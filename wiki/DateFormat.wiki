@@ -1,0 +1,20 @@
+#summary Explanations about date formatting.
+
+= Introduction =
+
+Add your content here.
+
+
+= Table =
+
+|| Expression || Output ||
+|| d || the day as number without a leading zero (1 to 31) ||
+|| dd || the day as number with a leading zero (01 to 31) ||
+|| ddd || the abbreviated localized day name (e.g. 'Mon' to 'Sun'). Uses QDate::shortDayName(). ||
+|| dddd || the long localized day name (e.g. 'Monday' to 'Sunday'). Uses QDate::longDayName(). ||
+|| M || the month as number without a leading zero (1 to 12) ||
+|| MM || the month as number with a leading zero (01 to 12) ||
+|| MMM || the abbreviated localized month name (e.g. 'Jan' to 'Dec'). Uses QDate::shortMonthName(). ||
+|| MMMM || the long localized month name (e.g. 'January' to 'December'). Uses || QDate::longMonthName(). ||
+|| yy || the year as two digit number (00 to 99) ||
+|| yyyy || the year as four digit number. If the year is negative, a minus sign is prepended in addition. ||
