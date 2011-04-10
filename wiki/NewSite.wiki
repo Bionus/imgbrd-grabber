@@ -2,7 +2,8 @@
 
 = Introduction =
 
-If an imageboard is not available for the program, you can add it.
+If an imageboard is not available for the program, you can add it. There are three ways to retrieve informations from imageboards with this program: using an XML API, a JSON API, or using regex (from "best" to "worst").
+These files must be put in the "sites" directory, then in the corresponding sub-directory ("xml", "json" or "regex").
 
 
 = How to create a new site file =
