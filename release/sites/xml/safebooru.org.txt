@@ -1,0 +1,5 @@
+0
+http://safebooru.org/index.php?page=dapi&s=post&q=index&limit={limit}&pid={page}&tags={tags}
+
+http://safebooru.org/index.php?page=post&s=view&id={id}
+<li class="tag-type-(.+)">.*<a href=".+">.*</a>.*<a href=".+">(.+)</a>.*</li>
