@@ -2,7 +2,7 @@
 
 =Introduction=
 
-If you're language is not available for the program, you can add if *very simply*. The goal of this page is to tell you how to do this.
+If you're language is not available for the program, you can add if *very simply* (the fact that there are many steps is not relevant). The goal of this page is to tell you how to do this.
 
 
 
@@ -17,7 +17,10 @@ If you're language is not available for the program, you can add if *very simply
   # A new window will pop-up: For the source language's language, set French, and for the country France. And for the target language, just put your language and country.
   # There will be a part in the window where you will have five fields : "Source text", "English translation", "English translator comment", "'Your language' translation" and "'Your language' translator comments".
   # The "only" thing you have to do know is to fill-up the "'Your language' translation" part, then mark item as done ("Translation > Done and Next", or just press "Ctrl+Return")
+  # Once all the translations have been marked as done, save and quit.
+  # Then, drag and drop your translation file on "lrelease.exe".
+  # Another file will be created : "'Your language'.qm". Just move it to the "languages" directory in the Grabber's installation folder.
 
 
 
-Once finished, dont hesitate sending me a mail (bio.nus@hotmail.fr) so I will add your translation to the downloads !
+Once finished, dont hesitate sending me a mail with your translation file (the .ts one) at bio.nus@hotmail.fr, so I will add your translation to the downloads !
