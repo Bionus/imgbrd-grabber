@@ -2,7 +2,7 @@
 
 = Introduction =
 
-Add your content here.
+You can edit the way favorite's field displays date in te settings. Here is an explanation how it works.
 
 
 = Table =
