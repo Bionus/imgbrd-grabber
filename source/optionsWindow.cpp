@@ -23,6 +23,8 @@ optionsWindow::optionsWindow(mainWindow *parent) : QWidget(parent), parent(paren
 			comboLanguages->setMaxVisibleItems(20);
 			comboLanguages->addItems(languages);
 			comboLanguages->setCurrentIndex(codes.indexOf(settings.value("language", "en").toString()));
+		m_lineDateFormat = new QLineEdit;
+			m_lineDateFormat->setText(settings.value("dateformat").toString());
 		QLineEdit *lineBlacklistedtags = new QLineEdit;
 			lineBlacklistedtags->setText(settings.value("blacklistedtags").toString());
 		QCheckBox *checkDownloadBlacklist = new QCheckBox;
@@ -35,6 +37,7 @@ optionsWindow::optionsWindow(mainWindow *parent) : QWidget(parent), parent(paren
 	QFormLayout *form0 = new QFormLayout;
 		form0->addRow(tr("&Langue"), comboLanguages);
 		form0->addRow(tr("&Liste noire"), lineBlacklistedtags);
+		form0->addRow(tr("&Format de la date"), m_lineDateFormat);
 		form0->addRow(txt_1);
 		form0->addRow(tr("&Télécharger les image de la liste noire"), checkDownloadBlacklist);
 		form0->addRow(tr("&Nombre de colonnes"), spinColumns);
@@ -189,6 +192,7 @@ optionsWindow::optionsWindow(mainWindow *parent) : QWidget(parent), parent(paren
 void optionsWindow::save()
 {
 	QSettings settings("settings.ini", QSettings::IniFormat);
+	settings.setValue("dateformat", m_lineDateFormat->text());
 	settings.setValue("blacklistedtags", this->lineBlacklistedtags->text());
 	settings.setValue("downloadblacklist", this->checkDownloadBlacklist->isChecked());
 	settings.setValue("columns", this->spinColumns->value());
