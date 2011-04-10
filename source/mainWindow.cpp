@@ -15,7 +15,7 @@
 #include "TextEdit.h"
 #include "QBouton.h"
 
-#define VERSION "1.1"
+#define VERSION "1.2"
 
 using namespace std;
 
@@ -192,7 +192,7 @@ mainWindow::mainWindow(QString m_program, QStringList m_params) : loaded(false),
 	QWidget *tabLog = new QWidget;
 		tabLog->setLayout(labelLogs);
 
-	this->loadLanguage(settings.value("language", "en").toString());
+	this->loadLanguage(settings.value("language", "English").toString());
 	
 	
 	
