@@ -1,0 +1,23 @@
+#summary How to create a new translation file
+
+=Introduction=
+
+If you're language is not available for the program, you can add if *very simply*. The goal of this page is to tell you how to do this.
+
+
+
+=How to create a new translation file=
+
+  # Download the translations tools on the downloads page.
+  # Unarchive it using winrar, 7-zip or whatever.
+  # You will have a file named "en.ts" : it is the english translation file: duplicate it.
+  # Rename the "your_translation_file.ts", replacing "your_translation_file" by the name of your language, for example "Deutsch".
+  # Launch "linguist.exe"
+  # Open ("File > Open..." or "Ctrl+O") the en.ts file and your language file.
+  # A new window will pop-up: For the source language's language, set French, and for the country France. And for the target language, just put your language and country.
+  # There will be a part in the window where you will have five fields : "Source text", "English translation", "English translator comment", "'Your language' translation" and "'Your language' translator comments".
+  # The "only" thing you have to do know is to fill-up the "'Your language' translation" part, then mark item as done ("Translation > Done and Next", or just press "Ctrl+Return")
+
+
+
+Once finished, dont hesitate sending me a mail (bio.nus@hotmail.fr) so I will add your translation to the downloads !
