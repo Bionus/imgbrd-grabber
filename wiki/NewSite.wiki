@@ -1,0 +1,66 @@
+#summary How to create a new site file.
+
+= Introduction =
+
+If an imageboard is not available for the program, you can add it.
+
+
+= How to create a new site file =
+
+== XML ==
+  # The first page number. Usually set to 1.
+  # Url of posts list. Set the limit param to {limit}, page to {page} and tags to {tags}.
+  # Url of popular images. Set the day param to {day}, month to {month} and year to {year}.
+  # Url of single post, by id. Set the id param to {id}.
+  # Regex for tags list.
+Example :
+{{{
+1
+http://danbooru.donmai.us/post/index.xml?limit={limit}&page={page}&tags={tags}
+http://danbooru.donmai.us/post/popular_by_day.xml?day={day}&month={month}&year={year}
+http://danbooru.donmai.us/post/show/{id}
+<li class="tag-type-(.+)">.*<a href=".+">.*</a>.*<a href=".+">(.+)</a>.*</li>
+}}}
+
+== JSON ==
+  # The first page number. Usually set to 1.
+  # Url of posts list. Set the limit param to {limit}, page to {page} and tags to {tags}.
+  # Url of popular images. Set the day param to {day}, month to {month} and year to {year}.
+  # Url of single post, by id. Set the id param to {id}.
+  # Regex for tags list.
+Example :
+{{{
+1
+http://danbooru.donmai.us/post/index.json?limit={limit}&page={page}&tags={tags}
+http://danbooru.donmai.us/post/popular_by_day.json?day={day}&month={month}&year={year}
+http://danbooru.donmai.us/post/show/{id}
+<li class="tag-type-(.+)">.*<a href=".+">.*</a>.*<a href=".+">(.+)</a>.*</li>
+}}}
+
+== Regex ==
+I advise you not to use regex to retrieve information, unless this is the only way.
+  # The first page number. Usually set to 1.
+  # Url of posts list. Set the limit param to {limit}, page to {page} and tags to {tags}.
+  # Url of popular images. Set the day param to {day}, month to {month} and year to {year}.
+  # Url of single post, by id. Set the id param to {id}.
+  # Regex for tags list.
+  # Regex for a single image on the posts list.
+  # Names of retrieved informations.
+  # Regex for the last page.
+Example :
+{{{
+1
+http://danbooru.donmai.us/post/index?limit={limit}&page={page}&tags={tags}
+http://danbooru.donmai.us/post/popular_by_day?day={day}&month={month}&year={year}
+http://danbooru.donmai.us/post/show/{id}
+<li class="tag-type-(.+)">.*<a href=".+">.*</a>.*<a href=".+">(.+)</a>.*</li>
+<span class=".*" id="p(\d*)">.*<a .*>.*(<img[ ]+class=".*" src="(http://danbooru.donmai.us/data/preview/(.*).jpg)" title="(.+) rating:(.*) score:(.*) user:(.*)" alt=".*" width=.* height=.*>).*</a>.*</span>
+id|image|preview_url|md5|tags|rating|score|user
+<link href="/post\?limit=\d*&amp;page=(\d*)&amp;tags=[^"]*" rel="last" title="Last Page">
+}}}
+
+
+= Conclusion =
+
+Note that most of the imageboards use the same API. So in most of the case, doing a copy/paste of the danbooru or gelbooru (the two main apis) file, then changing url is enough.
+And don't hesitate sending me a mail with your site file at bio.nus@hotmail.fr, so I will add it to the downloads !
