@@ -13,8 +13,9 @@ optionsWindow::optionsWindow(mainWindow *parent) : QWidget(parent), parent(paren
 	this->setWindowFlags(Qt::Window);
 	
 	QSettings settings("settings.ini", QSettings::IniFormat);
-	QStringList languages = QStringList() << "English" << "Français";
-	QStringList codes = QStringList() << "en" << "fr";
+	QStringList languages = QDir("languages").entryList(QStringList("*.qm"), QDir::Files);
+	for (int i = 0; i < languages.count(); i++)
+	{ languages[i].remove(".qm", Qt::CaseInsensitive); }
 	
 	QTabWidget *onglets = new QTabWidget(this);
 	
@@ -22,7 +23,7 @@ optionsWindow::optionsWindow(mainWindow *parent) : QWidget(parent), parent(paren
 		QComboBox *comboLanguages = new QComboBox;
 			comboLanguages->setMaxVisibleItems(20);
 			comboLanguages->addItems(languages);
-			comboLanguages->setCurrentIndex(codes.indexOf(settings.value("language", "en").toString()));
+			comboLanguages->setCurrentIndex(languages.indexOf(settings.value("language", "English").toString()));
 		m_lineDateFormat = new QLineEdit;
 			m_lineDateFormat->setText(settings.value("dateformat").toString());
 		QLineEdit *lineBlacklistedtags = new QLineEdit;
@@ -216,10 +217,10 @@ void optionsWindow::save()
 		settings.setValue("character_sep", this->lineCharacterSep->text());
 		settings.setValue("character_value", this->lineCharacterValue->text());
 	settings.endGroup();
-	if (settings.value("language", "en").toString() != this->codes.at(this->comboLanguages->currentIndex()))
+	if (settings.value("language", "English").toString() != this->comboLanguages->currentText())
 	{
-		settings.setValue("language", this->codes.at(this->comboLanguages->currentIndex()));
-		parent->loadLanguage(this->codes.at(this->comboLanguages->currentIndex()));
+		settings.setValue("language", this->comboLanguages->currentText());
+		parent->loadLanguage(this->comboLanguages->currentText());
 	}
 	this->close();
 }
