@@ -21,7 +21,7 @@ class optionsWindow : public QWidget
 		QStringList languages, codes, sources;
 		QComboBox *comboLanguages, *comboSource1, *comboSource2, *comboSource3;
 		QSpinBox *spinUpdates, *spinColumns, *spinLimit;
-		QLineEdit *linePath, *lineFilename, *lineArtistEmpty, *lineArtistSep, *lineArtistValue, *lineCopyrightEmpty, *lineCopyrightSep, *lineCopyrightValue, *lineCharacterEmpty, *lineCharacterSep, *lineCharacterValue, *lineBlacklistedtags;
+		QLineEdit *m_lineDateFormat, *linePath, *lineFilename, *lineArtistEmpty, *lineArtistSep, *lineArtistValue, *lineCopyrightEmpty, *lineCopyrightSep, *lineCopyrightValue, *lineCharacterEmpty, *lineCharacterSep, *lineCharacterValue, *lineBlacklistedtags;
 		QCheckBox *checkDownloadBlacklist, *checkArtistUseall, *checkCopyrightUseall, *checkCharacterUseall;
 };
 

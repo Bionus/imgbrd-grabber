@@ -15,7 +15,7 @@
 #include "TextEdit.h"
 #include "QBouton.h"
 
-#define VERSION "1.0"
+#define VERSION "1.1"
 
 using namespace std;
 
@@ -138,7 +138,7 @@ mainWindow::mainWindow(QString m_program, QStringList m_params) : loaded(false),
 			m_date = new QDateEdit;
 				m_date->setDateRange(QDate(2000, 1, 1), m_serverDate.date());
 				m_date->setDate(m_serverDate.date());
-				m_date->setDisplayFormat("dd/MM/yyyy");
+				m_date->setDisplayFormat(settings.value("dateformat", "dd/MM/yyyy").toString());
 				connect(m_date, SIGNAL(dateChanged(QDate)), radio2, SLOT(toggle()));
 			champs->addWidget(m_date, 1, 1, 1, 3);
 	QHBoxLayout *actions = new QHBoxLayout();
