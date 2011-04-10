@@ -10,8 +10,7 @@ If you're language is not available for the program, you can add if *very simply
 
   # Download the translations tools on the downloads page.
   # Unarchive it using winrar, 7-zip or whatever.
-  # You will have a file named "en.ts" : it is the english translation file: duplicate it.
-  # Rename the "your_translation_file.ts", replacing "your_translation_file" by the name of your language, for example "Deutsch".
+  # Rename the "your_translation_file.ts" file, replacing "your_translation_file" by the name of your language, for example "Deutsch".
   # Launch "linguist.exe"
   # Open ("File > Open..." or "Ctrl+O") the en.ts file and your language file.
   # A new window will pop-up: For the source language's language, set French, and for the country France. And for the target language, just put your language and country.
