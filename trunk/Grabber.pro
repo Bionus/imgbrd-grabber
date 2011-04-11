@@ -17,7 +17,8 @@ HEADERS += includes/addgroupwindow.h \
            includes/QAffiche.h \
            includes/QBouton.h \
            includes/textedit.h \
-           includes/zoomWindow.h
+           includes/zoomWindow.h \
+    includes/json.h
 SOURCES += source/addgroupwindow.cpp \
            source/adduniquewindow.cpp \
            source/advancedWindow.cpp \
@@ -28,8 +29,9 @@ SOURCES += source/addgroupwindow.cpp \
            source/QAffiche.cpp \
            source/QBouton.cpp \
            source/textedit.cpp \
-           source/zoomWindow.cpp
+           source/zoomWindow.cpp \
+    source/json.cpp
 RESOURCES += resources.qrc
 RC_FILE = icon.rc
 TRANSLATIONS += languages/en.ts languages/fr.ts
-QT += network script xml
+QT += network xml

@@ -3,7 +3,6 @@
 #include <math.h>
 #include <QApplication>
 #include <QtXml>
-#include <QScriptEngine>
 #include <QtNetwork>
 #include "functions.h"
 #include "mainWindow.h"
@@ -14,6 +13,7 @@
 #include "adduniquewindow.h"
 #include "TextEdit.h"
 #include "QBouton.h"
+#include "json.h"
 
 #define VERSION "1.2"
 
@@ -28,7 +28,7 @@ mainWindow::mainWindow(QString m_program, QStringList m_params) : loaded(false),
 	this->setWindowTitle(tr("Grabber"));
 
 	m_serverDate = QDateTime::currentDateTime();
-	m_serverDate.setTime(m_serverDate.toUTC().time().addSecs(-60*60*4));
+	m_serverDate = m_serverDate.toUTC().addSecs(-60*60*4);
 
 	this->loadFavorites();
 
@@ -41,7 +41,6 @@ mainWindow::mainWindow(QString m_program, QStringList m_params) : loaded(false),
 		this->move(settings.value("pos", QPoint(200, 200)).toPoint());
 	}
 
-	QString sel = "1";
 	QMap<QString,QStringList> stes;
 	QStringList dir, defaults = QStringList() << "xml" << "json" << "regex";
 	for (int s = 0; s < 3; s++)
@@ -49,8 +48,6 @@ mainWindow::mainWindow(QString m_program, QStringList m_params) : loaded(false),
 		dir = QDir("sites\\"+settings.value("source_"+s, defaults.at(s)).toString()).entryList(QDir::Files);
 		for (int i = 0; i < dir.count(); i++)
 		{
-			if (i > 0 && s == 0)
-			{ sel += "0"; }
 			QFile file("sites\\"+settings.value("source_"+s, defaults.at(s)).toString()+"\\"+dir.at(i));
 			if (file.open(QIODevice::ReadOnly | QIODevice::Text))
 			{
@@ -67,11 +64,16 @@ mainWindow::mainWindow(QString m_program, QStringList m_params) : loaded(false),
 			}
 		}
 	}
+	QString sel = '1'+QString().fill('0',stes.count()-1);
 	this->sites = stes;
 
 	QString sav = settings.value("sites", sel).toString();
-	for (int i = 0; i < sav.count(); i++)
-	{ this->selected.append(sav.at(i) == '1' ? true : false); }
+	for (int i = 0; i < sel.count(); i++)
+	{
+		if (sav.count() <= i)
+		{ sav[i] = '0'; }
+		this->selected.append(sav.at(i) == '1' ? true : false);
+	}
 
 
 
@@ -440,13 +442,11 @@ void mainWindow::getAllSource(QNetworkReply *r)
 	}
 	else if (this->sites[site].at(0) == "json")
 	{
-		// Getting last page
-		QScriptEngine engine;
-		QScriptValue src(engine.evaluate(source));
-		QMap<QString, QVariant> sc;
-		if (src.isArray())
+		QVariant src = Json::parse(source);
+		if (!src.isNull())
 		{
-			QList<QVariant> sourc = src.toVariant().toList();
+			QMap<QString, QVariant> sc;
+			QList<QVariant> sourc = src.toList();
 			for (int id = 0; id < sourc.count(); id++)
 			{
 				sc = sourc.at(id).toMap();
@@ -850,13 +850,11 @@ void mainWindow::replyFinished(QNetworkReply* r)
 	}
 	else if (this->sites[site].at(0) == "json")
 	{
-		// Getting last page
-		QScriptEngine engine;
-		QScriptValue src(engine.evaluate(source));
-		QMap<QString, QVariant> sc;
-		if (src.isArray())
+		QVariant src = Json::parse(source);
+		if (!src.isNull())
 		{
-			QList<QVariant> sourc = src.toVariant().toList();
+			QMap<QString, QVariant> sc;
+			QList<QVariant> sourc = src.toList();
 			for (int id = 0; id < sourc.count(); id++)
 			{
 				sc = sourc.at(id).toMap();

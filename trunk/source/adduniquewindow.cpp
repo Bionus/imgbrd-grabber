@@ -1,7 +1,7 @@
 #include "adduniquewindow.h"
 #include "functions.h"
+#include "json.h"
 #include <QtXml>
-#include <QScriptEngine>
 
 AddUniqueWindow::AddUniqueWindow(QMap<QString,QStringList> sites, mainWindow *parent) : QWidget(parent), m_parent(parent), m_sites(sites)
 {
@@ -63,12 +63,11 @@ void AddUniqueWindow::replyFinished(QNetworkReply *r)
 	}
 	else if (m_sites[site].at(0) == "json")
 	{
-		QScriptEngine engine;
-		QScriptValue src(engine.evaluate(source));
+		QVariant src = Json::parse(source);
 		QMap<QString, QVariant> sc;
-		if (src.isArray())
+		if (!src.isNull())
 		{
-			QList<QVariant> sourc = src.toVariant().toList();
+			QList<QVariant> sourc = src.toList();
 			sc = sourc.at(0).toMap();
 			for (int i = 0; i < infos.count(); i++)
 			{ values[infos.at(i)] = sc.value(infos.at(i)).toString(); }
