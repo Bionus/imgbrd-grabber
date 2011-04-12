@@ -9,6 +9,7 @@ These files must be put in the "sites" directory, then in the corresponding sub-
 = How to create a new site file =
 
 == XML ==
+For the majority of boorus (based on danbooru and gelbooru).
   # The first page number. Usually set to 1.
   # Url of posts list. Set the limit param to {limit}, page to {page} and tags to {tags}.
   # Url of popular images. Set the day param to {day}, month to {month} and year to {year}.
@@ -24,6 +25,7 @@ http://danbooru.donmai.us/post/show/{id}
 }}}
 
 == JSON ==
+An alternative for many boorus, and necessary for a few others (sankakucomplex for example)
   # The first page number. Usually set to 1.
   # Url of posts list. Set the limit param to {limit}, page to {page} and tags to {tags}.
   # Url of popular images. Set the day param to {day}, month to {month} and year to {year}.
@@ -39,7 +41,7 @@ http://danbooru.donmai.us/post/show/{id}
 }}}
 
 == Regex ==
-I advise you not to use regex to retrieve information, unless this is the only way.
+I advise you not to use regex to retrieve information, unless this is the only way (for the boorus that doesn't provide any API).
   # The first page number. Usually set to 1.
   # Url of posts list. Set the limit param to {limit}, page to {page} and tags to {tags}.
   # Url of popular images. Set the day param to {day}, month to {month} and year to {year}.
