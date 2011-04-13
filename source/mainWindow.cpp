@@ -924,7 +924,7 @@ void mainWindow::replyFinished(QNetworkReply* r)
 		txt->setText(site+" - <a href=\""+url+"\">"+url+"</a> - "+tr("Aucun résultat")+(reasons.count() > 0 ? "<br/>"+tr("Raisons possibles : %1").arg(reasons.join(", ")) : ""));
 	}
 	else
-	{ txt->setText(site+" - <a href=\""+url+"\">"+url+"</a> - "+tr("Page %1 sur %2 (%3 sur %4)").arg(QString::number(this->page->value()), (max != 0 ? QString::number(this->page->maximum()) : "?"), QString::number(results), (count != 0 ? QString::number(count) : "?"))); }
+	{ txt->setText(site+" - <a href=\""+url+"\">"+url+"</a> - "+tr("Page %1 sur %2 (%3 sur %4)").arg(QString::number(this->page->value()), (max != 0 ? QString::number(ceil(count/settings.value("limit", 20).toFloat())) : "?"), QString::number(results), (count != 0 ? QString::number(count) : "?"))); }
 	connect(txt, SIGNAL(linkActivated(QString)), this, SLOT(openUrl(QString)));
 	int pl = ceil(sqrt(settings.value("limit", 20).toInt()));
 	float fl = (float)settings.value("limit", 20).toInt()/pl;
