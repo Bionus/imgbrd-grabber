@@ -7,6 +7,9 @@
 #include "optionsWindow.h"
 #include "advancedWindow.h"
 
+Q_IMPORT_PLUGIN(qjpeg)
+Q_IMPORT_PLUGIN(qgif)
+
 
 
 int main(int argc, char *argv[])

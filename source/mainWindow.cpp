@@ -27,6 +27,8 @@ mainWindow::mainWindow(QString m_program, QStringList m_params) : loaded(false),
 	this->setWindowIcon(QIcon(":/images/icon.ico"));
 	this->setWindowTitle(tr("Grabber"));
 
+	qDebug() << "Supported formats: " << QImageReader::supportedImageFormats();
+
 	m_serverDate = QDateTime::currentDateTime();
 	m_serverDate = m_serverDate.toUTC().addSecs(-60*60*4);
 
@@ -235,7 +237,7 @@ void mainWindow::log(QString l)
 {
 	this->_log.prepend(l);
 	if (this->loaded)
-	{ this->_logLabel->setText(_log.join("\r\n")); }
+	{ this->_logLabel->setText(_log.join("<br/>")); }
 }
 void mainWindow::logClear()
 {
@@ -785,6 +787,7 @@ void mainWindow::replyFinished(QNetworkReply* r)
 {
 	QSettings settings("settings.ini", QSettings::IniFormat);
 	QString url = r->url().toString();
+		log("Received page "+url);
 	int n = 0, site_id = 0, results = 0;
 	for (int i = 0; i < this->assoc.count(); i++)
 	{
@@ -938,6 +941,7 @@ void mainWindow::setTags(QString tags)
 { this->search->setText(tags); }
 void mainWindow::replyFinishedPic(QNetworkReply* r)
 {
+	log("Received preview image <a href='"+r->url().toString()+"'>"+r->url().toString()+"</a>");
 	QSettings settings("settings.ini", QSettings::IniFormat);
 	int id = 0, site = 0, n = 0;
 	for (int i = 0; i < this->details.count(); i++)
@@ -971,6 +975,8 @@ void mainWindow::replyFinishedPic(QNetworkReply* r)
 	{ unit = "o"; }
 	QPixmap pic;
 	pic.loadFromData(r->readAll());
+	if (pic.isNull())
+	{ log("<b>Warning:</b> one of the preview pictures (<a href='"+r->url().toString()+"'>"+r->url().toString()+"</a>) is empty."); }
 	QBouton *l = new QBouton(n, this);
 		l->setIcon(pic);
 		l->setToolTip(tr("<b>Tags :</b> %1<br/><br/><b>ID :</b> %2<br/><b>Classe :</b> %3<br/><b>Score :</b> %4<br/><b>Posteur :</b> %5<br/><br/><b>Dimensions :</b> %6 x %7<br/><b>Taille :</b> %8 %9<br/><b>Date :</b> %10<br/>").arg(this->details.at(n).value("tags"), this->details.at(n).value("id"), assoc[this->details.at(n).value("rating")], this->details.at(n).value("score"), this->details.at(n).value("author"), this->details.at(n).value("width"), this->details.at(n).value("height"), QString::number(round(size)), unit).arg(this->details.at(n).value("created_at")));
