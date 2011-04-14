@@ -9,29 +9,31 @@ INCLUDEPATH += . includes languages source
 
 # Input
 HEADERS += includes/addgroupwindow.h \
-           includes/adduniquewindow.h \
-           includes/advancedWindow.h \
-           includes/functions.h \
-           includes/mainWindow.h \
-           includes/optionsWindow.h \
-           includes/QAffiche.h \
-           includes/QBouton.h \
-           includes/textedit.h \
-           includes/zoomWindow.h \
-    includes/json.h
+	includes/adduniquewindow.h \
+	includes/advancedWindow.h \
+	includes/functions.h \
+	includes/mainWindow.h \
+	includes/optionsWindow.h \
+	includes/QAffiche.h \
+	includes/QBouton.h \
+	includes/textedit.h \
+	includes/zoomWindow.h \
+	includes/json.h
 SOURCES += source/addgroupwindow.cpp \
-           source/adduniquewindow.cpp \
-           source/advancedWindow.cpp \
-           source/functions.cpp \
-           source/main.cpp \
-           source/mainWindow.cpp \
-           source/optionsWindow.cpp \
-           source/QAffiche.cpp \
-           source/QBouton.cpp \
-           source/textedit.cpp \
-           source/zoomWindow.cpp \
-    source/json.cpp
+	source/adduniquewindow.cpp \
+	source/advancedWindow.cpp \
+	source/functions.cpp \
+	source/main.cpp \
+	source/mainWindow.cpp \
+	source/optionsWindow.cpp \
+	source/QAffiche.cpp \
+	source/QBouton.cpp \
+	source/textedit.cpp \
+	source/zoomWindow.cpp \
+	source/json.cpp
 RESOURCES += resources.qrc
 RC_FILE = icon.rc
 TRANSLATIONS += languages/en.ts languages/fr.ts
 QT += network xml
+QTPLUGIN += qjpeg \
+	qgif
