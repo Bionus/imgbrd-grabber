@@ -1,0 +1,19 @@
+#summary How to use the program.
+
+=Installation=
+==Windows==
+  # Download the windows installer from the download page.
+  # Launch the installer, then follow instructions. By default, the program will be installed to "C:/Program Files/Grabber".
+  # Go to the installation folder, then launch "Grabber.exe".
+
+=Usage=
+==Settings==
+The first thing to do is to set up the program. To do so, go to "Options > Options".
+  * The fisrt tab is for general settings (language, date format...).
+  * The second tab is to tell to the programm the priority of APIs. For example, if you have three files for "danbooru.donmai.us" (one for each retrieving method), it will use the one specified in the "Source 1" field.
+  * The third tab must be filled up if you want to save pictures on your computer using the program. Set the "Folder" field to the location you want your images to be saved, and fill the "Format" field using informations below it (example: "%artist%/%copyright%/%character%/%md5%.%ext%").
+  * The three last tabs are here to tell the program what to do if there are missing or multiple informations about an image (for example, no artists, or multiple characters).
+Once finished, you can press the "Ok" button.
+==Sources==
+The second thing to do is to choose from where you want to download pictures. To do so, click on the "Sources" button on the bottom of the window. Just check the imageboards you want to get informations from, then press ok.
+*Note:* if you select multiple imageboards, they will be put in one column by default. I advice you changing this by editing the "Columns" settings in the options.
