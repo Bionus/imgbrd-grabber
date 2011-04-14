@@ -35,5 +35,3 @@ RESOURCES += resources.qrc
 RC_FILE = icon.rc
 TRANSLATIONS += languages/en.ts languages/fr.ts
 QT += network xml
-QTPLUGIN += qjpeg \
-	qgif
