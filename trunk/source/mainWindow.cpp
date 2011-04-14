@@ -27,8 +27,6 @@ mainWindow::mainWindow(QString m_program, QStringList m_params) : loaded(false),
 	this->setWindowIcon(QIcon(":/images/icon.ico"));
 	this->setWindowTitle(tr("Grabber"));
 
-	qDebug() << "Supported formats: " << QImageReader::supportedImageFormats();
-
 	m_serverDate = QDateTime::currentDateTime();
 	m_serverDate = m_serverDate.toUTC().addSecs(-60*60*4);
 
