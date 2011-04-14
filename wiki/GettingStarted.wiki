@@ -1,12 +1,18 @@
 #summary How to use the program.
 
+
+
 =Installation=
+
 ==Windows==
   # Download the windows installer from the download page.
   # Launch the installer, then follow instructions. By default, the program will be installed to "C:/Program Files/Grabber".
   # Go to the installation folder, then launch "Grabber.exe".
 
+
+
 =Usage=
+
 ==Settings==
 The first thing to do is to set up the program. To do so, go to "Options > Options".
   * The fisrt tab is for general settings (language, date format...).
@@ -14,6 +20,13 @@ The first thing to do is to set up the program. To do so, go to "Options > Optio
   * The third tab must be filled up if you want to save pictures on your computer using the program. Set the "Folder" field to the location you want your images to be saved, and fill the "Format" field using informations below it (example: "%artist%/%copyright%/%character%/%md5%.%ext%").
   * The three last tabs are here to tell the program what to do if there are missing or multiple informations about an image (for example, no artists, or multiple characters).
 Once finished, you can press the "Ok" button.
+
 ==Sources==
 The second thing to do is to choose from where you want to download pictures. To do so, click on the "Sources" button on the bottom of the window. Just check the imageboards you want to get informations from, then press ok.
+
 *Note:* if you select multiple imageboards, they will be put in one column by default. I advice you changing this by editing the "Columns" settings in the options.
+
+==Search fields==
+The upper part of the window is "divided" in two. You can choose between them using their respective radio.
+  * The tags & page field: to make searches using tags. You can add your own tags to auto-completion editing the "words.txt" file.
+  * The date field: to search in the popular images of a single day. You can change the date format in the options.
