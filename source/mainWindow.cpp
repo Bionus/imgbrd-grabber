@@ -104,7 +104,6 @@ mainWindow::mainWindow(QString m_program, QStringList m_params) : loaded(false),
 	
 	/* Fichiers */
 
-	QWidget *wid = new QWidget; 
 	QGridLayout *champs = new QGridLayout;
 		radio1 = new QRadioButton(this);
 			radio1->setChecked(true);
@@ -156,8 +155,10 @@ mainWindow::mainWindow(QString m_program, QStringList m_params) : loaded(false),
 			mainlayout->setAlignment(champs, Qt::AlignTop);
 		mainlayout->addLayout(web);
 		mainlayout->addLayout(actions);
-	wid->setLayout(mainlayout);
-	wid->setSizePolicy(QSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored));
+			mainlayout->setAlignment(actions, Qt::AlignBottom);
+	m_tabExplore = new QWidget;
+		m_tabExplore->setLayout(mainlayout);
+		m_tabExplore->setSizePolicy(QSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored));
 
 	QVBoxLayout *labelBatch = new QVBoxLayout(this);
 		QLabel *txtGroups = new QLabel(tr("Groupes"));
@@ -185,25 +186,29 @@ mainWindow::mainWindow(QString m_program, QStringList m_params) : loaded(false),
 				connect(buttonClearBatch, SIGNAL(clicked()), this, SLOT(batchClear()));
 				labelBatchButtons->addWidget(buttonClearBatch);
 		labelBatch->addLayout(labelBatchButtons);
-	QWidget *tabBatch = new QWidget;
-		tabBatch->setLayout(labelBatch);
+	m_tabBatch = new QWidget;
+		m_tabBatch->setLayout(labelBatch);
 
 	QVBoxLayout *labelLogs = new QVBoxLayout(this);
-		_logLabel = new QLabel(tr(""));
-			labelLogs->addWidget(_logLabel);
-	QWidget *tabLog = new QWidget;
-		tabLog->setLayout(labelLogs);
-
-	this->loadLanguage(settings.value("language", "English").toString());
-	
-	
+		QScrollArea *logscroll = new QScrollArea;
+			_logLabel = new QLabel(tr(""));
+				_logLabel->setWordWrap(true);
+				_logLabel->setSizePolicy(QSizePolicy(QSizePolicy::Ignored,QSizePolicy::Ignored));
+			logscroll->setWidget(_logLabel);
+			logscroll->setWidgetResizable(true);
+			labelLogs->addWidget(logscroll);
+		m_logClear = new QPushButton(this);
+			connect(m_logClear, SIGNAL(clicked()), this, SLOT(logClear()));
+			labelLogs->addWidget(m_logClear);
+	 m_tabLog = new QWidget;
+		m_tabLog->setLayout(labelLogs);
 	
 	// Zone centrale
-	QTabWidget *tabs = new QTabWidget();
-		tabs->addTab(wid, tr("Explorer"));
-		tabs->addTab(tabBatch, tr("Télécharger"));
-		tabs->addTab(tabLog, tr("Log"));
-	setCentralWidget(tabs);
+	m_tabs = new QTabWidget;
+		m_tabs->addTab(m_tabExplore, "{tab}");
+		m_tabs->addTab(m_tabBatch, "{tab}");
+		m_tabs->addTab(m_tabLog, "{tab}");
+	setCentralWidget(m_tabs);
 	
 	// Sauvegarde
 	this->comboSources = comboSources;
@@ -222,6 +227,8 @@ mainWindow::mainWindow(QString m_program, QStringList m_params) : loaded(false),
 	this->statusSize = statusSize;
 	this->_log = QStringList();
 	this->loaded = true;
+
+	this->loadLanguage(settings.value("language", "English").toString());
 
 	if (!this->m_params.isEmpty())
 	{
@@ -269,6 +276,10 @@ void mainWindow::retranslateStrings()
 	ok->setText(tr("Ok"));
 	adv->setText(tr("Sources"));
 	gA->setText(tr("Prendre cette page"));
+	m_logClear->setText(tr("Effacer le log"));
+	m_tabs->setTabText(0, tr("Explorer"));
+	m_tabs->setTabText(1, tr("Télécharger"));
+	m_tabs->setTabText(2, tr("Log"));
 }
 void mainWindow::loadFavorites()
 {
@@ -972,12 +983,13 @@ void mainWindow::replyFinishedPic(QNetworkReply* r)
 	else
 	{ unit = "o"; }
 	QPixmap pic;
-	pic.loadFromData(r->readAll());
+		pic.loadFromData(r->readAll());
 	if (pic.isNull())
 	{ log("<b>Warning:</b> one of the preview pictures (<a href='"+r->url().toString()+"'>"+r->url().toString()+"</a>) is empty."); }
 	QBouton *l = new QBouton(n, this);
 		l->setIcon(pic);
 		l->setToolTip(tr("<b>Tags :</b> %1<br/><br/><b>ID :</b> %2<br/><b>Classe :</b> %3<br/><b>Score :</b> %4<br/><b>Posteur :</b> %5<br/><br/><b>Dimensions :</b> %6 x %7<br/><b>Taille :</b> %8 %9<br/><b>Date :</b> %10<br/>").arg(this->details.at(n).value("tags"), this->details.at(n).value("id"), assoc[this->details.at(n).value("rating")], this->details.at(n).value("score"), this->details.at(n).value("author"), this->details.at(n).value("width"), this->details.at(n).value("height"), QString::number(round(size)), unit).arg(this->details.at(n).value("created_at")));
+		//l->setSizePolicy(QSizePolicy(QSizePolicy::Ignored,QSizePolicy::Ignored));
 		l->setIconSize(QSize(150, 150));
 		l->setFlat(true);
 		connect(l, SIGNAL(appui(int)), this, SLOT(webZoom(int)));
