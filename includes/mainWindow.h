@@ -93,6 +93,9 @@ class mainWindow : public QMainWindow
 		QString m_program;
 		QStringList m_params;
 		QDateTime m_serverDate;
+		QPushButton *m_logClear;
+		QTabWidget *m_tabs;
+		QWidget *m_tabExplore, *m_tabBatch, *m_tabLog;
 };
 
 #endif
