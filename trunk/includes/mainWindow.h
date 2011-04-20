@@ -56,7 +56,7 @@ class mainWindow : public QMainWindow
 		void _getAll();
 	
 	private:
-		bool loaded, allow, changed;
+		bool loaded, allow, changed, m_must_get_tags;
 		int ch, updating, filesUpdates, getAllId, getAllDownloaded, getAllExists, getAllIgnored, getAllErrors, pagemax, columns, limit;
 		QStringList paths, sources, assoc, _log;
 		QString path;

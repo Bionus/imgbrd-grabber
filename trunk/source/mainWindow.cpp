@@ -15,7 +15,7 @@
 #include "QBouton.h"
 #include "json.h"
 
-#define VERSION "1.4"
+#define VERSION "1.5"
 
 using namespace std;
 
@@ -33,6 +33,72 @@ mainWindow::mainWindow(QString m_program, QStringList m_params) : loaded(false),
 	this->loadFavorites();
 
 	QSettings settings("settings.ini", QSettings::IniFormat);
+	if (settings.value("firstload", true).toBool())
+	{
+		QSettings cfg(QSettings::IniFormat, QSettings::UserScope, "Mozilla", "Firefox");
+		QString path = QFileInfo(cfg.fileName()).absolutePath()+"/Firefox";
+		QSettings profiles(path+"/profiles.ini", QSettings::IniFormat);
+		int reponse = QMessageBox::question(this, tr("Danbooru Downloader"), tr("L'extension pour Mozilla Firefox \"Danbooru Downloader\" a été détéctée sur votre système. Souhaitez-vous en importer les préférences ?"), QMessageBox::Yes | QMessageBox::No);
+		if (reponse == QMessageBox::Yes)
+		{
+			QFile prefs(path+"/"+profiles.value("Profile0/Path").toString()+"/prefs.js");
+			if (prefs.exists())
+			{
+				if (prefs.open(QIODevice::ReadOnly | QIODevice::Text))
+				{
+					QString source;
+					while (!prefs.atEnd())
+					{ source += QString(prefs.readLine()); }
+					QRegExp rx("user_pref\\(\"danbooru.downloader.([^\"]+)\", ([^\\)]+)\\);");
+					int pos = 0;
+					QMap<QString,QString> firefox, assoc;
+					assoc["blacklist"] = "blacklistedtags";
+					assoc["generalTagsSeparator"] = "separator";
+					assoc["multipleArtistsAll"] = "artist_useall";
+					assoc["multipleArtistsDefault"] = "artist_value";
+					assoc["multipleArtistsSeparator"] = "artist_sep";
+					assoc["multipleCharactersAll"] = "character_useall";
+					assoc["multipleCharactersDefault"] = "character_value";
+					assoc["multipleCharactersSeparator"] = "character_sep";
+					assoc["multipleCopyrightsAll"] = "copyright_useall";
+					assoc["multipleCopyrightsDefault"] = "copyright_value";
+					assoc["multipleCopyrightsSeparator"] = "copyright_sep";
+					assoc["noArtist"] = "artist_empty";
+					assoc["noCharacter"] = "character_empty";
+					assoc["noCopyright"] = "copyright_empty";
+					assoc["targetFolder"] = "path";
+					assoc["targetName"] = "filename";
+					while ((pos = rx.indexIn(source, pos)) != -1)
+					{
+						pos += rx.matchedLength();
+						QString value = rx.cap(2);
+						if (value.left(1) == "\"")	{ value = value.right(value.length()-1);	}
+						if (value.right(1) == "\"")	{ value = value.left(value.length()-1);		}
+						firefox[rx.cap(1)] = value;
+					}
+					QSettings settings("settings.ini", QSettings::IniFormat);
+					settings.beginGroup("Save");
+					if (firefox.keys().contains("useBlacklist"))
+					{
+						if (firefox["useBlacklist"] == "true")
+						{ settings.setValue("downloadblacklist", false); }
+						else
+						{ settings.setValue("downloadblacklist", true); }
+					}
+					for (int i = 0; i < firefox.size(); i++)
+					{
+						if (assoc.keys().contains(firefox.keys().at(i)))
+						{
+							QString v =  firefox.values().at(i);
+							v.replace("\\\\", "\\");
+							settings.setValue(assoc[firefox.keys().at(i)], v);
+						}
+					}
+				}
+			}
+		}
+		settings.setValue("firstload", false);
+	}
 
 	this->setWindowState(Qt::WindowStates(settings.value("state", 0).toInt()));
 	if (!this->isMaximized())
@@ -535,17 +601,56 @@ void mainWindow::getAllSource(QNetworkReply *r)
 
 void mainWindow::_getAll()
 {
+	QSettings settings("settings.ini", QSettings::IniFormat);
 	if (getAllId < this->allImages.count())
 	{
+		settings.beginGroup("Save");
+		QString fn = settings.value("filename").toString();
+		QStringList forbidden = QStringList() << "artist" << "copyright" << "character" << "model" << "general" << "model|artist";
+		m_must_get_tags = false;
+		for (int i = 0; i < forbidden.count(); i++)
+		{
+			if (fn.contains("%"+forbidden.at(i)+"%"))
+			{ m_must_get_tags = true; }
+		}
 		log("Images download started.");
-		QString u = this->sites[this->allImages.at(getAllId).value("site")].at(4);
-			u.replace("{id}", this->allImages.at(getAllId).value("id"));
-		QUrl rl(u);
-		QNetworkAccessManager *m = new QNetworkAccessManager(this);
-		connect(m, SIGNAL(finished(QNetworkReply*)), this, SLOT(getAllPerformTags(QNetworkReply*)));
-		QNetworkRequest request(rl);
-			request.setRawHeader("Referer", u.toAscii());
-		this->getAllRequest = m->get(request);
+		if (m_must_get_tags)
+		{
+			log("Downloading detailed tags first.");
+			QString u = this->sites[this->allImages.at(getAllId).value("site")].at(4);
+				u.replace("{id}", this->allImages.at(getAllId).value("id"));
+			QUrl rl(u);
+			QNetworkAccessManager *m = new QNetworkAccessManager(this);
+			connect(m, SIGNAL(finished(QNetworkReply*)), this, SLOT(getAllPerformTags(QNetworkReply*)));
+			QNetworkRequest request(rl);
+				request.setRawHeader("Referer", u.toAscii());
+			this->getAllRequest = m->get(request);
+		}
+		else
+		{
+			QString u(this->allImages.at(getAllId).value("file_url"));
+			QString path = settings.value("filename").toString()
+			.replace("%all%", this->allImages.at(getAllId).value("tags"))
+			.replace("%all_original%", this->allImages.at(getAllId).value("tags"))
+			.replace("%filename%", u.section('/', -1).section('.', 0, -2))
+			.replace("%rating%", this->allImages.at(getAllId).value("rating"))
+			.replace("%md5%", this->allImages.at(getAllId).value("md5"))
+			.replace("%website%", this->allImages.at(getAllId).value("site"))
+			.replace("%ext%", u.section('.', -1));
+			QFile file(path);
+			if (!file.exists())
+			{
+				log("Downloading pictures directly.");
+				QUrl rl(u);
+				QNetworkAccessManager *m = new QNetworkAccessManager(this);
+				connect(m, SIGNAL(finished(QNetworkReply*)), this, SLOT(getAllPerformImage(QNetworkReply*)));
+				QNetworkRequest request(rl);
+					request.setRawHeader("Referer", u.toAscii());
+				this->getAllRequest = m->get(request);
+			}
+			else
+			{ log("Image ignored."); }
+		}
 	}
 	else
 	{
@@ -561,7 +666,6 @@ void mainWindow::_getAll()
 				tr("%n erreur(s).", "", getAllErrors)
 			)
 		);
-		QSettings settings("settings.ini", QSettings::IniFormat);
 		if (!settings.value("Exec/init").toString().isEmpty())
 		{
 			m_process->closeWriteChannel();
@@ -769,13 +873,10 @@ void mainWindow::getAllPerformImage(QNetworkReply* reply)
 				getAllErrors++;
 			}
 		}
-		else
-		{
-			f.open(QIODevice::WriteOnly);
-			f.write(reply->readAll());
-			f.close();
-			getAllDownloaded++;
-		}
+		f.open(QIODevice::WriteOnly);
+		f.write(reply->readAll());
+		f.close();
+		getAllDownloaded++;
 		getAllId++;
 		int count = this->progressdialog->value();
 		if (this->getAllDetails["alls"].contains("absurdres"))		{ count += 3; }
@@ -786,6 +887,8 @@ void mainWindow::getAllPerformImage(QNetworkReply* reply)
 		this->getAllDetails.clear();
 		this->_getAll();
 	}
+	else
+	{ getAllErrors++; }
 }
 void mainWindow::getAllCancel()
 {
