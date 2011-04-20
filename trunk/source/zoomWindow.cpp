@@ -108,7 +108,10 @@ void zoomWindow::openUrl(QString url)
 void zoomWindow::openSaveDir()
 {
 	QSettings settings("settings.ini", QSettings::IniFormat);
-	QDesktopServices::openUrl(QUrl("file:///"+settings.value("Save/path").toString()+"\\"+this->getSavePath().section('\\', 0, -2)));
+	QString path = settings.value("Save/path").toString().replace("\\", "/");
+	if (path.right(1) == "/")
+	{ path = path.left(path.length()-1); }
+	QDesktopServices::openUrl(QUrl("file:///"+path+"/"+this->getSavePath().section('\\', 0, -2)));
 }
 
 void zoomWindow::linkHovered(QString url)
@@ -206,14 +209,16 @@ void zoomWindow::replyFinished(QNetworkReply* reply)
 		}
 		this->labelTags->setText(tr("<b>Tags :</b> %1").arg(tags.trimmed()));
 		QString pth = this->getSavePath();
-		QString path = settings.value("Save/path").toString()+"\\"+pth;
-		QFile file(path);
-		if (file.exists() && !settings.value("Save/path").toString().isEmpty() && !pth.isEmpty())
+		QString path = settings.value("Save/path").toString().replace("\\", "/");
+		if (path.right(1) == "/")
+		{ path = path.left(path.length()-1); }
+		QFile file(path+"/"+pth);
+		if (file.exists() && !path.isEmpty() && !pth.isEmpty())
 		{
 			this->buttonSave->setText(tr("Fichier déjà existant"));
 			this->d.clear();
 				if (!file.open(QIODevice::ReadOnly))
-				{ error(this, tr("Erreur inattendue lors de l'ouverture du fichier.\r\n%1").arg(path)); }
+				{ error(this, tr("Erreur inattendue lors de l'ouverture du fichier.\r\n%1").arg(path+"/"+pth)); }
 				while (!file.atEnd())
 				{ this->d.append(file.readLine()); }
 			this->image.loadFromData(this->d, (const char*)this->format.toAscii().data());
@@ -268,20 +273,27 @@ void zoomWindow::saveImage()
 {
 	QSettings settings("settings.ini", QSettings::IniFormat);
 	QString path = this->getSavePath();
-	QFile f(settings.value("Save/path").toString()+"\\"+path);
-	if (settings.value("Save/path").toString().isEmpty())
+	QString pth = settings.value("Save/path").toString().replace("\\", "/");
+	if (pth.right(1) == "/")
+	{ pth = pth.left(pth.length()-1); }
+	QFile f(pth+"/"+path);
+	if (pth.isEmpty())
 	{ error(this, tr("Vous n'avez pas précisé de dossier de sauvegarde !")); }
 	else if (path.isEmpty())
 	{ error(this, tr("Vous n'avez pas précisé de format de sauvegarde !")); }
 	else if (!f.exists())
 	{
-		this->buttonSave->setText(tr("Sauvegarde..."));
-		QDir dir(settings.value("Save/path").toString());
-		if (!dir.mkpath(path.section('\\', 0, -2)))
-		{ error(this, tr("Erreur lors de la sauvegarde de l'image.\r\n%1").arg(settings.value("Save/path").toString()+"\\"+path)); }
+		QDir path_to_file(pth+"/"+path.section('/', 0, -2));
+		if (!path_to_file.exists())
+		{
+			QDir dir(pth);
+			if (!dir.mkpath(path.section('/', 0, -2)))
+			{ error(this, tr("Erreur lors de la sauvegarde de l'image.\r\n%1").arg(pth+"/"+path)); }
+		}
 		f.open(QIODevice::WriteOnly);
 		f.write(this->d);
 		f.close();
+		parent->log(tr("Saved %1").arg(pth+"/"+path));
 		this->buttonSave->setText(tr("Sauvegardé !"));
 	}
 	else
@@ -301,7 +313,7 @@ QString zoomWindow::getSavePath()
 {
 	QSettings settings("settings.ini", QSettings::IniFormat);
 	settings.beginGroup("Save");
-	return settings.value("filename").toString()
+	QString filename = settings.value("filename").toString()
 	.replace("%artist%", (this->details["artists"].isEmpty() ? settings.value("artist_empty").toString() : (settings.value("artist_useall").toBool() || this->details["artists"].count() == 1 ? this->details["artists"].join(settings.value("artist_sep").toString()) : settings.value("artist_value").toString())))
 	.replace("%general%", this->details["generals"].join(settings.value("separator").toString()))
 	.replace("%copyright%", (this->details["copyrights"].isEmpty() ? settings.value("copyright_empty").toString() : (settings.value("copyright_useall").toBool() || this->details["copyrights"].count() == 1 ? this->details["copyrights"].join(settings.value("copyright_sep").toString()) : settings.value("copyright_value").toString())))
@@ -313,7 +325,11 @@ QString zoomWindow::getSavePath()
 	.replace("%rating%", this->rating)
 	.replace("%md5%", this->md5)
 	.replace("%website%", this->site)
-	.replace("%ext%", this->url.section('.', -1));
+	.replace("%ext%", this->url.section('.', -1))
+	.replace("\\", "/");
+	if (filename.left(1) == "/")
+	{ filename = filename.right(filename.length()-1); }
+	return filename;
 }
 
 
