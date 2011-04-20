@@ -96,6 +96,7 @@ class mainWindow : public QMainWindow
 		QPushButton *m_logClear;
 		QTabWidget *m_tabs;
 		QWidget *m_tabExplore, *m_tabBatch, *m_tabLog;
+		QProcess *m_process;
 };
 
 #endif

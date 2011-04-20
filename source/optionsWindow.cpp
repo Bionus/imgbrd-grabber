@@ -33,7 +33,7 @@ optionsWindow::optionsWindow(mainWindow *parent) : QWidget(parent), parent(paren
 		QLabel *txt_1 = new QLabel(tr("<i>Une confirmation sera demandée avant l'affichage d'une image contenant un tag contenu dans cette liste (séparer les tags par des espaces).</i>"));
 			txt_1->setWordWrap(true);
 		QSpinBox *spinColumns = new QSpinBox;
-			spinColumns->setRange(1, 4);
+			spinColumns->setRange(1, 10);
 			spinColumns->setValue(settings.value("columns", 1).toInt());
 	QFormLayout *form0 = new QFormLayout;
 		form0->addRow(tr("&Langue"), comboLanguages);
@@ -48,7 +48,7 @@ optionsWindow::optionsWindow(mainWindow *parent) : QWidget(parent), parent(paren
 	QStringList sources = QStringList() << "xml" << "json" << "regex";
 	QWidget *page01 = new QWidget;
 		QSpinBox *spinLimit = new QSpinBox;
-			spinLimit->setRange(1, 100);
+			spinLimit->setRange(1, 1000);
 			spinLimit->setValue(settings.value("limit", 20).toInt());
 		QComboBox *comboSource1 = new QComboBox;
 			comboSource1->setMaxVisibleItems(20);
@@ -76,6 +76,8 @@ optionsWindow::optionsWindow(mainWindow *parent) : QWidget(parent), parent(paren
 			linePath->setText(settings.value("path").toString());
 		QLineEdit *lineFilename = new QLineEdit;
 			lineFilename->setText(settings.value("filename").toString());
+		m_lineSaveSeparator = new QLineEdit;
+			m_lineSaveSeparator->setText(settings.value("separator").toString());
 		QLabel *txt_3 = new QLabel(tr(
 			"Symboles disponibles : <i>%artist%</i>, <i>%general%</i>, <i>%copyright%</i>, <i>%character%</i>, <i>%all%</i>, <i>%filename%</i>, <i>%ext%</i>, <i>%rating%</i>, <i>%website%</i>, <i>%md5%</i>."
 			"<br/><i>%artist%</i> : tags de nom d'artiste"
@@ -92,6 +94,7 @@ optionsWindow::optionsWindow(mainWindow *parent) : QWidget(parent), parent(paren
 			txt_3->setWordWrap(true);
 	QFormLayout *form1 = new QFormLayout;
 		form1->addRow(tr("&Dossier"), linePath);
+		form1->addRow(tr("&Séparateur de tags"), m_lineSaveSeparator);
 		form1->addRow(tr("&Format"), lineFilename);
 		form1->addRow(txt_3);
 	page1->setLayout(form1);
@@ -130,7 +133,7 @@ optionsWindow::optionsWindow(mainWindow *parent) : QWidget(parent), parent(paren
 		form3->addRow(tr("&Valeur si multiples"), lineCopyrightValue);
 	page3->setLayout(form3);
 	onglets->addTab(page3, tr("Tags série"));
-		
+
 	QWidget *page4 = new QWidget;
 		QLineEdit *lineCharacterEmpty = new QLineEdit;
 			lineCharacterEmpty->setText(settings.value("character_empty", "unknown").toString());
@@ -147,6 +150,32 @@ optionsWindow::optionsWindow(mainWindow *parent) : QWidget(parent), parent(paren
 		form4->addRow(tr("&Valeur si multiples"), lineCharacterValue);
 	page4->setLayout(form4);
 	onglets->addTab(page4, tr("Tags personnage"));
+	settings.endGroup();
+
+	settings.beginGroup("Exec");
+	QWidget *page5 = new QWidget;
+		m_lineExecInit = new QLineEdit;
+			m_lineExecInit->setText(settings.value("init", "").toString());
+		m_lineExecImage = new QLineEdit;
+			m_lineExecImage->setText(settings.value("image", "").toString());
+		QLabel *txt_4 = new QLabel(tr("Symboles disponibles : les mêmes que dans l'onglet \"Sauvegarde\"."));
+		m_lineExecTag = new QLineEdit;
+			m_lineExecTag->setText(settings.value("tag", "").toString());
+		QLabel *txt_5 = new QLabel(tr(
+			"Symboles disponibles : <i>%tag%</i>, <i>%type%</i>, <i>%number%</i>."
+			"<br/><i>%tag%</i> : le tag"
+			"<br/><i>%type%</i> : type du tag, \"general\", \"artist\", \"copyright\", \"character\", \"model\" ou \"photo_set\""
+			"<br/><i>%number%</i> : le numéro du type de tag (varie entre 0 et 6)"
+		));
+			txt_5->setWordWrap(true);
+	QFormLayout *form5 = new QFormLayout;
+		form5->addRow(tr("&Initialisation"), m_lineExecInit);
+		form5->addRow(tr("&Image"), m_lineExecImage);
+		form5->addRow(txt_4);
+		form5->addRow(tr("&Tag"), m_lineExecTag);
+		form5->addRow(txt_5);
+	page5->setLayout(form5);
+	onglets->addTab(page5, tr("Commandes"));
 	settings.endGroup();
 	
 	QPushButton *backButton = new QPushButton(tr("Annuler"));
@@ -202,6 +231,7 @@ void optionsWindow::save()
 	settings.setValue("source_2", this->sources.at(this->comboSource2->currentIndex()));
 	settings.setValue("source_3", this->sources.at(this->comboSource3->currentIndex()));
 	settings.beginGroup("Save");
+		settings.setValue("separator", m_lineSaveSeparator->text());
 		settings.setValue("path", this->linePath->text());
 		settings.setValue("filename", this->lineFilename->text());
 		settings.setValue("artist_empty", this->lineArtistEmpty->text());
@@ -216,6 +246,11 @@ void optionsWindow::save()
 		settings.setValue("character_useall", this->checkCharacterUseall->isChecked());
 		settings.setValue("character_sep", this->lineCharacterSep->text());
 		settings.setValue("character_value", this->lineCharacterValue->text());
+	settings.endGroup();
+	settings.beginGroup("Exec");
+		settings.setValue("init", m_lineExecInit->text());
+		settings.setValue("image", m_lineExecImage->text());
+		settings.setValue("tag", m_lineExecTag->text());
 	settings.endGroup();
 	if (settings.value("language", "English").toString() != this->comboLanguages->currentText())
 	{
