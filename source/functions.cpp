@@ -3,7 +3,7 @@
 #include "functions.h"
 
 void error(QWidget *p, QString d)
-{ QMessageBox::critical(p, "Erreur", d); }
+{ QMessageBox::critical(p, "Error", d); }
 
 void sortNonCaseSensitive(QStringList &sList)
 {

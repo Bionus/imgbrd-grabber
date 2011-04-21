@@ -22,7 +22,7 @@ class zoomWindow : public QWidget
 		void replyFinishedZoom(QNetworkReply*);
 		void rR();
 		void saveNQuit();
-		void saveImage();
+		bool saveImage();
 		void saveImageAs();
 		void fullScreen();
 		void openUrl(QString);

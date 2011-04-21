@@ -24,6 +24,11 @@ optionsWindow::optionsWindow(mainWindow *parent) : QWidget(parent), parent(paren
 			comboLanguages->setMaxVisibleItems(20);
 			comboLanguages->addItems(languages);
 			comboLanguages->setCurrentIndex(languages.indexOf(settings.value("language", "English").toString()));
+		m_spinUpdatesRate = new QSpinBox;
+			m_spinUpdatesRate->setRange(-1, 999999999);
+			m_spinUpdatesRate->setValue(settings.value("updatesrate", 86400).toInt());
+		QLabel *txt_0 = new QLabel(tr("<i>En secondes. Mettez -1 pour ne jamais rechercher de mises à jour. Vous pourrez toujours lancer le gestionnaire de mises à jour manuellement en lançant \"Updater.exe\".</i>"));
+			txt_0->setWordWrap(true);
 		m_lineDateFormat = new QLineEdit;
 			m_lineDateFormat->setText(settings.value("dateformat").toString());
 		QLineEdit *lineBlacklistedtags = new QLineEdit;
@@ -32,16 +37,14 @@ optionsWindow::optionsWindow(mainWindow *parent) : QWidget(parent), parent(paren
 			checkDownloadBlacklist->setChecked(settings.value("downloadblacklist").toBool());
 		QLabel *txt_1 = new QLabel(tr("<i>Une confirmation sera demandée avant l'affichage d'une image contenant un tag contenu dans cette liste (séparer les tags par des espaces).</i>"));
 			txt_1->setWordWrap(true);
-		QSpinBox *spinColumns = new QSpinBox;
-			spinColumns->setRange(1, 10);
-			spinColumns->setValue(settings.value("columns", 1).toInt());
 	QFormLayout *form0 = new QFormLayout;
 		form0->addRow(tr("&Langue"), comboLanguages);
-		form0->addRow(tr("&Liste noire"), lineBlacklistedtags);
+		form0->addRow(tr("&Recherche de mises à jour"), m_spinUpdatesRate);
+		form0->addRow(txt_0);
 		form0->addRow(tr("&Format de la date"), m_lineDateFormat);
+		form0->addRow(tr("&Liste noire"), lineBlacklistedtags);
 		form0->addRow(txt_1);
 		form0->addRow(tr("&Télécharger les image de la liste noire"), checkDownloadBlacklist);
-		form0->addRow(tr("&Nombre de colonnes"), spinColumns);
 	page0->setLayout(form0);
 	onglets->addTab(page0, tr("Général"));
 	
@@ -50,6 +53,9 @@ optionsWindow::optionsWindow(mainWindow *parent) : QWidget(parent), parent(paren
 		QSpinBox *spinLimit = new QSpinBox;
 			spinLimit->setRange(1, 1000);
 			spinLimit->setValue(settings.value("limit", 20).toInt());
+		QSpinBox *spinColumns = new QSpinBox;
+			spinColumns->setRange(1, 10);
+			spinColumns->setValue(settings.value("columns", 1).toInt());
 		QComboBox *comboSource1 = new QComboBox;
 			comboSource1->setMaxVisibleItems(20);
 			comboSource1->addItems(sources);
@@ -64,6 +70,7 @@ optionsWindow::optionsWindow(mainWindow *parent) : QWidget(parent), parent(paren
 			comboSource3->setCurrentIndex(sources.indexOf(settings.value("source_3", "regex").toString()));
 	QFormLayout *form01 = new QFormLayout;
 		form01->addRow(tr("&Images par page"), spinLimit);
+		form01->addRow(tr("&Nombre de colonnes"), spinColumns);
 		form01->addRow(tr("&Source 1"), comboSource1);
 		form01->addRow(tr("&Source 2"), comboSource2);
 		form01->addRow(tr("&Source 3"), comboSource3);
@@ -223,10 +230,11 @@ void optionsWindow::save()
 {
 	QSettings settings("settings.ini", QSettings::IniFormat);
 	settings.setValue("dateformat", m_lineDateFormat->text());
+	settings.setValue("updatesrate", m_spinUpdatesRate->value());
 	settings.setValue("blacklistedtags", this->lineBlacklistedtags->text());
 	settings.setValue("downloadblacklist", this->checkDownloadBlacklist->isChecked());
-	settings.setValue("columns", this->spinColumns->value());
 	settings.setValue("limit", this->spinLimit->value());
+	settings.setValue("columns", this->spinColumns->value());
 	settings.setValue("source_1", this->sources.at(this->comboSource1->currentIndex()));
 	settings.setValue("source_2", this->sources.at(this->comboSource2->currentIndex()));
 	settings.setValue("source_3", this->sources.at(this->comboSource3->currentIndex()));

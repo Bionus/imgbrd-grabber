@@ -1,3 +1,5 @@
+#include <windows.h>
+#include <shellapi.h>
 #include <string>
 #include <sstream>
 #include <math.h>
@@ -302,6 +304,52 @@ mainWindow::mainWindow(QString m_program, QStringList m_params) : loaded(false),
 		search->doColor();
 		webUpdate();
 	}
+
+	if (settings.value("lastupdate").toDateTime().addSecs(settings.value("updatesrate", 86400).toInt()) <= QDateTime::currentDateTime())
+	{
+		QNetworkAccessManager *manager = new QNetworkAccessManager(this);
+		connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinishedVersion(QNetworkReply*)));
+		manager->get(QNetworkRequest(QUrl("http://imgbrd-grabber.googlecode.com/svn/trunk/release/VERSION")));
+	}
+}
+void mainWindow::replyFinishedVersion(QNetworkReply* r)
+{
+	QString onlineVersion = r->readAll(), version;
+	QFile file("VERSION");
+	if (file.open(QIODevice::ReadOnly | QIODevice::Text))
+	{
+		while (!file.atEnd())
+		{ version = file.readLine(); }
+		file.close();
+	}
+	else
+	{ return; }
+	if (onlineVersion.toFloat() > version.toFloat())
+	{
+		int reply = QMessageBox::question(this, tr("Mise à jour"), tr("Une mise à jour a été détéctée (%1). Souhaitez-vous l'installer ?").arg(onlineVersion), QMessageBox::Yes | QMessageBox::No);
+		if (reply == QMessageBox::Yes)
+		{
+			QString exeFileName = m_program.replace("\\", "/").section('/', 0, -2)+"/Updater.exe";
+			#ifdef Q_OS_WIN
+				int result = (int)::ShellExecuteA(0, "open", exeFileName.toUtf8().constData(), 0, 0, SW_SHOWNORMAL);
+				if (SE_ERR_ACCESSDENIED == result)
+				{
+					// Requesting elevation
+					result = (int)::ShellExecuteA(0, "runas", exeFileName.toUtf8().constData(), 0, 0, SW_SHOWNORMAL);
+				}
+				if (result <= 32)
+				{
+					// error handling
+				}
+			#else
+				if (!QProcess::startDetached(exeFileName))
+				{
+					// error handling
+				}
+			#endif
+			qApp->exit();
+		}
+	}
 }
 
 void mainWindow::log(QString l)
@@ -311,7 +359,7 @@ void mainWindow::log(QString l)
 	{
 		QString txt;
 		for (int i = 0; i < m_log->size(); i++)
-		{ qDebug() << 5; txt += QString(i > 0 ? "<br/>" : "")+"["+m_log->keys().at(i).toString("hh':'mm")+"] "+m_log->values().at(i); }
+		{ txt += QString(i > 0 ? "<br/>" : "")+"["+m_log->keys().at(i).toString("hh':'mm")+"] "+m_log->values().at(i); }
 		this->_logLabel->setText(txt);
 	}
 }
@@ -1329,6 +1377,6 @@ void mainWindow::aboutAuthor()
 	QMessageBox::information(
 		this,
 		tr("À propos de Grabber"),
-		tr("Version %1<br />Grabber est une création de Bionus.<br/>N'hésitez pas à visiter le <a href=\"http://www.bionus.fr.cr/\">site</a> pour rester à jour, ou récupérer des fichiers de site ou des traductions.").arg(VERSION)
+		tr("Version %1<br />Grabber est une création de Bionus.<br/>N'hésitez pas à visiter le <a href=\"http://code.google.com/p/imgbrd-grabber/\">site</a> pour rester à jour, ou récupérer des fichiers de site ou des traductions.").arg(VERSION)
 	);
 }
