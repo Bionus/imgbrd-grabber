@@ -22,6 +22,7 @@ class mainWindow : public QMainWindow
 	public slots:
 		void help();
 		void aboutAuthor();
+		void replyFinishedVersion(QNetworkReply*);
 		void replyFinished(QNetworkReply*);
 		void replyFinishedPic(QNetworkReply*);
 		void options();

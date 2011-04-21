@@ -265,11 +265,11 @@ void zoomWindow::update(bool onlysize)
 
 void zoomWindow::saveNQuit()
 {
-	this->saveImage();
-	this->close();
+	if (this->saveImage())
+	{ this->close(); }
 }
 
-void zoomWindow::saveImage()
+bool zoomWindow::saveImage()
 {
 	QSettings settings("settings.ini", QSettings::IniFormat);
 	QString path = this->getSavePath();
@@ -278,9 +278,9 @@ void zoomWindow::saveImage()
 	{ pth = pth.left(pth.length()-1); }
 	QFile f(pth+"/"+path);
 	if (pth.isEmpty())
-	{ error(this, tr("Vous n'avez pas précisé de dossier de sauvegarde !")); }
+	{ error(this, tr("Vous n'avez pas précisé de dossier de sauvegarde !")); return false; }
 	else if (path.isEmpty())
-	{ error(this, tr("Vous n'avez pas précisé de format de sauvegarde !")); }
+	{ error(this, tr("Vous n'avez pas précisé de format de sauvegarde !")); return false; }
 	else if (!f.exists())
 	{
 		QDir path_to_file(pth+"/"+path.section('/', 0, -2));
@@ -298,6 +298,7 @@ void zoomWindow::saveImage()
 	}
 	else
 	{ this->buttonSave->setText(tr("Fichier déjà existant")); }
+	return true;
 }
 
 void zoomWindow::saveImageAs()
