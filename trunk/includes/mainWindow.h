@@ -58,7 +58,7 @@ class mainWindow : public QMainWindow
 	private:
 		bool loaded, allow, changed, m_must_get_tags;
 		int ch, updating, filesUpdates, getAllId, getAllDownloaded, getAllExists, getAllIgnored, getAllErrors, pagemax, columns, limit;
-		QStringList paths, sources, assoc, _log;
+		QStringList paths, sources, assoc;
 		QString path;
 		QList<QMap<QString, QString> > details, batchs, allImages;
 		QList<QLabel *> webSites;
@@ -97,6 +97,7 @@ class mainWindow : public QMainWindow
 		QTabWidget *m_tabs;
 		QWidget *m_tabExplore, *m_tabBatch, *m_tabLog;
 		QProcess *m_process;
+		QMap<QDateTime,QString> *m_log;
 };
 
 #endif

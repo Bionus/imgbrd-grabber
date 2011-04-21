@@ -21,7 +21,7 @@ using namespace std;
 
 
 
-mainWindow::mainWindow(QString m_program, QStringList m_params) : loaded(false), allow(true), changed(false), ch(0), updating(0), batchGroups(0), batchUniques(0), m_program(m_program), m_params(m_params)
+mainWindow::mainWindow(QString m_program, QStringList m_params) : loaded(false), allow(true), changed(false), ch(0), updating(0), batchGroups(0), batchUniques(0), m_program(m_program), m_params(m_params), m_log(new QMap<QDateTime,QString>)
 {
 	this->resize(800, 600);
 	this->setWindowIcon(QIcon(":/images/icon.ico"));
@@ -292,7 +292,6 @@ mainWindow::mainWindow(QString m_program, QStringList m_params) : loaded(false),
 	this->statusCount = statusCount;
 	this->statusPath = statusPath;
 	this->statusSize = statusSize;
-	this->_log = QStringList();
 	this->loaded = true;
 
 	this->loadLanguage(settings.value("language", "English").toString());
@@ -307,13 +306,18 @@ mainWindow::mainWindow(QString m_program, QStringList m_params) : loaded(false),
 
 void mainWindow::log(QString l)
 {
-	this->_log.prepend(l);
+	this->m_log->insert(QDateTime::currentDateTime(), l);
 	if (this->loaded)
-	{ this->_logLabel->setText(_log.join("<br/>")); }
+	{
+		QString txt;
+		for (int i = 0; i < m_log->size(); i++)
+		{ qDebug() << 5; txt += QString(i > 0 ? "<br/>" : "")+"["+m_log->keys().at(i).toString("hh':'mm")+"] "+m_log->values().at(i); }
+		this->_logLabel->setText(txt);
+	}
 }
 void mainWindow::logClear()
 {
-	this->_log.clear();
+	this->m_log->clear();
 	if (this->loaded)
 	{ this->_logLabel->setText(""); }
 }
