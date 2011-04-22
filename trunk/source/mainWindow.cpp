@@ -231,8 +231,8 @@ mainWindow::mainWindow(QString m_program, QStringList m_params) : loaded(false),
 	QVBoxLayout *labelBatch = new QVBoxLayout(this);
 		QLabel *txtGroups = new QLabel(tr("Groupes"));
 			labelBatch->addWidget(txtGroups);
-		batchTableGroups = new QTableWidget(0, 6, this);
-			batchTableGroups->setHorizontalHeaderLabels(QStringList() << tr("Tags") << tr("Page") << tr("Images par page") << tr("Limite d'images") << tr("Télécharger les image de la liste noire") << tr("Source"));
+		batchTableGroups = new QTableWidget(0, 7, this);
+			batchTableGroups->setHorizontalHeaderLabels(QStringList() << tr("Tags") << tr("Page") << tr("Images par page") << tr("Limite d'images") << tr("Télécharger les image de la liste noire") << tr("Source") << tr("Populaires"));
 			labelBatch->addWidget(batchTableGroups);
 			connect(batchTableGroups, SIGNAL(cellChanged(int,int)), this, SLOT(updateBatchGroups(int,int)));
 		QPushButton *buttonAddGroup = new QPushButton(tr("Ajouter"));
@@ -332,24 +332,19 @@ void mainWindow::replyFinishedVersion(QNetworkReply* r)
 			QString exeFileName = m_program.replace("\\", "/").section('/', 0, -2)+"/Updater.exe";
 			#ifdef Q_OS_WIN
 				int result = (int)::ShellExecuteA(0, "open", exeFileName.toUtf8().constData(), 0, 0, SW_SHOWNORMAL);
-				if (SE_ERR_ACCESSDENIED == result)
-				{
-					// Requesting elevation
-					result = (int)::ShellExecuteA(0, "runas", exeFileName.toUtf8().constData(), 0, 0, SW_SHOWNORMAL);
-				}
+				if (result == SE_ERR_ACCESSDENIED)
+				{ result = (int)::ShellExecuteA(0, "runas", exeFileName.toUtf8().constData(), 0, 0, SW_SHOWNORMAL); }
 				if (result <= 32)
-				{
-					// error handling
-				}
+				{ log(tr("<b>Error:</b> %1").arg(tr("impossible de lancer le programme de mise à jour."))); }
 			#else
 				if (!QProcess::startDetached(exeFileName))
-				{
-					// error handling
-				}
+				{ log(tr("<b>Error:</b> %1").arg(tr("impossible de lancer le programme de mise à jour."))); }
 			#endif
 			qApp->exit();
 		}
 	}
+	QSettings settings("settings.ini", QSettings::IniFormat);
+		settings.setValue("lastupdatecheck", QDateTime::currentDateTime());
 }
 
 void mainWindow::log(QString l)
@@ -395,6 +390,8 @@ void mainWindow::retranslateStrings()
 	ok->setText(tr("Ok"));
 	adv->setText(tr("Sources"));
 	gA->setText(tr("Prendre cette page"));
+	batchTableGroups->setHorizontalHeaderLabels(QStringList() << tr("Tags") << tr("Page") << tr("Images par page") << tr("Limite d'images") << tr("Télécharger les image de la liste noire") << tr("Source") << tr("Populaires"));
+	batchTableUniques->setHorizontalHeaderLabels(QStringList() << tr("Id") << tr("Md5") << tr("Classe") << tr("Tags") << tr("Url") << tr("Site"));
 	m_logClear->setText(tr("Effacer le log"));
 	m_tabs->setTabText(0, tr("Explorer"));
 	m_tabs->setTabText(1, tr("Télécharger"));
@@ -489,6 +486,11 @@ void mainWindow::saveAdvanced(advancedWindow *w)
 
 void mainWindow::getAll()
 {
+	QSettings settings("settings.ini", QSettings::IniFormat);
+	if (settings.value("Save/path").toString().isEmpty())
+	{ error(this, tr("Vous n'avez pas précisé de dossier de sauvegarde !")); return; }
+	else if (settings.value("Save/filename").toString().isEmpty())
+	{ error(this, tr("Vous n'avez pas précisé de format de sauvegarde !")); return; }
 	log("Grouped download started.");
 	getAllId = 0;
 	getAllDownloaded = 0;
@@ -499,7 +501,6 @@ void mainWindow::getAll()
 	allImages = batchs;
 	QNetworkAccessManager *manager = new QNetworkAccessManager(this);
 	connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(getAllSource(QNetworkReply*)));
-	QSettings settings("settings.ini", QSettings::IniFormat);
 	if (!settings.value("Exec/init").toString().isEmpty())
 	{
 		m_process = new QProcess;
@@ -508,31 +509,52 @@ void mainWindow::getAll()
 	}
 	for (int i = 0; i < groupBatchs.count(); i++)
 	{
-		QString text = " "+groupBatchs.at(i).at(0)+" ";
-		text.replace(" rating:s ", " rating:safe ", Qt::CaseInsensitive)
-			.replace(" rating:q ", " rating:questionable ", Qt::CaseInsensitive)
-			.replace(" rating:e ", " rating:explicit ", Qt::CaseInsensitive)
-			.replace("-rating:s ", "-rating:safe ", Qt::CaseInsensitive)
-			.replace("-rating:q ", "-rating:questionable ", Qt::CaseInsensitive)
-			.replace("-rating:e ", "-rating:explicit ", Qt::CaseInsensitive);
-		QStringList tags = text.split(" ", QString::SkipEmptyParts);
-		tags.removeDuplicates();
-		int pp = groupBatchs.at(i).at(2).toInt();
-		pp = pp > 100 ? 100 : pp;
-		for (int r = 0; r < ceil(groupBatchs.at(i).at(3).toDouble()/pp); r++)
+		QString site = groupBatchs.at(i).at(5);
+		if (groupBatchs.at(i).at(6) == "false")
 		{
-			QString site = groupBatchs.at(i).at(5);
-			if (!this->sites.keys().contains(site))
-			{ log(tr("<b>Warning:</b> %1").arg(tr("site \"%1\" not found.").arg(site))); }
-			else
+			QString text = " "+groupBatchs.at(i).at(0)+" ";
+			text.replace(" rating:s ", " rating:safe ", Qt::CaseInsensitive)
+				.replace(" rating:q ", " rating:questionable ", Qt::CaseInsensitive)
+				.replace(" rating:e ", " rating:explicit ", Qt::CaseInsensitive)
+				.replace(" -rating:s ", " -rating:safe ", Qt::CaseInsensitive)
+				.replace(" -rating:q ", " -rating:questionable ", Qt::CaseInsensitive)
+				.replace(" -rating:e ", " -rating:explicit ", Qt::CaseInsensitive);
+			QStringList tags = text.split(" ", QString::SkipEmptyParts);
+			tags.removeDuplicates();
+			int pp = groupBatchs.at(i).at(2).toInt();
+			pp = pp > 100 ? 100 : pp;
+			for (int r = 0; r < ceil(groupBatchs.at(i).at(3).toDouble()/pp); r++)
 			{
-				QString url = this->sites[site].at(2);
-					url.replace("{page}", QString::number(groupBatchs.at(i).at(1).toInt()+r));
-					url.replace("{tags}", tags.join(" "));
-					url.replace("{limit}", QString::number(pp));
-				groupBatchs[i][6] = url;
-				manager->get(QNetworkRequest(QUrl(url)));
+				if (!this->sites.keys().contains(site))
+				{ log(tr("<b>Warning:</b> %1").arg(tr("site \"%1\" not found.").arg(site))); }
+				else
+				{
+					QString url = this->sites[site].at(2);
+						url.replace("{page}", QString::number(groupBatchs.at(i).at(1).toInt()+r));
+						url.replace("{tags}", tags.join(" "));
+						url.replace("{limit}", QString::number(pp));
+					groupBatchs[i][7] = url;
+					manager->get(QNetworkRequest(QUrl(url)));
+				}
 			}
+		}
+		else
+		{
+			qDebug() << 1;
+			QDate date = QDate::fromString(groupBatchs.at(i).at(0), Qt::ISODate);
+			qDebug() << date;
+			QString url = this->sites[site].at(3);
+			qDebug() << date << url;
+				url.replace("{day}", QString::number(date.day()));
+			qDebug() << date << url;
+				url.replace("{month}", QString::number(date.month()));
+			qDebug() << date << url;
+				url.replace("{year}", QString::number(date.year()));
+			qDebug() << date << url;
+			groupBatchs[i][7] = url;
+			qDebug() << date << url;
+			manager->get(QNetworkRequest(QUrl(url)));
+			qDebug() << date << url;
 		}
 	}
 }
@@ -544,7 +566,7 @@ void mainWindow::getAllSource(QNetworkReply *r)
 	int n = 0;
 	for (int i = 0; i < groupBatchs.count(); i++)
 	{
-		if (groupBatchs.at(i).at(6) == url)
+		if (groupBatchs.at(i).at(7) == url)
 		{ n = i; break; }
 	}
 	QString site = groupBatchs.at(n).at(5);
@@ -1295,7 +1317,12 @@ void mainWindow::getPage()
 		{ actuals.append(keys.at(i)); }
 	}
 	for (int i = 0; i < actuals.count(); i++)
-	{ this->batchAddGroup(QStringList() << search->toPlainText() << QString::number(this->page->value()) << settings.value("limit", 20).toString() << settings.value("limit", 20).toString() << "false" << actuals.at(i) << ""); }
+	{
+		if (radio2->isChecked())
+		{ this->batchAddGroup(QStringList() << m_date->date().toString(Qt::ISODate) << 0 << 0 << 0 << "false" << actuals.at(i) << "true" << ""); }
+		else
+		{ this->batchAddGroup(QStringList() << search->toPlainText() << QString::number(this->page->value()) << settings.value("limit", 20).toString() << settings.value("limit", 20).toString() << "false" << actuals.at(i) << "false" << ""); }
+	}
 }
 void mainWindow::batchAddGroup(const QStringList& values)
 {
