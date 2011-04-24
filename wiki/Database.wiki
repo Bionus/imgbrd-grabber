@@ -26,7 +26,7 @@ Here, you now just have to put the query for adding an image in the database, us
 *Do not forget to put an ";" at the end of your query !*
 For example :
 {{{
-INSERT INTO images(id, rating, tags) VALUES(NULL, '%rating%', '%tags%')
+INSERT INTO images(id, rating, tags) VALUES(NULL, '%rating%', '%tags%');
 }}}
 
 ==Tag==
@@ -34,5 +34,5 @@ Here, you now just have to put the query for adding a tag in the database, using
 *Do not forget to put an ";" at the end of your query !*
 For example :
 {{{
-INSERT INTO tags(name, type) VALUES('%tag%', '%type%')
+INSERT INTO tags(name, type) VALUES('%tag%', '%type%');
 }}}
