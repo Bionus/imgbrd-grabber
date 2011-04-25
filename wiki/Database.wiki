@@ -17,7 +17,7 @@ Here, you have three fields: "Initialization", "Image" and "Tag".
 Since we are here talking databases, we must first connect to this database. For example, for a MySQL database, the command is (on windows) "path/to/mysql/file --user=USER_NAME --password=PASSWORD DATABASE_NAME". Of course you will have to replace "USER_NAME" by your user name, "PASSWORD" by your password and DATABASE_NAME by the name of your database. Note that the username/password is often "root" with an empty password if your database is a local one.
 So here you have, for example:
 {{{
-C:/Program Files/wamp/bin/mysql/mysql.exe --user=root --password= imageboard
+C:/Program Files/wamp/bin/mysql/mysql5.1.36/bin/mysql.exe --user=root --password= imageboard
 }}}
 And now, you have your connection ready !
 
