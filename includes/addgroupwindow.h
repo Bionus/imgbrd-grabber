@@ -3,7 +3,7 @@
 
 #include <QtGui>
 #include "mainWindow.h"
-#include "TextEdit.h"
+#include "textedit.h"
 
 class AddGroupWindow : public QWidget
 {

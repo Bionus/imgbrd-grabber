@@ -12,9 +12,14 @@ class optionsWindow : public QWidget
 
 	public:
 		optionsWindow(mainWindow *parent = 0);
-	
+		QTabWidget	*onglets;
+
+	signals:
+		void closed();
+
 	public slots:
 		void save();
+		void closeEvent(QCloseEvent *);
 	
 	private:
 		mainWindow	*parent;

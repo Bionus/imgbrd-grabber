@@ -10,7 +10,7 @@ advancedWindow::advancedWindow(QList<bool> selected, QWidget *parent) : QWidget(
 	this->setWindowModality(Qt::WindowModal);
 
 	QVBoxLayout *form = new QVBoxLayout;
-	QStringList dir = QStringList() << QDir("sites\\xml").entryList(QDir::Files) << QDir("sites\\json").entryList(QDir::Files) << QDir("sites\\regex").entryList(QDir::Files);
+	QStringList dir = QStringList() << QDir("sites/xml").entryList(QDir::Files) << QDir("sites/json").entryList(QDir::Files) << QDir("sites/regex").entryList(QDir::Files);
 		dir.removeDuplicates();
 		dir.sort();
 		for (int i = 0; i < dir.count(); i++)

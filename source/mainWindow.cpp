@@ -1,4 +1,4 @@
-#include <windows.h>
+#include "windows.h"
 #include <shellapi.h>
 #include <string>
 #include <sstream>
@@ -13,7 +13,7 @@
 #include "advancedWindow.h"
 #include "addgroupwindow.h"
 #include "adduniquewindow.h"
-#include "TextEdit.h"
+#include "textedit.h"
 #include "QBouton.h"
 #include "json.h"
 
@@ -102,6 +102,7 @@ mainWindow::mainWindow(QString m_program, QStringList m_params) : loaded(false),
 		settings.setValue("firstload", false);
 	}
 
+	// Loading last window state, size and position from the settings file
 	this->setWindowState(Qt::WindowStates(settings.value("state", 0).toInt()));
 	if (!this->isMaximized())
 	{
@@ -109,14 +110,15 @@ mainWindow::mainWindow(QString m_program, QStringList m_params) : loaded(false),
 		this->move(settings.value("pos", QPoint(200, 200)).toPoint());
 	}
 
+	// Searching for availables sites
 	QMap<QString,QStringList> stes;
 	QStringList dir, defaults = QStringList() << "xml" << "json" << "regex";
 	for (int s = 0; s < 3; s++)
 	{
-		dir = QDir("sites\\"+settings.value("source_"+s, defaults.at(s)).toString()).entryList(QDir::Files);
+		dir = QDir("sites/"+settings.value("source_"+s, defaults.at(s)).toString()).entryList(QDir::Files);
 		for (int i = 0; i < dir.count(); i++)
 		{
-			QFile file("sites\\"+settings.value("source_"+s, defaults.at(s)).toString()+"\\"+dir.at(i));
+			QFile file("sites/"+settings.value("source_"+s, defaults.at(s)).toString()+"/"+dir.at(i));
 			if (file.open(QIODevice::ReadOnly | QIODevice::Text))
 			{
 				if (stes.value(dir.at(i).section('.', 0, -2)).empty())
@@ -134,7 +136,6 @@ mainWindow::mainWindow(QString m_program, QStringList m_params) : loaded(false),
 	}
 	QString sel = '1'+QString().fill('0',stes.count()-1);
 	this->sites = stes;
-
 	QString sav = settings.value("sites", sel).toString();
 	for (int i = 0; i < sel.count(); i++)
 	{
@@ -329,14 +330,15 @@ void mainWindow::replyFinishedVersion(QNetworkReply* r)
 		int reply = QMessageBox::question(this, tr("Mise à jour"), tr("Une mise à jour a été détéctée (%1). Souhaitez-vous l'installer ?").arg(onlineVersion), QMessageBox::Yes | QMessageBox::No);
 		if (reply == QMessageBox::Yes)
 		{
-			QString exeFileName = m_program.replace("\\", "/").section('/', 0, -2)+"/Updater.exe";
 			#ifdef Q_OS_WIN
+				QString exeFileName = m_program.replace("\\", "/").section('/', 0, -2)+"/Updater.exe";
 				int result = (int)::ShellExecuteA(0, "open", exeFileName.toUtf8().constData(), 0, 0, SW_SHOWNORMAL);
 				if (result == SE_ERR_ACCESSDENIED)
 				{ result = (int)::ShellExecuteA(0, "runas", exeFileName.toUtf8().constData(), 0, 0, SW_SHOWNORMAL); }
 				if (result <= 32)
 				{ log(tr("<b>Error:</b> %1").arg(tr("impossible de lancer le programme de mise à jour."))); }
 			#else
+				QString exeFileName = m_program.replace("\\", "/").section('/', 0, -2)+"/Updater";
 				if (!QProcess::startDetached(exeFileName))
 				{ log(tr("<b>Error:</b> %1").arg(tr("impossible de lancer le programme de mise à jour."))); }
 			#endif
@@ -540,21 +542,13 @@ void mainWindow::getAll()
 		}
 		else
 		{
-			qDebug() << 1;
 			QDate date = QDate::fromString(groupBatchs.at(i).at(0), Qt::ISODate);
-			qDebug() << date;
 			QString url = this->sites[site].at(3);
-			qDebug() << date << url;
 				url.replace("{day}", QString::number(date.day()));
-			qDebug() << date << url;
 				url.replace("{month}", QString::number(date.month()));
-			qDebug() << date << url;
 				url.replace("{year}", QString::number(date.year()));
-			qDebug() << date << url;
 			groupBatchs[i][7] = url;
-			qDebug() << date << url;
 			manager->get(QNetworkRequest(QUrl(url)));
-			qDebug() << date << url;
 		}
 	}
 }
@@ -1000,6 +994,7 @@ void mainWindow::webUpdate()
 			this->web->removeWidget(this->webSites.at(i));
 		}
 		this->webSites.clear();
+		this->web = new QGridLayout;
 	}
 	QNetworkAccessManager *manager = new QNetworkAccessManager(this);
 	connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply*)));
@@ -1260,7 +1255,16 @@ void mainWindow::replyFinishedPic(QNetworkReply* r)
 	{ log("<b>Warning:</b> one of the preview pictures (<a href='"+r->url().toString()+"'>"+r->url().toString()+"</a>) is empty."); }
 	QBouton *l = new QBouton(n, this);
 		l->setIcon(pic);
-		l->setToolTip(tr("<b>Tags :</b> %1<br/><br/><b>ID :</b> %2<br/><b>Classe :</b> %3<br/><b>Score :</b> %4<br/><b>Posteur :</b> %5<br/><br/><b>Dimensions :</b> %6 x %7<br/><b>Taille :</b> %8 %9<br/><b>Date :</b> %10<br/>").arg(this->details.at(n).value("tags"), this->details.at(n).value("id"), assoc[this->details.at(n).value("rating")], this->details.at(n).value("score"), this->details.at(n).value("author"), this->details.at(n).value("width"), this->details.at(n).value("height"), QString::number(round(size)), unit).arg(this->details.at(n).value("created_at")));
+		l->setToolTip(QString("%1%2%3%4%5%6%7%8")
+			.arg(this->details.at(n).value("tags").isEmpty() ? "" : tr("<b>Tags :</b> %1<br/><br/>").arg(this->details.at(n).value("tags")))
+			.arg(this->details.at(n).value("id").isEmpty() ? "" : tr("<b>ID :</b> %1<br/>").arg(this->details.at(n).value("id")))
+			.arg(this->details.at(n).value("rating").isEmpty() ? "" : tr("<b>Classe :</b> %1<br/>").arg(assoc[this->details.at(n).value("rating")]))
+			.arg(this->details.at(n).value("score").isEmpty() ? "" : tr("<b>Score :</b> %1<br/>").arg(this->details.at(n).value("score")))
+			.arg(this->details.at(n).value("author").isEmpty() ? "" : tr("<b>Posteur :</b> %1<br/><br/>").arg(this->details.at(n).value("author")))
+			.arg(this->details.at(n).value("width").isEmpty() || this->details.at(n).value("height").isEmpty() ? "" : tr("<b>Dimensions :</b> %1 x %2<br/>").arg(this->details.at(n).value("width"), this->details.at(n).value("height")))
+			.arg(this->details.at(n).value("file_size").isEmpty() ? "" : tr("<b>Taille :</b> %1 %2<br/>").arg(QString::number(round(size)), unit))
+			.arg(this->details.at(n).value("created_at").isEmpty() ? "" : tr("<b>Date :</b> %1").arg(this->details.at(n).value("created_at")))
+		);
 		l->setIconSize(QSize(150, 150));
 		l->setFlat(true);
 		connect(l, SIGNAL(appui(int)), this, SLOT(webZoom(int)));
@@ -1357,7 +1361,7 @@ void mainWindow::batchClear()
 void mainWindow::help()
 {
 	QWidget *wHelp = new QWidget;
-		QLabel *text = new QLabel(
+		QLabel *text = new QLabel(tr(
 			"<h2>Explorer</h2>"
 			"Cette page permet de voir les images directement depuis les sites d'images."
 			"<h3>Liste</h3>"
@@ -1380,7 +1384,7 @@ void mainWindow::help()
 			"Pour télécharger certaines images. Ajoutez-en à la liste en faisant un clic-droit sur l'image désirée, et retirez-en en en faisant un second."
 			"<h2>Log</h2>"
 			"En cas de problème, l'onglet log peut vous donner une indication sur ce qui ne va pas."
-		);
+		));
 			text->setWordWrap(true);
 			text->setSizePolicy(QSizePolicy(QSizePolicy::Ignored,QSizePolicy::Ignored));
 		QScrollArea *scrollArea = new QScrollArea;
