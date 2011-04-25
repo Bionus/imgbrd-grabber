@@ -1,12 +1,11 @@
 #ifndef HEADER_MAINWINDOW
 #define HEADER_MAINWINDOW
 
-#include <QtGui>
 #include <QtNetwork>
-#include <QVariant>
+#include <QtGui>
 #include "QAffiche.h"
 #include "QBouton.h"
-#include "TextEdit.h"
+#include "textedit.h"
 #include "advancedWindow.h"
 
 

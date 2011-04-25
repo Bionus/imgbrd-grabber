@@ -3,6 +3,7 @@
 #include <QtNetwork>
 #include "functions.h"
 #include "zoomWindow.h"
+#include "optionsWindow.h"
 #include "QAffiche.h"
 
 using namespace std;
@@ -15,7 +16,7 @@ zoomWindow::zoomWindow(QString m_program, QString site, QStringList regex, QStri
 	
 	this->resize(600, 800);
 	this->setWindowIcon(QIcon(":/images/icon.ico"));
-	this->setWindowTitle("DB Viewer - "+tr("Image"));
+	this->setWindowTitle(tr("Grabber")+" - "+tr("Image"));
 	
 	QFile file("favorites.txt");
 	if (file.open(QIODevice::ReadOnly | QIODevice::Text))
@@ -111,7 +112,21 @@ void zoomWindow::openSaveDir()
 	QString path = settings.value("Save/path").toString().replace("\\", "/");
 	if (path.right(1) == "/")
 	{ path = path.left(path.length()-1); }
-	QDesktopServices::openUrl(QUrl("file:///"+path+"/"+this->getSavePath().section('\\', 0, -2)));
+	QString pth = this->getSavePath().section('/', 0, -2), url = path+"/"+pth;
+	QDir dir(url);
+	if (dir.exists())
+	{ QDesktopServices::openUrl(QUrl("file:///"+url)); }
+	else
+	{
+		int reply = QMessageBox::question(this, tr("Dossier inexistant"), tr("Le dossier de sauvegarde n'existe pas encore. Le creer ?"), QMessageBox::Yes | QMessageBox::No);
+		if (reply == QMessageBox::Yes)
+		{
+			QDir dir(path);
+			if (!dir.mkpath(pth))
+			{ error(this, tr("Erreur lors de la création du dossier.\r\n%1").arg(url)); }
+			QDesktopServices::openUrl(QUrl("file:///"+url));
+		}
+	}
 }
 
 void zoomWindow::linkHovered(QString url)
@@ -272,16 +287,38 @@ void zoomWindow::saveNQuit()
 bool zoomWindow::saveImage()
 {
 	QSettings settings("settings.ini", QSettings::IniFormat);
-	QString path = this->getSavePath();
 	QString pth = settings.value("Save/path").toString().replace("\\", "/");
 	if (pth.right(1) == "/")
 	{ pth = pth.left(pth.length()-1); }
-	QFile f(pth+"/"+path);
+	QString path = this->getSavePath();
 	if (pth.isEmpty())
-	{ error(this, tr("Vous n'avez pas précisé de dossier de sauvegarde !")); return false; }
-	else if (path.isEmpty())
-	{ error(this, tr("Vous n'avez pas précisé de format de sauvegarde !")); return false; }
-	else if (!f.exists())
+	{
+		int reply = QMessageBox::question(this, tr("Erreur"), tr("Vous n'avez pas précisé de dossier de sauvegarde ! Voulez-vous ouvrir les options ?"), QMessageBox::Yes | QMessageBox::No);
+		if (reply == QMessageBox::Yes)
+		{
+			optionsWindow *options = new optionsWindow(this->parent);
+			options->onglets->setCurrentIndex(2);
+			options->setWindowModality(Qt::ApplicationModal);
+			options->show();
+			connect(options, SIGNAL(destroyed()), this, SLOT(saveImage()));
+		}
+		return false;
+	}
+	if (settings.value("Save/filename").toString().isEmpty())
+	{
+		int reply = QMessageBox::question(this, tr("Erreur"), tr("Vous n'avez pas précisé de format de sauvegarde ! Voulez-vous ouvrir les options ?"), QMessageBox::Yes | QMessageBox::No);
+		if (reply == QMessageBox::Yes)
+		{
+			optionsWindow *options = new optionsWindow(this->parent);
+			options->onglets->setCurrentIndex(2);
+			options->setWindowModality(Qt::ApplicationModal);
+			options->show();
+			connect(options, SIGNAL(closed()), this, SLOT(saveImage()));
+		}
+		return false;
+	}
+	QFile f(pth+"/"+path);
+	if (!f.exists())
 	{
 		QDir path_to_file(pth+"/"+path.section('/', 0, -2));
 		if (!path_to_file.exists())

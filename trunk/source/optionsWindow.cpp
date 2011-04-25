@@ -6,7 +6,7 @@ using namespace std;
 
 
 
-optionsWindow::optionsWindow(mainWindow *parent) : QWidget(parent), parent(parent)
+optionsWindow::optionsWindow(mainWindow *parent) : QWidget(0), parent(parent)
 {
 	this->setWindowIcon(QIcon(":/images/icon.ico"));
 	this->setWindowTitle(tr("Grabber")+" - "+tr("Options"));
@@ -17,7 +17,7 @@ optionsWindow::optionsWindow(mainWindow *parent) : QWidget(parent), parent(paren
 	for (int i = 0; i < languages.count(); i++)
 	{ languages[i].remove(".qm", Qt::CaseInsensitive); }
 	
-	QTabWidget *onglets = new QTabWidget(this);
+	onglets = new QTabWidget(this);
 	
 	QWidget *page0 = new QWidget;
 		QComboBox *comboLanguages = new QComboBox;
@@ -266,4 +266,10 @@ void optionsWindow::save()
 		parent->loadLanguage(this->comboLanguages->currentText());
 	}
 	this->close();
+}
+
+void optionsWindow::closeEvent(QCloseEvent *e)
+{
+	emit closed();
+	e->accept();
 }
