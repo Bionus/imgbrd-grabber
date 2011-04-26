@@ -17,7 +17,7 @@
 #include "QBouton.h"
 #include "json.h"
 
-#define VERSION "1.5"
+#define VERSION "1.6"
 
 using namespace std;
 
