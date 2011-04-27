@@ -1,5 +1,3 @@
-#summary How to use the "commands" tab to add entries in a database for each download
-
 _Sorry for the bad English on this page, this will be rectified in the next few days._
 
 =Introduction=
