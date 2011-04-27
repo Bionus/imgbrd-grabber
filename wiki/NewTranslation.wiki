@@ -8,8 +8,8 @@ If you're language is not available for the program, you can add if pretty simpl
 
 =How to create a new translation file=
 
-  # Download the translations tools on the downloads page.
-  # Unarchive it using winrar, 7-zip or whatever you want.
+  # Download the translations tools from the downloads page.
+  # Unarchive them using winrar, 7-zip or whatever you want.
   # Rename the "your_translation_file.ts" file, replacing "your_translation_file" by the name of your language, for example "Deutsch".
   # Launch "linguist.exe".
   # Open ("File > Open..." or "Ctrl+O") the "en.ts" file and your language file.
