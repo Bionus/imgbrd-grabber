@@ -218,11 +218,11 @@ mainWindow::mainWindow(QString m_program, QStringList m_params) : loaded(false),
 		gA = new QPushButton(this);
 			connect(gA, SIGNAL(clicked()), this, SLOT(getPage()));
 			actions->addWidget(gA);
-	QGridLayout *web = new QGridLayout;
+	m_web = new QGridLayout;
 	QVBoxLayout *mainlayout = new QVBoxLayout;
 		mainlayout->addLayout(champs);
 			mainlayout->setAlignment(champs, Qt::AlignTop);
-		mainlayout->addLayout(web);
+		mainlayout->addLayout(m_web);
 		mainlayout->addLayout(actions);
 			mainlayout->setAlignment(actions, Qt::AlignBottom);
 	m_tabExplore = new QWidget;
@@ -287,7 +287,6 @@ mainWindow::mainWindow(QString m_program, QStringList m_params) : loaded(false),
 	this->characters = characters;
 	this->pix = pix;
 	this->image = image;
-	this->web = web;
 	this->search = search;
 	this->files = files;
 	this->area = area;
@@ -981,7 +980,7 @@ void mainWindow::webUpdate()
 		for (int i = 0; i < this->webPics.count(); i++)
 		{
 			this->webPics.at(i)->hide();
-			this->web->removeWidget(this->webPics.at(i));
+			this->m_web->removeWidget(this->webPics.at(i));
 		}
 		this->webPics.clear();
 		this->details.clear();
@@ -991,10 +990,11 @@ void mainWindow::webUpdate()
 		for (int i = 0; i < this->webSites.count(); i++)
 		{
 			this->webSites.at(i)->hide();
-			this->web->removeWidget(this->webSites.at(i));
+			this->m_web->removeWidget(this->webSites.at(i));
 		}
+		for (int i = 0; i < this->webSites.count()*11; i++)
+		{ this->m_web->setRowMinimumHeight(i, 0); }
 		this->webSites.clear();
-		this->web = new QGridLayout;
 	}
 	QNetworkAccessManager *manager = new QNetworkAccessManager(this);
 	connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply*)));
@@ -1207,8 +1207,8 @@ void mainWindow::replyFinished(QNetworkReply* r)
 	connect(txt, SIGNAL(linkActivated(QString)), this, SLOT(openUrl(QString)));
 	int pl = ceil(sqrt(settings.value("limit", 20).toInt()));
 	float fl = (float)settings.value("limit", 20).toInt()/pl;
-	this->web->addWidget(txt, floor(n/settings.value("columns", 1).toInt())*(ceil(fl)+1), pl*(n%settings.value("columns", 1).toInt()), 1, pl);
-	this->web->setRowMinimumHeight(floor(n/settings.value("columns", 1).toInt())*(ceil(fl)+1), 50);
+	this->m_web->addWidget(txt, floor(n/settings.value("columns", 1).toInt())*(ceil(fl)+1), pl*(n%settings.value("columns", 1).toInt()), 1, pl);
+	this->m_web->setRowMinimumHeight(floor(n/settings.value("columns", 1).toInt())*(ceil(fl)+1), 50);
 	this->webSites.append(txt);
 }
 void mainWindow::openUrl(QString url)
@@ -1271,7 +1271,7 @@ void mainWindow::replyFinishedPic(QNetworkReply* r)
 		connect(l, SIGNAL(rightClick(int)), this, SLOT(batchChange(int)));
 	int pl = ceil(sqrt(settings.value("limit", 20).toInt()));
 	float fl = (float)settings.value("limit", 20).toInt()/pl;
-	this->web->addWidget(l, floor(id/pl)+(floor(site/settings.value("columns", 1).toInt())*(ceil(fl)+1))+1, id%pl+pl*(site%settings.value("columns", 1).toInt()), 1, 1);
+	this->m_web->addWidget(l, floor(id/pl)+(floor(site/settings.value("columns", 1).toInt())*(ceil(fl)+1))+1, id%pl+pl*(site%settings.value("columns", 1).toInt()), 1, 1);
 	this->webPics.append(l);
 }
 

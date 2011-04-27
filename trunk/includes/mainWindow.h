@@ -67,7 +67,7 @@ class mainWindow : public QMainWindow
 		QRadioButton *radio1, *radio2;
 		QPixmap pix;
 		QAffiche *image;
-		QGridLayout *web;
+		QGridLayout *m_web;
 		QList<QBouton *> webPics;
 		QStringList files;
 		TextEdit *search;
