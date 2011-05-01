@@ -40,60 +40,63 @@ mainWindow::mainWindow(QString m_program, QStringList m_params) : loaded(false),
 		QSettings cfg(QSettings::IniFormat, QSettings::UserScope, "Mozilla", "Firefox");
 		QString path = QFileInfo(cfg.fileName()).absolutePath()+"/Firefox";
 		QSettings profiles(path+"/profiles.ini", QSettings::IniFormat);
-		int reponse = QMessageBox::question(this, tr("Danbooru Downloader"), tr("L'extension pour Mozilla Firefox \"Danbooru Downloader\" a été détéctée sur votre système. Souhaitez-vous en importer les préférences ?"), QMessageBox::Yes | QMessageBox::No);
-		if (reponse == QMessageBox::Yes)
+		if (QFile::exists(path+"/"+profiles.value("Profile0/Path").toString()+"/extensions/danbooru_downloader@cuberocks.net.xpi"))
 		{
-			QFile prefs(path+"/"+profiles.value("Profile0/Path").toString()+"/prefs.js");
-			if (prefs.exists())
+			int reponse = QMessageBox::question(this, tr("Danbooru Downloader"), tr("L'extension pour Mozilla Firefox \"Danbooru Downloader\" a été détéctée sur votre système. Souhaitez-vous en importer les préférences ?"), QMessageBox::Yes | QMessageBox::No);
+			if (reponse == QMessageBox::Yes)
 			{
-				if (prefs.open(QIODevice::ReadOnly | QIODevice::Text))
+				QFile prefs(path+"/"+profiles.value("Profile0/Path").toString()+"/prefs.js");
+				if (prefs.exists())
 				{
-					QString source;
-					while (!prefs.atEnd())
-					{ source += QString(prefs.readLine()); }
-					QRegExp rx("user_pref\\(\"danbooru.downloader.([^\"]+)\", ([^\\)]+)\\);");
-					int pos = 0;
-					QMap<QString,QString> firefox, assoc;
-					assoc["blacklist"] = "blacklistedtags";
-					assoc["generalTagsSeparator"] = "separator";
-					assoc["multipleArtistsAll"] = "artist_useall";
-					assoc["multipleArtistsDefault"] = "artist_value";
-					assoc["multipleArtistsSeparator"] = "artist_sep";
-					assoc["multipleCharactersAll"] = "character_useall";
-					assoc["multipleCharactersDefault"] = "character_value";
-					assoc["multipleCharactersSeparator"] = "character_sep";
-					assoc["multipleCopyrightsAll"] = "copyright_useall";
-					assoc["multipleCopyrightsDefault"] = "copyright_value";
-					assoc["multipleCopyrightsSeparator"] = "copyright_sep";
-					assoc["noArtist"] = "artist_empty";
-					assoc["noCharacter"] = "character_empty";
-					assoc["noCopyright"] = "copyright_empty";
-					assoc["targetFolder"] = "path";
-					assoc["targetName"] = "filename";
-					while ((pos = rx.indexIn(source, pos)) != -1)
+					if (prefs.open(QIODevice::ReadOnly | QIODevice::Text))
 					{
-						pos += rx.matchedLength();
-						QString value = rx.cap(2);
-						if (value.left(1) == "\"")	{ value = value.right(value.length()-1);	}
-						if (value.right(1) == "\"")	{ value = value.left(value.length()-1);		}
-						firefox[rx.cap(1)] = value;
-					}
-					QSettings settings("settings.ini", QSettings::IniFormat);
-					settings.beginGroup("Save");
-					if (firefox.keys().contains("useBlacklist"))
-					{
-						if (firefox["useBlacklist"] == "true")
-						{ settings.setValue("downloadblacklist", false); }
-						else
-						{ settings.setValue("downloadblacklist", true); }
-					}
-					for (int i = 0; i < firefox.size(); i++)
-					{
-						if (assoc.keys().contains(firefox.keys().at(i)))
+						QString source;
+						while (!prefs.atEnd())
+						{ source += QString(prefs.readLine()); }
+						QRegExp rx("user_pref\\(\"danbooru.downloader.([^\"]+)\", ([^\\)]+)\\);");
+						int pos = 0;
+						QMap<QString,QString> firefox, assoc;
+						assoc["blacklist"] = "blacklistedtags";
+						assoc["generalTagsSeparator"] = "separator";
+						assoc["multipleArtistsAll"] = "artist_useall";
+						assoc["multipleArtistsDefault"] = "artist_value";
+						assoc["multipleArtistsSeparator"] = "artist_sep";
+						assoc["multipleCharactersAll"] = "character_useall";
+						assoc["multipleCharactersDefault"] = "character_value";
+						assoc["multipleCharactersSeparator"] = "character_sep";
+						assoc["multipleCopyrightsAll"] = "copyright_useall";
+						assoc["multipleCopyrightsDefault"] = "copyright_value";
+						assoc["multipleCopyrightsSeparator"] = "copyright_sep";
+						assoc["noArtist"] = "artist_empty";
+						assoc["noCharacter"] = "character_empty";
+						assoc["noCopyright"] = "copyright_empty";
+						assoc["targetFolder"] = "path";
+						assoc["targetName"] = "filename";
+						while ((pos = rx.indexIn(source, pos)) != -1)
 						{
-							QString v =  firefox.values().at(i);
-							v.replace("\\\\", "\\");
-							settings.setValue(assoc[firefox.keys().at(i)], v);
+							pos += rx.matchedLength();
+							QString value = rx.cap(2);
+							if (value.left(1) == "\"")	{ value = value.right(value.length()-1);	}
+							if (value.right(1) == "\"")	{ value = value.left(value.length()-1);		}
+							firefox[rx.cap(1)] = value;
+						}
+						QSettings settings("settings.ini", QSettings::IniFormat);
+						settings.beginGroup("Save");
+						if (firefox.keys().contains("useBlacklist"))
+						{
+							if (firefox["useBlacklist"] == "true")
+							{ settings.setValue("downloadblacklist", false); }
+							else
+							{ settings.setValue("downloadblacklist", true); }
+						}
+						for (int i = 0; i < firefox.size(); i++)
+						{
+							if (assoc.keys().contains(firefox.keys().at(i)))
+							{
+								QString v =  firefox.values().at(i);
+								v.replace("\\\\", "\\");
+								settings.setValue(assoc[firefox.keys().at(i)], v);
+							}
 						}
 					}
 				}
