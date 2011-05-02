@@ -1,0 +1,26 @@
+#summary Commandline usage
+
+
+*This feature will be added in the 1.7 version. It is not working for the moment.*
+---
+
+= Introduction =
+Using commandline, you cas automate downloads of an entire batch of tags very easily. If you don't want to start the program a lot of times, it is a good and quick solution.
+
+= General =
+== Windows ==
+  # Go to "Start > Run", put "cmd" then press ok.
+  # Go to the installation folder using the "cd" command (example: "cd C:/Program Files/Grabber"). If you installed the program on another drive than C:, just add the "/D" paramter (example: "cd /D E:/Programs/Grabber").
+  # Now, you can launch the application, and all its paramters, that we are going to study now.
+
+= Parameters =
+  * --booru (-b): the booru you want to use (you can use multiple boorus separating them with spaces)
+  * --limit (-l): the maximum amount of files the program can download.
+  * --page (-s): the first page
+  * --path (-p): where you want to save pictures
+  * --filename (-f): the saving format (see the options window)
+
+= Log-in =
+Sometimes, the server will be overloaded, and will promote the logged-in visitors. In this case, it is necessary to log-in. For this, two additional parameters are available:
+  * --user (-u): the username
+  * --password (-w) : the password
