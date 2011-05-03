@@ -3,7 +3,7 @@
 
 *This feature will be added in the 1.7 version. It is not working for the moment.*
 
----
+----
 
 = Introduction =
 Using commandline, you cas automate downloads of an entire batch of tags very easily. If you don't want to start the program a lot of times, it is a good and quick solution.
