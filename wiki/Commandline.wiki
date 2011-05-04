@@ -15,6 +15,7 @@ Using commandline, you cas automate downloads of an entire batch of tags very ea
   # Now, you can launch the application, and all its paramters, that we are going to study now.
 
 = Parameters =
+  * batch: you must specify this parameter if you want the program to download in console instead of starting gui
   * booru (b): the booru you want to use (you can use multiple boorus separating them with spaces)
   * limit (l): the maximum amount of files the program can download.
   * page (s): the first page
@@ -23,7 +24,7 @@ Using commandline, you cas automate downloads of an entire batch of tags very ea
   * Others paramters are considered as tags.
 For example :
 {{{
-Grabber.exe happoubi_jin -booru=danbooru.donmai.us -limit=100 -page=1 -path="C:/Users/Bionus/My Pictures" -format=%md5%.%ext
+Grabber.exe happoubi_jin -booru=danbooru.donmai.us -limit=100 -page=1 -path="C:/Users/Bionus/My Pictures" -format=%md5%.%ext -batch
 }}}
 
 = Log-in =
@@ -32,7 +33,7 @@ Sometimes, the server will be overloaded, and will promote the logged-in visitor
   * password (w) : the password
 For example :
 {{{
-Grabber.exe happoubi_jin -user=Bionus -password=YOUR_PASSWORD_HERE -booru=danbooru.donmai.us -limit=100 -page=1 -path="C:/Users/Bionus/My Pictures" -format=%md5%.%ext
+Grabber.exe happoubi_jin -user=Bionus -password=YOUR_PASSWORD_HERE -booru=danbooru.donmai.us -limit=100 -page=1 -path="C:/Users/Bionus/My Pictures" -format=%md5%.%ext -batch
 }}}
 Of course replace "YOUR_PASSWORD_HERE" by your real password, or its hashed version. To get your passowrd's hashed version, use the sha1 algorithm and hash the string "choujin-steiner--YOUR_PASSWORD--".
 *This functionnality has not been tested, since I didn't found the server overloaded since I implemented this feature. So if you tested it and that it worked (or not), I'd be glad to know.*
