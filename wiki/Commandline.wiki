@@ -34,4 +34,5 @@ For example :
 {{{
 Grabber.exe happoubi_jin -user=Bionus -password=YOUR_PASSWORD_HERE -booru=danbooru.donmai.us -limit=100 -page=1 -path="C:/Users/Bionus/My Pictures" -format=%md5%.%ext
 }}}
-Of course replace "YOUR_PASSWORD_HERE" by your real password.
+Of course replace "YOUR_PASSWORD_HERE" by your real password, or its hashed version. To get your passowrd's hashed version, use the sha1 algorithm and hash the string "choujin-steiner--YOUR_PASSWORD--".
+*This functionnality has not been tested, since I didn't found the server overloaded since I implemented this feature. So if you tested it and that it worked (or not), I'd be glad to know.*
