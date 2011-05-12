@@ -10,7 +10,7 @@ class AddGroupWindow : public QWidget
 	Q_OBJECT
 
 	public:
-		AddGroupWindow(QMap<QString,int>, mainWindow *parent);
+		AddGroupWindow(QStringList, mainWindow *parent);
 
 	public slots:
 		void ok();

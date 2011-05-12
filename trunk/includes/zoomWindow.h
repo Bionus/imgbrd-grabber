@@ -20,7 +20,7 @@ class zoomWindow : public QWidget
 		void update(bool onlysize = false);
 		void replyFinished(QNetworkReply*);
 		void replyFinishedZoom(QNetworkReply*);
-		void rR();
+		void rR(qint64 a = -1, qint64 b = -1);
 		void saveNQuit();
 		bool saveImage();
 		void saveImageAs();
@@ -46,15 +46,17 @@ class zoomWindow : public QWidget
 		QString site, id, url, tags, md5, rating, score, user, format;
 		QAffiche *labelImage;
 		QLabel *labelTags;
-		QPixmap image, tmp, p;
+		QPixmap image;
 		QTimer *timer;
 		QNetworkReply *r;
 		QByteArray d;
 		QNetworkAccessManager *m;
-		QPushButton *buttonSave, *buttonSaveNQuit, *buttonSaveas;
+		QPushButton *buttonSave, *buttonSaveNQuit, *buttonSaveas, *m_buttonSaveNQuit;
 		mainWindow *parent;
 		QString link, m_program;
 		QStringList favorites;
+		QNetworkReply *m_reply;
+		const char* m_format;
 };
 
 #endif

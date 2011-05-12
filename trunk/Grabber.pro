@@ -3,7 +3,7 @@
 ######################################################################
 
 TEMPLATE = app
-TARGET = 
+TARGET =
 DEPENDPATH += . includes languages source
 INCLUDEPATH += . includes languages source
 
@@ -18,7 +18,8 @@ HEADERS += includes/addgroupwindow.h \
 	includes/QBouton.h \
 	includes/textedit.h \
 	includes/zoomWindow.h \
-	includes/json.h
+	includes/json.h \
+    includes/favoritewindow.h
 SOURCES += source/addgroupwindow.cpp \
 	source/adduniquewindow.cpp \
 	source/advancedWindow.cpp \
@@ -30,7 +31,8 @@ SOURCES += source/addgroupwindow.cpp \
 	source/QBouton.cpp \
 	source/textedit.cpp \
 	source/zoomWindow.cpp \
-	source/json.cpp
+	source/json.cpp \
+    includes/favoritewindow.cpp
 RESOURCES += resources.qrc
 RC_FILE = icon.rc
 TRANSLATIONS += languages/en.ts languages/fr.ts

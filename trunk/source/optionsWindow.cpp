@@ -37,6 +37,8 @@ optionsWindow::optionsWindow(mainWindow *parent) : QWidget(0), parent(parent)
 			checkDownloadBlacklist->setChecked(settings.value("downloadblacklist").toBool());
 		QLabel *txt_1 = new QLabel(tr("<i>Une confirmation sera demandée avant l'affichage d'une image contenant un tag contenu dans cette liste (séparer les tags par des espaces).</i>"));
 			txt_1->setWordWrap(true);
+		m_checkLoadAtStart = new QCheckBox;
+			m_checkLoadAtStart->setChecked(settings.value("loadatstart", false).toBool());
 	QFormLayout *form0 = new QFormLayout;
 		form0->addRow(tr("&Langue"), comboLanguages);
 		form0->addRow(tr("&Recherche de mises à jour"), m_spinUpdatesRate);
@@ -45,6 +47,7 @@ optionsWindow::optionsWindow(mainWindow *parent) : QWidget(0), parent(parent)
 		form0->addRow(tr("&Liste noire"), lineBlacklistedtags);
 		form0->addRow(txt_1);
 		form0->addRow(tr("&Télécharger les image de la liste noire"), checkDownloadBlacklist);
+		form0->addRow(tr("&Charger la première page au démarrage"), m_checkLoadAtStart);
 	page0->setLayout(form0);
 	onglets->addTab(page0, tr("Général"));
 	
@@ -76,6 +79,17 @@ optionsWindow::optionsWindow(mainWindow *parent) : QWidget(0), parent(parent)
 		form01->addRow(tr("&Source 3"), comboSource3);
 	page01->setLayout(form01);
 	onglets->addTab(page01, tr("Sources"));
+
+	QWidget *page10 = new QWidget;
+		m_checkLogShow = new QCheckBox;
+			m_checkLogShow->setChecked(settings.value("Log/show", true).toBool());
+		m_checkLogInvert = new QCheckBox;
+			m_checkLogInvert->setChecked(settings.value("Log/invert", false).toBool());
+	QFormLayout *form10 = new QFormLayout;
+		form10->addRow(tr("&Afficher le log"), m_checkLogShow);
+		form10->addRow(tr("&Inverser le log"), m_checkLogInvert);
+	page10->setLayout(form10);
+	onglets->addTab(page10, tr("Log"));
 
 	settings.beginGroup("Save");
 	QWidget *page1 = new QWidget;
@@ -127,6 +141,8 @@ optionsWindow::optionsWindow(mainWindow *parent) : QWidget(0), parent(parent)
 	QWidget *page3 = new QWidget;
 		QLineEdit *lineCopyrightEmpty = new QLineEdit;
 			lineCopyrightEmpty->setText(settings.value("copyright_empty", "misc").toString());
+		m_checkCopyrightUseShorter = new QCheckBox;
+			m_checkCopyrightUseShorter->setChecked(settings.value("copyright_useshorter", true).toBool());
 		QCheckBox *checkCopyrightUseall = new QCheckBox;
 			checkCopyrightUseall->setChecked(settings.value("copyright_useall", false).toBool());
 		QLineEdit *lineCopyrightSep = new QLineEdit;
@@ -135,6 +151,7 @@ optionsWindow::optionsWindow(mainWindow *parent) : QWidget(0), parent(parent)
 			lineCopyrightValue->setText(settings.value("copyright_value", "crossover").toString());
 	QFormLayout *form3 = new QFormLayout;
 		form3->addRow(tr("Si &aucun"), lineCopyrightEmpty);
+		form3->addRow(tr("&Utiliser le plus court si possible"), m_checkCopyrightUseShorter);
 		form3->addRow(tr("&Garder tous"), checkCopyrightUseall);
 		form3->addRow(tr("&Séparateur si multiples"), lineCopyrightSep);
 		form3->addRow(tr("&Valeur si multiples"), lineCopyrightValue);
@@ -238,6 +255,9 @@ void optionsWindow::save()
 	settings.setValue("source_1", this->sources.at(this->comboSource1->currentIndex()));
 	settings.setValue("source_2", this->sources.at(this->comboSource2->currentIndex()));
 	settings.setValue("source_3", this->sources.at(this->comboSource3->currentIndex()));
+	settings.setValue("loadatstart", m_checkLoadAtStart->isChecked());
+	settings.setValue("Log/show", m_checkLogShow->isChecked());
+	settings.setValue("Log/invert", m_checkLogInvert->isChecked());
 	settings.beginGroup("Save");
 		settings.setValue("separator", m_lineSaveSeparator->text());
 		settings.setValue("path", this->linePath->text());
@@ -247,6 +267,7 @@ void optionsWindow::save()
 		settings.setValue("artist_sep", this->lineArtistSep->text());
 		settings.setValue("artist_value", this->lineArtistValue->text());
 		settings.setValue("copyright_empty", this->lineCopyrightEmpty->text());
+		settings.setValue("copyright_useshorter", this->m_checkCopyrightUseShorter->text());
 		settings.setValue("copyright_useall", this->checkCopyrightUseall->isChecked());
 		settings.setValue("copyright_sep", this->lineCopyrightSep->text());
 		settings.setValue("copyright_value", this->lineCopyrightValue->text());

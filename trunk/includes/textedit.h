@@ -9,13 +9,13 @@
 	Q_OBJECT
 
 	public:
-		TextEdit(QMap<QString,int> favorites, QWidget *parent = 0);
+		TextEdit(QStringList favorites, QWidget *parent = 0);
 		~TextEdit();
 		void setCompleter(QCompleter *c);
 		QCompleter *completer() const;
 		QSize sizeHint() const;
 		void doColor();
-		void setFavorites(QMap<QString,int> favorites);
+		void setFavorites(QStringList favorites);
 
 	signals:
 		void returnPressed();

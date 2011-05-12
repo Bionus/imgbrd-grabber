@@ -1,6 +1,6 @@
 #include "addgroupwindow.h"
 
-AddGroupWindow::AddGroupWindow(QMap<QString,int> favorites, mainWindow *parent) : QWidget(parent), m_parent(parent)
+AddGroupWindow::AddGroupWindow(QStringList favorites, mainWindow *parent) : QWidget(parent), m_parent(parent)
 {
 	QVBoxLayout *layout = new QVBoxLayout;
 		QFormLayout *formLayout = new QFormLayout;

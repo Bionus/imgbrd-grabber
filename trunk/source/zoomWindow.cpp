@@ -39,9 +39,9 @@ zoomWindow::zoomWindow(QString m_program, QString site, QStringList regex, QStri
 		QPushButton *buttonSave = new QPushButton("");
 			connect(buttonSave, SIGNAL(clicked()), this, SLOT(saveImage()));
 			buttons->addWidget(buttonSave);
-		QPushButton *buttonSaveNQuit = new QPushButton(tr("Enregistrer et fermer"));
-			connect(buttonSaveNQuit, SIGNAL(clicked()), this, SLOT(saveNQuit()));
-			buttons->addWidget(buttonSaveNQuit);
+		m_buttonSaveNQuit = new QPushButton("");
+			connect(m_buttonSaveNQuit, SIGNAL(clicked()), this, SLOT(saveNQuit()));
+			buttons->addWidget(m_buttonSaveNQuit);
 		QPushButton *buttonOpenSaveDir = new QPushButton(tr("Ouvrir le dossier de destination"));
 			connect(buttonOpenSaveDir, SIGNAL(clicked()), this, SLOT(openSaveDir()));
 			buttons->addWidget(buttonOpenSaveDir);
@@ -84,7 +84,7 @@ zoomWindow::zoomWindow(QString m_program, QString site, QStringList regex, QStri
 	this->buttonSave = buttonSave;
 	this->buttonSaveas = buttonSaveas;
 
-	this->format = this->url.section('.', -1).toUpper();
+	this->format = this->url.section('.', -1).toUpper().toAscii().data();
 	
 	QTimer *timer = new QTimer(this);
 		connect(timer, SIGNAL(timeout()), this, SLOT(update()));
@@ -152,7 +152,7 @@ void zoomWindow::openInNewWindow()
 void zoomWindow::favorite()
 {
 	favorites.append(link);
-	QString ct(favorites.join(" "));
+	QString ct(favorites.join("\r\n"));
 	QFile f("favorites.txt");
 	f.open(QIODevice::WriteOnly);
 	f.write(ct.toAscii());
@@ -161,7 +161,7 @@ void zoomWindow::favorite()
 void zoomWindow::unfavorite()
 {
 	favorites.removeAll(link);
-	QString ct(favorites.join(" "));
+	QString ct(favorites.join("\r\n"));
 	QFile f("favorites.txt");
 	f.open(QIODevice::WriteOnly);
 	f.write(ct.toAscii());
@@ -172,26 +172,29 @@ void zoomWindow::unfavorite()
 
 void zoomWindow::load()
 {
-	QNetworkAccessManager *m = new QNetworkAccessManager(this);
-	connect(m, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinishedZoom(QNetworkReply*)));
 	QNetworkRequest request(QUrl(this->url));
 		request.setRawHeader("Referer", this->url.toAscii());
-	QNetworkReply *r = m->get(request);
-	connect(r, SIGNAL(readyRead()), this, SLOT(rR()));
-	this->r = r;
-	this->m = m;
+	//MyThread *thread = new MyThread(request);
+	//connect(thread, SIGNAL(readyRead(QNetworkReply*)), this, SLOT(rR(QNetworkReply*)));
+	//connect(thread, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinishedZoom(QNetworkReply*)));
+	//thread->start();
+	QEventLoop *q = new QEventLoop;
+	QNetworkAccessManager *manager = new QNetworkAccessManager;
+	m_reply = manager->get(request);
+	connect(m_reply, SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(rR(qint64, qint64)));
+	connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinishedZoom(QNetworkReply*)));
+	connect(manager, SIGNAL(finished(QNetworkReply*)), q, SLOT(quit()));
+	q->exec();
 }
 
-void zoomWindow::rR()
+void zoomWindow::rR(qint64 size, qint64 total)
 {
-	if (this->r->size() > 66535 || this->oldsize == this->r->size())
+	if (m_reply->size() >= (total/10) || size == total) // 20 updates by image
 	{
-		this->d.append(this->r->readAll());
-		this->image.loadFromData(this->d, (const char*)this->format.toAscii().data());
+		this->d.append(m_reply->readAll());
+		this->image.loadFromData(this->d, m_format);
 		this->update(true);
 	}
-	else
-	{ this->oldsize = this->r->size(); }
 }
 
 void zoomWindow::replyFinished(QNetworkReply* reply)
@@ -231,18 +234,20 @@ void zoomWindow::replyFinished(QNetworkReply* reply)
 		if (file.exists() && !path.isEmpty() && !pth.isEmpty())
 		{
 			this->buttonSave->setText(tr("Fichier déjà existant"));
+			m_buttonSaveNQuit->setText(tr("Fermer"));
 			this->d.clear();
 				if (!file.open(QIODevice::ReadOnly))
 				{ error(this, tr("Erreur inattendue lors de l'ouverture du fichier.\r\n%1").arg(path+"/"+pth)); }
 				while (!file.atEnd())
 				{ this->d.append(file.readLine()); }
-			this->image.loadFromData(this->d, (const char*)this->format.toAscii().data());
+			this->image.loadFromData(this->d, m_format);
 			this->loaded = true;
 			this->update();
 		}
 		else
 		{
 			this->buttonSave->setText(tr("Enregistrer"));
+			m_buttonSaveNQuit->setText(tr("Enregistrer et fermer"));
 			this->load();
 		}
 	}
@@ -255,7 +260,7 @@ void zoomWindow::replyFinishedZoom(QNetworkReply* reply)
 	if (reply->error() == QNetworkReply::NoError)
 	{
 		this->d.append(reply->readAll());
-		this->image.loadFromData(this->d, (const char*)this->format.toAscii().data());
+		this->image.loadFromData(this->d, m_format);
 		this->loaded = true;
 		this->update();
 	}
@@ -268,13 +273,13 @@ void zoomWindow::replyFinishedZoom(QNetworkReply* reply)
 void zoomWindow::update(bool onlysize)
 {
 	if (onlysize && (this->image.width() > this->labelImage->width() || this->image.height() > this->labelImage->height()))
-	{ this->labelImage->setPixmap(this->image.scaled(this->labelImage->width(), this->labelImage->height(), Qt::KeepAspectRatio, Qt::FastTransformation)); }
+	{ this->labelImage->setImage(this->image.scaled(this->labelImage->width(), this->labelImage->height(), Qt::KeepAspectRatio, Qt::FastTransformation)); }
 	else if (this->loaded)
 	{
 		if (this->image.width() > this->labelImage->width() || this->image.height() > this->labelImage->height())
-		{ this->labelImage->setPixmap(this->image.scaled(this->labelImage->width(), this->labelImage->height(), Qt::KeepAspectRatio, Qt::SmoothTransformation)); }
+		{ this->labelImage->setImage(this->image.scaled(this->labelImage->width(), this->labelImage->height(), Qt::KeepAspectRatio, Qt::SmoothTransformation)); }
 		else
-		{ this->labelImage->setPixmap(this->image); }
+		{ this->labelImage->setImage(this->image); }
 	}
 }
 
@@ -332,6 +337,7 @@ bool zoomWindow::saveImage()
 		f.close();
 		parent->log(tr("Saved %1").arg(pth+"/"+path));
 		this->buttonSave->setText(tr("Sauvegardé !"));
+		m_buttonSaveNQuit->setText(tr("Fermer"));
 	}
 	else
 	{ this->buttonSave->setText(tr("Fichier déjà existant")); }
@@ -351,10 +357,30 @@ QString zoomWindow::getSavePath()
 {
 	QSettings settings("settings.ini", QSettings::IniFormat);
 	settings.beginGroup("Save");
+	QStringList copyrights;
+	QString cop;
+	bool found;
+	for (int i = 0; i < this->details["copyrights"].size(); i++)
+	{
+		found = false;
+		cop = this->details["copyrights"].at(i);
+		for (int r = 0; r < copyrights.size(); r++)
+		{
+			if (copyrights.at(r).left(cop.size()) == cop.left(copyrights.at(r).size()))
+			{
+				if (cop.size() < copyrights.at(r).size())
+				{ copyrights[r] = cop; }
+				found = true;
+			}
+		}
+		if (!found)
+		{ copyrights.append(cop); }
+	}
+	settings.value("copyright_useshorter", true).toBool();
 	QString filename = settings.value("filename").toString()
 	.replace("%artist%", (this->details["artists"].isEmpty() ? settings.value("artist_empty").toString() : (settings.value("artist_useall").toBool() || this->details["artists"].count() == 1 ? this->details["artists"].join(settings.value("artist_sep").toString()) : settings.value("artist_value").toString())))
 	.replace("%general%", this->details["generals"].join(settings.value("separator").toString()))
-	.replace("%copyright%", (this->details["copyrights"].isEmpty() ? settings.value("copyright_empty").toString() : (settings.value("copyright_useall").toBool() || this->details["copyrights"].count() == 1 ? this->details["copyrights"].join(settings.value("copyright_sep").toString()) : settings.value("copyright_value").toString())))
+	.replace("%copyright%", (copyrights.isEmpty() ? settings.value("copyright_empty").toString() : (settings.value("copyright_useall").toBool() || copyrights.count() == 1 ? copyrights.join(settings.value("copyright_sep").toString()) : settings.value("copyright_value").toString())))
 	.replace("%character%", (this->details["characters"].isEmpty() ? settings.value("character_empty").toString() : (settings.value("character_useall").toBool() || this->details["characters"].count() == 1 ? this->details["characters"].join(settings.value("character_sep").toString()) : settings.value("character_value").toString())))
 	.replace("%model%", (this->details["models"].isEmpty() ? settings.value("model_empty").toString() : (settings.value("model_useall").toBool() || this->details["models"].count() == 1 ? this->details["models"].join(settings.value("model_sep").toString()) : settings.value("model_value").toString())))
 	.replace("%model|artist%", (!this->details["models"].isEmpty() ? (settings.value("model_useall").toBool() || this->details["models"].count() == 1 ? this->details["models"].join(settings.value("model_sep").toString()) : settings.value("model_value").toString()) : (this->details["artists"].isEmpty() ? settings.value("artist_empty").toString() : (settings.value("artist_useall").toBool() || this->details["artists"].count() == 1 ? this->details["artists"].join(settings.value("artist_sep").toString()) : settings.value("artist_value").toString()))))
@@ -377,7 +403,7 @@ void zoomWindow::fullScreen()
 	QAffiche *label = new QAffiche();
 		label->setStyleSheet("background-color: black");
 		label->setAlignment(Qt::AlignCenter);
-		label->setPixmap(this->image.scaled(QApplication::desktop()->screenGeometry().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+		label->setImage(this->image.scaled(QApplication::desktop()->screenGeometry().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
 		label->showFullScreen();
 	QShortcut *escape= new QShortcut(QKeySequence(Qt::Key_Escape), label);
 		connect(escape, SIGNAL(activated()), label, SLOT(close()));

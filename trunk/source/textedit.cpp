@@ -1,7 +1,7 @@
 #include <QApplication>
 #include "textedit.h"
 
-TextEdit::TextEdit(QMap<QString,int> favorites, QWidget *parent) : QTextEdit(parent), favorites(favorites.keys()), c(0)
+TextEdit::TextEdit(QStringList favorites, QWidget *parent) : QTextEdit(parent), favorites(favorites), c(0)
 {
 	setAcceptRichText(false);
 	setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed));
@@ -33,8 +33,8 @@ void TextEdit::setCompleter(QCompleter *completer)
 	 QObject::connect(c, SIGNAL(activated(QString)), this, SLOT(insertCompletion(QString)));
 }
 
-void TextEdit::setFavorites(QMap<QString,int> favorites)
-{ this->favorites = favorites.keys(); }
+void TextEdit::setFavorites(QStringList favorites)
+{ this->favorites = favorites; }
 
 QCompleter *TextEdit::completer() const
 {
@@ -51,6 +51,7 @@ void TextEdit::insertCompletion(const QString& completion)
 	 tc.movePosition(QTextCursor::EndOfWord);
 	 tc.insertText(completion.right(extra));
 	 setTextCursor(tc);
+	 doColor();
 }
 
  QString TextEdit::textUnderCursor() const
@@ -62,9 +63,9 @@ void TextEdit::insertCompletion(const QString& completion)
 
 void TextEdit::focusInEvent(QFocusEvent *e)
 {
-	 if (c)
-		 c->setWidget(this);
-	 QTextEdit::focusInEvent(e);
+	if (c)
+	{ c->setWidget(this); }
+	QTextEdit::focusInEvent(e);
 }
 
 void TextEdit::keyPressEvent(QKeyEvent *e)
@@ -73,8 +74,10 @@ void TextEdit::keyPressEvent(QKeyEvent *e)
 	{
 		e->ignore();
 		if (!c || !c->popup()->isVisible())
-		{ emit this->returnPressed(); }
-		this->doColor();
+		{
+			this->doColor();
+			emit this->returnPressed();
+		}
 		return;
 	}
 	if (c && c->popup()->isVisible())
@@ -102,7 +105,7 @@ void TextEdit::keyPressEvent(QKeyEvent *e)
 	if (!c || (ctrlOrShift && e->text().isEmpty()))
 	{ this->doColor(); return; }
 
-	static QString eow("~!@#$%^&*()_+{}|:\"<>?,./;'[]\\-="); // end of word
+	static QString eow("- "); // end of word
 	bool hasModifier = (e->modifiers() != Qt::NoModifier) && !ctrlOrShift;
 	QString completionPrefix = textUnderCursor();
 
