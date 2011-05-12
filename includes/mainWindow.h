@@ -15,7 +15,7 @@ class mainWindow : public QMainWindow
     Q_OBJECT
 
 	public:
-		mainWindow(QString, QStringList);
+		mainWindow(QString, QStringList, QMap<QString,QString>);
 		void setTags(QString);
 	
 	public slots:
@@ -26,6 +26,7 @@ class mainWindow : public QMainWindow
 		void replyFinishedPic(QNetworkReply*);
 		void options();
 		void webUpdate();
+		void web(QString tags = "");
 		void webZoom(int);
 		void batchChange(int);
 		void advanced();
@@ -50,6 +51,8 @@ class mainWindow : public QMainWindow
 		void addUnique();
 		void batchAddGroup(const QStringList& values);
 		void batchAddUnique(QMap<QString,QString>);
+		void loadFavorite(int);
+		void favoriteProperties(int);
 
 	protected:
 		void closeEvent(QCloseEvent*);
@@ -57,19 +60,17 @@ class mainWindow : public QMainWindow
 	
 	private:
 		bool loaded, allow, changed, m_must_get_tags;
-		int ch, updating, filesUpdates, getAllId, getAllDownloaded, getAllExists, getAllIgnored, getAllErrors, pagemax, columns, limit;
-		QStringList paths, sources, assoc;
-		QString path;
+		int ch, updating, filesUpdates, getAllId, getAllDownloaded, getAllExists, getAllIgnored, getAllErrors, pagemax, columns, limit, batchGroups, batchUniques, getAllCount;
+		QStringList paths, sources, assoc, files, m_tags;
+		QString path, source, artist, copyright, character, m_currLang, m_langPath, m_program;
 		QList<QMap<QString, QString> > details, batchs, allImages;
 		QList<QLabel *> webSites;
 		QList<bool> selected;
-		QString source, artist, copyright, character;
 		QRadioButton *radio1, *radio2;
 		QPixmap pix;
 		QAffiche *image;
-		QGridLayout *m_web;
+		QGridLayout *m_web, *m_layoutFavorites, *m_webFavorites;
 		QList<QBouton *> webPics;
-		QStringList files;
 		TextEdit *search;
 		QSpinBox *page;
 		QDateEdit *m_date;
@@ -81,23 +82,21 @@ class mainWindow : public QMainWindow
 		QProgressDialog *progressdialog;
 		QNetworkReply *getAllRequest;
 		QMap<QString, QStringList> getAllDetails, sites;
-		QPushButton *ok, *adv, *gA, *clearBatch, *showBatch, *getBatch;
+		QPushButton *ok, *adv, *gA, *clearBatch, *showBatch, *getBatch, *m_logClear;
 		QMenu *menuOptions, *menuAide;
 		QAction *actionOptions, *actionAboutAuthor, *actionAboutQt, *actionHelp;
 		QTranslator m_translator, m_translatorQt;
-		QString m_currLang, m_langPath;
-		QMap<QString,int> favorites;
+		QMap<QString,QString> m_favorites, m_params;
 		QTableWidget *batchTableGroups, *batchTableUniques;
-		int batchGroups, batchUniques, getAllCount;
 		QList<QStringList> groupBatchs;
-		QString m_program;
-		QStringList m_params;
 		QDateTime m_serverDate;
-		QPushButton *m_logClear;
 		QTabWidget *m_tabs;
-		QWidget *m_tabExplore, *m_tabBatch, *m_tabLog;
+		QWidget *m_tabExplore, *m_tabBatch, *m_tabLog, *m_tabFavorites;
 		QProcess *m_process;
 		QMap<QDateTime,QString> *m_log;
+		QSettings *m_settings;
+		bool m_loadFavorite;
+		QVBoxLayout *m_favoritesLayout;
 };
 
 #endif

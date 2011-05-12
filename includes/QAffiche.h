@@ -13,6 +13,8 @@ class QAffiche : public QLabel
 	public:
 		QAffiche(QWidget *parent = 0);
 		~QAffiche();
+		void setImage(QImage);
+		void setImage(QPixmap);
 	
 	signals:
 		void doubleClicked();

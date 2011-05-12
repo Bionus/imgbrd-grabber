@@ -55,3 +55,12 @@ void QAffiche::leaveEvent(QEvent* e)
 
 bool QAffiche::hitLabel(const QPoint &p)
 { return rect().contains(p); }
+
+void QAffiche::setImage(QImage image)
+{
+	this->setPixmap(QPixmap::fromImage(image));
+}
+void QAffiche::setImage(QPixmap image)
+{
+	this->setPixmap(image);
+}

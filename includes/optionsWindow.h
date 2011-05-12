@@ -27,7 +27,7 @@ class optionsWindow : public QWidget
 		QComboBox	*comboLanguages, *comboSource1, *comboSource2, *comboSource3;
 		QSpinBox	*spinColumns, *spinLimit, *m_spinUpdatesRate;
 		QLineEdit	*m_lineDateFormat, *linePath, *lineFilename, *lineArtistEmpty, *lineArtistSep, *lineArtistValue, *lineCopyrightEmpty, *lineCopyrightSep, *lineCopyrightValue, *lineCharacterEmpty, *lineCharacterSep, *lineCharacterValue, *lineBlacklistedtags, *m_lineExecInit, *m_lineExecImage, *m_lineExecTag, *m_lineSaveSeparator;
-		QCheckBox	*checkDownloadBlacklist, *checkArtistUseall, *checkCopyrightUseall, *checkCharacterUseall;
+		QCheckBox	*checkDownloadBlacklist, *checkArtistUseall, *checkCopyrightUseall, *checkCharacterUseall, *m_checkLoadAtStart, *m_checkLogInvert, *m_checkLogShow, *m_checkCopyrightUseShorter;
 };
 
 #endif
