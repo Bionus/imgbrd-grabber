@@ -13,6 +13,7 @@
 #include "advancedWindow.h"
 #include "addgroupwindow.h"
 #include "adduniquewindow.h"
+#include "favoritewindow.h"
 #include "textedit.h"
 #include "QBouton.h"
 #include "json.h"
@@ -34,7 +35,7 @@ mainWindow::mainWindow(QString m_program, QStringList m_tags, QMap<QString,QStri
 	m_serverDate = QDateTime::currentDateTime();
 	m_serverDate = m_serverDate.toUTC().addSecs(-60*60*4);
 
-	this->loadFavorites();
+	loadFavorites();
 
 	if (m_settings->value("firstload", true).toBool())
 	{
@@ -244,6 +245,7 @@ mainWindow::mainWindow(QString m_program, QStringList m_tags, QMap<QString,QStri
 			for (int i = 0; i < keys.count(); i++)
 			{
 				QStringList xp = m_favorites.value(keys.at(i)).split("|");
+				int note = xp.isEmpty() ? 50 : xp.takeFirst().toInt();
 				QDateTime lastviewed = xp.isEmpty() ? QDateTime(QDate(2000, 1, 1), QTime(0, 0, 0, 0)) : QDateTime::fromString(xp.takeFirst(), Qt::ISODate);
 				QString imagepath = xp.isEmpty() ? ":/images/noimage.png" : xp.takeFirst();
 				QBouton *image = new QBouton(i);
@@ -252,7 +254,7 @@ mainWindow::mainWindow(QString m_program, QStringList m_tags, QMap<QString,QStri
 					image->setFlat(true);
 					connect(image, SIGNAL(rightClick(int)), this, SLOT(favoriteProperties(int)));
 				QBouton *caption = new QBouton(i);
-					caption->setText(keys.at(i)+" ("+lastviewed.toString(format)+")");
+					caption->setText(keys.at(i)+" ("+QString::number(note)+" % - "+lastviewed.toString(format)+")");
 					caption->setFlat(true);
 				connect(image, SIGNAL(appui(int)), this, SLOT(loadFavorite(int)));
 				connect(caption, SIGNAL(appui(int)), this, SLOT(loadFavorite(int)));
@@ -373,11 +375,39 @@ void mainWindow::loadFavorite(int id)
 void mainWindow::favoriteProperties(int id)
 {
 	QString tag = m_favorites.keys().at(id);
-	QStringList xp = m_favorites.value(keys.at(i)).split("|");
+	QStringList xp = m_favorites.value(tag).split("|");
+	int note = xp.isEmpty() ? 50 : xp.takeFirst().toInt();
 	QDateTime lastviewed = xp.isEmpty() ? QDateTime(QDate(2000, 1, 1), QTime(0, 0, 0, 0)) : QDateTime::fromString(xp.takeFirst(), Qt::ISODate);
 	QString imagepath = xp.isEmpty() ? "" : xp.takeFirst();
-	favoriteWindow *fwin = new favoriteWindow(tag, lastviewed, imagepath);
+	favoriteWindow *fwin = new favoriteWindow(tag, note, lastviewed, imagepath, this);
 	fwin->show();
+}
+void mainWindow::updateFavorites()
+{
+	loadFavorites();
+	QGridLayout *layout = new QGridLayout;
+		QStringList keys = m_favorites.keys();
+		QString format = m_settings->value("dateformat", "dd/MM/yyyy").toString();
+		for (int i = 0; i < keys.count(); i++)
+		{
+			QStringList xp = m_favorites.value(keys.at(i)).split("|");
+			int note = xp.isEmpty() ? 50 : xp.takeFirst().toInt();
+			QDateTime lastviewed = xp.isEmpty() ? QDateTime(QDate(2000, 1, 1), QTime(0, 0, 0, 0)) : QDateTime::fromString(xp.takeFirst(), Qt::ISODate);
+			QString imagepath = xp.isEmpty() ? ":/images/noimage.png" : xp.takeFirst();
+			QBouton *image = new QBouton(i);
+				image->setIcon(QPixmap(imagepath).scaledToWidth(100, Qt::SmoothTransformation));
+				image->setIconSize(QSize(150, 150));
+				image->setFlat(true);
+				connect(image, SIGNAL(rightClick(int)), this, SLOT(favoriteProperties(int)));
+			QBouton *caption = new QBouton(i);
+				caption->setText(keys.at(i)+" ("+QString::number(note)+" % - "+lastviewed.toString(format)+")");
+				caption->setFlat(true);
+			connect(image, SIGNAL(appui(int)), this, SLOT(loadFavorite(int)));
+			connect(caption, SIGNAL(appui(int)), this, SLOT(loadFavorite(int)));
+			layout->addWidget(image, (i/10)*2, i%10);
+			layout->addWidget(caption, (i/10)*2+1, i%10);
+		}
+	m_layoutFavorites = layout;
 }
 
 void mainWindow::replyFinishedVersion(QNetworkReply* r)
@@ -479,7 +509,7 @@ void mainWindow::loadFavorites()
 	{
 		QStringList wrds;
 		while (!file.atEnd())
-		{ wrds.append(QString(file.readLine()).remove("\r\n").remove("\n")); }
+		{ wrds.append(QString(file.readLine()).remove("\r\n").remove("\n").remove("\r")); }
 		for (int i = 0; i < wrds.count(); i++)
 		{
 			QStringList xp = wrds.at(i).split("|");
@@ -638,7 +668,9 @@ void mainWindow::getAllSource(QNetworkReply *r)
 		{ n = i; break; }
 	}
 	QString site = groupBatchs.at(n).at(5);
-	if (this->sites[site].at(0) == "xml")
+	if (source.isEmpty())
+	{ log(tr("<b>Attention:</b> %1").arg(tr("rien n'a été reçu.").arg(site))); }
+	else if (this->sites[site].at(0) == "xml")
 	{
 		QDomDocument doc;
 		QString errorMsg;
@@ -1044,7 +1076,8 @@ void mainWindow::webUpdate()
 }
 void mainWindow::web(QString tags)
 {
-	log("Loading page...");
+	tags = (tags.isEmpty() ? this->search->toPlainText() : tags);
+	log("Loading page with tags \""+tags+"\"...");
 	if (!this->replies.isEmpty())
 	{
 		for (int i = 0; i < this->replies.count(); i++)
@@ -1093,7 +1126,7 @@ void mainWindow::web(QString tags)
 		QString url;
 		if (this->radio1->isChecked() && !this->sites[keys.at(i)].at(2).isEmpty())
 		{
-			QString text = " "+(tags.isEmpty() ? this->search->toPlainText() : tags)+" ";
+			QString text = " "+tags+" ";
 				text.replace(" rating:s ", " rating:safe ", Qt::CaseInsensitive)
 				.replace(" rating:q ", " rating:questionable ", Qt::CaseInsensitive)
 				.replace(" rating:e ", " rating:explicit ", Qt::CaseInsensitive)
@@ -1102,11 +1135,14 @@ void mainWindow::web(QString tags)
 				.replace(" -rating:e ", " -rating:explicit ", Qt::CaseInsensitive);
 			QStringList tags = text.split(" ", QString::SkipEmptyParts);
 			tags.removeDuplicates();
-			this->search->setText(tags.join(" "));
-			this->search->doColor();
+			if (!m_loadFavorite)
+			{
+				this->search->setText(tags.join(" "));
+				this->search->doColor();
+			}
 			url = this->sites[keys.at(i)].at(2);
 			url.replace("{page}", QString::number(this->page->value()-1+this->sites[keys.at(i)].at(1).toInt()));
-			url.replace("{tags}", this->search->toPlainText());
+			url.replace("{tags}", tags.join(" "));
 			url.replace("{limit}", QString::number(m_settings->value("limit", 20).toInt()));
 		}
 		else if (!this->sites[keys.at(i)].at(3).isEmpty())

@@ -1,20 +1,34 @@
 #ifndef FAVORITEWINDOW_H
 #define FAVORITEWINDOW_H
 
-#include <QWidget>
+#include <QtGui>
+#include "mainWindow.h"
 
 
+namespace Ui
+{
+	class favoriteWindow;
+}
 
-class favoriteWindow : public QWidget
+
+class favoriteWindow : public QDialog
 {
     Q_OBJECT
 
 	public:
-		explicit favoriteWindow(QWidget *parent = 0);
-
-	signals:
+		explicit favoriteWindow(QString, int, QDateTime, QString, mainWindow *parent);
+		~favoriteWindow();
 
 	public slots:
+		void save();
+		void on_openButton_clicked();
+
+	private:
+		mainWindow *m_parent;
+		Ui::favoriteWindow *ui;
+		int m_note;
+		QString m_tag, m_imagepath;
+		QDateTime m_lastviewed;
 
 };
 

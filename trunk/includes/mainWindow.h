@@ -53,6 +53,7 @@ class mainWindow : public QMainWindow
 		void batchAddUnique(QMap<QString,QString>);
 		void loadFavorite(int);
 		void favoriteProperties(int);
+		void updateFavorites();
 
 	protected:
 		void closeEvent(QCloseEvent*);
