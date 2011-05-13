@@ -22,8 +22,8 @@ class zoomWindow : public QWidget
 		void replyFinishedZoom(QNetworkReply*);
 		void rR(qint64 a = -1, qint64 b = -1);
 		void saveNQuit();
-		bool saveImage();
-		void saveImageAs();
+		QString saveImage();
+		QString saveImageAs();
 		void fullScreen();
 		void openUrl(QString);
 		void openSaveDir();
@@ -57,6 +57,7 @@ class zoomWindow : public QWidget
 		QStringList favorites;
 		QNetworkReply *m_reply;
 		const char* m_format;
+		bool m_mustSave;
 };
 
 #endif

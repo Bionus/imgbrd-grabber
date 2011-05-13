@@ -32,8 +32,11 @@ SOURCES += source/addgroupwindow.cpp \
 	source/textedit.cpp \
 	source/zoomWindow.cpp \
 	source/json.cpp \
-    includes/favoritewindow.cpp
+    source/favoritewindow.cpp
 RESOURCES += resources.qrc
 RC_FILE = icon.rc
 TRANSLATIONS += languages/en.ts languages/fr.ts
 QT += network xml
+
+FORMS += \
+    ui/favoriteWindow.ui
