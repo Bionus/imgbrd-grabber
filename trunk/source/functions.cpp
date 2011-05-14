@@ -25,3 +25,25 @@ QDateTime qDateTimeFromString(QString str)
 	date = date.toLocalTime(); // Then to user's time
 	return date;
 }
+
+QMap<QString,QString> loadFavorites()
+{
+	QMap<QString,QString> favorites;
+	QFile file("favorites.txt");
+	if (file.open(QIODevice::ReadOnly))
+	{
+		QString favs = file.readAll();
+		QStringList wrds = favs.replace("\r\n", "\n").replace("\r", "\n").split("\n");
+		for (int i = 0; i < wrds.count(); i++)
+		{
+			if (!wrds.at(i).isEmpty())
+			{
+				QStringList xp = wrds.at(i).split("|");
+				QString tag = xp.takeFirst();
+				favorites.insert(tag, (xp.isEmpty() ? "" : xp.join("|")));
+			}
+		}
+		file.close();
+	}
+	return favorites;
+}

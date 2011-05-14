@@ -31,6 +31,7 @@ class zoomWindow : public QWidget
 		void contextMenu();
 		void openInNewWindow();
 		void favorite();
+		void setfavorite();
 		void unfavorite();
 	
 	protected:

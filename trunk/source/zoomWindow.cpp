@@ -18,20 +18,7 @@ zoomWindow::zoomWindow(QString m_program, QString site, QStringList regex, QStri
 	this->setWindowIcon(QIcon(":/images/icon.ico"));
 	this->setWindowTitle(tr("Grabber")+" - "+tr("Image"));
 	
-	QFile file("favorites.txt");
-	if (file.open(QIODevice::ReadOnly | QIODevice::Text))
-	{
-		QStringList wrds;
-		while (!file.atEnd())
-		{ wrds.append(QString(file.readLine()).remove("\r\n").remove("\n").remove("\r")); }
-		for (int i = 0; i < wrds.count(); i++)
-		{
-			QStringList xp = wrds.at(i).split("|");
-			QString tag = xp.takeFirst();
-			favorites.append(tag);
-		}
-		file.close();
-	}
+	favorites = loadFavorites().keys();
 
 	QSettings settings("settings.ini", QSettings::IniFormat);
 		settings.beginGroup("Zoom");
@@ -144,7 +131,10 @@ void zoomWindow::contextMenu()
 	if (!this->link.isEmpty())
 	{
 		if (favorites.contains(link, Qt::CaseInsensitive))
-		{ menu->addAction(tr("Retirer des favoris"), this, SLOT(unfavorite())); }
+		{
+			menu->addAction(tr("Retirer des favoris"), this, SLOT(unfavorite()));
+			menu->addAction(tr("Choisir comme image"), this, SLOT(setfavorite()));
+		}
 		else
 		{ menu->addAction(tr("Ajouter aux favoris"), this, SLOT(favorite())); }
 		menu->addAction(tr("Ouvrir dans une nouvelle fenêtre"), this, SLOT(openInNewWindow()));
@@ -166,14 +156,35 @@ void zoomWindow::favorite()
 	f.close();
 	parent->updateFavorites();
 }
+void zoomWindow::setfavorite()
+{
+	QString path = saveImage();
+	QFile f("favorites.txt");
+	f.open(QIODevice::ReadOnly);
+		QString favs = f.readAll();
+	f.close();
+	favs.replace("\r\n", "\n").replace("\r", "\n").replace("\n", "\r\n");
+	QRegExp reg(link+"\\|([^|]+)\\|([^|]+)\\|([^|]+)\r\n");
+	reg.setMinimal(true);
+	favs.replace(reg, link+"|\\1|\\2|"+path+"\r\n");
+	f.open(QIODevice::WriteOnly);
+		f.write(favs.toAscii());
+	f.close();
+	parent->updateFavorites();
+}
 void zoomWindow::unfavorite()
 {
 	favorites.removeAll(link);
 	QFile f("favorites.txt");
 	f.open(QIODevice::ReadOnly);
-		//QString favs = f.readAll();
+		QString favs = f.readAll();
 	f.close();
+	favs.replace("\r\n", "\n").replace("\r", "\n").replace("\n", "\r\n");
+	QRegExp reg(link+"\\|(.+)\\r\\n");
+	reg.setMinimal(true);
+	favs.remove(reg);
 	f.open(QIODevice::WriteOnly);
+		f.write(favs.toAscii());
 	f.close();
 	parent->updateFavorites();
 }
@@ -457,7 +468,7 @@ void zoomWindow::closeEvent(QCloseEvent *e)
 		settings.setValue("size", this->size());
 		settings.setValue("pos", this->pos());
 	if (r->isRunning())			{ r->abort();		}
-	if (m_reply != NULL)
+	if (m_reply)
 	{
 		if (m_reply->isRunning())
 		{ m_reply->abort();	}

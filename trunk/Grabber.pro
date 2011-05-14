@@ -35,7 +35,7 @@ SOURCES += source/addgroupwindow.cpp \
     source/favoritewindow.cpp
 RESOURCES += resources.qrc
 RC_FILE = icon.rc
-TRANSLATIONS += languages/en.ts languages/fr.ts
+TRANSLATIONS += languages/English.ts languages/Français.ts
 QT += network xml
 
 FORMS += \
