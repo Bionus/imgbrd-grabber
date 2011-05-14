@@ -35,7 +35,7 @@ mainWindow::mainWindow(QString m_program, QStringList m_tags, QMap<QString,QStri
 	m_serverDate = QDateTime::currentDateTime();
 	m_serverDate = m_serverDate.toUTC().addSecs(-60*60*4);
 
-	loadFavorites();
+	m_favorites = loadFavorites();
 
 	if (m_settings->value("firstload", true).toBool())
 	{
@@ -369,7 +369,7 @@ mainWindow::mainWindow(QString m_program, QStringList m_tags, QMap<QString,QStri
 void mainWindow::loadFavorite(int id)
 {
 	QString tag = m_favorites.keys().at(id);
-	m_loadFavorite = true;
+	m_loadFavorite = QDateTime::fromString(m_favorites.value(tag).section('|', 1, 1), Qt::ISODate);
 	web(tag);
 }
 void mainWindow::favoriteProperties(int id)
@@ -384,7 +384,7 @@ void mainWindow::favoriteProperties(int id)
 }
 void mainWindow::updateFavorites()
 {
-	loadFavorites();
+	m_favorites = loadFavorites();
 	QGridLayout *layout = new QGridLayout;
 		QStringList keys = m_favorites.keys();
 		QString format = m_settings->value("dateformat", "dd/MM/yyyy").toString();
@@ -433,11 +433,11 @@ void mainWindow::replyFinishedVersion(QNetworkReply* r)
 				if (result == SE_ERR_ACCESSDENIED)
 				{ result = (int)::ShellExecuteA(0, "runas", exeFileName.toUtf8().constData(), 0, 0, SW_SHOWNORMAL); }
 				if (result <= 32)
-				{ log(tr("<b>Erreur:</b> %1").arg(tr("impossible de lancer le programme de mise à jour."))); }
+				{ log(tr("<b>Erreur :</b> %1").arg(tr("impossible de lancer le programme de mise à jour."))); }
 			#else
 				QString exeFileName = m_program.replace("\\", "/").section('/', 0, -2)+"/Updater";
 				if (!QProcess::startDetached(exeFileName))
-				{ log(tr("<b>Erreur:</b> %1").arg(tr("impossible de lancer le programme de mise à jour."))); }
+				{ log(tr("<b>Erreur :</b> %1").arg(tr("impossible de lancer le programme de mise à jour."))); }
 			#endif
 			qApp->exit();
 		}
@@ -500,25 +500,6 @@ void mainWindow::retranslateStrings()
 	m_tabs->setTabText(2, tr("Télécharger"));
 	m_tabs->setTabText(3, tr("Log"));
 }
-void mainWindow::loadFavorites()
-{
-	log(tr("Lecture des favoris..."));
-	m_favorites.clear();
-	QFile file("favorites.txt");
-	if (file.open(QIODevice::ReadOnly | QIODevice::Text))
-	{
-		QStringList wrds;
-		while (!file.atEnd())
-		{ wrds.append(QString(file.readLine()).remove("\r\n").remove("\n").remove("\r")); }
-		for (int i = 0; i < wrds.count(); i++)
-		{
-			QStringList xp = wrds.at(i).split("|");
-			QString tag = xp.takeFirst();
-			m_favorites.insert(tag, (xp.isEmpty() ? "" : xp.join("|")));
-		}
-		file.close();
-	}
-}
 
 void mainWindow::switchTranslator(QTranslator& translator, const QString& filename)
 {
@@ -554,8 +535,7 @@ void mainWindow::changeEvent(QEvent* event)
 
 void mainWindow::closeEvent(QCloseEvent *e)
 {
-	log("Saving...");
-	QSettings settings("m_settings->ini", QSettings::IniFormat);
+	log(tr("Sauvegarde..."));
 		m_settings->setValue("state", int(this->windowState()));
 		m_settings->setValue("size", this->size());
 		m_settings->setValue("pos", this->pos());
@@ -569,7 +549,7 @@ void mainWindow::closeEvent(QCloseEvent *e)
 
 void mainWindow::options()
 {
-	log("Opening options window...");
+	log(tr("Ouverture de la fenêtre des options..."));
 	optionsWindow *options = new optionsWindow(this);
 	options->show();
 }
@@ -578,14 +558,14 @@ void mainWindow::options()
 
 void mainWindow::advanced()
 {
-	log("Opening sources window...");
+	log(tr("Ouverture de la fenêtre des sources..."));
 	advancedWindow *adv = new advancedWindow(this->selected, this);
 	adv->show();
 	connect(adv, SIGNAL(closed(advancedWindow*)), this, SLOT(saveAdvanced(advancedWindow*)));
 }
 void mainWindow::saveAdvanced(advancedWindow *w)
 {
-	log("Saving changes from sources window...");
+	log(tr("Sauvegarde des nouvelles sources..."));
 	this->selected = w->getSelected();
 }
 
@@ -597,7 +577,7 @@ void mainWindow::getAll()
 	{ error(this, tr("Vous n'avez pas précisé de dossier de sauvegarde !")); return; }
 	else if (m_settings->value("Save/filename").toString().isEmpty())
 	{ error(this, tr("Vous n'avez pas précisé de format de sauvegarde !")); return; }
-	log("Grouped download started.");
+	log(tr("Téléchargement groupé commencé."));
 	getAllId = 0;
 	getAllDownloaded = 0;
 	getAllIgnored = 0;
@@ -632,7 +612,7 @@ void mainWindow::getAll()
 			for (int r = 0; r < ceil(groupBatchs.at(i).at(3).toDouble()/pp); r++)
 			{
 				if (!this->sites.keys().contains(site))
-				{ log(tr("<b>Attention:</b> %1").arg(tr("site \"%1\" not found.").arg(site))); }
+				{ log(tr("<b>Attention :</b> %1").arg(tr("site \"%1\" not found.").arg(site))); }
 				else
 				{
 					QString url = this->sites[site].at(2);
@@ -660,7 +640,7 @@ void mainWindow::getAll()
 void mainWindow::getAllSource(QNetworkReply *r)
 {
 	QString url = r->url().toString(), source = r->readAll();
-	log("Received \""+url+"\"");
+	log(tr("Recu \"%1\"").arg(url));
 	int n = 0;
 	for (int i = 0; i < groupBatchs.count(); i++)
 	{
@@ -669,7 +649,7 @@ void mainWindow::getAllSource(QNetworkReply *r)
 	}
 	QString site = groupBatchs.at(n).at(5);
 	if (source.isEmpty())
-	{ log(tr("<b>Attention:</b> %1").arg(tr("rien n'a été reçu.").arg(site))); }
+	{ log(tr("<b>Attention :</b> %1").arg(tr("rien n'a été reçu.").arg(site))); }
 	else if (this->sites[site].at(0) == "xml")
 	{
 		QDomDocument doc;
@@ -1071,13 +1051,13 @@ void mainWindow::getAllCancel()
 
 void mainWindow::webUpdate()
 {
-	m_loadFavorite = false;
+	m_loadFavorite = QDateTime();
 	web();
 }
 void mainWindow::web(QString tags)
 {
 	tags = (tags.isEmpty() ? this->search->toPlainText() : tags);
-	log("Loading page with tags \""+tags+"\"...");
+	log(tr("Chargement de la page avec les tags \"%1\"...").arg(tags));
 	if (!this->replies.isEmpty())
 	{
 		for (int i = 0; i < this->replies.count(); i++)
@@ -1089,7 +1069,7 @@ void mainWindow::web(QString tags)
 		for (int i = 0; i < this->webPics.count(); i++)
 		{
 			this->webPics.at(i)->hide();
-			if (m_loadFavorite)
+			if (!m_loadFavorite.isNull())
 			{ this->m_webFavorites->removeWidget(this->webPics.at(i)); }
 			else
 			{ this->m_web->removeWidget(this->webPics.at(i)); }
@@ -1102,14 +1082,14 @@ void mainWindow::web(QString tags)
 		for (int i = 0; i < this->webSites.count(); i++)
 		{
 			this->webSites.at(i)->hide();
-			if (m_loadFavorite)
+			if (!m_loadFavorite.isNull())
 			{ this->m_webFavorites->removeWidget(this->webSites.at(i)); }
 			else
 			{ this->m_web->removeWidget(this->webSites.at(i)); }
 		}
 		for (int i = 0; i < this->webSites.count()*11; i++)
 		{
-			if (m_loadFavorite)
+			if (!m_loadFavorite.isNull())
 			{ this->m_webFavorites->setRowMinimumHeight(i, 0); }
 			else
 			{ this->m_web->setRowMinimumHeight(i, 0); }
@@ -1135,7 +1115,7 @@ void mainWindow::web(QString tags)
 				.replace(" -rating:e ", " -rating:explicit ", Qt::CaseInsensitive);
 			QStringList tags = text.split(" ", QString::SkipEmptyParts);
 			tags.removeDuplicates();
-			if (!m_loadFavorite)
+			if (m_loadFavorite.isNull())
 			{
 				this->search->setText(tags.join(" "));
 				this->search->doColor();
@@ -1177,11 +1157,10 @@ void mainWindow::webZoom(int id)
 	}
 	zoomWindow *zoom = new zoomWindow(m_program, this->details.at(id).value("site"), this->sites[this->details.at(id).value("site")], this->details.at(id).value("id"), this->details.at(id).value("file_url"), this->details.at(id).value("tags"), this->details.at(id).value("md5"), this->details.at(id).value("rating"), this->details.at(id).value("score"), this->details.at(id).value("author"), this);
 	zoom->show();
-	loadFavorites();
+	m_favorites = loadFavorites();
 }
 void mainWindow::replyFinished(QNetworkReply* r)
 {
-	QSettings settings("m_settings->ini", QSettings::IniFormat);
 	QString url = r->url().toString();
 		log("Received page "+url);
 	int n = 0, site_id = 0, results = 0;
@@ -1230,20 +1209,21 @@ void mainWindow::replyFinished(QNetworkReply* r)
 				for (int i = 0; i < infos.count(); i++)
 				{ d[infos.at(i)] = nodeList.at(id).attributes().namedItem(infos.at(i)).nodeValue(); }
 				QString date(nodeList.at(id).attributes().namedItem("created_at").nodeValue());
+				QDateTime timestamp;
 				if (date.toInt() != 0)
-				{
-					QDateTime timestamp;
-					timestamp.setTime_t(date.toInt());
-					d["created_at"] = timestamp.toString(tr("'le' dd/MM/yyyy 'à' hh:mm"));
-				}
+				{ timestamp.setTime_t(date.toInt()); }
 				else
-				{ d["created_at"] = qDateTimeFromString(date).toString(tr("'le' dd/MM/yyyy 'à' hh:mm")); }
+				{ timestamp = qDateTimeFromString(date); }
+				d["created_at"] = timestamp.toString(tr("'le' dd/MM/yyyy 'à' hh:mm"));
 				d["site"] = site;
 				d["site_id"] = QString::number(n);
 				d["pos"] = QString::number(id);
-				this->details.append(d);
-				this->replies.append(mngr->get(QNetworkRequest(QUrl(d["preview_url"]))));
-				results++;
+				if (m_loadFavorite.isNull() || timestamp > m_loadFavorite)
+				{
+					this->details.append(d);
+					this->replies.append(mngr->get(QNetworkRequest(QUrl(d["preview_url"]))));
+					results++;
+				}
 			}
 		}
 	}
@@ -1268,9 +1248,12 @@ void mainWindow::replyFinished(QNetworkReply* r)
 				d["site"] = site;
 				d["site_id"] = QString::number(n);
 				d["pos"] = QString::number(id);
-				this->details.append(d);
-				this->replies.append(mngr->get(QNetworkRequest(QUrl(d["preview_url"]))));
-				results++;
+				if (m_loadFavorite.isNull() || timestamp > m_loadFavorite)
+				{
+					this->details.append(d);
+					this->replies.append(mngr->get(QNetworkRequest(QUrl(d["preview_url"]))));
+					results++;
+				}
 			}
 		}
 	}
@@ -1327,7 +1310,7 @@ void mainWindow::replyFinished(QNetworkReply* r)
 	connect(txt, SIGNAL(linkActivated(QString)), this, SLOT(openUrl(QString)));
 	int pl = ceil(sqrt(m_settings->value("limit", 20).toInt()));
 	float fl = (float)m_settings->value("limit", 20).toInt()/pl;
-	if (m_loadFavorite)
+	if (!m_loadFavorite.isNull())
 	{
 		this->m_webFavorites->addWidget(txt, floor(n/m_settings->value("columns", 1).toInt())*(ceil(fl)+1), pl*(n%m_settings->value("columns", 1).toInt()), 1, pl);
 		this->m_webFavorites->setRowMinimumHeight(floor(n/m_settings->value("columns", 1).toInt())*(ceil(fl)+1), 50);
@@ -1399,7 +1382,7 @@ void mainWindow::replyFinishedPic(QNetworkReply* r)
 		connect(l, SIGNAL(rightClick(int)), this, SLOT(batchChange(int)));
 	int pl = ceil(sqrt(m_settings->value("limit", 20).toInt()));
 	float fl = (float)m_settings->value("limit", 20).toInt()/pl;
-	if (m_loadFavorite)
+	if (!m_loadFavorite.isNull())
 	{ this->m_webFavorites->addWidget(l, floor(id/pl)+(floor(site/m_settings->value("columns", 1).toInt())*(ceil(fl)+1))+1, id%pl+pl*(site%m_settings->value("columns", 1).toInt()), 1, 1); }
 	else
 	{ this->m_web->addWidget(l, floor(id/pl)+(floor(site/m_settings->value("columns", 1).toInt())*(ceil(fl)+1))+1, id%pl+pl*(site%m_settings->value("columns", 1).toInt()), 1, 1); }

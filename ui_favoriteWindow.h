@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'favoriteWindow.ui'
 **
-** Created: Fri 13. May 23:31:47 2011
+** Created: Sat 14. May 18:06:58 2011
 **      by: Qt User Interface Compiler version 4.7.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -139,7 +139,7 @@ public:
 
     void retranslateUi(QDialog *favoriteWindow)
     {
-        favoriteWindow->setWindowTitle(QApplication::translate("favoriteWindow", "Dialog", 0, QApplication::UnicodeUTF8));
+        favoriteWindow->setWindowTitle(QApplication::translate("favoriteWindow", "Modifier un favori", 0, QApplication::UnicodeUTF8));
         tagLabel->setText(QApplication::translate("favoriteWindow", "Tag", 0, QApplication::UnicodeUTF8));
         noteLabel->setText(QApplication::translate("favoriteWindow", "Note", 0, QApplication::UnicodeUTF8));
         noteSpinBox->setSuffix(QApplication::translate("favoriteWindow", " %", 0, QApplication::UnicodeUTF8));

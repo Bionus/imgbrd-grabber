@@ -45,7 +45,6 @@ class mainWindow : public QMainWindow
 		void getAllSource(QNetworkReply*);
 		void log(QString);
 		void logClear();
-		void loadFavorites();
 		void updateBatchGroups(int, int);
 		void addGroup();
 		void addUnique();
@@ -96,7 +95,7 @@ class mainWindow : public QMainWindow
 		QProcess *m_process;
 		QMap<QDateTime,QString> *m_log;
 		QSettings *m_settings;
-		bool m_loadFavorite;
+		QDateTime m_loadFavorite;
 		QVBoxLayout *m_favoritesLayout;
 };
 
