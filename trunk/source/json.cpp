@@ -1,10 +1,10 @@
 /**
- * \file json.h
+ * @file json.h
  * 
- * \author Eeli Reilin <eeli@nilier.org>,
+ * @author Eeli Reilin <eeli@nilier.org>,
  *         Mikko Ahonen <mikko.j.ahonen@jyu.fi>
- * \version 0.1
- * \date 8/25/2010
+ * @version 0.1
+ * @date 8/25/2010
  */
 
 #include <QDebug>

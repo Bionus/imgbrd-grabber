@@ -3,6 +3,13 @@
 #include "json.h"
 #include <QtXml>
 
+
+
+/**
+ * Constructor of the AddUniqueWindow class, generating its window.
+ * @param	favorites	List of favorites tags, needed for coloration
+ * @param	parent		The parent window
+ */
 AddUniqueWindow::AddUniqueWindow(QMap<QString,QStringList> sites, mainWindow *parent) : QWidget(parent), m_parent(parent), m_sites(sites)
 {
 	QVBoxLayout *layout = new QVBoxLayout;
@@ -30,6 +37,9 @@ AddUniqueWindow::AddUniqueWindow(QMap<QString,QStringList> sites, mainWindow *pa
 	this->resize(QSize(200, 0));
 }
 
+/**
+ * Search for image in available websites.
+ */
 void AddUniqueWindow::ok()
 {
 	QNetworkAccessManager *manager = new QNetworkAccessManager(this);
@@ -40,6 +50,11 @@ void AddUniqueWindow::ok()
 	url.replace("{limit}", "1");
 	manager->get(QNetworkRequest(QUrl(url)));
 }
+
+/**
+ * Signal triggered when the search is finished.
+ * @param r		The QNetworkReply associated with the search
+ */
 void AddUniqueWindow::replyFinished(QNetworkReply *r)
 {
 	QStringList infos = QStringList() << "id" << "md5" << "rating" << "tags" << "file_url";

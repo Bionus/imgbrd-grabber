@@ -1,5 +1,12 @@
 #include "addgroupwindow.h"
 
+
+
+/**
+ * Constructor of the AddGroupWindow class, generating its window.
+ * @param	favorites	List of favorites tags, needed for coloration
+ * @param	parent		The parent window
+ */
 AddGroupWindow::AddGroupWindow(QStringList favorites, mainWindow *parent) : QWidget(parent), m_parent(parent)
 {
 	QVBoxLayout *layout = new QVBoxLayout;
@@ -53,6 +60,9 @@ AddGroupWindow::AddGroupWindow(QStringList favorites, mainWindow *parent) : QWid
 	this->resize(QSize(400, 0));
 }
 
+/**
+ * Relays the informations to the parent window.
+ */
 void AddGroupWindow::ok()
 {
 	QStringList bools = QStringList() << "true" << "false";
