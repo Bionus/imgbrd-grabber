@@ -2,6 +2,11 @@
 
 
 
+/**
+ * Constructor of the AddGroupWindow class, generating its window.
+ * @param	selected	Bool list of currently selected websites, in the alphabetical order
+ * @param	parent		The parent window
+ */
 advancedWindow::advancedWindow(QList<bool> selected, QWidget *parent) : QWidget(parent), selected(selected)
 {
 	this->setWindowIcon(QIcon(":/images/icon.ico"));
@@ -37,16 +42,20 @@ advancedWindow::advancedWindow(QList<bool> selected, QWidget *parent) : QWidget(
 	this->setLayout(l);
 }
 
-
-
+/**
+ * When closed, the window emit a signal wich will trigger a slot in the mainwindow.
+ * @param	event	The event triggered wy window's closing
+ * @todo	Why use a signal, since we can simply use a pointer to the parent window ?
+ */
 void advancedWindow::closeEvent(QCloseEvent *event)
 {
 	emit closed(this);
 	event->accept();
 }
 
-
-
+/**
+ * Saves current selection then close the window.
+ */
 void advancedWindow::valid()
 {
 	QLayout *form = this->layout()->itemAt(0)->layout();
@@ -55,5 +64,9 @@ void advancedWindow::valid()
 	this->close();
 }
 
+/**
+ * Accessor for the "selected" variable.
+ * @return A bool list corresponding to selected websites.
+ */
 QList<bool> advancedWindow::getSelected()
 { return this->selected; }

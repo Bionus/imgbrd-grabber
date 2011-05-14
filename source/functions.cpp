@@ -2,9 +2,20 @@
 #include <QtGui>
 #include "functions.h"
 
-void error(QWidget *p, QString d)
-{ QMessageBox::critical(p, "Error", d); }
 
+
+/**
+ * Popup a message notifying the user that something went wrong.
+ * @param parent	The parent widget
+ * @param error		The error message
+ */
+void error(QWidget *parent, QString error)
+{ QMessageBox::critical(parent, "Error", error); }
+
+/**
+ * Sort a list non case-sensitively.
+ * @param sList		The list that will be ordered
+ */
 void sortNonCaseSensitive(QStringList &sList)
 {
 	QMap<QString, QString> strMap;
@@ -13,6 +24,11 @@ void sortNonCaseSensitive(QStringList &sList)
 	sList = strMap.values();
 }
 
+/**
+ * Convert a danbooru-like date (Sat May 14 17:38:04 -0400 2011) to a valid QDateTime.
+ * @param	str		The date string
+ * @return	The converted date as QDateTime
+ */
 QDateTime qDateTimeFromString(QString str)
 {
 	QDateTime date;
@@ -26,6 +42,10 @@ QDateTime qDateTimeFromString(QString str)
 	return date;
 }
 
+/**
+ * Load favorites from local file.
+ * @return	A QMap<QString,QString> with tags as keys, then the remaining details as value (value1|value2|value3...)
+ */
 QMap<QString,QString> loadFavorites()
 {
 	QMap<QString,QString> favorites;
