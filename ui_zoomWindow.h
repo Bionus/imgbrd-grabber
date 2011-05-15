@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'zoomWindow.ui'
 **
-** Created: Sun 15. May 14:34:09 2011
+** Created: Sun 15. May 23:37:39 2011
 **      by: Qt User Interface Compiler version 4.7.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -14,7 +14,6 @@
 #include <QtGui/QAction>
 #include <QtGui/QApplication>
 #include <QtGui/QButtonGroup>
-#include <QtGui/QFormLayout>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QHeaderView>
 #include <QtGui/QLabel>
@@ -28,15 +27,10 @@ class Ui_zoomWindow
 {
 public:
     QVBoxLayout *verticalLayout;
-    QFormLayout *formLayout;
+    QHBoxLayout *horizontalLayout;
     QLabel *labelFormTags;
     QLabel *labelTags;
-    QLabel *labelFormRating;
-    QLabel *labelRating;
-    QLabel *labelFormScore;
-    QLabel *labelFormUser;
-    QLabel *labelScore;
-    QLabel *labelUser;
+    QPushButton *buttonDetails;
     QHBoxLayout *buttonsLayout;
     QPushButton *buttonSave;
     QPushButton *buttonSaveNQuit;
@@ -54,56 +48,26 @@ public:
         zoomWindow->setWindowIcon(icon);
         verticalLayout = new QVBoxLayout(zoomWindow);
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
-        formLayout = new QFormLayout();
-        formLayout->setObjectName(QString::fromUtf8("formLayout"));
-        formLayout->setFieldGrowthPolicy(QFormLayout::AllNonFixedFieldsGrow);
+        horizontalLayout = new QHBoxLayout();
+        horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
         labelFormTags = new QLabel(zoomWindow);
         labelFormTags->setObjectName(QString::fromUtf8("labelFormTags"));
 
-        formLayout->setWidget(0, QFormLayout::LabelRole, labelFormTags);
+        horizontalLayout->addWidget(labelFormTags);
 
         labelTags = new QLabel(zoomWindow);
         labelTags->setObjectName(QString::fromUtf8("labelTags"));
-        labelTags->setContextMenuPolicy(Qt::CustomContextMenu);
-        labelTags->setWordWrap(true);
 
-        formLayout->setWidget(0, QFormLayout::FieldRole, labelTags);
+        horizontalLayout->addWidget(labelTags);
 
-        labelFormRating = new QLabel(zoomWindow);
-        labelFormRating->setObjectName(QString::fromUtf8("labelFormRating"));
+        buttonDetails = new QPushButton(zoomWindow);
+        buttonDetails->setObjectName(QString::fromUtf8("buttonDetails"));
 
-        formLayout->setWidget(1, QFormLayout::LabelRole, labelFormRating);
+        horizontalLayout->addWidget(buttonDetails);
 
-        labelRating = new QLabel(zoomWindow);
-        labelRating->setObjectName(QString::fromUtf8("labelRating"));
-        labelRating->setWordWrap(true);
+        horizontalLayout->setStretch(1, 1);
 
-        formLayout->setWidget(1, QFormLayout::FieldRole, labelRating);
-
-        labelFormScore = new QLabel(zoomWindow);
-        labelFormScore->setObjectName(QString::fromUtf8("labelFormScore"));
-
-        formLayout->setWidget(2, QFormLayout::LabelRole, labelFormScore);
-
-        labelFormUser = new QLabel(zoomWindow);
-        labelFormUser->setObjectName(QString::fromUtf8("labelFormUser"));
-
-        formLayout->setWidget(3, QFormLayout::LabelRole, labelFormUser);
-
-        labelScore = new QLabel(zoomWindow);
-        labelScore->setObjectName(QString::fromUtf8("labelScore"));
-        labelScore->setWordWrap(true);
-
-        formLayout->setWidget(2, QFormLayout::FieldRole, labelScore);
-
-        labelUser = new QLabel(zoomWindow);
-        labelUser->setObjectName(QString::fromUtf8("labelUser"));
-        labelUser->setWordWrap(true);
-
-        formLayout->setWidget(3, QFormLayout::FieldRole, labelUser);
-
-
-        verticalLayout->addLayout(formLayout);
+        verticalLayout->addLayout(horizontalLayout);
 
         buttonsLayout = new QHBoxLayout();
         buttonsLayout->setObjectName(QString::fromUtf8("buttonsLayout"));
@@ -136,9 +100,6 @@ public:
         QObject::connect(buttonSaveNQuit, SIGNAL(clicked()), zoomWindow, SLOT(saveNQuit()));
         QObject::connect(buttonOpen, SIGNAL(clicked()), zoomWindow, SLOT(openSaveDir()));
         QObject::connect(buttonSaveAs, SIGNAL(clicked()), zoomWindow, SLOT(saveImageAs()));
-        QObject::connect(labelTags, SIGNAL(linkHovered(QString)), zoomWindow, SLOT(linkHovered(QString)));
-        QObject::connect(labelTags, SIGNAL(linkActivated(QString)), zoomWindow, SLOT(openUrl(QString)));
-        QObject::connect(labelTags, SIGNAL(customContextMenuRequested(QPoint)), zoomWindow, SLOT(contextMenu()));
 
         QMetaObject::connectSlotsByName(zoomWindow);
     } // setupUi
@@ -148,12 +109,7 @@ public:
         zoomWindow->setWindowTitle(QApplication::translate("zoomWindow", "Grabber - Image", 0, QApplication::UnicodeUTF8));
         labelFormTags->setText(QApplication::translate("zoomWindow", "<b>Tags</b>", 0, QApplication::UnicodeUTF8));
         labelTags->setText(QString());
-        labelFormRating->setText(QApplication::translate("zoomWindow", "<b>Rating</b>", 0, QApplication::UnicodeUTF8));
-        labelRating->setText(QString());
-        labelFormScore->setText(QApplication::translate("zoomWindow", "<b>Score</b>", 0, QApplication::UnicodeUTF8));
-        labelFormUser->setText(QApplication::translate("zoomWindow", "<b>User</b>", 0, QApplication::UnicodeUTF8));
-        labelScore->setText(QString());
-        labelUser->setText(QString());
+        buttonDetails->setText(QApplication::translate("zoomWindow", "Plus d'infos", 0, QApplication::UnicodeUTF8));
         buttonSave->setText(QApplication::translate("zoomWindow", "Enregistrer", 0, QApplication::UnicodeUTF8));
         buttonSaveNQuit->setText(QApplication::translate("zoomWindow", "Enregistrer et fermer", 0, QApplication::UnicodeUTF8));
         buttonOpen->setText(QApplication::translate("zoomWindow", "Ouvrir le dossier de destination", 0, QApplication::UnicodeUTF8));

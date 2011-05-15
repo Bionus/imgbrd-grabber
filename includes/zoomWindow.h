@@ -5,6 +5,7 @@
 #include <QtNetwork>
 #include "QAffiche.h"
 #include "mainWindow.h"
+#include "detailswindow.h"
 
 
 
@@ -51,6 +52,7 @@ class zoomWindow : public QWidget
 	private:
 		mainWindow *m_parent;
 		Ui::zoomWindow *ui;
+		detailsWindow *m_detailsWindow;
 		QStringList regex;
 		int timeout, loaded, oldsize;
 		QMap<QString, QStringList> details;
@@ -66,7 +68,7 @@ class zoomWindow : public QWidget
 		QString link, m_program;
 		QNetworkReply *m_reply;
 		const char* m_format;
-		bool m_mustSave;
+		bool m_mustSave, m_replyExists;
 		QStringList favorites;
 };
 

@@ -11,7 +11,7 @@ using namespace std;
 
 
 
-zoomWindow::zoomWindow(QString m_program, QString site, QStringList regex, QString id, QString url, QString tags, QString md5, QString rating, QString score, QString user, mainWindow *parent) : m_parent(parent), ui(new Ui::zoomWindow), regex(regex), timeout(300), loaded(0), oldsize(0), site(site), id(id), url(url), tags(tags), md5(md5), score(score), user(user), link(""), m_program(m_program), m_mustSave(false)
+zoomWindow::zoomWindow(QString m_program, QString site, QStringList regex, QString id, QString url, QString tags, QString md5, QString rating, QString score, QString user, mainWindow *parent) : m_parent(parent), ui(new Ui::zoomWindow), regex(regex), timeout(300), loaded(0), oldsize(0), site(site), id(id), url(url), tags(tags), md5(md5), score(score), user(user), link(""), m_program(m_program), m_mustSave(false), m_replyExists(false)
 {
 	ui->setupUi(this);
 	favorites = loadFavorites().keys();
@@ -42,9 +42,6 @@ zoomWindow::zoomWindow(QString m_program, QString site, QStringList regex, QStri
 		assoc["q"] = tr("Questionable");
 		assoc["e"] = tr("Explicit");
 	this->rating = assoc.value(rating);
-	ui->labelRating->setText(this->rating);
-	ui->labelScore->setText(score);
-	ui->labelUser->setText(user);
 
 	this->format = this->url.section('.', -1).toUpper().toAscii().data();
 	
@@ -52,6 +49,9 @@ zoomWindow::zoomWindow(QString m_program, QString site, QStringList regex, QStri
 		connect(timer, SIGNAL(timeout()), this, SLOT(update()));
 		timer->setSingleShot(true);
 		this->timer = timer;
+
+	m_detailsWindow = new detailsWindow(hreftags.trimmed());
+	connect(ui->buttonDetails, SIGNAL(clicked()), m_detailsWindow, SLOT(show()));
 
 	QString u = this->regex.at(4);
 		u.replace("{id}", this->id);
@@ -174,6 +174,7 @@ void zoomWindow::load()
 		request.setRawHeader("Referer", this->url.toAscii());
 	QEventLoop *q = new QEventLoop;
 	QNetworkAccessManager *manager = new QNetworkAccessManager;
+	m_replyExists = true;
 	m_reply = manager->get(request);
 	connect(m_reply, SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(rR(qint64, qint64)));
 	connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinishedZoom(QNetworkReply*)));
@@ -441,10 +442,6 @@ void zoomWindow::closeEvent(QCloseEvent *e)
 		settings.setValue("size", this->size());
 		settings.setValue("pos", this->pos());
 	if (r->isRunning())			{ r->abort();		}
-	if (m_reply)
-	{
-		if (m_reply->isRunning())
-		{ m_reply->abort();	}
-	}
+	if (m_replyExists)			{ m_reply->abort();	}
 	QWidget::closeEvent(e);
 }

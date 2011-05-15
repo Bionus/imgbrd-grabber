@@ -84,7 +84,7 @@ class mainWindow : public QMainWindow
 		QProgressDialog *progressdialog;
 		QNetworkReply *getAllRequest;
 		QMap<QString, QStringList> getAllDetails, sites;
-		QPushButton *ok, *adv, *m_favoritesButtonAdvanced, *gA, *clearBatch, *showBatch, *getBatch, *m_logClear;
+		QPushButton *ok, *adv, *m_favoritesButtonAdvanced, *gA, *clearBatch, *showBatch, *getBatch, *m_logClear, *m_buttonOpenCalendar;
 		QMenu *menuOptions, *menuAide;
 		QAction *actionOptions, *actionAboutAuthor, *actionAboutQt, *actionHelp;
 		QTranslator m_translator, m_translatorQt;
@@ -99,6 +99,7 @@ class mainWindow : public QMainWindow
 		QSettings *m_settings;
 		QDateTime m_loadFavorite;
 		QVBoxLayout *m_favoritesLayout;
+		QCalendarWidget *m_calendar;
 };
 
 #endif

@@ -19,7 +19,8 @@ HEADERS += includes/addgroupwindow.h \
 	includes/textedit.h \
 	includes/zoomWindow.h \
 	includes/json.h \
-    includes/favoritewindow.h
+    includes/favoritewindow.h \
+	includes/detailswindow.h
 SOURCES += source/addgroupwindow.cpp \
 	source/adduniquewindow.cpp \
 	source/advancedWindow.cpp \
@@ -32,7 +33,8 @@ SOURCES += source/addgroupwindow.cpp \
 	source/textedit.cpp \
 	source/zoomWindow.cpp \
 	source/json.cpp \
-    source/favoritewindow.cpp
+    source/favoritewindow.cpp \
+    source/detailswindow.cpp
 RESOURCES += resources.qrc
 RC_FILE = icon.rc
 TRANSLATIONS += languages/English.ts languages/Français.ts
@@ -40,4 +42,5 @@ QT += network xml
 
 FORMS += \
     ui/favoriteWindow.ui \
-    ui/zoomWindow.ui
+    ui/zoomWindow.ui \
+    ui/detailsWindow.ui

@@ -216,7 +216,16 @@ mainWindow::mainWindow(QString m_program, QStringList m_tags, QMap<QString,QStri
 				m_date->setDate(m_serverDate.date());
 				m_date->setDisplayFormat(m_settings->value("dateformat", "dd/MM/yyyy").toString());
 				connect(m_date, SIGNAL(dateChanged(QDate)), radio2, SLOT(toggle()));
-			champs->addWidget(m_date, 1, 1, 1, 3);
+				champs->addWidget(m_date, 1, 1, 1, 2);
+			m_buttonOpenCalendar = new QPushButton;
+				m_calendar = new QCalendarWidget;
+					m_calendar->setDateRange(QDate(2000, 1, 1), m_serverDate.date());
+					m_calendar->setSelectedDate(m_serverDate.date());
+					connect(m_calendar, SIGNAL(activated(QDate)), m_date, SLOT(setDate(QDate)));
+					connect(m_date, SIGNAL(dateChanged(QDate)), m_calendar, SLOT(setSelectedDate(QDate)));
+					connect(m_calendar, SIGNAL(activated(QDate)), m_calendar, SLOT(close()));
+				connect(m_buttonOpenCalendar, SIGNAL(clicked()), m_calendar, SLOT(show()));
+				champs->addWidget(m_buttonOpenCalendar, 1, 3, 1, 1);
 	QHBoxLayout *actions = new QHBoxLayout;
 		adv = new QPushButton(this);
 			connect(adv, SIGNAL(clicked()), this, SLOT(advanced()));
@@ -249,9 +258,11 @@ mainWindow::mainWindow(QString m_program, QStringList m_tags, QMap<QString,QStri
 				int note = xp.isEmpty() ? 50 : xp.takeFirst().toInt();
 				QDateTime lastviewed = xp.isEmpty() ? QDateTime(QDate(2000, 1, 1), QTime(0, 0, 0, 0)) : QDateTime::fromString(xp.takeFirst(), Qt::ISODate);
 				QString imagepath = xp.isEmpty() ? ":/images/noimage.png" : xp.takeFirst();
-				QBouton *image = new QBouton(i);
-					image->setIcon(QPixmap(imagepath).scaledToWidth(100, Qt::SmoothTransformation));
-					image->setIconSize(QSize(150, 150));
+					QBouton *image = new QBouton(i);
+						if (!QFile::exists(imagepath))
+						{ imagepath = ":/images/noimage.png"; }
+						image->setIcon(QPixmap(imagepath).scaled(QSize(150,150), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+						image->setIconSize(QSize(150, 150));
 					image->setFlat(true);
 					connect(image, SIGNAL(rightClick(int)), this, SLOT(favoriteProperties(int)));
 				QBouton *caption = new QBouton(i);
@@ -387,8 +398,8 @@ void mainWindow::favoriteProperties(int id)
 	int note = xp.isEmpty() ? 50 : xp.takeFirst().toInt();
 	QDateTime lastviewed = xp.isEmpty() ? QDateTime(QDate(2000, 1, 1), QTime(0, 0, 0, 0)) : QDateTime::fromString(xp.takeFirst(), Qt::ISODate);
 	QString imagepath = xp.isEmpty() ? "" : xp.takeFirst();
-	favoriteWindow *fwin = new favoriteWindow(tag, note, lastviewed, imagepath, this);
-	fwin->show();
+	//favoriteWindow *fwin = new favoriteWindow(tag, note, lastviewed, imagepath, this);
+	//fwin->show();
 }
 void mainWindow::updateFavorites()
 {
@@ -519,6 +530,7 @@ void mainWindow::retranslateStrings()
 	m_tabs->setTabText(1, tr("Favoris"));
 	m_tabs->setTabText(2, tr("Télécharger"));
 	m_tabs->setTabText(3, tr("Log"));
+	m_buttonOpenCalendar->setText(tr("Choisir"));
 	DONE()
 }
 
@@ -737,7 +749,6 @@ void mainWindow::getAllSource(QNetworkReply *r)
 	}
 	else if (this->sites[site].at(0) == "regex")
 	{
-		// Getting images
 		QRegExp rx(this->sites[site].at(6));
 		QStringList order = this->sites[site].at(7).split('|');
 		rx.setMinimal(true);
@@ -1330,7 +1341,7 @@ void mainWindow::replyFinished(QNetworkReply* r)
 		{ reasons.append(tr("trop de tags")); }
 		if (this->page->value() > 1000)
 		{ reasons.append(tr("page trop éloignée")); }
-		txt->setText(site+" - <a href=\""+url+"\">"+url+"</a> - "+tr("Aucun résultat")+(reasons.count() > 0 ? "<br/>"+tr("Raisons possibles : %1").arg(reasons.join(", ")) : ""));
+		txt->setText(site+" - <a href=\""+url+"\">"+url+"</a> - "+(!m_loadFavorite.isNull() ? tr("Aucun résultat depuis le %1").arg(m_loadFavorite.toString(m_settings->value("dateformat", "dd/MM/yyyy").toString())) : tr("Aucun résultat")+(reasons.count() > 0 ? "<br/>"+tr("Raisons possibles : %1").arg(reasons.join(", ")) : "")));
 	}
 	else
 	{ txt->setText(site+" - <a href=\""+url+"\">"+url+"</a> - "+tr("Page %1 sur %2 (%3 sur %4)").arg(QString::number(this->page->value()), (max != 0 ? QString::number(ceil(count/m_settings->value("limit", 20).toFloat())) : "?"), QString::number(results), (count != 0 ? QString::number(count) : "?"))); }

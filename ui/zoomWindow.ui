@@ -25,78 +25,25 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0">
    <item>
-    <layout class="QFormLayout" name="formLayout">
-     <property name="fieldGrowthPolicy">
-      <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-     </property>
-     <item row="0" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,1,0">
+     <item>
       <widget class="QLabel" name="labelFormTags">
        <property name="text">
         <string>&lt;b&gt;Tags&lt;/b&gt;</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
+     <item>
       <widget class="QLabel" name="labelTags">
-       <property name="contextMenuPolicy">
-        <enum>Qt::CustomContextMenu</enum>
-       </property>
        <property name="text">
         <string/>
        </property>
-       <property name="wordWrap">
-        <bool>true</bool>
-       </property>
       </widget>
      </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="labelFormRating">
+     <item>
+      <widget class="QPushButton" name="buttonDetails">
        <property name="text">
-        <string>&lt;b&gt;Rating&lt;/b&gt;</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QLabel" name="labelRating">
-       <property name="text">
-        <string/>
-       </property>
-       <property name="wordWrap">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="labelFormScore">
-       <property name="text">
-        <string>&lt;b&gt;Score&lt;/b&gt;</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0">
-      <widget class="QLabel" name="labelFormUser">
-       <property name="text">
-        <string>&lt;b&gt;User&lt;/b&gt;</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="QLabel" name="labelScore">
-       <property name="text">
-        <string/>
-       </property>
-       <property name="wordWrap">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="QLabel" name="labelUser">
-       <property name="text">
-        <string/>
-       </property>
-       <property name="wordWrap">
-        <bool>true</bool>
+        <string>Plus d'infos</string>
        </property>
       </widget>
      </item>
@@ -201,54 +148,6 @@
     <hint type="destinationlabel">
      <x>667</x>
      <y>468</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>labelTags</sender>
-   <signal>linkHovered(QString)</signal>
-   <receiver>zoomWindow</receiver>
-   <slot>linkHovered(QString)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>156</x>
-     <y>19</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>164</x>
-     <y>16</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>labelTags</sender>
-   <signal>linkActivated(QString)</signal>
-   <receiver>zoomWindow</receiver>
-   <slot>openUrl(QString)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>388</x>
-     <y>11</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>396</x>
-     <y>16</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>labelTags</sender>
-   <signal>customContextMenuRequested(QPoint)</signal>
-   <receiver>zoomWindow</receiver>
-   <slot>contextMenu()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>697</x>
-     <y>15</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>712</x>
-     <y>15</y>
     </hint>
    </hints>
   </connection>
