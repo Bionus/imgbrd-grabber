@@ -2,5 +2,8 @@
     <qresource prefix="/">
         <file>images/icon.ico</file>
         <file>images/noimage.png</file>
+        <file>images/ratings/explicit.png</file>
+        <file>images/ratings/questionable.png</file>
+        <file>images/ratings/safe.png</file>
     </qresource>
 </RCC>
