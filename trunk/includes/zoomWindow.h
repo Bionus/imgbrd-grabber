@@ -8,12 +8,20 @@
 
 
 
+namespace Ui
+{
+	class zoomWindow;
+}
+
+
+
 class zoomWindow : public QWidget
 {
     Q_OBJECT
 
 	public:
 		zoomWindow(QString, QString, QStringList, QString, QString, QString, QString, QString, QString, QString, mainWindow *);
+		~zoomWindow();
 		void load();
 	
 	public slots:
@@ -41,6 +49,8 @@ class zoomWindow : public QWidget
 		QString getSavePath();
 
 	private:
+		mainWindow *m_parent;
+		Ui::zoomWindow *ui;
 		QStringList regex;
 		int timeout, loaded, oldsize;
 		QMap<QString, QStringList> details;
@@ -53,12 +63,11 @@ class zoomWindow : public QWidget
 		QByteArray d;
 		QNetworkAccessManager *m;
 		QPushButton *buttonSave, *buttonSaveNQuit, *buttonSaveas, *m_buttonSaveNQuit;
-		mainWindow *parent;
 		QString link, m_program;
-		QStringList favorites;
 		QNetworkReply *m_reply;
 		const char* m_format;
 		bool m_mustSave;
+		QStringList favorites;
 };
 
 #endif

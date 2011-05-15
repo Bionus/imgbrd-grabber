@@ -18,7 +18,8 @@
 #include "QBouton.h"
 #include "json.h"
 
-#define VERSION "1.7"
+#define VERSION	"1.7"
+#define DONE()	logUpdate(tr(" Fait"));
 
 using namespace std;
 
@@ -216,7 +217,7 @@ mainWindow::mainWindow(QString m_program, QStringList m_tags, QMap<QString,QStri
 				m_date->setDisplayFormat(m_settings->value("dateformat", "dd/MM/yyyy").toString());
 				connect(m_date, SIGNAL(dateChanged(QDate)), radio2, SLOT(toggle()));
 			champs->addWidget(m_date, 1, 1, 1, 3);
-	QHBoxLayout *actions = new QHBoxLayout();
+	QHBoxLayout *actions = new QHBoxLayout;
 		adv = new QPushButton(this);
 			connect(adv, SIGNAL(clicked()), this, SLOT(advanced()));
 			actions->addWidget(adv);
@@ -261,9 +262,15 @@ mainWindow::mainWindow(QString m_program, QStringList m_tags, QMap<QString,QStri
 				m_layoutFavorites->addWidget(image, (i/10)*2, i%10);
 				m_layoutFavorites->addWidget(caption, (i/10)*2+1, i%10);
 			}
-			m_favoritesLayout->addLayout(m_layoutFavorites);
+		QHBoxLayout *favorites_actions = new QHBoxLayout;
+			m_favoritesButtonAdvanced = new QPushButton(this);
+				connect(m_favoritesButtonAdvanced, SIGNAL(clicked()), this, SLOT(advanced()));
+				favorites_actions->addWidget(m_favoritesButtonAdvanced);
 		m_webFavorites = new QGridLayout;
+			m_favoritesLayout->addLayout(m_layoutFavorites);
 			m_favoritesLayout->addLayout(m_webFavorites);
+			m_favoritesLayout->addLayout(favorites_actions);
+				m_favoritesLayout->setAlignment(favorites_actions, Qt::AlignBottom);
 	 m_tabFavorites = new QWidget;
 		m_tabFavorites->setLayout(m_favoritesLayout);
 		m_tabFavorites->setSizePolicy(QSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored));
@@ -310,6 +317,7 @@ mainWindow::mainWindow(QString m_program, QStringList m_tags, QMap<QString,QStri
 				_logLabel->setWordWrap(true);
 				_logLabel->setTextFormat(Qt::RichText);
 				_logLabel->setSizePolicy(QSizePolicy(QSizePolicy::Ignored,QSizePolicy::Ignored));
+				_logLabel->setOpenExternalLinks(true);
 			logscroll->setWidget(_logLabel);
 			logscroll->setWidgetResizable(true);
 			labelLogs->addWidget(logscroll);
@@ -448,6 +456,17 @@ void mainWindow::replyFinishedVersion(QNetworkReply* r)
 void mainWindow::log(QString l)
 {
 	this->m_log->insert(QDateTime::currentDateTime(), l);
+	logShow();
+}
+void mainWindow::logUpdate(QString l)
+{
+	QDateTime date = m_log->keys().at(m_log->count()-1);
+	QString message = m_log->value(date)+l;
+	this->m_log->insert(date, message);
+	logShow();
+}
+void mainWindow::logShow()
+{
 	if (this->loaded)
 	{
 		QString txt;
@@ -492,6 +511,7 @@ void mainWindow::retranslateStrings()
 	ok->setText(tr("Ok"));
 	adv->setText(tr("Sources"));
 	gA->setText(tr("Prendre cette page"));
+	m_favoritesButtonAdvanced->setText(tr("Sources"));
 	batchTableGroups->setHorizontalHeaderLabels(QStringList() << tr("Tags") << tr("Page") << tr("Images par page") << tr("Limite d'images") << tr("Télécharger les image de la liste noire") << tr("Source") << tr("Populaires"));
 	batchTableUniques->setHorizontalHeaderLabels(QStringList() << tr("Id") << tr("Md5") << tr("Classe") << tr("Tags") << tr("Url") << tr("Site"));
 	m_logClear->setText(tr("Effacer le log"));
@@ -499,6 +519,7 @@ void mainWindow::retranslateStrings()
 	m_tabs->setTabText(1, tr("Favoris"));
 	m_tabs->setTabText(2, tr("Télécharger"));
 	m_tabs->setTabText(3, tr("Log"));
+	DONE()
 }
 
 void mainWindow::switchTranslator(QTranslator& translator, const QString& filename)
@@ -539,10 +560,7 @@ void mainWindow::closeEvent(QCloseEvent *e)
 		m_settings->setValue("state", int(this->windowState()));
 		m_settings->setValue("size", this->size());
 		m_settings->setValue("pos", this->pos());
-		QString sav;
-		for (int i = 0; i < this->selected.count(); i++)
-		{ sav += (this->selected.at(i) ? "1" : "0"); }
-		m_settings->setValue("sites", sav);
+	DONE()
 	QMainWindow::closeEvent(e);
 }
 
@@ -552,6 +570,7 @@ void mainWindow::options()
 	log(tr("Ouverture de la fenêtre des options..."));
 	optionsWindow *options = new optionsWindow(this);
 	options->show();
+	DONE()
 }
 
 
@@ -562,11 +581,17 @@ void mainWindow::advanced()
 	advancedWindow *adv = new advancedWindow(this->selected, this);
 	adv->show();
 	connect(adv, SIGNAL(closed(advancedWindow*)), this, SLOT(saveAdvanced(advancedWindow*)));
+	DONE()
 }
 void mainWindow::saveAdvanced(advancedWindow *w)
 {
 	log(tr("Sauvegarde des nouvelles sources..."));
 	this->selected = w->getSelected();
+	QString sav;
+	for (int i = 0; i < this->selected.count(); i++)
+	{ sav += (this->selected.at(i) ? "1" : "0"); }
+	m_settings->setValue("sites", sav);
+	DONE()
 }
 
 
@@ -1057,7 +1082,6 @@ void mainWindow::webUpdate()
 void mainWindow::web(QString tags)
 {
 	tags = (tags.isEmpty() ? this->search->toPlainText() : tags);
-	log(tr("Chargement de la page avec les tags \"%1\"...").arg(tags));
 	if (!this->replies.isEmpty())
 	{
 		for (int i = 0; i < this->replies.count(); i++)
@@ -1134,7 +1158,10 @@ void mainWindow::web(QString tags)
 		}
 		this->assoc.append(url);
 		if (this->selected.at(i) && !url.isEmpty())
-		{ this->replies.append(manager->get(QNetworkRequest(QUrl(url)))); }
+		{
+			log(tr("Chargement de la page <a href=\"%1\">%1</a>").arg(url));
+			this->replies.append(manager->get(QNetworkRequest(QUrl(url))));
+		}
 	}
 }
 void mainWindow::webZoom(int id)
@@ -1162,7 +1189,7 @@ void mainWindow::webZoom(int id)
 void mainWindow::replyFinished(QNetworkReply* r)
 {
 	QString url = r->url().toString();
-		log("Received page "+url);
+	log(tr("Réception de la page <a href=\"%1\">%1</a>").arg(url));
 	int n = 0, site_id = 0, results = 0;
 	for (int i = 0; i < this->assoc.count(); i++)
 	{

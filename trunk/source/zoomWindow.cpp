@@ -2,22 +2,18 @@
 #include <QApplication>
 #include <QtNetwork>
 #include "functions.h"
-#include "zoomWindow.h"
 #include "optionsWindow.h"
 #include "QAffiche.h"
+#include "zoomWindow.h"
+#include "ui_zoomWindow.h"
 
 using namespace std;
 
 
 
-zoomWindow::zoomWindow(QString m_program, QString site, QStringList regex, QString id, QString url, QString tags, QString md5, QString rating, QString score, QString user, mainWindow *parent) : regex(regex), timeout(300), loaded(0), oldsize(0), site(site), id(id), url(url), tags(tags), md5(md5), score(score), user(user), link(""), m_program(m_program), m_mustSave(false)
+zoomWindow::zoomWindow(QString m_program, QString site, QStringList regex, QString id, QString url, QString tags, QString md5, QString rating, QString score, QString user, mainWindow *parent) : m_parent(parent), ui(new Ui::zoomWindow), regex(regex), timeout(300), loaded(0), oldsize(0), site(site), id(id), url(url), tags(tags), md5(md5), score(score), user(user), link(""), m_program(m_program), m_mustSave(false)
 {
-	this->parent = parent;
-	
-	this->resize(600, 800);
-	this->setWindowIcon(QIcon(":/images/icon.ico"));
-	this->setWindowTitle(tr("Grabber")+" - "+tr("Image"));
-	
+	ui->setupUi(this);
 	favorites = loadFavorites().keys();
 
 	QSettings settings("settings.ini", QSettings::IniFormat);
@@ -28,55 +24,27 @@ zoomWindow::zoomWindow(QString m_program, QString site, QStringList regex, QStri
 			this->resize(settings.value("size", QSize(800, 600)).toSize());
 			this->move(settings.value("pos", QPoint(200, 200)).toPoint());
 		}
-	
-	QHBoxLayout *buttons = new QHBoxLayout();
-		QPushButton *buttonSave = new QPushButton("");
-			connect(buttonSave, SIGNAL(clicked()), this, SLOT(saveImage()));
-			buttons->addWidget(buttonSave);
-		m_buttonSaveNQuit = new QPushButton("");
-			connect(m_buttonSaveNQuit, SIGNAL(clicked()), this, SLOT(saveNQuit()));
-			buttons->addWidget(m_buttonSaveNQuit);
-		QPushButton *buttonOpenSaveDir = new QPushButton(tr("Ouvrir le dossier de destination"));
-			connect(buttonOpenSaveDir, SIGNAL(clicked()), this, SLOT(openSaveDir()));
-			buttons->addWidget(buttonOpenSaveDir);
-		QPushButton *buttonSaveas = new QPushButton(tr("Enregistrer sous..."));
-			connect(buttonSaveas, SIGNAL(clicked()), this, SLOT(saveImageAs()));
-			buttons->addWidget(buttonSaveas);
+
 	QAffiche *labelImage = new QAffiche;
 		labelImage->setSizePolicy(QSizePolicy(QSizePolicy::Ignored,QSizePolicy::Ignored));
 		connect(labelImage, SIGNAL(doubleClicked()), this, SLOT(fullScreen()));
+	ui->verticalLayout->insertWidget(1, labelImage, 2);
+	this->labelImage = labelImage;
+
 	QStringList taglist = tags.split(' ');
 	QString hreftags;
 	for (int i = 0; i < taglist.count(); i++)
 	{ hreftags += " <a href=\""+taglist.at(i)+"\" style=\"text-decoration:none;color:#000000\">"+taglist.at(i)+"</a>"; }
-	QLabel *labelTags = new QLabel(tr("<b>Tags :</b> %1").arg(hreftags.trimmed()));
-		labelTags->setWordWrap(true);
-		labelTags->setContextMenuPolicy(Qt::CustomContextMenu);
-		connect(labelTags, SIGNAL(linkActivated(QString)), this, SLOT(openUrl(QString)));
-		connect(labelTags, SIGNAL(linkHovered(QString)), this, SLOT(linkHovered(QString)));
-		connect(labelTags, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenu()));
+	ui->labelTags->setText(hreftags.trimmed());
+
 	QMap<QString, QString> assoc;
 		assoc["s"] = tr("Safe");
 		assoc["q"] = tr("Questionable");
 		assoc["e"] = tr("Explicit");
 	this->rating = assoc.value(rating);
-	QLabel *labelRating = new QLabel(tr("<b>Classe :</b> %1").arg(this->rating));
-	QLabel *labelScore = new QLabel(tr("<b>Score :</b> %1").arg(score));
-	QLabel *labelUser = new QLabel(tr("<b>Posteur :</b> %1").arg(user));
-	QVBoxLayout *l = new QVBoxLayout();
-		l->addWidget(labelTags);
-		l->addWidget(labelRating);
-		l->addWidget(labelScore);
-		l->addWidget(labelUser);
-		l->addWidget(labelImage);
-			l->setStretchFactor(labelImage, 2);
-		l->addLayout(buttons);
-	this->setLayout(l);
-	
-	this->labelTags = labelTags;
-	this->labelImage = labelImage;
-	this->buttonSave = buttonSave;
-	this->buttonSaveas = buttonSaveas;
+	ui->labelRating->setText(this->rating);
+	ui->labelScore->setText(score);
+	ui->labelUser->setText(user);
 
 	this->format = this->url.section('.', -1).toUpper().toAscii().data();
 	
@@ -94,11 +62,20 @@ zoomWindow::zoomWindow(QString m_program, QString site, QStringList regex, QStri
 		rq.setRawHeader("Referer", u.toAscii());
 	this->r = manager->get(rq);
 }
+
+/**
+ * Destructor of the zoomWindow class
+ */
+zoomWindow::~zoomWindow()
+{
+	delete ui;
+}
+
 void zoomWindow::openUrl(QString url)
 {
-	this->parent->setTags(url);
-	this->parent->webUpdate();
-	this->parent->activateWindow();
+	m_parent->setTags(url);
+	m_parent->webUpdate();
+	m_parent->activateWindow();
 }
 void zoomWindow::openSaveDir()
 {
@@ -154,7 +131,7 @@ void zoomWindow::favorite()
 		f.open(QIODevice::WriteOnly | QIODevice::Append);
 		f.write(QString(link+"|50|"+QDateTime::currentDateTime().toString(Qt::ISODate)+"|"+image+"\r\n").toAscii());
 	f.close();
-	parent->updateFavorites();
+	m_parent->updateFavorites();
 }
 void zoomWindow::setfavorite()
 {
@@ -170,7 +147,7 @@ void zoomWindow::setfavorite()
 	f.open(QIODevice::WriteOnly);
 		f.write(favs.toAscii());
 	f.close();
-	parent->updateFavorites();
+	m_parent->updateFavorites();
 }
 void zoomWindow::unfavorite()
 {
@@ -186,7 +163,7 @@ void zoomWindow::unfavorite()
 	f.open(QIODevice::WriteOnly);
 		f.write(favs.toAscii());
 	f.close();
-	parent->updateFavorites();
+	m_parent->updateFavorites();
 }
 
 
@@ -195,10 +172,6 @@ void zoomWindow::load()
 {
 	QNetworkRequest request(QUrl(this->url));
 		request.setRawHeader("Referer", this->url.toAscii());
-	//MyThread *thread = new MyThread(request);
-	//connect(thread, SIGNAL(readyRead(QNetworkReply*)), this, SLOT(rR(QNetworkReply*)));
-	//connect(thread, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinishedZoom(QNetworkReply*)));
-	//thread->start();
 	QEventLoop *q = new QEventLoop;
 	QNetworkAccessManager *manager = new QNetworkAccessManager;
 	m_reply = manager->get(request);
@@ -247,7 +220,7 @@ void zoomWindow::replyFinished(QNetworkReply* reply)
 			else							{ this->details["generals"].append(normalized);		tags.replace(" "+tag+" ", " <a href=\""+tag+"\" style=\"text-decoration:none;color:#000000\">"+tag+"</a> "); }
 			this->details["alls"].append(normalized);
 		}
-		this->labelTags->setText(tr("<b>Tags :</b> %1").arg(tags.trimmed()));
+		ui->labelTags->setText(tags.trimmed());
 		QString pth = this->getSavePath();
 		QString path = settings.value("Save/path").toString().replace("\\", "/");
 		if (path.right(1) == "/")
@@ -255,8 +228,8 @@ void zoomWindow::replyFinished(QNetworkReply* reply)
 		QFile file(path+"/"+pth);
 		if (file.exists() && !path.isEmpty() && !pth.isEmpty())
 		{
-			this->buttonSave->setText(tr("Fichier déjà existant"));
-			m_buttonSaveNQuit->setText(tr("Fermer"));
+			ui->buttonSave->setText(tr("Fichier déjà existant"));
+			ui->buttonSaveNQuit->setText(tr("Fermer"));
 			this->d.clear();
 				if (!file.open(QIODevice::ReadOnly))
 				{ error(this, tr("Erreur inattendue lors de l'ouverture du fichier.\r\n%1").arg(path+"/"+pth)); }
@@ -268,8 +241,8 @@ void zoomWindow::replyFinished(QNetworkReply* reply)
 		}
 		else
 		{
-			this->buttonSave->setText(tr("Enregistrer"));
-			m_buttonSaveNQuit->setText(tr("Enregistrer et fermer"));
+			ui->buttonSave->setText(tr("Enregistrer"));
+			ui->buttonSaveNQuit->setText(tr("Enregistrer et fermer"));
 			this->load();
 		}
 	}
@@ -317,7 +290,7 @@ QString zoomWindow::saveImage()
 {
 	if (!loaded)
 	{
-		this->buttonSave->setText(tr("Sauvegarde..."));
+		ui->buttonSave->setText(tr("Sauvegarde..."));
 		m_mustSave = true;
 		return QString();
 	}
@@ -331,7 +304,7 @@ QString zoomWindow::saveImage()
 		int reply = QMessageBox::question(this, tr("Erreur"), tr("Vous n'avez pas précisé de dossier de sauvegarde ! Voulez-vous ouvrir les options ?"), QMessageBox::Yes | QMessageBox::No);
 		if (reply == QMessageBox::Yes)
 		{
-			optionsWindow *options = new optionsWindow(this->parent);
+			optionsWindow *options = new optionsWindow(m_parent);
 			options->onglets->setCurrentIndex(2);
 			options->setWindowModality(Qt::ApplicationModal);
 			options->show();
@@ -344,7 +317,7 @@ QString zoomWindow::saveImage()
 		int reply = QMessageBox::question(this, tr("Erreur"), tr("Vous n'avez pas précisé de format de sauvegarde ! Voulez-vous ouvrir les options ?"), QMessageBox::Yes | QMessageBox::No);
 		if (reply == QMessageBox::Yes)
 		{
-			optionsWindow *options = new optionsWindow(this->parent);
+			optionsWindow *options = new optionsWindow(m_parent);
 			options->onglets->setCurrentIndex(2);
 			options->setWindowModality(Qt::ApplicationModal);
 			options->show();
@@ -365,12 +338,12 @@ QString zoomWindow::saveImage()
 		f.open(QIODevice::WriteOnly);
 		f.write(this->d);
 		f.close();
-		parent->log(tr("Saved %1").arg(pth+"/"+path));
-		this->buttonSave->setText(tr("Sauvegardé !"));
-		m_buttonSaveNQuit->setText(tr("Fermer"));
+		m_parent->log(tr("Saved %1").arg(pth+"/"+path));
+		ui->buttonSave->setText(tr("Sauvegardé !"));
+		ui->buttonSaveNQuit->setText(tr("Fermer"));
 	}
 	else
-	{ this->buttonSave->setText(tr("Fichier déjà existant")); }
+	{ ui->buttonSave->setText(tr("Fichier déjà existant")); }
 	return pth+"/"+path;
 }
 

@@ -168,6 +168,15 @@ void TextEdit::customContextMenuRequested(QPoint)
 				{ favsGroup->addAction(favorites.at(i)); }
 				favs->addActions(favsGroup->actions());
 			menu->addMenu(favs);
+		QMenu *ratings = new QMenu(tr("Classes"), menu);
+			QActionGroup* ratingsGroup = new QActionGroup(favs);
+				ratingsGroup->setExclusive(true);
+				connect(ratingsGroup, SIGNAL(triggered(QAction *)), this, SLOT(insertFav(QAction *)));
+					ratingsGroup->addAction(QIcon(":/images/ratings/safe.png"), "rating:safe");
+					ratingsGroup->addAction(QIcon(":/images/ratings/questionable.png"), "rating:questionable");
+					ratingsGroup->addAction(QIcon(":/images/ratings/explicit.png"), "rating:explicit");
+				ratings->addActions(ratingsGroup->actions());
+			menu->addMenu(ratings);
 	menu->exec(QCursor::pos());
 }
 void TextEdit::insertFav(QAction *act)
