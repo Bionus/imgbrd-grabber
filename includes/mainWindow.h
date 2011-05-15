@@ -44,6 +44,8 @@ class mainWindow : public QMainWindow
 		void getPage();
 		void getAllSource(QNetworkReply*);
 		void log(QString);
+		void logUpdate(QString);
+		void logShow();
 		void logClear();
 		void updateBatchGroups(int, int);
 		void addGroup();
@@ -82,7 +84,7 @@ class mainWindow : public QMainWindow
 		QProgressDialog *progressdialog;
 		QNetworkReply *getAllRequest;
 		QMap<QString, QStringList> getAllDetails, sites;
-		QPushButton *ok, *adv, *gA, *clearBatch, *showBatch, *getBatch, *m_logClear;
+		QPushButton *ok, *adv, *m_favoritesButtonAdvanced, *gA, *clearBatch, *showBatch, *getBatch, *m_logClear;
 		QMenu *menuOptions, *menuAide;
 		QAction *actionOptions, *actionAboutAuthor, *actionAboutQt, *actionHelp;
 		QTranslator m_translator, m_translatorQt;

@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'favoriteWindow.ui'
 **
-** Created: Sat 14. May 18:06:58 2011
+** Created: Sun 15. May 01:01:13 2011
 **      by: Qt User Interface Compiler version 4.7.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -140,11 +140,23 @@ public:
     void retranslateUi(QDialog *favoriteWindow)
     {
         favoriteWindow->setWindowTitle(QApplication::translate("favoriteWindow", "Modifier un favori", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_WHATSTHIS
+        tagLabel->setWhatsThis(QApplication::translate("favoriteWindow", "Le tag correspond au favori. Il n'est pas souvent utile de le modifier.", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
         tagLabel->setText(QApplication::translate("favoriteWindow", "Tag", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_WHATSTHIS
+        noteLabel->setWhatsThis(QApplication::translate("favoriteWindow", "De 0 \303\240 100, la note peut servir \303\240 ordonner les favoris par ordre de pr\303\251f\303\251rence.", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
         noteLabel->setText(QApplication::translate("favoriteWindow", "Note", 0, QApplication::UnicodeUTF8));
         noteSpinBox->setSuffix(QApplication::translate("favoriteWindow", " %", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_WHATSTHIS
+        lastViewedLabel->setWhatsThis(QApplication::translate("favoriteWindow", "Derni\303\250re fois que vous avez cliqu\303\251 sur \"Marquer comme vu\".", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
         lastViewedLabel->setText(QApplication::translate("favoriteWindow", "Derni\303\250re vue", 0, QApplication::UnicodeUTF8));
         lastViewedDateTimeEdit->setDisplayFormat(QApplication::translate("favoriteWindow", "dd/MM/yyyy HH:mm:ss", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_WHATSTHIS
+        imageLabel->setWhatsThis(QApplication::translate("favoriteWindow", "Image dont l'icone sera affich\303\251e dans la liste des favoris.", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
         imageLabel->setText(QApplication::translate("favoriteWindow", "Image", 0, QApplication::UnicodeUTF8));
         openButton->setText(QApplication::translate("favoriteWindow", "Parcourir", 0, QApplication::UnicodeUTF8));
     } // retranslateUi

@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>zoomWindow</class>
+ <widget class="QWidget" name="zoomWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="baseSize">
+   <size>
+    <width>0</width>
+    <height>0</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Grabber - Image</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../resources.qrc">
+    <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0">
+   <item>
+    <layout class="QFormLayout" name="formLayout">
+     <property name="fieldGrowthPolicy">
+      <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+     </property>
+     <item row="0" column="0">
+      <widget class="QLabel" name="labelFormTags">
+       <property name="text">
+        <string>&lt;b&gt;Tags&lt;/b&gt;</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLabel" name="labelTags">
+       <property name="contextMenuPolicy">
+        <enum>Qt::CustomContextMenu</enum>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="labelFormRating">
+       <property name="text">
+        <string>&lt;b&gt;Rating&lt;/b&gt;</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLabel" name="labelRating">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="labelFormScore">
+       <property name="text">
+        <string>&lt;b&gt;Score&lt;/b&gt;</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="labelFormUser">
+       <property name="text">
+        <string>&lt;b&gt;User&lt;/b&gt;</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QLabel" name="labelScore">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QLabel" name="labelUser">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="buttonsLayout">
+     <item>
+      <widget class="QPushButton" name="buttonSave">
+       <property name="text">
+        <string>Enregistrer</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonSaveNQuit">
+       <property name="text">
+        <string>Enregistrer et fermer</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonOpen">
+       <property name="text">
+        <string>Ouvrir le dossier de destination</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonSaveAs">
+       <property name="text">
+        <string>Enregistrer sous...</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="../resources.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>buttonSave</sender>
+   <signal>clicked()</signal>
+   <receiver>zoomWindow</receiver>
+   <slot>saveImage()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>37</x>
+     <y>450</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>68</x>
+     <y>472</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonSaveNQuit</sender>
+   <signal>clicked()</signal>
+   <receiver>zoomWindow</receiver>
+   <slot>saveNQuit()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>234</x>
+     <y>447</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>290</x>
+     <y>469</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonOpen</sender>
+   <signal>clicked()</signal>
+   <receiver>zoomWindow</receiver>
+   <slot>openSaveDir()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>429</x>
+     <y>455</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>471</x>
+     <y>469</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonSaveAs</sender>
+   <signal>clicked()</signal>
+   <receiver>zoomWindow</receiver>
+   <slot>saveImageAs()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>626</x>
+     <y>455</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>667</x>
+     <y>468</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>labelTags</sender>
+   <signal>linkHovered(QString)</signal>
+   <receiver>zoomWindow</receiver>
+   <slot>linkHovered(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>156</x>
+     <y>19</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>164</x>
+     <y>16</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>labelTags</sender>
+   <signal>linkActivated(QString)</signal>
+   <receiver>zoomWindow</receiver>
+   <slot>openUrl(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>388</x>
+     <y>11</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>396</x>
+     <y>16</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>labelTags</sender>
+   <signal>customContextMenuRequested(QPoint)</signal>
+   <receiver>zoomWindow</receiver>
+   <slot>contextMenu()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>697</x>
+     <y>15</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>712</x>
+     <y>15</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>saveImage()</slot>
+  <slot>saveNQuit()</slot>
+  <slot>openSaveDir()</slot>
+  <slot>saveImageAs()</slot>
+  <slot>contextMenu()</slot>
+  <slot>linkHovered(QString)</slot>
+  <slot>openUrl(QString)</slot>
+ </slots>
+</ui>

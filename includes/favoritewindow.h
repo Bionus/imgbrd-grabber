@@ -5,10 +5,12 @@
 #include "mainWindow.h"
 
 
+
 namespace Ui
 {
 	class favoriteWindow;
 }
+
 
 
 class favoriteWindow : public QDialog

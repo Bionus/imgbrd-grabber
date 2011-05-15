@@ -27,6 +27,9 @@
      </property>
      <item row="0" column="0">
       <widget class="QLabel" name="tagLabel">
+       <property name="whatsThis">
+        <string>Le tag correspond au favori. Il n'est pas souvent utile de le modifier.</string>
+       </property>
        <property name="text">
         <string>Tag</string>
        </property>
@@ -37,6 +40,9 @@
      </item>
      <item row="1" column="0">
       <widget class="QLabel" name="noteLabel">
+       <property name="whatsThis">
+        <string>De 0 à 100, la note peut servir à ordonner les favoris par ordre de préférence.</string>
+       </property>
        <property name="text">
         <string>Note</string>
        </property>
@@ -57,6 +63,9 @@
      </item>
      <item row="2" column="0">
       <widget class="QLabel" name="lastViewedLabel">
+       <property name="whatsThis">
+        <string>Dernière fois que vous avez cliqué sur &quot;Marquer comme vu&quot;.</string>
+       </property>
        <property name="text">
         <string>Dernière vue</string>
        </property>
@@ -71,6 +80,9 @@
      </item>
      <item row="3" column="0">
       <widget class="QLabel" name="imageLabel">
+       <property name="whatsThis">
+        <string>Image dont l'icone sera affichée dans la liste des favoris.</string>
+       </property>
        <property name="text">
         <string>Image</string>
        </property>

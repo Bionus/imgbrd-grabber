@@ -39,4 +39,5 @@ TRANSLATIONS += languages/English.ts languages/Français.ts
 QT += network xml
 
 FORMS += \
-    ui/favoriteWindow.ui
+    ui/favoriteWindow.ui \
+    ui/zoomWindow.ui
