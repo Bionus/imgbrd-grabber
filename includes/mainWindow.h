@@ -55,6 +55,9 @@ class mainWindow : public QMainWindow
 		void loadFavorite(int);
 		void favoriteProperties(int);
 		void updateFavorites();
+		void viewed();
+		void setFavoriteViewed(QString);
+		void favoritesBack();
 
 	protected:
 		void closeEvent(QCloseEvent*);
@@ -84,7 +87,7 @@ class mainWindow : public QMainWindow
 		QProgressDialog *progressdialog;
 		QNetworkReply *getAllRequest;
 		QMap<QString, QStringList> getAllDetails, sites;
-		QPushButton *ok, *adv, *m_favoritesButtonAdvanced, *gA, *clearBatch, *showBatch, *getBatch, *m_logClear, *m_buttonOpenCalendar;
+		QPushButton *ok, *adv, *m_favoritesButtonAdvanced, *m_favoritesButtonViewed, *m_favoritesButtonBack, *gA, *clearBatch, *showBatch, *getBatch, *m_logClear, *m_buttonOpenCalendar;
 		QMenu *menuOptions, *menuAide;
 		QAction *actionOptions, *actionAboutAuthor, *actionAboutQt, *actionHelp;
 		QTranslator m_translator, m_translatorQt;
@@ -100,6 +103,9 @@ class mainWindow : public QMainWindow
 		QDateTime m_loadFavorite;
 		QVBoxLayout *m_favoritesLayout;
 		QCalendarWidget *m_calendar;
+		QString m_currentFavorite;
+		QList<QAffiche *> m_favoritesCaptions;
+		QList<QBouton *> m_favoritesImages;
 };
 
 #endif

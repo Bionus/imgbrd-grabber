@@ -13,10 +13,10 @@
 #include "advancedWindow.h"
 #include "addgroupwindow.h"
 #include "adduniquewindow.h"
-#include "favoritewindow.h"
 #include "textedit.h"
 #include "QBouton.h"
 #include "json.h"
+#include "favoritewindow.h"
 
 #define VERSION	"1.7"
 #define DONE()	logUpdate(tr(" Fait"));
@@ -25,7 +25,7 @@ using namespace std;
 
 
 
-mainWindow::mainWindow(QString m_program, QStringList m_tags, QMap<QString,QString> m_params) : loaded(false), allow(true), changed(false), ch(0), updating(0), batchGroups(0), batchUniques(0), m_tags(m_tags), m_program(m_program), m_params(m_params), m_log(new QMap<QDateTime,QString>)
+mainWindow::mainWindow(QString m_program, QStringList m_tags, QMap<QString,QString> m_params) : loaded(false), allow(true), changed(false), ch(0), updating(0), batchGroups(0), batchUniques(0), m_tags(m_tags), m_program(m_program), m_params(m_params), m_log(new QMap<QDateTime,QString>), m_currentFavorite("")
 {
 	this->resize(800, 600);
 	this->setWindowIcon(QIcon(":/images/icon.ico"));
@@ -194,6 +194,9 @@ mainWindow::mainWindow(QString m_program, QStringList m_tags, QMap<QString,QStri
 							QByteArray line = words.readLine();
 							completion.append(QString(line).remove("\r\n").remove("\n").split(" ", QString::SkipEmptyParts));
 						}
+						completion.append(m_favorites.keys());
+						completion.removeDuplicates();
+						completion.sort();
 						QCompleter *completer = new QCompleter(completion, this);
 						completer->setCaseSensitivity(Qt::CaseInsensitive);
 						search->setCompleter(completer);
@@ -219,6 +222,8 @@ mainWindow::mainWindow(QString m_program, QStringList m_tags, QMap<QString,QStri
 				champs->addWidget(m_date, 1, 1, 1, 2);
 			m_buttonOpenCalendar = new QPushButton;
 				m_calendar = new QCalendarWidget;
+					m_calendar->setWindowIcon(QIcon(":/images/icon.ico"));
+					m_calendar->setWindowTitle("Grabber - Choisir une date");
 					m_calendar->setDateRange(QDate(2000, 1, 1), m_serverDate.date());
 					m_calendar->setSelectedDate(m_serverDate.date());
 					connect(m_calendar, SIGNAL(activated(QDate)), m_date, SLOT(setDate(QDate)));
@@ -254,26 +259,43 @@ mainWindow::mainWindow(QString m_program, QStringList m_tags, QMap<QString,QStri
 			QString format = m_settings->value("dateformat", "dd/MM/yyyy").toString();
 			for (int i = 0; i < keys.count(); i++)
 			{
-				QStringList xp = m_favorites.value(keys.at(i)).split("|");
+				QString tag = keys.at(i);
+				QStringList xp = m_favorites.value(tag).split("|");
 				int note = xp.isEmpty() ? 50 : xp.takeFirst().toInt();
 				QDateTime lastviewed = xp.isEmpty() ? QDateTime(QDate(2000, 1, 1), QTime(0, 0, 0, 0)) : QDateTime::fromString(xp.takeFirst(), Qt::ISODate);
-				QString imagepath = xp.isEmpty() ? ":/images/noimage.png" : xp.takeFirst();
+				tag.remove('\\').remove('/').remove(':').remove('*').remove('?').remove('"').remove('<').remove('>').remove('|');
+				QString imagepath = "thumbs/"+tag+".png";
 					QBouton *image = new QBouton(i);
-						if (!QFile::exists(imagepath))
-						{ imagepath = ":/images/noimage.png"; }
-						image->setIcon(QPixmap(imagepath).scaled(QSize(150,150), Qt::KeepAspectRatio, Qt::SmoothTransformation));
-						image->setIconSize(QSize(150, 150));
+					if (!QFile::exists(imagepath))
+					{ imagepath = ":/images/noimage.png"; }
+					QPixmap img(imagepath);
+					if ((img.width() > 150 || img.height() > 150) && QFile::exists(imagepath))
+					{
+						img = img.scaled(QSize(150,150), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+						img.save("thumbs/"+tag+".png", "PNG");
+					}
+					image->setIcon(img);
+					image->setIconSize(QSize(150, 150));
 					image->setFlat(true);
 					connect(image, SIGNAL(rightClick(int)), this, SLOT(favoriteProperties(int)));
-				QBouton *caption = new QBouton(i);
-					caption->setText(keys.at(i)+" ("+QString::number(note)+" % - "+lastviewed.toString(format)+")");
-					caption->setFlat(true);
+				QAffiche *caption = new QAffiche(i);
+					caption->setText(keys.at(i)+"<br/>("+QString::number(note)+" % - "+lastviewed.toString(format)+")");
+					caption->setTextFormat(Qt::RichText);
+					caption->setAlignment(Qt::AlignCenter);
 				connect(image, SIGNAL(appui(int)), this, SLOT(loadFavorite(int)));
-				connect(caption, SIGNAL(appui(int)), this, SLOT(loadFavorite(int)));
+				connect(caption, SIGNAL(clicked(int)), this, SLOT(loadFavorite(int)));
 				m_layoutFavorites->addWidget(image, (i/10)*2, i%10);
 				m_layoutFavorites->addWidget(caption, (i/10)*2+1, i%10);
+				m_favoritesImages.append(image);
+				m_favoritesCaptions.append(caption);
 			}
 		QHBoxLayout *favorites_actions = new QHBoxLayout;
+			m_favoritesButtonViewed = new QPushButton(this);
+				connect(m_favoritesButtonViewed, SIGNAL(clicked()), this, SLOT(viewed()));
+				favorites_actions->addWidget(m_favoritesButtonViewed);
+			m_favoritesButtonBack = new QPushButton(this);
+				connect(m_favoritesButtonBack, SIGNAL(clicked()), this, SLOT(favoritesBack()));
+				favorites_actions->addWidget(m_favoritesButtonBack);
 			m_favoritesButtonAdvanced = new QPushButton(this);
 				connect(m_favoritesButtonAdvanced, SIGNAL(clicked()), this, SLOT(advanced()));
 				favorites_actions->addWidget(m_favoritesButtonAdvanced);
@@ -388,8 +410,73 @@ mainWindow::mainWindow(QString m_program, QStringList m_tags, QMap<QString,QStri
 void mainWindow::loadFavorite(int id)
 {
 	QString tag = m_favorites.keys().at(id);
+	this->m_currentFavorite = tag;
 	m_loadFavorite = QDateTime::fromString(m_favorites.value(tag).section('|', 1, 1), Qt::ISODate);
 	web(tag);
+}
+void mainWindow::viewed()
+{
+	if (m_currentFavorite.isEmpty())
+	{
+		int reponse = QMessageBox::question(this, tr("Grabber - Marquer comme vu"), tr("Êtes-vous sûr de vouloir marquer tous vos favoris comme vus ?"), QMessageBox::Yes | QMessageBox::No);
+		if (reponse == QMessageBox::Yes)
+		{
+			QStringList keys = m_favorites.keys();
+			for (int i = 0; i < keys.count(); i++)
+			{ setFavoriteViewed(keys.at(i)); }
+		}
+	}
+	else
+	{ setFavoriteViewed(m_currentFavorite); }
+	updateFavorites();
+}
+void mainWindow::setFavoriteViewed(QString tag)
+{
+	QFile f("favorites.txt");
+	f.open(QIODevice::ReadOnly);
+		QString favs = f.readAll();
+	f.close();
+	favs.replace("\r\n", "\n").replace("\r", "\n").replace("\n", "\r\n");
+	QRegExp reg(tag+"\\|([^|]+)\\|([^|]+)\\|([^|]+)\r\n");
+	reg.setMinimal(true);
+	favs.replace(reg, tag+"|\\1|"+QDateTime::currentDateTime().toString(Qt::ISODate)+"|\\3\r\n");
+	f.open(QIODevice::WriteOnly);
+		f.write(favs.toAscii());
+	f.close();
+}
+void mainWindow::favoritesBack()
+{
+	if (!m_currentFavorite.isEmpty())
+	{
+		m_currentFavorite = "";
+		if (!this->replies.isEmpty())
+		{
+			for (int i = 0; i < this->replies.count(); i++)
+			{ this->replies.at(i)->abort(); }
+			this->replies.clear();
+		}
+		if (!this->webPics.isEmpty())
+		{
+			for (int i = 0; i < this->webPics.count(); i++)
+			{
+				this->webPics.at(i)->hide();
+				this->m_webFavorites->removeWidget(this->webPics.at(i));
+			}
+			this->webPics.clear();
+			this->details.clear();
+		}
+		if (!this->webSites.isEmpty())
+		{
+			for (int i = 0; i < this->webSites.count(); i++)
+			{
+				this->webSites.at(i)->hide();
+				this->m_webFavorites->removeWidget(this->webSites.at(i));
+			}
+			for (int i = 0; i < this->webSites.count()*11; i++)
+			{ this->m_webFavorites->setRowMinimumHeight(i, 0); }
+			this->webSites.clear();
+		}
+	}
 }
 void mainWindow::favoriteProperties(int id)
 {
@@ -397,36 +484,54 @@ void mainWindow::favoriteProperties(int id)
 	QStringList xp = m_favorites.value(tag).split("|");
 	int note = xp.isEmpty() ? 50 : xp.takeFirst().toInt();
 	QDateTime lastviewed = xp.isEmpty() ? QDateTime(QDate(2000, 1, 1), QTime(0, 0, 0, 0)) : QDateTime::fromString(xp.takeFirst(), Qt::ISODate);
-	QString imagepath = xp.isEmpty() ? "" : xp.takeFirst();
-	//favoriteWindow *fwin = new favoriteWindow(tag, note, lastviewed, imagepath, this);
-	//fwin->show();
+	favoriteWindow *fwin = new favoriteWindow(tag, note, lastviewed, this);
+	fwin->show();
 }
 void mainWindow::updateFavorites()
 {
 	m_favorites = loadFavorites();
-	QGridLayout *layout = new QGridLayout;
-		QStringList keys = m_favorites.keys();
-		QString format = m_settings->value("dateformat", "dd/MM/yyyy").toString();
-		for (int i = 0; i < keys.count(); i++)
+	QStringList keys = m_favorites.keys();
+	QString format = m_settings->value("dateformat", "dd/MM/yyyy").toString();
+	for (int i = 0; i < keys.count(); i++)
+	{
+		QString tag = keys.at(i);
+		QStringList xp = m_favorites.value(tag).split("|");
+		int note = xp.isEmpty() ? 50 : xp.takeFirst().toInt();
+		QDateTime lastviewed = xp.isEmpty() ? QDateTime(QDate(2000, 1, 1), QTime(0, 0, 0, 0)) : QDateTime::fromString(xp.takeFirst(), Qt::ISODate);
+		tag.remove('\\').remove('/').remove(':').remove('*').remove('?').remove('"').remove('<').remove('>').remove('|');
+		QString imagepath = "thumbs/"+tag+".png";
+		if (!QFile::exists(imagepath))
+		{ imagepath = ":/images/noimage.png"; }
+		QPixmap img(imagepath);
+		if ((img.width() > 150 || img.height() > 150) && QFile::exists(imagepath))
 		{
-			QStringList xp = m_favorites.value(keys.at(i)).split("|");
-			int note = xp.isEmpty() ? 50 : xp.takeFirst().toInt();
-			QDateTime lastviewed = xp.isEmpty() ? QDateTime(QDate(2000, 1, 1), QTime(0, 0, 0, 0)) : QDateTime::fromString(xp.takeFirst(), Qt::ISODate);
-			QString imagepath = xp.isEmpty() ? ":/images/noimage.png" : xp.takeFirst();
+			img = img.scaled(QSize(150,150), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+			img.save("thumbs/"+tag+".png", "PNG");
+		}
+		if (m_favoritesImages.count() > i)
+		{
+			m_favoritesImages.at(i)->setIcon(img);
+			m_favoritesCaptions.at(i)->setText(keys.at(i)+" ("+QString::number(note)+" % - "+lastviewed.toString(format)+")");
+		}
+		else
+		{
 			QBouton *image = new QBouton(i);
-				image->setIcon(QPixmap(imagepath).scaledToWidth(100, Qt::SmoothTransformation));
+				image->setIcon(img);
 				image->setIconSize(QSize(150, 150));
 				image->setFlat(true);
 				connect(image, SIGNAL(rightClick(int)), this, SLOT(favoriteProperties(int)));
-			QBouton *caption = new QBouton(i);
-				caption->setText(keys.at(i)+" ("+QString::number(note)+" % - "+lastviewed.toString(format)+")");
-				caption->setFlat(true);
+			QAffiche *caption = new QAffiche(i);
+				caption->setText(keys.at(i)+"<br/>("+QString::number(note)+" % - "+lastviewed.toString(format)+")");
+				caption->setTextFormat(Qt::RichText);
+				caption->setAlignment(Qt::AlignCenter);
 			connect(image, SIGNAL(appui(int)), this, SLOT(loadFavorite(int)));
-			connect(caption, SIGNAL(appui(int)), this, SLOT(loadFavorite(int)));
-			layout->addWidget(image, (i/10)*2, i%10);
-			layout->addWidget(caption, (i/10)*2+1, i%10);
+			connect(caption, SIGNAL(clicked(int)), this, SLOT(loadFavorite(int)));
+			m_layoutFavorites->addWidget(image, (i/10)*2, i%10);
+			m_layoutFavorites->addWidget(caption, (i/10)*2+1, i%10);
+			m_favoritesImages.append(image);
+			m_favoritesCaptions.append(caption);
 		}
-	m_layoutFavorites = layout;
+	}
 }
 
 void mainWindow::replyFinishedVersion(QNetworkReply* r)
@@ -522,6 +627,8 @@ void mainWindow::retranslateStrings()
 	ok->setText(tr("Ok"));
 	adv->setText(tr("Sources"));
 	gA->setText(tr("Prendre cette page"));
+	m_favoritesButtonViewed->setText(tr("Marquer comme vu"));
+	m_favoritesButtonBack->setText(tr("Retour"));
 	m_favoritesButtonAdvanced->setText(tr("Sources"));
 	batchTableGroups->setHorizontalHeaderLabels(QStringList() << tr("Tags") << tr("Page") << tr("Images par page") << tr("Limite d'images") << tr("Télécharger les image de la liste noire") << tr("Source") << tr("Populaires"));
 	batchTableUniques->setHorizontalHeaderLabels(QStringList() << tr("Id") << tr("Md5") << tr("Classe") << tr("Tags") << tr("Url") << tr("Site"));
@@ -1193,7 +1300,7 @@ void mainWindow::webZoom(int id)
 			{ return; }
 		}
 	}
-	zoomWindow *zoom = new zoomWindow(m_program, this->details.at(id).value("site"), this->sites[this->details.at(id).value("site")], this->details.at(id).value("id"), this->details.at(id).value("file_url"), this->details.at(id).value("tags"), this->details.at(id).value("md5"), this->details.at(id).value("rating"), this->details.at(id).value("score"), this->details.at(id).value("author"), this);
+	zoomWindow *zoom = new zoomWindow(m_program, this->details.at(id).value("site"), this->sites[this->details.at(id).value("site")], this->details.at(id), this);
 	zoom->show();
 	m_favorites = loadFavorites();
 }

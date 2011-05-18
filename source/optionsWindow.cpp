@@ -93,6 +93,8 @@ optionsWindow::optionsWindow(mainWindow *parent) : QWidget(0), parent(parent)
 
 	settings.beginGroup("Save");
 	QWidget *page1 = new QWidget;
+		m_checkDownloadOriginals = new QCheckBox;
+			m_checkDownloadOriginals->setChecked(settings.value("downloadoriginals", true).toBool());
 		QLineEdit *linePath = new QLineEdit;
 			linePath->setText(settings.value("path").toString());
 		QLineEdit *lineFilename = new QLineEdit;
@@ -114,6 +116,7 @@ optionsWindow::optionsWindow(mainWindow *parent) : QWidget(0), parent(parent)
 		));
 			txt_3->setWordWrap(true);
 	QFormLayout *form1 = new QFormLayout;
+		form1->addRow(tr("&Télécharger les images originales"), m_checkDownloadOriginals);
 		form1->addRow(tr("&Dossier"), linePath);
 		form1->addRow(tr("&Séparateur de tags"), m_lineSaveSeparator);
 		form1->addRow(tr("&Format"), lineFilename);
@@ -259,6 +262,7 @@ void optionsWindow::save()
 	settings.setValue("Log/show", m_checkLogShow->isChecked());
 	settings.setValue("Log/invert", m_checkLogInvert->isChecked());
 	settings.beginGroup("Save");
+		settings.setValue("downloadoriginals", m_checkDownloadOriginals->isChecked());
 		settings.setValue("separator", m_lineSaveSeparator->text());
 		settings.setValue("path", this->linePath->text());
 		settings.setValue("filename", this->lineFilename->text());

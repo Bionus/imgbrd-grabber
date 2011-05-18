@@ -3,6 +3,7 @@
 
 #include <QtGui>
 #include "mainWindow.h"
+#include "ui_favoriteWindow.h"
 
 
 
@@ -11,14 +12,12 @@ namespace Ui
 	class favoriteWindow;
 }
 
-
-
 class favoriteWindow : public QDialog
 {
     Q_OBJECT
 
 	public:
-		explicit favoriteWindow(QString, int, QDateTime, QString, mainWindow *parent);
+		favoriteWindow(QString, int, QDateTime, mainWindow *parent);
 		~favoriteWindow();
 
 	public slots:
@@ -29,7 +28,7 @@ class favoriteWindow : public QDialog
 		mainWindow *m_parent;
 		Ui::favoriteWindow *ui;
 		int m_note;
-		QString m_tag, m_imagepath;
+		QString m_tag;
 		QDateTime m_lastviewed;
 
 };

@@ -21,7 +21,7 @@ class zoomWindow : public QWidget
     Q_OBJECT
 
 	public:
-		zoomWindow(QString, QString, QStringList, QString, QString, QString, QString, QString, QString, QString, mainWindow *);
+		zoomWindow(QString, QString, QStringList, QMap<QString,QString>, mainWindow *);
 		~zoomWindow();
 		void load();
 	
@@ -37,7 +37,7 @@ class zoomWindow : public QWidget
 		void openUrl(QString);
 		void openSaveDir();
 		void linkHovered(QString url);
-		void contextMenu();
+		void contextMenu(QPoint);
 		void openInNewWindow();
 		void favorite();
 		void setfavorite();
@@ -54,6 +54,7 @@ class zoomWindow : public QWidget
 		Ui::zoomWindow *ui;
 		detailsWindow *m_detailsWindow;
 		QStringList regex;
+		QMap<QString,QString> m_details;
 		int timeout, loaded, oldsize;
 		QMap<QString, QStringList> details;
 		QString site, id, url, tags, md5, rating, score, user, format;
