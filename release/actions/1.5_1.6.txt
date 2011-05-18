@@ -1,0 +1,2 @@
+delete favorites.txt
+mkdir thumbs
