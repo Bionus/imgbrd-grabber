@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'favoriteWindow.ui'
 **
-** Created: Sun 15. May 01:01:13 2011
-**      by: Qt User Interface Compiler version 4.7.3
+** Created: Wed 18. May 21:49:37 2011
+**      by: Qt User Interface Compiler version 4.6.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -55,6 +55,9 @@ public:
         sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(favoriteWindow->sizePolicy().hasHeightForWidth());
         favoriteWindow->setSizePolicy(sizePolicy);
+        QIcon icon;
+        icon.addFile(QString::fromUtf8(":/images/icon.ico"), QSize(), QIcon::Normal, QIcon::Off);
+        favoriteWindow->setWindowIcon(icon);
         verticalLayout = new QVBoxLayout(favoriteWindow);
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
         formLayout_2 = new QFormLayout();
@@ -139,7 +142,7 @@ public:
 
     void retranslateUi(QDialog *favoriteWindow)
     {
-        favoriteWindow->setWindowTitle(QApplication::translate("favoriteWindow", "Modifier un favori", 0, QApplication::UnicodeUTF8));
+        favoriteWindow->setWindowTitle(QApplication::translate("favoriteWindow", "Grabber - Modifier un favori", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_WHATSTHIS
         tagLabel->setWhatsThis(QApplication::translate("favoriteWindow", "Le tag correspond au favori. Il n'est pas souvent utile de le modifier.", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_WHATSTHIS

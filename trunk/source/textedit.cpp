@@ -44,21 +44,33 @@ QCompleter *TextEdit::completer() const
 void TextEdit::insertCompletion(const QString& completion)
 {
 	if (c->widget() != this)
-		 return;
-	 QTextCursor tc = textCursor();
-	 int extra = completion.length() - c->completionPrefix().length();
-	 tc.movePosition(QTextCursor::Left);
-	 tc.movePosition(QTextCursor::EndOfWord);
-	 tc.insertText(completion.right(extra));
-	 setTextCursor(tc);
-	 doColor();
+	{ return; }
+	QTextCursor tc = textCursor();
+	int extra = completion.length() - c->completionPrefix().length();
+	tc.movePosition(QTextCursor::Left);
+	tc.movePosition(QTextCursor::EndOfWord);
+	tc.insertText(completion.right(extra));
+	setTextCursor(tc);
+	doColor();
 }
 
  QString TextEdit::textUnderCursor() const
 {
-	 QTextCursor tc = textCursor();
-	 tc.select(QTextCursor::WordUnderCursor);
-	 return tc.selectedText();
+	int size = 0, pos = textCursor().position();
+	QString topos = this->toPlainText().left(pos), plain = " "+this->toPlainText()+" ";
+	pos = pos-topos.count("-");
+	QRegExp reg(" [~-]([^ ]*) ");
+	plain.replace(" ", "  ").replace(reg, " \\1 ");
+	plain = plain.replace("  ", " ").trimmed();
+	QStringList words = plain.split(" ", QString::SkipEmptyParts);
+	QString word;
+	for (int i = 0; i < words.count(); i++)
+	{
+		if (size <= pos && pos <= size+words.at(i).length())
+		{ word = words.at(i); }
+		size += words.at(i).length()+1;
+	}
+	return word;
 }
 
 void TextEdit::focusInEvent(QFocusEvent *e)
@@ -90,9 +102,9 @@ void TextEdit::keyPressEvent(QKeyEvent *e)
 			case Qt::Key_Escape:
 			case Qt::Key_Tab:
 			case Qt::Key_Backtab:
-				 e->ignore();
+				e->ignore();
 				this->doColor();
-				 return; // let the completer do default behavior
+				return; // let the completer do default behavior
 			default:
 				break;
 		}
@@ -167,6 +179,7 @@ void TextEdit::customContextMenuRequested(QPoint)
 				for (int i = 0; i < favorites.count(); i++)
 				{ favsGroup->addAction(favorites.at(i)); }
 				favs->addActions(favsGroup->actions());
+				favs->setIcon(QIcon(":/images/icons/favorite.png"));
 			menu->addMenu(favs);
 		QMenu *ratings = new QMenu(tr("Classes"), menu);
 			QActionGroup* ratingsGroup = new QActionGroup(favs);
@@ -176,6 +189,7 @@ void TextEdit::customContextMenuRequested(QPoint)
 					ratingsGroup->addAction(QIcon(":/images/ratings/questionable.png"), "rating:questionable");
 					ratingsGroup->addAction(QIcon(":/images/ratings/explicit.png"), "rating:explicit");
 				ratings->addActions(ratingsGroup->actions());
+				ratings->setIcon(QIcon(":/images/ratings/none.png"));
 			menu->addMenu(ratings);
 	menu->exec(QCursor::pos());
 }

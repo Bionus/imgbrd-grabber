@@ -16,6 +16,9 @@
     <height>0</height>
    </size>
   </property>
+  <property name="contextMenuPolicy">
+   <enum>Qt::DefaultContextMenu</enum>
+  </property>
   <property name="windowTitle">
    <string>Grabber - Image</string>
   </property>
@@ -35,8 +38,14 @@
      </item>
      <item>
       <widget class="QLabel" name="labelTags">
+       <property name="contextMenuPolicy">
+        <enum>Qt::CustomContextMenu</enum>
+       </property>
        <property name="text">
         <string/>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -110,7 +119,7 @@
    <slot>saveNQuit()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>234</x>
+     <x>241</x>
      <y>447</y>
     </hint>
     <hint type="destinationlabel">
@@ -126,7 +135,7 @@
    <slot>openSaveDir()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>429</x>
+     <x>442</x>
      <y>455</y>
     </hint>
     <hint type="destinationlabel">
@@ -142,12 +151,60 @@
    <slot>saveImageAs()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>626</x>
+     <x>658</x>
      <y>455</y>
     </hint>
     <hint type="destinationlabel">
-     <x>667</x>
+     <x>476</x>
      <y>468</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>labelTags</sender>
+   <signal>customContextMenuRequested(QPoint)</signal>
+   <receiver>zoomWindow</receiver>
+   <slot>contextMenu(QPoint)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>548</x>
+     <y>295</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>596</x>
+     <y>311</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>labelTags</sender>
+   <signal>linkHovered(QString)</signal>
+   <receiver>zoomWindow</receiver>
+   <slot>linkHovered(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>355</x>
+     <y>190</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>404</x>
+     <y>311</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>labelTags</sender>
+   <signal>linkActivated(QString)</signal>
+   <receiver>zoomWindow</receiver>
+   <slot>openUrl(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>130</x>
+     <y>183</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>192</x>
+     <y>311</y>
     </hint>
    </hints>
   </connection>
@@ -157,8 +214,8 @@
   <slot>saveNQuit()</slot>
   <slot>openSaveDir()</slot>
   <slot>saveImageAs()</slot>
-  <slot>contextMenu()</slot>
   <slot>linkHovered(QString)</slot>
   <slot>openUrl(QString)</slot>
+  <slot>contextMenu(QPoint)</slot>
  </slots>
 </ui>

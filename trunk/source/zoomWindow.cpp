@@ -11,7 +11,7 @@ using namespace std;
 
 
 
-zoomWindow::zoomWindow(QString m_program, QString site, QStringList regex, QString id, QString url, QString tags, QString md5, QString rating, QString score, QString user, mainWindow *parent) : m_parent(parent), ui(new Ui::zoomWindow), regex(regex), timeout(300), loaded(0), oldsize(0), site(site), id(id), url(url), tags(tags), md5(md5), score(score), user(user), link(""), m_program(m_program), m_mustSave(false), m_replyExists(false)
+zoomWindow::zoomWindow(QString m_program, QString site, QStringList regex, QMap<QString,QString> details, mainWindow *parent) : m_parent(parent), ui(new Ui::zoomWindow), regex(regex), m_details(details), timeout(300), loaded(0), oldsize(0), site(site), m_program(m_program), m_mustSave(false), m_replyExists(false)
 {
 	ui->setupUi(this);
 	favorites = loadFavorites().keys();
@@ -31,7 +31,7 @@ zoomWindow::zoomWindow(QString m_program, QString site, QStringList regex, QStri
 	ui->verticalLayout->insertWidget(1, labelImage, 2);
 	this->labelImage = labelImage;
 
-	QStringList taglist = tags.split(' ');
+	QStringList taglist = m_details.value("tags").split(' ');
 	QString hreftags;
 	for (int i = 0; i < taglist.count(); i++)
 	{ hreftags += " <a href=\""+taglist.at(i)+"\" style=\"text-decoration:none;color:#000000\">"+taglist.at(i)+"</a>"; }
@@ -41,7 +41,8 @@ zoomWindow::zoomWindow(QString m_program, QString site, QStringList regex, QStri
 		assoc["s"] = tr("Safe");
 		assoc["q"] = tr("Questionable");
 		assoc["e"] = tr("Explicit");
-	this->rating = assoc.value(rating);
+	this->rating = assoc.value(m_details.value("rating"));
+	this->url = settings.value("Save/downloadoriginals", true).toBool() ? m_details.value("file_url") : (m_details.value("sample_url").isEmpty() ? m_details.value("file_url") : m_details.value("sample_url"));
 
 	this->format = this->url.section('.', -1).toUpper().toAscii().data();
 	
@@ -50,11 +51,11 @@ zoomWindow::zoomWindow(QString m_program, QString site, QStringList regex, QStri
 		timer->setSingleShot(true);
 		this->timer = timer;
 
-	m_detailsWindow = new detailsWindow(hreftags.trimmed());
+	m_detailsWindow = new detailsWindow(m_details);
 	connect(ui->buttonDetails, SIGNAL(clicked()), m_detailsWindow, SLOT(show()));
 
 	QString u = this->regex.at(4);
-		u.replace("{id}", this->id);
+		u.replace("{id}", m_details.value("id"));
 	QUrl rl(u);
 	QNetworkAccessManager *manager = new QNetworkAccessManager(this);
 	connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply*)));
@@ -102,19 +103,19 @@ void zoomWindow::openSaveDir()
 
 void zoomWindow::linkHovered(QString url)
 { this->link = url; }
-void zoomWindow::contextMenu()
+void zoomWindow::contextMenu(QPoint point)
 {
 	QMenu *menu = new QMenu(this);
 	if (!this->link.isEmpty())
 	{
 		if (favorites.contains(link, Qt::CaseInsensitive))
 		{
-			menu->addAction(tr("Retirer des favoris"), this, SLOT(unfavorite()));
-			menu->addAction(tr("Choisir comme image"), this, SLOT(setfavorite()));
+			menu->addAction(QIcon(":/images/icons/remove.png"), tr("Retirer des favoris"), this, SLOT(unfavorite()));
+			menu->addAction(QIcon(":/images/icons/save.png"), tr("Choisir comme image"), this, SLOT(setfavorite()));
 		}
 		else
-		{ menu->addAction(tr("Ajouter aux favoris"), this, SLOT(favorite())); }
-		menu->addAction(tr("Ouvrir dans une nouvelle fenêtre"), this, SLOT(openInNewWindow()));
+		{ menu->addAction(QIcon(":/images/icons/add.png"), tr("Ajouter aux favoris"), this, SLOT(favorite())); }
+		menu->addAction(QIcon(":/images/icons/window.png"), tr("Ouvrir dans une nouvelle fenêtre"), this, SLOT(openInNewWindow()));
 	}
 	menu->exec(QCursor::pos());
 }
@@ -129,24 +130,20 @@ void zoomWindow::favorite()
 	favorites.append(link);
 	QFile f("favorites.txt");
 		f.open(QIODevice::WriteOnly | QIODevice::Append);
-		f.write(QString(link+"|50|"+QDateTime::currentDateTime().toString(Qt::ISODate)+"|"+image+"\r\n").toAscii());
+		f.write(QString(link+"|50|"+QDateTime::currentDateTime().toString(Qt::ISODate)+"\r\n").toAscii());
 	f.close();
+	QPixmap img = image;
+	if (img.width() > 150 || img.height() > 150)
+	{ img = img.scaled(QSize(150,150), Qt::KeepAspectRatio, Qt::SmoothTransformation); }
+	img.save("thumbs/"+link+".png", "PNG");
 	m_parent->updateFavorites();
 }
 void zoomWindow::setfavorite()
 {
-	QString path = saveImage();
-	QFile f("favorites.txt");
-	f.open(QIODevice::ReadOnly);
-		QString favs = f.readAll();
-	f.close();
-	favs.replace("\r\n", "\n").replace("\r", "\n").replace("\n", "\r\n");
-	QRegExp reg(link+"\\|([^|]+)\\|([^|]+)\\|([^|]+)\r\n");
-	reg.setMinimal(true);
-	favs.replace(reg, link+"|\\1|\\2|"+path+"\r\n");
-	f.open(QIODevice::WriteOnly);
-		f.write(favs.toAscii());
-	f.close();
+	QPixmap img = image;
+	if (img.width() > 150 || img.height() > 150)
+	{ img = img.scaled(QSize(150,150), Qt::KeepAspectRatio, Qt::SmoothTransformation); }
+	img.save("thumbs/"+link+".png", "PNG");
 	m_parent->updateFavorites();
 }
 void zoomWindow::unfavorite()
@@ -163,6 +160,8 @@ void zoomWindow::unfavorite()
 	f.open(QIODevice::WriteOnly);
 		f.write(favs.toAscii());
 	f.close();
+	if (QFile::exists("thumbs/"+link+".png"))
+	{ QFile::remove("thumbs/"+link+".png"); }
 	m_parent->updateFavorites();
 }
 
@@ -182,13 +181,16 @@ void zoomWindow::load()
 	q->exec();
 }
 
+#define UPDATES 20
 void zoomWindow::rR(qint64 size, qint64 total)
 {
-	if (m_reply->size() >= (total/10) || size == total) // 20 updates by image
+	if (m_reply->size() >= (total/UPDATES) || size == total)
 	{
 		this->d.append(m_reply->readAll());
 		if (!this->d.isEmpty())
-		{ this->image.loadFromData(this->d, m_format); }
+		{
+			this->image.loadFromData(this->d, m_format);
+		}
 		this->update(true);
 	}
 }
@@ -199,12 +201,12 @@ void zoomWindow::replyFinished(QNetworkReply* reply)
 	{
 		QSettings settings("settings.ini", QSettings::IniFormat);
 		bool under = settings.value("Save/remplaceblanksbyunderscores", false).toBool();
-		QStringList blacklistedtags(settings.value("blacklistedtags", "blood gore futa futanari shota").toString().split(' '));
+		QStringList blacklistedtags(settings.value("blacklistedtags").toString().split(' '));
 		QString source = reply->readAll();
 		QRegExp rx(this->regex.at(5));
 		rx.setMinimal(true);
 		int pos = 0;
-		QString tags = " "+this->tags+" ";
+		QString tags = " "+m_details.value("tags")+" ";
 		while ((pos = rx.indexIn(source, pos)) != -1)
 		{
 			pos += rx.matchedLength();
@@ -222,6 +224,8 @@ void zoomWindow::replyFinished(QNetworkReply* reply)
 			this->details["alls"].append(normalized);
 		}
 		ui->labelTags->setText(tags.trimmed());
+		m_details["tags"] = tags.trimmed();
+		m_detailsWindow->setTags(tags.trimmed());
 		QString pth = this->getSavePath();
 		QString path = settings.value("Save/path").toString().replace("\\", "/");
 		if (path.right(1) == "/")
@@ -350,7 +354,7 @@ QString zoomWindow::saveImage()
 
 QString zoomWindow::saveImageAs()
 {
-	QString path = QFileDialog::getSaveFileName(this, tr("Enregistrer l'image"), this->url.section('/', -1), "Images (*.png *.gif *.jpg *.jpeg)");
+	QString path = QFileDialog::getSaveFileName(this, tr("Enregistrer l'image"), m_details.value("file_url").section('/', -1), "Images (*.png *.gif *.jpg *.jpeg)");
 	QFile f(path);
 	f.open(QIODevice::WriteOnly);
 	f.write(this->d);
@@ -390,10 +394,10 @@ QString zoomWindow::getSavePath()
 	.replace("%model%", (this->details["models"].isEmpty() ? settings.value("model_empty").toString() : (settings.value("model_useall").toBool() || this->details["models"].count() == 1 ? this->details["models"].join(settings.value("model_sep").toString()) : settings.value("model_value").toString())))
 	.replace("%model|artist%", (!this->details["models"].isEmpty() ? (settings.value("model_useall").toBool() || this->details["models"].count() == 1 ? this->details["models"].join(settings.value("model_sep").toString()) : settings.value("model_value").toString()) : (this->details["artists"].isEmpty() ? settings.value("artist_empty").toString() : (settings.value("artist_useall").toBool() || this->details["artists"].count() == 1 ? this->details["artists"].join(settings.value("artist_sep").toString()) : settings.value("artist_value").toString()))))
 	.replace("%all%", this->details["alls"].join(settings.value("separator").toString()))
-	.replace("%filename%", this->url.section('/', -1).section('.', 0, -2))
+	.replace("%filename%", m_details.value("file_url").section('/', -1).section('.', 0, -2))
 	.replace("%rating%", this->rating)
-	.replace("%md5%", this->md5)
-	.replace("%website%", this->site)
+	.replace("%md5%", m_details.value("md5"))
+	.replace("%website%", m_details.value("site"))
 	.replace("%ext%", this->url.section('.', -1))
 	.replace("\\", "/");
 	if (filename.left(1) == "/")

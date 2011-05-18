@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'zoomWindow.ui'
 **
-** Created: Sun 15. May 23:37:39 2011
-**      by: Qt User Interface Compiler version 4.7.3
+** Created: Wed 18. May 23:26:45 2011
+**      by: Qt User Interface Compiler version 4.6.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -43,6 +43,7 @@ public:
             zoomWindow->setObjectName(QString::fromUtf8("zoomWindow"));
         zoomWindow->resize(800, 600);
         zoomWindow->setBaseSize(QSize(0, 0));
+        zoomWindow->setContextMenuPolicy(Qt::DefaultContextMenu);
         QIcon icon;
         icon.addFile(QString::fromUtf8(":/images/icon.ico"), QSize(), QIcon::Normal, QIcon::Off);
         zoomWindow->setWindowIcon(icon);
@@ -57,6 +58,8 @@ public:
 
         labelTags = new QLabel(zoomWindow);
         labelTags->setObjectName(QString::fromUtf8("labelTags"));
+        labelTags->setContextMenuPolicy(Qt::CustomContextMenu);
+        labelTags->setWordWrap(true);
 
         horizontalLayout->addWidget(labelTags);
 
@@ -100,6 +103,9 @@ public:
         QObject::connect(buttonSaveNQuit, SIGNAL(clicked()), zoomWindow, SLOT(saveNQuit()));
         QObject::connect(buttonOpen, SIGNAL(clicked()), zoomWindow, SLOT(openSaveDir()));
         QObject::connect(buttonSaveAs, SIGNAL(clicked()), zoomWindow, SLOT(saveImageAs()));
+        QObject::connect(labelTags, SIGNAL(customContextMenuRequested(QPoint)), zoomWindow, SLOT(contextMenu(QPoint)));
+        QObject::connect(labelTags, SIGNAL(linkHovered(QString)), zoomWindow, SLOT(linkHovered(QString)));
+        QObject::connect(labelTags, SIGNAL(linkActivated(QString)), zoomWindow, SLOT(openUrl(QString)));
 
         QMetaObject::connectSlotsByName(zoomWindow);
     } // setupUi

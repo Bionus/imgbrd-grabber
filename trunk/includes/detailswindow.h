@@ -1,5 +1,5 @@
-#ifndef FAVORITEWINDOW_H
-#define FAVORITEWINDOW_H
+#ifndef DETAILSWINDOW_H
+#define DETAILSWINDOW_H
 
 #include <QtGui>
 
@@ -17,12 +17,13 @@ class detailsWindow : public QWidget
 	Q_OBJECT
 
 	public:
-		explicit detailsWindow(QString);
+		explicit detailsWindow(QMap<QString,QString>);
 		~detailsWindow();
+		void setTags(QString);
 
 	private:
 		Ui::detailsWindow *ui;
 
 };
 
-#endif // FAVORITEWINDOW_H
+#endif // DETAILSWINDOW_H
