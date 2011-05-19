@@ -1,2 +1,3 @@
 delete favorites.txt
+mkdir_loc 
 mkdir_loc thumbs
