@@ -1,6 +1,7 @@
 #include <QApplication>
 #include "optionsWindow.h"
 #include "mainWindow.h"
+#include "functions.h"
 
 using namespace std;
 
@@ -12,7 +13,7 @@ optionsWindow::optionsWindow(mainWindow *parent) : QWidget(0), parent(parent)
 	this->setWindowTitle(tr("Grabber")+" - "+tr("Options"));
 	this->setWindowFlags(Qt::Window);
 	
-	QSettings settings("settings.ini", QSettings::IniFormat);
+	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
 	QStringList languages = QDir("languages").entryList(QStringList("*.qm"), QDir::Files);
 	for (int i = 0; i < languages.count(); i++)
 	{ languages[i].remove(".qm", Qt::CaseInsensitive); }
@@ -248,7 +249,7 @@ optionsWindow::optionsWindow(mainWindow *parent) : QWidget(0), parent(parent)
 
 void optionsWindow::save()
 {
-	QSettings settings("settings.ini", QSettings::IniFormat);
+	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
 	settings.setValue("dateformat", m_lineDateFormat->text());
 	settings.setValue("updatesrate", m_spinUpdatesRate->value());
 	settings.setValue("blacklistedtags", this->lineBlacklistedtags->text());

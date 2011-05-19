@@ -10,7 +10,7 @@ class AddGroupWindow : public QWidget
 	Q_OBJECT
 
 	public:
-		AddGroupWindow(QStringList, mainWindow *parent);
+		AddGroupWindow(QStringList, QStringList, mainWindow *parent);
 
 	public slots:
 		void ok();
@@ -19,7 +19,8 @@ class AddGroupWindow : public QWidget
 		mainWindow	*m_parent;
 		TextEdit	*m_lineTags;
 		QSpinBox	*m_spinPage, *m_spinPP, *m_spinLimit;
-		QComboBox	*m_comboDwl;
+		QComboBox	*m_comboDwl, *m_comboSites;
+		QStringList m_sites;
 };
 
 #endif // ADDGROUPWINDOW_H

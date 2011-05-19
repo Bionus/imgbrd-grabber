@@ -1,4 +1,5 @@
 #include "addgroupwindow.h"
+#include "functions.h"
 
 
 
@@ -7,10 +8,14 @@
  * @param	favorites	List of favorites tags, needed for coloration
  * @param	parent		The parent window
  */
-AddGroupWindow::AddGroupWindow(QStringList favorites, mainWindow *parent) : QWidget(parent), m_parent(parent)
+AddGroupWindow::AddGroupWindow(QStringList sites, QStringList favorites, mainWindow *parent) : QWidget(parent), m_parent(parent), m_sites(sites)
 {
 	QVBoxLayout *layout = new QVBoxLayout;
 		QFormLayout *formLayout = new QFormLayout;
+			m_comboSites = new QComboBox;
+				m_comboSites->setMaxVisibleItems(20);
+				m_comboSites->addItems(m_sites);
+				formLayout->addRow(tr("&Site"), m_comboSites);
 			m_lineTags = new TextEdit(favorites, this);
 				m_lineTags->setContextMenuPolicy(Qt::CustomContextMenu);
 				QStringList completion;
@@ -65,8 +70,9 @@ AddGroupWindow::AddGroupWindow(QStringList favorites, mainWindow *parent) : QWid
  */
 void AddGroupWindow::ok()
 {
+	QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
 	QStringList bools = QStringList() << "true" << "false";
-	QStringList values = QStringList() << m_lineTags->toPlainText() << QString::number(m_spinPage->value()) << QString::number(m_spinPP->value()) << QString::number(m_spinLimit->value()) << bools.at(m_comboDwl->currentIndex()) << "danbooru.donmai.us" << "";
+	QStringList values = QStringList() << m_lineTags->toPlainText() << QString::number(m_spinPage->value()) << QString::number(m_spinPP->value()) << QString::number(m_spinLimit->value()) << bools.at(m_comboDwl->currentIndex()) << m_sites.at(m_comboSites->currentIndex()) << "false" << settings->value("filename").toString() << settings->value("path").toString() << "";
 	m_parent->batchAddGroup(values);
 	this->close();
 }

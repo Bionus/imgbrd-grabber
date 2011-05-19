@@ -16,7 +16,7 @@ zoomWindow::zoomWindow(QString m_program, QString site, QStringList regex, QMap<
 	ui->setupUi(this);
 	favorites = loadFavorites().keys();
 
-	QSettings settings("settings.ini", QSettings::IniFormat);
+	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
 		settings.beginGroup("Zoom");
 		this->setWindowState(Qt::WindowStates(settings.value("state", 0).toInt()));
 		if (!this->isMaximized())
@@ -80,7 +80,7 @@ void zoomWindow::openUrl(QString url)
 }
 void zoomWindow::openSaveDir()
 {
-	QSettings settings("settings.ini", QSettings::IniFormat);
+	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
 	QString path = settings.value("Save/path").toString().replace("\\", "/");
 	if (path.right(1) == "/")
 	{ path = path.left(path.length()-1); }
@@ -128,14 +128,16 @@ void zoomWindow::favorite()
 {
 	QString image = saveImage();
 	favorites.append(link);
-	QFile f("favorites.txt");
+	QFile f(savePath("favorites.txt"));
 		f.open(QIODevice::WriteOnly | QIODevice::Append);
 		f.write(QString(link+"|50|"+QDateTime::currentDateTime().toString(Qt::ISODate)+"\r\n").toAscii());
 	f.close();
 	QPixmap img = image;
 	if (img.width() > 150 || img.height() > 150)
 	{ img = img.scaled(QSize(150,150), Qt::KeepAspectRatio, Qt::SmoothTransformation); }
-	img.save("thumbs/"+link+".png", "PNG");
+	if (!QDir(savePath("thumbs")).exists())
+	{ QDir(savePath()).mkdir("thumbs"); }
+	img.save(savePath("thumbs/"+link+".png"), "PNG");
 	m_parent->updateFavorites();
 }
 void zoomWindow::setfavorite()
@@ -143,13 +145,15 @@ void zoomWindow::setfavorite()
 	QPixmap img = image;
 	if (img.width() > 150 || img.height() > 150)
 	{ img = img.scaled(QSize(150,150), Qt::KeepAspectRatio, Qt::SmoothTransformation); }
-	img.save("thumbs/"+link+".png", "PNG");
+	if (!QDir(savePath("thumbs")).exists())
+	{ QDir(savePath()).mkdir("thumbs"); }
+	img.save(savePath("thumbs/"+link+".png"), "PNG");
 	m_parent->updateFavorites();
 }
 void zoomWindow::unfavorite()
 {
 	favorites.removeAll(link);
-	QFile f("favorites.txt");
+	QFile f(savePath("favorites.txt"));
 	f.open(QIODevice::ReadOnly);
 		QString favs = f.readAll();
 	f.close();
@@ -160,8 +164,8 @@ void zoomWindow::unfavorite()
 	f.open(QIODevice::WriteOnly);
 		f.write(favs.toAscii());
 	f.close();
-	if (QFile::exists("thumbs/"+link+".png"))
-	{ QFile::remove("thumbs/"+link+".png"); }
+	if (QFile::exists(savePath("thumbs/"+link+".png")))
+	{ QFile::remove(savePath("thumbs/"+link+".png")); }
 	m_parent->updateFavorites();
 }
 
@@ -199,7 +203,7 @@ void zoomWindow::replyFinished(QNetworkReply* reply)
 {
 	if (reply->error() == QNetworkReply::NoError)
 	{
-		QSettings settings("settings.ini", QSettings::IniFormat);
+		QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
 		bool under = settings.value("Save/remplaceblanksbyunderscores", false).toBool();
 		QStringList blacklistedtags(settings.value("blacklistedtags").toString().split(' '));
 		QString source = reply->readAll();
@@ -293,37 +297,28 @@ void zoomWindow::saveNQuit()
 
 QString zoomWindow::saveImage()
 {
-	if (!loaded)
+	if (!loaded) // If image is still loading, we wait for it to finish
 	{
 		ui->buttonSave->setText(tr("Sauvegarde..."));
 		m_mustSave = true;
 		return QString();
 	}
-	QSettings settings("settings.ini", QSettings::IniFormat);
+	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
 	QString pth = settings.value("Save/path").toString().replace("\\", "/");
 	if (pth.right(1) == "/")
 	{ pth = pth.left(pth.length()-1); }
 	QString path = this->getSavePath();
-	if (pth.isEmpty())
+	if (pth.isEmpty() || settings.value("Save/filename").toString().isEmpty())
 	{
-		int reply = QMessageBox::question(this, tr("Erreur"), tr("Vous n'avez pas précisé de dossier de sauvegarde ! Voulez-vous ouvrir les options ?"), QMessageBox::Yes | QMessageBox::No);
+		int reply;
+		if (pth.isEmpty())
+		{ reply = QMessageBox::question(this, tr("Erreur"), tr("Vous n'avez pas précisé de dossier de sauvegarde ! Voulez-vous ouvrir les options ?"), QMessageBox::Yes | QMessageBox::No); }
+		else
+		{ reply = QMessageBox::question(this, tr("Erreur"), tr("Vous n'avez pas précisé de format de sauvegarde ! Voulez-vous ouvrir les options ?"), QMessageBox::Yes | QMessageBox::No); }
 		if (reply == QMessageBox::Yes)
 		{
 			optionsWindow *options = new optionsWindow(m_parent);
-			options->onglets->setCurrentIndex(2);
-			options->setWindowModality(Qt::ApplicationModal);
-			options->show();
-			connect(options, SIGNAL(destroyed()), this, SLOT(saveImage()));
-		}
-		return QString();
-	}
-	if (settings.value("Save/filename").toString().isEmpty())
-	{
-		int reply = QMessageBox::question(this, tr("Erreur"), tr("Vous n'avez pas précisé de format de sauvegarde ! Voulez-vous ouvrir les options ?"), QMessageBox::Yes | QMessageBox::No);
-		if (reply == QMessageBox::Yes)
-		{
-			optionsWindow *options = new optionsWindow(m_parent);
-			options->onglets->setCurrentIndex(2);
+			options->onglets->setCurrentIndex(3);
 			options->setWindowModality(Qt::ApplicationModal);
 			options->show();
 			connect(options, SIGNAL(closed()), this, SLOT(saveImage()));
@@ -440,7 +435,7 @@ void zoomWindow::resizeEvent(QResizeEvent *e)
 
 void zoomWindow::closeEvent(QCloseEvent *e)
 {
-	QSettings settings("settings.ini", QSettings::IniFormat);
+	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
 		settings.beginGroup("Zoom");
 		settings.setValue("state", int(this->windowState()));
 		settings.setValue("size", this->size());
