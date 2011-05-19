@@ -401,7 +401,7 @@ mainWindow::mainWindow(QString m_program, QStringList m_tags, QMap<QString,QStri
 		webUpdate();
 	}
 
-	if (m_settings->value("lastupdate").toDateTime().addSecs(m_settings->value("updatesrate", 86400).toInt()) <= QDateTime::currentDateTime())
+	if (m_settings->value("lastupdatecheck").toDateTime().addSecs(m_settings->value("updatesrate", 86400).toInt()) <= QDateTime::currentDateTime())
 	{
 		QNetworkAccessManager *manager = new QNetworkAccessManager(this);
 		connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinishedVersion(QNetworkReply*)));
@@ -549,7 +549,8 @@ void mainWindow::replyFinishedVersion(QNetworkReply* r)
 	{ return; }
 	if (onlineVersion.toFloat() > version.toFloat())
 	{
-		int reply = QMessageBox::question(this, tr("Mise à jour"), tr("Une mise à jour a été détéctée (%1). Souhaitez-vous l'installer ?").arg(onlineVersion), QMessageBox::Yes | QMessageBox::No);
+		QMessageBox::information(this, tr("Mise à jour"), tr("Une mise à jour a été détéctée (%1). Pour l'installer, fermez l'application, puis lancez le fichier \"Updater\". Pour ne plus afficher ce message, ouvrez les options puis mettez le champ \"Rechercher des mises à jour\" à une valeur plus importante, ou simplement -1.").arg(onlineVersion));
+		/*int reply = QMessageBox::question(this, tr("Mise à jour"), tr("Une mise à jour a été détéctée (%1). Souhaitez-vous l'installer ?").arg(onlineVersion), QMessageBox::Yes | QMessageBox::No);
 		if (reply == QMessageBox::Yes)
 		{
 			#ifdef Q_OS_WIN
@@ -565,7 +566,7 @@ void mainWindow::replyFinishedVersion(QNetworkReply* r)
 				{ log(tr("<b>Erreur :</b> %1").arg(tr("impossible de lancer le programme de mise à jour."))); }
 			#endif
 			qApp->exit();
-		}
+		}*/
 	}
 	m_settings->setValue("lastupdatecheck", QDateTime::currentDateTime());
 }
