@@ -31,7 +31,7 @@ mainWindow::mainWindow(QString m_program, QStringList m_tags, QMap<QString,QStri
 	this->setWindowIcon(QIcon(":/images/icon.ico"));
 	this->setWindowTitle(tr("Grabber"));
 
-	m_settings = new QSettings("settings.ini", QSettings::IniFormat);
+	m_settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
 
 	m_serverDate = QDateTime::currentDateTime();
 	m_serverDate = m_serverDate.toUTC().addSecs(-60*60*4);
@@ -264,7 +264,7 @@ mainWindow::mainWindow(QString m_program, QStringList m_tags, QMap<QString,QStri
 				int note = xp.isEmpty() ? 50 : xp.takeFirst().toInt();
 				QDateTime lastviewed = xp.isEmpty() ? QDateTime(QDate(2000, 1, 1), QTime(0, 0, 0, 0)) : QDateTime::fromString(xp.takeFirst(), Qt::ISODate);
 				tag.remove('\\').remove('/').remove(':').remove('*').remove('?').remove('"').remove('<').remove('>').remove('|');
-				QString imagepath = "thumbs/"+tag+".png";
+				QString imagepath = savePath("thumbs/"+tag+".png");
 					QBouton *image = new QBouton(i);
 					if (!QFile::exists(imagepath))
 					{ imagepath = ":/images/noimage.png"; }
@@ -272,7 +272,7 @@ mainWindow::mainWindow(QString m_program, QStringList m_tags, QMap<QString,QStri
 					if ((img.width() > 150 || img.height() > 150) && QFile::exists(imagepath))
 					{
 						img = img.scaled(QSize(150,150), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-						img.save("thumbs/"+tag+".png", "PNG");
+						img.save(savePath("thumbs/"+tag+".png"), "PNG");
 					}
 					image->setIcon(img);
 					image->setIconSize(QSize(150, 150));
@@ -390,8 +390,9 @@ mainWindow::mainWindow(QString m_program, QStringList m_tags, QMap<QString,QStri
 	if (this->m_params.keys().contains("batch"))
 	{
 		this->batchAddGroup(QStringList() << this->m_tags.join(" ") << this->m_params.value("page", "1") << this->m_params.value("limit", m_settings->value("limit", 20).toString()) << this->m_params.value("limit", m_settings->value("limit", 20).toString()) << "false" << this->m_params.value("booru", this->sites.keys().at(0)) << "false" << this->m_params.value("filename", m_settings->value("filename").toString()) << this->m_params.value("path", m_settings->value("path").toString()) << "");
-		m_tabs->setCurrentIndex(1);
-		this->getAll();
+		m_tabs->setCurrentIndex(2);
+		if (!this->m_params.keys().contains("dontstart"))
+		{ this->getAll(); }
 	}
 	else if (!this->m_tags.isEmpty() || m_settings->value("loadatstart", false).toBool())
 	{
@@ -499,19 +500,19 @@ void mainWindow::updateFavorites()
 		int note = xp.isEmpty() ? 50 : xp.takeFirst().toInt();
 		QDateTime lastviewed = xp.isEmpty() ? QDateTime(QDate(2000, 1, 1), QTime(0, 0, 0, 0)) : QDateTime::fromString(xp.takeFirst(), Qt::ISODate);
 		tag.remove('\\').remove('/').remove(':').remove('*').remove('?').remove('"').remove('<').remove('>').remove('|');
-		QString imagepath = "thumbs/"+tag+".png";
+		QString imagepath = savePath("thumbs/"+tag+".png");
 		if (!QFile::exists(imagepath))
 		{ imagepath = ":/images/noimage.png"; }
 		QPixmap img(imagepath);
 		if ((img.width() > 150 || img.height() > 150) && QFile::exists(imagepath))
 		{
 			img = img.scaled(QSize(150,150), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-			img.save("thumbs/"+tag+".png", "PNG");
+			img.save(savePath("thumbs/"+tag+".png"), "PNG");
 		}
 		if (m_favoritesImages.count() > i)
 		{
 			m_favoritesImages.at(i)->setIcon(img);
-			m_favoritesCaptions.at(i)->setText(keys.at(i)+" ("+QString::number(note)+" % - "+lastviewed.toString(format)+")");
+			m_favoritesCaptions.at(i)->setText(keys.at(i)+"<br/>("+QString::number(note)+" % - "+lastviewed.toString(format)+")");
 		}
 		else
 		{
@@ -604,7 +605,7 @@ void mainWindow::logClear()
 
 void mainWindow::addGroup()
 {
-	AddGroupWindow *wAddGroup = new AddGroupWindow(m_favorites.keys(), this);
+	AddGroupWindow *wAddGroup = new AddGroupWindow(this->sites.keys(), m_favorites.keys(), this);
 	wAddGroup->show();
 }
 void mainWindow::addUnique()
@@ -638,7 +639,7 @@ void mainWindow::retranslateStrings()
 	m_tabs->setTabText(2, tr("Télécharger"));
 	m_tabs->setTabText(3, tr("Log"));
 	m_buttonOpenCalendar->setText(tr("Choisir"));
-	DONE()
+	logUpdate(tr(" Fait"));
 }
 
 void mainWindow::switchTranslator(QTranslator& translator, const QString& filename)
@@ -740,7 +741,17 @@ void mainWindow::getAll()
 	for (int i = 0; i < groupBatchs.count(); i++)
 	{
 		QString site = groupBatchs.at(i).at(5);
-		if (groupBatchs.at(i).at(6) == "false")
+		if (groupBatchs.at(i).at(6) == "true")
+		{
+			QDate date = QDate::fromString(groupBatchs.at(i).at(0), Qt::ISODate);
+			QString url = this->sites[site].at(3);
+				url.replace("{day}", QString::number(date.day()));
+				url.replace("{month}", QString::number(date.month()));
+				url.replace("{year}", QString::number(date.year()));
+			groupBatchs[i][9] = url;
+			manager->get(QNetworkRequest(QUrl(url)));
+		}
+		else
 		{
 			QString text = " "+groupBatchs.at(i).at(0)+" ";
 			text.replace(" rating:s ", " rating:safe ", Qt::CaseInsensitive)
@@ -767,16 +778,6 @@ void mainWindow::getAll()
 					manager->get(QNetworkRequest(QUrl(url)));
 				}
 			}
-		}
-		else
-		{
-			QDate date = QDate::fromString(groupBatchs.at(i).at(0), Qt::ISODate);
-			QString url = this->sites[site].at(3);
-				url.replace("{day}", QString::number(date.day()));
-				url.replace("{month}", QString::number(date.month()));
-				url.replace("{year}", QString::number(date.year()));
-			groupBatchs[i][9] = url;
-			manager->get(QNetworkRequest(QUrl(url)));
 		}
 	}
 }

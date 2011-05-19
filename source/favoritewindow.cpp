@@ -1,4 +1,5 @@
 #include "favoritewindow.h"
+#include "functions.h"
 
 
 
@@ -42,8 +43,8 @@ void favoriteWindow::on_openButton_clicked()
  */
 void favoriteWindow::save()
 {
-	if (m_tag != ui->tagLineEdit->text() && QFile::exists("thumbs/"+m_tag+".png"))
-	{ QFile::rename("thumbs/"+m_tag+".png", "thumbs/"+ui->tagLineEdit->text()+".png"); }
+	if (m_tag != ui->tagLineEdit->text() && QFile::exists(savePath("thumbs/"+m_tag+".png")))
+	{ QFile::rename(savePath("thumbs/"+m_tag+".png"), savePath("thumbs/"+ui->tagLineEdit->text()+".png")); }
 	if (QFile::exists(ui->imageLineEdit->text()))
 	{
 		QPixmap img(ui->imageLineEdit->text());
@@ -51,10 +52,10 @@ void favoriteWindow::save()
 		{
 			if (img.width() > 150 || img.height() > 150)
 			{ img = img.scaled(QSize(150,150), Qt::KeepAspectRatio, Qt::SmoothTransformation); }
-			img.save("thumbs/"+ui->tagLineEdit->text()+".png", "PNG");
+			img.save(savePath("thumbs/"+ui->tagLineEdit->text()+".png"), "PNG");
 		}
 	}
-	QFile f("favorites.txt");
+	QFile f(savePath("favorites.txt"));
 	f.open(QIODevice::ReadOnly);
 		QString favorites = f.readAll();
 	f.close();

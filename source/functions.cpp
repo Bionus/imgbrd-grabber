@@ -49,7 +49,7 @@ QDateTime qDateTimeFromString(QString str)
 QMap<QString,QString> loadFavorites()
 {
 	QMap<QString,QString> favorites;
-	QFile file("favorites.txt");
+	QFile file(savePath("favorites.txt"));
 	if (file.open(QIODevice::ReadOnly))
 	{
 		QString favs = file.readAll();
@@ -67,3 +67,6 @@ QMap<QString,QString> loadFavorites()
 	}
 	return favorites;
 }
+
+QString savePath(QString file)
+{ return QDir::toNativeSeparators(QDir::homePath()+"/Grabber/"+file); }

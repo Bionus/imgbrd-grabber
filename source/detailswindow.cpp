@@ -16,10 +16,10 @@ detailsWindow::detailsWindow(QMap<QString,QString> details) : QWidget(0), ui(new
 	if (details.contains("md5"))			{ ui->labelMd5->setText(details.value("md5"));			}
 	if (details.contains("score"))			{ ui->labelScore->setText(details.value("score"));		}
 	if (details.contains("created_at"))		{ ui->labelDate->setText(details.value("created_at"));	}
-	if (details.contains("has_children"))	{ ui->labelChildren->setText(details.value("has_children") == "false" ? "non" : "oui");	}
-	if (details.contains("has_notes"))		{ ui->labelNotes->setText(details.value("has_notes") == "false" ? "non" : "oui");		}
-	if (details.contains("has_comments"))	{ ui->labelComments->setText(details.value("has_comments") == "false" ? "non" : "oui");	}
-	if (details.contains("parent_id"))		{ ui->labelParent->setText(details.value("parent_id").isEmpty() ? "non" : "oui (#"+details.value("parent_id")+")");	}
+	if (details.contains("has_children"))	{ ui->labelChildren->setText(details.value("has_children") == "false" ? tr("non") : tr("oui"));	}
+	if (details.contains("has_notes"))		{ ui->labelNotes->setText(details.value("has_notes") == "false" ? tr("non") : tr("oui"));		}
+	if (details.contains("has_comments"))	{ ui->labelComments->setText(details.value("has_comments") == "false" ? tr("non") : tr("oui"));	}
+	if (details.contains("parent_id"))		{ ui->labelParent->setText(details.value("parent_id").isEmpty() ? tr("non") : tr("oui (#%1)").arg(details.value("parent_id")));	}
 	if (details.contains("source"))			{ ui->labelSource->setText("<a href=\""+details.value("source")+"\">"+details.value("source")+"</a>");				}
 	if (details.contains("file_url"))		{ ui->labelUrl->setText("<a href=\""+details.value("file_url")+"\">"+details.value("file_url")+"</a>");				}
 	if (details.contains("sample_url"))		{ ui->labelSample->setText("<a href=\""+details.value("sample_url")+"\">"+details.value("sample_url")+"</a>");		}
