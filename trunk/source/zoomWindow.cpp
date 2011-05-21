@@ -359,7 +359,7 @@ QString zoomWindow::saveImageAs()
 
 QString zoomWindow::getSavePath()
 {
-	QSettings settings("settings.ini", QSettings::IniFormat);
+	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
 	settings.beginGroup("Save");
 	QStringList copyrights;
 	QString cop;
