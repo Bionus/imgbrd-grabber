@@ -65,7 +65,7 @@ class mainWindow : public QMainWindow
 	
 	private:
 		bool loaded, allow, changed, m_must_get_tags;
-		int ch, updating, filesUpdates, getAllId, getAllDownloaded, getAllExists, getAllIgnored, getAllErrors, pagemax, columns, limit, batchGroups, batchUniques, getAllCount;
+		int ch, updating, filesUpdates, getAllId, getAllDownloaded, getAllExists, getAllIgnored, getAllErrors, pagemax, columns, limit, batchGroups, batchUniques, getAllCount, getAllPageCount;
 		QStringList paths, sources, assoc, files, m_tags;
 		QString path, source, artist, copyright, character, m_currLang, m_langPath, m_program;
 		QList<QMap<QString, QString> > details, batchs, allImages;

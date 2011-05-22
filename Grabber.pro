@@ -43,4 +43,4 @@ QT += network xml
 FORMS += \
     ui/favoriteWindow.ui \
     ui/zoomWindow.ui \
-    ui/detailsWindow.ui
+	ui/detailsWindow.ui

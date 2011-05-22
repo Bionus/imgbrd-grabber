@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'favoriteWindow.ui'
 **
-** Created: Wed 18. May 21:49:37 2011
+** Created: Sun 22. May 22:01:48 2011
 **      by: Qt User Interface Compiler version 4.6.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!

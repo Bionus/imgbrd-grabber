@@ -573,6 +573,7 @@ void mainWindow::replyFinishedVersion(QNetworkReply* r)
 
 void mainWindow::log(QString l)
 {
+	qDebug() << l;
 	this->m_log->insert(QDateTime::currentDateTime(), l);
 	logShow();
 }
@@ -730,6 +731,7 @@ void mainWindow::getAll()
 	getAllExists = 0;
 	getAllErrors = 0;
 	getAllCount = 0;
+	getAllPageCount = 0;
 	allImages = batchs;
 	QNetworkAccessManager *manager = new QNetworkAccessManager(this);
 	connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(getAllSource(QNetworkReply*)));
@@ -750,6 +752,7 @@ void mainWindow::getAll()
 				url.replace("{month}", QString::number(date.month()));
 				url.replace("{year}", QString::number(date.year()));
 			groupBatchs[i][9] = url;
+			getAllPageCount++;
 			manager->get(QNetworkRequest(QUrl(url)));
 		}
 		else
@@ -776,6 +779,7 @@ void mainWindow::getAll()
 						url.replace("{tags}", tags.join(" "));
 						url.replace("{limit}", QString::number(pp));
 					groupBatchs[i][9] = url;
+					getAllPageCount++;
 					manager->get(QNetworkRequest(QUrl(url)));
 				}
 			}
@@ -786,7 +790,7 @@ void mainWindow::getAll()
 void mainWindow::getAllSource(QNetworkReply *r)
 {
 	QString url = r->url().toString(), source = r->readAll();
-	log(tr("Recu \"%1\"").arg(url));
+	log(tr("Recu <a href=\"%1\">%1</a>").arg(url));
 	int n = 0;
 	for (int i = 0; i < groupBatchs.count(); i++)
 	{
@@ -878,7 +882,7 @@ void mainWindow::getAllSource(QNetworkReply *r)
 		}
 	}
 	getAllCount++;
-	if (getAllCount == groupBatchs.count())
+	if (getAllCount == getAllPageCount)
 	{
 		int count = 0;
 		for (int i = 0; i < allImages.count(); i++)
@@ -894,14 +898,6 @@ void mainWindow::getAllSource(QNetworkReply *r)
 			this->progressdialog->show();
 			this->progressdialog->setValue(0);
 		log("All images' urls received.");
-		this->_getAll();
-	}
-}
-
-void mainWindow::_getAll()
-{
-	if (getAllId < this->allImages.count())
-	{
 		QString fn = m_settings->value("Save/filename").toString();
 		QStringList forbidden = QStringList() << "artist" << "copyright" << "character" << "model" << "general" << "model|artist";
 		m_must_get_tags = false;
@@ -910,10 +906,20 @@ void mainWindow::_getAll()
 			if (fn.contains("%"+forbidden.at(i)+"%"))
 			{ m_must_get_tags = true; }
 		}
-		log("Images download started.");
+		if (m_must_get_tags)
+		{ log("Downloading detailed tags first."); }
+		else
+		{ log("Downloading pictures directly."); }
+		this->_getAll();
+	}
+}
+
+void mainWindow::_getAll()
+{
+	if (getAllId < this->allImages.count())
+	{
 		if (m_must_get_tags)
 		{
-			log("Downloading detailed tags first.");
 			QString u = this->sites[this->allImages.at(getAllId).value("site")].at(4);
 				u.replace("{id}", this->allImages.at(getAllId).value("id"));
 			QUrl rl(u);
@@ -937,7 +943,6 @@ void mainWindow::_getAll()
 			QFile file(path);
 			if (!file.exists())
 			{
-				log("Downloading pictures directly.");
 				QUrl rl(u);
 				QNetworkAccessManager *m = new QNetworkAccessManager(this);
 				connect(m, SIGNAL(finished(QNetworkReply*)), this, SLOT(getAllPerformImage(QNetworkReply*)));
@@ -969,13 +974,13 @@ void mainWindow::_getAll()
 			m_process->waitForFinished(1000);
 			m_process->close();
 		}
-		log("Grouped download finished.");
+		log("Batch download finished.");
 	}
 }
 void mainWindow::getAllPerformTags(QNetworkReply* reply)
 {
 	// Treating tags
-	log("Received tags data from \""+reply->url().toString()+"\"");
+	log(tr("Tags reçus depuis <a href=\"%1\">%1</a>").arg(reply->url().toString()));
 	if (reply->error() == QNetworkReply::NoError)
 	{
 		bool under = m_settings->value("Save/remplaceblanksbyunderscores", false).toBool();
@@ -1058,7 +1063,10 @@ void mainWindow::getAllPerformTags(QNetworkReply* reply)
 			for (int i = 0; i < blacklistedtags.size(); i++)
 			{
 				if (this->allImages.at(getAllId).value("tags").contains(blacklistedtags.at(i), Qt::CaseInsensitive))
-				{ detected = true; }
+				{
+					detected = true;
+					log(tr("Certains tags de l'image sont blacklistés"));
+				}
 			}
 		}
 		if (detected && !m_settings->value("downloadblacklist").toBool())
@@ -1070,6 +1078,7 @@ void mainWindow::getAllPerformTags(QNetworkReply* reply)
 			this->progressdialog->setValue(count); 
 			getAllId++;
 			getAllIgnored++;
+			log(tr("Image ignorée"));
 			this->getAllDetails.clear();
 			this->_getAll();
 		}
@@ -1093,6 +1102,7 @@ void mainWindow::getAllPerformTags(QNetworkReply* reply)
 		else																			{ count += 1; }
 		this->progressdialog->setValue(count); 
 		getAllExists++;
+		log(tr("Fichier déjà existant"));
 		// Loading next tags
 		this->getAllDetails.clear();
 		this->_getAll();
@@ -1100,7 +1110,7 @@ void mainWindow::getAllPerformTags(QNetworkReply* reply)
 }
 void mainWindow::getAllPerformImage(QNetworkReply* reply)
 {
-	log("Received image from \""+reply->url().toString()+"\"");
+	log(tr("Image reçue depuis <a href=\"%1\">%1</a>").arg(reply->url().toString()));
 	if (reply->error() == QNetworkReply::NoError)
 	{
 		// Getting path
