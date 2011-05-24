@@ -549,6 +549,7 @@ void mainWindow::replyFinishedVersion(QNetworkReply* r)
 	{ return; }
 	if (onlineVersion.toFloat() > version.toFloat())
 	{
+		qDebug() << onlineVersion.toFloat() << version.toFloat() << version;
 		QMessageBox::information(this, tr("Mise à jour"), tr("Une mise à jour a été détéctée (%1). Pour l'installer, fermez l'application, puis lancez le fichier \"Updater\". Pour ne plus afficher ce message, ouvrez les options puis mettez le champ \"Rechercher des mises à jour\" à une valeur plus importante, ou simplement -1.").arg(onlineVersion));
 		/*int reply = QMessageBox::question(this, tr("Mise à jour"), tr("Une mise à jour a été détéctée (%1). Souhaitez-vous l'installer ?").arg(onlineVersion), QMessageBox::Yes | QMessageBox::No);
 		if (reply == QMessageBox::Yes)
@@ -618,7 +619,7 @@ void mainWindow::addUnique()
 
 void mainWindow::retranslateStrings()
 {
-	log(tr("Traduction des textes..."));
+	log(tr("Traduction des textes en %1...").arg(m_settings->value("language", "English").toString()));
 	menuOptions->setTitle(tr("&Options"));
 	actionOptions->setText(tr("&Options"));
 	menuAide->setTitle(tr("&Aide"));
@@ -732,6 +733,7 @@ void mainWindow::getAll()
 	getAllErrors = 0;
 	getAllCount = 0;
 	getAllPageCount = 0;
+	getAllBeforeId = -1;
 	allImages = batchs;
 	QNetworkAccessManager *manager = new QNetworkAccessManager(this);
 	connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(getAllSource(QNetworkReply*)));
@@ -790,6 +792,7 @@ void mainWindow::getAll()
 void mainWindow::getAllSource(QNetworkReply *r)
 {
 	QString url = r->url().toString(), source = r->readAll();
+	QList<QMap<QString, QString> > imgs;
 	log(tr("Recu <a href=\"%1\">%1</a>").arg(url));
 	int n = 0;
 	for (int i = 0; i < groupBatchs.count(); i++)
@@ -831,7 +834,7 @@ void mainWindow::getAllSource(QNetworkReply *r)
 				d["site"] = site;
 				d["site_id"] = QString::number(n);
 				d["pos"] = QString::number(id);
-				this->allImages.append(d);
+				imgs.append(d);
 			}
 		}
 	}
@@ -856,7 +859,7 @@ void mainWindow::getAllSource(QNetworkReply *r)
 				d["site"] = site;
 				d["site_id"] = QString::number(n);
 				d["pos"] = QString::number(id);
-				this->allImages.append(d);
+				imgs.append(d);
 			}
 		}
 	}
@@ -877,10 +880,16 @@ void mainWindow::getAllSource(QNetworkReply *r)
 			d["site"] = site;
 			d["site_id"] = QString::number(n);
 			d["pos"] = QString::number(id);
-			this->allImages.append(d);
+			imgs.append(d);
 			id++;
 		}
 	}
+	if (imgs.isEmpty())
+	{
+		qDebug() << this->allImages.last();
+	}
+	else
+	{ this->allImages.append(imgs); }
 	getAllCount++;
 	if (getAllCount == getAllPageCount)
 	{
@@ -1043,13 +1052,15 @@ void mainWindow::getAllPerformTags(QNetworkReply* reply)
 	.replace("%rating%", this->allImages.at(getAllId).value("rating"))
 	.replace("%md5%", this->allImages.at(getAllId).value("md5"))
 	.replace("%website%", this->allImages.at(getAllId).value("site"))
-	.replace("%ext%", u.section('.', -1));
+	.replace("%ext%", u.section('.', -1))
+	.replace("\\", "/");
+	qDebug() << path;
 	// saving path
 	QString p = m_settings->value("path").toString().replace("\\", "/");
 	m_settings->endGroup();
 	if (p.right(1) == "/")
 	{ p = p.left(p.length()-1); }
-	QString pth = p+"\\"+path;
+	QString pth = p+"/"+path;
 	QFile f(pth);
 	if (!f.exists())	{ f.setFileName(pth.section('.', 0, -2)+".png");	}
 	if (!f.exists())	{ f.setFileName(pth.section('.', 0, -2)+".gif");	}
@@ -1129,6 +1140,7 @@ void mainWindow::getAllPerformImage(QNetworkReply* reply)
 		.replace("%filename%", u.section('/', -1).section('.', 0, -2))
 		.replace("%rating%", this->allImages.at(getAllId).value("rating"))
 		.replace("%md5%", this->allImages.at(getAllId).value("md5"))
+		.replace("%website%", this->allImages.at(getAllId).value("site"))
 		.replace("%ext%", u.section('.', -1))
 		.replace("\\", "/");
 		if (path.left(1) == "/")
