@@ -1,4 +1,4 @@
-556cd77128d5965121f030b2d950fb7a Grabber.exe
+8ec68b2b88a43ea2630c4a61bb10cf87 Grabber.exe
 c1a9719af134cf82270f757cf32993eb imageformats/qgif4.dll
 8ff1723c1087b6bc56c45a57c5e0e441 imageformats/qico4.dll
 6246500d1310942b9829509ce7036c14 imageformats/qjpeg4.dll
@@ -19,6 +19,7 @@ d736ea73917babcde068ab763c7d42dd sites/json/chan.sankakucomplex.com.txt
 8c3ae975cd97924ca540a0a61849d409 sites/json/danbooru.donmai.us.txt
 4b3ed94e7ed699f1f9f0135a84b259d8 sites/json/idol.sankakucomplex.com.txt
 ed4a383e2a03b3589cbd7819ad3458df sites/regex/danbooru.donmai.us.txt
+0f23ede250b1359e1d3dfc8b883bd343 sites/regex/tentaclerape.net.txt
 34dad2d566d5d9572610f4c9ffc94537 sites/xml/behoimi.org.txt
 05a6586a495b20432840f1ddae48d705 sites/xml/danbooru.donmai.us.txt
 a1c1c45e06d06a73f9fe79f6ac1d873b sites/xml/e621.net.txt
@@ -29,7 +30,7 @@ c94374a4cc7af0e80e5178196e0a423c sites/xml/gelbooru.com.txt
 f694b04b67f087669c8a49d8230201dc sites/xml/konachan.com.txt
 b27af3746b61169cb3ed3bca62446bf0 sites/xml/nekobooru.net.txt
 b966dc635826331df4da3720dc1c73ad sites/xml/oreno.imouto.org.txt
-f951ad11ff18bd93f4481bc75656e513 sites/xml/r34.booru.org.txt
+99ee5d9f9968584247e0c43f1c7c35aa sites/xml/rule34.booru.org.txt
 8ecff1609790ccf68041c5bc6354c435 sites/xml/safebooru.org.txt
 2fdc101c1bd095bdf50d1e50b2aaed23 sites/xml/sonohara.donmai.us.txt
 5d8cfc74b0094d66251238c876b2425d sites/xml/thedoujin.com.txt

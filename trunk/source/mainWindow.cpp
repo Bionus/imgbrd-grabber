@@ -33,8 +33,8 @@ mainWindow::mainWindow(QString m_program, QStringList m_tags, QMap<QString,QStri
 
 	m_settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
 
-	m_serverDate = QDateTime::currentDateTime();
-	m_serverDate = m_serverDate.toUTC().addSecs(-60*60*4);
+	m_serverDate = QDateTime::currentDateTime().toUTC().addSecs(-60*60*4);
+	m_timezonedecay = QDateTime::currentDateTime().time().hour()-m_serverDate.time().hour();
 
 	m_favorites = loadFavorites();
 
@@ -407,6 +407,8 @@ mainWindow::mainWindow(QString m_program, QStringList m_tags, QMap<QString,QStri
 		connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinishedVersion(QNetworkReply*)));
 		manager->get(QNetworkRequest(QUrl("http://imgbrd-grabber.googlecode.com/svn/trunk/release/VERSION")));
 	}
+
+	this->search->setFocus();
 }
 void mainWindow::loadFavorite(int id)
 {
@@ -433,17 +435,19 @@ void mainWindow::viewed()
 }
 void mainWindow::setFavoriteViewed(QString tag)
 {
-	QFile f("favorites.txt");
+	log(tr("Marquage comme vu de %1...").arg(tag));
+	QFile f(savePath("favorites.txt"));
 	f.open(QIODevice::ReadOnly);
 		QString favs = f.readAll();
 	f.close();
 	favs.replace("\r\n", "\n").replace("\r", "\n").replace("\n", "\r\n");
-	QRegExp reg(tag+"\\|([^|]+)\\|([^|]+)\\|([^|]+)\r\n");
+	QRegExp reg(tag+"\\|([^|]+)\\|([^|]+)\r\n");
 	reg.setMinimal(true);
-	favs.replace(reg, tag+"|\\1|"+QDateTime::currentDateTime().toString(Qt::ISODate)+"|\\3\r\n");
+	favs.replace(reg, tag+"|\\1|"+QDateTime::currentDateTime().toString(Qt::ISODate)+"\r\n");
 	f.open(QIODevice::WriteOnly);
 		f.write(favs.toAscii());
 	f.close();
+	DONE()
 }
 void mainWindow::favoritesBack()
 {
@@ -809,7 +813,11 @@ void mainWindow::getAllSource(QNetworkReply *r)
 		QString errorMsg;
 		int errorLine, errorColumn;
 		if (!doc.setContent(source, false, &errorMsg, &errorLine, &errorColumn))
-		{ error(this, tr("Erreur lors de l'analyse du fichier XML : %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn))); }
+		{
+			log(tr("<b>Erreur :</b> %1").arg(tr("erreur lors de l'analyse du fichier XML : %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn))));
+			error(this, tr("Erreur lors de l'analyse du fichier XML : %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn)));
+			return;
+		}
 		QDomElement docElem = doc.documentElement();
 		// Reading posts
 		QDomNodeList nodeList = docElem.elementsByTagName("post");
@@ -830,7 +838,7 @@ void mainWindow::getAllSource(QNetworkReply *r)
 					d["created_at"] = timestamp.toString(tr("'le' dd/MM/yyyy 'à' hh:mm"));
 				}
 				else
-				{ d["created_at"] = qDateTimeFromString(date).toString(tr("'le' dd/MM/yyyy 'à' hh:mm")); }
+				{ d["created_at"] = qDateTimeFromString(date, m_timezonedecay).toString(tr("'le' dd/MM/yyyy 'à' hh:mm")); }
 				d["site"] = site;
 				d["site_id"] = QString::number(n);
 				d["pos"] = QString::number(id);
@@ -869,14 +877,35 @@ void mainWindow::getAllSource(QNetworkReply *r)
 		QStringList order = this->sites[site].at(7).split('|');
 		rx.setMinimal(true);
 		int pos = 0, id = 0;
-		while ((pos = rx.indexIn(source, pos)) != -1)
+		QString pagereg = this->sites[site].at(2);
+			pagereg.replace("{page}", "(\\d*)")
+			.replace("{tags}", "(?:\\w*)")
+			.replace("{limit}", "(?:\\d*)");
+		QRegExp regexp(pagereg+"\r\n");
+			regexp.setMinimal(true);
+			regexp.indexIn(url+"\r\n", 0);
+		int page = regexp.cap(1).toInt();
+		qDebug() << (page-1)*groupBatchs.at(n).at(2).toInt()+id;
+		while (((pos = rx.indexIn(source, pos)) != -1) && (page-1)*groupBatchs.at(n).at(2).toInt()+id < groupBatchs.at(n).at(3).toInt())
 		{
 			pos += rx.matchedLength();
 			QMap<QString, QString> d;
 			for (int i = 0; i < order.size(); i++)
 			{ d[order.at(i)] = rx.cap(i+1); }
-			d["file_url"] = d["preview_url"];
+			if (d["preview_url"][0] == '/')
+			{ d["preview_url"] = "http://"+site+d["preview_url"]; }
+			if (this->sites[site][9].isEmpty())
+			{
+				d["file_url"] = d["preview_url"];
 				d["file_url"].remove("preview/");
+			}
+			else
+			{
+				d["file_url"] = this->sites[site].at(9);
+				d["file_url"].replace("{id}", d["id"])
+				.replace("{md5}", d["md5"])
+				.replace("{ext}", "jpg");
+			}
 			d["site"] = site;
 			d["site_id"] = QString::number(n);
 			d["pos"] = QString::number(id);
@@ -1054,7 +1083,6 @@ void mainWindow::getAllPerformTags(QNetworkReply* reply)
 	.replace("%website%", this->allImages.at(getAllId).value("site"))
 	.replace("%ext%", u.section('.', -1))
 	.replace("\\", "/");
-	qDebug() << path;
 	// saving path
 	QString p = m_settings->value("path").toString().replace("\\", "/");
 	m_settings->endGroup();
@@ -1186,7 +1214,7 @@ void mainWindow::getAllPerformImage(QNetworkReply* reply)
 		{
 			if (!dir.mkpath(path.section('/', 0, -2)))
 			{
-				log(tr("<b>Error:</b> %1").arg(tr("impossible to create the destination folder: %1.").arg(p+"/"+path.section('/', 0, -2))));
+				log(tr("<b>Erreur:</b> %1").arg(tr("impossible de créer le dossier de destination: %1.").arg(p+"/"+path.section('/', 0, -2))));
 				getAllErrors++;
 			}
 		}
@@ -1332,6 +1360,15 @@ void mainWindow::replyFinished(QNetworkReply* r)
 {
 	QString url = r->url().toString();
 	log(tr("Réception de la page <a href=\"%1\">%1</a>").arg(url));
+	QString redir = r->attribute(QNetworkRequest::RedirectionTargetAttribute).toString();
+	if (!redir.isEmpty())
+	{
+		log(tr("Page redirigée vers <a href=\"%1\">%1</a>").arg(redir));
+		QNetworkAccessManager *manager = new QNetworkAccessManager(this);
+		connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply*)));
+		this->replies.append(manager->get(QNetworkRequest(QUrl(redir))));
+		return;
+	}
 	int n = 0, site_id = 0, results = 0;
 	for (int i = 0; i < this->assoc.count(); i++)
 	{
@@ -1354,7 +1391,12 @@ void mainWindow::replyFinished(QNetworkReply* r)
 		QString errorMsg;
 		int errorLine, errorColumn;
 		if (!doc.setContent(source, false, &errorMsg, &errorLine, &errorColumn))
-		{ error(this, tr("Erreur lors de l'analyse du fichier XML : %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn))); }
+		{
+			qDebug() << source;
+			log(tr("<b>Erreur :</b> %1").arg(tr("erreur lors de l'analyse du fichier XML : %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn))));
+			error(this, tr("Erreur lors de l'analyse du fichier XML : %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn)));
+			return;
+		}
 		QDomElement docElem = doc.documentElement();
 		// Getting last page
 		count = docElem.attributes().namedItem("count").nodeValue().toFloat();
@@ -1382,7 +1424,7 @@ void mainWindow::replyFinished(QNetworkReply* r)
 				if (date.toInt() != 0)
 				{ timestamp.setTime_t(date.toInt()); }
 				else
-				{ timestamp = qDateTimeFromString(date); }
+				{ timestamp = qDateTimeFromString(date, m_timezonedecay); }
 				d["created_at"] = timestamp.toString(tr("'le' dd/MM/yyyy 'à' hh:mm"));
 				d["site"] = site;
 				d["site_id"] = QString::number(n);
@@ -1445,14 +1487,26 @@ void mainWindow::replyFinished(QNetworkReply* r)
 		QStringList order = this->sites[site].at(7).split('|');
 		rx.setMinimal(true);
 		int pos = 0, id = 0;
-		while ((pos = rx.indexIn(source, pos)) != -1)
+		while (((pos = rx.indexIn(source, pos)) != -1) && id < m_settings->value("limit", 20).toInt())
 		{
 			pos += rx.matchedLength();
 			QMap<QString, QString> d;
 			for (int i = 0; i < order.size(); i++)
 			{ d[order.at(i)] = rx.cap(i+1); }
-			d["file_url"] = d["preview_url"];
+			if (d["preview_url"][0] == '/')
+			{ d["preview_url"] = "http://"+site+d["preview_url"]; }
+			if (this->sites[site][9].isEmpty())
+			{
+				d["file_url"] = d["preview_url"];
 				d["file_url"].remove("preview/");
+			}
+			else
+			{
+				d["file_url"] = this->sites[site].at(9);
+				d["file_url"].replace("{id}", d["id"])
+				.replace("{md5}", d["md5"])
+				.replace("{ext}", "jpg");
+			}
 			d["site"] = site;
 			d["site_id"] = QString::number(n);
 			d["pos"] = QString::number(id);
@@ -1463,6 +1517,7 @@ void mainWindow::replyFinished(QNetworkReply* r)
 		}
 	}
 	QLabel *txt = new QLabel();
+	m_countPage[site] = results;
 	if (results == 0)
 	{
 		QStringList reasons = QStringList();
@@ -1477,6 +1532,8 @@ void mainWindow::replyFinished(QNetworkReply* r)
 	else
 	{ txt->setText(site+" - <a href=\""+url+"\">"+url+"</a> - "+tr("Page %1 sur %2 (%3 sur %4)").arg(QString::number(this->page->value()), (max != 0 ? QString::number(ceil(count/m_settings->value("limit", 20).toFloat())) : "?"), QString::number(results), (count != 0 ? QString::number(count) : "?"))); }
 	connect(txt, SIGNAL(linkActivated(QString)), this, SLOT(openUrl(QString)));
+	//int pl = ceil(sqrt(results));
+	//float fl = (float)results/pl;
 	int pl = ceil(sqrt(m_settings->value("limit", 20).toInt()));
 	float fl = (float)m_settings->value("limit", 20).toInt()/pl;
 	if (!m_loadFavorite.isNull())
@@ -1497,15 +1554,17 @@ void mainWindow::setTags(QString tags)
 { this->search->setText(tags); }
 void mainWindow::replyFinishedPic(QNetworkReply* r)
 {
+	// TODO: bug qqpart ici
 	log("Received preview image <a href='"+r->url().toString()+"'>"+r->url().toString()+"</a>");
-	QSettings settings("m_settings->ini", QSettings::IniFormat);
 	int id = 0, site = 0, n = 0;
+	QString ste;
 	for (int i = 0; i < this->details.count(); i++)
 	{
 		if (this->details.at(i).value("preview_url") == r->url().toString())
 		{
 			site = this->details.at(i).value("site_id").toInt();
 			id = this->details.at(i).value("pos").toInt();
+			ste = this->details.at(i).value("site");
 			n = i;
 			break;
 		}
@@ -1549,13 +1608,16 @@ void mainWindow::replyFinishedPic(QNetworkReply* r)
 		l->setFlat(true);
 		connect(l, SIGNAL(appui(int)), this, SLOT(webZoom(int)));
 		connect(l, SIGNAL(rightClick(int)), this, SLOT(batchChange(int)));
-	int pl = ceil(sqrt(m_settings->value("limit", 20).toInt()));
-	float fl = (float)m_settings->value("limit", 20).toInt()/pl;
-	if (!m_loadFavorite.isNull())
-	{ this->m_webFavorites->addWidget(l, floor(id/pl)+(floor(site/m_settings->value("columns", 1).toInt())*(ceil(fl)+1))+1, id%pl+pl*(site%m_settings->value("columns", 1).toInt()), 1, 1); }
-	else
-	{ this->m_web->addWidget(l, floor(id/pl)+(floor(site/m_settings->value("columns", 1).toInt())*(ceil(fl)+1))+1, id%pl+pl*(site%m_settings->value("columns", 1).toInt()), 1, 1); }
-	this->webPics.append(l);
+	if (m_countPage[ste] != 0)
+	{
+		int pl = ceil(sqrt(m_countPage[ste]));
+		float fl = (float)m_countPage[ste]/pl;
+		if (!m_loadFavorite.isNull())
+		{ this->m_webFavorites->addWidget(l, floor(id/pl)+(floor(site/m_settings->value("columns", 1).toInt())*(ceil(fl)+1))+1, id%pl+pl*(site%m_settings->value("columns", 1).toInt()), 1, 1); }
+		else
+		{ this->m_web->addWidget(l, floor(id/pl)+(floor(site/m_settings->value("columns", 1).toInt())*(ceil(fl)+1))+1, id%pl+pl*(site%m_settings->value("columns", 1).toInt()), 1, 1); }
+		this->webPics.append(l);
+	}
 }
 
 void mainWindow::batchChange(int id)
