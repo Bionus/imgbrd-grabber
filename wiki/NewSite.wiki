@@ -50,7 +50,7 @@ I advise you not to use regex to retrieve information, unless this is the only w
   # Regex for a single image on the posts list.
   # Names of retrieved informations.
   # Regex for the last page.
-  # This one is optional. It is the image's url. For example : "http://www.somesite.com/image/{id}.{ext}" (tokens: id, ext, md5). {ext} will by replaced in this order, until it finds the image: jpg, png, jpeg, gif.
+  # This one is optional. It is the image's url. For example : "`http://www.somesite.com/image/{id}.{ext}`" (tokens: id, ext, md5). {ext} will by replaced in this order, until it finds the image: jpg, png, jpeg, gif.
 Example :
 {{{
 1
