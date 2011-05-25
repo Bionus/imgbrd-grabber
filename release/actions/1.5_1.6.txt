@@ -1,2 +1,0 @@
-delete favorites.txt
-mkpath_loc thumbs
