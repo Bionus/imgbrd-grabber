@@ -50,6 +50,7 @@ I advise you not to use regex to retrieve information, unless this is the only w
   # Regex for a single image on the posts list.
   # Names of retrieved informations.
   # Regex for the last page.
+  # This one is optional. It is the image's url. For example : "http://www.somesite.com/image/{id}.{ext}" (tokens: id, ext, md5). {ext} will by replaced in this order, until it finds the image: jpg, png, jpeg, gif.
 Example :
 {{{
 1
@@ -65,5 +66,5 @@ id|image|preview_url|md5|tags|rating|score|user
 
 = Conclusion =
 
-Note that most of the imageboards use the same API. So in most of the case, doing a copy/paste of the danbooru or gelbooru (the two main apis) file, then changing url is enough.
-And don't hesitate sending me a mail with your site file at bio.nus@hotmail.fr, so I will add it to the downloads !
+Note that most of the imageboards use the same API. So in most of the case, doing a copy/paste of the danbooru or gelbooru (the two main engines) file, then changing url is enough. For shimmie-based boorus, you can copy/paste the one from tentaclerape, but you may have to do some modifications.
+And don't hesitate sending me a mail with your site file at bio.nus@hotmail.fr, so I will add it to the officially supported boorus!
