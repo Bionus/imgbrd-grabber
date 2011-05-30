@@ -66,5 +66,16 @@ QMap<QString,QString> loadFavorites()
 	return favorites;
 }
 
+QString validateFilename(QString text)
+{
+	if (text.isEmpty())
+	{ return QObject::tr("<span style=\"color:red\">Les noms de fichiers ne doivent pas être vides !</span>"); }
+	if (!text.endsWith(".%ext%"))
+	{ return QObject::tr("<span style=\"color:orange\">Votre nom de fichier ne finit pas par une extension, symbolisée par %ext% ! Vous risquez de ne pas pouvoir ouvrir vos fichiers.</span>"); }
+	if (!text.contains("%md5%"))
+	{ return QObject::tr("<span style=\"color:orange\">Votre nom de fichier n'est pas unique à chaque image et une image risque d'en écraser une précédente lors de la sauvegarde ! Vous devriez utiliser le symbole %md5%, unique à chaque image, pour éviter ce désagrément.</span>"); }
+	return QObject::tr("<span style=\"color:green\">Format valide !</span>");
+}
+
 QString savePath(QString file)
 { return QDir::toNativeSeparators(QDir::homePath()+"/Grabber/"+file); }

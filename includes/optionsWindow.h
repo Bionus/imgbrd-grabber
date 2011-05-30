@@ -1,33 +1,35 @@
-#ifndef HEADER_OPTIONSWINDOW
-#define HEADER_OPTIONSWINDOW
+#ifndef OPTIONSWINDOW_H
+#define OPTIONSWINDOW_H
 
 #include <QtGui>
 #include "mainWindow.h"
 
+namespace Ui
+{
+    class optionsWindow;
+}
 
 
-class optionsWindow : public QWidget
+
+class optionsWindow : public QDialog
 {
     Q_OBJECT
 
 	public:
-		optionsWindow(mainWindow *parent = 0);
-		QTabWidget	*onglets;
-
-	signals:
-		void closed();
+		explicit optionsWindow(mainWindow *parent = 0);
+		~optionsWindow();
 
 	public slots:
+		void updateContainer(QTreeWidgetItem *, QTreeWidgetItem *);
+		void on_buttonFolder_clicked();
+		void on_buttonColoringArtists_clicked();
+		void on_buttonColoringCopyrights_clicked();
+		void on_buttonColoringCharacters_clicked();
 		void save();
-		void closeEvent(QCloseEvent *);
-	
+
 	private:
-		mainWindow	*parent;
-		QStringList	languages, codes, sources;
-		QComboBox	*comboLanguages, *comboSource1, *comboSource2, *comboSource3;
-		QSpinBox	*spinColumns, *spinLimit, *m_spinUpdatesRate;
-		QLineEdit	*m_lineDateFormat, *linePath, *lineFilename, *lineArtistEmpty, *lineArtistSep, *lineArtistValue, *lineCopyrightEmpty, *lineCopyrightSep, *lineCopyrightValue, *lineCharacterEmpty, *lineCharacterSep, *lineCharacterValue, *lineBlacklistedtags, *m_lineExecInit, *m_lineExecImage, *m_lineExecTag, *m_lineSaveSeparator;
-		QCheckBox	*checkDownloadBlacklist, *checkArtistUseall, *checkCopyrightUseall, *checkCharacterUseall, *m_checkLoadAtStart, *m_checkLogInvert, *m_checkLogShow, *m_checkCopyrightUseShorter, *m_checkDownloadOriginals;
+		mainWindow *m_parent;
+		Ui::optionsWindow *ui;
 };
 
-#endif
+#endif // OPTIONSWINDOW_H

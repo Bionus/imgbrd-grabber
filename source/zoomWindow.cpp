@@ -318,7 +318,7 @@ QString zoomWindow::saveImage()
 		if (reply == QMessageBox::Yes)
 		{
 			optionsWindow *options = new optionsWindow(m_parent);
-			options->onglets->setCurrentIndex(3);
+			//options->onglets->setCurrentIndex(3);
 			options->setWindowModality(Qt::ApplicationModal);
 			options->show();
 			connect(options, SIGNAL(closed()), this, SLOT(saveImage()));
@@ -388,15 +388,16 @@ QString zoomWindow::getSavePath()
 	.replace("%character%", (this->details["characters"].isEmpty() ? settings.value("character_empty").toString() : (settings.value("character_useall").toBool() || this->details["characters"].count() == 1 ? this->details["characters"].join(settings.value("character_sep").toString()) : settings.value("character_value").toString())))
 	.replace("%model%", (this->details["models"].isEmpty() ? settings.value("model_empty").toString() : (settings.value("model_useall").toBool() || this->details["models"].count() == 1 ? this->details["models"].join(settings.value("model_sep").toString()) : settings.value("model_value").toString())))
 	.replace("%model|artist%", (!this->details["models"].isEmpty() ? (settings.value("model_useall").toBool() || this->details["models"].count() == 1 ? this->details["models"].join(settings.value("model_sep").toString()) : settings.value("model_value").toString()) : (this->details["artists"].isEmpty() ? settings.value("artist_empty").toString() : (settings.value("artist_useall").toBool() || this->details["artists"].count() == 1 ? this->details["artists"].join(settings.value("artist_sep").toString()) : settings.value("artist_value").toString()))))
-	.replace("%all%", this->details["alls"].join(settings.value("separator").toString()))
 	.replace("%filename%", m_details.value("file_url").section('/', -1).section('.', 0, -2))
 	.replace("%rating%", this->rating)
 	.replace("%md5%", m_details.value("md5"))
 	.replace("%website%", m_details.value("site"))
 	.replace("%ext%", this->url.section('.', -1))
 	.replace("\\", "/");
-	if (filename.left(1) == "/")
-	{ filename = filename.right(filename.length()-1); }
+	QString pth = settings.value("path").toString().replace("\\", "/");
+	if (filename.left(1) == "/")	{ filename = filename.right(filename.length()-1);	}
+	if (pth.right(1) == "/")		{ pth = pth.left(pth.length()-1);					}
+	filename.replace("%all%", this->details["alls"].join(settings.value("separator").toString()).left(264-pth.length()-filename.length())); // 264 = 260 (windows limitation) - 1 (the slash between path and filename) + 5 (filename still contains "{all}" currently, and we must not take this length in account)
 	return filename;
 }
 
