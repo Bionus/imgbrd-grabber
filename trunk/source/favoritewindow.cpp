@@ -33,7 +33,7 @@ favoriteWindow::~favoriteWindow()
  */
 void favoriteWindow::on_openButton_clicked()
 {
-	QString file = QFileDialog::getOpenFileName(this, tr("Choisir une image"), QSettings("settings.ini", QSettings::IniFormat).value("Save/path").toString(), "Images (*.png *.gif *.jpg *.jpeg)");
+	QString file = QFileDialog::getOpenFileName(this, tr("Choisir une image"), QSettings(savePath("settings.ini"), QSettings::IniFormat).value("Save/path").toString(), "Images (*.png *.gif *.jpg *.jpeg)");
 	if (!file.isEmpty())
 	{ ui->imageLineEdit->setText(file); }
 }

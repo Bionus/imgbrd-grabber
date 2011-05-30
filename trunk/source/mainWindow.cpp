@@ -17,8 +17,9 @@
 #include "QBouton.h"
 #include "json.h"
 #include "favoritewindow.h"
+#include "startwindow.h"
 
-#define VERSION	"1.7"
+#define VERSION	"1.8"
 #define DONE()	logUpdate(tr(" Fait"));
 
 using namespace std;
@@ -40,6 +41,8 @@ mainWindow::mainWindow(QString m_program, QStringList m_tags, QMap<QString,QStri
 
 	if (m_settings->value("firstload", true).toBool())
 	{
+		startWindow *swin = new startWindow(this);
+		swin->show();
 		QSettings cfg(QSettings::IniFormat, QSettings::UserScope, "Mozilla", "Firefox");
 		QString path = QFileInfo(cfg.fileName()).absolutePath()+"/Firefox";
 		QSettings profiles(path+"/profiles.ini", QSettings::IniFormat);
@@ -1535,6 +1538,8 @@ void mainWindow::replyFinished(QNetworkReply* r)
 	//int pl = ceil(sqrt(results));
 	//float fl = (float)results/pl;
 	int pl = ceil(sqrt(m_settings->value("limit", 20).toInt()));
+
+
 	float fl = (float)m_settings->value("limit", 20).toInt()/pl;
 	if (!m_loadFavorite.isNull())
 	{
