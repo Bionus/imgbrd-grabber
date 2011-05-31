@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>646</width>
-    <height>1274</height>
+    <height>1560</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -389,7 +389,7 @@
             </property>
            </widget>
           </item>
-          <item row="5" column="0" colspan="2">
+          <item row="6" column="0" colspan="2">
            <widget class="QLabel" name="label_15">
             <property name="text">
              <string>Symboles disponibles : &lt;i&gt;%artist%&lt;/i&gt;, &lt;i&gt;%general%&lt;/i&gt;, &lt;i&gt;%copyright%&lt;/i&gt;, &lt;i&gt;%character%&lt;/i&gt;, &lt;i&gt;%all%&lt;/i&gt;, &lt;i&gt;%filename%&lt;/i&gt;, &lt;i&gt;%ext%&lt;/i&gt;, &lt;i&gt;%rating%&lt;/i&gt;, &lt;i&gt;%website%&lt;/i&gt;, &lt;i&gt;%md5%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%artist%&lt;/i&gt; : tags de nom d'artiste&lt;br/&gt;&lt;i&gt;%general%&lt;/i&gt; : tags d'image génériques&lt;br/&gt;&lt;i&gt;%copyright%&lt;/i&gt; : tags de copyright, en général le nom de l'anime/manga&lt;br/&gt;&lt;i&gt;%character%&lt;/i&gt; : tags indiquant quels personnages sont présents sur l'image&lt;br/&gt;&lt;i&gt;%all%&lt;/i&gt; : tous les tags&lt;br/&gt;&lt;i&gt;%filename%&lt;/i&gt; : nom du fichier sur le serveur, en général une chaîne alphanumérique&lt;br/&gt;&lt;i&gt;%ext%&lt;/i&gt; : extension de l'image&lt;br/&gt;&lt;i&gt;%rating%&lt;/i&gt; : Questionable, Safe ou Explicit&lt;br/&gt;&lt;i&gt;%website%&lt;/i&gt; : url du site de l'image&lt;br/&gt;&lt;i&gt;%md5%&lt;/i&gt; : code unique de l'image, composé de 32 caractères alphanumériques</string>
@@ -429,6 +429,16 @@
           </item>
           <item row="4" column="1">
            <widget class="QLineEdit" name="lineFilename"/>
+          </item>
+          <item row="5" column="0" colspan="2">
+           <widget class="QLabel" name="filenameValidator">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>
@@ -626,7 +636,7 @@
             <item>
              <widget class="QLineEdit" name="lineColoringArtists">
               <property name="text">
-               <string>#aa0000</string>
+               <string/>
               </property>
              </widget>
             </item>
@@ -674,6 +684,48 @@
             </item>
             <item>
              <widget class="QPushButton" name="buttonColoringCharacters">
+              <property name="text">
+               <string>Choisir</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="label_33">
+            <property name="text">
+             <string>Modèles</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="label_34">
+            <property name="text">
+             <string>Généraux</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="1,0">
+            <item>
+             <widget class="QLineEdit" name="lineColoringGenerals"/>
+            </item>
+            <item>
+             <widget class="QPushButton" name="buttonColoringGenerals">
+              <property name="text">
+               <string>Choisir</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="3" column="1">
+           <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="1,0">
+            <item>
+             <widget class="QLineEdit" name="lineColoringModels"/>
+            </item>
+            <item>
+             <widget class="QPushButton" name="buttonColoringModels">
               <property name="text">
                <string>Choisir</string>
               </property>
