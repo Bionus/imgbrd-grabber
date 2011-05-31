@@ -220,11 +220,11 @@ void zoomWindow::replyFinished(QNetworkReply* reply)
 			{ normalized.replace('_', ' '); }
 			if (blacklistedtags.contains(tag, Qt::CaseInsensitive))
 			{ tags.replace(" "+tag+" ", " <a href=\""+tag+"\" style=\"font-weight:bold;text-decoration:underline;color:#000000\">"+tag+"</a> ");	}
-			if (type == "character")		{ this->details["characters"].append(normalized);	tags.replace(" "+tag+" ", " <a href=\""+tag+"\" style=\"text-decoration:none;color:#00aa00\">"+tag+"</a> ");	}
-			else if (type == "copyright")	{ this->details["copyrights"].append(normalized);	tags.replace(" "+tag+" ", " <a href=\""+tag+"\" style=\"text-decoration:none;color:#aa00aa\">"+tag+"</a> ");	}
-			else if (type == "artist")		{ this->details["artists"].append(normalized);		tags.replace(" "+tag+" ", " <a href=\""+tag+"\" style=\"text-decoration:none;color:#aa0000\">"+tag+"</a> ");	}
-			else if (type == "model")		{ this->details["models"].append(normalized);		tags.replace(" "+tag+" ", " <a href=\""+tag+"\" style=\"text-decoration:none;color:#0000ee\">"+tag+"</a> ");	}
-			else							{ this->details["generals"].append(normalized);		tags.replace(" "+tag+" ", " <a href=\""+tag+"\" style=\"text-decoration:none;color:#000000\">"+tag+"</a> "); }
+			if (type == "character")		{ this->details["characters"].append(normalized);	tags.replace(" "+tag+" ", " <a href=\""+tag+"\" style=\"text-decoration:none;color:"+settings.value("Coloring/characters", "#00aa00").toString()+"\">"+tag+"</a> ");	}
+			else if (type == "copyright")	{ this->details["copyrights"].append(normalized);	tags.replace(" "+tag+" ", " <a href=\""+tag+"\" style=\"text-decoration:none;color:"+settings.value("Coloring/copyrights", "#aa00aa").toString()+"\">"+tag+"</a> ");	}
+			else if (type == "artist")		{ this->details["artists"].append(normalized);		tags.replace(" "+tag+" ", " <a href=\""+tag+"\" style=\"text-decoration:none;color:"+settings.value("Coloring/artists", "#aa0000").toString()+"\">"+tag+"</a> ");	}
+			else if (type == "model")		{ this->details["models"].append(normalized);		tags.replace(" "+tag+" ", " <a href=\""+tag+"\" style=\"text-decoration:none;color:"+settings.value("Coloring/models", "#0000ee").toString()+"\">"+tag+"</a> ");	}
+			else							{ this->details["generals"].append(normalized);		tags.replace(" "+tag+" ", " <a href=\""+tag+"\" style=\"text-decoration:none;color:"+settings.value("Coloring/generals", "#000000").toString()+"\">"+tag+"</a> ");	}
 			this->details["alls"].append(normalized);
 		}
 		ui->labelTags->setText(tags.trimmed());

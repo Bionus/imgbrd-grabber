@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'optionswindow.ui'
 **
-** Created: Mon 30. May 22:53:21 2011
+** Created: Tue 31. May 15:53:35 2011
 **      by: Qt User Interface Compiler version 4.6.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -80,6 +80,7 @@ public:
     QPushButton *buttonFolder;
     QLabel *label_8;
     QLineEdit *lineFilename;
+    QLabel *filenameValidator;
     QWidget *widget_4;
     QFormLayout *formLayout_5;
     QLabel *label_16;
@@ -122,6 +123,14 @@ public:
     QHBoxLayout *horizontalLayout_5;
     QLineEdit *lineColoringCharacters;
     QPushButton *buttonColoringCharacters;
+    QLabel *label_33;
+    QLabel *label_34;
+    QHBoxLayout *horizontalLayout_6;
+    QLineEdit *lineColoringGenerals;
+    QPushButton *buttonColoringGenerals;
+    QHBoxLayout *horizontalLayout_7;
+    QLineEdit *lineColoringModels;
+    QPushButton *buttonColoringModels;
     QWidget *widget_7;
     QFormLayout *formLayout_8;
     QLabel *label_25;
@@ -138,7 +147,7 @@ public:
     {
         if (optionsWindow->objectName().isEmpty())
             optionsWindow->setObjectName(QString::fromUtf8("optionsWindow"));
-        optionsWindow->resize(646, 1274);
+        optionsWindow->resize(646, 1560);
         QIcon icon;
         icon.addFile(QString::fromUtf8(":/images/icon.ico"), QSize(), QIcon::Normal, QIcon::Off);
         optionsWindow->setWindowIcon(icon);
@@ -354,7 +363,7 @@ public:
         label_15->setObjectName(QString::fromUtf8("label_15"));
         label_15->setWordWrap(true);
 
-        formLayout_4->setWidget(5, QFormLayout::SpanningRole, label_15);
+        formLayout_4->setWidget(6, QFormLayout::SpanningRole, label_15);
 
         lineSeparator = new QLineEdit(widget_3);
         lineSeparator->setObjectName(QString::fromUtf8("lineSeparator"));
@@ -386,6 +395,12 @@ public:
         lineFilename->setObjectName(QString::fromUtf8("lineFilename"));
 
         formLayout_4->setWidget(4, QFormLayout::FieldRole, lineFilename);
+
+        filenameValidator = new QLabel(widget_3);
+        filenameValidator->setObjectName(QString::fromUtf8("filenameValidator"));
+        filenameValidator->setWordWrap(true);
+
+        formLayout_4->setWidget(5, QFormLayout::SpanningRole, filenameValidator);
 
 
         container->addWidget(widget_3);
@@ -588,6 +603,48 @@ public:
 
         formLayout_9->setLayout(2, QFormLayout::FieldRole, horizontalLayout_5);
 
+        label_33 = new QLabel(widget_8);
+        label_33->setObjectName(QString::fromUtf8("label_33"));
+
+        formLayout_9->setWidget(3, QFormLayout::LabelRole, label_33);
+
+        label_34 = new QLabel(widget_8);
+        label_34->setObjectName(QString::fromUtf8("label_34"));
+
+        formLayout_9->setWidget(4, QFormLayout::LabelRole, label_34);
+
+        horizontalLayout_6 = new QHBoxLayout();
+        horizontalLayout_6->setObjectName(QString::fromUtf8("horizontalLayout_6"));
+        lineColoringGenerals = new QLineEdit(widget_8);
+        lineColoringGenerals->setObjectName(QString::fromUtf8("lineColoringGenerals"));
+
+        horizontalLayout_6->addWidget(lineColoringGenerals);
+
+        buttonColoringGenerals = new QPushButton(widget_8);
+        buttonColoringGenerals->setObjectName(QString::fromUtf8("buttonColoringGenerals"));
+
+        horizontalLayout_6->addWidget(buttonColoringGenerals);
+
+        horizontalLayout_6->setStretch(0, 1);
+
+        formLayout_9->setLayout(4, QFormLayout::FieldRole, horizontalLayout_6);
+
+        horizontalLayout_7 = new QHBoxLayout();
+        horizontalLayout_7->setObjectName(QString::fromUtf8("horizontalLayout_7"));
+        lineColoringModels = new QLineEdit(widget_8);
+        lineColoringModels->setObjectName(QString::fromUtf8("lineColoringModels"));
+
+        horizontalLayout_7->addWidget(lineColoringModels);
+
+        buttonColoringModels = new QPushButton(widget_8);
+        buttonColoringModels->setObjectName(QString::fromUtf8("buttonColoringModels"));
+
+        horizontalLayout_7->addWidget(buttonColoringModels);
+
+        horizontalLayout_7->setStretch(0, 1);
+
+        formLayout_9->setLayout(3, QFormLayout::FieldRole, horizontalLayout_7);
+
 
         container->addWidget(widget_8);
 
@@ -733,6 +790,7 @@ public:
         lineSeparator->setText(QString());
         buttonFolder->setText(QApplication::translate("optionsWindow", "Parcourir", 0, QApplication::UnicodeUTF8));
         label_8->setText(QApplication::translate("optionsWindow", "Noms de fichiers", 0, QApplication::UnicodeUTF8));
+        filenameValidator->setText(QString());
         label_16->setText(QApplication::translate("optionsWindow", "Si aucun", 0, QApplication::UnicodeUTF8));
         label_18->setText(QApplication::translate("optionsWindow", "S\303\251parateur si multiples", 0, QApplication::UnicodeUTF8));
         label_19->setText(QApplication::translate("optionsWindow", "Valeur si multiples", 0, QApplication::UnicodeUTF8));
@@ -756,12 +814,16 @@ public:
         lineCharactersIfMultiples->setText(QApplication::translate("optionsWindow", "group", 0, QApplication::UnicodeUTF8));
         checkCharactersKeepAll->setText(QApplication::translate("optionsWindow", "Garder tous", 0, QApplication::UnicodeUTF8));
         label_30->setText(QApplication::translate("optionsWindow", "Artistes", 0, QApplication::UnicodeUTF8));
-        lineColoringArtists->setText(QApplication::translate("optionsWindow", "#aa0000", 0, QApplication::UnicodeUTF8));
+        lineColoringArtists->setText(QString());
         buttonColoringArtists->setText(QApplication::translate("optionsWindow", "Choisir", 0, QApplication::UnicodeUTF8));
         label_31->setText(QApplication::translate("optionsWindow", "S\303\251ries", 0, QApplication::UnicodeUTF8));
         label_32->setText(QApplication::translate("optionsWindow", "Personnages", 0, QApplication::UnicodeUTF8));
         buttonColoringCopyrights->setText(QApplication::translate("optionsWindow", "Choisir", 0, QApplication::UnicodeUTF8));
         buttonColoringCharacters->setText(QApplication::translate("optionsWindow", "Choisir", 0, QApplication::UnicodeUTF8));
+        label_33->setText(QApplication::translate("optionsWindow", "Mod\303\250les", 0, QApplication::UnicodeUTF8));
+        label_34->setText(QApplication::translate("optionsWindow", "G\303\251n\303\251raux", 0, QApplication::UnicodeUTF8));
+        buttonColoringGenerals->setText(QApplication::translate("optionsWindow", "Choisir", 0, QApplication::UnicodeUTF8));
+        buttonColoringModels->setText(QApplication::translate("optionsWindow", "Choisir", 0, QApplication::UnicodeUTF8));
         label_25->setText(QApplication::translate("optionsWindow", "Initialisation", 0, QApplication::UnicodeUTF8));
         label_26->setText(QApplication::translate("optionsWindow", "Image", 0, QApplication::UnicodeUTF8));
         label_27->setText(QApplication::translate("optionsWindow", "Symboles disponibles : les m\303\252mes que dans la partie sauvegarde.", 0, QApplication::UnicodeUTF8));

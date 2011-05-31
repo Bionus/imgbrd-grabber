@@ -19,7 +19,7 @@ optionsWindow::optionsWindow(mainWindow *parent) : QDialog(parent), m_parent(par
 
 	ui->comboLanguages->setCurrentIndex(languages.indexOf(settings.value("language", "English").toString()));
 	ui->spinCheckForUpdates->setValue(settings.value("updatesrate", 86400).toInt());
-	ui->lineDateFormat->setText(settings.value("dateformat").toString());
+	ui->lineDateFormat->setText(settings.value("dateformat", "dd/MM/yyyy").toString());
 	ui->lineBlacklist->setText(settings.value("blacklistedtags").toString());
 	ui->checkDownloadBlacklisted->setChecked(settings.value("downloadblacklist", false).toBool());
 	ui->checkLoadFirstAtStart->setChecked(settings.value("loadatstart", false).toBool());
@@ -64,6 +64,8 @@ optionsWindow::optionsWindow(mainWindow *parent) : QDialog(parent), m_parent(par
 		ui->lineColoringArtists->setText(settings.value("artists", "#aa0000").toString());
 		ui->lineColoringCopyrights->setText(settings.value("copyrights", "#aa00aa").toString());
 		ui->lineColoringCharacters->setText(settings.value("characters", "#00aa00").toString());
+		ui->lineColoringModels->setText(settings.value("models", "#0000ee").toString());
+		ui->lineColoringGenerals->setText(settings.value("generals", "#000000").toString());
 
 	settings.endGroup();
 
@@ -83,12 +85,27 @@ optionsWindow::~optionsWindow()
 	delete ui;
 }
 
+void optionsWindow::on_lineFilename_textChanged(QString text)
+{ ui->filenameValidator->setText(validateFilename(text)); }
+
 void optionsWindow::on_buttonFolder_clicked()
 {
 	QString folder = QFileDialog::getExistingDirectory(this, tr("Choisir un dossier de sauvegarde"), ui->lineFolder->text());
 	if (!folder.isEmpty())
 	{ ui->lineFolder->setText(folder); }
 }
+
+void optionsWindow::on_lineColoringArtists_textChanged()
+{ ui->lineColoringArtists->setStyleSheet("color:"+ui->lineColoringArtists->text()); }
+void optionsWindow::on_lineColoringCopyrights_textChanged()
+{ ui->lineColoringCopyrights->setStyleSheet("color:"+ui->lineColoringCopyrights->text()); }
+void optionsWindow::on_lineColoringCharacters_textChanged()
+{ ui->lineColoringCharacters->setStyleSheet("color:"+ui->lineColoringCharacters->text()); }
+void optionsWindow::on_lineColoringModels_textChanged()
+{ ui->lineColoringModels->setStyleSheet("color:"+ui->lineColoringModels->text()); }
+void optionsWindow::on_lineColoringGenerals_textChanged()
+{ ui->lineColoringGenerals->setStyleSheet("color:"+ui->lineColoringGenerals->text()); }
+
 void optionsWindow::on_buttonColoringArtists_clicked()
 {
 	QColor color = QColorDialog::getColor(QColor(ui->lineColoringArtists->text()), this, "Grabber - Choisir une couleur");
@@ -106,6 +123,18 @@ void optionsWindow::on_buttonColoringCharacters_clicked()
 	QColor color = QColorDialog::getColor(QColor(ui->lineColoringCharacters->text()), this, "Grabber - Choisir une couleur");
 	if (color.isValid())
 	{ ui->lineColoringCharacters->setText(color.name()); }
+}
+void optionsWindow::on_buttonColoringModels_clicked()
+{
+	QColor color = QColorDialog::getColor(QColor(ui->lineColoringModels->text()), this, "Grabber - Choisir une couleur");
+	if (color.isValid())
+	{ ui->lineColoringModels->setText(color.name()); }
+}
+void optionsWindow::on_buttonColoringGenerals_clicked()
+{
+	QColor color = QColorDialog::getColor(QColor(ui->lineColoringGenerals->text()), this, "Grabber - Choisir une couleur");
+	if (color.isValid())
+	{ ui->lineColoringGenerals->setText(color.name()); }
 }
 
 void optionsWindow::updateContainer(QTreeWidgetItem *current, QTreeWidgetItem *previous)
@@ -184,6 +213,8 @@ void optionsWindow::save()
 		settings.setValue("artists", ui->lineColoringArtists->text());
 		settings.setValue("copyrights", ui->lineColoringCopyrights->text());
 		settings.setValue("characters", ui->lineColoringCharacters->text());
+		settings.setValue("models", ui->lineColoringModels->text());
+		settings.setValue("generals", ui->lineColoringGenerals->text());
 
 	settings.endGroup();
 
