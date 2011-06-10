@@ -76,7 +76,7 @@ class mainWindow : public QMainWindow
 		Ui::mainWindow *ui;
 		QSettings *m_settings;
 		QDateTime m_serverDate;
-		int m_timezonedecay, m_getAllId, m_getAllDownloaded, m_getAllExists, m_getAllIgnored, m_getAllErrors, m_getAllCount, m_getAllPageCount, m_getAllBeforeId, m_pagemax;
+		int m_timezonedecay, m_getAllId, m_getAllDownloaded, m_getAllExists, m_getAllIgnored, m_getAllErrors, m_getAllCount, m_getAllPageCount, m_getAllBeforeId, m_pagemax, m_remainingPics, m_remainingSites;
 		QMap<QString,QString> m_favorites, m_params;
 		QString m_program;
 		QStringList m_tags, m_assoc, m_gotMd5;
@@ -101,6 +101,7 @@ class mainWindow : public QMainWindow
 		QProcess *m_process;
 		QNetworkReply *m_getAllRequest;
 		QProgressDialog *m_progressdialog;
+		QList<QBouton*> m_mergeButtons;
 };
 
 #endif // MAINWINDOW_H

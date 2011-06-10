@@ -142,6 +142,9 @@
                <property name="text">
                 <string>Fusionner les résultats</string>
                </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
               </widget>
              </item>
              <item>
