@@ -25,6 +25,7 @@ mainWindow::mainWindow(QString program, QStringList tags, QMap<QString,QString> 
 	QStringList assoc = QStringList() << "name" << "note" << "lastviewed";
 		ui->comboOrderfavorites->setCurrentIndex(assoc.indexOf(m_settings->value("Favorites/order").toString()));
 		ui->comboOrderasc->setCurrentIndex(int(m_settings->value("Favorites/reverse").toBool()));
+		ui->checkMergeResults->setChecked(m_settings->value("mergeresults", false).toBool());
 		m_settings->setValue("reverse", bool(ui->comboOrderasc->currentIndex() == 1));
 	loadLanguage(m_settings->value("language", "English").toString());
 
@@ -418,6 +419,8 @@ void mainWindow::webUpdatePopular()
 }
 void mainWindow::web(QString tags, bool popular)
 {
+	m_remainingPics = 0;
+	m_remainingSites = 0;
 	m_currentPageIsPopular = popular;
 	tags = (tags.isEmpty() ? m_search->toPlainText() : tags);
 	if (!m_replies.isEmpty())
@@ -499,6 +502,7 @@ void mainWindow::web(QString tags, bool popular)
 		{
 			log(tr("Chargement de la page <a href=\"%1\">%1</a>").arg(url));
 			m_replies.append(manager->get(QNetworkRequest(QUrl::fromEncoded(url.toAscii()))));
+			m_remainingSites++;
 		}
 	}
 }
@@ -685,6 +689,8 @@ void mainWindow::replyFinished(QNetworkReply* r)
 		}
 	}
 	m_countPage[site] = results;
+	m_remainingPics += results;
+	m_remainingSites--;
 	if (!ui->checkMergeResults->isChecked())
 	{
 		QLabel *txt = new QLabel();
@@ -725,6 +731,7 @@ void mainWindow::replyFinishedPic(QNetworkReply* r)
 {
 	// TODO: bug qqpart ici
 	log("Received preview image <a href='"+r->url().toString()+"'>"+r->url().toString()+"</a>");
+	m_remainingPics--;
 	int id = 0, site = 0, n = 0;
 	QString ste;
 	for (int i = 0; i < m_details.count(); i++)
@@ -787,15 +794,35 @@ void mainWindow::replyFinishedPic(QNetworkReply* r)
 		connect(l, SIGNAL(rightClick(int)), this, SLOT(batchChange(int)));
 	if (m_countPage[ste] != 0)
 	{
-		int pl = ceil(sqrt(m_settings->value("limit", 20).toInt()));
-		float fl = (float)m_settings->value("limit", 20).toInt()/pl;
-		//int pl = ceil(sqrt(m_countPage[ste]));
-		//float fl = (float)m_countPage[ste]/pl;
-		if (!m_loadFavorite.isNull())
-		{ ui->layoutFavoritesResults->addWidget(l, floor(id/pl)+(floor(site/m_settings->value("columns", 1).toInt())*(ceil(fl)+1))+1, id%pl+pl*(site%m_settings->value("columns", 1).toInt()), 1, 1); }
+		if (ui->checkMergeResults->isChecked())
+		{
+			m_mergeButtons.append(l);
+			if (m_remainingPics == 0 && m_remainingSites == 0)
+			{
+				int pl = ceil(sqrt(m_mergeButtons.count()));
+				float fl = (float)m_mergeButtons.count()/pl;
+				for (int id = 0; id < m_mergeButtons.count(); id++)
+				{
+					if (!m_loadFavorite.isNull())
+					{ ui->layoutFavoritesResults->addWidget(m_mergeButtons.at(id), floor(id/pl)+(floor(site/m_settings->value("columns", 1).toInt())*(ceil(fl)+1))+1, id%pl+pl*(site%m_settings->value("columns", 1).toInt()), 1, 1); }
+					else
+					{ ui->layoutResults->addWidget(m_mergeButtons.at(id), floor(id/pl)+(floor(site/m_settings->value("columns", 1).toInt())*(ceil(fl)+1))+1, id%pl+pl*(site%m_settings->value("columns", 1).toInt()), 1, 1); }
+					m_webPics.append(m_mergeButtons.at(id));
+				}
+			}
+		}
 		else
-		{ ui->layoutResults->addWidget(l, floor(id/pl)+(floor(site/m_settings->value("columns", 1).toInt())*(ceil(fl)+1))+1, id%pl+pl*(site%m_settings->value("columns", 1).toInt()), 1, 1); }
-		m_webPics.append(l);
+		{
+			int pl = ceil(sqrt(m_settings->value("limit", 20).toInt()));
+			float fl = (float)m_settings->value("limit", 20).toInt()/pl;
+			//int pl = ceil(sqrt(m_countPage[ste]));
+			//float fl = (float)m_countPage[ste]/pl;
+			if (!m_loadFavorite.isNull())
+			{ ui->layoutFavoritesResults->addWidget(l, floor(id/pl)+(floor(site/m_settings->value("columns", 1).toInt())*(ceil(fl)+1))+1, id%pl+pl*(site%m_settings->value("columns", 1).toInt()), 1, 1); }
+			else
+			{ ui->layoutResults->addWidget(l, floor(id/pl)+(floor(site/m_settings->value("columns", 1).toInt())*(ceil(fl)+1))+1, id%pl+pl*(site%m_settings->value("columns", 1).toInt()), 1, 1); }
+			m_webPics.append(l);
+		}
 	}
 }
 
@@ -947,6 +974,7 @@ void mainWindow::closeEvent(QCloseEvent *e)
 			m_settings->setValue("order", assoc[ui->comboOrderfavorites->currentIndex()]);
 			m_settings->setValue("reverse", bool(ui->comboOrderasc->currentIndex() == 1));
 		m_settings->endGroup();
+		m_settings->setValue("mergeresults", ui->checkMergeResults->isChecked());
 	DONE()
 	e->accept();
 }
