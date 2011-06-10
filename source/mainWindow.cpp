@@ -801,7 +801,6 @@ void mainWindow::replyFinishedPic(QNetworkReply* r)
 		if (ui->checkMergeResults->isChecked())
 		{
 			m_mergeButtons.append(l);
-			qDebug() << m_remainingPics << m_remainingSites;
 			if (m_remainingPics == 0 && m_remainingSites == 0)
 			{
 				int pl = ceil(sqrt(m_mergeButtons.count()));
@@ -1313,13 +1312,17 @@ void mainWindow::_getAll()
 		{
 			QString u(m_allImages.at(m_getAllId).value("file_url"));
 			QString path = m_settings->value("Save/filename").toString()
-			.replace("%all%", m_allImages.at(m_getAllId).value("tags"))
-			.replace("%all_original%", m_allImages.at(m_getAllId).value("tags"))
 			.replace("%filename%", u.section('/', -1).section('.', 0, -2))
 			.replace("%rating%", m_allImages.at(m_getAllId).value("rating"))
 			.replace("%md5%", m_allImages.at(m_getAllId).value("md5"))
 			.replace("%website%", m_allImages.at(m_getAllId).value("site"))
 			.replace("%ext%", u.section('.', -1));
+			QString pth = m_settings->value("Save/path").toString().replace("\\", "/");
+			if (path.left(1) == "/")	{ path = path.right(path.length()-1);	}
+			if (pth.right(1) == "/")	{ pth = pth.left(pth.length()-1);		}
+			QString all = m_allImages.at(m_getAllId).value("tags");
+			all.replace(" ", m_settings->value("separator", " ").toString());
+			path.replace("%all%", all.left(263-pth.length()-path.length()));
 			QFile file(path);
 			if (!file.exists())
 			{
@@ -1504,20 +1507,18 @@ void mainWindow::getAllPerformImage(QNetworkReply* reply)
 		.replace("%character%", (m_getAllDetails["characters"].isEmpty() ? m_settings->value("character_empty").toString() : (m_settings->value("character_useall").toBool() || m_getAllDetails["characters"].count() == 1 ? m_getAllDetails["characters"].join(m_settings->value("character_sep").toString()) : m_settings->value("character_value").toString())))
 		.replace("%model%", (m_getAllDetails["models"].isEmpty() ? m_settings->value("model_empty").toString() : (m_settings->value("model_useall").toBool() || m_getAllDetails["models"].count() == 1 ? m_getAllDetails["models"].join(m_settings->value("model_sep").toString()) : m_settings->value("model_value").toString())))
 		.replace("%model|artist%", (!m_getAllDetails["models"].isEmpty() ? (m_settings->value("model_useall").toBool() || m_getAllDetails["models"].count() == 1 ? m_getAllDetails["models"].join(m_settings->value("model_sep").toString()) : m_settings->value("model_value").toString()) : (m_getAllDetails["artists"].isEmpty() ? m_settings->value("artist_empty").toString() : (m_settings->value("artist_useall").toBool() || m_getAllDetails["artists"].count() == 1 ? m_getAllDetails["artists"].join(m_settings->value("artist_sep").toString()) : m_settings->value("artist_value").toString()))))
-		.replace("%all%", m_getAllDetails["alls"].join(m_settings->value("separator").toString()))
-		.replace("%all_original%", m_getAllDetails["alls_original"].join(m_settings->value("separator").toString()))
 		.replace("%filename%", u.section('/', -1).section('.', 0, -2))
 		.replace("%rating%", m_allImages.at(m_getAllId).value("rating"))
 		.replace("%md5%", m_allImages.at(m_getAllId).value("md5"))
 		.replace("%website%", m_allImages.at(m_getAllId).value("site"))
 		.replace("%ext%", u.section('.', -1))
 		.replace("\\", "/");
-		if (path.left(1) == "/")
-		{ path = path.right(path.length()-1); }
-		// saving path
 		QString p = m_settings->value("path").toString().replace("\\", "/");
-		if (p.right(1) == "/")
-		{ p = p.left(p.length()-1); }
+		if (path.left(1) == "/")	{ path = path.right(path.length()-1);	}
+		if (p.right(1) == "/")		{ p = p.left(p.length()-1);				}
+		QString all = m_allImages.at(m_getAllId).value("tags");
+		all.replace(" ", m_settings->value("separator", " ").toString());
+		path.replace("%all%", all.left(263-p.length()-path.length()));
 		QFile f(p+"/"+path);
 		QDir dir(p);
 		m_settings->endGroup();
@@ -1531,12 +1532,11 @@ void mainWindow::getAllPerformImage(QNetworkReply* reply)
 			.replace("%character%", (m_getAllDetails["characters"].isEmpty() ? m_settings->value("character_empty").toString() : (m_settings->value("character_useall").toBool() || m_getAllDetails["characters"].count() == 1 ? m_getAllDetails["characters"].join(m_settings->value("character_sep").toString()) : m_settings->value("character_value").toString())))
 			.replace("%model%", (m_getAllDetails["models"].isEmpty() ? m_settings->value("model_empty").toString() : (m_settings->value("model_useall").toBool() || m_getAllDetails["models"].count() == 1 ? m_getAllDetails["models"].join(m_settings->value("model_sep").toString()) : m_settings->value("model_value").toString())))
 			.replace("%model|artist%", (!m_getAllDetails["models"].isEmpty() ? (m_settings->value("model_useall").toBool() || m_getAllDetails["models"].count() == 1 ? m_getAllDetails["models"].join(m_settings->value("model_sep").toString()) : m_settings->value("model_value").toString()) : (m_getAllDetails["artists"].isEmpty() ? m_settings->value("artist_empty").toString() : (m_settings->value("artist_useall").toBool() || m_getAllDetails["artists"].count() == 1 ? m_getAllDetails["artists"].join(m_settings->value("artist_sep").toString()) : m_settings->value("artist_value").toString()))))
-			.replace("%all%", m_getAllDetails["alls"].join(m_settings->value("separator").toString()))
-			.replace("%all_original%", m_getAllDetails["alls_original"].join(m_settings->value("separator").toString()))
 			.replace("%filename%", u.section('/', -1).section('.', 0, -2))
 			.replace("%rating%", m_allImages.at(m_getAllId).value("rating"))
 			.replace("%md5%", m_allImages.at(m_getAllId).value("md5"))
 			.replace("%ext%", u.section('.', -1))
+			.replace("%all%", all.left(263-p.length()-path.length()))
 			.replace("%filename%", path)
 			.replace("\\", "/")
 			.replace("%path%", p+"/"+path);

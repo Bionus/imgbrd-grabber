@@ -397,7 +397,7 @@ QString zoomWindow::getSavePath()
 	QString pth = settings.value("path").toString().replace("\\", "/");
 	if (filename.left(1) == "/")	{ filename = filename.right(filename.length()-1);	}
 	if (pth.right(1) == "/")		{ pth = pth.left(pth.length()-1);					}
-	filename.replace("%all%", this->details["alls"].join(settings.value("separator").toString()).left(264-pth.length()-filename.length())); // 264 = 260 (windows limitation) - 1 (the slash between path and filename) + 5 (filename still contains "{all}" currently, and we must not take this length in account)
+	filename.replace("%all%", this->details["alls"].join(settings.value("separator").toString()).left(263-pth.length()-filename.length()));
 	return filename;
 }
 
