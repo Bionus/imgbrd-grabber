@@ -79,7 +79,7 @@ class mainWindow : public QMainWindow
 		int m_timezonedecay, m_getAllId, m_getAllDownloaded, m_getAllExists, m_getAllIgnored, m_getAllErrors, m_getAllCount, m_getAllPageCount, m_getAllBeforeId, m_pagemax;
 		QMap<QString,QString> m_favorites, m_params;
 		QString m_program;
-		QStringList m_tags, m_assoc;
+		QStringList m_tags, m_assoc, m_gotMd5;
 		QList<QStringList> m_groupBatchs;
 		bool m_allow, m_currentPageIsPopular, m_must_get_tags;
 		QList<QMap<QString, QString> > m_details, m_batchs, m_allImages;

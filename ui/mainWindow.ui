@@ -138,6 +138,13 @@
               </widget>
              </item>
              <item>
+              <widget class="QCheckBox" name="checkMergeResults">
+               <property name="text">
+                <string>Fusionner les résultats</string>
+               </property>
+              </widget>
+             </item>
+             <item>
               <widget class="QPushButton" name="buttonGetpage">
                <property name="text">
                 <string>Prendre cette page</string>

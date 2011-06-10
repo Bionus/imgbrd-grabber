@@ -684,37 +684,40 @@ void mainWindow::replyFinished(QNetworkReply* r)
 			id++;
 		}
 	}
-	QLabel *txt = new QLabel();
 	m_countPage[site] = results;
-	if (results == 0)
+	if (!ui->checkMergeResults->isChecked())
 	{
-		QStringList reasons = QStringList();
-		if (source.isEmpty())
-		{ reasons.append(tr("serveur hors-ligne")); }
-		if (m_search->toPlainText().count(" ") > 1)
-		{ reasons.append(tr("trop de tags")); }
-		if (ui->spinPage->value() > 1000)
-		{ reasons.append(tr("page trop éloignée")); }
-		txt->setText(site+" - <a href=\""+url+"\">"+url+"</a> - "+(!m_loadFavorite.isNull() ? tr("Aucun résultat depuis le %1").arg(m_loadFavorite.toString(m_settings->value("dateformat", "dd/MM/yyyy").toString())) : tr("Aucun résultat")+(reasons.count() > 0 ? "<br/>"+tr("Raisons possibles : %1").arg(reasons.join(", ")) : "")));
+		QLabel *txt = new QLabel();
+		if (results == 0)
+		{
+			QStringList reasons = QStringList();
+			if (source.isEmpty())
+			{ reasons.append(tr("serveur hors-ligne")); }
+			if (m_search->toPlainText().count(" ") > 1)
+			{ reasons.append(tr("trop de tags")); }
+			if (ui->spinPage->value() > 1000)
+			{ reasons.append(tr("page trop éloignée")); }
+			txt->setText(site+" - <a href=\""+url+"\">"+url+"</a> - "+(!m_loadFavorite.isNull() ? tr("Aucun résultat depuis le %1").arg(m_loadFavorite.toString(m_settings->value("dateformat", "dd/MM/yyyy").toString())) : tr("Aucun résultat")+(reasons.count() > 0 ? "<br/>"+tr("Raisons possibles : %1").arg(reasons.join(", ")) : "")));
+		}
+		else
+		{ txt->setText(site+" - <a href=\""+url+"\">"+url+"</a> - "+tr("Page %1 sur %2 (%3 sur %4)").arg(QString::number(ui->spinPage->value()), (max != 0 ? QString::number(ceil(count/m_settings->value("limit", 20).toFloat())) : "?"), QString::number(results), (count != 0 ? QString::number(count) : "?"))); }
+		txt->setOpenExternalLinks(true);
+		//int pl = ceil(sqrt(results));
+		//float fl = (float)results/pl;
+		int pl = ceil(sqrt(m_settings->value("limit", 20).toInt()));
+		float fl = (float)m_settings->value("limit", 20).toInt()/pl;
+		if (!m_loadFavorite.isNull())
+		{
+			ui->layoutFavoritesResults->addWidget(txt, floor(n/m_settings->value("columns", 1).toInt())*(ceil(fl)+1), pl*(n%m_settings->value("columns", 1).toInt()), 1, pl);
+			ui->layoutFavoritesResults->setRowMinimumHeight(floor(n/m_settings->value("columns", 1).toInt())*(ceil(fl)+1), 50);
+		}
+		else
+		{
+			ui->layoutResults->addWidget(txt, floor(n/m_settings->value("columns", 1).toInt())*(ceil(fl)+1), pl*(n%m_settings->value("columns", 1).toInt()), 1, pl);
+			ui->layoutResults->setRowMinimumHeight(floor(n/m_settings->value("columns", 1).toInt())*(ceil(fl)+1), 50);
+		}
+		m_webSites.append(txt);
 	}
-	else
-	{ txt->setText(site+" - <a href=\""+url+"\">"+url+"</a> - "+tr("Page %1 sur %2 (%3 sur %4)").arg(QString::number(ui->spinPage->value()), (max != 0 ? QString::number(ceil(count/m_settings->value("limit", 20).toFloat())) : "?"), QString::number(results), (count != 0 ? QString::number(count) : "?"))); }
-	txt->setOpenExternalLinks(true);
-	//int pl = ceil(sqrt(results));
-	//float fl = (float)results/pl;
-	int pl = ceil(sqrt(m_settings->value("limit", 20).toInt()));
-	float fl = (float)m_settings->value("limit", 20).toInt()/pl;
-	if (!m_loadFavorite.isNull())
-	{
-		ui->layoutFavoritesResults->addWidget(txt, floor(n/m_settings->value("columns", 1).toInt())*(ceil(fl)+1), pl*(n%m_settings->value("columns", 1).toInt()), 1, pl);
-		ui->layoutFavoritesResults->setRowMinimumHeight(floor(n/m_settings->value("columns", 1).toInt())*(ceil(fl)+1), 50);
-	}
-	else
-	{
-		ui->layoutResults->addWidget(txt, floor(n/m_settings->value("columns", 1).toInt())*(ceil(fl)+1), pl*(n%m_settings->value("columns", 1).toInt()), 1, pl);
-		ui->layoutResults->setRowMinimumHeight(floor(n/m_settings->value("columns", 1).toInt())*(ceil(fl)+1), 50);
-	}
-	m_webSites.append(txt);
 }
 void mainWindow::setTags(QString tags)
 { m_search->setText(tags); }
@@ -734,6 +737,14 @@ void mainWindow::replyFinishedPic(QNetworkReply* r)
 			n = i;
 			break;
 		}
+	}
+	// Vérification des doublons
+	if (ui->checkMergeResults->isChecked())
+	{
+		QString md5 = m_details.at(n).value("md5");
+		if (m_gotMd5.contains(md5))
+		{ return; }
+		m_gotMd5.append(md5);
 	}
 	QMap<QString, QString> assoc;
 		assoc["s"] = tr("Safe");
@@ -866,13 +877,13 @@ void mainWindow::favoriteProperties(int id)
 
 void mainWindow::log(QString l)
 {
-	qDebug() << l;
+	//qDebug() << l;
 	m_log->insert(QDateTime::currentDateTime(), l);
 	logShow();
 }
 void mainWindow::logUpdate(QString l)
 {
-	qDebug() << l;
+	//qDebug() << l;
 	QDateTime date = m_log->keys().at(m_log->count()-1);
 	QString message = m_log->value(date)+l;
 	m_log->insert(date, message);

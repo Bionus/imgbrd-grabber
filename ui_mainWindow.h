@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainWindow.ui'
 **
-** Created: Fri 10. Jun 19:19:56 2011
+** Created: Fri 10. Jun 19:38:26 2011
 **      by: Qt User Interface Compiler version 4.6.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -14,6 +14,7 @@
 #include <QtGui/QAction>
 #include <QtGui/QApplication>
 #include <QtGui/QButtonGroup>
+#include <QtGui/QCheckBox>
 #include <QtGui/QComboBox>
 #include <QtGui/QDateEdit>
 #include <QtGui/QGridLayout>
@@ -62,6 +63,7 @@ public:
     QGridLayout *layoutResults;
     QHBoxLayout *horizontalLayout;
     QPushButton *buttonSourcesList;
+    QCheckBox *checkMergeResults;
     QPushButton *buttonGetpage;
     QWidget *tab_2;
     QVBoxLayout *verticalLayout_4;
@@ -211,6 +213,11 @@ public:
         buttonSourcesList->setObjectName(QString::fromUtf8("buttonSourcesList"));
 
         horizontalLayout->addWidget(buttonSourcesList);
+
+        checkMergeResults = new QCheckBox(widget);
+        checkMergeResults->setObjectName(QString::fromUtf8("checkMergeResults"));
+
+        horizontalLayout->addWidget(checkMergeResults);
 
         buttonGetpage = new QPushButton(widget);
         buttonGetpage->setObjectName(QString::fromUtf8("buttonGetpage"));
@@ -497,6 +504,7 @@ public:
         buttonPopular->setText(QApplication::translate("mainWindow", "Ok", 0, QApplication::UnicodeUTF8));
         datePopular->setDisplayFormat(QApplication::translate("mainWindow", "dd/MM/yyyy", 0, QApplication::UnicodeUTF8));
         buttonSourcesList->setText(QApplication::translate("mainWindow", "Sources", 0, QApplication::UnicodeUTF8));
+        checkMergeResults->setText(QApplication::translate("mainWindow", "Fusionner les r\303\251sultats", 0, QApplication::UnicodeUTF8));
         buttonGetpage->setText(QApplication::translate("mainWindow", "Prendre cette page", 0, QApplication::UnicodeUTF8));
         tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("mainWindow", "Explorer", 0, QApplication::UnicodeUTF8));
         label_3->setText(QApplication::translate("mainWindow", "Trier par", 0, QApplication::UnicodeUTF8));
