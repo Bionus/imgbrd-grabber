@@ -20,6 +20,7 @@ class advancedWindow : public QWidget
 	
 	signals:
 		void closed(advancedWindow *);
+		void valid(advancedWindow *);
 	
 	private:
 		QList<bool> selected;

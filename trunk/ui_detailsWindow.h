@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'detailsWindow.ui'
 **
-** Created: Sun 29. May 22:42:35 2011
+** Created: Sun 5. Jun 20:29:08 2011
 **      by: Qt User Interface Compiler version 4.6.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!

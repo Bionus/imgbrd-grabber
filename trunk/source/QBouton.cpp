@@ -11,9 +11,10 @@ QBouton::QBouton(int id, QWidget * parent) : QPushButton(parent)
 }
 
 int QBouton::id()
-{
-	return this->_id;
-}
+{ return this->_id; }
+void QBouton::setId(int id)
+{ this->_id = id; }
+
 void QBouton::mousePressEvent(QMouseEvent * event)
 {
 	if (event->button()==Qt::LeftButton)

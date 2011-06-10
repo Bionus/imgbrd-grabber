@@ -75,7 +75,7 @@ zoomWindow::~zoomWindow()
 void zoomWindow::openUrl(QString url)
 {
 	m_parent->setTags(url);
-	m_parent->webUpdate();
+	m_parent->webUpdateTags();
 	m_parent->activateWindow();
 }
 void zoomWindow::openSaveDir()
@@ -84,10 +84,10 @@ void zoomWindow::openSaveDir()
 	QString path = settings.value("Save/path").toString().replace("\\", "/");
 	if (path.right(1) == "/")
 	{ path = path.left(path.length()-1); }
-	QString pth = this->getSavePath().section('/', 0, -2), url = path+"/"+pth;
+	QString file = this->getSavePath(), pth = file.section('/', 0, -2), url = path+"/"+pth;
 	QDir dir(url);
 	if (dir.exists())
-	{ QDesktopServices::openUrl(QUrl("file:///"+url)); }
+	{ showInGraphicalShell(path+"/"+file); /*QDesktopServices::openUrl(QUrl("file:///"+url));*/ }
 	else
 	{
 		int reply = QMessageBox::question(this, tr("Dossier inexistant"), tr("Le dossier de sauvegarde n'existe pas encore. Le creer ?"), QMessageBox::Yes | QMessageBox::No);

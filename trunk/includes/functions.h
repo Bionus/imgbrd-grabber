@@ -9,5 +9,6 @@ QDateTime qDateTimeFromString(QString s, int d = 5);
 QMap<QString,QString> loadFavorites();
 QString savePath(QString s = "");
 QString validateFilename(QString);
+void showInGraphicalShell(const QString &);
 
 #endif
