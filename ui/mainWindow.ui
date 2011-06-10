@@ -1,0 +1,824 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>mainWindow</class>
+ <widget class="QMainWindow" name="mainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Grabber</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../resources.qrc">
+    <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <property name="spacing">
+     <number>6</number>
+    </property>
+    <property name="margin">
+     <number>0</number>
+    </property>
+    <item>
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="tab">
+       <attribute name="title">
+        <string>Explorer</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QWidget" name="widget" native="true">
+          <layout class="QVBoxLayout" name="layoutExplore" stretch="0,0,1,0">
+           <property name="margin">
+            <number>0</number>
+           </property>
+           <item>
+            <layout class="QGridLayout" name="layoutFields" columnstretch="0,1,0,0">
+             <property name="margin">
+              <number>0</number>
+             </property>
+             <property name="spacing">
+              <number>6</number>
+             </property>
+             <item row="0" column="0">
+              <widget class="QLabel" name="label">
+               <property name="text">
+                <string>Liste</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="label_2">
+               <property name="text">
+                <string>Populaires</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="2">
+              <widget class="QSpinBox" name="spinPage">
+               <property name="minimum">
+                <number>1</number>
+               </property>
+               <property name="maximum">
+                <number>1000</number>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="2">
+              <widget class="QPushButton" name="buttonCalendar">
+               <property name="text">
+                <string>Choisir</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="3">
+              <widget class="QPushButton" name="buttonTags">
+               <property name="text">
+                <string>Ok</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="3">
+              <widget class="QPushButton" name="buttonPopular">
+               <property name="text">
+                <string>Ok</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QDateEdit" name="datePopular">
+               <property name="displayFormat">
+                <string>dd/MM/yyyy</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <spacer name="verticalSpacer">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::MinimumExpanding</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <layout class="QGridLayout" name="layoutResults"/>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout">
+             <item>
+              <widget class="QPushButton" name="buttonSourcesList">
+               <property name="text">
+                <string>Sources</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="buttonGetpage">
+               <property name="text">
+                <string>Prendre cette page</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_2">
+       <attribute name="title">
+        <string>Favoris</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_4">
+        <item>
+         <widget class="QWidget" name="widget_2" native="true">
+          <layout class="QVBoxLayout" name="verticalLayout_5" stretch="0,1,0,0">
+           <property name="spacing">
+            <number>6</number>
+           </property>
+           <property name="margin">
+            <number>0</number>
+           </property>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="0,0,0">
+             <item>
+              <widget class="QLabel" name="label_3">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>Trier par</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="comboOrderfavorites">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="currentIndex">
+                <number>0</number>
+               </property>
+               <item>
+                <property name="text">
+                 <string>Nom</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Note</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Dernière vue</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="comboOrderasc">
+               <property name="currentIndex">
+                <number>0</number>
+               </property>
+               <item>
+                <property name="text">
+                 <string>Ascendant</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Descendant</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QGridLayout" name="layoutFavorites"/>
+           </item>
+           <item>
+            <layout class="QGridLayout" name="layoutFavoritesResults"/>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_2">
+             <item>
+              <widget class="QPushButton" name="buttonSourcesFavs">
+               <property name="text">
+                <string>Sources</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="buttonBack">
+               <property name="text">
+                <string>Retour</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="buttonMarkasviewed">
+               <property name="text">
+                <string>Marquer comme vu</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_3">
+       <attribute name="title">
+        <string>Télécharger</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_6">
+        <item>
+         <widget class="QWidget" name="widget_4" native="true">
+          <layout class="QVBoxLayout" name="verticalLayout_10">
+           <property name="margin">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="label_4">
+             <property name="text">
+              <string>Groupes</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QTableWidget" name="tableBatchGroups">
+             <column>
+              <property name="text">
+               <string>Tags</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Page</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Images par page</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Limite d'images</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Télécharger les images de la liste noire</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Source</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Populaires</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Noms de fichiers</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Dossier</string>
+              </property>
+             </column>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButton_12">
+             <property name="text">
+              <string>Ajouter</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_5">
+             <property name="text">
+              <string>Images seules</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QTableWidget" name="tableBatchUniques">
+             <column>
+              <property name="text">
+               <string>Id</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Md5</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Classe</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Tags</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Url</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Site</string>
+              </property>
+             </column>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButton_13">
+             <property name="text">
+              <string>Ajouter</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_3">
+             <item>
+              <widget class="QPushButton" name="pushButton_14">
+               <property name="text">
+                <string>Tout télécharger</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButton_15">
+               <property name="text">
+                <string>Effacer</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_4">
+       <attribute name="title">
+        <string>Log</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_9">
+        <item>
+         <widget class="QWidget" name="widget_3" native="true">
+          <layout class="QVBoxLayout" name="verticalLayout_7">
+           <property name="margin">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="QScrollArea" name="scrollArea">
+             <property name="widgetResizable">
+              <bool>true</bool>
+             </property>
+             <widget class="QWidget" name="scrollAreaWidgetContents">
+              <property name="geometry">
+               <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>774</width>
+                <height>504</height>
+               </rect>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout_8">
+               <property name="margin">
+                <number>6</number>
+               </property>
+               <item>
+                <widget class="QLabel" name="labelLog">
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="textFormat">
+                  <enum>Qt::RichText</enum>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="buttonClearlog">
+             <property name="text">
+              <string>Effacer le log</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuOptions">
+    <property name="title">
+     <string>Fichier</string>
+    </property>
+    <addaction name="actionOptions"/>
+    <addaction name="actionFolder"/>
+    <addaction name="actionQuit"/>
+   </widget>
+   <widget class="QMenu" name="menu_propos">
+    <property name="title">
+     <string>Aide</string>
+    </property>
+    <addaction name="actionHelp"/>
+    <addaction name="separator"/>
+    <addaction name="actionAboutGrabber"/>
+    <addaction name="actionAboutQt"/>
+   </widget>
+   <addaction name="menuOptions"/>
+   <addaction name="menu_propos"/>
+  </widget>
+  <action name="actionOptions">
+   <property name="text">
+    <string>Options</string>
+   </property>
+  </action>
+  <action name="actionFolder">
+   <property name="text">
+    <string>Dossier de sauvegarde</string>
+   </property>
+  </action>
+  <action name="actionQuit">
+   <property name="text">
+    <string>Quitter</string>
+   </property>
+  </action>
+  <action name="actionHelp">
+   <property name="text">
+    <string>Aide</string>
+   </property>
+  </action>
+  <action name="actionAboutGrabber">
+   <property name="text">
+    <string>À propos de Grabber</string>
+   </property>
+  </action>
+  <action name="actionAboutQt">
+   <property name="text">
+    <string>À propos de Qt</string>
+   </property>
+  </action>
+ </widget>
+ <resources>
+  <include location="../resources.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>actionHelp</sender>
+   <signal>triggered()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>help()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionOptions</sender>
+   <signal>triggered()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>options()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionAboutGrabber</sender>
+   <signal>triggered()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>aboutAuthor()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonSourcesList</sender>
+   <signal>clicked()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>advanced()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>152</x>
+     <y>564</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>132</x>
+     <y>591</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>comboOrderfavorites</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>mainWindow</receiver>
+   <slot>updateFavorites()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>157</x>
+     <y>72</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>298</x>
+     <y>71</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>comboOrderasc</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>mainWindow</receiver>
+   <slot>updateFavorites()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>524</x>
+     <y>72</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>651</x>
+     <y>71</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonTags</sender>
+   <signal>clicked()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>webUpdateTags()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>726</x>
+     <y>74</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>756</x>
+     <y>73</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonPopular</sender>
+   <signal>clicked()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>webUpdatePopular()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>730</x>
+     <y>101</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>742</x>
+     <y>101</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonSourcesFavs</sender>
+   <signal>clicked()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>advanced()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>111</x>
+     <y>585</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>169</x>
+     <y>564</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_15</sender>
+   <signal>clicked()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>batchClear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>501</x>
+     <y>585</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>641</x>
+     <y>565</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_12</sender>
+   <signal>clicked()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>addGroup()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>110</x>
+     <y>300</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>488</x>
+     <y>288</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_13</sender>
+   <signal>clicked()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>addUnique()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>110</x>
+     <y>555</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>440</x>
+     <y>535</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonClearlog</sender>
+   <signal>clicked()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>logClear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>110</x>
+     <y>586</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>652</x>
+     <y>565</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonGetpage</sender>
+   <signal>clicked()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>getPage()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>635</x>
+     <y>563</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>661</x>
+     <y>591</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_14</sender>
+   <signal>clicked()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>getAll()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>354</x>
+     <y>578</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>307</x>
+     <y>574</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBack</sender>
+   <signal>clicked()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>favoritesBack()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>404</x>
+     <y>572</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>453</x>
+     <y>564</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonMarkasviewed</sender>
+   <signal>clicked()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>viewed()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>617</x>
+     <y>572</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>715</x>
+     <y>574</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>help()</slot>
+  <slot>options()</slot>
+  <slot>aboutAuthor()</slot>
+  <slot>advanced()</slot>
+  <slot>updateFavorites()</slot>
+  <slot>webUpdateTags()</slot>
+  <slot>webUpdatePopular()</slot>
+  <slot>batchClear()</slot>
+  <slot>addGroup()</slot>
+  <slot>addUnique()</slot>
+  <slot>logClear()</slot>
+  <slot>getPage()</slot>
+  <slot>getAll()</slot>
+  <slot>favoritesBack()</slot>
+  <slot>viewed()</slot>
+ </slots>
+</ui>

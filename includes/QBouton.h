@@ -17,6 +17,9 @@ class QBouton : public QPushButton
 		QBouton(int id = 0, QWidget * parent = 0);
 		int id();
 		void mousePressEvent(QMouseEvent *);
+
+	public slots:
+		void setId(int);
 		
 	signals:
 		void appui(int);

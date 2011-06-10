@@ -61,6 +61,7 @@ void advancedWindow::valid()
 	QLayout *form = this->layout()->itemAt(0)->layout();
 	for (int i = 0; i < form->count(); i++)
 	{ this->selected[i] = this->checks.at(i)->isChecked(); }
+	emit valid(this);
 	this->close();
 }
 

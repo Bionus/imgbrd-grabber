@@ -79,3 +79,36 @@ QString validateFilename(QString text)
 
 QString savePath(QString file)
 { return QDir::toNativeSeparators(QDir::homePath()+"/Grabber/"+file); }
+
+void showInGraphicalShell(const QString &pathIn)
+{
+	// Mac & Windows support folder or file.
+	#if defined(Q_OS_WIN)
+		QString param;
+		if (!QFileInfo(pathIn).isDir())
+		{ param = QLatin1String("/select,"); }
+		param += QDir::toNativeSeparators(pathIn);
+		QProcess::startDetached("explorer.exe "+param);
+	#elif defined(Q_OS_MAC)
+		Q_UNUSED(parent)
+		QStringList scriptArgs;
+		scriptArgs << QLatin1String("-e") << QString::fromLatin1("tell application \"Finder\" to reveal POSIX file \"%1\"").arg(pathIn);
+		QProcess::execute(QLatin1String("/usr/bin/osascript"), scriptArgs);
+		scriptArgs.clear();
+		scriptArgs << QLatin1String("-e") << QLatin1String("tell application \"Finder\" to activate");
+		QProcess::execute("/usr/bin/osascript", scriptArgs);
+	#else
+		// we cannot select a file here, because no file browser really supports it...
+		const QFileInfo fileInfo(pathIn);
+		const QString folder = fileInfo.absoluteFilePath();
+		const QString app = Utils::UnixUtils::fileBrowser(Core::ICore::instance()->settings());
+		QProcess browserProc;
+		const QString browserArgs = Utils::UnixUtils::substituteFileBrowserParameters(app, folder);
+		bool success = browserProc.startDetached(browserArgs);
+		const QString error = QString::fromLocal8Bit(browserProc.readAllStandardError());
+		success = success && error.isEmpty();
+		//if (!success)
+		//{ showGraphicalShellError(parent, app, error); }
+	#endif
+}
+

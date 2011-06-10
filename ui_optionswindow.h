@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'optionswindow.ui'
 **
-** Created: Tue 31. May 15:53:35 2011
+** Created: Sun 5. Jun 20:29:09 2011
 **      by: Qt User Interface Compiler version 4.6.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -45,8 +45,6 @@ public:
     QLabel *label_2;
     QSpinBox *spinCheckForUpdates;
     QLabel *label_3;
-    QLabel *label_4;
-    QLineEdit *lineDateFormat;
     QLabel *label_5;
     QLineEdit *lineBlacklist;
     QLabel *label_6;
@@ -217,41 +215,31 @@ public:
 
         formLayout_2->setWidget(3, QFormLayout::SpanningRole, label_3);
 
-        label_4 = new QLabel(widget_2);
-        label_4->setObjectName(QString::fromUtf8("label_4"));
-
-        formLayout_2->setWidget(4, QFormLayout::LabelRole, label_4);
-
-        lineDateFormat = new QLineEdit(widget_2);
-        lineDateFormat->setObjectName(QString::fromUtf8("lineDateFormat"));
-
-        formLayout_2->setWidget(4, QFormLayout::FieldRole, lineDateFormat);
-
         label_5 = new QLabel(widget_2);
         label_5->setObjectName(QString::fromUtf8("label_5"));
 
-        formLayout_2->setWidget(5, QFormLayout::LabelRole, label_5);
+        formLayout_2->setWidget(4, QFormLayout::LabelRole, label_5);
 
         lineBlacklist = new QLineEdit(widget_2);
         lineBlacklist->setObjectName(QString::fromUtf8("lineBlacklist"));
 
-        formLayout_2->setWidget(5, QFormLayout::FieldRole, lineBlacklist);
+        formLayout_2->setWidget(4, QFormLayout::FieldRole, lineBlacklist);
 
         label_6 = new QLabel(widget_2);
         label_6->setObjectName(QString::fromUtf8("label_6"));
         label_6->setWordWrap(true);
 
-        formLayout_2->setWidget(6, QFormLayout::SpanningRole, label_6);
+        formLayout_2->setWidget(5, QFormLayout::SpanningRole, label_6);
 
         checkDownloadBlacklisted = new QCheckBox(widget_2);
         checkDownloadBlacklisted->setObjectName(QString::fromUtf8("checkDownloadBlacklisted"));
 
-        formLayout_2->setWidget(7, QFormLayout::SpanningRole, checkDownloadBlacklisted);
+        formLayout_2->setWidget(6, QFormLayout::SpanningRole, checkDownloadBlacklisted);
 
         checkLoadFirstAtStart = new QCheckBox(widget_2);
         checkLoadFirstAtStart->setObjectName(QString::fromUtf8("checkLoadFirstAtStart"));
 
-        formLayout_2->setWidget(8, QFormLayout::SpanningRole, checkLoadFirstAtStart);
+        formLayout_2->setWidget(7, QFormLayout::SpanningRole, checkLoadFirstAtStart);
 
 
         container->addWidget(widget_2);
@@ -752,8 +740,6 @@ public:
         label->setText(QApplication::translate("optionsWindow", "Langue", 0, QApplication::UnicodeUTF8));
         label_2->setText(QApplication::translate("optionsWindow", "Recherche de mises \303\240 jour", 0, QApplication::UnicodeUTF8));
         label_3->setText(QApplication::translate("optionsWindow", "<i>En secondes. Mettez -1 pour ne jamais rechercher de mises \303\240 jour. Vous pourrez toujours lancer le gestionnaire de mises \303\240 jour manuellement en lan\303\247ant \"Updater.exe\".</i>", 0, QApplication::UnicodeUTF8));
-        label_4->setText(QApplication::translate("optionsWindow", "Format de la date", 0, QApplication::UnicodeUTF8));
-        lineDateFormat->setText(QString());
         label_5->setText(QApplication::translate("optionsWindow", "Liste noire", 0, QApplication::UnicodeUTF8));
         label_6->setText(QApplication::translate("optionsWindow", "<i>Une confirmation sera demand\303\251e avant l'affichage d'une image contenant un tag contenu dans cette liste (s\303\251parer les tags par des espaces).</i>", 0, QApplication::UnicodeUTF8));
         checkDownloadBlacklisted->setText(QApplication::translate("optionsWindow", "T\303\251l\303\251charger les images de la liste noire", 0, QApplication::UnicodeUTF8));
@@ -795,23 +781,23 @@ public:
         label_18->setText(QApplication::translate("optionsWindow", "S\303\251parateur si multiples", 0, QApplication::UnicodeUTF8));
         label_19->setText(QApplication::translate("optionsWindow", "Valeur si multiples", 0, QApplication::UnicodeUTF8));
         checkArtistsKeepAll->setText(QApplication::translate("optionsWindow", "Garder tous", 0, QApplication::UnicodeUTF8));
-        lineArtistsIfNone->setText(QApplication::translate("optionsWindow", "anonymous", 0, QApplication::UnicodeUTF8));
-        lineArtistsSeparator->setText(QApplication::translate("optionsWindow", "+", 0, QApplication::UnicodeUTF8));
-        lineArtistsIfMultiples->setText(QApplication::translate("optionsWindow", "multiple artists", 0, QApplication::UnicodeUTF8));
+        lineArtistsIfNone->setText(QString());
+        lineArtistsSeparator->setText(QString());
+        lineArtistsIfMultiples->setText(QString());
         label_17->setText(QApplication::translate("optionsWindow", "Si aucun", 0, QApplication::UnicodeUTF8));
         label_20->setText(QApplication::translate("optionsWindow", "S\303\251parateur si multiples", 0, QApplication::UnicodeUTF8));
         label_21->setText(QApplication::translate("optionsWindow", "Valeur si multiples", 0, QApplication::UnicodeUTF8));
-        lineCopyrightsIfNone->setText(QApplication::translate("optionsWindow", "misc", 0, QApplication::UnicodeUTF8));
-        lineCopyrightsSeparator->setText(QApplication::translate("optionsWindow", "+", 0, QApplication::UnicodeUTF8));
-        lineCopyrightsIfMultiples->setText(QApplication::translate("optionsWindow", "crossover", 0, QApplication::UnicodeUTF8));
+        lineCopyrightsIfNone->setText(QString());
+        lineCopyrightsSeparator->setText(QString());
+        lineCopyrightsIfMultiples->setText(QString());
         checkCopyrightsUseShorter->setText(QApplication::translate("optionsWindow", "Utiliser le plus court si possible", 0, QApplication::UnicodeUTF8));
         checkCopyrightsKeepAll->setText(QApplication::translate("optionsWindow", "Garder tous", 0, QApplication::UnicodeUTF8));
         label_22->setText(QApplication::translate("optionsWindow", "Si aucun", 0, QApplication::UnicodeUTF8));
         label_23->setText(QApplication::translate("optionsWindow", "S\303\251parateur si multiples", 0, QApplication::UnicodeUTF8));
         label_24->setText(QApplication::translate("optionsWindow", "Valeur si multiples", 0, QApplication::UnicodeUTF8));
-        lineCharactersIfNone->setText(QApplication::translate("optionsWindow", "unknown", 0, QApplication::UnicodeUTF8));
-        lineCharactersSeparator->setText(QApplication::translate("optionsWindow", "+", 0, QApplication::UnicodeUTF8));
-        lineCharactersIfMultiples->setText(QApplication::translate("optionsWindow", "group", 0, QApplication::UnicodeUTF8));
+        lineCharactersIfNone->setText(QString());
+        lineCharactersSeparator->setText(QString());
+        lineCharactersIfMultiples->setText(QString());
         checkCharactersKeepAll->setText(QApplication::translate("optionsWindow", "Garder tous", 0, QApplication::UnicodeUTF8));
         label_30->setText(QApplication::translate("optionsWindow", "Artistes", 0, QApplication::UnicodeUTF8));
         lineColoringArtists->setText(QString());

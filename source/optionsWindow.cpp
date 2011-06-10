@@ -19,7 +19,6 @@ optionsWindow::optionsWindow(mainWindow *parent) : QDialog(parent), m_parent(par
 
 	ui->comboLanguages->setCurrentIndex(languages.indexOf(settings.value("language", "English").toString()));
 	ui->spinCheckForUpdates->setValue(settings.value("updatesrate", 86400).toInt());
-	ui->lineDateFormat->setText(settings.value("dateformat", "dd/MM/yyyy").toString());
 	ui->lineBlacklist->setText(settings.value("blacklistedtags").toString());
 	ui->checkDownloadBlacklisted->setChecked(settings.value("downloadblacklist", false).toBool());
 	ui->checkLoadFirstAtStart->setChecked(settings.value("loadatstart", false).toBool());
@@ -96,15 +95,40 @@ void optionsWindow::on_buttonFolder_clicked()
 }
 
 void optionsWindow::on_lineColoringArtists_textChanged()
-{ ui->lineColoringArtists->setStyleSheet("color:"+ui->lineColoringArtists->text()); }
+{
+	if (QColor(ui->lineColoringArtists->text()).isValid())
+	{ ui->lineColoringArtists->setStyleSheet("color:"+ui->lineColoringArtists->text()); }
+	else
+	{ ui->lineColoringArtists->setStyleSheet("color:#000000"); }
+}
 void optionsWindow::on_lineColoringCopyrights_textChanged()
-{ ui->lineColoringCopyrights->setStyleSheet("color:"+ui->lineColoringCopyrights->text()); }
+{
+	if (QColor(ui->lineColoringCopyrights->text()).isValid())
+	{ ui->lineColoringCopyrights->setStyleSheet("color:"+ui->lineColoringCopyrights->text()); }
+	else
+	{ ui->lineColoringCopyrights->setStyleSheet("color:#000000"); }
+}
 void optionsWindow::on_lineColoringCharacters_textChanged()
-{ ui->lineColoringCharacters->setStyleSheet("color:"+ui->lineColoringCharacters->text()); }
+{
+	if (QColor(ui->lineColoringCharacters->text()).isValid())
+	{ ui->lineColoringCharacters->setStyleSheet("color:"+ui->lineColoringCharacters->text()); }
+	else
+	{ ui->lineColoringCharacters->setStyleSheet("color:#000000"); }
+}
 void optionsWindow::on_lineColoringModels_textChanged()
-{ ui->lineColoringModels->setStyleSheet("color:"+ui->lineColoringModels->text()); }
+{
+	if (QColor(ui->lineColoringModels->text()).isValid())
+	{ ui->lineColoringModels->setStyleSheet("color:"+ui->lineColoringModels->text()); }
+	else
+	{ ui->lineColoringModels->setStyleSheet("color:#000000"); }
+}
 void optionsWindow::on_lineColoringGenerals_textChanged()
-{ ui->lineColoringGenerals->setStyleSheet("color:"+ui->lineColoringGenerals->text()); }
+{
+	if (QColor(ui->lineColoringGenerals->text()).isValid())
+	{ ui->lineColoringGenerals->setStyleSheet("color:"+ui->lineColoringGenerals->text()); }
+	else
+	{ ui->lineColoringGenerals->setStyleSheet("color:#000000"); }
+}
 
 void optionsWindow::on_buttonColoringArtists_clicked()
 {
@@ -140,15 +164,15 @@ void optionsWindow::on_buttonColoringGenerals_clicked()
 void optionsWindow::updateContainer(QTreeWidgetItem *current, QTreeWidgetItem *previous)
 {
 	QStringList texts = QStringList() <<
-		tr("Général") <<
-		tr("Sources") <<
-		tr("Log") <<
-		tr("Sauvegarde") <<
-		tr("Tags artiste") <<
-		tr("Tags série") <<
-		tr("Tags personnage") <<
-		tr("Coloration") <<
-		tr("Commandes");
+		tr("Général", "update") <<
+		tr("Sources", "update") <<
+		tr("Log", "update") <<
+		tr("Sauvegarde", "update") <<
+		tr("Tags artiste", "update") <<
+		tr("Tags série", "update") <<
+		tr("Tags personnage", "update") <<
+		tr("Coloration", "update") <<
+		tr("Commandes", "update");
 	QMap<QString,int> assoc;
 	for (int i = 0; i < texts.count(); i++)
 	{ assoc[texts.at(i)] = i; }
@@ -158,6 +182,7 @@ void optionsWindow::updateContainer(QTreeWidgetItem *current, QTreeWidgetItem *p
 		if (iprevious < ui->container->count())
 		{ ui->container->itemAt(iprevious)->widget()->hide(); }
 	}
+	qDebug() << current->text(0);
 	int icurrent = assoc[current->text(0)];
 	if (icurrent < ui->container->count())
 	{ ui->container->itemAt(icurrent)->widget()->show(); }
@@ -167,7 +192,6 @@ void optionsWindow::save()
 {
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
 
-	settings.setValue("dateformat", ui->lineDateFormat->text());
 	settings.setValue("updatesrate", ui->spinCheckForUpdates->value());
 	settings.setValue("blacklistedtags", ui->lineBlacklist->text());
 	settings.setValue("downloadblacklist", ui->checkDownloadBlacklisted->isChecked());

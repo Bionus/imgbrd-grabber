@@ -2,7 +2,10 @@
 #define ADDUNIQUEWINDOW_H
 
 #include <QtGui>
+#include <QtNetwork>
 #include "mainWindow.h"
+
+
 
 class AddUniqueWindow : public QWidget
 {
