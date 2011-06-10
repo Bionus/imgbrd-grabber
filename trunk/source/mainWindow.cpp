@@ -31,6 +31,8 @@ mainWindow::mainWindow(QString program, QStringList tags, QMap<QString,QString> 
 
 	m_serverDate = QDateTime::currentDateTime().toUTC().addSecs(-60*60*4);
 	m_timezonedecay = QDateTime::currentDateTime().time().hour()-m_serverDate.time().hour();
+	m_gotMd5 = QStringList();
+	m_mergeButtons = QList<QBouton*>();
 
 	connect(ui->actionQuit, SIGNAL(triggered()), qApp, SLOT(quit()));
 	connect(ui->actionAboutQt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
@@ -421,6 +423,8 @@ void mainWindow::web(QString tags, bool popular)
 {
 	m_remainingPics = 0;
 	m_remainingSites = 0;
+	m_gotMd5.clear();
+	m_mergeButtons.clear();
 	m_currentPageIsPopular = popular;
 	tags = (tags.isEmpty() ? m_search->toPlainText() : tags);
 	if (!m_replies.isEmpty())
@@ -797,16 +801,16 @@ void mainWindow::replyFinishedPic(QNetworkReply* r)
 		if (ui->checkMergeResults->isChecked())
 		{
 			m_mergeButtons.append(l);
+			qDebug() << m_remainingPics << m_remainingSites;
 			if (m_remainingPics == 0 && m_remainingSites == 0)
 			{
 				int pl = ceil(sqrt(m_mergeButtons.count()));
-				float fl = (float)m_mergeButtons.count()/pl;
 				for (int id = 0; id < m_mergeButtons.count(); id++)
 				{
 					if (!m_loadFavorite.isNull())
-					{ ui->layoutFavoritesResults->addWidget(m_mergeButtons.at(id), floor(id/pl)+(floor(site/m_settings->value("columns", 1).toInt())*(ceil(fl)+1))+1, id%pl+pl*(site%m_settings->value("columns", 1).toInt()), 1, 1); }
+					{ ui->layoutFavoritesResults->addWidget(m_mergeButtons.at(id), floor(id/pl)+1, id%pl+pl, 1, 1); }
 					else
-					{ ui->layoutResults->addWidget(m_mergeButtons.at(id), floor(id/pl)+(floor(site/m_settings->value("columns", 1).toInt())*(ceil(fl)+1))+1, id%pl+pl*(site%m_settings->value("columns", 1).toInt()), 1, 1); }
+					{ ui->layoutResults->addWidget(m_mergeButtons.at(id), floor(id/pl)+1, id%pl+pl, 1, 1); }
 					m_webPics.append(m_mergeButtons.at(id));
 				}
 			}
