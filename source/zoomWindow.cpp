@@ -87,7 +87,7 @@ void zoomWindow::openSaveDir()
 	QString file = this->getSavePath(), pth = file.section('/', 0, -2), url = path+"/"+pth;
 	QDir dir(url);
 	if (dir.exists())
-	{ showInGraphicalShell(path+"/"+file); /*QDesktopServices::openUrl(QUrl("file:///"+url));*/ }
+	{ showInGraphicalShell(url); }
 	else
 	{
 		int reply = QMessageBox::question(this, tr("Dossier inexistant"), tr("Le dossier de sauvegarde n'existe pas encore. Le creer ?"), QMessageBox::Yes | QMessageBox::No);
@@ -96,7 +96,7 @@ void zoomWindow::openSaveDir()
 			QDir dir(path);
 			if (!dir.mkpath(pth))
 			{ error(this, tr("Erreur lors de la création du dossier.\r\n%1").arg(url)); }
-			QDesktopServices::openUrl(QUrl("file:///"+url));
+			showInGraphicalShell(url);
 		}
 	}
 }

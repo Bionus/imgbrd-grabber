@@ -10,7 +10,7 @@
 #include "json.h"
 #include <QtXml>
 
-#define VERSION	"1.8"
+#define VERSION	"1.8.0"
 #define DONE()	logUpdate(tr(" Fait"));
 
 
@@ -20,6 +20,10 @@ mainWindow::mainWindow(QString program, QStringList tags, QMap<QString,QString> 
 	ui->setupUi(this);
 
 	m_log = new QMap<QDateTime,QString>;
+
+	ui->actionQuit->setShortcut(QKeySequence::Quit);
+	ui->actionFolder->setShortcut(QKeySequence::Open);
+	ui->actionHelp->setShortcut(QKeySequence::HelpContents);
 
 	m_settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
 	QStringList assoc = QStringList() << "name" << "note" << "lastviewed";
@@ -282,6 +286,15 @@ void mainWindow::batchAddUnique(QMap<QString,QString> values)
 		//ui->tableBatchUniques->removeRow(0);
 	}
 }
+void mainWindow::saveFolder()
+{
+	QString path = m_settings->value("Save/path").toString().replace("\\", "/");
+	if (path.right(1) == "/")
+	{ path = path.left(path.length()-1); }
+	QDir dir(path);
+	if (dir.exists())
+	{ showInGraphicalShell(path); }
+}
 void mainWindow::batchClear()
 {
 	m_batchs.clear();
@@ -293,13 +306,16 @@ void mainWindow::batchClear()
 }
 void mainWindow::batchChange(int id)
 {
-	int n = 0;
-	for (int i = 0; i < m_webPics.count(); i++)
+	if (!ui->checkMergeResults->isChecked())
 	{
-		if (m_webPics.at(i)->id() == id)
-		{ n = i; break; }
+		int n = 0;
+		for (int i = 0; i < m_webPics.count(); i++)
+		{
+			if (m_webPics.at(i)->id() == id)
+			{ n = i; break; }
+		}
+		batchAddUnique(m_details.at(n));
 	}
-	batchAddUnique(m_details.at(n));
 }
 void mainWindow::updateBatchGroups(int y, int x)
 {
@@ -949,13 +965,13 @@ void mainWindow::favoriteProperties(int id)
 
 void mainWindow::log(QString l)
 {
-	//qDebug() << l;
+	qDebug() << l;
 	m_log->insert(QDateTime::currentDateTime(), l);
 	logShow();
 }
 void mainWindow::logUpdate(QString l)
 {
-	//qDebug() << l;
+	qDebug() << l;
 	QDateTime date = m_log->keys().at(m_log->count()-1);
 	QString message = m_log->value(date)+l;
 	m_log->insert(date, message);
@@ -968,7 +984,7 @@ void mainWindow::logShow()
 	for (int i = 0; i < m_log->size(); i++)
 	{
 		k = m_settings->value("Log/invert", false).toBool() ? m_log->size()-i-1 : i;
-		txt += QString(i > 0 ? "<br/>" : "")+"["+m_log->keys().at(k).toString("hh':'mm")+"] "+m_log->values().at(k);
+		txt += QString(i > 0 ? "<br/>" : "")+"["+m_log->keys().at(k).toString("hh:mm:ss.zzz")+"] "+m_log->values().at(k);
 	}
 	ui->labelLog->setText(txt);
 }
@@ -993,7 +1009,12 @@ void mainWindow::loadLanguage(const QString& rLanguage)
 		QLocale::setDefault(locale);
 		switchTranslator(m_translator, "languages/"+m_currLang);
 		log(tr("Traduction des textes en %1...").arg(m_currLang));
-		ui->retranslateUi(this);
+			// QCombobox are reset
+			int _comboOrderfavorites = ui->comboOrderfavorites->currentIndex();
+			int _comboOrderasc = ui->comboOrderasc->currentIndex();
+			ui->retranslateUi(this);
+			ui->comboOrderfavorites->setCurrentIndex(_comboOrderfavorites);
+			ui->comboOrderasc->setCurrentIndex(_comboOrderasc);
 		logUpdate(tr(" Fait"));
 	}
 }
@@ -1319,7 +1340,7 @@ void mainWindow::getAllSource(QNetworkReply *r)
 			m_progressdialog->show();
 			m_progressdialog->setValue(0);
 		log("All images' urls received.");
-		QString fn = m_settings->value("Save/filename").toString();
+		QString fn = m_groupBatchs[m_allImages.at(m_getAllId).value("site_id").toInt()][7];
 		QStringList forbidden = QStringList() << "artist" << "copyright" << "character" << "model" << "general" << "model|artist";
 		m_must_get_tags = false;
 		for (int i = 0; i < forbidden.count(); i++)
@@ -1353,13 +1374,14 @@ void mainWindow::_getAll()
 		else
 		{
 			QString u(m_allImages.at(m_getAllId).value("file_url"));
-			QString path = m_settings->value("Save/filename").toString()
-			.replace("%filename%", u.section('/', -1).section('.', 0, -2))
+			QString path = m_groupBatchs[m_allImages.at(m_getAllId).value("site_id").toInt()][7];
+			path.replace("%filename%", u.section('/', -1).section('.', 0, -2))
 			.replace("%rating%", m_allImages.at(m_getAllId).value("rating"))
 			.replace("%md5%", m_allImages.at(m_getAllId).value("md5"))
 			.replace("%website%", m_allImages.at(m_getAllId).value("site"))
 			.replace("%ext%", u.section('.', -1));
-			QString pth = m_settings->value("Save/path").toString().replace("\\", "/");
+			QString pth = m_groupBatchs[m_allImages.at(m_getAllId).value("site_id").toInt()][8];
+			pth.replace("\\", "/");
 			if (path.left(1) == "/")	{ path = path.right(path.length()-1);	}
 			if (pth.right(1) == "/")	{ pth = pth.left(pth.length()-1);		}
 			QString all = m_allImages.at(m_getAllId).value("tags");
@@ -1455,8 +1477,8 @@ void mainWindow::getAllPerformTags(QNetworkReply* reply)
 	// Getting path
 	QString u = m_allImages.at(m_getAllId).value("file_url");
 	m_settings->beginGroup("Save");
-	QString path = m_settings->value("filename").toString()
-	.replace("%artist%", (m_getAllDetails["artists"].isEmpty() ? m_settings->value("artist_empty").toString() : (m_settings->value("artist_useall").toBool() || m_getAllDetails["artists"].count() == 1 ? m_getAllDetails["artists"].join(m_settings->value("artist_sep").toString()) : m_settings->value("artist_value").toString())))
+	QString path = m_groupBatchs[m_allImages.at(m_getAllId).value("site_id").toInt()][7];
+	path.replace("%artist%", (m_getAllDetails["artists"].isEmpty() ? m_settings->value("artist_empty").toString() : (m_settings->value("artist_useall").toBool() || m_getAllDetails["artists"].count() == 1 ? m_getAllDetails["artists"].join(m_settings->value("artist_sep").toString()) : m_settings->value("artist_value").toString())))
 	.replace("%general%", m_getAllDetails["generals"].join(m_settings->value("separator").toString()))
 	.replace("%copyright%", (m_getAllDetails["copyrights"].isEmpty() ? m_settings->value("copyright_empty").toString() : (m_settings->value("copyright_useall").toBool() || m_getAllDetails["copyrights"].count() == 1 ? m_getAllDetails["copyrights"].join(m_settings->value("copyright_sep").toString()) : m_settings->value("copyright_value").toString())))
 	.replace("%character%", (m_getAllDetails["characters"].isEmpty() ? m_settings->value("character_empty").toString() : (m_settings->value("character_useall").toBool() || m_getAllDetails["characters"].count() == 1 ? m_getAllDetails["characters"].join(m_settings->value("character_sep").toString()) : m_settings->value("character_value").toString())))
@@ -1471,7 +1493,8 @@ void mainWindow::getAllPerformTags(QNetworkReply* reply)
 	.replace("%ext%", u.section('.', -1))
 	.replace("\\", "/");
 	// saving path
-	QString p = m_settings->value("path").toString().replace("\\", "/");
+	QString p = m_groupBatchs[m_allImages.at(m_getAllId).value("site_id").toInt()][8];
+	p.replace("\\", "/");
 	m_settings->endGroup();
 	if (p.right(1) == "/")
 	{ p = p.left(p.length()-1); }
@@ -1528,7 +1551,7 @@ void mainWindow::getAllPerformTags(QNetworkReply* reply)
 		else													{ count += 1; }
 		m_progressdialog->setValue(count);
 		m_getAllExists++;
-		log(tr("Fichier déjà existant"));
+		log(tr("Fichier déjà existant : %1").arg(f.fileName()));
 		// Loading next tags
 		m_getAllDetails.clear();
 		_getAll();
@@ -1542,8 +1565,8 @@ void mainWindow::getAllPerformImage(QNetworkReply* reply)
 		// Getting path
 		QString u = reply->url().toString();
 		m_settings->beginGroup("Save");
-		QString path = m_settings->value("filename").toString()
-		.replace("%artist%", (m_getAllDetails["artists"].isEmpty() ? m_settings->value("artist_empty").toString() : (m_settings->value("artist_useall").toBool() || m_getAllDetails["artists"].count() == 1 ? m_getAllDetails["artists"].join(m_settings->value("artist_sep").toString()) : m_settings->value("artist_value").toString())))
+		QString path = m_groupBatchs[m_allImages.at(m_getAllId).value("site_id").toInt()][7];
+		path.replace("%artist%", (m_getAllDetails["artists"].isEmpty() ? m_settings->value("artist_empty").toString() : (m_settings->value("artist_useall").toBool() || m_getAllDetails["artists"].count() == 1 ? m_getAllDetails["artists"].join(m_settings->value("artist_sep").toString()) : m_settings->value("artist_value").toString())))
 		.replace("%general%", m_getAllDetails["generals"].join(m_settings->value("separator").toString()))
 		.replace("%copyright%", (m_getAllDetails["copyrights"].isEmpty() ? m_settings->value("copyright_empty").toString() : (m_settings->value("copyright_useall").toBool() || m_getAllDetails["copyrights"].count() == 1 ? m_getAllDetails["copyrights"].join(m_settings->value("copyright_sep").toString()) : m_settings->value("copyright_value").toString())))
 		.replace("%character%", (m_getAllDetails["characters"].isEmpty() ? m_settings->value("character_empty").toString() : (m_settings->value("character_useall").toBool() || m_getAllDetails["characters"].count() == 1 ? m_getAllDetails["characters"].join(m_settings->value("character_sep").toString()) : m_settings->value("character_value").toString())))
@@ -1555,7 +1578,8 @@ void mainWindow::getAllPerformImage(QNetworkReply* reply)
 		.replace("%website%", m_allImages.at(m_getAllId).value("site"))
 		.replace("%ext%", u.section('.', -1))
 		.replace("\\", "/");
-		QString p = m_settings->value("path").toString().replace("\\", "/");
+		QString p = m_groupBatchs[m_allImages.at(m_getAllId).value("site_id").toInt()][8];
+		p.replace("\\", "/");
 		if (path.left(1) == "/")	{ path = path.right(path.length()-1);	}
 		if (p.right(1) == "/")		{ p = p.left(p.length()-1);				}
 		QString all = m_allImages.at(m_getAllId).value("tags");

@@ -446,8 +446,8 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>98</width>
-                <height>28</height>
+                <width>774</width>
+                <height>504</height>
                </rect>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_8">
@@ -461,6 +461,9 @@
                  </property>
                  <property name="textFormat">
                   <enum>Qt::RichText</enum>
+                 </property>
+                 <property name="openExternalLinks">
+                  <bool>true</bool>
                  </property>
                 </widget>
                </item>
@@ -820,6 +823,38 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>tableBatchGroups</sender>
+   <signal>cellChanged(int,int)</signal>
+   <receiver>mainWindow</receiver>
+   <slot>updateBatchGroups(int,int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>420</x>
+     <y>204</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>477</x>
+     <y>203</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionFolder</sender>
+   <signal>triggered()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>saveFolder()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>help()</slot>
@@ -837,5 +872,7 @@
   <slot>getAll()</slot>
   <slot>favoritesBack()</slot>
   <slot>viewed()</slot>
+  <slot>updateBatchGroups(int,int)</slot>
+  <slot>saveFolder()</slot>
  </slots>
 </ui>

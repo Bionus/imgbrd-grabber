@@ -182,7 +182,6 @@ void optionsWindow::updateContainer(QTreeWidgetItem *current, QTreeWidgetItem *p
 		if (iprevious < ui->container->count())
 		{ ui->container->itemAt(iprevious)->widget()->hide(); }
 	}
-	qDebug() << current->text(0);
 	int icurrent = assoc[current->text(0)];
 	if (icurrent < ui->container->count())
 	{ ui->container->itemAt(icurrent)->widget()->show(); }
