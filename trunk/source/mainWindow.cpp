@@ -27,8 +27,8 @@ mainWindow::mainWindow(QString program, QStringList tags, QMap<QString,QString> 
 
 	m_settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
 	QStringList assoc = QStringList() << "name" << "note" << "lastviewed";
-		ui->comboOrderfavorites->setCurrentIndex(assoc.indexOf(m_settings->value("Favorites/order").toString()));
-		ui->comboOrderasc->setCurrentIndex(int(m_settings->value("Favorites/reverse").toBool()));
+		ui->comboOrderfavorites->setCurrentIndex(assoc.indexOf(m_settings->value("Favorites/order", "name").toString()));
+		ui->comboOrderasc->setCurrentIndex(int(m_settings->value("Favorites/reverse", false).toBool()));
 		ui->checkMergeResults->setChecked(m_settings->value("mergeresults", false).toBool());
 		m_settings->setValue("reverse", bool(ui->comboOrderasc->currentIndex() == 1));
 	loadLanguage(m_settings->value("language", "English").toString());
