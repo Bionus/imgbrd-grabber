@@ -129,7 +129,7 @@
             <layout class="QGridLayout" name="layoutResults"/>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout">
+            <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,0,0">
              <item>
               <widget class="QPushButton" name="buttonSourcesList">
                <property name="text">
@@ -144,6 +144,13 @@
                </property>
                <property name="checked">
                 <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="labelMergeResults">
+               <property name="text">
+                <string/>
                </property>
               </widget>
              </item>
@@ -439,8 +446,8 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>774</width>
-                <height>504</height>
+                <width>98</width>
+                <height>28</height>
                </rect>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_8">
