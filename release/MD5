@@ -5,8 +5,8 @@ c1a9719af134cf82270f757cf32993eb imageformats/qgif4.dll
 2512ba8d4a22c017a782c673e47cc7a4 imageformats/qmng4.dll
 9012bb490d1d4395e400ca3f24e5d0b5 imageformats/qsvg4.dll
 949d1034852f829c5508a326279790b9 imageformats/qtiff4.dll
-d65d9f3880b0b096df42a0ca4f330178 languages/English.qm
-1ff5e7d12a6f2532f04c7467394ae432 languages/Français.qm
+2c829f36adbcbbbcef0f290fc6941e8c languages/English.qm
+0e8f23cb23cee8ee6eb3ee22129ad605 languages/Français.qm
 188992203cad9be2d18916edf027c2a5 languages/updater/English.qm
 b633ad468f4d1dec1649d8d3a26ab835 languages/updater/Français.qm
 c4b4409f186da70fcf2bcc60d5f05489 libgcc_s_dw2-1.dll
