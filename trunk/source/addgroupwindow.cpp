@@ -37,7 +37,7 @@ AddGroupWindow::AddGroupWindow(QStringList sites, QStringList favorites, mainWin
 				m_spinPage->setValue(1);
 				formLayout->addRow(tr("&Page"), m_spinPage);
 			m_spinPP = new QSpinBox;
-				m_spinPP->setRange(1, 100);
+				m_spinPP->setRange(1, 1000);
 				m_spinPP->setValue(100);
 				formLayout->addRow(tr("&Images par page"), m_spinPP);
 			m_spinLimit = new QSpinBox;

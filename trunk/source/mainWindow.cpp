@@ -10,7 +10,7 @@
 #include "json.h"
 #include <QtXml>
 
-#define VERSION	"1.8.0"
+#define VERSION	"1.8.1"
 #define DONE()	logUpdate(tr(" Fait"));
 
 
@@ -578,6 +578,7 @@ void mainWindow::replyFinished(QNetworkReply* r)
 	int max = 0;
 	float count = 0;
 	QString site = m_sites.keys().at(site_id), source = r->readAll();
+	qDebug() << url << source;
 	QNetworkAccessManager *mngr = new QNetworkAccessManager(this);
 	connect(mngr, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinishedPic(QNetworkReply*)));
 	if (m_sites[site].at(0) == "xml")
@@ -1178,7 +1179,6 @@ void mainWindow::getAll()
 			QStringList tags = text.split(" ", QString::SkipEmptyParts);
 			tags.removeDuplicates();
 			int pp = m_groupBatchs.at(i).at(2).toInt();
-			pp = pp > 100 ? 100 : pp;
 			for (int r = 0; r < ceil(m_groupBatchs.at(i).at(3).toDouble()/pp); r++)
 			{
 				if (!m_sites.keys().contains(site))
@@ -1201,6 +1201,7 @@ void mainWindow::getAll()
 void mainWindow::getAllSource(QNetworkReply *r)
 {
 	QString url = r->url().toString(), source = r->readAll();
+	qDebug() << url << source;
 	QList<QMap<QString, QString> > imgs;
 	log(tr("Recu <a href=\"%1\">%1</a>").arg(url));
 	int n = 0;
@@ -1211,7 +1212,10 @@ void mainWindow::getAllSource(QNetworkReply *r)
 	}
 	QString site = m_groupBatchs.at(n).at(5);
 	if (source.isEmpty())
-	{ log(tr("<b>Attention :</b> %1").arg(tr("rien n'a été reçu.").arg(site))); }
+	{
+		error(this, tr("<b>Attention :</b> %1").arg(tr("rien n'a été reçu.").arg(site)));
+		log(tr("<b>Attention :</b> %1").arg(tr("rien n'a été reçu.").arg(site)));
+	}
 	else if (m_sites[site].at(0) == "xml")
 	{
 		QDomDocument doc;
@@ -1319,6 +1323,8 @@ void mainWindow::getAllSource(QNetworkReply *r)
 	}
 	if (imgs.isEmpty())
 	{
+		error(this, tr("<b>Attention :</b> %1").arg(tr("rien n'a été reçu depuis %1 (%2). Raisons possibles : tag incorrect, page trop éloignée.").arg(site, url)));
+		return;
 		qDebug() << m_allImages.last();
 	}
 	else
