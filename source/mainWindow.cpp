@@ -423,9 +423,11 @@ void mainWindow::web(QString tags, bool popular)
 {
 	m_remainingPics = 0;
 	m_remainingSites = 0;
+	m_countPics = 0;
 	m_gotMd5.clear();
 	m_mergeButtons.clear();
 	m_currentPageIsPopular = popular;
+	ui->labelMergeResults->setText(tr("%1/%2 (%3/%4)").arg(m_replies.count()-m_countPics-m_remainingSites).arg(m_replies.count()-m_countPics).arg(m_countPics-m_remainingPics).arg(m_countPics));
 	tags = (tags.isEmpty() ? m_search->toPlainText() : tags);
 	if (!m_replies.isEmpty())
 	{
@@ -509,6 +511,7 @@ void mainWindow::web(QString tags, bool popular)
 			m_remainingSites++;
 		}
 	}
+	ui->labelMergeResults->setText(tr("%1/%2 (%3/%4)").arg(m_replies.count()-m_countPics-m_remainingSites).arg(m_replies.count()-m_countPics).arg(m_countPics-m_remainingPics).arg(m_countPics));
 }
 void mainWindow::webZoom(int id)
 {
@@ -694,7 +697,9 @@ void mainWindow::replyFinished(QNetworkReply* r)
 	}
 	m_countPage[site] = results;
 	m_remainingPics += results;
+	m_countPics += results;
 	m_remainingSites--;
+	ui->labelMergeResults->setText(tr("%1/%2 (%3/%4)").arg(m_replies.count()-m_countPics-m_remainingSites).arg(m_replies.count()-m_countPics).arg(m_countPics-m_remainingPics).arg(m_countPics));
 	if (!ui->checkMergeResults->isChecked())
 	{
 		QLabel *txt = new QLabel();
@@ -736,6 +741,7 @@ void mainWindow::replyFinishedPic(QNetworkReply* r)
 	// TODO: bug qqpart ici
 	log("Received preview image <a href='"+r->url().toString()+"'>"+r->url().toString()+"</a>");
 	m_remainingPics--;
+	ui->labelMergeResults->setText(tr("%1/%2 (%3/%4)").arg(m_replies.count()-m_countPics-m_remainingSites).arg(m_replies.count()-m_countPics).arg(m_countPics-m_remainingPics).arg(m_countPics));
 	int id = 0, site = 0, n = 0;
 	QString ste;
 	for (int i = 0; i < m_details.count(); i++)
@@ -750,57 +756,68 @@ void mainWindow::replyFinishedPic(QNetworkReply* r)
 		}
 	}
 	// Vérification des doublons
+	bool ignore = false;
 	if (ui->checkMergeResults->isChecked())
 	{
 		QString md5 = m_details.at(n).value("md5");
 		if (m_gotMd5.contains(md5))
-		{ return; }
-		m_gotMd5.append(md5);
+		{
+			if (m_remainingPics == 0 && m_remainingSites == 0)
+			{ ignore = true; }
+			else
+			{ return; }
+		}
+		if (!ignore)
+		{ m_gotMd5.append(md5); }
 	}
-	QMap<QString, QString> assoc;
-		assoc["s"] = tr("Safe");
-		assoc["q"] = tr("Questionable");
-		assoc["e"] = tr("Explicit");
-	QString unit;
-	int size = m_details.at(n).value("file_size").toInt();
-	if (size >= 2048)
+	QBouton *l = new QBouton(n, this);
+	if (!ignore)
 	{
-		size /= 1024;
+		QMap<QString, QString> assoc;
+			assoc["s"] = tr("Safe");
+			assoc["q"] = tr("Questionable");
+			assoc["e"] = tr("Explicit");
+		QString unit;
+		int size = m_details.at(n).value("file_size").toInt();
 		if (size >= 2048)
 		{
 			size /= 1024;
-			unit = "mo";
+			if (size >= 2048)
+			{
+				size /= 1024;
+				unit = "mo";
+			}
+			else
+			{ unit = "ko"; }
 		}
 		else
-		{ unit = "ko"; }
+		{ unit = "o"; }
+		QPixmap pic;
+			pic.loadFromData(r->readAll());
+		if (pic.isNull())
+		{ log("<b>Warning:</b> one of the preview pictures (<a href='"+r->url().toString()+"'>"+r->url().toString()+"</a>) is empty."); }
+			l->setIcon(pic);
+			l->setToolTip(QString("%1%2%3%4%5%6%7%8")
+				.arg(m_details.at(n).value("tags").isEmpty() ? "" : tr("<b>Tags :</b> %1<br/><br/>").arg(m_details.at(n).value("tags")))
+				.arg(m_details.at(n).value("id").isEmpty() ? "" : tr("<b>ID :</b> %1<br/>").arg(m_details.at(n).value("id")))
+				.arg(m_details.at(n).value("rating").isEmpty() ? "" : tr("<b>Classe :</b> %1<br/>").arg(assoc[m_details.at(n).value("rating")]))
+				.arg(m_details.at(n).value("score").isEmpty() ? "" : tr("<b>Score :</b> %1<br/>").arg(m_details.at(n).value("score")))
+				.arg(m_details.at(n).value("author").isEmpty() ? "" : tr("<b>Posteur :</b> %1<br/><br/>").arg(m_details.at(n).value("author")))
+				.arg(m_details.at(n).value("width").isEmpty() || m_details.at(n).value("height").isEmpty() ? "" : tr("<b>Dimensions :</b> %1 x %2<br/>").arg(m_details.at(n).value("width"), m_details.at(n).value("height")))
+				.arg(m_details.at(n).value("file_size").isEmpty() ? "" : tr("<b>Taille :</b> %1 %2<br/>").arg(QString::number(round(size)), unit))
+				.arg(m_details.at(n).value("created_at").isEmpty() ? "" : tr("<b>Date :</b> %1").arg(m_details.at(n).value("created_at")))
+			);
+			l->setIconSize(QSize(150, 150));
+			l->setFlat(true);
+			connect(l, SIGNAL(appui(int)), this, SLOT(webZoom(int)));
+			connect(l, SIGNAL(rightClick(int)), this, SLOT(batchChange(int)));
 	}
-	else
-	{ unit = "o"; }
-	QPixmap pic;
-		pic.loadFromData(r->readAll());
-	if (pic.isNull())
-	{ log("<b>Warning:</b> one of the preview pictures (<a href='"+r->url().toString()+"'>"+r->url().toString()+"</a>) is empty."); }
-	QBouton *l = new QBouton(n, this);
-		l->setIcon(pic);
-		l->setToolTip(QString("%1%2%3%4%5%6%7%8")
-			.arg(m_details.at(n).value("tags").isEmpty() ? "" : tr("<b>Tags :</b> %1<br/><br/>").arg(m_details.at(n).value("tags")))
-			.arg(m_details.at(n).value("id").isEmpty() ? "" : tr("<b>ID :</b> %1<br/>").arg(m_details.at(n).value("id")))
-			.arg(m_details.at(n).value("rating").isEmpty() ? "" : tr("<b>Classe :</b> %1<br/>").arg(assoc[m_details.at(n).value("rating")]))
-			.arg(m_details.at(n).value("score").isEmpty() ? "" : tr("<b>Score :</b> %1<br/>").arg(m_details.at(n).value("score")))
-			.arg(m_details.at(n).value("author").isEmpty() ? "" : tr("<b>Posteur :</b> %1<br/><br/>").arg(m_details.at(n).value("author")))
-			.arg(m_details.at(n).value("width").isEmpty() || m_details.at(n).value("height").isEmpty() ? "" : tr("<b>Dimensions :</b> %1 x %2<br/>").arg(m_details.at(n).value("width"), m_details.at(n).value("height")))
-			.arg(m_details.at(n).value("file_size").isEmpty() ? "" : tr("<b>Taille :</b> %1 %2<br/>").arg(QString::number(round(size)), unit))
-			.arg(m_details.at(n).value("created_at").isEmpty() ? "" : tr("<b>Date :</b> %1").arg(m_details.at(n).value("created_at")))
-		);
-		l->setIconSize(QSize(150, 150));
-		l->setFlat(true);
-		connect(l, SIGNAL(appui(int)), this, SLOT(webZoom(int)));
-		connect(l, SIGNAL(rightClick(int)), this, SLOT(batchChange(int)));
 	if (m_countPage[ste] != 0)
 	{
 		if (ui->checkMergeResults->isChecked())
 		{
-			m_mergeButtons.append(l);
+			if (!ignore)
+			{ m_mergeButtons.append(l); }
 			if (m_remainingPics == 0 && m_remainingSites == 0)
 			{
 				int pl = ceil(sqrt(m_mergeButtons.count()));

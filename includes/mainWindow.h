@@ -76,7 +76,7 @@ class mainWindow : public QMainWindow
 		Ui::mainWindow *ui;
 		QSettings *m_settings;
 		QDateTime m_serverDate;
-		int m_timezonedecay, m_getAllId, m_getAllDownloaded, m_getAllExists, m_getAllIgnored, m_getAllErrors, m_getAllCount, m_getAllPageCount, m_getAllBeforeId, m_pagemax, m_remainingPics, m_remainingSites;
+		int m_timezonedecay, m_getAllId, m_getAllDownloaded, m_getAllExists, m_getAllIgnored, m_getAllErrors, m_getAllCount, m_getAllPageCount, m_getAllBeforeId, m_pagemax, m_remainingPics, m_remainingSites, m_countPics;
 		QMap<QString,QString> m_favorites, m_params;
 		QString m_program;
 		QStringList m_tags, m_assoc, m_gotMd5;

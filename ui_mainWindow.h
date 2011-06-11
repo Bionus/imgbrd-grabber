@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainWindow.ui'
 **
-** Created: Fri 10. Jun 20:33:22 2011
+** Created: Sat 11. Jun 11:38:57 2011
 **      by: Qt User Interface Compiler version 4.6.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -64,6 +64,7 @@ public:
     QHBoxLayout *horizontalLayout;
     QPushButton *buttonSourcesList;
     QCheckBox *checkMergeResults;
+    QLabel *labelMergeResults;
     QPushButton *buttonGetpage;
     QWidget *tab_2;
     QVBoxLayout *verticalLayout_4;
@@ -219,6 +220,11 @@ public:
         checkMergeResults->setChecked(true);
 
         horizontalLayout->addWidget(checkMergeResults);
+
+        labelMergeResults = new QLabel(widget);
+        labelMergeResults->setObjectName(QString::fromUtf8("labelMergeResults"));
+
+        horizontalLayout->addWidget(labelMergeResults);
 
         buttonGetpage = new QPushButton(widget);
         buttonGetpage->setObjectName(QString::fromUtf8("buttonGetpage"));
@@ -416,7 +422,7 @@ public:
         scrollArea->setWidgetResizable(true);
         scrollAreaWidgetContents = new QWidget();
         scrollAreaWidgetContents->setObjectName(QString::fromUtf8("scrollAreaWidgetContents"));
-        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 774, 504));
+        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 98, 28));
         verticalLayout_8 = new QVBoxLayout(scrollAreaWidgetContents);
         verticalLayout_8->setContentsMargins(6, 6, 6, 6);
         verticalLayout_8->setObjectName(QString::fromUtf8("verticalLayout_8"));
@@ -506,6 +512,7 @@ public:
         datePopular->setDisplayFormat(QApplication::translate("mainWindow", "dd/MM/yyyy", 0, QApplication::UnicodeUTF8));
         buttonSourcesList->setText(QApplication::translate("mainWindow", "Sources", 0, QApplication::UnicodeUTF8));
         checkMergeResults->setText(QApplication::translate("mainWindow", "Fusionner les r\303\251sultats", 0, QApplication::UnicodeUTF8));
+        labelMergeResults->setText(QString());
         buttonGetpage->setText(QApplication::translate("mainWindow", "Prendre cette page", 0, QApplication::UnicodeUTF8));
         tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("mainWindow", "Explorer", 0, QApplication::UnicodeUTF8));
         label_3->setText(QApplication::translate("mainWindow", "Trier par", 0, QApplication::UnicodeUTF8));
