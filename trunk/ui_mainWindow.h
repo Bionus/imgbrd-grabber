@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainWindow.ui'
 **
-** Created: Sat 11. Jun 11:38:57 2011
+** Created: Sat 11. Jun 22:17:45 2011
 **      by: Qt User Interface Compiler version 4.6.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -422,13 +422,14 @@ public:
         scrollArea->setWidgetResizable(true);
         scrollAreaWidgetContents = new QWidget();
         scrollAreaWidgetContents->setObjectName(QString::fromUtf8("scrollAreaWidgetContents"));
-        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 98, 28));
+        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 774, 504));
         verticalLayout_8 = new QVBoxLayout(scrollAreaWidgetContents);
         verticalLayout_8->setContentsMargins(6, 6, 6, 6);
         verticalLayout_8->setObjectName(QString::fromUtf8("verticalLayout_8"));
         labelLog = new QLabel(scrollAreaWidgetContents);
         labelLog->setObjectName(QString::fromUtf8("labelLog"));
         labelLog->setTextFormat(Qt::RichText);
+        labelLog->setOpenExternalLinks(true);
 
         verticalLayout_8->addWidget(labelLog);
 
@@ -486,6 +487,8 @@ public:
         QObject::connect(pushButton_14, SIGNAL(clicked()), mainWindow, SLOT(getAll()));
         QObject::connect(buttonBack, SIGNAL(clicked()), mainWindow, SLOT(favoritesBack()));
         QObject::connect(buttonMarkasviewed, SIGNAL(clicked()), mainWindow, SLOT(viewed()));
+        QObject::connect(tableBatchGroups, SIGNAL(cellChanged(int,int)), mainWindow, SLOT(updateBatchGroups(int,int)));
+        QObject::connect(actionFolder, SIGNAL(triggered()), mainWindow, SLOT(saveFolder()));
 
         tabWidget->setCurrentIndex(0);
         comboOrderfavorites->setCurrentIndex(0);

@@ -66,20 +66,50 @@ QMap<QString,QString> loadFavorites()
 	return favorites;
 }
 
+/**
+ * Check filename format's validity.
+ * @param	text	The format to be validated.
+ * @return			A QString containing the message (error or not).
+ * @todo			Return a constant instead of a QString.
+ */
 QString validateFilename(QString text)
 {
+	// Field must be filled
 	if (text.isEmpty())
 	{ return QObject::tr("<span style=\"color:red\">Les noms de fichiers ne doivent pas être vides !</span>"); }
+	// Field must end by an extension
 	if (!text.endsWith(".%ext%"))
 	{ return QObject::tr("<span style=\"color:orange\">Votre nom de fichier ne finit pas par une extension, symbolisée par %ext% ! Vous risquez de ne pas pouvoir ouvrir vos fichiers.</span>"); }
+	// Field must contain an unique token
 	if (!text.contains("%md5%"))
 	{ return QObject::tr("<span style=\"color:orange\">Votre nom de fichier n'est pas unique à chaque image et une image risque d'en écraser une précédente lors de la sauvegarde ! Vous devriez utiliser le symbole %md5%, unique à chaque image, pour éviter ce désagrément.</span>"); }
+	// Looking for unknown tokens
+	QStringList tokens = QStringList() << "artist" << "general" << "copyright" << "character" << "model" << "model|artist" << "filename" << "rating" << "md5" << "website" << "ext" << "all";
+	QRegExp rx = QRegExp("%(.+)%");
+	rx.setMinimal(true);
+	int pos = 0;
+	while ((pos = rx.indexIn(text, pos)) != -1)
+	{
+		if (!tokens.contains(rx.cap(1)))
+		{ return QObject::tr("<span style=\"color:orange\">Le symbole %%1% n\'existe pas et ne sera pas remplacé.</span>").arg(rx.cap(1)); }
+		pos += rx.matchedLength();
+	}
+	// All tests passed
 	return QObject::tr("<span style=\"color:green\">Format valide !</span>");
 }
 
+/**
+ * Return the path to a specified file in the config folder (since program files is not writable).
+ * @param	file	The file.
+ * @return			The absolute path to the file.
+ */
 QString savePath(QString file)
 { return QDir::toNativeSeparators(QDir::homePath()+"/Grabber/"+file); }
 
+/**
+ * Opens the explorer and select the file.
+ * @param	pathIn	The path to the file.
+ */
 void showInGraphicalShell(const QString &pathIn)
 {
 	// Mac & Windows support folder or file.

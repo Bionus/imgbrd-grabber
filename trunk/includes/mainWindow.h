@@ -32,6 +32,7 @@ class mainWindow : public QMainWindow
 		void options();
 		void help();
 		void aboutAuthor();
+		void saveFolder();
 		// Language
 		void switchTranslator(QTranslator&, const QString&);
 		void loadLanguage(const QString&);
