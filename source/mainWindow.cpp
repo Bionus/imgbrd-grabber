@@ -700,6 +700,8 @@ void mainWindow::replyFinished(QNetworkReply* r)
 	m_countPics += results;
 	m_remainingSites--;
 	ui->labelMergeResults->setText(tr("%1/%2 (%3/%4)").arg(m_replies.count()-m_countPics-m_remainingSites).arg(m_replies.count()-m_countPics).arg(m_countPics-m_remainingPics).arg(m_countPics));
+	int pl = ceil(sqrt(m_settings->value("limit", 20).toInt()));
+	float fl = (float)m_settings->value("limit", 20).toInt()/pl;
 	if (!ui->checkMergeResults->isChecked())
 	{
 		QLabel *txt = new QLabel();
@@ -717,10 +719,6 @@ void mainWindow::replyFinished(QNetworkReply* r)
 		else
 		{ txt->setText(site+" - <a href=\""+url+"\">"+url+"</a> - "+tr("Page %1 sur %2 (%3 sur %4)").arg(QString::number(ui->spinPage->value()), (max != 0 ? QString::number(ceil(count/m_settings->value("limit", 20).toFloat())) : "?"), QString::number(results), (count != 0 ? QString::number(count) : "?"))); }
 		txt->setOpenExternalLinks(true);
-		//int pl = ceil(sqrt(results));
-		//float fl = (float)results/pl;
-		int pl = ceil(sqrt(m_settings->value("limit", 20).toInt()));
-		float fl = (float)m_settings->value("limit", 20).toInt()/pl;
 		if (!m_loadFavorite.isNull())
 		{
 			ui->layoutFavoritesResults->addWidget(txt, floor(n/m_settings->value("columns", 1).toInt())*(ceil(fl)+1), pl*(n%m_settings->value("columns", 1).toInt()), 1, pl);
@@ -730,6 +728,21 @@ void mainWindow::replyFinished(QNetworkReply* r)
 		{
 			ui->layoutResults->addWidget(txt, floor(n/m_settings->value("columns", 1).toInt())*(ceil(fl)+1), pl*(n%m_settings->value("columns", 1).toInt()), 1, pl);
 			ui->layoutResults->setRowMinimumHeight(floor(n/m_settings->value("columns", 1).toInt())*(ceil(fl)+1), 50);
+		}
+		m_webSites.append(txt);
+	}
+	else if (results == 0 && m_remainingSites == 0)
+	{
+		QLabel *txt = new QLabel((!m_loadFavorite.isNull() ? tr("Aucun résultat depuis le %1").arg(m_loadFavorite.toString(m_settings->value("dateformat", "dd/MM/yyyy").toString())) : tr("Aucun résultat")));
+		if (!m_loadFavorite.isNull())
+		{
+			ui->layoutFavoritesResults->addWidget(txt, 0, 0, 1, pl);
+			ui->layoutFavoritesResults->setRowMinimumHeight(0, 50);
+		}
+		else
+		{
+			ui->layoutResults->addWidget(txt, 0, 0, 1, pl);
+			ui->layoutResults->setRowMinimumHeight(0, 50);
 		}
 		m_webSites.append(txt);
 	}
@@ -821,12 +834,24 @@ void mainWindow::replyFinishedPic(QNetworkReply* r)
 			if (m_remainingPics == 0 && m_remainingSites == 0)
 			{
 				int pl = ceil(sqrt(m_mergeButtons.count()));
+				QLabel *txt = new QLabel(tr("Résultats"));
+				if (!m_loadFavorite.isNull())
+				{
+					ui->layoutFavoritesResults->addWidget(txt, 0, 0, 1, pl);
+					ui->layoutFavoritesResults->setRowMinimumHeight(0, 50);
+				}
+				else
+				{
+					ui->layoutResults->addWidget(txt, 0, 0, 1, pl);
+					ui->layoutResults->setRowMinimumHeight(0, 50);
+				}
+				m_webSites.append(txt);
 				for (int id = 0; id < m_mergeButtons.count(); id++)
 				{
 					if (!m_loadFavorite.isNull())
-					{ ui->layoutFavoritesResults->addWidget(m_mergeButtons.at(id), floor(id/pl)+1, id%pl+pl, 1, 1); }
+					{ ui->layoutFavoritesResults->addWidget(m_mergeButtons.at(id), floor(id/pl)+1, id%pl, 1, 1); }
 					else
-					{ ui->layoutResults->addWidget(m_mergeButtons.at(id), floor(id/pl)+1, id%pl+pl, 1, 1); }
+					{ ui->layoutResults->addWidget(m_mergeButtons.at(id), floor(id/pl)+1, id%pl, 1, 1); }
 					m_webPics.append(m_mergeButtons.at(id));
 				}
 			}
