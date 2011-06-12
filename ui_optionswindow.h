@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'optionswindow.ui'
 **
-** Created: Sun 5. Jun 20:29:09 2011
+** Created: Sun 12. Jun 14:32:56 2011
 **      by: Qt User Interface Compiler version 4.6.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -112,23 +112,37 @@ public:
     QLabel *label_30;
     QHBoxLayout *horizontalLayout_3;
     QLineEdit *lineColoringArtists;
-    QPushButton *buttonColoringArtists;
+    QPushButton *buttonColoringArtistsColor;
+    QPushButton *buttonColoringArtistsFont;
     QLabel *label_31;
     QLabel *label_32;
     QHBoxLayout *horizontalLayout_4;
     QLineEdit *lineColoringCopyrights;
-    QPushButton *buttonColoringCopyrights;
+    QPushButton *buttonColoringCopyrightsColor;
+    QPushButton *buttonColoringCopyrightsFont;
     QHBoxLayout *horizontalLayout_5;
     QLineEdit *lineColoringCharacters;
-    QPushButton *buttonColoringCharacters;
+    QPushButton *buttonColoringCharactersColor;
+    QPushButton *buttonColoringCharactersFont;
     QLabel *label_33;
     QLabel *label_34;
     QHBoxLayout *horizontalLayout_6;
     QLineEdit *lineColoringGenerals;
-    QPushButton *buttonColoringGenerals;
+    QPushButton *buttonColoringGeneralsColor;
+    QPushButton *buttonColoringGeneralsFont;
     QHBoxLayout *horizontalLayout_7;
     QLineEdit *lineColoringModels;
-    QPushButton *buttonColoringModels;
+    QPushButton *buttonColoringModelsColor;
+    QPushButton *buttonColoringModelsFont;
+    QWidget *widget_9;
+    QFormLayout *formLayout_10;
+    QLabel *label_4;
+    QLabel *label_35;
+    QHBoxLayout *horizontalLayout_8;
+    QLineEdit *linePassword;
+    QPushButton *buttonCrypt;
+    QLineEdit *linePseudo;
+    QLabel *label_36;
     QWidget *widget_7;
     QFormLayout *formLayout_8;
     QLabel *label_25;
@@ -145,7 +159,7 @@ public:
     {
         if (optionsWindow->objectName().isEmpty())
             optionsWindow->setObjectName(QString::fromUtf8("optionsWindow"));
-        optionsWindow->resize(646, 1560);
+        optionsWindow->resize(646, 1799);
         QIcon icon;
         icon.addFile(QString::fromUtf8(":/images/icon.ico"), QSize(), QIcon::Normal, QIcon::Off);
         optionsWindow->setWindowIcon(icon);
@@ -162,6 +176,7 @@ public:
         new QTreeWidgetItem(__qtreewidgetitem);
         new QTreeWidgetItem(__qtreewidgetitem);
         new QTreeWidgetItem(__qtreewidgetitem);
+        new QTreeWidgetItem(treeWidget);
         new QTreeWidgetItem(treeWidget);
         new QTreeWidgetItem(treeWidget);
         treeWidget->setObjectName(QString::fromUtf8("treeWidget"));
@@ -542,10 +557,15 @@ public:
 
         horizontalLayout_3->addWidget(lineColoringArtists);
 
-        buttonColoringArtists = new QPushButton(widget_8);
-        buttonColoringArtists->setObjectName(QString::fromUtf8("buttonColoringArtists"));
+        buttonColoringArtistsColor = new QPushButton(widget_8);
+        buttonColoringArtistsColor->setObjectName(QString::fromUtf8("buttonColoringArtistsColor"));
 
-        horizontalLayout_3->addWidget(buttonColoringArtists);
+        horizontalLayout_3->addWidget(buttonColoringArtistsColor);
+
+        buttonColoringArtistsFont = new QPushButton(widget_8);
+        buttonColoringArtistsFont->setObjectName(QString::fromUtf8("buttonColoringArtistsFont"));
+
+        horizontalLayout_3->addWidget(buttonColoringArtistsFont);
 
         horizontalLayout_3->setStretch(0, 1);
 
@@ -568,10 +588,15 @@ public:
 
         horizontalLayout_4->addWidget(lineColoringCopyrights);
 
-        buttonColoringCopyrights = new QPushButton(widget_8);
-        buttonColoringCopyrights->setObjectName(QString::fromUtf8("buttonColoringCopyrights"));
+        buttonColoringCopyrightsColor = new QPushButton(widget_8);
+        buttonColoringCopyrightsColor->setObjectName(QString::fromUtf8("buttonColoringCopyrightsColor"));
 
-        horizontalLayout_4->addWidget(buttonColoringCopyrights);
+        horizontalLayout_4->addWidget(buttonColoringCopyrightsColor);
+
+        buttonColoringCopyrightsFont = new QPushButton(widget_8);
+        buttonColoringCopyrightsFont->setObjectName(QString::fromUtf8("buttonColoringCopyrightsFont"));
+
+        horizontalLayout_4->addWidget(buttonColoringCopyrightsFont);
 
 
         formLayout_9->setLayout(1, QFormLayout::FieldRole, horizontalLayout_4);
@@ -583,10 +608,15 @@ public:
 
         horizontalLayout_5->addWidget(lineColoringCharacters);
 
-        buttonColoringCharacters = new QPushButton(widget_8);
-        buttonColoringCharacters->setObjectName(QString::fromUtf8("buttonColoringCharacters"));
+        buttonColoringCharactersColor = new QPushButton(widget_8);
+        buttonColoringCharactersColor->setObjectName(QString::fromUtf8("buttonColoringCharactersColor"));
 
-        horizontalLayout_5->addWidget(buttonColoringCharacters);
+        horizontalLayout_5->addWidget(buttonColoringCharactersColor);
+
+        buttonColoringCharactersFont = new QPushButton(widget_8);
+        buttonColoringCharactersFont->setObjectName(QString::fromUtf8("buttonColoringCharactersFont"));
+
+        horizontalLayout_5->addWidget(buttonColoringCharactersFont);
 
 
         formLayout_9->setLayout(2, QFormLayout::FieldRole, horizontalLayout_5);
@@ -608,10 +638,15 @@ public:
 
         horizontalLayout_6->addWidget(lineColoringGenerals);
 
-        buttonColoringGenerals = new QPushButton(widget_8);
-        buttonColoringGenerals->setObjectName(QString::fromUtf8("buttonColoringGenerals"));
+        buttonColoringGeneralsColor = new QPushButton(widget_8);
+        buttonColoringGeneralsColor->setObjectName(QString::fromUtf8("buttonColoringGeneralsColor"));
 
-        horizontalLayout_6->addWidget(buttonColoringGenerals);
+        horizontalLayout_6->addWidget(buttonColoringGeneralsColor);
+
+        buttonColoringGeneralsFont = new QPushButton(widget_8);
+        buttonColoringGeneralsFont->setObjectName(QString::fromUtf8("buttonColoringGeneralsFont"));
+
+        horizontalLayout_6->addWidget(buttonColoringGeneralsFont);
 
         horizontalLayout_6->setStretch(0, 1);
 
@@ -624,10 +659,15 @@ public:
 
         horizontalLayout_7->addWidget(lineColoringModels);
 
-        buttonColoringModels = new QPushButton(widget_8);
-        buttonColoringModels->setObjectName(QString::fromUtf8("buttonColoringModels"));
+        buttonColoringModelsColor = new QPushButton(widget_8);
+        buttonColoringModelsColor->setObjectName(QString::fromUtf8("buttonColoringModelsColor"));
 
-        horizontalLayout_7->addWidget(buttonColoringModels);
+        horizontalLayout_7->addWidget(buttonColoringModelsColor);
+
+        buttonColoringModelsFont = new QPushButton(widget_8);
+        buttonColoringModelsFont->setObjectName(QString::fromUtf8("buttonColoringModelsFont"));
+
+        horizontalLayout_7->addWidget(buttonColoringModelsFont);
 
         horizontalLayout_7->setStretch(0, 1);
 
@@ -635,6 +675,50 @@ public:
 
 
         container->addWidget(widget_8);
+
+        widget_9 = new QWidget(optionsWindow);
+        widget_9->setObjectName(QString::fromUtf8("widget_9"));
+        formLayout_10 = new QFormLayout(widget_9);
+        formLayout_10->setObjectName(QString::fromUtf8("formLayout_10"));
+        formLayout_10->setFieldGrowthPolicy(QFormLayout::AllNonFixedFieldsGrow);
+        label_4 = new QLabel(widget_9);
+        label_4->setObjectName(QString::fromUtf8("label_4"));
+
+        formLayout_10->setWidget(0, QFormLayout::LabelRole, label_4);
+
+        label_35 = new QLabel(widget_9);
+        label_35->setObjectName(QString::fromUtf8("label_35"));
+
+        formLayout_10->setWidget(1, QFormLayout::LabelRole, label_35);
+
+        horizontalLayout_8 = new QHBoxLayout();
+        horizontalLayout_8->setObjectName(QString::fromUtf8("horizontalLayout_8"));
+        linePassword = new QLineEdit(widget_9);
+        linePassword->setObjectName(QString::fromUtf8("linePassword"));
+
+        horizontalLayout_8->addWidget(linePassword);
+
+        buttonCrypt = new QPushButton(widget_9);
+        buttonCrypt->setObjectName(QString::fromUtf8("buttonCrypt"));
+
+        horizontalLayout_8->addWidget(buttonCrypt);
+
+
+        formLayout_10->setLayout(1, QFormLayout::FieldRole, horizontalLayout_8);
+
+        linePseudo = new QLineEdit(widget_9);
+        linePseudo->setObjectName(QString::fromUtf8("linePseudo"));
+
+        formLayout_10->setWidget(0, QFormLayout::FieldRole, linePseudo);
+
+        label_36 = new QLabel(widget_9);
+        label_36->setObjectName(QString::fromUtf8("label_36"));
+        label_36->setWordWrap(true);
+
+        formLayout_10->setWidget(2, QFormLayout::SpanningRole, label_36);
+
+
+        container->addWidget(widget_9);
 
         widget_7 = new QWidget(optionsWindow);
         widget_7->setObjectName(QString::fromUtf8("widget_7"));
@@ -734,7 +818,9 @@ public:
         QTreeWidgetItem *___qtreewidgetitem8 = treeWidget->topLevelItem(4);
         ___qtreewidgetitem8->setText(0, QApplication::translate("optionsWindow", "Coloration", 0, QApplication::UnicodeUTF8));
         QTreeWidgetItem *___qtreewidgetitem9 = treeWidget->topLevelItem(5);
-        ___qtreewidgetitem9->setText(0, QApplication::translate("optionsWindow", "Commandes", 0, QApplication::UnicodeUTF8));
+        ___qtreewidgetitem9->setText(0, QApplication::translate("optionsWindow", "Connexion", 0, QApplication::UnicodeUTF8));
+        QTreeWidgetItem *___qtreewidgetitem10 = treeWidget->topLevelItem(6);
+        ___qtreewidgetitem10->setText(0, QApplication::translate("optionsWindow", "Commandes", 0, QApplication::UnicodeUTF8));
         treeWidget->setSortingEnabled(__sortingEnabled);
 
         label->setText(QApplication::translate("optionsWindow", "Langue", 0, QApplication::UnicodeUTF8));
@@ -801,15 +887,24 @@ public:
         checkCharactersKeepAll->setText(QApplication::translate("optionsWindow", "Garder tous", 0, QApplication::UnicodeUTF8));
         label_30->setText(QApplication::translate("optionsWindow", "Artistes", 0, QApplication::UnicodeUTF8));
         lineColoringArtists->setText(QString());
-        buttonColoringArtists->setText(QApplication::translate("optionsWindow", "Choisir", 0, QApplication::UnicodeUTF8));
+        buttonColoringArtistsColor->setText(QApplication::translate("optionsWindow", "Couleur", 0, QApplication::UnicodeUTF8));
+        buttonColoringArtistsFont->setText(QApplication::translate("optionsWindow", "Police", 0, QApplication::UnicodeUTF8));
         label_31->setText(QApplication::translate("optionsWindow", "S\303\251ries", 0, QApplication::UnicodeUTF8));
         label_32->setText(QApplication::translate("optionsWindow", "Personnages", 0, QApplication::UnicodeUTF8));
-        buttonColoringCopyrights->setText(QApplication::translate("optionsWindow", "Choisir", 0, QApplication::UnicodeUTF8));
-        buttonColoringCharacters->setText(QApplication::translate("optionsWindow", "Choisir", 0, QApplication::UnicodeUTF8));
+        buttonColoringCopyrightsColor->setText(QApplication::translate("optionsWindow", "Couleur", 0, QApplication::UnicodeUTF8));
+        buttonColoringCopyrightsFont->setText(QApplication::translate("optionsWindow", "Police", 0, QApplication::UnicodeUTF8));
+        buttonColoringCharactersColor->setText(QApplication::translate("optionsWindow", "Couleur", 0, QApplication::UnicodeUTF8));
+        buttonColoringCharactersFont->setText(QApplication::translate("optionsWindow", "Police", 0, QApplication::UnicodeUTF8));
         label_33->setText(QApplication::translate("optionsWindow", "Mod\303\250les", 0, QApplication::UnicodeUTF8));
         label_34->setText(QApplication::translate("optionsWindow", "G\303\251n\303\251raux", 0, QApplication::UnicodeUTF8));
-        buttonColoringGenerals->setText(QApplication::translate("optionsWindow", "Choisir", 0, QApplication::UnicodeUTF8));
-        buttonColoringModels->setText(QApplication::translate("optionsWindow", "Choisir", 0, QApplication::UnicodeUTF8));
+        buttonColoringGeneralsColor->setText(QApplication::translate("optionsWindow", "Couleur", 0, QApplication::UnicodeUTF8));
+        buttonColoringGeneralsFont->setText(QApplication::translate("optionsWindow", "Police", 0, QApplication::UnicodeUTF8));
+        buttonColoringModelsColor->setText(QApplication::translate("optionsWindow", "Couleur", 0, QApplication::UnicodeUTF8));
+        buttonColoringModelsFont->setText(QApplication::translate("optionsWindow", "Police", 0, QApplication::UnicodeUTF8));
+        label_4->setText(QApplication::translate("optionsWindow", "Pseudo", 0, QApplication::UnicodeUTF8));
+        label_35->setText(QApplication::translate("optionsWindow", "Mot de passe hash\303\251", 0, QApplication::UnicodeUTF8));
+        buttonCrypt->setText(QApplication::translate("optionsWindow", "Hasher un mot de passe", 0, QApplication::UnicodeUTF8));
+        label_36->setText(QApplication::translate("optionsWindow", "Vous devez \303\252tre conscient des risques de s\303\251curit\303\251 impliqu\303\251s lors de l'envoi de votre mot de passe \303\240 travers un canal non chiffr\303\251. Bien que votre mot de passe sera hach\303\251, il est encore th\303\251oriquement possible pour quelqu'un de voler votre compte en cr\303\251ant un faux cookie en fonction de votre mot de passe hash\303\251.", 0, QApplication::UnicodeUTF8));
         label_25->setText(QApplication::translate("optionsWindow", "Initialisation", 0, QApplication::UnicodeUTF8));
         label_26->setText(QApplication::translate("optionsWindow", "Image", 0, QApplication::UnicodeUTF8));
         label_27->setText(QApplication::translate("optionsWindow", "Symboles disponibles : les m\303\252mes que dans la partie sauvegarde.", 0, QApplication::UnicodeUTF8));

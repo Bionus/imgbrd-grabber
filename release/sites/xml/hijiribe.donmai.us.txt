@@ -1,5 +1,5 @@
 1
-http://hijiribe.donmai.us/post/index.xml?limit={limit}&page={page}&tags={tags}
-http://hijiribe.donmai.us/post/popular_by_day.xml?day={day}&month={month}&year={year}
+http://hijiribe.donmai.us/post/index.xml?login={pseudo}&password_hash={password}&limit={limit}&page={page}&tags={tags}
+http://hijiribe.donmai.us/post/index.xml?login={pseudo}&password_hash={password}&limit={limit}&page={page}&tags=date:{month}/{day}/{year} order:score
 http://hijiribe.donmai.us/post/show/{id}
 <li class="tag-type-(.+)">.*<a href=".+">.*</a>.*<a href=".+">(.+)</a>.*</li>

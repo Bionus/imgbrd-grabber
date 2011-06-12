@@ -142,3 +142,23 @@ void showInGraphicalShell(const QString &pathIn)
 	#endif
 }
 
+QString qfonttocss(QFont font)
+{
+	QString style;
+	switch (font.style())
+	{
+		case QFont::StyleNormal:	style = "normal";	break;
+		case QFont::StyleItalic:	style = "italic";	break;
+		case QFont::StyleOblique:	style = "oblique";	break;
+	}
+	QString size;
+	if (font.pixelSize() == -1)
+	{ size = QString::number(font.pointSize())+"pt"; }
+	else
+	{ size = QString::number(font.pixelSize())+"px"; }
+	QString weight = QString::number(font.weight()*8+100);
+	QStringList decorations;
+	if (font.strikeOut())	{ decorations.append("line-through");	}
+	if (font.underline())	{ decorations.append("underline");		}
+	return "font-family:'"+font.family()+"'; font-size:"+size+"; font-style:"+style+"; font-weight:"+weight+"; text-decoration:"+(decorations.isEmpty() ? "none" : decorations.join(" "));
+}

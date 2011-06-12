@@ -23,16 +23,22 @@ class optionsWindow : public QDialog
 		void updateContainer(QTreeWidgetItem *, QTreeWidgetItem *);
 		void on_lineFilename_textChanged(QString);
 		void on_buttonFolder_clicked();
+		void on_buttonCrypt_clicked();
 		void on_lineColoringArtists_textChanged();
 		void on_lineColoringCopyrights_textChanged();
 		void on_lineColoringCharacters_textChanged();
 		void on_lineColoringModels_textChanged();
 		void on_lineColoringGenerals_textChanged();
-		void on_buttonColoringArtists_clicked();
-		void on_buttonColoringCopyrights_clicked();
-		void on_buttonColoringCharacters_clicked();
-		void on_buttonColoringModels_clicked();
-		void on_buttonColoringGenerals_clicked();
+		void on_buttonColoringArtistsColor_clicked();
+		void on_buttonColoringCopyrightsColor_clicked();
+		void on_buttonColoringCharactersColor_clicked();
+		void on_buttonColoringModelsColor_clicked();
+		void on_buttonColoringGeneralsColor_clicked();
+		void on_buttonColoringArtistsFont_clicked();
+		void on_buttonColoringCopyrightsFont_clicked();
+		void on_buttonColoringCharactersFont_clicked();
+		void on_buttonColoringModelsFont_clicked();
+		void on_buttonColoringGeneralsFont_clicked();
 		void save();
 
 	private:

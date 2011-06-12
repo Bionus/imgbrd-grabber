@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>646</width>
-    <height>1560</height>
+    <height>1799</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -95,6 +95,11 @@
        <item>
         <property name="text">
          <string>Coloration</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Connexion</string>
         </property>
        </item>
        <item>
@@ -618,7 +623,7 @@
            </widget>
           </item>
           <item row="0" column="1">
-           <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="1,0">
+           <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="1,0,0">
             <item>
              <widget class="QLineEdit" name="lineColoringArtists">
               <property name="text">
@@ -627,9 +632,16 @@
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="buttonColoringArtists">
+             <widget class="QPushButton" name="buttonColoringArtistsColor">
               <property name="text">
-               <string>Choisir</string>
+               <string>Couleur</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="buttonColoringArtistsFont">
+              <property name="text">
+               <string>Police</string>
               </property>
              </widget>
             </item>
@@ -655,9 +667,16 @@
              <widget class="QLineEdit" name="lineColoringCopyrights"/>
             </item>
             <item>
-             <widget class="QPushButton" name="buttonColoringCopyrights">
+             <widget class="QPushButton" name="buttonColoringCopyrightsColor">
               <property name="text">
-               <string>Choisir</string>
+               <string>Couleur</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="buttonColoringCopyrightsFont">
+              <property name="text">
+               <string>Police</string>
               </property>
              </widget>
             </item>
@@ -669,9 +688,16 @@
              <widget class="QLineEdit" name="lineColoringCharacters"/>
             </item>
             <item>
-             <widget class="QPushButton" name="buttonColoringCharacters">
+             <widget class="QPushButton" name="buttonColoringCharactersColor">
               <property name="text">
-               <string>Choisir</string>
+               <string>Couleur</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="buttonColoringCharactersFont">
+              <property name="text">
+               <string>Police</string>
               </property>
              </widget>
             </item>
@@ -692,32 +718,96 @@
            </widget>
           </item>
           <item row="4" column="1">
-           <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="1,0">
+           <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="1,0,0">
             <item>
              <widget class="QLineEdit" name="lineColoringGenerals"/>
             </item>
             <item>
-             <widget class="QPushButton" name="buttonColoringGenerals">
+             <widget class="QPushButton" name="buttonColoringGeneralsColor">
               <property name="text">
-               <string>Choisir</string>
+               <string>Couleur</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="buttonColoringGeneralsFont">
+              <property name="text">
+               <string>Police</string>
               </property>
              </widget>
             </item>
            </layout>
           </item>
           <item row="3" column="1">
-           <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="1,0">
+           <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="1,0,0">
             <item>
              <widget class="QLineEdit" name="lineColoringModels"/>
             </item>
             <item>
-             <widget class="QPushButton" name="buttonColoringModels">
+             <widget class="QPushButton" name="buttonColoringModelsColor">
               <property name="text">
-               <string>Choisir</string>
+               <string>Couleur</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="buttonColoringModelsFont">
+              <property name="text">
+               <string>Police</string>
               </property>
              </widget>
             </item>
            </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QWidget" name="widget_9" native="true">
+         <layout class="QFormLayout" name="formLayout_10">
+          <property name="fieldGrowthPolicy">
+           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+          </property>
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_4">
+            <property name="text">
+             <string>Pseudo</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_35">
+            <property name="text">
+             <string>Mot de passe hashé</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <layout class="QHBoxLayout" name="horizontalLayout_8">
+            <item>
+             <widget class="QLineEdit" name="linePassword"/>
+            </item>
+            <item>
+             <widget class="QPushButton" name="buttonCrypt">
+              <property name="text">
+               <string>Hasher un mot de passe</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="linePseudo"/>
+          </item>
+          <item row="2" column="0" colspan="2">
+           <widget class="QLabel" name="label_36">
+            <property name="text">
+             <string>Vous devez être conscient des risques de sécurité impliqués lors de l'envoi de votre mot de passe à travers un canal non chiffré. Bien que votre mot de passe sera haché, il est encore théoriquement possible pour quelqu'un de voler votre compte en créant un faux cookie en fonction de votre mot de passe hashé.</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>

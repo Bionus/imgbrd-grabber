@@ -211,6 +211,12 @@ void zoomWindow::replyFinished(QNetworkReply* reply)
 		rx.setMinimal(true);
 		int pos = 0;
 		QString tags = " "+m_details.value("tags")+" ";
+		QFont fontArtists, fontCopyrights, fontCharacters, fontModels, fontGenerals;
+			fontArtists.fromString(settings.value("Coloring/Fonts/artists").toString());
+			fontCopyrights.fromString(settings.value("Coloring/Fonts/copyrights").toString());
+			fontCharacters.fromString(settings.value("Coloring/Fonts/characters").toString());
+			fontModels.fromString(settings.value("Coloring/Fonts/models").toString());
+			fontGenerals.fromString(settings.value("Coloring/Fonts/generals").toString());
 		while ((pos = rx.indexIn(source, pos)) != -1)
 		{
 			pos += rx.matchedLength();
@@ -220,11 +226,11 @@ void zoomWindow::replyFinished(QNetworkReply* reply)
 			{ normalized.replace('_', ' '); }
 			if (blacklistedtags.contains(tag, Qt::CaseInsensitive))
 			{ tags.replace(" "+tag+" ", " <a href=\""+tag+"\" style=\"font-weight:bold;text-decoration:underline;color:#000000\">"+tag+"</a> ");	}
-			if (type == "character")		{ this->details["characters"].append(normalized);	tags.replace(" "+tag+" ", " <a href=\""+tag+"\" style=\"text-decoration:none;color:"+settings.value("Coloring/characters", "#00aa00").toString()+"\">"+tag+"</a> ");	}
-			else if (type == "copyright")	{ this->details["copyrights"].append(normalized);	tags.replace(" "+tag+" ", " <a href=\""+tag+"\" style=\"text-decoration:none;color:"+settings.value("Coloring/copyrights", "#aa00aa").toString()+"\">"+tag+"</a> ");	}
-			else if (type == "artist")		{ this->details["artists"].append(normalized);		tags.replace(" "+tag+" ", " <a href=\""+tag+"\" style=\"text-decoration:none;color:"+settings.value("Coloring/artists", "#aa0000").toString()+"\">"+tag+"</a> ");	}
-			else if (type == "model")		{ this->details["models"].append(normalized);		tags.replace(" "+tag+" ", " <a href=\""+tag+"\" style=\"text-decoration:none;color:"+settings.value("Coloring/models", "#0000ee").toString()+"\">"+tag+"</a> ");	}
-			else							{ this->details["generals"].append(normalized);		tags.replace(" "+tag+" ", " <a href=\""+tag+"\" style=\"text-decoration:none;color:"+settings.value("Coloring/generals", "#000000").toString()+"\">"+tag+"</a> ");	}
+			if (type == "character")		{ this->details["characters"].append(normalized);	tags.replace(" "+tag+" ", " <a href=\""+tag+"\" style=\"color:"+settings.value("Coloring/Colors/characters", "#00aa00").toString()+";"+qfonttocss(fontCharacters)+"\">"+tag+"</a> ");	}
+			else if (type == "copyright")	{ this->details["copyrights"].append(normalized);	tags.replace(" "+tag+" ", " <a href=\""+tag+"\" style=\"text-decoration:none;color:"+settings.value("Coloring/Colors/copyrights", "#aa00aa").toString()+";"+qfonttocss(fontCopyrights)+"\">"+tag+"</a> ");	}
+			else if (type == "artist")		{ this->details["artists"].append(normalized);		tags.replace(" "+tag+" ", " <a href=\""+tag+"\" style=\"text-decoration:none;color:"+settings.value("Coloring/Colors/artists", "#aa0000").toString()+";"+qfonttocss(fontArtists)+"\">"+tag+"</a> ");	}
+			else if (type == "model")		{ this->details["models"].append(normalized);		tags.replace(" "+tag+" ", " <a href=\""+tag+"\" style=\"text-decoration:none;color:"+settings.value("Coloring/Colors/models", "#0000ee").toString()+";"+qfonttocss(fontModels)+"\">"+tag+"</a> ");	}
+			else							{ this->details["generals"].append(normalized);		tags.replace(" "+tag+" ", " <a href=\""+tag+"\" style=\"text-decoration:none;color:"+settings.value("Coloring/Colors/generals", "#000000").toString()+";"+qfonttocss(fontGenerals)+"\">"+tag+"</a> ");	}
 			this->details["alls"].append(normalized);
 		}
 		ui->labelTags->setText(tags.trimmed());
