@@ -10,5 +10,6 @@ QMap<QString,QString> loadFavorites();
 QString savePath(QString s = "");
 QString validateFilename(QString);
 void showInGraphicalShell(const QString &);
+QString qfonttocss(QFont);
 
 #endif

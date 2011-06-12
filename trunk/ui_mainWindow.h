@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainWindow.ui'
 **
-** Created: Sat 11. Jun 22:17:45 2011
+** Created: Sun 12. Jun 16:34:40 2011
 **      by: Qt User Interface Compiler version 4.6.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -54,13 +54,20 @@ public:
     QGridLayout *layoutFields;
     QLabel *label;
     QLabel *label_2;
-    QSpinBox *spinPage;
     QPushButton *buttonCalendar;
     QPushButton *buttonTags;
     QPushButton *buttonPopular;
     QDateEdit *datePopular;
-    QSpacerItem *verticalSpacer;
+    QSpinBox *spinPage;
+    QPushButton *pushButton;
+    QWidget *widgetPlus;
+    QGridLayout *gridLayout;
+    QLabel *label_6;
+    QLabel *label_7;
+    QSpinBox *spinImagesPerPage;
+    QSpinBox *spinColumns;
     QGridLayout *layoutResults;
+    QSpacerItem *verticalSpacer;
     QHBoxLayout *horizontalLayout;
     QPushButton *buttonSourcesList;
     QCheckBox *checkMergeResults;
@@ -152,9 +159,6 @@ public:
         layoutExplore->setObjectName(QString::fromUtf8("layoutExplore"));
         layoutFields = new QGridLayout();
 #ifndef Q_OS_MAC
-        layoutFields->setSpacing(6);
-#endif
-#ifndef Q_OS_MAC
         layoutFields->setContentsMargins(0, 0, 0, 0);
 #endif
         layoutFields->setObjectName(QString::fromUtf8("layoutFields"));
@@ -168,13 +172,6 @@ public:
 
         layoutFields->addWidget(label_2, 1, 0, 1, 1);
 
-        spinPage = new QSpinBox(widget);
-        spinPage->setObjectName(QString::fromUtf8("spinPage"));
-        spinPage->setMinimum(1);
-        spinPage->setMaximum(1000);
-
-        layoutFields->addWidget(spinPage, 0, 2, 1, 1);
-
         buttonCalendar = new QPushButton(widget);
         buttonCalendar->setObjectName(QString::fromUtf8("buttonCalendar"));
 
@@ -183,30 +180,84 @@ public:
         buttonTags = new QPushButton(widget);
         buttonTags->setObjectName(QString::fromUtf8("buttonTags"));
 
-        layoutFields->addWidget(buttonTags, 0, 3, 1, 1);
+        layoutFields->addWidget(buttonTags, 0, 5, 1, 1);
 
         buttonPopular = new QPushButton(widget);
         buttonPopular->setObjectName(QString::fromUtf8("buttonPopular"));
 
-        layoutFields->addWidget(buttonPopular, 1, 3, 1, 1);
+        layoutFields->addWidget(buttonPopular, 1, 5, 1, 1);
 
         datePopular = new QDateEdit(widget);
         datePopular->setObjectName(QString::fromUtf8("datePopular"));
 
         layoutFields->addWidget(datePopular, 1, 1, 1, 1);
 
+        spinPage = new QSpinBox(widget);
+        spinPage->setObjectName(QString::fromUtf8("spinPage"));
+        spinPage->setMinimumSize(QSize(60, 0));
+        spinPage->setMinimum(1);
+        spinPage->setMaximum(1000);
+
+        layoutFields->addWidget(spinPage, 0, 3, 2, 1);
+
+        pushButton = new QPushButton(widget);
+        pushButton->setObjectName(QString::fromUtf8("pushButton"));
+        QSizePolicy sizePolicy1(QSizePolicy::Fixed, QSizePolicy::Preferred);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(pushButton->sizePolicy().hasHeightForWidth());
+        pushButton->setSizePolicy(sizePolicy1);
+        pushButton->setMaximumSize(QSize(30, 16777215));
+        pushButton->setCheckable(true);
+
+        layoutFields->addWidget(pushButton, 0, 6, 2, 1);
+
         layoutFields->setColumnStretch(1, 1);
 
         layoutExplore->addLayout(layoutFields);
 
-        verticalSpacer = new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::MinimumExpanding);
+        widgetPlus = new QWidget(widget);
+        widgetPlus->setObjectName(QString::fromUtf8("widgetPlus"));
+        widgetPlus->setEnabled(true);
+        gridLayout = new QGridLayout(widgetPlus);
+        gridLayout->setContentsMargins(0, 0, 0, 0);
+        gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
+        label_6 = new QLabel(widgetPlus);
+        label_6->setObjectName(QString::fromUtf8("label_6"));
 
-        layoutExplore->addItem(verticalSpacer);
+        gridLayout->addWidget(label_6, 0, 0, 1, 1);
+
+        label_7 = new QLabel(widgetPlus);
+        label_7->setObjectName(QString::fromUtf8("label_7"));
+
+        gridLayout->addWidget(label_7, 0, 2, 1, 1);
+
+        spinImagesPerPage = new QSpinBox(widgetPlus);
+        spinImagesPerPage->setObjectName(QString::fromUtf8("spinImagesPerPage"));
+        spinImagesPerPage->setMinimum(1);
+        spinImagesPerPage->setMaximum(1000);
+        spinImagesPerPage->setValue(20);
+
+        gridLayout->addWidget(spinImagesPerPage, 0, 1, 1, 1);
+
+        spinColumns = new QSpinBox(widgetPlus);
+        spinColumns->setObjectName(QString::fromUtf8("spinColumns"));
+        spinColumns->setMinimum(1);
+        spinColumns->setMaximum(10);
+
+        gridLayout->addWidget(spinColumns, 0, 3, 1, 1);
+
+
+        layoutExplore->addWidget(widgetPlus);
 
         layoutResults = new QGridLayout();
         layoutResults->setObjectName(QString::fromUtf8("layoutResults"));
 
         layoutExplore->addLayout(layoutResults);
+
+        verticalSpacer = new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        layoutExplore->addItem(verticalSpacer);
 
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
@@ -255,9 +306,6 @@ public:
         horizontalLayout_4->setObjectName(QString::fromUtf8("horizontalLayout_4"));
         label_3 = new QLabel(widget_2);
         label_3->setObjectName(QString::fromUtf8("label_3"));
-        QSizePolicy sizePolicy1(QSizePolicy::Fixed, QSizePolicy::Preferred);
-        sizePolicy1.setHorizontalStretch(0);
-        sizePolicy1.setVerticalStretch(0);
         sizePolicy1.setHeightForWidth(label_3->sizePolicy().hasHeightForWidth());
         label_3->setSizePolicy(sizePolicy1);
 
@@ -489,6 +537,7 @@ public:
         QObject::connect(buttonMarkasviewed, SIGNAL(clicked()), mainWindow, SLOT(viewed()));
         QObject::connect(tableBatchGroups, SIGNAL(cellChanged(int,int)), mainWindow, SLOT(updateBatchGroups(int,int)));
         QObject::connect(actionFolder, SIGNAL(triggered()), mainWindow, SLOT(saveFolder()));
+        QObject::connect(pushButton, SIGNAL(clicked()), mainWindow, SLOT(widgetPlusChange()));
 
         tabWidget->setCurrentIndex(0);
         comboOrderfavorites->setCurrentIndex(0);
@@ -513,6 +562,9 @@ public:
         buttonTags->setText(QApplication::translate("mainWindow", "Ok", 0, QApplication::UnicodeUTF8));
         buttonPopular->setText(QApplication::translate("mainWindow", "Ok", 0, QApplication::UnicodeUTF8));
         datePopular->setDisplayFormat(QApplication::translate("mainWindow", "dd/MM/yyyy", 0, QApplication::UnicodeUTF8));
+        pushButton->setText(QApplication::translate("mainWindow", "+", 0, QApplication::UnicodeUTF8));
+        label_6->setText(QApplication::translate("mainWindow", "Images par page", 0, QApplication::UnicodeUTF8));
+        label_7->setText(QApplication::translate("mainWindow", "Nombre de colonnes", 0, QApplication::UnicodeUTF8));
         buttonSourcesList->setText(QApplication::translate("mainWindow", "Sources", 0, QApplication::UnicodeUTF8));
         checkMergeResults->setText(QApplication::translate("mainWindow", "Fusionner les r\303\251sultats", 0, QApplication::UnicodeUTF8));
         labelMergeResults->setText(QString());

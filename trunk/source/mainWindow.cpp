@@ -6,6 +6,7 @@
 #include "addgroupwindow.h"
 #include "adduniquewindow.h"
 #include "zoomWindow.h"
+#include "batchwindow.h"
 #include "functions.h"
 #include "json.h"
 #include <QtXml>
@@ -20,6 +21,7 @@ mainWindow::mainWindow(QString program, QStringList tags, QMap<QString,QString> 
 	ui->setupUi(this);
 
 	m_log = new QMap<QDateTime,QString>;
+	m_progressdialog = new batchWindow(this);
 
 	ui->actionQuit->setShortcut(QKeySequence::Quit);
 	ui->actionFolder->setShortcut(QKeySequence::Open);
@@ -32,6 +34,10 @@ mainWindow::mainWindow(QString program, QStringList tags, QMap<QString,QString> 
 		ui->checkMergeResults->setChecked(m_settings->value("mergeresults", false).toBool());
 		m_settings->setValue("reverse", bool(ui->comboOrderasc->currentIndex() == 1));
 	loadLanguage(m_settings->value("language", "English").toString());
+
+	ui->spinImagesPerPage->setValue(m_settings->value("limit", 20).toInt());
+	ui->spinColumns->setValue(m_settings->value("columns", 1).toInt());
+	ui->widgetPlus->hide();
 
 	m_serverDate = QDateTime::currentDateTime().toUTC().addSecs(-60*60*4);
 	m_timezonedecay = QDateTime::currentDateTime().time().hour()-m_serverDate.time().hour();
@@ -182,7 +188,7 @@ mainWindow::mainWindow(QString program, QStringList tags, QMap<QString,QString> 
 				m_search->setCompleter(completer);
 			}
 		connect(m_search, SIGNAL(returnPressed()), this, SLOT(webUpdateTags()));
-		ui->layoutFields->addWidget(m_search, 0, 1);
+		ui->layoutFields->addWidget(m_search, 0, 1, 1, 2);
 
 	// Calendar
 	ui->datePopular->setDateRange(QDate(2000, 1, 1), m_serverDate.date());
@@ -235,7 +241,7 @@ void mainWindow::getPage()
 		if (m_currentPageIsPopular)
 		{ this->batchAddGroup(QStringList() << ui->datePopular->date().toString(Qt::ISODate) << 0 << 0 << 0 << "false" << actuals.at(i) << "true" << m_settings->value("Save/filename").toString() << m_settings->value("Save/path").toString() << ""); }
 		else
-		{ this->batchAddGroup(QStringList() << m_search->toPlainText() << QString::number(ui->spinPage->value()) << m_settings->value("limit", 20).toString() << m_settings->value("limit", 20).toString() << "false" << actuals.at(i) << "false" << m_settings->value("Save/filename").toString() << m_settings->value("Save/path").toString() << ""); }
+		{ this->batchAddGroup(QStringList() << m_search->toPlainText() << QString::number(ui->spinPage->value()) << QString::number(ui->spinImagesPerPage->value()) << QString::number(ui->spinImagesPerPage->value()) << "false" << actuals.at(i) << "false" << m_settings->value("Save/filename").toString() << m_settings->value("Save/path").toString() << ""); }
 	}
 }
 
@@ -285,6 +291,13 @@ void mainWindow::batchAddUnique(QMap<QString,QString> values)
 	{
 		//ui->tableBatchUniques->removeRow(0);
 	}
+}
+void mainWindow::widgetPlusChange()
+{
+	if (ui->widgetPlus->isHidden())
+	{ ui->widgetPlus->show(); }
+	else
+	{ ui->widgetPlus->hide(); }
 }
 void mainWindow::saveFolder()
 {
@@ -510,14 +523,20 @@ void mainWindow::web(QString tags, bool popular)
 			url = m_sites[keys.at(i)].at(2);
 			url.replace("{page}", QString::number(ui->spinPage->value()-1+m_sites[keys.at(i)].at(1).toInt()));
 			url.replace("{tags}", tags.join(" ").replace("&", "%26"));
-			url.replace("{limit}", QString::number(m_settings->value("limit", 20).toInt()));
+			url.replace("{limit}", QString::number(ui->spinImagesPerPage->value()));
+			url.replace("{pseudo}", m_settings->value("Login/pseudo").toString());
+			url.replace("{password}", m_settings->value("Login/password").toString());
 		}
 		else if (!m_sites[keys.at(i)].at(3).isEmpty())
 		{
 			url = m_sites[keys.at(i)].at(3);
+			url.replace("{page}", QString::number(ui->spinPage->value()-1+m_sites[keys.at(i)].at(1).toInt()));
+			url.replace("{limit}", QString::number(ui->spinImagesPerPage->value()));
 			url.replace("{day}", QString::number(ui->datePopular->date().day()));
 			url.replace("{month}", QString::number(ui->datePopular->date().month()));
 			url.replace("{year}", QString::number(ui->datePopular->date().year()));
+			url.replace("{pseudo}", m_settings->value("Login/pseudo").toString());
+			url.replace("{password}", m_settings->value("Login/password").toString());
 		}
 		m_assoc.append(url);
 		if (m_selected.at(i) && !url.isEmpty())
@@ -578,7 +597,6 @@ void mainWindow::replyFinished(QNetworkReply* r)
 	int max = 0;
 	float count = 0;
 	QString site = m_sites.keys().at(site_id), source = r->readAll();
-	qDebug() << url << source;
 	QNetworkAccessManager *mngr = new QNetworkAccessManager(this);
 	connect(mngr, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinishedPic(QNetworkReply*)));
 	if (m_sites[site].at(0) == "xml")
@@ -596,7 +614,7 @@ void mainWindow::replyFinished(QNetworkReply* r)
 		QDomElement docElem = doc.documentElement();
 		// Getting last page
 		count = docElem.attributes().namedItem("count").nodeValue().toFloat();
-		max = ceil(count/m_settings->value("limit", 20).toFloat());
+		max = ceil(count/((float)ui->spinImagesPerPage->value()));
 		if (max < 1)
 		{ max = 1; }
 		if (m_pagemax < max)
@@ -683,7 +701,7 @@ void mainWindow::replyFinished(QNetworkReply* r)
 		QStringList order = m_sites[site].at(7).split('|');
 		rx.setMinimal(true);
 		int pos = 0, id = 0;
-		while (((pos = rx.indexIn(source, pos)) != -1) && id < m_settings->value("limit", 20).toInt())
+		while (((pos = rx.indexIn(source, pos)) != -1) && id < ui->spinImagesPerPage->value())
 		{
 			pos += rx.matchedLength();
 			QMap<QString, QString> d;
@@ -717,8 +735,8 @@ void mainWindow::replyFinished(QNetworkReply* r)
 	m_countPics += results;
 	m_remainingSites--;
 	ui->labelMergeResults->setText(tr("%1/%2 (%3/%4)").arg(m_replies.count()-m_countPics-m_remainingSites).arg(m_replies.count()-m_countPics).arg(m_countPics-m_remainingPics).arg(m_countPics));
-	int pl = ceil(sqrt(m_settings->value("limit", 20).toInt()));
-	float fl = (float)m_settings->value("limit", 20).toInt()/pl;
+	int pl = ceil(sqrt(ui->spinImagesPerPage->value()));
+	float fl = (float)ui->spinImagesPerPage->value()/pl;
 	if (!ui->checkMergeResults->isChecked())
 	{
 		QLabel *txt = new QLabel();
@@ -734,17 +752,17 @@ void mainWindow::replyFinished(QNetworkReply* r)
 			txt->setText(site+" - <a href=\""+url+"\">"+url+"</a> - "+(!m_loadFavorite.isNull() ? tr("Aucun résultat depuis le %1").arg(m_loadFavorite.toString(m_settings->value("dateformat", "dd/MM/yyyy").toString())) : tr("Aucun résultat")+(reasons.count() > 0 ? "<br/>"+tr("Raisons possibles : %1").arg(reasons.join(", ")) : "")));
 		}
 		else
-		{ txt->setText(site+" - <a href=\""+url+"\">"+url+"</a> - "+tr("Page %1 sur %2 (%3 sur %4)").arg(QString::number(ui->spinPage->value()), (max != 0 ? QString::number(ceil(count/m_settings->value("limit", 20).toFloat())) : "?"), QString::number(results), (count != 0 ? QString::number(count) : "?"))); }
+		{ txt->setText(site+" - <a href=\""+url+"\">"+url+"</a> - "+tr("Page %1 sur %2 (%3 sur %4)").arg(QString::number(ui->spinPage->value()), (max != 0 ? QString::number(ceil(count/((float)ui->spinImagesPerPage->value()))) : "?"), QString::number(results), (count != 0 ? QString::number(count) : "?"))); }
 		txt->setOpenExternalLinks(true);
 		if (!m_loadFavorite.isNull())
 		{
-			ui->layoutFavoritesResults->addWidget(txt, floor(n/m_settings->value("columns", 1).toInt())*(ceil(fl)+1), pl*(n%m_settings->value("columns", 1).toInt()), 1, pl);
-			ui->layoutFavoritesResults->setRowMinimumHeight(floor(n/m_settings->value("columns", 1).toInt())*(ceil(fl)+1), 50);
+			ui->layoutFavoritesResults->addWidget(txt, floor(n/ui->spinColumns->value())*(ceil(fl)+1), pl*(n%ui->spinColumns->value()), 1, pl);
+			ui->layoutFavoritesResults->setRowMinimumHeight(floor(n/ui->spinColumns->value())*(ceil(fl)+1), 50);
 		}
 		else
 		{
-			ui->layoutResults->addWidget(txt, floor(n/m_settings->value("columns", 1).toInt())*(ceil(fl)+1), pl*(n%m_settings->value("columns", 1).toInt()), 1, pl);
-			ui->layoutResults->setRowMinimumHeight(floor(n/m_settings->value("columns", 1).toInt())*(ceil(fl)+1), 50);
+			ui->layoutResults->addWidget(txt, floor(n/ui->spinColumns->value())*(ceil(fl)+1), pl*(n%ui->spinColumns->value()), 1, pl);
+			ui->layoutResults->setRowMinimumHeight(floor(n/ui->spinColumns->value())*(ceil(fl)+1), 50);
 		}
 		m_webSites.append(txt);
 	}
@@ -875,14 +893,14 @@ void mainWindow::replyFinishedPic(QNetworkReply* r)
 		}
 		else
 		{
-			int pl = ceil(sqrt(m_settings->value("limit", 20).toInt()));
-			float fl = (float)m_settings->value("limit", 20).toInt()/pl;
+			int pl = ceil(sqrt(ui->spinImagesPerPage->value()));
+			float fl = (float)ui->spinImagesPerPage->value()/pl;
 			//int pl = ceil(sqrt(m_countPage[ste]));
 			//float fl = (float)m_countPage[ste]/pl;
 			if (!m_loadFavorite.isNull())
-			{ ui->layoutFavoritesResults->addWidget(l, floor(id/pl)+(floor(site/m_settings->value("columns", 1).toInt())*(ceil(fl)+1))+1, id%pl+pl*(site%m_settings->value("columns", 1).toInt()), 1, 1); }
+			{ ui->layoutFavoritesResults->addWidget(l, floor(id/pl)+(floor(site/ui->spinColumns->value())*(ceil(fl)+1))+1, id%pl+pl*(site%ui->spinColumns->value()), 1, 1); }
 			else
-			{ ui->layoutResults->addWidget(l, floor(id/pl)+(floor(site/m_settings->value("columns", 1).toInt())*(ceil(fl)+1))+1, id%pl+pl*(site%m_settings->value("columns", 1).toInt()), 1, 1); }
+			{ ui->layoutResults->addWidget(l, floor(id/pl)+(floor(site/ui->spinColumns->value())*(ceil(fl)+1))+1, id%pl+pl*(site%ui->spinColumns->value()), 1, 1); }
 			m_webPics.append(l);
 		}
 	}
@@ -987,6 +1005,8 @@ void mainWindow::logShow()
 		k = m_settings->value("Log/invert", false).toBool() ? m_log->size()-i-1 : i;
 		txt += QString(i > 0 ? "<br/>" : "")+"["+m_log->keys().at(k).toString("hh:mm:ss.zzz")+"] "+m_log->values().at(k);
 	}
+	if (m_progressdialog->isVisible())
+	{ m_progressdialog->setLog(txt); }
 	ui->labelLog->setText(txt);
 }
 void mainWindow::logClear()
@@ -1156,6 +1176,7 @@ void mainWindow::getAll()
 	for (int i = 0; i < m_groupBatchs.count(); i++)
 	{
 		QString site = m_groupBatchs.at(i).at(5);
+		int pp = m_groupBatchs.at(i).at(2).toInt();
 		if (m_groupBatchs.at(i).at(6) == "true")
 		{
 			QDate date = QDate::fromString(m_groupBatchs.at(i).at(0), Qt::ISODate);
@@ -1163,6 +1184,7 @@ void mainWindow::getAll()
 				url.replace("{day}", QString::number(date.day()));
 				url.replace("{month}", QString::number(date.month()));
 				url.replace("{year}", QString::number(date.year()));
+				url.replace("{limit}", QString::number(pp));
 			m_groupBatchs[i][9] = url;
 			m_getAllPageCount++;
 			manager->get(QNetworkRequest(QUrl(url)));
@@ -1178,7 +1200,6 @@ void mainWindow::getAll()
 				.replace(" -rating:e ", " -rating:explicit ", Qt::CaseInsensitive);
 			QStringList tags = text.split(" ", QString::SkipEmptyParts);
 			tags.removeDuplicates();
-			int pp = m_groupBatchs.at(i).at(2).toInt();
 			for (int r = 0; r < ceil(m_groupBatchs.at(i).at(3).toDouble()/pp); r++)
 			{
 				if (!m_sites.keys().contains(site))
@@ -1189,6 +1210,8 @@ void mainWindow::getAll()
 						url.replace("{page}", QString::number(m_groupBatchs.at(i).at(1).toInt()+r));
 						url.replace("{tags}", tags.join(" ").replace("&", "%26"));
 						url.replace("{limit}", QString::number(pp));
+						url.replace("{pseudo}", m_settings->value("Login/pseudo").toString());
+						url.replace("{password}", m_settings->value("Login/password").toString());
 					m_groupBatchs[i][9] = url;
 					m_getAllPageCount++;
 					manager->get(QNetworkRequest(QUrl::fromEncoded(url.toAscii())));
@@ -1196,12 +1219,15 @@ void mainWindow::getAll()
 			}
 		}
 	}
+	m_progressdialog->setText(tr("Téléchargement des pages, veuillez patienter..."));
+		connect(m_progressdialog, SIGNAL(closed()), this, SLOT(getAllCancel()));
+		m_progressdialog->setValue(0);
+		m_progressdialog->show();
 }
 
 void mainWindow::getAllSource(QNetworkReply *r)
 {
 	QString url = r->url().toString(), source = r->readAll();
-	qDebug() << url << source;
 	QList<QMap<QString, QString> > imgs;
 	log(tr("Recu <a href=\"%1\">%1</a>").arg(url));
 	int n = 0;
@@ -1321,17 +1347,16 @@ void mainWindow::getAllSource(QNetworkReply *r)
 			id++;
 		}
 	}
-	if (imgs.isEmpty())
-	{
-		error(this, tr("<b>Attention :</b> %1").arg(tr("rien n'a été reçu depuis %1 (%2). Raisons possibles : tag incorrect, page trop éloignée.").arg(site, url)));
-		return;
-		qDebug() << m_allImages.last();
-	}
-	else
+	if (!imgs.isEmpty())
 	{ m_allImages.append(imgs); }
 	m_getAllCount++;
 	if (m_getAllCount == m_getAllPageCount)
 	{
+		if (m_allImages.isEmpty())
+		{
+			error(this, tr("<b>Attention :</b> %1").arg(tr("rien n'a été reçu depuis %1. Raisons possibles : tag incorrect, page trop éloignée.").arg(site)));
+			return;
+		}
 		int count = 0;
 		for (int i = 0; i < m_allImages.count(); i++)
 		{
@@ -1339,13 +1364,9 @@ void mainWindow::getAllSource(QNetworkReply *r)
 			else if (m_allImages.at(i).value("tags").contains("highres"))	{ count += 2; }
 			else															{ count += 1; }
 		}
-		QProgressDialog *progressdialog = new QProgressDialog(tr("Récupération des images"), tr("Annuler"), 0, count, this);
-			progressdialog->setModal(true);
-			m_progressdialog = progressdialog;
-			connect(m_progressdialog, SIGNAL(canceled()), this, SLOT(getAllCancel()));
-			m_progressdialog->show();
-			m_progressdialog->setValue(0);
 		log("All images' urls received.");
+		m_progressdialog->setMaximum(count);
+		m_progressdialog->setText(tr("Téléchargement des images en cours..."));
 		QString fn = m_groupBatchs[m_allImages.at(m_getAllId).value("site_id").toInt()][7];
 		QStringList forbidden = QStringList() << "artist" << "copyright" << "character" << "model" << "general" << "model|artist";
 		m_must_get_tags = false;
@@ -1557,7 +1578,7 @@ void mainWindow::getAllPerformTags(QNetworkReply* reply)
 		else													{ count += 1; }
 		m_progressdialog->setValue(count);
 		m_getAllExists++;
-		log(tr("Fichier déjà existant : %1").arg(f.fileName()));
+		log(tr("Fichier déjà existant : <a href=\"file:///%1\">%1</a>").arg(f.fileName()));
 		// Loading next tags
 		m_getAllDetails.clear();
 		_getAll();
@@ -1653,5 +1674,6 @@ void mainWindow::getAllCancel()
 	log("Canceling download...");
 	m_getAllRequest->abort();
 	m_progressdialog->close();
+	m_progressdialog = new batchWindow(this);
 	DONE()
 }

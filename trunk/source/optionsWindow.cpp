@@ -60,11 +60,34 @@ optionsWindow::optionsWindow(mainWindow *parent) : QDialog(parent), m_parent(par
 
 	settings.beginGroup("Coloring");
 
-		ui->lineColoringArtists->setText(settings.value("artists", "#aa0000").toString());
-		ui->lineColoringCopyrights->setText(settings.value("copyrights", "#aa00aa").toString());
-		ui->lineColoringCharacters->setText(settings.value("characters", "#00aa00").toString());
-		ui->lineColoringModels->setText(settings.value("models", "#0000ee").toString());
-		ui->lineColoringGenerals->setText(settings.value("generals", "#000000").toString());
+		settings.beginGroup("Colors");
+			ui->lineColoringArtists->setText(settings.value("artists", "#aa0000").toString());
+			ui->lineColoringCopyrights->setText(settings.value("copyrights", "#aa00aa").toString());
+			ui->lineColoringCharacters->setText(settings.value("characters", "#00aa00").toString());
+			ui->lineColoringModels->setText(settings.value("models", "#0000ee").toString());
+			ui->lineColoringGenerals->setText(settings.value("generals", "#000000").toString());
+		settings.endGroup();
+
+		settings.beginGroup("Fonts");
+			QFont fontArtists, fontCopyrights, fontCharacters, fontModels, fontGenerals;
+			fontArtists.fromString(settings.value("artists").toString());
+			fontCopyrights.fromString(settings.value("copyrights").toString());
+			fontCharacters.fromString(settings.value("characters").toString());
+			fontModels.fromString(settings.value("models").toString());
+			fontGenerals.fromString(settings.value("generals").toString());
+			ui->lineColoringArtists->setFont(fontArtists);
+			ui->lineColoringCopyrights->setFont(fontCopyrights);
+			ui->lineColoringCharacters->setFont(fontCharacters);
+			ui->lineColoringModels->setFont(fontModels);
+			ui->lineColoringGenerals->setFont(fontGenerals);
+		settings.endGroup();
+
+	settings.endGroup();
+
+	settings.beginGroup("Login");
+
+		ui->linePseudo->setText(settings.value("pseudo").toString());
+		ui->linePassword->setText(settings.value("password").toString());
 
 	settings.endGroup();
 
@@ -92,6 +115,12 @@ void optionsWindow::on_buttonFolder_clicked()
 	QString folder = QFileDialog::getExistingDirectory(this, tr("Choisir un dossier de sauvegarde"), ui->lineFolder->text());
 	if (!folder.isEmpty())
 	{ ui->lineFolder->setText(folder); }
+}
+void optionsWindow::on_buttonCrypt_clicked()
+{
+	QString password = QInputDialog::getText(this, "Hasher un mot de passe", "Veuillez entrer votre mot de passe.", QLineEdit::Password);
+	if (!password.isEmpty())
+	{ ui->linePassword->setText(QCryptographicHash::hash(password.toUtf8(), QCryptographicHash::Sha1).toHex()); }
 }
 
 void optionsWindow::on_lineColoringArtists_textChanged()
@@ -130,35 +159,71 @@ void optionsWindow::on_lineColoringGenerals_textChanged()
 	{ ui->lineColoringGenerals->setStyleSheet("color:#000000"); }
 }
 
-void optionsWindow::on_buttonColoringArtists_clicked()
+void optionsWindow::on_buttonColoringArtistsColor_clicked()
 {
 	QColor color = QColorDialog::getColor(QColor(ui->lineColoringArtists->text()), this, "Grabber - Choisir une couleur");
 	if (color.isValid())
 	{ ui->lineColoringArtists->setText(color.name()); }
 }
-void optionsWindow::on_buttonColoringCopyrights_clicked()
+void optionsWindow::on_buttonColoringCopyrightsColor_clicked()
 {
 	QColor color = QColorDialog::getColor(QColor(ui->lineColoringCopyrights->text()), this, "Grabber - Choisir une couleur");
 	if (color.isValid())
 	{ ui->lineColoringCopyrights->setText(color.name()); }
 }
-void optionsWindow::on_buttonColoringCharacters_clicked()
+void optionsWindow::on_buttonColoringCharactersColor_clicked()
 {
 	QColor color = QColorDialog::getColor(QColor(ui->lineColoringCharacters->text()), this, "Grabber - Choisir une couleur");
 	if (color.isValid())
 	{ ui->lineColoringCharacters->setText(color.name()); }
 }
-void optionsWindow::on_buttonColoringModels_clicked()
+void optionsWindow::on_buttonColoringModelsColor_clicked()
 {
 	QColor color = QColorDialog::getColor(QColor(ui->lineColoringModels->text()), this, "Grabber - Choisir une couleur");
 	if (color.isValid())
 	{ ui->lineColoringModels->setText(color.name()); }
 }
-void optionsWindow::on_buttonColoringGenerals_clicked()
+void optionsWindow::on_buttonColoringGeneralsColor_clicked()
 {
 	QColor color = QColorDialog::getColor(QColor(ui->lineColoringGenerals->text()), this, "Grabber - Choisir une couleur");
 	if (color.isValid())
 	{ ui->lineColoringGenerals->setText(color.name()); }
+}
+
+void optionsWindow::on_buttonColoringArtistsFont_clicked()
+{
+	bool ok = false;
+	QFont police = QFontDialog::getFont(&ok, ui->lineColoringArtists->font(), this, "Grabber - Choisir une police");
+	if (ok)
+	{ ui->lineColoringArtists->setFont(police); }
+}
+void optionsWindow::on_buttonColoringCopyrightsFont_clicked()
+{
+	bool ok = false;
+	QFont police = QFontDialog::getFont(&ok, ui->lineColoringCopyrights->font(), this, "Grabber - Choisir une police");
+	if (ok)
+	{ ui->lineColoringCopyrights->setFont(police); }
+}
+void optionsWindow::on_buttonColoringCharactersFont_clicked()
+{
+	bool ok = false;
+	QFont police = QFontDialog::getFont(&ok, ui->lineColoringCharacters->font(), this, "Grabber - Choisir une police");
+	if (ok)
+	{ ui->lineColoringCharacters->setFont(police); }
+}
+void optionsWindow::on_buttonColoringModelsFont_clicked()
+{
+	bool ok = false;
+	QFont police = QFontDialog::getFont(&ok, ui->lineColoringModels->font(), this, "Grabber - Choisir une police");
+	if (ok)
+	{ ui->lineColoringModels->setFont(police); }
+}
+void optionsWindow::on_buttonColoringGeneralsFont_clicked()
+{
+	bool ok = false;
+	QFont police = QFontDialog::getFont(&ok, ui->lineColoringGenerals->font(), this, "Grabber - Choisir une police");
+	if (ok)
+	{ ui->lineColoringGenerals->setFont(police); }
 }
 
 void optionsWindow::updateContainer(QTreeWidgetItem *current, QTreeWidgetItem *previous)
@@ -172,6 +237,7 @@ void optionsWindow::updateContainer(QTreeWidgetItem *current, QTreeWidgetItem *p
 		tr("Tags série", "update") <<
 		tr("Tags personnage", "update") <<
 		tr("Coloration", "update") <<
+		tr("Connexion", "update") <<
 		tr("Commandes", "update");
 	QMap<QString,int> assoc;
 	for (int i = 0; i < texts.count(); i++)
@@ -233,11 +299,28 @@ void optionsWindow::save()
 
 	settings.beginGroup("Coloring");
 
-		settings.setValue("artists", ui->lineColoringArtists->text());
-		settings.setValue("copyrights", ui->lineColoringCopyrights->text());
-		settings.setValue("characters", ui->lineColoringCharacters->text());
-		settings.setValue("models", ui->lineColoringModels->text());
-		settings.setValue("generals", ui->lineColoringGenerals->text());
+		settings.beginGroup("Colors");
+			settings.setValue("artists", ui->lineColoringArtists->text());
+			settings.setValue("copyrights", ui->lineColoringCopyrights->text());
+			settings.setValue("characters", ui->lineColoringCharacters->text());
+			settings.setValue("models", ui->lineColoringModels->text());
+			settings.setValue("generals", ui->lineColoringGenerals->text());
+		settings.endGroup();
+
+		settings.beginGroup("Fonts");
+			settings.setValue("artists", ui->lineColoringArtists->font().toString());
+			settings.setValue("copyrights", ui->lineColoringCopyrights->font().toString());
+			settings.setValue("characters", ui->lineColoringCharacters->font().toString());
+			settings.setValue("models", ui->lineColoringModels->font().toString());
+			settings.setValue("generals", ui->lineColoringGenerals->font().toString());
+		settings.endGroup();
+
+	settings.endGroup();
+
+	settings.beginGroup("Login");
+
+		settings.setValue("pseudo", ui->linePseudo->text());
+		settings.setValue("password", ui->linePassword->text());
 
 	settings.endGroup();
 

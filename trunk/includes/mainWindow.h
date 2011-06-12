@@ -3,6 +3,7 @@
 
 #include <QtGui>
 #include "advancedWindow.h"
+#include "batchwindow.h"
 #include "QAffiche.h"
 #include "QBouton.h"
 #include "textedit.h"
@@ -72,6 +73,7 @@ class mainWindow : public QMainWindow
 		void closeEvent(QCloseEvent*);
 		void advanced();
 		void saveAdvanced(advancedWindow*);
+		void widgetPlusChange();
 
 	private:
 		Ui::mainWindow *ui;
@@ -101,7 +103,7 @@ class mainWindow : public QMainWindow
 		TextEdit *m_search;
 		QProcess *m_process;
 		QNetworkReply *m_getAllRequest;
-		QProgressDialog *m_progressdialog;
+		batchWindow *m_progressdialog;
 		QList<QBouton*> m_mergeButtons;
 };
 

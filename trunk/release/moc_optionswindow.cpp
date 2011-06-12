@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'optionswindow.h'
 **
-** Created: Sat 11. Jun 20:38:18 2011
+** Created: Sun 12. Jun 18:48:28 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.6.2)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_optionsWindow[] = {
        4,       // revision
        0,       // classname
        0,    0, // classinfo
-      14,   14, // methods
+      20,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -35,16 +35,22 @@ static const uint qt_meta_data_optionsWindow[] = {
       68,   14,   14,   14, 0x0a,
      105,   14,   14,   14, 0x0a,
      131,   14,   14,   14, 0x0a,
-     168,   14,   14,   14, 0x0a,
-     208,   14,   14,   14, 0x0a,
-     248,   14,   14,   14, 0x0a,
-     284,   14,   14,   14, 0x0a,
-     322,   14,   14,   14, 0x0a,
-     357,   14,   14,   14, 0x0a,
-     395,   14,   14,   14, 0x0a,
-     433,   14,   14,   14, 0x0a,
-     467,   14,   14,   14, 0x0a,
-     503,   14,   14,   14, 0x0a,
+     156,   14,   14,   14, 0x0a,
+     193,   14,   14,   14, 0x0a,
+     233,   14,   14,   14, 0x0a,
+     273,   14,   14,   14, 0x0a,
+     309,   14,   14,   14, 0x0a,
+     347,   14,   14,   14, 0x0a,
+     387,   14,   14,   14, 0x0a,
+     430,   14,   14,   14, 0x0a,
+     473,   14,   14,   14, 0x0a,
+     512,   14,   14,   14, 0x0a,
+     553,   14,   14,   14, 0x0a,
+     592,   14,   14,   14, 0x0a,
+     634,   14,   14,   14, 0x0a,
+     676,   14,   14,   14, 0x0a,
+     714,   14,   14,   14, 0x0a,
+     754,   14,   14,   14, 0x0a,
 
        0        // eod
 };
@@ -54,16 +60,22 @@ static const char qt_meta_stringdata_optionsWindow[] = {
     "updateContainer(QTreeWidgetItem*,QTreeWidgetItem*)\0"
     "on_lineFilename_textChanged(QString)\0"
     "on_buttonFolder_clicked()\0"
+    "on_buttonCrypt_clicked()\0"
     "on_lineColoringArtists_textChanged()\0"
     "on_lineColoringCopyrights_textChanged()\0"
     "on_lineColoringCharacters_textChanged()\0"
     "on_lineColoringModels_textChanged()\0"
     "on_lineColoringGenerals_textChanged()\0"
-    "on_buttonColoringArtists_clicked()\0"
-    "on_buttonColoringCopyrights_clicked()\0"
-    "on_buttonColoringCharacters_clicked()\0"
-    "on_buttonColoringModels_clicked()\0"
-    "on_buttonColoringGenerals_clicked()\0"
+    "on_buttonColoringArtistsColor_clicked()\0"
+    "on_buttonColoringCopyrightsColor_clicked()\0"
+    "on_buttonColoringCharactersColor_clicked()\0"
+    "on_buttonColoringModelsColor_clicked()\0"
+    "on_buttonColoringGeneralsColor_clicked()\0"
+    "on_buttonColoringArtistsFont_clicked()\0"
+    "on_buttonColoringCopyrightsFont_clicked()\0"
+    "on_buttonColoringCharactersFont_clicked()\0"
+    "on_buttonColoringModelsFont_clicked()\0"
+    "on_buttonColoringGeneralsFont_clicked()\0"
     "save()\0"
 };
 
@@ -99,20 +111,26 @@ int optionsWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 0: updateContainer((*reinterpret_cast< QTreeWidgetItem*(*)>(_a[1])),(*reinterpret_cast< QTreeWidgetItem*(*)>(_a[2]))); break;
         case 1: on_lineFilename_textChanged((*reinterpret_cast< QString(*)>(_a[1]))); break;
         case 2: on_buttonFolder_clicked(); break;
-        case 3: on_lineColoringArtists_textChanged(); break;
-        case 4: on_lineColoringCopyrights_textChanged(); break;
-        case 5: on_lineColoringCharacters_textChanged(); break;
-        case 6: on_lineColoringModels_textChanged(); break;
-        case 7: on_lineColoringGenerals_textChanged(); break;
-        case 8: on_buttonColoringArtists_clicked(); break;
-        case 9: on_buttonColoringCopyrights_clicked(); break;
-        case 10: on_buttonColoringCharacters_clicked(); break;
-        case 11: on_buttonColoringModels_clicked(); break;
-        case 12: on_buttonColoringGenerals_clicked(); break;
-        case 13: save(); break;
+        case 3: on_buttonCrypt_clicked(); break;
+        case 4: on_lineColoringArtists_textChanged(); break;
+        case 5: on_lineColoringCopyrights_textChanged(); break;
+        case 6: on_lineColoringCharacters_textChanged(); break;
+        case 7: on_lineColoringModels_textChanged(); break;
+        case 8: on_lineColoringGenerals_textChanged(); break;
+        case 9: on_buttonColoringArtistsColor_clicked(); break;
+        case 10: on_buttonColoringCopyrightsColor_clicked(); break;
+        case 11: on_buttonColoringCharactersColor_clicked(); break;
+        case 12: on_buttonColoringModelsColor_clicked(); break;
+        case 13: on_buttonColoringGeneralsColor_clicked(); break;
+        case 14: on_buttonColoringArtistsFont_clicked(); break;
+        case 15: on_buttonColoringCopyrightsFont_clicked(); break;
+        case 16: on_buttonColoringCharactersFont_clicked(); break;
+        case 17: on_buttonColoringModelsFont_clicked(); break;
+        case 18: on_buttonColoringGeneralsFont_clicked(); break;
+        case 19: save(); break;
         default: ;
         }
-        _id -= 14;
+        _id -= 20;
     }
     return _id;
 }

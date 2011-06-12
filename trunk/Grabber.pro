@@ -21,7 +21,8 @@ HEADERS += includes/addgroupwindow.h \
     includes/favoritewindow.h \
 	includes/detailswindow.h \
 	includes/startwindow.h \
-	includes/optionswindow.h
+	includes/optionswindow.h \
+	includes/batchwindow.h
 SOURCES += source/addgroupwindow.cpp \
 	source/adduniquewindow.cpp \
 	source/advancedWindow.cpp \
@@ -36,7 +37,8 @@ SOURCES += source/addgroupwindow.cpp \
     source/favoritewindow.cpp \
     source/detailswindow.cpp \
 	source/startwindow.cpp \
-	source/optionswindow.cpp
+	source/optionswindow.cpp \
+    source/batchwindow.cpp
 RESOURCES += resources.qrc
 RC_FILE = icon.rc
 TRANSLATIONS += languages/English.ts languages/Français.ts
@@ -49,4 +51,5 @@ FORMS += \
 	ui/detailsWindow.ui \
 	ui/startwindow.ui \
     ui/optionswindow.ui \
-	ui/mainWindow.ui
+	ui/mainWindow.ui \
+	ui/batchwindow.ui

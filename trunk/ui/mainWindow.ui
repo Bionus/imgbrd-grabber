@@ -43,17 +43,14 @@
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
          <widget class="QWidget" name="widget" native="true">
-          <layout class="QVBoxLayout" name="layoutExplore" stretch="0,0,1,0">
+          <layout class="QVBoxLayout" name="layoutExplore" stretch="0,0,1,0,0">
            <property name="margin">
             <number>0</number>
            </property>
            <item>
-            <layout class="QGridLayout" name="layoutFields" columnstretch="0,1,0,0">
+            <layout class="QGridLayout" name="layoutFields" columnstretch="0,1,0,0,0,0,0">
              <property name="margin">
               <number>0</number>
-             </property>
-             <property name="spacing">
-              <number>6</number>
              </property>
              <item row="0" column="0">
               <widget class="QLabel" name="label">
@@ -69,16 +66,6 @@
                </property>
               </widget>
              </item>
-             <item row="0" column="2">
-              <widget class="QSpinBox" name="spinPage">
-               <property name="minimum">
-                <number>1</number>
-               </property>
-               <property name="maximum">
-                <number>1000</number>
-               </property>
-              </widget>
-             </item>
              <item row="1" column="2">
               <widget class="QPushButton" name="buttonCalendar">
                <property name="text">
@@ -86,14 +73,14 @@
                </property>
               </widget>
              </item>
-             <item row="0" column="3">
+             <item row="0" column="5">
               <widget class="QPushButton" name="buttonTags">
                <property name="text">
                 <string>Ok</string>
                </property>
               </widget>
              </item>
-             <item row="1" column="3">
+             <item row="1" column="5">
               <widget class="QPushButton" name="buttonPopular">
                <property name="text">
                 <string>Ok</string>
@@ -107,15 +94,102 @@
                </property>
               </widget>
              </item>
+             <item row="0" column="3" rowspan="2">
+              <widget class="QSpinBox" name="spinPage">
+               <property name="minimumSize">
+                <size>
+                 <width>60</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="minimum">
+                <number>1</number>
+               </property>
+               <property name="maximum">
+                <number>1000</number>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="6" rowspan="2">
+              <widget class="QPushButton" name="pushButton">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>30</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>+</string>
+               </property>
+               <property name="checkable">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
             </layout>
+           </item>
+           <item>
+            <widget class="QWidget" name="widgetPlus" native="true">
+             <property name="enabled">
+              <bool>true</bool>
+             </property>
+             <layout class="QGridLayout" name="gridLayout">
+              <property name="margin">
+               <number>0</number>
+              </property>
+              <item row="0" column="0">
+               <widget class="QLabel" name="label_6">
+                <property name="text">
+                 <string>Images par page</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="2">
+               <widget class="QLabel" name="label_7">
+                <property name="text">
+                 <string>Nombre de colonnes</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QSpinBox" name="spinImagesPerPage">
+                <property name="minimum">
+                 <number>1</number>
+                </property>
+                <property name="maximum">
+                 <number>1000</number>
+                </property>
+                <property name="value">
+                 <number>20</number>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="3">
+               <widget class="QSpinBox" name="spinColumns">
+                <property name="minimum">
+                 <number>1</number>
+                </property>
+                <property name="maximum">
+                 <number>10</number>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <layout class="QGridLayout" name="layoutResults"/>
            </item>
            <item>
             <spacer name="verticalSpacer">
              <property name="orientation">
               <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeType">
-              <enum>QSizePolicy::MinimumExpanding</enum>
              </property>
              <property name="sizeHint" stdset="0">
               <size>
@@ -124,9 +198,6 @@
               </size>
              </property>
             </spacer>
-           </item>
-           <item>
-            <layout class="QGridLayout" name="layoutResults"/>
            </item>
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,0,0">
@@ -855,6 +926,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>widgetPlusChange()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>641</x>
+     <y>80</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>637</x>
+     <y>102</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>help()</slot>
@@ -874,5 +961,6 @@
   <slot>viewed()</slot>
   <slot>updateBatchGroups(int,int)</slot>
   <slot>saveFolder()</slot>
+  <slot>widgetPlusChange()</slot>
  </slots>
 </ui>

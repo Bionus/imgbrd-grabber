@@ -1,5 +1,5 @@
 1
-http://nekobooru.net/post/index.xml?limit={limit}&page={page}&tags={tags}
-http://nekobooru.net/post/popular_by_day.xml?day={day}&month={month}&year={year}
+http://nekobooru.net/post/index.xml?login={pseudo}&password_hash={password}&limit={limit}&page={page}&tags={tags}
+http://nekobooru.net/post/index.xml?login={pseudo}&password_hash={password}&limit={limit}&page={page}&tags=date:{month}/{day}/{year} order:score
 http://nekobooru.net/post/show/{id}
 <li class="tag-type-(.+)">.*<a href=".+">.*</a>.*<a href=".+">(.+)</a>.*</li>
