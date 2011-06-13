@@ -16,7 +16,7 @@
 
 
 
-mainWindow::mainWindow(QString program, QStringList tags, QMap<QString,QString> params) : ui(new Ui::mainWindow), m_params(params), m_program(program), m_tags(tags), m_currentPageIsPopular(false)
+mainWindow::mainWindow(QString program, QStringList tags, QMap<QString,QString> params) : ui(new Ui::mainWindow), m_params(params), m_program(program), m_currentFav(-1), m_tags(tags), m_currentPageIsPopular(false)
 {
 	ui->setupUi(this);
 
@@ -438,6 +438,26 @@ void mainWindow::loadFavorite(int id)
 	m_loadFavorite = QDateTime::fromString(m_favorites.value(tag).section('|', 1, 1), Qt::ISODate);
 	web(tag);
 }
+void mainWindow::checkFavorites()
+{
+	ui->widgetFavorites->hide();
+	m_currentFav = -1;
+	m_currentFavCount = 0;
+	m_currentFavorite = QString();
+	loadNextFavorite();
+}
+void mainWindow::loadNextFavorite()
+{
+	if (m_currentFav+1 == m_favorites.count())
+	{ return; }
+	else
+	{
+		m_currentFav++;
+		QString tag = m_favorites.keys().at(m_currentFav);
+		m_loadFavorite = QDateTime::fromString(m_favorites.value(tag).section('|', 1, 1), Qt::ISODate);
+		web(tag);
+	}
+}
 void mainWindow::webUpdateTags()
 {
 	m_loadFavorite = QDateTime();
@@ -458,13 +478,13 @@ void mainWindow::web(QString tags, bool popular)
 	m_currentPageIsPopular = popular;
 	ui->labelMergeResults->setText(tr("%1/%2 (%3/%4)").arg(m_replies.count()-m_countPics-m_remainingSites).arg(m_replies.count()-m_countPics).arg(m_countPics-m_remainingPics).arg(m_countPics));
 	tags = (tags.isEmpty() ? m_search->toPlainText() : tags);
-	if (!m_replies.isEmpty())
+	if (!m_replies.isEmpty() && m_currentFav == -1)
 	{
 		for (int i = 0; i < m_replies.count(); i++)
 		{ m_replies.at(i)->abort(); }
 		m_replies.clear();
 	}
-	if (!m_webPics.isEmpty())
+	if (!m_webPics.isEmpty() && m_currentFav == -1)
 	{
 		for (int i = 0; i < m_webPics.count(); i++)
 		{
@@ -477,7 +497,7 @@ void mainWindow::web(QString tags, bool popular)
 		m_webPics.clear();
 		m_details.clear();
 	}
-	if (!m_webSites.isEmpty())
+	if (!m_webSites.isEmpty() && m_currentFav == -1)
 	{
 		for (int i = 0; i < m_webSites.count(); i++)
 		{
@@ -742,6 +762,11 @@ void mainWindow::replyFinished(QNetworkReply* r)
 		QLabel *txt = new QLabel();
 		if (results == 0)
 		{
+			if (m_currentFav != -1)
+			{
+				loadNextFavorite();
+				return;
+			}
 			QStringList reasons = QStringList();
 			if (source.isEmpty())
 			{ reasons.append(tr("serveur hors-ligne")); }
@@ -862,7 +887,16 @@ void mainWindow::replyFinishedPic(QNetworkReply* r)
 	}
 	if (m_countPage[ste] != 0)
 	{
-		if (ui->checkMergeResults->isChecked())
+		if (m_currentFav != -1)
+		{
+			int pl = 10;
+			ui->layoutFavoritesResults->addWidget(l, floor(m_currentFavCount/pl)+1, m_currentFavCount%pl, 1, 1);
+			m_webPics.append(l);
+			m_currentFavCount++;
+			if (m_remainingPics == 0 && m_remainingSites == 0)
+			{ loadNextFavorite(); }
+		}
+		else if (ui->checkMergeResults->isChecked())
 		{
 			if (!ignore)
 			{ m_mergeButtons.append(l); }
@@ -895,8 +929,6 @@ void mainWindow::replyFinishedPic(QNetworkReply* r)
 		{
 			int pl = ceil(sqrt(ui->spinImagesPerPage->value()));
 			float fl = (float)ui->spinImagesPerPage->value()/pl;
-			//int pl = ceil(sqrt(m_countPage[ste]));
-			//float fl = (float)m_countPage[ste]/pl;
 			if (!m_loadFavorite.isNull())
 			{ ui->layoutFavoritesResults->addWidget(l, floor(id/pl)+(floor(site/ui->spinColumns->value())*(ceil(fl)+1))+1, id%pl+pl*(site%ui->spinColumns->value()), 1, 1); }
 			else
@@ -940,9 +972,11 @@ void mainWindow::setFavoriteViewed(QString tag)
 }
 void mainWindow::favoritesBack()
 {
-	if (!m_currentFavorite.isEmpty())
+	if (!m_currentFavorite.isEmpty() || m_currentFav != -1)
 	{
 		m_currentFavorite = "";
+		m_currentFav = -1;
+		ui->widgetFavorites->show();
 		if (!m_replies.isEmpty())
 		{
 			for (int i = 0; i < m_replies.count(); i++)

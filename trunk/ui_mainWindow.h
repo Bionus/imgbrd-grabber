@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainWindow.ui'
 **
-** Created: Sun 12. Jun 16:34:40 2011
+** Created: Mon 13. Jun 02:37:37 2011
 **      by: Qt User Interface Compiler version 4.6.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -81,10 +81,14 @@ public:
     QLabel *label_3;
     QComboBox *comboOrderfavorites;
     QComboBox *comboOrderasc;
+    QWidget *widgetFavorites;
+    QVBoxLayout *verticalLayout_3;
     QGridLayout *layoutFavorites;
     QGridLayout *layoutFavoritesResults;
+    QSpacerItem *verticalSpacer_2;
     QHBoxLayout *horizontalLayout_2;
     QPushButton *buttonSourcesFavs;
+    QPushButton *pushButton_2;
     QPushButton *buttonBack;
     QPushButton *buttonMarkasviewed;
     QWidget *tab_3;
@@ -329,15 +333,27 @@ public:
 
         verticalLayout_5->addLayout(horizontalLayout_4);
 
+        widgetFavorites = new QWidget(widget_2);
+        widgetFavorites->setObjectName(QString::fromUtf8("widgetFavorites"));
+        verticalLayout_3 = new QVBoxLayout(widgetFavorites);
+        verticalLayout_3->setContentsMargins(0, 0, 0, 0);
+        verticalLayout_3->setObjectName(QString::fromUtf8("verticalLayout_3"));
         layoutFavorites = new QGridLayout();
         layoutFavorites->setObjectName(QString::fromUtf8("layoutFavorites"));
 
-        verticalLayout_5->addLayout(layoutFavorites);
+        verticalLayout_3->addLayout(layoutFavorites);
+
+
+        verticalLayout_5->addWidget(widgetFavorites);
 
         layoutFavoritesResults = new QGridLayout();
         layoutFavoritesResults->setObjectName(QString::fromUtf8("layoutFavoritesResults"));
 
         verticalLayout_5->addLayout(layoutFavoritesResults);
+
+        verticalSpacer_2 = new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayout_5->addItem(verticalSpacer_2);
 
         horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
@@ -345,6 +361,11 @@ public:
         buttonSourcesFavs->setObjectName(QString::fromUtf8("buttonSourcesFavs"));
 
         horizontalLayout_2->addWidget(buttonSourcesFavs);
+
+        pushButton_2 = new QPushButton(widget_2);
+        pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
+
+        horizontalLayout_2->addWidget(pushButton_2);
 
         buttonBack = new QPushButton(widget_2);
         buttonBack->setObjectName(QString::fromUtf8("buttonBack"));
@@ -538,8 +559,9 @@ public:
         QObject::connect(tableBatchGroups, SIGNAL(cellChanged(int,int)), mainWindow, SLOT(updateBatchGroups(int,int)));
         QObject::connect(actionFolder, SIGNAL(triggered()), mainWindow, SLOT(saveFolder()));
         QObject::connect(pushButton, SIGNAL(clicked()), mainWindow, SLOT(widgetPlusChange()));
+        QObject::connect(pushButton_2, SIGNAL(clicked()), mainWindow, SLOT(checkFavorites()));
 
-        tabWidget->setCurrentIndex(0);
+        tabWidget->setCurrentIndex(1);
         comboOrderfavorites->setCurrentIndex(0);
         comboOrderasc->setCurrentIndex(0);
 
@@ -583,6 +605,7 @@ public:
          << QApplication::translate("mainWindow", "Descendant", 0, QApplication::UnicodeUTF8)
         );
         buttonSourcesFavs->setText(QApplication::translate("mainWindow", "Sources", 0, QApplication::UnicodeUTF8));
+        pushButton_2->setText(QApplication::translate("mainWindow", "Tout v\303\251rifier", 0, QApplication::UnicodeUTF8));
         buttonBack->setText(QApplication::translate("mainWindow", "Retour", 0, QApplication::UnicodeUTF8));
         buttonMarkasviewed->setText(QApplication::translate("mainWindow", "Marquer comme vu", 0, QApplication::UnicodeUTF8));
         tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("mainWindow", "Favoris", 0, QApplication::UnicodeUTF8));
