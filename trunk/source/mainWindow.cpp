@@ -11,12 +11,12 @@
 #include "json.h"
 #include <QtXml>
 
-#define VERSION	"1.8.1"
+#define VERSION	"1.9.0b"
 #define DONE()	logUpdate(tr(" Fait"));
 
 
 
-mainWindow::mainWindow(QString program, QStringList tags, QMap<QString,QString> params) : ui(new Ui::mainWindow), m_params(params), m_program(program), m_currentFav(-1), m_tags(tags), m_currentPageIsPopular(false)
+mainWindow::mainWindow(QString program, QStringList tags, QMap<QString,QString> params) : ui(new Ui::mainWindow), m_currentFav(-1), m_params(params), m_program(program), m_tags(tags), m_currentPageIsPopular(false)
 {
 	ui->setupUi(this);
 
@@ -35,9 +35,13 @@ mainWindow::mainWindow(QString program, QStringList tags, QMap<QString,QString> 
 		m_settings->setValue("reverse", bool(ui->comboOrderasc->currentIndex() == 1));
 	loadLanguage(m_settings->value("language", "English").toString());
 
+	ui->layoutResults->setHorizontalSpacing(m_settings->value("Margins/horizontal", 6).toInt());
+	ui->layoutResults->setVerticalSpacing(m_settings->value("Margins/vertical", 6).toInt());
+
 	ui->spinImagesPerPage->setValue(m_settings->value("limit", 20).toInt());
 	ui->spinColumns->setValue(m_settings->value("columns", 1).toInt());
 	ui->widgetPlus->hide();
+	ui->widgetFavoritesResults->hide();
 
 	m_serverDate = QDateTime::currentDateTime().toUTC().addSecs(-60*60*4);
 	m_timezonedecay = QDateTime::currentDateTime().time().hour()-m_serverDate.time().hour();
@@ -433,6 +437,7 @@ void mainWindow::updateFavorites()
 }
 void mainWindow::loadFavorite(int id)
 {
+	ui->widgetFavoritesResults->show();
 	QString tag = m_favorites.keys().at(id);
 	m_currentFavorite = tag;
 	m_loadFavorite = QDateTime::fromString(m_favorites.value(tag).section('|', 1, 1), Qt::ISODate);
@@ -440,7 +445,6 @@ void mainWindow::loadFavorite(int id)
 }
 void mainWindow::checkFavorites()
 {
-	ui->widgetFavorites->hide();
 	m_currentFav = -1;
 	m_currentFavCount = 0;
 	m_currentFavorite = QString();
@@ -757,6 +761,8 @@ void mainWindow::replyFinished(QNetworkReply* r)
 	ui->labelMergeResults->setText(tr("%1/%2 (%3/%4)").arg(m_replies.count()-m_countPics-m_remainingSites).arg(m_replies.count()-m_countPics).arg(m_countPics-m_remainingPics).arg(m_countPics));
 	int pl = ceil(sqrt(ui->spinImagesPerPage->value()));
 	float fl = (float)ui->spinImagesPerPage->value()/pl;
+	if (results >= m_settings->value("hidefavorites", 20).toInt() && !m_loadFavorite.isNull())
+	{ ui->widgetFavorites->hide(); }
 	if (!ui->checkMergeResults->isChecked())
 	{
 		QLabel *txt = new QLabel();
@@ -893,6 +899,8 @@ void mainWindow::replyFinishedPic(QNetworkReply* r)
 			ui->layoutFavoritesResults->addWidget(l, floor(m_currentFavCount/pl)+1, m_currentFavCount%pl, 1, 1);
 			m_webPics.append(l);
 			m_currentFavCount++;
+			if (m_currentFavCount >= m_settings->value("hidefavorites", 20).toInt())
+			{ ui->widgetFavorites->hide(); }
 			if (m_remainingPics == 0 && m_remainingSites == 0)
 			{ loadNextFavorite(); }
 		}
@@ -972,6 +980,8 @@ void mainWindow::setFavoriteViewed(QString tag)
 }
 void mainWindow::favoritesBack()
 {
+	ui->widgetFavoritesResults->hide();
+	ui->widgetFavorites->show();
 	if (!m_currentFavorite.isEmpty() || m_currentFav != -1)
 	{
 		m_currentFavorite = "";
@@ -1105,8 +1115,19 @@ void mainWindow::options()
 {
 	log(tr("Ouverture de la fenêtre des options..."));
 	optionsWindow *options = new optionsWindow(this);
+	connect(options, SIGNAL(accepted()), this, SLOT(optionsClosed()));
 	options->show();
 	DONE()
+}
+void mainWindow::optionsClosed()
+{
+	m_settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
+
+	ui->layoutResults->setHorizontalSpacing(m_settings->value("Margins/horizontal", 6).toInt());
+	ui->layoutResults->setVerticalSpacing(m_settings->value("Margins/vertical", 6).toInt());
+
+	ui->spinImagesPerPage->setValue(m_settings->value("limit", 20).toInt());
+	ui->spinColumns->setValue(m_settings->value("columns", 1).toInt());
 }
 
 void mainWindow::advanced()

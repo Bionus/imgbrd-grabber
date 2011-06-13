@@ -34,7 +34,7 @@
        </sizepolicy>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -317,18 +317,30 @@
            </item>
            <item>
             <widget class="QWidget" name="widgetFavorites" native="true">
-             <layout class="QVBoxLayout" name="verticalLayout_3">
+             <layout class="QGridLayout" name="gridLayout_3">
               <property name="margin">
                <number>0</number>
               </property>
-              <item>
+              <item row="0" column="0">
                <layout class="QGridLayout" name="layoutFavorites"/>
               </item>
              </layout>
             </widget>
            </item>
            <item>
-            <layout class="QGridLayout" name="layoutFavoritesResults"/>
+            <widget class="QWidget" name="widgetFavoritesResults" native="true">
+             <layout class="QGridLayout" name="gridLayout_2">
+              <property name="margin">
+               <number>0</number>
+              </property>
+              <property name="horizontalSpacing">
+               <number>6</number>
+              </property>
+              <item row="0" column="0">
+               <layout class="QGridLayout" name="layoutFavoritesResults"/>
+              </item>
+             </layout>
+            </widget>
            </item>
            <item>
             <spacer name="verticalSpacer_2">

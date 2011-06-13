@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainWindow.ui'
 **
-** Created: Mon 13. Jun 02:37:37 2011
+** Created: Tue 14. Jun 00:12:05 2011
 **      by: Qt User Interface Compiler version 4.6.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -82,8 +82,10 @@ public:
     QComboBox *comboOrderfavorites;
     QComboBox *comboOrderasc;
     QWidget *widgetFavorites;
-    QVBoxLayout *verticalLayout_3;
+    QGridLayout *gridLayout_3;
     QGridLayout *layoutFavorites;
+    QWidget *widgetFavoritesResults;
+    QGridLayout *gridLayout_2;
     QGridLayout *layoutFavoritesResults;
     QSpacerItem *verticalSpacer_2;
     QHBoxLayout *horizontalLayout_2;
@@ -335,21 +337,30 @@ public:
 
         widgetFavorites = new QWidget(widget_2);
         widgetFavorites->setObjectName(QString::fromUtf8("widgetFavorites"));
-        verticalLayout_3 = new QVBoxLayout(widgetFavorites);
-        verticalLayout_3->setContentsMargins(0, 0, 0, 0);
-        verticalLayout_3->setObjectName(QString::fromUtf8("verticalLayout_3"));
+        gridLayout_3 = new QGridLayout(widgetFavorites);
+        gridLayout_3->setContentsMargins(0, 0, 0, 0);
+        gridLayout_3->setObjectName(QString::fromUtf8("gridLayout_3"));
         layoutFavorites = new QGridLayout();
         layoutFavorites->setObjectName(QString::fromUtf8("layoutFavorites"));
 
-        verticalLayout_3->addLayout(layoutFavorites);
+        gridLayout_3->addLayout(layoutFavorites, 0, 0, 1, 1);
 
 
         verticalLayout_5->addWidget(widgetFavorites);
 
+        widgetFavoritesResults = new QWidget(widget_2);
+        widgetFavoritesResults->setObjectName(QString::fromUtf8("widgetFavoritesResults"));
+        gridLayout_2 = new QGridLayout(widgetFavoritesResults);
+        gridLayout_2->setContentsMargins(0, 0, 0, 0);
+        gridLayout_2->setObjectName(QString::fromUtf8("gridLayout_2"));
+        gridLayout_2->setHorizontalSpacing(6);
         layoutFavoritesResults = new QGridLayout();
         layoutFavoritesResults->setObjectName(QString::fromUtf8("layoutFavoritesResults"));
 
-        verticalLayout_5->addLayout(layoutFavoritesResults);
+        gridLayout_2->addLayout(layoutFavoritesResults, 0, 0, 1, 1);
+
+
+        verticalLayout_5->addWidget(widgetFavoritesResults);
 
         verticalSpacer_2 = new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
@@ -561,7 +572,7 @@ public:
         QObject::connect(pushButton, SIGNAL(clicked()), mainWindow, SLOT(widgetPlusChange()));
         QObject::connect(pushButton_2, SIGNAL(clicked()), mainWindow, SLOT(checkFavorites()));
 
-        tabWidget->setCurrentIndex(1);
+        tabWidget->setCurrentIndex(0);
         comboOrderfavorites->setCurrentIndex(0);
         comboOrderasc->setCurrentIndex(0);
 

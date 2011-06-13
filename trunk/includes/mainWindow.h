@@ -31,6 +31,7 @@ class mainWindow : public QMainWindow
 		void logClear();
 		// Menus
 		void options();
+		void optionsClosed();
 		void help();
 		void aboutAuthor();
 		void saveFolder();

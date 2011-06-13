@@ -22,6 +22,7 @@ optionsWindow::optionsWindow(mainWindow *parent) : QDialog(parent), m_parent(par
 	ui->lineBlacklist->setText(settings.value("blacklistedtags").toString());
 	ui->checkDownloadBlacklisted->setChecked(settings.value("downloadblacklist", false).toBool());
 	ui->checkLoadFirstAtStart->setChecked(settings.value("loadatstart", false).toBool());
+	ui->spinHideFavorites->setValue(settings.value("hidefavorites", 20).toInt());
 
 	ui->spinImagesPerPage->setValue(settings.value("limit", 20).toInt());
 	ui->spinColumns->setValue(settings.value("columns", 1).toInt());
@@ -34,32 +35,26 @@ optionsWindow::optionsWindow(mainWindow *parent) : QDialog(parent), m_parent(par
 	ui->checkInvertLog->setChecked(settings.value("Log/invert", false).toBool());
 
 	settings.beginGroup("Save");
-
 		ui->checkDownloadOriginals->setChecked(settings.value("downloadoriginals", true).toBool());
 		ui->lineFolder->setText(settings.value("path").toString());
 		ui->lineFilename->setText(settings.value("filename").toString());
 		ui->lineSeparator->setText(settings.value("separator").toString());
-
 		ui->lineArtistsIfNone->setText(settings.value("artist_empty", "anonymous").toString());
 		ui->checkArtistsKeepAll->setChecked(settings.value("artist_useall", false).toBool());
 		ui->lineArtistsSeparator->setText(settings.value("artist_sep", "+").toString());
 		ui->lineArtistsIfMultiples->setText(settings.value("artist_value", "multiple artists").toString());
-
 		ui->lineCopyrightsIfNone->setText(settings.value("copyright_empty", "misc").toString());
 		ui->checkCopyrightsUseShorter->setChecked(settings.value("copyright_useshorter", true).toBool());
 		ui->checkCopyrightsKeepAll->setChecked(settings.value("copyright_useall", false).toBool());
 		ui->lineCopyrightsSeparator->setText(settings.value("copyright_sep", "+").toString());
 		ui->lineCopyrightsIfMultiples->setText(settings.value("copyright_value", "crossover").toString());
-
 		ui->lineCharactersIfNone->setText(settings.value("character_empty", "unknown").toString());
 		ui->checkCharactersKeepAll->setChecked(settings.value("character_useall", false).toBool());
 		ui->lineCharactersSeparator->setText(settings.value("character_sep", "+").toString());
 		ui->lineCharactersIfMultiples->setText(settings.value("character_value", "group").toString());
-
 	settings.endGroup();
 
 	settings.beginGroup("Coloring");
-
 		settings.beginGroup("Colors");
 			ui->lineColoringArtists->setText(settings.value("artists", "#aa0000").toString());
 			ui->lineColoringCopyrights->setText(settings.value("copyrights", "#aa00aa").toString());
@@ -67,7 +62,6 @@ optionsWindow::optionsWindow(mainWindow *parent) : QDialog(parent), m_parent(par
 			ui->lineColoringModels->setText(settings.value("models", "#0000ee").toString());
 			ui->lineColoringGenerals->setText(settings.value("generals", "#000000").toString());
 		settings.endGroup();
-
 		settings.beginGroup("Fonts");
 			QFont fontArtists, fontCopyrights, fontCharacters, fontModels, fontGenerals;
 			fontArtists.fromString(settings.value("artists").toString());
@@ -81,22 +75,22 @@ optionsWindow::optionsWindow(mainWindow *parent) : QDialog(parent), m_parent(par
 			ui->lineColoringModels->setFont(fontModels);
 			ui->lineColoringGenerals->setFont(fontGenerals);
 		settings.endGroup();
+	settings.endGroup();
 
+	settings.beginGroup("Margins");
+		ui->spinHorizontalMargins->setValue(settings.value("horizontal", 6).toInt());
+		ui->spinVerticalMargins->setValue(settings.value("vertical", 6).toInt());
 	settings.endGroup();
 
 	settings.beginGroup("Login");
-
 		ui->linePseudo->setText(settings.value("pseudo").toString());
 		ui->linePassword->setText(settings.value("password").toString());
-
 	settings.endGroup();
 
 	settings.beginGroup("Exec");
-
 		ui->lineCommandsInitialisation->setText(settings.value("init").toString());
 		ui->lineCommandsImage->setText(settings.value("image").toString());
 		ui->lineCommandsTag->setText(settings.value("tag").toString());
-
 	settings.endGroup();
 
 	connect(this, SIGNAL(accepted()), this, SLOT(save()));
@@ -236,7 +230,9 @@ void optionsWindow::updateContainer(QTreeWidgetItem *current, QTreeWidgetItem *p
 		tr("Tags artiste", "update") <<
 		tr("Tags série", "update") <<
 		tr("Tags personnage", "update") <<
+		tr("Interface", "update") <<
 		tr("Coloration", "update") <<
+		tr("Marges", "update") <<
 		tr("Connexion", "update") <<
 		tr("Commandes", "update");
 	QMap<QString,int> assoc;
@@ -268,37 +264,34 @@ void optionsWindow::save()
 	settings.setValue("source_2", sources.at(ui->comboSource2->currentIndex()));
 	settings.setValue("source_3", sources.at(ui->comboSource3->currentIndex()));
 	settings.setValue("loadatstart", ui->checkLoadFirstAtStart->isChecked());
+	settings.setValue("hidefavorites", ui->spinHideFavorites->value());
 
-	settings.setValue("Log/show", ui->checkShowLog->isChecked());
-	settings.setValue("Log/invert", ui->checkInvertLog->isChecked());
+	settings.beginGroup("Log");
+		settings.setValue("show", ui->checkShowLog->isChecked());
+		settings.setValue("invert", ui->checkInvertLog->isChecked());
+	settings.endGroup();
 
 	settings.beginGroup("Save");
-
 		settings.setValue("downloadoriginals", ui->checkDownloadOriginals->isChecked());
 		settings.setValue("separator", ui->lineSeparator->text());
 		settings.setValue("path", ui->lineFolder->text());
 		settings.setValue("filename", ui->lineFilename->text());
-
 		settings.setValue("artist_empty", ui->lineArtistsIfNone->text());
 		settings.setValue("artist_useall", ui->checkArtistsKeepAll->isChecked());
 		settings.setValue("artist_sep", ui->lineArtistsSeparator->text());
 		settings.setValue("artist_value", ui->lineArtistsIfMultiples->text());
-
 		settings.setValue("copyright_empty", ui->lineCopyrightsIfNone->text());
 		settings.setValue("copyright_useshorter", ui->checkCopyrightsUseShorter->isChecked());
 		settings.setValue("copyright_useall", ui->checkCopyrightsKeepAll->isChecked());
 		settings.setValue("copyright_sep", ui->lineCopyrightsSeparator->text());
 		settings.setValue("copyright_value", ui->lineCopyrightsIfMultiples->text());
-
 		settings.setValue("character_empty", ui->lineCharactersIfNone->text());
 		settings.setValue("character_useall", ui->checkCharactersKeepAll->isChecked());
 		settings.setValue("character_sep", ui->lineCharactersSeparator->text());
 		settings.setValue("character_value", ui->lineCharactersIfMultiples->text());
-
 	settings.endGroup();
 
 	settings.beginGroup("Coloring");
-
 		settings.beginGroup("Colors");
 			settings.setValue("artists", ui->lineColoringArtists->text());
 			settings.setValue("copyrights", ui->lineColoringCopyrights->text());
@@ -306,7 +299,6 @@ void optionsWindow::save()
 			settings.setValue("models", ui->lineColoringModels->text());
 			settings.setValue("generals", ui->lineColoringGenerals->text());
 		settings.endGroup();
-
 		settings.beginGroup("Fonts");
 			settings.setValue("artists", ui->lineColoringArtists->font().toString());
 			settings.setValue("copyrights", ui->lineColoringCopyrights->font().toString());
@@ -314,22 +306,22 @@ void optionsWindow::save()
 			settings.setValue("models", ui->lineColoringModels->font().toString());
 			settings.setValue("generals", ui->lineColoringGenerals->font().toString());
 		settings.endGroup();
+	settings.endGroup();
 
+	settings.beginGroup("Margins");
+		settings.setValue("horizontal", ui->spinHorizontalMargins->value());
+		settings.setValue("vertical", ui->spinVerticalMargins->value());
 	settings.endGroup();
 
 	settings.beginGroup("Login");
-
 		settings.setValue("pseudo", ui->linePseudo->text());
 		settings.setValue("password", ui->linePassword->text());
-
 	settings.endGroup();
 
 	settings.beginGroup("Exec");
-
 		settings.setValue("init", ui->lineCommandsInitialisation->text());
 		settings.setValue("image", ui->lineCommandsImage->text());
 		settings.setValue("tag", ui->lineCommandsTag->text());
-
 	settings.endGroup();
 
 	if (settings.value("language", "English").toString() != ui->comboLanguages->currentText())
