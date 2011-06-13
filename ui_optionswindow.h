@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'optionswindow.ui'
 **
-** Created: Sun 12. Jun 14:32:56 2011
+** Created: Tue 14. Jun 00:04:37 2011
 **      by: Qt User Interface Compiler version 4.6.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -49,7 +49,6 @@ public:
     QLineEdit *lineBlacklist;
     QLabel *label_6;
     QCheckBox *checkDownloadBlacklisted;
-    QCheckBox *checkLoadFirstAtStart;
     QWidget *widget_1;
     QFormLayout *formLayout_3;
     QLabel *label_9;
@@ -107,6 +106,12 @@ public:
     QLineEdit *lineCharactersSeparator;
     QLineEdit *lineCharactersIfMultiples;
     QCheckBox *checkCharactersKeepAll;
+    QWidget *widget_10;
+    QFormLayout *formLayout_11;
+    QLabel *label_39;
+    QSpinBox *spinHideFavorites;
+    QCheckBox *checkLoadFirstAtStart;
+    QLabel *label_40;
     QWidget *widget_8;
     QFormLayout *formLayout_9;
     QLabel *label_30;
@@ -134,6 +139,12 @@ public:
     QLineEdit *lineColoringModels;
     QPushButton *buttonColoringModelsColor;
     QPushButton *buttonColoringModelsFont;
+    QWidget *widget_11;
+    QFormLayout *formLayout_12;
+    QLabel *label_37;
+    QSpinBox *spinHorizontalMargins;
+    QLabel *label_38;
+    QSpinBox *spinVerticalMargins;
     QWidget *widget_9;
     QFormLayout *formLayout_10;
     QLabel *label_4;
@@ -176,7 +187,9 @@ public:
         new QTreeWidgetItem(__qtreewidgetitem);
         new QTreeWidgetItem(__qtreewidgetitem);
         new QTreeWidgetItem(__qtreewidgetitem);
-        new QTreeWidgetItem(treeWidget);
+        QTreeWidgetItem *__qtreewidgetitem1 = new QTreeWidgetItem(treeWidget);
+        new QTreeWidgetItem(__qtreewidgetitem1);
+        new QTreeWidgetItem(__qtreewidgetitem1);
         new QTreeWidgetItem(treeWidget);
         new QTreeWidgetItem(treeWidget);
         treeWidget->setObjectName(QString::fromUtf8("treeWidget"));
@@ -250,11 +263,6 @@ public:
         checkDownloadBlacklisted->setObjectName(QString::fromUtf8("checkDownloadBlacklisted"));
 
         formLayout_2->setWidget(6, QFormLayout::SpanningRole, checkDownloadBlacklisted);
-
-        checkLoadFirstAtStart = new QCheckBox(widget_2);
-        checkLoadFirstAtStart->setObjectName(QString::fromUtf8("checkLoadFirstAtStart"));
-
-        formLayout_2->setWidget(7, QFormLayout::SpanningRole, checkLoadFirstAtStart);
 
 
         container->addWidget(widget_2);
@@ -541,6 +549,36 @@ public:
 
         container->addWidget(widget_6);
 
+        widget_10 = new QWidget(optionsWindow);
+        widget_10->setObjectName(QString::fromUtf8("widget_10"));
+        formLayout_11 = new QFormLayout(widget_10);
+        formLayout_11->setObjectName(QString::fromUtf8("formLayout_11"));
+        label_39 = new QLabel(widget_10);
+        label_39->setObjectName(QString::fromUtf8("label_39"));
+
+        formLayout_11->setWidget(1, QFormLayout::LabelRole, label_39);
+
+        spinHideFavorites = new QSpinBox(widget_10);
+        spinHideFavorites->setObjectName(QString::fromUtf8("spinHideFavorites"));
+        spinHideFavorites->setMaximum(1000);
+        spinHideFavorites->setValue(20);
+
+        formLayout_11->setWidget(1, QFormLayout::FieldRole, spinHideFavorites);
+
+        checkLoadFirstAtStart = new QCheckBox(widget_10);
+        checkLoadFirstAtStart->setObjectName(QString::fromUtf8("checkLoadFirstAtStart"));
+
+        formLayout_11->setWidget(0, QFormLayout::SpanningRole, checkLoadFirstAtStart);
+
+        label_40 = new QLabel(widget_10);
+        label_40->setObjectName(QString::fromUtf8("label_40"));
+        label_40->setWordWrap(true);
+
+        formLayout_11->setWidget(2, QFormLayout::SpanningRole, label_40);
+
+
+        container->addWidget(widget_10);
+
         widget_8 = new QWidget(optionsWindow);
         widget_8->setObjectName(QString::fromUtf8("widget_8"));
         formLayout_9 = new QFormLayout(widget_8);
@@ -675,6 +713,38 @@ public:
 
 
         container->addWidget(widget_8);
+
+        widget_11 = new QWidget(optionsWindow);
+        widget_11->setObjectName(QString::fromUtf8("widget_11"));
+        formLayout_12 = new QFormLayout(widget_11);
+        formLayout_12->setObjectName(QString::fromUtf8("formLayout_12"));
+        formLayout_12->setFieldGrowthPolicy(QFormLayout::AllNonFixedFieldsGrow);
+        label_37 = new QLabel(widget_11);
+        label_37->setObjectName(QString::fromUtf8("label_37"));
+
+        formLayout_12->setWidget(0, QFormLayout::LabelRole, label_37);
+
+        spinHorizontalMargins = new QSpinBox(widget_11);
+        spinHorizontalMargins->setObjectName(QString::fromUtf8("spinHorizontalMargins"));
+        spinHorizontalMargins->setMaximum(20);
+        spinHorizontalMargins->setValue(6);
+
+        formLayout_12->setWidget(0, QFormLayout::FieldRole, spinHorizontalMargins);
+
+        label_38 = new QLabel(widget_11);
+        label_38->setObjectName(QString::fromUtf8("label_38"));
+
+        formLayout_12->setWidget(1, QFormLayout::LabelRole, label_38);
+
+        spinVerticalMargins = new QSpinBox(widget_11);
+        spinVerticalMargins->setObjectName(QString::fromUtf8("spinVerticalMargins"));
+        spinVerticalMargins->setMaximum(20);
+        spinVerticalMargins->setValue(6);
+
+        formLayout_12->setWidget(1, QFormLayout::FieldRole, spinVerticalMargins);
+
+
+        container->addWidget(widget_11);
 
         widget_9 = new QWidget(optionsWindow);
         widget_9->setObjectName(QString::fromUtf8("widget_9"));
@@ -816,11 +886,15 @@ public:
         QTreeWidgetItem *___qtreewidgetitem7 = ___qtreewidgetitem4->child(2);
         ___qtreewidgetitem7->setText(0, QApplication::translate("optionsWindow", "Tags personnage", 0, QApplication::UnicodeUTF8));
         QTreeWidgetItem *___qtreewidgetitem8 = treeWidget->topLevelItem(4);
-        ___qtreewidgetitem8->setText(0, QApplication::translate("optionsWindow", "Coloration", 0, QApplication::UnicodeUTF8));
-        QTreeWidgetItem *___qtreewidgetitem9 = treeWidget->topLevelItem(5);
-        ___qtreewidgetitem9->setText(0, QApplication::translate("optionsWindow", "Connexion", 0, QApplication::UnicodeUTF8));
-        QTreeWidgetItem *___qtreewidgetitem10 = treeWidget->topLevelItem(6);
-        ___qtreewidgetitem10->setText(0, QApplication::translate("optionsWindow", "Commandes", 0, QApplication::UnicodeUTF8));
+        ___qtreewidgetitem8->setText(0, QApplication::translate("optionsWindow", "Interface", 0, QApplication::UnicodeUTF8));
+        QTreeWidgetItem *___qtreewidgetitem9 = ___qtreewidgetitem8->child(0);
+        ___qtreewidgetitem9->setText(0, QApplication::translate("optionsWindow", "Coloration", 0, QApplication::UnicodeUTF8));
+        QTreeWidgetItem *___qtreewidgetitem10 = ___qtreewidgetitem8->child(1);
+        ___qtreewidgetitem10->setText(0, QApplication::translate("optionsWindow", "Marges", 0, QApplication::UnicodeUTF8));
+        QTreeWidgetItem *___qtreewidgetitem11 = treeWidget->topLevelItem(5);
+        ___qtreewidgetitem11->setText(0, QApplication::translate("optionsWindow", "Connexion", 0, QApplication::UnicodeUTF8));
+        QTreeWidgetItem *___qtreewidgetitem12 = treeWidget->topLevelItem(6);
+        ___qtreewidgetitem12->setText(0, QApplication::translate("optionsWindow", "Commandes", 0, QApplication::UnicodeUTF8));
         treeWidget->setSortingEnabled(__sortingEnabled);
 
         label->setText(QApplication::translate("optionsWindow", "Langue", 0, QApplication::UnicodeUTF8));
@@ -829,7 +903,6 @@ public:
         label_5->setText(QApplication::translate("optionsWindow", "Liste noire", 0, QApplication::UnicodeUTF8));
         label_6->setText(QApplication::translate("optionsWindow", "<i>Une confirmation sera demand\303\251e avant l'affichage d'une image contenant un tag contenu dans cette liste (s\303\251parer les tags par des espaces).</i>", 0, QApplication::UnicodeUTF8));
         checkDownloadBlacklisted->setText(QApplication::translate("optionsWindow", "T\303\251l\303\251charger les images de la liste noire", 0, QApplication::UnicodeUTF8));
-        checkLoadFirstAtStart->setText(QApplication::translate("optionsWindow", "Charger la premi\303\250re page au d\303\251marrage", 0, QApplication::UnicodeUTF8));
         label_9->setText(QApplication::translate("optionsWindow", "Images par page", 0, QApplication::UnicodeUTF8));
         label_10->setText(QApplication::translate("optionsWindow", "Nombre de colonnes", 0, QApplication::UnicodeUTF8));
         label_11->setText(QApplication::translate("optionsWindow", "Source 1", 0, QApplication::UnicodeUTF8));
@@ -885,6 +958,9 @@ public:
         lineCharactersSeparator->setText(QString());
         lineCharactersIfMultiples->setText(QString());
         checkCharactersKeepAll->setText(QApplication::translate("optionsWindow", "Garder tous", 0, QApplication::UnicodeUTF8));
+        label_39->setText(QApplication::translate("optionsWindow", "Cacher les favoris", 0, QApplication::UnicodeUTF8));
+        checkLoadFirstAtStart->setText(QApplication::translate("optionsWindow", "Charger la premi\303\250re page au d\303\251marrage", 0, QApplication::UnicodeUTF8));
+        label_40->setText(QApplication::translate("optionsWindow", "La liste des favoris sera cach\303\251e d\303\250s que ce nombre d'images re\303\247ues sera atteint.", 0, QApplication::UnicodeUTF8));
         label_30->setText(QApplication::translate("optionsWindow", "Artistes", 0, QApplication::UnicodeUTF8));
         lineColoringArtists->setText(QString());
         buttonColoringArtistsColor->setText(QApplication::translate("optionsWindow", "Couleur", 0, QApplication::UnicodeUTF8));
@@ -901,6 +977,8 @@ public:
         buttonColoringGeneralsFont->setText(QApplication::translate("optionsWindow", "Police", 0, QApplication::UnicodeUTF8));
         buttonColoringModelsColor->setText(QApplication::translate("optionsWindow", "Couleur", 0, QApplication::UnicodeUTF8));
         buttonColoringModelsFont->setText(QApplication::translate("optionsWindow", "Police", 0, QApplication::UnicodeUTF8));
+        label_37->setText(QApplication::translate("optionsWindow", "Marges horizontales", 0, QApplication::UnicodeUTF8));
+        label_38->setText(QApplication::translate("optionsWindow", "Marges verticales", 0, QApplication::UnicodeUTF8));
         label_4->setText(QApplication::translate("optionsWindow", "Pseudo", 0, QApplication::UnicodeUTF8));
         label_35->setText(QApplication::translate("optionsWindow", "Mot de passe hash\303\251", 0, QApplication::UnicodeUTF8));
         buttonCrypt->setText(QApplication::translate("optionsWindow", "Hasher un mot de passe", 0, QApplication::UnicodeUTF8));

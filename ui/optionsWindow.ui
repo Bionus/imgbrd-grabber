@@ -94,8 +94,18 @@
        </item>
        <item>
         <property name="text">
-         <string>Coloration</string>
+         <string>Interface</string>
         </property>
+        <item>
+         <property name="text">
+          <string>Coloration</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Marges</string>
+         </property>
+        </item>
        </item>
        <item>
         <property name="text">
@@ -181,13 +191,6 @@
            <widget class="QCheckBox" name="checkDownloadBlacklisted">
             <property name="text">
              <string>Télécharger les images de la liste noire</string>
-            </property>
-           </widget>
-          </item>
-          <item row="7" column="0" colspan="2">
-           <widget class="QCheckBox" name="checkLoadFirstAtStart">
-            <property name="text">
-             <string>Charger la première page au démarrage</string>
             </property>
            </widget>
           </item>
@@ -613,6 +616,46 @@
         </widget>
        </item>
        <item>
+        <widget class="QWidget" name="widget_10" native="true">
+         <layout class="QFormLayout" name="formLayout_11">
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_39">
+            <property name="text">
+             <string>Cacher les favoris</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QSpinBox" name="spinHideFavorites">
+            <property name="maximum">
+             <number>1000</number>
+            </property>
+            <property name="value">
+             <number>20</number>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0" colspan="2">
+           <widget class="QCheckBox" name="checkLoadFirstAtStart">
+            <property name="text">
+             <string>Charger la première page au démarrage</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0" colspan="2">
+           <widget class="QLabel" name="label_40">
+            <property name="text">
+             <string>La liste des favoris sera cachée dès que ce nombre d'images reçues sera atteint.</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
         <widget class="QWidget" name="widget_8" native="true">
          <layout class="QFormLayout" name="formLayout_9">
           <item row="0" column="0">
@@ -758,6 +801,49 @@
              </widget>
             </item>
            </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QWidget" name="widget_11" native="true">
+         <layout class="QFormLayout" name="formLayout_12">
+          <property name="fieldGrowthPolicy">
+           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+          </property>
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_37">
+            <property name="text">
+             <string>Marges horizontales</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QSpinBox" name="spinHorizontalMargins">
+            <property name="maximum">
+             <number>20</number>
+            </property>
+            <property name="value">
+             <number>6</number>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_38">
+            <property name="text">
+             <string>Marges verticales</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QSpinBox" name="spinVerticalMargins">
+            <property name="maximum">
+             <number>20</number>
+            </property>
+            <property name="value">
+             <number>6</number>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>

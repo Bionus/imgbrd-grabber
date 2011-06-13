@@ -117,7 +117,7 @@ void TextEdit::keyPressEvent(QKeyEvent *e)
 	if (!c || (ctrlOrShift && e->text().isEmpty()))
 	{ this->doColor(); return; }
 
-	static QString eow("- "); // end of word
+	static QString eow(" "); // end of word
 	bool hasModifier = (e->modifiers() != Qt::NoModifier) && !ctrlOrShift;
 	QString completionPrefix = textUnderCursor();
 

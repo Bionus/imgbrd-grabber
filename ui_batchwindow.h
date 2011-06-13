@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'batchwindow.ui'
 **
-** Created: Mon 13. Jun 02:10:58 2011
+** Created: Tue 14. Jun 00:15:20 2011
 **      by: Qt User Interface Compiler version 4.6.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -86,7 +86,7 @@ public:
         scrollAreaWidgetContents = new QWidget();
         scrollAreaWidgetContents->setObjectName(QString::fromUtf8("scrollAreaWidgetContents"));
         scrollAreaWidgetContents->setGeometry(QRect(0, 0, 282, 69));
-        QSizePolicy sizePolicy2(QSizePolicy::Ignored, QSizePolicy::Ignored);
+        QSizePolicy sizePolicy2(QSizePolicy::Expanding, QSizePolicy::Expanding);
         sizePolicy2.setHorizontalStretch(0);
         sizePolicy2.setVerticalStretch(0);
         sizePolicy2.setHeightForWidth(scrollAreaWidgetContents->sizePolicy().hasHeightForWidth());
@@ -130,7 +130,6 @@ public:
     {
         batchWindow->setWindowTitle(QApplication::translate("batchWindow", "Grabber - T\303\251l\303\251chargement group\303\251", 0, QApplication::UnicodeUTF8));
         buttonDetails->setText(QApplication::translate("batchWindow", "D\303\251tails", 0, QApplication::UnicodeUTF8));
-        labelLog->setText(QString());
         labelMessage->setText(QString());
     } // retranslateUi
 
