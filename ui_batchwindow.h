@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'batchwindow.ui'
 **
-** Created: Sun 12. Jun 18:57:55 2011
+** Created: Mon 13. Jun 02:10:58 2011
 **      by: Qt User Interface Compiler version 4.6.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -83,7 +83,6 @@ public:
         sizePolicy1.setHeightForWidth(scrollArea->sizePolicy().hasHeightForWidth());
         scrollArea->setSizePolicy(sizePolicy1);
         scrollArea->setFrameShape(QFrame::NoFrame);
-        scrollArea->setWidgetResizable(true);
         scrollAreaWidgetContents = new QWidget();
         scrollAreaWidgetContents->setObjectName(QString::fromUtf8("scrollAreaWidgetContents"));
         scrollAreaWidgetContents->setGeometry(QRect(0, 0, 282, 69));

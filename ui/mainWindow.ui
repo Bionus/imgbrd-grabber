@@ -34,7 +34,7 @@
        </sizepolicy>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -246,7 +246,7 @@
        <layout class="QVBoxLayout" name="verticalLayout_4">
         <item>
          <widget class="QWidget" name="widget_2" native="true">
-          <layout class="QVBoxLayout" name="verticalLayout_5" stretch="0,1,0,0">
+          <layout class="QVBoxLayout" name="verticalLayout_5" stretch="0,1,0,0,0">
            <property name="spacing">
             <number>6</number>
            </property>
@@ -316,10 +316,32 @@
             </layout>
            </item>
            <item>
-            <layout class="QGridLayout" name="layoutFavorites"/>
+            <widget class="QWidget" name="widgetFavorites" native="true">
+             <layout class="QVBoxLayout" name="verticalLayout_3">
+              <property name="margin">
+               <number>0</number>
+              </property>
+              <item>
+               <layout class="QGridLayout" name="layoutFavorites"/>
+              </item>
+             </layout>
+            </widget>
            </item>
            <item>
             <layout class="QGridLayout" name="layoutFavoritesResults"/>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+            </spacer>
            </item>
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -327,6 +349,13 @@
               <widget class="QPushButton" name="buttonSourcesFavs">
                <property name="text">
                 <string>Sources</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButton_2">
+               <property name="text">
+                <string>Tout vérifier</string>
                </property>
               </widget>
              </item>
@@ -933,12 +962,28 @@
    <slot>widgetPlusChange()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>641</x>
-     <y>80</y>
+     <x>785</x>
+     <y>104</y>
     </hint>
     <hint type="destinationlabel">
      <x>637</x>
      <y>102</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_2</sender>
+   <signal>clicked()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>checkFavorites()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>274</x>
+     <y>568</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>307</x>
+     <y>581</y>
     </hint>
    </hints>
   </connection>
@@ -962,5 +1007,6 @@
   <slot>updateBatchGroups(int,int)</slot>
   <slot>saveFolder()</slot>
   <slot>widgetPlusChange()</slot>
+  <slot>checkFavorites()</slot>
  </slots>
 </ui>
