@@ -15,11 +15,11 @@
 =Usage=
 
 ==Settings==
-The first thing to do is to set up the program. To do so, go to "Options > Options".
-  * The fisrt tab is for general settings (language, date format...).
-  * The second tab is to tell to the programm the priority of APIs. For example, if you have three files for "danbooru.donmai.us" (one for each retrieving method), it will use the one specified in the "Source 1" field.
-  * The third tab must be filled up if you want to save pictures on your computer using the program. Set the "Folder" field to the location you want your images to be saved, and fill the "Format" field using informations below it (example: "%artist%/%copyright%/%character%/%md5%.%ext%").
-  * The three last tabs are here to tell the program what to do if there are missing or multiple informations about an image (for example, no artists, or multiple characters).
+If you have ignored the window that opened at first launch, the first thing to do is to set up the program. To do so, go to "File > Options".
+  * The "General" part is for general settings (language, etc.).
+  * The "Sources" part is to set the number of columns and the number of images to be retrieved from each site. You can also set the priority of APIs. For example, if you have three files for "danbooru.donmai.us" (one for each retrieving method: XML, JSON and Regex), it will use the one specified in the "Source 1" field. I advice you leaving this to XML > JSON > Regex.
+  * The "Save" part must be filled up if you want to save pictures on your computer using the program. Set the "Folder" field to the location you want your images to be saved, and fill the "Filename" field using informations below it (example: "%artist%/%copyright%/%character%/%md5%.%ext%"). Make sure your format is valid before continuing.
+  * The three sub parts are here to tell the program what to do if there are missing or multiple informations about an image (for example, no artists, or multiple characters).
 Once finished, you can press the "Ok" button.
 
 ==Sources==
@@ -28,7 +28,7 @@ The second thing to do is to choose from where you want to download pictures. To
 *Note:* if you select multiple imageboards, they will be put in one column by default. I advice you changing this by editing the "Columns" settings in the options.
 
 ==Search fields==
-The upper part of the window is "divided" in two. You can choose between them using their respective radio.
-  * The tags & page field: to make searches using tags. You can add your own tags to auto-completion editing the "words.txt" file.
-  * The date field: to search in the popular images of a single day. You can change the date format in the options.
+The upper part of the window is "divided" in two.
+  * The tags field: to make searches using tags. You can add your own tags to auto-completion editing the "words.txt" file.
+  * The date field: to search in the popular images of a single day. You can show a calendar (more handy) clicking on the "Choose" button.
 When you have finished, just press the "Ok" button, and the results will be displayed below the search fields.
