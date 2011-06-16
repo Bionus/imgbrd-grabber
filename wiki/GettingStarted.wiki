@@ -15,7 +15,7 @@
 =Usage=
 
 ==Settings==
-If you have ignored the window that opened at first launch, the first thing to do is to set up the program. To do so, go to "File > Options".
+If you have ignored the window that opened at first launch, the first thing to do is to set them. To do so, go to "File > Options".
   * The "General" part is for general settings (language, etc.).
   * The "Sources" part is to set the number of columns and the number of images to be retrieved from each site. You can also set the priority of APIs. For example, if you have three files for "danbooru.donmai.us" (one for each retrieving method: XML, JSON and Regex), it will use the one specified in the "Source 1" field. I advice you leaving this to XML > JSON > Regex.
   * The "Save" part must be filled up if you want to save pictures on your computer using the program. Set the "Folder" field to the location you want your images to be saved, and fill the "Filename" field using informations below it (example: "%artist%/%copyright%/%character%/%md5%.%ext%"). Make sure your format is valid before continuing.
