@@ -10,13 +10,13 @@ INCLUDEPATH += . includes languages source
 # Input
 HEADERS += includes/addgroupwindow.h \
 	includes/adduniquewindow.h \
-	includes/advancedWindow.h \
+	includes/advancedwindow.h \
 	includes/functions.h \
-	includes/mainWindow.h \
-	includes/QAffiche.h \
-	includes/QBouton.h \
+	includes/mainwindow.h \
+	includes/qaffiche.h \
+	includes/qbouton.h \
 	includes/textedit.h \
-	includes/zoomWindow.h \
+	includes/zoomwindow.h \
 	includes/json.h \
     includes/favoritewindow.h \
 	includes/detailswindow.h \
@@ -25,14 +25,14 @@ HEADERS += includes/addgroupwindow.h \
 	includes/batchwindow.h
 SOURCES += source/addgroupwindow.cpp \
 	source/adduniquewindow.cpp \
-	source/advancedWindow.cpp \
+	source/advancedwindow.cpp \
 	source/functions.cpp \
 	source/main.cpp \
-	source/mainWindow.cpp \
-	source/QAffiche.cpp \
-	source/QBouton.cpp \
+	source/mainwindow.cpp \
+	source/qaffiche.cpp \
+	source/qbouton.cpp \
 	source/textedit.cpp \
-	source/zoomWindow.cpp \
+	source/zoomwindow.cpp \
 	source/json.cpp \
     source/favoritewindow.cpp \
     source/detailswindow.cpp \
@@ -46,10 +46,10 @@ QT += network xml
 CONFIG += designer plugin
 
 FORMS += \
-    ui/favoriteWindow.ui \
-    ui/zoomWindow.ui \
-	ui/detailsWindow.ui \
+	ui/favoritewindow.ui \
+	ui/zoomwindow.ui \
+	ui/detailswindow.ui \
 	ui/startwindow.ui \
     ui/optionswindow.ui \
-	ui/mainWindow.ui \
+	ui/mainwindow.ui \
 	ui/batchwindow.ui

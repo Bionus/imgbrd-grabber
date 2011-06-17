@@ -3,7 +3,7 @@
 
 #include <QtGui>
 #include "mainWindow.h"
-#include "ui_startWindow.h"
+#include "ui_startwindow.h"
 
 
 
