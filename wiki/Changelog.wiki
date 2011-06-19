@@ -1,0 +1,77 @@
+#summary Imgbrd-grabber's changelog from v0.1 to v1.9.3
+
+= 1.9 =
+== 1.9.3 ==
+  * Fixed issue 16 (e621's batch download).
+== 1.9.2 ==
+  * Half-fixed issue 16 (e621's image listing).
+== 1.9.1 ==
+  * Fixed favorites check.
+== 1.9.0 ==
+  * Basic post-filtering to bypass tags limitation. Supports ratings and tags.
+  * Hide favorites list if there are too many pictures to display (you can change this limit in the options).
+  * Change margins in the settings.
+  * Improve batch download window.
+  * Check new images for favorites (with a button or a setting to check them a start).
+  * Choose options (limit...) for each search, using a "+" button near the validation buttons.
+  * Favorites using "order:score" to allow personalized limits.
+  * Change fonts for coloration.
+  * Login to bypass danbooru's limitations.
+
+= 1.8 =
+== 1.8.1 ==
+  * Fixed "&" in batch download
+== 1.8.0 ==
+  * Options remade.
+  * Now check filename format's validity.
+  * Order favorites by name, note, or by the last time they have been marked as viewed.
+  * Choose folder and filename format at first launch.
+  * Merge search results using md5.
+  * Change coloration for artist, copyright, character, etc. tags in the options.
+  * Added link to save folder in menu.
+  * Bugfixes
+
+= 1.7 =
+== 1.7.4 ==
+  * Focus automatically on search field at start.
+  * Fixed timezone and summertime for favorites.
+  * Fixed r34 website.
+  * Added tentaclerape.net website.
+== 1.7.3 ==
+  * Fixed %website% token in batch download.
+== 1.7.2 ==
+  * One of the batch download bugs fixed.
+== 1.7.1 ==
+  * Fixed issue #10
+== 1.7.0 ==
+  * Favorites.
+  * Added details window to images window (now only tags are displayed on the image window, and details can be accessed clicking on "More details").
+  * Added calendar to choose a favorites date.
+  * Now waits for image to be loaded before saving.
+  * Improved auto-updater (which should NOT be used to update to this version since it is too buggy, it will remains to 1.6 version since it is totally functionnal).
+  * Improved coloration.
+  * Added log options (invert and hide).
+  * Saving image switch the "Save and close" button to "Close".
+
+= 1.0 =
+== 1.6 ==
+  * Added an auto-updater (not working).
+  * A few minor improvements and bug fixes.
+  * Fixed issue #8
+== 1.5 ==
+  * Added compatibility with Mozilla Firefox extension "Danbooru Downloader".
+  * Less pages loaded if %artist%, %character%, %copyright% are not used (faster grouped downloads).
+  * Fixed issue #7
+== 1.4 ==
+  * Added commands tab in the options.
+  * Fixed issue #6
+== 1.3 ==
+  * Fixed issue #3
+  * Fixed issue #4
+  * Fixed issue #5
+== 1.2 ==
+  * Fixed issue #1
+== 1.1 ==
+  * Fixed issue #2 by adding a new configuration field : "date format".
+== 1.0 ==
+  * First release.
