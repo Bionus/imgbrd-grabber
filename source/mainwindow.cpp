@@ -11,7 +11,7 @@
 #include "json.h"
 #include <QtXml>
 
-#define VERSION	"1.9.1"
+#define VERSION	"1.9.3"
 #define DONE()	logUpdate(tr(" Fait"));
 
 
@@ -711,6 +711,10 @@ void mainWindow::replyFinished(QNetworkReply* r)
 				infos << "status" << "source" << "has_comments" << "file_url" << "sample_url" << "change" << "sample_width" << "has_children" << "preview_url" << "width" << "md5" << "preview_width" << "sample_height" << "parent_id" << "height" << "has_notes" << "creator_id" << "file_size" << "id" << "preview_height" << "rating" << "tags" << "author" << "score";
 				for (int i = 0; i < infos.count(); i++)
 				{ d[infos.at(i)] = nodeList.at(id).attributes().namedItem(infos.at(i)).nodeValue(); }
+				if (!d["preview_url"].startsWith("http://"))
+				{ d["preview_url"] = m_sites[site].at(2).section("/", 0, 2)+QString(d["preview_url"].startsWith("/") ? "" : "/")+d["preview_url"]; }
+				if (!d["file_url"].startsWith("http://"))
+				{ d["file_url"] = m_sites[site].at(2).section("/", 0, 2)+QString(d["file_url"].startsWith("/") ? "" : "/")+d["file_url"]; }
 				QString date(nodeList.at(id).attributes().namedItem("created_at").nodeValue());
 				QDateTime timestamp;
 				if (date.toInt() != 0)
@@ -751,6 +755,10 @@ void mainWindow::replyFinished(QNetworkReply* r)
 				infos << "status" << "source" << "has_comments" << "file_url" << "sample_url" << "change" << "sample_width" << "has_children" << "preview_url" << "width" << "md5" << "preview_width" << "sample_height" << "parent_id" << "height" << "has_notes" << "creator_id" << "file_size" << "id" << "preview_height" << "rating" << "tags" << "author" << "score";
 				for (int i = 0; i < infos.count(); i++)
 				{ d[infos.at(i)] = sc.value(infos.at(i)).toString(); }
+				if (!d["preview_url"].startsWith("http://"))
+				{ d["preview_url"] = m_sites[site].at(2).section("/", 0, 2)+QString(d["preview_url"].startsWith("/") ? "" : "/")+d["preview_url"]; }
+				if (!d["file_url"].startsWith("http://"))
+				{ d["file_url"] = m_sites[site].at(2).section("/", 0, 2)+QString(d["file_url"].startsWith("/") ? "" : "/")+d["file_url"]; }
 				QDateTime timestamp;
 				timestamp.setTime_t(sc.value("created_at").toMap().value("s").toInt());
 				d["created_at"] = timestamp.toString(tr("le dd/MM/yyyy à hh:mm"));
@@ -797,8 +805,10 @@ void mainWindow::replyFinished(QNetworkReply* r)
 			QMap<QString, QString> d;
 			for (int i = 0; i < order.size(); i++)
 			{ d[order.at(i)] = rx.cap(i+1); }
-			if (d["preview_url"][0] == '/')
-			{ d["preview_url"] = "http://"+site+d["preview_url"]; }
+			if (!d["preview_url"].startsWith("http://"))
+			{ d["preview_url"] = m_sites[site].at(2).section("/", 0, 2)+QString(d["preview_url"].startsWith("/") ? "" : "/")+d["preview_url"]; }
+				if (!d["file_url"].startsWith("http://"))
+				{ d["file_url"] = m_sites[site].at(2).section("/", 0, 2)+QString(d["file_url"].startsWith("/") ? "" : "/")+d["file_url"]; }
 			if (m_sites[site][9].isEmpty())
 			{
 				d["file_url"] = d["preview_url"];
@@ -1405,6 +1415,10 @@ void mainWindow::getAllSource(QNetworkReply *r)
 				}
 				else
 				{ d["created_at"] = qDateTimeFromString(date, m_timezonedecay).toString(tr("'le' dd/MM/yyyy 'à' hh:mm")); }
+				if (!d["preview_url"].startsWith("http://"))
+				{ d["preview_url"] = m_sites[site].at(2).section("/", 0, 2)+QString(d["preview_url"].startsWith("/") ? "" : "/")+d["preview_url"]; }
+				if (!d["file_url"].startsWith("http://"))
+				{ d["file_url"] = m_sites[site].at(2).section("/", 0, 2)+QString(d["file_url"].startsWith("/") ? "" : "/")+d["file_url"]; }
 				d["site"] = site;
 				d["site_id"] = QString::number(n);
 				d["pos"] = QString::number(id);
@@ -1427,6 +1441,10 @@ void mainWindow::getAllSource(QNetworkReply *r)
 				infos << "status" << "source" << "has_comments" << "file_url" << "sample_url" << "change" << "sample_width" << "has_children" << "preview_url" << "width" << "md5" << "preview_width" << "sample_height" << "parent_id" << "height" << "has_notes" << "creator_id" << "file_size" << "id" << "preview_height" << "rating" << "tags" << "author" << "score";
 				for (int i = 0; i < infos.count(); i++)
 				{ d[infos.at(i)] = sc.value(infos.at(i)).toString(); }
+				if (!d["preview_url"].startsWith("http://"))
+				{ d["preview_url"] = m_sites[site].at(2).section("/", 0, 2)+QString(d["preview_url"].startsWith("/") ? "" : "/")+d["preview_url"]; }
+				if (!d["file_url"].startsWith("http://"))
+				{ d["file_url"] = m_sites[site].at(2).section("/", 0, 2)+QString(d["file_url"].startsWith("/") ? "" : "/")+d["file_url"]; }
 				QDateTime timestamp;
 				timestamp.setTime_t(sc.value("created_at").toMap().value("s").toInt());
 				d["created_at"] = timestamp.toString(tr("le dd/MM/yyyy à hh:mm"));
@@ -1457,8 +1475,10 @@ void mainWindow::getAllSource(QNetworkReply *r)
 			QMap<QString, QString> d;
 			for (int i = 0; i < order.size(); i++)
 			{ d[order.at(i)] = rx.cap(i+1); }
-			if (d["preview_url"][0] == '/')
-			{ d["preview_url"] = "http://"+site+d["preview_url"]; }
+			if (!d["preview_url"].startsWith("http://"))
+			{ d["preview_url"] = m_sites[site].at(2).section("/", 0, 2)+QString(d["preview_url"].startsWith("/") ? "" : "/")+d["preview_url"]; }
+			if (!d["file_url"].startsWith("http://"))
+			{ d["file_url"] = m_sites[site].at(2).section("/", 0, 2)+QString(d["file_url"].startsWith("/") ? "" : "/")+d["file_url"]; }
 			if (m_sites[site][9].isEmpty())
 			{
 				d["file_url"] = d["preview_url"];
