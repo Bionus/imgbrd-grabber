@@ -2,8 +2,8 @@
 #define FAVORITEWINDOW_H
 
 #include <QtGui>
-#include "mainWindow.h"
-#include "ui_favoriteWindow.h"
+#include "mainwindow.h"
+#include "ui_favoritewindow.h"
 
 
 

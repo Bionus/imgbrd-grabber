@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QtGui>
-#include "advancedWindow.h"
+#include "advancedwindow.h"
 #include "batchwindow.h"
 #include "QAffiche.h"
 #include "QBouton.h"
@@ -37,7 +37,7 @@ class mainWindow : public QMainWindow
 		void saveFolder();
 		// Language
 		void switchTranslator(QTranslator&, const QString&);
-		void loadLanguage(const QString&);
+		void loadLanguage(const QString&, bool shutup = false);
 		void changeEvent(QEvent*);
 		// Favorites
 		void loadFavorite(int);
@@ -49,6 +49,7 @@ class mainWindow : public QMainWindow
 		void checkFavorites();
 		void loadNextFavorite();
 		// Download
+		void webUpdateLast();
 		void webUpdateTags();
 		void webUpdatePopular();
 		void web(QString tags = "", bool popular = false);
@@ -87,7 +88,7 @@ class mainWindow : public QMainWindow
 		QString m_program;
 		QStringList m_tags, m_assoc, m_gotMd5;
 		QList<QStringList> m_groupBatchs;
-		bool m_allow, m_currentPageIsPopular, m_must_get_tags;
+		bool m_allow, m_currentPageIsPopular, m_must_get_tags, m_lastWeb;
 		QList<QMap<QString, QString> > m_details, m_batchs, m_allImages;
 		QMap<QDateTime,QString> *m_log;
 		QString m_currLang;
@@ -103,7 +104,7 @@ class mainWindow : public QMainWindow
 		QList<QBouton*> m_webPics;
 		QList<QLabel*> m_webSites;
 		QMap<QString,int> m_countPage;
-		TextEdit *m_search;
+		TextEdit *m_search, *m_postFiltering;
 		QProcess *m_process;
 		QNetworkReply *m_getAllRequest;
 		batchWindow *m_progressdialog;

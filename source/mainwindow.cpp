@@ -1,23 +1,26 @@
-#include "mainWindow.h"
-#include "ui_mainWindow.h"
-#include "optionsWindow.h"
+#include "mainwindow.h"
+#include "ui_mainwindow.h"
+#include "optionswindow.h"
 #include "startwindow.h"
 #include "favoritewindow.h"
 #include "addgroupwindow.h"
 #include "adduniquewindow.h"
-#include "zoomWindow.h"
+#include "zoomwindow.h"
 #include "batchwindow.h"
 #include "functions.h"
 #include "json.h"
 #include <QtXml>
 
-#define VERSION	"1.9.0b"
+#define VERSION	"1.9.1"
 #define DONE()	logUpdate(tr(" Fait"));
 
 
 
-mainWindow::mainWindow(QString program, QStringList tags, QMap<QString,QString> params) : ui(new Ui::mainWindow), m_currentFav(-1), m_params(params), m_program(program), m_tags(tags), m_currentPageIsPopular(false)
+mainWindow::mainWindow(QString program, QStringList tags, QMap<QString,QString> params) : ui(new Ui::mainWindow), m_currentFav(-1), m_params(params), m_program(program), m_tags(tags), m_currentPageIsPopular(false), m_lastWeb(false)
 {
+	QString p = savePath("settings.ini");
+	m_settings = new QSettings(p, QSettings::IniFormat);
+	loadLanguage(m_settings->value("language", "English").toString(), true);
 	ui->setupUi(this);
 
 	m_log = new QMap<QDateTime,QString>;
@@ -27,7 +30,7 @@ mainWindow::mainWindow(QString program, QStringList tags, QMap<QString,QString> 
 	ui->actionFolder->setShortcut(QKeySequence::Open);
 	ui->actionHelp->setShortcut(QKeySequence::HelpContents);
 
-	m_settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
+	log(tr("Chargement des préférences depuis <a href=\"file:///%1\">%1</a>").arg(p));
 	QStringList assoc = QStringList() << "name" << "note" << "lastviewed";
 		ui->comboOrderfavorites->setCurrentIndex(assoc.indexOf(m_settings->value("Favorites/order", "name").toString()));
 		ui->comboOrderasc->setCurrentIndex(int(m_settings->value("Favorites/reverse", false).toBool()));
@@ -127,7 +130,7 @@ mainWindow::mainWindow(QString program, QStringList tags, QMap<QString,QString> 
 		}
 		m_settings->setValue("firstload", false);
 	}
-
+	
 	// Loading last window state, size and position from the settings file
 	setWindowState(Qt::WindowStates(m_settings->value("state", 0).toInt()));
 	if (!isMaximized())
@@ -174,7 +177,9 @@ mainWindow::mainWindow(QString program, QStringList tags, QMap<QString,QString> 
 
 	// Search field
 	m_search = new TextEdit(m_favorites.keys(), this);
+	m_postFiltering = new TextEdit(m_favorites.keys(), this);
 		m_search->setContextMenuPolicy(Qt::CustomContextMenu);
+		m_postFiltering->setContextMenuPolicy(Qt::CustomContextMenu);
 		QStringList completion;
 			QFile words("words.txt");
 			if (words.open(QIODevice::ReadOnly | QIODevice::Text))
@@ -190,9 +195,12 @@ mainWindow::mainWindow(QString program, QStringList tags, QMap<QString,QString> 
 				QCompleter *completer = new QCompleter(completion, this);
 					completer->setCaseSensitivity(Qt::CaseInsensitive);
 				m_search->setCompleter(completer);
+				m_postFiltering->setCompleter(completer);
 			}
 		connect(m_search, SIGNAL(returnPressed()), this, SLOT(webUpdateTags()));
+		connect(m_postFiltering, SIGNAL(returnPressed()), this, SLOT(web()));
 		ui->layoutFields->addWidget(m_search, 0, 1, 1, 2);
+		ui->layoutPlus->addWidget(m_postFiltering, 1, 1, 1, 3);
 
 	// Calendar
 	ui->datePopular->setDateRange(QDate(2000, 1, 1), m_serverDate.date());
@@ -445,6 +453,7 @@ void mainWindow::loadFavorite(int id)
 }
 void mainWindow::checkFavorites()
 {
+	ui->widgetFavoritesResults->show();
 	m_currentFav = -1;
 	m_currentFavCount = 0;
 	m_currentFavorite = QString();
@@ -462,6 +471,11 @@ void mainWindow::loadNextFavorite()
 		web(tag);
 	}
 }
+void mainWindow::webUpdateLast()
+{
+	m_loadFavorite = QDateTime();
+	web("", m_lastWeb);
+}
 void mainWindow::webUpdateTags()
 {
 	m_loadFavorite = QDateTime();
@@ -474,21 +488,22 @@ void mainWindow::webUpdatePopular()
 }
 void mainWindow::web(QString tags, bool popular)
 {
+	m_lastWeb = popular;
 	m_remainingPics = 0;
 	m_remainingSites = 0;
 	m_countPics = 0;
 	m_gotMd5.clear();
 	m_mergeButtons.clear();
 	m_currentPageIsPopular = popular;
-	ui->labelMergeResults->setText(tr("%1/%2 (%3/%4)").arg(m_replies.count()-m_countPics-m_remainingSites).arg(m_replies.count()-m_countPics).arg(m_countPics-m_remainingPics).arg(m_countPics));
+	ui->labelMergeResults->setText(tr("%1/%2 (%3/%4)").arg(m_currentFav == -1 ? m_replies.count()-m_countPics-m_remainingSites : m_currentFav+1).arg(m_currentFav == -1 ? m_replies.count()-m_countPics : m_favorites.count()).arg(m_countPics-m_remainingPics).arg(m_countPics));
 	tags = (tags.isEmpty() ? m_search->toPlainText() : tags);
-	if (!m_replies.isEmpty() && m_currentFav == -1)
+	if (!m_replies.isEmpty() && m_currentFav < 1)
 	{
 		for (int i = 0; i < m_replies.count(); i++)
 		{ m_replies.at(i)->abort(); }
 		m_replies.clear();
 	}
-	if (!m_webPics.isEmpty() && m_currentFav == -1)
+	if (!m_webPics.isEmpty() && m_currentFav < 1)
 	{
 		for (int i = 0; i < m_webPics.count(); i++)
 		{
@@ -501,7 +516,7 @@ void mainWindow::web(QString tags, bool popular)
 		m_webPics.clear();
 		m_details.clear();
 	}
-	if (!m_webSites.isEmpty() && m_currentFav == -1)
+	if (!m_webSites.isEmpty() && m_currentFav < 1)
 	{
 		for (int i = 0; i < m_webSites.count(); i++)
 		{
@@ -570,7 +585,7 @@ void mainWindow::web(QString tags, bool popular)
 			m_remainingSites++;
 		}
 	}
-	ui->labelMergeResults->setText(tr("%1/%2 (%3/%4)").arg(m_replies.count()-m_countPics-m_remainingSites).arg(m_replies.count()-m_countPics).arg(m_countPics-m_remainingPics).arg(m_countPics));
+	ui->labelMergeResults->setText(tr("%1/%2 (%3/%4)").arg(m_currentFav == -1 ? m_replies.count()-m_countPics-m_remainingSites : m_currentFav+1).arg(m_currentFav == -1 ? m_replies.count()-m_countPics : m_favorites.count()).arg(m_countPics-m_remainingPics).arg(m_countPics));
 }
 void mainWindow::webZoom(int id)
 {
@@ -593,6 +608,45 @@ void mainWindow::webZoom(int id)
 	zoomWindow *zoom = new zoomWindow(m_program, m_details.at(id).value("site"), m_sites[m_details.at(id).value("site")], m_details.at(id), this);
 	zoom->show();
 	m_favorites = loadFavorites();
+}
+QString filter(QString f, QMap<QString, QString> image)
+{
+	QStringList filters = f.toLower().split(" ");
+	QStringList types = QStringList() << "rating";
+	bool invert;
+	QString filter, type;
+	for (int i = 0; i < filters.count(); i++)
+	{
+		invert = false;
+		filter = filters.at(i);
+		if (filter.startsWith('-'))
+		{
+			filter = filter.right(filter.length()-1);
+			invert = true;
+		}
+		if (filter.contains(":"))
+		{
+			type = filter.section(':', 0, 0);
+			filter = filter.section(':', 1);
+			if (!types.contains(type))
+			{ return QObject::tr("unknown type \"%1\" (available types: \"%2\")").arg(filter, types.join("\", \"")); }
+			if (type == "rating")
+			{
+				if (!image["rating"].startsWith(filter.left(1)) && !invert)
+				{ return QObject::tr("image is not \"%1\"").arg(filter); }
+				if (image["rating"].startsWith(filter.left(1)) && invert)
+				{ return QObject::tr("image is \"%1\"").arg(filter); }
+			}
+		}
+		else
+		{
+			if (!image["tags"].contains(filter) && !invert)
+			{ return QObject::tr("image does not contains \"%1\"").arg(filter); }
+			if (image["tags"].contains(filter) && invert)
+			{ return QObject::tr("image contains \"%1\"").arg(filter); }
+		}
+	}
+	return QString();
 }
 void mainWindow::replyFinished(QNetworkReply* r)
 {
@@ -669,9 +723,15 @@ void mainWindow::replyFinished(QNetworkReply* r)
 				d["pos"] = QString::number(id);
 				if (m_loadFavorite.isNull() || timestamp > m_loadFavorite)
 				{
-					m_details.append(d);
-					m_replies.append(mngr->get(QNetworkRequest(QUrl(d["preview_url"]))));
-					results++;
+					QString error = filter(m_postFiltering->toPlainText(), d);
+					if (error.isEmpty())
+					{
+						m_details.append(d);
+						m_replies.append(mngr->get(QNetworkRequest(QUrl(d["preview_url"]))));
+						results++;
+					}
+					else
+					{ log(tr("Image #%1 ignored. Reason: %2.").arg(QString::number(id+1), error)); }
 				}
 			}
 		}
@@ -699,9 +759,15 @@ void mainWindow::replyFinished(QNetworkReply* r)
 				d["pos"] = QString::number(id);
 				if (m_loadFavorite.isNull() || timestamp > m_loadFavorite)
 				{
-					m_details.append(d);
-					m_replies.append(mngr->get(QNetworkRequest(QUrl(d["preview_url"]))));
-					results++;
+					QString error = filter(m_postFiltering->toPlainText(), d);
+					if (error.isEmpty())
+					{
+						m_details.append(d);
+						m_replies.append(mngr->get(QNetworkRequest(QUrl(d["preview_url"]))));
+						results++;
+					}
+					else
+					{ log(tr("Image #%1 ignored. Reason: %2.").arg(QString::number(id+1), error)); }
 				}
 			}
 		}
@@ -748,9 +814,15 @@ void mainWindow::replyFinished(QNetworkReply* r)
 			d["site"] = site;
 			d["site_id"] = QString::number(n);
 			d["pos"] = QString::number(id);
-			m_details.append(d);
-			m_replies.append(mngr->get(QNetworkRequest(QUrl(d["preview_url"]))));
-			results++;
+			QString error = filter(m_postFiltering->toPlainText(), d);
+			if (error.isEmpty())
+			{
+				m_details.append(d);
+				m_replies.append(mngr->get(QNetworkRequest(QUrl(d["preview_url"]))));
+				results++;
+			}
+			else
+			{ log(tr("Image #%1 ignored. Reason: %2.").arg(QString::number(id+1), error)); }
 			id++;
 		}
 	}
@@ -758,21 +830,16 @@ void mainWindow::replyFinished(QNetworkReply* r)
 	m_remainingPics += results;
 	m_countPics += results;
 	m_remainingSites--;
-	ui->labelMergeResults->setText(tr("%1/%2 (%3/%4)").arg(m_replies.count()-m_countPics-m_remainingSites).arg(m_replies.count()-m_countPics).arg(m_countPics-m_remainingPics).arg(m_countPics));
+	ui->labelMergeResults->setText(tr("%1/%2 (%3/%4)").arg(m_currentFav == -1 ? m_replies.count()-m_countPics-m_remainingSites : m_currentFav+1).arg(m_currentFav == -1 ? m_replies.count()-m_countPics : m_favorites.count()).arg(m_countPics-m_remainingPics).arg(m_countPics));
 	int pl = ceil(sqrt(ui->spinImagesPerPage->value()));
 	float fl = (float)ui->spinImagesPerPage->value()/pl;
 	if (results >= m_settings->value("hidefavorites", 20).toInt() && !m_loadFavorite.isNull())
 	{ ui->widgetFavorites->hide(); }
-	if (!ui->checkMergeResults->isChecked())
+	if (!ui->checkMergeResults->isChecked() && m_currentFav == -1)
 	{
 		QLabel *txt = new QLabel();
 		if (results == 0)
 		{
-			if (m_currentFav != -1)
-			{
-				loadNextFavorite();
-				return;
-			}
 			QStringList reasons = QStringList();
 			if (source.isEmpty())
 			{ reasons.append(tr("serveur hors-ligne")); }
@@ -797,7 +864,7 @@ void mainWindow::replyFinished(QNetworkReply* r)
 		}
 		m_webSites.append(txt);
 	}
-	else if (results == 0 && m_remainingSites == 0)
+	else if (results == 0 && m_remainingSites == 0 && m_currentFav == -1)
 	{
 		QLabel *txt = new QLabel((!m_loadFavorite.isNull() ? tr("Aucun résultat depuis le %1").arg(m_loadFavorite.toString(m_settings->value("dateformat", "dd/MM/yyyy").toString())) : tr("Aucun résultat")));
 		if (!m_loadFavorite.isNull())
@@ -812,6 +879,8 @@ void mainWindow::replyFinished(QNetworkReply* r)
 		}
 		m_webSites.append(txt);
 	}
+	if (m_currentFav != -1)
+	{ loadNextFavorite(); }
 }
 void mainWindow::setTags(QString tags)
 { m_search->setText(tags); }
@@ -820,7 +889,7 @@ void mainWindow::replyFinishedPic(QNetworkReply* r)
 	// TODO: bug qqpart ici
 	log("Received preview image <a href='"+r->url().toString()+"'>"+r->url().toString()+"</a>");
 	m_remainingPics--;
-	ui->labelMergeResults->setText(tr("%1/%2 (%3/%4)").arg(m_replies.count()-m_countPics-m_remainingSites).arg(m_replies.count()-m_countPics).arg(m_countPics-m_remainingPics).arg(m_countPics));
+	ui->labelMergeResults->setText(tr("%1/%2 (%3/%4)").arg(m_currentFav == -1 ? m_replies.count()-m_countPics-m_remainingSites : m_currentFav+1).arg(m_currentFav == -1 ? m_replies.count()-m_countPics : m_favorites.count()).arg(m_countPics-m_remainingPics).arg(m_countPics));
 	int id = 0, site = 0, n = 0;
 	QString ste;
 	for (int i = 0; i < m_details.count(); i++)
@@ -1065,7 +1134,7 @@ void mainWindow::switchTranslator(QTranslator& translator, const QString& filena
 	if (translator.load(filename))
 	{ qApp->installTranslator(&translator); }
 }
-void mainWindow::loadLanguage(const QString& rLanguage)
+void mainWindow::loadLanguage(const QString& rLanguage, bool shutup)
 {
 	if (m_currLang != rLanguage)
 	{
@@ -1073,14 +1142,19 @@ void mainWindow::loadLanguage(const QString& rLanguage)
 		QLocale locale = QLocale(m_currLang);
 		QLocale::setDefault(locale);
 		switchTranslator(m_translator, "languages/"+m_currLang);
-		log(tr("Traduction des textes en %1...").arg(m_currLang));
-			// QCombobox are reset
-			int _comboOrderfavorites = ui->comboOrderfavorites->currentIndex();
-			int _comboOrderasc = ui->comboOrderasc->currentIndex();
-			ui->retranslateUi(this);
-			ui->comboOrderfavorites->setCurrentIndex(_comboOrderfavorites);
-			ui->comboOrderasc->setCurrentIndex(_comboOrderasc);
-		logUpdate(tr(" Fait"));
+		if (!shutup)
+		{
+			log(tr("Traduction des textes en %1...").arg(m_currLang));
+				// QCombobox are reset
+				int _comboOrderfavorites = ui->comboOrderfavorites->currentIndex();
+				int _comboOrderasc = ui->comboOrderasc->currentIndex();
+				#if defined(Q_OS_WIN)
+					ui->retranslateUi(this);
+				#endif
+				ui->comboOrderfavorites->setCurrentIndex(_comboOrderfavorites);
+				ui->comboOrderasc->setCurrentIndex(_comboOrderasc);
+			logUpdate(tr(" Fait"));
+		}
 	}
 }
 void mainWindow::changeEvent(QEvent* event)
@@ -1224,9 +1298,11 @@ void mainWindow::getAll()
 	connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(getAllSource(QNetworkReply*)));
 	if (!m_settings->value("Exec/init").toString().isEmpty())
 	{
+		log(tr("Execution de \"%1\"").arg(m_settings->value("Exec/init").toString()));
 		m_process = new QProcess;
 		m_process->start(m_settings->value("Exec/init").toString());
-		m_process->waitForStarted(1000);
+		if (m_process->waitForStarted(1000))
+		{ log(tr("<b>Erreur :</b> %1").arg(tr("erreur lors de la commande d'initialisation : %1.").arg("timed out"))); }
 	}
 	for (int i = 0; i < m_groupBatchs.count(); i++)
 	{
@@ -1546,7 +1622,10 @@ void mainWindow::getAllPerformTags(QNetworkReply* reply)
 				.replace("%type%", type)
 				.replace("%number%", QString::number(types[type]));
 				if (!m_settings->value("Exec/init").toString().isEmpty())
-				{ m_process->write(exec.toAscii()); }
+				{
+					log(tr("Execution de \"%1\"").arg(exec));
+					m_process->write(exec.toAscii());
+				}
 				else
 				{
 					m_process->start(exec);
@@ -1690,7 +1769,10 @@ void mainWindow::getAllPerformImage(QNetworkReply* reply)
 			.replace("%path%", p+"/"+path);
 			m_settings->endGroup();
 			if (!m_settings->value("Exec/init").toString().isEmpty())
-			{ m_process->write(exec.toAscii()); }
+			{
+				log(tr("Execution de \"%1\"").arg(exec));
+				m_process->write(exec.toAscii());
+			}
 			else
 			{
 				m_process->start(exec);

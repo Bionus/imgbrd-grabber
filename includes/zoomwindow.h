@@ -4,7 +4,7 @@
 #include <QtGui>
 #include <QtNetwork>
 #include "QAffiche.h"
-#include "mainWindow.h"
+#include "mainwindow.h"
 #include "detailswindow.h"
 
 
@@ -69,7 +69,7 @@ class zoomWindow : public QWidget
 		QString link, m_program;
 		QNetworkReply *m_reply;
 		const char* m_format;
-		bool m_mustSave, m_replyExists;
+		bool m_mustSave, m_replyExists, m_finished;
 		QStringList favorites;
 };
 

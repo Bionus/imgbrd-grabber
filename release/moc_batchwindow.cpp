@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'batchwindow.h'
 **
-** Created: Sun 12. Jun 18:48:36 2011
+** Created: Sun 19. Jun 01:02:46 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.6.2)
 **
 ** WARNING! All changes made in this file will be lost!
