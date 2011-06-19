@@ -233,7 +233,6 @@ void zoomWindow::replyFinished(QNetworkReply* reply)
 			tags.replace(" "+tag+" ", " <a href=\""+tag+"\" style=\""+styles[type+"s"]+"\">"+tag+"</a> ");
 			this->details["alls"].append(normalized);
 		}
-		qDebug() << styles;
 		ui->labelTags->setText(tags.trimmed());
 		m_details["tags"] = tags.trimmed();
 		m_detailsWindow->setTags(tags.trimmed());
