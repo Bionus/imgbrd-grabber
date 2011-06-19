@@ -1,4 +1,4 @@
-#include "optionsWindow.h"
+#include "optionswindow.h"
 #include "ui_optionswindow.h"
 #include "functions.h"
 

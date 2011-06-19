@@ -2,7 +2,7 @@
 #define ADDGROUPWINDOW_H
 
 #include <QtGui>
-#include "mainWindow.h"
+#include "mainwindow.h"
 #include "textedit.h"
 
 class AddGroupWindow : public QWidget

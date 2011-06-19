@@ -2,7 +2,7 @@
 #define OPTIONSWINDOW_H
 
 #include <QtGui>
-#include "mainWindow.h"
+#include "mainwindow.h"
 
 namespace Ui
 {

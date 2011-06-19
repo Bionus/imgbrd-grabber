@@ -3,7 +3,7 @@
 
 #include <QtGui>
 #include <QtNetwork>
-#include "mainWindow.h"
+#include "mainwindow.h"
 
 
 

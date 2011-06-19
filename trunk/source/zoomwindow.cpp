@@ -2,16 +2,16 @@
 #include <QApplication>
 #include <QtNetwork>
 #include "functions.h"
-#include "optionsWindow.h"
+#include "optionswindow.h"
 #include "QAffiche.h"
-#include "zoomWindow.h"
-#include "ui_zoomWindow.h"
+#include "zoomwindow.h"
+#include "ui_zoomwindow.h"
 
 using namespace std;
 
 
 
-zoomWindow::zoomWindow(QString m_program, QString site, QStringList regex, QMap<QString,QString> details, mainWindow *parent) : m_parent(parent), ui(new Ui::zoomWindow), regex(regex), m_details(details), timeout(300), loaded(0), oldsize(0), site(site), m_program(m_program), m_mustSave(false), m_replyExists(false)
+zoomWindow::zoomWindow(QString m_program, QString site, QStringList regex, QMap<QString,QString> details, mainWindow *parent) : m_parent(parent), ui(new Ui::zoomWindow), regex(regex), m_details(details), timeout(300), loaded(0), oldsize(0), site(site), m_program(m_program), m_mustSave(false), m_replyExists(false), m_finished(false)
 {
 	ui->setupUi(this);
 	favorites = loadFavorites().keys();
@@ -44,7 +44,7 @@ zoomWindow::zoomWindow(QString m_program, QString site, QStringList regex, QMap<
 	this->rating = assoc.value(m_details.value("rating"));
 	this->url = settings.value("Save/downloadoriginals", true).toBool() ? m_details.value("file_url") : (m_details.value("sample_url").isEmpty() ? m_details.value("file_url") : m_details.value("sample_url"));
 
-	this->format = this->url.section('.', -1).toUpper().toAscii().data();
+	m_format = this->url.section('.', -1).toUpper().toAscii().data();
 	
 	QTimer *timer = new QTimer(this);
 		connect(timer, SIGNAL(timeout()), this, SLOT(update()));
@@ -179,6 +179,7 @@ void zoomWindow::load()
 	QNetworkAccessManager *manager = new QNetworkAccessManager;
 	m_replyExists = true;
 	m_reply = manager->get(request);
+	this->d = QByteArray();
 	connect(m_reply, SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(rR(qint64, qint64)));
 	connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinishedZoom(QNetworkReply*)));
 	connect(manager, SIGNAL(finished(QNetworkReply*)), q, SLOT(quit()));
@@ -188,7 +189,7 @@ void zoomWindow::load()
 #define UPDATES 20
 void zoomWindow::rR(qint64 size, qint64 total)
 {
-	if (m_reply->size() >= (total/UPDATES) || size == total)
+	if ((m_reply->size() >= (total/UPDATES) || size == total) && !m_finished)
 	{
 		this->d.append(m_reply->readAll());
 		if (!this->d.isEmpty())
@@ -211,12 +212,14 @@ void zoomWindow::replyFinished(QNetworkReply* reply)
 		rx.setMinimal(true);
 		int pos = 0;
 		QString tags = " "+m_details.value("tags")+" ";
-		QFont fontArtists, fontCopyrights, fontCharacters, fontModels, fontGenerals;
-			fontArtists.fromString(settings.value("Coloring/Fonts/artists").toString());
-			fontCopyrights.fromString(settings.value("Coloring/Fonts/copyrights").toString());
-			fontCharacters.fromString(settings.value("Coloring/Fonts/characters").toString());
-			fontModels.fromString(settings.value("Coloring/Fonts/models").toString());
-			fontGenerals.fromString(settings.value("Coloring/Fonts/generals").toString());
+		QStringList tlist = QStringList() << "artists" << "copyrights" << "characters" << "models" << "generals";
+		QMap<QString,QString> styles;
+		for (int i = 0; i < tlist.size(); i++)
+		{
+			QFont font;
+			font.fromString(settings.value("Coloring/Fonts/"+tlist.at(i)).toString());
+			styles[tlist.at(i)] = "color:"+settings.value("Coloring/Colors/"+tlist.at(i), "#00aa00").toString()+"; "+qfonttocss(font);
+		}
 		while ((pos = rx.indexIn(source, pos)) != -1)
 		{
 			pos += rx.matchedLength();
@@ -225,14 +228,12 @@ void zoomWindow::replyFinished(QNetworkReply* reply)
 			if (!under)
 			{ normalized.replace('_', ' '); }
 			if (blacklistedtags.contains(tag, Qt::CaseInsensitive))
-			{ tags.replace(" "+tag+" ", " <a href=\""+tag+"\" style=\"font-weight:bold;text-decoration:underline;color:#000000\">"+tag+"</a> ");	}
-			if (type == "character")		{ this->details["characters"].append(normalized);	tags.replace(" "+tag+" ", " <a href=\""+tag+"\" style=\"color:"+settings.value("Coloring/Colors/characters", "#00aa00").toString()+";"+qfonttocss(fontCharacters)+"\">"+tag+"</a> ");	}
-			else if (type == "copyright")	{ this->details["copyrights"].append(normalized);	tags.replace(" "+tag+" ", " <a href=\""+tag+"\" style=\"text-decoration:none;color:"+settings.value("Coloring/Colors/copyrights", "#aa00aa").toString()+";"+qfonttocss(fontCopyrights)+"\">"+tag+"</a> ");	}
-			else if (type == "artist")		{ this->details["artists"].append(normalized);		tags.replace(" "+tag+" ", " <a href=\""+tag+"\" style=\"text-decoration:none;color:"+settings.value("Coloring/Colors/artists", "#aa0000").toString()+";"+qfonttocss(fontArtists)+"\">"+tag+"</a> ");	}
-			else if (type == "model")		{ this->details["models"].append(normalized);		tags.replace(" "+tag+" ", " <a href=\""+tag+"\" style=\"text-decoration:none;color:"+settings.value("Coloring/Colors/models", "#0000ee").toString()+";"+qfonttocss(fontModels)+"\">"+tag+"</a> ");	}
-			else							{ this->details["generals"].append(normalized);		tags.replace(" "+tag+" ", " <a href=\""+tag+"\" style=\"text-decoration:none;color:"+settings.value("Coloring/Colors/generals", "#000000").toString()+";"+qfonttocss(fontGenerals)+"\">"+tag+"</a> ");	}
+			{ tags.replace(" "+tag+" ", " <a href=\""+tag+"\" style=\"\">"+tag+"</a> ");	}
+			this->details[type+"s"].append(normalized);
+			tags.replace(" "+tag+" ", " <a href=\""+tag+"\" style=\""+styles[type+"s"]+"\">"+tag+"</a> ");
 			this->details["alls"].append(normalized);
 		}
+		qDebug() << styles;
 		ui->labelTags->setText(tags.trimmed());
 		m_details["tags"] = tags.trimmed();
 		m_detailsWindow->setTags(tags.trimmed());
@@ -267,6 +268,8 @@ void zoomWindow::replyFinished(QNetworkReply* reply)
 
 void zoomWindow::replyFinishedZoom(QNetworkReply* reply)
 {
+	m_finished = true;
+	m_reply->abort();
 	if (reply->error() == QNetworkReply::NoError)
 	{
 		this->d.append(reply->readAll());

@@ -1,7 +1,7 @@
 /**
  * @file
  * @author  Bionus <bio.nus@hotmail.fr>
- * @version 1.7
+ * @version 1.9.0
  *
  * @section LICENSE
  *
@@ -30,10 +30,10 @@
 #include <QtGui>
 #include "QAffiche.h"
 #include "QBouton.h"
-#include "mainWindow.h"
-#include "zoomWindow.h"
-#include "optionsWindow.h"
-#include "advancedWindow.h"
+#include "mainwindow.h"
+#include "zoomwindow.h"
+#include "optionswindow.h"
+#include "advancedwindow.h"
 
 
 

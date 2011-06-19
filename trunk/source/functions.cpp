@@ -146,9 +146,9 @@ QString qfonttocss(QFont font)
 	{ size = QString::number(font.pointSize())+"pt"; }
 	else
 	{ size = QString::number(font.pixelSize())+"px"; }
-	QString weight = QString::number(font.weight()*8+100);
+	QString weight = QString::number(font.weight()*8); // should be "font.weight()*8+100", but linux doesn't handle weight the same way windows do
 	QStringList decorations;
 	if (font.strikeOut())	{ decorations.append("line-through");	}
 	if (font.underline())	{ decorations.append("underline");		}
-	return "font-family:'"+font.family()+"'; font-size:"+size+"; font-style:"+style+"; font-weight:"+weight+"; text-decoration:"+(decorations.isEmpty() ? "none" : decorations.join(" "));
+	return "font-family:'"+font.family()+"'; font-size:"+size+"; font-style:"+style+"; font-weight:"+weight+"; text-decoration:"+(decorations.isEmpty() ? "none" : decorations.join(" "))+";";
 }

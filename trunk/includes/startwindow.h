@@ -2,7 +2,7 @@
 #define STARTWINDOW_H
 
 #include <QtGui>
-#include "mainWindow.h"
+#include "mainwindow.h"
 #include "ui_startwindow.h"
 
 

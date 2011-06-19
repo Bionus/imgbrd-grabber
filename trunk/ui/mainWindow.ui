@@ -139,7 +139,7 @@
              <property name="enabled">
               <bool>true</bool>
              </property>
-             <layout class="QGridLayout" name="gridLayout">
+             <layout class="QGridLayout" name="layoutPlus">
               <property name="margin">
                <number>0</number>
               </property>
@@ -177,6 +177,13 @@
                 </property>
                 <property name="maximum">
                  <number>10</number>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="label_8">
+                <property name="text">
+                 <string>Post-filtrage</string>
                 </property>
                </widget>
               </item>
@@ -558,8 +565,8 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>774</width>
-                <height>504</height>
+                <width>776</width>
+                <height>489</height>
                </rect>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_8">
@@ -605,7 +612,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>21</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuOptions">
