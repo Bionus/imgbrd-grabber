@@ -1,4 +1,5 @@
 #summary Imgbrd-grabber's changelog from v1.0 to v1.9.3
+#sidebar TableOfContents
 
 = 1.9 =
 == 1.9.3 ==
