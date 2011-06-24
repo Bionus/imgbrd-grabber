@@ -10,7 +10,7 @@ class advancedWindow : public QWidget
     Q_OBJECT
 
 	public:
-		advancedWindow(QList<bool> selected, QWidget *parent = 0);
+		advancedWindow(QList<bool> selected, QStringList sites, QWidget *parent = 0);
 		QList<bool> getSelected();
 		int getColumns();
 	

@@ -152,3 +152,22 @@ QString qfonttocss(QFont font)
 	if (font.underline())	{ decorations.append("underline");		}
 	return "font-family:'"+font.family()+"'; font-size:"+size+"; font-style:"+style+"; font-weight:"+weight+"; text-decoration:"+(decorations.isEmpty() ? "none" : decorations.join(" "))+";";
 }
+
+QMap<QString,QString> domToMap(QDomElement dom)
+{
+	QMap<QString,QString> details;
+	dom.firstChildElement("Name").firstChild().nodeValue();
+	for (QDomNode n = dom.firstChild(); !n.isNull(); n = n.nextSibling())
+	{
+		if (n.firstChild().nodeName() == "#text")
+		{ details[n.nodeName()] = n.firstChild().nodeValue(); }
+		else
+		{
+			QMap<QString,QString> r = domToMap(n.toElement());
+			QStringList k = r.keys();
+			for (int i = 0; i < r.count(); i++)
+			{ details[n.nodeName()+"/"+k.at(i)] = r.value(k.at(i)); }
+		}
+	}
+	return details;
+}

@@ -95,7 +95,8 @@ class mainWindow : public QMainWindow
 		QTranslator m_translator;
 		QList<bool> m_selected;
 		QCalendarWidget *m_calendar;
-		QMap<QString,QStringList> m_sites, m_getAllDetails;
+		QMap<QString,QMap<QString,QString> > m_sites;
+		QMap<QString,QStringList> m_getAllDetails;
 		QList<QAffiche*> m_favoritesCaptions;
 		QList<QBouton*> m_favoritesImages;
 		QDateTime m_loadFavorite;

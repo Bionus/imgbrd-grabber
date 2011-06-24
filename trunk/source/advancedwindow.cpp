@@ -7,7 +7,7 @@
  * @param	selected	Bool list of currently selected websites, in the alphabetical order
  * @param	parent		The parent window
  */
-advancedWindow::advancedWindow(QList<bool> selected, QWidget *parent) : QWidget(parent), selected(selected)
+advancedWindow::advancedWindow(QList<bool> selected, QStringList sites, QWidget *parent) : QWidget(parent), selected(selected)
 {
 	this->setWindowIcon(QIcon(":/images/icon.ico"));
 	this->setWindowTitle(tr("Grabber")+" - "+tr("Sources"));
@@ -15,21 +15,19 @@ advancedWindow::advancedWindow(QList<bool> selected, QWidget *parent) : QWidget(
 	this->setWindowModality(Qt::WindowModal);
 
 	QVBoxLayout *form = new QVBoxLayout;
-	QStringList dir = QStringList() << QDir("sites/xml").entryList(QDir::Files) << QDir("sites/json").entryList(QDir::Files) << QDir("sites/regex").entryList(QDir::Files);
-		dir.removeDuplicates();
-		dir.sort();
-		for (int i = 0; i < dir.count(); i++)
-		{
-			QCheckBox *check = new QCheckBox();
-				check->setChecked(this->selected[i]);
-				this->checks << check;
-			QLabel *label = new QLabel(dir.at(i).section('.', 0, -2));
-			QHBoxLayout *l = new QHBoxLayout;
-				l->addWidget(check);
-				l->addWidget(label);
-					l->setStretchFactor(label, 2);
-			form->addLayout(l);
-		}
+	sites.sort();
+	for (int i = 0; i < sites.count(); i++)
+	{
+		QCheckBox *check = new QCheckBox();
+			check->setChecked(this->selected[i]);
+			this->checks << check;
+		QLabel *label = new QLabel(sites.at(i));
+		QHBoxLayout *l = new QHBoxLayout;
+			l->addWidget(check);
+			l->addWidget(label);
+				l->setStretchFactor(label, 2);
+		form->addLayout(l);
+	}
 	
 	QPushButton *backButton = new QPushButton(tr("Annuler"));
 		connect(backButton, SIGNAL(clicked()), this, SLOT(close()));

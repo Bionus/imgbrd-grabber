@@ -11,7 +11,7 @@ using namespace std;
 
 
 
-zoomWindow::zoomWindow(QString m_program, QString site, QStringList regex, QMap<QString,QString> details, mainWindow *parent) : m_parent(parent), ui(new Ui::zoomWindow), regex(regex), m_details(details), timeout(300), loaded(0), oldsize(0), site(site), m_program(m_program), m_mustSave(false), m_replyExists(false), m_finished(false)
+zoomWindow::zoomWindow(QString m_program, QString site, QMap<QString,QString> regex, QMap<QString,QString> details, mainWindow *parent) : m_parent(parent), ui(new Ui::zoomWindow), regex(regex), m_details(details), timeout(300), loaded(0), oldsize(0), site(site), m_program(m_program), m_mustSave(false), m_replyExists(false), m_finished(false)
 {
 	ui->setupUi(this);
 	favorites = loadFavorites().keys();
@@ -54,7 +54,7 @@ zoomWindow::zoomWindow(QString m_program, QString site, QStringList regex, QMap<
 	m_detailsWindow = new detailsWindow(m_details);
 	connect(ui->buttonDetails, SIGNAL(clicked()), m_detailsWindow, SLOT(show()));
 
-	QString u = this->regex.at(4);
+	QString u = this->regex["Urls/Html/Post"];
 		u.replace("{id}", m_details.value("id"));
 	QUrl rl(u);
 	QNetworkAccessManager *manager = new QNetworkAccessManager(this);
@@ -208,7 +208,7 @@ void zoomWindow::replyFinished(QNetworkReply* reply)
 		bool under = settings.value("Save/remplaceblanksbyunderscores", false).toBool();
 		QStringList blacklistedtags(settings.value("blacklistedtags").toString().split(' '));
 		QString source = reply->readAll();
-		QRegExp rx(this->regex.at(5));
+		QRegExp rx(this->regex["Regex/Tags"]);
 		rx.setMinimal(true);
 		int pos = 0;
 		QString tags = " "+m_details.value("tags")+" ";
