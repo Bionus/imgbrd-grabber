@@ -140,33 +140,78 @@ mainWindow::mainWindow(QString program, QStringList tags, QMap<QString,QString> 
 	}
 
 	// Searching for availables sites
-	QMap<QString,QStringList> stes;
-	QStringList dir, defaults = QStringList() << "xml" << "json" << "regex";
-	for (int s = 0; s < 3; s++)
+	QMap<QString,QMap<QString,QString> > stes;
+	QStringList dir = QDir("sites").entryList(QDir::Dirs);
+	for (int i = 0; i < dir.count(); i++)
 	{
-		dir = QDir("sites/"+m_settings->value("source_"+s, defaults.at(s)).toString()).entryList(QDir::Files);
-		for (int i = 0; i < dir.count(); i++)
+		QFile file("sites/"+dir.at(i)+"/model.xml");
+		if (file.open(QIODevice::ReadOnly | QIODevice::Text))
 		{
-			QFile file("sites/"+m_settings->value("source_"+s, defaults.at(s)).toString()+"/"+dir.at(i));
-			if (file.open(QIODevice::ReadOnly | QIODevice::Text))
+			QString source = file.readAll();
+			QDomDocument doc;
+			QString errorMsg;
+			int errorLine, errorColumn;
+			if (!doc.setContent(source, false, &errorMsg, &errorLine, &errorColumn))
+			{ log(tr("<b>Erreur :</b> %1").arg(tr("erreur lors de l'analyse du fichier XML : %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn)))); }
+			else
 			{
-				if (stes.value(dir.at(i).section('.', 0, -2)).empty())
+				QDomElement docElem = doc.documentElement();
+				QMap<QString,QString> details = domToMap(docElem);
+				QStringList defaults = QStringList() << "xml" << "json" << "regex";
+				QString source, curr;
+				for (int s = 0; s < 3; s++)
 				{
-					stes[dir.at(i).section('.', 0, -2)] = QStringList() << m_settings->value("source_"+s, defaults.at(s)).toString();
-					while (!file.atEnd())
+					QString t = m_settings->value("source_"+s, defaults.at(s)).toString();
+					t[0] = t[0].toUpper();
+					if (details.contains("Urls/"+t+"/Tags"))
 					{
-						QString line = file.readLine();
-						line.remove("\n");
-						stes[dir.at(i).section('.', 0, -2)].append(line);
+						source = t;
+						break;
 					}
 				}
+				if (!source.isEmpty())
+				{
+					QFile f("sites/"+dir.at(i)+"/sites.txt");
+					if (f.open(QIODevice::ReadOnly | QIODevice::Text))
+					{
+						while (!f.atEnd())
+						{
+							QString line = f.readLine();
+							line.remove("\n").remove("\r");
+							if (line.contains(':'))
+							{
+								curr = line.section(':', 1).toLower();
+								curr[0] = curr[0].toUpper();
+								line = line.section(':', 0, 0);
+							}
+							else
+							{ curr = source; }
+							stes[line] = details;
+							QStringList k = stes[line].keys();
+							for (int i = 0; i < k.size(); i++)
+							{
+								if (k.at(i).startsWith("Urls/"))
+								{ stes[line][k.at(i)] = "http://"+line+stes[line][k.at(i)]; }
+							}
+							stes[line]["Urls/Selected/Tags"] = stes[line]["Urls/"+curr+"/Tags"];
+							stes[line]["Urls/Selected/Popular"] = stes[line]["Urls/"+curr+"/Popular"];
+							stes[line]["Selected"] = curr.toLower();
+						}
+					}
+					else
+					{ log(tr("<b>Erreur :</b> %1").arg(tr("fichier sites.txt du modèle %1 introuvable.").arg(dir.at(i)))); }
+					f.close();
+				}
+				else
+				{ log(tr("<b>Erreur :</b> %1").arg(tr("aucune source valide trouvée dans le fichier model.xml de %1.").arg(dir.at(i)))); }
 			}
 		}
+		file.close();
 	}
+	m_sites = stes;
 
 	// Selected ones
 	QString sel = '1'+QString().fill('0',stes.count()-1);
-	m_sites = stes;
 	QString sav = m_settings->value("sites", sel).toString();
 	for (int i = 0; i < sel.count(); i++)
 	{
@@ -543,7 +588,7 @@ void mainWindow::web(QString tags, bool popular)
 	for (int i = 0; i < keys.count(); i++)
 	{
 		QString url;
-		if (!popular && !m_sites[keys.at(i)].at(2).isEmpty())
+		if (!popular)
 		{
 			QString text = " "+tags+" ";
 				text.replace(" rating:s ", " rating:safe ", Qt::CaseInsensitive)
@@ -559,17 +604,17 @@ void mainWindow::web(QString tags, bool popular)
 				m_search->setText(tags.join(" "));
 				m_search->doColor();
 			}
-			url = m_sites[keys.at(i)].at(2);
-			url.replace("{page}", QString::number(ui->spinPage->value()-1+m_sites[keys.at(i)].at(1).toInt()));
+			url = m_sites[keys.at(i)]["Urls/Selected/Tags"];
+			url.replace("{page}", QString::number(ui->spinPage->value()-1+m_sites[keys.at(i)]["FirstPage"].toInt()));
 			url.replace("{tags}", tags.join(" ").replace("&", "%26"));
 			url.replace("{limit}", QString::number(ui->spinImagesPerPage->value()));
 			url.replace("{pseudo}", m_settings->value("Login/pseudo").toString());
 			url.replace("{password}", m_settings->value("Login/password").toString());
 		}
-		else if (!m_sites[keys.at(i)].at(3).isEmpty())
+		else
 		{
-			url = m_sites[keys.at(i)].at(3);
-			url.replace("{page}", QString::number(ui->spinPage->value()-1+m_sites[keys.at(i)].at(1).toInt()));
+			url = m_sites[keys.at(i)]["Urls/Selected/Popular"];
+			url.replace("{page}", QString::number(ui->spinPage->value()-1+m_sites[keys.at(i)]["FirstPage"].toInt()));
 			url.replace("{limit}", QString::number(ui->spinImagesPerPage->value()));
 			url.replace("{day}", QString::number(ui->datePopular->date().day()));
 			url.replace("{month}", QString::number(ui->datePopular->date().month()));
@@ -677,7 +722,7 @@ void mainWindow::replyFinished(QNetworkReply* r)
 	QString site = m_sites.keys().at(site_id), source = r->readAll();
 	QNetworkAccessManager *mngr = new QNetworkAccessManager(this);
 	connect(mngr, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinishedPic(QNetworkReply*)));
-	if (m_sites[site].at(0) == "xml")
+	if (m_sites[site]["Selected"] == "xml")
 	{
 		QDomDocument doc;
 		QString errorMsg;
@@ -712,9 +757,9 @@ void mainWindow::replyFinished(QNetworkReply* r)
 				for (int i = 0; i < infos.count(); i++)
 				{ d[infos.at(i)] = nodeList.at(id).attributes().namedItem(infos.at(i)).nodeValue(); }
 				if (!d["preview_url"].startsWith("http://"))
-				{ d["preview_url"] = m_sites[site].at(2).section("/", 0, 2)+QString(d["preview_url"].startsWith("/") ? "" : "/")+d["preview_url"]; }
+				{ d["preview_url"] = "http://"+site+QString(d["preview_url"].startsWith("/") ? "" : "/")+d["preview_url"]; }
 				if (!d["file_url"].startsWith("http://"))
-				{ d["file_url"] = m_sites[site].at(2).section("/", 0, 2)+QString(d["file_url"].startsWith("/") ? "" : "/")+d["file_url"]; }
+				{ d["file_url"] = "http://"+site+QString(d["file_url"].startsWith("/") ? "" : "/")+d["file_url"]; }
 				QString date(nodeList.at(id).attributes().namedItem("created_at").nodeValue());
 				QDateTime timestamp;
 				if (date.toInt() != 0)
@@ -740,7 +785,7 @@ void mainWindow::replyFinished(QNetworkReply* r)
 			}
 		}
 	}
-	else if (m_sites[site].at(0) == "json")
+	else if (m_sites[site]["Selected"] == "json")
 	{
 		QVariant src = Json::parse(source);
 		if (!src.isNull())
@@ -756,9 +801,9 @@ void mainWindow::replyFinished(QNetworkReply* r)
 				for (int i = 0; i < infos.count(); i++)
 				{ d[infos.at(i)] = sc.value(infos.at(i)).toString(); }
 				if (!d["preview_url"].startsWith("http://"))
-				{ d["preview_url"] = m_sites[site].at(2).section("/", 0, 2)+QString(d["preview_url"].startsWith("/") ? "" : "/")+d["preview_url"]; }
+				{ d["preview_url"] = "http://"+site+QString(d["preview_url"].startsWith("/") ? "" : "/")+d["preview_url"]; }
 				if (!d["file_url"].startsWith("http://"))
-				{ d["file_url"] = m_sites[site].at(2).section("/", 0, 2)+QString(d["file_url"].startsWith("/") ? "" : "/")+d["file_url"]; }
+				{ d["file_url"] = "http://"+site+QString(d["file_url"].startsWith("/") ? "" : "/")+d["file_url"]; }
 				QDateTime timestamp;
 				timestamp.setTime_t(sc.value("created_at").toMap().value("s").toInt());
 				d["created_at"] = timestamp.toString(tr("le dd/MM/yyyy à hh:mm"));
@@ -780,10 +825,10 @@ void mainWindow::replyFinished(QNetworkReply* r)
 			}
 		}
 	}
-	else if (m_sites[site].at(0) == "regex")
+	else if (m_sites[site]["Selected"] == "regex")
 	{
 		// Getting last page
-		QRegExp rxlast(m_sites[site].at(8));
+		QRegExp rxlast(m_sites[site]["Regex/LastPage"]);
 		rxlast.setMinimal(true);
 		rxlast.indexIn(source, 0);
 		max = rxlast.cap(1).toInt();
@@ -795,8 +840,8 @@ void mainWindow::replyFinished(QNetworkReply* r)
 			ui->spinPage->setMaximum(max);
 		}
 		// Getting images
-		QRegExp rx(m_sites[site].at(6));
-		QStringList order = m_sites[site].at(7).split('|');
+		QRegExp rx(m_sites[site]["Regex/Image"]);
+		QStringList order = m_sites[site]["Regex/Order"].split('|');
 		rx.setMinimal(true);
 		int pos = 0, id = 0;
 		while (((pos = rx.indexIn(source, pos)) != -1) && id < ui->spinImagesPerPage->value())
@@ -806,17 +851,17 @@ void mainWindow::replyFinished(QNetworkReply* r)
 			for (int i = 0; i < order.size(); i++)
 			{ d[order.at(i)] = rx.cap(i+1); }
 			if (!d["preview_url"].startsWith("http://"))
-			{ d["preview_url"] = m_sites[site].at(2).section("/", 0, 2)+QString(d["preview_url"].startsWith("/") ? "" : "/")+d["preview_url"]; }
+			{ d["preview_url"] = "http://"+site+QString(d["preview_url"].startsWith("/") ? "" : "/")+d["preview_url"]; }
 				if (!d["file_url"].startsWith("http://"))
-				{ d["file_url"] = m_sites[site].at(2).section("/", 0, 2)+QString(d["file_url"].startsWith("/") ? "" : "/")+d["file_url"]; }
-			if (m_sites[site][9].isEmpty())
+				{ d["file_url"] = "http://"+site+QString(d["file_url"].startsWith("/") ? "" : "/")+d["file_url"]; }
+			if (m_sites[site]["Urls/Html/Image"].isEmpty())
 			{
 				d["file_url"] = d["preview_url"];
 				d["file_url"].remove("preview/");
 			}
 			else
 			{
-				d["file_url"] = m_sites[site].at(9);
+				d["file_url"] = m_sites[site]["Urls/Html/Image"];
 				d["file_url"].replace("{id}", d["id"])
 				.replace("{md5}", d["md5"])
 				.replace("{ext}", "jpg");
@@ -1217,7 +1262,7 @@ void mainWindow::optionsClosed()
 void mainWindow::advanced()
 {
 	log(tr("Ouverture de la fenêtre des sources..."));
-	advancedWindow *adv = new advancedWindow(m_selected, this);
+	advancedWindow *adv = new advancedWindow(m_selected, m_sites.keys(), this);
 	adv->show();
 	connect(adv, SIGNAL(valid(advancedWindow*)), this, SLOT(saveAdvanced(advancedWindow*)));
 	DONE()
@@ -1321,7 +1366,7 @@ void mainWindow::getAll()
 		if (m_groupBatchs.at(i).at(6) == "true")
 		{
 			QDate date = QDate::fromString(m_groupBatchs.at(i).at(0), Qt::ISODate);
-			QString url = m_sites[site].at(3);
+			QString url = m_sites[site]["Urls/Selected/Popular"];
 				url.replace("{day}", QString::number(date.day()));
 				url.replace("{month}", QString::number(date.month()));
 				url.replace("{year}", QString::number(date.year()));
@@ -1347,7 +1392,7 @@ void mainWindow::getAll()
 				{ log(tr("<b>Attention :</b> %1").arg(tr("site \"%1\" not found.").arg(site))); }
 				else
 				{
-					QString url = m_sites[site].at(2);
+					QString url = m_sites[site]["Urls/Selected/Tags"];
 						url.replace("{page}", QString::number(m_groupBatchs.at(i).at(1).toInt()+r));
 						url.replace("{tags}", tags.join(" ").replace("&", "%26"));
 						url.replace("{limit}", QString::number(pp));
@@ -1383,7 +1428,7 @@ void mainWindow::getAllSource(QNetworkReply *r)
 		error(this, tr("<b>Attention :</b> %1").arg(tr("rien n'a été reçu.").arg(site)));
 		log(tr("<b>Attention :</b> %1").arg(tr("rien n'a été reçu.").arg(site)));
 	}
-	else if (m_sites[site].at(0) == "xml")
+	else if (m_sites[site]["Selected"] == "xml")
 	{
 		QDomDocument doc;
 		QString errorMsg;
@@ -1416,9 +1461,9 @@ void mainWindow::getAllSource(QNetworkReply *r)
 				else
 				{ d["created_at"] = qDateTimeFromString(date, m_timezonedecay).toString(tr("'le' dd/MM/yyyy 'à' hh:mm")); }
 				if (!d["preview_url"].startsWith("http://"))
-				{ d["preview_url"] = m_sites[site].at(2).section("/", 0, 2)+QString(d["preview_url"].startsWith("/") ? "" : "/")+d["preview_url"]; }
+				{ d["preview_url"] = "http://"+site+QString(d["preview_url"].startsWith("/") ? "" : "/")+d["preview_url"]; }
 				if (!d["file_url"].startsWith("http://"))
-				{ d["file_url"] = m_sites[site].at(2).section("/", 0, 2)+QString(d["file_url"].startsWith("/") ? "" : "/")+d["file_url"]; }
+				{ d["file_url"] = "http://"+site+QString(d["file_url"].startsWith("/") ? "" : "/")+d["file_url"]; }
 				d["site"] = site;
 				d["site_id"] = QString::number(n);
 				d["pos"] = QString::number(id);
@@ -1426,7 +1471,7 @@ void mainWindow::getAllSource(QNetworkReply *r)
 			}
 		}
 	}
-	else if (m_sites[site].at(0) == "json")
+	else if (m_sites[site]["Selected"] == "json")
 	{
 		QVariant src = Json::parse(source);
 		if (!src.isNull())
@@ -1442,9 +1487,9 @@ void mainWindow::getAllSource(QNetworkReply *r)
 				for (int i = 0; i < infos.count(); i++)
 				{ d[infos.at(i)] = sc.value(infos.at(i)).toString(); }
 				if (!d["preview_url"].startsWith("http://"))
-				{ d["preview_url"] = m_sites[site].at(2).section("/", 0, 2)+QString(d["preview_url"].startsWith("/") ? "" : "/")+d["preview_url"]; }
+				{ d["preview_url"] = "http://"+site+QString(d["preview_url"].startsWith("/") ? "" : "/")+d["preview_url"]; }
 				if (!d["file_url"].startsWith("http://"))
-				{ d["file_url"] = m_sites[site].at(2).section("/", 0, 2)+QString(d["file_url"].startsWith("/") ? "" : "/")+d["file_url"]; }
+				{ d["file_url"] = "http://"+site+QString(d["file_url"].startsWith("/") ? "" : "/")+d["file_url"]; }
 				QDateTime timestamp;
 				timestamp.setTime_t(sc.value("created_at").toMap().value("s").toInt());
 				d["created_at"] = timestamp.toString(tr("le dd/MM/yyyy à hh:mm"));
@@ -1455,13 +1500,13 @@ void mainWindow::getAllSource(QNetworkReply *r)
 			}
 		}
 	}
-	else if (m_sites[site].at(0) == "regex")
+	else if (m_sites[site]["Selected"] == "regex")
 	{
-		QRegExp rx(m_sites[site].at(6));
-		QStringList order = m_sites[site].at(7).split('|');
+		QRegExp rx(m_sites[site]["Regex/Image"]);
+		QStringList order = m_sites[site]["Regex/Order"].split('|');
 		rx.setMinimal(true);
 		int pos = 0, id = 0;
-		QString pagereg = m_sites[site].at(2);
+		QString pagereg = m_sites[site]["Urls/Selected/Tags"];
 			pagereg.replace("{page}", "(\\d*)")
 			.replace("{tags}", "(?:\\w*)")
 			.replace("{limit}", "(?:\\d*)");
@@ -1476,17 +1521,17 @@ void mainWindow::getAllSource(QNetworkReply *r)
 			for (int i = 0; i < order.size(); i++)
 			{ d[order.at(i)] = rx.cap(i+1); }
 			if (!d["preview_url"].startsWith("http://"))
-			{ d["preview_url"] = m_sites[site].at(2).section("/", 0, 2)+QString(d["preview_url"].startsWith("/") ? "" : "/")+d["preview_url"]; }
+			{ d["preview_url"] = "http://"+site+QString(d["preview_url"].startsWith("/") ? "" : "/")+d["preview_url"]; }
 			if (!d["file_url"].startsWith("http://"))
-			{ d["file_url"] = m_sites[site].at(2).section("/", 0, 2)+QString(d["file_url"].startsWith("/") ? "" : "/")+d["file_url"]; }
-			if (m_sites[site][9].isEmpty())
+			{ d["file_url"] = "http://"+site+QString(d["file_url"].startsWith("/") ? "" : "/")+d["file_url"]; }
+			if (m_sites[site]["Urls/Html/Image"].isEmpty())
 			{
 				d["file_url"] = d["preview_url"];
 				d["file_url"].remove("preview/");
 			}
 			else
 			{
-				d["file_url"] = m_sites[site].at(9);
+				d["file_url"] = m_sites[site]["Urls/Html/Image"];
 				d["file_url"].replace("{id}", d["id"])
 				.replace("{md5}", d["md5"])
 				.replace("{ext}", "jpg");
@@ -1540,7 +1585,7 @@ void mainWindow::_getAll()
 	{
 		if (m_must_get_tags)
 		{
-			QString u = m_sites[m_allImages.at(m_getAllId).value("site")].at(4);
+			QString u = m_sites[m_allImages.at(m_getAllId).value("site")]["Urls/Html/Post"];
 				u.replace("{id}", m_allImages.at(m_getAllId).value("id"));
 			QUrl rl(u);
 			QNetworkAccessManager *m = new QNetworkAccessManager(this);
@@ -1610,7 +1655,7 @@ void mainWindow::getAllPerformTags(QNetworkReply* reply)
 	{
 		bool under = m_settings->value("Save/remplaceblanksbyunderscores", false).toBool();
 		QString source = reply->readAll();
-		QRegExp rx(m_sites[m_allImages.at(m_getAllId).value("site")].at(5));
+		QRegExp rx(m_sites[m_allImages.at(m_getAllId).value("site")]["Regex/Tags"]);
 		rx.setMinimal(true);
 		int pos = 0;
 		while ((pos = rx.indexIn(source, pos)) != -1)

@@ -21,7 +21,7 @@ class zoomWindow : public QWidget
     Q_OBJECT
 
 	public:
-		zoomWindow(QString, QString, QStringList, QMap<QString,QString>, mainWindow *);
+		zoomWindow(QString, QString, QMap<QString,QString>, QMap<QString,QString>, mainWindow *);
 		~zoomWindow();
 		void load();
 	
@@ -53,7 +53,7 @@ class zoomWindow : public QWidget
 		mainWindow *m_parent;
 		Ui::zoomWindow *ui;
 		detailsWindow *m_detailsWindow;
-		QStringList regex;
+		QMap<QString,QString> regex;
 		QMap<QString,QString> m_details;
 		int timeout, loaded, oldsize;
 		QMap<QString, QStringList> details;

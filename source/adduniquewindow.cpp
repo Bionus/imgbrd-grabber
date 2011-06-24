@@ -10,7 +10,7 @@
  * @param	favorites	List of favorites tags, needed for coloration
  * @param	parent		The parent window
  */
-AddUniqueWindow::AddUniqueWindow(QMap<QString,QStringList> sites, mainWindow *parent) : QWidget(parent), m_parent(parent), m_sites(sites)
+AddUniqueWindow::AddUniqueWindow(QMap<QString,QMap<QString,QString> > sites, mainWindow *parent) : QWidget(parent), m_parent(parent), m_sites(sites)
 {
 	QVBoxLayout *layout = new QVBoxLayout;
 		QFormLayout *formLayout = new QFormLayout;
@@ -44,10 +44,10 @@ void AddUniqueWindow::ok()
 {
 	QNetworkAccessManager *manager = new QNetworkAccessManager(this);
 	connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply*)));
-	QString url = m_sites[m_comboSite->currentText()].at(2);
-	url.replace("{page}", "1");
-	url.replace("{tags}", (m_lineId->text().isEmpty() ? "md5:"+m_lineMd5->text() : "id:"+m_lineId->text()));
-	url.replace("{limit}", "1");
+	QString url = m_sites[m_comboSite->currentText()]["Urls/Selected/Tags"];
+		url.replace("{page}", "1");
+		url.replace("{tags}", (m_lineId->text().isEmpty() ? "md5:"+m_lineMd5->text() : "id:"+m_lineId->text()));
+		url.replace("{limit}", "1");
 	manager->get(QNetworkRequest(QUrl(url)));
 }
 
@@ -60,7 +60,7 @@ void AddUniqueWindow::replyFinished(QNetworkReply *r)
 	QStringList infos = QStringList() << "id" << "md5" << "rating" << "tags" << "file_url";
 	QMap<QString,QString> values;
 	QString site = m_comboSite->currentText(), source = r->readAll();
-	if (m_sites[site].at(0) == "xml")
+	if (m_sites[site]["Selected"] == "xml")
 	{
 		QDomDocument doc;
 		QString errorMsg;
@@ -76,7 +76,7 @@ void AddUniqueWindow::replyFinished(QNetworkReply *r)
 			values["site"] = site;
 		}
 	}
-	else if (m_sites[site].at(0) == "json")
+	else if (m_sites[site]["Selected"] == "json")
 	{
 		QVariant src = Json::parse(source);
 		QMap<QString, QVariant> sc;
@@ -89,10 +89,10 @@ void AddUniqueWindow::replyFinished(QNetworkReply *r)
 			values["site"] = site;
 		}
 	}
-	else if (m_sites[site].at(0) == "regex")
+	else if (m_sites[site]["Selected"] == "regex")
 	{
-		QRegExp rx(m_sites[site].at(6));
-		QStringList order = m_sites[site].at(7).split('|');
+		QRegExp rx(m_sites[site]["Regex/Image"]);
+		QStringList order = m_sites[site]["Regex/Order"].split('|');
 		rx.setMinimal(true);
 		rx.indexIn(source, 0);
 		for (int i = 0; i < order.size(); i++)
