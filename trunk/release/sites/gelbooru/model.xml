@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Site>
+	<Name>Gelbooru</Name>
+	<Urls>
+		<Xml>
+			<Tags>/index.php?page=dapi&amp;s=post&amp;q=index&amp;limit={limit}&amp;pid={page}&amp;tags={tags}</Tags>
+			<Popular>/index.php?page=dapi&amp;s=post&amp;q=index&amp;limit={limit}&amp;pid={page}&amp;tags=date:{month}/{day}/{year} order:score:desc</Popular>
+		</Xml>
+		<Html>
+			<Post>/index.php?page=post&amp;s=view&amp;id={id}</Post>
+		</Html>
+	</Urls>
+	<Regex>
+		<Tags>&lt;li class=&quot;tag-type-(.+)&quot;&gt;.*&lt;a href=&quot;.+&quot;&gt;.*&lt;/a&gt;.*&lt;a href=&quot;.+&quot;&gt;(.+)&lt;/a&gt;.*&lt;/li&gt;</Tags>
+	</Regex>
+	<FirstPage>0</FirstPage>
+</Site>

@@ -1,9 +1,0 @@
-1
-http://www.tentaclerape.net/post/list/{tags}/{page}
-
-http://www.tentaclerape.net/post/view/{id}
-<li class="tag-type-(.+)">.*<a href=".+">.*</a>.*<a href=".+">(.+)</a>.*</li>
-<a class='.*' href='.*'>.*(<img id='(\d*)' title='(.+) // (.+)x(.+) // .*' alt='.*' width='.*' height='.*' src='(/_thumbs/(.*)/thumb.jpg)' />).*</a>
-image|id|tags|width|height|preview_url|md5
-<link href="/post\?limit=\d*&amp;page=(\d*)&amp;tags=[^"]*" rel="last" title="Last Page">
-http://www.tentaclerape.net/image/{id}.{ext}

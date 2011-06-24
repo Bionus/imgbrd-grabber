@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Site>
+	<Name>Danbooru</Name>
+	<Urls>
+		<Xml>
+			<Tags>/post/index.xml?login={pseudo}&amp;password_hash={password}&amp;limit={limit}&amp;page={page}&amp;tags={tags}</Tags>
+			<Popular>/post/index.xml?login={pseudo}&amp;password_hash={password}&amp;limit={limit}&amp;page={page}&amp;tags=date:{month}/{day}/{year} order:score</Popular>
+		</Xml>
+		<Json>
+			<Tags>/post/index.json?login={pseudo}&amp;password_hash={password}&amp;limit={limit}&amp;page={page}&amp;tags={tags}</Tags>
+			<Popular>/post/index.json?login={pseudo}&amp;password_hash={password}&amp;limit={limit}&amp;page={page}&amp;tags=date:{month}/{day}/{year} order:score</Popular>
+		</Json>
+		<Html>
+			<Post>/post/show/{id}</Post>
+		</Html>
+	</Urls>
+	<Regex>
+		<Tags>&lt;li class=&quot;tag-type-(.+)&quot;&gt;.*&lt;a href=&quot;.+&quot;&gt;.*&lt;/a&gt;.*&lt;a href=&quot;.+&quot;&gt;(.+)&lt;/a&gt;.*&lt;/li&gt;</Tags>
+		<Image>&lt;span class=&quot;.*&quot; id=&quot;p(\d*)&quot;&gt;.*&lt;a .*&gt;.*(&lt;img[ ]+class=&quot;.*&quot; src=&quot;(http://danbooru.donmai.us/data/preview/(.*).jpg)&quot; title=&quot;(.+) rating:(.*) score:(.*) user:(.*)&quot; alt=&quot;.*&quot; width=.* height=.*&gt;).*&lt;/a&gt;.*&lt;/span&gt;</Image>
+		<Order>id|image|preview_url|md5|tags|rating|score|user</Order>
+		<LastPage>&lt;link href=&quot;/post\?limit=\d*&amp;page=(\d*)&amp;tags=[^&quot;]*&quot; rel=&quot;last&quot; title=&quot;Last Page&quot;&gt;</LastPage>
+	</Regex>
+	<FirstPage>1</FirstPage>
+</Site>

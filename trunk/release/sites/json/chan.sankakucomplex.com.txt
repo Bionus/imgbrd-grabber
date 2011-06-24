@@ -1,5 +1,0 @@
-1
-http://chan.sankakucomplex.com/post/index.json?limit={limit}&page={page}&tags={tags}
-http://chan.sankakucomplex.com/post/popular_by_day.json?day={day}&month={month}&year={year}
-http://chan.sankakucomplex.com/post/show/{id}
-<li class="tag-type-(.+)">.*<a href=".+">.*</a>.*<a href=".+">(.+)</a>.*</li>
