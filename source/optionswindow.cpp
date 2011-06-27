@@ -31,6 +31,9 @@ optionsWindow::optionsWindow(mainWindow *parent) : QDialog(parent), m_parent(par
 	ui->comboSource2->setCurrentIndex(sources.indexOf(settings.value("source_2", "xml").toString()));
 	ui->comboSource3->setCurrentIndex(sources.indexOf(settings.value("source_3", "xml").toString()));
 
+	QStringList types = QStringList() << "text" << "icon" << "both" << "hide";
+	ui->comboSources->setCurrentIndex(types.indexOf(settings.value("Sources/Types", "text").toString()));
+
 	ui->checkShowLog->setChecked(settings.value("Log/show", true).toBool());
 	ui->checkInvertLog->setChecked(settings.value("Log/invert", false).toBool());
 
@@ -265,6 +268,9 @@ void optionsWindow::save()
 	settings.setValue("source_3", sources.at(ui->comboSource3->currentIndex()));
 	settings.setValue("loadatstart", ui->checkLoadFirstAtStart->isChecked());
 	settings.setValue("hidefavorites", ui->spinHideFavorites->value());
+
+	QStringList types = QStringList() << "text" << "icon" << "both" << "hide";
+	settings.setValue("Sources/Types", types.at(ui->comboSources->currentIndex()));
 
 	settings.beginGroup("Log");
 		settings.setValue("show", ui->checkShowLog->isChecked());

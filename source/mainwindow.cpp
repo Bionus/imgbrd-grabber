@@ -16,7 +16,7 @@
 
 
 
-mainWindow::mainWindow(QString program, QStringList tags, QMap<QString,QString> params) : ui(new Ui::mainWindow), m_currentFav(-1), m_params(params), m_program(program), m_tags(tags), m_currentPageIsPopular(false), m_lastWeb(false)
+mainWindow::mainWindow(QString program, QStringList tags, QStringMap params) : ui(new Ui::mainWindow), m_currentFav(-1), m_params(params), m_program(program), m_tags(tags), m_currentPageIsPopular(false), m_lastWeb(false)
 {
 	QString p = savePath("settings.ini");
 	m_settings = new QSettings(p, QSettings::IniFormat);
@@ -76,7 +76,7 @@ mainWindow::mainWindow(QString program, QStringList tags, QMap<QString,QString> 
 						{ source += QString(prefs.readLine()); }
 						QRegExp rx("user_pref\\(\"danbooru.downloader.([^\"]+)\", ([^\\)]+)\\);");
 						int pos = 0;
-						QMap<QString,QString> firefox, assoc;
+						QStringMap firefox, assoc;
 						assoc["blacklist"] = "blacklistedtags";
 						assoc["generalTagsSeparator"] = "separator";
 						assoc["multipleArtistsAll"] = "artist_useall";
@@ -140,7 +140,7 @@ mainWindow::mainWindow(QString program, QStringList tags, QMap<QString,QString> 
 	}
 
 	// Searching for availables sites
-	QMap<QString,QMap<QString,QString> > stes;
+	QStringMapMap stes;
 	QStringList dir = QDir("sites").entryList(QDir::Dirs);
 	for (int i = 0; i < dir.count(); i++)
 	{
@@ -156,7 +156,7 @@ mainWindow::mainWindow(QString program, QStringList tags, QMap<QString,QString> 
 			else
 			{
 				QDomElement docElem = doc.documentElement();
-				QMap<QString,QString> details = domToMap(docElem);
+				QStringMap details = domToMap(docElem);
 				QStringList defaults = QStringList() << "xml" << "json" << "regex";
 				QString source, curr;
 				for (int s = 0; s < 3; s++)
@@ -187,14 +187,9 @@ mainWindow::mainWindow(QString program, QStringList tags, QMap<QString,QString> 
 							else
 							{ curr = source; }
 							stes[line] = details;
-							QStringList k = stes[line].keys();
-							for (int i = 0; i < k.size(); i++)
-							{
-								if (k.at(i).startsWith("Urls/"))
-								{ stes[line][k.at(i)] = "http://"+line+stes[line][k.at(i)]; }
-							}
-							stes[line]["Urls/Selected/Tags"] = stes[line]["Urls/"+curr+"/Tags"];
-							stes[line]["Urls/Selected/Popular"] = stes[line]["Urls/"+curr+"/Popular"];
+							stes[line]["Urls/Selected/Tags"] = "http://"+line+stes[line]["Urls/"+curr+"/Tags"];
+							stes[line]["Urls/Selected/Popular"] = "http://"+line+stes[line]["Urls/"+curr+"/Popular"];
+							stes[line]["Urls/Html/Post"] = "http://"+line+stes[line]["Urls/Html/Post"];
 							stes[line]["Selected"] = curr.toLower();
 						}
 					}
@@ -317,7 +312,7 @@ void mainWindow::batchAddGroup(const QStringList& values)
 	}
 	m_allow = true;
 }
-void mainWindow::batchAddUnique(QMap<QString,QString> values)
+void mainWindow::batchAddUnique(QStringMap values)
 {
 	if (!m_batchs.removeOne(values))
 	{
@@ -330,7 +325,7 @@ void mainWindow::batchAddUnique(QMap<QString,QString> values)
 			QString v;
 			if (types.at(t) == "rating")
 			{
-				QMap<QString, QString> assoc;
+				QStringMap assoc;
 					assoc["s"] = tr("Safe");
 					assoc["q"] = tr("Questionable");
 					assoc["e"] = tr("Explicit");
@@ -411,11 +406,11 @@ QList<T> reversed(const QList<T> & in)
 	std::reverse_copy(in.begin(), in.end(), std::back_inserter(result));
 	return result;
 }
-bool sortByNote(const QMap<QString,QString> &s1, const QMap<QString,QString> &s2)
+bool sortByNote(const QStringMap &s1, const QStringMap &s2)
 { return s1["note"].toInt() < s2["note"].toInt(); }
-bool sortByName(const QMap<QString,QString> &s1, const QMap<QString,QString> &s2)
+bool sortByName(const QStringMap &s1, const QStringMap &s2)
 { return s1["name"].toLower() < s2["name"].toLower(); }
-bool sortByLastviewed(const QMap<QString,QString> &s1, const QMap<QString,QString> &s2)
+bool sortByLastviewed(const QStringMap &s1, const QStringMap &s2)
 { return QDateTime::fromString(s1["lastviewed"], Qt::ISODate) < QDateTime::fromString(s2["lastviewed"], Qt::ISODate); }
 void mainWindow::updateFavorites()
 {
@@ -424,10 +419,10 @@ void mainWindow::updateFavorites()
 	bool reverse = (ui->comboOrderasc->currentIndex() == 1);
 	m_favorites = loadFavorites();
 	QStringList keys = m_favorites.keys();
-	QList<QMap<QString,QString> > favorites;
+	QList<QStringMap > favorites;
 	for (int i = 0; i < keys.size(); i++)
 	{
-		QMap<QString,QString> d;
+		QStringMap d;
 		QString tag = keys.at(i);
 		d["id"] = QString::number(i);
 		d["name"] = tag;
@@ -654,7 +649,7 @@ void mainWindow::webZoom(int id)
 	zoom->show();
 	m_favorites = loadFavorites();
 }
-QString filter(QString f, QMap<QString, QString> image)
+QString filter(QString f, QStringMap image)
 {
 	QStringList filters = f.toLower().split(" ");
 	QStringList types = QStringList() << "rating";
@@ -751,7 +746,7 @@ void mainWindow::replyFinished(QNetworkReply* r)
 		{
 			for (int id = 0; id < nodeList.count(); id++)
 			{
-				QMap<QString, QString> d;
+				QStringMap d;
 				QStringList infos;
 				infos << "status" << "source" << "has_comments" << "file_url" << "sample_url" << "change" << "sample_width" << "has_children" << "preview_url" << "width" << "md5" << "preview_width" << "sample_height" << "parent_id" << "height" << "has_notes" << "creator_id" << "file_size" << "id" << "preview_height" << "rating" << "tags" << "author" << "score";
 				for (int i = 0; i < infos.count(); i++)
@@ -795,7 +790,7 @@ void mainWindow::replyFinished(QNetworkReply* r)
 			for (int id = 0; id < sourc.count(); id++)
 			{
 				sc = sourc.at(id).toMap();
-				QMap<QString, QString> d;
+				QStringMap d;
 				QStringList infos;
 				infos << "status" << "source" << "has_comments" << "file_url" << "sample_url" << "change" << "sample_width" << "has_children" << "preview_url" << "width" << "md5" << "preview_width" << "sample_height" << "parent_id" << "height" << "has_notes" << "creator_id" << "file_size" << "id" << "preview_height" << "rating" << "tags" << "author" << "score";
 				for (int i = 0; i < infos.count(); i++)
@@ -847,7 +842,7 @@ void mainWindow::replyFinished(QNetworkReply* r)
 		while (((pos = rx.indexIn(source, pos)) != -1) && id < ui->spinImagesPerPage->value())
 		{
 			pos += rx.matchedLength();
-			QMap<QString, QString> d;
+			QStringMap d;
 			for (int i = 0; i < order.size(); i++)
 			{ d[order.at(i)] = rx.cap(i+1); }
 			if (!d["preview_url"].startsWith("http://"))
@@ -976,7 +971,7 @@ void mainWindow::replyFinishedPic(QNetworkReply* r)
 	QBouton *l = new QBouton(n, this);
 	if (!ignore)
 	{
-		QMap<QString, QString> assoc;
+		QStringMap assoc;
 			assoc["s"] = tr("Safe");
 			assoc["q"] = tr("Questionable");
 			assoc["e"] = tr("Explicit");
@@ -1262,12 +1257,12 @@ void mainWindow::optionsClosed()
 void mainWindow::advanced()
 {
 	log(tr("Ouverture de la fenêtre des sources..."));
-	advancedWindow *adv = new advancedWindow(m_selected, m_sites.keys(), this);
+	sourcesWindow *adv = new sourcesWindow(m_selected, &m_sites, this);
 	adv->show();
-	connect(adv, SIGNAL(valid(advancedWindow*)), this, SLOT(saveAdvanced(advancedWindow*)));
+	connect(adv, SIGNAL(valid(sourcesWindow*)), this, SLOT(saveAdvanced(sourcesWindow*)));
 	DONE()
 }
-void mainWindow::saveAdvanced(advancedWindow *w)
+void mainWindow::saveAdvanced(sourcesWindow *w)
 {
 	log(tr("Sauvegarde des nouvelles sources..."));
 	m_selected = w->getSelected();
@@ -1414,7 +1409,7 @@ void mainWindow::getAll()
 void mainWindow::getAllSource(QNetworkReply *r)
 {
 	QString url = r->url().toString(), source = r->readAll();
-	QList<QMap<QString, QString> > imgs;
+	QList<QStringMap> imgs;
 	log(tr("Recu <a href=\"%1\">%1</a>").arg(url));
 	int n = 0;
 	for (int i = 0; i < m_groupBatchs.count(); i++)
@@ -1446,7 +1441,7 @@ void mainWindow::getAllSource(QNetworkReply *r)
 		{
 			for (int id = 0; id < nodeList.count(); id++)
 			{
-				QMap<QString, QString> d;
+				QStringMap d;
 				QStringList infos;
 				infos << "status" << "source" << "has_comments" << "file_url" << "sample_url" << "change" << "sample_width" << "has_children" << "preview_url" << "width" << "md5" << "preview_width" << "sample_height" << "parent_id" << "height" << "has_notes" << "creator_id" << "file_size" << "id" << "preview_height" << "rating" << "tags" << "author" << "score";
 				for (int i = 0; i < infos.count(); i++)
@@ -1481,7 +1476,7 @@ void mainWindow::getAllSource(QNetworkReply *r)
 			for (int id = 0; id < sourc.count(); id++)
 			{
 				sc = sourc.at(id).toMap();
-				QMap<QString, QString> d;
+				QStringMap d;
 				QStringList infos;
 				infos << "status" << "source" << "has_comments" << "file_url" << "sample_url" << "change" << "sample_width" << "has_children" << "preview_url" << "width" << "md5" << "preview_width" << "sample_height" << "parent_id" << "height" << "has_notes" << "creator_id" << "file_size" << "id" << "preview_height" << "rating" << "tags" << "author" << "score";
 				for (int i = 0; i < infos.count(); i++)
@@ -1517,7 +1512,7 @@ void mainWindow::getAllSource(QNetworkReply *r)
 		while (((pos = rx.indexIn(source, pos)) != -1) && (page-1)*m_groupBatchs.at(n).at(2).toInt()+id < m_groupBatchs.at(n).at(3).toInt())
 		{
 			pos += rx.matchedLength();
-			QMap<QString, QString> d;
+			QStringMap d;
 			for (int i = 0; i < order.size(); i++)
 			{ d[order.at(i)] = rx.cap(i+1); }
 			if (!d["preview_url"].startsWith("http://"))

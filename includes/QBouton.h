@@ -14,19 +14,23 @@ class QBouton : public QPushButton
 	Q_OBJECT
  
 	public:
-		QBouton(int id = 0, QWidget * parent = 0);
-		int id();
+		QBouton(QVariant id = 0, QWidget * parent = 0);
+		QVariant id();
 		void mousePressEvent(QMouseEvent *);
 
 	public slots:
-		void setId(int);
+		void setId(QVariant);
 		
 	signals:
+		void appui(QVariant);
+		void rightClick(QVariant);
 		void appui(int);
 		void rightClick(int);
+		void appui(QString);
+		void rightClick(QString);
 	
 	private:
-		int _id;
+		QVariant _id;
 };
 
 #endif

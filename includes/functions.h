@@ -4,6 +4,13 @@
 #include <QtGui>
 #include <QtXml>
 
+
+
+typedef QMap<QString,QString> QStringMap;
+typedef QMap<QString,QStringMap> QStringMapMap;
+
+
+
 void error(QWidget *, QString);
 void sortNonCaseSensitive(QStringList &);
 QDateTime qDateTimeFromString(QString s, int d = 5);
