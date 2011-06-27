@@ -33,7 +33,6 @@
 #include "mainwindow.h"
 #include "zoomwindow.h"
 #include "optionswindow.h"
-#include "advancedwindow.h"
 
 
 

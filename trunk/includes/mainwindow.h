@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QtGui>
-#include "advancedwindow.h"
+#include "sourceswindow.h"
 #include "batchwindow.h"
 #include "QAffiche.h"
 #include "QBouton.h"
@@ -20,7 +20,7 @@ class mainWindow : public QMainWindow
     Q_OBJECT
 
 	public:
-		explicit mainWindow(QString, QStringList, QMap<QString,QString>);
+		explicit mainWindow(QString, QStringList, QStringMap);
 		~mainWindow();
 
 	public slots:
@@ -63,7 +63,7 @@ class mainWindow : public QMainWindow
 		void addGroup();
 		void addUnique();
 		void batchAddGroup(const QStringList& values);
-		void batchAddUnique(QMap<QString,QString>);
+		void batchAddUnique(QStringMap);
 		void getPage();
 		// Batch download
 		void getAll();
@@ -76,7 +76,7 @@ class mainWindow : public QMainWindow
 		void setTags(QString);
 		void closeEvent(QCloseEvent*);
 		void advanced();
-		void saveAdvanced(advancedWindow*);
+		void saveAdvanced(sourcesWindow*);
 		void widgetPlusChange();
 
 	private:
@@ -84,18 +84,18 @@ class mainWindow : public QMainWindow
 		QSettings *m_settings;
 		QDateTime m_serverDate;
 		int m_timezonedecay, m_getAllId, m_getAllDownloaded, m_getAllExists, m_getAllIgnored, m_getAllErrors, m_getAllCount, m_getAllPageCount, m_getAllBeforeId, m_pagemax, m_remainingPics, m_remainingSites, m_countPics, m_currentFav, m_currentFavCount;
-		QMap<QString,QString> m_favorites, m_params;
+		QStringMap m_favorites, m_params;
 		QString m_program;
 		QStringList m_tags, m_assoc, m_gotMd5;
 		QList<QStringList> m_groupBatchs;
 		bool m_allow, m_currentPageIsPopular, m_must_get_tags, m_lastWeb;
-		QList<QMap<QString, QString> > m_details, m_batchs, m_allImages;
+		QList<QStringMap> m_details, m_batchs, m_allImages;
 		QMap<QDateTime,QString> *m_log;
 		QString m_currLang;
 		QTranslator m_translator;
 		QList<bool> m_selected;
 		QCalendarWidget *m_calendar;
-		QMap<QString,QMap<QString,QString> > m_sites;
+		QStringMapMap m_sites;
 		QMap<QString,QStringList> m_getAllDetails;
 		QList<QAffiche*> m_favoritesCaptions;
 		QList<QBouton*> m_favoritesImages;

@@ -10,7 +10,6 @@ INCLUDEPATH += . includes languages source
 # Input
 HEADERS += includes/addgroupwindow.h \
 	includes/adduniquewindow.h \
-	includes/advancedwindow.h \
 	includes/functions.h \
 	includes/mainwindow.h \
 	includes/qaffiche.h \
@@ -23,10 +22,10 @@ HEADERS += includes/addgroupwindow.h \
 	includes/startwindow.h \
 	includes/optionswindow.h \
 	includes/batchwindow.h \
-    sourceswindow.h
+    includes/sourceswindow.h \
+    includes/sitewindow.h
 SOURCES += source/addgroupwindow.cpp \
 	source/adduniquewindow.cpp \
-	source/advancedwindow.cpp \
 	source/functions.cpp \
 	source/main.cpp \
 	source/mainwindow.cpp \
@@ -40,7 +39,8 @@ SOURCES += source/addgroupwindow.cpp \
 	source/startwindow.cpp \
 	source/optionswindow.cpp \
     source/batchwindow.cpp \
-    sourceswindow.cpp
+    source/sourceswindow.cpp \
+    source/sitewindow.cpp
 RESOURCES += resources.qrc
 RC_FILE = icon.rc
 TRANSLATIONS += languages/English.ts languages/Français.ts
@@ -55,4 +55,5 @@ FORMS += \
     ui/optionswindow.ui \
 	ui/mainwindow.ui \
 	ui/batchwindow.ui \
-    sourceswindow.ui
+    ui/sourceswindow.ui \
+    ui/sitewindow.ui
