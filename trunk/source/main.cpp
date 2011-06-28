@@ -28,6 +28,7 @@
 
 #include <QApplication>
 #include <QtGui>
+#include "qappli.h"
 #include "QAffiche.h"
 #include "QBouton.h"
 #include "mainwindow.h"

@@ -21,7 +21,6 @@ siteWindow::siteWindow(QStringMapMap *sites, QWidget *parent) : QDialog(parent),
 
 	ui->comboBox->setDisabled(true);
 	ui->checkBox->setChecked(true);
-	ui->lineEdit->setText("gelbooru.com");
 }
 
 siteWindow::~siteWindow()
@@ -37,10 +36,38 @@ void siteWindow::accept()
 	if (url.endsWith("/"))
 	{ url = url.left(url.size()-1); }
 
-	QString type;
+	QString type, name;
+	QStringList types;
 	if (ui->checkBox->isChecked())
 	{
-
+		QNetworkAccessManager *manager = new QNetworkAccessManager(this);
+		for (int i = 0; i < m_sites->count(); i++)
+		{
+			name = m_sites->value(m_sites->keys().at(i))["Name"].toLower();
+			if (!types.contains(name))
+			{
+				QStringMap map = m_sites->value(m_sites->keys().at(i));
+				types.append(name);
+				QString curr = map["Selected"];
+				curr[0] = curr[0].toUpper();
+				QNetworkReply *reply = manager->get(QNetworkRequest("http://"+url+map["Urls/"+curr+"/Tags"]));
+				QEventLoop loop;
+					connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
+				loop.exec();
+				if (reply->error() == 0)
+				{
+					type = name;
+					break;
+				}
+			}
+		}
+		if (type.isEmpty())
+		{
+			error(this, tr("Impossible de deviner le type du site. Êtes-vous sûr de l'url ?"));
+			ui->comboBox->setDisabled(false);
+			ui->checkBox->setChecked(false);
+			return;
+		}
 	}
 	else
 	{ type = ui->comboBox->currentText().toLower(); }
@@ -58,7 +85,6 @@ void siteWindow::accept()
 		f.write(stes.join("\r\n").toAscii());
 	f.close();
 
-	QString name;
 	for (int i = 0; i < m_sites->count(); i++)
 	{
 		name = m_sites->value(m_sites->keys().at(i))["Name"].toLower();

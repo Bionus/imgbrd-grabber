@@ -11,7 +11,7 @@
 #include "json.h"
 #include <QtXml>
 
-#define VERSION	"1.9.3"
+#define VERSION	"2.0.0"
 #define DONE()	logUpdate(tr(" Fait"));
 
 
@@ -163,7 +163,7 @@ mainWindow::mainWindow(QString program, QStringList tags, QStringMap params) : u
 				{
 					QString t = m_settings->value("source_"+s, defaults.at(s)).toString();
 					t[0] = t[0].toUpper();
-					if (details.contains("Urls/"+t+"/Tags"))
+					if (details.contains("Urls/"+(t == "Regex" ? "Html" : t)+"/Tags"))
 					{
 						source = t;
 						break;
@@ -187,8 +187,8 @@ mainWindow::mainWindow(QString program, QStringList tags, QStringMap params) : u
 							else
 							{ curr = source; }
 							stes[line] = details;
-							stes[line]["Urls/Selected/Tags"] = "http://"+line+stes[line]["Urls/"+curr+"/Tags"];
-							stes[line]["Urls/Selected/Popular"] = "http://"+line+stes[line]["Urls/"+curr+"/Popular"];
+							stes[line]["Urls/Selected/Tags"] = "http://"+line+stes[line]["Urls/"+(curr == "Regex" ? "Html" : curr)+"/Tags"];
+							stes[line]["Urls/Selected/Popular"] = "http://"+line+stes[line]["Urls/"+(curr == "Regex" ? "Html" : curr)+"/Popular"];
 							stes[line]["Urls/Html/Post"] = "http://"+line+stes[line]["Urls/Html/Post"];
 							stes[line]["Selected"] = curr.toLower();
 						}
@@ -546,26 +546,14 @@ void mainWindow::web(QString tags, bool popular)
 	if (!m_webPics.isEmpty() && m_currentFav < 1)
 	{
 		for (int i = 0; i < m_webPics.count(); i++)
-		{
-			m_webPics.at(i)->hide();
-			if (!m_loadFavorite.isNull())
-			{ ui->layoutFavoritesResults->removeWidget(m_webPics.at(i)); }
-			else
-			{ ui->layoutResults->removeWidget(m_webPics.at(i)); }
-		}
+		{ delete m_webPics.at(i); }
 		m_webPics.clear();
 		m_details.clear();
 	}
 	if (!m_webSites.isEmpty() && m_currentFav < 1)
 	{
 		for (int i = 0; i < m_webSites.count(); i++)
-		{
-			m_webSites.at(i)->hide();
-			if (!m_loadFavorite.isNull())
-			{ ui->layoutFavoritesResults->removeWidget(m_webSites.at(i)); }
-			else
-			{ ui->layoutResults->removeWidget(m_webSites.at(i)); }
-		}
+		{ delete m_webSites.at(i); }
 		for (int i = 0; i < m_webSites.count()*11; i++)
 		{
 			if (!m_loadFavorite.isNull())
@@ -839,7 +827,7 @@ void mainWindow::replyFinished(QNetworkReply* r)
 		QStringList order = m_sites[site]["Regex/Order"].split('|');
 		rx.setMinimal(true);
 		int pos = 0, id = 0;
-		while (((pos = rx.indexIn(source, pos)) != -1) && id < ui->spinImagesPerPage->value())
+		while (((pos = rx.indexIn(source, pos)) != -1)/* && id < ui->spinImagesPerPage->value()*/)
 		{
 			pos += rx.matchedLength();
 			QStringMap d;
@@ -1025,32 +1013,13 @@ void mainWindow::replyFinishedPic(QNetworkReply* r)
 		}
 		else if (ui->checkMergeResults->isChecked())
 		{
-			if (!ignore)
-			{ m_mergeButtons.append(l); }
-			if (m_remainingPics == 0 && m_remainingSites == 0)
-			{
-				int pl = ceil(sqrt(m_mergeButtons.count()));
-				QLabel *txt = new QLabel(tr("Résultats"));
-				if (!m_loadFavorite.isNull())
-				{
-					ui->layoutFavoritesResults->addWidget(txt, 0, 0, 1, pl);
-					ui->layoutFavoritesResults->setRowMinimumHeight(0, 50);
-				}
-				else
-				{
-					ui->layoutResults->addWidget(txt, 0, 0, 1, pl);
-					ui->layoutResults->setRowMinimumHeight(0, 50);
-				}
-				m_webSites.append(txt);
-				for (int id = 0; id < m_mergeButtons.count(); id++)
-				{
-					if (!m_loadFavorite.isNull())
-					{ ui->layoutFavoritesResults->addWidget(m_mergeButtons.at(id), floor(id/pl)+1, id%pl, 1, 1); }
-					else
-					{ ui->layoutResults->addWidget(m_mergeButtons.at(id), floor(id/pl)+1, id%pl, 1, 1); }
-					m_webPics.append(m_mergeButtons.at(id));
-				}
-			}
+			m_mergeButtons.append(l);
+			int pl = ceil(sqrt((m_replies.count()-m_countPics)*ui->spinImagesPerPage->value()));
+			if (!m_loadFavorite.isNull())
+			{ ui->layoutFavoritesResults->addWidget(l, floor(n/pl), n%pl, 1, 1); }
+			else
+			{ ui->layoutResults->addWidget(l, floor(n/pl), n%pl, 1, 1); }
+			m_webPics.append(l);
 		}
 		else
 		{
@@ -1106,31 +1075,30 @@ void mainWindow::favoritesBack()
 		m_currentFavorite = "";
 		m_currentFav = -1;
 		ui->widgetFavorites->show();
-		if (!m_replies.isEmpty())
+		if (!m_replies.isEmpty() && m_currentFav < 1)
 		{
 			for (int i = 0; i < m_replies.count(); i++)
 			{ m_replies.at(i)->abort(); }
 			m_replies.clear();
 		}
-		if (!m_webPics.isEmpty())
+		if (!m_webPics.isEmpty() && m_currentFav < 1)
 		{
 			for (int i = 0; i < m_webPics.count(); i++)
-			{
-				m_webPics.at(i)->hide();
-				ui->layoutFavoritesResults->removeWidget(m_webPics.at(i));
-			}
+			{ delete m_webPics.at(i); }
 			m_webPics.clear();
 			m_details.clear();
 		}
-		if (!m_webSites.isEmpty())
+		if (!m_webSites.isEmpty() && m_currentFav < 1)
 		{
 			for (int i = 0; i < m_webSites.count(); i++)
-			{
-				m_webSites.at(i)->hide();
-				ui->layoutFavoritesResults->removeWidget(m_webSites.at(i));
-			}
+			{ delete m_webSites.at(i); }
 			for (int i = 0; i < m_webSites.count()*11; i++)
-			{ ui->layoutFavoritesResults->setRowMinimumHeight(i, 0); }
+			{
+				if (!m_loadFavorite.isNull())
+				{ ui->layoutFavoritesResults->setRowMinimumHeight(i, 0); }
+				else
+				{ ui->layoutResults->setRowMinimumHeight(i, 0); }
+			}
 			m_webSites.clear();
 		}
 	}
