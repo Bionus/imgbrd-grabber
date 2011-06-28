@@ -172,7 +172,6 @@ void sourcesWindow::insertCheckBox()
 			break;
 		}
 	}
-	qDebug() << m_selected;
 
 	for (int i = 0; i < m_checks.count(); i++)
 	{

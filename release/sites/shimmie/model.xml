@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Site>
+	<Name>Shimmie</Name>
+	<Urls>
+		<Html>
+			<Tags>/post/list/{tags}/{page}</Tags>
+			<Post>/post/show/{id}</Post>
+			<Image>/image/{id}.{ext}</Image>
+		</Html>
+	</Urls>
+	<Regex>
+		<Tags>&lt;li class=&quot;tag-type-(.+)&quot;&gt;.*&lt;a href=&quot;.+&quot;&gt;.*&lt;/a&gt;.*&lt;a href=&quot;.+&quot;&gt;(.+)&lt;/a&gt;.*&lt;/li&gt;</Tags>
+		<Image>&lt;a [^&gt;]*&gt;[^&lt;]*(&lt;img id='([^']*)' title='(.+) // (.+)x(.+) // [^']*' alt='[^']*'(?: height='[^']*')? width='[^']*'(?: height='[^']*')? src='.*(/_thumbs/([^/]*)/thumb.jpg)' ?/?&gt;)[^&lt;]*&lt;/a&gt;</Image>
+		<Order>image|id|tags|width|height|preview_url|md5</Order>
+		<LastPage>&lt;link href=&quot;/post\?limit=\d*&amp;page=(\d*)&amp;tags=[^&quot;]*&quot; rel=&quot;last&quot; title=&quot;Last Page&quot;&gt;</LastPage>
+	</Regex>
+	<FirstPage>1</FirstPage>
+</Site>

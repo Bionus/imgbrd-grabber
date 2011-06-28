@@ -23,7 +23,8 @@ HEADERS += includes/addgroupwindow.h \
 	includes/optionswindow.h \
 	includes/batchwindow.h \
     includes/sourceswindow.h \
-    includes/sitewindow.h
+    includes/sitewindow.h \
+    qappli.h
 SOURCES += source/addgroupwindow.cpp \
 	source/adduniquewindow.cpp \
 	source/functions.cpp \
@@ -40,7 +41,8 @@ SOURCES += source/addgroupwindow.cpp \
 	source/optionswindow.cpp \
     source/batchwindow.cpp \
     source/sourceswindow.cpp \
-    source/sitewindow.cpp
+    source/sitewindow.cpp \
+    qappli.cpp
 RESOURCES += resources.qrc
 RC_FILE = icon.rc
 TRANSLATIONS += languages/English.ts languages/Français.ts

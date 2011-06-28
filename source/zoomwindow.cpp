@@ -193,9 +193,7 @@ void zoomWindow::rR(qint64 size, qint64 total)
 	{
 		this->d.append(m_reply->readAll());
 		if (!this->d.isEmpty())
-		{
-			this->image.loadFromData(this->d, m_format);
-		}
+		{ this->image.loadFromData(this->d, m_format); }
 		this->update(true);
 	}
 }
@@ -230,7 +228,7 @@ void zoomWindow::replyFinished(QNetworkReply* reply)
 			if (blacklistedtags.contains(tag, Qt::CaseInsensitive))
 			{ tags.replace(" "+tag+" ", " <a href=\""+tag+"\" style=\"\">"+tag+"</a> ");	}
 			this->details[type+"s"].append(normalized);
-			tags.replace(" "+tag+" ", " <a href=\""+tag+"\" style=\""+styles[type+"s"]+"\">"+tag+"</a> ");
+			tags.replace(" "+tag+" ", " <a href=\""+tag+"\" style=\""+(styles.contains(type+"s") ? styles[type+"s"] : styles["generals"])+"\">"+tag+"</a> ");
 			this->details["alls"].append(normalized);
 		}
 		ui->labelTags->setText(tags.trimmed());

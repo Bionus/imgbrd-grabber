@@ -2,6 +2,7 @@
 #define SITEWINDOW_H
 
 #include <QtGui>
+#include <QtNetwork>
 #include "functions.h"
 
 
