@@ -1,12 +1,62 @@
 #summary How to create a new site file.
 
-= Introduction =
+= v2.0 and higher =
 
-If an imageboard is not available for the program, you can add it. There are three ways to retrieve informations from imageboards with this program: using an XML API, a JSON API, or using regex (from "best" to "worst").
-These files must be put in the "sites" directory, then in the corresponding sub-directory ("xml", "json" or "regex").
+== Based on gelbooru, danbooru or shimmie ==
+To add an imageboard/booru:
+  # Start the program.
+  # Click on the "Sources" button at the bottom of the window ("Explore" tab).
+  # Click on the "Add" button at the bottom of the window that just popped up.
+  # Fill the Url field, and leave "Guess" checked.
+  # If an error occurs, uncheck "Guess", and choose an imageboard in the list.
+_*Note that shimmie-based boorus will give random results when downloading multiple images from them!*_
 
+== Add a site type ==
 
-= How to create a new site file =
+*Part not finished!*
+If your site is not based on danbooru/gelbooru/shimmie, it gets more complicated. *You must have a minimal knowledge of XML and regex to make your own one.* Here is an example of file you'll have to create (it is the danbooru's file):
+<code language="xml"><?xml version="1.0" encoding="utf-8" ?>
+<Site>
+	<Name>Danbooru</Name>
+	<Urls>
+		<Xml>
+			<Tags>/post/index.xml?login={pseudo}&amp;password_hash={password}&amp;limit={limit}&amp;page={page}&amp;tags={tags}</Tags>
+			<Popular>/post/index.xml?login={pseudo}&amp;password_hash={password}&amp;limit={limit}&amp;page={page}&amp;tags=date:{month}/{day}/{year} order:score</Popular>
+		</Xml>
+		<Json>
+			<Tags>/post/index.json?login={pseudo}&amp;password_hash={password}&amp;limit={limit}&amp;page={page}&amp;tags={tags}</Tags>
+			<Popular>/post/index.json?login={pseudo}&amp;password_hash={password}&amp;limit={limit}&amp;page={page}&amp;tags=date:{month}/{day}/{year} order:score</Popular>
+		</Json>
+		<Html>
+			<Post>/post/show/{id}</Post>
+		</Html>
+	</Urls>
+	<Regex>
+		<Tags>&lt;li class=&quot;tag-type-(.+)&quot;&gt;.*&lt;a href=&quot;.+&quot;&gt;.*&lt;/a&gt;.*&lt;a href=&quot;.+&quot;&gt;(.+)&lt;/a&gt;.*&lt;/li&gt;</Tags>
+		<Image>&lt;span class=&quot;.*&quot; id=&quot;p(\d*)&quot;&gt;.*&lt;a .*&gt;.*(&lt;img[ ]+class=&quot;.*&quot; src=&quot;(http://danbooru.donmai.us/data/preview/(.*).jpg)&quot; title=&quot;(.+) rating:(.*) score:(.*) user:(.*)&quot; alt=&quot;.*&quot; width=.* height=.*&gt;).*&lt;/a&gt;.*&lt;/span&gt;</Image>
+		<Order>id|image|preview_url|md5|tags|rating|score|user</Order>
+		<LastPage>&lt;link href=&quot;/post\?limit=\d*&amp;page=(\d*)&amp;tags=[^&quot;]*&quot; rel=&quot;last&quot; title=&quot;Last Page&quot;&gt;</LastPage>
+	</Regex>
+	<FirstPage>1</FirstPage>
+</Site></code>
+Let's explain it in detail.
+  * Name: the name that will be shown in the sources window.
+  * Urls: the pages urls. You must set at least Html/Post and either Xml or Json. They must start with a slash.
+   * Xml/Json
+    * Tags
+    * Tags
+   * Html
+    * Post: url of an image details.
+  * Regex: even when using xml/json, some regex must be used
+   * Tags
+   * Image
+   * LastPage
+  * FirstPage: the number of the firstpage, usually 1 (but, for example, gelbooru starts with 0).
+
+= Before v2.0 =
+
+There are three ways to retrieve informations from imageboards: using an XML API, a JSON API, or using regex (from "best" to "worst"). To add a site to the program, you must create a file named according to the site's url (ex: "danbooru.donmai.us"), without "http://" and any ending slash.
+These files must be put in the "sites" directory, then in the corresponding sub-directory ("xml", "json" or "regex"). There can be 3 files by site, one per directory.
 
 == XML ==
 For the majority of boorus (based on danbooru and gelbooru).
