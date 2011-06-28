@@ -11,5 +11,13 @@
         <file>images/icons/remove.png</file>
         <file>images/icons/save.png</file>
         <file>images/icons/window.png</file>
+        <file>images/sortings/id.png</file>
+        <file>images/sortings/landscape.png</file>
+        <file>images/sortings/pixels.png</file>
+        <file>images/sortings/portrait.png</file>
+        <file>images/sortings/rank.png</file>
+        <file>images/sortings/score.png</file>
+        <file>images/sortings/size.png</file>
+        <file>images/sortings/sort.png</file>
     </qresource>
 </RCC>

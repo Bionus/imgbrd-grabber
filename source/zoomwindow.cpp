@@ -11,7 +11,7 @@ using namespace std;
 
 
 
-zoomWindow::zoomWindow(QString m_program, QString site, QMap<QString,QString> regex, QMap<QString,QString> details, mainWindow *parent) : m_parent(parent), ui(new Ui::zoomWindow), regex(regex), m_details(details), timeout(300), loaded(0), oldsize(0), site(site), m_program(m_program), m_mustSave(false), m_replyExists(false), m_finished(false)
+zoomWindow::zoomWindow(QString m_program, QString site, QStringMap regex, QStringMap details, mainWindow *parent) : m_parent(parent), ui(new Ui::zoomWindow), regex(regex), m_details(details), timeout(300), loaded(0), oldsize(0), site(site), m_program(m_program), m_replyExists(false), m_finished(false)
 {
 	ui->setupUi(this);
 	favorites = loadFavorites().keys();
@@ -24,6 +24,11 @@ zoomWindow::zoomWindow(QString m_program, QString site, QMap<QString,QString> re
 			this->resize(settings.value("size", QSize(800, 600)).toSize());
 			this->move(settings.value("pos", QPoint(200, 200)).toPoint());
 		}
+		settings.endGroup();
+
+	if (settings.value("autodownload", false).toBool())
+	{ saveImage(); }
+	qDebug() << settings.value("autodownload", false).toBool();
 
 	QAffiche *labelImage = new QAffiche;
 		labelImage->setSizePolicy(QSizePolicy(QSizePolicy::Ignored,QSizePolicy::Ignored));
@@ -51,11 +56,12 @@ zoomWindow::zoomWindow(QString m_program, QString site, QMap<QString,QString> re
 		timer->setSingleShot(true);
 		this->timer = timer;
 
+	QString u = this->regex["Urls/Html/Post"];
+		u.replace("{id}", m_details.value("id"));
+		m_details["page_url"] = u;
 	m_detailsWindow = new detailsWindow(m_details);
 	connect(ui->buttonDetails, SIGNAL(clicked()), m_detailsWindow, SLOT(show()));
 
-	QString u = this->regex["Urls/Html/Post"];
-		u.replace("{id}", m_details.value("id"));
 	QUrl rl(u);
 	QNetworkAccessManager *manager = new QNetworkAccessManager(this);
 	connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply*)));
@@ -253,11 +259,7 @@ void zoomWindow::replyFinished(QNetworkReply* reply)
 			this->update();
 		}
 		else
-		{
-			ui->buttonSave->setText(tr("Enregistrer"));
-			ui->buttonSaveNQuit->setText(tr("Enregistrer et fermer"));
-			this->load();
-		}
+		{ this->load(); }
 	}
 	else if (reply->error() != QNetworkReply::OperationCanceledError)
 	{ error(this, tr("Une erreur inattendue est survenue lors du chargement des tags.\r\n%1").arg(reply->url().toString())); }
@@ -273,7 +275,7 @@ void zoomWindow::replyFinishedZoom(QNetworkReply* reply)
 		this->image.loadFromData(this->d, m_format);
 		this->loaded = true;
 		this->update();
-		if (this->m_mustSave)
+		if (this->m_mustSave > 0)
 		{ this->saveImage(); }
 	}
 	else if (reply->error() != QNetworkReply::OperationCanceledError)
@@ -297,8 +299,16 @@ void zoomWindow::update(bool onlysize)
 
 void zoomWindow::saveNQuit()
 {
-	if (!this->saveImage().isEmpty())
-	{ this->close(); }
+	if (loaded) // If image is still loading, we wait for it to finish
+	{
+		if (!this->saveImage().isEmpty())
+		{ this->close(); }
+	}
+	else
+	{
+		ui->buttonSave->setText(tr("Sauvegarde..."));
+		m_mustSave = 2;
+	}
 }
 
 QString zoomWindow::saveImage()
@@ -306,7 +316,7 @@ QString zoomWindow::saveImage()
 	if (!loaded) // If image is still loading, we wait for it to finish
 	{
 		ui->buttonSave->setText(tr("Sauvegarde..."));
-		m_mustSave = true;
+		m_mustSave = 1;
 		return QString();
 	}
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
@@ -350,6 +360,9 @@ QString zoomWindow::saveImage()
 	}
 	else
 	{ ui->buttonSave->setText(tr("Fichier déjà existant")); }
+	if (m_mustSave == 2)
+	{ close(); }
+	m_mustSave = 0;
 	return pth+"/"+path;
 }
 

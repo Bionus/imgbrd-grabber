@@ -55,7 +55,7 @@ class zoomWindow : public QWidget
 		detailsWindow *m_detailsWindow;
 		QMap<QString,QString> regex;
 		QMap<QString,QString> m_details;
-		int timeout, loaded, oldsize;
+		int timeout, loaded, oldsize, m_mustSave;
 		QMap<QString, QStringList> details;
 		QString site, id, url, tags, md5, rating, score, user, format;
 		QAffiche *labelImage;
@@ -69,7 +69,7 @@ class zoomWindow : public QWidget
 		QString link, m_program;
 		QNetworkReply *m_reply;
 		const char* m_format;
-		bool m_mustSave, m_replyExists, m_finished;
+		bool m_replyExists, m_finished;
 		QStringList favorites;
 };
 

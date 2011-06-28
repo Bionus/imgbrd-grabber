@@ -23,6 +23,7 @@ optionsWindow::optionsWindow(mainWindow *parent) : QDialog(parent), m_parent(par
 	ui->checkDownloadBlacklisted->setChecked(settings.value("downloadblacklist", false).toBool());
 	ui->checkLoadFirstAtStart->setChecked(settings.value("loadatstart", false).toBool());
 	ui->spinHideFavorites->setValue(settings.value("hidefavorites", 20).toInt());
+	ui->checkAutodownload->setChecked(settings.value("autodownload", false).toBool());
 
 	ui->spinImagesPerPage->setValue(settings.value("limit", 20).toInt());
 	ui->spinColumns->setValue(settings.value("columns", 1).toInt());
@@ -268,6 +269,7 @@ void optionsWindow::save()
 	settings.setValue("source_3", sources.at(ui->comboSource3->currentIndex()));
 	settings.setValue("loadatstart", ui->checkLoadFirstAtStart->isChecked());
 	settings.setValue("hidefavorites", ui->spinHideFavorites->value());
+	settings.setValue("autodownload", ui->checkAutodownload->isChecked());
 
 	QStringList types = QStringList() << "text" << "icon" << "both" << "hide";
 	settings.setValue("Sources/Types", types.at(ui->comboSources->currentIndex()));

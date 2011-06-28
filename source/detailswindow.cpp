@@ -20,11 +20,12 @@ detailsWindow::detailsWindow(QMap<QString,QString> details) : QWidget(0), ui(new
 	if (details.contains("has_children"))	{ ui->labelChildren->setText(details.value("has_children") == "false" ? tr("non") : tr("oui"));	}
 	if (details.contains("has_notes"))		{ ui->labelNotes->setText(details.value("has_notes") == "false" ? tr("non") : tr("oui"));		}
 	if (details.contains("has_comments"))	{ ui->labelComments->setText(details.value("has_comments") == "false" ? tr("non") : tr("oui"));	}
-	if (details.contains("parent_id"))		{ ui->labelParent->setText(details.value("parent_id").isEmpty() ? tr("non") : tr("oui (#%1)").arg(details.value("parent_id")));	}
 	if (details.contains("source"))			{ ui->labelSource->setText("<a href=\""+details.value("source")+"\">"+details.value("source")+"</a>");				}
+	if (details.contains("page_url"))		{ ui->labelPage->setText("<a href=\""+details.value("page_url")+"\">"+details.value("page_url")+"</a>");			}
 	if (details.contains("file_url"))		{ ui->labelUrl->setText("<a href=\""+details.value("file_url")+"\">"+details.value("file_url")+"</a>");				}
 	if (details.contains("sample_url"))		{ ui->labelSample->setText("<a href=\""+details.value("sample_url")+"\">"+details.value("sample_url")+"</a>");		}
 	if (details.contains("preview_url"))	{ ui->labelPreview->setText("<a href=\""+details.value("preview_url")+"\">"+details.value("preview_url")+"</a>");	}
+	if (details.contains("parent_id"))		{ ui->labelParent->setText(details.value("parent_id").isEmpty() ? tr("non") : tr("oui (#%1)").arg(details.value("parent_id")));		}
 	if (details.contains("author"))			{ ui->labelUser->setText(details.value("author")+(details.contains("creator_id") ? " (#"+details.value("creator_id")+")" : ""));	}
 	if (details.contains("rating"))
 	{

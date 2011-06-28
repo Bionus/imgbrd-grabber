@@ -49,10 +49,11 @@ class mainWindow : public QMainWindow
 		void checkFavorites();
 		void loadNextFavorite();
 		// Download
-		void webUpdateLast();
+		void insertDate(QDate);
+		void nextPage();
+		void previousPage();
 		void webUpdateTags();
-		void webUpdatePopular();
-		void web(QString tags = "", bool popular = false);
+		void web(QString tags = "");
 		void webZoom(int);
 		void replyFinished(QNetworkReply*);
 		void replyFinishedPic(QNetworkReply*);
@@ -88,7 +89,7 @@ class mainWindow : public QMainWindow
 		QString m_program;
 		QStringList m_tags, m_assoc, m_gotMd5;
 		QList<QStringList> m_groupBatchs;
-		bool m_allow, m_currentPageIsPopular, m_must_get_tags, m_lastWeb;
+		bool m_allow, m_must_get_tags;
 		QList<QStringMap> m_details, m_batchs, m_allImages;
 		QMap<QDateTime,QString> *m_log;
 		QString m_currLang;

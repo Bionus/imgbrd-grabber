@@ -16,7 +16,7 @@
 
 
 
-mainWindow::mainWindow(QString program, QStringList tags, QStringMap params) : ui(new Ui::mainWindow), m_currentFav(-1), m_params(params), m_program(program), m_tags(tags), m_currentPageIsPopular(false), m_lastWeb(false)
+mainWindow::mainWindow(QString program, QStringList tags, QStringMap params) : ui(new Ui::mainWindow), m_currentFav(-1), m_params(params), m_program(program), m_tags(tags)
 {
 	QString p = savePath("settings.ini");
 	m_settings = new QSettings(p, QSettings::IniFormat);
@@ -239,19 +239,16 @@ mainWindow::mainWindow(QString program, QStringList tags, QStringMap params) : u
 			}
 		connect(m_search, SIGNAL(returnPressed()), this, SLOT(webUpdateTags()));
 		connect(m_postFiltering, SIGNAL(returnPressed()), this, SLOT(web()));
-		ui->layoutFields->addWidget(m_search, 0, 1, 1, 2);
+		ui->layoutFields->insertWidget(0, m_search, 1);
 		ui->layoutPlus->addWidget(m_postFiltering, 1, 1, 1, 3);
 
 	// Calendar
-	ui->datePopular->setDateRange(QDate(2000, 1, 1), m_serverDate.date());
-		ui->datePopular->setDate(m_serverDate.date());
 	m_calendar = new QCalendarWidget;
 		m_calendar->setWindowIcon(QIcon(":/images/icon.ico"));
 		m_calendar->setWindowTitle("Grabber - Choisir une date");
 		m_calendar->setDateRange(QDate(2000, 1, 1), m_serverDate.date());
 		m_calendar->setSelectedDate(m_serverDate.date());
-		connect(m_calendar, SIGNAL(activated(QDate)), ui->datePopular, SLOT(setDate(QDate)));
-		connect(ui->datePopular, SIGNAL(dateChanged(QDate)), m_calendar, SLOT(setSelectedDate(QDate)));
+		connect(m_calendar, SIGNAL(activated(QDate)), this, SLOT(insertDate(QDate)));
 		connect(m_calendar, SIGNAL(activated(QDate)), m_calendar, SLOT(close()));
 	connect(ui->buttonCalendar, SIGNAL(clicked()), m_calendar, SLOT(show()));
 
@@ -279,6 +276,11 @@ mainWindow::~mainWindow()
 }
 
 
+void mainWindow::insertDate(QDate date)
+{
+	m_search->setText(m_search->toPlainText()+" date:"+date.toString("MM/dd/yyyy"));
+	m_search->doColor();
+}
 
 void mainWindow::getPage()
 {
@@ -289,12 +291,7 @@ void mainWindow::getPage()
 		{ actuals.append(keys.at(i)); }
 	}
 	for (int i = 0; i < actuals.count(); i++)
-	{
-		if (m_currentPageIsPopular)
-		{ this->batchAddGroup(QStringList() << ui->datePopular->date().toString(Qt::ISODate) << 0 << 0 << 0 << "false" << actuals.at(i) << "true" << m_settings->value("Save/filename").toString() << m_settings->value("Save/path").toString() << ""); }
-		else
-		{ this->batchAddGroup(QStringList() << m_search->toPlainText() << QString::number(ui->spinPage->value()) << QString::number(ui->spinImagesPerPage->value()) << QString::number(ui->spinImagesPerPage->value()) << "false" << actuals.at(i) << "false" << m_settings->value("Save/filename").toString() << m_settings->value("Save/path").toString() << ""); }
-	}
+	{ this->batchAddGroup(QStringList() << m_search->toPlainText() << QString::number(ui->spinPage->value()) << QString::number(ui->spinImagesPerPage->value()) << QString::number(ui->spinImagesPerPage->value()) << "false" << actuals.at(i) << "false" << m_settings->value("Save/filename").toString() << m_settings->value("Save/path").toString() << ""); }
 }
 
 void mainWindow::batchAddGroup(const QStringList& values)
@@ -511,30 +508,34 @@ void mainWindow::loadNextFavorite()
 		web(tag);
 	}
 }
-void mainWindow::webUpdateLast()
+void mainWindow::nextPage()
 {
-	m_loadFavorite = QDateTime();
-	web("", m_lastWeb);
+	if (ui->spinPage->value() < m_pagemax)
+	{
+		ui->spinPage->setValue(ui->spinPage->value()+1);
+		webUpdateTags();
+	}
+}
+void mainWindow::previousPage()
+{
+	if (ui->spinPage->value() > 1)
+	{
+		ui->spinPage->setValue(ui->spinPage->value()-1);
+		webUpdateTags();
+	}
 }
 void mainWindow::webUpdateTags()
 {
 	m_loadFavorite = QDateTime();
 	web();
 }
-void mainWindow::webUpdatePopular()
+void mainWindow::web(QString tags)
 {
-	m_loadFavorite = QDateTime();
-	web("", true);
-}
-void mainWindow::web(QString tags, bool popular)
-{
-	m_lastWeb = popular;
 	m_remainingPics = 0;
 	m_remainingSites = 0;
 	m_countPics = 0;
 	m_gotMd5.clear();
 	m_mergeButtons.clear();
-	m_currentPageIsPopular = popular;
 	ui->labelMergeResults->setText(tr("%1/%2 (%3/%4)").arg(m_currentFav == -1 ? m_replies.count()-m_countPics-m_remainingSites : m_currentFav+1).arg(m_currentFav == -1 ? m_replies.count()-m_countPics : m_favorites.count()).arg(m_countPics-m_remainingPics).arg(m_countPics));
 	tags = (tags.isEmpty() ? m_search->toPlainText() : tags);
 	if (!m_replies.isEmpty() && m_currentFav < 1)
@@ -566,45 +567,32 @@ void mainWindow::web(QString tags, bool popular)
 	QNetworkAccessManager *manager = new QNetworkAccessManager(this);
 	connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply*)));
 	m_pagemax = 0;
+	ui->buttonPreviousPage->setEnabled(ui->spinPage->value() > 1);
 	m_assoc.clear();
 	QStringList keys = m_sites.keys();
 	for (int i = 0; i < keys.count(); i++)
 	{
 		QString url;
-		if (!popular)
+		QString text = " "+tags+" ";
+			text.replace(" rating:s ", " rating:safe ", Qt::CaseInsensitive)
+			.replace(" rating:q ", " rating:questionable ", Qt::CaseInsensitive)
+			.replace(" rating:e ", " rating:explicit ", Qt::CaseInsensitive)
+			.replace(" -rating:s ", " -rating:safe ", Qt::CaseInsensitive)
+			.replace(" -rating:q ", " -rating:questionable ", Qt::CaseInsensitive)
+			.replace(" -rating:e ", " -rating:explicit ", Qt::CaseInsensitive);
+		QStringList tags = text.split(" ", QString::SkipEmptyParts);
+		tags.removeDuplicates();
+		if (m_loadFavorite.isNull())
 		{
-			QString text = " "+tags+" ";
-				text.replace(" rating:s ", " rating:safe ", Qt::CaseInsensitive)
-				.replace(" rating:q ", " rating:questionable ", Qt::CaseInsensitive)
-				.replace(" rating:e ", " rating:explicit ", Qt::CaseInsensitive)
-				.replace(" -rating:s ", " -rating:safe ", Qt::CaseInsensitive)
-				.replace(" -rating:q ", " -rating:questionable ", Qt::CaseInsensitive)
-				.replace(" -rating:e ", " -rating:explicit ", Qt::CaseInsensitive);
-			QStringList tags = text.split(" ", QString::SkipEmptyParts);
-			tags.removeDuplicates();
-			if (m_loadFavorite.isNull())
-			{
-				m_search->setText(tags.join(" "));
-				m_search->doColor();
-			}
-			url = m_sites[keys.at(i)]["Urls/Selected/Tags"];
-			url.replace("{page}", QString::number(ui->spinPage->value()-1+m_sites[keys.at(i)]["FirstPage"].toInt()));
-			url.replace("{tags}", tags.join(" ").replace("&", "%26"));
-			url.replace("{limit}", QString::number(ui->spinImagesPerPage->value()));
-			url.replace("{pseudo}", m_settings->value("Login/pseudo").toString());
-			url.replace("{password}", m_settings->value("Login/password").toString());
+			m_search->setText(tags.join(" "));
+			m_search->doColor();
 		}
-		else
-		{
-			url = m_sites[keys.at(i)]["Urls/Selected/Popular"];
-			url.replace("{page}", QString::number(ui->spinPage->value()-1+m_sites[keys.at(i)]["FirstPage"].toInt()));
-			url.replace("{limit}", QString::number(ui->spinImagesPerPage->value()));
-			url.replace("{day}", QString::number(ui->datePopular->date().day()));
-			url.replace("{month}", QString::number(ui->datePopular->date().month()));
-			url.replace("{year}", QString::number(ui->datePopular->date().year()));
-			url.replace("{pseudo}", m_settings->value("Login/pseudo").toString());
-			url.replace("{password}", m_settings->value("Login/password").toString());
-		}
+		url = m_sites[keys.at(i)]["Urls/Selected/Tags"];
+		url.replace("{page}", QString::number(ui->spinPage->value()-1+m_sites[keys.at(i)]["FirstPage"].toInt()));
+		url.replace("{tags}", tags.join(" ").replace("&", "%26"));
+		url.replace("{limit}", QString::number(ui->spinImagesPerPage->value()));
+		url.replace("{pseudo}", m_settings->value("Login/pseudo").toString());
+		url.replace("{password}", m_settings->value("Login/password").toString());
 		m_assoc.append(url);
 		if (m_selected.at(i) && !url.isEmpty())
 		{
@@ -728,6 +716,7 @@ void mainWindow::replyFinished(QNetworkReply* r)
 			m_pagemax = max;
 			ui->spinPage->setMaximum(max);
 		}
+		ui->buttonNextPage->setEnabled(m_pagemax > ui->spinPage->value());
 		// Reading posts
 		QDomNodeList nodeList = docElem.elementsByTagName("post");
 		if (nodeList.count() > 0)
