@@ -139,16 +139,6 @@ p, li { white-space: pre-wrap; }
        </property>
       </widget>
      </item>
-     <item row="6" column="1">
-      <widget class="QLabel" name="labelUser">
-       <property name="text">
-        <string>&lt;i&gt;Inconnu&lt;/i&gt;</string>
-       </property>
-       <property name="wordWrap">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
      <item row="7" column="0" colspan="2">
       <spacer name="verticalSpacer2">
        <property name="orientation">
@@ -241,21 +231,21 @@ p, li { white-space: pre-wrap; }
        </property>
       </spacer>
      </item>
-     <item row="12" column="0">
+     <item row="13" column="0">
       <widget class="QLabel" name="labelFormUrl">
        <property name="text">
         <string>&lt;b&gt;URL&lt;/b&gt;</string>
        </property>
       </widget>
      </item>
-     <item row="13" column="0">
+     <item row="14" column="0">
       <widget class="QLabel" name="labelFormSource">
        <property name="text">
         <string>&lt;b&gt;Source&lt;/b&gt;</string>
        </property>
       </widget>
      </item>
-     <item row="13" column="1">
+     <item row="14" column="1">
       <widget class="QLabel" name="labelSource">
        <property name="text">
         <string>&lt;i&gt;Inconnue&lt;/i&gt;</string>
@@ -265,7 +255,7 @@ p, li { white-space: pre-wrap; }
        </property>
       </widget>
      </item>
-     <item row="12" column="1">
+     <item row="13" column="1">
       <widget class="QLabel" name="labelUrl">
        <property name="text">
         <string>&lt;i&gt;Inconnue&lt;/i&gt;</string>
@@ -275,21 +265,21 @@ p, li { white-space: pre-wrap; }
        </property>
       </widget>
      </item>
-     <item row="14" column="0">
+     <item row="15" column="0">
       <widget class="QLabel" name="labelFormSample">
        <property name="text">
         <string>&lt;b&gt;Sample&lt;/b&gt;</string>
        </property>
       </widget>
      </item>
-     <item row="15" column="0">
+     <item row="16" column="0">
       <widget class="QLabel" name="labelFormPreview">
        <property name="text">
         <string>&lt;b&gt;Vignette&lt;/b&gt;</string>
        </property>
       </widget>
      </item>
-     <item row="14" column="1">
+     <item row="15" column="1">
       <widget class="QLabel" name="labelSample">
        <property name="text">
         <string>&lt;i&gt;Inconnue&lt;/i&gt;</string>
@@ -299,12 +289,39 @@ p, li { white-space: pre-wrap; }
        </property>
       </widget>
      </item>
-     <item row="15" column="1">
+     <item row="16" column="1">
       <widget class="QLabel" name="labelPreview">
        <property name="text">
         <string>&lt;i&gt;Inconnue&lt;/i&gt;</string>
        </property>
        <property name="openExternalLinks">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="12" column="0">
+      <widget class="QLabel" name="labelFormPage">
+       <property name="text">
+        <string>&lt;b&gt;Page&lt;/b&gt;</string>
+       </property>
+      </widget>
+     </item>
+     <item row="12" column="1">
+      <widget class="QLabel" name="labelPage">
+       <property name="text">
+        <string>&lt;i&gt;Inconnue&lt;/i&gt;</string>
+       </property>
+       <property name="openExternalLinks">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="1">
+      <widget class="QLabel" name="labelUser">
+       <property name="text">
+        <string>&lt;i&gt;Inconnu&lt;/i&gt;</string>
+       </property>
+       <property name="wordWrap">
         <bool>true</bool>
        </property>
       </widget>

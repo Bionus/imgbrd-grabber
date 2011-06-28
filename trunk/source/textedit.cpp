@@ -191,6 +191,24 @@ void TextEdit::customContextMenuRequested(QPoint)
 				ratings->addActions(ratingsGroup->actions());
 				ratings->setIcon(QIcon(":/images/ratings/none.png"));
 			menu->addMenu(ratings);
+		QMenu *sortings = new QMenu(tr("Tris"), menu);
+			QActionGroup* sortingsGroup = new QActionGroup(favs);
+				sortingsGroup->setExclusive(true);
+				connect(sortingsGroup, SIGNAL(triggered(QAction *)), this, SLOT(insertFav(QAction *)));
+					sortingsGroup->addAction(QIcon(":/images/icons/favorite.png"), "order:favcount");
+					sortingsGroup->addAction(QIcon(":/images/sortings/size.png"), "order:filesize");
+					sortingsGroup->addAction(QIcon(":/images/sortings/id.png"), "order:id");
+					sortingsGroup->addAction(QIcon(":/images/sortings/id.png"), "order:id_desc");
+					sortingsGroup->addAction(QIcon(":/images/sortings/landscape.png"), "order:landscape");
+					sortingsGroup->addAction(QIcon(":/images/sortings/pixels.png"), "order:mpixels");
+					sortingsGroup->addAction(QIcon(":/images/sortings/pixels.png"), "order:mpixels_asc");
+					sortingsGroup->addAction(QIcon(":/images/sortings/portrait.png"), "order:portrait");
+					sortingsGroup->addAction(QIcon(":/images/icons/favorite.png"), "order:rank");
+					sortingsGroup->addAction(QIcon(":/images/sortings/score.png"), "order:score");
+					sortingsGroup->addAction(QIcon(":/images/sortings/score.png"), "order:score_asc");
+				sortings->addActions(sortingsGroup->actions());
+				sortings->setIcon(QIcon(":/images/sortings/sort.png"));
+			menu->addMenu(sortings);
 	menu->exec(QCursor::pos());
 }
 void TextEdit::insertFav(QAction *act)

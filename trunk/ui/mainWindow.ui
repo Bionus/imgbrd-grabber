@@ -48,53 +48,18 @@
             <number>0</number>
            </property>
            <item>
-            <layout class="QGridLayout" name="layoutFields" columnstretch="0,1,0,0,0,0,0">
-             <property name="margin">
-              <number>0</number>
+            <layout class="QHBoxLayout" name="layoutFields" stretch="0,0,0,0">
+             <property name="spacing">
+              <number>6</number>
              </property>
-             <item row="0" column="0">
-              <widget class="QLabel" name="label">
-               <property name="text">
-                <string>Liste</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0">
-              <widget class="QLabel" name="label_2">
-               <property name="text">
-                <string>Populaires</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="2">
+             <item>
               <widget class="QPushButton" name="buttonCalendar">
                <property name="text">
-                <string>Choisir</string>
+                <string> Insérer une date </string>
                </property>
               </widget>
              </item>
-             <item row="0" column="5">
-              <widget class="QPushButton" name="buttonTags">
-               <property name="text">
-                <string>Ok</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="5">
-              <widget class="QPushButton" name="buttonPopular">
-               <property name="text">
-                <string>Ok</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="QDateEdit" name="datePopular">
-               <property name="displayFormat">
-                <string>dd/MM/yyyy</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="3" rowspan="2">
+             <item>
               <widget class="QSpinBox" name="spinPage">
                <property name="minimumSize">
                 <size>
@@ -110,14 +75,15 @@
                </property>
               </widget>
              </item>
-             <item row="0" column="6" rowspan="2">
-              <widget class="QPushButton" name="pushButton">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
+             <item>
+              <widget class="QPushButton" name="buttonTags">
+               <property name="text">
+                <string>Ok</string>
                </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButton">
                <property name="maximumSize">
                 <size>
                  <width>30</width>
@@ -207,7 +173,23 @@
             </spacer>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,0,0">
+            <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,1,1,1,1,0">
+             <item>
+              <widget class="QPushButton" name="buttonPreviousPage">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>30</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>&lt;</string>
+               </property>
+              </widget>
+             </item>
              <item>
               <widget class="QPushButton" name="buttonSourcesList">
                <property name="text">
@@ -236,6 +218,22 @@
               <widget class="QPushButton" name="buttonGetpage">
                <property name="text">
                 <string>Prendre cette page</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="buttonNextPage">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>30</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>&gt;</string>
                </property>
               </widget>
              </item>
@@ -783,22 +781,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>buttonPopular</sender>
-   <signal>clicked()</signal>
-   <receiver>mainWindow</receiver>
-   <slot>webUpdatePopular()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>730</x>
-     <y>101</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>742</x>
-     <y>101</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>buttonSourcesFavs</sender>
    <signal>clicked()</signal>
    <receiver>mainWindow</receiver>
@@ -1006,6 +988,38 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>buttonNextPage</sender>
+   <signal>clicked()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>nextPage()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>767</x>
+     <y>575</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>757</x>
+     <y>590</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonPreviousPage</sender>
+   <signal>clicked()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>previousPage()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>28</x>
+     <y>569</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>35</x>
+     <y>592</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>help()</slot>
@@ -1027,5 +1041,7 @@
   <slot>saveFolder()</slot>
   <slot>widgetPlusChange()</slot>
   <slot>checkFavorites()</slot>
+  <slot>previousPage()</slot>
+  <slot>nextPage()</slot>
  </slots>
 </ui>
