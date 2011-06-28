@@ -15,7 +15,8 @@ _*Note that shimmie-based boorus will give random results when downloading multi
 
 *Part not finished!*
 If your site is not based on danbooru/gelbooru/shimmie, it gets more complicated. *You must have a minimal knowledge of XML and regex to make your own one.* Here is an example of file you'll have to create (it is the danbooru's file):
-<code language="xml"><?xml version="1.0" encoding="utf-8" ?>
+{{{
+<?xml version="1.0" encoding="utf-8" ?>
 <Site>
 	<Name>Danbooru</Name>
 	<Urls>
@@ -38,7 +39,8 @@ If your site is not based on danbooru/gelbooru/shimmie, it gets more complicated
 		<LastPage>&lt;link href=&quot;/post\?limit=\d*&amp;page=(\d*)&amp;tags=[^&quot;]*&quot; rel=&quot;last&quot; title=&quot;Last Page&quot;&gt;</LastPage>
 	</Regex>
 	<FirstPage>1</FirstPage>
-</Site></code>
+</Site>
+}}}
 Let's explain it in detail.
   * Name: the name that will be shown in the sources window.
   * Urls: the pages urls. You must set at least Html/Post and either Xml or Json. They must start with a slash.
