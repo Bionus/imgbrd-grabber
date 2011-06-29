@@ -29,6 +29,29 @@ favoriteWindow::~favoriteWindow()
 }
 
 /**
+ * Removes the favorite from the list and closes the window
+ */
+void favoriteWindow::on_buttonRemove_clicked()
+{
+	QFile f(savePath("favorites.txt"));
+	f.open(QIODevice::ReadOnly);
+		QString favs = f.readAll();
+	f.close();
+	favs.replace("\r\n", "\n").replace("\r", "\n").replace("\n", "\r\n");
+	QRegExp reg(m_tag+"\\|(.+)\\r\\n");
+	reg.setMinimal(true);
+	favs.remove(reg);
+	f.open(QIODevice::WriteOnly);
+		f.write(favs.toAscii());
+	f.close();
+	if (QFile::exists(savePath("thumbs/"+m_tag+".png")))
+	{ QFile::remove(savePath("thumbs/"+m_tag+".png")); }
+	m_parent->updateFavorites();
+
+	close();
+}
+
+/**
  * Opens a window to choose an image to set the imagepath value.
  */
 void favoriteWindow::on_openButton_clicked()

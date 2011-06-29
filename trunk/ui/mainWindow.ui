@@ -48,10 +48,17 @@
             <number>0</number>
            </property>
            <item>
-            <layout class="QHBoxLayout" name="layoutFields" stretch="0,0,0,0">
+            <layout class="QHBoxLayout" name="layoutFields" stretch="0,0,0,0,0">
              <property name="spacing">
               <number>6</number>
              </property>
+             <item>
+              <widget class="QLabel" name="label">
+               <property name="text">
+                <string>Recherche</string>
+               </property>
+              </widget>
+             </item>
              <item>
               <widget class="QPushButton" name="buttonCalendar">
                <property name="text">
@@ -153,6 +160,9 @@
                 </property>
                </widget>
               </item>
+              <item row="2" column="0" colspan="4">
+               <layout class="QHBoxLayout" name="layoutSourcesList"/>
+              </item>
              </layout>
             </widget>
            </item>
@@ -173,7 +183,23 @@
             </spacer>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,1,1,1,1,0">
+            <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,1,1,1,1,0,0">
+             <item>
+              <widget class="QPushButton" name="buttonFirstPage">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>30</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>&lt;&lt;</string>
+               </property>
+              </widget>
+             </item>
              <item>
               <widget class="QPushButton" name="buttonPreviousPage">
                <property name="enabled">
@@ -237,6 +263,22 @@
                </property>
               </widget>
              </item>
+             <item>
+              <widget class="QPushButton" name="buttonLastPage">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>30</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>&gt;&gt;</string>
+               </property>
+              </widget>
+             </item>
             </layout>
            </item>
           </layout>
@@ -251,7 +293,7 @@
        <layout class="QVBoxLayout" name="verticalLayout_4">
         <item>
          <widget class="QWidget" name="widget_2" native="true">
-          <layout class="QVBoxLayout" name="verticalLayout_5" stretch="0,1,0,0,0">
+          <layout class="QVBoxLayout" name="verticalLayout_5" stretch="0,1,0,0,0,0">
            <property name="spacing">
             <number>6</number>
            </property>
@@ -359,6 +401,9 @@
               </size>
              </property>
             </spacer>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="layoutSourcesFavs"/>
            </item>
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -964,7 +1009,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>785</x>
-     <y>104</y>
+     <y>75</y>
     </hint>
     <hint type="destinationlabel">
      <x>637</x>
@@ -995,8 +1040,8 @@
    <slot>nextPage()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>767</x>
-     <y>575</y>
+     <x>749</x>
+     <y>585</y>
     </hint>
     <hint type="destinationlabel">
      <x>757</x>
@@ -1011,12 +1056,44 @@
    <slot>previousPage()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>28</x>
-     <y>569</y>
+     <x>67</x>
+     <y>585</y>
     </hint>
     <hint type="destinationlabel">
      <x>35</x>
      <y>592</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonFirstPage</sender>
+   <signal>clicked()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>firstPage()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>33</x>
+     <y>570</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>573</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonLastPage</sender>
+   <signal>clicked()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>lastPage()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>775</x>
+     <y>563</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>764</x>
+     <y>508</y>
     </hint>
    </hints>
   </connection>
@@ -1043,5 +1120,7 @@
   <slot>checkFavorites()</slot>
   <slot>previousPage()</slot>
   <slot>nextPage()</slot>
+  <slot>firstPage()</slot>
+  <slot>lastPage()</slot>
  </slots>
 </ui>

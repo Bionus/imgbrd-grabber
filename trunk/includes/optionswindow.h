@@ -22,6 +22,7 @@ class optionsWindow : public QDialog
 	public slots:
 		void updateContainer(QTreeWidgetItem *, QTreeWidgetItem *);
 		void on_lineFilename_textChanged(QString);
+		void on_comboSourcesLetters_currentIndexChanged(int);
 		void on_buttonFolder_clicked();
 		void on_buttonCrypt_clicked();
 		void on_lineColoringArtists_textChanged();

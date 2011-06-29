@@ -2,10 +2,7 @@
 <Site>
 	<Name>Gelbooru</Name>
 	<Urls>
-		<Xml>
-			<Tags>/index.php?page=dapi&amp;s=post&amp;q=index&amp;limit={limit}&amp;pid={page}&amp;tags={tags}</Tags>
-			<Popular>/index.php?page=dapi&amp;s=post&amp;q=index&amp;limit={limit}&amp;pid={page}&amp;tags=date:{month}/{day}/{year} order:score:desc</Popular>
-		</Xml>
+		<Xml>/index.php?page=dapi&amp;s=post&amp;q=index&amp;limit={limit}&amp;pid={page}&amp;tags={tags}</Tags></Xml>
 		<Html>
 			<Post>/index.php?page=post&amp;s=view&amp;id={id}</Post>
 		</Html>

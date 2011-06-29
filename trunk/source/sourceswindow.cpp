@@ -41,17 +41,21 @@ sourcesWindow::sourcesWindow(QList<bool> selected, QStringMapMap *sites, QWidget
 		int n = 1;
 		if (t != "hide")
 		{
-			QString txt;
-			QLabel *type = new QLabel();
-				if (t == "icon" || t == "both")
-				{ txt += "<img src=\"sites/"+sites->value(k.at(i))["Name"].toLower()+"/icon.png\" /> "; }
-				if (t == "text" || t == "both")
-				{ txt += sites->value(k.at(i))["Name"]; }
-				type->setText(txt);
-				type->setTextFormat(Qt::RichText);
-				ui->gridLayout->addWidget(type, i, 1);
+			if (t == "icon" || t == "both")
+			{
+				QLabel *image = new QLabel();
+				image->setPixmap(QPixmap(savePath("sites/"+sites->value(k.at(i))["Name"].toLower()+"/icon.png")));
+				ui->gridLayout->addWidget(image, i, n);
+				m_labels << image;
+				n++;
+			}
+			if (t == "text" || t == "both")
+			{
+				QLabel *type = new QLabel(sites->value(k.at(i))["Name"]);
+				ui->gridLayout->addWidget(type, i, n);
 				m_labels << type;
 				n++;
+			}
 		}
 		QBouton *del = new QBouton(k.at(i));
 			del->setText(tr("Supprimer"));
@@ -84,8 +88,10 @@ void sourcesWindow::closeEvent(QCloseEvent *event)
  */
 void sourcesWindow::valid()
 {
-	for (int i = 0; i < m_checks.count(); i++)
+	qDebug() << m_selected;
+	for (int i = 0; i < m_selected.count(); i++)
 	{ m_selected[i] = m_checks.at(i)->isChecked(); }
+	qDebug() << m_selected;
 	emit valid(this);
 	this->close();
 }
@@ -106,7 +112,7 @@ void sourcesWindow::deleteSite(QVariant site)
 			ui->gridLayout->removeWidget(m_labels.at(i));
 		}
 		QString type = m_sites->value(site.toString())["Name"].toLower();
-		QFile f("sites/"+type+"/sites.txt");
+		QFile f(savePath("sites/"+type+"/sites.txt"));
 		f.open(QIODevice::ReadOnly);
 			QString sites = f.readAll();
 		f.close();
@@ -118,6 +124,7 @@ void sourcesWindow::deleteSite(QVariant site)
 		f.close();
 		m_sites->remove(site.toString());
 		m_selected.removeAt(i);
+		m_checks.removeAt(i);
 	}
 }
 
@@ -144,6 +151,7 @@ void sourcesWindow::insertCheckBox()
 	}
 
 	QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
+	QString t = settings->value("Sources/Types", "text").toString();
 	for (int i = 0; i < m_sites->count(); i++)
 	{
 		if (k.at(i) != m_checks.at(i)->text())
@@ -153,18 +161,19 @@ void sourcesWindow::insertCheckBox()
 				check->setChecked(m_selected[i]);
 				check->setText(k.at(i));
 				m_checks.insert(i, check);
-			QString t = settings->value("Sources/Types", "text").toString();
 			if (t != "hide")
 			{
-				QString txt;
-				QLabel *type = new QLabel();
-					if (t == "icon" || t == "both")
-					{ txt += "<img src=\"sites/"+m_sites->value(k.at(i))["Name"].toLower()+"/icon.png\" /> "; }
-					if (t == "text" || t == "both")
-					{ txt += m_sites->value(k.at(i))["Name"]; }
-					type->setText(txt);
-					type->setTextFormat(Qt::RichText);
-					m_labels.insert(i, type);
+				if (t == "icon" || t == "both")
+				{
+					QLabel *image = new QLabel();
+					image->setPixmap(QPixmap(savePath("sites/"+m_sites->value(k.at(i))["Name"].toLower()+"/icon.png")));
+					m_labels << image;
+				}
+				if (t == "text" || t == "both")
+				{
+					QLabel *type = new QLabel(m_sites->value(k.at(i))["Name"]);
+					m_labels << type;
+				}
 			}
 			QBouton *del = new QBouton(k.at(i));
 				del->setText(tr("Supprimer"));
@@ -172,19 +181,20 @@ void sourcesWindow::insertCheckBox()
 			break;
 		}
 	}
-
+	int n =  0+(t == "icon" || t == "both")+(t == "text" || t == "both");
 	for (int i = 0; i < m_checks.count(); i++)
 	{
 		ui->gridLayout->addWidget(m_checks.at(i), i, 0);
 		m_checks.at(i)->show();
-		int n = 1;
 		if (!m_labels.isEmpty())
 		{
-			ui->gridLayout->addWidget(m_labels.at(i), i, 1);
-			m_labels.at(i)->show();
-			n++;
+			for (int r = 0; r < n; r++)
+			{
+				ui->gridLayout->addWidget(m_labels.at(i*n+r), i*n+r, 1);
+				m_labels.at(i*n+r)->show();
+			}
 		}
-		ui->gridLayout->addWidget(m_buttons.at(i), i, n);
+		ui->gridLayout->addWidget(m_buttons.at(i), i, n+1);
 		m_buttons.at(i)->show();
 	}
 }

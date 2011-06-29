@@ -16,6 +16,8 @@ zoomWindow::zoomWindow(QString m_program, QString site, QStringMap regex, QStrin
 	ui->setupUi(this);
 	favorites = loadFavorites().keys();
 
+	m_mustSave = 0;
+
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
 		settings.beginGroup("Zoom");
 		this->setWindowState(Qt::WindowStates(settings.value("state", 0).toInt()));
@@ -28,7 +30,6 @@ zoomWindow::zoomWindow(QString m_program, QString site, QStringMap regex, QStrin
 
 	if (settings.value("autodownload", false).toBool())
 	{ saveImage(); }
-	qDebug() << settings.value("autodownload", false).toBool();
 
 	QAffiche *labelImage = new QAffiche;
 		labelImage->setSizePolicy(QSizePolicy(QSizePolicy::Ignored,QSizePolicy::Ignored));
@@ -249,14 +250,22 @@ void zoomWindow::replyFinished(QNetworkReply* reply)
 		{
 			ui->buttonSave->setText(tr("Fichier déjà existant"));
 			ui->buttonSaveNQuit->setText(tr("Fermer"));
-			this->d.clear();
+			this->loaded = true;
+			if (this->url.section('.', -1).toUpper() == "GIF")
+			{
+				QMovie *movie = new QMovie(path+"/"+pth);
+				labelImage->setMovie(movie);
+				movie->start();
+			}
+			else
+			{
+				this->d.clear();
 				if (!file.open(QIODevice::ReadOnly))
 				{ error(this, tr("Erreur inattendue lors de l'ouverture du fichier.\r\n%1").arg(path+"/"+pth)); }
-				while (!file.atEnd())
-				{ this->d.append(file.readLine()); }
-			this->image.loadFromData(this->d, m_format);
-			this->loaded = true;
-			this->update();
+				this->d = file.readAll();
+				this->image.loadFromData(this->d, m_format);
+				this->update();
+			}
 		}
 		else
 		{ this->load(); }
@@ -272,9 +281,26 @@ void zoomWindow::replyFinishedZoom(QNetworkReply* reply)
 	if (reply->error() == QNetworkReply::NoError)
 	{
 		this->d.append(reply->readAll());
-		this->image.loadFromData(this->d, m_format);
 		this->loaded = true;
-		this->update();
+		if (this->url.section('.', -1).toUpper() == "GIF")
+		{
+			QTemporaryFile f;
+			if (f.open())
+			{
+				f.write(this->d);
+				f.close();
+				QMovie *movie = new QMovie(f.fileName());
+				labelImage->setMovie(movie);
+				movie->start();
+			}
+			else
+			{ error(this, tr("Une erreur inattendue est survenue lors du chargement de l'image.\r\n%1").arg(reply->url().toString())); }
+		}
+		else
+		{
+			this->image.loadFromData(this->d, m_format);
+			this->update();
+		}
 		if (this->m_mustSave > 0)
 		{ this->saveImage(); }
 	}
@@ -286,14 +312,19 @@ void zoomWindow::replyFinishedZoom(QNetworkReply* reply)
 
 void zoomWindow::update(bool onlysize)
 {
-	if (onlysize && (this->image.width() > this->labelImage->width() || this->image.height() > this->labelImage->height()))
-	{ this->labelImage->setImage(this->image.scaled(this->labelImage->width(), this->labelImage->height(), Qt::KeepAspectRatio, Qt::FastTransformation)); }
-	else if (this->loaded)
+	if (this->url.section('.', -1).toUpper() == "GIF")
+	{  }
+	else
 	{
-		if (this->image.width() > this->labelImage->width() || this->image.height() > this->labelImage->height())
-		{ this->labelImage->setImage(this->image.scaled(this->labelImage->width(), this->labelImage->height(), Qt::KeepAspectRatio, Qt::SmoothTransformation)); }
-		else
-		{ this->labelImage->setImage(this->image); }
+		if (onlysize && (this->image.width() > this->labelImage->width() || this->image.height() > this->labelImage->height()))
+		{ this->labelImage->setImage(this->image.scaled(this->labelImage->width(), this->labelImage->height(), Qt::KeepAspectRatio, Qt::FastTransformation)); }
+		else if (this->loaded)
+		{
+			if (this->image.width() > this->labelImage->width() || this->image.height() > this->labelImage->height())
+			{ this->labelImage->setImage(this->image.scaled(this->labelImage->width(), this->labelImage->height(), Qt::KeepAspectRatio, Qt::SmoothTransformation)); }
+			else
+			{ this->labelImage->setImage(this->image); }
+		}
 	}
 }
 
