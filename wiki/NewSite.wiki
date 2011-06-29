@@ -13,7 +13,6 @@ _*Note that shimmie-based boorus will give random results when downloading multi
 
 == Add a site type ==
 
-*Part not finished!*
 If your site is not based on danbooru/gelbooru/shimmie, it gets more complicated. *You must have a minimal knowledge of XML and regex to make your own one.* Here is an example of file you'll have to create (it is the danbooru's file):
 {{{
 <?xml version="1.0" encoding="utf-8" ?>
@@ -41,13 +40,14 @@ Let's explain it in detail.
    * Xml: url to the site's XML API. You can use {pseudo}, {password}, {limit}, {page} and {tags}.
    * Json: same as Xml, but for JSON API.
    * Html
-    * Post: url of an image details.
+    * Post: url of an image's details. You can use {id}.
   * Regex: even when using xml/json, some regex must be used
    * Tags: regex that must return a list of tags from the Html/Post url. Must capture tag's type and tag (in this order).
    * Image: regex that must return a list of iamges from the Html/Post url. Must capture id and preview_url, but can capture md5, tags, rating, score and user (any order, see below).
    * Order: capture order, separated with a "|". For example "id|preview_url" means that the first captured text in the Image regex will be id, and the second one the preview image's url.
-   * LastPage: regex that must return the last page, if XML API don't give it. Must only capture page number.
-  * FirstPage: the number of the firstpage, usually 1 (but, for example, gelbooru starts with 0).
+   * Last page: regex that must return the last page, if XML API don't give it. Must only capture page number.
+  * First page: the number of the first page, usually 1 (but, for example, gelbooru starts with 0).
+Then, save it to "%UserProfile%/Grabber/sites/your_site_here/model.xml". You should also put in this directory an icon.png file, which is the 16x16 image that will be displayed in the sources window.
 
 = Before v2.0 =
 
