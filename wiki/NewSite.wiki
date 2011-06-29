@@ -47,7 +47,7 @@ Let's explain it in detail.
    * Order: capture order, separated with a "|". For example "id|preview_url" means that the first captured text in the Image regex will be id, and the second one the preview image's url.
    * Last page: regex that must return the last page, if XML API don't give it. Must only capture page number.
   * First page: the number of the first page, usually 1 (but, for example, gelbooru starts with 0).
-Then, save it to "%UserProfile%/Grabber/sites/your_site_here/model.xml". You should also put in this directory an icon.png file, which is the 16x16 image that will be displayed in the sources window.
+Then, save it to "%USERPROFILE%/Grabber/sites/your_site_here/model.xml". You should also put in this directory an icon.png file, which is the 16x16 image that will be displayed in the sources window.
 
 = Before v2.0 =
 
