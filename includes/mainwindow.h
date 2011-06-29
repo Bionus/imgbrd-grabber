@@ -48,10 +48,13 @@ class mainWindow : public QMainWindow
 		void favoritesBack();
 		void checkFavorites();
 		void loadNextFavorite();
-		// Download
+		// Search
 		void insertDate(QDate);
-		void nextPage();
+		void firstPage();
 		void previousPage();
+		void nextPage();
+		void lastPage();
+		// Download
 		void webUpdateTags();
 		void web(QString tags = "");
 		void webZoom(int);
@@ -74,6 +77,7 @@ class mainWindow : public QMainWindow
 		void getAllSource(QNetworkReply*);
 		void _getAll();
 		// Others
+		void updateSourcesCheckboxes();
 		void setTags(QString);
 		void closeEvent(QCloseEvent*);
 		void advanced();
@@ -111,6 +115,7 @@ class mainWindow : public QMainWindow
 		QNetworkReply *m_getAllRequest;
 		batchWindow *m_progressdialog;
 		QList<QBouton*> m_mergeButtons;
+		QList<QCheckBox*> cbls, cbfs;
 };
 
 #endif // MAINWINDOW_H

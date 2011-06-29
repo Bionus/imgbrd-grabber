@@ -15,7 +15,7 @@ siteWindow::siteWindow(QStringMapMap *sites, QWidget *parent) : QDialog(parent),
 		if (!types.contains(name))
 		{
 			types.append(name);
-			ui->comboBox->addItem(QIcon("sites/"+name.toLower()+"/icon.png"), name);
+			ui->comboBox->addItem(QIcon(savePath("sites/"+name.toLower()+"/icon.png")), name);
 		}
 	}
 
@@ -72,7 +72,7 @@ void siteWindow::accept()
 	else
 	{ type = ui->comboBox->currentText().toLower(); }
 
-	QFile f("sites/"+type+"/sites.txt");
+	QFile f(savePath("sites/"+type+"/sites.txt"));
 	f.open(QIODevice::ReadOnly);
 		QString sites = f.readAll();
 	f.close();

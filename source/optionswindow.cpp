@@ -34,6 +34,9 @@ optionsWindow::optionsWindow(mainWindow *parent) : QDialog(parent), m_parent(par
 
 	QStringList types = QStringList() << "text" << "icon" << "both" << "hide";
 	ui->comboSources->setCurrentIndex(types.indexOf(settings.value("Sources/Types", "text").toString()));
+	int i = settings.value("Sources/Letters", 3).toInt();
+	ui->comboSourcesLetters->setCurrentIndex((i < 0)+(i < -1));
+	ui->spinSourcesLetters->setValue(i < 0 ? 3 : i);
 
 	ui->checkShowLog->setChecked(settings.value("Log/show", true).toBool());
 	ui->checkInvertLog->setChecked(settings.value("Log/invert", false).toBool());
@@ -107,6 +110,9 @@ optionsWindow::~optionsWindow()
 
 void optionsWindow::on_lineFilename_textChanged(QString text)
 { ui->filenameValidator->setText(validateFilename(text)); }
+
+void optionsWindow::on_comboSourcesLetters_currentIndexChanged(int i)
+{ ui->spinSourcesLetters->setDisabled(i > 0); }
 
 void optionsWindow::on_buttonFolder_clicked()
 {
@@ -273,6 +279,8 @@ void optionsWindow::save()
 
 	QStringList types = QStringList() << "text" << "icon" << "both" << "hide";
 	settings.setValue("Sources/Types", types.at(ui->comboSources->currentIndex()));
+	int i = ui->comboSourcesLetters->currentIndex();
+	settings.setValue("Sources/Letters", (i == 0 ? ui->spinSourcesLetters->value() : -i));
 
 	settings.beginGroup("Log");
 		settings.setValue("show", ui->checkShowLog->isChecked());

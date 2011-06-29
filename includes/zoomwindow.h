@@ -61,6 +61,7 @@ class zoomWindow : public QWidget
 		QAffiche *labelImage;
 		QLabel *labelTags;
 		QPixmap image;
+		QMovie *movie;
 		QTimer *timer;
 		QNetworkReply *r;
 		QByteArray d;

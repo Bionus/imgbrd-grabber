@@ -19,5 +19,6 @@
         <file>images/sortings/score.png</file>
         <file>images/sortings/size.png</file>
         <file>images/sortings/sort.png</file>
+        <file>images/spinner.gif</file>
     </qresource>
 </RCC>

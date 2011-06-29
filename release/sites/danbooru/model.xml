@@ -2,14 +2,8 @@
 <Site>
 	<Name>Danbooru</Name>
 	<Urls>
-		<Xml>
-			<Tags>/post/index.xml?login={pseudo}&amp;password_hash={password}&amp;limit={limit}&amp;page={page}&amp;tags={tags}</Tags>
-			<Popular>/post/index.xml?login={pseudo}&amp;password_hash={password}&amp;limit={limit}&amp;page={page}&amp;tags=date:{month}/{day}/{year} order:score</Popular>
-		</Xml>
-		<Json>
-			<Tags>/post/index.json?login={pseudo}&amp;password_hash={password}&amp;limit={limit}&amp;page={page}&amp;tags={tags}</Tags>
-			<Popular>/post/index.json?login={pseudo}&amp;password_hash={password}&amp;limit={limit}&amp;page={page}&amp;tags=date:{month}/{day}/{year} order:score</Popular>
-		</Json>
+		<Xml>/post/index.xml?login={pseudo}&amp;password_hash={password}&amp;limit={limit}&amp;page={page}&amp;tags={tags}</Tags></Xml>
+		<Json>/post/index.json?login={pseudo}&amp;password_hash={password}&amp;limit={limit}&amp;page={page}&amp;tags={tags}</Tags></Json>
 		<Html>
 			<Post>/post/show/{id}</Post>
 		</Html>

@@ -23,6 +23,7 @@ class favoriteWindow : public QDialog
 	public slots:
 		void save();
 		void on_openButton_clicked();
+		void on_buttonRemove_clicked();
 
 	private:
 		mainWindow *m_parent;
