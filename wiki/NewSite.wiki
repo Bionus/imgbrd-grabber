@@ -108,9 +108,3 @@ http://danbooru.donmai.us/post/show/{id}
 id|image|preview_url|md5|tags|rating|score|user
 <link href="/post\?limit=\d*&amp;page=(\d*)&amp;tags=[^"]*" rel="last" title="Last Page">
 }}}
-
-
-= Conclusion =
-
-Note that most of the imageboards use the same API. So in most of the case, doing a copy/paste of the danbooru or gelbooru (the two main engines) file, then changing url is enough. For shimmie-based boorus, you can copy/paste the one from tentaclerape, but you may have to do some modifications.
-And don't hesitate sending me a mail with your site file at bio.nus@hotmail.fr, so I will add it to the officially supported boorus!
