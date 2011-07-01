@@ -32,6 +32,9 @@ optionsWindow::optionsWindow(mainWindow *parent) : QDialog(parent), m_parent(par
 	ui->comboSource2->setCurrentIndex(sources.indexOf(settings.value("source_2", "xml").toString()));
 	ui->comboSource3->setCurrentIndex(sources.indexOf(settings.value("source_3", "xml").toString()));
 
+	QStringList positions = QStringList() << "top" << "left" << "auto";
+	ui->comboTagsposition->setCurrentIndex(positions.indexOf(settings.value("tagsposition", "top").toString()));
+
 	QStringList types = QStringList() << "text" << "icon" << "both" << "hide";
 	ui->comboSources->setCurrentIndex(types.indexOf(settings.value("Sources/Types", "text").toString()));
 	int i = settings.value("Sources/Letters", 3).toInt();
@@ -276,6 +279,8 @@ void optionsWindow::save()
 	settings.setValue("loadatstart", ui->checkLoadFirstAtStart->isChecked());
 	settings.setValue("hidefavorites", ui->spinHideFavorites->value());
 	settings.setValue("autodownload", ui->checkAutodownload->isChecked());
+	QStringList positions = QStringList() << "top" << "left" << "auto";
+	settings.setValue("tagsposition", positions.at(ui->comboTagsposition->currentIndex()));
 
 	QStringList types = QStringList() << "text" << "icon" << "both" << "hide";
 	settings.setValue("Sources/Types", types.at(ui->comboSources->currentIndex()));

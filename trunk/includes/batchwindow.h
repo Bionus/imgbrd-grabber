@@ -27,6 +27,8 @@ class batchWindow : public QDialog
 		void setLog(QString);
 		void setValue(int);
 		void setMaximum(int);
+		void setImages(int);
+		void setImagesCount(int);
 		void on_buttonDetails_clicked();
 		void closeEvent(QCloseEvent *);
 
@@ -36,6 +38,7 @@ class batchWindow : public QDialog
 	private:
 		Ui::batchWindow *ui;
 		QSize m_currentSize;
+		int m_imagesCount;
 };
 
 #endif // BATCHWINDOW_H
