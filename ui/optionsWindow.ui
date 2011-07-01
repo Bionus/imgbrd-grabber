@@ -750,6 +750,32 @@ p, li { white-space: pre-wrap; }
             </item>
            </layout>
           </item>
+          <item row="8" column="0">
+           <widget class="QLabel" name="label_44">
+            <property name="text">
+             <string>Position de la liste de tags</string>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="1">
+           <widget class="QComboBox" name="comboTagsposition">
+            <item>
+             <property name="text">
+              <string>Haut</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Gauche</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Automatique</string>
+             </property>
+            </item>
+           </widget>
+          </item>
          </layout>
         </widget>
        </item>

@@ -59,7 +59,7 @@ class zoomWindow : public QWidget
 		QMap<QString, QStringList> details;
 		QString site, id, url, tags, md5, rating, score, user, format;
 		QAffiche *labelImage;
-		QLabel *labelTags;
+		QLabel *m_labelTags;
 		QPixmap image;
 		QMovie *movie;
 		QTimer *timer;

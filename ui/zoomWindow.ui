@@ -26,23 +26,22 @@
    <iconset resource="../resources.qrc">
     <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0">
+  <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,0">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,1,0">
+    <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,1">
      <item>
-      <widget class="QLabel" name="labelFormTags">
-       <property name="text">
-        <string>&lt;b&gt;Tags&lt;/b&gt;</string>
+      <widget class="QLabel" name="labelTagsLeft">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Ignored">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
        </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="labelTags">
        <property name="contextMenuPolicy">
         <enum>Qt::CustomContextMenu</enum>
        </property>
-       <property name="text">
-        <string/>
+       <property name="textFormat">
+        <enum>Qt::RichText</enum>
        </property>
        <property name="wordWrap">
         <bool>true</bool>
@@ -50,16 +49,42 @@
       </widget>
      </item>
      <item>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QLabel" name="labelTagsTop">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="contextMenuPolicy">
+          <enum>Qt::CustomContextMenu</enum>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::RichText</enum>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="buttonsLayout">
+     <item>
       <widget class="QPushButton" name="buttonDetails">
        <property name="text">
         <string>Plus d'infos</string>
        </property>
       </widget>
      </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="buttonsLayout">
      <item>
       <widget class="QPushButton" name="buttonSave">
        <property name="text">
@@ -161,7 +186,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>labelTags</sender>
+   <sender>labelTagsTop</sender>
    <signal>customContextMenuRequested(QPoint)</signal>
    <receiver>zoomWindow</receiver>
    <slot>contextMenu(QPoint)</slot>
@@ -177,7 +202,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>labelTags</sender>
+   <sender>labelTagsTop</sender>
    <signal>linkHovered(QString)</signal>
    <receiver>zoomWindow</receiver>
    <slot>linkHovered(QString)</slot>
@@ -193,7 +218,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>labelTags</sender>
+   <sender>labelTagsTop</sender>
    <signal>linkActivated(QString)</signal>
    <receiver>zoomWindow</receiver>
    <slot>openUrl(QString)</slot>
@@ -205,6 +230,54 @@
     <hint type="destinationlabel">
      <x>192</x>
      <y>311</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>labelTagsLeft</sender>
+   <signal>customContextMenuRequested(QPoint)</signal>
+   <receiver>zoomWindow</receiver>
+   <slot>contextMenu(QPoint)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>12</x>
+     <y>284</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>labelTagsLeft</sender>
+   <signal>linkHovered(QString)</signal>
+   <receiver>zoomWindow</receiver>
+   <slot>linkHovered(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>12</x>
+     <y>284</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>labelTagsLeft</sender>
+   <signal>linkActivated(QString)</signal>
+   <receiver>zoomWindow</receiver>
+   <slot>openUrl(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>12</x>
+     <y>284</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
     </hint>
    </hints>
   </connection>

@@ -494,11 +494,6 @@
              </column>
              <column>
               <property name="text">
-               <string>Populaires</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
                <string>Noms de fichiers</string>
               </property>
              </column>

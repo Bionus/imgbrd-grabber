@@ -34,14 +34,13 @@ zoomWindow::zoomWindow(QString m_program, QString site, QStringMap regex, QStrin
 	QAffiche *labelImage = new QAffiche;
 		labelImage->setSizePolicy(QSizePolicy(QSizePolicy::Ignored,QSizePolicy::Ignored));
 		connect(labelImage, SIGNAL(doubleClicked()), this, SLOT(fullScreen()));
-	ui->verticalLayout->insertWidget(1, labelImage, 2);
+	ui->verticalLayout->insertWidget(1, labelImage, 1);
 	this->labelImage = labelImage;
 
 	QStringList taglist = m_details.value("tags").split(' ');
-	QString hreftags;
+	QStringList hreftags;
 	for (int i = 0; i < taglist.count(); i++)
-	{ hreftags += " <a href=\""+taglist.at(i)+"\" style=\"text-decoration:none;color:#000000\">"+taglist.at(i)+"</a>"; }
-	ui->labelTags->setText(hreftags.trimmed());
+	{ hreftags.append(" <a href=\""+taglist.at(i)+"\" style=\"text-decoration:none;color:#000000\">"+taglist.at(i)+"</a>"); }
 
 	QMap<QString, QString> assoc;
 		assoc["s"] = tr("Safe");
@@ -62,6 +61,30 @@ zoomWindow::zoomWindow(QString m_program, QString site, QStringMap regex, QStrin
 		m_details["page_url"] = u;
 	m_detailsWindow = new detailsWindow(m_details);
 	connect(ui->buttonDetails, SIGNAL(clicked()), m_detailsWindow, SLOT(show()));
+
+	QString pos = settings.value("tagsposition", "top").toString();
+	if (pos == "auto")
+	{
+		if (m_details.contains("width") && m_details.contains("height"))
+		{
+			if (m_details["width"].toFloat()/m_details["height"].toFloat() >= 4.0/3.0)
+			{ pos = "top"; }
+			else
+			{ pos = "left"; }
+		}
+		else
+		{ pos = "top"; }
+	}
+	if (pos == "top")
+	{
+		ui->labelTagsLeft->hide();
+		ui->labelTagsTop->setText(hreftags.join(" "));
+	}
+	else
+	{
+		ui->labelTagsTop->hide();
+		ui->labelTagsLeft->setText(hreftags.join("<br/>"));
+	}
 
 	QUrl rl(u);
 	QNetworkAccessManager *manager = new QNetworkAccessManager(this);
@@ -182,15 +205,15 @@ void zoomWindow::load()
 {
 	QNetworkRequest request(QUrl(this->url));
 		request.setRawHeader("Referer", this->url.toAscii());
-	QEventLoop *q = new QEventLoop;
+	//QEventLoop *q = new QEventLoop;
 	QNetworkAccessManager *manager = new QNetworkAccessManager;
 	m_replyExists = true;
 	m_reply = manager->get(request);
 	this->d = QByteArray();
 	connect(m_reply, SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(rR(qint64, qint64)));
 	connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinishedZoom(QNetworkReply*)));
-	connect(manager, SIGNAL(finished(QNetworkReply*)), q, SLOT(quit()));
-	q->exec();
+	//connect(manager, SIGNAL(finished(QNetworkReply*)), q, SLOT(quit()));
+	//q->exec();
 }
 
 #define UPDATES 20
@@ -238,7 +261,10 @@ void zoomWindow::replyFinished(QNetworkReply* reply)
 			tags.replace(" "+tag+" ", " <a href=\""+tag+"\" style=\""+(styles.contains(type+"s") ? styles[type+"s"] : styles["generals"])+"\">"+tag+"</a> ");
 			this->details["alls"].append(normalized);
 		}
-		ui->labelTags->setText(tags.trimmed());
+		if (ui->labelTagsLeft->isHidden())
+		{ ui->labelTagsTop->setText(tags); }
+		else
+		{ ui->labelTagsLeft->setText(tags.split("> <").join("><br/><")); }
 		m_details["tags"] = tags.trimmed();
 		m_detailsWindow->setTags(tags.trimmed());
 		QString pth = this->getSavePath();
@@ -312,9 +338,7 @@ void zoomWindow::replyFinishedZoom(QNetworkReply* reply)
 
 void zoomWindow::update(bool onlysize)
 {
-	if (this->url.section('.', -1).toUpper() == "GIF")
-	{  }
-	else
+	if (this->url.section('.', -1).toUpper() != "GIF")
 	{
 		if (onlysize && (this->image.width() > this->labelImage->width() || this->image.height() > this->labelImage->height()))
 		{ this->labelImage->setImage(this->image.scaled(this->labelImage->width(), this->labelImage->height(), Qt::KeepAspectRatio, Qt::FastTransformation)); }

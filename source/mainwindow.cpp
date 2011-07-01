@@ -731,8 +731,7 @@ void mainWindow::replyFinished(QNetworkReply* r)
 		if (cbls.at(i)->isChecked())
 		{ n++; }
 	}
-	int max = 0;
-	float count = 0;
+	int max = 0, count = 0;
 	QString site = m_sites.keys().at(site_id), source = r->readAll();
 	QNetworkAccessManager *mngr = new QNetworkAccessManager(this);
 	connect(mngr, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinishedPic(QNetworkReply*)));
@@ -921,7 +920,7 @@ void mainWindow::replyFinished(QNetworkReply* r)
 			txt->setText(site+" - <a href=\""+url+"\">"+url+"</a> - "+(!m_loadFavorite.isNull() ? tr("Aucun résultat depuis le %1").arg(m_loadFavorite.toString(m_settings->value("dateformat", "dd/MM/yyyy").toString())) : tr("Aucun résultat")+(reasons.count() > 0 ? "<br/>"+tr("Raisons possibles : %1").arg(reasons.join(", ")) : "")));
 		}
 		else
-		{ txt->setText(site+" - <a href=\""+url+"\">"+url+"</a> - "+tr("Page %1 sur %2 (%3 sur %4)").arg(QString::number(ui->spinPage->value()), (max != 0 ? QString::number(ceil(count/((float)ui->spinImagesPerPage->value()))) : "?"), QString::number(results), (count != 0 ? QString::number(count) : "?"))); }
+		{ txt->setText(site+" - <a href=\""+url+"\">"+url+"</a> - "+tr("Page %1 sur %2 (%3 sur %4)").arg(ui->spinPage->value()).arg(max != 0 ? ceil(count/((float)ui->spinImagesPerPage->value())) : 0).arg(results).arg(count != 0 ? count : 0)); }
 		txt->setOpenExternalLinks(true);
 		if (!m_loadFavorite.isNull())
 		{
@@ -1558,6 +1557,7 @@ void mainWindow::getAllSource(QNetworkReply *r)
 		}
 		log("All images' urls received.");
 		m_progressdialog->setMaximum(count);
+		m_progressdialog->setImagesCount(m_allImages.count());
 		m_progressdialog->setText(tr("Téléchargement des images en cours..."));
 		QString fn = m_groupBatchs[m_allImages.at(m_getAllId).value("site_id").toInt()][6];
 		QStringList forbidden = QStringList() << "artist" << "copyright" << "character" << "model" << "general" << "model|artist";
@@ -1624,6 +1624,7 @@ void mainWindow::_getAll()
 	{
 		log("Images download finished.");
 		m_progressdialog->setValue(m_progressdialog->maximum());
+		m_progressdialog->close();
 		QMessageBox::information(
 			this,
 			tr("Récupération des images"),
@@ -1747,6 +1748,7 @@ void mainWindow::getAllPerformTags(QNetworkReply* reply)
 			else if (m_allImages.at(m_getAllId).value("tags").contains("highres"))	{ count += 2; }
 			else																										{ count += 1; }
 			m_progressdialog->setValue(count);
+			m_progressdialog->setImages(m_getAllId);
 			m_getAllId++;
 			m_getAllIgnored++;
 			log(tr("Image ignorée"));
@@ -1772,6 +1774,7 @@ void mainWindow::getAllPerformTags(QNetworkReply* reply)
 		else if (m_getAllDetails["alls"].contains("highres"))	{ count += 2; }
 		else													{ count += 1; }
 		m_progressdialog->setValue(count);
+		m_progressdialog->setImages(m_getAllId);
 		m_getAllExists++;
 		log(tr("Fichier déjà existant : <a href=\"file:///%1\">%1</a>").arg(f.fileName()));
 		// Loading next tags
@@ -1851,7 +1854,7 @@ void mainWindow::getAllPerformImage(QNetworkReply* reply)
 			}
 		}
 		f.open(QIODevice::WriteOnly);
-		f.write(reply->readAll());
+			f.write(reply->readAll());
 		f.close();
 		m_getAllDownloaded++;
 		m_getAllId++;
@@ -1860,6 +1863,7 @@ void mainWindow::getAllPerformImage(QNetworkReply* reply)
 		else if (m_getAllDetails["alls"].contains("highres"))	{ count += 2; }
 		else													{ count += 1; }
 		m_progressdialog->setValue(count);
+		m_progressdialog->setImages(m_getAllId);
 		// Loading next tags
 		m_getAllDetails.clear();
 		_getAll();
