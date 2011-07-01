@@ -2,7 +2,7 @@
 <Site>
 	<Name>Gelbooru</Name>
 	<Urls>
-		<Xml>/index.php?page=dapi&amp;s=post&amp;q=index&amp;limit={limit}&amp;pid={page}&amp;tags={tags}</Tags></Xml>
+		<Xml>/index.php?page=dapi&amp;s=post&amp;q=index&amp;limit={limit}&amp;pid={page}&amp;tags={tags}</Xml>
 		<Html>
 			<Post>/index.php?page=post&amp;s=view&amp;id={id}</Post>
 		</Html>
