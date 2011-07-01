@@ -72,7 +72,7 @@ void AddGroupWindow::ok()
 {
 	QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
 	QStringList bools = QStringList() << "true" << "false";
-	QStringList values = QStringList() << m_lineTags->toPlainText() << QString::number(m_spinPage->value()) << QString::number(m_spinPP->value()) << QString::number(m_spinLimit->value()) << bools.at(m_comboDwl->currentIndex()) << m_sites.at(m_comboSites->currentIndex()) << "false" << settings->value("Save/filename").toString() << settings->value("Save/path").toString() << "";
+	QStringList values = QStringList() << m_lineTags->toPlainText() << QString::number(m_spinPage->value()) << QString::number(m_spinPP->value()) << QString::number(m_spinLimit->value()) << bools.at(m_comboDwl->currentIndex()) << m_sites.at(m_comboSites->currentIndex()) << settings->value("Save/filename").toString() << settings->value("Save/path").toString() << "";
 	m_parent->batchAddGroup(values);
 	this->close();
 }
