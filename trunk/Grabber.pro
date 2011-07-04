@@ -17,13 +17,16 @@ HEADERS += includes/addgroupwindow.h \
 	includes/textedit.h \
 	includes/zoomwindow.h \
 	includes/json.h \
-    includes/favoritewindow.h \
+	includes/favoritewindow.h \
 	includes/detailswindow.h \
 	includes/startwindow.h \
 	includes/optionswindow.h \
 	includes/batchwindow.h \
-    includes/sourceswindow.h \
-	includes/sitewindow.h
+	includes/sourceswindow.h \
+	includes/sitewindow.h \
+	includes/page.h \
+	includes/image.h \
+    includes/aboutwindow.h
 SOURCES += source/addgroupwindow.cpp \
 	source/adduniquewindow.cpp \
 	source/functions.cpp \
@@ -34,13 +37,16 @@ SOURCES += source/addgroupwindow.cpp \
 	source/textedit.cpp \
 	source/zoomwindow.cpp \
 	source/json.cpp \
-    source/favoritewindow.cpp \
-    source/detailswindow.cpp \
+	source/favoritewindow.cpp \
+	source/detailswindow.cpp \
 	source/startwindow.cpp \
 	source/optionswindow.cpp \
-    source/batchwindow.cpp \
-    source/sourceswindow.cpp \
-	source/sitewindow.cpp
+	source/batchwindow.cpp \
+	source/sourceswindow.cpp \
+	source/sitewindow.cpp \
+	source/page.cpp \
+	source/image.cpp \
+    source/aboutwindow.cpp
 RESOURCES += resources.qrc
 RC_FILE = icon.rc
 TRANSLATIONS += languages/English.ts languages/Français.ts
@@ -52,8 +58,9 @@ FORMS += \
 	ui/zoomwindow.ui \
 	ui/detailswindow.ui \
 	ui/startwindow.ui \
-    ui/optionswindow.ui \
+	ui/optionswindow.ui \
 	ui/mainwindow.ui \
 	ui/batchwindow.ui \
-    ui/sourceswindow.ui \
-    ui/sitewindow.ui
+	ui/sourceswindow.ui \
+	ui/sitewindow.ui \
+    ui/aboutwindow.ui

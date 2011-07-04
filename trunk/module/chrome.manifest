@@ -1,0 +1,7 @@
+content   imgbrdgrabber                 chrome/content/
+skin      imgbrdgrabber   classic/1.0   chrome/skin/
+locale    imgbrdgrabber   en-US         chrome/locale/en-US/
+
+
+overlay   chrome://browser/content/browser.xul   chrome://imgbrdgrabber/content/ff-overlay.xul
+style chrome://global/content/customizeToolbar.xul chrome://imgbrdgrabber/skin/overlay.css

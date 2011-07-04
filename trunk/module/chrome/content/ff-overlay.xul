@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="chrome://imgbrdgrabber/skin/overlay.css" type="text/css"?>
+<!DOCTYPE overlay SYSTEM "chrome://imgbrdgrabber/locale/overlay.dtd">
+<overlay id="imgbrdgrabber-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<script src="overlay.js"/>
+	<script src="ff-overlay.js"/>
+
+	<stringbundleset id="stringbundleset">
+		<stringbundle id="imgbrdgrabber-strings" src="chrome://imgbrdgrabber/locale/overlay.properties"/>
+	</stringbundleset>
+
+	<menupopup id="menu_ToolsPopup">
+		<menu id="imgbrdgrabber-menu" label="&imgbrdgrabberMenu.label;">
+			<menupopup datasources="10-1.rdf" ref="urn:root">
+				<menuitem id="imgbrdgrabber-menu-viewitlater" label="&imgbrdgrabberMenu.viewItLater;" oncommand="imgbrdgrabber.viewItLater(event);" />
+				<menuitem id="imgbrdgrabber-menu-view" label="&imgbrdgrabberMenu.view;" oncommand="imgbrdgrabber.view(event);" />
+				 <template>
+					<rule>
+						<conditions>
+							<content uri="?jar"/>
+							<triple subject="?jar"
+								predicate="http://xfly.mozdev.org/fly-rdf#types"
+								object="?types"/>
+							<member container="?types" child="?type"/>
+							<triple subject="?type"
+								predicate="http://xfly.mozdev.org/fly-rdf#name"
+								object="?name"/>
+						</conditions>
+						<action>
+							<menuitem id="imgbrdgrabber-menu-batch" label="&imgbrdgrabberMenu.batch;" oncommand="imgbrdgrabber.batch(event);" />
+						</action>
+					</rule>
+				</template>
+			</menupopup>
+		</menu>
+	</menupopup>
+
+	<popup id="contentAreaContextMenu">
+		<menuitem id="context-imgbrdgrabber" label="&imgbrdgrabberContext.label;"
+			accesskey="&imgbrdgrabberContext.accesskey;"
+			insertafter="context-stop"
+			oncommand="imgbrdgrabber.onMenuItemCommand(event)"/>
+	</popup>
+
+	<toolbarpalette id="BrowserToolbarPalette">
+		<toolbarbutton id="imgbrdgrabber-toolbar-button" class="toolbarbutton-1 chromeclass-toolbar-additional"
+			label="&imgbrdgrabberToolbarButton.label;" tooltiptext="&imgbrdgrabberToolbarButton.tooltip;"
+			oncommand="imgbrdgrabber.onToolbarButtonCommand()"/>
+	</toolbarpalette>
+
+</overlay>
