@@ -1,5 +1,21 @@
 #summary Imgbrd-grabber's changelog from v1.0 to v1.9.3
 
+= 2.0 =
+== 2.0.0 ==
+  * Added sources manager.
+  * Autodownload.
+  * Added sources in the "+" part.
+  * Added support to animated GIFs.
+  * Choose where the program will display tags.
+  * Sortings in search field's context menu added.
+  * Direct link in details window.
+  * Next page and previous page buttons added.
+  * Search fields merged.
+  * Removed "Results" text.
+  * Fixed RAM usage.
+  * Fixed preview pictures showing up lately when merging results.
+  * Fixed batch download window (log not resizing).
+
 = 1.9 =
 == 1.9.3 ==
   * Fixed issue 16 (e621's batch download).
