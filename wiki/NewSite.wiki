@@ -1,8 +1,7 @@
 #summary How to create a new site file.
 
-= v2.0 and higher =
+= Based on gelbooru, danbooru or shimmie =
 
-== Based on gelbooru, danbooru or shimmie ==
 To add an imageboard/booru:
   # Start the program.
   # Click on the "Sources" button at the bottom of the window ("Explore" tab).
@@ -11,7 +10,8 @@ To add an imageboard/booru:
   # If an error occurs, uncheck "Guess", and choose an imageboard in the list.
 _*Note that shimmie-based boorus will give random results when downloading multiple images from them!*_
 
-== Add a site type ==
+
+= Add a site type =
 
 If your site is not based on danbooru/gelbooru/shimmie, it gets more complicated. *You must have a minimal knowledge of XML and regex to make your own one.* Here is an example of file you'll have to create (it is the danbooru's file):
 {{{
@@ -19,8 +19,12 @@ If your site is not based on danbooru/gelbooru/shimmie, it gets more complicated
 <Site>
 	<Name>Danbooru</Name>
 	<Urls>
-		<Xml>/post/index.xml?login={pseudo}&amp;password_hash={password}&amp;limit={limit}&amp;page={page}&amp;tags={tags}</Tags></Xml>
-		<Json>/post/index.json?login={pseudo}&amp;password_hash={password}&amp;limit={limit}&amp;page={page}&amp;tags={tags}</Tags></Json>
+		<Xml>
+			<Tags>/post/index.xml?login={pseudo}&amp;password_hash={password}&amp;limit={limit}&amp;page={page}&amp;tags={tags}</Tags>
+		</Xml>
+		<Json>
+			<Tags>/post/index.json?login={pseudo}&amp;password_hash={password}&amp;limit={limit}&amp;page={page}&amp;tags={tags}</Tags>
+		</Json>
 		<Html>
 			<Post>/post/show/{id}</Post>
 		</Html>
@@ -48,63 +52,3 @@ Let's explain it in detail.
    * Last page: regex that must return the last page, if XML API don't give it. Must only capture page number.
   * First page: the number of the first page, usually 1 (but, for example, gelbooru starts with 0).
 Then, save it to "%USERPROFILE%/Grabber/sites/your_site_here/model.xml". You should also put in this directory an icon.png file, which is the 16x16 image that will be displayed in the sources window.
-
-= Before v2.0 =
-
-There are three ways to retrieve informations from imageboards: using an XML API, a JSON API, or using regex (from "best" to "worst"). To add a site to the program, you must create a file named according to the site's url (ex: "danbooru.donmai.us"), without "http://" and any ending slash.
-These files must be put in the "sites" directory, then in the corresponding sub-directory ("xml", "json" or "regex"). There can be 3 files by site, one per directory.
-
-== XML ==
-For the majority of boorus (based on danbooru and gelbooru).
-  # The first page number. Usually set to 1.
-  # Url of posts list. Set the limit param to {limit}, page to {page} and tags to {tags}.
-  # Url of popular images. Set the day param to {day}, month to {month} and year to {year}.
-  # Url of single post, by id. Set the id param to {id}.
-  # Regex for tags list.
-Example :
-{{{
-1
-http://danbooru.donmai.us/post/index.xml?limit={limit}&page={page}&tags={tags}
-http://danbooru.donmai.us/post/popular_by_day.xml?day={day}&month={month}&year={year}
-http://danbooru.donmai.us/post/show/{id}
-<li class="tag-type-(.+)">.*<a href=".+">.*</a>.*<a href=".+">(.+)</a>.*</li>
-}}}
-
-== JSON ==
-An alternative for many boorus, and necessary for a few others (sankakucomplex for example)
-  # The first page number. Usually set to 1.
-  # Url of posts list. Set the limit param to {limit}, page to {page} and tags to {tags}.
-  # Url of popular images. Set the day param to {day}, month to {month} and year to {year}.
-  # Url of single post, by id. Set the id param to {id}.
-  # Regex for tags list.
-Example :
-{{{
-1
-http://danbooru.donmai.us/post/index.json?limit={limit}&page={page}&tags={tags}
-http://danbooru.donmai.us/post/popular_by_day.json?day={day}&month={month}&year={year}
-http://danbooru.donmai.us/post/show/{id}
-<li class="tag-type-(.+)">.*<a href=".+">.*</a>.*<a href=".+">(.+)</a>.*</li>
-}}}
-
-== Regex ==
-I advise you not to use regex to retrieve information, unless this is the only way (for the boorus that doesn't provide any API).
-  # The first page number. Usually set to 1.
-  # Url of posts list. Set the limit param to {limit}, page to {page} and tags to {tags}.
-  # Url of popular images. Set the day param to {day}, month to {month} and year to {year}.
-  # Url of single post, by id. Set the id param to {id}.
-  # Regex for tags list.
-  # Regex for a single image on the posts list.
-  # Names of retrieved informations.
-  # Regex for the last page.
-  # This one is optional. It is the image's url. For example : "`http://www.somesite.com/image/{id}.{ext}`" (tokens: id, ext, md5). {ext} will by replaced in this order, until it finds the image: jpg, png, jpeg, gif.
-Example :
-{{{
-1
-http://danbooru.donmai.us/post/index?limit={limit}&page={page}&tags={tags}
-http://danbooru.donmai.us/post/popular_by_day?day={day}&month={month}&year={year}
-http://danbooru.donmai.us/post/show/{id}
-<li class="tag-type-(.+)">.*<a href=".+">.*</a>.*<a href=".+">(.+)</a>.*</li>
-<span class=".*" id="p(\d*)">.*<a .*>.*(<img[ ]+class=".*" src="(http://danbooru.donmai.us/data/preview/(.*).jpg)" title="(.+) rating:(.*) score:(.*) user:(.*)" alt=".*" width=.* height=.*>).*</a>.*</span>
-id|image|preview_url|md5|tags|rating|score|user
-<link href="/post\?limit=\d*&amp;page=(\d*)&amp;tags=[^"]*" rel="last" title="Last Page">
-}}}
