@@ -7,6 +7,7 @@
 #include "adduniquewindow.h"
 #include "zoomwindow.h"
 #include "batchwindow.h"
+#include "aboutwindow.h"
 #include "functions.h"
 #include "json.h"
 #include <QtXml>
@@ -22,6 +23,21 @@ mainWindow::mainWindow(QString program, QStringList tags, QStringMap params) : u
 	m_settings = new QSettings(p, QSettings::IniFormat);
 	loadLanguage(m_settings->value("language", "English").toString(), true);
 	ui->setupUi(this);
+
+	QStringList titles = QStringList() << tr("Explorer") << tr("Favoris") << tr("Téléchargements") << tr("Log");
+	QList<QMdiSubWindow*> tabs;
+	for (int i = 0; i < titles.count(); i++)
+	{
+		QMdiSubWindow *wid = ui->mdiArea->addSubWindow(ui->subWindows->takeAt(0)->widget());
+			wid->setWindowIcon(QIcon());
+			wid->setWindowTitle(titles.at(i));
+			QPalette palette = wid->palette();
+				palette.setColor(backgroundRole(), QColor(255,255,255));
+				wid->setPalette(palette);
+				wid->setAutoFillBackground(true);
+		tabs.append(wid);
+	}
+	ui->mdiArea->setActiveSubWindow(tabs[0]);
 
 	m_log = new QMap<QDateTime,QString>;
 	m_progressdialog = new batchWindow(this);
@@ -259,7 +275,7 @@ mainWindow::mainWindow(QString program, QStringList tags, QStringMap params) : u
 	if (this->m_params.keys().contains("batch"))
 	{
 		batchAddGroup(QStringList() << m_tags.join(" ") << m_params.value("page", "1") << m_params.value("limit", m_settings->value("limit", 20).toString()) << this->m_params.value("limit", m_settings->value("limit", 20).toString()) << "false" << this->m_params.value("booru", m_sites.keys().at(0)) << "false" << this->m_params.value("filename", m_settings->value("filename").toString()) << this->m_params.value("path", m_settings->value("path").toString()) << "");
-		ui->tabWidget->setCurrentIndex(2);
+		//ui->tabWidget->setCurrentIndex(2);
 		if (!m_params.keys().contains("dontstart"))
 		{ /*getAll();*/ }
 	}
@@ -1335,11 +1351,8 @@ void mainWindow::help()
 }
 void mainWindow::aboutAuthor()
 {
-	QMessageBox::information(
-		this,
-		tr("À propos de Grabber"),
-		tr("Version %1<br />Grabber est une création de Bionus.<br/>N'hésitez pas à visiter le <a href=\"http://code.google.com/p/imgbrd-grabber/\">site</a> pour rester à jour, ou récupérer des fichiers de site ou des traductions.").arg(VERSION)
-	);
+	aboutWindow *aw = new aboutWindow(QString(VERSION), this);
+	aw->show();
 }
 
 /* Batch download */

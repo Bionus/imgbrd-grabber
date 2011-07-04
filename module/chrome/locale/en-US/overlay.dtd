@@ -1,0 +1,9 @@
+<!ENTITY imgbrdgrabberMenu.label "Imgbrd-Grabber">
+<!ENTITY imgbrdgrabberMenu.viewItLater "View it later">
+<!ENTITY imgbrdgrabberMenu.view "View this page with Grabber">
+<!ENTITY imgbrdgrabberMenu.batch "Batch download this page">
+<!ENTITY imgbrdgrabberContext.label "Your Menuitem">
+<!ENTITY imgbrdgrabberContext.accesskey "Y">
+<!ENTITY imgbrdgrabberToolbarButton.label "Your Toolbar Button">
+<!ENTITY imgbrdgrabberToolbarButton.tooltip "This is your toolbar button!">
+<!ENTITY imgbrdgrabberSidebar.label "Your Sidebar">
