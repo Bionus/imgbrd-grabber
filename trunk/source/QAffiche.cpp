@@ -5,7 +5,7 @@ using namespace std;
 
 
 
-QAffiche::QAffiche(int id, QWidget *parent) : QLabel(parent)
+QAffiche::QAffiche(QVariant id, QWidget *parent) : QLabel(parent)
 {
 	m_pressed = false;
 	m_id = id;
@@ -20,7 +20,7 @@ void QAffiche::mouseDoubleClickEvent(QMouseEvent* e)
 	if(e->button() == Qt::LeftButton)
 	{
 		emit doubleClicked();
-		emit doubleClicked(m_id);
+		emit doubleClicked(m_id.toInt());
 	}
 	QLabel::mouseDoubleClickEvent(e);
 }
@@ -33,7 +33,7 @@ void QAffiche::mousePressEvent(QMouseEvent* e)
 	else
 	{ m_pressed = false; }
 	emit pressed();
-	emit pressed(m_id);
+	emit pressed(m_id.toInt());
 }
 
 
@@ -42,11 +42,12 @@ void QAffiche::mouseReleaseEvent(QMouseEvent* e)
 	if(m_pressed && e->button() == Qt::LeftButton && hitLabel(e->pos()))
 	{
 		emit clicked();
-		emit clicked(m_id);
+		emit clicked(m_id.toInt());
+		emit clicked(m_id.toString());
 	}
 	m_pressed = false;
 	emit released();
-	emit released(m_id);
+	emit released(m_id.toInt());
 
 }
 
@@ -54,14 +55,14 @@ void QAffiche::enterEvent(QEvent* e)
 {
 	QLabel::enterEvent(e);
 	emit mouseOver();
-	emit mouseOver(m_id);
+	emit mouseOver(m_id.toInt());
 }
 
 void QAffiche::leaveEvent(QEvent* e)
 {
 	QLabel::leaveEvent(e);
 	emit mouseOut();
-	emit mouseOut(m_id);
+	emit mouseOut(m_id.toInt());
 }
 
 bool QAffiche::hitLabel(const QPoint &p)

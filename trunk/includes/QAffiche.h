@@ -11,7 +11,7 @@ class QAffiche : public QLabel
 	Q_OBJECT
 	
 	public:
-		QAffiche(int id = -1, QWidget *parent = 0);
+		QAffiche(QVariant id = QVariant(), QWidget *parent = 0);
 		~QAffiche();
 		void setImage(QImage);
 		void setImage(QPixmap);
@@ -21,6 +21,7 @@ class QAffiche : public QLabel
 		void doubleClicked(int);
 		void clicked();
 		void clicked(int);
+		void clicked(QString);
 		void pressed();
 		void pressed(int);
 		void released();
@@ -38,7 +39,7 @@ class QAffiche : public QLabel
 		void leaveEvent(QEvent *);
 		bool hitLabel(const QPoint &p);
 		bool m_pressed;
-		int m_id;
+		QVariant m_id;
 };
 
 #endif

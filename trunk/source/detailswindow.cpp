@@ -8,36 +8,24 @@
  * Constructor of the detailsWindow class, completing its window.
  * @param	tags		Image's tags (colored or not)
  */
-detailsWindow::detailsWindow(QMap<QString,QString> details) : QWidget(0), ui(new Ui::detailsWindow)
+detailsWindow::detailsWindow(Image *image) : QWidget(0), ui(new Ui::detailsWindow)
 {
 	ui->setupUi(this);
 
-	if (details.contains("tags"))			{ ui->labelTags->setText(details.value("tags"));		}
-	if (details.contains("id"))				{ ui->labelId->setText(details.value("id"));			}
-	if (details.contains("md5"))			{ ui->labelMd5->setText(details.value("md5"));			}
-	if (details.contains("score"))			{ ui->labelScore->setText(details.value("score"));		}
-	if (details.contains("created_at"))		{ ui->labelDate->setText(details.value("created_at"));	}
-	if (details.contains("has_children"))	{ ui->labelChildren->setText(details.value("has_children") == "false" ? tr("non") : tr("oui"));	}
-	if (details.contains("has_notes"))		{ ui->labelNotes->setText(details.value("has_notes") == "false" ? tr("non") : tr("oui"));		}
-	if (details.contains("has_comments"))	{ ui->labelComments->setText(details.value("has_comments") == "false" ? tr("non") : tr("oui"));	}
-	if (details.contains("source"))			{ ui->labelSource->setText("<a href=\""+details.value("source")+"\">"+details.value("source")+"</a>");				}
-	if (details.contains("page_url"))		{ ui->labelPage->setText("<a href=\""+details.value("page_url")+"\">"+details.value("page_url")+"</a>");			}
-	if (details.contains("file_url"))		{ ui->labelUrl->setText("<a href=\""+details.value("file_url")+"\">"+details.value("file_url")+"</a>");				}
-	if (details.contains("sample_url"))		{ ui->labelSample->setText("<a href=\""+details.value("sample_url")+"\">"+details.value("sample_url")+"</a>");		}
-	if (details.contains("preview_url"))	{ ui->labelPreview->setText("<a href=\""+details.value("preview_url")+"\">"+details.value("preview_url")+"</a>");	}
-	if (details.contains("parent_id"))		{ ui->labelParent->setText(details.value("parent_id").isEmpty() ? tr("non") : tr("oui (#%1)").arg(details.value("parent_id")));		}
-	if (details.contains("author"))			{ ui->labelUser->setText(details.value("author")+(details.contains("creator_id") ? " (#"+details.value("creator_id")+")" : ""));	}
-	if (details.contains("rating"))
+	if (!image->tags().isEmpty())		{ ui->labelTags->setText(image->tags().join(" "));		}
+	if (image->id() != 0)				{ ui->labelId->setText(QString::number(image->id()));	}
+	if (!image->md5().isEmpty())		{ ui->labelMd5->setText(image->md5());					}
+	if (!image->rating().isEmpty())		{ ui->labelRating->setText(image->rating());			}
+	if (image->createdAt().isValid())	{ ui->labelDate->setText(image->createdAt().toString(tr("le dd/MM/yyyy à hh:mm")));		}
+	if (!image->source().isEmpty())		{ ui->labelSource->setText("<a href=\""+image->source()+"\">"+image->source()+"</a>");	}
+	if (!image->pageUrl().isEmpty())	{ ui->labelPage->setText("<a href=\""+image->pageUrl().toString()+"\">"+image->pageUrl().toString()+"</a>");			}
+	if (!image->fileUrl().isEmpty())	{ ui->labelUrl->setText("<a href=\""+image->fileUrl().toString()+"\">"+image->fileUrl().toString()+"</a>");				}
+	if (!image->sampleUrl().isEmpty())	{ ui->labelSample->setText("<a href=\""+image->sampleUrl().toString()+"\">"+image->sampleUrl().toString()+"</a>");		}
+	if (!image->previewUrl().isEmpty())	{ ui->labelPreview->setText("<a href=\""+image->previewUrl().toString()+"\">"+image->previewUrl().toString()+"</a>");	}
+	if (!image->author().isEmpty())		{ ui->labelUser->setText(image->author()+(image->authorId() != 0 ? " (#"+QString::number(image->authorId())+")" : ""));	}
+	if (image->fileSize() != 0)
 	{
-		QMap<QString, QString> assoc;
-			assoc["s"] = tr("Safe");
-			assoc["q"] = tr("Questionable");
-			assoc["e"] = tr("Explicit");
-		ui->labelRating->setText(assoc.value(details.value("rating")));
-	}
-	if (details.contains("file_size"))
-	{
-		int size = details.value("file_size").toInt();
+		int size = image->fileSize();
 		QString unit = "o";
 		if (size > 2048)
 		{
@@ -51,8 +39,13 @@ detailsWindow::detailsWindow(QMap<QString,QString> details) : QWidget(0), ui(new
 		}
 		ui->labelFilesize->setText(QString::number(size)+" "+unit);
 	}
-	if (details.contains("height") && details.contains("width"))
-	{ ui->labelSize->setText(details.value("width")+"x"+details.value("height")); }
+	if (!image->size().isEmpty())
+	{ ui->labelSize->setText(QString::number(image->width())+"x"+QString::number(image->height())); }
+	ui->labelScore->setText(QString::number(image->score()));
+	ui->labelChildren->setText(image->hasChildren() ? tr("oui") : tr("non"));
+	ui->labelNotes->setText(image->hasNote() ? tr("oui") : tr("non"));
+	ui->labelComments->setText(image->hasComments() ? tr("oui") : tr("non"));
+	ui->labelParent->setText(image->parentId() != 0 ? tr("oui (#%1)").arg(image->parentId() != 0) : tr("non"));
 
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
 	QFont fontArtists, fontCopyrights, fontCharacters, fontModels, fontGenerals;

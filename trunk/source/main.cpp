@@ -36,6 +36,9 @@
 
 
 
+QMap<QDateTime,QString> _log;
+mainWindow *_mainwindow;
+
 int main(int argc, char *argv[])
 {
 	QStringList tags;
@@ -64,8 +67,9 @@ int main(int argc, char *argv[])
 
 	QApplication app(argc, argv);
 
-	mainWindow *fenetre = new mainWindow(argv[0], tags, params);
-	fenetre->show();
+	_mainwindow = new mainWindow(argv[0], tags, params);
+	_mainwindow->init();
+	_mainwindow->show();
 
 	return app.exec();
 }

@@ -32,7 +32,7 @@
 
 	private:
 		QString textUnderCursor() const;
-		QStringList favorites;
+		QStringList m_favorites;
 		QCompleter *c;
  };
 

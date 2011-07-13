@@ -24,10 +24,13 @@ class QBouton : public QPushButton
 	signals:
 		void appui(QVariant);
 		void rightClick(QVariant);
+		void middleClick(QVariant);
 		void appui(int);
 		void rightClick(int);
+		void middleClick(int);
 		void appui(QString);
 		void rightClick(QString);
+		void middleClick(QString);
 	
 	private:
 		QVariant _id;

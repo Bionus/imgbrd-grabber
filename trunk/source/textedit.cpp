@@ -1,7 +1,10 @@
 #include <QApplication>
 #include "textedit.h"
+#include "functions.h"
 
-TextEdit::TextEdit(QStringList favorites, QWidget *parent) : QTextEdit(parent), favorites(favorites), c(0)
+
+
+TextEdit::TextEdit(QStringList favorites, QWidget *parent) : QTextEdit(parent), m_favorites(favorites), c(0)
 {
 	setAcceptRichText(false);
 	setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed));
@@ -34,7 +37,7 @@ void TextEdit::setCompleter(QCompleter *completer)
 }
 
 void TextEdit::setFavorites(QStringList favorites)
-{ this->favorites = favorites; }
+{ m_favorites = favorites; }
 
 QCompleter *TextEdit::completer() const
 {
@@ -155,8 +158,8 @@ void TextEdit::doColor()
 	if (!c || !c->popup()->isVisible())
 	{
 		QString txt = " "+this->toPlainText()+" ";
-		for (int i = 0; i < favorites.size(); i++)
-		{ txt.replace(" "+favorites.at(i)+" ", " <span style=\"color:pink\">"+favorites.at(i)+"</span> "); }
+		for (int i = 0; i < m_favorites.size(); i++)
+		{ txt.replace(" "+m_favorites.at(i)+" ", " <span style=\"color:pink\">"+m_favorites.at(i)+"</span> "); }
 		txt.replace(QRegExp(" ~([^ ]+)"), " <span style=\"color:green\">~\\1</span>");
 		txt.replace(QRegExp(" -([^ ]+)"), " <span style=\"color:red\">-\\1</span>");
 		txt.replace(QRegExp(" (user|fav|md5|rating|source|status|approver|unlocked|sub|id|width|height|score|mpixels|filesize|date|gentags|arttags|chartags|copytags|status|status|approver|order|parent):([^ ]*)"), " <span style=\"color:brown\">\\1:\\2</span>");
@@ -176,11 +179,21 @@ void TextEdit::customContextMenuRequested(QPoint)
 			QActionGroup* favsGroup = new QActionGroup(favs);
 				favsGroup->setExclusive(true);
 				connect(favsGroup, SIGNAL(triggered(QAction *)), this, SLOT(insertFav(QAction *)));
-				for (int i = 0; i < favorites.count(); i++)
-				{ favsGroup->addAction(favorites.at(i)); }
+				for (int i = 0; i < m_favorites.count(); i++)
+				{ favsGroup->addAction(m_favorites.at(i)); }
 				favs->addActions(favsGroup->actions());
 				favs->setIcon(QIcon(":/images/icons/favorite.png"));
 			menu->addMenu(favs);
+		QMenu *vils = new QMenu(tr("Gardés pour plus tard"), menu);
+			QActionGroup* vilsGroup = new QActionGroup(vils);
+				vilsGroup->setExclusive(true);
+				connect(vilsGroup, SIGNAL(triggered(QAction *)), this, SLOT(insertFav(QAction *)));
+				QStringList viewitlater = loadViewItLater();
+				for (int i = 0; i < viewitlater.count(); i++)
+				{ vilsGroup->addAction(viewitlater.at(i)); }
+				vils->addActions(vilsGroup->actions());
+				vils->setIcon(QIcon(":/images/icons/book.png"));
+			menu->addMenu(vils);
 		QMenu *ratings = new QMenu(tr("Classes"), menu);
 			QActionGroup* ratingsGroup = new QActionGroup(favs);
 				ratingsGroup->setExclusive(true);
