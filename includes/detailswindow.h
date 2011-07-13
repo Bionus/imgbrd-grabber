@@ -2,6 +2,7 @@
 #define DETAILSWINDOW_H
 
 #include <QtGui>
+#include "image.h"
 
 
 
@@ -17,7 +18,7 @@ class detailsWindow : public QWidget
 	Q_OBJECT
 
 	public:
-		explicit detailsWindow(QMap<QString,QString>);
+		explicit detailsWindow(Image *);
 		~detailsWindow();
 		void setTags(QString);
 

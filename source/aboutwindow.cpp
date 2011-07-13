@@ -14,7 +14,7 @@ aboutWindow::aboutWindow(QString version, QWidget *parent) : QDialog(parent), ui
 	connect(m, SIGNAL(finished(QNetworkReply*)), this, SLOT(finished(QNetworkReply*)));
 	m->get(QNetworkRequest(QUrl("http://imgbrd-grabber.googlecode.com/svn/trunk/VERSION")));
 
-	resize(QSize(400, 190));
+	setFixedSize(400, 170);
 }
 
 aboutWindow::~aboutWindow()
@@ -25,8 +25,6 @@ aboutWindow::~aboutWindow()
 void aboutWindow::finished(QNetworkReply *r)
 {
 	QString l = r->readAll();
-	qDebug() << l;
-	qDebug() << r->url();
 	int latest = l.replace(".", "").toInt();
 	if (latest <= m_version)
 	{ ui->labelMessage->setText("<p style=\"font-size:8pt; font-style:italic; color:#808080;\">"+tr("Grabber est à jour")+"</p>"); }

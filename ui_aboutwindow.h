@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'aboutwindow.ui'
 **
-** Created: Mon 4. Jul 22:44:08 2011
+** Created: Tue 12. Jul 21:25:48 2011
 **      by: Qt User Interface Compiler version 4.6.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -38,11 +38,6 @@ public:
         if (aboutWindow->objectName().isEmpty())
             aboutWindow->setObjectName(QString::fromUtf8("aboutWindow"));
         aboutWindow->resize(400, 190);
-        QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-        sizePolicy.setHorizontalStretch(0);
-        sizePolicy.setVerticalStretch(0);
-        sizePolicy.setHeightForWidth(aboutWindow->sizePolicy().hasHeightForWidth());
-        aboutWindow->setSizePolicy(sizePolicy);
         QIcon icon;
         icon.addFile(QString::fromUtf8(":/images/icon.ico"), QSize(), QIcon::Normal, QIcon::Off);
         aboutWindow->setWindowIcon(icon);

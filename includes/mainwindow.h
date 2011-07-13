@@ -7,6 +7,7 @@
 #include "QAffiche.h"
 #include "QBouton.h"
 #include "textedit.h"
+#include "searchtab.h"
 
 
 
@@ -25,8 +26,6 @@ class mainWindow : public QMainWindow
 
 	public slots:
 		// Log
-		void log(QString l);
-		void logUpdate(QString l);
 		void logShow();
 		void logClear();
 		// Menus
@@ -48,12 +47,6 @@ class mainWindow : public QMainWindow
 		void favoritesBack();
 		void checkFavorites();
 		void loadNextFavorite();
-		// Search
-		void insertDate(QDate);
-		void firstPage();
-		void previousPage();
-		void nextPage();
-		void lastPage();
 		// Download
 		void webUpdateTags();
 		void web(QString tags = "");
@@ -68,7 +61,6 @@ class mainWindow : public QMainWindow
 		void addUnique();
 		void batchAddGroup(const QStringList& values);
 		void batchAddUnique(QStringMap);
-		void getPage();
 		// Batch download
 		void getAll();
 		void getAllPerformTags(QNetworkReply*);
@@ -78,11 +70,15 @@ class mainWindow : public QMainWindow
 		void _getAll();
 		// Others
 		void updateSourcesCheckboxes();
-		void setTags(QString);
 		void closeEvent(QCloseEvent*);
 		void advanced();
 		void saveAdvanced(sourcesWindow*);
-		void widgetPlusChange();
+		void init();
+		// Tabs
+		void addTab(QString tag = "");
+		void addTabFavorite(int);
+		void updateTabTitle(searchTab*);
+		void closeCurrentTab();
 
 	private:
 		Ui::mainWindow *ui;
@@ -95,7 +91,6 @@ class mainWindow : public QMainWindow
 		QList<QStringList> m_groupBatchs;
 		bool m_allow, m_must_get_tags;
 		QList<QStringMap> m_details, m_batchs, m_allImages;
-		QMap<QDateTime,QString> *m_log;
 		QString m_currLang;
 		QTranslator m_translator;
 		QList<bool> m_selected;
@@ -110,12 +105,14 @@ class mainWindow : public QMainWindow
 		QList<QBouton*> m_webPics;
 		QList<QLabel*> m_webSites;
 		QMap<QString,int> m_countPage;
-		TextEdit *m_search, *m_postFiltering;
+		//TextEdit *m_search, *m_postFiltering;
 		QProcess *m_process;
 		QNetworkReply *m_getAllRequest;
 		batchWindow *m_progressdialog;
 		QList<QBouton*> m_mergeButtons;
 		QList<QCheckBox*> cbls, cbfs;
+		QList<searchTab*> m_tabs;
+		bool m_loaded;
 };
 
 #endif // MAINWINDOW_H

@@ -79,7 +79,7 @@ sourcesWindow::~sourcesWindow()
  */
 void sourcesWindow::closeEvent(QCloseEvent *event)
 {
-	emit closed(this);
+	emit closed();
 	event->accept();
 }
 
@@ -88,11 +88,9 @@ void sourcesWindow::closeEvent(QCloseEvent *event)
  */
 void sourcesWindow::valid()
 {
-	qDebug() << m_selected;
 	for (int i = 0; i < m_selected.count(); i++)
 	{ m_selected[i] = m_checks.at(i)->isChecked(); }
-	qDebug() << m_selected;
-	emit valid(this);
+	emit valid(m_selected);
 	this->close();
 }
 

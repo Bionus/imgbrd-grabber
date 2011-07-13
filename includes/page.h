@@ -2,18 +2,41 @@
 #define PAGE_H
 
 #include <QtGui>
+#include <QtNetwork>
 #include "image.h"
+#include "functions.h"
+
+class Image;
 
 
 
-class Page
+class Page : public QObject
 {
+	Q_OBJECT
+
 	public:
-		Page(QString url, QMap<QString,QMap<QString,QString> > site);
+		explicit Page(QMap<QString,QMap<QString,QString> > *sites, QString site, QStringList tags = QStringList(), int page = 1, int limit = 25, QStringList postFiltering = QStringList(), QObject *parent = 0);
+		~Page();
+		void					load();
+		QList<Image*>			images();
+		QMap<QString,QString>	site();
+		int						imagesCount();
+		QUrl					url();
+		QString					source();
+
+	public slots:
+		void parse(QNetworkReply*);
+
+	signals:
+		void finishedLoading(Page*);
 
 	private:
-		QString m_url, m_format;
-		QList<Image*> m_images;
+		QMap<QString,QString>	m_site;
+		QString					m_format, m_source;
+		QStringList				m_postFiltering;
+		QUrl					m_url;
+		QList<Image*>			m_images;
+		int						m_imagesCount;
 };
 
 #endif // PAGE_H

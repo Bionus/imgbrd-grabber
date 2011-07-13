@@ -26,7 +26,8 @@ HEADERS += includes/addgroupwindow.h \
 	includes/sitewindow.h \
 	includes/page.h \
 	includes/image.h \
-    includes/aboutwindow.h
+    includes/aboutwindow.h \
+	includes/searchtab.h
 SOURCES += source/addgroupwindow.cpp \
 	source/adduniquewindow.cpp \
 	source/functions.cpp \
@@ -46,7 +47,8 @@ SOURCES += source/addgroupwindow.cpp \
 	source/sitewindow.cpp \
 	source/page.cpp \
 	source/image.cpp \
-    source/aboutwindow.cpp
+    source/aboutwindow.cpp \
+	source/searchtab.cpp
 RESOURCES += resources.qrc
 RC_FILE = icon.rc
 TRANSLATIONS += languages/English.ts languages/Français.ts
@@ -63,4 +65,5 @@ FORMS += \
 	ui/batchwindow.ui \
 	ui/sourceswindow.ui \
 	ui/sitewindow.ui \
-    ui/aboutwindow.ui
+    ui/aboutwindow.ui \
+    ui/searchtab.ui

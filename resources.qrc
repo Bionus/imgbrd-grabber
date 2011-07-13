@@ -20,5 +20,8 @@
         <file>images/sortings/size.png</file>
         <file>images/sortings/sort.png</file>
         <file>images/icon.png</file>
+        <file>images/close.png</file>
+        <file>images/add.png</file>
+        <file>images/icons/book.png</file>
     </qresource>
 </RCC>

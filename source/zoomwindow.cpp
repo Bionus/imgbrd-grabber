@@ -11,10 +11,11 @@ using namespace std;
 
 
 
-zoomWindow::zoomWindow(QString m_program, QString site, QStringMap regex, QStringMap details, mainWindow *parent) : m_parent(parent), ui(new Ui::zoomWindow), regex(regex), m_details(details), timeout(300), loaded(0), oldsize(0), site(site), m_program(m_program), m_replyExists(false), m_finished(false)
+zoomWindow::zoomWindow(Image *image, QStringMap site) : ui(new Ui::zoomWindow), m_image(image), m_site(site), timeout(300), loaded(0), oldsize(0), m_program(qApp->arguments().at(0)), m_replyExists(false), m_finished(false)
 {
 	ui->setupUi(this);
-	favorites = loadFavorites().keys();
+	m_favorites = loadFavorites().keys();
+	m_viewItLater = loadViewItLater();
 
 	m_mustSave = 0;
 
@@ -37,7 +38,7 @@ zoomWindow::zoomWindow(QString m_program, QString site, QStringMap regex, QStrin
 	ui->verticalLayout->insertWidget(1, labelImage, 1);
 	this->labelImage = labelImage;
 
-	QStringList taglist = m_details.value("tags").split(' ');
+	QStringList taglist = image->tags();
 	QStringList hreftags;
 	for (int i = 0; i < taglist.count(); i++)
 	{ hreftags.append(" <a href=\""+taglist.at(i)+"\" style=\"text-decoration:none;color:#000000\">"+taglist.at(i)+"</a>"); }
@@ -46,28 +47,26 @@ zoomWindow::zoomWindow(QString m_program, QString site, QStringMap regex, QStrin
 		assoc["s"] = tr("Safe");
 		assoc["q"] = tr("Questionable");
 		assoc["e"] = tr("Explicit");
-	this->rating = assoc.value(m_details.value("rating"));
-	this->url = settings.value("Save/downloadoriginals", true).toBool() ? m_details.value("file_url") : (m_details.value("sample_url").isEmpty() ? m_details.value("file_url") : m_details.value("sample_url"));
+	m_url = settings.value("Save/downloadoriginals", true).toBool() ? m_image->fileUrl().toString() : (m_image->sampleUrl().isEmpty() ? m_image->fileUrl().toString() : m_image->sampleUrl().toString());
 
-	m_format = this->url.section('.', -1).toUpper().toAscii().data();
+	m_format = m_url.section('.', -1).toUpper().toAscii().data();
 	
 	QTimer *timer = new QTimer(this);
 		connect(timer, SIGNAL(timeout()), this, SLOT(update()));
 		timer->setSingleShot(true);
 		this->timer = timer;
 
-	QString u = this->regex["Urls/Html/Post"];
-		u.replace("{id}", m_details.value("id"));
-		m_details["page_url"] = u;
-	m_detailsWindow = new detailsWindow(m_details);
+	QString u = m_site["Urls/Html/Post"];
+		u.replace("{id}", QString::number(image->id()));
+	m_detailsWindow = new detailsWindow(m_image);
 	connect(ui->buttonDetails, SIGNAL(clicked()), m_detailsWindow, SLOT(show()));
 
 	QString pos = settings.value("tagsposition", "top").toString();
 	if (pos == "auto")
 	{
-		if (m_details.contains("width") && m_details.contains("height"))
+		if (!m_image->size().isEmpty())
 		{
-			if (m_details["width"].toFloat()/m_details["height"].toFloat() >= 4.0/3.0)
+			if (float(m_image->width())/float(m_image->height()) >= 4./3.)
 			{ pos = "top"; }
 			else
 			{ pos = "left"; }
@@ -104,9 +103,7 @@ zoomWindow::~zoomWindow()
 
 void zoomWindow::openUrl(QString url)
 {
-	m_parent->setTags(url);
-	m_parent->webUpdateTags();
-	m_parent->activateWindow();
+	emit linkClicked(url);
 }
 void zoomWindow::openSaveDir()
 {
@@ -138,13 +135,17 @@ void zoomWindow::contextMenu(QPoint point)
 	QMenu *menu = new QMenu(this);
 	if (!this->link.isEmpty())
 	{
-		if (favorites.contains(link, Qt::CaseInsensitive))
+		if (m_favorites.contains(link, Qt::CaseInsensitive))
 		{
 			menu->addAction(QIcon(":/images/icons/remove.png"), tr("Retirer des favoris"), this, SLOT(unfavorite()));
 			menu->addAction(QIcon(":/images/icons/save.png"), tr("Choisir comme image"), this, SLOT(setfavorite()));
 		}
 		else
 		{ menu->addAction(QIcon(":/images/icons/add.png"), tr("Ajouter aux favoris"), this, SLOT(favorite())); }
+		if (m_viewItLater.contains(link, Qt::CaseInsensitive))
+		{ menu->addAction(QIcon(":/images/icons/remove.png"), tr("Ne pas garder pour plus tard"), this, SLOT(unviewitlater())); }
+		else
+		{ menu->addAction(QIcon(":/images/icons/add.png"), tr("Garder pour plus tard"), this, SLOT(viewitlater())); }
 		menu->addAction(QIcon(":/images/icons/window.png"), tr("Ouvrir dans une nouvelle fenêtre"), this, SLOT(openInNewWindow()));
 	}
 	menu->exec(QCursor::pos());
@@ -157,7 +158,7 @@ void zoomWindow::openInNewWindow()
 void zoomWindow::favorite()
 {
 	QString image = saveImage();
-	favorites.append(link);
+	m_favorites.append(link);
 	QFile f(savePath("favorites.txt"));
 		f.open(QIODevice::WriteOnly | QIODevice::Append);
 		f.write(QString(link+"|50|"+QDateTime::currentDateTime().toString(Qt::ISODate)+"\r\n").toAscii());
@@ -168,7 +169,7 @@ void zoomWindow::favorite()
 	if (!QDir(savePath("thumbs")).exists())
 	{ QDir(savePath()).mkdir("thumbs"); }
 	img.save(savePath("thumbs/"+link+".png"), "PNG");
-	m_parent->updateFavorites();
+	//m_parent->updateFavorites();
 }
 void zoomWindow::setfavorite()
 {
@@ -178,11 +179,11 @@ void zoomWindow::setfavorite()
 	if (!QDir(savePath("thumbs")).exists())
 	{ QDir(savePath()).mkdir("thumbs"); }
 	img.save(savePath("thumbs/"+link+".png"), "PNG");
-	m_parent->updateFavorites();
+	//m_parent->updateFavorites();
 }
 void zoomWindow::unfavorite()
 {
-	favorites.removeAll(link);
+	m_favorites.removeAll(link);
 	QFile f(savePath("favorites.txt"));
 	f.open(QIODevice::ReadOnly);
 		QString favs = f.readAll();
@@ -196,24 +197,37 @@ void zoomWindow::unfavorite()
 	f.close();
 	if (QFile::exists(savePath("thumbs/"+link+".png")))
 	{ QFile::remove(savePath("thumbs/"+link+".png")); }
-	m_parent->updateFavorites();
+	//m_parent->updateFavorites();
+}
+void zoomWindow::viewitlater()
+{
+	m_viewItLater.append(link);
+	QFile f(savePath("viewitlater.txt"));
+	f.open(QIODevice::WriteOnly);
+		f.write(m_viewItLater.join("\r\n").toAscii());
+	f.close();
+}
+void zoomWindow::unviewitlater()
+{
+	m_viewItLater.removeAll(link);
+	QFile f(savePath("viewitlater.txt"));
+	f.open(QIODevice::WriteOnly);
+		f.write(m_viewItLater.join("\r\n").toAscii());
+	f.close();
 }
 
 
 
 void zoomWindow::load()
 {
-	QNetworkRequest request(QUrl(this->url));
-		request.setRawHeader("Referer", this->url.toAscii());
-	//QEventLoop *q = new QEventLoop;
+	QNetworkRequest *request = new QNetworkRequest(QUrl(m_url));
+		request->setRawHeader("Referer", m_url.toAscii());
 	QNetworkAccessManager *manager = new QNetworkAccessManager;
 	m_replyExists = true;
-	m_reply = manager->get(request);
+	m_reply = manager->get(*request);
 	this->d = QByteArray();
 	connect(m_reply, SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(rR(qint64, qint64)));
 	connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinishedZoom(QNetworkReply*)));
-	//connect(manager, SIGNAL(finished(QNetworkReply*)), q, SLOT(quit()));
-	//q->exec();
 }
 
 #define UPDATES 20
@@ -236,10 +250,10 @@ void zoomWindow::replyFinished(QNetworkReply* reply)
 		bool under = settings.value("Save/remplaceblanksbyunderscores", false).toBool();
 		QStringList blacklistedtags(settings.value("blacklistedtags").toString().split(' '));
 		QString source = reply->readAll();
-		QRegExp rx(this->regex["Regex/Tags"]);
+		QRegExp rx(m_site["Regex/Tags"]);
 		rx.setMinimal(true);
 		int pos = 0;
-		QString tags = " "+m_details.value("tags")+" ";
+		QString tags = " "+m_image->tags().join(" ")+" ";
 		QStringList tlist = QStringList() << "artists" << "copyrights" << "characters" << "models" << "generals";
 		QMap<QString,QString> styles;
 		for (int i = 0; i < tlist.size(); i++)
@@ -265,7 +279,6 @@ void zoomWindow::replyFinished(QNetworkReply* reply)
 		{ ui->labelTagsTop->setText(tags); }
 		else
 		{ ui->labelTagsLeft->setText(tags.split("> <").join("><br/><")); }
-		m_details["tags"] = tags.trimmed();
 		m_detailsWindow->setTags(tags.trimmed());
 		QString pth = this->getSavePath();
 		QString path = settings.value("Save/path").toString().replace("\\", "/");
@@ -277,7 +290,7 @@ void zoomWindow::replyFinished(QNetworkReply* reply)
 			ui->buttonSave->setText(tr("Fichier déjà existant"));
 			ui->buttonSaveNQuit->setText(tr("Fermer"));
 			this->loaded = true;
-			if (this->url.section('.', -1).toUpper() == "GIF")
+			if (m_url.section('.', -1).toUpper() == "GIF")
 			{
 				QMovie *movie = new QMovie(path+"/"+pth);
 				labelImage->setMovie(movie);
@@ -308,7 +321,7 @@ void zoomWindow::replyFinishedZoom(QNetworkReply* reply)
 	{
 		this->d.append(reply->readAll());
 		this->loaded = true;
-		if (this->url.section('.', -1).toUpper() == "GIF")
+		if (m_url.section('.', -1).toUpper() == "GIF")
 		{
 			QTemporaryFile f;
 			if (f.open())
@@ -338,7 +351,7 @@ void zoomWindow::replyFinishedZoom(QNetworkReply* reply)
 
 void zoomWindow::update(bool onlysize)
 {
-	if (this->url.section('.', -1).toUpper() != "GIF")
+	if (m_url.section('.', -1).toUpper() != "GIF")
 	{
 		if (onlysize && (this->image.width() > this->labelImage->width() || this->image.height() > this->labelImage->height()))
 		{ this->labelImage->setImage(this->image.scaled(this->labelImage->width(), this->labelImage->height(), Qt::KeepAspectRatio, Qt::FastTransformation)); }
@@ -354,14 +367,14 @@ void zoomWindow::update(bool onlysize)
 
 void zoomWindow::saveNQuit()
 {
-	if (loaded) // If image is still loading, we wait for it to finish
+	if (loaded)
 	{
 		if (!this->saveImage().isEmpty())
 		{ this->close(); }
 	}
 	else
 	{
-		ui->buttonSave->setText(tr("Sauvegarde..."));
+		ui->buttonSaveNQuit->setText(tr("Sauvegarde..."));
 		m_mustSave = 2;
 	}
 }
@@ -388,11 +401,11 @@ QString zoomWindow::saveImage()
 		{ reply = QMessageBox::question(this, tr("Erreur"), tr("Vous n'avez pas précisé de format de sauvegarde ! Voulez-vous ouvrir les options ?"), QMessageBox::Yes | QMessageBox::No); }
 		if (reply == QMessageBox::Yes)
 		{
-			optionsWindow *options = new optionsWindow(m_parent);
+			/*optionsWindow *options = new optionsWindow(m_parent);
 			//options->onglets->setCurrentIndex(3);
 			options->setWindowModality(Qt::ApplicationModal);
 			options->show();
-			connect(options, SIGNAL(closed()), this, SLOT(saveImage()));
+			connect(options, SIGNAL(closed()), this, SLOT(saveImage()));*/
 		}
 		return QString();
 	}
@@ -409,7 +422,7 @@ QString zoomWindow::saveImage()
 		f.open(QIODevice::WriteOnly);
 		f.write(this->d);
 		f.close();
-		m_parent->log(tr("Saved %1").arg(pth+"/"+path));
+		//m_parent->log(tr("Saved %1").arg(pth+"/"+path));
 		ui->buttonSave->setText(tr("Sauvegardé !"));
 		ui->buttonSaveNQuit->setText(tr("Fermer"));
 	}
@@ -423,7 +436,7 @@ QString zoomWindow::saveImage()
 
 QString zoomWindow::saveImageAs()
 {
-	QString path = QFileDialog::getSaveFileName(this, tr("Enregistrer l'image"), m_details.value("file_url").section('/', -1), "Images (*.png *.gif *.jpg *.jpeg)");
+	QString path = QFileDialog::getSaveFileName(this, tr("Enregistrer l'image"), m_image->fileUrl().toString().section('/', -1), "Images (*.png *.gif *.jpg *.jpeg)");
 	QFile f(path);
 	f.open(QIODevice::WriteOnly);
 	f.write(this->d);
@@ -438,23 +451,27 @@ QString zoomWindow::getSavePath()
 	QStringList copyrights;
 	QString cop;
 	bool found;
-	for (int i = 0; i < this->details["copyrights"].size(); i++)
+	if (settings.value("copyright_useshorter", true).toBool())
 	{
-		found = false;
-		cop = this->details["copyrights"].at(i);
-		for (int r = 0; r < copyrights.size(); r++)
+		for (int i = 0; i < this->details["copyrights"].size(); i++)
 		{
-			if (copyrights.at(r).left(cop.size()) == cop.left(copyrights.at(r).size()))
+			found = false;
+			cop = this->details["copyrights"].at(i);
+			for (int r = 0; r < copyrights.size(); r++)
 			{
-				if (cop.size() < copyrights.at(r).size())
-				{ copyrights[r] = cop; }
-				found = true;
+				if (copyrights.at(r).left(cop.size()) == cop.left(copyrights.at(r).size()))
+				{
+					if (cop.size() < copyrights.at(r).size())
+					{ copyrights[r] = cop; }
+					found = true;
+				}
 			}
+			if (!found)
+			{ copyrights.append(cop); }
 		}
-		if (!found)
-		{ copyrights.append(cop); }
 	}
-	settings.value("copyright_useshorter", true).toBool();
+	else
+	{ copyrights = this->details["copyrights"]; }
 	QString filename = settings.value("filename").toString()
 	.replace("%artist%", (this->details["artists"].isEmpty() ? settings.value("artist_empty").toString() : (settings.value("artist_useall").toBool() || this->details["artists"].count() == 1 ? this->details["artists"].join(settings.value("artist_sep").toString()) : settings.value("artist_value").toString())))
 	.replace("%general%", this->details["generals"].join(settings.value("separator").toString()))
@@ -462,11 +479,11 @@ QString zoomWindow::getSavePath()
 	.replace("%character%", (this->details["characters"].isEmpty() ? settings.value("character_empty").toString() : (settings.value("character_useall").toBool() || this->details["characters"].count() == 1 ? this->details["characters"].join(settings.value("character_sep").toString()) : settings.value("character_value").toString())))
 	.replace("%model%", (this->details["models"].isEmpty() ? settings.value("model_empty").toString() : (settings.value("model_useall").toBool() || this->details["models"].count() == 1 ? this->details["models"].join(settings.value("model_sep").toString()) : settings.value("model_value").toString())))
 	.replace("%model|artist%", (!this->details["models"].isEmpty() ? (settings.value("model_useall").toBool() || this->details["models"].count() == 1 ? this->details["models"].join(settings.value("model_sep").toString()) : settings.value("model_value").toString()) : (this->details["artists"].isEmpty() ? settings.value("artist_empty").toString() : (settings.value("artist_useall").toBool() || this->details["artists"].count() == 1 ? this->details["artists"].join(settings.value("artist_sep").toString()) : settings.value("artist_value").toString()))))
-	.replace("%filename%", m_details.value("file_url").section('/', -1).section('.', 0, -2))
-	.replace("%rating%", this->rating)
-	.replace("%md5%", m_details.value("md5"))
-	.replace("%website%", m_details.value("site"))
-	.replace("%ext%", this->url.section('.', -1))
+	.replace("%filename%", m_image->fileUrl().toString().section('/', -1).section('.', 0, -2))
+	.replace("%rating%", m_image->rating())
+	.replace("%md5%", m_image->md5())
+	.replace("%website%", m_image->site())
+	.replace("%ext%", m_url.section('.', -1))
 	.replace("\\", "/");
 	QString pth = settings.value("path").toString().replace("\\", "/");
 	if (filename.left(1) == "/")	{ filename = filename.right(filename.length()-1);	}

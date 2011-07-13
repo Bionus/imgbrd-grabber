@@ -31,8 +31,8 @@ class sourcesWindow : public QDialog
 		void deleteSite(QVariant);
 
 	signals:
-		void closed(sourcesWindow *);
-		void valid(sourcesWindow *);
+		void closed();
+		void valid(QList<bool>);
 
 	private:
 		Ui::sourcesWindow *ui;

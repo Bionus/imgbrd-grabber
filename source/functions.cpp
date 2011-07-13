@@ -1,6 +1,10 @@
 #include <QApplication>
 #include <QtGui>
 #include "functions.h"
+#include "mainwindow.h"
+
+extern QMap<QDateTime,QString> _log;
+extern mainWindow *_mainwindow;
 
 
 
@@ -64,6 +68,23 @@ QMap<QString,QString> loadFavorites()
 		file.close();
 	}
 	return favorites;
+}
+
+/**
+ * Load view it later tags from local file.
+ * @return	A QStringList containing tags
+ */
+QStringList loadViewItLater()
+{
+	QStringList viewitlater;
+	QFile file(savePath("viewitlater.txt"));
+	if (file.open(QIODevice::ReadOnly))
+	{
+		QString vil = file.readAll();
+		viewitlater = vil.replace("\r\n", "\n").replace("\r", "\n").split("\n");
+		file.close();
+	}
+	return viewitlater;
 }
 
 /**
@@ -170,4 +191,19 @@ QMap<QString,QString> domToMap(QDomElement dom)
 		}
 	}
 	return details;
+}
+
+void log(QString l)
+{
+	qDebug() << l;
+	_log.insert(QDateTime::currentDateTime(), l);
+	_mainwindow->logShow();
+}
+void logUpdate(QString l)
+{
+	qDebug() << l;
+	QDateTime date = _log.keys().at(_log.count()-1);
+	QString message = _log.value(date)+l;
+	_log.insert(date, message);
+	_mainwindow->logShow();
 }
