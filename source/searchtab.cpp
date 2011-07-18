@@ -155,6 +155,7 @@ void searchTab::load()
 		if (m_checkboxes.at(i)->isChecked())
 		{
 			Page *page = new Page(m_sites, m_sites->keys().at(i), m_search->toPlainText().toLower().split(" "), ui->spinPage->value(), ui->spinImagesPerPage->value(), m_postFiltering->toPlainText().toLower().split(" "));
+			log(tr("Chargement de la page <a href=\"%1\">%1</a>").arg(page->url().toString()));
 			connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(finishedLoading(Page*)));
 			page->load();
 			m_pages.append(page);
@@ -162,8 +163,11 @@ void searchTab::load()
 	}
 }
 
+bool sortByFrequency(const QMap<QString,QString> &s1, const QMap<QString,QString> &s2)
+{ return s1["count"].toInt() > s2["count"].toInt(); }
 void searchTab::finishedLoading(Page* page)
 {
+	log(tr("Réception de la page <a href=\"%1\">%1</a>").arg(page->url().toString()));
 	if (page->imagesCount() < m_pagemax || m_pagemax == -1 )
 	{ m_pagemax = page->imagesCount(); }
 	QList<Image*> imgs = page->images();
@@ -187,8 +191,47 @@ void searchTab::finishedLoading(Page* page)
 		txt->setOpenExternalLinks(true);
 	ui->layoutResults->addWidget(txt, floor(pos/ui->spinColumns->value())*(fl+1), pl*(pos%ui->spinColumns->value()), 1, pl);
 	ui->layoutResults->setRowMinimumHeight((floor(pos/ui->spinColumns->value())*(fl+1)), 50);
-
 	m_images.append(imgs);
+
+	// Tags for this page
+	QList<QMap<QString,QString> > taglist;
+	QStringList tagsGot;
+	for (int i = 0; i < m_pages.count(); i++)
+	{
+		QList<QMap<QString,QString> > tags = m_pages.at(i)->tags();
+		for (int t = 0; t < tags.count(); t++)
+		{
+			QMap<QString,QString> tg = tags.at(t);
+			if (tagsGot.contains(tg["tag"]))
+			{ taglist[tagsGot.indexOf(tg["tag"])]["count"] = QString::number(taglist[tagsGot.indexOf(tg["tag"])]["count"].toInt()+tg["count"].toInt()); }
+			else
+			{
+				taglist.append(tg);
+				tagsGot.append(tg["tag"]);
+			}
+		}
+	}
+
+	// We sort tags by frequency
+	qSort(taglist.begin(), taglist.end(), sortByFrequency);
+
+	// Then we show them, styled if possible
+	QStringList tlist = QStringList() << "artists" << "copyrights" << "characters" << "models" << "generals";
+	QMap<QString,QString> styles;
+	QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
+	for (int i = 0; i < tlist.size(); i++)
+	{
+		QFont font;
+		font.fromString(settings->value("Coloring/Fonts/"+tlist.at(i)).toString());
+		styles[tlist.at(i)] = "color:"+settings->value("Coloring/Colors/"+tlist.at(i), "#00aa00").toString()+"; "+qfonttocss(font);
+	}
+	QString tags;
+	for (int i = 0; i < taglist.count(); i++)
+	{ tags += "<a href=\""+taglist[i]["tag"]+"\" style=\""+(styles.contains(taglist[i]["type"]+"s") ? styles[taglist[i]["type"]+"s"] : styles["generals"])+"\">"+taglist[i]["tag"]+"</a> ("+taglist[i]["count"]+")<br/>"; }
+	ui->labelTags->setText(tags);
+	ui->splitter->setSizes(QList<int>() << ui->labelTags->sizeHint().width() << width()-ui->labelTags->sizeHint().width());
+
+	// Loading images
 	for (int i = 0; i < imgs.count(); i++)
 	{
 		Image *img = imgs.at(i);

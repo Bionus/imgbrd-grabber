@@ -41,7 +41,7 @@ void mainWindow::init()
 
 	// Searching for availables sites
 	QStringMapMap stes;
-	QStringList dir = QDir(savePath("sites")).entryList(QDir::Dirs);
+	QStringList dir = QDir(savePath("sites")).entryList(QDir::Dirs | QDir::NoDotAndDotDot);
 	for (int i = 0; i < dir.count(); i++)
 	{
 		QFile file(savePath("sites/"+dir.at(i)+"/model.xml"));
@@ -61,7 +61,7 @@ void mainWindow::init()
 				QString source, curr;
 				for (int s = 0; s < 3; s++)
 				{
-					QString t = m_settings->value("source_"+s, defaults.at(s)).toString();
+					QString t = m_settings->value("source_"+QString::number(s+1), defaults.at(s)).toString();
 					t[0] = t[0].toUpper();
 					if (details.contains("Urls/"+(t == "Regex" ? "Html" : t)+"/Tags"))
 					{
