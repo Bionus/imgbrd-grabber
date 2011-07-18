@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'searchtab.ui'
 **
-** Created: Tue 12. Jul 21:25:48 2011
+** Created: Mon 18. Jul 14:47:57 2011
 **      by: Qt User Interface Compiler version 4.6.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -20,8 +20,10 @@
 #include <QtGui/QHeaderView>
 #include <QtGui/QLabel>
 #include <QtGui/QPushButton>
+#include <QtGui/QScrollArea>
 #include <QtGui/QSpacerItem>
 #include <QtGui/QSpinBox>
+#include <QtGui/QSplitter>
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QWidget>
 
@@ -30,7 +32,14 @@ QT_BEGIN_NAMESPACE
 class Ui_searchTab
 {
 public:
-    QVBoxLayout *verticalLayout;
+    QVBoxLayout *verticalLayout_2;
+    QSplitter *splitter;
+    QScrollArea *scrollArea;
+    QWidget *scrollAreaWidgetContents;
+    QVBoxLayout *verticalLayout_3;
+    QLabel *labelTags;
+    QWidget *widget_2;
+    QVBoxLayout *verticalLayout_4;
     QHBoxLayout *layoutFields;
     QLabel *label;
     QPushButton *buttonCalendar;
@@ -67,22 +76,59 @@ public:
         sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(searchTab->sizePolicy().hasHeightForWidth());
         searchTab->setSizePolicy(sizePolicy);
-        verticalLayout = new QVBoxLayout(searchTab);
-        verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
+        verticalLayout_2 = new QVBoxLayout(searchTab);
+        verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
+        splitter = new QSplitter(searchTab);
+        splitter->setObjectName(QString::fromUtf8("splitter"));
+        scrollArea = new QScrollArea(splitter);
+        scrollArea->setObjectName(QString::fromUtf8("scrollArea"));
+        sizePolicy.setHeightForWidth(scrollArea->sizePolicy().hasHeightForWidth());
+        scrollArea->setSizePolicy(sizePolicy);
+        scrollArea->setFrameShape(QFrame::NoFrame);
+        scrollArea->setFrameShadow(QFrame::Plain);
+        scrollArea->setLineWidth(0);
+        scrollAreaWidgetContents = new QWidget();
+        scrollAreaWidgetContents->setObjectName(QString::fromUtf8("scrollAreaWidgetContents"));
+        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 758, 513));
+        QSizePolicy sizePolicy1(QSizePolicy::Preferred, QSizePolicy::Expanding);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(scrollAreaWidgetContents->sizePolicy().hasHeightForWidth());
+        scrollAreaWidgetContents->setSizePolicy(sizePolicy1);
+        scrollAreaWidgetContents->setMaximumSize(QSize(16777215, 16777215));
+        verticalLayout_3 = new QVBoxLayout(scrollAreaWidgetContents);
+        verticalLayout_3->setContentsMargins(0, 0, 0, 0);
+        verticalLayout_3->setObjectName(QString::fromUtf8("verticalLayout_3"));
+        labelTags = new QLabel(scrollAreaWidgetContents);
+        labelTags->setObjectName(QString::fromUtf8("labelTags"));
+        sizePolicy1.setHeightForWidth(labelTags->sizePolicy().hasHeightForWidth());
+        labelTags->setSizePolicy(sizePolicy1);
+        labelTags->setTextFormat(Qt::RichText);
+
+        verticalLayout_3->addWidget(labelTags);
+
+        scrollArea->setWidget(scrollAreaWidgetContents);
+        splitter->addWidget(scrollArea);
+        widget_2 = new QWidget(splitter);
+        widget_2->setObjectName(QString::fromUtf8("widget_2"));
+        sizePolicy.setHeightForWidth(widget_2->sizePolicy().hasHeightForWidth());
+        widget_2->setSizePolicy(sizePolicy);
+        verticalLayout_4 = new QVBoxLayout(widget_2);
+        verticalLayout_4->setObjectName(QString::fromUtf8("verticalLayout_4"));
         layoutFields = new QHBoxLayout();
         layoutFields->setSpacing(6);
         layoutFields->setObjectName(QString::fromUtf8("layoutFields"));
-        label = new QLabel(searchTab);
+        label = new QLabel(widget_2);
         label->setObjectName(QString::fromUtf8("label"));
 
         layoutFields->addWidget(label);
 
-        buttonCalendar = new QPushButton(searchTab);
+        buttonCalendar = new QPushButton(widget_2);
         buttonCalendar->setObjectName(QString::fromUtf8("buttonCalendar"));
 
         layoutFields->addWidget(buttonCalendar);
 
-        spinPage = new QSpinBox(searchTab);
+        spinPage = new QSpinBox(widget_2);
         spinPage->setObjectName(QString::fromUtf8("spinPage"));
         spinPage->setMinimumSize(QSize(60, 0));
         spinPage->setMinimum(1);
@@ -90,12 +136,12 @@ public:
 
         layoutFields->addWidget(spinPage);
 
-        buttonTags = new QPushButton(searchTab);
+        buttonTags = new QPushButton(widget_2);
         buttonTags->setObjectName(QString::fromUtf8("buttonTags"));
 
         layoutFields->addWidget(buttonTags);
 
-        pushButton = new QPushButton(searchTab);
+        pushButton = new QPushButton(widget_2);
         pushButton->setObjectName(QString::fromUtf8("pushButton"));
         pushButton->setMaximumSize(QSize(30, 16777215));
         pushButton->setCheckable(true);
@@ -103,9 +149,9 @@ public:
         layoutFields->addWidget(pushButton);
 
 
-        verticalLayout->addLayout(layoutFields);
+        verticalLayout_4->addLayout(layoutFields);
 
-        widgetPlus = new QWidget(searchTab);
+        widgetPlus = new QWidget(widget_2);
         widgetPlus->setObjectName(QString::fromUtf8("widgetPlus"));
         widgetPlus->setEnabled(true);
         layoutPlus = new QGridLayout(widgetPlus);
@@ -147,62 +193,62 @@ public:
         layoutPlus->addLayout(layoutSourcesList, 2, 0, 1, 4);
 
 
-        verticalLayout->addWidget(widgetPlus);
+        verticalLayout_4->addWidget(widgetPlus);
 
         layoutResults = new QGridLayout();
         layoutResults->setObjectName(QString::fromUtf8("layoutResults"));
 
-        verticalLayout->addLayout(layoutResults);
+        verticalLayout_4->addLayout(layoutResults);
 
         verticalSpacer = new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
-        verticalLayout->addItem(verticalSpacer);
+        verticalLayout_4->addItem(verticalSpacer);
 
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
-        buttonFirstPage = new QPushButton(searchTab);
+        buttonFirstPage = new QPushButton(widget_2);
         buttonFirstPage->setObjectName(QString::fromUtf8("buttonFirstPage"));
         buttonFirstPage->setEnabled(false);
         buttonFirstPage->setMaximumSize(QSize(30, 16777215));
 
         horizontalLayout->addWidget(buttonFirstPage);
 
-        buttonPreviousPage = new QPushButton(searchTab);
+        buttonPreviousPage = new QPushButton(widget_2);
         buttonPreviousPage->setObjectName(QString::fromUtf8("buttonPreviousPage"));
         buttonPreviousPage->setEnabled(false);
         buttonPreviousPage->setMaximumSize(QSize(30, 16777215));
 
         horizontalLayout->addWidget(buttonPreviousPage);
 
-        buttonSourcesList = new QPushButton(searchTab);
+        buttonSourcesList = new QPushButton(widget_2);
         buttonSourcesList->setObjectName(QString::fromUtf8("buttonSourcesList"));
 
         horizontalLayout->addWidget(buttonSourcesList);
 
-        checkMergeResults = new QCheckBox(searchTab);
+        checkMergeResults = new QCheckBox(widget_2);
         checkMergeResults->setObjectName(QString::fromUtf8("checkMergeResults"));
         checkMergeResults->setChecked(true);
 
         horizontalLayout->addWidget(checkMergeResults);
 
-        labelMergeResults = new QLabel(searchTab);
+        labelMergeResults = new QLabel(widget_2);
         labelMergeResults->setObjectName(QString::fromUtf8("labelMergeResults"));
 
         horizontalLayout->addWidget(labelMergeResults);
 
-        buttonGetpage = new QPushButton(searchTab);
+        buttonGetpage = new QPushButton(widget_2);
         buttonGetpage->setObjectName(QString::fromUtf8("buttonGetpage"));
 
         horizontalLayout->addWidget(buttonGetpage);
 
-        buttonNextPage = new QPushButton(searchTab);
+        buttonNextPage = new QPushButton(widget_2);
         buttonNextPage->setObjectName(QString::fromUtf8("buttonNextPage"));
         buttonNextPage->setEnabled(false);
         buttonNextPage->setMaximumSize(QSize(30, 16777215));
 
         horizontalLayout->addWidget(buttonNextPage);
 
-        buttonLastPage = new QPushButton(searchTab);
+        buttonLastPage = new QPushButton(widget_2);
         buttonLastPage->setObjectName(QString::fromUtf8("buttonLastPage"));
         buttonLastPage->setEnabled(false);
         buttonLastPage->setMaximumSize(QSize(30, 16777215));
@@ -213,15 +259,18 @@ public:
         horizontalLayout->setStretch(4, 1);
         horizontalLayout->setStretch(5, 1);
 
-        verticalLayout->addLayout(horizontalLayout);
+        verticalLayout_4->addLayout(horizontalLayout);
 
-        verticalLayout->setStretch(2, 1);
+        splitter->addWidget(widget_2);
+
+        verticalLayout_2->addWidget(splitter);
+
 
         retranslateUi(searchTab);
-        QObject::connect(buttonTags, SIGNAL(clicked()), searchTab, SLOT(load()));
-        QObject::connect(pushButton, SIGNAL(clicked(bool)), widgetPlus, SLOT(setVisible(bool)));
-        QObject::connect(buttonSourcesList, SIGNAL(clicked()), searchTab, SLOT(openSourcesWindow()));
         QObject::connect(buttonGetpage, SIGNAL(clicked()), searchTab, SLOT(getPage()));
+        QObject::connect(pushButton, SIGNAL(clicked(bool)), widgetPlus, SLOT(setVisible(bool)));
+        QObject::connect(buttonTags, SIGNAL(clicked()), searchTab, SLOT(load()));
+        QObject::connect(buttonSourcesList, SIGNAL(clicked()), searchTab, SLOT(openSourcesWindow()));
 
         QMetaObject::connectSlotsByName(searchTab);
     } // setupUi
@@ -229,6 +278,7 @@ public:
     void retranslateUi(QWidget *searchTab)
     {
         searchTab->setWindowTitle(QApplication::translate("searchTab", "Nouvel onglet", 0, QApplication::UnicodeUTF8));
+        labelTags->setText(QString());
         label->setText(QApplication::translate("searchTab", "Recherche", 0, QApplication::UnicodeUTF8));
         buttonCalendar->setText(QApplication::translate("searchTab", " Ins\303\251rer une date ", 0, QApplication::UnicodeUTF8));
         buttonTags->setText(QApplication::translate("searchTab", "Ok", 0, QApplication::UnicodeUTF8));

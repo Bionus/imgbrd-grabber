@@ -3,7 +3,6 @@
 
 #include <QtGui>
 #include <QtNetwork>
-#include "ui_searchtab.h"
 #include "textedit.h"
 #include "page.h"
 
