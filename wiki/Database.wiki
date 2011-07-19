@@ -34,8 +34,8 @@ For example :
 = Gelbooru =
 ==Image==
 Work in progress...
-<code language="sql">...</code>
+<code language="sql">UPDATE post_count SET pcount=pcount+1 WHERE access_key="posts";</code>
 
 ==Tag==
 You must change tag_index.tag index and set it to be unique first.
-<code language="sql">INSERT INTO tag_index(tag, index_count) VALUES('%tag%', 1) ON DUPLICATE KEY UPDATE index_count = index_count+1;</code>
+<code language="sql">INSERT INTO tag_index(tag, index_count) VALUES("%tag%", 1) ON DUPLICATE KEY UPDATE index_count = index_count+1;</code>
