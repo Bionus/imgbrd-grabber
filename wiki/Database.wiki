@@ -3,7 +3,7 @@
 =Introduction=
 
 Note that this feature is pretty limited, and if you have any suggestion for improving it, don't hesitate add an issue in the "Issue" tab.
-*I highly recommend having some knowledge for reading this.*
+*I highly recommend having some knowledge for using this.*
 
 
 =How to=
