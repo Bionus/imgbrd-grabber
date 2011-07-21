@@ -68,6 +68,7 @@ class Image : public QObject
 		QPixmap			m_imagePreview;
 		Page			*m_parent;
 		QNetworkReply	*m_loadPreview, *m_loadTags;
+		bool			m_loadPreviewExists, m_loadTagsExists;
 };
 
 #endif // IMAGE_H

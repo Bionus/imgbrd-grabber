@@ -28,6 +28,7 @@ class Page : public QObject
 
 	public slots:
 		void parse(QNetworkReply*);
+		void abort();
 
 	signals:
 		void finishedLoading(Page*);
@@ -40,6 +41,8 @@ class Page : public QObject
 		QList<Image*>			m_images;
 		int						m_imagesCount, m_imagesPerPage;
 		QList<Tag*>				m_tags;
+		QNetworkReply			*m_reply;
+		bool					m_replyExists;
 };
 
 #endif // PAGE_H
