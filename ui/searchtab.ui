@@ -19,9 +19,16 @@
   <property name="windowTitle">
    <string>Nouvel onglet</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../resources.qrc">
+    <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
     <widget class="QSplitter" name="splitter">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
      <widget class="QScrollArea" name="scrollArea">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
@@ -38,13 +45,16 @@
       <property name="lineWidth">
        <number>0</number>
       </property>
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
       <widget class="QWidget" name="scrollAreaWidgetContents">
        <property name="geometry">
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>758</width>
-         <height>513</height>
+         <width>16</width>
+         <height>496</height>
         </rect>
        </property>
        <property name="sizePolicy">
@@ -71,8 +81,11 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
+          <property name="contextMenuPolicy">
+           <enum>Qt::CustomContextMenu</enum>
+          </property>
           <property name="text">
-           <string/>
+           <string notr="true"/>
           </property>
           <property name="textFormat">
            <enum>Qt::RichText</enum>
@@ -90,6 +103,18 @@
        </sizepolicy>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_4">
+       <property name="leftMargin">
+        <number>9</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
        <item>
         <layout class="QHBoxLayout" name="layoutFields" stretch="0,0,0,0,0">
          <property name="spacing">
@@ -330,7 +355,9 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../resources.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>buttonGetpage</sender>
@@ -339,8 +366,8 @@
    <slot>getPage()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>612</x>
-     <y>505</y>
+     <x>706</x>
+     <y>511</y>
     </hint>
     <hint type="destinationlabel">
      <x>677</x>
@@ -359,8 +386,8 @@
      <y>21</y>
     </hint>
     <hint type="destinationlabel">
-     <x>774</x>
-     <y>40</y>
+     <x>779</x>
+     <y>89</y>
     </hint>
    </hints>
   </connection>
@@ -371,8 +398,8 @@
    <slot>load()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>621</x>
-     <y>24</y>
+     <x>742</x>
+     <y>41</y>
     </hint>
     <hint type="destinationlabel">
      <x>709</x>
@@ -387,12 +414,60 @@
    <slot>openSourcesWindow()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>159</x>
-     <y>505</y>
+     <x>254</x>
+     <y>511</y>
     </hint>
     <hint type="destinationlabel">
      <x>185</x>
      <y>507</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>labelTags</sender>
+   <signal>linkHovered(QString)</signal>
+   <receiver>searchTab</receiver>
+   <slot>linkHovered(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>24</x>
+     <y>169</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>189</x>
+     <y>91</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>labelTags</sender>
+   <signal>customContextMenuRequested(QPoint)</signal>
+   <receiver>searchTab</receiver>
+   <slot>contextMenu()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>24</x>
+     <y>228</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>80</x>
+     <y>223</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>labelTags</sender>
+   <signal>linkActivated(QString)</signal>
+   <receiver>searchTab</receiver>
+   <slot>linkClicked(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>12</x>
+     <y>148</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>44</x>
+     <y>151</y>
     </hint>
    </hints>
   </connection>
@@ -401,5 +476,8 @@
   <slot>load()</slot>
   <slot>openSourcesWindow()</slot>
   <slot>getPage()</slot>
+  <slot>linkHovered(QString)</slot>
+  <slot>contextMenu()</slot>
+  <slot>linkClicked(QString)</slot>
  </slots>
 </ui>

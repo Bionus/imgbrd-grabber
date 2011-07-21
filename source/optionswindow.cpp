@@ -18,12 +18,12 @@ optionsWindow::optionsWindow(mainWindow *parent) : QDialog(parent), m_parent(par
 	ui->comboLanguages->addItems(languages);
 
 	ui->comboLanguages->setCurrentIndex(languages.indexOf(settings.value("language", "English").toString()));
-	ui->spinCheckForUpdates->setValue(settings.value("updatesrate", 86400).toInt());
 	ui->lineBlacklist->setText(settings.value("blacklistedtags").toString());
 	ui->checkDownloadBlacklisted->setChecked(settings.value("downloadblacklist", false).toBool());
 	ui->checkLoadFirstAtStart->setChecked(settings.value("loadatstart", false).toBool());
 	ui->spinHideFavorites->setValue(settings.value("hidefavorites", 20).toInt());
 	ui->checkAutodownload->setChecked(settings.value("autodownload", false).toBool());
+	ui->checkHideBlacklisted->setChecked(settings.value("hideblacklisted", false).toBool());
 
 	ui->spinImagesPerPage->setValue(settings.value("limit", 20).toInt());
 	ui->spinColumns->setValue(settings.value("columns", 1).toInt());
@@ -44,6 +44,8 @@ optionsWindow::optionsWindow(mainWindow *parent) : QDialog(parent), m_parent(par
 	ui->checkShowLog->setChecked(settings.value("Log/show", true).toBool());
 	ui->checkInvertLog->setChecked(settings.value("Log/invert", false).toBool());
 
+	ui->checkResizeInsteadOfCropping->setChecked(settings.value("resizeInsteadOfCropping", true).toBool());
+
 	settings.beginGroup("Save");
 		ui->checkDownloadOriginals->setChecked(settings.value("downloadoriginals", true).toBool());
 		ui->lineFolder->setText(settings.value("path").toString());
@@ -51,15 +53,21 @@ optionsWindow::optionsWindow(mainWindow *parent) : QDialog(parent), m_parent(par
 		ui->lineSeparator->setText(settings.value("separator").toString());
 		ui->lineArtistsIfNone->setText(settings.value("artist_empty", "anonymous").toString());
 		ui->checkArtistsKeepAll->setChecked(settings.value("artist_useall", false).toBool());
+		ui->checkArtistsKeepAll->toggle();
+		ui->checkArtistsKeepAll->toggle();
 		ui->lineArtistsSeparator->setText(settings.value("artist_sep", "+").toString());
 		ui->lineArtistsIfMultiples->setText(settings.value("artist_value", "multiple artists").toString());
 		ui->lineCopyrightsIfNone->setText(settings.value("copyright_empty", "misc").toString());
 		ui->checkCopyrightsUseShorter->setChecked(settings.value("copyright_useshorter", true).toBool());
 		ui->checkCopyrightsKeepAll->setChecked(settings.value("copyright_useall", false).toBool());
+		ui->checkCopyrightsKeepAll->toggle();
+		ui->checkCopyrightsKeepAll->toggle();
 		ui->lineCopyrightsSeparator->setText(settings.value("copyright_sep", "+").toString());
 		ui->lineCopyrightsIfMultiples->setText(settings.value("copyright_value", "crossover").toString());
 		ui->lineCharactersIfNone->setText(settings.value("character_empty", "unknown").toString());
 		ui->checkCharactersKeepAll->setChecked(settings.value("character_useall", false).toBool());
+		ui->checkCharactersKeepAll->toggle();
+		ui->checkCharactersKeepAll->toggle();
 		ui->lineCharactersSeparator->setText(settings.value("character_sep", "+").toString());
 		ui->lineCharactersIfMultiples->setText(settings.value("character_value", "group").toString());
 	settings.endGroup();
@@ -71,19 +79,25 @@ optionsWindow::optionsWindow(mainWindow *parent) : QDialog(parent), m_parent(par
 			ui->lineColoringCharacters->setText(settings.value("characters", "#00aa00").toString());
 			ui->lineColoringModels->setText(settings.value("models", "#0000ee").toString());
 			ui->lineColoringGenerals->setText(settings.value("generals", "#000000").toString());
+			ui->lineColoringFavorites->setText(settings.value("favorites", "#ffc0cb").toString());
+			ui->lineColoringBlacklisteds->setText(settings.value("blacklisteds", "#000000").toString());
 		settings.endGroup();
 		settings.beginGroup("Fonts");
-			QFont fontArtists, fontCopyrights, fontCharacters, fontModels, fontGenerals;
+			QFont fontArtists, fontCopyrights, fontCharacters, fontModels, fontGenerals, fontFavorites, fontBlacklisteds;
 			fontArtists.fromString(settings.value("artists").toString());
 			fontCopyrights.fromString(settings.value("copyrights").toString());
 			fontCharacters.fromString(settings.value("characters").toString());
 			fontModels.fromString(settings.value("models").toString());
 			fontGenerals.fromString(settings.value("generals").toString());
+			fontFavorites.fromString(settings.value("favorites").toString());
+			fontBlacklisteds.fromString(settings.value("blacklisteds").toString());
 			ui->lineColoringArtists->setFont(fontArtists);
 			ui->lineColoringCopyrights->setFont(fontCopyrights);
 			ui->lineColoringCharacters->setFont(fontCharacters);
 			ui->lineColoringModels->setFont(fontModels);
 			ui->lineColoringGenerals->setFont(fontGenerals);
+			ui->lineColoringFavorites->setFont(fontFavorites);
+			ui->lineColoringBlacklisteds->setFont(fontBlacklisteds);
 		settings.endGroup();
 	settings.endGroup();
 
@@ -165,6 +179,20 @@ void optionsWindow::on_lineColoringGenerals_textChanged()
 	else
 	{ ui->lineColoringGenerals->setStyleSheet("color:#000000"); }
 }
+void optionsWindow::on_lineColoringFavorites_textChanged()
+{
+	if (QColor(ui->lineColoringFavorites->text()).isValid())
+	{ ui->lineColoringFavorites->setStyleSheet("color:"+ui->lineColoringFavorites->text()); }
+	else
+	{ ui->lineColoringFavorites->setStyleSheet("color:#000000"); }
+}
+void optionsWindow::on_lineColoringBlacklisteds_textChanged()
+{
+	if (QColor(ui->lineColoringBlacklisteds->text()).isValid())
+	{ ui->lineColoringBlacklisteds->setStyleSheet("color:"+ui->lineColoringBlacklisteds->text()); }
+	else
+	{ ui->lineColoringBlacklisteds->setStyleSheet("color:#000000"); }
+}
 
 void optionsWindow::on_buttonColoringArtistsColor_clicked()
 {
@@ -195,6 +223,18 @@ void optionsWindow::on_buttonColoringGeneralsColor_clicked()
 	QColor color = QColorDialog::getColor(QColor(ui->lineColoringGenerals->text()), this, "Grabber - Choisir une couleur");
 	if (color.isValid())
 	{ ui->lineColoringGenerals->setText(color.name()); }
+}
+void optionsWindow::on_buttonColoringFavoritesColor_clicked()
+{
+	QColor color = QColorDialog::getColor(QColor(ui->lineColoringFavorites->text()), this, "Grabber - Choisir une couleur");
+	if (color.isValid())
+	{ ui->lineColoringFavorites->setText(color.name()); }
+}
+void optionsWindow::on_buttonColoringBlacklistedsColor_clicked()
+{
+	QColor color = QColorDialog::getColor(QColor(ui->lineColoringBlacklisteds->text()), this, "Grabber - Choisir une couleur");
+	if (color.isValid())
+	{ ui->lineColoringBlacklisteds->setText(color.name()); }
 }
 
 void optionsWindow::on_buttonColoringArtistsFont_clicked()
@@ -232,6 +272,20 @@ void optionsWindow::on_buttonColoringGeneralsFont_clicked()
 	if (ok)
 	{ ui->lineColoringGenerals->setFont(police); }
 }
+void optionsWindow::on_buttonColoringFavoritesFont_clicked()
+{
+	bool ok = false;
+	QFont police = QFontDialog::getFont(&ok, ui->lineColoringFavorites->font(), this, "Grabber - Choisir une police");
+	if (ok)
+	{ ui->lineColoringFavorites->setFont(police); }
+}
+void optionsWindow::on_buttonColoringBlacklistedsFont_clicked()
+{
+	bool ok = false;
+	QFont police = QFontDialog::getFont(&ok, ui->lineColoringBlacklisteds->font(), this, "Grabber - Choisir une police");
+	if (ok)
+	{ ui->lineColoringBlacklisteds->setFont(police); }
+}
 
 void optionsWindow::updateContainer(QTreeWidgetItem *current, QTreeWidgetItem *previous)
 {
@@ -266,7 +320,6 @@ void optionsWindow::save()
 {
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
 
-	settings.setValue("updatesrate", ui->spinCheckForUpdates->value());
 	settings.setValue("blacklistedtags", ui->lineBlacklist->text());
 	settings.setValue("downloadblacklist", ui->checkDownloadBlacklisted->isChecked());
 
@@ -281,6 +334,7 @@ void optionsWindow::save()
 	settings.setValue("autodownload", ui->checkAutodownload->isChecked());
 	QStringList positions = QStringList() << "top" << "left" << "auto";
 	settings.setValue("tagsposition", positions.at(ui->comboTagsposition->currentIndex()));
+	settings.setValue("hideblacklisted", ui->checkHideBlacklisted->isChecked());
 
 	QStringList types = QStringList() << "text" << "icon" << "both" << "hide";
 	settings.setValue("Sources/Types", types.at(ui->comboSources->currentIndex()));
@@ -291,6 +345,8 @@ void optionsWindow::save()
 		settings.setValue("show", ui->checkShowLog->isChecked());
 		settings.setValue("invert", ui->checkInvertLog->isChecked());
 	settings.endGroup();
+
+	settings.setValue("resizeInsteadOfCropping", ui->checkResizeInsteadOfCropping->isChecked());
 
 	settings.beginGroup("Save");
 		settings.setValue("downloadoriginals", ui->checkDownloadOriginals->isChecked());
@@ -319,6 +375,8 @@ void optionsWindow::save()
 			settings.setValue("characters", ui->lineColoringCharacters->text());
 			settings.setValue("models", ui->lineColoringModels->text());
 			settings.setValue("generals", ui->lineColoringGenerals->text());
+			settings.setValue("favorites", ui->lineColoringFavorites->text());
+			settings.setValue("blacklisteds", ui->lineColoringBlacklisteds->text());
 		settings.endGroup();
 		settings.beginGroup("Fonts");
 			settings.setValue("artists", ui->lineColoringArtists->font().toString());
@@ -326,6 +384,8 @@ void optionsWindow::save()
 			settings.setValue("characters", ui->lineColoringCharacters->font().toString());
 			settings.setValue("models", ui->lineColoringModels->font().toString());
 			settings.setValue("generals", ui->lineColoringGenerals->font().toString());
+			settings.setValue("favorites", ui->lineColoringFavorites->font().toString());
+			settings.setValue("blacklisteds", ui->lineColoringBlacklisteds->font().toString());
 		settings.endGroup();
 	settings.endGroup();
 

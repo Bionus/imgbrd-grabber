@@ -28,7 +28,7 @@ class zoomWindow : public QWidget
 	
 	public slots:
 		void update(bool onlysize = false);
-		void replyFinished(QNetworkReply*);
+		void replyFinished(Image*);
 		void replyFinishedZoom(QNetworkReply*);
 		void rR(qint64 a = -1, qint64 b = -1);
 		void saveNQuit();

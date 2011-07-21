@@ -413,8 +413,6 @@
     <property name="title">
      <string>Aide</string>
     </property>
-    <addaction name="actionHelp"/>
-    <addaction name="separator"/>
     <addaction name="actionAboutGrabber"/>
     <addaction name="actionAboutQt"/>
    </widget>
@@ -434,11 +432,6 @@
   <action name="actionQuit">
    <property name="text">
     <string>Quitter</string>
-   </property>
-  </action>
-  <action name="actionHelp">
-   <property name="text">
-    <string>Aide</string>
    </property>
   </action>
   <action name="actionAboutGrabber">
@@ -466,22 +459,6 @@
   <include location="../resources.qrc"/>
  </resources>
  <connections>
-  <connection>
-   <sender>actionHelp</sender>
-   <signal>triggered()</signal>
-   <receiver>mainWindow</receiver>
-   <slot>help()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>399</x>
-     <y>299</y>
-    </hint>
-   </hints>
-  </connection>
   <connection>
    <sender>actionOptions</sender>
    <signal>triggered()</signal>
@@ -697,8 +674,8 @@
    <slot>logClear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>680</x>
-     <y>526</y>
+     <x>93</x>
+     <y>64</y>
     </hint>
     <hint type="destinationlabel">
      <x>715</x>
@@ -735,6 +712,22 @@
     <hint type="destinationlabel">
      <x>399</x>
      <y>270</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>tableBatchGroups</sender>
+   <signal>cellChanged(int,int)</signal>
+   <receiver>mainWindow</receiver>
+   <slot>updateBatchGroups(int,int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>137</x>
+     <y>162</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>167</x>
+     <y>164</y>
     </hint>
    </hints>
   </connection>
