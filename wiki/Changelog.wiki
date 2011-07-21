@@ -1,6 +1,14 @@
-#summary Imgbrd-grabber's changelog from v1.0 to v1.9.3
+#summary Imgbrd-grabber's changelog from v1.0 to v2.1.0
 
 = 2.0 =
+== 2.1.0 ==
+  * Ordered options.
+  * Tabs.
+  * "View it later".
+  * Option to choose between resize and cropping for preview pictures.
+  * Some compatibility fixes with Danbooru Downloader 1.7.1 (in 2.0: "fate/stay" => "fatestay" while db downloader (and 2.1 now) gives "fate stay")
+  * Shows most used tags in the main window.
+  * Supports more things in the post-filtering field (source, id, width, height and score).
 == 2.0.0 ==
   * Added sources manager.
   * Autodownload.
