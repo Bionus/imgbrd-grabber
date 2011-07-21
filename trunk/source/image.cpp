@@ -48,27 +48,30 @@ Image::Image(QMap<QString, QString> details, int timezonedecay, Page* parent)
 	m_size = QSize(details.contains("width") ? details["width"].toInt() : 0, details.contains("height") ? details["height"].toInt() : 0);
 	m_parent = parent;
 
-	m_loadPreview = NULL;
-	m_loadTags = NULL;
+	m_loadPreviewExists = false;
+	m_loadTagsExists = false;
 }
 Image::~Image()
-{ }
+{ delete &m_imagePreview; }
 
 void Image::loadPreview()
 {
-	// Load image, and when finished parse result
+	m_loadPreviewExists = true;
 	QNetworkAccessManager *manager = new QNetworkAccessManager(this);
 	connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(parsePreview(QNetworkReply*)));
 	m_loadPreview = manager->get(QNetworkRequest(m_previewUrl));
 }
 void Image::abortPreview()
 {
-	if (m_loadPreview->isRunning())
-	{ m_loadPreview->abort(); }
+	if (m_loadPreviewExists)
+	{
+		if (m_loadPreview->isRunning())
+		{ m_loadPreview->abort(); }
+	}
 }
 void Image::loadTags()
 {
-	// Load tags, and when finished parse result
+	m_loadPreviewExists = true;
 	QNetworkAccessManager *manager = new QNetworkAccessManager(this);
 	connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(parseTags(QNetworkReply*)));
 	m_loadTags = manager->get(QNetworkRequest(m_pageUrl));

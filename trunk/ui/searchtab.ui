@@ -386,8 +386,8 @@
      <y>21</y>
     </hint>
     <hint type="destinationlabel">
-     <x>779</x>
-     <y>89</y>
+     <x>788</x>
+     <y>86</y>
     </hint>
    </hints>
   </connection>
@@ -398,8 +398,8 @@
    <slot>load()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>742</x>
-     <y>41</y>
+     <x>751</x>
+     <y>32</y>
     </hint>
     <hint type="destinationlabel">
      <x>709</x>
@@ -471,6 +471,70 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>buttonNextPage</sender>
+   <signal>clicked()</signal>
+   <receiver>searchTab</receiver>
+   <slot>nextPage()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>741</x>
+     <y>517</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>737</x>
+     <y>531</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonLastPage</sender>
+   <signal>clicked()</signal>
+   <receiver>searchTab</receiver>
+   <slot>lastPage()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>765</x>
+     <y>513</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>770</x>
+     <y>534</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonPreviousPage</sender>
+   <signal>clicked()</signal>
+   <receiver>searchTab</receiver>
+   <slot>previousPage()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>85</x>
+     <y>515</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>79</x>
+     <y>536</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonFirstPage</sender>
+   <signal>clicked()</signal>
+   <receiver>searchTab</receiver>
+   <slot>firstPage()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>49</x>
+     <y>507</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-2</x>
+     <y>524</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>load()</slot>
@@ -479,5 +543,9 @@
   <slot>linkHovered(QString)</slot>
   <slot>contextMenu()</slot>
   <slot>linkClicked(QString)</slot>
+  <slot>nextPage()</slot>
+  <slot>lastPage()</slot>
+  <slot>firstPage()</slot>
+  <slot>previousPage()</slot>
  </slots>
 </ui>

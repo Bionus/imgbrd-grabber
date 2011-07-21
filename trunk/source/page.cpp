@@ -16,16 +16,25 @@ Page::Page(QMap<QString,QMap<QString,QString> > *sites, QString site, QStringLis
 	url.replace("{pseudo}", settings->value("Login/pseudo").toString());
 	url.replace("{password}", settings->value("Login/password").toString());
 	m_url = QUrl(url);
+	m_replyExists = false;
 }
 Page::~Page()
 { }
 
 void Page::load()
 {
-	// Load page, and when finished parse result
+	m_replyExists = true;
 	QNetworkAccessManager *manager = new QNetworkAccessManager(this);
 	connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(parse(QNetworkReply*)));
-	manager->get(QNetworkRequest(m_url));
+	m_reply = manager->get(QNetworkRequest(m_url));
+}
+void Page::abort()
+{
+	if (m_replyExists)
+	{
+		if (m_reply->isRunning())
+		{ m_reply->abort(); }
+	}
 }
 
 void Page::parse(QNetworkReply* r)

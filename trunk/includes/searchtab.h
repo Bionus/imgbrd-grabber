@@ -72,6 +72,7 @@ class searchTab : public QWidget
 		QList<QCheckBox*>						m_checkboxes;
 		QString									m_link;
 		bool									m_sized;
+		int										m_page;
 };
 
 #endif // SEARCHTAB_H

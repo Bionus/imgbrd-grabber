@@ -95,6 +95,18 @@ void searchTab::closeEvent(QCloseEvent *e)
 	QList<int> sizes = ui->splitter->sizes();
 	settings->setValue("splitter", QString::number(sizes[0])+"|"+QString::number(sizes[1]));
 	settings->setValue("mergeresults", ui->checkMergeResults->isChecked());
+	if (!m_pages.isEmpty())
+	{
+		for (int i = 0; i < m_pages.count(); i++)
+		{ delete m_pages.at(i); }
+		m_pages.clear();
+	}
+	if (!m_images.isEmpty())
+	{
+		for (int i = 0; i < m_images.count(); i++)
+		{ delete m_images.at(i); }
+		m_images.clear();
+	}
 	e->accept();
 }
 
@@ -167,12 +179,24 @@ void searchTab::updateCheckboxes()
 
 void searchTab::load()
 {
+	ui->buttonFirstPage->setEnabled(ui->spinPage->value() > 1);
+	ui->buttonPreviousPage->setEnabled(ui->spinPage->value() > 1);
 	while (ui->layoutResults->count() > 0)
 	{ ui->layoutResults->takeAt(0)->widget()->hide(); }
 	setWindowTitle(m_search->toPlainText().isEmpty() ? tr("Recherche") : m_search->toPlainText());
 	emit titleChanged(this);
 	ui->labelTags->setText("");
+	for (int i = 0; i < m_pages.count(); i++)
+	{
+		m_pages.at(i)->abort();
+		delete m_pages.at(i);
+	}
 	m_pages.clear();
+	for (int i = 0; i < m_images.count(); i++)
+	{
+		m_images.at(i)->abortPreview();
+		delete m_images.at(i);
+	}
 	m_images.clear();
 	for (int i = 0; i < m_selectedSources.count(); i++)
 	{
@@ -185,6 +209,7 @@ void searchTab::load()
 			m_pages.append(page);
 		}
 	}
+	m_page = 0;
 }
 
 bool sortByFrequency(Tag *s1, Tag *s2)
@@ -194,28 +219,35 @@ void searchTab::finishedLoading(Page* page)
 	log(tr("Réception de la page <a href=\"%1\">%1</a>").arg(page->url().toString()));
 	if (page->imagesCount() < m_pagemax || m_pagemax == -1 )
 	{ m_pagemax = page->imagesCount(); }
+	ui->buttonNextPage->setEnabled(m_pagemax > ui->spinPage->value());
+	ui->buttonLastPage->setEnabled(m_pagemax > ui->spinPage->value());
+
 	QList<Image*> imgs = page->images();
-	int pos = m_pages.indexOf(page);
-	int pl = ceil(sqrt(ui->spinImagesPerPage->value()));
-	float fl = (float)ui->spinImagesPerPage->value()/pl;
-	QLabel *txt = new QLabel();
-		if (imgs.count() == 0)
-		{
-			QStringList reasons = QStringList();
-			if (page->source().isEmpty())
-			{ reasons.append(tr("serveur hors-ligne")); }
-			if (m_search->toPlainText().count(" ") > 1)
-			{ reasons.append(tr("trop de tags")); }
-			if (ui->spinPage->value() > 1000)
-			{ reasons.append(tr("page trop éloignée")); }
-			txt->setText(m_sites->key(page->site())+" - <a href=\""+page->url().toString()+"\">"+page->url().toString()+"</a> - "+tr("Aucun résultat")+(reasons.count() > 0 ? "<br/>"+tr("Raisons possibles : %1").arg(reasons.join(", ")) : ""));
-		}
-		else
-		{ txt->setText(m_sites->key(page->site())+" - <a href=\""+page->url().toString()+"\">"+page->url().toString()+"</a> - "+tr("Page %1 sur %2 (%3 sur %4)").arg(ui->spinPage->value()).arg(page->imagesCount() != 0 ? ceil(page->imagesCount()/((float)ui->spinImagesPerPage->value())) : 0).arg(imgs.count()).arg(page->imagesCount() != 0 ? page->imagesCount() : 0)); }
-		txt->setOpenExternalLinks(true);
-	ui->layoutResults->addWidget(txt, floor(pos/ui->spinColumns->value())*(fl+1), pl*(pos%ui->spinColumns->value()), 1, pl);
-	ui->layoutResults->setRowMinimumHeight((floor(pos/ui->spinColumns->value())*(fl+1)), 50);
 	m_images.append(imgs);
+
+	if (!ui->checkMergeResults->isChecked())
+	{
+		int pos = m_pages.indexOf(page);
+		int pl = ceil(sqrt(ui->spinImagesPerPage->value()));
+		float fl = (float)ui->spinImagesPerPage->value()/pl;
+		QLabel *txt = new QLabel();
+			if (imgs.count() == 0)
+			{
+				QStringList reasons = QStringList();
+				if (page->source().isEmpty())
+				{ reasons.append(tr("serveur hors-ligne")); }
+				if (m_search->toPlainText().count(" ") > 1)
+				{ reasons.append(tr("trop de tags")); }
+				if (ui->spinPage->value() > 1000)
+				{ reasons.append(tr("page trop éloignée")); }
+				txt->setText(m_sites->key(page->site())+" - <a href=\""+page->url().toString()+"\">"+page->url().toString()+"</a> - "+tr("Aucun résultat")+(reasons.count() > 0 ? "<br/>"+tr("Raisons possibles : %1").arg(reasons.join(", ")) : ""));
+			}
+			else
+			{ txt->setText(m_sites->key(page->site())+" - <a href=\""+page->url().toString()+"\">"+page->url().toString()+"</a> - "+tr("Page %1 sur %2 (%3 sur %4)").arg(ui->spinPage->value()).arg(page->imagesCount() != 0 ? ceil(page->imagesCount()/((float)ui->spinImagesPerPage->value())) : 0).arg(imgs.count()).arg(page->imagesCount() != 0 ? page->imagesCount() : 0)); }
+			txt->setOpenExternalLinks(true);
+		ui->layoutResults->addWidget(txt, floor(pos/ui->spinColumns->value())*(fl+1), pl*(pos%ui->spinColumns->value()), 1, pl);
+		ui->layoutResults->setRowMinimumHeight((floor(pos/ui->spinColumns->value())*(fl+1)), 50);
+	}
 
 	// Tags for this page
 	QList<Tag*> taglist;
@@ -225,12 +257,15 @@ void searchTab::finishedLoading(Page* page)
 		QList<Tag*> tags = m_pages.at(i)->tags();
 		for (int t = 0; t < tags.count(); t++)
 		{
-			if (tagsGot.contains(tags.at(t)->text()))
-			{ taglist[tagsGot.indexOf(tags.at(t)->text())]->setCount(taglist[tagsGot.indexOf(tags.at(t)->text())]->count()+tags.at(t)->count()); }
-			else
+			if (!tags.at(t)->text().isEmpty())
 			{
-				taglist.append(tags.at(t));
-				tagsGot.append(tags.at(t)->text());
+				if (tagsGot.contains(tags.at(t)->text()))
+				{ taglist[tagsGot.indexOf(tags.at(t)->text())]->setCount(taglist[tagsGot.indexOf(tags.at(t)->text())]->count()+tags.at(t)->count()); }
+				else
+				{
+					taglist.append(tags.at(t));
+					tagsGot.append(tags.at(t)->text());
+				}
 			}
 		}
 	}
@@ -265,6 +300,22 @@ void searchTab::finishedLoading(Page* page)
 		ui->splitter->setSizes(QList<int>() << s1 << width()-s1);
 	}
 
+	m_page++;
+	if (ui->checkMergeResults->isChecked())
+	{
+		if (m_page != m_pages.count())
+		{ return; }
+		QStringList md5s;
+		for (int i = 0; i < m_images.count(); i++)
+		{
+			if (md5s.contains(m_images.at(i)->md5()))
+			{ m_images.removeAt(i); i--; }
+			else
+			{ md5s.append(m_images.at(i)->md5()); }
+		}
+		imgs = m_images;
+	}
+
 	// Loading images
 	for (int i = 0; i < imgs.count(); i++)
 	{
@@ -294,8 +345,9 @@ void searchTab::finishedLoading(Page* page)
 
 void searchTab::finishedLoadingPreview(Image *img)
 {
-	int position = m_images.indexOf(img);
-	int page = m_pages.indexOf(img->page());
+	int position = m_images.indexOf(img), page = 0;
+	if (!ui->checkMergeResults->isChecked())
+	{ page = m_pages.indexOf(img->page()); }
 	QPixmap preview = img->previewImage();
 	if (preview.isNull())
 	{
@@ -344,7 +396,10 @@ void searchTab::finishedLoadingPreview(Image *img)
 		//connect(l, SIGNAL(rightClick(int)), this, SLOT(batchChange(int)));
 	int pl = ceil(sqrt(ui->spinImagesPerPage->value()));
 	float fl = (float)ui->spinImagesPerPage->value()/pl;
-	ui->layoutResults->addWidget(l, floor(float(position%ui->spinImagesPerPage->value())/fl)+(floor(page/ui->spinColumns->value())*(fl+1))+1, (page%ui->spinColumns->value())*pl+position%pl, 1, 1);
+	int pp = ui->spinImagesPerPage->value();
+	if (ui->checkMergeResults->isChecked())
+	{ pp = m_images.count(); }
+	ui->layoutResults->addWidget(l, floor(float(position%pp)/fl)+(floor(page/ui->spinColumns->value())*(fl+1))+1, (page%ui->spinColumns->value())*pl+position%pl, 1, 1);
 }
 
 void searchTab::webZoom(int id)

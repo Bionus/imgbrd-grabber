@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'searchtab.ui'
 **
-** Created: Thu 21. Jul 17:56:27 2011
+** Created: Thu 21. Jul 23:47:42 2011
 **      by: Qt User Interface Compiler version 4.6.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -282,6 +282,10 @@ public:
         QObject::connect(labelTags, SIGNAL(linkHovered(QString)), searchTab, SLOT(linkHovered(QString)));
         QObject::connect(labelTags, SIGNAL(customContextMenuRequested(QPoint)), searchTab, SLOT(contextMenu()));
         QObject::connect(labelTags, SIGNAL(linkActivated(QString)), searchTab, SLOT(linkClicked(QString)));
+        QObject::connect(buttonNextPage, SIGNAL(clicked()), searchTab, SLOT(nextPage()));
+        QObject::connect(buttonLastPage, SIGNAL(clicked()), searchTab, SLOT(lastPage()));
+        QObject::connect(buttonPreviousPage, SIGNAL(clicked()), searchTab, SLOT(previousPage()));
+        QObject::connect(buttonFirstPage, SIGNAL(clicked()), searchTab, SLOT(firstPage()));
 
         QMetaObject::connectSlotsByName(searchTab);
     } // setupUi
