@@ -7,7 +7,7 @@
 #include "zoomwindow.h"
 #include "ui_zoomwindow.h"
 
-using namespace std;
+extern mainWindow *_mainwindow;
 
 
 
@@ -38,10 +38,10 @@ zoomWindow::zoomWindow(Image *image, QStringMap site) : ui(new Ui::zoomWindow), 
 	ui->verticalLayout->insertWidget(1, labelImage, 1);
 	this->labelImage = labelImage;
 
-	QStringList taglist = image->tags();
+	QList<Tag*> taglist = image->tags();
 	QStringList hreftags;
 	for (int i = 0; i < taglist.count(); i++)
-	{ hreftags.append(" <a href=\""+taglist.at(i)+"\" style=\"text-decoration:none;color:#000000\">"+taglist.at(i)+"</a>"); }
+	{ hreftags.append("<a href=\""+taglist.at(i)->text()+"\" style=\"text-decoration:none;color:#000000\">"+taglist.at(i)->text()+"</a>"); }
 
 	QMap<QString, QString> assoc;
 		assoc["s"] = tr("Safe");
@@ -76,7 +76,7 @@ zoomWindow::zoomWindow(Image *image, QStringMap site) : ui(new Ui::zoomWindow), 
 	}
 	if (pos == "top")
 	{
-		ui->labelTagsLeft->hide();
+		ui->widgetLeft->hide();
 		ui->labelTagsTop->setText(hreftags.join(" "));
 	}
 	else
@@ -85,12 +85,8 @@ zoomWindow::zoomWindow(Image *image, QStringMap site) : ui(new Ui::zoomWindow), 
 		ui->labelTagsLeft->setText(hreftags.join("<br/>"));
 	}
 
-	QUrl rl(u);
-	QNetworkAccessManager *manager = new QNetworkAccessManager(this);
-	connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply*)));
-	QNetworkRequest rq(rl);
-		rq.setRawHeader("Referer", u.toAscii());
-	this->r = manager->get(rq);
+	connect(image, SIGNAL(finishedLoadingTags(Image*)), this, SLOT(replyFinished(Image*)));
+	image->loadTags();
 }
 
 /**
@@ -169,7 +165,7 @@ void zoomWindow::favorite()
 	if (!QDir(savePath("thumbs")).exists())
 	{ QDir(savePath()).mkdir("thumbs"); }
 	img.save(savePath("thumbs/"+link+".png"), "PNG");
-	//m_parent->updateFavorites();
+	_mainwindow->updateFavorites();
 }
 void zoomWindow::setfavorite()
 {
@@ -179,7 +175,7 @@ void zoomWindow::setfavorite()
 	if (!QDir(savePath("thumbs")).exists())
 	{ QDir(savePath()).mkdir("thumbs"); }
 	img.save(savePath("thumbs/"+link+".png"), "PNG");
-	//m_parent->updateFavorites();
+	_mainwindow->updateFavorites();
 }
 void zoomWindow::unfavorite()
 {
@@ -197,7 +193,7 @@ void zoomWindow::unfavorite()
 	f.close();
 	if (QFile::exists(savePath("thumbs/"+link+".png")))
 	{ QFile::remove(savePath("thumbs/"+link+".png")); }
-	//m_parent->updateFavorites();
+	_mainwindow->updateFavorites();
 }
 void zoomWindow::viewitlater()
 {
@@ -242,75 +238,70 @@ void zoomWindow::rR(qint64 size, qint64 total)
 	}
 }
 
-void zoomWindow::replyFinished(QNetworkReply* reply)
+void zoomWindow::replyFinished(Image* img)
 {
-	if (reply->error() == QNetworkReply::NoError)
+	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
+	bool under = settings.value("Save/remplaceblanksbyunderscores", false).toBool();
+	QStringList blacklistedtags(settings.value("blacklistedtags").toString().split(' '));
+
+	QStringList tlist = QStringList() << "artists" << "copyrights" << "characters" << "models" << "generals";
+	QMap<QString,QString> styles;
+	for (int i = 0; i < tlist.size(); i++)
 	{
-		QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
-		bool under = settings.value("Save/remplaceblanksbyunderscores", false).toBool();
-		QStringList blacklistedtags(settings.value("blacklistedtags").toString().split(' '));
-		QString source = reply->readAll();
-		QRegExp rx(m_site["Regex/Tags"]);
-		rx.setMinimal(true);
-		int pos = 0;
-		QString tags = " "+m_image->tags().join(" ")+" ";
-		QStringList tlist = QStringList() << "artists" << "copyrights" << "characters" << "models" << "generals";
-		QMap<QString,QString> styles;
-		for (int i = 0; i < tlist.size(); i++)
-		{
-			QFont font;
-			font.fromString(settings.value("Coloring/Fonts/"+tlist.at(i)).toString());
-			styles[tlist.at(i)] = "color:"+settings.value("Coloring/Colors/"+tlist.at(i), "#00aa00").toString()+"; "+qfonttocss(font);
-		}
-		while ((pos = rx.indexIn(source, pos)) != -1)
-		{
-			pos += rx.matchedLength();
-			QString type = rx.cap(1), tag = rx.cap(2).replace(" ", "_"), normalized = tag;
-			normalized.remove('\\').remove('/').remove(':').remove('*').remove('?').remove('"').remove('<').remove('>').remove('|');
-			if (!under)
-			{ normalized.replace('_', ' '); }
-			if (blacklistedtags.contains(tag, Qt::CaseInsensitive))
-			{ tags.replace(" "+tag+" ", " <a href=\""+tag+"\" style=\"\">"+tag+"</a> ");	}
-			this->details[type+"s"].append(normalized);
-			tags.replace(" "+tag+" ", " <a href=\""+tag+"\" style=\""+(styles.contains(type+"s") ? styles[type+"s"] : styles["generals"])+"\">"+tag+"</a> ");
-			this->details["alls"].append(normalized);
-		}
-		if (ui->labelTagsLeft->isHidden())
-		{ ui->labelTagsTop->setText(tags); }
-		else
-		{ ui->labelTagsLeft->setText(tags.split("> <").join("><br/><")); }
-		m_detailsWindow->setTags(tags.trimmed());
-		QString pth = this->getSavePath();
-		QString path = settings.value("Save/path").toString().replace("\\", "/");
-		if (path.right(1) == "/")
-		{ path = path.left(path.length()-1); }
-		QFile file(path+"/"+pth);
-		if (file.exists() && !path.isEmpty() && !pth.isEmpty())
-		{
-			ui->buttonSave->setText(tr("Fichier déjà existant"));
-			ui->buttonSaveNQuit->setText(tr("Fermer"));
-			this->loaded = true;
-			if (m_url.section('.', -1).toUpper() == "GIF")
-			{
-				QMovie *movie = new QMovie(path+"/"+pth);
-				labelImage->setMovie(movie);
-				movie->start();
-			}
-			else
-			{
-				this->d.clear();
-				if (!file.open(QIODevice::ReadOnly))
-				{ error(this, tr("Erreur inattendue lors de l'ouverture du fichier.\r\n%1").arg(path+"/"+pth)); }
-				this->d = file.readAll();
-				this->image.loadFromData(this->d, m_format);
-				this->update();
-			}
-		}
-		else
-		{ this->load(); }
+		QFont font;
+		font.fromString(settings.value("Coloring/Fonts/"+tlist.at(i)).toString());
+		styles[tlist.at(i)] = "color:"+settings.value("Coloring/Colors/"+tlist.at(i), "#00aa00").toString()+"; "+qfonttocss(font);
 	}
-	else if (reply->error() != QNetworkReply::OperationCanceledError)
-	{ error(this, tr("Une erreur inattendue est survenue lors du chargement des tags.\r\n%1").arg(reply->url().toString())); }
+
+	QStringList t;
+	for (int i = 0; i < img->tags().count(); i++)
+	{
+		Tag *tag = img->tags().at(i);
+		QString normalized = tag->text().replace("\\", " ").replace("/", " ").replace(":", " ").replace("|", " ").replace("*", " ").replace("?", " ").replace("\"", " ").replace("<", " ").replace(">", " ").trimmed();
+		if (!under)
+		{ normalized.replace('_', ' '); }
+		this->details[tag->type()+"s"].append(normalized);
+		this->details["alls"].append(normalized);
+		if (blacklistedtags.contains(tag->text(), Qt::CaseInsensitive))
+		{ t.append("<a href=\""+tag->text()+"\" style=\"\">"+tag->text()+"</a>"); }
+		else
+		{ t.append("<a href=\""+tag->text()+"\" style=\""+(styles.contains(tag->type()+"s") ? styles[tag->type()+"s"] : styles["generals"])+"\">"+tag->text()+"</a>"); }
+	}
+	tags = t.join(" ");
+	if (ui->widgetLeft->isHidden())
+	{ ui->labelTagsTop->setText(tags); }
+	else
+	{ ui->labelTagsLeft->setText(t.join("<br/>")); }
+	m_detailsWindow->setTags(tags);
+
+	QString pth = this->getSavePath();
+	QString path = settings.value("Save/path").toString().replace("\\", "/");
+	if (path.right(1) == "/")
+	{ path = path.left(path.length()-1); }
+	QFile file(path+"/"+pth);
+	if (file.exists() && !path.isEmpty() && !pth.isEmpty())
+	{
+		ui->buttonSave->setText(tr("Fichier déjà existant"));
+		ui->buttonSaveNQuit->setText(tr("Fermer"));
+		this->loaded = true;
+		if (m_url.section('.', -1).toUpper() == "GIF")
+		{
+			QMovie *movie = new QMovie(path+"/"+pth);
+			labelImage->setMovie(movie);
+			movie->start();
+		}
+		else
+		{
+			this->d.clear();
+			if (!file.open(QIODevice::ReadOnly))
+			{ error(this, tr("Erreur inattendue lors de l'ouverture du fichier.\r\n%1").arg(path+"/"+pth)); }
+			this->d = file.readAll();
+			this->image.loadFromData(this->d, m_format);
+			this->update();
+		}
+	}
+	else
+	{ this->load(); }
 }
 
 void zoomWindow::replyFinishedZoom(QNetworkReply* reply)
@@ -401,11 +392,11 @@ QString zoomWindow::saveImage()
 		{ reply = QMessageBox::question(this, tr("Erreur"), tr("Vous n'avez pas précisé de format de sauvegarde ! Voulez-vous ouvrir les options ?"), QMessageBox::Yes | QMessageBox::No); }
 		if (reply == QMessageBox::Yes)
 		{
-			/*optionsWindow *options = new optionsWindow(m_parent);
+			optionsWindow *options = new optionsWindow(_mainwindow);
 			//options->onglets->setCurrentIndex(3);
 			options->setWindowModality(Qt::ApplicationModal);
 			options->show();
-			connect(options, SIGNAL(closed()), this, SLOT(saveImage()));*/
+			connect(options, SIGNAL(closed()), this, SLOT(saveImage()));
 		}
 		return QString();
 	}
@@ -422,7 +413,7 @@ QString zoomWindow::saveImage()
 		f.open(QIODevice::WriteOnly);
 		f.write(this->d);
 		f.close();
-		//m_parent->log(tr("Saved %1").arg(pth+"/"+path));
+		log(tr("Saved <a href=\"file:///%1\">%1</a>").arg(pth+"/"+path));
 		ui->buttonSave->setText(tr("Sauvegardé !"));
 		ui->buttonSaveNQuit->setText(tr("Fermer"));
 	}
@@ -532,7 +523,11 @@ void zoomWindow::closeEvent(QCloseEvent *e)
 		settings.setValue("state", int(this->windowState()));
 		settings.setValue("size", this->size());
 		settings.setValue("pos", this->pos());
-	if (r->isRunning())			{ r->abort();		}
-	if (m_replyExists)			{ m_reply->abort();	}
+	m_image->abortTags();
+	if (m_replyExists)
+	{
+		if (m_reply->isRunning())
+		{ m_reply->abort(); }
+	}
 	QWidget::closeEvent(e);
 }

@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'searchtab.ui'
 **
-** Created: Mon 18. Jul 14:47:57 2011
+** Created: Thu 21. Jul 17:56:27 2011
 **      by: Qt User Interface Compiler version 4.6.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -76,10 +76,14 @@ public:
         sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(searchTab->sizePolicy().hasHeightForWidth());
         searchTab->setSizePolicy(sizePolicy);
+        QIcon icon;
+        icon.addFile(QString::fromUtf8(":/images/icon.ico"), QSize(), QIcon::Normal, QIcon::Off);
+        searchTab->setWindowIcon(icon);
         verticalLayout_2 = new QVBoxLayout(searchTab);
         verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
         splitter = new QSplitter(searchTab);
         splitter->setObjectName(QString::fromUtf8("splitter"));
+        splitter->setOrientation(Qt::Horizontal);
         scrollArea = new QScrollArea(splitter);
         scrollArea->setObjectName(QString::fromUtf8("scrollArea"));
         sizePolicy.setHeightForWidth(scrollArea->sizePolicy().hasHeightForWidth());
@@ -87,9 +91,10 @@ public:
         scrollArea->setFrameShape(QFrame::NoFrame);
         scrollArea->setFrameShadow(QFrame::Plain);
         scrollArea->setLineWidth(0);
+        scrollArea->setWidgetResizable(true);
         scrollAreaWidgetContents = new QWidget();
         scrollAreaWidgetContents->setObjectName(QString::fromUtf8("scrollAreaWidgetContents"));
-        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 758, 513));
+        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 16, 496));
         QSizePolicy sizePolicy1(QSizePolicy::Preferred, QSizePolicy::Expanding);
         sizePolicy1.setHorizontalStretch(0);
         sizePolicy1.setVerticalStretch(0);
@@ -103,6 +108,8 @@ public:
         labelTags->setObjectName(QString::fromUtf8("labelTags"));
         sizePolicy1.setHeightForWidth(labelTags->sizePolicy().hasHeightForWidth());
         labelTags->setSizePolicy(sizePolicy1);
+        labelTags->setContextMenuPolicy(Qt::CustomContextMenu);
+        labelTags->setText(QString::fromUtf8(""));
         labelTags->setTextFormat(Qt::RichText);
 
         verticalLayout_3->addWidget(labelTags);
@@ -115,6 +122,7 @@ public:
         widget_2->setSizePolicy(sizePolicy);
         verticalLayout_4 = new QVBoxLayout(widget_2);
         verticalLayout_4->setObjectName(QString::fromUtf8("verticalLayout_4"));
+        verticalLayout_4->setContentsMargins(9, 0, 0, 0);
         layoutFields = new QHBoxLayout();
         layoutFields->setSpacing(6);
         layoutFields->setObjectName(QString::fromUtf8("layoutFields"));
@@ -271,6 +279,9 @@ public:
         QObject::connect(pushButton, SIGNAL(clicked(bool)), widgetPlus, SLOT(setVisible(bool)));
         QObject::connect(buttonTags, SIGNAL(clicked()), searchTab, SLOT(load()));
         QObject::connect(buttonSourcesList, SIGNAL(clicked()), searchTab, SLOT(openSourcesWindow()));
+        QObject::connect(labelTags, SIGNAL(linkHovered(QString)), searchTab, SLOT(linkHovered(QString)));
+        QObject::connect(labelTags, SIGNAL(customContextMenuRequested(QPoint)), searchTab, SLOT(contextMenu()));
+        QObject::connect(labelTags, SIGNAL(linkActivated(QString)), searchTab, SLOT(linkClicked(QString)));
 
         QMetaObject::connectSlotsByName(searchTab);
     } // setupUi
@@ -278,7 +289,6 @@ public:
     void retranslateUi(QWidget *searchTab)
     {
         searchTab->setWindowTitle(QApplication::translate("searchTab", "Nouvel onglet", 0, QApplication::UnicodeUTF8));
-        labelTags->setText(QString());
         label->setText(QApplication::translate("searchTab", "Recherche", 0, QApplication::UnicodeUTF8));
         buttonCalendar->setText(QApplication::translate("searchTab", " Ins\303\251rer une date ", 0, QApplication::UnicodeUTF8));
         buttonTags->setText(QApplication::translate("searchTab", "Ok", 0, QApplication::UnicodeUTF8));

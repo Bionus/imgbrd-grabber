@@ -113,13 +113,10 @@ void mainWindow::init()
 		ui->tabWidget->setCornerWidget(add);
 	addTab();
 
-	cbfs = QList<QCheckBox*>();
-
 	ui->actionClosetab->setShortcut(QKeySequence("Ctrl+W"));
 	ui->actionAddtab->setShortcut(QKeySequence::AddTab);
 	ui->actionQuit->setShortcut(QKeySequence::Quit);
 	ui->actionFolder->setShortcut(QKeySequence::Open);
-	ui->actionHelp->setShortcut(QKeySequence::HelpContents);
 
 	log(tr("Chargement des préférences depuis <a href=\"file:///%1\">%1</a>").arg(p));
 	QStringList assoc = QStringList() << "name" << "note" << "lastviewed";
@@ -225,17 +222,16 @@ void mainWindow::init()
 	{
 		if (sav.count() <= i)
 		{ sav[i] = '0'; }
-		m_selected.append(sav.at(i) == '1' ? true : false);
+		m_selectedSources.append(sav.at(i) == '1' ? true : false);
 	}
-	updateSourcesCheckboxes();
 
 	// Console usage
 	if (this->m_params.keys().contains("batch"))
 	{
-		batchAddGroup(QStringList() << m_tags.join(" ") << m_params.value("page", "1") << m_params.value("limit", m_settings->value("limit", 20).toString()) << this->m_params.value("limit", m_settings->value("limit", 20).toString()) << "false" << this->m_params.value("booru", m_sites.keys().at(0)) << "false" << this->m_params.value("filename", m_settings->value("filename").toString()) << this->m_params.value("path", m_settings->value("path").toString()) << "");
-		//ui->tabWidget->setCurrentIndex(2);
+		batchAddGroup(QStringList() << m_tags.join(" ") << m_params.value("page", "1") << m_params.value("limit", m_settings->value("limit", 20).toString()) << this->m_params.value("limit", m_settings->value("limit", 20).toString()) << "false" << this->m_params.value("booru", m_sites.keys().at(0)) << this->m_params.value("filename", m_settings->value("Save/filename").toString()) << this->m_params.value("path", m_settings->value("Save/path").toString()) << "");
+		ui->tabWidget->setCurrentIndex(2);
 		if (!m_params.keys().contains("dontstart"))
-		{ /*getAll();*/ }
+		{ getAll(); }
 	}
 	else if (!m_tags.isEmpty() || m_settings->value("loadatstart", false).toBool())
 	{ m_tabs[0]->setTags(this->m_tags.join(" ")); }
@@ -326,27 +322,6 @@ void mainWindow::batchAddUnique(QStringMap values)
 	else
 	{
 		//ui->tableBatchUniques->removeRow(0);
-	}
-}
-void mainWindow::updateSourcesCheckboxes()
-{
-	for (int i = 0; i < cbfs.size(); i++)
-	{ delete cbfs.at(i); }
-	cbfs.clear();
-	QStringList urls = m_sites.keys();
-	int n = m_settings->value("Sources/Letters", 3).toInt(), m = n;
-	for (int i = 0; i < urls.size(); i++)
-	{
-		if (n < 0)
-		{
-			m = urls.at(i).indexOf('.');
-			if (n < -1 && urls.at(i).indexOf('.', m+1) != -1)
-			{ m = urls.at(i).indexOf('.', m+1); }
-		}
-		QCheckBox *cbf = new QCheckBox(urls.at(i).left(m));
-			cbf->setChecked(m_selected.at(i));
-			ui->layoutSourcesFavs->addWidget(cbf);
-		cbfs.append(cbf);
 	}
 }
 void mainWindow::saveFolder()
@@ -452,18 +427,20 @@ void mainWindow::updateFavorites()
 			img = img.scaled(QSize(150,150), Qt::KeepAspectRatio, Qt::SmoothTransformation);
 			img.save(savePath("thumbs/"+tag+".png"), "PNG");
 		}
+		QString xt = tr("<b>Nom :</b> %1<br/><b>Note :</b> %2 %%<br/><b>Dernière vue :</b> %3").arg(favorites[i]["name"], favorites[i]["note"], QDateTime::fromString(favorites[i]["lastviewed"], Qt::ISODate).toString(format));
 		if (m_favoritesImages.count() > i)
 		{
 			m_favoritesImages.at(i)->setIcon(img);
+			m_favoritesImages.at(i)->setIconSize(img.size());
 			m_favoritesImages.at(i)->setId(favorites[i]["id"].toInt());
+			m_favoritesImages.at(i)->setToolTip(xt);
 			m_favoritesCaptions.at(i)->setText(favorites[i]["name"]+"<br/>("+favorites[i]["note"]+" % - "+QDateTime::fromString(favorites[i]["lastviewed"], Qt::ISODate).toString(format)+")");
 		}
 		else
 		{
-			QString xt = tr("<b>Nom :</b> %1<br/><b>Note :</b> %2 %%<br/><b>Dernière vue :</b> %3").arg(favorites[i]["name"], favorites[i]["note"], QDateTime::fromString(favorites[i]["lastviewed"], Qt::ISODate).toString(format));
-			QBouton *image = new QBouton(favorites[i]["id"].toInt());
+			QBouton *image = new QBouton(favorites[i]["id"].toInt(), this, m_settings->value("resizeInsteadOfCropping", true).toBool());
 				image->setIcon(img);
-				image->setIconSize(QSize(150, 150));
+				image->setIconSize(img.size());
 				image->setFlat(true);
 				image->setToolTip(xt);
 				connect(image, SIGNAL(rightClick(int)), this, SLOT(favoriteProperties(int)));
@@ -510,96 +487,147 @@ void mainWindow::loadNextFavorite()
 		web(tag);
 	}
 }
-void mainWindow::webUpdateTags()
-{
-	m_loadFavorite = QDateTime();
-	web();
-}
 void mainWindow::web(QString tags)
 {
-	/*m_remainingPics = 0;
-	m_remainingSites = 0;
-	m_countPics = 0;
-	m_gotMd5.clear();
-	m_mergeButtons.clear();
-	m_tabs[0]->ui->labelMergeResults->setText(tr("%1/%2 (%3/%4)").arg(m_currentFav == -1 ? m_replies.count()-m_countPics-m_remainingSites : m_currentFav+1).arg(m_currentFav == -1 ? m_replies.count()-m_countPics : m_favorites.count()).arg(m_countPics-m_remainingPics).arg(m_countPics));
-	tags = (tags.isEmpty() ? m_tabs[0]->m_search->toPlainText() : tags);
-	if (!m_replies.isEmpty() && m_currentFav < 1)
+	while (ui->layoutFavoritesResults->count() > 0)
+	{ ui->layoutFavoritesResults->takeAt(0)->widget()->hide(); }
+	m_pages.clear();
+	m_images.clear();
+	for (int i = 0; i < m_selectedSources.count(); i++)
 	{
-		for (int i = 0; i < m_replies.count(); i++)
-		{ m_replies.at(i)->abort(); }
-		m_replies.clear();
-	}
-	if (!m_webPics.isEmpty() && m_currentFav < 1)
-	{
-		for (int i = 0; i < m_webPics.count(); i++)
-		{ delete m_webPics.at(i); }
-		m_webPics.clear();
-		m_details.clear();
-	}
-	if (!m_webSites.isEmpty() && m_currentFav < 1)
-	{
-		for (int i = 0; i < m_webSites.count(); i++)
-		{ delete m_webSites.at(i); }
-		for (int i = 0; i < m_webSites.count()*11; i++)
+		if (m_selectedSources.at(i))
 		{
-			if (!m_loadFavorite.isNull())
-			{ ui->layoutFavoritesResults->setRowMinimumHeight(i, 0); }
+			Page *page = new Page(&m_sites, m_sites.keys().at(i), tags.split(" "), 1, m_settings->value("limit", 20).toInt(), QStringList(), this);
+			log(tr("Chargement de la page <a href=\"%1\">%1</a>").arg(page->url().toString()));
+			connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(finishedLoading(Page*)));
+			page->load();
+			m_pages.append(page);
+		}
+	}
+}
+void mainWindow::finishedLoading(Page* page)
+{
+	log(tr("Réception de la page <a href=\"%1\">%1</a>").arg(page->url().toString()));
+
+	if (page->imagesCount() < m_pagemax || m_pagemax == -1 )
+	{ m_pagemax = page->imagesCount(); }
+	QList<Image*> imgs = page->images();
+	int pos = m_pages.indexOf(page);
+	m_images.append(imgs);
+
+	// Loading images
+	int results = 0;
+	for (int i = 0; i < imgs.count(); i++)
+	{
+		Image *img = imgs.at(i);
+		if (img->createdAt() < m_loadFavorite)
+		{ log(tr("Image #%1 ignored. Reason: %2.").arg(i).arg("déjà vue"));; }
+		else
+		{
+			QStringList detected;
+			if (!m_settings->value("blacklistedtags").toString().isEmpty())
+			{
+				QStringList blacklistedtags(m_settings->value("blacklistedtags").toString().split(" "));
+				for (int b = 0; b < blacklistedtags.size(); b++)
+				{
+					for (int t = 0; t < img->tags().count(); t++)
+					{
+						if (img->tags().at(t)->text().toLower() == blacklistedtags.at(b).toLower())
+						{ detected.append(blacklistedtags.at(b)); }
+					}
+				}
+			}
+			if (!detected.isEmpty() && m_settings->value("hideblacklisted", false).toBool())
+			{ log(tr("Image #%1 ignored. Reason: %2.").arg(i).arg("\""+detected.join(", ")+"\""));; }
 			else
-			{ m_tabs[0]->ui->layoutResults->setRowMinimumHeight(i, 0); }
+			{
+				connect(img, SIGNAL(finishedLoadingPreview(Image*)), this, SLOT(finishedLoadingPreview(Image*)));
+				img->loadPreview();
+				results++;
+			}
 		}
-		m_webSites.clear();
 	}
-	QNetworkAccessManager *manager = new QNetworkAccessManager(this);
-	connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply*)));
-	m_pagemax = 0;
-	m_tabs[0]->ui->buttonFirstPage->setEnabled(m_tabs[0]->ui->spinPage->value() > 1);
-	m_tabs[0]->ui->buttonPreviousPage->setEnabled(m_tabs[0]->ui->spinPage->value() > 1);
-	m_assoc.clear();
-	QStringList keys = m_sites.keys();
-	for (int i = 0; i < keys.count(); i++)
+	if (results >= m_settings->value("hidefavorites", 20).toInt())
+	{ ui->widgetFavorites->hide(); }
+
+	int pl = ceil(sqrt(m_settings->value("limit", 20).toInt()));
+	float fl = (float)m_settings->value("limit", 20).toInt()/pl;
+	QLabel *txt = new QLabel();
+		if (results == 0)
+		{ txt->setText(tr("Aucun résultat depuis le %1.").arg(m_loadFavorite.toString(tr("dd/MM/yyyy")))); }
+		else
+		{ txt->setText(m_sites.key(page->site())+" - <a href=\""+page->url().toString()+"\">"+page->url().toString()+"</a> - "+tr("Page %1 sur %2 (%3 sur %4)").arg(1).arg(page->imagesCount() != 0 ? ceil(page->imagesCount()/((float)m_settings->value("limit", 20).toInt())) : 0).arg(imgs.count()).arg(page->imagesCount() != 0 ? page->imagesCount() : 0)); }
+		txt->setOpenExternalLinks(true);
+	ui->layoutFavoritesResults->addWidget(txt, floor(pos/m_settings->value("columns", 1).toInt())*(fl+1), pl*(pos%m_settings->value("columns", 1).toInt()), 1, pl);
+	ui->layoutFavoritesResults->setRowMinimumHeight((floor(pos/m_settings->value("columns", 1).toInt())*(fl+1)), 50);
+}
+void mainWindow::finishedLoadingPreview(Image *img)
+{
+	int position = m_images.indexOf(img);
+	int page = m_pages.indexOf(img->page());
+	QPixmap preview = img->previewImage();
+	if (preview.isNull())
 	{
-		QString url;
-		QString text = " "+tags+" ";
-			text.replace(" rating:s ", " rating:safe ", Qt::CaseInsensitive)
-			.replace(" rating:q ", " rating:questionable ", Qt::CaseInsensitive)
-			.replace(" rating:e ", " rating:explicit ", Qt::CaseInsensitive)
-			.replace(" -rating:s ", " -rating:safe ", Qt::CaseInsensitive)
-			.replace(" -rating:q ", " -rating:questionable ", Qt::CaseInsensitive)
-			.replace(" -rating:e ", " -rating:explicit ", Qt::CaseInsensitive);
-		QStringList tags = text.split(" ", QString::SkipEmptyParts);
-		tags.removeDuplicates();
-		if (m_loadFavorite.isNull())
-		{
-			m_tabs[0]->m_search->setText(tags.join(" "));
-			m_tabs[0]->m_search->doColor();
-		}
-		url = m_sites[keys.at(i)]["Urls/Selected/Tags"];
-		url.replace("{page}", QString::number(m_tabs[0]->ui->spinPage->value()-1+m_sites[keys.at(i)]["FirstPage"].toInt()));
-		url.replace("{tags}", tags.join(" ").replace("&", "%26"));
-		url.replace("{limit}", QString::number(m_tabs[0]->ui->spinImagesPerPage->value()));
-		url.replace("{pseudo}", m_settings->value("Login/pseudo").toString());
-		url.replace("{password}", m_settings->value("Login/password").toString());
-		m_assoc.append(url);
-		if (cbls.at(i)->isChecked() && !url.isEmpty())
-		{
-			log(tr("Chargement de la page <a href=\"%1\">%1</a>").arg(url));
-			m_replies.append(manager->get(QNetworkRequest(QUrl::fromEncoded(url.toAscii()))));
-			m_remainingSites++;
-		}
+		log("<b>Warning:</b> one of the preview pictures (<a href='"+img->previewUrl().toString()+"'>"+img->previewUrl().toString()+"</a>) is empty.");
+		return;
 	}
-	m_tabs[0]->ui->labelMergeResults->setText(tr("%1/%2 (%3/%4)").arg(m_currentFav == -1 ? m_replies.count()-m_countPics-m_remainingSites : m_currentFav+1).arg(m_currentFav == -1 ? m_replies.count()-m_countPics : m_favorites.count()).arg(m_countPics-m_remainingPics).arg(m_countPics));*/
+
+	QString unit;
+	int size = img->fileSize();
+	if (size >= 2048)
+	{
+		size /= 1024;
+		if (size >= 2048)
+		{
+			size /= 1024;
+			unit = "mo";
+		}
+		else
+		{ unit = "ko"; }
+	}
+	else
+	{ unit = "o"; }
+
+	QColor color;
+	if (img->status() == "pending")
+	{ color = QColor("#0000ff"); }
+	QBouton *l = new QBouton(position, this, m_settings->value("resizeInsteadOfCropping", true).toBool(), color);
+		l->setIcon(preview);
+		QString t;
+		for (int i = 0; i < img->tags().count(); i++)
+		{ t += " "+img->tags().at(i)->text(); }
+		l->setToolTip(QString("%1%2%3%4%5%6%7%8")
+			.arg(img->tags().isEmpty() ? " " : tr("<b>Tags :</b> %1<br/><br/>").arg(t.trimmed()))
+			.arg(img->id() == 0 ? " " : tr("<b>ID :</b> %1<br/>").arg(img->id()))
+			.arg(img->rating().isEmpty() ? " " : tr("<b>Classe :</b> %1<br/>").arg(img->rating()))
+			.arg(tr("<b>Score :</b> %1<br/>").arg(img->score()))
+			.arg(img->author().isEmpty() ? " " : tr("<b>Posteur :</b> %1<br/><br/>").arg(img->author()))
+			.arg(img->width() == 0 || img->height() == 0 ? " " : tr("<b>Dimensions :</b> %1 x %2<br/>").arg(QString::number(img->width()), QString::number(img->height())))
+			.arg(img->fileSize() == 0 ? " " : tr("<b>Taille :</b> %1 %2<br/>").arg(QString::number(round(size)), unit))
+			.arg(!img->createdAt().isValid() ? " " : tr("<b>Date :</b> %1").arg(img->createdAt().toString(tr("le dd/MM/yyyy à hh:mm"))))
+		);
+		l->setIconSize(preview.size());
+		l->setFlat(true);
+		connect(l, SIGNAL(appui(int)), this, SLOT(webZoom(int)));
+		connect(l, SIGNAL(rightClick(int)), this, SLOT(batchChange(int)));
+	int pl = ceil(sqrt(m_settings->value("limit", 20).toInt()));
+	float fl = (float)m_settings->value("limit", 20).toInt()/pl;
+	ui->layoutFavoritesResults->addWidget(l, floor(float(position%m_settings->value("limit", 20).toInt())/fl)+(floor(page/m_settings->value("columns", 1).toInt())*(fl+1))+1, (page%m_settings->value("columns", 1).toInt())*pl+position%pl, 1, 1);
 }
 void mainWindow::webZoom(int id)
 {
-	/*QStringList detected;
+	QStringList detected;
+	Image *image = m_images.at(id);
 	if (!m_settings->value("blacklistedtags").toString().isEmpty())
 	{
-		QStringList blacklistedtags(m_settings->value("blacklistedtags").toString().split(' '));
+		QStringList blacklistedtags(m_settings->value("blacklistedtags").toString().split(" "));
 		for (int i = 0; i < blacklistedtags.size(); i++)
 		{
-			if (m_details.at(id).value("tags").contains(blacklistedtags.at(i), Qt::CaseInsensitive))
-			{ detected.append(blacklistedtags.at(i)); }
+			for (int t = 0; t < image->tags().count(); t++)
+			{
+				if (image->tags().at(t)->text().toLower() == blacklistedtags.at(i).toLower())
+				{ detected.append(blacklistedtags.at(i)); }
+			}
 		}
 		if (!detected.isEmpty())
 		{
@@ -608,404 +636,9 @@ void mainWindow::webZoom(int id)
 			{ return; }
 		}
 	}
-	zoomWindow *zoom = new zoomWindow(m_program, m_details.at(id).value("site"), m_sites[m_details.at(id).value("site")], m_details.at(id), this);
+	zoomWindow *zoom = new zoomWindow(image, image->page()->site());
 	zoom->show();
-	m_favorites = loadFavorites();*/
-}
-QString filter(QString f, QStringMap image)
-{
-	/*QStringList filters = f.toLower().split(" ");
-	QStringList types = QStringList() << "rating";
-	bool invert;
-	QString filter, type;
-	for (int i = 0; i < filters.count(); i++)
-	{
-		invert = false;
-		filter = filters.at(i);
-		if (filter.startsWith('-'))
-		{
-			filter = filter.right(filter.length()-1);
-			invert = true;
-		}
-		if (filter.contains(":"))
-		{
-			type = filter.section(':', 0, 0);
-			filter = filter.section(':', 1);
-			if (!types.contains(type))
-			{ return QObject::tr("unknown type \"%1\" (available types: \"%2\")").arg(filter, types.join("\", \"")); }
-			if (type == "rating")
-			{
-				if (!image["rating"].startsWith(filter.left(1)) && !invert)
-				{ return QObject::tr("image is not \"%1\"").arg(filter); }
-				if (image["rating"].startsWith(filter.left(1)) && invert)
-				{ return QObject::tr("image is \"%1\"").arg(filter); }
-			}
-		}
-		else
-		{
-			if (!image["tags"].contains(filter) && !invert)
-			{ return QObject::tr("image does not contains \"%1\"").arg(filter); }
-			if (image["tags"].contains(filter) && invert)
-			{ return QObject::tr("image contains \"%1\"").arg(filter); }
-		}
-	}*/
-	return QString();
-}
-void mainWindow::replyFinished(QNetworkReply* r)
-{
-	/*QString url = r->url().toString();
-	log(tr("Réception de la page <a href=\"%1\">%1</a>").arg(url));
-	QString redir = r->attribute(QNetworkRequest::RedirectionTargetAttribute).toString();
-	if (!redir.isEmpty())
-	{
-		log(tr("Page redirigée vers <a href=\"%1\">%1</a>").arg(redir));
-		QNetworkAccessManager *manager = new QNetworkAccessManager(this);
-		connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply*)));
-		m_replies.append(manager->get(QNetworkRequest(QUrl(redir))));
-		return;
-	}
-	int n = 0, site_id = 0, results = 0;
-	for (int i = 0; i < m_assoc.count(); i++)
-	{
-		if (m_assoc.at(i) == url)
-		{
-			site_id = i;
-			break;
-		}
-		if (cbls.at(i)->isChecked())
-		{ n++; }
-	}
-	int max = 0, count = 0;
-	QString site = m_sites.keys().at(site_id), source = r->readAll();
-	QNetworkAccessManager *mngr = new QNetworkAccessManager(this);
-	connect(mngr, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinishedPic(QNetworkReply*)));
-	if (m_sites[site]["Selected"] == "xml")
-	{
-		QDomDocument doc;
-		QString errorMsg;
-		int errorLine, errorColumn;
-		if (!doc.setContent(source, false, &errorMsg, &errorLine, &errorColumn))
-		{
-			qDebug() << source;
-			log(tr("<b>Erreur :</b> %1").arg(tr("erreur lors de l'analyse du fichier XML : %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn))));
-			error(this, tr("Erreur lors de l'analyse du fichier XML : %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn)));
-			return;
-		}
-		QDomElement docElem = doc.documentElement();
-		// Getting last page
-		count = docElem.attributes().namedItem("count").nodeValue().toFloat();
-		max = ceil(count/((float)m_tabs[0]->ui->spinImagesPerPage->value()));
-		if (max < 1)
-		{ max = 1; }
-		if (m_pagemax < max)
-		{
-			m_pagemax = max;
-			m_tabs[0]->ui->spinPage->setMaximum(max);
-		}
-		m_tabs[0]->ui->buttonNextPage->setEnabled(m_pagemax > m_tabs[0]->ui->spinPage->value());
-		m_tabs[0]->ui->buttonLastPage->setEnabled(m_pagemax > m_tabs[0]->ui->spinPage->value());
-		// Reading posts
-		QDomNodeList nodeList = docElem.elementsByTagName("post");
-		if (nodeList.count() > 0)
-		{
-			for (int id = 0; id < nodeList.count(); id++)
-			{
-				QStringMap d;
-				QStringList infos;
-				infos << "status" << "source" << "has_comments" << "file_url" << "sample_url" << "change" << "sample_width" << "has_children" << "preview_url" << "width" << "md5" << "preview_width" << "sample_height" << "parent_id" << "height" << "has_notes" << "creator_id" << "file_size" << "id" << "preview_height" << "rating" << "tags" << "author" << "score";
-				for (int i = 0; i < infos.count(); i++)
-				{ d[infos.at(i)] = nodeList.at(id).attributes().namedItem(infos.at(i)).nodeValue(); }
-				if (!d["preview_url"].startsWith("http://"))
-				{ d["preview_url"] = "http://"+site+QString(d["preview_url"].startsWith("/") ? "" : "/")+d["preview_url"]; }
-				if (!d["file_url"].startsWith("http://"))
-				{ d["file_url"] = "http://"+site+QString(d["file_url"].startsWith("/") ? "" : "/")+d["file_url"]; }
-				QString date(nodeList.at(id).attributes().namedItem("created_at").nodeValue());
-				QDateTime timestamp;
-				if (date.toInt() != 0)
-				{ timestamp.setTime_t(date.toInt()); }
-				else
-				{ timestamp = qDateTimeFromString(date, m_timezonedecay); }
-				d["created_at"] = timestamp.toString(tr("'le' dd/MM/yyyy 'à' hh:mm"));
-				d["site"] = site;
-				d["site_id"] = QString::number(n);
-				d["pos"] = QString::number(id);
-				if (m_loadFavorite.isNull() || timestamp > m_loadFavorite)
-				{
-					QString error = filter(m_tabs[0]->m_postFiltering->toPlainText(), d);
-					if (error.isEmpty())
-					{
-						m_details.append(d);
-						m_replies.append(mngr->get(QNetworkRequest(QUrl(d["preview_url"]))));
-						results++;
-					}
-					else
-					{ log(tr("Image #%1 ignored. Reason: %2.").arg(QString::number(id+1), error)); }
-				}
-			}
-		}
-	}
-	else if (m_sites[site]["Selected"] == "json")
-	{
-		QVariant src = Json::parse(source);
-		if (!src.isNull())
-		{
-			QMap<QString, QVariant> sc;
-			QList<QVariant> sourc = src.toList();
-			for (int id = 0; id < sourc.count(); id++)
-			{
-				sc = sourc.at(id).toMap();
-				QStringMap d;
-				QStringList infos;
-				infos << "status" << "source" << "has_comments" << "file_url" << "sample_url" << "change" << "sample_width" << "has_children" << "preview_url" << "width" << "md5" << "preview_width" << "sample_height" << "parent_id" << "height" << "has_notes" << "creator_id" << "file_size" << "id" << "preview_height" << "rating" << "tags" << "author" << "score";
-				for (int i = 0; i < infos.count(); i++)
-				{ d[infos.at(i)] = sc.value(infos.at(i)).toString(); }
-				if (!d["preview_url"].startsWith("http://"))
-				{ d["preview_url"] = "http://"+site+QString(d["preview_url"].startsWith("/") ? "" : "/")+d["preview_url"]; }
-				if (!d["file_url"].startsWith("http://"))
-				{ d["file_url"] = "http://"+site+QString(d["file_url"].startsWith("/") ? "" : "/")+d["file_url"]; }
-				QDateTime timestamp;
-				timestamp.setTime_t(sc.value("created_at").toMap().value("s").toInt());
-				d["created_at"] = timestamp.toString(tr("le dd/MM/yyyy à hh:mm"));
-				d["site"] = site;
-				d["site_id"] = QString::number(n);
-				d["pos"] = QString::number(id);
-				if (m_loadFavorite.isNull() || timestamp > m_loadFavorite)
-				{
-					QString error = filter(m_tabs[0]->m_postFiltering->toPlainText(), d);
-					if (error.isEmpty())
-					{
-						m_details.append(d);
-						m_replies.append(mngr->get(QNetworkRequest(QUrl(d["preview_url"]))));
-						results++;
-					}
-					else
-					{ log(tr("Image #%1 ignored. Reason: %2.").arg(QString::number(id+1), error)); }
-				}
-			}
-		}
-	}
-	else if (m_sites[site]["Selected"] == "regex")
-	{
-		// Getting last page
-		QRegExp rxlast(m_sites[site]["Regex/LastPage"]);
-		rxlast.setMinimal(true);
-		rxlast.indexIn(source, 0);
-		max = rxlast.cap(1).toInt();
-		if (max < 1)
-		{ max = 1; }
-		if (m_pagemax < max)
-		{
-			m_pagemax = max;
-			m_tabs[0]->ui->spinPage->setMaximum(max);
-		}
-		// Getting images
-		QRegExp rx(m_sites[site]["Regex/Image"]);
-		QStringList order = m_sites[site]["Regex/Order"].split('|');
-		rx.setMinimal(true);
-		int pos = 0, id = 0;
-		while (((pos = rx.indexIn(source, pos)) != -1))
-		{
-			pos += rx.matchedLength();
-			QStringMap d;
-			for (int i = 0; i < order.size(); i++)
-			{ d[order.at(i)] = rx.cap(i+1); }
-			if (!d["preview_url"].startsWith("http://"))
-			{ d["preview_url"] = "http://"+site+QString(d["preview_url"].startsWith("/") ? "" : "/")+d["preview_url"]; }
-				if (!d["file_url"].startsWith("http://"))
-				{ d["file_url"] = "http://"+site+QString(d["file_url"].startsWith("/") ? "" : "/")+d["file_url"]; }
-			if (m_sites[site]["Urls/Html/Image"].isEmpty())
-			{
-				d["file_url"] = d["preview_url"];
-				d["file_url"].remove("preview/");
-			}
-			else
-			{
-				d["file_url"] = m_sites[site]["Urls/Html/Image"];
-				d["file_url"].replace("{id}", d["id"])
-				.replace("{md5}", d["md5"])
-				.replace("{ext}", "jpg");
-			}
-			d["site"] = site;
-			d["site_id"] = QString::number(n);
-			d["pos"] = QString::number(id);
-			QString error = filter(m_tabs[0]->m_postFiltering->toPlainText(), d);
-			if (error.isEmpty())
-			{
-				m_details.append(d);
-				m_replies.append(mngr->get(QNetworkRequest(QUrl(d["preview_url"]))));
-				results++;
-			}
-			else
-			{ log(tr("Image #%1 ignored. Reason: %2.").arg(QString::number(id+1), error)); }
-			id++;
-		}
-	}
-	m_countPage[site] = results;
-	m_remainingPics += results;
-	m_countPics += results;
-	m_remainingSites--;
-	m_tabs[0]->ui->labelMergeResults->setText(tr("%1/%2 (%3/%4)").arg(m_currentFav == -1 ? m_replies.count()-m_countPics-m_remainingSites : m_currentFav+1).arg(m_currentFav == -1 ? m_replies.count()-m_countPics : m_favorites.count()).arg(m_countPics-m_remainingPics).arg(m_countPics));
-	int pl = ceil(sqrt(m_tabs[0]->ui->spinImagesPerPage->value()));
-	float fl = (float)m_tabs[0]->ui->spinImagesPerPage->value()/pl;
-	if (results >= m_settings->value("hidefavorites", 20).toInt() && !m_loadFavorite.isNull())
-	{ ui->widgetFavorites->hide(); }
-	if (!m_tabs[0]->ui->checkMergeResults->isChecked() && m_currentFav == -1)
-	{
-		QLabel *txt = new QLabel();
-		if (results == 0)
-		{
-			QStringList reasons = QStringList();
-			if (source.isEmpty())
-			{ reasons.append(tr("serveur hors-ligne")); }
-			if (m_tabs[0]->m_search->toPlainText().count(" ") > 1)
-			{ reasons.append(tr("trop de tags")); }
-			if (m_tabs[0]->ui->spinPage->value() > 1000)
-			{ reasons.append(tr("page trop éloignée")); }
-			txt->setText(site+" - <a href=\""+url+"\">"+url+"</a> - "+(!m_loadFavorite.isNull() ? tr("Aucun résultat depuis le %1").arg(m_loadFavorite.toString(m_settings->value("dateformat", "dd/MM/yyyy").toString())) : tr("Aucun résultat")+(reasons.count() > 0 ? "<br/>"+tr("Raisons possibles : %1").arg(reasons.join(", ")) : "")));
-		}
-		else
-		{ txt->setText(site+" - <a href=\""+url+"\">"+url+"</a> - "+tr("Page %1 sur %2 (%3 sur %4)").arg(m_tabs[0]->ui->spinPage->value()).arg(max != 0 ? ceil(count/((float)m_tabs[0]->ui->spinImagesPerPage->value())) : 0).arg(results).arg(count != 0 ? count : 0)); }
-		txt->setOpenExternalLinks(true);
-		if (!m_loadFavorite.isNull())
-		{
-			ui->layoutFavoritesResults->addWidget(txt, floor(n/m_tabs[0]->ui->spinColumns->value())*(ceil(fl)+1), pl*(n%m_tabs[0]->ui->spinColumns->value()), 1, pl);
-			ui->layoutFavoritesResults->setRowMinimumHeight(floor(n/m_tabs[0]->ui->spinColumns->value())*(ceil(fl)+1), 50);
-		}
-		else
-		{
-			m_tabs[0]->ui->layoutResults->addWidget(txt, floor(n/m_tabs[0]->ui->spinColumns->value())*(ceil(fl)+1), pl*(n%m_tabs[0]->ui->spinColumns->value()), 1, pl);
-			m_tabs[0]->ui->layoutResults->setRowMinimumHeight(floor(n/m_tabs[0]->ui->spinColumns->value())*(ceil(fl)+1), 50);
-		}
-		m_webSites.append(txt);
-	}
-	else if (results == 0 && m_remainingSites == 0 && m_currentFav == -1)
-	{
-		QLabel *txt = new QLabel((!m_loadFavorite.isNull() ? tr("Aucun résultat depuis le %1").arg(m_loadFavorite.toString(m_settings->value("dateformat", "dd/MM/yyyy").toString())) : tr("Aucun résultat")));
-		if (!m_loadFavorite.isNull())
-		{
-			ui->layoutFavoritesResults->addWidget(txt, 0, 0, 1, pl);
-			ui->layoutFavoritesResults->setRowMinimumHeight(0, 50);
-		}
-		else
-		{
-			m_tabs[0]->ui->layoutResults->addWidget(txt, 0, 0, 1, pl);
-			m_tabs[0]->ui->layoutResults->setRowMinimumHeight(0, 50);
-		}
-		m_webSites.append(txt);
-	}
-	if (m_currentFav != -1)
-	{ loadNextFavorite(); }*/
-}
-void mainWindow::replyFinishedPic(QNetworkReply* r)
-{
-	/*// TODO: bug qqpart ici
-	log("Received preview image <a href='"+r->url().toString()+"'>"+r->url().toString()+"</a>");
-	m_remainingPics--;
-	m_tabs[0]->ui->labelMergeResults->setText(tr("%1/%2 (%3/%4)").arg(m_currentFav == -1 ? m_replies.count()-m_countPics-m_remainingSites : m_currentFav+1).arg(m_currentFav == -1 ? m_replies.count()-m_countPics : m_favorites.count()).arg(m_countPics-m_remainingPics).arg(m_countPics));
-	int id = 0, site = 0, n = 0;
-	QString ste;
-	for (int i = 0; i < m_details.count(); i++)
-	{
-		if (m_details.at(i).value("preview_url") == r->url().toString())
-		{
-			site = m_details.at(i).value("site_id").toInt();
-			id = m_details.at(i).value("pos").toInt();
-			ste = m_details.at(i).value("site");
-			n = i;
-			break;
-		}
-	}
-	// Vérification des doublons
-	bool ignore = false;
-	if (m_tabs[0]->ui->checkMergeResults->isChecked())
-	{
-		QString md5 = m_details.at(n).value("md5");
-		if (m_gotMd5.contains(md5))
-		{
-			if (m_remainingPics == 0 && m_remainingSites == 0)
-			{ ignore = true; }
-			else
-			{ return; }
-		}
-		if (!ignore)
-		{ m_gotMd5.append(md5); }
-	}
-	QBouton *l = new QBouton(n, this);
-	if (!ignore)
-	{
-		QStringMap assoc;
-			assoc["s"] = tr("Safe");
-			assoc["q"] = tr("Questionable");
-			assoc["e"] = tr("Explicit");
-		QString unit;
-		int size = m_details.at(n).value("file_size").toInt();
-		if (size >= 2048)
-		{
-			size /= 1024;
-			if (size >= 2048)
-			{
-				size /= 1024;
-				unit = "mo";
-			}
-			else
-			{ unit = "ko"; }
-		}
-		else
-		{ unit = "o"; }
-		QPixmap pic;
-			pic.loadFromData(r->readAll());
-		if (pic.isNull())
-		{ log("<b>Warning:</b> one of the preview pictures (<a href='"+r->url().toString()+"'>"+r->url().toString()+"</a>) is empty."); }
-			l->setIcon(pic);
-			l->setToolTip(QString("%1%2%3%4%5%6%7%8")
-				.arg(m_details.at(n).value("tags").isEmpty() ? "" : tr("<b>Tags :</b> %1<br/><br/>").arg(m_details.at(n).value("tags")))
-				.arg(m_details.at(n).value("id").isEmpty() ? "" : tr("<b>ID :</b> %1<br/>").arg(m_details.at(n).value("id")))
-				.arg(m_details.at(n).value("rating").isEmpty() ? "" : tr("<b>Classe :</b> %1<br/>").arg(assoc[m_details.at(n).value("rating")]))
-				.arg(m_details.at(n).value("score").isEmpty() ? "" : tr("<b>Score :</b> %1<br/>").arg(m_details.at(n).value("score")))
-				.arg(m_details.at(n).value("author").isEmpty() ? "" : tr("<b>Posteur :</b> %1<br/><br/>").arg(m_details.at(n).value("author")))
-				.arg(m_details.at(n).value("width").isEmpty() || m_details.at(n).value("height").isEmpty() ? "" : tr("<b>Dimensions :</b> %1 x %2<br/>").arg(m_details.at(n).value("width"), m_details.at(n).value("height")))
-				.arg(m_details.at(n).value("file_size").isEmpty() ? "" : tr("<b>Taille :</b> %1 %2<br/>").arg(QString::number(round(size)), unit))
-				.arg(m_details.at(n).value("created_at").isEmpty() ? "" : tr("<b>Date :</b> %1").arg(m_details.at(n).value("created_at")))
-			);
-			l->setIconSize(QSize(150, 150));
-			l->setFlat(true);
-			connect(l, SIGNAL(appui(int)), this, SLOT(webZoom(int)));
-			connect(l, SIGNAL(rightClick(int)), this, SLOT(batchChange(int)));
-	}
-	if (m_countPage[ste] != 0)
-	{
-		if (m_currentFav != -1)
-		{
-			int pl = 10;
-			ui->layoutFavoritesResults->addWidget(l, floor(m_currentFavCount/pl)+1, m_currentFavCount%pl, 1, 1);
-			m_webPics.append(l);
-			m_currentFavCount++;
-			if (m_currentFavCount >= m_settings->value("hidefavorites", 20).toInt())
-			{ ui->widgetFavorites->hide(); }
-			if (m_remainingPics == 0 && m_remainingSites == 0)
-			{ loadNextFavorite(); }
-		}
-		else if (m_tabs[0]->ui->checkMergeResults->isChecked())
-		{
-			m_mergeButtons.append(l);
-			int pl = ceil(sqrt((m_replies.count()-m_countPics)*m_tabs[0]->ui->spinImagesPerPage->value()));
-			if (!m_loadFavorite.isNull())
-			{ ui->layoutFavoritesResults->addWidget(l, floor(n/pl), n%pl, 1, 1); }
-			else
-			{ m_tabs[0]->ui->layoutResults->addWidget(l, floor(n/pl), n%pl, 1, 1); }
-			m_webPics.append(l);
-		}
-		else
-		{
-			int pl = ceil(sqrt(m_tabs[0]->ui->spinImagesPerPage->value()));
-			float fl = (float)m_tabs[0]->ui->spinImagesPerPage->value()/pl;
-			if (!m_loadFavorite.isNull())
-			{ ui->layoutFavoritesResults->addWidget(l, floor(id/pl)+(floor(site/m_tabs[0]->ui->spinColumns->value())*(ceil(fl)+1))+1, id%pl+pl*(site%m_tabs[0]->ui->spinColumns->value()), 1, 1); }
-			else
-			{ m_tabs[0]->ui->layoutResults->addWidget(l, floor(id/pl)+(floor(site/m_tabs[0]->ui->spinColumns->value())*(ceil(fl)+1))+1, id%pl+pl*(site%m_tabs[0]->ui->spinColumns->value()), 1, 1); }
-			m_webPics.append(l);
-		}
-	}*/
+	connect(zoom, SIGNAL(linkClicked(QString)), this, SLOT(setTags(QString)));
 }
 
 void mainWindow::viewed()
@@ -1121,7 +754,6 @@ void mainWindow::loadLanguage(const QString& rLanguage, bool shutup)
 		if (!shutup)
 		{
 			log(tr("Traduction des textes en %1...").arg(m_currLang));
-				// QCombobox are reset
 				int _comboOrderfavorites = ui->comboOrderfavorites->currentIndex();
 				int _comboOrderasc = ui->comboOrderasc->currentIndex();
 				#if defined(Q_OS_WIN)
@@ -1155,7 +787,6 @@ void mainWindow::closeEvent(QCloseEvent *e)
 			m_settings->setValue("order", assoc[ui->comboOrderfavorites->currentIndex()]);
 			m_settings->setValue("reverse", bool(ui->comboOrderasc->currentIndex() == 1));
 		m_settings->endGroup();
-		//m_settings->setValue("mergeresults", m_tabs[0]->ui->checkMergeResults->isChecked());
 	DONE();
 	e->accept();
 }
@@ -1173,27 +804,13 @@ void mainWindow::optionsClosed()
 {
 	m_settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
 	m_tabs[0]->optionsChanged(m_settings);
-
-	QStringList urls = m_sites.keys();
-	int n = m_settings->value("Sources/Letters", 3).toInt(), m = n;
-	for (int i = 0; i < urls.size(); i++)
-	{
-		if (n < 0)
-		{
-			m = urls.at(i).indexOf('.');
-			if (n < -1 && urls.at(i).indexOf('.', m+1) != -1)
-			{ m = urls.at(i).indexOf('.', m+1); }
-		}
-		cbfs.at(i)->setText(urls.at(i).left(m));
-	}
-
 	m_tabs[0]->updateCheckboxes();
 }
 
 void mainWindow::advanced()
 {
 	log(tr("Ouverture de la fenêtre des sources..."));
-	sourcesWindow *adv = new sourcesWindow(m_selected, &m_sites, this);
+	sourcesWindow *adv = new sourcesWindow(m_selectedSources, &m_sites, this);
 	adv->show();
 	connect(adv, SIGNAL(valid(sourcesWindow*)), this, SLOT(saveAdvanced(sourcesWindow*)));
 	DONE();
@@ -1201,60 +818,16 @@ void mainWindow::advanced()
 void mainWindow::saveAdvanced(sourcesWindow *w)
 {
 	log(tr("Sauvegarde des nouvelles sources..."));
-	m_selected = w->getSelected();
+	m_selectedSources = w->getSelected();
 	QString sav;
-	for (int i = 0; i < m_selected.count(); i++)
-	{ sav += (m_selected.at(i) ? "1" : "0"); }
+	for (int i = 0; i < m_selectedSources.count(); i++)
+	{ sav += (m_selectedSources.at(i) ? "1" : "0"); }
 	m_settings->setValue("sites", sav);
-	updateSourcesCheckboxes();
+	for (int i = 0; i < m_tabs.count(); i++)
+	{ m_tabs[i]->updateCheckboxes(); }
 	DONE();
 }
 
-void mainWindow::help()
-{
-	QWidget *wHelp = new QWidget;
-		QLabel *text = new QLabel(tr(
-			"<h2>Explorer</h2>"
-			"Cette page permet de voir les images directement depuis les sites d'images."
-			"<h3>Liste</h3>"
-			"Affiche les images selon un certains tag."
-			"<h4>Tags</h4>"
-			"Le premier champ correspond aux critères de la recherche. Vous pouvez accéder aux tags mis en favoris par un clic-droit."
-			"<h4>Page</h4>"
-			"Le second champ correspond à la page demandée et est plafonné à 1000."
-			"<h3>Populaires</h3>"
-			"Affiche les images populaires à une certaine date. Les champs correspondent à la date et sont demandés dans l'ordre JJ/MM/YY."
-			"<h3>Sources</h3>"
-			"Permet de choisir les sites sources des images, qui se diviseront en lignes et colonnes."
-			"<h3>Prendre cette page</h3>"
-			"Ajoute la page actuelle aux téléchargements, sans les lancer."
-			"<h2>Téléchargement</h2>"
-			"Celles-ci servent à télécharger en masse une série d'images."
-			"<h3>Groupées</h3>"
-			"Pour télécharger un certain nombre d'images selon un certain tag sur certains sites. Vous pouvez modifier ces options dans l'onglet \"Téléchargements\"."
-			"<h3>Uniques</h3>"
-			"Pour télécharger certaines images. Ajoutez-en à la liste en faisant un clic-droit sur l'image désirée, et retirez-en en en faisant un second."
-			"<h2>Log</h2>"
-			"En cas de problème, l'onglet log peut vous donner une indication sur ce qui ne va pas."
-		));
-			text->setWordWrap(true);
-			text->setSizePolicy(QSizePolicy(QSizePolicy::Ignored,QSizePolicy::Ignored));
-		QScrollArea *scrollArea = new QScrollArea;
-			scrollArea->setWidget(text);
-			//scrollArea->setWidgetResizable(true);
-			scrollArea->setFrameShape(QFrame::NoFrame);
-		QPushButton *closeButton = new QPushButton(tr("Fermer"));
-			connect(closeButton, SIGNAL(clicked()), wHelp, SLOT(close()));
-		QVBoxLayout *layout = new QVBoxLayout;
-			layout->addWidget(scrollArea);
-			layout->addWidget(closeButton);
-	wHelp->setLayout(layout);
-	wHelp->setWindowIcon(QIcon(":/images/icon.ico"));
-	wHelp->setWindowTitle(tr("Grabber")+" - "+tr("Aide"));
-	wHelp->setWindowFlags(Qt::Window);
-	wHelp->resize(QSize(800, 600));
-	wHelp->show();
-}
 void mainWindow::aboutAuthor()
 {
 	aboutWindow *aw = new aboutWindow(QString(VERSION), this);
@@ -1277,9 +850,9 @@ void mainWindow::getAll()
 	m_getAllCount = 0;
 	m_getAllPageCount = 0;
 	m_getAllBeforeId = -1;
+	m_getAllImages.clear();
+	m_getAllPages.clear();
 	m_allImages = m_batchs;
-	QNetworkAccessManager *manager = new QNetworkAccessManager(this);
-	connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(getAllSource(QNetworkReply*)));
 	if (!m_settings->value("Exec/init").toString().isEmpty())
 	{
 		log(tr("Execution de \"%1\"").arg(m_settings->value("Exec/init").toString()));
@@ -1307,178 +880,55 @@ void mainWindow::getAll()
 			{ log(tr("<b>Attention :</b> %1").arg(tr("site \"%1\" not found.").arg(site))); }
 			else
 			{
-				QString url = m_sites[site]["Urls/Selected/Tags"];
-					url.replace("{page}", QString::number(m_groupBatchs.at(i).at(1).toInt()+r));
-					url.replace("{tags}", tags.join(" ").replace("&", "%26"));
-					url.replace("{limit}", QString::number(pp));
-					url.replace("{pseudo}", m_settings->value("Login/pseudo").toString());
-					url.replace("{password}", m_settings->value("Login/password").toString());
-				m_groupBatchs[i][8] = url;
-				m_getAllPageCount++;
-				manager->get(QNetworkRequest(QUrl::fromEncoded(url.toAscii())));
+				Page *page = new Page(&m_sites, site, tags, m_groupBatchs.at(i).at(1).toInt()+r, pp);
+				log(tr("Chargement de la page <a href=\"%1\">%1</a>").arg(page->url().toString()));
+				connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(getAllFinishedLoading(Page*)));
+				page->load();
+				m_groupBatchs[i][8] = page->url().toString();
+				m_getAllPages.append(page);
 			}
 		}
 	}
 	m_progressdialog->setText(tr("Téléchargement des pages, veuillez patienter..."));
-		connect(m_progressdialog, SIGNAL(closed()), this, SLOT(getAllCancel()));
+		connect(m_progressdialog, SIGNAL(rejected()), this, SLOT(getAllCancel()));
 		m_progressdialog->setValue(0);
 		m_progressdialog->show();
+		logShow();
 }
-
-void mainWindow::getAllSource(QNetworkReply *r)
+void mainWindow::getAllFinishedLoading(Page* p)
 {
-	QString url = r->url().toString(), source = r->readAll();
-	QList<QStringMap> imgs;
-	log(tr("Recu <a href=\"%1\">%1</a>").arg(url));
+	log(tr("Page reçue <a href=\"%1\">%1</a>").arg(p->url().toString()));
 	int n = 0;
 	for (int i = 0; i < m_groupBatchs.count(); i++)
 	{
-		if (m_groupBatchs.at(i).at(8) == url)
+		if (m_groupBatchs.at(i).at(8) == p->url().toString())
 		{ n = i; break; }
 	}
-	QString site = m_groupBatchs.at(n).at(5);
-	if (source.isEmpty())
-	{
-		error(this, tr("<b>Attention :</b> %1").arg(tr("rien n'a été reçu.").arg(site)));
-		log(tr("<b>Attention :</b> %1").arg(tr("rien n'a été reçu.").arg(site)));
-	}
-	else if (m_sites[site]["Selected"] == "xml")
-	{
-		QDomDocument doc;
-		QString errorMsg;
-		int errorLine, errorColumn;
-		if (!doc.setContent(source, false, &errorMsg, &errorLine, &errorColumn))
-		{
-			log(tr("<b>Erreur :</b> %1").arg(tr("erreur lors de l'analyse du fichier XML : %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn))));
-			error(this, tr("Erreur lors de l'analyse du fichier XML : %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn)));
-			return;
-		}
-		QDomElement docElem = doc.documentElement();
-		// Reading posts
-		QDomNodeList nodeList = docElem.elementsByTagName("post");
-		if (nodeList.count() > 0)
-		{
-			for (int id = 0; id < nodeList.count(); id++)
-			{
-				QStringMap d;
-				QStringList infos;
-				infos << "status" << "source" << "has_comments" << "file_url" << "sample_url" << "change" << "sample_width" << "has_children" << "preview_url" << "width" << "md5" << "preview_width" << "sample_height" << "parent_id" << "height" << "has_notes" << "creator_id" << "file_size" << "id" << "preview_height" << "rating" << "tags" << "author" << "score";
-				for (int i = 0; i < infos.count(); i++)
-				{ d[infos.at(i)] = nodeList.at(id).attributes().namedItem(infos.at(i)).nodeValue(); }
-				QString date(nodeList.at(id).attributes().namedItem("created_at").nodeValue());
-				if (date.toInt() != 0)
-				{
-					QDateTime timestamp;
-					timestamp.setTime_t(date.toInt());
-					d["created_at"] = timestamp.toString(tr("'le' dd/MM/yyyy 'à' hh:mm"));
-				}
-				else
-				{ d["created_at"] = qDateTimeFromString(date, m_timezonedecay).toString(tr("'le' dd/MM/yyyy 'à' hh:mm")); }
-				if (!d["preview_url"].startsWith("http://"))
-				{ d["preview_url"] = "http://"+site+QString(d["preview_url"].startsWith("/") ? "" : "/")+d["preview_url"]; }
-				if (!d["file_url"].startsWith("http://"))
-				{ d["file_url"] = "http://"+site+QString(d["file_url"].startsWith("/") ? "" : "/")+d["file_url"]; }
-				d["site"] = site;
-				d["site_id"] = QString::number(n);
-				d["pos"] = QString::number(id);
-				imgs.append(d);
-			}
-		}
-	}
-	else if (m_sites[site]["Selected"] == "json")
-	{
-		QVariant src = Json::parse(source);
-		if (!src.isNull())
-		{
-			QMap<QString, QVariant> sc;
-			QList<QVariant> sourc = src.toList();
-			for (int id = 0; id < sourc.count(); id++)
-			{
-				sc = sourc.at(id).toMap();
-				QStringMap d;
-				QStringList infos;
-				infos << "status" << "source" << "has_comments" << "file_url" << "sample_url" << "change" << "sample_width" << "has_children" << "preview_url" << "width" << "md5" << "preview_width" << "sample_height" << "parent_id" << "height" << "has_notes" << "creator_id" << "file_size" << "id" << "preview_height" << "rating" << "tags" << "author" << "score";
-				for (int i = 0; i < infos.count(); i++)
-				{ d[infos.at(i)] = sc.value(infos.at(i)).toString(); }
-				if (!d["preview_url"].startsWith("http://"))
-				{ d["preview_url"] = "http://"+site+QString(d["preview_url"].startsWith("/") ? "" : "/")+d["preview_url"]; }
-				if (!d["file_url"].startsWith("http://"))
-				{ d["file_url"] = "http://"+site+QString(d["file_url"].startsWith("/") ? "" : "/")+d["file_url"]; }
-				QDateTime timestamp;
-				timestamp.setTime_t(sc.value("created_at").toMap().value("s").toInt());
-				d["created_at"] = timestamp.toString(tr("le dd/MM/yyyy à hh:mm"));
-				d["site"] = site;
-				d["site_id"] = QString::number(n);
-				d["pos"] = QString::number(id);
-				imgs.append(d);
-			}
-		}
-	}
-	else if (m_sites[site]["Selected"] == "regex")
-	{
-		QRegExp rx(m_sites[site]["Regex/Image"]);
-		QStringList order = m_sites[site]["Regex/Order"].split('|');
-		rx.setMinimal(true);
-		int pos = 0, id = 0;
-		QString pagereg = m_sites[site]["Urls/Selected/Tags"];
-			pagereg.replace("{page}", "(\\d*)")
-			.replace("{tags}", "(?:\\w*)")
-			.replace("{limit}", "(?:\\d*)");
-		QRegExp regexp(pagereg+"\r\n");
-			regexp.setMinimal(true);
-			regexp.indexIn(url+"\r\n", 0);
-		int page = regexp.cap(1).toInt();
-		while (((pos = rx.indexIn(source, pos)) != -1) && (page-1)*m_groupBatchs.at(n).at(2).toInt()+id < m_groupBatchs.at(n).at(3).toInt())
-		{
-			pos += rx.matchedLength();
-			QStringMap d;
-			for (int i = 0; i < order.size(); i++)
-			{ d[order.at(i)] = rx.cap(i+1); }
-			if (!d["preview_url"].startsWith("http://"))
-			{ d["preview_url"] = "http://"+site+QString(d["preview_url"].startsWith("/") ? "" : "/")+d["preview_url"]; }
-			if (!d["file_url"].startsWith("http://"))
-			{ d["file_url"] = "http://"+site+QString(d["file_url"].startsWith("/") ? "" : "/")+d["file_url"]; }
-			if (m_sites[site]["Urls/Html/Image"].isEmpty())
-			{
-				d["file_url"] = d["preview_url"];
-				d["file_url"].remove("preview/");
-			}
-			else
-			{
-				d["file_url"] = m_sites[site]["Urls/Html/Image"];
-				d["file_url"].replace("{id}", d["id"])
-				.replace("{md5}", d["md5"])
-				.replace("{ext}", "jpg");
-			}
-			d["site"] = site;
-			d["site_id"] = QString::number(n);
-			d["pos"] = QString::number(id);
-			imgs.append(d);
-			id++;
-		}
-	}
-	if (!imgs.isEmpty())
-	{ m_allImages.append(imgs); }
+	m_getAllImages.append(p->images());
 	m_getAllCount++;
-	if (m_getAllCount == m_getAllPageCount)
+	if (m_getAllCount == m_getAllPages.count())
 	{
-		if (m_allImages.isEmpty())
+		if (m_getAllImages.isEmpty())
 		{
-			error(this, tr("<b>Attention :</b> %1").arg(tr("rien n'a été reçu depuis %1. Raisons possibles : tag incorrect, page trop éloignée.").arg(site)));
+			error(this, tr("<b>Attention :</b> %1").arg(tr("rien n'a été reçu depuis %1. Raisons possibles : tag incorrect, page trop éloignée.").arg(p->site().value("Url"))));
 			return;
 		}
 		int count = 0;
-		for (int i = 0; i < m_allImages.count(); i++)
+		for (int i = 0; i < m_getAllImages.count(); i++)
 		{
-			if (m_allImages.at(i).value("tags").contains("absurdres"))		{ count += 3; }
-			else if (m_allImages.at(i).value("tags").contains("highres"))	{ count += 2; }
-			else															{ count += 1; }
+			int bonus = 1;
+			for (int t = 0; t < m_getAllImages.at(i)->tags().count(); t++)
+			{
+				if (m_getAllImages.at(i)->tags().at(t)->text().toLower() == "absurdres")	{ bonus = 3; break; }
+				else if (m_getAllImages.at(i)->tags().at(t)->text().toLower() == "highres")	{ bonus = 2; break; }
+			}
+			count += bonus;
 		}
-		log("All images' urls received.");
+		log(tr("Toutes les urls des images ont été reçues."));
 		m_progressdialog->setMaximum(count);
-		m_progressdialog->setImagesCount(m_allImages.count());
+		m_progressdialog->setImagesCount(m_getAllImages.count());
 		m_progressdialog->setText(tr("Téléchargement des images en cours..."));
-		QString fn = m_groupBatchs[m_allImages.at(m_getAllId).value("site_id").toInt()][6];
+		QString fn = m_groupBatchs[n][6];
 		QStringList forbidden = QStringList() << "artist" << "copyright" << "character" << "model" << "general" << "model|artist";
 		m_must_get_tags = false;
 		for (int i = 0; i < forbidden.count(); i++)
@@ -1493,40 +943,46 @@ void mainWindow::getAllSource(QNetworkReply *r)
 		_getAll();
 	}
 }
-
 void mainWindow::_getAll()
 {
-	if (m_getAllId < m_allImages.count())
+	if (m_getAllId < m_getAllImages.count())
 	{
 		if (m_must_get_tags)
 		{
-			QString u = m_sites[m_allImages.at(m_getAllId).value("site")]["Urls/Html/Post"];
-				u.replace("{id}", m_allImages.at(m_getAllId).value("id"));
-			QUrl rl(u);
-			QNetworkAccessManager *m = new QNetworkAccessManager(this);
-			connect(m, SIGNAL(finished(QNetworkReply*)), this, SLOT(getAllPerformTags(QNetworkReply*)));
-			QNetworkRequest request(rl);
-				request.setRawHeader("Referer", u.toAscii());
-			m_getAllRequest = m->get(request);
+			m_getAllImages.at(m_getAllId)->loadTags();
+			connect(m_getAllImages.at(m_getAllId), SIGNAL(finishedLoadingTags(Image*)), this, SLOT(getAllPerformTags(Image*)));
 		}
 		else
 		{
-			QString u(m_allImages.at(m_getAllId).value("file_url"));
-			QString path = m_groupBatchs[m_allImages.at(m_getAllId).value("site_id").toInt()][6];
+			Image *img = m_getAllImages.at(m_getAllId);
+
+			// Row
+			int site_id = 0;
+			for (int i = 0; i < m_groupBatchs.count(); i++)
+			{
+				if (m_groupBatchs.at(i).at(8) == img->page()->url().toString())
+				{ site_id = i; break; }
+			}
+
+			QString u(img->fileUrl().toString());
+			QString path = m_groupBatchs[site_id][6];
 			path.replace("%filename%", u.section('/', -1).section('.', 0, -2))
-			.replace("%rating%", m_allImages.at(m_getAllId).value("rating"))
-			.replace("%md5%", m_allImages.at(m_getAllId).value("md5"))
-			.replace("%website%", m_allImages.at(m_getAllId).value("site"))
+			.replace("%rating%", img->rating())
+			.replace("%md5%", img->md5())
+			.replace("%website%", img->site())
 			.replace("%ext%", u.section('.', -1));
-			QString pth = m_groupBatchs[m_allImages.at(m_getAllId).value("site_id").toInt()][7];
+			QString pth = m_groupBatchs[site_id][7];
 			pth.replace("\\", "/");
 			if (path.left(1) == "/")	{ path = path.right(path.length()-1);	}
 			if (pth.right(1) == "/")	{ pth = pth.left(pth.length()-1);		}
-			QString all = m_allImages.at(m_getAllId).value("tags");
+			QString all;
+			for (int i = 0; i < img->tags().count(); i++)
+			{ all += " "+img->tags().at(i)->text(); }
+			all = all.trimmed();
 			all.replace(" ", m_settings->value("separator", " ").toString());
 			path.replace("%all%", all.left(263-pth.length()-path.length()));
-			QFile file(path);
-			if (!file.exists())
+			QFile f(pth+"/"+path);
+			if (!f.exists())
 			{
 				QUrl rl(u);
 				QNetworkAccessManager *m = new QNetworkAccessManager(this);
@@ -1536,7 +992,21 @@ void mainWindow::_getAll()
 				m_getAllRequest = m->get(request);
 			}
 			else
-			{ log("Image ignored."); }
+			{
+				m_getAllId++;
+				int count = m_progressdialog->value(), bonus = 1;
+				for (int t = 0; t < img->tags().count(); t++)
+				{
+					if (img->tags().at(t)->text().toLower() == "absurdres")		{ bonus = 3; break; }
+					else if (img->tags().at(t)->text().toLower() == "highres")	{ bonus = 2; break; }
+				}
+				m_progressdialog->setValue(count+bonus);
+				m_progressdialog->setImages(m_getAllId);
+				m_getAllExists++;
+				log(tr("Fichier déjà existant : <a href=\"file:///%1\">%1</a>").arg(f.fileName()));
+				m_getAllDetails.clear();
+				_getAll();
+			}
 		}
 	}
 	else
@@ -1563,64 +1033,64 @@ void mainWindow::_getAll()
 		log("Batch download finished.");
 	}
 }
-void mainWindow::getAllPerformTags(QNetworkReply* reply)
+void mainWindow::getAllPerformTags(Image* img)
 {
-	// Treating tags
-	log(tr("Tags reçus depuis <a href=\"%1\">%1</a>").arg(reply->url().toString()));
-	if (reply->error() == QNetworkReply::NoError)
+	log(tr("Tags reçus"));
+	bool under = m_settings->value("Save/remplaceblanksbyunderscores", false).toBool();
+	for (int i = 0; i < img->tags().count(); i++)
 	{
-		bool under = m_settings->value("Save/remplaceblanksbyunderscores", false).toBool();
-		QString source = reply->readAll();
-		QRegExp rx(m_sites[m_allImages.at(m_getAllId).value("site")]["Regex/Tags"]);
-		rx.setMinimal(true);
-		int pos = 0;
-		while ((pos = rx.indexIn(source, pos)) != -1)
+		Tag *tag = img->tags().at(i);
+		QString normalized = tag->text().replace(" ", "_"), original = normalized;
+		m_getAllDetails["alls_original"].append(original);
+		normalized = normalized.replace("\\", " ").replace("/", " ").replace(":", " ").replace("|", " ").replace("*", " ").replace("?", " ").replace("\"", " ").replace("<", " ").replace(">", " ").trimmed();
+		if (!under)
+		{ normalized.replace('_', ' '); }
+		if		(tag->type() == "character")	{ m_getAllDetails["characters"].append(normalized); }
+		else if (tag->type() == "copyright")	{ m_getAllDetails["copyrights"].append(normalized); }
+		else if (tag->type() == "artist")		{ m_getAllDetails["artists"].append(normalized);	}
+		else if (tag->type() == "model")		{ m_getAllDetails["models"].append(normalized);		}
+		else									{ m_getAllDetails["generals"].append(normalized);	}
+		m_getAllDetails["alls"].append(normalized);
+		if (!m_settings->value("Exec/tag").toString().isEmpty())
 		{
-			pos += rx.matchedLength();
-			QString type = rx.cap(1), normalized = rx.cap(2).replace(" ", "_"), original = normalized;
-			m_getAllDetails["alls_original"].append(original);
-			normalized.remove('\\').remove('/').remove(':').remove('*').remove('?').remove('"').remove('<').remove('>').remove('|');
-			if (!under)
-			{ normalized.replace('_', ' '); }
-			if (type == "character")		{ m_getAllDetails["characters"].append(normalized); }
-			else if (type == "copyright")	{ m_getAllDetails["copyrights"].append(normalized); }
-			else if (type == "artist")		{ m_getAllDetails["artists"].append(normalized);	}
-			else if (type == "model")		{ m_getAllDetails["models"].append(normalized);		}
-			else							{ m_getAllDetails["generals"].append(normalized);	}
-			m_getAllDetails["alls"].append(normalized);
-			if (!m_settings->value("Exec/tag").toString().isEmpty())
+			QMap<QString,int> types;
+			types["general"] = 0;
+			types["artist"] = 1;
+			types["general"] = 2;
+			types["copyright"] = 3;
+			types["character"] = 4;
+			types["model"] = 5;
+			types["photo_set"] = 6;
+			QString exec = m_settings->value("Exec/tag").toString()
+			.replace("%tag%", original)
+			.replace("%type%", tag->type())
+			.replace("%number%", QString::number(types[tag->type()]));
+			if (!m_settings->value("Exec/init").toString().isEmpty())
 			{
-				QMap<QString,int> types;
-				types["general"] = 0;
-				types["artist"] = 1;
-				types["general"] = 2;
-				types["copyright"] = 3;
-				types["character"] = 4;
-				types["model"] = 5;
-				types["photo_set"] = 6;
-				QString exec = m_settings->value("Exec/tag").toString()
-				.replace("%tag%", original)
-				.replace("%type%", type)
-				.replace("%number%", QString::number(types[type]));
-				if (!m_settings->value("Exec/init").toString().isEmpty())
-				{
-					log(tr("Execution de \"%1\"").arg(exec));
-					m_process->write(exec.toAscii());
-				}
-				else
-				{
-					m_process->start(exec);
-					m_process->waitForStarted(1000);
-
-					m_process->close();
-				}
+				log(tr("Execution de \"%1\"").arg(exec));
+				m_process->write(exec.toAscii());
+			}
+			else
+			{
+				m_process->start(exec);
+				m_process->waitForStarted(1000);
+				m_process->close();
 			}
 		}
 	}
+
+	// Row
+	int site_id = 0;
+	for (int i = 0; i < m_groupBatchs.count(); i++)
+	{
+		if (m_groupBatchs.at(i).at(8) == img->page()->url().toString())
+		{ site_id = i; break; }
+	}
+
 	// Getting path
-	QString u = m_allImages.at(m_getAllId).value("file_url");
+	QString u = img->fileUrl().toString();
 	m_settings->beginGroup("Save");
-	QString path = m_groupBatchs[m_allImages.at(m_getAllId).value("site_id").toInt()][6];
+	QString path = m_groupBatchs[site_id][6];
 	path.replace("%artist%", (m_getAllDetails["artists"].isEmpty() ? m_settings->value("artist_empty").toString() : (m_settings->value("artist_useall").toBool() || m_getAllDetails["artists"].count() == 1 ? m_getAllDetails["artists"].join(m_settings->value("artist_sep").toString()) : m_settings->value("artist_value").toString())))
 	.replace("%general%", m_getAllDetails["generals"].join(m_settings->value("separator").toString()))
 	.replace("%copyright%", (m_getAllDetails["copyrights"].isEmpty() ? m_settings->value("copyright_empty").toString() : (m_settings->value("copyright_useall").toBool() || m_getAllDetails["copyrights"].count() == 1 ? m_getAllDetails["copyrights"].join(m_settings->value("copyright_sep").toString()) : m_settings->value("copyright_value").toString())))
@@ -1630,19 +1100,21 @@ void mainWindow::getAllPerformTags(QNetworkReply* reply)
 	.replace("%all%", m_getAllDetails["alls"].join(m_settings->value("separator").toString()))
 	.replace("%all_original%", m_getAllDetails["alls_original"].join(m_settings->value("separator").toString()))
 	.replace("%filename%", u.section('/', -1).section('.', 0, -2))
-	.replace("%rating%", m_allImages.at(m_getAllId).value("rating"))
-	.replace("%md5%", m_allImages.at(m_getAllId).value("md5"))
-	.replace("%website%", m_allImages.at(m_getAllId).value("site"))
+	.replace("%rating%", img->rating())
+	.replace("%md5%", img->md5())
+	.replace("%website%", img->site())
 	.replace("%ext%", u.section('.', -1))
 	.replace("\\", "/");
-	// saving path
-	QString p = m_groupBatchs[m_allImages.at(m_getAllId).value("site_id").toInt()][7];
+
+	// Save path
+	QString p = m_groupBatchs[site_id][7];
 	p.replace("\\", "/");
 	m_settings->endGroup();
 	if (p.right(1) == "/")
 	{ p = p.left(p.length()-1); }
 	QString pth = p+"/"+path;
 	QFile f(pth);
+
 	if (!f.exists())	{ f.setFileName(pth.section('.', 0, -2)+".png");	}
 	if (!f.exists())	{ f.setFileName(pth.section('.', 0, -2)+".gif");	}
 	if (!f.exists())	{ f.setFileName(pth.section('.', 0, -2)+".jpeg");	}
@@ -1652,52 +1124,56 @@ void mainWindow::getAllPerformTags(QNetworkReply* reply)
 		if (!m_settings->value("blacklistedtags").toString().isEmpty())
 		{
 			QStringList blacklistedtags(m_settings->value("blacklistedtags").toString().split(' '));
-			for (int i = 0; i < blacklistedtags.size(); i++)
+			for (int b = 0; b < blacklistedtags.size(); b++)
 			{
-				if (m_allImages.at(m_getAllId).value("tags").contains(blacklistedtags.at(i), Qt::CaseInsensitive))
+				for (int t = 0; t < img->tags().count(); t++)
 				{
-					detected = true;
-					log(tr("Certains tags de l'image sont blacklistés"));
+					if (img->tags().at(t)->text().toLower() == blacklistedtags.at(b).toLower())
+					{
+						detected = true;
+						log(tr("Certains tags de l'image sont blacklistés."));
+					}
 				}
 			}
 		}
 		if (detected && !m_settings->value("downloadblacklist").toBool())
 		{
-			int count = m_progressdialog->value();
-			if (m_allImages.at(m_getAllId).value("tags").contains("absurdres"))		{ count += 3; }
-			else if (m_allImages.at(m_getAllId).value("tags").contains("highres"))	{ count += 2; }
-			else																										{ count += 1; }
-			m_progressdialog->setValue(count);
-			m_progressdialog->setImages(m_getAllId);
 			m_getAllId++;
+			int count = m_progressdialog->value(), bonus = 1;
+			for (int t = 0; t < img->tags().count(); t++)
+			{
+				if (img->tags().at(t)->text().toLower() == "absurdres")		{ bonus = 3; break; }
+				else if (img->tags().at(t)->text().toLower() == "highres")	{ bonus = 2; break; }
+			}
+			m_progressdialog->setValue(count+bonus);
+			m_progressdialog->setImages(m_getAllId);
 			m_getAllIgnored++;
-			log(tr("Image ignorée"));
+			log(tr("Image ignorée."));
 			m_getAllDetails.clear();
 			_getAll();
 		}
 		else
 		{
-			QString u(m_allImages.at(m_getAllId).value("file_url"));
-			QUrl rl(u);
 			QNetworkAccessManager *m = new QNetworkAccessManager(this);
 			connect(m, SIGNAL(finished(QNetworkReply*)), this, SLOT(getAllPerformImage(QNetworkReply*)));
-			QNetworkRequest request(rl);
-				request.setRawHeader("Referer", u.toAscii());
+			QNetworkRequest request(img->fileUrl());
+				request.setRawHeader("Referer", img->fileUrl().toString().toAscii());
 			m_getAllRequest = m->get(request);
 		}
 	}
 	else
 	{
 		m_getAllId++;
-		int count = m_progressdialog->value();
-		if (m_getAllDetails["alls"].contains("absurdres"))		{ count += 3; }
-		else if (m_getAllDetails["alls"].contains("highres"))	{ count += 2; }
-		else													{ count += 1; }
-		m_progressdialog->setValue(count);
+		int count = m_progressdialog->value(), bonus = 1;
+		for (int t = 0; t < img->tags().count(); t++)
+		{
+			if (img->tags().at(t)->text().toLower() == "absurdres")		{ bonus = 3; break; }
+			else if (img->tags().at(t)->text().toLower() == "highres")	{ bonus = 2; break; }
+		}
+		m_progressdialog->setValue(count+bonus);
 		m_progressdialog->setImages(m_getAllId);
 		m_getAllExists++;
 		log(tr("Fichier déjà existant : <a href=\"file:///%1\">%1</a>").arg(f.fileName()));
-		// Loading next tags
 		m_getAllDetails.clear();
 		_getAll();
 	}
@@ -1707,10 +1183,20 @@ void mainWindow::getAllPerformImage(QNetworkReply* reply)
 	log(tr("Image reçue depuis <a href=\"%1\">%1</a>").arg(reply->url().toString()));
 	if (reply->error() == QNetworkReply::NoError)
 	{
+		Image *img = m_getAllImages.at(m_getAllId);
+
+		// Row
+		int site_id = 0;
+		for (int i = 0; i < m_groupBatchs.count(); i++)
+		{
+			if (m_groupBatchs.at(i).at(8) == img->page()->url().toString())
+			{ site_id = i; break; }
+		}
+
 		// Getting path
 		QString u = reply->url().toString();
 		m_settings->beginGroup("Save");
-		QString path = m_groupBatchs[m_allImages.at(m_getAllId).value("site_id").toInt()][6];
+		QString path = m_groupBatchs[site_id][6];
 		path.replace("%artist%", (m_getAllDetails["artists"].isEmpty() ? m_settings->value("artist_empty").toString() : (m_settings->value("artist_useall").toBool() || m_getAllDetails["artists"].count() == 1 ? m_getAllDetails["artists"].join(m_settings->value("artist_sep").toString()) : m_settings->value("artist_value").toString())))
 		.replace("%general%", m_getAllDetails["generals"].join(m_settings->value("separator").toString()))
 		.replace("%copyright%", (m_getAllDetails["copyrights"].isEmpty() ? m_settings->value("copyright_empty").toString() : (m_settings->value("copyright_useall").toBool() || m_getAllDetails["copyrights"].count() == 1 ? m_getAllDetails["copyrights"].join(m_settings->value("copyright_sep").toString()) : m_settings->value("copyright_value").toString())))
@@ -1718,18 +1204,23 @@ void mainWindow::getAllPerformImage(QNetworkReply* reply)
 		.replace("%model%", (m_getAllDetails["models"].isEmpty() ? m_settings->value("model_empty").toString() : (m_settings->value("model_useall").toBool() || m_getAllDetails["models"].count() == 1 ? m_getAllDetails["models"].join(m_settings->value("model_sep").toString()) : m_settings->value("model_value").toString())))
 		.replace("%model|artist%", (!m_getAllDetails["models"].isEmpty() ? (m_settings->value("model_useall").toBool() || m_getAllDetails["models"].count() == 1 ? m_getAllDetails["models"].join(m_settings->value("model_sep").toString()) : m_settings->value("model_value").toString()) : (m_getAllDetails["artists"].isEmpty() ? m_settings->value("artist_empty").toString() : (m_settings->value("artist_useall").toBool() || m_getAllDetails["artists"].count() == 1 ? m_getAllDetails["artists"].join(m_settings->value("artist_sep").toString()) : m_settings->value("artist_value").toString()))))
 		.replace("%filename%", u.section('/', -1).section('.', 0, -2))
-		.replace("%rating%", m_allImages.at(m_getAllId).value("rating"))
-		.replace("%md5%", m_allImages.at(m_getAllId).value("md5"))
-		.replace("%website%", m_allImages.at(m_getAllId).value("site"))
+		.replace("%rating%", img->rating())
+		.replace("%md5%", img->md5())
+		.replace("%website%", img->site())
 		.replace("%ext%", u.section('.', -1))
 		.replace("\\", "/");
-		QString p = m_groupBatchs[m_allImages.at(m_getAllId).value("site_id").toInt()][7];
+
+		QString p = m_groupBatchs[site_id][7];
 		p.replace("\\", "/");
 		if (path.left(1) == "/")	{ path = path.right(path.length()-1);	}
 		if (p.right(1) == "/")		{ p = p.left(p.length()-1);				}
-		QString all = m_allImages.at(m_getAllId).value("tags");
+		QString all;
+		for (int i = 0; i < img->tags().count(); i++)
+		{ all += " "+img->tags().at(i)->text(); }
+		all = all.trimmed();
 		all.replace(" ", m_settings->value("separator", " ").toString());
 		path.replace("%all%", all.left(263-p.length()-path.length()));
+
 		QFile f(p+"/"+path);
 		QDir dir(p);
 		m_settings->endGroup();
@@ -1744,8 +1235,9 @@ void mainWindow::getAllPerformImage(QNetworkReply* reply)
 			.replace("%model%", (m_getAllDetails["models"].isEmpty() ? m_settings->value("model_empty").toString() : (m_settings->value("model_useall").toBool() || m_getAllDetails["models"].count() == 1 ? m_getAllDetails["models"].join(m_settings->value("model_sep").toString()) : m_settings->value("model_value").toString())))
 			.replace("%model|artist%", (!m_getAllDetails["models"].isEmpty() ? (m_settings->value("model_useall").toBool() || m_getAllDetails["models"].count() == 1 ? m_getAllDetails["models"].join(m_settings->value("model_sep").toString()) : m_settings->value("model_value").toString()) : (m_getAllDetails["artists"].isEmpty() ? m_settings->value("artist_empty").toString() : (m_settings->value("artist_useall").toBool() || m_getAllDetails["artists"].count() == 1 ? m_getAllDetails["artists"].join(m_settings->value("artist_sep").toString()) : m_settings->value("artist_value").toString()))))
 			.replace("%filename%", u.section('/', -1).section('.', 0, -2))
-			.replace("%rating%", m_allImages.at(m_getAllId).value("rating"))
-			.replace("%md5%", m_allImages.at(m_getAllId).value("md5"))
+			.replace("%rating%", img->rating())
+			.replace("%md5%", img->md5())
+			.replace("%website%", img->site())
 			.replace("%ext%", u.section('.', -1))
 			.replace("%all%", all.left(263-p.length()-path.length()))
 			.replace("%filename%", path)
@@ -1778,11 +1270,13 @@ void mainWindow::getAllPerformImage(QNetworkReply* reply)
 		f.close();
 		m_getAllDownloaded++;
 		m_getAllId++;
-		int count = m_progressdialog->value();
-		if (m_getAllDetails["alls"].contains("absurdres"))		{ count += 3; }
-		else if (m_getAllDetails["alls"].contains("highres"))	{ count += 2; }
-		else													{ count += 1; }
-		m_progressdialog->setValue(count);
+		int count = m_progressdialog->value(), bonus = 1;
+		for (int t = 0; t < img->tags().count(); t++)
+		{
+			if (img->tags().at(t)->text().toLower() == "absurdres")		{ bonus = 3; break; }
+			else if (img->tags().at(t)->text().toLower() == "highres")	{ bonus = 2; break; }
+		}
+		m_progressdialog->setValue(count+bonus);
 		m_progressdialog->setImages(m_getAllId);
 		// Loading next tags
 		m_getAllDetails.clear();
@@ -1794,7 +1288,8 @@ void mainWindow::getAllPerformImage(QNetworkReply* reply)
 void mainWindow::getAllCancel()
 {
 	log("Canceling download...");
-	m_getAllRequest->abort();
+	if (m_getAllRequest->isRunning())
+	{ m_getAllRequest->abort(); }
 	m_progressdialog->close();
 	m_progressdialog = new batchWindow(this);
 	DONE();

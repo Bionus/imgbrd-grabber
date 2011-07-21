@@ -14,12 +14,13 @@ class QBouton : public QPushButton
 	Q_OBJECT
  
 	public:
-		QBouton(QVariant id = 0, QWidget * parent = 0);
+		QBouton(QVariant id = 0, QWidget * parent = 0, bool resizeInsteadOfCropping = false, QColor color = QColor());
 		QVariant id();
 		void mousePressEvent(QMouseEvent *);
 
 	public slots:
 		void setId(QVariant);
+		void paintEvent(QPaintEvent *event);
 		
 	signals:
 		void appui(QVariant);
@@ -33,7 +34,10 @@ class QBouton : public QPushButton
 		void middleClick(QString);
 	
 	private:
-		QVariant _id;
+		QVariant	_id;
+		bool		_resizeInsteadOfCropping, _np;
+		QSize		_originalSize;
+		QColor		_penColor;
 };
 
 #endif

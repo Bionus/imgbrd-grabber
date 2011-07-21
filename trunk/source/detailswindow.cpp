@@ -12,7 +12,13 @@ detailsWindow::detailsWindow(Image *image) : QWidget(0), ui(new Ui::detailsWindo
 {
 	ui->setupUi(this);
 
-	if (!image->tags().isEmpty())		{ ui->labelTags->setText(image->tags().join(" "));		}
+	if (!image->tags().isEmpty())
+	{
+		QString t;
+		for (int i = 0; i < image->tags().count(); i++)
+		{ t += " "+image->tags().at(i)->text(); }
+		ui->labelTags->setText(t.trimmed());
+	}
 	if (image->id() != 0)				{ ui->labelId->setText(QString::number(image->id()));	}
 	if (!image->md5().isEmpty())		{ ui->labelMd5->setText(image->md5());					}
 	if (!image->rating().isEmpty())		{ ui->labelRating->setText(image->rating());			}

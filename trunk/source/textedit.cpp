@@ -159,7 +159,7 @@ void TextEdit::doColor()
 	{
 		QString txt = " "+this->toPlainText()+" ";
 		for (int i = 0; i < m_favorites.size(); i++)
-		{ txt.replace(" "+m_favorites.at(i)+" ", " <span style=\"color:pink\">"+m_favorites.at(i)+"</span> "); }
+		{ txt.replace(" "+m_favorites.at(i)+" ", " <span style=\"color:#ffc0cb\">"+m_favorites.at(i)+"</span> "); }
 		txt.replace(QRegExp(" ~([^ ]+)"), " <span style=\"color:green\">~\\1</span>");
 		txt.replace(QRegExp(" -([^ ]+)"), " <span style=\"color:red\">-\\1</span>");
 		txt.replace(QRegExp(" (user|fav|md5|rating|source|status|approver|unlocked|sub|id|width|height|score|mpixels|filesize|date|gentags|arttags|chartags|copytags|status|status|approver|order|parent):([^ ]*)"), " <span style=\"color:brown\">\\1:\\2</span>");

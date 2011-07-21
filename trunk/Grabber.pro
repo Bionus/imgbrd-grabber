@@ -26,7 +26,8 @@ HEADERS += includes/addgroupwindow.h \
 	includes/sitewindow.h \
 	includes/page.h \
 	includes/image.h \
-    includes/aboutwindow.h \
+	includes/aboutwindow.h \
+	includes/tag.h \
 	includes/searchtab.h
 SOURCES += source/addgroupwindow.cpp \
 	source/adduniquewindow.cpp \
@@ -47,7 +48,8 @@ SOURCES += source/addgroupwindow.cpp \
 	source/sitewindow.cpp \
 	source/page.cpp \
 	source/image.cpp \
-    source/aboutwindow.cpp \
+	source/aboutwindow.cpp \
+	source/tag.cpp \
 	source/searchtab.cpp
 RESOURCES += resources.qrc
 RC_FILE = icon.rc
