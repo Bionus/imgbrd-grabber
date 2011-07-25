@@ -1,5 +1,7 @@
 #summary How to create a new translation file
 
+*Translation files are not up-to-date ! You must not use the "your_translation_file.ts" and "en.ts" files provided in the download, you should directly use the "English.ts" file in your languages directory, then duplicate it.*
+
 =Introduction=
 
 If you're language is not available for the program, you can add if pretty simply. The goal of this page is to tell you how to do this.
