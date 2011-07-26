@@ -15,6 +15,7 @@ void		error(QWidget *, QString);
 void		sortNonCaseSensitive(QStringList &);
 QDateTime	qDateTimeFromString(QString s, int d = 5);
 QString		savePath(QString s = "");
+int			levenshtein(QString, QString);
 QString		validateFilename(QString);
 void		showInGraphicalShell(const QString &);
 QString		qfonttocss(QFont);

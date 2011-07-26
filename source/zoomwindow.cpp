@@ -142,10 +142,14 @@ void zoomWindow::contextMenu(QPoint point)
 		{ menu->addAction(QIcon(":/images/icons/remove.png"), tr("Ne pas garder pour plus tard"), this, SLOT(unviewitlater())); }
 		else
 		{ menu->addAction(QIcon(":/images/icons/add.png"), tr("Garder pour plus tard"), this, SLOT(viewitlater())); }
+		menu->addSeparator();
+		menu->addAction(QIcon(":/images/icons/tab.png"), tr("Ouvrir dans un nouvel onglet"), this, SLOT(openInNewTab()));
 		menu->addAction(QIcon(":/images/icons/window.png"), tr("Ouvrir dans une nouvelle fenêtre"), this, SLOT(openInNewWindow()));
 	}
 	menu->exec(QCursor::pos());
 }
+void zoomWindow::openInNewTab()
+{ _mainwindow->addTab(link); }
 void zoomWindow::openInNewWindow()
 {
 	QProcess myProcess;
@@ -474,6 +478,8 @@ QString zoomWindow::getSavePath()
 	.replace("%rating%", m_image->rating())
 	.replace("%md5%", m_image->md5())
 	.replace("%website%", m_image->site())
+	.replace("%height%", QString::number(m_image->height()))
+	.replace("%width%", QString::number(m_image->width()))
 	.replace("%ext%", m_url.section('.', -1))
 	.replace("\\", "/");
 	QString pth = settings.value("path").toString().replace("\\", "/");

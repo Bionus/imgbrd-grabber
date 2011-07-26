@@ -20,7 +20,7 @@ void QBouton::paintEvent(QPaintEvent *event)
 	{
 		QRect region = event->rect();
 		QPainter *painter = new QPainter(this);
-		int p = 0, x = region.x(), y = region.y(), w = iconSize().width(), h = iconSize().height();
+		int p = 3, x = region.x(), y = region.y(), w = iconSize().width(), h = iconSize().height();
 		float coef, mcoef;
 		coef = float(region.width())/float(w);
 		coef = float(region.height())/float(h) < coef ? float(region.height())/float(h) : coef;

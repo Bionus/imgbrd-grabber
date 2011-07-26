@@ -23,5 +23,6 @@
         <file>images/close.png</file>
         <file>images/add.png</file>
         <file>images/icons/book.png</file>
+        <file>images/icons/tab.png</file>
     </qresource>
 </RCC>

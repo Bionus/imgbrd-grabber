@@ -176,6 +176,32 @@
         </layout>
        </item>
        <item>
+        <widget class="QWidget" name="widgetMeant" native="true">
+         <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0,1">
+          <property name="margin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>Peut-être avez-vous voulu dire :</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="labelMeant">
+            <property name="text">
+             <string notr="true"/>
+            </property>
+            <property name="textFormat">
+             <enum>Qt::RichText</enum>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
         <widget class="QWidget" name="widgetPlus" native="true">
          <property name="enabled">
           <bool>true</bool>

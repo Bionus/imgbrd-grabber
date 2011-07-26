@@ -39,6 +39,7 @@ class zoomWindow : public QWidget
 		void openSaveDir();
 		void linkHovered(QString);
 		void contextMenu(QPoint);
+		void openInNewTab();
 		void openInNewWindow();
 		void favorite();
 		void setfavorite();
