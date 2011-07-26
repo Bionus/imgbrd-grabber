@@ -27,6 +27,12 @@ Then, extract it to "C:\Program Files\Wamp\www\gelbooru". You must now configure
 
 Go to [http://localhost/phpmyadmin/ http://localhost/phpmyadmin/]. Change the language if you want, then create a database named "gelbooru" with an "utf8_unicode_ci" Collation.
 
+Once done, Go to the "SQL" tab, and fill the text area with
+{{{
+SET GLOBAL log_bin_trust_function_creators = 1;
+}}}
+Then click "Go".
+
 Now, open the file located at "C:\Program Files\Wamp\www\gelbooru\config.php" with a basic text editor.
 
 Find the line :
@@ -86,6 +92,19 @@ INSERT INTO tag_index(tag, index_count) VALUES("%tag%", 1) ON DUPLICATE KEY UPDA
 }}}
 Image
 {{{
-C:\Windows\System32\cmd.exe /C copy "%path%" "D:\Sites\boo\images\1\%md5%.%ext%"
+C:\Windows\System32\cmd.exe /C copy "%path%" "C:\Program Files\Wamp\www\gelbooru\images\1\%md5%.%ext%"
 }}}
+On Windows Vista and Windows 7, this command just won't work, unless you started Grabber with administrator rights, since Program Files is a protected folder.
+
+So you can do two things:
+  * Start Grabber with administrator rights.
+  * Configure wamp and move the www folder to another location.
+Let's explain the second solution, which is the best one. Move your gelbooru folder somewhere else, for example to "C:\Users\Bionus\Documents\www\gelbooru". Then, click on the WAMP icon in the system stray, then go to the Apache menu and click "httpd.conf". Into this file, look for "C:\Program Files\Wamp\www" and replace it with "C:\Users\Bionus\Documents\www" (for example). You should find it two times. Then, save the file. Click on the WAMP icon and restart all services. Now, you must also change the Image command, and replace "C:\Program Files\Wamp\www\gelbooru" to "C:\Users\Bionus\Documents\www\gelbooru" (for example).
+
 Now, every time you save an image, a copy will be created in your local booru!
+
+
+
+== Thumbnail issue ==
+
+If you test, you'll see that it doesn't works totally. In fact, no thumbnail is generated when doing this. Just visit [http://localhost/gelbooru/thumbs_fix.php http://localhost/gelbooru/thumbs_fix.php] to fix this. Note that you must be logged in as administrator in gelbooru to do this.
