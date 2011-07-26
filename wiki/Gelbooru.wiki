@@ -74,7 +74,7 @@ The installation is finished! You can now use your booru going [http://localhost
 
 
 
-== Grabber ==
+= Grabber =
 
 Launch Grabber, then open the options window and go to the "Commands" part. Set it to those values:
 
@@ -105,6 +105,6 @@ Now, every time you save an image, a copy will be created in your local booru!
 
 
 
-== Thumbnail issue ==
+= Thumbnail issue =
 
 If you test, you'll see that it doesn't works totally. In fact, no thumbnail is generated when doing this. Just visit [http://localhost/gelbooru/thumbs_fix.php http://localhost/gelbooru/thumbs_fix.php] to fix this. Note that you must be logged in as administrator in gelbooru to do this.
