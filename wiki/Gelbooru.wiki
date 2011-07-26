@@ -5,6 +5,8 @@
 = Operating system =
 In this wiki, I'll consider that you're on Windows. But on Linux & other OSes, it should be pretty the same (cp instead of copy, LAMP instead of WAMP, etc.)
 
+
+
 = Installing a local web server =
 
 First, we're going to install WAMP, which contains everithing required to have a local web server.
@@ -12,6 +14,8 @@ First, we're going to install WAMP, which contains everithing required to have a
 Go [http://sourceforge.net/projects/wampserver/ here] and download the latest version of WAMP.
 
 Then, install it: "Next", "I accept the agreement" > "Next", "Next", "Next", "Install". It will ask you for "PHP mail parameters". We don't care about them, so just leave the default values and click Next and launch WAMP.
+
+
 
 = Installing Gelbooru =
 
@@ -26,37 +30,62 @@ Go to [http://localhost/phpmyadmin/ http://localhost/phpmyadmin/]. Change the la
 Now, open the file located at "C:\Program Files\Wamp\www\gelbooru\config.php" with a basic text editor.
 
 Find the line :
-
-{{{ $mysql_pass = "test"; }}}
-
+{{{
+$mysql_pass = "test";
+}}}
 And replace it by
-
-{{{ $mysql_pass = ""; }}}
-
+{{{
+$mysql_pass = "";
+}}}
 Replace
-
-{{{ $mysql_db = "asdf"; }}}
-
+{{{
+$mysql_db = "asdf";
+}}}
 By
-
-{{{ $mysql_db = "gelbooru"; }}}
-
+{{{
+$mysql_db = "gelbooru";
+}}}
 Replace
-
-{{{ $site_url = "http://127.0.0.1/branches/0.1.10/0.1.10/"; }}}
-
+{{{
+$site_url = "http://127.0.0.1/branches/0.1.10/0.1.10/";
+}}}
 By
-
-{{{ $site_url = "http://localhost/gelbooru"; }}}
-
+{{{
+$site_url = "http://localhost/gelbooru";
+}}}
 And finally replace
-
-{{{ $site_url3 = "Default Booru"; }}}
-
+{{{
+$site_url3 = "Default Booru";
+}}}
 By (you can change "Localbooru" by the name of your booru)
-
-{{{ $site_url2 = $site_url3 = "Localbooru"; }}}
+{{{
+$site_url2 = $site_url3 = "Localbooru";
+}}}
 
 Now, go to [http://localhost/gelbooru/install/ http://localhost/gelbooru/install/] and register your admin account.
 
 The installation is finished! You can now use your booru going [http://localhost/gelbooru/ here]. If you run into errors after adding images, click on the WAMP icon on the system tray, go to "PHP > PHP settings" and uncheck "display errors".
+
+
+
+== Grabber ==
+
+Launch Grabber, then open the options window and go to the "Commands" part. Set it to those values:
+
+Initialization
+{{{
+"C:\Program Files\Zend\MySQL51\bin\mysql.exe" --user=root --password= booru
+}}}
+Image (with initialization)
+{{{
+INSERT INTO posts(creation_date, hash, image, height, width, ext, rating, tags, directory, active_date) VALUES(NOW(), "%md5%", "%md5%.%ext%", %height%, %width%, ".%ext%", "%rating%", " %all% ", "1", "20110619"); UPDATE post_count SET pcount=pcount+1 WHERE access_key="posts";
+}}}
+Tag (with initialization)
+{{{
+INSERT INTO tag_index(tag, index_count) VALUES("%tag%", 1) ON DUPLICATE KEY UPDATE index_count = index_count+1;
+}}}
+Image
+{{{
+C:\Windows\System32\cmd.exe /C copy "%path%" "D:\Sites\boo\images\1\%md5%.%ext%"
+}}}
+Now, every time you save an image, a copy will be created in your local booru!
