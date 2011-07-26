@@ -74,7 +74,7 @@ Launch Grabber, then open the options window and go to the "Commands" part. Set 
 
 Initialization
 {{{
-"C:\Program Files\Wamp\bin\mysql\mysql5.5.8\bin\mysql.exe" --user=root --password= booru
+"C:\Program Files\Wamp\bin\mysql\mysql5.5.8\bin\mysql.exe" --user=root --password= gelbooru
 }}}
 Image (with initialization)
 {{{
