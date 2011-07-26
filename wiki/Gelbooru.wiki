@@ -8,11 +8,55 @@ In this wiki, I'll consider that you're on Windows. But on Linux & other OSes, i
 = Installing a local web server =
 
 First, we're going to install WAMP, which contains everithing required to have a local web server.
+
 Go [http://sourceforge.net/projects/wampserver/ here] and download the latest version of WAMP.
+
 Then, install it: "Next", "I accept the agreement" > "Next", "Next", "Next", "Install". It will ask you for "PHP mail parameters". We don't care about them, so just leave the default values and click Next and launch WAMP.
 
 = Installing Gelbooru =
 
 So we have a working server installed. You can check that everything works visiting [http://127.0.0.1/ 127.0.0.1] or [http://localhost/ localhost].
+
 Now, we must install Gelbooru. Go [http://gelbooru.com/index.php?page=forum&s=view&id=99 here] and download the latest version from the 0.1 branch (0.1.`*`).
-Then, extract it to "C:\Program Files\Wamp\www\gelbooru".
+
+Then, extract it to "C:\Program Files\Wamp\www\gelbooru". You must now configure it and create its database.
+
+Go to [http://localhost/phpmyadmin/ http://localhost/phpmyadmin/]. Change the language if you want, then create a database named "gelbooru" with an "utf8_unicode_ci" Collation.
+
+Now, open the file located at "C:\Program Files\Wamp\www\gelbooru\config.php" with a basic text editor.
+
+Find the line :
+
+{{{ $mysql_pass = "test"; }}}
+
+And replace it by
+
+{{{ $mysql_pass = ""; }}}
+
+Replace
+
+{{{ $mysql_db = "asdf"; }}}
+
+By
+
+{{{ $mysql_db = "gelbooru"; }}}
+
+Replace
+
+{{{ $site_url = "http://127.0.0.1/branches/0.1.10/0.1.10/"; }}}
+
+By
+
+{{{ $site_url = "http://localhost/gelbooru"; }}}
+
+And finally replace
+
+{{{ $site_url3 = "Default Booru"; }}}
+
+By (you can change "Localbooru" by the name of your booru)
+
+{{{ $site_url2 = $site_url3 = "Localbooru"; }}}
+
+Now, go to [http://localhost/gelbooru/install/ http://localhost/gelbooru/install/] and register your admin account.
+
+The installation is finished! You can now use your booru going [http://localhost/gelbooru/ here]. If you run into errors after adding images, click on the WAMP icon on the system tray, go to "PHP > PHP settings" and uncheck "display errors".
