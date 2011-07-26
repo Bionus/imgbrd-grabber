@@ -1,0 +1,18 @@
+#summary Keep a local gelbooru to browse your downloaded images.
+
+== This wiki highlights a feature that will be implemented in Grabber v2.2, which is not yet released! So you won't be able to reproduce its content. =
+
+= Operating system =
+In this wiki, I'll consider that you're on Windows. But on Linux & other OSes, it should be pretty the same (cp instead of copy, LAMP instead of WAMP, etc.)
+
+= Installing a local web server =
+
+First, we're going to install WAMP, which contains everithing required to have a local web server.
+Go [http://sourceforge.net/projects/wampserver/ here] and download the latest version of WAMP.
+Then, install it: "Next", "I accept the agreement" > "Next", "Next", "Next", "Install". It will ask you for "PHP mail parameters". We don't care about them, so just leave the default values and click Next and launch WAMP.
+
+= Installing Gelbooru =
+
+So we have a working server installed. You can check that everything works visiting [http://127.0.0.1/ 127.0.0.1] or [http://localhost/ localhost].
+Now, we must install Gelbooru. Go [http://gelbooru.com/index.php?page=forum&s=view&id=99 here] and download the latest version from the 0.1 branch (0.1.`*`).
+Then, extract it to "C:\Program Files\Wamp\www\gelbooru".
