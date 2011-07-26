@@ -11,6 +11,8 @@ extern mainWindow *_mainwindow;
 searchTab::searchTab(QMap<QString,QMap<QString,QString> > *sites, QMap<QString,QString> *favorites, QDateTime *serverDate, QWidget *parent) : QWidget(parent), ui(new Ui::searchTab), m_serverDate(serverDate), m_favorites(favorites), m_sites(sites), m_pagemax(-1), m_sized(false)
 {
     ui->setupUi(this);
+	ui->widgetMeant->hide();
+
 	QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
 
 	// Search field
@@ -37,6 +39,7 @@ searchTab::searchTab(QMap<QString,QMap<QString,QString> > *sites, QMap<QString,Q
 			}
 		connect(m_search, SIGNAL(returnPressed()), this, SLOT(load()));
 		connect(m_postFiltering, SIGNAL(returnPressed()), this, SLOT(load()));
+		connect(ui->labelMeant, SIGNAL(linkActivated(QString)), this, SLOT(setTags(QString)));
 		ui->layoutFields->insertWidget(1, m_search, 1);
 		ui->layoutPlus->addWidget(m_postFiltering, 1, 1, 1, 3);
 
@@ -179,6 +182,7 @@ void searchTab::updateCheckboxes()
 
 void searchTab::load()
 {
+	ui->widgetMeant->hide();
 	ui->buttonFirstPage->setEnabled(ui->spinPage->value() > 1);
 	ui->buttonPreviousPage->setEnabled(ui->spinPage->value() > 1);
 	while (ui->layoutResults->count() > 0)
@@ -240,6 +244,48 @@ void searchTab::finishedLoading(Page* page)
 				{ reasons.append(tr("trop de tags")); }
 				if (ui->spinPage->value() > 1000)
 				{ reasons.append(tr("page trop éloignée")); }
+				QStringList completion;
+				QFile words("words.txt");
+				if (words.open(QIODevice::ReadOnly | QIODevice::Text))
+				{
+					while (!words.atEnd())
+					{
+						QByteArray line = words.readLine();
+						completion.append(QString(line).remove("\r\n").remove("\n").split(" ", QString::SkipEmptyParts));
+					}
+					completion.append(m_favorites->keys());
+					completion.removeDuplicates();
+					completion.sort();
+					QStringList tags = m_search->toPlainText().trimmed().split(" ");
+					QMap<QString,QString> results, clean;
+					int c = 0;
+					for (int t = 0; t < tags.size(); t++)
+					{
+						QString tag = tags.at(t);
+						int lev = (tag.length()/3)+2;
+						for (int w = 0; w < completion.size(); w++)
+						{
+							int d = levenshtein(tag, completion.at(w));
+							if (d < lev)
+							{
+								if (results[tag].isEmpty())
+								{ c++; }
+								results[tag] = "<b>"+completion.at(w)+"</b>";
+								clean[tag] = completion.at(w);
+								lev = d;
+							}
+						}
+						if (lev == 0)
+						{ results[tag] = tag; c--; }
+					}
+					qDebug() << c;
+					if (c > 0)
+					{
+						QStringList res = results.values(), cl = clean.values();
+						ui->widgetMeant->show();
+						ui->labelMeant->setText("<a href=\""+cl.join(" ")+"\" style=\"color:black;text-decoration:none;\">"+res.join(" ")+"</a>");
+					}
+				}
 				txt->setText(m_sites->key(page->site())+" - <a href=\""+page->url().toString()+"\">"+page->url().toString()+"</a> - "+tr("Aucun résultat")+(reasons.count() > 0 ? "<br/>"+tr("Raisons possibles : %1").arg(reasons.join(", ")) : ""));
 			}
 			else
@@ -248,6 +294,8 @@ void searchTab::finishedLoading(Page* page)
 		ui->layoutResults->addWidget(txt, floor(pos/ui->spinColumns->value())*(fl+1), pl*(pos%ui->spinColumns->value()), 1, pl);
 		ui->layoutResults->setRowMinimumHeight((floor(pos/ui->spinColumns->value())*(fl+1)), 50);
 	}
+	else
+	{ ui->layoutResults->setRowMinimumHeight(0, 50); }
 
 	// Tags for this page
 	QList<Tag*> taglist;
@@ -375,11 +423,20 @@ void searchTab::finishedLoadingPreview(Image *img)
 	QColor color;
 	if (img->status() == "pending")
 	{ color = QColor("#0000ff"); }
+	if (img->parentId() != 0)
+	{ color = QColor("#cccc00"); }
+	if (img->hasChildren())
+	{ color = QColor("#00ff00"); }
+	for (int i = 0; i < img->tags().count(); i++)
+	{
+		if (m_favorites->keys().contains(img->tags().at(i)->text()) && !m_search->toPlainText().trimmed().split(" ").contains(img->tags().at(i)->text()))
+		{ color = QColor("#ffc0cb"); break; }
+	}
 	QBouton *l = new QBouton(position, this, settings->value("resizeInsteadOfCropping", true).toBool(), color);
 		l->setIcon(preview);
 		QString t;
 		for (int i = 0; i < img->tags().count(); i++)
-		{ t += " "+img->tags().at(i)->text(); }
+		{ t += " "+img->tags().at(i)->stylished(m_favorites->keys()); }
 		l->setToolTip(QString("%1%2%3%4%5%6%7%8")
 			.arg(img->tags().isEmpty() ? " " : tr("<b>Tags :</b> %1<br/><br/>").arg(t.trimmed()))
 			.arg(img->id() == 0 ? " " : tr("<b>ID :</b> %1<br/>").arg(img->id()))
@@ -484,8 +541,13 @@ void searchTab::linkHovered(QString url)
 { m_link = url; }
 void searchTab::linkClicked(QString url)
 {
-	m_search->setPlainText(url);
-	load();
+	if (Qt::ControlModifier)
+	{ _mainwindow->addTab(url); }
+	else
+	{
+		m_search->setPlainText(url);
+		load();
+	}
 }
 void searchTab::contextMenu()
 {
@@ -501,10 +563,14 @@ void searchTab::contextMenu()
 		{ menu->addAction(QIcon(":/images/icons/remove.png"), tr("Ne pas garder pour plus tard"), this, SLOT(unviewitlater())); }
 		else
 		{ menu->addAction(QIcon(":/images/icons/add.png"), tr("Garder pour plus tard"), this, SLOT(viewitlater())); }
+		menu->addSeparator();
+		menu->addAction(QIcon(":/images/icons/tab.png"), tr("Ouvrir dans un nouvel onglet"), this, SLOT(openInNewTab()));
 		menu->addAction(QIcon(":/images/icons/window.png"), tr("Ouvrir dans une nouvelle fenêtre"), this, SLOT(openInNewWindow()));
 	}
 	menu->exec(QCursor::pos());
 }
+void searchTab::openInNewTab()
+{ _mainwindow->addTab(m_link); }
 void searchTab::openInNewWindow()
 {
 	QProcess myProcess;

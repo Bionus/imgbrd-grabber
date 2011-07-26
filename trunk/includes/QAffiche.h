@@ -11,7 +11,7 @@ class QAffiche : public QLabel
 	Q_OBJECT
 	
 	public:
-		QAffiche(QVariant id = QVariant(), QWidget *parent = 0);
+		QAffiche(QVariant id = QVariant(), int border = 0, QColor color = QColor(), QWidget *parent = 0);
 		~QAffiche();
 		void setImage(QImage);
 		void setImage(QPixmap);
@@ -32,14 +32,17 @@ class QAffiche : public QLabel
 		void mouseOut(int);
 		
 	protected:
-		void mouseDoubleClickEvent ( QMouseEvent * e );
-		void mousePressEvent( QMouseEvent *e);
-		void mouseReleaseEvent( QMouseEvent *e);
-		void enterEvent(QEvent *);
-		void leaveEvent(QEvent *);
+		//void paintEvent(QPaintEvent*);
+		void mouseDoubleClickEvent(QMouseEvent*);
+		void mousePressEvent(QMouseEvent*);
+		void mouseReleaseEvent(QMouseEvent*);
+		void enterEvent(QEvent*);
+		void leaveEvent(QEvent*);
 		bool hitLabel(const QPoint &p);
 		bool m_pressed;
 		QVariant m_id;
+		int m_border;
+		QColor m_color;
 };
 
 #endif

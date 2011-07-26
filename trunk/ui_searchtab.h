@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'searchtab.ui'
 **
-** Created: Thu 21. Jul 23:47:42 2011
+** Created: Mon 25. Jul 23:59:37 2011
 **      by: Qt User Interface Compiler version 4.6.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -46,6 +46,10 @@ public:
     QSpinBox *spinPage;
     QPushButton *buttonTags;
     QPushButton *pushButton;
+    QWidget *widgetMeant;
+    QHBoxLayout *horizontalLayout_2;
+    QLabel *label_2;
+    QLabel *labelMeant;
     QWidget *widgetPlus;
     QGridLayout *layoutPlus;
     QLabel *label_6;
@@ -158,6 +162,27 @@ public:
 
 
         verticalLayout_4->addLayout(layoutFields);
+
+        widgetMeant = new QWidget(widget_2);
+        widgetMeant->setObjectName(QString::fromUtf8("widgetMeant"));
+        horizontalLayout_2 = new QHBoxLayout(widgetMeant);
+        horizontalLayout_2->setContentsMargins(0, 0, 0, 0);
+        horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
+        label_2 = new QLabel(widgetMeant);
+        label_2->setObjectName(QString::fromUtf8("label_2"));
+
+        horizontalLayout_2->addWidget(label_2);
+
+        labelMeant = new QLabel(widgetMeant);
+        labelMeant->setObjectName(QString::fromUtf8("labelMeant"));
+        labelMeant->setText(QString::fromUtf8(""));
+        labelMeant->setTextFormat(Qt::RichText);
+
+        horizontalLayout_2->addWidget(labelMeant);
+
+        horizontalLayout_2->setStretch(1, 1);
+
+        verticalLayout_4->addWidget(widgetMeant);
 
         widgetPlus = new QWidget(widget_2);
         widgetPlus->setObjectName(QString::fromUtf8("widgetPlus"));
@@ -297,6 +322,7 @@ public:
         buttonCalendar->setText(QApplication::translate("searchTab", " Ins\303\251rer une date ", 0, QApplication::UnicodeUTF8));
         buttonTags->setText(QApplication::translate("searchTab", "Ok", 0, QApplication::UnicodeUTF8));
         pushButton->setText(QApplication::translate("searchTab", "+", 0, QApplication::UnicodeUTF8));
+        label_2->setText(QApplication::translate("searchTab", "Peut-\303\252tre avez-vous voulu dire :", 0, QApplication::UnicodeUTF8));
         label_6->setText(QApplication::translate("searchTab", "Images par page", 0, QApplication::UnicodeUTF8));
         label_7->setText(QApplication::translate("searchTab", "Nombre de colonnes", 0, QApplication::UnicodeUTF8));
         label_8->setText(QApplication::translate("searchTab", "Post-filtrage", 0, QApplication::UnicodeUTF8));

@@ -32,7 +32,7 @@ class QBouton : public QPushButton
 		void appui(QString);
 		void rightClick(QString);
 		void middleClick(QString);
-	
+
 	private:
 		QVariant	_id;
 		bool		_resizeInsteadOfCropping, _np;

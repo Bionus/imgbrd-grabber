@@ -46,6 +46,7 @@ class searchTab : public QWidget
 		void linkHovered(QString);
 		void linkClicked(QString);
 		void contextMenu();
+		void openInNewTab();
 		void openInNewWindow();
 		void favorite();
 		void unfavorite();

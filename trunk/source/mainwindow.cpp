@@ -591,6 +591,10 @@ void mainWindow::finishedLoadingPreview(Image *img)
 	QColor color;
 	if (img->status() == "pending")
 	{ color = QColor("#0000ff"); }
+	if (img->parentId() != 0)
+	{ color = QColor("#cccc00"); }
+	if (img->hasChildren())
+	{ color = QColor("##00ff00"); }
 	QBouton *l = new QBouton(position, this, m_settings->value("resizeInsteadOfCropping", true).toBool(), color);
 		l->setIcon(preview);
 		QString t;
@@ -789,6 +793,7 @@ void mainWindow::closeEvent(QCloseEvent *e)
 		m_settings->endGroup();
 	DONE();
 	e->accept();
+	qApp->quit();
 }
 
 
@@ -853,12 +858,12 @@ void mainWindow::getAll()
 	m_getAllImages.clear();
 	m_getAllPages.clear();
 	m_allImages = m_batchs;
-	if (!m_settings->value("Exec/init").toString().isEmpty())
+	if (!m_settings->value("Exec/Group/init").toString().isEmpty())
 	{
-		log(tr("Execution de \"%1\"").arg(m_settings->value("Exec/init").toString()));
+		log(tr("Execution de la commande d'initialisation' \"%1\"").arg(m_settings->value("Exec/Group/init").toString()));
 		m_process = new QProcess;
-		m_process->start(m_settings->value("Exec/init").toString());
-		if (m_process->waitForStarted(1000))
+		m_process->start(m_settings->value("Exec/Group/init").toString());
+		if (m_process->waitForStarted(10000))
 		{ log(tr("<b>Erreur :</b> %1").arg(tr("erreur lors de la commande d'initialisation : %1.").arg("timed out"))); }
 	}
 	for (int i = 0; i < m_groupBatchs.count(); i++)
@@ -1024,7 +1029,7 @@ void mainWindow::_getAll()
 				tr("%n erreur(s).", "", m_getAllErrors)
 			)
 		);
-		if (!m_settings->value("Exec/init").toString().isEmpty())
+		if (!m_settings->value("Exec/Group/init").toString().isEmpty())
 		{
 			m_process->closeWriteChannel();
 			m_process->waitForFinished(1000);
@@ -1051,32 +1056,6 @@ void mainWindow::getAllPerformTags(Image* img)
 		else if (tag->type() == "model")		{ m_getAllDetails["models"].append(normalized);		}
 		else									{ m_getAllDetails["generals"].append(normalized);	}
 		m_getAllDetails["alls"].append(normalized);
-		if (!m_settings->value("Exec/tag").toString().isEmpty())
-		{
-			QMap<QString,int> types;
-			types["general"] = 0;
-			types["artist"] = 1;
-			types["general"] = 2;
-			types["copyright"] = 3;
-			types["character"] = 4;
-			types["model"] = 5;
-			types["photo_set"] = 6;
-			QString exec = m_settings->value("Exec/tag").toString()
-			.replace("%tag%", original)
-			.replace("%type%", tag->type())
-			.replace("%number%", QString::number(types[tag->type()]));
-			if (!m_settings->value("Exec/init").toString().isEmpty())
-			{
-				log(tr("Execution de \"%1\"").arg(exec));
-				m_process->write(exec.toAscii());
-			}
-			else
-			{
-				m_process->start(exec);
-				m_process->waitForStarted(1000);
-				m_process->close();
-			}
-		}
 	}
 
 	// Row
@@ -1154,6 +1133,37 @@ void mainWindow::getAllPerformTags(Image* img)
 		}
 		else
 		{
+			QMap<QString,int> types;
+			types["general"] = 0;
+			types["artist"] = 1;
+			types["general"] = 2;
+			types["copyright"] = 3;
+			types["character"] = 4;
+			types["model"] = 5;
+			types["photo_set"] = 6;
+			for (int i = 0; i < img->tags().count(); i++)
+			{
+				Tag *tag = img->tags().at(i);
+				QString original = tag->text().replace(" ", "_");
+				if (!m_settings->value("Exec/tag").toString().isEmpty())
+				{
+					QString exec = m_settings->value("Exec/tag").toString()
+					.replace("%tag%", original)
+					.replace("%type%", tag->type())
+					.replace("%number%", QString::number(types[tag->type()]));
+					log(tr("Execution seule de \"%1\"").arg(exec));
+					QProcess::execute(exec);
+				}
+				if (!m_settings->value("Exec/Group/tag").toString().isEmpty())
+				{
+					QString exec = m_settings->value("Exec/Group/tag").toString()
+					.replace("%tag%", original)
+					.replace("%type%", tag->type())
+					.replace("%number%", QString::number(types[tag->type()]));
+					log(tr("Execution groupée de \"%1\"").arg(exec));
+					m_process->write(exec.toAscii());
+				}
+			}
 			QNetworkAccessManager *m = new QNetworkAccessManager(this);
 			connect(m, SIGNAL(finished(QNetworkReply*)), this, SLOT(getAllPerformImage(QNetworkReply*)));
 			QNetworkRequest request(img->fileUrl());
@@ -1218,12 +1228,27 @@ void mainWindow::getAllPerformImage(QNetworkReply* reply)
 		for (int i = 0; i < img->tags().count(); i++)
 		{ all += " "+img->tags().at(i)->text(); }
 		all = all.trimmed();
-		all.replace(" ", m_settings->value("separator", " ").toString());
-		path.replace("%all%", all.left(263-p.length()-path.length()));
+		QString l = all;
+		l.replace(" ", m_settings->value("separator", " ").toString());
+		path.replace("%all%", l.left(263-p.length()-path.length()));
 
 		QFile f(p+"/"+path);
 		QDir dir(p);
 		m_settings->endGroup();
+
+		QDir path_to_file(p+"/"+path.section('/', 0, -2));
+		if (!path_to_file.exists())
+		{
+			if (!dir.mkpath(path.section('/', 0, -2)))
+			{
+				log(tr("<b>Erreur:</b> %1").arg(tr("impossible de créer le dossier de destination: %1.").arg(p+"/"+path.section('/', 0, -2))));
+				m_getAllErrors++;
+			}
+		}
+		f.open(QIODevice::WriteOnly);
+			f.write(reply->readAll());
+		f.close();
+
 		if (!m_settings->value("Exec/image").toString().isEmpty())
 		{
 			QString exec = m_settings->value("Exec/image").toString();
@@ -1238,36 +1263,42 @@ void mainWindow::getAllPerformImage(QNetworkReply* reply)
 			.replace("%rating%", img->rating())
 			.replace("%md5%", img->md5())
 			.replace("%website%", img->site())
+			.replace("%height%", QString::number(img->height()))
+			.replace("%width%", QString::number(img->width()))
 			.replace("%ext%", u.section('.', -1))
-			.replace("%all%", all.left(263-p.length()-path.length()))
-			.replace("%filename%", path)
-			.replace("\\", "/")
-			.replace("%path%", p+"/"+path);
+			.replace("%all%", all)
+			.replace("%filename%", QDir::toNativeSeparators(path))
+			.replace("%path%", QDir::toNativeSeparators(p+"/"+path));
 			m_settings->endGroup();
-			if (!m_settings->value("Exec/init").toString().isEmpty())
-			{
-				log(tr("Execution de \"%1\"").arg(exec));
-				m_process->write(exec.toAscii());
-			}
-			else
-			{
-				m_process->start(exec);
-				m_process->waitForStarted(1000);
-				m_process->close();
-			}
+			qDebug() << QFile::exists(QDir::toNativeSeparators(p+"/"+path));
+			log(tr("Execution seule de \"%1\"").arg(exec));
+			QProcess::execute(exec);
 		}
-		QDir path_to_file(p+"/"+path.section('/', 0, -2));
-		if (!path_to_file.exists())
+		if (!m_settings->value("Exec/Group/image").toString().isEmpty())
 		{
-			if (!dir.mkpath(path.section('/', 0, -2)))
-			{
-				log(tr("<b>Erreur:</b> %1").arg(tr("impossible de créer le dossier de destination: %1.").arg(p+"/"+path.section('/', 0, -2))));
-				m_getAllErrors++;
-			}
+			QString exec = m_settings->value("Exec/Group/image").toString();
+			m_settings->beginGroup("Save");
+			exec.replace("%artist%", (m_getAllDetails["artists"].isEmpty() ? m_settings->value("artist_empty").toString() : (m_settings->value("artist_useall").toBool() || m_getAllDetails["artists"].count() == 1 ? m_getAllDetails["artists"].join(m_settings->value("artist_sep").toString()) : m_settings->value("artist_value").toString())))
+			.replace("%general%", m_getAllDetails["generals"].join(m_settings->value("separator").toString()))
+			.replace("%copyright%", (m_getAllDetails["copyrights"].isEmpty() ? m_settings->value("copyright_empty").toString() : (m_settings->value("copyright_useall").toBool() || m_getAllDetails["copyrights"].count() == 1 ? m_getAllDetails["copyrights"].join(m_settings->value("copyright_sep").toString()) : m_settings->value("copyright_value").toString())))
+			.replace("%character%", (m_getAllDetails["characters"].isEmpty() ? m_settings->value("character_empty").toString() : (m_settings->value("character_useall").toBool() || m_getAllDetails["characters"].count() == 1 ? m_getAllDetails["characters"].join(m_settings->value("character_sep").toString()) : m_settings->value("character_value").toString())))
+			.replace("%model%", (m_getAllDetails["models"].isEmpty() ? m_settings->value("model_empty").toString() : (m_settings->value("model_useall").toBool() || m_getAllDetails["models"].count() == 1 ? m_getAllDetails["models"].join(m_settings->value("model_sep").toString()) : m_settings->value("model_value").toString())))
+			.replace("%model|artist%", (!m_getAllDetails["models"].isEmpty() ? (m_settings->value("model_useall").toBool() || m_getAllDetails["models"].count() == 1 ? m_getAllDetails["models"].join(m_settings->value("model_sep").toString()) : m_settings->value("model_value").toString()) : (m_getAllDetails["artists"].isEmpty() ? m_settings->value("artist_empty").toString() : (m_settings->value("artist_useall").toBool() || m_getAllDetails["artists"].count() == 1 ? m_getAllDetails["artists"].join(m_settings->value("artist_sep").toString()) : m_settings->value("artist_value").toString()))))
+			.replace("%filename%", u.section('/', -1).section('.', 0, -2))
+			.replace("%rating%", img->rating())
+			.replace("%md5%", img->md5())
+			.replace("%website%", img->site())
+			.replace("%height%", QString::number(img->height()))
+			.replace("%width%", QString::number(img->width()))
+			.replace("%ext%", u.section('.', -1))
+			.replace("%all%", all)
+			.replace("%filename%", QDir::toNativeSeparators(path))
+			.replace("%path%", QDir::toNativeSeparators(p+"/"+path));
+			m_settings->endGroup();
+			log(tr("Execution groupée de \"%1\"").arg(exec));
+			m_process->write(exec.toAscii());
 		}
-		f.open(QIODevice::WriteOnly);
-			f.write(reply->readAll());
-		f.close();
+
 		m_getAllDownloaded++;
 		m_getAllId++;
 		int count = m_progressdialog->value(), bonus = 1;

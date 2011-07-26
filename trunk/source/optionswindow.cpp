@@ -112,7 +112,9 @@ optionsWindow::optionsWindow(mainWindow *parent) : QDialog(parent), m_parent(par
 	settings.endGroup();
 
 	settings.beginGroup("Exec");
-		ui->lineCommandsInitialisation->setText(settings.value("init").toString());
+		ui->lineCommandsGroupInitialisation->setText(settings.value("Group/init").toString());
+		ui->lineCommandsGroupImage->setText(settings.value("Group/image").toString());
+		ui->lineCommandsGroupTag->setText(settings.value("Group/tag").toString());
 		ui->lineCommandsImage->setText(settings.value("image").toString());
 		ui->lineCommandsTag->setText(settings.value("tag").toString());
 	settings.endGroup();
@@ -400,7 +402,9 @@ void optionsWindow::save()
 	settings.endGroup();
 
 	settings.beginGroup("Exec");
-		settings.setValue("init", ui->lineCommandsInitialisation->text());
+		settings.setValue("Group/init", ui->lineCommandsGroupInitialisation->text());
+		settings.setValue("Group/image", ui->lineCommandsGroupImage->text());
+		settings.setValue("Group/tag", ui->lineCommandsGroupTag->text());
 		settings.setValue("image", ui->lineCommandsImage->text());
 		settings.setValue("tag", ui->lineCommandsTag->text());
 	settings.endGroup();
