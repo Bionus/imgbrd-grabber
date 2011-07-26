@@ -29,6 +29,5 @@ The second thing to do is to choose from where you want to download pictures. To
 
 ==Search fields==
 The upper part of the window is "divided" in two.
-  * The tags field: to make searches using tags. You can add your own tags to auto-completion editing the "words.txt" file.
-  * The date field: to search in the popular images of a single day. You can show a calendar (more handy) clicking on the "Choose" button.
-When you have finished, just press the "Ok" button, and the results will be displayed below the search fields.
+  * The search form: to make searches using tags. You can add your own tags to auto-completion editing the "words.txt" file. To insert a date, click the button. Browse other pages by changing the page value.
+  * Hidden form: show it by clicking the "+" button. Here, you have to fields to change quickly the options (images per page and columns), sources checkboxes and "Post-filtering". Post-filtering allow you to bypass the two-tags limitation on danbooru for example, by adding additional tags or metas (source, id, height, etc.) in this field. Note that none of these fields will be saved at exit.
