@@ -2,8 +2,10 @@
 
 == This wiki highlights a feature that will be implemented in Grabber v2.2, which is not yet released! So you won't be able to reproduce its content. =
 
-= Operating system =
-In this wiki, I'll consider that you're on Windows. But on Linux & other OSes, it should be pretty the same (cp instead of copy, LAMP instead of WAMP, etc.)
+= Introduction =
+First of all, know that on old computers, using commands can slow down huge batch downloads (a recent computer should take about 50ms more per image).
+
+_Note: in this wiki, I'll consider that you're using Windows. But on Linux & other OSes, it should be pretty the same (use the cp command instead of copy, LAMP instead of WAMP, etc.)._
 
 
 
@@ -25,7 +27,7 @@ Now, we must install Gelbooru. Go [http://gelbooru.com/index.php?page=forum&s=vi
 
 Then, extract it to "C:\Program Files\Wamp\www\gelbooru". You must now configure it and create its database.
 
-Go to [http://localhost/phpmyadmin/ http://localhost/phpmyadmin/]. Change the language if you want, then create a database named "gelbooru" with an "utf8_unicode_ci" Collation.
+Go to [http://localhost/phpmyadmin/ http://localhost/phpmyadmin/]. Username: "root", password: "" (blank). Change the language if you want, then create a database named "gelbooru" with an "utf8_unicode_ci" Collation.
 
 Once done, Go to the "SQL" tab, and fill the text area with
 {{{
