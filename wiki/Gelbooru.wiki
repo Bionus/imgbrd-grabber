@@ -3,7 +3,7 @@
 == This wiki highlights a feature that will be implemented in Grabber v2.2, which is not yet released! So you won't be able to reproduce its content. =
 
 = Introduction =
-First of all, know that on old computers, using commands can slow down huge batch downloads (a recent computer should take about 50ms more per image).
+First of all, know that using commands can slow down huge batch downloads (a recent computer should take from 100ms to 1s more per image, which is very consequent).
 
 _Note: in this wiki, I'll consider that you're using Windows. But on Linux & other OSes, it should be pretty the same (use the cp command instead of copy, LAMP instead of WAMP, etc.)._
 
