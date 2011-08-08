@@ -107,7 +107,8 @@ void zoomWindow::openSaveDir()
 	QString path = settings.value("Save/path").toString().replace("\\", "/");
 	if (path.right(1) == "/")
 	{ path = path.left(path.length()-1); }
-	QString file = this->getSavePath(), pth = file.section('/', 0, -2), url = path+"/"+pth;
+	path = QDir::toNativeSeparators(path);
+	QString file = m_image->path(), pth = file.section(QDir::toNativeSeparators("/"), 0, -2), url = path+QDir::toNativeSeparators("/")+pth;
 	QDir dir(url);
 	if (dir.exists())
 	{ showInGraphicalShell(url); }
@@ -262,8 +263,8 @@ void zoomWindow::replyFinished(Image* img)
 	{
 		Tag *tag = img->tags().at(i);
 		QString normalized = tag->text().replace("\\", " ").replace("/", " ").replace(":", " ").replace("|", " ").replace("*", " ").replace("?", " ").replace("\"", " ").replace("<", " ").replace(">", " ").trimmed();
-		if (!under)
-		{ normalized.replace('_', ' '); }
+		if (under)
+		{ normalized.replace(' ', '_'); }
 		this->details[tag->type()+"s"].append(normalized);
 		this->details["alls"].append(normalized);
 		if (blacklistedtags.contains(tag->text(), Qt::CaseInsensitive))
@@ -278,7 +279,7 @@ void zoomWindow::replyFinished(Image* img)
 	{ ui->labelTagsLeft->setText(t.join("<br/>")); }
 	m_detailsWindow->setTags(tags);
 
-	QString pth = this->getSavePath();
+	QString pth = m_image->path();
 	QString path = settings.value("Save/path").toString().replace("\\", "/");
 	if (path.right(1) == "/")
 	{ path = path.left(path.length()-1); }
@@ -328,7 +329,7 @@ void zoomWindow::replyFinishedZoom(QNetworkReply* reply)
 				movie->start();
 			}
 			else
-			{ error(this, tr("Une erreur inattendue est survenue lors du chargement de l'image.\r\n%1").arg(reply->url().toString())); }
+			{ error(this, tr("Une erreur inattendue est survenue lors du chargement de l'image GIF.\r\n%1").arg(reply->url().toString())); }
 		}
 		else
 		{
@@ -337,6 +338,16 @@ void zoomWindow::replyFinishedZoom(QNetworkReply* reply)
 		}
 		if (this->m_mustSave > 0)
 		{ this->saveImage(); }
+	}
+	else if (reply->error() == QNetworkReply::ContentNotFoundError && m_url.section('.', -1) != "jpeg")
+	{
+		QString ext = m_url.section('.', -1);
+		QMap<QString,QString> nextext;
+		nextext["jpg"] = "png";
+		nextext["png"] = "gif";
+		nextext["gif"] = "jpeg";
+		m_url = m_url.section('.', 0, -2)+"."+nextext[ext];
+		load();
 	}
 	else if (reply->error() != QNetworkReply::OperationCanceledError)
 	{ error(this, tr("Une erreur inattendue est survenue lors du chargement de l'image.\r\n%1").arg(reply->url().toString())); }
@@ -386,7 +397,7 @@ QString zoomWindow::saveImage()
 	QString pth = settings.value("Save/path").toString().replace("\\", "/");
 	if (pth.right(1) == "/")
 	{ pth = pth.left(pth.length()-1); }
-	QString path = this->getSavePath();
+	QString path = m_image->path();
 	if (pth.isEmpty() || settings.value("Save/filename").toString().isEmpty())
 	{
 		int reply;
@@ -404,22 +415,85 @@ QString zoomWindow::saveImage()
 		}
 		return QString();
 	}
-	QFile f(pth+"/"+path);
+	QString fp = QDir::toNativeSeparators(pth+"/"+path);
+	QFile f(fp);
 	if (!f.exists())
 	{
-		QDir path_to_file(pth+"/"+path.section('/', 0, -2));
+		QProcess *p = new QProcess;
+		if (!settings.value("Exec/Group/init").toString().isEmpty())
+		{
+			log(tr("Execution de la commande d'initialisation' \"%1\"").arg(settings.value("Exec/Group/init").toString()));
+			p->start(settings.value("Exec/Group/init").toString());
+			if (!p->waitForStarted(10000))
+			{ log(tr("<b>Erreur :</b> %1").arg(tr("erreur lors de la commande d'initialisation : %1.").arg("timed out"))); }
+		}
+		QDir path_to_file(fp.section(QDir::toNativeSeparators("/"), 0, -2));
 		if (!path_to_file.exists())
 		{
 			QDir dir(pth);
-			if (!dir.mkpath(path.section('/', 0, -2)))
-			{ error(this, tr("Erreur lors de la sauvegarde de l'image.\r\n%1").arg(pth+"/"+path)); }
+			if (!dir.mkpath(path.section(QDir::toNativeSeparators("/"), 0, -2)))
+			{ error(this, tr("Erreur lors de la sauvegarde de l'image.\r\n%1").arg(fp)); }
 		}
 		f.open(QIODevice::WriteOnly);
-		f.write(this->d);
+			f.write(this->d);
 		f.close();
-		log(tr("Saved <a href=\"file:///%1\">%1</a>").arg(pth+"/"+path));
+
+		QMap<QString,int> types;
+		types["general"] = 0;
+		types["artist"] = 1;
+		types["general"] = 2;
+		types["copyright"] = 3;
+		types["character"] = 4;
+		types["model"] = 5;
+		types["photo_set"] = 6;
+		for (int i = 0; i < m_image->tags().count(); i++)
+		{
+			Tag *tag = m_image->tags().at(i);
+			QString original = tag->text().replace(" ", "_");
+			if (!settings.value("Exec/tag").toString().isEmpty())
+			{
+				QString exec = settings.value("Exec/tag").toString()
+				.replace("%tag%", original)
+				.replace("%type%", tag->type())
+				.replace("%number%", QString::number(types[tag->type()]));
+				log(tr("Execution seule de \"%1\"").arg(exec));
+				QProcess::execute(exec);
+			}
+			if (!settings.value("Exec/Group/tag").toString().isEmpty())
+			{
+				QString exec = settings.value("Exec/Group/tag").toString()
+				.replace("%tag%", original)
+				.replace("%type%", tag->type())
+				.replace("%number%", QString::number(types[tag->type()]));
+				log(tr("Execution groupée de \"%1\"").arg(exec));
+				p->write(exec.toAscii());
+			}
+		}
+		if (!settings.value("Exec/image").toString().isEmpty())
+		{
+			QString exec = m_image->path(settings.value("Exec/image").toString());
+			exec.replace("%path%", fp);
+			exec.replace(" \\C ", " /C ");
+			log(tr("Execution seule de \"%1\"").arg(exec));
+			QProcess::execute(exec);
+		}
+		if (!settings.value("Exec/Group/image").toString().isEmpty())
+		{
+			QString exec = m_image->path(settings.value("Exec/Group/image").toString());
+			exec.replace("%path%", fp);
+			log(tr("Execution groupée de \"%1\"").arg(exec));
+			p->write(exec.toAscii());
+		}
+
+		log(tr("Sauvegardé <a href=\"file:///%1\">%1</a>").arg(pth+"/"+path));
 		ui->buttonSave->setText(tr("Sauvegardé !"));
 		ui->buttonSaveNQuit->setText(tr("Fermer"));
+		if (!settings.value("Exec/Group/init").toString().isEmpty())
+		{
+			p->closeWriteChannel();
+			p->waitForFinished(1000);
+			p->close();
+		}
 	}
 	else
 	{ ui->buttonSave->setText(tr("Fichier déjà existant")); }
@@ -437,56 +511,6 @@ QString zoomWindow::saveImageAs()
 	f.write(this->d);
 	f.close();
 	return path;
-}
-
-QString zoomWindow::getSavePath()
-{
-	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
-	settings.beginGroup("Save");
-	QStringList copyrights;
-	QString cop;
-	bool found;
-	if (settings.value("copyright_useshorter", true).toBool())
-	{
-		for (int i = 0; i < this->details["copyrights"].size(); i++)
-		{
-			found = false;
-			cop = this->details["copyrights"].at(i);
-			for (int r = 0; r < copyrights.size(); r++)
-			{
-				if (copyrights.at(r).left(cop.size()) == cop.left(copyrights.at(r).size()))
-				{
-					if (cop.size() < copyrights.at(r).size())
-					{ copyrights[r] = cop; }
-					found = true;
-				}
-			}
-			if (!found)
-			{ copyrights.append(cop); }
-		}
-	}
-	else
-	{ copyrights = this->details["copyrights"]; }
-	QString filename = settings.value("filename").toString()
-	.replace("%artist%", (this->details["artists"].isEmpty() ? settings.value("artist_empty").toString() : (settings.value("artist_useall").toBool() || this->details["artists"].count() == 1 ? this->details["artists"].join(settings.value("artist_sep").toString()) : settings.value("artist_value").toString())))
-	.replace("%general%", this->details["generals"].join(settings.value("separator").toString()))
-	.replace("%copyright%", (copyrights.isEmpty() ? settings.value("copyright_empty").toString() : (settings.value("copyright_useall").toBool() || copyrights.count() == 1 ? copyrights.join(settings.value("copyright_sep").toString()) : settings.value("copyright_value").toString())))
-	.replace("%character%", (this->details["characters"].isEmpty() ? settings.value("character_empty").toString() : (settings.value("character_useall").toBool() || this->details["characters"].count() == 1 ? this->details["characters"].join(settings.value("character_sep").toString()) : settings.value("character_value").toString())))
-	.replace("%model%", (this->details["models"].isEmpty() ? settings.value("model_empty").toString() : (settings.value("model_useall").toBool() || this->details["models"].count() == 1 ? this->details["models"].join(settings.value("model_sep").toString()) : settings.value("model_value").toString())))
-	.replace("%model|artist%", (!this->details["models"].isEmpty() ? (settings.value("model_useall").toBool() || this->details["models"].count() == 1 ? this->details["models"].join(settings.value("model_sep").toString()) : settings.value("model_value").toString()) : (this->details["artists"].isEmpty() ? settings.value("artist_empty").toString() : (settings.value("artist_useall").toBool() || this->details["artists"].count() == 1 ? this->details["artists"].join(settings.value("artist_sep").toString()) : settings.value("artist_value").toString()))))
-	.replace("%filename%", m_image->fileUrl().toString().section('/', -1).section('.', 0, -2))
-	.replace("%rating%", m_image->rating())
-	.replace("%md5%", m_image->md5())
-	.replace("%website%", m_image->site())
-	.replace("%height%", QString::number(m_image->height()))
-	.replace("%width%", QString::number(m_image->width()))
-	.replace("%ext%", m_url.section('.', -1))
-	.replace("\\", "/");
-	QString pth = settings.value("path").toString().replace("\\", "/");
-	if (filename.left(1) == "/")	{ filename = filename.right(filename.length()-1);	}
-	if (pth.right(1) == "/")		{ pth = pth.left(pth.length()-1);					}
-	filename.replace("%all%", this->details["alls"].join(settings.value("separator").toString()).left(263-pth.length()-filename.length()));
-	return filename;
 }
 
 

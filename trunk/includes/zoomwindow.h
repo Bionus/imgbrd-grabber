@@ -51,7 +51,6 @@ class zoomWindow : public QWidget
 		void closeEvent(QCloseEvent *);
 		void resizeEvent(QResizeEvent *);
 		void save(QString, QPushButton *);
-		QString getSavePath();
 
 	signals:
 		void linkClicked(QString);

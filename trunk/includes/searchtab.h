@@ -35,6 +35,7 @@ class searchTab : public QWidget
 		// Loading
 		void load();
 		void finishedLoading(Page*);
+		void finishedLoadingTags(Page*);
 		void finishedLoadingPreview(Image*);
 		// Sources
 		void openSourcesWindow();

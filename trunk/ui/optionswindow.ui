@@ -318,6 +318,16 @@
             </item>
            </widget>
           </item>
+          <item row="5" column="0" colspan="2">
+           <widget class="QCheckBox" name="checkUseregexfortags">
+            <property name="text">
+             <string>Récupérer les tags les plus précis lors de la recherche d'images</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
          </layout>
         </widget>
        </item>

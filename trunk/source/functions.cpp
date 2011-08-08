@@ -102,7 +102,7 @@ QString validateFilename(QString text)
 	if (!text.endsWith(".%ext%"))
 	{ return QObject::tr("<span style=\"color:orange\">Votre nom de fichier ne finit pas par une extension, symbolisée par %ext% ! Vous risquez de ne pas pouvoir ouvrir vos fichiers.</span>"); }
 	// Field must contain an unique token
-	if (!text.contains("%md5%"))
+	if (!text.contains("%md5%") && !text.contains("%id%"))
 	{ return QObject::tr("<span style=\"color:orange\">Votre nom de fichier n'est pas unique à chaque image et une image risque d'en écraser une précédente lors de la sauvegarde ! Vous devriez utiliser le symbole %md5%, unique à chaque image, pour éviter ce désagrément.</span>"); }
 	// Looking for unknown tokens
 	QStringList tokens = QStringList() << "artist" << "general" << "copyright" << "character" << "model" << "model|artist" << "filename" << "rating" << "md5" << "website" << "ext" << "all";
@@ -116,6 +116,8 @@ QString validateFilename(QString text)
 		pos += rx.matchedLength();
 	}
 	// All tests passed
+	if (!text.contains("%md5%"))
+	{ return QObject::tr("<span style=\"color:green\">Vous avez choisi d'utiliser le symbole %id%. Sachez que celui-ci est unique pour un site choisi. Le même ID pourra identifier des images différentes en fonction du site.</span>"); }
 	return QObject::tr("<span style=\"color:green\">Format valide !</span>");
 }
 

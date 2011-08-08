@@ -193,6 +193,7 @@ void searchTab::load()
 	for (int i = 0; i < m_pages.count(); i++)
 	{
 		m_pages.at(i)->abort();
+		m_pages.at(i)->abortTags();
 		delete m_pages.at(i);
 	}
 	m_pages.clear();
@@ -210,6 +211,12 @@ void searchTab::load()
 			log(tr("Chargement de la page <a href=\"%1\">%1</a>").arg(page->url().toString()));
 			connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(finishedLoading(Page*)));
 			page->load();
+			QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
+			if (settings->value("useregexfortags", true).toBool())
+			{
+				connect(page, SIGNAL(finishedLoadingTags(Page*)), this, SLOT(finishedLoadingTags(Page*)));
+				page->loadTags();
+			}
 			m_pages.append(page);
 		}
 	}
@@ -246,7 +253,7 @@ void searchTab::finishedLoading(Page* page)
 				{ reasons.append(tr("page trop éloignée")); }
 				QStringList completion;
 				QFile words("words.txt");
-				if (words.open(QIODevice::ReadOnly | QIODevice::Text))
+				if (words.open(QIODevice::ReadOnly | QIODevice::Text) && !m_search->toPlainText().isEmpty())
 				{
 					while (!words.atEnd())
 					{
@@ -278,7 +285,6 @@ void searchTab::finishedLoading(Page* page)
 						if (lev == 0)
 						{ results[tag] = tag; c--; }
 					}
-					qDebug() << c;
 					if (c > 0)
 					{
 						QStringList res = results.values(), cl = clean.values();
@@ -297,55 +303,61 @@ void searchTab::finishedLoading(Page* page)
 	else
 	{ ui->layoutResults->setRowMinimumHeight(0, 50); }
 
-	// Tags for this page
-	QList<Tag*> taglist;
-	QStringList tagsGot;
-	for (int i = 0; i < m_pages.count(); i++)
+	QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
+	if (!settings->value("useregexfortags", true).toBool())
 	{
-		QList<Tag*> tags = m_pages.at(i)->tags();
-		for (int t = 0; t < tags.count(); t++)
+		// Tags for this page
+		QList<Tag*> taglist;
+		QStringList tagsGot;
+		for (int i = 0; i < m_pages.count(); i++)
 		{
-			if (!tags.at(t)->text().isEmpty())
+			QList<Tag*> tags = m_pages.at(i)->tags();
+			for (int t = 0; t < tags.count(); t++)
 			{
-				if (tagsGot.contains(tags.at(t)->text()))
-				{ taglist[tagsGot.indexOf(tags.at(t)->text())]->setCount(taglist[tagsGot.indexOf(tags.at(t)->text())]->count()+tags.at(t)->count()); }
-				else
+				if (!tags.at(t)->text().isEmpty())
 				{
-					taglist.append(tags.at(t));
-					tagsGot.append(tags.at(t)->text());
+					if (tagsGot.contains(tags.at(t)->text()))
+					{ taglist[tagsGot.indexOf(tags.at(t)->text())]->setCount(taglist[tagsGot.indexOf(tags.at(t)->text())]->count()+tags.at(t)->count()); }
+					else
+					{
+						taglist.append(tags.at(t));
+						tagsGot.append(tags.at(t)->text());
+					}
 				}
 			}
 		}
-	}
 
-	// We sort tags by frequency
-	qSort(taglist.begin(), taglist.end(), sortByFrequency);
+		// We sort tags by frequency
+		qSort(taglist.begin(), taglist.end(), sortByFrequency);
 
-	// Then we show them, styled if possible
-	QStringList tlist = QStringList() << "artists" << "copyrights" << "characters" << "models" << "generals" << "favorites" << "blacklisteds";
-	QStringList defaults = QStringList() << "#aa0000" << "#aa00aa" << "#00aa00" << "#0000ee" << "#000000" << "#ffc0cb" << "#000000";
-	QMap<QString,QString> styles;
-	QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
-	for (int i = 0; i < tlist.size(); i++)
-	{
-		QFont font;
-		font.fromString(settings->value("Coloring/Fonts/"+tlist.at(i)).toString());
-		styles[tlist.at(i)] = "color:"+settings->value("Coloring/Colors/"+tlist.at(i), defaults.at(i)).toString()+"; "+qfonttocss(font);
-	}
-	QString tags;
-	for (int i = 0; i < taglist.count(); i++)
-	{
-		if (m_favorites->contains(taglist[i]->text()))
-		{ taglist[i]->setType("favorite"); }
-		tags += "<a href=\""+taglist[i]->text()+"\" style=\""+(styles.contains(taglist[i]->type()+"s") ? styles[taglist[i]->type()+"s"] : styles["generals"])+"\">"+taglist[i]->text()+"</a> ("+QString::number(taglist[i]->count())+")<br/>";
-	}
-	ui->labelTags->setText(tags);
-	if (!m_sized)
-	{
-		int s1 = ui->labelTags->sizeHint().width();
-		if (s1 > width()*.2)
-		{ s1 = width()*.2; }
-		ui->splitter->setSizes(QList<int>() << s1 << width()-s1);
+		// Then we show them, styled if possible
+		QStringList tlist = QStringList() << "artists" << "copyrights" << "characters" << "models" << "generals" << "favorites" << "blacklisteds";
+		QStringList defaults = QStringList() << "#aa0000" << "#aa00aa" << "#00aa00" << "#0000ee" << "#000000" << "#ffc0cb" << "#000000";
+		QMap<QString,QString> styles;
+		QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
+		for (int i = 0; i < tlist.size(); i++)
+		{
+			QFont font;
+			font.fromString(settings->value("Coloring/Fonts/"+tlist.at(i)).toString());
+			styles[tlist.at(i)] = "color:"+settings->value("Coloring/Colors/"+tlist.at(i), defaults.at(i)).toString()+"; "+qfonttocss(font);
+		}
+		QString tags;
+		for (int i = 0; i < taglist.count(); i++)
+		{
+			if (m_favorites->contains(taglist[i]->text()))
+			{ taglist[i]->setType("favorite"); }
+			QString n = taglist[i]->text();
+			n.replace(" ", "_");
+			tags += "<a href=\""+n+"\" style=\""+(styles.contains(taglist[i]->type()+"s") ? styles[taglist[i]->type()+"s"] : styles["generals"])+"\">"+taglist[i]->text()+"</a> ("+QString::number(taglist[i]->count())+")<br/>";
+		}
+		ui->labelTags->setText(tags);
+		if (!m_sized)
+		{
+			int s1 = ui->labelTags->sizeHint().width();
+			if (s1 > width()*.2)
+			{ s1 = width()*.2; }
+			ui->splitter->setSizes(QList<int>() << s1 << width()-s1);
+		}
 	}
 
 	m_page++;
@@ -388,6 +400,62 @@ void searchTab::finishedLoading(Page* page)
 			connect(img, SIGNAL(finishedLoadingPreview(Image*)), this, SLOT(finishedLoadingPreview(Image*)));
 			img->loadPreview();
 		}
+	}
+}
+
+void searchTab::finishedLoadingTags(Page *page)
+{
+	// Tags for this page
+	QList<Tag*> taglist;
+	QStringList tagsGot;
+	for (int i = 0; i < m_pages.count(); i++)
+	{
+		QList<Tag*> tags = m_pages.at(i)->tags();
+		for (int t = 0; t < tags.count(); t++)
+		{
+			if (!tags.at(t)->text().isEmpty())
+			{
+				if (tagsGot.contains(tags.at(t)->text()))
+				{ taglist[tagsGot.indexOf(tags.at(t)->text())]->setCount(taglist[tagsGot.indexOf(tags.at(t)->text())]->count()+tags.at(t)->count()); }
+				else
+				{
+					taglist.append(tags.at(t));
+					tagsGot.append(tags.at(t)->text());
+				}
+			}
+		}
+	}
+
+	// We sort tags by frequency
+	qSort(taglist.begin(), taglist.end(), sortByFrequency);
+
+	// Then we show them, styled if possible
+	QStringList tlist = QStringList() << "artists" << "copyrights" << "characters" << "models" << "generals" << "favorites" << "blacklisteds";
+	QStringList defaults = QStringList() << "#aa0000" << "#aa00aa" << "#00aa00" << "#0000ee" << "#000000" << "#ffc0cb" << "#000000";
+	QMap<QString,QString> styles;
+	QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
+	for (int i = 0; i < tlist.size(); i++)
+	{
+		QFont font;
+		font.fromString(settings->value("Coloring/Fonts/"+tlist.at(i)).toString());
+		styles[tlist.at(i)] = "color:"+settings->value("Coloring/Colors/"+tlist.at(i), defaults.at(i)).toString()+"; "+qfonttocss(font);
+	}
+	QString tags;
+	for (int i = 0; i < taglist.count(); i++)
+	{
+		if (m_favorites->contains(taglist[i]->text()))
+		{ taglist[i]->setType("favorite"); }
+		QString n = taglist[i]->text();
+		n.replace(" ", "_");
+		tags += "<a href=\""+n+"\" style=\""+(styles.contains(taglist[i]->type()+"s") ? styles[taglist[i]->type()+"s"] : styles["generals"])+"\">"+taglist[i]->text()+"</a> ("+QString::number(taglist[i]->count())+")<br/>";
+	}
+	ui->labelTags->setText(tags);
+	if (!m_sized)
+	{
+		int s1 = ui->labelTags->sizeHint().width();
+		if (s1 > width()*.2)
+		{ s1 = width()*.2; }
+		ui->splitter->setSizes(QList<int>() << s1 << width()-s1);
 	}
 }
 
@@ -450,7 +518,7 @@ void searchTab::finishedLoadingPreview(Image *img)
 		l->setIconSize(preview.size());
 		l->setFlat(true);
 		connect(l, SIGNAL(appui(int)), this, SLOT(webZoom(int)));
-		//connect(l, SIGNAL(rightClick(int)), this, SLOT(batchChange(int)));
+		connect(l, SIGNAL(rightClick(int)), _mainwindow, SLOT(batchChange(int)));
 	int pl = ceil(sqrt(ui->spinImagesPerPage->value()));
 	float fl = (float)ui->spinImagesPerPage->value()/pl;
 	int pp = ui->spinImagesPerPage->value();
@@ -505,7 +573,7 @@ void searchTab::getPage()
 	}
 	QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
 	for (int i = 0; i < actuals.count(); i++)
-	{ emit batchAddGroup(QStringList() << m_search->toPlainText() << QString::number(ui->spinPage->value()) << QString::number(ui->spinImagesPerPage->value()) << QString::number(ui->spinImagesPerPage->value()) << "false" << actuals.at(i) << settings->value("Save/filename").toString() << settings->value("Save/path").toString() << ""); }
+	{ emit batchAddGroup(QStringList() << m_search->toPlainText() << QString::number(ui->spinPage->value()) << QString::number(ui->spinImagesPerPage->value()) << QString::number(ui->spinImagesPerPage->value()) << settings->value("downloadblacklist").toString() << actuals.at(i) << settings->value("Save/filename").toString() << settings->value("Save/path").toString() << ""); }
 }
 
 void searchTab::firstPage()

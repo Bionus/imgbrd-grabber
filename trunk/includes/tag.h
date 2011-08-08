@@ -9,7 +9,7 @@
 class Tag
 {
 	public:
-		explicit Tag(QString text, QString type = "general", int count = 1);
+		explicit Tag(QString text, QString type = "unknown", int count = 1);
 		~Tag();
 		QString stylished(QStringList);
 		void setText(QString);

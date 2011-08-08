@@ -3,7 +3,10 @@
 
 
 Tag::Tag(QString text, QString type, int count) : m_text(text), m_type(type), m_count(count)
-{ }
+{
+	if (text.endsWith("(artist)") && type == "unknown")
+	{ m_type = "artist"; }
+}
 Tag::~Tag()
 { }
 

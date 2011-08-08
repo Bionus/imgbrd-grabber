@@ -124,14 +124,16 @@ void TextEdit::keyPressEvent(QKeyEvent *e)
 	bool hasModifier = (e->modifiers() != Qt::NoModifier) && !ctrlOrShift;
 	QString completionPrefix = textUnderCursor();
 
-	if (!isShortcut && (hasModifier || e->text().isEmpty()|| completionPrefix.length() < 3 || eow.contains(e->text().right(1))))
+	QString p = c->completionPrefix();
+	c->setCompletionPrefix(completionPrefix);
+	if ((c->completionCount() == 1 && c->currentCompletion().size() == completionPrefix.size()) || (!isShortcut && (hasModifier || e->text().isEmpty()|| completionPrefix.length() < 3 || eow.contains(e->text().right(1)))))
 	{
 		c->popup()->hide();
 		this->doColor();
 		return;
 	}
 
-	if (completionPrefix != c->completionPrefix())
+	if (completionPrefix != p)
 	{
 		c->setCompletionPrefix(completionPrefix);
 		c->popup()->setCurrentIndex(c->completionModel()->index(0, 0));

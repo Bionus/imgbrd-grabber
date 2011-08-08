@@ -51,6 +51,7 @@ int main(int argc, char *argv[])
 	assoc["f"] = "filename";
 	assoc["u"] = "user";
 	assoc["w"] = "password";
+	assoc["i"] = "ignore";
 	for (int i = 1; i < argc; i++)
 	{
 		if (argv[i][0] == '-')

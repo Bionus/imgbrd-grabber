@@ -45,6 +45,7 @@ optionsWindow::optionsWindow(mainWindow *parent) : QDialog(parent), m_parent(par
 	ui->checkInvertLog->setChecked(settings.value("Log/invert", false).toBool());
 
 	ui->checkResizeInsteadOfCropping->setChecked(settings.value("resizeInsteadOfCropping", true).toBool());
+	ui->checkUseregexfortags->setChecked(settings.value("useregexfortags", true).toBool());
 
 	settings.beginGroup("Save");
 		ui->checkDownloadOriginals->setChecked(settings.value("downloadoriginals", true).toBool());
@@ -349,6 +350,7 @@ void optionsWindow::save()
 	settings.endGroup();
 
 	settings.setValue("resizeInsteadOfCropping", ui->checkResizeInsteadOfCropping->isChecked());
+	settings.setValue("useregexfortags", ui->checkUseregexfortags->isChecked());
 
 	settings.beginGroup("Save");
 		settings.setValue("downloadoriginals", ui->checkDownloadOriginals->isChecked());
