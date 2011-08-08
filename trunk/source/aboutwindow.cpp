@@ -16,7 +16,7 @@ aboutWindow::aboutWindow(QString version, QWidget *parent) : QDialog(parent), ui
 
 	setFixedSize(400, 170);
 }
-
+ 
 aboutWindow::~aboutWindow()
 {
     delete ui;
