@@ -12,7 +12,7 @@
 #include "json.h"
 #include <QtXml>
 
-#define VERSION	"2.2.0"
+#define VERSION	"2.2.1"
 #define DONE()	logUpdate(tr(" Fait"))
 
 extern QMap<QDateTime,QString> _log;
@@ -969,7 +969,16 @@ void mainWindow::_getAll()
 			.replace("%rating%", img->rating())
 			.replace("%md5%", img->md5())
 			.replace("%website%", img->site())
-			.replace("%ext%", u.section('.', -1));
+			.replace("%id%", QString::number(img->id()))
+			.replace("%ext%", u.section('.', -1))
+			.replace("%search%", m_groupBatchs[site_id][0]);
+			QStringList search = m_groupBatchs[site_id][0].split(" ");
+			int i = 1;
+			while (path.contains("%search_"+QString::number(i)+"%"))
+			{
+				path.replace("%search_"+QString::number(i)+"%", (search.size() >= i ? search[i-1] : ""));
+				i++;
+			}
 			QString pth = m_groupBatchs[site_id][7];
 			pth.replace("\\", "/");
 			if (path.left(1) == "/")	{ path = path.right(path.length()-1);	}
@@ -983,12 +992,41 @@ void mainWindow::_getAll()
 			QFile f(pth+"/"+path);
 			if (!f.exists())
 			{
-				QUrl rl(u);
-				QNetworkAccessManager *m = new QNetworkAccessManager(this);
-				connect(m, SIGNAL(finished(QNetworkReply*)), this, SLOT(getAllPerformImage(QNetworkReply*)));
-				QNetworkRequest request(rl);
-					request.setRawHeader("Referer", u.toAscii());
-				m_getAllRequest = m->get(request);
+				bool detected = false;
+				if (!m_settings->value("blacklistedtags").toString().isEmpty())
+				{
+					QStringList blacklistedtags(m_settings->value("blacklistedtags").toString().split(' '));
+					for (int b = 0; b < blacklistedtags.size(); b++)
+					{
+						for (int t = 0; t < img->tags().count(); t++)
+						{
+							if (img->tags().at(t)->text().toLower() == blacklistedtags.at(b).toLower())
+							{
+								detected = true;
+								log(tr("Certains tags de l'image sont blacklistés."));
+							}
+						}
+					}
+				}
+				if (detected && m_groupBatchs[site_id][4] == "false")
+				{
+					m_getAllId++;
+					m_progressdialog->setValue(m_progressdialog->value()+img->value());
+					m_progressdialog->setImages(m_getAllId);
+					m_getAllIgnored++;
+					log(tr("Image ignorée."));
+					m_getAllDetails.clear();
+					_getAll();
+				}
+				else
+				{
+					QUrl rl(u);
+					QNetworkAccessManager *m = new QNetworkAccessManager(this);
+					connect(m, SIGNAL(finished(QNetworkReply*)), this, SLOT(getAllPerformImage(QNetworkReply*)));
+					QNetworkRequest request(rl);
+						request.setRawHeader("Referer", u.toAscii());
+					m_getAllRequest = m->get(request);
+				}
 			}
 			else
 			{
