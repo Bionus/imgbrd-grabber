@@ -24,8 +24,8 @@ aboutWindow::~aboutWindow()
 
 void aboutWindow::finished(QNetworkReply *r)
 {
-	QString l = r->readAll();
-	int latest = l.replace(".", "").toInt();
+	QString l = r->readAll(), last = l;
+	int latest = last.replace(".", "").toInt();
 	if (latest <= m_version)
 	{ ui->labelMessage->setText("<p style=\"font-size:8pt; font-style:italic; color:#808080;\">"+tr("Grabber est à jour")+"</p>"); }
 	else
