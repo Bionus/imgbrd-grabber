@@ -1,6 +1,19 @@
 #summary Imgbrd-grabber's changelog from v1.0 to v2.1.0
 
 = 2.0 =
+== 2.2.0 ==
+  * Fixed issue #19
+  * Parents/children (borders on image list).
+  * "Maybe you meant" when searches gives no result.
+  * Support of a local gelbooru with commands (+tuto).
+  * Ctrl+click open tag in a new tab.
+  * %search%, %search_1%, %search_2%, %search_3%, etc. tokens.
+  * %id% token.
+  * Search tags (at the left) and images separately to have the same tags results than with Regex with XML.
+  * Little improvement for auto-completion. You no more need to press enter or space after each tag to hide the list.
+  * Improved commands.
+== 2.1.1 ==
+  * Fixed issue #18
 == 2.1.0 ==
   * Ordered options.
   * Tabs.
