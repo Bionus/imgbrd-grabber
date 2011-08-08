@@ -1,7 +1,5 @@
 #summary Keep a local gelbooru to browse your downloaded images.
 
-== This wiki highlights a feature that will be implemented in Grabber v2.2, which is not yet released! So you won't be able to reproduce its content. =
-
 = Introduction =
 First of all, know that using commands can slow down huge batch downloads (a recent computer should take from 100ms to 1s more per image, which is very consequent).
 
