@@ -23,7 +23,11 @@ Image::Image(QMap<QString, QString> details, int timezonedecay, Page* parent)
 	{
 		QStringList t = details["tags"].split(" ");
 		for (int i = 0; i < t.count(); i++)
-		{ m_tags.append(new Tag(t.at(i))); }
+		{
+			QString tg = t.at(i);
+			tg.replace("&amp;", "&");
+			m_tags.append(new Tag(tg));
+		}
 	}
 	m_id = details.contains("id") ? details["id"].toInt() : 0;
 	m_score = details.contains("score") ? details["score"].toInt() : 0;
@@ -97,7 +101,7 @@ void Image::parseTags(QNetworkReply* r)
 	while ((pos = rx.indexIn(source, pos)) != -1)
 	{
 		pos += rx.matchedLength();
-		QString type = rx.cap(1), tag = rx.cap(2).replace(" ", "_");
+		QString type = rx.cap(1), tag = rx.cap(2).replace(" ", "_").replace("&amp;", "&");
 		int count = rx.cap(3).toInt();
 		for (int i = 0; i < m_tags.count(); i++)
 		{
@@ -191,6 +195,100 @@ QString Image::filter(QStringList filters)
 	}
 	return QString();
 }
+
+QString Image::path(QString fn)
+{
+	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
+	settings.beginGroup("Save");
+	if (fn.isEmpty())
+	{ fn = settings.value("filename").toString(); }
+	QStringList copyrights;
+	QString cop;
+	bool found;
+	QMap<QString,QStringList> details;
+	for (int i = 0; i < m_tags.size(); i++)
+	{
+		QString t = m_tags.at(i)->text();
+		details["allos"].append(t);
+		t.replace("_", " ");
+		details[m_tags.at(i)->type()+"s"].append(t);
+		details["alls"].append(t);
+	}
+	if (settings.value("copyright_useshorter", true).toBool())
+	{
+		for (int i = 0; i < details["copyrights"].size(); i++)
+		{
+			found = false;
+			cop = details["copyrights"].at(i);
+			for (int r = 0; r < copyrights.size(); r++)
+			{
+				if (copyrights.at(r).left(cop.size()) == cop.left(copyrights.at(r).size()))
+				{
+					if (cop.size() < copyrights.at(r).size())
+					{ copyrights[r] = cop; }
+					found = true;
+				}
+			}
+			if (!found)
+			{ copyrights.append(cop); }
+		}
+	}
+	else
+	{ copyrights = details["copyrights"]; }
+	QStringList search = m_parent->search();
+	QString filename = fn
+	.replace("%artist%", (details["artists"].isEmpty() ? settings.value("artist_empty").toString() : (settings.value("artist_useall").toBool() || details["artists"].count() == 1 ? details["artists"].join(settings.value("artist_sep").toString()) : settings.value("artist_value").toString())))
+	.replace("%general%", details["generals"].join(settings.value("separator").toString()))
+	.replace("%copyright%", (copyrights.isEmpty() ? settings.value("copyright_empty").toString() : (settings.value("copyright_useall").toBool() || copyrights.count() == 1 ? copyrights.join(settings.value("copyright_sep").toString()) : settings.value("copyright_value").toString())))
+	.replace("%character%", (details["characters"].isEmpty() ? settings.value("character_empty").toString() : (settings.value("character_useall").toBool() || details["characters"].count() == 1 ? details["characters"].join(settings.value("character_sep").toString()) : settings.value("character_value").toString())))
+	.replace("%model%", (details["models"].isEmpty() ? settings.value("model_empty").toString() : (settings.value("model_useall").toBool() || details["models"].count() == 1 ? details["models"].join(settings.value("model_sep").toString()) : settings.value("model_value").toString())))
+	.replace("%model|artist%", (!details["models"].isEmpty() ? (settings.value("model_useall").toBool() || details["models"].count() == 1 ? details["models"].join(settings.value("model_sep").toString()) : settings.value("model_value").toString()) : (details["artists"].isEmpty() ? settings.value("artist_empty").toString() : (settings.value("artist_useall").toBool() || details["artists"].count() == 1 ? details["artists"].join(settings.value("artist_sep").toString()) : settings.value("artist_value").toString()))))
+	.replace("%filename%", m_url.section('/', -1).section('.', 0, -2))
+	.replace("%rating%", m_rating)
+	.replace("%md5%", m_md5)
+	.replace("%id%", QString::number(m_id))
+	.replace("%website%", m_site)
+	.replace("%height%", QString::number(m_size.height()))
+	.replace("%width%", QString::number(m_size.width()))
+	.replace("%ext%", m_url.section('.', -1))
+	.replace("%search%", search.join(settings.value("separator").toString()))
+	.replace("\\", "/");
+	int i = 1;
+	while (filename.contains("%search_"+QString::number(i)+"%"))
+	{
+		filename.replace("%search_"+QString::number(i)+"%", (search.size() >= i ? search[i-1] : ""));
+		i++;
+	}
+	QString pth = settings.value("path").toString().replace("\\", "/");
+	if (filename.left(1) == "/")	{ filename = filename.right(filename.length()-1);	}
+	if (pth.right(1) == "/")		{ pth = pth.left(pth.length()-1);					}
+	filename.replace("%all%", details["alls"].join(settings.value("separator").toString()).left(263-pth.length()-filename.length()));
+	filename.replace("%allo%", details["allos"].join(" "));
+	while (filename.indexOf("//") >= 0)
+	{ filename.replace("//", "/"); }
+	return QDir::toNativeSeparators(filename);
+}
+
+int Image::value()
+{
+	int pixels;
+	if (!m_size.isEmpty())
+	{ pixels = m_size.width()*m_size.height(); }
+	else
+	{
+		pixels = 1200*900;
+		QStringList tags;
+		for (int t = 0; t < m_tags.size(); t++)
+		{ tags.append(m_tags.at(t)->text().toLower()); }
+		if (tags.contains("incredibly_absurdres"))	{ pixels = 10000*10000; }
+		else if (tags.contains("absurdres"))		{ pixels = 3200*2400; }
+		else if (tags.contains("highres"))			{ pixels = 1600*1200; }
+		else if (tags.contains("lowres"))			{ pixels = 500*500; }
+	}
+	return pixels;
+}
+
+
 
 QString		Image::url()			{ return m_url;				}
 QString		Image::md5()			{ return m_md5;				}

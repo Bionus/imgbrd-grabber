@@ -3,7 +3,7 @@
 
 
 
-Page::Page(QMap<QString,QMap<QString,QString> > *sites, QString site, QStringList tags, int page, int limit, QStringList postFiltering, QObject *parent) : QObject(parent), m_postFiltering(postFiltering), m_imagesPerPage(limit)
+Page::Page(QMap<QString,QMap<QString,QString> > *sites, QString site, QStringList tags, int page, int limit, QStringList postFiltering, QObject *parent) : QObject(parent), m_postFiltering(postFiltering), m_search(tags), m_imagesPerPage(limit)
 {
 	// Some definitions from parameters
 	m_site = sites->value(site);
@@ -15,18 +15,35 @@ Page::Page(QMap<QString,QMap<QString,QString> > *sites, QString site, QStringLis
 	QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
 	url.replace("{pseudo}", settings->value("Login/pseudo").toString());
 	url.replace("{password}", settings->value("Login/password").toString());
+	qDebug() << url;
 	m_url = QUrl(url);
+
+	if (m_site.contains("Urls/Html/Tags"))
+	{
+		QString url = m_site["Urls/Html/Tags"];
+		url.replace("{page}", QString::number(page-1+m_site["FirstPage"].toInt()));
+		url.replace("{tags}", tags.join(" ").replace("&", "%26"));
+		url.replace("{limit}", QString::number(limit));
+		QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
+		url.replace("{pseudo}", settings->value("Login/pseudo").toString());
+		url.replace("{password}", settings->value("Login/password").toString());
+		m_urlRegex = QUrl(url);
+	}
+	else
+	{ m_urlRegex = ""; }
+
 	m_replyExists = false;
+	m_replyTagsExists = false;
 }
 Page::~Page()
 { }
 
 void Page::load()
 {
-	m_replyExists = true;
 	QNetworkAccessManager *manager = new QNetworkAccessManager(this);
 	connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(parse(QNetworkReply*)));
 	m_reply = manager->get(QNetworkRequest(m_url));
+	m_replyExists = true;
 }
 void Page::abort()
 {
@@ -34,6 +51,25 @@ void Page::abort()
 	{
 		if (m_reply->isRunning())
 		{ m_reply->abort(); }
+	}
+}
+
+void Page::loadTags()
+{
+	if (!m_urlRegex.isEmpty())
+	{
+		QNetworkAccessManager *manager = new QNetworkAccessManager(this);
+		connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(parseTags(QNetworkReply*)));
+		m_replyTags = manager->get(QNetworkRequest(m_urlRegex));
+		m_replyTagsExists = true;
+	}
+}
+void Page::abortTags()
+{
+	if (m_replyTagsExists)
+	{
+		if (m_replyTags->isRunning())
+		{ m_replyTags->abort(); }
 	}
 }
 
@@ -142,7 +178,6 @@ void Page::parse(QNetworkReply* r)
 		m_imagesCount = rxlast.cap(1).toInt()*m_imagesPerPage;
 
 		// Getting tags
-		qDebug() << m_site["Regex/Tags"];
 		QRegExp rxtags(m_site["Regex/Tags"]);
 		rxtags.setMinimal(true);
 		int p = 0;
@@ -214,6 +249,21 @@ void Page::parse(QNetworkReply* r)
 
 	emit finishedLoading(this);
 }
+void Page::parseTags(QNetworkReply *r)
+{
+	QString source = r->readAll();
+	QRegExp rxtags(m_site["Regex/Tags"]);
+	rxtags.setMinimal(true);
+	int p = 0;
+	m_tags.clear();
+	while (((p = rxtags.indexIn(source, p)) != -1))
+	{
+		p += rxtags.matchedLength();
+		m_tags.append(new Tag(rxtags.cap(2), rxtags.cap(1), rxtags.cap(3).toInt()));
+	}
+
+	emit finishedLoadingTags(this);
+}
 
 QList<Image*>			Page::images()		{ return m_images;		}
 QMap<QString,QString>	Page::site()		{ return m_site;		}
@@ -221,3 +271,4 @@ QUrl					Page::url()			{ return m_url;			}
 int						Page::imagesCount()	{ return m_imagesCount;	}
 QString					Page::source()		{ return m_source;		}
 QList<Tag*>				Page::tags()		{ return m_tags;		}
+QStringList				Page::search()		{ return m_search;		}

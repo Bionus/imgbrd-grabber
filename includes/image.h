@@ -19,7 +19,9 @@ class Image : public QObject
 		~Image();
 		void loadPreview();
 		void loadTags();
+		int value();
 		QString filter(QStringList);
+		QString path(QString fn = "");
 		QString		url();
 		QString		md5();
 		QString		author();
