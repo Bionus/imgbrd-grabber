@@ -105,18 +105,18 @@ QString validateFilename(QString text)
 	if (!text.contains("%md5%") && !text.contains("%id%"))
 	{ return QObject::tr("<span style=\"color:orange\">Votre nom de fichier n'est pas unique à chaque image et une image risque d'en écraser une précédente lors de la sauvegarde ! Vous devriez utiliser le symbole %md5%, unique à chaque image, pour éviter ce désagrément.</span>"); }
 	// Looking for unknown tokens
-	QStringList tokens = QStringList() << "artist" << "general" << "copyright" << "character" << "model" << "model|artist" << "filename" << "rating" << "md5" << "website" << "ext" << "all";
+	QStringList tokens = QStringList() << "artist" << "general" << "copyright" << "character" << "model" << "model|artist" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search";
 	QRegExp rx = QRegExp("%(.+)%");
 	rx.setMinimal(true);
 	int pos = 0;
 	while ((pos = rx.indexIn(text, pos)) != -1)
 	{
-		if (!tokens.contains(rx.cap(1)))
+		if (!tokens.contains(rx.cap(1)) && !rx.cap(1).startsWith("search_"))
 		{ return QObject::tr("<span style=\"color:orange\">Le symbole %%1% n\'existe pas et ne sera pas remplacé.</span>").arg(rx.cap(1)); }
 		pos += rx.matchedLength();
 	}
 	// All tests passed
-	if (!text.contains("%md5%"))
+	if (!text.contains("%md5%") && !text.contains("%website%"))
 	{ return QObject::tr("<span style=\"color:green\">Vous avez choisi d'utiliser le symbole %id%. Sachez que celui-ci est unique pour un site choisi. Le même ID pourra identifier des images différentes en fonction du site.</span>"); }
 	return QObject::tr("<span style=\"color:green\">Format valide !</span>");
 }
