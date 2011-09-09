@@ -24,5 +24,9 @@
         <file>images/add.png</file>
         <file>images/icons/book.png</file>
         <file>images/icons/tab.png</file>
+        <file>images/colors/blue.png</file>
+        <file>images/colors/green.png</file>
+        <file>images/colors/red.png</file>
+        <file>images/colors/black.png</file>
     </qresource>
 </RCC>

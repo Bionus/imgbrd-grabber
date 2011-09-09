@@ -7,22 +7,25 @@ Page::Page(QMap<QString,QMap<QString,QString> > *sites, QString site, QStringLis
 {
 	// Some definitions from parameters
 	m_site = sites->value(site);
+	m_website = site;
 	m_format = m_site["Selected"];
+	QString t = tags.join(" ").replace("&", "%26");
+	if (m_site.contains("DefaultTag") && t.isEmpty())
+	{ t = m_site["DefaultTag"]; }
 	QString url = m_site["Urls/Selected/Tags"];
 	url.replace("{page}", QString::number(page-1+m_site["FirstPage"].toInt()));
-	url.replace("{tags}", tags.join(" ").replace("&", "%26"));
+	url.replace("{tags}", t);
 	url.replace("{limit}", QString::number(limit));
 	QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
 	url.replace("{pseudo}", settings->value("Login/pseudo").toString());
 	url.replace("{password}", settings->value("Login/password").toString());
-	qDebug() << url;
 	m_url = QUrl(url);
 
 	if (m_site.contains("Urls/Html/Tags"))
 	{
 		QString url = m_site["Urls/Html/Tags"];
 		url.replace("{page}", QString::number(page-1+m_site["FirstPage"].toInt()));
-		url.replace("{tags}", tags.join(" ").replace("&", "%26"));
+		url.replace("{tags}", t);
 		url.replace("{limit}", QString::number(limit));
 		QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
 		url.replace("{pseudo}", settings->value("Login/pseudo").toString());
@@ -42,7 +45,9 @@ void Page::load()
 {
 	QNetworkAccessManager *manager = new QNetworkAccessManager(this);
 	connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(parse(QNetworkReply*)));
-	m_reply = manager->get(QNetworkRequest(m_url));
+	QNetworkRequest r(m_url);
+		r.setRawHeader("Referer", m_url.toString().toAscii());
+	m_reply = manager->get(r);
 	m_replyExists = true;
 }
 void Page::abort()
@@ -123,6 +128,10 @@ void Page::parse(QNetworkReply* r)
 				if (!d["file_url"].startsWith("http://"))
 				{ d["file_url"] = "http://"+m_site["Url"]+QString(d["file_url"].startsWith("/") ? "" : "/")+d["file_url"]; }
 				d["page_url"] = m_site["Urls/Html/Post"];
+				QString t = m_search.join(" ").replace("&", "%26");
+				if (m_site.contains("DefaultTag") && t.isEmpty())
+				{ t = m_site["DefaultTag"]; }
+				d["page_url"].replace("{tags}", t);
 				d["page_url"].replace("{id}", d["id"]);
 				int timezonedecay = QDateTime::currentDateTime().time().hour()-QDateTime::currentDateTime().toUTC().addSecs(-60*60*4).time().hour();
 				Image *img = new Image(d, timezonedecay, this);
@@ -156,6 +165,10 @@ void Page::parse(QNetworkReply* r)
 				if (!d["file_url"].startsWith("http://"))
 				{ d["file_url"] = "http://"+m_site["Url"]+QString(d["file_url"].startsWith("/") ? "" : "/")+d["file_url"]; }
 				d["page_url"] = m_site["Urls/Html/Post"];
+				QString t = m_search.join(" ").replace("&", "%26");
+				if (m_site.contains("DefaultTag") && t.isEmpty())
+				{ t = m_site["DefaultTag"]; }
+				d["page_url"].replace("{tags}", t);
 				d["page_url"].replace("{id}", d["id"]);
 				int timezonedecay = QDateTime::currentDateTime().time().hour()-QDateTime::currentDateTime().toUTC().addSecs(-60*60*4).time().hour();
 				Image *img = new Image(d, timezonedecay, this);
@@ -172,19 +185,27 @@ void Page::parse(QNetworkReply* r)
 	else if (m_site["Selected"] == "regex")
 	{
 		// Getting last page
-		QRegExp rxlast(m_site["Regex/LastPage"]);
-		rxlast.setMinimal(true);
-		rxlast.indexIn(m_source, 0);
-		m_imagesCount = rxlast.cap(1).toInt()*m_imagesPerPage;
+		if (m_site.contains("LastPage"))
+		{ m_imagesCount = m_site["LastPage"].toInt()*m_imagesPerPage; }
+		else if (m_site.contains("Regex/LastPage"))
+		{
+			QRegExp rxlast(m_site["Regex/LastPage"]);
+			rxlast.setMinimal(true);
+			rxlast.indexIn(m_source, 0);
+			m_imagesCount = rxlast.cap(1).toInt()*m_imagesPerPage;
+		}
 
 		// Getting tags
-		QRegExp rxtags(m_site["Regex/Tags"]);
-		rxtags.setMinimal(true);
-		int p = 0;
-		while (((p = rxtags.indexIn(m_source, p)) != -1))
+		if (m_site.contains("Regex/Tags"))
 		{
-			p += rxtags.matchedLength();
-			m_tags.append(new Tag(rxtags.cap(2), rxtags.cap(1), rxtags.cap(3).toInt()));
+			QRegExp rxtags(m_site["Regex/Tags"]);
+			rxtags.setMinimal(true);
+			int p = 0;
+			while (((p = rxtags.indexIn(m_source, p)) != -1))
+			{
+				p += rxtags.matchedLength();
+				m_tags.append(new Tag(rxtags.cap(2), rxtags.cap(1), rxtags.cap(3).toInt()));
+			}
 		}
 
 		// Getting images
@@ -204,8 +225,11 @@ void Page::parse(QNetworkReply* r)
 			{ d["file_url"] = "http://"+m_site["Url"]+QString(d["file_url"].startsWith("/") ? "" : "/")+d["file_url"]; }
 			if (!m_site.contains("Urls/Html/Image"))
 			{
-				d["file_url"] = d["preview_url"];
-				d["file_url"].remove("preview/");
+				if (m_site.contains("preview/"))
+				{
+					d["file_url"] = d["preview_url"];
+					d["file_url"].remove("preview/");
+				}
 			}
 			else
 			{
@@ -215,6 +239,10 @@ void Page::parse(QNetworkReply* r)
 				.replace("{ext}", "jpg");
 			}
 			d["page_url"] = m_site["Urls/Html/Post"];
+			QString t = m_search.join(" ").replace("&", "%26");
+			if (m_site.contains("DefaultTag") && t.isEmpty())
+			{ t = m_site["DefaultTag"]; }
+			d["page_url"].replace("{tags}", t);
 			d["page_url"].replace("{id}", d["id"]);
 			int timezonedecay = QDateTime::currentDateTime().time().hour()-QDateTime::currentDateTime().toUTC().addSecs(-60*60*4).time().hour();
 			Image *img = new Image(d, timezonedecay, this);
@@ -251,17 +279,19 @@ void Page::parse(QNetworkReply* r)
 }
 void Page::parseTags(QNetworkReply *r)
 {
-	QString source = r->readAll();
-	QRegExp rxtags(m_site["Regex/Tags"]);
-	rxtags.setMinimal(true);
-	int p = 0;
 	m_tags.clear();
-	while (((p = rxtags.indexIn(source, p)) != -1))
+	if (m_site.contains("Regex/Tags"))
 	{
-		p += rxtags.matchedLength();
-		m_tags.append(new Tag(rxtags.cap(2), rxtags.cap(1), rxtags.cap(3).toInt()));
+		QString source = r->readAll();
+		QRegExp rxtags(m_site["Regex/Tags"]);
+		rxtags.setMinimal(true);
+		int p = 0;
+		while (((p = rxtags.indexIn(source, p)) != -1))
+		{
+			p += rxtags.matchedLength();
+			m_tags.append(new Tag(rxtags.cap(2), rxtags.cap(1), rxtags.cap(3).toInt()));
+		}
 	}
-
 	emit finishedLoadingTags(this);
 }
 
@@ -270,5 +300,6 @@ QMap<QString,QString>	Page::site()		{ return m_site;		}
 QUrl					Page::url()			{ return m_url;			}
 int						Page::imagesCount()	{ return m_imagesCount;	}
 QString					Page::source()		{ return m_source;		}
+QString					Page::website()		{ return m_website;		}
 QList<Tag*>				Page::tags()		{ return m_tags;		}
 QStringList				Page::search()		{ return m_search;		}

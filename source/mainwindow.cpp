@@ -12,7 +12,7 @@
 #include "json.h"
 #include <QtXml>
 
-#define VERSION	"2.2.1"
+#define VERSION	"2.2.2"
 #define DONE()	logUpdate(tr(" Fait"))
 
 extern QMap<QDateTime,QString> _log;
@@ -731,8 +731,6 @@ void mainWindow::logShow()
 			k = m_settings->value("Log/invert", false).toBool() ? _log.size()-i-1 : i;
 			txt += QString(i > 0 ? "<br/>" : "")+"["+_log.keys().at(k).toString("hh:mm:ss.zzz")+"] "+_log.values().at(k);
 		}
-		if (m_progressdialog->isVisible())
-		{ m_progressdialog->setLog(txt); }
 		ui->labelLog->setText(txt);
 	}
 }
@@ -911,7 +909,10 @@ void mainWindow::getAllFinishedLoading(Page* p)
 		if (m_groupBatchs.at(i).at(8) == p->url().toString())
 		{ n = i; break; }
 	}
-	m_getAllImages.append(p->images());
+	QList<Image*> imgs = p->images();
+	while (imgs.size() > m_groupBatchs.at(n).at(2).toInt())
+	{ imgs.removeAt(m_groupBatchs.at(n).at(2).toInt()); }
+	m_getAllImages.append(imgs);
 	m_getAllCount++;
 	if (m_getAllCount == m_getAllPages.count())
 	{
@@ -922,7 +923,10 @@ void mainWindow::getAllFinishedLoading(Page* p)
 		}
 		int count = 0;
 		for (int i = 0; i < m_getAllImages.count(); i++)
-		{ count += m_getAllImages.at(i)->value(); }
+		{
+			count += m_getAllImages.at(i)->value();
+			m_progressdialog->addImage(m_getAllImages.at(i)->url());
+		}
 		log(tr("Toutes les urls des images ont été reçues."));
 		m_progressdialog->setMaximum(count);
 		m_progressdialog->setImagesCount(m_getAllImages.count());
@@ -1015,6 +1019,7 @@ void mainWindow::_getAll()
 					m_progressdialog->setImages(m_getAllId);
 					m_getAllIgnored++;
 					log(tr("Image ignorée."));
+					m_progressdialog->loadedImage(img->url());
 					m_getAllDetails.clear();
 					_getAll();
 				}
@@ -1025,6 +1030,7 @@ void mainWindow::_getAll()
 					connect(m, SIGNAL(finished(QNetworkReply*)), this, SLOT(getAllPerformImage(QNetworkReply*)));
 					QNetworkRequest request(rl);
 						request.setRawHeader("Referer", u.toAscii());
+					m_progressdialog->loadingImage(img->url());
 					m_getAllRequest = m->get(request);
 				}
 			}
@@ -1035,6 +1041,7 @@ void mainWindow::_getAll()
 				m_progressdialog->setImages(m_getAllId);
 				m_getAllExists++;
 				log(tr("Fichier déjà existant : <a href=\"file:///%1\">%1</a>").arg(f.fileName()));
+				m_progressdialog->loadedImage(img->url());
 				m_getAllDetails.clear();
 				_getAll();
 			}
@@ -1061,7 +1068,8 @@ void mainWindow::_getAll()
 			m_process->waitForFinished(1000);
 			m_process->close();
 		}
-		log("Batch download finished.");
+		log(tr("Téléchargement groupé terminé"));
+		m_progressdialog->clear();
 	}
 }
 void mainWindow::getAllPerformTags(Image* img)
@@ -1132,6 +1140,7 @@ void mainWindow::getAllPerformTags(Image* img)
 			m_progressdialog->setImages(m_getAllId);
 			m_getAllIgnored++;
 			log(tr("Image ignorée."));
+			m_progressdialog->loadedImage(img->url());
 			m_getAllDetails.clear();
 			_getAll();
 		}
@@ -1142,6 +1151,7 @@ void mainWindow::getAllPerformTags(Image* img)
 			QNetworkRequest request(img->fileUrl());
 				request.setRawHeader("Referer", img->fileUrl().toString().toAscii());
 			log(tr("Chargement de l'image depuis <a href=\"%1\">%1</a>").arg(img->fileUrl().toString()));
+			m_progressdialog->loadingImage(img->url());
 			m_getAllRequest = m->get(request);
 		}
 	}
@@ -1153,16 +1163,16 @@ void mainWindow::getAllPerformTags(Image* img)
 		m_getAllExists++;
 		log(tr("Fichier déjà existant : <a href=\"file:///%1\">%1</a>").arg(f.fileName()));
 		m_getAllDetails.clear();
+		m_progressdialog->loadedImage(img->url());
 		_getAll();
 	}
 }
 void mainWindow::getAllPerformImage(QNetworkReply* reply)
 {
 	log(tr("Image reçue depuis <a href=\"%1\">%1</a>").arg(reply->url().toString()));
+	Image *img = m_getAllImages.at(m_getAllId);
 	if (reply->error() == QNetworkReply::NoError)
 	{
-		Image *img = m_getAllImages.at(m_getAllId);
-
 		// Row
 		int site_id = 0;
 		for (int i = 0; i < m_groupBatchs.count(); i++)
@@ -1173,6 +1183,7 @@ void mainWindow::getAllPerformImage(QNetworkReply* reply)
 
 		// Getting path
 		QString path = img->path(m_groupBatchs[site_id][6]);
+		path.replace("%n%", QString::number(m_getAllId+1));
 		QString p = QDir::toNativeSeparators(m_groupBatchs[site_id][7]);
 		if (path.left(1) == QDir::toNativeSeparators("/"))	{ path = path.right(path.length()-1);	}
 		if (p.right(1) == QDir::toNativeSeparators("/"))	{ p = p.left(p.length()-1);				}
@@ -1189,7 +1200,6 @@ void mainWindow::getAllPerformImage(QNetworkReply* reply)
 			}
 		}
 		QFile f(fp);
-		qDebug() << fp;
 		f.open(QIODevice::WriteOnly);
 			f.write(reply->readAll());
 		f.close();
@@ -1240,24 +1250,26 @@ void mainWindow::getAllPerformImage(QNetworkReply* reply)
 			log(tr("Execution groupée de \"%1\"").arg(exec));
 			m_process->write(exec.toAscii());
 		}
-
 		m_getAllDownloaded++;
-		m_getAllId++;
-		m_progressdialog->setValue(m_progressdialog->value()+img->value());
-		m_progressdialog->setImages(m_getAllId);
-		// Loading next tags
-		m_getAllDetails.clear();
-		_getAll();
+		m_progressdialog->loadedImage(img->url());
 	}
 	else
-	{ m_getAllErrors++; }
+	{
+		m_getAllErrors++;
+		m_progressdialog->errorImage(img->url());
+	}
+
+	m_getAllId++;
+	m_progressdialog->setValue(m_progressdialog->value()+img->value());
+	m_progressdialog->setImages(m_getAllId);
+	m_getAllDetails.clear();
+	_getAll();
 }
 void mainWindow::getAllCancel()
 {
-	log("Canceling download...");
 	if (m_getAllRequest->isRunning())
 	{ m_getAllRequest->abort(); }
-	m_progressdialog->close();
-	m_progressdialog = new batchWindow(this);
+	m_progressdialog->clear();
+	log(tr("Annulation des téléchargements..."));
 	DONE();
 }

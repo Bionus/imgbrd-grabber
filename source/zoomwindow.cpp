@@ -5,13 +5,14 @@
 #include "optionswindow.h"
 #include "QAffiche.h"
 #include "zoomwindow.h"
+#include "imagethread.h"
 #include "ui_zoomwindow.h"
 
 extern mainWindow *_mainwindow;
 
 
 
-zoomWindow::zoomWindow(Image *image, QStringMap site) : ui(new Ui::zoomWindow), m_image(image), m_site(site), timeout(300), loaded(0), oldsize(0), m_program(qApp->arguments().at(0)), m_replyExists(false), m_finished(false)
+zoomWindow::zoomWindow(Image *image, QStringMap site) : ui(new Ui::zoomWindow), m_image(image), m_site(site), timeout(300), loaded(0), oldsize(0), m_program(qApp->arguments().at(0)), m_replyExists(false), m_finished(false), m_size(0)
 {
 	ui->setupUi(this);
 	m_favorites = loadFavorites().keys();
@@ -221,25 +222,35 @@ void zoomWindow::unviewitlater()
 
 void zoomWindow::load()
 {
-	QNetworkRequest *request = new QNetworkRequest(QUrl(m_url));
-		request->setRawHeader("Referer", m_url.toAscii());
+	log(tr("Chargement de l'image depuis <a href=\"%1\">%1</a>").arg(m_url));
+	m_data = QByteArray();
+	QNetworkRequest request = QNetworkRequest(QUrl(m_url));
+		request.setRawHeader("Referer", m_url.toAscii());
 	QNetworkAccessManager *manager = new QNetworkAccessManager;
+	m_reply = manager->get(request);
+	connect(m_reply, SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(downloadProgress(qint64, qint64)));
+	connect(m_reply, SIGNAL(finished()), this, SLOT(replyFinishedZoom()));
 	m_replyExists = true;
-	m_reply = manager->get(*request);
-	this->d = QByteArray();
-	connect(m_reply, SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(rR(qint64, qint64)));
-	connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinishedZoom(QNetworkReply*)));
 }
 
-#define UPDATES 20
-void zoomWindow::rR(qint64 size, qint64 total)
+#define UPDATES 16
+void zoomWindow::downloadProgress(qint64 size, qint64 total)
 {
-	if ((m_reply->size() >= (total/UPDATES) || size == total) && !m_finished)
+	if (size-m_data.size() >= total/UPDATES)
 	{
-		this->d.append(m_reply->readAll());
-		if (!this->d.isEmpty())
-		{ this->image.loadFromData(this->d, m_format); }
-		this->update(true);
+		m_data.append(m_reply->readAll());
+		ImageThread *th = new ImageThread(m_data);
+		connect(th, SIGNAL(finished(QPixmap, int)), this, SLOT(display(QPixmap, int)));
+		th->start();
+	}
+}
+void zoomWindow::display(QPixmap pix, int size)
+{
+	if (!pix.size().isEmpty() && size > m_size)
+	{
+		m_size = size;
+		this->image = pix;
+		this->update(!m_finished);
 	}
 }
 
@@ -259,7 +270,7 @@ void zoomWindow::replyFinished(Image* img)
 	}
 
 	QStringList t;
-	for (int i = 0; i < img->tags().count(); i++)
+	for (int i = 0; i < img->tags().size(); i++)
 	{
 		Tag *tag = img->tags().at(i);
 		QString normalized = tag->text().replace("\\", " ").replace("/", " ").replace(":", " ").replace("|", " ").replace("*", " ").replace("?", " ").replace("\"", " ").replace("<", " ").replace(">", " ").trimmed();
@@ -297,11 +308,11 @@ void zoomWindow::replyFinished(Image* img)
 		}
 		else
 		{
-			this->d.clear();
+			m_data.clear();
 			if (!file.open(QIODevice::ReadOnly))
 			{ error(this, tr("Erreur inattendue lors de l'ouverture du fichier.\r\n%1").arg(path+"/"+pth)); }
-			this->d = file.readAll();
-			this->image.loadFromData(this->d, m_format);
+			m_data = file.readAll();
+			this->image.loadFromData(m_data, m_format);
 			this->update();
 		}
 	}
@@ -309,37 +320,39 @@ void zoomWindow::replyFinished(Image* img)
 	{ this->load(); }
 }
 
-void zoomWindow::replyFinishedZoom(QNetworkReply* reply)
+void zoomWindow::replyFinishedZoom()
 {
+	log(tr("Image reçue depuis <a href=\"%1\">%1</a>").arg(m_url));
 	m_finished = true;
-	m_reply->abort();
-	if (reply->error() == QNetworkReply::NoError)
+	if (m_reply->error() == QNetworkReply::NoError)
 	{
-		this->d.append(reply->readAll());
+		m_data.append(m_reply->readAll());
 		this->loaded = true;
 		if (m_url.section('.', -1).toUpper() == "GIF")
 		{
 			QTemporaryFile f;
 			if (f.open())
 			{
-				f.write(this->d);
+				f.write(m_data);
 				f.close();
 				QMovie *movie = new QMovie(f.fileName());
 				labelImage->setMovie(movie);
 				movie->start();
 			}
 			else
-			{ error(this, tr("Une erreur inattendue est survenue lors du chargement de l'image GIF.\r\n%1").arg(reply->url().toString())); }
+			{ error(this, tr("Une erreur inattendue est survenue lors du chargement de l'image GIF.\r\n%1").arg(m_reply->url().toString())); }
 		}
 		else
 		{
-			this->image.loadFromData(this->d, m_format);
-			this->update();
+			qDebug() << "startfinal";
+			ImageThread *th = new ImageThread(m_data);
+			connect(th, SIGNAL(finished(QPixmap, int)), this, SLOT(display(QPixmap, int)));
+			th->start();
 		}
 		if (this->m_mustSave > 0)
 		{ this->saveImage(); }
 	}
-	else if (reply->error() == QNetworkReply::ContentNotFoundError && m_url.section('.', -1) != "jpeg")
+	else if (m_reply->error() == QNetworkReply::ContentNotFoundError && m_url.section('.', -1) != "jpeg")
 	{
 		QString ext = m_url.section('.', -1);
 		QMap<QString,QString> nextext;
@@ -347,10 +360,12 @@ void zoomWindow::replyFinishedZoom(QNetworkReply* reply)
 		nextext["png"] = "gif";
 		nextext["gif"] = "jpeg";
 		m_url = m_url.section('.', 0, -2)+"."+nextext[ext];
+		log(tr("Image non trouvée. Nouvel essai avec l'extension %1...").arg(nextext[ext]));
 		load();
 	}
-	else if (reply->error() != QNetworkReply::OperationCanceledError)
-	{ error(this, tr("Une erreur inattendue est survenue lors du chargement de l'image.\r\n%1").arg(reply->url().toString())); }
+	else if (m_reply->error() != QNetworkReply::OperationCanceledError)
+	{ error(this, tr("Une erreur inattendue est survenue lors du chargement de l'image.\r\n%1").arg(m_reply->url().toString())); }
+	m_reply->abort();
 }
 
 
@@ -432,10 +447,11 @@ QString zoomWindow::saveImage()
 		{
 			QDir dir(pth);
 			if (!dir.mkpath(path.section(QDir::toNativeSeparators("/"), 0, -2)))
-			{ error(this, tr("Erreur lors de la sauvegarde de l'image.\r\n%1").arg(fp)); }
+			{ error(this, tr("Erreur lors de la sauvegarde de l'image.\r\n%1").arg(fp)); return QString(); }
 		}
 		f.open(QIODevice::WriteOnly);
-			f.write(this->d);
+			f.write(m_data);
+			log(tr("Sauvegarde de l'image dans le fichier <a href=\"file:///%1\">%1</a>").arg(f.fileName()));
 		f.close();
 
 		QMap<QString,int> types;
@@ -508,7 +524,7 @@ QString zoomWindow::saveImageAs()
 	QString path = QFileDialog::getSaveFileName(this, tr("Enregistrer l'image"), m_image->fileUrl().toString().section('/', -1), "Images (*.png *.gif *.jpg *.jpeg)");
 	QFile f(path);
 	f.open(QIODevice::WriteOnly);
-	f.write(this->d);
+	f.write(m_data);
 	f.close();
 	return path;
 }
@@ -557,7 +573,10 @@ void zoomWindow::closeEvent(QCloseEvent *e)
 	if (m_replyExists)
 	{
 		if (m_reply->isRunning())
-		{ m_reply->abort(); }
+		{
+			m_reply->abort();
+			log(tr("Chargement de l'image stoppé."));
+		}
 	}
-	QWidget::closeEvent(e);
+	e->accept();
 }

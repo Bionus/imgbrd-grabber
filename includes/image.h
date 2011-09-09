@@ -17,8 +17,6 @@ class Image : public QObject
 	public:
 		Image(QMap<QString,QString> details, int timezonedecay = 0, Page *parent = NULL);
 		~Image();
-		void loadPreview();
-		void loadTags();
 		int value();
 		QString filter(QStringList);
 		QString path(QString fn = "");
@@ -50,6 +48,8 @@ class Image : public QObject
 		Page		*page();
 
 	public slots:
+		void loadPreview();
+		void loadTags();
 		void parsePreview(QNetworkReply*);
 		void parseTags(QNetworkReply*);
 		void abortPreview();

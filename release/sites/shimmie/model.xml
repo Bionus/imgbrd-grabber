@@ -4,8 +4,8 @@
 	<Urls>
 		<Html>
 			<Tags>/post/list/{tags}/{page}</Tags>
-			<Post>/post/show/{id}</Post>
-			<Image>/image/{id}.{ext}</Image>
+			<Post>/post/view/{id}</Post>
+			<Image>/_images/{md5}.{ext}</Image>
 		</Html>
 	</Urls>
 	<Regex>
