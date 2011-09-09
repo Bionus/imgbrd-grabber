@@ -37,7 +37,7 @@ sourcesWindow::sourcesWindow(QList<bool> selected, QStringMapMap *sites, QWidget
 			check->setText(k.at(i));
 			m_checks << check;
 			ui->gridLayout->addWidget(check, i, 0);
-		QString t = settings->value("Sources/Types", "text").toString();
+		QString t = settings->value("Sources/Types", "icon").toString();
 		int n = 1;
 		if (t != "hide")
 		{

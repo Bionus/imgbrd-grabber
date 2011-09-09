@@ -75,6 +75,7 @@ class searchTab : public QWidget
 		QString									m_link;
 		bool									m_sized;
 		int										m_page;
+		QList<QGridLayout*>						m_layouts;
 };
 
 #endif // SEARCHTAB_H

@@ -186,30 +186,47 @@ void searchTab::load()
 	ui->buttonFirstPage->setEnabled(ui->spinPage->value() > 1);
 	ui->buttonPreviousPage->setEnabled(ui->spinPage->value() > 1);
 	while (ui->layoutResults->count() > 0)
-	{ ui->layoutResults->takeAt(0)->widget()->hide(); }
+	{
+		QLayoutItem *item = ui->layoutResults->takeAt(0);
+		if (item->widget() != 0)
+		{ item->widget()->hide(); }
+	}
 	setWindowTitle(m_search->toPlainText().isEmpty() ? tr("Recherche") : m_search->toPlainText());
 	emit titleChanged(this);
 	ui->labelTags->setText("");
-	for (int i = 0; i < m_pages.count(); i++)
+	for (int i = 0; i < m_pages.size(); i++)
 	{
 		m_pages.at(i)->abort();
 		m_pages.at(i)->abortTags();
 		delete m_pages.at(i);
 	}
 	m_pages.clear();
-	for (int i = 0; i < m_images.count(); i++)
+	for (int i = 0; i < m_images.size(); i++)
 	{
 		m_images.at(i)->abortPreview();
 		delete m_images.at(i);
 	}
 	m_images.clear();
-	for (int i = 0; i < m_selectedSources.count(); i++)
+	for (int i = 0; i < m_layouts.size(); i++)
+	{
+		while (m_layouts[i]->count() > 0)
+		{
+			QLayoutItem *item = m_layouts[i]->takeAt(0);
+			if (item->widget() != 0)
+			{ item->widget()->hide(); }
+		}
+	}
+	m_layouts.clear();
+	for (int i = 0; i < m_selectedSources.size(); i++)
 	{
 		if (m_checkboxes.at(i)->isChecked())
 		{
-			Page *page = new Page(m_sites, m_sites->keys().at(i), m_search->toPlainText().toLower().split(" "), ui->spinPage->value(), ui->spinImagesPerPage->value(), m_postFiltering->toPlainText().toLower().split(" "));
+			int perpage = ui->spinImagesPerPage->value();
+			Page *page = new Page(m_sites, m_sites->keys().at(i), m_search->toPlainText().toLower().split(" "), ui->spinPage->value(), perpage, m_postFiltering->toPlainText().toLower().split(" "));
 			log(tr("Chargement de la page <a href=\"%1\">%1</a>").arg(page->url().toString()));
 			connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(finishedLoading(Page*)));
+			m_pages.append(page);
+			m_layouts.append(new QGridLayout);
 			page->load();
 			QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
 			if (settings->value("useregexfortags", true).toBool())
@@ -217,9 +234,10 @@ void searchTab::load()
 				connect(page, SIGNAL(finishedLoadingTags(Page*)), this, SLOT(finishedLoadingTags(Page*)));
 				page->loadTags();
 			}
-			m_pages.append(page);
 		}
 	}
+	if (ui->checkMergeResults->isChecked())
+	{ ui->layoutResults->addLayout(m_layouts[0], 0, 0, 1, 1); }
 	m_page = 0;
 }
 
@@ -235,12 +253,12 @@ void searchTab::finishedLoading(Page* page)
 
 	QList<Image*> imgs = page->images();
 	m_images.append(imgs);
-
 	if (!ui->checkMergeResults->isChecked())
 	{
 		int pos = m_pages.indexOf(page);
-		int pl = ceil(sqrt(ui->spinImagesPerPage->value()));
-		float fl = (float)ui->spinImagesPerPage->value()/pl;
+		int perpage = page->site().value("Urls/Selected/Tags").contains("{limit}") ? ui->spinImagesPerPage->value() : imgs.size();
+		int pl = ceil(sqrt(perpage));
+		float fl = (float)perpage/pl;
 		QLabel *txt = new QLabel();
 			if (imgs.count() == 0)
 			{
@@ -295,13 +313,15 @@ void searchTab::finishedLoading(Page* page)
 				txt->setText(m_sites->key(page->site())+" - <a href=\""+page->url().toString()+"\">"+page->url().toString()+"</a> - "+tr("Aucun résultat")+(reasons.count() > 0 ? "<br/>"+tr("Raisons possibles : %1").arg(reasons.join(", ")) : ""));
 			}
 			else
-			{ txt->setText(m_sites->key(page->site())+" - <a href=\""+page->url().toString()+"\">"+page->url().toString()+"</a> - "+tr("Page %1 sur %2 (%3 sur %4)").arg(ui->spinPage->value()).arg(page->imagesCount() != 0 ? ceil(page->imagesCount()/((float)ui->spinImagesPerPage->value())) : 0).arg(imgs.count()).arg(page->imagesCount() != 0 ? page->imagesCount() : 0)); }
+			{ txt->setText(m_sites->key(page->site())+" - <a href=\""+page->url().toString()+"\">"+page->url().toString()+"</a> - "+tr("Page %1 sur %2 (%3 sur %4)").arg(ui->spinPage->value()).arg(page->imagesCount() != 0 ? ceil(page->imagesCount()/((float)perpage)) : 0).arg(imgs.count()).arg(page->imagesCount() != 0 ? page->imagesCount() : 0)); }
 			txt->setOpenExternalLinks(true);
-		ui->layoutResults->addWidget(txt, floor(pos/ui->spinColumns->value())*(fl+1), pl*(pos%ui->spinColumns->value()), 1, pl);
-		ui->layoutResults->setRowMinimumHeight((floor(pos/ui->spinColumns->value())*(fl+1)), 50);
+		int page_x = pos%ui->spinColumns->value(), page_y = (pos/ui->spinColumns->value())*2;
+		//ui->layoutResults->addWidget(txt, floor(pos/ui->spinColumns->value())*(fl+1), pl*(pos%ui->spinColumns->value()), 1, pl);
+		//ui->layoutResults->setRowMinimumHeight((floor(pos/ui->spinColumns->value())*(fl+1)), 50);
+		ui->layoutResults->addWidget(txt, page_y, page_x, 1, 1);
+		ui->layoutResults->setRowMinimumHeight(page_y, 50);
+		ui->layoutResults->addLayout(m_layouts[pos], page_y+1, page_x, 1, 1);
 	}
-	else
-	{ ui->layoutResults->setRowMinimumHeight(0, 50); }
 
 	QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
 	if (!settings->value("useregexfortags", true).toBool())
@@ -467,7 +487,7 @@ void searchTab::finishedLoadingPreview(Image *img)
 	QPixmap preview = img->previewImage();
 	if (preview.isNull())
 	{
-		log("<b>Warning:</b> one of the preview pictures (<a href='"+img->previewUrl().toString()+"'>"+img->previewUrl().toString()+"</a>) is empty.");
+		log(tr("<b>Attention :</b> %1").arg(tr("une des vignettes est vide (<a href=\"%1\">%1</a>).").arg(img->previewUrl().toString())));
 		return;
 	}
 
@@ -519,12 +539,14 @@ void searchTab::finishedLoadingPreview(Image *img)
 		l->setFlat(true);
 		connect(l, SIGNAL(appui(int)), this, SLOT(webZoom(int)));
 		connect(l, SIGNAL(rightClick(int)), _mainwindow, SLOT(batchChange(int)));
-	int pl = ceil(sqrt(ui->spinImagesPerPage->value()));
-	float fl = (float)ui->spinImagesPerPage->value()/pl;
-	int pp = ui->spinImagesPerPage->value();
+	int perpage = img->page()->site().value("Urls/Selected/Tags").contains("{limit}") ? ui->spinImagesPerPage->value() : img->page()->images().size();
+	int pl = ceil(sqrt(perpage));
+	float fl = (float)perpage/pl;
+	int pp = perpage;
 	if (ui->checkMergeResults->isChecked())
 	{ pp = m_images.count(); }
-	ui->layoutResults->addWidget(l, floor(float(position%pp)/fl)+(floor(page/ui->spinColumns->value())*(fl+1))+1, (page%ui->spinColumns->value())*pl+position%pl, 1, 1);
+	m_layouts[page]->addWidget(l, floor(float(position%pp)/pl), position%pl);
+	//ui->layoutResults->addWidget(l, floor(float(position%pp)/pl)+(floor(page/ui->spinColumns->value())*(fl+1))+1, (page%ui->spinColumns->value())*pl+position%pl, 1, 1);
 }
 
 void searchTab::webZoom(int id)
@@ -532,6 +554,7 @@ void searchTab::webZoom(int id)
 	QStringList detected;
 	QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
 	Image *image = m_images.at(id);
+
 	if (!settings->value("blacklistedtags").toString().isEmpty())
 	{
 		QStringList blacklistedtags(settings->value("blacklistedtags").toString().split(" "));
@@ -573,7 +596,10 @@ void searchTab::getPage()
 	}
 	QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
 	for (int i = 0; i < actuals.count(); i++)
-	{ emit batchAddGroup(QStringList() << m_search->toPlainText() << QString::number(ui->spinPage->value()) << QString::number(ui->spinImagesPerPage->value()) << QString::number(ui->spinImagesPerPage->value()) << settings->value("downloadblacklist").toString() << actuals.at(i) << settings->value("Save/filename").toString() << settings->value("Save/path").toString() << ""); }
+	{
+		int perpage = ui->spinImagesPerPage->value();
+		emit batchAddGroup(QStringList() << m_search->toPlainText() << QString::number(ui->spinPage->value()) << QString::number(perpage) << QString::number(perpage) << settings->value("downloadblacklist").toString() << actuals.at(i) << settings->value("Save/filename").toString() << settings->value("Save/path").toString() << "");
+	}
 }
 
 void searchTab::firstPage()

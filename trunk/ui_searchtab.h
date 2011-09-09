@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'searchtab.ui'
 **
-** Created: Mon 25. Jul 23:59:37 2011
-**      by: Qt User Interface Compiler version 4.6.2
+** Created: Wed 7. Sep 14:10:55 2011
+**      by: Qt User Interface Compiler version 4.6.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/

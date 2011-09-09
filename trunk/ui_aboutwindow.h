@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'aboutwindow.ui'
 **
-** Created: Tue 12. Jul 21:25:48 2011
-**      by: Qt User Interface Compiler version 4.6.2
+** Created: Tue 30. Aug 20:34:50 2011
+**      by: Qt User Interface Compiler version 4.6.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -70,6 +70,7 @@ public:
         label_5->setObjectName(QString::fromUtf8("label_5"));
         label_5->setTextFormat(Qt::RichText);
         label_5->setWordWrap(true);
+        label_5->setOpenExternalLinks(true);
 
         verticalLayout->addWidget(label_5);
 

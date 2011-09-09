@@ -36,7 +36,7 @@ optionsWindow::optionsWindow(mainWindow *parent) : QDialog(parent), m_parent(par
 	ui->comboTagsposition->setCurrentIndex(positions.indexOf(settings.value("tagsposition", "top").toString()));
 
 	QStringList types = QStringList() << "text" << "icon" << "both" << "hide";
-	ui->comboSources->setCurrentIndex(types.indexOf(settings.value("Sources/Types", "text").toString()));
+	ui->comboSources->setCurrentIndex(types.indexOf(settings.value("Sources/Types", "icon").toString()));
 	int i = settings.value("Sources/Letters", 3).toInt();
 	ui->comboSourcesLetters->setCurrentIndex((i < 0)+(i < -1));
 	ui->spinSourcesLetters->setValue(i < 0 ? 3 : i);
@@ -49,6 +49,7 @@ optionsWindow::optionsWindow(mainWindow *parent) : QDialog(parent), m_parent(par
 
 	settings.beginGroup("Save");
 		ui->checkDownloadOriginals->setChecked(settings.value("downloadoriginals", true).toBool());
+		ui->checkReplaceBlanks->setChecked(settings.value("replaceblanks", false).toBool());
 		ui->lineFolder->setText(settings.value("path").toString());
 		ui->lineFilename->setText(settings.value("filename").toString());
 		ui->lineSeparator->setText(settings.value("separator").toString());
@@ -354,6 +355,7 @@ void optionsWindow::save()
 
 	settings.beginGroup("Save");
 		settings.setValue("downloadoriginals", ui->checkDownloadOriginals->isChecked());
+		settings.setValue("replaceblanks", ui->checkReplaceBlanks->isChecked());
 		settings.setValue("separator", ui->lineSeparator->text());
 		settings.setValue("path", ui->lineFolder->text());
 		settings.setValue("filename", ui->lineFilename->text());

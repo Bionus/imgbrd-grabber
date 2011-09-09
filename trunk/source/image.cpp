@@ -5,8 +5,8 @@
 
 Image::Image(QMap<QString, QString> details, int timezonedecay, Page* parent)
 {
-	m_site = details.contains("site") ? details["site"] : m_url.section("/", 2, 2);
-	m_url = details.contains("file_url") ? details["file_url"] : "";
+	m_site = parent->website();
+	m_url = details.contains("file_url") ? (details["file_url"].startsWith("/") ? "http://"+m_site+details["file_url"] : details["file_url"]) : "";
 	m_md5 = details.contains("md5") ? details["md5"] : "";
 	m_author = details.contains("author") ? details["author"] : "";
 	m_status = details.contains("status") ? details["status"] : "";
@@ -46,9 +46,9 @@ Image::Image(QMap<QString, QString> details, int timezonedecay, Page* parent)
 	m_hasNote = details.contains("has_note") ? details["has_note"] == "true" : false;
 	m_hasComments = details.contains("has_comments") ? details["has_comments"] == "true" : false;
 	m_pageUrl = details.contains("page_url") ? QUrl(details["page_url"]) : QUrl();
-	m_fileUrl = details.contains("file_url") ? QUrl(details["file_url"]) : QUrl();
-	m_sampleUrl = details.contains("sample_url") ? QUrl(details["sample_url"]) : QUrl();
-	m_previewUrl = details.contains("preview_url") ? QUrl(details["preview_url"]) : QUrl();
+	m_fileUrl = details.contains("file_url") ? QUrl(details["file_url"].startsWith("/") ? "http://"+m_site+details["file_url"] : details["file_url"]) : QUrl();
+	m_sampleUrl = details.contains("sample_url") ? QUrl(details["sample_url"].startsWith("/") ? "http://"+m_site+details["sample_url"] : details["sample_url"]) : QUrl();
+	m_previewUrl = details.contains("preview_url") ? QUrl(details["preview_url"].startsWith("/") ? "http://"+m_site+details["preview_url"] : details["preview_url"]) : QUrl();
 	m_size = QSize(details.contains("width") ? details["width"].toInt() : 0, details.contains("height") ? details["height"].toInt() : 0);
 	m_parent = parent;
 
@@ -63,7 +63,9 @@ void Image::loadPreview()
 	m_loadPreviewExists = true;
 	QNetworkAccessManager *manager = new QNetworkAccessManager(this);
 	connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(parsePreview(QNetworkReply*)));
-	m_loadPreview = manager->get(QNetworkRequest(m_previewUrl));
+	QNetworkRequest r(m_previewUrl);
+		r.setRawHeader("Referer", m_previewUrl.toString().toAscii());
+	m_loadPreview = manager->get(r);
 }
 void Image::abortPreview()
 {
@@ -73,43 +75,45 @@ void Image::abortPreview()
 		{ m_loadPreview->abort(); }
 	}
 }
+void Image::parsePreview(QNetworkReply* r)
+{
+	m_imagePreview.loadFromData(r->readAll());
+	emit finishedLoadingPreview(this);
+}
+
 void Image::loadTags()
 {
 	m_loadPreviewExists = true;
 	QNetworkAccessManager *manager = new QNetworkAccessManager(this);
 	connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(parseTags(QNetworkReply*)));
-	m_loadTags = manager->get(QNetworkRequest(m_pageUrl));
+	QNetworkRequest r(m_pageUrl);
+		r.setRawHeader("Referer", m_pageUrl.toString().toAscii());
+	m_loadTags = manager->get(r);
 }
 void Image::abortTags()
 {
 	if (m_loadTags->isRunning())
 	{ m_loadTags->abort(); }
 }
-
-void Image::parsePreview(QNetworkReply* r)
-{
-	m_imagePreview.loadFromData(r->readAll());
-	emit finishedLoadingPreview(this);
-}
 void Image::parseTags(QNetworkReply* r)
 {
-	QString source = r->readAll();
-	QRegExp rx(m_parent->site().value("Regex/Tags"));
-	rx.setMinimal(true);
-
-	int pos = 0;
-	while ((pos = rx.indexIn(source, pos)) != -1)
+	if (m_parent->site().contains("Regex/Tags"))
 	{
-		pos += rx.matchedLength();
-		QString type = rx.cap(1), tag = rx.cap(2).replace(" ", "_").replace("&amp;", "&");
-		int count = rx.cap(3).toInt();
-		for (int i = 0; i < m_tags.count(); i++)
+		QString source = r->readAll();
+		QRegExp rx(m_parent->site().value("Regex/Tags"));
+		rx.setMinimal(true);
+		int pos = 0;
+		QList<Tag*> tgs;
+		while ((pos = rx.indexIn(source, pos)) != -1)
 		{
-			if (tag == m_tags.at(i)->text())
-			{ m_tags[i] = new Tag(tag, type, count); }
+			pos += rx.matchedLength();
+			QString type = rx.cap(1), tag = rx.cap(2).replace(" ", "_").replace("&amp;", "&");
+			int count = rx.cap(3).toInt();
+			tgs.append(new Tag(tag, type, count));
 		}
+		if (!tgs.isEmpty())
+		{ m_tags = tgs; }
 	}
-
 	emit finishedLoadingTags(this);
 }
 
@@ -210,7 +214,9 @@ QString Image::path(QString fn)
 	{
 		QString t = m_tags.at(i)->text();
 		details["allos"].append(t);
-		t.replace("_", " ");
+		t = t.replace("\\", "_").replace("%", "_").replace("/", "_").replace(":", "_").replace("|", "_").replace("*", "_").replace("?", "_").replace("\"", "_").replace("<", "_").replace(">", "_").replace("__", "_").replace("__", "_").replace("__", "_").trimmed();
+		if (!settings.value("replaceblanks", false).toBool())
+		{ t.replace("_", " "); }
 		details[m_tags.at(i)->type()+"s"].append(t);
 		details["alls"].append(t);
 	}
@@ -262,10 +268,11 @@ QString Image::path(QString fn)
 	QString pth = settings.value("path").toString().replace("\\", "/");
 	if (filename.left(1) == "/")	{ filename = filename.right(filename.length()-1);	}
 	if (pth.right(1) == "/")		{ pth = pth.left(pth.length()-1);					}
-	filename.replace("%all%", details["alls"].join(settings.value("separator").toString()).left(263-pth.length()-filename.length()));
-	filename.replace("%allo%", details["allos"].join(" "));
 	while (filename.indexOf("//") >= 0)
 	{ filename.replace("//", "/"); }
+	QString ls = details["alls"].join(settings.value("separator").toString());
+	filename.replace("%all%", ls.left(259-pth.length()-1-filename.length()));
+	filename.replace("%allo%", details["allos"].join(" "));
 	return QDir::toNativeSeparators(filename);
 }
 

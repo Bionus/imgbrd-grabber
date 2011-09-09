@@ -7,6 +7,7 @@
 #include "Image.h"
 #include "mainwindow.h"
 #include "detailswindow.h"
+#include "imagethread.h"
 
 
 
@@ -29,8 +30,8 @@ class zoomWindow : public QWidget
 	public slots:
 		void update(bool onlysize = false);
 		void replyFinished(Image*);
-		void replyFinishedZoom(QNetworkReply*);
-		void rR(qint64 a = -1, qint64 b = -1);
+		void replyFinishedZoom();
+		void display(QPixmap, int);
 		void saveNQuit();
 		QString saveImage();
 		QString saveImageAs();
@@ -46,6 +47,7 @@ class zoomWindow : public QWidget
 		void unfavorite();
 		void viewitlater();
 		void unviewitlater();
+		void downloadProgress(qint64, qint64);
 	
 	protected:
 		void closeEvent(QCloseEvent *);
@@ -79,6 +81,8 @@ class zoomWindow : public QWidget
 		const char* m_format;
 		bool m_replyExists, m_finished;
 		QStringList m_favorites, m_viewItLater;
+		QByteArray m_data;
+		int m_size;
 };
 
 #endif
