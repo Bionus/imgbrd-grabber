@@ -12,7 +12,7 @@
 #include "json.h"
 #include <QtXml>
 
-#define VERSION	"2.2.2"
+#define VERSION	"2.3.0"
 #define DONE()	logUpdate(tr(" Fait"))
 
 extern QMap<QDateTime,QString> _log;
