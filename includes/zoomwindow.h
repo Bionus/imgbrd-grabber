@@ -4,7 +4,7 @@
 #include <QtGui>
 #include <QtNetwork>
 #include "QAffiche.h"
-#include "Image.h"
+#include "image.h"
 #include "mainwindow.h"
 #include "detailswindow.h"
 #include "imagethread.h"
