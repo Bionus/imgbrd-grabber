@@ -13,6 +13,7 @@ _*Note that shimmie-based boorus will give random results when downloading multi
 
 = Add a site type =
 
+*NOT UP TO DATE! Instead, copy the current model.xml files from "%USERPROFILE%/Grabber/sites"*
 If your site is not based on danbooru/gelbooru/shimmie, it gets more complicated. *You must have a minimal knowledge of XML and regex to make your own one.* Here is an example of file you'll have to create (it is the danbooru's file):
 {{{
 <?xml version="1.0" encoding="utf-8" ?>
