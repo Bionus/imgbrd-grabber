@@ -88,6 +88,7 @@ zoomWindow::zoomWindow(Image *image, QStringMap site) : ui(new Ui::zoomWindow), 
 
 	connect(image, SIGNAL(finishedLoadingTags(Image*)), this, SLOT(replyFinished(Image*)));
 	image->loadTags();
+	activateWindow();
 }
 
 /**

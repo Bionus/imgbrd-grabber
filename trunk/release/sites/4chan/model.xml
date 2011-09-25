@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Site>
+	<Name>4chan</Name>
+	<Urls>
+		<Html>
+			<Tags>/{tags}/</Tags>
+			<Post>/{tags}/res/{id}</Post>
+		</Html>
+	</Urls>
+	<Regex>
+		<Image>&lt;span class=&quot;filesize&quot;&gt;File : &lt;a href=&quot;([^&quot;]+)&quot; target=&quot;_blank&quot;&gt;(?:[^&lt;]+)&lt;/a&gt;-\(([^,]+), ([^x]+)x([^\)]+)\)&lt;/span&gt;&lt;br&gt;&lt;a href=&quot;(?:[^&quot;]+)&quot; target=_blank&gt;&lt;img src=([^ ]+) (?:[^&gt;]+)&gt;&lt;/a&gt;&lt;a name=&quot;0&quot;&gt;&lt;/a&gt;\s*&lt;input type=checkbox name=&quot;([^&quot;]+)&quot; value=delete&gt;&lt;span class=&quot;filetitle&quot;&gt;&lt;/span&gt;\s*&lt;span class=&quot;postername&quot;&gt;([^&lt;]+)&lt;/span&gt; ([^ ]+) &lt;span id=&quot;(?:[^&quot;]+)&quot;&gt;&lt;a href=&quot;res/(?:[^#]+)#(?:[^&quot;]+)&quot; class=&quot;quotejs&quot;&gt;No.&lt;/a&gt;&lt;a href=&quot;res/(?:[^#]+)#(?:[^&quot;]+)&quot; class=&quot;quotejs&quot;&gt;(?:[^&lt;]+)&lt;/a&gt;  &amp;nbsp; \[&lt;a href=&quot;res/(?:[^&quot;]+)&quot;&gt;Reply&lt;/a&gt;\]&lt;/span&gt;</Image>
+		<Order>file_url|filesize|width|height|preview_url|id|user|created_at</Order>
+	</Regex>
+	<LastPage>15</LastPage>
+	<DefaultTag>a</DefaultTag>
+	<FirstPage>1</FirstPage>
+	<SubGalleries>true</SubGalleries>
+</Site>
