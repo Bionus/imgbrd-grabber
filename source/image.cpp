@@ -242,37 +242,43 @@ QString Image::path(QString fn)
 	else
 	{ copyrights = details["copyrights"]; }
 	QStringList search = m_parent->search();
-	QString filename = fn
-	.replace("%artist%", (details["artists"].isEmpty() ? settings.value("artist_empty").toString() : (settings.value("artist_useall").toBool() || details["artists"].count() == 1 ? details["artists"].join(settings.value("artist_sep").toString()) : settings.value("artist_value").toString())))
-	.replace("%general%", details["generals"].join(settings.value("separator").toString()))
-	.replace("%copyright%", (copyrights.isEmpty() ? settings.value("copyright_empty").toString() : (settings.value("copyright_useall").toBool() || copyrights.count() == 1 ? copyrights.join(settings.value("copyright_sep").toString()) : settings.value("copyright_value").toString())))
-	.replace("%character%", (details["characters"].isEmpty() ? settings.value("character_empty").toString() : (settings.value("character_useall").toBool() || details["characters"].count() == 1 ? details["characters"].join(settings.value("character_sep").toString()) : settings.value("character_value").toString())))
-	.replace("%model%", (details["models"].isEmpty() ? settings.value("model_empty").toString() : (settings.value("model_useall").toBool() || details["models"].count() == 1 ? details["models"].join(settings.value("model_sep").toString()) : settings.value("model_value").toString())))
-	.replace("%model|artist%", (!details["models"].isEmpty() ? (settings.value("model_useall").toBool() || details["models"].count() == 1 ? details["models"].join(settings.value("model_sep").toString()) : settings.value("model_value").toString()) : (details["artists"].isEmpty() ? settings.value("artist_empty").toString() : (settings.value("artist_useall").toBool() || details["artists"].count() == 1 ? details["artists"].join(settings.value("artist_sep").toString()) : settings.value("artist_value").toString()))))
-	.replace("%filename%", m_url.section('/', -1).section('.', 0, -2))
-	.replace("%rating%", m_rating)
-	.replace("%md5%", m_md5)
-	.replace("%id%", QString::number(m_id))
-	.replace("%website%", m_site)
-	.replace("%height%", QString::number(m_size.height()))
-	.replace("%width%", QString::number(m_size.width()))
-	.replace("%ext%", m_url.section('.', -1))
-	.replace("%search%", search.join(settings.value("separator").toString()))
-	.replace("\\", "/");
+	QString filename = fn, pth = settings.value("path").toString().replace("\\", "/");
+	filename.replace("\\", "/");
+	if (filename.left(1) == "/")	{ filename = filename.right(filename.length()-1);	}
+	if (pth.right(1) == "/")		{ pth = pth.left(pth.length()-1);					}
 	int i = 1;
 	while (filename.contains("%search_"+QString::number(i)+"%"))
 	{
-		filename.replace("%search_"+QString::number(i)+"%", (search.size() >= i ? search[i-1] : ""));
+		filename.replace("%search_"+QString::number(i)+"%", (search.size() >= i ? search[i-1] : "").left(259-pth.length()-1-filename.length()));
 		i++;
 	}
-	QString pth = settings.value("path").toString().replace("\\", "/");
-	if (filename.left(1) == "/")	{ filename = filename.right(filename.length()-1);	}
-	if (pth.right(1) == "/")		{ pth = pth.left(pth.length()-1);					}
+	QStringList rem = (filename.contains("%artist%") ? details["artists"] : QStringList()) +
+		(filename.contains("%copyright%") ? copyrights : QStringList()) +
+		(filename.contains("%character%") ? details["characters"] : QStringList()) +
+		(filename.contains("%model%") ? details["models"] : QStringList()) +
+		(filename.contains("%general%") ? details["generals"] : QStringList());
+	filename.replace("%artist%", (details["artists"].isEmpty() ? settings.value("artist_empty").toString() : (settings.value("artist_useall").toBool() || details["artists"].count() == 1 ? details["artists"].join(settings.value("artist_sep").toString()) : settings.value("artist_value").toString())).left(259-pth.length()-1-filename.length()));
+	filename.replace("%copyright%", (copyrights.isEmpty() ? settings.value("copyright_empty").toString() : (settings.value("copyright_useall").toBool() || copyrights.count() == 1 ? copyrights.join(settings.value("copyright_sep").toString()) : settings.value("copyright_value").toString())).left(259-pth.length()-1-filename.length()));
+	filename.replace("%character%", (details["characters"].isEmpty() ? settings.value("character_empty").toString() : (settings.value("character_useall").toBool() || details["characters"].count() == 1 ? details["characters"].join(settings.value("character_sep").toString()) : settings.value("character_value").toString())).left(259-pth.length()-1-filename.length()));
+	filename.replace("%model%", (details["models"].isEmpty() ? settings.value("model_empty").toString() : (settings.value("model_useall").toBool() || details["models"].count() == 1 ? details["models"].join(settings.value("model_sep").toString()) : settings.value("model_value").toString())).left(259-pth.length()-1-filename.length()));
+	filename.replace("%model|artist%", (!details["models"].isEmpty() ? (settings.value("model_useall").toBool() || details["models"].count() == 1 ? details["models"].join(settings.value("model_sep").toString()) : settings.value("model_value").toString()) : (details["artists"].isEmpty() ? settings.value("artist_empty").toString() : (settings.value("artist_useall").toBool() || details["artists"].count() == 1 ? details["artists"].join(settings.value("artist_sep").toString()) : settings.value("artist_value").toString()))).left(259-pth.length()-1-filename.length()));
+	filename.replace("%search%", search.join(settings.value("separator").toString()).left(259-pth.length()-1-filename.length()));
+	filename.replace("%filename%", m_url.section('/', -1).section('.', 0, -2).left(259-pth.length()-1-filename.length()));
+	filename.replace("%rating%", m_rating.left(259-pth.length()-1-filename.length()));
+	filename.replace("%md5%", m_md5.left(259-pth.length()-1-filename.length()));
+	filename.replace("%id%", QString::number(m_id).left(259-pth.length()-1-filename.length()));
+	filename.replace("%website%", m_site.left(259-pth.length()-1-filename.length()));
+	filename.replace("%height%", QString::number(m_size.height()).left(259-pth.length()-1-filename.length()));
+	filename.replace("%width%", QString::number(m_size.width()).left(259-pth.length()-1-filename.length()));
+	filename.replace("%ext%", m_url.section('.', -1).left(259-pth.length()-1-filename.length()));
+	filename.replace("%general%", details["generals"].join(settings.value("separator").toString()).left(259-pth.length()-1-filename.length()));
+	QStringList l = details["alls"];
+	for (int i = 0; i < rem.size(); i++)
+	{ l.removeAll(rem.at(i)); }
+	filename.replace("%all%", l.join(settings.value("separator").toString()).left(259-pth.length()-1-filename.length()));
+	filename.replace("%allo%", details["allos"].join(" "));
 	while (filename.indexOf("//") >= 0)
 	{ filename.replace("//", "/"); }
-	QString ls = details["alls"].join(settings.value("separator").toString());
-	filename.replace("%all%", ls.left(259-pth.length()-1-filename.length()));
-	filename.replace("%allo%", details["allos"].join(" "));
 	return QDir::toNativeSeparators(filename);
 }
 
