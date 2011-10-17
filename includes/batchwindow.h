@@ -35,6 +35,7 @@ class batchWindow : public QDialog
 		void errorImage(QString);
 		void on_buttonDetails_clicked();
 		void closeEvent(QCloseEvent *);
+		void copyToClipboard();
 
 	signals:
 		void closed();

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>646</width>
-    <height>2354</height>
+    <height>2740</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -78,6 +78,11 @@
         </property>
         <item>
          <property name="text">
+          <string>Nom de fichier</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
           <string>Tags artiste</string>
          </property>
         </item>
@@ -89,6 +94,11 @@
         <item>
          <property name="text">
           <string>Tags personnage</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Symbole personnalisé</string>
          </property>
         </item>
        </item>
@@ -110,6 +120,11 @@
        <item>
         <property name="text">
          <string>Connexion</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Proxy</string>
         </property>
        </item>
        <item>
@@ -137,31 +152,45 @@
           <item row="0" column="1">
            <widget class="QComboBox" name="comboLanguages"/>
           </item>
-          <item row="2" column="0">
+          <item row="3" column="0">
            <widget class="QLabel" name="label_5">
             <property name="text">
              <string>Liste noire</string>
             </property>
            </widget>
           </item>
-          <item row="2" column="1">
+          <item row="3" column="1">
            <widget class="QLineEdit" name="lineBlacklist"/>
           </item>
-          <item row="4" column="0" colspan="2">
+          <item row="6" column="0">
+           <widget class="QLabel" name="label_48">
+            <property name="text">
+             <string>Liste blanche</string>
+            </property>
+           </widget>
+          </item>
+          <item row="9" column="0">
+           <widget class="QLabel" name="label_49">
+            <property name="text">
+             <string>Tags ignorés</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0" colspan="2">
            <widget class="QLabel" name="label_2">
             <property name="text">
              <string>&lt;i&gt;Séparer les tags par des espaces.&lt;/i&gt;</string>
             </property>
            </widget>
           </item>
-          <item row="5" column="0" colspan="2">
+          <item row="4" column="0" colspan="2">
            <widget class="QCheckBox" name="checkHideBlacklisted">
             <property name="text">
              <string>Ignorer les images contenant un tag de la liste noire</string>
             </property>
            </widget>
           </item>
-          <item row="6" column="0" colspan="2">
+          <item row="5" column="0" colspan="2">
            <widget class="QLabel" name="label_6">
             <property name="text">
              <string>&lt;i&gt;Les images contenant un tag de la liste noire ne seront tout simplement pas affichées dans la liste de résultats si cette case est cochée. Sinon, une confirmation sera demandée avant l'affichage d'une de ces images.&lt;/i&gt;</string>
@@ -171,17 +200,72 @@
             </property>
            </widget>
           </item>
-          <item row="7" column="0" colspan="2">
-           <widget class="QCheckBox" name="checkDownloadBlacklisted">
+          <item row="6" column="1">
+           <widget class="QLineEdit" name="lineWhitelist"/>
+          </item>
+          <item row="9" column="1">
+           <widget class="QLineEdit" name="lineIgnored"/>
+          </item>
+          <item row="7" column="1">
+           <widget class="QComboBox" name="comboWhitelist">
+            <property name="currentIndex">
+             <number>1</number>
+            </property>
+            <item>
+             <property name="text">
+              <string>Ne pas télécharger automatiquement</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Au chargement de l'image</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Au chargement de la page</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item row="7" column="0">
+           <widget class="QLabel" name="label_50">
             <property name="text">
-             <string>Télécharger les images de la liste noire</string>
+             <string>Télécharger</string>
             </property>
            </widget>
           </item>
           <item row="8" column="0" colspan="2">
+           <widget class="QLabel" name="label_51">
+            <property name="text">
+             <string>&lt;i&gt;Les images contenant un tag de la liste blanche seront téléchargées automatiquement en fonction de l'option ci-dessus.&lt;/i&gt;</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="10" column="0" colspan="2">
+           <widget class="QLabel" name="label_52">
+            <property name="text">
+             <string>&lt;i&gt;Ces tags ne seront pas pris en compte lors de la sauvegarde de l'image.&lt;/i&gt;</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="12" column="0" colspan="2">
            <widget class="QCheckBox" name="checkLoadFirstAtStart">
             <property name="text">
              <string>Charger la première page au démarrage</string>
+            </property>
+           </widget>
+          </item>
+          <item row="11" column="0" colspan="2">
+           <widget class="QCheckBox" name="checkDownloadBlacklisted">
+            <property name="text">
+             <string>Télécharger les images de la liste noire</string>
             </property>
            </widget>
           </item>
@@ -360,6 +444,9 @@
        <item>
         <widget class="QWidget" name="widget_3" native="true">
          <layout class="QFormLayout" name="formLayout_4">
+          <property name="fieldGrowthPolicy">
+           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+          </property>
           <item row="0" column="0" colspan="2">
            <widget class="QCheckBox" name="checkDownloadOriginals">
             <property name="text">
@@ -370,34 +457,17 @@
             </property>
            </widget>
           </item>
+          <item row="1" column="0" colspan="2">
+           <widget class="QCheckBox" name="checkAutodownload">
+            <property name="text">
+             <string>Télécharger les images automatiquement</string>
+            </property>
+           </widget>
+          </item>
           <item row="2" column="0">
            <widget class="QLabel" name="label_7">
             <property name="text">
              <string>Dossier</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="0">
-           <widget class="QLabel" name="label_14">
-            <property name="text">
-             <string>Séparateur de tags</string>
-            </property>
-           </widget>
-          </item>
-          <item row="8" column="0" colspan="2">
-           <widget class="QLabel" name="label_15">
-            <property name="text">
-             <string>Symboles disponibles : &lt;i&gt;%artist%&lt;/i&gt;, &lt;i&gt;%general%&lt;/i&gt;, &lt;i&gt;%copyright%&lt;/i&gt;, &lt;i&gt;%character%&lt;/i&gt;, &lt;i&gt;%all%&lt;/i&gt;, &lt;i&gt;%filename%&lt;/i&gt;, &lt;i&gt;%ext%&lt;/i&gt;, &lt;i&gt;%rating%&lt;/i&gt;, &lt;i&gt;%website%&lt;/i&gt;, &lt;i&gt;%md5%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%artist%&lt;/i&gt; : tags de nom d'artiste&lt;br/&gt;&lt;i&gt;%general%&lt;/i&gt; : tags d'image génériques&lt;br/&gt;&lt;i&gt;%copyright%&lt;/i&gt; : tags de copyright, en général le nom de l'anime/manga&lt;br/&gt;&lt;i&gt;%character%&lt;/i&gt; : tags indiquant quels personnages sont présents sur l'image&lt;br/&gt;&lt;i&gt;%all%&lt;/i&gt; : tous les tags&lt;br/&gt;&lt;i&gt;%filename%&lt;/i&gt; : nom du fichier sur le serveur, en général une chaîne alphanumérique&lt;br/&gt;&lt;i&gt;%ext%&lt;/i&gt; : extension de l'image&lt;br/&gt;&lt;i&gt;%rating%&lt;/i&gt; : Questionable, Safe ou Explicit&lt;br/&gt;&lt;i&gt;%website%&lt;/i&gt; : url du site de l'image&lt;br/&gt;&lt;i&gt;%md5%&lt;/i&gt; : code unique de l'image, composé de 32 caractères alphanumériques&lt;br/&gt;&lt;i&gt;%id%&lt;/i&gt; : identifiant de l'image sur un site donné&lt;br/&gt;&lt;i&gt;%search%&lt;/i&gt; : tags de la recherche&lt;br/&gt;&lt;i&gt;%search_n%&lt;/i&gt; : n-ième tag de la recherche</string>
-            </property>
-            <property name="wordWrap">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="1">
-           <widget class="QLineEdit" name="lineSeparator">
-            <property name="text">
-             <string/>
             </property>
            </widget>
           </item>
@@ -415,30 +485,17 @@
             </item>
            </layout>
           </item>
-          <item row="6" column="0">
-           <widget class="QLabel" name="label_8">
+          <item row="4" column="0">
+           <widget class="QLabel" name="label_14">
             <property name="text">
-             <string>Noms de fichiers</string>
+             <string>Séparateur de tags</string>
             </property>
            </widget>
           </item>
-          <item row="6" column="1">
-           <widget class="QLineEdit" name="lineFilename"/>
-          </item>
-          <item row="7" column="0" colspan="2">
-           <widget class="QLabel" name="filenameValidator">
+          <item row="4" column="1">
+           <widget class="QLineEdit" name="lineSeparator">
             <property name="text">
              <string/>
-            </property>
-            <property name="wordWrap">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0" colspan="2">
-           <widget class="QCheckBox" name="checkAutodownload">
-            <property name="text">
-             <string>Télécharger les images automatiquement</string>
             </property>
            </widget>
           </item>
@@ -446,6 +503,66 @@
            <widget class="QCheckBox" name="checkReplaceBlanks">
             <property name="text">
              <string>Remplacer les espaces par des underscores</string>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="0" colspan="2">
+           <widget class="QLabel" name="label_55">
+            <property name="text">
+             <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Si le nom de fichier est plus grand que ce nombre, il sera tronqué. Laissez à 0 pour laisser la limite par défaut.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="0">
+           <widget class="QLabel" name="label_54">
+            <property name="text">
+             <string>Longeur limite</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="1">
+           <widget class="QSpinBox" name="spinLimit"/>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QWidget" name="widget_13" native="true">
+         <layout class="QFormLayout" name="formLayout_15">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_8">
+            <property name="text">
+             <string>Noms de fichiers</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="lineFilename"/>
+          </item>
+          <item row="2" column="0" colspan="2">
+           <widget class="QLabel" name="label_15">
+            <property name="text">
+             <string>Symboles disponibles : &lt;i&gt;%artist%&lt;/i&gt;, &lt;i&gt;%general%&lt;/i&gt;, &lt;i&gt;%copyright%&lt;/i&gt;, &lt;i&gt;%character%&lt;/i&gt;, &lt;i&gt;%all%&lt;/i&gt;, &lt;i&gt;%filename%&lt;/i&gt;, &lt;i&gt;%ext%&lt;/i&gt;, &lt;i&gt;%rating%&lt;/i&gt;, &lt;i&gt;%website%&lt;/i&gt;, &lt;i&gt;%md5%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%artist%&lt;/i&gt; : tags de nom d'artiste&lt;br/&gt;&lt;i&gt;%general%&lt;/i&gt; : tags d'image génériques&lt;br/&gt;&lt;i&gt;%copyright%&lt;/i&gt; : tags de copyright, en général le nom de l'anime/manga&lt;br/&gt;&lt;i&gt;%character%&lt;/i&gt; : tags indiquant quels personnages sont présents sur l'image&lt;br/&gt;&lt;i&gt;%all%&lt;/i&gt; : tous les tags&lt;br/&gt;&lt;i&gt;%filename%&lt;/i&gt; : nom du fichier sur le serveur, en général une chaîne alphanumérique&lt;br/&gt;&lt;i&gt;%ext%&lt;/i&gt; : extension de l'image&lt;br/&gt;&lt;i&gt;%rating%&lt;/i&gt; : Questionable, Safe ou Explicit&lt;br/&gt;&lt;i&gt;%website%&lt;/i&gt; : url du site de l'image&lt;br/&gt;&lt;i&gt;%md5%&lt;/i&gt; : code unique de l'image, composé de 32 caractères alphanumériques&lt;br/&gt;&lt;i&gt;%id%&lt;/i&gt; : identifiant de l'image sur un site donné&lt;br/&gt;&lt;i&gt;%search%&lt;/i&gt; : tags de la recherche&lt;br/&gt;&lt;i&gt;%search_n%&lt;/i&gt; : n-ième tag de la recherche</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0" colspan="2">
+           <widget class="QLabel" name="filenameValidator">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -626,6 +743,25 @@
              <string>Garder tous</string>
             </property>
            </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QWidget" name="widget_12" native="true">
+         <layout class="QFormLayout" name="formLayout_14">
+          <item row="0" column="0" colspan="2">
+           <widget class="QLabel" name="label_53">
+            <property name="text">
+             <string>&lt;i&gt;Le symbole %custom% vous permet de personnaliser un des symboles. Les tags de cette liste trouvés dans l'image seront placés dans %custom%.&lt;/i&gt;</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0" colspan="2">
+           <widget class="QPlainTextEdit" name="editCustom"/>
           </item>
          </layout>
         </widget>
@@ -1096,6 +1232,52 @@ p, li { white-space: pre-wrap; }
         </widget>
        </item>
        <item>
+        <widget class="QWidget" name="widget_14" native="true">
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <item>
+           <widget class="QCheckBox" name="checkProxyUse">
+            <property name="text">
+             <string>Utiliser un proxy</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QWidget" name="widgetProxy" native="true">
+            <layout class="QFormLayout" name="formLayout_16">
+             <property name="margin">
+              <number>0</number>
+             </property>
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_56">
+               <property name="text">
+                <string>Serveur</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="label_57">
+               <property name="text">
+                <string>Port</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QSpinBox" name="spinProxyPort">
+               <property name="maximum">
+                <number>9999</number>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QLineEdit" name="lineProxyHostName"/>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
         <widget class="QWidget" name="widget_7" native="true">
          <layout class="QFormLayout" name="formLayout_8">
           <item row="0" column="0" colspan="2">
@@ -1201,8 +1383,8 @@ p, li { white-space: pre-wrap; }
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>293</x>
-     <y>2187</y>
+     <x>302</x>
+     <y>2730</y>
     </hint>
     <hint type="destinationlabel">
      <x>157</x>
@@ -1217,8 +1399,8 @@ p, li { white-space: pre-wrap; }
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>361</x>
-     <y>2187</y>
+     <x>370</x>
+     <y>2730</y>
     </hint>
     <hint type="destinationlabel">
      <x>286</x>
@@ -1249,12 +1431,12 @@ p, li { white-space: pre-wrap; }
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>223</x>
-     <y>1172</y>
+     <x>409</x>
+     <y>1367</y>
     </hint>
     <hint type="destinationlabel">
-     <x>318</x>
-     <y>1203</y>
+     <x>618</x>
+     <y>1393</y>
     </hint>
    </hints>
   </connection>
@@ -1265,12 +1447,12 @@ p, li { white-space: pre-wrap; }
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>207</x>
-     <y>1173</y>
+     <x>393</x>
+     <y>1367</y>
     </hint>
     <hint type="destinationlabel">
-     <x>210</x>
-     <y>1197</y>
+     <x>293</x>
+     <y>1393</y>
     </hint>
    </hints>
   </connection>
@@ -1281,12 +1463,12 @@ p, li { white-space: pre-wrap; }
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>232</x>
-     <y>1050</y>
+     <x>418</x>
+     <y>1248</y>
     </hint>
     <hint type="destinationlabel">
-     <x>228</x>
-     <y>1072</y>
+     <x>293</x>
+     <y>1274</y>
     </hint>
    </hints>
   </connection>
@@ -1297,12 +1479,12 @@ p, li { white-space: pre-wrap; }
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>280</x>
-     <y>1050</y>
+     <x>466</x>
+     <y>1248</y>
     </hint>
     <hint type="destinationlabel">
-     <x>347</x>
-     <y>1085</y>
+     <x>625</x>
+     <y>1274</y>
     </hint>
    </hints>
   </connection>
@@ -1313,12 +1495,12 @@ p, li { white-space: pre-wrap; }
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>235</x>
-     <y>913</y>
+     <x>421</x>
+     <y>1100</y>
     </hint>
     <hint type="destinationlabel">
-     <x>237</x>
-     <y>935</y>
+     <x>293</x>
+     <y>1126</y>
     </hint>
    </hints>
   </connection>
@@ -1329,12 +1511,28 @@ p, li { white-space: pre-wrap; }
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>275</x>
-     <y>911</y>
+     <x>461</x>
+     <y>1100</y>
     </hint>
     <hint type="destinationlabel">
-     <x>348</x>
-     <y>941</y>
+     <x>625</x>
+     <y>1126</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkProxyUse</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>widgetProxy</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>236</x>
+     <y>2354</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>229</x>
+     <y>2373</y>
     </hint>
    </hints>
   </connection>

@@ -209,10 +209,13 @@ QString Image::path(QString fn)
 	QStringList copyrights;
 	QString cop;
 	bool found;
+	QStringList custom = QStringList(), scustom = settings.value("custom").toString().split(' ');
 	QMap<QString,QStringList> details;
 	for (int i = 0; i < m_tags.size(); i++)
 	{
 		QString t = m_tags.at(i)->text();
+		if (scustom.contains(t))
+		{ custom.append(t); }
 		details["allos"].append(t);
 		t = t.replace("\\", "_").replace("%", "_").replace("/", "_").replace(":", "_").replace("|", "_").replace("*", "_").replace("?", "_").replace("\"", "_").replace("<", "_").replace(">", "_").replace("__", "_").replace("__", "_").replace("__", "_").trimmed();
 		if (!settings.value("replaceblanks", false).toBool())
@@ -252,6 +255,7 @@ QString Image::path(QString fn)
 		filename.replace("%search_"+QString::number(i)+"%", (search.size() >= i ? search[i-1] : "").left(259-pth.length()-1-filename.length()));
 		i++;
 	}
+	QString ext = m_url.section('.', -1).left(259-pth.length()-1-filename.length());
 	QStringList rem = (filename.contains("%artist%") ? details["artists"] : QStringList()) +
 		(filename.contains("%copyright%") ? copyrights : QStringList()) +
 		(filename.contains("%character%") ? details["characters"] : QStringList()) +
@@ -270,8 +274,9 @@ QString Image::path(QString fn)
 	filename.replace("%website%", m_site.left(259-pth.length()-1-filename.length()));
 	filename.replace("%height%", QString::number(m_size.height()).left(259-pth.length()-1-filename.length()));
 	filename.replace("%width%", QString::number(m_size.width()).left(259-pth.length()-1-filename.length()));
-	filename.replace("%ext%", m_url.section('.', -1).left(259-pth.length()-1-filename.length()));
+	filename.replace("%ext%", ext);
 	filename.replace("%general%", details["generals"].join(settings.value("separator").toString()).left(259-pth.length()-1-filename.length()));
+	filename.replace("%custom%", custom.join(settings.value("separator").toString()).left(259-pth.length()-1-filename.length()));
 	QStringList l = details["alls"];
 	for (int i = 0; i < rem.size(); i++)
 	{ l.removeAll(rem.at(i)); }
@@ -279,6 +284,8 @@ QString Image::path(QString fn)
 	filename.replace("%allo%", details["allos"].join(" "));
 	while (filename.indexOf("//") >= 0)
 	{ filename.replace("//", "/"); }
+	if (filename.length() > settings.value("limit").toInt() && settings.value("limit").toInt() > 0)
+	{ filename = filename.left(filename.length()-ext.length()-1).left(settings.value("limit").toInt()-ext.length()-1) + filename.right(ext.length()+1); }
 	return QDir::toNativeSeparators(filename);
 }
 

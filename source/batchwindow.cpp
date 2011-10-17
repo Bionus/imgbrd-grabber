@@ -6,7 +6,7 @@
 batchWindow::batchWindow(QWidget *parent) : QDialog(parent), ui(new Ui::batchWindow), m_items(0)
 {
 	ui->setupUi(this);
-	ui->tableWidget->hide();
+	ui->details->hide();
 	ui->tableWidget->resizeColumnToContents(0);
 	resize(QSize(300, 0));
 	m_currentSize = QSize(300, 225);
@@ -33,6 +33,17 @@ void batchWindow::clear()
 	ui->progressBar->setValue(0);
 	ui->progressBar->setMaximum(100);
 	ui->labelImages->setText("0/0");
+}
+void batchWindow::copyToClipboard()
+{
+	QList<QTableWidgetItem *> selected = ui->tableWidget->selectedItems();
+	QStringList urls = QStringList();
+	for (int i = 0; i < selected.size(); i++)
+	{
+		if (selected.at(i)->icon().isNull())
+		{ urls.append(selected.at(i)->text()); }
+	}
+	qApp->clipboard()->setText(urls.join("\n"));
 }
 
 void batchWindow::addImage(QString url)
@@ -72,14 +83,14 @@ void batchWindow::errorImage(QString url)
 
 void batchWindow::on_buttonDetails_clicked()
 {
-	if (ui->tableWidget->isHidden())
+	if (ui->details->isHidden())
 	{
-		ui->tableWidget->show();
+		ui->details->show();
 		resize(m_currentSize);
 	}
 	else
 	{
-		ui->tableWidget->hide();
+		ui->details->hide();
 		m_currentSize = size();
 		resize(QSize(300, 0));
 	}
