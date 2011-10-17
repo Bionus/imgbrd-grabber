@@ -30,7 +30,18 @@ zoomWindow::zoomWindow(Image *image, QStringMap site) : ui(new Ui::zoomWindow), 
 		}
 		settings.endGroup();
 
-	if (settings.value("autodownload", false).toBool())
+	bool whitelisted = false;
+	if (!settings.value("whitelistedtags").toString().isEmpty())
+	{
+		QStringList whitelist = settings.value("whitelistedtags").toString().split(" ");
+		QList<Tag*> tags = image->tags();
+		for (int i = 0; i < tags.size(); i++)
+		{
+			if (whitelist.contains(tags.at(i)->text()))
+			{ whitelisted = true; break; }
+		}
+	}
+	if (settings.value("autodownload", false).toBool() || (whitelisted && settings.value("whitelist_download", "image").toString() == "image"))
 	{ saveImage(); }
 
 	QAffiche *labelImage = new QAffiche;
@@ -345,7 +356,6 @@ void zoomWindow::replyFinishedZoom()
 		}
 		else
 		{
-			qDebug() << "startfinal";
 			ImageThread *th = new ImageThread(m_data);
 			connect(th, SIGNAL(finished(QPixmap, int)), this, SLOT(display(QPixmap, int)));
 			th->start();

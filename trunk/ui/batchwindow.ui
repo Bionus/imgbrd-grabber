@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>300</width>
-    <height>164</height>
+    <height>287</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -75,50 +75,72 @@
     </widget>
    </item>
    <item row="2" column="0" colspan="3">
-    <widget class="QTableWidget" name="tableWidget">
-     <property name="autoScroll">
-      <bool>false</bool>
+    <widget class="QWidget" name="details" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
      </property>
-     <property name="editTriggers">
-      <set>QAbstractItemView::NoEditTriggers</set>
-     </property>
-     <property name="showDropIndicator" stdset="0">
-      <bool>false</bool>
-     </property>
-     <property name="dragDropOverwriteMode">
-      <bool>false</bool>
-     </property>
-     <property name="verticalScrollMode">
-      <enum>QAbstractItemView::ScrollPerPixel</enum>
-     </property>
-     <property name="horizontalScrollMode">
-      <enum>QAbstractItemView::ScrollPerPixel</enum>
-     </property>
-     <property name="showGrid">
-      <bool>true</bool>
-     </property>
-     <attribute name="horizontalHeaderHighlightSections">
-      <bool>false</bool>
-     </attribute>
-     <attribute name="horizontalHeaderStretchLastSection">
-      <bool>true</bool>
-     </attribute>
-     <attribute name="verticalHeaderVisible">
-      <bool>false</bool>
-     </attribute>
-     <attribute name="verticalHeaderDefaultSectionSize">
-      <number>20</number>
-     </attribute>
-     <column>
-      <property name="text">
-       <string/>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <property name="margin">
+       <number>0</number>
       </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Url</string>
-      </property>
-     </column>
+      <item>
+       <widget class="QTableWidget" name="tableWidget">
+        <property name="autoScroll">
+         <bool>false</bool>
+        </property>
+        <property name="editTriggers">
+         <set>QAbstractItemView::NoEditTriggers</set>
+        </property>
+        <property name="showDropIndicator" stdset="0">
+         <bool>false</bool>
+        </property>
+        <property name="dragDropOverwriteMode">
+         <bool>false</bool>
+        </property>
+        <property name="verticalScrollMode">
+         <enum>QAbstractItemView::ScrollPerPixel</enum>
+        </property>
+        <property name="horizontalScrollMode">
+         <enum>QAbstractItemView::ScrollPerPixel</enum>
+        </property>
+        <property name="showGrid">
+         <bool>true</bool>
+        </property>
+        <attribute name="horizontalHeaderHighlightSections">
+         <bool>false</bool>
+        </attribute>
+        <attribute name="horizontalHeaderStretchLastSection">
+         <bool>true</bool>
+        </attribute>
+        <attribute name="verticalHeaderVisible">
+         <bool>false</bool>
+        </attribute>
+        <attribute name="verticalHeaderDefaultSectionSize">
+         <number>20</number>
+        </attribute>
+        <column>
+         <property name="text">
+          <string/>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Url</string>
+         </property>
+        </column>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton">
+        <property name="text">
+         <string>Copier les liens séléctionnés dans le presse-papier</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
   </layout>
@@ -134,8 +156,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>257</x>
-     <y>154</y>
+     <x>290</x>
+     <y>277</y>
     </hint>
     <hint type="destinationlabel">
      <x>157</x>
@@ -151,7 +173,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>290</x>
-     <y>154</y>
+     <y>277</y>
     </hint>
     <hint type="destinationlabel">
      <x>286</x>
@@ -159,5 +181,24 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>batchWindow</receiver>
+   <slot>copyToClipboard()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>89</x>
+     <y>246</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>136</x>
+     <y>236</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
+ <slots>
+  <slot>copyToClipboard()</slot>
+ </slots>
 </ui>

@@ -9,7 +9,7 @@ optionsWindow::optionsWindow(mainWindow *parent) : QDialog(parent), m_parent(par
     ui->setupUi(this);
 	for (int i = 1; i < ui->container->count(); i++)
 	{ ui->container->itemAt(i)->widget()->hide(); }
-	resize(QSize(600, 400));
+	resize(QSize(600, 376));
 
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
 	QStringList languages = QDir("languages").entryList(QStringList("*.qm"), QDir::Files);
@@ -20,6 +20,10 @@ optionsWindow::optionsWindow(mainWindow *parent) : QDialog(parent), m_parent(par
 	ui->comboLanguages->setCurrentIndex(languages.indexOf(settings.value("language", "English").toString()));
 	ui->lineBlacklist->setText(settings.value("blacklistedtags").toString());
 	ui->checkDownloadBlacklisted->setChecked(settings.value("downloadblacklist", false).toBool());
+	ui->lineWhitelist->setText(settings.value("whitelistedtags").toString());
+	QStringList wl = QStringList() << "never" << "image" << "page";
+	ui->comboWhitelist->setCurrentIndex(wl.indexOf(settings.value("whitelist_download", "image").toString()));
+	ui->lineIgnored->setText(settings.value("ignoredtags").toString());
 	ui->checkLoadFirstAtStart->setChecked(settings.value("loadatstart", false).toBool());
 	ui->spinHideFavorites->setValue(settings.value("hidefavorites", 20).toInt());
 	ui->checkAutodownload->setChecked(settings.value("autodownload", false).toBool());
@@ -72,6 +76,8 @@ optionsWindow::optionsWindow(mainWindow *parent) : QDialog(parent), m_parent(par
 		ui->checkCharactersKeepAll->toggle();
 		ui->lineCharactersSeparator->setText(settings.value("character_sep", "+").toString());
 		ui->lineCharactersIfMultiples->setText(settings.value("character_value", "group").toString());
+		ui->spinLimit->setValue(settings.value("limit", 0).toInt());
+		ui->editCustom->setPlainText(settings.value("custom").toString());
 	settings.endGroup();
 
 	settings.beginGroup("Coloring");
@@ -111,6 +117,13 @@ optionsWindow::optionsWindow(mainWindow *parent) : QDialog(parent), m_parent(par
 	settings.beginGroup("Login");
 		ui->linePseudo->setText(settings.value("pseudo").toString());
 		ui->linePassword->setText(settings.value("password").toString());
+	settings.endGroup();
+
+	settings.beginGroup("Proxy");
+		ui->checkProxyUse->setChecked(settings.value("use", false).toBool());
+		ui->widgetProxy->setEnabled(settings.value("use", false).toBool());
+		ui->lineProxyHostName->setText(settings.value("hostName").toString());
+		ui->spinProxyPort->setValue(settings.value("port").toInt());
 	settings.endGroup();
 
 	settings.beginGroup("Exec");
@@ -298,13 +311,16 @@ void optionsWindow::updateContainer(QTreeWidgetItem *current, QTreeWidgetItem *p
 		tr("Sources", "update") <<
 		tr("Log", "update") <<
 		tr("Sauvegarde", "update") <<
+		tr("Nom de fichier", "update") <<
 		tr("Tags artiste", "update") <<
 		tr("Tags série", "update") <<
 		tr("Tags personnage", "update") <<
+		tr("Symbole personnalisé", "update") <<
 		tr("Interface", "update") <<
 		tr("Coloration", "update") <<
 		tr("Marges", "update") <<
 		tr("Connexion", "update") <<
+		tr("Proxy", "update") <<
 		tr("Commandes", "update");
 	QMap<QString,int> assoc;
 	for (int i = 0; i < texts.count(); i++)
@@ -326,6 +342,10 @@ void optionsWindow::save()
 
 	settings.setValue("blacklistedtags", ui->lineBlacklist->text());
 	settings.setValue("downloadblacklist", ui->checkDownloadBlacklisted->isChecked());
+	settings.setValue("whitelistedtags", ui->lineWhitelist->text());
+	settings.setValue("ignoredtags", ui->lineIgnored->text());
+	QStringList wl = QStringList() << "never" << "image" << "page";
+	settings.setValue("whitelist_download", wl.at(ui->comboWhitelist->currentIndex()));
 
 	settings.setValue("limit", ui->spinImagesPerPage->value());
 	settings.setValue("columns", ui->spinColumns->value());
@@ -372,6 +392,8 @@ void optionsWindow::save()
 		settings.setValue("character_useall", ui->checkCharactersKeepAll->isChecked());
 		settings.setValue("character_sep", ui->lineCharactersSeparator->text());
 		settings.setValue("character_value", ui->lineCharactersIfMultiples->text());
+		settings.setValue("limit", ui->spinLimit->value());
+		settings.setValue("custom", ui->editCustom->toPlainText());
 	settings.endGroup();
 
 	settings.beginGroup("Coloring");
@@ -403,6 +425,12 @@ void optionsWindow::save()
 	settings.beginGroup("Login");
 		settings.setValue("pseudo", ui->linePseudo->text());
 		settings.setValue("password", ui->linePassword->text());
+	settings.endGroup();
+
+	settings.beginGroup("Proxy");
+		settings.setValue("use", ui->checkProxyUse->isChecked());
+		settings.setValue("hostName", ui->lineProxyHostName->text());
+		settings.setValue("port", ui->spinProxyPort->value());
 	settings.endGroup();
 
 	settings.beginGroup("Exec");

@@ -29,6 +29,12 @@ void mainWindow::init()
 	ui->setupUi(this);
 	m_favorites = loadFavorites();
 
+	if (m_settings->value("Proxy/use", false).toBool())
+	{
+		QNetworkProxy proxy(QNetworkProxy::HttpProxy, m_settings->value("Proxy/hostName").toString(), m_settings->value("Proxy/port").toInt());
+		QNetworkProxy::setApplicationProxy(proxy);
+	}
+
 	m_serverDate = QDateTime::currentDateTime().toUTC().addSecs(-60*60*4);
 	m_timezonedecay = QDateTime::currentDateTime().time().hour()-m_serverDate.time().hour();
 	m_gotMd5 = QStringList();

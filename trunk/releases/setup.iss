@@ -57,29 +57,6 @@ Name: "spanish"; MessagesFile: "compiler:Languages\Spanish.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 0,6.1 
 
-[CustomMessages]
-english.FullDesc=Full installation
-english.CompactDesc=Compact installation
-english.CustomDesc=Custom installation
-french.FullDesc=Installation complète
-french.CompactDesc=Installation compacte
-french.CustomDesc=Installation personnalisée
- 
-[Types]
-Name: "full"; Description: {cm:FullDesc}
-Name: "compact"; Description: {cm:CompactDesc}
-Name: "custom"; Description: {cm:CustomDesc}; Flags: iscustom
-
-[Components]
-Name: "program"; Description: "Fichiers du programme"; Types: full compact custom; Flags: fixed
-Name: "sites"; Description: "Fichiers de site"; Types: full
-Name: "sites\danbooru"; Description: "Danbooru"; Types: full compact custom
-Name: "sites\gelbooru"; Description: "Gelbooru"; Types: full
-Name: "sites\shimmie"; Description: "Shimmie"; Types: full
-Name: "languages"; Description: "Langues"; Types: full
-Name: "languages\en"; Description: "Anglais"; Types: full compact custom
-Name: "languages\fr"; Description: "Français"; Types: full
-
 [Files]   
 Source: "D:\Programmation\C++\Qt\Grabber\release\Grabber.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\libgcc_s_dw2-1.dll"; DestDir: "{app}"; Flags: ignoreversion
@@ -96,14 +73,14 @@ Source: "D:\Programmation\C++\Qt\Grabber\release\imageformats\qsvg4.dll"; DestDi
 Source: "D:\Programmation\C++\Qt\Grabber\release\imageformats\qtiff4.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\words.txt"; DestDir: "{app}"; Flags: ignoreversion       
 Source: "D:\Programmation\C++\Qt\Grabber\release\languages\English.qm"; DestDir: "{app}\languages"; Flags: ignoreversion
-Source: "D:\Programmation\C++\Qt\Grabber\release\languages\Français.qm"; DestDir: "{app}\languages"; Flags: ignoreversion 
-Source: "D:\Programmation\C++\Qt\Grabber\release\sites\danbooru\icon.png"; DestDir: "{%UserProfile}\Grabber\sites\danbooru"; Flags: ignoreversion 
+Source: "D:\Programmation\C++\Qt\Grabber\release\languages\Français.qm"; DestDir: "{app}\languages"; Flags: ignoreversion
+Source: "D:\Programmation\C++\Qt\Grabber\release\sites\danbooru\icon.png"; DestDir: "{%UserProfile}\Grabber\sites\danbooru"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\danbooru\model.xml"; DestDir: "{%UserProfile}\Grabber\sites\danbooru"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\danbooru\sites.txt"; DestDir: "{%UserProfile}\Grabber\sites\danbooru"; Flags: ignoreversion
-Source: "D:\Programmation\C++\Qt\Grabber\release\sites\gelbooru\icon.png"; DestDir: "{%UserProfile}\Grabber\sites\gelbooru"; Flags: ignoreversion 
+Source: "D:\Programmation\C++\Qt\Grabber\release\sites\gelbooru\icon.png"; DestDir: "{%UserProfile}\Grabber\sites\gelbooru"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\gelbooru\model.xml"; DestDir: "{%UserProfile}\Grabber\sites\gelbooru"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\gelbooru\sites.txt"; DestDir: "{%UserProfile}\Grabber\sites\gelbooru"; Flags: ignoreversion
-Source: "D:\Programmation\C++\Qt\Grabber\release\sites\shimmie\icon.png"; DestDir: "{%UserProfile}\Grabber\sites\shimmie"; Flags: ignoreversion 
+Source: "D:\Programmation\C++\Qt\Grabber\release\sites\shimmie\icon.png"; DestDir: "{%UserProfile}\Grabber\sites\shimmie"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\shimmie\model.xml"; DestDir: "{%UserProfile}\Grabber\sites\shimmie"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\shimmie\sites.txt"; DestDir: "{%UserProfile}\Grabber\sites\shimmie"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
