@@ -300,19 +300,28 @@
         <translation>Grabber - Batch download</translation>
     </message>
     <message utf8="true">
-        <location filename="../ui/batchwindow.ui" line="50"/>
+        <location filename="../ui/batchwindow.ui" line="40"/>
         <source>Détails</source>
         <translation>Details</translation>
     </message>
     <message>
-        <location filename="../ui/batchwindow.ui" line="131"/>
+        <location filename="../ui/batchwindow.ui" line="111"/>
         <source>Url</source>
         <translation>Url</translation>
     </message>
+    <message>
+        <location filename="../ui/batchwindow.ui" line="116"/>
+        <source>Progression</source>
+        <translation>Progression</translation>
+    </message>
+    <message>
+        <location filename="../ui/batchwindow.ui" line="124"/>
+        <source>Copier les liens dans le presse-papier</source>
+        <translation>Copy links to clipboard</translation>
+    </message>
     <message utf8="true">
-        <location filename="../ui/batchwindow.ui" line="139"/>
         <source>Copier les liens séléctionnés dans le presse-papier</source>
-        <translation>Copy selected links in the clipboard</translation>
+        <translation type="obsolete">Copy selected links in the clipboard</translation>
     </message>
 </context>
 <context>
@@ -1173,23 +1182,23 @@ p, li { white-space: pre-wrap; }
         <translation>Executing initialization command &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="1078"/>
+        <location filename="../source/mainwindow.cpp" line="1081"/>
         <source>Téléchargement groupé terminé</source>
         <translation>Batch download finished</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="1084"/>
+        <location filename="../source/mainwindow.cpp" line="1107"/>
         <source>Tags reçus</source>
         <translation>Tags received</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="1280"/>
+        <location filename="../source/mainwindow.cpp" line="1303"/>
         <source>Annulation des téléchargements...</source>
         <translation>Cancelling downloads...</translation>
     </message>
     <message>
         <location filename="../source/mainwindow.cpp" line="1017"/>
-        <location filename="../source/mainwindow.cpp" line="1138"/>
+        <location filename="../source/mainwindow.cpp" line="1161"/>
         <source>Certains tags de l&apos;image sont blacklistés.</source>
         <translation>Some tags are blacklisted.</translation>
     </message>
@@ -1200,24 +1209,24 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../source/mainwindow.cpp" line="1028"/>
-        <location filename="../source/mainwindow.cpp" line="1149"/>
+        <location filename="../source/mainwindow.cpp" line="1172"/>
         <source>Image ignorée.</source>
         <translation>Image ignored.</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="1160"/>
+        <location filename="../source/mainwindow.cpp" line="1183"/>
         <source>Chargement de l&apos;image depuis &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;</source>
         <translation>Loading image from &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="1232"/>
-        <location filename="../source/mainwindow.cpp" line="1250"/>
+        <location filename="../source/mainwindow.cpp" line="1255"/>
+        <location filename="../source/mainwindow.cpp" line="1273"/>
         <source>Execution seule de &quot;%1&quot;</source>
         <translation>Executing &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="1241"/>
-        <location filename="../source/mainwindow.cpp" line="1257"/>
+        <location filename="../source/mainwindow.cpp" line="1264"/>
+        <location filename="../source/mainwindow.cpp" line="1280"/>
         <source>Execution groupée de &quot;%1&quot;</source>
         <translation>Grouped execution of &quot;%1&quot;</translation>
     </message>
@@ -1234,8 +1243,8 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Close</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="1050"/>
-        <location filename="../source/mainwindow.cpp" line="1171"/>
+        <location filename="../source/mainwindow.cpp" line="1053"/>
+        <location filename="../source/mainwindow.cpp" line="1194"/>
         <source>Fichier déjà existant : &lt;a href=&quot;file:///%1&quot;&gt;%1&lt;/a&gt;</source>
         <translation>File already exists: &lt;a href=&quot;file:///%1&quot;&gt;%1&lt;/a&gt;</translation>
     </message>
@@ -1349,17 +1358,17 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">File already exists</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="1179"/>
+        <location filename="../source/mainwindow.cpp" line="1202"/>
         <source>Image reçue depuis &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;</source>
         <translation>Image received from &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="1205"/>
+        <location filename="../source/mainwindow.cpp" line="1228"/>
         <source>&lt;b&gt;Erreur:&lt;/b&gt; %1</source>
         <translation>&lt;b&gt;Error:&lt;/b&gt; %1</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="1205"/>
+        <location filename="../source/mainwindow.cpp" line="1228"/>
         <source>impossible de créer le dossier de destination: %1.</source>
         <translation>impossible to create the destination folder: %1.</translation>
     </message>
@@ -1479,7 +1488,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Image</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="1064"/>
+        <location filename="../source/mainwindow.cpp" line="1067"/>
         <source>Récupération des images</source>
         <translation>Getting images</translation>
     </message>
@@ -1502,7 +1511,7 @@ p, li { white-space: pre-wrap; }
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../source/mainwindow.cpp" line="1069"/>
+        <location filename="../source/mainwindow.cpp" line="1072"/>
         <source>%n erreur(s).</source>
         <translation>
             <numerusform>%n error.</numerusform>

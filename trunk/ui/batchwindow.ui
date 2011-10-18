@@ -121,7 +121,7 @@
       <item>
        <widget class="QPushButton" name="pushButton">
         <property name="text">
-         <string>Copier les liens séléctionnés dans le presse-papier</string>
+         <string>Copier les liens dans le presse-papier</string>
         </property>
        </widget>
       </item>

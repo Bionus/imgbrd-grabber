@@ -43,7 +43,7 @@ void batchWindow::copyToClipboard()
 	{
 		count = ui->tableWidget->rowCount();
 		for (int i = 0; i < count; i++)
-		{ urls.append(ui->tableWidget->itemAt(1, i)->text()); }
+		{ urls.append(ui->tableWidget->item(i, 1)->text()); }
 	}
 	else
 	{
@@ -65,6 +65,7 @@ void batchWindow::addImage(QString url)
 	ui->tableWidget->setItem(m_items, 1, new QTableWidgetItem(url));
 	QProgressBar *prog = new QProgressBar();
 	prog->setTextVisible(false);
+	m_progressBars.append(prog);
 	ui->tableWidget->setCellWidget(m_items, 2, prog);
 	ui->tableWidget->resizeColumnToContents(0);
 	QHeaderView *headerView = ui->tableWidget->horizontalHeader();
@@ -81,12 +82,23 @@ void batchWindow::loadingImage(QString url)
 		{ ui->tableWidget->item(i, 0)->setIcon(QIcon(":/images/colors/blue.png")); }
 	}
 }
+void batchWindow::statusImage(QString url, int percent)
+{
+	for (int i = 0; i < m_items; i++)
+	{
+		if (ui->tableWidget->item(i, 1)->text() == url)
+		{ m_progressBars[i]->setValue(percent); }
+	}
+}
 void batchWindow::loadedImage(QString url)
 {
 	for (int i = 0; i < m_items; i++)
 	{
 		if (ui->tableWidget->item(i, 1)->text() == url)
-		{ ui->tableWidget->item(i, 0)->setIcon(QIcon(":/images/colors/green.png")); }
+		{
+			ui->tableWidget->item(i, 0)->setIcon(QIcon(":/images/colors/green.png"));
+			m_progressBars[i]->setValue(100);
+		}
 	}
 }
 void batchWindow::errorImage(QString url)
@@ -116,9 +128,10 @@ void batchWindow::on_buttonDetails_clicked()
 	}
 }
 
-void batchWindow::setText(QString text)		{ ui->labelMessage->setText(text);		}
-void batchWindow::setValue(int value)		{ ui->progressBar->setValue(value);		}
-void batchWindow::setMaximum(int value)		{ ui->progressBar->setMaximum(value);	}
+void batchWindow::setText(QString text)		{ ui->labelMessage->setText(text);						}
+void batchWindow::setValue(int value)		{ m_value = value; ui->progressBar->setValue(value);	}
+void batchWindow::setLittleValue(int value)	{ ui->progressBar->setValue(m_value + value);			}
+void batchWindow::setMaximum(int value)		{ ui->progressBar->setMaximum(value);					}
 void batchWindow::setImagesCount(int value)	{ m_imagesCount = value; ui->labelImages->setText(QString("0/%2").arg(m_imagesCount));	}
 void batchWindow::setImages(int value)		{ ui->labelImages->setText(QString("%1/%2").arg(value).arg(m_imagesCount));				}
 

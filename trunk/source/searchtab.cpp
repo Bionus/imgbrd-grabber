@@ -257,7 +257,7 @@ void searchTab::finishedLoading(Page* page)
 	{
 		int pos = m_pages.indexOf(page);
 		int perpage = page->site().value("Urls/Selected/Tags").contains("{limit}") ? ui->spinImagesPerPage->value() : imgs.size();
-		int pl = ceil(sqrt(perpage));
+		//int pl = ceil(sqrt(perpage));
 		//float fl = (float)perpage/pl;
 		QLabel *txt = new QLabel();
 			if (imgs.count() == 0)
