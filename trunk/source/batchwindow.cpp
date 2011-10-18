@@ -37,11 +37,21 @@ void batchWindow::clear()
 void batchWindow::copyToClipboard()
 {
 	QList<QTableWidgetItem *> selected = ui->tableWidget->selectedItems();
+	int count = selected.size();
 	QStringList urls = QStringList();
-	for (int i = 0; i < selected.size(); i++)
+	if (count < 1)
 	{
-		if (selected.at(i)->icon().isNull())
-		{ urls.append(selected.at(i)->text()); }
+		count = ui->tableWidget->rowCount();
+		for (int i = 0; i < count; i++)
+		{ urls.append(ui->tableWidget->itemAt(1, i)->text()); }
+	}
+	else
+	{
+		for (int i = 0; i < count; i++)
+		{
+			if (selected.at(i)->icon().isNull())
+			{ urls.append(selected.at(i)->text()); }
+		}
 	}
 	qApp->clipboard()->setText(urls.join("\n"));
 }
@@ -53,7 +63,14 @@ void batchWindow::addImage(QString url)
 	id->setIcon(QIcon(":/images/colors/black.png"));
 	ui->tableWidget->setItem(m_items, 0, id);
 	ui->tableWidget->setItem(m_items, 1, new QTableWidgetItem(url));
+	QProgressBar *prog = new QProgressBar();
+	prog->setTextVisible(false);
+	ui->tableWidget->setCellWidget(m_items, 2, prog);
 	ui->tableWidget->resizeColumnToContents(0);
+	QHeaderView *headerView = ui->tableWidget->horizontalHeader();
+	headerView->setResizeMode(QHeaderView::Interactive);
+	headerView->setResizeMode(1, QHeaderView::Stretch);
+	headerView->resizeSection(2, 80);
 	m_items++;
 }
 void batchWindow::loadingImage(QString url)
@@ -80,6 +97,9 @@ void batchWindow::errorImage(QString url)
 		{ ui->tableWidget->item(i, 0)->setIcon(QIcon(":/images/colors/red.png")); }
 	}
 }
+
+void batchWindow::setSpeed(QString speed)
+{ ui->labelSpeed->setText(speed); }
 
 void batchWindow::on_buttonDetails_clicked()
 {

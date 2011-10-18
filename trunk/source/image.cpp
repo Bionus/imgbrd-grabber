@@ -200,6 +200,29 @@ QString Image::filter(QStringList filters)
 	return QString();
 }
 
+
+
+QString analyse(QStringList tokens, QString text)
+{
+	QString ret = text;
+	QRegExp reg = QRegExp("\\<([^>]+)\\>");
+	int pos = 0;
+	while ((pos = reg.indexIn(text, pos)) != -1)
+	{
+		QString cap = reg.cap(1);
+		if (!cap.isEmpty())
+		{
+			cap += QString(">").repeated(cap.count('<')-cap.count('>'));
+			ret.replace("<"+cap+">", analyse(tokens, cap));
+		}
+		pos += reg.matchedLength()+cap.count('<')-cap.count('>');
+	}
+	QString r = ret;
+	for (int i = 0; i < tokens.size(); i++)
+	{ r.replace("%"+tokens.at(i)+"%", ""); }
+	return r.contains("%") ? "" : ret;
+}
+
 QString Image::path(QString fn)
 {
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
@@ -255,12 +278,17 @@ QString Image::path(QString fn)
 		filename.replace("%search_"+QString::number(i)+"%", (search.size() >= i ? search[i-1] : "").left(259-pth.length()-1-filename.length()));
 		i++;
 	}
+
 	QString ext = m_url.section('.', -1).left(259-pth.length()-1-filename.length());
 	QStringList rem = (filename.contains("%artist%") ? details["artists"] : QStringList()) +
 		(filename.contains("%copyright%") ? copyrights : QStringList()) +
 		(filename.contains("%character%") ? details["characters"] : QStringList()) +
 		(filename.contains("%model%") ? details["models"] : QStringList()) +
 		(filename.contains("%general%") ? details["generals"] : QStringList());
+
+	QStringList tokens = QStringList() << "artist" << "general" << "copyright" << "character" << "model" << "model|artist" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "custom" << "allo";
+	filename = analyse(tokens, filename);
+
 	filename.replace("%artist%", (details["artists"].isEmpty() ? settings.value("artist_empty").toString() : (settings.value("artist_useall").toBool() || details["artists"].count() == 1 ? details["artists"].join(settings.value("artist_sep").toString()) : settings.value("artist_value").toString())).left(259-pth.length()-1-filename.length()));
 	filename.replace("%copyright%", (copyrights.isEmpty() ? settings.value("copyright_empty").toString() : (settings.value("copyright_useall").toBool() || copyrights.count() == 1 ? copyrights.join(settings.value("copyright_sep").toString()) : settings.value("copyright_value").toString())).left(259-pth.length()-1-filename.length()));
 	filename.replace("%character%", (details["characters"].isEmpty() ? settings.value("character_empty").toString() : (settings.value("character_useall").toBool() || details["characters"].count() == 1 ? details["characters"].join(settings.value("character_sep").toString()) : settings.value("character_value").toString())).left(259-pth.length()-1-filename.length()));

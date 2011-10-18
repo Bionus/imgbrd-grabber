@@ -441,6 +441,18 @@ void optionsWindow::save()
 		settings.setValue("tag", ui->lineCommandsTag->text());
 	settings.endGroup();
 
+	if (settings.value("Proxy/use", false).toBool())
+	{
+		QNetworkProxy proxy(QNetworkProxy::HttpProxy, settings.value("Proxy/hostName").toString(), settings.value("Proxy/port").toInt());
+		QNetworkProxy::setApplicationProxy(proxy);
+		log(tr("Activation du proxy général sur l'hôte \"%1\" et le port %2.").arg(settings.value("Proxy/hostName").toString()).arg(settings.value("Proxy/port").toInt()));
+	}
+	else if (QNetworkProxy::applicationProxy().type() != QNetworkProxy::NoProxy)
+	{
+		QNetworkProxy::setApplicationProxy(QNetworkProxy::NoProxy);
+		log(tr("Désactivation du proxy général."));
+	}
+
 	if (settings.value("language", "English").toString() != ui->comboLanguages->currentText())
 	{
 		settings.setValue("language", ui->comboLanguages->currentText());
