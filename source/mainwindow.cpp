@@ -33,6 +33,7 @@ void mainWindow::init()
 	{
 		QNetworkProxy proxy(QNetworkProxy::HttpProxy, m_settings->value("Proxy/hostName").toString(), m_settings->value("Proxy/port").toInt());
 		QNetworkProxy::setApplicationProxy(proxy);
+		log(tr("Activation du proxy général sur l'hôte \"%1\" et le port %2.").arg(m_settings->value("Proxy/hostName").toString()).arg(m_settings->value("Proxy/port").toInt()));
 	}
 
 	m_serverDate = QDateTime::currentDateTime().toUTC().addSecs(-60*60*4);
@@ -1038,6 +1039,9 @@ void mainWindow::_getAll()
 						request.setRawHeader("Referer", u.toAscii());
 					m_progressdialog->loadingImage(img->url());
 					m_getAllRequest = m->get(request);
+					m_downloadTime = new QTime();
+					m_downloadTime->start();
+					connect(m_getAllRequest, SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(getAllProgress(qint64, qint64)));
 				}
 			}
 			else
@@ -1077,6 +1081,24 @@ void mainWindow::_getAll()
 		log(tr("Téléchargement groupé terminé"));
 		m_progressdialog->clear();
 	}
+}
+void mainWindow::getAllProgress(qint64 bytesReceived, qint64)
+{
+	double speed = bytesReceived * 1000.0 / m_downloadTime->elapsed();
+	QString unit;
+	if (speed < 1024)
+	{ unit = "bytes/sec"; }
+	else if (speed < 1024*1024)
+	{
+		speed /= 1024;
+		unit = "kB/s";
+	}
+	else
+	{
+		speed /= 1024*1024;
+		unit = "MB/s";
+	}
+	m_progressdialog->setSpeed(QString::number(speed)+" "+unit);
 }
 void mainWindow::getAllPerformTags(Image* img)
 {

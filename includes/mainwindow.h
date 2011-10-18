@@ -64,6 +64,7 @@ class mainWindow : public QMainWindow
 		void getAllFinishedLoading(Page*);
 		void getAllPerformTags(Image*);
 		void getAllPerformImage(QNetworkReply*);
+		void getAllProgress(qint64, qint64);
 		void getAllCancel();
 		void _getAll();
 		// Others
@@ -113,6 +114,7 @@ class mainWindow : public QMainWindow
 		QList<Image*>				m_images;
 		int							m_pagemax;
 		QList<bool>					m_selectedSources;
+		QTime						*m_downloadTime;
 };
 
 #endif // MAINWINDOW_H

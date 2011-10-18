@@ -95,13 +95,6 @@ void Page::parse(QNetworkReply* r)
 	m_imagesCount = 0;
 	m_source = r->readAll();
 
-	qDebug() << "open";
-	QFile *f = new QFile("test.html");
-	f->open(QFile::WriteOnly | QFile::Text);
-	f->write(m_source.toAscii());
-	f->close();
-	qDebug() << "close";
-
 	// XML
 	if (m_site["Selected"] == "xml")
 	{

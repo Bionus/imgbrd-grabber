@@ -258,7 +258,7 @@ void searchTab::finishedLoading(Page* page)
 		int pos = m_pages.indexOf(page);
 		int perpage = page->site().value("Urls/Selected/Tags").contains("{limit}") ? ui->spinImagesPerPage->value() : imgs.size();
 		int pl = ceil(sqrt(perpage));
-		float fl = (float)perpage/pl;
+		//float fl = (float)perpage/pl;
 		QLabel *txt = new QLabel();
 			if (imgs.count() == 0)
 			{
@@ -541,7 +541,7 @@ void searchTab::finishedLoadingPreview(Image *img)
 		connect(l, SIGNAL(rightClick(int)), _mainwindow, SLOT(batchChange(int)));
 	int perpage = img->page()->site().value("Urls/Selected/Tags").contains("{limit}") ? ui->spinImagesPerPage->value() : img->page()->images().size();
 	int pl = ceil(sqrt(perpage));
-	float fl = (float)perpage/pl;
+	//float fl = (float)perpage/pl;
 	int pp = perpage;
 	if (ui->checkMergeResults->isChecked())
 	{ pp = m_images.count(); }
