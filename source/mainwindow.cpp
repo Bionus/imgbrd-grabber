@@ -1082,7 +1082,7 @@ void mainWindow::_getAll()
 		m_progressdialog->clear();
 	}
 }
-void mainWindow::getAllProgress(qint64 bytesReceived, qint64)
+void mainWindow::getAllProgress(qint64 bytesReceived, qint64 bytesTotal)
 {
 	double speed = bytesReceived * 1000.0 / m_downloadTime->elapsed();
 	QString unit;
@@ -1099,6 +1099,8 @@ void mainWindow::getAllProgress(qint64 bytesReceived, qint64)
 		unit = "MB/s";
 	}
 	m_progressdialog->setSpeed(QString::number(speed)+" "+unit);
+	m_progressdialog->statusImage(m_getAllImages.at(m_getAllId)->url(), (100*bytesReceived)/bytesTotal);
+	m_progressdialog->setLittleValue((m_getAllImages.at(m_getAllId)->value()*bytesReceived)/bytesTotal);
 }
 void mainWindow::getAllPerformTags(Image* img)
 {
