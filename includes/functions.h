@@ -23,6 +23,7 @@ QStringMap	domToMap(QDomElement);
 
 QStringMap	loadFavorites();
 QStringList	loadViewItLater();
+QStringList	loadIgnored();
 
 void		log(QString);
 void		logUpdate(QString);

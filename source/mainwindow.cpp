@@ -1034,11 +1034,12 @@ void mainWindow::_getAll()
 				{
 					QUrl rl(u);
 					QNetworkAccessManager *m = new QNetworkAccessManager(this);
-					connect(m, SIGNAL(finished(QNetworkReply*)), this, SLOT(getAllPerformImage(QNetworkReply*)));
 					QNetworkRequest request(rl);
 						request.setRawHeader("Referer", u.toAscii());
 					m_progressdialog->loadingImage(img->url());
 					m_getAllRequest = m->get(request);
+					connect(m_getAllRequest, SIGNAL(finished()), this, SLOT(getAllPerformImage()));
+					m_getAllRequestExists = true;
 					m_downloadTime = new QTime();
 					m_downloadTime->start();
 					connect(m_getAllRequest, SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(getAllProgress(qint64, qint64)));
@@ -1066,10 +1067,10 @@ void mainWindow::_getAll()
 			this,
 			tr("Récupération des images"),
 			QString(
-				tr("%n fichier(s) récupéré(s) avec succès.\r\n", "", m_getAllDownloaded)+
-				tr("%n fichier(s) ignoré(s).\r\n", "", m_getAllIgnored)+
-				tr("%n fichier(s) déjà existant(s).\r\n", "", m_getAllExists)+
-				tr("%n erreur(s).", "", m_getAllErrors)
+				tr("%n fichier(s) récupéré(s) avec succès.\r\n", "get_all_ok", m_getAllDownloaded)+
+				tr("%n fichier(s) ignoré(s).\r\n", "get_all_ignored", m_getAllIgnored)+
+				tr("%n fichier(s) déjà existant(s).\r\n", "get_all_exists", m_getAllExists)+
+				tr("%n erreur(s).", "get_all_errors", m_getAllErrors)
 			)
 		);
 		if (!m_settings->value("Exec/Group/init").toString().isEmpty())
@@ -1177,12 +1178,13 @@ void mainWindow::getAllPerformTags(Image* img)
 		else
 		{
 			QNetworkAccessManager *m = new QNetworkAccessManager(this);
-			connect(m, SIGNAL(finished(QNetworkReply*)), this, SLOT(getAllPerformImage(QNetworkReply*)));
 			QNetworkRequest request(img->fileUrl());
 				request.setRawHeader("Referer", img->fileUrl().toString().toAscii());
 			log(tr("Chargement de l'image depuis <a href=\"%1\">%1</a>").arg(img->fileUrl().toString()));
 			m_progressdialog->loadingImage(img->url());
 			m_getAllRequest = m->get(request);
+			connect(m_getAllRequest, SIGNAL(finished()), this, SLOT(getAllPerformImage()));
+			m_getAllRequestExists = true;
 		}
 	}
 	else
@@ -1197,8 +1199,11 @@ void mainWindow::getAllPerformTags(Image* img)
 		_getAll();
 	}
 }
-void mainWindow::getAllPerformImage(QNetworkReply* reply)
+void mainWindow::getAllPerformImage()
 {
+	QNetworkReply* reply = m_getAllRequest;
+	if (reply->error() == QNetworkReply::OperationCanceledError)
+	{ return; }
 	log(tr("Image reçue depuis <a href=\"%1\">%1</a>").arg(reply->url().toString()));
 	Image *img = m_getAllImages.at(m_getAllId);
 	if (reply->error() == QNetworkReply::NoError)
@@ -1297,9 +1302,13 @@ void mainWindow::getAllPerformImage(QNetworkReply* reply)
 }
 void mainWindow::getAllCancel()
 {
-	if (m_getAllRequest->isRunning())
-	{ m_getAllRequest->abort(); }
-	m_progressdialog->clear();
 	log(tr("Annulation des téléchargements..."));
+	if (m_getAllRequestExists)
+	{
+		m_getAllRequestExists = false;
+		if (m_getAllRequest->isRunning())
+		{ m_getAllRequest->abort(); }
+	}
+	m_progressdialog->clear();
 	DONE();
 }

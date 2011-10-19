@@ -1176,24 +1176,69 @@ p, li { white-space: pre-wrap; }
         <source>Execution de la commande d&apos;initialisation&apos; &quot;%1&quot;</source>
         <translation>Execution de la commande d&apos;initialisation &quot;%1&quot;</translation>
     </message>
+    <message numerus="yes">
+        <location filename="../source/mainwindow.cpp" line="1070"/>
+        <source>%n fichier(s) récupéré(s) avec succès.
+</source>
+        <comment>get_all_ok</comment>
+        <translation>
+            <numerusform>%n fichier récupéré avec succès.
+</numerusform>
+            <numerusform>%n fichier récupérés avec succès.
+</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../source/mainwindow.cpp" line="1071"/>
+        <source>%n fichier(s) ignoré(s).
+</source>
+        <comment>get_all_ignored</comment>
+        <translation>
+            <numerusform>%n fichier ignoré.
+</numerusform>
+            <numerusform>%n fichier ignorés.
+</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../source/mainwindow.cpp" line="1072"/>
+        <source>%n fichier(s) déjà existant(s).
+</source>
+        <comment>get_all_exists</comment>
+        <translation>
+            <numerusform>%n fichier déjà existant.
+</numerusform>
+            <numerusform>%n fichiers déjà existants.
+</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../source/mainwindow.cpp" line="1073"/>
+        <source>%n erreur(s).</source>
+        <comment>get_all_errors</comment>
+        <translation>
+            <numerusform>%n erreur.</numerusform>
+            <numerusform>%n erreurs.</numerusform>
+        </translation>
+    </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="1081"/>
+        <location filename="../source/mainwindow.cpp" line="1082"/>
         <source>Téléchargement groupé terminé</source>
         <translation>Téléchargement groupé commencé</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="1107"/>
+        <location filename="../source/mainwindow.cpp" line="1108"/>
         <source>Tags reçus</source>
         <translation>Tags reçus</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="1303"/>
+        <location filename="../source/mainwindow.cpp" line="1305"/>
         <source>Annulation des téléchargements...</source>
         <translation>Annulation des téléchargements...</translation>
     </message>
     <message>
         <location filename="../source/mainwindow.cpp" line="1017"/>
-        <location filename="../source/mainwindow.cpp" line="1161"/>
+        <location filename="../source/mainwindow.cpp" line="1162"/>
         <source>Certains tags de l&apos;image sont blacklistés.</source>
         <translation>Certains tags de l&apos;image sont blacklistés.</translation>
     </message>
@@ -1204,7 +1249,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../source/mainwindow.cpp" line="1028"/>
-        <location filename="../source/mainwindow.cpp" line="1172"/>
+        <location filename="../source/mainwindow.cpp" line="1173"/>
         <source>Image ignorée.</source>
         <translation>Image ignorée.</translation>
     </message>
@@ -1214,14 +1259,14 @@ p, li { white-space: pre-wrap; }
         <translation>Chargement de l&apos;image depuis &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="1255"/>
-        <location filename="../source/mainwindow.cpp" line="1273"/>
+        <location filename="../source/mainwindow.cpp" line="1260"/>
+        <location filename="../source/mainwindow.cpp" line="1278"/>
         <source>Execution seule de &quot;%1&quot;</source>
         <translation>Execution seule de &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="1264"/>
-        <location filename="../source/mainwindow.cpp" line="1280"/>
+        <location filename="../source/mainwindow.cpp" line="1269"/>
+        <location filename="../source/mainwindow.cpp" line="1285"/>
         <source>Execution groupée de &quot;%1&quot;</source>
         <translation>Execution groupée de &quot;%1&quot;</translation>
     </message>
@@ -1238,8 +1283,8 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Fermer</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="1053"/>
-        <location filename="../source/mainwindow.cpp" line="1194"/>
+        <location filename="../source/mainwindow.cpp" line="1054"/>
+        <location filename="../source/mainwindow.cpp" line="1196"/>
         <source>Fichier déjà existant : &lt;a href=&quot;file:///%1&quot;&gt;%1&lt;/a&gt;</source>
         <translation>Fichier déjà existant : &lt;a href=&quot;file:///%1&quot;&gt;%1&lt;/a&gt;</translation>
     </message>
@@ -1357,17 +1402,17 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Fichier déjà existant</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="1202"/>
+        <location filename="../source/mainwindow.cpp" line="1207"/>
         <source>Image reçue depuis &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;</source>
         <translation>Image reçue depuis &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="1228"/>
+        <location filename="../source/mainwindow.cpp" line="1233"/>
         <source>&lt;b&gt;Erreur:&lt;/b&gt; %1</source>
         <translation>&lt;b&gt;Erreur :&lt;/b&gt; %1</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="1228"/>
+        <location filename="../source/mainwindow.cpp" line="1233"/>
         <source>impossible de créer le dossier de destination: %1.</source>
         <translation>impossible de créer le dossier de destination: %1.</translation>
     </message>
@@ -1487,7 +1532,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Image</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="1067"/>
+        <location filename="../source/mainwindow.cpp" line="1068"/>
         <source>Récupération des images</source>
         <translation>Récupération des images</translation>
     </message>
@@ -1500,9 +1545,8 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Images</translation>
     </message>
     <message numerus="yes">
-        <location filename="../source/mainwindow.cpp" line="1072"/>
         <source>%n erreur(s).</source>
-        <translation>
+        <translation type="obsolete">
             <numerusform>%n erreur.</numerusform>
             <numerusform>%n erreurs.</numerusform>
         </translation>

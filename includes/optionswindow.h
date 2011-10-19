@@ -32,6 +32,7 @@ class optionsWindow : public QDialog
 		void on_lineColoringGenerals_textChanged();
 		void on_lineColoringFavorites_textChanged();
 		void on_lineColoringBlacklisteds_textChanged();
+		void on_lineColoringIgnoreds_textChanged();
 		void on_buttonColoringArtistsColor_clicked();
 		void on_buttonColoringCopyrightsColor_clicked();
 		void on_buttonColoringCharactersColor_clicked();
@@ -39,6 +40,7 @@ class optionsWindow : public QDialog
 		void on_buttonColoringGeneralsColor_clicked();
 		void on_buttonColoringFavoritesColor_clicked();
 		void on_buttonColoringBlacklistedsColor_clicked();
+		void on_buttonColoringIgnoredsColor_clicked();
 		void on_buttonColoringArtistsFont_clicked();
 		void on_buttonColoringCopyrightsFont_clicked();
 		void on_buttonColoringCharactersFont_clicked();
@@ -46,6 +48,7 @@ class optionsWindow : public QDialog
 		void on_buttonColoringGeneralsFont_clicked();
 		void on_buttonColoringFavoritesFont_clicked();
 		void on_buttonColoringBlacklistedsFont_clicked();
+		void on_buttonColoringIgnoredsFont_clicked();
 		void save();
 
 	private:

@@ -89,9 +89,10 @@ optionsWindow::optionsWindow(mainWindow *parent) : QDialog(parent), m_parent(par
 			ui->lineColoringGenerals->setText(settings.value("generals", "#000000").toString());
 			ui->lineColoringFavorites->setText(settings.value("favorites", "#ffc0cb").toString());
 			ui->lineColoringBlacklisteds->setText(settings.value("blacklisteds", "#000000").toString());
+			ui->lineColoringIgnoreds->setText(settings.value("ignoreds", "#999999").toString());
 		settings.endGroup();
 		settings.beginGroup("Fonts");
-			QFont fontArtists, fontCopyrights, fontCharacters, fontModels, fontGenerals, fontFavorites, fontBlacklisteds;
+			QFont fontArtists, fontCopyrights, fontCharacters, fontModels, fontGenerals, fontFavorites, fontBlacklisteds, fontIgnoreds;
 			fontArtists.fromString(settings.value("artists").toString());
 			fontCopyrights.fromString(settings.value("copyrights").toString());
 			fontCharacters.fromString(settings.value("characters").toString());
@@ -99,6 +100,7 @@ optionsWindow::optionsWindow(mainWindow *parent) : QDialog(parent), m_parent(par
 			fontGenerals.fromString(settings.value("generals").toString());
 			fontFavorites.fromString(settings.value("favorites").toString());
 			fontBlacklisteds.fromString(settings.value("blacklisteds").toString());
+			fontIgnoreds.fromString(settings.value("ignoreds").toString());
 			ui->lineColoringArtists->setFont(fontArtists);
 			ui->lineColoringCopyrights->setFont(fontCopyrights);
 			ui->lineColoringCharacters->setFont(fontCharacters);
@@ -106,6 +108,7 @@ optionsWindow::optionsWindow(mainWindow *parent) : QDialog(parent), m_parent(par
 			ui->lineColoringGenerals->setFont(fontGenerals);
 			ui->lineColoringFavorites->setFont(fontFavorites);
 			ui->lineColoringBlacklisteds->setFont(fontBlacklisteds);
+			ui->lineColoringIgnoreds->setFont(fontIgnoreds);
 		settings.endGroup();
 	settings.endGroup();
 
@@ -210,6 +213,13 @@ void optionsWindow::on_lineColoringBlacklisteds_textChanged()
 	else
 	{ ui->lineColoringBlacklisteds->setStyleSheet("color:#000000"); }
 }
+void optionsWindow::on_lineColoringIgnoreds_textChanged()
+{
+	if (QColor(ui->lineColoringIgnoreds->text()).isValid())
+	{ ui->lineColoringIgnoreds->setStyleSheet("color:"+ui->lineColoringIgnoreds->text()); }
+	else
+	{ ui->lineColoringIgnoreds->setStyleSheet("color:#000000"); }
+}
 
 void optionsWindow::on_buttonColoringArtistsColor_clicked()
 {
@@ -252,6 +262,12 @@ void optionsWindow::on_buttonColoringBlacklistedsColor_clicked()
 	QColor color = QColorDialog::getColor(QColor(ui->lineColoringBlacklisteds->text()), this, "Grabber - Choisir une couleur");
 	if (color.isValid())
 	{ ui->lineColoringBlacklisteds->setText(color.name()); }
+}
+void optionsWindow::on_buttonColoringIgnoredsColor_clicked()
+{
+	QColor color = QColorDialog::getColor(QColor(ui->lineColoringIgnoreds->text()), this, "Grabber - Choisir une couleur");
+	if (color.isValid())
+	{ ui->lineColoringIgnoreds->setText(color.name()); }
 }
 
 void optionsWindow::on_buttonColoringArtistsFont_clicked()
@@ -302,6 +318,13 @@ void optionsWindow::on_buttonColoringBlacklistedsFont_clicked()
 	QFont police = QFontDialog::getFont(&ok, ui->lineColoringBlacklisteds->font(), this, "Grabber - Choisir une police");
 	if (ok)
 	{ ui->lineColoringBlacklisteds->setFont(police); }
+}
+void optionsWindow::on_buttonColoringIgnoredsFont_clicked()
+{
+	bool ok = false;
+	QFont police = QFontDialog::getFont(&ok, ui->lineColoringIgnoreds->font(), this, "Grabber - Choisir une police");
+	if (ok)
+	{ ui->lineColoringIgnoreds->setFont(police); }
 }
 
 void optionsWindow::updateContainer(QTreeWidgetItem *current, QTreeWidgetItem *previous)
@@ -405,6 +428,7 @@ void optionsWindow::save()
 			settings.setValue("generals", ui->lineColoringGenerals->text());
 			settings.setValue("favorites", ui->lineColoringFavorites->text());
 			settings.setValue("blacklisteds", ui->lineColoringBlacklisteds->text());
+			settings.setValue("ignoreds", ui->lineColoringIgnoreds->text());
 		settings.endGroup();
 		settings.beginGroup("Fonts");
 			settings.setValue("artists", ui->lineColoringArtists->font().toString());
@@ -414,6 +438,7 @@ void optionsWindow::save()
 			settings.setValue("generals", ui->lineColoringGenerals->font().toString());
 			settings.setValue("favorites", ui->lineColoringFavorites->font().toString());
 			settings.setValue("blacklisteds", ui->lineColoringBlacklisteds->font().toString());
+			settings.setValue("ignoreds", ui->lineColoringIgnoreds->font().toString());
 		settings.endGroup();
 	settings.endGroup();
 

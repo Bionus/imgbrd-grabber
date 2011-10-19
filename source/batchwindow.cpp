@@ -27,7 +27,7 @@ void batchWindow::clear()
 {
 	m_items = 0;
 	m_imagesCount = 0;
-	ui->tableWidget->clear();
+	ui->tableWidget->clearContents();
 	ui->tableWidget->setRowCount(0);
 	ui->labelMessage->setText("");
 	ui->progressBar->setValue(0);
@@ -129,11 +129,11 @@ void batchWindow::on_buttonDetails_clicked()
 }
 
 void batchWindow::setText(QString text)		{ ui->labelMessage->setText(text);						}
-void batchWindow::setValue(int value)		{ m_value = value; ui->progressBar->setValue(value);	}
+void batchWindow::setValue(int value)		{ m_value = value; ui->progressBar->setValue(m_value);	}
 void batchWindow::setLittleValue(int value)	{ ui->progressBar->setValue(m_value + value);			}
 void batchWindow::setMaximum(int value)		{ ui->progressBar->setMaximum(value);					}
 void batchWindow::setImagesCount(int value)	{ m_imagesCount = value; ui->labelImages->setText(QString("0/%2").arg(m_imagesCount));	}
 void batchWindow::setImages(int value)		{ ui->labelImages->setText(QString("%1/%2").arg(value).arg(m_imagesCount));				}
 
-int batchWindow::value()					{ return ui->progressBar->value();		}
+int batchWindow::value()					{ return m_value;						}
 int batchWindow::maximum()					{ return ui->progressBar->maximum();	}

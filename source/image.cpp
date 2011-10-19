@@ -234,6 +234,7 @@ QString Image::path(QString fn)
 	bool found;
 	QStringList custom = QStringList(), scustom = settings.value("custom").toString().split(' ');
 	QMap<QString,QStringList> details;
+	QStringList ignore = loadIgnored();
 	for (int i = 0; i < m_tags.size(); i++)
 	{
 		QString t = m_tags.at(i)->text();
@@ -243,7 +244,7 @@ QString Image::path(QString fn)
 		t = t.replace("\\", "_").replace("%", "_").replace("/", "_").replace(":", "_").replace("|", "_").replace("*", "_").replace("?", "_").replace("\"", "_").replace("<", "_").replace(">", "_").replace("__", "_").replace("__", "_").replace("__", "_").trimmed();
 		if (!settings.value("replaceblanks", false).toBool())
 		{ t.replace("_", " "); }
-		details[m_tags.at(i)->type()+"s"].append(t);
+		details[ignore.contains(m_tags.at(i)->text(), Qt::CaseInsensitive) ? "generals" : m_tags.at(i)->type()+"s"].append(t);
 		details["alls"].append(t);
 	}
 	if (settings.value("copyright_useshorter", true).toBool())
