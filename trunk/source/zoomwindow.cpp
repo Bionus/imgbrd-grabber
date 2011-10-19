@@ -17,6 +17,7 @@ zoomWindow::zoomWindow(Image *image, QStringMap site) : ui(new Ui::zoomWindow), 
 	ui->setupUi(this);
 	m_favorites = loadFavorites().keys();
 	m_viewItLater = loadViewItLater();
+	m_ignore = loadIgnored();
 
 	m_mustSave = 0;
 
@@ -145,6 +146,7 @@ void zoomWindow::contextMenu(QPoint point)
 	QMenu *menu = new QMenu(this);
 	if (!this->link.isEmpty())
 	{
+		// Favoris
 		if (m_favorites.contains(link, Qt::CaseInsensitive))
 		{
 			menu->addAction(QIcon(":/images/icons/remove.png"), tr("Retirer des favoris"), this, SLOT(unfavorite()));
@@ -152,11 +154,18 @@ void zoomWindow::contextMenu(QPoint point)
 		}
 		else
 		{ menu->addAction(QIcon(":/images/icons/add.png"), tr("Ajouter aux favoris"), this, SLOT(favorite())); }
+		// Garder pour plus tard
 		if (m_viewItLater.contains(link, Qt::CaseInsensitive))
 		{ menu->addAction(QIcon(":/images/icons/remove.png"), tr("Ne pas garder pour plus tard"), this, SLOT(unviewitlater())); }
 		else
 		{ menu->addAction(QIcon(":/images/icons/add.png"), tr("Garder pour plus tard"), this, SLOT(viewitlater())); }
+		// Ignorer
+		if (m_ignore.contains(link, Qt::CaseInsensitive))
+		{ menu->addAction(QIcon(":/images/icons/showed.png"), tr("Ne plus ignorer"), this, SLOT(unignore())); }
+		else
+		{ menu->addAction(QIcon(":/images/icons/hidden.png"), tr("Ignorer"), this, SLOT(ignore())); }
 		menu->addSeparator();
+		// Onglets
 		menu->addAction(QIcon(":/images/icons/tab.png"), tr("Ouvrir dans un nouvel onglet"), this, SLOT(openInNewTab()));
 		menu->addAction(QIcon(":/images/icons/window.png"), tr("Ouvrir dans une nouvelle fenêtre"), this, SLOT(openInNewWindow()));
 	}
@@ -229,6 +238,24 @@ void zoomWindow::unviewitlater()
 		f.write(m_viewItLater.join("\r\n").toAscii());
 	f.close();
 }
+void zoomWindow::ignore()
+{
+	m_ignore.append(link);
+	QFile f(savePath("ignore.txt"));
+	f.open(QIODevice::WriteOnly);
+		f.write(m_ignore.join("\r\n").toAscii());
+	f.close();
+	colore();
+}
+void zoomWindow::unignore()
+{
+	m_ignore.removeAll(link);
+	QFile f(savePath("ignore.txt"));
+	f.open(QIODevice::WriteOnly);
+		f.write(m_ignore.join("\r\n").toAscii());
+	f.close();
+	colore();
+}
 
 
 
@@ -268,40 +295,10 @@ void zoomWindow::display(QPixmap pix, int size)
 
 void zoomWindow::replyFinished(Image* img)
 {
+	m_image = img;
+	colore();
+
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
-	bool under = settings.value("Save/remplaceblanksbyunderscores", false).toBool();
-	QStringList blacklistedtags(settings.value("blacklistedtags").toString().split(' '));
-
-	QStringList tlist = QStringList() << "artists" << "copyrights" << "characters" << "models" << "generals";
-	QMap<QString,QString> styles;
-	for (int i = 0; i < tlist.size(); i++)
-	{
-		QFont font;
-		font.fromString(settings.value("Coloring/Fonts/"+tlist.at(i)).toString());
-		styles[tlist.at(i)] = "color:"+settings.value("Coloring/Colors/"+tlist.at(i), "#00aa00").toString()+"; "+qfonttocss(font);
-	}
-
-	QStringList t;
-	for (int i = 0; i < img->tags().size(); i++)
-	{
-		Tag *tag = img->tags().at(i);
-		QString normalized = tag->text().replace("\\", " ").replace("/", " ").replace(":", " ").replace("|", " ").replace("*", " ").replace("?", " ").replace("\"", " ").replace("<", " ").replace(">", " ").trimmed();
-		if (under)
-		{ normalized.replace(' ', '_'); }
-		this->details[tag->type()+"s"].append(normalized);
-		this->details["alls"].append(normalized);
-		if (blacklistedtags.contains(tag->text(), Qt::CaseInsensitive))
-		{ t.append("<a href=\""+tag->text()+"\" style=\"\">"+tag->text()+"</a>"); }
-		else
-		{ t.append("<a href=\""+tag->text()+"\" style=\""+(styles.contains(tag->type()+"s") ? styles[tag->type()+"s"] : styles["generals"])+"\">"+tag->text()+"</a>"); }
-	}
-	tags = t.join(" ");
-	if (ui->widgetLeft->isHidden())
-	{ ui->labelTagsTop->setText(tags); }
-	else
-	{ ui->labelTagsLeft->setText(t.join("<br/>")); }
-	m_detailsWindow->setTags(tags);
-
 	QString pth = m_image->path();
 	QString path = settings.value("Save/path").toString().replace("\\", "/");
 	if (path.right(1) == "/")
@@ -330,6 +327,40 @@ void zoomWindow::replyFinished(Image* img)
 	}
 	else
 	{ this->load(); }
+}
+void zoomWindow::colore()
+{
+	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
+	bool under = settings.value("Save/remplaceblanksbyunderscores", false).toBool();
+	QStringList blacklistedtags(settings.value("blacklistedtags").toString().split(' '));
+
+	QStringList tlist = QStringList() << "blacklisteds" << "ignoreds" << "artists" << "copyrights" << "characters" << "models" << "generals" << "favorites";
+	QStringList defaults = QStringList() << "000000" << "999999" << "aa0000" << "aa00aa" << "00aa00" << "0000ee" << "000000" << "ffc0cb";
+	QMap<QString,QString> styles;
+	for (int i = 0; i < tlist.size(); i++)
+	{
+		QFont font;
+		font.fromString(settings.value("Coloring/Fonts/"+tlist.at(i)).toString());
+		styles[tlist.at(i)] = "color:"+settings.value("Coloring/Colors/"+tlist.at(i), "#"+defaults.at(i)).toString()+"; "+qfonttocss(font);
+	}
+	QStringList t;
+	for (int i = 0; i < m_image->tags().size(); i++)
+	{
+		Tag *tag = m_image->tags().at(i);
+		QString normalized = tag->text().replace("\\", " ").replace("/", " ").replace(":", " ").replace("|", " ").replace("*", " ").replace("?", " ").replace("\"", " ").replace("<", " ").replace(">", " ").trimmed();
+		if (under)
+		{ normalized.replace(' ', '_'); }
+		this->details[tag->type()+"s"].append(normalized);
+		this->details["alls"].append(normalized);
+		QString type = blacklistedtags.contains(tag->text(), Qt::CaseInsensitive) ? "blacklisteds" : (m_ignore.contains(tag->text(), Qt::CaseInsensitive) ? "ignored" : tag->type());
+		t.append("<a href=\""+tag->text()+"\" style=\""+(styles.contains(type+"s") ? styles[type+"s"] : styles["generals"])+"\">"+tag->text()+"</a>");
+	}
+	tags = t.join(" ");
+	if (ui->widgetLeft->isHidden())
+	{ ui->labelTagsTop->setText(tags); }
+	else
+	{ ui->labelTagsLeft->setText(t.join("<br/>")); }
+	m_detailsWindow->setTags(tags);
 }
 
 void zoomWindow::replyFinishedZoom()

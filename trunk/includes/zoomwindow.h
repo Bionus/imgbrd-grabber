@@ -47,7 +47,10 @@ class zoomWindow : public QWidget
 		void unfavorite();
 		void viewitlater();
 		void unviewitlater();
+		void ignore();
+		void unignore();
 		void downloadProgress(qint64, qint64);
+		void colore();
 	
 	protected:
 		void closeEvent(QCloseEvent *);
@@ -80,7 +83,7 @@ class zoomWindow : public QWidget
 		QNetworkReply *m_reply;
 		const char* m_format;
 		bool m_replyExists, m_finished;
-		QStringList m_favorites, m_viewItLater;
+		QStringList m_favorites, m_viewItLater, m_ignore;
 		QByteArray m_data;
 		int m_size;
 };

@@ -28,5 +28,7 @@
         <file>images/colors/green.png</file>
         <file>images/colors/red.png</file>
         <file>images/colors/black.png</file>
+        <file>images/icons/hidden.png</file>
+        <file>images/icons/showed.png</file>
     </qresource>
 </RCC>

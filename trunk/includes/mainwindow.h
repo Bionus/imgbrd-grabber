@@ -63,7 +63,7 @@ class mainWindow : public QMainWindow
 		void getAll();
 		void getAllFinishedLoading(Page*);
 		void getAllPerformTags(Image*);
-		void getAllPerformImage(QNetworkReply*);
+		void getAllPerformImage();
 		void getAllProgress(qint64, qint64);
 		void getAllCancel();
 		void _getAll();
@@ -109,7 +109,7 @@ class mainWindow : public QMainWindow
 		batchWindow					*m_progressdialog;
 		QList<QBouton*>				m_mergeButtons;
 		QList<searchTab*>			m_tabs;
-		bool						m_loaded;
+		bool						m_loaded, m_getAllRequestExists;
 		QList<Page*>				m_pages;
 		QList<Image*>				m_images;
 		int							m_pagemax;

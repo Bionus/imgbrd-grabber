@@ -1132,6 +1132,34 @@ p, li { white-space: pre-wrap; }
             </item>
            </layout>
           </item>
+          <item row="7" column="0">
+           <widget class="QLabel" name="label_58">
+            <property name="text">
+             <string>Ignorés</string>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="1">
+           <layout class="QHBoxLayout" name="horizontalLayout_12">
+            <item>
+             <widget class="QLineEdit" name="lineColoringIgnoreds"/>
+            </item>
+            <item>
+             <widget class="QPushButton" name="buttonColoringIgnoredsColor">
+              <property name="text">
+               <string>Couleur</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="buttonColoringIgnoredsFont">
+              <property name="text">
+               <string>Police</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
          </layout>
         </widget>
        </item>

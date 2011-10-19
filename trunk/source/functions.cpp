@@ -88,6 +88,23 @@ QStringList loadViewItLater()
 }
 
 /**
+ * Load ignored tags from local file.
+ * @return	A QStringList containing tags
+ */
+QStringList loadIgnored()
+{
+	QStringList ignore;
+	QFile file(savePath("ignore.txt"));
+	if (file.open(QIODevice::ReadOnly))
+	{
+		QString vil = file.readAll();
+		ignore = vil.replace("\r\n", "\n").replace("\r", "\n").split("\n");
+		file.close();
+	}
+	return ignore;
+}
+
+/**
  * Check filename format's validity.
  * @param	text	The format to be validated.
  * @return			A QString containing the message (error or not).
