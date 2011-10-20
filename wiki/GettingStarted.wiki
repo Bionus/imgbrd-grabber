@@ -6,7 +6,7 @@
 
 ==Windows==
   # Download the windows installer from the download page.
-  # Launch the installer, then follow instructions. By default, the program will be installed to "C:/Program Files/Grabber" (note that all your settings will be stored in "C:/Users/%USERNAME%/Grabber").
+  # Launch the installer, then follow instructions. By default, the program will be installed to "C:/Program Files/Grabber" (note that all your settings will be stored in "%USERPROFILE%/Grabber").
   # Go to the installation folder, then launch "Grabber.exe".
 
 
