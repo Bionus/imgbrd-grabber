@@ -1,1 +1,39 @@
-#summary Detailed info about filename.
+#summary Detailed info about the filename option.
+
+
+
+= Available tokens =
+  * %artist%
+  * %copyright%
+  * %character%
+  * %model% : boorus such as [http://behoimi.org/ Behoimi] use, adding to classical type, the "model" type.
+  * %model|artist% : if there is a model in the tags, use it, else fallback to the artist.
+  * %search% : search tags
+  * %search_1%, %search_2%, %search_3%... : first/second/third/etc. tag of the search.
+  * %filename% : image filename, as stored on the booru's server.
+  * %rating%
+  * %md5%
+  * %id%
+  * %website%
+  * %height%
+  * %width%
+  * %ext%
+  * %general%
+  * %custom% : custom tags that have been found in the image.
+  * %all% : all tags.
+  * %allo% : do not use this unless you know what you're doing. It is the same as %all%, but without the removal of forbidden characters and any treatment (so some images just won't save).
+
+= Conditionals =
+You can use conditionals in your filename, using strict inequality signs (< and >). If any token found in the conditional does not exist or is empty, nothing into it will be displayed.
+Since an example is worth a thousand words:
+{{{
+image - <%artist% some text <%nothing% another text> test><<%character% some text> text %nothing%> %md5%.%ext%
+}}}
+Assuming the image contains both an artist and a character, it will return:
+{{{
+image - %artist% some text  test %md5%.%ext%
+}}}
+If the image doesn't have any artist, it will be:
+{{{
+image -  %md5%.%ext%
+}}}
