@@ -37,3 +37,23 @@ If the image doesn't have any artist, it will be:
 {{{
 image -  %md5%.%ext%
 }}}
+You can also test directly the presence of a tag surrounding him with quotes. For example:
+{{{
+image - <image contains the tag "solo"><"group" is one of the image tags> %md5%.%ext%
+}}}
+If the image contains the "solo" tag, it will return:
+{{{
+image - image contains the tag solo  %md5%.%ext%
+}}}
+If the image contains the "group" tag:
+{{{
+image -  group is one of the image tags %md5%.%ext%
+}}}
+If, for some obscure reason, it have both:
+{{{
+image - image contains the tag solo group is one of the image tags %md5%.%ext%
+}}}
+If, it does not have solo nor group:
+{{{
+image -   %md5%.%ext%
+}}}
