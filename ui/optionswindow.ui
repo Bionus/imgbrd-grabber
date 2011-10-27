@@ -528,7 +528,11 @@ p, li { white-space: pre-wrap; }
            </widget>
           </item>
           <item row="6" column="1">
-           <widget class="QSpinBox" name="spinLimit"/>
+           <widget class="QSpinBox" name="spinLimit">
+            <property name="maximum">
+             <number>260</number>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>

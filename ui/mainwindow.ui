@@ -218,6 +218,11 @@
             </column>
             <column>
              <property name="text">
+              <string>Source</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
               <string>Page</string>
              </property>
             </column>
@@ -233,22 +238,17 @@
             </column>
             <column>
              <property name="text">
-              <string>Télécharger les images de la liste noire</string>
-             </property>
-            </column>
-            <column>
-             <property name="text">
-              <string>Source</string>
-             </property>
-            </column>
-            <column>
-             <property name="text">
               <string>Noms de fichiers</string>
              </property>
             </column>
             <column>
              <property name="text">
               <string>Dossier</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Télécharger les images de la liste noire</string>
              </property>
             </column>
            </widget>
