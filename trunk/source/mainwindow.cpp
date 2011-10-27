@@ -12,7 +12,7 @@
 #include "json.h"
 #include <QtXml>
 
-#define VERSION	"2.3.1"
+#define VERSION	"2.4.0"
 #define DONE()	logUpdate(tr(" Fait"))
 
 extern QMap<QDateTime,QString> _log;
@@ -112,7 +112,6 @@ void mainWindow::init()
 		file.close();
 	}
 	m_sites = stes;
-
 
 	QPushButton *add = new QPushButton(QIcon(":/images/add.png"), "");
 		add->setFlat(true);
@@ -244,6 +243,11 @@ void mainWindow::init()
 	else if (!m_tags.isEmpty() || m_settings->value("loadatstart", false).toBool())
 	{ m_tabs[0]->setTags(this->m_tags.join(" ")); }
 
+	QHeaderView *headerView = ui->tableBatchGroups->horizontalHeader();
+	headerView->setResizeMode(QHeaderView::Interactive);
+	headerView = ui->tableBatchUniques->horizontalHeader();
+	headerView->setResizeMode(QHeaderView::Interactive);
+
 	m_loaded = true;
 	logShow();
 }
@@ -296,7 +300,13 @@ void mainWindow::batchAddGroup(const QStringList& values)
 		item = new QTableWidgetItem;
 			item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsEditable);
 			item->setText(values.at(t));
-		ui->tableBatchGroups->setItem(ui->tableBatchGroups->rowCount()-1, t, item);
+		int r = t+1;
+		if (r == 1) { r = 0; }
+		else if (r == 6) { r = 1; }
+		else if (r == 7) { r = 5; }
+		else if (r == 8) { r = 6; }
+		else if (r == 5) { r = 7; }
+		ui->tableBatchGroups->setItem(ui->tableBatchGroups->rowCount()-1, r, item);
 	}
 	m_allow = true;
 }
@@ -366,7 +376,16 @@ void mainWindow::batchChange(int id)
 void mainWindow::updateBatchGroups(int y, int x)
 {
 	if (m_allow)
-	{ m_groupBatchs[y][x] = ui->tableBatchGroups->item(y,x)->text(); }
+	{
+		int r = x;
+		if (0 == 1) { r = 1; }
+		else if (r == 1) { r = 6; }
+		else if (r == 5) { r = 7; }
+		else if (r == 6) { r = 8; }
+		else if (r == 7) { r = 5; }
+		r--;
+		m_groupBatchs[y][r] = ui->tableBatchGroups->item(y,x)->text();
+	}
 }
 void mainWindow::addGroup()
 {
@@ -1185,6 +1204,9 @@ void mainWindow::getAllPerformTags(Image* img)
 			m_getAllRequest = m->get(request);
 			connect(m_getAllRequest, SIGNAL(finished()), this, SLOT(getAllPerformImage()));
 			m_getAllRequestExists = true;
+			m_downloadTime = new QTime();
+			m_downloadTime->start();
+			connect(m_getAllRequest, SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(getAllProgress(qint64, qint64)));
 		}
 	}
 	else

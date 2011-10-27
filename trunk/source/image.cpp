@@ -202,7 +202,7 @@ QString Image::filter(QStringList filters)
 
 
 
-QString analyse(QStringList tokens, QString text)
+QString analyse(QStringList tokens, QString text, QStringList tags)
 {
 	QString ret = text;
 	QRegExp reg = QRegExp("\\<([^>]+)\\>");
@@ -213,14 +213,22 @@ QString analyse(QStringList tokens, QString text)
 		if (!cap.isEmpty())
 		{
 			cap += QString(">").repeated(cap.count('<')-cap.count('>'));
-			ret.replace("<"+cap+">", analyse(tokens, cap));
+			ret.replace("<"+cap+">", analyse(tokens, cap, tags));
 		}
 		pos += reg.matchedLength()+cap.count('<')-cap.count('>');
 	}
 	QString r = ret;
 	for (int i = 0; i < tokens.size(); i++)
 	{ r.replace("%"+tokens.at(i)+"%", ""); }
-	return r.contains("%") ? "" : ret;
+	reg = QRegExp("\"([^\"]+)\"");
+	pos = 0;
+	while ((pos = reg.indexIn(text, pos)) != -1)
+	{
+		if (!reg.cap(1).isEmpty() && tags.contains(reg.cap(1)))
+		{ ret.replace(reg.cap(0), reg.cap(1)); }
+		pos += reg.matchedLength();
+	}
+	return r.contains("%") || ret.contains("\"") ? "" : ret;
 }
 
 QString Image::path(QString fn)
@@ -288,7 +296,7 @@ QString Image::path(QString fn)
 		(filename.contains("%general%") ? details["generals"] : QStringList());
 
 	QStringList tokens = QStringList() << "artist" << "general" << "copyright" << "character" << "model" << "model|artist" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "custom" << "allo";
-	filename = analyse(tokens, filename);
+	filename = analyse(tokens, filename, details["allos"]);
 
 	filename.replace("%artist%", (details["artists"].isEmpty() ? settings.value("artist_empty").toString() : (settings.value("artist_useall").toBool() || details["artists"].count() == 1 ? details["artists"].join(settings.value("artist_sep").toString()) : settings.value("artist_value").toString())).left(259-pth.length()-1-filename.length()));
 	filename.replace("%copyright%", (copyrights.isEmpty() ? settings.value("copyright_empty").toString() : (settings.value("copyright_useall").toBool() || copyrights.count() == 1 ? copyrights.join(settings.value("copyright_sep").toString()) : settings.value("copyright_value").toString())).left(259-pth.length()-1-filename.length()));
