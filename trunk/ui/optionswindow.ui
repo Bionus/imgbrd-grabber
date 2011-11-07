@@ -752,20 +752,17 @@ p, li { white-space: pre-wrap; }
         </widget>
        </item>
        <item>
-        <widget class="QWidget" name="widget_12" native="true">
-         <layout class="QFormLayout" name="formLayout_14">
+        <widget class="QWidget" name="widgetCustom" native="true">
+         <layout class="QFormLayout" name="layoutCustom">
+          <property name="fieldGrowthPolicy">
+           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+          </property>
           <item row="0" column="0" colspan="2">
-           <widget class="QLabel" name="label_53">
+           <widget class="QPushButton" name="buttonCustom">
             <property name="text">
-             <string>&lt;i&gt;Le symbole %custom% vous permet de personnaliser un des symboles. Les tags de cette liste trouvés dans l'image seront placés dans %custom%.&lt;/i&gt;</string>
-            </property>
-            <property name="wordWrap">
-             <bool>true</bool>
+             <string>Ajouter un symbole personnalisé</string>
             </property>
            </widget>
-          </item>
-          <item row="1" column="0" colspan="2">
-           <widget class="QPlainTextEdit" name="editCustom"/>
           </item>
          </layout>
         </widget>

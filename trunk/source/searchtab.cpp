@@ -401,20 +401,24 @@ void searchTab::finishedLoading(Page* page)
 	{
 		QStringList detected;
 		Image *img = imgs.at(i);
+		QStringList tags = m_search->toPlainText().split(' ');
+		QList<QChar> modifiers = QList<QChar>() << '~';
+		for (int r = 0; r < tags.size(); r++)
+		{
+			if (modifiers.contains(tags[r][0]))
+			{ tags[r] = tags[r].right(tags[r].size()-1); }
+		}
 		if (!settings->value("blacklistedtags").toString().isEmpty())
 		{
 			QStringList blacklistedtags(settings->value("blacklistedtags").toString().split(" "));
-			for (int b = 0; b < blacklistedtags.size(); b++)
+			for (int t = 0; t < img->tags().count(); t++)
 			{
-				for (int t = 0; t < img->tags().count(); t++)
-				{
-					if (img->tags().at(t)->text().toLower() == blacklistedtags.at(b).toLower())
-					{ detected.append(blacklistedtags.at(b)); }
-				}
+				if (blacklistedtags.contains(img->tags().at(t)->text(), Qt::CaseInsensitive) && !tags.contains(img->tags().at(t)->text(), Qt::CaseInsensitive))
+				{ detected.append(img->tags().at(t)->text().toLower()); }
 			}
 		}
 		if (!detected.isEmpty() && settings->value("hideblacklisted", false).toBool())
-		{ log(tr("Image #%1 ignored. Reason: %2.").arg(i).arg("\""+detected.join(", ")+"\""));; }
+		{ log(tr("Image #%1 ignorée. Raison : %2.").arg(i).arg("\""+detected.join(", ")+"\""));; }
 		else
 		{
 			connect(img, SIGNAL(finishedLoadingPreview(Image*)), this, SLOT(finishedLoadingPreview(Image*)));

@@ -248,6 +248,11 @@ void mainWindow::init()
 	headerView = ui->tableBatchUniques->horizontalHeader();
 	headerView->setResizeMode(QHeaderView::Interactive);
 
+	QStringList sizes = m_settings->value("batch", "100,100,100,100,100,100,100,100,100").toString().split(',');
+	int m = sizes.size() > ui->tableBatchGroups->columnCount() ? ui->tableBatchGroups->columnCount() : sizes.size();
+	for (int i = 0; i < m; i++)
+	{ ui->tableBatchGroups->horizontalHeader()->resizeSection(i, sizes.at(i).toInt()); }
+
 	m_loaded = true;
 	logShow();
 }
@@ -298,7 +303,6 @@ void mainWindow::batchAddGroup(const QStringList& values)
 	for (int t = 0; t < values.count(); t++)
 	{
 		item = new QTableWidgetItem;
-			item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsEditable);
 			item->setText(values.at(t));
 		int r = t+1;
 		if (r == 1) { r = 0; }
@@ -307,6 +311,10 @@ void mainWindow::batchAddGroup(const QStringList& values)
 		else if (r == 8) { r = 6; }
 		else if (r == 5) { r = 7; }
 		ui->tableBatchGroups->setItem(ui->tableBatchGroups->rowCount()-1, r, item);
+		/*QProgressBar *prog = new QProgressBar();
+		prog->setTextVisible(false);
+		m_progressBars.append(prog);
+		ui->tableBatchGroups->setCellWidget(ui->tableBatchGroups->rowCount()-1, 8, prog);*/
 	}
 	m_allow = true;
 }
@@ -359,6 +367,31 @@ void mainWindow::batchClear()
 	m_groupBatchs.clear();
 	ui->tableBatchGroups->clearContents();
 	ui->tableBatchGroups->setRowCount(0);
+}
+void mainWindow::batchClearSel()
+{
+	QList<QTableWidgetItem *> selected = ui->tableBatchGroups->selectedItems();
+	int count = selected.size();
+	QSet<int> todelete = QSet<int>();
+	for (int i = 0; i < count; i++)
+	{ todelete.insert(selected.at(i)->row()); }
+	int rem = 0;
+	foreach (int i, todelete)
+	{
+		ui->tableBatchGroups->removeRow(i-rem);
+		rem++;
+	}
+	selected = ui->tableBatchUniques->selectedItems();
+	count = selected.size();
+	todelete.clear();
+	for (int i = 0; i < count; i++)
+	{ todelete.insert(selected.at(i)->row()); }
+	rem = 0;
+	foreach (int i, todelete)
+	{
+		ui->tableBatchUniques->removeRow(i-rem);
+		rem++;
+	}
 }
 void mainWindow::batchChange(int id)
 {
@@ -548,7 +581,7 @@ void mainWindow::finishedLoading(Page* page)
 	{
 		Image *img = imgs.at(i);
 		if (img->createdAt() < m_loadFavorite)
-		{ log(tr("Image #%1 ignored. Reason: %2.").arg(i).arg("déjà vue"));; }
+		{ log(tr("Image #%1 ignorée. Raison : %2.").arg(i).arg("déjà vue"));; }
 		else
 		{
 			QStringList detected;
@@ -565,7 +598,7 @@ void mainWindow::finishedLoading(Page* page)
 				}
 			}
 			if (!detected.isEmpty() && m_settings->value("hideblacklisted", false).toBool())
-			{ log(tr("Image #%1 ignored. Reason: %2.").arg(i).arg("\""+detected.join(", ")+"\""));; }
+			{ log(tr("Image #%1 ignorée. Raison : %2.").arg(i).arg("\""+detected.join(", ")+"\""));; }
 			else
 			{
 				connect(img, SIGNAL(finishedLoadingPreview(Image*)), this, SLOT(finishedLoadingPreview(Image*)));
@@ -812,6 +845,10 @@ void mainWindow::closeEvent(QCloseEvent *e)
 		settings.setValue("state", int(windowState()));
 		settings.setValue("size", size());
 		settings.setValue("pos", pos());
+		QStringList sizes = QStringList();
+		for (int i = 0; i < ui->tableBatchGroups->columnCount(); i++)
+		{ sizes.append(QString::number(ui->tableBatchGroups->horizontalHeader()->sectionSize(i))); }
+		settings.setValue("batch", sizes.join(","));
 		settings.beginGroup("Favorites");
 			QStringList assoc = QStringList() << "name" << "note" << "lastviewed";
 			settings.setValue("order", assoc[ui->comboOrderfavorites->currentIndex()]);
@@ -866,8 +903,13 @@ void mainWindow::aboutAuthor()
 }
 
 /* Batch download */
-void mainWindow::getAll()
+void mainWindow::batchSel()
 {
+	getAll(false);
+}
+void mainWindow::getAll(bool all)
+{
+	qDebug() << all;
 	if (m_settings->value("Save/path").toString().isEmpty())
 	{ error(this, tr("Vous n'avez pas précisé de dossier de sauvegarde !")); return; }
 	else if (m_settings->value("Save/filename").toString().isEmpty())
@@ -883,7 +925,6 @@ void mainWindow::getAll()
 	m_getAllBeforeId = -1;
 	m_getAllImages.clear();
 	m_getAllPages.clear();
-	m_allImages = m_batchs;
 	if (!m_settings->value("Exec/Group/init").toString().isEmpty())
 	{
 		log(tr("Execution de la commande d'initialisation' \"%1\"").arg(m_settings->value("Exec/Group/init").toString()));
@@ -892,31 +933,39 @@ void mainWindow::getAll()
 		if (!m_process->waitForStarted(10000))
 		{ log(tr("<b>Erreur :</b> %1").arg(tr("erreur lors de la commande d'initialisation : %1.").arg("timed out"))); }
 	}
+	QList<QTableWidgetItem *> selected = ui->tableBatchGroups->selectedItems();
+	int count = selected.size();
+	QSet<int> todownload = QSet<int>();
+	for (int i = 0; i < count; i++)
+	{ todownload.insert(selected.at(i)->row()); }
 	for (int i = 0; i < m_groupBatchs.count(); i++)
 	{
-		QString site = m_groupBatchs.at(i).at(5);
-		int pp = m_groupBatchs.at(i).at(2).toInt();
-		QString text = " "+m_groupBatchs.at(i).at(0)+" ";
-		text.replace(" rating:s ", " rating:safe ", Qt::CaseInsensitive)
-			.replace(" rating:q ", " rating:questionable ", Qt::CaseInsensitive)
-			.replace(" rating:e ", " rating:explicit ", Qt::CaseInsensitive)
-			.replace(" -rating:s ", " -rating:safe ", Qt::CaseInsensitive)
-			.replace(" -rating:q ", " -rating:questionable ", Qt::CaseInsensitive)
-			.replace(" -rating:e ", " -rating:explicit ", Qt::CaseInsensitive);
-		QStringList tags = text.split(" ", QString::SkipEmptyParts);
-		tags.removeDuplicates();
-		for (int r = 0; r < ceil(m_groupBatchs.at(i).at(3).toDouble()/pp); r++)
+		if (all || todownload.contains(i))
 		{
-			if (!m_sites.keys().contains(site))
-			{ log(tr("<b>Attention :</b> %1").arg(tr("site \"%1\" not found.").arg(site))); }
-			else
+			QString site = m_groupBatchs.at(i).at(5);
+			int pp = m_groupBatchs.at(i).at(2).toInt();
+			QString text = " "+m_groupBatchs.at(i).at(0)+" ";
+			text.replace(" rating:s ", " rating:safe ", Qt::CaseInsensitive)
+				.replace(" rating:q ", " rating:questionable ", Qt::CaseInsensitive)
+				.replace(" rating:e ", " rating:explicit ", Qt::CaseInsensitive)
+				.replace(" -rating:s ", " -rating:safe ", Qt::CaseInsensitive)
+				.replace(" -rating:q ", " -rating:questionable ", Qt::CaseInsensitive)
+				.replace(" -rating:e ", " -rating:explicit ", Qt::CaseInsensitive);
+			QStringList tags = text.split(" ", QString::SkipEmptyParts);
+			tags.removeDuplicates();
+			for (int r = 0; r < ceil(m_groupBatchs.at(i).at(3).toDouble()/pp); r++)
 			{
-				Page *page = new Page(&m_sites, site, tags, m_groupBatchs.at(i).at(1).toInt()+r, pp);
-				log(tr("Chargement de la page <a href=\"%1\">%1</a>").arg(page->url().toString()));
-				connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(getAllFinishedLoading(Page*)));
-				page->load();
-				m_groupBatchs[i][8] = page->url().toString();
-				m_getAllPages.append(page);
+				if (!m_sites.keys().contains(site))
+				{ log(tr("<b>Attention :</b> %1").arg(tr("site \"%1\" not found.").arg(site))); }
+				else
+				{
+					Page *page = new Page(&m_sites, site, tags, m_groupBatchs.at(i).at(1).toInt()+r, pp);
+					log(tr("Chargement de la page <a href=\"%1\">%1</a>").arg(page->url().toString()));
+					connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(getAllFinishedLoading(Page*)));
+					page->load();
+					m_groupBatchs[i][8] = page->url().toString();
+					m_getAllPages.append(page);
+				}
 			}
 		}
 	}
@@ -1002,7 +1051,7 @@ void mainWindow::_getAll()
 			.replace("%id%", QString::number(img->id()))
 			.replace("%ext%", u.section('.', -1))
 			.replace("%search%", m_groupBatchs[site_id][0]);
-			QStringList search = m_groupBatchs[site_id][0].split(" ");
+			QStringList search = m_groupBatchs[site_id][0].split(' ');
 			int i = 1;
 			while (path.contains("%search_"+QString::number(i)+"%"))
 			{
@@ -1023,18 +1072,22 @@ void mainWindow::_getAll()
 			if (!f.exists())
 			{
 				bool detected = false;
+				QStringList tags = search;
+				QList<QChar> modifiers = QList<QChar>() << '~';
+				for (int r = 0; r < tags.size(); r++)
+				{
+					if (modifiers.contains(tags[r][0]))
+					{ tags[r] = tags[r].right(tags[r].size()-1); }
+				}
 				if (!m_settings->value("blacklistedtags").toString().isEmpty())
 				{
 					QStringList blacklistedtags(m_settings->value("blacklistedtags").toString().split(' '));
-					for (int b = 0; b < blacklistedtags.size(); b++)
+					for (int t = 0; t < img->tags().count(); t++)
 					{
-						for (int t = 0; t < img->tags().count(); t++)
+						if (blacklistedtags.contains(img->tags().at(t)->text(), Qt::CaseInsensitive) && !tags.contains(img->tags().at(t)->text(), Qt::CaseInsensitive))
 						{
-							if (img->tags().at(t)->text().toLower() == blacklistedtags.at(b).toLower())
-							{
-								detected = true;
-								log(tr("Certains tags de l'image sont blacklistés."));
-							}
+							detected = true;
+							log(tr("Certains tags de l'image sont blacklistés."));
 						}
 					}
 				}
@@ -1168,18 +1221,23 @@ void mainWindow::getAllPerformTags(Image* img)
 	if (!f.exists())
 	{
 		bool detected = false;
+		QStringList tags = m_groupBatchs[site_id][0].split(' ');
+		QList<QChar> modifiers = QList<QChar>() << '~';
+		for (int r = 0; r < tags.size(); r++)
+		{
+			if (modifiers.contains(tags[r][0]))
+			{ tags[r] = tags[r].right(tags[r].size()-1); }
+		}
 		if (!m_settings->value("blacklistedtags").toString().isEmpty())
 		{
 			QStringList blacklistedtags(m_settings->value("blacklistedtags").toString().split(' '));
-			for (int b = 0; b < blacklistedtags.size(); b++)
+			for (int t = 0; t < img->tags().count(); t++)
 			{
-				for (int t = 0; t < img->tags().count(); t++)
+				if (blacklistedtags.contains(img->tags().at(t)->text(), Qt::CaseInsensitive) && !tags.contains(img->tags().at(t)->text(), Qt::CaseInsensitive))
 				{
-					if (img->tags().at(t)->text().toLower() == blacklistedtags.at(b).toLower())
-					{
-						detected = true;
-						log(tr("Certains tags de l'image sont blacklistés."));
-					}
+					detected = true;
+					log(tr("Certains tags de l'image sont blacklistés."));
+					qDebug() << img->tags().at(t)->text();
 				}
 			}
 		}

@@ -53,6 +53,8 @@ class mainWindow : public QMainWindow
 		void webZoom(int);
 		// Batch download management
 		void batchClear();
+		void batchClearSel();
+		void batchSel();
 		void batchChange(int);
 		void updateBatchGroups(int, int);
 		void addGroup();
@@ -60,7 +62,7 @@ class mainWindow : public QMainWindow
 		void batchAddGroup(const QStringList& values);
 		void batchAddUnique(QStringMap);
 		// Batch download
-		void getAll();
+		void getAll(bool all = true);
 		void getAllFinishedLoading(Page*);
 		void getAllPerformTags(Image*);
 		void getAllPerformImage();
@@ -88,7 +90,7 @@ class mainWindow : public QMainWindow
 		QStringList m_tags, m_assoc, m_gotMd5;
 		QList<QStringList> m_groupBatchs;
 		bool m_allow, m_must_get_tags;
-		QList<QStringMap> m_details, m_batchs, m_allImages;
+		QList<QStringMap> m_details, m_batchs;
 		QString m_currLang;
 		QTranslator m_translator;
 		QCalendarWidget *m_calendar;
@@ -115,6 +117,7 @@ class mainWindow : public QMainWindow
 		int							m_pagemax;
 		QList<bool>					m_selectedSources;
 		QTime						*m_downloadTime;
+		//QList<QProgressBar*>		m_progressBars;
 };
 
 #endif // MAINWINDOW_H
