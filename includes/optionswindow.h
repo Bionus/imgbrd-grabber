@@ -49,11 +49,15 @@ class optionsWindow : public QDialog
 		void on_buttonColoringFavoritesFont_clicked();
 		void on_buttonColoringBlacklistedsFont_clicked();
 		void on_buttonColoringIgnoredsFont_clicked();
+		void on_buttonCustom_clicked();
+		void addCustom(QString, QString);
 		void save();
 
 	private:
 		mainWindow *m_parent;
 		Ui::optionsWindow *ui;
+		QList<QLineEdit*> m_customNames;
+		QList<QLineEdit*> m_customTags;
 };
 
 #endif // OPTIONSWINDOW_H

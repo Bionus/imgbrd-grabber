@@ -89,9 +89,6 @@
         <property name="horizontalScrollMode">
          <enum>QAbstractItemView::ScrollPerPixel</enum>
         </property>
-        <property name="showGrid">
-         <bool>true</bool>
-        </property>
         <attribute name="horizontalHeaderHighlightSections">
          <bool>false</bool>
         </attribute>

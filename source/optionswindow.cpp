@@ -1,5 +1,6 @@
 #include "optionswindow.h"
 #include "ui_optionswindow.h"
+#include "customwindow.h"
 #include "functions.h"
 
 
@@ -77,7 +78,19 @@ optionsWindow::optionsWindow(mainWindow *parent) : QDialog(parent), m_parent(par
 		ui->lineCharactersSeparator->setText(settings.value("character_sep", "+").toString());
 		ui->lineCharactersIfMultiples->setText(settings.value("character_value", "group").toString());
 		ui->spinLimit->setValue(settings.value("limit", 0).toInt());
-		ui->editCustom->setPlainText(settings.value("custom").toString());
+		settings.beginGroup("Customs");
+			m_customNames = QList<QLineEdit*>();
+			m_customTags = QList<QLineEdit*>();
+			QStringList keys = settings.childKeys();
+			for (int i = 0; i < keys.size(); i++)
+			{
+				QLineEdit *leName = new QLineEdit(keys.at(i));
+				QLineEdit *leTags = new QLineEdit(settings.value(keys.at(i)).toString());
+				m_customNames.append(leName);
+				m_customTags.append(leTags);
+				ui->layoutCustom->insertRow(i, leName, leTags);
+			}
+		settings.endGroup();
 	settings.endGroup();
 
 	settings.beginGroup("Coloring");
@@ -136,7 +149,6 @@ optionsWindow::optionsWindow(mainWindow *parent) : QDialog(parent), m_parent(par
 		ui->lineCommandsImage->setText(settings.value("image").toString());
 		ui->lineCommandsTag->setText(settings.value("tag").toString());
 	settings.endGroup();
-
 	connect(this, SIGNAL(accepted()), this, SLOT(save()));
 }
 
@@ -156,6 +168,20 @@ void optionsWindow::on_buttonFolder_clicked()
 	QString folder = QFileDialog::getExistingDirectory(this, tr("Choisir un dossier de sauvegarde"), ui->lineFolder->text());
 	if (!folder.isEmpty())
 	{ ui->lineFolder->setText(folder); }
+}
+void optionsWindow::on_buttonCustom_clicked()
+{
+	customWindow *cw = new customWindow();
+	connect(cw, SIGNAL(validated(QString, QString)), this, SLOT(addCustom(QString, QString)));
+	cw->show();
+}
+void optionsWindow::addCustom(QString name, QString tags)
+{
+	QLineEdit *leName = new QLineEdit(name);
+	QLineEdit *leTags = new QLineEdit(tags);
+	ui->layoutCustom->insertRow(m_customNames.size(), leName, leTags);
+	m_customNames.append(leName);
+	m_customTags.append(leTags);
 }
 void optionsWindow::on_buttonCrypt_clicked()
 {
@@ -401,6 +427,12 @@ void optionsWindow::save()
 		settings.setValue("replaceblanks", ui->checkReplaceBlanks->isChecked());
 		settings.setValue("separator", ui->lineSeparator->text());
 		settings.setValue("path", ui->lineFolder->text());
+		QDir pth = QDir(ui->lineFolder->text());
+		if (!pth.exists())
+		{
+			while (!pth.cdUp()) {}
+			pth.mkpath(ui->lineFolder->text());
+		}
 		settings.setValue("filename", ui->lineFilename->text());
 		settings.setValue("artist_empty", ui->lineArtistsIfNone->text());
 		settings.setValue("artist_useall", ui->checkArtistsKeepAll->isChecked());
@@ -416,7 +448,11 @@ void optionsWindow::save()
 		settings.setValue("character_sep", ui->lineCharactersSeparator->text());
 		settings.setValue("character_value", ui->lineCharactersIfMultiples->text());
 		settings.setValue("limit", ui->spinLimit->value());
-		settings.setValue("custom", ui->editCustom->toPlainText());
+		settings.beginGroup("Customs");
+			settings.remove("");
+			for (int i = 0; i < m_customNames.size(); i++)
+			{ settings.setValue(m_customNames.at(i)->text(), m_customTags.at(i)->text()); }
+		settings.endGroup();
 	settings.endGroup();
 
 	settings.beginGroup("Coloring");

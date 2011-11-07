@@ -211,6 +211,18 @@
           </item>
           <item>
            <widget class="QTableWidget" name="tableBatchGroups">
+            <property name="verticalScrollMode">
+             <enum>QAbstractItemView::ScrollPerPixel</enum>
+            </property>
+            <property name="horizontalScrollMode">
+             <enum>QAbstractItemView::ScrollPerPixel</enum>
+            </property>
+            <attribute name="horizontalHeaderHighlightSections">
+             <bool>false</bool>
+            </attribute>
+            <attribute name="verticalHeaderHighlightSections">
+             <bool>false</bool>
+            </attribute>
             <column>
              <property name="text">
               <string>Tags</string>
@@ -269,6 +281,18 @@
           </item>
           <item>
            <widget class="QTableWidget" name="tableBatchUniques">
+            <property name="verticalScrollMode">
+             <enum>QAbstractItemView::ScrollPerPixel</enum>
+            </property>
+            <property name="horizontalScrollMode">
+             <enum>QAbstractItemView::ScrollPerPixel</enum>
+            </property>
+            <attribute name="horizontalHeaderHighlightSections">
+             <bool>false</bool>
+            </attribute>
+            <attribute name="verticalHeaderHighlightSections">
+             <bool>false</bool>
+            </attribute>
             <column>
              <property name="text">
               <string>Id</string>
@@ -311,6 +335,13 @@
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_3">
             <item>
+             <widget class="QPushButton" name="pushButton">
+              <property name="text">
+               <string>Télécharger la séléction</string>
+              </property>
+             </widget>
+            </item>
+            <item>
              <widget class="QPushButton" name="pushButton_14">
               <property name="text">
                <string>Tout télécharger</string>
@@ -318,9 +349,16 @@
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="pushButton_15">
+             <widget class="QPushButton" name="buttonClearSel">
               <property name="text">
-               <string>Effacer</string>
+               <string>Effacer la séléction</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="buttonClear">
+              <property name="text">
+               <string>Tout effacer</string>
               </property>
              </widget>
             </item>
@@ -652,7 +690,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>pushButton_15</sender>
+   <sender>buttonClear</sender>
    <signal>clicked()</signal>
    <receiver>mainWindow</receiver>
    <slot>batchClear()</slot>
@@ -675,7 +713,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>93</x>
-     <y>64</y>
+     <y>506</y>
     </hint>
     <hint type="destinationlabel">
      <x>715</x>
@@ -716,18 +754,34 @@
    </hints>
   </connection>
   <connection>
-   <sender>tableBatchGroups</sender>
-   <signal>cellChanged(int,int)</signal>
+   <sender>buttonClearSel</sender>
+   <signal>clicked()</signal>
    <receiver>mainWindow</receiver>
-   <slot>updateBatchGroups(int,int)</slot>
+   <slot>batchClearSel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>137</x>
-     <y>162</y>
+     <x>515</x>
+     <y>519</y>
     </hint>
     <hint type="destinationlabel">
-     <x>167</x>
-     <y>164</y>
+     <x>801</x>
+     <y>498</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>batchSel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>135</x>
+     <y>514</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>0</x>
+     <y>519</y>
     </hint>
    </hints>
   </connection>
@@ -758,5 +812,7 @@
   <slot>lastPage()</slot>
   <slot>addTab()</slot>
   <slot>closeCurrentTab()</slot>
+  <slot>batchClearSel()</slot>
+  <slot>batchSel()</slot>
  </slots>
 </ui>

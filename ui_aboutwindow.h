@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'aboutwindow.ui'
 **
-** Created: Tue 30. Aug 20:34:50 2011
-**      by: Qt User Interface Compiler version 4.6.4
+** Created: Thu 3. Nov 00:31:00 2011
+**      by: Qt User Interface Compiler version 4.7.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
