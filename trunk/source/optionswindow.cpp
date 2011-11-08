@@ -185,7 +185,7 @@ void optionsWindow::addCustom(QString name, QString tags)
 }
 void optionsWindow::on_buttonCrypt_clicked()
 {
-	QString password = QInputDialog::getText(this, "Hasher un mot de passe", "Veuillez entrer votre mot de passe.", QLineEdit::Password);
+	QString password = QInputDialog::getText(this, tr("Hasher un mot de passe"), tr("Veuillez entrer votre mot de passe."), QLineEdit::Password);
 	if (!password.isEmpty())
 	{ ui->linePassword->setText(QCryptographicHash::hash(password.toUtf8(), QCryptographicHash::Sha1).toHex()); }
 }
