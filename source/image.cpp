@@ -240,14 +240,19 @@ QString Image::path(QString fn)
 	QStringList copyrights;
 	QString cop;
 	bool found;
-	QStringList custom = QStringList(), scustom = settings.value("custom").toString().split(' ');
+	QMap<QString,QStringList> custom = QMap<QString,QStringList>(), scustom = getCustoms();
 	QMap<QString,QStringList> details;
 	QStringList ignore = loadIgnored();
 	for (int i = 0; i < m_tags.size(); i++)
 	{
 		QString t = m_tags.at(i)->text();
-		if (scustom.contains(t))
-		{ custom.append(t); }
+		for (int r = 0; r < scustom.size(); r++)
+		{
+			if (!custom.contains(scustom.keys().at(r)))
+			{ custom.insert(scustom.keys().at(r), QStringList()); }
+			if (scustom.values().at(r).contains(t))
+			{ custom[scustom.keys().at(r)].append(t); }
+		}
 		details["allos"].append(t);
 		t = t.replace("\\", "_").replace("%", "_").replace("/", "_").replace(":", "_").replace("|", "_").replace("*", "_").replace("?", "_").replace("\"", "_").replace("<", "_").replace(">", "_").replace("__", "_").replace("__", "_").replace("__", "_").trimmed();
 		if (!settings.value("replaceblanks", false).toBool())
@@ -295,9 +300,11 @@ QString Image::path(QString fn)
 		(filename.contains("%model%") ? details["models"] : QStringList()) +
 		(filename.contains("%general%") ? details["generals"] : QStringList());
 
-	QStringList tokens = QStringList() << "artist" << "general" << "copyright" << "character" << "model" << "model|artist" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "custom" << "allo";
+	QStringList tokens = QStringList() << "artist" << "general" << "copyright" << "character" << "model" << "model|artist" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "allo" << custom.keys();
 	filename = analyse(tokens, filename, details["allos"]);
 
+	for (int i = 0; i < custom.size(); i++)
+	{ filename.replace("%"+custom.keys().at(i)+"%", custom.values().at(i).join(settings.value("separator").toString()).left(259-pth.length()-1-filename.length())); }
 	filename.replace("%artist%", (details["artists"].isEmpty() ? settings.value("artist_empty").toString() : (settings.value("artist_useall").toBool() || details["artists"].count() == 1 ? details["artists"].join(settings.value("artist_sep").toString()) : settings.value("artist_value").toString())).left(259-pth.length()-1-filename.length()));
 	filename.replace("%copyright%", (copyrights.isEmpty() ? settings.value("copyright_empty").toString() : (settings.value("copyright_useall").toBool() || copyrights.count() == 1 ? copyrights.join(settings.value("copyright_sep").toString()) : settings.value("copyright_value").toString())).left(259-pth.length()-1-filename.length()));
 	filename.replace("%character%", (details["characters"].isEmpty() ? settings.value("character_empty").toString() : (settings.value("character_useall").toBool() || details["characters"].count() == 1 ? details["characters"].join(settings.value("character_sep").toString()) : settings.value("character_value").toString())).left(259-pth.length()-1-filename.length()));
@@ -313,7 +320,6 @@ QString Image::path(QString fn)
 	filename.replace("%width%", QString::number(m_size.width()).left(259-pth.length()-1-filename.length()));
 	filename.replace("%ext%", ext);
 	filename.replace("%general%", details["generals"].join(settings.value("separator").toString()).left(259-pth.length()-1-filename.length()));
-	filename.replace("%custom%", custom.join(settings.value("separator").toString()).left(259-pth.length()-1-filename.length()));
 	QStringList l = details["alls"];
 	for (int i = 0; i < rem.size(); i++)
 	{ l.removeAll(rem.at(i)); }
@@ -323,6 +329,7 @@ QString Image::path(QString fn)
 	{ filename.replace("//", "/"); }
 	if (filename.length() > settings.value("limit").toInt() && settings.value("limit").toInt() > 0)
 	{ filename = filename.left(filename.length()-ext.length()-1).left(settings.value("limit").toInt()-ext.length()-1) + filename.right(ext.length()+1); }
+	qDebug() << QDir::toNativeSeparators(filename);
 	return QDir::toNativeSeparators(filename);
 }
 
