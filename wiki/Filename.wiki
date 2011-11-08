@@ -19,9 +19,12 @@
   * %width%
   * %ext%
   * %general%
-  * %custom% : custom tags that have been found in the image.
   * %all% : all tags.
   * %allo% : do not use this unless you know what you're doing. It is the same as %all%, but without the removal of forbidden characters and any treatment (so some images just won't save).
+
+= Custom tokens =
+You can also add custom tokens. To do so, go to the options, "save" part and "custom tokens" subpart. Then just click the button "Add a new custom token" and choose a name and tags that will be searched (separate them with spaces). Any tags in this list found in the image will be placed into your token. For example if an image got tags "a", "b", "c", "d" and your tags list for token "test" is "a c e", "%test%" will be replaced by "a c".
+_Note: custom tokens with an already used name (such as %character%) will be used first.
 
 = Conditionals =
 You can use conditionals in your filename, using strict inequality signs (< and >). If any token found in the conditional does not exist or is empty, nothing into it will be displayed.
