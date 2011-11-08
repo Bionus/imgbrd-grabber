@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Grabber"
-#define MyAppVersion "2.4.0a"
+#define MyAppVersion "2.4.0"
 #define MyAppPublisher "Bionus"
 #define MyAppURL "http://code.google.com/p/imgbrd-grabber/"
 #define MyAppExeName "Grabber.exe"

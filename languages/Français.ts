@@ -760,6 +760,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="487"/>
+        <location filename="../source/mainwindow.cpp" line="270"/>
         <source>Nouvel onglet</source>
         <translation>Nouvel onglet</translation>
     </message>
@@ -2084,6 +2085,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../ui/optionswindow.ui" line="1238"/>
+        <location filename="../source/optionswindow.cpp" line="188"/>
         <source>Hasher un mot de passe</source>
         <translation>Hasher un mot de passe</translation>
     </message>
@@ -2349,6 +2351,11 @@ p, li { white-space: pre-wrap; }
         <location filename="../source/optionswindow.cpp" line="168"/>
         <source>Choisir un dossier de sauvegarde</source>
         <translation>Choisir un dossier de sauvegarde</translation>
+    </message>
+    <message>
+        <location filename="../source/optionswindow.cpp" line="188"/>
+        <source>Veuillez entrer votre mot de passe.</source>
+        <translation>Veuillez entrer votre mot de passe.</translation>
     </message>
     <message>
         <location filename="../source/optionswindow.cpp" line="359"/>
