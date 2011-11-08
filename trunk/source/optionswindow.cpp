@@ -78,14 +78,14 @@ optionsWindow::optionsWindow(mainWindow *parent) : QDialog(parent), m_parent(par
 		ui->lineCharactersSeparator->setText(settings.value("character_sep", "+").toString());
 		ui->lineCharactersIfMultiples->setText(settings.value("character_value", "group").toString());
 		ui->spinLimit->setValue(settings.value("limit", 0).toInt());
+		QMap<QString,QStringList> customs = getCustoms();
 		settings.beginGroup("Customs");
 			m_customNames = QList<QLineEdit*>();
 			m_customTags = QList<QLineEdit*>();
-			QStringList keys = settings.childKeys();
-			for (int i = 0; i < keys.size(); i++)
+			for (int i = 0; i < customs.size(); i++)
 			{
-				QLineEdit *leName = new QLineEdit(keys.at(i));
-				QLineEdit *leTags = new QLineEdit(settings.value(keys.at(i)).toString());
+				QLineEdit *leName = new QLineEdit(customs.keys().at(i));
+				QLineEdit *leTags = new QLineEdit(customs.values().at(i).join(" "));
 				m_customNames.append(leName);
 				m_customTags.append(leTags);
 				ui->layoutCustom->insertRow(i, leName, leTags);

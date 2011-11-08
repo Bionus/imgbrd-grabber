@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'customwindow.ui'
 **
-** Created: Thu 3. Nov 00:32:53 2011
+** Created: Tue 8. Nov 22:42:36 2011
 **      by: Qt User Interface Compiler version 4.7.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -88,7 +88,7 @@ public:
 
     void retranslateUi(QDialog *customWindow)
     {
-        customWindow->setWindowTitle(QApplication::translate("customWindow", "Grabber - Ajouter un site", 0, QApplication::UnicodeUTF8));
+        customWindow->setWindowTitle(QApplication::translate("customWindow", "Grabber - Ajouter un symbole personnalis\303\251", 0, QApplication::UnicodeUTF8));
         label_3->setText(QApplication::translate("customWindow", "<i>S\303\251parer les tags par des espaces ou des sauts de ligne</i>", 0, QApplication::UnicodeUTF8));
         label->setText(QApplication::translate("customWindow", "Nom", 0, QApplication::UnicodeUTF8));
         label_2->setText(QApplication::translate("customWindow", "Tags", 0, QApplication::UnicodeUTF8));

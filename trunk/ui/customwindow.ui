@@ -14,7 +14,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Grabber - Ajouter un site</string>
+   <string>Grabber - Ajouter un symbole personnalisé</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../resources.qrc">

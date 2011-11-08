@@ -29,6 +29,21 @@ void sortNonCaseSensitive(QStringList &sList)
 }
 
 /**
+ * Load custom tokens from settings.
+ * @return	The map with token names as keys and token tags as values.
+ */
+QMap<QString,QStringList> getCustoms()
+{
+	QMap<QString,QStringList> tokens;
+	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
+	settings.beginGroup("Save/Customs");
+	QStringList keys = settings.childKeys();
+	for (int i = 0; i < keys.size(); i++)
+	{ tokens.insert(keys.at(i), settings.value(keys.at(i)).toString().split(' ')); }
+	return tokens;
+}
+
+/**
  * Convert a danbooru-like date (Sat May 14 17:38:04 -0400 2011) to a valid QDateTime.
  * @param	str		The date string
  * @return	The converted date as QDateTime
@@ -122,7 +137,7 @@ QString validateFilename(QString text)
 	if (!text.contains("%md5%") && !text.contains("%id%"))
 	{ return QObject::tr("<span style=\"color:orange\">Votre nom de fichier n'est pas unique à chaque image et une image risque d'en écraser une précédente lors de la sauvegarde ! Vous devriez utiliser le symbole %md5%, unique à chaque image, pour éviter ce désagrément.</span>"); }
 	// Looking for unknown tokens
-	QStringList tokens = QStringList() << "artist" << "general" << "copyright" << "character" << "model" << "model|artist" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "custom" << "allo";
+	QStringList tokens = QStringList() << "artist" << "general" << "copyright" << "character" << "model" << "model|artist" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "allo" << getCustoms().keys();
 	QRegExp rx = QRegExp("%(.+)%");
 	rx.setMinimal(true);
 	int pos = 0;

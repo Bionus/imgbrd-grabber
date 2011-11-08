@@ -267,7 +267,7 @@ void mainWindow::addTab(QString tag)
 	searchTab *w = new searchTab(&m_sites, &m_favorites, &m_serverDate, this);
 	connect(w, SIGNAL(batchAddGroup(QStringList)), this, SLOT(batchAddGroup(QStringList)));
 	connect(w, SIGNAL(titleChanged(searchTab*)), this, SLOT(updateTabTitle(searchTab*)));
-	int index = ui->tabWidget->insertTab(ui->tabWidget->currentIndex()+(!m_tabs.isEmpty()), w, "Nouvel onglet");
+	int index = ui->tabWidget->insertTab(ui->tabWidget->currentIndex()+(!m_tabs.isEmpty()), w, tr("Nouvel onglet"));
 	ui->tabWidget->setCurrentIndex(index);
 	m_tabs.append(w);
 	QPushButton *closeTab = new QPushButton(QIcon(":/images/close.png"), "");
@@ -1237,7 +1237,6 @@ void mainWindow::getAllPerformTags(Image* img)
 				{
 					detected = true;
 					log(tr("Certains tags de l'image sont blacklistés."));
-					qDebug() << img->tags().at(t)->text();
 				}
 			}
 		}
