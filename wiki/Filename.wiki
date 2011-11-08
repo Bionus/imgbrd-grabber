@@ -24,6 +24,7 @@
 
 = Custom tokens =
 You can also add custom tokens. To do so, go to the options, "save" part and "custom tokens" subpart. Then just click the button "Add a new custom token" and choose a name and tags that will be searched (separate them with spaces). Any tags in this list found in the image will be placed into your token. For example if an image got tags "a", "b", "c", "d" and your tags list for token "test" is "a c e", "%test%" will be replaced by "a c".
+
 _Note: custom tokens with an already used name (such as %character%) will be used first.
 
 = Conditionals =
