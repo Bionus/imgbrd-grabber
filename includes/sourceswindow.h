@@ -29,6 +29,8 @@ class sourcesWindow : public QDialog
 		void addSite();
 		void insertCheckBox();
 		void deleteSite(QVariant);
+		void checkUpdate();
+		void checkClicked();
 
 	signals:
 		void closed();
