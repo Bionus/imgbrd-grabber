@@ -38,6 +38,9 @@
      <property name="text">
       <string>Tout cocher</string>
      </property>
+     <property name="tristate">
+      <bool>true</bool>
+     </property>
     </widget>
    </item>
    <item>
@@ -120,22 +123,6 @@
     <hint type="destinationlabel">
      <x>217</x>
      <y>373</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkBox</sender>
-   <signal>stateChanged(int)</signal>
-   <receiver>sourcesWindow</receiver>
-   <slot>checkAll(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>177</x>
-     <y>25</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>184</x>
-     <y>16</y>
     </hint>
    </hints>
   </connection>

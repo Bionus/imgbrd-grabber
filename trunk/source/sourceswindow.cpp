@@ -35,6 +35,7 @@ sourcesWindow::sourcesWindow(QList<bool> selected, QStringMapMap *sites, QWidget
 		QCheckBox *check = new QCheckBox();
 			check->setChecked(m_selected[i]);
 			check->setText(k.at(i));
+			connect(check, SIGNAL(stateChanged(int)), this, SLOT(checkUpdate()));
 			m_checks << check;
 			ui->gridLayout->addWidget(check, i, 0);
 		QString t = settings->value("Sources/Types", "icon").toString();
@@ -64,6 +65,8 @@ sourcesWindow::sourcesWindow(QList<bool> selected, QStringMapMap *sites, QWidget
 			ui->gridLayout->addWidget(del, i, n);
 	}
 	ui->gridLayout->setColumnStretch(0, 1);
+	connect(ui->checkBox, SIGNAL(clicked()), this, SLOT(checkClicked()));
+	checkUpdate();
 
 	ui->buttonOk->setFocus();
 }
@@ -81,6 +84,40 @@ void sourcesWindow::closeEvent(QCloseEvent *event)
 {
 	emit closed();
 	event->accept();
+}
+
+/**
+ * Update the "Check all" checkbox according to checked checkboxes.
+ */
+void sourcesWindow::checkUpdate()
+{
+	bool onechecked = false;
+	bool oneunchecked = false;
+	for (int i = 0; i < m_checks.size(); i++)
+	{
+		if (m_checks[i]->isChecked())
+		{ onechecked = true; }
+		else
+		{ oneunchecked = true; }
+	}
+	if (onechecked && !oneunchecked)
+	{ ui->checkBox->setCheckState(Qt::Checked); }
+	else if (!onechecked && oneunchecked)
+	{ ui->checkBox->setCheckState(Qt::Unchecked); }
+	else
+	{ ui->checkBox->setCheckState(Qt::PartiallyChecked); }
+}
+
+/**
+ * Altern between the checked and unchecked state of the tri-state checkbox "Check all".
+ */
+void sourcesWindow::checkClicked()
+{
+	if (ui->checkBox->checkState() == Qt::Unchecked)
+	{ ui->checkBox->setCheckState(Qt::Unchecked); }
+	else
+	{ ui->checkBox->setCheckState(Qt::Checked); }
+	checkAll(ui->checkBox->checkState());
 }
 
 /**
