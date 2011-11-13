@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'imagethread.h'
 **
-** Created: Thu 3. Nov 00:33:42 2011
+** Created: Sun 13. Nov 00:45:01 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.4)
 **
 ** WARNING! All changes made in this file will be lost!

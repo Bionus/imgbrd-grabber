@@ -60,7 +60,7 @@ sourcesWindow::sourcesWindow(QList<bool> selected, QStringMapMap *sites, QWidget
 		}
 		QBouton *del = new QBouton(k.at(i));
 			del->setText(tr("Supprimer"));
-			connect(del, SIGNAL(appui(QVariant)), this, SLOT(deleteSite(QVariant)));
+			connect(del, SIGNAL(appui(QString)), this, SLOT(deleteSite(QString)));
 			m_buttons << del;
 			ui->gridLayout->addWidget(del, i, n);
 	}
@@ -131,12 +131,16 @@ void sourcesWindow::valid()
 	this->close();
 }
 
-void sourcesWindow::deleteSite(QVariant site)
+/**
+ * Delete a site from the sources list.
+ * @param	site	The url of the site to delete.
+ */
+void sourcesWindow::deleteSite(QString site)
 {
-	int reponse = QMessageBox::question(this, tr("Grabber - Supprimer un site"), tr("Êtes-vous sûr de vouloir supprimer le site %1 ?").arg(site.toString()), QMessageBox::Yes | QMessageBox::No);
+	int reponse = QMessageBox::question(this, tr("Grabber - Supprimer un site"), tr("Êtes-vous sûr de vouloir supprimer le site %1 ?").arg(site), QMessageBox::Yes | QMessageBox::No);
 	if (reponse == QMessageBox::Yes)
 	{
-		int i = m_sites->keys().indexOf(site.toString());
+		int i = m_sites->keys().indexOf(site);
 		m_checks.at(i)->hide();
 		ui->gridLayout->removeWidget(m_checks.at(i));
 		m_buttons.at(i)->hide();
@@ -146,29 +150,36 @@ void sourcesWindow::deleteSite(QVariant site)
 			m_labels.at(i)->hide();
 			ui->gridLayout->removeWidget(m_labels.at(i));
 		}
-		QString type = m_sites->value(site.toString())["Name"].toLower();
+		QString type = m_sites->value(site)["Name"].toLower();
 		QFile f(savePath("sites/"+type+"/sites.txt"));
 		f.open(QIODevice::ReadOnly);
 			QString sites = f.readAll();
 		f.close();
 		sites.replace("\r\n", "\n").replace("\r", "\n").replace("\n", "\r\n");
 		QStringList stes = sites.split("\r\n");
-		stes.removeAll(site.toString());
+		stes.removeAll(site);
 		f.open(QIODevice::WriteOnly);
 			f.write(stes.join("\r\n").toAscii());
 		f.close();
-		m_sites->remove(site.toString());
+		m_sites->remove(site);
 		m_selected.removeAt(i);
 		m_checks.removeAt(i);
 	}
 }
 
+/**
+ * Open the window to add a site.
+ */
 void sourcesWindow::addSite()
 {
 	siteWindow *sw = new siteWindow(m_sites, this);
 	sw->show();
 	connect(sw, SIGNAL(accepted()), this, SLOT(insertCheckBox()));
 }
+
+/**
+ * Add a site to the list.
+ */
 void sourcesWindow::insertCheckBox()
 {
 	QStringList k = m_sites->keys();

@@ -8,6 +8,7 @@
 #include "zoomwindow.h"
 #include "batchwindow.h"
 #include "aboutwindow.h"
+#include "blacklistfix.h"
 #include "functions.h"
 #include "json.h"
 #include <QtXml>
@@ -19,7 +20,7 @@ extern QMap<QDateTime,QString> _log;
 
 
 
-mainWindow::mainWindow(QString program, QStringList tags, QStringMap params) : ui(new Ui::mainWindow), m_currentFav(-1), m_params(params), m_program(program), m_tags(tags), m_loaded(false)
+mainWindow::mainWindow(QString program, QStringList tags, QStringMap params) : ui(new Ui::mainWindow), m_currentFav(-1), m_loaded(false), m_program(program), m_tags(tags), m_params(params)
 {
 }
 void mainWindow::init()
@@ -1390,4 +1391,10 @@ void mainWindow::getAllCancel()
 	}
 	m_progressdialog->clear();
 	DONE();
+}
+
+void mainWindow::blacklistFix()
+{
+	BlacklistFix *bf = new BlacklistFix(m_sites);
+	bf->show();
 }

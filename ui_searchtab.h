@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'searchtab.ui'
 **
-** Created: Thu 3. Nov 00:31:00 2011
+** Created: Sun 13. Nov 00:38:37 2011
 **      by: Qt User Interface Compiler version 4.7.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -52,12 +52,12 @@ public:
     QLabel *labelMeant;
     QWidget *widgetPlus;
     QGridLayout *layoutPlus;
-    QLabel *label_6;
-    QLabel *label_7;
-    QSpinBox *spinImagesPerPage;
     QSpinBox *spinColumns;
-    QLabel *label_8;
     QHBoxLayout *layoutSourcesList;
+    QLabel *label_7;
+    QLabel *label_8;
+    QSpinBox *spinImagesPerPage;
+    QLabel *label_6;
     QGridLayout *layoutResults;
     QSpacerItem *verticalSpacer;
     QHBoxLayout *horizontalLayout;
@@ -187,18 +187,30 @@ public:
         widgetPlus = new QWidget(widget_2);
         widgetPlus->setObjectName(QString::fromUtf8("widgetPlus"));
         widgetPlus->setEnabled(true);
+        widgetPlus->setStyleSheet(QString::fromUtf8("#widgetPlus { border: 1px solid #bbb; border-radius: 5px; }"));
         layoutPlus = new QGridLayout(widgetPlus);
-        layoutPlus->setContentsMargins(0, 0, 0, 0);
         layoutPlus->setObjectName(QString::fromUtf8("layoutPlus"));
-        label_6 = new QLabel(widgetPlus);
-        label_6->setObjectName(QString::fromUtf8("label_6"));
+        spinColumns = new QSpinBox(widgetPlus);
+        spinColumns->setObjectName(QString::fromUtf8("spinColumns"));
+        spinColumns->setMinimum(1);
+        spinColumns->setMaximum(10);
 
-        layoutPlus->addWidget(label_6, 0, 0, 1, 1);
+        layoutPlus->addWidget(spinColumns, 0, 3, 1, 1);
+
+        layoutSourcesList = new QHBoxLayout();
+        layoutSourcesList->setObjectName(QString::fromUtf8("layoutSourcesList"));
+
+        layoutPlus->addLayout(layoutSourcesList, 2, 0, 1, 4);
 
         label_7 = new QLabel(widgetPlus);
         label_7->setObjectName(QString::fromUtf8("label_7"));
 
         layoutPlus->addWidget(label_7, 0, 2, 1, 1);
+
+        label_8 = new QLabel(widgetPlus);
+        label_8->setObjectName(QString::fromUtf8("label_8"));
+
+        layoutPlus->addWidget(label_8, 1, 0, 1, 1);
 
         spinImagesPerPage = new QSpinBox(widgetPlus);
         spinImagesPerPage->setObjectName(QString::fromUtf8("spinImagesPerPage"));
@@ -208,22 +220,10 @@ public:
 
         layoutPlus->addWidget(spinImagesPerPage, 0, 1, 1, 1);
 
-        spinColumns = new QSpinBox(widgetPlus);
-        spinColumns->setObjectName(QString::fromUtf8("spinColumns"));
-        spinColumns->setMinimum(1);
-        spinColumns->setMaximum(10);
+        label_6 = new QLabel(widgetPlus);
+        label_6->setObjectName(QString::fromUtf8("label_6"));
 
-        layoutPlus->addWidget(spinColumns, 0, 3, 1, 1);
-
-        label_8 = new QLabel(widgetPlus);
-        label_8->setObjectName(QString::fromUtf8("label_8"));
-
-        layoutPlus->addWidget(label_8, 1, 0, 1, 1);
-
-        layoutSourcesList = new QHBoxLayout();
-        layoutSourcesList->setObjectName(QString::fromUtf8("layoutSourcesList"));
-
-        layoutPlus->addLayout(layoutSourcesList, 2, 0, 1, 4);
+        layoutPlus->addWidget(label_6, 0, 0, 1, 1);
 
 
         verticalLayout_4->addWidget(widgetPlus);
@@ -301,7 +301,6 @@ public:
 
         retranslateUi(searchTab);
         QObject::connect(buttonGetpage, SIGNAL(clicked()), searchTab, SLOT(getPage()));
-        QObject::connect(pushButton, SIGNAL(clicked(bool)), widgetPlus, SLOT(setVisible(bool)));
         QObject::connect(buttonTags, SIGNAL(clicked()), searchTab, SLOT(load()));
         QObject::connect(buttonSourcesList, SIGNAL(clicked()), searchTab, SLOT(openSourcesWindow()));
         QObject::connect(labelTags, SIGNAL(linkHovered(QString)), searchTab, SLOT(linkHovered(QString)));
@@ -311,6 +310,7 @@ public:
         QObject::connect(buttonLastPage, SIGNAL(clicked()), searchTab, SLOT(lastPage()));
         QObject::connect(buttonPreviousPage, SIGNAL(clicked()), searchTab, SLOT(previousPage()));
         QObject::connect(buttonFirstPage, SIGNAL(clicked()), searchTab, SLOT(firstPage()));
+        QObject::connect(pushButton, SIGNAL(clicked(bool)), widgetPlus, SLOT(setVisible(bool)));
 
         QMetaObject::connectSlotsByName(searchTab);
     } // setupUi
@@ -323,9 +323,9 @@ public:
         buttonTags->setText(QApplication::translate("searchTab", "Ok", 0, QApplication::UnicodeUTF8));
         pushButton->setText(QApplication::translate("searchTab", "+", 0, QApplication::UnicodeUTF8));
         label_2->setText(QApplication::translate("searchTab", "Peut-\303\252tre avez-vous voulu dire :", 0, QApplication::UnicodeUTF8));
-        label_6->setText(QApplication::translate("searchTab", "Images par page", 0, QApplication::UnicodeUTF8));
         label_7->setText(QApplication::translate("searchTab", "Nombre de colonnes", 0, QApplication::UnicodeUTF8));
         label_8->setText(QApplication::translate("searchTab", "Post-filtrage", 0, QApplication::UnicodeUTF8));
+        label_6->setText(QApplication::translate("searchTab", "Images par page", 0, QApplication::UnicodeUTF8));
         buttonFirstPage->setText(QApplication::translate("searchTab", "<<", 0, QApplication::UnicodeUTF8));
         buttonPreviousPage->setText(QApplication::translate("searchTab", "<", 0, QApplication::UnicodeUTF8));
         buttonSourcesList->setText(QApplication::translate("searchTab", "Sources", 0, QApplication::UnicodeUTF8));

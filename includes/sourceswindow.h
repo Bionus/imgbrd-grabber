@@ -28,7 +28,7 @@ class sourcesWindow : public QDialog
 		void checkAll(int check = 2);
 		void addSite();
 		void insertCheckBox();
-		void deleteSite(QVariant);
+		void deleteSite(QString);
 		void checkUpdate();
 		void checkClicked();
 

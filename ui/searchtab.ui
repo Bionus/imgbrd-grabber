@@ -206,21 +206,34 @@
          <property name="enabled">
           <bool>true</bool>
          </property>
+         <property name="styleSheet">
+          <string notr="true">#widgetPlus { border: 1px solid #bbb; border-radius: 5px; }</string>
+         </property>
          <layout class="QGridLayout" name="layoutPlus">
-          <property name="margin">
-           <number>0</number>
-          </property>
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_6">
-            <property name="text">
-             <string>Images par page</string>
+          <item row="0" column="3">
+           <widget class="QSpinBox" name="spinColumns">
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="maximum">
+             <number>10</number>
             </property>
            </widget>
+          </item>
+          <item row="2" column="0" colspan="4">
+           <layout class="QHBoxLayout" name="layoutSourcesList"/>
           </item>
           <item row="0" column="2">
            <widget class="QLabel" name="label_7">
             <property name="text">
              <string>Nombre de colonnes</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_8">
+            <property name="text">
+             <string>Post-filtrage</string>
             </property>
            </widget>
           </item>
@@ -237,25 +250,12 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="3">
-           <widget class="QSpinBox" name="spinColumns">
-            <property name="minimum">
-             <number>1</number>
-            </property>
-            <property name="maximum">
-             <number>10</number>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_8">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_6">
             <property name="text">
-             <string>Post-filtrage</string>
+             <string>Images par page</string>
             </property>
            </widget>
-          </item>
-          <item row="2" column="0" colspan="4">
-           <layout class="QHBoxLayout" name="layoutSourcesList"/>
           </item>
          </layout>
         </widget>
@@ -402,22 +402,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>pushButton</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>widgetPlus</receiver>
-   <slot>setVisible(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>774</x>
-     <y>21</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>788</x>
-     <y>86</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>buttonTags</sender>
    <signal>clicked()</signal>
    <receiver>searchTab</receiver>
@@ -558,6 +542,22 @@
     <hint type="destinationlabel">
      <x>-2</x>
      <y>524</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>widgetPlus</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>774</x>
+     <y>21</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>788</x>
+     <y>86</y>
     </hint>
    </hints>
   </connection>

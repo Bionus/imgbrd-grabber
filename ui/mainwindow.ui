@@ -443,7 +443,6 @@
     <addaction name="actionAddtab"/>
     <addaction name="actionClosetab"/>
     <addaction name="separator"/>
-    <addaction name="actionOptions"/>
     <addaction name="actionFolder"/>
     <addaction name="actionQuit"/>
    </widget>
@@ -454,7 +453,16 @@
     <addaction name="actionAboutGrabber"/>
     <addaction name="actionAboutQt"/>
    </widget>
+   <widget class="QMenu" name="menuOutils">
+    <property name="title">
+     <string>Outils</string>
+    </property>
+    <addaction name="actionBlacklistFix"/>
+    <addaction name="separator"/>
+    <addaction name="actionOptions"/>
+   </widget>
    <addaction name="menuOptions"/>
+   <addaction name="menuOutils"/>
    <addaction name="menu_propos"/>
   </widget>
   <action name="actionOptions">
@@ -490,6 +498,11 @@
   <action name="actionClosetab">
    <property name="text">
     <string>Fermer l'onglet</string>
+   </property>
+  </action>
+  <action name="actionBlacklistFix">
+   <property name="text">
+    <string>Réparateur de liste noire</string>
    </property>
   </action>
  </widget>
@@ -648,8 +661,8 @@
    <slot>addGroup()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>348</x>
-     <y>270</y>
+     <x>93</x>
+     <y>58</y>
     </hint>
     <hint type="destinationlabel">
      <x>465</x>
@@ -664,8 +677,8 @@
    <slot>addUnique()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>401</x>
-     <y>495</y>
+     <x>93</x>
+     <y>67</y>
     </hint>
     <hint type="destinationlabel">
      <x>472</x>
@@ -680,8 +693,8 @@
    <slot>getAll()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>361</x>
-     <y>525</y>
+     <x>111</x>
+     <y>100</y>
     </hint>
     <hint type="destinationlabel">
      <x>352</x>
@@ -696,8 +709,8 @@
    <slot>batchClear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>784</x>
-     <y>525</y>
+     <x>111</x>
+     <y>100</y>
     </hint>
     <hint type="destinationlabel">
      <x>693</x>
@@ -713,7 +726,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>93</x>
-     <y>506</y>
+     <y>64</y>
     </hint>
     <hint type="destinationlabel">
      <x>715</x>
@@ -760,8 +773,8 @@
    <slot>batchClearSel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>515</x>
-     <y>519</y>
+     <x>111</x>
+     <y>100</y>
     </hint>
     <hint type="destinationlabel">
      <x>801</x>
@@ -776,12 +789,28 @@
    <slot>batchSel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>135</x>
-     <y>514</y>
+     <x>111</x>
+     <y>100</y>
     </hint>
     <hint type="destinationlabel">
      <x>0</x>
      <y>519</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionBlacklistFix</sender>
+   <signal>triggered()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>blacklistFix()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>270</y>
     </hint>
    </hints>
   </connection>
@@ -814,5 +843,6 @@
   <slot>closeCurrentTab()</slot>
   <slot>batchClearSel()</slot>
   <slot>batchSel()</slot>
+  <slot>blacklistFix()</slot>
  </slots>
 </ui>

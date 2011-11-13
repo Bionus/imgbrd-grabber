@@ -10,15 +10,15 @@ extern mainWindow *_mainwindow;
 
 /**
  * Popup a message notifying the user that something went wrong.
- * @param parent	The parent widget
- * @param error		The error message
+ * @param	parent	The parent widget
+ * @param	error	The error message
  */
 void error(QWidget *parent, QString error)
 { QMessageBox::critical(parent, "Error", error); }
 
 /**
  * Sort a list non case-sensitively.
- * @param sList		The list that will be ordered
+ * @param	sList	The list that will be ordered
  */
 void sortNonCaseSensitive(QStringList &sList)
 {
@@ -45,8 +45,9 @@ QMap<QString,QStringList> getCustoms()
 
 /**
  * Convert a danbooru-like date (Sat May 14 17:38:04 -0400 2011) to a valid QDateTime.
- * @param	str		The date string
- * @return	The converted date as QDateTime
+ * @param	str				The date string.
+ * @param	timezonedecay	The number of timezones between the user and the server.
+ * @return	The converted date as a QDateTime.
  */
 QDateTime qDateTimeFromString(QString str, int timezonedecay)
 {
@@ -55,7 +56,7 @@ QDateTime qDateTimeFromString(QString str, int timezonedecay)
 	months << "Jan" << "Feb" << "Mar" << "Apr" << "May" << "Jun" << "Jul" << "Aug" << "Sep" << "Oct" << "Nov" << "Dec";
 	QTime time(str.mid(11,2).toInt(), str.mid(14,2).toInt(), str.mid(17,2).toInt());
 	date.setDate(QDate(str.mid(26,4).toInt(), months.indexOf(str.mid(4,3))+1, str.mid(8,2).toInt()+(str.mid(11,2).toInt() >= 18)));
-	date.setTime(time.addSecs(3600*timezonedecay)); // We convert the date to user's time
+	date.setTime(time.addSecs(3600*timezonedecay));
 	return date;
 }
 
@@ -87,7 +88,7 @@ QMap<QString,QString> loadFavorites()
 
 /**
  * Load view it later tags from local file.
- * @return	A QStringList containing tags
+ * @return	A QStringList containing tags to view later
  */
 QStringList loadViewItLater()
 {
@@ -210,6 +211,11 @@ void showInGraphicalShell(const QString &pathIn)
 	#endif
 }
 
+/**
+ * Converts a QFont to a CSS string.
+ * @param	font	The font to convert.
+ * @return	The CSS font.
+ */
 QString qfonttocss(QFont font)
 {
 	QString style;
@@ -231,6 +237,11 @@ QString qfonttocss(QFont font)
 	return "font-family:'"+font.family()+"'; font-size:"+size+"; font-style:"+style+"; font-weight:"+weight+"; text-decoration:"+(decorations.isEmpty() ? "none" : decorations.join(" "))+";";
 }
 
+/**
+ * Converts a DOM elemet to a map.
+ * @param	dom		The DOM element to convert.
+ * @return	A QString map with names (joined with a slash if necessary) as keys and texts as values.
+ */
 QMap<QString,QString> domToMap(QDomElement dom)
 {
 	QMap<QString,QString> details;
@@ -250,12 +261,21 @@ QMap<QString,QString> domToMap(QDomElement dom)
 	return details;
 }
 
+/**
+ * Append text in the log in a new line.
+ * @param	l	The message to append.
+ */
 void log(QString l)
 {
 	qDebug() << l;
 	_log.insert(QDateTime::currentDateTime(), l);
 	_mainwindow->logShow();
 }
+
+/**
+ * Append text in the log at the end of the current line.
+ * @param	l	The message to append.
+ */
 void logUpdate(QString l)
 {
 	qDebug() << l;
