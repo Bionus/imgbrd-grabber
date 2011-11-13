@@ -1,6 +1,6 @@
 #summary Imgbrd-grabber's changelog from v1.0 to v2.4.0
 
-= 2.0 =
+= 2.4 =
 == 2.4.0 ==
   * Fix truncation and remove duplicates in %all% (issue #28).
   * Add filename length hard limit option.
@@ -14,11 +14,15 @@
   * Multiple custom tokens.
   * Download images containing searched blacklisted tags.
   * Some minor translations and bug fixes.
+
+= 2.3 =
 == 2.3.0 ==
   * Bugfixes (issue #22, issue #23, issue #25, and some others).
   * Batch download window improvement (details part will no more show log, but table with image list).
   * No more lags when displaying big images.
   * Better support for Shimmie-based boards (issue #24).
+
+= 2.2 =
 == 2.2.1 ==
   * Fixed issue #19
 == 2.2.0 ==
@@ -31,6 +35,8 @@
   * Search tags (at the left) and images separately to have the same tags results than with Regex with XML.
   * Little improvement for auto-completion. You no more need to press enter or space after each tag to hide the list.
   * Improved commands.
+
+= 2.1 =
 == 2.1.1 ==
   * Fixed issue #18
 == 2.1.0 ==
@@ -41,6 +47,8 @@
   * Some compatibility fixes with Danbooru Downloader 1.7.1 (in 2.0: "fate/stay" => "fatestay" while db downloader (and 2.1 now) gives "fate stay")
   * Shows most used tags in the main window.
   * Supports more things in the post-filtering field (source, id, width, height and score).
+
+= 2.0 =
 == 2.0.0 ==
   * Added sources manager.
   * Autodownload.
