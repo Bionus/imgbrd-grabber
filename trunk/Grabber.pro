@@ -30,7 +30,10 @@ HEADERS += includes/addgroupwindow.h \
 	includes/tag.h \
 	includes/imagethread.h \
 	includes/searchtab.h \
-    includes/customwindow.h
+    includes/customwindow.h \
+    includes/blacklistfix.h \
+    includes/blacklistfix2.h \
+    includes/blacklistfix3.h
 SOURCES += source/addgroupwindow.cpp \
 	source/adduniquewindow.cpp \
 	source/functions.cpp \
@@ -54,7 +57,10 @@ SOURCES += source/addgroupwindow.cpp \
 	source/tag.cpp \
 	source/imagethread.cpp \
 	source/searchtab.cpp \
-    source/customwindow.cpp
+    source/customwindow.cpp \
+    source/blacklistfix.cpp \
+    source/blacklistfix2.cpp \
+    source/blacklistfix3.cpp
 RESOURCES += resources.qrc
 RC_FILE = icon.rc
 TRANSLATIONS += languages/English.ts languages/Français.ts
@@ -73,7 +79,7 @@ FORMS += \
 	ui/sitewindow.ui \
     ui/aboutwindow.ui \
     ui/searchtab.ui \
-    ui/customwindow.ui
-
-
-
+    ui/customwindow.ui \
+    ui/blacklistfix.ui \
+    ui/blacklistfix2.ui \
+    ui/blacklistfix3.ui

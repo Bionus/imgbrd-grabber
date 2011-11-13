@@ -33,6 +33,7 @@ class mainWindow : public QMainWindow
 		void optionsClosed();
 		void aboutAuthor();
 		void saveFolder();
+		void blacklistFix();
 		// Language
 		void switchTranslator(QTranslator&, const QString&);
 		void loadLanguage(const QString&, bool shutup = false);
@@ -60,7 +61,7 @@ class mainWindow : public QMainWindow
 		void addGroup();
 		void addUnique();
 		void batchAddGroup(const QStringList& values);
-		void batchAddUnique(QStringMap);
+		void batchAddUnique(QMap<QString,QString>);
 		// Batch download
 		void getAll(bool all = true);
 		void getAllFinishedLoading(Page*);
@@ -81,43 +82,33 @@ class mainWindow : public QMainWindow
 		void closeCurrentTab();
 
 	private:
-		Ui::mainWindow *ui;
-		QSettings *m_settings;
-		QDateTime m_serverDate;
-		int m_timezonedecay, m_getAllId, m_getAllDownloaded, m_getAllExists, m_getAllIgnored, m_getAllErrors, m_getAllCount, m_getAllPageCount, m_getAllBeforeId, m_remainingPics, m_remainingSites, m_countPics, m_currentFav, m_currentFavCount;
-		QStringMap m_favorites, m_params;
-		QString m_program;
-		QStringList m_tags, m_assoc, m_gotMd5;
-		QList<QStringList> m_groupBatchs;
-		bool m_allow, m_must_get_tags;
-		QList<QStringMap> m_details, m_batchs;
-		QString m_currLang;
-		QTranslator m_translator;
-		QCalendarWidget *m_calendar;
-		QStringMapMap m_sites;
-		QList<Image*>				m_getAllImages;
-		QList<Page*>				m_getAllPages;
-		QMap<QString,QStringList>	m_getAllDetails;
-		QList<QAffiche*>			m_favoritesCaptions;
-		QList<QBouton*>				m_favoritesImages;
-		QDateTime					m_loadFavorite;
-		QString						m_currentFavorite;
-		QList<QNetworkReply*>		m_replies;
-		QList<QBouton*>				m_webPics;
-		QList<QLabel*>				m_webSites;
-		QMap<QString,int>			m_countPage;
-		QProcess					*m_process;
-		QNetworkReply				*m_getAllRequest;
-		batchWindow					*m_progressdialog;
-		QList<QBouton*>				m_mergeButtons;
-		QList<searchTab*>			m_tabs;
-		bool						m_loaded, m_getAllRequestExists;
-		QList<Page*>				m_pages;
-		QList<Image*>				m_images;
-		int							m_pagemax;
-		QList<bool>					m_selectedSources;
-		QTime						*m_downloadTime;
-		//QList<QProgressBar*>		m_progressBars;
+		Ui::mainWindow		*ui;
+		int					m_pagemax, m_timezonedecay, m_getAllId, m_getAllDownloaded, m_getAllExists, m_getAllIgnored, m_getAllErrors, m_getAllCount, m_getAllPageCount, m_getAllBeforeId, m_remainingPics, m_remainingSites, m_countPics, m_currentFav, m_currentFavCount;
+		bool				m_allow, m_must_get_tags, m_loaded, m_getAllRequestExists;
+		QSettings			*m_settings;
+		QProcess			*m_process;
+		QNetworkReply		*m_getAllRequest;
+		batchWindow			*m_progressdialog;
+		QString				m_program, m_currLang, m_currentFavorite;
+		QStringList			m_tags, m_assoc, m_gotMd5;
+		QTranslator			m_translator;
+		QTime				*m_downloadTime;
+		QDateTime			m_serverDate, m_loadFavorite;
+		QCalendarWidget		*m_calendar;
+		QMap<QString,int>	m_countPage;
+		QList<QStringList>	m_groupBatchs;
+		QList<Image*>		m_getAllImages, m_images;
+		QList<Page*>		m_getAllPages, m_pages;
+		QList<QAffiche*>	m_favoritesCaptions;
+		QList<QBouton*>		m_favoritesImages, m_mergeButtons, m_webPics;
+		QList<searchTab*>	m_tabs;
+		QList<bool>			m_selectedSources;
+		QList<QLabel*>		m_webSites;
+		QMap<QString,QString>					m_favorites, m_params;
+		QMap<QString,QStringList>				m_getAllDetails;
+		QMap<QString,QMap<QString,QString> >	m_sites;
+		QList<QNetworkReply*>					m_replies;
+		QList<QMap<QString,QString> >			m_details, m_batchs;
 };
 
 #endif // MAINWINDOW_H
