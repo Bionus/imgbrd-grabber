@@ -1,8 +1,27 @@
-#summary Imgbrd-grabber's changelog from v1.0 to v2.1.0
+#summary Imgbrd-grabber's changelog from v1.0 to v2.4.0
 
 = 2.0 =
-== 2.2.0 ==
+== 2.4.0 ==
+  * Fix truncation and remove duplicates in %all% (issue #28).
+  * Add filename length hard limit option.
+  * Conditional tags.
+  * Whitelist (automatic download for images containing a tag from the whitelist)
+  * Ignore tags (such as "nintendo", "sega", etc. to avoid false "crossover"s)
+  * Proxy support.
+  * Improved batch download window (current download speed, percentage of download, and "copy links to clipboard" button).
+  * Added batch download delete selected and download selected buttons.
+  * Fixed columns in the batch download tab.
+  * Multiple custom tokens.
+  * Download images containing searched blacklisted tags.
+  * Some minor translations and bug fixes.
+== 2.3.0 ==
+  * Bugfixes (issue #22, issue #23, issue #25, and some others).
+  * Batch download window improvement (details part will no more show log, but table with image list).
+  * No more lags when displaying big images.
+  * Better support for Shimmie-based boards (issue #24).
+== 2.2.1 ==
   * Fixed issue #19
+== 2.2.0 ==
   * Parents/children (borders on image list).
   * "Maybe you meant" when searches gives no result.
   * Support of a local gelbooru with commands (+tuto).
