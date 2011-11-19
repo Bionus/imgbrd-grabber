@@ -2,6 +2,7 @@
 #include "ui_searchtab.h"
 #include "QBouton.h"
 #include "zoomwindow.h"
+#include "searchwindow.h"
 
 #define DONE()	logUpdate(tr(" Fait"))
 extern mainWindow *_mainwindow;
@@ -43,17 +44,6 @@ searchTab::searchTab(QMap<QString,QMap<QString,QString> > *sites, QMap<QString,Q
 		ui->layoutFields->insertWidget(1, m_search, 1);
 		ui->layoutPlus->addWidget(m_postFiltering, 1, 1, 1, 3);
 
-	// Calendar
-	m_calendar = new QCalendarWidget;
-		m_calendar->setLocale(QLocale(settings->value("language", "English").toString().toLower().left(2)));
-		m_calendar->setWindowIcon(QIcon(":/images/icon.ico"));
-		m_calendar->setWindowTitle("Grabber - Choisir une date");
-		m_calendar->setDateRange(QDate(2000, 1, 1), m_serverDate->date());
-		m_calendar->setSelectedDate(m_serverDate->date());
-		connect(m_calendar, SIGNAL(activated(QDate)), this, SLOT(insertDate(QDate)));
-		connect(m_calendar, SIGNAL(activated(QDate)), m_calendar, SLOT(close()));
-	connect(ui->buttonCalendar, SIGNAL(clicked()), m_calendar, SLOT(show()));
-
 	// Sources
 	QString sel = '1'+QString().fill('0',m_sites->count()-1);
 	QString sav = settings->value("sites", sel).toString();
@@ -92,12 +82,20 @@ searchTab::~searchTab()
 	delete ui;
 }
 
+void searchTab::on_buttonSearch_clicked()
+{
+	SearchWindow *sw = new SearchWindow(m_search->toPlainText(), m_serverDate->date(), this);
+	connect(sw, SIGNAL(accepted(QString)), this, SLOT(setTags(QString)));
+	sw->show();
+}
+
 void searchTab::closeEvent(QCloseEvent *e)
 {
 	QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
 	QList<int> sizes = ui->splitter->sizes();
 	settings->setValue("splitter", QString::number(sizes[0])+"|"+QString::number(sizes[1]));
 	settings->setValue("mergeresults", ui->checkMergeResults->isChecked());
+	settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat); // For some obscure reason it won't save without this line... :/
 	if (!m_pages.isEmpty())
 	{
 		for (int i = 0; i < m_pages.count(); i++)
@@ -123,14 +121,6 @@ void searchTab::optionsChanged(QSettings *settings)
 	ui->layoutResults->setVerticalSpacing(settings->value("Margins/vertical", 6).toInt());
 	ui->spinImagesPerPage->setValue(settings->value("limit", 20).toInt());
 	ui->spinColumns->setValue(settings->value("columns", 1).toInt());
-}
-
-
-
-void searchTab::insertDate(QDate date)
-{
-	m_search->setText(m_search->toPlainText()+" date:"+date.toString("MM/dd/yyyy"));
-	m_search->doColor();
 }
 
 
@@ -257,8 +247,6 @@ void searchTab::finishedLoading(Page* page)
 	{
 		int pos = m_pages.indexOf(page);
 		int perpage = page->site().value("Urls/Selected/Tags").contains("{limit}") ? ui->spinImagesPerPage->value() : imgs.size();
-		//int pl = ceil(sqrt(perpage));
-		//float fl = (float)perpage/pl;
 		QLabel *txt = new QLabel();
 			if (imgs.count() == 0)
 			{
@@ -316,10 +304,8 @@ void searchTab::finishedLoading(Page* page)
 			{ txt->setText(m_sites->key(page->site())+" - <a href=\""+page->url().toString()+"\">"+page->url().toString()+"</a> - "+tr("Page %1 sur %2 (%3 sur %4)").arg(ui->spinPage->value()).arg(page->imagesCount() != 0 ? ceil(page->imagesCount()/((float)perpage)) : 0).arg(imgs.count()).arg(page->imagesCount() != 0 ? page->imagesCount() : 0)); }
 			txt->setOpenExternalLinks(true);
 		int page_x = pos%ui->spinColumns->value(), page_y = (pos/ui->spinColumns->value())*2;
-		//ui->layoutResults->addWidget(txt, floor(pos/ui->spinColumns->value())*(fl+1), pl*(pos%ui->spinColumns->value()), 1, pl);
-		//ui->layoutResults->setRowMinimumHeight((floor(pos/ui->spinColumns->value())*(fl+1)), 50);
 		ui->layoutResults->addWidget(txt, page_y, page_x, 1, 1);
-		ui->layoutResults->setRowMinimumHeight(page_y, 50);
+		ui->layoutResults->setRowMinimumHeight(page_y, height()/20);
 		ui->layoutResults->addLayout(m_layouts[pos], page_y+1, page_x, 1, 1);
 	}
 
@@ -362,13 +348,18 @@ void searchTab::finishedLoading(Page* page)
 			styles[tlist.at(i)] = "color:"+settings->value("Coloring/Colors/"+tlist.at(i), defaults.at(i)).toString()+"; "+qfonttocss(font);
 		}
 		QString tags;
-		for (int i = 0; i < taglist.count(); i++)
+		int last = 0, h = height()/10;
+		for (int i = 0; i < taglist.size(); i++)
 		{
-			if (m_favorites->contains(taglist[i]->text()))
-			{ taglist[i]->setType("favorite"); }
-			QString n = taglist[i]->text();
-			n.replace(" ", "_");
-			tags += "<a href=\""+n+"\" style=\""+(styles.contains(taglist[i]->type()+"s") ? styles[taglist[i]->type()+"s"] : styles["generals"])+"\">"+taglist[i]->text()+"</a> ("+QString::number(taglist[i]->count())+")<br/>";
+			if (i < h || last == taglist[i]->count())
+			{
+				last = taglist[i]->count();
+				if (m_favorites->contains(taglist[i]->text()))
+				{ taglist[i]->setType("favorite"); }
+				QString n = taglist[i]->text();
+				n.replace(" ", "_");
+				tags += "<a href=\""+n+"\" style=\""+(styles.contains(taglist[i]->type()+"s") ? styles[taglist[i]->type()+"s"] : styles["generals"])+"\">"+taglist[i]->text()+"</a> ("+QString::number(taglist[i]->count())+")<br/>";
+			}
 		}
 		ui->labelTags->setText(tags);
 		if (!m_sized)
@@ -537,7 +528,7 @@ void searchTab::finishedLoadingPreview(Image *img)
 			.arg(img->author().isEmpty() ? " " : tr("<b>Posteur :</b> %1<br/><br/>").arg(img->author()))
 			.arg(img->width() == 0 || img->height() == 0 ? " " : tr("<b>Dimensions :</b> %1 x %2<br/>").arg(QString::number(img->width()), QString::number(img->height())))
 			.arg(img->fileSize() == 0 ? " " : tr("<b>Taille :</b> %1 %2<br/>").arg(QString::number(round(size)), unit))
-			.arg(!img->createdAt().isValid() ? " " : tr("<b>Date :</b> %1").arg(img->createdAt().toString(tr("le dd/MM/yyyy à hh:mm"))))
+			.arg(!img->createdAt().isValid() ? " " : tr("<b>Date :</b> %1").arg(img->createdAt().toString(tr("'le 'dd/MM/yyyy' à 'hh:mm"))))
 		);
 		l->setIconSize(preview.size());
 		l->setFlat(true);

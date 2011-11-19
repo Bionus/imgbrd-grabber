@@ -128,9 +128,9 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="buttonCalendar">
+          <widget class="QPushButton" name="buttonSearch">
            <property name="text">
-            <string> Insérer une date </string>
+            <string>Plus</string>
            </property>
           </widget>
          </item>
@@ -261,20 +261,27 @@
         </widget>
        </item>
        <item>
-        <layout class="QGridLayout" name="layoutResults"/>
-       </item>
-       <item>
-        <spacer name="verticalSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <property name="spacing">
+          <number>0</number>
          </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>0</width>
-           <height>0</height>
-          </size>
-         </property>
-        </spacer>
+         <item>
+          <layout class="QGridLayout" name="layoutResults"/>
+         </item>
+         <item>
+          <spacer name="verticalSpacer">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
        </item>
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,1,0,1,1,0,0">

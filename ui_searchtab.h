@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'searchtab.ui'
 **
-** Created: Sun 13. Nov 00:38:37 2011
+** Created: Sat 19. Nov 00:18:31 2011
 **      by: Qt User Interface Compiler version 4.7.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -42,7 +42,7 @@ public:
     QVBoxLayout *verticalLayout_4;
     QHBoxLayout *layoutFields;
     QLabel *label;
-    QPushButton *buttonCalendar;
+    QPushButton *buttonSearch;
     QSpinBox *spinPage;
     QPushButton *buttonTags;
     QPushButton *pushButton;
@@ -58,6 +58,7 @@ public:
     QLabel *label_8;
     QSpinBox *spinImagesPerPage;
     QLabel *label_6;
+    QVBoxLayout *verticalLayout;
     QGridLayout *layoutResults;
     QSpacerItem *verticalSpacer;
     QHBoxLayout *horizontalLayout;
@@ -135,10 +136,10 @@ public:
 
         layoutFields->addWidget(label);
 
-        buttonCalendar = new QPushButton(widget_2);
-        buttonCalendar->setObjectName(QString::fromUtf8("buttonCalendar"));
+        buttonSearch = new QPushButton(widget_2);
+        buttonSearch->setObjectName(QString::fromUtf8("buttonSearch"));
 
-        layoutFields->addWidget(buttonCalendar);
+        layoutFields->addWidget(buttonSearch);
 
         spinPage = new QSpinBox(widget_2);
         spinPage->setObjectName(QString::fromUtf8("spinPage"));
@@ -228,14 +229,20 @@ public:
 
         verticalLayout_4->addWidget(widgetPlus);
 
+        verticalLayout = new QVBoxLayout();
+        verticalLayout->setSpacing(0);
+        verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
         layoutResults = new QGridLayout();
         layoutResults->setObjectName(QString::fromUtf8("layoutResults"));
 
-        verticalLayout_4->addLayout(layoutResults);
+        verticalLayout->addLayout(layoutResults);
 
         verticalSpacer = new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
-        verticalLayout_4->addItem(verticalSpacer);
+        verticalLayout->addItem(verticalSpacer);
+
+
+        verticalLayout_4->addLayout(verticalLayout);
 
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
@@ -319,7 +326,7 @@ public:
     {
         searchTab->setWindowTitle(QApplication::translate("searchTab", "Nouvel onglet", 0, QApplication::UnicodeUTF8));
         label->setText(QApplication::translate("searchTab", "Recherche", 0, QApplication::UnicodeUTF8));
-        buttonCalendar->setText(QApplication::translate("searchTab", " Ins\303\251rer une date ", 0, QApplication::UnicodeUTF8));
+        buttonSearch->setText(QApplication::translate("searchTab", "Plus", 0, QApplication::UnicodeUTF8));
         buttonTags->setText(QApplication::translate("searchTab", "Ok", 0, QApplication::UnicodeUTF8));
         pushButton->setText(QApplication::translate("searchTab", "+", 0, QApplication::UnicodeUTF8));
         label_2->setText(QApplication::translate("searchTab", "Peut-\303\252tre avez-vous voulu dire :", 0, QApplication::UnicodeUTF8));

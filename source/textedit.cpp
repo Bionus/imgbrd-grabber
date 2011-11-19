@@ -19,7 +19,6 @@ TextEdit::TextEdit(QStringList favorites, QWidget *parent) : QTextEdit(parent), 
 TextEdit::~TextEdit()
 {
 }
-
 void TextEdit::setCompleter(QCompleter *completer)
 {
 	 if (c)

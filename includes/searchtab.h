@@ -28,7 +28,6 @@ class searchTab : public QWidget
 		void previousPage();
 		void nextPage();
 		void lastPage();
-		void insertDate(QDate);
 		// Zooms
 		void setTags(QString);
 		void webZoom(int);
@@ -56,6 +55,7 @@ class searchTab : public QWidget
 		// Others
 		void optionsChanged(QSettings*);
 		void closeEvent(QCloseEvent*);
+		void on_buttonSearch_clicked();
 
 	signals:
 		void batchAddGroup(QStringList);

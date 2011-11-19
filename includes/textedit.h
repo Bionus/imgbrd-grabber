@@ -14,8 +14,8 @@
 		void setCompleter(QCompleter *c);
 		QCompleter *completer() const;
 		QSize sizeHint() const;
-		void doColor();
 		void setFavorites(QStringList favorites);
+		void doColor();
 
 	signals:
 		void returnPressed();
