@@ -94,7 +94,6 @@ class mainWindow : public QMainWindow
 		QTranslator			m_translator;
 		QTime				*m_downloadTime;
 		QDateTime			m_serverDate, m_loadFavorite;
-		QCalendarWidget		*m_calendar;
 		QMap<QString,int>	m_countPage;
 		QList<QStringList>	m_groupBatchs;
 		QList<Image*>		m_getAllImages, m_images;

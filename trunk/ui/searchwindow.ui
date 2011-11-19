@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SearchWindow</class>
+ <widget class="QDialog" name="SearchWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>320</width>
+    <height>178</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>Grabber - Recherche</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../resources.qrc">
+    <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
+  </property>
+  <layout class="QFormLayout" name="formLayout">
+   <property name="fieldGrowthPolicy">
+    <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+   </property>
+   <item row="0" column="0">
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>Trier par</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QComboBox" name="comboOrder">
+     <item>
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>ID (croissant)</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>ID (décroissant)</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Score (croissant)</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Score (décroissant)</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Mégapixels (croissant)</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Mégapixels (décroissant)</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Taille de fichier</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Orientation paysage</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Orientation portrait</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Nombre de favoris</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Rang</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>Rating</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="1">
+     <item>
+      <widget class="QComboBox" name="comboRating">
+       <item>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Safe</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Safe (non)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Questionable</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Questionable (non)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Explicit</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Explicit (non)</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="label_4">
+     <property name="text">
+      <string>Statut</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QComboBox" name="comboStatus">
+     <item>
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Supprimée</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Active</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Signalée</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>En attente</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="label_3">
+     <property name="text">
+      <string>Date</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLineEdit" name="lineDate"/>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonCalendar">
+       <property name="text">
+        <string>Calendrier</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="4" column="0" colspan="2">
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QPushButton" name="buttonImage">
+       <property name="text">
+        <string>Image</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QDialogButtonBox" name="buttonBox">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="standardButtons">
+        <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="../resources.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>SearchWindow</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>248</x>
+     <y>254</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>SearchWindow</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>316</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>286</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

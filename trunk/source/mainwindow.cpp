@@ -855,6 +855,8 @@ void mainWindow::closeEvent(QCloseEvent *e)
 			settings.setValue("order", assoc[ui->comboOrderfavorites->currentIndex()]);
 			settings.setValue("reverse", bool(ui->comboOrderasc->currentIndex() == 1));
 		settings.endGroup();
+		for (int i = 0; i < m_tabs.size(); i++)
+		{ m_tabs.at(i)->deleteLater(); }
 	DONE();
 	e->accept();
 	qApp->quit();
