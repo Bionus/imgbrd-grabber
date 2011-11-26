@@ -458,6 +458,7 @@
      <string>Outils</string>
     </property>
     <addaction name="actionBlacklistFix"/>
+    <addaction name="actionEmptyDirsFix"/>
     <addaction name="separator"/>
     <addaction name="actionOptions"/>
    </widget>
@@ -503,6 +504,11 @@
   <action name="actionBlacklistFix">
    <property name="text">
     <string>Réparateur de liste noire</string>
+   </property>
+  </action>
+  <action name="actionEmptyDirsFix">
+   <property name="text">
+    <string>Réparateur de dossiers vides</string>
    </property>
   </action>
  </widget>
@@ -661,8 +667,8 @@
    <slot>addGroup()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>93</x>
-     <y>58</y>
+     <x>96</x>
+     <y>270</y>
     </hint>
     <hint type="destinationlabel">
      <x>465</x>
@@ -677,8 +683,8 @@
    <slot>addUnique()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>93</x>
-     <y>67</y>
+     <x>96</x>
+     <y>495</y>
     </hint>
     <hint type="destinationlabel">
      <x>472</x>
@@ -693,8 +699,8 @@
    <slot>getAll()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>111</x>
-     <y>100</y>
+     <x>310</x>
+     <y>525</y>
     </hint>
     <hint type="destinationlabel">
      <x>352</x>
@@ -709,8 +715,8 @@
    <slot>batchClear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>111</x>
-     <y>100</y>
+     <x>699</x>
+     <y>525</y>
     </hint>
     <hint type="destinationlabel">
      <x>693</x>
@@ -725,8 +731,8 @@
    <slot>logClear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>93</x>
-     <y>64</y>
+     <x>96</x>
+     <y>526</y>
     </hint>
     <hint type="destinationlabel">
      <x>715</x>
@@ -773,8 +779,8 @@
    <slot>batchClearSel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>111</x>
-     <y>100</y>
+     <x>504</x>
+     <y>525</y>
     </hint>
     <hint type="destinationlabel">
      <x>801</x>
@@ -789,8 +795,8 @@
    <slot>batchSel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>111</x>
-     <y>100</y>
+     <x>115</x>
+     <y>525</y>
     </hint>
     <hint type="destinationlabel">
      <x>0</x>
@@ -803,6 +809,22 @@
    <signal>triggered()</signal>
    <receiver>mainWindow</receiver>
    <slot>blacklistFix()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>270</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionEmptyDirsFix</sender>
+   <signal>triggered()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>emptyDirsFix()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>
@@ -844,5 +866,6 @@
   <slot>batchClearSel()</slot>
   <slot>batchSel()</slot>
   <slot>blacklistFix()</slot>
+  <slot>emptyDirsFix()</slot>
  </slots>
 </ui>

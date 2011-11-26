@@ -172,6 +172,7 @@ void searchTab::updateCheckboxes()
 
 void searchTab::load()
 {
+	log(tr("Chargement des résultats..."));
 	ui->widgetMeant->hide();
 	ui->buttonFirstPage->setEnabled(ui->spinPage->value() > 1);
 	ui->buttonPreviousPage->setEnabled(ui->spinPage->value() > 1);
@@ -188,13 +189,13 @@ void searchTab::load()
 	{
 		m_pages.at(i)->abort();
 		m_pages.at(i)->abortTags();
-		delete m_pages.at(i);
+		m_pages.at(i)->deleteLater();
 	}
 	m_pages.clear();
 	for (int i = 0; i < m_images.size(); i++)
 	{
 		m_images.at(i)->abortPreview();
-		delete m_images.at(i);
+		m_images.at(i)->deleteLater();
 	}
 	m_images.clear();
 	for (int i = 0; i < m_layouts.size(); i++)

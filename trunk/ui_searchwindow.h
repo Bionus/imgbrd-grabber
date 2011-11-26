@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'searchwindow.ui'
 **
-** Created: Sat 19. Nov 22:11:43 2011
+** Created: Sat 26. Nov 15:46:25 2011
 **      by: Qt User Interface Compiler version 4.7.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -23,6 +23,7 @@
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
 #include <QtGui/QPushButton>
+#include <QtGui/QSpacerItem>
 
 QT_BEGIN_NAMESPACE
 
@@ -44,12 +45,14 @@ public:
     QHBoxLayout *horizontalLayout_2;
     QPushButton *buttonImage;
     QDialogButtonBox *buttonBox;
+    QSpacerItem *verticalSpacer;
+    QLabel *label_5;
 
     void setupUi(QDialog *SearchWindow)
     {
         if (SearchWindow->objectName().isEmpty())
             SearchWindow->setObjectName(QString::fromUtf8("SearchWindow"));
-        SearchWindow->resize(320, 178);
+        SearchWindow->resize(280, 215);
         QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
@@ -132,7 +135,17 @@ public:
         horizontalLayout_2->addWidget(buttonBox);
 
 
-        formLayout->setLayout(4, QFormLayout::SpanningRole, horizontalLayout_2);
+        formLayout->setLayout(6, QFormLayout::SpanningRole, horizontalLayout_2);
+
+        verticalSpacer = new QSpacerItem(20, 10, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        formLayout->setItem(5, QFormLayout::SpanningRole, verticalSpacer);
+
+        label_5 = new QLabel(SearchWindow);
+        label_5->setObjectName(QString::fromUtf8("label_5"));
+        label_5->setWordWrap(true);
+
+        formLayout->setWidget(4, QFormLayout::SpanningRole, label_5);
 
 
         retranslateUi(SearchWindow);
@@ -184,6 +197,7 @@ public:
         label_3->setText(QApplication::translate("SearchWindow", "Date", 0, QApplication::UnicodeUTF8));
         buttonCalendar->setText(QApplication::translate("SearchWindow", "Calendrier", 0, QApplication::UnicodeUTF8));
         buttonImage->setText(QApplication::translate("SearchWindow", "Image", 0, QApplication::UnicodeUTF8));
+        label_5->setText(QApplication::translate("SearchWindow", "<i>N'oubliez pas que certains imageboards emp\303\252chent l'utilisation de plus d'un certain nombre de tags pour les membres non premiums.", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
 };

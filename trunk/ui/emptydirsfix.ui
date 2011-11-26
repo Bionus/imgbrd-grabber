@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>BlacklistFix</class>
- <widget class="QDialog" name="BlacklistFix">
+ <class>EmptyDirsFix</class>
+ <widget class="QDialog" name="EmptyDirsFix">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>395</width>
-    <height>147</height>
+    <width>274</width>
+    <height>69</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Réparateur de liste noire</string>
+   <string>Réparateur de dossiers vides</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../resources.qrc">
@@ -28,37 +28,7 @@
    <item row="0" column="1">
     <widget class="QLineEdit" name="lineFolder"/>
    </item>
-   <item row="1" column="0">
-    <widget class="QLabel" name="label_2">
-     <property name="text">
-      <string>Noms de fichiers</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="1">
-    <widget class="QLineEdit" name="lineFilename"/>
-   </item>
-   <item row="2" column="0">
-    <widget class="QLabel" name="label_3">
-     <property name="text">
-      <string>Liste noire</string>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="1">
-    <widget class="QLineEdit" name="lineBlacklist"/>
-   </item>
-   <item row="3" column="0">
-    <widget class="QLabel" name="label_4">
-     <property name="text">
-      <string>Source</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="1">
-    <widget class="QComboBox" name="comboSource"/>
-   </item>
-   <item row="4" column="0" colspan="2">
+   <item row="1" column="0" colspan="2">
     <layout class="QHBoxLayout" name="horizontalLayout_4">
      <item>
       <spacer name="horizontalSpacer">
@@ -94,5 +64,41 @@
  <resources>
   <include location="../resources.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>buttonCancel</sender>
+   <signal>clicked()</signal>
+   <receiver>EmptyDirsFix</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>226</x>
+     <y>53</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>233</x>
+     <y>45</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonContinue</sender>
+   <signal>clicked()</signal>
+   <receiver>EmptyDirsFix</receiver>
+   <slot>next()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>134</x>
+     <y>47</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>144</x>
+     <y>47</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>next()</slot>
+ </slots>
 </ui>

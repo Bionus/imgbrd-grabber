@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'blacklistfix.ui'
 **
-** Created: Sun 13. Nov 23:50:50 2011
+** Created: Sat 26. Nov 23:18:37 2011
 **      by: Qt User Interface Compiler version 4.7.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -53,7 +53,6 @@ public:
         BlacklistFix->setWindowIcon(icon);
         formLayout = new QFormLayout(BlacklistFix);
         formLayout->setObjectName(QString::fromUtf8("formLayout"));
-        formLayout->setFieldGrowthPolicy(QFormLayout::AllNonFixedFieldsGrow);
         label = new QLabel(BlacklistFix);
         label->setObjectName(QString::fromUtf8("label"));
 
