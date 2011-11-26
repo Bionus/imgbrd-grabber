@@ -126,7 +126,7 @@ void BlacklistFix2::getAll(Page *p)
 	else
 	{
 		BlacklistFix3 *bf3 = new BlacklistFix3(m_getAll.values(), m_blacklist);
-		hide();
+		close();
 		bf3->show();
 	}
 }

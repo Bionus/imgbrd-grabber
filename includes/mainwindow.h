@@ -34,6 +34,7 @@ class mainWindow : public QMainWindow
 		void aboutAuthor();
 		void saveFolder();
 		void blacklistFix();
+		void emptyDirsFix();
 		// Language
 		void switchTranslator(QTranslator&, const QString&);
 		void loadLanguage(const QString&, bool shutup = false);

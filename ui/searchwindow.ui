@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>320</width>
-    <height>178</height>
+    <width>280</width>
+    <height>215</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -205,7 +205,7 @@
      </item>
     </layout>
    </item>
-   <item row="4" column="0" colspan="2">
+   <item row="6" column="0" colspan="2">
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
       <widget class="QPushButton" name="buttonImage">
@@ -225,6 +225,32 @@
       </widget>
      </item>
     </layout>
+   </item>
+   <item row="5" column="0" colspan="2">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Expanding</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>10</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="4" column="0" colspan="2">
+    <widget class="QLabel" name="label_5">
+     <property name="text">
+      <string>&lt;i&gt;N'oubliez pas que certains imageboards empêchent l'utilisation de plus d'un certain nombre de tags pour les membres non premiums.</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>

@@ -26,6 +26,6 @@ void BlacklistFix::on_buttonCancel_clicked()
 void BlacklistFix::on_buttonContinue_clicked()
 {
 	BlacklistFix2 *bf2 = new BlacklistFix2(m_sites, ui->lineFolder->text(), ui->lineFilename->text(), ui->lineBlacklist->text().split(' '), m_sites.value(ui->comboSource->currentText()));
-	hide();
+	close();
 	bf2->show();
 }

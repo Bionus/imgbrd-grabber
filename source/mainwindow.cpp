@@ -9,6 +9,7 @@
 #include "batchwindow.h"
 #include "aboutwindow.h"
 #include "blacklistfix.h"
+#include "emptydirsfix.h"
 #include "functions.h"
 #include "json.h"
 #include <QtXml>
@@ -1399,4 +1400,9 @@ void mainWindow::blacklistFix()
 {
 	BlacklistFix *bf = new BlacklistFix(m_sites);
 	bf->show();
+}
+void mainWindow::emptyDirsFix()
+{
+	EmptyDirsFix *edf = new EmptyDirsFix();
+	edf->show();
 }

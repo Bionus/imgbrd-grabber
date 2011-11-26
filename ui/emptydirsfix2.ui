@@ -1,64 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>BlacklistFix</class>
- <widget class="QDialog" name="BlacklistFix">
+ <class>EmptyDirsFix2</class>
+ <widget class="QDialog" name="EmptyDirsFix2">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>395</width>
-    <height>147</height>
+    <height>455</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Réparateur de liste noire</string>
+   <string>Réparateur de dossiers vides</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../resources.qrc">
     <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
   </property>
-  <layout class="QFormLayout" name="formLayout">
-   <item row="0" column="0">
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Dossier</string>
+      <string>Choisissez les dossiers à supprimer dans la liste ci-dessous.</string>
      </property>
     </widget>
    </item>
-   <item row="0" column="1">
-    <widget class="QLineEdit" name="lineFolder"/>
-   </item>
-   <item row="1" column="0">
-    <widget class="QLabel" name="label_2">
-     <property name="text">
-      <string>Noms de fichiers</string>
+   <item>
+    <widget class="QListWidget" name="listWidget">
+     <property name="selectionMode">
+      <enum>QAbstractItemView::MultiSelection</enum>
      </property>
     </widget>
    </item>
-   <item row="1" column="1">
-    <widget class="QLineEdit" name="lineFilename"/>
-   </item>
-   <item row="2" column="0">
-    <widget class="QLabel" name="label_3">
-     <property name="text">
-      <string>Liste noire</string>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="1">
-    <widget class="QLineEdit" name="lineBlacklist"/>
-   </item>
-   <item row="3" column="0">
-    <widget class="QLabel" name="label_4">
-     <property name="text">
-      <string>Source</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="1">
-    <widget class="QComboBox" name="comboSource"/>
-   </item>
-   <item row="4" column="0" colspan="2">
+   <item>
     <layout class="QHBoxLayout" name="horizontalLayout_4">
      <item>
       <spacer name="horizontalSpacer">
@@ -74,9 +48,9 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="buttonContinue">
+      <widget class="QPushButton" name="buttonDelete">
        <property name="text">
-        <string>Continuer</string>
+        <string>Supprimer</string>
        </property>
       </widget>
      </item>
@@ -94,5 +68,41 @@
  <resources>
   <include location="../resources.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>buttonCancel</sender>
+   <signal>clicked()</signal>
+   <receiver>EmptyDirsFix2</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>341</x>
+     <y>439</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>354</x>
+     <y>449</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonDelete</sender>
+   <signal>clicked()</signal>
+   <receiver>EmptyDirsFix2</receiver>
+   <slot>deleteSel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>272</x>
+     <y>427</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>276</x>
+     <y>453</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>deleteSel()</slot>
+ </slots>
 </ui>
