@@ -519,4 +519,5 @@ void optionsWindow::save()
 		settings.setValue("language", ui->comboLanguages->currentText());
 		m_parent->loadLanguage(ui->comboLanguages->currentText());
 	}
+	qDebug() << "true";
 }

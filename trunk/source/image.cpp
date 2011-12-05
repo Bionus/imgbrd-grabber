@@ -329,7 +329,6 @@ QString Image::path(QString fn)
 	{ filename.replace("//", "/"); }
 	if (filename.length() > settings.value("limit").toInt() && settings.value("limit").toInt() > 0)
 	{ filename = filename.left(filename.length()-ext.length()-1).left(settings.value("limit").toInt()-ext.length()-1) + filename.right(ext.length()+1); }
-	qDebug() << QDir::toNativeSeparators(filename);
 	return QDir::toNativeSeparators(filename);
 }
 

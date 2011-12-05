@@ -263,6 +263,11 @@
               <string>Télécharger les images de la liste noire</string>
              </property>
             </column>
+            <column>
+             <property name="text">
+              <string>Progression</string>
+             </property>
+            </column>
            </widget>
           </item>
           <item>
@@ -333,36 +338,44 @@
            </widget>
           </item>
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_3">
-            <item>
-             <widget class="QPushButton" name="pushButton">
-              <property name="text">
-               <string>Télécharger la séléction</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="pushButton_14">
-              <property name="text">
-               <string>Tout télécharger</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="buttonClearSel">
-              <property name="text">
-               <string>Effacer la séléction</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="buttonClear">
-              <property name="text">
-               <string>Tout effacer</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
+           <widget class="QWidget" name="widgetDownloadButtons" native="true">
+            <layout class="QHBoxLayout" name="horizontalLayout">
+             <property name="spacing">
+              <number>6</number>
+             </property>
+             <property name="margin">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QPushButton" name="pushButton">
+               <property name="text">
+                <string>Télécharger la séléction</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButton_14">
+               <property name="text">
+                <string>Tout télécharger</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="buttonClearSel">
+               <property name="text">
+                <string>Effacer la séléction</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="buttonClear">
+               <property name="text">
+                <string>Tout effacer</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
           </item>
          </layout>
         </widget>

@@ -160,7 +160,11 @@ QString validateFilename(QString text)
  * @return			The absolute path to the file.
  */
 QString savePath(QString file)
-{ return QDir::toNativeSeparators(QDir::homePath()+"/Grabber/"+file); }
+{
+	if (QFile(QDir::toNativeSeparators(qApp->applicationDirPath()+"/settings.ini")).exists())
+	{ return QDir::toNativeSeparators(qApp->applicationDirPath()+"/"+file); }
+	return QDir::toNativeSeparators(QDir::homePath()+"/Grabber/"+file);
+}
 
 /**
  * Return the levenshtein distance between two strings.
@@ -179,8 +183,8 @@ int levenshtein(QString s1, QString s2)
 
 	for(unsigned int i = 1; i <= len1; ++i)
 		for(unsigned int j = 1; j <= len2; ++j)
-			  d[i][j] = std::min( std::min(d[i - 1][j] + 1,d[i][j - 1] + 1),
-				  d[i - 1][j - 1] + (s1[i - 1] == s2[j - 1] ? 0 : 1) );
+			d[i][j] = std::min( std::min(d[i - 1][j] + 1,d[i][j - 1] + 1),
+				d[i - 1][j - 1] + (s1[i - 1] == s2[j - 1] ? 0 : 1) );
 
 	return d[len1][len2];
 }

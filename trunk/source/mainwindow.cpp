@@ -14,14 +14,14 @@
 #include "json.h"
 #include <QtXml>
 
-#define VERSION	"2.4.0"
+#define VERSION	"3.0.0a"
 #define DONE()	logUpdate(tr(" Fait"))
 
 extern QMap<QDateTime,QString> _log;
 
 
 
-mainWindow::mainWindow(QString program, QStringList tags, QStringMap params) : ui(new Ui::mainWindow), m_currentFav(-1), m_loaded(false), m_program(program), m_tags(tags), m_params(params)
+mainWindow::mainWindow(QString program, QStringList tags, QStringMap params) : ui(new Ui::mainWindow), m_currentFav(-1), m_loaded(false), m_getAll(false), m_program(program), m_tags(tags), m_params(params)
 {
 }
 void mainWindow::init()
@@ -42,7 +42,8 @@ void mainWindow::init()
 	m_timezonedecay = QDateTime::currentDateTime().time().hour()-m_serverDate.time().hour();
 	m_gotMd5 = QStringList();
 	m_mergeButtons = QList<QBouton*>();
-	m_progressdialog = new batchWindow(this);
+	m_progressBars = QList<QProgressBar*>();
+	m_progressdialog = new batchWindow();
 
 	ui->tableBatchGroups->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
 	ui->tableBatchUniques->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
@@ -313,11 +314,11 @@ void mainWindow::batchAddGroup(const QStringList& values)
 		else if (r == 8) { r = 6; }
 		else if (r == 5) { r = 7; }
 		ui->tableBatchGroups->setItem(ui->tableBatchGroups->rowCount()-1, r, item);
-		/*QProgressBar *prog = new QProgressBar();
-		prog->setTextVisible(false);
-		m_progressBars.append(prog);
-		ui->tableBatchGroups->setCellWidget(ui->tableBatchGroups->rowCount()-1, 8, prog);*/
 	}
+	QProgressBar *prog = new QProgressBar();
+	prog->setTextVisible(false);
+	m_progressBars.append(prog);
+	ui->tableBatchGroups->setCellWidget(ui->tableBatchGroups->rowCount()-1, 8, prog);
 	m_allow = true;
 }
 void mainWindow::batchAddUnique(QStringMap values)
@@ -369,6 +370,7 @@ void mainWindow::batchClear()
 	m_groupBatchs.clear();
 	ui->tableBatchGroups->clearContents();
 	ui->tableBatchGroups->setRowCount(0);
+	m_progressBars.clear();
 }
 void mainWindow::batchClearSel()
 {
@@ -913,7 +915,13 @@ void mainWindow::batchSel()
 }
 void mainWindow::getAll(bool all)
 {
-	qDebug() << all;
+	if (m_getAll)
+	{
+		log(tr("Lancement d'un téléchargement groupé annulé car un autre est déjà en cours d'éxecution."));
+		return;
+	}
+	m_getAll = true;
+	ui->widgetDownloadButtons->setDisabled(m_getAll);
 	if (m_settings->value("Save/path").toString().isEmpty())
 	{ error(this, tr("Vous n'avez pas précisé de dossier de sauvegarde !")); return; }
 	else if (m_settings->value("Save/filename").toString().isEmpty())
@@ -929,6 +937,11 @@ void mainWindow::getAll(bool all)
 	m_getAllBeforeId = -1;
 	m_getAllImages.clear();
 	m_getAllPages.clear();
+	for (int i = 0; i < m_progressBars.size(); i++)
+	{
+		m_progressBars.at(i)->setMaximum(100);
+		m_progressBars.at(i)->setValue(0);
+	}
 	if (!m_settings->value("Exec/Group/init").toString().isEmpty())
 	{
 		log(tr("Execution de la commande d'initialisation' \"%1\"").arg(m_settings->value("Exec/Group/init").toString()));
@@ -989,6 +1002,7 @@ void mainWindow::getAllFinishedLoading(Page* p)
 		{ n = i; break; }
 	}
 	QList<Image*> imgs = p->images();
+	m_progressBars[n]->setMaximum(imgs.size());
 	while (imgs.size() > m_groupBatchs.at(n).at(2).toInt())
 	{ imgs.removeAt(m_groupBatchs.at(n).at(2).toInt()); }
 	m_getAllImages.append(imgs);
@@ -1103,6 +1117,7 @@ void mainWindow::_getAll()
 					m_getAllIgnored++;
 					log(tr("Image ignorée."));
 					m_progressdialog->loadedImage(img->url());
+					m_progressBars[site_id]->setValue(m_progressBars[site_id]->value()+1);
 					m_getAllDetails.clear();
 					_getAll();
 				}
@@ -1129,6 +1144,7 @@ void mainWindow::_getAll()
 				m_getAllExists++;
 				log(tr("Fichier déjà existant : <a href=\"file:///%1\">%1</a>").arg(f.fileName()));
 				m_progressdialog->loadedImage(img->url());
+				m_progressBars[site_id]->setValue(m_progressBars[site_id]->value()+1);
 				m_getAllDetails.clear();
 				_getAll();
 			}
@@ -1155,6 +1171,8 @@ void mainWindow::_getAll()
 			m_process->waitForFinished(1000);
 			m_process->close();
 		}
+		m_getAll = false;
+		ui->widgetDownloadButtons->setDisabled(m_getAll);
 		log(tr("Téléchargement groupé terminé"));
 		m_progressdialog->clear();
 	}
@@ -1252,6 +1270,7 @@ void mainWindow::getAllPerformTags(Image* img)
 			m_getAllIgnored++;
 			log(tr("Image ignorée."));
 			m_progressdialog->loadedImage(img->url());
+			m_progressBars[site_id]->setValue(m_progressBars[site_id]->value()+1);
 			m_getAllDetails.clear();
 			_getAll();
 		}
@@ -1279,6 +1298,7 @@ void mainWindow::getAllPerformTags(Image* img)
 		log(tr("Fichier déjà existant : <a href=\"file:///%1\">%1</a>").arg(f.fileName()));
 		m_getAllDetails.clear();
 		m_progressdialog->loadedImage(img->url());
+		m_progressBars[site_id]->setValue(m_progressBars[site_id]->value()+1);
 		_getAll();
 	}
 }
@@ -1289,16 +1309,17 @@ void mainWindow::getAllPerformImage()
 	{ return; }
 	log(tr("Image reçue depuis <a href=\"%1\">%1</a>").arg(reply->url().toString()));
 	Image *img = m_getAllImages.at(m_getAllId);
+
+	// Row
+	int site_id = 0;
+	for (int i = 0; i < m_groupBatchs.count(); i++)
+	{
+		if (m_groupBatchs.at(i).at(8) == img->page()->url().toString())
+		{ site_id = i; break; }
+	}
+
 	if (reply->error() == QNetworkReply::NoError)
 	{
-		// Row
-		int site_id = 0;
-		for (int i = 0; i < m_groupBatchs.count(); i++)
-		{
-			if (m_groupBatchs.at(i).at(8) == img->page()->url().toString())
-			{ site_id = i; break; }
-		}
-
 		// Getting path
 		QString path = img->path(m_groupBatchs[site_id][6]);
 		path.replace("%n%", QString::number(m_getAllId+1));
@@ -1376,6 +1397,7 @@ void mainWindow::getAllPerformImage()
 		m_getAllErrors++;
 		m_progressdialog->errorImage(img->url());
 	}
+	m_progressBars[site_id]->setValue(m_progressBars[site_id]->value()+1);
 
 	m_getAllId++;
 	m_progressdialog->setValue(m_progressdialog->value()+img->value());
@@ -1393,6 +1415,8 @@ void mainWindow::getAllCancel()
 		{ m_getAllRequest->abort(); }
 	}
 	m_progressdialog->clear();
+	m_getAll = false;
+	ui->widgetDownloadButtons->setDisabled(m_getAll);
 	DONE();
 }
 
