@@ -24,7 +24,7 @@
     <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
   </property>
   <property name="modal">
-   <bool>true</bool>
+   <bool>false</bool>
   </property>
   <layout class="QGridLayout" name="gridLayout" columnstretch="1,0,0">
    <item row="1" column="0" colspan="2">

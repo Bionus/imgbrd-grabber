@@ -85,7 +85,7 @@ class mainWindow : public QMainWindow
 	private:
 		Ui::mainWindow		*ui;
 		int					m_pagemax, m_timezonedecay, m_getAllId, m_getAllDownloaded, m_getAllExists, m_getAllIgnored, m_getAllErrors, m_getAllCount, m_getAllPageCount, m_getAllBeforeId, m_remainingPics, m_remainingSites, m_countPics, m_currentFav, m_currentFavCount;
-		bool				m_allow, m_must_get_tags, m_loaded, m_getAllRequestExists;
+		bool				m_allow, m_must_get_tags, m_loaded, m_getAllRequestExists, m_getAll;
 		QSettings			*m_settings;
 		QProcess			*m_process;
 		QNetworkReply		*m_getAllRequest;
@@ -107,6 +107,7 @@ class mainWindow : public QMainWindow
 		QMap<QString,QString>					m_favorites, m_params;
 		QMap<QString,QStringList>				m_getAllDetails;
 		QMap<QString,QMap<QString,QString> >	m_sites;
+		QList<QProgressBar*>					m_progressBars;
 		QList<QNetworkReply*>					m_replies;
 		QList<QMap<QString,QString> >			m_details, m_batchs;
 };
