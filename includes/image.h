@@ -46,6 +46,7 @@ class Image : public QObject
 		QSize		size();
 		QPixmap		previewImage();
 		Page		*page();
+		void		setUrl(QString);
 
 	public slots:
 		void loadPreview();

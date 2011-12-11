@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'blacklistfix.h'
 **
-** Created: Sun 13. Nov 00:45:08 2011
+** Created: Sun 11. Dec 22:28:54 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.4)
 **
 ** WARNING! All changes made in this file will be lost!

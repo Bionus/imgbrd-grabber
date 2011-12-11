@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'searchwindow.h'
 **
-** Created: Sat 19. Nov 22:12:19 2011
+** Created: Sun 11. Dec 22:29:01 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.4)
 **
 ** WARNING! All changes made in this file will be lost!

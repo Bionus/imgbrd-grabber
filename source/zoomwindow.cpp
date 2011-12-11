@@ -365,6 +365,16 @@ void zoomWindow::colore()
 
 void zoomWindow::replyFinishedZoom()
 {
+	// Check redirection
+	QUrl redir = m_reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
+	if (!redir.isEmpty())
+	{
+		m_url = redir.toString();
+		m_image->setUrl(m_url);
+		load();
+		return;
+	}
+
 	log(tr("Image reçue depuis <a href=\"%1\">%1</a>").arg(m_url));
 	m_finished = true;
 	if (m_reply->error() == QNetworkReply::NoError)
@@ -454,6 +464,7 @@ QString zoomWindow::saveImage()
 	QString pth = settings.value("Save/path").toString().replace("\\", "/");
 	if (pth.right(1) == "/")
 	{ pth = pth.left(pth.length()-1); }
+
 	QString path = m_image->path();
 	if (pth.isEmpty() || settings.value("Save/filename").toString().isEmpty())
 	{
