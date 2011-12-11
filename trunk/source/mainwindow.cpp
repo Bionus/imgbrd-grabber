@@ -19,6 +19,14 @@
 
 extern QMap<QDateTime,QString> _log;
 
+/*
+deviantart.org
+g.e-hentai.org
+minitokyo.net
+pixiv.net
+zerochan.net
+*/
+
 
 
 mainWindow::mainWindow(QString program, QStringList tags, QStringMap params) : ui(new Ui::mainWindow), m_currentFav(-1), m_loaded(false), m_getAll(false), m_program(program), m_tags(tags), m_params(params)

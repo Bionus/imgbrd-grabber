@@ -77,8 +77,24 @@ void Image::abortPreview()
 }
 void Image::parsePreview(QNetworkReply* r)
 {
+	// Check redirection
+	QUrl redir = r->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
+	if (!redir.isEmpty())
+	{
+		m_previewUrl = redir;
+		loadPreview();
+		return;
+	}
+
+	// Load preview from raw result
 	m_imagePreview.loadFromData(r->readAll());
-	emit finishedLoadingPreview(this);
+	if (m_imagePreview.isNull())
+	{
+		log(tr("<b>Attention :</b> %1").arg(tr("une des vignettes est vide (<a href=\"%1\">%1</a>). Nouvel essai...").arg(m_previewUrl.toString())));
+		loadPreview();
+	}
+	else
+	{ emit finishedLoadingPreview(this); }
 }
 
 void Image::loadTags()
@@ -97,6 +113,15 @@ void Image::abortTags()
 }
 void Image::parseTags(QNetworkReply* r)
 {
+	// Check redirection
+	QUrl redir = r->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
+	if (!redir.isEmpty())
+	{
+		m_pageUrl = redir;
+		loadTags();
+		return;
+	}
+
 	if (m_parent->site().contains("Regex/Tags"))
 	{
 		QString source = r->readAll();
@@ -294,6 +319,8 @@ QString Image::path(QString fn)
 	}
 
 	QString ext = m_url.section('.', -1).left(259-pth.length()-1-filename.length());
+	if (ext.length() > 5)
+	{ ext = "jpg"; }
 	QStringList rem = (filename.contains("%artist%") ? details["artists"] : QStringList()) +
 		(filename.contains("%copyright%") ? copyrights : QStringList()) +
 		(filename.contains("%character%") ? details["characters"] : QStringList()) +
@@ -379,3 +406,5 @@ QUrl		Image::pageUrl()		{ return m_pageUrl;			}
 QSize		Image::size()			{ return m_size;			}
 QPixmap		Image::previewImage()	{ return m_imagePreview;	}
 Page		*Image::page()			{ return m_parent;			}
+
+void	Image::setUrl(QString u)	{ m_url = u;	}
