@@ -225,6 +225,11 @@
             </attribute>
             <column>
              <property name="text">
+              <string/>
+             </property>
+            </column>
+            <column>
+             <property name="text">
               <string>Tags</string>
              </property>
             </column>

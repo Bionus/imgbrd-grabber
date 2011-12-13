@@ -15,7 +15,7 @@
 #include <QtXml>
 
 #define VERSION	"3.0.0a"
-#define DONE()	logUpdate(tr(" Fait"))
+#define DONE()	logUpdate(QObject::tr(" Fait"))
 
 extern QMap<QDateTime,QString> _log;
 
@@ -311,6 +311,8 @@ void mainWindow::batchAddGroup(const QStringList& values)
 	QTableWidgetItem *item;
 	ui->tableBatchGroups->setRowCount(ui->tableBatchGroups->rowCount()+1);
 	m_allow = false;
+	QTableWidgetItem *it = new QTableWidgetItem(QIcon(":/images/colors/black.png"), QString::number(ui->tableBatchGroups->rowCount()));
+	ui->tableBatchGroups->setItem(ui->tableBatchGroups->rowCount()-1, 0, it);
 	for (int t = 0; t < values.count(); t++)
 	{
 		item = new QTableWidgetItem;
@@ -321,12 +323,12 @@ void mainWindow::batchAddGroup(const QStringList& values)
 		else if (r == 7) { r = 5; }
 		else if (r == 8) { r = 6; }
 		else if (r == 5) { r = 7; }
-		ui->tableBatchGroups->setItem(ui->tableBatchGroups->rowCount()-1, r, item);
+		ui->tableBatchGroups->setItem(ui->tableBatchGroups->rowCount()-1, r+1, item);
 	}
 	QProgressBar *prog = new QProgressBar();
 	prog->setTextVisible(false);
 	m_progressBars.append(prog);
-	ui->tableBatchGroups->setCellWidget(ui->tableBatchGroups->rowCount()-1, 8, prog);
+	ui->tableBatchGroups->setCellWidget(ui->tableBatchGroups->rowCount()-1, 9, prog);
 	m_allow = true;
 }
 void mainWindow::batchAddUnique(QStringMap values)
@@ -429,7 +431,7 @@ void mainWindow::updateBatchGroups(int y, int x)
 		else if (r == 6) { r = 8; }
 		else if (r == 7) { r = 5; }
 		r--;
-		m_groupBatchs[y][r] = ui->tableBatchGroups->item(y,x)->text();
+		m_groupBatchs[y][r] = ui->tableBatchGroups->item(y, x+1)->text();
 	}
 }
 void mainWindow::addGroup()
@@ -950,6 +952,8 @@ void mainWindow::getAll(bool all)
 		m_progressBars.at(i)->setMaximum(100);
 		m_progressBars.at(i)->setValue(0);
 	}
+	for (int i = 0; i < ui->tableBatchGroups->rowCount(); i++)
+	{ ui->tableBatchGroups->item(i, 0)->setIcon(QIcon(":/images/colors/black.png")); }
 	if (!m_settings->value("Exec/Group/init").toString().isEmpty())
 	{
 		log(tr("Execution de la commande d'initialisation' \"%1\"").arg(m_settings->value("Exec/Group/init").toString()));
@@ -1067,6 +1071,7 @@ void mainWindow::_getAll()
 				if (m_groupBatchs.at(i).at(8) == img->page()->url().toString())
 				{ site_id = i; break; }
 			}
+			ui->tableBatchGroups->item(site_id, 0)->setIcon(QIcon(":/images/colors/blue.png"));
 
 			QString u(img->fileUrl().toString());
 			QString path = m_groupBatchs[site_id][6];
@@ -1126,6 +1131,8 @@ void mainWindow::_getAll()
 					log(tr("Image ignorée."));
 					m_progressdialog->loadedImage(img->url());
 					m_progressBars[site_id]->setValue(m_progressBars[site_id]->value()+1);
+					if (m_progressBars[site_id]->value() >= m_progressBars[site_id]->maximum())
+					{ ui->tableBatchGroups->item(site_id, 0)->setIcon(QIcon(":/images/colors/green.png")); }
 					m_getAllDetails.clear();
 					_getAll();
 				}
@@ -1153,6 +1160,8 @@ void mainWindow::_getAll()
 				log(tr("Fichier déjà existant : <a href=\"file:///%1\">%1</a>").arg(f.fileName()));
 				m_progressdialog->loadedImage(img->url());
 				m_progressBars[site_id]->setValue(m_progressBars[site_id]->value()+1);
+				if (m_progressBars[site_id]->value() >= m_progressBars[site_id]->maximum())
+				{ ui->tableBatchGroups->item(site_id, 0)->setIcon(QIcon(":/images/colors/green.png")); }
 				m_getAllDetails.clear();
 				_getAll();
 			}
@@ -1279,6 +1288,8 @@ void mainWindow::getAllPerformTags(Image* img)
 			log(tr("Image ignorée."));
 			m_progressdialog->loadedImage(img->url());
 			m_progressBars[site_id]->setValue(m_progressBars[site_id]->value()+1);
+			if (m_progressBars[site_id]->value() >= m_progressBars[site_id]->maximum())
+			{ ui->tableBatchGroups->item(site_id, 0)->setIcon(QIcon(":/images/colors/green.png")); }
 			m_getAllDetails.clear();
 			_getAll();
 		}
@@ -1307,6 +1318,8 @@ void mainWindow::getAllPerformTags(Image* img)
 		m_getAllDetails.clear();
 		m_progressdialog->loadedImage(img->url());
 		m_progressBars[site_id]->setValue(m_progressBars[site_id]->value()+1);
+		if (m_progressBars[site_id]->value() >= m_progressBars[site_id]->maximum())
+		{ ui->tableBatchGroups->item(site_id, 0)->setIcon(QIcon(":/images/colors/green.png")); }
 		_getAll();
 	}
 }
@@ -1406,6 +1419,8 @@ void mainWindow::getAllPerformImage()
 		m_progressdialog->errorImage(img->url());
 	}
 	m_progressBars[site_id]->setValue(m_progressBars[site_id]->value()+1);
+	if (m_progressBars[site_id]->value() >= m_progressBars[site_id]->maximum())
+	{ ui->tableBatchGroups->item(site_id, 0)->setIcon(QIcon(":/images/colors/green.png")); }
 
 	m_getAllId++;
 	m_progressdialog->setValue(m_progressdialog->value()+img->value());

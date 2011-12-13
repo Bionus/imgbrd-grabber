@@ -4,7 +4,7 @@
 #include "zoomwindow.h"
 #include "searchwindow.h"
 
-#define DONE()	logUpdate(tr(" Fait"))
+#define DONE()	logUpdate(QObject::tr(" Fait"))
 extern mainWindow *_mainwindow;
 
 
