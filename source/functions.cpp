@@ -44,6 +44,21 @@ QMap<QString,QStringList> getCustoms()
 }
 
 /**
+ * Load multiple filenames from settings.
+ * @return	The map with token names as keys and token tags as values.
+ */
+QMap<QString,QString> getFilenames()
+{
+	QMap<QString,QString> tokens;
+	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
+	settings.beginGroup("Filenames");
+	QStringList keys = settings.childKeys();
+	for (int i = 0; i < keys.size(); i++)
+	{ tokens.insert(keys.at(i), settings.value(keys.at(i)).toString()); }
+	return tokens;
+}
+
+/**
  * Convert a danbooru-like date (Sat May 14 17:38:04 -0400 2011) to a valid QDateTime.
  * @param	str				The date string.
  * @param	timezonedecay	The number of timezones between the user and the server.

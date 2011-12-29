@@ -31,6 +31,7 @@ Image::Image(QMap<QString, QString> details, int timezonedecay, Page* parent)
 	}
 	m_id = details.contains("id") ? details["id"].toInt() : 0;
 	m_score = details.contains("score") ? details["score"].toInt() : 0;
+	m_hasScore = details.contains("score");
 	m_parentId = details.contains("parent_id") ? details["parent_id"].toInt() : 0;
 	m_fileSize = details.contains("file_size") ? details["file_size"].toInt() : 0;
 	m_authorId = details.contains("creator_id") ? details["creator_id"].toInt() : 0;
@@ -399,6 +400,7 @@ QDateTime	Image::createdAt()		{ return m_createdAt;		}
 bool		Image::hasChildren()	{ return m_hasChildren;		}
 bool		Image::hasNote()		{ return m_hasNote;			}
 bool		Image::hasComments()	{ return m_hasComments;		}
+bool		Image::hasScore()		{ return m_hasScore;		}
 QUrl		Image::fileUrl()		{ return m_fileUrl;			}
 QUrl		Image::sampleUrl()		{ return m_sampleUrl;		}
 QUrl		Image::previewUrl()		{ return m_previewUrl;		}

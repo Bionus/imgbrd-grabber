@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Site>
-	<Name>Shimmie</Name>
+	<Name>Zerochan</Name>
 	<Urls>
 		<Html>
-			<Tags>/post/list/{tags}/{page}</Tags>
-			<Post>/post/view/{id}</Post>
-			<Image>/_images/{md5}.{ext}</Image>
+			<Tags>/{tags}?p={page}</Tags>
+			<Post>/{id}</Post>
 		</Html>
 		<Rss>
-			<Tags>/rss/images/{page}</Tags>
+			<Tags>/{tags}?xml&amp;p={page}</Tags>
+			<Limit>100</Limit>
 		</Rss>
 	</Urls>
 	<Regex>
