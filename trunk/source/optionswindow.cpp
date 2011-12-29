@@ -1,6 +1,7 @@
 #include "optionswindow.h"
 #include "ui_optionswindow.h"
 #include "customwindow.h"
+#include "filenamewindow.h"
 #include "functions.h"
 
 
@@ -32,14 +33,26 @@ optionsWindow::optionsWindow(mainWindow *parent) : QDialog(parent), m_parent(par
 
 	ui->spinImagesPerPage->setValue(settings.value("limit", 20).toInt());
 	ui->spinColumns->setValue(settings.value("columns", 1).toInt());
-	QStringList sources = QStringList() << "xml" << "json" << "regex";
+	QStringList sources = QStringList() << "xml" << "json" << "regex" << "rss";
 	ui->comboSource1->setCurrentIndex(sources.indexOf(settings.value("source_1", "xml").toString()));
-	ui->comboSource2->setCurrentIndex(sources.indexOf(settings.value("source_2", "xml").toString()));
-	ui->comboSource3->setCurrentIndex(sources.indexOf(settings.value("source_3", "xml").toString()));
+	ui->comboSource2->setCurrentIndex(sources.indexOf(settings.value("source_2", "json").toString()));
+	ui->comboSource3->setCurrentIndex(sources.indexOf(settings.value("source_3", "regex").toString()));
+	ui->comboSource4->setCurrentIndex(sources.indexOf(settings.value("source_4", "rss").toString()));
 
 	QStringList positions = QStringList() << "top" << "left" << "auto";
 	ui->comboTagsposition->setCurrentIndex(positions.indexOf(settings.value("tagsposition", "top").toString()));
 
+	QMap<QString,QString> filenames = getFilenames();
+	m_filenamesConditions = QList<QLineEdit*>();
+	m_filenamesFilenames = QList<QLineEdit*>();
+	for (int i = 0; i < filenames.size(); i++)
+	{
+		QLineEdit *leCondition = new QLineEdit(filenames.keys().at(i));
+		QLineEdit *leFilename = new QLineEdit(filenames.values().at(i));
+		m_filenamesConditions.append(leCondition);
+		m_filenamesFilenames.append(leFilename);
+		ui->layoutFilenames->insertRow(i, leCondition, leFilename);
+	}
 	QStringList types = QStringList() << "text" << "icon" << "both" << "hide";
 	ui->comboSources->setCurrentIndex(types.indexOf(settings.value("Sources/Types", "icon").toString()));
 	int i = settings.value("Sources/Letters", 3).toInt();
@@ -169,6 +182,7 @@ void optionsWindow::on_buttonFolder_clicked()
 	if (!folder.isEmpty())
 	{ ui->lineFolder->setText(folder); }
 }
+
 void optionsWindow::on_buttonCustom_clicked()
 {
 	customWindow *cw = new customWindow();
@@ -183,6 +197,21 @@ void optionsWindow::addCustom(QString name, QString tags)
 	m_customNames.append(leName);
 	m_customTags.append(leTags);
 }
+void optionsWindow::on_buttonFilenames_clicked()
+{
+	filenameWindow *cw = new filenameWindow();
+	connect(cw, SIGNAL(validated(QString, QString)), this, SLOT(addFilename(QString, QString)));
+	cw->show();
+}
+void optionsWindow::addFilename(QString condition, QString filename)
+{
+	QLineEdit *leCondition = new QLineEdit(condition);
+	QLineEdit *leFilename = new QLineEdit(filename);
+	ui->layoutFilenames->insertRow(m_filenamesConditions.size(), leCondition, leFilename);
+	m_filenamesConditions.append(leCondition);
+	m_filenamesFilenames.append(leFilename);
+}
+
 void optionsWindow::on_buttonCrypt_clicked()
 {
 	QString password = QInputDialog::getText(this, tr("Hasher un mot de passe"), tr("Veuillez entrer votre mot de passe."), QLineEdit::Password);
@@ -361,6 +390,7 @@ void optionsWindow::updateContainer(QTreeWidgetItem *current, QTreeWidgetItem *p
 		tr("Log", "update") <<
 		tr("Sauvegarde", "update") <<
 		tr("Nom de fichier", "update") <<
+		tr("Noms multiples", "update") <<
 		tr("Tags artiste", "update") <<
 		tr("Tags série", "update") <<
 		tr("Tags personnage", "update") <<
@@ -398,16 +428,23 @@ void optionsWindow::save()
 
 	settings.setValue("limit", ui->spinImagesPerPage->value());
 	settings.setValue("columns", ui->spinColumns->value());
-	QStringList sources = QStringList() << "xml" << "json" << "regex";
+	QStringList sources = QStringList() << "xml" << "json" << "regex" << "rss";
 	settings.setValue("source_1", sources.at(ui->comboSource1->currentIndex()));
 	settings.setValue("source_2", sources.at(ui->comboSource2->currentIndex()));
 	settings.setValue("source_3", sources.at(ui->comboSource3->currentIndex()));
+	settings.setValue("source_4", sources.at(ui->comboSource4->currentIndex()));
 	settings.setValue("loadatstart", ui->checkLoadFirstAtStart->isChecked());
 	settings.setValue("hidefavorites", ui->spinHideFavorites->value());
 	settings.setValue("autodownload", ui->checkAutodownload->isChecked());
 	QStringList positions = QStringList() << "top" << "left" << "auto";
 	settings.setValue("tagsposition", positions.at(ui->comboTagsposition->currentIndex()));
 	settings.setValue("hideblacklisted", ui->checkHideBlacklisted->isChecked());
+
+	settings.beginGroup("Filenames");
+		settings.remove("");
+		for (int i = 0; i < m_filenamesConditions.size(); i++)
+		{ settings.setValue(m_filenamesConditions.at(i)->text(), m_filenamesFilenames.at(i)->text()); }
+	settings.endGroup();
 
 	QStringList types = QStringList() << "text" << "icon" << "both" << "hide";
 	settings.setValue("Sources/Types", types.at(ui->comboSources->currentIndex()));

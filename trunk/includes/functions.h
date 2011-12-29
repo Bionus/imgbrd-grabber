@@ -20,7 +20,9 @@ QString		validateFilename(QString);
 void		showInGraphicalShell(const QString &);
 QString		qfonttocss(QFont);
 QStringMap	domToMap(QDomElement);
+
 QMap<QString,QStringList>	getCustoms();
+QMap<QString,QString>		getFilenames();
 
 QStringMap	loadFavorites();
 QStringList	loadViewItLater();

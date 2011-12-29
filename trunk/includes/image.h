@@ -39,6 +39,7 @@ class Image : public QObject
 		bool		hasChildren();
 		bool		hasNote();
 		bool		hasComments();
+		bool		hasScore();
 		QUrl		pageUrl();
 		QUrl		fileUrl();
 		QUrl		sampleUrl();
@@ -71,7 +72,7 @@ class Image : public QObject
 		QPixmap			m_imagePreview;
 		Page			*m_parent;
 		QNetworkReply	*m_loadPreview, *m_loadTags;
-		bool			m_loadPreviewExists, m_loadTagsExists;
+		bool			m_loadPreviewExists, m_loadTagsExists, m_hasScore;
 };
 
 #endif // IMAGE_H

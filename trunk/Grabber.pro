@@ -31,6 +31,7 @@ HEADERS += includes/addgroupwindow.h \
 	includes/imagethread.h \
 	includes/searchtab.h \
     includes/customwindow.h \
+    includes/filenamewindow.h \
     includes/blacklistfix.h \
     includes/blacklistfix2.h \
     includes/blacklistfix3.h \
@@ -61,6 +62,7 @@ SOURCES += source/addgroupwindow.cpp \
 	source/imagethread.cpp \
 	source/searchtab.cpp \
     source/customwindow.cpp \
+    source/filenamewindow.cpp \
     source/blacklistfix.cpp \
     source/blacklistfix2.cpp \
     source/blacklistfix3.cpp \
@@ -86,6 +88,7 @@ FORMS += \
     ui/aboutwindow.ui \
     ui/searchtab.ui \
     ui/customwindow.ui \
+    ui/filenamewindow.ui \
     ui/blacklistfix.ui \
     ui/blacklistfix2.ui \
     ui/blacklistfix3.ui \

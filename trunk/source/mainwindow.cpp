@@ -105,6 +105,8 @@ void mainWindow::init()
 							{ curr = source; }
 							stes[line] = details;
 							stes[line]["Urls/Selected/Tags"] = "http://"+line+stes[line]["Urls/"+(curr == "Regex" ? "Html" : curr)+"/Tags"];
+							if (stes[line].contains("Urls/"+(curr == "Regex" ? "Html" : curr)+"/Limit"))
+							{ stes[line]["Urls/Selected/Limit"] = stes[line]["Urls/"+(curr == "Regex" ? "Html" : curr)+"/Limit"]; }
 							stes[line]["Url"] = line;
 							stes[line]["Urls/Html/Post"] = "http://"+line+stes[line]["Urls/Html/Post"];
 							if (stes[line].contains("Urls/Html/Tags"))

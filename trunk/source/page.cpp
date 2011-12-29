@@ -12,8 +12,15 @@ Page::Page(QMap<QString,QMap<QString,QString> > *sites, QString site, QStringLis
 	QString t = tags.join(" ").replace("&", "%26");
 	if (m_site.contains("DefaultTag") && t.isEmpty())
 	{ t = m_site["DefaultTag"]; }
+
+	m_blim = m_site.contains("Urls/Selected/Limit") ? m_site["Urls/Selected/Limit"].toInt() : limit;
+	if (m_imagesPerPage > m_blim)
+	{ m_imagesPerPage = m_blim; }
+	m_page = page;
+	int p = floor((page - 1) * limit / m_blim) + m_site["FirstPage"].toInt();
+
 	QString url = m_site["Urls/Selected/Tags"];
-	url.replace("{page}", QString::number(page-1+m_site["FirstPage"].toInt()));
+	url.replace("{page}", QString::number(p));
 	url.replace("{tags}", t);
 	url.replace("{limit}", QString::number(limit));
 	QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
@@ -24,7 +31,7 @@ Page::Page(QMap<QString,QMap<QString,QString> > *sites, QString site, QStringLis
 	if (m_site.contains("Urls/Html/Tags"))
 	{
 		QString url = m_site["Urls/Html/Tags"];
-		url.replace("{page}", QString::number(page-1+m_site["FirstPage"].toInt()));
+		url.replace("{page}", QString::number(p));
 		url.replace("{tags}", t);
 		url.replace("{limit}", QString::number(limit));
 		QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
@@ -37,6 +44,7 @@ Page::Page(QMap<QString,QMap<QString,QString> > *sites, QString site, QStringLis
 
 	m_replyExists = false;
 	m_replyTagsExists = false;
+	m_currentUrl = 0;
 }
 Page::~Page()
 { }
@@ -92,8 +100,9 @@ void Page::parse(QNetworkReply* r)
 	// Reading reply and resetting vars
 	m_images.clear();
 	m_tags.clear();
-	m_imagesCount = 0;
+	m_imagesCount = -1;
 	m_source = r->readAll();
+	int first = ((m_page - 1) * m_imagesPerPage) % m_blim;
 
 	// XML
 	if (m_site["Selected"] == "xml")
@@ -116,7 +125,7 @@ void Page::parse(QNetworkReply* r)
 		QDomNodeList nodeList = docElem.elementsByTagName("post");
 		if (nodeList.count() > 0)
 		{
-			for (int id = 0; id < nodeList.count(); id++)
+			for (int id = first; id < nodeList.count() && id < m_imagesPerPage + first; id++)
 			{
 				QStringMap d;
 				QStringList infos;
@@ -152,7 +161,7 @@ void Page::parse(QNetworkReply* r)
 		{
 			QMap<QString, QVariant> sc;
 			QList<QVariant> sourc = src.toList();
-			for (int id = 0; id < sourc.count(); id++)
+			for (int id = first; id < sourc.count() && id < m_imagesPerPage + first; id++)
 			{
 				sc = sourc.at(id).toMap();
 				QStringMap d;
@@ -164,6 +173,65 @@ void Page::parse(QNetworkReply* r)
 				{ d["preview_url"] = "http://"+m_site["Url"]+QString(d["preview_url"].startsWith("/") ? "" : "/")+d["preview_url"]; }
 				if (!d["file_url"].startsWith("http://"))
 				{ d["file_url"] = "http://"+m_site["Url"]+QString(d["file_url"].startsWith("/") ? "" : "/")+d["file_url"]; }
+				d["page_url"] = m_site["Urls/Html/Post"];
+				QString t = m_search.join(" ").replace("&", "%26");
+				if (m_site.contains("DefaultTag") && t.isEmpty())
+				{ t = m_site["DefaultTag"]; }
+				d["page_url"].replace("{tags}", t);
+				d["page_url"].replace("{id}", d["id"]);
+				int timezonedecay = QDateTime::currentDateTime().time().hour()-QDateTime::currentDateTime().toUTC().addSecs(-60*60*4).time().hour();
+				Image *img = new Image(d, timezonedecay, this);
+				QString error = img->filter(m_postFiltering);
+				if (error.isEmpty())
+				{ m_images.append(img); }
+				else
+				{ log(tr("Image #%1 ignored. Reason: %2.").arg(QString::number(id+1), error)); }
+			}
+		}
+	}
+
+	// RSS
+	if (m_site["Selected"] == "rss")
+	{
+		// Initializations
+		QDomDocument doc;
+		QString errorMsg;
+		int errorLine, errorColumn;
+		if (!doc.setContent(m_source, false, &errorMsg, &errorLine, &errorColumn))
+		{
+			log(tr("Erreur lors de l'analyse du fichier RSS : %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn)));
+			return;
+		}
+		QDomElement docElem = doc.documentElement();
+
+		// Reading posts
+		QDomNodeList nodeList = docElem.elementsByTagName("item");
+		if (nodeList.count() > 0)
+		{
+			for (int id = first; id < nodeList.count() && id < m_imagesPerPage + first; id++)
+			{
+				QDomNodeList children = nodeList.at(id).childNodes();
+				QStringMap d, dat;
+				for (int i = 0; i < children.size(); i++)
+				{
+					QString content = children.at(i).childNodes().at(0).nodeValue();
+					if (!content.isEmpty())
+					{ dat.insert(children.at(i).nodeName(), content); }
+					else
+					{ dat.insert(children.at(i).nodeName(), children.at(i).attributes().namedItem("url").nodeValue()); }
+				}
+				d.insert("preview_url", dat["media:thumbnail"]);
+				d.insert("file_url", dat["media:content"]);
+				d.insert("tags", dat["media:keywords"]);
+				//qDebug() << id + 1 << d;
+				/*QStringList infos;
+				infos << "created_at" << "status" << "source" << "has_comments" << "file_url" << "sample_url" << "change" << "sample_width" << "has_children" << "preview_url" << "width" << "md5" << "preview_width" << "sample_height" << "parent_id" << "height" << "has_notes" << "creator_id" << "file_size" << "id" << "preview_height" << "rating" << "tags" << "author" << "score";
+				for (int i = 0; i < infos.count(); i++)
+				{ d[infos.at(i)] = nodeList.at(id).attributes().namedItem(infos.at(i)).nodeValue(); }
+				if (!d["preview_url"].startsWith("http://"))
+				{ d["preview_url"] = "http://"+m_site["Url"]+QString(d["preview_url"].startsWith("/") ? "" : "/")+d["preview_url"]; }
+				if (!d["file_url"].startsWith("http://"))
+				{ d["file_url"] = "http://"+m_site["Url"]+QString(d["file_url"].startsWith("/") ? "" : "/")+d["file_url"]; }*/
 				d["page_url"] = m_site["Urls/Html/Post"];
 				QString t = m_search.join(" ").replace("&", "%26");
 				if (m_site.contains("DefaultTag") && t.isEmpty())
@@ -213,7 +281,7 @@ void Page::parse(QNetworkReply* r)
 		QStringList order = m_site["Regex/Order"].split('|');
 		rx.setMinimal(true);
 		int pos = 0, id = 0;
-		while (((pos = rx.indexIn(m_source, pos)) != -1))// && id < ui->spinImagesPerPage->value()
+		while ((pos = rx.indexIn(m_source, pos)) != -1)
 		{
 			pos += rx.matchedLength();
 			QStringMap d;
