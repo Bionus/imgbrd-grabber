@@ -55,6 +55,7 @@ Image::Image(QMap<QString, QString> details, int timezonedecay, Page* parent)
 
 	m_loadPreviewExists = false;
 	m_loadTagsExists = false;
+	m_pools = QList<Pool*>();
 }
 Image::~Image()
 { delete &m_imagePreview; }
@@ -123,6 +124,23 @@ void Image::parseTags(QNetworkReply* r)
 		return;
 	}
 
+	// Pools
+	if (m_parent->site().contains("Regex/Pools"))
+	{
+		qDebug() << m_parent->site().value("Regex/Pools");
+		QString source = r->readAll();
+		QRegExp rx(m_parent->site().value("Regex/Pools"));
+		rx.setMinimal(true);
+		int pos = 0;
+		while ((pos = rx.indexIn(source, pos)) != -1)
+		{
+			pos += rx.matchedLength();
+			QString previous = rx.cap(1), id = rx.cap(2), name = rx.cap(3), next = rx.cap(4);
+			m_pools.append(new Pool(id.toInt(), name, m_id, next.toInt(), previous.toInt()));
+		}
+	}
+
+	// Tags
 	if (m_parent->site().contains("Regex/Tags"))
 	{
 		QString source = r->readAll();
@@ -140,6 +158,7 @@ void Image::parseTags(QNetworkReply* r)
 		if (!tgs.isEmpty())
 		{ m_tags = tgs; }
 	}
+
 	emit finishedLoadingTags(this);
 }
 
@@ -389,6 +408,7 @@ QString		Image::rating()			{ return m_rating;			}
 QString		Image::source()			{ return m_source;			}
 QString		Image::site()			{ return m_site;			}
 QList<Tag*>	Image::tags()			{ return m_tags;			}
+QList<Pool*>Image::pools()			{ return m_pools;			}
 int			Image::id()				{ return m_id;				}
 int			Image::score()			{ return m_score;			}
 int			Image::parentId()		{ return m_parentId;		}

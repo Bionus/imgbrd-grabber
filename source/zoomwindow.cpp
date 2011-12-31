@@ -298,6 +298,14 @@ void zoomWindow::replyFinished(Image* img)
 	m_image = img;
 	colore();
 
+	QStringList pools = QStringList();
+	for (int i = 0; i < img->pools().size(); i++)
+	{
+		Pool *p = img->pools().at(i);
+		pools.append((p->previous() != 0 ? "<a href=\""+QString::number(p->previous())+"\">&lt;&lt;</a> " : "")+"<a href=\"pool:"+QString::number(p->id())+"\">"+p->name()+"</a>"+(p->next() != 0 ? " <a href=\""+QString::number(p->next())+"\">&gt;&gt;</a>" : ""));
+	}
+	ui->labelPools->setText(pools.join("<br />"));
+
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
 	QString pth = m_image->path();
 	QString path = settings.value("Save/path").toString().replace("\\", "/");

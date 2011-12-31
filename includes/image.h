@@ -5,6 +5,7 @@
 #include <QtNetwork>
 #include "page.h"
 #include "tag.h"
+#include "pool.h"
 
 class Page;
 
@@ -28,6 +29,7 @@ class Image : public QObject
 		QString		source();
 		QString		site();
 		QList<Tag*>	tags();
+		QList<Pool*>pools();
 		int			id();
 		int			score();
 		int			parentId();
@@ -64,6 +66,7 @@ class Image : public QObject
 	private:
 		QString			m_url, m_md5, m_author, m_status, m_rating, m_source, m_site;
 		QList<Tag*>		m_tags;
+		QList<Pool*>	m_pools;
 		int				m_id, m_score, m_parentId, m_fileSize, m_authorId;
 		QDateTime		m_createdAt;
 		bool			m_hasChildren, m_hasNote, m_hasComments;

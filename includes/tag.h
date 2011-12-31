@@ -2,7 +2,6 @@
 #define TAG_H
 
 #include <QtGui>
-#include "tag.h"
 
 
 
