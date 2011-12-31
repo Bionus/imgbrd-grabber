@@ -36,8 +36,9 @@ HEADERS += includes/addgroupwindow.h \
     includes/blacklistfix2.h \
     includes/blacklistfix3.h \
     includes/searchwindow.h \
-    includes/emptydirsfix.h \
-    includes/emptydirsfix2.h
+	includes/emptydirsfix.h \
+	includes/emptydirsfix2.h \
+	includes/pool.h
 SOURCES += source/addgroupwindow.cpp \
 	source/adduniquewindow.cpp \
 	source/functions.cpp \
@@ -67,8 +68,9 @@ SOURCES += source/addgroupwindow.cpp \
     source/blacklistfix2.cpp \
     source/blacklistfix3.cpp \
     source/searchwindow.cpp \
-    source/emptydirsfix.cpp \
-    source/emptydirsfix2.cpp
+	source/emptydirsfix.cpp \
+	source/emptydirsfix2.cpp \
+	source/pool.cpp
 RESOURCES += resources.qrc
 RC_FILE = icon.rc
 TRANSLATIONS += languages/English.ts languages/Français.ts

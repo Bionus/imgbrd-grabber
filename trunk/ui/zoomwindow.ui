@@ -26,7 +26,7 @@
    <iconset resource="../resources.qrc">
     <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,0">
+  <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,0,0">
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,1">
      <item>
@@ -52,7 +52,7 @@
              <x>0</x>
              <y>0</y>
              <width>69</width>
-             <height>549</height>
+             <height>530</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -77,8 +77,6 @@
          </widget>
         </item>
        </layout>
-       <zorder>labelTagsLeft</zorder>
-       <zorder>scrollArea</zorder>
       </widget>
      </item>
      <item>
@@ -102,6 +100,16 @@
       </layout>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QLabel" name="labelPools">
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
    </item>
    <item>
     <layout class="QHBoxLayout" name="buttonsLayout">
