@@ -23,7 +23,8 @@ class zoomWindow : public QWidget
     Q_OBJECT
 
 	public:
-		zoomWindow(Image *, QStringMap);
+		zoomWindow(Image *, QStringMap, QMap<QString,QMap<QString,QString> > *sites);
+		void go();
 		~zoomWindow();
 		void load();
 	
@@ -31,12 +32,14 @@ class zoomWindow : public QWidget
 		void update(bool onlysize = false);
 		void replyFinished(Image*);
 		void replyFinishedZoom();
-		void display(QPixmap, int);
+		void display(QPixmap*, int);
 		void saveNQuit();
 		QString saveImage();
 		QString saveImageAs();
 		void fullScreen();
 		void openUrl(QString);
+		void openPool(QString);
+		void openPoolId(Page*);
 		void openSaveDir();
 		void linkHovered(QString);
 		void contextMenu(QPoint);
@@ -72,7 +75,7 @@ class zoomWindow : public QWidget
 		QString id, m_url, tags, md5, rating, score, user, format;
 		QAffiche *labelImage;
 		QLabel *m_labelTags;
-		QPixmap image;
+		QPixmap *image;
 		QMovie *movie;
 		QTimer *timer;
 		QNetworkReply *r;
@@ -86,6 +89,7 @@ class zoomWindow : public QWidget
 		QStringList m_favorites, m_viewItLater, m_ignore;
 		QByteArray m_data;
 		int m_size;
+		QMap<QString,QMap<QString,QString> > *m_sites;
 };
 
 #endif

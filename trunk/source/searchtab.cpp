@@ -569,7 +569,7 @@ void searchTab::webZoom(int id)
 			{ return; }
 		}
 	}
-	zoomWindow *zoom = new zoomWindow(image, image->page()->site());
+	zoomWindow *zoom = new zoomWindow(image, image->page()->site(), m_sites);
 	zoom->show();
 	connect(zoom, SIGNAL(linkClicked(QString)), this, SLOT(setTags(QString)));
 }
