@@ -163,8 +163,8 @@
    <slot>saveImage()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>37</x>
-     <y>450</y>
+     <x>203</x>
+     <y>589</y>
     </hint>
     <hint type="destinationlabel">
      <x>68</x>
@@ -179,8 +179,8 @@
    <slot>saveNQuit()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>241</x>
-     <y>447</y>
+     <x>470</x>
+     <y>589</y>
     </hint>
     <hint type="destinationlabel">
      <x>290</x>
@@ -195,8 +195,8 @@
    <slot>openSaveDir()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>442</x>
-     <y>455</y>
+     <x>633</x>
+     <y>589</y>
     </hint>
     <hint type="destinationlabel">
      <x>471</x>
@@ -211,8 +211,8 @@
    <slot>saveImageAs()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>658</x>
-     <y>455</y>
+     <x>789</x>
+     <y>589</y>
     </hint>
     <hint type="destinationlabel">
      <x>476</x>
@@ -316,6 +316,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>labelPools</sender>
+   <signal>linkActivated(QString)</signal>
+   <receiver>zoomWindow</receiver>
+   <slot>openPool(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>356</x>
+     <y>552</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>374</x>
+     <y>553</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>saveImage()</slot>
@@ -325,5 +341,6 @@
   <slot>linkHovered(QString)</slot>
   <slot>openUrl(QString)</slot>
   <slot>contextMenu(QPoint)</slot>
+  <slot>openPool(QString)</slot>
  </slots>
 </ui>

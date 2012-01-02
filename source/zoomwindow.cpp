@@ -12,7 +12,7 @@ extern mainWindow *_mainwindow;
 
 
 
-zoomWindow::zoomWindow(Image *image, QStringMap site) : ui(new Ui::zoomWindow), m_image(image), m_site(site), timeout(300), loaded(0), oldsize(0), m_program(qApp->arguments().at(0)), m_replyExists(false), m_finished(false), m_size(0)
+zoomWindow::zoomWindow(Image *image, QStringMap site, QMap<QString,QMap<QString,QString> > *sites) : ui(new Ui::zoomWindow), m_image(image), m_site(site), timeout(300), loaded(0), oldsize(0), m_program(qApp->arguments().at(0)), m_replyExists(false), m_finished(false), m_size(0), m_sites(sites)
 {
 	ui->setupUi(this);
 	m_favorites = loadFavorites().keys();
@@ -31,11 +31,17 @@ zoomWindow::zoomWindow(Image *image, QStringMap site) : ui(new Ui::zoomWindow), 
 		}
 		settings.endGroup();
 
+	go();
+}
+void zoomWindow::go()
+{
+	ui->labelPools->hide();
+	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
 	bool whitelisted = false;
 	if (!settings.value("whitelistedtags").toString().isEmpty())
 	{
 		QStringList whitelist = settings.value("whitelistedtags").toString().split(" ");
-		QList<Tag*> tags = image->tags();
+		QList<Tag*> tags = m_image->tags();
 		for (int i = 0; i < tags.size(); i++)
 		{
 			if (whitelist.contains(tags.at(i)->text()))
@@ -51,7 +57,7 @@ zoomWindow::zoomWindow(Image *image, QStringMap site) : ui(new Ui::zoomWindow), 
 	ui->verticalLayout->insertWidget(1, labelImage, 1);
 	this->labelImage = labelImage;
 
-	QList<Tag*> taglist = image->tags();
+	QList<Tag*> taglist = m_image->tags();
 	QStringList hreftags;
 	for (int i = 0; i < taglist.count(); i++)
 	{ hreftags.append("<a href=\""+taglist.at(i)->text()+"\" style=\"text-decoration:none;color:#000000\">"+taglist.at(i)->text()+"</a>"); }
@@ -63,14 +69,14 @@ zoomWindow::zoomWindow(Image *image, QStringMap site) : ui(new Ui::zoomWindow), 
 	m_url = settings.value("Save/downloadoriginals", true).toBool() ? m_image->fileUrl().toString() : (m_image->sampleUrl().isEmpty() ? m_image->fileUrl().toString() : m_image->sampleUrl().toString());
 
 	m_format = m_url.section('.', -1).toUpper().toAscii().data();
-	
+
 	QTimer *timer = new QTimer(this);
 		connect(timer, SIGNAL(timeout()), this, SLOT(update()));
 		timer->setSingleShot(true);
 		this->timer = timer;
 
 	QString u = m_site["Urls/Html/Post"];
-		u.replace("{id}", QString::number(image->id()));
+		u.replace("{id}", QString::number(m_image->id()));
 	m_detailsWindow = new detailsWindow(m_image);
 	connect(ui->buttonDetails, SIGNAL(clicked()), m_detailsWindow, SLOT(show()));
 
@@ -98,8 +104,8 @@ zoomWindow::zoomWindow(Image *image, QStringMap site) : ui(new Ui::zoomWindow), 
 		ui->labelTagsLeft->setText(hreftags.join("<br/>"));
 	}
 
-	connect(image, SIGNAL(finishedLoadingTags(Image*)), this, SLOT(replyFinished(Image*)));
-	image->loadTags();
+	connect(m_image, SIGNAL(finishedLoadingTags(Image*)), this, SLOT(replyFinished(Image*)));
+	m_image->loadTags();
 	activateWindow();
 }
 
@@ -112,9 +118,34 @@ zoomWindow::~zoomWindow()
 }
 
 void zoomWindow::openUrl(QString url)
+{ emit linkClicked(url); }
+void zoomWindow::openPool(QString url)
 {
-	emit linkClicked(url);
+	if (url.startsWith("pool:"))
+	{ emit linkClicked(url); }
+	else
+	{
+		Page *p = new Page(m_sites, m_image->site(), QStringList() << "id:"+url, 1, 1);
+		connect(p, SIGNAL(finishedLoading(Page*)), this, SLOT(openPoolId(Page*)));
+		p->load();
+	}
 }
+void zoomWindow::openPoolId(Page *p)
+{
+	if (p->images().size() < 1)
+	{ return; }
+	m_image = p->images().at(0);
+	timeout = 300;
+	loaded = 0;
+	oldsize = 0;
+	m_replyExists = false;
+	m_finished = false;
+	m_size = 0;
+	labelImage->hide();
+	ui->verticalLayout->removeWidget(labelImage);
+	go();
+}
+
 void zoomWindow::openSaveDir()
 {
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
@@ -196,12 +227,15 @@ void zoomWindow::favorite()
 }
 void zoomWindow::setfavorite()
 {
-	QPixmap img = image;
-	if (img.width() > 150 || img.height() > 150)
-	{ img = img.scaled(QSize(150,150), Qt::KeepAspectRatio, Qt::SmoothTransformation); }
 	if (!QDir(savePath("thumbs")).exists())
 	{ QDir(savePath()).mkdir("thumbs"); }
-	img.save(savePath("thumbs/"+link+".png"), "PNG");
+	if (image->width() > 150 || image->height() > 150)
+	{
+		QPixmap img = image->scaled(QSize(150,150), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+		img.save(savePath("thumbs/"+link+".png"), "PNG");
+	}
+	else
+	{ image->save(savePath("thumbs/"+link+".png"), "PNG"); }
 	_mainwindow->updateFavorites();
 }
 void zoomWindow::unfavorite()
@@ -278,14 +312,17 @@ void zoomWindow::downloadProgress(qint64 size, qint64 total)
 	if (size-m_data.size() >= total/UPDATES)
 	{
 		m_data.append(m_reply->readAll());
-		ImageThread *th = new ImageThread(m_data);
+		/*ImageThread *th = new ImageThread(m_data);
 		connect(th, SIGNAL(finished(QPixmap, int)), this, SLOT(display(QPixmap, int)));
-		th->start();
+		th->start();*/
+		QPixmap image;
+		image.loadFromData(m_data);
+		display(&image, m_data.size());
 	}
 }
-void zoomWindow::display(QPixmap pix, int size)
+void zoomWindow::display(QPixmap *pix, int size)
 {
-	if (!pix.size().isEmpty() && size > m_size)
+	if (!pix->size().isEmpty() && size > m_size)
 	{
 		m_size = size;
 		this->image = pix;
@@ -302,8 +339,10 @@ void zoomWindow::replyFinished(Image* img)
 	for (int i = 0; i < img->pools().size(); i++)
 	{
 		Pool *p = img->pools().at(i);
-		pools.append((p->previous() != 0 ? "<a href=\""+QString::number(p->previous())+"\">&lt;&lt;</a> " : "")+"<a href=\"pool:"+QString::number(p->id())+"\">"+p->name()+"</a>"+(p->next() != 0 ? " <a href=\""+QString::number(p->next())+"\">&gt;&gt;</a>" : ""));
+		pools.append((p->previous() != 0 ? "<a href=\""+QString::number(p->previous())+"\">&lt;</a> " : "")+"<a href=\"pool:"+QString::number(p->id())+"\">"+p->name()+"</a>"+(p->next() != 0 ? " <a href=\""+QString::number(p->next())+"\">&gt;</a>" : ""));
 	}
+	if (!pools.isEmpty())
+	{ ui->labelPools->show(); }
 	ui->labelPools->setText(pools.join("<br />"));
 
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
@@ -329,7 +368,7 @@ void zoomWindow::replyFinished(Image* img)
 			if (!file.open(QIODevice::ReadOnly))
 			{ error(this, tr("Erreur inattendue lors de l'ouverture du fichier.\r\n%1").arg(path+"/"+pth)); }
 			m_data = file.readAll();
-			this->image.loadFromData(m_data, m_format);
+			this->image->loadFromData(m_data, m_format);
 			this->update();
 		}
 	}
@@ -405,9 +444,12 @@ void zoomWindow::replyFinishedZoom()
 		}
 		else
 		{
-			ImageThread *th = new ImageThread(m_data);
+			/*ImageThread *th = new ImageThread(m_data);
 			connect(th, SIGNAL(finished(QPixmap, int)), this, SLOT(display(QPixmap, int)));
-			th->start();
+			th->start();*/
+			QPixmap image;
+			image.loadFromData(m_data);
+			display(&image, m_data.size());
 		}
 		if (this->m_mustSave > 0)
 		{ this->saveImage(); }
@@ -434,14 +476,14 @@ void zoomWindow::update(bool onlysize)
 {
 	if (m_url.section('.', -1).toUpper() != "GIF")
 	{
-		if (onlysize && (this->image.width() > this->labelImage->width() || this->image.height() > this->labelImage->height()))
-		{ this->labelImage->setImage(this->image.scaled(this->labelImage->width(), this->labelImage->height(), Qt::KeepAspectRatio, Qt::FastTransformation)); }
+		if (onlysize && (this->image->width() > this->labelImage->width() || this->image->height() > this->labelImage->height()))
+		{ this->labelImage->setImage(this->image->scaled(this->labelImage->width(), this->labelImage->height(), Qt::KeepAspectRatio, Qt::FastTransformation)); }
 		else if (this->loaded)
 		{
-			if (this->image.width() > this->labelImage->width() || this->image.height() > this->labelImage->height())
-			{ this->labelImage->setImage(this->image.scaled(this->labelImage->width(), this->labelImage->height(), Qt::KeepAspectRatio, Qt::SmoothTransformation)); }
+			if (this->image->width() > this->labelImage->width() || this->image->height() > this->labelImage->height())
+			{ this->labelImage->setImage(this->image->scaled(this->labelImage->width(), this->labelImage->height(), Qt::KeepAspectRatio, Qt::SmoothTransformation)); }
 			else
-			{ this->labelImage->setImage(this->image); }
+			{ this->labelImage->setImage(*this->image); }
 		}
 	}
 }
@@ -597,7 +639,7 @@ void zoomWindow::fullScreen()
 	QAffiche *label = new QAffiche();
 		label->setStyleSheet("background-color: black");
 		label->setAlignment(Qt::AlignCenter);
-		label->setImage(this->image.scaled(QApplication::desktop()->screenGeometry().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+		label->setImage(this->image->scaled(QApplication::desktop()->screenGeometry().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
 		label->showFullScreen();
 	QShortcut *escape= new QShortcut(QKeySequence(Qt::Key_Escape), label);
 		connect(escape, SIGNAL(activated()), label, SLOT(close()));
@@ -612,7 +654,7 @@ void zoomWindow::resizeEvent(QResizeEvent *e)
 	{
 		if (!this->timer->isActive())
 		{
-			this->timeout = this->image.width()*this->image.height()/100000;
+			this->timeout = this->image->width()*this->image->height()/100000;
 			if (this->timeout < 50)		{ this->timeout = 50;	}
 			if (this->timeout > 500)	{ this->timeout = 500;	}
 		}

@@ -23,6 +23,7 @@ class mainWindow : public QMainWindow
 	public:
 		explicit mainWindow(QString, QStringList, QStringMap);
 		~mainWindow();
+		QMap<QString,QMap<QString,QString> > m_sites;
 
 	public slots:
 		// Log
@@ -104,12 +105,11 @@ class mainWindow : public QMainWindow
 		QList<searchTab*>	m_tabs;
 		QList<bool>			m_selectedSources;
 		QList<QLabel*>		m_webSites;
-		QMap<QString,QString>					m_favorites, m_params;
-		QMap<QString,QStringList>				m_getAllDetails;
-		QMap<QString,QMap<QString,QString> >	m_sites;
-		QList<QProgressBar*>					m_progressBars;
-		QList<QNetworkReply*>					m_replies;
-		QList<QMap<QString,QString> >			m_details, m_batchs;
+		QMap<QString,QString>			m_favorites, m_params;
+		QMap<QString,QStringList>		m_getAllDetails;
+		QList<QProgressBar*>			m_progressBars;
+		QList<QNetworkReply*>			m_replies;
+		QList<QMap<QString,QString> >	m_details, m_batchs;
 };
 
 #endif // MAINWINDOW_H
