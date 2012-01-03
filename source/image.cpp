@@ -62,11 +62,17 @@ Image::~Image()
 
 void Image::loadPreview()
 {
-	m_loadPreviewExists = true;
 	QNetworkAccessManager *manager = new QNetworkAccessManager(this);
+	QNetworkDiskCache *diskCache = new QNetworkDiskCache(this);
+	diskCache->setCacheDirectory(QDesktopServices::storageLocation(QDesktopServices::CacheLocation));
+	manager->setCache(diskCache);
+
 	connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(parsePreview(QNetworkReply*)));
 	QNetworkRequest r(m_previewUrl);
+		r.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::PreferCache);
 		r.setRawHeader("Referer", m_previewUrl.toString().toAscii());
+
+	m_loadPreviewExists = true;
 	m_loadPreview = manager->get(r);
 }
 void Image::abortPreview()
