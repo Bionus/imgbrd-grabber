@@ -63,9 +63,9 @@ Image::~Image()
 void Image::loadPreview()
 {
 	QNetworkAccessManager *manager = new QNetworkAccessManager(this);
-	QNetworkDiskCache *diskCache = new QNetworkDiskCache(this);
-	diskCache->setCacheDirectory(QDesktopServices::storageLocation(QDesktopServices::CacheLocation));
-	manager->setCache(diskCache);
+		QNetworkDiskCache *diskCache = new QNetworkDiskCache(this);
+		diskCache->setCacheDirectory(QDesktopServices::storageLocation(QDesktopServices::CacheLocation));
+		manager->setCache(diskCache);
 
 	connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(parsePreview(QNetworkReply*)));
 	QNetworkRequest r(m_previewUrl);
@@ -107,11 +107,17 @@ void Image::parsePreview(QNetworkReply* r)
 
 void Image::loadTags()
 {
-	m_loadPreviewExists = true;
 	QNetworkAccessManager *manager = new QNetworkAccessManager(this);
+		QNetworkDiskCache *diskCache = new QNetworkDiskCache(this);
+		diskCache->setCacheDirectory(QDesktopServices::storageLocation(QDesktopServices::CacheLocation));
+		manager->setCache(diskCache);
+
 	connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(parseTags(QNetworkReply*)));
 	QNetworkRequest r(m_pageUrl);
+		r.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::PreferCache);
 		r.setRawHeader("Referer", m_pageUrl.toString().toAscii());
+
+	m_loadTagsExists = true;
 	m_loadTags = manager->get(r);
 }
 void Image::abortTags()
@@ -121,6 +127,8 @@ void Image::abortTags()
 }
 void Image::parseTags(QNetworkReply* r)
 {
+	qDebug() << "tags" << r->attribute(QNetworkRequest::SourceIsFromCacheAttribute).toBool();
+
 	// Check redirection
 	QUrl redir = r->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 	if (!redir.isEmpty())
@@ -133,7 +141,6 @@ void Image::parseTags(QNetworkReply* r)
 	// Pools
 	if (m_parent->site().contains("Regex/Pools"))
 	{
-		qDebug() << m_parent->site().value("Regex/Pools");
 		QString source = r->readAll();
 		QRegExp rx(m_parent->site().value("Regex/Pools"));
 		rx.setMinimal(true);

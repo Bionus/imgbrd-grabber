@@ -297,12 +297,20 @@ void zoomWindow::load()
 {
 	log(tr("Chargement de l'image depuis <a href=\"%1\">%1</a>").arg(m_url));
 	m_data = QByteArray();
+
+	QNetworkAccessManager *manager = new QNetworkAccessManager;
+		QNetworkDiskCache *diskCache = new QNetworkDiskCache(this);
+		diskCache->setCacheDirectory(QDesktopServices::storageLocation(QDesktopServices::CacheLocation));
+		manager->setCache(diskCache);
+
 	QNetworkRequest request = QNetworkRequest(QUrl(m_url));
 		request.setRawHeader("Referer", m_url.toAscii());
-	QNetworkAccessManager *manager = new QNetworkAccessManager;
+		request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::PreferCache);
+
 	m_reply = manager->get(request);
 	connect(m_reply, SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(downloadProgress(qint64, qint64)));
 	connect(m_reply, SIGNAL(finished()), this, SLOT(replyFinishedZoom()));
+
 	m_replyExists = true;
 }
 
@@ -412,6 +420,8 @@ void zoomWindow::colore()
 
 void zoomWindow::replyFinishedZoom()
 {
+	qDebug() << "zoom" << m_reply->attribute(QNetworkRequest::SourceIsFromCacheAttribute).toBool();
+
 	// Check redirection
 	QUrl redir = m_reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 	if (!redir.isEmpty())
