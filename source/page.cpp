@@ -220,18 +220,13 @@ void Page::parse(QNetworkReply* r)
 					else
 					{ dat.insert(children.at(i).nodeName(), children.at(i).attributes().namedItem("url").nodeValue()); }
 				}
+				d.insert("tags", dat["media:keywords"]);
 				d.insert("preview_url", dat["media:thumbnail"]);
 				d.insert("file_url", dat["media:content"]);
-				d.insert("tags", dat["media:keywords"]);
-				//qDebug() << id + 1 << d;
-				/*QStringList infos;
-				infos << "created_at" << "status" << "source" << "has_comments" << "file_url" << "sample_url" << "change" << "sample_width" << "has_children" << "preview_url" << "width" << "md5" << "preview_width" << "sample_height" << "parent_id" << "height" << "has_notes" << "creator_id" << "file_size" << "id" << "preview_height" << "rating" << "tags" << "author" << "score";
-				for (int i = 0; i < infos.count(); i++)
-				{ d[infos.at(i)] = nodeList.at(id).attributes().namedItem(infos.at(i)).nodeValue(); }
 				if (!d["preview_url"].startsWith("http://"))
 				{ d["preview_url"] = "http://"+m_site["Url"]+QString(d["preview_url"].startsWith("/") ? "" : "/")+d["preview_url"]; }
 				if (!d["file_url"].startsWith("http://"))
-				{ d["file_url"] = "http://"+m_site["Url"]+QString(d["file_url"].startsWith("/") ? "" : "/")+d["file_url"]; }*/
+				{ d["file_url"] = "http://"+m_site["Url"]+QString(d["file_url"].startsWith("/") ? "" : "/")+d["file_url"]; }
 				d["page_url"] = m_site["Urls/Html/Post"];
 				QString t = m_search.join(" ").replace("&", "%26");
 				if (m_site.contains("DefaultTag") && t.isEmpty())
