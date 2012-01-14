@@ -5,7 +5,7 @@ using namespace std;
 
 
 
-QBouton::QBouton(QVariant id, QWidget *parent, bool resizeInsteadOfCropping, QColor color) : QPushButton(parent), _id(id), _resizeInsteadOfCropping(resizeInsteadOfCropping), _np(false), _originalSize(QSize(-1,-1)), _penColor(color)
+QBouton::QBouton(QVariant id, bool resizeInsteadOfCropping, int border, QColor color, QWidget *parent) : QPushButton(parent), _id(id), _resizeInsteadOfCropping(resizeInsteadOfCropping), _np(false), _originalSize(QSize(-1,-1)), _penColor(color), _border(border)
 {
 }
 
@@ -20,7 +20,7 @@ void QBouton::paintEvent(QPaintEvent *event)
 	{
 		QRect region = event->rect();
 		QPainter *painter = new QPainter(this);
-		int p = 3, x = region.x(), y = region.y(), w = iconSize().width(), h = iconSize().height();
+		int p = _border, x = region.x(), y = region.y(), w = iconSize().width(), h = iconSize().height();
 		float coef, mcoef;
 		coef = float(region.width())/float(w);
 		coef = float(region.height())/float(h) < coef ? float(region.height())/float(h) : coef;

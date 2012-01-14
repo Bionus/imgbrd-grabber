@@ -60,6 +60,11 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>lineName</tabstop>
+  <tabstop>textTags</tabstop>
+  <tabstop>buttonBox</tabstop>
+ </tabstops>
  <resources>
   <include location="../resources.qrc"/>
  </resources>

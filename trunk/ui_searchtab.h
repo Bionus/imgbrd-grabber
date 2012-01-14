@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'searchtab.ui'
 **
-** Created: Mon 2. Jan 13:50:26 2012
+** Created: Sat 14. Jan 16:08:17 2012
 **      by: Qt User Interface Compiler version 4.8.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -305,6 +305,19 @@ public:
 
         verticalLayout_2->addWidget(splitter);
 
+        QWidget::setTabOrder(scrollArea, buttonSearch);
+        QWidget::setTabOrder(buttonSearch, spinPage);
+        QWidget::setTabOrder(spinPage, buttonTags);
+        QWidget::setTabOrder(buttonTags, pushButton);
+        QWidget::setTabOrder(pushButton, spinImagesPerPage);
+        QWidget::setTabOrder(spinImagesPerPage, spinColumns);
+        QWidget::setTabOrder(spinColumns, buttonFirstPage);
+        QWidget::setTabOrder(buttonFirstPage, buttonPreviousPage);
+        QWidget::setTabOrder(buttonPreviousPage, buttonSourcesList);
+        QWidget::setTabOrder(buttonSourcesList, checkMergeResults);
+        QWidget::setTabOrder(checkMergeResults, buttonGetpage);
+        QWidget::setTabOrder(buttonGetpage, buttonNextPage);
+        QWidget::setTabOrder(buttonNextPage, buttonLastPage);
 
         retranslateUi(searchTab);
         QObject::connect(buttonGetpage, SIGNAL(clicked()), searchTab, SLOT(getPage()));

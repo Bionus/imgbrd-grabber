@@ -402,6 +402,7 @@ void zoomWindow::colore()
 	for (int i = 0; i < m_image->tags().size(); i++)
 	{
 		Tag *tag = m_image->tags().at(i);
+		qDebug() << tag->type();
 		QString normalized = tag->text().replace("\\", " ").replace("/", " ").replace(":", " ").replace("|", " ").replace("*", " ").replace("?", " ").replace("\"", " ").replace("<", " ").replace(">", " ").trimmed();
 		if (under)
 		{ normalized.replace(' ', '_'); }
@@ -420,8 +421,6 @@ void zoomWindow::colore()
 
 void zoomWindow::replyFinishedZoom()
 {
-	qDebug() << "zoom" << m_reply->attribute(QNetworkRequest::SourceIsFromCacheAttribute).toBool();
-
 	// Check redirection
 	QUrl redir = m_reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 	if (!redir.isEmpty())
@@ -454,12 +453,10 @@ void zoomWindow::replyFinishedZoom()
 		}
 		else
 		{
-			/*ImageThread *th = new ImageThread(m_data);
-			connect(th, SIGNAL(finished(QPixmap, int)), this, SLOT(display(QPixmap, int)));
-			th->start();*/
-			QPixmap image;
-			image.loadFromData(m_data);
-			display(&image, m_data.size());
+			QPixmap *img = new QPixmap();
+			img->loadFromData(m_data);
+			this->image = img;
+			this->update(false);
 		}
 		if (this->m_mustSave > 0)
 		{ this->saveImage(); }

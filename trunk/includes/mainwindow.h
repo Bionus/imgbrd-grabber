@@ -77,6 +77,8 @@ class mainWindow : public QMainWindow
 		void advanced();
 		void saveAdvanced(sourcesWindow*);
 		void init();
+		void on_buttonSaveLinkList_clicked();
+		void on_buttonLoadLinkList_clicked();
 		// Tabs
 		void addTab(QString tag = "");
 		void addTabFavorite(int);

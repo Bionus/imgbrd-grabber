@@ -394,9 +394,11 @@ void mainWindow::batchClearSel()
 	int rem = 0;
 	foreach (int i, todelete)
 	{
+		m_groupBatchs.removeAt(i-rem);
 		ui->tableBatchGroups->removeRow(i-rem);
 		rem++;
 	}
+
 	selected = ui->tableBatchUniques->selectedItems();
 	count = selected.size();
 	todelete.clear();
@@ -405,6 +407,7 @@ void mainWindow::batchClearSel()
 	rem = 0;
 	foreach (int i, todelete)
 	{
+		m_batchs.removeAt(i-rem);
 		ui->tableBatchUniques->removeRow(i-rem);
 		rem++;
 	}
@@ -424,16 +427,15 @@ void mainWindow::batchChange(int id)
 }
 void mainWindow::updateBatchGroups(int y, int x)
 {
-	if (m_allow)
+	if (m_allow && x > 0)
 	{
-		int r = x;
-		if (0 == 1) { r = 1; }
+		int r = x - 1;
+		if (r == 0) { r = 1; }
 		else if (r == 1) { r = 6; }
 		else if (r == 5) { r = 7; }
 		else if (r == 6) { r = 8; }
 		else if (r == 7) { r = 5; }
-		r--;
-		m_groupBatchs[y][r] = ui->tableBatchGroups->item(y, x+1)->text();
+		m_groupBatchs[y][r-1] = ui->tableBatchGroups->item(y, x)->text();
 	}
 }
 void mainWindow::addGroup()
@@ -954,8 +956,10 @@ void mainWindow::getAll(bool all)
 		m_progressBars.at(i)->setMaximum(100);
 		m_progressBars.at(i)->setValue(0);
 	}
+	m_allow = false;
 	for (int i = 0; i < ui->tableBatchGroups->rowCount(); i++)
 	{ ui->tableBatchGroups->item(i, 0)->setIcon(QIcon(":/images/colors/black.png")); }
+	m_allow = true;
 	if (!m_settings->value("Exec/Group/init").toString().isEmpty())
 	{
 		log(tr("Execution de la commande d'initialisation' \"%1\"").arg(m_settings->value("Exec/Group/init").toString()));
@@ -1055,6 +1059,7 @@ void mainWindow::getAllFinishedLoading(Page* p)
 }
 void mainWindow::_getAll()
 {
+	qDebug() << "_getAll";
 	if (m_getAllId < m_getAllImages.count())
 	{
 		if (m_must_get_tags)
@@ -1454,4 +1459,71 @@ void mainWindow::emptyDirsFix()
 {
 	EmptyDirsFix *edf = new EmptyDirsFix();
 	edf->show();
+}
+
+void mainWindow::on_buttonSaveLinkList_clicked()
+{
+	QString save = QFileDialog::getSaveFileName(this, tr("Enregistrer la liste de liens"), QString(), tr("Liens Imageboard-Grabber (*.igl)"));
+	if (save.isEmpty())
+	{ return; }
+
+	QString links;
+	foreach (QStringList list, m_groupBatchs)
+	{ links += list.join("¤")+"\r\n"; }
+
+	QFile *f = new QFile(save);
+	if (f->open(QFile::WriteOnly))
+	{
+		f->write(links.trimmed().toAscii());
+		f->close();
+		QMessageBox::information(this, tr("Enregistrer la liste de liens"), tr("Liste de liens enregistrée avec succès !"));
+	}
+	else
+	{ QMessageBox::critical(this, tr("Enregistrer la liste de liens"), tr("Erreur lors de l'ouverture du fichier.")); }
+}
+
+void mainWindow::on_buttonLoadLinkList_clicked()
+{
+	QString load = QFileDialog::getOpenFileName(this, tr("Charger une liste de liens"), QString(), tr("Liens Imageboard-Grabber (*.igl)"));
+	if (load.isEmpty())
+	{ return; }
+
+	QFile *f = new QFile(load);
+	if (f->open(QFile::ReadOnly))
+	{
+		QString links = f->readAll();
+		f->close();
+
+		QStringList det = links.split("\r\n");
+		foreach (QString link, det)
+		{
+			m_allow = false;
+			QStringList infos = link.split("¤");
+			ui->tableBatchGroups->setRowCount(ui->tableBatchGroups->rowCount()+1);
+			QTableWidgetItem *item, *it = new QTableWidgetItem(QIcon(":/images/colors/black.png"), QString::number(ui->tableBatchGroups->rowCount()));
+			ui->tableBatchGroups->setItem(ui->tableBatchGroups->rowCount()-1, 0, it);
+			for (int t = 0; t < infos.count(); t++)
+			{
+				item = new QTableWidgetItem;
+					item->setText(infos.at(t));
+				int r = t+1;
+				if (r == 1) { r = 0; }
+				else if (r == 6) { r = 1; }
+				else if (r == 7) { r = 5; }
+				else if (r == 8) { r = 6; }
+				else if (r == 5) { r = 7; }
+				ui->tableBatchGroups->setItem(ui->tableBatchGroups->rowCount()-1, r+1, item);
+			}
+			m_groupBatchs.append(infos);
+			QProgressBar *prog = new QProgressBar();
+			prog->setTextVisible(false);
+			m_progressBars.append(prog);
+			ui->tableBatchGroups->setCellWidget(ui->tableBatchGroups->rowCount()-1, 9, prog);
+			m_allow = true;
+		}
+
+		QMessageBox::information(this, tr("Charger une liste de liens"), tr("Liste de liens chargée avec succès !"));
+	}
+	else
+	{ QMessageBox::critical(this, tr("Charger une liste de liens"), tr("Erreur lors de l'ouverture du fichier.")); }
 }

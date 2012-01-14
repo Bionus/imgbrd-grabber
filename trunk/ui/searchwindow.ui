@@ -254,6 +254,15 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>comboOrder</tabstop>
+  <tabstop>comboRating</tabstop>
+  <tabstop>comboStatus</tabstop>
+  <tabstop>lineDate</tabstop>
+  <tabstop>buttonCalendar</tabstop>
+  <tabstop>buttonImage</tabstop>
+  <tabstop>buttonBox</tabstop>
+ </tabstops>
  <resources>
   <include location="../resources.qrc"/>
  </resources>

@@ -90,6 +90,12 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>checkBox</tabstop>
+  <tabstop>pushButton</tabstop>
+  <tabstop>buttonCancel</tabstop>
+  <tabstop>buttonOk</tabstop>
+ </tabstops>
  <resources>
   <include location="../resources.qrc"/>
  </resources>

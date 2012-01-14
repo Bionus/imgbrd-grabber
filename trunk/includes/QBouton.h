@@ -14,7 +14,7 @@ class QBouton : public QPushButton
 	Q_OBJECT
  
 	public:
-		QBouton(QVariant id = 0, QWidget * parent = 0, bool resizeInsteadOfCropping = false, QColor color = QColor());
+		QBouton(QVariant id = 0, bool resizeInsteadOfCropping = false, int border = 0, QColor color = QColor(), QWidget *parent = 0);
 		QVariant id();
 		void mousePressEvent(QMouseEvent *);
 
@@ -38,6 +38,7 @@ class QBouton : public QPushButton
 		bool		_resizeInsteadOfCropping, _np;
 		QSize		_originalSize;
 		QColor		_penColor;
+		int			_border;
 };
 
 #endif

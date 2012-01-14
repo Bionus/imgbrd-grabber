@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'searchwindow.ui'
 **
-** Created: Mon 2. Jan 13:50:26 2012
+** Created: Sat 14. Jan 16:08:17 2012
 **      by: Qt User Interface Compiler version 4.8.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -147,6 +147,12 @@ public:
 
         formLayout->setWidget(4, QFormLayout::SpanningRole, label_5);
 
+        QWidget::setTabOrder(comboOrder, comboRating);
+        QWidget::setTabOrder(comboRating, comboStatus);
+        QWidget::setTabOrder(comboStatus, lineDate);
+        QWidget::setTabOrder(lineDate, buttonCalendar);
+        QWidget::setTabOrder(buttonCalendar, buttonImage);
+        QWidget::setTabOrder(buttonImage, buttonBox);
 
         retranslateUi(SearchWindow);
         QObject::connect(buttonBox, SIGNAL(accepted()), SearchWindow, SLOT(accept()));
