@@ -516,7 +516,7 @@ void searchTab::finishedLoadingPreview(Image *img)
 		if (m_favorites->keys().contains(img->tags().at(i)->text()) && !m_search->toPlainText().trimmed().split(" ").contains(img->tags().at(i)->text()))
 		{ color = QColor("#ffc0cb"); break; }
 	}
-	QBouton *l = new QBouton(position, this, settings->value("resizeInsteadOfCropping", true).toBool(), color);
+	QBouton *l = new QBouton(position, settings->value("resizeInsteadOfCropping", true).toBool(), 3, color, this);
 		l->setIcon(preview);
 		QString t;
 		for (int i = 0; i < img->tags().count(); i++)

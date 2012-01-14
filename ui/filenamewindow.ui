@@ -60,6 +60,11 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>lineCondition</tabstop>
+  <tabstop>lineFilename</tabstop>
+  <tabstop>buttonBox</tabstop>
+ </tabstops>
  <resources>
   <include location="../resources.qrc"/>
  </resources>

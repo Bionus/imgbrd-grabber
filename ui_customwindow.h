@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'customwindow.ui'
 **
-** Created: Mon 2. Jan 13:50:26 2012
+** Created: Sat 14. Jan 16:08:17 2012
 **      by: Qt User Interface Compiler version 4.8.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -78,6 +78,8 @@ public:
 
         formLayout->setWidget(3, QFormLayout::SpanningRole, buttonBox);
 
+        QWidget::setTabOrder(lineName, textTags);
+        QWidget::setTabOrder(textTags, buttonBox);
 
         retranslateUi(customWindow);
         QObject::connect(buttonBox, SIGNAL(accepted()), customWindow, SLOT(accept()));

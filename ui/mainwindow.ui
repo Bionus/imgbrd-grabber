@@ -33,7 +33,7 @@
          </sizepolicy>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <property name="movable">
          <bool>true</bool>
@@ -362,6 +362,20 @@
               <widget class="QPushButton" name="pushButton_14">
                <property name="text">
                 <string>Tout télécharger</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="buttonSaveLinkList">
+               <property name="text">
+                <string>Sauvegarder</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="buttonLoadLinkList">
+               <property name="text">
+                <string>Charger</string>
                </property>
               </widget>
              </item>
@@ -749,8 +763,8 @@
    <slot>logClear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>96</x>
-     <y>526</y>
+     <x>93</x>
+     <y>506</y>
     </hint>
     <hint type="destinationlabel">
      <x>715</x>
@@ -851,6 +865,22 @@
     <hint type="destinationlabel">
      <x>399</x>
      <y>270</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>tableBatchGroups</sender>
+   <signal>cellChanged(int,int)</signal>
+   <receiver>mainWindow</receiver>
+   <slot>updateBatchGroups(int,int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>392</x>
+     <y>168</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>612</x>
+     <y>170</y>
     </hint>
    </hints>
   </connection>

@@ -388,6 +388,22 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>scrollArea</tabstop>
+  <tabstop>buttonSearch</tabstop>
+  <tabstop>spinPage</tabstop>
+  <tabstop>buttonTags</tabstop>
+  <tabstop>pushButton</tabstop>
+  <tabstop>spinImagesPerPage</tabstop>
+  <tabstop>spinColumns</tabstop>
+  <tabstop>buttonFirstPage</tabstop>
+  <tabstop>buttonPreviousPage</tabstop>
+  <tabstop>buttonSourcesList</tabstop>
+  <tabstop>checkMergeResults</tabstop>
+  <tabstop>buttonGetpage</tabstop>
+  <tabstop>buttonNextPage</tabstop>
+  <tabstop>buttonLastPage</tabstop>
+ </tabstops>
  <resources>
   <include location="../resources.qrc"/>
  </resources>
