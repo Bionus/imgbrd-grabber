@@ -731,8 +731,8 @@
    <slot>getAll()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>310</x>
-     <y>525</y>
+     <x>265</x>
+     <y>526</y>
     </hint>
     <hint type="destinationlabel">
      <x>352</x>
@@ -811,8 +811,8 @@
    <slot>batchClearSel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>504</x>
-     <y>525</y>
+     <x>655</x>
+     <y>526</y>
     </hint>
     <hint type="destinationlabel">
      <x>801</x>
