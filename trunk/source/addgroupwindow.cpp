@@ -38,11 +38,11 @@ AddGroupWindow::AddGroupWindow(QStringList sites, QStringList favorites, mainWin
 				formLayout->addRow(tr("&Page"), m_spinPage);
 			m_spinPP = new QSpinBox;
 				m_spinPP->setRange(1, 1000);
-				m_spinPP->setValue(100);
+				m_spinPP->setValue(1000);
 				formLayout->addRow(tr("&Images par page"), m_spinPP);
 			m_spinLimit = new QSpinBox;
 				m_spinLimit->setRange(1, 1000000);
-				m_spinLimit->setValue(100);
+				m_spinLimit->setValue(1000);
 				formLayout->addRow(tr("&Limite d'images"), m_spinLimit);
 			m_comboDwl = new QComboBox;
 				m_comboDwl->setMaxVisibleItems(20);
