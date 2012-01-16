@@ -1,6 +1,6 @@
 #summary How to create a new translation file
 
-*Translation files provided in the translation tools are not up-to-date! You should not use the "YourLanguage.ts" and "English.ts" files provided in the download, but directly use the "English.ts" file in your Grabber/languages directory, then duplicate it.*
+*Translation files provided in the translation tools are not up-to-date! You should not use the "`YourLanguage.ts`" and "English.ts" files provided in the download, but directly use the "English.ts" file in your Grabber/languages directory, then duplicate it.*
 
 =Introduction=
 
@@ -14,7 +14,7 @@ If you're language is not available for the program, you can add if pretty simpl
   # Unarchive them using winrar, 7-zip or whatever you want.
   # Rename the "YourLanguage.ts" file, replacing "YourLanguage" by the name of your language, for example "Deutsch".
   # Launch "linguist.exe".
-  # Open ("File > Open..." or "Ctrl+O") the "English.ts" file and your language file.
+  # Open ("File > Open..." or "Ctrl+O") the "English.ts" file and your language file. If you understand French as well or better than English, you don't have to open "English.ts".
   # A new window will pop-up: for the source language's language, set French, and for the country France. And for the target language and country, just put here your language and country (in the previous example, German from Germany).
   # There will be a part in the window where you will have five fields: "Source text", "English translation", "English translator comment", "'Your language' translation" and "'Your language' translator comments".
   # The "only" thing you have to do now is to fill-up the "'Your language' translation" part, then mark item as done ("Translation > Done and Next", the green tick button, or just press "Ctrl+Return").
