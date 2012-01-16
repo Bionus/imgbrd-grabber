@@ -1,6 +1,6 @@
 #summary How to create a new translation file
 
-*Translation files are not up-to-date ! You must not use the "your_translation_file.ts" and "en.ts" files provided in the download, you should directly use the "English.ts" file in your languages directory, then duplicate it.*
+*Translation files provided in the translation tools are not up-to-date! You should not use the "YourLanguage.ts" and "English.ts" files provided in the download, but directly use the "English.ts" file in your Grabber/languages directory, then duplicate it.*
 
 =Introduction=
 
@@ -12,16 +12,16 @@ If you're language is not available for the program, you can add if pretty simpl
 
   # Download the translations tools from the downloads page.
   # Unarchive them using winrar, 7-zip or whatever you want.
-  # Rename the "your_translation_file.ts" file, replacing "your_translation_file" by the name of your language, for example "Deutsch".
+  # Rename the "YourLanguage.ts" file, replacing "YourLanguage" by the name of your language, for example "Deutsch".
   # Launch "linguist.exe".
-  # Open ("File > Open..." or "Ctrl+O") the "en.ts" file and your language file.
-  # A new window will pop-up: for the source language's language, set French, and for the country France. And for the target language and country, just put here your language and country.
-  # There will be a part in the window where you will have five fields : "Source text", "English translation", "English translator comment", "'Your language' translation" and "'Your language' translator comments".
-  # The "only" thing you have to do now is to fill-up the "'Your language' translation" part, then mark item as done ("Translation > Done and Next", or just press "Ctrl+Return").
+  # Open ("File > Open..." or "Ctrl+O") the "English.ts" file and your language file.
+  # A new window will pop-up: for the source language's language, set French, and for the country France. And for the target language and country, just put here your language and country (in the previous example, German from Germany).
+  # There will be a part in the window where you will have five fields: "Source text", "English translation", "English translator comment", "'Your language' translation" and "'Your language' translator comments".
+  # The "only" thing you have to do now is to fill-up the "'Your language' translation" part, then mark item as done ("Translation > Done and Next", the green tick button, or just press "Ctrl+Return").
   # Once all the translations have been marked as done, save and quit.
   # Then, drag and drop your translation file on "lrelease.exe".
-  # Another file will be created : "'Your language'.qm". Just move it to the "languages" directory in the Grabber's installation folder.
+  # Another file will be created : "'Your language'.qm". Just move it to the "languages" directory in the Grabber's installation folder. You can know choose it in the options!
 
 
 
-Once finished, dont hesitate sending me a mail with your translation file (the .ts one) at bio.nus@hotmail.fr, so I will add your translation to the downloads!
+Once finished, dont hesitate sending me a mail with your translation file (the .ts one) at bio.nus@hotmail.fr, so I will add your translation to the officially supported languages!
