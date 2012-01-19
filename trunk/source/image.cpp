@@ -135,7 +135,7 @@ void Image::parseTags(QNetworkReply* r)
 		loadTags();
 		return;
 	}
-	QString source = r->readAll();
+	QString source = QString::fromUtf8(r->readAll());
 
 	// Pools
 	if (m_parent->site().contains("Regex/Pools"))
@@ -163,6 +163,7 @@ void Image::parseTags(QNetworkReply* r)
 			pos += rx.matchedLength();
 			QString type = rx.cap(1), tag = rx.cap(2).replace(" ", "_").replace("&amp;", "&");
 			int count = rx.cap(3).toInt();
+			qDebug() << tag << rx.cap(0);
 			tgs.append(new Tag(tag, type, count));
 		}
 		if (!tgs.isEmpty())
@@ -311,9 +312,6 @@ QString Image::path(QString fn)
 			{ custom[scustom.keys().at(r)].append(t); }
 		}
 		details["allos"].append(t);
-		t = t.replace("\\", "_").replace("%", "_").replace("/", "_").replace(":", "_").replace("|", "_").replace("*", "_").replace("?", "_").replace("\"", "_").replace("<", "_").replace(">", "_").replace("__", "_").replace("__", "_").replace("__", "_").trimmed();
-		if (!settings.value("replaceblanks", false).toBool())
-		{ t.replace("_", " "); }
 		details[ignore.contains(m_tags.at(i)->text(), Qt::CaseInsensitive) ? "generals" : m_tags.at(i)->type()+"s"].append(t);
 		details["alls"].append(t);
 	}
@@ -407,7 +405,13 @@ QString Image::path(QString fn)
 
 	// We replace everithing
 	for (int i = 0; i < replaces.size(); i++)
-	{ filename.replace(replaces.keys().at(i), (replaces.values().at(i).first.isEmpty() ? replaces.values().at(i).second : replaces.values().at(i).first).left(259-pth.length()-1-filename.length())); }
+	{
+		QString res = replaces.values().at(i).first.isEmpty() ? replaces.values().at(i).second : replaces.values().at(i).first;
+		res = res.replace("\\", "_").replace("%", "_").replace("/", "_").replace(":", "_").replace("|", "_").replace("*", "_").replace("?", "_").replace("\"", "_").replace("<", "_").replace(">", "_").replace("__", "_").replace("__", "_").replace("__", "_").trimmed();
+		if (!settings.value("replaceblanks", false).toBool())
+		{ res.replace("_", " "); }
+		filename.replace(replaces.keys().at(i), res.left(259-pth.length()-1-filename.length()));
+	}
 
 	// We remove empty dir names
 	while (filename.indexOf("//") >= 0)
@@ -417,7 +421,6 @@ QString Image::path(QString fn)
 	if (filename.length() > settings.value("limit").toInt() && settings.value("limit").toInt() > 0)
 	{ filename = filename.left(filename.length()-ext.length()-1).left(settings.value("limit").toInt()-ext.length()-1) + filename.right(ext.length()+1); }
 
-	qDebug() << QDir::toNativeSeparators(filename);
 	return QDir::toNativeSeparators(filename);
 }
 

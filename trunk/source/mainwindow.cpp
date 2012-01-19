@@ -74,9 +74,9 @@ void mainWindow::init()
 			{
 				QDomElement docElem = doc.documentElement();
 				QStringMap details = domToMap(docElem);
-				QStringList defaults = QStringList() << "xml" << "json" << "regex";
+				QStringList defaults = QStringList() << "xml" << "json" << "rss" << "regex";
 				QString source, curr;
-				for (int s = 0; s < 3; s++)
+				for (int s = 0; s < 4; s++)
 				{
 					QString t = m_settings->value("source_"+QString::number(s+1), defaults.at(s)).toString();
 					t[0] = t[0].toUpper();
@@ -112,6 +112,7 @@ void mainWindow::init()
 							if (stes[line].contains("Urls/Html/Tags"))
 							{ stes[line]["Urls/Html/Tags"] = "http://"+line+stes[line]["Urls/Html/Tags"]; }
 							stes[line]["Selected"] = curr.toLower();
+							qDebug() << stes[line];
 						}
 					}
 					else
@@ -836,9 +837,9 @@ void mainWindow::loadLanguage(const QString& rLanguage, bool shutup)
 			log(tr("Traduction des textes en %1...").arg(m_currLang));
 				int _comboOrderfavorites = ui->comboOrderfavorites->currentIndex();
 				int _comboOrderasc = ui->comboOrderasc->currentIndex();
-				#if defined(Q_OS_WIN)
+				/*#if defined(Q_OS_WIN)
 					ui->retranslateUi(this);
-				#endif
+				#endif*/
 				ui->comboOrderfavorites->setCurrentIndex(_comboOrderfavorites);
 				ui->comboOrderasc->setCurrentIndex(_comboOrderasc);
 			logUpdate(tr(" Fait"));

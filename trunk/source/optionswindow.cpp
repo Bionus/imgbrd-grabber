@@ -142,6 +142,7 @@ optionsWindow::optionsWindow(mainWindow *parent) : QDialog(parent), m_parent(par
 		ui->spinHorizontalMargins->setValue(settings.value("horizontal", 6).toInt());
 		ui->spinVerticalMargins->setValue(settings.value("vertical", 6).toInt());
 	settings.endGroup();
+	ui->spinBorders->setValue(settings.value("borders", 3).toInt());
 
 	settings.beginGroup("Login");
 		ui->linePseudo->setText(settings.value("pseudo").toString());
@@ -397,7 +398,7 @@ void optionsWindow::updateContainer(QTreeWidgetItem *current, QTreeWidgetItem *p
 		tr("Symbole personnalisé", "update") <<
 		tr("Interface", "update") <<
 		tr("Coloration", "update") <<
-		tr("Marges", "update") <<
+		tr("Marges et bordures", "update") <<
 		tr("Connexion", "update") <<
 		tr("Proxy", "update") <<
 		tr("Commandes", "update");
@@ -519,6 +520,7 @@ void optionsWindow::save()
 		settings.setValue("horizontal", ui->spinHorizontalMargins->value());
 		settings.setValue("vertical", ui->spinVerticalMargins->value());
 	settings.endGroup();
+	settings.setValue("borders", ui->spinBorders->value());
 
 	settings.beginGroup("Login");
 		settings.setValue("pseudo", ui->linePseudo->text());

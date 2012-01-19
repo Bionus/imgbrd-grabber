@@ -104,6 +104,24 @@ void Page::parse(QNetworkReply* r)
 	m_source = r->readAll();
 	int first = ((m_page - 1) * m_imagesPerPage) % m_blim;
 
+	// Getting last page
+	if (m_site.contains("LastPage"))
+	{ m_imagesCount = m_site["LastPage"].toInt()*m_imagesPerPage; }
+	else if (m_site.contains("Regex/LastPage"))
+	{
+		QRegExp rxlast(m_site["Regex/LastPage"]);
+		rxlast.setMinimal(true);
+		rxlast.indexIn(m_source, 0);
+		m_imagesCount = rxlast.cap(1).remove(",").toInt()*m_imagesPerPage;
+	}
+	else if (m_site.contains("Regex/Count"))
+	{
+		QRegExp rxlast(m_site["Regex/Count"]);
+		rxlast.setMinimal(true);
+		rxlast.indexIn(m_source, 0);
+		m_imagesCount = rxlast.cap(1).remove(",").toInt();
+	}
+
 	// XML
 	if (m_site["Selected"] == "xml")
 	{
@@ -247,17 +265,6 @@ void Page::parse(QNetworkReply* r)
 	// Regexes
 	else if (m_site["Selected"] == "regex")
 	{
-		// Getting last page
-		if (m_site.contains("LastPage"))
-		{ m_imagesCount = m_site["LastPage"].toInt()*m_imagesPerPage; }
-		else if (m_site.contains("Regex/LastPage"))
-		{
-			QRegExp rxlast(m_site["Regex/LastPage"]);
-			rxlast.setMinimal(true);
-			rxlast.indexIn(m_source, 0);
-			m_imagesCount = rxlast.cap(1).toInt()*m_imagesPerPage;
-		}
-
 		// Getting tags
 		if (m_site.contains("Regex/Tags"))
 		{
