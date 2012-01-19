@@ -4,39 +4,90 @@
 
 
 
-TextEdit::TextEdit(QStringList favorites, QWidget *parent) : QTextEdit(parent), m_favorites(favorites), c(0)
+TextEdit::TextEdit(QStringList favs, QWidget *parent) : QTextEdit(parent), c(0), m_favorites(favs)
 {
-	setAcceptRichText(false);
-	setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed));
+	setTabChangesFocus(true);
 	setWordWrapMode(QTextOption::NoWrap);
 	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-	setTabChangesFocus(true);
-	setMaximumHeight(21);
+	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+	setFixedHeight(sizeHint().height());
 	connect(this, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(customContextMenuRequested(QPoint)));
 }
 
 TextEdit::~TextEdit()
 {
 }
-void TextEdit::setCompleter(QCompleter *completer)
+
+QSize TextEdit::sizeHint() const
 {
-	 if (c)
-		 QObject::disconnect(c, 0, this, 0);
-
-	 c = completer;
-
-	 if (!c)
-		 return;
-
-	 c->setWidget(this);
-	 c->setCompletionMode(QCompleter::PopupCompletion);
-	 c->setCaseSensitivity(Qt::CaseInsensitive);
-	 QObject::connect(c, SIGNAL(activated(QString)), this, SLOT(insertCompletion(QString)));
+	QFontMetrics fm(font());
+	int h = qMax(fm.height(), 14) + 4;
+	int w = fm.width(QLatin1Char('x')) * 17 + 4;
+	QStyleOptionFrameV2 opt;
+	opt.initFrom(this);
+	return (style()->sizeFromContents(QStyle::CT_LineEdit, &opt, QSize(w, h).expandedTo(QApplication::globalStrut()), this));
 }
 
-void TextEdit::setFavorites(QStringList favorites)
-{ m_favorites = favorites; }
+void TextEdit::wheelEvent(QWheelEvent *e)
+{ e->ignore(); }
+
+void TextEdit::doColor()
+{
+	QString txt = " "+this->toPlainText()+" ";
+	for (int i = 0; i < m_favorites.size(); i++)
+	{ txt.replace(" "+m_favorites.at(i)+" ", " <span style=\"color:#ffc0cb\">"+m_favorites.at(i)+"</span> "); }
+	QRegExp r1(" ~([^ ]+)"), r2(" -([^ ]+)"), r3(" (user|fav|md5|pool|rating|source|status|approver|unlocked|sub|id|width|height|score|mpixels|filesize|date|gentags|arttags|chartags|copytags|status|status|approver|order|parent):([^ ]*)");
+	int pos = 0;
+	while ((pos = r1.indexIn(txt, pos)) != -1)
+	{
+		QString rep = " <span style=\"color:green\">~"+r1.cap(1).replace("&", "&amp;").replace(">", "&gt;").replace("<", "&lt;")+"</span>";
+		txt.replace(r1.cap(0), rep);
+		pos += rep.length();
+	}
+	pos = 0;
+	while ((pos = r2.indexIn(txt, pos)) != -1)
+	{
+		QString rep = " <span style=\"color:red\">-"+r2.cap(1).replace("&", "&amp;").replace(">", "&gt;").replace("<", "&lt;")+"</span>";
+		txt.replace(r2.cap(0), rep);
+		pos += rep.length();
+	}
+	pos = 0;
+	while ((pos = r3.indexIn(txt, pos)) != -1)
+	{
+		QString rep = " <span style=\"color:brown\">"+r3.cap(1).replace("&", "&amp;").replace(">", "&gt;").replace("<", "&lt;")+":"+r3.cap(2).replace("&", "&amp;").replace(">", "&gt;").replace("<", "&lt;")+"</span>";
+		txt.replace(r3.cap(0), rep);
+		pos += rep.length();
+	}
+	QTextCursor crsr = textCursor();
+	pos = crsr.columnNumber();
+	int lengh = crsr.selectionEnd()-crsr.selectionStart();
+	setHtml(txt.mid(1, txt.length()-2));
+	crsr.setPosition(pos-lengh, QTextCursor::MoveAnchor);
+	crsr.setPosition(pos, QTextCursor::KeepAnchor);
+	setTextCursor(crsr);
+}
+void TextEdit::setText(const QString &text)
+{
+	QTextEdit::setText(text);
+	doColor();
+}
+
+void TextEdit::setCompleter(QCompleter *completer)
+{
+	if (c)
+	{ QObject::disconnect(c, 0, this, 0); }
+
+	c = completer;
+
+	if (!c)
+	{ return; }
+
+	c->setWidget(this);
+	c->setCompletionMode(QCompleter::PopupCompletion);
+	c->setCaseSensitivity(Qt::CaseInsensitive);
+	QObject::connect(c, SIGNAL(activated(QString)), this, SLOT(insertCompletion(QString)));
+}
 
 QCompleter *TextEdit::completer() const
 {
@@ -53,26 +104,13 @@ void TextEdit::insertCompletion(const QString& completion)
 	tc.movePosition(QTextCursor::EndOfWord);
 	tc.insertText(completion.right(extra));
 	setTextCursor(tc);
-	doColor();
 }
 
- QString TextEdit::textUnderCursor() const
+QString TextEdit::textUnderCursor() const
 {
-	int size = 0, pos = textCursor().position();
-	QString topos = this->toPlainText().left(pos), plain = " "+this->toPlainText()+" ";
-	pos = pos-topos.count("-");
-	QRegExp reg(" [~-]([^ ]*) ");
-	plain.replace(" ", "  ").replace(reg, " \\1 ");
-	plain = plain.replace("  ", " ").trimmed();
-	QStringList words = plain.split(" ", QString::SkipEmptyParts);
-	QString word;
-	for (int i = 0; i < words.count(); i++)
-	{
-		if (size <= pos && pos <= size+words.at(i).length())
-		{ word = words.at(i); }
-		size += words.at(i).length()+1;
-	}
-	return word;
+	QTextCursor tc = textCursor();
+	tc.select(QTextCursor::WordUnderCursor);
+	return tc.selectedText();
 }
 
 void TextEdit::focusInEvent(QFocusEvent *e)
@@ -84,96 +122,59 @@ void TextEdit::focusInEvent(QFocusEvent *e)
 
 void TextEdit::keyPressEvent(QKeyEvent *e)
 {
-	if (e->key() == Qt::Key_Enter || e->key() == Qt::Key_Return)
-	{
-		e->ignore();
-		if (!c || !c->popup()->isVisible())
-		{
-			this->doColor();
-			emit this->returnPressed();
-		}
-		return;
-	}
 	if (c && c->popup()->isVisible())
 	{
 		// The following keys are forwarded by the completer to the widget
-		switch (e->key())
-		{
-			case Qt::Key_Enter:
-			case Qt::Key_Return:
-			case Qt::Key_Escape:
-			case Qt::Key_Tab:
-			case Qt::Key_Backtab:
-				e->ignore();
-				this->doColor();
-				return; // let the completer do default behavior
-			default:
-				break;
-		}
+	   switch (e->key()) {
+	   case Qt::Key_Enter:
+	   case Qt::Key_Return:
+	   case Qt::Key_Escape:
+	   case Qt::Key_Tab:
+	   case Qt::Key_Backtab:
+			e->ignore();
+			return; // let the completer do default behavior
+	   default:
+		   break;
+	   }
 	}
 
-	bool isShortcut = ((e->modifiers() & Qt::ControlModifier) && e->key() == Qt::Key_Space); // CTRL+Space
-	if (!c || !isShortcut) // dont process the shortcut when we have a completer
-	{ QTextEdit::keyPressEvent(e); }
-	const bool ctrlOrShift = (e->modifiers() & (Qt::ControlModifier | Qt::ShiftModifier));
-	if (!c || (ctrlOrShift && e->text().isEmpty()))
-	{ this->doColor(); return; }
+	bool isShortcut = ((e->modifiers() & Qt::ControlModifier) && e->key() == Qt::Key_E); // CTRL+E
+	if (!c || !isShortcut) // do not process the shortcut when we have a completer
+	{
+		if (e->key() == Qt::Key_Enter || e->key() == Qt::Key_Return)
+		{
+			emit returnPressed();
+			return;
+		}
+		QTextEdit::keyPressEvent(e);
+	}
+	doColor();
 
-	static QString eow(" "); // end of word
+	const bool ctrlOrShift = e->modifiers() & (Qt::ControlModifier | Qt::ShiftModifier);
+	if (!c || (ctrlOrShift && e->text().isEmpty()))
+	{ return; }
+
+	static QString eow("~!@#$%^&*()_+{}|:\"<>?,./;'[]\\-="); // end of word
 	bool hasModifier = (e->modifiers() != Qt::NoModifier) && !ctrlOrShift;
 	QString completionPrefix = textUnderCursor();
 
-	QString p = c->completionPrefix();
-	c->setCompletionPrefix(completionPrefix);
-	if ((c->completionCount() == 1 && c->currentCompletion().size() == completionPrefix.size()) || (!isShortcut && (hasModifier || e->text().isEmpty()|| completionPrefix.length() < 3 || eow.contains(e->text().right(1)))))
+	if (!isShortcut && (hasModifier || e->text().isEmpty()|| completionPrefix.length() < 3 || eow.contains(e->text().right(1))))
 	{
 		c->popup()->hide();
-		this->doColor();
 		return;
 	}
 
-	if (completionPrefix != p)
+	if (completionPrefix != c->completionPrefix())
 	{
 		c->setCompletionPrefix(completionPrefix);
 		c->popup()->setCurrentIndex(c->completionModel()->index(0, 0));
 	}
 	QRect cr = cursorRect();
 	cr.setWidth(c->popup()->sizeHintForColumn(0) + c->popup()->verticalScrollBar()->sizeHint().width());
-	c->complete(cr); // popup it up!
-	this->doColor();
+	c->complete(cr);
 }
 
-void TextEdit::wheelEvent(QWheelEvent *e)
-{ e->ignore(); }
-
-QSize TextEdit::sizeHint() const
-{
-	QFontMetrics fm(font());
-	int h = fm.height();
-	int w = fm.width(QLatin1Char('x'));
-	return QSize(w, h);
-}
-
-void TextEdit::doColor()
-{
-	if (!c || !c->popup()->isVisible())
-	{
-		QString txt = " "+this->toPlainText()+" ";
-		for (int i = 0; i < m_favorites.size(); i++)
-		{ txt.replace(" "+m_favorites.at(i)+" ", " <span style=\"color:#ffc0cb\">"+m_favorites.at(i)+"</span> "); }
-		txt.replace(QRegExp(" ~([^ ]+)"), " <span style=\"color:green\">~\\1</span>");
-		txt.replace(QRegExp(" -([^ ]+)"), " <span style=\"color:red\">-\\1</span>");
-		txt.replace(QRegExp(" (user|fav|md5|pool|rating|source|status|approver|unlocked|sub|id|width|height|score|mpixels|filesize|date|gentags|arttags|chartags|copytags|status|status|approver|order|parent):([^ ]*)"), " <span style=\"color:brown\">\\1:\\2</span>");
-		QTextCursor crsr = textCursor();
-		int pos = crsr.columnNumber(), lengh = crsr.selectionEnd()-crsr.selectionStart();
-		setHtml(txt.mid(1, txt.length()-2));
-		crsr.setPosition(pos-lengh, QTextCursor::MoveAnchor);
-		crsr.setPosition(pos, QTextCursor::KeepAnchor);
-		setTextCursor(crsr);
-	}
-}
-
-void TextEdit::customContextMenuRequested(QPoint)
+void TextEdit::customContextMenuRequested(const QPoint &pos)
 {
 	QMenu *menu = new QMenu(this);
 		QMenu *favs = new QMenu(tr("Favoris"), menu);

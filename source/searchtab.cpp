@@ -9,7 +9,7 @@ extern mainWindow *_mainwindow;
 
 
 
-searchTab::searchTab(QMap<QString,QMap<QString,QString> > *sites, QMap<QString,QString> *favorites, QDateTime *serverDate, QWidget *parent) : QWidget(parent), ui(new Ui::searchTab), m_serverDate(serverDate), m_favorites(favorites), m_sites(sites), m_pagemax(-1), m_sized(false)
+searchTab::searchTab(QMap<QString,QMap<QString,QString> > *sites, QMap<QString,QString> *favorites, QDateTime *serverDate, QWidget *parent) : QWidget(parent), ui(new Ui::searchTab), m_serverDate(serverDate), m_favorites(favorites), m_sites(sites), m_pagemax(-1), m_lastTags(QString()), m_sized(false)
 {
     ui->setupUi(this);
 	ui->widgetMeant->hide();
@@ -173,6 +173,12 @@ void searchTab::updateCheckboxes()
 void searchTab::load()
 {
 	log(tr("Chargement des résultats..."));
+	qDebug() << m_search->toPlainText() << m_search->toHtml();
+
+	if (m_search->toPlainText() != m_lastTags && !m_lastTags.isNull())
+	{ ui->spinPage->setValue(1); }
+	m_lastTags = m_search->toPlainText();
+
 	ui->widgetMeant->hide();
 	ui->buttonFirstPage->setEnabled(ui->spinPage->value() > 1);
 	ui->buttonPreviousPage->setEnabled(ui->spinPage->value() > 1);
@@ -239,7 +245,7 @@ void searchTab::finishedLoading(Page* page)
 	log(tr("Réception de la page <a href=\"%1\">%1</a>").arg(page->url().toString()));
 	if (page->imagesCount() < m_pagemax || m_pagemax == -1 )
 	{ m_pagemax = page->imagesCount(); }
-	ui->buttonNextPage->setEnabled(m_pagemax > ui->spinPage->value() || page->imagesCount() == -1);
+	ui->buttonNextPage->setEnabled(m_pagemax > ui->spinPage->value() || page->imagesCount() == -1 || (page->imagesCount() == 0 && page->images().count() > 0));
 	ui->buttonLastPage->setEnabled(m_pagemax > ui->spinPage->value());
 
 	QList<Image*> imgs = page->images();
@@ -516,7 +522,7 @@ void searchTab::finishedLoadingPreview(Image *img)
 		if (m_favorites->keys().contains(img->tags().at(i)->text()) && !m_search->toPlainText().trimmed().split(" ").contains(img->tags().at(i)->text()))
 		{ color = QColor("#ffc0cb"); break; }
 	}
-	QBouton *l = new QBouton(position, settings->value("resizeInsteadOfCropping", true).toBool(), 3, color, this);
+	QBouton *l = new QBouton(position, settings->value("resizeInsteadOfCropping", true).toBool(), settings->value("borders", 3).toInt(), color, this);
 		l->setIcon(preview);
 		QString t;
 		for (int i = 0; i < img->tags().count(); i++)
@@ -578,7 +584,6 @@ void searchTab::setTags(QString tags)
 {
 	activateWindow();
 	m_search->setText(tags);
-	m_search->doColor();
 	load();
 }
 
@@ -613,7 +618,7 @@ void searchTab::previousPage()
 }
 void searchTab::nextPage()
 {
-	if (ui->spinPage->value() < m_pagemax)
+	if (ui->spinPage->value() < ui->spinPage->maximum())
 	{
 		ui->spinPage->setValue(ui->spinPage->value()+1);
 		load();

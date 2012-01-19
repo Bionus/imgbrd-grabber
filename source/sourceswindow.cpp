@@ -46,7 +46,7 @@ sourcesWindow::sourcesWindow(QList<bool> selected, QStringMapMap *sites, QWidget
 			{
 				QLabel *image = new QLabel();
 				image->setPixmap(QPixmap(savePath("sites/"+sites->value(k.at(i))["Name"].toLower()+"/icon.png")));
-				ui->gridLayout->addWidget(image, i, n);
+				ui->gridLayout->addWidget(image, i, n + (t == "both" ? 1 : 0));
 				m_labels << image;
 				n++;
 			}

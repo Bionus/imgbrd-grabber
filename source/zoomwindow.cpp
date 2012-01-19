@@ -517,6 +517,7 @@ QString zoomWindow::saveImage()
 		m_mustSave = 1;
 		return QString();
 	}
+
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
 	QString pth = settings.value("Save/path").toString().replace("\\", "/");
 	if (pth.right(1) == "/")
@@ -563,6 +564,8 @@ QString zoomWindow::saveImage()
 			f.write(m_data);
 			log(tr("Sauvegarde de l'image dans le fichier <a href=\"file:///%1\">%1</a>").arg(f.fileName()));
 		f.close();
+		QFileInfo info(f);
+		qDebug() << info.created() << info.lastModified() << info.lastRead();
 
 		QMap<QString,int> types;
 		types["general"] = 0;

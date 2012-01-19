@@ -72,7 +72,7 @@ class searchTab : public QWidget
 		int										m_pagemax;
 		QList<bool>								m_selectedSources;
 		QList<QCheckBox*>						m_checkboxes;
-		QString									m_link;
+		QString									m_link, m_lastTags;
 		bool									m_sized;
 		int										m_page;
 		QList<QGridLayout*>						m_layouts;

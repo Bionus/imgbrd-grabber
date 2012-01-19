@@ -118,7 +118,7 @@
         </item>
         <item>
          <property name="text">
-          <string>Marges</string>
+          <string>Marges et bordures</string>
          </property>
         </item>
        </item>
@@ -1269,6 +1269,23 @@ p, li { white-space: pre-wrap; }
             </property>
             <property name="value">
              <number>6</number>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_59">
+            <property name="text">
+             <string>Bordures</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QSpinBox" name="spinBorders">
+            <property name="maximum">
+             <number>10</number>
+            </property>
+            <property name="value">
+             <number>3</number>
             </property>
            </widget>
           </item>
