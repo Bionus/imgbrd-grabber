@@ -7,7 +7,7 @@
   * %copyright%
   * %character%
   * %model% : boorus such as [http://behoimi.org/ Behoimi] use, adding to classical type, the "model" type.
-  * %model|artist% : if there is a model in the tags, use it, else fallback to the artist.
+
   * %search% : search tags
   * %search_1%, %search_2%, %search_3%... : first/second/third/etc. tag of the search.
   * %filename% : image filename, as stored on the booru's server.
