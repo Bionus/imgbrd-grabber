@@ -24,7 +24,6 @@ deviantart.org
 g.e-hentai.org
 minitokyo.net
 pixiv.net
-zerochan.net
 */
 
 
@@ -75,16 +74,14 @@ void mainWindow::init()
 				QDomElement docElem = doc.documentElement();
 				QStringMap details = domToMap(docElem);
 				QStringList defaults = QStringList() << "xml" << "json" << "rss" << "regex";
-				QString source, curr;
+				QString curr;
+				QStringList source;
 				for (int s = 0; s < 4; s++)
 				{
 					QString t = m_settings->value("source_"+QString::number(s+1), defaults.at(s)).toString();
 					t[0] = t[0].toUpper();
 					if (details.contains("Urls/"+(t == "Regex" ? "Html" : t)+"/Tags"))
-					{
-						source = t;
-						break;
-					}
+					{ source.append(t); }
 				}
 				if (!source.isEmpty())
 				{
@@ -95,24 +92,28 @@ void mainWindow::init()
 						{
 							QString line = f.readLine();
 							line.remove("\n").remove("\r");
+							QStringList srcs;
 							if (line.contains(':'))
 							{
 								curr = line.section(':', 1).toLower();
 								curr[0] = curr[0].toUpper();
+								srcs.append(curr);
 								line = line.section(':', 0, 0);
 							}
 							else
-							{ curr = source; }
+							{ srcs = source; }
 							stes[line] = details;
-							stes[line]["Urls/Selected/Tags"] = "http://"+line+stes[line]["Urls/"+(curr == "Regex" ? "Html" : curr)+"/Tags"];
-							if (stes[line].contains("Urls/"+(curr == "Regex" ? "Html" : curr)+"/Limit"))
-							{ stes[line]["Urls/Selected/Limit"] = stes[line]["Urls/"+(curr == "Regex" ? "Html" : curr)+"/Limit"]; }
+							for (int i = 0; i < srcs.size(); i++)
+							{
+								stes[line]["Urls/"+QString::number(i+1)+"/Tags"] = "http://"+line+stes[line]["Urls/"+(srcs[i] == "Regex" ? "Html" : srcs[i])+"/Tags"];
+								if (stes[line].contains("Urls/"+(srcs[i] == "Regex" ? "Html" : srcs[i])+"/Limit"))
+								{ stes[line]["Urls/"+QString::number(i+1)+"/Limit"] = stes[line]["Urls/"+(srcs[i] == "Regex" ? "Html" : srcs[i])+"/Limit"]; }
+							}
 							stes[line]["Url"] = line;
 							stes[line]["Urls/Html/Post"] = "http://"+line+stes[line]["Urls/Html/Post"];
 							if (stes[line].contains("Urls/Html/Tags"))
 							{ stes[line]["Urls/Html/Tags"] = "http://"+line+stes[line]["Urls/Html/Tags"]; }
-							stes[line]["Selected"] = curr.toLower();
-							qDebug() << stes[line];
+							stes[line]["Selected"] = srcs.join("/").toLower();
 						}
 					}
 					else
@@ -441,7 +442,10 @@ void mainWindow::updateBatchGroups(int y, int x)
 }
 void mainWindow::addGroup()
 {
-	AddGroupWindow *wAddGroup = new AddGroupWindow(m_sites.keys(), m_favorites.keys(), this);
+	qDebug() << m_selectedSources;
+	qDebug() << m_tabs[0]->sources();
+	QString selected;
+	AddGroupWindow *wAddGroup = new AddGroupWindow(selected, m_sites.keys(), m_favorites.keys(), this);
 	wAddGroup->show();
 }
 void mainWindow::addUnique()

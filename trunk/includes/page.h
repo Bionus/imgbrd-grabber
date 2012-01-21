@@ -20,6 +20,7 @@ class Page : public QObject
 		~Page();
 		void					load();
 		void					loadTags();
+		void					fallback();
 		QList<Image*>			images();
 		QMap<QString,QString>	site();
 		int						imagesCount();
@@ -45,7 +46,7 @@ class Page : public QObject
 		QStringList				m_postFiltering, m_search;
 		QUrl					m_url, m_urlRegex;
 		QList<Image*>			m_images;
-		int						m_imagesCount, m_imagesPerPage, m_currentUrl, m_page, m_blim;
+		int						m_imagesCount, m_imagesPerPage, m_currentUrl, m_page, m_blim, m_currentSource;
 		QList<Tag*>				m_tags;
 		QNetworkReply			*m_reply, *m_replyTags;
 		bool					m_replyExists, m_replyTagsExists;

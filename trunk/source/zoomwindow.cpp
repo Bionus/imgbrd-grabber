@@ -31,6 +31,9 @@ zoomWindow::zoomWindow(Image *image, QStringMap site, QMap<QString,QMap<QString,
 		}
 		settings.endGroup();
 
+	QShortcut *escape = new QShortcut(QKeySequence(Qt::Key_Escape), this);
+		connect(escape, SIGNAL(activated()), this, SLOT(close()));
+
 	go();
 }
 void zoomWindow::go()
@@ -372,11 +375,9 @@ void zoomWindow::replyFinished(Image* img)
 		}
 		else
 		{
-			m_data.clear();
-			if (!file.open(QIODevice::ReadOnly))
-			{ error(this, tr("Erreur inattendue lors de l'ouverture du fichier.\r\n%1").arg(path+"/"+pth)); }
-			m_data = file.readAll();
-			this->image->loadFromData(m_data, m_format);
+			QPixmap *img = new QPixmap();
+			img->load(path+"/"+pth);
+			this->image = img;
 			this->update();
 		}
 	}
@@ -402,7 +403,6 @@ void zoomWindow::colore()
 	for (int i = 0; i < m_image->tags().size(); i++)
 	{
 		Tag *tag = m_image->tags().at(i);
-		qDebug() << tag->type();
 		QString normalized = tag->text().replace("\\", " ").replace("/", " ").replace(":", " ").replace("|", " ").replace("*", " ").replace("?", " ").replace("\"", " ").replace("<", " ").replace(">", " ").trimmed();
 		if (under)
 		{ normalized.replace(' ', '_'); }
@@ -456,7 +456,7 @@ void zoomWindow::replyFinishedZoom()
 			QPixmap *img = new QPixmap();
 			img->loadFromData(m_data);
 			this->image = img;
-			this->update(false);
+			this->update();
 		}
 		if (this->m_mustSave > 0)
 		{ this->saveImage(); }
@@ -564,8 +564,6 @@ QString zoomWindow::saveImage()
 			f.write(m_data);
 			log(tr("Sauvegarde de l'image dans le fichier <a href=\"file:///%1\">%1</a>").arg(f.fileName()));
 		f.close();
-		QFileInfo info(f);
-		qDebug() << info.created() << info.lastModified() << info.lastRead();
 
 		QMap<QString,int> types;
 		types["general"] = 0;
@@ -651,7 +649,7 @@ void zoomWindow::fullScreen()
 		label->setAlignment(Qt::AlignCenter);
 		label->setImage(this->image->scaled(QApplication::desktop()->screenGeometry().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
 		label->showFullScreen();
-	QShortcut *escape= new QShortcut(QKeySequence(Qt::Key_Escape), label);
+	QShortcut *escape = new QShortcut(QKeySequence(Qt::Key_Escape), label);
 		connect(escape, SIGNAL(activated()), label, SLOT(close()));
 	connect(label, SIGNAL(doubleClicked()), label, SLOT(close()));
 }

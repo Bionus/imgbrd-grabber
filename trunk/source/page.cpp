@@ -3,26 +3,47 @@
 
 
 
-Page::Page(QMap<QString,QMap<QString,QString> > *sites, QString site, QStringList tags, int page, int limit, QStringList postFiltering, QObject *parent) : QObject(parent), m_postFiltering(postFiltering), m_search(tags), m_imagesPerPage(limit)
+Page::Page(QMap<QString,QMap<QString,QString> > *sites, QString site, QStringList tags, int page, int limit, QStringList postFiltering, QObject *parent) : QObject(parent), m_postFiltering(postFiltering), m_search(tags), m_imagesPerPage(limit), m_currentSource(0)
 {
+
 	// Some definitions from parameters
 	m_site = sites->value(site);
 	m_website = site;
-	m_format = m_site["Selected"];
-	QString t = tags.join(" ").replace("&", "%26");
+
+	m_page = page;
+	fallback();
+
+	m_replyExists = false;
+	m_replyTagsExists = false;
+	m_currentUrl = 0;
+}
+Page::~Page()
+{ }
+
+void Page::fallback()
+{
+	if (m_currentSource > 3)
+	{
+		log(tr("Aucune source valide du site n'a retourné de résultat."));
+		return;
+	}
+
+	m_currentSource++;
+
+	QString t = m_search.join(" ").replace("&", "%26");
 	if (m_site.contains("DefaultTag") && t.isEmpty())
 	{ t = m_site["DefaultTag"]; }
 
-	m_blim = m_site.contains("Urls/Selected/Limit") ? m_site["Urls/Selected/Limit"].toInt() : limit;
+	m_format = m_site["Selected"].split('/').at(m_currentSource-1);
+	m_blim = m_site.contains("Urls/"+QString::number(m_currentSource)+"/Limit") ? m_site["Urls/"+QString::number(m_currentSource)+"/Limit"].toInt() : m_imagesPerPage;
 	if (m_imagesPerPage > m_blim)
 	{ m_imagesPerPage = m_blim; }
-	m_page = page;
-	int p = floor((page - 1) * limit / m_blim) + m_site["FirstPage"].toInt();
+	int p = floor((m_page - 1) * m_imagesPerPage / m_blim) + m_site["FirstPage"].toInt();
 
-	QString url = m_site["Urls/Selected/Tags"];
+	QString url = m_site["Urls/"+QString::number(m_currentSource)+"/Tags"];
 	url.replace("{page}", QString::number(p));
 	url.replace("{tags}", t);
-	url.replace("{limit}", QString::number(limit));
+	url.replace("{limit}", QString::number(m_imagesPerPage));
 	QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
 	url.replace("{pseudo}", settings->value("Login/pseudo").toString());
 	url.replace("{password}", settings->value("Login/password").toString());
@@ -33,7 +54,7 @@ Page::Page(QMap<QString,QMap<QString,QString> > *sites, QString site, QStringLis
 		QString url = m_site["Urls/Html/Tags"];
 		url.replace("{page}", QString::number(p));
 		url.replace("{tags}", t);
-		url.replace("{limit}", QString::number(limit));
+		url.replace("{limit}", QString::number(m_imagesPerPage));
 		QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
 		url.replace("{pseudo}", settings->value("Login/pseudo").toString());
 		url.replace("{password}", settings->value("Login/password").toString());
@@ -41,13 +62,7 @@ Page::Page(QMap<QString,QMap<QString,QString> > *sites, QString site, QStringLis
 	}
 	else
 	{ m_urlRegex = ""; }
-
-	m_replyExists = false;
-	m_replyTagsExists = false;
-	m_currentUrl = 0;
 }
-Page::~Page()
-{ }
 
 void Page::load()
 {
@@ -122,8 +137,16 @@ void Page::parse(QNetworkReply* r)
 		m_imagesCount = rxlast.cap(1).remove(",").toInt();
 	}
 
+
+	if (m_source.isEmpty())
+	{
+		fallback();
+		load();
+		return;
+	}
+
 	// XML
-	if (m_site["Selected"] == "xml")
+	if (m_format == "xml")
 	{
 		// Initializations
 		QDomDocument doc;
@@ -132,6 +155,8 @@ void Page::parse(QNetworkReply* r)
 		if (!doc.setContent(m_source, false, &errorMsg, &errorLine, &errorColumn))
 		{
 			log(tr("Erreur lors de l'analyse du fichier XML : %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn)));
+			fallback();
+			load();
 			return;
 		}
 		QDomElement docElem = doc.documentElement();
@@ -172,7 +197,7 @@ void Page::parse(QNetworkReply* r)
 	}
 
 	// JSON
-	else if (m_site["Selected"] == "json")
+	else if (m_format == "json")
 	{
 		QVariant src = Json::parse(m_source);
 		if (!src.isNull())
@@ -206,10 +231,16 @@ void Page::parse(QNetworkReply* r)
 				{ log(tr("Image #%1 ignored. Reason: %2.").arg(QString::number(id+1), error)); }
 			}
 		}
+		else
+		{
+			fallback();
+			load();
+			return;
+		}
 	}
 
 	// RSS
-	if (m_site["Selected"] == "rss")
+	if (m_format == "rss")
 	{
 		// Initializations
 		QDomDocument doc;
@@ -218,6 +249,8 @@ void Page::parse(QNetworkReply* r)
 		if (!doc.setContent(m_source, false, &errorMsg, &errorLine, &errorColumn))
 		{
 			log(tr("Erreur lors de l'analyse du fichier RSS : %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn)));
+			fallback();
+			load();
 			return;
 		}
 		QDomElement docElem = doc.documentElement();
@@ -263,7 +296,7 @@ void Page::parse(QNetworkReply* r)
 	}
 
 	// Regexes
-	else if (m_site["Selected"] == "regex")
+	else if (m_format == "regex")
 	{
 		// Getting tags
 		if (m_site.contains("Regex/Tags"))
