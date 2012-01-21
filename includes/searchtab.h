@@ -21,6 +21,7 @@ class searchTab : public QWidget
 		explicit searchTab(QMap<QString,QMap<QString,QString> > *sites, QMap<QString,QString> *favorites, QDateTime *serverDate, QWidget *parent = 0);
 		~searchTab();
 		Ui::searchTab *ui;
+		QList<bool> sources();
 
 	public slots:
 		// Search

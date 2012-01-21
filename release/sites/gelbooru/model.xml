@@ -6,6 +6,7 @@
 			<Tags>/index.php?page=dapi&amp;s=post&amp;q=index&amp;limit={limit}&amp;pid={page}&amp;tags={tags}</Tags>
 		</Xml>
 		<Html>
+			<Tags>/index.php?page=post&amp;s=list&amp;limit={limit}&amp;pid={page}&amp;tags={tags}</Tags>
 			<Post>/index.php?page=post&amp;s=view&amp;id={id}</Post>
 		</Html>
 	</Urls>

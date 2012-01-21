@@ -152,9 +152,11 @@ void Image::parseTags(QNetworkReply* r)
 	}
 
 	// Tags
+	qDebug() << "has" << m_parent->site().contains("Regex/Tags");
 	if (m_parent->site().contains("Regex/Tags"))
 	{
 		QRegExp rx(m_parent->site().value("Regex/Tags"));
+		qDebug() << m_parent->site().value("Regex/Tags");
 		rx.setMinimal(true);
 		int pos = 0;
 		QList<Tag*> tgs;
@@ -163,7 +165,7 @@ void Image::parseTags(QNetworkReply* r)
 			pos += rx.matchedLength();
 			QString type = rx.cap(1), tag = rx.cap(2).replace(" ", "_").replace("&amp;", "&");
 			int count = rx.cap(3).toInt();
-			qDebug() << tag << rx.cap(0);
+			qDebug() << tag << type << count;
 			tgs.append(new Tag(tag, type, count));
 		}
 		if (!tgs.isEmpty())
@@ -346,11 +348,10 @@ QString Image::path(QString fn)
 
 	for (int i = 0; i < custom.size(); i++)
 	{ replaces.insert("%"+custom.keys().at(i)+"%", QPair<QString,QString>(custom.values().at(i).join(settings.value("separator").toString()), "")); }
-	replaces.insert("%artist%", QPair<QString,QString>(settings.value("artist_useall").toBool() || details["artists"].count() == 1 ? details["artists"].join(settings.value("artist_sep").toString()) : settings.value("artist_value").toString(), settings.value("artist_empty").toString()));
-	replaces.insert("%copyright%", QPair<QString,QString>(settings.value("copyright_useall").toBool() || copyrights.count() == 1 ? copyrights.join(settings.value("copyright_sep").toString()) : settings.value("copyright_value").toString(), settings.value("copyright_empty").toString()));
-	replaces.insert("%character%", QPair<QString,QString>(settings.value("character_useall").toBool() || details["characters"].count() == 1 ? details["characters"].join(settings.value("character_sep").toString()) : settings.value("character_value").toString(), settings.value("character_empty").toString()));
-	replaces.insert("%model%", QPair<QString,QString>(settings.value("model_useall").toBool() || details["models"].count() == 1 ? details["models"].join(settings.value("model_sep").toString()) : settings.value("model_value").toString(), settings.value("model_empty").toString()));
-	replaces.insert("%model|artist%", QPair<QString,QString>(!details["models"].isEmpty() ? (settings.value("model_useall").toBool() || details["models"].count() == 1 ? details["models"].join(settings.value("model_sep").toString()) : settings.value("model_value").toString()) : (settings.value("artist_useall").toBool() || details["artists"].count() == 1 ? details["artists"].join(settings.value("artist_sep").toString()) : settings.value("artist_value").toString()), settings.value("artist_empty").toString()));
+	replaces.insert("%artist%", QPair<QString,QString>(details["artists"].count() > 0 ? (settings.value("artist_useall").toBool() || details["artists"].count() == 1 ? details["artists"].join(settings.value("artist_sep").toString()) : settings.value("artist_value").toString()) : "", settings.value("artist_empty").toString()));
+	replaces.insert("%copyright%", QPair<QString,QString>(details["copyrights"].count() > 0 ? (settings.value("copyright_useall").toBool() || details["copyrights"].count() == 1 ? details["copyrights"].join(settings.value("copyright_sep").toString()) : settings.value("copyright_value").toString()) : "", settings.value("copyright_empty").toString()));
+	replaces.insert("%character%", QPair<QString,QString>(details["characters"].count() > 0 ? (settings.value("character_useall").toBool() || details["characters"].count() == 1 ? details["characters"].join(settings.value("character_sep").toString()) : settings.value("character_value").toString()) : "", settings.value("character_empty").toString()));
+	replaces.insert("%model%", QPair<QString,QString>(details["models"].count() > 0 ? (settings.value("model_useall").toBool() || details["models"].count() == 1 ? details["models"].join(settings.value("model_sep").toString()) : settings.value("model_value").toString()) : "", settings.value("model_empty").toString()));
 	replaces.insert("%search%", QPair<QString,QString>(search.join(settings.value("separator").toString()), ""));
 	replaces.insert("%filename%", QPair<QString,QString>(m_url.section('/', -1).section('.', 0, -2), ""));
 	replaces.insert("%rating%", QPair<QString,QString>(m_rating, ""));
@@ -389,7 +390,10 @@ QString Image::path(QString fn)
 	if (pth.right(1) == "/")		{ pth = pth.left(pth.length()-1);					}
 
 	// Conditionals
-	QStringList tokens = QStringList() << "artist" << "general" << "copyright" << "character" << "model" << "model|artist" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "allo" << custom.keys();
+	QStringList c = custom.keys();
+	for (int i = 0; i < 10; i++)
+	{ c.append("search_"+QString::number(i)); }
+	QStringList tokens = QStringList() << "artist" << "general" << "copyright" << "character" << "model" << "model|artist" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "allo" << c;
 	filename = analyse(tokens, filename, details["allos"]);
 
 	// No duplicates in %all%
