@@ -14,7 +14,7 @@
 #include "json.h"
 #include <QtXml>
 
-#define VERSION	"3.0.0a"
+#define VERSION	"3.0.0"
 #define DONE()	logUpdate(QObject::tr(" Fait"))
 
 extern QMap<QDateTime,QString> _log;
@@ -397,6 +397,7 @@ void mainWindow::batchClearSel()
 	foreach (int i, todelete)
 	{
 		m_groupBatchs.removeAt(i-rem);
+		m_progressBars.removeAt(i-rem);
 		ui->tableBatchGroups->removeRow(i-rem);
 		rem++;
 	}
@@ -442,9 +443,19 @@ void mainWindow::updateBatchGroups(int y, int x)
 }
 void mainWindow::addGroup()
 {
-	qDebug() << m_selectedSources;
-	qDebug() << m_tabs[0]->sources();
+	if (m_tabs.count() > 0)
+	{ m_selectedSources = m_tabs[0]->sources(); }
 	QString selected;
+	for (int i = 0; i < m_selectedSources.count(); i++)
+	{
+		if (m_selectedSources[i])
+		{
+			selected = m_sites.keys().at(i);
+			break;
+		}
+	}
+	if (selected.isEmpty() && m_sites.size() > 0)
+	{ selected = m_sites.keys().at(0); }
 	AddGroupWindow *wAddGroup = new AddGroupWindow(selected, m_sites.keys(), m_favorites.keys(), this);
 	wAddGroup->show();
 }
@@ -956,15 +967,18 @@ void mainWindow::getAll(bool all)
 	m_getAllBeforeId = -1;
 	m_getAllImages.clear();
 	m_getAllPages.clear();
+	qDebug() << 3 << 1 << m_progressBars.size();
 	for (int i = 0; i < m_progressBars.size(); i++)
 	{
 		m_progressBars.at(i)->setMaximum(100);
 		m_progressBars.at(i)->setValue(0);
 	}
+	qDebug() << 3 << 2;
 	m_allow = false;
 	for (int i = 0; i < ui->tableBatchGroups->rowCount(); i++)
 	{ ui->tableBatchGroups->item(i, 0)->setIcon(QIcon(":/images/colors/black.png")); }
 	m_allow = true;
+	qDebug() << 3 << 3;
 	if (!m_settings->value("Exec/Group/init").toString().isEmpty())
 	{
 		log(tr("Execution de la commande d'initialisation' \"%1\"").arg(m_settings->value("Exec/Group/init").toString()));
@@ -973,11 +987,13 @@ void mainWindow::getAll(bool all)
 		if (!m_process->waitForStarted(10000))
 		{ log(tr("<b>Erreur :</b> %1").arg(tr("erreur lors de la commande d'initialisation : %1.").arg("timed out"))); }
 	}
+	qDebug() << 4;
 	QList<QTableWidgetItem *> selected = ui->tableBatchGroups->selectedItems();
 	int count = selected.size();
 	QSet<int> todownload = QSet<int>();
 	for (int i = 0; i < count; i++)
 	{ todownload.insert(selected.at(i)->row()); }
+	qDebug() << 5;
 	for (int i = 0; i < m_groupBatchs.count(); i++)
 	{
 		if (all || todownload.contains(i))
@@ -1009,11 +1025,13 @@ void mainWindow::getAll(bool all)
 			}
 		}
 	}
+	qDebug() << 6;
 	m_progressdialog->setText(tr("Téléchargement des pages, veuillez patienter..."));
 		connect(m_progressdialog, SIGNAL(rejected()), this, SLOT(getAllCancel()));
 		m_progressdialog->setValue(0);
 		m_progressdialog->show();
 		logShow();
+	qDebug() << 7;
 }
 void mainWindow::getAllFinishedLoading(Page* p)
 {
