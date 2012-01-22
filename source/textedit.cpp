@@ -34,28 +34,28 @@ void TextEdit::wheelEvent(QWheelEvent *e)
 
 void TextEdit::doColor()
 {
-	QString txt = " "+this->toPlainText()+" ";
+	QString txt = Qt::escape(" "+this->toPlainText()+" ");
 	for (int i = 0; i < m_favorites.size(); i++)
 	{ txt.replace(" "+m_favorites.at(i)+" ", " <span style=\"color:#ffc0cb\">"+m_favorites.at(i)+"</span> "); }
 	QRegExp r1(" ~([^ ]+)"), r2(" -([^ ]+)"), r3(" (user|fav|md5|pool|rating|source|status|approver|unlocked|sub|id|width|height|score|mpixels|filesize|date|gentags|arttags|chartags|copytags|status|status|approver|order|parent):([^ ]*)");
 	int pos = 0;
 	while ((pos = r1.indexIn(txt, pos)) != -1)
 	{
-		QString rep = " <span style=\"color:green\">~"+r1.cap(1).replace("&", "&amp;").replace(">", "&gt;").replace("<", "&lt;")+"</span>";
+		QString rep = " <span style=\"color:green\">~"+r1.cap(1)+"</span>";
 		txt.replace(r1.cap(0), rep);
 		pos += rep.length();
 	}
 	pos = 0;
 	while ((pos = r2.indexIn(txt, pos)) != -1)
 	{
-		QString rep = " <span style=\"color:red\">-"+r2.cap(1).replace("&", "&amp;").replace(">", "&gt;").replace("<", "&lt;")+"</span>";
+		QString rep = " <span style=\"color:red\">-"+r2.cap(1)+"</span>";
 		txt.replace(r2.cap(0), rep);
 		pos += rep.length();
 	}
 	pos = 0;
 	while ((pos = r3.indexIn(txt, pos)) != -1)
 	{
-		QString rep = " <span style=\"color:brown\">"+r3.cap(1).replace("&", "&amp;").replace(">", "&gt;").replace("<", "&lt;")+":"+r3.cap(2).replace("&", "&amp;").replace(">", "&gt;").replace("<", "&lt;")+"</span>";
+		QString rep = " <span style=\"color:brown\">"+r3.cap(1)+":"+r3.cap(2)+"</span>";
 		txt.replace(r3.cap(0), rep);
 		pos += rep.length();
 	}

@@ -18,6 +18,7 @@ zoomWindow::zoomWindow(Image *image, QStringMap site, QMap<QString,QMap<QString,
 	m_favorites = loadFavorites().keys();
 	m_viewItLater = loadViewItLater();
 	m_ignore = loadIgnored();
+	setAttribute(Qt::WA_DeleteOnClose);
 
 	m_mustSave = 0;
 
@@ -680,7 +681,7 @@ void zoomWindow::closeEvent(QCloseEvent *e)
 		settings.setValue("state", int(this->windowState()));
 		settings.setValue("size", this->size());
 		settings.setValue("pos", this->pos());
-	m_image->abortTags();
+	//m_image->abortTags();
 	if (m_replyExists)
 	{
 		if (m_reply->isRunning())

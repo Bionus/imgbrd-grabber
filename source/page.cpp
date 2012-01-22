@@ -27,6 +27,8 @@ void Page::fallback()
 		log(tr("Aucune source valide du site n'a retourné de résultat."));
 		return;
 	}
+	if (m_currentSource > 0)
+	{ log(tr("Chargement en %1 échoué. Nouvel essai en %2.").arg(m_format).arg(m_site["Selected"].split('/').at(m_currentSource))); }
 
 	m_currentSource++;
 
@@ -47,7 +49,7 @@ void Page::fallback()
 	QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
 	url.replace("{pseudo}", settings->value("Login/pseudo").toString());
 	url.replace("{password}", settings->value("Login/password").toString());
-	m_url = QUrl(url);
+	m_url = QUrl::fromEncoded(url.toAscii());
 
 	if (m_site.contains("Urls/Html/Tags"))
 	{
@@ -136,7 +138,6 @@ void Page::parse(QNetworkReply* r)
 		rxlast.indexIn(m_source, 0);
 		m_imagesCount = rxlast.cap(1).remove(",").toInt();
 	}
-
 
 	if (m_source.isEmpty())
 	{

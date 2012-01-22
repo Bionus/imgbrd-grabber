@@ -15,7 +15,7 @@
 		<Tags>&lt;li class=&quot;tag-type-(.+)&quot;&gt;.*&lt;a href=&quot;.+&quot;&gt;.*&lt;/a&gt;.*&lt;a href=&quot;.+&quot;&gt;(.+)&lt;/a&gt;.*&lt;/li&gt;</Tags>
 		<Image>&lt;a href='/post/view/([^']+)'[^&gt;]*&gt;[^&lt;]*(&lt;img(?: id='(?:[^']*)')? title='(.+) // (.+)x(.+) // [^']*' alt='[^']*'(?: height='[^']*')? width='[^']*'(?: height='[^']*')? src='.*(/_thumbs/([^/]*)/thumb.jpg)' ?/?&gt;)[^&lt;]*&lt;/a&gt;</Image>
 		<Order>id|image|tags|width|height|preview_url|md5</Order>
-		<LastPage>&lt;link href=&quot;/post\?limit=\d*&amp;page=(\d*)&amp;tags=[^&quot;]*&quot; rel=&quot;last&quot; title=&quot;Last Page&quot;&gt;</LastPage>
+		<Count>has ([0-9,]+) .*images\.</Count>
 	</Regex>
 	<FirstPage>1</FirstPage>
 </Site>
