@@ -11,6 +11,16 @@ typedef QMap<QString,QStringMap> QStringMapMap;
 
 
 
+enum Log
+{
+	Info,
+	Notice,
+	Warning,
+	Error
+};
+
+
+
 void		error(QWidget *, QString);
 void		sortNonCaseSensitive(QStringList &);
 QDateTime	qDateTimeFromString(QString s, int d = 5);
@@ -28,7 +38,7 @@ QStringMap	loadFavorites();
 QStringList	loadViewItLater();
 QStringList	loadIgnored();
 
-void		log(QString);
+void		log(QString, Log type = Info);
 void		logUpdate(QString);
 
 #endif

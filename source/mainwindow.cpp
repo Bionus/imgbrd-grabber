@@ -14,7 +14,7 @@
 #include "json.h"
 #include <QtXml>
 
-#define VERSION	"3.0.0"
+#define VERSION	"3.0.1"
 #define DONE()	logUpdate(QObject::tr(" Fait"))
 
 extern QMap<QDateTime,QString> _log;
@@ -37,6 +37,7 @@ void mainWindow::init()
 	loadLanguage(m_settings->value("language", "English").toString(), true);
 	ui->setupUi(this);
 	m_favorites = loadFavorites();
+	log(tr("Nouvelle session démarée."));
 
 	if (m_settings->value("Proxy/use", false).toBool())
 	{
@@ -68,7 +69,7 @@ void mainWindow::init()
 			QString errorMsg;
 			int errorLine, errorColumn;
 			if (!doc.setContent(source, false, &errorMsg, &errorLine, &errorColumn))
-			{ log(tr("<b>Erreur :</b> %1").arg(tr("erreur lors de l'analyse du fichier XML : %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn)))); }
+			{ log(tr("Erreur lors de l'analyse du fichier XML : %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn)), Error); }
 			else
 			{
 				QDomElement docElem = doc.documentElement();
@@ -117,11 +118,11 @@ void mainWindow::init()
 						}
 					}
 					else
-					{ log(tr("<b>Erreur :</b> %1").arg(tr("fichier sites.txt du modèle %1 introuvable.").arg(dir.at(i)))); }
+					{ log(tr("Fichier sites.txt du modèle %1 introuvable.").arg(dir.at(i)), Error); }
 					f.close();
 				}
 				else
-				{ log(tr("<b>Erreur :</b> %1").arg(tr("aucune source valide trouvée dans le fichier model.xml de %1.").arg(dir.at(i)))); }
+				{ log(tr("Aucune source valide trouvée dans le fichier model.xml de %1.").arg(dir.at(i))); }
 			}
 		}
 		file.close();
@@ -985,7 +986,7 @@ void mainWindow::getAll(bool all)
 		m_process = new QProcess;
 		m_process->start(m_settings->value("Exec/Group/init").toString());
 		if (!m_process->waitForStarted(10000))
-		{ log(tr("<b>Erreur :</b> %1").arg(tr("erreur lors de la commande d'initialisation : %1.").arg("timed out"))); }
+		{ log(tr("Erreur lors de la commande d'initialisation : %1.").arg("timed out"), Error); }
 	}
 	qDebug() << 4;
 	QList<QTableWidgetItem *> selected = ui->tableBatchGroups->selectedItems();
@@ -1385,7 +1386,7 @@ void mainWindow::getAllPerformImage()
 			QDir dir(p);
 			if (!dir.mkpath(path.section(QDir::toNativeSeparators("/"), 0, -2)))
 			{
-				log(tr("<b>Erreur:</b> %1").arg(tr("impossible de créer le dossier de destination: %1.").arg(p+"/"+path.section('/', 0, -2))));
+				log(tr("Impossible de créer le dossier de destination: %1.").arg(p+"/"+path.section('/', 0, -2)), Error);
 				m_getAllErrors++;
 			}
 		}
