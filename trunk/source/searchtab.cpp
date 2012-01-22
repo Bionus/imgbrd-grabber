@@ -187,7 +187,7 @@ void searchTab::load()
 		if (item->widget() != 0)
 		{ item->widget()->hide(); }
 	}
-	setWindowTitle(m_search->toPlainText().isEmpty() ? tr("Recherche") : m_search->toPlainText());
+	setWindowTitle(m_search->toPlainText().isEmpty() ? tr("Recherche") : m_search->toPlainText().replace("&", "&&"));
 	emit titleChanged(this);
 	ui->labelTags->setText("");
 	for (int i = 0; i < m_pages.size(); i++)
@@ -219,7 +219,7 @@ void searchTab::load()
 		{
 			int perpage = ui->spinImagesPerPage->value();
 			Page *page = new Page(m_sites, m_sites->keys().at(i), m_search->toPlainText().toLower().split(" "), ui->spinPage->value(), perpage, m_postFiltering->toPlainText().toLower().split(" "));
-			log(tr("Chargement de la page <a href=\"%1\">%1</a>").arg(page->url().toString()));
+			log(tr("Chargement de la page <a href=\"%1\">%1</a>").arg(Qt::escape(page->url().toString())));
 			connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(finishedLoading(Page*)));
 			m_pages.append(page);
 			m_layouts.append(new QGridLayout);
@@ -241,7 +241,7 @@ bool sortByFrequency(Tag *s1, Tag *s2)
 { return s1->count() > s2->count(); }
 void searchTab::finishedLoading(Page* page)
 {
-	log(tr("Réception de la page <a href=\"%1\">%1</a>").arg(page->url().toString()));
+	log(tr("Réception de la page <a href=\"%1\">%1</a>").arg(Qt::escape(page->url().toString())));
 	if (page->imagesCount() < m_pagemax || m_pagemax == -1 )
 	{ m_pagemax = page->imagesCount(); }
 	ui->buttonNextPage->setEnabled(m_pagemax > ui->spinPage->value() || page->imagesCount() == -1 || (page->imagesCount() == 0 && page->images().count() > 0));
@@ -301,13 +301,13 @@ void searchTab::finishedLoading(Page* page)
 					{
 						QStringList res = results.values(), cl = clean.values();
 						ui->widgetMeant->show();
-						ui->labelMeant->setText("<a href=\""+cl.join(" ")+"\" style=\"color:black;text-decoration:none;\">"+res.join(" ")+"</a>");
+						ui->labelMeant->setText("<a href=\""+Qt::escape(cl.join(" "))+"\" style=\"color:black;text-decoration:none;\">"+res.join(" ")+"</a>");
 					}
 				}
-				txt->setText("<a href=\""+page->url().toString()+"\">"+m_sites->key(page->site())+"</a> - "+tr("Aucun résultat")+(reasons.count() > 0 ? "<br/>"+tr("Raisons possibles : %1").arg(reasons.join(", ")) : ""));
+				txt->setText("<a href=\""+Qt::escape(page->url().toString())+"\">"+m_sites->key(page->site())+"</a> - "+tr("Aucun résultat")+(reasons.count() > 0 ? "<br/>"+tr("Raisons possibles : %1").arg(reasons.join(", ")) : ""));
 			}
 			else
-			{ txt->setText("<a href=\""+page->url().toString()+"\">"+m_sites->key(page->site())+"</a> - "+tr("Page %1 sur %2 (%3 sur %4)").arg(ui->spinPage->value()).arg(page->imagesCount() > 0 ? QString::number(ceil(page->imagesCount()/((float)perpage))) : "?").arg(imgs.count()).arg(page->imagesCount() > 0 ? QString::number(page->imagesCount()) : "?")); }
+			{ txt->setText("<a href=\""+Qt::escape(page->url().toString())+"\">"+m_sites->key(page->site())+"</a> - "+tr("Page %1 sur %2 (%3 sur %4)").arg(ui->spinPage->value()).arg(page->imagesCount() > 0 ? QString::number(ceil(page->imagesCount()/((float)perpage))) : "?").arg(imgs.count()).arg(page->imagesCount() > 0 ? QString::number(page->imagesCount()) : "?")); }
 			txt->setOpenExternalLinks(true);
 		int page_x = pos%ui->spinColumns->value(), page_y = (pos/ui->spinColumns->value())*2;
 		ui->layoutResults->addWidget(txt, page_y, page_x, 1, 1);

@@ -117,13 +117,16 @@ void Image::loadTags()
 		r.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::PreferCache);
 		r.setRawHeader("Referer", m_pageUrl.toString().toAscii());
 
-	m_loadTagsExists = true;
 	m_loadTags = manager->get(r);
+	m_loadTagsExists = true;
 }
 void Image::abortTags()
 {
-	if (m_loadTags->isRunning())
-	{ m_loadTags->abort(); }
+	if (m_loadTagsExists)
+	{
+		if (m_loadTags->isRunning())
+		{ m_loadTags->abort(); }
+	}
 }
 void Image::parseTags(QNetworkReply* r)
 {
