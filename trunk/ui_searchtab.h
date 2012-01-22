@@ -26,7 +26,7 @@
 #include <QtGui/QSplitter>
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QWidget>
-
+ 
 QT_BEGIN_NAMESPACE
 
 class Ui_searchTab
