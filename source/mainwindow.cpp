@@ -14,7 +14,7 @@
 #include "json.h"
 #include <QtXml>
 
-#define VERSION	"3.0.1"
+#define VERSION	"3.0.2"
 #define DONE()	logUpdate(QObject::tr(" Fait"))
 
 extern QMap<QDateTime,QString> _log;

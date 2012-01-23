@@ -272,13 +272,34 @@ void Page::parse(QNetworkReply* r)
 					else
 					{ dat.insert(children.at(i).nodeName(), children.at(i).attributes().namedItem("url").nodeValue()); }
 				}
+				// QDateTime::fromString(date, "ddd, dd MMM yyyy hh:mm:ss +0000"); // shimmie date format
+				d.insert("page_url", dat["link"]);
 				d.insert("tags", dat["media:keywords"]);
 				d.insert("preview_url", dat["media:thumbnail"]);
+				d.insert("sample_url", dat["media:content"]);
 				d.insert("file_url", dat["media:content"]);
+				if (!d.contains("id"))
+				{
+					QRegExp id("/(\\d+)");
+					id.indexIn(d["page_url"]);
+					d.insert("id", id.cap(1));
+				}
 				if (!d["preview_url"].startsWith("http://"))
 				{ d["preview_url"] = "http://"+m_site["Url"]+QString(d["preview_url"].startsWith("/") ? "" : "/")+d["preview_url"]; }
 				if (!d["file_url"].startsWith("http://"))
 				{ d["file_url"] = "http://"+m_site["Url"]+QString(d["file_url"].startsWith("/") ? "" : "/")+d["file_url"]; }
+				if (m_site.contains("Urls/Rss/Image"))
+				{
+					if (m_site["Urls/Rss/Image"].contains("->"))
+					{ d["file_url"].replace(m_site["Urls/Rss/Image"].left(m_site["Urls/Rss/Image"].indexOf("->")), m_site["Urls/Rss/Image"].right(m_site["Urls/Rss/Image"].indexOf("->")+1)); }
+					else
+					{
+						d["file_url"] = m_site["Urls/Rss/Image"];
+						d["file_url"].replace("{id}", d["id"])
+						.replace("{md5}", d["md5"])
+						.replace("{ext}", "jpg");
+					}
+				}
 				d["page_url"] = m_site["Urls/Html/Post"];
 				QString t = m_search.join(" ").replace("&", "%26");
 				if (m_site.contains("DefaultTag") && t.isEmpty())
@@ -327,20 +348,17 @@ void Page::parse(QNetworkReply* r)
 			{ d["preview_url"] = "http://"+m_site["Url"]+QString(d["preview_url"].startsWith("/") ? "" : "/")+d["preview_url"]; }
 			if (!d["file_url"].startsWith("http://"))
 			{ d["file_url"] = "http://"+m_site["Url"]+QString(d["file_url"].startsWith("/") ? "" : "/")+d["file_url"]; }
-			if (!m_site.contains("Urls/Html/Image"))
+			if (m_site.contains("Urls/Html/Image"))
 			{
-				if (m_site.contains("preview/"))
+				if (m_site["Urls/Rss/Image"].contains("->"))
+				{ d["file_url"].replace(m_site["Urls/Rss/Image"].left(m_site["Urls/Rss/Image"].indexOf("->")), m_site["Urls/Rss/Image"].right(m_site["Urls/Rss/Image"].indexOf("->")+1)); }
+				else
 				{
-					d["file_url"] = d["preview_url"];
-					d["file_url"].remove("preview/");
+					d["file_url"] = m_site["Urls/Html/Image"];
+					d["file_url"].replace("{id}", d["id"])
+					.replace("{md5}", d["md5"])
+					.replace("{ext}", "jpg");
 				}
-			}
-			else
-			{
-				d["file_url"] = m_site["Urls/Html/Image"];
-				d["file_url"].replace("{id}", d["id"])
-				.replace("{md5}", d["md5"])
-				.replace("{ext}", "jpg");
 			}
 			d["page_url"] = m_site["Urls/Html/Post"];
 			QString t = m_search.join(" ").replace("&", "%26");

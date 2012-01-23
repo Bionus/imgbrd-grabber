@@ -5,10 +5,12 @@
 		<Html>
 			<Tags>/{tags}?p={page}</Tags>
 			<Post>/{id}</Post>
+			<Image>/600/->/full/</Image>
 		</Html>
 		<Rss>
 			<Tags>/{tags}?xml&amp;p={page}</Tags>
 			<Limit>100</Limit>
+			<Image>/600/->/full/</Image>
 		</Rss>
 	</Urls>
 	<Regex>

@@ -480,5 +480,12 @@ QUrl		Image::pageUrl()		{ return m_pageUrl;			}
 QSize		Image::size()			{ return m_size;			}
 QPixmap		Image::previewImage()	{ return m_imagePreview;	}
 Page		*Image::page()			{ return m_parent;			}
+QByteArray	Image::data()			{ return m_data;			}
 
-void	Image::setUrl(QString u)	{ m_url = u;	}
+void	Image::setUrl(QString u)		{ m_url = u;	}
+void	Image::setData(QByteArray d)
+{
+	m_data = d;
+	if (m_md5.isEmpty())
+	{ m_md5 = QCryptographicHash::hash(m_data, QCryptographicHash::Md5).toHex(); }
+}
