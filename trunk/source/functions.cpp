@@ -292,10 +292,15 @@ void log(QString l, Log type)
 	qDebug() << l;
 	QDateTime time = QDateTime::currentDateTime();
 	_log.insert(time, (type == Error ? QObject::tr("<b>Erreur :</b> %1").arg(l) : (type == Warning ? QObject::tr("<b>Attention :</b> %1").arg(l) : (type == Notice ? QObject::tr("<b>Notice :</b> %1").arg(l) : l))));
+	QSettings set(savePath("settings.ini"), QSettings::IniFormat);
 
-	QFile f("main.log");
+	QFile f(savePath("main.log"));
 	if (f.open(QFile::Append | QFile::Text | (_log.count() == 1 ? QFile::Truncate : QFile::NotOpen)))
-	{ f.write(QString("["+time.toString("hh:mm:ss.zzz")+"] "+l+"\r\n").toAscii()); }
+	{
+		QString v = set.contains("Login/pseudo") ? l.replace(set.value("Login/pseudo").toString(), "{pseudo}") : l;
+		v = set.contains("Login/password") ? l.replace(set.value("Login/password").toString(), "{password}") : v;
+		f.write(QString("["+time.toString("hh:mm:ss.zzz")+"] "+v+"\r\n").toAscii());
+	}
 	f.close();
 
 	_mainwindow->logShow();
