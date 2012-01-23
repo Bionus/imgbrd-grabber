@@ -54,7 +54,10 @@ QMap<QString,QString> getFilenames()
 	settings.beginGroup("Filenames");
 	QStringList keys = settings.childKeys();
 	for (int i = 0; i < keys.size(); i++)
-	{ tokens.insert(keys.at(i), settings.value(keys.at(i)).toString()); }
+	{
+		if (!keys.at(i).isEmpty())
+		{ tokens.insert(keys.at(i), settings.value(keys.at(i)).toString()); }
+	}
 	return tokens;
 }
 

@@ -49,7 +49,9 @@ class Image : public QObject
 		QSize		size();
 		QPixmap		previewImage();
 		Page		*page();
+		QByteArray	data();
 		void		setUrl(QString);
+		void		setData(QByteArray data);
 
 	public slots:
 		void loadPreview();
@@ -76,6 +78,7 @@ class Image : public QObject
 		Page			*m_parent;
 		QNetworkReply	*m_loadPreview, *m_loadTags;
 		bool			m_loadPreviewExists, m_loadTagsExists, m_hasScore;
+		QByteArray		m_data;
 };
 
 #endif // IMAGE_H

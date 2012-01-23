@@ -437,6 +437,7 @@ void zoomWindow::replyFinishedZoom()
 	if (m_reply->error() == QNetworkReply::NoError)
 	{
 		m_data.append(m_reply->readAll());
+		m_image->setData(m_data);
 		this->loaded = true;
 		if (m_url.section('.', -1).toUpper() == "GIF")
 		{
