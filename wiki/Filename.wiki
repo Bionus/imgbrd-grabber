@@ -29,7 +29,8 @@ _Note: custom tokens with an already used name (such as %character%) will be use
 
 = Conditionals =
 You can use conditionals in your filename, using strict inequality signs (< and >).
-== Token conditionals ==
+== Simple conditionals ==
+=== Token conditionals ===
 If any token found in the conditional does not exist or is empty, nothing into it will be displayed.
 Since an example is worth a thousand words:
 {{{
@@ -43,7 +44,7 @@ If the image doesn't have any artist, it will be:
 {{{
 image -  %md5%.%ext%
 }}}
-== Tag conditionals ==
+=== Tag conditionals ===
 You can also test directly the presence of a tag surrounding him with quotes. For example:
 {{{
 image - <image contains the tag "solo"><"group" is one of the image tags> %md5%.%ext%
