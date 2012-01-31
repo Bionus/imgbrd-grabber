@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>646</width>
-    <height>2945</height>
+    <width>648</width>
+    <height>376</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,14 +19,14 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0">
+    <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,1">
      <property name="sizeConstraint">
-      <enum>QLayout::SetDefaultConstraint</enum>
+      <enum>QLayout::SetFixedSize</enum>
      </property>
      <item>
       <widget class="QTreeWidget" name="treeWidget">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+        <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -140,1340 +140,1342 @@
       </widget>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="container">
-       <item>
-        <widget class="QWidget" name="widget_2" native="true">
-         <layout class="QFormLayout" name="formLayout_2">
-          <property name="fieldGrowthPolicy">
-           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-          </property>
-          <item row="0" column="0">
-           <widget class="QLabel" name="label">
+      <widget class="QStackedWidget" name="stackedWidget">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="currentIndex">
+        <number>3</number>
+       </property>
+       <widget class="QWidget" name="page1">
+        <layout class="QFormLayout" name="formLayout_14">
+         <property name="fieldGrowthPolicy">
+          <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+         </property>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>Langue</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QComboBox" name="comboLanguages"/>
+         </item>
+         <item row="1" column="0" colspan="2">
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>&lt;i&gt;Séparer les tags par des espaces.&lt;/i&gt;</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_5">
+           <property name="text">
+            <string>Liste noire</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QLineEdit" name="lineBlacklist"/>
+         </item>
+         <item row="3" column="0" colspan="2">
+          <widget class="QCheckBox" name="checkHideBlacklisted">
+           <property name="text">
+            <string>Ignorer les images contenant un tag de la liste noire</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0" colspan="2">
+          <widget class="QLabel" name="label_6">
+           <property name="text">
+            <string>&lt;i&gt;Les images contenant un tag de la liste noire ne seront tout simplement pas affichées dans la liste de résultats si cette case est cochée. Sinon, une confirmation sera demandée avant l'affichage d'une de ces images.&lt;/i&gt;</string>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0">
+          <widget class="QLabel" name="label_48">
+           <property name="text">
+            <string>Liste blanche</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="1">
+          <widget class="QLineEdit" name="lineWhitelist"/>
+         </item>
+         <item row="6" column="0">
+          <widget class="QLabel" name="label_50">
+           <property name="text">
+            <string>Télécharger</string>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="1">
+          <widget class="QComboBox" name="comboWhitelist">
+           <property name="currentIndex">
+            <number>1</number>
+           </property>
+           <item>
             <property name="text">
-             <string>Langue</string>
+             <string>Ne pas télécharger automatiquement</string>
             </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QComboBox" name="comboLanguages"/>
-          </item>
-          <item row="3" column="0">
-           <widget class="QLabel" name="label_5">
+           </item>
+           <item>
             <property name="text">
-             <string>Liste noire</string>
+             <string>Au chargement de l'image</string>
             </property>
-           </widget>
-          </item>
-          <item row="3" column="1">
-           <widget class="QLineEdit" name="lineBlacklist"/>
-          </item>
-          <item row="6" column="0">
-           <widget class="QLabel" name="label_48">
+           </item>
+           <item>
             <property name="text">
-             <string>Liste blanche</string>
+             <string>Au chargement de la page</string>
             </property>
-           </widget>
-          </item>
-          <item row="9" column="0">
-           <widget class="QLabel" name="label_49">
+           </item>
+          </widget>
+         </item>
+         <item row="7" column="0" colspan="2">
+          <widget class="QLabel" name="label_51">
+           <property name="text">
+            <string>&lt;i&gt;Les images contenant un tag de la liste blanche seront téléchargées automatiquement en fonction de l'option ci-dessus.&lt;/i&gt;</string>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="8" column="0">
+          <widget class="QLabel" name="label_49">
+           <property name="text">
+            <string>Tags ignorés</string>
+           </property>
+          </widget>
+         </item>
+         <item row="8" column="1">
+          <widget class="QLineEdit" name="lineIgnored"/>
+         </item>
+         <item row="9" column="0" colspan="2">
+          <widget class="QLabel" name="label_52">
+           <property name="text">
+            <string>&lt;i&gt;Ces tags ne seront pas pris en compte lors de la sauvegarde de l'image.&lt;/i&gt;</string>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="10" column="0" colspan="2">
+          <widget class="QCheckBox" name="checkDownloadBlacklisted">
+           <property name="text">
+            <string>Télécharger les images de la liste noire</string>
+           </property>
+          </widget>
+         </item>
+         <item row="11" column="0" colspan="2">
+          <widget class="QCheckBox" name="checkLoadFirstAtStart">
+           <property name="text">
+            <string>Charger la première page au démarrage</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+        <zorder>label</zorder>
+        <zorder>comboLanguages</zorder>
+        <zorder>label_2</zorder>
+        <zorder>label_5</zorder>
+        <zorder>lineBlacklist</zorder>
+        <zorder>checkHideBlacklisted</zorder>
+        <zorder>label_6</zorder>
+        <zorder>label_48</zorder>
+        <zorder>label_50</zorder>
+        <zorder>lineWhitelist</zorder>
+        <zorder>comboWhitelist</zorder>
+        <zorder>label_51</zorder>
+        <zorder>label_49</zorder>
+        <zorder>lineIgnored</zorder>
+        <zorder>label_52</zorder>
+        <zorder>checkDownloadBlacklisted</zorder>
+        <zorder>checkLoadFirstAtStart</zorder>
+       </widget>
+       <widget class="QWidget" name="page2">
+        <layout class="QFormLayout" name="formLayout_2">
+         <property name="fieldGrowthPolicy">
+          <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+         </property>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_9">
+           <property name="text">
+            <string>Images par page</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_10">
+           <property name="text">
+            <string>Nombre de colonnes</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_11">
+           <property name="text">
+            <string>Source 1</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="label_12">
+           <property name="text">
+            <string>Source 2</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="label_13">
+           <property name="text">
+            <string>Source 3</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0">
+          <widget class="QLabel" name="label_53">
+           <property name="text">
+            <string>Source 4</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QSpinBox" name="spinImagesPerPage">
+           <property name="minimum">
+            <number>1</number>
+           </property>
+           <property name="maximum">
+            <number>1000</number>
+           </property>
+           <property name="value">
+            <number>20</number>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QSpinBox" name="spinColumns">
+           <property name="minimum">
+            <number>1</number>
+           </property>
+           <property name="maximum">
+            <number>10</number>
+           </property>
+           <property name="value">
+            <number>1</number>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="0" colspan="2">
+          <widget class="QCheckBox" name="checkUseregexfortags">
+           <property name="text">
+            <string>Récupérer les tags les plus précis lors de la recherche d'images</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QComboBox" name="comboSource1">
+           <item>
             <property name="text">
-             <string>Tags ignorés</string>
+             <string>XML</string>
             </property>
-           </widget>
-          </item>
-          <item row="2" column="0" colspan="2">
-           <widget class="QLabel" name="label_2">
+           </item>
+           <item>
             <property name="text">
-             <string>&lt;i&gt;Séparer les tags par des espaces.&lt;/i&gt;</string>
+             <string>JSON</string>
             </property>
-           </widget>
-          </item>
-          <item row="4" column="0" colspan="2">
-           <widget class="QCheckBox" name="checkHideBlacklisted">
+           </item>
+           <item>
             <property name="text">
-             <string>Ignorer les images contenant un tag de la liste noire</string>
+             <string>Regex</string>
             </property>
-           </widget>
-          </item>
-          <item row="5" column="0" colspan="2">
-           <widget class="QLabel" name="label_6">
+           </item>
+           <item>
             <property name="text">
-             <string>&lt;i&gt;Les images contenant un tag de la liste noire ne seront tout simplement pas affichées dans la liste de résultats si cette case est cochée. Sinon, une confirmation sera demandée avant l'affichage d'une de ces images.&lt;/i&gt;</string>
+             <string>RSS</string>
             </property>
-            <property name="wordWrap">
-             <bool>true</bool>
+           </item>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QComboBox" name="comboSource2">
+           <property name="currentIndex">
+            <number>1</number>
+           </property>
+           <item>
+            <property name="text">
+             <string>XML</string>
             </property>
-           </widget>
-          </item>
-          <item row="6" column="1">
-           <widget class="QLineEdit" name="lineWhitelist"/>
-          </item>
-          <item row="9" column="1">
-           <widget class="QLineEdit" name="lineIgnored"/>
-          </item>
-          <item row="7" column="1">
-           <widget class="QComboBox" name="comboWhitelist">
-            <property name="currentIndex">
-             <number>1</number>
+           </item>
+           <item>
+            <property name="text">
+             <string>JSON</string>
             </property>
-            <item>
+           </item>
+           <item>
+            <property name="text">
+             <string>Regex</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>RSS</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <widget class="QComboBox" name="comboSource3">
+           <property name="currentIndex">
+            <number>2</number>
+           </property>
+           <item>
+            <property name="text">
+             <string>XML</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>JSON</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Regex</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>RSS</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="5" column="1">
+          <widget class="QComboBox" name="comboSource4">
+           <property name="currentIndex">
+            <number>3</number>
+           </property>
+           <item>
+            <property name="text">
+             <string>XML</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>JSON</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Regex</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>RSS</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="page3">
+        <layout class="QFormLayout" name="formLayout_3">
+         <item row="0" column="0" colspan="2">
+          <widget class="QCheckBox" name="checkShowLog">
+           <property name="text">
+            <string>Afficher le log</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0" colspan="2">
+          <widget class="QCheckBox" name="checkInvertLog">
+           <property name="text">
+            <string>Inverser le log</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="page4">
+        <layout class="QFormLayout" name="formLayout_17">
+         <item row="1" column="0" colspan="2">
+          <widget class="QCheckBox" name="checkAutodownload">
+           <property name="text">
+            <string>Télécharger les images automatiquement</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_7">
+           <property name="text">
+            <string>Dossier</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,0">
+           <item>
+            <widget class="QLineEdit" name="lineFolder"/>
+           </item>
+           <item>
+            <widget class="QPushButton" name="buttonFolder">
              <property name="text">
-              <string>Ne pas télécharger automatiquement</string>
+              <string>Parcourir</string>
              </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Au chargement de l'image</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Au chargement de la page</string>
-             </property>
-            </item>
-           </widget>
-          </item>
-          <item row="7" column="0">
-           <widget class="QLabel" name="label_50">
-            <property name="text">
-             <string>Télécharger</string>
-            </property>
-           </widget>
-          </item>
-          <item row="8" column="0" colspan="2">
-           <widget class="QLabel" name="label_51">
-            <property name="text">
-             <string>&lt;i&gt;Les images contenant un tag de la liste blanche seront téléchargées automatiquement en fonction de l'option ci-dessus.&lt;/i&gt;</string>
-            </property>
-            <property name="wordWrap">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="10" column="0" colspan="2">
-           <widget class="QLabel" name="label_52">
-            <property name="text">
-             <string>&lt;i&gt;Ces tags ne seront pas pris en compte lors de la sauvegarde de l'image.&lt;/i&gt;</string>
-            </property>
-            <property name="wordWrap">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="12" column="0" colspan="2">
-           <widget class="QCheckBox" name="checkLoadFirstAtStart">
-            <property name="text">
-             <string>Charger la première page au démarrage</string>
-            </property>
-           </widget>
-          </item>
-          <item row="11" column="0" colspan="2">
-           <widget class="QCheckBox" name="checkDownloadBlacklisted">
-            <property name="text">
-             <string>Télécharger les images de la liste noire</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QWidget" name="widget_1" native="true">
-         <layout class="QFormLayout" name="formLayout_3">
-          <property name="fieldGrowthPolicy">
-           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-          </property>
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_9">
-            <property name="text">
-             <string>Images par page</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QSpinBox" name="spinImagesPerPage">
-            <property name="minimum">
-             <number>1</number>
-            </property>
-            <property name="maximum">
-             <number>1000</number>
-            </property>
-            <property name="value">
-             <number>20</number>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_10">
-            <property name="text">
-             <string>Nombre de colonnes</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QSpinBox" name="spinColumns">
-            <property name="minimum">
-             <number>1</number>
-            </property>
-            <property name="maximum">
-             <number>10</number>
-            </property>
-            <property name="value">
-             <number>1</number>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="label_11">
-            <property name="text">
-             <string>Source 1</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QComboBox" name="comboSource1">
-            <item>
-             <property name="text">
-              <string>XML</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>JSON</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Regex</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>RSS</string>
-             </property>
-            </item>
-           </widget>
-          </item>
-          <item row="3" column="0">
-           <widget class="QLabel" name="label_12">
-            <property name="text">
-             <string>Source 2</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="1">
-           <widget class="QComboBox" name="comboSource2">
-            <property name="currentIndex">
-             <number>1</number>
-            </property>
-            <item>
-             <property name="text">
-              <string>XML</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>JSON</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Regex</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>RSS</string>
-             </property>
-            </item>
-           </widget>
-          </item>
-          <item row="4" column="0">
-           <widget class="QLabel" name="label_13">
-            <property name="text">
-             <string>Source 3</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="1">
-           <widget class="QComboBox" name="comboSource3">
-            <property name="currentIndex">
-             <number>2</number>
-            </property>
-            <item>
-             <property name="text">
-              <string>XML</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>JSON</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Regex</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>RSS</string>
-             </property>
-            </item>
-           </widget>
-          </item>
-          <item row="6" column="0" colspan="2">
-           <widget class="QCheckBox" name="checkUseregexfortags">
-            <property name="text">
-             <string>Récupérer les tags les plus précis lors de la recherche d'images</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="1">
-           <widget class="QComboBox" name="comboSource4">
-            <property name="currentIndex">
-             <number>3</number>
-            </property>
-            <item>
-             <property name="text">
-              <string>XML</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>JSON</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Regex</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>RSS</string>
-             </property>
-            </item>
-           </widget>
-          </item>
-          <item row="5" column="0">
-           <widget class="QLabel" name="label_53">
-            <property name="text">
-             <string>Source 4</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QWidget" name="widget" native="true">
-         <layout class="QFormLayout" name="formLayout">
-          <property name="fieldGrowthPolicy">
-           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-          </property>
-          <item row="0" column="0" colspan="2">
-           <widget class="QCheckBox" name="checkShowLog">
-            <property name="text">
-             <string>Afficher le log</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0" colspan="2">
-           <widget class="QCheckBox" name="checkInvertLog">
-            <property name="text">
-             <string>Inverser le log</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QWidget" name="widget_3" native="true">
-         <layout class="QFormLayout" name="formLayout_4">
-          <property name="fieldGrowthPolicy">
-           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-          </property>
-          <item row="0" column="0" colspan="2">
-           <widget class="QCheckBox" name="checkDownloadOriginals">
-            <property name="text">
-             <string>Télécharger les images originales</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0" colspan="2">
-           <widget class="QCheckBox" name="checkAutodownload">
-            <property name="text">
-             <string>Télécharger les images automatiquement</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="label_7">
-            <property name="text">
-             <string>Dossier</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,0">
-            <item>
-             <widget class="QLineEdit" name="lineFolder"/>
-            </item>
-            <item>
-             <widget class="QPushButton" name="buttonFolder">
-              <property name="text">
-               <string>Parcourir</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item row="4" column="0">
-           <widget class="QLabel" name="label_14">
-            <property name="text">
-             <string>Séparateur de tags</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="1">
-           <widget class="QLineEdit" name="lineSeparator">
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="0" colspan="2">
-           <widget class="QCheckBox" name="checkReplaceBlanks">
-            <property name="text">
-             <string>Remplacer les espaces par des underscores</string>
-            </property>
-           </widget>
-          </item>
-          <item row="7" column="0" colspan="2">
-           <widget class="QLabel" name="label_55">
-            <property name="text">
-             <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="label_14">
+           <property name="text">
+            <string>Séparateur de tags</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QLineEdit" name="lineSeparator">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0" colspan="2">
+          <widget class="QCheckBox" name="checkReplaceBlanks">
+           <property name="text">
+            <string>Remplacer les espaces par des underscores</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0">
+          <widget class="QLabel" name="label_54">
+           <property name="text">
+            <string>Longeur limite</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="1">
+          <widget class="QSpinBox" name="spinLimit">
+           <property name="maximum">
+            <number>260</number>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="0" colspan="2">
+          <widget class="QLabel" name="label_55">
+           <property name="text">
+            <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Si le nom de fichier est plus grand que ce nombre, il sera tronqué. Laissez à 0 pour laisser la limite par défaut.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-            </property>
-            <property name="wordWrap">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="6" column="0">
-           <widget class="QLabel" name="label_54">
-            <property name="text">
-             <string>Longeur limite</string>
-            </property>
-           </widget>
-          </item>
-          <item row="6" column="1">
-           <widget class="QSpinBox" name="spinLimit">
-            <property name="maximum">
-             <number>260</number>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QWidget" name="widget_13" native="true">
-         <layout class="QFormLayout" name="formLayout_15">
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_8">
-            <property name="text">
-             <string>Noms de fichiers</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QLineEdit" name="lineFilename"/>
-          </item>
-          <item row="2" column="0" colspan="2">
-           <widget class="QLabel" name="label_15">
-            <property name="text">
-             <string>Symboles disponibles : &lt;i&gt;%artist%&lt;/i&gt;, &lt;i&gt;%general%&lt;/i&gt;, &lt;i&gt;%copyright%&lt;/i&gt;, &lt;i&gt;%character%&lt;/i&gt;, &lt;i&gt;%all%&lt;/i&gt;, &lt;i&gt;%filename%&lt;/i&gt;, &lt;i&gt;%ext%&lt;/i&gt;, &lt;i&gt;%rating%&lt;/i&gt;, &lt;i&gt;%website%&lt;/i&gt;, &lt;i&gt;%md5%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%artist%&lt;/i&gt; : tags de nom d'artiste&lt;br/&gt;&lt;i&gt;%general%&lt;/i&gt; : tags d'image génériques&lt;br/&gt;&lt;i&gt;%copyright%&lt;/i&gt; : tags de copyright, en général le nom de l'anime/manga&lt;br/&gt;&lt;i&gt;%character%&lt;/i&gt; : tags indiquant quels personnages sont présents sur l'image&lt;br/&gt;&lt;i&gt;%all%&lt;/i&gt; : tous les tags&lt;br/&gt;&lt;i&gt;%filename%&lt;/i&gt; : nom du fichier sur le serveur, en général une chaîne alphanumérique&lt;br/&gt;&lt;i&gt;%ext%&lt;/i&gt; : extension de l'image&lt;br/&gt;&lt;i&gt;%rating%&lt;/i&gt; : Questionable, Safe ou Explicit&lt;br/&gt;&lt;i&gt;%website%&lt;/i&gt; : url du site de l'image&lt;br/&gt;&lt;i&gt;%md5%&lt;/i&gt; : code unique de l'image, composé de 32 caractères alphanumériques&lt;br/&gt;&lt;i&gt;%id%&lt;/i&gt; : identifiant de l'image sur un site donné&lt;br/&gt;&lt;i&gt;%search%&lt;/i&gt; : tags de la recherche&lt;br/&gt;&lt;i&gt;%search_n%&lt;/i&gt; : n-ième tag de la recherche&lt;br/&gt;
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="0">
+          <widget class="QLabel" name="label_29">
+           <property name="text">
+            <string>Téléchargements simultanés</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0" colspan="2">
+          <widget class="QCheckBox" name="checkDownloadOriginals">
+           <property name="text">
+            <string>Télécharger les images originales</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="1">
+          <widget class="QSpinBox" name="spinSimultaneous">
+           <property name="minimum">
+            <number>1</number>
+           </property>
+           <property name="maximum">
+            <number>10</number>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="page5">
+        <layout class="QFormLayout" name="formLayout_4">
+         <property name="fieldGrowthPolicy">
+          <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+         </property>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_8">
+           <property name="text">
+            <string>Noms de fichiers</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLineEdit" name="lineFilename"/>
+         </item>
+         <item row="1" column="0" colspan="2">
+          <widget class="QLabel" name="filenameValidator">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0" colspan="2">
+          <widget class="QLabel" name="label_60">
+           <property name="text">
+            <string>Symboles disponibles : &lt;i&gt;%artist%&lt;/i&gt;, &lt;i&gt;%general%&lt;/i&gt;, &lt;i&gt;%copyright%&lt;/i&gt;, &lt;i&gt;%character%&lt;/i&gt;, &lt;i&gt;%all%&lt;/i&gt;, &lt;i&gt;%filename%&lt;/i&gt;, &lt;i&gt;%ext%&lt;/i&gt;, &lt;i&gt;%rating%&lt;/i&gt;, &lt;i&gt;%website%&lt;/i&gt;, &lt;i&gt;%md5%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%artist%&lt;/i&gt; : tags de nom d'artiste&lt;br/&gt;&lt;i&gt;%general%&lt;/i&gt; : tags d'image génériques&lt;br/&gt;&lt;i&gt;%copyright%&lt;/i&gt; : tags de copyright, en général le nom de l'anime/manga&lt;br/&gt;&lt;i&gt;%character%&lt;/i&gt; : tags indiquant quels personnages sont présents sur l'image&lt;br/&gt;&lt;i&gt;%all%&lt;/i&gt; : tous les tags&lt;br/&gt;&lt;i&gt;%filename%&lt;/i&gt; : nom du fichier sur le serveur, en général une chaîne alphanumérique&lt;br/&gt;&lt;i&gt;%ext%&lt;/i&gt; : extension de l'image&lt;br/&gt;&lt;i&gt;%rating%&lt;/i&gt; : Questionable, Safe ou Explicit&lt;br/&gt;&lt;i&gt;%website%&lt;/i&gt; : url du site de l'image&lt;br/&gt;&lt;i&gt;%md5%&lt;/i&gt; : code unique de l'image, composé de 32 caractères alphanumériques&lt;br/&gt;&lt;i&gt;%id%&lt;/i&gt; : identifiant de l'image sur un site donné&lt;br/&gt;&lt;i&gt;%search%&lt;/i&gt; : tags de la recherche&lt;br/&gt;&lt;i&gt;%search_n%&lt;/i&gt; : n-ième tag de la recherche&lt;br/&gt;
 Vous pouvez aussi utiliser les structures conditionnelles. Pour plus d'informations, cliquez &lt;a href=&quot;http://code.google.com/p/imgbrd-grabber/wiki/Filename&quot;&gt;ici&lt;/a&gt;.</string>
-            </property>
-            <property name="wordWrap">
-             <bool>true</bool>
-            </property>
-            <property name="openExternalLinks">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0" colspan="2">
-           <widget class="QLabel" name="filenameValidator">
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="page6">
+        <layout class="QFormLayout" name="layoutFilenames">
+         <item row="0" column="0" colspan="2">
+          <widget class="QPushButton" name="buttonFilenames">
+           <property name="text">
+            <string>Ajouter un nom de fichier conditionnel</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="page7">
+        <layout class="QFormLayout" name="formLayout_15">
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_16">
+           <property name="text">
+            <string>Si aucun</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLineEdit" name="lineArtistsIfNone">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_18">
+           <property name="text">
+            <string>Séparateur si multiples</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="label_19">
+           <property name="text">
+            <string>Valeur si multiples</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QLineEdit" name="lineArtistsSeparator">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QLineEdit" name="lineArtistsIfMultiples">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0" colspan="2">
+          <widget class="QCheckBox" name="checkArtistsKeepAll">
+           <property name="text">
+            <string>Garder tous</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="page8">
+        <layout class="QFormLayout" name="formLayout_5">
+         <item row="0" column="0" colspan="2">
+          <widget class="QCheckBox" name="checkCopyrightsUseShorter">
+           <property name="text">
+            <string>Utiliser le plus court si possible</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_17">
+           <property name="text">
+            <string>Si aucun</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLineEdit" name="lineCopyrightsIfNone">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0" colspan="2">
+          <widget class="QCheckBox" name="checkCopyrightsKeepAll">
+           <property name="text">
+            <string>Garder tous</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="label_20">
+           <property name="text">
+            <string>Séparateur si multiples</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="label_21">
+           <property name="text">
+            <string>Valeur si multiples</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QLineEdit" name="lineCopyrightsSeparator">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <widget class="QLineEdit" name="lineCopyrightsIfMultiples">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="page9">
+        <layout class="QFormLayout" name="formLayout_6">
+         <property name="fieldGrowthPolicy">
+          <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+         </property>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_22">
+           <property name="text">
+            <string>Si aucun</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLineEdit" name="lineCharactersIfNone">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_23">
+           <property name="text">
+            <string>Séparateur si multiples</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QLineEdit" name="lineCharactersSeparator">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="label_24">
+           <property name="text">
+            <string>Valeur si multiples</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QLineEdit" name="lineCharactersIfMultiples">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0" colspan="2">
+          <widget class="QCheckBox" name="checkCharactersKeepAll">
+           <property name="text">
+            <string>Garder tous</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="page10">
+        <layout class="QFormLayout" name="layoutCustom">
+         <item row="0" column="0" colspan="2">
+          <widget class="QPushButton" name="buttonCustom">
+           <property name="text">
+            <string>Ajouter un symbole personnalisé</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="page11">
+        <layout class="QFormLayout" name="formLayout_7">
+         <property name="fieldGrowthPolicy">
+          <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+         </property>
+         <item row="0" column="0" colspan="2">
+          <widget class="QCheckBox" name="checkResizeInsteadOfCropping">
+           <property name="text">
+            <string>Redimensionnser les miniatures au lieu de les couper</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_39">
+           <property name="text">
+            <string>Cacher les favoris</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QSpinBox" name="spinHideFavorites">
+           <property name="maximum">
+            <number>1000</number>
+           </property>
+           <property name="value">
+            <number>20</number>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0" colspan="2">
+          <widget class="QLabel" name="label_40">
+           <property name="text">
+            <string>&lt;i&gt;La liste des favoris sera cachée dès que ce nombre d'images reçues sera atteint.&lt;/i&gt;</string>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="label_41">
+           <property name="text">
+            <string>Affichage des types de sources</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QComboBox" name="comboSources">
+           <item>
             <property name="text">
-             <string/>
+             <string>Texte</string>
             </property>
-            <property name="wordWrap">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QWidget" name="widgetFilenames" native="true">
-         <layout class="QFormLayout" name="layoutFilenames">
-          <item row="0" column="0" colspan="2">
-           <widget class="QPushButton" name="buttonFilenames">
+           </item>
+           <item>
             <property name="text">
-             <string>Ajouter un nom de fichier conditionnel</string>
+             <string>Image</string>
             </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QWidget" name="widget_4" native="true">
-         <layout class="QFormLayout" name="formLayout_5">
-          <property name="fieldGrowthPolicy">
-           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-          </property>
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_16">
+           </item>
+           <item>
             <property name="text">
-             <string>Si aucun</string>
+             <string>Image et texte</string>
             </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="label_18">
+           </item>
+           <item>
             <property name="text">
-             <string>Séparateur si multiples</string>
+             <string>Ne pas afficher</string>
             </property>
-           </widget>
-          </item>
-          <item row="3" column="0">
-           <widget class="QLabel" name="label_19">
-            <property name="text">
-             <string>Valeur si multiples</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0" colspan="2">
-           <widget class="QCheckBox" name="checkArtistsKeepAll">
-            <property name="text">
-             <string>Garder tous</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QLineEdit" name="lineArtistsIfNone">
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QLineEdit" name="lineArtistsSeparator">
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="1">
-           <widget class="QLineEdit" name="lineArtistsIfMultiples">
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QWidget" name="widget_5" native="true">
-         <layout class="QFormLayout" name="formLayout_6">
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_17">
-            <property name="text">
-             <string>Si aucun</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="0">
-           <widget class="QLabel" name="label_20">
-            <property name="text">
-             <string>Séparateur si multiples</string>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="0">
-           <widget class="QLabel" name="label_21">
-            <property name="text">
-             <string>Valeur si multiples</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QLineEdit" name="lineCopyrightsIfNone">
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="1">
-           <widget class="QLineEdit" name="lineCopyrightsSeparator">
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="1">
-           <widget class="QLineEdit" name="lineCopyrightsIfMultiples">
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="0" colspan="2">
-           <widget class="QCheckBox" name="checkCopyrightsKeepAll">
-            <property name="text">
-             <string>Garder tous</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0" colspan="2">
-           <widget class="QCheckBox" name="checkCopyrightsUseShorter">
-            <property name="text">
-             <string>Utiliser le plus court si possible</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QWidget" name="widget_6" native="true">
-         <layout class="QFormLayout" name="formLayout_7">
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_22">
-            <property name="text">
-             <string>Si aucun</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="label_23">
-            <property name="text">
-             <string>Séparateur si multiples</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="0">
-           <widget class="QLabel" name="label_24">
-            <property name="text">
-             <string>Valeur si multiples</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QLineEdit" name="lineCharactersIfNone">
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QLineEdit" name="lineCharactersSeparator">
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="1">
-           <widget class="QLineEdit" name="lineCharactersIfMultiples">
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0" colspan="2">
-           <widget class="QCheckBox" name="checkCharactersKeepAll">
-            <property name="text">
-             <string>Garder tous</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QWidget" name="widgetCustom" native="true">
-         <layout class="QFormLayout" name="layoutCustom">
-          <property name="fieldGrowthPolicy">
-           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-          </property>
-          <item row="0" column="0" colspan="2">
-           <widget class="QPushButton" name="buttonCustom">
-            <property name="text">
-             <string>Ajouter un symbole personnalisé</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QWidget" name="widget_10" native="true">
-         <layout class="QFormLayout" name="formLayout_11">
-          <property name="fieldGrowthPolicy">
-           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-          </property>
-          <item row="2" column="0" colspan="2">
-           <widget class="QCheckBox" name="checkResizeInsteadOfCropping">
-            <property name="text">
-             <string>Redimensionnser les miniatures au lieu de les couper</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="0">
-           <widget class="QLabel" name="label_39">
-            <property name="text">
-             <string>Cacher les favoris</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="1">
-           <widget class="QSpinBox" name="spinHideFavorites">
-            <property name="maximum">
-             <number>1000</number>
-            </property>
-            <property name="value">
-             <number>20</number>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="0" colspan="2">
-           <widget class="QLabel" name="label_40">
-            <property name="text">
-             <string>&lt;i&gt;La liste des favoris sera cachée dès que ce nombre d'images reçues sera atteint.&lt;/i&gt;</string>
-            </property>
-            <property name="wordWrap">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="0">
-           <widget class="QLabel" name="label_41">
-            <property name="text">
-             <string>Affichage des types de sources</string>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="1">
-           <widget class="QComboBox" name="comboSources">
-            <item>
-             <property name="text">
-              <string>Texte</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Image</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Image et texte</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Ne pas afficher</string>
-             </property>
-            </item>
-           </widget>
-          </item>
-          <item row="6" column="0">
-           <widget class="QLabel" name="label_42">
-            <property name="text">
-             <string>Lettres affichées</string>
-            </property>
-           </widget>
-          </item>
-          <item row="6" column="1">
-           <layout class="QHBoxLayout" name="horizontalLayout_9">
-            <item>
-             <widget class="QComboBox" name="comboSourcesLetters">
-              <item>
-               <property name="text">
-                <string>Afficher n lettres</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Avant le premier point</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Avant le second point</string>
-               </property>
-              </item>
-             </widget>
-            </item>
-            <item>
-             <widget class="QSpinBox" name="spinSourcesLetters">
-              <property name="minimum">
-               <number>0</number>
+           </item>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="label_42">
+           <property name="text">
+            <string>Lettres affichées</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <layout class="QHBoxLayout" name="horizontalLayout_9">
+           <item>
+            <widget class="QComboBox" name="comboSourcesLetters">
+             <item>
+              <property name="text">
+               <string>Afficher n lettres</string>
               </property>
-              <property name="maximum">
-               <number>1000000</number>
+             </item>
+             <item>
+              <property name="text">
+               <string>Avant le premier point</string>
               </property>
-              <property name="value">
-               <number>3</number>
+             </item>
+             <item>
+              <property name="text">
+               <string>Avant le second point</string>
               </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item row="8" column="0" colspan="2">
-           <widget class="QLabel" name="label_43">
-            <property name="text">
-             <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+             </item>
+            </widget>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="spinSourcesLetters">
+             <property name="minimum">
+              <number>0</number>
+             </property>
+             <property name="maximum">
+              <number>1000000</number>
+             </property>
+             <property name="value">
+              <number>3</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="5" column="0" colspan="2">
+          <widget class="QLabel" name="label_43">
+           <property name="text">
+            <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-style:italic;&quot;&gt;Nombre de lettres affichées à côté des cases à cocher des sources en bas de la fenêtre principale.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-            </property>
-            <property name="wordWrap">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="9" column="0">
-           <widget class="QLabel" name="label_44">
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="0">
+          <widget class="QLabel" name="label_44">
+           <property name="text">
+            <string>Position de la liste de tags</string>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="1">
+          <widget class="QComboBox" name="comboTagsposition">
+           <item>
             <property name="text">
-             <string>Position de la liste de tags</string>
+             <string>Haut</string>
             </property>
-           </widget>
-          </item>
-          <item row="9" column="1">
-           <widget class="QComboBox" name="comboTagsposition">
-            <item>
+           </item>
+           <item>
+            <property name="text">
+             <string>Gauche</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Automatique</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="page12">
+        <layout class="QFormLayout" name="formLayout_11">
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_30">
+           <property name="text">
+            <string>Artistes</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_31">
+           <property name="text">
+            <string>Séries</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_32">
+           <property name="text">
+            <string>Personnages</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="label_33">
+           <property name="text">
+            <string>Modèles</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="label_34">
+           <property name="text">
+            <string>Généraux</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0">
+          <widget class="QLabel" name="label_45">
+           <property name="text">
+            <string>Favoris</string>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="0">
+          <widget class="QLabel" name="label_46">
+           <property name="text">
+            <string>Sur liste noire</string>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="0">
+          <widget class="QLabel" name="label_58">
+           <property name="text">
+            <string>Ignorés</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="1,0,0">
+           <item>
+            <widget class="QLineEdit" name="lineColoringArtists">
              <property name="text">
-              <string>Haut</string>
+              <string/>
              </property>
-            </item>
-            <item>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="buttonColoringArtistsColor">
              <property name="text">
-              <string>Gauche</string>
+              <string>Couleur</string>
              </property>
-            </item>
-            <item>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="buttonColoringArtistsFont">
              <property name="text">
-              <string>Automatique</string>
+              <string>Police</string>
              </property>
-            </item>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QWidget" name="widget_8" native="true">
-         <layout class="QFormLayout" name="formLayout_9">
-          <property name="fieldGrowthPolicy">
-           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-          </property>
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_30">
-            <property name="text">
-             <string>Artistes</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="1,0,0">
-            <item>
-             <widget class="QLineEdit" name="lineColoringArtists">
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="buttonColoringArtistsColor">
-              <property name="text">
-               <string>Couleur</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="buttonColoringArtistsFont">
-              <property name="text">
-               <string>Police</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_31">
-            <property name="text">
-             <string>Séries</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <layout class="QHBoxLayout" name="horizontalLayout_4">
-            <item>
-             <widget class="QLineEdit" name="lineColoringCopyrights"/>
-            </item>
-            <item>
-             <widget class="QPushButton" name="buttonColoringCopyrightsColor">
-              <property name="text">
-               <string>Couleur</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="buttonColoringCopyrightsFont">
-              <property name="text">
-               <string>Police</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="label_32">
-            <property name="text">
-             <string>Personnages</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <layout class="QHBoxLayout" name="horizontalLayout_5">
-            <item>
-             <widget class="QLineEdit" name="lineColoringCharacters"/>
-            </item>
-            <item>
-             <widget class="QPushButton" name="buttonColoringCharactersColor">
-              <property name="text">
-               <string>Couleur</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="buttonColoringCharactersFont">
-              <property name="text">
-               <string>Police</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item row="3" column="0">
-           <widget class="QLabel" name="label_33">
-            <property name="text">
-             <string>Modèles</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="1">
-           <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="1,0,0">
-            <item>
-             <widget class="QLineEdit" name="lineColoringModels"/>
-            </item>
-            <item>
-             <widget class="QPushButton" name="buttonColoringModelsColor">
-              <property name="text">
-               <string>Couleur</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="buttonColoringModelsFont">
-              <property name="text">
-               <string>Police</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item row="4" column="0">
-           <widget class="QLabel" name="label_34">
-            <property name="text">
-             <string>Généraux</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="1">
-           <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="1,0,0">
-            <item>
-             <widget class="QLineEdit" name="lineColoringGenerals"/>
-            </item>
-            <item>
-             <widget class="QPushButton" name="buttonColoringGeneralsColor">
-              <property name="text">
-               <string>Couleur</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="buttonColoringGeneralsFont">
-              <property name="text">
-               <string>Police</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item row="5" column="0">
-           <widget class="QLabel" name="label_45">
-            <property name="text">
-             <string>Favoris</string>
-            </property>
-           </widget>
-          </item>
-          <item row="6" column="0">
-           <widget class="QLabel" name="label_46">
-            <property name="text">
-             <string>Sur liste noire</string>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="1">
-           <layout class="QHBoxLayout" name="horizontalLayout_10">
-            <item>
-             <widget class="QLineEdit" name="lineColoringFavorites"/>
-            </item>
-            <item>
-             <widget class="QPushButton" name="buttonColoringFavoritesColor">
-              <property name="text">
-               <string>Couleur</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="buttonColoringFavoritesFont">
-              <property name="text">
-               <string>Police</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item row="6" column="1">
-           <layout class="QHBoxLayout" name="horizontalLayout_11">
-            <item>
-             <widget class="QLineEdit" name="lineColoringBlacklisteds"/>
-            </item>
-            <item>
-             <widget class="QPushButton" name="buttonColoringBlacklistedsColor">
-              <property name="text">
-               <string>Couleur</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="buttonColoringBlacklistedsFont">
-              <property name="text">
-               <string>Police</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item row="7" column="0">
-           <widget class="QLabel" name="label_58">
-            <property name="text">
-             <string>Ignorés</string>
-            </property>
-           </widget>
-          </item>
-          <item row="7" column="1">
-           <layout class="QHBoxLayout" name="horizontalLayout_12">
-            <item>
-             <widget class="QLineEdit" name="lineColoringIgnoreds"/>
-            </item>
-            <item>
-             <widget class="QPushButton" name="buttonColoringIgnoredsColor">
-              <property name="text">
-               <string>Couleur</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="buttonColoringIgnoredsFont">
-              <property name="text">
-               <string>Police</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QWidget" name="widget_11" native="true">
-         <layout class="QFormLayout" name="formLayout_12">
-          <property name="fieldGrowthPolicy">
-           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-          </property>
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_37">
-            <property name="text">
-             <string>Marges horizontales</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QSpinBox" name="spinHorizontalMargins">
-            <property name="maximum">
-             <number>20</number>
-            </property>
-            <property name="value">
-             <number>6</number>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_38">
-            <property name="text">
-             <string>Marges verticales</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QSpinBox" name="spinVerticalMargins">
-            <property name="maximum">
-             <number>20</number>
-            </property>
-            <property name="value">
-             <number>6</number>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="label_59">
-            <property name="text">
-             <string>Bordures</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QSpinBox" name="spinBorders">
-            <property name="maximum">
-             <number>10</number>
-            </property>
-            <property name="value">
-             <number>3</number>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QWidget" name="widget_9" native="true">
-         <layout class="QFormLayout" name="formLayout_10">
-          <property name="fieldGrowthPolicy">
-           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-          </property>
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_4">
-            <property name="text">
-             <string>Pseudo</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_35">
-            <property name="text">
-             <string>Mot de passe hashé</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <layout class="QHBoxLayout" name="horizontalLayout_8">
-            <item>
-             <widget class="QLineEdit" name="linePassword"/>
-            </item>
-            <item>
-             <widget class="QPushButton" name="buttonCrypt">
-              <property name="text">
-               <string>Hasher un mot de passe</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item row="0" column="1">
-           <widget class="QLineEdit" name="linePseudo"/>
-          </item>
-          <item row="2" column="0" colspan="2">
-           <widget class="QLabel" name="label_36">
-            <property name="text">
-             <string>Vous devez être conscient des risques de sécurité impliqués lors de l'envoi de votre mot de passe à travers un canal non chiffré. Bien que votre mot de passe sera haché, il est encore théoriquement possible pour quelqu'un de voler votre compte en créant un faux cookie en fonction de votre mot de passe hashé.</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignJustify|Qt::AlignVCenter</set>
-            </property>
-            <property name="wordWrap">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QWidget" name="widget_14" native="true">
-         <layout class="QVBoxLayout" name="verticalLayout_2">
-          <item>
-           <widget class="QCheckBox" name="checkProxyUse">
-            <property name="text">
-             <string>Utiliser un proxy</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QWidget" name="widgetProxy" native="true">
-            <layout class="QFormLayout" name="formLayout_16">
-             <property name="margin">
-              <number>0</number>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="1" column="1">
+          <layout class="QHBoxLayout" name="horizontalLayout_4">
+           <item>
+            <widget class="QLineEdit" name="lineColoringCopyrights"/>
+           </item>
+           <item>
+            <widget class="QPushButton" name="buttonColoringCopyrightsColor">
+             <property name="text">
+              <string>Couleur</string>
              </property>
-             <item row="0" column="0">
-              <widget class="QLabel" name="label_56">
-               <property name="text">
-                <string>Serveur</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0">
-              <widget class="QLabel" name="label_57">
-               <property name="text">
-                <string>Port</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="QSpinBox" name="spinProxyPort">
-               <property name="maximum">
-                <number>99999</number>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QLineEdit" name="lineProxyHostName"/>
-             </item>
-            </layout>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QWidget" name="widget_7" native="true">
-         <layout class="QFormLayout" name="formLayout_8">
-          <item row="0" column="0" colspan="2">
-           <widget class="QGroupBox" name="groupBox">
-            <property name="title">
-             <string>Avec initialisation</string>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="buttonColoringCopyrightsFont">
+             <property name="text">
+              <string>Police</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="2" column="1">
+          <layout class="QHBoxLayout" name="horizontalLayout_5">
+           <item>
+            <widget class="QLineEdit" name="lineColoringCharacters"/>
+           </item>
+           <item>
+            <widget class="QPushButton" name="buttonColoringCharactersColor">
+             <property name="text">
+              <string>Couleur</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="buttonColoringCharactersFont">
+             <property name="text">
+              <string>Police</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="3" column="1">
+          <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="1,0,0">
+           <item>
+            <widget class="QLineEdit" name="lineColoringModels"/>
+           </item>
+           <item>
+            <widget class="QPushButton" name="buttonColoringModelsColor">
+             <property name="text">
+              <string>Couleur</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="buttonColoringModelsFont">
+             <property name="text">
+              <string>Police</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="4" column="1">
+          <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="1,0,0">
+           <item>
+            <widget class="QLineEdit" name="lineColoringGenerals"/>
+           </item>
+           <item>
+            <widget class="QPushButton" name="buttonColoringGeneralsColor">
+             <property name="text">
+              <string>Couleur</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="buttonColoringGeneralsFont">
+             <property name="text">
+              <string>Police</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="5" column="1">
+          <layout class="QHBoxLayout" name="horizontalLayout_10">
+           <item>
+            <widget class="QLineEdit" name="lineColoringFavorites"/>
+           </item>
+           <item>
+            <widget class="QPushButton" name="buttonColoringFavoritesColor">
+             <property name="text">
+              <string>Couleur</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="buttonColoringFavoritesFont">
+             <property name="text">
+              <string>Police</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="6" column="1">
+          <layout class="QHBoxLayout" name="horizontalLayout_11">
+           <item>
+            <widget class="QLineEdit" name="lineColoringBlacklisteds"/>
+           </item>
+           <item>
+            <widget class="QPushButton" name="buttonColoringBlacklistedsColor">
+             <property name="text">
+              <string>Couleur</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="buttonColoringBlacklistedsFont">
+             <property name="text">
+              <string>Police</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="7" column="1">
+          <layout class="QHBoxLayout" name="horizontalLayout_12">
+           <item>
+            <widget class="QLineEdit" name="lineColoringIgnoreds"/>
+           </item>
+           <item>
+            <widget class="QPushButton" name="buttonColoringIgnoredsColor">
+             <property name="text">
+              <string>Couleur</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="buttonColoringIgnoredsFont">
+             <property name="text">
+              <string>Police</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="page13">
+        <layout class="QFormLayout" name="formLayout_9">
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_37">
+           <property name="text">
+            <string>Marges horizontales</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QSpinBox" name="spinHorizontalMargins">
+           <property name="maximum">
+            <number>20</number>
+           </property>
+           <property name="value">
+            <number>6</number>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_38">
+           <property name="text">
+            <string>Marges verticales</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QSpinBox" name="spinVerticalMargins">
+           <property name="maximum">
+            <number>20</number>
+           </property>
+           <property name="value">
+            <number>6</number>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_59">
+           <property name="text">
+            <string>Bordures</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QSpinBox" name="spinBorders">
+           <property name="maximum">
+            <number>10</number>
+           </property>
+           <property name="value">
+            <number>3</number>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="page14">
+        <layout class="QFormLayout" name="formLayout_12">
+         <property name="fieldGrowthPolicy">
+          <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+         </property>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_4">
+           <property name="text">
+            <string>Pseudo</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLineEdit" name="linePseudo"/>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_35">
+           <property name="text">
+            <string>Mot de passe hashé</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <layout class="QHBoxLayout" name="horizontalLayout_8">
+           <item>
+            <widget class="QLineEdit" name="linePassword"/>
+           </item>
+           <item>
+            <widget class="QPushButton" name="buttonCrypt">
+             <property name="text">
+              <string>Hasher un mot de passe</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="2" column="0" colspan="2">
+          <widget class="QLabel" name="label_15">
+           <property name="text">
+            <string>Vous devez être conscient des risques de sécurité impliqués lors de l'envoi de votre mot de passe à travers un canal non chiffré. Bien que votre mot de passe sera haché, il est encore théoriquement possible pour quelqu'un de voler votre compte en créant un faux cookie en fonction de votre mot de passe hashé.</string>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="page15">
+        <layout class="QFormLayout" name="formLayout_10">
+         <item row="0" column="0" colspan="2">
+          <widget class="QCheckBox" name="checkProxyUse">
+           <property name="text">
+            <string>Utiliser un proxy</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0" colspan="2">
+          <widget class="QWidget" name="widgetProxy" native="true">
+           <layout class="QFormLayout" name="formLayout_16">
+            <property name="margin">
+             <number>0</number>
             </property>
-            <layout class="QFormLayout" name="formLayout_13">
-             <item row="0" column="0">
-              <widget class="QLabel" name="label_25">
-               <property name="text">
-                <string>Initialisation</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QLineEdit" name="lineCommandsGroupInitialisation"/>
-             </item>
-             <item row="1" column="0">
-              <widget class="QLabel" name="label_26">
-               <property name="text">
-                <string>Image</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="QLineEdit" name="lineCommandsGroupImage"/>
-             </item>
-             <item row="2" column="0">
-              <widget class="QLabel" name="label_28">
-               <property name="text">
-                <string>Tag</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="1">
-              <widget class="QLineEdit" name="lineCommandsGroupTag"/>
-             </item>
-            </layout>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_3">
-            <property name="text">
-             <string>Image</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QLineEdit" name="lineCommandsImage"/>
-          </item>
-          <item row="2" column="0" colspan="2">
-           <widget class="QLabel" name="label_27">
-            <property name="text">
-             <string>Symboles disponibles : les mêmes que dans la partie sauvegarde.</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="0">
-           <widget class="QLabel" name="label_47">
-            <property name="text">
-             <string>Tag</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="1">
-           <widget class="QLineEdit" name="lineCommandsTag"/>
-          </item>
-          <item row="4" column="0" colspan="2">
-           <widget class="QLabel" name="label_29">
-            <property name="text">
-             <string>Symboles disponibles : &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt; : le tag&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt; : type du tag, &quot;general&quot;, &quot;artist&quot;, &quot;copyright&quot;, &quot;character&quot;, &quot;model&quot; ou &quot;photo_set&quot;&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt; : le numéro du type de tag (varie entre 0 et 6)</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-      </layout>
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_56">
+              <property name="text">
+               <string>Serveur</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_57">
+              <property name="text">
+               <string>Port</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QSpinBox" name="spinProxyPort">
+              <property name="maximum">
+               <number>99999</number>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QLineEdit" name="lineProxyHostName"/>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="page16">
+        <layout class="QFormLayout" name="formLayout_18">
+         <property name="fieldGrowthPolicy">
+          <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+         </property>
+         <item row="0" column="0" colspan="2">
+          <widget class="QGroupBox" name="groupBox">
+           <property name="title">
+            <string>Avec initialisation</string>
+           </property>
+           <layout class="QFormLayout" name="formLayout_13">
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_25">
+              <property name="text">
+               <string>Initialisation</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QLineEdit" name="lineCommandsGroupInitialisation"/>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_26">
+              <property name="text">
+               <string>Image</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QLineEdit" name="lineCommandsGroupImage"/>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="label_28">
+              <property name="text">
+               <string>Tag</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QLineEdit" name="lineCommandsGroupTag"/>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_3">
+           <property name="text">
+            <string>Image</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLineEdit" name="lineCommandsImage"/>
+         </item>
+         <item row="2" column="0" colspan="2">
+          <widget class="QLabel" name="label_36">
+           <property name="text">
+            <string>Symboles disponibles : les mêmes que dans la partie sauvegarde.</string>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="label_47">
+           <property name="text">
+            <string>Tag</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QLineEdit" name="lineCommandsTag"/>
+         </item>
+         <item row="4" column="0" colspan="2">
+          <widget class="QLabel" name="label_27">
+           <property name="text">
+            <string>Symboles disponibles : &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt; : le tag&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt; : type du tag, &quot;general&quot;, &quot;artist&quot;, &quot;copyright&quot;, &quot;character&quot;, &quot;model&quot; ou &quot;photo_set&quot;&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt; : le numéro du type de tag (varie entre 0 et 6)</string>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </widget>
      </item>
     </layout>
    </item>
@@ -1491,52 +1493,10 @@ p, li { white-space: pre-wrap; }
  </widget>
  <tabstops>
   <tabstop>treeWidget</tabstop>
-  <tabstop>comboLanguages</tabstop>
-  <tabstop>lineBlacklist</tabstop>
-  <tabstop>checkHideBlacklisted</tabstop>
-  <tabstop>lineWhitelist</tabstop>
-  <tabstop>comboWhitelist</tabstop>
-  <tabstop>lineIgnored</tabstop>
-  <tabstop>checkDownloadBlacklisted</tabstop>
-  <tabstop>checkLoadFirstAtStart</tabstop>
-  <tabstop>spinImagesPerPage</tabstop>
-  <tabstop>spinColumns</tabstop>
-  <tabstop>comboSource1</tabstop>
-  <tabstop>comboSource2</tabstop>
-  <tabstop>comboSource3</tabstop>
-  <tabstop>comboSource4</tabstop>
-  <tabstop>checkUseregexfortags</tabstop>
-  <tabstop>checkShowLog</tabstop>
-  <tabstop>checkInvertLog</tabstop>
-  <tabstop>checkDownloadOriginals</tabstop>
-  <tabstop>checkAutodownload</tabstop>
   <tabstop>lineFolder</tabstop>
   <tabstop>buttonFolder</tabstop>
-  <tabstop>lineSeparator</tabstop>
-  <tabstop>checkReplaceBlanks</tabstop>
-  <tabstop>spinLimit</tabstop>
-  <tabstop>lineFilename</tabstop>
-  <tabstop>buttonFilenames</tabstop>
-  <tabstop>lineArtistsIfNone</tabstop>
-  <tabstop>checkArtistsKeepAll</tabstop>
-  <tabstop>lineArtistsSeparator</tabstop>
-  <tabstop>lineArtistsIfMultiples</tabstop>
-  <tabstop>checkCopyrightsUseShorter</tabstop>
-  <tabstop>lineCopyrightsIfNone</tabstop>
-  <tabstop>checkCopyrightsKeepAll</tabstop>
-  <tabstop>lineCopyrightsSeparator</tabstop>
-  <tabstop>lineCopyrightsIfMultiples</tabstop>
-  <tabstop>lineCharactersIfNone</tabstop>
-  <tabstop>checkCharactersKeepAll</tabstop>
-  <tabstop>lineCharactersSeparator</tabstop>
-  <tabstop>lineCharactersIfMultiples</tabstop>
-  <tabstop>buttonCustom</tabstop>
-  <tabstop>checkResizeInsteadOfCropping</tabstop>
-  <tabstop>spinHideFavorites</tabstop>
-  <tabstop>comboSources</tabstop>
   <tabstop>comboSourcesLetters</tabstop>
   <tabstop>spinSourcesLetters</tabstop>
-  <tabstop>comboTagsposition</tabstop>
   <tabstop>lineColoringArtists</tabstop>
   <tabstop>buttonColoringArtistsColor</tabstop>
   <tabstop>buttonColoringArtistsFont</tabstop>
@@ -1561,19 +1521,13 @@ p, li { white-space: pre-wrap; }
   <tabstop>lineColoringIgnoreds</tabstop>
   <tabstop>buttonColoringIgnoredsColor</tabstop>
   <tabstop>buttonColoringIgnoredsFont</tabstop>
-  <tabstop>spinHorizontalMargins</tabstop>
-  <tabstop>spinVerticalMargins</tabstop>
-  <tabstop>linePseudo</tabstop>
   <tabstop>linePassword</tabstop>
   <tabstop>buttonCrypt</tabstop>
-  <tabstop>checkProxyUse</tabstop>
   <tabstop>lineProxyHostName</tabstop>
   <tabstop>spinProxyPort</tabstop>
   <tabstop>lineCommandsGroupInitialisation</tabstop>
   <tabstop>lineCommandsGroupImage</tabstop>
   <tabstop>lineCommandsGroupTag</tabstop>
-  <tabstop>lineCommandsImage</tabstop>
-  <tabstop>lineCommandsTag</tabstop>
   <tabstop>buttonBox</tabstop>
  </tabstops>
  <resources>

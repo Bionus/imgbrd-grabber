@@ -8,10 +8,7 @@
 
 optionsWindow::optionsWindow(mainWindow *parent) : QDialog(parent), m_parent(parent), ui(new Ui::optionsWindow)
 {
-    ui->setupUi(this);
-	for (int i = 1; i < ui->container->count(); i++)
-	{ ui->container->itemAt(i)->widget()->hide(); }
-	resize(QSize(600, 376));
+	ui->setupUi(this);
 
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
 	QStringList languages = QDir("languages").entryList(QStringList("*.qm"), QDir::Files);
@@ -91,6 +88,7 @@ optionsWindow::optionsWindow(mainWindow *parent) : QDialog(parent), m_parent(par
 		ui->lineCharactersSeparator->setText(settings.value("character_sep", "+").toString());
 		ui->lineCharactersIfMultiples->setText(settings.value("character_value", "group").toString());
 		ui->spinLimit->setValue(settings.value("limit", 0).toInt());
+		ui->spinSimultaneous->setValue(settings.value("simultaneous", 1).toInt());
 		QMap<QString,QStringList> customs = getCustoms();
 		settings.beginGroup("Customs");
 			m_customNames = QList<QLineEdit*>();
@@ -402,18 +400,7 @@ void optionsWindow::updateContainer(QTreeWidgetItem *current, QTreeWidgetItem *p
 		tr("Connexion", "update") <<
 		tr("Proxy", "update") <<
 		tr("Commandes", "update");
-	QMap<QString,int> assoc;
-	for (int i = 0; i < texts.count(); i++)
-	{ assoc[texts.at(i)] = i; }
-	if (previous != NULL)
-	{
-		int iprevious = assoc[previous->text(0)];
-		if (iprevious < ui->container->count())
-		{ ui->container->itemAt(iprevious)->widget()->hide(); }
-	}
-	int icurrent = assoc[current->text(0)];
-	if (icurrent < ui->container->count())
-	{ ui->container->itemAt(icurrent)->widget()->show(); }
+	ui->stackedWidget->setCurrentIndex(texts.indexOf(current->text(0)));
 }
 
 void optionsWindow::save()
@@ -486,6 +473,7 @@ void optionsWindow::save()
 		settings.setValue("character_sep", ui->lineCharactersSeparator->text());
 		settings.setValue("character_value", ui->lineCharactersIfMultiples->text());
 		settings.setValue("limit", ui->spinLimit->value());
+		settings.setValue("simultaneous", ui->spinSimultaneous->value());
 		settings.beginGroup("Customs");
 			settings.remove("");
 			for (int i = 0; i < m_customNames.size(); i++)

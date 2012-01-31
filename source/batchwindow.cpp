@@ -3,7 +3,7 @@
 
 
 
-batchWindow::batchWindow(QWidget *parent) : QDialog(parent), ui(new Ui::batchWindow), m_items(0)
+batchWindow::batchWindow(QWidget *parent) : QDialog(parent), ui(new Ui::batchWindow), m_items(0), m_images(0)
 {
 	ui->setupUi(this);
 	ui->details->hide();
@@ -133,8 +133,9 @@ void batchWindow::setText(QString text)		{ ui->labelMessage->setText(text);					
 void batchWindow::setValue(int value)		{ m_value = value; ui->progressBar->setValue(m_value);	}
 void batchWindow::setLittleValue(int value)	{ ui->progressBar->setValue(m_value + value);			}
 void batchWindow::setMaximum(int value)		{ ui->progressBar->setMaximum(value);					}
-void batchWindow::setImagesCount(int value)	{ m_imagesCount = value; ui->labelImages->setText(QString("0/%2").arg(m_imagesCount));	}
-void batchWindow::setImages(int value)		{ ui->labelImages->setText(QString("%1/%2").arg(value).arg(m_imagesCount));				}
+void batchWindow::setImagesCount(int value)	{ m_imagesCount = value; ui->labelImages->setText(QString("0/%2").arg(m_imagesCount));			}
+void batchWindow::setImages(int value)		{ m_images = value; ui->labelImages->setText(QString("%1/%2").arg(value).arg(m_imagesCount));	}
 
 int batchWindow::value()					{ return m_value;						}
 int batchWindow::maximum()					{ return ui->progressBar->maximum();	}
+int batchWindow::images()					{ return m_images;						}

@@ -68,8 +68,8 @@ class mainWindow : public QMainWindow
 		void getAll(bool all = true);
 		void getAllFinishedLoading(Page*);
 		void getAllPerformTags(Image*);
-		void getAllPerformImage();
-		void getAllProgress(qint64, qint64);
+		void getAllPerformImage(Image*);
+		void getAllProgress(Image*, qint64, qint64);
 		void getAllCancel();
 		void _getAll();
 		// Others
@@ -79,6 +79,8 @@ class mainWindow : public QMainWindow
 		void init();
 		void on_buttonSaveLinkList_clicked();
 		void on_buttonLoadLinkList_clicked();
+		bool saveLinkList(QString filename);
+		bool loadLinkList(QString filename);
 		// Tabs
 		void addTab(QString tag = "");
 		void addTabFavorite(int);
@@ -87,7 +89,7 @@ class mainWindow : public QMainWindow
 
 	private:
 		Ui::mainWindow		*ui;
-		int					m_pagemax, m_timezonedecay, m_getAllId, m_getAllDownloaded, m_getAllExists, m_getAllIgnored, m_getAllErrors, m_getAllCount, m_getAllPageCount, m_getAllBeforeId, m_remainingPics, m_remainingSites, m_countPics, m_currentFav, m_currentFavCount;
+		int					m_pagemax, m_timezonedecay, m_getAllDownloaded, m_getAllExists, m_getAllIgnored, m_getAllErrors, m_getAllCount, m_getAllPageCount, m_getAllBeforeId, m_remainingPics, m_remainingSites, m_countPics, m_currentFav, m_currentFavCount;
 		bool				m_allow, m_must_get_tags, m_loaded, m_getAllRequestExists, m_getAll;
 		QSettings			*m_settings;
 		QProcess			*m_process;
@@ -100,13 +102,14 @@ class mainWindow : public QMainWindow
 		QDateTime			m_serverDate, m_loadFavorite;
 		QMap<QString,int>	m_countPage;
 		QList<QStringList>	m_groupBatchs;
-		QList<Image*>		m_getAllImages, m_images;
+		QList<Image*>		m_getAllRemaining, m_getAllDownloading, m_images;
 		QList<Page*>		m_getAllPages, m_pages;
 		QList<QAffiche*>	m_favoritesCaptions;
 		QList<QBouton*>		m_favoritesImages, m_mergeButtons, m_webPics;
 		QList<searchTab*>	m_tabs;
 		QList<bool>			m_selectedSources;
 		QList<QLabel*>		m_webSites;
+		QMap<QString,double>			m_getAllDownloadingSpeeds;
 		QMap<QString,QString>			m_favorites, m_params;
 		QMap<QString,QStringList>		m_getAllDetails;
 		QList<QProgressBar*>			m_progressBars;
