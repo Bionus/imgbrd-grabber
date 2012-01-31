@@ -55,6 +55,7 @@ Image::Image(QMap<QString, QString> details, int timezonedecay, Page* parent)
 
 	m_loadPreviewExists = false;
 	m_loadTagsExists = false;
+	m_loadImageExists = false;
 	m_pools = QList<Pool*>();
 }
 Image::~Image()
@@ -431,6 +432,30 @@ QString Image::path(QString fn)
 	return QDir::toNativeSeparators(filename);
 }
 
+void Image::loadImage()
+{
+	QNetworkAccessManager *m = new QNetworkAccessManager(this);
+	QNetworkRequest request(m_url);
+		request.setRawHeader("Referer", m_url.toAscii());
+
+	m_loadImage = m->get(request);
+	connect(m_loadImage, SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(downloadProgressImageS(qint64, qint64)));
+	connect(m_loadImage, SIGNAL(finished()), this, SLOT(finishedImageS()));
+	m_loadImageExists = true;
+}
+void Image::finishedImageS()
+{ emit finishedImage(this); }
+void Image::downloadProgressImageS(qint64 v1, qint64 v2)
+{ emit downloadProgressImage(this, v1, v2); }
+void Image::abortImage()
+{
+	if (m_loadImageExists)
+	{
+		if (m_loadImage->isRunning())
+		{ m_loadImage->abort(); }
+	}
+}
+
 int Image::value()
 {
 	int pixels;
@@ -452,35 +477,36 @@ int Image::value()
 
 
 
-QString		Image::url()			{ return m_url;				}
-QString		Image::md5()			{ return m_md5;				}
-QString		Image::author()			{ return m_author;			}
-QString		Image::status()			{ return m_status;			}
-QString		Image::rating()			{ return m_rating;			}
-QString		Image::source()			{ return m_source;			}
-QString		Image::site()			{ return m_site;			}
-QList<Tag*>	Image::tags()			{ return m_tags;			}
-QList<Pool*>Image::pools()			{ return m_pools;			}
-int			Image::id()				{ return m_id;				}
-int			Image::score()			{ return m_score;			}
-int			Image::parentId()		{ return m_parentId;		}
-int			Image::fileSize()		{ return m_fileSize;		}
-int			Image::width()			{ return m_size.width();	}
-int			Image::height()			{ return m_size.height();	}
-int			Image::authorId()		{ return m_authorId;		}
-QDateTime	Image::createdAt()		{ return m_createdAt;		}
-bool		Image::hasChildren()	{ return m_hasChildren;		}
-bool		Image::hasNote()		{ return m_hasNote;			}
-bool		Image::hasComments()	{ return m_hasComments;		}
-bool		Image::hasScore()		{ return m_hasScore;		}
-QUrl		Image::fileUrl()		{ return m_fileUrl;			}
-QUrl		Image::sampleUrl()		{ return m_sampleUrl;		}
-QUrl		Image::previewUrl()		{ return m_previewUrl;		}
-QUrl		Image::pageUrl()		{ return m_pageUrl;			}
-QSize		Image::size()			{ return m_size;			}
-QPixmap		Image::previewImage()	{ return m_imagePreview;	}
-Page		*Image::page()			{ return m_parent;			}
-QByteArray	Image::data()			{ return m_data;			}
+QString			Image::url()			{ return m_url;				}
+QString			Image::md5()			{ return m_md5;				}
+QString			Image::author()			{ return m_author;			}
+QString			Image::status()			{ return m_status;			}
+QString			Image::rating()			{ return m_rating;			}
+QString			Image::source()			{ return m_source;			}
+QString			Image::site()			{ return m_site;			}
+QList<Tag*>		Image::tags()			{ return m_tags;			}
+QList<Pool*>	Image::pools()			{ return m_pools;			}
+int				Image::id()				{ return m_id;				}
+int				Image::score()			{ return m_score;			}
+int				Image::parentId()		{ return m_parentId;		}
+int				Image::fileSize()		{ return m_fileSize;		}
+int				Image::width()			{ return m_size.width();	}
+int				Image::height()			{ return m_size.height();	}
+int				Image::authorId()		{ return m_authorId;		}
+QDateTime		Image::createdAt()		{ return m_createdAt;		}
+bool			Image::hasChildren()	{ return m_hasChildren;		}
+bool			Image::hasNote()		{ return m_hasNote;			}
+bool			Image::hasComments()	{ return m_hasComments;		}
+bool			Image::hasScore()		{ return m_hasScore;		}
+QUrl			Image::fileUrl()		{ return m_fileUrl;			}
+QUrl			Image::sampleUrl()		{ return m_sampleUrl;		}
+QUrl			Image::previewUrl()		{ return m_previewUrl;		}
+QUrl			Image::pageUrl()		{ return m_pageUrl;			}
+QSize			Image::size()			{ return m_size;			}
+QPixmap			Image::previewImage()	{ return m_imagePreview;	}
+Page			*Image::page()			{ return m_parent;			}
+QByteArray		Image::data()			{ return m_data;			}
+QNetworkReply	*Image::imageReply()	{ return m_loadImage;		}
 
 void	Image::setUrl(QString u)		{ m_url = u;	}
 void	Image::setData(QByteArray d)

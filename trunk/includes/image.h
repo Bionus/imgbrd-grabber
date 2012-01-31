@@ -52,33 +52,41 @@ class Image : public QObject
 		QByteArray	data();
 		void		setUrl(QString);
 		void		setData(QByteArray data);
+		QNetworkReply	*imageReply();
 
 	public slots:
 		void loadPreview();
 		void loadTags();
-		void parsePreview(QNetworkReply*);
-		void parseTags(QNetworkReply*);
+		void loadImage();
 		void abortPreview();
 		void abortTags();
+		void abortImage();
+		void parsePreview(QNetworkReply*);
+		void parseTags(QNetworkReply*);
+
+	private slots:
+		void finishedImageS();
+		void downloadProgressImageS(qint64, qint64);
 
 	signals:
 		void finishedLoadingPreview(Image*);
 		void finishedLoadingTags(Image*);
+		void finishedImage(Image*);
+		void downloadProgressImage(Image*, qint64, qint64);
 
 	private:
-		QString			m_url, m_md5, m_author, m_status, m_rating, m_source, m_site;
-		QList<Tag*>		m_tags;
-		QList<Pool*>	m_pools;
+		Page			*m_parent;
 		int				m_id, m_score, m_parentId, m_fileSize, m_authorId;
-		QDateTime		m_createdAt;
-		bool			m_hasChildren, m_hasNote, m_hasComments;
+		bool			m_hasChildren, m_hasNote, m_hasComments, m_loadPreviewExists, m_loadTagsExists, m_hasScore, m_loadImageExists;
+		QString			m_url, m_md5, m_author, m_status, m_rating, m_source, m_site;
 		QUrl			m_pageUrl, m_fileUrl, m_sampleUrl, m_previewUrl;
 		QSize			m_size;
 		QPixmap			m_imagePreview;
-		Page			*m_parent;
-		QNetworkReply	*m_loadPreview, *m_loadTags;
-		bool			m_loadPreviewExists, m_loadTagsExists, m_hasScore;
+		QDateTime		m_createdAt;
 		QByteArray		m_data;
+		QNetworkReply	*m_loadPreview, *m_loadTags, *m_loadImage;
+		QList<Tag*>		m_tags;
+		QList<Pool*>	m_pools;
 };
 
 #endif // IMAGE_H

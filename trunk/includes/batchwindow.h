@@ -21,6 +21,7 @@ class batchWindow : public QDialog
 		~batchWindow();
 		int value();
 		int maximum();
+		int images();
 
 	public slots:
 		void clear();
@@ -46,7 +47,7 @@ class batchWindow : public QDialog
 	private:
 		Ui::batchWindow			*ui;
 		QSize					m_currentSize;
-		int						m_imagesCount, m_items, m_value;
+		int						m_imagesCount, m_items, m_value, m_images;
 		QList<QProgressBar*>	m_progressBars;
 };
 
