@@ -1,4 +1,4 @@
-#include "ImageThread.h"
+#include "imagethread.h"
 
 ImageThread::ImageThread(QByteArray data, QObject* parent) : QThread(parent), m_data(data)
 {
