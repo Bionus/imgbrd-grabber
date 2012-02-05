@@ -1,5 +1,38 @@
 #summary Imgbrd-grabber's changelog from v1.0 to v2.4.0
 
+= 3.0 =
+== 3.0.4 ==
+  * Pseudo/password now hidden in log.
+== 3.0.3 ==
+  * Fixed log save path.
+  * Added translations of some missing texts.
+== 3.0.2 ==
+  * Zerochan now downloads fullsized images.
+  * Fixed %id% and %md5% for Zerochan.
+== 3.0.1 ==
+  * Log autosave.
+  * Removed TheDoujin.
+== 3.0.0 ==
+  * Allow doing something during batch download. But not another batch download.
+  * Batch download icons + progress bars.
+  * Blacklist fix tool (will remove all downloaded images containing a certain tag).
+  * Cache results for faster browsing.
+  * Batch image limit default value to 1,000 to avoid useless requests.
+  * Empty directories remover.
+  * Fallback to next source fetching if one fails
+  * Fixed splitter.
+  * Fixed tab key navigation in forms.
+  * Multiple filenames (triggered by a tag or a token).
+  * Page set to 1 after each new search.
+  * Pools.
+  * Save/open batch download lists.
+  * Search button added.
+  * Set border size in the options.
+  * Shortcut for the options.
+  * Stability fixes.
+  * Switched to Qt 4.8.
+  * You can close image window by pressing Escape.
+
 = 2.4 =
 == 2.4.0 ==
   * Fix truncation and remove duplicates in %all% (issue #28).
