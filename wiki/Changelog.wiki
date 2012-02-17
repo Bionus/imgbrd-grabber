@@ -1,4 +1,4 @@
-#summary Imgbrd-grabber's changelog from v1.0 to v2.4.0
+#summary Imgbrd-grabber's changelog from v1.0 to v3.0.4
 
 = 3.0 =
 == 3.0.4 ==
