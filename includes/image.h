@@ -20,7 +20,7 @@ class Image : public QObject
 		~Image();
 		int value();
 		QString filter(QStringList);
-		QString path(QString fn = "");
+		QString path(QString fn = "", QString pth = "");
 		QString		url();
 		QString		md5();
 		QString		author();

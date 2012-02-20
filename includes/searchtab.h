@@ -5,20 +5,23 @@
 #include <QtNetwork>
 #include "textedit.h"
 #include "page.h"
+#include "mainwindow.h"
 
 
 
 namespace Ui
 {
     class searchTab;
+	class mainWindow;
 }
 
+class mainWindow;
 class searchTab : public QWidget
 {
     Q_OBJECT
 
 	public:
-		explicit searchTab(QMap<QString,QMap<QString,QString> > *sites, QMap<QString,QString> *favorites, QDateTime *serverDate, QWidget *parent = 0);
+		explicit searchTab(int id, QMap<QString, QMap<QString, QString> > *sites, QMap<QString, QString> *favorites, QDateTime *serverDate, mainWindow *parent);
 		~searchTab();
 		Ui::searchTab *ui;
 		QList<bool> sources();
@@ -53,6 +56,9 @@ class searchTab : public QWidget
 		void unfavorite();
 		void viewitlater();
 		void unviewitlater();
+		// History
+		void historyBack();
+		void historyNext();
 		// Others
 		void optionsChanged(QSettings*);
 		void closeEvent(QCloseEvent*);
@@ -63,6 +69,8 @@ class searchTab : public QWidget
 		void titleChanged(searchTab*);
 
 	private:
+		int										m_id;
+		mainWindow								*m_parent;
 		TextEdit								*m_search, *m_postFiltering;
 		QCalendarWidget							*m_calendar;
 		QDateTime								*m_serverDate;
@@ -74,9 +82,10 @@ class searchTab : public QWidget
 		QList<bool>								m_selectedSources;
 		QList<QCheckBox*>						m_checkboxes;
 		QString									m_link, m_lastTags;
-		bool									m_sized;
-		int										m_page;
+		bool									m_sized, m_from_history;
+		int										m_page, m_history_cursor;
 		QList<QGridLayout*>						m_layouts;
+		QList<QMap<QString,QString> >			m_history;
 };
 
 #endif // SEARCHTAB_H

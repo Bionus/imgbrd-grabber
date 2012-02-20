@@ -27,6 +27,7 @@ class Page : public QObject
 		QUrl					url();
 		QString					source();
 		QString					website();
+		QString					wiki();
 		QList<Tag*>				tags();
 		QStringList				search();
 
@@ -42,7 +43,7 @@ class Page : public QObject
 
 	private:
 		QMap<QString,QString>	m_site;
-		QString					m_format, m_website, m_source;
+		QString					m_format, m_website, m_source, m_wiki;
 		QStringList				m_postFiltering, m_search;
 		QUrl					m_url, m_urlRegex;
 		QList<Image*>			m_images;

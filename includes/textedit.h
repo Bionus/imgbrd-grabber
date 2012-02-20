@@ -24,10 +24,10 @@ class TextEdit : public QTextEdit
 
 	private:
 		QString textUnderCursor() const;
-		void insertFav(QAction *act);
 
 	private slots:
 		void insertCompletion(const QString &completion);
+		void insertFav(QAction *act);
 		void customContextMenuRequested(const QPoint &pos);
 
 	signals:

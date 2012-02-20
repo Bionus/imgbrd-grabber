@@ -42,65 +42,41 @@ AddUniqueWindow::AddUniqueWindow(QMap<QString,QMap<QString,QString> > sites, mai
  */
 void AddUniqueWindow::ok()
 {
-	QNetworkAccessManager *manager = new QNetworkAccessManager(this);
-	connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply*)));
-	QString url = m_sites[m_comboSite->currentText()]["Urls/Selected/Tags"];
-		url.replace("{page}", "1");
-		url.replace("{tags}", (m_lineId->text().isEmpty() ? "md5:"+m_lineMd5->text() : "id:"+m_lineId->text()));
-		url.replace("{limit}", "1");
-	manager->get(QNetworkRequest(QUrl(url)));
+	m_page = new Page(&m_sites, m_comboSite->currentText(), QStringList(m_lineId->text().isEmpty() ? "md5:"+m_lineMd5->text() : "id:"+m_lineId->text()), 1, 1);
+	connect(m_page, SIGNAL(finishedLoading(Page*)), this, SLOT(replyFinished(Page*)));
+	m_page->load();
 }
 
 /**
  * Signal triggered when the search is finished.
  * @param r		The QNetworkReply associated with the search
  */
-void AddUniqueWindow::replyFinished(QNetworkReply *r)
+void AddUniqueWindow::replyFinished(Page *p)
 {
-	QStringList infos = QStringList() << "id" << "md5" << "rating" << "tags" << "file_url";
+	if (p->images().isEmpty())
+	{
+		error(this, tr("Aucune image n'a été trouvée."));
+		return;
+	}
+
+	Image *img = p->images().first();
+	QStringList tags;
+	foreach (Tag* tag, img->tags())
+	{ tags.append(tag->text()); }
+
 	QMap<QString,QString> values;
-	QString site = m_comboSite->currentText(), source = r->readAll();
-	if (m_sites[site]["Selected"] == "xml")
-	{
-		QDomDocument doc;
-		QString errorMsg;
-		int errorLine, errorColumn;
-		if (!doc.setContent(source, false, &errorMsg, &errorLine, &errorColumn))
-		{ error(this, tr("Erreur lors de l'analyse du fichier XML : %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn))); }
-		QDomElement docElem = doc.documentElement();
-		QDomNodeList nodeList = docElem.elementsByTagName("post");
-		if (nodeList.count() > 0)
-		{
-			for (int i = 0; i < infos.count(); i++)
-			{ values[infos.at(i)] = nodeList.at(0).attributes().namedItem(infos.at(i)).nodeValue(); }
-			values["site"] = site;
-		}
-	}
-	else if (m_sites[site]["Selected"] == "json")
-	{
-		QVariant src = Json::parse(source);
-		QMap<QString, QVariant> sc;
-		if (!src.isNull())
-		{
-			QList<QVariant> sourc = src.toList();
-			sc = sourc.at(0).toMap();
-			for (int i = 0; i < infos.count(); i++)
-			{ values[infos.at(i)] = sc.value(infos.at(i)).toString(); }
-			values["site"] = site;
-		}
-	}
-	else if (m_sites[site]["Selected"] == "regex")
-	{
-		QRegExp rx(m_sites[site]["Regex/Image"]);
-		QStringList order = m_sites[site]["Regex/Order"].split('|');
-		rx.setMinimal(true);
-		rx.indexIn(source, 0);
-		for (int i = 0; i < order.size(); i++)
-		{ values[order.at(i)] = rx.cap(i+1); }
-		values["file_url"] = values["preview_url"];
-			values["file_url"].remove("preview/");
-		values["site"] = site;
-	}
+	values.insert("id", QString::number(img->id()));
+	values.insert("md5", img->md5());
+	values.insert("rating", img->rating());
+	values.insert("tags", tags.join(" "));
+	values.insert("file_url", img->fileUrl().toString());
+	values.insert("site", m_comboSite->currentText());
+
+	values.insert("page_url", m_sites[m_comboSite->currentText()]["Urls/Html/Post"]);
+	QString t = m_sites[m_comboSite->currentText()].contains("DefaultTag") ? m_sites[m_comboSite->currentText()]["DefaultTag"] : "";
+	values["page_url"].replace("{tags}", t);
+	values["page_url"].replace("{id}", values["id"]);
+
 	m_parent->batchAddUnique(values);
 	this->close();
 }

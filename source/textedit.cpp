@@ -224,11 +224,19 @@ void TextEdit::customContextMenuRequested(const QPoint &pos)
 				sortings->addActions(sortingsGroup->actions());
 				sortings->setIcon(QIcon(":/images/sortings/sort.png"));
 			menu->addMenu(sortings);
+		menu->addSeparator();
+			if (!textCursor().selection().isEmpty())
+			{
+				menu->addAction(tr("Copier"), this, SLOT(copy()), QKeySequence::Copy);
+				menu->addAction(tr("Couper"), this, SLOT(cut()), QKeySequence::Cut);
+			}
+			menu->addAction(tr("Coller"), this, SLOT(paste()), QKeySequence::Paste);
 	menu->exec(QCursor::pos());
 }
 void TextEdit::insertFav(QAction *act)
 {
 	QString fav = act->text();
+	qDebug() << fav;
 	QTextCursor cursor = this->textCursor();
 	int pos = cursor.columnNumber();
 	QString txt = this->toPlainText();
