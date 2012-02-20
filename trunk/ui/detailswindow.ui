@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>412</height>
+    <height>431</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -247,8 +247,17 @@ p, li { white-space: pre-wrap; }
      </item>
      <item row="14" column="1">
       <widget class="QLabel" name="labelSource">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="text">
         <string>&lt;i&gt;Inconnue&lt;/i&gt;</string>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
        </property>
        <property name="openExternalLinks">
         <bool>true</bool>
@@ -257,8 +266,17 @@ p, li { white-space: pre-wrap; }
      </item>
      <item row="13" column="1">
       <widget class="QLabel" name="labelUrl">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="text">
         <string>&lt;i&gt;Inconnue&lt;/i&gt;</string>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
        </property>
        <property name="openExternalLinks">
         <bool>true</bool>
@@ -281,8 +299,17 @@ p, li { white-space: pre-wrap; }
      </item>
      <item row="15" column="1">
       <widget class="QLabel" name="labelSample">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="text">
         <string>&lt;i&gt;Inconnue&lt;/i&gt;</string>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
        </property>
        <property name="openExternalLinks">
         <bool>true</bool>
@@ -291,8 +318,17 @@ p, li { white-space: pre-wrap; }
      </item>
      <item row="16" column="1">
       <widget class="QLabel" name="labelPreview">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="text">
         <string>&lt;i&gt;Inconnue&lt;/i&gt;</string>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
        </property>
        <property name="openExternalLinks">
         <bool>true</bool>
@@ -308,8 +344,17 @@ p, li { white-space: pre-wrap; }
      </item>
      <item row="12" column="1">
       <widget class="QLabel" name="labelPage">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="text">
         <string>&lt;i&gt;Inconnue&lt;/i&gt;</string>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
        </property>
        <property name="openExternalLinks">
         <bool>true</bool>

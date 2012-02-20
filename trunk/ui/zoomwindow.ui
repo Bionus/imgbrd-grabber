@@ -52,7 +52,7 @@
              <x>0</x>
              <y>0</y>
              <width>69</width>
-             <height>530</height>
+             <height>504</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -112,40 +112,108 @@
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="buttonsLayout">
-     <item>
+    <layout class="QGridLayout" name="buttonsLayout">
+     <property name="verticalSpacing">
+      <number>0</number>
+     </property>
+     <item row="0" column="0" rowspan="2">
       <widget class="QPushButton" name="buttonDetails">
        <property name="text">
         <string>Plus d'infos</string>
        </property>
       </widget>
      </item>
-     <item>
+     <item row="0" column="1">
       <widget class="QPushButton" name="buttonSave">
        <property name="text">
         <string>Enregistrer</string>
        </property>
       </widget>
      </item>
-     <item>
+     <item row="0" column="2">
       <widget class="QPushButton" name="buttonSaveNQuit">
        <property name="text">
         <string>Enregistrer et fermer</string>
        </property>
       </widget>
      </item>
-     <item>
+     <item row="0" column="3">
       <widget class="QPushButton" name="buttonOpen">
        <property name="text">
-        <string>Ouvrir le dossier de destination</string>
+        <string>Dossier de destination</string>
        </property>
       </widget>
      </item>
-     <item>
+     <item row="0" column="5" rowspan="2">
       <widget class="QPushButton" name="buttonSaveAs">
        <property name="text">
         <string>Enregistrer sous...</string>
        </property>
+      </widget>
+     </item>
+     <item row="0" column="4" rowspan="2">
+      <widget class="QPushButton" name="pushButton">
+       <property name="maximumSize">
+        <size>
+         <width>24</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>+</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1" colspan="3">
+      <widget class="QWidget" name="widget" native="true">
+       <layout class="QGridLayout" name="gridLayout">
+        <property name="verticalSpacing">
+         <number>0</number>
+        </property>
+        <property name="margin">
+         <number>0</number>
+        </property>
+        <item row="1" column="0">
+         <widget class="QPushButton" name="buttonSaveFav">
+          <property name="text">
+           <string>Enregistrer (fav)</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QPushButton" name="buttonSaveNQuitFav">
+          <property name="text">
+           <string>Enregistrer et fermer (fav)</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="QPushButton" name="buttonOpenFav">
+          <property name="text">
+           <string>Dossier de destination (fav)</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0" colspan="3">
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>3</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
       </widget>
      </item>
     </layout>
@@ -163,8 +231,8 @@
    <slot>saveImage()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>203</x>
-     <y>589</y>
+     <x>235</x>
+     <y>483</y>
     </hint>
     <hint type="destinationlabel">
      <x>68</x>
@@ -179,8 +247,8 @@
    <slot>saveNQuit()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>470</x>
-     <y>589</y>
+     <x>535</x>
+     <y>483</y>
     </hint>
     <hint type="destinationlabel">
      <x>290</x>
@@ -195,8 +263,8 @@
    <slot>openSaveDir()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>633</x>
-     <y>589</y>
+     <x>655</x>
+     <y>483</y>
     </hint>
     <hint type="destinationlabel">
      <x>471</x>
@@ -212,7 +280,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>789</x>
-     <y>589</y>
+     <y>523</y>
     </hint>
     <hint type="destinationlabel">
      <x>476</x>
@@ -323,12 +391,76 @@
    <slot>openPool(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>356</x>
-     <y>552</y>
+     <x>374</x>
+     <y>453</y>
     </hint>
     <hint type="destinationlabel">
      <x>374</x>
      <y>553</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonSaveFav</sender>
+   <signal>clicked()</signal>
+   <receiver>zoomWindow</receiver>
+   <slot>saveImageFav()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>105</x>
+     <y>543</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>229</x>
+     <y>597</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonSaveNQuitFav</sender>
+   <signal>clicked()</signal>
+   <receiver>zoomWindow</receiver>
+   <slot>saveNQuitFav()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>274</x>
+     <y>545</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>421</x>
+     <y>596</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonOpenFav</sender>
+   <signal>clicked()</signal>
+   <receiver>zoomWindow</receiver>
+   <slot>openSaveDirFav()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>390</x>
+     <y>538</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>572</x>
+     <y>591</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>widget</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>677</x>
+     <y>523</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>271</x>
+     <y>510</y>
     </hint>
    </hints>
   </connection>
@@ -342,5 +474,8 @@
   <slot>openUrl(QString)</slot>
   <slot>contextMenu(QPoint)</slot>
   <slot>openPool(QString)</slot>
+  <slot>saveImageFav()</slot>
+  <slot>saveNQuitFav()</slot>
+  <slot>openSaveDirFav()</slot>
  </slots>
 </ui>

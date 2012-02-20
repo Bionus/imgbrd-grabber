@@ -11,7 +11,7 @@
 		</Html>
 	</Urls>
 	<Regex>
-		<Tags>&lt;li class=&quot;tag-type-(.+)&quot;&gt;.*&lt;a href=&quot;.+&quot;&gt;.*&lt;/a&gt;.*&lt;a href=&quot;.+&quot;&gt;(.+)&lt;/a&gt;.*&lt;/li&gt;</Tags>
+		<Tags>&lt;li class=&quot;tag-type-([^&quot;]+)&quot;&gt;(?:[^&lt;]*&lt;a href=&quot;[^&quot;]+&quot;&gt;\?&lt;/a&gt;)?[^&lt;]*&lt;a href=&quot;[^&quot;]+&quot;&gt;([^&lt;]+)&lt;/a&gt;[^&lt;]*&lt;span[^&gt;]*&gt;(\d+)&lt;/span&gt;&lt;/li&gt;</Tags>
 	</Regex>
 	<FirstPage>0</FirstPage>
 </Site>

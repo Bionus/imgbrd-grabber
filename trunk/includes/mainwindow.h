@@ -16,6 +16,7 @@ namespace Ui
     class mainWindow;
 }
 
+class searchTab;
 class mainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -24,6 +25,7 @@ class mainWindow : public QMainWindow
 		explicit mainWindow(QString, QStringList, QStringMap);
 		~mainWindow();
 		QMap<QString,QMap<QString,QString> > m_sites;
+		Ui::mainWindow *ui;
 
 	public slots:
 		// Log
@@ -43,7 +45,9 @@ class mainWindow : public QMainWindow
 		// Favorites
 		void loadFavorite(int);
 		void favoriteProperties(int);
-		void updateFavorites();
+		void updateFavorites(bool dock = false);
+		void updateFavoritesDock();
+		void updateKeepForLater();
 		void viewed();
 		void setFavoriteViewed(QString);
 		void favoritesBack();
@@ -66,6 +70,7 @@ class mainWindow : public QMainWindow
 		void batchAddUnique(QMap<QString,QString>);
 		// Batch download
 		void getAll(bool all = true);
+		void getAllImages();
 		void getAllFinishedLoading(Page*);
 		void getAllPerformTags(Image*);
 		void getAllPerformImage(Image*);
@@ -86,9 +91,9 @@ class mainWindow : public QMainWindow
 		void addTabFavorite(int);
 		void updateTabTitle(searchTab*);
 		void closeCurrentTab();
+		void loadTag(QString tag);
 
 	private:
-		Ui::mainWindow		*ui;
 		int					m_pagemax, m_timezonedecay, m_getAllDownloaded, m_getAllExists, m_getAllIgnored, m_getAllErrors, m_getAllCount, m_getAllPageCount, m_getAllBeforeId, m_remainingPics, m_remainingSites, m_countPics, m_currentFav, m_currentFavCount;
 		bool				m_allow, m_must_get_tags, m_loaded, m_getAllRequestExists, m_getAll;
 		QSettings			*m_settings;

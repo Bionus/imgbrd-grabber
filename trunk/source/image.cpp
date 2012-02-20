@@ -64,13 +64,13 @@ Image::~Image()
 void Image::loadPreview()
 {
 	QNetworkAccessManager *manager = new QNetworkAccessManager(this);
-		QNetworkDiskCache *diskCache = new QNetworkDiskCache(this);
+		/*QNetworkDiskCache *diskCache = new QNetworkDiskCache(this);
 		diskCache->setCacheDirectory(QDesktopServices::storageLocation(QDesktopServices::CacheLocation));
-		manager->setCache(diskCache);
+		manager->setCache(diskCache);*/
 
 	connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(parsePreview(QNetworkReply*)));
 	QNetworkRequest r(m_previewUrl);
-		r.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::PreferCache);
+		//r.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::PreferCache);
 		r.setRawHeader("Referer", m_previewUrl.toString().toAscii());
 
 	m_loadPreviewExists = true;
@@ -109,13 +109,13 @@ void Image::parsePreview(QNetworkReply* r)
 void Image::loadTags()
 {
 	QNetworkAccessManager *manager = new QNetworkAccessManager(this);
-		QNetworkDiskCache *diskCache = new QNetworkDiskCache(this);
+		/*QNetworkDiskCache *diskCache = new QNetworkDiskCache(this);
 		diskCache->setCacheDirectory(QDesktopServices::storageLocation(QDesktopServices::CacheLocation));
-		manager->setCache(diskCache);
+		manager->setCache(diskCache);*/
 
 	connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(parseTags(QNetworkReply*)));
 	QNetworkRequest r(m_pageUrl);
-		r.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::PreferCache);
+		//r.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::PreferCache);
 		r.setRawHeader("Referer", m_pageUrl.toString().toAscii());
 
 	m_loadTags = manager->get(r);
@@ -156,11 +156,9 @@ void Image::parseTags(QNetworkReply* r)
 	}
 
 	// Tags
-	qDebug() << "has" << m_parent->site().contains("Regex/Tags");
 	if (m_parent->site().contains("Regex/Tags"))
 	{
 		QRegExp rx(m_parent->site().value("Regex/Tags"));
-		qDebug() << m_parent->site().value("Regex/Tags");
 		rx.setMinimal(true);
 		int pos = 0;
 		QList<Tag*> tgs;
@@ -169,7 +167,6 @@ void Image::parseTags(QNetworkReply* r)
 			pos += rx.matchedLength();
 			QString type = rx.cap(1), tag = rx.cap(2).replace(" ", "_").replace("&amp;", "&");
 			int count = rx.cap(3).toInt();
-			qDebug() << tag << type << count;
 			tgs.append(new Tag(tag, type, count));
 		}
 		if (!tgs.isEmpty())
@@ -293,12 +290,14 @@ QString analyse(QStringList tokens, QString text, QStringList tags)
 	return r.contains("%") || ret.contains("\"") ? "" : ret;
 }
 
-QString Image::path(QString fn)
+QString Image::path(QString fn, QString pth)
 {
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
 	settings.beginGroup("Save");
 	if (fn.isEmpty())
 	{ fn = settings.value("filename").toString(); }
+	if (pth.isEmpty())
+	{ pth = settings.value("path").toString(); }
 
 	QMap<QString,QPair<QString,QString> > replaces = QMap<QString,QPair<QString,QString> >();
 	QStringList copyrights;
@@ -388,7 +387,7 @@ QString Image::path(QString fn)
 	}
 
 	// We get path and remove useless slashes from filename
-	QString pth = settings.value("path").toString().replace("\\", "/");
+	pth.replace("\\", "/");
 	filename.replace("\\", "/");
 	if (filename.left(1) == "/")	{ filename = filename.right(filename.length()-1);	}
 	if (pth.right(1) == "/")		{ pth = pth.left(pth.length()-1);					}

@@ -66,7 +66,9 @@ optionsWindow::optionsWindow(mainWindow *parent) : QDialog(parent), m_parent(par
 		ui->checkDownloadOriginals->setChecked(settings.value("downloadoriginals", true).toBool());
 		ui->checkReplaceBlanks->setChecked(settings.value("replaceblanks", false).toBool());
 		ui->lineFolder->setText(settings.value("path").toString());
+		ui->lineFolderFavorites->setText(settings.value("path_favorites").toString());
 		ui->lineFilename->setText(settings.value("filename").toString());
+		ui->lineFavorites->setText(settings.value("filename_favorites").toString());
 		ui->lineSeparator->setText(settings.value("separator").toString());
 		ui->lineArtistsIfNone->setText(settings.value("artist_empty", "anonymous").toString());
 		ui->checkArtistsKeepAll->setChecked(settings.value("artist_useall", false).toBool());
@@ -171,6 +173,8 @@ optionsWindow::~optionsWindow()
 
 void optionsWindow::on_lineFilename_textChanged(QString text)
 { ui->filenameValidator->setText(validateFilename(text)); }
+void optionsWindow::on_lineFavorites_textChanged(QString text)
+{ ui->favoritesValidator->setText(validateFilename(text)); }
 
 void optionsWindow::on_comboSourcesLetters_currentIndexChanged(int i)
 { ui->spinSourcesLetters->setDisabled(i > 0); }
@@ -180,6 +184,12 @@ void optionsWindow::on_buttonFolder_clicked()
 	QString folder = QFileDialog::getExistingDirectory(this, tr("Choisir un dossier de sauvegarde"), ui->lineFolder->text());
 	if (!folder.isEmpty())
 	{ ui->lineFolder->setText(folder); }
+}
+void optionsWindow::on_buttonFolderFavorites_clicked()
+{
+	QString folder = QFileDialog::getExistingDirectory(this, tr("Choisir un dossier de sauvegarde pour les favoris"), ui->lineFolderFavorites->text());
+	if (!folder.isEmpty())
+	{ ui->lineFolderFavorites->setText(folder); }
 }
 
 void optionsWindow::on_buttonCustom_clicked()
@@ -213,7 +223,7 @@ void optionsWindow::addFilename(QString condition, QString filename)
 
 void optionsWindow::on_buttonCrypt_clicked()
 {
-	QString password = QInputDialog::getText(this, tr("Hasher un mot de passe"), tr("Veuillez entrer votre mot de passe."), QLineEdit::Password);
+	QString password = QInputDialog::getText(this, tr("Hasher un mot de passe"), tr("Veuillez entrer votre mot de passe, dans le format adapté.<br/>Par exemple, pour danbooru, le format est \"%1\" (sans les guillemets).").arg("choujin-steiner--%1--").arg(tr("VOTRE_MOT_DE_PASSE")), QLineEdit::Password);
 	if (!password.isEmpty())
 	{ ui->linePassword->setText(QCryptographicHash::hash(password.toUtf8(), QCryptographicHash::Sha1).toHex()); }
 }
@@ -458,7 +468,15 @@ void optionsWindow::save()
 			while (!pth.cdUp()) {}
 			pth.mkpath(ui->lineFolder->text());
 		}
+		settings.setValue("path_favorites", ui->lineFolderFavorites->text());
+		pth = QDir(ui->lineFolderFavorites->text());
+		if (!pth.exists())
+		{
+			while (!pth.cdUp()) {}
+			pth.mkpath(ui->lineFolderFavorites->text());
+		}
 		settings.setValue("filename", ui->lineFilename->text());
+		settings.setValue("filename_favorites", ui->lineFavorites->text());
 		settings.setValue("artist_empty", ui->lineArtistsIfNone->text());
 		settings.setValue("artist_useall", ui->checkArtistsKeepAll->isChecked());
 		settings.setValue("artist_sep", ui->lineArtistsSeparator->text());

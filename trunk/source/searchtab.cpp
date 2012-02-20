@@ -1,5 +1,6 @@
 #include "searchtab.h"
 #include "ui_searchtab.h"
+#include "ui_mainwindow.h"
 #include "QBouton.h"
 #include "zoomwindow.h"
 #include "searchwindow.h"
@@ -9,7 +10,7 @@ extern mainWindow *_mainwindow;
 
 
 
-searchTab::searchTab(QMap<QString,QMap<QString,QString> > *sites, QMap<QString,QString> *favorites, QDateTime *serverDate, QWidget *parent) : QWidget(parent), ui(new Ui::searchTab), m_serverDate(serverDate), m_favorites(favorites), m_sites(sites), m_pagemax(-1), m_lastTags(QString()), m_sized(false)
+searchTab::searchTab(int id, QMap<QString,QMap<QString,QString> > *sites, QMap<QString,QString> *favorites, QDateTime *serverDate, mainWindow *parent) : QWidget(parent), ui(new Ui::searchTab), m_id(id), m_parent(parent), m_serverDate(serverDate), m_favorites(favorites), m_sites(sites), m_pagemax(-1), m_lastTags(QString()), m_sized(false), m_from_history(false), m_history_cursor(0), m_history(QList<QMap<QString,QString> >())
 {
     ui->setupUi(this);
 	ui->widgetMeant->hide();
@@ -67,13 +68,13 @@ searchTab::searchTab(QMap<QString,QMap<QString,QString> > *sites, QMap<QString,Q
 	m_search->setFocus();
 
 	// Splitter size
-	QString sizes = settings->value("splitter").toString();
+	/*QString sizes = settings->value("splitter").toString();
 	if (!sizes.isEmpty())
 	{
 		QStringList sz = sizes.split("|");
 		ui->splitter->setSizes(QList<int>() << sz[0].toInt() << sz[1].toInt());
 		m_sized = true;
-	}
+	}*/
 }
 
 searchTab::~searchTab()
@@ -92,8 +93,8 @@ void searchTab::on_buttonSearch_clicked()
 void searchTab::closeEvent(QCloseEvent *e)
 {
 	QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
-	QList<int> sizes = ui->splitter->sizes();
-	settings->setValue("splitter", QString::number(sizes[0])+"|"+QString::number(sizes[1]));
+	/*QList<int> sizes = ui->splitter->sizes();
+	settings->setValue("splitter", QString::number(sizes[0])+"|"+QString::number(sizes[1]));*/
 	settings->setValue("mergeresults", ui->checkMergeResults->isChecked());
 	settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat); // For some obscure reason it won't save without this line... :/
 	if (!m_pages.isEmpty())
@@ -174,6 +175,36 @@ void searchTab::load()
 {
 	log(tr("Chargement des résultats..."));
 
+	//m_parent->ui->dock_wiki->hide();
+	m_parent->ui->labelWiki->setText("");
+
+	if (!m_from_history)
+	{
+		QMap<QString,QString> srch = QMap<QString,QString>();
+		srch["tags"] = m_search->toPlainText();
+		srch["page"] = QString::number(ui->spinPage->value());
+		srch["ipp"] = QString::number(ui->spinImagesPerPage->value());
+		srch["columns"] = QString::number(ui->spinColumns->value());
+		m_history.append(srch);
+
+		if (m_history.size() > 1)
+		{
+			m_history_cursor++;
+			ui->buttonHistoryBack->setEnabled(true);
+			ui->buttonHistoryNext->setEnabled(false);
+		}
+
+		QMap<QString,QVariant> crsh = QMap<QString,QVariant>();
+		crsh["tags"] = QVariant(m_search->toPlainText());
+		crsh["page"] = QVariant(QString::number(ui->spinPage->value()));
+		crsh["ipp"] = QVariant(QString::number(ui->spinImagesPerPage->value()));
+		crsh["columns"] = QVariant(QString::number(ui->spinColumns->value()));
+
+		QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
+		settings->setValue("Tabs/"+QString::number(m_id), QVariant(crsh));
+	}
+	m_from_history = false;
+
 	if (m_search->toPlainText() != m_lastTags && !m_lastTags.isNull())
 	{ ui->spinPage->setValue(1); }
 	m_lastTags = m_search->toPlainText();
@@ -189,7 +220,7 @@ void searchTab::load()
 	}
 	setWindowTitle(m_search->toPlainText().isEmpty() ? tr("Recherche") : m_search->toPlainText().replace("&", "&&"));
 	emit titleChanged(this);
-	ui->labelTags->setText("");
+	m_parent->ui->labelTags->setText("");
 	for (int i = 0; i < m_pages.size(); i++)
 	{
 		m_pages.at(i)->abort();
@@ -367,14 +398,8 @@ void searchTab::finishedLoading(Page* page)
 				tags += "<a href=\""+n+"\" style=\""+(styles.contains(taglist[i]->type()+"s") ? styles[taglist[i]->type()+"s"] : styles["generals"])+"\">"+taglist[i]->text()+"</a> ("+QString::number(taglist[i]->count())+")<br/>";
 			}
 		}
-		ui->labelTags->setText(tags);
-		if (!m_sized)
-		{
-			int s1 = ui->labelTags->sizeHint().width();
-			if (s1 > width()*.2)
-			{ s1 = width()*.2; }
-			ui->splitter->setSizes(QList<int>() << s1 << width()-s1);
-		}
+
+		m_parent->ui->labelTags->setText(tags);
 	}
 
 	m_page++;
@@ -470,13 +495,12 @@ void searchTab::finishedLoadingTags(Page *page)
 		n.replace(" ", "_");
 		tags += "<a href=\""+n+"\" style=\""+(styles.contains(taglist[i]->type()+"s") ? styles[taglist[i]->type()+"s"] : styles["generals"])+"\">"+taglist[i]->text()+"</a> ("+QString::number(taglist[i]->count())+")<br/>";
 	}
-	ui->labelTags->setText(tags);
-	if (!m_sized)
+
+	m_parent->ui->labelTags->setText(tags);
+	if (!page->wiki().isEmpty())
 	{
-		int s1 = ui->labelTags->sizeHint().width();
-		if (s1 > width()*.2)
-		{ s1 = width()*.2; }
-		ui->splitter->setSizes(QList<int>() << s1 << width()-s1);
+		//m_parent->ui->dock_wiki->show();
+		m_parent->ui->labelWiki->setText("<style>.title { font-weight: bold; } ul { margin-left: -30px; }</style>"+page->wiki());
 	}
 }
 
@@ -488,7 +512,7 @@ void searchTab::finishedLoadingPreview(Image *img)
 	QPixmap preview = img->previewImage();
 	if (preview.isNull())
 	{
-		log(tr("<b>Attention :</b> %1").arg(tr("une des vignettes est vide (<a href=\"%1\">%1</a>).").arg(img->previewUrl().toString())));
+		log(tr("<b>Attention :</b> %1").arg(tr("une des miniatures est vide (<a href=\"%1\">%1</a>).").arg(img->previewUrl().toString())));
 		return;
 	}
 
@@ -725,3 +749,38 @@ void searchTab::unviewitlater()
 
 QList<bool> searchTab::sources()
 { return m_selectedSources; }
+
+void searchTab::historyBack()
+{
+	if (m_history_cursor > 0)
+	{
+		m_from_history = true;
+		m_history_cursor--;
+
+		ui->spinPage->setValue(m_history[m_history_cursor]["page"].toInt());
+		ui->spinImagesPerPage->setValue(m_history[m_history_cursor]["ipp"].toInt());
+		ui->spinColumns->setValue(m_history[m_history_cursor]["columns"].toInt());
+		setTags(m_history[m_history_cursor]["tags"]);
+
+		ui->buttonHistoryNext->setEnabled(true);
+		if (m_history_cursor == 0)
+		{ ui->buttonHistoryBack->setEnabled(false); }
+	}
+}
+void searchTab::historyNext()
+{
+	if (m_history_cursor < m_history.size() - 1)
+	{
+		m_from_history = true;
+		m_history_cursor++;
+
+		ui->spinPage->setValue(m_history[m_history_cursor]["page"].toInt());
+		ui->spinImagesPerPage->setValue(m_history[m_history_cursor]["ipp"].toInt());
+		ui->spinColumns->setValue(m_history[m_history_cursor]["columns"].toInt());
+		setTags(m_history[m_history_cursor]["tags"]);
+
+		ui->buttonHistoryBack->setEnabled(true);
+		if (m_history_cursor == m_history.size() - 1)
+		{ ui->buttonHistoryNext->setEnabled(false); }
+	}
+}

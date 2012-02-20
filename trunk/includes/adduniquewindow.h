@@ -16,13 +16,14 @@ class AddUniqueWindow : public QWidget
 
 	public slots:
 		void ok();
-		void replyFinished(QNetworkReply *r);
+		void replyFinished(Page *p);
 
 	private:
 		mainWindow								*m_parent;
 		QMap<QString,QMap<QString,QString> >	m_sites;
 		QLineEdit								*m_lineMd5, *m_lineId;
 		QComboBox								*m_comboSite;
+		Page									*m_page;
 };
 
 #endif // ADDUNIQUEWINDOW_H
