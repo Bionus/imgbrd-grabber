@@ -21,6 +21,7 @@ class Image : public QObject
 		int value();
 		QString filter(QStringList);
 		QString path(QString fn = "", QString pth = "");
+		QStringList blacklisted(QStringList);
 		QString		url();
 		QString		md5();
 		QString		author();

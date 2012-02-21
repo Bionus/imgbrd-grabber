@@ -24,7 +24,7 @@ zoomWindow::zoomWindow(Image *image, QStringMap site, QMap<QString,QMap<QString,
 
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
 	restoreGeometry(settings.value("Zoom/geometry").toByteArray());
-	resize(QSize(780, 600));
+	ui->buttonPlus->setChecked(settings.value("Zoom/plus", false).toBool());
 
 	QShortcut *escape = new QShortcut(QKeySequence(Qt::Key_Escape), this);
 		connect(escape, SIGNAL(activated()), this, SLOT(close()));
@@ -748,6 +748,7 @@ void zoomWindow::closeEvent(QCloseEvent *e)
 {
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
 	settings.setValue("Zoom/geometry", saveGeometry());
+	settings.setValue("Zoom/plus", ui->buttonPlus->isChecked());
 	//m_image->abortTags();
 	if (m_replyExists)
 	{

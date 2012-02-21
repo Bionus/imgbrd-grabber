@@ -576,21 +576,13 @@ void searchTab::finishedLoadingPreview(Image *img)
 
 void searchTab::webZoom(int id)
 {
-	QStringList detected;
 	QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
 	Image *image = m_images.at(id);
 
 	if (!settings->value("blacklistedtags").toString().isEmpty())
 	{
 		QStringList blacklistedtags(settings->value("blacklistedtags").toString().split(" "));
-		for (int i = 0; i < blacklistedtags.size(); i++)
-		{
-			for (int t = 0; t < image->tags().count(); t++)
-			{
-				if (image->tags().at(t)->text().toLower() == blacklistedtags.at(i).toLower())
-				{ detected.append(blacklistedtags.at(i)); }
-			}
-		}
+		QStringList detected = image->blacklisted(blacklistedtags);
 		if (!detected.isEmpty())
 		{
 			int reply = QMessageBox::question(this, tr("List noire"), tr("%n tag(s) figurant dans la liste noire détécté(s) sur cette image : %1. Voulez-vous l'afficher tout de même ?", "", detected.size()).arg(detected.join(", ")), QMessageBox::Yes | QMessageBox::No);

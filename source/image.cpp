@@ -474,6 +474,24 @@ int Image::value()
 	return pixels;
 }
 
+QStringList Image::blacklisted(QStringList blacklistedtags)
+{
+	QStringList detected;
+	QRegExp reg;
+	reg.setCaseSensitivity(Qt::CaseInsensitive);
+	reg.setPatternSyntax(QRegExp::Wildcard);
+	for (int i = 0; i < blacklistedtags.size(); i++)
+	{
+		for (int t = 0; t < m_tags.count(); t++)
+		{
+			reg.setPattern(blacklistedtags.at(i));
+			if (reg.exactMatch(m_tags[t]->text()))
+			{ detected.append(m_tags[t]->text()); }
+		}
+	}
+	return detected;
+}
+
 
 
 QString			Image::url()			{ return m_url;				}

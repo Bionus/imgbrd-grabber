@@ -17,7 +17,7 @@
 
 
 
-#define VERSION	"3.1.0a1"
+#define VERSION	"3.1.0a2"
 #define DONE()	logUpdate(QObject::tr(" Fait"))
 
 extern QMap<QDateTime,QString> _log;
@@ -272,7 +272,6 @@ void mainWindow::init()
 	// Loading last window state, size and position from the settings file
 	restoreGeometry(m_settings->value("geometry").toByteArray());
 	restoreState(m_settings->value("state").toByteArray());
-	resize(QSize(780, 600));
 
 	// Selected ones
 	QString sel = '1'+QString().fill('0',stes.count()-1);
@@ -725,19 +724,8 @@ void mainWindow::finishedLoading(Page* page)
 		{ log(tr("Image #%1 ignorée. Raison : %2.").arg(i).arg("déjà vue"));; }
 		else
 		{
-			QStringList detected;
-			if (!m_settings->value("blacklistedtags").toString().isEmpty())
-			{
-				QStringList blacklistedtags(m_settings->value("blacklistedtags").toString().split(" "));
-				for (int b = 0; b < blacklistedtags.size(); b++)
-				{
-					for (int t = 0; t < img->tags().count(); t++)
-					{
-						if (img->tags().at(t)->text().toLower() == blacklistedtags.at(b).toLower())
-						{ detected.append(blacklistedtags.at(b)); }
-					}
-				}
-			}
+			QStringList blacklistedtags(m_settings->value("blacklistedtags").toString().split(" "));
+			QStringList detected = img->blacklisted(blacklistedtags);
 			if (!detected.isEmpty() && m_settings->value("hideblacklisted", false).toBool())
 			{ log(tr("Image #%1 ignorée. Raison : %2.").arg(i).arg("\""+detected.join(", ")+"\""));; }
 			else
@@ -821,19 +809,11 @@ void mainWindow::finishedLoadingPreview(Image *img)
 }
 void mainWindow::webZoom(int id)
 {
-	QStringList detected;
 	Image *image = m_images.at(id);
 	if (!m_settings->value("blacklistedtags").toString().isEmpty())
 	{
 		QStringList blacklistedtags(m_settings->value("blacklistedtags").toString().split(" "));
-		for (int i = 0; i < blacklistedtags.size(); i++)
-		{
-			for (int t = 0; t < image->tags().count(); t++)
-			{
-				if (image->tags().at(t)->text().toLower() == blacklistedtags.at(i).toLower())
-				{ detected.append(blacklistedtags.at(i)); }
-			}
-		}
+		QStringList detected = image->blacklisted(blacklistedtags);
 		if (!detected.isEmpty())
 		{
 			int reply = QMessageBox::question(this, tr("List noire"), tr("%n tag(s) figurant dans la liste noire détécté(s) sur cette image : %1. Voulez-vous l'afficher tout de même ?", "", detected.size()).arg(detected.join(", ")), QMessageBox::Yes | QMessageBox::No);
@@ -1269,14 +1249,7 @@ void mainWindow::_getAll()
 				if (!m_settings->value("blacklistedtags").toString().isEmpty())
 				{
 					QStringList blacklistedtags(m_settings->value("blacklistedtags").toString().split(' '));
-					for (int t = 0; t < img->tags().count(); t++)
-					{
-						if (blacklistedtags.contains(img->tags().at(t)->text(), Qt::CaseInsensitive) && !tags.contains(img->tags().at(t)->text(), Qt::CaseInsensitive))
-						{
-							detected = true;
-							log(tr("Certains tags de l'image sont blacklistés."));
-						}
-					}
+					detected = !img->blacklisted(blacklistedtags).isEmpty();
 				}
 				if (detected && site_id >= 0 && m_groupBatchs[site_id][4] == "false")
 				{
@@ -1450,14 +1423,7 @@ void mainWindow::getAllPerformTags(Image* img)
 		if (!m_settings->value("blacklistedtags").toString().isEmpty())
 		{
 			QStringList blacklistedtags(m_settings->value("blacklistedtags").toString().split(' '));
-			for (int t = 0; t < img->tags().count(); t++)
-			{
-				if (blacklistedtags.contains(img->tags().at(t)->text(), Qt::CaseInsensitive) && !tags.contains(img->tags().at(t)->text(), Qt::CaseInsensitive))
-				{
-					detected = true;
-					log(tr("Certains tags de l'image sont blacklistés."));
-				}
-			}
+			detected = !img->blacklisted(blacklistedtags).isEmpty();
 		}
 		if (detected && site_id >= 0 && m_groupBatchs[site_id][4] == "false")
 		{
@@ -1761,6 +1727,12 @@ bool mainWindow::loadLinkList(QString filename)
 
 void mainWindow::loadTag(QString tag)
 {
+	if (tag.startsWith("http://"))
+	{
+		QDesktopServices::openUrl(tag);
+		return;
+	}
+
 	if (m_tabs.count() > 0 && ui->tabWidget->currentIndex() < m_tabs.count())
 	{ m_tabs[ui->tabWidget->currentIndex()]->setTags(tag); }
 }

@@ -152,7 +152,7 @@
       </widget>
      </item>
      <item row="0" column="4" rowspan="2">
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="buttonPlus">
        <property name="maximumSize">
         <size>
          <width>24</width>
@@ -231,8 +231,8 @@
    <slot>saveImage()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>235</x>
-     <y>483</y>
+     <x>305</x>
+     <y>563</y>
     </hint>
     <hint type="destinationlabel">
      <x>68</x>
@@ -247,8 +247,8 @@
    <slot>saveNQuit()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>535</x>
-     <y>483</y>
+     <x>457</x>
+     <y>563</y>
     </hint>
     <hint type="destinationlabel">
      <x>290</x>
@@ -263,8 +263,8 @@
    <slot>openSaveDir()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>655</x>
-     <y>483</y>
+     <x>608</x>
+     <y>563</y>
     </hint>
     <hint type="destinationlabel">
      <x>471</x>
@@ -280,7 +280,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>789</x>
-     <y>523</y>
+     <y>576</y>
     </hint>
     <hint type="destinationlabel">
      <x>476</x>
@@ -391,8 +391,8 @@
    <slot>openPool(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>374</x>
-     <y>453</y>
+     <x>383</x>
+     <y>533</y>
     </hint>
     <hint type="destinationlabel">
      <x>374</x>
@@ -407,8 +407,8 @@
    <slot>saveImageFav()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>105</x>
-     <y>543</y>
+     <x>266</x>
+     <y>589</y>
     </hint>
     <hint type="destinationlabel">
      <x>229</x>
@@ -423,8 +423,8 @@
    <slot>saveNQuitFav()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>274</x>
-     <y>545</y>
+     <x>457</x>
+     <y>589</y>
     </hint>
     <hint type="destinationlabel">
      <x>421</x>
@@ -439,8 +439,8 @@
    <slot>openSaveDirFav()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>390</x>
-     <y>538</y>
+     <x>608</x>
+     <y>589</y>
     </hint>
     <hint type="destinationlabel">
      <x>572</x>
@@ -449,18 +449,18 @@
    </hints>
   </connection>
   <connection>
-   <sender>pushButton</sender>
-   <signal>clicked(bool)</signal>
+   <sender>buttonPlus</sender>
+   <signal>toggled(bool)</signal>
    <receiver>widget</receiver>
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>677</x>
-     <y>523</y>
+     <x>621</x>
+     <y>567</y>
     </hint>
     <hint type="destinationlabel">
-     <x>271</x>
-     <y>510</y>
+     <x>460</x>
+     <y>585</y>
     </hint>
    </hints>
   </connection>
