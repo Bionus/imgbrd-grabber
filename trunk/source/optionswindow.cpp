@@ -465,15 +465,31 @@ void optionsWindow::save()
 		QDir pth = QDir(ui->lineFolder->text());
 		if (!pth.exists())
 		{
-			while (!pth.cdUp()) {}
-			pth.mkpath(ui->lineFolder->text());
+			QString op = "";
+			while (!pth.exists() && pth.path() != op)
+			{
+				op = pth.path();
+				pth.setPath(pth.path().remove(QRegExp("/([^/]+)$")));
+			}
+			if (pth.path() == op)
+			{ error(this, tr("Une erreur est survenue lors de la création du dossier de sauvegarde.")); }
+			else
+			{ pth.mkpath(ui->lineFolder->text()); }
 		}
 		settings.setValue("path_favorites", ui->lineFolderFavorites->text());
 		pth = QDir(ui->lineFolderFavorites->text());
 		if (!pth.exists())
 		{
-			while (!pth.cdUp()) {}
-			pth.mkpath(ui->lineFolderFavorites->text());
+			QString op = "";
+			while (!pth.exists() && pth.path() != op)
+			{
+				op = pth.path();
+				pth.setPath(pth.path().remove(QRegExp("/([^/]+)$")));
+			}
+			if (pth.path() == op)
+			{ error(this, tr("Une erreur est survenue lors de la création du dossier de sauvegarde des favoris.")); }
+			else
+			{ pth.mkpath(ui->lineFolderFavorites->text()); }
 		}
 		settings.setValue("filename", ui->lineFilename->text());
 		settings.setValue("filename_favorites", ui->lineFavorites->text());
