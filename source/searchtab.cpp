@@ -12,7 +12,7 @@ extern mainWindow *_mainwindow;
 
 searchTab::searchTab(int id, QMap<QString,QMap<QString,QString> > *sites, QMap<QString,QString> *favorites, QDateTime *serverDate, mainWindow *parent) : QWidget(parent), ui(new Ui::searchTab), m_id(id), m_parent(parent), m_serverDate(serverDate), m_favorites(favorites), m_sites(sites), m_pagemax(-1), m_lastTags(QString()), m_sized(false), m_from_history(false), m_history_cursor(0), m_history(QList<QMap<QString,QString> >())
 {
-    ui->setupUi(this);
+	ui->setupUi(this);
 	ui->widgetMeant->hide();
 
 	QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
@@ -40,6 +40,9 @@ searchTab::searchTab(int id, QMap<QString,QMap<QString,QString> > *sites, QMap<Q
 				m_postFiltering->setCompleter(completer);
 			}
 		connect(m_search, SIGNAL(returnPressed()), this, SLOT(load()));
+		connect(m_search, SIGNAL(favoritesChanged()), _mainwindow, SLOT(updateFavorites()));
+		connect(m_search, SIGNAL(favoritesChanged()), _mainwindow, SLOT(updateFavoritesDock()));
+		connect(m_search, SIGNAL(kflChanged()), _mainwindow, SLOT(updateKeepForLater()));
 		connect(m_postFiltering, SIGNAL(returnPressed()), this, SLOT(load()));
 		connect(ui->labelMeant, SIGNAL(linkActivated(QString)), this, SLOT(setTags(QString)));
 		ui->layoutFields->insertWidget(1, m_search, 1);
@@ -193,19 +196,10 @@ void searchTab::load()
 			ui->buttonHistoryBack->setEnabled(true);
 			ui->buttonHistoryNext->setEnabled(false);
 		}
-
-		QMap<QString,QVariant> crsh = QMap<QString,QVariant>();
-		crsh["tags"] = QVariant(m_search->toPlainText());
-		crsh["page"] = QVariant(QString::number(ui->spinPage->value()));
-		crsh["ipp"] = QVariant(QString::number(ui->spinImagesPerPage->value()));
-		crsh["columns"] = QVariant(QString::number(ui->spinColumns->value()));
-
-		QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
-		settings->setValue("Tabs/"+QString::number(m_id), QVariant(crsh));
 	}
 	m_from_history = false;
 
-	if (m_search->toPlainText() != m_lastTags && !m_lastTags.isNull())
+	if (m_search->toPlainText() != m_lastTags && !m_lastTags.isNull() && m_history_cursor == m_history.size() - 1)
 	{ ui->spinPage->setValue(1); }
 	m_lastTags = m_search->toPlainText();
 
@@ -776,3 +770,6 @@ void searchTab::historyNext()
 		{ ui->buttonHistoryNext->setEnabled(false); }
 	}
 }
+
+QString searchTab::tags()
+{ return m_search->toPlainText(); }

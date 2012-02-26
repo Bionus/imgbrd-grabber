@@ -25,6 +25,7 @@ class searchTab : public QWidget
 		~searchTab();
 		Ui::searchTab *ui;
 		QList<bool> sources();
+		QString tags();
 
 	public slots:
 		// Search

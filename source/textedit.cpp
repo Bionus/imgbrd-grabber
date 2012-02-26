@@ -184,6 +184,11 @@ void TextEdit::customContextMenuRequested(const QPoint &pos)
 				for (int i = 0; i < m_favorites.count(); i++)
 				{ favsGroup->addAction(m_favorites.at(i)); }
 				favs->addActions(favsGroup->actions());
+				favs->addSeparator();
+				if (m_favorites.contains(toPlainText()))
+				{ favs->addAction(tr("Retirer"), this, SLOT(unsetFavorite())); }
+				else
+				{ favs->addAction(tr("Ajouter"), this, SLOT(setFavorite())); }
 				favs->setIcon(QIcon(":/images/icons/favorite.png"));
 			menu->addMenu(favs);
 		QMenu *vils = new QMenu(tr("Gardés pour plus tard"), menu);
@@ -194,6 +199,11 @@ void TextEdit::customContextMenuRequested(const QPoint &pos)
 				for (int i = 0; i < viewitlater.count(); i++)
 				{ vilsGroup->addAction(viewitlater.at(i)); }
 				vils->addActions(vilsGroup->actions());
+				vils->addSeparator();
+				if (viewitlater.contains(toPlainText()))
+				{ vils->addAction(tr("Retirer"), this, SLOT(unsetKfl())); }
+				else
+				{ vils->addAction(tr("Ajouter"), this, SLOT(setKfl())); }
 				vils->setIcon(QIcon(":/images/icons/book.png"));
 			menu->addMenu(vils);
 		QMenu *ratings = new QMenu(tr("Classes"), menu);
@@ -233,10 +243,64 @@ void TextEdit::customContextMenuRequested(const QPoint &pos)
 			menu->addAction(tr("Coller"), this, SLOT(paste()), QKeySequence::Paste);
 	menu->exec(QCursor::pos());
 }
+void TextEdit::setFavorite()
+{
+	m_favorites.append(toPlainText());
+	m_favorites.sort();
+
+	QFile f(savePath("favorites.txt"));
+		f.open(QIODevice::WriteOnly | QIODevice::Append);
+		f.write(QString(toPlainText()+"|50|"+QDateTime::currentDateTime().toString(Qt::ISODate)+"\r\n").toAscii());
+	f.close();
+
+	emit favoritesChanged();
+}
+void TextEdit::unsetFavorite()
+{
+	m_favorites.removeAll(toPlainText());
+	QFile f(savePath("favorites.txt"));
+	f.open(QIODevice::ReadOnly);
+		QString favs = f.readAll();
+	f.close();
+	favs.replace("\r\n", "\n").replace("\r", "\n").replace("\n", "\r\n");
+	QRegExp reg(toPlainText()+"\\|(.+)\\r\\n");
+	reg.setMinimal(true);
+	favs.remove(reg);
+	f.open(QIODevice::WriteOnly);
+		f.write(favs.toAscii());
+	f.close();
+	if (QFile::exists(savePath("thumbs/"+toPlainText()+".png")))
+	{ QFile::remove(savePath("thumbs/"+toPlainText()+".png")); }
+
+	emit favoritesChanged();
+}
+void TextEdit::setKfl()
+{
+	QStringList viewitlater = loadViewItLater();
+	viewitlater.append(toPlainText());
+
+	QFile f(savePath("viewitlater.txt"));
+	f.open(QIODevice::WriteOnly);
+		f.write(viewitlater.join("\r\n").toAscii());
+	f.close();
+
+	emit kflChanged();
+}
+void TextEdit::unsetKfl()
+{
+	QStringList viewitlater = loadViewItLater();
+	viewitlater.removeAll(toPlainText());
+
+	QFile f(savePath("viewitlater.txt"));
+	f.open(QIODevice::WriteOnly);
+		f.write(viewitlater.join("\r\n").toAscii());
+	f.close();
+
+	emit kflChanged();
+}
 void TextEdit::insertFav(QAction *act)
 {
 	QString fav = act->text();
-	qDebug() << fav;
 	QTextCursor cursor = this->textCursor();
 	int pos = cursor.columnNumber();
 	QString txt = this->toPlainText();

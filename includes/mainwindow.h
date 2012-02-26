@@ -8,6 +8,7 @@
 #include "QBouton.h"
 #include "textedit.h"
 #include "searchtab.h"
+#include "ui_searchtab.h"
 
 
 
@@ -87,11 +88,13 @@ class mainWindow : public QMainWindow
 		bool saveLinkList(QString filename);
 		bool loadLinkList(QString filename);
 		// Tabs
-		void addTab(QString tag = "");
+		int addTab(QString tag = "");
 		void addTabFavorite(int);
 		void updateTabTitle(searchTab*);
 		void closeCurrentTab();
 		void loadTag(QString tag);
+		bool saveTabs(QString);
+		bool loadTabs(QString);
 
 	private:
 		int					m_pagemax, m_timezonedecay, m_getAllDownloaded, m_getAllExists, m_getAllIgnored, m_getAllErrors, m_getAllCount, m_getAllPageCount, m_getAllBeforeId, m_remainingPics, m_remainingSites, m_countPics, m_currentFav, m_currentFavCount;
