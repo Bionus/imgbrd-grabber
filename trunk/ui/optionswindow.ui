@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>648</width>
-    <height>376</height>
+    <width>666</width>
+    <height>423</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -148,7 +148,7 @@
         </sizepolicy>
        </property>
        <property name="currentIndex">
-        <number>3</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="page1">
         <layout class="QFormLayout" name="formLayout_14">
@@ -165,31 +165,24 @@
          <item row="0" column="1">
           <widget class="QComboBox" name="comboLanguages"/>
          </item>
-         <item row="1" column="0" colspan="2">
-          <widget class="QLabel" name="label_2">
-           <property name="text">
-            <string>&lt;i&gt;Séparer les tags par des espaces.&lt;/i&gt;</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
+         <item row="3" column="0">
           <widget class="QLabel" name="label_5">
            <property name="text">
             <string>Liste noire</string>
            </property>
           </widget>
          </item>
-         <item row="2" column="1">
+         <item row="3" column="1">
           <widget class="QLineEdit" name="lineBlacklist"/>
          </item>
-         <item row="3" column="0" colspan="2">
+         <item row="5" column="0" colspan="2">
           <widget class="QCheckBox" name="checkHideBlacklisted">
            <property name="text">
             <string>Ignorer les images contenant un tag de la liste noire</string>
            </property>
           </widget>
          </item>
-         <item row="4" column="0" colspan="2">
+         <item row="6" column="0" colspan="2">
           <widget class="QLabel" name="label_6">
            <property name="text">
             <string>&lt;i&gt;Les images contenant un tag de la liste noire ne seront tout simplement pas affichées dans la liste de résultats si cette case est cochée. Sinon, une confirmation sera demandée avant l'affichage d'une de ces images.&lt;/i&gt;</string>
@@ -199,24 +192,24 @@
            </property>
           </widget>
          </item>
-         <item row="5" column="0">
+         <item row="7" column="0">
           <widget class="QLabel" name="label_48">
            <property name="text">
             <string>Liste blanche</string>
            </property>
           </widget>
          </item>
-         <item row="5" column="1">
+         <item row="7" column="1">
           <widget class="QLineEdit" name="lineWhitelist"/>
          </item>
-         <item row="6" column="0">
+         <item row="8" column="0">
           <widget class="QLabel" name="label_50">
            <property name="text">
             <string>Télécharger</string>
            </property>
           </widget>
          </item>
-         <item row="6" column="1">
+         <item row="8" column="1">
           <widget class="QComboBox" name="comboWhitelist">
            <property name="currentIndex">
             <number>1</number>
@@ -238,7 +231,7 @@
            </item>
           </widget>
          </item>
-         <item row="7" column="0" colspan="2">
+         <item row="9" column="0" colspan="2">
           <widget class="QLabel" name="label_51">
            <property name="text">
             <string>&lt;i&gt;Les images contenant un tag de la liste blanche seront téléchargées automatiquement en fonction de l'option ci-dessus.&lt;/i&gt;</string>
@@ -248,17 +241,17 @@
            </property>
           </widget>
          </item>
-         <item row="8" column="0">
+         <item row="10" column="0">
           <widget class="QLabel" name="label_49">
            <property name="text">
             <string>Tags ignorés</string>
            </property>
           </widget>
          </item>
-         <item row="8" column="1">
+         <item row="10" column="1">
           <widget class="QLineEdit" name="lineIgnored"/>
          </item>
-         <item row="9" column="0" colspan="2">
+         <item row="11" column="0" colspan="2">
           <widget class="QLabel" name="label_52">
            <property name="text">
             <string>&lt;i&gt;Ces tags ne seront pas pris en compte lors de la sauvegarde de l'image.&lt;/i&gt;</string>
@@ -268,24 +261,49 @@
            </property>
           </widget>
          </item>
-         <item row="10" column="0" colspan="2">
+         <item row="12" column="0" colspan="2">
           <widget class="QCheckBox" name="checkDownloadBlacklisted">
            <property name="text">
             <string>Télécharger les images de la liste noire</string>
            </property>
           </widget>
          </item>
-         <item row="11" column="0" colspan="2">
-          <widget class="QCheckBox" name="checkLoadFirstAtStart">
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_63">
            <property name="text">
-            <string>Charger la première page au démarrage</string>
+            <string>Au démarrage</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QComboBox" name="comboStart">
+           <item>
+            <property name="text">
+             <string>Ne rien faire</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Charger la première page</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Restaurer la dernière session</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="4" column="0" colspan="2">
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>&lt;i&gt;Séparer les tags par des espaces.&lt;/i&gt;</string>
            </property>
           </widget>
          </item>
         </layout>
         <zorder>label</zorder>
         <zorder>comboLanguages</zorder>
-        <zorder>label_2</zorder>
         <zorder>label_5</zorder>
         <zorder>lineBlacklist</zorder>
         <zorder>checkHideBlacklisted</zorder>
@@ -299,7 +317,9 @@
         <zorder>lineIgnored</zorder>
         <zorder>label_52</zorder>
         <zorder>checkDownloadBlacklisted</zorder>
-        <zorder>checkLoadFirstAtStart</zorder>
+        <zorder>label_63</zorder>
+        <zorder>comboStart</zorder>
+        <zorder>label_2</zorder>
        </widget>
        <widget class="QWidget" name="page2">
         <layout class="QFormLayout" name="formLayout_2">
@@ -514,6 +534,19 @@
        </widget>
        <widget class="QWidget" name="page4">
         <layout class="QFormLayout" name="formLayout_17">
+         <property name="fieldGrowthPolicy">
+          <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+         </property>
+         <item row="0" column="0" colspan="2">
+          <widget class="QCheckBox" name="checkDownloadOriginals">
+           <property name="text">
+            <string>Télécharger les images originales</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
          <item row="1" column="0" colspan="2">
           <widget class="QCheckBox" name="checkAutodownload">
            <property name="text">
@@ -535,6 +568,27 @@
            </item>
            <item>
             <widget class="QPushButton" name="buttonFolder">
+             <property name="text">
+              <string>Parcourir</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="label_62">
+           <property name="text">
+            <string>Favoris</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <layout class="QHBoxLayout" name="horizontalLayout_13">
+           <item>
+            <widget class="QLineEdit" name="lineFolderFavorites"/>
+           </item>
+           <item>
+            <widget class="QPushButton" name="buttonFolderFavorites">
              <property name="text">
               <string>Parcourir</string>
              </property>
@@ -598,16 +652,6 @@ p, li { white-space: pre-wrap; }
            </property>
           </widget>
          </item>
-         <item row="0" column="0" colspan="2">
-          <widget class="QCheckBox" name="checkDownloadOriginals">
-           <property name="text">
-            <string>Télécharger les images originales</string>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
          <item row="8" column="1">
           <widget class="QSpinBox" name="spinSimultaneous">
            <property name="minimum">
@@ -617,27 +661,6 @@ p, li { white-space: pre-wrap; }
             <number>10</number>
            </property>
           </widget>
-         </item>
-         <item row="3" column="0">
-          <widget class="QLabel" name="label_62">
-           <property name="text">
-            <string>Favoris</string>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="1">
-          <layout class="QHBoxLayout" name="horizontalLayout_13">
-           <item>
-            <widget class="QLineEdit" name="lineFolderFavorites"/>
-           </item>
-           <item>
-            <widget class="QPushButton" name="buttonFolderFavorites">
-             <property name="text">
-              <string>Parcourir</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
          </item>
         </layout>
        </widget>

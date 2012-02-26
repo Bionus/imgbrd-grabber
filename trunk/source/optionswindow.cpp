@@ -23,7 +23,8 @@ optionsWindow::optionsWindow(mainWindow *parent) : QDialog(parent), m_parent(par
 	QStringList wl = QStringList() << "never" << "image" << "page";
 	ui->comboWhitelist->setCurrentIndex(wl.indexOf(settings.value("whitelist_download", "image").toString()));
 	ui->lineIgnored->setText(settings.value("ignoredtags").toString());
-	ui->checkLoadFirstAtStart->setChecked(settings.value("loadatstart", false).toBool());
+	QStringList starts = QStringList() << "none" << "loadfirst" << "restore";
+	ui->comboStart->setCurrentIndex(starts.indexOf(settings.value("start", "none").toString()));
 	ui->spinHideFavorites->setValue(settings.value("hidefavorites", 20).toInt());
 	ui->checkAutodownload->setChecked(settings.value("autodownload", false).toBool());
 	ui->checkHideBlacklisted->setChecked(settings.value("hideblacklisted", false).toBool());
@@ -431,7 +432,8 @@ void optionsWindow::save()
 	settings.setValue("source_2", sources.at(ui->comboSource2->currentIndex()));
 	settings.setValue("source_3", sources.at(ui->comboSource3->currentIndex()));
 	settings.setValue("source_4", sources.at(ui->comboSource4->currentIndex()));
-	settings.setValue("loadatstart", ui->checkLoadFirstAtStart->isChecked());
+	QStringList starts = QStringList() << "none" << "loadfirst" << "restore";
+	settings.setValue("start", starts.at(ui->comboStart->currentIndex()));
 	settings.setValue("hidefavorites", ui->spinHideFavorites->value());
 	settings.setValue("autodownload", ui->checkAutodownload->isChecked());
 	QStringList positions = QStringList() << "top" << "left" << "auto";

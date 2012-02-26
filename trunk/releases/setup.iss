@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Grabber"
-#define MyAppVersion "3.1.0a1"
+#define MyAppVersion "3.1.0a2"
 #define MyAppPublisher "Bionus"
 #define MyAppURL "http://code.google.com/p/imgbrd-grabber/"
 #define MyAppExeName "Grabber.exe"
@@ -91,6 +91,9 @@ Source: "D:\Programmation\C++\Qt\Grabber\release\sites\danbooru\sites.txt"; Dest
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\gelbooru\icon.png"; DestDir: "{%UserProfile}\Grabber\sites\gelbooru"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\gelbooru\model.xml"; DestDir: "{%UserProfile}\Grabber\sites\gelbooru"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\gelbooru\sites.txt"; DestDir: "{%UserProfile}\Grabber\sites\gelbooru"; Flags: ignoreversion     
+Source: "D:\Programmation\C++\Qt\Grabber\release\sites\metabooru\icon.png"; DestDir: "{%UserProfile}\Grabber\sites\gelbooru"; Flags: ignoreversion
+Source: "D:\Programmation\C++\Qt\Grabber\release\sites\metabooru\model.xml"; DestDir: "{%UserProfile}\Grabber\sites\gelbooru"; Flags: ignoreversion
+Source: "D:\Programmation\C++\Qt\Grabber\release\sites\metabooru\sites.txt"; DestDir: "{%UserProfile}\Grabber\sites\gelbooru"; Flags: ignoreversion     
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\shimmie\icon.png"; DestDir: "{%UserProfile}\Grabber\sites\shimmie"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\shimmie\model.xml"; DestDir: "{%UserProfile}\Grabber\sites\shimmie"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\shimmie\sites.txt"; DestDir: "{%UserProfile}\Grabber\sites\shimmie"; Flags: ignoreversion

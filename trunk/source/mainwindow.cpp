@@ -51,20 +51,6 @@ void mainWindow::init()
 	tabifyDockWidget(ui->dock_kfl, ui->dock_favorites);
 	ui->dock_internet->raise();
 
-	if (crashed)
-	{
-		log(tr("Il semblerait que Imgbrd-Grabber n'ait pas été fermé correctement la dernière fois."));
-		/*int reponse = QMessageBox::question(this, tr("Danbooru Downloader"), tr("Il semblerait que l'application n'ait pas été arrêtée correctement lors de sa dernière utilisation. Voulez-vous envoyer un rapport aux développeurs ?"), QMessageBox::Yes | QMessageBox::No);
-		if (reponse == QMessageBox::Yes)
-		{
-			QFile f(savePath("main.log"));
-			f.open(QFile::ReadOnly);
-			QString log = f.readAll().trimmed();
-			f.close();
-			QDesktopServices::openUrl(QUrl("mailto:bio.nus@hotmail.fr?subject=Imgbrd-Grabber crash report&attach="+QUrl::toPercentEncoding(log)));
-		}*/
-	}
-
 	ui->menuView->addAction(ui->dock_internet->toggleViewAction());
 	ui->menuView->addAction(ui->dock_wiki->toggleViewAction());
 	ui->menuView->addAction(ui->dock_kfl->toggleViewAction());
@@ -165,13 +151,6 @@ void mainWindow::init()
 		file.close();
 	}
 	m_sites = stes;
-
-	QPushButton *add = new QPushButton(QIcon(":/images/add.png"), "");
-		add->setFlat(true);
-		add->resize(QSize(12,12));
-		connect(add, SIGNAL(clicked()), this, SLOT(addTab()));
-		ui->tabWidget->setCornerWidget(add);
-	addTab();
 
 	ui->actionClosetab->setShortcut(QKeySequence("Ctrl+W"));
 	ui->actionAddtab->setShortcut(QKeySequence::AddTab);
@@ -283,6 +262,28 @@ void mainWindow::init()
 		m_selectedSources.append(sav.at(i) == '1' ? true : false);
 	}
 
+	QPushButton *add = new QPushButton(QIcon(":/images/add.png"), "");
+		add->setFlat(true);
+		add->resize(QSize(12,12));
+		connect(add, SIGNAL(clicked()), this, SLOT(addTab()));
+		ui->tabWidget->setCornerWidget(add);
+
+	bool restore = m_settings->value("start", "none").toString() == "restore";
+	if (crashed && !restore)
+	{
+		log(tr("Il semblerait que Imgbrd-Grabber n'ait pas été fermé correctement la dernière fois."));
+		int reponse = QMessageBox::question(this, tr("Danbooru Downloader"), tr("Il semblerait que l'application n'ait pas été arrêtée correctement lors de sa dernière utilisation. Voulez-vous restaurer votre dernière seesion ?"), QMessageBox::Yes | QMessageBox::No);
+		if (reponse == QMessageBox::Yes)
+		{ restore = true; }
+	}
+	if (restore)
+	{
+		loadLinkList(savePath("restore.igl"));
+		loadTabs(savePath("tabs.txt"));
+	}
+	if (m_tabs.isEmpty())
+	{ addTab(); }
+
 	// Console usage
 	if (this->m_params.keys().contains("batch"))
 	{
@@ -291,7 +292,7 @@ void mainWindow::init()
 		if (!m_params.keys().contains("dontstart"))
 		{ getAll(); }
 	}
-	else if (!m_tags.isEmpty() || m_settings->value("loadatstart", false).toBool())
+	else if (!m_tags.isEmpty() || m_settings->value("start", "none").toString() == "firstpage")
 	{
 		if (!m_tags.isEmpty() && m_tags.first().endsWith(".igl"))
 		{
@@ -322,7 +323,7 @@ mainWindow::~mainWindow()
 	delete ui;
 }
 
-void mainWindow::addTab(QString tag)
+int mainWindow::addTab(QString tag)
 {
 	searchTab *w = new searchTab(m_tabs.size(), &m_sites, &m_favorites, &m_serverDate, this);
 	connect(w, SIGNAL(batchAddGroup(QStringList)), this, SLOT(batchAddGroup(QStringList)));
@@ -337,6 +338,42 @@ void mainWindow::addTab(QString tag)
 		ui->tabWidget->findChild<QTabBar*>()->setTabButton(index, QTabBar::RightSide, closeTab);
 	if (!tag.isEmpty())
 	{ w->setTags(tag); }
+	saveTabs(savePath("tabs.txt"));
+	return m_tabs.size() - 1;
+}
+bool mainWindow::saveTabs(QString filename)
+{
+	QStringList tabs = QStringList();
+	for (int i = 0; i < m_tabs.size(); i++)
+	{ tabs.append(m_tabs[i]->tags()+"¤"+QString::number(m_tabs[i]->ui->spinPage->value())); }
+
+	QFile *f = new QFile(filename);
+	if (f->open(QFile::WriteOnly))
+	{
+		f->write(tabs.join("\r\n").toAscii());
+		f->close();
+		return true;
+	}
+	return false;
+}
+bool mainWindow::loadTabs(QString filename)
+{
+	QFile *f = new QFile(filename);
+	if (f->open(QFile::ReadOnly))
+	{
+		QString links = f->readAll();
+		f->close();
+
+		QStringList tabs = links.split("\r\n");
+		for (int i = 1; i < tabs.size(); i++)
+		{
+			QStringList infos = tabs[i].split("¤");
+			int i = addTab(infos[0]);
+			m_tabs[i]->ui->spinPage->setValue(infos[1].toInt());
+		}
+		return true;
+	}
+	return false;
 }
 void mainWindow::addTabFavorite(int id)
 {
@@ -346,6 +383,7 @@ void mainWindow::addTabFavorite(int id)
 void mainWindow::updateTabTitle(searchTab *tab)
 {
 	ui->tabWidget->setTabText(ui->tabWidget->indexOf(tab), tab->windowTitle());
+	saveTabs(savePath("tabs.txt"));
 }
 void mainWindow::closeCurrentTab()
 {
@@ -379,6 +417,7 @@ void mainWindow::batchAddGroup(const QStringList& values)
 	m_progressBars.append(prog);
 	ui->tableBatchGroups->setCellWidget(ui->tableBatchGroups->rowCount()-1, 9, prog);
 	m_allow = true;
+	saveLinkList(savePath("restore.igl"));
 }
 void mainWindow::batchAddUnique(QStringMap values)
 {
@@ -412,6 +451,7 @@ void mainWindow::batchAddUnique(QStringMap values)
 	{
 		//ui->tableBatchUniques->removeRow(0);
 	}
+	saveLinkList(savePath("restore.igl"));
 }
 void mainWindow::saveFolder()
 {
@@ -963,6 +1003,8 @@ void mainWindow::changeEvent(QEvent* event)
 void mainWindow::closeEvent(QCloseEvent *e)
 {
 	log(tr("Sauvegarde..."));
+		saveLinkList(savePath("restore.igl"));
+		saveTabs(savePath("tabs.txt"));
 		QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
 		settings.setValue("state", saveState());
 		settings.setValue("geometry", saveGeometry());
@@ -978,6 +1020,7 @@ void mainWindow::closeEvent(QCloseEvent *e)
 		for (int i = 0; i < m_tabs.size(); i++)
 		{ m_tabs.at(i)->deleteLater(); }
 		settings.setValue("crashed", false);
+		settings.sync();
 	DONE();
 	e->accept();
 	qApp->quit();
@@ -1721,8 +1764,7 @@ bool mainWindow::loadLinkList(QString filename)
 		}
 		return true;
 	}
-	else
-	{ return false; }
+	return false;
 }
 
 void mainWindow::loadTag(QString tag)
