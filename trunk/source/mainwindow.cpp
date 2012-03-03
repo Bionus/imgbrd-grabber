@@ -13,6 +13,7 @@
 #include "functions.h"
 #include "json.h"
 #include <QtXml>
+#include <QtScript>
 #include <float.h>
 
 
@@ -23,17 +24,22 @@
 extern QMap<QDateTime,QString> _log;
 
 /*
-deviantart.org
-g.e-hentai.org
-minitokyo.net
-pixiv.net
+  deviantart.org
+  g.e-hentai.org
+  minitokyo.net
+  pixiv.net
+*/
+
+/*
+  QString inits = "var artist = \"ishikei\";";
+  QString prgm = "artist + \" lolollo\"";
+  QString filename = QScriptEngine().evaluate(QScriptProgram(inits + prgm)).toString();
 */
 
 
 
 mainWindow::mainWindow(QString program, QStringList tags, QStringMap params) : ui(new Ui::mainWindow), m_currentFav(-1), m_loaded(false), m_getAll(false), m_program(program), m_tags(tags), m_params(params)
-{
-}
+{ }
 void mainWindow::init()
 {
 	m_settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
@@ -70,7 +76,7 @@ void mainWindow::init()
 	m_gotMd5 = QStringList();
 	m_mergeButtons = QList<QBouton*>();
 	m_progressBars = QList<QProgressBar*>();
-	m_progressdialog = new batchWindow();
+	m_progressdialog = new batchWindow(this);
 
 	ui->tableBatchGroups->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
 	ui->tableBatchUniques->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
@@ -262,7 +268,7 @@ void mainWindow::init()
 		m_selectedSources.append(sav.at(i) == '1' ? true : false);
 	}
 
-	QPushButton *add = new QPushButton(QIcon(":/images/add.png"), "");
+	QPushButton *add = new QPushButton(QIcon(":/images/add.png"), "", this);
 		add->setFlat(true);
 		add->resize(QSize(12,12));
 		connect(add, SIGNAL(clicked()), this, SLOT(addTab()));
@@ -328,10 +334,12 @@ int mainWindow::addTab(QString tag)
 	searchTab *w = new searchTab(m_tabs.size(), &m_sites, &m_favorites, &m_serverDate, this);
 	connect(w, SIGNAL(batchAddGroup(QStringList)), this, SLOT(batchAddGroup(QStringList)));
 	connect(w, SIGNAL(titleChanged(searchTab*)), this, SLOT(updateTabTitle(searchTab*)));
+	connect(w, SIGNAL(changed(searchTab*)), this, SLOT(updateTabs()));
+	connect(w, SIGNAL(closed(searchTab*)), this, SLOT(tabClosed(searchTab*)));
 	int index = ui->tabWidget->insertTab(ui->tabWidget->currentIndex()+(!m_tabs.isEmpty()), w, tr("Nouvel onglet"));
 	ui->tabWidget->setCurrentIndex(index);
 	m_tabs.append(w);
-	QPushButton *closeTab = new QPushButton(QIcon(":/images/close.png"), "");
+	QPushButton *closeTab = new QPushButton(QIcon(":/images/close.png"), "", this);
 		closeTab->setFlat(true);
 		closeTab->resize(QSize(8,8));
 		connect(closeTab, SIGNAL(clicked()), w, SLOT(deleteLater()));
@@ -344,10 +352,10 @@ int mainWindow::addTab(QString tag)
 bool mainWindow::saveTabs(QString filename)
 {
 	QStringList tabs = QStringList();
-	for (int i = 0; i < m_tabs.size(); i++)
-	{ tabs.append(m_tabs[i]->tags()+"¤"+QString::number(m_tabs[i]->ui->spinPage->value())); }
+	foreach (searchTab *tab, m_tabs)
+	{ tabs.append(tab->tags()+"¤"+QString::number(tab->ui->spinPage->value())+"¤"+QString::number(tab->ui->spinImagesPerPage->value())+"¤"+QString::number(tab->ui->spinColumns->value())); }
 
-	QFile *f = new QFile(filename);
+	QFile *f = new QFile(filename, this);
 	if (f->open(QFile::WriteOnly))
 	{
 		f->write(tabs.join("\r\n").toAscii());
@@ -358,18 +366,23 @@ bool mainWindow::saveTabs(QString filename)
 }
 bool mainWindow::loadTabs(QString filename)
 {
-	QFile *f = new QFile(filename);
+	QFile *f = new QFile(filename, this);
 	if (f->open(QFile::ReadOnly))
 	{
-		QString links = f->readAll();
+		QString links = f->readAll().trimmed();
 		f->close();
 
 		QStringList tabs = links.split("\r\n");
-		for (int i = 1; i < tabs.size(); i++)
+		for (int j = 0; j < tabs.size(); j++)
 		{
-			QStringList infos = tabs[i].split("¤");
-			int i = addTab(infos[0]);
-			m_tabs[i]->ui->spinPage->setValue(infos[1].toInt());
+			QStringList infos = tabs[j].split("¤");
+			if (infos.size() > 3)
+			{
+				int i = addTab(infos[0]);
+				m_tabs[i]->ui->spinPage->setValue(infos[1].toInt());
+				m_tabs[i]->ui->spinImagesPerPage->setValue(infos[2].toInt());
+				m_tabs[i]->ui->spinColumns->setValue(infos[3].toInt());
+			}
 		}
 		return true;
 	}
@@ -381,9 +394,21 @@ void mainWindow::addTabFavorite(int id)
 	addTab(tag);
 }
 void mainWindow::updateTabTitle(searchTab *tab)
+{ ui->tabWidget->setTabText(ui->tabWidget->indexOf(tab), tab->windowTitle()); }
+void mainWindow::updateTabs()
+{ saveTabs(savePath("tabs.txt")); }
+void mainWindow::tabClosed(searchTab *tab)
+{ m_tabs.removeAll(tab); }
+void mainWindow::currentTabChanged(int tab)
 {
-	ui->tabWidget->setTabText(ui->tabWidget->indexOf(tab), tab->windowTitle());
-	saveTabs(savePath("tabs.txt"));
+	if (m_loaded)
+	{
+		if (ui->tabWidget->widget(tab)->maximumWidth() != 16777214)
+		{
+			ui->labelTags->setText(m_tabs[tab]->results());
+			ui->labelWiki->setText("<style>.title { font-weight: bold; } ul { margin-left: -30px; }</style>"+m_tabs[tab]->wiki());
+		}
+	}
 }
 void mainWindow::closeCurrentTab()
 {
@@ -412,7 +437,7 @@ void mainWindow::batchAddGroup(const QStringList& values)
 		else if (r == 5) { r = 7; }
 		ui->tableBatchGroups->setItem(ui->tableBatchGroups->rowCount()-1, r+1, item);
 	}
-	QProgressBar *prog = new QProgressBar();
+	QProgressBar *prog = new QProgressBar(this);
 	prog->setTextVisible(false);
 	m_progressBars.append(prog);
 	ui->tableBatchGroups->setCellWidget(ui->tableBatchGroups->rowCount()-1, 9, prog);
@@ -618,14 +643,14 @@ void mainWindow::updateFavorites(bool dock)
 		}
 		else
 		{
-			QBouton *image = new QBouton(favorites[i]["id"].toInt(), this, m_settings->value("resizeInsteadOfCropping", true).toBool());
+			QBouton *image = new QBouton(favorites[i]["id"].toInt(), this, m_settings->value("resizeInsteadOfCropping", true).toBool(), QColor(), this);
 				image->setIcon(img);
 				image->setIconSize(img.size());
 				image->setFlat(true);
 				image->setToolTip(xt);
 				connect(image, SIGNAL(rightClick(int)), this, SLOT(favoriteProperties(int)));
 				connect(image, SIGNAL(middleClick(int)), this, SLOT(addTabFavorite(int)));
-			QAffiche *caption = new QAffiche(favorites[i]["id"].toInt());
+			QAffiche *caption = new QAffiche(favorites[i]["id"].toInt(), 0 ,QColor(), this);
 				caption->setText(favorites[i]["name"]+"<br/>("+favorites[i]["note"]+" % - "+QDateTime::fromString(favorites[i]["lastviewed"], Qt::ISODate).toString(format)+")");
 				caption->setTextFormat(Qt::RichText);
 				caption->setAlignment(Qt::AlignCenter);
@@ -781,7 +806,7 @@ void mainWindow::finishedLoading(Page* page)
 
 	int pl = ceil(sqrt(m_settings->value("limit", 20).toInt()));
 	float fl = (float)m_settings->value("limit", 20).toInt()/pl;
-	QLabel *txt = new QLabel();
+	QLabel *txt = new QLabel(this);
 		if (results == 0)
 		{ txt->setText(tr("Aucun résultat depuis le %1.").arg(m_loadFavorite.toString(tr("dd/MM/yyyy")))); }
 		else
@@ -824,7 +849,7 @@ void mainWindow::finishedLoadingPreview(Image *img)
 	{ color = QColor("#cccc00"); }
 	if (img->hasChildren())
 	{ color = QColor("##00ff00"); }
-	QBouton *l = new QBouton(position, this, m_settings->value("resizeInsteadOfCropping", true).toBool(), color);
+	QBouton *l = new QBouton(position, this, m_settings->value("resizeInsteadOfCropping", true).toBool(), color, this);
 		l->setIcon(preview);
 		QString t;
 		for (int i = 0; i < img->tags().count(); i++)
@@ -1037,7 +1062,7 @@ void mainWindow::options()
 }
 void mainWindow::optionsClosed()
 {
-	m_settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
+	m_settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat, this);
 	m_tabs[0]->optionsChanged(m_settings);
 	m_tabs[0]->updateCheckboxes();
 }
@@ -1111,7 +1136,7 @@ void mainWindow::getAll(bool all)
 	m_getAllPages.clear();
 
 	for (int i = 0; i < m_batchs.size(); i++)
-	{ m_getAllRemaining.append(new Image(m_batchs.at(i), m_timezonedecay, new Page(&m_sites, m_batchs.at(i).value("site"), m_batchs.at(i).value("tags").split(" "), 1, 1))); }
+	{ m_getAllRemaining.append(new Image(m_batchs.at(i), m_timezonedecay, new Page(&m_sites, m_batchs.at(i).value("site"), m_batchs.at(i).value("tags").split(" "), 1, 1, QStringList(), this))); }
 
 	for (int i = 0; i < m_progressBars.size(); i++)
 	{
@@ -1125,7 +1150,7 @@ void mainWindow::getAll(bool all)
 	if (!m_settings->value("Exec/Group/init").toString().isEmpty())
 	{
 		log(tr("Execution de la commande d'initialisation' \"%1\"").arg(m_settings->value("Exec/Group/init").toString()));
-		m_process = new QProcess;
+		m_process = new QProcess(this);
 		m_process->start(m_settings->value("Exec/Group/init").toString());
 		if (!m_process->waitForStarted(10000))
 		{ log(tr("Erreur lors de la commande d'initialisation : %1.").arg("timed out"), Error); }
@@ -1158,7 +1183,7 @@ void mainWindow::getAll(bool all)
 					{ log(tr("<b>Attention :</b> %1").arg(tr("site \"%1\" not found.").arg(site))); }
 					else
 					{
-						Page *page = new Page(&m_sites, site, tags, m_groupBatchs.at(i).at(1).toInt()+r, pp);
+						Page *page = new Page(&m_sites, site, tags, m_groupBatchs.at(i).at(1).toInt()+r, pp, QStringList(), this);
 						log(tr("Chargement de la page <a href=\"%1\">%1</a>").arg(Qt::escape(page->url().toString())));
 						connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(getAllFinishedLoading(Page*)));
 						page->load();
@@ -1213,7 +1238,7 @@ void mainWindow::getAllImages()
 	for (int i = 0; i < m_getAllRemaining.count(); i++)
 	{
 		count += m_getAllRemaining.at(i)->value();
-		m_progressdialog->addImage(m_getAllRemaining.at(i)->url());
+		m_progressdialog->addImage(m_getAllRemaining.at(i)->url(), m_getAllRemaining.at(i)->fileSize());
 	}
 	m_progressdialog->setMaximum(count);
 	m_progressdialog->setImagesCount(m_getAllRemaining.count());
@@ -1312,7 +1337,7 @@ void mainWindow::_getAll()
 				{
 					log(tr("Chargement de l'image depuis <a href=\"%1\">%1</a>").arg(img->fileUrl().toString()));
 					m_progressdialog->loadingImage(img->url());
-					m_downloadTime = new QTime();
+					m_downloadTime = new QTime;
 					m_downloadTime->start();
 					connect(img, SIGNAL(finishedImage(Image*)), this, SLOT(getAllPerformImage(Image*)));
 					connect(img, SIGNAL(downloadProgressImage(Image*,qint64,qint64)), this, SLOT(getAllProgress(Image*,qint64,qint64)));
@@ -1326,7 +1351,7 @@ void mainWindow::_getAll()
 				m_progressdialog->setImages(m_progressdialog->images()+1);
 				m_getAllExists++;
 				log(tr("Fichier déjà existant : <a href=\"file:///%1\">%1</a>").arg(f.fileName()));
-				m_progressdialog->loadedImage(img->url());
+				m_progressdialog->errorImage(img->url());
 				if (site_id >= 0)
 				{
 					m_progressBars[site_id]->setValue(m_progressBars[site_id]->value()+1);
@@ -1344,6 +1369,11 @@ void mainWindow::_getAll()
 		log("Images download finished.");
 		m_progressdialog->setValue(m_progressdialog->maximum());
 		m_progressdialog->close();
+		switch (m_progressdialog->endAction())
+		{
+			case 1:	openTray();	break;
+			case 2:	shutDown();	break;
+		}
 		QMessageBox::information(
 			this,
 			tr("Récupération des images"),
@@ -1487,7 +1517,7 @@ void mainWindow::getAllPerformTags(Image* img)
 		{
 			log(tr("Chargement de l'image depuis <a href=\"%1\">%1</a>").arg(img->fileUrl().toString()));
 			m_progressdialog->loadingImage(img->url());
-			m_downloadTime = new QTime();
+			m_downloadTime = new QTime;
 			m_downloadTime->start();
 			connect(img, SIGNAL(finishedImage(Image*)), this, SLOT(getAllPerformImage(Image*)));
 			connect(img, SIGNAL(downloadProgressImage(Image*,qint64,qint64)), this, SLOT(getAllProgress(Image*,qint64,qint64)));
@@ -1675,12 +1705,12 @@ void mainWindow::getAllCancel()
 
 void mainWindow::blacklistFix()
 {
-	BlacklistFix *bf = new BlacklistFix(m_sites);
+	BlacklistFix *bf = new BlacklistFix(m_sites, this);
 	bf->show();
 }
 void mainWindow::emptyDirsFix()
 {
-	EmptyDirsFix *edf = new EmptyDirsFix();
+	EmptyDirsFix *edf = new EmptyDirsFix(this);
 	edf->show();
 }
 
@@ -1701,7 +1731,7 @@ bool mainWindow::saveLinkList(QString filename)
 	for (int i = 0; i < m_groupBatchs.size(); i++)
 	{ links += m_groupBatchs[i].join("¤")+"¤"+QString::number(m_progressBars[i]->value())+"/"+QString::number(m_progressBars[i]->maximum())+"\r\n"; }
 
-	QFile *f = new QFile(filename);
+	QFile *f = new QFile(filename, this);
 	if (f->open(QFile::WriteOnly))
 	{
 		f->write(links.trimmed().toAscii());
@@ -1724,7 +1754,7 @@ void mainWindow::on_buttonLoadLinkList_clicked()
 }
 bool mainWindow::loadLinkList(QString filename)
 {
-	QFile *f = new QFile(filename);
+	QFile *f = new QFile(filename, this);
 	if (f->open(QFile::ReadOnly))
 	{
 		QString links = f->readAll();
@@ -1754,7 +1784,7 @@ bool mainWindow::loadLinkList(QString filename)
 				ui->tableBatchGroups->setItem(ui->tableBatchGroups->rowCount()-1, r+1, item);
 			}
 			m_groupBatchs.append(infos);
-			QProgressBar *prog = new QProgressBar();
+			QProgressBar *prog = new QProgressBar(this);
 			prog->setMaximum(max);
 			prog->setValue(val);
 			prog->setTextVisible(false);

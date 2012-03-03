@@ -200,7 +200,7 @@ int levenshtein(QString s1, QString s2)
 	for(unsigned int i = 1; i <= len2; ++i) d[0][i] = i;
 
 	for(unsigned int i = 1; i <= len1; ++i)
-		for(unsigned int j = 1; j <= len2; ++j)
+		for (unsigned int j = 1; j <= len2; ++j)
 			d[i][j] = std::min( std::min(d[i - 1][j] + 1,d[i][j - 1] + 1),
 				d[i - 1][j - 1] + (s1[i - 1] == s2[j - 1] ? 0 : 1) );
 
@@ -317,4 +317,39 @@ void logUpdate(QString l)
 	QString message = _log.value(date)+l;
 	_log.insert(date, message);
 	_mainwindow->logShow();
+}
+
+/**
+ * Shut down computer after a certain period of time.
+ * @param	timeout		Time before shutdown in seconds.
+ */
+void shutDown(int timeout)
+{
+	#if defined(Q_OS_WIN)
+		QProcess::startDetached("shutdown -s -f -t "+QString::number(timeout));
+	#else
+		QProcess::startDetached("shutdown "+QString::number(timeout));
+	#endif
+}
+
+/**
+ * Opens CD tray.
+ */
+void openTray()
+{
+	#if defined(Q_OS_WIN)
+		QProcess::startDetached("CDR.exe open");
+	#else
+		QProcess::startDetached("eject cdrom");
+	#endif
+}
+
+/**
+ * Rounds a var to the closest integer.
+ * @param	d	Number of decimals to keep.
+ */
+float round(float n, unsigned d)
+{
+	int p = pow(10., d);
+	return floor(n * p + .5) / p;
 }

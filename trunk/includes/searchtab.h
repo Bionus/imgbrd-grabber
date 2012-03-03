@@ -26,6 +26,8 @@ class searchTab : public QWidget
 		Ui::searchTab *ui;
 		QList<bool> sources();
 		QString tags();
+		QString results();
+		QString wiki();
 
 	public slots:
 		// Search
@@ -68,6 +70,8 @@ class searchTab : public QWidget
 	signals:
 		void batchAddGroup(QStringList);
 		void titleChanged(searchTab*);
+		void changed(searchTab*);
+		void closed(searchTab*);
 
 	private:
 		int										m_id;
@@ -82,11 +86,12 @@ class searchTab : public QWidget
 		int										m_pagemax;
 		QList<bool>								m_selectedSources;
 		QList<QCheckBox*>						m_checkboxes;
-		QString									m_link, m_lastTags;
+		QString									m_link, m_lastTags, m_wiki, m_tags;
 		bool									m_sized, m_from_history;
 		int										m_page, m_history_cursor;
 		QList<QGridLayout*>						m_layouts;
 		QList<QMap<QString,QString> >			m_history;
+		QStringList								m_modifiers;
 };
 
 #endif // SEARCHTAB_H

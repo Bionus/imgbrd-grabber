@@ -91,10 +91,13 @@ class mainWindow : public QMainWindow
 		int addTab(QString tag = "");
 		void addTabFavorite(int);
 		void updateTabTitle(searchTab*);
+		void tabClosed(searchTab *);
+		void currentTabChanged(int);
 		void closeCurrentTab();
 		void loadTag(QString tag);
 		bool saveTabs(QString);
 		bool loadTabs(QString);
+		void updateTabs();
 
 	private:
 		int					m_pagemax, m_timezonedecay, m_getAllDownloaded, m_getAllExists, m_getAllIgnored, m_getAllErrors, m_getAllCount, m_getAllPageCount, m_getAllBeforeId, m_remainingPics, m_remainingSites, m_countPics, m_currentFav, m_currentFavCount;

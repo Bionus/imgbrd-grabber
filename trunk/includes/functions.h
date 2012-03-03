@@ -27,12 +27,13 @@ QDateTime	qDateTimeFromString(QString s, int d = 5);
 QString		savePath(QString s = "");
 int			levenshtein(QString, QString);
 QString		validateFilename(QString);
-void		showInGraphicalShell(const QString &);
 QString		qfonttocss(QFont);
 QStringMap	domToMap(QDomElement);
+float		round(float n, unsigned d);
 
-QMap<QString,QStringList>	getCustoms();
-QMap<QString,QString>		getFilenames();
+void		showInGraphicalShell(const QString &);
+void		shutDown(int timeout = 0);
+void		openTray();
 
 QStringMap	loadFavorites();
 QStringList	loadViewItLater();
@@ -40,5 +41,9 @@ QStringList	loadIgnored();
 
 void		log(QString, Log type = Info);
 void		logUpdate(QString);
+
+QMap<QString,QStringList>	getCustoms();
+QMap<QString,QString>		getFilenames();
+
 
 #endif

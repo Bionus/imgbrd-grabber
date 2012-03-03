@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>666</width>
-    <height>423</height>
+    <height>443</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -69,11 +69,6 @@
        </item>
        <item>
         <property name="text">
-         <string>Log</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
          <string>Sauvegarde</string>
         </property>
         <item>
@@ -121,6 +116,11 @@
           <string>Marges et bordures</string>
          </property>
         </item>
+        <item>
+         <property name="text">
+          <string>Log</string>
+         </property>
+        </item>
        </item>
        <item>
         <property name="text">
@@ -165,6 +165,32 @@
          <item row="0" column="1">
           <widget class="QComboBox" name="comboLanguages"/>
          </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_63">
+           <property name="text">
+            <string>Au démarrage</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QComboBox" name="comboStart">
+           <item>
+            <property name="text">
+             <string>Ne rien faire</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Charger la première page</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Restaurer la dernière session</string>
+            </property>
+           </item>
+          </widget>
+         </item>
          <item row="3" column="0">
           <widget class="QLabel" name="label_5">
            <property name="text">
@@ -174,6 +200,13 @@
          </item>
          <item row="3" column="1">
           <widget class="QLineEdit" name="lineBlacklist"/>
+         </item>
+         <item row="4" column="0" colspan="2">
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>&lt;i&gt;Séparer les tags par des espaces.&lt;/i&gt;</string>
+           </property>
+          </widget>
          </item>
          <item row="5" column="0" colspan="2">
           <widget class="QCheckBox" name="checkHideBlacklisted">
@@ -268,38 +301,25 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="label_63">
+         <item row="13" column="0">
+          <widget class="QLabel" name="label_64">
            <property name="text">
-            <string>Au démarrage</string>
+            <string>Ajouts</string>
            </property>
           </widget>
          </item>
-         <item row="1" column="1">
-          <widget class="QComboBox" name="comboStart">
-           <item>
-            <property name="text">
-             <string>Ne rien faire</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Charger la première page</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Restaurer la dernière session</string>
-            </property>
-           </item>
-          </widget>
-         </item>
-         <item row="4" column="0" colspan="2">
-          <widget class="QLabel" name="label_2">
+         <item row="14" column="0" colspan="2">
+          <widget class="QLabel" name="label_65">
            <property name="text">
-            <string>&lt;i&gt;Séparer les tags par des espaces.&lt;/i&gt;</string>
+            <string>&lt;i&gt;Ces tags seront automatiquement ajoutés à chaque recherche.&lt;/i&gt;</string>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
            </property>
           </widget>
+         </item>
+         <item row="13" column="1">
+          <widget class="QLineEdit" name="lineAdd"/>
          </item>
         </layout>
         <zorder>label</zorder>
@@ -320,6 +340,9 @@
         <zorder>label_63</zorder>
         <zorder>comboStart</zorder>
         <zorder>label_2</zorder>
+        <zorder>label_64</zorder>
+        <zorder>label_65</zorder>
+        <zorder>lineAdd</zorder>
        </widget>
        <widget class="QWidget" name="page2">
         <layout class="QFormLayout" name="formLayout_2">
@@ -1067,6 +1090,16 @@ p, li { white-space: pre-wrap; }
              <string>Automatique</string>
             </property>
            </item>
+          </widget>
+         </item>
+         <item row="7" column="0" colspan="2">
+          <widget class="QCheckBox" name="checkShowTagWarning">
+           <property name="text">
+            <string>Afficher l'avertissement en cas de modificateur incompatible</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
           </widget>
          </item>
         </layout>

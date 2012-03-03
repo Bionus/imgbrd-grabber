@@ -1,4 +1,5 @@
 #include "batchwindow.h"
+#include "functions.h"
 #include "ui_batchwindow.h"
 
 
@@ -57,22 +58,40 @@ void batchWindow::copyToClipboard()
 	qApp->clipboard()->setText(urls.join("\n"));
 }
 
-void batchWindow::addImage(QString url)
+void batchWindow::addImage(QString url, int size)
 {
 	ui->tableWidget->setRowCount(m_items+1);
 	QTableWidgetItem *id = new QTableWidgetItem(QString::number(m_items+1));
 	id->setIcon(QIcon(":/images/colors/black.png"));
 	ui->tableWidget->setItem(m_items, 0, id);
 	ui->tableWidget->setItem(m_items, 1, new QTableWidgetItem(url));
+	QString unit;
+	if (size >= 1024)
+	{
+		size /= 1024;
+		if (size >= 1024)
+		{
+			size /= 1024;
+			unit = "mo";
+		}
+		else
+		{ unit = "ko"; }
+	}
+	else
+	{ unit = "o"; }
+	ui->tableWidget->setItem(m_items, 2, new QTableWidgetItem(QString::number(round(size, 2))+" "+unit));
+	ui->tableWidget->setItem(m_items, 3, new QTableWidgetItem());
 	QProgressBar *prog = new QProgressBar();
 	prog->setTextVisible(false);
 	m_progressBars.append(prog);
-	ui->tableWidget->setCellWidget(m_items, 2, prog);
+	ui->tableWidget->setCellWidget(m_items, 4, prog);
 	ui->tableWidget->resizeColumnToContents(0);
 	QHeaderView *headerView = ui->tableWidget->horizontalHeader();
 	headerView->setResizeMode(QHeaderView::Interactive);
 	headerView->setResizeMode(1, QHeaderView::Stretch);
 	headerView->resizeSection(2, 80);
+	headerView->resizeSection(3, 80);
+	headerView->resizeSection(4, 80);
 	m_items++;
 }
 void batchWindow::loadingImage(QString url)
@@ -139,3 +158,4 @@ void batchWindow::setImages(int value)		{ m_images = value; ui->labelImages->set
 int batchWindow::value()					{ return m_value;						}
 int batchWindow::maximum()					{ return ui->progressBar->maximum();	}
 int batchWindow::images()					{ return m_images;						}
+int batchWindow::endAction()				{ return ui->comboEnd->currentIndex();	}
