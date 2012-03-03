@@ -1,18 +1,26 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Site>
-	<Name>Gelbooru</Name>
+	<Name>Danbooru</Name>
 	<Urls>
 		<Xml>
-			<Tags>/index.php?page=dapi&amp;s=post&amp;q=index&amp;limit={limit}&amp;pid={page}&amp;tags={tags}</Tags>
+			<Tags>/post/index.xml?login={pseudo}&amp;password_hash={password}&amp;limit={limit}&amp;page={page}&amp;tags={tags}</Tags>
 		</Xml>
+		<Json>
+			<Tags>/post/index.json?login={pseudo}&amp;password_hash={password}&amp;limit={limit}&amp;page={page}&amp;tags={tags}</Tags>
+		</Json>
 		<Html>
-			<Tags>/index.php?page=post&amp;s=list&amp;limit={limit}&amp;pid={page}&amp;tags={tags}</Tags>
-			<Post>/index.php?page=post&amp;s=view&amp;id={id}</Post>
-			<Image>/ssd/data/preview/->/data/</Image>
+			<Tags>/post/index?login={pseudo}&amp;password_hash={password}&amp;limit={limit}&amp;page={page}&amp;tags={tags}</Tags>
+			<Post>/post/show/{id}</Post>
 		</Html>
 	</Urls>
 	<Regex>
-		<Tags>&lt;li class=&quot;tag-type-([^&quot;]+)&quot;&gt;(?:[^&lt;]*&lt;a href=&quot;[^&quot;]+&quot;&gt;\?&lt;/a&gt;)?[^&lt;]*&lt;a href=&quot;[^&quot;]+&quot;&gt;([^&lt;]+)&lt;/a&gt;[^&lt;]*&lt;span[^&gt;]*&gt;(\d+)&lt;/span&gt;&lt;/li&gt;</Tags>
+		<Tags>&lt;li class=&quot;tag-type-([^&quot;]+)&quot;&gt;.*&lt;a href=&quot;[^&quot;]+&quot;[^&gt;]*&gt;([^&lt;\?]+)&lt;/a&gt;.*&lt;span class=&quot;post-count&quot;&gt;(\d+)&lt;/span&gt;.*&lt;/li&gt;</Tags>
+		<Image>&lt;span class=&quot;.*&quot; id=&quot;p(\d*)&quot;&gt;.*&lt;a .*&gt;.*(&lt;img[ ]+class=&quot;.*&quot; src=&quot;((?:.*)/data/preview/(.*).jpg)&quot; title=&quot;(.+) rating:(.*) score:(.*) user:(.*)&quot; alt=&quot;.*&quot; width=.* height=.*&gt;).*&lt;/a&gt;.*&lt;/span&gt;</Image>
+		<Order>id|image|preview_url|md5|tags|rating|score|user</Order>
+		<LastPage>&lt;link href=&quot;/post\?limit=\d*&amp;page=(\d*)&amp;tags=[^&quot;]*&quot; rel=&quot;last&quot; title=&quot;Last Page&quot;&gt;</LastPage>
+		<Pools>&lt;div class=&quot;status-notice&quot; id=&quot;pool\d+&quot;&gt;[^&lt;]*Pool:[^&lt;]*(?:&lt;a href=&quot;/post/show/(\d+)&quot; &gt;&amp;lt;&amp;lt;&lt;/a&gt;)?[^&lt;]*&lt;a href=&quot;/pool/show/(\d+)&quot; &gt;([^&lt;]+)&lt;/a&gt;[^&lt;]*(?:&lt;a href=&quot;/post/show/(\d+)&quot; &gt;&amp;gt;&amp;gt;&lt;/a&gt;)?[^&lt;]*&lt;/div&gt;</Pools>
+		<Wiki>&lt;div id=&quot;sidebar-wiki&quot;(?:[^&gt;]+)&gt;(.+)&lt;/div&gt;</Wiki>
 	</Regex>
-	<FirstPage>0</FirstPage>
+	<Modifiers>rating:safe rating:questionable rating:explicit user: fav: fastfav: md5: source: id: width: height: score: mpixels: filesize: date: gentags: arttags: chartags: copytags: approver: parent: sub: status:any status:deleted status:active status:flagged status:pending order:id order:id_desc order:score order:score_asc order:mpixels order:mpixels_asc order:filesize order:landscape order:portrait order:favcount order:rank parent:none unlocked:rating</Modifiers>
+	<FirstPage>1</FirstPage>
 </Site>

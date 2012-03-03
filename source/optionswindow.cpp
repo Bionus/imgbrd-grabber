@@ -20,6 +20,7 @@ optionsWindow::optionsWindow(mainWindow *parent) : QDialog(parent), m_parent(par
 	ui->lineBlacklist->setText(settings.value("blacklistedtags").toString());
 	ui->checkDownloadBlacklisted->setChecked(settings.value("downloadblacklist", false).toBool());
 	ui->lineWhitelist->setText(settings.value("whitelistedtags").toString());
+	ui->lineAdd->setText(settings.value("add").toString());
 	QStringList wl = QStringList() << "never" << "image" << "page";
 	ui->comboWhitelist->setCurrentIndex(wl.indexOf(settings.value("whitelist_download", "image").toString()));
 	ui->lineIgnored->setText(settings.value("ignoredtags").toString());
@@ -28,6 +29,7 @@ optionsWindow::optionsWindow(mainWindow *parent) : QDialog(parent), m_parent(par
 	ui->spinHideFavorites->setValue(settings.value("hidefavorites", 20).toInt());
 	ui->checkAutodownload->setChecked(settings.value("autodownload", false).toBool());
 	ui->checkHideBlacklisted->setChecked(settings.value("hideblacklisted", false).toBool());
+	ui->checkShowTagWarning->setChecked(settings.value("showtagwarning", true).toBool());
 
 	ui->spinImagesPerPage->setValue(settings.value("limit", 20).toInt());
 	ui->spinColumns->setValue(settings.value("columns", 1).toInt());
@@ -422,6 +424,7 @@ void optionsWindow::save()
 	settings.setValue("downloadblacklist", ui->checkDownloadBlacklisted->isChecked());
 	settings.setValue("whitelistedtags", ui->lineWhitelist->text());
 	settings.setValue("ignoredtags", ui->lineIgnored->text());
+	settings.setValue("add", ui->lineAdd->text());
 	QStringList wl = QStringList() << "never" << "image" << "page";
 	settings.setValue("whitelist_download", wl.at(ui->comboWhitelist->currentIndex()));
 
@@ -439,6 +442,7 @@ void optionsWindow::save()
 	QStringList positions = QStringList() << "top" << "left" << "auto";
 	settings.setValue("tagsposition", positions.at(ui->comboTagsposition->currentIndex()));
 	settings.setValue("hideblacklisted", ui->checkHideBlacklisted->isChecked());
+	settings.setValue("showtagwarning", ui->checkShowTagWarning->isChecked());
 
 	settings.beginGroup("Filenames");
 		settings.remove("");

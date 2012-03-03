@@ -10,12 +10,12 @@ extern mainWindow *_mainwindow;
 
 
 
-searchTab::searchTab(int id, QMap<QString,QMap<QString,QString> > *sites, QMap<QString,QString> *favorites, QDateTime *serverDate, mainWindow *parent) : QWidget(parent), ui(new Ui::searchTab), m_id(id), m_parent(parent), m_serverDate(serverDate), m_favorites(favorites), m_sites(sites), m_pagemax(-1), m_lastTags(QString()), m_sized(false), m_from_history(false), m_history_cursor(0), m_history(QList<QMap<QString,QString> >())
+searchTab::searchTab(int id, QMap<QString,QMap<QString,QString> > *sites, QMap<QString,QString> *favorites, QDateTime *serverDate, mainWindow *parent) : QWidget(parent), ui(new Ui::searchTab), m_id(id), m_parent(parent), m_serverDate(serverDate), m_favorites(favorites), m_sites(sites), m_pagemax(-1), m_lastTags(QString()), m_sized(false), m_from_history(false), m_history_cursor(0), m_history(QList<QMap<QString,QString> >()), m_modifiers(QStringList())
 {
 	ui->setupUi(this);
 	ui->widgetMeant->hide();
 
-	QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
+	QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat, this);
 
 	// Search field
 	m_search = new TextEdit(m_favorites->keys(), this);
@@ -29,8 +29,14 @@ searchTab::searchTab(int id, QMap<QString,QMap<QString,QString> > *sites, QMap<Q
 				while (!words.atEnd())
 				{
 					QByteArray line = words.readLine();
-					completion.append(QString(line).remove("\r\n").remove("\n").split(" ", QString::SkipEmptyParts));
+					completion.append(QString(line).trimmed().split(" ", QString::SkipEmptyParts));
 				}
+				for (int i = 0; i < sites->size(); i++)
+				{
+					if (sites->value(sites->keys().at(i)).contains("Modifiers"))
+					{ m_modifiers.append(sites->value(sites->keys().at(i)).value("Modifiers").trimmed().split(" ", QString::SkipEmptyParts)); }
+				}
+				completion.append(m_modifiers);
 				completion.append(m_favorites->keys());
 				completion.removeDuplicates();
 				completion.sort();
@@ -69,15 +75,6 @@ searchTab::searchTab(int id, QMap<QString,QMap<QString,QString> > *sites, QMap<Q
 		setAutoFillBackground(true);
 	updateCheckboxes();
 	m_search->setFocus();
-
-	// Splitter size
-	/*QString sizes = settings->value("splitter").toString();
-	if (!sizes.isEmpty())
-	{
-		QStringList sz = sizes.split("|");
-		ui->splitter->setSizes(QList<int>() << sz[0].toInt() << sz[1].toInt());
-		m_sized = true;
-	}*/
 }
 
 searchTab::~searchTab()
@@ -95,11 +92,9 @@ void searchTab::on_buttonSearch_clicked()
 
 void searchTab::closeEvent(QCloseEvent *e)
 {
-	QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
-	/*QList<int> sizes = ui->splitter->sizes();
-	settings->setValue("splitter", QString::number(sizes[0])+"|"+QString::number(sizes[1]));*/
+	QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat, this);
 	settings->setValue("mergeresults", ui->checkMergeResults->isChecked());
-	settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat); // For some obscure reason it won't save without this line... :/
+	settings->sync();
 	if (!m_pages.isEmpty())
 	{
 		for (int i = 0; i < m_pages.count(); i++)
@@ -112,6 +107,7 @@ void searchTab::closeEvent(QCloseEvent *e)
 		{ delete m_images.at(i); }
 		m_images.clear();
 	}
+	emit(closed(this));
 	e->accept();
 }
 
@@ -142,7 +138,7 @@ void searchTab::saveSources(QList<bool> sel)
 	QString sav;
 	for (int i = 0; i < m_selectedSources.count(); i++)
 	{ sav += (m_selectedSources.at(i) ? "1" : "0"); }
-	QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
+	QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat, this);
 	settings->setValue("sites", sav);
 	DONE();
 	updateCheckboxes();
@@ -154,7 +150,7 @@ void searchTab::updateCheckboxes()
 	{ delete m_checkboxes.at(i); }
 	m_checkboxes.clear();
 	QStringList urls = m_sites->keys();
-	QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
+	QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat, this);
 	int n = settings->value("Sources/Letters", 3).toInt(), m = n;
 	for (int i = 0; i < urls.size(); i++)
 	{
@@ -164,7 +160,7 @@ void searchTab::updateCheckboxes()
 			if (n < -1 && urls.at(i).indexOf('.', m+1) != -1)
 			{ m = urls.at(i).indexOf('.', m+1); }
 		}
-		QCheckBox *c = new QCheckBox(urls.at(i).left(m));
+		QCheckBox *c = new QCheckBox(urls.at(i).left(m), this);
 			c->setChecked(m_selectedSources.at(i));
 			ui->layoutSourcesList->addWidget(c);
 		m_checkboxes.append(c);
@@ -214,6 +210,7 @@ void searchTab::load()
 	}
 	setWindowTitle(m_search->toPlainText().isEmpty() ? tr("Recherche") : m_search->toPlainText().replace("&", "&&"));
 	emit titleChanged(this);
+	m_tags = "";
 	m_parent->ui->labelTags->setText("");
 	for (int i = 0; i < m_pages.size(); i++)
 	{
@@ -238,18 +235,30 @@ void searchTab::load()
 		}
 	}
 	m_layouts.clear();
+
+	QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat, this);
 	for (int i = 0; i < m_selectedSources.size(); i++)
 	{
 		if (m_checkboxes.at(i)->isChecked())
 		{
+			QStringList tags = m_search->toPlainText().toLower().trimmed().split(" ", QString::SkipEmptyParts), modifiers = m_modifiers;
+			tags.append(settings->value("add").toString().toLower().trimmed().split(" ", QString::SkipEmptyParts));
+			if (m_sites->value(m_sites->keys().at(i)).contains("Modifiers"))
+			{
+				QStringList mods = m_sites->value(m_sites->keys().at(i)).value("Modifiers").trimmed().split(" ", QString::SkipEmptyParts);
+				for (int j = 0; j < mods.size(); j++)
+				{ modifiers.removeAll(mods[j]); }
+			}
+			for (int k = 0; k < modifiers.size(); k++)
+			{ tags.removeAll(modifiers[k]); }
 			int perpage = ui->spinImagesPerPage->value();
-			Page *page = new Page(m_sites, m_sites->keys().at(i), m_search->toPlainText().toLower().split(" "), ui->spinPage->value(), perpage, m_postFiltering->toPlainText().toLower().split(" "));
+			Page *page = new Page(m_sites, m_sites->keys().at(i), tags, ui->spinPage->value(), perpage, m_postFiltering->toPlainText().toLower().split(" ", QString::SkipEmptyParts), this);
 			log(tr("Chargement de la page <a href=\"%1\">%1</a>").arg(Qt::escape(page->url().toString())));
 			connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(finishedLoading(Page*)));
 			m_pages.append(page);
-			m_layouts.append(new QGridLayout);
+			m_layouts.append(new QGridLayout(this));
 			page->load();
-			QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
+			QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat, this);
 			if (settings->value("useregexfortags", true).toBool())
 			{
 				connect(page, SIGNAL(finishedLoadingTags(Page*)), this, SLOT(finishedLoadingTags(Page*)));
@@ -260,6 +269,8 @@ void searchTab::load()
 	if (ui->checkMergeResults->isChecked())
 	{ ui->layoutResults->addLayout(m_layouts[0], 0, 0, 1, 1); }
 	m_page = 0;
+
+	emit changed(this);
 }
 
 bool sortByFrequency(Tag *s1, Tag *s2)
@@ -272,13 +283,15 @@ void searchTab::finishedLoading(Page* page)
 	ui->buttonNextPage->setEnabled(m_pagemax > ui->spinPage->value() || page->imagesCount() == -1 || (page->imagesCount() == 0 && page->images().count() > 0));
 	ui->buttonLastPage->setEnabled(m_pagemax > ui->spinPage->value());
 
+	QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat, this);
+
 	QList<Image*> imgs = page->images();
 	m_images.append(imgs);
 	if (!ui->checkMergeResults->isChecked())
 	{
 		int pos = m_pages.indexOf(page);
 		int perpage = page->site().value("Urls/Selected/Tags").contains("{limit}") ? ui->spinImagesPerPage->value() : imgs.size();
-		QLabel *txt = new QLabel();
+		QLabel *txt = new QLabel(this);
 			if (imgs.count() == 0)
 			{
 				QStringList reasons = QStringList();
@@ -334,13 +347,24 @@ void searchTab::finishedLoading(Page* page)
 			else
 			{ txt->setText("<a href=\""+Qt::escape(page->url().toString())+"\">"+m_sites->key(page->site())+"</a> - "+tr("Page %1 sur %2 (%3 sur %4)").arg(ui->spinPage->value()).arg(page->imagesCount() > 0 ? QString::number(ceil(page->imagesCount()/((float)perpage))) : "?").arg(imgs.count()).arg(page->imagesCount() > 0 ? QString::number(page->imagesCount()) : "?")); }
 			txt->setOpenExternalLinks(true);
+			if (page->search().join(" ") != m_search->toPlainText() && settings->value("showtagwarning", true).toBool())
+			{
+				QStringList uncommon = m_search->toPlainText().toLower().trimmed().split(" ", QString::SkipEmptyParts);
+				uncommon.append(settings->value("add").toString().toLower().trimmed().split(" ", QString::SkipEmptyParts));
+				for (int i = 0; i < page->search().size(); i++)
+				{
+					if (uncommon.contains(page->search().at(i)))
+					{ uncommon.removeAll(page->search().at(i)); }
+				}
+				if (!uncommon.isEmpty() > 0)
+				{ txt->setText(txt->text()+"<br/>"+QString("Des modificateurs ont été otés de la recherche car ils ne sont pas compatibles avec cet imageboard : %1.").arg(uncommon.join(" "))); }
+			}
 		int page_x = pos%ui->spinColumns->value(), page_y = (pos/ui->spinColumns->value())*2;
 		ui->layoutResults->addWidget(txt, page_y, page_x, 1, 1);
 		ui->layoutResults->setRowMinimumHeight(page_y, height()/20);
 		ui->layoutResults->addLayout(m_layouts[pos], page_y+1, page_x, 1, 1);
 	}
 
-	QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
 	if (!settings->value("useregexfortags", true).toBool())
 	{
 		// Tags for this page
@@ -371,7 +395,7 @@ void searchTab::finishedLoading(Page* page)
 		QStringList tlist = QStringList() << "artists" << "copyrights" << "characters" << "models" << "generals" << "favorites" << "blacklisteds";
 		QStringList defaults = QStringList() << "#aa0000" << "#aa00aa" << "#00aa00" << "#0000ee" << "#000000" << "#ffc0cb" << "#000000";
 		QMap<QString,QString> styles;
-		QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
+		QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat, this);
 		for (int i = 0; i < tlist.size(); i++)
 		{
 			QFont font;
@@ -393,6 +417,7 @@ void searchTab::finishedLoading(Page* page)
 			}
 		}
 
+		m_tags = tags;
 		m_parent->ui->labelTags->setText(tags);
 	}
 
@@ -473,7 +498,7 @@ void searchTab::finishedLoadingTags(Page *page)
 	QStringList tlist = QStringList() << "artists" << "copyrights" << "characters" << "models" << "generals" << "favorites" << "blacklisteds";
 	QStringList defaults = QStringList() << "#aa0000" << "#aa00aa" << "#00aa00" << "#0000ee" << "#000000" << "#ffc0cb" << "#000000";
 	QMap<QString,QString> styles;
-	QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
+	QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat, this);
 	for (int i = 0; i < tlist.size(); i++)
 	{
 		QFont font;
@@ -490,11 +515,12 @@ void searchTab::finishedLoadingTags(Page *page)
 		tags += "<a href=\""+n+"\" style=\""+(styles.contains(taglist[i]->type()+"s") ? styles[taglist[i]->type()+"s"] : styles["generals"])+"\">"+taglist[i]->text()+"</a> ("+QString::number(taglist[i]->count())+")<br/>";
 	}
 
+	m_tags = tags;
 	m_parent->ui->labelTags->setText(tags);
 	if (!page->wiki().isEmpty())
 	{
-		//m_parent->ui->dock_wiki->show();
-		m_parent->ui->labelWiki->setText("<style>.title { font-weight: bold; } ul { margin-left: -30px; }</style>"+page->wiki());
+		m_wiki = "<style>.title { font-weight: bold; } ul { margin-left: -30px; }</style>"+page->wiki();
+		m_parent->ui->labelWiki->setText(m_wiki);
 	}
 }
 
@@ -526,7 +552,7 @@ void searchTab::finishedLoadingPreview(Image *img)
 	else
 	{ unit = "o"; }
 
-	QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
+	QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat, this);
 	QColor color;
 	if (img->status() == "pending")
 	{ color = QColor("#0000ff"); }
@@ -570,7 +596,7 @@ void searchTab::finishedLoadingPreview(Image *img)
 
 void searchTab::webZoom(int id)
 {
-	QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
+	QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat, this);
 	Image *image = m_images.at(id);
 
 	if (!settings->value("blacklistedtags").toString().isEmpty())
@@ -604,7 +630,7 @@ void searchTab::getPage()
 		if (m_checkboxes.at(i)->isChecked())
 		{ actuals.append(keys.at(i)); }
 	}
-	QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
+	QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat, this);
 	for (int i = 0; i < actuals.count(); i++)
 	{
 		int perpage = ui->spinImagesPerPage->value();
@@ -771,5 +797,6 @@ void searchTab::historyNext()
 	}
 }
 
-QString searchTab::tags()
-{ return m_search->toPlainText(); }
+QString searchTab::tags()		{ return m_search->toPlainText();	}
+QString searchTab::results()	{ return m_tags;					}
+QString searchTab::wiki()		{ return m_wiki;					}

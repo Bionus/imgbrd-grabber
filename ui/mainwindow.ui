@@ -426,8 +426,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>592</width>
-             <height>445</height>
+             <width>98</width>
+             <height>28</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_8">
@@ -1049,7 +1049,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>51</x>
-     <y>281</y>
+     <y>266</y>
     </hint>
     <hint type="destinationlabel">
      <x>99</x>
@@ -1065,7 +1065,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>58</x>
-     <y>307</y>
+     <y>292</y>
     </hint>
     <hint type="destinationlabel">
      <x>98</x>
@@ -1112,8 +1112,8 @@
    <slot>addGroup()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>750</x>
-     <y>256</y>
+     <x>193</x>
+     <y>57</y>
     </hint>
     <hint type="destinationlabel">
      <x>804</x>
@@ -1128,8 +1128,8 @@
    <slot>addUnique()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>688</x>
-     <y>480</y>
+     <x>193</x>
+     <y>66</y>
     </hint>
     <hint type="destinationlabel">
      <x>804</x>
@@ -1144,8 +1144,8 @@
    <slot>batchSel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>202</x>
-     <y>520</y>
+     <x>211</x>
+     <y>99</y>
     </hint>
     <hint type="destinationlabel">
      <x>216</x>
@@ -1160,8 +1160,8 @@
    <slot>getAll()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>292</x>
-     <y>521</y>
+     <x>211</x>
+     <y>99</y>
     </hint>
     <hint type="destinationlabel">
      <x>302</x>
@@ -1176,8 +1176,8 @@
    <slot>batchClearSel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>620</x>
-     <y>518</y>
+     <x>211</x>
+     <y>99</y>
     </hint>
     <hint type="destinationlabel">
      <x>629</x>
@@ -1192,8 +1192,8 @@
    <slot>batchClear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>743</x>
-     <y>516</y>
+     <x>211</x>
+     <y>99</y>
     </hint>
     <hint type="destinationlabel">
      <x>742</x>
@@ -1208,8 +1208,8 @@
    <slot>logClear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>474</x>
-     <y>507</y>
+     <x>193</x>
+     <y>63</y>
     </hint>
     <hint type="destinationlabel">
      <x>476</x>
@@ -1329,6 +1329,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>tabWidget</sender>
+   <signal>currentChanged(int)</signal>
+   <receiver>mainWindow</receiver>
+   <slot>currentTabChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>344</x>
+     <y>32</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-3</x>
+     <y>52</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>help()</slot>
@@ -1362,5 +1378,6 @@
   <slot>emptyDirsFix()</slot>
   <slot>loadTag(QString)</slot>
   <slot>updateFavoritesDock()</slot>
+  <slot>currentTabChanged(int)</slot>
  </slots>
 </ui>

@@ -22,6 +22,7 @@ class batchWindow : public QDialog
 		int value();
 		int maximum();
 		int images();
+		int endAction();
 
 	public slots:
 		void clear();
@@ -31,7 +32,7 @@ class batchWindow : public QDialog
 		void setMaximum(int);
 		void setImages(int);
 		void setImagesCount(int);
-		void addImage(QString);
+		void addImage(QString, int);
 		void loadingImage(QString);
 		void statusImage(QString, int);
 		void loadedImage(QString);
