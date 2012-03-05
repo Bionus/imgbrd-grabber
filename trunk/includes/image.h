@@ -29,7 +29,7 @@ class Image : public QObject
 		QString		rating();
 		QString		source();
 		QString		site();
-		QList<Tag*>	tags();
+		QList<Tag>	tags();
 		QList<Pool*>pools();
 		int			id();
 		int			score();
@@ -77,7 +77,7 @@ class Image : public QObject
 
 	private:
 		Page			*m_parent;
-		int				m_id, m_score, m_parentId, m_fileSize, m_authorId;
+		int				m_id, m_score, m_parentId, m_fileSize, m_authorId, m_previewTry;
 		bool			m_hasChildren, m_hasNote, m_hasComments, m_loadPreviewExists, m_loadTagsExists, m_hasScore, m_loadImageExists;
 		QString			m_url, m_md5, m_author, m_status, m_rating, m_source, m_site;
 		QUrl			m_pageUrl, m_fileUrl, m_sampleUrl, m_previewUrl;
@@ -86,7 +86,7 @@ class Image : public QObject
 		QDateTime		m_createdAt;
 		QByteArray		m_data;
 		QNetworkReply	*m_loadPreview, *m_loadTags, *m_loadImage;
-		QList<Tag*>		m_tags;
+		QList<Tag>		m_tags;
 		QList<Pool*>	m_pools;
 };
 

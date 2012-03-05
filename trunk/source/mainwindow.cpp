@@ -495,6 +495,7 @@ void mainWindow::batchClear()
 	m_groupBatchs.clear();
 	ui->tableBatchGroups->clearContents();
 	ui->tableBatchGroups->setRowCount(0);
+	qDeleteAll(m_progressBars);
 	m_progressBars.clear();
 }
 void mainWindow::batchClearSel()
@@ -756,7 +757,9 @@ void mainWindow::web(QString tags)
 {
 	while (ui->layoutFavoritesResults->count() > 0)
 	{ ui->layoutFavoritesResults->takeAt(0)->widget()->hide(); }
+	qDeleteAll(m_pages);
 	m_pages.clear();
+	qDeleteAll(m_images);
 	m_images.clear();
 	for (int i = 0; i < m_selectedSources.count(); i++)
 	{
@@ -819,8 +822,7 @@ void mainWindow::finishedLoadingPreview(Image *img)
 {
 	int position = m_images.indexOf(img);
 	int page = m_pages.indexOf(img->page());
-	QPixmap preview = img->previewImage();
-	if (preview.isNull())
+	if (img->previewImage().isNull())
 	{
 		log("<b>Warning:</b> one of the preview pictures (<a href='"+img->previewUrl().toString()+"'>"+img->previewUrl().toString()+"</a>) is empty.");
 		return;
@@ -850,10 +852,11 @@ void mainWindow::finishedLoadingPreview(Image *img)
 	if (img->hasChildren())
 	{ color = QColor("##00ff00"); }
 	QBouton *l = new QBouton(position, this, m_settings->value("resizeInsteadOfCropping", true).toBool(), color, this);
-		l->setIcon(preview);
+		l->setIcon(img->previewImage());
 		QString t;
-		for (int i = 0; i < img->tags().count(); i++)
-		{ t += " "+img->tags().at(i)->text(); }
+		QList<Tag> tgs = img->tags();
+		for (int i = 0; i < tgs.count(); i++)
+		{ t += " "+tgs[i].text(); }
 		l->setToolTip(QString("%1%2%3%4%5%6%7%8")
 			.arg(img->tags().isEmpty() ? " " : tr("<b>Tags :</b> %1<br/><br/>").arg(t.trimmed()))
 			.arg(img->id() == 0 ? " " : tr("<b>ID :</b> %1<br/>").arg(img->id()))
@@ -864,7 +867,7 @@ void mainWindow::finishedLoadingPreview(Image *img)
 			.arg(img->fileSize() == 0 ? " " : tr("<b>Taille :</b> %1 %2<br/>").arg(QString::number(round(size)), unit))
 			.arg(!img->createdAt().isValid() ? " " : tr("<b>Date :</b> %1").arg(img->createdAt().toString(tr("le dd/MM/yyyy à hh:mm"))))
 		);
-		l->setIconSize(preview.size());
+		l->setIconSize(img->previewImage().size());
 		l->setFlat(true);
 		connect(l, SIGNAL(appui(int)), this, SLOT(webZoom(int)));
 		connect(l, SIGNAL(rightClick(int)), this, SLOT(batchChange(int)));
@@ -937,21 +940,20 @@ void mainWindow::favoritesBack()
 		{
 			for (int i = 0; i < m_replies.count(); i++)
 			{ m_replies.at(i)->abort(); }
+			qDeleteAll(m_replies);
 			m_replies.clear();
 		}
 		if (!m_webPics.isEmpty() && m_currentFav < 1)
 		{
-			for (int i = 0; i < m_webPics.count(); i++)
-			{ delete m_webPics.at(i); }
+			qDeleteAll(m_webPics);
 			m_webPics.clear();
 			m_details.clear();
 		}
 		if (!m_webSites.isEmpty() && m_currentFav < 1)
 		{
-			for (int i = 0; i < m_webSites.count(); i++)
-			{ delete m_webSites.at(i); }
 			for (int i = 0; i < m_webSites.count()*11; i++)
 			{ ui->layoutFavoritesResults->setRowMinimumHeight(i, 0); }
+			qDeleteAll(m_webSites);
 			m_webSites.clear();
 		}
 	}
@@ -1030,22 +1032,21 @@ void mainWindow::closeEvent(QCloseEvent *e)
 	log(tr("Sauvegarde..."));
 		saveLinkList(savePath("restore.igl"));
 		saveTabs(savePath("tabs.txt"));
-		QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
-		settings.setValue("state", saveState());
-		settings.setValue("geometry", saveGeometry());
+		m_settings->setValue("state", saveState());
+		m_settings->setValue("geometry", saveGeometry());
 		QStringList sizes = QStringList();
 		for (int i = 0; i < ui->tableBatchGroups->columnCount(); i++)
 		{ sizes.append(QString::number(ui->tableBatchGroups->horizontalHeader()->sectionSize(i))); }
-		settings.setValue("batch", sizes.join(","));
-		settings.beginGroup("Favorites");
+		m_settings->setValue("batch", sizes.join(","));
+		m_settings->beginGroup("Favorites");
 			QStringList assoc = QStringList() << "name" << "note" << "lastviewed";
-			settings.setValue("order", assoc[ui->comboOrderfavorites->currentIndex()]);
-			settings.setValue("reverse", bool(ui->comboOrderasc->currentIndex() == 1));
-		settings.endGroup();
+			m_settings->setValue("order", assoc[ui->comboOrderfavorites->currentIndex()]);
+			m_settings->setValue("reverse", bool(ui->comboOrderasc->currentIndex() == 1));
+		m_settings->endGroup();
 		for (int i = 0; i < m_tabs.size(); i++)
 		{ m_tabs.at(i)->deleteLater(); }
-		settings.setValue("crashed", false);
-		settings.sync();
+		m_settings->setValue("crashed", false);
+		m_settings->sync();
 	DONE();
 	e->accept();
 	qApp->quit();
@@ -1062,8 +1063,7 @@ void mainWindow::options()
 }
 void mainWindow::optionsClosed()
 {
-	m_settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat, this);
-	m_tabs[0]->optionsChanged(m_settings);
+	m_tabs[0]->optionsChanged();
 	m_tabs[0]->updateCheckboxes();
 }
 
@@ -1130,9 +1130,12 @@ void mainWindow::getAll(bool all)
 	m_getAllBeforeId = -1;
 	m_getAllRequestExists = false;
 
-	m_getAllRemaining.clear();
-	m_getAllDownloading.clear();
 	m_getAllDownloadingSpeeds.clear();
+	qDeleteAll(m_getAllRemaining);
+	m_getAllRemaining.clear();
+	qDeleteAll(m_getAllDownloading);
+	m_getAllDownloading.clear();
+	qDeleteAll(m_getAllPages);
 	m_getAllPages.clear();
 
 	for (int i = 0; i < m_batchs.size(); i++)
@@ -1434,16 +1437,16 @@ void mainWindow::getAllPerformTags(Image* img)
 	bool under = m_settings->value("Save/remplaceblanksbyunderscores", false).toBool();
 	for (int i = 0; i < img->tags().count(); i++)
 	{
-		Tag *tag = img->tags().at(i);
-		QString normalized = tag->text().replace(" ", "_"), original = normalized;
+		Tag tag = img->tags().at(i);
+		QString normalized = tag.text().replace(" ", "_"), original = normalized;
 		m_getAllDetails["alls_original"].append(original);
 		normalized = normalized.replace("\\", " ").replace("/", " ").replace(":", " ").replace("|", " ").replace("*", " ").replace("?", " ").replace("\"", " ").replace("<", " ").replace(">", " ").trimmed();
 		if (!under)
 		{ normalized.replace('_', ' '); }
-		if		(tag->type() == "character")	{ m_getAllDetails["characters"].append(normalized); }
-		else if (tag->type() == "copyright")	{ m_getAllDetails["copyrights"].append(normalized); }
-		else if (tag->type() == "artist")		{ m_getAllDetails["artists"].append(normalized);	}
-		else if (tag->type() == "model")		{ m_getAllDetails["models"].append(normalized);		}
+		if		(tag.type() == "character")	{ m_getAllDetails["characters"].append(normalized); }
+		else if (tag.type() == "copyright")	{ m_getAllDetails["copyrights"].append(normalized); }
+		else if (tag.type() == "artist")		{ m_getAllDetails["artists"].append(normalized);	}
+		else if (tag.type() == "model")		{ m_getAllDetails["models"].append(normalized);		}
 		else									{ m_getAllDetails["generals"].append(normalized);	}
 		m_getAllDetails["alls"].append(normalized);
 	}
@@ -1626,14 +1629,14 @@ void mainWindow::getAllPerformImage(Image* img)
 		types["photo_set"] = 6;
 		for (int i = 0; i < img->tags().count(); i++)
 		{
-			Tag *tag = img->tags().at(i);
-			QString original = tag->text().replace(" ", "_");
+			Tag tag = img->tags().at(i);
+			QString original = tag.text().replace(" ", "_");
 			if (!m_settings->value("Exec/tag").toString().isEmpty())
 			{
 				QString exec = m_settings->value("Exec/tag").toString()
 				.replace("%tag%", original)
-				.replace("%type%", tag->type())
-				.replace("%number%", QString::number(types[tag->type()]));
+				.replace("%type%", tag.type())
+				.replace("%number%", QString::number(types[tag.type()]));
 				log(tr("Execution seule de \"%1\"").arg(exec));
 				QProcess::execute(exec);
 			}
@@ -1641,8 +1644,8 @@ void mainWindow::getAllPerformImage(Image* img)
 			{
 				QString exec = m_settings->value("Exec/Group/tag").toString()
 				.replace("%tag%", original)
-				.replace("%type%", tag->type())
-				.replace("%number%", QString::number(types[tag->type()]));
+				.replace("%type%", tag.type())
+				.replace("%number%", QString::number(types[tag.type()]));
 				log(tr("Execution groupée de \"%1\"").arg(exec));
 				m_process->write(exec.toAscii());
 			}

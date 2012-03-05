@@ -34,6 +34,7 @@ void batchWindow::clear()
 	ui->progressBar->setValue(0);
 	ui->progressBar->setMaximum(100);
 	ui->labelImages->setText("0/0");
+	qDeleteAll(m_progressBars);
 	m_progressBars.clear();
 }
 void batchWindow::copyToClipboard()

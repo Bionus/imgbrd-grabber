@@ -31,6 +31,7 @@ void Page::fallback()
 	{ log(tr("Chargement en %1 échoué. Nouvel essai en %2.").arg(m_format).arg(m_site["Selected"].split('/').at(m_currentSource))); }
 
 	m_currentSource++;
+	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
 
 	QString t = m_search.join(" ").replace("&", "%26");
 	if (m_site.contains("DefaultTag") && t.isEmpty())
@@ -45,10 +46,9 @@ void Page::fallback()
 	QString url = m_site["Urls/"+QString::number(m_currentSource)+"/"+(t.isEmpty() && m_site.contains("Urls/"+QString::number(m_currentSource)+"/Home") ? "Home" : "Tags")];
 	url.replace("{page}", QString::number(p));
 	url.replace("{tags}", t);
-	url.replace("{limit}", QString::number(m_imagesPerPage));
-	QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
-	url.replace("{pseudo}", settings->value("Login/pseudo").toString());
-	url.replace("{password}", settings->value("Login/password").toString());
+    url.replace("{limit}", QString::number(m_imagesPerPage));
+	url.replace("{pseudo}", settings.value("Login/pseudo").toString());
+	url.replace("{password}", settings.value("Login/password").toString());
 	m_url = QUrl::fromEncoded(url.toAscii());
 
 	if (m_site.contains("Urls/Html/Tags"))
@@ -56,10 +56,9 @@ void Page::fallback()
 		QString url = m_site["Urls/Html/"+QString(t.isEmpty() && m_site.contains("Urls/Html/Home") ? "Home" : "Tags")];
 		url.replace("{page}", QString::number(p));
 		url.replace("{tags}", t);
-		url.replace("{limit}", QString::number(m_imagesPerPage));
-		QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
-		url.replace("{pseudo}", settings->value("Login/pseudo").toString());
-		url.replace("{password}", settings->value("Login/password").toString());
+        url.replace("{limit}", QString::number(m_imagesPerPage));
+		url.replace("{pseudo}", settings.value("Login/pseudo").toString());
+		url.replace("{password}", settings.value("Login/password").toString());
 		m_urlRegex = QUrl(url);
 	}
 	else
@@ -115,6 +114,7 @@ void Page::parse(QNetworkReply* r)
 	}
 
 	// Reading reply and resetting vars
+	qDeleteAll(m_images);
 	m_images.clear();
 	m_tags.clear();
 	m_imagesCount = -1;
@@ -192,7 +192,10 @@ void Page::parse(QNetworkReply* r)
 				if (error.isEmpty())
 				{ m_images.append(img); }
 				else
-				{ log(tr("Image #%1 ignored. Reason: %2.").arg(QString::number(id+1), error)); }
+				{
+					img->deleteLater();
+					log(tr("Image #%1 ignored. Reason: %2.").arg(QString::number(id+1), error));
+				}
 			}
 		}
 	}
@@ -229,7 +232,10 @@ void Page::parse(QNetworkReply* r)
 				if (error.isEmpty())
 				{ m_images.append(img); }
 				else
-				{ log(tr("Image #%1 ignored. Reason: %2.").arg(QString::number(id+1), error)); }
+				{
+					img->deleteLater();
+					log(tr("Image #%1 ignored. Reason: %2.").arg(QString::number(id+1), error));
+				}
 			}
 		}
 		else
@@ -312,7 +318,10 @@ void Page::parse(QNetworkReply* r)
 				if (error.isEmpty())
 				{ m_images.append(img); }
 				else
-				{ log(tr("Image #%1 ignored. Reason: %2.").arg(QString::number(id+1), error)); }
+				{
+					img->deleteLater();
+					log(tr("Image #%1 ignored. Reason: %2.").arg(QString::number(id+1), error));
+				}
 			}
 		}
 	}
@@ -325,14 +334,13 @@ void Page::parse(QNetworkReply* r)
 		{
 			QRegExp rxtags(m_site["Regex/Tags"]);
 			rxtags.setMinimal(true);
-			qDebug() << 0;
 			QStringList tags = QStringList();
 			int p = 0;
 			while (((p = rxtags.indexIn(m_source, p)) != -1))
 			{
 				if (!tags.contains(rxtags.cap(2)))
 				{
-					m_tags.append(new Tag(rxtags.cap(2), rxtags.cap(1), rxtags.cap(3).toInt()));
+					m_tags.append(Tag(rxtags.cap(2), rxtags.cap(1), rxtags.cap(3).toInt()));
 					tags.append(rxtags.cap(2));
 				}
 				p += rxtags.matchedLength();
@@ -381,7 +389,10 @@ void Page::parse(QNetworkReply* r)
 			if (error.isEmpty())
 			{ m_images.append(img); }
 			else
-			{ log(tr("Image #%1 ignored. Reason: %2.").arg(QString::number(id+1), error)); }
+			{
+				img->deleteLater();
+				log(tr("Image #%1 ignored. Reason: %2.").arg(QString::number(id+1), error));
+			}
 			id++;
 		}
 	}
@@ -392,27 +403,31 @@ void Page::parse(QNetworkReply* r)
 		QStringList tagsGot;
 		for (int i = 0; i < m_images.count(); i++)
 		{
-			QList<Tag*> tags = m_images.at(i)->tags();
+			QList<Tag> tags = m_images.at(i)->tags();
 			for (int t = 0; t < tags.count(); t++)
 			{
-				if (tagsGot.contains(tags.at(t)->text()))
-				{ m_tags[tagsGot.indexOf(tags.at(t)->text())]->setCount(m_tags[tagsGot.indexOf(tags.at(t)->text())]->count()+1); }
+				if (tagsGot.contains(tags[t].text()))
+				{ m_tags[tagsGot.indexOf(tags[t].text())].setCount(m_tags[tagsGot.indexOf(tags[t].text())].count()+1); }
 				else
 				{
-					m_tags.append(tags.at(t));
-					tagsGot.append(tags.at(t)->text());
+					m_tags.append(tags[t]);
+					tagsGot.append(tags[t].text());
 				}
 			}
 		}
 	}
+
+	r->deleteLater();
+	m_reply->deleteLater();
+	m_replyExists = false;
 
 	emit finishedLoading(this);
 }
 void Page::parseTags(QNetworkReply *r)
 {
 	QString source = QString::fromUtf8(r->readAll());
-
 	m_tags.clear();
+
 	if (m_site.contains("Regex/Tags"))
 	{
 		QRegExp rxtags(m_site["Regex/Tags"]);
@@ -421,7 +436,7 @@ void Page::parseTags(QNetworkReply *r)
 		while (((p = rxtags.indexIn(source, p)) != -1))
 		{
 			p += rxtags.matchedLength();
-			m_tags.append(new Tag(rxtags.cap(2), rxtags.cap(1), rxtags.cap(3).toInt()));
+			m_tags.append(Tag(rxtags.cap(2), rxtags.cap(1), rxtags.cap(3).toInt()));
 		}
 	}
 
@@ -435,6 +450,10 @@ void Page::parseTags(QNetworkReply *r)
 		m_wiki.remove("/wiki/show?title=").remove(QRegExp("<p><a href=\"([^\"]+)\">Full entry &raquo;</a></p>")).replace("<h6>", "<span class=\"title\">").replace("</h6>", "</span>");
 	}
 
+	r->deleteLater();
+	m_replyTags->deleteLater();
+	m_replyTagsExists = false;
+
 	emit finishedLoadingTags(this);
 }
 
@@ -445,5 +464,5 @@ int						Page::imagesCount()	{ return m_imagesCount;	}
 QString					Page::source()		{ return m_source;		}
 QString					Page::website()		{ return m_website;		}
 QString					Page::wiki()		{ return m_wiki;		}
-QList<Tag*>				Page::tags()		{ return m_tags;		}
+QList<Tag>				Page::tags()		{ return m_tags;		}
 QStringList				Page::search()		{ return m_search;		}

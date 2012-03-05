@@ -30,6 +30,7 @@ QString		validateFilename(QString);
 QString		qfonttocss(QFont);
 QStringMap	domToMap(QDomElement);
 float		round(float n, unsigned d);
+void		clearLayout(QLayout *layout);
 
 void		showInGraphicalShell(const QString &);
 void		shutDown(int timeout = 0);

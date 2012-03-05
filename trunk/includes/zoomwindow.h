@@ -18,12 +18,12 @@ namespace Ui
 
 
 
-class zoomWindow : public QWidget
+class zoomWindow : public QDialog
 {
     Q_OBJECT
 
 	public:
-		zoomWindow(Image *, QStringMap, QMap<QString,QMap<QString,QString> > *sites);
+		zoomWindow(Image *, QStringMap, QMap<QString,QMap<QString,QString> > *sites, QWidget *parent = 0);
 		void go();
 		~zoomWindow();
 		void load();
@@ -82,7 +82,6 @@ class zoomWindow : public QWidget
 		QPixmap *image;
 		QMovie *movie;
 		QTimer *timer;
-		QNetworkReply *r;
 		QByteArray d;
 		QNetworkAccessManager *m;
 		QPushButton *buttonSave, *buttonSaveNQuit, *buttonSaveas, *m_buttonSaveNQuit;
