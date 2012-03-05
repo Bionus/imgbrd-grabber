@@ -18,7 +18,7 @@ Image::Image(QMap<QString, QString> details, int timezonedecay, Page* parent)
 	if (assoc.contains(m_rating))
 	{ m_rating = assoc[m_rating]; }
 	m_source = details.contains("source") ? details["source"] : "";
-	m_tags = QList<Tag*>();
+	m_tags = QList<Tag>();
 	if (details.contains("tags"))
 	{
 		QStringList t = details["tags"].split(" ");
@@ -26,7 +26,7 @@ Image::Image(QMap<QString, QString> details, int timezonedecay, Page* parent)
 		{
 			QString tg = t.at(i);
 			tg.replace("&amp;", "&");
-			m_tags.append(new Tag(tg));
+			m_tags.append(Tag(tg));
 		}
 	}
 	m_id = details.contains("id") ? details["id"].toInt() : 0;
@@ -53,13 +53,14 @@ Image::Image(QMap<QString, QString> details, int timezonedecay, Page* parent)
 	m_size = QSize(details.contains("width") ? details["width"].toInt() : 0, details.contains("height") ? details["height"].toInt() : 0);
 	m_parent = parent;
 
+	m_previewTry = 0;
 	m_loadPreviewExists = false;
 	m_loadTagsExists = false;
 	m_loadImageExists = false;
 	m_pools = QList<Pool*>();
 }
 Image::~Image()
-{ delete &m_imagePreview; }
+{ }
 
 void Image::loadPreview()
 {
@@ -69,10 +70,12 @@ void Image::loadPreview()
 		manager->setCache(diskCache);*/
 
 	connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(parsePreview(QNetworkReply*)));
+	connect(manager, SIGNAL(finished(QNetworkReply*)), manager, SLOT(deleteLater()));
 	QNetworkRequest r(m_previewUrl);
 		//r.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::PreferCache);
 		r.setRawHeader("Referer", m_previewUrl.toString().toAscii());
 
+	m_previewTry++;
 	m_loadPreviewExists = true;
 	m_loadPreview = manager->get(r);
 }
@@ -97,9 +100,13 @@ void Image::parsePreview(QNetworkReply* r)
 
 	// Load preview from raw result
 	m_imagePreview.loadFromData(r->readAll());
-	if (m_imagePreview.isNull())
+	r->deleteLater();
+	m_loadPreviewExists = false;
+
+	// If nothing has been received
+	if (m_imagePreview.isNull() && m_previewTry <= 3)
 	{
-		log(tr("<b>Attention :</b> %1").arg(tr("une des vignettes est vide (<a href=\"%1\">%1</a>). Nouvel essai...").arg(m_previewUrl.toString())));
+		log(tr("<b>Attention :</b> %1").arg(tr("une des miniatures est vide (<a href=\"%1\">%1</a>). Nouvel essai (%2/%3)...").arg(m_previewUrl.toString()).arg(m_previewTry).arg(3)));
 		loadPreview();
 	}
 	else
@@ -161,13 +168,13 @@ void Image::parseTags(QNetworkReply* r)
 		QRegExp rx(m_parent->site().value("Regex/Tags"));
 		rx.setMinimal(true);
 		int pos = 0;
-		QList<Tag*> tgs;
+		QList<Tag> tgs;
 		while ((pos = rx.indexIn(source, pos)) != -1)
 		{
 			pos += rx.matchedLength();
 			QString type = rx.cap(1), tag = rx.cap(2).replace(" ", "_").replace("&amp;", "&");
 			int count = rx.cap(3).toInt();
-			tgs.append(new Tag(tag, type, count));
+			tgs.append(Tag(tag, type, count));
 		}
 		if (!tgs.isEmpty())
 		{ m_tags = tgs; }
@@ -247,7 +254,7 @@ QString Image::filter(QStringList filters)
 			bool cond = false;
 			for (int t = 0; t < m_tags.count(); t++)
 			{
-				if (m_tags.at(t)->text().toLower() == filter.toLower())
+				if (m_tags[t].text().toLower() == filter.toLower())
 				{ cond = true; break; }
 			}
 			if (!cond && !invert)
@@ -308,7 +315,7 @@ QString Image::path(QString fn, QString pth)
 	QStringList ignore = loadIgnored();
 	for (int i = 0; i < m_tags.size(); i++)
 	{
-		QString t = m_tags.at(i)->text();
+		QString t = m_tags[i].text();
 		for (int r = 0; r < scustom.size(); r++)
 		{
 			if (!custom.contains(scustom.keys().at(r)))
@@ -317,7 +324,7 @@ QString Image::path(QString fn, QString pth)
 			{ custom[scustom.keys().at(r)].append(t); }
 		}
 		details["allos"].append(t);
-		details[ignore.contains(m_tags.at(i)->text(), Qt::CaseInsensitive) ? "generals" : m_tags.at(i)->type()+"s"].append(t);
+		details[ignore.contains(m_tags[i].text(), Qt::CaseInsensitive) ? "generals" : m_tags[i].type()+"s"].append(t);
 		details["alls"].append(t);
 	}
 	if (settings.value("copyright_useshorter", true).toBool())
@@ -433,11 +440,11 @@ QString Image::path(QString fn, QString pth)
 
 void Image::loadImage()
 {
-	QNetworkAccessManager *m = new QNetworkAccessManager(this);
+	QNetworkAccessManager m(this);
 	QNetworkRequest request(m_url);
 		request.setRawHeader("Referer", m_url.toAscii());
 
-	m_loadImage = m->get(request);
+	m_loadImage = m.get(request);
 	connect(m_loadImage, SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(downloadProgressImageS(qint64, qint64)));
 	connect(m_loadImage, SIGNAL(finished()), this, SLOT(finishedImageS()));
 	m_loadImageExists = true;
@@ -465,7 +472,7 @@ int Image::value()
 		pixels = 1200*900;
 		QStringList tags;
 		for (int t = 0; t < m_tags.size(); t++)
-		{ tags.append(m_tags.at(t)->text().toLower()); }
+		{ tags.append(m_tags[t].text().toLower()); }
 		if (tags.contains("incredibly_absurdres"))	{ pixels = 10000*10000; }
 		else if (tags.contains("absurdres"))		{ pixels = 3200*2400; }
 		else if (tags.contains("highres"))			{ pixels = 1600*1200; }
@@ -485,8 +492,8 @@ QStringList Image::blacklisted(QStringList blacklistedtags)
 		for (int t = 0; t < m_tags.count(); t++)
 		{
 			reg.setPattern(blacklistedtags.at(i));
-			if (reg.exactMatch(m_tags[t]->text()))
-			{ detected.append(m_tags[t]->text()); }
+			if (reg.exactMatch(m_tags[t].text()))
+			{ detected.append(m_tags[t].text()); }
 		}
 	}
 	return detected;
@@ -501,7 +508,7 @@ QString			Image::status()			{ return m_status;			}
 QString			Image::rating()			{ return m_rating;			}
 QString			Image::source()			{ return m_source;			}
 QString			Image::site()			{ return m_site;			}
-QList<Tag*>		Image::tags()			{ return m_tags;			}
+QList<Tag>		Image::tags()			{ return m_tags;			}
 QList<Pool*>	Image::pools()			{ return m_pools;			}
 int				Image::id()				{ return m_id;				}
 int				Image::score()			{ return m_score;			}

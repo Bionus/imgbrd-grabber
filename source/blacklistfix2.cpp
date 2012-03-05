@@ -106,10 +106,10 @@ void BlacklistFix2::getAll(Page *p)
 	{
 		if (p->images().size() > 0)
 		{
-			QList<Tag*> ts = p->images().at(0)->tags();
+			QList<Tag> ts = p->images().at(0)->tags();
 			QStringList tags;
 			for (int i = 0; i < ts.size(); i++)
-			{ tags.append(ts.at(i)->text()); }
+			{ tags.append(ts[i].text()); }
 			m_getAll[p->images().at(0)->md5()].insert("tags", tags.join(" "));
 		}
 	}

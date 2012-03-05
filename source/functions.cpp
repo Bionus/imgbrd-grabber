@@ -353,3 +353,19 @@ float round(float n, unsigned d)
 	int p = pow(10., d);
 	return floor(n * p + .5) / p;
 }
+
+void clearLayout(QLayout *layout)
+{
+	QLayoutItem *item;
+	while((item = layout->takeAt(0)))
+	{
+		if (item->layout())
+		{
+			clearLayout(item->layout());
+			delete item->layout();
+		}
+		if (item->widget())
+		{ delete item->widget(); }
+		delete item;
+	}
+}

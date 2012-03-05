@@ -6,7 +6,11 @@ using namespace std;
 
 
 QBouton::QBouton(QVariant id, bool resizeInsteadOfCropping, int border, QColor color, QWidget *parent) : QPushButton(parent), _id(id), _resizeInsteadOfCropping(resizeInsteadOfCropping), _np(false), _originalSize(QSize(-1,-1)), _penColor(color), _border(border)
+{ }
+
+QBouton::~QBouton()
 {
+	icon().~QIcon();
 }
 
 QVariant QBouton::id()

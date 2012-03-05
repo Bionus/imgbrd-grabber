@@ -28,7 +28,7 @@ class Page : public QObject
 		QString					source();
 		QString					website();
 		QString					wiki();
-		QList<Tag*>				tags();
+		QList<Tag>				tags();
 		QStringList				search();
 
 	public slots:
@@ -48,7 +48,7 @@ class Page : public QObject
 		QUrl					m_url, m_urlRegex;
 		QList<Image*>			m_images;
 		int						m_imagesCount, m_imagesPerPage, m_currentUrl, m_page, m_blim, m_currentSource;
-		QList<Tag*>				m_tags;
+		QList<Tag>				m_tags;
 		QNetworkReply			*m_reply, *m_replyTags;
 		bool					m_replyExists, m_replyTagsExists;
 };

@@ -13,12 +13,12 @@ namespace Ui
 
 
 
-class detailsWindow : public QWidget
+class detailsWindow : public QDialog
 {
 	Q_OBJECT
 
 	public:
-		explicit detailsWindow(Image *);
+		explicit detailsWindow(Image *img, QWidget *parent = 0);
 		~detailsWindow();
 		void setTags(QString);
 

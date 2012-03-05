@@ -8,7 +8,7 @@
  * Constructor of the detailsWindow class, completing its window.
  * @param	tags		Image's tags (colored or not)
  */
-detailsWindow::detailsWindow(Image *image) : QWidget(0), ui(new Ui::detailsWindow)
+detailsWindow::detailsWindow(Image *image, QWidget *parent) : QDialog(parent), ui(new Ui::detailsWindow)
 {
 	ui->setupUi(this);
 
@@ -16,7 +16,7 @@ detailsWindow::detailsWindow(Image *image) : QWidget(0), ui(new Ui::detailsWindo
 	{
 		QString t;
 		for (int i = 0; i < image->tags().count(); i++)
-		{ t += " "+image->tags().at(i)->text(); }
+		{ t += " "+image->tags()[i].text(); }
 		ui->labelTags->setText(t.trimmed());
 	}
 	if (image->id() != 0)				{ ui->labelId->setText(QString::number(image->id()));	}

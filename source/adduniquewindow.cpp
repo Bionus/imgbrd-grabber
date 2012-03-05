@@ -61,8 +61,8 @@ void AddUniqueWindow::replyFinished(Page *p)
 
 	Image *img = p->images().first();
 	QStringList tags;
-	foreach (Tag* tag, img->tags())
-	{ tags.append(tag->text()); }
+	foreach (Tag tag, img->tags())
+	{ tags.append(tag.text()); }
 
 	QMap<QString,QString> values;
 	values.insert("id", QString::number(img->id()));

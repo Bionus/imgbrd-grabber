@@ -63,7 +63,7 @@ class searchTab : public QWidget
 		void historyBack();
 		void historyNext();
 		// Others
-		void optionsChanged(QSettings*);
+		void optionsChanged();
 		void closeEvent(QCloseEvent*);
 		void on_buttonSearch_clicked();
 
