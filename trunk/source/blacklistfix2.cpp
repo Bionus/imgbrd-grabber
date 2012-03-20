@@ -95,7 +95,7 @@ void BlacklistFix2::on_buttonContinue_clicked()
 	}
 
 
-	int reponse = QMessageBox::question(this, tr("Réparateur de liste noire"), tr("Vous vous apprêtez à télécharger les informations de %n image(s). Êtes-vous sûr de vouloir continuer ?", "", m_details.size()), QMessageBox::Yes | QMessageBox::No);
+	int reponse = QMessageBox::question(this, tr("RÃ©parateur de liste noire"), tr("Vous vous apprÃªtez Ã  tÃ©lÃ©charger les informations de %n image(s). ÃŠtes-vous sÃ»r de vouloir continuer ?", "", m_details.size()), QMessageBox::Yes | QMessageBox::No);
 	if (reponse == QMessageBox::Yes)
 	{ getAll(); }
 }

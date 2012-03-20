@@ -116,7 +116,7 @@ void searchTab::closeEvent(QCloseEvent *e)
 
 void searchTab::optionsChanged()
 {
-	log(tr("Mise à jour des options de l'onglet \"%1\".").arg(windowTitle()));
+	log(tr("Mise Ã  jour des options de l'onglet \"%1\".").arg(windowTitle()));
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
 	ui->retranslateUi(this);
 	ui->layoutResults->setHorizontalSpacing(settings.value("Margins/horizontal", 6).toInt());
@@ -147,7 +147,7 @@ void searchTab::saveSources(QList<bool> sel)
 }
 void searchTab::updateCheckboxes()
 {
-	log(tr("Mise à jour des cases à cocher."));
+	log(tr("Mise Ã  jour des cases Ã  cocher."));
 	qDeleteAll(m_checkboxes);
 	m_checkboxes.clear();
 	QStringList urls = m_sites->keys();
@@ -173,7 +173,7 @@ void searchTab::updateCheckboxes()
 
 void searchTab::load()
 {
-	log(tr("Chargement des résultats..."));
+	log(tr("Chargement des rÃ©sultats..."));
 
 	m_parent->ui->labelWiki->setText("");
 
@@ -262,7 +262,7 @@ bool sortByFrequency(Tag s1, Tag s2)
 { return s1.count() > s2.count(); }
 void searchTab::finishedLoading(Page* page)
 {
-	log(tr("Réception de la page <a href=\"%1\">%1</a>").arg(Qt::escape(page->url().toString())));
+	log(tr("RÃ©ception de la page <a href=\"%1\">%1</a>").arg(Qt::escape(page->url().toString())));
 	if (page->imagesCount() < m_pagemax || m_pagemax == -1 )
 	{ m_pagemax = page->imagesCount(); }
 	ui->buttonNextPage->setEnabled(m_pagemax > ui->spinPage->value() || page->imagesCount() == -1 || (page->imagesCount() == 0 && page->images().count() > 0));
@@ -285,7 +285,7 @@ void searchTab::finishedLoading(Page* page)
 				if (m_search->toPlainText().count(" ") > 1)
 				{ reasons.append(tr("trop de tags")); }
 				if (ui->spinPage->value() > 1000)
-				{ reasons.append(tr("page trop éloignée")); }
+				{ reasons.append(tr("page trop Ã©loignÃ©e")); }
 				QStringList completion;
 				QFile words("words.txt");
 				if (words.open(QIODevice::ReadOnly | QIODevice::Text) && !m_search->toPlainText().isEmpty())
@@ -327,7 +327,7 @@ void searchTab::finishedLoading(Page* page)
 						ui->labelMeant->setText("<a href=\""+Qt::escape(cl.join(" "))+"\" style=\"color:black;text-decoration:none;\">"+res.join(" ")+"</a>");
 					}
 				}
-				txt->setText("<a href=\""+Qt::escape(page->url().toString())+"\">"+m_sites->key(page->site())+"</a> - "+tr("Aucun résultat")+(reasons.count() > 0 ? "<br/>"+tr("Raisons possibles : %1").arg(reasons.join(", ")) : ""));
+				txt->setText("<a href=\""+Qt::escape(page->url().toString())+"\">"+m_sites->key(page->site())+"</a> - "+tr("Aucun rÃ©sultat")+(reasons.count() > 0 ? "<br/>"+tr("Raisons possibles : %1").arg(reasons.join(", ")) : ""));
 			}
 			else
 			{ txt->setText("<a href=\""+Qt::escape(page->url().toString())+"\">"+m_sites->key(page->site())+"</a> - "+tr("Page %1 sur %2 (%3 sur %4)").arg(ui->spinPage->value()).arg(page->imagesCount() > 0 ? QString::number(ceil(page->imagesCount()/((float)perpage))) : "?").arg(imgs.count()).arg(page->imagesCount() > 0 ? QString::number(page->imagesCount()) : "?")); }
@@ -342,7 +342,7 @@ void searchTab::finishedLoading(Page* page)
 					{ uncommon.removeAll(page->search().at(i)); }
 				}
 				if (!uncommon.isEmpty() > 0)
-				{ txt->setText(txt->text()+"<br/>"+QString("Des modificateurs ont été otés de la recherche car ils ne sont pas compatibles avec cet imageboard : %1.").arg(uncommon.join(" "))); }
+				{ txt->setText(txt->text()+"<br/>"+QString("Des modificateurs ont Ã©tÃ© otÃ©s de la recherche car ils ne sont pas compatibles avec cet imageboard : %1.").arg(uncommon.join(" "))); }
 			}
 		int page_x = pos%ui->spinColumns->value(), page_y = (pos/ui->spinColumns->value())*2;
 		ui->layoutResults->addWidget(txt, page_y, page_x, 1, 1);
@@ -444,7 +444,7 @@ void searchTab::finishedLoading(Page* page)
 			}
 		}
 		if (!detected.isEmpty() && settings.value("hideblacklisted", false).toBool())
-		{ log(tr("Image #%1 ignorée. Raison : %2.").arg(i).arg("\""+detected.join(", ")+"\""));; }
+		{ log(tr("Image #%1 ignorÃ©e. Raison : %2.").arg(i).arg("\""+detected.join(", ")+"\""));; }
 		else
 		{
 			connect(img, SIGNAL(finishedLoadingPreview(Image*)), this, SLOT(finishedLoadingPreview(Image*)));
@@ -562,7 +562,7 @@ void searchTab::finishedLoadingPreview(Image *img)
 			.arg(img->author().isEmpty() ? " " : tr("<b>Posteur :</b> %1<br/><br/>").arg(img->author()))
 			.arg(img->width() == 0 || img->height() == 0 ? " " : tr("<b>Dimensions :</b> %1 x %2<br/>").arg(QString::number(img->width()), QString::number(img->height())))
 			.arg(img->fileSize() == 0 ? " " : tr("<b>Taille :</b> %1 %2<br/>").arg(QString::number(round(size)), unit))
-			.arg(!img->createdAt().isValid() ? " " : tr("<b>Date :</b> %1").arg(img->createdAt().toString(tr("'le 'dd/MM/yyyy' à 'hh:mm"))))
+			.arg(!img->createdAt().isValid() ? " " : tr("<b>Date :</b> %1").arg(img->createdAt().toString(tr("'le 'dd/MM/yyyy' Ã  'hh:mm"))))
 		);
 		l->setIconSize(img->previewImage().size());
 		l->setFlat(true);
@@ -587,7 +587,7 @@ void searchTab::webZoom(int id)
 		QStringList detected = image->blacklisted(blacklistedtags);
 		if (!detected.isEmpty())
 		{
-			int reply = QMessageBox::question(this, tr("List noire"), tr("%n tag(s) figurant dans la liste noire détécté(s) sur cette image : %1. Voulez-vous l'afficher tout de même ?", "", detected.size()).arg(detected.join(", ")), QMessageBox::Yes | QMessageBox::No);
+			int reply = QMessageBox::question(this, tr("List noire"), tr("%n tag(s) figurant dans la liste noire dÃ©tÃ©ctÃ©(s) sur cette image : %1. Voulez-vous l'afficher tout de mÃªme ?", "", detected.size()).arg(detected.join(", ")), QMessageBox::Yes | QMessageBox::No);
 			if (reply == QMessageBox::No)
 			{ return; }
 		}
@@ -678,7 +678,7 @@ void searchTab::contextMenu()
 		{ menu->addAction(QIcon(":/images/icons/add.png"), tr("Garder pour plus tard"), this, SLOT(viewitlater())); }
 		menu->addSeparator();
 		menu->addAction(QIcon(":/images/icons/tab.png"), tr("Ouvrir dans un nouvel onglet"), this, SLOT(openInNewTab()));
-		menu->addAction(QIcon(":/images/icons/window.png"), tr("Ouvrir dans une nouvelle fenêtre"), this, SLOT(openInNewWindow()));
+		menu->addAction(QIcon(":/images/icons/window.png"), tr("Ouvrir dans une nouvelle fenÃªtre"), this, SLOT(openInNewWindow()));
 	}
 	menu->exec(QCursor::pos());
 }
@@ -695,7 +695,7 @@ void searchTab::favorite()
 	m_favorites->insert(m_link, v);
 	QFile f(savePath("favorites.txt"));
 		f.open(QIODevice::WriteOnly | QIODevice::Append);
-		f.write(QString(m_link+"|"+v+"\r\n").toAscii());
+		f.write(QString(m_link+"|"+v+"\r\n").toUtf8());
 	f.close();
 	/*QPixmap img = image;
 	if (img.width() > 150 || img.height() > 150)
@@ -717,7 +717,7 @@ void searchTab::unfavorite()
 	reg.setMinimal(true);
 	favs.remove(reg);
 	f.open(QIODevice::WriteOnly);
-		f.write(favs.toAscii());
+		f.write(favs.toUtf8());
 	f.close();
 	if (QFile::exists(savePath("thumbs/"+m_link+".png")))
 	{ QFile::remove(savePath("thumbs/"+m_link+".png")); }
@@ -729,7 +729,7 @@ void searchTab::viewitlater()
 	vil.append(m_link);
 	QFile f(savePath("viewitlater.txt"));
 	f.open(QIODevice::WriteOnly);
-		f.write(vil.join("\r\n").toAscii());
+		f.write(vil.join("\r\n").toUtf8());
 	f.close();
 }
 void searchTab::unviewitlater()
@@ -738,7 +738,7 @@ void searchTab::unviewitlater()
 	vil.removeAll(m_link);
 	QFile f(savePath("viewitlater.txt"));
 	f.open(QIODevice::WriteOnly);
-		f.write(vil.join("\r\n").toAscii());
+		f.write(vil.join("\r\n").toUtf8());
 	f.close();
 }
 

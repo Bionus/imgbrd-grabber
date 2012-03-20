@@ -50,7 +50,7 @@ void mainWindow::init()
 
 	loadLanguage(m_settings->value("language", "English").toString(), true);
 	ui->setupUi(this);
-	log(tr("Nouvelle session dÈmarÈe."));
+	log(tr("Nouvelle session d√©mar√©e."));
 
 	tabifyDockWidget(ui->dock_internet, ui->dock_wiki);
 	tabifyDockWidget(ui->dock_wiki, ui->dock_kfl);
@@ -68,7 +68,7 @@ void mainWindow::init()
 	{
 		QNetworkProxy proxy(QNetworkProxy::HttpProxy, m_settings->value("Proxy/hostName").toString(), m_settings->value("Proxy/port").toInt());
 		QNetworkProxy::setApplicationProxy(proxy);
-		log(tr("Activation du proxy gÈnÈral sur l'hÙte \"%1\" et le port %2.").arg(m_settings->value("Proxy/hostName").toString()).arg(m_settings->value("Proxy/port").toInt()));
+		log(tr("Activation du proxy g√©n√©ral sur l'h√¥te \"%1\" et le port %2.").arg(m_settings->value("Proxy/hostName").toString()).arg(m_settings->value("Proxy/port").toInt()));
 	}
 
 	m_serverDate = QDateTime::currentDateTime().toUTC().addSecs(-60*60*4);
@@ -147,11 +147,11 @@ void mainWindow::init()
 						}
 					}
 					else
-					{ log(tr("Fichier sites.txt du modËle %1 introuvable.").arg(dir.at(i)), Error); }
+					{ log(tr("Fichier sites.txt du mod√®le %1 introuvable.").arg(dir.at(i)), Error); }
 					f.close();
 				}
 				else
-				{ log(tr("Aucune source valide trouvÈe dans le fichier model.xml de %1.").arg(dir.at(i))); }
+				{ log(tr("Aucune source valide trouv√©e dans le fichier model.xml de %1.").arg(dir.at(i))); }
 			}
 		}
 		file.close();
@@ -163,7 +163,7 @@ void mainWindow::init()
 	ui->actionQuit->setShortcut(QKeySequence::Quit);
 	ui->actionFolder->setShortcut(QKeySequence::Open);
 
-	log(tr("Chargement des prÈfÈrences depuis <a href=\"file:///%1\">%1</a>").arg(savePath("settings.ini")));
+	log(tr("Chargement des pr√©f√©rences depuis <a href=\"file:///%1\">%1</a>").arg(savePath("settings.ini")));
 	QStringList assoc = QStringList() << "name" << "note" << "lastviewed";
 		ui->comboOrderfavorites->setCurrentIndex(assoc.indexOf(m_settings->value("Favorites/order", "name").toString()));
 		ui->comboOrderasc->setCurrentIndex(int(m_settings->value("Favorites/reverse", false).toBool()));
@@ -186,7 +186,7 @@ void mainWindow::init()
 		QSettings profiles(path+"/profiles.ini", QSettings::IniFormat);
 		if (QFile::exists(path+"/"+profiles.value("Profile0/Path").toString()+"/extensions/danbooru_downloader@cuberocks.net.xpi"))
 		{
-			int reponse = QMessageBox::question(this, tr("Danbooru Downloader"), tr("L'extension pour Mozilla Firefox \"Danbooru Downloader\" a ÈtÈ dÈtÈctÈe sur votre systËme. Souhaitez-vous en importer les prÈfÈrences ?"), QMessageBox::Yes | QMessageBox::No);
+			int reponse = QMessageBox::question(this, tr("Danbooru Downloader"), tr("L'extension pour Mozilla Firefox \"Danbooru Downloader\" a √©t√© d√©t√©ct√©e sur votre syst√®me. Souhaitez-vous en importer les pr√©f√©rences ?"), QMessageBox::Yes | QMessageBox::No);
 			if (reponse == QMessageBox::Yes)
 			{
 				QFile prefs(path+"/"+profiles.value("Profile0/Path").toString()+"/prefs.js");
@@ -277,8 +277,8 @@ void mainWindow::init()
 	bool restore = m_settings->value("start", "none").toString() == "restore";
 	if (crashed && !restore)
 	{
-		log(tr("Il semblerait que Imgbrd-Grabber n'ait pas ÈtÈ fermÈ correctement la derniËre fois."));
-		int reponse = QMessageBox::question(this, tr("Danbooru Downloader"), tr("Il semblerait que l'application n'ait pas ÈtÈ arrÍtÈe correctement lors de sa derniËre utilisation. Voulez-vous restaurer votre derniËre seesion ?"), QMessageBox::Yes | QMessageBox::No);
+		log(tr("Il semblerait que Imgbrd-Grabber n'ait pas √©t√© ferm√© correctement la derni√®re fois."));
+		int reponse = QMessageBox::question(this, tr("Danbooru Downloader"), tr("Il semblerait que l'application n'ait pas √©t√© arr√™t√©e correctement lors de sa derni√®re utilisation. Voulez-vous restaurer votre derni√®re seesion ?"), QMessageBox::Yes | QMessageBox::No);
 		if (reponse == QMessageBox::Yes)
 		{ restore = true; }
 	}
@@ -353,12 +353,12 @@ bool mainWindow::saveTabs(QString filename)
 {
 	QStringList tabs = QStringList();
 	foreach (searchTab *tab, m_tabs)
-	{ tabs.append(tab->tags()+"§"+QString::number(tab->ui->spinPage->value())+"§"+QString::number(tab->ui->spinImagesPerPage->value())+"§"+QString::number(tab->ui->spinColumns->value())); }
+	{ tabs.append(tab->tags()+"¬§"+QString::number(tab->ui->spinPage->value())+"¬§"+QString::number(tab->ui->spinImagesPerPage->value())+"¬§"+QString::number(tab->ui->spinColumns->value())); }
 
 	QFile *f = new QFile(filename, this);
 	if (f->open(QFile::WriteOnly))
 	{
-		f->write(tabs.join("\r\n").toAscii());
+		f->write(tabs.join("\r\n").toUtf8());
 		f->close();
 		return true;
 	}
@@ -375,7 +375,7 @@ bool mainWindow::loadTabs(QString filename)
 		QStringList tabs = links.split("\r\n");
 		for (int j = 0; j < tabs.size(); j++)
 		{
-			QStringList infos = tabs[j].split("§");
+			QStringList infos = tabs[j].split("¬§");
 			if (infos.size() > 3)
 			{
 				int i = addTab(infos[0]);
@@ -448,7 +448,7 @@ void mainWindow::batchAddUnique(QStringMap values)
 {
 	if (!m_batchs.removeOne(values))
 	{
-		log(tr("Ajout d'une image en tÈlÈchargement unique : %1").arg(values.value("file_url")));
+		log(tr("Ajout d'une image en t√©l√©chargement unique : %1").arg(values.value("file_url")));
 		m_batchs.append(values);
 		QStringList types = QStringList() << "id" << "md5" <<  "rating" << "tags" << "file_url" << "site";
 		QTableWidgetItem *item;
@@ -633,7 +633,7 @@ void mainWindow::updateFavorites(bool dock)
 			img = img.scaled(QSize(150,150), Qt::KeepAspectRatio, Qt::SmoothTransformation);
 			img.save(savePath("thumbs/"+tag+".png"), "PNG");
 		}
-		QString xt = tr("<b>Nom :</b> %1<br/><b>Note :</b> %2 %%<br/><b>DerniËre vue :</b> %3").arg(favorites[i]["name"], favorites[i]["note"], QDateTime::fromString(favorites[i]["lastviewed"], Qt::ISODate).toString(format));
+		QString xt = tr("<b>Nom :</b> %1<br/><b>Note :</b> %2 %%<br/><b>Derni√®re vue :</b> %3").arg(favorites[i]["name"], favorites[i]["note"], QDateTime::fromString(favorites[i]["lastviewed"], Qt::ISODate).toString(format));
 		if (m_favoritesImages.count() > i)
 		{
 			m_favoritesImages.at(i)->setIcon(img);
@@ -711,7 +711,7 @@ void mainWindow::updateFavoritesDock()
 	{
 		QLabel *lab = new QLabel(QString("<a href=\"%1\" style=\"color:black;text-decoration:none;\">%2</a>").arg(favorites[i]["name"], favorites[i]["tag"]), this);
 		connect(lab, SIGNAL(linkActivated(QString)), this, SLOT(loadTag(QString)));
-		lab->setToolTip("<img src=\""+favorites[i]["imagepath"]+"\" /><br/>"+tr("<b>Nom :</b> %1<br/><b>Note :</b> %2 %%<br/><b>DerniËre vue :</b> %3").arg(favorites[i]["name"], favorites[i]["note"], QDateTime::fromString(favorites[i]["lastviewed"], Qt::ISODate).toString(format)));
+		lab->setToolTip("<img src=\""+favorites[i]["imagepath"]+"\" /><br/>"+tr("<b>Nom :</b> %1<br/><b>Note :</b> %2 %%<br/><b>Derni√®re vue :</b> %3").arg(favorites[i]["name"], favorites[i]["note"], QDateTime::fromString(favorites[i]["lastviewed"], Qt::ISODate).toString(format)));
 		ui->layoutFavoritesDock->addWidget(lab);
 	}
 }
@@ -775,7 +775,7 @@ void mainWindow::web(QString tags)
 }
 void mainWindow::finishedLoading(Page* page)
 {
-	log(tr("RÈception de la page <a href=\"%1\">%1</a>").arg(Qt::escape(page->url().toString())));
+	log(tr("R√©ception de la page <a href=\"%1\">%1</a>").arg(Qt::escape(page->url().toString())));
 
 	if (page->imagesCount() < m_pagemax || m_pagemax == -1 )
 	{ m_pagemax = page->imagesCount(); }
@@ -789,13 +789,13 @@ void mainWindow::finishedLoading(Page* page)
 	{
 		Image *img = imgs.at(i);
 		if (img->createdAt() < m_loadFavorite)
-		{ log(tr("Image #%1 ignorÈe. Raison : %2.").arg(i).arg("dÈj‡ vue"));; }
+		{ log(tr("Image #%1 ignor√©e. Raison : %2.").arg(i).arg("d√©j√† vue"));; }
 		else
 		{
 			QStringList blacklistedtags(m_settings->value("blacklistedtags").toString().split(" "));
 			QStringList detected = img->blacklisted(blacklistedtags);
 			if (!detected.isEmpty() && m_settings->value("hideblacklisted", false).toBool())
-			{ log(tr("Image #%1 ignorÈe. Raison : %2.").arg(i).arg("\""+detected.join(", ")+"\""));; }
+			{ log(tr("Image #%1 ignor√©e. Raison : %2.").arg(i).arg("\""+detected.join(", ")+"\""));; }
 			else
 			{
 				connect(img, SIGNAL(finishedLoadingPreview(Image*)), this, SLOT(finishedLoadingPreview(Image*)));
@@ -811,7 +811,7 @@ void mainWindow::finishedLoading(Page* page)
 	float fl = (float)m_settings->value("limit", 20).toInt()/pl;
 	QLabel *txt = new QLabel(this);
 		if (results == 0)
-		{ txt->setText(tr("Aucun rÈsultat depuis le %1.").arg(m_loadFavorite.toString(tr("dd/MM/yyyy")))); }
+		{ txt->setText(tr("Aucun r√©sultat depuis le %1.").arg(m_loadFavorite.toString(tr("dd/MM/yyyy")))); }
 		else
 		{ txt->setText(m_sites.key(page->site())+" - <a href=\""+page->url().toString()+"\">"+page->url().toString()+"</a> - "+tr("Page %1 sur %2 (%3 sur %4)").arg(1).arg(page->imagesCount() != 0 ? ceil(page->imagesCount()/((float)m_settings->value("limit", 20).toInt())) : 0).arg(imgs.count()).arg(page->imagesCount() != 0 ? page->imagesCount() : 0)); }
 		txt->setOpenExternalLinks(true);
@@ -865,7 +865,7 @@ void mainWindow::finishedLoadingPreview(Image *img)
 			.arg(img->author().isEmpty() ? " " : tr("<b>Posteur :</b> %1<br/><br/>").arg(img->author()))
 			.arg(img->width() == 0 || img->height() == 0 ? " " : tr("<b>Dimensions :</b> %1 x %2<br/>").arg(QString::number(img->width()), QString::number(img->height())))
 			.arg(img->fileSize() == 0 ? " " : tr("<b>Taille :</b> %1 %2<br/>").arg(QString::number(round(size)), unit))
-			.arg(!img->createdAt().isValid() ? " " : tr("<b>Date :</b> %1").arg(img->createdAt().toString(tr("le dd/MM/yyyy ‡ hh:mm"))))
+			.arg(!img->createdAt().isValid() ? " " : tr("<b>Date :</b> %1").arg(img->createdAt().toString(tr("le dd/MM/yyyy √† hh:mm"))))
 		);
 		l->setIconSize(img->previewImage().size());
 		l->setFlat(true);
@@ -884,7 +884,7 @@ void mainWindow::webZoom(int id)
 		QStringList detected = image->blacklisted(blacklistedtags);
 		if (!detected.isEmpty())
 		{
-			int reply = QMessageBox::question(this, tr("List noire"), tr("%n tag(s) figurant dans la liste noire dÈtÈctÈ(s) sur cette image : %1. Voulez-vous l'afficher tout de mÍme ?", "", detected.size()).arg(detected.join(", ")), QMessageBox::Yes | QMessageBox::No);
+			int reply = QMessageBox::question(this, tr("List noire"), tr("%n tag(s) figurant dans la liste noire d√©t√©ct√©(s) sur cette image : %1. Voulez-vous l'afficher tout de m√™me ?", "", detected.size()).arg(detected.join(", ")), QMessageBox::Yes | QMessageBox::No);
 			if (reply == QMessageBox::No)
 			{ return; }
 		}
@@ -898,7 +898,7 @@ void mainWindow::viewed()
 {
 	if (m_currentFavorite.isEmpty())
 	{
-		int reponse = QMessageBox::question(this, tr("Grabber - Marquer comme vu"), tr(" tes-vous s˚r de vouloir marquer tous vos favoris comme vus ?"), QMessageBox::Yes | QMessageBox::No);
+		int reponse = QMessageBox::question(this, tr("Grabber - Marquer comme vu"), tr("√ätes-vous s√ªr de vouloir marquer tous vos favoris comme vus ?"), QMessageBox::Yes | QMessageBox::No);
 		if (reponse == QMessageBox::Yes)
 		{
 			QStringList keys = m_favorites.keys();
@@ -923,7 +923,7 @@ void mainWindow::setFavoriteViewed(QString tag)
 	reg.setMinimal(true);
 	favs.replace(reg, tag+"|\\1|"+QDateTime::currentDateTime().toString(Qt::ISODate)+"\r\n");
 	f.open(QIODevice::WriteOnly);
-		f.write(favs.toAscii());
+		f.write(favs.toUtf8());
 	f.close();
 	DONE();
 }
@@ -1055,7 +1055,7 @@ void mainWindow::closeEvent(QCloseEvent *e)
 
 void mainWindow::options()
 {
-	log(tr("Ouverture de la fenÍtre des options..."));
+	log(tr("Ouverture de la fen√™tre des options..."));
 	optionsWindow *options = new optionsWindow(this);
 	connect(options, SIGNAL(accepted()), this, SLOT(optionsClosed()));
 	options->show();
@@ -1069,7 +1069,7 @@ void mainWindow::optionsClosed()
 
 void mainWindow::advanced()
 {
-	log(tr("Ouverture de la fenÍtre des sources..."));
+	log(tr("Ouverture de la fen√™tre des sources..."));
 	sourcesWindow *adv = new sourcesWindow(m_selectedSources, &m_sites, this);
 	adv->show();
 	connect(adv, SIGNAL(valid(sourcesWindow*)), this, SLOT(saveAdvanced(sourcesWindow*)));
@@ -1103,20 +1103,20 @@ void mainWindow::getAll(bool all)
 {
 	if (m_getAll)
 	{
-		log(tr("Lancement d'un tÈlÈchargement groupÈ annulÈ car un autre est dÈj‡ en cours d'Èxecution."));
+		log(tr("Lancement d'un t√©l√©chargement group√© annul√© car un autre est d√©j√† en cours d'√©xecution."));
 		return;
 	}
 	if (m_settings->value("Save/path").toString().isEmpty())
 	{
-		error(this, tr("Vous n'avez pas prÈcisÈ de dossier de sauvegarde !"));
+		error(this, tr("Vous n'avez pas pr√©cis√© de dossier de sauvegarde !"));
 		return;
 	}
 	else if (m_settings->value("Save/filename").toString().isEmpty())
 	{
-		error(this, tr("Vous n'avez pas prÈcisÈ de nom de fichier !"));
+		error(this, tr("Vous n'avez pas pr√©cis√© de nom de fichier !"));
 		return;
 	}
-	log(tr("TÈlÈchargement groupÈ commencÈ."));
+	log(tr("T√©l√©chargement group√© commenc√©."));
 
 	m_getAll = true;
 	ui->widgetDownloadButtons->setDisabled(m_getAll);
@@ -1197,9 +1197,9 @@ void mainWindow::getAll(bool all)
 			}
 		}
 	}
-	else
+	if (m_getAllPages.isEmpty())
 	{ getAllImages(); }
-	m_progressdialog->setText(tr("TÈlÈchargement des pages, veuillez patienter..."));
+	m_progressdialog->setText(tr("T√©l√©chargement des pages, veuillez patienter..."));
 		connect(m_progressdialog, SIGNAL(rejected()), this, SLOT(getAllCancel()));
 		m_progressdialog->setValue(0);
 		m_progressdialog->setImagesCount(0);
@@ -1209,7 +1209,7 @@ void mainWindow::getAll(bool all)
 }
 void mainWindow::getAllFinishedLoading(Page* p)
 {
-	log(tr("Page reÁue <a href=\"%1\">%1</a>").arg(Qt::escape(p->url().toString())));
+	log(tr("Page re√ßue <a href=\"%1\">%1</a>").arg(Qt::escape(p->url().toString())));
 	int n = 0;
 	for (int i = 0; i < m_groupBatchs.count(); i++)
 	{
@@ -1227,7 +1227,7 @@ void mainWindow::getAllFinishedLoading(Page* p)
 	{
 		if (m_getAllRemaining.isEmpty())
 		{
-			error(this, tr("<b>Attention :</b> %1").arg(tr("rien n'a ÈtÈ reÁu depuis %1. Raisons possibles : tag incorrect, page trop ÈloignÈe.").arg(p->site().value("Url"))));
+			error(this, tr("<b>Attention :</b> %1").arg(tr("rien n'a √©t√© re√ßu depuis %1. Raisons possibles : tag incorrect, page trop √©loign√©e.").arg(p->site().value("Url"))));
 			return;
 		}
 		getAllImages();
@@ -1235,7 +1235,7 @@ void mainWindow::getAllFinishedLoading(Page* p)
 }
 void mainWindow::getAllImages()
 {
-	log(tr("Toutes les urls des images ont ÈtÈ reÁues."));
+	log(tr("Toutes les urls des images ont √©t√© re√ßues."));
 
 	int count = 0;
 	for (int i = 0; i < m_getAllRemaining.count(); i++)
@@ -1245,7 +1245,7 @@ void mainWindow::getAllImages()
 	}
 	m_progressdialog->setMaximum(count);
 	m_progressdialog->setImagesCount(m_getAllRemaining.count());
-	m_progressdialog->setText(tr("TÈlÈchargement des images en cours..."));
+	m_progressdialog->setText(tr("T√©l√©chargement des images en cours..."));
 
 	m_must_get_tags = false;
 	QStringList forbidden = QStringList() << "artist" << "copyright" << "character" << "model" << "general";
@@ -1328,7 +1328,7 @@ void mainWindow::_getAll()
 					m_progressdialog->setValue(m_progressdialog->value()+img->value());
 					m_progressdialog->setImages(m_progressdialog->images()+1);
 					m_getAllIgnored++;
-					log(tr("Image ignorÈe."));
+					log(tr("Image ignor√©e."));
 					m_progressdialog->loadedImage(img->url());
 					m_progressBars[site_id]->setValue(m_progressBars[site_id]->value()+1);
 					if (m_progressBars[site_id]->value() >= m_progressBars[site_id]->maximum())
@@ -1353,7 +1353,7 @@ void mainWindow::_getAll()
 				m_progressdialog->setValue(m_progressdialog->value()+img->value());
 				m_progressdialog->setImages(m_progressdialog->images()+1);
 				m_getAllExists++;
-				log(tr("Fichier dÈj‡ existant : <a href=\"file:///%1\">%1</a>").arg(f.fileName()));
+				log(tr("Fichier d√©j√† existant : <a href=\"file:///%1\">%1</a>").arg(f.fileName()));
 				m_progressdialog->errorImage(img->url());
 				if (site_id >= 0)
 				{
@@ -1379,11 +1379,11 @@ void mainWindow::_getAll()
 		}
 		QMessageBox::information(
 			this,
-			tr("RÈcupÈration des images"),
+			tr("R√©cup√©ration des images"),
 			QString(
-				tr("%n fichier(s) rÈcupÈrÈ(s) avec succËs.", "", m_getAllDownloaded)+"\r\n"+
-				tr("%n fichier(s) ignorÈ(s).", "", m_getAllIgnored)+"\r\n"+
-				tr("%n fichier(s) dÈj‡ existant(s).", "", m_getAllExists)+"\r\n"+
+				tr("%n fichier(s) r√©cup√©r√©(s) avec succ√®s.", "", m_getAllDownloaded)+"\r\n"+
+				tr("%n fichier(s) ignor√©(s).", "", m_getAllIgnored)+"\r\n"+
+				tr("%n fichier(s) d√©j√† existant(s).", "", m_getAllExists)+"\r\n"+
 				tr("%n erreur(s).", "", m_getAllErrors)
 			)
 		);
@@ -1395,7 +1395,7 @@ void mainWindow::_getAll()
 		}
 		m_getAll = false;
 		ui->widgetDownloadButtons->setDisabled(m_getAll);
-		log(tr("TÈlÈchargement groupÈ terminÈ"));
+		log(tr("T√©l√©chargement group√© termin√©"));
 		m_progressdialog->clear();
 	}
 }
@@ -1433,7 +1433,7 @@ void mainWindow::getAllProgress(Image *img, qint64 bytesReceived, qint64 bytesTo
 }
 void mainWindow::getAllPerformTags(Image* img)
 {
-	log(tr("Tags reÁus"));
+	log(tr("Tags re√ßus"));
 	bool under = m_settings->value("Save/remplaceblanksbyunderscores", false).toBool();
 	for (int i = 0; i < img->tags().count(); i++)
 	{
@@ -1506,7 +1506,7 @@ void mainWindow::getAllPerformTags(Image* img)
 			m_progressdialog->setValue(m_progressdialog->value()+img->value());
 			m_progressdialog->setImages(m_progressdialog->images()+1);
 			m_getAllIgnored++;
-			log(tr("Image ignorÈe."));
+			log(tr("Image ignor√©e."));
 			m_progressdialog->loadedImage(img->url());
 			m_progressBars[site_id]->setValue(m_progressBars[site_id]->value()+1);
 			if (m_progressBars[site_id]->value() >= m_progressBars[site_id]->maximum())
@@ -1533,7 +1533,7 @@ void mainWindow::getAllPerformTags(Image* img)
 		m_progressdialog->setValue(m_progressdialog->value()+img->value());
 		m_progressdialog->setImages(m_progressdialog->images()+1);
 		m_getAllExists++;
-		log(tr("Fichier dÈj‡ existant : <a href=\"file:///%1\">%1</a>").arg(f.fileName()));
+		log(tr("Fichier d√©j√† existant : <a href=\"file:///%1\">%1</a>").arg(f.fileName()));
 		m_getAllDetails.clear();
 		m_progressdialog->loadedImage(img->url());
 		if (site_id >= 0)
@@ -1553,7 +1553,7 @@ void mainWindow::getAllPerformImage(Image* img)
 
 	if (reply->error() == QNetworkReply::OperationCanceledError)
 	{ return; }
-	log(tr("Image reÁue depuis <a href=\"%1\">%1</a>").arg(reply->url().toString()));
+	log(tr("Image re√ßue depuis <a href=\"%1\">%1</a>").arg(reply->url().toString()));
 
 	// Row
 	int site_id = -1;
@@ -1595,7 +1595,7 @@ void mainWindow::getAllPerformImage(Image* img)
 			QDir dir(p);
 			if (!dir.mkpath(path.section(QDir::toNativeSeparators("/"), 0, -2)))
 			{
-				log(tr("Impossible de crÈer le dossier de destination: %1.").arg(p+"/"+path.section('/', 0, -2)), Error);
+				log(tr("Impossible de cr√©er le dossier de destination: %1.").arg(p+"/"+path.section('/', 0, -2)), Error);
 				m_getAllErrors++;
 			}
 		}
@@ -1615,7 +1615,7 @@ void mainWindow::getAllPerformImage(Image* img)
 		}
 		else
 		{
-			log(tr("Rien n'a ÈtÈ reÁu pour l'image: <a href=\"%1\">%1</a>.").arg(Qt::escape(img->url())), Error);
+			log(tr("Rien n'a √©t√© re√ßu pour l'image: <a href=\"%1\">%1</a>.").arg(Qt::escape(img->url())), Error);
 			m_getAllErrors++;
 		}
 
@@ -1646,8 +1646,8 @@ void mainWindow::getAllPerformImage(Image* img)
 				.replace("%tag%", original)
 				.replace("%type%", tag.type())
 				.replace("%number%", QString::number(types[tag.type()]));
-				log(tr("Execution groupÈe de \"%1\"").arg(exec));
-				m_process->write(exec.toAscii());
+				log(tr("Execution group√©e de \"%1\"").arg(exec));
+				m_process->write(exec.toUtf8());
 			}
 		}
 		if (!m_settings->value("Exec/image").toString().isEmpty())
@@ -1662,8 +1662,8 @@ void mainWindow::getAllPerformImage(Image* img)
 		{
 			QString exec = img->path(m_settings->value("Exec/Group/image").toString());
 			exec.replace("%path%", fp);
-			log(tr("Execution groupÈe de \"%1\"").arg(exec));
-			m_process->write(exec.toAscii());
+			log(tr("Execution group√©e de \"%1\"").arg(exec));
+			m_process->write(exec.toUtf8());
 		}
 	}
 	else
@@ -1694,7 +1694,7 @@ void mainWindow::getAllPerformImage(Image* img)
 }
 void mainWindow::getAllCancel()
 {
-	log(tr("Annulation des tÈlÈchargements..."));
+	log(tr("Annulation des t√©l√©chargements..."));
 	for (int i = 0; i < m_getAllDownloading.size(); i++)
 	{
 		m_getAllDownloading[i]->abortTags();
@@ -1724,7 +1724,7 @@ void mainWindow::on_buttonSaveLinkList_clicked()
 	{ return; }
 
 	if (saveLinkList(save))
-	{ QMessageBox::information(this, tr("Enregistrer la liste de liens"), tr("Liste de liens enregistrÈe avec succËs !")); }
+	{ QMessageBox::information(this, tr("Enregistrer la liste de liens"), tr("Liste de liens enregistr√©e avec succ√®s !")); }
 	else
 	{ QMessageBox::critical(this, tr("Enregistrer la liste de liens"), tr("Erreur lors de l'ouverture du fichier.")); }
 }
@@ -1732,12 +1732,12 @@ bool mainWindow::saveLinkList(QString filename)
 {
 	QString links = "[IGL 1]\r\n";
 	for (int i = 0; i < m_groupBatchs.size(); i++)
-	{ links += m_groupBatchs[i].join("§")+"§"+QString::number(m_progressBars[i]->value())+"/"+QString::number(m_progressBars[i]->maximum())+"\r\n"; }
+	{ links += m_groupBatchs[i].join("¬§")+"¬§"+QString::number(m_progressBars[i]->value())+"/"+QString::number(m_progressBars[i]->maximum())+"\r\n"; }
 
 	QFile *f = new QFile(filename, this);
 	if (f->open(QFile::WriteOnly))
 	{
-		f->write(links.trimmed().toAscii());
+		f->write(links.trimmed().toUtf8());
 		f->close();
 		return true;
 	}
@@ -1751,7 +1751,7 @@ void mainWindow::on_buttonLoadLinkList_clicked()
 	{ return; }
 
 	if (loadLinkList(load))
-	{ QMessageBox::information(this, tr("Charger une liste de liens"), tr("Liste de liens chargÈe avec succËs !")); }
+	{ QMessageBox::information(this, tr("Charger une liste de liens"), tr("Liste de liens charg√©e avec succ√®s !")); }
 	else
 	{ QMessageBox::critical(this, tr("Charger une liste de liens"), tr("Erreur lors de l'ouverture du fichier.")); }
 }
@@ -1768,7 +1768,7 @@ bool mainWindow::loadLinkList(QString filename)
 		{
 			QString link = det[i];
 			m_allow = false;
-			QStringList infos = link.split("§");
+			QStringList infos = link.split("¬§");
 			ui->tableBatchGroups->setRowCount(ui->tableBatchGroups->rowCount()+1);
 			QString last = infos.takeLast();
 			int max = last.right(last.indexOf("/")+1).toInt(), val = last.left(last.indexOf("/")).toInt();

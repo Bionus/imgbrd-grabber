@@ -167,7 +167,7 @@ void zoomWindow::openSaveDir(bool fav)
 		{
 			QDir dir(path);
 			if (!dir.mkpath(pth))
-			{ error(this, tr("Erreur lors de la création du dossier.\r\n%1").arg(url)); }
+			{ error(this, tr("Erreur lors de la crÃ©ation du dossier.\r\n%1").arg(url)); }
 			showInGraphicalShell(url);
 		}
 	}
@@ -203,7 +203,7 @@ void zoomWindow::contextMenu(QPoint point)
 		menu->addSeparator();
 		// Onglets
 		menu->addAction(QIcon(":/images/icons/tab.png"), tr("Ouvrir dans un nouvel onglet"), this, SLOT(openInNewTab()));
-		menu->addAction(QIcon(":/images/icons/window.png"), tr("Ouvrir dans une nouvelle fenêtre"), this, SLOT(openInNewWindow()));
+		menu->addAction(QIcon(":/images/icons/window.png"), tr("Ouvrir dans une nouvelle fenÃªtre"), this, SLOT(openInNewWindow()));
 	}
 	menu->exec(QCursor::pos());
 }
@@ -221,7 +221,7 @@ void zoomWindow::favorite()
 
 	QFile f(savePath("favorites.txt"));
 		f.open(QIODevice::WriteOnly | QIODevice::Append);
-		f.write(QString(link+"|50|"+QDateTime::currentDateTime().toString(Qt::ISODate)+"\r\n").toAscii());
+		f.write(QString(link+"|50|"+QDateTime::currentDateTime().toString(Qt::ISODate)+"\r\n").toUtf8());
 	f.close();
 
 	setfavorite();
@@ -254,7 +254,7 @@ void zoomWindow::unfavorite()
 	reg.setMinimal(true);
 	favs.remove(reg);
 	f.open(QIODevice::WriteOnly);
-		f.write(favs.toAscii());
+		f.write(favs.toUtf8());
 	f.close();
 	if (QFile::exists(savePath("thumbs/"+link+".png")))
 	{ QFile::remove(savePath("thumbs/"+link+".png")); }
@@ -267,7 +267,7 @@ void zoomWindow::viewitlater()
 	m_viewItLater.append(link);
 	QFile f(savePath("viewitlater.txt"));
 	f.open(QIODevice::WriteOnly);
-		f.write(m_viewItLater.join("\r\n").toAscii());
+		f.write(m_viewItLater.join("\r\n").toUtf8());
 	f.close();
 
 	_mainwindow->updateKeepForLater();
@@ -277,7 +277,7 @@ void zoomWindow::unviewitlater()
 	m_viewItLater.removeAll(link);
 	QFile f(savePath("viewitlater.txt"));
 	f.open(QIODevice::WriteOnly);
-		f.write(m_viewItLater.join("\r\n").toAscii());
+		f.write(m_viewItLater.join("\r\n").toUtf8());
 	f.close();
 
 	_mainwindow->updateKeepForLater();
@@ -287,7 +287,7 @@ void zoomWindow::ignore()
 	m_ignore.append(link);
 	QFile f(savePath("ignore.txt"));
 	f.open(QIODevice::WriteOnly);
-		f.write(m_ignore.join("\r\n").toAscii());
+		f.write(m_ignore.join("\r\n").toUtf8());
 	f.close();
 	colore();
 }
@@ -296,7 +296,7 @@ void zoomWindow::unignore()
 	m_ignore.removeAll(link);
 	QFile f(savePath("ignore.txt"));
 	f.open(QIODevice::WriteOnly);
-		f.write(m_ignore.join("\r\n").toAscii());
+		f.write(m_ignore.join("\r\n").toUtf8());
 	f.close();
 	colore();
 }
@@ -392,12 +392,12 @@ void zoomWindow::replyFinished(Image* img)
 	{
 		if (file1.exists())
 		{
-			ui->buttonSave->setText(tr("Fichier déjà existant"));
+			ui->buttonSave->setText(tr("Fichier dÃ©jÃ  existant"));
 			ui->buttonSaveNQuit->setText(tr("Fermer"));
 		}
 		if (file2.exists())
 		{
-			ui->buttonSaveFav->setText(tr("Fichier déjà existant (fav)"));
+			ui->buttonSaveFav->setText(tr("Fichier dÃ©jÃ  existant (fav)"));
 			ui->buttonSaveNQuitFav->setText(tr("Fermer (fav)"));
 		}
 		if (m_url.section('.', -1).toUpper() == "GIF")
@@ -466,7 +466,7 @@ void zoomWindow::replyFinishedZoom()
 		return;
 	}
 
-	log(tr("Image reçue depuis <a href=\"%1\">%1</a>").arg(m_url));
+	log(tr("Image reÃ§ue depuis <a href=\"%1\">%1</a>").arg(m_url));
 	m_finished = true;
 	if (m_reply->error() == QNetworkReply::NoError)
 	{
@@ -509,7 +509,7 @@ void zoomWindow::replyFinishedZoom()
 		nextext["png"] = "gif";
 		nextext["gif"] = "jpeg";
 		m_url = m_url.section('.', 0, -2)+"."+nextext[ext];
-		log(tr("Image non trouvée. Nouvel essai avec l'extension %1...").arg(nextext[ext]));
+		log(tr("Image non trouvÃ©e. Nouvel essai avec l'extension %1...").arg(nextext[ext]));
 		load();
 	}
 	else if (m_reply->error() != QNetworkReply::OperationCanceledError)
@@ -591,9 +591,9 @@ QString zoomWindow::saveImage(bool fav)
 	{
 		int reply;
 		if (pth.isEmpty())
-		{ reply = QMessageBox::question(this, tr("Erreur"), tr("Vous n'avez pas précisé de dossier de sauvegarde ! Voulez-vous ouvrir les options ?"), QMessageBox::Yes | QMessageBox::No); }
+		{ reply = QMessageBox::question(this, tr("Erreur"), tr("Vous n'avez pas prÃ©cisÃ© de dossier de sauvegarde ! Voulez-vous ouvrir les options ?"), QMessageBox::Yes | QMessageBox::No); }
 		else
-		{ reply = QMessageBox::question(this, tr("Erreur"), tr("Vous n'avez pas précisé de format de sauvegarde ! Voulez-vous ouvrir les options ?"), QMessageBox::Yes | QMessageBox::No); }
+		{ reply = QMessageBox::question(this, tr("Erreur"), tr("Vous n'avez pas prÃ©cisÃ© de format de sauvegarde ! Voulez-vous ouvrir les options ?"), QMessageBox::Yes | QMessageBox::No); }
 		if (reply == QMessageBox::Yes)
 		{
 			optionsWindow *options = new optionsWindow(_mainwindow);
@@ -657,7 +657,7 @@ QString zoomWindow::saveImage(bool fav)
 				.replace("%tag%", original)
 				.replace("%type%", tag.type())
 				.replace("%number%", QString::number(types[tag.type()]));
-				log(tr("Execution groupée de \"%1\"").arg(exec));
+				log(tr("Execution groupÃ©e de \"%1\"").arg(exec));
 				p->write(exec.toAscii());
 			}
 		}
@@ -673,19 +673,19 @@ QString zoomWindow::saveImage(bool fav)
 		{
 			QString exec = m_image->path(settings.value("Exec/Group/image").toString());
 			exec.replace("%path%", fp);
-			log(tr("Execution groupée de \"%1\"").arg(exec));
+			log(tr("Execution groupÃ©e de \"%1\"").arg(exec));
 			p->write(exec.toAscii());
 		}
 
-		log(tr("Sauvegardé <a href=\"file:///%1\">%1</a>").arg(pth+"/"+path));
+		log(tr("SauvegardÃ© <a href=\"file:///%1\">%1</a>").arg(pth+"/"+path));
 		if (fav)
 		{
-			ui->buttonSaveFav->setText(tr("Sauvegardé ! (fav)"));
+			ui->buttonSaveFav->setText(tr("SauvegardÃ© ! (fav)"));
 			ui->buttonSaveNQuitFav->setText(tr("Fermer (fav)"));
 		}
 		else
 		{
-			ui->buttonSave->setText(tr("Sauvegardé !"));
+			ui->buttonSave->setText(tr("SauvegardÃ© !"));
 			ui->buttonSaveNQuit->setText(tr("Fermer"));
 		}
 		if (!settings.value("Exec/Group/init").toString().isEmpty())
@@ -698,9 +698,9 @@ QString zoomWindow::saveImage(bool fav)
 	else
 	{
 		if (fav)
-		{ ui->buttonSaveFav->setText(tr("Fichier déjà existant (fav)")); }
+		{ ui->buttonSaveFav->setText(tr("Fichier dÃ©jÃ  existant (fav)")); }
 		else
-		{ ui->buttonSave->setText(tr("Fichier déjà existant")); }
+		{ ui->buttonSave->setText(tr("Fichier dÃ©jÃ  existant")); }
 	}
 	if (m_mustSave == 2 || m_mustSave == 4)
 	{ close(); }
@@ -764,7 +764,7 @@ void zoomWindow::closeEvent(QCloseEvent *e)
 		if (m_reply->isRunning())
 		{
 			m_reply->abort();
-			log(tr("Chargement de l'image stoppé."));
+			log(tr("Chargement de l'image stoppÃ©."));
 		}
 	}
 	e->accept();

@@ -71,12 +71,6 @@ SOURCES += source/addgroupwindow.cpp \
 	source/emptydirsfix.cpp \
 	source/emptydirsfix2.cpp \
 	source/pool.cpp
-RESOURCES += resources.qrc
-RC_FILE = icon.rc
-TRANSLATIONS += languages/English.ts languages/Français.ts
-QT += network xml
-CONFIG += designer plugin
-
 FORMS += \
 	ui/favoritewindow.ui \
 	ui/zoomwindow.ui \
@@ -98,8 +92,9 @@ FORMS += \
     ui/emptydirsfix.ui \
     ui/emptydirsfix2.ui
 
-
-
-
-
-
+RESOURCES += resources.qrc
+RC_FILE = icon.rc
+TRANSLATIONS += languages/English.ts languages/FranÃ§ais.ts
+QT += network xml
+CONFIG += designer plugin
+CODECFORTR = UTF-8

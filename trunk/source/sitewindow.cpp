@@ -63,7 +63,7 @@ void siteWindow::accept()
 		}
 		if (type.isEmpty())
 		{
-			error(this, tr("Impossible de deviner le type du site. Êtes-vous sûr de l'url ?"));
+			error(this, tr("Impossible de deviner le type du site. ÃŠtes-vous sÃ»r de l'url ?"));
 			ui->comboBox->setDisabled(false);
 			ui->checkBox->setChecked(false);
 			return;
