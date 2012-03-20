@@ -440,11 +440,11 @@ QString Image::path(QString fn, QString pth)
 
 void Image::loadImage()
 {
-	QNetworkAccessManager m(this);
+	QNetworkAccessManager *m = new QNetworkAccessManager(this);
 	QNetworkRequest request(m_url);
 		request.setRawHeader("Referer", m_url.toAscii());
 
-	m_loadImage = m.get(request);
+	m_loadImage = m->get(request);
 	connect(m_loadImage, SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(downloadProgressImageS(qint64, qint64)));
 	connect(m_loadImage, SIGNAL(finished()), this, SLOT(finishedImageS()));
 	m_loadImageExists = true;

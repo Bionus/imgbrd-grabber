@@ -5,7 +5,6 @@
 
 Page::Page(QMap<QString,QMap<QString,QString> > *sites, QString site, QStringList tags, int page, int limit, QStringList postFiltering, QObject *parent) : QObject(parent), m_postFiltering(postFiltering), m_search(tags), m_imagesPerPage(limit), m_currentSource(0)
 {
-
 	// Some definitions from parameters
 	m_site = sites->value(site);
 	m_website = site;
@@ -24,11 +23,11 @@ void Page::fallback()
 {
 	if (m_currentSource > 3)
 	{
-		log(tr("Aucune source valide du site n'a retourné de résultat."));
+		log(tr("Aucune source valide du site n'a retournÃ© de rÃ©sultat."));
 		return;
 	}
 	if (m_currentSource > 0)
-	{ log(tr("Chargement en %1 échoué. Nouvel essai en %2.").arg(m_format).arg(m_site["Selected"].split('/').at(m_currentSource))); }
+	{ log(tr("Chargement en %1 Ã©chouÃ©. Nouvel essai en %2.").arg(m_format).arg(m_site["Selected"].split('/').at(m_currentSource))); }
 
 	m_currentSource++;
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
@@ -49,7 +48,7 @@ void Page::fallback()
     url.replace("{limit}", QString::number(m_imagesPerPage));
 	url.replace("{pseudo}", settings.value("Login/pseudo").toString());
 	url.replace("{password}", settings.value("Login/password").toString());
-	m_url = QUrl::fromEncoded(url.toAscii());
+	m_url = QUrl::fromEncoded(url.toUtf8());
 
 	if (m_site.contains("Urls/Html/Tags"))
 	{
@@ -70,7 +69,7 @@ void Page::load()
 	QNetworkAccessManager *manager = new QNetworkAccessManager(this);
 	connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(parse(QNetworkReply*)));
 	QNetworkRequest r(m_url);
-		r.setRawHeader("Referer", m_url.toString().toAscii());
+		r.setRawHeader("Referer", m_url.toString().toUtf8());
 	m_reply = manager->get(r);
 	m_replyExists = true;
 }
@@ -349,7 +348,6 @@ void Page::parse(QNetworkReply* r)
 
 		// Getting images
 		QRegExp rx(m_site["Regex/Image"]);
-		qDebug() << m_site["Regex/Image"];
 		QStringList order = m_site["Regex/Order"].split('|');
 		rx.setMinimal(true);
 		int pos = 0, id = 0;

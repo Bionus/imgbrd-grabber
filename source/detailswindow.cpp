@@ -22,7 +22,7 @@ detailsWindow::detailsWindow(Image *image, QWidget *parent) : QDialog(parent), u
 	if (image->id() != 0)				{ ui->labelId->setText(QString::number(image->id()));	}
 	if (!image->md5().isEmpty())		{ ui->labelMd5->setText(image->md5());					}
 	if (!image->rating().isEmpty())		{ ui->labelRating->setText(image->rating());			}
-	if (image->createdAt().isValid())	{ ui->labelDate->setText(image->createdAt().toString(tr("le dd/MM/yyyy à hh:mm")));		}
+	if (image->createdAt().isValid())	{ ui->labelDate->setText(image->createdAt().toString(tr("le dd/MM/yyyy Ã  hh:mm")));		}
 	if (!image->source().isEmpty())		{ ui->labelSource->setText("<a href=\""+image->source()+"\">"+image->source()+"</a>");	}
 	if (!image->pageUrl().isEmpty())	{ ui->labelPage->setText("<a href=\""+image->pageUrl().toString()+"\">"+image->pageUrl().toString()+"</a>");			}
 	if (!image->fileUrl().isEmpty())	{ ui->labelUrl->setText("<a href=\""+image->fileUrl().toString()+"\">"+image->fileUrl().toString()+"</a>");				}

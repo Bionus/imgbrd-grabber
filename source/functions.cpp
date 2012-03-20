@@ -148,13 +148,13 @@ QString validateFilename(QString text)
 {
 	// Field must be filled
 	if (text.isEmpty())
-	{ return QObject::tr("<span style=\"color:red\">Les noms de fichiers ne doivent pas être vides !</span>"); }
+	{ return QObject::tr("<span style=\"color:red\">Les noms de fichiers ne doivent pas Ãªtre vides !</span>"); }
 	// Field must end by an extension
 	if (!text.endsWith(".%ext%"))
-	{ return QObject::tr("<span style=\"color:orange\">Votre nom de fichier ne finit pas par une extension, symbolisée par %ext% ! Vous risquez de ne pas pouvoir ouvrir vos fichiers.</span>"); }
+	{ return QObject::tr("<span style=\"color:orange\">Votre nom de fichier ne finit pas par une extension, symbolisÃ©e par %ext% ! Vous risquez de ne pas pouvoir ouvrir vos fichiers.</span>"); }
 	// Field must contain an unique token
 	if (!text.contains("%md5%") && !text.contains("%id%"))
-	{ return QObject::tr("<span style=\"color:orange\">Votre nom de fichier n'est pas unique à chaque image et une image risque d'en écraser une précédente lors de la sauvegarde ! Vous devriez utiliser le symbole %md5%, unique à chaque image, pour éviter ce désagrément.</span>"); }
+	{ return QObject::tr("<span style=\"color:orange\">Votre nom de fichier n'est pas unique Ã  chaque image et une image risque d'en Ã©craser une prÃ©cÃ©dente lors de la sauvegarde ! Vous devriez utiliser le symbole %md5%, unique Ã  chaque image, pour Ã©viter ce dÃ©sagrÃ©ment.</span>"); }
 	// Looking for unknown tokens
 	QStringList tokens = QStringList() << "artist" << "general" << "copyright" << "character" << "model" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "allo" << getCustoms().keys();
 	QRegExp rx = QRegExp("%(.+)%");
@@ -163,12 +163,12 @@ QString validateFilename(QString text)
 	while ((pos = rx.indexIn(text, pos)) != -1)
 	{
 		if (!tokens.contains(rx.cap(1)) && !rx.cap(1).startsWith("search_"))
-		{ return QObject::tr("<span style=\"color:orange\">Le symbole %%1% n\'existe pas et ne sera pas remplacé.</span>").arg(rx.cap(1)); }
+		{ return QObject::tr("<span style=\"color:orange\">Le symbole %%1% n\'existe pas et ne sera pas remplacÃ©.</span>").arg(rx.cap(1)); }
 		pos += rx.matchedLength();
 	}
 	// All tests passed
 	if (!text.contains("%md5%") && !text.contains("%website%"))
-	{ return QObject::tr("<span style=\"color:green\">Vous avez choisi d'utiliser le symbole %id%. Sachez que celui-ci est unique pour un site choisi. Le même ID pourra identifier des images différentes en fonction du site.</span>"); }
+	{ return QObject::tr("<span style=\"color:green\">Vous avez choisi d'utiliser le symbole %id%. Sachez que celui-ci est unique pour un site choisi. Le mÃªme ID pourra identifier des images diffÃ©rentes en fonction du site.</span>"); }
 	return QObject::tr("<span style=\"color:green\">Format valide !</span>");
 }
 
@@ -299,7 +299,7 @@ void log(QString l, Log type)
 	{
 		QString v = set.contains("Login/pseudo") ? l.replace(set.value("Login/pseudo").toString(), "{pseudo}") : l;
 		v = set.contains("Login/password") ? l.replace(set.value("Login/password").toString(), "{password}") : v;
-		f.write(QString("["+time.toString("hh:mm:ss.zzz")+"] "+v+"\r\n").toAscii());
+		f.write(QString("["+time.toString("hh:mm:ss.zzz")+"] "+v+"\r\n").toUtf8());
 	}
 	f.close();
 

@@ -34,7 +34,7 @@ void aboutWindow::finished(QNetworkReply *r)
 	QString l = r->readAll(), last = l;
 	int latest = version2int(last);
 	if (latest <= m_version)
-	{ ui->labelMessage->setText("<p style=\"font-size:8pt; font-style:italic; color:#808080;\">"+tr("Grabber est à jour")+"</p>"); }
+	{ ui->labelMessage->setText("<p style=\"font-size:8pt; font-style:italic; color:#808080;\">"+tr("Grabber est Ã  jour")+"</p>"); }
 	else
 	{ ui->labelMessage->setText("<p style=\"font-size:8pt; font-style:italic; color:#808080;\">"+tr("Une nouvelle version est disponible : %1").arg(l)+"</p>"); }
 }

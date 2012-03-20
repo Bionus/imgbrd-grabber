@@ -55,7 +55,7 @@ void AddUniqueWindow::replyFinished(Page *p)
 {
 	if (p->images().isEmpty())
 	{
-		error(this, tr("Aucune image n'a été trouvée."));
+		error(this, tr("Aucune image n'a Ã©tÃ© trouvÃ©e."));
 		return;
 	}
 

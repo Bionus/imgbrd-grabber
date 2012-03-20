@@ -137,7 +137,7 @@ void sourcesWindow::valid()
  */
 void sourcesWindow::deleteSite(QString site)
 {
-	int reponse = QMessageBox::question(this, tr("Grabber - Supprimer un site"), tr("Êtes-vous sûr de vouloir supprimer le site %1 ?").arg(site), QMessageBox::Yes | QMessageBox::No);
+	int reponse = QMessageBox::question(this, tr("Grabber - Supprimer un site"), tr("ÃŠtes-vous sÃ»r de vouloir supprimer le site %1 ?").arg(site), QMessageBox::Yes | QMessageBox::No);
 	if (reponse == QMessageBox::Yes)
 	{
 		int i = m_sites->keys().indexOf(site);

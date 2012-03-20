@@ -191,7 +191,7 @@ void TextEdit::customContextMenuRequested(const QPoint &pos)
 				{ favs->addAction(tr("Ajouter"), this, SLOT(setFavorite())); }
 				favs->setIcon(QIcon(":/images/icons/favorite.png"));
 			menu->addMenu(favs);
-		QMenu *vils = new QMenu(tr("Gardés pour plus tard"), menu);
+		QMenu *vils = new QMenu(tr("GardÃ©s pour plus tard"), menu);
 			QActionGroup* vilsGroup = new QActionGroup(vils);
 				vilsGroup->setExclusive(true);
 				connect(vilsGroup, SIGNAL(triggered(QAction *)), this, SLOT(insertFav(QAction *)));

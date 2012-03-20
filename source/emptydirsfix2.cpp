@@ -53,7 +53,7 @@ void EmptyDirsFix2::deleteSel()
 	for (int i = 0; i < sel.size(); i++)
 	{ folders.append(sel.at(i)->text()); }
 
-	int reponse = QMessageBox::question(this, tr("Réparateur de dossiers vides"), tr("Vous vous apprêtez à supprimer %n dossier(s). Êtes-vous sûr de vouloir continuer ?", "", folders.size()), QMessageBox::Yes | QMessageBox::No);
+	int reponse = QMessageBox::question(this, tr("RÃ©parateur de dossiers vides"), tr("Vous vous apprÃªtez Ã  supprimer %n dossier(s). ÃŠtes-vous sÃ»r de vouloir continuer ?", "", folders.size()), QMessageBox::Yes | QMessageBox::No);
 	if (reponse == QMessageBox::Yes)
 	{
 		for (int i = 0; i < folders.size(); i++)

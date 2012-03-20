@@ -42,7 +42,7 @@ void favoriteWindow::on_buttonRemove_clicked()
 	reg.setMinimal(true);
 	favs.remove(reg);
 	f.open(QIODevice::WriteOnly);
-		f.write(favs.toAscii());
+		f.write(favs.toUtf8());
 	f.close();
 	if (QFile::exists(savePath("thumbs/"+m_tag+".png")))
 	{ QFile::remove(savePath("thumbs/"+m_tag+".png")); }
@@ -86,7 +86,7 @@ void favoriteWindow::save()
 	favorites.remove(m_tag+"|"+QString::number(m_note)+"|"+m_lastviewed.toString(Qt::ISODate)+"\r\n");
 	favorites += ui->tagLineEdit->text()+"|"+QString::number(ui->noteSpinBox->value())+"|"+ui->lastViewedDateTimeEdit->dateTime().toString(Qt::ISODate)+"\r\n";
 	f.open(QIODevice::WriteOnly);
-		f.write(favorites.toAscii());
+		f.write(favorites.toUtf8());
 	f.close();
 	m_parent->updateFavorites();
 }

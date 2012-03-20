@@ -226,7 +226,7 @@ void optionsWindow::addFilename(QString condition, QString filename)
 
 void optionsWindow::on_buttonCrypt_clicked()
 {
-	QString password = QInputDialog::getText(this, tr("Hasher un mot de passe"), tr("Veuillez entrer votre mot de passe, dans le format adapté.<br/>Par exemple, pour danbooru, le format est \"%1\" (sans les guillemets).").arg("choujin-steiner--%1--").arg(tr("VOTRE_MOT_DE_PASSE")), QLineEdit::Password);
+	QString password = QInputDialog::getText(this, tr("Hasher un mot de passe"), tr("Veuillez entrer votre mot de passe, dans le format adaptÃ©.<br/>Par exemple, pour danbooru, le format est \"%1\" (sans les guillemets).").arg("choujin-steiner--%1--").arg(tr("VOTRE_MOT_DE_PASSE")), QLineEdit::Password);
 	if (!password.isEmpty())
 	{ ui->linePassword->setText(QCryptographicHash::hash(password.toUtf8(), QCryptographicHash::Sha1).toHex()); }
 }
@@ -397,16 +397,16 @@ void optionsWindow::on_buttonColoringIgnoredsFont_clicked()
 void optionsWindow::updateContainer(QTreeWidgetItem *current, QTreeWidgetItem *previous)
 {
 	QStringList texts = QStringList() <<
-		tr("Général", "update") <<
+		tr("GÃ©nÃ©ral", "update") <<
 		tr("Sources", "update") <<
 		tr("Log", "update") <<
 		tr("Sauvegarde", "update") <<
 		tr("Nom de fichier", "update") <<
 		tr("Noms multiples", "update") <<
 		tr("Tags artiste", "update") <<
-		tr("Tags série", "update") <<
+		tr("Tags sÃ©rie", "update") <<
 		tr("Tags personnage", "update") <<
-		tr("Symbole personnalisé", "update") <<
+		tr("Symbole personnalisÃ©", "update") <<
 		tr("Interface", "update") <<
 		tr("Coloration", "update") <<
 		tr("Marges et bordures", "update") <<
@@ -478,7 +478,7 @@ void optionsWindow::save()
 				pth.setPath(pth.path().remove(QRegExp("/([^/]+)$")));
 			}
 			if (pth.path() == op)
-			{ error(this, tr("Une erreur est survenue lors de la création du dossier de sauvegarde.")); }
+			{ error(this, tr("Une erreur est survenue lors de la crÃ©ation du dossier de sauvegarde.")); }
 			else
 			{ pth.mkpath(ui->lineFolder->text()); }
 		}
@@ -493,7 +493,7 @@ void optionsWindow::save()
 				pth.setPath(pth.path().remove(QRegExp("/([^/]+)$")));
 			}
 			if (pth.path() == op)
-			{ error(this, tr("Une erreur est survenue lors de la création du dossier de sauvegarde des favoris.")); }
+			{ error(this, tr("Une erreur est survenue lors de la crÃ©ation du dossier de sauvegarde des favoris.")); }
 			else
 			{ pth.mkpath(ui->lineFolderFavorites->text()); }
 		}
@@ -573,12 +573,12 @@ void optionsWindow::save()
 	{
 		QNetworkProxy proxy(QNetworkProxy::HttpProxy, settings.value("Proxy/hostName").toString(), settings.value("Proxy/port").toInt());
 		QNetworkProxy::setApplicationProxy(proxy);
-		log(tr("Activation du proxy général sur l'hôte \"%1\" et le port %2.").arg(settings.value("Proxy/hostName").toString()).arg(settings.value("Proxy/port").toInt()));
+		log(tr("Activation du proxy gÃ©nÃ©ral sur l'hÃ´te \"%1\" et le port %2.").arg(settings.value("Proxy/hostName").toString()).arg(settings.value("Proxy/port").toInt()));
 	}
 	else if (QNetworkProxy::applicationProxy().type() != QNetworkProxy::NoProxy)
 	{
 		QNetworkProxy::setApplicationProxy(QNetworkProxy::NoProxy);
-		log(tr("Désactivation du proxy général."));
+		log(tr("DÃ©sactivation du proxy gÃ©nÃ©ral."));
 	}
 
 	if (settings.value("language", "English").toString() != ui->comboLanguages->currentText())

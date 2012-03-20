@@ -49,7 +49,7 @@ AddGroupWindow::AddGroupWindow(QString selected, QStringList sites, QStringList 
 				m_comboDwl->setMaxVisibleItems(20);
 				m_comboDwl->addItems(QStringList() << tr("Oui") << tr("Non"));
 				m_comboDwl->setCurrentIndex(1);
-				formLayout->addRow(tr("&Télécharger les image de la liste noire"), m_comboDwl);
+				formLayout->addRow(tr("&TÃ©lÃ©charger les image de la liste noire"), m_comboDwl);
 			layout->addLayout(formLayout);
 		QHBoxLayout *layoutButtons = new QHBoxLayout;
 			QPushButton *buttonOk = new QPushButton(tr("Ok"));
