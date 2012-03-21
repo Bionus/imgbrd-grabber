@@ -206,6 +206,7 @@ void searchTab::load()
 	{ clearLayout(m_layouts[i]); }
 	qDeleteAll(m_layouts);
 	m_layouts.clear();
+	clearLayout(ui->layoutResults);
 	setWindowTitle(m_search->toPlainText().isEmpty() ? tr("Recherche") : m_search->toPlainText().replace("&", "&&"));
 	emit titleChanged(this);
 	m_tags = "";

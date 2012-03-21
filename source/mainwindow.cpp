@@ -1216,7 +1216,15 @@ void mainWindow::getAllFinishedLoading(Page* p)
 		if (m_groupBatchs.at(i).at(8) == p->url().toString())
 		{ n = i; break; }
 	}
-	QList<Image*> imgs = p->images();
+
+	QList<Image*> imgs = QList<Image*>(), ims = p->images();
+	QStringList blacklistedtags(m_settings->value("blacklistedtags").toString().split(' '));
+	for (int i = 0; i < ims.size(); i++)
+	{
+		if (ims[i]->blacklisted(blacklistedtags).isEmpty())
+		{ imgs.append(ims[i]); }
+	}
+
 	m_progressBars[n]->setMaximum(imgs.size());
 	while (imgs.size() > m_groupBatchs.at(n).at(2).toInt())
 	{ imgs.removeAt(m_groupBatchs.at(n).at(2).toInt()); }
@@ -1227,7 +1235,10 @@ void mainWindow::getAllFinishedLoading(Page* p)
 	{
 		if (m_getAllRemaining.isEmpty())
 		{
-			error(this, tr("<b>Attention :</b> %1").arg(tr("rien n'a été reçu depuis %1. Raisons possibles : tag incorrect, page trop éloignée.").arg(p->site().value("Url"))));
+			if (ims.isEmpty())
+			{ error(this, tr("<b>Attention :</b> %1").arg(tr("rien n'a été reçu depuis %1. Raisons possibles : tag incorrect, page trop éloignée.").arg(p->site().value("Url")))); }
+			else
+			{ error(this, tr("<b>Attention :</b> %1").arg(tr("toutes les images provenant de %1 ont été ignorées.").arg(p->site().value("Url")))); }
 			return;
 		}
 		getAllImages();
