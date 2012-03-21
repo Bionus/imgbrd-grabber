@@ -44,7 +44,7 @@ void Page::fallback()
 
 	QString url = m_site["Urls/"+QString::number(m_currentSource)+"/"+(t.isEmpty() && m_site.contains("Urls/"+QString::number(m_currentSource)+"/Home") ? "Home" : "Tags")];
 	url.replace("{page}", QString::number(p));
-	url.replace("{tags}", t);
+	url.replace("{tags}", QUrl::toPercentEncoding(t));
     url.replace("{limit}", QString::number(m_imagesPerPage));
 	url.replace("{pseudo}", settings.value("Login/pseudo").toString());
 	url.replace("{password}", settings.value("Login/password").toString());
@@ -54,7 +54,7 @@ void Page::fallback()
 	{
 		QString url = m_site["Urls/Html/"+QString(t.isEmpty() && m_site.contains("Urls/Html/Home") ? "Home" : "Tags")];
 		url.replace("{page}", QString::number(p));
-		url.replace("{tags}", t);
+		url.replace("{tags}", QUrl::toPercentEncoding(t));
         url.replace("{limit}", QString::number(m_imagesPerPage));
 		url.replace("{pseudo}", settings.value("Login/pseudo").toString());
 		url.replace("{password}", settings.value("Login/password").toString());
