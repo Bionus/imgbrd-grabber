@@ -32,15 +32,17 @@ class batchWindow : public QDialog
 		void setMaximum(int);
 		void setImages(int);
 		void setImagesCount(int);
-		void addImage(QString, int);
+		void addImage(QString, int batch, int size);
 		void loadingImage(QString);
 		void statusImage(QString, int);
+		void speedImage(QString, int);
 		void loadedImage(QString);
 		void errorImage(QString);
 		void on_buttonDetails_clicked();
 		void closeEvent(QCloseEvent *);
 		void copyToClipboard();
-		void setSpeed(QString);
+		void setSpeed(int);
+		void drawSpeed();
 
 	signals:
 		void closed();
@@ -48,8 +50,9 @@ class batchWindow : public QDialog
 	private:
 		Ui::batchWindow			*ui;
 		QSize					m_currentSize;
-		int						m_imagesCount, m_items, m_value, m_images;
+		int						m_imagesCount, m_items, m_value, m_images, m_currentSpeed;
 		QList<QProgressBar*>	m_progressBars;
+		QMap<QString, int>		m_speeds;
 };
 
 #endif // BATCHWINDOW_H

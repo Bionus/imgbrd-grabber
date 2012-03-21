@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>320</width>
+    <width>426</width>
     <height>346</height>
    </rect>
   </property>
@@ -105,6 +105,11 @@
         </column>
         <column>
          <property name="text">
+          <string>Batch</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
           <string>Url</string>
          </property>
         </column>
@@ -146,6 +151,11 @@
           <item>
            <property name="text">
             <string>Ne rien faire</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Fermer la fenêtre</string>
            </property>
           </item>
           <item>

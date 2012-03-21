@@ -987,6 +987,8 @@ void mainWindow::logClear()
 	_log.clear();
 	logShow();
 }
+void mainWindow::logOpen()
+{ QDesktopServices::openUrl("file:///"+savePath("main.log")); }
 
 void mainWindow::switchTranslator(QTranslator& translator, const QString& filename)
 {
@@ -1124,6 +1126,7 @@ void mainWindow::getAll(bool all)
 	m_getAllDownloaded = 0;
 	m_getAllExists = 0;
 	m_getAllIgnored = 0;
+	m_getAll404s = 0;
 	m_getAllErrors = 0;
 	m_getAllCount = 0;
 	m_getAllPageCount = 0;
@@ -1252,7 +1255,13 @@ void mainWindow::getAllImages()
 	for (int i = 0; i < m_getAllRemaining.count(); i++)
 	{
 		count += m_getAllRemaining.at(i)->value();
-		m_progressdialog->addImage(m_getAllRemaining.at(i)->url(), m_getAllRemaining.at(i)->fileSize());
+		int n = 0;
+		for (int r = 0; r < m_groupBatchs.count(); r++)
+		{
+			if (m_groupBatchs.at(r).at(8) == m_getAllRemaining.at(i)->page()->url().toString())
+			{ n = r + 1; break; }
+		}
+		m_progressdialog->addImage(m_getAllRemaining.at(i)->url(), n, m_getAllRemaining.at(i)->fileSize());
 	}
 	m_progressdialog->setMaximum(count);
 	m_progressdialog->setImagesCount(m_getAllRemaining.count());
@@ -1351,8 +1360,8 @@ void mainWindow::_getAll()
 				{
 					log(tr("Chargement de l'image depuis <a href=\"%1\">%1</a>").arg(img->fileUrl().toString()));
 					m_progressdialog->loadingImage(img->url());
-					m_downloadTime = new QTime;
-					m_downloadTime->start();
+					m_downloadTime.insert(img->url(), new QTime);
+					m_downloadTime[img->url()]->start();
 					connect(img, SIGNAL(finishedImage(Image*)), this, SLOT(getAllPerformImage(Image*)));
 					connect(img, SIGNAL(downloadProgressImage(Image*,qint64,qint64)), this, SLOT(getAllProgress(Image*,qint64,qint64)));
 					m_getAllDownloadingSpeeds.insert(img->url(), 0);
@@ -1382,11 +1391,11 @@ void mainWindow::_getAll()
 	{
 		log("Images download finished.");
 		m_progressdialog->setValue(m_progressdialog->maximum());
-		m_progressdialog->close();
 		switch (m_progressdialog->endAction())
 		{
-			case 1:	openTray();	break;
-			case 2:	shutDown();	break;
+			case 1:	m_progressdialog->close();	break;
+			case 2:	openTray();					break;
+			case 3:	shutDown();					break;
 		}
 		QMessageBox::information(
 			this,
@@ -1395,6 +1404,7 @@ void mainWindow::_getAll()
 				tr("%n fichier(s) récupéré(s) avec succès.", "", m_getAllDownloaded)+"\r\n"+
 				tr("%n fichier(s) ignoré(s).", "", m_getAllIgnored)+"\r\n"+
 				tr("%n fichier(s) déjà existant(s).", "", m_getAllExists)+"\r\n"+
+				tr("%n fichier(s) non trouvé(s) sur le serveur.", "", m_getAll404s)+"\r\n"+
 				tr("%n erreur(s).", "", m_getAllErrors)
 			)
 		);
@@ -1412,35 +1422,9 @@ void mainWindow::_getAll()
 }
 void mainWindow::getAllProgress(Image *img, qint64 bytesReceived, qint64 bytesTotal)
 {
-	/*double speed = bytesReceived * 1000.0 / m_downloadTime->elapsed();
-	m_getAllDownloadingSpeeds[img->url()] = speed;
-	int count = 0;
-	speed = 0;
-	foreach (double val, m_getAllDownloadingSpeeds)
-	{
-		if (val > 0 && val <= DBL_MAX)
-		{
-			speed += val;
-			count++;
-		}
-	}
-	speed = (speed/count)*10;
-	QString unit;
-	if (speed < 1024)
-	{ unit = "bytes/sec"; }
-	else if (speed < 1024*1024)
-	{
-		speed /= 1024;
-		unit = "kB/s";
-	}
-	else
-	{
-		speed /= 1024*1024;
-		unit = "MB/s";
-	}
-	m_progressdialog->setSpeed(QString::number(speed)+" "+unit);*/
-	/*m_progressdialog->statusImage(img->url(), (100*bytesReceived)/bytesTotal);
-	m_progressdialog->setLittleValue((img->value()*bytesReceived)/bytesTotal);*/
+	qint64 speed = (bytesReceived * 1000) / m_downloadTime[img->url()]->elapsed();
+	m_progressdialog->speedImage(img->url(), speed);
+	m_progressdialog->statusImage(img->url(), (bytesReceived * 100) / bytesTotal);
 }
 void mainWindow::getAllPerformTags(Image* img)
 {
@@ -1531,8 +1515,8 @@ void mainWindow::getAllPerformTags(Image* img)
 		{
 			log(tr("Chargement de l'image depuis <a href=\"%1\">%1</a>").arg(img->fileUrl().toString()));
 			m_progressdialog->loadingImage(img->url());
-			m_downloadTime = new QTime;
-			m_downloadTime->start();
+			m_downloadTime.insert(img->url(), new QTime);
+			m_downloadTime[img->url()]->start();
 			connect(img, SIGNAL(finishedImage(Image*)), this, SLOT(getAllPerformImage(Image*)));
 			connect(img, SIGNAL(downloadProgressImage(Image*,qint64,qint64)), this, SLOT(getAllProgress(Image*,qint64,qint64)));
 			m_getAllDownloadingSpeeds.insert(img->url(), 0);
@@ -1677,6 +1661,8 @@ void mainWindow::getAllPerformImage(Image* img)
 			m_process->write(exec.toUtf8());
 		}
 	}
+	else if (reply->error() == QNetworkReply::ContentNotFoundError)
+	{ m_getAll404s++; }
 	else
 	{ m_getAllErrors++; }
 
