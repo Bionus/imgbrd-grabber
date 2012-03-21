@@ -19,7 +19,6 @@ SearchWindow::SearchWindow(QString tags, QDate server, QWidget *parent) : QDialo
 
 	QStringList favs = loadFavorites().keys();
 	m_tags = new TextEdit(favs, this);
-		m_tags->setText(tags);
 		m_tags->setContextMenuPolicy(Qt::CustomContextMenu);
 		QStringList completion;
 			QFile words("words.txt");
@@ -40,6 +39,42 @@ SearchWindow::SearchWindow(QString tags, QDate server, QWidget *parent) : QDialo
 		connect(m_tags, SIGNAL(returnPressed()), this, SLOT(accept()));
 
 	ui->formLayout->insertRow(0, tr("Tags"), m_tags);
+
+	QStringList orders = QStringList() << "id" << "id_desc" << "score_asc" << "score" << "mpixels_asc" << "mpixels" << "filesize" << "landscape" << "portrait" << "favcount" << "rank";
+	QStringList ratings = QStringList() << "rating:safe" << "-rating:safe" << "rating:questionable" << "-rating:questionable" << "rating:explicit" << "-rating:explicit";
+	QStringList status = QStringList() << "deleted" << "active" << "flagged" << "pending" << "any";
+
+	if (tags.contains("order:"))
+	{
+		QRegExp reg("order:([^ ]+)");
+		reg.indexIn(tags);
+		ui->comboOrder->setCurrentIndex(orders.indexOf(reg.cap(1))+1);
+		tags.remove(reg.cap(0));
+	}
+	if (tags.contains("rating:"))
+	{
+		QRegExp reg("-?rating:[^ ]+");
+		reg.indexIn(tags);
+		ui->comboRating->setCurrentIndex(ratings.indexOf(reg.cap(0))+1);
+		tags.remove(reg.cap(0));
+	}
+	if (tags.contains("status:"))
+	{
+		QRegExp reg("status:([^ ]+)");
+		reg.indexIn(tags);
+		ui->comboStatus->setCurrentIndex(status.indexOf(reg.cap(1))+1);
+		tags.remove(reg.cap(0));
+	}
+	if (tags.contains("date:"))
+	{
+		QRegExp reg("date:([^ ]+)");
+		reg.indexIn(tags);
+		m_calendar->setSelectedDate(QDate::fromString(reg.cap(1), "MM/dd/yyyy"));
+		ui->lineDate->setText(reg.cap(1));
+		tags.remove(reg.cap(0));
+	}
+
+	m_tags->setText(tags);
 }
 SearchWindow::~SearchWindow()
 {
@@ -53,9 +88,9 @@ void SearchWindow::setDate(QDate d)
 
 void SearchWindow::accept()
 {
-	QStringList orders = QStringList() << "id" << "id_desc" << "score" << "score_asc" << "mpixels" << "mpixels_asc" << "filesize" << "landscape" << "portrait" << "favcount" << "rank";
+	QStringList orders = QStringList() << "id" << "id_desc" << "score_asc" << "score" << "mpixels_asc" << "mpixels" << "filesize" << "landscape" << "portrait" << "favcount" << "rank";
 	QStringList ratings = QStringList() << "rating:safe" << "-rating:safe" << "rating:questionable" << "-rating:questionable" << "rating:explicit" << "-rating:explicit";
-	QStringList status = QStringList() << "deleted" << "active" << "flagged" << "pending";
+	QStringList status = QStringList() << "deleted" << "active" << "flagged" << "pending" << "any";
 
 	emit accepted(QString(m_tags->toPlainText()+" "+(ui->comboStatus->currentIndex() != 0 ? "status:"+status.at(ui->comboStatus->currentIndex()-1) : "")+" "+(ui->comboOrder->currentIndex() != 0 ? "order:"+orders.at(ui->comboOrder->currentIndex()-1) : "")+" "+(ui->comboRating->currentIndex() != 0 ? ratings.at(ui->comboRating->currentIndex()-1) : "")+" "+(!ui->lineDate->text().isEmpty() ? "date:"+ui->lineDate->text() : "")).trimmed());
 	QDialog::accept();
@@ -63,9 +98,9 @@ void SearchWindow::accept()
 
 void SearchWindow::on_buttonImage_clicked()
 {
-	QStringList orders = QStringList() << "id" << "id_desc" << "score" << "score_asc" << "mpixels" << "mpixels_asc" << "filesize" << "landscape" << "portrait" << "favcount" << "rank";
+	QStringList orders = QStringList() << "id" << "id_desc" << "score_asc" << "score" << "mpixels_asc" << "mpixels" << "filesize" << "landscape" << "portrait" << "favcount" << "rank";
 	QStringList ratings = QStringList() << "rating:safe" << "-rating:safe" << "rating:questionable" << "-rating:questionable" << "rating:explicit" << "-rating:explicit";
-	QStringList status = QStringList() << "deleted" << "active" << "flagged" << "pending";
+	QStringList status = QStringList() << "deleted" << "active" << "flagged" << "pending" << "any";
 
 	QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
 	QString path = QFileDialog::getOpenFileName(this, tr("Chercher une image"), settings->value("Save/path").toString(), "Images (*.png *.gif *.jpg *.jpeg)");

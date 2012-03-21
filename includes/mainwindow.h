@@ -32,6 +32,7 @@ class mainWindow : public QMainWindow
 		// Log
 		void logShow();
 		void logClear();
+		void logOpen();
 		// Menus
 		void options();
 		void optionsClosed();
@@ -100,7 +101,7 @@ class mainWindow : public QMainWindow
 		void updateTabs();
 
 	private:
-		int					m_pagemax, m_timezonedecay, m_getAllDownloaded, m_getAllExists, m_getAllIgnored, m_getAllErrors, m_getAllCount, m_getAllPageCount, m_getAllBeforeId, m_remainingPics, m_remainingSites, m_countPics, m_currentFav, m_currentFavCount;
+		int					m_pagemax, m_timezonedecay, m_getAllDownloaded, m_getAllExists, m_getAllIgnored, m_getAll404s, m_getAllErrors, m_getAllCount, m_getAllPageCount, m_getAllBeforeId, m_remainingPics, m_remainingSites, m_countPics, m_currentFav, m_currentFavCount;
 		bool				m_allow, m_must_get_tags, m_loaded, m_getAllRequestExists, m_getAll;
 		QSettings			*m_settings;
 		QProcess			*m_process;
@@ -109,7 +110,7 @@ class mainWindow : public QMainWindow
 		QString				m_program, m_currLang, m_currentFavorite;
 		QStringList			m_tags, m_assoc, m_gotMd5;
 		QTranslator			m_translator;
-		QTime				*m_downloadTime;
+		QMap<QString,QTime*>m_downloadTime;
 		QDateTime			m_serverDate, m_loadFavorite;
 		QMap<QString,int>	m_countPage;
 		QList<QStringList>	m_groupBatchs;

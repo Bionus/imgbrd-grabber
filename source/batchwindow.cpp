@@ -46,7 +46,7 @@ void batchWindow::copyToClipboard()
 	{
 		count = ui->tableWidget->rowCount();
 		for (int i = 0; i < count; i++)
-		{ urls.append(ui->tableWidget->item(i, 1)->text()); }
+		{ urls.append(ui->tableWidget->item(i, 2)->text()); }
 	}
 	else
 	{
@@ -59,14 +59,15 @@ void batchWindow::copyToClipboard()
 	qApp->clipboard()->setText(urls.join("\n"));
 }
 
-void batchWindow::addImage(QString url, int size)
+void batchWindow::addImage(QString url, int batch, int size)
 {
 	ui->tableWidget->setRowCount(m_items+1);
 	QTableWidgetItem *id = new QTableWidgetItem(QString::number(m_items+1));
 	id->setIcon(QIcon(":/images/colors/black.png"));
 	ui->tableWidget->setItem(m_items, 0, id);
-	ui->tableWidget->setItem(m_items, 1, new QTableWidgetItem(url));
-	QString unit;
+	ui->tableWidget->setItem(m_items, 1, new QTableWidgetItem(QString::number(batch)));
+	ui->tableWidget->setItem(m_items, 2, new QTableWidgetItem(url));
+	QString unit = "o/s";
 	if (size >= 1024)
 	{
 		size /= 1024;
@@ -78,18 +79,17 @@ void batchWindow::addImage(QString url, int size)
 		else
 		{ unit = "ko"; }
 	}
-	else
-	{ unit = "o"; }
-	ui->tableWidget->setItem(m_items, 2, new QTableWidgetItem(QString::number(round(size, 2))+" "+unit));
-	ui->tableWidget->setItem(m_items, 3, new QTableWidgetItem());
+	ui->tableWidget->setItem(m_items, 3, new QTableWidgetItem(QString::number(round(size, 2))+" "+unit));
+	ui->tableWidget->setItem(m_items, 4, new QTableWidgetItem());
 	QProgressBar *prog = new QProgressBar();
 	prog->setTextVisible(false);
 	m_progressBars.append(prog);
-	ui->tableWidget->setCellWidget(m_items, 4, prog);
+	ui->tableWidget->setCellWidget(m_items, 5, prog);
 	ui->tableWidget->resizeColumnToContents(0);
 	QHeaderView *headerView = ui->tableWidget->horizontalHeader();
 	headerView->setResizeMode(QHeaderView::Interactive);
-	headerView->setResizeMode(1, QHeaderView::Stretch);
+	headerView->resizeSection(1, 40);
+	headerView->setResizeMode(2, QHeaderView::Stretch);
 	headerView->resizeSection(2, 80);
 	headerView->resizeSection(3, 80);
 	headerView->resizeSection(4, 80);
@@ -97,9 +97,10 @@ void batchWindow::addImage(QString url, int size)
 }
 void batchWindow::loadingImage(QString url)
 {
+	m_speeds.insert(url, 0);
 	for (int i = 0; i < m_items; i++)
 	{
-		if (ui->tableWidget->item(i, 1)->text() == url)
+		if (ui->tableWidget->item(i, 2)->text() == url)
 		{ ui->tableWidget->item(i, 0)->setIcon(QIcon(":/images/colors/blue.png")); }
 	}
 }
@@ -107,32 +108,78 @@ void batchWindow::statusImage(QString url, int percent)
 {
 	for (int i = 0; i < m_items; i++)
 	{
-		if (ui->tableWidget->item(i, 1)->text() == url)
+		if (ui->tableWidget->item(i, 2)->text() == url)
 		{ m_progressBars[i]->setValue(percent); }
+	}
+}
+void batchWindow::speedImage(QString url, int speed)
+{
+	m_currentSpeed += speed - m_speeds[url];
+	m_speeds[url] = speed;
+	QString unit = "o/s";
+	if (speed >= 1024)
+	{
+		speed /= 1024;
+		if (speed >= 1024)
+		{
+			speed /= 1024;
+			unit = "mo/s";
+		}
+		else
+		{ unit = "ko/s"; }
+	}
+	drawSpeed();
+	for (int i = 0; i < m_items; i++)
+	{
+		if (ui->tableWidget->item(i, 2)->text() == url)
+		{ ui->tableWidget->item(i, 4)->setText(QString::number(round(speed, 2))+" "+unit); }
 	}
 }
 void batchWindow::loadedImage(QString url)
 {
+	m_speeds.remove(url);
 	for (int i = 0; i < m_items; i++)
 	{
-		if (ui->tableWidget->item(i, 1)->text() == url)
+		if (ui->tableWidget->item(i, 2)->text() == url)
 		{
 			ui->tableWidget->item(i, 0)->setIcon(QIcon(":/images/colors/green.png"));
+			ui->tableWidget->item(i, 4)->setText("");
 			m_progressBars[i]->setValue(100);
 		}
 	}
 }
 void batchWindow::errorImage(QString url)
 {
+	m_speeds.remove(url);
 	for (int i = 0; i < m_items; i++)
 	{
-		if (ui->tableWidget->item(i, 1)->text() == url)
+		if (ui->tableWidget->item(i, 2)->text() == url)
 		{ ui->tableWidget->item(i, 0)->setIcon(QIcon(":/images/colors/red.png")); }
 	}
 }
 
-void batchWindow::setSpeed(QString speed)
-{ ui->labelSpeed->setText(speed); }
+void batchWindow::setSpeed(int speed)
+{
+	m_currentSpeed = speed;
+	drawSpeed();
+}
+void batchWindow::drawSpeed()
+{
+	QString unit = "o/s";
+	int speed = m_currentSpeed;
+	if (speed >= 1024)
+	{
+		speed /= 1024;
+		if (speed >= 1024)
+		{
+			speed /= 1024;
+			unit = "mo/s";
+		}
+		else
+		{ unit = "ko/s"; }
+	}
+	ui->labelSpeed->setText(QString::number(round(speed, 2))+" "+unit);
+}
 
 void batchWindow::on_buttonDetails_clicked()
 {
