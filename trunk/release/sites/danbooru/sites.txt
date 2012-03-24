@@ -8,5 +8,5 @@ ichijou.org
 idol.sankakucomplex.com:json
 konachan.com
 nekobooru.net
-oreno.imouto.org
+yande.re
 sonohara.donmai.us

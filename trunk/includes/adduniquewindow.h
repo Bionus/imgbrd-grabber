@@ -7,23 +7,33 @@
 
 
 
-class AddUniqueWindow : public QWidget
+namespace Ui
+{
+	class AddUniqueWindow;
+}
+
+
+
+class AddUniqueWindow : public QDialog
 {
 	Q_OBJECT
 
 	public:
-		AddUniqueWindow(QMap<QString,QMap<QString,QString> >, mainWindow *parent);
+		AddUniqueWindow(QString, QMap<QString,QMap<QString,QString> >, mainWindow *parent);
 
 	public slots:
-		void ok();
+		void add();
+		void ok(bool close = true);
 		void replyFinished(Page *p);
+		void on_buttonFolder_clicked();
+		void on_lineFilename_textChanged(QString);
 
 	private:
+		Ui::AddUniqueWindow						*ui;
 		mainWindow								*m_parent;
-		QMap<QString,QMap<QString,QString> >	m_sites;
-		QLineEdit								*m_lineMd5, *m_lineId;
-		QComboBox								*m_comboSite;
 		Page									*m_page;
+		QMap<QString,QMap<QString,QString> >	m_sites;
+		bool									m_close;
 };
 
 #endif // ADDUNIQUEWINDOW_H
