@@ -88,6 +88,7 @@ class Image : public QObject
 		QNetworkReply	*m_loadPreview, *m_loadTags, *m_loadImage;
 		QList<Tag>		m_tags;
 		QList<Pool*>	m_pools;
+		QTime			m_timer;
 };
 
 #endif // IMAGE_H

@@ -151,6 +151,7 @@ void Image::parseTags(QNetworkReply* r)
 	// Pools
 	if (m_parent->site().contains("Regex/Pools"))
 	{
+		m_pools.clear();
 		QRegExp rx(m_parent->site().value("Regex/Pools"));
 		rx.setMinimal(true);
 		int pos = 0;
@@ -349,28 +350,28 @@ QString Image::path(QString fn, QString pth)
 	else
 	{ copyrights = details["copyrights"]; }
 	QStringList search = m_parent->search();
-	for (int i = 0; i < search.size(); i++)
-	{ replaces.insert("%search_"+QString::number(i+1)+"%", QPair<QString,QString>(search[i], "")); }
 
 	QString ext = m_url.section('.', -1);
 	if (ext.length() > 5)
 	{ ext = "jpg"; }
 
-	for (int i = 0; i < custom.size(); i++)
-	{ replaces.insert("%"+custom.keys().at(i)+"%", QPair<QString,QString>(custom.values().at(i).join(settings.value("separator").toString()), "")); }
+	replaces.insert("%ext%", QPair<QString,QString>(ext, "jpg"));
+	replaces.insert("%filename%", QPair<QString,QString>(m_url.section('/', -1).section('.', 0, -2), ""));
+	replaces.insert("%website%", QPair<QString,QString>(m_site, ""));
+	replaces.insert("%md5%", QPair<QString,QString>(m_md5, ""));
+	replaces.insert("%id%", QPair<QString,QString>(QString::number(m_id), "0"));
+	for (int i = 0; i < search.size(); i++)
+	{ replaces.insert("%search_"+QString::number(i+1)+"%", QPair<QString,QString>(search[i], "")); }
+	replaces.insert("%search%", QPair<QString,QString>(search.join(settings.value("separator").toString()), ""));
 	replaces.insert("%artist%", QPair<QString,QString>(details["artists"].count() > 0 ? (settings.value("artist_useall").toBool() || details["artists"].count() == 1 ? details["artists"].join(settings.value("artist_sep").toString()) : settings.value("artist_value").toString()) : "", settings.value("artist_empty").toString()));
 	replaces.insert("%copyright%", QPair<QString,QString>(details["copyrights"].count() > 0 ? (settings.value("copyright_useall").toBool() || details["copyrights"].count() == 1 ? details["copyrights"].join(settings.value("copyright_sep").toString()) : settings.value("copyright_value").toString()) : "", settings.value("copyright_empty").toString()));
 	replaces.insert("%character%", QPair<QString,QString>(details["characters"].count() > 0 ? (settings.value("character_useall").toBool() || details["characters"].count() == 1 ? details["characters"].join(settings.value("character_sep").toString()) : settings.value("character_value").toString()) : "", settings.value("character_empty").toString()));
 	replaces.insert("%model%", QPair<QString,QString>(details["models"].count() > 0 ? (settings.value("model_useall").toBool() || details["models"].count() == 1 ? details["models"].join(settings.value("model_sep").toString()) : settings.value("model_value").toString()) : "", settings.value("model_empty").toString()));
-	replaces.insert("%search%", QPair<QString,QString>(search.join(settings.value("separator").toString()), ""));
-	replaces.insert("%filename%", QPair<QString,QString>(m_url.section('/', -1).section('.', 0, -2), ""));
 	replaces.insert("%rating%", QPair<QString,QString>(m_rating, ""));
-	replaces.insert("%md5%", QPair<QString,QString>(m_md5, ""));
-	replaces.insert("%id%", QPair<QString,QString>(QString::number(m_id), "0"));
-	replaces.insert("%website%", QPair<QString,QString>(m_site, ""));
 	replaces.insert("%height%", QPair<QString,QString>(QString::number(m_size.height()), "0"));
 	replaces.insert("%width%", QPair<QString,QString>(QString::number(m_size.width()), "0"));
-	replaces.insert("%ext%", QPair<QString,QString>(ext, "jpg"));
+	for (int i = 0; i < custom.size(); i++)
+	{ replaces.insert("%"+custom.keys().at(i)+"%", QPair<QString,QString>(custom.values().at(i).join(settings.value("separator").toString()), "")); }
 	replaces.insert("%general%", QPair<QString,QString>(details["generals"].join(settings.value("separator").toString()), ""));
 	replaces.insert("%allo%", QPair<QString,QString>(details["allos"].join(" "), ""));
 	replaces.insert("%all%", QPair<QString,QString>(details["alls"].join(" "), ""));
@@ -424,7 +425,12 @@ QString Image::path(QString fn, QString pth)
 		res = res.replace("\\", "_").replace("%", "_").replace("/", "_").replace(":", "_").replace("|", "_").replace("*", "_").replace("?", "_").replace("\"", "_").replace("<", "_").replace(">", "_").replace("__", "_").replace("__", "_").replace("__", "_").trimmed();
 		if (!settings.value("replaceblanks", false).toBool())
 		{ res.replace("_", " "); }
-		filename.replace(replaces.keys().at(i), res.left(259-pth.length()-1-filename.length()));
+
+		// We only cut the name if it is not a folder
+		if (!filename.right(filename.length()-filename.indexOf(replaces.keys().at(i))).contains("/"))
+		{ filename.replace(replaces.keys().at(i), res.left(259-pth.length()-1-filename.length())); }
+		else
+		{ filename.replace(replaces.keys().at(i), res); }
 	}
 
 	// We remove empty dir names
@@ -445,6 +451,7 @@ void Image::loadImage()
 		request.setRawHeader("Referer", m_url.toAscii());
 
 	m_loadImage = m->get(request);
+	//m_timer.start();
 	connect(m_loadImage, SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(downloadProgressImageS(qint64, qint64)));
 	connect(m_loadImage, SIGNAL(finished()), this, SLOT(finishedImageS()));
 	m_loadImageExists = true;
@@ -452,7 +459,13 @@ void Image::loadImage()
 void Image::finishedImageS()
 { emit finishedImage(this); }
 void Image::downloadProgressImageS(qint64 v1, qint64 v2)
-{ emit downloadProgressImage(this, v1, v2); }
+{
+	if (v2 > 0/* && (v1 == v2 || m_timer.elapsed() > 500)*/)
+	{
+		//m_timer.restart();
+		emit downloadProgressImage(this, v1, v2);
+	}
+}
 void Image::abortImage()
 {
 	if (m_loadImageExists)

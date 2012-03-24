@@ -90,7 +90,8 @@ FORMS += \
     ui/blacklistfix3.ui \
     ui/searchwindow.ui \
     ui/emptydirsfix.ui \
-    ui/emptydirsfix2.ui
+    ui/emptydirsfix2.ui \
+    ui/adduniquewindow.ui
 
 RESOURCES += resources.qrc
 RC_FILE = icon.rc

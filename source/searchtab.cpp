@@ -228,16 +228,8 @@ void searchTab::load()
 	{
 		if (m_checkboxes.at(i)->isChecked())
 		{
-			QStringList tags = m_search->toPlainText().toLower().trimmed().split(" ", QString::SkipEmptyParts), modifiers = m_modifiers;
+			QStringList tags = m_search->toPlainText().toLower().trimmed().split(" ", QString::SkipEmptyParts);
 			tags.append(settings.value("add").toString().toLower().trimmed().split(" ", QString::SkipEmptyParts));
-			if (m_sites->value(m_sites->keys().at(i)).contains("Modifiers"))
-			{
-				QStringList mods = m_sites->value(m_sites->keys().at(i)).value("Modifiers").trimmed().split(" ", QString::SkipEmptyParts);
-				for (int j = 0; j < mods.size(); j++)
-				{ modifiers.removeAll(mods[j]); }
-			}
-			for (int k = 0; k < modifiers.size(); k++)
-			{ tags.removeAll(modifiers[k]); }
 			int perpage = ui->spinImagesPerPage->value();
 			Page *page = new Page(m_sites, m_sites->keys().at(i), tags, ui->spinPage->value(), perpage, m_postFiltering->toPlainText().toLower().split(" ", QString::SkipEmptyParts), this);
 			log(tr("Chargement de la page <a href=\"%1\">%1</a>").arg(Qt::escape(page->url().toString())));

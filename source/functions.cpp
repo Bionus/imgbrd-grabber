@@ -290,7 +290,7 @@ QMap<QString,QString> domToMap(QDomElement dom)
 void log(QString l, Log type)
 {
 	qDebug() << l;
-	QDateTime time = QDateTime::currentDateTime();
+	/*QDateTime time = QDateTime::currentDateTime();
 	_log.insert(time, (type == Error ? QObject::tr("<b>Erreur :</b> %1").arg(l) : (type == Warning ? QObject::tr("<b>Attention :</b> %1").arg(l) : (type == Notice ? QObject::tr("<b>Notice :</b> %1").arg(l) : l))));
 	QSettings set(savePath("settings.ini"), QSettings::IniFormat);
 
@@ -299,12 +299,20 @@ void log(QString l, Log type)
 	{
 		QString v = set.contains("Login/pseudo") ? l.replace(set.value("Login/pseudo").toString(), "{pseudo}") : l;
 		v = set.contains("Login/password") ? l.replace(set.value("Login/password").toString(), "{password}") : v;
-		f.write(QString("["+time.toString("hh:mm:ss.zzz")+"] "+v+"\r\n").toUtf8());
+		f.write(QString("["+time.toString("hh:mm:ss.zzz")+"] "+stripTags(v)+"\r\n").toUtf8());
 	}
 	f.close();
 
-	_mainwindow->logShow();
+	_mainwindow->logShow();*/
 }
+
+/**
+ * Removes HTML from a string.
+ * @param	str		The string to remove HTML from.
+ * @return			The string without html.
+ */
+QString stripTags(QString str)
+{ return str.remove(QRegExp("<[^>]*>")); }
 
 /**
  * Append text in the log at the end of the current line.
@@ -312,11 +320,11 @@ void log(QString l, Log type)
  */
 void logUpdate(QString l)
 {
-	qDebug() << l;
+	/*qDebug() << l;
 	QDateTime date = _log.keys().at(_log.count()-1);
 	QString message = _log.value(date)+l;
 	_log.insert(date, message);
-	_mainwindow->logShow();
+	_mainwindow->logShow();*/
 }
 
 /**

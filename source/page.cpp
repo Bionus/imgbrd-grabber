@@ -3,11 +3,26 @@
 
 
 
-Page::Page(QMap<QString,QMap<QString,QString> > *sites, QString site, QStringList tags, int page, int limit, QStringList postFiltering, QObject *parent) : QObject(parent), m_postFiltering(postFiltering), m_search(tags), m_imagesPerPage(limit), m_currentSource(0)
+Page::Page(QMap<QString,QMap<QString,QString> > *sites, QString site, QStringList tags, int page, int limit, QStringList postFiltering, QObject *parent) : QObject(parent), m_postFiltering(postFiltering), m_imagesPerPage(limit), m_currentSource(0)
 {
-	// Some definitions from parameters
 	m_site = sites->value(site);
 	m_website = site;
+
+	QStringList modifiers = QStringList();
+	for (int i = 0; i < sites->size(); i++)
+	{
+		if (sites->value(sites->keys().at(i)).contains("Modifiers"))
+		{ modifiers.append(sites->value(sites->keys().at(i)).value("Modifiers").trimmed().split(" ", QString::SkipEmptyParts)); }
+	}
+	if (m_site.contains("Modifiers"))
+	{
+		QStringList mods = m_site.value("Modifiers").trimmed().split(" ", QString::SkipEmptyParts);
+		for (int j = 0; j < mods.size(); j++)
+		{ modifiers.removeAll(mods[j]); }
+	}
+	for (int k = 0; k < modifiers.size(); k++)
+	{ tags.removeAll(modifiers[k]); }
+	m_search = tags;
 
 	m_page = page;
 	fallback();
@@ -175,9 +190,9 @@ void Page::parse(QNetworkReply* r)
 				infos << "created_at" << "status" << "source" << "has_comments" << "file_url" << "sample_url" << "change" << "sample_width" << "has_children" << "preview_url" << "width" << "md5" << "preview_width" << "sample_height" << "parent_id" << "height" << "has_notes" << "creator_id" << "file_size" << "id" << "preview_height" << "rating" << "tags" << "author" << "score";
 				for (int i = 0; i < infos.count(); i++)
 				{ d[infos.at(i)] = nodeList.at(id).attributes().namedItem(infos.at(i)).nodeValue(); }
-				if (!d["preview_url"].startsWith("http://"))
+				if (!d["preview_url"].startsWith("http://") && !d["preview_url"].startsWith("https://"))
 				{ d["preview_url"] = "http://"+m_site["Url"]+QString(d["preview_url"].startsWith("/") ? "" : "/")+d["preview_url"]; }
-				if (!d["file_url"].startsWith("http://"))
+				if (!d["file_url"].startsWith("http://") && !d["file_url"].startsWith("https://"))
 				{ d["file_url"] = "http://"+m_site["Url"]+QString(d["file_url"].startsWith("/") ? "" : "/")+d["file_url"]; }
 				d["page_url"] = m_site["Urls/Html/Post"];
 				QString t = m_search.join(" ").replace("&", "%26");
@@ -215,9 +230,9 @@ void Page::parse(QNetworkReply* r)
 				infos << "created_at" << "status" << "source" << "has_comments" << "file_url" << "sample_url" << "change" << "sample_width" << "has_children" << "preview_url" << "width" << "md5" << "preview_width" << "sample_height" << "parent_id" << "height" << "has_notes" << "creator_id" << "file_size" << "id" << "preview_height" << "rating" << "tags" << "author" << "score";
 				for (int i = 0; i < infos.count(); i++)
 				{ d[infos.at(i)] = sc.value(infos.at(i)).toString(); }
-				if (!d["preview_url"].startsWith("http://"))
+				if (!d["preview_url"].startsWith("http://") && !d["preview_url"].startsWith("https://"))
 				{ d["preview_url"] = "http://"+m_site["Url"]+QString(d["preview_url"].startsWith("/") ? "" : "/")+d["preview_url"]; }
-				if (!d["file_url"].startsWith("http://"))
+				if (!d["file_url"].startsWith("http://") && !d["file_url"].startsWith("https://"))
 				{ d["file_url"] = "http://"+m_site["Url"]+QString(d["file_url"].startsWith("/") ? "" : "/")+d["file_url"]; }
 				d["page_url"] = m_site["Urls/Html/Post"];
 				QString t = m_search.join(" ").replace("&", "%26");
@@ -289,9 +304,9 @@ void Page::parse(QNetworkReply* r)
 					id.indexIn(d["page_url"]);
 					d.insert("id", id.cap(1));
 				}
-				if (!d["preview_url"].startsWith("http://"))
+				if (!d["preview_url"].startsWith("http://") && !d["preview_url"].startsWith("https://"))
 				{ d["preview_url"] = "http://"+m_site["Url"]+QString(d["preview_url"].startsWith("/") ? "" : "/")+d["preview_url"]; }
-				if (!d["file_url"].startsWith("http://"))
+				if (!d["file_url"].startsWith("http://") && !d["file_url"].startsWith("https://"))
 				{ d["file_url"] = "http://"+m_site["Url"]+QString(d["file_url"].startsWith("/") ? "" : "/")+d["file_url"]; }
 				if (m_site.contains("Urls/Rss/Image"))
 				{
@@ -357,11 +372,11 @@ void Page::parse(QNetworkReply* r)
 			QStringMap d;
 			for (int i = 0; i < order.size(); i++)
 			{ d[order.at(i)] = rx.cap(i+1); }
-			if (!d["preview_url"].startsWith("http://"))
+			if (!d["preview_url"].startsWith("http://") && !d["preview_url"].startsWith("https://"))
 			{ d["preview_url"] = "http://"+m_site["Url"]+QString(d["preview_url"].startsWith("/") ? "" : "/")+d["preview_url"]; }
 			if (!d.contains("file_url"))
 			{ d["file_url"] = d["preview_url"]; }
-			else if (!d["file_url"].startsWith("http://"))
+			else if (!d["file_url"].startsWith("http://") && !d["file_url"].startsWith("https://"))
 			{ d["file_url"] = "http://"+m_site["Url"]+QString(d["file_url"].startsWith("/") ? "" : "/")+d["file_url"]; }
 			if (m_site.contains("Urls/Html/Image"))
 			{

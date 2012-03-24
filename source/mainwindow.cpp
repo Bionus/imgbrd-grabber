@@ -12,6 +12,7 @@
 #include "emptydirsfix.h"
 #include "functions.h"
 #include "json.h"
+#include "windows.h"
 #include <QtXml>
 #include <QtScript>
 #include <float.h>
@@ -551,6 +552,7 @@ void mainWindow::updateBatchGroups(int y, int x)
 		else if (r == 6) { r = 8; }
 		else if (r == 7) { r = 5; }
 		m_groupBatchs[y][r-1] = ui->tableBatchGroups->item(y, x)->text();
+		saveLinkList(savePath("restore.igl"));
 	}
 }
 void mainWindow::addGroup()
@@ -573,7 +575,20 @@ void mainWindow::addGroup()
 }
 void mainWindow::addUnique()
 {
-	AddUniqueWindow *wAddUnique = new AddUniqueWindow(m_sites, this);
+	if (m_tabs.count() > 0)
+	{ m_selectedSources = m_tabs[0]->sources(); }
+	QString selected;
+	for (int i = 0; i < m_selectedSources.count(); i++)
+	{
+		if (m_selectedSources[i])
+		{
+			selected = m_sites.keys().at(i);
+			break;
+		}
+	}
+	if (selected.isEmpty() && m_sites.size() > 0)
+	{ selected = m_sites.keys().at(0); }
+	AddUniqueWindow *wAddUnique = new AddUniqueWindow(selected, m_sites, this);
 	wAddUnique->show();
 }
 
@@ -836,10 +851,10 @@ void mainWindow::finishedLoadingPreview(Image *img)
 		if (size >= 2048)
 		{
 			size /= 1024;
-			unit = "mo";
+			unit = "Mio";
 		}
 		else
-		{ unit = "ko"; }
+		{ unit = "Kio"; }
 	}
 	else
 	{ unit = "o"; }
@@ -1295,6 +1310,9 @@ void mainWindow::getAllImages()
 }
 void mainWindow::_getAll()
 {
+	if (m_progressdialog->cancelled())
+	{ return; }
+
 	if (m_getAllRemaining.count() > 0)
 	{
 		m_getAllDownloading.prepend(m_getAllRemaining.takeFirst());
@@ -1417,18 +1435,21 @@ void mainWindow::_getAll()
 		m_getAll = false;
 		ui->widgetDownloadButtons->setDisabled(m_getAll);
 		log(tr("Téléchargement groupé terminé"));
-		m_progressdialog->clear();
 	}
 }
 void mainWindow::getAllProgress(Image *img, qint64 bytesReceived, qint64 bytesTotal)
 {
-	qint64 speed = (bytesReceived * 1000) / m_downloadTime[img->url()]->elapsed();
+	float speed = (bytesReceived * 1000) / m_downloadTime[img->url()]->elapsed();
 	m_progressdialog->speedImage(img->url(), speed);
 	m_progressdialog->statusImage(img->url(), (bytesReceived * 100) / bytesTotal);
 }
 void mainWindow::getAllPerformTags(Image* img)
 {
+	if (m_progressdialog->cancelled())
+	{ return; }
+
 	log(tr("Tags reçus"));
+
 	bool under = m_settings->value("Save/remplaceblanksbyunderscores", false).toBool();
 	for (int i = 0; i < img->tags().count(); i++)
 	{
@@ -1544,6 +1565,9 @@ void mainWindow::getAllPerformTags(Image* img)
 }
 void mainWindow::getAllPerformImage(Image* img)
 {
+	if (m_progressdialog->cancelled())
+	{ return; }
+
 	QNetworkReply* reply = img->imageReply();
 
 	if (reply->error() == QNetworkReply::OperationCanceledError)
@@ -1692,6 +1716,7 @@ void mainWindow::getAllPerformImage(Image* img)
 void mainWindow::getAllCancel()
 {
 	log(tr("Annulation des téléchargements..."));
+	m_progressdialog->cancel();
 	for (int i = 0; i < m_getAllDownloading.size(); i++)
 	{
 		m_getAllDownloading[i]->abortTags();

@@ -1,6 +1,7 @@
 #include "adduniquewindow.h"
 #include "functions.h"
 #include "json.h"
+#include "ui_adduniquewindow.h"
 #include <QtXml>
 
 
@@ -10,39 +11,39 @@
  * @param	favorites	List of favorites tags, needed for coloration
  * @param	parent		The parent window
  */
-AddUniqueWindow::AddUniqueWindow(QMap<QString,QMap<QString,QString> > sites, mainWindow *parent) : QWidget(parent), m_parent(parent), m_sites(sites)
+AddUniqueWindow::AddUniqueWindow(QString selected, QMap<QString,QMap<QString,QString> > sites, mainWindow *parent) : QDialog(parent), ui(new Ui::AddUniqueWindow), m_parent(parent), m_sites(sites)
 {
-	QVBoxLayout *layout = new QVBoxLayout;
-		QFormLayout *formLayout = new QFormLayout;
-			m_comboSite = new QComboBox;
-				m_comboSite->addItems(m_sites.keys());
-				formLayout->addRow(tr("&Site"), m_comboSite);
-			m_lineId = new QLineEdit;
-				formLayout->addRow(tr("&Id"), m_lineId);
-			m_lineMd5 = new QLineEdit;
-				formLayout->addRow(tr("&Md5"), m_lineMd5);
-			layout->addLayout(formLayout);
-		QHBoxLayout *layoutButtons = new QHBoxLayout;
-			QPushButton *buttonOk = new QPushButton(tr("Ok"));
-				connect(buttonOk, SIGNAL(clicked()), this, SLOT(ok()));
-				layoutButtons->addWidget(buttonOk);
-			QPushButton *buttonClose = new QPushButton(tr("Fermer"));
-				connect(buttonClose, SIGNAL(clicked()), this, SLOT(close()));
-				layoutButtons->addWidget(buttonClose);
-			layout->addLayout(layoutButtons);
-	this->setLayout(layout);
-	this->setWindowIcon(QIcon(":/images/icon.ico"));
-	this->setWindowTitle(tr("Grabber")+" - "+tr("Ajouter image"));
-	this->setWindowFlags(Qt::Window);
-	this->resize(QSize(200, 0));
+	ui->setupUi(this);
+
+	ui->comboSites->addItems(m_sites.keys());
+	ui->comboSites->setCurrentIndex(m_sites.keys().indexOf(selected));
+
+	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
+	ui->lineFolder->setText(settings.value("Save/path").toString());
+	ui->lineFilename->setText(settings.value("Save/filename").toString());
 }
+
+/**
+ * Ui events
+ */
+void AddUniqueWindow::on_buttonFolder_clicked()
+{
+	QString folder = QFileDialog::getExistingDirectory(this, tr("Choisir un dossier de sauvegarde"), ui->lineFolder->text());
+	if (!folder.isEmpty())
+	{ ui->lineFolder->setText(folder); }
+}
+void AddUniqueWindow::on_lineFilename_textChanged(QString text)
+{ ui->labelFilename->setText(validateFilename(text)); }
 
 /**
  * Search for image in available websites.
  */
-void AddUniqueWindow::ok()
+void AddUniqueWindow::add()
+{ ok(false); }
+void AddUniqueWindow::ok(bool close)
 {
-	m_page = new Page(&m_sites, m_comboSite->currentText(), QStringList(m_lineId->text().isEmpty() ? "md5:"+m_lineMd5->text() : "id:"+m_lineId->text()), 1, 1);
+	m_close = close;
+	m_page = new Page(&m_sites, ui->comboSites->currentText(), QStringList() << (ui->lineId->text().isEmpty() ? "md5:"+ui->lineMd5->text() : "id:"+ui->lineId->text()) << "status:any", 1, 1);
 	connect(m_page, SIGNAL(finishedLoading(Page*)), this, SLOT(replyFinished(Page*)));
 	m_page->load();
 }
@@ -70,13 +71,15 @@ void AddUniqueWindow::replyFinished(Page *p)
 	values.insert("rating", img->rating());
 	values.insert("tags", tags.join(" "));
 	values.insert("file_url", img->fileUrl().toString());
-	values.insert("site", m_comboSite->currentText());
+	values.insert("site", ui->comboSites->currentText());
 
-	values.insert("page_url", m_sites[m_comboSite->currentText()]["Urls/Html/Post"]);
-	QString t = m_sites[m_comboSite->currentText()].contains("DefaultTag") ? m_sites[m_comboSite->currentText()]["DefaultTag"] : "";
+	values.insert("page_url", m_sites[ui->comboSites->currentText()]["Urls/Html/Post"]);
+	QString t = m_sites[ui->comboSites->currentText()].contains("DefaultTag") ? m_sites[ui->comboSites->currentText()]["DefaultTag"] : "";
 	values["page_url"].replace("{tags}", t);
 	values["page_url"].replace("{id}", values["id"]);
 
 	m_parent->batchAddUnique(values);
-	this->close();
+
+	if (m_close)
+	{ this->close(); }
 }

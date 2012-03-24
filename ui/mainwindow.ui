@@ -1123,8 +1123,8 @@
    <slot>addGroup()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>296</x>
-     <y>271</y>
+     <x>193</x>
+     <y>249</y>
     </hint>
     <hint type="destinationlabel">
      <x>804</x>
@@ -1139,8 +1139,8 @@
    <slot>addUnique()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>296</x>
-     <y>498</y>
+     <x>193</x>
+     <y>476</y>
     </hint>
     <hint type="destinationlabel">
      <x>804</x>
@@ -1155,7 +1155,7 @@
    <slot>batchSel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>232</x>
+     <x>211</x>
      <y>527</y>
     </hint>
     <hint type="destinationlabel">
@@ -1171,7 +1171,7 @@
    <slot>getAll()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>343</x>
+     <x>338</x>
      <y>527</y>
     </hint>
     <hint type="destinationlabel">
@@ -1187,7 +1187,7 @@
    <slot>batchClearSel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>675</x>
+     <x>670</x>
      <y>527</y>
     </hint>
     <hint type="destinationlabel">
@@ -1203,7 +1203,7 @@
    <slot>batchClear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>786</x>
+     <x>781</x>
      <y>527</y>
     </hint>
     <hint type="destinationlabel">
@@ -1219,7 +1219,7 @@
    <slot>logClear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>297</x>
+     <x>212</x>
      <y>526</y>
     </hint>
     <hint type="destinationlabel">
@@ -1363,12 +1363,28 @@
    <slot>logOpen()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>531</x>
-     <y>518</y>
+     <x>785</x>
+     <y>526</y>
     </hint>
     <hint type="destinationlabel">
      <x>485</x>
      <y>-5</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>tableBatchGroups</sender>
+   <signal>cellChanged(int,int)</signal>
+   <receiver>mainWindow</receiver>
+   <slot>updateBatchGroups(int,int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>193</x>
+     <y>71</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>801</x>
+     <y>208</y>
     </hint>
    </hints>
   </connection>

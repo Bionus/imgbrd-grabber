@@ -31,6 +31,7 @@ QString		qfonttocss(QFont);
 QStringMap	domToMap(QDomElement);
 float		round(float n, unsigned d);
 void		clearLayout(QLayout *layout);
+QString		stripTags(QString);
 
 void		showInGraphicalShell(const QString &);
 void		shutDown(int timeout = 0);
