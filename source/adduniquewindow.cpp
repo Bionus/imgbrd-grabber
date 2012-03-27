@@ -72,6 +72,8 @@ void AddUniqueWindow::replyFinished(Page *p)
 	values.insert("tags", tags.join(" "));
 	values.insert("file_url", img->fileUrl().toString());
 	values.insert("site", ui->comboSites->currentText());
+	values.insert("filename", ui->lineFilename->text());
+	values.insert("folder", ui->lineFolder->text());
 
 	values.insert("page_url", m_sites[ui->comboSites->currentText()]["Urls/Html/Post"]);
 	QString t = m_sites[ui->comboSites->currentText()].contains("DefaultTag") ? m_sites[ui->comboSites->currentText()]["DefaultTag"] : "";

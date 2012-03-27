@@ -23,6 +23,7 @@ class batchWindow : public QDialog
 		int maximum();
 		int images();
 		int endAction();
+		bool endRemove();
 		bool cancelled();
 
 	public slots:
