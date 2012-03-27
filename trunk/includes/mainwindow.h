@@ -114,7 +114,7 @@ class mainWindow : public QMainWindow
 		QDateTime			m_serverDate, m_loadFavorite;
 		QMap<QString,int>	m_countPage;
 		QList<QStringList>	m_groupBatchs;
-		QList<Image*>		m_getAllRemaining, m_getAllDownloading, m_images;
+		QList<Image*>		m_getAllRemaining, m_getAllDownloading, m_getAllFailed, m_images;
 		QList<Page*>		m_getAllPages, m_pages;
 		QList<QAffiche*>	m_favoritesCaptions;
 		QList<QBouton*>		m_favoritesImages, m_mergeButtons, m_webPics;
@@ -127,6 +127,7 @@ class mainWindow : public QMainWindow
 		QList<QProgressBar*>			m_progressBars;
 		QList<QNetworkReply*>			m_replies;
 		QList<QMap<QString,QString> >	m_details, m_batchs;
+		QSet<int>						m_batchDownloading;
 };
 
 #endif // MAINWINDOW_H

@@ -19,7 +19,7 @@
 
 
 
-#define VERSION	"3.1.0a2"
+#define VERSION	"3.1.0a3"
 #define DONE()	logUpdate(QObject::tr(" Fait"))
 
 extern QMap<QDateTime,QString> _log;
@@ -451,7 +451,7 @@ void mainWindow::batchAddUnique(QStringMap values)
 	{
 		log(tr("Ajout d'une image en téléchargement unique : %1").arg(values.value("file_url")));
 		m_batchs.append(values);
-		QStringList types = QStringList() << "id" << "md5" <<  "rating" << "tags" << "file_url" << "site";
+		QStringList types = QStringList() << "id" << "md5" <<  "rating" << "tags" << "file_url" << "site" << "filename" << "folder";
 		QTableWidgetItem *item;
 		ui->tableBatchUniques->setRowCount(ui->tableBatchUniques->rowCount()+1);
 		for (int t = 0; t < types.count(); t++)
@@ -1151,6 +1151,8 @@ void mainWindow::getAll(bool all)
 	m_getAllDownloadingSpeeds.clear();
 	qDeleteAll(m_getAllRemaining);
 	m_getAllRemaining.clear();
+	qDeleteAll(m_getAllFailed);
+	m_getAllFailed.clear();
 	qDeleteAll(m_getAllDownloading);
 	m_getAllDownloading.clear();
 	qDeleteAll(m_getAllPages);
@@ -1178,6 +1180,7 @@ void mainWindow::getAll(bool all)
 	}
 	QList<QTableWidgetItem *> selected = ui->tableBatchGroups->selectedItems();
 	int count = selected.size();
+	m_batchDownloading.clear();
 	QSet<int> todownload = QSet<int>();
 	for (int i = 0; i < count; i++)
 	{ todownload.insert(selected.at(i)->row()); }
@@ -1187,6 +1190,7 @@ void mainWindow::getAll(bool all)
 		{
 			if (all || todownload.contains(i))
 			{
+				m_batchDownloading.insert(i);
 				QString site = m_groupBatchs.at(i).at(5);
 				int pp = m_groupBatchs.at(i).at(2).toInt();
 				QString text = " "+m_groupBatchs.at(i).at(0)+" ";
@@ -1344,7 +1348,7 @@ void mainWindow::_getAll()
 				pth = m_groupBatchs[site_id][7];
 			}
 
-			QFile f(pth+"/"+img->path(path));
+			QFile f((img->folder().isEmpty() ? pth : img->folder())+"/"+img->path(path));
 			if (!f.exists())
 			{
 				bool detected = false;
@@ -1415,6 +1419,17 @@ void mainWindow::_getAll()
 			case 2:	openTray();					break;
 			case 3:	shutDown();					break;
 		}
+		if (m_progressdialog->endRemove())
+		{
+			int rem = 0;
+			foreach (int i, m_batchDownloading)
+			{
+				m_groupBatchs.removeAt(i-rem);
+				m_progressBars.removeAt(i-rem);
+				ui->tableBatchGroups->removeRow(i-rem);
+				rem++;
+			}
+		}
 		QMessageBox::information(
 			this,
 			tr("Récupération des images"),
@@ -1426,15 +1441,37 @@ void mainWindow::_getAll()
 				tr("%n erreur(s).", "", m_getAllErrors)
 			)
 		);
-		if (!m_settings->value("Exec/Group/init").toString().isEmpty())
+		int reponse = QMessageBox::No;
+		if (m_getAllErrors > 0)
 		{
-			m_process->closeWriteChannel();
-			m_process->waitForFinished(1000);
-			m_process->close();
+			reponse = QMessageBox::question(this, tr("Récupération des images"), tr("Des erreurs sont survenues pendant le téléchargement des images. Voulez vous relancer le téléchargement de celles-ci ? (%1/%2)").arg(m_getAllErrors).arg(m_progressdialog->maximum()), QMessageBox::Yes | QMessageBox::No);
+			if (reponse == QMessageBox::Yes)
+			{
+				m_progressdialog->clear();
+				qDeleteAll(m_getAllRemaining);
+				m_getAllRemaining.clear();
+				m_getAllRemaining = m_getAllFailed;
+				m_getAllDownloaded = 0;
+				m_getAllExists = 0;
+				m_getAllIgnored = 0;
+				m_getAll404s = 0;
+				m_getAllErrors = 0;
+				m_getAllCount = 0;
+				getAllImages();
+			}
 		}
-		m_getAll = false;
-		ui->widgetDownloadButtons->setDisabled(m_getAll);
-		log(tr("Téléchargement groupé terminé"));
+		if (reponse != QMessageBox::Yes)
+		{
+			if (!m_settings->value("Exec/Group/init").toString().isEmpty())
+			{
+				m_process->closeWriteChannel();
+				m_process->waitForFinished(1000);
+				m_process->close();
+			}
+			m_getAll = false;
+			ui->widgetDownloadButtons->setDisabled(false);
+			log(tr("Téléchargement groupé terminé"));
+		}
 	}
 }
 void mainWindow::getAllProgress(Image *img, qint64 bytesReceived, qint64 bytesTotal)
@@ -1477,7 +1514,7 @@ void mainWindow::getAllPerformTags(Image* img)
 
 	// Getting path
 	QString path = m_settings->value("Save/filename").toString();
-	QString p = m_settings->value("Save/path").toString();
+	QString p = img->folder().isEmpty() ? m_settings->value("Save/path").toString() : img->folder();
 	if (site_id >= 0)
 	{
 		path = m_groupBatchs[site_id][6];
@@ -1589,12 +1626,12 @@ void mainWindow::getAllPerformImage(Image* img)
 		{ m_getAllId = i; }
 	}
 
-	int errors = m_getAllErrors;
+	int errors = m_getAllErrors, e404s = m_getAll404s;
 	if (reply->error() == QNetworkReply::NoError)
 	{
 		// Path
 		QString path = m_settings->value("Save/filename").toString();
-		QString p = m_settings->value("Save/path").toString();
+		QString p = img->folder().isEmpty() ? m_settings->value("Save/path").toString() : img->folder();
 		if (site_id >= 0)
 		{
 			ui->tableBatchGroups->item(site_id, 0)->setIcon(QIcon(":/images/colors/blue.png"));
@@ -1690,13 +1727,16 @@ void mainWindow::getAllPerformImage(Image* img)
 	else
 	{ m_getAllErrors++; }
 
-	if (m_getAllErrors == errors)
+	if (m_getAllErrors == errors && m_getAll404s == e404s)
 	{
 		m_getAllDownloaded++;
 		m_progressdialog->loadedImage(img->url());
 	}
 	else
-	{ m_progressdialog->errorImage(img->url()); }
+	{
+		m_progressdialog->errorImage(img->url());
+		m_getAllFailed.append(m_getAllDownloading[m_getAllId]);
+	}
 
 	if (site_id >= 0)
 	{

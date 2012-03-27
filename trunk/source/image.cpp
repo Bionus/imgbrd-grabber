@@ -11,6 +11,8 @@ Image::Image(QMap<QString, QString> details, int timezonedecay, Page* parent)
 	m_author = details.contains("author") ? details["author"] : "";
 	m_status = details.contains("status") ? details["status"] : "";
 	m_rating = details.contains("rating") ? details["rating"] : "";
+	m_filename = details.contains("filename") ? details["filename"] : "";
+	m_folder = details.contains("folder") ? details["folder"] : "";
 	QStringMap assoc;
 		assoc["s"] = tr("Safe");
 		assoc["q"] = tr("Questionable");
@@ -300,6 +302,11 @@ QString analyse(QStringList tokens, QString text, QStringList tags)
 
 QString Image::path(QString fn, QString pth)
 {
+	if (!m_filename.isEmpty())
+	{ fn = m_filename; }
+	if (!m_folder.isEmpty())
+	{ pth = m_folder; }
+
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
 	settings.beginGroup("Save");
 	if (fn.isEmpty())
@@ -521,6 +528,8 @@ QString			Image::status()			{ return m_status;			}
 QString			Image::rating()			{ return m_rating;			}
 QString			Image::source()			{ return m_source;			}
 QString			Image::site()			{ return m_site;			}
+QString			Image::filename()		{ return m_filename;		}
+QString			Image::folder()			{ return m_folder;			}
 QList<Tag>		Image::tags()			{ return m_tags;			}
 QList<Pool*>	Image::pools()			{ return m_pools;			}
 int				Image::id()				{ return m_id;				}
