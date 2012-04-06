@@ -49,6 +49,7 @@ class searchTab : public QWidget
 		void updateCheckboxes();
 		// Batch
 		void getPage();
+		void getAll();
 		// Tag list
 		void linkHovered(QString);
 		void linkClicked(QString);
@@ -81,7 +82,7 @@ class searchTab : public QWidget
 		QDateTime								*m_serverDate;
 		QMap<QString,QString>					*m_favorites;
 		QMap<QString,QMap<QString,QString> >	*m_sites;
-		QList<Page*>							m_pages;
+		QMap<QString,Page*>						m_pages;
 		QList<Image*>							m_images;
 		int										m_pagemax;
 		QList<bool>								m_selectedSources;

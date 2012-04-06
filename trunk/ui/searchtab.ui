@@ -248,7 +248,7 @@
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,1,0,1,1,0,0">
+    <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,1,0,1,1,1,0,0">
      <item>
       <widget class="QPushButton" name="buttonFirstPage">
        <property name="enabled">
@@ -309,6 +309,13 @@
       <widget class="QPushButton" name="buttonGetpage">
        <property name="text">
         <string>Prendre cette page</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonGetAll">
+       <property name="text">
+        <string>Prendre tout</string>
        </property>
       </widget>
      </item>
@@ -512,6 +519,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>buttonGetAll</sender>
+   <signal>clicked()</signal>
+   <receiver>searchTab</receiver>
+   <slot>getAll()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>667</x>
+     <y>503</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>699</x>
+     <y>526</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>load()</slot>
@@ -526,5 +549,6 @@
   <slot>previousPage()</slot>
   <slot>historyBack()</slot>
   <slot>historyNext()</slot>
+  <slot>getAll()</slot>
  </slots>
 </ui>

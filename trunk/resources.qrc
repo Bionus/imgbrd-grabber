@@ -30,5 +30,6 @@
         <file>images/colors/black.png</file>
         <file>images/icons/hidden.png</file>
         <file>images/icons/showed.png</file>
+        <file>images/sortings/change.png</file>
     </qresource>
 </RCC>

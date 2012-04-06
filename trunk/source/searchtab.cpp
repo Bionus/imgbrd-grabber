@@ -213,8 +213,8 @@ void searchTab::load()
 	m_parent->ui->labelTags->setText("");
 	for (int i = 0; i < m_pages.size(); i++)
 	{
-		m_pages.at(i)->abort();
-		m_pages.at(i)->abortTags();
+		m_pages.value(m_pages.keys().at(i))->abort();
+		m_pages.value(m_pages.keys().at(i))->abortTags();
 	}
 	qDeleteAll(m_pages);
 	m_pages.clear();
@@ -234,7 +234,7 @@ void searchTab::load()
 			Page *page = new Page(m_sites, m_sites->keys().at(i), tags, ui->spinPage->value(), perpage, m_postFiltering->toPlainText().toLower().split(" ", QString::SkipEmptyParts), this);
 			log(tr("Chargement de la page <a href=\"%1\">%1</a>").arg(Qt::escape(page->url().toString())));
 			connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(finishedLoading(Page*)));
-			m_pages.append(page);
+			m_pages.insert(page->website(), page);
 			m_layouts.append(new QGridLayout);
 			page->load();
 			if (settings.value("useregexfortags", true).toBool())
@@ -267,7 +267,7 @@ void searchTab::finishedLoading(Page* page)
 	m_images.append(imgs);
 	if (!ui->checkMergeResults->isChecked())
 	{
-		int pos = m_pages.indexOf(page);
+		int pos = m_pages.values().indexOf(page);
 		int perpage = page->site().value("Urls/Selected/Tags").contains("{limit}") ? ui->spinImagesPerPage->value() : imgs.size();
 		QLabel *txt = new QLabel(this);
 			if (imgs.count() == 0)
@@ -350,7 +350,7 @@ void searchTab::finishedLoading(Page* page)
 		QStringList tagsGot;
 		for (int i = 0; i < m_pages.count(); i++)
 		{
-			QList<Tag> tags = m_pages.at(i)->tags();
+			QList<Tag> tags = m_pages.value(m_pages.keys().at(i))->tags();
 			for (int t = 0; t < tags.count(); t++)
 			{
 				if (!tags[t].text().isEmpty())
@@ -453,7 +453,7 @@ void searchTab::finishedLoadingTags(Page *page)
 	QStringList tagsGot;
 	for (int i = 0; i < m_pages.count(); i++)
 	{
-		QList<Tag> tags = m_pages.at(i)->tags();
+		QList<Tag> tags = m_pages.value(m_pages.keys().at(i))->tags();
 		for (int t = 0; t < tags.count(); t++)
 		{
 			if (!tags[t].text().isEmpty())
@@ -506,7 +506,7 @@ void searchTab::finishedLoadingPreview(Image *img)
 {
 	int position = m_images.indexOf(img), page = 0;
 	if (!ui->checkMergeResults->isChecked())
-	{ page = m_pages.indexOf(img->page()); }
+	{ page = m_pages.values().indexOf(img->page()); }
 	if (img->previewImage().isNull())
 	{
 		log(tr("<b>Attention :</b> %1").arg(tr("une des miniatures est vide (<a href=\"%1\">%1</a>).").arg(img->previewUrl().toString())));
@@ -612,6 +612,18 @@ void searchTab::getPage()
 		int perpage = ui->spinImagesPerPage->value();
 		emit batchAddGroup(QStringList() << m_search->toPlainText() << QString::number(ui->spinPage->value()) << QString::number(perpage) << QString::number(perpage) << settings.value("downloadblacklist").toString() << actuals.at(i) << settings.value("Save/filename").toString() << settings.value("Save/path").toString() << "");
 	}
+}
+void searchTab::getAll()
+{
+	QStringList actuals, keys = m_sites->keys();
+	for (int i = 0; i < m_checkboxes.count(); i++)
+	{
+		if (m_checkboxes.at(i)->isChecked())
+		{ actuals.append(keys.at(i)); }
+	}
+	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
+	for (int i = 0; i < actuals.count(); i++)
+	{ emit batchAddGroup(QStringList() << m_search->toPlainText() << "1" << QString::number(qMin(1000, qMax(m_pages.value(actuals.at(i))->images().count(), m_pages.value(actuals.at(i))->imagesCount()))) << QString::number(qMax(m_pages.value(actuals.at(i))->images().count(), m_pages.value(actuals.at(i))->imagesCount())) << settings.value("downloadblacklist").toString() << actuals.at(i) << settings.value("Save/filename").toString() << settings.value("Save/path").toString() << ""); }
 }
 
 void searchTab::firstPage()

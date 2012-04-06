@@ -154,7 +154,7 @@ void TextEdit::keyPressEvent(QKeyEvent *e)
 	if (!c || (ctrlOrShift && e->text().isEmpty()))
 	{ return; }
 
-	static QString eow(""); // end of word
+	static QString eow(" ");
 	bool hasModifier = (e->modifiers() != Qt::NoModifier) && !ctrlOrShift;
 	QString completionPrefix = textUnderCursor();
 
@@ -167,7 +167,7 @@ void TextEdit::keyPressEvent(QKeyEvent *e)
 	if (completionPrefix != c->completionPrefix())
 	{
 		c->setCompletionPrefix(completionPrefix);
-		c->popup()->setCurrentIndex(c->completionModel()->index(0, 0));
+		//c->popup()->setCurrentIndex(c->completionModel()->index(0, 0));
 	}
 	QRect cr = cursorRect();
 	cr.setWidth(c->popup()->sizeHintForColumn(0) + c->popup()->verticalScrollBar()->sizeHint().width());
@@ -220,6 +220,8 @@ void TextEdit::customContextMenuRequested(const QPoint &pos)
 			QActionGroup* sortingsGroup = new QActionGroup(favs);
 				sortingsGroup->setExclusive(true);
 				connect(sortingsGroup, SIGNAL(triggered(QAction *)), this, SLOT(insertFav(QAction *)));
+					sortingsGroup->addAction(QIcon(":/images/sortings/change.png"), "order:change");
+					sortingsGroup->addAction(QIcon(":/images/sortings/change.png"), "order:change_desc");
 					sortingsGroup->addAction(QIcon(":/images/icons/favorite.png"), "order:favcount");
 					sortingsGroup->addAction(QIcon(":/images/sortings/size.png"), "order:filesize");
 					sortingsGroup->addAction(QIcon(":/images/sortings/id.png"), "order:id");

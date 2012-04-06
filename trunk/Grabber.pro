@@ -95,7 +95,7 @@ FORMS += \
 
 RESOURCES += resources.qrc
 RC_FILE = icon.rc
-TRANSLATIONS += languages/English.ts languages/FranÃ§ais.ts
+TRANSLATIONS += languages/English.ts languages/Français.ts
 QT += network xml
 CONFIG += designer plugin
 CODECFORTR = UTF-8

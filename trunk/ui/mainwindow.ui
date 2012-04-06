@@ -436,7 +436,7 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>673</width>
+             <width>553</width>
              <height>443</height>
             </rect>
            </property>
@@ -561,8 +561,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>192</width>
-          <height>50</height>
+          <width>220</width>
+          <height>41</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_9">
@@ -617,8 +617,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>192</width>
-          <height>50</height>
+          <width>220</width>
+          <height>42</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -706,8 +706,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>180</width>
-          <height>78</height>
+          <width>208</width>
+          <height>57</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_12">
@@ -788,8 +788,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>192</width>
-          <height>50</height>
+          <width>220</width>
+          <height>41</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_11">
@@ -844,7 +844,7 @@
         <widget class="QLineEdit" name="lineFolder"/>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_3">
+        <widget class="QPushButton" name="buttonFolder">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -884,6 +884,9 @@
       <widget class="QLabel" name="labelFilename">
        <property name="text">
         <string/>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -1100,7 +1103,7 @@
     </hint>
     <hint type="destinationlabel">
      <x>39</x>
-     <y>101</y>
+     <y>83</y>
     </hint>
    </hints>
   </connection>
@@ -1116,7 +1119,7 @@
     </hint>
     <hint type="destinationlabel">
      <x>39</x>
-     <y>426</y>
+     <y>292</y>
     </hint>
    </hints>
   </connection>
@@ -1132,7 +1135,7 @@
     </hint>
     <hint type="destinationlabel">
      <x>39</x>
-     <y>210</y>
+     <y>148</y>
     </hint>
    </hints>
   </connection>
@@ -1144,7 +1147,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>51</x>
-     <y>266</y>
+     <y>197</y>
     </hint>
     <hint type="destinationlabel">
      <x>99</x>
@@ -1160,7 +1163,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>58</x>
-     <y>292</y>
+     <y>223</y>
     </hint>
     <hint type="destinationlabel">
      <x>98</x>
@@ -1207,7 +1210,7 @@
    <slot>addGroup()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>193</x>
+     <x>313</x>
      <y>249</y>
     </hint>
     <hint type="destinationlabel">
@@ -1223,7 +1226,7 @@
    <slot>addUnique()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>193</x>
+     <x>313</x>
      <y>476</y>
     </hint>
     <hint type="destinationlabel">
@@ -1239,7 +1242,7 @@
    <slot>batchSel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>211</x>
+     <x>331</x>
      <y>527</y>
     </hint>
     <hint type="destinationlabel">
@@ -1255,7 +1258,7 @@
    <slot>getAll()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>338</x>
+     <x>438</x>
      <y>527</y>
     </hint>
     <hint type="destinationlabel">
@@ -1271,7 +1274,7 @@
    <slot>batchClearSel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>670</x>
+     <x>705</x>
      <y>527</y>
     </hint>
     <hint type="destinationlabel">
@@ -1287,7 +1290,7 @@
    <slot>batchClear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>781</x>
+     <x>786</x>
      <y>527</y>
     </hint>
     <hint type="destinationlabel">
@@ -1303,8 +1306,8 @@
    <slot>logClear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>211</x>
-     <y>90</y>
+     <x>332</x>
+     <y>526</y>
     </hint>
     <hint type="destinationlabel">
      <x>476</x>
@@ -1319,8 +1322,8 @@
    <slot>checkFavorites()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>372</x>
-     <y>525</y>
+     <x>506</x>
+     <y>526</y>
     </hint>
     <hint type="destinationlabel">
      <x>387</x>
@@ -1367,8 +1370,8 @@
    <slot>advanced()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>156</x>
-     <y>511</y>
+     <x>366</x>
+     <y>526</y>
     </hint>
     <hint type="destinationlabel">
      <x>102</x>
@@ -1383,8 +1386,8 @@
    <slot>loadTag(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>74</x>
-     <y>79</y>
+     <x>73</x>
+     <y>74</y>
     </hint>
     <hint type="destinationlabel">
      <x>-7</x>
@@ -1399,8 +1402,8 @@
    <slot>loadTag(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>35</x>
-     <y>480</y>
+     <x>34</x>
+     <y>347</y>
     </hint>
     <hint type="destinationlabel">
      <x>-12</x>
@@ -1415,8 +1418,8 @@
    <slot>loadTag(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>46</x>
-     <y>187</y>
+     <x>45</x>
+     <y>139</y>
     </hint>
     <hint type="destinationlabel">
      <x>-6</x>
@@ -1447,8 +1450,8 @@
    <slot>logOpen()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>211</x>
-     <y>90</y>
+     <x>612</x>
+     <y>526</y>
     </hint>
     <hint type="destinationlabel">
      <x>485</x>
@@ -1463,12 +1466,44 @@
    <slot>updateBatchGroups(int,int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>193</x>
+     <x>313</x>
      <y>71</y>
     </hint>
     <hint type="destinationlabel">
      <x>801</x>
      <y>208</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lineFolder</sender>
+   <signal>textEdited(QString)</signal>
+   <receiver>mainWindow</receiver>
+   <slot>batchSel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>90</x>
+     <y>404</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-2</x>
+     <y>398</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lineFilename</sender>
+   <signal>textEdited(QString)</signal>
+   <receiver>mainWindow</receiver>
+   <slot>saveSettings()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>66</x>
+     <y>435</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>432</y>
     </hint>
    </hints>
   </connection>
@@ -1507,5 +1542,6 @@
   <slot>updateFavoritesDock()</slot>
   <slot>currentTabChanged(int)</slot>
   <slot>logOpen()</slot>
+  <slot>saveSettings()</slot>
  </slots>
 </ui>
