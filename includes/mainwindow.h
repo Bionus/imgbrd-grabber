@@ -88,6 +88,8 @@ class mainWindow : public QMainWindow
 		void on_buttonLoadLinkList_clicked();
 		bool saveLinkList(QString filename);
 		bool loadLinkList(QString filename);
+		void saveSettings();
+		void on_buttonFolder_clicked();
 		// Tabs
 		int addTab(QString tag = "");
 		void addTabFavorite(int);

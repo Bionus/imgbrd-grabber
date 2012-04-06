@@ -62,6 +62,7 @@ void mainWindow::init()
 	ui->menuView->addAction(ui->dock_wiki->toggleViewAction());
 	ui->menuView->addAction(ui->dock_kfl->toggleViewAction());
 	ui->menuView->addAction(ui->dock_favorites->toggleViewAction());
+	ui->menuView->addAction(ui->dockOptions->toggleViewAction());
 
 	m_favorites = loadFavorites();
 
@@ -315,6 +316,8 @@ void mainWindow::init()
 	headerView->setResizeMode(QHeaderView::Interactive);
 	headerView = ui->tableBatchUniques->horizontalHeader();
 	headerView->setResizeMode(QHeaderView::Interactive);
+	ui->lineFilename->setText(m_settings->value("Save/filename").toString());
+	ui->lineFolder->setText(m_settings->value("Save/path").toString());
 
 	QStringList sizes = m_settings->value("batch", "100,100,100,100,100,100,100,100,100").toString().split(',');
 	int m = sizes.size() > ui->tableBatchGroups->columnCount() ? ui->tableBatchGroups->columnCount() : sizes.size();
@@ -1872,4 +1875,21 @@ void mainWindow::loadTag(QString tag)
 
 	if (m_tabs.count() > 0 && ui->tabWidget->currentIndex() < m_tabs.count())
 	{ m_tabs[ui->tabWidget->currentIndex()]->setTags(tag); }
+}
+
+void mainWindow::on_buttonFolder_clicked()
+{
+	QString folder = QFileDialog::getExistingDirectory(this, tr("Choisir un dossier de sauvegarde"), ui->lineFolder->text());
+	if (!folder.isEmpty())
+	{
+		ui->lineFolder->setText(folder);
+		saveSettings();
+	}
+}
+void mainWindow::saveSettings()
+{
+	m_settings->setValue("Save/path", ui->lineFolder->text());
+	m_settings->setValue("Save/filename", ui->lineFilename->text());
+	ui->labelFilename->setText(validateFilename(ui->lineFilename->text()));
+	m_settings->sync();
 }
