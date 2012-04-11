@@ -36,9 +36,11 @@ Page::~Page()
 
 void Page::fallback()
 {
-	if (m_currentSource > 3)
+	if (m_currentSource > m_site["Selected"].count('/'))
 	{
 		log(tr("Aucune source valide du site n'a retourné de résultat."));
+		m_currentSource++;
+		emit finishedLoading(this);
 		return;
 	}
 	if (m_currentSource > 0)
@@ -81,12 +83,15 @@ void Page::fallback()
 
 void Page::load()
 {
-	QNetworkAccessManager *manager = new QNetworkAccessManager(this);
-	connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(parse(QNetworkReply*)));
-	QNetworkRequest r(m_url);
-		r.setRawHeader("Referer", m_url.toString().toUtf8());
-	m_reply = manager->get(r);
-	m_replyExists = true;
+	if (m_currentSource <= m_site["Selected"].count('/') + 1)
+	{
+		QNetworkAccessManager *manager = new QNetworkAccessManager(this);
+		connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(parse(QNetworkReply*)));
+		QNetworkRequest r(m_url);
+			r.setRawHeader("Referer", m_url.toString().toUtf8());
+		m_reply = manager->get(r);
+		m_replyExists = true;
+	}
 }
 void Page::abort()
 {
@@ -133,9 +138,16 @@ void Page::parse(QNetworkReply* r)
 	m_tags.clear();
 	m_imagesCount = -1;
 	m_source = r->readAll();
-	int first = ((m_page - 1) * m_imagesPerPage) % m_blim;
+
+	if (m_source.isEmpty())
+	{
+		fallback();
+		load();
+		return;
+	}
 
 	// Getting last page
+	int first = ((m_page - 1) * m_imagesPerPage) % m_blim;
 	if (m_site.contains("LastPage"))
 	{ m_imagesCount = m_site["LastPage"].toInt()*m_imagesPerPage; }
 	else if (m_site.contains("Regex/LastPage"))
@@ -151,13 +163,6 @@ void Page::parse(QNetworkReply* r)
 		rxlast.setMinimal(true);
 		rxlast.indexIn(m_source, 0);
 		m_imagesCount = rxlast.cap(1).remove(",").toInt();
-	}
-
-	if (m_source.isEmpty())
-	{
-		fallback();
-		load();
-		return;
 	}
 
 	// XML

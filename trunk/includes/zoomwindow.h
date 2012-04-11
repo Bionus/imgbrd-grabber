@@ -93,6 +93,7 @@ class zoomWindow : public QDialog
 		QByteArray m_data;
 		int m_size;
 		QMap<QString,QMap<QString,QString> > *m_sites;
+		QString m_source;
 };
 
 #endif

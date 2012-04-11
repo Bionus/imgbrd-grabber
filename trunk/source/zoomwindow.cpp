@@ -12,7 +12,7 @@ extern mainWindow *_mainwindow;
 
 
 
-zoomWindow::zoomWindow(Image *image, QStringMap site, QMap<QString,QMap<QString,QString> > *sites, QWidget *parent) : QDialog(parent, Qt::Window), ui(new Ui::zoomWindow), m_image(image), m_site(site), timeout(300), loaded(0), oldsize(0), m_program(qApp->arguments().at(0)), m_replyExists(false), m_finished(false), m_thread(false), m_data(QByteArray()), m_size(0), m_sites(sites)
+zoomWindow::zoomWindow(Image *image, QStringMap site, QMap<QString,QMap<QString,QString> > *sites, QWidget *parent) : QDialog(parent, Qt::Window), ui(new Ui::zoomWindow), m_image(image), m_site(site), timeout(300), loaded(0), oldsize(0), m_program(qApp->arguments().at(0)), m_replyExists(false), m_finished(false), m_thread(false), m_data(QByteArray()), m_size(0), m_sites(sites), m_source()
 {
 	ui->setupUi(this);
 	setAttribute(Qt::WA_DeleteOnClose);
@@ -301,8 +301,6 @@ void zoomWindow::unignore()
 	colore();
 }
 
-
-
 void zoomWindow::load()
 {
 	log(tr("Chargement de l'image depuis <a href=\"%1\">%1</a>").arg(m_url));
@@ -400,23 +398,24 @@ void zoomWindow::replyFinished(Image* img)
 			ui->buttonSaveFav->setText(tr("Fichier déjà existant (fav)"));
 			ui->buttonSaveNQuitFav->setText(tr("Fermer (fav)"));
 		}
+		m_source = file1.exists() ? path1+"/"+pth1 : path2+"/"+pth2;
 		if (m_url.section('.', -1).toUpper() == "GIF")
 		{
-			QMovie *movie = new QMovie(file1.exists() ? path1+"/"+pth1 : path2+"/"+pth2, QByteArray(), this);
+			QMovie *movie = new QMovie(m_source, QByteArray(), this);
 			labelImage->setMovie(movie);
 			movie->start();
 		}
 		else
 		{
 			QPixmap *img = new QPixmap;
-			img->load(file1.exists() ? path1+"/"+pth1 : path2+"/"+pth2);
+			img->load(m_source);
 			this->image = img;
 			this->loaded = true;
-			this->update();
+			update();
 		}
 	}
 	else
-	{ this->load(); }
+	{ load(); }
 }
 void zoomWindow::colore()
 {
@@ -625,10 +624,16 @@ QString zoomWindow::saveImage(bool fav)
 			if (!dir.mkpath(path.section(QDir::toNativeSeparators("/"), 0, -2)))
 			{ error(this, tr("Erreur lors de la sauvegarde de l'image.\r\n%1").arg(fp)); return QString(); }
 		}
-		f.open(QIODevice::WriteOnly);
+
+		log(tr("Sauvegarde de l'image (%1) dans le fichier <a href=\"file:///%2\">%2</a>").arg(m_data.size()).arg(f.fileName()));
+		if (m_source.isEmpty())
+		{
+			f.open(QIODevice::WriteOnly);
 			f.write(m_data);
-			log(tr("Sauvegarde de l'image dans le fichier <a href=\"file:///%1\">%1</a>").arg(f.fileName()));
-		f.close();
+			f.close();
+		}
+		else
+		{ QFile::copy(m_source, f.fileName()); }
 
 		QMap<QString,int> types;
 		types["general"] = 0;
@@ -724,7 +729,7 @@ QString zoomWindow::saveImageAs()
 
 void zoomWindow::fullScreen()
 {
-	QAffiche *label = new QAffiche(QVariant(), 0, QColor(), this);
+	QAffiche *label = new QAffiche(QVariant(), 0, QColor());
 		label->setStyleSheet("background-color: black");
 		label->setAlignment(Qt::AlignCenter);
 		label->setImage(this->image->scaled(QApplication::desktop()->screenGeometry().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));

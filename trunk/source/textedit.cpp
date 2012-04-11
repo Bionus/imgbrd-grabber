@@ -125,17 +125,26 @@ void TextEdit::keyPressEvent(QKeyEvent *e)
 	if (c && c->popup()->isVisible())
 	{
 		// The following keys are forwarded by the completer to the widget
-	   switch (e->key()) {
-	   case Qt::Key_Enter:
-	   case Qt::Key_Return:
-	   case Qt::Key_Escape:
-	   case Qt::Key_Tab:
-	   case Qt::Key_Backtab:
-			e->ignore();
-			return; // let the completer do default behavior
-	   default:
-		   break;
-	   }
+		switch (e->key())
+		{
+			case Qt::Key_Enter:
+			case Qt::Key_Return:
+				if (textUnderCursor() != c->currentCompletion())
+				{ e->ignore(); }
+				else
+				{
+					c->popup()->hide();
+					emit returnPressed();
+					return;
+				}
+				return;
+
+			case Qt::Key_Escape:
+			case Qt::Key_Tab:
+			case Qt::Key_Backtab:
+				e->ignore();
+				return;
+		}
 	}
 
 	bool isShortcut = ((e->modifiers() & Qt::ControlModifier) && e->key() == Qt::Key_E); // CTRL+E

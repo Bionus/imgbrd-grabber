@@ -220,6 +220,18 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>buttonDetails</tabstop>
+  <tabstop>buttonSave</tabstop>
+  <tabstop>buttonSaveNQuit</tabstop>
+  <tabstop>buttonOpen</tabstop>
+  <tabstop>buttonSaveFav</tabstop>
+  <tabstop>buttonSaveNQuitFav</tabstop>
+  <tabstop>buttonOpenFav</tabstop>
+  <tabstop>buttonPlus</tabstop>
+  <tabstop>buttonSaveAs</tabstop>
+  <tabstop>scrollArea</tabstop>
+ </tabstops>
  <resources>
   <include location="../resources.qrc"/>
  </resources>

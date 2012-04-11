@@ -2,7 +2,7 @@
 #include "functions.h"
 #include "ui_batchwindow.h"
 
-#define SAMPLES 20
+#define SAMPLES 100
 
 
 
@@ -47,6 +47,8 @@ void batchWindow::clear()
 	ui->progressBar->setValue(0);
 	ui->progressBar->setMaximum(100);
 	ui->labelImages->setText("0/0");
+	ui->labelSpeed->setText("");
+	ui->cancelButton->setText(tr("Annuler"));
 	qDeleteAll(m_progressBars);
 	m_progressBars.clear();
 	m_speeds.clear();
@@ -112,14 +114,12 @@ void batchWindow::addImage(QString url, int batch, float size)
 }
 void batchWindow::loadingImage(QString url)
 {
-	qDebug() << "loadingImage()" << url << 1 << QTime::currentTime().toString("hh:mm:ss.zzz");
 	m_speeds.insert(url, QQueue<int>());
 	for (int i = 0; i < m_items; i++)
 	{
 		if (ui->tableWidget->item(i, 2)->text() == url)
 		{ ui->tableWidget->item(i, 0)->setIcon(QIcon(":/images/colors/blue.png")); }
 	}
-	qDebug() << "loadingImage()" << url << 2 << QTime::currentTime().toString("hh:mm:ss.zzz");
 }
 void batchWindow::statusImage(QString url, int percent)
 {
@@ -244,13 +244,15 @@ void batchWindow::setText(QString text)
 { ui->labelMessage->setText(text); }
 void batchWindow::setValue(int value)
 {
-	/*m_value = value;
-ui->progressBar->setValue(m_value);*/
+	m_value = value;
+	ui->progressBar->setValue(m_value);
+	if (ui->progressBar->maximum() <= m_value)
+	{ ui->cancelButton->setText(tr("Fermer")); }
 }
 void batchWindow::setLittleValue(int value)
 { /*ui->progressBar->setValue(m_value + value);*/ }
 void batchWindow::setMaximum(int value)
-{ /*ui->progressBar->setMaximum(value);*/ }
+{ ui->progressBar->setMaximum(value); }
 void batchWindow::setImagesCount(int value)
 {
 	m_imagesCount = value;

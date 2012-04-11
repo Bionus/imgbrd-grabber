@@ -433,6 +433,7 @@ void mainWindow::batchAddGroup(const QStringList& values)
 	{
 		item = new QTableWidgetItem;
 			item->setText(values.at(t));
+			item->setToolTip(values.at(t));
 		int r = t+1;
 		if (r == 1) { r = 0; }
 		else if (r == 6) { r = 1; }
@@ -1433,6 +1434,7 @@ void mainWindow::_getAll()
 				rem++;
 			}
 		}
+		activateWindow();
 		QMessageBox::information(
 			this,
 			tr("Récupération des images"),
