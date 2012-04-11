@@ -335,7 +335,7 @@ void searchTab::finishedLoading(Page* page)
 					{ uncommon.removeAll(page->search().at(i)); }
 				}
 				if (!uncommon.isEmpty() > 0)
-				{ txt->setText(txt->text()+"<br/>"+QString("Des modificateurs ont été otés de la recherche car ils ne sont pas compatibles avec cet imageboard : %1.").arg(uncommon.join(" "))); }
+				{ txt->setText(txt->text()+"<br/>"+QString(tr("Des modificateurs ont été otés de la recherche car ils ne sont pas compatibles avec cet imageboard : %1.")).arg(uncommon.join(" "))); }
 			}
 		int page_x = pos%ui->spinColumns->value(), page_y = (pos/ui->spinColumns->value())*2;
 		ui->layoutResults->addWidget(txt, page_y, page_x, 1, 1);
@@ -610,7 +610,7 @@ void searchTab::getPage()
 	for (int i = 0; i < actuals.count(); i++)
 	{
 		int perpage = ui->spinImagesPerPage->value();
-		emit batchAddGroup(QStringList() << m_search->toPlainText() << QString::number(ui->spinPage->value()) << QString::number(perpage) << QString::number(perpage) << settings.value("downloadblacklist").toString() << actuals.at(i) << settings.value("Save/filename").toString() << settings.value("Save/path").toString() << "");
+		emit batchAddGroup(QStringList() << m_search->toPlainText()+" "+settings.value("add").toString().toLower().trimmed() << QString::number(ui->spinPage->value()) << QString::number(perpage) << QString::number(perpage) << settings.value("downloadblacklist").toString() << actuals.at(i) << settings.value("Save/filename").toString() << settings.value("Save/path").toString() << "");
 	}
 }
 void searchTab::getAll()
@@ -623,7 +623,7 @@ void searchTab::getAll()
 	}
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
 	for (int i = 0; i < actuals.count(); i++)
-	{ emit batchAddGroup(QStringList() << m_search->toPlainText() << "1" << QString::number(qMin(1000, qMax(m_pages.value(actuals.at(i))->images().count(), m_pages.value(actuals.at(i))->imagesCount()))) << QString::number(qMax(m_pages.value(actuals.at(i))->images().count(), m_pages.value(actuals.at(i))->imagesCount())) << settings.value("downloadblacklist").toString() << actuals.at(i) << settings.value("Save/filename").toString() << settings.value("Save/path").toString() << ""); }
+	{ emit batchAddGroup(QStringList() << m_search->toPlainText()+" "+settings.value("add").toString().toLower().trimmed() << "1" << QString::number(qMin(1000, qMax(m_pages.value(actuals.at(i))->images().count(), m_pages.value(actuals.at(i))->imagesCount()))) << QString::number(qMax(m_pages.value(actuals.at(i))->images().count(), m_pages.value(actuals.at(i))->imagesCount())) << settings.value("downloadblacklist").toString() << actuals.at(i) << settings.value("Save/filename").toString() << settings.value("Save/path").toString() << ""); }
 }
 
 void searchTab::firstPage()
