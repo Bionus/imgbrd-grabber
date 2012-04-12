@@ -307,13 +307,13 @@ void zoomWindow::load()
 	m_data.clear();
 
 	QNetworkAccessManager *manager = new QNetworkAccessManager(this);
-		QNetworkDiskCache *diskCache = new QNetworkDiskCache(this);
+		/*QNetworkDiskCache *diskCache = new QNetworkDiskCache(this);
 		diskCache->setCacheDirectory(QDesktopServices::storageLocation(QDesktopServices::CacheLocation));
-		manager->setCache(diskCache);
+		manager->setCache(diskCache);*/
 
 	QNetworkRequest request = QNetworkRequest(QUrl(m_url));
 		request.setRawHeader("Referer", m_url.toAscii());
-		request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::PreferCache);
+		//request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::PreferCache);
 
 	m_reply = manager->get(request);
 	connect(m_reply, SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(downloadProgress(qint64, qint64)));

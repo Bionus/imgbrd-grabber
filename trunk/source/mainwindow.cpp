@@ -316,8 +316,7 @@ void mainWindow::init()
 	headerView->setResizeMode(QHeaderView::Interactive);
 	headerView = ui->tableBatchUniques->horizontalHeader();
 	headerView->setResizeMode(QHeaderView::Interactive);
-	ui->lineFilename->setText(m_settings->value("Save/filename").toString());
-	ui->lineFolder->setText(m_settings->value("Save/path").toString());
+	on_buttonInitSettings_clicked();
 
 	QStringList sizes = m_settings->value("batch", "100,100,100,100,100,100,100,100,100").toString().split(',');
 	int m = sizes.size() > ui->tableBatchGroups->columnCount() ? ui->tableBatchGroups->columnCount() : sizes.size();
@@ -326,6 +325,8 @@ void mainWindow::init()
 
 	m_loaded = true;
 	logShow();
+
+	qDebug() << m_settings->value("Save/path").toString() << m_settings->value("Save/filename").toString() << m_settings->value("Save/path_real").toString() << m_settings->value("Save/filename_real").toString();
 }
 
 mainWindow::~mainWindow()
@@ -1887,6 +1888,18 @@ void mainWindow::on_buttonFolder_clicked()
 		ui->lineFolder->setText(folder);
 		saveSettings();
 	}
+}
+void mainWindow::on_buttonSaveSettings_clicked()
+{
+	m_settings->setValue("Save/path_real", ui->lineFolder->text());
+	m_settings->setValue("Save/filename_real", ui->lineFilename->text());
+	saveSettings();
+}
+void mainWindow::on_buttonInitSettings_clicked()
+{
+	ui->lineFolder->setText(m_settings->value("Save/path_real").toString());
+	ui->lineFilename->setText(m_settings->value("Save/filename_real").toString());
+	saveSettings();
 }
 void mainWindow::saveSettings()
 {
