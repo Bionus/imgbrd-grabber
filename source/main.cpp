@@ -1,11 +1,11 @@
 /**
  * @file
  * @author  Bionus <bio.nus@hotmail.fr>
- * @version 1.9.0
+ * @version 3.1.0
  *
  * @section LICENSE
  *
- * Copyright 2011 Bionus
+ * Copyright 2011 - 2012 Bionus
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.

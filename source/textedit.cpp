@@ -147,7 +147,7 @@ void TextEdit::keyPressEvent(QKeyEvent *e)
 		}
 	}
 
-	bool isShortcut = ((e->modifiers() & Qt::ControlModifier) && e->key() == Qt::Key_E); // CTRL+E
+	bool isShortcut = ((e->modifiers() & Qt::ControlModifier) && e->key() == Qt::Key_Space); // CTRL+Space
 	if (!c || !isShortcut) // do not process the shortcut when we have a completer
 	{
 		if (e->key() == Qt::Key_Enter || e->key() == Qt::Key_Return)
@@ -174,10 +174,8 @@ void TextEdit::keyPressEvent(QKeyEvent *e)
 	}
 
 	if (completionPrefix != c->completionPrefix())
-	{
-		c->setCompletionPrefix(completionPrefix);
-		//c->popup()->setCurrentIndex(c->completionModel()->index(0, 0));
-	}
+	{ c->setCompletionPrefix(completionPrefix); }
+
 	QRect cr = cursorRect();
 	cr.setWidth(c->popup()->sizeHintForColumn(0) + c->popup()->verticalScrollBar()->sizeHint().width());
 	c->complete(cr);

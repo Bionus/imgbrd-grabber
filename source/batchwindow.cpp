@@ -9,10 +9,15 @@
 batchWindow::batchWindow(QWidget *parent) : QDialog(parent), ui(new Ui::batchWindow), m_items(0), m_images(0), m_cancel(false)
 {
 	ui->setupUi(this);
-	ui->details->hide();
 	ui->tableWidget->resizeColumnToContents(0);
-	resize(QSize(300, 0));
-	m_currentSize = QSize(300, 225);
+
+	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
+	restoreGeometry(settings.value("Batch/geometry").toByteArray());
+	ui->details->setVisible(settings.value("Batch/details", true).toBool());
+	ui->comboEnd->setCurrentIndex(settings.value("Batch/end", 0).toInt());
+	ui->checkRemove->setChecked(settings.value("Batch/remove", false).toBool());
+	m_currentSize = size();
+
 	m_speeds.insert("", QQueue<int>());
 }
 
@@ -22,6 +27,13 @@ batchWindow::~batchWindow()
 }
 void batchWindow::closeEvent(QCloseEvent *e)
 {
+	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
+	settings.setValue("Batch/geometry", saveGeometry());
+	settings.setValue("Batch/details", ui->details->isVisible());
+	settings.setValue("Batch/end", ui->comboEnd->currentIndex());
+	settings.setValue("Batch/remove", ui->checkRemove->isChecked());
+	settings.sync();
+
 	if (m_images < m_imagesCount)
 	{
 		cancel();
@@ -29,6 +41,7 @@ void batchWindow::closeEvent(QCloseEvent *e)
 	}
 	else
 	{ clear(); }
+
 	emit closed();
 	e->accept();
 }

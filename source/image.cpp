@@ -314,7 +314,10 @@ QString Image::path(QString fn, QString pth)
 	if (pth.isEmpty())
 	{ pth = settings.value("path").toString(); }
 
-	QMap<QString,QPair<QString,QString> > replaces = QMap<QString,QPair<QString,QString> >();
+	typedef QPair<QString,QString> QStrP;
+	typedef QPair<QString,QStrP> QStrPP;
+
+	QList<QStrPP> replaces = QList<QStrPP>();
 	QStringList copyrights;
 	QString cop;
 	bool found;
@@ -362,26 +365,26 @@ QString Image::path(QString fn, QString pth)
 	if (ext.length() > 5)
 	{ ext = "jpg"; }
 
-	replaces.insert("%ext%", QPair<QString,QString>(ext, "jpg"));
-	replaces.insert("%filename%", QPair<QString,QString>(m_url.section('/', -1).section('.', 0, -2), ""));
-	replaces.insert("%website%", QPair<QString,QString>(m_site, ""));
-	replaces.insert("%md5%", QPair<QString,QString>(m_md5, ""));
-	replaces.insert("%id%", QPair<QString,QString>(QString::number(m_id), "0"));
+	replaces.append(QStrPP("%ext%", QStrP(ext, "jpg")));
+	replaces.append(QStrPP("%filename%", QStrP(m_url.section('/', -1).section('.', 0, -2), "")));
+	replaces.append(QStrPP("%website%", QStrP(m_site, "")));
+	replaces.append(QStrPP("%md5%", QStrP(m_md5, "")));
+	replaces.append(QStrPP("%id%", QStrP(QString::number(m_id), "0")));
 	for (int i = 0; i < search.size(); i++)
-	{ replaces.insert("%search_"+QString::number(i+1)+"%", QPair<QString,QString>(search[i], "")); }
-	replaces.insert("%search%", QPair<QString,QString>(search.join(settings.value("separator").toString()), ""));
-	replaces.insert("%artist%", QPair<QString,QString>(details["artists"].count() > 0 ? (settings.value("artist_useall").toBool() || details["artists"].count() == 1 ? details["artists"].join(settings.value("artist_sep").toString()) : settings.value("artist_value").toString()) : "", settings.value("artist_empty").toString()));
-	replaces.insert("%copyright%", QPair<QString,QString>(details["copyrights"].count() > 0 ? (settings.value("copyright_useall").toBool() || details["copyrights"].count() == 1 ? details["copyrights"].join(settings.value("copyright_sep").toString()) : settings.value("copyright_value").toString()) : "", settings.value("copyright_empty").toString()));
-	replaces.insert("%character%", QPair<QString,QString>(details["characters"].count() > 0 ? (settings.value("character_useall").toBool() || details["characters"].count() == 1 ? details["characters"].join(settings.value("character_sep").toString()) : settings.value("character_value").toString()) : "", settings.value("character_empty").toString()));
-	replaces.insert("%model%", QPair<QString,QString>(details["models"].count() > 0 ? (settings.value("model_useall").toBool() || details["models"].count() == 1 ? details["models"].join(settings.value("model_sep").toString()) : settings.value("model_value").toString()) : "", settings.value("model_empty").toString()));
-	replaces.insert("%rating%", QPair<QString,QString>(m_rating, ""));
-	replaces.insert("%height%", QPair<QString,QString>(QString::number(m_size.height()), "0"));
-	replaces.insert("%width%", QPair<QString,QString>(QString::number(m_size.width()), "0"));
+	{ replaces.append(QStrPP("%search_"+QString::number(i+1)+"%", QStrP(search[i], ""))); }
+	replaces.append(QStrPP("%search%", QStrP(search.join(settings.value("separator").toString()), "")));
+	replaces.append(QStrPP("%artist%", QStrP(details["artists"].count() > 0 ? (settings.value("artist_useall").toBool() || details["artists"].count() == 1 ? details["artists"].join(settings.value("artist_sep").toString()) : settings.value("artist_value").toString()) : "", settings.value("artist_empty").toString())));
+	replaces.append(QStrPP("%copyright%", QStrP(details["copyrights"].count() > 0 ? (settings.value("copyright_useall").toBool() || details["copyrights"].count() == 1 ? details["copyrights"].join(settings.value("copyright_sep").toString()) : settings.value("copyright_value").toString()) : "", settings.value("copyright_empty").toString())));
+	replaces.append(QStrPP("%character%", QStrP(details["characters"].count() > 0 ? (settings.value("character_useall").toBool() || details["characters"].count() == 1 ? details["characters"].join(settings.value("character_sep").toString()) : settings.value("character_value").toString()) : "", settings.value("character_empty").toString())));
+	replaces.append(QStrPP("%model%", QStrP(details["models"].count() > 0 ? (settings.value("model_useall").toBool() || details["models"].count() == 1 ? details["models"].join(settings.value("model_sep").toString()) : settings.value("model_value").toString()) : "", settings.value("model_empty").toString())));
+	replaces.append(QStrPP("%rating%", QStrP(m_rating, "")));
+	replaces.append(QStrPP("%height%", QStrP(QString::number(m_size.height()), "0")));
+	replaces.append(QStrPP("%width%", QStrP(QString::number(m_size.width()), "0")));
 	for (int i = 0; i < custom.size(); i++)
-	{ replaces.insert("%"+custom.keys().at(i)+"%", QPair<QString,QString>(custom.values().at(i).join(settings.value("separator").toString()), "")); }
-	replaces.insert("%general%", QPair<QString,QString>(details["generals"].join(settings.value("separator").toString()), ""));
-	replaces.insert("%allo%", QPair<QString,QString>(details["allos"].join(" "), ""));
-	replaces.insert("%all%", QPair<QString,QString>(details["alls"].join(" "), ""));
+	{ replaces.append(QStrPP("%"+custom.keys().at(i)+"%", QStrP(custom.values().at(i).join(settings.value("separator").toString()), ""))); }
+	replaces.append(QStrPP("%general%", QStrP(details["generals"].join(settings.value("separator").toString()), "")));
+	replaces.append(QStrPP("%allo%", QStrP(details["allos"].join(" "), "")));
+	replaces.append(QStrPP("%all%", QStrP(details["alls"].join(" "), "")));
 
 	// Filename
 	QString filename = fn;
@@ -391,9 +394,18 @@ QString Image::path(QString fn, QString pth)
 		QString cond = filenames.keys().at(i);
 		if (cond.startsWith("%") && cond.endsWith("%"))
 		{
-			if (replaces.contains(cond))
+			int contains = -1;
+			for (int j = 0; j < replaces.size(); j++)
 			{
-				if (!replaces.value(cond).first.isEmpty())
+				if (replaces[j].first == cond)
+				{
+					contains = j;
+					break;
+				}
+			}
+			if (contains >= 0)
+			{
+				if (!replaces.at(contains).first.isEmpty())
 				{ filename = filenames.value(cond); }
 			}
 		}
@@ -423,21 +435,22 @@ QString Image::path(QString fn, QString pth)
 	QStringList l = details["alls"];
 	for (int i = 0; i < rem.size(); i++)
 	{ l.removeAll(rem.at(i)); }
-	replaces.insert("%all%", QPair<QString,QString>(l.join(settings.value("separator").toString()), ""));
+	replaces.append(QStrPP("%all%", QStrP(l.join(settings.value("separator").toString()), "")));
 
 	// We replace everithing
 	for (int i = 0; i < replaces.size(); i++)
 	{
-		QString res = replaces.values().at(i).first.isEmpty() ? replaces.values().at(i).second : replaces.values().at(i).first;
+		QStrPP val = replaces.at(i);
+		QString res = val.second.first.isEmpty() ? val.second.second : val.second.first;
 		res = res.replace("\\", "_").replace("%", "_").replace("/", "_").replace(":", "_").replace("|", "_").replace("*", "_").replace("?", "_").replace("\"", "_").replace("<", "_").replace(">", "_").replace("__", "_").replace("__", "_").replace("__", "_").trimmed();
 		if (!settings.value("replaceblanks", false).toBool())
 		{ res.replace("_", " "); }
 
 		// We only cut the name if it is not a folder
-		if (!filename.right(filename.length()-filename.indexOf(replaces.keys().at(i))).contains("/"))
-		{ filename.replace(replaces.keys().at(i), res.left(259-pth.length()-1-filename.length())); }
+		if (!filename.right(filename.length()-filename.indexOf(val.first)).contains("/"))
+		{ filename.replace(val.first, res.left(259-pth.length()-1-filename.length())); }
 		else
-		{ filename.replace(replaces.keys().at(i), res); }
+		{ filename.replace(val.first, res); }
 	}
 
 	// We remove empty dir names

@@ -23,7 +23,9 @@ searchTab::searchTab(int id, QMap<QString,QMap<QString,QString> > *sites, QMap<Q
 	m_postFiltering = new TextEdit(m_favorites->keys(), this);
 		m_search->setContextMenuPolicy(Qt::CustomContextMenu);
 		m_postFiltering->setContextMenuPolicy(Qt::CustomContextMenu);
-		QStringList completion;
+		if (settings.value("autocompletion", true).toBool())
+		{
+			QStringList completion;
 			QFile words("words.txt");
 			if (words.open(QIODevice::ReadOnly | QIODevice::Text))
 			{
@@ -46,6 +48,7 @@ searchTab::searchTab(int id, QMap<QString,QMap<QString,QString> > *sites, QMap<Q
 				m_search->setCompleter(completer);
 				m_postFiltering->setCompleter(completer);
 			}
+		}
 		connect(m_search, SIGNAL(returnPressed()), this, SLOT(load()));
 		connect(m_search, SIGNAL(favoritesChanged()), _mainwindow, SLOT(updateFavorites()));
 		connect(m_search, SIGNAL(favoritesChanged()), _mainwindow, SLOT(updateFavoritesDock()));
