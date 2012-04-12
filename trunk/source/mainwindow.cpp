@@ -188,7 +188,7 @@ void mainWindow::init()
 		QSettings profiles(path+"/profiles.ini", QSettings::IniFormat);
 		if (QFile::exists(path+"/"+profiles.value("Profile0/Path").toString()+"/extensions/danbooru_downloader@cuberocks.net.xpi"))
 		{
-			int reponse = QMessageBox::question(this, tr("Danbooru Downloader"), tr("L'extension pour Mozilla Firefox \"Danbooru Downloader\" a été détéctée sur votre système. Souhaitez-vous en importer les préférences ?"), QMessageBox::Yes | QMessageBox::No);
+			int reponse = QMessageBox::question(this, tr("Grabber"), tr("L'extension pour Mozilla Firefox \"Danbooru Downloader\" a été détéctée sur votre système. Souhaitez-vous en importer les préférences ?"), QMessageBox::Yes | QMessageBox::No);
 			if (reponse == QMessageBox::Yes)
 			{
 				QFile prefs(path+"/"+profiles.value("Profile0/Path").toString()+"/prefs.js");
@@ -280,7 +280,7 @@ void mainWindow::init()
 	if (crashed && !restore)
 	{
 		log(tr("Il semblerait que Imgbrd-Grabber n'ait pas été fermé correctement la dernière fois."));
-		int reponse = QMessageBox::question(this, tr("Danbooru Downloader"), tr("Il semblerait que l'application n'ait pas été arrêtée correctement lors de sa dernière utilisation. Voulez-vous restaurer votre dernière seesion ?"), QMessageBox::Yes | QMessageBox::No);
+		int reponse = QMessageBox::question(this, tr("Grabber"), tr("Il semblerait que l'application n'ait pas été arrêtée correctement lors de sa dernière utilisation. Voulez-vous restaurer votre dernière seesion ?"), QMessageBox::Yes | QMessageBox::No);
 		if (reponse == QMessageBox::Yes)
 		{ restore = true; }
 	}
@@ -341,8 +341,8 @@ int mainWindow::addTab(QString tag)
 	connect(w, SIGNAL(changed(searchTab*)), this, SLOT(updateTabs()));
 	connect(w, SIGNAL(closed(searchTab*)), this, SLOT(tabClosed(searchTab*)));
 	int index = ui->tabWidget->insertTab(ui->tabWidget->currentIndex()+(!m_tabs.isEmpty()), w, tr("Nouvel onglet"));
-	ui->tabWidget->setCurrentIndex(index);
 	m_tabs.append(w);
+	ui->tabWidget->setCurrentIndex(index);
 	QPushButton *closeTab = new QPushButton(QIcon(":/images/close.png"), "", this);
 		closeTab->setFlat(true);
 		closeTab->resize(QSize(8,8));
