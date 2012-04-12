@@ -166,17 +166,38 @@ void Image::parseTags(QNetworkReply* r)
 	}
 
 	// Tags
-	if (m_parent->site().contains("Regex/Tags"))
+	QRegExp rx = QRegExp();
+	if (m_parent->site().contains("Regex/ImageTags"))
+	{ rx = QRegExp(m_parent->site().value("Regex/ImageTags")); }
+	else if (m_parent->site().contains("Regex/Tags"))
+	{ rx = QRegExp(m_parent->site().value("Regex/Tags")); }
+	if (!rx.isEmpty())
 	{
-		QRegExp rx(m_parent->site().value("Regex/Tags"));
 		rx.setMinimal(true);
 		int pos = 0;
 		QList<Tag> tgs;
 		while ((pos = rx.indexIn(source, pos)) != -1)
 		{
 			pos += rx.matchedLength();
-			QString type = rx.cap(1), tag = rx.cap(2).replace(" ", "_").replace("&amp;", "&");
-			int count = rx.cap(3).toInt();
+			QString type = "unknown", tag = "";
+			int count = 1;
+			switch (rx.captureCount())
+			{
+				case 3:
+					type = rx.cap(1);
+					tag = rx.cap(2).replace(" ", "_").replace("&amp;", "&");
+					count = rx.cap(3).toInt();
+					break;
+
+				case 2:
+					type = rx.cap(1);
+					tag = rx.cap(2).replace(" ", "_").replace("&amp;", "&");
+					break;
+
+				case 1:
+					tag = rx.cap(1).replace(" ", "_").replace("&amp;", "&");
+					break;
+			}
 			tgs.append(Tag(tag, type, count));
 		}
 		if (!tgs.isEmpty())

@@ -436,8 +436,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>553</width>
-             <height>443</height>
+             <width>98</width>
+             <height>28</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_8">
@@ -889,6 +889,24 @@
         <bool>true</bool>
        </property>
       </widget>
+     </item>
+     <item row="3" column="0" colspan="2">
+      <layout class="QHBoxLayout" name="horizontalLayout_7">
+       <item>
+        <widget class="QPushButton" name="buttonInitSettings">
+         <property name="text">
+          <string>Réinitialiser</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="buttonSaveSettings">
+         <property name="text">
+          <string>Sauvegarder</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </widget>

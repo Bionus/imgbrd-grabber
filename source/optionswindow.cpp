@@ -69,9 +69,9 @@ optionsWindow::optionsWindow(mainWindow *parent) : QDialog(parent), m_parent(par
 	settings.beginGroup("Save");
 		ui->checkDownloadOriginals->setChecked(settings.value("downloadoriginals", true).toBool());
 		ui->checkReplaceBlanks->setChecked(settings.value("replaceblanks", false).toBool());
-		ui->lineFolder->setText(settings.value("path").toString());
+		ui->lineFolder->setText(settings.value("path_real").toString());
 		ui->lineFolderFavorites->setText(settings.value("path_favorites").toString());
-		ui->lineFilename->setText(settings.value("filename").toString());
+		ui->lineFilename->setText(settings.value("filename_real").toString());
 		ui->lineFavorites->setText(settings.value("filename_favorites").toString());
 		ui->lineSeparator->setText(settings.value("separator").toString());
 		ui->lineArtistsIfNone->setText(settings.value("artist_empty", "anonymous").toString());
@@ -470,6 +470,7 @@ void optionsWindow::save()
 		settings.setValue("replaceblanks", ui->checkReplaceBlanks->isChecked());
 		settings.setValue("separator", ui->lineSeparator->text());
 		settings.setValue("path", ui->lineFolder->text());
+		settings.setValue("path_real", ui->lineFolder->text());
 		QDir pth = QDir(ui->lineFolder->text());
 		if (!pth.exists())
 		{
@@ -500,6 +501,7 @@ void optionsWindow::save()
 			{ pth.mkpath(ui->lineFolderFavorites->text()); }
 		}
 		settings.setValue("filename", ui->lineFilename->text());
+		settings.setValue("filename_real", ui->lineFilename->text());
 		settings.setValue("filename_favorites", ui->lineFavorites->text());
 		settings.setValue("artist_empty", ui->lineArtistsIfNone->text());
 		settings.setValue("artist_useall", ui->checkArtistsKeepAll->isChecked());
@@ -588,5 +590,7 @@ void optionsWindow::save()
 		settings.setValue("language", ui->comboLanguages->currentText());
 		m_parent->loadLanguage(ui->comboLanguages->currentText());
 	}
-	qDebug() << "true";
+
+	settings.sync();
+	m_parent->on_buttonInitSettings_clicked();
 }
