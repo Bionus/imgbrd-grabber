@@ -951,6 +951,16 @@ Vous pouvez aussi utiliser les structures conditionnelles. Pour plus d'informati
            </property>
           </widget>
          </item>
+         <item row="1" column="0" colspan="2">
+          <widget class="QCheckBox" name="checkAutocompletion">
+           <property name="text">
+            <string>Activer l'autocomplétion</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
          <item row="2" column="0">
           <widget class="QLabel" name="label_39">
            <property name="text">
@@ -1102,10 +1112,10 @@ p, li { white-space: pre-wrap; }
            </property>
           </widget>
          </item>
-         <item row="1" column="0" colspan="2">
-          <widget class="QCheckBox" name="checkAutocompletion">
+         <item row="9" column="0" colspan="2">
+          <widget class="QCheckBox" name="checkShowWarnings">
            <property name="text">
-            <string>Activer l'autocomplétion</string>
+            <string>Afficher les autre avertissements</string>
            </property>
            <property name="checked">
             <bool>true</bool>

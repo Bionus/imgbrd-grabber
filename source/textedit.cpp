@@ -181,7 +181,7 @@ void TextEdit::keyPressEvent(QKeyEvent *e)
 	c->complete(cr);
 }
 
-void TextEdit::customContextMenuRequested(const QPoint &pos)
+void TextEdit::customContextMenuRequested(QPoint)
 {
 	QMenu *menu = new QMenu(this);
 		QMenu *favs = new QMenu(tr("Favoris"), menu);

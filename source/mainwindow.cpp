@@ -19,7 +19,7 @@
 
 
 
-#define VERSION	"3.1.0a3"
+#define VERSION	"3.1.1"
 #define DONE()	logUpdate(QObject::tr(" Fait"))
 
 extern QMap<QDateTime,QString> _log;
@@ -255,7 +255,7 @@ void mainWindow::init()
 		}
 		m_settings->setValue("firstload", false);
 	}
-	
+
 	// Loading last window state, size and position from the settings file
 	restoreGeometry(m_settings->value("geometry").toByteArray());
 	restoreState(m_settings->value("state").toByteArray());
@@ -325,8 +325,6 @@ void mainWindow::init()
 
 	m_loaded = true;
 	logShow();
-
-	qDebug() << m_settings->value("Save/path").toString() << m_settings->value("Save/filename").toString() << m_settings->value("Save/path_real").toString() << m_settings->value("Save/filename_real").toString();
 }
 
 mainWindow::~mainWindow()
@@ -1071,7 +1069,6 @@ void mainWindow::closeEvent(QCloseEvent *e)
 		m_settings->sync();
 	DONE();
 	e->accept();
-	qApp->quit();
 }
 
 
@@ -1165,6 +1162,7 @@ void mainWindow::getAll(bool all)
 
 	for (int i = 0; i < m_batchs.size(); i++)
 	{ m_getAllRemaining.append(new Image(m_batchs.at(i), m_timezonedecay, new Page(&m_sites, m_batchs.at(i).value("site"), m_batchs.at(i).value("tags").split(" "), 1, 1, QStringList(), this))); }
+	m_getAllLimit = m_batchs.size();
 
 	for (int i = 0; i < m_progressBars.size(); i++)
 	{
@@ -1207,6 +1205,7 @@ void mainWindow::getAll(bool all)
 					.replace(" -rating:e ", " -rating:explicit ", Qt::CaseInsensitive);
 				QStringList tags = text.split(" ", QString::SkipEmptyParts);
 				tags.removeDuplicates();
+				m_getAllLimit += m_groupBatchs.at(i).at(3).toDouble();
 				for (int r = 0; r < ceil(m_groupBatchs.at(i).at(3).toDouble()/pp); r++)
 				{
 					if (!m_sites.keys().contains(site))
@@ -1245,7 +1244,7 @@ void mainWindow::getAllFinishedLoading(Page* p)
 	}
 
 	QList<Image*> imgs = QList<Image*>(), ims = p->images();
-	QStringList blacklistedtags(m_settings->value("blacklistedtags").toString().split(' '));
+	QStringList blacklistedtags(m_settings->value("blacklistedtags").toString().split(' ', QString::SkipEmptyParts));
 	for (int i = 0; i < ims.size(); i++)
 	{
 		if (ims[i]->blacklisted(blacklistedtags).isEmpty())
@@ -1273,6 +1272,10 @@ void mainWindow::getAllFinishedLoading(Page* p)
 }
 void mainWindow::getAllImages()
 {
+	// Si la limite d'images n'est pas un multiple du nombre d'images par page, on retire celles en trop
+	while (m_getAllRemaining.count() > m_getAllLimit)
+	{ m_getAllRemaining.removeLast(); }
+
 	log(tr("Toutes les urls des images ont été reçues."));
 
 	int count = 0;
@@ -1322,13 +1325,13 @@ void mainWindow::_getAll()
 	if (m_progressdialog->cancelled())
 	{ return; }
 
-	if (m_getAllRemaining.count() > 0)
+	if (m_getAllRemaining.size() > 0)
 	{
 		m_getAllDownloading.prepend(m_getAllRemaining.takeFirst());
 
 		if (m_must_get_tags)
 		{
-			m_getAllDownloading.at(0)->loadTags();
+			m_getAllDownloading.at(0)->loadDetails();
 			connect(m_getAllDownloading.at(0), SIGNAL(finishedLoadingTags(Image*)), this, SLOT(getAllPerformTags(Image*)));
 		}
 		else
@@ -1389,8 +1392,8 @@ void mainWindow::_getAll()
 					m_progressdialog->loadingImage(img->url());
 					m_downloadTime.insert(img->url(), new QTime);
 					m_downloadTime[img->url()]->start();
-					connect(img, SIGNAL(finishedImage(Image*)), this, SLOT(getAllPerformImage(Image*)));
-					connect(img, SIGNAL(downloadProgressImage(Image*,qint64,qint64)), this, SLOT(getAllProgress(Image*,qint64,qint64)));
+					connect(img, SIGNAL(finishedImage(Image*)), this, SLOT(getAllPerformImage(Image*)), Qt::UniqueConnection);
+					connect(img, SIGNAL(downloadProgressImage(Image*,qint64,qint64)), this, SLOT(getAllProgress(Image*,qint64,qint64)), Qt::UniqueConnection);
 					m_getAllDownloadingSpeeds.insert(img->url(), 0);
 					img->loadImage();
 				}
@@ -1450,19 +1453,21 @@ void mainWindow::_getAll()
 		int reponse = QMessageBox::No;
 		if (m_getAllErrors > 0)
 		{
-			reponse = QMessageBox::question(this, tr("Récupération des images"), tr("Des erreurs sont survenues pendant le téléchargement des images. Voulez vous relancer le téléchargement de celles-ci ? (%1/%2)").arg(m_getAllErrors).arg(m_progressdialog->maximum()), QMessageBox::Yes | QMessageBox::No);
+			reponse = QMessageBox::question(this, tr("Récupération des images"), tr("Des erreurs sont survenues pendant le téléchargement des images. Voulez vous relancer le téléchargement de celles-ci ? (%1/%2)").arg(m_getAllErrors).arg(m_progressdialog->count()), QMessageBox::Yes | QMessageBox::No);
 			if (reponse == QMessageBox::Yes)
 			{
 				m_progressdialog->clear();
 				qDeleteAll(m_getAllRemaining);
 				m_getAllRemaining.clear();
 				m_getAllRemaining = m_getAllFailed;
+				m_getAllFailed.clear();
 				m_getAllDownloaded = 0;
 				m_getAllExists = 0;
 				m_getAllIgnored = 0;
 				m_getAll404s = 0;
 				m_getAllErrors = 0;
 				m_getAllCount = 0;
+				m_progressdialog->show();
 				getAllImages();
 			}
 		}
@@ -1581,8 +1586,8 @@ void mainWindow::getAllPerformTags(Image* img)
 			m_progressdialog->loadingImage(img->url());
 			m_downloadTime.insert(img->url(), new QTime);
 			m_downloadTime[img->url()]->start();
-			connect(img, SIGNAL(finishedImage(Image*)), this, SLOT(getAllPerformImage(Image*)));
-			connect(img, SIGNAL(downloadProgressImage(Image*,qint64,qint64)), this, SLOT(getAllProgress(Image*,qint64,qint64)));
+			connect(img, SIGNAL(finishedImage(Image*)), this, SLOT(getAllPerformImage(Image*)), Qt::UniqueConnection);
+			connect(img, SIGNAL(downloadProgressImage(Image*,qint64,qint64)), this, SLOT(getAllProgress(Image*,qint64,qint64)), Qt::UniqueConnection);
 			m_getAllDownloadingSpeeds.insert(img->url(), 0);
 			img->loadImage();
 		}
@@ -1651,81 +1656,79 @@ void mainWindow::getAllPerformImage(Image* img)
 		if (p.right(1) == QDir::toNativeSeparators("/"))	{ p = p.left(p.length()-1);				}
 		QString fp = QDir::toNativeSeparators(p+"/"+path);
 
-		QDir path_to_file(fp.section(QDir::toNativeSeparators("/"), 0, -2));
-		if (!path_to_file.exists())
+		QDir path_to_file(fp.section(QDir::toNativeSeparators("/"), 0, -2)), dir(p);
+		if (!path_to_file.exists() && !dir.mkpath(path.section(QDir::toNativeSeparators("/"), 0, -2)))
 		{
-			QDir dir(p);
-			if (!dir.mkpath(path.section(QDir::toNativeSeparators("/"), 0, -2)))
-			{
-				log(tr("Impossible de créer le dossier de destination: %1.").arg(p+"/"+path.section('/', 0, -2)), Error);
-				m_getAllErrors++;
-			}
-		}
-
-		QByteArray data = reply->readAll();
-		if (!data.isEmpty())
-		{
-			QFile f(fp);
-			if (f.open(QIODevice::WriteOnly))
-			{ f.write(data); }
-			else
-			{
-				log(tr("Impossible d'ouvrir le fichier de destination: %1.").arg(fp), Error);
-				m_getAllErrors++;
-			}
-			f.close();
+			log(tr("Impossible de créer le dossier de destination: %1.").arg(p+"/"+path.section('/', 0, -2)), Error);
+			m_getAllErrors++;
 		}
 		else
 		{
-			log(tr("Rien n'a été reçu pour l'image: <a href=\"%1\">%1</a>.").arg(Qt::escape(img->url())), Error);
-			m_getAllErrors++;
-		}
-
-		QMap<QString,int> types;
-		types["general"] = 0;
-		types["artist"] = 1;
-		types["general"] = 2;
-		types["copyright"] = 3;
-		types["character"] = 4;
-		types["model"] = 5;
-		types["photo_set"] = 6;
-		for (int i = 0; i < img->tags().count(); i++)
-		{
-			Tag tag = img->tags().at(i);
-			QString original = tag.text().replace(" ", "_");
-			if (!m_settings->value("Exec/tag").toString().isEmpty())
+			QByteArray data = reply->readAll();
+			if (!data.isEmpty())
 			{
-				QString exec = m_settings->value("Exec/tag").toString()
-				.replace("%tag%", original)
-				.replace("%type%", tag.type())
-				.replace("%number%", QString::number(types[tag.type()]));
+				QFile f(fp);
+				if (f.open(QIODevice::WriteOnly))
+				{ f.write(data); }
+				else
+				{
+					log(tr("Impossible d'ouvrir le fichier de destination: %1.").arg(fp), Error);
+					m_getAllErrors++;
+				}
+				f.close();
+			}
+			else
+			{
+				log(tr("Rien n'a été reçu pour l'image: <a href=\"%1\">%1</a>.").arg(Qt::escape(img->url())), Error);
+				m_getAllErrors++;
+			}
+
+			QMap<QString,int> types;
+			types["general"] = 0;
+			types["artist"] = 1;
+			types["general"] = 2;
+			types["copyright"] = 3;
+			types["character"] = 4;
+			types["model"] = 5;
+			types["photo_set"] = 6;
+			for (int i = 0; i < img->tags().count(); i++)
+			{
+				Tag tag = img->tags().at(i);
+				QString original = tag.text().replace(" ", "_");
+				if (!m_settings->value("Exec/tag").toString().isEmpty())
+				{
+					QString exec = m_settings->value("Exec/tag").toString()
+					.replace("%tag%", original)
+					.replace("%type%", tag.type())
+					.replace("%number%", QString::number(types[tag.type()]));
+					log(tr("Execution seule de \"%1\"").arg(exec));
+					QProcess::execute(exec);
+				}
+				if (!m_settings->value("Exec/Group/tag").toString().isEmpty())
+				{
+					QString exec = m_settings->value("Exec/Group/tag").toString()
+					.replace("%tag%", original)
+					.replace("%type%", tag.type())
+					.replace("%number%", QString::number(types[tag.type()]));
+					log(tr("Execution groupée de \"%1\"").arg(exec));
+					m_process->write(exec.toUtf8());
+				}
+			}
+			if (!m_settings->value("Exec/image").toString().isEmpty())
+			{
+				QString exec = img->path(m_settings->value("Exec/image").toString());
+				exec.replace("%path%", fp);
+				exec.replace(" \\C ", " /C ");
 				log(tr("Execution seule de \"%1\"").arg(exec));
 				QProcess::execute(exec);
 			}
-			if (!m_settings->value("Exec/Group/tag").toString().isEmpty())
+			if (!m_settings->value("Exec/Group/image").toString().isEmpty())
 			{
-				QString exec = m_settings->value("Exec/Group/tag").toString()
-				.replace("%tag%", original)
-				.replace("%type%", tag.type())
-				.replace("%number%", QString::number(types[tag.type()]));
+				QString exec = img->path(m_settings->value("Exec/Group/image").toString());
+				exec.replace("%path%", fp);
 				log(tr("Execution groupée de \"%1\"").arg(exec));
 				m_process->write(exec.toUtf8());
 			}
-		}
-		if (!m_settings->value("Exec/image").toString().isEmpty())
-		{
-			QString exec = img->path(m_settings->value("Exec/image").toString());
-			exec.replace("%path%", fp);
-			exec.replace(" \\C ", " /C ");
-			log(tr("Execution seule de \"%1\"").arg(exec));
-			QProcess::execute(exec);
-		}
-		if (!m_settings->value("Exec/Group/image").toString().isEmpty())
-		{
-			QString exec = img->path(m_settings->value("Exec/Group/image").toString());
-			exec.replace("%path%", fp);
-			log(tr("Execution groupée de \"%1\"").arg(exec));
-			m_process->write(exec.toUtf8());
 		}
 	}
 	else if (reply->error() == QNetworkReply::ContentNotFoundError)
@@ -1759,6 +1762,7 @@ void mainWindow::getAllPerformImage(Image* img)
 
 	_getAll();
 }
+
 void mainWindow::getAllCancel()
 {
 	log(tr("Annulation des téléchargements..."));

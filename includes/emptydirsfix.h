@@ -4,12 +4,12 @@
 #include <QDialog>
 
 namespace Ui {
-    class EmptyDirsFix;
+	class EmptyDirsFix;
 }
 
 class EmptyDirsFix : public QDialog
 {
-    Q_OBJECT
+	Q_OBJECT
 
 	public:
 		explicit EmptyDirsFix(QWidget *parent = 0);

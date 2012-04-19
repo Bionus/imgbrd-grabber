@@ -72,7 +72,7 @@ sourcesWindow::sourcesWindow(QList<bool> selected, QStringMapMap *sites, QWidget
 }
 sourcesWindow::~sourcesWindow()
 {
-    delete ui;
+	delete ui;
 }
 
 /**

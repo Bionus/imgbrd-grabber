@@ -7,14 +7,14 @@
 
 namespace Ui
 {
-    class batchWindow;
+	class batchWindow;
 }
 
 
 
 class batchWindow : public QDialog
 {
-    Q_OBJECT
+	Q_OBJECT
 
 	public:
 		explicit batchWindow(QWidget *parent = 0);
@@ -22,6 +22,7 @@ class batchWindow : public QDialog
 		int value();
 		int maximum();
 		int images();
+		int count();
 		int endAction();
 		bool endRemove();
 		bool cancelled();

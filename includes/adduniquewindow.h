@@ -25,6 +25,7 @@ class AddUniqueWindow : public QDialog
 		void add();
 		void ok(bool close = true);
 		void replyFinished(Page *p);
+		void addImage(Image *img);
 		void on_buttonFolder_clicked();
 		void on_lineFilename_textChanged(QString);
 

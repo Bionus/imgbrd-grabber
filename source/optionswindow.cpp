@@ -30,6 +30,7 @@ optionsWindow::optionsWindow(mainWindow *parent) : QDialog(parent), m_parent(par
 	ui->checkAutodownload->setChecked(settings.value("autodownload", false).toBool());
 	ui->checkHideBlacklisted->setChecked(settings.value("hideblacklisted", false).toBool());
 	ui->checkShowTagWarning->setChecked(settings.value("showtagwarning", true).toBool());
+	ui->checkShowWarnings->setChecked(settings.value("showwarnings", true).toBool());
 
 	ui->spinImagesPerPage->setValue(settings.value("limit", 20).toInt());
 	ui->spinColumns->setValue(settings.value("columns", 1).toInt());
@@ -444,6 +445,7 @@ void optionsWindow::save()
 	settings.setValue("tagsposition", positions.at(ui->comboTagsposition->currentIndex()));
 	settings.setValue("hideblacklisted", ui->checkHideBlacklisted->isChecked());
 	settings.setValue("showtagwarning", ui->checkShowTagWarning->isChecked());
+	settings.setValue("showwarnings", ui->checkShowWarnings->isChecked());
 
 	settings.beginGroup("Filenames");
 		settings.remove("");

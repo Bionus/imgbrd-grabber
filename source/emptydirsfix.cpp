@@ -5,14 +5,14 @@
 
 EmptyDirsFix::EmptyDirsFix(QWidget *parent) : QDialog(parent), ui(new Ui::EmptyDirsFix)
 {
-    ui->setupUi(this);
+	ui->setupUi(this);
 
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
 	ui->lineFolder->setText(settings.value("Save/path").toString());
 }
 EmptyDirsFix::~EmptyDirsFix()
 {
-    delete ui;
+	delete ui;
 }
 
 void EmptyDirsFix::next()

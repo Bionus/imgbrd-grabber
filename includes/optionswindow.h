@@ -6,14 +6,14 @@
 
 namespace Ui
 {
-    class optionsWindow;
+	class optionsWindow;
 }
 
 
 
 class optionsWindow : public QDialog
 {
-    Q_OBJECT
+	Q_OBJECT
 
 	public:
 		explicit optionsWindow(mainWindow *parent = 0);

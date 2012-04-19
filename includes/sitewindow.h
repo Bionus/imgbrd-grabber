@@ -9,12 +9,12 @@
 
 namespace Ui
 {
-    class siteWindow;
+	class siteWindow;
 }
 
 class siteWindow : public QDialog
 {
-    Q_OBJECT
+	Q_OBJECT
 
 	public:
 		explicit siteWindow(QStringMapMap *sites, QWidget *parent = 0);

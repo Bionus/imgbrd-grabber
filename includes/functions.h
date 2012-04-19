@@ -44,6 +44,9 @@ QStringList	loadIgnored();
 void		log(QString, Log type = Info);
 void		logUpdate(QString);
 
+QString					mapToString(QMap<QString,QString> map, QString gen = "{gen}", QString mid = "{mid}");
+QMap<QString,QString>	stringToMap(QString map, QString gen = "{gen}", QString mid = "{mid}");
+
 QMap<QString,QStringList>	getCustoms();
 QMap<QString,QString>		getFilenames();
 

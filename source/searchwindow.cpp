@@ -78,7 +78,7 @@ SearchWindow::SearchWindow(QString tags, QDate server, QWidget *parent) : QDialo
 }
 SearchWindow::~SearchWindow()
 {
-    delete ui;
+	delete ui;
 }
 
 void SearchWindow::setDate(QDate d)
