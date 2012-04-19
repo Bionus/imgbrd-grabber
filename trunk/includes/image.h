@@ -59,13 +59,13 @@ class Image : public QObject
 
 	public slots:
 		void loadPreview();
-		void loadTags();
+		void loadDetails();
 		void loadImage();
 		void abortPreview();
 		void abortTags();
 		void abortImage();
 		void parsePreview(QNetworkReply*);
-		void parseTags(QNetworkReply*);
+		void parseDetails(QNetworkReply*);
 
 	private slots:
 		void finishedImageS();
@@ -80,17 +80,18 @@ class Image : public QObject
 	private:
 		Page			*m_parent;
 		int				m_id, m_score, m_parentId, m_fileSize, m_authorId, m_previewTry;
-		bool			m_hasChildren, m_hasNote, m_hasComments, m_loadPreviewExists, m_loadTagsExists, m_hasScore, m_loadImageExists;
+		bool			m_hasChildren, m_hasNote, m_hasComments, m_loadPreviewExists, m_loadDetailsExists, m_hasScore, m_loadImageExists;
 		QString			m_url, m_md5, m_author, m_status, m_rating, m_source, m_site, m_filename, m_folder;
 		QUrl			m_pageUrl, m_fileUrl, m_sampleUrl, m_previewUrl;
 		QSize			m_size;
 		QPixmap			m_imagePreview;
 		QDateTime		m_createdAt;
 		QByteArray		m_data;
-		QNetworkReply	*m_loadPreview, *m_loadTags, *m_loadImage;
+		QNetworkReply	*m_loadPreview, *m_loadDetails, *m_loadImage;
 		QList<Tag>		m_tags;
 		QList<Pool*>	m_pools;
 		QTime			m_timer;
+		QMap<QString,QString>	m_parentSite;
 };
 
 #endif // IMAGE_H

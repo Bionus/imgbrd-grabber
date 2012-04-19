@@ -8,12 +8,12 @@
 
 namespace Ui
 {
-    class aboutWindow;
+	class aboutWindow;
 }
 
 class aboutWindow : public QDialog
 {
-    Q_OBJECT
+	Q_OBJECT
 
 	public:
 		explicit aboutWindow(QString v, QWidget *parent = 0);

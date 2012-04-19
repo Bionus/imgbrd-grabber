@@ -20,7 +20,7 @@ namespace Ui
 
 class zoomWindow : public QDialog
 {
-    Q_OBJECT
+	Q_OBJECT
 
 	public:
 		zoomWindow(Image *, QStringMap, QMap<QString,QMap<QString,QString> > *sites, QWidget *parent = 0);

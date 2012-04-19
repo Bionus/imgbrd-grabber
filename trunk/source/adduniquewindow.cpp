@@ -43,9 +43,33 @@ void AddUniqueWindow::add()
 void AddUniqueWindow::ok(bool close)
 {
 	m_close = close;
-	m_page = new Page(&m_sites, ui->comboSites->currentText(), QStringList() << (ui->lineId->text().isEmpty() ? "md5:"+ui->lineMd5->text() : "id:"+ui->lineId->text()) << "status:any", 1, 1);
-	connect(m_page, SIGNAL(finishedLoading(Page*)), this, SLOT(replyFinished(Page*)));
-	m_page->load();
+	bool useDirectLink = true;
+	if (
+		(m_sites[ui->comboSites->currentText()].value("Urls/Html/Post").contains("{id}") && ui->lineId->text().isEmpty()) ||
+		(m_sites[ui->comboSites->currentText()].value("Urls/Html/Post").contains("{md5}") && ui->lineMd5->text().isEmpty())
+	)
+	{ useDirectLink = false; }
+	if (useDirectLink)
+	{
+		QString url = m_sites[ui->comboSites->currentText()].value("Urls/Html/Post");
+		url.replace("{id}", ui->lineId->text());
+		url.replace("{md5}", ui->lineMd5->text());
+		QMap<QString,QString> details = QMap<QString,QString>();
+		details.insert("page_url", url);
+		details.insert("id", ui->lineId->text());
+		details.insert("md5", ui->lineMd5->text());
+		details.insert("website", ui->comboSites->currentText());
+		details.insert("site", mapToString(m_sites[ui->comboSites->currentText()]));
+		Image *img = new Image(details);
+		img->loadDetails();
+		connect(img, SIGNAL(finishedLoadingTags(Image*)), this, SLOT(addImage(Image*)));
+	}
+	else
+	{
+		m_page = new Page(&m_sites, ui->comboSites->currentText(), QStringList() << (ui->lineId->text().isEmpty() ? "md5:"+ui->lineMd5->text() : "id:"+ui->lineId->text()) << "status:any", 1, 1);
+		connect(m_page, SIGNAL(finishedLoading(Page*)), this, SLOT(replyFinished(Page*)));
+		m_page->load();
+	}
 }
 
 /**
@@ -61,6 +85,11 @@ void AddUniqueWindow::replyFinished(Page *p)
 	}
 
 	Image *img = p->images().first();
+	addImage(img);
+}
+
+void AddUniqueWindow::addImage(Image *img)
+{
 	QStringList tags;
 	foreach (Tag tag, img->tags())
 	{ tags.append(tag.text()); }

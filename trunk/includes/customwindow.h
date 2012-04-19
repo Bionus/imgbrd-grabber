@@ -13,7 +13,7 @@ namespace Ui
 
 class customWindow : public QDialog
 {
-    Q_OBJECT
+	Q_OBJECT
 
 	public:
 		explicit customWindow(QWidget *parent = 0);

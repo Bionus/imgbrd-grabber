@@ -11,14 +11,14 @@
 
 namespace Ui
 {
-    class searchTab;
+	class searchTab;
 	class mainWindow;
 }
 
 class mainWindow;
 class searchTab : public QWidget
 {
-    Q_OBJECT
+	Q_OBJECT
 
 	public:
 		explicit searchTab(int id, QMap<QString, QMap<QString, QString> > *sites, QMap<QString, QString> *favorites, QDateTime *serverDate, mainWindow *parent);

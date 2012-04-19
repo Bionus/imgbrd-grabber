@@ -5,7 +5,8 @@
 
 Image::Image(QMap<QString, QString> details, int timezonedecay, Page* parent)
 {
-	m_site = parent->website();
+	m_site = parent != NULL ? parent->website() : (details.contains("website") ? details["website"] : "");
+	m_parentSite = parent != NULL ? parent->site() :  (details.contains("site") ? stringToMap(details["site"]) : QMap<QString,QString>());
 	m_url = details.contains("file_url") ? (details["file_url"].startsWith("/") ? "http://"+m_site+details["file_url"] : details["file_url"]) : "";
 	m_md5 = details.contains("md5") ? details["md5"] : "";
 	m_author = details.contains("author") ? details["author"] : "";
@@ -57,7 +58,7 @@ Image::Image(QMap<QString, QString> details, int timezonedecay, Page* parent)
 
 	m_previewTry = 0;
 	m_loadPreviewExists = false;
-	m_loadTagsExists = false;
+	m_loadDetailsExists = false;
 	m_loadImageExists = false;
 	m_pools = QList<Pool*>();
 }
@@ -72,7 +73,6 @@ void Image::loadPreview()
 		manager->setCache(diskCache);*/
 
 	connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(parsePreview(QNetworkReply*)));
-	connect(manager, SIGNAL(finished(QNetworkReply*)), manager, SLOT(deleteLater()));
 	QNetworkRequest r(m_previewUrl);
 		//r.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::PreferCache);
 		r.setRawHeader("Referer", m_previewUrl.toString().toAscii());
@@ -115,46 +115,46 @@ void Image::parsePreview(QNetworkReply* r)
 	{ emit finishedLoadingPreview(this); }
 }
 
-void Image::loadTags()
+void Image::loadDetails()
 {
 	QNetworkAccessManager *manager = new QNetworkAccessManager(this);
 		/*QNetworkDiskCache *diskCache = new QNetworkDiskCache(this);
 		diskCache->setCacheDirectory(QDesktopServices::storageLocation(QDesktopServices::CacheLocation));
 		manager->setCache(diskCache);*/
 
-	connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(parseTags(QNetworkReply*)));
+	connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(parseDetails(QNetworkReply*)));
 	QNetworkRequest r(m_pageUrl);
 		//r.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::PreferCache);
 		r.setRawHeader("Referer", m_pageUrl.toString().toAscii());
 
-	m_loadTags = manager->get(r);
-	m_loadTagsExists = true;
+	m_loadDetails = manager->get(r);
+	m_loadDetailsExists = true;
 }
 void Image::abortTags()
 {
-	if (m_loadTagsExists)
+	if (m_loadDetailsExists)
 	{
-		if (m_loadTags->isRunning())
-		{ m_loadTags->abort(); }
+		if (m_loadDetails->isRunning())
+		{ m_loadDetails->abort(); }
 	}
 }
-void Image::parseTags(QNetworkReply* r)
+void Image::parseDetails(QNetworkReply* r)
 {
 	// Check redirection
 	QUrl redir = r->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 	if (!redir.isEmpty())
 	{
 		m_pageUrl = redir;
-		loadTags();
+		loadDetails();
 		return;
 	}
 	QString source = QString::fromUtf8(r->readAll());
 
 	// Pools
-	if (m_parent->site().contains("Regex/Pools"))
+	if (m_parentSite.contains("Regex/Pools"))
 	{
 		m_pools.clear();
-		QRegExp rx(m_parent->site().value("Regex/Pools"));
+		QRegExp rx(m_parentSite.value("Regex/Pools"));
 		rx.setMinimal(true);
 		int pos = 0;
 		while ((pos = rx.indexIn(source, pos)) != -1)
@@ -167,10 +167,10 @@ void Image::parseTags(QNetworkReply* r)
 
 	// Tags
 	QRegExp rx = QRegExp();
-	if (m_parent->site().contains("Regex/ImageTags"))
-	{ rx = QRegExp(m_parent->site().value("Regex/ImageTags")); }
-	else if (m_parent->site().contains("Regex/Tags"))
-	{ rx = QRegExp(m_parent->site().value("Regex/Tags")); }
+	if (m_parentSite.contains("Regex/ImageTags"))
+	{ rx = QRegExp(m_parentSite.value("Regex/ImageTags")); }
+	else if (m_parentSite.contains("Regex/Tags"))
+	{ rx = QRegExp(m_parentSite.value("Regex/Tags")); }
 	if (!rx.isEmpty())
 	{
 		rx.setMinimal(true);
@@ -183,6 +183,12 @@ void Image::parseTags(QNetworkReply* r)
 			int count = 1;
 			switch (rx.captureCount())
 			{
+				case 4:
+					type = rx.cap(1);
+					tag = rx.cap(4).replace(" ", "_").replace("&amp;", "&");
+					count = rx.cap(3).toInt();
+					break;
+
 				case 3:
 					type = rx.cap(1);
 					tag = rx.cap(2).replace(" ", "_").replace("&amp;", "&");
@@ -202,6 +208,20 @@ void Image::parseTags(QNetworkReply* r)
 		}
 		if (!tgs.isEmpty())
 		{ m_tags = tgs; }
+	}
+
+	// Image url
+	if (m_url.isEmpty() && m_parentSite.contains("Regex/ImageUrl"))
+	{
+		QRegExp rx = QRegExp(m_parentSite.value("Regex/ImageUrl"));
+		rx.setMinimal(true);
+		int pos = 0;
+		while ((pos = rx.indexIn(source, pos)) != -1)
+		{
+			pos += rx.matchedLength();
+			m_url = rx.cap(1);
+			m_fileUrl = rx.cap(1);
+		}
 	}
 
 	emit finishedLoadingTags(this);
@@ -380,7 +400,7 @@ QString Image::path(QString fn, QString pth)
 	}
 	else
 	{ copyrights = details["copyrights"]; }
-	QStringList search = m_parent->search();
+	QStringList search = m_parent != NULL ? m_parent->search() : QStringList();
 
 	QString ext = m_url.section('.', -1);
 	if (ext.length() > 5)

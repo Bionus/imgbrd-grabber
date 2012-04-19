@@ -2,7 +2,7 @@
  * @file json.h
  * 
  * @author Eeli Reilin <eeli@nilier.org>,
- *         Mikko Ahonen <mikko.j.ahonen@jyu.fi>
+ *		 Mikko Ahonen <mikko.j.ahonen@jyu.fi>
  * @version 0.1
  * @date 8/25/2010
  */

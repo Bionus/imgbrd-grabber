@@ -12,7 +12,7 @@ int version2int(QString version)
 
 aboutWindow::aboutWindow(QString version, QWidget *parent) : QDialog(parent), ui(new Ui::aboutWindow)
 {
-    ui->setupUi(this);
+	ui->setupUi(this);
 
 	ui->labelCurrent->setText(version);
 	m_version = version2int(version);
@@ -26,7 +26,7 @@ aboutWindow::aboutWindow(QString version, QWidget *parent) : QDialog(parent), ui
 
 aboutWindow::~aboutWindow()
 {
-    delete ui;
+	delete ui;
 }
 
 void aboutWindow::finished(QNetworkReply *r)

@@ -30,6 +30,7 @@ class Page : public QObject
 		QString					wiki();
 		QList<Tag>				tags();
 		QStringList				search();
+		QStringList				errors();
 
 	public slots:
 		void parse(QNetworkReply*);
@@ -44,7 +45,7 @@ class Page : public QObject
 	private:
 		QMap<QString,QString>	m_site;
 		QString					m_format, m_website, m_source, m_wiki;
-		QStringList				m_postFiltering, m_search;
+		QStringList				m_postFiltering, m_search, m_errors;
 		QUrl					m_url, m_urlRegex;
 		QList<Image*>			m_images;
 		int						m_imagesCount, m_imagesPerPage, m_currentUrl, m_page, m_blim, m_currentSource;

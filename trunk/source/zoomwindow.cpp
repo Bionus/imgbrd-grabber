@@ -103,7 +103,7 @@ void zoomWindow::go()
 	}
 
 	connect(m_image, SIGNAL(finishedLoadingTags(Image*)), this, SLOT(replyFinished(Image*)));
-	m_image->loadTags();
+	m_image->loadDetails();
 	activateWindow();
 }
 
@@ -331,7 +331,6 @@ void zoomWindow::downloadProgress(qint64 size, qint64 total)
 		m_thread = true;
 		ImageThread *th = new ImageThread(m_data, this);
 		connect(th, SIGNAL(finished(QPixmap, int)), this, SLOT(display(QPixmap, int)));
-		connect(th, SIGNAL(finished(QPixmap, int)), th, SLOT(deleteLater()));
 		th->start();
 		/*QPixmap image;
 		image.loadFromData(m_data);

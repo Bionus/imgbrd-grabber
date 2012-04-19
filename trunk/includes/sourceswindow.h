@@ -9,12 +9,12 @@
 
 namespace Ui
 {
-    class sourcesWindow;
+	class sourcesWindow;
 }
 
 class sourcesWindow : public QDialog
 {
-    Q_OBJECT
+	Q_OBJECT
 
 	public:
 		explicit sourcesWindow(QList<bool> selected, QStringMapMap *sites, QWidget *parent = 0);

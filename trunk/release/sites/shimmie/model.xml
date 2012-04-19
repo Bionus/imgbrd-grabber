@@ -12,10 +12,11 @@
 		</Rss>
 	</Urls>
 	<Regex>
-		<Tags>&lt;li class=&quot;tag-type-(.+)&quot;&gt;.*&lt;a href=&quot;.+&quot;&gt;.*&lt;/a&gt;.*&lt;a href=&quot;.+&quot;&gt;(.+)&lt;/a&gt;.*&lt;/li&gt;</Tags>
-		<Image>&lt;a(?: class='thumb')? href='/post/view/([^']+)'[^&gt;]*&gt;[^&lt;]*(&lt;img(?: id='(?:[^']*)')? title='(.+) // (.+)x(.+) // [^']*' alt='[^']*'(?: height='[^']*')? width='[^']*'(?: height='[^']*')? src='.*(/_thumbs/([^/]*)/thumb.jpg)' ?/?&gt;)[^&lt;]*&lt;/a&gt;</Image>
+		<Tags>&lt;li class=&quot;tag-type-(.+)&quot;&gt;.*&lt;a href=&quot;.+&quot;&gt;.*&lt;/a&gt;.*&lt;a href=&quot;.+&quot;&gt;(.+)&lt;/a&gt;.*&lt;/li&gt;|&lt;a class=['&quot;]tag_name['&quot;] href=['&quot;]([^'&quot;]+)['&quot;]&gt;([^&lt;]+)&lt;/a&gt;</Tags>
+		<Image>&lt;a(?: class='thumb')? href='/post/view/([^']+)'[^&gt;]*&gt;[^&lt;]*(&lt;img(?: id='(?:[^']*)')? title='(.+) // (.+)x(.+) // [^']*' alt='[^']*'(?: height='[^']*')? width='[^']*'(?: height='[^']*')? src='.*(/_thumbs/([^/]*)/thumb.jpg|questionable.jpg)' ?/?&gt;)[^&lt;]*&lt;/a&gt;</Image>
 		<Order>id|image|tags|width|height|preview_url|md5</Order>
 		<LastPage>&lt;a href='/post/list/(\d*)'&gt;Last&lt;/a&gt;</LastPage>
+		<ImageUrl>&lt;img alt='main image' id='main_image' src='([^']+)'[^&gt;]*&gt;</ImageUrl>
 	</Regex>
 	<FirstPage>1</FirstPage>
 </Site>

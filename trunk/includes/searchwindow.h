@@ -6,12 +6,12 @@
 
 namespace Ui
 {
-    class SearchWindow;
+	class SearchWindow;
 }
 
 class SearchWindow : public QDialog
 {
-    Q_OBJECT
+	Q_OBJECT
 
 	public:
 		explicit SearchWindow(QString tags, QDate server, QWidget *parent = 0);

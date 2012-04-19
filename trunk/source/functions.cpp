@@ -377,3 +377,16 @@ void clearLayout(QLayout *layout)
 		delete item;
 	}
 }
+
+QString mapToString(QMap<QString,QString> map, QString gen, QString mid)
+{ return QStringList(map.keys()).join(gen)+mid+QStringList(map.values()).join(gen); }
+
+QMap<QString,QString> stringToMap(QString map, QString gen, QString mid)
+{
+	QStringList keysValues = map.split(mid);
+	QStringList keys = keysValues.at(0).split(gen), values = keysValues.at(1).split(gen);
+	QMap<QString,QString> res = QMap<QString,QString>();
+	for (int i = 0; i < qMax(keys.size(), values.size()); i++)
+	{ res.insert(keys[i], values[i]); }
+	return res;
+}

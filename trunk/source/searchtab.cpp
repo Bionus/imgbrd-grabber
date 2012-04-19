@@ -337,9 +337,11 @@ void searchTab::finishedLoading(Page* page)
 					if (uncommon.contains(page->search().at(i)))
 					{ uncommon.removeAll(page->search().at(i)); }
 				}
-				if (!uncommon.isEmpty() > 0)
+				if (!uncommon.isEmpty())
 				{ txt->setText(txt->text()+"<br/>"+QString(tr("Des modificateurs ont été otés de la recherche car ils ne sont pas compatibles avec cet imageboard : %1.")).arg(uncommon.join(" "))); }
 			}
+			if (!page->errors().isEmpty() && settings.value("showwarnings", true).toBool())
+			{ txt->setText(txt->text()+"<br/>"+page->errors().join("<br/>")); }
 		int page_x = pos%ui->spinColumns->value(), page_y = (pos/ui->spinColumns->value())*2;
 		ui->layoutResults->addWidget(txt, page_y, page_x, 1, 1);
 		ui->layoutResults->setRowMinimumHeight(page_y, height()/20);
@@ -394,7 +396,7 @@ void searchTab::finishedLoading(Page* page)
 				{ taglist[i].setType("favorite"); }
 				QString n = taglist[i].text();
 				n.replace(" ", "_");
-				tags += "<a href=\""+n+"\" style=\""+(styles.contains(taglist[i].type()+"s") ? styles[taglist[i].type()+"s"] : styles["generals"])+"\">"+taglist[i].text()+"</a> ("+QString::number(taglist[i].count())+")<br/>";
+				tags += "<a href=\""+n+"\" style=\""+(styles.contains(taglist[i].type()+"s") ? styles[taglist[i].type()+"s"] : styles["generals"])+"\">"+taglist[i].text()+"</a>"+(taglist[i].count() > 0 ? " ("+QString::number(taglist[i].count())+")" : "")+"<br/>";
 			}
 		}
 
@@ -493,7 +495,7 @@ void searchTab::finishedLoadingTags(Page *page)
 		{ taglist[i].setType("favorite"); }
 		QString n = taglist[i].text();
 		n.replace(" ", "_");
-		tags += "<a href=\""+n+"\" style=\""+(styles.contains(taglist[i].type()+"s") ? styles[taglist[i].type()+"s"] : styles["generals"])+"\">"+taglist[i].text()+"</a> ("+QString::number(taglist[i].count())+")<br/>";
+		tags += "<a href=\""+n+"\" style=\""+(styles.contains(taglist[i].type()+"s") ? styles[taglist[i].type()+"s"] : styles["generals"])+"\">"+taglist[i].text()+"</a>"+(taglist[i].count() > 0 ? " ("+QString::number(taglist[i].count())+")" : "")+"<br/>";
 	}
 
 	m_tags = tags;
@@ -612,7 +614,7 @@ void searchTab::getPage()
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
 	for (int i = 0; i < actuals.count(); i++)
 	{
-		int perpage = ui->spinImagesPerPage->value();
+		int perpage = m_pages.value(actuals.at(i))->images().count();
 		emit batchAddGroup(QStringList() << m_search->toPlainText()+" "+settings.value("add").toString().toLower().trimmed() << QString::number(ui->spinPage->value()) << QString::number(perpage) << QString::number(perpage) << settings.value("downloadblacklist").toString() << actuals.at(i) << settings.value("Save/filename").toString() << settings.value("Save/path").toString() << "");
 	}
 }

@@ -5,7 +5,7 @@
 
 BlacklistFix::BlacklistFix(QMap<QString,QMap<QString,QString> > sites, QWidget *parent) : QDialog(parent), ui(new Ui::BlacklistFix), m_sites(sites)
 {
-    ui->setupUi(this);
+	ui->setupUi(this);
 
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
 	ui->lineFolder->setText(settings.value("Save/path").toString());

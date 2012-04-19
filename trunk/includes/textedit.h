@@ -16,6 +16,7 @@ class TextEdit : public QTextEdit
 		QSize sizeHint() const;
 		void doColor();
 		void setText(const QString &text);
+		void setFavorites(QStringList);
 
 	protected:
 		void keyPressEvent(QKeyEvent *e);
@@ -28,7 +29,7 @@ class TextEdit : public QTextEdit
 	private slots:
 		void insertCompletion(const QString &completion);
 		void insertFav(QAction *act);
-		void customContextMenuRequested(const QPoint &pos);
+		void customContextMenuRequested(QPoint);
 		void setFavorite();
 		void unsetFavorite();
 		void setKfl();

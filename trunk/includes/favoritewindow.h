@@ -14,7 +14,7 @@ namespace Ui
 
 class favoriteWindow : public QDialog
 {
-    Q_OBJECT
+	Q_OBJECT
 
 	public:
 		favoriteWindow(QString, int, QDateTime, mainWindow *parent);

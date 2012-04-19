@@ -23,7 +23,7 @@ batchWindow::batchWindow(QWidget *parent) : QDialog(parent), ui(new Ui::batchWin
 
 batchWindow::~batchWindow()
 {
-    delete ui;
+	delete ui;
 }
 void batchWindow::closeEvent(QCloseEvent *e)
 {
@@ -282,5 +282,6 @@ void batchWindow::setImages(int value)
 int batchWindow::value()		{ return m_value;						}
 int batchWindow::maximum()		{ return ui->progressBar->maximum();	}
 int batchWindow::images()		{ return m_images;						}
+int batchWindow::count()		{ return m_imagesCount;					}
 int batchWindow::endAction()	{ return ui->comboEnd->currentIndex();	}
 bool batchWindow::endRemove()	{ return ui->checkRemove->isChecked();	}
