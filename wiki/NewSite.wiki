@@ -64,6 +64,7 @@ Let's explain it in detail.
    * Last page (optional): regex that must return the last page, if XML API don't give it. Must only capture page number.
    * ImageUrl (optional): regex that must return an image's url from its details page.
   * FirstPage: the number of the first page, usually 1 (but, for example, gelbooru starts with 0).
+  * Modifiers (optional): some boards allow to use modifiers, for example, to filter ratings and get only sfw results. You can put these modifiers here.
   * DefaultTag (optional): the tag that must be used in all queries if the user doesn't search one.
 _You may want to use CDATAs portions not to escape your regexes, however it won't work, so you'll have to escape all these characters._
 
