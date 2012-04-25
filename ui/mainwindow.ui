@@ -55,7 +55,14 @@
        <attribute name="title">
         <string>Favoris</string>
        </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,1,0,0,0,0">
+       <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0,1,0,0,0,0">
+        <item>
+         <widget class="QLabel" name="label_6">
+          <property name="text">
+           <string>&lt;span style=&quot;color:red&quot;&gt;This part is currently under development and is subject to bugs.&lt;/span&gt;</string>
+          </property>
+         </widget>
+        </item>
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="0,0,0">
           <item>
@@ -562,7 +569,7 @@
           <x>0</x>
           <y>0</y>
           <width>220</width>
-          <height>41</height>
+          <height>36</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_9">
@@ -618,7 +625,7 @@
           <x>0</x>
           <y>0</y>
           <width>220</width>
-          <height>42</height>
+          <height>35</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -707,7 +714,7 @@
           <x>0</x>
           <y>0</y>
           <width>208</width>
-          <height>57</height>
+          <height>44</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_12">
@@ -789,7 +796,7 @@
           <x>0</x>
           <y>0</y>
           <width>220</width>
-          <height>41</height>
+          <height>36</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_11">
