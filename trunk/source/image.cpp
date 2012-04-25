@@ -369,7 +369,6 @@ QString Image::path(QString fn, QString pth)
 	QRegExp reg;
 	reg.setCaseSensitivity(Qt::CaseInsensitive);
 	reg.setPatternSyntax(QRegExp::Wildcard);
-	qDebug() << remove;
 	for (int i = 0; i < m_tags.size(); i++)
 	{
 		QString t = m_tags[i].text();
@@ -380,7 +379,6 @@ QString Image::path(QString fn, QString pth)
 			if (reg.exactMatch(t))
 			{ removed = true; }
 		}
-		qDebug() << removed << t;
 		if (!removed)
 		{
 			for (int r = 0; r < scustom.size(); r++)

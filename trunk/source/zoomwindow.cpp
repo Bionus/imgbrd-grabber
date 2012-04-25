@@ -217,6 +217,9 @@ void zoomWindow::openInNewWindow()
 void zoomWindow::favorite()
 {
 	QString image = saveImage();
+	QPixmap pix(image);
+	pix.scaled(QSize(150, 150), Qt::KeepAspectRatio, Qt::SmoothTransformation).save(savePath("thumbs/"+link+".png"));
+
 	m_favorites.append(link);
 
 	QFile f(savePath("favorites.txt"));
@@ -513,7 +516,6 @@ void zoomWindow::replyFinishedZoom()
 	else if (m_reply->error() != QNetworkReply::OperationCanceledError)
 	{ error(this, tr("Une erreur inattendue est survenue lors du chargement de l'image.\r\n%1").arg(m_reply->url().toString())); }
 
-	m_data.clear();
 	m_reply->deleteLater();
 	m_replyExists = false;
 }
