@@ -349,6 +349,8 @@ QString Image::path(QString fn, QString pth)
 	{ pth = m_folder; }
 
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
+	QStringList ignore = loadIgnored(), remove = settings.value("ignoredtags").toString().split(' ', QString::SkipEmptyParts);
+
 	settings.beginGroup("Save");
 	if (fn.isEmpty())
 	{ fn = settings.value("filename").toString(); }
@@ -364,20 +366,34 @@ QString Image::path(QString fn, QString pth)
 	bool found;
 	QMap<QString,QStringList> custom = QMap<QString,QStringList>(), scustom = getCustoms();
 	QMap<QString,QStringList> details;
-	QStringList ignore = loadIgnored();
+	QRegExp reg;
+	reg.setCaseSensitivity(Qt::CaseInsensitive);
+	reg.setPatternSyntax(QRegExp::Wildcard);
+	qDebug() << remove;
 	for (int i = 0; i < m_tags.size(); i++)
 	{
 		QString t = m_tags[i].text();
-		for (int r = 0; r < scustom.size(); r++)
+		bool removed = false;
+		for (int j = 0; j < remove.size(); j++)
 		{
-			if (!custom.contains(scustom.keys().at(r)))
-			{ custom.insert(scustom.keys().at(r), QStringList()); }
-			if (scustom.values().at(r).contains(t))
-			{ custom[scustom.keys().at(r)].append(t); }
+			reg.setPattern(remove.at(j));
+			if (reg.exactMatch(t))
+			{ removed = true; }
 		}
-		details["allos"].append(t);
-		details[ignore.contains(m_tags[i].text(), Qt::CaseInsensitive) ? "generals" : m_tags[i].type()+"s"].append(t);
-		details["alls"].append(t);
+		qDebug() << removed << t;
+		if (!removed)
+		{
+			for (int r = 0; r < scustom.size(); r++)
+			{
+				if (!custom.contains(scustom.keys().at(r)))
+				{ custom.insert(scustom.keys().at(r), QStringList()); }
+				if (scustom.values().at(r).contains(t))
+				{ custom[scustom.keys().at(r)].append(t); }
+			}
+			details["allos"].append(t);
+			details[ignore.contains(m_tags[i].text(), Qt::CaseInsensitive) ? "generals" : m_tags[i].type()+"s"].append(t);
+			details["alls"].append(t);
+		}
 	}
 	if (settings.value("copyright_useshorter", true).toBool())
 	{

@@ -19,7 +19,7 @@
 
 
 
-#define VERSION	"3.1.1"
+#define VERSION	"3.1.2a"
 #define DONE()	logUpdate(QObject::tr(" Fait"))
 
 extern QMap<QDateTime,QString> _log;
