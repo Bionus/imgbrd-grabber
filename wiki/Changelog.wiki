@@ -1,5 +1,36 @@
 #summary Imgbrd-grabber's changelog from v1.0 to v3.0.4
 
+= 3.1 =
+== 3.1.2 ==
+  * Added warning in the favorites part.
+  * Fixed ignored tags (normal and wildcard).
+  * Fixed saving.
+== 3.1.1 ==
+  * Fixed translation issues.
+  * Fixed Shimmie single image download.
+  * Fixed searches with '&'.
+  * Fixed infinite loop for batch download errors.
+  * Fixed problem when the images per page value is not a divider of the image limit.
+== 3.1.0 ==
+  * Asynchronous downloads.
+  * Open CD tray / shutdown after batch download.
+  * Restore after crashes (issue #54).
+  * Search history.
+  * Wildcard in blacklisted tags.
+  * Remove forced resizing.
+  * Docks on the window borders for tags, wiki, favorites and kept for later in order to have a direct access to all of them.
+  * Add to favorites / kept for later directly from the search field (issue #74).
+  * Wiki (only for danbooru-based boards).
+  * File association for .igl files.
+  * Fix images resize for huge images.
+  * Fix single downloads (issue #62).
+  * Fix wrong directory in options (issue #71).
+  * Fix remaining French messages (issue #11).
+  * Fix most of batch downloads crashes.
+  * Fix a lot of memory leaks.
+  * Fix images resize for huge images.
+  * And a lot more I don't remember.
+
 = 3.0 =
 == 3.0.4 ==
   * Pseudo/password now hidden in log.
