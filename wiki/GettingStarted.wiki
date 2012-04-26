@@ -2,29 +2,29 @@
 
 
 
-=Installation=
+= Installation =
 
-==Windows==
+== Windows ==
   # Download the windows installer from the download page.
   # Launch the installer, then follow instructions. By default, the program will be installed to "C:/Program Files/Grabber" (note that all your settings will be stored in "%USERPROFILE%/Grabber").
-  # Go to the installation folder, then launch "Grabber.exe".
+  # If you haven't left the "start Grabber" checked at the end of the installation, go to the installation folder, then launch "Grabber.exe".
 
 
 
-=Usage=
+= Usage =
 
-==Settings==
-If you have ignored the window that opened at first launch, the first thing to do is to set them. To do so, go to "File > Options".
-Then, go the the "Save" part. This part part must be filled up if you want to save pictures on your computer using the program. Set the "Folder" field to the location you want your images to be saved, and fill the "Filename" field. For more information about the "Filename" field, you can check [http://code.google.com/p/imgbrd-grabber/wiki/Filename this]. Make sure your format is valid before continuing.
+== Settings ==
+If you have ignored the window that opened at first launch, the first thing to do is to set some settings. To do so, go to "Edit > Options".
+Then, go the the "Save" part. This part part must be filled up if you want to save pictures on your computer using the program. Set the "Folder" field to the location you want your images to be saved, and fill the "Filename" field. For more information about the "Filename" field, you can check [http://code.google.com/p/imgbrd-grabber/wiki/Filename this]. The simplest filename is "%md5%.%ext%" (without the quotes). Make sure your format is valid before continuing.
 Once finished, you can press the "Ok" button.
 
-==Sources==
-The second thing to do is to choose from where you want to download pictures. By default it will take the first (alphabetically) in the list, so [http://behoimi.org/ Behoimi]. To change them, click on the "Sources" button on the bottom of the window. Just check the imageboards you want to get informations from, then press ok.
+== Sources ==
+The second thing to do is to choose from which boards you want to browse and download pictures. By default it will take the first (alphabetically) in the list, so it will very likely be [http://behoimi.org/ Behoimi]. To change them, click on the "Sources" button on the bottom of the window. Just check the imageboards you want to get informations from, then press ok.
 
-*Note:* if you select multiple imageboards, they will be put in one column by default. I advice you changing this by editing the "Columns" settings in the options.
+* Note: if you select multiple imageboards, they will be put in one column by default. I advice you changing this by editing the "Columns" settings in the options. *
 You can also merge all results to remove duplicates checking the "Merge results" option at the bottom of the window.
 
-==Search fields==
-The upper part of the window is "divided" in two.
-  * The search form: to make searches using tags. You can add your own tags to auto-completion editing the "words.txt" file. To insert a date, click the button. Browse other pages by changing the page value.
-  * Hidden form: show it by clicking the "+" button. Here, you have some fields to change quickly the options (images per page and columns), sources checkboxes and "Post-filtering". Post-filtering allow you, for example, to bypass the two-tags limitation on danbooru, by adding additional tags or metas (source, id, height, etc.) in this field. Note that none of these fields will be saved at exit.
+== Search field ==
+The upper part of the window is "divided" in two parts.
+  * The search form: to make searches using tags. You can add your own tags to auto-completion by editing the "words.txt" file. To insert a date, or access an interface to sort or filter the results, you can click the "Plus" button. You can also browse other pages by changing the page value.
+  * Hidden form: you can show it by clicking the "+" button. Here, you have some fields to change quickly the options (images per page and columns), sources checkboxes and "Post-filtering". Post-filtering allows you, for example, to bypass the two-tags limitation of danbooru, by adding additional tags or metas (source, id, height, etc.) in this field. Note that none of these fields will be saved at exit, so if you want to definitely change the number of images per pages or columns, you should change them directly in the options.
