@@ -305,6 +305,15 @@
         </item>
         <item>
          <widget class="QTableWidget" name="tableBatchUniques">
+          <property name="editTriggers">
+           <set>QAbstractItemView::NoEditTriggers</set>
+          </property>
+          <property name="showDropIndicator" stdset="0">
+           <bool>false</bool>
+          </property>
+          <property name="dragDropOverwriteMode">
+           <bool>false</bool>
+          </property>
           <property name="verticalScrollMode">
            <enum>QAbstractItemView::ScrollPerPixel</enum>
           </property>
@@ -443,8 +452,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>98</width>
-             <height>28</height>
+             <width>553</width>
+             <height>443</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_8">
@@ -1128,7 +1137,7 @@
     </hint>
     <hint type="destinationlabel">
      <x>39</x>
-     <y>83</y>
+     <y>78</y>
     </hint>
    </hints>
   </connection>
@@ -1144,7 +1153,7 @@
     </hint>
     <hint type="destinationlabel">
      <x>39</x>
-     <y>292</y>
+     <y>267</y>
     </hint>
    </hints>
   </connection>
@@ -1160,7 +1169,7 @@
     </hint>
     <hint type="destinationlabel">
      <x>39</x>
-     <y>148</y>
+     <y>136</y>
     </hint>
    </hints>
   </connection>
@@ -1172,7 +1181,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>51</x>
-     <y>197</y>
+     <y>185</y>
     </hint>
     <hint type="destinationlabel">
      <x>99</x>
@@ -1188,7 +1197,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>58</x>
-     <y>223</y>
+     <y>211</y>
     </hint>
     <hint type="destinationlabel">
      <x>98</x>
@@ -1203,8 +1212,8 @@
    <slot>updateFavorites()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>279</x>
-     <y>60</y>
+     <x>529</x>
+     <y>91</y>
     </hint>
     <hint type="destinationlabel">
      <x>805</x>
@@ -1219,8 +1228,8 @@
    <slot>updateFavorites()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>576</x>
-     <y>63</y>
+     <x>785</x>
+     <y>91</y>
     </hint>
     <hint type="destinationlabel">
      <x>804</x>
@@ -1411,8 +1420,8 @@
    <slot>loadTag(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>73</x>
-     <y>74</y>
+     <x>72</x>
+     <y>69</y>
     </hint>
     <hint type="destinationlabel">
      <x>-7</x>
@@ -1427,8 +1436,8 @@
    <slot>loadTag(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>34</x>
-     <y>347</y>
+     <x>33</x>
+     <y>317</y>
     </hint>
     <hint type="destinationlabel">
      <x>-12</x>
@@ -1443,8 +1452,8 @@
    <slot>loadTag(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>45</x>
-     <y>139</y>
+     <x>44</x>
+     <y>127</y>
     </hint>
     <hint type="destinationlabel">
      <x>-6</x>
@@ -1507,8 +1516,8 @@
    <slot>batchSel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>90</x>
-     <y>404</y>
+     <x>105</x>
+     <y>380</y>
     </hint>
     <hint type="destinationlabel">
      <x>-2</x>
@@ -1523,8 +1532,8 @@
    <slot>saveSettings()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>66</x>
-     <y>435</y>
+     <x>80</x>
+     <y>409</y>
     </hint>
     <hint type="destinationlabel">
      <x>-1</x>

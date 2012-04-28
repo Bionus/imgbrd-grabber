@@ -10,13 +10,14 @@ batchWindow::batchWindow(QWidget *parent) : QDialog(parent), ui(new Ui::batchWin
 {
 	ui->setupUi(this);
 	ui->tableWidget->resizeColumnToContents(0);
+	m_currentSize = size();
 
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
 	restoreGeometry(settings.value("Batch/geometry").toByteArray());
-	ui->details->setVisible(settings.value("Batch/details", true).toBool());
+	ui->buttonDetails->setChecked(settings.value("Batch/details", true).toBool());
+	on_buttonDetails_clicked(settings.value("Batch/details", true).toBool());
 	ui->comboEnd->setCurrentIndex(settings.value("Batch/end", 0).toInt());
 	ui->checkRemove->setChecked(settings.value("Batch/remove", false).toBool());
-	m_currentSize = size();
 
 	m_speeds.insert("", QQueue<int>());
 }
@@ -29,7 +30,7 @@ void batchWindow::closeEvent(QCloseEvent *e)
 {
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
 	settings.setValue("Batch/geometry", saveGeometry());
-	settings.setValue("Batch/details", ui->details->isVisible());
+	settings.setValue("Batch/details", ui->buttonDetails->isChecked());
 	settings.setValue("Batch/end", ui->comboEnd->currentIndex());
 	settings.setValue("Batch/remove", ui->checkRemove->isChecked());
 	settings.sync();
@@ -238,9 +239,9 @@ void batchWindow::drawSpeed()
 	ui->labelSpeed->setText(QLocale::system().toString(speed, 'f', speed < 10 ? 2 : 0)+" "+unit);
 }
 
-void batchWindow::on_buttonDetails_clicked()
+void batchWindow::on_buttonDetails_clicked(bool visible)
 {
-	if (ui->details->isHidden())
+	if (ui->details->isHidden() || visible)
 	{
 		ui->details->show();
 		resize(m_currentSize);

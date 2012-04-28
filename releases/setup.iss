@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Grabber"
-#define MyAppVersion "3.1.2"
+#define MyAppVersion "3.1.3"
 #define MyAppPublisher "Bionus"
 #define MyAppURL "http://code.google.com/p/imgbrd-grabber/"
 #define MyAppExeName "Grabber.exe"
@@ -26,6 +26,7 @@ LicenseFile=D:\Programmation\C++\Qt\Grabber\releases\Apache license 2.0.txt
 OutputDir=D:\Programmation\C++\Qt\Grabber\releases
 OutputBaseFilename=Grabber_{#MyAppVersion}
 SetupIconFile=D:\Programmation\C++\Qt\Grabber\images\icon.ico       
+UninstallDisplayIcon={app}\icon.ico
 WizardSmallImageFile=D:\Programmation\C++\Qt\Grabber\icon.bmp
 Compression=lzma
 SolidCompression=yes
@@ -99,7 +100,8 @@ Source: "D:\Programmation\C++\Qt\Grabber\release\sites\shimmie\model.xml"; DestD
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\shimmie\sites.txt"; DestDir: "{%UserProfile}\Grabber\sites\shimmie"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\zerochan\icon.png"; DestDir: "{%UserProfile}\Grabber\sites\zerochan"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\zerochan\model.xml"; DestDir: "{%UserProfile}\Grabber\sites\zerochan"; Flags: ignoreversion
-Source: "D:\Programmation\C++\Qt\Grabber\release\sites\zerochan\sites.txt"; DestDir: "{%UserProfile}\Grabber\sites\zerochan"; Flags: ignoreversion
+Source: "D:\Programmation\C++\Qt\Grabber\release\sites\zerochan\sites.txt"; DestDir: "{%UserProfile}\Grabber\sites\zerochan"; Flags: ignoreversion            
+Source: "D:\Programmation\C++\Qt\Grabber\images\icon.ico"; DestDir: "{app}"; Flags: ignoreversion
 
 [InstallDelete] 
 Type: filesandordirs; Name: "{app}\languages\updater"

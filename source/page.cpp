@@ -196,7 +196,7 @@ void Page::parse(QNetworkReply* r)
 				QStringList infos;
 				infos << "created_at" << "status" << "source" << "has_comments" << "file_url" << "sample_url" << "change" << "sample_width" << "has_children" << "preview_url" << "width" << "md5" << "preview_width" << "sample_height" << "parent_id" << "height" << "has_notes" << "creator_id" << "file_size" << "id" << "preview_height" << "rating" << "tags" << "author" << "score";
 				for (int i = 0; i < infos.count(); i++)
-				{ d[infos.at(i)] = nodeList.at(id).attributes().namedItem(infos.at(i)).nodeValue(); }
+				{ d[infos.at(i)] = nodeList.at(id).attributes().namedItem(infos.at(i)).nodeValue().trimmed(); }
 				if (!d["preview_url"].startsWith("http://") && !d["preview_url"].startsWith("https://"))
 				{ d["preview_url"] = "http://"+m_site["Url"]+QString(d["preview_url"].startsWith("/") ? "" : "/")+d["preview_url"]; }
 				if (!d["file_url"].startsWith("http://") && !d["file_url"].startsWith("https://"))
@@ -236,7 +236,7 @@ void Page::parse(QNetworkReply* r)
 				QStringList infos;
 				infos << "created_at" << "status" << "source" << "has_comments" << "file_url" << "sample_url" << "change" << "sample_width" << "has_children" << "preview_url" << "width" << "md5" << "preview_width" << "sample_height" << "parent_id" << "height" << "has_notes" << "creator_id" << "file_size" << "id" << "preview_height" << "rating" << "tags" << "author" << "score";
 				for (int i = 0; i < infos.count(); i++)
-				{ d[infos.at(i)] = sc.value(infos.at(i)).toString(); }
+				{ d[infos.at(i)] = sc.value(infos.at(i)).toString().trimmed(); }
 				if (!d["preview_url"].startsWith("http://") && !d["preview_url"].startsWith("https://"))
 				{ d["preview_url"] = "http://"+m_site["Url"]+QString(d["preview_url"].startsWith("/") ? "" : "/")+d["preview_url"]; }
 				if (!d["file_url"].startsWith("http://") && !d["file_url"].startsWith("https://"))
@@ -295,9 +295,9 @@ void Page::parse(QNetworkReply* r)
 				{
 					QString content = children.at(i).childNodes().at(0).nodeValue();
 					if (!content.isEmpty())
-					{ dat.insert(children.at(i).nodeName(), content); }
+					{ dat.insert(children.at(i).nodeName(), content.trimmed()); }
 					else
-					{ dat.insert(children.at(i).nodeName(), children.at(i).attributes().namedItem("url").nodeValue()); }
+					{ dat.insert(children.at(i).nodeName(), children.at(i).attributes().namedItem("url").nodeValue().trimmed()); }
 				}
 				// QDateTime::fromString(date, "ddd, dd MMM yyyy hh:mm:ss +0000"); // shimmie date format
 				d.insert("page_url", dat["link"]);

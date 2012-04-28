@@ -41,7 +41,7 @@ class batchWindow : public QDialog
 		void speedImage(QString, float);
 		void loadedImage(QString);
 		void errorImage(QString);
-		void on_buttonDetails_clicked();
+		void on_buttonDetails_clicked(bool visible);
 		void closeEvent(QCloseEvent *);
 		void copyToClipboard();
 		void cancel();

@@ -46,7 +46,8 @@ void AddUniqueWindow::ok(bool close)
 	bool useDirectLink = true;
 	if (
 		(m_sites[ui->comboSites->currentText()].value("Urls/Html/Post").contains("{id}") && ui->lineId->text().isEmpty()) ||
-		(m_sites[ui->comboSites->currentText()].value("Urls/Html/Post").contains("{md5}") && ui->lineMd5->text().isEmpty())
+		(m_sites[ui->comboSites->currentText()].value("Urls/Html/Post").contains("{md5}") && ui->lineMd5->text().isEmpty()) ||
+		!m_sites[ui->comboSites->currentText()].contains("Regex/ImageUrl")
 	)
 	{ useDirectLink = false; }
 	if (useDirectLink)
