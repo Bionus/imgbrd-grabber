@@ -83,24 +83,24 @@ Source: "D:\Programmation\C++\Qt\Grabber\release\imageformats\qjpeg4.dll"; DestD
 Source: "D:\Programmation\C++\Qt\Grabber\release\imageformats\qmng4.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\imageformats\qsvg4.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\imageformats\qtiff4.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
-Source: "D:\Programmation\C++\Qt\Grabber\release\words.txt"; DestDir: "{app}"; Flags: ignoreversion       
+Source: "D:\Programmation\C++\Qt\Grabber\release\words.txt"; DestDir: "{app}";
 Source: "D:\Programmation\C++\Qt\Grabber\release\languages\English.qm"; DestDir: "{app}\languages"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\languages\Français.qm"; DestDir: "{app}\languages"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\danbooru\icon.png"; DestDir: "{%UserProfile}\Grabber\sites\danbooru"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\danbooru\model.xml"; DestDir: "{%UserProfile}\Grabber\sites\danbooru"; Flags: ignoreversion
-Source: "D:\Programmation\C++\Qt\Grabber\release\sites\danbooru\sites.txt"; DestDir: "{%UserProfile}\Grabber\sites\danbooru"; Flags: ignoreversion
+Source: "D:\Programmation\C++\Qt\Grabber\release\sites\danbooru\sites.txt"; DestDir: "{%UserProfile}\Grabber\sites\danbooru";
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\gelbooru\icon.png"; DestDir: "{%UserProfile}\Grabber\sites\gelbooru"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\gelbooru\model.xml"; DestDir: "{%UserProfile}\Grabber\sites\gelbooru"; Flags: ignoreversion
-Source: "D:\Programmation\C++\Qt\Grabber\release\sites\gelbooru\sites.txt"; DestDir: "{%UserProfile}\Grabber\sites\gelbooru"; Flags: ignoreversion     
+Source: "D:\Programmation\C++\Qt\Grabber\release\sites\gelbooru\sites.txt"; DestDir: "{%UserProfile}\Grabber\sites\gelbooru";     
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\metabooru\icon.png"; DestDir: "{%UserProfile}\Grabber\sites\metabooru"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\metabooru\model.xml"; DestDir: "{%UserProfile}\Grabber\sites\metabooru"; Flags: ignoreversion
-Source: "D:\Programmation\C++\Qt\Grabber\release\sites\metabooru\sites.txt"; DestDir: "{%UserProfile}\Grabber\sites\metabooru"; Flags: ignoreversion     
+Source: "D:\Programmation\C++\Qt\Grabber\release\sites\metabooru\sites.txt"; DestDir: "{%UserProfile}\Grabber\sites\metabooru";     
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\shimmie\icon.png"; DestDir: "{%UserProfile}\Grabber\sites\shimmie"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\shimmie\model.xml"; DestDir: "{%UserProfile}\Grabber\sites\shimmie"; Flags: ignoreversion
-Source: "D:\Programmation\C++\Qt\Grabber\release\sites\shimmie\sites.txt"; DestDir: "{%UserProfile}\Grabber\sites\shimmie"; Flags: ignoreversion
+Source: "D:\Programmation\C++\Qt\Grabber\release\sites\shimmie\sites.txt"; DestDir: "{%UserProfile}\Grabber\sites\shimmie";
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\zerochan\icon.png"; DestDir: "{%UserProfile}\Grabber\sites\zerochan"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\zerochan\model.xml"; DestDir: "{%UserProfile}\Grabber\sites\zerochan"; Flags: ignoreversion
-Source: "D:\Programmation\C++\Qt\Grabber\release\sites\zerochan\sites.txt"; DestDir: "{%UserProfile}\Grabber\sites\zerochan"; Flags: ignoreversion            
+Source: "D:\Programmation\C++\Qt\Grabber\release\sites\zerochan\sites.txt"; DestDir: "{%UserProfile}\Grabber\sites\zerochan";            
 Source: "D:\Programmation\C++\Qt\Grabber\images\icon.ico"; DestDir: "{app}"; Flags: ignoreversion
 
 [InstallDelete] 

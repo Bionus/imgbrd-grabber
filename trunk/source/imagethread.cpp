@@ -9,4 +9,5 @@ void ImageThread::run()
 	QPixmap image;
 	image.loadFromData(m_data);
 	emit finished(image, m_data.size());
+	this->deleteLater();
 }

@@ -1,8 +1,8 @@
 #ifndef IMAGETHREAD_H
 #define IMAGETHREAD_H
 
-#include <QtGui>
-#include <QtNetwork>
+#include <QThread>
+#include <QPixmap>
 
 class ImageThread : public QThread
 {

@@ -289,9 +289,7 @@ QMap<QString,QString> domToMap(QDomElement dom)
  */
 void log(QString l, Log type)
 {
-	qDebug() << l;
 	/*QDateTime time = QDateTime::currentDateTime();
-	_log.insert(time, (type == Error ? QObject::tr("<b>Erreur :</b> %1").arg(l) : (type == Warning ? QObject::tr("<b>Attention :</b> %1").arg(l) : (type == Notice ? QObject::tr("<b>Notice :</b> %1").arg(l) : l))));
 	QSettings set(savePath("settings.ini"), QSettings::IniFormat);
 
 	QFile f(savePath("main.log"));
@@ -303,7 +301,10 @@ void log(QString l, Log type)
 	}
 	f.close();
 
+	_log.insert(time, (type == Error ? QObject::tr("<b>Erreur :</b> %1").arg(l) : (type == Warning ? QObject::tr("<b>Attention :</b> %1").arg(l) : (type == Notice ? QObject::tr("<b>Notice :</b> %1").arg(l) : l))));
 	_mainwindow->logShow();*/
+
+	qDebug() << l;
 }
 
 /**

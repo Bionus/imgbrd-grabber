@@ -12,7 +12,7 @@ extern mainWindow *_mainwindow;
 
 
 
-zoomWindow::zoomWindow(Image *image, QStringMap site, QMap<QString,QMap<QString,QString> > *sites, QWidget *parent) : QDialog(parent, Qt::Window), ui(new Ui::zoomWindow), m_image(image), m_site(site), timeout(300), loaded(0), oldsize(0), m_program(qApp->arguments().at(0)), m_replyExists(false), m_finished(false), m_thread(false), m_data(QByteArray()), m_size(0), m_sites(sites), m_source()
+zoomWindow::zoomWindow(Image *image, QStringMap site, QMap<QString,QMap<QString,QString> > *sites, QWidget *parent) : QDialog(0, Qt::Window), ui(new Ui::zoomWindow), m_image(image), m_site(site), timeout(300), loaded(0), oldsize(0), m_program(qApp->arguments().at(0)), m_replyExists(false), m_finished(false), m_thread(false), m_data(QByteArray()), m_size(0), m_sites(sites), m_source()
 {
 	ui->setupUi(this);
 	setAttribute(Qt::WA_DeleteOnClose);
@@ -112,8 +112,10 @@ void zoomWindow::go()
  */
 zoomWindow::~zoomWindow()
 {
-	movie->deleteLater();
-	m_labelTags->deleteLater();
+	if (movie != NULL)
+	{ movie->deleteLater(); }
+	if (m_labelTags != NULL)
+	{ m_labelTags->deleteLater(); }
 	delete image;
 	delete ui;
 }
@@ -354,6 +356,7 @@ void zoomWindow::display(QPixmap pix, int size)
 	if (!pix.size().isEmpty() && size >= m_size)
 	{
 		m_size = size;
+		delete this->image;
 		this->image = new QPixmap(pix);
 		this->update(!m_finished);
 		m_thread = false;
@@ -764,14 +767,12 @@ void zoomWindow::closeEvent(QCloseEvent *e)
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
 	settings.setValue("Zoom/geometry", saveGeometry());
 	settings.setValue("Zoom/plus", ui->buttonPlus->isChecked());
+	settings.sync();
 	//m_image->abortTags();
-	if (m_replyExists)
+	if (m_replyExists && m_reply->isRunning())
 	{
-		if (m_reply->isRunning())
-		{
-			m_reply->abort();
-			log(tr("Chargement de l'image stoppé."));
-		}
+		m_reply->abort();
+		log(tr("Chargement de l'image stoppé."));
 	}
 	e->accept();
 }

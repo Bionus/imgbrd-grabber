@@ -1122,6 +1122,23 @@ p, li { white-space: pre-wrap; }
            </property>
           </widget>
          </item>
+         <item row="10" column="0" colspan="2">
+          <widget class="QCheckBox" name="checkGetUnloadedPages">
+           <property name="text">
+            <string>Télécharger les pages non chargées</string>
+           </property>
+          </widget>
+         </item>
+         <item row="11" column="0" colspan="2">
+          <widget class="QLabel" name="label_66">
+           <property name="text">
+            <string>&lt;i&gt;Si vous activez cette option, appuyer sur le bouton &quot;Télécharger cette page&quot; prendra en compte les modifications faîtes au nombre d'images par page, numéro de page, etc. même si elles n'ont pas été chargées.</string>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
         </layout>
        </widget>
        <widget class="QWidget" name="page12">
