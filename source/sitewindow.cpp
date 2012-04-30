@@ -1,5 +1,8 @@
+#include "mainwindow.h"
 #include "sitewindow.h"
 #include "ui_sitewindow.h"
+
+extern mainWindow *_mainwindow;
 
 
 
@@ -99,6 +102,8 @@ void siteWindow::accept()
 			break;
 		}
 	}
+
+	_mainwindow->loadSites();
 
 	emit accepted();
 	close();

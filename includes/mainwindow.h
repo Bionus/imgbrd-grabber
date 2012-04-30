@@ -92,6 +92,7 @@ class mainWindow : public QMainWindow
 		void on_buttonInitSettings_clicked();
 		void saveSettings();
 		void on_buttonFolder_clicked();
+		void loadSites();
 		// Tabs
 		int addTab(QString tag = "");
 		void addTabFavorite(int);

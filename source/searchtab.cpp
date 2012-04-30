@@ -158,6 +158,10 @@ void searchTab::updateCheckboxes()
 	int n = settings.value("Sources/Letters", 3).toInt(), m = n;
 	for (int i = 0; i < urls.size(); i++)
 	{
+		if (urls[i].startsWith("www."))
+		{ urls[i] = urls[i].right(urls[i].length() - 4); }
+		else if (urls[i].startsWith("chan."))
+		{ urls[i] = urls[i].right(urls[i].length() - 5); }
 		if (n < 0)
 		{
 			m = urls.at(i).indexOf('.');
@@ -179,6 +183,7 @@ void searchTab::load()
 	log(tr("Chargement des résultats..."));
 
 	m_parent->ui->labelWiki->setText("");
+	m_pagemax = -1;
 
 	if (!m_from_history)
 	{
@@ -259,19 +264,21 @@ bool sortByFrequency(Tag s1, Tag s2)
 void searchTab::finishedLoading(Page* page)
 {
 	log(tr("Réception de la page <a href=\"%1\">%1</a>").arg(Qt::escape(page->url().toString())));
-	if (page->imagesCount() < m_pagemax || m_pagemax == -1 )
-	{ m_pagemax = page->imagesCount(); }
-	ui->buttonNextPage->setEnabled(m_pagemax > ui->spinPage->value() || page->imagesCount() == -1 || (page->imagesCount() == 0 && page->images().count() > 0));
-	ui->buttonLastPage->setEnabled(m_pagemax > ui->spinPage->value());
 
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
-
 	QList<Image*> imgs = page->images();
 	m_images.append(imgs);
+	int perpage = page->site().value("Urls/Selected/Tags").contains("{limit}") ? ui->spinImagesPerPage->value() : imgs.size();
+	int maxpage = ceil(page->imagesCount()/((float)perpage));
+
+	if (maxpage < m_pagemax || m_pagemax == -1)
+	{ m_pagemax = maxpage; }
+	ui->buttonNextPage->setEnabled(maxpage > ui->spinPage->value() || page->imagesCount() == -1 || (page->imagesCount() == 0 && page->images().count() > 0));
+	ui->buttonLastPage->setEnabled(maxpage > ui->spinPage->value());
+
 	if (!ui->checkMergeResults->isChecked())
 	{
 		int pos = m_pages.values().indexOf(page);
-		int perpage = page->site().value("Urls/Selected/Tags").contains("{limit}") ? ui->spinImagesPerPage->value() : imgs.size();
 		QLabel *txt = new QLabel(this);
 			if (imgs.count() == 0)
 			{
@@ -326,7 +333,7 @@ void searchTab::finishedLoading(Page* page)
 				txt->setText("<a href=\""+Qt::escape(page->url().toString())+"\">"+m_sites->key(page->site())+"</a> - "+tr("Aucun résultat")+(reasons.count() > 0 ? "<br/>"+tr("Raisons possibles : %1").arg(reasons.join(", ")) : ""));
 			}
 			else
-			{ txt->setText("<a href=\""+Qt::escape(page->url().toString())+"\">"+m_sites->key(page->site())+"</a> - "+tr("Page %1 sur %2 (%3 sur %4)").arg(ui->spinPage->value()).arg(page->imagesCount() > 0 ? QString::number(ceil(page->imagesCount()/((float)perpage))) : "?").arg(imgs.count()).arg(page->imagesCount() > 0 ? QString::number(page->imagesCount()) : "?")); }
+			{ txt->setText("<a href=\""+Qt::escape(page->url().toString())+"\">"+m_sites->key(page->site())+"</a> - "+tr("Page %1 sur %2 (%3 sur %4)").arg(ui->spinPage->value()).arg(page->imagesCount() > 0 ? QString::number(maxpage) : "?").arg(imgs.count()).arg(page->imagesCount() > 0 ? QString::number(page->imagesCount()) : "?")); }
 			txt->setOpenExternalLinks(true);
 			if (page->search().join(" ") != m_search->toPlainText() && settings.value("showtagwarning", true).toBool())
 			{
@@ -612,9 +619,10 @@ void searchTab::getPage()
 		{ actuals.append(keys.at(i)); }
 	}
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
+	bool unloaded = settings.value("getunloadedpages", false).toBool();
 	for (int i = 0; i < actuals.count(); i++)
 	{
-		int perpage = m_pages.value(actuals.at(i))->images().count();
+		int perpage = unloaded ? ui->spinImagesPerPage->value() : m_pages.value(actuals.at(i))->images().count();
 		emit batchAddGroup(QStringList() << m_search->toPlainText()+" "+settings.value("add").toString().toLower().trimmed() << QString::number(ui->spinPage->value()) << QString::number(perpage) << QString::number(perpage) << settings.value("downloadblacklist").toString() << actuals.at(i) << settings.value("Save/filename").toString() << settings.value("Save/path").toString() << "");
 	}
 }

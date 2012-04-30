@@ -452,8 +452,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>553</width>
-             <height>443</height>
+             <width>98</width>
+             <height>28</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_8">
@@ -1276,8 +1276,8 @@
    <slot>batchSel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>331</x>
-     <y>527</y>
+     <x>299</x>
+     <y>515</y>
     </hint>
     <hint type="destinationlabel">
      <x>216</x>
@@ -1340,8 +1340,8 @@
    <slot>logClear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>332</x>
-     <y>526</y>
+     <x>331</x>
+     <y>90</y>
     </hint>
     <hint type="destinationlabel">
      <x>476</x>
@@ -1484,8 +1484,8 @@
    <slot>logOpen()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>612</x>
-     <y>526</y>
+     <x>331</x>
+     <y>90</y>
     </hint>
     <hint type="destinationlabel">
      <x>485</x>

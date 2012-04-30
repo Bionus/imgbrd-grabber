@@ -84,81 +84,7 @@ void mainWindow::init()
 	ui->tableBatchUniques->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
 
 	// Searching for availables sites
-	QStringMapMap stes;
-	QStringList dir = QDir(savePath("sites")).entryList(QDir::Dirs | QDir::NoDotAndDotDot);
-	for (int i = 0; i < dir.count(); i++)
-	{
-		QFile file(savePath("sites/"+dir.at(i)+"/model.xml"));
-		if (file.open(QIODevice::ReadOnly | QIODevice::Text))
-		{
-			QString source = file.readAll();
-			QDomDocument doc;
-			QString errorMsg;
-			int errorLine, errorColumn;
-			if (!doc.setContent(source, false, &errorMsg, &errorLine, &errorColumn))
-			{ log(tr("Erreur lors de l'analyse du fichier XML : %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn)), Error); }
-			else
-			{
-				QDomElement docElem = doc.documentElement();
-				QStringMap details = domToMap(docElem);
-				QStringList defaults = QStringList() << "xml" << "json" << "rss" << "regex";
-				QString curr;
-				QStringList source;
-				for (int s = 0; s < 4; s++)
-				{
-					QString t = m_settings->value("source_"+QString::number(s+1), defaults.at(s)).toString();
-					t[0] = t[0].toUpper();
-					if (details.contains("Urls/"+(t == "Regex" ? "Html" : t)+"/Tags"))
-					{ source.append(t); }
-				}
-				if (!source.isEmpty())
-				{
-					QFile f(savePath("sites/"+dir.at(i)+"/sites.txt"));
-					if (f.open(QIODevice::ReadOnly | QIODevice::Text))
-					{
-						while (!f.atEnd())
-						{
-							QString line = f.readLine();
-							line.remove("\n").remove("\r");
-							QStringList srcs;
-							if (line.contains(':'))
-							{
-								curr = line.section(':', 1).toLower();
-								curr[0] = curr[0].toUpper();
-								srcs.append(curr);
-								line = line.section(':', 0, 0);
-							}
-							else
-							{ srcs = source; }
-							stes[line] = details;
-							for (int i = 0; i < srcs.size(); i++)
-							{
-								stes[line]["Urls/"+QString::number(i+1)+"/Tags"] = "http://"+line+stes[line]["Urls/"+(srcs[i] == "Regex" ? "Html" : srcs[i])+"/Tags"];
-								if (stes[line].contains("Urls/"+(srcs[i] == "Regex" ? "Html" : srcs[i])+"/Limit"))
-								{ stes[line]["Urls/"+QString::number(i+1)+"/Limit"] = stes[line]["Urls/"+(srcs[i] == "Regex" ? "Html" : srcs[i])+"/Limit"]; }
-								if (stes[line].contains("Urls/"+(srcs[i] == "Regex" ? "Html" : srcs[i])+"/Home"))
-								{ stes[line]["Urls/"+QString::number(i+1)+"/Home"] = "http://"+line+stes[line]["Urls/"+(srcs[i] == "Regex" ? "Html" : srcs[i])+"/Home"]; }
-							}
-							stes[line]["Url"] = line;
-							stes[line]["Urls/Html/Post"] = "http://"+line+stes[line]["Urls/Html/Post"];
-							if (stes[line].contains("Urls/Html/Tags"))
-							{ stes[line]["Urls/Html/Tags"] = "http://"+line+stes[line]["Urls/Html/Tags"]; }
-							if (stes[line].contains("Urls/Html/Home"))
-							{ stes[line]["Urls/Html/Home"] = "http://"+line+stes[line]["Urls/Html/Home"]; }
-							stes[line]["Selected"] = srcs.join("/").toLower();
-						}
-					}
-					else
-					{ log(tr("Fichier sites.txt du modèle %1 introuvable.").arg(dir.at(i)), Error); }
-					f.close();
-				}
-				else
-				{ log(tr("Aucune source valide trouvée dans le fichier model.xml de %1.").arg(dir.at(i))); }
-			}
-		}
-		file.close();
-	}
-	m_sites = stes;
+	loadSites();
 
 	ui->actionClosetab->setShortcut(QKeySequence("Ctrl+W"));
 	ui->actionAddtab->setShortcut(QKeySequence::AddTab);
@@ -261,7 +187,7 @@ void mainWindow::init()
 	restoreState(m_settings->value("state").toByteArray());
 
 	// Selected ones
-	QString sel = '1'+QString().fill('0',stes.count()-1);
+	QString sel = '1'+QString().fill('0', m_sites.count()-1);
 	QString sav = m_settings->value("sites", sel).toString();
 	for (int i = 0; i < sel.count(); i++)
 	{
@@ -323,6 +249,85 @@ void mainWindow::init()
 
 	m_loaded = true;
 	logShow();
+}
+void mainWindow::loadSites()
+{
+	QStringMapMap stes;
+	QStringList dir = QDir(savePath("sites")).entryList(QDir::Dirs | QDir::NoDotAndDotDot);
+	for (int i = 0; i < dir.count(); i++)
+	{
+		QFile file(savePath("sites/"+dir.at(i)+"/model.xml"));
+		if (file.open(QIODevice::ReadOnly | QIODevice::Text))
+		{
+			QString source = file.readAll();
+			QDomDocument doc;
+			QString errorMsg;
+			int errorLine, errorColumn;
+			if (!doc.setContent(source, false, &errorMsg, &errorLine, &errorColumn))
+			{ log(tr("Erreur lors de l'analyse du fichier XML : %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn)), Error); }
+			else
+			{
+				QDomElement docElem = doc.documentElement();
+				QStringMap details = domToMap(docElem);
+				QStringList defaults = QStringList() << "xml" << "json" << "rss" << "regex";
+				QString curr;
+				QStringList source;
+				for (int s = 0; s < 4; s++)
+				{
+					QString t = m_settings->value("source_"+QString::number(s+1), defaults.at(s)).toString();
+					t[0] = t[0].toUpper();
+					if (details.contains("Urls/"+(t == "Regex" ? "Html" : t)+"/Tags"))
+					{ source.append(t); }
+				}
+				if (!source.isEmpty())
+				{
+					QFile f(savePath("sites/"+dir.at(i)+"/sites.txt"));
+					if (f.open(QIODevice::ReadOnly | QIODevice::Text))
+					{
+						while (!f.atEnd())
+						{
+							QString line = f.readLine();
+							line.remove("\n").remove("\r");
+							QStringList srcs;
+							if (line.contains(':'))
+							{
+								curr = line.section(':', 1).toLower();
+								curr[0] = curr[0].toUpper();
+								srcs.append(curr);
+								line = line.section(':', 0, 0);
+							}
+							else
+							{ srcs = source; }
+							stes[line] = details;
+							for (int i = 0; i < srcs.size(); i++)
+							{
+								stes[line]["Urls/"+QString::number(i+1)+"/Tags"] = "http://"+line+stes[line]["Urls/"+(srcs[i] == "Regex" ? "Html" : srcs[i])+"/Tags"];
+								if (stes[line].contains("Urls/"+(srcs[i] == "Regex" ? "Html" : srcs[i])+"/Limit"))
+								{ stes[line]["Urls/"+QString::number(i+1)+"/Limit"] = stes[line]["Urls/"+(srcs[i] == "Regex" ? "Html" : srcs[i])+"/Limit"]; }
+								if (stes[line].contains("Urls/"+(srcs[i] == "Regex" ? "Html" : srcs[i])+"/Home"))
+								{ stes[line]["Urls/"+QString::number(i+1)+"/Home"] = "http://"+line+stes[line]["Urls/"+(srcs[i] == "Regex" ? "Html" : srcs[i])+"/Home"]; }
+							}
+							stes[line]["Url"] = line;
+							stes[line]["Urls/Html/Post"] = "http://"+line+stes[line]["Urls/Html/Post"];
+							if (stes[line].contains("Urls/Html/Tags"))
+							{ stes[line]["Urls/Html/Tags"] = "http://"+line+stes[line]["Urls/Html/Tags"]; }
+							if (stes[line].contains("Urls/Html/Home"))
+							{ stes[line]["Urls/Html/Home"] = "http://"+line+stes[line]["Urls/Html/Home"]; }
+							stes[line]["Selected"] = srcs.join("/").toLower();
+						}
+					}
+					else
+					{ log(tr("Fichier sites.txt du modèle %1 introuvable.").arg(dir.at(i)), Error); }
+					f.close();
+				}
+				else
+				{ log(tr("Aucune source valide trouvée dans le fichier model.xml de %1.").arg(dir.at(i))); }
+			}
+		}
+		file.close();
+	}
+	m_sites.clear();
+	m_sites = stes;
 }
 
 mainWindow::~mainWindow()
@@ -881,7 +886,7 @@ void mainWindow::webZoom(int id)
 		QStringList detected = image->blacklisted(blacklistedtags);
 		if (!detected.isEmpty())
 		{
-			int reply = QMessageBox::question(this, tr("List noire"), tr("%n tag(s) figurant dans la liste noire détécté(s) sur cette image : %1. Voulez-vous l'afficher tout de même ?", "", detected.size()).arg(detected.join(", ")), QMessageBox::Yes | QMessageBox::No);
+			int reply = QMessageBox::question(this, tr("Liste noire"), tr("%n tag(s) figurant dans la liste noire détécté(s) sur cette image : %1. Voulez-vous l'afficher tout de même ?", "", detected.size()).arg(detected.join(", ")), QMessageBox::Yes | QMessageBox::No);
 			if (reply == QMessageBox::No)
 			{ return; }
 		}
@@ -1046,6 +1051,7 @@ void mainWindow::closeEvent(QCloseEvent *e)
 		{ m_tabs.at(i)->deleteLater(); }
 		m_settings->setValue("crashed", false);
 		m_settings->sync();
+		QFile::copy(m_settings->fileName(), savePath("settings."+QString(VERSION)+".ini"));
 	DONE();
 	e->accept();
 }

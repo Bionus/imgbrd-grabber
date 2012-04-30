@@ -579,9 +579,12 @@ QStringList Image::blacklisted(QStringList blacklistedtags)
 	{
 		for (int t = 0; t < m_tags.count(); t++)
 		{
-			reg.setPattern(blacklistedtags.at(i));
-			if (reg.exactMatch(m_tags[t].text()))
-			{ detected.append(m_tags[t].text()); }
+			if (!blacklistedtags.at(i).trimmed().isEmpty())
+			{
+				reg.setPattern(blacklistedtags.at(i).trimmed());
+				if (reg.exactMatch(m_tags[t].text()))
+				{ detected.append(m_tags[t].text()); }
+			}
 		}
 	}
 	return detected;
