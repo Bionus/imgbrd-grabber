@@ -14,8 +14,9 @@ class ImageThread : public QThread
 	protected:
 		void run();
 
-	signals:
-		void finished(QPixmap, int);
+    signals:
+        void finished(QPixmap, int);
+        void finished(QImage, int);
 
 	private:
 		QByteArray m_data;

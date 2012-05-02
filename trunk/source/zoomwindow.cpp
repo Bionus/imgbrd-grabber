@@ -12,7 +12,7 @@ extern mainWindow *_mainwindow;
 
 
 
-zoomWindow::zoomWindow(Image *image, QStringMap site, QMap<QString,QMap<QString,QString> > *sites, QWidget *parent) : QDialog(0, Qt::Window), ui(new Ui::zoomWindow), m_image(image), m_site(site), timeout(300), loaded(0), oldsize(0), m_program(qApp->arguments().at(0)), m_replyExists(false), m_finished(false), m_thread(false), m_data(QByteArray()), m_size(0), m_sites(sites), m_source()
+zoomWindow::zoomWindow(Image *image, QStringMap site, QMap<QString,QMap<QString,QString> > *sites, QWidget *parent) : QDialog(0, Qt::Window), ui(new Ui::zoomWindow), m_image(image), m_site(site), timeout(300), loaded(0), oldsize(0), m_program(qApp->arguments().at(0)), m_labelTags(NULL), image(NULL), movie(NULL), m_replyExists(false), m_finished(false), m_thread(false), m_data(QByteArray()), m_size(0), m_sites(sites), m_source()
 {
 	ui->setupUi(this);
 	setAttribute(Qt::WA_DeleteOnClose);
@@ -112,12 +112,12 @@ void zoomWindow::go()
  */
 zoomWindow::~zoomWindow()
 {
-	if (movie != NULL)
-	{ movie->deleteLater(); }
+    if (movie != NULL)
+    { movie->deleteLater(); }
 	if (m_labelTags != NULL)
-	{ m_labelTags->deleteLater(); }
-	delete image;
-	delete ui;
+    { m_labelTags->deleteLater(); }
+    delete image;
+    delete ui;
 }
 
 void zoomWindow::openUrl(QString url)
@@ -335,8 +335,8 @@ void zoomWindow::downloadProgress(qint64 size, qint64 total)
 		m_data.append(m_reply->readAll());
 		m_thread = true;
 		ImageThread *th = new ImageThread(m_data, this);
-		connect(th, SIGNAL(finished(QPixmap, int)), this, SLOT(display(QPixmap, int)));
-		th->start();
+        connect(th, SIGNAL(finished(QImage, int)), this, SLOT(display(QImage, int)));
+        th->start();
 		/*QPixmap image;
 		image.loadFromData(m_data);
 		display(&image, m_data.size());*/
@@ -353,14 +353,25 @@ void zoomWindow::display(QPixmap *pix, int size)
 }
 void zoomWindow::display(QPixmap pix, int size)
 {
-	if (!pix.size().isEmpty() && size >= m_size)
-	{
-		m_size = size;
-		delete this->image;
-		this->image = new QPixmap(pix);
-		this->update(!m_finished);
-		m_thread = false;
-	}
+    if (!pix.size().isEmpty() && size >= m_size)
+    {
+        m_size = size;
+        delete this->image;
+        this->image = new QPixmap(pix);
+        this->update(!m_finished);
+        m_thread = false;
+    }
+}
+void zoomWindow::display(QImage pix, int size)
+{
+    if (!pix.size().isEmpty() && size >= m_size)
+    {
+        m_size = size;
+        //delete this->image;
+        this->image = new QPixmap(QPixmap::fromImage(pix));
+        this->update(!m_finished);
+        m_thread = false;
+    }
 }
 
 void zoomWindow::replyFinished(Image* img)
@@ -406,7 +417,7 @@ void zoomWindow::replyFinished(Image* img)
 		m_source = file1.exists() ? path1+"/"+pth1 : path2+"/"+pth2;
 		if (m_url.section('.', -1).toUpper() == "GIF")
 		{
-			QMovie *movie = new QMovie(m_source, QByteArray(), this);
+            this->movie = new QMovie(m_source, QByteArray(), this);
 			labelImage->setMovie(movie);
 			movie->start();
 		}
@@ -483,7 +494,7 @@ void zoomWindow::replyFinishedZoom()
 			{
 				f.write(m_data);
 				f.close();
-				QMovie *movie = new QMovie(f.fileName(), QByteArray(), this);
+                this->movie = new QMovie(f.fileName(), QByteArray(), this);
 				labelImage->setMovie(movie);
 				movie->start();
 			}
@@ -498,8 +509,8 @@ void zoomWindow::replyFinishedZoom()
 			this->update();*/
 			m_thread = true;
 			ImageThread *th = new ImageThread(m_data, this);
-			connect(th, SIGNAL(finished(QPixmap, int)), this, SLOT(display(QPixmap, int)));
-			th->start();
+            connect(th, SIGNAL(finished(QImage, int)), this, SLOT(display(QImage, int)));
+            th->start();
 			this->loaded = true;
 		}
 		if (this->m_mustSave > 0)
@@ -551,7 +562,7 @@ void zoomWindow::saveNQuit()
 	else
 	{
 		ui->buttonSaveNQuit->setText(tr("Sauvegarde..."));
-		m_mustSave = 2;
+        m_mustSave = 2;
 	}
 }
 void zoomWindow::saveNQuitFav()
@@ -564,7 +575,7 @@ void zoomWindow::saveNQuitFav()
 	else
 	{
 		ui->buttonSaveNQuitFav->setText(tr("Sauvegarde..."));
-		m_mustSave = 4;
+        m_mustSave = 4;
 	}
 }
 
@@ -575,12 +586,12 @@ QString zoomWindow::saveImage(bool fav)
 		if (fav)
 		{
 			ui->buttonSaveFav->setText(tr("Sauvegarde... (fav)"));
-			m_mustSave = 3;
+            m_mustSave = 3;
 		}
 		else
 		{
 			ui->buttonSave->setText(tr("Sauvegarde..."));
-			m_mustSave = 1;
+            m_mustSave = 1;
 		}
 		return QString();
 	}
@@ -712,7 +723,7 @@ QString zoomWindow::saveImage(bool fav)
 		{ ui->buttonSave->setText(tr("Fichier déjà existant")); }
 	}
 	if (m_mustSave == 2 || m_mustSave == 4)
-	{ close(); }
+    { close(); }
 	m_mustSave = 0;
 	return pth+"/"+path;
 }

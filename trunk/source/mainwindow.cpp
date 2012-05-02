@@ -12,14 +12,16 @@
 #include "emptydirsfix.h"
 #include "functions.h"
 #include "json.h"
-#include "windows.h"
 #include <QtXml>
 #include <QtScript>
-#include <float.h>
+#if defined(Q_OS_WIN)
+	#include "windows.h"
+	#include <float.h>
+#endif
 
 
 
-#define VERSION	"3.1.3"
+#define VERSION	"3.1.4"
 #define DONE()	logUpdate(QObject::tr(" Fait"))
 
 extern QMap<QDateTime,QString> _log;
@@ -1402,7 +1404,7 @@ void mainWindow::_getAll()
 				m_progressdialog->setImages(m_progressdialog->images()+1);
 				m_getAllExists++;
 				log(tr("Fichier déjà existant : <a href=\"file:///%1\">%1</a>").arg(f.fileName()));
-				m_progressdialog->errorImage(img->url());
+                m_progressdialog->loadedImage(img->url());
 				if (site_id >= 0)
 				{
 					m_progressBars[site_id]->setValue(m_progressBars[site_id]->value()+1);
@@ -1734,16 +1736,16 @@ void mainWindow::getAllPerformImage(Image* img)
 	else
 	{ m_getAllErrors++; }
 
-	if (m_getAllErrors == errors && m_getAll404s == e404s)
+    if (m_getAllErrors == errors && m_getAll404s == e404s)
 	{
 		m_getAllDownloaded++;
 		m_progressdialog->loadedImage(img->url());
 	}
 	else
-	{
-		m_progressdialog->errorImage(img->url());
-		m_getAllFailed.append(m_getAllDownloading[m_getAllId]);
-	}
+    {
+        m_progressdialog->errorImage(img->url());
+        m_getAllFailed.append(m_getAllDownloading[m_getAllId]);
+    }
 
 	if (site_id >= 0)
 	{
