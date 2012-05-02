@@ -31,9 +31,10 @@ class zoomWindow : public QDialog
 	public slots:
 		void update(bool onlysize = false);
 		void replyFinished(Image*);
-		void replyFinishedZoom();
-		void display(QPixmap, int);
+        void replyFinishedZoom();
+        void display(QPixmap, int);
 		void display(QPixmap*, int);
+        void display(QImage, int);
 		void saveNQuit();
 		void saveNQuitFav();
 		QString saveImage(bool fav = false);

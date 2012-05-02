@@ -88,8 +88,7 @@ void Page::load()
 	{
 		QNetworkAccessManager *manager = new QNetworkAccessManager(this);
 		connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(parse(QNetworkReply*)));
-		QNetworkRequest r(m_url);
-		qDebug() << m_url.toString().toUtf8();
+        QNetworkRequest r(m_url);
 			r.setRawHeader("Referer", m_url.toString().toUtf8());
 		m_reply = manager->get(r);
 		m_replyExists = true;

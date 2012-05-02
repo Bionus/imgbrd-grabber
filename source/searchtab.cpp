@@ -182,7 +182,7 @@ void searchTab::load()
 {
 	log(tr("Chargement des résultats..."));
 
-	m_parent->ui->labelWiki->setText("");
+    m_parent->ui->labelWiki->setText("");
 	m_pagemax = -1;
 
 	if (!m_from_history)
@@ -207,29 +207,29 @@ void searchTab::load()
 	{ ui->spinPage->setValue(1); }
 	m_lastTags = m_search->toPlainText();
 
-	ui->widgetMeant->hide();
+    ui->widgetMeant->hide();
 	ui->buttonFirstPage->setEnabled(ui->spinPage->value() > 1);
 	ui->buttonPreviousPage->setEnabled(ui->spinPage->value() > 1);
-	for (int i = 0; i < m_layouts.size(); i++)
-	{ clearLayout(m_layouts[i]); }
-	qDeleteAll(m_layouts);
+    for (int i = 0; i < m_layouts.size(); i++)
+    { clearLayout(m_layouts[i]); }
+    qDeleteAll(m_layouts);
 	m_layouts.clear();
-	clearLayout(ui->layoutResults);
-	setWindowTitle(m_search->toPlainText().isEmpty() ? tr("Recherche") : m_search->toPlainText().replace("&", "&&"));
-	emit titleChanged(this);
+    clearLayout(ui->layoutResults);
+    setWindowTitle(m_search->toPlainText().isEmpty() ? tr("Recherche") : m_search->toPlainText().replace("&", "&&"));
+    emit titleChanged(this);
 	m_tags = "";
 	m_parent->ui->labelTags->setText("");
-	for (int i = 0; i < m_pages.size(); i++)
+    for (int i = 0; i < m_pages.size(); i++)
 	{
 		m_pages.value(m_pages.keys().at(i))->abort();
 		m_pages.value(m_pages.keys().at(i))->abortTags();
 	}
-	qDeleteAll(m_pages);
+    qDeleteAll(m_pages);
 	m_pages.clear();
-	for (int i = 0; i < m_images.size(); i++)
+    for (int i = 0; i < m_images.size(); i++)
 	{ m_images.at(i)->abortPreview(); }
-	qDeleteAll(m_images);
-	m_images.clear();
+    qDeleteAll(m_images);
+    m_images.clear();
 
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
 	for (int i = 0; i < m_selectedSources.size(); i++)
@@ -246,7 +246,7 @@ void searchTab::load()
 			m_layouts.append(new QGridLayout);
 			page->load();
 			if (settings.value("useregexfortags", true).toBool())
-			{
+            {
 				connect(page, SIGNAL(finishedLoadingTags(Page*)), this, SLOT(finishedLoadingTags(Page*)));
 				page->loadTags();
 			}
@@ -254,7 +254,7 @@ void searchTab::load()
 	}
 	if (ui->checkMergeResults->isChecked())
 	{ ui->layoutResults->addLayout(m_layouts[0], 0, 0, 1, 1); }
-	m_page = 0;
+    m_page = 0;
 
 	emit changed(this);
 }
