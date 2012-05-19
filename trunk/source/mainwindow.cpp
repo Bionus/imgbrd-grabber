@@ -21,7 +21,11 @@
 
 
 
+<<<<<<< .mine
+#define VERSION	"3.1.5"
+=======
 #define VERSION	"3.1.4"
+>>>>>>> .r281
 #define DONE()	logUpdate(QObject::tr(" Fait"))
 
 extern QMap<QDateTime,QString> _log;
@@ -1339,12 +1343,7 @@ void mainWindow::_getAll()
 			Image *img = m_getAllDownloading.at(0);
 
 			// Row
-			int site_id = -1;
-			for (int i = 0; i < m_groupBatchs.count(); i++)
-			{
-				if (m_groupBatchs.at(i).at(8) == img->page()->url().toString())
-				{ site_id = i; break; }
-			}
+			int site_id = m_progressdialog->batch(img->url());
 
 			// Path
 			QString path = m_settings->value("Save/filename").toString();
@@ -1356,7 +1355,8 @@ void mainWindow::_getAll()
 				pth = m_groupBatchs[site_id][7];
 			}
 
-			QFile f((img->folder().isEmpty() ? pth : img->folder())+"/"+img->path(path));
+			QString p = img->folder().isEmpty() ? pth : img->folder();
+			QFile f(p+"/"+img->path(path, p));
 			if (!f.exists())
 			{
 				bool detected = false;
@@ -1509,19 +1509,14 @@ void mainWindow::getAllPerformTags(Image* img)
 		{ normalized.replace('_', ' '); }
 		if		(tag.type() == "character")	{ m_getAllDetails["characters"].append(normalized); }
 		else if (tag.type() == "copyright")	{ m_getAllDetails["copyrights"].append(normalized); }
-		else if (tag.type() == "artist")		{ m_getAllDetails["artists"].append(normalized);	}
+		else if (tag.type() == "artist")	{ m_getAllDetails["artists"].append(normalized);	}
 		else if (tag.type() == "model")		{ m_getAllDetails["models"].append(normalized);		}
-		else									{ m_getAllDetails["generals"].append(normalized);	}
+		else								{ m_getAllDetails["generals"].append(normalized);	}
 		m_getAllDetails["alls"].append(normalized);
 	}
 
 	// Row
-	int site_id = -1;
-	for (int i = 0; i < m_groupBatchs.count(); i++)
-	{
-		if (m_groupBatchs.at(i).at(8) == img->page()->url().toString())
-		{ site_id = i; break; }
-	}
+	int site_id = m_progressdialog->batch(img->url());
 
 	// Getting path
 	QString path = m_settings->value("Save/filename").toString();
@@ -1531,7 +1526,7 @@ void mainWindow::getAllPerformTags(Image* img)
 		path = m_groupBatchs[site_id][6];
 		p = m_groupBatchs[site_id][7];
 	}
-	path = img->path(path);
+	path = img->path(path, p);
 
 	// Save path
 	p.replace("\\", "/");
@@ -1623,12 +1618,7 @@ void mainWindow::getAllPerformImage(Image* img)
 	log(tr("Image reçue depuis <a href=\"%1\">%1</a>").arg(reply->url().toString()));
 
 	// Row
-	int site_id = -1;
-	for (int i = 0; i < m_groupBatchs.count(); i++)
-	{
-		if (m_groupBatchs.at(i).at(8) == img->page()->url().toString())
-		{ site_id = i; break; }
-	}
+	int site_id = m_progressdialog->batch(img->url());
 
 	int m_getAllId = -1;
 	for (int i = 0; i < m_getAllDownloading.count(); i++)
@@ -1649,7 +1639,7 @@ void mainWindow::getAllPerformImage(Image* img)
 			path = m_groupBatchs[site_id][6];
 			p = m_groupBatchs[site_id][7];
 		}
-		path = img->path(path);
+		path = img->path(path, p);
 		path.replace("%n%", QString::number(m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors));
 
 		if (path.left(1) == QDir::toNativeSeparators("/"))	{ path = path.right(path.length()-1);	}
