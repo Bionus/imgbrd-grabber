@@ -228,8 +228,13 @@ void searchTab::load()
 	m_pages.clear();
     for (int i = 0; i < m_images.size(); i++)
 	{ m_images.at(i)->abortPreview(); }
+<<<<<<< .mine
+	//qDeleteAll(m_images);
+	m_images.clear();
+=======
     qDeleteAll(m_images);
     m_images.clear();
+>>>>>>> .r281
 
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
 	for (int i = 0; i < m_selectedSources.size(); i++)
@@ -636,7 +641,10 @@ void searchTab::getAll()
 	}
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
 	for (int i = 0; i < actuals.count(); i++)
-	{ emit batchAddGroup(QStringList() << m_search->toPlainText()+" "+settings.value("add").toString().toLower().trimmed() << "1" << QString::number(qMin(1000, qMax(m_pages.value(actuals.at(i))->images().count(), m_pages.value(actuals.at(i))->imagesCount()))) << QString::number(qMax(m_pages.value(actuals.at(i))->images().count(), m_pages.value(actuals.at(i))->imagesCount())) << settings.value("downloadblacklist").toString() << actuals.at(i) << settings.value("Save/filename").toString() << settings.value("Save/path").toString() << ""); }
+	{
+		int limit = m_sites->value(actuals.at(i)).contains("Urls/1/Limit") ? m_sites->value(actuals.at(i)).value("Urls/1/Limit").toInt() : 0;
+		emit batchAddGroup(QStringList() << m_search->toPlainText()+" "+settings.value("add").toString().toLower().trimmed() << "1" << QString::number(qMin((limit > 0 ? limit : 1000), qMax(m_pages.value(actuals.at(i))->images().count(), m_pages.value(actuals.at(i))->imagesCount()))) << QString::number(qMax(m_pages.value(actuals.at(i))->images().count(), m_pages.value(actuals.at(i))->imagesCount())) << settings.value("downloadblacklist").toString() << actuals.at(i) << settings.value("Save/filename").toString() << settings.value("Save/path").toString() << "");
+	}
 }
 
 void searchTab::firstPage()

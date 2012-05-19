@@ -126,6 +126,14 @@ void batchWindow::addImage(QString url, int batch, float size)
 	headerView->resizeSection(4, 80);
 	m_items++;
 }
+int batchWindow::batch(QString url)
+{
+	for (int i = 0; i < m_items; i++)
+	{
+		if (ui->tableWidget->item(i, 2)->text() == url)
+		{ return ui->tableWidget->item(1, 1)->text().toInt() - 1; }
+	}
+}
 void batchWindow::loadingImage(QString url)
 {
 	m_speeds.insert(url, QQueue<int>());
