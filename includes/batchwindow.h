@@ -26,6 +26,7 @@ class batchWindow : public QDialog
 		int endAction();
 		bool endRemove();
 		bool cancelled();
+		int batch(QString url);
 
 	public slots:
 		void clear();
