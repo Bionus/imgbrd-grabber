@@ -149,6 +149,9 @@ QString validateFilename(QString text)
 	// Field must be filled
 	if (text.isEmpty())
 	{ return QObject::tr("<span style=\"color:red\">Les noms de fichiers ne doivent pas être vides !</span>"); }
+	// Can't validate javascript expressions
+	if (text.startsWith("javascript:"))
+	{ return QObject::tr("<span style=\"color:orange\">Impossible de valider les expressions Javascript.</span>"); }
 	// Field must end by an extension
 	if (!text.endsWith(".%ext%"))
 	{ return QObject::tr("<span style=\"color:orange\">Votre nom de fichier ne finit pas par une extension, symbolisée par %ext% ! Vous risquez de ne pas pouvoir ouvrir vos fichiers.</span>"); }

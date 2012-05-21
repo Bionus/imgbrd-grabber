@@ -19,13 +19,7 @@
 	#include <float.h>
 #endif
 
-
-
-<<<<<<< .mine
 #define VERSION	"3.1.5"
-=======
-#define VERSION	"3.1.4"
->>>>>>> .r281
 #define DONE()	logUpdate(QObject::tr(" Fait"))
 
 extern QMap<QDateTime,QString> _log;
@@ -35,12 +29,6 @@ extern QMap<QDateTime,QString> _log;
   g.e-hentai.org
   minitokyo.net
   pixiv.net
-*/
-
-/*
-  QString inits = "var artist = \"ishikei\";";
-  QString prgm = "artist + \" lolollo\"";
-  QString filename = QScriptEngine().evaluate(QScriptProgram(inits + prgm)).toString();
 */
 
 

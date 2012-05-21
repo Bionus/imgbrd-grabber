@@ -20,7 +20,7 @@ HEADERS += includes/aboutwindow.h \
            includes/emptydirsfix.h \
            includes/emptydirsfix2.h \
            includes/favoritewindow.h \
-           includes/filenamewindow.h \
+		   includes/conditionwindow.h \
            includes/functions.h \
            includes/image.h \
            includes/imagethread.h \
@@ -38,7 +38,8 @@ HEADERS += includes/aboutwindow.h \
            includes/startwindow.h \
            includes/tag.h \
            includes/textedit.h \
-           includes/zoomwindow.h
+		   includes/zoomwindow.h \
+           includes/filenamewindow.h
 FORMS += ui/aboutwindow.ui \
          ui/adduniquewindow.ui \
          ui/batchwindow.ui \
@@ -50,7 +51,7 @@ FORMS += ui/aboutwindow.ui \
          ui/emptydirsfix.ui \
          ui/emptydirsfix2.ui \
          ui/favoritewindow.ui \
-         ui/filenamewindow.ui \
+		 ui/conditionwindow.ui \
          ui/mainwindow.ui \
          ui/optionswindow.ui \
          ui/searchtab.ui \
@@ -58,7 +59,8 @@ FORMS += ui/aboutwindow.ui \
          ui/sitewindow.ui \
          ui/sourceswindow.ui \
          ui/startwindow.ui \
-         ui/zoomwindow.ui
+		 ui/zoomwindow.ui \
+         ui/filenamewindow.ui
 SOURCES += source/aboutwindow.cpp \
            source/addgroupwindow.cpp \
            source/adduniquewindow.cpp \
@@ -71,7 +73,7 @@ SOURCES += source/aboutwindow.cpp \
            source/emptydirsfix.cpp \
            source/emptydirsfix2.cpp \
            source/favoritewindow.cpp \
-           source/filenamewindow.cpp \
+		   source/conditionwindow.cpp \
            source/functions.cpp \
            source/image.cpp \
            source/imagethread.cpp \
@@ -90,7 +92,8 @@ SOURCES += source/aboutwindow.cpp \
            source/startwindow.cpp \
            source/tag.cpp \
            source/textedit.cpp \
-		   source/zoomwindow.cpp
+		   source/zoomwindow.cpp \
+		   source/filenamewindow.cpp
 
 RESOURCES += resources.qrc
 RC_FILE = icon.rc
@@ -98,3 +101,4 @@ TRANSLATIONS += languages/English.ts languages/Français.ts
 QT += network xml
 CONFIG += designer plugin
 CODECFORTR = UTF-8
+LIBS += -lqscintilla2
