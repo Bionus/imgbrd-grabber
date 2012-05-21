@@ -47,5 +47,7 @@ void startWindow::save()
 {
 	QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
 	settings->setValue("Save/path", ui->pathLineEdit->text());
+	settings->setValue("Save/path_real", ui->pathLineEdit->text());
 	settings->setValue("Save/filename", ui->filenameLineEdit->text());
+	settings->setValue("Save/filename_real", ui->filenameLineEdit->text());
 }

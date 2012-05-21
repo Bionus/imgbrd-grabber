@@ -1,6 +1,7 @@
 #include "optionswindow.h"
 #include "ui_optionswindow.h"
 #include "customwindow.h"
+#include "conditionwindow.h"
 #include "filenamewindow.h"
 #include "functions.h"
 
@@ -177,11 +178,6 @@ optionsWindow::~optionsWindow()
 	delete ui;
 }
 
-void optionsWindow::on_lineFilename_textChanged(QString text)
-{ ui->filenameValidator->setText(validateFilename(text)); }
-void optionsWindow::on_lineFavorites_textChanged(QString text)
-{ ui->favoritesValidator->setText(validateFilename(text)); }
-
 void optionsWindow::on_comboSourcesLetters_currentIndexChanged(int i)
 { ui->spinSourcesLetters->setDisabled(i > 0); }
 
@@ -198,9 +194,22 @@ void optionsWindow::on_buttonFolderFavorites_clicked()
 	{ ui->lineFolderFavorites->setText(folder); }
 }
 
+void optionsWindow::on_buttonFilenamePlus_clicked()
+{
+	FilenameWindow *fw = new FilenameWindow(ui->lineFilename->text(), this);
+	connect(fw, SIGNAL(validated(QString)), ui->lineFilename, SLOT(setText(QString)));
+	fw->show();
+}
+void optionsWindow::on_buttonFavoritesPlus_clicked()
+{
+	FilenameWindow *fw = new FilenameWindow(ui->lineFavorites->text(), this);
+	connect(fw, SIGNAL(validated(QString)), ui->lineFavorites, SLOT(setText(QString)));
+	fw->show();
+}
+
 void optionsWindow::on_buttonCustom_clicked()
 {
-	customWindow *cw = new customWindow();
+	customWindow *cw = new customWindow(this);
 	connect(cw, SIGNAL(validated(QString, QString)), this, SLOT(addCustom(QString, QString)));
 	cw->show();
 }
@@ -214,7 +223,7 @@ void optionsWindow::addCustom(QString name, QString tags)
 }
 void optionsWindow::on_buttonFilenames_clicked()
 {
-	filenameWindow *cw = new filenameWindow();
+	conditionWindow *cw = new conditionWindow();
 	connect(cw, SIGNAL(validated(QString, QString)), this, SLOT(addFilename(QString, QString)));
 	cw->show();
 }

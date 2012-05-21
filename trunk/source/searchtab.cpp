@@ -228,13 +228,8 @@ void searchTab::load()
 	m_pages.clear();
     for (int i = 0; i < m_images.size(); i++)
 	{ m_images.at(i)->abortPreview(); }
-<<<<<<< .mine
 	//qDeleteAll(m_images);
 	m_images.clear();
-=======
-    qDeleteAll(m_images);
-    m_images.clear();
->>>>>>> .r281
 
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
 	for (int i = 0; i < m_selectedSources.size(); i++)

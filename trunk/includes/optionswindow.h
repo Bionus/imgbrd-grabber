@@ -21,8 +21,6 @@ class optionsWindow : public QDialog
 
 	public slots:
 		void updateContainer(QTreeWidgetItem *, QTreeWidgetItem *);
-		void on_lineFilename_textChanged(QString);
-		void on_lineFavorites_textChanged(QString);
 		void on_comboSourcesLetters_currentIndexChanged(int);
 		void on_buttonFolder_clicked();
 		void on_buttonFolderFavorites_clicked();
@@ -51,6 +49,8 @@ class optionsWindow : public QDialog
 		void on_buttonColoringFavoritesFont_clicked();
 		void on_buttonColoringBlacklistedsFont_clicked();
 		void on_buttonColoringIgnoredsFont_clicked();
+		void on_buttonFilenamePlus_clicked();
+		void on_buttonFavoritesPlus_clicked();
 		void on_buttonCustom_clicked();
 		void addCustom(QString, QString);
 		void on_buttonFilenames_clicked();

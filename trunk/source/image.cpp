@@ -1,5 +1,6 @@
 #include "image.h"
 #include "functions.h"
+#include <QtScript>
 
 
 
@@ -468,49 +469,68 @@ QString Image::path(QString fn, QString pth)
 		{ filename = filenames.value(cond); }
 	}
 
-	// We get path and remove useless slashes from filename
-	pth.replace("\\", "/");
-	filename.replace("\\", "/");
-	if (filename.left(1) == "/")	{ filename = filename.right(filename.length()-1);	}
-	if (pth.right(1) == "/")		{ pth = pth.left(pth.length()-1);					}
-
-	// Conditionals
-	QStringList c = custom.keys();
-	for (int i = 0; i < 10; i++)
-	{ c.append("search_"+QString::number(i)); }
-	QStringList tokens = QStringList() << "artist" << "general" << "copyright" << "character" << "model" << "model|artist" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "allo" << c;
-	filename = analyse(tokens, filename, details["allos"]);
-
-	// No duplicates in %all%
-	QStringList rem = (filename.contains("%artist%") ? details["artists"] : QStringList()) +
-		(filename.contains("%copyright%") ? copyrights : QStringList()) +
-		(filename.contains("%character%") ? details["characters"] : QStringList()) +
-		(filename.contains("%model%") ? details["models"] : QStringList()) +
-		(filename.contains("%general%") ? details["generals"] : QStringList());
-	QStringList l = details["alls"];
-	for (int i = 0; i < rem.size(); i++)
-	{ l.removeAll(rem.at(i)); }
-	replaces.append(QStrPP("%all%", QStrP(l.join(settings.value("separator").toString()), "")));
-
-	// We replace everithing
-	for (int i = 0; i < replaces.size(); i++)
+	if (filename.startsWith("javascript:"))
 	{
-		QStrPP val = replaces.at(i);
-		QString res = val.second.first.isEmpty() ? val.second.second : val.second.first;
-		res = res.replace("\\", "_").replace("%", "_").replace("/", "_").replace(":", "_").replace("|", "_").replace("*", "_").replace("?", "_").replace("\"", "_").replace("<", "_").replace(">", "_").replace("__", "_").replace("__", "_").replace("__", "_").trimmed();
-		if (!settings.value("replaceblanks", false).toBool())
-		{ res.replace("_", " "); }
+		filename = filename.right(filename.length() - 11);
 
-		// We only cut the name if it is not a folder
-		if (!filename.right(filename.length()-filename.indexOf(val.first)).contains("/"))
-		{ filename.replace(val.first, res.left(259-pth.length()-1-filename.length())); }
-		else
-		{ filename.replace(val.first, res); }
+		QString inits = "";
+		for (int i = 0; i < replaces.size(); i++)
+		{ inits += "var " + replaces[i].first.mid(1, replaces[i].first.size() - 2) + " = \"" + (replaces[i].second.first.isEmpty() ? replaces[i].second.second : replaces[i].second.first) + "\";\r\n"; }
+
+		if (QScriptEngine().evaluate(QScriptProgram(inits + filename)).isError())
+		{
+			error(parent(), tr("Erreur d'évaluation du Javascript :<br/>") + QScriptEngine().evaluate(QScriptProgram(inits + filename)).toString());
+			return QString();
+		}
+
+		filename = QScriptEngine().evaluate(QScriptProgram(inits + filename)).toString();
 	}
+	else
+	{
+		// We get path and remove useless slashes from filename
+		pth.replace("\\", "/");
+		filename.replace("\\", "/");
+		if (filename.left(1) == "/")	{ filename = filename.right(filename.length()-1);	}
+		if (pth.right(1) == "/")		{ pth = pth.left(pth.length()-1);					}
 
-	// We remove empty dir names
-	while (filename.indexOf("//") >= 0)
-	{ filename.replace("//", "/"); }
+		// Conditionals
+		QStringList c = custom.keys();
+		for (int i = 0; i < 10; i++)
+		{ c.append("search_"+QString::number(i)); }
+		QStringList tokens = QStringList() << "artist" << "general" << "copyright" << "character" << "model" << "model|artist" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "allo" << c;
+		filename = analyse(tokens, filename, details["allos"]);
+
+		// No duplicates in %all%
+		QStringList rem = (filename.contains("%artist%") ? details["artists"] : QStringList()) +
+			(filename.contains("%copyright%") ? copyrights : QStringList()) +
+			(filename.contains("%character%") ? details["characters"] : QStringList()) +
+			(filename.contains("%model%") ? details["models"] : QStringList()) +
+			(filename.contains("%general%") ? details["generals"] : QStringList());
+		QStringList l = details["alls"];
+		for (int i = 0; i < rem.size(); i++)
+		{ l.removeAll(rem.at(i)); }
+		replaces.append(QStrPP("%all%", QStrP(l.join(settings.value("separator").toString()), "")));
+
+		// We replace everithing
+		for (int i = 0; i < replaces.size(); i++)
+		{
+			QStrPP val = replaces.at(i);
+			QString res = val.second.first.isEmpty() ? val.second.second : val.second.first;
+			res = res.replace("\\", "_").replace("%", "_").replace("/", "_").replace(":", "_").replace("|", "_").replace("*", "_").replace("?", "_").replace("\"", "_").replace("<", "_").replace(">", "_").replace("__", "_").replace("__", "_").replace("__", "_").trimmed();
+			if (!settings.value("replaceblanks", false).toBool())
+			{ res.replace("_", " "); }
+
+			// We only cut the name if it is not a folder
+			if (!filename.right(filename.length()-filename.indexOf(val.first)).contains("/"))
+			{ filename.replace(val.first, res.left(259-pth.length()-1-filename.length())); }
+			else
+			{ filename.replace(val.first, res); }
+		}
+
+		// We remove empty dir names
+		while (filename.indexOf("//") >= 0)
+		{ filename.replace("//", "/"); }
+	}
 
 	// Max filename size option
 	if (filename.length() > settings.value("limit").toInt() && settings.value("limit").toInt() > 0)

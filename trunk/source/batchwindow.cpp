@@ -133,6 +133,7 @@ int batchWindow::batch(QString url)
 		if (ui->tableWidget->item(i, 2)->text() == url)
 		{ return ui->tableWidget->item(1, 1)->text().toInt() - 1; }
 	}
+	return -1;
 }
 void batchWindow::loadingImage(QString url)
 {

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>filenameWindow</class>
- <widget class="QDialog" name="filenameWindow">
+ <class>conditionWindow</class>
+ <widget class="QDialog" name="conditionWindow">
   <property name="windowModality">
    <enum>Qt::WindowModal</enum>
   </property>
@@ -72,7 +72,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>filenameWindow</receiver>
+   <receiver>conditionWindow</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -88,7 +88,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>filenameWindow</receiver>
+   <receiver>conditionWindow</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
