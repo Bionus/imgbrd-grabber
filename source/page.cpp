@@ -350,12 +350,6 @@ void Page::parse(QNetworkReply* r)
 					.replace("{ext}", "jpg");
 				}
 			}
-			d["page_url"] = m_site["Urls/Html/Post"];
-			QString t = m_search.join(" ");
-			if (m_site.contains("DefaultTag") && t.isEmpty())
-			{ t = m_site["DefaultTag"]; }
-			d["page_url"].replace("{tags}", QUrl::toPercentEncoding(t));
-			d["page_url"].replace("{id}", d["id"]);
 
 			if (order.contains("json") && !d["json"].isEmpty())
 			{
@@ -366,6 +360,16 @@ void Page::parse(QNetworkReply* r)
 					for (int i = 0; i < map.size(); i++)
 					{ d[map.keys().at(i)] = map.values().at(i).toString(); }
 				}
+			}
+
+			if (!d.contains("page_url"))
+			{
+				d["page_url"] = m_site["Urls/Html/Post"];
+				QString t = m_search.join(" ");
+				if (m_site.contains("DefaultTag") && t.isEmpty())
+				{ t = m_site["DefaultTag"]; }
+				d["page_url"].replace("{tags}", QUrl::toPercentEncoding(t));
+				d["page_url"].replace("{id}", d["id"]);
 			}
 
 			int timezonedecay = QDateTime::currentDateTime().time().hour()-QDateTime::currentDateTime().toUTC().addSecs(-60*60*4).time().hour();
@@ -448,7 +452,6 @@ void Page::parse(QNetworkReply* r)
 		}
 	}
 
-	r->deleteLater();
 	m_reply->deleteLater();
 	m_replyExists = false;
 
@@ -499,7 +502,6 @@ void Page::parseTags(QNetworkReply *r)
 		m_wiki.remove("/wiki/show?title=").remove(QRegExp("<p><a href=\"([^\"]+)\">Full entry &raquo;</a></p>")).replace("<h6>", "<span class=\"title\">").replace("</h6>", "</span>");
 	}
 
-	r->deleteLater();
 	m_replyTags->deleteLater();
 	m_replyTagsExists = false;
 

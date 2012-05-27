@@ -207,22 +207,24 @@ void sourcesWindow::insertCheckBox()
 				check->setChecked(m_selected[i]);
 				check->setText(k.at(i));
 				m_checks.insert(i, check);
+				qDebug() << m_selected[i] << k.at(i) << m_sites->value(k.at(i))["Name"].toLower() << savePath("sites/"+m_sites->value(k.at(i))["Name"].toLower()+"/icon.png");
 			if (t != "hide")
 			{
+				if (t == "text" || t == "both")
+				{
+					QLabel *type = new QLabel(m_sites->value(k.at(i))["Name"]);
+					m_labels.insert(i, type);
+				}
 				if (t == "icon" || t == "both")
 				{
 					QLabel *image = new QLabel();
 					image->setPixmap(QPixmap(savePath("sites/"+m_sites->value(k.at(i))["Name"].toLower()+"/icon.png")));
-					m_labels << image;
-				}
-				if (t == "text" || t == "both")
-				{
-					QLabel *type = new QLabel(m_sites->value(k.at(i))["Name"]);
-					m_labels << type;
+					m_labels.insert(i, image);
 				}
 			}
 			QBouton *del = new QBouton(k.at(i));
 				del->setText(tr("Supprimer"));
+				connect(del, SIGNAL(appui(QString)), this, SLOT(deleteSite(QString)));
 				m_buttons.insert(i, del);
 			break;
 		}

@@ -10,7 +10,7 @@ extern mainWindow *_mainwindow;
 
 
 
-searchTab::searchTab(int id, QMap<QString,QMap<QString,QString> > *sites, QMap<QString,QString> *favorites, QDateTime *serverDate, mainWindow *parent) : QWidget(parent), ui(new Ui::searchTab), m_id(id), m_parent(parent), m_serverDate(serverDate), m_favorites(favorites), m_sites(sites), m_pagemax(-1), m_lastTags(QString()), m_sized(false), m_from_history(false), m_history_cursor(0), m_history(QList<QMap<QString,QString> >()), m_modifiers(QStringList())
+searchTab::searchTab(int id, QMap<QString,QMap<QString,QString> > *sites, QMap<QString,QString> *favorites, QDateTime *serverDate, mainWindow *parent) : QWidget(parent), ui(new Ui::searchTab), m_id(id), m_parent(parent), m_serverDate(serverDate), m_favorites(favorites), m_sites(sites), m_pagemax(-1), m_lastTags(QString()), m_sized(false), m_from_history(false), m_stop(true), m_history_cursor(0), m_history(QList<QMap<QString,QString> >()), m_modifiers(QStringList())
 {
 	ui->setupUi(this);
 	ui->widgetMeant->hide();
@@ -182,6 +182,7 @@ void searchTab::load()
 {
 	log(tr("Chargement des résultats..."));
 
+	m_stop = true;
     m_parent->ui->labelWiki->setText("");
 	m_pagemax = -1;
 
@@ -244,6 +245,7 @@ void searchTab::load()
 			connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(finishedLoading(Page*)));
 			m_pages.insert(page->website(), page);
 			m_layouts.append(new QGridLayout);
+			m_stop = false;
 			page->load();
 			if (settings.value("useregexfortags", true).toBool())
             {
@@ -252,7 +254,7 @@ void searchTab::load()
 			}
 		}
 	}
-	if (ui->checkMergeResults->isChecked())
+	if (ui->checkMergeResults->isChecked() && m_layouts.size() > 0)
 	{ ui->layoutResults->addLayout(m_layouts[0], 0, 0, 1, 1); }
     m_page = 0;
 
@@ -263,6 +265,9 @@ bool sortByFrequency(Tag s1, Tag s2)
 { return s1.count() > s2.count(); }
 void searchTab::finishedLoading(Page* page)
 {
+	if (m_stop)
+	{ return; }
+
 	log(tr("Réception de la page <a href=\"%1\">%1</a>").arg(Qt::escape(page->url().toString())));
 
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
@@ -350,10 +355,11 @@ void searchTab::finishedLoading(Page* page)
 			}
 			if (!page->errors().isEmpty() && settings.value("showwarnings", true).toBool())
 			{ txt->setText(txt->text()+"<br/>"+page->errors().join("<br/>")); }
-		int page_x = pos%ui->spinColumns->value(), page_y = (pos/ui->spinColumns->value())*2;
+		int page_x = pos % ui->spinColumns->value(), page_y = (pos / ui->spinColumns->value()) * 2;
 		ui->layoutResults->addWidget(txt, page_y, page_x, 1, 1);
 		ui->layoutResults->setRowMinimumHeight(page_y, height()/20);
-		ui->layoutResults->addLayout(m_layouts[pos], page_y+1, page_x, 1, 1);
+		if (m_layouts.size() > pos)
+		{ ui->layoutResults->addLayout(m_layouts[pos], page_y + 1, page_x, 1, 1); }
 	}
 
 	if (!settings.value("useregexfortags", true).toBool())
@@ -517,6 +523,9 @@ void searchTab::finishedLoadingTags(Page *page)
 
 void searchTab::finishedLoadingPreview(Image *img)
 {
+	if (m_stop)
+	{ return; }
+
 	int position = m_images.indexOf(img), page = 0;
 	if (!ui->checkMergeResults->isChecked())
 	{ page = m_pages.values().indexOf(img->page()); }
@@ -575,11 +584,13 @@ void searchTab::finishedLoadingPreview(Image *img)
 		connect(l, SIGNAL(appui(int)), this, SLOT(webZoom(int)));
 		connect(l, SIGNAL(rightClick(int)), _mainwindow, SLOT(batchChange(int)));
 	int perpage = img->page()->site().value("Urls/Selected/Tags").contains("{limit}") ? ui->spinImagesPerPage->value() : img->page()->images().size();
+	perpage = perpage > 0 ? perpage : 20;
 	int pl = ceil(sqrt(perpage));
 	int pp = perpage;
 	if (ui->checkMergeResults->isChecked())
 	{ pp = m_images.count(); }
-	m_layouts[page]->addWidget(l, floor(float(position%pp)/pl), position%pl);
+	if (m_layouts.size() > page)
+	{ m_layouts[page]->addWidget(l, floor(float(position % pp) / pl), position % pl); }
 }
 
 void searchTab::webZoom(int id)

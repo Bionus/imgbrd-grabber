@@ -88,7 +88,7 @@ class searchTab : public QWidget
 		QList<bool>								m_selectedSources;
 		QList<QCheckBox*>						m_checkboxes;
 		QString									m_link, m_lastTags, m_wiki, m_tags;
-		bool									m_sized, m_from_history;
+		bool									m_sized, m_from_history, m_stop;
 		int										m_page, m_history_cursor;
 		QList<QGridLayout*>						m_layouts;
 		QList<QMap<QString,QString> >			m_history;
