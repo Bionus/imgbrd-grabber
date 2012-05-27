@@ -21,9 +21,7 @@ class startWindow : public QDialog
 		~startWindow();
 
 	public slots:
-		void save();
-		void on_openButton_clicked();
-		void on_filenameLineEdit_textChanged(QString);
+		void openOptions();
 
 	private:
 		mainWindow *m_parent;

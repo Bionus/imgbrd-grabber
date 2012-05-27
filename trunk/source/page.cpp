@@ -220,54 +220,8 @@ void Page::parse(QNetworkReply* r)
 		}
 	}
 
-	// JSON
-	else if (m_format == "json")
-	{
-		QVariant src = Json::parse(m_source);
-		if (!src.isNull())
-		{
-			QMap<QString, QVariant> sc;
-			QList<QVariant> sourc = src.toList();
-			for (int id = first; id < sourc.count()/* && id < m_imagesPerPage + first*/; id++)
-			{
-				sc = sourc.at(id).toMap();
-				QStringMap d;
-				QStringList infos;
-				infos << "created_at" << "status" << "source" << "has_comments" << "file_url" << "sample_url" << "change" << "sample_width" << "has_children" << "preview_url" << "width" << "md5" << "preview_width" << "sample_height" << "parent_id" << "height" << "has_notes" << "creator_id" << "file_size" << "id" << "preview_height" << "rating" << "tags" << "author" << "score";
-				for (int i = 0; i < infos.count(); i++)
-				{ d[infos.at(i)] = sc.value(infos.at(i)).toString().trimmed(); }
-				if (!d["preview_url"].startsWith("http://") && !d["preview_url"].startsWith("https://"))
-				{ d["preview_url"] = "http://"+m_site["Url"]+QString(d["preview_url"].startsWith("/") ? "" : "/")+d["preview_url"]; }
-				if (!d["file_url"].startsWith("http://") && !d["file_url"].startsWith("https://"))
-				{ d["file_url"] = "http://"+m_site["Url"]+QString(d["file_url"].startsWith("/") ? "" : "/")+d["file_url"]; }
-				d["page_url"] = m_site["Urls/Html/Post"];
-				QString t = m_search.join(" ");
-				if (m_site.contains("DefaultTag") && t.isEmpty())
-				{ t = m_site["DefaultTag"]; }
-				d["page_url"].replace("{tags}", QUrl::toPercentEncoding(t));
-				d["page_url"].replace("{id}", d["id"]);
-				int timezonedecay = QDateTime::currentDateTime().time().hour()-QDateTime::currentDateTime().toUTC().addSecs(-60*60*4).time().hour();
-				Image *img = new Image(d, timezonedecay, this);
-				QString error = img->filter(m_postFiltering);
-				if (error.isEmpty())
-				{ m_images.append(img); }
-				else
-				{
-					img->deleteLater();
-					log(tr("Image #%1 ignored. Reason: %2.").arg(QString::number(id+1), error));
-				}
-			}
-		}
-		else
-		{
-			fallback();
-			load();
-			return;
-		}
-	}
-
 	// RSS
-	if (m_format == "rss")
+	else if (m_format == "rss")
 	{
 		// Initializations
 		QDomDocument doc;
@@ -402,6 +356,18 @@ void Page::parse(QNetworkReply* r)
 			{ t = m_site["DefaultTag"]; }
 			d["page_url"].replace("{tags}", QUrl::toPercentEncoding(t));
 			d["page_url"].replace("{id}", d["id"]);
+
+			if (order.contains("json") && !d["json"].isEmpty())
+			{
+				QVariant src = Json::parse(d["json"]);
+				if (!src.isNull())
+				{
+					QMap<QString,QVariant> map = src.toMap();
+					for (int i = 0; i < map.size(); i++)
+					{ d[map.keys().at(i)] = map.values().at(i).toString(); }
+				}
+			}
+
 			int timezonedecay = QDateTime::currentDateTime().time().hour()-QDateTime::currentDateTime().toUTC().addSecs(-60*60*4).time().hour();
 			Image *img = new Image(d, timezonedecay, this);
 			QString error = img->filter(m_postFiltering);
@@ -413,6 +379,52 @@ void Page::parse(QNetworkReply* r)
 				log(tr("Image #%1 ignored. Reason: %2.").arg(QString::number(id+1), error));
 			}
 			id++;
+		}
+	}
+
+	// JSON
+	else if (m_format == "json")
+	{
+		QVariant src = Json::parse(m_source);
+		if (!src.isNull())
+		{
+			QMap<QString, QVariant> sc;
+			QList<QVariant> sourc = src.toList();
+			for (int id = first; id < sourc.count()/* && id < m_imagesPerPage + first*/; id++)
+			{
+				sc = sourc.at(id).toMap();
+				QStringMap d;
+				QStringList infos;
+				infos << "created_at" << "status" << "source" << "has_comments" << "file_url" << "sample_url" << "change" << "sample_width" << "has_children" << "preview_url" << "width" << "md5" << "preview_width" << "sample_height" << "parent_id" << "height" << "has_notes" << "creator_id" << "file_size" << "id" << "preview_height" << "rating" << "tags" << "author" << "score";
+				for (int i = 0; i < infos.count(); i++)
+				{ d[infos.at(i)] = sc.value(infos.at(i)).toString().trimmed(); }
+				if (!d["preview_url"].startsWith("http://") && !d["preview_url"].startsWith("https://"))
+				{ d["preview_url"] = "http://"+m_site["Url"]+QString(d["preview_url"].startsWith("/") ? "" : "/")+d["preview_url"]; }
+				if (!d["file_url"].startsWith("http://") && !d["file_url"].startsWith("https://"))
+				{ d["file_url"] = "http://"+m_site["Url"]+QString(d["file_url"].startsWith("/") ? "" : "/")+d["file_url"]; }
+				d["page_url"] = m_site["Urls/Html/Post"];
+				QString t = m_search.join(" ");
+				if (m_site.contains("DefaultTag") && t.isEmpty())
+				{ t = m_site["DefaultTag"]; }
+				d["page_url"].replace("{tags}", QUrl::toPercentEncoding(t));
+				d["page_url"].replace("{id}", d["id"]);
+				int timezonedecay = QDateTime::currentDateTime().time().hour()-QDateTime::currentDateTime().toUTC().addSecs(-60*60*4).time().hour();
+				Image *img = new Image(d, timezonedecay, this);
+				QString error = img->filter(m_postFiltering);
+				if (error.isEmpty())
+				{ m_images.append(img); }
+				else
+				{
+					img->deleteLater();
+					log(tr("Image #%1 ignored. Reason: %2.").arg(QString::number(id+1), error));
+				}
+			}
+		}
+		else
+		{
+			fallback();
+			load();
+			return;
 		}
 	}
 

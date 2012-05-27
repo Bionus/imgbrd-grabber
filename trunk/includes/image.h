@@ -18,9 +18,9 @@ class Image : public QObject
 	public:
 		Image(QMap<QString,QString> details, int timezonedecay = 0, Page *parent = NULL);
 		~Image();
-		int value();
-		QString filter(QStringList);
-		QString path(QString fn = "", QString pth = "");
+		int			value();
+		QString		filter(QStringList);
+		QString		path(QString fn = "", QString pth = "", bool complex = true);
 		QStringList blacklisted(QStringList);
 		QString		url();
 		QString		md5();

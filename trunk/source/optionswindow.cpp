@@ -76,7 +76,7 @@ optionsWindow::optionsWindow(mainWindow *parent) : QDialog(parent), m_parent(par
 		ui->lineFolderFavorites->setText(settings.value("path_favorites").toString());
 		ui->lineFilename->setText(settings.value("filename_real").toString());
 		ui->lineFavorites->setText(settings.value("filename_favorites").toString());
-		ui->lineSeparator->setText(settings.value("separator").toString());
+		ui->lineSeparator->setText(settings.value("separator", " ").toString());
 		ui->lineArtistsIfNone->setText(settings.value("artist_empty", "anonymous").toString());
 		ui->checkArtistsKeepAll->setChecked(settings.value("artist_useall", false).toBool());
 		ui->checkArtistsKeepAll->toggle();
@@ -407,6 +407,8 @@ void optionsWindow::on_buttonColoringIgnoredsFont_clicked()
 }
 
 void optionsWindow::updateContainer(QTreeWidgetItem *current, QTreeWidgetItem *previous)
+{ setCategory(current->text(0)); }
+void optionsWindow::setCategory(QString value)
 {
 	QStringList texts = QStringList() <<
 		tr("Général", "update") <<
@@ -425,7 +427,7 @@ void optionsWindow::updateContainer(QTreeWidgetItem *current, QTreeWidgetItem *p
 		tr("Connexion", "update") <<
 		tr("Proxy", "update") <<
 		tr("Commandes", "update");
-	ui->stackedWidget->setCurrentIndex(texts.indexOf(current->text(0)));
+	ui->stackedWidget->setCurrentIndex(texts.indexOf(value));
 }
 
 void optionsWindow::save()

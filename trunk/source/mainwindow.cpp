@@ -164,6 +164,7 @@ void mainWindow::init()
 							}
 						}
 						m_settings->endGroup();
+						prefs.close();
 					}
 				}
 			}
@@ -317,8 +318,8 @@ void mainWindow::loadSites()
 				else
 				{ log(tr("Aucune source valide trouvée dans le fichier model.xml de %1.").arg(dir.at(i))); }
 			}
+			file.close();
 		}
-		file.close();
 	}
 	m_sites.clear();
 	m_sites = stes;
@@ -355,22 +356,22 @@ bool mainWindow::saveTabs(QString filename)
 	foreach (searchTab *tab, m_tabs)
 	{ tabs.append(tab->tags()+"¤"+QString::number(tab->ui->spinPage->value())+"¤"+QString::number(tab->ui->spinImagesPerPage->value())+"¤"+QString::number(tab->ui->spinColumns->value())); }
 
-	QFile *f = new QFile(filename, this);
-	if (f->open(QFile::WriteOnly))
+	QFile f(filename);
+	if (f.open(QFile::WriteOnly))
 	{
-		f->write(tabs.join("\r\n").toUtf8());
-		f->close();
+		f.write(tabs.join("\r\n").toUtf8());
+		f.close();
 		return true;
 	}
 	return false;
 }
 bool mainWindow::loadTabs(QString filename)
 {
-	QFile *f = new QFile(filename, this);
-	if (f->open(QFile::ReadOnly))
+	QFile f(filename);
+	if (f.open(QFile::ReadOnly))
 	{
-		QString links = f->readAll().trimmed();
-		f->close();
+		QString links = f.readAll().trimmed();
+		f.close();
 
 		QStringList tabs = links.split("\r\n");
 		for (int j = 0; j < tabs.size(); j++)
@@ -1647,13 +1648,15 @@ void mainWindow::getAllPerformImage(Image* img)
 			{
 				QFile f(fp);
 				if (f.open(QIODevice::WriteOnly))
-				{ f.write(data); }
+				{
+					f.write(data);
+					f.close();
+				}
 				else
 				{
 					log(tr("Impossible d'ouvrir le fichier de destination: %1.").arg(fp), Error);
 					m_getAllErrors++;
 				}
-				f.close();
 			}
 			else
 			{
@@ -1694,7 +1697,7 @@ void mainWindow::getAllPerformImage(Image* img)
 			}
 			if (!m_settings->value("Exec/image").toString().isEmpty())
 			{
-				QString exec = img->path(m_settings->value("Exec/image").toString());
+				QString exec = img->path(m_settings->value("Exec/image").toString(), "", false);
 				exec.replace("%path%", fp);
 				exec.replace(" \\C ", " /C ");
 				log(tr("Execution seule de \"%1\"").arg(exec));
@@ -1702,7 +1705,7 @@ void mainWindow::getAllPerformImage(Image* img)
 			}
 			if (!m_settings->value("Exec/Group/image").toString().isEmpty())
 			{
-				QString exec = img->path(m_settings->value("Exec/Group/image").toString());
+				QString exec = img->path(m_settings->value("Exec/Group/image").toString(), "", false);
 				exec.replace("%path%", fp);
 				log(tr("Execution groupée de \"%1\"").arg(exec));
 				m_process->write(exec.toUtf8());
@@ -1791,11 +1794,11 @@ bool mainWindow::saveLinkList(QString filename)
 		links += "\r\n";
 	}
 
-	QFile *f = new QFile(filename, this);
-	if (f->open(QFile::WriteOnly))
+	QFile f(filename);
+	if (f.open(QFile::WriteOnly))
 	{
-		f->write(links.trimmed().toUtf8());
-		f->close();
+		f.write(links.trimmed().toUtf8());
+		f.close();
 		return true;
 	}
 	return false;
@@ -1814,11 +1817,11 @@ void mainWindow::on_buttonLoadLinkList_clicked()
 }
 bool mainWindow::loadLinkList(QString filename)
 {
-	QFile *f = new QFile(filename, this);
-	if (f->open(QFile::ReadOnly))
+	QFile f(filename);
+	if (f.open(QFile::ReadOnly))
 	{
-		QString links = f->readAll();
-		f->close();
+		QString links = f.readAll();
+		f.close();
 
 		QStringList det = links.split("\r\n", QString::SkipEmptyParts);
 		if (det.size() < 1)
