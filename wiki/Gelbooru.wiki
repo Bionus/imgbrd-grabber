@@ -73,7 +73,7 @@ $lowerlimit = 20;
 $no_cache = true;
 $tag_count = 20;
 }}}
-You can of course change those values by whatever you want.
+You can of course change those values to whatever you want.
 
 Now, go to [http://localhost/gelbooru/install/ http://localhost/gelbooru/install/] and register your admin account.
 
