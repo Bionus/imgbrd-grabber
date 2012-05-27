@@ -59,7 +59,7 @@ By
 {{{
 $site_url = "http://localhost/gelbooru";
 }}}
-And finally replace
+Replace
 {{{
 $site_url3 = "Default Booru";
 }}}
@@ -67,6 +67,13 @@ By (you can change "Localbooru" by the name of your booru)
 {{{
 $site_url2 = $site_url3 = "Localbooru";
 }}}
+And finally add, just before the "?>" at the end of the file
+{{{
+$lowerlimit = 20;
+$no_cache = true;
+$tag_count = 20;
+}}}
+You can of course change those values by whatever you want.
 
 Now, go to [http://localhost/gelbooru/install/ http://localhost/gelbooru/install/] and register your admin account.
 
@@ -78,7 +85,7 @@ The installation is finished! You can now use your booru going [http://localhost
 
 Launch Grabber, then open the options window and go to the "Commands" part. Set it to those values:
 
-Initialization
+Initialization (note that the mysql version may vary)
 {{{
 "C:\Program Files\Wamp\bin\mysql\mysql5.5.8\bin\mysql.exe" --user=root --password= gelbooru
 }}}
