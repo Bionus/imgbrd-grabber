@@ -109,8 +109,11 @@ void TextEdit::insertCompletion(const QString& completion)
 QString TextEdit::textUnderCursor() const
 {
 	QTextCursor tc = textCursor();
-	tc.select(QTextCursor::WordUnderCursor);
-	return tc.selectedText();
+	QString txt = toPlainText();
+	int i2 = txt.indexOf(' ', tc.position());
+	int i1 = txt.lastIndexOf(' ', tc.position() - txt.size());
+	i1 = i1 < 0 ? 0 : i1;
+	return txt.mid(i1, i2 - i1);
 }
 
 void TextEdit::focusInEvent(QFocusEvent *e)
