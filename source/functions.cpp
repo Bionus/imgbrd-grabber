@@ -69,13 +69,14 @@ QMap<QString,QString> getFilenames()
  */
 QDateTime qDateTimeFromString(QString str, int timezonedecay)
 {
-	QDateTime date;
-	QList<QString> months;
-	months << "Jan" << "Feb" << "Mar" << "Apr" << "May" << "Jun" << "Jul" << "Aug" << "Sep" << "Oct" << "Nov" << "Dec";
+	QDateTime date = QDateTime::fromString(str.left(19), "yyyy/MM/dd HH:mm:ss");
+	date = date.addSecs(str.mid(str.length() - 5).toInt() * 36);
+	return date;
+	/*QDateTime date;
+	QStringList months = QStringList() << "Jan" << "Feb" << "Mar" << "Apr" << "May" << "Jun" << "Jul" << "Aug" << "Sep" << "Oct" << "Nov" << "Dec";
 	QTime time(str.mid(11,2).toInt(), str.mid(14,2).toInt(), str.mid(17,2).toInt());
 	date.setDate(QDate(str.mid(26,4).toInt(), months.indexOf(str.mid(4,3))+1, str.mid(8,2).toInt()+(str.mid(11,2).toInt() >= 18)));
-	date.setTime(time.addSecs(3600*timezonedecay));
-	return date;
+	date.setTime(time.addSecs(3600 * timezonedecay));*/
 }
 
 /**

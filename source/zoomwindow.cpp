@@ -624,14 +624,6 @@ QString zoomWindow::saveImage(bool fav)
 	QFile f(fp);
 	if (!f.exists())
 	{
-		QProcess *p = new QProcess(this);
-		if (!settings.value("Exec/Group/init").toString().isEmpty())
-		{
-			log(tr("Execution de la commande d'initialisation' \"%1\"").arg(settings.value("Exec/Group/init").toString()));
-			p->start(settings.value("Exec/Group/init").toString());
-			if (!p->waitForStarted(10000))
-			{ log(tr("<b>Erreur :</b> %1").arg(tr("erreur lors de la commande d'initialisation : %1.").arg("timed out"))); }
-		}
 		QDir path_to_file(fp.section(QDir::toNativeSeparators("/"), 0, -2));
 		if (!path_to_file.exists())
 		{
@@ -650,6 +642,16 @@ QString zoomWindow::saveImage(bool fav)
 		else
 		{ QFile::copy(m_source, f.fileName()); }
 
+		// Commands: initialization
+		QProcess *p = new QProcess(this);
+		if (!settings.value("Exec/Group/init").toString().isEmpty())
+		{
+			log(tr("Execution de la commande d'initialisation' \"%1\"").arg(settings.value("Exec/Group/init").toString()));
+			p->start(settings.value("Exec/Group/init").toString());
+			if (!p->waitForStarted(10000))
+			{ log(tr("<b>Erreur :</b> %1").arg(tr("erreur lors de la commande d'initialisation : %1.").arg("timed out"))); }
+		}
+		// Commands: tags
 		QMap<QString,int> types;
 		types["general"] = 0;
 		types["artist"] = 1;
@@ -681,9 +683,10 @@ QString zoomWindow::saveImage(bool fav)
 				p->write(exec.toAscii());
 			}
 		}
+		// Commands: image
 		if (!settings.value("Exec/image").toString().isEmpty())
 		{
-			QString exec = m_image->path(settings.value("Exec/image").toString());
+			QString exec = m_image->path(settings.value("Exec/image").toString(), "", false);
 			exec.replace("%path%", fp);
 			exec.replace(" \\C ", " /C ");
 			log(tr("Execution seule de \"%1\"").arg(exec));
@@ -691,7 +694,7 @@ QString zoomWindow::saveImage(bool fav)
 		}
 		if (!settings.value("Exec/Group/image").toString().isEmpty())
 		{
-			QString exec = m_image->path(settings.value("Exec/Group/image").toString());
+			QString exec = m_image->path(settings.value("Exec/Group/image").toString(), "", false);
 			exec.replace("%path%", fp);
 			log(tr("Execution groupée de \"%1\"").arg(exec));
 			p->write(exec.toAscii());
