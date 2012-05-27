@@ -72,12 +72,18 @@ And finally add, just before the "?>" at the end of the file
 $lowerlimit = 20;
 $no_cache = false;
 $tag_count = 20;
+$new_tag_list = '--------------------------------------------------';
+$new_user_list = '--------------------------------------------------';
+$new_cthreshold = 0;
+$new_pthreshold = 0;
+$new_my_tags = '';
+error_reporting(0);
 }}}
 You can of course change those values to whatever you want.
 
 Now, go to [http://localhost/gelbooru/install/ http://localhost/gelbooru/install/] and register your admin account.
 
-The installation is finished! You can now use your booru going [http://localhost/gelbooru/ here]. If you run into errors after adding images (and you definitely will), click on the WAMP icon on the system tray, go to "PHP > PHP settings" and uncheck "display errors".
+The installation is finished! You can now use your booru going [http://localhost/gelbooru/ here]. If you still run into errors after adding images, click on the WAMP icon on the system tray, go to "PHP > PHP settings" and uncheck "display errors".
 
 
 
