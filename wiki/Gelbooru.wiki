@@ -70,14 +70,14 @@ $site_url2 = $site_url3 = "Localbooru";
 And finally add, just before the "?>" at the end of the file
 {{{
 $lowerlimit = 20;
-$no_cache = true;
+$no_cache = false;
 $tag_count = 20;
 }}}
 You can of course change those values to whatever you want.
 
 Now, go to [http://localhost/gelbooru/install/ http://localhost/gelbooru/install/] and register your admin account.
 
-The installation is finished! You can now use your booru going [http://localhost/gelbooru/ here]. If you run into errors after adding images, click on the WAMP icon on the system tray, go to "PHP > PHP settings" and uncheck "display errors".
+The installation is finished! You can now use your booru going [http://localhost/gelbooru/ here]. If you run into errors after adding images (and you definitely will), click on the WAMP icon on the system tray, go to "PHP > PHP settings" and uncheck "display errors".
 
 
 
