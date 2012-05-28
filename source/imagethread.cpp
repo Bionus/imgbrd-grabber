@@ -9,5 +9,5 @@ void ImageThread::run()
     QImage image;
     image.loadFromData(m_data);
     emit finished(image, m_data.size());
-    this->deleteLater();
+    deleteLater();
 }
