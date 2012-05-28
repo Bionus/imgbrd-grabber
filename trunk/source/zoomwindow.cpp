@@ -116,7 +116,8 @@ zoomWindow::~zoomWindow()
     { movie->deleteLater(); }
 	if (m_labelTags != NULL)
     { m_labelTags->deleteLater(); }
-    delete image;
+	if (image != NULL)
+	{ delete image; }
     delete ui;
 }
 
@@ -335,8 +336,8 @@ void zoomWindow::downloadProgress(qint64 size, qint64 total)
 		m_data.append(m_reply->readAll());
 		m_thread = true;
 		ImageThread *th = new ImageThread(m_data, this);
-        connect(th, SIGNAL(finished(QImage, int)), this, SLOT(display(QImage, int)));
-        th->start();
+		connect(th, SIGNAL(finished(QImage, int)), this, SLOT(display(QImage, int)));
+		th->start();
 		/*QPixmap image;
 		image.loadFromData(m_data);
 		display(&image, m_data.size());*/
@@ -347,31 +348,31 @@ void zoomWindow::display(QPixmap *pix, int size)
 	if (!pix->size().isEmpty() && size >= m_size)
 	{
 		m_size = size;
-		this->image = pix;
-		this->update(!m_finished);
+		image = pix;
+		update(!m_finished);
 	}
 }
 void zoomWindow::display(QPixmap pix, int size)
 {
-    if (!pix.size().isEmpty() && size >= m_size)
+	if (!pix.size().isEmpty() && size >= m_size)
     {
         m_size = size;
-        delete this->image;
-        this->image = new QPixmap(pix);
-        this->update(!m_finished);
-        m_thread = false;
-    }
+		delete image;
+		image = new QPixmap(pix);
+		update(!m_finished);
+		m_thread = false;
+	}
 }
 void zoomWindow::display(QImage pix, int size)
 {
     if (!pix.size().isEmpty() && size >= m_size)
     {
-        m_size = size;
-        //delete this->image;
-        this->image = new QPixmap(QPixmap::fromImage(pix));
-        this->update(!m_finished);
+		m_size = size;
+		delete image;
+		image = new QPixmap(QPixmap::fromImage(pix));
+		update(!m_finished);
         m_thread = false;
-    }
+	}
 }
 
 void zoomWindow::replyFinished(Image* img)
@@ -509,8 +510,8 @@ void zoomWindow::replyFinishedZoom()
 			this->update();*/
 			m_thread = true;
 			ImageThread *th = new ImageThread(m_data, this);
-            connect(th, SIGNAL(finished(QImage, int)), this, SLOT(display(QImage, int)));
-            th->start();
+			connect(th, SIGNAL(finished(QImage, int)), this, SLOT(display(QImage, int)));
+			th->start();
 			this->loaded = true;
 		}
 		if (this->m_mustSave > 0)

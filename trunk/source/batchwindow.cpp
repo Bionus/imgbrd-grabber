@@ -6,7 +6,7 @@
 
 
 
-batchWindow::batchWindow(QWidget *parent) : QDialog(parent), ui(new Ui::batchWindow), m_items(0), m_images(0), m_cancel(false)
+batchWindow::batchWindow(QWidget *parent) : QDialog(), ui(new Ui::batchWindow), m_items(0), m_images(0), m_cancel(false)
 {
 	ui->setupUi(this);
 	ui->tableWidget->resizeColumnToContents(0);

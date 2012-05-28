@@ -225,7 +225,7 @@ void searchTab::load()
 		m_pages.value(m_pages.keys().at(i))->abort();
 		m_pages.value(m_pages.keys().at(i))->abortTags();
 	}
-    qDeleteAll(m_pages);
+	//qDeleteAll(m_pages);
 	m_pages.clear();
     for (int i = 0; i < m_images.size(); i++)
 	{ m_images.at(i)->abortPreview(); }
@@ -604,7 +604,7 @@ void searchTab::webZoom(int id)
 		QStringList detected = image->blacklisted(blacklistedtags);
 		if (!detected.isEmpty())
 		{
-			int reply = QMessageBox::question(this, tr("List noire"), tr("%n tag(s) figurant dans la liste noire détécté(s) sur cette image : %1. Voulez-vous l'afficher tout de même ?", "", detected.size()).arg(detected.join(", ")), QMessageBox::Yes | QMessageBox::No);
+			int reply = QMessageBox::question(m_parent, tr("List noire"), tr("%n tag(s) figurant dans la liste noire détécté(s) sur cette image : %1. Voulez-vous l'afficher tout de même ?", "", detected.size()).arg(detected.join(", ")), QMessageBox::Yes | QMessageBox::No);
 			if (reply == QMessageBox::No)
 			{ return; }
 		}

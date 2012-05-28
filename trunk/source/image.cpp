@@ -492,7 +492,6 @@ QString Image::path(QString fn, QString pth, bool complex)
 		filename.replace("\\", "/");
 		if (filename.left(1) == "/")	{ filename = filename.right(filename.length()-1);	}
 		if (pth.right(1) == "/")		{ pth = pth.left(pth.length()-1);					}
-		qDebug() << filename;
 
 		// Conditionals
 		if (complex)
@@ -502,7 +501,6 @@ QString Image::path(QString fn, QString pth, bool complex)
 			{ c.append("search_"+QString::number(i)); }
 			QStringList tokens = QStringList() << "artist" << "general" << "copyright" << "character" << "model" << "model|artist" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "allo" << c;
 			filename = analyse(tokens, filename, details["allos"]);
-			qDebug() << filename;
 		}
 
 		// No duplicates in %all%
@@ -515,7 +513,6 @@ QString Image::path(QString fn, QString pth, bool complex)
 		for (int i = 0; i < rem.size(); i++)
 		{ l.removeAll(rem.at(i)); }
 		replaces.append(QStrPP("%all%", QStrP(l.join(settings.value("separator").toString()), "")));
-		qDebug() << filename;
 
 		// We replace everithing
 		for (int i = 0; i < replaces.size(); i++)
@@ -532,13 +529,11 @@ QString Image::path(QString fn, QString pth, bool complex)
 			else
 			{ filename.replace(val.first, res); }
 		}
-		qDebug() << filename;
 
 		// We remove empty dir names
 		while (filename.indexOf("//") >= 0)
 		{ filename.replace("//", "/"); }
 	}
-	qDebug() << filename;
 
 	// Max filename size option
 	if (filename.length() > settings.value("limit").toInt() && settings.value("limit").toInt() > 0)

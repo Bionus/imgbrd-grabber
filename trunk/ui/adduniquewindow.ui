@@ -171,6 +171,70 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>lineId</sender>
+   <signal>returnPressed()</signal>
+   <receiver>AddUniqueWindow</receiver>
+   <slot>ok()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>160</x>
+     <y>41</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>289</x>
+     <y>45</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lineMd5</sender>
+   <signal>returnPressed()</signal>
+   <receiver>AddUniqueWindow</receiver>
+   <slot>ok()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>257</x>
+     <y>76</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>288</x>
+     <y>76</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lineFilename</sender>
+   <signal>returnPressed()</signal>
+   <receiver>AddUniqueWindow</receiver>
+   <slot>ok()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>281</x>
+     <y>133</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>289</x>
+     <y>132</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lineFolder</sender>
+   <signal>returnPressed()</signal>
+   <receiver>AddUniqueWindow</receiver>
+   <slot>ok()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>188</x>
+     <y>100</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>292</x>
+     <y>105</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>ok()</slot>
