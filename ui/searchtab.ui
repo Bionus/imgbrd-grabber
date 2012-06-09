@@ -230,7 +230,13 @@
       <number>0</number>
      </property>
      <item>
-      <layout class="QGridLayout" name="layoutResults"/>
+      <widget class="QWidget" name="widgetResults" native="true">
+       <layout class="QGridLayout" name="layoutResults">
+        <property name="margin">
+         <number>0</number>
+        </property>
+       </layout>
+      </widget>
      </item>
      <item>
       <spacer name="verticalSpacer">

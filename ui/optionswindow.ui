@@ -148,7 +148,7 @@
         </sizepolicy>
        </property>
        <property name="currentIndex">
-        <number>4</number>
+        <number>12</number>
        </property>
        <widget class="QWidget" name="page1">
         <layout class="QFormLayout" name="formLayout_14">
@@ -1393,55 +1393,131 @@ p, li { white-space: pre-wrap; }
        </widget>
        <widget class="QWidget" name="page13">
         <layout class="QFormLayout" name="formLayout_9">
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_37">
-           <property name="text">
-            <string>Marges horizontales</string>
+         <property name="fieldGrowthPolicy">
+          <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+         </property>
+         <item row="0" column="0" colspan="2">
+          <widget class="QGroupBox" name="groupBox_3">
+           <property name="title">
+            <string>Serveurs</string>
            </property>
+           <layout class="QFormLayout" name="formLayout_8">
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_60">
+              <property name="text">
+               <string>Marges horizontales</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QSpinBox" name="spinMainMargins">
+              <property name="maximum">
+               <number>200</number>
+              </property>
+              <property name="value">
+               <number>10</number>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_67">
+              <property name="text">
+               <string>Bordures</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QSpinBox" name="spinServerBorders"/>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="label_68">
+              <property name="text">
+               <string>Couleur</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <layout class="QHBoxLayout" name="horizontalLayout_16">
+              <item>
+               <widget class="QLineEdit" name="lineBorderColor"/>
+              </item>
+              <item>
+               <widget class="QPushButton" name="buttonBorderColor">
+                <property name="text">
+                 <string>Couleur</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+           <zorder>label_60</zorder>
+           <zorder>label_60</zorder>
+           <zorder>spinMainMargins</zorder>
+           <zorder>label_67</zorder>
+           <zorder>spinServerBorders</zorder>
+           <zorder>label_68</zorder>
+           <zorder>horizontalLayoutWidget</zorder>
           </widget>
          </item>
-         <item row="0" column="1">
-          <widget class="QSpinBox" name="spinHorizontalMargins">
-           <property name="maximum">
-            <number>20</number>
+         <item row="1" column="0" colspan="2">
+          <widget class="QGroupBox" name="groupBox_2">
+           <property name="title">
+            <string>Images</string>
            </property>
-           <property name="value">
-            <number>6</number>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="label_38">
-           <property name="text">
-            <string>Marges verticales</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="QSpinBox" name="spinVerticalMargins">
-           <property name="maximum">
-            <number>20</number>
-           </property>
-           <property name="value">
-            <number>6</number>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="label_59">
-           <property name="text">
-            <string>Bordures</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="1">
-          <widget class="QSpinBox" name="spinBorders">
-           <property name="maximum">
-            <number>10</number>
-           </property>
-           <property name="value">
-            <number>3</number>
-           </property>
+           <layout class="QFormLayout" name="formLayout">
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_37">
+              <property name="text">
+               <string>Marges horizontales</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QSpinBox" name="spinHorizontalMargins">
+              <property name="maximum">
+               <number>20</number>
+              </property>
+              <property name="value">
+               <number>6</number>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_38">
+              <property name="text">
+               <string>Marges verticales</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QSpinBox" name="spinVerticalMargins">
+              <property name="maximum">
+               <number>20</number>
+              </property>
+              <property name="value">
+               <number>6</number>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="label_59">
+              <property name="text">
+               <string>Bordures</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QSpinBox" name="spinBorders">
+              <property name="maximum">
+               <number>10</number>
+              </property>
+              <property name="value">
+               <number>3</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </widget>
          </item>
         </layout>

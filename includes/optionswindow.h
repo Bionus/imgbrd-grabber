@@ -50,6 +50,8 @@ class optionsWindow : public QDialog
 		void on_buttonColoringFavoritesFont_clicked();
 		void on_buttonColoringBlacklistedsFont_clicked();
 		void on_buttonColoringIgnoredsFont_clicked();
+		void on_lineBorderColor_textChanged();
+		void on_buttonBorderColor_clicked();
 		void on_buttonFilenamePlus_clicked();
 		void on_buttonFavoritesPlus_clicked();
 		void on_buttonCustom_clicked();
