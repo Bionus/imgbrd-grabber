@@ -126,6 +126,10 @@ void searchTab::optionsChanged()
 	ui->layoutResults->setVerticalSpacing(settings.value("Margins/vertical", 6).toInt());
 	ui->spinImagesPerPage->setValue(settings.value("limit", 20).toInt());
 	ui->spinColumns->setValue(settings.value("columns", 1).toInt());
+	/*QPalette p = ui->widgetResults->palette();
+	p.setColor(ui->widgetResults->backgroundRole(), QColor(settings.value("serverBorderColor", "#000000").toString()));
+	ui->widgetResults->setPalette(p);*/
+	ui->layoutResults->setHorizontalSpacing(settings.value("Margins/main", 10).toInt());
 }
 
 
@@ -148,6 +152,7 @@ void searchTab::saveSources(QList<bool> sel)
 	DONE();
 	updateCheckboxes();
 }
+
 void searchTab::updateCheckboxes()
 {
 	log(tr("Mise à jour des cases à cocher."));
