@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Grabber"
-#define MyAppVersion "3.1.4"
+#define MyAppVersion "3.1.5a"
 #define MyAppPublisher "Bionus"
 #define MyAppURL "http://code.google.com/p/imgbrd-grabber/"
 #define MyAppExeName "Grabber.exe"
@@ -75,8 +75,10 @@ Source: "D:\Programmation\C++\Qt\Grabber\release\libgcc_s_dw2-1.dll"; DestDir: "
 Source: "D:\Programmation\C++\Qt\Grabber\release\mingwm10.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\QtCore4.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\QtGui4.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\Programmation\C++\Qt\Grabber\release\QtNetwork4.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\Programmation\C++\Qt\Grabber\release\QtXml4.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\Programmation\C++\Qt\Grabber\release\QtNetwork4.dll"; DestDir: "{app}"; Flags: ignoreversion     
+Source: "D:\Programmation\C++\Qt\Grabber\release\QtXml4.dll"; DestDir: "{app}"; Flags: ignoreversion              
+Source: "D:\Programmation\C++\Qt\Grabber\release\QtScript4.dll"; DestDir: "{app}"; Flags: ignoreversion           
+Source: "D:\Programmation\C++\Qt\Grabber\release\qscintilla2.dll"; DestDir: "{app}"; Flags: ignoreversion               
 Source: "D:\Programmation\C++\Qt\Grabber\release\imageformats\qgif4.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\imageformats\qico4.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\imageformats\qjpeg4.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
