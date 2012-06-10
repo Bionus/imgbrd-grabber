@@ -1421,16 +1421,26 @@ p, li { white-space: pre-wrap; }
             </item>
             <item row="1" column="0">
              <widget class="QLabel" name="label_67">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="text">
                <string>Bordures</string>
               </property>
              </widget>
             </item>
             <item row="1" column="1">
-             <widget class="QSpinBox" name="spinServerBorders"/>
+             <widget class="QSpinBox" name="spinServerBorders">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+             </widget>
             </item>
             <item row="2" column="0">
              <widget class="QLabel" name="label_68">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="text">
                <string>Couleur</string>
               </property>
@@ -1439,10 +1449,20 @@ p, li { white-space: pre-wrap; }
             <item row="2" column="1">
              <layout class="QHBoxLayout" name="horizontalLayout_16">
               <item>
-               <widget class="QLineEdit" name="lineBorderColor"/>
+               <widget class="QLineEdit" name="lineBorderColor">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+                <property name="text">
+                 <string>#000000</string>
+                </property>
+               </widget>
               </item>
               <item>
                <widget class="QPushButton" name="buttonBorderColor">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="text">
                  <string>Couleur</string>
                 </property>
@@ -1451,13 +1471,6 @@ p, li { white-space: pre-wrap; }
              </layout>
             </item>
            </layout>
-           <zorder>label_60</zorder>
-           <zorder>label_60</zorder>
-           <zorder>spinMainMargins</zorder>
-           <zorder>label_67</zorder>
-           <zorder>spinServerBorders</zorder>
-           <zorder>label_68</zorder>
-           <zorder>horizontalLayoutWidget</zorder>
           </widget>
          </item>
          <item row="1" column="0" colspan="2">
