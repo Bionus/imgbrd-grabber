@@ -109,10 +109,10 @@ void TextEdit::insertCompletion(const QString& completion)
 QString TextEdit::textUnderCursor() const
 {
 	QTextCursor tc = textCursor();
-	QString txt = toPlainText();
-	int i2 = txt.indexOf(' ', tc.position());
-	int i1 = txt.lastIndexOf(' ', tc.position() - txt.size());
-	i1 = i1 < 0 ? 0 : i1;
+	QString txt = ' ' + toPlainText() + ' ';
+	int pos = tc.position();
+	int i2 = txt.indexOf(' ', pos);
+	int i1 = txt.lastIndexOf(' ', i2 - 1) + 1;
 	return txt.mid(i1, i2 - i1);
 }
 
@@ -128,17 +128,18 @@ void TextEdit::keyPressEvent(QKeyEvent *e)
 	if (c && c->popup()->isVisible())
 	{
 		// The following keys are forwarded by the completer to the widget
+		QString curr = c->popup()->currentIndex().data().toString(), under = textUnderCursor();
 		switch (e->key())
 		{
 			case Qt::Key_Enter:
 			case Qt::Key_Return:
-				if (textUnderCursor() != c->currentCompletion())
-				{ e->ignore(); }
+				c->popup()->hide();
+				if (curr == "" || under == curr)
+				{ emit returnPressed(); }
 				else
 				{
-					c->popup()->hide();
-					emit returnPressed();
-					return;
+					insertCompletion(curr);
+					doColor();
 				}
 				return;
 
