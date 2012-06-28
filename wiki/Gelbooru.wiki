@@ -13,15 +13,11 @@ First, we're going to install WAMP, which contains everithing required to have a
 
  # Download the latest version of WampServer here (2.2e as I am writing this): [http://sourceforge.net/projects/wampserver/]
  # Install it somewhere that doesn’t requires admin rights to write into (for example, the default location c:\wamp)
- http://image.noelshack.com/fichiers/2012/26/1340898741-wamplocation.png
  # At the end of the installation, the installer may ask for two things.
   # First, he will ask you what your favorite browser is. You can leave it to the default value which will be Internet Explorer, or change it to another browser (Firefox, Chrome, etc.).
   # Finally, he will ask some email settings. Leave the default values, you don’t care about that.
-  http://image.noelshack.com/fichiers/2012/26/1340898741-wampemail.png
  # Now that WampServer is installed, you should see a little green W in your system tray, near the clock (you may need to expand the tray to see it).
- http://image.noelshack.com/fichiers/2012/26/1340898741-wampnotification.png
  # Congratulations! You can visit your local server by going to [http://localhost/ here]!
- http://image.noelshack.com/fichiers/2012/26/1340898530-wampcheck.png
 
 
 
