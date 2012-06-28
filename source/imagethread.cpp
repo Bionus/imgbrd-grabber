@@ -7,7 +7,7 @@ ImageThread::ImageThread(QByteArray data, QObject* parent) : QThread(parent), m_
 void ImageThread::run()
 {
     QImage image;
-    image.loadFromData(m_data);
-    emit finished(image, m_data.size());
+	if (image.loadFromData(m_data))
+	{ emit finished(image, m_data.size()); }
     deleteLater();
 }

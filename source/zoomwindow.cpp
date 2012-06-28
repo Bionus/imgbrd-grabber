@@ -12,7 +12,7 @@ extern mainWindow *_mainwindow;
 
 
 
-zoomWindow::zoomWindow(Image *image, QStringMap site, QMap<QString,QMap<QString,QString> > *sites, QWidget *parent) : QDialog(0, Qt::Window), ui(new Ui::zoomWindow), m_image(image), m_site(site), timeout(300), loaded(0), oldsize(0), m_labelTags(NULL), image(NULL), movie(NULL), m_program(qApp->arguments().at(0)), m_replyExists(false), m_finished(false), m_thread(false), m_data(QByteArray()), m_size(0), m_sites(sites), m_source()
+zoomWindow::zoomWindow(Image *image, QStringMap site, QMap<QString,QMap<QString,QString> > *sites, QWidget *parent) : QDialog(0, Qt::Window), ui(new Ui::zoomWindow), m_image(image), m_site(site), timeout(300), loaded(0), oldsize(0), m_labelTags(NULL), image(NULL), movie(NULL), m_program(qApp->arguments().at(0)), m_replyExists(false), m_finished(false), m_thread(false), m_data(QByteArray()), m_size(0), m_sites(sites), m_source(), m_th(NULL)
 {
 	ui->setupUi(this);
 	setAttribute(Qt::WA_DeleteOnClose);
@@ -335,9 +335,9 @@ void zoomWindow::downloadProgress(qint64 size, qint64 total)
 	{
 		m_data.append(m_reply->readAll());
 		m_thread = true;
-		ImageThread *th = new ImageThread(m_data, this);
-		connect(th, SIGNAL(finished(QImage, int)), this, SLOT(display(QImage, int)));
-		th->start();
+		m_th = new ImageThread(m_data);
+		connect(m_th, SIGNAL(finished(QImage, int)), this, SLOT(display(QImage, int)));
+		m_th->start();
 		/*QPixmap image;
 		image.loadFromData(m_data);
 		display(&image, m_data.size());*/
@@ -508,10 +508,12 @@ void zoomWindow::replyFinishedZoom()
 			img->loadFromData(m_data);
 			this->image = img;
 			this->update();*/
+			/*if (m_thread && m_th->isRunning())
+			{ m_th->quit(); }*/
 			m_thread = true;
-			ImageThread *th = new ImageThread(m_data, this);
-			connect(th, SIGNAL(finished(QImage, int)), this, SLOT(display(QImage, int)));
-			th->start();
+			m_th = new ImageThread(m_data);
+			connect(m_th, SIGNAL(finished(QImage, int)), this, SLOT(display(QImage, int)));
+			m_th->start();
 			this->loaded = true;
 		}
 		if (this->m_mustSave > 0)
@@ -784,6 +786,8 @@ void zoomWindow::closeEvent(QCloseEvent *e)
 	settings.setValue("Zoom/plus", ui->buttonPlus->isChecked());
 	settings.sync();
 	//m_image->abortTags();
+	/*if (m_thread && m_th->isRunning())
+	{ m_th->quit(); }*/
 	if (m_replyExists && m_reply->isRunning())
 	{
 		m_reply->abort();

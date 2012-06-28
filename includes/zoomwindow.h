@@ -95,6 +95,7 @@ class zoomWindow : public QDialog
 		int m_size;
 		QMap<QString,QMap<QString,QString> > *m_sites;
 		QString m_source;
+		ImageThread *m_th;
 };
 
 #endif
