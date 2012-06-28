@@ -90,9 +90,10 @@ void batchWindow::copyToClipboard()
 	qApp->clipboard()->setText(urls.join("\n"));
 }
 
+void batchWindow::setCount(int cnt)
+{ ui->tableWidget->setRowCount(cnt); }
 void batchWindow::addImage(QString url, int batch, float size)
 {
-	ui->tableWidget->setRowCount(m_items+1);
 	QTableWidgetItem *id = new QTableWidgetItem(QString::number(m_items+1));
 	id->setIcon(QIcon(":/images/colors/black.png"));
 	ui->tableWidget->setItem(m_items, 0, id);

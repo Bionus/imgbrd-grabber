@@ -1269,12 +1269,13 @@ void mainWindow::getAllImages()
 	while (m_getAllRemaining.count() > m_getAllLimit)
 	{ m_getAllRemaining.removeLast(); }
 
-	log(tr("Toutes les urls des images ont été reçues."));
+	log(tr("Toutes les urls des images ont été reçues (%n image(s)).", "", m_getAllRemaining.count()));
 
 	int count = 0;
+	m_progressdialog->setCount(m_getAllRemaining.count());
 	for (int i = 0; i < m_getAllRemaining.count(); i++)
 	{
-		count += m_getAllRemaining.at(i)->value();
+		count += m_getAllRemaining[i]->value();
 		int n = 0;
 		for (int r = 0; r < m_groupBatchs.count(); r++)
 		{
