@@ -425,7 +425,7 @@ QString Image::path(QString fn, QString pth, bool complex)
 	replaces.append(QStrPP("%filename%", QStrP(m_url.section('/', -1).section('.', 0, -2), "")));
 	replaces.append(QStrPP("%website%", QStrP(m_site, "")));
 	replaces.append(QStrPP("%md5%", QStrP(m_md5, "")));
-	replaces.append(QStrPP("%date%", QStrP(m_createdAt.toString(tr("dd-MM-yyyy hh.mm")), "")));
+	replaces.append(QStrPP("%date%", QStrP(m_createdAt.toString(tr("dd-MM-yyyy HH.mm")), "")));
 	replaces.append(QStrPP("%id%", QStrP(QString::number(m_id), "0")));
 	for (int i = 0; i < search.size(); i++)
 	{ replaces.append(QStrPP("%search_"+QString::number(i+1)+"%", QStrP(search[i], ""))); }
