@@ -330,7 +330,7 @@ QString analyse(QStringList tokens, QString text, QStringList tags)
 	}
 	QString r = ret;
 	for (int i = 0; i < tokens.size(); i++)
-	{ r.replace("%"+tokens.at(i)+"%", ""); }
+	{ r.replace(QRegExp("%"+tokens.at(i)+"%"), ""); }
 	reg = QRegExp("\"([^\"]+)\"");
 	pos = 0;
 	while ((pos = reg.indexIn(text, pos)) != -1)
@@ -425,6 +425,7 @@ QString Image::path(QString fn, QString pth, bool complex)
 	replaces.append(QStrPP("%filename%", QStrP(m_url.section('/', -1).section('.', 0, -2), "")));
 	replaces.append(QStrPP("%website%", QStrP(m_site, "")));
 	replaces.append(QStrPP("%md5%", QStrP(m_md5, "")));
+	replaces.append(QStrPP("%date%", QStrP(m_createdAt.toString(tr("dd-MM-yyyy hh.mm")), "")));
 	replaces.append(QStrPP("%id%", QStrP(QString::number(m_id), "0")));
 	for (int i = 0; i < search.size(); i++)
 	{ replaces.append(QStrPP("%search_"+QString::number(i+1)+"%", QStrP(search[i], ""))); }
@@ -499,7 +500,7 @@ QString Image::path(QString fn, QString pth, bool complex)
 			QStringList c = custom.keys();
 			for (int i = 0; i < 10; i++)
 			{ c.append("search_"+QString::number(i)); }
-			QStringList tokens = QStringList() << "artist" << "general" << "copyright" << "character" << "model" << "model|artist" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "allo" << c;
+			QStringList tokens = QStringList() << "artist" << "general" << "copyright" << "character" << "model" << "model|artist" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "allo" << c << "date" << "date:([^%]+)";
 			filename = analyse(tokens, filename, details["allos"]);
 		}
 
@@ -513,6 +514,14 @@ QString Image::path(QString fn, QString pth, bool complex)
 		for (int i = 0; i < rem.size(); i++)
 		{ l.removeAll(rem.at(i)); }
 		replaces.append(QStrPP("%all%", QStrP(l.join(settings.value("separator").toString()), "")));
+
+		// Complex expressions
+		QRegExp rxdate("%date:([^%]+)%");
+		rxdate.setMinimal(true);
+		qDebug() << m_createdAt << m_createdAt.toString(tr("dd/MM/yyyy hh:mm"));
+		int p = 0;
+		while (((p = rxdate.indexIn(filename, p)) != -1))
+		{ filename.replace(rxdate.cap(0), m_createdAt.toString(rxdate.cap(1))); }
 
 		// We replace everithing
 		for (int i = 0; i < replaces.size(); i++)
@@ -648,7 +657,8 @@ Page			*Image::page()			{ return m_parent;			}
 QByteArray		Image::data()			{ return m_data;			}
 QNetworkReply	*Image::imageReply()	{ return m_loadImage;		}
 
-void	Image::setUrl(QString u)		{ m_url = u;	}
+void	Image::setUrl(QString u)		{ m_url = u;				}
+void	Image::setFileSize(int s)		{ m_fileSize = s;			}
 void	Image::setData(QByteArray d)
 {
 	m_data = d;

@@ -115,7 +115,6 @@ class mainWindow : public QMainWindow
 		QString				m_program, m_currLang, m_currentFavorite;
 		QStringList			m_tags, m_assoc, m_gotMd5;
 		QTranslator			m_translator;
-		QMap<QString,QTime*>m_downloadTime;
 		QDateTime			m_serverDate, m_loadFavorite;
 		QMap<QString,int>	m_countPage;
 		QList<QStringList>	m_groupBatchs;
@@ -129,6 +128,7 @@ class mainWindow : public QMainWindow
 		QMap<QString,double>			m_getAllDownloadingSpeeds;
 		QMap<QString,QString>			m_favorites, m_params;
 		QMap<QString,QStringList>		m_getAllDetails;
+		QMap<QString,QTime*>			m_downloadTime, m_downloadTimeLast;
 		QList<QProgressBar*>			m_progressBars;
 		QList<QNetworkReply*>			m_replies;
 		QList<QMap<QString,QString> >	m_details, m_batchs;

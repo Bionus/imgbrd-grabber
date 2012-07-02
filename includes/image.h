@@ -55,6 +55,7 @@ class Image : public QObject
 		QByteArray	data();
 		void		setUrl(QString);
 		void		setData(QByteArray data);
+		void		setFileSize(int);
 		QNetworkReply	*imageReply();
 
 	public slots:
