@@ -16,7 +16,7 @@ class Page : public QObject
 	Q_OBJECT
 
 	public:
-		explicit Page(QMap<QString,QMap<QString,QString> > *sites, QString site, QStringList tags = QStringList(), int page = 1, int limit = 25, QStringList postFiltering = QStringList(), QObject *parent = 0);
+		explicit Page(QMap<QString,QMap<QString,QString> > *sites, QString site, QStringList tags = QStringList(), int page = 1, int limit = 25, QStringList postFiltering = QStringList(), bool smart = false, QObject *parent = 0);
 		~Page();
 		void					load();
 		void					loadTags();
@@ -51,7 +51,7 @@ class Page : public QObject
 		int						m_imagesCount, m_imagesPerPage, m_currentUrl, m_page, m_blim, m_currentSource;
 		QList<Tag>				m_tags;
 		QNetworkReply			*m_reply, *m_replyTags;
-		bool					m_replyExists, m_replyTagsExists;
+		bool					m_replyExists, m_replyTagsExists, m_smart;
 };
 
 #endif // PAGE_H

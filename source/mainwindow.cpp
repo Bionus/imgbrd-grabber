@@ -762,7 +762,7 @@ void mainWindow::web(QString tags)
 	{
 		if (m_selectedSources.at(i))
 		{
-			Page *page = new Page(&m_sites, m_sites.keys().at(i), tags.split(" "), 1, m_settings->value("limit", 20).toInt(), QStringList(), this);
+			Page *page = new Page(&m_sites, m_sites.keys().at(i), tags.split(" "), 1, m_settings->value("limit", 20).toInt(), QStringList(), true, this);
 			log(tr("Chargement de la page <a href=\"%1\">%1</a>").arg(Qt::escape(page->url().toString())));
 			connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(finishedLoading(Page*)));
 			page->load();
@@ -1147,13 +1147,13 @@ void mainWindow::getAll(bool all)
 		for (int r = 0; r < count; r++)
 		{
 			int i = selected.at(r)->row();
-			m_getAllRemaining.append(new Image(m_batchs.at(i), m_timezonedecay, new Page(&m_sites, m_batchs.at(i).value("site"), m_batchs.at(i).value("tags").split(" "), 1, 1, QStringList(), this)));
+			m_getAllRemaining.append(new Image(m_batchs.at(i), m_timezonedecay, new Page(&m_sites, m_batchs.at(i).value("site"), m_batchs.at(i).value("tags").split(" "), 1, 1, QStringList(), false, this)));
 		}
 	}
 	else
 	{
 		for (int i = 0; i < m_batchs.size(); i++)
-		{ m_getAllRemaining.append(new Image(m_batchs.at(i), m_timezonedecay, new Page(&m_sites, m_batchs.at(i).value("site"), m_batchs.at(i).value("tags").split(" "), 1, 1, QStringList(), this))); }
+		{ m_getAllRemaining.append(new Image(m_batchs.at(i), m_timezonedecay, new Page(&m_sites, m_batchs.at(i).value("site"), m_batchs.at(i).value("tags").split(" "), 1, 1, QStringList(), false, this))); }
 	}
 	m_getAllLimit = m_batchs.size();
 
@@ -1205,7 +1205,7 @@ void mainWindow::getAll(bool all)
 					{ log(tr("<b>Attention :</b> %1").arg(tr("site \"%1\" not found.").arg(site))); }
 					else
 					{
-						Page *page = new Page(&m_sites, site, tags, m_groupBatchs.at(i).at(1).toInt()+r, pp, QStringList(), this);
+						Page *page = new Page(&m_sites, site, tags, m_groupBatchs.at(i).at(1).toInt()+r, pp, QStringList(), false, this);
 						log(tr("Chargement de la page <a href=\"%1\">%1</a>").arg(Qt::escape(page->url().toString())));
 						connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(getAllFinishedLoading(Page*)));
 						page->load();
@@ -1451,6 +1451,7 @@ void mainWindow::_getAll()
 		int reponse = QMessageBox::No;
 		if (m_getAllErrors > 0)
 		{
+			m_getAllErrors = 0;
 			reponse = QMessageBox::question(this, tr("Récupération des images"), tr("Des erreurs sont survenues pendant le téléchargement des images. Voulez vous relancer le téléchargement de celles-ci ? (%1/%2)").arg(m_getAllErrors).arg(m_progressdialog->count()), QMessageBox::Yes | QMessageBox::No);
 			if (reponse == QMessageBox::Yes)
 			{

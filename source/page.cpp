@@ -3,7 +3,7 @@
 
 
 
-Page::Page(QMap<QString,QMap<QString,QString> > *sites, QString site, QStringList tags, int page, int limit, QStringList postFiltering, QObject *parent) : QObject(parent), m_postFiltering(postFiltering), m_errors(QStringList()), m_imagesPerPage(limit), m_currentSource(0)
+Page::Page(QMap<QString,QMap<QString,QString> > *sites, QString site, QStringList tags, int page, int limit, QStringList postFiltering, bool smart, QObject *parent) : QObject(parent), m_postFiltering(postFiltering), m_errors(QStringList()), m_imagesPerPage(limit), m_currentSource(0), m_smart(smart)
 {
 	m_site = sites->value(site);
 	m_website = site;
@@ -55,10 +55,14 @@ void Page::fallback()
 	{ t = m_site["DefaultTag"]; }
 
 	m_format = m_site["Selected"].split('/').at(m_currentSource-1);
+	int p = m_page;
 	m_blim = m_site.contains("Urls/"+QString::number(m_currentSource)+"/Limit") ? m_site["Urls/"+QString::number(m_currentSource)+"/Limit"].toInt() : m_imagesPerPage;
-	if (m_imagesPerPage > m_blim)
-	{ m_imagesPerPage = m_blim; }
-	int p = floor((m_page - 1) * m_imagesPerPage / m_blim) + m_site["FirstPage"].toInt();
+	if (m_smart)
+	{
+		if (m_imagesPerPage > m_blim)
+		{ m_imagesPerPage = m_blim; }
+		p = floor((m_page - 1) * m_imagesPerPage / m_blim) + m_site["FirstPage"].toInt();
+	}
 
 	QString url = m_site["Urls/"+QString::number(m_currentSource)+"/"+(t.isEmpty() && m_site.contains("Urls/"+QString::number(m_currentSource)+"/Home") ? "Home" : "Tags")];
 	url.replace("{page}", QString::number(p));
@@ -147,24 +151,7 @@ void Page::parse(QNetworkReply* r)
 		return;
 	}
 
-	// Getting last page
 	int first = ((m_page - 1) * m_imagesPerPage) % m_blim;
-	if (m_site.contains("LastPage"))
-	{ m_imagesCount = m_site["LastPage"].toInt()*m_imagesPerPage; }
-	else if (m_site.contains("Regex/LastPage"))
-	{
-		QRegExp rxlast(m_site["Regex/LastPage"]);
-		rxlast.setMinimal(true);
-		rxlast.indexIn(m_source, 0);
-		m_imagesCount = rxlast.cap(1).remove(",").toInt()*m_imagesPerPage;
-	}
-	else if (m_site.contains("Regex/Count"))
-	{
-		QRegExp rxlast(m_site["Regex/Count"]);
-		rxlast.setMinimal(true);
-		rxlast.indexIn(m_source, 0);
-		m_imagesCount = rxlast.cap(1).remove(",").toInt();
-	}
 
 	// XML
 	if (m_format == "xml")
@@ -189,13 +176,14 @@ void Page::parse(QNetworkReply* r)
 		QDomNodeList nodeList = docElem.elementsByTagName("post");
 		if (nodeList.count() > 0)
 		{
-			for (int id = first; id < nodeList.count()/* && id < m_imagesPerPage + first*/; id++)
+			int max = m_smart ? qMin(nodeList.count(), m_imagesPerPage) : nodeList.count();
+			for (int id = 0; id < max; id++)
 			{
 				QStringMap d;
 				QStringList infos;
 				infos << "created_at" << "status" << "source" << "has_comments" << "file_url" << "sample_url" << "change" << "sample_width" << "has_children" << "preview_url" << "width" << "md5" << "preview_width" << "sample_height" << "parent_id" << "height" << "has_notes" << "creator_id" << "file_size" << "id" << "preview_height" << "rating" << "tags" << "author" << "score";
 				for (int i = 0; i < infos.count(); i++)
-				{ d[infos.at(i)] = nodeList.at(id).attributes().namedItem(infos.at(i)).nodeValue().trimmed(); }
+				{ d[infos.at(i)] = nodeList.at(id + first).attributes().namedItem(infos.at(i)).nodeValue().trimmed(); }
 				if (!d["preview_url"].startsWith("http://") && !d["preview_url"].startsWith("https://"))
 				{ d["preview_url"] = "http://"+m_site["Url"]+QString(d["preview_url"].startsWith("/") ? "" : "/")+d["preview_url"]; }
 				if (!d["file_url"].startsWith("http://") && !d["file_url"].startsWith("https://"))
@@ -214,7 +202,7 @@ void Page::parse(QNetworkReply* r)
 				else
 				{
 					img->deleteLater();
-					log(tr("Image #%1 ignored. Reason: %2.").arg(QString::number(id+1), error));
+					log(tr("Image #%1 ignored. Reason: %2.").arg(QString::number(id + first + 1), error));
 				}
 			}
 		}
@@ -240,9 +228,10 @@ void Page::parse(QNetworkReply* r)
 		QDomNodeList nodeList = docElem.elementsByTagName("item");
 		if (nodeList.count() > 0)
 		{
-			for (int id = first; id < nodeList.count()/* && id < m_imagesPerPage + first*/; id++)
+			int max = m_smart ? qMin(nodeList.count(), m_imagesPerPage) : nodeList.count();
+			for (int id = 0; id < max; id++)
 			{
-				QDomNodeList children = nodeList.at(id).childNodes();
+				QDomNodeList children = nodeList.at(id + first).childNodes();
 				QStringMap d, dat;
 				for (int i = 0; i < children.size(); i++)
 				{
@@ -260,9 +249,9 @@ void Page::parse(QNetworkReply* r)
 				d.insert("file_url", dat["media:content"]);
 				if (!d.contains("id"))
 				{
-					QRegExp id("/(\\d+)");
-					id.indexIn(d["page_url"]);
-					d.insert("id", id.cap(1));
+					QRegExp rx("/(\\d+)");
+					rx.indexIn(d["page_url"]);
+					d.insert("id", rx.cap(1));
 				}
 				if (!d["preview_url"].startsWith("http://") && !d["preview_url"].startsWith("https://"))
 				{ d["preview_url"] = "http://"+m_site["Url"]+QString(d["preview_url"].startsWith("/") ? "" : "/")+d["preview_url"]; }
@@ -294,7 +283,7 @@ void Page::parse(QNetworkReply* r)
 				else
 				{
 					img->deleteLater();
-					log(tr("Image #%1 ignored. Reason: %2.").arg(QString::number(id+1), error));
+					log(tr("Image #%1 ignored. Reason: %2.").arg(QString::number(id + first + 1), error));
 				}
 			}
 		}
@@ -326,7 +315,7 @@ void Page::parse(QNetworkReply* r)
 		QStringList order = m_site["Regex/Order"].split('|');
 		rx.setMinimal(true);
 		int pos = 0, id = 0;
-		while ((pos = rx.indexIn(m_source, pos)) != -1)
+		while ((pos = rx.indexIn(m_source, pos)) != -1 && (id < m_imagesPerPage || !m_smart))
 		{
 			pos += rx.matchedLength();
 			QStringMap d;
@@ -394,9 +383,10 @@ void Page::parse(QNetworkReply* r)
 		{
 			QMap<QString, QVariant> sc;
 			QList<QVariant> sourc = src.toList();
-			for (int id = first; id < sourc.count()/* && id < m_imagesPerPage + first*/; id++)
+			int max = m_smart ? qMin(sourc.count(), m_imagesPerPage) : sourc.count();
+			for (int id = 0; id < max; id++)
 			{
-				sc = sourc.at(id).toMap();
+				sc = sourc.at(id + first).toMap();
 				QStringMap d;
 				QStringList infos;
 				infos << "created_at" << "status" << "source" << "has_comments" << "file_url" << "sample_url" << "change" << "sample_width" << "has_children" << "preview_url" << "width" << "md5" << "preview_width" << "sample_height" << "parent_id" << "height" << "has_notes" << "creator_id" << "file_size" << "id" << "preview_height" << "rating" << "tags" << "author" << "score";
@@ -420,7 +410,7 @@ void Page::parse(QNetworkReply* r)
 				else
 				{
 					img->deleteLater();
-					log(tr("Image #%1 ignored. Reason: %2.").arg(QString::number(id+1), error));
+					log(tr("Image #%1 ignored. Reason: %2.").arg(QString::number(id + first + 1), error));
 				}
 			}
 		}
@@ -450,6 +440,22 @@ void Page::parse(QNetworkReply* r)
 				}
 			}
 		}
+	}
+
+	// Getting last page
+	if (m_site.contains("LastPage"))
+	{ m_imagesCount = m_site["LastPage"].toInt()*m_imagesPerPage; }
+	else if (m_site.contains("Regex/LastPage"))
+	{
+		QRegExp rxlast(m_site["Regex/LastPage"]);
+		rxlast.indexIn(m_source, 0);
+		m_imagesCount = rxlast.cap(1).remove(",").toInt() * m_imagesPerPage;
+	}
+	if (m_site.contains("Regex/Count") && m_imagesCount == 0)
+	{
+		QRegExp rxlast(m_site["Regex/Count"]);
+		rxlast.indexIn(m_source, 0);
+		m_imagesCount = rxlast.cap(1).remove(",").toInt();
 	}
 
 	m_reply->deleteLater();

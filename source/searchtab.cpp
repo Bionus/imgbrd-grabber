@@ -243,7 +243,7 @@ void searchTab::load()
 			QStringList tags = m_search->toPlainText().toLower().trimmed().split(" ", QString::SkipEmptyParts);
 			tags.append(settings.value("add").toString().toLower().trimmed().split(" ", QString::SkipEmptyParts));
 			int perpage = ui->spinImagesPerPage->value();
-			Page *page = new Page(m_sites, m_sites->keys().at(i), tags, ui->spinPage->value(), perpage, m_postFiltering->toPlainText().toLower().split(" ", QString::SkipEmptyParts), this);
+			Page *page = new Page(m_sites, m_sites->keys().at(i), tags, ui->spinPage->value(), perpage, m_postFiltering->toPlainText().toLower().split(" ", QString::SkipEmptyParts), true, this);
 			log(tr("Chargement de la page <a href=\"%1\">%1</a>").arg(Qt::escape(page->url().toString())));
 			connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(finishedLoading(Page*)));
 			m_pages.insert(page->website(), page);
@@ -262,7 +262,7 @@ void searchTab::load()
 	}
 	if (ui->checkMergeResults->isChecked() && m_layouts.size() > 0)
 	{ ui->layoutResults->addLayout(m_layouts[0], 0, 0, 1, 1); }
-    m_page = 0;
+	m_page = 0;
 
 	emit changed(this);
 }
@@ -290,6 +290,8 @@ void searchTab::finishedLoading(Page* page)
 	if (!ui->checkMergeResults->isChecked())
 	{
 		int pos = m_pages.values().indexOf(page);
+		if (pos < 0)
+		{ return; }
 		QLabel *txt = new QLabel(this);
 			if (imgs.count() == 0)
 			{
