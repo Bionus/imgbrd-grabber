@@ -46,6 +46,7 @@ void mainWindow::init()
 	loadLanguage(m_settings->value("language", "English").toString(), true);
 	ui->setupUi(this);
 	log(tr("Nouvelle session démarée."));
+	log(tr("Chargement des préférences depuis <a href=\"file:///%1\">%1</a>").arg(savePath("settings.ini")));
 
 	tabifyDockWidget(ui->dock_internet, ui->dock_wiki);
 	tabifyDockWidget(ui->dock_wiki, ui->dock_kfl);
@@ -85,7 +86,6 @@ void mainWindow::init()
 	ui->actionQuit->setShortcut(QKeySequence::Quit);
 	ui->actionFolder->setShortcut(QKeySequence::Open);
 
-	log(tr("Chargement des préférences depuis <a href=\"file:///%1\">%1</a>").arg(savePath("settings.ini")));
 	QStringList assoc = QStringList() << "name" << "note" << "lastviewed";
 		ui->comboOrderfavorites->setCurrentIndex(assoc.indexOf(m_settings->value("Favorites/order", "name").toString()));
 		ui->comboOrderasc->setCurrentIndex(int(m_settings->value("Favorites/reverse", false).toBool()));
@@ -1209,7 +1209,7 @@ void mainWindow::getAll(bool all)
 						log(tr("Chargement de la page <a href=\"%1\">%1</a>").arg(Qt::escape(page->url().toString())));
 						connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(getAllFinishedLoading(Page*)));
 						page->load();
-						m_groupBatchs[i][8] = page->url().toString();
+						m_groupBatchs[i][8] += (m_groupBatchs[i][8] == "" ? "" : "¤") + page->url().toString();
 						m_getAllPages.append(page);
 					}
 				}
@@ -1228,12 +1228,15 @@ void mainWindow::getAll(bool all)
 }
 void mainWindow::getAllFinishedLoading(Page* p)
 {
-	log(tr("Page reçue <a href=\"%1\">%1</a>").arg(Qt::escape(p->url().toString())));
+	log(tr("Page reçue <a href=\"%1\">%1</a> (%n résultat(s))", "", p->images().count()).arg(Qt::escape(p->url().toString())));
 	int n = 0;
 	for (int i = 0; i < m_groupBatchs.count(); i++)
 	{
-		if (m_groupBatchs.at(i).at(8) == p->url().toString())
-		{ n = i; break; }
+		if (m_groupBatchs[i][8].split("¤", QString::SkipEmptyParts).contains(p->url().toString()))
+		{
+			n = i;
+			break;
+		}
 	}
 
 	QList<Image*> imgs = QList<Image*>(), ims = p->images();
@@ -1245,8 +1248,8 @@ void mainWindow::getAllFinishedLoading(Page* p)
 	}
 
 	m_progressBars[n]->setMaximum(imgs.size());
-	while (imgs.size() > m_groupBatchs.at(n).at(2).toInt())
-	{ imgs.removeAt(m_groupBatchs.at(n).at(2).toInt()); }
+	while (imgs.size() > m_groupBatchs[n][2].toInt())
+	{ imgs.removeAt(m_groupBatchs[n][2].toInt()); }
 	m_getAllRemaining.append(imgs);
 	m_getAllCount++;
 
@@ -1279,8 +1282,11 @@ void mainWindow::getAllImages()
 		int n = 0;
 		for (int r = 0; r < m_groupBatchs.count(); r++)
 		{
-			if (m_groupBatchs.at(r).at(8) == m_getAllRemaining.at(i)->page()->url().toString())
-			{ n = r + 1; break; }
+			if (m_groupBatchs[r][8].split("¤", QString::SkipEmptyParts).contains(m_getAllRemaining.at(i)->page()->url().toString()))
+			{
+				n = r + 1;
+				break;
+			}
 		}
 		m_progressdialog->addImage(m_getAllRemaining.at(i)->url(), n, m_getAllRemaining.at(i)->fileSize());
 	}
@@ -1382,6 +1388,8 @@ void mainWindow::_getAll()
 					m_progressdialog->loadingImage(img->url());
 					m_downloadTime.insert(img->url(), new QTime);
 					m_downloadTime[img->url()]->start();
+					m_downloadTimeLast.insert(img->url(), new QTime);
+					m_downloadTimeLast[img->url()]->start();
 					connect(img, SIGNAL(finishedImage(Image*)), this, SLOT(getAllPerformImage(Image*)), Qt::UniqueConnection);
 					connect(img, SIGNAL(downloadProgressImage(Image*,qint64,qint64)), this, SLOT(getAllProgress(Image*,qint64,qint64)), Qt::UniqueConnection);
 					m_getAllDownloadingSpeeds.insert(img->url(), 0);
@@ -1477,8 +1485,17 @@ void mainWindow::_getAll()
 }
 void mainWindow::getAllProgress(Image *img, qint64 bytesReceived, qint64 bytesTotal)
 {
-	float speed = (bytesReceived * 1000) / m_downloadTime[img->url()]->elapsed();
-	m_progressdialog->speedImage(img->url(), speed);
+	if (m_downloadTimeLast[img->url()]->elapsed() >= 1000)
+	{
+		m_downloadTimeLast[img->url()]->restart();
+		float speed = (bytesReceived * 1000) / m_downloadTime[img->url()]->elapsed();
+		m_progressdialog->speedImage(img->url(), speed);
+	}
+	if (img->fileSize() == 0)
+	{
+		img->setFileSize(bytesTotal);
+		m_progressdialog->sizeImage(img->url(), bytesTotal);
+	}
 	m_progressdialog->statusImage(img->url(), (bytesReceived * 100) / bytesTotal);
 }
 void mainWindow::getAllPerformTags(Image* img)
@@ -1571,6 +1588,8 @@ void mainWindow::getAllPerformTags(Image* img)
 			m_progressdialog->loadingImage(img->url());
 			m_downloadTime.insert(img->url(), new QTime);
 			m_downloadTime[img->url()]->start();
+			m_downloadTimeLast.insert(img->url(), new QTime);
+			m_downloadTimeLast[img->url()]->start();
 			connect(img, SIGNAL(finishedImage(Image*)), this, SLOT(getAllPerformImage(Image*)), Qt::UniqueConnection);
 			connect(img, SIGNAL(downloadProgressImage(Image*,qint64,qint64)), this, SLOT(getAllProgress(Image*,qint64,qint64)), Qt::UniqueConnection);
 			m_getAllDownloadingSpeeds.insert(img->url(), 0);

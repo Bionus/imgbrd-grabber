@@ -19,7 +19,10 @@ batchWindow::batchWindow(QWidget *parent) : QDialog(), ui(new Ui::batchWindow), 
 	ui->comboEnd->setCurrentIndex(settings.value("Batch/end", 0).toInt());
 	ui->checkRemove->setChecked(settings.value("Batch/remove", false).toBool());
 
-	m_speeds.insert("", QQueue<int>());
+	m_speeds = QMap<QString, int>();
+
+	m_time = new QTime;
+	m_time->start();
 }
 
 batchWindow::~batchWindow()
@@ -55,6 +58,7 @@ void batchWindow::clear()
 	m_cancel = false;
 	m_items = 0;
 	m_imagesCount = 0;
+	m_time->restart();
 	ui->tableWidget->clearContents();
 	ui->tableWidget->setRowCount(0);
 	ui->labelMessage->setText("");
@@ -66,7 +70,6 @@ void batchWindow::clear()
 	qDeleteAll(m_progressBars);
 	m_progressBars.clear();
 	m_speeds.clear();
-	m_speeds.insert("", QQueue<int>());
 }
 void batchWindow::copyToClipboard()
 {
@@ -138,7 +141,7 @@ int batchWindow::batch(QString url)
 }
 void batchWindow::loadingImage(QString url)
 {
-	m_speeds.insert(url, QQueue<int>());
+	m_speeds.insert(url, 0);
 	for (int i = 0; i < m_items; i++)
 	{
 		if (ui->tableWidget->item(i, 2)->text() == url)
@@ -153,17 +156,8 @@ void batchWindow::statusImage(QString url, int percent)
 		{ m_progressBars[i]->setValue(percent); }
 	}
 }
-void batchWindow::speedImage(QString url, float spe)
+void batchWindow::speedImage(QString url, float speed)
 {
-	m_speeds[url].enqueue(spe);
-	if (m_speeds[url].length() > SAMPLES)
-	{ m_speeds[url].dequeue(); }
-
-	float speed = 0;
-	foreach (int sp, m_speeds[url])
-	{ speed += sp; }
-	speed /= m_speeds[url].length();
-
 	QString unit = "o/s";
 	if (speed >= 1024)
 	{
@@ -185,6 +179,29 @@ void batchWindow::speedImage(QString url, float spe)
 
 	drawSpeed();
 }
+void batchWindow::sizeImage(QString url, float size)
+{
+	for (int i = 0; i < m_items; i++)
+	{
+		if (ui->tableWidget->item(i, 2)->text() == url)
+		{
+			QString unit = "o";
+			if (size >= 1024)
+			{
+				size /= 1024;
+				if (size >= 1024)
+				{
+					size /= 1024;
+					unit = "Mio";
+				}
+				else
+				{ unit = "Kio"; }
+			}
+			ui->tableWidget->setItem(i, 3, new QTableWidgetItem(QLocale::system().toString(size, 'f', size < 10 ? 2 : 0)+" "+unit));
+			return;
+		}
+	}
+}
 void batchWindow::loadedImage(QString url)
 {
 	m_speeds.remove(url);
@@ -196,6 +213,7 @@ void batchWindow::loadedImage(QString url)
 			ui->tableWidget->item(i, 0)->setIcon(QIcon(":/images/colors/green.png"));
 			ui->tableWidget->item(i, 4)->setText("");
 			m_progressBars[i]->setValue(100);
+			return;
 		}
 	}
 }
@@ -205,34 +223,25 @@ void batchWindow::errorImage(QString url)
 	for (int i = 0; i < m_items; i++)
 	{
 		if (ui->tableWidget->item(i, 2)->text() == url)
-		{ ui->tableWidget->item(i, 0)->setIcon(QIcon(":/images/colors/red.png")); }
+		{
+			ui->tableWidget->item(i, 0)->setIcon(QIcon(":/images/colors/red.png"));
+			ui->tableWidget->item(i, 4)->setText("");
+			return;
+		}
 	}
 }
 
 void batchWindow::drawSpeed()
 {
+	if (m_time->elapsed() < 1000)
+	{ return; }
+
+	m_time->restart();
+
 	float speed = 0;
-	for (int i = 1; i < m_speeds.size(); i++)
-	{
-		QQueue<int> queue = m_speeds[m_speeds.keys()[i]];
-		if (!queue.isEmpty())
-		{
-			float spe = 0;
-			foreach (int sp, queue)
-			{ spe += sp; }
-			spe /= queue.length();
-			speed += spe;
-		}
-	}
-
-	m_speeds[""].enqueue(speed);
-	if (m_speeds[""].length() > SAMPLES)
-	{ m_speeds[""].dequeue(); }
-
-	speed = 0;
-	foreach (int sp, m_speeds[""])
+	foreach (int sp, m_speeds.values())
 	{ speed += sp; }
-	speed /= m_speeds[""].length();
+	speed /= m_speeds.count();
 
 	QString unit = "o/s";
 	if (speed >= 1024)
@@ -288,6 +297,7 @@ void batchWindow::setImages(int value)
 	m_images = value;
 	ui->labelImages->setText(QString("%1/%2").arg(value).arg(m_imagesCount));
 	ui->progressBar->setValue(value);
+	qDebug() << ui->progressBar->value() << ui->progressBar->maximum();
 }
 
 int batchWindow::value()		{ return m_value;						}

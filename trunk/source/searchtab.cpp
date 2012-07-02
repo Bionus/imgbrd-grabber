@@ -122,8 +122,6 @@ void searchTab::optionsChanged()
 	log(tr("Mise à jour des options de l'onglet \"%1\".").arg(windowTitle()));
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
 	ui->retranslateUi(this);
-	ui->layoutResults->setHorizontalSpacing(settings.value("Margins/horizontal", 6).toInt());
-	ui->layoutResults->setVerticalSpacing(settings.value("Margins/vertical", 6).toInt());
 	ui->spinImagesPerPage->setValue(settings.value("limit", 20).toInt());
 	ui->spinColumns->setValue(settings.value("columns", 1).toInt());
 	/*QPalette p = ui->widgetResults->palette();
@@ -249,7 +247,10 @@ void searchTab::load()
 			log(tr("Chargement de la page <a href=\"%1\">%1</a>").arg(Qt::escape(page->url().toString())));
 			connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(finishedLoading(Page*)));
 			m_pages.insert(page->website(), page);
-			m_layouts.append(new QGridLayout);
+			QGridLayout *l = new QGridLayout;
+			l->setHorizontalSpacing(settings.value("Margins/horizontal", 6).toInt());
+			l->setVerticalSpacing(settings.value("Margins/vertical", 6).toInt());
+			m_layouts.append(l);
 			m_stop = false;
 			page->load();
 			if (settings.value("useregexfortags", true).toBool())

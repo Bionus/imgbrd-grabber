@@ -69,14 +69,20 @@ QMap<QString,QString> getFilenames()
  */
 QDateTime qDateTimeFromString(QString str, int timezonedecay)
 {
-	QDateTime date = QDateTime::fromString(str.left(19), "yyyy/MM/dd HH:mm:ss");
-	date = date.addSecs(str.mid(str.length() - 5).toInt() * 36);
+	QDateTime date;
+	if (str[0].isDigit())
+	{
+		date = QDateTime::fromString(str.left(19), "yyyy/MM/dd HH:mm:ss");
+		date = date.addSecs(str.mid(str.length() - 5).toInt() * 36);
+	}
+	else
+	{
+		QStringList months = QStringList() << "Jan" << "Feb" << "Mar" << "Apr" << "May" << "Jun" << "Jul" << "Aug" << "Sep" << "Oct" << "Nov" << "Dec";
+		QTime time = QTime::fromString(str.mid(11, 8), "HH:mm:ss");
+		date.setDate(QDate(str.mid(26,4).toInt(), months.indexOf(str.mid(4,3))+1, str.mid(8,2).toInt()+(str.mid(11,2).toInt() >= 18)));
+		date.setTime(time.addSecs(3600 * timezonedecay));
+	}
 	return date;
-	/*QDateTime date;
-	QStringList months = QStringList() << "Jan" << "Feb" << "Mar" << "Apr" << "May" << "Jun" << "Jul" << "Aug" << "Sep" << "Oct" << "Nov" << "Dec";
-	QTime time(str.mid(11,2).toInt(), str.mid(14,2).toInt(), str.mid(17,2).toInt());
-	date.setDate(QDate(str.mid(26,4).toInt(), months.indexOf(str.mid(4,3))+1, str.mid(8,2).toInt()+(str.mid(11,2).toInt() >= 18)));
-	date.setTime(time.addSecs(3600 * timezonedecay));*/
 }
 
 /**
@@ -160,13 +166,19 @@ QString validateFilename(QString text)
 	if (!text.contains("%md5%") && !text.contains("%id%"))
 	{ return QObject::tr("<span style=\"color:orange\">Votre nom de fichier n'est pas unique à chaque image et une image risque d'en écraser une précédente lors de la sauvegarde ! Vous devriez utiliser le symbole %md5%, unique à chaque image, pour éviter ce désagrément.</span>"); }
 	// Looking for unknown tokens
-	QStringList tokens = QStringList() << "artist" << "general" << "copyright" << "character" << "model" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "allo" << getCustoms().keys();
-	QRegExp rx = QRegExp("%(.+)%");
+	QStringList tokens = QStringList() << "artist" << "general" << "copyright" << "character" << "model" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "search_(\\d+)" << "allo" << getCustoms().keys() << "date" << "date:([^%]+)";
+	QRegExp rx("%(.+)%");
 	rx.setMinimal(true);
 	int pos = 0;
 	while ((pos = rx.indexIn(text, pos)) != -1)
 	{
-		if (!tokens.contains(rx.cap(1)) && !rx.cap(1).startsWith("search_"))
+		bool found = false;
+		for (int i = 0; i < tokens.length(); i++)
+		{
+			if (QRegExp("%"+tokens[i]+"%").indexIn(rx.cap(0)) != -1)
+			{ found = true; }
+		}
+		if (!found)
 		{ return QObject::tr("<span style=\"color:orange\">Le symbole %%1% n\'existe pas et ne sera pas remplacé.</span>").arg(rx.cap(1)); }
 		pos += rx.matchedLength();
 	}
