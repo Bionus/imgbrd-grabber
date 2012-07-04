@@ -518,7 +518,6 @@ QString Image::path(QString fn, QString pth, bool complex)
 		// Complex expressions
 		QRegExp rxdate("%date:([^%]+)%");
 		rxdate.setMinimal(true);
-		qDebug() << m_createdAt << m_createdAt.toString(tr("dd/MM/yyyy hh:mm"));
 		int p = 0;
 		while (((p = rxdate.indexIn(filename, p)) != -1))
 		{ filename.replace(rxdate.cap(0), m_createdAt.toString(rxdate.cap(1))); }

@@ -379,10 +379,11 @@ bool mainWindow::loadTabs(QString filename)
 			QStringList infos = tabs[j].split("¤");
 			if (infos.size() > 3)
 			{
-				int i = addTab(infos[0]);
+				int i = addTab();
 				m_tabs[i]->ui->spinPage->setValue(infos[1].toInt());
 				m_tabs[i]->ui->spinImagesPerPage->setValue(infos[2].toInt());
 				m_tabs[i]->ui->spinColumns->setValue(infos[3].toInt());
+				m_tabs[i]->setTags(infos[0]);
 			}
 		}
 		return true;

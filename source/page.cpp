@@ -151,7 +151,7 @@ void Page::parse(QNetworkReply* r)
 		return;
 	}
 
-	int first = ((m_page - 1) * m_imagesPerPage) % m_blim;
+	int first = m_smart ? ((m_page - 1) * m_imagesPerPage) % m_blim : 0;
 
 	// XML
 	if (m_format == "xml")
@@ -255,6 +255,8 @@ void Page::parse(QNetworkReply* r)
 				}
 				if (!d["preview_url"].startsWith("http://") && !d["preview_url"].startsWith("https://"))
 				{ d["preview_url"] = "http://"+m_site["Url"]+QString(d["preview_url"].startsWith("/") ? "" : "/")+d["preview_url"]; }
+				if (!d["sample_url"].startsWith("http://") && !d["sample_url"].startsWith("https://"))
+				{ d["sample_url"] = "http://"+m_site["Url"]+QString(d["sample_url"].startsWith("/") ? "" : "/")+d["sample_url"]; }
 				if (!d["file_url"].startsWith("http://") && !d["file_url"].startsWith("https://"))
 				{ d["file_url"] = "http://"+m_site["Url"]+QString(d["file_url"].startsWith("/") ? "" : "/")+d["file_url"]; }
 				if (m_site.contains("Urls/Rss/Image"))
