@@ -102,19 +102,24 @@ void batchWindow::addImage(QString url, int batch, float size)
 	ui->tableWidget->setItem(m_items, 0, id);
 	ui->tableWidget->setItem(m_items, 1, new QTableWidgetItem(QString::number(batch)));
 	ui->tableWidget->setItem(m_items, 2, new QTableWidgetItem(url));
-	QString unit = "o";
-	if (size >= 1024)
+	QString sze = "";
+	if (size != 0)
 	{
-		size /= 1024;
+		QString unit = "o";
 		if (size >= 1024)
 		{
 			size /= 1024;
-			unit = "Mio";
+			if (size >= 1024)
+			{
+				size /= 1024;
+				unit = "Mio";
+			}
+			else
+			{ unit = "Kio"; }
 		}
-		else
-		{ unit = "Kio"; }
+		sze = QLocale::system().toString(size, 'f', size < 10 ? 2 : 0)+" "+unit;
 	}
-	ui->tableWidget->setItem(m_items, 3, new QTableWidgetItem(QLocale::system().toString(size, 'f', size < 10 ? 2 : 0)+" "+unit));
+	ui->tableWidget->setItem(m_items, 3, new QTableWidgetItem(sze));
 	ui->tableWidget->setItem(m_items, 4, new QTableWidgetItem());
 	QProgressBar *prog = new QProgressBar();
 	prog->setTextVisible(false);
@@ -135,7 +140,7 @@ int batchWindow::batch(QString url)
 	for (int i = 0; i < m_items; i++)
 	{
 		if (ui->tableWidget->item(i, 2)->text() == url)
-		{ return ui->tableWidget->item(1, 1)->text().toInt() - 1; }
+		{ return ui->tableWidget->item(i, 1)->text().toInt() - 1; }
 	}
 	return -1;
 }
@@ -297,7 +302,6 @@ void batchWindow::setImages(int value)
 	m_images = value;
 	ui->labelImages->setText(QString("%1/%2").arg(value).arg(m_imagesCount));
 	ui->progressBar->setValue(value);
-	qDebug() << ui->progressBar->value() << ui->progressBar->maximum();
 }
 
 int batchWindow::value()		{ return m_value;						}

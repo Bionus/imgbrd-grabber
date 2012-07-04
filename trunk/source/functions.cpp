@@ -340,11 +340,12 @@ QString stripTags(QString str)
  */
 void logUpdate(QString l)
 {
-	/*qDebug() << l;
-	QDateTime date = _log.keys().at(_log.count()-1);
+	/*QDateTime date = _log.keys().at(_log.count()-1);
 	QString message = _log.value(date)+l;
 	_log.insert(date, message);
-	_mainwindow->logShow();*/
+	_mainwindow->logShow();
+
+	qDebug() << l;*/
 }
 
 /**
