@@ -67,6 +67,7 @@ class Image : public QObject
 		void abortImage();
 		void parsePreview(QNetworkReply*);
 		void parseDetails(QNetworkReply*);
+		void sslErrorHandler(QNetworkReply*, QList<QSslError>);
 
 	private slots:
 		void finishedImageS();

@@ -37,6 +37,7 @@ class Page : public QObject
 		void parseTags(QNetworkReply*);
 		void abort();
 		void abortTags();
+		void sslErrorHandler(QNetworkReply*, QList<QSslError>);
 
 	signals:
 		void finishedLoading(Page*);

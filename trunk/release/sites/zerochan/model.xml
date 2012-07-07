@@ -5,12 +5,13 @@
 		<Html>
 			<Tags>/{tags}?p={page}</Tags>
 			<Post>/{id}</Post>
+			<Limit>22</Limit>
 			<Image>/600/->/full/</Image>
 		</Html>
 		<Rss>
 			<Tags>/{tags}?xml&amp;p={page}</Tags>
 			<Limit>100</Limit>
-			<Image>/600/->/full/</Image>
+			<Image>.600.->.full.</Image>
 		</Rss>
 	</Urls>
 	<Regex>
@@ -18,6 +19,7 @@
 		<Image>&lt;a href='/post/view/([^']+)'[^&gt;]*&gt;[^&lt;]*(&lt;img(?: id='(?:[^']*)')? title='(.+) // (.+)x(.+) // [^']*' alt='[^']*'(?: height='[^']*')? width='[^']*'(?: height='[^']*')? src='.*(/_thumbs/([^/]*)/thumb.jpg)' ?/?&gt;)[^&lt;]*&lt;/a&gt;</Image>
 		<Order>id|image|tags|width|height|preview_url|md5</Order>
 		<Count>has ([0-9,]+) .*images\.</Count>
+		<LastPage>page (?:[0-9,]+) of ([0-9,]+)</LastPage>
 	</Regex>
 	<FirstPage>1</FirstPage>
 </Site>
