@@ -315,7 +315,8 @@ void zoomWindow::load()
     QNetworkAccessManager *manager = new QNetworkAccessManager(this);
         /*QNetworkDiskCache *diskCache = new QNetworkDiskCache(this);
         diskCache->setCacheDirectory(QDesktopServices::storageLocation(QDesktopServices::CacheLocation));
-        manager->setCache(diskCache);*/
+		manager->setCache(diskCache);*/
+	connect(manager, SIGNAL(sslErrors(QNetworkReply*, QList<QSslError>)), this, SLOT(sslErrorHandler(QNetworkReply*, QList<QSslError>)));
 
     QNetworkRequest request = QNetworkRequest(QUrl(m_url));
         request.setRawHeader("Referer", m_url.toAscii());
@@ -327,6 +328,8 @@ void zoomWindow::load()
 
     m_replyExists = true;
 }
+void zoomWindow::sslErrorHandler(QNetworkReply* qnr, QList<QSslError>)
+{ qnr->ignoreSslErrors(); }
 
 #define UPDATES 16
 void zoomWindow::downloadProgress(qint64 size, qint64 total)

@@ -72,8 +72,9 @@ void Image::loadPreview()
 		/*QNetworkDiskCache *diskCache = new QNetworkDiskCache(this);
 		diskCache->setCacheDirectory(QDesktopServices::storageLocation(QDesktopServices::CacheLocation));
 		manager->setCache(diskCache);*/
-
 	connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(parsePreview(QNetworkReply*)));
+	connect(manager, SIGNAL(sslErrors(QNetworkReply*, QList<QSslError>)), this, SLOT(sslErrorHandler(QNetworkReply*, QList<QSslError>)));
+
 	QNetworkRequest r(m_previewUrl);
 		//r.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::PreferCache);
 		r.setRawHeader("Referer", m_previewUrl.toString().toAscii());
@@ -82,6 +83,8 @@ void Image::loadPreview()
 	m_loadPreviewExists = true;
 	m_loadPreview = manager->get(r);
 }
+void Image::sslErrorHandler(QNetworkReply* qnr, QList<QSslError>)
+{ qnr->ignoreSslErrors(); }
 void Image::abortPreview()
 {
 	if (m_loadPreviewExists)
@@ -122,8 +125,9 @@ void Image::loadDetails()
 		/*QNetworkDiskCache *diskCache = new QNetworkDiskCache(this);
 		diskCache->setCacheDirectory(QDesktopServices::storageLocation(QDesktopServices::CacheLocation));
 		manager->setCache(diskCache);*/
-
 	connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(parseDetails(QNetworkReply*)));
+	connect(manager, SIGNAL(sslErrors(QNetworkReply*, QList<QSslError>)), this, SLOT(sslErrorHandler(QNetworkReply*, QList<QSslError>)));
+
 	QNetworkRequest r(m_pageUrl);
 		//r.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::PreferCache);
 		r.setRawHeader("Referer", m_pageUrl.toString().toAscii());
@@ -553,6 +557,7 @@ QString Image::path(QString fn, QString pth, bool complex)
 void Image::loadImage()
 {
 	QNetworkAccessManager *m = new QNetworkAccessManager(this);
+	connect(m, SIGNAL(sslErrors(QNetworkReply*, QList<QSslError>)), this, SLOT(sslErrorHandler(QNetworkReply*, QList<QSslError>)));
 	QNetworkRequest request(m_url);
 		request.setRawHeader("Referer", m_url.toAscii());
 

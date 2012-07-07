@@ -9,9 +9,7 @@ QBouton::QBouton(QVariant id, bool resizeInsteadOfCropping, int border, QColor c
 { }
 
 QBouton::~QBouton()
-{
-	icon().~QIcon();
-}
+{ }
 
 QVariant QBouton::id()
 { return _id; }

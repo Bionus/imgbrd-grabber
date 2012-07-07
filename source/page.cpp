@@ -92,12 +92,16 @@ void Page::load()
 	{
 		QNetworkAccessManager *manager = new QNetworkAccessManager(this);
 		connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(parse(QNetworkReply*)));
+		connect(manager, SIGNAL(sslErrors(QNetworkReply*, QList<QSslError>)), this, SLOT(sslErrorHandler(QNetworkReply*, QList<QSslError>)));
+
         QNetworkRequest r(m_url);
 			r.setRawHeader("Referer", m_url.toString().toUtf8());
 		m_reply = manager->get(r);
 		m_replyExists = true;
 	}
 }
+void Page::sslErrorHandler(QNetworkReply* qnr, QList<QSslError> errlist)
+{ qnr->ignoreSslErrors(); }
 void Page::abort()
 {
 	if (m_replyExists)
@@ -113,6 +117,7 @@ void Page::loadTags()
 	{
 		QNetworkAccessManager *manager = new QNetworkAccessManager(this);
 		connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(parseTags(QNetworkReply*)));
+		connect(manager, SIGNAL(sslErrors(QNetworkReply*, QList<QSslError>)), this, SLOT(sslErrorHandler(QNetworkReply*, QList<QSslError>)));
 		m_replyTags = manager->get(QNetworkRequest(m_urlRegex));
 		m_replyTagsExists = true;
 	}
@@ -146,6 +151,7 @@ void Page::parse(QNetworkReply* r)
 
 	if (m_source.isEmpty())
 	{
+		log("Loading error: "+r->errorString());
 		fallback();
 		load();
 		return;
