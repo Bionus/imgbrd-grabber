@@ -167,6 +167,8 @@ void batchWindow::statusImage(QString url, int percent)
 }
 void batchWindow::speedImage(QString url, float speed)
 {
+	m_speeds[url] = (int)speed;
+
 	QString unit = "o/s";
 	if (speed >= 1024)
 	{
@@ -250,7 +252,6 @@ void batchWindow::drawSpeed()
 	float speed = 0;
 	foreach (int sp, m_speeds.values())
 	{ speed += sp; }
-	speed /= m_speeds.count();
 
 	QString unit = "o/s";
 	if (speed >= 1024)

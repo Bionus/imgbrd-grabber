@@ -19,7 +19,7 @@
 	#include <float.h>
 #endif
 
-#define VERSION	"3.1.5a"
+#define VERSION	"3.1.5"
 #define DONE()	logUpdate(QObject::tr(" Fait"))
 
 extern QMap<QDateTime,QString> _log;
