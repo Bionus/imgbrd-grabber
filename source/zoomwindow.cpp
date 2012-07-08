@@ -26,8 +26,12 @@ zoomWindow::zoomWindow(Image *image, QMap<QString,QString> site, QMap<QString,QM
     restoreGeometry(settings.value("Zoom/geometry").toByteArray());
     ui->buttonPlus->setChecked(settings.value("Zoom/plus", false).toBool());
 
-    QShortcut *escape = new QShortcut(QKeySequence(Qt::Key_Escape), this);
-        connect(escape, SIGNAL(activated()), this, SLOT(close()));
+	QShortcut *escape = new QShortcut(QKeySequence(Qt::Key_Escape), this);
+		connect(escape, SIGNAL(activated()), this, SLOT(close()));
+	QShortcut *save = new QShortcut(QKeySequence::Save, this);
+		connect(save, SIGNAL(activated()), this, SLOT(saveImage()));
+	QShortcut *saveAs = new QShortcut(QKeySequence("Ctrl+Shift+S"), this);
+		connect(saveAs, SIGNAL(activated()), this, SLOT(saveImageAs()));
 
     go();
 }
