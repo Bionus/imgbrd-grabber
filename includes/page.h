@@ -1,8 +1,9 @@
 #ifndef PAGE_H
 #define PAGE_H
 
-#include <QtGui>
-#include <QtNetwork>
+#include <QMap>
+#include <QNetworkReply>
+#include <QSslError>
 #include "tag.h"
 #include "image.h"
 #include "functions.h"

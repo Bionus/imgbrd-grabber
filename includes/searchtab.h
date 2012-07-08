@@ -1,8 +1,9 @@
 #ifndef SEARCHTAB_H
 #define SEARCHTAB_H
 
-#include <QtGui>
-#include <QtNetwork>
+#include <QWidget>
+#include <QMap>
+#include <QCalendarWidget>
 #include "textedit.h"
 #include "page.h"
 #include "mainwindow.h"
@@ -15,7 +16,10 @@ namespace Ui
 	class mainWindow;
 }
 
+
+
 class mainWindow;
+
 class searchTab : public QWidget
 {
 	Q_OBJECT

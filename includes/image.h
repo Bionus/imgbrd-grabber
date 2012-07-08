@@ -1,8 +1,11 @@
 #ifndef IMAGE_H
 #define IMAGE_H
 
-#include <QtGui>
-#include <QtNetwork>
+#include <QMap>
+#include <QNetworkReply>
+#include <QDateTime>
+#include <QPixmap>
+#include <QSslError>
 #include "page.h"
 #include "tag.h"
 #include "pool.h"

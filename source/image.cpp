@@ -1,6 +1,6 @@
+#include <QtScript>
 #include "image.h"
 #include "functions.h"
-#include <QtScript>
 
 
 
@@ -439,6 +439,7 @@ QString Image::path(QString fn, QString pth, bool complex)
 	replaces.append(QStrPP("%character%", QStrP(details["characters"].count() > 0 ? (settings.value("character_useall").toBool() || details["characters"].count() == 1 ? details["characters"].join(settings.value("character_sep").toString()) : settings.value("character_value").toString()) : "", settings.value("character_empty").toString())));
 	replaces.append(QStrPP("%model%", QStrP(details["models"].count() > 0 ? (settings.value("model_useall").toBool() || details["models"].count() == 1 ? details["models"].join(settings.value("model_sep").toString()) : settings.value("model_value").toString()) : "", settings.value("model_empty").toString())));
 	replaces.append(QStrPP("%rating%", QStrP(m_rating, "")));
+	replaces.append(QStrPP("%score%", QStrP(QString::number(m_score), "")));
 	replaces.append(QStrPP("%height%", QStrP(QString::number(m_size.height()), "0")));
 	replaces.append(QStrPP("%width%", QStrP(QString::number(m_size.width()), "0")));
 	for (int i = 0; i < custom.size(); i++)
@@ -504,7 +505,7 @@ QString Image::path(QString fn, QString pth, bool complex)
 			QStringList c = custom.keys();
 			for (int i = 0; i < 10; i++)
 			{ c.append("search_"+QString::number(i)); }
-			QStringList tokens = QStringList() << "artist" << "general" << "copyright" << "character" << "model" << "model|artist" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "allo" << c << "date" << "date:([^%]+)";
+			QStringList tokens = QStringList() << "artist" << "general" << "copyright" << "character" << "model" << "model|artist" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "allo" << c << "date" << "date:([^%]+)" << "score";
 			filename = analyse(tokens, filename, details["allos"]);
 		}
 

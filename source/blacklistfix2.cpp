@@ -1,3 +1,4 @@
+#include <QMessageBox>
 #include "blacklistfix2.h"
 #include "blacklistfix3.h"
 #include "functions.h"
