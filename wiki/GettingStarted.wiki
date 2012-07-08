@@ -22,6 +22,7 @@ Once finished, you can press the "Ok" button.
 The second thing to do is to choose from which boards you want to browse and download pictures. By default it will take the first (alphabetically) in the list, so it will very likely be [http://behoimi.org/ Behoimi]. To change them, click on the "Sources" button on the bottom of the window. Just check the imageboards you want to get informations from, then press Ok.
 
 * Note: if you select multiple imageboards, they will be put in one column by default. You can change this behavior by editing the "Columns" settings in the options. *
+
 You can also merge all results to remove duplicates checking the "Merge results" option at the bottom of the window (it is useful if you browse from sites than mirror each others, while still having their own uploaders).
 
 == Search field ==
