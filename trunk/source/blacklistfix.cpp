@@ -1,3 +1,4 @@
+#include <QSettings>
 #include "blacklistfix.h"
 #include "blacklistfix2.h"
 #include "functions.h"

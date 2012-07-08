@@ -1,3 +1,5 @@
+#include <QSettings>
+#include <QFileDialog>
 #include "adduniquewindow.h"
 #include "ui_adduniquewindow.h"
 #include "functions.h"

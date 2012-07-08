@@ -2,6 +2,8 @@
 #define BLACKLISTFIX2_H
 
 #include <QDialog>
+#include <QTreeWidgetItem>
+#include <QDir>
 #include "page.h"
 
 

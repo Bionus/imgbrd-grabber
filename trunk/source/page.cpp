@@ -1,5 +1,7 @@
+#include <QSettings>
 #include "page.h"
 #include "json.h"
+#include "math.h"
 
 
 

@@ -1,7 +1,10 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QtGui>
+#include <QMainWindow>
+#include <QSettings>
+#include <QProcess>
+#include <QTranslator>
 #include "sourceswindow.h"
 #include "batchwindow.h"
 #include "QAffiche.h"
