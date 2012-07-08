@@ -1,3 +1,11 @@
+#include <QNetworkProxy>
+#include <QSettings>
+#include <QDir>
+#include <QInputDialog>
+#include <QFileDialog>
+#include <QColorDialog>
+#include <QFontDialog>
+#include <QCryptographicHash>
 #include "optionswindow.h"
 #include "ui_optionswindow.h"
 #include "customwindow.h"
@@ -7,7 +15,7 @@
 
 
 
-optionsWindow::optionsWindow(mainWindow *parent) : QDialog(parent), m_parent(parent), ui(new Ui::optionsWindow)
+optionsWindow::optionsWindow(QWidget *parent) : QDialog(parent), ui(new Ui::optionsWindow)
 {
 	ui->setupUi(this);
 
@@ -623,9 +631,9 @@ void optionsWindow::save()
 	if (settings.value("language", "English").toString() != ui->comboLanguages->currentText())
 	{
 		settings.setValue("language", ui->comboLanguages->currentText());
-		m_parent->loadLanguage(ui->comboLanguages->currentText());
+		emit languageChanged(ui->comboLanguages->currentText());
 	}
 
 	settings.sync();
-	m_parent->on_buttonInitSettings_clicked();
+	emit settingsChanged();
 }

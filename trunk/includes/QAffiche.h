@@ -1,8 +1,8 @@
 #ifndef HEADER_QAFFICHE
 #define HEADER_QAFFICHE
 
-#include <string>
-#include <QtGui>
+#include <QLabel>
+#include <QVariant>
 
 
 

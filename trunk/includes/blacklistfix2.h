@@ -1,12 +1,17 @@
 #ifndef BLACKLISTFIX2_H
 #define BLACKLISTFIX2_H
 
-#include <QtGui>
+#include <QDialog>
 #include "page.h"
 
-namespace Ui {
+
+
+namespace Ui
+{
 	class BlacklistFix2;
 }
+
+
 
 class BlacklistFix2 : public QDialog
 {

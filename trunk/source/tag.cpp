@@ -1,3 +1,4 @@
+#include <QStringList>
 #include "tag.h"
 
 

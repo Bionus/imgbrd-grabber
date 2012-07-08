@@ -1,7 +1,9 @@
 #ifndef BATCHWINDOW_H
 #define BATCHWINDOW_H
 
-#include <QtGui>
+#include <QDialog>
+#include <QProgressBar>
+#include <QMap>
 
 
 

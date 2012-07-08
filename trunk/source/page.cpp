@@ -185,7 +185,7 @@ void Page::parse(QNetworkReply* r)
 			int max = m_smart ? qMin(nodeList.count(), m_imagesPerPage) : nodeList.count();
 			for (int id = 0; id < max; id++)
 			{
-				QStringMap d;
+				QMap<QString,QString> d;
 				QStringList infos;
 				infos << "created_at" << "status" << "source" << "has_comments" << "file_url" << "sample_url" << "change" << "sample_width" << "has_children" << "preview_url" << "width" << "md5" << "preview_width" << "sample_height" << "parent_id" << "height" << "has_notes" << "creator_id" << "file_size" << "id" << "preview_height" << "rating" << "tags" << "author" << "score";
 				for (int i = 0; i < infos.count(); i++)
@@ -238,7 +238,7 @@ void Page::parse(QNetworkReply* r)
 			for (int id = 0; id < max; id++)
 			{
 				QDomNodeList children = nodeList.at(id + first).childNodes();
-				QStringMap d, dat;
+				QMap<QString,QString> d, dat;
 				for (int i = 0; i < children.size(); i++)
 				{
 					QString content = children.at(i).childNodes().at(0).nodeValue();
@@ -326,7 +326,7 @@ void Page::parse(QNetworkReply* r)
 		while ((pos = rx.indexIn(m_source, pos)) != -1 && (id < m_imagesPerPage || !m_smart))
 		{
 			pos += rx.matchedLength();
-			QStringMap d;
+			QMap<QString,QString> d;
 			for (int i = 0; i < order.size(); i++)
 			{ d[order.at(i)] = rx.cap(i+1); }
 			if (!d["preview_url"].startsWith("http://") && !d["preview_url"].startsWith("https://"))
@@ -395,7 +395,7 @@ void Page::parse(QNetworkReply* r)
 			for (int id = 0; id < max; id++)
 			{
 				sc = sourc.at(id + first).toMap();
-				QStringMap d;
+				QMap<QString,QString> d;
 				QStringList infos;
 				infos << "created_at" << "status" << "source" << "has_comments" << "file_url" << "sample_url" << "change" << "sample_width" << "has_children" << "preview_url" << "width" << "md5" << "preview_width" << "sample_height" << "parent_id" << "height" << "has_notes" << "creator_id" << "file_size" << "id" << "preview_height" << "rating" << "tags" << "author" << "score";
 				for (int i = 0; i < infos.count(); i++)
@@ -451,9 +451,9 @@ void Page::parse(QNetworkReply* r)
 	}
 
 	// Getting last page
-	if (m_site.contains("LastPage"))
+	if (m_site.contains("LastPage") && m_imagesCount == 0)
 	{ m_imagesCount = m_site["LastPage"].toInt()*m_imagesPerPage; }
-	else if (m_site.contains("Regex/LastPage"))
+	if (m_site.contains("Regex/LastPage") && m_imagesCount == 0)
 	{
 		QRegExp rxlast(m_site["Regex/LastPage"]);
 		rxlast.indexIn(m_source, 0);

@@ -1,11 +1,17 @@
 #ifndef BLACKLISTFIX_H
 #define BLACKLISTFIX_H
 
-#include <QtGui>
+#include <QDialog>
+#include <QMap>
 
-namespace Ui {
+
+
+namespace Ui
+{
 	class BlacklistFix;
 }
+
+
 
 class BlacklistFix : public QDialog
 {

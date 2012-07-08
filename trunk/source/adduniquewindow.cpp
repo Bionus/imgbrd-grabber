@@ -1,8 +1,7 @@
 #include "adduniquewindow.h"
+#include "ui_adduniquewindow.h"
 #include "functions.h"
 #include "json.h"
-#include "ui_adduniquewindow.h"
-#include <QtXml>
 
 
 
@@ -11,7 +10,7 @@
  * @param	favorites	List of favorites tags, needed for coloration
  * @param	parent		The parent window
  */
-AddUniqueWindow::AddUniqueWindow(QString selected, QMap<QString,QMap<QString,QString> > sites, mainWindow *parent) : QDialog(parent), ui(new Ui::AddUniqueWindow), m_parent(parent), m_sites(sites)
+AddUniqueWindow::AddUniqueWindow(QString selected, QMap<QString,QMap<QString,QString> > sites, QWidget *parent) : QDialog(parent), ui(new Ui::AddUniqueWindow), m_sites(sites)
 {
 	ui->setupUi(this);
 
@@ -110,7 +109,7 @@ void AddUniqueWindow::addImage(Image *img)
 	values["page_url"].replace("{tags}", t);
 	values["page_url"].replace("{id}", values["id"]);
 
-	m_parent->batchAddUnique(values);
+	emit sendData(values);
 
 	if (m_close)
 	{ this->close(); }

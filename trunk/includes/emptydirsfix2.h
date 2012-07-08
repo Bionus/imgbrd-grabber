@@ -1,12 +1,18 @@
 #ifndef EmptyDirsFix2_H
 #define EmptyDirsFix2_H
 
-#include <QtGui>
-#include "page.h"
+#include <QDialog>
+#include <QDir>
+#include <QTreeWidgetItem>
 
-namespace Ui {
+
+
+namespace Ui
+{
 	class EmptyDirsFix2;
 }
+
+
 
 class EmptyDirsFix2 : public QDialog
 {

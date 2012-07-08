@@ -60,7 +60,9 @@ void FilenameWindow::on_buttonHelpClassic_clicked()
 		"<i>%md5%</i> : code unique de l'image, composé de 32 caractères alphanumériques<br/>"
 		"<i>%id%</i> : identifiant de l'image sur un site donné<br/>"
 		"<i>%search%</i> : tags de la recherche<br/>"
-		"<i>%search_n%</i> : n-ième tag de la recherche<br/><br/>"
+		"<i>%search_n%</i> : n-ième tag de la recherche<br/>"
+		"<i>%date%</i> : date d'ajout de l'image au format dd-MM-yyyy HH.mm<br/>"
+		"<i>%date:format%</i> : date d'ajout de l'image au format donné<br/><br/>"
 		"Vous pouvez aussi utiliser les structures conditionnelles. Pour plus d'informations, cliquez <a href=\"http://code.google.com/p/imgbrd-grabber/wiki/Filename\">ici</a>.")
 	);
 }
@@ -81,7 +83,8 @@ void FilenameWindow::on_buttonHelpJavascript_clicked()
 		"<i>md5</i> : code unique de l'image, composé de 32 caractères alphanumériques<br/>"
 		"<i>id</i> : identifiant de l'image sur un site donné<br/>"
 		"<i>search</i> : tags de la recherche<br/>"
-		"<i>search_n</i> : n-ième tag de la recherche<br/><br/>"
+		"<i>search_n</i> : n-ième tag de la recherche<br/>"
+		"<i>date</i> : date d'ajout de l'image au format dd-MM-yyyy HH.mm<br/><br/>"
 		"Pour plus d'informations sur le nommage Javascript, cliquez <a href=\"http://code.google.com/p/imgbrd-grabber/wiki/Filename#Javascript\">ici</a>.")
 	);
 }

@@ -1,13 +1,18 @@
 #ifndef SEARCHWINDOW_H
 #define SEARCHWINDOW_H
 
-#include <QtGui>
+#include <QDialog>
+#include <QCalendarWidget>
 #include "textedit.h"
+
+
 
 namespace Ui
 {
 	class SearchWindow;
 }
+
+
 
 class SearchWindow : public QDialog
 {

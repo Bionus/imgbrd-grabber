@@ -1,4 +1,5 @@
 #include "startwindow.h"
+#include "ui_startwindow.h"
 #include "optionswindow.h"
 
 
@@ -7,7 +8,7 @@
  * Constructor of the startWindow class, completing its window.
  * @param	parent		The parent window
  */
-startWindow::startWindow(mainWindow *parent) : QDialog(parent), m_parent(parent), ui(new Ui::startWindow)
+startWindow::startWindow(QWidget *parent) : QDialog(parent), ui(new Ui::startWindow)
 {
 	ui->setupUi(this);
 	connect(this, SIGNAL(accepted()), this, SLOT(openOptions()));
@@ -26,7 +27,7 @@ startWindow::~startWindow()
  */
 void startWindow::openOptions()
 {
-	optionsWindow *ow = new optionsWindow(m_parent);
+	optionsWindow *ow = new optionsWindow(parentWidget());
 	ow->show();
 	ow->setCategory(tr("Sauvegarde", "update"));
 }

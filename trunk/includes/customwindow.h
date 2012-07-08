@@ -1,8 +1,7 @@
 #ifndef CUSTOMWINDOW_H
 #define CUSTOMWINDOW_H
 
-#include <QtGui>
-#include "functions.h"
+#include <QDialog>
 
 
 

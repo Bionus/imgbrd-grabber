@@ -1,11 +1,8 @@
 #ifndef HEADER_QBOUTON
 #define HEADER_QBOUTON
 
-#include <string>
-#include <QtGui>
-#include <QtNetwork>
-
-using namespace std;
+#include <QPushButton>
+#include <QVariant>
 
 
 

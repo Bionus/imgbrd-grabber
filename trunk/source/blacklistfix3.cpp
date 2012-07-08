@@ -1,6 +1,8 @@
+#include <QFile>
 #include "blacklistfix3.h"
-#include "functions.h"
 #include "ui_blacklistfix3.h"
+
+
 
 BlacklistFix3::BlacklistFix3(QList<QMap<QString,QString> > details, QStringList blacklist, QWidget *parent) : QDialog(parent), ui(new Ui::BlacklistFix3), m_details(details), m_blacklist(blacklist)
 {

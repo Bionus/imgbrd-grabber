@@ -15,7 +15,7 @@ Image::Image(QMap<QString, QString> details, int timezonedecay, Page* parent)
 	m_rating = details.contains("rating") ? details["rating"] : "";
 	m_filename = details.contains("filename") ? details["filename"] : "";
 	m_folder = details.contains("folder") ? details["folder"] : "";
-	QStringMap assoc;
+	QMap<QString,QString> assoc;
 		assoc["s"] = tr("Safe");
 		assoc["q"] = tr("Questionable");
 		assoc["e"] = tr("Explicit");

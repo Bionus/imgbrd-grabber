@@ -3,9 +3,14 @@
 
 #include <QDialog>
 
-namespace Ui {
+
+
+namespace Ui
+{
 	class EmptyDirsFix;
 }
+
+
 
 class EmptyDirsFix : public QDialog
 {

@@ -1,6 +1,12 @@
+#include <QSettings>
+#include <QFile>
+#include <QFileDialog>
+#include <QCryptographicHash>
 #include "searchwindow.h"
-#include "functions.h"
 #include "ui_searchwindow.h"
+#include "functions.h"
+
+
 
 SearchWindow::SearchWindow(QString tags, QDate server, QWidget *parent) : QDialog(parent), ui(new Ui::SearchWindow)
 {

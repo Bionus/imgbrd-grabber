@@ -1,7 +1,7 @@
 #ifndef DETAILSWINDOW_H
 #define DETAILSWINDOW_H
 
-#include <QtGui>
+#include <QDialog>
 #include "image.h"
 
 

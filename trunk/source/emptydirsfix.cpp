@@ -1,7 +1,10 @@
+#include <QSettings>
 #include "emptydirsfix.h"
 #include "emptydirsfix2.h"
-#include "functions.h"
 #include "ui_emptydirsfix.h"
+#include "functions.h"
+
+
 
 EmptyDirsFix::EmptyDirsFix(QWidget *parent) : QDialog(parent), ui(new Ui::EmptyDirsFix)
 {

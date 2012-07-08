@@ -1,4 +1,4 @@
-#include <QApplication>
+#include <QMouseEvent>
 #include "QAffiche.h"
 
 using namespace std;

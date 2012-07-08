@@ -1,4 +1,8 @@
+#include <QFile>
+#include <QFileDialog>
+#include <QSettings>
 #include "favoritewindow.h"
+#include "ui_favoritewindow.h"
 #include "functions.h"
 
 
@@ -11,7 +15,7 @@
  * @param	imagepath	Path to the favorite's image
  * @param	parent		The parent window
  */
-favoriteWindow::favoriteWindow(QString tag, int note, QDateTime lastviewed, mainWindow *parent) : QDialog(parent), m_parent(parent), ui(new Ui::favoriteWindow), m_note(note), m_tag(tag), m_lastviewed(lastviewed)
+favoriteWindow::favoriteWindow(QString tag, int note, QDateTime lastviewed, QWidget *parent) : QDialog(parent), ui(new Ui::favoriteWindow), m_note(note), m_tag(tag), m_lastviewed(lastviewed)
 {
 	ui->setupUi(this);
 	ui->tagLineEdit->setText(tag);
@@ -46,7 +50,7 @@ void favoriteWindow::on_buttonRemove_clicked()
 	f.close();
 	if (QFile::exists(savePath("thumbs/"+m_tag+".png")))
 	{ QFile::remove(savePath("thumbs/"+m_tag+".png")); }
-	m_parent->updateFavorites();
+	emit favoritesChanged();
 
 	close();
 }
@@ -88,5 +92,5 @@ void favoriteWindow::save()
 	f.open(QIODevice::WriteOnly);
 		f.write(favorites.toUtf8());
 	f.close();
-	m_parent->updateFavorites();
+	emit favoritesChanged();
 }

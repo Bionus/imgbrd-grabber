@@ -1,7 +1,7 @@
 #ifndef TAG_H
 #define TAG_H
 
-#include <QtGui>
+#include <QString>
 
 
 

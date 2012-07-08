@@ -17,13 +17,16 @@ namespace Ui
 	class mainWindow;
 }
 
+
+
 class searchTab;
+
 class mainWindow : public QMainWindow
 {
 	Q_OBJECT
 
 	public:
-		explicit mainWindow(QString, QStringList, QStringMap);
+		explicit mainWindow(QString, QStringList, QMap<QString,QString>);
 		~mainWindow();
 		QMap<QString,QMap<QString,QString> > m_sites;
 		Ui::mainWindow *ui;

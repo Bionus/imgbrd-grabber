@@ -1,9 +1,8 @@
 #ifndef FAVORITEWINDOW_H
 #define FAVORITEWINDOW_H
 
-#include <QtGui>
-#include "mainwindow.h"
-#include "ui_favoritewindow.h"
+#include <QDialog>
+#include <QDateTime>
 
 
 
@@ -12,12 +11,14 @@ namespace Ui
 	class favoriteWindow;
 }
 
+
+
 class favoriteWindow : public QDialog
 {
 	Q_OBJECT
 
 	public:
-		favoriteWindow(QString, int, QDateTime, mainWindow *parent);
+		favoriteWindow(QString, int, QDateTime, QWidget *parent);
 		~favoriteWindow();
 
 	public slots:
@@ -25,8 +26,10 @@ class favoriteWindow : public QDialog
 		void on_openButton_clicked();
 		void on_buttonRemove_clicked();
 
+	signals:
+		void favoritesChanged();
+
 	private:
-		mainWindow *m_parent;
 		Ui::favoriteWindow *ui;
 		int m_note;
 		QString m_tag;
