@@ -566,12 +566,16 @@ void searchTab::finishedLoadingPreview(Image *img)
     if (img->parentId() != 0)
     { color = QColor("#cccc00"); }
     if (img->hasChildren())
-    { color = QColor("#00ff00"); }
+	{ color = QColor("#00ff00"); }
     for (int i = 0; i < img->tags().count(); i++)
-    {
-        if (m_favorites->keys().contains(img->tags()[i].text()) && !m_search->toPlainText().trimmed().split(" ").contains(img->tags()[i].text()))
-        { color = QColor("#ffc0cb"); break; }
+	{
+		if (m_favorites->keys().contains(img->tags()[i].text()) && !m_search->toPlainText().trimmed().split(" ").contains(img->tags()[i].text()))
+		{ color = QColor("#ffc0cb"); break; }
     }
+	QStringList blacklistedtags(settings.value("blacklistedtags").toString().split(" "));
+	QStringList detected = img->blacklisted(blacklistedtags);
+	if (!detected.isEmpty())
+	{ color = QColor("#000000"); }
     QBouton *l = new QBouton(position, settings.value("resizeInsteadOfCropping", true).toBool(), settings.value("borders", 3).toInt(), color, this);
         l->setIcon(img->previewImage());
         QString t;
