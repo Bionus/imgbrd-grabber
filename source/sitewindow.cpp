@@ -1,12 +1,12 @@
-#include "mainwindow.h"
 #include "sitewindow.h"
 #include "ui_sitewindow.h"
+#include "mainwindow.h"
 
 extern mainWindow *_mainwindow;
 
 
 
-siteWindow::siteWindow(QStringMapMap *sites, QWidget *parent) : QDialog(parent), ui(new Ui::siteWindow), m_sites(sites)
+siteWindow::siteWindow(QMap<QString, QMap<QString, QString> > *sites, QWidget *parent) : QDialog(parent), ui(new Ui::siteWindow), m_sites(sites)
 {
 	ui->setupUi(this);
 
@@ -49,7 +49,7 @@ void siteWindow::accept()
 			name = m_sites->value(m_sites->keys().at(i))["Name"].toLower();
 			if (!types.contains(name))
 			{
-				QStringMap map = m_sites->value(m_sites->keys().at(i));
+				QMap<QString,QString> map = m_sites->value(m_sites->keys().at(i));
 				types.append(name);
 				QString curr = map["Selected"];
 				curr[0] = curr[0].toUpper();
@@ -93,7 +93,7 @@ void siteWindow::accept()
 		name = m_sites->value(m_sites->keys().at(i))["Name"].toLower();
 		if (name == type)
 		{
-			QStringMap map = m_sites->value(m_sites->keys().at(i));
+			QMap<QString,QString> map = m_sites->value(m_sites->keys().at(i));
 			QString curr = map["Selected"];
 			curr[0] = curr[0].toUpper();
 			map["Urls/Selected/Tags"] = "http://"+url+map["Urls/"+curr+"/Tags"];

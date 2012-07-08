@@ -1,8 +1,7 @@
 #ifndef CONDITIONWINDOW_H
 #define CONDITIONWINDOW_H
 
-#include <QtGui>
-#include "functions.h"
+#include <QDialog>
 
 
 

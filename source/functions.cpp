@@ -1,10 +1,19 @@
+#include <QSettings>
+#include <QFile>
+#include <QMessageBox>
+#include <QDir>
+#include <QFileInfo>
+#include <QProcess>
 #include <QApplication>
-#include <QtGui>
+#include <QDebug>
+#include "math.h"
 #include "functions.h"
-#include "mainwindow.h"
+//#include "mainwindow.h"
 
-extern QMap<QDateTime,QString> _log;
-extern mainWindow *_mainwindow;
+using namespace std;
+
+//extern QMap<QDateTime,QString> _log;
+//extern mainWindow *_mainwindow;
 
 
 
@@ -209,7 +218,7 @@ QString savePath(QString file)
 int levenshtein(QString s1, QString s2)
 {
 	const size_t len1 = s1.size(), len2 = s2.size();
-	vector<vector<unsigned int> > d(len1 + 1, vector<unsigned int>(len2 + 1));
+	std::vector<std::vector<unsigned int> > d(len1 + 1, vector<unsigned int>(len2 + 1));
 
 	d[0][0] = 0;
 	for(unsigned int i = 1; i <= len1; ++i) d[i][0] = i;

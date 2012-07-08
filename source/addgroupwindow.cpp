@@ -1,3 +1,8 @@
+#include <QVBoxLayout>
+#include <QFormLayout>
+#include <QPushButton>
+#include <QFile>
+#include <QSettings>
 #include "addgroupwindow.h"
 #include "functions.h"
 
@@ -8,7 +13,7 @@
  * @param	favorites	List of favorites tags, needed for coloration
  * @param	parent		The parent window
  */
-AddGroupWindow::AddGroupWindow(QString selected, QStringList sites, QStringList favorites, mainWindow *parent) : QWidget(parent), m_parent(parent), m_sites(sites)
+AddGroupWindow::AddGroupWindow(QString selected, QStringList sites, QStringList favorites, QWidget *parent) : QWidget(parent), m_sites(sites)
 {
 	QVBoxLayout *layout = new QVBoxLayout;
 		QFormLayout *formLayout = new QFormLayout;
@@ -74,6 +79,6 @@ void AddGroupWindow::ok()
 	QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
 	QStringList bools = QStringList() << "true" << "false";
 	QStringList values = QStringList() << m_lineTags->toPlainText() << QString::number(m_spinPage->value()) << QString::number(m_spinPP->value()) << QString::number(m_spinLimit->value()) << bools.at(m_comboDwl->currentIndex()) << m_sites.at(m_comboSites->currentIndex()) << settings->value("Save/filename").toString() << settings->value("Save/path").toString() << "";
-	m_parent->batchAddGroup(values);
+	emit sendData(values);
 	this->close();
 }

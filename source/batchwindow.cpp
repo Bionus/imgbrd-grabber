@@ -1,6 +1,10 @@
+#include <QSettings>
+#include <QTime>
+#include <QCloseEvent>
+#include <QClipboard>
 #include "batchwindow.h"
-#include "functions.h"
 #include "ui_batchwindow.h"
+#include "functions.h"
 
 #define SAMPLES 100
 

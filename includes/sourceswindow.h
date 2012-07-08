@@ -1,9 +1,10 @@
 #ifndef SOURCESWINDOW_H
 #define SOURCESWINDOW_H
 
-#include <QtGui>
+#include <QDialog>
+#include <QCheckBox>
+#include <QLabel>
 #include "QBouton.h"
-#include "functions.h"
 
 
 
@@ -12,12 +13,14 @@ namespace Ui
 	class sourcesWindow;
 }
 
+
+
 class sourcesWindow : public QDialog
 {
 	Q_OBJECT
 
 	public:
-		explicit sourcesWindow(QList<bool> selected, QStringMapMap *sites, QWidget *parent = 0);
+		explicit sourcesWindow(QList<bool> selected, QMap<QString,QMap<QString,QString> > *sites, QWidget *parent = 0);
 		~sourcesWindow();
 		QList<bool> getSelected();
 		int getColumns();
@@ -42,7 +45,7 @@ class sourcesWindow : public QDialog
 		QList<QCheckBox*> m_checks;
 		QList<QLabel*> m_labels;
 		QList<QBouton*> m_buttons;
-		QStringMapMap *m_sites;
+		QMap<QString,QMap<QString,QString> > *m_sites;
 };
 
 #endif // SOURCESWINDOW_H

@@ -1,7 +1,6 @@
-#include <QApplication>
+#include <QPaintEvent>
+#include <QPainter>
 #include "QBouton.h"
-
-using namespace std;
 
 
 

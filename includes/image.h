@@ -7,9 +7,9 @@
 #include "tag.h"
 #include "pool.h"
 
+
+
 class Page;
-
-
 
 class Image : public QObject
 {

@@ -1,6 +1,9 @@
+#include <QMessageBox>
+#include <QCloseEvent>
 #include "sourceswindow.h"
-#include "sitewindow.h"
 #include "ui_sourceswindow.h"
+#include "sitewindow.h"
+#include "functions.h"
 
 
 
@@ -10,7 +13,7 @@
  * @param	sites		QStringList of sites names
  * @param	parent		The parent window
  */
-sourcesWindow::sourcesWindow(QList<bool> selected, QStringMapMap *sites, QWidget *parent) : QDialog(parent), ui(new Ui::sourcesWindow), m_selected(selected), m_sites(sites)
+sourcesWindow::sourcesWindow(QList<bool> selected, QMap<QString, QMap<QString, QString> > *sites, QWidget *parent) : QDialog(parent), ui(new Ui::sourcesWindow), m_selected(selected), m_sites(sites)
 {
 	ui->setupUi(this);
 

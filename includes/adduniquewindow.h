@@ -1,9 +1,9 @@
 #ifndef ADDUNIQUEWINDOW_H
 #define ADDUNIQUEWINDOW_H
 
-#include <QtGui>
-#include <QtNetwork>
-#include "mainwindow.h"
+#include <QMap>
+#include <QDialog>
+#include "image.h"
 
 
 
@@ -19,7 +19,7 @@ class AddUniqueWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		AddUniqueWindow(QString, QMap<QString,QMap<QString,QString> >, mainWindow *parent);
+		AddUniqueWindow(QString, QMap<QString,QMap<QString,QString> >, QWidget *parent);
 
 	public slots:
 		void add();
@@ -29,9 +29,11 @@ class AddUniqueWindow : public QDialog
 		void on_buttonFolder_clicked();
 		void on_lineFilename_textChanged(QString);
 
+	signals:
+		void sendData(QMap<QString,QString>);
+
 	private:
 		Ui::AddUniqueWindow						*ui;
-		mainWindow								*m_parent;
 		Page									*m_page;
 		QMap<QString,QMap<QString,QString> >	m_sites;
 		bool									m_close;

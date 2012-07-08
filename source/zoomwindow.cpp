@@ -1,4 +1,3 @@
-#include <string>
 #include <QApplication>
 #include <QtNetwork>
 #include "functions.h"
@@ -12,7 +11,7 @@ extern mainWindow *_mainwindow;
 
 
 
-zoomWindow::zoomWindow(Image *image, QStringMap site, QMap<QString,QMap<QString,QString> > *sites, QWidget *parent) : QDialog(0, Qt::Window), ui(new Ui::zoomWindow), m_image(image), m_site(site), timeout(300), loaded(0), oldsize(0), m_labelTags(NULL), image(NULL), movie(NULL), m_program(qApp->arguments().at(0)), m_replyExists(false), m_finished(false), m_thread(false), m_data(QByteArray()), m_size(0), m_sites(sites), m_source(), m_th(NULL)
+zoomWindow::zoomWindow(Image *image, QMap<QString,QString> site, QMap<QString,QMap<QString,QString> > *sites, QWidget *parent) : QDialog(0, Qt::Window), ui(new Ui::zoomWindow), m_image(image), m_site(site), timeout(300), loaded(0), oldsize(0), m_labelTags(NULL), image(NULL), movie(NULL), m_program(qApp->arguments().at(0)), m_replyExists(false), m_finished(false), m_thread(false), m_data(QByteArray()), m_size(0), m_sites(sites), m_source(), m_th(NULL)
 {
     ui->setupUi(this);
     setAttribute(Qt::WA_DeleteOnClose);

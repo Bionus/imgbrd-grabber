@@ -1,9 +1,8 @@
 #ifndef SITEWINDOW_H
 #define SITEWINDOW_H
 
-#include <QtGui>
+#include <QDialog>
 #include <QtNetwork>
-#include "functions.h"
 
 
 
@@ -12,12 +11,14 @@ namespace Ui
 	class siteWindow;
 }
 
+
+
 class siteWindow : public QDialog
 {
 	Q_OBJECT
 
 	public:
-		explicit siteWindow(QStringMapMap *sites, QWidget *parent = 0);
+		explicit siteWindow(QMap<QString,QMap<QString,QString> > *sites, QWidget *parent = 0);
 		~siteWindow();
 
 	public slots:
@@ -25,7 +26,7 @@ class siteWindow : public QDialog
 
 	private:
 		Ui::siteWindow *ui;
-		QStringMapMap *m_sites;
+		QMap<QString,QMap<QString,QString> > *m_sites;
 };
 
 #endif // SITEWINDOW_H

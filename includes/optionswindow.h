@@ -1,8 +1,10 @@
 #ifndef OPTIONSWINDOW_H
 #define OPTIONSWINDOW_H
 
-#include <QtGui>
-#include "mainwindow.h"
+#include <QDialog>
+#include <QTreeWidgetItem>
+
+
 
 namespace Ui
 {
@@ -16,7 +18,7 @@ class optionsWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		explicit optionsWindow(mainWindow *parent = 0);
+		explicit optionsWindow(QWidget *parent = 0);
 		~optionsWindow();
 
 	public slots:
@@ -60,8 +62,11 @@ class optionsWindow : public QDialog
 		void addFilename(QString, QString);
 		void save();
 
+	signals:
+		void languageChanged(QString);
+		void settingsChanged();
+
 	private:
-		mainWindow *m_parent;
 		Ui::optionsWindow *ui;
 		QList<QLineEdit*> m_customNames, m_customTags, m_filenamesConditions, m_filenamesFilenames;
 };

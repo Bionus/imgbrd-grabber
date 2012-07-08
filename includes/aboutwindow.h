@@ -1,8 +1,8 @@
 #ifndef ABOUTWINDOW_H
 #define ABOUTWINDOW_H
 
-#include <QtGui>
-#include <QtNetwork>
+#include <QDialog>
+#include <QNetworkReply>
 
 
 
@@ -10,6 +10,8 @@ namespace Ui
 {
 	class aboutWindow;
 }
+
+
 
 class aboutWindow : public QDialog
 {

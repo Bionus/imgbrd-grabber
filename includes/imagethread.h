@@ -4,6 +4,8 @@
 #include <QThread>
 #include <QPixmap>
 
+
+
 class ImageThread : public QThread
 {
 	Q_OBJECT

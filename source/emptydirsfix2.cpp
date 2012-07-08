@@ -1,6 +1,8 @@
+#include <QMessageBox>
 #include "emptydirsfix2.h"
-#include "functions.h"
 #include "ui_emptydirsfix2.h"
+
+
 
 EmptyDirsFix2::EmptyDirsFix2(QString folder, QWidget *parent) : QDialog(parent), ui(new Ui::EmptyDirsFix2), m_folder(folder)
 {

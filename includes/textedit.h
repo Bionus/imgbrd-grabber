@@ -1,8 +1,10 @@
 #ifndef HEADER_TEXTEDIT
 #define HEADER_TEXTEDIT
 
-#include <QtGui>
+#include <QTextEdit>
 #include <QCompleter>
+
+
 
 class TextEdit : public QTextEdit
 {
