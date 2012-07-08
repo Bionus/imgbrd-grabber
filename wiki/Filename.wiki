@@ -7,11 +7,11 @@
   * %copyright%
   * %character%
   * %model% : boorus such as [http://behoimi.org/ Behoimi] use, adding to classical type, the "model" type.
-
   * %search% : search tags
   * %search_1%, %search_2%, %search_3%... : first/second/third/etc. tag of the search.
   * %filename% : image filename, as stored on the booru's server.
   * %rating%
+  * %score%
   * %md5%
   * %id%
   * %website%
@@ -19,8 +19,43 @@
   * %width%
   * %ext%
   * %general%
+  * %date% : the date the image was posted on the server, using the format "MM-dd-yyyy HH.mm".
+  * %date:format% : the date the image was posted on the server, using the format provided after the colon. More details about the formatting of the date can be found [http://code.google.com/p/imgbrd-grabber/wiki/Filename#Dates below]. Beware of not using any character forbidden by your operating system in the format, or images won't save.
   * %all% : all tags.
   * %allo% : do not use this unless you know what you're doing. It is the same as %all%, but without the removal of forbidden characters and any treatment (so some images just won't save).
+
+= Dates =
+|| *Expression* || *Output* ||
+|| d || the day as number without a leading zero (1 to 31) ||
+|| dd || the day as number with a leading zero (01 to 31) ||
+|| ddd || the abbreviated localized day name ||
+|| dddd || the long localized day name ||
+|| M || the month as number without a leading zero (1-12) ||
+|| MM || the month as number with a leading zero (01-12) ||
+|| MMM || the abbreviated localized month name ||
+|| MMMM || the long localized month name ||
+|| yy || the year as two digit number (00-99) ||
+|| yyyy || the year as four digit number ||
+|| h || the hour without a leading zero (0 to 23 or 1 to 12 if AM/PM display) ||
+|| hh || the hour with a leading zero (00 to 23 or 01 to 12 if AM/PM display) ||
+|| m || the minute without a leading zero (0 to 59) ||
+|| mm || the minute with a leading zero (00 to 59) ||
+|| s || the second without a leading zero (0 to 59) ||
+|| ss || the second with a leading zero (00 to 59) ||
+|| z || the milliseconds without leading zeroes (0 to 999) ||
+|| zzz || the milliseconds with leading zeroes (000 to 999) ||
+|| AP || use AM/PM display. AP will be replaced by either "AM" or "PM". ||
+|| ap || use am/pm display. ap will be replaced by either "am" or "pm". ||
+
+All other input characters will be ignored. Any sequence of characters that are enclosed in singlequotes will be treated as text and not be used as an expression. Two consecutive singlequotes ("''") are replaced by a singlequote in the output.
+
+Some examples, assumed that the date is 21 May 2001 at 14:13:09:
+|| *Format* || *Result* ||
+|| dd.MM.yyyy || 21.05.2001 ||
+|| ddd MMMM d yy || Tue May 21 01 ||
+|| hh:mm:ss.zzz || 14:13:09.042 ||
+|| h:m:s ap || 2:13:9 pm ||
+
 
 = Custom tokens =
 You can also add custom tokens. To do so, go to the options, "save" part and "custom tokens" subpart. Then just click the button "Add a new custom token" and choose a name and tags that will be searched (separate them with spaces). Any tags in this list found in the image will be placed into your token. For example if an image got tags "a", "b", "c", "d" and your tags list for token "test" is "a c e", "%test%" will be replaced by "a c".
@@ -65,3 +100,8 @@ If, it does not have solo nor group:
 {{{
 image -   %md5%.%ext%
 }}}
+
+= Javascript =
+You can also use Javascript in your filenames. To do so, you can either use the field in the filename window, that you can open clicking the "..." button near the filename field, or by adding "javascript:" before your script.
+
+For example, if your script is "md5 + '.' + ext", your filename will be "javascript:md5 + '.' + ext".
