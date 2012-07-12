@@ -11,7 +11,7 @@ extern mainWindow *_mainwindow;
 
 
 
-zoomWindow::zoomWindow(Image *image, QMap<QString,QString> site, QMap<QString,QMap<QString,QString> > *sites, QWidget *parent) : QDialog(0, Qt::Window), ui(new Ui::zoomWindow), m_image(image), m_site(site), timeout(300), loaded(0), oldsize(0), m_labelTags(NULL), image(NULL), movie(NULL), m_program(qApp->arguments().at(0)), m_replyExists(false), m_finished(false), m_thread(false), m_data(QByteArray()), m_size(0), m_sites(sites), m_source(), m_th(NULL)
+zoomWindow::zoomWindow(Image *image, QMap<QString,QString> site, QMap<QString,QMap<QString,QString> > *sites, QWidget *parent) : QDialog(0, Qt::Window), ui(new Ui::zoomWindow), m_image(image), m_site(site), timeout(300), m_loaded(0), oldsize(0), m_labelTags(NULL), image(NULL), movie(NULL), m_program(qApp->arguments().at(0)), m_replyExists(false), m_finished(false), m_thread(false), m_data(QByteArray()), m_size(0), m_sites(sites), m_source(), m_th(NULL)
 {
     ui->setupUi(this);
     setAttribute(Qt::WA_DeleteOnClose);
@@ -53,11 +53,10 @@ void zoomWindow::go()
     if (settings.value("autodownload", false).toBool() || (whitelisted && settings.value("whitelist_download", "image").toString() == "image"))
     { saveImage(); }
 
-    QAffiche *labelImage = new QAffiche(QVariant(), 0, QColor(), this);
-        labelImage->setSizePolicy(QSizePolicy(QSizePolicy::Ignored,QSizePolicy::Ignored));
-        connect(labelImage, SIGNAL(doubleClicked()), this, SLOT(fullScreen()));
-    ui->verticalLayout->insertWidget(1, labelImage, 1);
-    this->labelImage = labelImage;
+	m_labelImage = new QAffiche(QVariant(), 0, QColor(), this);
+		m_labelImage->setSizePolicy(QSizePolicy(QSizePolicy::Ignored,QSizePolicy::Ignored));
+		connect(m_labelImage, SIGNAL(doubleClicked()), this, SLOT(fullScreen()));
+	ui->verticalLayout->insertWidget(1, m_labelImage, 1);
 
     QStringList hreftags;
     for (int i = 0; i < taglist.count(); i++)
@@ -143,13 +142,13 @@ void zoomWindow::openPoolId(Page *p)
     { return; }
     m_image = p->images().at(0);
     timeout = 300;
-    loaded = 0;
+	m_loaded = 0;
     oldsize = 0;
     m_replyExists = false;
     m_finished = false;
     m_size = 0;
-    labelImage->hide();
-    ui->verticalLayout->removeWidget(labelImage);
+	m_labelImage->hide();
+	ui->verticalLayout->removeWidget(m_labelImage);
     go();
 }
 
@@ -344,30 +343,7 @@ void zoomWindow::downloadProgress(qint64 size, qint64 total)
         m_th = new ImageThread(m_data);
         connect(m_th, SIGNAL(finished(QImage, int)), this, SLOT(display(QImage, int)));
         connect(m_th, SIGNAL(finished()), m_th, SLOT(deleteLater()));
-        m_th->start();
-        /*QPixmap image;
-        image.loadFromData(m_data);
-        display(&image, m_data.size());*/
-    }
-}
-void zoomWindow::display(QPixmap *pix, int size)
-{
-    if (!pix->size().isEmpty() && size >= m_size)
-    {
-        m_size = size;
-        image = pix;
-        update(!m_finished);
-    }
-}
-void zoomWindow::display(QPixmap pix, int size)
-{
-    if (!pix.size().isEmpty() && size >= m_size)
-    {
-        m_size = size;
-        delete image;
-        image = new QPixmap(pix);
-        update(!m_finished);
-        m_thread = false;
+		m_th->start();
     }
 }
 void zoomWindow::display(QImage pix, int size)
@@ -376,8 +352,11 @@ void zoomWindow::display(QImage pix, int size)
     {
         m_size = size;
         delete image;
-        image = new QPixmap(QPixmap::fromImage(pix));
-        update(!m_finished);
+		image = new QPixmap(QPixmap::fromImage(pix));
+		if (m_url.section('.', -1).toUpper() == "GIF")
+		{ m_labelImage->setPixmap(*image); }
+		else
+		{ update(!m_finished); }
         m_thread = false;
     }
 }
@@ -426,7 +405,7 @@ void zoomWindow::replyFinished(Image* img)
         if (m_url.section('.', -1).toUpper() == "GIF")
         {
             this->movie = new QMovie(m_source, QByteArray(), this);
-            labelImage->setMovie(movie);
+			m_labelImage->setMovie(movie);
             movie->start();
         }
         else
@@ -434,7 +413,7 @@ void zoomWindow::replyFinished(Image* img)
             QPixmap *img = new QPixmap;
             img->load(m_source);
             this->image = img;
-            this->loaded = true;
+			m_loaded = true;
             update();
         }
     }
@@ -497,35 +476,31 @@ void zoomWindow::replyFinishedZoom()
         m_image->setData(m_data);
         if (m_url.section('.', -1).toUpper() == "GIF")
         {
-            QTemporaryFile f;
-            if (f.open())
+			QTemporaryFile f;
+			if (f.open())
             {
-                f.write(m_data);
-                f.close();
-                this->movie = new QMovie(f.fileName(), QByteArray(), this);
-                labelImage->setMovie(movie);
+				f.write(m_data);
+				f.close();
+				this->movie = new QMovie(f.fileName(), QByteArray(), this);
+				m_labelImage->setMovie(movie);
                 movie->start();
+				image = NULL;
+				m_loaded = true;
             }
             else
             { error(this, tr("Une erreur inattendue est survenue lors du chargement de l'image GIF.\r\n%1").arg(m_reply->url().toString())); }
         }
         else
-        {
-            /*QPixmap *img = new QPixmap();
-            img->loadFromData(m_data);
-            this->image = img;
-            this->update();*/
-            /*if (m_thread && m_th->isRunning())
-            { m_th->quit(); }*/
+		{
             m_thread = true;
             m_th = new ImageThread(m_data);
             connect(m_th, SIGNAL(finished(QImage, int)), this, SLOT(display(QImage, int)));
             connect(m_th, SIGNAL(finished()), m_th, SLOT(deleteLater()));
             m_th->start();
-            this->loaded = true;
+			m_loaded = true;
         }
-        if (this->m_mustSave > 0)
-        { this->saveImage(); }
+		if (m_mustSave > 0)
+		{ saveImage(); }
     }
     else if (m_reply->error() == QNetworkReply::ContentNotFoundError && m_url.section('.', -1) != "jpeg")
     {
@@ -549,23 +524,23 @@ void zoomWindow::replyFinishedZoom()
 
 void zoomWindow::update(bool onlysize)
 {
-    if (m_url.section('.', -1).toUpper() != "GIF")
-    {
-        if (onlysize && (this->image->width() > this->labelImage->width() || this->image->height() > this->labelImage->height()))
-        { this->labelImage->setImage(this->image->scaled(this->labelImage->width(), this->labelImage->height(), Qt::KeepAspectRatio, Qt::FastTransformation)); }
-        else if (this->loaded)
+	if (m_url.section('.', -1).toUpper() != "GIF")
+	{
+		if (onlysize && (this->image->width() > m_labelImage->width() || this->image->height() > m_labelImage->height()))
+		{ m_labelImage->setImage(this->image->scaled(m_labelImage->width(), m_labelImage->height(), Qt::KeepAspectRatio, Qt::FastTransformation)); }
+		else if (m_loaded)
         {
-            if (this->image->width() > this->labelImage->width() || this->image->height() > this->labelImage->height())
-            { this->labelImage->setImage(this->image->scaled(this->labelImage->width(), this->labelImage->height(), Qt::KeepAspectRatio, Qt::SmoothTransformation)); }
+			if (this->image->width() > m_labelImage->width() || this->image->height() > m_labelImage->height())
+			{ m_labelImage->setImage(this->image->scaled(m_labelImage->width(), m_labelImage->height(), Qt::KeepAspectRatio, Qt::SmoothTransformation)); }
             else
-            { this->labelImage->setImage(*this->image); }
+			{ m_labelImage->setImage(*this->image); }
         }
     }
 }
 
 void zoomWindow::saveNQuit()
 {
-    if (loaded)
+	if (m_loaded)
     {
         if (!this->saveImage().isEmpty())
         { this->close(); }
@@ -578,7 +553,7 @@ void zoomWindow::saveNQuit()
 }
 void zoomWindow::saveNQuitFav()
 {
-    if (loaded)
+	if (m_loaded)
     {
         if (!this->saveImageFav().isEmpty())
         { this->close(); }
@@ -592,7 +567,7 @@ void zoomWindow::saveNQuitFav()
 
 QString zoomWindow::saveImage(bool fav)
 {
-    if (!loaded) // If image is still loading, we wait for it to finish
+	if (!m_loaded) // If image is still loading, we wait for it to finish
     {
         if (fav)
         {
@@ -644,14 +619,15 @@ QString zoomWindow::saveImage(bool fav)
         }
 
         log(tr("Sauvegarde de l'image (%1) dans le fichier <a href=\"file:///%2\">%2</a>").arg(m_data.size()).arg(f.fileName()));
-        if (m_source.isEmpty())
+		if (!m_source.isEmpty())
+		{ QFile::copy(m_source, f.fileName()); }
+		else
         {
-            f.open(QIODevice::WriteOnly);
-            f.write(m_data);
-            f.close();
-        }
-        else
-        { QFile::copy(m_source, f.fileName()); }
+			addMd5(m_image->md5(), fp);
+			f.open(QIODevice::WriteOnly);
+			f.write(m_data);
+			f.close();
+		}
 
         // Commands: initialization
         QProcess *p = new QProcess(this);
@@ -747,8 +723,9 @@ QString zoomWindow::saveImageFav()
 QString zoomWindow::saveImageAs()
 {
     QString path = QFileDialog::getSaveFileName(this, tr("Enregistrer l'image"), m_image->fileUrl().toString().section('/', -1), "Images (*.png *.gif *.jpg *.jpeg)");
+	addMd5(m_image->md5(), path);
     QFile f(path);
-    f.open(QIODevice::WriteOnly);
+	f.open(QIODevice::WriteOnly);
     f.write(m_data);
     f.close();
     return path;
@@ -760,8 +737,11 @@ void zoomWindow::fullScreen()
 {
     QAffiche *label = new QAffiche(QVariant(), 0, QColor());
         label->setStyleSheet("background-color: black");
-        label->setAlignment(Qt::AlignCenter);
-        label->setImage(this->image->scaled(QApplication::desktop()->screenGeometry().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+		label->setAlignment(Qt::AlignCenter);
+		if (m_url.section('.', -1).toUpper() == "GIF")
+		{ label->setMovie(movie); }
+		else
+		{ label->setImage(image->scaled(QApplication::desktop()->screenGeometry().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation)); }
         label->showFullScreen();
     QShortcut *escape = new QShortcut(QKeySequence(Qt::Key_Escape), label);
         connect(escape, SIGNAL(activated()), label, SLOT(close()));
@@ -772,7 +752,7 @@ void zoomWindow::fullScreen()
 
 void zoomWindow::resizeEvent(QResizeEvent *e)
 {
-    if (this->loaded && m_finished && !m_thread)
+	if (m_loaded && m_finished && !m_thread)
     {
         if (!this->timer->isActive())
         {

@@ -1245,7 +1245,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>313</x>
-     <y>249</y>
+     <y>57</y>
     </hint>
     <hint type="destinationlabel">
      <x>804</x>
@@ -1261,7 +1261,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>313</x>
-     <y>476</y>
+     <y>66</y>
     </hint>
     <hint type="destinationlabel">
      <x>804</x>
@@ -1276,8 +1276,8 @@
    <slot>batchSel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>299</x>
-     <y>515</y>
+     <x>331</x>
+     <y>99</y>
     </hint>
     <hint type="destinationlabel">
      <x>216</x>
@@ -1292,8 +1292,8 @@
    <slot>getAll()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>438</x>
-     <y>527</y>
+     <x>331</x>
+     <y>99</y>
     </hint>
     <hint type="destinationlabel">
      <x>302</x>
@@ -1308,8 +1308,8 @@
    <slot>batchClearSel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>705</x>
-     <y>527</y>
+     <x>331</x>
+     <y>99</y>
     </hint>
     <hint type="destinationlabel">
      <x>629</x>
@@ -1324,8 +1324,8 @@
    <slot>batchClear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>786</x>
-     <y>527</y>
+     <x>331</x>
+     <y>99</y>
     </hint>
     <hint type="destinationlabel">
      <x>742</x>
@@ -1501,7 +1501,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>313</x>
-     <y>71</y>
+     <y>54</y>
     </hint>
     <hint type="destinationlabel">
      <x>801</x>
@@ -1513,7 +1513,7 @@
    <sender>lineFolder</sender>
    <signal>textEdited(QString)</signal>
    <receiver>mainWindow</receiver>
-   <slot>batchSel()</slot>
+   <slot>saveSettings()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>105</x>

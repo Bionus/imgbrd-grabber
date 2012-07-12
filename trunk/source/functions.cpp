@@ -14,6 +14,7 @@ using namespace std;
 
 //extern QMap<QDateTime,QString> _log;
 //extern mainWindow *_mainwindow;
+extern QMap<QString,QString> _md5;
 
 
 
@@ -92,6 +93,110 @@ QDateTime qDateTimeFromString(QString str, int timezonedecay)
 		date.setTime(time.addSecs(3600 * timezonedecay));
 	}
 	return date;
+}
+
+/**
+ * Load md5 file and put its content into the _md5 map.
+ */
+void loadMd5s()
+{
+	QFile f(savePath("md5s.txt"));
+	f.open(QFile::ReadOnly);
+	QString line;
+	while ((line = f.readLine()) != "")
+	{ _md5.insert(line.left(32), line.mid(32)); }
+	qDebug() << _md5.keys();
+	f.close();
+}
+
+/**
+ * Save the _md5 map to the md5 file.
+ */
+void saveMd5s()
+{
+	QFile f(savePath("md5s.txt"));
+	f.open(QFile::WriteOnly | QFile::Truncate);
+	QStringList md5s = _md5.keys(), paths = _md5.values();
+	for (int i = 0; i < md5s.size(); i++)
+	{ f.write(QString(md5s[i] + paths[i] + "\r\n").toUtf8()); }
+	f.close();
+}
+
+/**
+ * Check if a file with this md5 already exists;
+ * @param	md5		The md5 that needs to be checked.
+ * @return			A QString containing the path to the already existing file, an empty QString if the md5 does not already exists.
+ */
+QString md5Exists(QString md5)
+{
+	if (_md5.contains(md5))
+	{
+		if (QFile::exists(_md5[md5]))
+		{ return _md5[md5]; }
+		else
+		{
+			removeMd5(md5);
+			return QString();
+		}
+	}
+	return QString();
+}
+
+/**
+ * Adds a md5 to the _md5 map and adds it to the md5 file.
+ * @param	md5		The md5 to add.
+ * @param	path	The path to the image with this md5.
+ */
+void addMd5(QString md5, QString path)
+{
+	_md5.insert(md5, path);
+	QFile f(savePath("md5s.txt"));
+	f.open(QFile::WriteOnly | QFile::Append);
+	f.write(QString(md5 + path + "\r\n").toUtf8());
+	f.close();
+}
+
+/**
+ * Removes a md5 from the _md5 map and removes it from the md5 file.
+ * @param	md5		The md5 to remove.
+ */
+void removeMd5(QString md5)
+{
+	_md5.remove(md5);
+	saveMd5s();
+}
+
+QString getUnit(int *value)
+{
+	QString unit = "o";
+	if (*value >= 1024)
+	{
+		*value /= 1024;
+		if (*value >= 1024)
+		{
+			*value /= 1024;
+			unit = "Mio";
+		}
+		else
+		{ unit = "Kio"; }
+	}
+	return unit;
+}
+QString getUnit(float *value)
+{
+	QString unit = "o";
+	if (*value >= 1024)
+	{
+		*value /= 1024;
+		if (*value >= 1024)
+		{
+			*value /= 1024;
+			unit = "Mio";
+		}
+		else
+		{ unit = "Kio"; }
+	}
+	return unit;
 }
 
 /**
