@@ -2,6 +2,7 @@
 #include <QTime>
 #include <QCloseEvent>
 #include <QClipboard>
+#include <QDebug>
 #include "batchwindow.h"
 #include "ui_batchwindow.h"
 #include "functions.h"
@@ -10,7 +11,7 @@
 
 
 
-batchWindow::batchWindow(QWidget *parent) : QDialog(), ui(new Ui::batchWindow), m_items(0), m_images(0), m_cancel(false)
+batchWindow::batchWindow(QWidget *parent) : QDialog(), ui(new Ui::batchWindow), m_items(0), m_images(0), m_maxSpeeds(0), m_cancel(false)
 {
 	ui->setupUi(this);
 	ui->tableWidget->resizeColumnToContents(0);
@@ -27,6 +28,7 @@ batchWindow::batchWindow(QWidget *parent) : QDialog(), ui(new Ui::batchWindow), 
 
 	m_time = new QTime;
 	m_time->start();
+	m_start = new QTime;
 }
 
 batchWindow::~batchWindow()
@@ -62,7 +64,9 @@ void batchWindow::clear()
 	m_cancel = false;
 	m_items = 0;
 	m_imagesCount = 0;
+	m_maxSpeeds = 0;
 	m_time->restart();
+	m_start->restart();
 	ui->tableWidget->clearContents();
 	ui->tableWidget->setRowCount(0);
 	ui->labelMessage->setText("");
@@ -150,7 +154,11 @@ int batchWindow::batch(QString url)
 }
 void batchWindow::loadingImage(QString url)
 {
+	if (m_start->isNull())
+	{ m_start->start(); }
 	m_speeds.insert(url, 0);
+	if (m_speeds.size() > m_maxSpeeds)
+	{ m_maxSpeeds = m_speeds.size(); }
 	for (int i = 0; i < m_items; i++)
 	{
 		if (ui->tableWidget->item(i, 2)->text() == url)
@@ -168,19 +176,7 @@ void batchWindow::statusImage(QString url, int percent)
 void batchWindow::speedImage(QString url, float speed)
 {
 	m_speeds[url] = (int)speed;
-
-	QString unit = "o/s";
-	if (speed >= 1024)
-	{
-		speed /= 1024;
-		if (speed >= 1024)
-		{
-			speed /= 1024;
-			unit = "Mio/s";
-		}
-		else
-		{ unit = "Kio/s"; }
-	}
+	QString unit = getUnit(&speed)+"/s";
 
 	for (int i = 0; i < m_items; i++)
 	{
@@ -196,18 +192,7 @@ void batchWindow::sizeImage(QString url, float size)
 	{
 		if (ui->tableWidget->item(i, 2)->text() == url)
 		{
-			QString unit = "o";
-			if (size >= 1024)
-			{
-				size /= 1024;
-				if (size >= 1024)
-				{
-					size /= 1024;
-					unit = "Mio";
-				}
-				else
-				{ unit = "Kio"; }
-			}
+			QString unit = getUnit(&size);
 			ui->tableWidget->setItem(i, 3, new QTableWidgetItem(QLocale::system().toString(size, 'f', size < 10 ? 2 : 0)+" "+unit));
 			return;
 		}
@@ -246,26 +231,35 @@ void batchWindow::drawSpeed()
 {
 	if (m_time->elapsed() < 1000)
 	{ return; }
-
 	m_time->restart();
 
-	float speed = 0;
+	int speed = 0;
 	foreach (int sp, m_speeds.values())
 	{ speed += sp; }
+	if (m_speeds.size() == m_maxSpeeds)
+	{ m_mean.append(speed); }
+	QString unit = getUnit(&speed)+"/s";
 
-	QString unit = "o/s";
-	if (speed >= 1024)
+	int speedMean = 0, count = qMin(m_mean.count(), 60);
+	if (count > 0)
 	{
-		speed /= 1024;
-		if (speed >= 1024)
-		{
-			speed /= 1024;
-			unit = "Mio/s";
-		}
-		else
-		{ unit = "Kio/s"; }
+		for (int i = m_mean.count() - count; i < m_mean.count() - 1; i++)
+		{ speedMean += m_mean[i]; }
+		speedMean = (int)(speedMean/count);
 	}
-	ui->labelSpeed->setText(QLocale::system().toString(speed, 'f', speed < 10 ? 2 : 0)+" "+unit);
+	QString unitMean = getUnit(&speedMean)+"/s";
+
+	int elapsed = m_start->elapsed();
+	int remaining = m_images > 0 ? (int)((elapsed * m_imagesCount) / m_images) : 0;
+	QTime tElapsed, tRemaining;
+	tElapsed = tElapsed.addMSecs(elapsed);
+	tRemaining = tRemaining.addMSecs(remaining);
+	QString fElapsed = elapsed > 3600000 ? tr("h 'h' m 'm' s 's'") : (elapsed > 60000 ? tr("m 'm' s 's'") : tr("s 's'"));
+	QString fRemaining = remaining > 3600000 ? tr("h 'h' m 'm' s 's'") : (remaining > 60000 ? tr("m 'm' s 's'") : tr("s 's'"));
+	qDebug() << elapsed / 1000 << remaining / 1000;
+
+	ui->labelSpeed->setText(QLocale::system().toString((float)speed, 'f', speed < 10 ? 2 : 0)+" "+unit);
+	ui->labelSpeed->setToolTip(tr("<b>Vitesse moyenne :</b> %1 %2<br/><br/><b>Temps écoulé :</b> %3<br/><b>Temps restant :</b> %4").arg(QLocale::system().toString((float)speedMean, 'f', speedMean < 10 ? 2 : 0), unitMean, tElapsed.toString(fElapsed), tRemaining.toString(fRemaining)));
 }
 
 void batchWindow::on_buttonDetails_clicked(bool visible)

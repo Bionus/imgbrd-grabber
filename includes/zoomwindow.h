@@ -31,9 +31,7 @@ class zoomWindow : public QDialog
 	public slots:
 		void update(bool onlysize = false);
 		void replyFinished(Image*);
-        void replyFinishedZoom();
-        void display(QPixmap, int);
-		void display(QPixmap*, int);
+		void replyFinishedZoom();
         void display(QImage, int);
 		void saveNQuit();
 		void saveNQuitFav();
@@ -76,10 +74,10 @@ class zoomWindow : public QDialog
 		detailsWindow *m_detailsWindow;
 		Image *m_image;
 		QMap<QString,QString> regex, m_details, m_site;
-		int timeout, loaded, oldsize, m_mustSave;
+		int timeout, m_loaded, oldsize, m_mustSave;
 		QMap<QString, QStringList> details;
 		QString id, m_url, tags, md5, rating, score, user, format;
-		QAffiche *labelImage;
+		QAffiche *m_labelImage;
 		QLabel *m_labelTags;
 		QPixmap *image;
 		QMovie *movie;

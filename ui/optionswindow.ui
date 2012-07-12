@@ -19,7 +19,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,1">
+    <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0">
      <property name="sizeConstraint">
       <enum>QLayout::SetFixedSize</enum>
      </property>
@@ -148,7 +148,7 @@
         </sizepolicy>
        </property>
        <property name="currentIndex">
-        <number>12</number>
+        <number>7</number>
        </property>
        <widget class="QWidget" name="page1">
         <layout class="QFormLayout" name="formLayout_14">
@@ -687,7 +687,7 @@ p, li { white-space: pre-wrap; }
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="page5">
+       <widget class="QWidget" name="pageSaveFilenames">
         <layout class="QFormLayout" name="formLayout_4">
          <property name="fieldGrowthPolicy">
           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
@@ -760,7 +760,7 @@ p, li { white-space: pre-wrap; }
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="page6">
+       <widget class="QWidget" name="pageSaveConditionals">
         <layout class="QFormLayout" name="layoutFilenames">
          <item row="0" column="0" colspan="2">
           <widget class="QPushButton" name="buttonFilenames">
@@ -771,7 +771,7 @@ p, li { white-space: pre-wrap; }
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="page7">
+       <widget class="QWidget" name="pageSaveArtists">
         <layout class="QFormLayout" name="formLayout_15">
          <item row="0" column="0">
           <widget class="QLabel" name="label_16">
@@ -787,46 +787,190 @@ p, li { white-space: pre-wrap; }
            </property>
           </widget>
          </item>
-         <item row="2" column="0">
+         <item row="1" column="0">
           <widget class="QLabel" name="label_18">
            <property name="text">
-            <string>Séparateur si multiples</string>
+            <string>Séparateur</string>
            </property>
           </widget>
          </item>
-         <item row="3" column="0">
-          <widget class="QLabel" name="label_19">
-           <property name="text">
-            <string>Valeur si multiples</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="1">
+         <item row="1" column="1">
           <widget class="QLineEdit" name="lineArtistsSeparator">
            <property name="text">
             <string/>
            </property>
           </widget>
          </item>
-         <item row="3" column="1">
-          <widget class="QLineEdit" name="lineArtistsIfMultiples">
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_71">
+           <property name="text">
+            <string>Si plus de n tags</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QSpinBox" name="spinArtistsMoreThanN">
+           <property name="maximum">
+            <number>100</number>
+           </property>
+           <property name="value">
+            <number>1</number>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0" colspan="2">
+          <widget class="QRadioButton" name="radioArtistsKeepAll">
+           <property name="text">
+            <string>Garder tous les tags</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0">
+          <widget class="QRadioButton" name="radioArtistsKeepNThenAdd">
+           <property name="text">
+            <string>Garder n tags, puis ajouter</string>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="0">
+          <widget class="QRadioButton" name="radioArtistsReplaceAll">
+           <property name="text">
+            <string>Remplacer tous les tags par</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="1">
+          <widget class="QLineEdit" name="lineArtistsReplaceAll">
            <property name="text">
             <string/>
            </property>
           </widget>
          </item>
-         <item row="1" column="0" colspan="2">
-          <widget class="QCheckBox" name="checkArtistsKeepAll">
+         <item row="4" column="0">
+          <widget class="QRadioButton" name="radioArtistsKeepN">
            <property name="text">
-            <string>Garder tous</string>
+            <string>Garder n tags</string>
            </property>
           </widget>
          </item>
+         <item row="4" column="1">
+          <widget class="QSpinBox" name="spinArtistsKeepN"/>
+         </item>
+         <item row="5" column="1">
+          <layout class="QHBoxLayout" name="horizontalLayout_17" stretch="1,1">
+           <item>
+            <widget class="QSpinBox" name="spinArtistsKeepNThenAdd"/>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineArtistsKeepNThenAdd">
+             <property name="text">
+              <string notr="true"> (+ %count%)</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="page8">
+       <widget class="QWidget" name="pageSaveCopyrights">
         <layout class="QFormLayout" name="formLayout_5">
-         <item row="0" column="0" colspan="2">
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_17">
+           <property name="text">
+            <string>Si aucun</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLineEdit" name="lineCopyrightsIfNone">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_20">
+           <property name="text">
+            <string>Séparateur</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLineEdit" name="lineCopyrightsSeparator">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_70">
+           <property name="text">
+            <string>Si plus de n tags</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QSpinBox" name="spinCopyrightsMoreThanN">
+           <property name="maximum">
+            <number>100</number>
+           </property>
+           <property name="value">
+            <number>1</number>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QRadioButton" name="radioCopyrightsKeepN">
+           <property name="text">
+            <string>Garder n tags</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <widget class="QSpinBox" name="spinCopyrightsKeepN"/>
+         </item>
+         <item row="5" column="0">
+          <widget class="QRadioButton" name="radioCopyrightsKeepNThenAdd">
+           <property name="text">
+            <string>Garder n tags, puis ajouter</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="1">
+          <layout class="QHBoxLayout" name="horizontalLayout_19" stretch="1,1">
+           <item>
+            <widget class="QSpinBox" name="spinCopyrightsKeepNThenAdd"/>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineCopyrightsKeepNThenAdd">
+             <property name="text">
+              <string notr="true"> (+ %count%)</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="6" column="0">
+          <widget class="QRadioButton" name="radioCopyrightsReplaceAll">
+           <property name="text">
+            <string>Remplacer tous les tags par</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="1">
+          <widget class="QLineEdit" name="lineCopyrightsReplaceAll">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="0" colspan="2">
           <widget class="QCheckBox" name="checkCopyrightsUseShorter">
            <property name="text">
             <string>Utiliser le plus court si possible</string>
@@ -836,62 +980,17 @@ p, li { white-space: pre-wrap; }
            </property>
           </widget>
          </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="label_17">
+         <item row="3" column="0" colspan="2">
+          <widget class="QRadioButton" name="radioCopyrightsKeepAll">
            <property name="text">
-            <string>Si aucun</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="QLineEdit" name="lineCopyrightsIfNone">
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0" colspan="2">
-          <widget class="QCheckBox" name="checkCopyrightsKeepAll">
-           <property name="text">
-            <string>Garder tous</string>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="0">
-          <widget class="QLabel" name="label_20">
-           <property name="text">
-            <string>Séparateur si multiples</string>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="0">
-          <widget class="QLabel" name="label_21">
-           <property name="text">
-            <string>Valeur si multiples</string>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="1">
-          <widget class="QLineEdit" name="lineCopyrightsSeparator">
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="1">
-          <widget class="QLineEdit" name="lineCopyrightsIfMultiples">
-           <property name="text">
-            <string/>
+            <string>Garder tous les tags</string>
            </property>
           </widget>
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="page9">
+       <widget class="QWidget" name="pageSaveCharacters">
         <layout class="QFormLayout" name="formLayout_6">
-         <property name="fieldGrowthPolicy">
-          <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-         </property>
          <item row="0" column="0">
           <widget class="QLabel" name="label_22">
            <property name="text">
@@ -906,38 +1005,89 @@ p, li { white-space: pre-wrap; }
            </property>
           </widget>
          </item>
-         <item row="2" column="0">
+         <item row="1" column="0">
           <widget class="QLabel" name="label_23">
            <property name="text">
-            <string>Séparateur si multiples</string>
+            <string>Séparateur</string>
            </property>
           </widget>
          </item>
-         <item row="2" column="1">
+         <item row="1" column="1">
           <widget class="QLineEdit" name="lineCharactersSeparator">
            <property name="text">
             <string/>
            </property>
           </widget>
          </item>
-         <item row="3" column="0">
-          <widget class="QLabel" name="label_24">
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_69">
            <property name="text">
-            <string>Valeur si multiples</string>
+            <string>Si plus de n tags</string>
            </property>
           </widget>
          </item>
-         <item row="3" column="1">
-          <widget class="QLineEdit" name="lineCharactersIfMultiples">
+         <item row="2" column="1">
+          <widget class="QSpinBox" name="spinCharactersMoreThanN">
+           <property name="maximum">
+            <number>100</number>
+           </property>
+           <property name="value">
+            <number>1</number>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QRadioButton" name="radioCharactersKeepN">
+           <property name="text">
+            <string>Garder n tags</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <widget class="QSpinBox" name="spinCharactersKeepN"/>
+         </item>
+         <item row="5" column="0">
+          <widget class="QRadioButton" name="radioCharactersKeepNThenAdd">
+           <property name="text">
+            <string>Garder n tags, puis ajouter</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="1">
+          <layout class="QHBoxLayout" name="horizontalLayout_20" stretch="1,1">
+           <item>
+            <widget class="QSpinBox" name="spinCharactersKeepNThenAdd"/>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineCharactersKeepNThenAdd">
+             <property name="text">
+              <string notr="true"> (+ %count%)</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="6" column="0">
+          <widget class="QRadioButton" name="radioCharactersReplaceAll">
+           <property name="text">
+            <string>Remplacer tous les tags par</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="1">
+          <widget class="QLineEdit" name="lineCharactersReplaceAll">
            <property name="text">
             <string/>
            </property>
           </widget>
          </item>
-         <item row="1" column="0" colspan="2">
-          <widget class="QCheckBox" name="checkCharactersKeepAll">
+         <item row="3" column="0" colspan="2">
+          <widget class="QRadioButton" name="radioCharactersKeepAll">
            <property name="text">
-            <string>Garder tous</string>
+            <string>Garder tous les tags</string>
            </property>
           </widget>
          </item>
@@ -1767,6 +1917,62 @@ p, li { white-space: pre-wrap; }
   <tabstop>lineCommandsGroupImage</tabstop>
   <tabstop>lineCommandsGroupTag</tabstop>
   <tabstop>buttonBox</tabstop>
+  <tabstop>comboLanguages</tabstop>
+  <tabstop>comboStart</tabstop>
+  <tabstop>lineBlacklist</tabstop>
+  <tabstop>checkHideBlacklisted</tabstop>
+  <tabstop>lineWhitelist</tabstop>
+  <tabstop>comboWhitelist</tabstop>
+  <tabstop>lineIgnored</tabstop>
+  <tabstop>checkDownloadBlacklisted</tabstop>
+  <tabstop>lineAdd</tabstop>
+  <tabstop>spinImagesPerPage</tabstop>
+  <tabstop>spinColumns</tabstop>
+  <tabstop>checkUseregexfortags</tabstop>
+  <tabstop>comboSource1</tabstop>
+  <tabstop>comboSource2</tabstop>
+  <tabstop>comboSource3</tabstop>
+  <tabstop>comboSource4</tabstop>
+  <tabstop>checkShowLog</tabstop>
+  <tabstop>checkInvertLog</tabstop>
+  <tabstop>checkDownloadOriginals</tabstop>
+  <tabstop>checkAutodownload</tabstop>
+  <tabstop>lineFolderFavorites</tabstop>
+  <tabstop>buttonFolderFavorites</tabstop>
+  <tabstop>lineSeparator</tabstop>
+  <tabstop>checkReplaceBlanks</tabstop>
+  <tabstop>spinLimit</tabstop>
+  <tabstop>spinSimultaneous</tabstop>
+  <tabstop>lineFilename</tabstop>
+  <tabstop>buttonFilenamePlus</tabstop>
+  <tabstop>lineFavorites</tabstop>
+  <tabstop>buttonFavoritesPlus</tabstop>
+  <tabstop>buttonFilenames</tabstop>
+  <tabstop>lineArtistsIfNone</tabstop>
+  <tabstop>lineArtistsSeparator</tabstop>
+  <tabstop>lineCopyrightsIfNone</tabstop>
+  <tabstop>lineCharactersIfNone</tabstop>
+  <tabstop>lineCharactersSeparator</tabstop>
+  <tabstop>comboTagsposition</tabstop>
+  <tabstop>checkShowTagWarning</tabstop>
+  <tabstop>checkShowWarnings</tabstop>
+  <tabstop>checkGetUnloadedPages</tabstop>
+  <tabstop>spinMainMargins</tabstop>
+  <tabstop>spinServerBorders</tabstop>
+  <tabstop>lineBorderColor</tabstop>
+  <tabstop>buttonBorderColor</tabstop>
+  <tabstop>spinHorizontalMargins</tabstop>
+  <tabstop>spinVerticalMargins</tabstop>
+  <tabstop>spinBorders</tabstop>
+  <tabstop>linePseudo</tabstop>
+  <tabstop>checkProxyUse</tabstop>
+  <tabstop>lineCommandsImage</tabstop>
+  <tabstop>lineCommandsTag</tabstop>
+  <tabstop>buttonCustom</tabstop>
+  <tabstop>spinHideFavorites</tabstop>
+  <tabstop>checkResizeInsteadOfCropping</tabstop>
+  <tabstop>comboSources</tabstop>
+  <tabstop>checkAutocompletion</tabstop>
  </tabstops>
  <resources>
   <include location="../resources.qrc"/>
@@ -1821,114 +2027,18 @@ p, li { white-space: pre-wrap; }
    </hints>
   </connection>
   <connection>
-   <sender>checkCharactersKeepAll</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>lineCharactersSeparator</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>275</x>
-     <y>39</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>275</x>
-     <y>39</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkCharactersKeepAll</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>label_23</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>275</x>
-     <y>39</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>275</x>
-     <y>39</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkCopyrightsKeepAll</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>label_20</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>275</x>
-     <y>39</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>275</x>
-     <y>39</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkCopyrightsKeepAll</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>lineCopyrightsSeparator</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>275</x>
-     <y>39</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>275</x>
-     <y>39</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkArtistsKeepAll</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>label_18</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>275</x>
-     <y>39</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>275</x>
-     <y>39</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkArtistsKeepAll</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>lineArtistsSeparator</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>275</x>
-     <y>39</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>275</x>
-     <y>39</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>checkProxyUse</sender>
    <signal>toggled(bool)</signal>
    <receiver>widgetProxy</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>275</x>
-     <y>39</y>
+     <x>266</x>
+     <y>21</y>
     </hint>
     <hint type="destinationlabel">
-     <x>275</x>
-     <y>39</y>
+     <x>266</x>
+     <y>30</y>
     </hint>
    </hints>
   </connection>

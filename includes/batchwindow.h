@@ -58,11 +58,12 @@ class batchWindow : public QDialog
 	private:
 		Ui::batchWindow			*ui;
 		QSize					m_currentSize;
-		int						m_imagesCount, m_items, m_value, m_images;
+		int						m_imagesCount, m_items, m_value, m_images, m_maxSpeeds;
 		QList<QProgressBar*>	m_progressBars;
 		QMap<QString, int>		m_speeds;
+		QList<int>				m_mean;
 		bool					m_cancel;
-		QTime					*m_time;
+		QTime					*m_time, *m_start;
 };
 
 #endif // BATCHWINDOW_H

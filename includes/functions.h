@@ -10,11 +10,6 @@
 
 
 
-//typedef QMap<QString,QString> QStringMap;
-//typedef QMap<QString,QMap<QString,QString> > QStringMapMap;
-
-
-
 enum Log
 {
 	Info,
@@ -35,6 +30,8 @@ QString		qfonttocss(QFont);
 float		round(float n, unsigned d);
 void		clearLayout(QLayout *layout);
 QString		stripTags(QString);
+QString		getUnit(int*);
+QString		getUnit(float*);
 
 void		showInGraphicalShell(const QString &);
 void		shutDown(int timeout = 0);
@@ -42,6 +39,12 @@ void		openTray();
 
 void		log(QString, Log type = Info);
 void		logUpdate(QString);
+
+void		loadMd5s();
+void		saveMd5s();
+QString		md5Exists(QString);
+void		addMd5(QString, QString);
+void		removeMd5(QString);
 
 QMap<QString,QString>		loadFavorites();
 QStringList					loadViewItLater();

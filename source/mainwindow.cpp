@@ -41,12 +41,6 @@ void mainWindow::init()
 	m_settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
 	bool crashed = m_settings->value("crashed", false).toBool();
 
-	QFile f("C:\\Users\\Spark\\Desktop\\test.txt");
-	f.open(QFile::ReadOnly);
-	QString line;
-	while ((line = f.readLine()) != "")
-	{ _md5.insert(line.left(32), line.mid(32)); }
-
 	m_settings->setValue("crashed", true);
 	m_settings->sync();
 
@@ -54,6 +48,8 @@ void mainWindow::init()
 	ui->setupUi(this);
 	log(tr("Nouvelle session démarée."));
 	log(tr("Chargement des préférences depuis <a href=\"file:///%1\">%1</a>").arg(savePath("settings.ini")));
+
+	loadMd5s();
 
 	tabifyDockWidget(ui->dock_internet, ui->dock_wiki);
 	tabifyDockWidget(ui->dock_wiki, ui->dock_kfl);
@@ -1259,6 +1255,8 @@ void mainWindow::getAllFinishedLoading(Page* p)
 	{
 		if (ims[i]->blacklisted(blacklistedtags).isEmpty())
 		{ imgs.append(ims[i]); }
+		else
+		{ log("Blacklisted: "+ims[i]->blacklisted(blacklistedtags).join(", ")); }
 	}
 
 	m_progressBars[n]->setMaximum(imgs.size());
@@ -1686,6 +1684,7 @@ void mainWindow::getAllPerformImage(Image* img)
 				{
 					f.write(data);
 					f.close();
+					addMd5(img->md5(), fp);
 				}
 				else
 				{
