@@ -44,6 +44,7 @@ void		loadMd5s();
 void		saveMd5s();
 QString		md5Exists(QString);
 void		addMd5(QString, QString);
+void		setMd5(QString, QString);
 void		removeMd5(QString);
 
 QMap<QString,QString>		loadFavorites();

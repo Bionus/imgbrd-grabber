@@ -82,6 +82,8 @@ optionsWindow::optionsWindow(QWidget *parent) : QDialog(parent), ui(new Ui::opti
 		ui->checkReplaceBlanks->setChecked(settings.value("replaceblanks", false).toBool());
 		ui->lineFolder->setText(settings.value("path_real").toString());
 		ui->lineFolderFavorites->setText(settings.value("path_favorites").toString());
+		QStringList opts = QStringList() << "save" << "copy" << "move" << "ignore";
+		ui->comboMd5Duplicates->setCurrentIndex(opts.indexOf(settings.value("md5Duplicates", "save").toString()));
 		ui->lineFilename->setText(settings.value("filename_real").toString());
 		ui->lineFavorites->setText(settings.value("filename_favorites").toString());
 		ui->lineSeparator->setText(settings.value("separator", " ").toString());
@@ -534,6 +536,8 @@ void optionsWindow::save()
 			else
 			{ pth.mkpath(ui->lineFolderFavorites->text()); }
 		}
+		QStringList opts = QStringList() << "save" << "copy" << "move" << "ignore";
+		settings.setValue("md5Duplicates", opts.at(ui->comboMd5Duplicates->currentIndex()));
 		settings.setValue("filename", ui->lineFilename->text());
 		settings.setValue("filename_real", ui->lineFilename->text());
 		settings.setValue("filename_favorites", ui->lineFavorites->text());

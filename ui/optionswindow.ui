@@ -148,7 +148,7 @@
         </sizepolicy>
        </property>
        <property name="currentIndex">
-        <number>7</number>
+        <number>3</number>
        </property>
        <widget class="QWidget" name="page1">
         <layout class="QFormLayout" name="formLayout_14">
@@ -683,6 +683,47 @@ p, li { white-space: pre-wrap; }
            <property name="maximum">
             <number>10</number>
            </property>
+          </widget>
+         </item>
+         <item row="9" column="0">
+          <widget class="QLabel" name="label_19">
+           <property name="text">
+            <string>Si un fichier existe déjà</string>
+           </property>
+          </widget>
+         </item>
+         <item row="10" column="0" colspan="2">
+          <widget class="QLabel" name="label_21">
+           <property name="text">
+            <string>&lt;i&gt;L'identicité des fichiers est basée sur l'algorithme MD5.&lt;/i&gt;</string>
+           </property>
+          </widget>
+         </item>
+         <item row="9" column="1">
+          <widget class="QComboBox" name="comboMd5Duplicates">
+           <property name="currentIndex">
+            <number>0</number>
+           </property>
+           <item>
+            <property name="text">
+             <string>Sauvegarder</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Copier</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Déplacer</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Ne pas sauvegarder</string>
+            </property>
+           </item>
           </widget>
          </item>
         </layout>

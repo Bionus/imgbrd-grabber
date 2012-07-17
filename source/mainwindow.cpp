@@ -19,7 +19,7 @@
 	#include <float.h>
 #endif
 
-#define VERSION	"3.1.5"
+#define VERSION	"3.2.0a"
 #define DONE()	logUpdate(QObject::tr(" Fait"))
 
 extern QMap<QDateTime,QString> _log;
@@ -1312,7 +1312,7 @@ void mainWindow::getAllImages()
 	{
 		for (int i = 0; i < forbidden.count(); i++)
 		{
-			if (m_groupBatchs[f][6].contains("%"+forbidden.at(i)+"%"))
+			if (m_groupBatchs[f][6].startsWith("javascript:") || m_groupBatchs[f][6].contains("%"+forbidden.at(i)+"%"))
 			{ m_must_get_tags = true; }
 		}
 	}
@@ -1320,14 +1320,14 @@ void mainWindow::getAllImages()
 	{
 		for (int i = 0; i < forbidden.count(); i++)
 		{
-			if (m_settings->value("Save/filename").toString().contains("%"+forbidden.at(i)+"%"))
+			if (m_settings->value("Save/filename").toString().startsWith("javascript:") || m_settings->value("Save/filename").toString().contains("%"+forbidden.at(i)+"%"))
 			{ m_must_get_tags = true; }
 		}
 	}
 	if (m_must_get_tags)
-	{ log("Downloading detailed tags first."); }
+	{ log(tr("Téléchargement des détails des images.")); }
 	else
-	{ log("Downloading pictures directly."); }
+	{ log(tr("Téléchargement des images directement.")); }
 
 	for (int i = 0; i < qMax(1, qMin(m_settings->value("Save/simultaneous").toInt(), 10)); i++)
 	{ _getAll(); }
