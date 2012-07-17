@@ -1820,21 +1820,29 @@ void mainWindow::on_buttonSaveLinkList_clicked()
 }
 bool mainWindow::saveLinkList(QString filename)
 {
-	QString links = "[IGL 1]\r\n";
+	QByteArray links = "[IGL 2]\r\n";
 	for (int i = 0; i < m_groupBatchs.size(); i++)
-	{ links += m_groupBatchs[i].join("¤")+"¤"+QString::number(m_progressBars[i]->value())+"/"+QString::number(m_progressBars[i]->maximum())+"\r\n"; }
+	{
+		links.append(m_groupBatchs[i].join(QString((char)29)));
+		links.append(QString::number(m_progressBars[i]->value())+"/"+QString::number(m_progressBars[i]->maximum()));
+		links.append((char)28);
+	}
 	QStringList vals = QStringList() << "id" << "md5" << "rating" << "tags" << "file_url" << "site" << "filename" << "folder";
 	for (int i = 0; i < m_batchs.size(); i++)
 	{
 		for (int j = 0; j < vals.size(); j++)
-		{ links += (j > 0 ? "¤" : "")+m_batchs[i][vals[j]]; }
-		links += "\r\n";
+		{
+			if (j != 0)
+			{ links.append((char)29); }
+			links.append(m_batchs[i][vals[j]]);
+		}
+		links.append((char)28);
 	}
 
 	QFile f(filename);
 	if (f.open(QFile::WriteOnly))
 	{
-		f.write(links.trimmed().toUtf8());
+		f.write(links);
 		f.close();
 		return true;
 	}
@@ -1857,62 +1865,67 @@ bool mainWindow::loadLinkList(QString filename)
 	QFile f(filename);
 	if (f.open(QFile::ReadOnly))
 	{
+		QString header = f.readLine();
+		int version = header.mid(5, header.length() - 6).toInt();
+
 		QString links = f.readAll();
 		f.close();
 
-		QStringList det = links.split("\r\n", QString::SkipEmptyParts);
+		QStringList det;
+		if (version == 1)
+		{ det = links.split("\r\n", QString::SkipEmptyParts); }
+		else
+		{ det = links.split(QString((char)28), QString::SkipEmptyParts); }
 		if (det.size() < 1)
 		{ return false; }
-		int version = det.at(0).mid(5, det.at(0).length() - 6).toInt();
-		switch (version)
+
+		for (int i = 0; i < det.size(); i++)
 		{
-			case 1:
-				for (int i = 1; i < det.size(); i++)
+			QString link = det[i];
+			m_allow = false;
+			QStringList infos;
+			if (version == 1)
+			{ infos = link.split("¤"); }
+			else
+			{ infos = link.split((char)29); }
+			if (infos.size() == 8)
+			{
+				QStringList vals = QStringList() << "id" << "md5" << "rating" << "tags" << "file_url" << "site" << "filename" << "folder";
+				QMap<QString,QString> values;
+				for (int i = 0; i < infos.size(); i++)
+				{ values.insert(vals[i], infos[i]); }
+				batchAddUnique(values);
+			}
+			else
+			{
+				ui->tableBatchGroups->setRowCount(ui->tableBatchGroups->rowCount()+1);
+				QString last = infos.takeLast();
+				int max = last.right(last.indexOf("/")+1).toInt(), val = last.left(last.indexOf("/")).toInt();
+				QTableWidgetItem *item, *it = new QTableWidgetItem(QIcon(":/images/colors/"+QString(val == max ? "green" : (val > 0 ? "blue" : "black"))+".png"), QString::number(ui->tableBatchGroups->rowCount()));
+				ui->tableBatchGroups->setItem(ui->tableBatchGroups->rowCount()-1, 0, it);
+				for (int t = 0; t < infos.count(); t++)
 				{
-					QString link = det[i];
-					m_allow = false;
-					QStringList infos = link.split("¤");
-					if (infos.size() == 8)
-					{
-						QStringList vals = QStringList() << "id" << "md5" << "rating" << "tags" << "file_url" << "site" << "filename" << "folder";
-						QMap<QString,QString> values;
-						for (int i = 0; i < infos.size(); i++)
-						{ values.insert(vals[i], infos[i]); }
-						batchAddUnique(values);
-					}
-					else
-					{
-						ui->tableBatchGroups->setRowCount(ui->tableBatchGroups->rowCount()+1);
-						QString last = infos.takeLast();
-						int max = last.right(last.indexOf("/")+1).toInt(), val = last.left(last.indexOf("/")).toInt();
-						QTableWidgetItem *item, *it = new QTableWidgetItem(QIcon(":/images/colors/"+QString(val == max ? "green" : (val > 0 ? "blue" : "black"))+".png"), QString::number(ui->tableBatchGroups->rowCount()));
-						ui->tableBatchGroups->setItem(ui->tableBatchGroups->rowCount()-1, 0, it);
-						for (int t = 0; t < infos.count(); t++)
-						{
-							item = new QTableWidgetItem;
-								item->setText(infos.at(t));
-							int r = t+1;
-							if (r == 1) { r = 0; }
-							else if (r == 6) { r = 1; }
-							else if (r == 7) { r = 5; }
-							else if (r == 8) { r = 6; }
-							else if (r == 5) { r = 7; }
-							ui->tableBatchGroups->setItem(ui->tableBatchGroups->rowCount()-1, r+1, item);
-						}
-						m_groupBatchs.append(infos);
-						QProgressBar *prog = new QProgressBar(this);
-						prog->setMaximum(max);
-						prog->setValue(val);
-						prog->setTextVisible(false);
-						m_progressBars.append(prog);
-						ui->tableBatchGroups->setCellWidget(ui->tableBatchGroups->rowCount()-1, 9, prog);
-						m_allow = true;
-					}
+					item = new QTableWidgetItem;
+						item->setText(infos.at(t));
+					int r = t+1;
+					if (r == 1) { r = 0; }
+					else if (r == 6) { r = 1; }
+					else if (r == 7) { r = 5; }
+					else if (r == 8) { r = 6; }
+					else if (r == 5) { r = 7; }
+					ui->tableBatchGroups->setItem(ui->tableBatchGroups->rowCount()-1, r+1, item);
 				}
-				return true;
-				break;
+				m_groupBatchs.append(infos);
+				QProgressBar *prog = new QProgressBar(this);
+				prog->setMaximum(max);
+				prog->setValue(val);
+				prog->setTextVisible(false);
+				m_progressBars.append(prog);
+				ui->tableBatchGroups->setCellWidget(ui->tableBatchGroups->rowCount()-1, 9, prog);
+				m_allow = true;
+			}
 		}
-		return false;
+		return true;
 	}
 	return false;
 }

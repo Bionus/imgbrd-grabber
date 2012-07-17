@@ -105,7 +105,6 @@ void loadMd5s()
 	QString line;
 	while ((line = f.readLine()) != "")
 	{ _md5.insert(line.left(32), line.mid(32)); }
-	qDebug() << _md5.keys();
 	f.close();
 }
 
