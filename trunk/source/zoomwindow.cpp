@@ -618,16 +618,59 @@ QString zoomWindow::saveImage(bool fav)
             { error(this, tr("Erreur lors de la sauvegarde de l'image.\r\n%1").arg(fp)); return QString(); }
         }
 
-        log(tr("Sauvegarde de l'image (%1) dans le fichier <a href=\"file:///%2\">%2</a>").arg(m_data.size()).arg(f.fileName()));
-		if (!m_source.isEmpty())
-		{ QFile::copy(m_source, f.fileName()); }
-		else
-        {
-			addMd5(m_image->md5(), fp);
-			f.open(QIODevice::WriteOnly);
-			f.write(m_data);
-			f.close();
+		QString whatToDo = settings.value("Save/md5Duplicates", "save").toString();
+		QString md5Duplicate = md5Exists(m_image->md5());
+		if (md5Duplicate.isEmpty() || whatToDo == "save")
+		{
+			log(tr("Sauvegarde de l'image dans le fichier <a href=\"file:///%1\">%1</a>").arg(f.fileName()));
+			if (!m_source.isEmpty())
+			{ QFile::copy(m_source, f.fileName()); }
+			else
+			{
+				addMd5(m_image->md5(), fp);
+				f.open(QIODevice::WriteOnly);
+				f.write(m_data);
+				f.close();
+			}
+
+			if (fav)
+			{ ui->buttonSaveFav->setText(tr("Sauvegardé ! (fav)")); }
+			else
+			{ ui->buttonSave->setText(tr("Sauvegardé !")); }
 		}
+		else if (whatToDo == "copy")
+		{
+			log(tr("Copie depuis <a href=\"file:///%1\">%1</a> vers <a href=\"file:///%2\">%2</a>").arg(md5Duplicate).arg(f.fileName()));
+			QFile::copy(md5Duplicate, f.fileName());
+
+			if (fav)
+			{ ui->buttonSaveFav->setText(tr("Copié ! (fav)")); }
+			else
+			{ ui->buttonSave->setText(tr("Copié !")); }
+		}
+		else if (whatToDo == "move")
+		{
+			log(tr("Déplacement depuis <a href=\"file:///%1\">%1</a> vers <a href=\"file:///%2\">%2</a>").arg(md5Duplicate).arg(f.fileName()));
+			QFile::rename(md5Duplicate, f.fileName());
+			setMd5(m_image->md5(), f.fileName());
+
+			if (fav)
+			{ ui->buttonSaveFav->setText(tr("Déplacé ! (fav)")); }
+			else
+			{ ui->buttonSave->setText(tr("Déplacé !")); }
+		}
+		else
+		{
+			if (fav)
+			{ ui->buttonSaveFav->setText(tr("Ignoré ! (fav)")); }
+			else
+			{ ui->buttonSave->setText(tr("Ignoré !")); }
+		}
+
+		if (fav)
+		{ ui->buttonSaveNQuitFav->setText(tr("Fermer (fav)")); }
+		else
+		{ ui->buttonSaveNQuit->setText(tr("Fermer")); }
 
         // Commands: initialization
         QProcess *p = new QProcess(this);
@@ -687,17 +730,6 @@ QString zoomWindow::saveImage(bool fav)
             p->write(exec.toAscii());
         }
 
-        log(tr("Sauvegardé <a href=\"file:///%1\">%1</a>").arg(pth+"/"+path));
-        if (fav)
-        {
-            ui->buttonSaveFav->setText(tr("Sauvegardé ! (fav)"));
-            ui->buttonSaveNQuitFav->setText(tr("Fermer (fav)"));
-        }
-        else
-        {
-            ui->buttonSave->setText(tr("Sauvegardé !"));
-            ui->buttonSaveNQuit->setText(tr("Fermer"));
-        }
         if (!settings.value("Exec/Group/init").toString().isEmpty())
         {
             p->closeWriteChannel();

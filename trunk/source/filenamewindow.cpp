@@ -36,11 +36,15 @@ void FilenameWindow::on_lineClassic_textChanged(QString text)
 {
 	ui->labelValidator->setText(validateFilename(text));
 
-	QString value = text.replace(QRegExp("%([^%]+)%"), "' + \\1 + '").remove(" + '' + ").trimmed();
+	QString value = "'"+text.replace("\\", "\\\\").replace("'", "\\'").replace(QRegExp("%([^%]+)%"), "' + \\1 + '").remove(" + '' + ").trimmed()+"'";
 	if (value.startsWith("' + "))
 	{ value = value.right(value.length() - 4); }
+	if (value.startsWith("'' + "))
+	{ value = value.right(value.length() - 5); }
 	if (value.endsWith(" + '"))
 	{ value = value.left(value.length() - 4); }
+	if (value.endsWith(" + ''"))
+	{ value = value.left(value.length() - 5); }
 	m_scintilla->setText(value);
 }
 

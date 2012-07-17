@@ -157,6 +157,17 @@ void addMd5(QString md5, QString path)
 }
 
 /**
+ * Set a md5 to the _md5 map changing the file it is pointing to.
+ * @param	md5		The md5 to add.
+ * @param	path	The path to the image with this md5.
+ */
+void setMd5(QString md5, QString path)
+{
+	_md5[md5] = path;
+	saveMd5s();
+}
+
+/**
  * Removes a md5 from the _md5 map and removes it from the md5 file.
  * @param	md5		The md5 to remove.
  */
