@@ -88,16 +88,40 @@ optionsWindow::optionsWindow(QWidget *parent) : QDialog(parent), ui(new Ui::opti
 		ui->lineFavorites->setText(settings.value("filename_favorites").toString());
 		ui->lineSeparator->setText(settings.value("separator", " ").toString());
 		ui->lineArtistsIfNone->setText(settings.value("artist_empty", "anonymous").toString());
-		ui->radioArtistsKeepAll->setChecked(settings.value("artist_useall", false).toBool());
+		QString artistMultiple = settings.value("artist_multiple", "replaceAll").toString();
+		if		(artistMultiple == "keepAll")		{ ui->radioArtistsKeepAll->setChecked(true);		}
+		else if	(artistMultiple == "keepN")			{ ui->radioArtistsKeepN->setChecked(true);			}
+		else if	(artistMultiple == "keepNThenAdd")	{ ui->radioArtistsKeepNThenAdd->setChecked(true);	}
+		else if	(artistMultiple == "replaceAll")	{ ui->radioArtistsReplaceAll->setChecked(true);		}
+		ui->spinArtistsMoreThanN->setValue(settings.value("artist_multiple_limit", 1).toInt());
+		ui->spinArtistsKeepN->setValue(settings.value("artist_multiple_keepN", 1).toInt());
+		ui->spinArtistsKeepNThenAdd->setValue(settings.value("artist_multiple_keepNThenAdd_keep", 1).toInt());
+		ui->lineArtistsKeepNThenAdd->setText(settings.value("artist_multiple_keepNThenAdd_add", " (+ %count%)").toString());
 		ui->lineArtistsSeparator->setText(settings.value("artist_sep", "+").toString());
 		ui->lineArtistsReplaceAll->setText(settings.value("artist_value", "multiple artists").toString());
 		ui->lineCopyrightsIfNone->setText(settings.value("copyright_empty", "misc").toString());
 		ui->checkCopyrightsUseShorter->setChecked(settings.value("copyright_useshorter", true).toBool());
-		ui->radioCopyrightsKeepAll->setChecked(settings.value("copyright_useall", false).toBool());
+		QString copyrightMultiple = settings.value("copyright_multiple", "replaceAll").toString();
+		if		(copyrightMultiple == "keepAll")		{ ui->radioCopyrightsKeepAll->setChecked(true);			}
+		else if	(copyrightMultiple == "keepN")			{ ui->radioCopyrightsKeepN->setChecked(true);			}
+		else if	(copyrightMultiple == "keepNThenAdd")	{ ui->radioCopyrightsKeepNThenAdd->setChecked(true);	}
+		else if	(copyrightMultiple == "replaceAll")		{ ui->radioCopyrightsReplaceAll->setChecked(true);		}
+		ui->spinCopyrightsMoreThanN->setValue(settings.value("copyright_multiple_limit", 1).toInt());
+		ui->spinCopyrightsKeepN->setValue(settings.value("copyright_multiple_keepN", 1).toInt());
+		ui->spinCopyrightsKeepNThenAdd->setValue(settings.value("copyright_multiple_keepNThenAdd_keep", 1).toInt());
+		ui->lineCopyrightsKeepNThenAdd->setText(settings.value("copyright_multiple_keepNThenAdd_add", " (+ %count%)").toString());
 		ui->lineCopyrightsSeparator->setText(settings.value("copyright_sep", "+").toString());
 		ui->lineCopyrightsReplaceAll->setText(settings.value("copyright_value", "crossover").toString());
 		ui->lineCharactersIfNone->setText(settings.value("character_empty", "unknown").toString());
-		ui->radioCharactersKeepAll->setChecked(settings.value("character_useall", false).toBool());
+		QString characterMultiple = settings.value("character_multiple", "replaceAll").toString();
+		if		(characterMultiple == "keepAll")		{ ui->radioCharactersKeepAll->setChecked(true);			}
+		else if	(characterMultiple == "keepN")			{ ui->radioCharactersKeepN->setChecked(true);			}
+		else if	(characterMultiple == "keepNThenAdd")	{ ui->radioCharactersKeepNThenAdd->setChecked(true);	}
+		else if	(characterMultiple == "replaceAll")		{ ui->radioCharactersReplaceAll->setChecked(true);		}
+		ui->spinCharactersMoreThanN->setValue(settings.value("character_multiple_limit", 1).toInt());
+		ui->spinCharactersKeepN->setValue(settings.value("character_multiple_keepN", 1).toInt());
+		ui->spinCharactersKeepNThenAdd->setValue(settings.value("character_multiple_keepNThenAdd_keep", 1).toInt());
+		ui->lineCharactersKeepNThenAdd->setText(settings.value("character_multiple_keepNThenAdd_add", " (+ %count%)").toString());
 		ui->lineCharactersSeparator->setText(settings.value("character_sep", "+").toString());
 		ui->lineCharactersReplaceAll->setText(settings.value("character_value", "group").toString());
 		ui->spinLimit->setValue(settings.value("limit", 0).toInt());
@@ -543,15 +567,43 @@ void optionsWindow::save()
 		settings.setValue("filename_favorites", ui->lineFavorites->text());
 		settings.setValue("artist_empty", ui->lineArtistsIfNone->text());
 		settings.setValue("artist_useall", ui->radioArtistsKeepAll->isChecked());
+		QString artistMultiple;
+		if		(ui->radioArtistsKeepAll->isChecked())		{ artistMultiple = "keepAll";		}
+		else if	(ui->radioArtistsKeepN->isChecked())		{ artistMultiple = "keepN";			}
+		else if	(ui->radioArtistsKeepNThenAdd->isChecked())	{ artistMultiple = "keepNThenAdd";	}
+		else if	(ui->radioArtistsReplaceAll->isChecked())	{ artistMultiple = "replaceAll";	}
+		settings.setValue("artist_multiple", artistMultiple);
+		settings.setValue("artist_multiple_limit", ui->spinArtistsMoreThanN->value());
+		settings.setValue("artist_multiple_keepN", ui->spinArtistsKeepN->value());
+		settings.setValue("artist_multiple_keepNThenAdd_keep", ui->spinArtistsKeepNThenAdd->value());
+		settings.setValue("artist_multiple_keepNThenAdd_add", ui->lineArtistsKeepNThenAdd->text());
 		settings.setValue("artist_sep", ui->lineArtistsSeparator->text());
 		settings.setValue("artist_value", ui->lineArtistsReplaceAll->text());
 		settings.setValue("copyright_empty", ui->lineCopyrightsIfNone->text());
 		settings.setValue("copyright_useshorter", ui->checkCopyrightsUseShorter->isChecked());
-		settings.setValue("copyright_useall", ui->radioCopyrightsKeepAll->isChecked());
+		QString copyrightMultiple;
+		if		(ui->radioCopyrightsKeepAll->isChecked())		{ copyrightMultiple = "keepAll";		}
+		else if	(ui->radioCopyrightsKeepN->isChecked())			{ copyrightMultiple = "keepN";			}
+		else if	(ui->radioCopyrightsKeepNThenAdd->isChecked())	{ copyrightMultiple = "keepNThenAdd";	}
+		else if	(ui->radioCopyrightsReplaceAll->isChecked())	{ copyrightMultiple = "replaceAll";		}
+		settings.setValue("copyright_multiple", copyrightMultiple);
+		settings.setValue("copyright_multiple_limit", ui->spinCopyrightsMoreThanN->value());
+		settings.setValue("copyright_multiple_keepN", ui->spinCopyrightsKeepN->value());
+		settings.setValue("copyright_multiple_keepNThenAdd_keep", ui->spinCopyrightsKeepNThenAdd->value());
+		settings.setValue("copyright_multiple_keepNThenAdd_add", ui->lineCopyrightsKeepNThenAdd->text());
 		settings.setValue("copyright_sep", ui->lineCopyrightsSeparator->text());
 		settings.setValue("copyright_value", ui->lineCopyrightsReplaceAll->text());
 		settings.setValue("character_empty", ui->lineCharactersIfNone->text());
-		settings.setValue("character_useall", ui->radioCharactersKeepAll->isChecked());
+		QString characterMultiple;
+		if		(ui->radioCharactersKeepAll->isChecked())		{ characterMultiple = "keepAll";		}
+		else if	(ui->radioCharactersKeepN->isChecked())			{ characterMultiple = "keepN";			}
+		else if	(ui->radioCharactersKeepNThenAdd->isChecked())	{ characterMultiple = "keepNThenAdd";	}
+		else if	(ui->radioCharactersReplaceAll->isChecked())	{ characterMultiple = "replaceAll";		}
+		settings.setValue("character_multiple", characterMultiple);
+		settings.setValue("character_multiple_limit", ui->spinCharactersMoreThanN->value());
+		settings.setValue("character_multiple_keepN", ui->spinCharactersKeepN->value());
+		settings.setValue("character_multiple_keepNThenAdd_keep", ui->spinCharactersKeepNThenAdd->value());
+		settings.setValue("character_multiple_keepNThenAdd_add", ui->lineCharactersKeepNThenAdd->text());
 		settings.setValue("character_sep", ui->lineCharactersSeparator->text());
 		settings.setValue("character_value", ui->lineCharactersReplaceAll->text());
 		settings.setValue("limit", ui->spinLimit->value());

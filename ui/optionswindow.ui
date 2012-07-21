@@ -148,7 +148,7 @@
         </sizepolicy>
        </property>
        <property name="currentIndex">
-        <number>3</number>
+        <number>6</number>
        </property>
        <widget class="QWidget" name="page1">
         <layout class="QFormLayout" name="formLayout_14">
@@ -2080,6 +2080,198 @@ p, li { white-space: pre-wrap; }
     <hint type="destinationlabel">
      <x>266</x>
      <y>30</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>spinCharactersKeepN</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>radioCharactersKeepN</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>404</x>
+     <y>131</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>247</x>
+     <y>128</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>spinCharactersKeepNThenAdd</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>radioCharactersKeepNThenAdd</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>364</x>
+     <y>152</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>291</x>
+     <y>154</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lineCharactersKeepNThenAdd</sender>
+   <signal>textEdited(QString)</signal>
+   <receiver>radioCharactersKeepNThenAdd</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>546</x>
+     <y>158</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>298</x>
+     <y>154</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lineCharactersReplaceAll</sender>
+   <signal>textEdited(QString)</signal>
+   <receiver>radioCharactersReplaceAll</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>409</x>
+     <y>188</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>319</x>
+     <y>184</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lineCopyrightsReplaceAll</sender>
+   <signal>textEdited(QString)</signal>
+   <receiver>radioCopyrightsReplaceAll</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>377</x>
+     <y>182</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>313</x>
+     <y>182</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>spinCopyrightsKeepNThenAdd</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>radioCopyrightsKeepNThenAdd</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>376</x>
+     <y>157</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>285</x>
+     <y>158</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lineCopyrightsKeepNThenAdd</sender>
+   <signal>textEdited(QString)</signal>
+   <receiver>radioCopyrightsKeepNThenAdd</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>526</x>
+     <y>155</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>316</x>
+     <y>157</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>spinCopyrightsKeepN</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>radioCopyrightsKeepN</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>373</x>
+     <y>131</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>237</x>
+     <y>128</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>spinArtistsKeepN</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>radioArtistsKeepN</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>396</x>
+     <y>131</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>254</x>
+     <y>133</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>spinArtistsKeepNThenAdd</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>radioArtistsKeepNThenAdd</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>406</x>
+     <y>151</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>304</x>
+     <y>155</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lineArtistsKeepNThenAdd</sender>
+   <signal>textEdited(QString)</signal>
+   <receiver>radioArtistsKeepNThenAdd</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>521</x>
+     <y>154</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>307</x>
+     <y>157</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lineArtistsReplaceAll</sender>
+   <signal>textEdited(QString)</signal>
+   <receiver>radioArtistsReplaceAll</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>423</x>
+     <y>177</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>300</x>
+     <y>183</y>
     </hint>
    </hints>
   </connection>
