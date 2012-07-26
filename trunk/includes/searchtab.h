@@ -11,13 +11,13 @@ class searchTab : public QWidget
 
     public:
         searchTab(QWidget *parent = 0);
-        virtual QList<bool> sources();
-        virtual QString tags();
-        virtual QString results();
-        virtual QString wiki();
-        virtual void optionsChanged();
-        virtual void updateCheckboxes();
-        virtual void setTags(QString);
+		virtual QList<bool> sources() = 0;
+		virtual QString tags() = 0;
+		virtual QString results() = 0;
+		virtual QString wiki() = 0;
+		virtual void optionsChanged() = 0;
+		virtual void updateCheckboxes() = 0;
+		virtual void setTags(QString) = 0;
 
     signals:
         void titleChanged(searchTab*);

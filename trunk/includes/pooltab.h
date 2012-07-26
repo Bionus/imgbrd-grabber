@@ -20,7 +20,7 @@ namespace Ui
 
 class mainWindow;
 
-class poolTab : public QWidget
+class poolTab : public searchTab
 {
     Q_OBJECT
 

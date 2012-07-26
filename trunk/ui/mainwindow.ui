@@ -452,8 +452,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>98</width>
-             <height>28</height>
+             <width>553</width>
+             <height>443</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_8">
@@ -536,6 +536,7 @@
      <string>Fichier</string>
     </property>
     <addaction name="actionAddtab"/>
+    <addaction name="actionAddpooltab"/>
     <addaction name="actionClosetab"/>
     <addaction name="separator"/>
     <addaction name="actionFolder"/>
@@ -1008,6 +1009,11 @@
     <string>Favoris</string>
    </property>
   </action>
+  <action name="actionAddpooltab">
+   <property name="text">
+    <string>Nouvel onglet pool</string>
+   </property>
+  </action>
  </widget>
  <resources>
   <include location="../resources.qrc"/>
@@ -1244,8 +1250,8 @@
    <slot>addGroup()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>313</x>
-     <y>57</y>
+     <x>536</x>
+     <y>271</y>
     </hint>
     <hint type="destinationlabel">
      <x>804</x>
@@ -1260,8 +1266,8 @@
    <slot>addUnique()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>313</x>
-     <y>66</y>
+     <x>536</x>
+     <y>498</y>
     </hint>
     <hint type="destinationlabel">
      <x>804</x>
@@ -1276,8 +1282,8 @@
    <slot>batchSel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>331</x>
-     <y>99</y>
+     <x>345</x>
+     <y>527</y>
     </hint>
     <hint type="destinationlabel">
      <x>216</x>
@@ -1292,8 +1298,8 @@
    <slot>getAll()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>331</x>
-     <y>99</y>
+     <x>438</x>
+     <y>527</y>
     </hint>
     <hint type="destinationlabel">
      <x>302</x>
@@ -1308,8 +1314,8 @@
    <slot>batchClearSel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>331</x>
-     <y>99</y>
+     <x>705</x>
+     <y>527</y>
     </hint>
     <hint type="destinationlabel">
      <x>629</x>
@@ -1324,8 +1330,8 @@
    <slot>batchClear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>331</x>
-     <y>99</y>
+     <x>786</x>
+     <y>527</y>
     </hint>
     <hint type="destinationlabel">
      <x>742</x>
@@ -1340,8 +1346,8 @@
    <slot>logClear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>331</x>
-     <y>90</y>
+     <x>506</x>
+     <y>526</y>
     </hint>
     <hint type="destinationlabel">
      <x>476</x>
@@ -1484,8 +1490,8 @@
    <slot>logOpen()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>331</x>
-     <y>90</y>
+     <x>785</x>
+     <y>526</y>
     </hint>
     <hint type="destinationlabel">
      <x>485</x>
@@ -1500,8 +1506,8 @@
    <slot>updateBatchGroups(int,int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>313</x>
-     <y>54</y>
+     <x>536</x>
+     <y>113</y>
     </hint>
     <hint type="destinationlabel">
      <x>801</x>
@@ -1541,6 +1547,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionAddpooltab</sender>
+   <signal>triggered()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>addPoolTab()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>270</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>help()</slot>
@@ -1577,5 +1599,6 @@
   <slot>currentTabChanged(int)</slot>
   <slot>logOpen()</slot>
   <slot>saveSettings()</slot>
+  <slot>addPoolTab()</slot>
  </slots>
 </ui>

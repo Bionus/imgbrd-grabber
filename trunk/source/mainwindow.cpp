@@ -338,35 +338,58 @@ mainWindow::~mainWindow()
 
 int mainWindow::addTab(QString tag)
 {
-    tagTab *w = new tagTab(m_tabs.size(), &m_sites, &m_favorites, &m_serverDate, this);
-    connect(w, SIGNAL(batchAddGroup(QStringList)), this, SLOT(batchAddGroup(QStringList)));
-    connect(w, SIGNAL(titleChanged(searchTab*)), this, SLOT(updateTabTitle(searchTab*)));
-    connect(w, SIGNAL(changed(searchTab*)), this, SLOT(updateTabs()));
-    connect(w, SIGNAL(closed(searchTab*)), this, SLOT(tabClosed(searchTab*)));
-    int index = ui->tabWidget->insertTab(ui->tabWidget->currentIndex()+(!m_tabs.isEmpty()), w, tr("Nouvel onglet"));
-    m_tabs.append(w);
-    m_tagTabs.append(w);
-    ui->tabWidget->setCurrentIndex(index);
-    QPushButton *closeTab = new QPushButton(QIcon(":/images/close.png"), "", this);
-        closeTab->setFlat(true);
-        closeTab->resize(QSize(8,8));
-        connect(closeTab, SIGNAL(clicked()), w, SLOT(deleteLater()));
-        ui->tabWidget->findChild<QTabBar*>()->setTabButton(index, QTabBar::RightSide, closeTab);
-    if (!tag.isEmpty())
-    { w->setTags(tag); }
-    saveTabs(savePath("tabs.txt"));
-    return m_tabs.size() - 1;
+	tagTab *w = new tagTab(m_tabs.size(), &m_sites, &m_favorites, &m_serverDate, this);
+	connect(w, SIGNAL(batchAddGroup(QStringList)), this, SLOT(batchAddGroup(QStringList)));
+	connect(w, SIGNAL(titleChanged(searchTab*)), this, SLOT(updateTabTitle(searchTab*)));
+	connect(w, SIGNAL(changed(searchTab*)), this, SLOT(updateTabs()));
+	connect(w, SIGNAL(closed(searchTab*)), this, SLOT(tabClosed(searchTab*)));
+	int index = ui->tabWidget->insertTab(ui->tabWidget->currentIndex()+(!m_tabs.isEmpty()), w, tr("Nouvel onglet"));
+	m_tabs.append(w);
+	m_tagTabs.append(w);
+	ui->tabWidget->setCurrentIndex(index);
+	QPushButton *closeTab = new QPushButton(QIcon(":/images/close.png"), "", this);
+		closeTab->setFlat(true);
+		closeTab->resize(QSize(8,8));
+		connect(closeTab, SIGNAL(clicked()), w, SLOT(deleteLater()));
+		ui->tabWidget->findChild<QTabBar*>()->setTabButton(index, QTabBar::RightSide, closeTab);
+	if (!tag.isEmpty())
+	{ w->setTags(tag); }
+	saveTabs(savePath("tabs.txt"));
+	return m_tabs.size() - 1;
+}
+int mainWindow::addPoolTab(int pool)
+{
+	poolTab *w = new poolTab(m_tabs.size(), &m_sites, &m_favorites, &m_serverDate, this);
+	connect(w, SIGNAL(batchAddGroup(QStringList)), this, SLOT(batchAddGroup(QStringList)));
+	connect(w, SIGNAL(titleChanged(searchTab*)), this, SLOT(updateTabTitle(searchTab*)));
+	connect(w, SIGNAL(changed(searchTab*)), this, SLOT(updateTabs()));
+	connect(w, SIGNAL(closed(searchTab*)), this, SLOT(tabClosed(searchTab*)));
+	int index = ui->tabWidget->insertTab(ui->tabWidget->currentIndex()+(!m_tabs.isEmpty()), w, tr("Nouvel onglet"));
+	m_tabs.append(w);
+	m_poolTabs.append(w);
+	ui->tabWidget->setCurrentIndex(index);
+	QPushButton *closeTab = new QPushButton(QIcon(":/images/close.png"), "", this);
+		closeTab->setFlat(true);
+		closeTab->resize(QSize(8,8));
+		connect(closeTab, SIGNAL(clicked()), w, SLOT(deleteLater()));
+		ui->tabWidget->findChild<QTabBar*>()->setTabButton(index, QTabBar::RightSide, closeTab);
+	if (pool != 0)
+	{ w->setTags("pool:"+QString::number(pool)); }
+	saveTabs(savePath("tabs.txt"));
+	return m_tabs.size() - 1;
 }
 bool mainWindow::saveTabs(QString filename)
 {
-    QStringList tabs = QStringList();
-    foreach (tagTab *tab, m_tagTabs)
-    { tabs.append(tab->tags()+"¤"+QString::number(tab->ui->spinPage->value())+"¤"+QString::number(tab->ui->spinImagesPerPage->value())+"¤"+QString::number(tab->ui->spinColumns->value())); }
+	QStringList tabs = QStringList();
+	foreach (tagTab *tab, m_tagTabs)
+	{ tabs.append(tab->tags()+"¤"+QString::number(tab->ui->spinPage->value())+"¤"+QString::number(tab->ui->spinImagesPerPage->value())+"¤"+QString::number(tab->ui->spinColumns->value())); }
+	foreach (poolTab *tab, m_poolTabs)
+	{ tabs.append(QString::number(tab->ui->spinPool->value())+"¤"+QString::number(tab->ui->comboSites->currentIndex())+"¤"+tab->tags()+"¤"+QString::number(tab->ui->spinPage->value())+"¤"+QString::number(tab->ui->spinImagesPerPage->value())+"¤"+QString::number(tab->ui->spinColumns->value())+"¤pool"); }
 
     QFile f(filename);
     if (f.open(QFile::WriteOnly))
     {
-        f.write(tabs.join("\r\n").toUtf8());
+		f.write(tabs.join("\r\n").toUtf8());
         f.close();
         return true;
     }
@@ -386,12 +409,26 @@ bool mainWindow::loadTabs(QString filename)
             QStringList infos = tabs[j].split("¤");
             if (infos.size() > 3)
             {
-                addTab();
-                int i = m_tagTabs.size() - 1;
-                m_tagTabs[i]->ui->spinPage->setValue(infos[1].toInt());
-                m_tagTabs[i]->ui->spinImagesPerPage->setValue(infos[2].toInt());
-                m_tagTabs[i]->ui->spinColumns->setValue(infos[3].toInt());
-                m_tagTabs[i]->setTags(infos[0]);
+				if (infos[infos.size() - 1] == "pool")
+				{
+					addPoolTab();
+					int i = m_poolTabs.size() - 1;
+					m_poolTabs[i]->ui->spinPool->setValue(infos[0].toInt());
+					m_poolTabs[i]->ui->comboSites->setCurrentIndex(infos[1].toInt());
+					m_poolTabs[i]->ui->spinPage->setValue(infos[2].toInt());
+					m_poolTabs[i]->ui->spinImagesPerPage->setValue(infos[4].toInt());
+					m_poolTabs[i]->ui->spinColumns->setValue(infos[5].toInt());
+					m_poolTabs[i]->setTags(infos[2]);
+				}
+				else
+				{
+					addTab();
+					int i = m_tagTabs.size() - 1;
+					m_tagTabs[i]->ui->spinPage->setValue(infos[1].toInt());
+					m_tagTabs[i]->ui->spinImagesPerPage->setValue(infos[2].toInt());
+					m_tagTabs[i]->ui->spinColumns->setValue(infos[3].toInt());
+					m_tagTabs[i]->setTags(infos[0]);
+				}
             }
         }
         return true;
@@ -1060,6 +1097,7 @@ void mainWindow::closeEvent(QCloseEvent *e)
         m_settings->sync();
         QFile::copy(m_settings->fileName(), savePath("settings."+QString(VERSION)+".ini"));
     DONE();
+	m_loaded = false;
     e->accept();
     qApp->quit();
 }
