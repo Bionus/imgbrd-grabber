@@ -10,13 +10,17 @@ extern mainWindow *_mainwindow;
 
 
 
-poolTab::poolTab(int id, QMap<QString,QMap<QString,QString> > *sites, QMap<QString,QString> *favorites, QDateTime *serverDate, mainWindow *parent) : QWidget(parent), ui(new Ui::poolTab), m_id(id), m_parent(parent), m_serverDate(serverDate), m_favorites(favorites), m_sites(sites), m_pagemax(-1), m_lastTags(QString()), m_sized(false), m_from_history(false), m_stop(true), m_history_cursor(0), m_history(QList<QMap<QString,QString> >()), m_modifiers(QStringList())
+poolTab::poolTab(int id, QMap<QString,QMap<QString,QString> > *sites, QMap<QString,QString> *favorites, QDateTime *serverDate, mainWindow *parent) : searchTab(parent), ui(new Ui::poolTab), m_id(id), m_parent(parent), m_serverDate(serverDate), m_favorites(favorites), m_sites(sites), m_pagemax(-1), m_lastTags(QString()), m_sized(false), m_from_history(false), m_stop(true), m_history_cursor(0), m_history(QList<QMap<QString,QString> >()), m_modifiers(QStringList())
 {
     ui->setupUi(this);
     ui->widgetMeant->hide();
     setAttribute(Qt::WA_DeleteOnClose);
 
     QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
+
+	QStringList sources = sites->keys();
+	foreach (QString source, sources)
+	{ ui->comboSites->addItem(source); }
 
     // Search field
     m_search = new TextEdit(m_favorites->keys(), this);
@@ -55,7 +59,7 @@ poolTab::poolTab(int id, QMap<QString,QMap<QString,QString> > *sites, QMap<QStri
         connect(m_search, SIGNAL(kflChanged()), _mainwindow, SLOT(updateKeepForLater()));
         connect(m_postFiltering, SIGNAL(returnPressed()), this, SLOT(load()));
         connect(ui->labelMeant, SIGNAL(linkActivated(QString)), this, SLOT(setTags(QString)));
-        ui->layoutFields->insertWidget(1, m_search, 1);
+		ui->layoutFields->insertWidget(3, m_search, 1);
         ui->layoutPlus->addWidget(m_postFiltering, 1, 1, 1, 3);
 
     // Sources
@@ -196,7 +200,7 @@ void poolTab::load()
         if (m_history.size() > 1)
         {
             m_history_cursor++;
-            ui->buttonHistoryBack->setEnabled(true);
+			ui->buttonHistoryBack->setEnabled(true);
             ui->buttonHistoryNext->setEnabled(false);
         }
     }
@@ -230,31 +234,28 @@ void poolTab::load()
     //qDeleteAll(m_images);
     m_images.clear();
 
-    QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
-    for (int i = 0; i < m_selectedSources.size(); i++)
-    {
-        if (m_checkboxes.at(i)->isChecked())
-        {
-            QStringList tags = m_search->toPlainText().toLower().trimmed().split(" ", QString::SkipEmptyParts);
-            tags.append(settings.value("add").toString().toLower().trimmed().split(" ", QString::SkipEmptyParts));
-            int perpage = ui->spinImagesPerPage->value();
-            Page *page = new Page(m_sites, m_sites->keys().at(i), tags, ui->spinPage->value(), perpage, m_postFiltering->toPlainText().toLower().split(" ", QString::SkipEmptyParts), true, this);
-            log(tr("Chargement de la page <a href=\"%1\">%1</a>").arg(Qt::escape(page->url().toString())));
-            connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(finishedLoading(Page*)));
-            m_pages.insert(page->website(), page);
-            QGridLayout *l = new QGridLayout;
-            l->setHorizontalSpacing(settings.value("Margins/horizontal", 6).toInt());
-            l->setVerticalSpacing(settings.value("Margins/vertical", 6).toInt());
-            m_layouts.append(l);
-            m_stop = false;
-            page->load();
-            if (settings.value("useregexfortags", true).toBool())
-            {
-                connect(page, SIGNAL(finishedLoadingTags(Page*)), this, SLOT(finishedLoadingTags(Page*)));
-                page->loadTags();
-            }
-        }
-    }
+	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
+
+	QStringList tags = m_search->toPlainText().toLower().trimmed().split(" ", QString::SkipEmptyParts);
+	tags.append(settings.value("add").toString().toLower().trimmed().split(" ", QString::SkipEmptyParts));
+	tags.prepend("pool:"+QString::number(ui->spinPool->value()));
+	int perpage = ui->spinImagesPerPage->value();
+	Page *page = new Page(m_sites, ui->comboSites->currentText(), tags, ui->spinPage->value(), perpage, m_postFiltering->toPlainText().toLower().split(" ", QString::SkipEmptyParts), true, this);
+	log(tr("Chargement de la page <a href=\"%1\">%1</a>").arg(Qt::escape(page->url().toString())));
+	connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(finishedLoading(Page*)));
+	m_pages.insert(page->website(), page);
+	QGridLayout *l = new QGridLayout;
+	l->setHorizontalSpacing(settings.value("Margins/horizontal", 6).toInt());
+	l->setVerticalSpacing(settings.value("Margins/vertical", 6).toInt());
+	m_layouts.append(l);
+	m_stop = false;
+	page->load();
+	if (settings.value("useregexfortags", true).toBool())
+	{
+		connect(page, SIGNAL(finishedLoadingTags(Page*)), this, SLOT(finishedLoadingTags(Page*)));
+		page->loadTags();
+	}
+
     m_page = 0;
 
     emit changed(this);
@@ -607,34 +608,16 @@ void poolTab::setTags(QString tags)
 
 void poolTab::getPage()
 {
-    QStringList actuals, keys = m_sites->keys();
-    for (int i = 0; i < m_checkboxes.count(); i++)
-    {
-        if (m_checkboxes.at(i)->isChecked())
-        { actuals.append(keys.at(i)); }
-    }
     QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
-    bool unloaded = settings.value("getunloadedpages", false).toBool();
-    for (int i = 0; i < actuals.count(); i++)
-    {
-        int perpage = unloaded ? ui->spinImagesPerPage->value() : m_pages.value(actuals.at(i))->images().count();
-        emit batchAddGroup(QStringList() << m_search->toPlainText()+" "+settings.value("add").toString().toLower().trimmed() << QString::number(ui->spinPage->value()) << QString::number(perpage) << QString::number(perpage) << settings.value("downloadblacklist").toString() << actuals.at(i) << settings.value("Save/filename").toString() << settings.value("Save/path").toString() << "");
-    }
+	bool unloaded = settings.value("getunloadedpages", false).toBool();
+	int perpage = unloaded ? ui->spinImagesPerPage->value() : m_pages.value(ui->comboSites->currentText())->images().count();
+	emit batchAddGroup(QStringList() << "pool:"+QString::number(ui->spinPool->value())+" "+m_search->toPlainText()+" "+settings.value("add").toString().toLower().trimmed() << QString::number(ui->spinPage->value()) << QString::number(perpage) << QString::number(perpage) << settings.value("downloadblacklist").toString() << ui->comboSites->currentText() << settings.value("Save/filename").toString() << settings.value("Save/path").toString() << "");
 }
 void poolTab::getAll()
 {
-    QStringList actuals, keys = m_sites->keys();
-    for (int i = 0; i < m_checkboxes.count(); i++)
-    {
-        if (m_checkboxes.at(i)->isChecked())
-        { actuals.append(keys.at(i)); }
-    }
-    QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
-    for (int i = 0; i < actuals.count(); i++)
-    {
-        int limit = m_sites->value(actuals.at(i)).contains("Urls/1/Limit") ? m_sites->value(actuals.at(i)).value("Urls/1/Limit").toInt() : 0;
-        emit batchAddGroup(QStringList() << m_search->toPlainText()+" "+settings.value("add").toString().toLower().trimmed() << "1" << QString::number(qMin((limit > 0 ? limit : 1000), qMax(m_pages.value(actuals.at(i))->images().count(), m_pages.value(actuals.at(i))->imagesCount()))) << QString::number(qMax(m_pages.value(actuals.at(i))->images().count(), m_pages.value(actuals.at(i))->imagesCount())) << settings.value("downloadblacklist").toString() << actuals.at(i) << settings.value("Save/filename").toString() << settings.value("Save/path").toString() << "");
-    }
+	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
+	int limit = m_sites->value(ui->comboSites->currentText()).contains("Urls/1/Limit") ? m_sites->value(ui->comboSites->currentText()).value("Urls/1/Limit").toInt() : 0;
+	emit batchAddGroup(QStringList() << "pool:"+QString::number(ui->spinPool->value())+" "+m_search->toPlainText()+" "+settings.value("add").toString().toLower().trimmed() << "1" << QString::number(qMin((limit > 0 ? limit : 1000), qMax(m_pages.value(ui->comboSites->currentText())->images().count(), m_pages.value(ui->comboSites->currentText())->imagesCount()))) << QString::number(qMax(m_pages.value(ui->comboSites->currentText())->images().count(), m_pages.value(ui->comboSites->currentText())->imagesCount())) << settings.value("downloadblacklist").toString() << ui->comboSites->currentText() << settings.value("Save/filename").toString() << settings.value("Save/path").toString() << "");
 }
 
 void poolTab::firstPage()
