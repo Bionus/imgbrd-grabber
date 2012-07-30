@@ -426,9 +426,9 @@ void tagTab::finishedLoading(Page* page)
 
     m_page++;
     if (ui->checkMergeResults->isChecked())
-    {
-        if (m_page != m_pages.count())
-        { return; }
+	{
+		if (m_page != m_pages.size())
+		{ return; }
         QStringList md5s;
         for (int i = 0; i < m_images.count(); i++)
         {
@@ -437,7 +437,7 @@ void tagTab::finishedLoading(Page* page)
             else
             { md5s.append(m_images.at(i)->md5()); }
         }
-        imgs = m_images;
+		imgs = m_images;
     }
 
     // Loading images
@@ -595,10 +595,10 @@ void tagTab::finishedLoadingPreview(Image *img)
         connect(l, SIGNAL(rightClick(int)), _mainwindow, SLOT(batchChange(int)));
     int perpage = img->page()->site().value("Urls/Selected/Tags").contains("{limit}") ? ui->spinImagesPerPage->value() : img->page()->images().size();
     perpage = perpage > 0 ? perpage : 20;
-    int pl = ceil(sqrt(perpage));
-    int pp = perpage;
-    if (ui->checkMergeResults->isChecked())
-    { pp = m_images.count(); }
+	int pp = perpage;
+	if (ui->checkMergeResults->isChecked())
+	{ pp = m_images.count(); }
+	int pl = ceil(sqrt(pp));
     if (m_layouts.size() > page)
     { m_layouts[page]->addWidget(l, floor(float(position % pp) / pl), position % pl); }
 }
