@@ -153,9 +153,12 @@ void Page::parse(QNetworkReply* r)
 
 	if (m_source.isEmpty())
 	{
-		log("Loading error: "+r->errorString());
-		fallback();
-		load();
+		if (r->error() != QNetworkReply::OperationCanceledError)
+		{
+			log("Loading error: "+r->errorString());
+			fallback();
+			load();
+		}
 		return;
 	}
 
