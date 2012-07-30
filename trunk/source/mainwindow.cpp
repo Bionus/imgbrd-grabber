@@ -491,6 +491,14 @@ void mainWindow::batchAddGroup(const QStringList& values)
     ui->tableBatchGroups->setCellWidget(ui->tableBatchGroups->rowCount()-1, 9, prog);
     m_allow = true;
     saveLinkList(savePath("restore.igl"));
+	updateGroupCount();
+}
+void mainWindow::updateGroupCount()
+{
+	int groups = 0;
+	for (int i = 0; i < ui->tableBatchGroups->rowCount(); i++)
+	{ groups += ui->tableBatchGroups->item(i, 5)->text().toInt(); }
+	ui->labelGroups->setText(tr("Groupes (%1/%2)").arg(ui->tableBatchGroups->rowCount()).arg(groups));
 }
 void mainWindow::batchAddUnique(QMap<QString,QString> values)
 {
@@ -526,6 +534,7 @@ void mainWindow::batchClear()
     ui->tableBatchGroups->setRowCount(0);
     qDeleteAll(m_progressBars);
     m_progressBars.clear();
+	updateGroupCount();
 }
 void mainWindow::batchClearSel()
 {
@@ -555,6 +564,7 @@ void mainWindow::batchClearSel()
         ui->tableBatchUniques->removeRow(i-rem);
         rem++;
     }
+	updateGroupCount();
 }
 void mainWindow::batchChange(int id)
 {
@@ -581,7 +591,7 @@ void mainWindow::updateBatchGroups(int y, int x)
         else if (r == 7) { r = 5; }
         m_groupBatchs[y][r-1] = ui->tableBatchGroups->item(y, x)->text();
         saveLinkList(savePath("restore.igl"));
-    }
+	}
 }
 void mainWindow::addGroup()
 {
@@ -1968,7 +1978,8 @@ bool mainWindow::loadLinkList(QString filename)
                 m_allow = true;
             }
         }
-        return true;
+		updateGroupCount();
+		return true;
     }
     return false;
 }

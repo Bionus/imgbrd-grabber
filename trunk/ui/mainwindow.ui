@@ -217,9 +217,9 @@
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
-         <widget class="QLabel" name="label_4">
+         <widget class="QLabel" name="labelGroups">
           <property name="text">
-           <string>Groupes</string>
+           <string>Groupes (0/0)</string>
           </property>
          </widget>
         </item>

@@ -81,6 +81,7 @@ class mainWindow : public QMainWindow
         void addGroup();
         void addUnique();
         void batchAddGroup(const QStringList& values);
+		void updateGroupCount();
         void batchAddUnique(QMap<QString,QString>);
         // Batch download
         void getAll(bool all = true);
