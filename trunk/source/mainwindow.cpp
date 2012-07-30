@@ -589,8 +589,22 @@ void mainWindow::updateBatchGroups(int y, int x)
         else if (r == 5) { r = 7; }
         else if (r == 6) { r = 8; }
         else if (r == 7) { r = 5; }
-        m_groupBatchs[y][r-1] = ui->tableBatchGroups->item(y, x)->text();
-        saveLinkList(savePath("restore.igl"));
+
+		if (r == 3 && ui->tableBatchGroups->item(y, x)->text().toInt() < 1)
+		{
+			error(this, tr("La limite d'images par page doit être supérieure ou égale à 1."));
+			ui->tableBatchGroups->item(y, x)->setText(m_groupBatchs[y][r-1]);
+		}
+		else if (r == 4 && ui->tableBatchGroups->item(y, x)->text().toInt() < 0)
+		{
+			error(this, tr("La limite d'imagessupérieure ou égale à 0."));
+			ui->tableBatchGroups->item(y, x)->setText(m_groupBatchs[y][r-1]);
+		}
+		else
+		{
+			m_groupBatchs[y][r-1] = ui->tableBatchGroups->item(y, x)->text();
+			saveLinkList(savePath("restore.igl"));
+		}
 	}
 }
 void mainWindow::addGroup()
