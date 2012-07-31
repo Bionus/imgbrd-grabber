@@ -346,6 +346,37 @@ QString analyse(QStringList tokens, QString text, QStringList tags)
 	return r.contains("%") || ret.contains("\"") ? "" : ret;
 }
 
+typedef QPair<QString,QString> QStrP;
+typedef QPair<QString,QStrP> QStrPP;
+QStrP getReplace(QString setting, QMap<QString,QStringList> details, QSettings *settings)
+{
+	QString first = "", second = "";
+	int limit = settings->value(setting+"_multiple_limit", 1).toInt();
+	if (details[setting+"s"].size() > limit)
+	{
+		QString whatToDo = settings->value(setting+"_multiple", "replaceAll").toString();
+		QString separator = settings->value(setting+"_sep", " ").toString();
+		if (whatToDo == "keepAll")
+		{ first = details[setting+"s"].join(separator); }
+		else if (whatToDo == "keepN")
+		{
+			int keepN = settings->value(setting+"_multiple_keepN", 1).toInt();
+			first = QStringList(details[setting+"s"].mid(0, qMin(1, keepN))).join(separator);
+		}
+		else if (whatToDo == "keepNThenAdd")
+		{
+			int keepN = settings->value(setting+"_multiple_keepNThenAdd_keep", 1).toInt();
+			QString thenAdd = settings->value(setting+"_multiple_keepNThenAdd_add", " (+ %count%)").toString();
+			thenAdd.replace("%total%", QString::number(details[setting+"s"].size()));
+			thenAdd.replace("%count%", QString::number(details[setting+"s"].size() - keepN));
+			first = QStringList(details[setting+"s"].mid(0, qMin(1, keepN))).join(separator) + thenAdd;
+		}
+		else
+		{ first = settings->value(setting+"_value").toString(); }
+	}
+	second = settings->value(setting+"_empty").toString();
+	return QStrP(first, second);
+}
 QString Image::path(QString fn, QString pth, bool complex)
 {
 	if (!m_filename.isEmpty())
@@ -361,9 +392,6 @@ QString Image::path(QString fn, QString pth, bool complex)
 	{ fn = settings.value("filename").toString(); }
 	if (pth.isEmpty())
 	{ pth = settings.value("path").toString(); }
-
-	typedef QPair<QString,QString> QStrP;
-	typedef QPair<QString,QStrP> QStrPP;
 
 	QList<QStrPP> replaces = QList<QStrPP>();
 	QStringList copyrights;
@@ -434,10 +462,10 @@ QString Image::path(QString fn, QString pth, bool complex)
 	for (int i = 0; i < search.size(); i++)
 	{ replaces.append(QStrPP("%search_"+QString::number(i+1)+"%", QStrP(search[i], ""))); }
 	replaces.append(QStrPP("%search%", QStrP(search.join(settings.value("separator").toString()), "")));
-	replaces.append(QStrPP("%artist%", QStrP(details["artists"].count() > 0 ? (settings.value("artist_useall").toBool() || details["artists"].count() == 1 ? details["artists"].join(settings.value("artist_sep").toString()) : settings.value("artist_value").toString()) : "", settings.value("artist_empty").toString())));
-	replaces.append(QStrPP("%copyright%", QStrP(details["copyrights"].count() > 0 ? (settings.value("copyright_useall").toBool() || details["copyrights"].count() == 1 ? details["copyrights"].join(settings.value("copyright_sep").toString()) : settings.value("copyright_value").toString()) : "", settings.value("copyright_empty").toString())));
-	replaces.append(QStrPP("%character%", QStrP(details["characters"].count() > 0 ? (settings.value("character_useall").toBool() || details["characters"].count() == 1 ? details["characters"].join(settings.value("character_sep").toString()) : settings.value("character_value").toString()) : "", settings.value("character_empty").toString())));
-	replaces.append(QStrPP("%model%", QStrP(details["models"].count() > 0 ? (settings.value("model_useall").toBool() || details["models"].count() == 1 ? details["models"].join(settings.value("model_sep").toString()) : settings.value("model_value").toString()) : "", settings.value("model_empty").toString())));
+	replaces.append(QStrPP("%artist%", getReplace("artist", details, &settings)));
+	replaces.append(QStrPP("%copyright%", getReplace("copyright", details, &settings)));
+	replaces.append(QStrPP("%character%", getReplace("character", details, &settings)));
+	replaces.append(QStrPP("%model%", getReplace("model", details, &settings)));
 	replaces.append(QStrPP("%rating%", QStrP(m_rating, "")));
 	replaces.append(QStrPP("%score%", QStrP(QString::number(m_score), "")));
 	replaces.append(QStrPP("%height%", QStrP(QString::number(m_size.height()), "0")));

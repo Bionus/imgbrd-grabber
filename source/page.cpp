@@ -65,8 +65,9 @@ void Page::fallback()
 	{
 		if (m_imagesPerPage > m_blim)
 		{ m_imagesPerPage = m_blim; }
-		p = floor((m_page - 1) * m_imagesPerPage / m_blim) + m_site["FirstPage"].toInt();
+		p = floor((m_page - 1) * m_imagesPerPage / m_blim) + 1;
 	}
+	p = p - 1 + m_site["FirstPage"].toInt();
 
 	QRegExp pool("pool:(\\d+)");
 	QString url;
@@ -116,7 +117,7 @@ void Page::fallback()
 		url.replace("{limit}", QString::number(m_imagesPerPage));
 		url.replace("{pseudo}", settings.value("Login/pseudo").toString());
 		url.replace("{password}", settings.value("Login/password").toString());
-		m_url = QUrl(url);
+		m_urlRegex = QUrl(url);
 	}
 	else if (m_site.contains("Urls/Html/Tags"))
 	{
@@ -126,10 +127,10 @@ void Page::fallback()
 		url.replace("{limit}", QString::number(m_imagesPerPage));
 		url.replace("{pseudo}", settings.value("Login/pseudo").toString());
 		url.replace("{password}", settings.value("Login/password").toString());
-		m_url = QUrl(url);
+		m_urlRegex = QUrl(url);
 	}
 	else
-	{ m_url = ""; }
+	{ m_urlRegex = ""; }
 }
 
 void Page::load()
