@@ -1,11 +1,12 @@
 #include <QSettings>
+#include <QDebug>
 #include "page.h"
 #include "json.h"
 #include "math.h"
 
 
 
-Page::Page(QMap<QString,QMap<QString,QString> > *sites, QString site, QStringList tags, int page, int limit, QStringList postFiltering, bool smart, QObject *parent) : QObject(parent), m_postFiltering(postFiltering), m_errors(QStringList()), m_imagesPerPage(limit), m_currentSource(0), m_smart(smart)
+Page::Page(QMap<QString,QMap<QString,QString> > *sites, QString site, QStringList tags, int page, int limit, QStringList postFiltering, bool smart, QObject *parent, int pool) : QObject(parent), m_postFiltering(postFiltering), m_errors(QStringList()), m_imagesPerPage(limit), m_currentSource(0), m_smart(smart)
 {
 	m_site = sites->value(site);
 	m_website = site;
@@ -27,6 +28,7 @@ Page::Page(QMap<QString,QMap<QString,QString> > *sites, QString site, QStringLis
 	m_search = tags;
 
 	m_page = page;
+	m_pool = pool;
 	fallback();
 
 	m_replyExists = false;
@@ -66,7 +68,38 @@ void Page::fallback()
 		p = floor((m_page - 1) * m_imagesPerPage / m_blim) + m_site["FirstPage"].toInt();
 	}
 
-	QString url = m_site["Urls/"+QString::number(m_currentSource)+"/"+(t.isEmpty() && m_site.contains("Urls/"+QString::number(m_currentSource)+"/Home") ? "Home" : "Tags")];
+	QRegExp pool("pool:(\\d+)");
+	QString url;
+	if (pool.indexIn(t) != -1)
+	{
+		for (int i = 1; i <= m_site["Selected"].count('/') + 1; i++)
+		{
+			if (m_site.contains("Urls/"+QString::number(i)+"/Pools"))
+			{
+				url = m_site["Urls/"+QString::number(i)+"/Pools"];
+				url.replace("{pool}", pool.cap(1));
+				m_currentSource = i;
+				m_format = m_site["Selected"].split('/').at(m_currentSource-1);
+				break;
+			}
+		}
+		if (url.isEmpty())
+		{
+			log(tr("Aucune source du site n'est compatible avec les pools."));
+			m_errors.append(tr("Aucune source du site n'est compatible avec les pools."));
+			m_search.removeAll("pool:"+pool.cap(1));
+			t.remove(pool);
+			t = t.trimmed();
+		}
+	}
+	if (url.isEmpty())
+	{
+		if (t.isEmpty() && m_site.contains("Urls/"+QString::number(m_currentSource)+"/Home"))
+		{ url = m_site["Urls/"+QString::number(m_currentSource)+"/Home"]; }
+		else
+		{ url = m_site["Urls/"+QString::number(m_currentSource)+"/Tags"]; }
+	}
+	m_originalUrl = url;
 	url.replace("{page}", QString::number(p));
 	url.replace("{tags}", QUrl::toPercentEncoding(t));
 	url.replace("{limit}", QString::number(m_imagesPerPage));
@@ -74,7 +107,18 @@ void Page::fallback()
 	url.replace("{password}", settings.value("Login/password").toString());
 	m_url = QUrl::fromEncoded(url.toUtf8());
 
-	if (m_site.contains("Urls/Html/Tags"))
+	if (pool.indexIn(t) != -1 && m_site.contains("Urls/Html/Pools"))
+	{
+		QString url = m_site["Urls/Html/Pools"];
+		url.replace("{page}", QString::number(p));
+		url.replace("{pool}", pool.cap(1));
+		url.replace("{tags}", QUrl::toPercentEncoding(t));
+		url.replace("{limit}", QString::number(m_imagesPerPage));
+		url.replace("{pseudo}", settings.value("Login/pseudo").toString());
+		url.replace("{password}", settings.value("Login/password").toString());
+		m_url = QUrl(url);
+	}
+	else if (m_site.contains("Urls/Html/Tags"))
 	{
 		QString url = m_site["Urls/Html/"+QString(t.isEmpty() && m_site.contains("Urls/Html/Home") ? "Home" : "Tags")];
 		url.replace("{page}", QString::number(p));
@@ -82,10 +126,10 @@ void Page::fallback()
 		url.replace("{limit}", QString::number(m_imagesPerPage));
 		url.replace("{pseudo}", settings.value("Login/pseudo").toString());
 		url.replace("{password}", settings.value("Login/password").toString());
-		m_urlRegex = QUrl(url);
+		m_url = QUrl(url);
 	}
 	else
-	{ m_urlRegex = ""; }
+	{ m_url = ""; }
 }
 
 void Page::load()
@@ -115,12 +159,12 @@ void Page::abort()
 
 void Page::loadTags()
 {
-	if (!m_urlRegex.isEmpty())
+	if (!m_url.isEmpty())
 	{
 		QNetworkAccessManager *manager = new QNetworkAccessManager(this);
 		connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(parseTags(QNetworkReply*)));
 		connect(manager, SIGNAL(sslErrors(QNetworkReply*, QList<QSslError>)), this, SLOT(sslErrorHandler(QNetworkReply*, QList<QSslError>)));
-		m_replyTags = manager->get(QNetworkRequest(m_urlRegex));
+		m_replyTags = manager->get(QNetworkRequest(m_url));
 		m_replyTagsExists = true;
 	}
 }
@@ -187,8 +231,7 @@ void Page::parse(QNetworkReply* r)
 		QDomNodeList nodeList = docElem.elementsByTagName("post");
 		if (nodeList.count() > 0)
 		{
-			int max = m_smart ? qMin(nodeList.count(), m_imagesPerPage) : nodeList.count();
-			for (int id = 0; id < max; id++)
+			for (int id = 0; id < nodeList.count(); id++)
 			{
 				QMap<QString,QString> d;
 				QStringList infos;
@@ -239,8 +282,7 @@ void Page::parse(QNetworkReply* r)
 		QDomNodeList nodeList = docElem.elementsByTagName("item");
 		if (nodeList.count() > 0)
 		{
-			int max = m_smart ? qMin(nodeList.count(), m_imagesPerPage) : nodeList.count();
-			for (int id = 0; id < max; id++)
+			for (int id = 0; id < nodeList.count(); id++)
 			{
 				QDomNodeList children = nodeList.at(id + first).childNodes();
 				QMap<QString,QString> d, dat;
@@ -328,7 +370,7 @@ void Page::parse(QNetworkReply* r)
 		QStringList order = m_site["Regex/Order"].split('|');
 		rx.setMinimal(true);
 		int pos = 0, id = 0;
-		while ((pos = rx.indexIn(m_source, pos)) != -1 && (id < m_imagesPerPage || !m_smart))
+		while ((pos = rx.indexIn(m_source, pos)) != -1)
 		{
 			pos += rx.matchedLength();
 			QMap<QString,QString> d;
@@ -337,7 +379,10 @@ void Page::parse(QNetworkReply* r)
 			if (!d["preview_url"].startsWith("http://") && !d["preview_url"].startsWith("https://"))
 			{ d["preview_url"] = "http://"+m_site["Url"]+QString(d["preview_url"].startsWith("/") ? "" : "/")+d["preview_url"]; }
 			if (!d.contains("file_url"))
-			{ d["file_url"] = d["preview_url"]; }
+			{
+				if (!m_site.contains("Regex/ImageUrl"))
+				{ d["file_url"] = d["preview_url"]; }
+			}
 			else if (!d["file_url"].startsWith("http://") && !d["file_url"].startsWith("https://"))
 			{ d["file_url"] = "http://"+m_site["Url"]+QString(d["file_url"].startsWith("/") ? "" : "/")+d["file_url"]; }
 			if (m_site.contains("Urls/Html/Image"))
@@ -396,8 +441,7 @@ void Page::parse(QNetworkReply* r)
 		{
 			QMap<QString, QVariant> sc;
 			QList<QVariant> sourc = src.toList();
-			int max = m_smart ? qMin(sourc.count(), m_imagesPerPage) : sourc.count();
-			for (int id = 0; id < max; id++)
+			for (int id = 0; id < sourc.count(); id++)
 			{
 				sc = sourc.at(id + first).toMap();
 				QMap<QString,QString> d;
@@ -456,20 +500,38 @@ void Page::parse(QNetworkReply* r)
 	}
 
 	// Getting last page
-	if (m_site.contains("LastPage") && m_imagesCount == 0)
+	if (m_site.contains("LastPage") && m_imagesCount < 1)
 	{ m_imagesCount = m_site["LastPage"].toInt()*m_imagesPerPage; }
-	if (m_site.contains("Regex/LastPage") && m_imagesCount == 0)
+	if (m_site.contains("Regex/LastPage") && m_imagesCount < 1)
 	{
 		QRegExp rxlast(m_site["Regex/LastPage"]);
 		rxlast.indexIn(m_source, 0);
 		m_imagesCount = rxlast.cap(1).remove(",").toInt() * m_imagesPerPage;
 	}
-	if (m_site.contains("Regex/Count") && m_imagesCount == 0)
+	if (m_site.contains("Regex/Count") && m_imagesCount < 1)
 	{
 		QRegExp rxlast(m_site["Regex/Count"]);
 		rxlast.indexIn(m_source, 0);
 		m_imagesCount = rxlast.cap(1).remove(",").toInt();
 	}
+	if (m_imagesCount < 1)
+	{ m_imagesCount = m_images.size(); }
+
+	// Virtual paging
+	int firstImage = 0;
+	int lastImage = m_smart ? m_imagesPerPage : m_images.size();
+	if (!m_originalUrl.contains("{page}"))
+	{
+		firstImage = m_imagesPerPage * (m_page - 1);
+		lastImage = m_imagesPerPage;
+	}
+	while (firstImage > 0)
+	{
+		m_images.removeFirst();
+		firstImage--;
+	}
+	while (m_images.size() > lastImage)
+	{ m_images.removeLast(); }
 
 	m_reply->deleteLater();
 	m_replyExists = false;

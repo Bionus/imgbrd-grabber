@@ -418,7 +418,11 @@ void zoomWindow::replyFinished(Image* img)
         }
     }
     else
-    { load(); }
+	{
+		if (m_url.isEmpty())
+		{ m_url = m_image->url(); }
+		load();
+	}
 }
 void zoomWindow::colore()
 {

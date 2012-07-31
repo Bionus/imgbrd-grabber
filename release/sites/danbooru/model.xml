@@ -4,12 +4,15 @@
 	<Urls>
 		<Xml>
 			<Tags>/post/index.xml?login={pseudo}&amp;password_hash={password}&amp;limit={limit}&amp;page={page}&amp;tags={tags}</Tags>
+			<Pools>/post/index.xml?login={pseudo}&amp;password_hash={password}&amp;limit={limit}&amp;page={page}&amp;tags=pool:{pool} {tags}</Pools>
 		</Xml>
 		<Json>
 			<Tags>/post/index.json?login={pseudo}&amp;password_hash={password}&amp;limit={limit}&amp;page={page}&amp;tags={tags}</Tags>
+			<Pools>/post/index.json?login={pseudo}&amp;password_hash={password}&amp;limit={limit}&amp;page={page}&amp;tags=pool:{pool} {tags}</Pools>
 		</Json>
 		<Html>
 			<Tags>/post/index?login={pseudo}&amp;password_hash={password}&amp;limit={limit}&amp;page={page}&amp;tags={tags}</Tags>
+			<Pools>/post/index?login={pseudo}&amp;password_hash={password}&amp;limit={limit}&amp;page={page}&amp;tags=pool:{pool} {tags}</Pools>
 			<Post>/post/show/{id}</Post>
 		</Html>
 	</Urls>
