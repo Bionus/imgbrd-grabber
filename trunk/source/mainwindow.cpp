@@ -304,16 +304,20 @@ void mainWindow::loadSites()
                             {
                                 stes[line]["Urls/"+QString::number(i+1)+"/Tags"] = "http://"+line+stes[line]["Urls/"+(srcs[i] == "Regex" ? "Html" : srcs[i])+"/Tags"];
                                 if (stes[line].contains("Urls/"+(srcs[i] == "Regex" ? "Html" : srcs[i])+"/Limit"))
-                                { stes[line]["Urls/"+QString::number(i+1)+"/Limit"] = stes[line]["Urls/"+(srcs[i] == "Regex" ? "Html" : srcs[i])+"/Limit"]; }
-                                if (stes[line].contains("Urls/"+(srcs[i] == "Regex" ? "Html" : srcs[i])+"/Home"))
-                                { stes[line]["Urls/"+QString::number(i+1)+"/Home"] = "http://"+line+stes[line]["Urls/"+(srcs[i] == "Regex" ? "Html" : srcs[i])+"/Home"]; }
+								{ stes[line]["Urls/"+QString::number(i+1)+"/Limit"] = stes[line]["Urls/"+(srcs[i] == "Regex" ? "Html" : srcs[i])+"/Limit"]; }
+								if (stes[line].contains("Urls/"+(srcs[i] == "Regex" ? "Html" : srcs[i])+"/Home"))
+								{ stes[line]["Urls/"+QString::number(i+1)+"/Home"] = "http://"+line+stes[line]["Urls/"+(srcs[i] == "Regex" ? "Html" : srcs[i])+"/Home"]; }
+								if (stes[line].contains("Urls/"+(srcs[i] == "Regex" ? "Html" : srcs[i])+"/Pools"))
+								{ stes[line]["Urls/"+QString::number(i+1)+"/Pools"] = "http://"+line+stes[line]["Urls/"+(srcs[i] == "Regex" ? "Html" : srcs[i])+"/Pools"]; }
                             }
                             stes[line]["Url"] = line;
                             stes[line]["Urls/Html/Post"] = "http://"+line+stes[line]["Urls/Html/Post"];
                             if (stes[line].contains("Urls/Html/Tags"))
-                            { stes[line]["Urls/Html/Tags"] = "http://"+line+stes[line]["Urls/Html/Tags"]; }
-                            if (stes[line].contains("Urls/Html/Home"))
-                            { stes[line]["Urls/Html/Home"] = "http://"+line+stes[line]["Urls/Html/Home"]; }
+							{ stes[line]["Urls/Html/Tags"] = "http://"+line+stes[line]["Urls/Html/Tags"]; }
+							if (stes[line].contains("Urls/Html/Home"))
+							{ stes[line]["Urls/Html/Home"] = "http://"+line+stes[line]["Urls/Html/Home"]; }
+							if (stes[line].contains("Urls/Html/Pools"))
+							{ stes[line]["Urls/Html/Pools"] = "http://"+line+stes[line]["Urls/Html/Pools"]; }
                             stes[line]["Selected"] = srcs.join("/").toLower();
                         }
                     }
