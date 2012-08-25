@@ -6,6 +6,7 @@
 #include <QColorDialog>
 #include <QFontDialog>
 #include <QCryptographicHash>
+#include <QSqlDatabase>
 #include "optionswindow.h"
 #include "ui_optionswindow.h"
 #include "customwindow.h"
@@ -195,11 +196,20 @@ optionsWindow::optionsWindow(QWidget *parent) : QDialog(parent), ui(new Ui::opti
 	settings.endGroup();
 
 	settings.beginGroup("Exec");
-		ui->lineCommandsGroupInitialisation->setText(settings.value("Group/init").toString());
-		ui->lineCommandsGroupImage->setText(settings.value("Group/image").toString());
-		ui->lineCommandsGroupTag->setText(settings.value("Group/tag").toString());
 		ui->lineCommandsImage->setText(settings.value("image").toString());
 		ui->lineCommandsTag->setText(settings.value("tag").toString());
+		settings.beginGroup("SQL");
+			ui->comboCommandsSqlDriver->addItems(QSqlDatabase::drivers());
+			ui->comboCommandsSqlDriver->setCurrentIndex(QSqlDatabase::drivers().indexOf(settings.value("driver", "QMYSQL").toString()));
+			ui->lineCommandsSqlHost->setText(settings.value("host").toString());
+			ui->lineCommandsSqlUser->setText(settings.value("user").toString());
+			ui->lineCommandsSqlPassword->setText(settings.value("password").toString());
+			ui->lineCommandsSqlDatabase->setText(settings.value("database").toString());
+			ui->lineCommandsSqlBefore->setText(settings.value("before").toString());
+			ui->lineCommandsSqlImage->setText(settings.value("image").toString());
+			ui->lineCommandsSqlTag->setText(settings.value("tag").toString());
+			ui->lineCommandsSqlAfter->setText(settings.value("after").toString());
+		settings.endGroup();
 	settings.endGroup();
 	connect(this, SIGNAL(accepted()), this, SLOT(save()));
 }
@@ -471,7 +481,8 @@ void optionsWindow::setCategory(QString value)
 		tr("Marges et bordures", "update") <<
 		tr("Connexion", "update") <<
 		tr("Proxy", "update") <<
-		tr("Commandes", "update");
+		tr("Commandes", "update") <<
+		tr("Base de données", "update");
 	ui->stackedWidget->setCurrentIndex(texts.indexOf(value));
 }
 
@@ -659,11 +670,19 @@ void optionsWindow::save()
 	settings.endGroup();
 
 	settings.beginGroup("Exec");
-		settings.setValue("Group/init", ui->lineCommandsGroupInitialisation->text());
-		settings.setValue("Group/image", ui->lineCommandsGroupImage->text());
-		settings.setValue("Group/tag", ui->lineCommandsGroupTag->text());
 		settings.setValue("image", ui->lineCommandsImage->text());
 		settings.setValue("tag", ui->lineCommandsTag->text());
+		settings.beginGroup("SQL");
+			settings.setValue("driver", ui->comboCommandsSqlDriver->currentText());
+			settings.setValue("host", ui->lineCommandsSqlHost->text());
+			settings.setValue("user", ui->lineCommandsSqlUser->text());
+			settings.setValue("password", ui->lineCommandsSqlPassword->text());
+			settings.setValue("database", ui->lineCommandsSqlDatabase->text());
+			settings.setValue("before", ui->lineCommandsSqlBefore->text());
+			settings.setValue("image", ui->lineCommandsSqlImage->text());
+			settings.setValue("tag", ui->lineCommandsSqlTag->text());
+			settings.setValue("after", ui->lineCommandsSqlAfter->text());
+		settings.endGroup();
 	settings.endGroup();
 
 	if (settings.value("Proxy/use", false).toBool())

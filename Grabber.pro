@@ -40,9 +40,10 @@ HEADERS += includes/aboutwindow.h \
 		   includes/textedit.h \
 		   includes/zoomwindow.h \
 		   includes/filenamewindow.h \
-	includes/pool.h \
-	includes/pooltab.h \
-	includes/tagtab.h
+		   includes/pool.h \
+		   includes/pooltab.h \
+		   includes/tagtab.h \
+		   includes/commands.h
 FORMS += ui/aboutwindow.ui \
 		 ui/adduniquewindow.ui \
 		 ui/batchwindow.ui \
@@ -98,13 +99,14 @@ SOURCES += source/aboutwindow.cpp \
 		   source/textedit.cpp \
 		   source/zoomwindow.cpp \
 		   source/filenamewindow.cpp \
-	source/pooltab.cpp \
-	source/tagtab.cpp
+		   source/pooltab.cpp \
+		   source/tagtab.cpp \
+		   source/commands.cpp
 
 RESOURCES += resources.qrc
 RC_FILE = icon.rc
 TRANSLATIONS += languages/English.ts languages/Français.ts
-QT += network xml
+QT += network xml sql
 CONFIG += designer plugin
 CODECFORTR = UTF-8
 LIBS += -lqscintilla2

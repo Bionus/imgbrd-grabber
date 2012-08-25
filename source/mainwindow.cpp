@@ -1,3 +1,9 @@
+#include <QtXml>
+#include <QtScript>
+#if defined(Q_OS_WIN)
+	#include "windows.h"
+	#include <float.h>
+#endif
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "ui_tagtab.h"
@@ -14,12 +20,8 @@
 #include "emptydirsfix.h"
 #include "functions.h"
 #include "json.h"
-#include <QtXml>
-#include <QtScript>
-#if defined(Q_OS_WIN)
-    #include "windows.h"
-    #include <float.h>
-#endif
+#include "commands.h"
+#include <QtSql/QSqlDatabase>
 
 #define VERSION	"3.2.0a"
 #define DONE()	logUpdate(QObject::tr(" Fait"))
@@ -37,7 +39,7 @@ extern QMap<QString,QString> _md5;
 
 
 mainWindow::mainWindow(QString program, QStringList tags, QMap<QString,QString> params) : ui(new Ui::mainWindow), m_currentFav(-1), m_loaded(false), m_getAll(false), m_program(program), m_tags(tags), m_params(params)
-{ }
+{  }
 void mainWindow::init()
 {
     m_settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
@@ -248,6 +250,8 @@ void mainWindow::init()
     for (int i = 0; i < m; i++)
     { ui->tableBatchGroups->horizontalHeader()->resizeSection(i, sizes.at(i).toInt()); }
 
+	Commands::get()->init(m_settings);
+
     m_loaded = true;
     logShow();
 }
@@ -304,20 +308,20 @@ void mainWindow::loadSites()
                             {
                                 stes[line]["Urls/"+QString::number(i+1)+"/Tags"] = "http://"+line+stes[line]["Urls/"+(srcs[i] == "Regex" ? "Html" : srcs[i])+"/Tags"];
                                 if (stes[line].contains("Urls/"+(srcs[i] == "Regex" ? "Html" : srcs[i])+"/Limit"))
-								{ stes[line]["Urls/"+QString::number(i+1)+"/Limit"] = stes[line]["Urls/"+(srcs[i] == "Regex" ? "Html" : srcs[i])+"/Limit"]; }
-								if (stes[line].contains("Urls/"+(srcs[i] == "Regex" ? "Html" : srcs[i])+"/Home"))
-								{ stes[line]["Urls/"+QString::number(i+1)+"/Home"] = "http://"+line+stes[line]["Urls/"+(srcs[i] == "Regex" ? "Html" : srcs[i])+"/Home"]; }
-								if (stes[line].contains("Urls/"+(srcs[i] == "Regex" ? "Html" : srcs[i])+"/Pools"))
-								{ stes[line]["Urls/"+QString::number(i+1)+"/Pools"] = "http://"+line+stes[line]["Urls/"+(srcs[i] == "Regex" ? "Html" : srcs[i])+"/Pools"]; }
+                                { stes[line]["Urls/"+QString::number(i+1)+"/Limit"] = stes[line]["Urls/"+(srcs[i] == "Regex" ? "Html" : srcs[i])+"/Limit"]; }
+                                if (stes[line].contains("Urls/"+(srcs[i] == "Regex" ? "Html" : srcs[i])+"/Home"))
+                                { stes[line]["Urls/"+QString::number(i+1)+"/Home"] = "http://"+line+stes[line]["Urls/"+(srcs[i] == "Regex" ? "Html" : srcs[i])+"/Home"]; }
+                                if (stes[line].contains("Urls/"+(srcs[i] == "Regex" ? "Html" : srcs[i])+"/Pools"))
+                                { stes[line]["Urls/"+QString::number(i+1)+"/Pools"] = "http://"+line+stes[line]["Urls/"+(srcs[i] == "Regex" ? "Html" : srcs[i])+"/Pools"]; }
                             }
                             stes[line]["Url"] = line;
                             stes[line]["Urls/Html/Post"] = "http://"+line+stes[line]["Urls/Html/Post"];
                             if (stes[line].contains("Urls/Html/Tags"))
-							{ stes[line]["Urls/Html/Tags"] = "http://"+line+stes[line]["Urls/Html/Tags"]; }
-							if (stes[line].contains("Urls/Html/Home"))
-							{ stes[line]["Urls/Html/Home"] = "http://"+line+stes[line]["Urls/Html/Home"]; }
-							if (stes[line].contains("Urls/Html/Pools"))
-							{ stes[line]["Urls/Html/Pools"] = "http://"+line+stes[line]["Urls/Html/Pools"]; }
+                            { stes[line]["Urls/Html/Tags"] = "http://"+line+stes[line]["Urls/Html/Tags"]; }
+                            if (stes[line].contains("Urls/Html/Home"))
+                            { stes[line]["Urls/Html/Home"] = "http://"+line+stes[line]["Urls/Html/Home"]; }
+                            if (stes[line].contains("Urls/Html/Pools"))
+                            { stes[line]["Urls/Html/Pools"] = "http://"+line+stes[line]["Urls/Html/Pools"]; }
                             stes[line]["Selected"] = srcs.join("/").toLower();
                         }
                     }
@@ -342,58 +346,58 @@ mainWindow::~mainWindow()
 
 int mainWindow::addTab(QString tag)
 {
-	tagTab *w = new tagTab(m_tabs.size(), &m_sites, &m_favorites, &m_serverDate, this);
-	connect(w, SIGNAL(batchAddGroup(QStringList)), this, SLOT(batchAddGroup(QStringList)));
-	connect(w, SIGNAL(titleChanged(searchTab*)), this, SLOT(updateTabTitle(searchTab*)));
-	connect(w, SIGNAL(changed(searchTab*)), this, SLOT(updateTabs()));
-	connect(w, SIGNAL(closed(searchTab*)), this, SLOT(tabClosed(searchTab*)));
-	int index = ui->tabWidget->insertTab(ui->tabWidget->currentIndex()+(!m_tabs.isEmpty()), w, tr("Nouvel onglet"));
-	m_tabs.append(w);
-	m_tagTabs.append(w);
-	ui->tabWidget->setCurrentIndex(index);
-	QPushButton *closeTab = new QPushButton(QIcon(":/images/close.png"), "", this);
-		closeTab->setFlat(true);
-		closeTab->resize(QSize(8,8));
-		connect(closeTab, SIGNAL(clicked()), w, SLOT(deleteLater()));
-		ui->tabWidget->findChild<QTabBar*>()->setTabButton(index, QTabBar::RightSide, closeTab);
-	if (!tag.isEmpty())
-	{ w->setTags(tag); }
-	saveTabs(savePath("tabs.txt"));
-	return m_tabs.size() - 1;
+    tagTab *w = new tagTab(m_tabs.size(), &m_sites, &m_favorites, &m_serverDate, this);
+    connect(w, SIGNAL(batchAddGroup(QStringList)), this, SLOT(batchAddGroup(QStringList)));
+    connect(w, SIGNAL(titleChanged(searchTab*)), this, SLOT(updateTabTitle(searchTab*)));
+    connect(w, SIGNAL(changed(searchTab*)), this, SLOT(updateTabs()));
+    connect(w, SIGNAL(closed(searchTab*)), this, SLOT(tabClosed(searchTab*)));
+    int index = ui->tabWidget->insertTab(ui->tabWidget->currentIndex()+(!m_tabs.isEmpty()), w, tr("Nouvel onglet"));
+    m_tabs.append(w);
+    m_tagTabs.append(w);
+    ui->tabWidget->setCurrentIndex(index);
+    QPushButton *closeTab = new QPushButton(QIcon(":/images/close.png"), "", this);
+        closeTab->setFlat(true);
+        closeTab->resize(QSize(8,8));
+        connect(closeTab, SIGNAL(clicked()), w, SLOT(deleteLater()));
+        ui->tabWidget->findChild<QTabBar*>()->setTabButton(index, QTabBar::RightSide, closeTab);
+    if (!tag.isEmpty())
+    { w->setTags(tag); }
+    saveTabs(savePath("tabs.txt"));
+    return m_tabs.size() - 1;
 }
 int mainWindow::addPoolTab(int pool)
 {
-	poolTab *w = new poolTab(m_tabs.size(), &m_sites, &m_favorites, &m_serverDate, this);
-	connect(w, SIGNAL(batchAddGroup(QStringList)), this, SLOT(batchAddGroup(QStringList)));
-	connect(w, SIGNAL(titleChanged(searchTab*)), this, SLOT(updateTabTitle(searchTab*)));
-	connect(w, SIGNAL(changed(searchTab*)), this, SLOT(updateTabs()));
-	connect(w, SIGNAL(closed(searchTab*)), this, SLOT(tabClosed(searchTab*)));
-	int index = ui->tabWidget->insertTab(ui->tabWidget->currentIndex()+(!m_tabs.isEmpty()), w, tr("Nouvel onglet"));
-	m_tabs.append(w);
-	m_poolTabs.append(w);
-	ui->tabWidget->setCurrentIndex(index);
-	QPushButton *closeTab = new QPushButton(QIcon(":/images/close.png"), "", this);
-		closeTab->setFlat(true);
-		closeTab->resize(QSize(8,8));
-		connect(closeTab, SIGNAL(clicked()), w, SLOT(deleteLater()));
-		ui->tabWidget->findChild<QTabBar*>()->setTabButton(index, QTabBar::RightSide, closeTab);
-	if (pool != 0)
-	{ w->setTags("pool:"+QString::number(pool)); }
-	saveTabs(savePath("tabs.txt"));
-	return m_tabs.size() - 1;
+    poolTab *w = new poolTab(m_tabs.size(), &m_sites, &m_favorites, &m_serverDate, this);
+    connect(w, SIGNAL(batchAddGroup(QStringList)), this, SLOT(batchAddGroup(QStringList)));
+    connect(w, SIGNAL(titleChanged(searchTab*)), this, SLOT(updateTabTitle(searchTab*)));
+    connect(w, SIGNAL(changed(searchTab*)), this, SLOT(updateTabs()));
+    connect(w, SIGNAL(closed(searchTab*)), this, SLOT(tabClosed(searchTab*)));
+    int index = ui->tabWidget->insertTab(ui->tabWidget->currentIndex()+(!m_tabs.isEmpty()), w, tr("Nouvel onglet"));
+    m_tabs.append(w);
+    m_poolTabs.append(w);
+    ui->tabWidget->setCurrentIndex(index);
+    QPushButton *closeTab = new QPushButton(QIcon(":/images/close.png"), "", this);
+        closeTab->setFlat(true);
+        closeTab->resize(QSize(8,8));
+        connect(closeTab, SIGNAL(clicked()), w, SLOT(deleteLater()));
+        ui->tabWidget->findChild<QTabBar*>()->setTabButton(index, QTabBar::RightSide, closeTab);
+    if (pool != 0)
+    { w->setTags("pool:"+QString::number(pool)); }
+    saveTabs(savePath("tabs.txt"));
+    return m_tabs.size() - 1;
 }
 bool mainWindow::saveTabs(QString filename)
 {
-	QStringList tabs = QStringList();
-	foreach (tagTab *tab, m_tagTabs)
-	{ tabs.append(tab->tags()+"¤"+QString::number(tab->ui->spinPage->value())+"¤"+QString::number(tab->ui->spinImagesPerPage->value())+"¤"+QString::number(tab->ui->spinColumns->value())); }
-	foreach (poolTab *tab, m_poolTabs)
-	{ tabs.append(QString::number(tab->ui->spinPool->value())+"¤"+QString::number(tab->ui->comboSites->currentIndex())+"¤"+tab->tags()+"¤"+QString::number(tab->ui->spinPage->value())+"¤"+QString::number(tab->ui->spinImagesPerPage->value())+"¤"+QString::number(tab->ui->spinColumns->value())+"¤pool"); }
+    QStringList tabs = QStringList();
+    foreach (tagTab *tab, m_tagTabs)
+    { tabs.append(tab->tags()+"¤"+QString::number(tab->ui->spinPage->value())+"¤"+QString::number(tab->ui->spinImagesPerPage->value())+"¤"+QString::number(tab->ui->spinColumns->value())); }
+    foreach (poolTab *tab, m_poolTabs)
+    { tabs.append(QString::number(tab->ui->spinPool->value())+"¤"+QString::number(tab->ui->comboSites->currentIndex())+"¤"+tab->tags()+"¤"+QString::number(tab->ui->spinPage->value())+"¤"+QString::number(tab->ui->spinImagesPerPage->value())+"¤"+QString::number(tab->ui->spinColumns->value())+"¤pool"); }
 
     QFile f(filename);
     if (f.open(QFile::WriteOnly))
     {
-		f.write(tabs.join("\r\n").toUtf8());
+        f.write(tabs.join("\r\n").toUtf8());
         f.close();
         return true;
     }
@@ -413,26 +417,26 @@ bool mainWindow::loadTabs(QString filename)
             QStringList infos = tabs[j].split("¤");
             if (infos.size() > 3)
             {
-				if (infos[infos.size() - 1] == "pool")
-				{
-					addPoolTab();
-					int i = m_poolTabs.size() - 1;
-					m_poolTabs[i]->ui->spinPool->setValue(infos[0].toInt());
-					m_poolTabs[i]->ui->comboSites->setCurrentIndex(infos[1].toInt());
-					m_poolTabs[i]->ui->spinPage->setValue(infos[2].toInt());
-					m_poolTabs[i]->ui->spinImagesPerPage->setValue(infos[4].toInt());
-					m_poolTabs[i]->ui->spinColumns->setValue(infos[5].toInt());
-					m_poolTabs[i]->setTags(infos[2]);
-				}
-				else
-				{
-					addTab();
-					int i = m_tagTabs.size() - 1;
-					m_tagTabs[i]->ui->spinPage->setValue(infos[1].toInt());
-					m_tagTabs[i]->ui->spinImagesPerPage->setValue(infos[2].toInt());
-					m_tagTabs[i]->ui->spinColumns->setValue(infos[3].toInt());
-					m_tagTabs[i]->setTags(infos[0]);
-				}
+                if (infos[infos.size() - 1] == "pool")
+                {
+                    addPoolTab();
+                    int i = m_poolTabs.size() - 1;
+                    m_poolTabs[i]->ui->spinPool->setValue(infos[0].toInt());
+                    m_poolTabs[i]->ui->comboSites->setCurrentIndex(infos[1].toInt());
+                    m_poolTabs[i]->ui->spinPage->setValue(infos[2].toInt());
+                    m_poolTabs[i]->ui->spinImagesPerPage->setValue(infos[4].toInt());
+                    m_poolTabs[i]->ui->spinColumns->setValue(infos[5].toInt());
+                    m_poolTabs[i]->setTags(infos[2]);
+                }
+                else
+                {
+                    addTab();
+                    int i = m_tagTabs.size() - 1;
+                    m_tagTabs[i]->ui->spinPage->setValue(infos[1].toInt());
+                    m_tagTabs[i]->ui->spinImagesPerPage->setValue(infos[2].toInt());
+                    m_tagTabs[i]->ui->spinColumns->setValue(infos[3].toInt());
+                    m_tagTabs[i]->setTags(infos[0]);
+                }
             }
         }
         return true;
@@ -450,6 +454,8 @@ void mainWindow::updateTabs()
 { saveTabs(savePath("tabs.txt")); }
 void mainWindow::tabClosed(searchTab *tab)
 { m_tabs.removeAll(tab); }
+void mainWindow::tabClosed(int tab)
+{ }
 void mainWindow::currentTabChanged(int tab)
 {
     if (m_loaded)
@@ -495,14 +501,14 @@ void mainWindow::batchAddGroup(const QStringList& values)
     ui->tableBatchGroups->setCellWidget(ui->tableBatchGroups->rowCount()-1, 9, prog);
     m_allow = true;
     saveLinkList(savePath("restore.igl"));
-	updateGroupCount();
+    updateGroupCount();
 }
 void mainWindow::updateGroupCount()
 {
-	int groups = 0;
-	for (int i = 0; i < ui->tableBatchGroups->rowCount(); i++)
-	{ groups += ui->tableBatchGroups->item(i, 5)->text().toInt(); }
-	ui->labelGroups->setText(tr("Groupes (%1/%2)").arg(ui->tableBatchGroups->rowCount()).arg(groups));
+    int groups = 0;
+    for (int i = 0; i < ui->tableBatchGroups->rowCount(); i++)
+    { groups += ui->tableBatchGroups->item(i, 5)->text().toInt(); }
+    ui->labelGroups->setText(tr("Groupes (%1/%2)").arg(ui->tableBatchGroups->rowCount()).arg(groups));
 }
 void mainWindow::batchAddUnique(QMap<QString,QString> values)
 {
@@ -538,7 +544,7 @@ void mainWindow::batchClear()
     ui->tableBatchGroups->setRowCount(0);
     qDeleteAll(m_progressBars);
     m_progressBars.clear();
-	updateGroupCount();
+    updateGroupCount();
 }
 void mainWindow::batchClearSel()
 {
@@ -568,7 +574,7 @@ void mainWindow::batchClearSel()
         ui->tableBatchUniques->removeRow(i-rem);
         rem++;
     }
-	updateGroupCount();
+    updateGroupCount();
 }
 void mainWindow::batchChange(int id)
 {
@@ -594,22 +600,22 @@ void mainWindow::updateBatchGroups(int y, int x)
         else if (r == 6) { r = 8; }
         else if (r == 7) { r = 5; }
 
-		if (r == 3 && ui->tableBatchGroups->item(y, x)->text().toInt() < 1)
-		{
-			error(this, tr("La limite d'images par page doit être supérieure ou égale à 1."));
-			ui->tableBatchGroups->item(y, x)->setText(m_groupBatchs[y][r-1]);
-		}
-		else if (r == 4 && ui->tableBatchGroups->item(y, x)->text().toInt() < 0)
-		{
-			error(this, tr("La limite d'imagessupérieure ou égale à 0."));
-			ui->tableBatchGroups->item(y, x)->setText(m_groupBatchs[y][r-1]);
-		}
-		else
-		{
-			m_groupBatchs[y][r-1] = ui->tableBatchGroups->item(y, x)->text();
-			saveLinkList(savePath("restore.igl"));
-		}
-	}
+        if (r == 3 && ui->tableBatchGroups->item(y, x)->text().toInt() < 1)
+        {
+            error(this, tr("La limite d'images par page doit être supérieure ou égale à 1."));
+            ui->tableBatchGroups->item(y, x)->setText(m_groupBatchs[y][r-1]);
+        }
+        else if (r == 4 && ui->tableBatchGroups->item(y, x)->text().toInt() < 0)
+        {
+            error(this, tr("La limite d'imagessupérieure ou égale à 0."));
+            ui->tableBatchGroups->item(y, x)->setText(m_groupBatchs[y][r-1]);
+        }
+        else
+        {
+            m_groupBatchs[y][r-1] = ui->tableBatchGroups->item(y, x)->text();
+            saveLinkList(savePath("restore.igl"));
+        }
+    }
 }
 void mainWindow::addGroup()
 {
@@ -1125,7 +1131,7 @@ void mainWindow::closeEvent(QCloseEvent *e)
         m_settings->sync();
         QFile::copy(m_settings->fileName(), savePath("settings."+QString(VERSION)+".ini"));
     DONE();
-	m_loaded = false;
+    m_loaded = false;
     e->accept();
     qApp->quit();
 }
@@ -1246,15 +1252,8 @@ void mainWindow::getAll(bool all)
     m_allow = false;
     for (int i = 0; i < ui->tableBatchGroups->rowCount(); i++)
     { ui->tableBatchGroups->item(i, 0)->setIcon(QIcon(":/images/colors/black.png")); }
-    m_allow = true;
-    if (!m_settings->value("Exec/Group/init").toString().isEmpty())
-    {
-        log(tr("Execution de la commande d'initialisation' \"%1\"").arg(m_settings->value("Exec/Group/init").toString()));
-        m_process = new QProcess(this);
-        m_process->start(m_settings->value("Exec/Group/init").toString());
-        if (!m_process->waitForStarted(10000))
-        { log(tr("Erreur lors de la commande d'initialisation : %1.").arg("timed out"), Error); }
-    }
+	m_allow = true;
+	Commands::get()->before();
     selected = ui->tableBatchGroups->selectedItems();
     count = selected.size();
     m_batchDownloading.clear();
@@ -1555,12 +1554,7 @@ void mainWindow::_getAll()
         }
         if (reponse != QMessageBox::Yes)
         {
-            if (!m_settings->value("Exec/Group/init").toString().isEmpty())
-            {
-                m_process->closeWriteChannel();
-                m_process->waitForFinished(1000);
-                m_process->close();
-            }
+			Commands::get()->after();
             m_getAll = false;
             ui->widgetDownloadButtons->setDisabled(false);
             log(tr("Téléchargement groupé terminé"));
@@ -1778,43 +1772,8 @@ void mainWindow::getAllPerformImage(Image* img)
             types["model"] = 5;
             types["photo_set"] = 6;
             for (int i = 0; i < img->tags().count(); i++)
-            {
-                Tag tag = img->tags().at(i);
-                QString original = tag.text().replace(" ", "_");
-                if (!m_settings->value("Exec/tag").toString().isEmpty())
-                {
-                    QString exec = m_settings->value("Exec/tag").toString()
-                    .replace("%tag%", original)
-                    .replace("%type%", tag.type())
-                    .replace("%number%", QString::number(types[tag.type()]));
-                    log(tr("Execution seule de \"%1\"").arg(exec));
-                    QProcess::execute(exec);
-                }
-                if (!m_settings->value("Exec/Group/tag").toString().isEmpty())
-                {
-                    QString exec = m_settings->value("Exec/Group/tag").toString()
-                    .replace("%tag%", original)
-                    .replace("%type%", tag.type())
-                    .replace("%number%", QString::number(types[tag.type()]));
-                    log(tr("Execution groupée de \"%1\"").arg(exec));
-                    m_process->write(exec.toUtf8());
-                }
-            }
-            if (!m_settings->value("Exec/image").toString().isEmpty())
-            {
-                QString exec = img->path(m_settings->value("Exec/image").toString(), "", false);
-                exec.replace("%path%", fp);
-                exec.replace(" \\C ", " /C ");
-                log(tr("Execution seule de \"%1\"").arg(exec));
-                QProcess::execute(exec);
-            }
-            if (!m_settings->value("Exec/Group/image").toString().isEmpty())
-            {
-                QString exec = img->path(m_settings->value("Exec/Group/image").toString(), "", false);
-                exec.replace("%path%", fp);
-                log(tr("Execution groupée de \"%1\"").arg(exec));
-                m_process->write(exec.toUtf8());
-            }
+			{ Commands::get()->tag(img->tags().at(i)); }
+			Commands::get()->image(img, fp);
         }
     }
     else if (reply->error() == QNetworkReply::ContentNotFoundError)
@@ -1996,8 +1955,8 @@ bool mainWindow::loadLinkList(QString filename)
                 m_allow = true;
             }
         }
-		updateGroupCount();
-		return true;
+        updateGroupCount();
+        return true;
     }
     return false;
 }

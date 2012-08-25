@@ -14,6 +14,7 @@
 #include "searchtab.h"
 #include "pooltab.h"
 #include "tagtab.h"
+#include "commands.h"
 
 
 
@@ -110,8 +111,9 @@ class mainWindow : public QMainWindow
 		int addTab(QString tag = "");
 		int addPoolTab(int pool = 0);
         void addTabFavorite(int);
-        void updateTabTitle(searchTab*);
-        void tabClosed(searchTab *);
+		void updateTabTitle(searchTab*);
+		void tabClosed(searchTab *);
+		void tabClosed(int);
         void currentTabChanged(int);
         void closeCurrentTab();
         void loadTag(QString tag);
@@ -135,12 +137,14 @@ class mainWindow : public QMainWindow
         QList<Image*>		m_getAllRemaining, m_getAllDownloading, m_getAllFailed, m_images;
         QList<Page*>		m_getAllPages, m_pages;
         QList<QAffiche*>	m_favoritesCaptions;
-        QList<QBouton*>		m_favoritesImages, m_mergeButtons, m_webPics;
-        QList<searchTab*>	m_tabs;
+		QList<QBouton*>		m_favoritesImages, m_mergeButtons, m_webPics;
+		QList<searchTab*>	m_tabs;
+		QList<int>			m_tabsIds;
         QList<tagTab*>      m_tagTabs;
         QList<poolTab*>     m_poolTabs;
         QList<bool>			m_selectedSources;
         QList<QLabel*>		m_webSites;
+		Commands			*m_commands;
         QMap<QString,double>			m_getAllDownloadingSpeeds;
         QMap<QString,QString>			m_favorites, m_params;
         QMap<QString,QStringList>		m_getAllDetails;
