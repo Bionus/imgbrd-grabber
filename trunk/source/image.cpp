@@ -216,7 +216,7 @@ void Image::parseDetails(QNetworkReply* r)
 	}
 
 	// Image url
-	if (m_url.isEmpty() && m_parentSite.contains("Regex/ImageUrl"))
+	if ((m_url.isEmpty() || m_parentSite.contains("Regex/ForceImageUrl")) && m_parentSite.contains("Regex/ImageUrl"))
 	{
 		QRegExp rx = QRegExp(m_parentSite.value("Regex/ImageUrl"));
 		rx.setMinimal(true);
@@ -555,7 +555,7 @@ QString Image::path(QString fn, QString pth, bool complex)
 		while (((p = rxdate.indexIn(filename, p)) != -1))
 		{ filename.replace(rxdate.cap(0), m_createdAt.toString(rxdate.cap(1))); }
 
-		// We replace everithing
+		// We replace everything
 		for (int i = 0; i < replaces.size(); i++)
 		{
 			QStrPP val = replaces.at(i);
@@ -565,7 +565,7 @@ QString Image::path(QString fn, QString pth, bool complex)
 			{ res.replace("_", " "); }
 
 			// We only cut the name if it is not a folder
-			if (!filename.right(filename.length()-filename.indexOf(val.first)).contains("/"))
+			if (complex && !filename.right(filename.length()-filename.indexOf(val.first)).contains("/"))
 			{ filename.replace(val.first, res.left(259-pth.length()-1-filename.length())); }
 			else
 			{ filename.replace(val.first, res); }
@@ -577,7 +577,7 @@ QString Image::path(QString fn, QString pth, bool complex)
 	}
 
 	// Max filename size option
-	if (filename.length() > settings.value("limit").toInt() && settings.value("limit").toInt() > 0)
+	if (complex && filename.length() > settings.value("limit").toInt() && settings.value("limit").toInt() > 0)
 	{ filename = filename.left(filename.length()-ext.length()-1).left(settings.value("limit").toInt()-ext.length()-1) + filename.right(ext.length()+1); }
 
 	return QDir::toNativeSeparators(filename);

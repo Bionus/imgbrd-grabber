@@ -676,16 +676,7 @@ QString zoomWindow::saveImage(bool fav)
 		else
 		{ ui->buttonSaveNQuit->setText(tr("Fermer")); }
 
-        // Commands: initialization
-        QProcess *p = new QProcess(this);
-        if (!settings.value("Exec/Group/init").toString().isEmpty())
-        {
-            log(tr("Execution de la commande d'initialisation' \"%1\"").arg(settings.value("Exec/Group/init").toString()));
-            p->start(settings.value("Exec/Group/init").toString());
-            if (!p->waitForStarted(10000))
-            { log(tr("<b>Erreur :</b> %1").arg(tr("erreur lors de la commande d'initialisation : %1.").arg("timed out"))); }
-        }
-        // Commands: tags
+		// Commands
         QMap<QString,int> types;
         types["general"] = 0;
         types["artist"] = 1;
@@ -694,53 +685,12 @@ QString zoomWindow::saveImage(bool fav)
         types["character"] = 4;
         types["model"] = 5;
         types["photo_set"] = 6;
-        for (int i = 0; i < m_image->tags().count(); i++)
-        {
-            Tag tag = m_image->tags().at(i);
-            QString original = tag.text().replace(" ", "_");
-            if (!settings.value("Exec/tag").toString().isEmpty())
-            {
-                QString exec = settings.value("Exec/tag").toString()
-                .replace("%tag%", original)
-                .replace("%type%", tag.type())
-                .replace("%number%", QString::number(types[tag.type()]));
-                log(tr("Execution seule de \"%1\"").arg(exec));
-                QProcess::execute(exec);
-            }
-            if (!settings.value("Exec/Group/tag").toString().isEmpty())
-            {
-                QString exec = settings.value("Exec/Group/tag").toString()
-                .replace("%tag%", original)
-                .replace("%type%", tag.type())
-                .replace("%number%", QString::number(types[tag.type()]));
-                log(tr("Execution groupée de \"%1\"").arg(exec));
-                p->write(exec.toAscii());
-            }
-        }
-        // Commands: image
-        if (!settings.value("Exec/image").toString().isEmpty())
-        {
-            QString exec = m_image->path(settings.value("Exec/image").toString(), "", false);
-            exec.replace("%path%", fp);
-            exec.replace(" \\C ", " /C ");
-            log(tr("Execution seule de \"%1\"").arg(exec));
-            QProcess::execute(exec);
-        }
-        if (!settings.value("Exec/Group/image").toString().isEmpty())
-        {
-            QString exec = m_image->path(settings.value("Exec/Group/image").toString(), "", false);
-            exec.replace("%path%", fp);
-            log(tr("Execution groupée de \"%1\"").arg(exec));
-            p->write(exec.toAscii());
-        }
-
-        if (!settings.value("Exec/Group/init").toString().isEmpty())
-        {
-            p->closeWriteChannel();
-            p->waitForFinished(1000);
-            p->close();
-        }
-    }
+		Commands::get()->before();
+		for (int i = 0; i < m_image->tags().count(); i++)
+		{ Commands::get()->tag(m_image->tags().at(i)); }
+		Commands::get()->image(m_image, fp);
+		Commands::get()->after();
+	}
     else
     {
         if (fav)

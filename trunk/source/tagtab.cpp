@@ -10,7 +10,7 @@ extern mainWindow *_mainwindow;
 
 
 
-tagTab::tagTab(int id, QMap<QString,QMap<QString,QString> > *sites, QMap<QString,QString> *favorites, QDateTime *serverDate, mainWindow *parent) : searchTab(parent), ui(new Ui::tagTab), m_id(id), m_parent(parent), m_serverDate(serverDate), m_favorites(favorites), m_sites(sites), m_pagemax(-1), m_lastTags(QString()), m_sized(false), m_from_history(false), m_stop(true), m_history_cursor(0), m_history(QList<QMap<QString,QString> >()), m_modifiers(QStringList())
+tagTab::tagTab(int id, QMap<QString,QMap<QString,QString> > *sites, QMap<QString,QString> *favorites, QDateTime *serverDate, mainWindow *parent) : searchTab(id, parent), ui(new Ui::tagTab), m_id(id), m_parent(parent), m_serverDate(serverDate), m_favorites(favorites), m_sites(sites), m_pagemax(-1), m_lastTags(QString()), m_sized(false), m_from_history(false), m_stop(true), m_history_cursor(0), m_history(QList<QMap<QString,QString> >()), m_modifiers(QStringList())
 {
     ui->setupUi(this);
     ui->widgetMeant->hide();
@@ -83,7 +83,7 @@ tagTab::tagTab(int id, QMap<QString,QMap<QString,QString> > *sites, QMap<QString
 
 tagTab::~tagTab()
 {
-    close();
+	close();
     delete ui;
 }
 
