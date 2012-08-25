@@ -88,6 +88,31 @@ Now, every time you save an image, a copy will be created in your local booru!
 
 
 
-= Thumbnail issue =
+= Troobleshooting =
+
+== Thumbnails ==
 
 If you test, you'll see that it doesn't works totally. In fact, no thumbnail is generated when doing this. Just visit [http://localhost/gelbooru/thumbs_fix.php http://localhost/gelbooru/thumbs_fix.php] to fix this. Note that you must be logged in as administrator in gelbooru to do this.
+
+== Searches with short tags ==
+
+By default, the minimal size for tags is 4. You may want to change this behavior to allow the search of shorter tags (some popular tags are only one character long, such as "v").
+To do this, open your "my.ini" file by clicking on the Wamp icon in the system tray, then "MySQL > my.ini".
+Search for "[mysqld]" in the file, and just under, add "ft_min_word_len=1" on a new line (1 is to allow one character long tags, you can set it to whatever you want, by default it is 4). Same thing for "[myisamchk]".
+The end of your file should now look like this (there can be minor differences):
+{{{
+[myisamchk]
+ft_min_word_len=1
+key_buffer = 20M
+sort_buffer_size = 20M
+read_buffer = 2M
+write_buffer = 2M
+
+[mysqlhotcopy]
+interactive-timeout
+
+[mysqld]
+ft_min_word_len=1
+port=3306
+}}}
+Then go to phpMyAdmin, in the "gelbooru" database, check all the tables and choose "Repair tables" in the list.
