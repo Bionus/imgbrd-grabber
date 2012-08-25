@@ -24,17 +24,18 @@ First, we're going to install WAMP, which contains everithing required to have a
 = Installing Gelbooru =
 
  # Download the latest version of Gelbooru here (0.1.10 as I am writing this): [http://gelbooru.com/index.php?page=forum&s=view&id=99]
- # Extract it to the www directory in your WampServer installation folder. You can either extract it to a subfolder or not. If you extract it to a subfolder, the site’s url will be [http://localhost/subfolder/], and if you don’t it will only be [http://localhost/]. It’s your choice, but if you don’t create a subfolder, you must remember to remove all the files in your www folder first. For the end of this tutorial, I’ll consider that you’re *not* using a subfolder.
- # If you are using linux, give the images and thumbnails folders writable permissions.
+ # Extract it to the www directory in your WampServer installation folder. You can either extract it to a subfolder or not. If you extract it to a subfolder, the site’s url will be [http://localhost/subfolder/], and if you don’t it will only be [http://localhost/]. It’s your choice, but if you don’t create a subfolder, you must remember to remove all the files in your www folder first. For the end of this tutorial, I’ll consider that you are using the subfolder "gelbooru".
+ # Create a folder named "1" in the "images" folder.
+ # If you are using linux, give the "images", "images/1" and "thumbnails" folders writable permissions.
  # Then, go to [http://localhost/phpmyadmin/]. If you have to login, use "root" as username and "" as password (no password).
- # Then, go to the databases tab and create a database named “gelbooru” with an “utf8_unicode_ci” encoding.
+ # Then, go to the databases tab and create a database named "gelbooru" with an "utf8_unicode_ci" encoding.
    Once done, Go to the "SQL" tab, and put this query in the text area:
 {{{
 SET GLOBAL log_bin_trust_function_creators = 1;
 }}}
    Click "Go".
- # Then, open the file “config.php” with a plain text editor (I don’t recommend using a WYSIWYG editor such as word).
-   <table cellpadding="3"><tr><td border="2">*Replace the line*</td><td>*By*</td></tr><tr><td>`$mysql_pass = "test";`</td><td>`$mysql_pass = "";`</td></tr><tr><td>`$mysql_db = "asdf";`</td><td>`$mysql_db = "gelbooru";`</td></tr><tr><td>`$site_url = "http://127.0.0.1/branches/0.1.10/0.1.10/";`</td><td>`$site_url = "http://localhost";`</td></tr><tr><td>`$site_url3 = "Default Booru";`</td><td>`$site_url2 = $site_url3 = "Localbooru";`</td></tr></table>
+ # Then, open the file "config.php" with a plain text editor (I don’t recommend using a WYSIWYG editor such as word).
+   <table cellpadding="3"><tr><td border="2">*Replace the line*</td><td>*By*</td></tr><tr><td>`$mysql_pass = "test";`</td><td>`$mysql_pass = "";`</td></tr><tr><td>`$mysql_db = "asdf";`</td><td>`$mysql_db = "gelbooru";`</td></tr><tr><td>`$site_url = "http://127.0.0.1/branches/0.1.10/0.1.10/";`</td><td>`$site_url = "http://localhost/gelbooru";`</td></tr><tr><td>`$site_url3 = "Default Booru";`</td><td>`$site_url2 = $site_url3 = "Localbooru";`</td></tr></table>
    (you can change "Localbooru" to anything: it will be the name of the booru)
  # And finally add, just before the "?>" at the end of the file:
 {{{
@@ -49,8 +50,8 @@ $new_my_tags = '';
 error_reporting(0);
 }}}
   You can of course change these values to whatever you want.
- # Finally, go to [http://localhost/install/] and register your admin account.
- # If you don’t see any errors the installation went well! As the script suggests, you can now delete the c:\wamp\www\install folder. You can now access your booru by going here: [http://localhost/]
+ # Finally, go to [http://localhost/gelbooru/install/] and register your admin account.
+ # If you don’t see any errors the installation went well! As the script suggests, you can now delete the c:\wamp\www\gelbooru\install folder. You can now access your booru by going here: [http://localhost/gelbooru/]
  # If you still run into errors after adding images, click on the WampServer icon on the system tray, go to "PHP > PHP settings" and uncheck "display errors".
 
 
