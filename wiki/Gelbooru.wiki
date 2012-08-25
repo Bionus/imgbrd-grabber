@@ -50,8 +50,14 @@ $new_my_tags = '';
 error_reporting(0);
 }}}
   You can of course change these values to whatever you want.
- # Finally, go to [http://localhost/gelbooru/install/] and register your admin account.
- # If you don’t see any errors the installation went well! As the script suggests, you can now delete the c:\wamp\www\gelbooru\install folder. You can now access your booru by going here: [http://localhost/gelbooru/]
+ # Go to [http://localhost/gelbooru/install/] and register your admin account.
+ # If you don’t see any errors the installation went well! As the script suggests, you can now delete the c:\wamp\www\gelbooru\install folder.
+ # Finally, go to phpMyAdmin, click on the "gelbooru" database on the left menu, then click on the "SQL" tab, and put this query in the text area:
+{{{
+ALTER TABLE `tag_index` ADD PRIMARY KEY (`tag`)
+}}}
+   Click "Go".
+ # You can now access your booru by going here: [http://localhost/gelbooru/]
  # If you still run into errors after adding images, click on the WampServer icon on the system tray, go to "PHP > PHP settings" and uncheck "display errors".
 
 
