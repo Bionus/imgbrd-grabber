@@ -254,7 +254,7 @@
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,1,0,1,1,1,0,0">
+    <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,1,0,1,1,1,1,0,0">
      <item>
       <widget class="QPushButton" name="buttonFirstPage">
        <property name="enabled">
@@ -308,6 +308,13 @@
       <widget class="QLabel" name="labelMergeResults">
        <property name="text">
         <string/>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonGetSel">
+       <property name="text">
+        <string>Prendre séléctionnés</string>
        </property>
       </widget>
      </item>
@@ -541,6 +548,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>buttonGetSel</sender>
+   <signal>clicked()</signal>
+   <receiver>tagTab</receiver>
+   <slot>getSel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>505</x>
+     <y>508</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>515</x>
+     <y>528</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>load()</slot>
@@ -556,5 +579,6 @@
   <slot>historyBack()</slot>
   <slot>historyNext()</slot>
   <slot>getAll()</slot>
+  <slot>getSel()</slot>
  </slots>
 </ui>

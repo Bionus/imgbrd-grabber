@@ -22,18 +22,21 @@ class QBouton : public QPushButton
 		
 	signals:
 		void appui(QVariant);
-		void rightClick(QVariant);
-		void middleClick(QVariant);
 		void appui(int);
-		void rightClick(int);
-		void middleClick(int);
 		void appui(QString);
+		void rightClick(QVariant);
+		void rightClick(int);
 		void rightClick(QString);
+		void middleClick(QVariant);
+		void middleClick(int);
 		void middleClick(QString);
+		void toggled(QVariant, bool);
+		void toggled(int, bool);
+		void toggled(QString, bool);
 
 	private:
 		QVariant	_id;
-		bool		_resizeInsteadOfCropping, _np;
+		bool		_resizeInsteadOfCropping, _np, _toggled;
 		QSize		_originalSize;
 		QColor		_penColor;
 		int			_border;

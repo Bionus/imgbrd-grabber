@@ -51,6 +51,7 @@ class batchWindow : public QDialog
 		void copyToClipboard();
 		void cancel();
 		void drawSpeed();
+		void imageUrlChanged(QString, QString);
 
 	signals:
 		void closed();

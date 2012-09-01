@@ -576,6 +576,8 @@ void tagTab::finishedLoadingPreview(Image *img)
     { color = QColor("#000000"); }
     QBouton *l = new QBouton(position, settings.value("resizeInsteadOfCropping", true).toBool(), settings.value("borders", 3).toInt(), color, this);
         l->setIcon(img->previewImage());
+		l->setCheckable(true);
+		l->setChecked(m_selectedImages.contains(img->url()));
         QString t;
         for (int i = 0; i < img->tags().count(); i++)
         { t += " "+img->tags()[i].stylished(m_favorites->keys()); }
@@ -591,8 +593,9 @@ void tagTab::finishedLoadingPreview(Image *img)
         );
         l->setIconSize(img->previewImage().size());
         l->setFlat(true);
-        connect(l, SIGNAL(appui(int)), this, SLOT(webZoom(int)));
-        connect(l, SIGNAL(rightClick(int)), _mainwindow, SLOT(batchChange(int)));
+		connect(l, SIGNAL(appui(int)), this, SLOT(webZoom(int)));
+		connect(l, SIGNAL(toggled(int,bool)), this, SLOT(toggleImage(int,bool)));
+		connect(l, SIGNAL(rightClick(int)), _mainwindow, SLOT(batchChange(int)));
     int perpage = img->page()->site().value("Urls/Selected/Tags").contains("{limit}") ? ui->spinImagesPerPage->value() : img->page()->images().size();
     perpage = perpage > 0 ? perpage : 20;
 	int pp = perpage;
@@ -605,24 +608,32 @@ void tagTab::finishedLoadingPreview(Image *img)
 
 void tagTab::webZoom(int id)
 {
-    QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
-    Image *image = m_images.at(id);
+	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
+	Image *image = m_images.at(id);
 
-    if (!settings.value("blacklistedtags").toString().isEmpty())
-    {
-        QStringList blacklistedtags(settings.value("blacklistedtags").toString().split(" "));
-        QStringList detected = image->blacklisted(blacklistedtags);
-        if (!detected.isEmpty())
-        {
-            int reply = QMessageBox::question(m_parent, tr("List noire"), tr("%n tag(s) figurant dans la liste noire détécté(s) sur cette image : %1. Voulez-vous l'afficher tout de même ?", "", detected.size()).arg(detected.join(", ")), QMessageBox::Yes | QMessageBox::No);
-            if (reply == QMessageBox::No)
-            { return; }
-        }
-    }
+	if (!settings.value("blacklistedtags").toString().isEmpty())
+	{
+		QStringList blacklistedtags(settings.value("blacklistedtags").toString().split(" "));
+		QStringList detected = image->blacklisted(blacklistedtags);
+		if (!detected.isEmpty())
+		{
+			int reply = QMessageBox::question(m_parent, tr("List noire"), tr("%n tag(s) figurant dans la liste noire détécté(s) sur cette image : %1. Voulez-vous l'afficher tout de même ?", "", detected.size()).arg(detected.join(", ")), QMessageBox::Yes | QMessageBox::No);
+			if (reply == QMessageBox::No)
+			{ return; }
+		}
+	}
 
-    zoomWindow *zoom = new zoomWindow(image, image->page()->site(), m_sites, this);
-    zoom->show();
-    connect(zoom, SIGNAL(linkClicked(QString)), this, SLOT(setTags(QString)));
+	zoomWindow *zoom = new zoomWindow(image, image->page()->site(), m_sites, this);
+	zoom->show();
+	connect(zoom, SIGNAL(linkClicked(QString)), this, SLOT(setTags(QString)));
+}
+
+void tagTab::toggleImage(int id, bool toggle)
+{
+	if (toggle)
+	{ selectImage(m_images.at(id)); }
+	else
+	{ unselectImage(m_images.at(id)); }
 }
 
 void tagTab::setTags(QString tags)
@@ -650,18 +661,45 @@ void tagTab::getPage()
 }
 void tagTab::getAll()
 {
-    QStringList actuals, keys = m_sites->keys();
-    for (int i = 0; i < m_checkboxes.count(); i++)
-    {
-        if (m_checkboxes.at(i)->isChecked())
-        { actuals.append(keys.at(i)); }
-    }
-    QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
-    for (int i = 0; i < actuals.count(); i++)
-    {
-        int limit = m_sites->value(actuals.at(i)).contains("Urls/1/Limit") ? m_sites->value(actuals.at(i)).value("Urls/1/Limit").toInt() : 0;
-        emit batchAddGroup(QStringList() << m_search->toPlainText()+" "+settings.value("add").toString().toLower().trimmed() << "1" << QString::number(qMin((limit > 0 ? limit : 1000), qMax(m_pages.value(actuals.at(i))->images().count(), m_pages.value(actuals.at(i))->imagesCount()))) << QString::number(qMax(m_pages.value(actuals.at(i))->images().count(), m_pages.value(actuals.at(i))->imagesCount())) << settings.value("downloadblacklist").toString() << actuals.at(i) << settings.value("Save/filename").toString() << settings.value("Save/path").toString() << "");
-    }
+	QStringList actuals, keys = m_sites->keys();
+	for (int i = 0; i < m_checkboxes.count(); i++)
+	{
+		if (m_checkboxes.at(i)->isChecked())
+		{ actuals.append(keys.at(i)); }
+	}
+	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
+	for (int i = 0; i < actuals.count(); i++)
+	{
+		int limit = m_sites->value(actuals.at(i)).contains("Urls/1/Limit") ? m_sites->value(actuals.at(i)).value("Urls/1/Limit").toInt() : 0;
+		emit batchAddGroup(QStringList() << m_search->toPlainText()+" "+settings.value("add").toString().toLower().trimmed() << "1" << QString::number(qMin((limit > 0 ? limit : 1000), qMax(m_pages.value(actuals.at(i))->images().count(), m_pages.value(actuals.at(i))->imagesCount()))) << QString::number(qMax(m_pages.value(actuals.at(i))->images().count(), m_pages.value(actuals.at(i))->imagesCount())) << settings.value("downloadblacklist").toString() << actuals.at(i) << settings.value("Save/filename").toString() << settings.value("Save/path").toString() << "");
+	}
+}
+void tagTab::getSel()
+{
+	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
+	foreach (Image *img, m_selectedImagesPtrs)
+	{
+		QStringList tags;
+		foreach (Tag tag, img->tags())
+		{ tags.append(tag.text()); }
+
+		QMap<QString,QString> values;
+		values.insert("id", QString::number(img->id()));
+		values.insert("md5", img->md5());
+		values.insert("rating", img->rating());
+		values.insert("tags", tags.join(" "));
+		values.insert("file_url", img->fileUrl().toString());
+		values.insert("site", img->site());
+		values.insert("filename", settings.value("Save/filename").toString());
+		values.insert("folder", settings.value("Save/path").toString());
+
+		values.insert("page_url", m_sites->value(img->site())["Urls/Html/Post"]);
+		QString t = m_sites->value(img->site()).contains("DefaultTag") ? m_sites->value(img->site())["DefaultTag"] : "";
+		values["page_url"].replace("{tags}", t);
+		values["page_url"].replace("{id}", values["id"]);
+
+		emit batchAddUnique(values);
+	}
 }
 
 void tagTab::firstPage()

@@ -54,6 +54,7 @@ class poolTab : public searchTab
         // Batch
         void getPage();
         void getAll();
+		void getSel();
         // Tag list
         void linkHovered(QString);
         void linkClicked(QString);
@@ -74,7 +75,8 @@ class poolTab : public searchTab
 
     signals:
         void batchAddGroup(QStringList);
-        void titleChanged(poolTab*);
+		void batchAddUnique(QMap<QString,QString>);
+		void titleChanged(poolTab*);
         void changed(poolTab*);
         void closed(poolTab*);
 

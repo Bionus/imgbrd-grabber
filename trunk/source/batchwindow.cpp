@@ -165,6 +165,14 @@ void batchWindow::loadingImage(QString url)
 		{ ui->tableWidget->item(i, 0)->setIcon(QIcon(":/images/colors/blue.png")); }
 	}
 }
+void batchWindow::imageUrlChanged(QString before, QString after)
+{
+	for (int i = 0; i < m_items; i++)
+	{
+		if (ui->tableWidget->item(i, 2)->text() == before)
+		{ ui->tableWidget->item(i, 2)->setText(after); }
+	}
+}
 void batchWindow::statusImage(QString url, int percent)
 {
 	for (int i = 0; i < m_items; i++)
@@ -256,7 +264,6 @@ void batchWindow::drawSpeed()
 	tRemaining = tRemaining.addMSecs(remaining);
 	QString fElapsed = elapsed > 3600000 ? tr("h 'h' m 'm' s 's'") : (elapsed > 60000 ? tr("m 'm' s 's'") : tr("s 's'"));
 	QString fRemaining = remaining > 3600000 ? tr("h 'h' m 'm' s 's'") : (remaining > 60000 ? tr("m 'm' s 's'") : tr("s 's'"));
-	qDebug() << elapsed / 1000 << remaining / 1000;
 
 	ui->labelSpeed->setText(QLocale::system().toString((float)speed, 'f', speed < 10 ? 2 : 0)+" "+unit);
 	ui->labelSpeed->setToolTip(tr("<b>Vitesse moyenne :</b> %1 %2<br/><br/><b>Temps écoulé :</b> %3<br/><b>Temps restant :</b> %4").arg(QLocale::system().toString((float)speedMean, 'f', speedMean < 10 ? 2 : 0), unitMean, tElapsed.toString(fElapsed), tRemaining.toString(fRemaining)));

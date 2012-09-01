@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Grabber"
-#define MyAppVersion "3.2.0a"
+#define MyAppVersion "3.2.0a2"
 #define MyAppPublisher "Bionus"
 #define MyAppURL "http://code.google.com/p/imgbrd-grabber/"
 #define MyAppExeName "Grabber.exe"
@@ -80,7 +80,10 @@ Source: "D:\Programmation\C++\Qt\Grabber\release\QtXml4.dll"; DestDir: "{app}"; 
 Source: "D:\Programmation\C++\Qt\Grabber\release\QtScript4.dll"; DestDir: "{app}"; Flags: ignoreversion           
 Source: "D:\Programmation\C++\Qt\Grabber\release\qscintilla2.dll"; DestDir: "{app}"; Flags: ignoreversion         
 Source: "D:\Programmation\C++\Qt\Grabber\release\libeay32.dll"; DestDir: "{app}"; Flags: ignoreversion         
-Source: "D:\Programmation\C++\Qt\Grabber\release\ssleay32.dll"; DestDir: "{app}"; Flags: ignoreversion               
+Source: "D:\Programmation\C++\Qt\Grabber\release\ssleay32.dll"; DestDir: "{app}"; Flags: ignoreversion       
+Source: "D:\Programmation\C++\Qt\Grabber\release\libmysql.dll"; DestDir: "{app}"; Flags: ignoreversion    
+Source: "D:\Programmation\C++\Qt\Grabber\release\QtSql4.dll"; DestDir: "{app}"; Flags: ignoreversion       
+Source: "D:\Programmation\C++\Qt\Grabber\release\sqldrivers\qsqlmysql4.dll"; DestDir: "{app}\sqldrivers"; Flags: ignoreversion               
 Source: "D:\Programmation\C++\Qt\Grabber\release\imageformats\qgif4.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\imageformats\qico4.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\imageformats\qjpeg4.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion

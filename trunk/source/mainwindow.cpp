@@ -347,8 +347,9 @@ mainWindow::~mainWindow()
 int mainWindow::addTab(QString tag)
 {
     tagTab *w = new tagTab(m_tabs.size(), &m_sites, &m_favorites, &m_serverDate, this);
-    connect(w, SIGNAL(batchAddGroup(QStringList)), this, SLOT(batchAddGroup(QStringList)));
-    connect(w, SIGNAL(titleChanged(searchTab*)), this, SLOT(updateTabTitle(searchTab*)));
+	connect(w, SIGNAL(batchAddGroup(QStringList)), this, SLOT(batchAddGroup(QStringList)));
+	connect(w, SIGNAL(batchAddUnique(QMap<QString,QString>)), this, SLOT(batchAddUnique(QMap<QString,QString>)));
+	connect(w, SIGNAL(titleChanged(searchTab*)), this, SLOT(updateTabTitle(searchTab*)));
     connect(w, SIGNAL(changed(searchTab*)), this, SLOT(updateTabs()));
     connect(w, SIGNAL(closed(searchTab*)), this, SLOT(tabClosed(searchTab*)));
     int index = ui->tabWidget->insertTab(ui->tabWidget->currentIndex()+(!m_tabs.isEmpty()), w, tr("Nouvel onglet"));
@@ -369,6 +370,7 @@ int mainWindow::addPoolTab(int pool)
 {
     poolTab *w = new poolTab(m_tabs.size(), &m_sites, &m_favorites, &m_serverDate, this);
     connect(w, SIGNAL(batchAddGroup(QStringList)), this, SLOT(batchAddGroup(QStringList)));
+	connect(w, SIGNAL(batchAddUnique(QMap<QString,QString>)), this, SLOT(batchAddUnique(QMap<QString,QString>)));
     connect(w, SIGNAL(titleChanged(searchTab*)), this, SLOT(updateTabTitle(searchTab*)));
     connect(w, SIGNAL(changed(searchTab*)), this, SLOT(updateTabs()));
     connect(w, SIGNAL(closed(searchTab*)), this, SLOT(tabClosed(searchTab*)));
@@ -523,7 +525,7 @@ void mainWindow::batchAddUnique(QMap<QString,QString> values)
         item = new QTableWidgetItem(v);
         ui->tableBatchUniques->setItem(ui->tableBatchUniques->rowCount()-1, t, item);
     }
-    saveLinkList(savePath("restore.igl"));
+	saveLinkList(savePath("restore.igl"));
 }
 void mainWindow::saveFolder()
 {
@@ -1369,8 +1371,9 @@ void mainWindow::getAllImages()
                 n = r + 1;
                 break;
             }
-        }
-        m_progressdialog->addImage(m_getAllRemaining.at(i)->url(), n, m_getAllRemaining.at(i)->fileSize());
+		}
+		m_progressdialog->addImage(m_getAllRemaining.at(i)->url(), n, m_getAllRemaining.at(i)->fileSize());
+		connect(m_getAllRemaining[i], SIGNAL(urlChanged(QString,QString)), m_progressdialog, SLOT(imageUrlChanged(QString,QString)));
     }
     m_progressdialog->setMaximum(count);
     m_progressdialog->setImagesCount(m_getAllRemaining.count());
@@ -1382,7 +1385,7 @@ void mainWindow::getAllImages()
     {
         for (int i = 0; i < forbidden.count(); i++)
         {
-            if (m_groupBatchs[f][6].startsWith("javascript:") || m_groupBatchs[f][6].contains("%"+forbidden.at(i)+"%"))
+			if (m_groupBatchs[f][6].startsWith("javascript:") || m_groupBatchs[f][6].contains("%"+forbidden.at(i)+"%") || (m_groupBatchs[f][6].contains("%filename%") && m_sites[m_groupBatchs[f][5]].contains("Regex/ForceImageUrl")))
             { m_must_get_tags = true; }
         }
     }
@@ -1853,8 +1856,8 @@ bool mainWindow::saveLinkList(QString filename)
     QByteArray links = "[IGL 2]\r\n";
     for (int i = 0; i < m_groupBatchs.size(); i++)
     {
-        links.append(m_groupBatchs[i].join(QString((char)29)));
-        links.append(QString::number(m_progressBars[i]->value())+"/"+QString::number(m_progressBars[i]->maximum()));
+		links.append(m_groupBatchs[i].join(QString((char)29)));
+		links.append(QString((char)29)+QString::number(m_progressBars[i]->value())+"/"+QString::number(m_progressBars[i]->maximum()));
         links.append((char)28);
     }
     QStringList vals = QStringList() << "id" << "md5" << "rating" << "tags" << "file_url" << "site" << "filename" << "folder";
@@ -1919,7 +1922,7 @@ bool mainWindow::loadLinkList(QString filename)
             else
             { infos = link.split((char)29); }
             if (infos.size() == 8)
-            {
+			{
                 QStringList vals = QStringList() << "id" << "md5" << "rating" << "tags" << "file_url" << "site" << "filename" << "folder";
                 QMap<QString,QString> values;
                 for (int i = 0; i < infos.size(); i++)
@@ -1927,7 +1930,7 @@ bool mainWindow::loadLinkList(QString filename)
                 batchAddUnique(values);
             }
             else
-            {
+			{
                 ui->tableBatchGroups->setRowCount(ui->tableBatchGroups->rowCount()+1);
                 QString last = infos.takeLast();
                 int max = last.right(last.indexOf("/")+1).toInt(), val = last.left(last.indexOf("/")).toInt();
@@ -1992,7 +1995,8 @@ void mainWindow::on_buttonInitSettings_clicked()
 {
     ui->lineFolder->setText(m_settings->value("Save/path_real").toString());
     ui->lineFilename->setText(m_settings->value("Save/filename_real").toString());
-    saveSettings();
+	Commands::get()->init(m_settings);
+	saveSettings();
 }
 void mainWindow::saveSettings()
 {
