@@ -221,12 +221,15 @@ void Image::parseDetails(QNetworkReply* r)
 		QRegExp rx = QRegExp(m_parentSite.value("Regex/ImageUrl"));
 		rx.setMinimal(true);
 		int pos = 0;
+		QString before = m_url;
 		while ((pos = rx.indexIn(source, pos)) != -1)
 		{
 			pos += rx.matchedLength();
 			m_url = rx.cap(1);
 			m_fileUrl = rx.cap(1);
 		}
+		if (before != m_url)
+		{ emit urlChanged(before, m_url); }
 	}
 
 	emit finishedLoadingTags(this);
@@ -560,7 +563,8 @@ QString Image::path(QString fn, QString pth, bool complex)
 		{
 			QStrPP val = replaces.at(i);
 			QString res = val.second.first.isEmpty() ? val.second.second : val.second.first;
-			res = res.replace("\\", "_").replace("%", "_").replace("/", "_").replace(":", "_").replace("|", "_").replace("*", "_").replace("?", "_").replace("\"", "_").replace("<", "_").replace(">", "_").replace("__", "_").replace("__", "_").replace("__", "_").trimmed();
+			if (val.first != "%allo%")
+			{ res = res.replace("\\", "_").replace("%", "_").replace("/", "_").replace(":", "_").replace("|", "_").replace("*", "_").replace("?", "_").replace("\"", "_").replace("<", "_").replace(">", "_").replace("__", "_").replace("__", "_").replace("__", "_").trimmed(); }
 			if (!settings.value("replaceblanks", false).toBool())
 			{ res.replace("_", " "); }
 

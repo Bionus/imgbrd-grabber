@@ -55,7 +55,8 @@ class tagTab : public searchTab
         // Batch
         void getPage();
         void getAll();
-        // Tag list
+		void getSel();
+		// Tag list
         void linkHovered(QString);
         void linkClicked(QString);
         void contextMenu();
@@ -72,10 +73,12 @@ class tagTab : public searchTab
         void optionsChanged();
         void closeEvent(QCloseEvent*);
         void on_buttonSearch_clicked();
+		void toggleImage(int, bool);
 
     signals:
-        void batchAddGroup(QStringList);
-        void titleChanged(tagTab*);
+		void batchAddGroup(QStringList);
+		void batchAddUnique(QMap<QString,QString>);
+		void titleChanged(tagTab*);
         void changed(tagTab*);
         void closed(tagTab*);
 

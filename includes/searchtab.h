@@ -2,6 +2,8 @@
 #define SEARCHTAB_H
 
 #include <QWidget>
+#include <QList>
+#include "image.h"
 
 
 
@@ -18,8 +20,12 @@ class searchTab : public QWidget
         virtual QString wiki() = 0;
         virtual void optionsChanged() = 0;
         virtual void updateCheckboxes() = 0;
-        virtual void setTags(QString) = 0;
-        int id();
+		virtual void setTags(QString) = 0;
+		void selectImage(Image*);
+		void unselectImage(Image*);
+		void toggleImage(Image*);
+		int id();
+		QStringList selectedImages();
 
     signals:
         void titleChanged(searchTab*);
@@ -27,8 +33,10 @@ class searchTab : public QWidget
         void closed(searchTab*);
         void deleted(int);
 
-    private:
+	protected:
         int m_id;
+		QStringList m_selectedImages;
+		QList<Image*> m_selectedImagesPtrs;
 };
 
 #endif // SEARCHTAB_H

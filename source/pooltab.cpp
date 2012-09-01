@@ -619,6 +619,33 @@ void poolTab::getAll()
     int limit = m_sites->value(ui->comboSites->currentText()).contains("Urls/1/Limit") ? m_sites->value(ui->comboSites->currentText()).value("Urls/1/Limit").toInt() : 0;
     emit batchAddGroup(QStringList() << "pool:"+QString::number(ui->spinPool->value())+" "+m_search->toPlainText()+" "+settings.value("add").toString().toLower().trimmed() << "1" << QString::number(qMin((limit > 0 ? limit : 1000), qMax(m_pages.value(ui->comboSites->currentText())->images().count(), m_pages.value(ui->comboSites->currentText())->imagesCount()))) << QString::number(qMax(m_pages.value(ui->comboSites->currentText())->images().count(), m_pages.value(ui->comboSites->currentText())->imagesCount())) << settings.value("downloadblacklist").toString() << ui->comboSites->currentText() << settings.value("Save/filename").toString() << settings.value("Save/path").toString() << "");
 }
+void poolTab::getSel()
+{
+	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
+	foreach (Image *img, m_selectedImagesPtrs)
+	{
+		QStringList tags;
+		foreach (Tag tag, img->tags())
+		{ tags.append(tag.text()); }
+
+		QMap<QString,QString> values;
+		values.insert("id", QString::number(img->id()));
+		values.insert("md5", img->md5());
+		values.insert("rating", img->rating());
+		values.insert("tags", tags.join(" "));
+		values.insert("file_url", img->fileUrl().toString());
+		values.insert("site", img->site());
+		values.insert("filename", settings.value("Save/filename").toString());
+		values.insert("folder", settings.value("Save/path").toString());
+
+		values.insert("page_url", m_sites->value(img->site())["Urls/Html/Post"]);
+		QString t = m_sites->value(img->site()).contains("DefaultTag") ? m_sites->value(img->site())["DefaultTag"] : "";
+		values["page_url"].replace("{tags}", t);
+		values["page_url"].replace("{id}", values["id"]);
+
+		emit batchAddUnique(values);
+	}
+}
 
 void poolTab::firstPage()
 {

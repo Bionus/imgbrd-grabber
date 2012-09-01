@@ -81,6 +81,7 @@ class Image : public QObject
 		void finishedLoadingTags(Image*);
 		void finishedImage(Image*);
 		void downloadProgressImage(Image*, qint64, qint64);
+		void urlChanged(QString, QString);
 
 	private:
 		Page			*m_parent;

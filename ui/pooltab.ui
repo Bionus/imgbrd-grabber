@@ -267,7 +267,7 @@
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,1,1,0,0">
+    <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,1,1,1,0,0">
      <item>
       <widget class="QPushButton" name="buttonFirstPage">
        <property name="enabled">
@@ -297,6 +297,13 @@
        </property>
        <property name="text">
         <string>&lt;</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_2">
+       <property name="text">
+        <string>Prendre séléctionnés</string>
        </property>
       </widget>
      </item>
@@ -425,8 +432,8 @@
    <slot>getPage()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>580</x>
-     <y>515</y>
+     <x>502</x>
+     <y>520</y>
     </hint>
     <hint type="destinationlabel">
      <x>606</x>
@@ -514,6 +521,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pushButton_2</sender>
+   <signal>clicked()</signal>
+   <receiver>poolTab</receiver>
+   <slot>getSel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>207</x>
+     <y>506</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>227</x>
+     <y>526</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>load()</slot>
@@ -529,5 +552,6 @@
   <slot>historyBack()</slot>
   <slot>historyNext()</slot>
   <slot>getAll()</slot>
+  <slot>getSel()</slot>
  </slots>
 </ui>
