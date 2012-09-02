@@ -427,7 +427,7 @@ QMap<QString,QString> domToMap(QDomElement dom)
  * Append text in the log in a new line.
  * @param	l	The message to append.
  */
-QFile f;
+QFile f, fCommandsLog, fCommandsSqlLog;
 void log(QString l, Log type)
 {
 	if (!f.isOpen())
@@ -448,6 +448,28 @@ void log(QString l, Log type)
 	//_mainwindow->logShow();
 
 	qDebug() << l;
+}
+void logCommand(QString l)
+{
+	if (!fCommandsLog.isOpen())
+	{
+		fCommandsLog.setFileName(savePath("commands.log"));
+		fCommandsLog.open(QFile::Append | QFile::Text | QFile::Truncate);
+	}
+
+	fCommandsLog.write(QString(l+"\r\n").toUtf8());
+	fCommandsLog.flush();
+}
+void logCommandSql(QString l)
+{
+	if (!fCommandsSqlLog.isOpen())
+	{
+		fCommandsSqlLog.setFileName(savePath("commands.sql"));
+		fCommandsSqlLog.open(QFile::Append | QFile::Text | QFile::Truncate);
+	}
+
+	fCommandsSqlLog.write(QString(l+"\r\n").toUtf8());
+	fCommandsSqlLog.flush();
 }
 
 /**

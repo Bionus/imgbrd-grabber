@@ -38,6 +38,8 @@ void		shutDown(int timeout = 0);
 void		openTray();
 
 void		log(QString, Log type = Info);
+void		logCommand(QString);
+void		logCommandSql(QString);
 void		logUpdate(QString);
 
 void		loadMd5s();

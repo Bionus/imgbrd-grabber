@@ -60,6 +60,7 @@ bool Commands::before()
 	{
 		start();
 		log(QObject::tr("Execution SQL de \"%1\"").arg(m_mysqlSettings.before));
+		logCommandSql(m_mysqlSettings.before);
 		QSqlQuery query;
 		return query.exec(m_mysqlSettings.before);
 	}
@@ -73,6 +74,7 @@ bool Commands::image(Image *img, QString fp)
 		exec.replace("%path%", fp);
 		exec.replace(" \\C ", " /C ");
 		log(QObject::tr("Execution de \"%1\"").arg(exec));
+		logCommand(exec);
 		QProcess::execute(exec);
 	}
 	if (m_mysql && !m_mysqlSettings.image.isEmpty())
@@ -81,6 +83,7 @@ bool Commands::image(Image *img, QString fp)
 		QString exec = img->path(m_mysqlSettings.image, "", false);
 		exec.replace("%path%", fp);
 		log(QObject::tr("Execution SQL de \"%1\"").arg(exec));
+		logCommandSql(exec);
 		QSqlQuery query;
 		return query.exec(exec);
 	}
@@ -105,6 +108,7 @@ bool Commands::tag(Tag tag)
 		.replace("%type%", tag.type())
 		.replace("%number%", QString::number(types[tag.type()]));
 		log(QObject::tr("Execution seule de \"%1\"").arg(exec));
+		logCommand(exec);
 		QProcess::execute(exec);
 	}
 	if (m_mysql && !m_mysqlSettings.tag.isEmpty())
@@ -116,6 +120,7 @@ bool Commands::tag(Tag tag)
 		.replace("%type%", tag.type())
 		.replace("%number%", QString::number(types[tag.type()]));
 		log(QObject::tr("Execution SQL de \"%1\"").arg(exec));
+		logCommandSql(exec);
 		QSqlQuery query;
 		return query.exec(exec);
 	}
@@ -127,6 +132,7 @@ bool Commands::after()
 	{
 		start();
 		log(QObject::tr("Execution SQL de \"%1\"").arg(m_mysqlSettings.after));
+		logCommandSql(m_mysqlSettings.after);
 		QSqlQuery query;
 		return query.exec(m_mysqlSettings.after);
 	}
