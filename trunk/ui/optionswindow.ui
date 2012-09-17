@@ -156,7 +156,7 @@
         </sizepolicy>
        </property>
        <property name="currentIndex">
-        <number>16</number>
+        <number>8</number>
        </property>
        <widget class="QWidget" name="page1">
         <layout class="QFormLayout" name="formLayout_14">
@@ -1178,14 +1178,14 @@ p, li { white-space: pre-wrap; }
            </property>
           </widget>
          </item>
-         <item row="2" column="0">
+         <item row="3" column="0">
           <widget class="QLabel" name="label_39">
            <property name="text">
             <string>Cacher les favoris</string>
            </property>
           </widget>
          </item>
-         <item row="2" column="1">
+         <item row="3" column="1">
           <widget class="QSpinBox" name="spinHideFavorites">
            <property name="maximum">
             <number>1000</number>
@@ -1195,7 +1195,7 @@ p, li { white-space: pre-wrap; }
            </property>
           </widget>
          </item>
-         <item row="3" column="0" colspan="2">
+         <item row="4" column="0" colspan="2">
           <widget class="QLabel" name="label_40">
            <property name="text">
             <string>&lt;i&gt;La liste des favoris sera cachée dès que ce nombre d'images reçues sera atteint.&lt;/i&gt;</string>
@@ -1205,14 +1205,14 @@ p, li { white-space: pre-wrap; }
            </property>
           </widget>
          </item>
-         <item row="4" column="0">
+         <item row="5" column="0">
           <widget class="QLabel" name="label_41">
            <property name="text">
             <string>Affichage des types de sources</string>
            </property>
           </widget>
          </item>
-         <item row="4" column="1">
+         <item row="5" column="1">
           <widget class="QComboBox" name="comboSources">
            <item>
             <property name="text">
@@ -1236,14 +1236,14 @@ p, li { white-space: pre-wrap; }
            </item>
           </widget>
          </item>
-         <item row="5" column="0">
+         <item row="6" column="0">
           <widget class="QLabel" name="label_42">
            <property name="text">
             <string>Lettres affichées</string>
            </property>
           </widget>
          </item>
-         <item row="5" column="1">
+         <item row="6" column="1">
           <layout class="QHBoxLayout" name="horizontalLayout_9">
            <item>
             <widget class="QComboBox" name="comboSourcesLetters">
@@ -1279,7 +1279,7 @@ p, li { white-space: pre-wrap; }
            </item>
           </layout>
          </item>
-         <item row="6" column="0" colspan="2">
+         <item row="7" column="0" colspan="2">
           <widget class="QLabel" name="label_43">
            <property name="text">
             <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -1293,14 +1293,14 @@ p, li { white-space: pre-wrap; }
            </property>
           </widget>
          </item>
-         <item row="7" column="0">
+         <item row="8" column="0">
           <widget class="QLabel" name="label_44">
            <property name="text">
             <string>Position de la liste de tags</string>
            </property>
           </widget>
          </item>
-         <item row="7" column="1">
+         <item row="8" column="1">
           <widget class="QComboBox" name="comboTagsposition">
            <item>
             <property name="text">
@@ -1319,7 +1319,7 @@ p, li { white-space: pre-wrap; }
            </item>
           </widget>
          </item>
-         <item row="8" column="0" colspan="2">
+         <item row="9" column="0" colspan="2">
           <widget class="QCheckBox" name="checkShowTagWarning">
            <property name="text">
             <string>Afficher l'avertissement en cas de modificateur incompatible</string>
@@ -1329,7 +1329,7 @@ p, li { white-space: pre-wrap; }
            </property>
           </widget>
          </item>
-         <item row="9" column="0" colspan="2">
+         <item row="10" column="0" colspan="2">
           <widget class="QCheckBox" name="checkShowWarnings">
            <property name="text">
             <string>Afficher les autre avertissements</string>
@@ -1339,20 +1339,66 @@ p, li { white-space: pre-wrap; }
            </property>
           </widget>
          </item>
-         <item row="10" column="0" colspan="2">
+         <item row="11" column="0" colspan="2">
           <widget class="QCheckBox" name="checkGetUnloadedPages">
            <property name="text">
             <string>Télécharger les pages non chargées</string>
            </property>
           </widget>
          </item>
-         <item row="11" column="0" colspan="2">
+         <item row="12" column="0" colspan="2">
           <widget class="QLabel" name="label_66">
            <property name="text">
             <string>&lt;i&gt;Si vous activez cette option, appuyer sur le bouton &quot;Télécharger cette page&quot; prendra en compte les modifications faîtes au nombre d'images par page, numéro de page, etc. même si elles n'ont pas été chargées.</string>
            </property>
            <property name="wordWrap">
             <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QComboBox" name="comboFavoritesDisplay">
+           <item>
+            <property name="text">
+             <string>Image, nom et détails</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Image et nom</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Image et détails</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Nom et détails</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Image seulement</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Nom seulement</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Détails seulement</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_26">
+           <property name="text">
+            <string>Affichage des favoris</string>
            </property>
           </widget>
          </item>
@@ -2176,8 +2222,8 @@ p, li { white-space: pre-wrap; }
      <y>21</y>
     </hint>
     <hint type="destinationlabel">
-     <x>266</x>
-     <y>30</y>
+     <x>445</x>
+     <y>72</y>
     </hint>
    </hints>
   </connection>
@@ -2188,12 +2234,12 @@ p, li { white-space: pre-wrap; }
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>404</x>
-     <y>131</y>
+     <x>269</x>
+     <y>39</y>
     </hint>
     <hint type="destinationlabel">
-     <x>247</x>
-     <y>128</y>
+     <x>269</x>
+     <y>39</y>
     </hint>
    </hints>
   </connection>
@@ -2204,12 +2250,12 @@ p, li { white-space: pre-wrap; }
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>364</x>
-     <y>152</y>
+     <x>269</x>
+     <y>39</y>
     </hint>
     <hint type="destinationlabel">
-     <x>291</x>
-     <y>154</y>
+     <x>269</x>
+     <y>39</y>
     </hint>
    </hints>
   </connection>
@@ -2220,12 +2266,12 @@ p, li { white-space: pre-wrap; }
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>546</x>
-     <y>158</y>
+     <x>269</x>
+     <y>39</y>
     </hint>
     <hint type="destinationlabel">
-     <x>298</x>
-     <y>154</y>
+     <x>269</x>
+     <y>39</y>
     </hint>
    </hints>
   </connection>
@@ -2236,12 +2282,12 @@ p, li { white-space: pre-wrap; }
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>409</x>
-     <y>188</y>
+     <x>269</x>
+     <y>39</y>
     </hint>
     <hint type="destinationlabel">
-     <x>319</x>
-     <y>184</y>
+     <x>269</x>
+     <y>39</y>
     </hint>
    </hints>
   </connection>

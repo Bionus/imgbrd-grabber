@@ -14,6 +14,7 @@
 #include "searchtab.h"
 #include "pooltab.h"
 #include "tagtab.h"
+#include "favoritestab.h"
 #include "commands.h"
 
 
@@ -23,6 +24,7 @@ namespace Ui
     class mainWindow;
     class poolTab;
     class tagTab;
+	class favoritesTab;
 }
 
 
@@ -30,6 +32,7 @@ namespace Ui
 class searchTab;
 class poolTab;
 class tagTab;
+class favoritesTab;
 
 class mainWindow : public QMainWindow
 {
@@ -57,22 +60,22 @@ class mainWindow : public QMainWindow
         void switchTranslator(QTranslator&, const QString&);
         void loadLanguage(const QString&, bool shutup = false);
         void changeEvent(QEvent*);
-        // Favorites
-        void loadFavorite(int);
-        void favoriteProperties(int);
-        void updateFavorites(bool dock = false);
+		// Favorites
+		void updateFavorites(bool dock = false);
         void updateFavoritesDock();
         void updateKeepForLater();
-        void viewed();
+		/*void loadFavorite(int);
+		void favoriteProperties(int);
+		void viewed();
         void setFavoriteViewed(QString);
         void favoritesBack();
         void checkFavorites();
-        void loadNextFavorite();
+		void loadNextFavorite();*/
         // Download
-        void web(QString tags = "");
+		/*void web(QString tags = "");
         void finishedLoading(Page*);
         void finishedLoadingPreview(Image*);
-        void webZoom(int);
+		void webZoom(int);*/
         // Batch download management
         void batchClear();
         void batchClearSel();
@@ -145,6 +148,7 @@ class mainWindow : public QMainWindow
         QList<bool>			m_selectedSources;
         QList<QLabel*>		m_webSites;
 		Commands			*m_commands;
+		favoritesTab		*m_favoritesTab;
         QMap<QString,double>			m_getAllDownloadingSpeeds;
         QMap<QString,QString>			m_favorites, m_params;
         QMap<QString,QStringList>		m_getAllDetails;

@@ -1,5 +1,5 @@
-#ifndef HEADER_FUCTIONS
-#define HEADER_FUCTIONS
+#ifndef HEADER_FUNCTIONS
+#define HEADER_FUNCTIONS
 
 #include <QMap>
 #include <QStringList>
@@ -7,6 +7,7 @@
 #include <QFont>
 #include <QDomElement>
 #include <QLayout>
+#include <algorithm>
 
 
 
@@ -17,7 +18,6 @@ enum Log
 	Warning,
 	Error
 };
-
 
 
 void		error(QWidget *, QString);
@@ -59,6 +59,22 @@ QMap<QString,QString>		stringToMap(QString map, QString gen = "{gen}", QString m
 
 QMap<QString,QStringList>	getCustoms();
 QMap<QString,QString>		getFilenames();
+
+
+
+template <typename T>
+QList<T> reversed(const QList<T> & in)
+{
+	QList<T> result;
+	std::reverse_copy(in.begin(), in.end(), std::back_inserter(result));
+	return result;
+}
+inline bool sortByNote(const QMap<QString,QString> &s1, const QMap<QString,QString> &s2)
+{ return s1["note"].toInt() < s2["note"].toInt(); }
+inline bool sortByName(const QMap<QString,QString> &s1, const QMap<QString,QString> &s2)
+{ return s1["name"].toLower() < s2["name"].toLower(); }
+inline bool sortByLastviewed(const QMap<QString,QString> &s1, const QMap<QString,QString> &s2)
+{ return QDateTime::fromString(s1["lastviewed"], Qt::ISODate) < QDateTime::fromString(s2["lastviewed"], Qt::ISODate); }
 
 
 #endif

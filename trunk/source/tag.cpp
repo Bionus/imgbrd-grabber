@@ -5,17 +5,17 @@
 
 Tag::Tag(QString text, QString type, int count) : m_text(text), m_type(type), m_count(count)
 {
-    if (text.endsWith("(artist)") && type == "unknown")
-    { m_type = "artist"; }
+	if (text.endsWith("(artist)") && type == "unknown")
+	{ m_type = "artist"; }
 }
 Tag::~Tag()
 { }
 
 QString Tag::stylished(QStringList favs)
 {
-    if (favs.contains(m_text))
-    { return "<span style=\"color:pink\">"+m_text+"</span>"; }
-    return m_text;
+	if (favs.contains(m_text))
+	{ return "<span style=\"color:pink\">"+m_text+"</span>"; }
+	return m_text;
 }
 
 void Tag::setText(QString text)	{ m_text = text;	}

@@ -43,6 +43,8 @@ HEADERS += includes/aboutwindow.h \
 		   includes/pool.h \
 		   includes/pooltab.h \
 		   includes/tagtab.h \
+		   includes/favoritestab.h \
+		   includes/md5fix.h \
 		   includes/commands.h
 FORMS += ui/aboutwindow.ui \
 		 ui/adduniquewindow.ui \
@@ -65,6 +67,8 @@ FORMS += ui/aboutwindow.ui \
 		 ui/zoomwindow.ui \
 		 ui/filenamewindow.ui \
 		 ui/pooltab.ui \
+		 ui/favoritestab.ui \
+		 ui/md5fix.ui \
 		 ui/tagtab.ui
 SOURCES += source/aboutwindow.cpp \
 		   source/addgroupwindow.cpp \
@@ -101,11 +105,13 @@ SOURCES += source/aboutwindow.cpp \
 		   source/filenamewindow.cpp \
 		   source/pooltab.cpp \
 		   source/tagtab.cpp \
+		   source/favoritestab.cpp \
+		   source/md5fix.cpp \
 		   source/commands.cpp
 
 RESOURCES += resources.qrc
 RC_FILE = icon.rc
-TRANSLATIONS += languages/English.ts languages/Français.ts
+TRANSLATIONS += languages/English.ts languages/Français.ts languages/Russian.ts
 QT += network xml sql
 CONFIG += designer plugin
 CODECFORTR = UTF-8

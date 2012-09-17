@@ -201,11 +201,14 @@ void TextEdit::customContextMenuRequested(QPoint)
 				for (int i = 0; i < m_favorites.count(); i++)
 				{ favsGroup->addAction(m_favorites.at(i)); }
 				favs->addActions(favsGroup->actions());
-				favs->addSeparator();
-				if (m_favorites.contains(toPlainText()))
-				{ favs->addAction(tr("Retirer"), this, SLOT(unsetFavorite())); }
-				else
-				{ favs->addAction(tr("Ajouter"), this, SLOT(setFavorite())); }
+				if (!toPlainText().isEmpty())
+				{
+					favs->addSeparator();
+					if (m_favorites.contains(toPlainText()))
+					{ favs->addAction(tr("Retirer"), this, SLOT(unsetFavorite())); }
+					else
+					{ favs->addAction(tr("Ajouter"), this, SLOT(setFavorite())); }
+				}
 				favs->setIcon(QIcon(":/images/icons/favorite.png"));
 			menu->addMenu(favs);
 		QMenu *vils = new QMenu(tr("Gardés pour plus tard"), menu);

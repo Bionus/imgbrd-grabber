@@ -141,7 +141,7 @@ void Page::load()
 		connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(parse(QNetworkReply*)));
 		connect(manager, SIGNAL(sslErrors(QNetworkReply*, QList<QSslError>)), this, SLOT(sslErrorHandler(QNetworkReply*, QList<QSslError>)));
 
-        QNetworkRequest r(m_url);
+		QNetworkRequest r(m_url);
 			r.setRawHeader("Referer", m_url.toString().toUtf8());
 		m_reply = manager->get(r);
 		m_replyExists = true;
@@ -316,7 +316,7 @@ void Page::parse(QNetworkReply* r)
 				if (m_site.contains("Urls/Rss/Image"))
 				{
 					if (m_site["Urls/Rss/Image"].contains("->"))
-					{ d["file_url"].replace(m_site["Urls/Rss/Image"].left(m_site["Urls/Rss/Image"].indexOf("->")), m_site["Urls/Rss/Image"].right(m_site["Urls/Rss/Image"].indexOf("->")+1)); }
+					{ d["file_url"].replace(m_site["Urls/Rss/Image"].left(m_site["Urls/Rss/Image"].indexOf("->")), m_site["Urls/Rss/Image"].right(m_site["Urls/Json/Image"].size()-m_site["Urls/Json/Image"].indexOf("->")-2)); }
 					else
 					{
 						d["file_url"] = m_site["Urls/Rss/Image"];
@@ -389,7 +389,7 @@ void Page::parse(QNetworkReply* r)
 			if (m_site.contains("Urls/Html/Image"))
 			{
 				if (m_site["Urls/Html/Image"].contains("->"))
-				{ d["file_url"].replace(m_site["Urls/Html/Image"].left(m_site["Urls/Html/Image"].indexOf("->")), m_site["Urls/Html/Image"].right(m_site["Urls/Html/Image"].indexOf("->")+1)); }
+				{ d["file_url"].replace(m_site["Urls/Html/Image"].left(m_site["Urls/Html/Image"].indexOf("->")), m_site["Urls/Html/Image"].right(m_site["Urls/Json/Image"].size()-m_site["Urls/Json/Image"].indexOf("->")-2)); }
 				else
 				{
 					d["file_url"] = m_site["Urls/Html/Image"];
@@ -452,8 +452,25 @@ void Page::parse(QNetworkReply* r)
 				{ d[infos.at(i)] = sc.value(infos.at(i)).toString().trimmed(); }
 				if (!d["preview_url"].startsWith("http://") && !d["preview_url"].startsWith("https://"))
 				{ d["preview_url"] = "http://"+m_site["Url"]+QString(d["preview_url"].startsWith("/") ? "" : "/")+d["preview_url"]; }
-				if (!d["file_url"].startsWith("http://") && !d["file_url"].startsWith("https://"))
+				if (!d.contains("file_url") || d["file_url"].isEmpty())
+				{
+					if (!m_site.contains("Regex/ImageUrl"))
+					{ d["file_url"] = d["preview_url"]; }
+				}
+				else if (!d["file_url"].startsWith("http://") && !d["file_url"].startsWith("https://"))
 				{ d["file_url"] = "http://"+m_site["Url"]+QString(d["file_url"].startsWith("/") ? "" : "/")+d["file_url"]; }
+				if (m_site.contains("Urls/Json/Image"))
+				{
+					if (m_site["Urls/Json/Image"].contains("->"))
+					{ d["file_url"].replace(m_site["Urls/Json/Image"].left(m_site["Urls/Json/Image"].indexOf("->")), m_site["Urls/Json/Image"].right(m_site["Urls/Json/Image"].size()-m_site["Urls/Json/Image"].indexOf("->")-2)); }
+					else
+					{
+						d["file_url"] = m_site["Urls/Json/Image"];
+						d["file_url"].replace("{id}", d["id"])
+						.replace("{md5}", d["md5"])
+						.replace("{ext}", "jpg");
+					}
+				}
 				d["page_url"] = m_site["Urls/Html/Post"];
 				QString t = m_search.join(" ");
 				if (m_site.contains("DefaultTag") && t.isEmpty())
@@ -515,8 +532,6 @@ void Page::parse(QNetworkReply* r)
 		rxlast.indexIn(m_source, 0);
 		m_imagesCount = rxlast.cap(1).remove(",").toInt();
 	}
-	if (m_imagesCount < 1)
-	{ m_imagesCount = m_images.size(); }
 
 	// Virtual paging
 	int firstImage = 0;
