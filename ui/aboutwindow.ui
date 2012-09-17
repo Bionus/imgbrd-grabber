@@ -31,7 +31,7 @@
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="QLabel" name="label_2">
+      <widget class="QLabel" name="labelTitle">
        <property name="text">
         <string>&lt;span style=&quot; font-size:30pt; font-weight:600; color:#505050;&quot;&gt;Grabber&lt;/p&gt;</string>
        </property>
@@ -52,7 +52,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="label_5">
+      <widget class="QLabel" name="labelCreator">
        <property name="text">
         <string>Grabber est une création de Bionus.&lt;br/&gt;N'hésitez pas à visiter le &lt;a href=&quot;http://code.google.com/p/imgbrd-grabber/&quot;&gt;site&lt;/a&gt; pour rester à jour, ou récupérer des fichiers de site ou des traductions.</string>
        </property>
@@ -64,6 +64,13 @@
        </property>
        <property name="openExternalLinks">
         <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="labelCredits">
+       <property name="text">
+        <string>Traduction russe par Станислав Егоров.</string>
        </property>
       </widget>
      </item>

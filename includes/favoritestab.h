@@ -1,9 +1,8 @@
-#ifndef TAGTAB_H
-#define TAGTAB_H
+#ifndef FAVORITESTAB_H
+#define FAVORITESTAB_H
 
 #include <QWidget>
 #include <QMap>
-#include <QCalendarWidget>
 #include "textedit.h"
 #include "searchtab.h"
 #include "page.h"
@@ -13,7 +12,7 @@
 
 namespace Ui
 {
-    class tagTab;
+	class favoritesTab;
     class mainWindow;
 }
 
@@ -21,14 +20,14 @@ namespace Ui
 
 class mainWindow;
 
-class tagTab : public searchTab
+class favoritesTab : public searchTab
 {
     Q_OBJECT
 
     public:
-        explicit tagTab(int id, QMap<QString, QMap<QString, QString> > *sites, QMap<QString, QString> *favorites, QDateTime *serverDate, mainWindow *parent);
-        ~tagTab();
-        Ui::tagTab *ui;
+		explicit favoritesTab(int id, QMap<QString, QMap<QString, QString> > *sites, QMap<QString, QString> *favorites, QDateTime *serverDate, mainWindow *parent);
+		~favoritesTab();
+		Ui::favoritesTab *ui;
         QList<bool> sources();
         QString tags();
         QString results();
@@ -58,49 +57,50 @@ class tagTab : public searchTab
 		void getSel();
 		// Tag list
         void linkHovered(QString);
-        void linkClicked(QString);
-        void contextMenu();
+		void linkClicked(QString);
         void openInNewTab();
-        void openInNewWindow();
-        void favorite();
-        void unfavorite();
-        void viewitlater();
-        void unviewitlater();
+		void openInNewWindow();
         // History
         void historyBack();
         void historyNext();
+		// Favorites
+		void favoriteProperties(int id = -1);
+		void updateFavorites();
+		void loadFavorite(int);
+		void checkFavorites();
+		void loadNextFavorite();
+		void favoritesBack();
+		void setFavoriteViewed(QString);
+		void viewed();
         // Others
         void optionsChanged();
         void closeEvent(QCloseEvent*);
-        void on_buttonSearch_clicked();
 		void toggleImage(int, bool);
 
     signals:
 		void batchAddGroup(QStringList);
 		void batchAddUnique(QMap<QString,QString>);
-		void titleChanged(tagTab*);
-		void changed(tagTab*);
-		void closed(tagTab*);
+		void changed(favoritesTab*);
+		void closed(favoritesTab*);
 
-	private:
+    private:
         int										m_id;
         mainWindow								*m_parent;
-        TextEdit								*m_search, *m_postFiltering;
-        QCalendarWidget							*m_calendar;
-        QDateTime								*m_serverDate;
-        QMap<QString,QString>					*m_favorites;
+		TextEdit								*m_postFiltering;
+		QDateTime								*m_serverDate, m_loadFavorite;
+		QMap<QString,QString>					*m_favorites;
         QMap<QString,QMap<QString,QString> >	*m_sites;
         QMap<QString,Page*>						m_pages;
         QList<Image*>							m_images;
         int										m_pagemax;
         QList<bool>								m_selectedSources;
         QList<QCheckBox*>						m_checkboxes;
-        QString									m_link, m_lastTags, m_wiki, m_tags;
+		QString									m_link, m_lastTags, m_wiki, m_tags, m_currentTags;
         bool									m_sized, m_from_history, m_stop;
-        int										m_page, m_history_cursor;
+		int										m_page, m_history_cursor, m_currentFav;
         QList<QGridLayout*>						m_layouts;
         QList<QMap<QString,QString> >			m_history;
-        QStringList								m_modifiers;
+		QStringList								m_modifiers;
 };
 
-#endif // TAGTAB_H
+#endif // FAVORITESTAB_H

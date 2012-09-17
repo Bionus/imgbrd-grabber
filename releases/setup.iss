@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Grabber"
-#define MyAppVersion "3.2.0a2"
+#define MyAppVersion "3.2.0a3"
 #define MyAppPublisher "Bionus"
 #define MyAppURL "http://code.google.com/p/imgbrd-grabber/"
 #define MyAppExeName "Grabber.exe"
@@ -91,8 +91,9 @@ Source: "D:\Programmation\C++\Qt\Grabber\release\imageformats\qmng4.dll"; DestDi
 Source: "D:\Programmation\C++\Qt\Grabber\release\imageformats\qsvg4.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\imageformats\qtiff4.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\words.txt"; DestDir: "{app}";
-Source: "D:\Programmation\C++\Qt\Grabber\release\languages\English.qm"; DestDir: "{app}\languages"; Flags: ignoreversion
+Source: "D:\Programmation\C++\Qt\Grabber\release\languages\English.qm"; DestDir: "{app}\languages"; Flags: ignoreversion         
 Source: "D:\Programmation\C++\Qt\Grabber\release\languages\Français.qm"; DestDir: "{app}\languages"; Flags: ignoreversion
+Source: "D:\Programmation\C++\Qt\Grabber\release\languages\Russian.qm"; DestDir: "{app}\languages"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\danbooru\icon.png"; DestDir: "{%UserProfile}\Grabber\sites\danbooru"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\danbooru\model.xml"; DestDir: "{%UserProfile}\Grabber\sites\danbooru"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\danbooru\sites.txt"; DestDir: "{%UserProfile}\Grabber\sites\danbooru";

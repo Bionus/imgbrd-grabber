@@ -45,166 +45,6 @@
       <property name="movable">
        <bool>true</bool>
       </property>
-      <widget class="QWidget" name="tabFavorites">
-       <property name="maximumSize">
-        <size>
-         <width>16777214</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <attribute name="title">
-        <string>Favoris</string>
-       </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0,1,0,0,0,0">
-        <item>
-         <widget class="QLabel" name="label_6">
-          <property name="text">
-           <string>&lt;span style=&quot;color:red&quot;&gt;This part is currently under development and is subject to bugs.&lt;/span&gt;</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="0,0,0">
-          <item>
-           <widget class="QLabel" name="label_3">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>Trier par</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QComboBox" name="comboOrderfavorites">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="currentIndex">
-             <number>0</number>
-            </property>
-            <item>
-             <property name="text">
-              <string>Nom</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Note</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Dernière vue</string>
-             </property>
-            </item>
-           </widget>
-          </item>
-          <item>
-           <widget class="QComboBox" name="comboOrderasc">
-            <property name="currentIndex">
-             <number>0</number>
-            </property>
-            <item>
-             <property name="text">
-              <string>Ascendant</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Descendant</string>
-             </property>
-            </item>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <widget class="QWidget" name="widgetFavorites" native="true">
-          <layout class="QGridLayout" name="gridLayout_3">
-           <property name="margin">
-            <number>0</number>
-           </property>
-           <item row="0" column="0">
-            <layout class="QGridLayout" name="layoutFavorites"/>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item>
-         <widget class="QWidget" name="widgetFavoritesResults" native="true">
-          <layout class="QGridLayout" name="gridLayout_2">
-           <property name="margin">
-            <number>0</number>
-           </property>
-           <property name="horizontalSpacing">
-            <number>6</number>
-           </property>
-           <item row="0" column="0">
-            <layout class="QGridLayout" name="layoutFavoritesResults"/>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item>
-         <spacer name="verticalSpacer_2">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Expanding</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <layout class="QHBoxLayout" name="layoutSourcesFavs"/>
-        </item>
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_2">
-          <item>
-           <widget class="QPushButton" name="buttonSourcesFavs">
-            <property name="text">
-             <string>Sources</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton_2">
-            <property name="text">
-             <string>Tout vérifier</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="buttonBack">
-            <property name="text">
-             <string>Retour</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="buttonMarkasviewed">
-            <property name="text">
-             <string>Marquer comme vu</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-       </layout>
-      </widget>
       <widget class="QWidget" name="tabBatch">
        <property name="maximumSize">
         <size>
@@ -452,8 +292,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>98</width>
-             <height>28</height>
+             <width>553</width>
+             <height>443</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_8">
@@ -523,6 +363,7 @@
     </property>
     <addaction name="actionBlacklistFix"/>
     <addaction name="actionEmptyDirsFix"/>
+    <addaction name="actionMd5Fix"/>
     <addaction name="separator"/>
     <addaction name="actionOptions"/>
    </widget>
@@ -1014,6 +855,11 @@
     <string>Nouvel onglet pool</string>
    </property>
   </action>
+  <action name="actionMd5Fix">
+   <property name="text">
+    <string>Réparateur de liste de md5</string>
+   </property>
+  </action>
  </widget>
  <resources>
   <include location="../resources.qrc"/>
@@ -1212,34 +1058,114 @@
    </hints>
   </connection>
   <connection>
-   <sender>comboOrderfavorites</sender>
-   <signal>currentIndexChanged(QString)</signal>
+   <sender>labelTags</sender>
+   <signal>linkActivated(QString)</signal>
    <receiver>mainWindow</receiver>
-   <slot>updateFavorites()</slot>
+   <slot>loadTag(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>529</x>
-     <y>91</y>
+     <x>72</x>
+     <y>69</y>
     </hint>
     <hint type="destinationlabel">
-     <x>805</x>
-     <y>71</y>
+     <x>-7</x>
+     <y>77</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>comboOrderasc</sender>
-   <signal>currentIndexChanged(QString)</signal>
+   <sender>labelWiki</sender>
+   <signal>linkActivated(QString)</signal>
    <receiver>mainWindow</receiver>
-   <slot>updateFavorites()</slot>
+   <slot>loadTag(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>785</x>
-     <y>91</y>
+     <x>33</x>
+     <y>317</y>
     </hint>
     <hint type="destinationlabel">
-     <x>804</x>
-     <y>64</y>
+     <x>-12</x>
+     <y>480</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>labelKpl</sender>
+   <signal>linkActivated(QString)</signal>
+   <receiver>mainWindow</receiver>
+   <slot>loadTag(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>44</x>
+     <y>127</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-6</x>
+     <y>190</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lineFolder</sender>
+   <signal>textEdited(QString)</signal>
+   <receiver>mainWindow</receiver>
+   <slot>saveSettings()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>105</x>
+     <y>380</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-2</x>
+     <y>398</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lineFilename</sender>
+   <signal>textEdited(QString)</signal>
+   <receiver>mainWindow</receiver>
+   <slot>saveSettings()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>80</x>
+     <y>409</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>432</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionAddpooltab</sender>
+   <signal>triggered()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>addPoolTab()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>270</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionMd5Fix</sender>
+   <signal>triggered()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>md5Fix()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>270</y>
     </hint>
    </hints>
   </connection>
@@ -1356,118 +1282,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>pushButton_2</sender>
-   <signal>clicked()</signal>
-   <receiver>mainWindow</receiver>
-   <slot>checkFavorites()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>506</x>
-     <y>526</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>387</x>
-     <y>544</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonBack</sender>
-   <signal>clicked()</signal>
-   <receiver>mainWindow</receiver>
-   <slot>favoritesBack()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>563</x>
-     <y>519</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>569</x>
-     <y>541</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonMarkasviewed</sender>
-   <signal>clicked()</signal>
-   <receiver>mainWindow</receiver>
-   <slot>viewed()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>775</x>
-     <y>518</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>805</x>
-     <y>518</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonSourcesFavs</sender>
-   <signal>clicked()</signal>
-   <receiver>mainWindow</receiver>
-   <slot>advanced()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>366</x>
-     <y>526</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>102</x>
-     <y>513</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>labelTags</sender>
-   <signal>linkActivated(QString)</signal>
-   <receiver>mainWindow</receiver>
-   <slot>loadTag(QString)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>72</x>
-     <y>69</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>-7</x>
-     <y>77</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>labelWiki</sender>
-   <signal>linkActivated(QString)</signal>
-   <receiver>mainWindow</receiver>
-   <slot>loadTag(QString)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>33</x>
-     <y>317</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>-12</x>
-     <y>480</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>labelKpl</sender>
-   <signal>linkActivated(QString)</signal>
-   <receiver>mainWindow</receiver>
-   <slot>loadTag(QString)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>44</x>
-     <y>127</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>-6</x>
-     <y>190</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>tabWidget</sender>
    <signal>currentChanged(int)</signal>
    <receiver>mainWindow</receiver>
@@ -1515,54 +1329,6 @@
     </hint>
    </hints>
   </connection>
-  <connection>
-   <sender>lineFolder</sender>
-   <signal>textEdited(QString)</signal>
-   <receiver>mainWindow</receiver>
-   <slot>saveSettings()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>105</x>
-     <y>380</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>-2</x>
-     <y>398</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>lineFilename</sender>
-   <signal>textEdited(QString)</signal>
-   <receiver>mainWindow</receiver>
-   <slot>saveSettings()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>80</x>
-     <y>409</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>-1</x>
-     <y>432</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionAddpooltab</sender>
-   <signal>triggered()</signal>
-   <receiver>mainWindow</receiver>
-   <slot>addPoolTab()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>399</x>
-     <y>270</y>
-    </hint>
-   </hints>
-  </connection>
  </connections>
  <slots>
   <slot>help()</slot>
@@ -1600,5 +1366,6 @@
   <slot>logOpen()</slot>
   <slot>saveSettings()</slot>
   <slot>addPoolTab()</slot>
+  <slot>md5Fix()</slot>
  </slots>
 </ui>

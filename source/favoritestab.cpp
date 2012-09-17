@@ -1,8 +1,9 @@
-#include "tagtab.h"
-#include "ui_tagtab.h"
+#include "favoritestab.h"
+#include "ui_favoritestab.h"
 #include "ui_mainwindow.h"
 #include "QBouton.h"
 #include "zoomwindow.h"
+#include "favoritewindow.h"
 #include "searchwindow.h"
 
 #define DONE()	logUpdate(QObject::tr(" Fait"))
@@ -10,18 +11,15 @@ extern mainWindow *_mainwindow;
 
 
 
-tagTab::tagTab(int id, QMap<QString,QMap<QString,QString> > *sites, QMap<QString,QString> *favorites, QDateTime *serverDate, mainWindow *parent) : searchTab(id, parent), ui(new Ui::tagTab), m_id(id), m_parent(parent), m_serverDate(serverDate), m_favorites(favorites), m_sites(sites), m_pagemax(-1), m_lastTags(QString()), m_sized(false), m_from_history(false), m_stop(true), m_history_cursor(0), m_history(QList<QMap<QString,QString> >()), m_modifiers(QStringList())
+favoritesTab::favoritesTab(int id, QMap<QString,QMap<QString,QString> > *sites, QMap<QString,QString> *favorites, QDateTime *serverDate, mainWindow *parent) : searchTab(id, parent), ui(new Ui::favoritesTab), m_id(id), m_parent(parent), m_serverDate(serverDate), m_favorites(favorites), m_sites(sites), m_pagemax(-1), m_lastTags(QString()), m_sized(false), m_from_history(false), m_stop(true), m_history_cursor(0), m_currentFav(0), m_history(QList<QMap<QString,QString> >()), m_modifiers(QStringList())
 {
 	ui->setupUi(this);
-	ui->widgetMeant->hide();
 	setAttribute(Qt::WA_DeleteOnClose);
 
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
 
 	// Search field
-	m_search = new TextEdit(m_favorites->keys(), this);
 	m_postFiltering = new TextEdit(m_favorites->keys(), this);
-		m_search->setContextMenuPolicy(Qt::CustomContextMenu);
 		m_postFiltering->setContextMenuPolicy(Qt::CustomContextMenu);
 		if (settings.value("autocompletion", true).toBool())
 		{
@@ -45,17 +43,10 @@ tagTab::tagTab(int id, QMap<QString,QMap<QString,QString> > *sites, QMap<QString
 				completion.sort();
 				QCompleter *completer = new QCompleter(completion, this);
 					completer->setCaseSensitivity(Qt::CaseInsensitive);
-				m_search->setCompleter(completer);
 				m_postFiltering->setCompleter(completer);
 			}
 		}
-		connect(m_search, SIGNAL(returnPressed()), this, SLOT(load()));
-		connect(m_search, SIGNAL(favoritesChanged()), _mainwindow, SLOT(updateFavorites()));
-		connect(m_search, SIGNAL(favoritesChanged()), _mainwindow, SLOT(updateFavoritesDock()));
-		connect(m_search, SIGNAL(kflChanged()), _mainwindow, SLOT(updateKeepForLater()));
 		connect(m_postFiltering, SIGNAL(returnPressed()), this, SLOT(load()));
-		connect(ui->labelMeant, SIGNAL(linkActivated(QString)), this, SLOT(setTags(QString)));
-		ui->layoutFields->insertWidget(1, m_search, 1);
 		ui->layoutPlus->addWidget(m_postFiltering, 1, 1, 1, 3);
 
 	// Sources
@@ -78,26 +69,30 @@ tagTab::tagTab(int id, QMap<QString,QMap<QString,QString> > *sites, QMap<QString
 		setPalette(pal);
 		setAutoFillBackground(true);
 	updateCheckboxes();
-	m_search->setFocus();
+	updateFavorites();
+
+	QStringList assoc = QStringList() << "name" << "note" << "lastviewed";
+		ui->comboOrder->setCurrentIndex(assoc.indexOf(settings.value("Favorites/order", "name").toString()));
+		ui->comboAsc->setCurrentIndex(int(settings.value("Favorites/reverse", false).toBool()));
+		settings.setValue("reverse", bool(ui->comboAsc->currentIndex() == 1));
+	ui->widgetResults->hide();
 }
 
-tagTab::~tagTab()
+favoritesTab::~favoritesTab()
 {
 	close();
 	delete ui;
 }
 
-void tagTab::on_buttonSearch_clicked()
-{
-	SearchWindow *sw = new SearchWindow(m_search->toPlainText(), m_serverDate->date(), this);
-	connect(sw, SIGNAL(accepted(QString)), this, SLOT(setTags(QString)));
-	sw->show();
-}
-
-void tagTab::closeEvent(QCloseEvent *e)
+void favoritesTab::closeEvent(QCloseEvent *e)
 {
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
 	settings.setValue("mergeresults", ui->checkMergeResults->isChecked());
+	settings.beginGroup("Favorites");
+		QStringList assoc = QStringList() << "name" << "note" << "lastviewed";
+		settings.setValue("order", assoc[ui->comboOrder->currentIndex()]);
+		settings.setValue("reverse", bool(ui->comboAsc->currentIndex() == 1));
+	settings.endGroup();
 	settings.sync();
 
 	qDeleteAll(m_pages);
@@ -117,7 +112,71 @@ void tagTab::closeEvent(QCloseEvent *e)
 
 
 
-void tagTab::optionsChanged()
+void favoritesTab::updateFavorites()
+{
+	QStringList assoc = QStringList() << "name" << "note" << "lastviewed";
+	QString order = assoc[ui->comboOrder->currentIndex()];
+	bool reverse = (ui->comboAsc->currentIndex() == 1);
+	*m_favorites = loadFavorites();
+	QStringList keys = m_favorites->keys();
+	QList<QMap<QString,QString> > favorites;
+	for (int i = 0; i < keys.size(); i++)
+	{
+		QMap<QString,QString> d;
+		QString tag = keys.at(i);
+		d["id"] = QString::number(i);
+		d["name"] = tag;
+		QStringList xp = m_favorites->value(tag).split("|");
+		d["note"] = xp.isEmpty() ? "50" : xp.takeFirst();
+		d["lastviewed"] = xp.isEmpty() ? QDateTime(QDate(2000, 1, 1), QTime(0, 0, 0, 0)).toString(Qt::ISODate) : xp.takeFirst();
+		tag.remove('\\').remove('/').remove(':').remove('*').remove('?').remove('"').remove('<').remove('>').remove('|');
+		d["imagepath"] = savePath("thumbs/"+tag+".png");
+		if (!QFile::exists(d["imagepath"]))
+		{ d["imagepath"] = ":/images/noimage.png"; }
+		favorites.append(d);
+	}
+	qSort(favorites.begin(), favorites.end(), sortByName);
+	if (order == "note")
+	{ qSort(favorites.begin(), favorites.end(), sortByNote); }
+	else if (order == "lastviewed")
+	{ qSort(favorites.begin(), favorites.end(), sortByLastviewed); }
+	if (reverse)
+	{ favorites = reversed(favorites); }
+	QString format = tr("dd/MM/yyyy");
+	clearLayout(ui->layoutFavorites);
+
+	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
+	for (int i = 0; i < favorites.count(); i++)
+	{
+		QString tag = favorites[i]["tag"];
+		tag.remove('\\').remove('/').remove(':').remove('*').remove('?').remove('"').remove('<').remove('>').remove('|');
+		QPixmap img(favorites[i]["imagepath"]);
+		if ((img.width() > 150 || img.height() > 150) && QFile::exists(favorites[i]["imagepath"]))
+		{
+			img = img.scaled(QSize(150,150), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+			img.save(savePath("thumbs/"+tag+".png"), "PNG");
+		}
+		QString xt = tr("<b>Nom :</b> %1<br/><b>Note :</b> %2 %%<br/><b>Dernière vue :</b> %3").arg(favorites[i]["name"], favorites[i]["note"], QDateTime::fromString(favorites[i]["lastviewed"], Qt::ISODate).toString(format));
+		QBouton *image = new QBouton(favorites[i]["id"].toInt(), this, settings.value("resizeInsteadOfCropping", true).toBool(), QColor(), this);
+			image->setIcon(img);
+			image->setIconSize(img.size());
+			image->setFlat(true);
+			image->setToolTip(xt);
+			connect(image, SIGNAL(rightClick(int)), this, SLOT(favoriteProperties(int)));
+			connect(image, SIGNAL(middleClick(int)), this, SLOT(addTabFavorite(int)));
+		QAffiche *caption = new QAffiche(favorites[i]["id"].toInt(), 0 ,QColor(), this);
+			caption->setText(favorites[i]["name"]+"<br/>("+favorites[i]["note"]+" % - "+QDateTime::fromString(favorites[i]["lastviewed"], Qt::ISODate).toString(format)+")");
+			caption->setTextFormat(Qt::RichText);
+			caption->setAlignment(Qt::AlignCenter);
+			caption->setToolTip(xt);
+		connect(image, SIGNAL(appui(int)), this, SLOT(loadFavorite(int)));
+		connect(caption, SIGNAL(clicked(int)), this, SLOT(loadFavorite(int)));
+		ui->layoutFavorites->addWidget(image, (i/10)*2, i%10);
+		ui->layoutFavorites->addWidget(caption, (i/10)*2+1, i%10);
+	}
+}
+
+void favoritesTab::optionsChanged()
 {
 	log(tr("Mise à jour des options de l'onglet \"%1\".").arg(windowTitle()));
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
@@ -132,13 +191,13 @@ void tagTab::optionsChanged()
 
 
 
-void tagTab::openSourcesWindow()
+void favoritesTab::openSourcesWindow()
 {
 	sourcesWindow *adv = new sourcesWindow(m_selectedSources, m_sites, this);
 	connect(adv, SIGNAL(valid(QList<bool>)), this, SLOT(saveSources(QList<bool>)));
 	adv->show();
 }
-void tagTab::saveSources(QList<bool> sel)
+void favoritesTab::saveSources(QList<bool> sel)
 {
 	log(tr("Sauvegarde des sources..."));
 	m_selectedSources = sel;
@@ -151,7 +210,7 @@ void tagTab::saveSources(QList<bool> sel)
 	updateCheckboxes();
 }
 
-void tagTab::updateCheckboxes()
+void favoritesTab::updateCheckboxes()
 {
 	log(tr("Mise à jour des cases à cocher."));
 	qDeleteAll(m_checkboxes);
@@ -181,7 +240,7 @@ void tagTab::updateCheckboxes()
 
 
 
-void tagTab::load()
+void favoritesTab::load()
 {
 	log(tr("Chargement des résultats..."));
 
@@ -192,7 +251,7 @@ void tagTab::load()
 	if (!m_from_history)
 	{
 		QMap<QString,QString> srch = QMap<QString,QString>();
-		srch["tags"] = m_search->toPlainText();
+		srch["tags"] = m_currentTags;
 		srch["page"] = QString::number(ui->spinPage->value());
 		srch["ipp"] = QString::number(ui->spinImagesPerPage->value());
 		srch["columns"] = QString::number(ui->spinColumns->value());
@@ -207,11 +266,10 @@ void tagTab::load()
 	}
 	m_from_history = false;
 
-	if (m_search->toPlainText() != m_lastTags && !m_lastTags.isNull() && m_history_cursor == m_history.size() - 1)
+	if (m_currentTags != m_lastTags && !m_lastTags.isNull() && m_history_cursor == m_history.size() - 1)
 	{ ui->spinPage->setValue(1); }
-	m_lastTags = m_search->toPlainText();
+	m_lastTags = m_currentTags;
 
-	ui->widgetMeant->hide();
 	ui->buttonFirstPage->setEnabled(ui->spinPage->value() > 1);
 	ui->buttonPreviousPage->setEnabled(ui->spinPage->value() > 1);
 	for (int i = 0; i < m_layouts.size(); i++)
@@ -219,8 +277,7 @@ void tagTab::load()
 	qDeleteAll(m_layouts);
 	m_layouts.clear();
 	clearLayout(ui->layoutResults);
-	setWindowTitle(m_search->toPlainText().isEmpty() ? tr("Recherche") : m_search->toPlainText().replace("&", "&&"));
-	emit titleChanged(this);
+
 	m_tags = "";
 	m_parent->ui->labelTags->setText("");
 	for (int i = 0; i < m_pages.size(); i++)
@@ -240,7 +297,7 @@ void tagTab::load()
 	{
 		if (m_checkboxes.at(i)->isChecked())
 		{
-			QStringList tags = m_search->toPlainText().toLower().trimmed().split(" ", QString::SkipEmptyParts);
+			QStringList tags = m_currentTags.toLower().trimmed().split(" ", QString::SkipEmptyParts);
 			tags.append(settings.value("add").toString().toLower().trimmed().split(" ", QString::SkipEmptyParts));
 			int perpage = ui->spinImagesPerPage->value();
 			Page *page = new Page(m_sites, m_sites->keys().at(i), tags, ui->spinPage->value(), perpage, m_postFiltering->toPlainText().toLower().split(" ", QString::SkipEmptyParts), true, this);
@@ -267,7 +324,7 @@ void tagTab::load()
 	emit changed(this);
 }
 
-void tagTab::finishedLoading(Page* page)
+void favoritesTab::finishedLoading(Page* page)
 {
 	if (m_stop)
 	{ return; }
@@ -275,7 +332,12 @@ void tagTab::finishedLoading(Page* page)
 	log(tr("Réception de la page <a href=\"%1\">%1</a>").arg(Qt::escape(page->url().toString())));
 
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
-	QList<Image*> imgs = page->images();
+	QList<Image*> imgs;
+	foreach (Image *img, page->images())
+	{
+		if (img->createdAt() > m_loadFavorite)
+		{ imgs.append(img); }
+	}
 	m_images.append(imgs);
 	int perpage = page->site().value("Urls/Selected/Tags").contains("{limit}") ? ui->spinImagesPerPage->value() : imgs.size();
 	int maxpage = ceil(page->imagesCount()/((float)perpage));
@@ -296,60 +358,18 @@ void tagTab::finishedLoading(Page* page)
 				QStringList reasons = QStringList();
 				if (page->source().isEmpty())
 				{ reasons.append(tr("serveur hors-ligne")); }
-				if (m_search->toPlainText().count(" ") > 1)
+				if (m_currentTags.count(" ") > 1)
 				{ reasons.append(tr("trop de tags")); }
 				if (ui->spinPage->value() > 1000)
 				{ reasons.append(tr("page trop éloignée")); }
-				QStringList completion;
-				QFile words("words.txt");
-				if (words.open(QIODevice::ReadOnly | QIODevice::Text) && !m_search->toPlainText().isEmpty())
-				{
-					while (!words.atEnd())
-					{
-						QByteArray line = words.readLine();
-						completion.append(QString(line).remove("\r\n").remove("\n").split(" ", QString::SkipEmptyParts));
-					}
-					completion.append(m_favorites->keys());
-					completion.removeDuplicates();
-					completion.sort();
-					QStringList tags = m_search->toPlainText().trimmed().split(" ");
-					QMap<QString,QString> results, clean;
-					int c = 0;
-					for (int t = 0; t < tags.size(); t++)
-					{
-						QString tag = tags.at(t);
-						int lev = (tag.length()/3)+2;
-						for (int w = 0; w < completion.size(); w++)
-						{
-							int d = levenshtein(tag, completion.at(w));
-							if (d < lev)
-							{
-								if (results[tag].isEmpty())
-								{ c++; }
-								results[tag] = "<b>"+completion.at(w)+"</b>";
-								clean[tag] = completion.at(w);
-								lev = d;
-							}
-						}
-						if (lev == 0)
-						{ results[tag] = tag; c--; }
-					}
-					if (c > 0)
-					{
-						QStringList res = results.values(), cl = clean.values();
-						ui->widgetMeant->show();
-						ui->labelMeant->setText("<a href=\""+Qt::escape(cl.join(" "))+"\" style=\"color:black;text-decoration:none;\">"+res.join(" ")+"</a>");
-					}
-					words.close();
-				}
-				txt->setText("<a href=\""+Qt::escape(page->url().toString())+"\">"+m_sites->key(page->site())+"</a> - "+tr("Aucun résultat")+(reasons.count() > 0 ? "<br/>"+tr("Raisons possibles : %1").arg(reasons.join(", ")) : ""));
+				txt->setText("<a href=\""+Qt::escape(page->url().toString())+"\">"+m_sites->key(page->site())+"</a> - "+tr("Aucun résultat depuis le %1").arg(m_loadFavorite.toString(tr("dd/MM/yyyy 'à' hh:mm")))+(reasons.count() > 0 ? "<br/>"+tr("Raisons possibles : %1").arg(reasons.join(", ")) : ""));
 			}
 			else
 			{ txt->setText("<a href=\""+Qt::escape(page->url().toString())+"\">"+m_sites->key(page->site())+"</a> - "+tr("Page %1 sur %2 (%3 sur %4)").arg(ui->spinPage->value()).arg(page->imagesCount() > 0 ? QString::number(maxpage) : "?").arg(imgs.count()).arg(page->imagesCount() > 0 ? QString::number(page->imagesCount()) : "?")); }
 			txt->setOpenExternalLinks(true);
-			if (page->search().join(" ") != m_search->toPlainText() && settings.value("showtagwarning", true).toBool())
+			if (page->search().join(" ") != m_currentTags && settings.value("showtagwarning", true).toBool())
 			{
-				QStringList uncommon = m_search->toPlainText().toLower().trimmed().split(" ", QString::SkipEmptyParts);
+				QStringList uncommon = m_currentTags.toLower().trimmed().split(" ", QString::SkipEmptyParts);
 				uncommon.append(settings.value("add").toString().toLower().trimmed().split(" ", QString::SkipEmptyParts));
 				for (int i = 0; i < page->search().size(); i++)
 				{
@@ -366,6 +386,8 @@ void tagTab::finishedLoading(Page* page)
 		ui->layoutResults->setRowMinimumHeight(page_y, height()/20);
 		if (m_layouts.size() > pos)
 		{ ui->layoutResults->addLayout(m_layouts[pos], page_y + 1, page_x, 1, 1); }
+		if (imgs.count() >= settings.value("hidefavorites", 20).toInt())
+		{ ui->widgetFavorites->hide(); }
 	}
 
 	if (!settings.value("useregexfortags", true).toBool())
@@ -445,7 +467,7 @@ void tagTab::finishedLoading(Page* page)
 	{
 		QStringList detected;
 		Image *img = imgs.at(i);
-		QStringList tags = m_search->toPlainText().split(' ');
+		QStringList tags = m_currentTags.split(' ');
 		QList<QChar> modifiers = QList<QChar>() << '~';
 		for (int r = 0; r < tags.size(); r++)
 		{
@@ -471,7 +493,7 @@ void tagTab::finishedLoading(Page* page)
 	}
 }
 
-void tagTab::finishedLoadingTags(Page *page)
+void favoritesTab::finishedLoadingTags(Page *page)
 {
 	// Tags for this page
 	QList<Tag> taglist;
@@ -527,7 +549,7 @@ void tagTab::finishedLoadingTags(Page *page)
 	}
 }
 
-void tagTab::finishedLoadingPreview(Image *img)
+void favoritesTab::finishedLoadingPreview(Image *img)
 {
 	if (m_stop)
 	{ return; }
@@ -567,7 +589,7 @@ void tagTab::finishedLoadingPreview(Image *img)
 	{ color = QColor("#00ff00"); }
 	for (int i = 0; i < img->tags().count(); i++)
 	{
-		if (m_favorites->keys().contains(img->tags()[i].text()) && !m_search->toPlainText().trimmed().split(" ").contains(img->tags()[i].text()))
+		if (m_favorites->keys().contains(img->tags()[i].text()) && !m_currentTags.trimmed().split(" ").contains(img->tags()[i].text()))
 		{ color = QColor("#ffc0cb"); break; }
 	}
 	QStringList blacklistedtags(settings.value("blacklistedtags").toString().split(" "));
@@ -606,7 +628,7 @@ void tagTab::finishedLoadingPreview(Image *img)
 	{ m_layouts[page]->addWidget(l, floor(float(position % pp) / pl), position % pl); }
 }
 
-void tagTab::webZoom(int id)
+void favoritesTab::webZoom(int id)
 {
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
 	Image *image = m_images.at(id);
@@ -628,7 +650,7 @@ void tagTab::webZoom(int id)
 	connect(zoom, SIGNAL(linkClicked(QString)), this, SLOT(setTags(QString)));
 }
 
-void tagTab::toggleImage(int id, bool toggle)
+void favoritesTab::toggleImage(int id, bool toggle)
 {
 	if (toggle)
 	{ selectImage(m_images.at(id)); }
@@ -636,14 +658,14 @@ void tagTab::toggleImage(int id, bool toggle)
 	{ unselectImage(m_images.at(id)); }
 }
 
-void tagTab::setTags(QString tags)
+void favoritesTab::setTags(QString tags)
 {
 	activateWindow();
-	m_search->setText(tags);
+	m_currentTags = tags;
 	load();
 }
 
-void tagTab::getPage()
+void favoritesTab::getPage()
 {
 	QStringList actuals, keys = m_sites->keys();
 	for (int i = 0; i < m_checkboxes.count(); i++)
@@ -656,10 +678,10 @@ void tagTab::getPage()
 	for (int i = 0; i < actuals.count(); i++)
 	{
 		int perpage = unloaded ? ui->spinImagesPerPage->value() : m_pages.value(actuals.at(i))->images().count();
-		emit batchAddGroup(QStringList() << m_search->toPlainText()+" "+settings.value("add").toString().toLower().trimmed() << QString::number(ui->spinPage->value()) << QString::number(perpage) << QString::number(perpage) << settings.value("downloadblacklist").toString() << actuals.at(i) << settings.value("Save/filename").toString() << settings.value("Save/path").toString() << "");
+		emit batchAddGroup(QStringList() << m_currentTags+" "+settings.value("add").toString().toLower().trimmed() << QString::number(ui->spinPage->value()) << QString::number(perpage) << QString::number(perpage) << settings.value("downloadblacklist").toString() << actuals.at(i) << settings.value("Save/filename").toString() << settings.value("Save/path").toString() << "");
 	}
 }
-void tagTab::getAll()
+void favoritesTab::getAll()
 {
 	QStringList actuals, keys = m_sites->keys();
 	for (int i = 0; i < m_checkboxes.count(); i++)
@@ -671,10 +693,10 @@ void tagTab::getAll()
 	for (int i = 0; i < actuals.count(); i++)
 	{
 		int limit = m_sites->value(actuals.at(i)).contains("Urls/1/Limit") ? m_sites->value(actuals.at(i)).value("Urls/1/Limit").toInt() : 0;
-		emit batchAddGroup(QStringList() << m_search->toPlainText()+" "+settings.value("add").toString().toLower().trimmed() << "1" << QString::number(qMin((limit > 0 ? limit : 1000), qMax(m_pages.value(actuals.at(i))->images().count(), m_pages.value(actuals.at(i))->imagesCount()))) << QString::number(qMax(m_pages.value(actuals.at(i))->images().count(), m_pages.value(actuals.at(i))->imagesCount())) << settings.value("downloadblacklist").toString() << actuals.at(i) << settings.value("Save/filename").toString() << settings.value("Save/path").toString() << "");
+		emit batchAddGroup(QStringList() << m_currentTags+" "+settings.value("add").toString().toLower().trimmed() << "1" << QString::number(qMin((limit > 0 ? limit : 1000), qMax(m_pages.value(actuals.at(i))->images().count(), m_pages.value(actuals.at(i))->imagesCount()))) << QString::number(qMax(m_pages.value(actuals.at(i))->images().count(), m_pages.value(actuals.at(i))->imagesCount())) << settings.value("downloadblacklist").toString() << actuals.at(i) << settings.value("Save/filename").toString() << settings.value("Save/path").toString() << "");
 	}
 }
-void tagTab::getSel()
+void favoritesTab::getSel()
 {
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
 	foreach (Image *img, m_selectedImagesPtrs)
@@ -702,12 +724,12 @@ void tagTab::getSel()
 	}
 }
 
-void tagTab::firstPage()
+void favoritesTab::firstPage()
 {
 	ui->spinPage->setValue(1);
 	load();
 }
-void tagTab::previousPage()
+void favoritesTab::previousPage()
 {
 	if (ui->spinPage->value() > 1)
 	{
@@ -715,7 +737,7 @@ void tagTab::previousPage()
 		load();
 	}
 }
-void tagTab::nextPage()
+void favoritesTab::nextPage()
 {
 	if (ui->spinPage->value() < ui->spinPage->maximum())
 	{
@@ -723,7 +745,7 @@ void tagTab::nextPage()
 		load();
 	}
 }
-void tagTab::lastPage()
+void favoritesTab::lastPage()
 {
 	ui->spinPage->setValue(m_pagemax);
 	load();
@@ -731,102 +753,30 @@ void tagTab::lastPage()
 
 
 
-void tagTab::linkHovered(QString url)
+void favoritesTab::linkHovered(QString url)
 { m_link = url; }
-void tagTab::linkClicked(QString url)
+void favoritesTab::linkClicked(QString url)
 {
 	if (Qt::ControlModifier)
 	{ _mainwindow->addTab(url); }
 	else
 	{
-		m_search->setPlainText(url);
+		m_currentTags = url;
 		load();
 	}
 }
-void tagTab::contextMenu()
-{
-	QMenu *menu = new QMenu(this);
-	if (!this->m_link.isEmpty())
-	{
-		if (m_favorites->contains(m_link))
-		{ menu->addAction(QIcon(":/images/icons/remove.png"), tr("Retirer des favoris"), this, SLOT(unfavorite())); }
-		else
-		{ menu->addAction(QIcon(":/images/icons/add.png"), tr("Ajouter aux favoris"), this, SLOT(favorite())); }
-		QStringList vil = loadViewItLater();
-		if (vil.contains(m_link, Qt::CaseInsensitive))
-		{ menu->addAction(QIcon(":/images/icons/remove.png"), tr("Ne pas garder pour plus tard"), this, SLOT(unviewitlater())); }
-		else
-		{ menu->addAction(QIcon(":/images/icons/add.png"), tr("Garder pour plus tard"), this, SLOT(viewitlater())); }
-		menu->addSeparator();
-		menu->addAction(QIcon(":/images/icons/tab.png"), tr("Ouvrir dans un nouvel onglet"), this, SLOT(openInNewTab()));
-		menu->addAction(QIcon(":/images/icons/window.png"), tr("Ouvrir dans une nouvelle fenêtre"), this, SLOT(openInNewWindow()));
-	}
-	menu->exec(QCursor::pos());
-}
-void tagTab::openInNewTab()
+void favoritesTab::openInNewTab()
 { _mainwindow->addTab(m_link); }
-void tagTab::openInNewWindow()
+void favoritesTab::openInNewWindow()
 {
 	QProcess myProcess;
 	myProcess.startDetached(qApp->arguments().at(0), QStringList(m_link));
 }
-void tagTab::favorite()
-{
-	QString v = "50|"+QDateTime::currentDateTime().toString(Qt::ISODate);
-	m_favorites->insert(m_link, v);
-	QFile f(savePath("favorites.txt"));
-		f.open(QIODevice::WriteOnly | QIODevice::Append);
-		f.write(QString(m_link+"|"+v+"\r\n").toUtf8());
-	f.close();
-	/*QPixmap img = image;
-	if (img.width() > 150 || img.height() > 150)
-	{ img = img.scaled(QSize(150,150), Qt::KeepAspectRatio, Qt::SmoothTransformation); }
-	if (!QDir(savePath("thumbs")).exists())
-	{ QDir(savePath()).mkdir("thumbs"); }
-	img.save(savePath("thumbs/"+m_link+".png"), "PNG");*/
-	_mainwindow->updateFavorites();
-}
-void tagTab::unfavorite()
-{
-	m_favorites->remove(m_link);
-	QFile f(savePath("favorites.txt"));
-	f.open(QIODevice::ReadOnly);
-		QString favs = f.readAll();
-	f.close();
-	favs.replace("\r\n", "\n").replace("\r", "\n").replace("\n", "\r\n");
-	QRegExp reg(m_link+"\\|(.+)\\r\\n");
-	reg.setMinimal(true);
-	favs.remove(reg);
-	f.open(QIODevice::WriteOnly);
-		f.write(favs.toUtf8());
-	f.close();
-	if (QFile::exists(savePath("thumbs/"+m_link+".png")))
-	{ QFile::remove(savePath("thumbs/"+m_link+".png")); }
-	_mainwindow->updateFavorites();
-}
-void tagTab::viewitlater()
-{
-	QStringList vil = loadViewItLater();
-	vil.append(m_link);
-	QFile f(savePath("viewitlater.txt"));
-	f.open(QIODevice::WriteOnly);
-		f.write(vil.join("\r\n").toUtf8());
-	f.close();
-}
-void tagTab::unviewitlater()
-{
-	QStringList vil = loadViewItLater();
-	vil.removeAll(m_link);
-	QFile f(savePath("viewitlater.txt"));
-	f.open(QIODevice::WriteOnly);
-		f.write(vil.join("\r\n").toUtf8());
-	f.close();
-}
 
-QList<bool> tagTab::sources()
+QList<bool> favoritesTab::sources()
 { return m_selectedSources; }
 
-void tagTab::historyBack()
+void favoritesTab::historyBack()
 {
 	if (m_history_cursor > 0)
 	{
@@ -843,7 +793,7 @@ void tagTab::historyBack()
 		{ ui->buttonHistoryBack->setEnabled(false); }
 	}
 }
-void tagTab::historyNext()
+void favoritesTab::historyNext()
 {
 	if (m_history_cursor < m_history.size() - 1)
 	{
@@ -861,6 +811,110 @@ void tagTab::historyNext()
 	}
 }
 
-QString tagTab::tags()		{ return m_search->toPlainText();	}
-QString tagTab::results()	{ return m_tags;					}
-QString tagTab::wiki()		{ return m_wiki;					}
+QString favoritesTab::tags()	{ return m_currentTags;	}
+QString favoritesTab::results()	{ return m_tags;		}
+QString favoritesTab::wiki()	{ return m_wiki;		}
+
+void favoritesTab::loadFavorite(int id)
+{
+	ui->widgetResults->show();
+	QString tag = m_favorites->keys().at(id);
+	m_currentTags = tag;
+	m_loadFavorite = QDateTime::fromString(m_favorites->value(tag).section('|', 1, 1), Qt::ISODate);
+	load();
+}
+void favoritesTab::checkFavorites()
+{
+	ui->widgetFavorites->show();
+	m_currentFav = -1;
+	m_currentTags = QString();
+	loadNextFavorite();
+}
+void favoritesTab::loadNextFavorite()
+{
+	if (m_currentFav+1 >= m_favorites->size())
+	{ return; }
+	else
+	{
+		m_currentFav++;
+		m_currentTags = m_favorites->keys().at(m_currentFav);
+		m_loadFavorite = QDateTime::fromString(m_favorites->value(m_currentTags).section('|', 1, 1), Qt::ISODate);
+		load();
+	}
+}
+void favoritesTab::viewed()
+{
+	if (m_currentTags.isEmpty())
+	{
+		int reponse = QMessageBox::question(this, tr("Grabber - Marquer comme vu"), tr("Êtes-vous sûr de vouloir marquer tous vos favoris comme vus ?"), QMessageBox::Yes | QMessageBox::No);
+		if (reponse == QMessageBox::Yes)
+		{
+			QStringList keys = m_favorites->keys();
+			for (int i = 0; i < keys.count(); i++)
+			{ setFavoriteViewed(keys.at(i)); }
+		}
+	}
+	else
+	{ setFavoriteViewed(m_currentTags); }
+	updateFavorites();
+	m_parent->updateFavoritesDock();
+}
+void favoritesTab::setFavoriteViewed(QString tag)
+{
+	log(tr("Marquage comme vu de %1...").arg(tag));
+	QFile f(savePath("favorites.txt"));
+	f.open(QIODevice::ReadOnly);
+		QString favs = f.readAll();
+	f.close();
+	favs.replace("\r\n", "\n").replace("\r", "\n").replace("\n", "\r\n");
+	QRegExp reg(tag+"\\|([^|]+)\\|([^|]+)\r\n");
+	reg.setMinimal(true);
+	favs.replace(reg, tag+"|\\1|"+QDateTime::currentDateTime().toString(Qt::ISODate)+"\r\n");
+	f.open(QIODevice::WriteOnly);
+		f.write(favs.toUtf8());
+	f.close();
+	DONE();
+}
+void favoritesTab::favoritesBack()
+{
+	ui->widgetResults->hide();
+	ui->widgetFavorites->show();
+	if (!m_currentTags.isEmpty() || m_currentFav != -1)
+	{
+		m_currentTags = "";
+		m_currentFav = -1;
+		ui->widgetFavorites->show();
+		/*if (!m_replies.isEmpty() && m_currentFav < 1)
+		{
+			for (int i = 0; i < m_replies.count(); i++)
+			{ m_replies.at(i)->abort(); }
+			qDeleteAll(m_replies);
+			m_replies.clear();
+		}
+		if (!m_webPics.isEmpty() && m_currentFav < 1)
+		{
+			qDeleteAll(m_webPics);
+			m_webPics.clear();
+			m_details.clear();
+		}
+		if (!m_webSites.isEmpty() && m_currentFav < 1)
+		{
+			for (int i = 0; i < m_webSites.count()*11; i++)
+			{ ui->layoutFavoritesResults->setRowMinimumHeight(i, 0); }
+			qDeleteAll(m_webSites);
+			m_webSites.clear();
+		}*/
+	}
+}
+void favoritesTab::favoriteProperties(int id)
+{
+	if (id == -1)
+	{ id = m_currentFav; }
+	QString tag = m_favorites->keys().at(id);
+	QStringList xp = m_favorites->value(tag).split("|");
+	int note = xp.isEmpty() ? 50 : xp.takeFirst().toInt();
+	QDateTime lastviewed = xp.isEmpty() ? QDateTime(QDate(2000, 1, 1), QTime(0, 0, 0, 0)) : QDateTime::fromString(xp.takeFirst(), Qt::ISODate);
+	favoriteWindow *fwin = new favoriteWindow(tag, note, lastviewed, this);
+	connect(fwin, SIGNAL(favoritesChanged()), this, SLOT(updateFavorites()));
+	fwin->show();
+}
