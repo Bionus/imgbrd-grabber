@@ -76,12 +76,13 @@ class favoritesTab : public searchTab
         void optionsChanged();
         void closeEvent(QCloseEvent*);
 		void toggleImage(int, bool);
+		void addTabFavorite(int);
 
     signals:
 		void batchAddGroup(QStringList);
 		void batchAddUnique(QMap<QString,QString>);
-		void changed(favoritesTab*);
-		void closed(favoritesTab*);
+		void changed(searchTab*);
+		void closed(searchTab*);
 
     private:
         int										m_id;

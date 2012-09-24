@@ -516,9 +516,12 @@ void zoomWindow::replyFinishedZoom()
 		m_url = m_url.section('.', 0, -2)+"."+nextext[ext];
 		log(tr("Image non trouvée. Nouvel essai avec l'extension %1...").arg(nextext[ext]));
 		load();
+		return;
 	}
 	else if (m_reply->error() != QNetworkReply::OperationCanceledError)
-	{ error(this, tr("Une erreur inattendue est survenue lors du chargement de l'image.\r\n%1").arg(m_reply->url().toString())); }
+	{
+		error(this, tr("Une erreur inattendue est survenue lors du chargement de l'image.\r\n%1").arg(m_reply->url().toString()));
+	}
 
 	m_reply->deleteLater();
 	m_replyExists = false;

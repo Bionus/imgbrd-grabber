@@ -176,6 +176,12 @@ void favoritesTab::updateFavorites()
 	}
 }
 
+void favoritesTab::addTabFavorite(int id)
+{
+	QString tag = m_favorites->keys().at(id);
+	m_parent->addTab(tag);
+}
+
 void favoritesTab::optionsChanged()
 {
 	log(tr("Mise à jour des options de l'onglet \"%1\".").arg(windowTitle()));
