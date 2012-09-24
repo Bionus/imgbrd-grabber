@@ -496,8 +496,8 @@
    <slot>previousPage()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>59</x>
-     <y>184</y>
+     <x>75</x>
+     <y>483</y>
     </hint>
     <hint type="destinationlabel">
      <x>75</x>
@@ -512,8 +512,8 @@
    <slot>firstPage()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>25</x>
-     <y>192</y>
+     <x>35</x>
+     <y>483</y>
     </hint>
     <hint type="destinationlabel">
      <x>31</x>
@@ -528,8 +528,8 @@
    <slot>getPage()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>525</x>
-     <y>193</y>
+     <x>587</x>
+     <y>483</y>
     </hint>
     <hint type="destinationlabel">
      <x>606</x>
@@ -544,8 +544,8 @@
    <slot>nextPage()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>737</x>
-     <y>185</y>
+     <x>751</x>
+     <y>483</y>
     </hint>
     <hint type="destinationlabel">
      <x>749</x>
@@ -560,8 +560,8 @@
    <slot>lastPage()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>773</x>
-     <y>184</y>
+     <x>787</x>
+     <y>483</y>
     </hint>
     <hint type="destinationlabel">
      <x>793</x>
@@ -576,8 +576,8 @@
    <slot>getAll()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>632</x>
-     <y>181</y>
+     <x>715</x>
+     <y>483</y>
     </hint>
     <hint type="destinationlabel">
      <x>699</x>
@@ -592,8 +592,8 @@
    <slot>getSel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>436</x>
-     <y>186</y>
+     <x>459</x>
+     <y>483</y>
     </hint>
     <hint type="destinationlabel">
      <x>515</x>
@@ -608,8 +608,8 @@
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>772</x>
-     <y>74</y>
+     <x>787</x>
+     <y>60</y>
     </hint>
     <hint type="destinationlabel">
      <x>770</x>
@@ -625,7 +625,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>751</x>
-     <y>79</y>
+     <y>60</y>
     </hint>
     <hint type="destinationlabel">
      <x>585</x>
@@ -640,8 +640,8 @@
    <slot>historyBack()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>15</x>
-     <y>77</y>
+     <x>25</x>
+     <y>60</y>
     </hint>
     <hint type="destinationlabel">
      <x>23</x>
@@ -656,8 +656,8 @@
    <slot>favoritesBack()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>125</x>
-     <y>181</y>
+     <x>203</x>
+     <y>483</y>
     </hint>
     <hint type="destinationlabel">
      <x>70</x>
@@ -672,8 +672,8 @@
    <slot>historyNext()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>48</x>
-     <y>73</y>
+     <x>57</x>
+     <y>60</y>
     </hint>
     <hint type="destinationlabel">
      <x>50</x>
@@ -688,12 +688,28 @@
    <slot>viewed()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>321</x>
-     <y>185</y>
+     <x>331</x>
+     <y>483</y>
     </hint>
     <hint type="destinationlabel">
      <x>359</x>
      <y>208</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_2</sender>
+   <signal>clicked()</signal>
+   <receiver>favoritesTab</receiver>
+   <slot>viewed()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>692</x>
+     <y>514</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>687</x>
+     <y>491</y>
     </hint>
    </hints>
   </connection>

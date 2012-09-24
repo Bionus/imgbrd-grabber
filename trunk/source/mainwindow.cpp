@@ -216,7 +216,6 @@ void mainWindow::init()
 	connect(m_favoritesTab, SIGNAL(batchAddGroup(QStringList)), this, SLOT(batchAddGroup(QStringList)));
 	connect(m_favoritesTab, SIGNAL(batchAddUnique(QMap<QString,QString>)), this, SLOT(batchAddUnique(QMap<QString,QString>)));
 	connect(m_favoritesTab, SIGNAL(changed(searchTab*)), this, SLOT(updateTabs()));
-	connect(m_favoritesTab, SIGNAL(closed(searchTab*)), this, SLOT(tabClosed(searchTab*)));
 	ui->tabWidget->insertTab(ui->tabWidget->currentIndex()+(!m_tabs.isEmpty()), m_favoritesTab, tr("Favoris"));
 
 	// Console usage
@@ -353,7 +352,7 @@ int mainWindow::addTab(QString tag)
 	connect(w, SIGNAL(batchAddUnique(QMap<QString,QString>)), this, SLOT(batchAddUnique(QMap<QString,QString>)));
 	connect(w, SIGNAL(titleChanged(searchTab*)), this, SLOT(updateTabTitle(searchTab*)));
 	connect(w, SIGNAL(changed(searchTab*)), this, SLOT(updateTabs()));
-	connect(w, SIGNAL(closed(searchTab*)), this, SLOT(tabClosed(searchTab*)));
+	connect(w, SIGNAL(closed(tagTab*)), this, SLOT(tabClosed(tagTab*)));
 	int index = ui->tabWidget->insertTab(ui->tabWidget->currentIndex()+(!m_tabs.isEmpty()), w, tr("Nouvel onglet"));
 	m_tabs.append(w);
 	m_tagTabs.append(w);
@@ -361,6 +360,7 @@ int mainWindow::addTab(QString tag)
 	QPushButton *closeTab = new QPushButton(QIcon(":/images/close.png"), "", this);
 		closeTab->setFlat(true);
 		closeTab->resize(QSize(8,8));
+		// TODO : put action manager to remove as well as deleteLater()
 		connect(closeTab, SIGNAL(clicked()), w, SLOT(deleteLater()));
 		ui->tabWidget->findChild<QTabBar*>()->setTabButton(index, QTabBar::RightSide, closeTab);
 	if (!tag.isEmpty())
@@ -375,7 +375,7 @@ int mainWindow::addPoolTab(int pool)
 	connect(w, SIGNAL(batchAddUnique(QMap<QString,QString>)), this, SLOT(batchAddUnique(QMap<QString,QString>)));
 	connect(w, SIGNAL(titleChanged(searchTab*)), this, SLOT(updateTabTitle(searchTab*)));
 	connect(w, SIGNAL(changed(searchTab*)), this, SLOT(updateTabs()));
-	connect(w, SIGNAL(closed(searchTab*)), this, SLOT(tabClosed(searchTab*)));
+	connect(w, SIGNAL(closed(poolTab*)), this, SLOT(tabClosed(poolTab*)));
 	int index = ui->tabWidget->insertTab(ui->tabWidget->currentIndex()+(!m_tabs.isEmpty()), w, tr("Nouvel onglet"));
 	m_tabs.append(w);
 	m_poolTabs.append(w);
@@ -394,9 +394,15 @@ bool mainWindow::saveTabs(QString filename)
 {
 	QStringList tabs = QStringList();
 	foreach (tagTab *tab, m_tagTabs)
-	{ tabs.append(tab->tags()+"¤"+QString::number(tab->ui->spinPage->value())+"¤"+QString::number(tab->ui->spinImagesPerPage->value())+"¤"+QString::number(tab->ui->spinColumns->value())); }
+	{
+		if (tab != NULL)
+		{ tabs.append(tab->tags()+"¤"+QString::number(tab->ui->spinPage->value())+"¤"+QString::number(tab->ui->spinImagesPerPage->value())+"¤"+QString::number(tab->ui->spinColumns->value())); }
+	}
 	foreach (poolTab *tab, m_poolTabs)
-	{ tabs.append(QString::number(tab->ui->spinPool->value())+"¤"+QString::number(tab->ui->comboSites->currentIndex())+"¤"+tab->tags()+"¤"+QString::number(tab->ui->spinPage->value())+"¤"+QString::number(tab->ui->spinImagesPerPage->value())+"¤"+QString::number(tab->ui->spinColumns->value())+"¤pool"); }
+	{
+		if (tab != NULL)
+		{ tabs.append(QString::number(tab->ui->spinPool->value())+"¤"+QString::number(tab->ui->comboSites->currentIndex())+"¤"+tab->tags()+"¤"+QString::number(tab->ui->spinPage->value())+"¤"+QString::number(tab->ui->spinImagesPerPage->value())+"¤"+QString::number(tab->ui->spinColumns->value())+"¤pool"); }
+	}
 
 	QFile f(filename);
 	if (f.open(QFile::WriteOnly))
@@ -447,19 +453,22 @@ bool mainWindow::loadTabs(QString filename)
 	}
 	return false;
 }
-void mainWindow::addTabFavorite(int id)
-{
-	QString tag = m_favorites.keys().at(id);
-	addTab(tag);
-}
 void mainWindow::updateTabTitle(searchTab *tab)
 { ui->tabWidget->setTabText(ui->tabWidget->indexOf(tab), tab->windowTitle()); }
 void mainWindow::updateTabs()
 { saveTabs(savePath("tabs.txt")); }
+void mainWindow::tabClosed(tagTab *tab)
+{
+	m_tagTabs.removeAll(tab);
+	m_tabs.removeAll((searchTab*)tab);
+}
+void mainWindow::tabClosed(poolTab *tab)
+{
+	m_poolTabs.removeAll(tab);
+	m_tabs.removeAll((searchTab*)tab);
+}
 void mainWindow::tabClosed(searchTab *tab)
 { m_tabs.removeAll(tab); }
-void mainWindow::tabClosed(int tab)
-{ }
 void mainWindow::currentTabChanged(int tab)
 {
 	if (m_loaded)
@@ -469,8 +478,8 @@ void mainWindow::currentTabChanged(int tab)
 			searchTab *tb = m_favoritesTab;
 			if (tab < m_tabs.size())
 			{ tb = m_tabs[tab]; }
-			ui->labelTags->setText(tb->results());
-			ui->labelWiki->setText("<style>.title { font-weight: bold; } ul { margin-left: -30px; }</style>"+tb->wiki());
+			/*ui->labelTags->setText(tb->results());
+			ui->labelWiki->setText("<style>.title { font-weight: bold; } ul { margin-left: -30px; }</style>"+tb->wiki());*/
 		}
 	}
 }

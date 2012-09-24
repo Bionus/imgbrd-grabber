@@ -113,15 +113,15 @@ class mainWindow : public QMainWindow
 		// Tabs
 		int addTab(QString tag = "");
 		int addPoolTab(int pool = 0);
-        void addTabFavorite(int);
 		void updateTabTitle(searchTab*);
-		void tabClosed(searchTab *);
-		void tabClosed(int);
+		void tabClosed(tagTab*);
+		void tabClosed(poolTab*);
+		void tabClosed(searchTab*);
         void currentTabChanged(int);
         void closeCurrentTab();
         void loadTag(QString tag);
         bool saveTabs(QString);
-        bool loadTabs(QString);
+		bool loadTabs(QString);
         void updateTabs();
 
     private:

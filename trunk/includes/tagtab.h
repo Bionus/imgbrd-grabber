@@ -78,8 +78,8 @@ class tagTab : public searchTab
     signals:
 		void batchAddGroup(QStringList);
 		void batchAddUnique(QMap<QString,QString>);
-		void titleChanged(tagTab*);
-		void changed(tagTab*);
+		void titleChanged(searchTab*);
+		void changed(searchTab*);
 		void closed(tagTab*);
 
 	private:
