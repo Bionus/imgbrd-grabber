@@ -355,10 +355,10 @@ QStrP getReplace(QString setting, QMap<QString,QStringList> details, QSettings *
 {
 	QString first = "", second = "";
 	int limit = settings->value(setting+"_multiple_limit", 1).toInt();
+	QString separator = settings->value(setting+"_sep", " ").toString();
 	if (details[setting+"s"].size() > limit)
 	{
 		QString whatToDo = settings->value(setting+"_multiple", "replaceAll").toString();
-		QString separator = settings->value(setting+"_sep", " ").toString();
 		if (whatToDo == "keepAll")
 		{ first = details[setting+"s"].join(separator); }
 		else if (whatToDo == "keepN")
@@ -377,6 +377,8 @@ QStrP getReplace(QString setting, QMap<QString,QStringList> details, QSettings *
 		else
 		{ first = settings->value(setting+"_value").toString(); }
 	}
+	else
+	{ first = first = details[setting+"s"].join(separator); }
 	second = settings->value(setting+"_empty").toString();
 	return QStrP(first, second);
 }

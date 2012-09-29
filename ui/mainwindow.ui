@@ -40,7 +40,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <property name="movable">
        <bool>true</bool>
@@ -861,6 +861,33 @@
    </property>
   </action>
  </widget>
+ <tabstops>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>tableBatchGroups</tabstop>
+  <tabstop>pushButton_12</tabstop>
+  <tabstop>tableBatchUniques</tabstop>
+  <tabstop>pushButton_13</tabstop>
+  <tabstop>pushButton</tabstop>
+  <tabstop>pushButton_14</tabstop>
+  <tabstop>buttonSaveLinkList</tabstop>
+  <tabstop>buttonLoadLinkList</tabstop>
+  <tabstop>buttonClearSel</tabstop>
+  <tabstop>buttonClear</tabstop>
+  <tabstop>scrollArea</tabstop>
+  <tabstop>buttonClearlog</tabstop>
+  <tabstop>buttonOpenLog</tabstop>
+  <tabstop>scrollArea_2</tabstop>
+  <tabstop>scrollArea_3</tabstop>
+  <tabstop>comboOrderFav</tabstop>
+  <tabstop>comboAscFav</tabstop>
+  <tabstop>scrollArea_5</tabstop>
+  <tabstop>scrollArea_4</tabstop>
+  <tabstop>lineFolder</tabstop>
+  <tabstop>buttonFolder</tabstop>
+  <tabstop>lineFilename</tabstop>
+  <tabstop>buttonInitSettings</tabstop>
+  <tabstop>buttonSaveSettings</tabstop>
+ </tabstops>
  <resources>
   <include location="../resources.qrc"/>
  </resources>
@@ -1157,7 +1184,7 @@
    <sender>actionMd5Fix</sender>
    <signal>triggered()</signal>
    <receiver>mainWindow</receiver>
-   <slot>md5Fix()</slot>
+   <slot>md5FixOpen()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>
@@ -1272,7 +1299,7 @@
    <slot>logClear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>506</x>
+     <x>332</x>
      <y>526</y>
     </hint>
     <hint type="destinationlabel">
@@ -1304,7 +1331,7 @@
    <slot>logOpen()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>785</x>
+     <x>612</x>
      <y>526</y>
     </hint>
     <hint type="destinationlabel">
@@ -1366,6 +1393,6 @@
   <slot>logOpen()</slot>
   <slot>saveSettings()</slot>
   <slot>addPoolTab()</slot>
-  <slot>md5Fix()</slot>
+  <slot>md5FixOpen()</slot>
  </slots>
 </ui>

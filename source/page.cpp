@@ -1,5 +1,5 @@
 #include <QSettings>
-#include <QDebug>
+#include <QFile>
 #include "page.h"
 #include "json.h"
 #include "math.h"
@@ -117,7 +117,7 @@ void Page::fallback()
 		url.replace("{limit}", QString::number(m_imagesPerPage));
 		url.replace("{pseudo}", settings.value("Login/pseudo").toString());
 		url.replace("{password}", settings.value("Login/password").toString());
-		m_urlRegex = QUrl(url);
+		m_urlRegex = QUrl::fromEncoded(url.toUtf8());
 	}
 	else if (m_site.contains("Urls/Html/Tags"))
 	{
@@ -127,7 +127,7 @@ void Page::fallback()
 		url.replace("{limit}", QString::number(m_imagesPerPage));
 		url.replace("{pseudo}", settings.value("Login/pseudo").toString());
 		url.replace("{password}", settings.value("Login/password").toString());
-		m_urlRegex = QUrl(url);
+		m_urlRegex = QUrl::fromEncoded(url.toUtf8());
 	}
 	else
 	{ m_urlRegex = ""; }
@@ -160,12 +160,15 @@ void Page::abort()
 
 void Page::loadTags()
 {
-	if (!m_url.isEmpty())
+	if (!m_urlRegex.isEmpty())
 	{
 		QNetworkAccessManager *manager = new QNetworkAccessManager(this);
 		connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(parseTags(QNetworkReply*)));
 		connect(manager, SIGNAL(sslErrors(QNetworkReply*, QList<QSslError>)), this, SLOT(sslErrorHandler(QNetworkReply*, QList<QSslError>)));
-		m_replyTags = manager->get(QNetworkRequest(m_url));
+
+		QNetworkRequest r(m_urlRegex);
+			r.setRawHeader("Referer", m_urlRegex.toString().toUtf8());
+		m_replyTags = manager->get(r);
 		m_replyTagsExists = true;
 	}
 }
@@ -579,7 +582,7 @@ void Page::parseTags(QNetworkReply *r)
 		QRegExp rxtags(m_site["Regex/Tags"]);
 		rxtags.setMinimal(true);
 		int p = 0;
-		while (((p = rxtags.indexIn(source, p)) != -1))
+		while ((p = rxtags.indexIn(source, p)) != -1)
 		{
 			p += rxtags.matchedLength();
 			if (rxtags.captureCount() == 4)
@@ -595,8 +598,10 @@ void Page::parseTags(QNetworkReply *r)
 		QRegExp rxwiki(m_site["Regex/Wiki"]);
 		rxwiki.setMinimal(true);
 		if (rxwiki.indexIn(source) != -1)
-		{ m_wiki = rxwiki.cap(1); }
-		m_wiki.remove("/wiki/show?title=").remove(QRegExp("<p><a href=\"([^\"]+)\">Full entry &raquo;</a></p>")).replace("<h6>", "<span class=\"title\">").replace("</h6>", "</span>");
+		{
+			m_wiki = rxwiki.cap(1);
+			m_wiki.remove("/wiki/show?title=").remove(QRegExp("<p><a href=\"([^\"]+)\">Full entry &raquo;</a></p>")).replace("<h6>", "<span class=\"title\">").replace("</h6>", "</span>");
+		}
 	}
 
 	m_replyTags->deleteLater();
