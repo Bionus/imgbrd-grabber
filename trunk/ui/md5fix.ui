@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>395</width>
-    <height>167</height>
+    <width>346</width>
+    <height>200</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,37 +21,44 @@
    <property name="fieldGrowthPolicy">
     <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
    </property>
-   <item row="0" column="0">
+   <item row="1" column="0">
     <widget class="QLabel" name="label">
      <property name="text">
       <string>Dossier</string>
      </property>
     </widget>
    </item>
-   <item row="0" column="1">
+   <item row="1" column="1">
     <widget class="QLineEdit" name="lineFolder"/>
    </item>
-   <item row="3" column="0">
+   <item row="2" column="0" colspan="2">
+    <widget class="QRadioButton" name="radioForce">
+     <property name="text">
+      <string>Forcer le calcul du md5</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0" colspan="2">
+    <widget class="QRadioButton" name="radioFilename">
+     <property name="text">
+      <string>Récupérer le md5 dans le nom du fichier</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0">
     <widget class="QLabel" name="label_2">
      <property name="text">
       <string>Noms de fichiers</string>
      </property>
     </widget>
    </item>
-   <item row="3" column="1">
+   <item row="4" column="1">
     <widget class="QLineEdit" name="lineFilename"/>
    </item>
-   <item row="4" column="0">
-    <widget class="QLabel" name="label_4">
-     <property name="text">
-      <string>Source</string>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="1">
-    <widget class="QComboBox" name="comboSource"/>
-   </item>
-   <item row="5" column="0" colspan="2">
+   <item row="6" column="0" colspan="2">
     <layout class="QHBoxLayout" name="horizontalLayout_4">
      <item>
       <spacer name="horizontalSpacer">
@@ -60,41 +67,44 @@
        </property>
        <property name="sizeHint" stdset="0">
         <size>
-         <width>40</width>
-         <height>20</height>
+         <width>0</width>
+         <height>0</height>
         </size>
        </property>
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="buttonContinue">
+      <widget class="QPushButton" name="buttonStart">
        <property name="text">
-        <string>Continuer</string>
+        <string>Démarrer</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="buttonCancel">
        <property name="text">
-        <string>Annuler</string>
+        <string>Fermer</string>
        </property>
       </widget>
      </item>
     </layout>
    </item>
-   <item row="1" column="0" colspan="2">
-    <widget class="QRadioButton" name="radioForce">
-     <property name="text">
-      <string>Forcer le calcul du md5</string>
+   <item row="5" column="0" colspan="2">
+    <widget class="QProgressBar" name="progressBar">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="format">
+      <string>%p/%m</string>
      </property>
     </widget>
    </item>
-   <item row="2" column="0" colspan="2">
-    <widget class="QRadioButton" name="radioFilename">
+   <item row="0" column="0" colspan="2">
+    <widget class="QLabel" name="label_3">
      <property name="text">
-      <string>Récupérer le md5 dans le nom du fichier</string>
+      <string>Cet outil va vider votre liste de MD5 et la remplir à nouveau avec les MD5 des fichiers trouvés dans le dossier précisé ci-dessous.</string>
      </property>
-     <property name="checked">
+     <property name="wordWrap">
       <bool>true</bool>
      </property>
     </widget>
@@ -106,8 +116,7 @@
   <tabstop>radioForce</tabstop>
   <tabstop>radioFilename</tabstop>
   <tabstop>lineFilename</tabstop>
-  <tabstop>comboSource</tabstop>
-  <tabstop>buttonContinue</tabstop>
+  <tabstop>buttonStart</tabstop>
   <tabstop>buttonCancel</tabstop>
  </tabstops>
  <resources>

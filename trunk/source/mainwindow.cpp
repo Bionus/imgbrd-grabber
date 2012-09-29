@@ -18,12 +18,13 @@
 #include "aboutwindow.h"
 #include "blacklistfix.h"
 #include "emptydirsfix.h"
+#include "md5fix.h"
 #include "functions.h"
 #include "json.h"
 #include "commands.h"
 #include <QtSql/QSqlDatabase>
 
-#define VERSION	"3.2.0a"
+#define VERSION	"3.2.0"
 #define DONE()	logUpdate(QObject::tr(" Fait"))
 
 extern QMap<QDateTime,QString> _log;
@@ -203,6 +204,7 @@ void mainWindow::init()
 		if (reponse == QMessageBox::Yes)
 		{ restore = true; }
 	}
+	ui->tabWidget->setCurrentIndex(0);
 	if (restore)
 	{
 		loadLinkList(savePath("restore.igl"));
@@ -216,7 +218,7 @@ void mainWindow::init()
 	connect(m_favoritesTab, SIGNAL(batchAddGroup(QStringList)), this, SLOT(batchAddGroup(QStringList)));
 	connect(m_favoritesTab, SIGNAL(batchAddUnique(QMap<QString,QString>)), this, SLOT(batchAddUnique(QMap<QString,QString>)));
 	connect(m_favoritesTab, SIGNAL(changed(searchTab*)), this, SLOT(updateTabs()));
-	ui->tabWidget->insertTab(ui->tabWidget->currentIndex()+(!m_tabs.isEmpty()), m_favoritesTab, tr("Favoris"));
+	ui->tabWidget->insertTab(m_tabs.size(), m_favoritesTab, tr("Favoris"));
 
 	// Console usage
 	if (this->m_params.keys().contains("batch"))
@@ -478,8 +480,8 @@ void mainWindow::currentTabChanged(int tab)
 			searchTab *tb = m_favoritesTab;
 			if (tab < m_tabs.size())
 			{ tb = m_tabs[tab]; }
-			/*ui->labelTags->setText(tb->results());
-			ui->labelWiki->setText("<style>.title { font-weight: bold; } ul { margin-left: -30px; }</style>"+tb->wiki());*/
+			ui->labelTags->setText(tb->results());
+			ui->labelWiki->setText("<style>.title { font-weight: bold; } ul { margin-left: -30px; }</style>"+tb->wiki());
 		}
 	}
 }
@@ -1520,6 +1522,11 @@ void mainWindow::emptyDirsFix()
 	EmptyDirsFix *edf = new EmptyDirsFix(this);
 	edf->show();
 }
+void mainWindow::md5FixOpen()
+{
+	md5Fix *md5f = new md5Fix(this);
+	md5f->show();
+}
 
 void mainWindow::on_buttonSaveLinkList_clicked()
 {
@@ -1668,6 +1675,8 @@ void mainWindow::on_buttonFolder_clicked()
 }
 void mainWindow::on_buttonSaveSettings_clicked()
 {
+	if (!QDir(ui->lineFolder->text()).exists())
+	{ QDir::root().mkpath(ui->lineFolder->text()); }
 	m_settings->setValue("Save/path_real", ui->lineFolder->text());
 	m_settings->setValue("Save/filename_real", ui->lineFilename->text());
 	saveSettings();

@@ -56,6 +56,7 @@ class mainWindow : public QMainWindow
         void saveFolder();
         void blacklistFix();
         void emptyDirsFix();
+		void md5FixOpen();
         // Language
         void switchTranslator(QTranslator&, const QString&);
         void loadLanguage(const QString&, bool shutup = false);
