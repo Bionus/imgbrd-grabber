@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>190</height>
+    <height>215</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -63,6 +63,16 @@
         <bool>true</bool>
        </property>
        <property name="openExternalLinks">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Merci à YMI pour son aide à la recherche et résolution de bugs, ainsi que toutes ses suggestions pour le programme.</string>
+       </property>
+       <property name="wordWrap">
         <bool>true</bool>
        </property>
       </widget>
