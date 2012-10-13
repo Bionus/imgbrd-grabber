@@ -813,6 +813,11 @@
     </message>
     <message>
         <location filename="../ui/aboutwindow.ui" line="73"/>
+        <source>Merci à YMI pour son aide à la recherche et résolution de bugs, ainsi que toutes ses suggestions pour le programme.</source>
+        <translation>Special thanks to YMI for his help looking and solving bugs, as well as suggesting new features for the program.</translation>
+    </message>
+    <message>
+        <location filename="../ui/aboutwindow.ui" line="83"/>
         <source>Traduction russe par Станислав Егоров.</source>
         <translation>Russian translation byr Станислав Егоров.</translation>
     </message>

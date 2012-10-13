@@ -821,6 +821,11 @@
     </message>
     <message>
         <location filename="../ui/aboutwindow.ui" line="73"/>
+        <source>Merci à YMI pour son aide à la recherche et résolution de bugs, ainsi que toutes ses suggestions pour le programme.</source>
+        <translation>Merci à YMI pour son aide à la recherche et résolution de bugs, ainsi que toutes ses suggestions pour le programme.</translation>
+    </message>
+    <message>
+        <location filename="../ui/aboutwindow.ui" line="83"/>
         <source>Traduction russe par Станислав Егоров.</source>
         <translation>Traduction russe par Станислав Егоров.</translation>
     </message>
@@ -4467,7 +4472,7 @@ Voulez-vous régler ces options maintenant ? Vous devez régler le dossier de sa
         <location filename="../source/zoomwindow.cpp" line="625"/>
         <source>Erreur lors de la sauvegarde de l&apos;image.
 %1</source>
-        <translation>Une erreur inattendue est survenue lors du chargement de l&apos;image.
+        <translation type="unfinished">Une erreur inattendue est survenue lors du chargement de l&apos;image.
 %1</translation>
     </message>
     <message>
