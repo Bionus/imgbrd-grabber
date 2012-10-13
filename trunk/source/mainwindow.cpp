@@ -24,7 +24,7 @@
 #include "commands.h"
 #include <QtSql/QSqlDatabase>
 
-#define VERSION	"3.2.0"
+#define VERSION	"3.2.1"
 #define DONE()	logUpdate(QObject::tr(" Fait"))
 
 extern QMap<QDateTime,QString> _log;
@@ -1151,18 +1151,7 @@ void mainWindow::_getAll()
 					_getAll();
 				}
 				else
-				{
-					log(tr("Chargement de l'image depuis <a href=\"%1\">%1</a>").arg(img->fileUrl().toString()));
-					m_progressdialog->loadingImage(img->url());
-					m_downloadTime.insert(img->url(), new QTime);
-					m_downloadTime[img->url()]->start();
-					m_downloadTimeLast.insert(img->url(), new QTime);
-					m_downloadTimeLast[img->url()]->start();
-					connect(img, SIGNAL(finishedImage(Image*)), this, SLOT(getAllPerformImage(Image*)), Qt::UniqueConnection);
-					connect(img, SIGNAL(downloadProgressImage(Image*,qint64,qint64)), this, SLOT(getAllProgress(Image*,qint64,qint64)), Qt::UniqueConnection);
-					m_getAllDownloadingSpeeds.insert(img->url(), 0);
-					img->loadImage();
-				}
+				{ getAllGetImage(img); }
 			}
 			else
 			{
@@ -1205,6 +1194,7 @@ void mainWindow::_getAll()
 			}
 		}
 		activateWindow();
+		m_getAll = false;
 		QMessageBox::information(
 			this,
 			tr("Récupération des images"),
@@ -1223,6 +1213,7 @@ void mainWindow::_getAll()
 			reponse = QMessageBox::question(this, tr("Récupération des images"), tr("Des erreurs sont survenues pendant le téléchargement des images. Voulez vous relancer le téléchargement de celles-ci ? (%1/%2)").arg(m_getAllErrors).arg(m_progressdialog->count()), QMessageBox::Yes | QMessageBox::No);
 			if (reponse == QMessageBox::Yes)
 			{
+				m_getAll = true;
 				m_progressdialog->clear();
 				qDeleteAll(m_getAllRemaining);
 				m_getAllRemaining.clear();
@@ -1241,7 +1232,6 @@ void mainWindow::_getAll()
 		if (reponse != QMessageBox::Yes)
 		{
 			Commands::get()->after();
-			m_getAll = false;
 			ui->widgetDownloadButtons->setDisabled(false);
 			log(tr("Téléchargement groupé terminé"));
 		}
@@ -1347,18 +1337,7 @@ void mainWindow::getAllPerformTags(Image* img)
 			_getAll();
 		}
 		else
-		{
-			log(tr("Chargement de l'image depuis <a href=\"%1\">%1</a>").arg(img->fileUrl().toString()));
-			m_progressdialog->loadingImage(img->url());
-			m_downloadTime.insert(img->url(), new QTime);
-			m_downloadTime[img->url()]->start();
-			m_downloadTimeLast.insert(img->url(), new QTime);
-			m_downloadTimeLast[img->url()]->start();
-			connect(img, SIGNAL(finishedImage(Image*)), this, SLOT(getAllPerformImage(Image*)), Qt::UniqueConnection);
-			connect(img, SIGNAL(downloadProgressImage(Image*,qint64,qint64)), this, SLOT(getAllProgress(Image*,qint64,qint64)), Qt::UniqueConnection);
-			m_getAllDownloadingSpeeds.insert(img->url(), 0);
-			img->loadImage();
-		}
+		{ getAllGetImage(img); }
 	}
 	else
 	{
@@ -1374,6 +1353,80 @@ void mainWindow::getAllPerformTags(Image* img)
 			if (m_progressBars[site_id]->value() >= m_progressBars[site_id]->maximum())
 			{ ui->tableBatchGroups->item(site_id, 0)->setIcon(QIcon(":/images/colors/green.png")); }
 		}
+		m_getAllDownloadingSpeeds.remove(img->url());
+		m_getAllDownloading.removeAt(m_getAllId);
+		_getAll();
+	}
+}
+void mainWindow::getAllGetImage(Image* img)
+{
+	// Row
+	int site_id = m_progressdialog->batch(img->url());
+	int m_getAllId = -1;
+	for (int i = 0; i < m_getAllDownloading.count(); i++)
+	{
+		if (m_getAllDownloading[i]->url() == img->url())
+		{ m_getAllId = i; }
+	}
+
+	// Path
+	QString path = m_settings->value("Save/filename").toString();
+	QString p = img->folder().isEmpty() ? m_settings->value("Save/path").toString() : img->folder();
+	if (site_id >= 0)
+	{
+		ui->tableBatchGroups->item(site_id, 0)->setIcon(QIcon(":/images/colors/blue.png"));
+		path = m_groupBatchs[site_id][6];
+		p = m_groupBatchs[site_id][7];
+	}
+	path = img->path(path, p);
+	path.replace("%n%", QString::number(m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors));
+	if (path.left(1) == QDir::toNativeSeparators("/"))	{ path = path.right(path.length()-1);	}
+	if (p.right(1) == QDir::toNativeSeparators("/"))	{ p = p.left(p.length()-1);				}
+	QString fp = QDir::toNativeSeparators(p+"/"+path);
+
+	// Action
+	QString whatToDo = m_settings->value("Save/md5Duplicates", "save").toString();
+	QString md5Duplicate = md5Exists(img->md5());
+	bool next = true;
+	if (md5Duplicate.isEmpty() || whatToDo == "save")
+	{
+		log(tr("Chargement de l'image depuis <a href=\"%1\">%1</a>").arg(img->fileUrl().toString()));
+		m_progressdialog->loadingImage(img->url());
+		m_downloadTime.insert(img->url(), new QTime);
+		m_downloadTime[img->url()]->start();
+		m_downloadTimeLast.insert(img->url(), new QTime);
+		m_downloadTimeLast[img->url()]->start();
+		connect(img, SIGNAL(finishedImage(Image*)), this, SLOT(getAllPerformImage(Image*)), Qt::UniqueConnection);
+		connect(img, SIGNAL(downloadProgressImage(Image*,qint64,qint64)), this, SLOT(getAllProgress(Image*,qint64,qint64)), Qt::UniqueConnection);
+		m_getAllDownloadingSpeeds.insert(img->url(), 0);
+		img->loadImage();
+		next = false;
+	}
+	else if (whatToDo == "copy")
+	{
+		m_getAllIgnored++;
+		log(tr("Copie depuis <a href=\"file:///%1\">%1</a> vers <a href=\"file:///%2\">%2</a>").arg(md5Duplicate).arg(fp));
+		QFile::copy(md5Duplicate, fp);
+	}
+	else if (whatToDo == "move")
+	{
+		m_getAllDownloaded++;
+		log(tr("Déplacement depuis <a href=\"file:///%1\">%1</a> vers <a href=\"file:///%2\">%2</a>").arg(md5Duplicate).arg(fp));
+		QFile::rename(md5Duplicate, fp);
+		setMd5(img->md5(), fp);
+	}
+	else
+	{
+		m_getAllIgnored++;
+		log(tr("MD5 \"%1\" de l'image <a href=\"%2\">%2</a> déjà existant dans le fichier <a href=\"file:///%3\">%3</a>").arg(img->md5(), md5Duplicate));
+	}
+
+	// Continue to next image
+	if (next)
+	{
+		m_progressdialog->setValue(m_progressdialog->value()+img->value());
+		m_progressdialog->setImages(m_progressdialog->images()+1);
+		m_getAllDetails.clear();
 		m_getAllDownloadingSpeeds.remove(img->url());
 		m_getAllDownloading.removeAt(m_getAllId);
 		_getAll();
@@ -1419,47 +1472,45 @@ void mainWindow::getAllPerformImage(Image* img)
 		if (p.right(1) == QDir::toNativeSeparators("/"))	{ p = p.left(p.length()-1);				}
 		QString fp = QDir::toNativeSeparators(p+"/"+path);
 
-		QDir path_to_file(fp.section(QDir::toNativeSeparators("/"), 0, -2)), dir(p);
-		if (!path_to_file.exists() && !dir.mkpath(path.section(QDir::toNativeSeparators("/"), 0, -2)))
+		QString whatToDo = m_settings->value("Save/md5Duplicates", "save").toString();
+		QString md5Duplicate = md5Exists(img->md5());
+		if (md5Duplicate.isEmpty() || whatToDo == "save")
 		{
-			log(tr("Impossible de créer le dossier de destination: %1.").arg(p+"/"+path.section('/', 0, -2)), Error);
-			m_getAllErrors++;
-		}
-		else
-		{
-			QByteArray data = reply->readAll();
-			if (!data.isEmpty())
+			QDir path_to_file(fp.section(QDir::toNativeSeparators("/"), 0, -2)), dir(p);
+			if (!path_to_file.exists() && !dir.mkpath(path.section(QDir::toNativeSeparators("/"), 0, -2)))
 			{
-				QFile f(fp);
-				if (f.open(QIODevice::WriteOnly))
-				{
-					f.write(data);
-					f.close();
-					addMd5(img->md5(), fp);
-				}
-				else
-				{
-					log(tr("Impossible d'ouvrir le fichier de destination: %1.").arg(fp), Error);
-					m_getAllErrors++;
-				}
+				log(tr("Impossible de créer le dossier de destination: %1.").arg(p+"/"+path.section('/', 0, -2)), Error);
+				m_getAllErrors++;
 			}
 			else
 			{
-				log(tr("Rien n'a été reçu pour l'image: <a href=\"%1\">%1</a>.").arg(Qt::escape(img->url())), Error);
-				m_getAllErrors++;
-			}
+				QByteArray data = reply->readAll();
+				if (!data.isEmpty())
+				{
+					addMd5(img->md5(), fp);
+					QFile f(fp);
+					f.open(QIODevice::WriteOnly);
+					f.write(data);
+					f.close();
+				}
+				else
+				{
+					log(tr("Rien n'a été reçu pour l'image: <a href=\"%1\">%1</a>.").arg(Qt::escape(img->url())), Error);
+					m_getAllErrors++;
+				}
 
-			QMap<QString,int> types;
-			types["general"] = 0;
-			types["artist"] = 1;
-			types["general"] = 2;
-			types["copyright"] = 3;
-			types["character"] = 4;
-			types["model"] = 5;
-			types["photo_set"] = 6;
-			for (int i = 0; i < img->tags().count(); i++)
-			{ Commands::get()->tag(img->tags().at(i)); }
-			Commands::get()->image(img, fp);
+				QMap<QString,int> types;
+				types["general"] = 0;
+				types["artist"] = 1;
+				types["general"] = 2;
+				types["copyright"] = 3;
+				types["character"] = 4;
+				types["model"] = 5;
+				types["photo_set"] = 6;
+				for (int i = 0; i < img->tags().count(); i++)
+				{ Commands::get()->tag(img->tags().at(i)); }
+				Commands::get()->image(img, fp);
+			}
 		}
 	}
 	else if (reply->error() == QNetworkReply::ContentNotFoundError)

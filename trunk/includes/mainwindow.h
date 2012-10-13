@@ -92,6 +92,7 @@ class mainWindow : public QMainWindow
         void getAll(bool all = true);
         void getAllImages();
         void getAllFinishedLoading(Page*);
+		void getAllGetImage(Image*);
         void getAllPerformTags(Image*);
         void getAllPerformImage(Image*);
         void getAllProgress(Image*, qint64, qint64);
