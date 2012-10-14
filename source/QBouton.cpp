@@ -17,11 +17,11 @@ void QBouton::setId(QVariant id)
 
 void QBouton::paintEvent(QPaintEvent *event)
 {
-	if (_resizeInsteadOfCropping) // No easy way to resize QPushButton's icon at resize + borders, so we must handle it ourselves
+	QRect region = event->rect();
+	QPainter *painter = new QPainter(this);
+	int p = _border, x = region.x(), y = region.y(), w = iconSize().width(), h = iconSize().height();
+	if (_resizeInsteadOfCropping)
 	{
-		QRect region = event->rect();
-		QPainter *painter = new QPainter(this);
-		int p = _border, x = region.x(), y = region.y(), w = iconSize().width(), h = iconSize().height();
 		float coef, mcoef;
 		coef = float(region.width())/float(w);
 		coef = float(region.height())/float(h) < coef ? float(region.height())/float(h) : coef;
@@ -31,27 +31,26 @@ void QBouton::paintEvent(QPaintEvent *event)
 		mcoef = mcoef > 1 ? 1 : mcoef;
 		w = w*coef;
 		h = h*coef;
-		x += (region.width()-w)/2;
-		y += (region.height()-h)/2;
-		if (w > h)	{ icon().paint(painter, x+p, y+p, w-2*p, w-2*p, Qt::AlignLeft | Qt::AlignTop); h = h-((h*2*p)/w)+2*p-1; }
-		else		{ icon().paint(painter, x+p, y+p, h-2*p, h-2*p, Qt::AlignLeft | Qt::AlignTop); w = w-((w*2*p)/h)+2*p-1; }
-		painter->setClipRect(x, y, w, h);
-		if (this->isChecked())
-		{
-			painter->setBrush(QBrush(QColor(0, 0, 255, 128), Qt::Dense4Pattern));
-			painter->setPen(Qt::NoPen);
-			painter->drawRect(x+p, y+p, w-2*p, h-2*p);
-		}
-		if (p > 0 && _penColor.isValid())
-		{
-			QPen pen(_penColor);
-			pen.setWidth(p*2);
-			painter->setPen(pen);
-			painter->drawRect(x,y,w,h);
-		}
 	}
-	else // Else, we can just use the default qpushbutton resize policy (i.e. cropping) FOR THE MOMENT, BECAUSE IT CAN'T HANDLE BORDERS
-	{ QPushButton::paintEvent(event); }
+	x += (region.width()-w)/2;
+	y += (region.height()-h)/2;
+	if (w > h)	{ icon().paint(painter, x+p, y+p, w-2*p, w-2*p, Qt::AlignLeft | Qt::AlignTop); h = h-((h*2*p)/w)+2*p-1; }
+	else		{ icon().paint(painter, x+p, y+p, h-2*p, h-2*p, Qt::AlignLeft | Qt::AlignTop); w = w-((w*2*p)/h)+2*p-1; }
+	painter->setClipRect(x, y, w, h);
+	if (this->isChecked())
+	{
+		painter->setBrush(QBrush(QColor(0, 0, 255, 128), Qt::Dense4Pattern));
+		painter->setPen(Qt::NoPen);
+		painter->drawRect(x+p, y+p, w-2*p, h-2*p);
+	}
+	if (p > 0 && _penColor.isValid())
+	{
+		QPen pen(_penColor);
+		pen.setWidth(p*2);
+		painter->setPen(pen);
+		painter->drawRect(qMax(x,0), qMax(y,0), qMin(w,size().width()), qMin(h,size().height()));
+	}
+	painter->end();
 }
 
 void QBouton::mousePressEvent(QMouseEvent *event)
