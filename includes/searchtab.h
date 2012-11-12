@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QList>
+#include "QBouton.h"
 #include "image.h"
 
 
@@ -35,6 +36,7 @@ class searchTab : public QWidget
 
 	protected:
         int m_id;
+		QList<QBouton*> m_boutons;
 		QStringList m_selectedImages;
 		QList<Image*> m_selectedImagesPtrs;
 };

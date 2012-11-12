@@ -604,6 +604,7 @@ void tagTab::finishedLoadingPreview(Image *img)
 	int pl = ceil(sqrt(pp));
 	if (m_layouts.size() > page)
 	{ m_layouts[page]->addWidget(l, floor(float(position % pp) / pl), position % pl); }
+	m_boutons.append(l);
 }
 
 void tagTab::webZoom(int id)
@@ -700,6 +701,10 @@ void tagTab::getSel()
 
 		emit batchAddUnique(values);
 	}
+	m_selectedImagesPtrs.clear();
+	m_selectedImages.clear();
+	foreach (QBouton *l, m_boutons)
+	{ l->setChecked(false); }
 }
 
 void tagTab::firstPage()

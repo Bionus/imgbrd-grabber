@@ -575,6 +575,7 @@ void poolTab::finishedLoadingPreview(Image *img)
 	int pp = perpage;
 	if (m_layouts.size() > page)
 	{ m_layouts[page]->addWidget(l, floor(float(position % pp) / pl), position % pl); }
+	m_boutons.append(l);
 }
 
 void poolTab::webZoom(int id)
@@ -645,6 +646,10 @@ void poolTab::getSel()
 
 		emit batchAddUnique(values);
 	}
+	m_selectedImagesPtrs.clear();
+	m_selectedImages.clear();
+	foreach (QBouton *l, m_boutons)
+	{ l->setChecked(false); }
 }
 
 void poolTab::firstPage()
