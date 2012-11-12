@@ -156,7 +156,7 @@
         </sizepolicy>
        </property>
        <property name="currentIndex">
-        <number>8</number>
+        <number>10</number>
        </property>
        <widget class="QWidget" name="page1">
         <layout class="QFormLayout" name="formLayout_14">

@@ -71,6 +71,9 @@ optionsWindow::optionsWindow(QWidget *parent) : QDialog(parent), ui(new Ui::opti
 	ui->comboSourcesLetters->setCurrentIndex((i < 0)+(i < -1));
 	ui->spinSourcesLetters->setValue(i < 0 ? 3 : i);
 
+	/*QStringList types = QStringList() << "text" << "icon" << "both" << "hide";
+	ui->comboSources->setCurrentIndex(types.indexOf(settings.value("favorites", "icon").toString()));*/
+
 	ui->checkShowLog->setChecked(settings.value("Log/show", true).toBool());
 	ui->checkInvertLog->setChecked(settings.value("Log/invert", false).toBool());
 
