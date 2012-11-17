@@ -571,7 +571,49 @@ void tagTab::finishedLoadingPreview(Image *img)
 		{ color = QColor("#ffc0cb"); break; }
 	}
 	QStringList blacklistedtags(settings.value("blacklistedtags").toString().split(" "));
+	QStringList whitelistedtags(settings.value("whitelistedtags").toString().split(" "));
 	QStringList detected = img->blacklisted(blacklistedtags);
+	QStringList whitelisted = img->blacklisted(whitelistedtags);
+	if (!whitelisted.isEmpty() && settings.value("whitelist_download", "image").toString() == "page")
+	{
+		bool download = false;
+		if (!detected.isEmpty())
+		{
+			int reponse = QMessageBox::question(this, tr("Grabber"), tr("Certains tags de l'image sont dans la liste blanche : \"%1\". Cependant, certains dans la liste noire : \"%2\". Voulez-vous la télécharger tout de même ?").arg(whitelisted.join(", "), detected.join(", ")), QMessageBox::Yes | QMessageBox::Open | QMessageBox::No);
+			if (reponse == QMessageBox::Yes)
+			{ download = true; }
+			else if (reponse == QMessageBox::Open)
+			{
+				zoomWindow *zoom = new zoomWindow(img, img->page()->site(), m_sites, this);
+				zoom->show();
+				connect(zoom, SIGNAL(linkClicked(QString)), this, SLOT(setTags(QString)));
+			}
+		}
+		else
+		{ download = true; }
+
+		if (download)
+		{
+			connect(img, SIGNAL(finishedImage(Image*)), _mainwindow, SLOT(saveImage(Image*)));
+			connect(img, SIGNAL(finishedImage(Image*)), _mainwindow, SLOT(decreaseDownloads()));
+
+			QString filename = settings.value("Save/filename").toString();;
+			bool getTags = filename.startsWith("javascript:") || (filename.contains("%filename%") && img->site().contains("Regex/ForceImageUrl"));
+			QStringList forbidden = QStringList() << "artist" << "copyright" << "character" << "model" << "general";
+			for (int i = 0; i < forbidden.count(); i++)
+			{ getTags = getTags || filename.contains("%"+forbidden.at(i)+"%"); }
+
+			if (getTags)
+			{
+				connect(img, SIGNAL(finishedLoadingTags(Image*)), img, SLOT(loadImage()));
+				img->loadDetails();
+			}
+			else
+			{ img->loadImage(); }
+
+			_mainwindow->increaseDownloads();
+		}
+	}
 	if (!detected.isEmpty())
 	{ color = QColor("#000000"); }
 	QBouton *l = new QBouton(position, settings.value("resizeInsteadOfCropping", true).toBool(), settings.value("borders", 3).toInt(), color, this);

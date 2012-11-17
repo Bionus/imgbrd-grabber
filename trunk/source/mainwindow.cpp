@@ -39,7 +39,7 @@ extern QMap<QString,QString> _md5;
 
 
 
-mainWindow::mainWindow(QString program, QStringList tags, QMap<QString,QString> params) : ui(new Ui::mainWindow), m_currentFav(-1), m_loaded(false), m_getAll(false), m_program(program), m_tags(tags), m_params(params)
+mainWindow::mainWindow(QString program, QStringList tags, QMap<QString,QString> params) : ui(new Ui::mainWindow), m_currentFav(-1), m_downloads(0), m_loaded(false), m_getAll(false), m_program(program), m_tags(tags), m_params(params)
 {  }
 void mainWindow::init()
 {
@@ -1147,7 +1147,6 @@ void mainWindow::_getAll()
 					m_progressBars[site_id]->setValue(m_progressBars[site_id]->value()+1);
 					if (m_progressBars[site_id]->value() >= m_progressBars[site_id]->maximum())
 					{ ui->tableBatchGroups->item(site_id, 0)->setIcon(QIcon(":/images/colors/green.png")); }
-					m_getAllDetails.clear();
 					_getAll();
 				}
 				else
@@ -1166,7 +1165,6 @@ void mainWindow::_getAll()
 					if (m_progressBars[site_id]->value() >= m_progressBars[site_id]->maximum())
 					{ ui->tableBatchGroups->item(site_id, 0)->setIcon(QIcon(":/images/colors/green.png")); }
 				}
-				m_getAllDetails.clear();
 				m_getAllDownloading.removeAt(0);
 				_getAll();
 			}
@@ -1259,23 +1257,6 @@ void mainWindow::getAllPerformTags(Image* img)
 
 	log(tr("Tags reçus"));
 
-	bool under = m_settings->value("Save/remplaceblanksbyunderscores", false).toBool();
-	for (int i = 0; i < img->tags().count(); i++)
-	{
-		Tag tag = img->tags().at(i);
-		QString normalized = tag.text().replace(" ", "_"), original = normalized;
-		m_getAllDetails["alls_original"].append(original);
-		normalized = normalized.replace("\\", " ").replace("/", " ").replace(":", " ").replace("|", " ").replace("*", " ").replace("?", " ").replace("\"", " ").replace("<", " ").replace(">", " ").trimmed();
-		if (!under)
-		{ normalized.replace('_', ' '); }
-		if		(tag.type() == "character")	{ m_getAllDetails["characters"].append(normalized); }
-		else if (tag.type() == "copyright")	{ m_getAllDetails["copyrights"].append(normalized); }
-		else if (tag.type() == "artist")	{ m_getAllDetails["artists"].append(normalized);	}
-		else if (tag.type() == "model")		{ m_getAllDetails["models"].append(normalized);		}
-		else								{ m_getAllDetails["generals"].append(normalized);	}
-		m_getAllDetails["alls"].append(normalized);
-	}
-
 	// Row
 	int site_id = m_progressdialog->batch(img->url());
 
@@ -1331,7 +1312,6 @@ void mainWindow::getAllPerformTags(Image* img)
 			m_progressBars[site_id]->setValue(m_progressBars[site_id]->value()+1);
 			if (m_progressBars[site_id]->value() >= m_progressBars[site_id]->maximum())
 			{ ui->tableBatchGroups->item(site_id, 0)->setIcon(QIcon(":/images/colors/green.png")); }
-			m_getAllDetails.clear();
 			m_getAllDownloadingSpeeds.remove(img->url());
 			m_getAllDownloading.removeAt(m_getAllId);
 			_getAll();
@@ -1345,7 +1325,6 @@ void mainWindow::getAllPerformTags(Image* img)
 		m_progressdialog->setImages(m_progressdialog->images()+1);
 		m_getAllExists++;
 		log(tr("Fichier déjà existant : <a href=\"file:///%1\">%1</a>").arg(f.fileName()));
-		m_getAllDetails.clear();
 		m_progressdialog->loadedImage(img->url());
 		if (site_id >= 0)
 		{
@@ -1426,7 +1405,6 @@ void mainWindow::getAllGetImage(Image* img)
 	{
 		m_progressdialog->setValue(m_progressdialog->value()+img->value());
 		m_progressdialog->setImages(m_progressdialog->images()+1);
-		m_getAllDetails.clear();
 		m_getAllDownloadingSpeeds.remove(img->url());
 		m_getAllDownloading.removeAt(m_getAllId);
 		_getAll();
@@ -1456,62 +1434,13 @@ void mainWindow::getAllPerformImage(Image* img)
 	int errors = m_getAllErrors, e404s = m_getAll404s;
 	if (reply->error() == QNetworkReply::NoError)
 	{
-		// Path
-		QString path = m_settings->value("Save/filename").toString();
-		QString p = img->folder().isEmpty() ? m_settings->value("Save/path").toString() : img->folder();
 		if (site_id >= 0)
 		{
 			ui->tableBatchGroups->item(site_id, 0)->setIcon(QIcon(":/images/colors/blue.png"));
-			path = m_groupBatchs[site_id][6];
-			p = m_groupBatchs[site_id][7];
+			saveImage(img, reply, m_groupBatchs[site_id][6], m_groupBatchs[site_id][7]);
 		}
-		path = img->path(path, p);
-		path.replace("%n%", QString::number(m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors));
-
-		if (path.left(1) == QDir::toNativeSeparators("/"))	{ path = path.right(path.length()-1);	}
-		if (p.right(1) == QDir::toNativeSeparators("/"))	{ p = p.left(p.length()-1);				}
-		QString fp = QDir::toNativeSeparators(p+"/"+path);
-
-		QString whatToDo = m_settings->value("Save/md5Duplicates", "save").toString();
-		QString md5Duplicate = md5Exists(img->md5());
-		if (md5Duplicate.isEmpty() || whatToDo == "save")
-		{
-			QDir path_to_file(fp.section(QDir::toNativeSeparators("/"), 0, -2)), dir(p);
-			if (!path_to_file.exists() && !dir.mkpath(path.section(QDir::toNativeSeparators("/"), 0, -2)))
-			{
-				log(tr("Impossible de créer le dossier de destination: %1.").arg(p+"/"+path.section('/', 0, -2)), Error);
-				m_getAllErrors++;
-			}
-			else
-			{
-				QByteArray data = reply->readAll();
-				if (!data.isEmpty())
-				{
-					addMd5(img->md5(), fp);
-					QFile f(fp);
-					f.open(QIODevice::WriteOnly);
-					f.write(data);
-					f.close();
-				}
-				else
-				{
-					log(tr("Rien n'a été reçu pour l'image: <a href=\"%1\">%1</a>.").arg(Qt::escape(img->url())), Error);
-					m_getAllErrors++;
-				}
-
-				QMap<QString,int> types;
-				types["general"] = 0;
-				types["artist"] = 1;
-				types["general"] = 2;
-				types["copyright"] = 3;
-				types["character"] = 4;
-				types["model"] = 5;
-				types["photo_set"] = 6;
-				for (int i = 0; i < img->tags().count(); i++)
-				{ Commands::get()->tag(img->tags().at(i)); }
-				Commands::get()->image(img, fp);
-			}
-		}
+		else
+		{ saveImage(img, reply); }
 	}
 	else if (reply->error() == QNetworkReply::ContentNotFoundError)
 	{ m_getAll404s++; }
@@ -1541,11 +1470,63 @@ void mainWindow::getAllPerformImage(Image* img)
 
 	m_progressdialog->setValue(m_progressdialog->value()+img->value());
 	m_progressdialog->setImages(m_progressdialog->images()+1);
-	m_getAllDetails.clear();
 	m_getAllDownloadingSpeeds.remove(img->url());
 	m_getAllDownloading.removeAt(m_getAllId);
 
 	_getAll();
+}
+void mainWindow::saveImage(Image *img, QNetworkReply *reply, QString path, QString p, bool getAll)
+{
+	if (reply == NULL)
+	{ reply = img->imageReply(); }
+
+	// Path
+	if (path == "")
+	{ path = m_settings->value("Save/filename").toString(); }
+	if (p == "")
+	{ p = img->folder().isEmpty() ? m_settings->value("Save/path").toString() : img->folder(); }
+	path = img->path(path, p);
+	if (getAll)
+	{ path.replace("%n%", QString::number(m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors)); }
+
+	if (path.left(1) == QDir::toNativeSeparators("/"))	{ path = path.right(path.length()-1);	}
+	if (p.right(1) == QDir::toNativeSeparators("/"))	{ p = p.left(p.length()-1);				}
+	QString fp = QDir::toNativeSeparators(p+"/"+path);
+
+	QString whatToDo = m_settings->value("Save/md5Duplicates", "save").toString();
+	QString md5Duplicate = md5Exists(img->md5());
+	if (md5Duplicate.isEmpty() || whatToDo == "save")
+	{
+		QDir path_to_file(fp.section(QDir::toNativeSeparators("/"), 0, -2)), dir(p);
+		if (!path_to_file.exists() && !dir.mkpath(path.section(QDir::toNativeSeparators("/"), 0, -2)))
+		{
+			log(tr("Impossible de créer le dossier de destination: %1.").arg(p+"/"+path.section('/', 0, -2)), Error);
+			if (getAll)
+			{ m_getAllErrors++; }
+		}
+		else
+		{
+			QByteArray data = reply->readAll();
+			if (!data.isEmpty())
+			{
+				addMd5(img->md5(), fp);
+				QFile f(fp);
+				f.open(QIODevice::WriteOnly);
+				f.write(data);
+				f.close();
+			}
+			else
+			{
+				log(tr("Rien n'a été reçu pour l'image: <a href=\"%1\">%1</a>.").arg(Qt::escape(img->url())), Error);
+				if (getAll)
+				{ m_getAllErrors++; }
+			}
+
+			for (int i = 0; i < img->tags().count(); i++)
+			{ Commands::get()->tag(img->tags().at(i)); }
+			Commands::get()->image(img, fp);
+		}
+	}
 }
 
 void mainWindow::getAllCancel()
@@ -1745,4 +1726,22 @@ void mainWindow::saveSettings()
 	m_settings->setValue("Save/filename", ui->lineFilename->text());
 	ui->labelFilename->setText(validateFilename(ui->lineFilename->text()));
 	m_settings->sync();
+}
+
+void mainWindow::increaseDownloads()
+{
+	m_downloads++;
+	updateDownloads();
+}
+void mainWindow::decreaseDownloads()
+{
+	m_downloads--;
+	updateDownloads();
+}
+void mainWindow::updateDownloads()
+{
+	if (m_downloads == 0)
+	{ setWindowTitle(tr("Grabber")); }
+	else
+	{ setWindowTitle(tr("Grabber") + " - " + tr("%n téléchargement(s) en cours", "", m_downloads)); }
 }
