@@ -97,21 +97,7 @@ class mainWindow : public QMainWindow
         void getAllPerformImage(Image*);
         void getAllProgress(Image*, qint64, qint64);
         void getAllCancel();
-        void _getAll();
-        // Others
-        void closeEvent(QCloseEvent*);
-        void advanced();
-        void saveAdvanced(sourcesWindow*);
-        void init();
-        void on_buttonSaveLinkList_clicked();
-        void on_buttonLoadLinkList_clicked();
-        bool saveLinkList(QString filename);
-        bool loadLinkList(QString filename);
-        void on_buttonSaveSettings_clicked();
-        void on_buttonInitSettings_clicked();
-        void saveSettings();
-        void on_buttonFolder_clicked();
-        void loadSites();
+		void _getAll();
 		// Tabs
 		int addTab(QString tag = "");
 		int addPoolTab(int pool = 0);
@@ -125,9 +111,28 @@ class mainWindow : public QMainWindow
         bool saveTabs(QString);
 		bool loadTabs(QString);
         void updateTabs();
+		// Title
+		void increaseDownloads();
+		void decreaseDownloads();
+		void updateDownloads();
+		// Others
+		void closeEvent(QCloseEvent*);
+		void advanced();
+		void saveAdvanced(sourcesWindow*);
+		void init();
+		void on_buttonSaveLinkList_clicked();
+		void on_buttonLoadLinkList_clicked();
+		bool saveLinkList(QString filename);
+		bool loadLinkList(QString filename);
+		void on_buttonSaveSettings_clicked();
+		void on_buttonInitSettings_clicked();
+		void saveSettings();
+		void on_buttonFolder_clicked();
+		void loadSites();
+		void saveImage(Image *img, QNetworkReply *reply = NULL, QString path = "", QString p = "", bool getAll = true);
 
     private:
-        int					m_pagemax, m_timezonedecay, m_getAllDownloaded, m_getAllExists, m_getAllIgnored, m_getAll404s, m_getAllErrors, m_getAllCount, m_getAllPageCount, m_getAllBeforeId, m_remainingPics, m_remainingSites, m_countPics, m_currentFav, m_currentFavCount, m_getAllLimit;
+		int					m_pagemax, m_timezonedecay, m_getAllDownloaded, m_getAllExists, m_getAllIgnored, m_getAll404s, m_getAllErrors, m_getAllCount, m_getAllPageCount, m_getAllBeforeId, m_remainingPics, m_remainingSites, m_countPics, m_currentFav, m_currentFavCount, m_getAllLimit, m_downloads;
         bool				m_allow, m_must_get_tags, m_loaded, m_getAllRequestExists, m_getAll;
         QSettings			*m_settings;
         QProcess			*m_process;
@@ -152,8 +157,7 @@ class mainWindow : public QMainWindow
 		Commands			*m_commands;
 		favoritesTab		*m_favoritesTab;
         QMap<QString,double>			m_getAllDownloadingSpeeds;
-        QMap<QString,QString>			m_favorites, m_params;
-        QMap<QString,QStringList>		m_getAllDetails;
+		QMap<QString,QString>			m_favorites, m_params;
         QMap<QString,QTime*>			m_downloadTime, m_downloadTimeLast;
         QList<QProgressBar*>			m_progressBars;
         QList<QNetworkReply*>			m_replies;
