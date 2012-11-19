@@ -235,9 +235,20 @@ void Image::parseDetails(QNetworkReply* r)
 	emit finishedLoadingTags(this);
 }
 
+int toDate(QString text)
+{
+	QDateTime date = QDateTime::fromString(text, "yyyy-MM-dd");
+	if (date.isValid())
+	{ return date.toString("yyyyMMdd").toInt(); }
+	date = QDateTime::fromString(text, "MM/dd/yyyy");
+	if (date.isValid())
+	{ return date.toString("yyyyMMdd").toInt(); }
+	return 0;
+}
 QString Image::filter(QStringList filters)
 {
-	QStringList types = QStringList() << "rating" << "source" << "id" << "width" << "height" << "score" << "mpixels";
+	QStringList mathematicaltypes = QStringList() << "id" << "width" << "height" << "score" << "mpixels" << "filesize" << "date";
+	QStringList types = QStringList() << "rating" << "source" << mathematicaltypes;
 	bool invert;
 	QString filter, type;
 	for (int i = 0; i < filters.count(); i++)
@@ -255,50 +266,77 @@ QString Image::filter(QStringList filters)
 			filter = filter.section(':', 1).toLower();
 			if (!types.contains(type))
 			{ return QObject::tr("unknown type \"%1\" (available types: \"%2\")").arg(filter, types.join("\", \"")); }
-			if (type == "rating")
-			{
-				bool cond = m_rating.toLower().startsWith(filter.left(1));
-				if (!cond && !invert)
-				{ return QObject::tr("image is not \"%1\"").arg(filter); }
-				if (cond && invert)
-				{ return QObject::tr("image is \"%1\"").arg(filter); }
-			}
-			else if (type == "source")
-			{
-				QRegExp rx = QRegExp(filter+"*", Qt::CaseInsensitive, QRegExp::Wildcard);
-				bool cond = rx.exactMatch(m_source);
-				if (!cond && !invert)
-				{ return QObject::tr("image's source does not starts with \"%1\"").arg(filter); }
-				if (cond && invert)
-				{ return QObject::tr("image's source starts with \"%1\"").arg(filter); }
-			}
-			else if (type == "id" || type == "width" || type == "height" || type == "score" || type == "mpixels")
+			if (mathematicaltypes.contains(type))
 			{
 				int input = 0;
-				if (type == "id")		{ input = m_id;								}
-				if (type == "width")	{ input = m_size.width();					}
-				if (type == "height")	{ input = m_size.height();					}
-				if (type == "score")	{ input = m_score;							}
-				if (type == "mpixels")	{ input = m_size.width()*m_size.height();	}
+				if (type == "id")		{ input = m_id;										}
+				if (type == "width")	{ input = m_size.width();							}
+				if (type == "height")	{ input = m_size.height();							}
+				if (type == "score")	{ input = m_score;									}
+				if (type == "mpixels")	{ input = m_size.width()*m_size.height();			}
+				if (type == "filesize")	{ input = m_fileSize;								}
+				if (type == "date")		{ input = m_createdAt.toString("yyyyMMdd").toInt();	}
 
 				bool cond;
-				if (filter.startsWith("..") || filter.startsWith("<="))
-				{ cond = input <= filter.right(filter.size()-2).toInt(); }
-				else if (filter.endsWith  ("..") || filter.startsWith(">="))
-				{ cond = input >= filter.right(filter.size()-2).toInt(); }
-				else if (filter.startsWith("<"))
-				{ cond = input < filter.right(filter.size()-1).toInt(); }
-				else if (filter.startsWith(">"))
-				{ cond = input > filter.right(filter.size()-1).toInt(); }
-				else if (filter.contains(".."))
-				{ cond = input >= filter.left(filter.indexOf("..")).toInt() && input <= filter.right(filter.size()-filter.indexOf("..")-2).toInt();	}
+				if (type == "date")
+				{
+					if (filter.startsWith("..") || filter.startsWith("<="))
+					{ cond = input <= toDate(filter.right(filter.size()-2)); }
+					else if (filter.endsWith(".."))
+					{ cond = input >= toDate(filter.left(filter.size()-2)); }
+					else if (filter.startsWith(">="))
+					{ cond = input >= toDate(filter.right(filter.size()-2)); }
+					else if (filter.startsWith("<"))
+					{ cond = input < toDate(filter.right(filter.size()-1)); }
+					else if (filter.startsWith(">"))
+					{ cond = input > toDate(filter.right(filter.size()-1)); }
+					else if (filter.contains(".."))
+					{ cond = input >= toDate(filter.left(filter.indexOf(".."))) && input <= toDate(filter.right(filter.size()-filter.indexOf("..")-2));	}
+					else
+					{ cond = input == toDate(filter); }
+				}
 				else
-				{ cond = input == filter.toInt(); }
+				{
+					if (filter.startsWith("..") || filter.startsWith("<="))
+					{ cond = input <= filter.right(filter.size()-2).toInt(); }
+					else if (filter.endsWith(".."))
+					{ cond = input >= filter.left(filter.size()-2).toInt(); }
+					else if (filter.startsWith(">="))
+					{ cond = input >= filter.right(filter.size()-2).toInt(); }
+					else if (filter.startsWith("<"))
+					{ cond = input < filter.right(filter.size()-1).toInt(); }
+					else if (filter.startsWith(">"))
+					{ cond = input > filter.right(filter.size()-1).toInt(); }
+					else if (filter.contains(".."))
+					{ cond = input >= filter.left(filter.indexOf("..")).toInt() && input <= filter.right(filter.size()-filter.indexOf("..")-2).toInt();	}
+					else
+					{ cond = input == filter.toInt(); }
+				}
 
 				if (!cond && !invert)
 				{ return QObject::tr("image's %1 does not match").arg(type); }
 				if (cond && invert)
 				{ return QObject::tr("image's %1 match").arg(type); }
+			}
+			else
+			{
+				if (type == "rating")
+				{
+					bool cond = m_rating.toLower().startsWith(filter.left(1));
+					if (!cond && !invert)
+					{ return QObject::tr("image is not \"%1\"").arg(filter); }
+					if (cond && invert)
+					{ return QObject::tr("image is \"%1\"").arg(filter); }
+				}
+				else if (type == "source")
+				{
+					QRegExp rx = QRegExp(filter+"*", Qt::CaseInsensitive, QRegExp::Wildcard);
+					bool cond = rx.exactMatch(m_source);
+					if (!cond && !invert)
+					{ return QObject::tr("image's source does not starts with \"%1\"").arg(filter); }
+					if (cond && invert)
+					{ return QObject::tr("image's source starts with \"%1\"").arg(filter); }
+				}
 			}
 		}
 		else if (!filter.isEmpty())
