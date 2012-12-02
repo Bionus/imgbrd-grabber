@@ -28,7 +28,6 @@
 
 #include <QApplication>
 #include <QtGui>
-#include <QDebug>
 #include "QAffiche.h"
 #include "QBouton.h"
 #include "mainwindow.h"
