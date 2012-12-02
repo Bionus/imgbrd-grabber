@@ -146,6 +146,7 @@ void favoritesTab::updateFavorites()
 	clearLayout(ui->layoutFavorites);
 
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
+	QString display = settings.value("favorites_display", "ind").toString();
 	for (int i = 0; i < favorites.count(); i++)
 	{
 		QString tag = favorites[i]["tag"];
@@ -157,22 +158,28 @@ void favoritesTab::updateFavorites()
 			img.save(savePath("thumbs/"+tag+".png"), "PNG");
 		}
 		QString xt = tr("<b>Nom :</b> %1<br/><b>Note :</b> %2 %%<br/><b>Dernière vue :</b> %3").arg(favorites[i]["name"], favorites[i]["note"], QDateTime::fromString(favorites[i]["lastviewed"], Qt::ISODate).toString(format));
-		QBouton *image = new QBouton(favorites[i]["id"].toInt(), this, settings.value("resizeInsteadOfCropping", true).toBool(), QColor(), this);
-			image->setIcon(img);
-			image->setIconSize(img.size());
-			image->setFlat(true);
-			image->setToolTip(xt);
-			connect(image, SIGNAL(rightClick(int)), this, SLOT(favoriteProperties(int)));
-			connect(image, SIGNAL(middleClick(int)), this, SLOT(addTabFavorite(int)));
+		if (display.contains("i"))
+		{
+			QBouton *image = new QBouton(favorites[i]["id"].toInt(), this, settings.value("resizeInsteadOfCropping", true).toBool(), QColor(), this);
+				image->setIcon(img);
+				image->setIconSize(img.size());
+				image->setFlat(true);
+				image->setToolTip(xt);
+				connect(image, SIGNAL(rightClick(int)), this, SLOT(favoriteProperties(int)));
+				connect(image, SIGNAL(middleClick(int)), this, SLOT(addTabFavorite(int)));
+				connect(image, SIGNAL(appui(int)), this, SLOT(loadFavorite(int)));
+			ui->layoutFavorites->addWidget(image, (i/10)*2, i%10);
+		}
 		QAffiche *caption = new QAffiche(favorites[i]["id"].toInt(), 0 ,QColor(), this);
-			caption->setText(favorites[i]["name"]+"<br/>("+favorites[i]["note"]+" % - "+QDateTime::fromString(favorites[i]["lastviewed"], Qt::ISODate).toString(format)+")");
+		caption->setText((display.contains("n") ? favorites[i]["name"] : "") + (display.contains("d") ? "<br/>("+favorites[i]["note"]+" % - "+QDateTime::fromString(favorites[i]["lastviewed"], Qt::ISODate).toString(format)+")" : ""));
 			caption->setTextFormat(Qt::RichText);
 			caption->setAlignment(Qt::AlignCenter);
 			caption->setToolTip(xt);
-		connect(image, SIGNAL(appui(int)), this, SLOT(loadFavorite(int)));
-		connect(caption, SIGNAL(clicked(int)), this, SLOT(loadFavorite(int)));
-		ui->layoutFavorites->addWidget(image, (i/10)*2, i%10);
-		ui->layoutFavorites->addWidget(caption, (i/10)*2+1, i%10);
+		if (!caption->text().isEmpty())
+		{
+			connect(caption, SIGNAL(clicked(int)), this, SLOT(loadFavorite(int)));
+			ui->layoutFavorites->addWidget(caption, (i/10)*2+1, i%10);
+		}
 	}
 }
 

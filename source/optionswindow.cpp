@@ -13,8 +13,11 @@
 #include "conditionwindow.h"
 #include "filenamewindow.h"
 #include "functions.h"
+#include "mainwindow.h"
 
 
+
+extern mainWindow *_mainwindow;
 
 optionsWindow::optionsWindow(QWidget *parent) : QDialog(parent), ui(new Ui::optionsWindow)
 {
@@ -71,8 +74,8 @@ optionsWindow::optionsWindow(QWidget *parent) : QDialog(parent), ui(new Ui::opti
 	ui->comboSourcesLetters->setCurrentIndex((i < 0)+(i < -1));
 	ui->spinSourcesLetters->setValue(i < 0 ? 3 : i);
 
-	/*QStringList types = QStringList() << "text" << "icon" << "both" << "hide";
-	ui->comboSources->setCurrentIndex(types.indexOf(settings.value("favorites", "icon").toString()));*/
+	QStringList ftypes = QStringList() << "ind" << "in" << "id" << "nd" << "i" << "n" << "d";
+	ui->comboFavoritesDisplay->setCurrentIndex(ftypes.indexOf(settings.value("favorites_display", "ind").toString()));
 
 	ui->checkShowLog->setChecked(settings.value("Log/show", true).toBool());
 	ui->checkInvertLog->setChecked(settings.value("Log/invert", false).toBool());
@@ -529,6 +532,13 @@ void optionsWindow::save()
 	settings.setValue("Sources/Types", types.at(ui->comboSources->currentIndex()));
 	int i = ui->comboSourcesLetters->currentIndex();
 	settings.setValue("Sources/Letters", (i == 0 ? ui->spinSourcesLetters->value() : -i));
+
+	QStringList ftypes = QStringList() << "ind" << "in" << "id" << "nd" << "i" << "n" << "d";
+	if (settings.value("favorites_display", "ind").toString() != ftypes.at(ui->comboFavoritesDisplay->currentIndex()))
+	{
+		settings.setValue("favorites_display", ftypes.at(ui->comboFavoritesDisplay->currentIndex()));
+		_mainwindow->updateFavorites(false);
+	}
 
 	settings.beginGroup("Log");
 		settings.setValue("show", ui->checkShowLog->isChecked());

@@ -251,8 +251,7 @@ void mainWindow::init()
 
 	Commands::get()->init(m_settings);
 
-	updateFavorites();
-	updateFavoritesDock();
+	updateFavorites(true);
 	updateKeepForLater();
 
 	m_lineFilename_completer = QStringList(m_settings->value("Save/filename").toString());
