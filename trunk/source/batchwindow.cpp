@@ -11,7 +11,7 @@
 
 
 
-batchWindow::batchWindow(QWidget *parent) : QDialog(), ui(new Ui::batchWindow), m_items(0), m_images(0), m_maxSpeeds(0), m_cancel(false)
+batchWindow::batchWindow(QWidget*) : QDialog(), ui(new Ui::batchWindow), m_imagesCount(0), m_items(0), m_images(0), m_maxSpeeds(0), m_cancel(false)
 {
 	ui->setupUi(this);
 	ui->tableWidget->resizeColumnToContents(0);
@@ -25,6 +25,7 @@ batchWindow::batchWindow(QWidget *parent) : QDialog(), ui(new Ui::batchWindow), 
 	ui->checkRemove->setChecked(settings.value("Batch/remove", false).toBool());
 
 	m_speeds = QMap<QString, int>();
+	m_urls = QStringList();
 
 	m_time = new QTime;
 	m_time->start();
@@ -78,6 +79,7 @@ void batchWindow::clear()
 	qDeleteAll(m_progressBars);
 	m_progressBars.clear();
 	m_speeds.clear();
+	m_urls.clear();
 }
 void batchWindow::copyToClipboard()
 {
@@ -105,6 +107,7 @@ void batchWindow::setCount(int cnt)
 { ui->tableWidget->setRowCount(cnt); }
 void batchWindow::addImage(QString url, int batch, float size)
 {
+	m_urls.append(url);
 	QTableWidgetItem *id = new QTableWidgetItem(QString::number(m_items+1));
 	id->setIcon(QIcon(":/images/colors/black.png"));
 	ui->tableWidget->setItem(m_items, 0, id);
@@ -129,28 +132,31 @@ void batchWindow::addImage(QString url, int batch, float size)
 	}
 	ui->tableWidget->setItem(m_items, 3, new QTableWidgetItem(sze));
 	ui->tableWidget->setItem(m_items, 4, new QTableWidgetItem());
-	QProgressBar *prog = new QProgressBar();
+	ui->tableWidget->setItem(m_items, 5, new QTableWidgetItem("0 %"));
+	/* QProgressBar *prog = new QProgressBar(this);
 	prog->setTextVisible(false);
 	m_progressBars.append(prog);
-	ui->tableWidget->setCellWidget(m_items, 5, prog);
-	ui->tableWidget->resizeColumnToContents(0);
+	ui->tableWidget->setCellWidget(m_items, 5, prog); */
+	m_items++;
+}
+void batchWindow::updateColumns()
+{
 	QHeaderView *headerView = ui->tableWidget->horizontalHeader();
 	headerView->setResizeMode(QHeaderView::Interactive);
+	headerView->resizeSection(0, 60);
 	headerView->resizeSection(1, 40);
-	headerView->setResizeMode(2, QHeaderView::Stretch);
 	headerView->resizeSection(2, 80);
+	headerView->setResizeMode(2, QHeaderView::Stretch);
 	headerView->resizeSection(3, 80);
 	headerView->resizeSection(4, 80);
-	m_items++;
+	headerView->resizeSection(5, 80);
+	ui->tableWidget->resizeColumnToContents(0);
+	ui->tableWidget->repaint();
 }
 int batchWindow::batch(QString url)
 {
-	for (int i = 0; i < m_items; i++)
-	{
-		if (ui->tableWidget->item(i, 2)->text() == url)
-		{ return ui->tableWidget->item(i, 1)->text().toInt() - 1; }
-	}
-	return -1;
+	int i = m_urls.indexOf(url);
+	return ui->tableWidget->item(i, 1)->text().toInt() - 1;
 }
 void batchWindow::loadingImage(QString url)
 {
@@ -159,80 +165,55 @@ void batchWindow::loadingImage(QString url)
 	m_speeds.insert(url, 0);
 	if (m_speeds.size() > m_maxSpeeds)
 	{ m_maxSpeeds = m_speeds.size(); }
-	for (int i = 0; i < m_items; i++)
-	{
-		if (ui->tableWidget->item(i, 2)->text() == url)
-		{ ui->tableWidget->item(i, 0)->setIcon(QIcon(":/images/colors/blue.png")); }
-	}
+
+	int i = m_urls.indexOf(url);
+	ui->tableWidget->item(i, 0)->setIcon(QIcon(":/images/colors/blue.png"));
 }
 void batchWindow::imageUrlChanged(QString before, QString after)
 {
-	for (int i = 0; i < m_items; i++)
-	{
-		if (ui->tableWidget->item(i, 2)->text() == before)
-		{ ui->tableWidget->item(i, 2)->setText(after); }
-	}
+	int i = m_urls.indexOf(before);
+	ui->tableWidget->item(i, 2)->setText(after);
 }
 void batchWindow::statusImage(QString url, int percent)
 {
-	for (int i = 0; i < m_items; i++)
-	{
-		if (ui->tableWidget->item(i, 2)->text() == url)
-		{ m_progressBars[i]->setValue(percent); }
-	}
+	int i = m_urls.indexOf(url);
+	// m_progressBars[i]->setValue(percent);
+	ui->tableWidget->item(i, 5)->setText(QString::number(percent)+" %");
 }
 void batchWindow::speedImage(QString url, float speed)
 {
 	m_speeds[url] = (int)speed;
 	QString unit = getUnit(&speed)+"/s";
 
-	for (int i = 0; i < m_items; i++)
-	{
-		if (ui->tableWidget->item(i, 2)->text() == url)
-		{ ui->tableWidget->item(i, 4)->setText(QLocale::system().toString(speed, 'f', speed < 10 ? 2 : 0)+" "+unit); }
-	}
+	int i = m_urls.indexOf(url);
+	ui->tableWidget->item(i, 4)->setText(QLocale::system().toString(speed, 'f', speed < 10 ? 2 : 0)+" "+unit);
 
 	drawSpeed();
 }
 void batchWindow::sizeImage(QString url, float size)
 {
-	for (int i = 0; i < m_items; i++)
-	{
-		if (ui->tableWidget->item(i, 2)->text() == url)
-		{
-			QString unit = getUnit(&size);
-			ui->tableWidget->setItem(i, 3, new QTableWidgetItem(QLocale::system().toString(size, 'f', size < 10 ? 2 : 0)+" "+unit));
-			return;
-		}
-	}
+	int i = m_urls.indexOf(url);
+	QString unit = getUnit(&size);
+	ui->tableWidget->setItem(i, 3, new QTableWidgetItem(QLocale::system().toString(size, 'f', size < 10 ? 2 : 0)+" "+unit));
 }
 void batchWindow::loadedImage(QString url)
 {
 	m_speeds.remove(url);
 	drawSpeed();
-	for (int i = 0; i < m_items; i++)
-	{
-		if (ui->tableWidget->item(i, 2)->text() == url)
-		{
-			ui->tableWidget->item(i, 0)->setIcon(QIcon(":/images/colors/green.png"));
-			ui->tableWidget->item(i, 4)->setText("");
-			m_progressBars[i]->setValue(100);
-			return;
-		}
-	}
+
+	int i = m_urls.indexOf(url);
+	ui->tableWidget->item(i, 0)->setIcon(QIcon(":/images/colors/green.png"));
+	ui->tableWidget->item(i, 4)->setText("");
+	// m_progressBars[i]->setValue(100);
+	ui->tableWidget->item(i, 5)->setText("100 %");
 }
 void batchWindow::errorImage(QString url)
 {
 	m_speeds.remove(url);
-	for (int i = 0; i < m_items; i++)
-	{
-		if (ui->tableWidget->item(i, 2)->text() == url)
-		{
-			ui->tableWidget->item(i, 0)->setIcon(QIcon(":/images/colors/red.png"));
-			ui->tableWidget->item(i, 4)->setText("");
-			return;
-		}
-	}
+
+	int i = m_urls.indexOf(url);
+	ui->tableWidget->item(i, 0)->setIcon(QIcon(":/images/colors/red.png"));
+	ui->tableWidget->item(i, 4)->setText("");
 }
 
 void batchWindow::drawSpeed()
@@ -293,7 +274,7 @@ void batchWindow::setValue(int value)
 	if (ui->progressBar->maximum() <= m_value)
 	{ ui->cancelButton->setText(tr("Fermer")); }
 }
-void batchWindow::setLittleValue(int value)
+void batchWindow::setLittleValue(int)
 { /*ui->progressBar->setValue(m_value + value);*/ }
 void batchWindow::setMaximum(int value)
 { ui->progressBar->setMaximum(value); }
@@ -306,7 +287,7 @@ void batchWindow::setImagesCount(int value)
 void batchWindow::setImages(int value)
 {
 	m_images = value;
-	ui->labelImages->setText(QString("%1/%2").arg(value).arg(m_imagesCount));
+	ui->labelImages->setText(QString("%1/%2").arg(m_images).arg(m_imagesCount));
 	ui->progressBar->setValue(value);
 }
 

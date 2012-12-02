@@ -594,7 +594,7 @@ void mainWindow::batchClearSel()
 	}
 	updateGroupCount();
 }
-void mainWindow::batchChange(int id)
+void mainWindow::batchChange(int)
 {
 	/*if (!m_tabs[0]->ui->checkMergeResults->isChecked())
 	{
@@ -947,6 +947,7 @@ void mainWindow::getAll(bool all)
 	{ todownload.insert(selected.at(i)->row()); }
 	if (all || !todownload.isEmpty())
 	{
+		m_progressdialog->setImagesCount(0);
 		for (int i = 0; i < m_groupBatchs.count(); i++)
 		{
 			if (all || todownload.contains(i))
@@ -976,6 +977,7 @@ void mainWindow::getAll(bool all)
 						page->load();
 						m_groupBatchs[i][8] += (m_groupBatchs[i][8] == "" ? "" : "¤") + page->url().toString();
 						m_getAllPages.append(page);
+						m_progressdialog->setImagesCount(m_progressdialog->count() + 1);
 					}
 				}
 			}
@@ -986,7 +988,6 @@ void mainWindow::getAll(bool all)
 	m_progressdialog->setText(tr("Téléchargement des pages, veuillez patienter..."));
 		connect(m_progressdialog, SIGNAL(rejected()), this, SLOT(getAllCancel()));
 		m_progressdialog->setValue(0);
-		m_progressdialog->setImagesCount(0);
 		m_progressdialog->setImages(0);
 		m_progressdialog->show();
 		logShow();
@@ -1019,6 +1020,7 @@ void mainWindow::getAllFinishedLoading(Page* p)
 	{ imgs.removeAt(m_groupBatchs[n][2].toInt()); }
 	m_getAllRemaining.append(imgs);
 	m_getAllCount++;
+	m_progressdialog->setImages(m_getAllCount);
 
 	if (m_getAllCount == m_getAllPages.count())
 	{
@@ -1041,8 +1043,10 @@ void mainWindow::getAllImages()
 
 	log(tr("Toutes les urls des images ont été reçues (%n image(s)).", "", m_getAllRemaining.count()));
 
+	m_progressdialog->setText(tr("Préparation des images, veuillez patienter..."));
 	int count = 0;
 	m_progressdialog->setCount(m_getAllRemaining.count());
+	m_progressdialog->setImagesCount(m_getAllRemaining.count());
 	for (int i = 0; i < m_getAllRemaining.count(); i++)
 	{
 		count += m_getAllRemaining[i]->value();
@@ -1057,10 +1061,14 @@ void mainWindow::getAllImages()
 		}
 		m_progressdialog->addImage(m_getAllRemaining.at(i)->url(), n, m_getAllRemaining.at(i)->fileSize());
 		connect(m_getAllRemaining[i], SIGNAL(urlChanged(QString,QString)), m_progressdialog, SLOT(imageUrlChanged(QString,QString)));
+		m_progressdialog->setImages(i+1);
 	}
-	m_progressdialog->setMaximum(count);
+
+	m_progressdialog->updateColumns();
 	m_progressdialog->setImagesCount(m_getAllRemaining.count());
+	m_progressdialog->setMaximum(count);
 	m_progressdialog->setText(tr("Téléchargement des images en cours..."));
+	m_progressdialog->setImages(0);
 
 	m_must_get_tags = false;
 	QStringList forbidden = QStringList() << "artist" << "copyright" << "character" << "model" << "general";
@@ -1080,6 +1088,7 @@ void mainWindow::getAllImages()
 			{ m_must_get_tags = true; }
 		}
 	}
+
 	if (m_must_get_tags)
 	{ log(tr("Téléchargement des détails des images.")); }
 	else

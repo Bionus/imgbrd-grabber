@@ -27,7 +27,7 @@ QString		savePath(QString s = "");
 int			levenshtein(QString, QString);
 QString		validateFilename(QString);
 QString		qfonttocss(QFont);
-float		round(float n, unsigned d);
+float		round(float n, int d = 0);
 void		clearLayout(QLayout *layout);
 QString		stripTags(QString);
 QString		getUnit(int*);

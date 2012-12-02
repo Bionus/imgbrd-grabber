@@ -11,7 +11,7 @@ extern mainWindow *_mainwindow;
 
 
 
-zoomWindow::zoomWindow(Image *image, QMap<QString,QString> site, QMap<QString,QMap<QString,QString> > *sites, QWidget *parent) : QDialog(0, Qt::Window), ui(new Ui::zoomWindow), m_image(image), m_site(site), timeout(300), m_loaded(0), oldsize(0), m_labelTags(NULL), image(NULL), movie(NULL), m_program(qApp->arguments().at(0)), m_replyExists(false), m_finished(false), m_thread(false), m_data(QByteArray()), m_size(0), m_sites(sites), m_source(), m_th(NULL)
+zoomWindow::zoomWindow(Image *image, QMap<QString,QString> site, QMap<QString,QMap<QString,QString> > *sites, QWidget *) : QDialog(0, Qt::Window), ui(new Ui::zoomWindow), m_image(image), m_site(site), timeout(300), m_loaded(0), oldsize(0), m_labelTags(NULL), image(NULL), movie(NULL), m_program(qApp->arguments().at(0)), m_replyExists(false), m_finished(false), m_thread(false), m_data(QByteArray()), m_size(0), m_sites(sites), m_source(), m_th(NULL)
 {
 	ui->setupUi(this);
 	setAttribute(Qt::WA_DeleteOnClose);
@@ -182,7 +182,7 @@ void zoomWindow::openSaveDirFav()
 
 void zoomWindow::linkHovered(QString url)
 { this->link = url; }
-void zoomWindow::contextMenu(QPoint point)
+void zoomWindow::contextMenu(QPoint)
 {
 	QMenu *menu = new QMenu(this);
 	if (!this->link.isEmpty())
@@ -321,8 +321,8 @@ void zoomWindow::load()
 	connect(manager, SIGNAL(sslErrors(QNetworkReply*, QList<QSslError>)), this, SLOT(sslErrorHandler(QNetworkReply*, QList<QSslError>)));
 
 	QNetworkRequest request = QNetworkRequest(QUrl(m_url));
-		request.setRawHeader("Referer", m_url.toAscii());
 		//request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::PreferCache);
+		//request.setRawHeader("Referer", m_url.toAscii());
 
 	m_reply = manager->get(request);
 	connect(m_reply, SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(downloadProgress(qint64, qint64)));

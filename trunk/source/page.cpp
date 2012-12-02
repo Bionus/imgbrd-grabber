@@ -1,5 +1,6 @@
 #include <QSettings>
 #include <QFile>
+#include <QDebug>
 #include "page.h"
 #include "json.h"
 #include "math.h"
@@ -65,13 +66,14 @@ void Page::fallback()
 	{
 		if (m_imagesPerPage > m_blim)
 		{ m_imagesPerPage = m_blim; }
-		p = floor((m_page - 1) * m_imagesPerPage / m_blim) + 1;
+		p = (int)floor((m_page - 1.) * m_imagesPerPage / m_blim) + 1;
 	}
 	p = p - 1 + m_site["FirstPage"].toInt();
 
 	QRegExp pool("pool:(\\d+)");
 	QString url;
-	if (pool.indexIn(t) != -1)
+	int pos = -1;
+	if ((pos = pool.indexIn(t)) != -1)
 	{
 		for (int i = 1; i <= m_site["Selected"].count('/') + 1; i++)
 		{
@@ -81,6 +83,7 @@ void Page::fallback()
 				url.replace("{pool}", pool.cap(1));
 				m_currentSource = i;
 				m_format = m_site["Selected"].split('/').at(m_currentSource-1);
+				t = t.remove(pos, pool.cap(0).length()).trimmed();
 				break;
 			}
 		}

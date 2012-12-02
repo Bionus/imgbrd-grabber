@@ -616,7 +616,7 @@ void favoritesTab::finishedLoadingPreview(Image *img)
 			.arg(img->hasScore() ? tr("<b>Score :</b> %1<br/>").arg(img->score()) : " ")
 			.arg(img->author().isEmpty() ? " " : tr("<b>Posteur :</b> %1<br/><br/>").arg(img->author()))
 			.arg(img->width() == 0 || img->height() == 0 ? " " : tr("<b>Dimensions :</b> %1 x %2<br/>").arg(QString::number(img->width()), QString::number(img->height())))
-			.arg(img->fileSize() == 0 ? " " : tr("<b>Taille :</b> %1 %2<br/>").arg(QString::number(round(size)), unit))
+			.arg(img->fileSize() == 0 ? " " : tr("<b>Taille :</b> %1 %2<br/>").arg(QString::number(size), unit))
 			.arg(!img->createdAt().isValid() ? " " : tr("<b>Date :</b> %1").arg(img->createdAt().toString(tr("'le 'dd/MM/yyyy' à 'hh:mm"))))
 		);
 		l->setIconSize(img->previewImage().size());
@@ -629,7 +629,7 @@ void favoritesTab::finishedLoadingPreview(Image *img)
 	int pp = perpage;
 	if (ui->checkMergeResults->isChecked())
 	{ pp = m_images.count(); }
-	int pl = ceil(sqrt(pp));
+	int pl = ceil(sqrt((double)pp));
 	if (m_layouts.size() > page)
 	{ m_layouts[page]->addWidget(l, floor(float(position % pp) / pl), position % pl); }
 }

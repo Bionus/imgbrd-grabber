@@ -240,10 +240,10 @@ void tagTab::load()
 	{
 		if (m_checkboxes.at(i)->isChecked())
 		{
-			QStringList tags = m_search->toPlainText().toLower().trimmed().split(" ", QString::SkipEmptyParts);
-			tags.append(settings.value("add").toString().toLower().trimmed().split(" ", QString::SkipEmptyParts));
+			QStringList tags = m_search->toPlainText().trimmed().split(" ", QString::SkipEmptyParts);
+			tags.append(settings.value("add").toString().trimmed().split(" ", QString::SkipEmptyParts));
 			int perpage = ui->spinImagesPerPage->value();
-			Page *page = new Page(m_sites, m_sites->keys().at(i), tags, ui->spinPage->value(), perpage, m_postFiltering->toPlainText().toLower().split(" ", QString::SkipEmptyParts), true, this);
+			Page *page = new Page(m_sites, m_sites->keys().at(i), tags, ui->spinPage->value(), perpage, m_postFiltering->toPlainText().split(" ", QString::SkipEmptyParts), true, this);
 			log(tr("Chargement de la page <a href=\"%1\">%1</a>").arg(Qt::escape(page->url().toString())));
 			connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(finishedLoading(Page*)));
 			m_pages.insert(page->website(), page);
@@ -349,8 +349,8 @@ void tagTab::finishedLoading(Page* page)
 			txt->setOpenExternalLinks(true);
 			if (page->search().join(" ") != m_search->toPlainText() && settings.value("showtagwarning", true).toBool())
 			{
-				QStringList uncommon = m_search->toPlainText().toLower().trimmed().split(" ", QString::SkipEmptyParts);
-				uncommon.append(settings.value("add").toString().toLower().trimmed().split(" ", QString::SkipEmptyParts));
+				QStringList uncommon = m_search->toPlainText().trimmed().split(" ", QString::SkipEmptyParts);
+				uncommon.append(settings.value("add").toString().trimmed().split(" ", QString::SkipEmptyParts));
 				for (int i = 0; i < page->search().size(); i++)
 				{
 					if (uncommon.contains(page->search().at(i)))
@@ -445,7 +445,7 @@ void tagTab::finishedLoading(Page* page)
 	{
 		QStringList detected;
 		Image *img = imgs.at(i);
-		QStringList tags = m_search->toPlainText().split(' ');
+		QStringList tags = m_search->toPlainText().toLower().split(' ');
 		QList<QChar> modifiers = QList<QChar>() << '~';
 		for (int r = 0; r < tags.size(); r++)
 		{
@@ -454,11 +454,11 @@ void tagTab::finishedLoading(Page* page)
 		}
 		if (!settings.value("blacklistedtags").toString().isEmpty())
 		{
-			QStringList blacklistedtags(settings.value("blacklistedtags").toString().split(" "));
+			QStringList blacklistedtags(settings.value("blacklistedtags").toString().toLower().split(" "));
 			for (int t = 0; t < img->tags().count(); t++)
 			{
-				if (blacklistedtags.contains(img->tags()[t].text(), Qt::CaseInsensitive) && !tags.contains(img->tags()[t].text(), Qt::CaseInsensitive))
-				{ detected.append(img->tags()[t].text().toLower()); }
+				if (blacklistedtags.contains(img->tags()[t].text().toLower(), Qt::CaseInsensitive) && !tags.contains(img->tags()[t].text().toLower(), Qt::CaseInsensitive))
+				{ detected.append(img->tags()[t].text()); }
 			}
 		}
 		if (!detected.isEmpty() && settings.value("hideblacklisted", false).toBool())
@@ -630,7 +630,7 @@ void tagTab::finishedLoadingPreview(Image *img)
 			.arg(img->hasScore() ? tr("<b>Score :</b> %1<br/>").arg(img->score()) : " ")
 			.arg(img->author().isEmpty() ? " " : tr("<b>Posteur :</b> %1<br/><br/>").arg(img->author()))
 			.arg(img->width() == 0 || img->height() == 0 ? " " : tr("<b>Dimensions :</b> %1 x %2<br/>").arg(QString::number(img->width()), QString::number(img->height())))
-			.arg(img->fileSize() == 0 ? " " : tr("<b>Taille :</b> %1 %2<br/>").arg(QString::number(round(size)), unit))
+			.arg(img->fileSize() == 0 ? " " : tr("<b>Taille :</b> %1 %2<br/>").arg(QString::number(size), unit))
 			.arg(!img->createdAt().isValid() ? " " : tr("<b>Date :</b> %1").arg(img->createdAt().toString(tr("'le 'dd/MM/yyyy' à 'hh:mm"))))
 		);
 		l->setIconSize(img->previewImage().size());
@@ -643,7 +643,7 @@ void tagTab::finishedLoadingPreview(Image *img)
 	int pp = perpage;
 	if (ui->checkMergeResults->isChecked())
 	{ pp = m_images.count(); }
-	int pl = ceil(sqrt(pp));
+	int pl = ceil(sqrt((double)pp));
 	if (m_layouts.size() > page)
 	{ m_layouts[page]->addWidget(l, floor(float(position % pp) / pl), position % pl); }
 	m_boutons.append(l);
@@ -699,7 +699,7 @@ void tagTab::getPage()
 	for (int i = 0; i < actuals.count(); i++)
 	{
 		int perpage = unloaded ? ui->spinImagesPerPage->value() : m_pages.value(actuals.at(i))->images().count();
-		emit batchAddGroup(QStringList() << m_search->toPlainText()+" "+settings.value("add").toString().toLower().trimmed() << QString::number(ui->spinPage->value()) << QString::number(perpage) << QString::number(perpage) << settings.value("downloadblacklist").toString() << actuals.at(i) << settings.value("Save/filename").toString() << settings.value("Save/path").toString() << "");
+		emit batchAddGroup(QStringList() << m_search->toPlainText()+" "+settings.value("add").toString().trimmed() << QString::number(ui->spinPage->value()) << QString::number(perpage) << QString::number(perpage) << settings.value("downloadblacklist").toString() << actuals.at(i) << settings.value("Save/filename").toString() << settings.value("Save/path").toString() << "");
 	}
 }
 void tagTab::getAll()
@@ -714,7 +714,7 @@ void tagTab::getAll()
 	for (int i = 0; i < actuals.count(); i++)
 	{
 		int limit = m_sites->value(actuals.at(i)).contains("Urls/1/Limit") ? m_sites->value(actuals.at(i)).value("Urls/1/Limit").toInt() : 0;
-		emit batchAddGroup(QStringList() << m_search->toPlainText()+" "+settings.value("add").toString().toLower().trimmed() << "1" << QString::number(qMin((limit > 0 ? limit : 1000), qMax(m_pages.value(actuals.at(i))->images().count(), m_pages.value(actuals.at(i))->imagesCount()))) << QString::number(qMax(m_pages.value(actuals.at(i))->images().count(), m_pages.value(actuals.at(i))->imagesCount())) << settings.value("downloadblacklist").toString() << actuals.at(i) << settings.value("Save/filename").toString() << settings.value("Save/path").toString() << "");
+		emit batchAddGroup(QStringList() << m_search->toPlainText()+" "+settings.value("add").toString().trimmed() << "1" << QString::number(qMin((limit > 0 ? limit : 1000), qMax(m_pages.value(actuals.at(i))->images().count(), m_pages.value(actuals.at(i))->imagesCount()))) << QString::number(qMax(m_pages.value(actuals.at(i))->images().count(), m_pages.value(actuals.at(i))->imagesCount())) << settings.value("downloadblacklist").toString() << actuals.at(i) << settings.value("Save/filename").toString() << settings.value("Save/path").toString() << "");
 	}
 }
 void tagTab::getSel()

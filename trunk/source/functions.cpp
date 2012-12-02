@@ -428,7 +428,7 @@ QMap<QString,QString> domToMap(QDomElement dom)
  * @param	l	The message to append.
  */
 QFile f, fCommandsLog, fCommandsSqlLog;
-void log(QString l, Log type)
+void log(QString l, Log)
 {
 	if (!f.isOpen())
 	{
@@ -523,7 +523,7 @@ void openTray()
  * Rounds a var to the closest integer.
  * @param	d	Number of decimals to keep.
  */
-float round(float n, unsigned d)
+float round(float n, int d)
 {
 	int p = pow(10., d);
 	return floor(n * p + .5) / p;
