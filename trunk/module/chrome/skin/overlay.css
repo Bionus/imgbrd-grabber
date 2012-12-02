@@ -1,9 +1,0 @@
-#imgbrdgrabber-toolbar-button
-{
-	list-style-image: url("chrome://imgbrdgrabber/skin/toolbar-button.png");
-	-moz-image-region: rect(0px 24px 24px 0px);
-}
-[iconsize="small"] #imgbrdgrabber-toolbar-button
-{
-	-moz-image-region: rect(0px 40px 16px 24px);
-}
