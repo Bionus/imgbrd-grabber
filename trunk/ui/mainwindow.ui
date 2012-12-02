@@ -1203,8 +1203,8 @@
    <slot>addGroup()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>536</x>
-     <y>271</y>
+     <x>313</x>
+     <y>249</y>
     </hint>
     <hint type="destinationlabel">
      <x>804</x>
@@ -1219,8 +1219,8 @@
    <slot>addUnique()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>536</x>
-     <y>498</y>
+     <x>313</x>
+     <y>476</y>
     </hint>
     <hint type="destinationlabel">
      <x>804</x>
@@ -1235,7 +1235,7 @@
    <slot>batchSel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>345</x>
+     <x>331</x>
      <y>527</y>
     </hint>
     <hint type="destinationlabel">
@@ -1347,12 +1347,44 @@
    <slot>updateBatchGroups(int,int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>536</x>
-     <y>113</y>
+     <x>313</x>
+     <y>71</y>
     </hint>
     <hint type="destinationlabel">
      <x>801</x>
      <y>208</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lineFilename</sender>
+   <signal>editingFinished()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>updateCompleters()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>143</x>
+     <y>402</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>150</x>
+     <y>543</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lineFolder</sender>
+   <signal>editingFinished()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>updateCompleters()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>172</x>
+     <y>372</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>126</x>
+     <y>542</y>
     </hint>
    </hints>
   </connection>
@@ -1394,5 +1426,6 @@
   <slot>saveSettings()</slot>
   <slot>addPoolTab()</slot>
   <slot>md5FixOpen()</slot>
+  <slot>updateCompleters()</slot>
  </slots>
 </ui>
