@@ -24,7 +24,7 @@
 #include "commands.h"
 #include <QtSql/QSqlDatabase>
 
-#define VERSION	"3.2.1"
+#define VERSION	"3.2.2"
 #define DONE()	logUpdate(QObject::tr(" Fait"))
 
 extern QMap<QDateTime,QString> _log;
@@ -254,6 +254,11 @@ void mainWindow::init()
 	updateFavorites();
 	updateFavoritesDock();
 	updateKeepForLater();
+
+	m_lineFilename_completer = QStringList(m_settings->value("Save/filename").toString());
+	m_lineFolder_completer = QStringList(m_settings->value("Save/path").toString());
+	ui->lineFolder->setCompleter(new QCompleter(m_lineFolder_completer));
+	ui->lineFilename->setCompleter(new QCompleter(m_lineFilename_completer));
 
 	m_loaded = true;
 	logShow();
@@ -1711,6 +1716,7 @@ void mainWindow::on_buttonFolder_clicked()
 	if (!folder.isEmpty())
 	{
 		ui->lineFolder->setText(folder);
+		updateCompleters();
 		saveSettings();
 	}
 }
@@ -1728,6 +1734,19 @@ void mainWindow::on_buttonInitSettings_clicked()
 	ui->lineFilename->setText(m_settings->value("Save/filename_real").toString());
 	Commands::get()->init(m_settings);
 	saveSettings();
+}
+void mainWindow::updateCompleters()
+{
+	if (ui->lineFolder->text() != m_settings->value("Save/path").toString())
+	{
+		m_lineFolder_completer.append(ui->lineFolder->text());
+		ui->lineFolder->setCompleter(new QCompleter(m_lineFolder_completer));
+	}
+	if (ui->labelFilename->text() != m_settings->value("Save/filename").toString())
+	{
+		m_lineFilename_completer.append(ui->lineFilename->text());
+		ui->lineFilename->setCompleter(new QCompleter(m_lineFilename_completer));
+	}
 }
 void mainWindow::saveSettings()
 {

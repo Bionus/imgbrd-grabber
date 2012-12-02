@@ -129,6 +129,7 @@ class mainWindow : public QMainWindow
 		void saveSettings();
 		void on_buttonFolder_clicked();
 		void loadSites();
+		void updateCompleters();
 		void saveImage(Image *img, QNetworkReply *reply = NULL, QString path = "", QString p = "", bool getAll = true);
 
     private:
@@ -163,6 +164,7 @@ class mainWindow : public QMainWindow
         QList<QNetworkReply*>			m_replies;
         QList<QMap<QString,QString> >	m_details, m_batchs;
         QSet<int>						m_batchDownloading;
+		QStringList			m_lineFilename_completer, m_lineFolder_completer;
 };
 
 #endif // MAINWINDOW_H
