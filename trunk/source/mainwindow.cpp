@@ -1631,8 +1631,8 @@ bool mainWindow::loadLinkList(QString filename)
 	QFile f(filename);
 	if (f.open(QFile::ReadOnly))
 	{
-		QString header = f.readLine();
-		int version = header.mid(5, header.length() - 6).toInt();
+		QString header = f.readLine().trimmed();
+		int version = header.mid(5, header.size() - 6).toInt();
 
 		QString links = f.readAll();
 		f.close();

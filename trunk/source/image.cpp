@@ -503,7 +503,7 @@ QString Image::path(QString fn, QString pth, bool complex)
 	replaces.insert("date", QStrP(m_createdAt.toString(tr("dd-MM-yyyy HH.mm")), ""));
 	replaces.insert("id", QStrP(QString::number(m_id), "0"));
 	for (int i = 0; i < search.size(); i++)
-	{ replaces.insert("search_"+QString::number(i+1)+"%", QStrP(search[i], "")); }
+	{ replaces.insert("search_"+QString::number(i+1), QStrP(search[i], "")); }
 	replaces.insert("search", QStrP(search.join(settings.value("separator").toString()), ""));
 	replaces.insert("artist", getReplace("artist", details, &settings));
 	replaces.insert("copyright", getReplace("copyright", details, &settings));
@@ -573,7 +573,7 @@ QString Image::path(QString fn, QString pth, bool complex)
 		{
 			QStringList c = custom.keys();
 			for (int i = 0; i < 10; i++)
-			{ c.append("search_"+QString::number(i)); }
+			{ c.append("search_"+QString::number(search.size())); }
 			QStringList tokens = QStringList() << "artist" << "general" << "copyright" << "character" << "model" << "model|artist" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "allo" << c << "date" << "date:([^%]+)" << "score";
 			filename = analyse(tokens, filename, details["allos"]);
 		}

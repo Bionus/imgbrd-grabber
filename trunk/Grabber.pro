@@ -10,8 +10,8 @@ INCLUDEPATH += . includes source
 BREAKPAD = D:/Programmation/C++/Qt/google-breakpad
 INCLUDEPATH += $${BREAKPAD}/src
 LIBS += $${BREAKPAD}/src/client/windows/Release/lib/common.lib \
-			  $${BREAKPAD}/src/client/windows/Release/lib/crash_generation_client.lib \
-			  $${BREAKPAD}/src/client/windows/Release/lib/exception_handler.lib
+		$${BREAKPAD}/src/client/windows/Release/lib/crash_generation_client.lib \
+		$${BREAKPAD}/src/client/windows/Release/lib/exception_handler.lib
 #LIBS += -lcommon -lcrash_generation_client -lexception_handler
 
 # Input
