@@ -464,7 +464,7 @@ void optionsWindow::on_buttonBorderColor_clicked()
 	{ ui->lineBorderColor->setText(color.name()); }
 }
 
-void optionsWindow::updateContainer(QTreeWidgetItem *current, QTreeWidgetItem *previous)
+void optionsWindow::updateContainer(QTreeWidgetItem *current, QTreeWidgetItem *)
 { setCategory(current->text(0)); }
 void optionsWindow::setCategory(QString value)
 {

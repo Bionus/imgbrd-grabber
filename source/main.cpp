@@ -1,7 +1,7 @@
 /**
  * @file
  * @author  Bionus <bio.nus@hotmail.fr>
- * @version 3.1.0
+ * @version 3.2.2
  *
  * @section LICENSE
  *
@@ -28,11 +28,13 @@
 
 #include <QApplication>
 #include <QtGui>
+#include <QDebug>
 #include "QAffiche.h"
 #include "QBouton.h"
 #include "mainwindow.h"
 #include "zoomwindow.h"
 #include "optionswindow.h"
+#include "crashhandler.h"
 
 
 
@@ -42,6 +44,14 @@ mainWindow *_mainwindow;
 
 int main(int argc, char *argv[])
 {
+	QApplication app(argc, argv);
+
+	QDir dir = QFileInfo(argv[0]).dir();
+	QString crashes = savePath("crashes");
+	if (!dir.exists(crashes))
+	{ dir.mkpath(crashes); }
+	CrashHandler::instance()->Init(crashes);
+
 	QStringList tags;
 	QMap<QString,QString> params;
 	QMap<QString,QString> assoc;
@@ -67,7 +77,7 @@ int main(int argc, char *argv[])
 		{ tags.append(argv[i]); }
 	}
 
-	QApplication app(argc, argv);
+	//QApplication app(argc, argv);
 
 	QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
 	QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));

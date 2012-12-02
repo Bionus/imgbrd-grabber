@@ -30,6 +30,7 @@ class batchWindow : public QDialog
 		bool cancelled();
 		int batch(QString url);
 		void setCount(int);
+		void updateColumns();
 
 	public slots:
 		void clear();
@@ -60,6 +61,7 @@ class batchWindow : public QDialog
 		Ui::batchWindow			*ui;
 		QSize					m_currentSize;
 		int						m_imagesCount, m_items, m_value, m_images, m_maxSpeeds;
+		QStringList				m_urls;
 		QList<QProgressBar*>	m_progressBars;
 		QMap<QString, int>		m_speeds;
 		QList<int>				m_mean;

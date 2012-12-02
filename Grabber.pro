@@ -7,6 +7,13 @@ TARGET =
 DEPENDPATH += . debug includes languages release source ui
 INCLUDEPATH += . includes source
 
+BREAKPAD = D:/Programmation/C++/Qt/google-breakpad
+INCLUDEPATH += $${BREAKPAD}/src
+LIBS += $${BREAKPAD}/src/client/windows/Release/lib/common.lib \
+			  $${BREAKPAD}/src/client/windows/Release/lib/crash_generation_client.lib \
+			  $${BREAKPAD}/src/client/windows/Release/lib/exception_handler.lib
+#LIBS += -lcommon -lcrash_generation_client -lexception_handler
+
 # Input
 HEADERS += includes/aboutwindow.h \
 		   includes/addgroupwindow.h \
@@ -45,7 +52,8 @@ HEADERS += includes/aboutwindow.h \
 		   includes/tagtab.h \
 		   includes/favoritestab.h \
 		   includes/md5fix.h \
-		   includes/commands.h
+		   includes/commands.h \
+		   includes/crashhandler.h
 FORMS += ui/aboutwindow.ui \
 		 ui/adduniquewindow.ui \
 		 ui/batchwindow.ui \
@@ -107,7 +115,8 @@ SOURCES += source/aboutwindow.cpp \
 		   source/tagtab.cpp \
 		   source/favoritestab.cpp \
 		   source/md5fix.cpp \
-		   source/commands.cpp
+		   source/commands.cpp \
+		   source/crashhandler.cpp
 
 RESOURCES += resources.qrc
 RC_FILE = icon.rc

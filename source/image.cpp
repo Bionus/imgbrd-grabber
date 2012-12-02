@@ -77,7 +77,7 @@ void Image::loadPreview()
 
 	QNetworkRequest r(m_previewUrl);
 		//r.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::PreferCache);
-		r.setRawHeader("Referer", m_previewUrl.toString().toAscii());
+		//r.setRawHeader("Referer", m_previewUrl.toString().toAscii());
 
 	m_previewTry++;
 	m_loadPreviewExists = true;
@@ -130,7 +130,7 @@ void Image::loadDetails()
 
 	QNetworkRequest r(m_pageUrl);
 		//r.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::PreferCache);
-		r.setRawHeader("Referer", m_pageUrl.toString().toAscii());
+		//r.setRawHeader("Referer", m_pageUrl.toString().toAscii());
 
 	m_loadDetails = manager->get(r);
 	m_loadDetailsExists = true;
@@ -375,7 +375,7 @@ QString analyse(QStringList tokens, QString text, QStringList tags)
 	}
 	QString r = ret;
 	for (int i = 0; i < tokens.size(); i++)
-	{ r.replace(QRegExp("%"+tokens.at(i)+"%"), ""); }
+	{ r.replace(QRegExp("%"+tokens.at(i)+"(?::([0-9]+))?%"), ""); }
 	reg = QRegExp("\"([^\"]+)\"");
 	pos = 0;
 	while ((pos = reg.indexIn(text, pos)) != -1)
@@ -436,7 +436,6 @@ QString Image::path(QString fn, QString pth, bool complex)
 	if (pth.isEmpty())
 	{ pth = settings.value("path").toString(); }
 
-	QList<QStrPP> replaces = QList<QStrPP>();
 	QStringList copyrights;
 	QString cop;
 	bool found;
@@ -496,28 +495,29 @@ QString Image::path(QString fn, QString pth, bool complex)
 	if (ext.length() > 5)
 	{ ext = "jpg"; }
 
-	replaces.append(QStrPP("%ext%", QStrP(ext, "jpg")));
-	replaces.append(QStrPP("%filename%", QStrP(m_url.section('/', -1).section('.', 0, -2), "")));
-	replaces.append(QStrPP("%website%", QStrP(m_site, "")));
-	replaces.append(QStrPP("%md5%", QStrP(m_md5, "")));
-	replaces.append(QStrPP("%date%", QStrP(m_createdAt.toString(tr("dd-MM-yyyy HH.mm")), "")));
-	replaces.append(QStrPP("%id%", QStrP(QString::number(m_id), "0")));
+	QMap<QString,QStrP> replaces = QMap<QString,QStrP>();
+	replaces.insert("ext", QStrP(ext, "jpg"));
+	replaces.insert("filename", QStrP(m_url.section('/', -1).section('.', 0, -2), ""));
+	replaces.insert("website", QStrP(m_site, ""));
+	replaces.insert("md5", QStrP(m_md5, ""));
+	replaces.insert("date", QStrP(m_createdAt.toString(tr("dd-MM-yyyy HH.mm")), ""));
+	replaces.insert("id", QStrP(QString::number(m_id), "0"));
 	for (int i = 0; i < search.size(); i++)
-	{ replaces.append(QStrPP("%search_"+QString::number(i+1)+"%", QStrP(search[i], ""))); }
-	replaces.append(QStrPP("%search%", QStrP(search.join(settings.value("separator").toString()), "")));
-	replaces.append(QStrPP("%artist%", getReplace("artist", details, &settings)));
-	replaces.append(QStrPP("%copyright%", getReplace("copyright", details, &settings)));
-	replaces.append(QStrPP("%character%", getReplace("character", details, &settings)));
-	replaces.append(QStrPP("%model%", getReplace("model", details, &settings)));
-	replaces.append(QStrPP("%rating%", QStrP(m_rating, "")));
-	replaces.append(QStrPP("%score%", QStrP(QString::number(m_score), "")));
-	replaces.append(QStrPP("%height%", QStrP(QString::number(m_size.height()), "0")));
-	replaces.append(QStrPP("%width%", QStrP(QString::number(m_size.width()), "0")));
+	{ replaces.insert("search_"+QString::number(i+1)+"%", QStrP(search[i], "")); }
+	replaces.insert("search", QStrP(search.join(settings.value("separator").toString()), ""));
+	replaces.insert("artist", getReplace("artist", details, &settings));
+	replaces.insert("copyright", getReplace("copyright", details, &settings));
+	replaces.insert("character", getReplace("character", details, &settings));
+	replaces.insert("model", getReplace("model", details, &settings));
+	replaces.insert("rating", QStrP(m_rating, ""));
+	replaces.insert("score", QStrP(QString::number(m_score), ""));
+	replaces.insert("height", QStrP(QString::number(m_size.height()), "0"));
+	replaces.insert("width", QStrP(QString::number(m_size.width()), "0"));
+	replaces.insert("general", QStrP(details["generals"].join(settings.value("separator").toString()), ""));
+	replaces.insert("allo", QStrP(details["allos"].join(" "), ""));
+	replaces.insert("all", QStrP(details["alls"].join(" "), ""));
 	for (int i = 0; i < custom.size(); i++)
-	{ replaces.append(QStrPP("%"+custom.keys().at(i)+"%", QStrP(custom.values().at(i).join(settings.value("separator").toString()), ""))); }
-	replaces.append(QStrPP("%general%", QStrP(details["generals"].join(settings.value("separator").toString()), "")));
-	replaces.append(QStrPP("%allo%", QStrP(details["allos"].join(" "), "")));
-	replaces.append(QStrPP("%all%", QStrP(details["alls"].join(" "), "")));
+	{ replaces.insert(custom.keys().at(i), QStrP(custom.values().at(i).join(settings.value("separator").toString()), "")); }
 
 	// Filename
 	QString filename = fn;
@@ -527,18 +527,15 @@ QString Image::path(QString fn, QString pth, bool complex)
 		QString cond = filenames.keys().at(i);
 		if (cond.startsWith("%") && cond.endsWith("%"))
 		{
-			int contains = -1;
-			for (int j = 0; j < replaces.size(); j++)
+			int contains = false;
+			if (replaces.contains(cond.mid(1, cond.size()-2)))
 			{
-				if (replaces[j].first == cond)
-				{
-					contains = j;
-					break;
-				}
+				contains = true;
+				break;
 			}
-			if (contains >= 0)
+			if (contains)
 			{
-				if (!replaces.at(contains).first.isEmpty())
+				if (!replaces[cond.mid(1, cond.size()-2)].first.isEmpty())
 				{ filename = filenames.value(cond); }
 			}
 		}
@@ -551,8 +548,9 @@ QString Image::path(QString fn, QString pth, bool complex)
 		filename = filename.right(filename.length() - 11);
 
 		QString inits = "";
+		QStringList keys = replaces.keys();
 		for (int i = 0; i < replaces.size(); i++)
-		{ inits += "var " + replaces[i].first.mid(1, replaces[i].first.size() - 2) + " = \"" + (replaces[i].second.first.isEmpty() ? replaces[i].second.second : replaces[i].second.first) + "\";\r\n"; }
+		{ inits += "var " + keys[i] + " = \"" + (replaces[keys[i]].first.isEmpty() ? replaces[keys[i]].second : replaces[keys[i]].first) + "\";\r\n"; }
 
 		if (QScriptEngine().evaluate(QScriptProgram(inits + filename)).isError())
 		{
@@ -589,30 +587,47 @@ QString Image::path(QString fn, QString pth, bool complex)
 		QStringList l = details["alls"];
 		for (int i = 0; i < rem.size(); i++)
 		{ l.removeAll(rem.at(i)); }
-		replaces.append(QStrPP("%all%", QStrP(l.join(settings.value("separator").toString()), "")));
+		replaces.insert("all", QStrP(l.join(settings.value("separator").toString()), ""));
 
 		// Complex expressions
 		QRegExp rxdate("%date:([^%]+)%");
 		rxdate.setMinimal(true);
 		int p = 0;
-		while (((p = rxdate.indexIn(filename, p)) != -1))
+		while ((p = rxdate.indexIn(filename, p)) != -1)
 		{ filename.replace(rxdate.cap(0), m_createdAt.toString(rxdate.cap(1))); }
+		QRegExp rxsize("%([^:]+):([^%]+)%");
+		rxsize.setMinimal(true);
+		p = 0;
+		while ((p = rxsize.indexIn(filename, p)) != -1)
+		{
+			QString key = rxsize.cap(1);
+			int length = rxsize.cap(2).toInt();
+			if (replaces.contains(key) && length >= 0)
+			{
+				QString res = replaces[key].first.isEmpty() ? replaces[key].second : replaces[key].first;
+				res = res.left(length);
+				filename.replace(rxsize.cap(0), res);
+			}
+			else
+			{ p += rxsize.matchedLength(); }
+		}
 
 		// We replace everything
+		QStringList keys = replaces.keys();
 		for (int i = 0; i < replaces.size(); i++)
 		{
-			QStrPP val = replaces.at(i);
-			QString res = val.second.first.isEmpty() ? val.second.second : val.second.first;
-			if (val.first != "%allo%")
+			QString key = keys.at(i);
+			QString res = replaces[key].first.isEmpty() ? replaces[key].second : replaces[key].first;
+			if (key != "allo")
 			{ res = res.replace("\\", "_").replace("%", "_").replace("/", "_").replace(":", "_").replace("|", "_").replace("*", "_").replace("?", "_").replace("\"", "_").replace("<", "_").replace(">", "_").replace("__", "_").replace("__", "_").replace("__", "_").trimmed(); }
 			if (!settings.value("replaceblanks", false).toBool())
 			{ res.replace("_", " "); }
 
 			// We only cut the name if it is not a folder
-			if (complex && !filename.right(filename.length()-filename.indexOf(val.first)).contains("/"))
-			{ filename.replace(val.first, res.left(259-pth.length()-1-filename.length())); }
+			if (complex && !filename.right(filename.length()-filename.indexOf("%"+key+"%")).contains("/"))
+			{ filename.replace("%"+key+"%", res.left(259-pth.length()-1-filename.length())); }
 			else
-			{ filename.replace(val.first, res); }
+			{ filename.replace("%"+key+"%", res); }
 		}
 
 		// We remove empty dir names
