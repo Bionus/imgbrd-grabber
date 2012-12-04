@@ -11,15 +11,15 @@ BREAKPAD = D:/Programmation/C++/Qt/google-breakpad
 INCLUDEPATH += $${BREAKPAD}/src
 #CONFIG(declarative_debug,release|declarative_debug)
 #{
-	LIBS += $${BREAKPAD}/src/client/windows/Debug/lib/common.lib \
-			$${BREAKPAD}/src/client/windows/Debug/lib/crash_generation_client.lib \
-			$${BREAKPAD}/src/client/windows/Debug/lib/exception_handler.lib
+#	LIBS += $${BREAKPAD}/src/client/windows/Debug/lib/common.lib \
+#			$${BREAKPAD}/src/client/windows/Debug/lib/crash_generation_client.lib \
+#			$${BREAKPAD}/src/client/windows/Debug/lib/exception_handler.lib
 #}
 #CONFIG(release,release|declarative_debug)
 #{
-#	LIBS += $${BREAKPAD}/src/client/windows/Release/lib/common.lib \
-#			$${BREAKPAD}/src/client/windows/Release/lib/crash_generation_client.lib \
-#			$${BREAKPAD}/src/client/windows/Release/lib/exception_handler.lib
+	LIBS += $${BREAKPAD}/src/client/windows/Release/lib/common.lib \
+			$${BREAKPAD}/src/client/windows/Release/lib/crash_generation_client.lib \
+			$${BREAKPAD}/src/client/windows/Release/lib/exception_handler.lib
 #}
 
 # Input

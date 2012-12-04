@@ -320,9 +320,12 @@ void zoomWindow::load()
 		manager->setCache(diskCache);*/
 	connect(manager, SIGNAL(sslErrors(QNetworkReply*, QList<QSslError>)), this, SLOT(sslErrorHandler(QNetworkReply*, QList<QSslError>)));
 
-	QNetworkRequest request = QNetworkRequest(QUrl(m_url));
+	QUrl url(m_url);
+	QNetworkRequest request = QNetworkRequest(url);
 		//request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::PreferCache);
-		//request.setRawHeader("Referer", m_url.toAscii());
+		QString referer = m_image->settings()->value("Referer", "").toString();
+		if (!referer.isEmpty())
+		{ request.setRawHeader("Referer", referer == "host" ? QString(url.scheme()+"://"+url.host()).toAscii() : (referer == "image" ? m_url.toAscii() : "")); }
 
 	m_reply = manager->get(request);
 	connect(m_reply, SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(downloadProgress(qint64, qint64)));

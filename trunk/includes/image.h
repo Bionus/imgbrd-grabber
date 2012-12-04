@@ -6,6 +6,7 @@
 #include <QDateTime>
 #include <QPixmap>
 #include <QSslError>
+#include <QSettings>
 #include "page.h"
 #include "tag.h"
 #include "pool.h"
@@ -59,6 +60,7 @@ class Image : public QObject
 		void		setUrl(QString);
 		void		setData(QByteArray data);
 		void		setFileSize(int);
+		QSettings	*settings();
 		QNetworkReply	*imageReply();
 
 	public slots:
@@ -97,6 +99,7 @@ class Image : public QObject
 		QList<Tag>		m_tags;
 		QList<Pool*>	m_pools;
 		QTime			m_timer;
+		QSettings		*m_settings;
 		QMap<QString,QString>	m_parentSite;
 };
 

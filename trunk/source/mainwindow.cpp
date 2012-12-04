@@ -24,7 +24,7 @@
 #include "commands.h"
 #include <QtSql/QSqlDatabase>
 
-#define VERSION	"3.2.2"
+#define VERSION	"3.2.3"
 #define DONE()	logUpdate(QObject::tr(" Fait"))
 
 extern QMap<QDateTime,QString> _log;
@@ -321,6 +321,7 @@ void mainWindow::loadSites()
 								if (stes[line].contains("Urls/"+(srcs[i] == "Regex" ? "Html" : srcs[i])+"/Pools"))
 								{ stes[line]["Urls/"+QString::number(i+1)+"/Pools"] = "http://"+line+stes[line]["Urls/"+(srcs[i] == "Regex" ? "Html" : srcs[i])+"/Pools"]; }
 							}
+							stes[line]["Model"] = dir.at(i);
 							stes[line]["Url"] = line;
 							stes[line]["Urls/Html/Post"] = "http://"+line+stes[line]["Urls/Html/Post"];
 							if (stes[line].contains("Urls/Html/Tags"))
@@ -1065,6 +1066,7 @@ void mainWindow::getAllImages()
 		}
 		m_progressdialog->addImage(m_getAllRemaining.at(i)->url(), n, m_getAllRemaining.at(i)->fileSize());
 		connect(m_getAllRemaining[i], SIGNAL(urlChanged(QString,QString)), m_progressdialog, SLOT(imageUrlChanged(QString,QString)));
+		connect(m_getAllRemaining[i], SIGNAL(urlChanged(QString,QString)), this, SLOT(imageUrlChanged(QString,QString)));
 		m_progressdialog->setImages(i+1);
 	}
 
@@ -1248,8 +1250,17 @@ void mainWindow::_getAll()
 		}
 	}
 }
+void mainWindow::imageUrlChanged(QString before, QString after)
+{
+	m_downloadTimeLast.insert(after, m_downloadTimeLast[before]);
+	m_downloadTimeLast.remove(before);
+	m_downloadTime.insert(after, m_downloadTime[before]);
+	m_downloadTime.remove(before);
+}
 void mainWindow::getAllProgress(Image *img, qint64 bytesReceived, qint64 bytesTotal)
 {
+	if (!m_downloadTimeLast.contains(img->url()))
+	{ return; }
 	if (m_downloadTimeLast[img->url()]->elapsed() >= 1000)
 	{
 		m_downloadTimeLast[img->url()]->restart();
