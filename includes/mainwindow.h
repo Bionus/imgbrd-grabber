@@ -129,6 +129,7 @@ class mainWindow : public QMainWindow
 		void saveSettings();
 		void on_buttonFolder_clicked();
 		void loadSites();
+		void imageUrlChanged(QString, QString);
 		void updateCompleters();
 		void saveImage(Image *img, QNetworkReply *reply = NULL, QString path = "", QString p = "", bool getAll = true);
 

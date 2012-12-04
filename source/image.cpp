@@ -62,9 +62,13 @@ Image::Image(QMap<QString, QString> details, int timezonedecay, Page* parent)
 	m_loadDetailsExists = false;
 	m_loadImageExists = false;
 	m_pools = QList<Pool*>();
+
+	m_settings = new QSettings(savePath("sites/"+m_parentSite["Model"]+"/"+m_site+"/settings.ini"), QSettings::IniFormat);
 }
 Image::~Image()
-{ }
+{
+	delete m_settings;
+}
 
 void Image::loadPreview()
 {
@@ -77,7 +81,9 @@ void Image::loadPreview()
 
 	QNetworkRequest r(m_previewUrl);
 		//r.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::PreferCache);
-		//r.setRawHeader("Referer", m_previewUrl.toString().toAscii());
+		QString referer = m_settings->value("Referer", "").toString();
+		if (!referer.isEmpty())
+		{ r.setRawHeader("Referer", referer == "host" ? QString(m_previewUrl.scheme()+"://"+m_previewUrl.host()).toAscii() : (referer == "image" ? m_previewUrl.toString().toAscii() : "")); }
 
 	m_previewTry++;
 	m_loadPreviewExists = true;
@@ -130,7 +136,9 @@ void Image::loadDetails()
 
 	QNetworkRequest r(m_pageUrl);
 		//r.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::PreferCache);
-		//r.setRawHeader("Referer", m_pageUrl.toString().toAscii());
+		QString referer = m_settings->value("Referer", "").toString();
+		if (!referer.isEmpty())
+		{ r.setRawHeader("Referer", referer == "host" ? QString(m_pageUrl.scheme()+"://"+m_pageUrl.host()).toAscii() : (referer == "image" ? m_pageUrl.toString().toAscii() : "")); }
 
 	m_loadDetails = manager->get(r);
 	m_loadDetailsExists = true;
@@ -229,7 +237,10 @@ void Image::parseDetails(QNetworkReply* r)
 			m_fileUrl = rx.cap(1);
 		}
 		if (before != m_url)
-		{ emit urlChanged(before, m_url); }
+		{
+			m_fileSize = 0;
+			emit urlChanged(before, m_url);
+		}
 	}
 
 	emit finishedLoadingTags(this);
@@ -646,8 +657,11 @@ void Image::loadImage()
 {
 	QNetworkAccessManager *m = new QNetworkAccessManager(this);
 	connect(m, SIGNAL(sslErrors(QNetworkReply*, QList<QSslError>)), this, SLOT(sslErrorHandler(QNetworkReply*, QList<QSslError>)));
-	QNetworkRequest request(m_url);
-		request.setRawHeader("Referer", m_url.toAscii());
+	QUrl url(m_url);
+	QNetworkRequest request(url);
+		QString referer = m_settings->value("Referer", "").toString();
+		if (!referer.isEmpty())
+		{ request.setRawHeader("Referer", referer == "host" ? QString(url.scheme()+"://"+url.host()).toAscii() : (referer == "image" ? m_url.toAscii() : "")); }
 
 	m_loadImage = m->get(request);
 	//m_timer.start();
@@ -656,10 +670,33 @@ void Image::loadImage()
 	m_loadImageExists = true;
 }
 void Image::finishedImageS()
-{ emit finishedImage(this); }
+{
+	QUrl redir = m_loadImage->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
+	if (!redir.isEmpty())
+	{
+		m_url = redir.toString();
+		loadImage();
+		return;
+	}
+
+	if (m_loadImage->error() == QNetworkReply::ContentNotFoundError && m_url.section('.', -1) != "jpeg")
+	{
+		QString ext = m_url.section('.', -1);
+		QMap<QString,QString> nextext;
+		nextext["jpg"] = "png";
+		nextext["png"] = "gif";
+		nextext["gif"] = "jpeg";
+		setUrl(m_url.section('.', 0, -2)+"."+nextext[ext]);
+		log(tr("Image non trouvée. Nouvel essai avec l'extension %1...").arg(nextext[ext]));
+		loadImage();
+		return;
+	}
+
+	emit finishedImage(this);
+}
 void Image::downloadProgressImageS(qint64 v1, qint64 v2)
 {
-	if (v2 > 0/* && (v1 == v2 || m_timer.elapsed() > 500)*/)
+	if (m_loadImageExists && v2 > 0/* && (v1 == v2 || m_timer.elapsed() > 500)*/)
 	{
 		//m_timer.restart();
 		emit downloadProgressImage(this, v1, v2);
@@ -748,8 +785,14 @@ QPixmap			Image::previewImage()	{ return m_imagePreview;	}
 Page			*Image::page()			{ return m_parent;			}
 QByteArray		Image::data()			{ return m_data;			}
 QNetworkReply	*Image::imageReply()	{ return m_loadImage;		}
+QSettings		*Image::settings()		{ return m_settings;		}
 
-void	Image::setUrl(QString u)		{ m_url = u;				}
+void	Image::setUrl(QString u)
+{
+	m_fileSize = 0;
+	emit urlChanged(m_url, u);
+	m_url = u;
+}
 void	Image::setFileSize(int s)		{ m_fileSize = s;			}
 void	Image::setData(QByteArray d)
 {

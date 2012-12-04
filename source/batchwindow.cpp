@@ -113,24 +113,8 @@ void batchWindow::addImage(QString url, int batch, float size)
 	ui->tableWidget->setItem(m_items, 0, id);
 	ui->tableWidget->setItem(m_items, 1, new QTableWidgetItem(QString::number(batch)));
 	ui->tableWidget->setItem(m_items, 2, new QTableWidgetItem(url));
-	QString sze = "";
-	if (size != 0)
-	{
-		QString unit = "o";
-		if (size >= 1024)
-		{
-			size /= 1024;
-			if (size >= 1024)
-			{
-				size /= 1024;
-				unit = "Mio";
-			}
-			else
-			{ unit = "Kio"; }
-		}
-		sze = QLocale::system().toString(size, 'f', size < 10 ? 2 : 0)+" "+unit;
-	}
-	ui->tableWidget->setItem(m_items, 3, new QTableWidgetItem(sze));
+	QString unit = getUnit(&size);
+	ui->tableWidget->setItem(m_items, 3, new QTableWidgetItem(size != 0 ? QLocale::system().toString(size, 'f', size < 10 ? 2 : 0)+" "+unit : ""));
 	ui->tableWidget->setItem(m_items, 4, new QTableWidgetItem());
 	ui->tableWidget->setItem(m_items, 5, new QTableWidgetItem("0 %"));
 	/* QProgressBar *prog = new QProgressBar(this);
@@ -172,7 +156,11 @@ void batchWindow::loadingImage(QString url)
 void batchWindow::imageUrlChanged(QString before, QString after)
 {
 	int i = m_urls.indexOf(before);
+	m_urls[i] = after;
 	ui->tableWidget->item(i, 2)->setText(after);
+	ui->tableWidget->item(i, 3)->setText("");
+	ui->tableWidget->item(i, 4)->setText("");
+	ui->tableWidget->item(i, 5)->setText("0 %");
 }
 void batchWindow::statusImage(QString url, int percent)
 {
@@ -194,7 +182,7 @@ void batchWindow::sizeImage(QString url, float size)
 {
 	int i = m_urls.indexOf(url);
 	QString unit = getUnit(&size);
-	ui->tableWidget->setItem(i, 3, new QTableWidgetItem(QLocale::system().toString(size, 'f', size < 10 ? 2 : 0)+" "+unit));
+	ui->tableWidget->setItem(i, 3, new QTableWidgetItem(size != 0 ? QLocale::system().toString(size, 'f', size < 10 ? 2 : 0)+" "+unit : ""));
 }
 void batchWindow::loadedImage(QString url)
 {
