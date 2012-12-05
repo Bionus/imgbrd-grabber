@@ -1058,13 +1058,13 @@ void mainWindow::getAllImages()
 		int n = 0;
 		for (int r = 0; r < m_groupBatchs.count(); r++)
 		{
-			if (m_groupBatchs[r][8].split("¤", QString::SkipEmptyParts).contains(m_getAllRemaining.at(i)->page()->url().toString()))
+			if (m_groupBatchs[r][8].split("¤", QString::SkipEmptyParts).contains(m_getAllRemaining[i]->page()->url().toString()))
 			{
 				n = r + 1;
 				break;
 			}
 		}
-		m_progressdialog->addImage(m_getAllRemaining.at(i)->url(), n, m_getAllRemaining.at(i)->fileSize());
+		m_progressdialog->addImage(m_getAllRemaining[i]->url(), n, m_getAllRemaining[i]->fileSize());
 		connect(m_getAllRemaining[i], SIGNAL(urlChanged(QString,QString)), m_progressdialog, SLOT(imageUrlChanged(QString,QString)));
 		connect(m_getAllRemaining[i], SIGNAL(urlChanged(QString,QString)), this, SLOT(imageUrlChanged(QString,QString)));
 		m_progressdialog->setImages(i+1);

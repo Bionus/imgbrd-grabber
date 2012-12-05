@@ -582,10 +582,7 @@ QString Image::path(QString fn, QString pth, bool complex)
 		// Conditionals
 		if (complex)
 		{
-			QStringList c = custom.keys();
-			for (int i = 0; i < 10; i++)
-			{ c.append("search_"+QString::number(search.size())); }
-			QStringList tokens = QStringList() << "artist" << "general" << "copyright" << "character" << "model" << "model|artist" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "allo" << c << "date" << "date:([^%]+)" << "score";
+			QStringList tokens = QStringList() << "artist" << "general" << "copyright" << "character" << "model" << "model|artist" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "allo" << "date" << "date:([^%]+)" << "search_(\\d+)" << "score" << custom.keys();
 			filename = analyse(tokens, filename, details["allos"]);
 		}
 
