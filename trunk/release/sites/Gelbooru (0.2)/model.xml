@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Site>
-	<Name>Gelbooru</Name>
+	<Name>Gelbooru (0.2)</Name>
 	<Urls>
 		<Xml>
 			<Tags>/index.php?page=dapi&amp;s=post&amp;q=index&amp;limit={limit}&amp;pid={page}&amp;tags={tags}</Tags>

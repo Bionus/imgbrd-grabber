@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Site>
+	<Name>Gelbooru (0.1)</Name>
+	<Urls>
+		<Html>
+			<Tags>/index.php?page=post&amp;s=list&amp;limit={limit}&amp;pid={page}&amp;tags={tags}</Tags>
+			<Pools>/index.php?page=pool&amp;s=show&amp;id={pool}</Pools>
+			<Post>/index.php?page=post&amp;s=view&amp;id={id}</Post>
+		</Html>
+	</Urls>
+	<Regex>
+		<Tags>&lt;li&gt;&lt;(a) [^&gt;]*&gt;\+&lt;/a&gt;&lt;a [^&gt;]*&gt;-&lt;/a&gt; &lt;span [^&gt;]*&gt;\? &lt;a href=&quot;[^&quot;]*&quot;&gt;([^&lt;]+)&lt;/a&gt; (\d+)&lt;/span&gt;&lt;/li&gt;</Tags>
+		<Image>&lt;span class=&quot;thumb&quot;&gt;&lt;a id=&quot;p(\d+)&quot; href=&quot;[^&quot;]+&quot;&gt;&lt;img src=&quot;(.*thumbnail_([^.]+)\.[^&quot;]+)&quot; alt=&quot;post&quot; border=&quot;0&quot; title=&quot;[^&quot;]*&quot;/&gt;&lt;/a&gt;[^&lt;]*&lt;script type=&quot;text/javascript&quot;&gt;[^&lt;]*//&lt;!\[CDATA\[[^&lt;]*posts\[[^]]+\] = \{'tags':'([^']+)'\.split\(/ /g\), 'rating':'([^']+)', 'score':([^,]+), 'user':'([^']+)'\}[^&lt;]*//\]\]&gt;[^&lt;]*&lt;/script&gt;&lt;/span&gt;</Image>
+		<Order>id|preview_url|md5|tags|rating|score|author</Order>
+		<ImageUrl>&lt;img[^&gt;]+src=&quot;([^&quot;]+)&quot;[^&gt;]+onclick=&quot;Note\.toggle\(\);&quot;[^&gt;]*/&gt;</ImageUrl>
+	</Regex>
+	<Modifiers>rating:safe rating:questionable rating:explicit user: fav: fastfav: md5: source: id: width: height: score: mpixels: filesize: date: gentags: arttags: chartags: copytags: approver: parent: sub: order:id order:id_desc order:score order:score_asc order:mpixels order:mpixels_asc order:filesize order:landscape order:portrait order:favcount order:rank parent:none unlocked:rating</Modifiers>
+	<DefaultTag>all</DefaultTag>
+	<FirstPage>0</FirstPage>
+</Site>
