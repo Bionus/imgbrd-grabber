@@ -293,7 +293,7 @@ void mainWindow::loadSites()
 				}
 				if (!source.isEmpty())
 				{
-					QFile f(savePath("sites/"+dir.at(i)+"/sites.txt"));
+					QFile f(savePath("sites/"+dir[i]+"/sites.txt"));
 					if (f.open(QIODevice::ReadOnly | QIODevice::Text))
 					{
 						while (!f.atEnd())
@@ -311,17 +311,17 @@ void mainWindow::loadSites()
 							else
 							{ srcs = source; }
 							stes[line] = details;
-							for (int i = 0; i < srcs.size(); i++)
+							for (int j = 0; j < srcs.size(); j++)
 							{
-								stes[line]["Urls/"+QString::number(i+1)+"/Tags"] = "http://"+line+stes[line]["Urls/"+(srcs[i] == "Regex" ? "Html" : srcs[i])+"/Tags"];
-								if (stes[line].contains("Urls/"+(srcs[i] == "Regex" ? "Html" : srcs[i])+"/Limit"))
-								{ stes[line]["Urls/"+QString::number(i+1)+"/Limit"] = stes[line]["Urls/"+(srcs[i] == "Regex" ? "Html" : srcs[i])+"/Limit"]; }
-								if (stes[line].contains("Urls/"+(srcs[i] == "Regex" ? "Html" : srcs[i])+"/Home"))
-								{ stes[line]["Urls/"+QString::number(i+1)+"/Home"] = "http://"+line+stes[line]["Urls/"+(srcs[i] == "Regex" ? "Html" : srcs[i])+"/Home"]; }
-								if (stes[line].contains("Urls/"+(srcs[i] == "Regex" ? "Html" : srcs[i])+"/Pools"))
-								{ stes[line]["Urls/"+QString::number(i+1)+"/Pools"] = "http://"+line+stes[line]["Urls/"+(srcs[i] == "Regex" ? "Html" : srcs[i])+"/Pools"]; }
+								stes[line]["Urls/"+QString::number(j+1)+"/Tags"] = "http://"+line+stes[line]["Urls/"+(srcs[j] == "Regex" ? "Html" : srcs[j])+"/Tags"];
+								if (stes[line].contains("Urls/"+(srcs[j] == "Regex" ? "Html" : srcs[j])+"/Limit"))
+								{ stes[line]["Urls/"+QString::number(j+1)+"/Limit"] = stes[line]["Urls/"+(srcs[j] == "Regex" ? "Html" : srcs[j])+"/Limit"]; }
+								if (stes[line].contains("Urls/"+(srcs[j] == "Regex" ? "Html" : srcs[j])+"/Home"))
+								{ stes[line]["Urls/"+QString::number(j+1)+"/Home"] = "http://"+line+stes[line]["Urls/"+(srcs[j] == "Regex" ? "Html" : srcs[j])+"/Home"]; }
+								if (stes[line].contains("Urls/"+(srcs[j] == "Regex" ? "Html" : srcs[j])+"/Pools"))
+								{ stes[line]["Urls/"+QString::number(j+1)+"/Pools"] = "http://"+line+stes[line]["Urls/"+(srcs[j] == "Regex" ? "Html" : srcs[j])+"/Pools"]; }
 							}
-							stes[line]["Model"] = dir.at(i);
+							stes[line]["Model"] = dir[i];
 							stes[line]["Url"] = line;
 							stes[line]["Urls/Html/Post"] = "http://"+line+stes[line]["Urls/Html/Post"];
 							if (stes[line].contains("Urls/Html/Tags"))
@@ -334,11 +334,11 @@ void mainWindow::loadSites()
 						}
 					}
 					else
-					{ log(tr("Fichier sites.txt du modèle %1 introuvable.").arg(dir.at(i)), Error); }
+					{ log(tr("Fichier sites.txt du modèle %1 introuvable.").arg(dir[i]), Error); }
 					f.close();
 				}
 				else
-				{ log(tr("Aucune source valide trouvée dans le fichier model.xml de %1.").arg(dir.at(i))); }
+				{ log(tr("Aucune source valide trouvée dans le fichier model.xml de %1.").arg(dir[i])); }
 			}
 			file.close();
 		}
@@ -1501,8 +1501,12 @@ void mainWindow::getAllPerformImage(Image* img)
 }
 void mainWindow::saveImage(Image *img, QNetworkReply *reply, QString path, QString p, bool getAll)
 {
-	if (reply == NULL)
-	{ reply = img->imageReply(); }
+	if (reply == NULL || !reply->isReadable())
+	{
+		reply = img->imageReply();
+		if (reply == NULL || !reply->isReadable())
+		{ return; }
+	}
 
 	// Path
 	if (path == "")
