@@ -1,5 +1,9 @@
 #summary Keep a local gelbooru to browse your downloaded images.
 
+_Thanks a lot to NobodX for his help with the commands system and Gelbooru._
+
+
+
 = Introduction =
 First of all, know that using commands can slow down huge batch downloads (a recent computer may need from 100ms to 1s more per image, which is very consequent).
 
@@ -65,6 +69,22 @@ ALTER TABLE `tag_index` ADD PRIMARY KEY (`tag`)
 
 = Grabber =
 
+== 3.2.0 and higer ==
+Launch Grabber, then open the options window and go to the "Commands" part. Set it to those values:
+
+- Driver: "QMYSQL"
+- Host: "localhost"
+- User: "root"
+- Password: "" (nothing)
+- Database: "gelbooru"
+- Start: "" (nothing)
+- Image: "INSERT INTO posts(creation_date, hash, image, height, width, ext, rating, tags, directory, active_date) VALUES(NOW(), "%md5%", "%md5%.%ext%", %height%, %width%, ".%ext%", "%rating%", " %all% ", "1", "20110619");"
+- Tag: "INSERT INTO tag_index(tag, index_count) VALUES("%tag%", 1) ON DUPLICATE KEY UPDATE index_count = index_count+1;"
+- End: "UPDATE post_count SET pcount = (SELECT COUNT(*) FROM posts), last_update = (CURDATE() + 0) WHERE access_key = "posts";"
+
+Now, every time you save an image, a copy will be created in your local booru!
+
+== Older versions ==
 Launch Grabber, then open the options window and go to the "Commands" part. Set it to those values:
 
 Initialization (note that the mysql version may vary)
