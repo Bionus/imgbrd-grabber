@@ -69,7 +69,7 @@ ALTER TABLE `tag_index` ADD PRIMARY KEY (`tag`)
 
 = Grabber =
 
-== 3.2.0 and higer ==
+== 3.2.0 and higher ==
 Launch Grabber, then open the options window and go to the "Commands" part. Set it to those values:
 
 - Driver: "QMYSQL"
