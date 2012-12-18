@@ -5,6 +5,7 @@
 #include <QCheckBox>
 #include <QLabel>
 #include "QBouton.h"
+#include "site.h"
 
 
 
@@ -20,7 +21,7 @@ class sourcesWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		explicit sourcesWindow(QList<bool> selected, QMap<QString,QMap<QString,QString> > *sites, QWidget *parent = 0);
+		explicit sourcesWindow(QList<bool> selected, QMap<QString,Site*> *sites, QWidget *parent = 0);
 		~sourcesWindow();
 		QList<bool> getSelected();
 		int getColumns();
@@ -31,6 +32,7 @@ class sourcesWindow : public QDialog
 		void checkAll(int check = 2);
 		void addSite();
 		void insertCheckBox();
+		void settingsSite(QString);
 		void deleteSite(QString);
 		void checkUpdate();
 		void checkClicked();
@@ -45,7 +47,7 @@ class sourcesWindow : public QDialog
 		QList<QCheckBox*> m_checks;
 		QList<QLabel*> m_labels;
 		QList<QBouton*> m_buttons;
-		QMap<QString,QMap<QString,QString> > *m_sites;
+		QMap<QString,Site*> *m_sites;
 };
 
 #endif // SOURCESWINDOW_H

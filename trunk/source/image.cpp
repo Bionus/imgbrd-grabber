@@ -7,7 +7,12 @@
 Image::Image(QMap<QString, QString> details, int timezonedecay, Page* parent)
 {
 	m_site = parent != NULL ? parent->website() : (details.contains("website") ? details["website"] : "");
-	m_parentSite = parent != NULL ? parent->site() :  (details.contains("site") ? stringToMap(details["site"]) : QMap<QString,QString>());
+	m_parentSite = parent != NULL ? parent->site() : (details.contains("site") ? (Site*)details["site"].toInt() : NULL);
+	if (m_parentSite == NULL)
+	{
+		log("IMAGE HAS NULL PARENT, ABORTING CREATION...");
+		return;
+	}
 	m_url = details.contains("file_url") ? (details["file_url"].startsWith("/") ? "http://"+m_site+details["file_url"] : details["file_url"]) : "";
 	m_md5 = details.contains("md5") ? details["md5"] : "";
 	m_author = details.contains("author") ? details["author"] : "";
@@ -58,54 +63,36 @@ Image::Image(QMap<QString, QString> details, int timezonedecay, Page* parent)
 	m_parent = parent;
 
 	m_previewTry = 0;
-	m_loadPreviewExists = false;
-	m_loadDetailsExists = false;
-	m_loadImageExists = false;
+	m_loadPreview = NULL;
+	m_loadDetails = NULL;
+	m_loadImage = NULL;
 	m_pools = QList<Pool*>();
 
-	m_settings = new QSettings(savePath("sites/"+m_parentSite["Model"]+"/"+m_site+"/settings.ini"), QSettings::IniFormat);
+	m_settings = new QSettings(savePath("sites/"+m_parentSite->value("Model")+"/"+m_site+"/settings.ini"), QSettings::IniFormat, this);
 }
 Image::~Image()
-{
-	delete m_settings;
-}
+{ }
 
 void Image::loadPreview()
 {
-	QNetworkAccessManager *manager = new QNetworkAccessManager(this);
-		/*QNetworkDiskCache *diskCache = new QNetworkDiskCache(this);
-		diskCache->setCacheDirectory(QDesktopServices::storageLocation(QDesktopServices::CacheLocation));
-		manager->setCache(diskCache);*/
-
-	QNetworkRequest r(m_previewUrl);
-		//r.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::PreferCache);
-		QString referer = m_settings->value("Referer", "").toString();
-		if (!referer.isEmpty())
-		{ r.setRawHeader("Referer", referer == "host" ? QString(m_previewUrl.scheme()+"://"+m_previewUrl.host()).toAscii() : (referer == "image" ? m_previewUrl.toString().toAscii() : "")); }
-
 	m_previewTry++;
-	m_loadPreviewExists = true;
-	m_loadPreview = manager->get(r);
+	m_loadPreview = m_parentSite->get(m_previewUrl);
 	m_loadPreview->setParent(this);
 
-	connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(parsePreview(QNetworkReply*)));
-	connect(manager, SIGNAL(sslErrors(QNetworkReply*, QList<QSslError>)), this, SLOT(sslErrorHandler(QNetworkReply*, QList<QSslError>)));
-	connect(manager, SIGNAL(finished(QNetworkReply*)), manager, SLOT(deleteLater()));
+	connect(m_loadPreview, SIGNAL(finished()), this, SLOT(parsePreview()));
 }
-void Image::sslErrorHandler(QNetworkReply* qnr, QList<QSslError>)
-{ qnr->ignoreSslErrors(); }
 void Image::abortPreview()
 {
-	if (m_loadPreviewExists)
+	if (m_loadPreview != NULL)
 	{
 		if (m_loadPreview->isRunning())
 		{ m_loadPreview->abort(); }
 	}
 }
-void Image::parsePreview(QNetworkReply* r)
+void Image::parsePreview()
 {
 	// Check redirection
-	QUrl redir = r->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
+	QUrl redir = m_loadPreview->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 	if (!redir.isEmpty())
 	{
 		m_previewUrl = redir;
@@ -114,9 +101,9 @@ void Image::parsePreview(QNetworkReply* r)
 	}
 
 	// Load preview from raw result
-	m_imagePreview.loadFromData(r->readAll());
-	r->deleteLater();
-	m_loadPreviewExists = false;
+	m_imagePreview.loadFromData(m_loadPreview->readAll());
+	m_loadPreview->deleteLater();
+	m_loadPreview = NULL;
 
 	// If nothing has been received
 	if (m_imagePreview.isNull() && m_previewTry <= 3)
@@ -130,51 +117,36 @@ void Image::parsePreview(QNetworkReply* r)
 
 void Image::loadDetails()
 {
-	QNetworkAccessManager *manager = new QNetworkAccessManager(this);
-		/*QNetworkDiskCache *diskCache = new QNetworkDiskCache(this);
-		diskCache->setCacheDirectory(QDesktopServices::storageLocation(QDesktopServices::CacheLocation));
-		manager->setCache(diskCache);*/
-
-	QNetworkRequest r(m_pageUrl);
-		//r.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::PreferCache);
-		QString referer = m_settings->value("Referer", "").toString();
-		if (!referer.isEmpty())
-		{ r.setRawHeader("Referer", referer == "host" ? QString(m_pageUrl.scheme()+"://"+m_pageUrl.host()).toAscii() : (referer == "image" ? m_pageUrl.toString().toAscii() : "")); }
-
-	m_loadDetails = manager->get(r);
+	m_loadDetails = m_parentSite->get(m_pageUrl);
 	m_loadDetails->setParent(this);
 
-	connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(parseDetails(QNetworkReply*)));
-	connect(manager, SIGNAL(sslErrors(QNetworkReply*, QList<QSslError>)), this, SLOT(sslErrorHandler(QNetworkReply*, QList<QSslError>)));
-	connect(manager, SIGNAL(finished(QNetworkReply*)), manager, SLOT(deleteLater()));
-
-	m_loadDetailsExists = true;
+	connect(m_loadDetails, SIGNAL(finished()), this, SLOT(parseDetails()));
 }
 void Image::abortTags()
 {
-	if (m_loadDetailsExists)
+	if (m_loadDetails != NULL)
 	{
 		if (m_loadDetails->isRunning())
 		{ m_loadDetails->abort(); }
 	}
 }
-void Image::parseDetails(QNetworkReply* r)
+void Image::parseDetails()
 {
 	// Check redirection
-	QUrl redir = r->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
+	QUrl redir = m_loadDetails->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 	if (!redir.isEmpty())
 	{
 		m_pageUrl = redir;
 		loadDetails();
 		return;
 	}
-	QString source = QString::fromUtf8(r->readAll());
+	QString source = QString::fromUtf8(m_loadDetails->readAll());
 
 	// Pools
-	if (m_parentSite.contains("Regex/Pools"))
+	if (m_parentSite->contains("Regex/Pools"))
 	{
 		m_pools.clear();
-		QRegExp rx(m_parentSite.value("Regex/Pools"));
+		QRegExp rx(m_parentSite->value("Regex/Pools"));
 		rx.setMinimal(true);
 		int pos = 0;
 		while ((pos = rx.indexIn(source, pos)) != -1)
@@ -187,10 +159,10 @@ void Image::parseDetails(QNetworkReply* r)
 
 	// Tags
 	QRegExp rx = QRegExp();
-	if (m_parentSite.contains("Regex/ImageTags"))
-	{ rx = QRegExp(m_parentSite.value("Regex/ImageTags")); }
-	else if (m_parentSite.contains("Regex/Tags"))
-	{ rx = QRegExp(m_parentSite.value("Regex/Tags")); }
+	if (m_parentSite->contains("Regex/ImageTags"))
+	{ rx = QRegExp(m_parentSite->value("Regex/ImageTags")); }
+	else if (m_parentSite->contains("Regex/Tags"))
+	{ rx = QRegExp(m_parentSite->value("Regex/Tags")); }
 	if (!rx.isEmpty())
 	{
 		rx.setMinimal(true);
@@ -217,6 +189,8 @@ void Image::parseDetails(QNetworkReply* r)
 
 				case 2:
 					type = rx.cap(1);
+					if (type == "series")
+					{ type = "copyright"; }
 					tag = rx.cap(2).replace(" ", "_").replace("&amp;", "&");
 					break;
 
@@ -231,9 +205,9 @@ void Image::parseDetails(QNetworkReply* r)
 	}
 
 	// Image url
-	if ((m_url.isEmpty() || m_parentSite.contains("Regex/ForceImageUrl")) && m_parentSite.contains("Regex/ImageUrl"))
+	if ((m_url.isEmpty() || m_parentSite->contains("Regex/ForceImageUrl")) && m_parentSite->contains("Regex/ImageUrl"))
 	{
-		QRegExp rx = QRegExp(m_parentSite.value("Regex/ImageUrl"));
+		QRegExp rx = QRegExp(m_parentSite->value("Regex/ImageUrl"));
 		rx.setMinimal(true);
 		int pos = 0;
 		QString before = m_url;
@@ -659,30 +633,18 @@ QString Image::path(QString fn, QString pth, bool complex)
 
 void Image::loadImage()
 {
-	QNetworkAccessManager *m = new QNetworkAccessManager(this);
-	connect(m, SIGNAL(sslErrors(QNetworkReply*, QList<QSslError>)), this, SLOT(sslErrorHandler(QNetworkReply*, QList<QSslError>)));
-	QUrl url(m_url);
-	QNetworkRequest request(url);
-		QString referer = m_settings->value("Referer", "").toString();
-		if (!referer.isEmpty())
-		{ request.setRawHeader("Referer", referer == "host" ? QString(url.scheme()+"://"+url.host()).toAscii() : (referer == "image" ? m_url.toAscii() : "")); }
-
-	m_loadImage = m->get(request);
+	m_loadImage = m_parentSite->get(m_url);
 	m_loadImage->setParent(this);
 	//m_timer.start();
 
 	connect(m_loadImage, SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(downloadProgressImageS(qint64, qint64)));
 	connect(m_loadImage, SIGNAL(finished()), this, SLOT(finishedImageS()));
-	connect(m, SIGNAL(finished(QNetworkReply*)), m, SLOT(deleteLater()));
-
-	m_loadImageExists = true;
 }
 void Image::finishedImageS()
 {
 	QUrl redir = m_loadImage->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 	if (!redir.isEmpty())
 	{
-		m_loadImageExists = false;
 		m_url = redir.toString();
 		loadImage();
 		return;
@@ -690,7 +652,6 @@ void Image::finishedImageS()
 
 	if (m_loadImage->error() == QNetworkReply::ContentNotFoundError && m_url.section('.', -1) != "jpeg")
 	{
-		m_loadImageExists = false;
 		QString ext = m_url.section('.', -1);
 		QMap<QString,QString> nextext;
 		nextext["jpg"] = "png";
@@ -706,7 +667,7 @@ void Image::finishedImageS()
 }
 void Image::downloadProgressImageS(qint64 v1, qint64 v2)
 {
-	if (m_loadImageExists && v2 > 0/* && (v1 == v2 || m_timer.elapsed() > 500)*/)
+	if (m_loadImage != NULL && v2 > 0/* && (v1 == v2 || m_timer.elapsed() > 500)*/)
 	{
 		//m_timer.restart();
 		emit downloadProgressImage(this, v1, v2);
@@ -714,7 +675,7 @@ void Image::downloadProgressImageS(qint64 v1, qint64 v2)
 }
 void Image::abortImage()
 {
-	if (m_loadImageExists)
+	if (m_loadImage != NULL)
 	{
 		if (m_loadImage->isRunning())
 		{ m_loadImage->abort(); }
@@ -795,6 +756,7 @@ QPixmap			Image::previewImage()	{ return m_imagePreview;	}
 Page			*Image::page()			{ return m_parent;			}
 QByteArray		Image::data()			{ return m_data;			}
 QNetworkReply	*Image::imageReply()	{ return m_loadImage;		}
+QNetworkReply	*Image::tagsReply()		{ return m_loadDetails;		}
 QSettings		*Image::settings()		{ return m_settings;		}
 
 void	Image::setUrl(QString u)

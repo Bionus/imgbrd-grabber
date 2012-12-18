@@ -11,7 +11,7 @@
 
 
 
-batchWindow::batchWindow(QWidget*) : QDialog(), ui(new Ui::batchWindow), m_imagesCount(0), m_items(0), m_images(0), m_maxSpeeds(0), m_cancel(false)
+batchWindow::batchWindow(QWidget*) : QDialog(), ui(new Ui::batchWindow), m_imagesCount(0), m_items(0), m_images(0), m_maxSpeeds(0), m_cancel(false), m_paused(false)
 {
 	ui->setupUi(this);
 	ui->tableWidget->resizeColumnToContents(0);
@@ -55,6 +55,15 @@ void batchWindow::closeEvent(QCloseEvent *e)
 
 	emit closed();
 	e->accept();
+}
+void batchWindow::pause()
+{
+	m_paused = !m_paused;
+	if (m_paused)
+	{ ui->labelSpeed->setText(tr("En pause")); }
+	else
+	{ ui->labelSpeed->setText(""); }
+	emit paused();
 }
 void batchWindow::cancel()
 { m_cancel = true; }
@@ -285,3 +294,4 @@ int batchWindow::images()		{ return m_images;						}
 int batchWindow::count()		{ return m_imagesCount;					}
 int batchWindow::endAction()	{ return ui->comboEnd->currentIndex();	}
 bool batchWindow::endRemove()	{ return ui->checkRemove->isChecked();	}
+bool batchWindow::isPaused()	{ return m_paused;						}

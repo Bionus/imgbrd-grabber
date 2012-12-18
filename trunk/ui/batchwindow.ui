@@ -183,7 +183,7 @@
     </widget>
    </item>
    <item row="4" column="0" colspan="3">
-    <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,1,0">
+    <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,1,0,0">
      <item>
       <widget class="QLabel" name="labelImages">
        <property name="text">
@@ -199,6 +199,13 @@
       </widget>
      </item>
      <item>
+      <widget class="QPushButton" name="buttonPause">
+       <property name="text">
+        <string>Pause</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="cancelButton">
        <property name="text">
         <string>Annuler</string>
@@ -209,6 +216,15 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>buttonDetails</tabstop>
+  <tabstop>tableWidget</tabstop>
+  <tabstop>pushButton</tabstop>
+  <tabstop>comboEnd</tabstop>
+  <tabstop>checkRemove</tabstop>
+  <tabstop>buttonPause</tabstop>
+  <tabstop>cancelButton</tabstop>
+ </tabstops>
  <resources>
   <include location="../resources.qrc"/>
  </resources>
@@ -245,8 +261,25 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>buttonPause</sender>
+   <signal>clicked()</signal>
+   <receiver>batchWindow</receiver>
+   <slot>pause()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>291</x>
+     <y>322</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>298</x>
+     <y>341</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>copyToClipboard()</slot>
+  <slot>pause()</slot>
  </slots>
 </ui>

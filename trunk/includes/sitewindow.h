@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QtNetwork>
+#include "site.h"
 
 
 
@@ -18,7 +19,7 @@ class siteWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		explicit siteWindow(QMap<QString,QMap<QString,QString> > *sites, QWidget *parent = 0);
+		explicit siteWindow(QMap<QString,Site*> *sites, QWidget *parent = 0);
 		~siteWindow();
 
 	public slots:
@@ -26,7 +27,7 @@ class siteWindow : public QDialog
 
 	private:
 		Ui::siteWindow *ui;
-		QMap<QString,QMap<QString,QString> > *m_sites;
+		QMap<QString,Site*> *m_sites;
 };
 
 #endif // SITEWINDOW_H

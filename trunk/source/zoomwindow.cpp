@@ -11,7 +11,7 @@ extern mainWindow *_mainwindow;
 
 
 
-zoomWindow::zoomWindow(Image *image, QMap<QString,QString> site, QMap<QString,QMap<QString,QString> > *sites, QWidget *) : QDialog(0, Qt::Window), ui(new Ui::zoomWindow), m_image(image), m_site(site), timeout(300), m_loaded(0), oldsize(0), m_labelTags(NULL), image(NULL), movie(NULL), m_program(qApp->arguments().at(0)), m_replyExists(false), m_finished(false), m_thread(false), m_data(QByteArray()), m_size(0), m_sites(sites), m_source(), m_th(NULL)
+zoomWindow::zoomWindow(Image *image, Site *site, QMap<QString,Site*> *sites, QWidget *) : QDialog(0, Qt::Window), ui(new Ui::zoomWindow), m_image(image), m_site(site), timeout(300), m_loaded(0), oldsize(0), m_labelTags(NULL), image(NULL), movie(NULL), m_program(qApp->arguments().at(0)), m_replyExists(false), m_finished(false), m_thread(false), m_data(QByteArray()), m_size(0), m_sites(sites), m_source(), m_th(NULL)
 {
 	ui->setupUi(this);
 	setAttribute(Qt::WA_DeleteOnClose);
@@ -75,7 +75,7 @@ void zoomWindow::go()
 		timer->setSingleShot(true);
 		this->timer = timer;
 
-	QString u = m_site["Urls/Html/Post"];
+	QString u = m_site->value("Urls/Html/Post");
 		u.replace("{id}", QString::number(m_image->id()));
 	m_detailsWindow = new detailsWindow(m_image, this);
 	connect(ui->buttonDetails, SIGNAL(clicked()), m_detailsWindow, SLOT(show()));
@@ -131,7 +131,7 @@ void zoomWindow::openPool(QString url)
 	{ emit linkClicked(url); }
 	else
 	{
-		Page *p = new Page(m_sites, m_image->site(), QStringList() << "id:"+url, 1, 1, QStringList(), this);
+		Page *p = new Page(m_sites->value(m_image->site()), m_sites, QStringList() << "id:"+url, 1, 1, QStringList(), this);
 		connect(p, SIGNAL(finishedLoading(Page*)), this, SLOT(openPoolId(Page*)));
 		p->load();
 	}
@@ -314,20 +314,7 @@ void zoomWindow::load()
 	log(tr("Chargement de l'image depuis <a href=\"%1\">%1</a>").arg(m_url));
 	m_data.clear();
 
-	QNetworkAccessManager *manager = new QNetworkAccessManager(this);
-		/*QNetworkDiskCache *diskCache = new QNetworkDiskCache(this);
-		diskCache->setCacheDirectory(QDesktopServices::storageLocation(QDesktopServices::CacheLocation));
-		manager->setCache(diskCache);*/
-	connect(manager, SIGNAL(sslErrors(QNetworkReply*, QList<QSslError>)), this, SLOT(sslErrorHandler(QNetworkReply*, QList<QSslError>)));
-
-	QUrl url(m_url);
-	QNetworkRequest request = QNetworkRequest(url);
-		//request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::PreferCache);
-		QString referer = m_image->settings()->value("Referer", "").toString();
-		if (!referer.isEmpty())
-		{ request.setRawHeader("Referer", referer == "host" ? QString(url.scheme()+"://"+url.host()).toAscii() : (referer == "image" ? m_url.toAscii() : "")); }
-
-	m_reply = manager->get(request);
+	m_reply = m_site->get(m_url);
 	connect(m_reply, SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(downloadProgress(qint64, qint64)));
 	connect(m_reply, SIGNAL(finished()), this, SLOT(replyFinishedZoom()));
 
@@ -522,9 +509,7 @@ void zoomWindow::replyFinishedZoom()
 		return;
 	}
 	else if (m_reply->error() != QNetworkReply::OperationCanceledError)
-	{
-		error(this, tr("Une erreur inattendue est survenue lors du chargement de l'image.\r\n%1").arg(m_reply->url().toString()));
-	}
+	{ error(this, tr("Une erreur inattendue est survenue lors du chargement de l'image (%1).\r\n%2").arg(m_reply->error()).arg(m_reply->url().toString())); }
 
 	m_reply->deleteLater();
 	m_replyExists = false;

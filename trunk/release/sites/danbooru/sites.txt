@@ -1,11 +1,11 @@
 behoimi.org
-chan.sankakucomplex.com:json
+chan.sankakucomplex.com
 danbooru.donmai.us
 e621.net
 genso.ws
 hijiribe.donmai.us
 ichijou.org
-idol.sankakucomplex.com:json
+idol.sankakucomplex.com
 konachan.com
 nekobooru.net
 yande.re

@@ -62,7 +62,9 @@ HEADERS += includes/aboutwindow.h \
 		   includes/favoritestab.h \
 		   includes/md5fix.h \
 		   includes/commands.h \
-		   includes/crashhandler.h
+		   includes/crashhandler.h \
+		   includes/sourcessettingswindow.h \
+		   includes/site.h
 FORMS += ui/aboutwindow.ui \
 		 ui/adduniquewindow.ui \
 		 ui/batchwindow.ui \
@@ -86,7 +88,8 @@ FORMS += ui/aboutwindow.ui \
 		 ui/pooltab.ui \
 		 ui/favoritestab.ui \
 		 ui/md5fix.ui \
-		 ui/tagtab.ui
+		 ui/tagtab.ui \
+		 ui/sourcessettingswindow.ui
 SOURCES += source/aboutwindow.cpp \
 		   source/addgroupwindow.cpp \
 		   source/adduniquewindow.cpp \
@@ -125,4 +128,6 @@ SOURCES += source/aboutwindow.cpp \
 		   source/favoritestab.cpp \
 		   source/md5fix.cpp \
 		   source/commands.cpp \
-		   source/crashhandler.cpp
+		   source/crashhandler.cpp \
+		   source/sourcessettingswindow.cpp \
+		   source/site.cpp

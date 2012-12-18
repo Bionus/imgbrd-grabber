@@ -24,7 +24,7 @@
 #include "commands.h"
 #include <QtSql/QSqlDatabase>
 
-#define VERSION	"3.2.3"
+#define VERSION	"3.2.4"
 #define DONE()	logUpdate(QObject::tr(" Fait"))
 
 extern QMap<QDateTime,QString> _log;
@@ -82,7 +82,9 @@ void mainWindow::init()
 	m_gotMd5 = QStringList();
 	m_mergeButtons = QList<QBouton*>();
 	m_progressBars = QList<QProgressBar*>();
+
 	m_progressdialog = new batchWindow(this);
+	connect(m_progressdialog, SIGNAL(paused()), this, SLOT(getAllPause()));
 
 	ui->tableBatchGroups->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
 	ui->tableBatchUniques->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
@@ -264,7 +266,7 @@ void mainWindow::init()
 }
 void mainWindow::loadSites()
 {
-	QMap<QString,QMap<QString,QString> > stes;
+	QMap<QString,Site*> stes;
 	QStringList dir = QDir(savePath("sites")).entryList(QDir::Dirs | QDir::NoDotAndDotDot);
 	for (int i = 0; i < dir.count(); i++)
 	{
@@ -280,7 +282,7 @@ void mainWindow::loadSites()
 			else
 			{
 				QDomElement docElem = doc.documentElement();
-				QMap<QString,QString> details = domToMap(docElem);
+				QMap<QString,QString> detals = domToMap(docElem);
 				QStringList defaults = QStringList() << "xml" << "json" << "rss" << "regex";
 				QString curr;
 				QStringList source;
@@ -288,7 +290,7 @@ void mainWindow::loadSites()
 				{
 					QString t = m_settings->value("source_"+QString::number(s+1), defaults.at(s)).toString();
 					t[0] = t[0].toUpper();
-					if (details.contains("Urls/"+(t == "Regex" ? "Html" : t)+"/Tags"))
+					if (detals.contains("Urls/"+(t == "Regex" ? "Html" : t)+"/Tags"))
 					{ source.append(t); }
 				}
 				if (!source.isEmpty())
@@ -310,27 +312,30 @@ void mainWindow::loadSites()
 							}
 							else
 							{ srcs = source; }
-							stes[line] = details;
+							QMap<QString,QString> details = detals;
 							for (int j = 0; j < srcs.size(); j++)
 							{
-								stes[line]["Urls/"+QString::number(j+1)+"/Tags"] = "http://"+line+stes[line]["Urls/"+(srcs[j] == "Regex" ? "Html" : srcs[j])+"/Tags"];
-								if (stes[line].contains("Urls/"+(srcs[j] == "Regex" ? "Html" : srcs[j])+"/Limit"))
-								{ stes[line]["Urls/"+QString::number(j+1)+"/Limit"] = stes[line]["Urls/"+(srcs[j] == "Regex" ? "Html" : srcs[j])+"/Limit"]; }
-								if (stes[line].contains("Urls/"+(srcs[j] == "Regex" ? "Html" : srcs[j])+"/Home"))
-								{ stes[line]["Urls/"+QString::number(j+1)+"/Home"] = "http://"+line+stes[line]["Urls/"+(srcs[j] == "Regex" ? "Html" : srcs[j])+"/Home"]; }
-								if (stes[line].contains("Urls/"+(srcs[j] == "Regex" ? "Html" : srcs[j])+"/Pools"))
-								{ stes[line]["Urls/"+QString::number(j+1)+"/Pools"] = "http://"+line+stes[line]["Urls/"+(srcs[j] == "Regex" ? "Html" : srcs[j])+"/Pools"]; }
+								QString sr = srcs[j] == "Regex" ? "Html" : srcs[j];
+								details["Urls/"+QString::number(j+1)+"/Tags"] = "http://"+line+details["Urls/"+sr+"/Tags"];
+								if (details.contains("Urls/"+sr+"/Limit"))
+								{ details["Urls/"+QString::number(j+1)+"/Limit"] = details["Urls/"+sr+"/Limit"]; }
+								if (details.contains("Urls/"+sr+"/Home"))
+								{ details["Urls/"+QString::number(j+1)+"/Home"] = "http://"+line+details["Urls/"+sr+"/Home"]; }
+								if (details.contains("Urls/"+sr+"/Pools"))
+								{ details["Urls/"+QString::number(j+1)+"/Pools"] = "http://"+line+details["Urls/"+sr+"/Pools"]; }
 							}
-							stes[line]["Model"] = dir[i];
-							stes[line]["Url"] = line;
-							stes[line]["Urls/Html/Post"] = "http://"+line+stes[line]["Urls/Html/Post"];
-							if (stes[line].contains("Urls/Html/Tags"))
-							{ stes[line]["Urls/Html/Tags"] = "http://"+line+stes[line]["Urls/Html/Tags"]; }
-							if (stes[line].contains("Urls/Html/Home"))
-							{ stes[line]["Urls/Html/Home"] = "http://"+line+stes[line]["Urls/Html/Home"]; }
-							if (stes[line].contains("Urls/Html/Pools"))
-							{ stes[line]["Urls/Html/Pools"] = "http://"+line+stes[line]["Urls/Html/Pools"]; }
-							stes[line]["Selected"] = srcs.join("/").toLower();
+							details["Model"] = dir[i];
+							details["Url"] = line;
+							details["Urls/Html/Post"] = "http://"+line+details["Urls/Html/Post"];
+							if (details.contains("Urls/Html/Tags"))
+							{ details["Urls/Html/Tags"] = "http://"+line+details["Urls/Html/Tags"]; }
+							if (details.contains("Urls/Html/Home"))
+							{ details["Urls/Html/Home"] = "http://"+line+details["Urls/Html/Home"]; }
+							if (details.contains("Urls/Html/Pools"))
+							{ details["Urls/Html/Pools"] = "http://"+line+details["Urls/Html/Pools"]; }
+							details["Selected"] = srcs.join("/").toLower();
+							Site *site = new Site(dir[i], line, details);
+							stes.insert(line, site);
 						}
 					}
 					else
@@ -343,6 +348,7 @@ void mainWindow::loadSites()
 			file.close();
 		}
 	}
+	qDeleteAll(m_sites);
 	m_sites.clear();
 	m_sites = stes;
 }
@@ -367,7 +373,6 @@ int mainWindow::addTab(QString tag)
 	QPushButton *closeTab = new QPushButton(QIcon(":/images/close.png"), "", this);
 		closeTab->setFlat(true);
 		closeTab->resize(QSize(8,8));
-		// TODO : put action manager to remove as well as deleteLater()
 		connect(closeTab, SIGNAL(clicked()), w, SLOT(deleteLater()));
 		ui->tabWidget->findChild<QTabBar*>()->setTabButton(index, QTabBar::RightSide, closeTab);
 	if (!tag.isEmpty())
@@ -924,13 +929,13 @@ void mainWindow::getAll(bool all)
 		for (int r = 0; r < count; r++)
 		{
 			int i = selected.at(r)->row();
-			m_getAllRemaining.append(new Image(m_batchs.at(i), m_timezonedecay, new Page(&m_sites, m_batchs.at(i).value("site"), m_batchs.at(i).value("tags").split(" "), 1, 1, QStringList(), false, this)));
+			m_getAllRemaining.append(new Image(m_batchs.at(i), m_timezonedecay, new Page(m_sites[m_batchs.at(i).value("site")], &m_sites, m_batchs.at(i).value("tags").split(" "), 1, 1, QStringList(), false, this)));
 		}
 	}
 	else
 	{
 		for (int i = 0; i < m_batchs.size(); i++)
-		{ m_getAllRemaining.append(new Image(m_batchs.at(i), m_timezonedecay, new Page(&m_sites, m_batchs.at(i).value("site"), m_batchs.at(i).value("tags").split(" "), 1, 1, QStringList(), false, this))); }
+		{ m_getAllRemaining.append(new Image(m_batchs.at(i), m_timezonedecay, new Page(m_sites[m_batchs.at(i).value("site")], &m_sites, m_batchs.at(i).value("tags").split(" "), 1, 1, QStringList(), false, this))); }
 	}
 	m_getAllLimit = m_batchs.size();
 
@@ -976,11 +981,11 @@ void mainWindow::getAll(bool all)
 					{ log(tr("<b>Attention :</b> %1").arg(tr("site \"%1\" not found.").arg(site))); }
 					else
 					{
-						Page *page = new Page(&m_sites, site, tags, m_groupBatchs.at(i).at(1).toInt()+r, pp, QStringList(), false, this);
+						Page *page = new Page(m_sites[site], &m_sites, tags, m_groupBatchs.at(i).at(1).toInt()+r, pp, QStringList(), false, this);
 						log(tr("Chargement de la page <a href=\"%1\">%1</a>").arg(Qt::escape(page->url().toString())));
 						connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(getAllFinishedLoading(Page*)));
 						page->load();
-						m_groupBatchs[i][8] += (m_groupBatchs[i][8] == "" ? "" : "¤") + page->url().toString();
+						m_groupBatchs[i][8] += (m_groupBatchs[i][8] == "" ? "" : "¤") + QString::number((int)page);
 						m_getAllPages.append(page);
 						m_progressdialog->setImagesCount(m_progressdialog->count() + 1);
 					}
@@ -1032,9 +1037,9 @@ void mainWindow::getAllFinishedLoading(Page* p)
 		if (m_getAllRemaining.isEmpty())
 		{
 			if (ims.isEmpty())
-			{ error(this, tr("<b>Attention :</b> %1").arg(tr("rien n'a été reçu depuis %1. Raisons possibles : tag incorrect, page trop éloignée.").arg(p->site().value("Url")))); }
+			{ error(this, tr("<b>Attention :</b> %1").arg(tr("rien n'a été reçu depuis %1. Raisons possibles : tag incorrect, page trop éloignée.").arg(p->site()->value("Url")))); }
 			else
-			{ error(this, tr("<b>Attention :</b> %1").arg(tr("toutes les images provenant de %1 ont été ignorées.").arg(p->site().value("Url")))); }
+			{ error(this, tr("<b>Attention :</b> %1").arg(tr("toutes les images provenant de %1 ont été ignorées.").arg(p->site()->value("Url")))); }
 			return;
 		}
 		getAllImages();
@@ -1058,7 +1063,7 @@ void mainWindow::getAllImages()
 		int n = 0;
 		for (int r = 0; r < m_groupBatchs.count(); r++)
 		{
-			if (m_groupBatchs[r][8].split("¤", QString::SkipEmptyParts).contains(m_getAllRemaining[i]->page()->url().toString()))
+			if (m_groupBatchs[r][8].split("¤", QString::SkipEmptyParts).contains(QString::number((int)m_getAllRemaining[i]->page())))
 			{
 				n = r + 1;
 				break;
@@ -1082,7 +1087,7 @@ void mainWindow::getAllImages()
 	{
 		for (int i = 0; i < forbidden.count(); i++)
 		{
-			if (m_groupBatchs[f][6].startsWith("javascript:") || m_groupBatchs[f][6].contains("%"+forbidden.at(i)+"%") || (m_groupBatchs[f][6].contains("%filename%") && m_sites[m_groupBatchs[f][5]].contains("Regex/ForceImageUrl")))
+			if (m_groupBatchs[f][6].startsWith("javascript:") || m_groupBatchs[f][6].contains("%"+forbidden.at(i)+"%") || (m_groupBatchs[f][6].contains("%filename%") && m_sites[m_groupBatchs[f][5]]->contains("Regex/ForceImageUrl")))
 			{ m_must_get_tags = true; }
 		}
 	}
@@ -1135,6 +1140,7 @@ void mainWindow::_getAll()
 			}
 
 			QString p = img->folder().isEmpty() ? pth : img->folder();
+			qDebug() << p << img->folder() << path << pth << img->path(path, p);
 			QFile f(p+"/"+img->path(path, p));
 			if (!f.exists())
 			{
@@ -1569,6 +1575,32 @@ void mainWindow::getAllCancel()
 	m_progressdialog->clear();
 	m_getAll = false;
 	ui->widgetDownloadButtons->setDisabled(m_getAll);
+	DONE();
+}
+void mainWindow::getAllPause()
+{
+	if (m_progressdialog->isPaused())
+	{
+		log(tr("Mise en pause des téléchargements..."));
+		for (int i = 0; i < m_getAllDownloading.size(); i++)
+		{
+			m_getAllDownloading[i]->abortTags();
+			m_getAllDownloading[i]->abortImage();
+		}
+		m_getAll = false;
+	}
+	else
+	{
+		log(tr("Reprise des téléchargements..."));
+		for (int i = 0; i < m_getAllDownloading.size(); i++)
+		{
+			if (m_getAllDownloading[i]->tagsReply() != NULL)
+			{ m_getAllDownloading[i]->loadDetails(); }
+			if (m_getAllDownloading[i]->imageReply() != NULL)
+			{ m_getAllDownloading[i]->loadImage(); }
+		}
+		m_getAll = true;
+	}
 	DONE();
 }
 

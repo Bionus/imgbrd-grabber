@@ -1,4 +1,5 @@
 #include <QApplication>
+#include <QCommonStyle>
 #include <QStyleOptionFrameV2>
 #include <QWheelEvent>
 #include <QAbstractItemView>
@@ -6,6 +7,7 @@
 #include <QMenu>
 #include <QTextDocumentFragment>
 #include <QFile>
+#include <QDebug>
 #include "textedit.h"
 #include "functions.h"
 
@@ -200,16 +202,17 @@ void TextEdit::customContextMenuRequested(QPoint)
 				connect(favsGroup, SIGNAL(triggered(QAction *)), this, SLOT(insertFav(QAction *)));
 				for (int i = 0; i < m_favorites.count(); i++)
 				{ favsGroup->addAction(m_favorites.at(i)); }
-				favs->addActions(favsGroup->actions());
 				if (!toPlainText().isEmpty())
 				{
-					favs->addSeparator();
 					if (m_favorites.contains(toPlainText()))
-					{ favs->addAction(tr("Retirer"), this, SLOT(unsetFavorite())); }
+					{ favs->addAction(QIcon(":/images/icons/remove.png"), tr("Retirer"), this, SLOT(unsetFavorite())); }
 					else
-					{ favs->addAction(tr("Ajouter"), this, SLOT(setFavorite())); }
+					{ favs->addAction(QIcon(":/images/icons/add.png"), tr("Ajouter"), this, SLOT(setFavorite())); }
+					favs->addSeparator();
 				}
+				favs->addActions(favsGroup->actions());
 				favs->setIcon(QIcon(":/images/icons/favorite.png"));
+				favs->setStyleSheet("* { menu-scrollable: 1 }");
 			menu->addMenu(favs);
 		QMenu *vils = new QMenu(tr("Gardés pour plus tard"), menu);
 			QActionGroup* vilsGroup = new QActionGroup(vils);
@@ -218,12 +221,15 @@ void TextEdit::customContextMenuRequested(QPoint)
 				QStringList viewitlater = loadViewItLater();
 				for (int i = 0; i < viewitlater.count(); i++)
 				{ vilsGroup->addAction(viewitlater.at(i)); }
+				if (!toPlainText().isEmpty())
+				{
+					if (viewitlater.contains(toPlainText()))
+					{ vils->addAction(QIcon(":/images/icons/remove.png"), tr("Retirer"), this, SLOT(unsetKfl())); }
+					else
+					{ vils->addAction(QIcon(":/images/icons/add.png"), tr("Ajouter"), this, SLOT(setKfl())); }
+					vils->addSeparator();
+				}
 				vils->addActions(vilsGroup->actions());
-				vils->addSeparator();
-				if (viewitlater.contains(toPlainText()))
-				{ vils->addAction(tr("Retirer"), this, SLOT(unsetKfl())); }
-				else
-				{ vils->addAction(tr("Ajouter"), this, SLOT(setKfl())); }
 				vils->setIcon(QIcon(":/images/icons/book.png"));
 			menu->addMenu(vils);
 		QMenu *ratings = new QMenu(tr("Classes"), menu);

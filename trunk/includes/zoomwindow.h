@@ -23,7 +23,7 @@ class zoomWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		zoomWindow(Image *, QMap<QString,QString>, QMap<QString,QMap<QString,QString> > *sites, QWidget *parent = 0);
+		zoomWindow(Image *, Site *, QMap<QString,Site*> *sites, QWidget *parent = 0);
 		void go();
 		~zoomWindow();
 		void load();
@@ -73,7 +73,8 @@ class zoomWindow : public QDialog
 		Ui::zoomWindow *ui;
 		detailsWindow *m_detailsWindow;
 		Image *m_image;
-		QMap<QString,QString> regex, m_details, m_site;
+		QMap<QString,QString> regex, m_details;
+		Site *m_site;
 		int timeout, m_loaded, oldsize, m_mustSave;
 		QMap<QString, QStringList> details;
 		QString id, m_url, tags, md5, rating, score, user, format;
@@ -92,7 +93,7 @@ class zoomWindow : public QDialog
 		QStringList m_favorites, m_viewItLater, m_ignore;
 		QByteArray m_data;
 		int m_size;
-		QMap<QString,QMap<QString,QString> > *m_sites;
+		QMap<QString,Site*> *m_sites;
 		QString m_source;
 		ImageThread *m_th;
 };
