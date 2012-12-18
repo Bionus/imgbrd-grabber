@@ -4,7 +4,7 @@
 #include "functions.h"
 #include "ui_blacklistfix.h"
 
-BlacklistFix::BlacklistFix(QMap<QString,QMap<QString,QString> > sites, QWidget *parent) : QDialog(parent), ui(new Ui::BlacklistFix), m_sites(sites)
+BlacklistFix::BlacklistFix(QMap<QString,Site*> sites, QWidget *parent) : QDialog(parent), ui(new Ui::BlacklistFix), m_sites(sites)
 {
 	ui->setupUi(this);
 

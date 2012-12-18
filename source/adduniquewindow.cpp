@@ -12,7 +12,7 @@
  * @param	favorites	List of favorites tags, needed for coloration
  * @param	parent		The parent window
  */
-AddUniqueWindow::AddUniqueWindow(QString selected, QMap<QString,QMap<QString,QString> > sites, QWidget *parent) : QDialog(parent), ui(new Ui::AddUniqueWindow), m_sites(sites)
+AddUniqueWindow::AddUniqueWindow(QString selected, QMap<QString,Site*> sites, QWidget *parent) : QDialog(parent), ui(new Ui::AddUniqueWindow), m_sites(sites)
 {
 	ui->setupUi(this);
 
@@ -46,14 +46,14 @@ void AddUniqueWindow::ok(bool close)
 	m_close = close;
 	bool useDirectLink = true;
 	if (
-		(m_sites[ui->comboSites->currentText()].value("Urls/Html/Post").contains("{id}") && ui->lineId->text().isEmpty()) ||
-		(m_sites[ui->comboSites->currentText()].value("Urls/Html/Post").contains("{md5}") && ui->lineMd5->text().isEmpty()) ||
-		!m_sites[ui->comboSites->currentText()].contains("Regex/ImageUrl")
+		(m_sites[ui->comboSites->currentText()]->value("Urls/Html/Post").contains("{id}") && ui->lineId->text().isEmpty()) ||
+		(m_sites[ui->comboSites->currentText()]->value("Urls/Html/Post").contains("{md5}") && ui->lineMd5->text().isEmpty()) ||
+		!m_sites[ui->comboSites->currentText()]->contains("Regex/ImageUrl")
 	)
 	{ useDirectLink = false; }
 	if (useDirectLink)
 	{
-		QString url = m_sites[ui->comboSites->currentText()].value("Urls/Html/Post");
+		QString url = m_sites[ui->comboSites->currentText()]->value("Urls/Html/Post");
 		url.replace("{id}", ui->lineId->text());
 		url.replace("{md5}", ui->lineMd5->text());
 		QMap<QString,QString> details = QMap<QString,QString>();
@@ -61,14 +61,14 @@ void AddUniqueWindow::ok(bool close)
 		details.insert("id", ui->lineId->text());
 		details.insert("md5", ui->lineMd5->text());
 		details.insert("website", ui->comboSites->currentText());
-		details.insert("site", mapToString(m_sites[ui->comboSites->currentText()]));
+		details.insert("site", QString::number((int)m_sites[ui->comboSites->currentText()]));
 		Image *img = new Image(details);
 		img->loadDetails();
 		connect(img, SIGNAL(finishedLoadingTags(Image*)), this, SLOT(addImage(Image*)));
 	}
 	else
 	{
-		m_page = new Page(&m_sites, ui->comboSites->currentText(), QStringList() << (ui->lineId->text().isEmpty() ? "md5:"+ui->lineMd5->text() : "id:"+ui->lineId->text()) << "status:any", 1, 1);
+		m_page = new Page(m_sites[ui->comboSites->currentText()], &m_sites, QStringList() << (ui->lineId->text().isEmpty() ? "md5:"+ui->lineMd5->text() : "id:"+ui->lineId->text()) << "status:any", 1, 1);
 		connect(m_page, SIGNAL(finishedLoading(Page*)), this, SLOT(replyFinished(Page*)));
 		m_page->load();
 	}
@@ -106,8 +106,8 @@ void AddUniqueWindow::addImage(Image *img)
 	values.insert("filename", ui->lineFilename->text());
 	values.insert("folder", ui->lineFolder->text());
 
-	values.insert("page_url", m_sites[ui->comboSites->currentText()]["Urls/Html/Post"]);
-	QString t = m_sites[ui->comboSites->currentText()].contains("DefaultTag") ? m_sites[ui->comboSites->currentText()]["DefaultTag"] : "";
+	values.insert("page_url", m_sites[ui->comboSites->currentText()]->value("Urls/Html/Post"));
+	QString t = m_sites[ui->comboSites->currentText()]->contains("DefaultTag") ? m_sites[ui->comboSites->currentText()]->value("DefaultTag") : "";
 	values["page_url"].replace("{tags}", t);
 	values["page_url"].replace("{id}", values["id"]);
 

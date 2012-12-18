@@ -5,6 +5,7 @@
 #include <QTreeWidgetItem>
 #include <QDir>
 #include "page.h"
+#include "site.h"
 
 
 
@@ -20,7 +21,7 @@ class BlacklistFix2 : public QDialog
 	Q_OBJECT
 
 	public:
-		explicit BlacklistFix2(QMap<QString,QMap<QString,QString> > sites, QString folder, QString filename, QStringList blacklist, QMap<QString,QString> site, QWidget *parent = 0);
+		explicit BlacklistFix2(QMap<QString,Site*> sites, QString folder, QString filename, QStringList blacklist, Site *site, QWidget *parent = 0);
 		~BlacklistFix2();
 		QList<QTreeWidgetItem*> mkTree(QDir);
 		QString remakePath(QTreeWidgetItem*);
@@ -35,9 +36,10 @@ class BlacklistFix2 : public QDialog
 		Ui::BlacklistFix2						*ui;
 		QString									m_folder, m_filename;
 		QStringList								m_blacklist;
-		QMap<QString,QString>					m_site;
+		Site									*m_site;
+		QMap<QString,QMap<QString,QString> >	m_getAll;
 		QList<QMap<QString,QString> >			m_details;
-		QMap<QString,QMap<QString,QString> >	m_sites, m_getAll;
+		QMap<QString,Site*>						m_sites;
 };
 
 #endif // BLACKLISTFIX2_H

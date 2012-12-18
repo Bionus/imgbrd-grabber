@@ -4,6 +4,7 @@
 #include <QMap>
 #include <QDialog>
 #include "image.h"
+#include "site.h"
 
 
 
@@ -19,7 +20,7 @@ class AddUniqueWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		AddUniqueWindow(QString, QMap<QString,QMap<QString,QString> >, QWidget *parent);
+		AddUniqueWindow(QString, QMap<QString,Site*> sites, QWidget *parent);
 
 	public slots:
 		void add();
@@ -33,10 +34,10 @@ class AddUniqueWindow : public QDialog
 		void sendData(QMap<QString,QString>);
 
 	private:
-		Ui::AddUniqueWindow						*ui;
-		Page									*m_page;
-		QMap<QString,QMap<QString,QString> >	m_sites;
-		bool									m_close;
+		Ui::AddUniqueWindow		*ui;
+		Page					*m_page;
+		QMap<QString,Site*>		m_sites;
+		bool					m_close;
 };
 
 #endif // ADDUNIQUEWINDOW_H

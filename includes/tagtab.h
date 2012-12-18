@@ -26,7 +26,7 @@ class tagTab : public searchTab
     Q_OBJECT
 
     public:
-        explicit tagTab(int id, QMap<QString, QMap<QString, QString> > *sites, QMap<QString, QString> *favorites, QDateTime *serverDate, mainWindow *parent);
+		explicit tagTab(int id, QMap<QString, Site*> *sites, QMap<QString, QString> *favorites, QDateTime *serverDate, mainWindow *parent);
         ~tagTab();
         Ui::tagTab *ui;
         QList<bool> sources();
@@ -83,24 +83,24 @@ class tagTab : public searchTab
 		void closed(tagTab*);
 
 	private:
-        int										m_id;
-        mainWindow								*m_parent;
-        TextEdit								*m_search, *m_postFiltering;
-        QCalendarWidget							*m_calendar;
-        QDateTime								*m_serverDate;
-        QMap<QString,QString>					*m_favorites;
-        QMap<QString,QMap<QString,QString> >	*m_sites;
-        QMap<QString,Page*>						m_pages;
-        QList<Image*>							m_images;
-        int										m_pagemax;
-        QList<bool>								m_selectedSources;
-        QList<QCheckBox*>						m_checkboxes;
-        QString									m_link, m_lastTags, m_wiki, m_tags;
-        bool									m_sized, m_from_history, m_stop;
-        int										m_page, m_history_cursor;
-        QList<QGridLayout*>						m_layouts;
-        QList<QMap<QString,QString> >			m_history;
-        QStringList								m_modifiers;
+		int								m_id;
+		mainWindow						*m_parent;
+		TextEdit						*m_search, *m_postFiltering;
+		QCalendarWidget					*m_calendar;
+		QDateTime						*m_serverDate;
+		QMap<QString,QString>			*m_favorites;
+		QMap<QString,Site*>				*m_sites;
+		QMap<QString,Page*>				m_pages;
+		QList<Image*>					m_images;
+		int								m_pagemax;
+		QList<bool>						m_selectedSources;
+		QList<QCheckBox*>				m_checkboxes;
+		QString							m_link, m_lastTags, m_wiki, m_tags;
+		bool							m_sized, m_from_history, m_stop;
+		int								m_page, m_history_cursor;
+		QList<QGridLayout*>				m_layouts;
+		QList<QMap<QString,QString> >	m_history;
+		QStringList						m_modifiers;
 };
 
 #endif // TAGTAB_H

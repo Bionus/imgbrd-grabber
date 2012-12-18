@@ -31,6 +31,7 @@ class batchWindow : public QDialog
 		int batch(QString url);
 		void setCount(int);
 		void updateColumns();
+		bool isPaused();
 
 	public slots:
 		void clear();
@@ -53,9 +54,11 @@ class batchWindow : public QDialog
 		void cancel();
 		void drawSpeed();
 		void imageUrlChanged(QString, QString);
+		void pause();
 
 	signals:
 		void closed();
+		void paused();
 
 	private:
 		Ui::batchWindow			*ui;
@@ -65,7 +68,7 @@ class batchWindow : public QDialog
 		QList<QProgressBar*>	m_progressBars;
 		QMap<QString, int>		m_speeds;
 		QList<int>				m_mean;
-		bool					m_cancel;
+		bool					m_cancel, m_paused;
 		QTime					*m_time, *m_start;
 };
 

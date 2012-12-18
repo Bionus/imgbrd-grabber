@@ -16,6 +16,7 @@
 #include "tagtab.h"
 #include "favoritestab.h"
 #include "commands.h"
+#include "site.h"
 
 
 
@@ -41,7 +42,7 @@ class mainWindow : public QMainWindow
     public:
         explicit mainWindow(QString, QStringList, QMap<QString,QString>);
         ~mainWindow();
-        QMap<QString,QMap<QString,QString> > m_sites;
+		QMap<QString,Site*> m_sites;
         Ui::mainWindow *ui;
 
     public slots:
@@ -96,7 +97,8 @@ class mainWindow : public QMainWindow
         void getAllPerformTags(Image*);
         void getAllPerformImage(Image*);
         void getAllProgress(Image*, qint64, qint64);
-        void getAllCancel();
+		void getAllCancel();
+		void getAllPause();
 		void _getAll();
 		// Tabs
 		int addTab(QString tag = "");

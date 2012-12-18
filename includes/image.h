@@ -10,6 +10,7 @@
 #include "page.h"
 #include "tag.h"
 #include "pool.h"
+#include "site.h"
 
 
 
@@ -62,6 +63,7 @@ class Image : public QObject
 		void		setFileSize(int);
 		QSettings	*settings();
 		QNetworkReply	*imageReply();
+		QNetworkReply	*tagsReply();
 
 	public slots:
 		void loadPreview();
@@ -70,9 +72,8 @@ class Image : public QObject
 		void abortPreview();
 		void abortTags();
 		void abortImage();
-		void parsePreview(QNetworkReply*);
-		void parseDetails(QNetworkReply*);
-		void sslErrorHandler(QNetworkReply*, QList<QSslError>);
+		void parsePreview();
+		void parseDetails();
 
 	private slots:
 		void finishedImageS();
@@ -88,7 +89,7 @@ class Image : public QObject
 	private:
 		Page			*m_parent;
 		int				m_id, m_score, m_parentId, m_fileSize, m_authorId, m_previewTry;
-		bool			m_hasChildren, m_hasNote, m_hasComments, m_loadPreviewExists, m_loadDetailsExists, m_hasScore, m_loadImageExists;
+		bool			m_hasChildren, m_hasNote, m_hasComments, m_hasScore;
 		QString			m_url, m_md5, m_author, m_status, m_rating, m_source, m_site, m_filename, m_folder;
 		QUrl			m_pageUrl, m_fileUrl, m_sampleUrl, m_previewUrl;
 		QSize			m_size;
@@ -100,7 +101,7 @@ class Image : public QObject
 		QList<Pool*>	m_pools;
 		QTime			m_timer;
 		QSettings		*m_settings;
-		QMap<QString,QString>	m_parentSite;
+		Site			*m_parentSite;
 };
 
 #endif // IMAGE_H

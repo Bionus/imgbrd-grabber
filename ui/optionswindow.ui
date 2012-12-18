@@ -127,11 +127,6 @@
        </item>
        <item>
         <property name="text">
-         <string>Connexion</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
          <string>Proxy</string>
         </property>
        </item>
@@ -1780,54 +1775,6 @@ p, li { white-space: pre-wrap; }
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="page14">
-        <layout class="QFormLayout" name="formLayout_12">
-         <property name="fieldGrowthPolicy">
-          <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-         </property>
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_4">
-           <property name="text">
-            <string>Pseudo</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QLineEdit" name="linePseudo"/>
-         </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="label_35">
-           <property name="text">
-            <string>Mot de passe hashé</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <layout class="QHBoxLayout" name="horizontalLayout_8">
-           <item>
-            <widget class="QLineEdit" name="linePassword"/>
-           </item>
-           <item>
-            <widget class="QPushButton" name="buttonCrypt">
-             <property name="text">
-              <string>Hasher un mot de passe</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item row="2" column="0" colspan="2">
-          <widget class="QLabel" name="label_15">
-           <property name="text">
-            <string>Vous devez être conscient des risques de sécurité impliqués lors de l'envoi de votre mot de passe à travers un canal non chiffré. Bien que votre mot de passe sera haché, il est encore théoriquement possible pour quelqu'un de voler votre compte en créant un faux cookie en fonction de votre mot de passe hashé.</string>
-           </property>
-           <property name="wordWrap">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
        <widget class="QWidget" name="page15">
         <layout class="QFormLayout" name="formLayout_10">
          <item row="0" column="0" colspan="2">
@@ -2097,8 +2044,6 @@ p, li { white-space: pre-wrap; }
   <tabstop>lineColoringIgnoreds</tabstop>
   <tabstop>buttonColoringIgnoredsColor</tabstop>
   <tabstop>buttonColoringIgnoredsFont</tabstop>
-  <tabstop>linePassword</tabstop>
-  <tabstop>buttonCrypt</tabstop>
   <tabstop>lineProxyHostName</tabstop>
   <tabstop>spinProxyPort</tabstop>
   <tabstop>buttonBox</tabstop>
@@ -2149,7 +2094,6 @@ p, li { white-space: pre-wrap; }
   <tabstop>spinHorizontalMargins</tabstop>
   <tabstop>spinVerticalMargins</tabstop>
   <tabstop>spinBorders</tabstop>
-  <tabstop>linePseudo</tabstop>
   <tabstop>checkProxyUse</tabstop>
   <tabstop>lineCommandsImage</tabstop>
   <tabstop>lineCommandsTag</tabstop>
@@ -2218,12 +2162,12 @@ p, li { white-space: pre-wrap; }
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>266</x>
+     <x>260</x>
      <y>21</y>
     </hint>
     <hint type="destinationlabel">
-     <x>445</x>
-     <y>72</y>
+     <x>260</x>
+     <y>30</y>
     </hint>
    </hints>
   </connection>
@@ -2234,12 +2178,12 @@ p, li { white-space: pre-wrap; }
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>269</x>
-     <y>39</y>
+     <x>610</x>
+     <y>139</y>
     </hint>
     <hint type="destinationlabel">
-     <x>269</x>
-     <y>39</y>
+     <x>267</x>
+     <y>136</y>
     </hint>
    </hints>
   </connection>
@@ -2250,12 +2194,12 @@ p, li { white-space: pre-wrap; }
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>269</x>
-     <y>39</y>
+     <x>490</x>
+     <y>166</y>
     </hint>
     <hint type="destinationlabel">
-     <x>269</x>
-     <y>39</y>
+     <x>331</x>
+     <y>162</y>
     </hint>
    </hints>
   </connection>
@@ -2266,12 +2210,12 @@ p, li { white-space: pre-wrap; }
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>269</x>
-     <y>39</y>
+     <x>645</x>
+     <y>166</y>
     </hint>
     <hint type="destinationlabel">
-     <x>269</x>
-     <y>39</y>
+     <x>331</x>
+     <y>162</y>
     </hint>
    </hints>
   </connection>
@@ -2282,12 +2226,12 @@ p, li { white-space: pre-wrap; }
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>269</x>
-     <y>39</y>
+     <x>610</x>
+     <y>193</y>
     </hint>
     <hint type="destinationlabel">
-     <x>269</x>
-     <y>39</y>
+     <x>334</x>
+     <y>190</y>
     </hint>
    </hints>
   </connection>

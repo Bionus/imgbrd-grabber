@@ -3,6 +3,7 @@
 #include "sourceswindow.h"
 #include "ui_sourceswindow.h"
 #include "sitewindow.h"
+#include "sourcessettingswindow.h"
 #include "functions.h"
 
 
@@ -13,7 +14,7 @@
  * @param	sites		QStringList of sites names
  * @param	parent		The parent window
  */
-sourcesWindow::sourcesWindow(QList<bool> selected, QMap<QString, QMap<QString, QString> > *sites, QWidget *parent) : QDialog(parent), ui(new Ui::sourcesWindow), m_selected(selected), m_sites(sites)
+sourcesWindow::sourcesWindow(QList<bool> selected, QMap<QString, Site*> *sites, QWidget *parent) : QDialog(parent), ui(new Ui::sourcesWindow), m_selected(selected), m_sites(sites)
 {
 	ui->setupUi(this);
 
@@ -48,22 +49,22 @@ sourcesWindow::sourcesWindow(QList<bool> selected, QMap<QString, QMap<QString, Q
 			if (t == "icon" || t == "both")
 			{
 				QLabel *image = new QLabel();
-				image->setPixmap(QPixmap(savePath("sites/"+sites->value(k.at(i))["Name"].toLower()+"/icon.png")));
+				image->setPixmap(QPixmap(savePath("sites/"+sites->value(k.at(i))->value("Name")+"/icon.png")));
 				ui->gridLayout->addWidget(image, i, n);
 				m_labels << image;
 				n++;
 			}
 			if (t == "text" || t == "both")
 			{
-				QLabel *type = new QLabel(sites->value(k.at(i))["Name"]);
+				QLabel *type = new QLabel(sites->value(k.at(i))->value("Name"));
 				ui->gridLayout->addWidget(type, i, n);
 				m_labels << type;
 				n++;
 			}
 		}
 		QBouton *del = new QBouton(k.at(i));
-			del->setText(tr("Supprimer"));
-			connect(del, SIGNAL(appui(QString)), this, SLOT(deleteSite(QString)));
+			del->setText(tr("Options"));
+			connect(del, SIGNAL(appui(QString)), this, SLOT(settingsSite(QString)));
 			m_buttons << del;
 			ui->gridLayout->addWidget(del, i, n);
 	}
@@ -134,6 +135,13 @@ void sourcesWindow::valid()
 	this->close();
 }
 
+void sourcesWindow::settingsSite(QString site)
+{
+	SourcesSettingsWindow *ssw = new SourcesSettingsWindow(m_sites->value(site), this);
+	connect(ssw, SIGNAL(siteDeleted(QString)), this, SLOT(deleteSite(QString)));
+	ssw->show();
+}
+
 /**
  * Delete a site from the sources list.
  * @param	site	The url of the site to delete.
@@ -153,17 +161,6 @@ void sourcesWindow::deleteSite(QString site)
 			m_labels.at(i)->hide();
 			ui->gridLayout->removeWidget(m_labels.at(i));
 		}
-		QString type = m_sites->value(site)["Name"].toLower();
-		QFile f(savePath("sites/"+type+"/sites.txt"));
-		f.open(QIODevice::ReadOnly);
-			QString sites = f.readAll();
-		f.close();
-		sites.replace("\r\n", "\n").replace("\r", "\n").replace("\n", "\r\n");
-		QStringList stes = sites.split("\r\n");
-		stes.removeAll(site);
-		f.open(QIODevice::WriteOnly);
-			f.write(stes.join("\r\n").toAscii());
-		f.close();
 		m_sites->remove(site);
 		m_selected.removeAt(i);
 		m_checks.removeAt(i);
@@ -210,24 +207,23 @@ void sourcesWindow::insertCheckBox()
 				check->setChecked(m_selected[i]);
 				check->setText(k.at(i));
 				m_checks.insert(i, check);
-				qDebug() << m_selected[i] << k.at(i) << m_sites->value(k.at(i))["Name"].toLower() << savePath("sites/"+m_sites->value(k.at(i))["Name"].toLower()+"/icon.png");
 			if (t != "hide")
 			{
 				if (t == "text" || t == "both")
 				{
-					QLabel *type = new QLabel(m_sites->value(k.at(i))["Name"]);
+					QLabel *type = new QLabel(m_sites->value(k.at(i))->value("Name"));
 					m_labels.insert(i, type);
 				}
 				if (t == "icon" || t == "both")
 				{
 					QLabel *image = new QLabel();
-					image->setPixmap(QPixmap(savePath("sites/"+m_sites->value(k.at(i))["Name"].toLower()+"/icon.png")));
+					image->setPixmap(QPixmap(savePath("sites/"+m_sites->value(k.at(i))->value("Name")+"/icon.png")));
 					m_labels.insert(i, image);
 				}
 			}
 			QBouton *del = new QBouton(k.at(i));
-				del->setText(tr("Supprimer"));
-				connect(del, SIGNAL(appui(QString)), this, SLOT(deleteSite(QString)));
+				del->setText(tr("Options"));
+				connect(del, SIGNAL(appui(QString)), this, SLOT(settingsSite(QString)));
 				m_buttons.insert(i, del);
 			break;
 		}

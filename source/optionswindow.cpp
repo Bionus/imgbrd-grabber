@@ -189,11 +189,6 @@ optionsWindow::optionsWindow(QWidget *parent) : QDialog(parent), ui(new Ui::opti
 	ui->lineBorderColor->setText(settings.value("serverBorderColor", "#000000").toString());
 	ui->spinBorders->setValue(settings.value("borders", 3).toInt());
 
-	settings.beginGroup("Login");
-		ui->linePseudo->setText(settings.value("pseudo").toString());
-		ui->linePassword->setText(settings.value("password").toString());
-	settings.endGroup();
-
 	settings.beginGroup("Proxy");
 		ui->checkProxyUse->setChecked(settings.value("use", false).toBool());
 		ui->widgetProxy->setEnabled(settings.value("use", false).toBool());
@@ -281,13 +276,6 @@ void optionsWindow::addFilename(QString condition, QString filename)
 	ui->layoutFilenames->insertRow(m_filenamesConditions.size(), leCondition, leFilename);
 	m_filenamesConditions.append(leCondition);
 	m_filenamesFilenames.append(leFilename);
-}
-
-void optionsWindow::on_buttonCrypt_clicked()
-{
-	QString password = QInputDialog::getText(this, tr("Hasher un mot de passe"), tr("Veuillez entrer votre mot de passe, dans le format adapté.<br/>Par exemple, pour danbooru, le format est \"%1\" (sans les guillemets).").arg("choujin-steiner--%1--").arg(tr("VOTRE_MOT_DE_PASSE")), QLineEdit::Password);
-	if (!password.isEmpty())
-	{ ui->linePassword->setText(QCryptographicHash::hash(password.toUtf8(), QCryptographicHash::Sha1).toHex()); }
 }
 
 void optionsWindow::on_lineColoringArtists_textChanged()
@@ -670,11 +658,6 @@ void optionsWindow::save()
 	settings.setValue("serverBorder", ui->spinServerBorders->value());
 	settings.setValue("serverBorderColor", ui->lineBorderColor->text());
 	settings.setValue("borders", ui->spinBorders->value());
-
-	settings.beginGroup("Login");
-		settings.setValue("pseudo", ui->linePseudo->text());
-		settings.setValue("password", ui->linePassword->text());
-	settings.endGroup();
 
 	settings.beginGroup("Proxy");
 		settings.setValue("use", ui->checkProxyUse->isChecked());

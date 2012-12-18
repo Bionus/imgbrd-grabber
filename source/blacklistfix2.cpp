@@ -4,7 +4,7 @@
 #include "functions.h"
 #include "ui_blacklistfix2.h"
 
-BlacklistFix2::BlacklistFix2(QMap<QString,QMap<QString,QString> > sites, QString folder, QString filename, QStringList blacklist, QMap<QString,QString> site, QWidget *parent) : QDialog(parent), ui(new Ui::BlacklistFix2), m_folder(folder), m_filename(filename), m_blacklist(blacklist), m_site(site), m_sites(sites)
+BlacklistFix2::BlacklistFix2(QMap<QString,Site*> sites, QString folder, QString filename, QStringList blacklist, Site *site, QWidget *parent) : QDialog(parent), ui(new Ui::BlacklistFix2), m_folder(folder), m_filename(filename), m_blacklist(blacklist), m_site(site), m_sites(sites)
 {
 	ui->setupUi(this);
 	ui->treeWidget->insertTopLevelItems(0, mkTree(QDir(folder)));
@@ -120,7 +120,7 @@ void BlacklistFix2::getAll(Page *p)
 		QMap<QString,QString> det = m_details.takeFirst();
 		m_getAll.insert(det.value("md5"), det);
 		QString query = "md5:"+det.value("md5");
-		Page *page = new Page(&m_sites, m_site.value("Url"), QStringList(query), 1, 1);
+		Page *page = new Page(m_site, &m_sites, QStringList(query), 1, 1);
 		connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(getAll(Page*)));
 		page->load();
 	}

@@ -27,7 +27,6 @@ class optionsWindow : public QDialog
 		void on_comboSourcesLetters_currentIndexChanged(int);
 		void on_buttonFolder_clicked();
 		void on_buttonFolderFavorites_clicked();
-		void on_buttonCrypt_clicked();
 		void on_lineColoringArtists_textChanged();
 		void on_lineColoringCopyrights_textChanged();
 		void on_lineColoringCharacters_textChanged();

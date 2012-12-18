@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QMap>
+#include "site.h"
 
 
 
@@ -18,7 +19,7 @@ class BlacklistFix : public QDialog
 	Q_OBJECT
 
 	public:
-		explicit BlacklistFix(QMap<QString,QMap<QString,QString> > sites, QWidget *parent = 0);
+		explicit BlacklistFix(QMap<QString,Site*> sites, QWidget *parent = 0);
 		~BlacklistFix();
 
 	private slots:
@@ -27,7 +28,7 @@ class BlacklistFix : public QDialog
 
 	private:
 		Ui::BlacklistFix *ui;
-		QMap<QString,QMap<QString,QString> >	m_sites;
+		QMap<QString,Site*> m_sites;
 };
 
 #endif // BLACKLISTFIX_H

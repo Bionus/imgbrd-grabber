@@ -6,19 +6,19 @@ extern mainWindow *_mainwindow;
 
 
 
-siteWindow::siteWindow(QMap<QString, QMap<QString, QString> > *sites, QWidget *parent) : QDialog(parent), ui(new Ui::siteWindow), m_sites(sites)
+siteWindow::siteWindow(QMap<QString,Site*> *sites, QWidget *parent) : QDialog(parent), ui(new Ui::siteWindow), m_sites(sites)
 {
 	ui->setupUi(this);
 
 	QStringList types;
-	QString name;
+	QString type;
 	for (int i = 0; i < sites->count(); i++)
 	{
-		name = sites->value(sites->keys().at(i))["Name"];
-		if (!types.contains(name))
+		type = sites->value(sites->keys().at(i))->type();
+		if (!types.contains(type))
 		{
-			types.append(name);
-			ui->comboBox->addItem(QIcon(savePath("sites/"+name.toLower()+"/icon.png")), name);
+			types.append(type);
+			ui->comboBox->addItem(QIcon(savePath("sites/"+type+"/icon.png")), type);
 		}
 	}
 
@@ -46,14 +46,14 @@ void siteWindow::accept()
 		QNetworkAccessManager *manager = new QNetworkAccessManager(this);
 		for (int i = 0; i < m_sites->count(); i++)
 		{
-			name = m_sites->value(m_sites->keys().at(i))["Name"].toLower();
+			name = m_sites->value(m_sites->keys().at(i))->type();
 			if (!types.contains(name))
 			{
-				QMap<QString,QString> map = m_sites->value(m_sites->keys().at(i));
+				Site *map = m_sites->value(m_sites->keys().at(i));
 				types.append(name);
-				QString curr = map["Selected"];
+				QString curr = map->value("Selected");
 				curr[0] = curr[0].toUpper();
-				QNetworkReply *reply = manager->get(QNetworkRequest("http://"+url+map["Urls/"+curr+"/Tags"]));
+				QNetworkReply *reply = manager->get(QNetworkRequest("http://"+url+map->value("Urls/"+curr+"/Tags")));
 				QEventLoop loop;
 					connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
 				loop.exec();
@@ -90,14 +90,14 @@ void siteWindow::accept()
 
 	for (int i = 0; i < m_sites->count(); i++)
 	{
-		name = m_sites->value(m_sites->keys().at(i))["Name"].toLower();
+		name = m_sites->value(m_sites->keys().at(i))->value("Name");
 		if (name == type)
 		{
-			QMap<QString,QString> map = m_sites->value(m_sites->keys().at(i));
-			QString curr = map["Selected"];
+			Site *map = m_sites->value(m_sites->keys().at(i));
+			QString curr = map->value("Selected");
 			curr[0] = curr[0].toUpper();
-			map["Urls/Selected/Tags"] = "http://"+url+map["Urls/"+curr+"/Tags"];
-			map["Urls/Selected/Popular"] = "http://"+url+map["Urls/"+curr+"/Popular"];
+			map->insert("Urls/Selected/Tags", "http://"+url+map->value("Urls/"+curr+"/Tags"));
+			map->insert("Urls/Selected/Popular", "http://"+url+map->value("Urls/"+curr+"/Popular"));
 			m_sites->insert(url, map);
 			break;
 		}

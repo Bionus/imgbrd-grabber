@@ -3,17 +3,17 @@
 	<Name>Metabooru</Name>
 	<Urls>
 		<Html>
-			<Home>/?page={page}</Home>
-			<Tags>/m/{tags}?page={page}</Tags>
-			<Post>/m/{tags}/{id}</Post>
-			<Image>http://content.metabooru.com/{md5}</Image>
+			<Home>/?position={page}</Home>
+			<Tags>/tags/{tags}?position={page}</Tags>
+			<Post>/{id}</Post>
+			<Image>/thumb200-></Image>
 		</Html>
 	</Urls>
 	<Regex>
-		<Tags>&lt;a class=&quot;([^&quot;]+)&quot; (?:href|id)=&quot;(?:[^&quot;]+)&quot; title=&quot;([^&quot;]+)&quot; (?:[^&gt;]+)&gt;</Tags>
-		<Image>&lt;article class=&quot;(?:[^&quot;]+)&quot;&gt;(?:&lt;a (?:[^&gt;]+)&gt;(?:[^&lt;]*)&lt;span class=&quot;icon(?: unread)?&quot;&gt;&lt;/span&gt;&lt;/a&gt;)?&lt;a (?:[^&gt;]+)&gt;&lt;span class=&quot;label&quot;&gt;([^&quot;]+)&lt;/span&gt;&lt;/a&gt;&lt;div class=&quot;score&quot;&gt;&lt;form (?:[^&gt;]+)&gt;&lt;input (?:[^&gt;]+)&gt;&lt;input (?:[^&gt;]+)&gt;&lt;input (?:[^&gt;]+)&gt;&lt;input (?:[^&gt;]+)&gt;&lt;/form&gt;&lt;form (?:[^&gt;]+)&gt;&lt;input (?:[^&gt;]+)&gt;&lt;input (?:[^&gt;]+)&gt;&lt;input (?:[^&gt;]+)&gt;&lt;input (?:[^&gt;]+)&gt;&lt;/form&gt;&lt;span (?:[^&gt;]+)&gt;&lt;span&gt;(\d+)&amp;#(?:\d+);&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;a class=&quot;thumb&quot; title=&quot;Post #(\d+) (?:[^&quot;]+)&quot; (?:[^&gt;]+)&gt;(&lt;img[^&gt;]+ src=&quot;(http://(?:[^.]+).metabooru.com/([^/]+)/thumb200)&quot; width=&quot;([^&quot;]+)&quot; height=&quot;([^&quot;]+)&quot; /&gt;)&lt;/a&gt;&lt;/article&gt;</Image>
-		<Order>tags|rating|id|image|preview_url|md5|width|height</Order>
-		<ImageTags>&quot;/m/[^/]+/tags/([^&quot;]+)&quot;</ImageTags>
+		<Tags>&lt;a class=&quot;inline-tag tag-type-([^&quot;]+)&quot; href=&quot;http://metabooru.com/tags/[^&quot;]+&quot;&gt;&lt;img [^&gt;]*&gt; ([^&lt;]+)&lt;/a&gt;</Tags>
+		<Image>&lt;a class=&quot;link&quot; href=&quot;/([0-9]+)&quot;&gt;&lt;img class=&quot;[^&quot;]*&quot; src=&quot;(http://[^.]+\.metabooru\.com/([^/]+)/thumb200)&quot; alt=&quot;[^&quot;]*&quot; style=&quot;[^&quot;]*&quot;/&gt;&lt;/a&gt;&lt;/div&gt;&lt;div class=&quot;score&quot;&gt;&lt;a [^&gt;]*&gt;&lt;span class=&quot;icon&quot;&gt;&lt;/span&gt;&lt;/a&gt;&lt;a [^&gt;]*&gt;&lt;span class=&quot;icon&quot;&gt;&lt;/span&gt;&lt;/a&gt;&lt;div class=&quot;value&quot;&gt;([0-9]+)%&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;tags&quot;&gt;&lt;a href=&quot;http://metabooru.com/tags/[^&quot;]*&quot; title=&quot;([^&quot;]*)&quot;&gt;&lt;img [^&gt;]*/&gt;&lt;/a&gt;</Image>
+		<Order>id|preview_url|md5|score|tags</Order>
+		<ImageTags>&lt;span class=&quot;name tag-type-([^&quot;']+)&quot;&gt;([^&lt;]+)&lt;/span&gt;</ImageTags>
 	</Regex>
-	<FirstPage>1</FirstPage>
+	<FirstPage>0</FirstPage>
 </Site>
