@@ -57,54 +57,58 @@ void QAffiche::mouseDoubleClickEvent(QMouseEvent* e)
 	QLabel::mouseDoubleClickEvent(e);
 }
 
-
 void QAffiche::mousePressEvent(QMouseEvent* e)
 {
-	if(e->button() == Qt::LeftButton)
+	m_lastPressed = e->button();
+	if (e->button() == Qt::LeftButton || e->button() == Qt::MidButton)
 	{ m_pressed = true; }
 	else
 	{ m_pressed = false; }
 	emit pressed();
 	emit pressed(m_id.toInt());
+	QLabel::mousePressEvent(e);
 }
-
 
 void QAffiche::mouseReleaseEvent(QMouseEvent* e)
 {
-	if(m_pressed && e->button() == Qt::LeftButton && hitLabel(e->pos()))
+	if (m_pressed && e->button() == Qt::LeftButton && hitLabel(e->pos()))
 	{
 		emit clicked();
 		emit clicked(m_id.toInt());
 		emit clicked(m_id.toString());
 	}
+	else if (m_pressed && e->button() == Qt::MidButton && hitLabel(e->pos()))
+	{
+		emit middleClicked();
+		emit middleClicked(m_id.toInt());
+		emit middleClicked(m_id.toString());
+	}
 	m_pressed = false;
 	emit released();
 	emit released(m_id.toInt());
-
+	QLabel::mouseReleaseEvent(e);
 }
 
 void QAffiche::enterEvent(QEvent* e)
 {
-	QLabel::enterEvent(e);
 	emit mouseOver();
 	emit mouseOver(m_id.toInt());
+	QLabel::enterEvent(e);
 }
 
 void QAffiche::leaveEvent(QEvent* e)
 {
-	QLabel::leaveEvent(e);
 	emit mouseOut();
 	emit mouseOut(m_id.toInt());
+	QLabel::leaveEvent(e);
 }
 
 bool QAffiche::hitLabel(const QPoint &p)
 { return rect().contains(p); }
+Qt::MouseButton QAffiche::lastPressed()
+{ return m_lastPressed; }
 
 void QAffiche::setImage(QImage image)
-{
-	this->setPixmap(QPixmap::fromImage(image));
-}
+{ this->setPixmap(QPixmap::fromImage(image)); }
 void QAffiche::setImage(QPixmap image)
-{
-	this->setPixmap(image);
-}
+{ this->setPixmap(image); }

@@ -11,7 +11,7 @@ extern mainWindow *_mainwindow;
 
 
 
-zoomWindow::zoomWindow(Image *image, Site *site, QMap<QString,Site*> *sites, QWidget *) : QDialog(0, Qt::Window), ui(new Ui::zoomWindow), m_image(image), m_site(site), timeout(300), m_loaded(0), oldsize(0), m_labelTags(NULL), image(NULL), movie(NULL), m_program(qApp->arguments().at(0)), m_replyExists(false), m_finished(false), m_thread(false), m_data(QByteArray()), m_size(0), m_sites(sites), m_source(), m_th(NULL)
+zoomWindow::zoomWindow(Image *image, Site *site, QMap<QString,Site*> *sites, QWidget *) : QDialog(0, Qt::Window), ui(new Ui::zoomWindow), m_image(image), m_site(site), timeout(300), m_loaded(0), oldsize(0), image(NULL), movie(NULL), m_program(qApp->arguments().at(0)), m_reply(NULL), m_finished(false), m_thread(false), m_data(QByteArray()), m_size(0), m_sites(sites), m_source(), m_th(NULL), m_fullScreen(NULL)
 {
 	ui->setupUi(this);
 	setAttribute(Qt::WA_DeleteOnClose);
@@ -32,6 +32,23 @@ zoomWindow::zoomWindow(Image *image, Site *site, QMap<QString,Site*> *sites, QWi
 		connect(save, SIGNAL(activated()), this, SLOT(saveImage()));
 	QShortcut *saveAs = new QShortcut(QKeySequence("Ctrl+Shift+S"), this);
 		connect(saveAs, SIGNAL(activated()), this, SLOT(saveImageAs()));
+
+	m_labelTagsLeft = new QAffiche(QVariant(), 0, QColor(), this);
+		m_labelTagsLeft->setContextMenuPolicy(Qt::CustomContextMenu);
+		connect(m_labelTagsLeft, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenu(QPoint)));
+		connect(m_labelTagsLeft, SIGNAL(linkActivated(QString)), this, SLOT(openUrl(QString)));
+		connect(m_labelTagsLeft, SIGNAL(linkHovered(QString)), this, SLOT(linkHovered(QString)));
+		connect(m_labelTagsLeft, SIGNAL(middleClicked()), this, SLOT(openInNewTab()));
+		ui->scrollAreaWidgetContents->layout()->addWidget(m_labelTagsLeft);
+
+	m_labelTagsTop = new QAffiche(QVariant(), 0, QColor(), this);
+		m_labelTagsTop->setWordWrap(true);
+		m_labelTagsTop->setContextMenuPolicy(Qt::CustomContextMenu);
+		connect(m_labelTagsTop, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenu(QPoint)));
+		connect(m_labelTagsTop, SIGNAL(linkActivated(QString)), this, SLOT(openUrl(QString)));
+		connect(m_labelTagsTop, SIGNAL(linkHovered(QString)), this, SLOT(linkHovered(QString)));
+		connect(m_labelTagsTop, SIGNAL(middleClicked()), this, SLOT(openInNewTab()));
+		ui->verticalLayout->insertWidget(0, m_labelTagsTop, 0);
 
 	go();
 }
@@ -73,7 +90,7 @@ void zoomWindow::go()
 	QTimer *timer = new QTimer(this);
 		connect(timer, SIGNAL(timeout()), this, SLOT(update()));
 		timer->setSingleShot(true);
-		this->timer = timer;
+		m_resizeTimer = timer;
 
 	QString u = m_site->value("Urls/Html/Post");
 		u.replace("{id}", QString::number(m_image->id()));
@@ -96,12 +113,12 @@ void zoomWindow::go()
 	if (pos == "top")
 	{
 		ui->widgetLeft->hide();
-		ui->labelTagsTop->setText(hreftags.join(" "));
+		m_labelTagsTop->setText(hreftags.join(" "));
 	}
 	else
 	{
-		ui->labelTagsTop->hide();
-		ui->labelTagsLeft->setText(hreftags.join("<br/>"));
+		m_labelTagsTop->hide();
+		m_labelTagsLeft->setText(hreftags.join("<br/>"));
 	}
 
 	connect(m_image, SIGNAL(finishedLoadingTags(Image*)), this, SLOT(replyFinished(Image*)));
@@ -116,8 +133,8 @@ zoomWindow::~zoomWindow()
 {
 	if (movie != NULL)
 	{ movie->deleteLater(); }
-	if (m_labelTags != NULL)
-	{ m_labelTags->deleteLater(); }
+	m_labelTagsTop->deleteLater();
+	m_labelTagsLeft->deleteLater();
 	if (image != NULL)
 	{ delete image; }
 	delete ui;
@@ -144,7 +161,8 @@ void zoomWindow::openPoolId(Page *p)
 	timeout = 300;
 	m_loaded = 0;
 	oldsize = 0;
-	m_replyExists = false;
+	m_reply->deleteLater();
+	m_reply = NULL;
 	m_finished = false;
 	m_size = 0;
 	m_labelImage->hide();
@@ -314,20 +332,22 @@ void zoomWindow::load()
 	log(tr("Chargement de l'image depuis <a href=\"%1\">%1</a>").arg(m_url));
 	m_data.clear();
 
+	m_imageTime = new QTime();
+	m_imageTime->start();
+
 	m_reply = m_site->get(m_url);
 	connect(m_reply, SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(downloadProgress(qint64, qint64)));
 	connect(m_reply, SIGNAL(finished()), this, SLOT(replyFinishedZoom()));
-
-	m_replyExists = true;
 }
 void zoomWindow::sslErrorHandler(QNetworkReply* qnr, QList<QSslError>)
 { qnr->ignoreSslErrors(); }
 
-#define UPDATES 16
-void zoomWindow::downloadProgress(qint64 size, qint64 total)
+#define TIME 500
+void zoomWindow::downloadProgress(qint64, qint64)
 {
-	if (size - m_data.size() >= total/UPDATES)
+	if (m_imageTime->elapsed() > TIME)
 	{
+		m_imageTime->restart();
 		m_data.append(m_reply->readAll());
 		m_thread = true;
 		m_th = new ImageThread(m_data);
@@ -348,6 +368,9 @@ void zoomWindow::display(QImage pix, int size)
 		else
 		{ update(!m_finished); }
 		m_thread = false;
+
+		if (m_fullScreen != NULL && m_fullScreen->isVisible())
+		{ m_fullScreen->setImage(image->scaled(QApplication::desktop()->screenGeometry().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation)); }
 	}
 }
 
@@ -443,14 +466,16 @@ void zoomWindow::colore()
 	}
 	tags = t.join(" ");
 	if (ui->widgetLeft->isHidden())
-	{ ui->labelTagsTop->setText(tags); }
+	{ m_labelTagsTop->setText(tags); }
 	else
-	{ ui->labelTagsLeft->setText(t.join("<br/>")); }
+	{ m_labelTagsLeft->setText(t.join("<br/>")); }
 	m_detailsWindow->setTags(tags);
 }
 
 void zoomWindow::replyFinishedZoom()
 {
+	delete m_imageTime;
+
 	// Check redirection
 	QUrl redir = m_reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 	if (!redir.isEmpty())
@@ -512,7 +537,7 @@ void zoomWindow::replyFinishedZoom()
 	{ error(this, tr("Une erreur inattendue est survenue lors du chargement de l'image (%1).\r\n%2").arg(m_reply->error()).arg(m_reply->url().toString())); }
 
 	m_reply->deleteLater();
-	m_replyExists = false;
+	m_reply = NULL;
 }
 
 
@@ -712,17 +737,17 @@ QString zoomWindow::saveImageAs()
 
 void zoomWindow::fullScreen()
 {
-	QAffiche *label = new QAffiche(QVariant(), 0, QColor());
-		label->setStyleSheet("background-color: black");
-		label->setAlignment(Qt::AlignCenter);
+	m_fullScreen = new QAffiche(QVariant(), 0, QColor());
+		m_fullScreen->setStyleSheet("background-color: black");
+		m_fullScreen->setAlignment(Qt::AlignCenter);
 		if (m_url.section('.', -1).toUpper() == "GIF")
-		{ label->setMovie(movie); }
+		{ m_fullScreen->setMovie(movie); }
 		else
-		{ label->setImage(image->scaled(QApplication::desktop()->screenGeometry().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation)); }
-		label->showFullScreen();
-	QShortcut *escape = new QShortcut(QKeySequence(Qt::Key_Escape), label);
-		connect(escape, SIGNAL(activated()), label, SLOT(close()));
-	connect(label, SIGNAL(doubleClicked()), label, SLOT(close()));
+		{ m_fullScreen->setImage(image->scaled(QApplication::desktop()->screenGeometry().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation)); }
+		m_fullScreen->showFullScreen();
+	QShortcut *escape = new QShortcut(QKeySequence(Qt::Key_Escape), m_fullScreen);
+		connect(escape, SIGNAL(activated()), m_fullScreen, SLOT(close()));
+	connect(m_fullScreen, SIGNAL(doubleClicked()), m_fullScreen, SLOT(close()));
 }
 
 
@@ -731,14 +756,14 @@ void zoomWindow::resizeEvent(QResizeEvent *e)
 {
 	if (m_loaded && m_finished && !m_thread)
 	{
-		if (!this->timer->isActive())
+		if (!m_resizeTimer->isActive())
 		{
 			this->timeout = this->image->width()*this->image->height()/100000;
 			if (this->timeout < 50)		{ this->timeout = 50;	}
 			if (this->timeout > 500)	{ this->timeout = 500;	}
 		}
-		this->timer->stop();
-		this->timer->start(this->timeout);
+		m_resizeTimer->stop();
+		m_resizeTimer->start(this->timeout);
 		this->update(true);
 	}
 	QWidget::resizeEvent(e);
@@ -753,7 +778,7 @@ void zoomWindow::closeEvent(QCloseEvent *e)
 	//m_image->abortTags();
 	/*if (m_thread && m_th->isRunning())
 	{ m_th->quit(); }*/
-	if (m_replyExists && m_reply->isRunning())
+	if (m_reply != NULL && m_reply->isRunning())
 	{
 		m_reply->abort();
 		log(tr("Chargement de l'image stoppé."));

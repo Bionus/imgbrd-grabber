@@ -78,24 +78,25 @@ class zoomWindow : public QDialog
 		int timeout, m_loaded, oldsize, m_mustSave;
 		QMap<QString, QStringList> details;
 		QString id, m_url, tags, md5, rating, score, user, format;
-		QAffiche *m_labelImage;
-		QLabel *m_labelTags;
+		QAffiche *m_labelImage, *m_labelTagsTop, *m_labelTagsLeft;
 		QPixmap *image;
 		QMovie *movie;
-		QTimer *timer;
+		QTimer *m_resizeTimer;
+		QTime *m_imageTime;
 		QByteArray d;
 		QNetworkAccessManager *m;
 		QPushButton *buttonSave, *buttonSaveNQuit, *buttonSaveas, *m_buttonSaveNQuit;
 		QString link, m_program;
 		QNetworkReply *m_reply;
 		const char* m_format;
-		bool m_replyExists, m_finished, m_thread;
+		bool m_finished, m_thread;
 		QStringList m_favorites, m_viewItLater, m_ignore;
 		QByteArray m_data;
 		int m_size;
 		QMap<QString,Site*> *m_sites;
 		QString m_source;
 		ImageThread *m_th;
+		QAffiche *m_fullScreen;
 };
 
 #endif
