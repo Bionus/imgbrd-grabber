@@ -15,6 +15,7 @@ class QAffiche : public QLabel
 		~QAffiche();
 		void setImage(QImage);
 		void setImage(QPixmap);
+		Qt::MouseButton lastPressed();
 	
 	signals:
 		void doubleClicked();
@@ -22,6 +23,9 @@ class QAffiche : public QLabel
 		void clicked();
 		void clicked(int);
 		void clicked(QString);
+		void middleClicked();
+		void middleClicked(int);
+		void middleClicked(QString);
 		void pressed();
 		void pressed(int);
 		void released();
@@ -43,6 +47,7 @@ class QAffiche : public QLabel
 		QVariant m_id;
 		int m_border;
 		QColor m_color;
+		Qt::MouseButton m_lastPressed;
 };
 
 #endif

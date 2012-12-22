@@ -59,19 +59,6 @@
             <property name="margin">
              <number>0</number>
             </property>
-            <item>
-             <widget class="QLabel" name="labelTagsLeft">
-              <property name="contextMenuPolicy">
-               <enum>Qt::CustomContextMenu</enum>
-              </property>
-              <property name="textFormat">
-               <enum>Qt::RichText</enum>
-              </property>
-              <property name="wordWrap">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
            </layout>
           </widget>
          </widget>
@@ -80,24 +67,7 @@
       </widget>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout">
-       <item>
-        <widget class="QLabel" name="labelTagsTop">
-         <property name="contextMenuPolicy">
-          <enum>Qt::CustomContextMenu</enum>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="textFormat">
-          <enum>Qt::RichText</enum>
-         </property>
-         <property name="wordWrap">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-      </layout>
+      <layout class="QVBoxLayout" name="verticalLayout"/>
      </item>
     </layout>
    </item>
@@ -297,102 +267,6 @@
     <hint type="destinationlabel">
      <x>476</x>
      <y>468</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>labelTagsTop</sender>
-   <signal>customContextMenuRequested(QPoint)</signal>
-   <receiver>zoomWindow</receiver>
-   <slot>contextMenu(QPoint)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>548</x>
-     <y>295</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>596</x>
-     <y>311</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>labelTagsTop</sender>
-   <signal>linkHovered(QString)</signal>
-   <receiver>zoomWindow</receiver>
-   <slot>linkHovered(QString)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>355</x>
-     <y>190</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>404</x>
-     <y>311</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>labelTagsTop</sender>
-   <signal>linkActivated(QString)</signal>
-   <receiver>zoomWindow</receiver>
-   <slot>openUrl(QString)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>130</x>
-     <y>183</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>192</x>
-     <y>311</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>labelTagsLeft</sender>
-   <signal>customContextMenuRequested(QPoint)</signal>
-   <receiver>zoomWindow</receiver>
-   <slot>contextMenu(QPoint)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>12</x>
-     <y>284</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>399</x>
-     <y>299</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>labelTagsLeft</sender>
-   <signal>linkHovered(QString)</signal>
-   <receiver>zoomWindow</receiver>
-   <slot>linkHovered(QString)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>12</x>
-     <y>284</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>399</x>
-     <y>299</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>labelTagsLeft</sender>
-   <signal>linkActivated(QString)</signal>
-   <receiver>zoomWindow</receiver>
-   <slot>openUrl(QString)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>12</x>
-     <y>284</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>399</x>
-     <y>299</y>
     </hint>
    </hints>
   </connection>

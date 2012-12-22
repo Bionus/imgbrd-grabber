@@ -534,7 +534,11 @@ void tagTab::finishedLoadingPreview(Image *img)
 
 	int position = m_images.indexOf(img), page = 0;
 	if (!ui->checkMergeResults->isChecked())
-	{ page = m_pages.values().indexOf(img->page()); }
+	{
+		page = m_pages.values().indexOf(img->page());
+		if (page < 0)
+		{ return; }
+	}
 	if (img->previewImage().isNull())
 	{
 		log(tr("<b>Attention :</b> %1").arg(tr("une des miniatures est vide (<a href=\"%1\">%1</a>).").arg(img->previewUrl().toString())));
