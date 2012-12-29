@@ -302,16 +302,22 @@ void mainWindow::loadSites()
 							QString line = f.readLine();
 							line.remove("\n").remove("\r");
 
+							QStringList srcs;
 							QSettings sets(savePath("sites/"+dir[i]+"/"+line+"/settings.ini"), QSettings::IniFormat);
-							QStringList srcs = QStringList() << sets.value("sources/source_1").toString() << sets.value("sources/source_2").toString() << sets.value("sources/source_3").toString() << sets.value("sources/source_4").toString();
-							srcs.removeAll("");
-							if (srcs.isEmpty())
-							{ srcs = source; }
-							else
+							if (!sets.value("sources/usedefault", true).toBool())
 							{
-								for (int i = 0; i < srcs.size(); i++)
-								{ srcs[i][0] = srcs[i][0].toUpper(); }
+								srcs = QStringList() << sets.value("sources/source_1").toString() << sets.value("sources/source_2").toString() << sets.value("sources/source_3").toString() << sets.value("sources/source_4").toString();
+								srcs.removeAll("");
+								if (srcs.isEmpty())
+								{ srcs = source; }
+								else
+								{
+									for (int i = 0; i < srcs.size(); i++)
+									{ srcs[i][0] = srcs[i][0].toUpper(); }
+								}
 							}
+							else
+							{ srcs = source; }
 
 							QMap<QString,QString> details = detals;
 							for (int j = 0; j < srcs.size(); j++)
