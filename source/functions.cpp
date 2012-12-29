@@ -537,13 +537,9 @@ void clearLayout(QLayout *layout)
 		if (item->layout())
 		{
 			clearLayout(item->layout());
-			item->layout()->deleteLater();
+			delete item->layout();
 		}
-		if (item->widget())
-		{
-			item->widget()->hide();
-			// item->widget()->deleteLater();
-		}
+		delete item->widget();
 		delete item;
 	}
 }
