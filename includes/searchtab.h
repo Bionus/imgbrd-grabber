@@ -15,7 +15,7 @@ class searchTab : public QWidget
     public:
         searchTab(int id, QWidget *parent = 0);
         ~searchTab();
-        virtual QList<bool> sources() = 0;
+		virtual QList<bool> sources();
         virtual QString tags() = 0;
         virtual QString results() = 0;
         virtual QString wiki() = 0;
@@ -27,6 +27,7 @@ class searchTab : public QWidget
 		void toggleImage(Image*);
 		int id();
 		QStringList selectedImages();
+		void setSources(QList<bool> sources);
 
     signals:
         void titleChanged(searchTab*);
@@ -35,10 +36,11 @@ class searchTab : public QWidget
         void deleted(int);
 
 	protected:
-        int m_id;
-		QList<QBouton*> m_boutons;
-		QStringList m_selectedImages;
-		QList<Image*> m_selectedImagesPtrs;
+		int				m_id;
+		QList<QBouton*>	m_boutons;
+		QStringList		m_selectedImages;
+		QList<Image*>	m_selectedImagesPtrs;
+		QList<bool>		m_selectedSources;
 };
 
 #endif // SEARCHTAB_H

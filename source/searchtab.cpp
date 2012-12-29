@@ -1,5 +1,6 @@
-#include <QDebug>
 #include "searchtab.h"
+
+
 
 searchTab::searchTab(int id, QWidget *parent) : QWidget(parent), m_id(id)
 { }
@@ -39,6 +40,11 @@ void searchTab::toggleImage(Image *img)
 	}
 }
 
+void searchTab::setSources(QList<bool> sources)
+{ m_selectedSources = sources; }
+
+QList<bool> searchTab::sources()
+{ return m_selectedSources; }
 int searchTab::id()
 { return m_id; }
 QStringList searchTab::selectedImages()

@@ -64,7 +64,7 @@ void Site::loginFinished()
 	emit loggedIn();
 }
 
-QNetworkReply *Site::get(QUrl url)
+QNetworkReply *Site::get(QUrl url, Page *page)
 {
 	if (m_manager == NULL)
 	{
@@ -77,9 +77,15 @@ QNetworkReply *Site::get(QUrl url)
 	{ login(); }
 
 	QNetworkRequest request(url);
-		QString referer = m_settings->value("Referer", "none").toString();
-		if (referer != "none")
-		{ request.setRawHeader("Referer", referer == "host" ? QString(url.scheme()+"://"+url.host()).toAscii() : (referer == "image" ? url.toString().toAscii() : "")); }
+		QString referer = m_settings->value("referer", "none").toString();
+		if (referer != "none" && (referer != "page" || page != NULL))
+		{ request.setRawHeader("Referer", referer == "host" ? QString(url.scheme()+"://"+url.host()).toAscii() : (referer == "image" ? url.toString().toAscii() : (referer == "page" ? page->url().toString().toAscii() : ""))); }
+		QMap<QString,QVariant> headers = m_settings->value("headers").toMap();
+		for (int i = 0; i < headers.size(); i++)
+		{
+			QString key = headers.keys().at(i);
+			request.setRawHeader(key.toAscii(), headers[key].toString().toAscii());
+		}
 
 	return m_manager->get(request);
 }

@@ -28,8 +28,7 @@ class tagTab : public searchTab
     public:
 		explicit tagTab(int id, QMap<QString, Site*> *sites, QMap<QString, QString> *favorites, QDateTime *serverDate, mainWindow *parent);
         ~tagTab();
-        Ui::tagTab *ui;
-        QList<bool> sources();
+		Ui::tagTab *ui;
         QString tags();
         QString results();
         QString wiki();
@@ -93,7 +92,6 @@ class tagTab : public searchTab
 		QMap<QString,Page*>				m_pages;
 		QList<Image*>					m_images;
 		int								m_pagemax;
-		QList<bool>						m_selectedSources;
 		QList<QCheckBox*>				m_checkboxes;
 		QString							m_link, m_lastTags, m_wiki, m_tags;
 		bool							m_sized, m_from_history, m_stop;

@@ -102,7 +102,7 @@ class mainWindow : public QMainWindow
 		void _getAll();
 		// Tabs
 		int addTab(QString tag = "");
-		int addPoolTab(int pool = 0);
+		int addPoolTab(int pool = 0, QString site = "");
 		void updateTabTitle(searchTab*);
 		void tabClosed(tagTab*);
 		void tabClosed(poolTab*);

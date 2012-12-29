@@ -145,7 +145,7 @@ void zoomWindow::openUrl(QString url)
 void zoomWindow::openPool(QString url)
 {
 	if (url.startsWith("pool:"))
-	{ emit linkClicked(url); }
+	{ emit poolClicked(url.right(url.length() - 5).toInt(), m_image->site()); }
 	else
 	{
 		Page *p = new Page(m_sites->value(m_image->site()), m_sites, QStringList() << "id:"+url, 1, 1, QStringList(), this);
@@ -501,6 +501,7 @@ void zoomWindow::replyFinishedZoom()
 				f.write(m_data);
 				f.close();
 				this->movie = new QMovie(f.fileName(), QByteArray(), this);
+				m_labelImage->setPixmap(0);
 				m_labelImage->setMovie(movie);
 				movie->start();
 				image = NULL;
