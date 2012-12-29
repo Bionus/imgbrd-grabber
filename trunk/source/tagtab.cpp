@@ -591,6 +591,7 @@ void tagTab::finishedLoadingPreview(Image *img)
 				zoomWindow *zoom = new zoomWindow(img, img->page()->site(), m_sites, this);
 				zoom->show();
 				connect(zoom, SIGNAL(linkClicked(QString)), this, SLOT(setTags(QString)));
+				connect(zoom, SIGNAL(poolClicked(int, QString)), _mainwindow, SLOT(addPoolTab(int, QString)));
 			}
 		}
 		else
@@ -673,6 +674,7 @@ void tagTab::webZoom(int id)
 	zoomWindow *zoom = new zoomWindow(image, image->page()->site(), m_sites, this);
 	zoom->show();
 	connect(zoom, SIGNAL(linkClicked(QString)), this, SLOT(setTags(QString)));
+	connect(zoom, SIGNAL(poolClicked(int, QString)), _mainwindow, SLOT(addPoolTab(int, QString)));
 }
 
 void tagTab::toggleImage(int id, bool toggle)
@@ -873,9 +875,6 @@ void tagTab::unviewitlater()
 		f.write(vil.join("\r\n").toUtf8());
 	f.close();
 }
-
-QList<bool> tagTab::sources()
-{ return m_selectedSources; }
 
 void tagTab::historyBack()
 {

@@ -66,6 +66,7 @@ class zoomWindow : public QDialog
 
 	signals:
 		void linkClicked(QString);
+		void poolClicked(int, QString);
 		void linkMiddleClicked(QString);
 
 	private:

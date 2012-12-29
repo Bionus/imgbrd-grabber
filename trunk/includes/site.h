@@ -10,8 +10,11 @@
 #include <QNetworkAccessManager>
 #include <QUrl>
 #include <QSslError>
+#include "page.h"
 
 
+
+class Page;
 
 class Site : public QObject
 {
@@ -28,8 +31,8 @@ class Site : public QObject
 		QString operator[](QString key) { return value(key); }
 		void insert(QString, QString);
 		QVariant setting(QString key, QVariant def = QVariant());
-		QNetworkReply *get(QUrl);
-		QNetworkReply *get(QString url) { return get(QUrl(url)); }
+		QNetworkReply *get(QUrl url, Page *page = NULL);
+		QNetworkReply *get(QString url, Page *page = NULL) { return get(QUrl(url), page); }
 
 	public slots:
 		void login();

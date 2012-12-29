@@ -598,13 +598,7 @@ void poolTab::webZoom(int id)
 	zoomWindow *zoom = new zoomWindow(image, image->page()->site(), m_sites, this);
 	zoom->show();
 	connect(zoom, SIGNAL(linkClicked(QString)), this, SLOT(setTags(QString)));
-}
-
-void poolTab::setTags(QString tags)
-{
-	activateWindow();
-	m_search->setText(tags);
-	load();
+	connect(zoom, SIGNAL(poolClicked(int, QString)), this, SLOT(setPool(int, QString)));
 }
 
 void poolTab::getPage()
@@ -773,9 +767,6 @@ void poolTab::unviewitlater()
 	f.close();
 }
 
-QList<bool> poolTab::sources()
-{ return m_selectedSources; }
-
 void poolTab::historyBack()
 {
 	if (m_history_cursor > 0)
@@ -811,6 +802,29 @@ void poolTab::historyNext()
 	}
 }
 
-QString poolTab::tags()		{ return m_search->toPlainText();	}
-QString poolTab::results()	{ return m_tags;					}
-QString poolTab::wiki()		{ return m_wiki;					}
+void poolTab::setTags(QString tags)
+{
+	activateWindow();
+	m_search->setText(tags);
+	load();
+}
+void poolTab::setPool(int id, QString site)
+{
+	activateWindow();
+	ui->spinPool->setValue(id);
+	int index = ui->comboSites->findText(site);
+	if (index != -1)
+	{ ui->comboSites->setCurrentIndex(index); }
+	load();
+}
+void poolTab::setSite(QString site)
+{
+	int index = ui->comboSites->findText(site);
+	if (index != -1)
+	{ ui->comboSites->setCurrentIndex(index); }
+}
+
+QString poolTab::tags()		{ return m_search->toPlainText();		}
+QString poolTab::results()	{ return m_tags;						}
+QString poolTab::wiki()		{ return m_wiki;						}
+QString poolTab::site()		{ return ui->comboSites->currentText();	}

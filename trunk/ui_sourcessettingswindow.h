@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'sourcessettingswindow.ui'
 **
-** Created: Sat 8. Dec 19:03:52 2012
+** Created: Sat 29. Dec 15:09:56 2012
 **      by: Qt User Interface Compiler version 4.8.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -322,6 +322,7 @@ public:
         comboReferer->insertItems(0, QStringList()
          << QApplication::translate("SourcesSettingsWindow", "Aucun", 0, QApplication::UnicodeUTF8)
          << QApplication::translate("SourcesSettingsWindow", "Site", 0, QApplication::UnicodeUTF8)
+         << QApplication::translate("SourcesSettingsWindow", "Page", 0, QApplication::UnicodeUTF8)
          << QApplication::translate("SourcesSettingsWindow", "Image", 0, QApplication::UnicodeUTF8)
         );
         tabWidget->setTabText(tabWidget->indexOf(tab_3), QApplication::translate("SourcesSettingsWindow", "G\303\251n\303\251ral", 0, QApplication::UnicodeUTF8));

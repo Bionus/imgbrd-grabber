@@ -284,7 +284,6 @@ void mainWindow::loadSites()
 				QDomElement docElem = doc.documentElement();
 				QMap<QString,QString> detals = domToMap(docElem);
 				QStringList defaults = QStringList() << "xml" << "json" << "rss" << "regex";
-				QString curr;
 				QStringList source;
 				for (int s = 0; s < 4; s++)
 				{
@@ -302,16 +301,18 @@ void mainWindow::loadSites()
 						{
 							QString line = f.readLine();
 							line.remove("\n").remove("\r");
-							QStringList srcs;
-							if (line.contains(':'))
-							{
-								curr = line.section(':', 1).toLower();
-								curr[0] = curr[0].toUpper();
-								srcs.append(curr);
-								line = line.section(':', 0, 0);
-							}
-							else
+
+							QSettings sets(savePath("sites/"+dir[i]+"/"+line+"/settings.ini"), QSettings::IniFormat);
+							QStringList srcs = QStringList() << sets.value("sources/source_1").toString() << sets.value("sources/source_2").toString() << sets.value("sources/source_3").toString() << sets.value("sources/source_4").toString();
+							srcs.removeAll("");
+							if (srcs.isEmpty())
 							{ srcs = source; }
+							else
+							{
+								for (int i = 0; i < srcs.size(); i++)
+								{ srcs[i][0] = srcs[i][0].toUpper(); }
+							}
+
 							QMap<QString,QString> details = detals;
 							for (int j = 0; j < srcs.size(); j++)
 							{
@@ -361,6 +362,8 @@ mainWindow::~mainWindow()
 int mainWindow::addTab(QString tag)
 {
 	tagTab *w = new tagTab(m_tabs.size(), &m_sites, &m_favorites, &m_serverDate, this);
+	if (m_tabs.size() > ui->tabWidget->currentIndex())
+	{ w->setSources(m_tabs[ui->tabWidget->currentIndex()]->sources()); }
 	connect(w, SIGNAL(batchAddGroup(QStringList)), this, SLOT(batchAddGroup(QStringList)));
 	connect(w, SIGNAL(batchAddUnique(QMap<QString,QString>)), this, SLOT(batchAddUnique(QMap<QString,QString>)));
 	connect(w, SIGNAL(titleChanged(searchTab*)), this, SLOT(updateTabTitle(searchTab*)));
@@ -380,9 +383,11 @@ int mainWindow::addTab(QString tag)
 	saveTabs(savePath("tabs.txt"));
 	return m_tabs.size() - 1;
 }
-int mainWindow::addPoolTab(int pool)
+int mainWindow::addPoolTab(int pool, QString site)
 {
 	poolTab *w = new poolTab(m_tabs.size(), &m_sites, &m_favorites, &m_serverDate, this);
+	if (m_tabs.size() > ui->tabWidget->currentIndex())
+	{ w->setSources(m_tabs[ui->tabWidget->currentIndex()]->sources()); }
 	connect(w, SIGNAL(batchAddGroup(QStringList)), this, SLOT(batchAddGroup(QStringList)));
 	connect(w, SIGNAL(batchAddUnique(QMap<QString,QString>)), this, SLOT(batchAddUnique(QMap<QString,QString>)));
 	connect(w, SIGNAL(titleChanged(searchTab*)), this, SLOT(updateTabTitle(searchTab*)));
@@ -397,8 +402,10 @@ int mainWindow::addPoolTab(int pool)
 		closeTab->resize(QSize(8,8));
 		connect(closeTab, SIGNAL(clicked()), w, SLOT(deleteLater()));
 		ui->tabWidget->findChild<QTabBar*>()->setTabButton(index, QTabBar::RightSide, closeTab);
+	if (!site.isEmpty())
+	{ w->setSite(site); }
 	if (pool != 0)
-	{ w->setTags("pool:"+QString::number(pool)); }
+	{ w->setPool(pool, site); }
 	saveTabs(savePath("tabs.txt"));
 	return m_tabs.size() - 1;
 }

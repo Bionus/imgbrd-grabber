@@ -14,7 +14,7 @@ SourcesSettingsWindow::SourcesSettingsWindow(Site *site, QWidget *parent) : QDia
 	QSettings settings(savePath("sites/"+m_site->type()+"/"+m_site->name()+"/settings.ini"), QSettings::IniFormat);
 	QSettings global(savePath("settings.ini"), QSettings::IniFormat);
 
-	QStringList referers = QStringList() << "none" << "host" << "image";
+	QStringList referers = QStringList() << "none" << "host" << "page" << "image";
 	ui->comboReferer->setCurrentIndex(referers.indexOf(settings.value("referer", "none").toString()));
 
 	ui->checkSourcesDefault->setChecked(settings.value("sources/usedefault", true).toBool());
@@ -73,7 +73,7 @@ void SourcesSettingsWindow::save()
 {
 	QSettings settings(savePath("sites/"+m_site->type()+"/"+m_site->name()+"/settings.ini"), QSettings::IniFormat);
 
-	QStringList referers = QStringList() << "none" << "host" << "image";
+	QStringList referers = QStringList() << "none" << "host" << "page" << "image";
 	settings.setValue("referer", referers[ui->comboReferer->currentIndex()]);
 
 	settings.setValue("sources/usedefault", ui->checkSourcesDefault->isChecked());

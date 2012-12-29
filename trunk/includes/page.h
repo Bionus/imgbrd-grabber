@@ -12,6 +12,7 @@
 
 
 class Image;
+class Site;
 
 class Page : public QObject
 {

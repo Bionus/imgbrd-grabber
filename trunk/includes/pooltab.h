@@ -27,11 +27,11 @@ class poolTab : public searchTab
     public:
 		explicit poolTab(int id, QMap<QString,Site*> *sites, QMap<QString, QString> *favorites, QDateTime *serverDate, mainWindow *parent);
         ~poolTab();
-        Ui::poolTab *ui;
-        QList<bool> sources();
+		Ui::poolTab *ui;
         QString tags();
         QString results();
         QString wiki();
+		QString site();
 
     public slots:
         // Search
@@ -41,6 +41,7 @@ class poolTab : public searchTab
         void lastPage();
         // Zooms
         void setTags(QString);
+		void setPool(int id, QString site);
         void webZoom(int);
         // Loading
         void load();
@@ -72,6 +73,7 @@ class poolTab : public searchTab
         void optionsChanged();
         void closeEvent(QCloseEvent*);
         void on_buttonSearch_clicked();
+		void setSite(QString);
 
     signals:
         void batchAddGroup(QStringList);
@@ -91,7 +93,6 @@ class poolTab : public searchTab
 		QMap<QString,Page*>				m_pages;
 		QList<Image*>					m_images;
 		int								m_pagemax;
-		QList<bool>						m_selectedSources;
 		QList<QCheckBox*>				m_checkboxes;
 		QString							m_link, m_lastTags, m_wiki, m_tags;
 		bool							m_sized, m_from_history, m_stop;
