@@ -633,7 +633,7 @@ QString Image::path(QString fn, QString pth, bool complex)
 
 void Image::loadImage()
 {
-	m_loadImage = m_parentSite->get(m_url, m_parent, "image");
+	m_loadImage = m_parentSite->get(m_url, m_parent, "image", this);
 	m_loadImage->setParent(this);
 	//m_timer.start();
 
