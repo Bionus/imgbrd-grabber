@@ -335,7 +335,7 @@ void zoomWindow::load()
 	m_imageTime = new QTime();
 	m_imageTime->start();
 
-	m_reply = m_site->get(m_url);
+	m_reply = m_site->get(m_url, NULL, "image", m_image);
 	connect(m_reply, SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(downloadProgress(qint64, qint64)));
 	connect(m_reply, SIGNAL(finished()), this, SLOT(replyFinishedZoom()));
 }

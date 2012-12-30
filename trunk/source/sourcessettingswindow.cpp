@@ -15,7 +15,11 @@ SourcesSettingsWindow::SourcesSettingsWindow(Site *site, QWidget *parent) : QDia
 	QSettings global(savePath("settings.ini"), QSettings::IniFormat);
 
 	QStringList referers = QStringList() << "none" << "host" << "page" << "image";
+	QStringList referers_preview = QStringList() << "" << "none" << "host" << "page" << "image";
+	QStringList referers_image = QStringList() << "" << "none" << "host" << "page" << "details" << "image";
 	ui->comboReferer->setCurrentIndex(referers.indexOf(settings.value("referer", "none").toString()));
+	ui->comboRefererPreview->setCurrentIndex(referers_preview.indexOf(settings.value("referer_preview", "").toString()));
+	ui->comboRefererImage->setCurrentIndex(referers_image.indexOf(settings.value("referer_image", "").toString()));
 
 	ui->checkSourcesDefault->setChecked(settings.value("sources/usedefault", true).toBool());
 	QStringList sources = QStringList() << "xml" << "json" << "regex" << "rss";
@@ -74,10 +78,14 @@ void SourcesSettingsWindow::save()
 	QSettings settings(savePath("sites/"+m_site->type()+"/"+m_site->name()+"/settings.ini"), QSettings::IniFormat);
 
 	QStringList referers = QStringList() << "none" << "host" << "page" << "image";
+	QStringList referers_preview = QStringList() << "" << "none" << "host" << "page" << "image";
+	QStringList referers_image = QStringList() << "" << "none" << "host" << "page" << "details" << "image";
 	settings.setValue("referer", referers[ui->comboReferer->currentIndex()]);
+	settings.setValue("referer_preview", referers_preview[ui->comboRefererPreview->currentIndex()]);
+	settings.setValue("referer_image", referers_image[ui->comboRefererImage->currentIndex()]);
 
-	settings.setValue("sources/usedefault", ui->checkSourcesDefault->isChecked());
 	QStringList sources = QStringList() << "xml" << "json" << "regex" << "rss";
+	settings.setValue("sources/usedefault", ui->checkSourcesDefault->isChecked());
 	settings.setValue("sources/source_1", sources[ui->comboSources1->currentIndex()]);
 	settings.setValue("sources/source_2", sources[ui->comboSources2->currentIndex()]);
 	settings.setValue("sources/source_3", sources[ui->comboSources3->currentIndex()]);
@@ -86,8 +94,8 @@ void SourcesSettingsWindow::save()
 	settings.setValue("auth/pseudo", ui->lineAuthPseudo->text());
 	settings.setValue("auth/password", ui->lineAuthPassword->text());
 
-	settings.setValue("login/parameter", ui->checkLoginParameter->isChecked());
 	QStringList methods = QStringList() << "get" << "post";
+	settings.setValue("login/parameter", ui->checkLoginParameter->isChecked());
 	settings.setValue("login/method", methods[ui->comboLoginMethod->currentIndex()]);
 	settings.setValue("login/url", ui->lineLoginUrl->text());
 	settings.setValue("login/pseudo", ui->lineLoginPseudo->text());

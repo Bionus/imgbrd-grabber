@@ -75,7 +75,7 @@
        <item row="0" column="0">
         <widget class="QLabel" name="label_7">
          <property name="text">
-          <string>Referer</string>
+          <string>Referer (par défaut)</string>
          </property>
         </widget>
        </item>
@@ -94,6 +94,83 @@
          <item>
           <property name="text">
            <string>Page</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Image</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_12">
+         <property name="text">
+          <string>Referer (apercu)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_13">
+         <property name="text">
+          <string>Referer (image)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QComboBox" name="comboRefererPreview">
+         <item>
+          <property name="text">
+           <string>Par défaut</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Aucun</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Site</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Page</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Image</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QComboBox" name="comboRefererImage">
+         <item>
+          <property name="text">
+           <string>Par défaut</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Aucun</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Site</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Page</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Détails</string>
           </property>
          </item>
          <item>

@@ -76,7 +76,7 @@ Image::~Image()
 void Image::loadPreview()
 {
 	m_previewTry++;
-	m_loadPreview = m_parentSite->get(m_previewUrl, m_parent);
+	m_loadPreview = m_parentSite->get(m_previewUrl, m_parent, "preview");
 	m_loadPreview->setParent(this);
 
 	connect(m_loadPreview, SIGNAL(finished()), this, SLOT(parsePreview()));
@@ -633,7 +633,7 @@ QString Image::path(QString fn, QString pth, bool complex)
 
 void Image::loadImage()
 {
-	m_loadImage = m_parentSite->get(m_url, m_parent);
+	m_loadImage = m_parentSite->get(m_url, m_parent, "image");
 	m_loadImage->setParent(this);
 	//m_timer.start();
 

@@ -376,6 +376,18 @@ void Page::parse()
 			QMap<QString,QString> d;
 			for (int i = 0; i < order.size(); i++)
 			{ d[order.at(i)] = rx.cap(i+1); }
+
+			if (order.contains("json") && !d["json"].isEmpty())
+			{
+				QVariant src = Json::parse(d["json"]);
+				if (!src.isNull())
+				{
+					QMap<QString,QVariant> map = src.toMap();
+					for (int i = 0; i < map.size(); i++)
+					{ d[map.keys().at(i)] = map.values().at(i).toString(); }
+				}
+			}
+
 			if (!d["preview_url"].startsWith("http://") && !d["preview_url"].startsWith("https://"))
 			{ d["preview_url"] = "http://"+m_site->value("Url")+QString(d["preview_url"].startsWith("/") ? "" : "/")+d["preview_url"]; }
 			if (!d.contains("file_url"))
@@ -388,7 +400,14 @@ void Page::parse()
 			if (m_site->contains("Urls/Html/Image"))
 			{
 				if (m_site->value("Urls/Html/Image").contains("->"))
-				{ d["file_url"].replace(m_site->value("Urls/Html/Image").left(m_site->value("Urls/Html/Image").indexOf("->")), m_site->value("Urls/Html/Image").right(m_site->value("Urls/Html/Image").size()-m_site->value("Urls/Html/Image").indexOf("->")-2)); }
+				{
+					QStringList replaces = m_site->value("Urls/Html/Image").split("&");
+					foreach (QString rep, replaces)
+					{
+						QRegExp rgx(rep.left(rep.indexOf("->")));
+						d["file_url"].replace(rgx, rep.right(rep.size() - rep.indexOf("->") - 2));
+					}
+				}
 				else
 				{
 					d["file_url"] = m_site->value("Urls/Html/Image");
@@ -397,17 +416,8 @@ void Page::parse()
 					.replace("{ext}", "jpg");
 				}
 			}
-
-			if (order.contains("json") && !d["json"].isEmpty())
-			{
-				QVariant src = Json::parse(d["json"]);
-				if (!src.isNull())
-				{
-					QMap<QString,QVariant> map = src.toMap();
-					for (int i = 0; i < map.size(); i++)
-					{ d[map.keys().at(i)] = map.values().at(i).toString(); }
-				}
-			}
+			qDebug() << 1 << d["preview_url"];
+			qDebug() << 2 << d["file_url"];
 
 			if (!d.contains("page_url"))
 			{
