@@ -11,10 +11,12 @@
 #include <QUrl>
 #include <QSslError>
 #include "page.h"
+#include "image.h"
 
 
 
 class Page;
+class Image;
 
 class Site : public QObject
 {
@@ -31,8 +33,8 @@ class Site : public QObject
 		QString operator[](QString key) { return value(key); }
 		void insert(QString, QString);
 		QVariant setting(QString key, QVariant def = QVariant());
-		QNetworkReply *get(QUrl url, Page *page = NULL);
-		QNetworkReply *get(QString url, Page *page = NULL) { return get(QUrl(url), page); }
+		QNetworkReply *get(QUrl url, Page *page = NULL, QString referer = "", Image *img = NULL);
+		QNetworkReply *get(QString url, Page *page = NULL, QString referer = "", Image *img = NULL) { return get(QUrl(url), page, referer, img); }
 
 	public slots:
 		void login();

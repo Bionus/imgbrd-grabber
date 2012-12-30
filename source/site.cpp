@@ -64,7 +64,7 @@ void Site::loginFinished()
 	emit loggedIn();
 }
 
-QNetworkReply *Site::get(QUrl url, Page *page)
+QNetworkReply *Site::get(QUrl url, Page *page, QString ref, Image *img)
 {
 	if (m_manager == NULL)
 	{
@@ -77,9 +77,20 @@ QNetworkReply *Site::get(QUrl url, Page *page)
 	{ login(); }
 
 	QNetworkRequest request(url);
-		QString referer = m_settings->value("referer", "none").toString();
+	QString referer = m_settings->value("referer"+(!ref.isEmpty() ? "_"+ref : ""), "").toString();
+		if (referer.isEmpty() && !ref.isEmpty())
+		{ referer = m_settings->value("referer", "none").toString(); }
 		if (referer != "none" && (referer != "page" || page != NULL))
-		{ request.setRawHeader("Referer", referer == "host" ? QString(url.scheme()+"://"+url.host()).toAscii() : (referer == "image" ? url.toString().toAscii() : (referer == "page" ? page->url().toString().toAscii() : ""))); }
+		{
+			if (referer == "host")
+			{ request.setRawHeader("Referer", QString(url.scheme()+"://"+url.host()).toAscii()); }
+			else if (referer == "image")
+			{ request.setRawHeader("Referer", url.toString().toAscii()); }
+			else if (referer == "page" && page)
+			{ request.setRawHeader("Referer", page->url().toString().toAscii()); }
+			else if (referer == "details" && img)
+			{ request.setRawHeader("Referer", img->pageUrl().toString().toAscii()); }
+		}
 		QMap<QString,QVariant> headers = m_settings->value("headers").toMap();
 		for (int i = 0; i < headers.size(); i++)
 		{

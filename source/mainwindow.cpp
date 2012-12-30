@@ -24,7 +24,7 @@
 #include "commands.h"
 #include <QtSql/QSqlDatabase>
 
-#define VERSION	"3.2.4"
+#define VERSION	"3.2.5"
 #define DONE()	logUpdate(QObject::tr(" Fait"))
 
 extern QMap<QDateTime,QString> _log;

@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'sourcessettingswindow.ui'
 **
-** Created: Sat 29. Dec 15:09:56 2012
+** Created: Sun 30. Dec 15:16:14 2012
 **      by: Qt User Interface Compiler version 4.8.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -43,6 +43,10 @@ public:
     QFormLayout *formLayout_5;
     QLabel *label_7;
     QComboBox *comboReferer;
+    QLabel *label_12;
+    QLabel *label_13;
+    QComboBox *comboRefererPreview;
+    QComboBox *comboRefererImage;
     QWidget *tab;
     QFormLayout *formLayout_3;
     QWidget *widget;
@@ -131,6 +135,26 @@ public:
         comboReferer->setObjectName(QString::fromUtf8("comboReferer"));
 
         formLayout_5->setWidget(0, QFormLayout::FieldRole, comboReferer);
+
+        label_12 = new QLabel(tab_3);
+        label_12->setObjectName(QString::fromUtf8("label_12"));
+
+        formLayout_5->setWidget(1, QFormLayout::LabelRole, label_12);
+
+        label_13 = new QLabel(tab_3);
+        label_13->setObjectName(QString::fromUtf8("label_13"));
+
+        formLayout_5->setWidget(2, QFormLayout::LabelRole, label_13);
+
+        comboRefererPreview = new QComboBox(tab_3);
+        comboRefererPreview->setObjectName(QString::fromUtf8("comboRefererPreview"));
+
+        formLayout_5->setWidget(1, QFormLayout::FieldRole, comboRefererPreview);
+
+        comboRefererImage = new QComboBox(tab_3);
+        comboRefererImage->setObjectName(QString::fromUtf8("comboRefererImage"));
+
+        formLayout_5->setWidget(2, QFormLayout::FieldRole, comboRefererImage);
 
         tabWidget->addTab(tab_3, QString());
         tab = new QWidget();
@@ -317,12 +341,31 @@ public:
         pushButton->setText(QApplication::translate("SourcesSettingsWindow", "Supprimer", 0, QApplication::UnicodeUTF8));
         pushButton_2->setText(QApplication::translate("SourcesSettingsWindow", "Annuler", 0, QApplication::UnicodeUTF8));
         pushButton_3->setText(QApplication::translate("SourcesSettingsWindow", "Valider", 0, QApplication::UnicodeUTF8));
-        label_7->setText(QApplication::translate("SourcesSettingsWindow", "Referer", 0, QApplication::UnicodeUTF8));
+        label_7->setText(QApplication::translate("SourcesSettingsWindow", "Referer (par d\303\251faut)", 0, QApplication::UnicodeUTF8));
         comboReferer->clear();
         comboReferer->insertItems(0, QStringList()
          << QApplication::translate("SourcesSettingsWindow", "Aucun", 0, QApplication::UnicodeUTF8)
          << QApplication::translate("SourcesSettingsWindow", "Site", 0, QApplication::UnicodeUTF8)
          << QApplication::translate("SourcesSettingsWindow", "Page", 0, QApplication::UnicodeUTF8)
+         << QApplication::translate("SourcesSettingsWindow", "Image", 0, QApplication::UnicodeUTF8)
+        );
+        label_12->setText(QApplication::translate("SourcesSettingsWindow", "Referer (apercu)", 0, QApplication::UnicodeUTF8));
+        label_13->setText(QApplication::translate("SourcesSettingsWindow", "Referer (image)", 0, QApplication::UnicodeUTF8));
+        comboRefererPreview->clear();
+        comboRefererPreview->insertItems(0, QStringList()
+         << QApplication::translate("SourcesSettingsWindow", "Par d\303\251faut", 0, QApplication::UnicodeUTF8)
+         << QApplication::translate("SourcesSettingsWindow", "Aucun", 0, QApplication::UnicodeUTF8)
+         << QApplication::translate("SourcesSettingsWindow", "Site", 0, QApplication::UnicodeUTF8)
+         << QApplication::translate("SourcesSettingsWindow", "Page", 0, QApplication::UnicodeUTF8)
+         << QApplication::translate("SourcesSettingsWindow", "Image", 0, QApplication::UnicodeUTF8)
+        );
+        comboRefererImage->clear();
+        comboRefererImage->insertItems(0, QStringList()
+         << QApplication::translate("SourcesSettingsWindow", "Par d\303\251faut", 0, QApplication::UnicodeUTF8)
+         << QApplication::translate("SourcesSettingsWindow", "Aucun", 0, QApplication::UnicodeUTF8)
+         << QApplication::translate("SourcesSettingsWindow", "Site", 0, QApplication::UnicodeUTF8)
+         << QApplication::translate("SourcesSettingsWindow", "Page", 0, QApplication::UnicodeUTF8)
+         << QApplication::translate("SourcesSettingsWindow", "D\303\251tails", 0, QApplication::UnicodeUTF8)
          << QApplication::translate("SourcesSettingsWindow", "Image", 0, QApplication::UnicodeUTF8)
         );
         tabWidget->setTabText(tabWidget->indexOf(tab_3), QApplication::translate("SourcesSettingsWindow", "G\303\251n\303\251ral", 0, QApplication::UnicodeUTF8));
