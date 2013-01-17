@@ -46,21 +46,30 @@ bool DumpCallback(const google_breakpad::MinidumpDescriptor &md,void *context, b
 bool DumpCallback(const char* _dump_dir,const char* _minidump_id,void *context, bool success)
 #endif
 {
+	QString dir, mid;
 	Q_UNUSED(context);
 	#if defined(Q_OS_WIN)
+		dir = QString::fromWCharArray(_dump_dir);
+		mid = QString::fromWCharArray(_minidump_id);
 		Q_UNUSED(_dump_dir);
 		Q_UNUSED(_minidump_id);
 		Q_UNUSED(assertion);
 		Q_UNUSED(exinfo);
+	#elif defined(Q_OS_LINUX)
+		dir = QString(md.directory().c_str());
+		mid = QString::number(md.fd());
+	#elif defined(Q_OS_MAC)
+		dir = QString::fromWCharArray(_dump_dir);
+		mid = QString::fromWCharArray(_minidump_id);
 	#endif
 
-	log(QObject::tr("Minidump sauvegardé dans le dossier \"%1\" avec l'id \"%2\" (%3)").arg(QString::fromWCharArray(_dump_dir), QString::fromWCharArray(_minidump_id), success ? QObject::tr("réussite") : QObject::tr("échec")));
+	log(QObject::tr("Minidump sauvegardé dans le dossier \"%1\" avec l'id \"%2\" (%3)").arg(dir, mid, success ? QObject::tr("réussite") : QObject::tr("échec")));
 	if (success)
 	{
 		QFile f(savePath("lastdump"));
 		if (f.open(QFile::WriteOnly))
 		{
-			f.write(QDir::toNativeSeparators(QString::fromWCharArray(_dump_dir)+"/"+QString::fromWCharArray(_minidump_id)+".dmp").toAscii());
+			f.write(QDir::toNativeSeparators(dir+"/"+mid+".dmp").toAscii());
 			f.close();
 		}
 	}

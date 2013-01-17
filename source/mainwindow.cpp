@@ -40,7 +40,7 @@ extern QMap<QString,QString> _md5;
 
 
 mainWindow::mainWindow(QString program, QStringList tags, QMap<QString,QString> params) : ui(new Ui::mainWindow), m_currentFav(-1), m_downloads(0), m_loaded(false), m_getAll(false), m_program(program), m_tags(tags), m_params(params)
-{  }
+{ }
 void mainWindow::init()
 {
 	m_settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
@@ -1241,8 +1241,7 @@ void mainWindow::_getAll()
 		int reponse = QMessageBox::No;
 		if (m_getAllErrors > 0)
 		{
-			m_getAllErrors = 0;
-			reponse = QMessageBox::question(this, tr("Récupération des images"), tr("Des erreurs sont survenues pendant le téléchargement des images. Voulez vous relancer le téléchargement de celles-ci ? (%1/%2)").arg(m_getAllErrors).arg(m_progressdialog->count()), QMessageBox::Yes | QMessageBox::No);
+			reponse = QMessageBox::question(this, tr("Récupération des images"), tr("Des erreurs sont survenues pendant le téléchargement des images. Voulez vous relancer le téléchargement de celles-ci ? (%1/%2)").arg(m_getAllErrors).arg(m_getAllDownloaded + m_getAllIgnored + m_getAllExists + m_getAll404s + m_getAllErrors), QMessageBox::Yes | QMessageBox::No);
 			if (reponse == QMessageBox::Yes)
 			{
 				m_getAll = true;
@@ -1255,11 +1254,11 @@ void mainWindow::_getAll()
 				m_getAllExists = 0;
 				m_getAllIgnored = 0;
 				m_getAll404s = 0;
-				m_getAllErrors = 0;
 				m_getAllCount = 0;
 				m_progressdialog->show();
 				getAllImages();
 			}
+			m_getAllErrors = 0;
 		}
 		if (reponse != QMessageBox::Yes)
 		{
@@ -1475,7 +1474,7 @@ void mainWindow::getAllPerformImage(Image* img)
 	}
 
 	int errors = m_getAllErrors, e404s = m_getAll404s;
-	if (reply->error() == QNetworkReply::NoError)
+	if (reply->error() == QNetworkReply::NoError && false)
 	{
 		if (site_id >= 0)
 		{
@@ -1485,7 +1484,7 @@ void mainWindow::getAllPerformImage(Image* img)
 		else
 		{ saveImage(img, reply); }
 	}
-	else if (reply->error() == QNetworkReply::ContentNotFoundError)
+	else if (reply->error() == QNetworkReply::ContentNotFoundError && false)
 	{ m_getAll404s++; }
 	else
 	{

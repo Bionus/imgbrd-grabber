@@ -6,6 +6,8 @@
 #include <QProcess>
 #include <QApplication>
 #include <QDebug>
+#include <QDesktopServices>
+#include <QUrl>
 #include "math.h"
 #include "functions.h"
 //#include "mainwindow.h"
@@ -369,7 +371,7 @@ void showInGraphicalShell(const QString &pathIn)
 		scriptArgs << QLatin1String("-e") << QLatin1String("tell application \"Finder\" to activate");
 		QProcess::execute("/usr/bin/osascript", scriptArgs);
 	#else
-		QDesktopServices::openUrl("file:///"+pathIn);
+		QDesktopServices::openUrl(QUrl("file:///"+pathIn));
 	#endif
 }
 

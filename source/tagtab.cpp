@@ -110,6 +110,7 @@ void tagTab::closeEvent(QCloseEvent *e)
 	{ clearLayout(m_layouts[i]); }
 	qDeleteAll(m_layouts);
 	m_layouts.clear();
+	m_boutons.clear();
 
 	emit closed(this);
 	e->accept();
@@ -218,6 +219,7 @@ void tagTab::load()
 	{ clearLayout(m_layouts[i]); }
 	qDeleteAll(m_layouts);
 	m_layouts.clear();
+	m_boutons.clear();
 	clearLayout(ui->layoutResults);
 	setWindowTitle(m_search->toPlainText().isEmpty() ? tr("Recherche") : m_search->toPlainText().replace("&", "&&"));
 	emit titleChanged(this);
