@@ -14,14 +14,21 @@ CODECFORTR = UTF-8
 TRANSLATIONS += languages/English.ts languages/Français.ts languages/Russian.ts
 
 # Google-Breakpad
-BREAKPAD = D:/Programmation/C++/Qt/google-breakpad
+win32 {
+	BREAKPAD = D:/Programmation/C++/Qt/google-breakpad
+	Debug:LIBS += $${BREAKPAD}/src/client/windows/Debug/lib/common.lib \
+				  $${BREAKPAD}/src/client/windows/Debug/lib/crash_generation_client.lib \
+				  $${BREAKPAD}/src/client/windows/Debug/lib/exception_handler.lib
+	Release:LIBS += $${BREAKPAD}/src/client/windows/Release/lib/common.lib \
+					$${BREAKPAD}/src/client/windows/Release/lib/crash_generation_client.lib \
+					$${BREAKPAD}/src/client/windows/Release/lib/exception_handler.lib
+}
+unix {
+	QMAKE_CXXFLAGS += -fpermissive
+	BREAKPAD = /home/spark/Documents/Programmation/C++/Qt/google-breakpad
+	LIBS += $${BREAKPAD}/src/client/linux/libbreakpad_client.a
+}
 INCLUDEPATH += $${BREAKPAD}/src
-Debug:LIBS += $${BREAKPAD}/src/client/windows/Debug/lib/common.lib \
-			  $${BREAKPAD}/src/client/windows/Debug/lib/crash_generation_client.lib \
-			  $${BREAKPAD}/src/client/windows/Debug/lib/exception_handler.lib
-Release:LIBS += $${BREAKPAD}/src/client/windows/Release/lib/common.lib \
-				$${BREAKPAD}/src/client/windows/Release/lib/crash_generation_client.lib \
-				$${BREAKPAD}/src/client/windows/Release/lib/exception_handler.lib
 
 # Input
 HEADERS += includes/aboutwindow.h \
