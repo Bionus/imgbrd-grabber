@@ -26,6 +26,8 @@ class SourcesSettingsWindow : public QDialog
 		void on_buttonAuthHash_clicked();
 		void deleteSite();
 		void save();
+		void testLogin();
+		void loginTested(Site::LoginResult);
 
 	signals:
 		void siteDeleted(QString);

@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'sourcessettingswindow.ui'
 **
-** Created: Wed 16. Jan 18:00:27 2013
+** Created: Fri 18. Jan 20:54:12 2013
 **      by: Qt User Interface Compiler version 4.8.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -25,6 +25,7 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QSpacerItem>
 #include <QtGui/QTabWidget>
+#include <QtGui/QVBoxLayout>
 #include <QtGui/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -32,12 +33,7 @@ QT_BEGIN_NAMESPACE
 class Ui_SourcesSettingsWindow
 {
 public:
-    QFormLayout *formLayout;
-    QHBoxLayout *horizontalLayout_4;
-    QSpacerItem *horizontalSpacer;
-    QPushButton *pushButton;
-    QPushButton *pushButton_2;
-    QPushButton *pushButton_3;
+    QVBoxLayout *verticalLayout;
     QTabWidget *tabWidget;
     QWidget *tab_3;
     QFormLayout *formLayout_5;
@@ -68,8 +64,11 @@ public:
     QHBoxLayout *horizontalLayout;
     QLineEdit *lineAuthPassword;
     QPushButton *buttonAuthHash;
+    QHBoxLayout *horizontalLayout_2;
+    QLabel *labelTestCredentials;
+    QPushButton *pushButton_4;
     QWidget *tab_4;
-    QFormLayout *formLayout_7;
+    QVBoxLayout *verticalLayout_2;
     QCheckBox *checkLoginParameter;
     QWidget *widget_2;
     QFormLayout *formLayout_6;
@@ -81,45 +80,25 @@ public:
     QLineEdit *lineLoginUrl;
     QLineEdit *lineLoginPseudo;
     QLineEdit *lineLoginPassword;
+    QHBoxLayout *horizontalLayout_5;
+    QLabel *labelTestLogin;
+    QPushButton *pushButton_5;
+    QHBoxLayout *horizontalLayout_4;
+    QSpacerItem *horizontalSpacer;
+    QPushButton *pushButton;
+    QPushButton *pushButton_2;
+    QPushButton *pushButton_3;
 
     void setupUi(QDialog *SourcesSettingsWindow)
     {
         if (SourcesSettingsWindow->objectName().isEmpty())
             SourcesSettingsWindow->setObjectName(QString::fromUtf8("SourcesSettingsWindow"));
-        SourcesSettingsWindow->resize(409, 215);
+        SourcesSettingsWindow->resize(369, 246);
         QIcon icon;
         icon.addFile(QString::fromUtf8(":/images/icon.ico"), QSize(), QIcon::Normal, QIcon::Off);
         SourcesSettingsWindow->setWindowIcon(icon);
-        formLayout = new QFormLayout(SourcesSettingsWindow);
-        formLayout->setObjectName(QString::fromUtf8("formLayout"));
-        formLayout->setFieldGrowthPolicy(QFormLayout::AllNonFixedFieldsGrow);
-        horizontalLayout_4 = new QHBoxLayout();
-#ifndef Q_OS_MAC
-        horizontalLayout_4->setContentsMargins(0, 0, 0, 0);
-#endif
-        horizontalLayout_4->setObjectName(QString::fromUtf8("horizontalLayout_4"));
-        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        horizontalLayout_4->addItem(horizontalSpacer);
-
-        pushButton = new QPushButton(SourcesSettingsWindow);
-        pushButton->setObjectName(QString::fromUtf8("pushButton"));
-
-        horizontalLayout_4->addWidget(pushButton);
-
-        pushButton_2 = new QPushButton(SourcesSettingsWindow);
-        pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
-
-        horizontalLayout_4->addWidget(pushButton_2);
-
-        pushButton_3 = new QPushButton(SourcesSettingsWindow);
-        pushButton_3->setObjectName(QString::fromUtf8("pushButton_3"));
-
-        horizontalLayout_4->addWidget(pushButton_3);
-
-
-        formLayout->setLayout(1, QFormLayout::SpanningRole, horizontalLayout_4);
-
+        verticalLayout = new QVBoxLayout(SourcesSettingsWindow);
+        verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
         tabWidget = new QTabWidget(SourcesSettingsWindow);
         tabWidget->setObjectName(QString::fromUtf8("tabWidget"));
         tab_3 = new QWidget();
@@ -252,16 +231,32 @@ public:
 
         formLayout_4->setLayout(1, QFormLayout::FieldRole, horizontalLayout);
 
+        horizontalLayout_2 = new QHBoxLayout();
+        horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
+        labelTestCredentials = new QLabel(tab_2);
+        labelTestCredentials->setObjectName(QString::fromUtf8("labelTestCredentials"));
+
+        horizontalLayout_2->addWidget(labelTestCredentials);
+
+        pushButton_4 = new QPushButton(tab_2);
+        pushButton_4->setObjectName(QString::fromUtf8("pushButton_4"));
+
+        horizontalLayout_2->addWidget(pushButton_4);
+
+        horizontalLayout_2->setStretch(0, 1);
+
+        formLayout_4->setLayout(2, QFormLayout::SpanningRole, horizontalLayout_2);
+
         tabWidget->addTab(tab_2, QString());
         tab_4 = new QWidget();
         tab_4->setObjectName(QString::fromUtf8("tab_4"));
-        formLayout_7 = new QFormLayout(tab_4);
-        formLayout_7->setObjectName(QString::fromUtf8("formLayout_7"));
+        verticalLayout_2 = new QVBoxLayout(tab_4);
+        verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
         checkLoginParameter = new QCheckBox(tab_4);
         checkLoginParameter->setObjectName(QString::fromUtf8("checkLoginParameter"));
         checkLoginParameter->setChecked(true);
 
-        formLayout_7->setWidget(0, QFormLayout::SpanningRole, checkLoginParameter);
+        verticalLayout_2->addWidget(checkLoginParameter);
 
         widget_2 = new QWidget(tab_4);
         widget_2->setObjectName(QString::fromUtf8("widget_2"));
@@ -310,11 +305,52 @@ public:
         formLayout_6->setWidget(3, QFormLayout::FieldRole, lineLoginPassword);
 
 
-        formLayout_7->setWidget(1, QFormLayout::SpanningRole, widget_2);
+        verticalLayout_2->addWidget(widget_2);
+
+        horizontalLayout_5 = new QHBoxLayout();
+        horizontalLayout_5->setObjectName(QString::fromUtf8("horizontalLayout_5"));
+        labelTestLogin = new QLabel(tab_4);
+        labelTestLogin->setObjectName(QString::fromUtf8("labelTestLogin"));
+
+        horizontalLayout_5->addWidget(labelTestLogin);
+
+        pushButton_5 = new QPushButton(tab_4);
+        pushButton_5->setObjectName(QString::fromUtf8("pushButton_5"));
+
+        horizontalLayout_5->addWidget(pushButton_5);
+
+        horizontalLayout_5->setStretch(0, 1);
+
+        verticalLayout_2->addLayout(horizontalLayout_5);
 
         tabWidget->addTab(tab_4, QString());
 
-        formLayout->setWidget(0, QFormLayout::LabelRole, tabWidget);
+        verticalLayout->addWidget(tabWidget);
+
+        horizontalLayout_4 = new QHBoxLayout();
+        horizontalLayout_4->setContentsMargins(0, 0, 0, 0);
+        horizontalLayout_4->setObjectName(QString::fromUtf8("horizontalLayout_4"));
+        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_4->addItem(horizontalSpacer);
+
+        pushButton = new QPushButton(SourcesSettingsWindow);
+        pushButton->setObjectName(QString::fromUtf8("pushButton"));
+
+        horizontalLayout_4->addWidget(pushButton);
+
+        pushButton_2 = new QPushButton(SourcesSettingsWindow);
+        pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
+
+        horizontalLayout_4->addWidget(pushButton_2);
+
+        pushButton_3 = new QPushButton(SourcesSettingsWindow);
+        pushButton_3->setObjectName(QString::fromUtf8("pushButton_3"));
+
+        horizontalLayout_4->addWidget(pushButton_3);
+
+
+        verticalLayout->addLayout(horizontalLayout_4);
 
 
         retranslateUi(SourcesSettingsWindow);
@@ -323,6 +359,8 @@ public:
         QObject::connect(pushButton_2, SIGNAL(clicked()), SourcesSettingsWindow, SLOT(reject()));
         QObject::connect(pushButton_3, SIGNAL(clicked()), SourcesSettingsWindow, SLOT(accept()));
         QObject::connect(checkLoginParameter, SIGNAL(toggled(bool)), widget_2, SLOT(setDisabled(bool)));
+        QObject::connect(pushButton_4, SIGNAL(clicked()), SourcesSettingsWindow, SLOT(testLogin()));
+        QObject::connect(pushButton_5, SIGNAL(clicked()), SourcesSettingsWindow, SLOT(testLogin()));
 
         tabWidget->setCurrentIndex(0);
         comboSources1->setCurrentIndex(0);
@@ -338,9 +376,6 @@ public:
     void retranslateUi(QDialog *SourcesSettingsWindow)
     {
         SourcesSettingsWindow->setWindowTitle(QApplication::translate("SourcesSettingsWindow", "Options de site", 0, QApplication::UnicodeUTF8));
-        pushButton->setText(QApplication::translate("SourcesSettingsWindow", "Supprimer", 0, QApplication::UnicodeUTF8));
-        pushButton_2->setText(QApplication::translate("SourcesSettingsWindow", "Annuler", 0, QApplication::UnicodeUTF8));
-        pushButton_3->setText(QApplication::translate("SourcesSettingsWindow", "Valider", 0, QApplication::UnicodeUTF8));
         label_7->setText(QApplication::translate("SourcesSettingsWindow", "Referer (par d\303\251faut)", 0, QApplication::UnicodeUTF8));
         comboReferer->clear();
         comboReferer->insertItems(0, QStringList()
@@ -404,8 +439,10 @@ public:
         checkSourcesDefault->setText(QApplication::translate("SourcesSettingsWindow", "Utiliser les sources par d\303\251faut", 0, QApplication::UnicodeUTF8));
         tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("SourcesSettingsWindow", "Sources", 0, QApplication::UnicodeUTF8));
         label->setText(QApplication::translate("SourcesSettingsWindow", "Pseudo", 0, QApplication::UnicodeUTF8));
-        label_2->setText(QApplication::translate("SourcesSettingsWindow", "Mot de passe hash\303\251", 0, QApplication::UnicodeUTF8));
+        label_2->setText(QApplication::translate("SourcesSettingsWindow", "Mot de passe", 0, QApplication::UnicodeUTF8));
         buttonAuthHash->setText(QApplication::translate("SourcesSettingsWindow", "Hasher un mot de passe", 0, QApplication::UnicodeUTF8));
+        labelTestCredentials->setText(QString());
+        pushButton_4->setText(QApplication::translate("SourcesSettingsWindow", "Tester", 0, QApplication::UnicodeUTF8));
         tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("SourcesSettingsWindow", "Identifiants", 0, QApplication::UnicodeUTF8));
         checkLoginParameter->setText(QApplication::translate("SourcesSettingsWindow", "Passage dans l'url", 0, QApplication::UnicodeUTF8));
         label_8->setText(QApplication::translate("SourcesSettingsWindow", "M\303\251thode", 0, QApplication::UnicodeUTF8));
@@ -417,7 +454,12 @@ public:
         label_9->setText(QApplication::translate("SourcesSettingsWindow", "Pseudo", 0, QApplication::UnicodeUTF8));
         label_10->setText(QApplication::translate("SourcesSettingsWindow", "Password", 0, QApplication::UnicodeUTF8));
         label_11->setText(QApplication::translate("SourcesSettingsWindow", "URL", 0, QApplication::UnicodeUTF8));
+        labelTestLogin->setText(QString());
+        pushButton_5->setText(QApplication::translate("SourcesSettingsWindow", "Tester", 0, QApplication::UnicodeUTF8));
         tabWidget->setTabText(tabWidget->indexOf(tab_4), QApplication::translate("SourcesSettingsWindow", "Connexion", 0, QApplication::UnicodeUTF8));
+        pushButton->setText(QApplication::translate("SourcesSettingsWindow", "Supprimer", 0, QApplication::UnicodeUTF8));
+        pushButton_2->setText(QApplication::translate("SourcesSettingsWindow", "Annuler", 0, QApplication::UnicodeUTF8));
+        pushButton_3->setText(QApplication::translate("SourcesSettingsWindow", "Valider", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
 };

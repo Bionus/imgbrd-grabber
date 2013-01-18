@@ -22,7 +22,14 @@ class Site : public QObject
 {
 	Q_OBJECT
 
+
 	public:
+		enum LoginResult
+		{
+			LoginError = -1,
+			LoginNoLogin = 1,
+			LoginSuccess = 0
+		};
 		Site(QString type, QString name, QMap<QString,QString> data);
 		~Site();
 		QString type();
@@ -43,7 +50,7 @@ class Site : public QObject
 		void finishedReply(QNetworkReply*);
 
 	signals:
-		void loggedIn();
+		void loggedIn(Site::LoginResult);
 		void finished(QNetworkReply*);
 
 	private:
@@ -54,7 +61,7 @@ class Site : public QObject
 		QString m_sessionId;
 		QNetworkAccessManager *m_manager;
 		QNetworkReply *m_loginReply;
-		bool m_loggedIn;
+		bool m_loggedIn, m_triedLogin, m_loginCheck;
 };
 
 #endif // SITE_H
