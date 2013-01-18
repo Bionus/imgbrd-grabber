@@ -6,7 +6,7 @@
 
 
 
-Site::Site(QString type, QString name, QMap<QString, QString> data) : m_type(type), m_name(name), m_data(data), m_manager(NULL), m_loggedIn(false)
+Site::Site(QString type, QString name, QMap<QString, QString> data) : m_type(type), m_name(name), m_data(data), m_manager(NULL), m_loggedIn(false), m_triedLogin(false), m_loginCheck(false)
 {
 	m_settings = new QSettings(savePath("sites/"+type+"/"+name+"/settings.ini"), QSettings::IniFormat);
 }
@@ -24,7 +24,7 @@ void Site::login()
 		connect(m_manager, SIGNAL(sslErrors(QNetworkReply*,QList<QSslError>)), this, SIGNAL(sslErrors(QNetworkReply*,QList<QSslError>)));
 	}
 
-	if (!m_settings->value("login/parameter").toBool() && !m_loggedIn)
+	if (!m_settings->value("login/parameter").toBool() && !m_loggedIn && !m_triedLogin)
 	{
 		if (!m_settings->value("login/url", "").toString().isEmpty())
 		{
@@ -54,14 +54,19 @@ void Site::login()
 				m_loginReply = m_manager->get(request);
 				connect(m_loginReply, SIGNAL(finished()), this, SLOT(loginFinished()));
 			}
+
+			return;
 		}
 	}
+
+	emit loggedIn(LoginNoLogin);
 }
 void Site::loginFinished()
 {
 	m_loggedIn = m_manager->cookieJar()->cookiesForUrl(m_loginReply->url()).isEmpty();
 	log(tr("Connexion à %1 terminée (%2).").arg(m_name, m_loggedIn ? "succès" : "échec"));
-	emit loggedIn();
+	m_triedLogin = true;
+	emit loggedIn(m_loggedIn ? LoginSuccess : LoginError);
 }
 
 QNetworkReply *Site::get(QUrl url, Page *page, QString ref, Image *img)

@@ -837,7 +837,7 @@ void mainWindow::closeEvent(QCloseEvent *e)
 		{ m_tabs.at(i)->deleteLater(); }
 		m_settings->setValue("crashed", false);
 		m_settings->sync();
-		QFile::copy(m_settings->fileName(), savePath("settings."+QString(VERSION)+".ini"));
+		QFile::copy(m_settings->fileName(), savePath("old/settings."+QString(VERSION)+".ini"));
 	DONE();
 	m_loaded = false;
 	e->accept();
@@ -1007,7 +1007,12 @@ void mainWindow::getAll(bool all)
 		}
 	}
 	if (m_getAllPages.isEmpty())
-	{ getAllImages(); }
+	{
+		if (m_getAllRemaining.isEmpty())
+		{ return; }
+		else
+		{ getAllImages(); }
+	}
 	m_progressdialog->setText(tr("Téléchargement des pages, veuillez patienter..."));
 		connect(m_progressdialog, SIGNAL(rejected()), this, SLOT(getAllCancel()));
 		m_progressdialog->setValue(0);
@@ -1021,7 +1026,7 @@ void mainWindow::getAllFinishedLoading(Page* p)
 	int n = 0;
 	for (int i = 0; i < m_groupBatchs.count(); i++)
 	{
-		if (m_groupBatchs[i][8].split("¤", QString::SkipEmptyParts).contains(p->url().toString()))
+		if (m_groupBatchs[i][8].split("¤", QString::SkipEmptyParts).contains(QString::number((int)p)))
 		{
 			n = i;
 			break;
@@ -1153,7 +1158,6 @@ void mainWindow::_getAll()
 			}
 
 			QString p = img->folder().isEmpty() ? pth : img->folder();
-			qDebug() << p << img->folder() << path << pth << img->path(path, p);
 			QFile f(p+"/"+img->path(path, p));
 			if (!f.exists())
 			{
@@ -1277,7 +1281,7 @@ void mainWindow::imageUrlChanged(QString before, QString after)
 }
 void mainWindow::getAllProgress(Image *img, qint64 bytesReceived, qint64 bytesTotal)
 {
-	if (!m_downloadTimeLast.contains(img->url()))
+	if (!m_downloadTimeLast.contains(img->url()) || m_downloadTimeLast[img->url()] == NULL)
 	{ return; }
 	if (m_downloadTimeLast[img->url()]->elapsed() >= 1000)
 	{
@@ -1474,7 +1478,7 @@ void mainWindow::getAllPerformImage(Image* img)
 	}
 
 	int errors = m_getAllErrors, e404s = m_getAll404s;
-	if (reply->error() == QNetworkReply::NoError && false)
+	if (reply->error() == QNetworkReply::NoError)
 	{
 		if (site_id >= 0)
 		{
@@ -1484,7 +1488,7 @@ void mainWindow::getAllPerformImage(Image* img)
 		else
 		{ saveImage(img, reply); }
 	}
-	else if (reply->error() == QNetworkReply::ContentNotFoundError && false)
+	else if (reply->error() == QNetworkReply::ContentNotFoundError)
 	{ m_getAll404s++; }
 	else
 	{

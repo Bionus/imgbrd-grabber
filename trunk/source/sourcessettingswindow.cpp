@@ -73,6 +73,34 @@ void SourcesSettingsWindow::deleteSite()
 	}
 }
 
+void SourcesSettingsWindow::testLogin()
+{
+	ui->labelTestCredentials->setText("<i>Connexion...</li>");
+	ui->labelTestLogin->setText("<i>Connexion...</li>");
+	connect(m_site, SIGNAL(loggedIn(Site::LoginResult)), this, SLOT(loginTested(Site::LoginResult)));
+	m_site->login();
+}
+void SourcesSettingsWindow::loginTested(Site::LoginResult result)
+{
+	switch (result)
+	{
+		case Site::LoginSuccess:
+			ui->labelTestCredentials->setText("<i>Succès !</i>");
+			ui->labelTestLogin->setText("<i>Succès !</i>");
+			break;
+
+		case Site::LoginError:
+			ui->labelTestCredentials->setText("<i>Érreur</i>");
+			ui->labelTestLogin->setText("<i>Érreur</i>");
+			break;
+
+		case Site::LoginNoLogin:
+			ui->labelTestCredentials->setText("<i>Impossible de tester</i>");
+			ui->labelTestLogin->setText("<i>Impossible de tester</i>");
+			break;
+	}
+}
+
 void SourcesSettingsWindow::save()
 {
 	QSettings settings(savePath("sites/"+m_site->type()+"/"+m_site->name()+"/settings.ini"), QSettings::IniFormat);
