@@ -1,6 +1,5 @@
 #include <QSettings>
 #include <QFile>
-#include <QDebug>
 #include "page.h"
 #include "json.h"
 #include "math.h"
@@ -416,8 +415,6 @@ void Page::parse()
 					.replace("{ext}", "jpg");
 				}
 			}
-			qDebug() << 1 << d["preview_url"];
-			qDebug() << 2 << d["file_url"];
 
 			if (!d.contains("page_url"))
 			{

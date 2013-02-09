@@ -24,7 +24,7 @@ optionsWindow::optionsWindow(QWidget *parent) : QDialog(parent), ui(new Ui::opti
 	ui->setupUi(this);
 
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
-	QStringList languages = QDir("languages").entryList(QStringList("*.qm"), QDir::Files);
+	QStringList languages = QDir(qApp->applicationDirPath()+"/languages").entryList(QStringList("*.qm"), QDir::Files);
 	for (int i = 0; i < languages.count(); i++)
 	{ languages[i].remove(".qm", Qt::CaseInsensitive); }
 	ui->comboLanguages->addItems(languages);
@@ -473,7 +473,6 @@ void optionsWindow::setCategory(QString value)
 		tr("Interface", "update") <<
 		tr("Coloration", "update") <<
 		tr("Marges et bordures", "update") <<
-		tr("Connexion", "update") <<
 		tr("Proxy", "update") <<
 		tr("Commandes", "update") <<
 		tr("Base de données", "update");

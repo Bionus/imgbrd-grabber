@@ -1,4 +1,3 @@
-#include <QDebug>
 #include <QFile>
 #include <QNetworkCookieJar>
 #include "site.h"
