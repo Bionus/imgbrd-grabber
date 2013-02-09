@@ -53,6 +53,7 @@ void mainWindow::init()
 	ui->setupUi(this);
 	log(tr("Nouvelle session démarée."));
 	log(tr("Version du logiciel : %1.").arg(VERSION));
+	log(tr("Chemin : %1").arg(qApp->applicationDirPath()));
 	log(tr("Chargement des préférences depuis <a href=\"file:///%1\">%1</a>").arg(savePath("settings.ini")));
 
 	loadMd5s();
@@ -222,6 +223,10 @@ void mainWindow::init()
 	connect(m_favoritesTab, SIGNAL(changed(searchTab*)), this, SLOT(updateTabs()));
 	ui->tabWidget->insertTab(m_tabs.size(), m_favoritesTab, tr("Favoris"));
 
+	ui->tableBatchGroups->horizontalHeader()->setResizeMode(QHeaderView::Interactive);
+	ui->tableBatchUniques->horizontalHeader()->setResizeMode(QHeaderView::Interactive);
+	on_buttonInitSettings_clicked();
+
 	// Console usage
 	if (this->m_params.keys().contains("batch"))
 	{
@@ -241,10 +246,6 @@ void mainWindow::init()
 		else
 		{ m_tagTabs[0]->setTags(this->m_tags.join(" ")); }
 	}
-
-	ui->tableBatchGroups->horizontalHeader()->setResizeMode(QHeaderView::Interactive);
-	ui->tableBatchUniques->horizontalHeader()->setResizeMode(QHeaderView::Interactive);
-	on_buttonInitSettings_clicked();
 
 	QStringList sizes = m_settings->value("batch", "100,100,100,100,100,100,100,100,100").toString().split(',');
 	int m = sizes.size() > ui->tableBatchGroups->columnCount() ? ui->tableBatchGroups->columnCount() : sizes.size();
@@ -800,7 +801,7 @@ void mainWindow::loadLanguage(const QString& rLanguage, bool shutup)
 		m_currLang = rLanguage;
 		QLocale locale = QLocale(m_currLang);
 		QLocale::setDefault(locale);
-		switchTranslator(m_translator, "languages/"+m_currLang);
+		switchTranslator(m_translator, qApp->applicationDirPath()+"/languages/"+m_currLang);
 		if (!shutup)
 		{
 			log(tr("Traduction des textes en %1...").arg(m_currLang));
