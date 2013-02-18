@@ -418,7 +418,7 @@ void tagTab::finishedLoading(Page* page)
 				{ taglist[i].setType("favorite"); }
 				QString n = taglist[i].text();
 				n.replace(" ", "_");
-				tags += "<a href=\""+n+"\" style=\""+(styles.contains(taglist[i].type()+"s") ? styles[taglist[i].type()+"s"] : styles["generals"])+"\">"+taglist[i].text()+"</a>"+(taglist[i].count() > 0 ? " ("+QString::number(taglist[i].count())+")" : "")+"<br/>";
+				tags += "<a href=\""+n+"\" style=\""+(styles.contains(taglist[i].type()+"s") ? styles[taglist[i].type()+"s"] : styles["generals"])+"\">"+taglist[i].text()+"</a>"+(taglist[i].count() > 0 ? " <span style=\"color:#aaa\">("+QString("%L1").arg(taglist[i].count())+")</span>" : "")+"<br/>";
 			}
 		}
 
@@ -517,7 +517,7 @@ void tagTab::finishedLoadingTags(Page *page)
 		{ taglist[i].setType("favorite"); }
 		QString n = taglist[i].text();
 		n.replace(" ", "_");
-		tags += "<a href=\""+n+"\" style=\""+(styles.contains(taglist[i].type()+"s") ? styles[taglist[i].type()+"s"] : styles["generals"])+"\">"+taglist[i].text()+"</a>"+(taglist[i].count() > 0 ? " ("+QString::number(taglist[i].count())+")" : "")+"<br/>";
+		tags += "<a href=\""+n+"\" style=\""+(styles.contains(taglist[i].type()+"s") ? styles[taglist[i].type()+"s"] : styles["generals"])+"\">"+taglist[i].text()+"</a>"+(taglist[i].count() > 0 ? " <span style=\"color:#aaa\">("+QString("%L1").arg(taglist[i].count())+")</span>" : "")+"<br/>";
 	}
 
 	m_tags = tags;
