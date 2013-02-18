@@ -78,6 +78,7 @@ void zoomWindow::go()
 	QStringList hreftags;
 	for (int i = 0; i < taglist.count(); i++)
 	{ hreftags.append("<a href=\""+taglist[i].text()+"\" style=\"text-decoration:none;color:#000000\">"+taglist[i].text()+"</a>"); }
+	hreftags.sort();
 
 	QMap<QString, QString> assoc;
 		assoc["s"] = tr("Safe");
@@ -464,6 +465,7 @@ void zoomWindow::colore()
 		QString type = blacklistedtags.contains(tag.text(), Qt::CaseInsensitive) ? "blacklisteds" : (m_ignore.contains(tag.text(), Qt::CaseInsensitive) ? "ignored" : tag.type());
 		t.append("<a href=\""+tag.text()+"\" style=\""+(styles.contains(type+"s") ? styles[type+"s"] : styles["generals"])+"\">"+tag.text()+"</a>");
 	}
+	t.sort();
 	tags = t.join(" ");
 	if (ui->widgetLeft->isHidden())
 	{ m_labelTagsTop->setText(tags); }

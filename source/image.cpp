@@ -178,13 +178,13 @@ void Image::parseDetails()
 				case 4:
 					type = rx.cap(1);
 					tag = rx.cap(4).replace(" ", "_").replace("&amp;", "&");
-					count = rx.cap(3).toInt();
+					count = rx.cap(3).endsWith('k') ? rx.cap(3).left(rx.cap(3).length() - 1).toInt() * 1000 : rx.cap(3).toInt();
 					break;
 
 				case 3:
 					type = rx.cap(1);
 					tag = rx.cap(2).replace(" ", "_").replace("&amp;", "&");
-					count = rx.cap(3).toInt();
+					count = rx.cap(3).endsWith('k') ? rx.cap(3).left(rx.cap(3).length() - 1).toInt() * 1000 : rx.cap(3).toInt();
 					break;
 
 				case 2:
@@ -197,6 +197,15 @@ void Image::parseDetails()
 				case 1:
 					tag = rx.cap(1).replace(" ", "_").replace("&amp;", "&");
 					break;
+			}
+			if (type.length() == 1)
+			{
+				int tpe = type.toInt();
+				if (tpe >= 0 && tpe <= 4)
+				{
+					QStringList types = QStringList() << "general" << "artist" << "unknown" << "copyright" << "character";
+					type = types[tpe];
+				}
 			}
 			tgs.append(Tag(tag, type, count));
 		}

@@ -164,6 +164,7 @@ void Page::loadTags()
 	if (!m_urlRegex.isEmpty())
 	{
 		m_replyTags = m_site->get(m_urlRegex);
+		connect(m_replyTags, SIGNAL(finished()), this, SLOT(parseTags()));
 		m_replyTagsExists = true;
 	}
 }
@@ -588,10 +589,43 @@ void Page::parseTags()
 		while ((p = rxtags.indexIn(source, p)) != -1)
 		{
 			p += rxtags.matchedLength();
-			if (rxtags.captureCount() == 4)
-			{ m_tags.append(Tag(rxtags.cap(4), rxtags.cap(1), rxtags.cap(3).toInt())); }
-			else
-			{ m_tags.append(Tag(rxtags.cap(2), rxtags.cap(1), rxtags.cap(3).toInt())); }
+			QString type = "unknown", tag = "";
+			int count = 1;
+			switch (rxtags.captureCount())
+			{
+				case 4:
+					type = rxtags.cap(1);
+					tag = rxtags.cap(4).replace(" ", "_").replace("&amp;", "&");
+					count = rxtags.cap(3).endsWith('k') ? rxtags.cap(3).left(rxtags.cap(3).length() - 1).toInt() * 1000 : rxtags.cap(3).toInt();
+					break;
+
+				case 3:
+					type = rxtags.cap(1);
+					tag = rxtags.cap(2).replace(" ", "_").replace("&amp;", "&");
+					count = rxtags.cap(3).endsWith('k') ? rxtags.cap(3).left(rxtags.cap(3).length() - 1).toInt() * 1000 : rxtags.cap(3).toInt();
+					break;
+
+				case 2:
+					type = rxtags.cap(1);
+					if (type == "series")
+					{ type = "copyright"; }
+					tag = rxtags.cap(2).replace(" ", "_").replace("&amp;", "&");
+					break;
+
+				case 1:
+					tag = rxtags.cap(1).replace(" ", "_").replace("&amp;", "&");
+					break;
+			}
+			if (type.length() == 1)
+			{
+				int tpe = type.toInt();
+				if (tpe >= 0 && tpe <= 4)
+				{
+					QStringList types = QStringList() << "general" << "artist" << "unknown" << "copyright" << "character";
+					type = types[tpe];
+				}
+			}
+			m_tags.append(Tag(tag, type, count));
 		}
 	}
 

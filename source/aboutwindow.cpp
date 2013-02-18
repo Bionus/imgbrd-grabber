@@ -21,7 +21,7 @@ aboutWindow::aboutWindow(QString version, QWidget *parent) : QDialog(parent), ui
 	connect(m, SIGNAL(finished(QNetworkReply*)), this, SLOT(finished(QNetworkReply*)));
 	m->get(QNetworkRequest(QUrl("http://imgbrd-grabber.googlecode.com/svn/trunk/VERSION")));
 
-	setFixedSize(400, 170);
+	setFixedSize(400, 228);
 }
 
 aboutWindow::~aboutWindow()
