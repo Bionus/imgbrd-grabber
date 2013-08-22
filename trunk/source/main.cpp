@@ -36,7 +36,6 @@
 #if USE_BREAKPAD
 	#include "crashhandler.h"
 #endif
-#include <QDir>
 
 
 
@@ -80,11 +79,6 @@ int main(int argc, char *argv[])
 		else
 		{ tags.append(argv[i]); }
 	}
-
-	//QApplication app(argc, argv);
-
-	/*QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
-	QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));*/
 
 	_mainwindow = new mainWindow(argv[0], tags, params);
 	_mainwindow->init();
