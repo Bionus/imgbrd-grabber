@@ -3,30 +3,36 @@
 	<Name>Danbooru (2.0)</Name>
 	<Urls>
 		<Xml>
-			<Tags>/post/index.xml?login={pseudo}&amp;password_hash={password}&amp;limit={limit}&amp;page={page}&amp;tags={tags}</Tags>
-			<Pools>/post/index.xml?login={pseudo}&amp;password_hash={password}&amp;limit={limit}&amp;page={page}&amp;tags=pool:{pool} {tags}</Pools>
-			<Image>/preview/->/</Image>
+			<Tags>/posts.xml?login={pseudo}&amp;password_hash={password}&amp;limit={limit}&amp;page={page}&amp;tags={tags}</Tags>
+			<Pools>/posts.xml?login={pseudo}&amp;password_hash={password}&amp;limit={limit}&amp;page={page}&amp;tags=pool:{pool} {tags}</Pools>
+			<Image>/data/{md5}.{ext}</Image>
+			<Preview>/data/preview/{md5}.{ext}</Preview>
 		</Xml>
 		<Json>
-			<Tags>/post/index.json?login={pseudo}&amp;password_hash={password}&amp;limit={limit}&amp;page={page}&amp;tags={tags}</Tags>
-			<Pools>/post/index.json?login={pseudo}&amp;password_hash={password}&amp;limit={limit}&amp;page={page}&amp;tags=pool:{pool} {tags}</Pools>
-			<Image>/preview/->/</Image>
+			<Tags>/posts.json?login={pseudo}&amp;password_hash={password}&amp;limit={limit}&amp;page={page}&amp;tags={tags}</Tags>
+			<Pools>/posts.json?login={pseudo}&amp;password_hash={password}&amp;limit={limit}&amp;page={page}&amp;tags=pool:{pool} {tags}</Pools>
+			<Image>/data/{md5}.{ext}</Image>
+			<Preview>/data/preview/{md5}.{ext}</Preview>
 		</Json>
 		<Html>
-			<Tags>/post/index?login={pseudo}&amp;password_hash={password}&amp;limit={limit}&amp;page={page}&amp;tags={tags}</Tags>
-			<Pools>/post/index?login={pseudo}&amp;password_hash={password}&amp;limit={limit}&amp;page={page}&amp;tags=pool:{pool} {tags}</Pools>
-			<Post>/post/show/{id}</Post>
-			<Image>/preview/->/</Image>
+			<Tags>/posts?login={pseudo}&amp;password_hash={password}&amp;limit={limit}&amp;page={page}&amp;tags={tags}</Tags>
+			<Pools>/posts?login={pseudo}&amp;password_hash={password}&amp;limit={limit}&amp;page={page}&amp;tags=pool:{pool} {tags}</Pools>
+			<Post>/posts/{id}</Post>
+			<Image>/preview/->/&amp;/ssd/->/</Image>
 		</Html>
 	</Urls>
 	<Regex>
 		<Tags>&lt;li class=&quot;category-([^&quot;]+)&quot;&gt;.*&lt;a class=&quot;search-tag&quot; href=&quot;[^&quot;]+&quot;[^&gt;]*&gt;([^&lt;\?]+)&lt;/a&gt;.*&lt;span class=&quot;post-count&quot;&gt;([^&lt;]+)&lt;/span&gt;.*&lt;/li&gt;</Tags>
-		<Image>Post.register\((\{(?:.+)\})\);</Image>
-		<Order>json</Order>
-		<LastPage>&lt;link href=&quot;[^&quot;]*\?.*page=(\d+)[^&quot;]*&quot; rel=&quot;last&quot; title=&quot;Last Page&quot;&gt;</LastPage>
+		<Image>&lt;article class=&quot;post-preview[^&quot;]*&quot;[^&gt;]* data-id=&quot;([^&quot;]*)&quot; data-tags=&quot;([^&quot;]*)&quot; data-uploader=&quot;([^&quot;]*)&quot; data-rating=&quot;([^&quot;]*)&quot; data-width=&quot;([^&quot;]*)&quot; data-height=&quot;([^&quot;]*)&quot; data-flags=&quot;([^&quot;]*)&quot; data-parent-id=&quot;([^&quot;]*)&quot; data-has-children=&quot;([^&quot;]*)&quot; data-score=&quot;([^&quot;]*)&quot; data-fav-count=&quot;[^&quot;]*&quot;&gt;&lt;a[^&gt;]*&gt;&lt;img src=&quot;(/ssd/data/preview/([^.]+)\.jpg)&quot;[^&gt;]*&gt;&lt;/a&gt;&lt;/article&gt;</Image>
+		<Order>id|tags|author|rating|width|height|status|parent_id|has_children|score|preview_url|md5</Order>
+		<LastPage>&gt;([0-9]+)&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a[^&gt;]+ rel=&quot;next&quot;&gt;&amp;gt;&amp;gt;&lt;</LastPage>
 		<Pools>&lt;div class=&quot;status-notice&quot; id=&quot;pool\d+&quot;&gt;[^&lt;]*Pool:[^&lt;]*(?:&lt;a href=&quot;/post/show/(\d+)&quot; &gt;&amp;lt;&amp;lt;&lt;/a&gt;)?[^&lt;]*&lt;a href=&quot;/pool/show/(\d+)&quot; &gt;([^&lt;]+)&lt;/a&gt;[^&lt;]*(?:&lt;a href=&quot;/post/show/(\d+)&quot; &gt;&amp;gt;&amp;gt;&lt;/a&gt;)?[^&lt;]*&lt;/div&gt;</Pools>
 		<Wiki>&lt;div id=&quot;sidebar-wiki&quot;(?:[^&gt;]+)&gt;(.+)&lt;/div&gt;</Wiki>
 	</Regex>
+	<Check>
+		<Url>/</Url>
+		<Regex>Running Danbooru v2</Regex>
+	</Check>
 	<Modifiers>rating:safe rating:questionable rating:explicit user: fav: fastfav: md5: source: id: width: height: score: mpixels: filesize: date: gentags: arttags: chartags: copytags: approver: parent: sub: status:any status:deleted status:active status:flagged status:pending order:id order:id_desc order:score order:score_asc order:mpixels order:mpixels_asc order:filesize order:landscape order:portrait order:favcount order:rank order:change order:change_desc parent:none unlocked:rating</Modifiers>
 	<FirstPage>1</FirstPage>
 </Site>

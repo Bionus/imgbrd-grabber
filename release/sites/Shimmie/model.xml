@@ -13,7 +13,7 @@
 	</Urls>
 	<Regex>
 		<Tags>&lt;li class=&quot;tag-type-([^&quot;]+)&quot;&gt;.*&lt;a href=&quot;[^&quot;]+&quot;&gt;[^&lt;]*&lt;/a&gt;[^&lt;]*&lt;a href=&quot;[^&quot;]+&quot;&gt;([^&lt;]+)&lt;/a&gt;[^&lt;]*&lt;/li&gt;|&lt;a class=['&quot;]tag_name['&quot;] href=['&quot;]([^'&quot;]+)(?:/1)?['&quot;]&gt;([^&lt;]+)&lt;/a&gt;</Tags>
-		<Image>&lt;a(?: class=['&quot;]thumb['&quot;])? href=['&quot;]/post/view/([^'&quot;]+)['&quot;][^&gt;]*&gt;[^&lt;]*(&lt;img(?: id=['&quot;](?:[^'&quot;]*)['&quot;])? title=['&quot;]([^'&quot;]+) // ([^'&quot;]+)x([^'&quot;]+) // [^'&quot;]*['&quot;] alt=['&quot;][^'&quot;]*['&quot;](?: height=['&quot;][^'&quot;]*['&quot;])? width=['&quot;][^'&quot;]*['&quot;](?: height=['&quot;][^'&quot;]*['&quot;])? src=['&quot;].*(/_thumbs/([^/]*)/[^'&quot;]*\.jpg|questionable\.jpg)['&quot;] ?/?&gt;)[^&lt;]*&lt;/a&gt;</Image>
+		<Image>&lt;a(?: class=['&quot;]thumb['&quot;])? href=['&quot;]/post/view/([^'&quot;]+)['&quot;][^&gt;]*&gt;[^&lt;]*&lt;(img(?: id=['&quot;](?:[^'&quot;]*)['&quot;])? title=['&quot;]([^'&quot;]+) // ([^'&quot;]+)x([^'&quot;]+) // [^'&quot;]*['&quot;] alt=['&quot;][^'&quot;]*['&quot;](?: height=['&quot;][^'&quot;]*['&quot;])? width=['&quot;][^'&quot;]*['&quot;](?: height=['&quot;][^'&quot;]*['&quot;])? src=['&quot;][^'&quot;]*(/_thumbs/([^/]*)/[^'&quot;]*\.jpg|/thumb/([^'&quot;]*)\.jpg|questionable\.jpg)['&quot;] ?/?&gt;)[^&lt;]*&lt;/a&gt;</Image>
 		<Order>id|image|tags|width|height|preview_url|md5</Order>
 		<LastPage>&lt;a href=['&quot;]/post/list(?:/[^/]+)?/(\d*)['&quot;]&gt;Last&lt;/a&gt;</LastPage>
 		<ImageUrl>&lt;img alt='main image' id='main_image' src='([^']+)'[^&gt;]*&gt;</ImageUrl>
