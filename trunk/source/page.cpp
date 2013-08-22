@@ -1,6 +1,6 @@
 #include <QSettings>
-#include <QDebug>
 #include <QFile>
+#include <QDebug>
 #include "page.h"
 #include "json.h"
 #include "math.h"
@@ -520,6 +520,14 @@ void Page::parse()
 					for (int i = 0; i < infos.count(); i++)
 					{ d[infos.at(i)] = sc.value(assoc.at(i)).toString().trimmed(); }
 				}
+				else if (sc.contains("tag_ids"))
+				{
+					QStringList infos, assoc;
+					infos << "created_at" << "source" << "file_url" << "preview_url" << "width" << "md5" << "height" << "id" << "tags" << "author" << "score";
+					assoc << "created_at" << "source_url" << "image" << "image" << "width" << "id" << "height" << "id_number" << "tags" << "uploader" << "score";
+					for (int i = 0; i < infos.count(); i++)
+					{ d[infos.at(i)] = sc.value(assoc.at(i)).toString().trimmed(); }
+				}
 				else
 				{
 					QStringList infos;
@@ -541,6 +549,18 @@ void Page::parse()
 					{
 						d["file_url"] = m_site->value("Urls/Json/Image");
 						d["file_url"].replace("{id}", d["id"])
+						.replace("{md5}", d["md5"])
+						.replace("{ext}", "jpg");
+					}
+				}
+				if (m_site->contains("Urls/Json/Thumbnail"))
+				{
+					if (m_site->value("Urls/Json/Thumbnail").contains("->"))
+					{ d["preview_url"].replace(m_site->value("Urls/Json/Thumbnail").left(m_site->value("Urls/Json/Thumbnail").indexOf("->")), m_site->value("Urls/Json/Thumbnail").right(m_site->value("Urls/Json/Thumbnail").size()-m_site->value("Urls/Json/Thumbnail").indexOf("->")-2)); }
+					else
+					{
+						d["preview_url"] = m_site->value("Urls/Json/Thumbnail");
+						d["preview_url"].replace("{id}", d["id"])
 						.replace("{md5}", d["md5"])
 						.replace("{ext}", "jpg");
 					}

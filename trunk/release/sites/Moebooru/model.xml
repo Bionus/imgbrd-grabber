@@ -21,7 +21,7 @@
 	</Urls>
 	<Regex>
 		<Tags>&lt;li class=&quot;(?:[^&quot;]* )?tag-type-([^&quot; ]+)&quot;[^&gt;]*&gt;(?:[^&lt;]*&lt;a[^&gt;]*&gt;[^&lt;]*&lt;/a&gt;)*[^&lt;]*&lt;a[^&gt;]*&gt;([^&lt;]*)&lt;/a&gt;[^&lt;]*&lt;span[^&gt;]*&gt;(\d+)k?&lt;/span&gt;[^&lt;]*&lt;/li&gt;</Tags>
-		<Image>Post.register\((\{(?:.+)\})\);</Image>
+		<Image>Post\.register\((\{(?:.+)\})\);?</Image>
 		<Order>json</Order>
 		<LastPage>&lt;link href=&quot;[^&quot;]*\?.*page=(\d+)[^&quot;]*&quot; rel=&quot;last&quot; title=&quot;Last Page&quot;&gt;</LastPage>
 		<Pools>&lt;div class=&quot;status-notice&quot; id=&quot;pool\d+&quot;&gt;[^&lt;]*Pool:[^&lt;]*(?:&lt;a href=&quot;/post/show/(\d+)&quot; &gt;&amp;lt;&amp;lt;&lt;/a&gt;)?[^&lt;]*&lt;a href=&quot;/pool/show/(\d+)&quot; &gt;([^&lt;]+)&lt;/a&gt;[^&lt;]*(?:&lt;a href=&quot;/post/show/(\d+)&quot; &gt;&amp;gt;&amp;gt;&lt;/a&gt;)?[^&lt;]*&lt;/div&gt;</Pools>

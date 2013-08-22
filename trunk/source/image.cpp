@@ -61,7 +61,11 @@ Image::Image(QMap<QString, QString> details, int timezonedecay, Page* parent)
 	}
 	else if (details.contains("tags"))
 	{
-		QStringList t = details["tags"].split(" ");
+		QStringList t;
+		if (details["tags"].count(" ") / details["tags"].count(", ") < 2)
+		{ t = details["tags"].split(", "); }
+		else
+		{ t = details["tags"].split(" "); }
 		for (int i = 0; i < t.count(); i++)
 		{
 			QString tg = t.at(i);
