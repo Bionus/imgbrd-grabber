@@ -5,6 +5,7 @@
 		<Json>
 			<Home>/images.json?key={password}&amp;page={page}&amp;nocomments=1&amp;nofav=1</Home>
 			<Tags>/search.json?key={password}&amp;page={page}&amp;q={tags}&amp;nocomments=1&amp;nofav=1</Tags>
+			<Thumbnail>full->thumb</Thumbnail>
 		</Json>
 		<Html>
 			<Home>/images/page/{page}?key={password}</Home>
@@ -13,9 +14,10 @@
 		</Html>
 	</Urls>
 	<Regex>
-		<Image>&lt;a href=&quot;/([0-9]+)(?:\?[^&quot;]*)&quot; alt=&quot;Size: ([0-9]+)x([0-9]+) \| Tagged: ([^&quot;]*)&quot;[^&gt;]*&gt;&lt;img alt=&quot;&quot; src=&quot;([^&quot;]+)&quot; ?/?&gt;&lt;/a&gt;</Image>
+		<Image>&lt;a href=&quot;/([^&quot;]+)&quot; alt=&quot;Size: ([^x]+)x([^ ]+) \| Tagged: ([^&quot;]+)&quot;[^&gt;]*&gt;&lt;img alt=&quot;&quot; src=&quot;([^&quot;]+)&quot;</Image>
 		<Order>id|width|height|tags|preview_url</Order>
-		<!--<LastPage>&lt;a href=&quot;(?:/images/page/|/search/index\?[^"]*page=)([0-9]+)</LastPage>-->
+		<LastPage>&lt;a href=&quot;(?:/images/page/|/tags/[^\?]*\?.*page=|/search/index\?.*page=)(\d+)[^&quot;]*&quot;>Last</LastPage>
+		<Count>of &lt;strong&gt;([^&lt;]+)&lt;/strong&gt; total</Count>
 	</Regex>
 	<Check>&gt;
 		<Url>/</Url>
