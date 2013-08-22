@@ -37,7 +37,6 @@
 	#include "crashhandler.h"
 #endif
 #include <QDir>
-#include <QDebug>
 
 
 

@@ -133,11 +133,7 @@ void Image::parsePreview()
 
 	// Load preview from raw result
 	QByteArray data = m_loadPreview->readAll();
-	QFile file("C:/Users/Spark/Desktop/test.jpg");
-	file.open(QFile::WriteOnly);
-	file.write(data);
-	file.close();
-	m_imagePreview.loadFromData(data, "jpg");
+	m_imagePreview.loadFromData(data);
 	m_loadPreview->deleteLater();
 	m_loadPreview = NULL;
 

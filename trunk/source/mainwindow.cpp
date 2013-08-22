@@ -2,6 +2,7 @@
 #include <QtScript>
 #include <QMessageBox>
 #include <QFileDialog>
+#include <QSound>
 #include <QtSql/QSqlDatabase>
 #if defined(Q_OS_WIN)
 	#include "windows.h"
@@ -1225,9 +1226,10 @@ void mainWindow::_getAll()
 		m_progressdialog->setValue(m_progressdialog->maximum());
 		switch (m_progressdialog->endAction())
 		{
-			case 1:	m_progressdialog->close();	break;
-			case 2:	openTray();					break;
-			case 3:	shutDown();					break;
+			case 1:	m_progressdialog->close();				break;
+			case 2:	openTray();								break;
+			case 3:	QSound::play(":/sounds/finished.wav");	break;
+			case 4:	shutDown();								break;
 		}
 		if (m_progressdialog->endRemove())
 		{
