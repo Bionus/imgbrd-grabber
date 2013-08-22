@@ -6,6 +6,8 @@
 #include "sourcessettingswindow.h"
 #include "functions.h"
 
+extern const QString VERSION;
+
 
 
 /**
@@ -71,6 +73,9 @@ sourcesWindow::sourcesWindow(QList<bool> selected, QMap<QString, Site*> *sites, 
 	ui->gridLayout->setColumnStretch(0, 1);
 	connect(ui->checkBox, SIGNAL(clicked()), this, SLOT(checkClicked()));
 	checkUpdate();
+
+	// Check for updates in the model files
+	checkForUpdates();
 
 	ui->buttonOk->setFocus();
 }
@@ -148,23 +153,19 @@ void sourcesWindow::settingsSite(QString site)
  */
 void sourcesWindow::deleteSite(QString site)
 {
-	int reponse = QMessageBox::question(this, tr("Grabber - Supprimer un site"), tr("Êtes-vous sûr de vouloir supprimer le site %1 ?").arg(site), QMessageBox::Yes | QMessageBox::No);
-	if (reponse == QMessageBox::Yes)
+	int i = m_sites->keys().indexOf(site);
+	m_checks.at(i)->hide();
+	ui->gridLayout->removeWidget(m_checks.at(i));
+	m_buttons.at(i)->hide();
+	ui->gridLayout->removeWidget(m_buttons.at(i));
+	if (!m_labels.isEmpty())
 	{
-		int i = m_sites->keys().indexOf(site);
-		m_checks.at(i)->hide();
-		ui->gridLayout->removeWidget(m_checks.at(i));
-		m_buttons.at(i)->hide();
-		ui->gridLayout->removeWidget(m_buttons.at(i));
-		if (!m_labels.isEmpty())
-		{
-			m_labels.at(i)->hide();
-			ui->gridLayout->removeWidget(m_labels.at(i));
-		}
-		m_sites->remove(site);
-		m_selected.removeAt(i);
-		m_checks.removeAt(i);
+		m_labels.at(i)->hide();
+		ui->gridLayout->removeWidget(m_labels.at(i));
 	}
+	m_sites->remove(site);
+	m_selected.removeAt(i);
+	m_checks.removeAt(i);
 }
 
 /**
@@ -263,3 +264,30 @@ void sourcesWindow::checkAll(int check)
 QList<bool> sourcesWindow::getSelected()
 { return m_selected; }
 
+void sourcesWindow::checkForUpdates()
+{
+	QStringList keys = m_sites->keys();
+	for (int i = 0; i < m_sites->size(); i++)
+	{
+		Site *site = m_sites->value(keys[i]);
+		site->checkForUpdates();
+		connect(site, SIGNAL(checkForUpdatesFinished(Site*)), this, SLOT(checkForUpdatesReceived(Site*)));
+	}
+}
+void sourcesWindow::checkForUpdatesReceived(Site *site)
+{
+	if (site->updateVersion() != "")
+	{
+		int pos = m_sites->values().indexOf(site);
+		if (site->updateVersion() != VERSION)
+		{
+			m_labels[pos]->setPixmap(QPixmap(":/images/icons/warning.png"));
+			m_labels[pos]->setToolTip(tr("Une mise à jour de cette source est disponible, mais pour une autre version du programme."));
+		}
+		else
+		{
+			m_labels[pos]->setPixmap(QPixmap(":/images/icons/update.png"));
+			m_labels[pos]->setToolTip(tr("Une mise à jour de cette source est disponible."));
+		}
+	}
+}

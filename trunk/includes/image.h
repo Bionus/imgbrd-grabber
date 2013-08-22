@@ -28,6 +28,7 @@ class Image : public QObject
 		QString		filter(QStringList);
 		QString		path(QString fn = "", QString pth = "", bool complex = true);
 		QStringList blacklisted(QStringList);
+		QStringList	stylishedTags(QStringList ignored);
 		QString		url();
 		QString		md5();
 		QString		author();

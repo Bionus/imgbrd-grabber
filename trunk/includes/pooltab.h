@@ -12,8 +12,8 @@
 
 namespace Ui
 {
-    class poolTab;
-    class mainWindow;
+	class poolTab;
+	class mainWindow;
 }
 
 
@@ -22,67 +22,71 @@ class mainWindow;
 
 class poolTab : public searchTab
 {
-    Q_OBJECT
+	Q_OBJECT
 
-    public:
+	public:
 		explicit poolTab(int id, QMap<QString,Site*> *sites, QMap<QString, QString> *favorites, QDateTime *serverDate, mainWindow *parent);
-        ~poolTab();
+		~poolTab();
 		Ui::poolTab *ui;
-        QString tags();
-        QString results();
-        QString wiki();
+		QString tags();
+		QString results();
+		QString wiki();
 		QString site();
+		int imagesPerPage();
+		int columns();
+		QString postFilter();
 
-    public slots:
-        // Search
-        void firstPage();
-        void previousPage();
-        void nextPage();
-        void lastPage();
-        // Zooms
-        void setTags(QString);
+	public slots:
+		// Search
+		void firstPage();
+		void previousPage();
+		void nextPage();
+		void lastPage();
+		// Zooms
+		void setTags(QString);
 		void setPool(int id, QString site);
-        void webZoom(int);
-        // Loading
-        void load();
-        void finishedLoading(Page*);
-        void finishedLoadingTags(Page*);
-        void finishedLoadingPreview(Image*);
-        // Sources
-        void openSourcesWindow();
-        void saveSources(QList<bool>);
-        void updateCheckboxes();
-        // Batch
-        void getPage();
-        void getAll();
+		void webZoom(int);
+		// Loading
+		void load();
+		void finishedLoading(Page*);
+		void finishedLoadingTags(Page*);
+		void finishedLoadingPreview(Image*);
+		// Sources
+		void openSourcesWindow();
+		void saveSources(QList<bool>);
+		void updateCheckboxes();
+		// Batch
+		void getPage();
+		void getAll();
 		void getSel();
-        // Tag list
-        void linkHovered(QString);
-        void linkClicked(QString);
-        void contextMenu();
-        void openInNewTab();
-        void openInNewWindow();
-        void favorite();
-        void unfavorite();
-        void viewitlater();
-        void unviewitlater();
-        // History
-        void historyBack();
-        void historyNext();
-        // Others
-        void optionsChanged();
-        void closeEvent(QCloseEvent*);
-        void on_buttonSearch_clicked();
+		// Tag list
+		void linkHovered(QString);
+		void linkClicked(QString);
+		void contextMenu();
+		void openInNewTab();
+		void openInNewWindow();
+		void favorite();
+		void unfavorite();
+		void viewitlater();
+		void unviewitlater();
+		// History
+		void historyBack();
+		void historyNext();
+		// Others
+		void optionsChanged();
+		void closeEvent(QCloseEvent*);
+		void on_buttonSearch_clicked();
 		void setSite(QString);
+		void setImagesPerPage(int ipp);
+		void setColumns(int columns);
+		void setPostFilter(QString postfilter);
 
-    signals:
-        void batchAddGroup(QStringList);
+	signals:
+		void batchAddGroup(QStringList);
 		void batchAddUnique(QMap<QString,QString>);
-		void titleChanged(searchTab*);
-		void changed(searchTab*);
 		void closed(poolTab*);
 
-    private:
+	private:
 		int								m_id;
 		mainWindow						*m_parent;
 		TextEdit						*m_search, *m_postFiltering;

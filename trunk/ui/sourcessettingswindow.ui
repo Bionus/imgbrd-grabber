@@ -23,19 +23,22 @@
      <property name="currentIndex">
       <number>0</number>
      </property>
-     <widget class="QWidget" name="tab_3">
+     <widget class="QWidget" name="tabGeneral">
       <attribute name="title">
        <string>Général</string>
       </attribute>
       <layout class="QFormLayout" name="formLayout_5">
-       <item row="0" column="0">
-        <widget class="QLabel" name="label_7">
+       <property name="fieldGrowthPolicy">
+        <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+       </property>
+       <item row="1" column="0">
+        <widget class="QLabel" name="labelReferer">
          <property name="text">
           <string>Referer (par défaut)</string>
          </property>
         </widget>
        </item>
-       <item row="0" column="1">
+       <item row="1" column="1">
         <widget class="QComboBox" name="comboReferer">
          <item>
           <property name="text">
@@ -59,21 +62,14 @@
          </item>
         </widget>
        </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="label_12">
+       <item row="2" column="0">
+        <widget class="QLabel" name="labelRefererPreview">
          <property name="text">
           <string>Referer (apercu)</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="label_13">
-         <property name="text">
-          <string>Referer (image)</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
+       <item row="2" column="1">
         <widget class="QComboBox" name="comboRefererPreview">
          <item>
           <property name="text">
@@ -102,7 +98,14 @@
          </item>
         </widget>
        </item>
-       <item row="2" column="1">
+       <item row="3" column="0">
+        <widget class="QLabel" name="labelRefererImage">
+         <property name="text">
+          <string>Referer (image)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
         <widget class="QComboBox" name="comboRefererImage">
          <item>
           <property name="text">
@@ -136,9 +139,19 @@
          </item>
         </widget>
        </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="labelSiteName">
+         <property name="text">
+          <string>Nom</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="lineSiteName"/>
+       </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab">
+     <widget class="QWidget" name="tabSources">
       <attribute name="title">
        <string>Sources</string>
       </attribute>
@@ -165,7 +178,7 @@
            <number>0</number>
           </property>
           <item row="0" column="0">
-           <widget class="QLabel" name="label_3">
+           <widget class="QLabel" name="labelSources1">
             <property name="text">
              <string>Source 1</string>
             </property>
@@ -199,7 +212,7 @@
            </widget>
           </item>
           <item row="1" column="0">
-           <widget class="QLabel" name="label_4">
+           <widget class="QLabel" name="labelSources2">
             <property name="text">
              <string>Source 2</string>
             </property>
@@ -233,7 +246,7 @@
            </widget>
           </item>
           <item row="2" column="0">
-           <widget class="QLabel" name="label_5">
+           <widget class="QLabel" name="labelSources3">
             <property name="text">
              <string>Source 3</string>
             </property>
@@ -267,7 +280,7 @@
            </widget>
           </item>
           <item row="3" column="0">
-           <widget class="QLabel" name="label_6">
+           <widget class="QLabel" name="labelSources4">
             <property name="text">
              <string>Source 4</string>
             </property>
@@ -315,13 +328,13 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab_2">
+     <widget class="QWidget" name="tabCredentials">
       <attribute name="title">
        <string>Identifiants</string>
       </attribute>
       <layout class="QFormLayout" name="formLayout_4">
        <item row="0" column="0">
-        <widget class="QLabel" name="label">
+        <widget class="QLabel" name="labelAuthPseudo">
          <property name="text">
           <string>Pseudo</string>
          </property>
@@ -331,14 +344,14 @@
         <widget class="QLineEdit" name="lineAuthPseudo"/>
        </item>
        <item row="1" column="0">
-        <widget class="QLabel" name="label_2">
+        <widget class="QLabel" name="labelAuthPassword">
          <property name="text">
           <string>Mot de passe</string>
          </property>
         </widget>
        </item>
        <item row="1" column="1">
-        <layout class="QHBoxLayout" name="horizontalLayout">
+        <layout class="QHBoxLayout" name="layoutHashPassword">
          <item>
           <widget class="QLineEdit" name="lineAuthPassword"/>
          </item>
@@ -352,7 +365,7 @@
         </layout>
        </item>
        <item row="2" column="0" colspan="2">
-        <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,0">
+        <layout class="QHBoxLayout" name="layoutTestCredentials" stretch="1,0">
          <item>
           <widget class="QLabel" name="labelTestCredentials">
            <property name="text">
@@ -361,7 +374,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton_4">
+          <widget class="QPushButton" name="buttonTestCredentials">
            <property name="text">
             <string>Tester</string>
            </property>
@@ -371,7 +384,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab_4">
+     <widget class="QWidget" name="tabLogin">
       <attribute name="title">
        <string>Connexion</string>
       </attribute>
@@ -484,12 +497,12 @@
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_4">
+    <layout class="QHBoxLayout" name="layoutButtons">
      <property name="margin">
       <number>0</number>
      </property>
      <item>
-      <spacer name="horizontalSpacer">
+      <spacer name="spacerButtons">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
@@ -502,21 +515,21 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="buttonDelete">
        <property name="text">
         <string>Supprimer</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_2">
+      <widget class="QPushButton" name="buttonCancel">
        <property name="text">
         <string>Annuler</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_3">
+      <widget class="QPushButton" name="buttonAccept">
        <property name="text">
         <string>Valider</string>
        </property>
@@ -526,6 +539,31 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>lineSiteName</tabstop>
+  <tabstop>comboReferer</tabstop>
+  <tabstop>comboRefererPreview</tabstop>
+  <tabstop>comboRefererImage</tabstop>
+  <tabstop>checkSourcesDefault</tabstop>
+  <tabstop>comboSources1</tabstop>
+  <tabstop>comboSources2</tabstop>
+  <tabstop>comboSources3</tabstop>
+  <tabstop>comboSources4</tabstop>
+  <tabstop>lineAuthPseudo</tabstop>
+  <tabstop>lineAuthPassword</tabstop>
+  <tabstop>buttonAuthHash</tabstop>
+  <tabstop>buttonTestCredentials</tabstop>
+  <tabstop>checkLoginParameter</tabstop>
+  <tabstop>comboLoginMethod</tabstop>
+  <tabstop>lineLoginUrl</tabstop>
+  <tabstop>lineLoginPseudo</tabstop>
+  <tabstop>lineLoginPassword</tabstop>
+  <tabstop>pushButton_5</tabstop>
+  <tabstop>buttonDelete</tabstop>
+  <tabstop>buttonCancel</tabstop>
+  <tabstop>buttonAccept</tabstop>
+ </tabstops>
  <resources>
   <include location="../resources.qrc"/>
  </resources>
@@ -547,7 +585,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>pushButton</sender>
+   <sender>buttonDelete</sender>
    <signal>clicked()</signal>
    <receiver>SourcesSettingsWindow</receiver>
    <slot>deleteSite()</slot>
@@ -563,7 +601,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>pushButton_2</sender>
+   <sender>buttonCancel</sender>
    <signal>clicked()</signal>
    <receiver>SourcesSettingsWindow</receiver>
    <slot>reject()</slot>
@@ -579,7 +617,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>pushButton_3</sender>
+   <sender>buttonAccept</sender>
    <signal>clicked()</signal>
    <receiver>SourcesSettingsWindow</receiver>
    <slot>accept()</slot>
@@ -611,7 +649,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>pushButton_4</sender>
+   <sender>buttonTestCredentials</sender>
    <signal>clicked()</signal>
    <receiver>SourcesSettingsWindow</receiver>
    <slot>testLogin()</slot>

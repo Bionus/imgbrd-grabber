@@ -11,9 +11,10 @@ SourcesSettingsWindow::SourcesSettingsWindow(Site *site, QWidget *parent) : QDia
 {
 	ui->setupUi(this);
 
-	QSettings settings(savePath("sites/"+m_site->type()+"/"+m_site->name()+"/settings.ini"), QSettings::IniFormat);
+	QSettings settings(savePath("sites/"+m_site->type()+"/"+m_site->url()+"/settings.ini"), QSettings::IniFormat);
 	QSettings global(savePath("settings.ini"), QSettings::IniFormat);
 
+	ui->lineSiteName->setText(settings.value("name", m_site->url()).toString());
 	QStringList referers = QStringList() << "none" << "host" << "page" << "image";
 	QStringList referers_preview = QStringList() << "" << "none" << "host" << "page" << "image";
 	QStringList referers_image = QStringList() << "" << "none" << "host" << "page" << "details" << "image";
@@ -48,7 +49,7 @@ SourcesSettingsWindow::~SourcesSettingsWindow()
 
 void SourcesSettingsWindow::on_buttonAuthHash_clicked()
 {
-	QString password = QInputDialog::getText(this, tr("Hasher un mot de passe"), tr("Veuillez entrer votre mot de passe, dans le format adapté.<br/>Par exemple, pour danbooru, le format est \"%1\" (sans les guillemets).").arg("choujin-steiner--%1--").arg(tr("VOTRE_MOT_DE_PASSE")), QLineEdit::Password);
+	QString password = QInputDialog::getText(this, tr("Hasher un mot de passe"), tr("Veuillez entrer votre mot de passe, dans le format adapté.<br/>Par exemple, pour danbooru, le format est \"%1\" (sans les guillemets).").arg("choujin-steiner--%1--").arg(tr("VOTRE_MOT_DE_PASSE")));
 	if (!password.isEmpty())
 	{ ui->lineAuthPassword->setText(QCryptographicHash::hash(password.toUtf8(), QCryptographicHash::Sha1).toHex()); }
 }
@@ -64,12 +65,12 @@ void SourcesSettingsWindow::deleteSite()
 		f.close();
 		sites.replace("\r\n", "\n").replace("\r", "\n").replace("\n", "\r\n");
 		QStringList stes = sites.split("\r\n");
-		stes.removeAll(m_site->name());
+		stes.removeAll(m_site->url());
 		f.open(QIODevice::WriteOnly);
-			f.write(stes.join("\r\n").toAscii());
+			f.write(stes.join("\r\n").toLatin1());
 		f.close();
 		close();
-		emit siteDeleted(m_site->name());
+		emit siteDeleted(m_site->url());
 	}
 }
 
@@ -103,8 +104,9 @@ void SourcesSettingsWindow::loginTested(Site::LoginResult result)
 
 void SourcesSettingsWindow::save()
 {
-	QSettings settings(savePath("sites/"+m_site->type()+"/"+m_site->name()+"/settings.ini"), QSettings::IniFormat);
+	QSettings settings(savePath("sites/"+m_site->type()+"/"+m_site->url()+"/settings.ini"), QSettings::IniFormat);
 
+	settings.setValue("name", ui->lineSiteName->text());
 	QStringList referers = QStringList() << "none" << "host" << "page" << "image";
 	QStringList referers_preview = QStringList() << "" << "none" << "host" << "page" << "image";
 	QStringList referers_image = QStringList() << "" << "none" << "host" << "page" << "details" << "image";
@@ -130,4 +132,6 @@ void SourcesSettingsWindow::save()
 	settings.setValue("login/password", ui->lineLoginPassword->text());
 
 	settings.sync();
+
+	m_site->load();
 }

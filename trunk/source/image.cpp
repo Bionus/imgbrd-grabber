@@ -10,10 +10,10 @@ Image::Image(QMap<QString, QString> details, int timezonedecay, Page* parent)
 	m_parentSite = parent != NULL ? parent->site() : (details.contains("site") ? (Site*)details["site"].toInt() : NULL);
 	if (m_parentSite == NULL)
 	{
-		log("IMAGE HAS NULL PARENT, ABORTING CREATION...");
+		log("Image has null parent, aborting creation.");
 		return;
 	}
-	m_url = details.contains("file_url") ? (details["file_url"].startsWith("/") ? "http://"+m_site+details["file_url"] : details["file_url"]) : "";
+	m_url = details.contains("file_url") ? (details["file_url"].startsWith("//") ? "http:"+details["file_url"] : (details["file_url"].startsWith("/") ? "http://"+m_site+details["file_url"] : details["file_url"])) : "";
 	m_md5 = details.contains("md5") ? details["md5"] : "";
 	m_author = details.contains("author") ? details["author"] : "";
 	m_status = details.contains("status") ? details["status"] : "";
@@ -28,7 +28,38 @@ Image::Image(QMap<QString, QString> details, int timezonedecay, Page* parent)
 	{ m_rating = assoc[m_rating]; }
 	m_source = details.contains("source") ? details["source"] : "";
 	m_tags = QList<Tag>();
-	if (details.contains("tags"))
+	if (details.contains("tags_general"))
+	{
+		QStringList t = details["tags_general"].split(" ");
+		for (int i = 0; i < t.count(); i++)
+		{
+			QString tg = t.at(i);
+			tg.replace("&amp;", "&");
+			m_tags.append(Tag(tg, "general"));
+		}
+		t = details["tags_artist"].split(" ");
+		for (int i = 0; i < t.count(); i++)
+		{
+			QString tg = t.at(i);
+			tg.replace("&amp;", "&");
+			m_tags.append(Tag(tg, "artist"));
+		}
+		t = details["tags_character"].split(" ");
+		for (int i = 0; i < t.count(); i++)
+		{
+			QString tg = t.at(i);
+			tg.replace("&amp;", "&");
+			m_tags.append(Tag(tg, "character"));
+		}
+		t = details["tags_copyright"].split(" ");
+		for (int i = 0; i < t.count(); i++)
+		{
+			QString tg = t.at(i);
+			tg.replace("&amp;", "&");
+			m_tags.append(Tag(tg, "copyright"));
+		}
+	}
+	else if (details.contains("tags"))
 	{
 		QStringList t = details["tags"].split(" ");
 		for (int i = 0; i < t.count(); i++)
@@ -101,14 +132,19 @@ void Image::parsePreview()
 	}
 
 	// Load preview from raw result
-	m_imagePreview.loadFromData(m_loadPreview->readAll());
+	QByteArray data = m_loadPreview->readAll();
+	QFile file("C:/Users/Spark/Desktop/test.jpg");
+	file.open(QFile::WriteOnly);
+	file.write(data);
+	file.close();
+	m_imagePreview.loadFromData(data, "jpg");
 	m_loadPreview->deleteLater();
 	m_loadPreview = NULL;
 
 	// If nothing has been received
 	if (m_imagePreview.isNull() && m_previewTry <= 3)
 	{
-		log(tr("<b>Attention :</b> %1").arg(tr("une des miniatures est vide (<a href=\"%1\">%1</a>). Nouvel essai (%2/%3)...").arg(m_previewUrl.toString()).arg(m_previewTry).arg(3)));
+		//log(tr("<b>Attention :</b> %1").arg(tr("une des miniatures est vide (<a href=\"%1\">%1</a>). Nouvel essai (%2/%3)...").arg(m_previewUrl.toString()).arg(m_previewTry).arg(3)));
 		loadPreview();
 	}
 	else
@@ -173,30 +209,44 @@ void Image::parseDetails()
 			pos += rx.matchedLength();
 			QString type = "unknown", tag = "";
 			int count = 1;
-			switch (rx.captureCount())
+			if (m_parentSite->contains("Regex/TagsOrder"))
 			{
-				case 4:
-					type = rx.cap(1);
-					tag = rx.cap(4).replace(" ", "_").replace("&amp;", "&");
-					count = rx.cap(3).endsWith('k') ? rx.cap(3).left(rx.cap(3).length() - 1).toInt() * 1000 : rx.cap(3).toInt();
-					break;
+				QStringList ordr = m_parentSite->value("Regex/TagsOrder").split('|');
+				if (ordr.contains("type"))
+				{ type = rx.cap(ordr.indexOf("type") + 1).toLower(); }
+				if (ordr.contains("tag"))
+				{ tag = rx.cap(ordr.indexOf("tag") + 1).replace(" ", "_").replace("&amp;", "&"); }
+				if (ordr.contains("count"))
+				{
+					int pos = ordr.indexOf("count") + 1;
+					count = rx.cap(pos).endsWith('k') ? rx.cap(pos).left(rx.cap(pos).length() - 1).toInt() * 1000 : rx.cap(pos).toInt();
+				}
+			}
+			else
+			{
+				switch (rx.captureCount())
+				{
+					case 4:
+						type = rx.cap(1).toLower();
+						tag = rx.cap(4).replace(" ", "_").replace("&amp;", "&");
+						count = rx.cap(3).endsWith('k') ? rx.cap(3).left(rx.cap(3).length() - 1).toInt() * 1000 : rx.cap(3).toInt();
+						break;
 
-				case 3:
-					type = rx.cap(1);
-					tag = rx.cap(2).replace(" ", "_").replace("&amp;", "&");
-					count = rx.cap(3).endsWith('k') ? rx.cap(3).left(rx.cap(3).length() - 1).toInt() * 1000 : rx.cap(3).toInt();
-					break;
+					case 3:
+						type = rx.cap(1).toLower();
+						tag = rx.cap(2).replace(" ", "_").replace("&amp;", "&");
+						count = rx.cap(3).endsWith('k') ? rx.cap(3).left(rx.cap(3).length() - 1).toInt() * 1000 : rx.cap(3).toInt();
+						break;
 
-				case 2:
-					type = rx.cap(1);
-					if (type == "series")
-					{ type = "copyright"; }
-					tag = rx.cap(2).replace(" ", "_").replace("&amp;", "&");
-					break;
+					case 2:
+						type = rx.cap(1).toLower();
+						tag = rx.cap(2).replace(" ", "_").replace("&amp;", "&");
+						break;
 
-				case 1:
-					tag = rx.cap(1).replace(" ", "_").replace("&amp;", "&");
-					break;
+					case 1:
+						tag = rx.cap(1).replace(" ", "_").replace("&amp;", "&");
+						break;
+				}
 			}
 			if (type.length() == 1)
 			{
@@ -207,6 +257,8 @@ void Image::parseDetails()
 					type = types[tpe];
 				}
 			}
+			else if (type == "series")	{ type = "copyright";	}
+			else if (type == "mangaka")	{ type = "artist";		}
 			tgs.append(Tag(tag, type, count));
 		}
 		if (!tgs.isEmpty())
@@ -499,7 +551,8 @@ QString Image::path(QString fn, QString pth, bool complex)
 	QMap<QString,QStrP> replaces = QMap<QString,QStrP>();
 	replaces.insert("ext", QStrP(ext, "jpg"));
 	replaces.insert("filename", QStrP(m_url.section('/', -1).section('.', 0, -2), ""));
-	replaces.insert("website", QStrP(m_site, ""));
+	replaces.insert("website", QStrP(m_parentSite->url(), ""));
+	replaces.insert("websitename", QStrP(m_parentSite->name(), ""));
 	replaces.insert("md5", QStrP(m_md5, ""));
 	replaces.insert("date", QStrP(m_createdAt.toString(tr("dd-MM-yyyy HH.mm")), ""));
 	replaces.insert("id", QStrP(QString::number(m_id), "0"));
@@ -551,7 +604,15 @@ QString Image::path(QString fn, QString pth, bool complex)
 		QString inits = "";
 		QStringList keys = replaces.keys();
 		for (int i = 0; i < replaces.size(); i++)
-		{ inits += "var " + keys[i] + " = \"" + (replaces[keys[i]].first.isEmpty() ? replaces[keys[i]].second : replaces[keys[i]].first) + "\";\r\n"; }
+		{
+			QString key = keys.at(i);
+			QString res = replaces[key].first.isEmpty() ? replaces[key].second : replaces[key].first;
+			if (key != "allo")
+			{ res = res.replace("\\", "_").replace("%", "_").replace("/", "_").replace(":", "_").replace("|", "_").replace("*", "_").replace("?", "_").replace("\"", "_").replace("<", "_").replace(">", "_").replace("__", "_").replace("__", "_").replace("__", "_").trimmed(); }
+			if (!settings.value("replaceblanks", false).toBool())
+			{ res.replace("_", " "); }
+			inits += "var " + key + " = \"" + res + "\";\r\n";
+		}
 
 		if (QScriptEngine().evaluate(QScriptProgram(inits + filename)).isError())
 		{
@@ -627,11 +688,11 @@ QString Image::path(QString fn, QString pth, bool complex)
 			else
 			{ filename.replace("%"+key+"%", res); }
 		}
-
-		// We remove empty dir names
-		while (filename.indexOf("//") >= 0)
-		{ filename.replace("//", "/"); }
 	}
+
+	// We remove empty directory names
+	while (filename.indexOf("//") >= 0)
+	{ filename.replace("//", "/"); }
 
 	// Max filename size option
 	if (complex && filename.length() > settings.value("limit").toInt() && settings.value("limit").toInt() > 0)
@@ -729,6 +790,31 @@ QStringList Image::blacklisted(QStringList blacklistedtags)
 		}
 	}
 	return detected;
+}
+
+QStringList Image::stylishedTags(QStringList ignored)
+{
+	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
+	QStringList blacklistedtags(settings.value("blacklistedtags").toString().split(' '));
+
+	QStringList tlist = QStringList() << "blacklisteds" << "ignoreds" << "artists" << "copyrights" << "characters" << "models" << "generals" << "favorites";
+	QStringList defaults = QStringList() << "000000" << "999999" << "aa0000" << "aa00aa" << "00aa00" << "0000ee" << "000000" << "ffc0cb";
+	QMap<QString,QString> styles;
+	for (int i = 0; i < tlist.size(); i++)
+	{
+		QFont font;
+		font.fromString(settings.value("Coloring/Fonts/"+tlist.at(i)).toString());
+		styles[tlist.at(i)] = "color:"+settings.value("Coloring/Colors/"+tlist.at(i), "#"+defaults.at(i)).toString()+"; "+qfonttocss(font);
+	}
+	QStringList t;
+	for (int i = 0; i < m_tags.size(); i++)
+	{
+		Tag tag = m_tags.at(i);
+		QString type = blacklistedtags.contains(tag.text(), Qt::CaseInsensitive) ? "blacklisteds" : (ignored.contains(tag.text(), Qt::CaseInsensitive) ? "ignored" : tag.type());
+		t.append("<a href=\""+tag.text()+"\" style=\""+(styles.contains(type+"s") ? styles[type+"s"] : styles["generals"])+"\">"+tag.text()+"</a>");
+	}
+	t.sort();
+	return t;
 }
 
 

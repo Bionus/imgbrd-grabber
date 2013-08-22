@@ -23,7 +23,7 @@ class Page : public QObject
 		~Page();
 		void			load();
 		void			loadTags();
-		void			fallback();
+		void			fallback(bool load = true);
 		QList<Image*>	images();
 		Site			*site();
 		int				imagesCount();
@@ -40,7 +40,6 @@ class Page : public QObject
 		void parseTags();
 		void abort();
 		void abortTags();
-		void sslErrorHandler(QNetworkReply*, QList<QSslError>);
 
 	signals:
 		void finishedLoading(Page*);

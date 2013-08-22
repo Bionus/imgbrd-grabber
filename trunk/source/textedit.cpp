@@ -42,7 +42,7 @@ void TextEdit::wheelEvent(QWheelEvent *e)
 
 void TextEdit::doColor()
 {
-	QString txt = Qt::escape(" "+this->toPlainText()+" ");
+	QString txt = " "+this->toPlainText().toHtmlEscaped()+" ";
 	for (int i = 0; i < m_favorites.size(); i++)
 	{ txt.replace(" "+m_favorites.at(i)+" ", " <span style=\"color:#ffc0cb\">"+m_favorites.at(i)+"</span> "); }
 	QRegExp r1(" ~([^ ]+)"), r2(" -([^ ]+)"), r3(" (user|fav|md5|pool|rating|source|status|approver|unlocked|sub|id|width|height|score|mpixels|filesize|date|gentags|arttags|chartags|copytags|status|status|approver|order|parent):([^ ]*)");
@@ -278,7 +278,7 @@ void TextEdit::setFavorite()
 
 	QFile f(savePath("favorites.txt"));
 		f.open(QIODevice::WriteOnly | QIODevice::Append);
-		f.write(QString(toPlainText()+"|50|"+QDateTime::currentDateTime().toString(Qt::ISODate)+"\r\n").toAscii());
+		f.write(QString(toPlainText()+"|50|"+QDateTime::currentDateTime().toString(Qt::ISODate)+"\r\n").toLatin1());
 	f.close();
 
 	emit favoritesChanged();
@@ -295,7 +295,7 @@ void TextEdit::unsetFavorite()
 	reg.setMinimal(true);
 	favs.remove(reg);
 	f.open(QIODevice::WriteOnly);
-		f.write(favs.toAscii());
+		f.write(favs.toLatin1());
 	f.close();
 	if (QFile::exists(savePath("thumbs/"+toPlainText()+".png")))
 	{ QFile::remove(savePath("thumbs/"+toPlainText()+".png")); }
@@ -309,7 +309,7 @@ void TextEdit::setKfl()
 
 	QFile f(savePath("viewitlater.txt"));
 	f.open(QIODevice::WriteOnly);
-		f.write(viewitlater.join("\r\n").toAscii());
+		f.write(viewitlater.join("\r\n").toLatin1());
 	f.close();
 
 	emit kflChanged();
@@ -321,7 +321,7 @@ void TextEdit::unsetKfl()
 
 	QFile f(savePath("viewitlater.txt"));
 	f.open(QIODevice::WriteOnly);
-		f.write(viewitlater.join("\r\n").toAscii());
+		f.write(viewitlater.join("\r\n").toLatin1());
 	f.close();
 
 	emit kflChanged();

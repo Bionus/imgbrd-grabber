@@ -3,8 +3,13 @@
 
 #include <QDialog>
 #include <QMessageBox>
-#include <Qsci/qsciscintilla.h>
-#include <Qsci/qscilexerjavascript.h>
+
+#if USE_QSCINTILLA
+	#include <Qsci/qsciscintilla.h>
+	#include <Qsci/qscilexerjavascript.h>
+#else
+	#include <QTextEdit>
+#endif
 
 
 
@@ -34,7 +39,12 @@ class FilenameWindow : public QDialog
 
 	private:
 		Ui::FilenameWindow *ui;
-		QsciScintilla *m_scintilla;
+		#if USE_QSCINTILLA
+			QsciScintilla *m_scintilla;
+		#else
+			QTextEdit *m_scintilla;
+		#endif
+
 };
 
 #endif // FILENAMEWINDOW_H

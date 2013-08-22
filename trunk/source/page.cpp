@@ -1,4 +1,5 @@
 #include <QSettings>
+#include <QDebug>
 #include <QFile>
 #include "page.h"
 #include "json.h"
@@ -8,7 +9,17 @@
 
 Page::Page(Site *site, QMap<QString,Site*> *sites, QStringList tags, int page, int limit, QStringList postFiltering, bool smart, QObject *parent, int pool) : QObject(parent), m_site(site), m_postFiltering(postFiltering), m_errors(QStringList()), m_imagesPerPage(limit), m_currentSource(0), m_smart(smart)
 {
-	m_website = m_site->name();
+	m_website = m_site->url();
+
+	QString text = " "+tags.join(" ")+" ";
+	text.replace(" rating:s ", " rating:safe ", Qt::CaseInsensitive)
+		.replace(" rating:q ", " rating:questionable ", Qt::CaseInsensitive)
+		.replace(" rating:e ", " rating:explicit ", Qt::CaseInsensitive)
+		.replace(" -rating:s ", " -rating:safe ", Qt::CaseInsensitive)
+		.replace(" -rating:q ", " -rating:questionable ", Qt::CaseInsensitive)
+		.replace(" -rating:e ", " -rating:explicit ", Qt::CaseInsensitive);
+	tags = text.split(" ", QString::SkipEmptyParts);
+	tags.removeDuplicates();
 
 	QStringList modifiers = QStringList();
 	for (int i = 0; i < sites->size(); i++)
@@ -29,7 +40,7 @@ Page::Page(Site *site, QMap<QString,Site*> *sites, QStringList tags, int page, i
 
 	m_page = page;
 	m_pool = pool;
-	fallback();
+	fallback(false);
 
 	m_replyExists = false;
 	m_replyTagsExists = false;
@@ -38,7 +49,7 @@ Page::Page(Site *site, QMap<QString,Site*> *sites, QStringList tags, int page, i
 Page::~Page()
 { }
 
-void Page::fallback()
+void Page::fallback(bool bload)
 {
 	if (m_currentSource > m_site->value("Selected").count('/'))
 	{
@@ -137,6 +148,9 @@ void Page::fallback()
 	}
 	else
 	{ m_urlRegex = ""; }
+
+	if (bload)
+	{ load(); }
 }
 
 void Page::load()
@@ -148,8 +162,6 @@ void Page::load()
 		m_replyExists = true;
 	}
 }
-void Page::sslErrorHandler(QNetworkReply* qnr, QList<QSslError> errlist)
-{ qnr->ignoreSslErrors(); }
 void Page::abort()
 {
 	if (m_replyExists)
@@ -179,10 +191,15 @@ void Page::abortTags()
 
 void Page::parse()
 {
+	m_source = m_reply->readAll();
+
 	// Check redirection
 	QUrl redir = m_reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 	if (!redir.isEmpty())
 	{
+		QString loc = redir.toString();
+		if (loc.left(4) != "http")
+		{ redir = QUrl(loc.left(1) == "/" ? "http://" + m_website + loc : "http://" + m_website + "/" + loc); }
 		m_url = redir;
 		load();
 		return;
@@ -192,8 +209,7 @@ void Page::parse()
 	qDeleteAll(m_images);
 	m_images.clear();
 	m_tags.clear();
-	m_imagesCount = -1;
-	m_source = m_reply->readAll();
+	//m_imagesCount = -1;
 
 	if (m_source.isEmpty())
 	{
@@ -201,7 +217,6 @@ void Page::parse()
 		{
 			log("Loading error: "+m_reply->errorString());
 			fallback();
-			load();
 		}
 		return;
 	}
@@ -211,6 +226,11 @@ void Page::parse()
 	// XML
 	if (m_format == "xml")
 	{
+		QFile f("C:/Users/Spark/Desktop/test.html");
+		f.open(QFile::WriteOnly);
+		f.write(m_source.toLatin1());
+		f.close();
+
 		// Initializations
 		QDomDocument doc;
 		QString errorMsg;
@@ -219,13 +239,17 @@ void Page::parse()
 		{
 			log(tr("Erreur lors de l'analyse du fichier XML : %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn)));
 			fallback();
-			load();
 			return;
 		}
 		QDomElement docElem = doc.documentElement();
 
 		// Getting last page
-		m_imagesCount = docElem.attributes().namedItem("count").nodeValue().toFloat();
+		int count = docElem.attributes().namedItem("count").nodeValue().toFloat();
+		QString database = docElem.attributes().namedItem("type").nodeValue();
+		if (count == 0 && database == "array")
+		{ count = docElem.elementsByTagName("total-count").at(0).toElement().text().toInt(); }
+		if (count > 0)
+		{ m_imagesCount = count; }
 
 		// Reading posts
 		QDomNodeList nodeList = docElem.elementsByTagName("post");
@@ -234,10 +258,47 @@ void Page::parse()
 			for (int id = 0; id < nodeList.count(); id++)
 			{
 				QMap<QString,QString> d;
-				QStringList infos;
-				infos << "created_at" << "status" << "source" << "has_comments" << "file_url" << "sample_url" << "change" << "sample_width" << "has_children" << "preview_url" << "width" << "md5" << "preview_width" << "sample_height" << "parent_id" << "height" << "has_notes" << "creator_id" << "file_size" << "id" << "preview_height" << "rating" << "tags" << "author" << "score";
-				for (int i = 0; i < infos.count(); i++)
-				{ d[infos.at(i)] = nodeList.at(id + first).attributes().namedItem(infos.at(i)).nodeValue().trimmed(); }
+				if (database == "array")
+				{
+					QStringList infos, assoc;
+					infos << "created_at" << "status" << "source" << "has_comments" << "file_url" << "sample_url" << "change" << "sample_width" << "has_children" << "preview_url" << "width" << "md5" << "preview_width" << "sample_height" << "parent_id" << "height" << "has_notes" << "creator_id" << "file_size" << "id" << "preview_height" << "rating" << "tags" << "author" << "score" << "tags_artist" << "tags_character" << "tags_copyright" << "tags_general";
+					assoc << "created-at" << "status" << "source" << "has_comments" << "file-url" << "large-file-url" << "change" << "sample_width" << "has-children" << "preview-file-url" << "image-width" << "md5" << "preview_width" << "sample_height" << "parent-id" << "image-height" << "has_notes" << "uploader-id" << "file_size" << "id" << "preview_height" << "rating" << "tag-string" << "uploader-name" << "score" << "tag-string-artist" << "tag-string-character" << "tag-string-copyright" << "tag-string-general";
+					for (int i = 0; i < infos.count(); i++)
+					{ d[infos.at(i)] = nodeList.at(id + first).namedItem(assoc.at(i)).toElement().text(); }
+				}
+				else
+				{
+					QStringList infos;
+					infos << "created_at" << "status" << "source" << "has_comments" << "file_url" << "sample_url" << "change" << "sample_width" << "has_children" << "preview_url" << "width" << "md5" << "preview_width" << "sample_height" << "parent_id" << "height" << "has_notes" << "creator_id" << "file_size" << "id" << "preview_height" << "rating" << "tags" << "author" << "score";
+					for (int i = 0; i < infos.count(); i++)
+					{ d[infos.at(i)] = nodeList.at(id + first).attributes().namedItem(infos.at(i)).nodeValue().trimmed(); }
+				}
+				if (!d.contains("ext") || d["ext"].isEmpty())
+				{ d["ext"] = "jpg"; }
+				if (m_site->contains("Urls/Xml/Image"))
+				{
+					if (m_site->value("Urls/Xml/Image").contains("->"))
+					{ d["file_url"].replace(m_site->value("Urls/Xml/Image").left(m_site->value("Urls/Xml/Image").indexOf("->")), m_site->value("Urls/Xml/Image").right(m_site->value("Urls/Xml/Image").size() - m_site->value("Urls/Xml/Image").indexOf("->")-2)); }
+					else
+					{
+						d["file_url"] = m_site->value("Urls/Xml/Image");
+						d["file_url"].replace("{id}", d["id"])
+						.replace("{md5}", d["md5"])
+						.replace("{ext}", d["ext"]);
+					}
+				}
+				if (m_site->contains("Urls/Xml/Preview"))
+				{
+					if (m_site->value("Urls/Xml/Preview").contains("->"))
+					{ d["preview_url"].replace(m_site->value("Urls/Xml/Preview").left(m_site->value("Urls/Xml/Preview").indexOf("->")), m_site->value("Urls/Xml/Preview").right(m_site->value("Urls/Xml/Preview").size() - m_site->value("Urls/Xml/Preview").indexOf("->")-2)); }
+					else
+					{
+						d["preview_url"] = m_site->value("Urls/Xml/Preview");
+						d["preview_url"].replace("{id}", d["id"])
+						.replace("{md5}", d["md5"])
+						.replace("{ext}", d["ext"]);
+					}
+				}
 				if (!d["preview_url"].startsWith("http://") && !d["preview_url"].startsWith("https://"))
 				{ d["preview_url"] = "http://"+m_site->value("Url")+QString(d["preview_url"].startsWith("/") ? "" : "/")+d["preview_url"]; }
 				if (!d["file_url"].startsWith("http://") && !d["file_url"].startsWith("https://"))
@@ -273,7 +334,6 @@ void Page::parse()
 		{
 			log(tr("Erreur lors de l'analyse du fichier RSS : %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn)));
 			fallback();
-			load();
 			return;
 		}
 		QDomElement docElem = doc.documentElement();
@@ -306,6 +366,8 @@ void Page::parse()
 					rx.indexIn(d["page_url"]);
 					d.insert("id", rx.cap(1));
 				}
+				if (!d.contains("ext") || d["ext"].isEmpty())
+				{ d["ext"] = "jpg"; }
 				if (!d["preview_url"].startsWith("http://") && !d["preview_url"].startsWith("https://"))
 				{ d["preview_url"] = "http://"+m_site->value("Url")+QString(d["preview_url"].startsWith("/") ? "" : "/")+d["preview_url"]; }
 				if (!d["sample_url"].startsWith("http://") && !d["sample_url"].startsWith("https://"))
@@ -315,13 +377,13 @@ void Page::parse()
 				if (m_site->contains("Urls/Rss/Image"))
 				{
 					if (m_site->value("Urls/Rss/Image").contains("->"))
-					{ d["file_url"].replace(m_site->value("Urls/Rss/Image").left(m_site->value("Urls/Rss/Image").indexOf("->")), m_site->value("Urls/Rss/Image").right(m_site->value("Urls/Json/Image").size()-m_site->value("Urls/Json/Image").indexOf("->")-2)); }
+					{ d["file_url"].replace(m_site->value("Urls/Rss/Image").left(m_site->value("Urls/Rss/Image").indexOf("->")), m_site->value("Urls/Rss/Image").right(m_site->value("Urls/Rss/Image").size()-m_site->value("Urls/Rss/Image").indexOf("->")-2)); }
 					else
 					{
 						d["file_url"] = m_site->value("Urls/Rss/Image");
 						d["file_url"].replace("{id}", d["id"])
 						.replace("{md5}", d["md5"])
-						.replace("{ext}", "jpg");
+						.replace("{ext}", d["ext"]);
 					}
 				}
 				d["page_url"] = m_site->value("Urls/Html/Post");
@@ -376,7 +438,6 @@ void Page::parse()
 			QMap<QString,QString> d;
 			for (int i = 0; i < order.size(); i++)
 			{ d[order.at(i)] = rx.cap(i+1); }
-
 			if (order.contains("json") && !d["json"].isEmpty())
 			{
 				QVariant src = Json::parse(d["json"]);
@@ -387,14 +448,12 @@ void Page::parse()
 					{ d[map.keys().at(i)] = map.values().at(i).toString(); }
 				}
 			}
-
+			if (!d.contains("ext") || d["ext"].isEmpty())
+			{ d["ext"] = "jpg"; }
 			if (!d["preview_url"].startsWith("http://") && !d["preview_url"].startsWith("https://"))
 			{ d["preview_url"] = "http://"+m_site->value("Url")+QString(d["preview_url"].startsWith("/") ? "" : "/")+d["preview_url"]; }
 			if (!d.contains("file_url"))
-			{
-				if (!m_site->contains("Regex/ImageUrl"))
-				{ d["file_url"] = d["preview_url"]; }
-			}
+			{ d["file_url"] = d["preview_url"]; }
 			else if (!d["file_url"].startsWith("http://") && !d["file_url"].startsWith("https://"))
 			{ d["file_url"] = "http://"+m_site->value("Url")+QString(d["file_url"].startsWith("/") ? "" : "/")+d["file_url"]; }
 			if (m_site->contains("Urls/Html/Image"))
@@ -413,7 +472,7 @@ void Page::parse()
 					d["file_url"] = m_site->value("Urls/Html/Image");
 					d["file_url"].replace("{id}", d["id"])
 					.replace("{md5}", d["md5"])
-					.replace("{ext}", "jpg");
+					.replace("{ext}", d["ext"]);
 				}
 			}
 
@@ -453,17 +512,25 @@ void Page::parse()
 			{
 				sc = sourc.at(id + first).toMap();
 				QMap<QString,QString> d;
-				QStringList infos;
-				infos << "created_at" << "status" << "source" << "has_comments" << "file_url" << "sample_url" << "change" << "sample_width" << "has_children" << "preview_url" << "width" << "md5" << "preview_width" << "sample_height" << "parent_id" << "height" << "has_notes" << "creator_id" << "file_size" << "id" << "preview_height" << "rating" << "tags" << "author" << "score";
-				for (int i = 0; i < infos.count(); i++)
-				{ d[infos.at(i)] = sc.value(infos.at(i)).toString().trimmed(); }
+				if (sc.contains("tag_string"))
+				{
+					QStringList infos, assoc;
+					infos << "created_at" << "status" << "source" << "has_comments" << "file_url" << "sample_url" << "change" << "sample_width" << "has_children" << "preview_url" << "width" << "md5" << "preview_width" << "sample_height" << "parent_id" << "height" << "has_notes" << "creator_id" << "file_size" << "id" << "preview_height" << "rating" << "tags" << "author" << "score" << "tags_artist" << "tags_character" << "tags_copyright" << "tags_general";
+					assoc << "created_at" << "status" << "source" << "has_comments" << "file_url" << "large_file_url" << "change" << "sample_width" << "has_children" << "preview_file_url" << "image_width" << "md5" << "preview_width" << "sample_height" << "parent_id" << "image_height" << "has_notes" << "uploader_id" << "file_size" << "id" << "preview_height" << "rating" << "tag_string" << "uploader_name" << "score" << "tag_string_artist" << "tag_string_character" << "tag_string_copyright" << "tag_string_general";
+					for (int i = 0; i < infos.count(); i++)
+					{ d[infos.at(i)] = sc.value(assoc.at(i)).toString().trimmed(); }
+				}
+				else
+				{
+					QStringList infos;
+					infos << "created_at" << "status" << "source" << "has_comments" << "file_url" << "sample_url" << "change" << "sample_width" << "has_children" << "preview_url" << "width" << "md5" << "preview_width" << "sample_height" << "parent_id" << "height" << "has_notes" << "creator_id" << "file_size" << "id" << "preview_height" << "rating" << "tags" << "author" << "score";
+					for (int i = 0; i < infos.count(); i++)
+					{ d[infos.at(i)] = sc.value(infos.at(i)).toString().trimmed(); }
+				}
 				if (!d["preview_url"].startsWith("http://") && !d["preview_url"].startsWith("https://"))
 				{ d["preview_url"] = "http://"+m_site->value("Url")+QString(d["preview_url"].startsWith("/") ? "" : "/")+d["preview_url"]; }
 				if (!d.contains("file_url") || d["file_url"].isEmpty())
-				{
-					if (!m_site->contains("Regex/ImageUrl"))
-					{ d["file_url"] = d["preview_url"]; }
-				}
+				{ d["file_url"] = d["preview_url"]; }
 				else if (!d["file_url"].startsWith("http://") && !d["file_url"].startsWith("https://"))
 				{ d["file_url"] = "http://"+m_site->value("Url")+QString(d["file_url"].startsWith("/") ? "" : "/")+d["file_url"]; }
 				if (m_site->contains("Urls/Json/Image"))
@@ -499,7 +566,6 @@ void Page::parse()
 		else
 		{
 			fallback();
-			load();
 			return;
 		}
 	}
@@ -526,18 +592,18 @@ void Page::parse()
 
 	// Getting last page
 	if (m_site->contains("LastPage") && m_imagesCount < 1)
-	{ m_imagesCount = m_site->value("LastPage").toInt()*m_imagesPerPage; }
-	if (m_site->contains("Regex/LastPage") && m_imagesCount < 1)
-	{
-		QRegExp rxlast(m_site->value("Regex/LastPage"));
-		rxlast.indexIn(m_source, 0);
-		m_imagesCount = rxlast.cap(1).remove(",").toInt() * m_imagesPerPage;
-	}
+	{ m_imagesCount = m_site->value("LastPage").toInt() * m_imagesPerPage; }
 	if (m_site->contains("Regex/Count") && m_imagesCount < 1)
 	{
 		QRegExp rxlast(m_site->value("Regex/Count"));
 		rxlast.indexIn(m_source, 0);
 		m_imagesCount = rxlast.cap(1).remove(",").toInt();
+	}
+	if (m_site->contains("Regex/LastPage") && m_imagesCount < 1)
+	{
+		QRegExp rxlast(m_site->value("Regex/LastPage"));
+		rxlast.indexIn(m_source, 0);
+		m_imagesCount = rxlast.cap(1).remove(",").toInt() * m_imagesPerPage;
 	}
 
 	// Virtual paging
@@ -573,6 +639,9 @@ void Page::parseTags()
 	QUrl redir = m_replyTags->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 	if (!redir.isEmpty())
 	{
+		QString loc = redir.toString();
+		if (loc.left(4) != "http")
+		{ redir = QUrl(loc.left(1) == "/" ? "http://" + m_website + loc : "http://" + m_website + "/" + loc); }
 		m_urlRegex = redir;
 		loadTags();
 		return;
@@ -629,6 +698,21 @@ void Page::parseTags()
 		}
 	}
 
+	// Getting last page
+	if (m_site->contains("Regex/Count") && m_imagesCount < 1)
+	{
+		QRegExp rxlast(m_site->value("Regex/Count"));
+		rxlast.indexIn(source, 0);
+		m_imagesCount = rxlast.cap(1).remove(",").toInt();
+	}
+	if (m_site->contains("Regex/LastPage") && m_imagesCount < 1)
+	{
+		QRegExp rxlast(m_site->value("Regex/LastPage"));
+		rxlast.indexIn(source, 0);
+		m_imagesCount = rxlast.cap(1).remove(",").toInt() * m_imagesPerPage;
+	}
+
+	// Wiki
 	m_wiki.clear();
 	if (m_site->contains("Regex/Wiki"))
 	{
