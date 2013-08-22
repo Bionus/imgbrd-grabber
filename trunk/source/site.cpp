@@ -6,8 +6,6 @@
 #include "site.h"
 #include "functions.h"
 
-extern const QString VERSION;
-
 
 
 Site::Site(QString type, QString url, QMap<QString, QString> data) : m_type(type), m_url(url), m_data(data), m_manager(NULL), m_loggedIn(false), m_triedLogin(false), m_loginCheck(false), m_updateVersion("")

@@ -10,8 +10,6 @@
 #include <algorithm>
 #include <QString>
 
-const QString VERSION = "3.3.0b";
-
 
 
 enum Log

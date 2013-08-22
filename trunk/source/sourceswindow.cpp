@@ -6,8 +6,6 @@
 #include "sourcessettingswindow.h"
 #include "functions.h"
 
-extern const QString VERSION;
-
 
 
 /**
