@@ -13,7 +13,7 @@ use_qscintilla {
 	DEFINES += USE_QSCINTILLA=1
 	LIBS += -lqscintilla2
 }
-QT += network xml sql script designer
+QT += network xml sql script designer multimedia
 
 # Additionnal
 CONFIG += plugin
