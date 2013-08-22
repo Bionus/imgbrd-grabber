@@ -31,7 +31,6 @@
 
 extern QMap<QDateTime,QString> _log;
 extern QMap<QString,QString> _md5;
-extern const QString VERSION;
 
 /*
   deviantart.org
