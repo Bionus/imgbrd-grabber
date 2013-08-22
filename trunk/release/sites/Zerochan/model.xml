@@ -6,16 +6,17 @@
 			<Tags>/{tags}?p={page}</Tags>
 			<Post>/{id}</Post>
 			<Limit>22</Limit>
-			<Image>/600/->/full/</Image>
+			<Image>\.240\.->.full.&amp;\.600\.->.full.</Image>
 		</Html>
 		<Rss>
 			<Tags>/{tags}?xml&amp;p={page}</Tags>
 			<Limit>100</Limit>
-			<Image>.600.->.full.</Image>
+			<Image>\.240\.->.full.&amp;\.600\.->.full.</Image>
 		</Rss>
 	</Urls>
 	<Regex>
-		<Tags>&lt;li&gt;&lt;a [^&gt;]+&gt;([^&gt;]+)&lt;/a&gt; [^&lt;]*&lt;/li&gt;</Tags>
+		<Tags>&lt;li&gt;&lt;a [^&gt;]+&gt;([^&gt;]+)&lt;/a&gt; ([^&lt;]*)&lt;/li&gt;</Tags>
+		<TagsOrder>tag|type</TagsOrder>
 		<Image>&lt;a href=['&quot;]/([^'&quot;]+)['&quot;][^&gt;]*&gt;[^&lt;]*(?:&lt;b&gt;[^&lt;]*&lt;/b&gt;)?[^&lt;]*(?:&lt;span&gt;[^&lt;]*&lt;/span&gt;)?[^&lt;]*(&lt;img\s*src=['&quot;]([^'&quot;]*)['&quot;][^&gt;]*/?&gt;)</Image>
 		<Order>id|image|preview_url</Order>
 		<Count>has ([0-9,]+) .*images\.</Count>
@@ -23,5 +24,9 @@
 		<ImageUrl>&lt;div id=&quot;large&quot;&gt;\s*&lt;a href=&quot;([^&quot;]+)&quot;[^>]* tabindex=&quot;1&quot;&gt;</ImageUrl>
 		<ForceImageUrl>true</ForceImageUrl>
 	</Regex>
+	<Check>
+		<Url>/</Url>
+		<Regex>© [0-9]+-[0-9]+ Zerochan</Regex>
+	</Check>
 	<FirstPage>1</FirstPage>
 </Site>

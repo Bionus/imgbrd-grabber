@@ -20,13 +20,17 @@
 		</Html>
 	</Urls>
 	<Regex>
-		<Tags>&lt;li class=&quot;tag-type-([^&quot;]+)&quot;&gt;.*&lt;a href=&quot;[^&quot;]+&quot;[^&gt;]*&gt;([^&lt;\?]+)&lt;/a&gt;.*&lt;span class=&quot;post-count&quot;&gt;(\d+)&lt;/span&gt;.*&lt;/li&gt;</Tags>
+		<Tags>&lt;li class=&quot;[^&quot;]*tag-type-([^&quot;]+)&quot;[^&gt;]*&gt;.*&lt;a href=&quot;[^&quot;]+&quot;[^&gt;]*&gt;([^&lt;\?]+)&lt;/a&gt;.*&lt;span class=&quot;post-count&quot;&gt;(\d+)&lt;/span&gt;.*&lt;/li&gt;</Tags>
 		<Image>Post.register\((\{(?:.+)\})\);</Image>
 		<Order>json</Order>
 		<LastPage>&lt;link href=&quot;[^&quot;]*\?.*page=(\d+)[^&quot;]*&quot; rel=&quot;last&quot; title=&quot;Last Page&quot;&gt;</LastPage>
 		<Pools>&lt;div class=&quot;status-notice&quot; id=&quot;pool\d+&quot;&gt;[^&lt;]*Pool:[^&lt;]*(?:&lt;a href=&quot;/post/show/(\d+)&quot; &gt;&amp;lt;&amp;lt;&lt;/a&gt;)?[^&lt;]*&lt;a href=&quot;/pool/show/(\d+)&quot; &gt;([^&lt;]+)&lt;/a&gt;[^&lt;]*(?:&lt;a href=&quot;/post/show/(\d+)&quot; &gt;&amp;gt;&amp;gt;&lt;/a&gt;)?[^&lt;]*&lt;/div&gt;</Pools>
 		<Wiki>&lt;div id=&quot;sidebar-wiki&quot;(?:[^&gt;]+)&gt;(.+)&lt;/div&gt;</Wiki>
 	</Regex>
+	<Check>
+		<Url>/</Url>
+		<Regex>Running Danbooru 1</Regex>
+	</Check>
 	<Modifiers>rating:safe rating:questionable rating:explicit user: fav: fastfav: md5: source: id: width: height: score: mpixels: filesize: date: gentags: arttags: chartags: copytags: approver: parent: sub: status:any status:deleted status:active status:flagged status:pending order:id order:id_desc order:score order:score_asc order:mpixels order:mpixels_asc order:filesize order:landscape order:portrait order:favcount order:rank order:change order:change_desc parent:none unlocked:rating</Modifiers>
 	<FirstPage>1</FirstPage>
 </Site>

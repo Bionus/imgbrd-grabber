@@ -12,11 +12,15 @@
 		</Html>
 	</Urls>
 	<Regex>
-		<Tags>&lt;li class=&quot;tag-type-([^&quot;]+)&quot;&gt;(?:[^&lt;]*&lt;a href=&quot;[^&quot;]+&quot;&gt;\?&lt;/a&gt;)?[^&lt;]*&lt;a href=&quot;[^&quot;]+&quot;&gt;([^&lt;]+)&lt;/a&gt;[^&lt;]*&lt;span[^&gt;]*&gt;(\d+)&lt;/span&gt;&lt;/li&gt;</Tags>
-		<Image>&lt;span(?: class=&quot;thumb&quot;)? id=&quot;\w(\d+)&quot;(?: class=&quot;thumb&quot;)?&gt;\s*&lt;a [^&gt;]+&gt;\s*&lt;img .*src=&quot;([^&quot;]+)&quot; .*title=&quot;(.+)&quot;/&gt;\s*&lt;/a&gt;\s*&lt;/span&gt;</Image>
+		<Tags>&lt;li class=&quot;tag-type-([^&quot;]+)&quot;&gt;(?:[^&lt;]*&lt;a[^&gt;]*&gt;[^&lt;]*&lt;/a&gt;)*[^&lt;]*&lt;a[^&gt;]*&gt;([^&lt;]*)&lt;/a&gt;[^&lt;]*&lt;span[^&gt;]*&gt;(\d+)&lt;/span&gt;[^&lt;]*&lt;/li&gt;</Tags>
+		<Image>&lt;span[^&gt;]* id=&quot;?\w(\d+)&quot;?[^&gt;]*&gt;\s*&lt;a [^&gt;]+&gt;\s*&lt;img [^&gt;]*src=&quot;([^&quot;]+)&quot; [^&gt;]*title=&quot;([^&quot;]+)&quot;[^&gt;]*/?&gt;\s*&lt;/a&gt;\s*&lt;/span&gt;</Image>
 		<Order>id|preview_url|tags</Order>
 		<ImageUrl>&lt;img[^&gt;]+src=&quot;([^&quot;]+)&quot;[^&gt;]+onclick=&quot;Note\.toggle\(\);&quot;[^&gt;]*/&gt;</ImageUrl>
 	</Regex>
+	<Check>
+		<Url>/</Url>
+		<Regex>Running Gelbooru Beta 0.2</Regex>
+	</Check>
 	<Modifiers>rating:safe rating:questionable rating:explicit user: fav: fastfav: md5: source: id: width: height: score: mpixels: filesize: date: gentags: arttags: chartags: copytags: approver: parent: sub: order:id order:id_desc order:score order:score_asc order:mpixels order:mpixels_asc order:filesize order:landscape order:portrait order:favcount order:rank parent:none unlocked:rating</Modifiers>
 	<FirstPage>0</FirstPage>
 </Site>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Site>
+	<Name>Booru-on-rails</Name>
+	<Urls>
+		<Json>
+			<Home>/images.json?key={password}&amp;page={page}&amp;nocomments=1&amp;nofav=1</Home>
+			<Tags>/search.json?key={password}&amp;page={page}&amp;q={tags}&amp;nocomments=1&amp;nofav=1</Tags>
+		</Json>
+		<Html>
+			<Home>/images/page/{page}?key={password}</Home>
+			<Tags>/search?key={password}&amp;page={page}&amp;sbq={tags}</Tags>
+			<Post>/{id}</Post>
+		</Html>
+	</Urls>
+	<Regex>
+		<Image>&lt;a href=&quot;/([0-9]+)(?:\?[^&quot;]*)&quot; alt=&quot;Size: ([0-9]+)x([0-9]+) \| Tagged: ([^&quot;]*)&quot;[^&gt;]*&gt;&lt;img alt=&quot;&quot; src=&quot;([^&quot;]+)&quot; ?/?&gt;&lt;/a&gt;</Image>
+		<Order>id|width|height|tags|preview_url</Order>
+		<!--<LastPage>&lt;a href=&quot;(?:/images/page/|/search/index\?[^"]*page=)([0-9]+)</LastPage>-->
+	</Regex>
+	<Check>&gt;
+		<Url>/</Url>
+		<Regex>Powered by the booru-on-rails project</Regex>
+	</Check>
+	<Modifiers>faved_by: width: height: uploader: source_url: description: sha512_hash: aspect_ratio:</Modifiers>
+	<FirstPage>1</FirstPage>
+</Site>
