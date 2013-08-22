@@ -36,6 +36,8 @@ class sourcesWindow : public QDialog
 		void deleteSite(QString);
 		void checkUpdate();
 		void checkClicked();
+		void checkForUpdates();
+		void checkForUpdatesReceived(Site *);
 
 	signals:
 		void closed();

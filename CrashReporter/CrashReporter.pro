@@ -4,7 +4,8 @@
 #
 #-------------------------------------------------
 
-QT       += core gui widgets
+CONFIG += qt
+QT       += core gui widgets designer
 
 TARGET = CrashReporter
 TEMPLATE = app

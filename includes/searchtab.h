@@ -18,7 +18,10 @@ class searchTab : public QWidget
 		virtual QList<bool> sources();
         virtual QString tags() = 0;
         virtual QString results() = 0;
-        virtual QString wiki() = 0;
+		virtual QString wiki() = 0;
+		virtual int imagesPerPage() = 0;
+		virtual int columns() = 0;
+		virtual QString postFilter() = 0;
         virtual void optionsChanged() = 0;
         virtual void updateCheckboxes() = 0;
 		virtual void setTags(QString) = 0;
@@ -28,6 +31,9 @@ class searchTab : public QWidget
 		int id();
 		QStringList selectedImages();
 		void setSources(QList<bool> sources);
+		virtual void setImagesPerPage(int ipp) = 0;
+		virtual void setColumns(int columns) = 0;
+		virtual void setPostFilter(QString postfilter) = 0;
 
     signals:
         void titleChanged(searchTab*);

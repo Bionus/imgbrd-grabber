@@ -151,7 +151,7 @@
         </sizepolicy>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>13</number>
        </property>
        <widget class="QWidget" name="page1">
         <layout class="QFormLayout" name="formLayout_14">
@@ -1790,29 +1790,50 @@ p, li { white-space: pre-wrap; }
             <property name="margin">
              <number>0</number>
             </property>
-            <item row="0" column="0">
+            <item row="1" column="0">
              <widget class="QLabel" name="label_56">
               <property name="text">
                <string>Serveur</string>
               </property>
              </widget>
             </item>
-            <item row="1" column="0">
+            <item row="2" column="0">
              <widget class="QLabel" name="label_57">
               <property name="text">
                <string>Port</string>
               </property>
              </widget>
             </item>
-            <item row="1" column="1">
+            <item row="2" column="1">
              <widget class="QSpinBox" name="spinProxyPort">
               <property name="maximum">
                <number>99999</number>
               </property>
              </widget>
             </item>
-            <item row="0" column="1">
+            <item row="1" column="1">
              <widget class="QLineEdit" name="lineProxyHostName"/>
+            </item>
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_4">
+              <property name="text">
+               <string>Type</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QComboBox" name="comboProxyType">
+              <item>
+               <property name="text">
+                <string>HTTP</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>SOCKS v5</string>
+               </property>
+              </item>
+             </widget>
             </item>
            </layout>
           </widget>

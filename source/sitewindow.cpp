@@ -9,6 +9,7 @@ extern mainWindow *_mainwindow;
 siteWindow::siteWindow(QMap<QString,Site*> *sites, QWidget *parent) : QDialog(parent), ui(new Ui::siteWindow), m_sites(sites)
 {
 	ui->setupUi(this);
+	ui->progressBar->hide();
 
 	QStringList types;
 	QString type;
@@ -33,6 +34,8 @@ siteWindow::~siteWindow()
 
 void siteWindow::accept()
 {
+	ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+
 	QString url = ui->lineEdit->text();
 	if (url.startsWith("http://"))
 	{ url.remove("http://"); }
@@ -40,28 +43,47 @@ void siteWindow::accept()
 	{ url = url.left(url.size()-1); }
 
 	QString type, name;
-	QStringList types;
+	QStringList checked;
 	if (ui->checkBox->isChecked())
 	{
+		for (int i = 0; i < m_sites->count(); i++)
+		{
+			name = m_sites->value(m_sites->keys().at(i))->type();
+			if (!checked.contains(name))
+			{ checked.append(name); }
+		}
+		ui->progressBar->setValue(0);
+		ui->progressBar->setMaximum(checked.count());
+		ui->progressBar->show();
+		checked.clear();
 		QNetworkAccessManager *manager = new QNetworkAccessManager(this);
 		for (int i = 0; i < m_sites->count(); i++)
 		{
 			name = m_sites->value(m_sites->keys().at(i))->type();
-			if (!types.contains(name))
+			if (!checked.contains(name))
 			{
 				Site *map = m_sites->value(m_sites->keys().at(i));
-				types.append(name);
-				QString curr = map->value("Selected");
-				curr[0] = curr[0].toUpper();
-				QNetworkReply *reply = manager->get(QNetworkRequest("http://"+url+map->value("Urls/"+curr+"/Tags")));
-				QEventLoop loop;
-					connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
-				loop.exec();
-				if (reply->error() == 0)
+				checked.append(name);
+				if (map->contains("Check/Url") && map->contains("Check/Regex"))
 				{
-					type = name;
-					break;
+					QString curr = map->value("Selected");
+					curr[0] = curr[0].toUpper();
+					QNetworkReply *reply = manager->get(QNetworkRequest("http://"+url+map->value("Check/Url")));
+					QEventLoop loop;
+						connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
+					loop.exec();
+					QString source = reply->readAll();
+					if (reply->error() == 0)
+					{
+						QRegExp rx(map->value("Check/Regex"));
+						if (rx.indexIn(source) != -1)
+						{
+							type = name;
+							break;
+						}
+					}
 				}
+				ui->progressBar->setValue(checked.size());
 			}
 		}
 		if (type.isEmpty())
@@ -69,8 +91,11 @@ void siteWindow::accept()
 			error(this, tr("Impossible de deviner le type du site. Êtes-vous sûr de l'url ?"));
 			ui->comboBox->setDisabled(false);
 			ui->checkBox->setChecked(false);
+			ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
+			ui->progressBar->hide();
 			return;
 		}
+		ui->progressBar->hide();
 	}
 	else
 	{ type = ui->comboBox->currentText().toLower(); }
@@ -85,7 +110,7 @@ void siteWindow::accept()
 	stes.removeDuplicates();
 	stes.sort();
 	f.open(QIODevice::WriteOnly);
-		f.write(stes.join("\r\n").toAscii());
+		f.write(stes.join("\r\n").toLatin1());
 	f.close();
 
 	for (int i = 0; i < m_sites->count(); i++)

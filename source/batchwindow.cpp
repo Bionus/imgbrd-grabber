@@ -135,82 +135,104 @@ void batchWindow::addImage(QString url, int batch, float size)
 void batchWindow::updateColumns()
 {
 	QHeaderView *headerView = ui->tableWidget->horizontalHeader();
-	headerView->setResizeMode(QHeaderView::Interactive);
+	headerView->setSectionResizeMode(QHeaderView::Interactive);
 	headerView->resizeSection(0, 60);
 	headerView->resizeSection(1, 40);
 	headerView->resizeSection(2, 80);
-	headerView->setResizeMode(2, QHeaderView::Stretch);
+	headerView->setSectionResizeMode(2, QHeaderView::Stretch);
 	headerView->resizeSection(3, 80);
 	headerView->resizeSection(4, 80);
 	headerView->resizeSection(5, 80);
 	ui->tableWidget->resizeColumnToContents(0);
 	ui->tableWidget->repaint();
 }
-int batchWindow::batch(QString url)
+int batchWindow::indexOf(QString url)
 {
 	int i = m_urls.indexOf(url);
+	if (i < 0 || ui->tableWidget->item(i, 1) == NULL)
+		return -1;
+	return i;
+}
+int batchWindow::batch(QString url)
+{
+	int i = indexOf(url);
+	if (i == -1)
+		return -1;
 	return ui->tableWidget->item(i, 1)->text().toInt() - 1;
 }
 void batchWindow::loadingImage(QString url)
 {
 	if (m_start->isNull())
-	{ m_start->start(); }
+		m_start->start();
 	m_speeds.insert(url, 0);
 	if (m_speeds.size() > m_maxSpeeds)
-	{ m_maxSpeeds = m_speeds.size(); }
+		m_maxSpeeds = m_speeds.size();
 
-	int i = m_urls.indexOf(url);
-	ui->tableWidget->item(i, 0)->setIcon(QIcon(":/images/colors/blue.png"));
+	int i = indexOf(url);
+	if (i != -1)
+		ui->tableWidget->item(i, 0)->setIcon(QIcon(":/images/colors/blue.png"));
 }
 void batchWindow::imageUrlChanged(QString before, QString after)
 {
-	int i = m_urls.indexOf(before);
-	m_urls[i] = after;
-	ui->tableWidget->item(i, 2)->setText(after);
-	ui->tableWidget->item(i, 3)->setText("");
-	ui->tableWidget->item(i, 4)->setText("");
-	ui->tableWidget->item(i, 5)->setText("0 %");
+	int i = indexOf(before);
+	if (i != -1)
+	{
+		m_urls[i] = after;
+		ui->tableWidget->item(i, 2)->setText(after);
+		ui->tableWidget->item(i, 3)->setText("");
+		ui->tableWidget->item(i, 4)->setText("");
+		ui->tableWidget->item(i, 5)->setText("0 %");
+	}
 }
 void batchWindow::statusImage(QString url, int percent)
 {
-	int i = m_urls.indexOf(url);
-	// m_progressBars[i]->setValue(percent);
-	ui->tableWidget->item(i, 5)->setText(QString::number(percent)+" %");
+	int i = indexOf(url);
+	if (i != -1)
+		ui->tableWidget->item(i, 5)->setText(QString::number(percent)+" %");
 }
 void batchWindow::speedImage(QString url, float speed)
 {
 	m_speeds[url] = (int)speed;
 	QString unit = getUnit(&speed)+"/s";
 
-	int i = m_urls.indexOf(url);
-	ui->tableWidget->item(i, 4)->setText(QLocale::system().toString(speed, 'f', speed < 10 ? 2 : 0)+" "+unit);
+	int i = indexOf(url);
+	if (i != -1)
+		ui->tableWidget->item(i, 4)->setText(QLocale::system().toString(speed, 'f', speed < 10 ? 2 : 0)+" "+unit);
 
 	drawSpeed();
 }
 void batchWindow::sizeImage(QString url, float size)
 {
-	int i = m_urls.indexOf(url);
-	QString unit = getUnit(&size);
-	ui->tableWidget->setItem(i, 3, new QTableWidgetItem(size != 0 ? QLocale::system().toString(size, 'f', size < 10 ? 2 : 0)+" "+unit : ""));
+	int i = indexOf(url);
+	if (i != -1)
+	{
+		QString unit = getUnit(&size);
+		ui->tableWidget->setItem(i, 3, new QTableWidgetItem(size != 0 ? QLocale::system().toString(size, 'f', size < 10 ? 2 : 0)+" "+unit : ""));
+	}
 }
 void batchWindow::loadedImage(QString url)
 {
 	m_speeds.remove(url);
 	drawSpeed();
 
-	int i = m_urls.indexOf(url);
-	ui->tableWidget->item(i, 0)->setIcon(QIcon(":/images/colors/green.png"));
-	ui->tableWidget->item(i, 4)->setText("");
-	// m_progressBars[i]->setValue(100);
-	ui->tableWidget->item(i, 5)->setText("100 %");
+	int i = indexOf(url);
+	if (i != -1)
+	{
+		ui->tableWidget->item(i, 0)->setIcon(QIcon(":/images/colors/green.png"));
+		ui->tableWidget->item(i, 4)->setText("");
+		ui->tableWidget->item(i, 5)->setText("100 %");
+	}
 }
 void batchWindow::errorImage(QString url)
 {
 	m_speeds.remove(url);
 
-	int i = m_urls.indexOf(url);
-	ui->tableWidget->item(i, 0)->setIcon(QIcon(":/images/colors/red.png"));
-	ui->tableWidget->item(i, 4)->setText("");
+	int i = indexOf(url);
+	if (i != -1)
+	{
+		ui->tableWidget->item(i, 0)->setIcon(QIcon(":/images/colors/red.png"));
+		ui->tableWidget->item(i, 4)->setText("");
+	}
 }
 
 void batchWindow::drawSpeed()

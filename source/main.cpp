@@ -33,7 +33,11 @@
 #include "mainwindow.h"
 #include "zoomwindow.h"
 #include "optionswindow.h"
-#include "crashhandler.h"
+#if USE_BREAKPAD
+	#include "crashhandler.h"
+#endif
+#include <QDir>
+#include <QDebug>
 
 
 
@@ -45,11 +49,13 @@ int main(int argc, char *argv[])
 {
 	QApplication app(argc, argv);
 
-	QDir dir = QFileInfo(argv[0]).dir();
-	QString crashes = savePath("crashes");
-	if (!dir.exists(crashes))
-	{ dir.mkpath(crashes); }
-	CrashHandler::instance()->Init(crashes);
+	#if USE_BREAKPAD
+		QDir dir = QFileInfo(argv[0]).dir();
+		QString crashes = savePath("crashes");
+		if (!dir.exists(crashes))
+		{ dir.mkpath(crashes); }
+		CrashHandler::instance()->Init(crashes);
+	#endif
 
 	QStringList tags;
 	QMap<QString,QString> params;
@@ -78,8 +84,8 @@ int main(int argc, char *argv[])
 
 	//QApplication app(argc, argv);
 
-	QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
-	QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
+	/*QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
+	QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));*/
 
 	_mainwindow = new mainWindow(argv[0], tags, params);
 	_mainwindow->init();

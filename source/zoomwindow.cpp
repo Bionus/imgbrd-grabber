@@ -1,5 +1,11 @@
 #include <QApplication>
 #include <QtNetwork>
+#include <QMessageBox>
+#include <QShortcut>
+#include <QMenu>
+#include <QDesktopWidget>
+#include <QFileDialog>
+#include <QMessageBox>
 #include "functions.h"
 #include "optionswindow.h"
 #include "QAffiche.h"
@@ -75,18 +81,13 @@ void zoomWindow::go()
 		connect(m_labelImage, SIGNAL(doubleClicked()), this, SLOT(fullScreen()));
 	ui->verticalLayout->insertWidget(1, m_labelImage, 1);
 
-	QStringList hreftags;
-	for (int i = 0; i < taglist.count(); i++)
-	{ hreftags.append("<a href=\""+taglist[i].text()+"\" style=\"text-decoration:none;color:#000000\">"+taglist[i].text()+"</a>"); }
-	hreftags.sort();
-
 	QMap<QString, QString> assoc;
 		assoc["s"] = tr("Safe");
 		assoc["q"] = tr("Questionable");
 		assoc["e"] = tr("Explicit");
 	m_url = settings.value("Save/downloadoriginals", true).toBool() ? m_image->fileUrl().toString() : (m_image->sampleUrl().isEmpty() ? m_image->fileUrl().toString() : m_image->sampleUrl().toString());
 
-	m_format = m_url.section('.', -1).toUpper().toAscii().data();
+	m_format = m_url.section('.', -1).toUpper().toLatin1().data();
 
 	QTimer *timer = new QTimer(this);
 		connect(timer, SIGNAL(timeout()), this, SLOT(update()));
@@ -114,12 +115,12 @@ void zoomWindow::go()
 	if (pos == "top")
 	{
 		ui->widgetLeft->hide();
-		m_labelTagsTop->setText(hreftags.join(" "));
+		m_labelTagsTop->setText(m_image->stylishedTags(m_ignore).join(" "));
 	}
 	else
 	{
 		m_labelTagsTop->hide();
-		m_labelTagsLeft->setText(hreftags.join("<br/>"));
+		m_labelTagsLeft->setText(m_image->stylishedTags(m_ignore).join("<br/>"));
 	}
 
 	connect(m_image, SIGNAL(finishedLoadingTags(Image*)), this, SLOT(replyFinished(Image*)));
@@ -440,32 +441,7 @@ void zoomWindow::replyFinished(Image* img)
 }
 void zoomWindow::colore()
 {
-	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
-	bool under = settings.value("Save/remplaceblanksbyunderscores", false).toBool();
-	QStringList blacklistedtags(settings.value("blacklistedtags").toString().split(' '));
-
-	QStringList tlist = QStringList() << "blacklisteds" << "ignoreds" << "artists" << "copyrights" << "characters" << "models" << "generals" << "favorites";
-	QStringList defaults = QStringList() << "000000" << "999999" << "aa0000" << "aa00aa" << "00aa00" << "0000ee" << "000000" << "ffc0cb";
-	QMap<QString,QString> styles;
-	for (int i = 0; i < tlist.size(); i++)
-	{
-		QFont font;
-		font.fromString(settings.value("Coloring/Fonts/"+tlist.at(i)).toString());
-		styles[tlist.at(i)] = "color:"+settings.value("Coloring/Colors/"+tlist.at(i), "#"+defaults.at(i)).toString()+"; "+qfonttocss(font);
-	}
-	QStringList t;
-	for (int i = 0; i < m_image->tags().size(); i++)
-	{
-		Tag tag = m_image->tags().at(i);
-		QString normalized = tag.text().replace("\\", " ").replace("/", " ").replace(":", " ").replace("|", " ").replace("*", " ").replace("?", " ").replace("\"", " ").replace("<", " ").replace(">", " ").trimmed();
-		if (under)
-		{ normalized.replace(' ', '_'); }
-		this->details[tag.type()+"s"].append(normalized);
-		this->details["alls"].append(normalized);
-		QString type = blacklistedtags.contains(tag.text(), Qt::CaseInsensitive) ? "blacklisteds" : (m_ignore.contains(tag.text(), Qt::CaseInsensitive) ? "ignored" : tag.type());
-		t.append("<a href=\""+tag.text()+"\" style=\""+(styles.contains(type+"s") ? styles[type+"s"] : styles["generals"])+"\">"+tag.text()+"</a>");
-	}
-	t.sort();
+	QStringList t = m_image->stylishedTags(m_ignore);
 	tags = t.join(" ");
 	if (ui->widgetLeft->isHidden())
 	{ m_labelTagsTop->setText(tags); }
@@ -503,7 +479,7 @@ void zoomWindow::replyFinishedZoom()
 				f.write(m_data);
 				f.close();
 				this->movie = new QMovie(f.fileName(), QByteArray(), this);
-				m_labelImage->setPixmap(0);
+				//m_labelImage->setPixmap(0);
 				m_labelImage->setMovie(movie);
 				movie->start();
 				image = NULL;

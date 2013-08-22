@@ -36,9 +36,9 @@ BlacklistFix3::BlacklistFix3(QList<QMap<QString,QString> > details, QStringList 
 		ui->tableWidget->resizeColumnToContents(0);
 	}
 	QHeaderView *headerView = ui->tableWidget->horizontalHeader();
-	headerView->setResizeMode(QHeaderView::Interactive);
+	headerView->setSectionResizeMode(QHeaderView::Interactive);
 	headerView->resizeSection(1, 50);
-	headerView->setResizeMode(2, QHeaderView::Stretch);
+	headerView->setSectionResizeMode(2, QHeaderView::Stretch);
 }
 BlacklistFix3::~BlacklistFix3()
 {

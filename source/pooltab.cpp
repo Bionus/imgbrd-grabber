@@ -1,3 +1,4 @@
+#include <QMessageBox>
 #include "pooltab.h"
 #include "ui_pooltab.h"
 #include "ui_mainwindow.h"
@@ -241,7 +242,7 @@ void poolTab::load()
 	tags.prepend("pool:"+QString::number(ui->spinPool->value()));
 	int perpage = ui->spinImagesPerPage->value();
 	Page *page = new Page(m_sites->value(ui->comboSites->currentText()), m_sites, tags, ui->spinPage->value(), perpage, m_postFiltering->toPlainText().split(" ", QString::SkipEmptyParts), true, this);
-	log(tr("Chargement de la page <a href=\"%1\">%1</a>").arg(Qt::escape(page->url().toString())));
+	log(tr("Chargement de la page <a href=\"%1\">%1</a>").arg(page->url().toString().toHtmlEscaped()));
 	connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(finishedLoading(Page*)));
 	m_pages.insert(page->website(), page);
 	QGridLayout *l = new QGridLayout;
@@ -266,7 +267,7 @@ void poolTab::finishedLoading(Page* page)
 	if (m_stop)
 	{ return; }
 
-	log(tr("Réception de la page <a href=\"%1\">%1</a>").arg(Qt::escape(page->url().toString())));
+	log(tr("Réception de la page <a href=\"%1\">%1</a>").arg(page->url().toString().toHtmlEscaped()));
 
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
 	QList<Image*> imgs = page->images();
@@ -330,14 +331,14 @@ void poolTab::finishedLoading(Page* page)
 				{
 					QStringList res = results.values(), cl = clean.values();
 					ui->widgetMeant->show();
-					ui->labelMeant->setText("<a href=\""+Qt::escape(cl.join(" "))+"\" style=\"color:black;text-decoration:none;\">"+res.join(" ")+"</a>");
+					ui->labelMeant->setText("<a href=\""+cl.join(" ").toHtmlEscaped()+"\" style=\"color:black;text-decoration:none;\">"+res.join(" ")+"</a>");
 				}
 				words.close();
 			}
-			txt->setText("<a href=\""+Qt::escape(page->url().toString())+"\">"+m_sites->key(page->site())+"</a> - "+tr("Aucun résultat")+(reasons.count() > 0 ? "<br/>"+tr("Raisons possibles : %1").arg(reasons.join(", ")) : ""));
+			txt->setText("<a href=\""+page->url().toString().toHtmlEscaped()+"\">"+page->site()->name()+"</a> - "+tr("Aucun résultat")+(reasons.count() > 0 ? "<br/>"+tr("Raisons possibles : %1").arg(reasons.join(", ")) : ""));
 		}
 		else
-		{ txt->setText("<a href=\""+Qt::escape(page->url().toString())+"\">"+m_sites->key(page->site())+"</a> - "+tr("Page %1 sur %2 (%3 sur %4)").arg(ui->spinPage->value()).arg(page->imagesCount() > 0 ? QString::number(maxpage) : "?").arg(imgs.count()).arg(page->imagesCount() > 0 ? QString::number(page->imagesCount()) : "?")); }
+		{ txt->setText("<a href=\""+page->url().toString().toHtmlEscaped()+"\">"+page->site()->name()+"</a> - "+tr("Page %1 sur %2 (%3 sur %4)").arg(ui->spinPage->value()).arg(page->imagesCount() > 0 ? QString::number(maxpage) : "?").arg(imgs.count()).arg(page->imagesCount() > 0 ? QString::number(page->imagesCount()) : "?")); }
 		txt->setOpenExternalLinks(true);
 		if (page->search().join(" ") != m_search->toPlainText() && settings.value("showtagwarning", true).toBool())
 		{
@@ -824,7 +825,17 @@ void poolTab::setSite(QString site)
 	{ ui->comboSites->setCurrentIndex(index); }
 }
 
-QString poolTab::tags()		{ return m_search->toPlainText();		}
-QString poolTab::results()	{ return m_tags;						}
-QString poolTab::wiki()		{ return m_wiki;						}
-QString poolTab::site()		{ return ui->comboSites->currentText();	}
+void poolTab::setImagesPerPage(int ipp)
+{ ui->spinImagesPerPage->setValue(ipp); }
+void poolTab::setColumns(int columns)
+{ ui->spinColumns->setValue(columns); }
+void poolTab::setPostFilter(QString postfilter)
+{ m_postFiltering->setText(postfilter); }
+
+int poolTab::imagesPerPage()	{ return ui->spinImagesPerPage->value();	}
+int poolTab::columns()			{ return ui->spinColumns->value();			}
+QString poolTab::postFilter()	{ return m_postFiltering->toPlainText();	}
+QString poolTab::tags()			{ return m_search->toPlainText();			}
+QString poolTab::results()		{ return m_tags;							}
+QString poolTab::wiki()			{ return m_wiki;							}
+QString poolTab::site()			{ return ui->comboSites->currentText();		}

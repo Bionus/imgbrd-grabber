@@ -6,9 +6,14 @@ FilenameWindow::FilenameWindow(QString value, QWidget *parent) : QDialog(parent)
 {
 	ui->setupUi(this);
 
-	m_scintilla = new QsciScintilla(this);
-	QsciLexerJavaScript *lexer = new QsciLexerJavaScript(this);
-	m_scintilla->setLexer(lexer);
+	#if USE_QSCINTILLA
+		m_scintilla = new QsciScintilla(this);
+		QsciLexerJavaScript *lexer = new QsciLexerJavaScript(this);
+		m_scintilla->setLexer(lexer);
+	#else
+		m_scintilla = new QTextEdit(this);
+	#endif
+
 	connect(ui->radioJavascript, SIGNAL(toggled(bool)), m_scintilla, SLOT(setEnabled(bool)));
 	ui->verticalLayout->insertWidget(ui->verticalLayout->count() - 1, m_scintilla);
 
@@ -62,6 +67,7 @@ void FilenameWindow::on_buttonHelpClassic_clicked()
 		"<i>%rating%</i> : Questionable, Safe ou Explicit<br/>"
 		"<i>%score%</i> : le score de l'image<br/>"
 		"<i>%website%</i> : url du site de l'image<br/>"
+		"<i>%websitename%</i> : nom du site de l'image<br/>"
 		"<i>%md5%</i> : code unique de l'image, composé de 32 caractères alphanumériques<br/>"
 		"<i>%id%</i> : identifiant de l'image sur un site donné<br/>"
 		"<i>%search%</i> : tags de la recherche<br/>"
@@ -86,6 +92,7 @@ void FilenameWindow::on_buttonHelpJavascript_clicked()
 		"<i>rating</i> : Questionable, Safe ou Explicit<br/>"
 		"<i>score</i> : le score de l'image<br/>"
 		"<i>website</i> : url du site de l'image<br/>"
+		"<i>websitename</i> : nom du site de l'image<br/>"
 		"<i>md5</i> : code unique de l'image, composé de 32 caractères alphanumériques<br/>"
 		"<i>id</i> : identifiant de l'image sur un site donné<br/>"
 		"<i>search</i> : tags de la recherche<br/>"
@@ -96,4 +103,11 @@ void FilenameWindow::on_buttonHelpJavascript_clicked()
 }
 
 void FilenameWindow::send()
-{ emit validated(ui->radioJavascript->isChecked() ? "javascript:"+m_scintilla->text() : ui->lineClassic->text()); }
+{
+	#if USE_QSCINTILLA
+		QString text = m_scintilla->text();
+	#else
+		QString text = m_scintilla->toPlainText();
+	#endif
+	emit validated(ui->radioJavascript->isChecked() ? "javascript:"+text : text);
+}

@@ -1,3 +1,5 @@
+#if USE_BREAKPAD
+
 #include "crashhandler.h"
 #include <QDir>
 #include <QProcess>
@@ -69,7 +71,7 @@ bool DumpCallback(const char* _dump_dir,const char* _minidump_id,void *context, 
 		QFile f(savePath("lastdump"));
 		if (f.open(QFile::WriteOnly))
 		{
-			f.write(QDir::toNativeSeparators(dir+"/"+mid+".dmp").toAscii());
+			f.write(QDir::toNativeSeparators(dir+"/"+mid+".dmp").toLatin1());
 			f.close();
 		}
 	}
@@ -151,3 +153,5 @@ bool CrashHandler::writeMinidump()
 
 void CrashHandler::Init( const QString& reportPath )
 { d->InitCrashHandler(reportPath); }
+
+#endif

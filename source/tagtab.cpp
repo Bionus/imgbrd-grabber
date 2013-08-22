@@ -1,3 +1,4 @@
+#include <QMessageBox>
 #include "tagtab.h"
 #include "ui_tagtab.h"
 #include "ui_mainwindow.h"
@@ -17,6 +18,7 @@ tagTab::tagTab(int id, QMap<QString,Site*> *sites, QMap<QString,QString> *favori
 	setAttribute(Qt::WA_DeleteOnClose);
 
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
+	m_ignored = loadIgnored();
 
 	// Search field
 	m_search = new TextEdit(m_favorites->keys(), this);
@@ -246,7 +248,7 @@ void tagTab::load()
 			tags.append(settings.value("add").toString().trimmed().split(" ", QString::SkipEmptyParts));
 			int perpage = ui->spinImagesPerPage->value();
 			Page *page = new Page(m_sites->value(m_sites->keys().at(i)), m_sites, tags, ui->spinPage->value(), perpage, m_postFiltering->toPlainText().split(" ", QString::SkipEmptyParts), true, this);
-			log(tr("Chargement de la page <a href=\"%1\">%1</a>").arg(Qt::escape(page->url().toString())));
+			log(tr("Chargement de la page <a href=\"%1\">%1</a>").arg(page->url().toString().toHtmlEscaped()));
 			connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(finishedLoading(Page*)));
 			m_pages.insert(page->website(), page);
 			QGridLayout *l = new QGridLayout;
@@ -254,12 +256,12 @@ void tagTab::load()
 			l->setVerticalSpacing(settings.value("Margins/vertical", 6).toInt());
 			m_layouts.append(l);
 			m_stop = false;
-			page->load();
 			if (settings.value("useregexfortags", true).toBool())
 			{
 				connect(page, SIGNAL(finishedLoadingTags(Page*)), this, SLOT(finishedLoadingTags(Page*)));
 				page->loadTags();
 			}
+			page->load();
 		}
 	}
 	if (ui->checkMergeResults->isChecked() && m_layouts.size() > 0)
@@ -274,14 +276,14 @@ void tagTab::finishedLoading(Page* page)
 	if (m_stop)
 	{ return; }
 
-	log(tr("Réception de la page <a href=\"%1\">%1</a>").arg(Qt::escape(page->url().toString())));
+	log(tr("Réception de la page <a href=\"%1\">%1</a>").arg(page->url().toString().toHtmlEscaped()));
 
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
 	QList<Image*> imgs = page->images();
 	m_images.append(imgs);
-	int perpage = page->site()->value("Urls/Selected/Tags").contains("{limit}") ? ui->spinImagesPerPage->value() : imgs.size();
-	int maxpage = ceil(page->imagesCount()/((float)perpage));
 
+	int perpage = page->site()->value("Urls/Selected/Tags").contains("{limit}") ? ui->spinImagesPerPage->value() : imgs.size();
+	int maxpage = ceil(page->imagesCount() / ((float)perpage));
 	if (maxpage < m_pagemax || m_pagemax == -1)
 	{ m_pagemax = maxpage; }
 	ui->buttonNextPage->setEnabled(maxpage > ui->spinPage->value() || page->imagesCount() == -1 || (page->imagesCount() == 0 && page->images().count() > 0));
@@ -293,6 +295,7 @@ void tagTab::finishedLoading(Page* page)
 		if (pos < 0)
 		{ return; }
 		QLabel *txt = new QLabel(this);
+		m_labels.append(txt);
 			if (imgs.count() == 0)
 			{
 				QStringList reasons = QStringList();
@@ -340,14 +343,14 @@ void tagTab::finishedLoading(Page* page)
 					{
 						QStringList res = results.values(), cl = clean.values();
 						ui->widgetMeant->show();
-						ui->labelMeant->setText("<a href=\""+Qt::escape(cl.join(" "))+"\" style=\"color:black;text-decoration:none;\">"+res.join(" ")+"</a>");
+						ui->labelMeant->setText("<a href=\""+cl.join(" ").toHtmlEscaped()+"\" style=\"color:black;text-decoration:none;\">"+res.join(" ")+"</a>");
 					}
 					words.close();
 				}
-				txt->setText("<a href=\""+Qt::escape(page->url().toString())+"\">"+m_sites->key(page->site())+"</a> - "+tr("Aucun résultat")+(reasons.count() > 0 ? "<br/>"+tr("Raisons possibles : %1").arg(reasons.join(", ")) : ""));
+				txt->setText("<a href=\""+page->url().toString().toHtmlEscaped()+"\">"+page->site()->name()+"</a> - "+tr("Aucun résultat")+(reasons.count() > 0 ? "<br/>"+tr("Raisons possibles : %1").arg(reasons.join(", ")) : ""));
 			}
 			else
-			{ txt->setText("<a href=\""+Qt::escape(page->url().toString())+"\">"+m_sites->key(page->site())+"</a> - "+tr("Page %1 sur %2 (%3 sur %4)").arg(ui->spinPage->value()).arg(page->imagesCount() > 0 ? QString::number(maxpage) : "?").arg(imgs.count()).arg(page->imagesCount() > 0 ? QString::number(page->imagesCount()) : "?")); }
+			{ txt->setText("<a href=\""+page->url().toString().toHtmlEscaped()+"\">"+page->site()->name()+"</a> - "+tr("Page %1 sur %2 (%3 sur %4)").arg(ui->spinPage->value()).arg(page->imagesCount() > 0 ? QString::number(maxpage) : "?").arg(imgs.count()).arg(page->imagesCount() > 0 ? QString::number(page->imagesCount()) : "?")); }
 			txt->setOpenExternalLinks(true);
 			if (page->search().join(" ") != m_search->toPlainText() && settings.value("showtagwarning", true).toBool())
 			{
@@ -519,14 +522,21 @@ void tagTab::finishedLoadingTags(Page *page)
 		n.replace(" ", "_");
 		tags += "<a href=\""+n+"\" style=\""+(styles.contains(taglist[i].type()+"s") ? styles[taglist[i].type()+"s"] : styles["generals"])+"\">"+taglist[i].text()+"</a>"+(taglist[i].count() > 0 ? " <span style=\"color:#aaa\">("+QString("%L1").arg(taglist[i].count())+")</span>" : "")+"<br/>";
 	}
-
 	m_tags = tags;
 	m_parent->ui->labelTags->setText(tags);
+
+	// Wiki
 	if (!page->wiki().isEmpty())
 	{
 		m_wiki = "<style>.title { font-weight: bold; } ul { margin-left: -30px; }</style>"+page->wiki();
 		m_parent->ui->labelWiki->setText(m_wiki);
 	}
+
+	int maxpage = ceil(page->imagesCount() / ((float)ui->spinImagesPerPage->value()));
+	if (maxpage < m_pagemax || m_pagemax == -1)
+	{ m_pagemax = maxpage; }
+	ui->buttonNextPage->setEnabled(maxpage > ui->spinPage->value() || page->imagesCount() == -1 || (page->imagesCount() == 0 && page->images().count() > 0));
+	ui->buttonLastPage->setEnabled(maxpage > ui->spinPage->value());
 }
 
 void tagTab::finishedLoadingPreview(Image *img)
@@ -627,11 +637,8 @@ void tagTab::finishedLoadingPreview(Image *img)
 		l->setIcon(img->previewImage());
 		l->setCheckable(true);
 		l->setChecked(m_selectedImages.contains(img->url()));
-		QString t;
-		for (int i = 0; i < img->tags().count(); i++)
-		{ t += " "+img->tags()[i].stylished(m_favorites->keys()); }
 		l->setToolTip(QString("%1%2%3%4%5%6%7%8")
-			.arg(img->tags().isEmpty() ? " " : tr("<b>Tags :</b> %1").arg(t.trimmed()))
+					  .arg(img->tags().isEmpty() ? " " : tr("<b>Tags :</b> %1").arg(img->stylishedTags(m_ignored).join(" ")))
 			.arg(img->id() == 0 ? " " : tr("<br/><br/><b>ID :</b> %1").arg(img->id()))
 			.arg(img->rating().isEmpty() ? " " : tr("<br/><b>Classe :</b> %1").arg(img->rating()))
 			.arg(img->hasScore() ? tr("<br/><b>Score :</b> %1").arg(img->score()) : " ")
@@ -913,6 +920,16 @@ void tagTab::historyNext()
 	}
 }
 
-QString tagTab::tags()		{ return m_search->toPlainText();	}
-QString tagTab::results()	{ return m_tags;					}
-QString tagTab::wiki()		{ return m_wiki;					}
+void tagTab::setImagesPerPage(int ipp)
+{ ui->spinImagesPerPage->setValue(ipp); }
+void tagTab::setColumns(int columns)
+{ ui->spinColumns->setValue(columns); }
+void tagTab::setPostFilter(QString postfilter)
+{ m_postFiltering->setText(postfilter); }
+
+int tagTab::imagesPerPage()		{ return ui->spinImagesPerPage->value();	}
+int tagTab::columns()			{ return ui->spinColumns->value();			}
+QString tagTab::postFilter()	{ return m_postFiltering->toPlainText();	}
+QString tagTab::tags()			{ return m_search->toPlainText();			}
+QString tagTab::results()		{ return m_tags;							}
+QString tagTab::wiki()			{ return m_wiki;							}

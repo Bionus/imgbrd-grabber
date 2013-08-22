@@ -28,7 +28,8 @@ class batchWindow : public QDialog
 		int endAction();
 		bool endRemove();
 		bool cancelled();
-		int batch(QString url);
+		int indexOf(QString);
+		int batch(QString);
 		void setCount(int);
 		void updateColumns();
 		bool isPaused();

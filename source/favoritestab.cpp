@@ -1,3 +1,5 @@
+#include <QMessageBox>
+#include <QMessageAuthenticationCode>
 #include "favoritestab.h"
 #include "ui_favoritestab.h"
 #include "ui_mainwindow.h"
@@ -314,7 +316,7 @@ void favoritesTab::load()
 			tags.append(settings.value("add").toString().toLower().trimmed().split(" ", QString::SkipEmptyParts));
 			int perpage = ui->spinImagesPerPage->value();
 			Page *page = new Page(m_sites->value(m_sites->keys().at(i)), m_sites, tags, ui->spinPage->value(), perpage, m_postFiltering->toPlainText().toLower().split(" ", QString::SkipEmptyParts), true, this);
-			log(tr("Chargement de la page <a href=\"%1\">%1</a>").arg(Qt::escape(page->url().toString())));
+			log(tr("Chargement de la page <a href=\"%1\">%1</a>").arg(page->url().toString().toHtmlEscaped()));
 			connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(finishedLoading(Page*)));
 			m_pages.insert(page->website(), page);
 			QGridLayout *l = new QGridLayout;
@@ -342,7 +344,7 @@ void favoritesTab::finishedLoading(Page* page)
 	if (m_stop)
 	{ return; }
 
-	log(tr("Réception de la page <a href=\"%1\">%1</a>").arg(Qt::escape(page->url().toString())));
+	log(tr("Réception de la page <a href=\"%1\">%1</a>").arg(page->url().toString().toHtmlEscaped()));
 
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
 	QList<Image*> imgs;
@@ -375,10 +377,10 @@ void favoritesTab::finishedLoading(Page* page)
 				{ reasons.append(tr("trop de tags")); }
 				if (ui->spinPage->value() > 1000)
 				{ reasons.append(tr("page trop éloignée")); }
-				txt->setText("<a href=\""+Qt::escape(page->url().toString())+"\">"+m_sites->key(page->site())+"</a> - "+tr("Aucun résultat depuis le %1").arg(m_loadFavorite.toString(tr("dd/MM/yyyy 'à' hh:mm")))+(reasons.count() > 0 ? "<br/>"+tr("Raisons possibles : %1").arg(reasons.join(", ")) : ""));
+				txt->setText("<a href=\""+page->url().toString().toHtmlEscaped()+"\">"+m_sites->key(page->site())+"</a> - "+tr("Aucun résultat depuis le %1").arg(m_loadFavorite.toString(tr("dd/MM/yyyy 'à' hh:mm")))+(reasons.count() > 0 ? "<br/>"+tr("Raisons possibles : %1").arg(reasons.join(", ")) : ""));
 			}
 			else
-			{ txt->setText("<a href=\""+Qt::escape(page->url().toString())+"\">"+m_sites->key(page->site())+"</a> - "+tr("Page %1 sur %2 (%3 sur %4)").arg(ui->spinPage->value()).arg(page->imagesCount() > 0 ? QString::number(maxpage) : "?").arg(imgs.count()).arg(page->imagesCount() > 0 ? QString::number(page->imagesCount()) : "?")); }
+			{ txt->setText("<a href=\""+page->url().toString().toHtmlEscaped()+"\">"+m_sites->key(page->site())+"</a> - "+tr("Page %1 sur %2 (%3 sur %4)").arg(ui->spinPage->value()).arg(page->imagesCount() > 0 ? QString::number(maxpage) : "?").arg(imgs.count()).arg(page->imagesCount() > 0 ? QString::number(page->imagesCount()) : "?")); }
 			txt->setOpenExternalLinks(true);
 			if (page->search().join(" ") != m_currentTags && settings.value("showtagwarning", true).toBool())
 			{
@@ -931,3 +933,14 @@ void favoritesTab::favoriteProperties(int id)
 	connect(fwin, SIGNAL(favoritesChanged()), this, SLOT(updateFavorites()));
 	fwin->show();
 }
+
+void favoritesTab::setImagesPerPage(int ipp)
+{ ui->spinImagesPerPage->setValue(ipp); }
+void favoritesTab::setColumns(int columns)
+{ ui->spinColumns->setValue(columns); }
+void favoritesTab::setPostFilter(QString postfilter)
+{ m_postFiltering->setText(postfilter); }
+
+int favoritesTab::imagesPerPage()	{ return ui->spinImagesPerPage->value();	}
+int favoritesTab::columns()			{ return ui->spinColumns->value();			}
+QString favoritesTab::postFilter()	{ return m_postFiltering->toPlainText();	}

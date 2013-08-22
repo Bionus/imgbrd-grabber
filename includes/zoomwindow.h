@@ -27,12 +27,12 @@ class zoomWindow : public QDialog
 		void go();
 		~zoomWindow();
 		void load();
-	
+
 	public slots:
 		void update(bool onlysize = false);
 		void replyFinished(Image*);
 		void replyFinishedZoom();
-        void display(QImage, int);
+		void display(QImage, int);
 		void saveNQuit();
 		void saveNQuitFav();
 		QString saveImage(bool fav = false);
@@ -58,7 +58,7 @@ class zoomWindow : public QDialog
 		void downloadProgress(qint64, qint64);
 		void colore();
 		void sslErrorHandler(QNetworkReply*, QList<QSslError>);
-	
+
 	protected:
 		void closeEvent(QCloseEvent *);
 		void resizeEvent(QResizeEvent *);
@@ -77,7 +77,6 @@ class zoomWindow : public QDialog
 		QMap<QString,QString> regex, m_details;
 		Site *m_site;
 		int timeout, m_loaded, oldsize, m_mustSave;
-		QMap<QString, QStringList> details;
 		QString id, m_url, tags, md5, rating, score, user, format;
 		QAffiche *m_labelImage, *m_labelTagsTop, *m_labelTagsLeft;
 		QPixmap *image;

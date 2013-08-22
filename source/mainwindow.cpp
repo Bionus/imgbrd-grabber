@@ -1,5 +1,8 @@
 #include <QtXml>
 #include <QtScript>
+#include <QMessageBox>
+#include <QFileDialog>
+#include <QtSql/QSqlDatabase>
 #if defined(Q_OS_WIN)
 	#include "windows.h"
 	#include <float.h>
@@ -22,13 +25,13 @@
 #include "functions.h"
 #include "json.h"
 #include "commands.h"
-#include <QtSql/QSqlDatabase>
 
-#define VERSION	"3.2.7"
-#define DONE()	logUpdate(QObject::tr(" Fait"))
+#define DONE()			logUpdate(QObject::tr(" Fait"))
+#define DIR_SEPARATOR	QDir::toNativeSeparators("/")
 
 extern QMap<QDateTime,QString> _log;
 extern QMap<QString,QString> _md5;
+extern const QString VERSION;
 
 /*
   deviantart.org
@@ -73,7 +76,8 @@ void mainWindow::init()
 
 	if (m_settings->value("Proxy/use", false).toBool())
 	{
-		QNetworkProxy proxy(QNetworkProxy::HttpProxy, m_settings->value("Proxy/hostName").toString(), m_settings->value("Proxy/port").toInt());
+		QNetworkProxy::ProxyType type = m_settings->value("Proxy/type", "http").toString() == "http" ? QNetworkProxy::HttpProxy : QNetworkProxy::Socks5Proxy;
+		QNetworkProxy proxy(type, m_settings->value("Proxy/hostName").toString(), m_settings->value("Proxy/port").toInt());
 		QNetworkProxy::setApplicationProxy(proxy);
 		log(tr("Activation du proxy général sur l'hôte \"%1\" et le port %2.").arg(m_settings->value("Proxy/hostName").toString()).arg(m_settings->value("Proxy/port").toInt()));
 	}
@@ -87,13 +91,12 @@ void mainWindow::init()
 	m_progressdialog = new batchWindow(this);
 	connect(m_progressdialog, SIGNAL(paused()), this, SLOT(getAllPause()));
 
-	ui->tableBatchGroups->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
-	ui->tableBatchUniques->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+	ui->tableBatchGroups->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+	ui->tableBatchUniques->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
-	// Searching for availables sites
 	loadSites();
 
-	ui->actionClosetab->setShortcut(QKeySequence("Ctrl+W"));
+	ui->actionClosetab->setShortcut(QKeySequence::Close);
 	ui->actionAddtab->setShortcut(QKeySequence::AddTab);
 	ui->actionQuit->setShortcut(QKeySequence::Quit);
 	ui->actionFolder->setShortcut(QKeySequence::Open);
@@ -223,8 +226,8 @@ void mainWindow::init()
 	connect(m_favoritesTab, SIGNAL(changed(searchTab*)), this, SLOT(updateTabs()));
 	ui->tabWidget->insertTab(m_tabs.size(), m_favoritesTab, tr("Favoris"));
 
-	ui->tableBatchGroups->horizontalHeader()->setResizeMode(QHeaderView::Interactive);
-	ui->tableBatchUniques->horizontalHeader()->setResizeMode(QHeaderView::Interactive);
+	ui->tableBatchGroups->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
+	ui->tableBatchUniques->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
 	on_buttonInitSettings_clicked();
 
 	// Console usage
@@ -356,7 +359,10 @@ void mainWindow::loadSites()
 			file.close();
 		}
 	}
-	qDeleteAll(m_sites);
+
+	// TODO: fix crash on qDeleteAll here
+	// qDeleteAll(m_sites);
+
 	m_sites.clear();
 	m_sites = stes;
 }
@@ -370,7 +376,12 @@ int mainWindow::addTab(QString tag)
 {
 	tagTab *w = new tagTab(m_tabs.size(), &m_sites, &m_favorites, &m_serverDate, this);
 	if (m_tabs.size() > ui->tabWidget->currentIndex())
-	{ w->setSources(m_tabs[ui->tabWidget->currentIndex()]->sources()); }
+	{
+		w->setSources(m_tabs[ui->tabWidget->currentIndex()]->sources());
+		w->setImagesPerPage(m_tabs[ui->tabWidget->currentIndex()]->imagesPerPage());
+		w->setColumns(m_tabs[ui->tabWidget->currentIndex()]->columns());
+		w->setPostFilter(m_tabs[ui->tabWidget->currentIndex()]->postFilter());
+	}
 	connect(w, SIGNAL(batchAddGroup(QStringList)), this, SLOT(batchAddGroup(QStringList)));
 	connect(w, SIGNAL(batchAddUnique(QMap<QString,QString>)), this, SLOT(batchAddUnique(QMap<QString,QString>)));
 	connect(w, SIGNAL(titleChanged(searchTab*)), this, SLOT(updateTabTitle(searchTab*)));
@@ -958,6 +969,7 @@ void mainWindow::getAll(bool all)
 		m_progressBars.at(i)->setMaximum(100);
 		m_progressBars.at(i)->setValue(0);
 	}
+
 	m_allow = false;
 	for (int i = 0; i < ui->tableBatchGroups->rowCount(); i++)
 	{ ui->tableBatchGroups->item(i, 0)->setIcon(QIcon(":/images/colors/black.png")); }
@@ -966,9 +978,15 @@ void mainWindow::getAll(bool all)
 	selected = ui->tableBatchGroups->selectedItems();
 	count = selected.size();
 	m_batchDownloading.clear();
+
+	m_progressdialog->setText(tr("Téléchargement des pages, veuillez patienter..."));
+	connect(m_progressdialog, SIGNAL(rejected()), this, SLOT(getAllCancel()));
+	m_progressdialog->clear();
+
 	QSet<int> todownload = QSet<int>();
 	for (int i = 0; i < count; i++)
 	{ todownload.insert(selected.at(i)->row()); }
+
 	if (all || !todownload.isEmpty())
 	{
 		m_progressdialog->setImagesCount(0);
@@ -976,29 +994,24 @@ void mainWindow::getAll(bool all)
 		{
 			if (all || todownload.contains(i))
 			{
-				m_batchDownloading.insert(i);
 				QString site = m_groupBatchs.at(i).at(5);
 				int pp = m_groupBatchs.at(i).at(2).toInt();
-				QString text = " "+m_groupBatchs.at(i).at(0)+" ";
-				text.replace(" rating:s ", " rating:safe ", Qt::CaseInsensitive)
-					.replace(" rating:q ", " rating:questionable ", Qt::CaseInsensitive)
-					.replace(" rating:e ", " rating:explicit ", Qt::CaseInsensitive)
-					.replace(" -rating:s ", " -rating:safe ", Qt::CaseInsensitive)
-					.replace(" -rating:q ", " -rating:questionable ", Qt::CaseInsensitive)
-					.replace(" -rating:e ", " -rating:explicit ", Qt::CaseInsensitive);
-				QStringList tags = text.split(" ", QString::SkipEmptyParts);
-				tags.removeDuplicates();
+
 				m_getAllLimit += m_groupBatchs.at(i).at(3).toDouble();
+				m_batchDownloading.insert(i);
+
 				for (int r = 0; r < ceil(m_groupBatchs.at(i).at(3).toDouble()/pp); r++)
 				{
 					if (!m_sites.keys().contains(site))
 					{ log(tr("<b>Attention :</b> %1").arg(tr("site \"%1\" not found.").arg(site))); }
 					else
 					{
-						Page *page = new Page(m_sites[site], &m_sites, tags, m_groupBatchs.at(i).at(1).toInt()+r, pp, QStringList(), false, this);
-						log(tr("Chargement de la page <a href=\"%1\">%1</a>").arg(Qt::escape(page->url().toString())));
+						Page *page = new Page(m_sites[site], &m_sites, m_groupBatchs.at(i).at(0).split(' '), m_groupBatchs.at(i).at(1).toInt()+r, pp, QStringList(), false, this);
 						connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(getAllFinishedLoading(Page*)));
 						page->load();
+
+						log(tr("Chargement de la page <a href=\"%1\">%1</a>").arg(page->url().toString().toHtmlEscaped()));
+
 						m_groupBatchs[i][8] += (m_groupBatchs[i][8] == "" ? "" : "¤") + QString::number((int)page);
 						m_getAllPages.append(page);
 						m_progressdialog->setImagesCount(m_progressdialog->count() + 1);
@@ -1007,6 +1020,7 @@ void mainWindow::getAll(bool all)
 			}
 		}
 	}
+
 	if (m_getAllPages.isEmpty())
 	{
 		if (m_getAllRemaining.isEmpty())
@@ -1014,16 +1028,13 @@ void mainWindow::getAll(bool all)
 		else
 		{ getAllImages(); }
 	}
-	m_progressdialog->setText(tr("Téléchargement des pages, veuillez patienter..."));
-		connect(m_progressdialog, SIGNAL(rejected()), this, SLOT(getAllCancel()));
-		m_progressdialog->setValue(0);
-		m_progressdialog->setImages(0);
-		m_progressdialog->show();
-		logShow();
+
+	m_progressdialog->show();
+	logShow();
 }
 void mainWindow::getAllFinishedLoading(Page* p)
 {
-	log(tr("Page reçue <a href=\"%1\">%1</a> (%n résultat(s))", "", p->images().count()).arg(Qt::escape(p->url().toString())));
+	log(tr("Page reçue <a href=\"%1\">%1</a> (%n résultat(s))", "", p->images().count()).arg(p->url().toString().toHtmlEscaped()));
 	int n = 0;
 	for (int i = 0; i < m_groupBatchs.count(); i++)
 	{
@@ -1493,7 +1504,7 @@ void mainWindow::getAllPerformImage(Image* img)
 	{ m_getAll404s++; }
 	else
 	{
-		log(tr("Erreur inconnue pour l'image: <a href=\"%1\">%1</a>. \"%2\"").arg(Qt::escape(img->url()), reply->errorString()), Error);
+		log(tr("Erreur inconnue pour l'image: <a href=\"%1\">%1</a>. \"%2\"").arg(img->url().toHtmlEscaped(), reply->errorString()), Error);
 		m_getAllErrors++;
 	}
 
@@ -1540,8 +1551,8 @@ void mainWindow::saveImage(Image *img, QNetworkReply *reply, QString path, QStri
 	if (getAll)
 	{ path.replace("%n%", QString::number(m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors)); }
 
-	if (path.left(1) == QDir::toNativeSeparators("/"))	{ path = path.right(path.length()-1);	}
-	if (p.right(1) == QDir::toNativeSeparators("/"))	{ p = p.left(p.length()-1);				}
+	if (path.left(1) == DIR_SEPARATOR)	{ path = path.right(path.length()-1);	}
+	if (p.right(1) == DIR_SEPARATOR)	{ p = p.left(p.length()-1);				}
 	QString fp = QDir::toNativeSeparators(p+"/"+path);
 
 	QString whatToDo = m_settings->value("Save/md5Duplicates", "save").toString();
@@ -1568,7 +1579,7 @@ void mainWindow::saveImage(Image *img, QNetworkReply *reply, QString path, QStri
 			}
 			else
 			{
-				log(tr("Rien n'a été reçu pour l'image: <a href=\"%1\">%1</a>.").arg(Qt::escape(img->url())), Error);
+				log(tr("Rien n'a été reçu pour l'image: <a href=\"%1\">%1</a>.").arg(img->url().toHtmlEscaped()), Error);
 				if (getAll)
 				{ m_getAllErrors++; }
 			}
