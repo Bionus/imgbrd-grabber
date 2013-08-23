@@ -150,27 +150,30 @@ optionsWindow::optionsWindow(QWidget *parent) : QDialog(parent), ui(new Ui::opti
 
     settings.beginGroup("Coloring");
         settings.beginGroup("Colors");
-            ui->lineColoringArtists->setText(settings.value("artists", "#aa0000").toString());
-            ui->lineColoringCopyrights->setText(settings.value("copyrights", "#aa00aa").toString());
+			ui->lineColoringArtists->setText(settings.value("artists", "#aa0000").toString());
+			ui->lineColoringCircles->setText(settings.value("circles", "#55bbff").toString());
+			ui->lineColoringCopyrights->setText(settings.value("copyrights", "#aa00aa").toString());
             ui->lineColoringCharacters->setText(settings.value("characters", "#00aa00").toString());
             ui->lineColoringModels->setText(settings.value("models", "#0000ee").toString());
             ui->lineColoringGenerals->setText(settings.value("generals", "#000000").toString());
-            ui->lineColoringFavorites->setText(settings.value("favorites", "#ffc0cb").toString());
+			ui->lineColoringFavorites->setText(settings.value("favorites", "#ffc0cb").toString());
             ui->lineColoringBlacklisteds->setText(settings.value("blacklisteds", "#000000").toString());
             ui->lineColoringIgnoreds->setText(settings.value("ignoreds", "#999999").toString());
         settings.endGroup();
         settings.beginGroup("Fonts");
-            QFont fontArtists, fontCopyrights, fontCharacters, fontModels, fontGenerals, fontFavorites, fontBlacklisteds, fontIgnoreds;
-            fontArtists.fromString(settings.value("artists").toString());
-            fontCopyrights.fromString(settings.value("copyrights").toString());
+			QFont fontArtists, fontCircles, fontCopyrights, fontCharacters, fontModels, fontGenerals, fontFavorites, fontBlacklisteds, fontIgnoreds;
+			fontArtists.fromString(settings.value("artists").toString());
+			fontCircles.fromString(settings.value("circles").toString());
+			fontCopyrights.fromString(settings.value("copyrights").toString());
             fontCharacters.fromString(settings.value("characters").toString());
             fontModels.fromString(settings.value("models").toString());
             fontGenerals.fromString(settings.value("generals").toString());
             fontFavorites.fromString(settings.value("favorites").toString());
             fontBlacklisteds.fromString(settings.value("blacklisteds").toString());
             fontIgnoreds.fromString(settings.value("ignoreds").toString());
-            ui->lineColoringArtists->setFont(fontArtists);
-            ui->lineColoringCopyrights->setFont(fontCopyrights);
+			ui->lineColoringArtists->setFont(fontArtists);
+			ui->lineColoringCircles->setFont(fontCircles);
+			ui->lineColoringCopyrights->setFont(fontCopyrights);
             ui->lineColoringCharacters->setFont(fontCharacters);
             ui->lineColoringModels->setFont(fontModels);
             ui->lineColoringGenerals->setFont(fontGenerals);
@@ -282,10 +285,17 @@ void optionsWindow::addFilename(QString condition, QString filename)
 
 void optionsWindow::on_lineColoringArtists_textChanged()
 {
-    if (QColor(ui->lineColoringArtists->text()).isValid())
-    { ui->lineColoringArtists->setStyleSheet("color:"+ui->lineColoringArtists->text()); }
-    else
-    { ui->lineColoringArtists->setStyleSheet("color:#000000"); }
+	if (QColor(ui->lineColoringArtists->text()).isValid())
+	{ ui->lineColoringArtists->setStyleSheet("color:"+ui->lineColoringArtists->text()); }
+	else
+	{ ui->lineColoringArtists->setStyleSheet("color:#000000"); }
+}
+void optionsWindow::on_lineColoringCircles_textChanged()
+{
+	if (QColor(ui->lineColoringCircles->text()).isValid())
+	{ ui->lineColoringCircles->setStyleSheet("color:"+ui->lineColoringCircles->text()); }
+	else
+	{ ui->lineColoringCircles->setStyleSheet("color:#000000"); }
 }
 void optionsWindow::on_lineColoringCopyrights_textChanged()
 {
@@ -339,9 +349,15 @@ void optionsWindow::on_lineColoringIgnoreds_textChanged()
 
 void optionsWindow::on_buttonColoringArtistsColor_clicked()
 {
-    QColor color = QColorDialog::getColor(QColor(ui->lineColoringArtists->text()), this, tr("Grabber - Choisir une couleur"));
-    if (color.isValid())
-    { ui->lineColoringArtists->setText(color.name()); }
+	QColor color = QColorDialog::getColor(QColor(ui->lineColoringArtists->text()), this, tr("Grabber - Choisir une couleur"));
+	if (color.isValid())
+	{ ui->lineColoringArtists->setText(color.name()); }
+}
+void optionsWindow::on_buttonColoringCirclesColor_clicked()
+{
+	QColor color = QColorDialog::getColor(QColor(ui->lineColoringCircles->text()), this, tr("Grabber - Choisir une couleur"));
+	if (color.isValid())
+	{ ui->lineColoringCircles->setText(color.name()); }
 }
 void optionsWindow::on_buttonColoringCopyrightsColor_clicked()
 {
@@ -388,10 +404,17 @@ void optionsWindow::on_buttonColoringIgnoredsColor_clicked()
 
 void optionsWindow::on_buttonColoringArtistsFont_clicked()
 {
-    bool ok = false;
-    QFont police = QFontDialog::getFont(&ok, ui->lineColoringArtists->font(), this, tr("Grabber - Choisir une police"));
-    if (ok)
-    { ui->lineColoringArtists->setFont(police); }
+	bool ok = false;
+	QFont police = QFontDialog::getFont(&ok, ui->lineColoringArtists->font(), this, tr("Grabber - Choisir une police"));
+	if (ok)
+	{ ui->lineColoringArtists->setFont(police); }
+}
+void optionsWindow::on_buttonColoringCirclesFont_clicked()
+{
+	bool ok = false;
+	QFont police = QFontDialog::getFont(&ok, ui->lineColoringCircles->font(), this, tr("Grabber - Choisir une police"));
+	if (ok)
+	{ ui->lineColoringCircles->setFont(police); }
 }
 void optionsWindow::on_buttonColoringCopyrightsFont_clicked()
 {
@@ -631,8 +654,9 @@ void optionsWindow::save()
     settings.beginGroup("Coloring");
         settings.beginGroup("Colors");
             settings.setValue("artists", ui->lineColoringArtists->text());
-            settings.setValue("copyrights", ui->lineColoringCopyrights->text());
-            settings.setValue("characters", ui->lineColoringCharacters->text());
+			settings.setValue("circles", ui->lineColoringCircles->text());
+			settings.setValue("copyrights", ui->lineColoringCopyrights->text());
+			settings.setValue("characters", ui->lineColoringCharacters->text());
             settings.setValue("models", ui->lineColoringModels->text());
             settings.setValue("generals", ui->lineColoringGenerals->text());
             settings.setValue("favorites", ui->lineColoringFavorites->text());
@@ -640,8 +664,9 @@ void optionsWindow::save()
             settings.setValue("ignoreds", ui->lineColoringIgnoreds->text());
         settings.endGroup();
         settings.beginGroup("Fonts");
-            settings.setValue("artists", ui->lineColoringArtists->font().toString());
-            settings.setValue("copyrights", ui->lineColoringCopyrights->font().toString());
+			settings.setValue("artists", ui->lineColoringArtists->font().toString());
+			settings.setValue("circles", ui->lineColoringCircles->font().toString());
+			settings.setValue("copyrights", ui->lineColoringCopyrights->font().toString());
             settings.setValue("characters", ui->lineColoringCharacters->font().toString());
             settings.setValue("models", ui->lineColoringModels->font().toString());
             settings.setValue("generals", ui->lineColoringGenerals->font().toString());
