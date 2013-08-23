@@ -1,5 +1,8 @@
 #summary Download list.
 
+= Changes to the downloads =
+The downloads have moved because google code will soon close its downloads.
+
 = Windows =
   * [http://www.bionus.fr.cr/imgbrd-grabber/downloads/Grabber_3.4.0.exe 3.4.0] <font color="green">Featured</font>
   * [http://www.bionus.fr.cr/imgbrd-grabber/downloads/Grabber_3.3.0.exe 3.3.0]
