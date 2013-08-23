@@ -675,45 +675,58 @@ void Page::parseTags()
 		QRegExp rxtags(m_site->value("Regex/Tags"));
 		rxtags.setMinimal(true);
 		int p = 0;
+		QStringList order = m_site->value("Regex/TagsOrder").split('|', QString::SkipEmptyParts);
 		while ((p = rxtags.indexIn(source, p)) != -1)
 		{
 			p += rxtags.matchedLength();
-			QString type = "unknown", tag = "";
+			QString type = "", tag = "";
 			int count = 1;
-			switch (rxtags.captureCount())
+			if (order.empty())
 			{
-				case 4:
-					type = rxtags.cap(1);
-					tag = rxtags.cap(4).replace(" ", "_").replace("&amp;", "&");
-					count = rxtags.cap(3).endsWith('k') ? rxtags.cap(3).left(rxtags.cap(3).length() - 1).toInt() * 1000 : rxtags.cap(3).toInt();
-					break;
-
-				case 3:
-					type = rxtags.cap(1);
-					tag = rxtags.cap(2).replace(" ", "_").replace("&amp;", "&");
-					count = rxtags.cap(3).endsWith('k') ? rxtags.cap(3).left(rxtags.cap(3).length() - 1).toInt() * 1000 : rxtags.cap(3).toInt();
-					break;
-
-				case 2:
-					type = rxtags.cap(1);
-					if (type == "series")
-					{ type = "copyright"; }
-					tag = rxtags.cap(2).replace(" ", "_").replace("&amp;", "&");
-					break;
-
-				case 1:
-					tag = rxtags.cap(1).replace(" ", "_").replace("&amp;", "&");
-					break;
-			}
-			if (type.length() == 1)
-			{
-				int tpe = type.toInt();
-				if (tpe >= 0 && tpe <= 4)
+				switch (rxtags.captureCount())
 				{
-					QStringList types = QStringList() << "general" << "artist" << "unknown" << "copyright" << "character";
-					type = types[tpe];
+					case 4:	order << "type" << "" << "count" << "tag";	break;
+					case 3:	order << "type" << "tag" << "count";		break;
+					case 2:	order << "type" << "tag";					break;
+					case 1:	order << "tag";								break;
 				}
 			}
+			for (int o = 0; o < order.size(); o++)
+			{
+				if (order.at(o) == "tag" && tag.isEmpty())
+				{ tag = rxtags.cap(o + 1).replace(" ", "_").replace("&amp;", "&").trimmed(); }
+				else if (order.at(o) == "type" && type.isEmpty())
+				{
+					type = rxtags.cap(o + 1).toLower().trimmed();
+					if (type.contains(", "))
+					{ type = type.split(", ").at(0).trimmed(); }
+					if (type == "series")
+					{ type = "copyright"; }
+					else if (type == "mangaka")
+					{ type = "artist"; }
+					else if (type == "game")
+					{ type = "copyright"; }
+					else if (type == "studio")
+					{ type = "circle"; }
+					else if (type == "source")
+					{ type = "general"; }
+					else if (type == "character group")
+					{ type = "general"; }
+					else if (type.length() == 1)
+					{
+						int tpe = type.toInt();
+						if (tpe >= 0 && tpe <= 4)
+						{
+							QStringList types = QStringList() << "general" << "artist" << "unknown" << "copyright" << "character";
+							type = types[tpe];
+						}
+					}
+				}
+				else if (order.at(o) == "count" && count != 0)
+				{ count = rxtags.cap(o + 1).toLower().endsWith('k') ? rxtags.cap(3).left(rxtags.cap(3).length() - 1).toInt() * 1000 : rxtags.cap(3).toInt(); }
+			}
+			if (type.isEmpty())
+			{ type = "unknown"; }
 			m_tags.append(Tag(tag, type, count));
 		}
 	}

@@ -204,61 +204,58 @@ void Image::parseDetails()
 		rx.setMinimal(true);
 		int pos = 0;
 		QList<Tag> tgs;
+		QStringList order = m_parentSite->value("Regex/TagsOrder").split('|', QString::SkipEmptyParts);
 		while ((pos = rx.indexIn(source, pos)) != -1)
 		{
 			pos += rx.matchedLength();
-			QString type = "unknown", tag = "";
+			QString type = "", tag = "";
 			int count = 1;
-			if (m_parentSite->contains("Regex/TagsOrder"))
-			{
-				QStringList ordr = m_parentSite->value("Regex/TagsOrder").split('|');
-				if (ordr.contains("type"))
-				{ type = rx.cap(ordr.indexOf("type") + 1).toLower(); }
-				if (ordr.contains("tag"))
-				{ tag = rx.cap(ordr.indexOf("tag") + 1).replace(" ", "_").replace("&amp;", "&"); }
-				if (ordr.contains("count"))
-				{
-					int pos = ordr.indexOf("count") + 1;
-					count = rx.cap(pos).endsWith('k') ? rx.cap(pos).left(rx.cap(pos).length() - 1).toInt() * 1000 : rx.cap(pos).toInt();
-				}
-			}
-			else
+			if (order.empty())
 			{
 				switch (rx.captureCount())
 				{
-					case 4:
-						type = rx.cap(1).toLower();
-						tag = rx.cap(4).replace(" ", "_").replace("&amp;", "&");
-						count = rx.cap(3).endsWith('k') ? rx.cap(3).left(rx.cap(3).length() - 1).toInt() * 1000 : rx.cap(3).toInt();
-						break;
-
-					case 3:
-						type = rx.cap(1).toLower();
-						tag = rx.cap(2).replace(" ", "_").replace("&amp;", "&");
-						count = rx.cap(3).endsWith('k') ? rx.cap(3).left(rx.cap(3).length() - 1).toInt() * 1000 : rx.cap(3).toInt();
-						break;
-
-					case 2:
-						type = rx.cap(1).toLower();
-						tag = rx.cap(2).replace(" ", "_").replace("&amp;", "&");
-						break;
-
-					case 1:
-						tag = rx.cap(1).replace(" ", "_").replace("&amp;", "&");
-						break;
+					case 4:	order << "type" << "" << "count" << "tag";	break;
+					case 3:	order << "type" << "tag" << "count";		break;
+					case 2:	order << "type" << "tag";					break;
+					case 1:	order << "tag";								break;
 				}
 			}
-			if (type.length() == 1)
+			for (int o = 0; o < order.size(); o++)
 			{
-				int tpe = type.toInt();
-				if (tpe >= 0 && tpe <= 4)
+				if (order.at(o) == "tag" && tag.isEmpty())
+				{ tag = rx.cap(o + 1).replace(" ", "_").replace("&amp;", "&").trimmed(); }
+				else if (order.at(o) == "type" && type.isEmpty())
 				{
-					QStringList types = QStringList() << "general" << "artist" << "unknown" << "copyright" << "character";
-					type = types[tpe];
+					type = rx.cap(o + 1).toLower().trimmed();
+					if (type.contains(", "))
+					{ type = type.split(", ").at(0).trimmed(); }
+					if (type == "series")
+					{ type = "copyright"; }
+					else if (type == "mangaka")
+					{ type = "artist"; }
+					else if (type == "game")
+					{ type = "copyright"; }
+					else if (type == "studio")
+					{ type = "circle"; }
+					else if (type == "source")
+					{ type = "general"; }
+					else if (type == "character group")
+					{ type = "general"; }
+					else if (type.length() == 1)
+					{
+						int tpe = type.toInt();
+						if (tpe >= 0 && tpe <= 4)
+						{
+							QStringList types = QStringList() << "general" << "artist" << "unknown" << "copyright" << "character";
+							type = types[tpe];
+						}
+					}
 				}
+				else if (order.at(o) == "count" && count != 0)
+				{ count = rx.cap(o + 1).toLower().endsWith('k') ? rx.cap(3).left(rx.cap(3).length() - 1).toInt() * 1000 : rx.cap(3).toInt(); }
 			}
-			else if (type == "series")	{ type = "copyright";	}
-			else if (type == "mangaka")	{ type = "artist";		}
+			if (type.isEmpty())
+			{ type = "unknown"; }
 			tgs.append(Tag(tag, type, count));
 		}
 		if (!tgs.isEmpty())
@@ -797,8 +794,8 @@ QStringList Image::stylishedTags(QStringList ignored)
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
 	QStringList blacklistedtags(settings.value("blacklistedtags").toString().split(' '));
 
-	QStringList tlist = QStringList() << "blacklisteds" << "ignoreds" << "artists" << "copyrights" << "characters" << "models" << "generals" << "favorites";
-	QStringList defaults = QStringList() << "000000" << "999999" << "aa0000" << "aa00aa" << "00aa00" << "0000ee" << "000000" << "ffc0cb";
+	QStringList tlist = QStringList() << "blacklisteds" << "ignoreds" << "artists" << "circles" << "copyrights" << "characters" << "models" << "generals" << "favorites";
+	QStringList defaults = QStringList() << "000000" << "999999" << "aa0000" << "55bbff" << "aa00aa" << "00aa00" << "0000ee" << "000000" << "ffc0cb";
 	QMap<QString,QString> styles;
 	for (int i = 0; i < tlist.size(); i++)
 	{
