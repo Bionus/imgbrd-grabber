@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Grabber"
-#define MyAppVersion "3.3.0"
+#define MyAppVersion "3.4.0"
 #define MyAppPublisher "Bionus"
 #define MyAppURL "http://code.google.com/p/imgbrd-grabber/"
 #define MyAppExeName "Grabber.exe"
@@ -75,28 +75,40 @@ Source: "D:\Programmation\C++\Qt\Grabber\release\CDR.exe"; DestDir: "{app}"; Fla
 Source: "D:\Programmation\C++\Qt\Grabber\release\CrashReporter.exe"; DestDir: "{app}"; Flags: ignoreversion   
 Source: "D:\Programmation\C++\Qt\Grabber\release\Grabber.exe"; DestDir: "{app}"; Flags: ignoreversion   
 Source: "D:\Programmation\C++\Qt\Grabber\release\words.txt"; DestDir: "{app}";    
+Source: "D:\Programmation\C++\Qt\Grabber\release\icudt51.dll"; DestDir: "{app}"; Flags: ignoreversion         
+Source: "D:\Programmation\C++\Qt\Grabber\release\icuin51.dll"; DestDir: "{app}"; Flags: ignoreversion         
+Source: "D:\Programmation\C++\Qt\Grabber\release\icuuc51.dll"; DestDir: "{app}"; Flags: ignoreversion         
 Source: "D:\Programmation\C++\Qt\Grabber\release\libeay32.dll"; DestDir: "{app}"; Flags: ignoreversion         
+Source: "D:\Programmation\C++\Qt\Grabber\release\libEGL.dll"; DestDir: "{app}"; Flags: ignoreversion         
+Source: "D:\Programmation\C++\Qt\Grabber\release\libGLESv2.dll"; DestDir: "{app}"; Flags: ignoreversion         
 Source: "D:\Programmation\C++\Qt\Grabber\release\libmysql.dll"; DestDir: "{app}"; Flags: ignoreversion        
 Source: "D:\Programmation\C++\Qt\Grabber\release\qscintilla2.dll"; DestDir: "{app}"; Flags: ignoreversion      
-Source: "D:\Programmation\C++\Qt\Grabber\release\QtCore4.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\Programmation\C++\Qt\Grabber\release\QtGui4.dll"; DestDir: "{app}"; Flags: ignoreversion           
-Source: "D:\Programmation\C++\Qt\Grabber\release\QtNetwork4.dll"; DestDir: "{app}"; Flags: ignoreversion      
-Source: "D:\Programmation\C++\Qt\Grabber\release\QtScript4.dll"; DestDir: "{app}"; Flags: ignoreversion        
-Source: "D:\Programmation\C++\Qt\Grabber\release\QtSql4.dll"; DestDir: "{app}"; Flags: ignoreversion           
-Source: "D:\Programmation\C++\Qt\Grabber\release\QtXml4.dll"; DestDir: "{app}"; Flags: ignoreversion           
+Source: "D:\Programmation\C++\Qt\Grabber\release\Qt5Core.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\Programmation\C++\Qt\Grabber\release\Qt5Gui.dll"; DestDir: "{app}"; Flags: ignoreversion           
+Source: "D:\Programmation\C++\Qt\Grabber\release\Qt5Multimedia.dll"; DestDir: "{app}"; Flags: ignoreversion       
+Source: "D:\Programmation\C++\Qt\Grabber\release\Qt5Network.dll"; DestDir: "{app}"; Flags: ignoreversion          
+Source: "D:\Programmation\C++\Qt\Grabber\release\Qt5PrintSupport.dll"; DestDir: "{app}"; Flags: ignoreversion      
+Source: "D:\Programmation\C++\Qt\Grabber\release\Qt5Script.dll"; DestDir: "{app}"; Flags: ignoreversion        
+Source: "D:\Programmation\C++\Qt\Grabber\release\Qt5Sql.dll"; DestDir: "{app}"; Flags: ignoreversion           
+Source: "D:\Programmation\C++\Qt\Grabber\release\Qt5Widgets.dll"; DestDir: "{app}"; Flags: ignoreversion           
+Source: "D:\Programmation\C++\Qt\Grabber\release\Qt5Xml.dll"; DestDir: "{app}"; Flags: ignoreversion           
 Source: "D:\Programmation\C++\Qt\Grabber\release\ssleay32.dll"; DestDir: "{app}"; Flags: ignoreversion     
 Source: "D:\Programmation\C++\Qt\Grabber\release\crashreporter\English.qm"; DestDir: "{app}\crashreporter"; Flags: ignoreversion         
 Source: "D:\Programmation\C++\Qt\Grabber\release\crashreporter\Français.qm"; DestDir: "{app}\crashreporter"; Flags: ignoreversion  
-Source: "D:\Programmation\C++\Qt\Grabber\release\imageformats\qgif4.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
-Source: "D:\Programmation\C++\Qt\Grabber\release\imageformats\qico4.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
-Source: "D:\Programmation\C++\Qt\Grabber\release\imageformats\qjpeg4.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
-Source: "D:\Programmation\C++\Qt\Grabber\release\imageformats\qmng4.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
-Source: "D:\Programmation\C++\Qt\Grabber\release\imageformats\qsvg4.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
-Source: "D:\Programmation\C++\Qt\Grabber\release\imageformats\qtga4.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
-Source: "D:\Programmation\C++\Qt\Grabber\release\imageformats\qtiff4.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
+Source: "D:\Programmation\C++\Qt\Grabber\release\imageformats\qgif.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
+Source: "D:\Programmation\C++\Qt\Grabber\release\imageformats\qico.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
+Source: "D:\Programmation\C++\Qt\Grabber\release\imageformats\qjpeg.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
+Source: "D:\Programmation\C++\Qt\Grabber\release\imageformats\qmng.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
+Source: "D:\Programmation\C++\Qt\Grabber\release\imageformats\qsvg.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
+Source: "D:\Programmation\C++\Qt\Grabber\release\imageformats\qtga.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
+Source: "D:\Programmation\C++\Qt\Grabber\release\imageformats\qtiff.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
+Source: "D:\Programmation\C++\Qt\Grabber\release\imageformats\qwbmp.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\languages\English.qm"; DestDir: "{app}\languages"; Flags: ignoreversion         
 Source: "D:\Programmation\C++\Qt\Grabber\release\languages\Français.qm"; DestDir: "{app}\languages"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\languages\Russian.qm"; DestDir: "{app}\languages"; Flags: ignoreversion
+Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Booru-on-rails\icon.png"; DestDir: "{%UserProfile}\Grabber\sites\Booru-on-rails"; Flags: ignoreversion
+Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Booru-on-rails\model.xml"; DestDir: "{%UserProfile}\Grabber\sites\Booru-on-rails"; Flags: ignoreversion
+Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Booru-on-rails\sites.txt"; DestDir: "{%UserProfile}\Grabber\sites\Booru-on-rails";   
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Danbooru\icon.png"; DestDir: "{%UserProfile}\Grabber\sites\Danbooru"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Danbooru\model.xml"; DestDir: "{%UserProfile}\Grabber\sites\Danbooru"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Danbooru\sites.txt"; DestDir: "{%UserProfile}\Grabber\sites\Danbooru";   
@@ -125,7 +137,7 @@ Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Shimmie\sites.txt"; DestD
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Zerochan\icon.png"; DestDir: "{%UserProfile}\Grabber\sites\Zerochan"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Zerochan\model.xml"; DestDir: "{%UserProfile}\Grabber\sites\Zerochan"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Zerochan\sites.txt"; DestDir: "{%UserProfile}\Grabber\sites\Zerochan";            
-Source: "D:\Programmation\C++\Qt\Grabber\release\sqldrivers\qsqlmysql4.dll"; DestDir: "{app}\sqldrivers"; Flags: ignoreversion               
+Source: "D:\Programmation\C++\Qt\Grabber\release\sqldrivers\qsqlmysql.dll"; DestDir: "{app}\sqldrivers"; Flags: ignoreversion               
 
 [InstallDelete] 
 Type: filesandordirs; Name: "{app}\languages\updater"
@@ -133,8 +145,22 @@ Type: filesandordirs; Name: "{app}\sites"
 Type: files; Name: "{app}\Updater.exe"       
 Type: files; Name: "{app}\VERSION"
 Type: files; Name: "{app}\MD5"                   
-Type: files; Name: "{app}\libgcc_s_dw2-1.dll"                   
+Type: files; Name: "{app}\libgcc_s_dw2-1.dll"                      
 Type: files; Name: "{app}\mingwm10.dll"                   
+Type: files; Name: "{app}\QtCore4.dll"                       
+Type: files; Name: "{app}\QtGui4.dll"                       
+Type: files; Name: "{app}\QtNetwork4.dll"                       
+Type: files; Name: "{app}\QtScript4.dll"                       
+Type: files; Name: "{app}\QtSql4.dll"                       
+Type: files; Name: "{app}\QtXml4.dll"                 
+Type: files; Name: "{app}\imageformats\qgif4.dll"                             
+Type: files; Name: "{app}\imageformats\qico4.dll"                             
+Type: files; Name: "{app}\imageformats\qjpeg4.dll"                             
+Type: files; Name: "{app}\imageformats\qmng4.dll"                             
+Type: files; Name: "{app}\imageformats\qsvg4.dll"                             
+Type: files; Name: "{app}\imageformats\qtga4.dll"                             
+Type: files; Name: "{app}\imageformats\qtiff4.dll"                             
+Type: files; Name: "{app}\sqldrivers\qsqlmysql4.dll"                     
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"

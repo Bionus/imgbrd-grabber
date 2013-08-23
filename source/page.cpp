@@ -508,6 +508,8 @@ void Page::parse()
 		{
 			QMap<QString, QVariant> sc;
 			QList<QVariant> sourc = src.toList();
+			if (sourc.isEmpty())
+			{ sourc = src.toMap().value("images").toList(); }
 			for (int id = 0; id < sourc.count(); id++)
 			{
 				sc = sourc.at(id + first).toMap();
@@ -544,7 +546,14 @@ void Page::parse()
 				if (m_site->contains("Urls/Json/Image"))
 				{
 					if (m_site->value("Urls/Json/Image").contains("->"))
-					{ d["file_url"].replace(m_site->value("Urls/Json/Image").left(m_site->value("Urls/Json/Image").indexOf("->")), m_site->value("Urls/Json/Image").right(m_site->value("Urls/Json/Image").size()-m_site->value("Urls/Json/Image").indexOf("->")-2)); }
+					{
+						QStringList replaces = m_site->value("Urls/Json/Image").split("&");
+						foreach (QString rep, replaces)
+						{
+							QRegExp rgx(rep.left(rep.indexOf("->")));
+							d["file_url"].replace(rgx, rep.right(rep.size() - rep.indexOf("->") - 2));
+						}
+					}
 					else
 					{
 						d["file_url"] = m_site->value("Urls/Json/Image");
@@ -556,7 +565,14 @@ void Page::parse()
 				if (m_site->contains("Urls/Json/Thumbnail"))
 				{
 					if (m_site->value("Urls/Json/Thumbnail").contains("->"))
-					{ d["preview_url"].replace(m_site->value("Urls/Json/Thumbnail").left(m_site->value("Urls/Json/Thumbnail").indexOf("->")), m_site->value("Urls/Json/Thumbnail").right(m_site->value("Urls/Json/Thumbnail").size()-m_site->value("Urls/Json/Thumbnail").indexOf("->")-2)); }
+					{
+						QStringList replaces = m_site->value("Urls/Json/Thumbnail").split("&");
+						foreach (QString rep, replaces)
+						{
+							QRegExp rgx(rep.left(rep.indexOf("->")));
+							d["preview_url"].replace(rgx, rep.right(rep.size() - rep.indexOf("->") - 2));
+						}
+					}
 					else
 					{
 						d["preview_url"] = m_site->value("Urls/Json/Thumbnail");
