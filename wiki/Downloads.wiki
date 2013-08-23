@@ -17,3 +17,4 @@ You can find the new downloads list [http://www.bionus.fr.cr/imgbrd-grabber/down
 
 = Mirrors =
   * [https://googledrive.com/host/0B9j07AwMZbxDLU9Td2VwVUJ6Tnc Google Drive]
+  * [https://skydrive.live.com/redir?resid=865D66DC92FCEFA5!124&authkey=!ANp8C5QMjubMtWg SkyDrive]
