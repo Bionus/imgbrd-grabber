@@ -5,6 +5,8 @@
 
 Tag::Tag(QString text, QString type, int count) : m_text(text), m_type(type), m_count(count)
 {
+	m_text.replace("&#39;", "'");
+
 	if (text.endsWith("(artist)") && type == "unknown")
 	{ m_type = "artist"; }
 	if (text.startsWith("artist:") && type == "unknown")
@@ -12,6 +14,9 @@ Tag::Tag(QString text, QString type, int count) : m_text(text), m_type(type), m_
 		m_type = "artist";
 		m_text = text.right(text.size() - 7);
 	}
+
+	if (type.contains(' '))
+	{ m_type = type.left(type.indexOf(' ')); }
 }
 Tag::~Tag()
 { }
