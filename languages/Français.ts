@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
 <TS version="2.0" language="fr_FR" sourcelanguage="fr_FR">
-<defaultcodec>UTF-8</defaultcodec>
 <context>
     <name>AddGroupWindow</name>
     <message>
@@ -343,24 +342,24 @@
         <translation>Nommage Javascript</translation>
     </message>
     <message>
-        <location filename="../source/filenamewindow.cpp" line="53"/>
-        <location filename="../source/filenamewindow.cpp" line="78"/>
+        <location filename="../source/filenamewindow.cpp" line="58"/>
+        <location filename="../source/filenamewindow.cpp" line="83"/>
         <source>Grabber</source>
         <translation>Grabber</translation>
     </message>
     <message>
-        <location filename="../source/filenamewindow.cpp" line="53"/>
-        <location filename="../source/filenamewindow.cpp" line="78"/>
+        <location filename="../source/filenamewindow.cpp" line="58"/>
+        <location filename="../source/filenamewindow.cpp" line="83"/>
         <source>Aide</source>
         <translation>Aide</translation>
     </message>
     <message>
-        <location filename="../source/filenamewindow.cpp" line="53"/>
+        <location filename="../source/filenamewindow.cpp" line="58"/>
         <source>Symboles disponibles : &lt;i&gt;%artist%&lt;/i&gt;, &lt;i&gt;%general%&lt;/i&gt;, &lt;i&gt;%copyright%&lt;/i&gt;, &lt;i&gt;%character%&lt;/i&gt;, &lt;i&gt;%all%&lt;/i&gt;, &lt;i&gt;%filename%&lt;/i&gt;, &lt;i&gt;%ext%&lt;/i&gt;, &lt;i&gt;%rating%&lt;/i&gt;, &lt;i&gt;%website%&lt;/i&gt;, &lt;i&gt;%md5%&lt;/i&gt;.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist%&lt;/i&gt; : tags de nom d&apos;artiste&lt;br/&gt;&lt;i&gt;%general%&lt;/i&gt; : tags d&apos;image génériques&lt;br/&gt;&lt;i&gt;%copyright%&lt;/i&gt; : tags de copyright, en général le nom de l&apos;anime/manga&lt;br/&gt;&lt;i&gt;%character%&lt;/i&gt; : tags indiquant quels personnages sont présents sur l&apos;image&lt;br/&gt;&lt;i&gt;%all%&lt;/i&gt; : tous les tags&lt;br/&gt;&lt;i&gt;%filename%&lt;/i&gt; : nom du fichier sur le serveur, en général une chaîne alphanumérique&lt;br/&gt;&lt;i&gt;%ext%&lt;/i&gt; : extension de l&apos;image&lt;br/&gt;&lt;i&gt;%rating%&lt;/i&gt; : Questionable, Safe ou Explicit&lt;br/&gt;&lt;i&gt;%score%&lt;/i&gt; : le score de l&apos;image&lt;br/&gt;&lt;i&gt;%website%&lt;/i&gt; : url du site de l&apos;image&lt;br/&gt;&lt;i&gt;%websitename%&lt;/i&gt; : nom du site de l&apos;image&lt;br/&gt;&lt;i&gt;%md5%&lt;/i&gt; : code unique de l&apos;image, composé de 32 caractères alphanumériques&lt;br/&gt;&lt;i&gt;%id%&lt;/i&gt; : identifiant de l&apos;image sur un site donné&lt;br/&gt;&lt;i&gt;%search%&lt;/i&gt; : tags de la recherche&lt;br/&gt;&lt;i&gt;%search_n%&lt;/i&gt; : n-ième tag de la recherche&lt;br/&gt;&lt;i&gt;%date%&lt;/i&gt; : date d&apos;ajout de l&apos;image au format dd-MM-yyyy HH.mm&lt;br/&gt;&lt;i&gt;%date:format%&lt;/i&gt; : date d&apos;ajout de l&apos;image au format donné&lt;br/&gt;&lt;br/&gt;Vous pouvez aussi utiliser les structures conditionnelles. Pour plus d&apos;informations, cliquez &lt;a href=&quot;http://code.google.com/p/imgbrd-grabber/wiki/Filename&quot;&gt;ici&lt;/a&gt;.</source>
         <translation>Symboles disponibles : &lt;i&gt;%artist%&lt;/i&gt;, &lt;i&gt;%general%&lt;/i&gt;, &lt;i&gt;%copyright%&lt;/i&gt;, &lt;i&gt;%character%&lt;/i&gt;, &lt;i&gt;%all%&lt;/i&gt;, &lt;i&gt;%filename%&lt;/i&gt;, &lt;i&gt;%ext%&lt;/i&gt;, &lt;i&gt;%rating%&lt;/i&gt;, &lt;i&gt;%website%&lt;/i&gt;, &lt;i&gt;%md5%&lt;/i&gt;.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist%&lt;/i&gt; : tags de nom d&apos;artiste&lt;br/&gt;&lt;i&gt;%general%&lt;/i&gt; : tags d&apos;image génériques&lt;br/&gt;&lt;i&gt;%copyright%&lt;/i&gt; : tags de copyright, en général le nom de l&apos;anime/manga&lt;br/&gt;&lt;i&gt;%character%&lt;/i&gt; : tags indiquant quels personnages sont présents sur l&apos;image&lt;br/&gt;&lt;i&gt;%all%&lt;/i&gt; : tous les tags&lt;br/&gt;&lt;i&gt;%filename%&lt;/i&gt; : nom du fichier sur le serveur, en général une chaîne alphanumérique&lt;br/&gt;&lt;i&gt;%ext%&lt;/i&gt; : extension de l&apos;image&lt;br/&gt;&lt;i&gt;%rating%&lt;/i&gt; : Questionable, Safe ou Explicit&lt;br/&gt;&lt;i&gt;%score%&lt;/i&gt; : le score de l&apos;image&lt;br/&gt;&lt;i&gt;%website%&lt;/i&gt; : url du site de l&apos;image&lt;br/&gt;&lt;i&gt;%websitename%&lt;/i&gt; : nom du site de l&apos;image&lt;br/&gt;&lt;i&gt;%md5%&lt;/i&gt; : code unique de l&apos;image, composé de 32 caractères alphanumériques&lt;br/&gt;&lt;i&gt;%id%&lt;/i&gt; : identifiant de l&apos;image sur un site donné&lt;br/&gt;&lt;i&gt;%search%&lt;/i&gt; : tags de la recherche&lt;br/&gt;&lt;i&gt;%search_n%&lt;/i&gt; : n-ième tag de la recherche&lt;br/&gt;&lt;i&gt;%date%&lt;/i&gt; : date d&apos;ajout de l&apos;image au format dd-MM-yyyy HH.mm&lt;br/&gt;&lt;i&gt;%date:format%&lt;/i&gt; : date d&apos;ajout de l&apos;image au format donné&lt;br/&gt;&lt;br/&gt;Vous pouvez aussi utiliser les structures conditionnelles. Pour plus d&apos;informations, cliquez &lt;a href=&quot;http://code.google.com/p/imgbrd-grabber/wiki/Filename&quot;&gt;ici&lt;/a&gt;.</translation>
     </message>
     <message>
-        <location filename="../source/filenamewindow.cpp" line="78"/>
+        <location filename="../source/filenamewindow.cpp" line="83"/>
         <source>Variables disponibles : &lt;i&gt;artist&lt;/i&gt;, &lt;i&gt;general&lt;/i&gt;, &lt;i&gt;copyright&lt;/i&gt;, &lt;i&gt;character&lt;/i&gt;, &lt;i&gt;all&lt;/i&gt;, &lt;i&gt;filename&lt;/i&gt;, &lt;i&gt;ext&lt;/i&gt;, &lt;i&gt;rating&lt;/i&gt;, &lt;i&gt;website&lt;/i&gt;, &lt;i&gt;md5&lt;/i&gt;.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;artist&lt;/i&gt; : tags de nom d&apos;artiste&lt;br/&gt;&lt;i&gt;general&lt;/i&gt; : tags d&apos;image génériques&lt;br/&gt;&lt;i&gt;copyright&lt;/i&gt; : tags de copyright, en général le nom de l&apos;anime/manga&lt;br/&gt;&lt;i&gt;character&lt;/i&gt; : tags indiquant quels personnages sont présents sur l&apos;image&lt;br/&gt;&lt;i&gt;all&lt;/i&gt; : tous les tags&lt;br/&gt;&lt;i&gt;filename&lt;/i&gt; : nom du fichier sur le serveur, en général une chaîne alphanumérique&lt;br/&gt;&lt;i&gt;ext&lt;/i&gt; : extension de l&apos;image&lt;br/&gt;&lt;i&gt;rating&lt;/i&gt; : Questionable, Safe ou Explicit&lt;br/&gt;&lt;i&gt;score&lt;/i&gt; : le score de l&apos;image&lt;br/&gt;&lt;i&gt;website&lt;/i&gt; : url du site de l&apos;image&lt;br/&gt;&lt;i&gt;websitename&lt;/i&gt; : nom du site de l&apos;image&lt;br/&gt;&lt;i&gt;md5&lt;/i&gt; : code unique de l&apos;image, composé de 32 caractères alphanumériques&lt;br/&gt;&lt;i&gt;id&lt;/i&gt; : identifiant de l&apos;image sur un site donné&lt;br/&gt;&lt;i&gt;search&lt;/i&gt; : tags de la recherche&lt;br/&gt;&lt;i&gt;search_n&lt;/i&gt; : n-ième tag de la recherche&lt;br/&gt;&lt;i&gt;date&lt;/i&gt; : date d&apos;ajout de l&apos;image au format dd-MM-yyyy HH.mm&lt;br/&gt;&lt;br/&gt;Pour plus d&apos;informations sur le nommage Javascript, cliquez &lt;a href=&quot;http://code.google.com/p/imgbrd-grabber/wiki/Filename#Javascript&quot;&gt;ici&lt;/a&gt;.</source>
         <translation>Variables disponibles : &lt;i&gt;artist&lt;/i&gt;, &lt;i&gt;general&lt;/i&gt;, &lt;i&gt;copyright&lt;/i&gt;, &lt;i&gt;character&lt;/i&gt;, &lt;i&gt;all&lt;/i&gt;, &lt;i&gt;filename&lt;/i&gt;, &lt;i&gt;ext&lt;/i&gt;, &lt;i&gt;rating&lt;/i&gt;, &lt;i&gt;website&lt;/i&gt;, &lt;i&gt;md5&lt;/i&gt;.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;artist&lt;/i&gt; : tags de nom d&apos;artiste&lt;br/&gt;&lt;i&gt;general&lt;/i&gt; : tags d&apos;image génériques&lt;br/&gt;&lt;i&gt;copyright&lt;/i&gt; : tags de copyright, en général le nom de l&apos;anime/manga&lt;br/&gt;&lt;i&gt;character&lt;/i&gt; : tags indiquant quels personnages sont présents sur l&apos;image&lt;br/&gt;&lt;i&gt;all&lt;/i&gt; : tous les tags&lt;br/&gt;&lt;i&gt;filename&lt;/i&gt; : nom du fichier sur le serveur, en général une chaîne alphanumérique&lt;br/&gt;&lt;i&gt;ext&lt;/i&gt; : extension de l&apos;image&lt;br/&gt;&lt;i&gt;rating&lt;/i&gt; : Questionable, Safe ou Explicit&lt;br/&gt;&lt;i&gt;score&lt;/i&gt; : le score de l&apos;image&lt;br/&gt;&lt;i&gt;website&lt;/i&gt; : url du site de l&apos;image&lt;br/&gt;&lt;i&gt;websitename&lt;/i&gt; : nom du site de l&apos;image&lt;br/&gt;&lt;i&gt;md5&lt;/i&gt; : code unique de l&apos;image, composé de 32 caractères alphanumériques&lt;br/&gt;&lt;i&gt;id&lt;/i&gt; : identifiant de l&apos;image sur un site donné&lt;br/&gt;&lt;i&gt;search&lt;/i&gt; : tags de la recherche&lt;br/&gt;&lt;i&gt;search_n&lt;/i&gt; : n-ième tag de la recherche&lt;br/&gt;&lt;i&gt;date&lt;/i&gt; : date d&apos;ajout de l&apos;image au format dd-MM-yyyy HH.mm&lt;br/&gt;&lt;br/&gt;Pour plus d&apos;informations sur le nommage Javascript, cliquez &lt;a href=&quot;http://code.google.com/p/imgbrd-grabber/wiki/Filename#Javascript&quot;&gt;ici&lt;/a&gt;.</translation>
     </message>
@@ -399,27 +398,25 @@
         <translation>Explicit</translation>
     </message>
     <message>
-        <location filename="../source/image.cpp" line="142"/>
         <source>&lt;b&gt;Attention :&lt;/b&gt; %1</source>
-        <translation>&lt;b&gt;Attention :&lt;/b&gt; %1</translation>
+        <translation type="obsolete">&lt;b&gt;Attention :&lt;/b&gt; %1</translation>
     </message>
     <message>
-        <location filename="../source/image.cpp" line="142"/>
         <source>une des miniatures est vide (&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;). Nouvel essai (%2/%3)...</source>
-        <translation>une des miniatures est vide (&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;). Nouvel essai (%2/%3)...</translation>
+        <translation type="obsolete">une des miniatures est vide (&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;). Nouvel essai (%2/%3)...</translation>
     </message>
     <message>
-        <location filename="../source/image.cpp" line="552"/>
+        <location filename="../source/image.cpp" line="554"/>
         <source>dd-MM-yyyy HH.mm</source>
         <translation>dd-MM-yyyy HH.mm</translation>
     </message>
     <message>
-        <location filename="../source/image.cpp" line="614"/>
+        <location filename="../source/image.cpp" line="616"/>
         <source>Erreur d&apos;évaluation du Javascript :&lt;br/&gt;</source>
         <translation>Erreur d&apos;évaluation du Javascript :&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../source/image.cpp" line="726"/>
+        <location filename="../source/image.cpp" line="728"/>
         <source>Image non trouvée. Nouvel essai avec l&apos;extension %1...</source>
         <translation>Image non trouvée. Nouvel essai avec l&apos;extension %1...</translation>
     </message>
@@ -431,42 +428,42 @@
 <context>
     <name>Page</name>
     <message>
-        <location filename="../source/page.cpp" line="45"/>
-        <location filename="../source/page.cpp" line="46"/>
+        <location filename="../source/page.cpp" line="56"/>
+        <location filename="../source/page.cpp" line="57"/>
         <source>Aucune source valide du site n&apos;a retourné de résultat.</source>
         <translation>Aucune source valide du site n&apos;a retourné de résultat.</translation>
     </message>
     <message>
-        <location filename="../source/page.cpp" line="52"/>
+        <location filename="../source/page.cpp" line="63"/>
         <source>Chargement en %1 échoué. Nouvel essai en %2.</source>
         <translation>Chargement en %1 échoué. Nouvel essai en %2.</translation>
     </message>
     <message>
-        <location filename="../source/page.cpp" line="90"/>
-        <location filename="../source/page.cpp" line="91"/>
+        <location filename="../source/page.cpp" line="101"/>
+        <location filename="../source/page.cpp" line="102"/>
         <source>Aucune source du site n&apos;est compatible avec les pools.</source>
         <translation>Aucune source du site n&apos;est compatible avec les pools.</translation>
     </message>
     <message>
-        <location filename="../source/page.cpp" line="228"/>
+        <location filename="../source/page.cpp" line="240"/>
         <source>Erreur lors de l&apos;analyse du fichier XML : %1 (%2 - %3).</source>
         <translation>Erreur lors de l&apos;analyse du fichier XML : %1 (%2 - %3).</translation>
     </message>
     <message>
-        <location filename="../source/page.cpp" line="307"/>
-        <location filename="../source/page.cpp" line="391"/>
-        <location filename="../source/page.cpp" line="489"/>
-        <location filename="../source/page.cpp" line="546"/>
+        <location filename="../source/page.cpp" line="320"/>
+        <location filename="../source/page.cpp" line="403"/>
+        <location filename="../source/page.cpp" line="497"/>
+        <location filename="../source/page.cpp" line="582"/>
         <source>Image #%1 ignored. Reason: %2.</source>
         <translation>Image #%1 ignorée. Raison : %2.</translation>
     </message>
     <message>
-        <location filename="../source/page.cpp" line="322"/>
+        <location filename="../source/page.cpp" line="335"/>
         <source>Erreur lors de l&apos;analyse du fichier RSS : %1 (%2 - %3).</source>
         <translation>Erreur lors de l&apos;analyse du fichier RSS : %1 (%2 - %3).</translation>
     </message>
     <message>
-        <location filename="../source/page.cpp" line="617"/>
+        <location filename="../source/page.cpp" line="652"/>
         <source>La recherche par tags est impossible avec la source choisie (%1).</source>
         <translation>La recherche par tags est impossible avec la source choisie (%1).</translation>
     </message>
@@ -521,55 +518,55 @@
         <translation type="obsolete">&lt;b&gt;Notice :&lt;/b&gt; %1</translation>
     </message>
     <message>
-        <location filename="../source/image.cpp" line="316"/>
+        <location filename="../source/image.cpp" line="318"/>
         <source>unknown type &quot;%1&quot; (available types: &quot;%2&quot;)</source>
         <translation>type inconnu &quot;%1&quot; (types disponibles : &quot;%2&quot;)</translation>
     </message>
     <message>
-        <location filename="../source/image.cpp" line="375"/>
+        <location filename="../source/image.cpp" line="377"/>
         <source>image is not &quot;%1&quot;</source>
         <translation>l&apos;image n&apos;est pas &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../source/image.cpp" line="377"/>
+        <location filename="../source/image.cpp" line="379"/>
         <source>image is &quot;%1&quot;</source>
         <translation>l&apos;image est &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../source/image.cpp" line="384"/>
+        <location filename="../source/image.cpp" line="386"/>
         <source>image&apos;s source does not starts with &quot;%1&quot;</source>
         <translation>la source de l&apos;image ne commence pas par &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../source/image.cpp" line="386"/>
+        <location filename="../source/image.cpp" line="388"/>
         <source>image&apos;s source starts with &quot;%1&quot;</source>
         <translation>la source de l&apos;image commence par &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../source/image.cpp" line="365"/>
+        <location filename="../source/image.cpp" line="367"/>
         <source>image&apos;s %1 does not match</source>
         <translation>%1 ne correspond pas</translation>
     </message>
     <message>
-        <location filename="../source/image.cpp" line="367"/>
+        <location filename="../source/image.cpp" line="369"/>
         <source>image&apos;s %1 match</source>
         <translation>%1 correspond</translation>
     </message>
     <message>
-        <location filename="../source/image.cpp" line="399"/>
+        <location filename="../source/image.cpp" line="401"/>
         <source>image does not contains &quot;%1&quot;</source>
         <translation>l&apos;image ne contient pas &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../source/image.cpp" line="401"/>
+        <location filename="../source/image.cpp" line="403"/>
         <source>image contains &quot;%1&quot;</source>
         <translation>l&apos;image contient &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../source/favoritestab.cpp" line="9"/>
-        <location filename="../source/mainwindow.cpp" line="28"/>
-        <location filename="../source/pooltab.cpp" line="8"/>
-        <location filename="../source/tagtab.cpp" line="8"/>
+        <location filename="../source/favoritestab.cpp" line="11"/>
+        <location filename="../source/mainwindow.cpp" line="30"/>
+        <location filename="../source/pooltab.cpp" line="9"/>
+        <location filename="../source/tagtab.cpp" line="9"/>
         <source> Fait</source>
         <translation> Fait</translation>
     </message>
@@ -597,17 +594,17 @@
         <translation>Execution de &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../source/crashhandler.cpp" line="66"/>
+        <location filename="../source/crashhandler.cpp" line="68"/>
         <source>Minidump sauvegardé dans le dossier &quot;%1&quot; avec l&apos;id &quot;%2&quot; (%3)</source>
         <translation>Minidump sauvegardé dans le dossier &quot;%1&quot; avec l&apos;id &quot;%2&quot; (%3)</translation>
     </message>
     <message>
-        <location filename="../source/crashhandler.cpp" line="66"/>
+        <location filename="../source/crashhandler.cpp" line="68"/>
         <source>réussite</source>
         <translation>réussite</translation>
     </message>
     <message>
-        <location filename="../source/crashhandler.cpp" line="66"/>
+        <location filename="../source/crashhandler.cpp" line="68"/>
         <source>échec</source>
         <translation>échec</translation>
     </message>
@@ -791,12 +788,12 @@
         <translation type="obsolete">Connexion à %1 terminée (%2).</translation>
     </message>
     <message>
-        <location filename="../source/site.cpp" line="34"/>
+        <location filename="../source/site.cpp" line="37"/>
         <source>Connexion à %1 (%2)...</source>
         <translation>Connexion à %1 (%2)...</translation>
     </message>
     <message>
-        <location filename="../source/site.cpp" line="71"/>
+        <location filename="../source/site.cpp" line="78"/>
         <source>Connexion à %1 (%2) terminée (%2).</source>
         <translation>Connexion à %1 (%2) terminée (%2).</translation>
     </message>
@@ -1193,21 +1190,26 @@
     </message>
     <message>
         <location filename="../ui/batchwindow.ui" line="168"/>
+        <source>Jouer un son</source>
+        <translation>Jouer un son</translation>
+    </message>
+    <message>
+        <location filename="../ui/batchwindow.ui" line="173"/>
         <source>Éteindre</source>
         <translation>Éteindre</translation>
     </message>
     <message>
-        <location filename="../ui/batchwindow.ui" line="176"/>
+        <location filename="../ui/batchwindow.ui" line="181"/>
         <source>Retirer</source>
         <translation>Retirer</translation>
     </message>
     <message>
-        <location filename="../ui/batchwindow.ui" line="204"/>
+        <location filename="../ui/batchwindow.ui" line="209"/>
         <source>Pause</source>
         <translation>Pause</translation>
     </message>
     <message>
-        <location filename="../ui/batchwindow.ui" line="211"/>
+        <location filename="../ui/batchwindow.ui" line="216"/>
         <location filename="../source/batchwindow.cpp" line="87"/>
         <source>Annuler</source>
         <translation>Annuler</translation>
@@ -1676,57 +1678,57 @@ p, li { white-space: pre-wrap; }
         <translation>&gt;&gt;</translation>
     </message>
     <message>
-        <location filename="../source/favoritestab.cpp" line="145"/>
+        <location filename="../source/favoritestab.cpp" line="147"/>
         <source>dd/MM/yyyy</source>
         <translation>dd/MM/yyyy</translation>
     </message>
     <message>
-        <location filename="../source/favoritestab.cpp" line="160"/>
+        <location filename="../source/favoritestab.cpp" line="162"/>
         <source>&lt;b&gt;Nom :&lt;/b&gt; %1&lt;br/&gt;&lt;b&gt;Note :&lt;/b&gt; %2 %%&lt;br/&gt;&lt;b&gt;Dernière vue :&lt;/b&gt; %3</source>
         <translation>&lt;b&gt;Nom :&lt;/b&gt; %1&lt;br/&gt;&lt;b&gt;Note :&lt;/b&gt; %2 %%&lt;br/&gt;&lt;b&gt;Dernière vue :&lt;/b&gt; %3</translation>
     </message>
     <message>
-        <location filename="../source/favoritestab.cpp" line="194"/>
+        <location filename="../source/favoritestab.cpp" line="196"/>
         <source>Mise à jour des options de l&apos;onglet &quot;%1&quot;.</source>
         <translation>Mise à jour des options de l&apos;onglet &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location filename="../source/favoritestab.cpp" line="215"/>
+        <location filename="../source/favoritestab.cpp" line="217"/>
         <source>Sauvegarde des sources...</source>
         <translation>Sauvegarde des sources...</translation>
     </message>
     <message>
-        <location filename="../source/favoritestab.cpp" line="228"/>
+        <location filename="../source/favoritestab.cpp" line="230"/>
         <source>Mise à jour des cases à cocher.</source>
         <translation>Mise à jour des cases à cocher.</translation>
     </message>
     <message>
-        <location filename="../source/favoritestab.cpp" line="258"/>
+        <location filename="../source/favoritestab.cpp" line="260"/>
         <source>Chargement des résultats...</source>
         <translation>Chargement des résultats...</translation>
     </message>
     <message>
-        <location filename="../source/favoritestab.cpp" line="317"/>
+        <location filename="../source/favoritestab.cpp" line="319"/>
         <source>Chargement de la page &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;</source>
         <translation>Chargement de la page &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../source/favoritestab.cpp" line="345"/>
+        <location filename="../source/favoritestab.cpp" line="347"/>
         <source>Réception de la page &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;</source>
         <translation>Réception de la page &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../source/favoritestab.cpp" line="373"/>
+        <location filename="../source/favoritestab.cpp" line="375"/>
         <source>serveur hors-ligne</source>
         <translation>serveur hors-ligne</translation>
     </message>
     <message>
-        <location filename="../source/favoritestab.cpp" line="375"/>
+        <location filename="../source/favoritestab.cpp" line="377"/>
         <source>trop de tags</source>
         <translation>trop de tags</translation>
     </message>
     <message>
-        <location filename="../source/favoritestab.cpp" line="377"/>
+        <location filename="../source/favoritestab.cpp" line="379"/>
         <source>page trop éloignée</source>
         <translation>page trop éloignée</translation>
     </message>
@@ -1735,97 +1737,97 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Aucun résultat</translation>
     </message>
     <message>
-        <location filename="../source/favoritestab.cpp" line="378"/>
+        <location filename="../source/favoritestab.cpp" line="380"/>
         <source>Raisons possibles : %1</source>
         <translation>Raisons possibles : %1</translation>
     </message>
     <message>
-        <location filename="../source/favoritestab.cpp" line="378"/>
+        <location filename="../source/favoritestab.cpp" line="380"/>
         <source>Aucun résultat depuis le %1</source>
         <translation>Aucun résultat depuis le %1</translation>
     </message>
     <message>
-        <location filename="../source/favoritestab.cpp" line="378"/>
+        <location filename="../source/favoritestab.cpp" line="380"/>
         <source>dd/MM/yyyy &apos;à&apos; hh:mm</source>
         <translation>dd/MM/yyyy &apos;à&apos; hh:mm</translation>
     </message>
     <message>
-        <location filename="../source/favoritestab.cpp" line="381"/>
+        <location filename="../source/favoritestab.cpp" line="383"/>
         <source>Page %1 sur %2 (%3 sur %4)</source>
         <translation>Page %1 sur %2 (%3 sur %4)</translation>
     </message>
     <message>
-        <location filename="../source/favoritestab.cpp" line="393"/>
+        <location filename="../source/favoritestab.cpp" line="395"/>
         <source>Des modificateurs ont été otés de la recherche car ils ne sont pas compatibles avec cet imageboard : %1.</source>
         <translation>Des modificateurs ont été otés de la recherche car ils ne sont pas compatibles avec cet imageboard : %1.</translation>
     </message>
     <message>
-        <location filename="../source/favoritestab.cpp" line="500"/>
+        <location filename="../source/favoritestab.cpp" line="502"/>
         <source>Image #%1 ignorée. Raison : %2.</source>
         <translation>Image #%1 ignorée. Raison : %2.</translation>
     </message>
     <message>
-        <location filename="../source/favoritestab.cpp" line="575"/>
+        <location filename="../source/favoritestab.cpp" line="577"/>
         <source>&lt;b&gt;Attention :&lt;/b&gt; %1</source>
         <translation>&lt;b&gt;Attention :&lt;/b&gt; %1</translation>
     </message>
     <message>
-        <location filename="../source/favoritestab.cpp" line="575"/>
+        <location filename="../source/favoritestab.cpp" line="577"/>
         <source>une des miniatures est vide (&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;).</source>
         <translation>une des miniatures est vide (&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;).</translation>
     </message>
     <message>
-        <location filename="../source/favoritestab.cpp" line="620"/>
+        <location filename="../source/favoritestab.cpp" line="622"/>
         <source>&lt;b&gt;Tags :&lt;/b&gt; %1&lt;br/&gt;&lt;br/&gt;</source>
         <translation>&lt;b&gt;Tags :&lt;/b&gt; %1&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../source/favoritestab.cpp" line="621"/>
+        <location filename="../source/favoritestab.cpp" line="623"/>
         <source>&lt;b&gt;ID :&lt;/b&gt; %1&lt;br/&gt;</source>
         <translation>&lt;b&gt;ID :&lt;/b&gt; %1&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../source/favoritestab.cpp" line="622"/>
+        <location filename="../source/favoritestab.cpp" line="624"/>
         <source>&lt;b&gt;Classe :&lt;/b&gt; %1&lt;br/&gt;</source>
         <translation>&lt;b&gt;Classe :&lt;/b&gt; %1&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../source/favoritestab.cpp" line="623"/>
+        <location filename="../source/favoritestab.cpp" line="625"/>
         <source>&lt;b&gt;Score :&lt;/b&gt; %1&lt;br/&gt;</source>
         <translation>&lt;b&gt;Score :&lt;/b&gt; %1&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../source/favoritestab.cpp" line="624"/>
+        <location filename="../source/favoritestab.cpp" line="626"/>
         <source>&lt;b&gt;Posteur :&lt;/b&gt; %1&lt;br/&gt;&lt;br/&gt;</source>
         <translation>&lt;b&gt;Posteur :&lt;/b&gt; %1&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../source/favoritestab.cpp" line="625"/>
+        <location filename="../source/favoritestab.cpp" line="627"/>
         <source>&lt;b&gt;Dimensions :&lt;/b&gt; %1 x %2&lt;br/&gt;</source>
         <translation>&lt;b&gt;Dimensions :&lt;/b&gt; %1 x %2&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../source/favoritestab.cpp" line="626"/>
+        <location filename="../source/favoritestab.cpp" line="628"/>
         <source>&lt;b&gt;Taille :&lt;/b&gt; %1 %2&lt;br/&gt;</source>
         <translation>&lt;b&gt;Taille :&lt;/b&gt; %1 %2&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../source/favoritestab.cpp" line="627"/>
+        <location filename="../source/favoritestab.cpp" line="629"/>
         <source>&lt;b&gt;Date :&lt;/b&gt; %1</source>
         <translation>&lt;b&gt;Date :&lt;/b&gt; %1</translation>
     </message>
     <message>
-        <location filename="../source/favoritestab.cpp" line="627"/>
+        <location filename="../source/favoritestab.cpp" line="629"/>
         <source>&apos;le &apos;dd/MM/yyyy&apos; à &apos;hh:mm</source>
         <translation>&apos;le &apos;dd/MM/yyyy&apos; à &apos;hh:mm</translation>
     </message>
     <message>
-        <location filename="../source/favoritestab.cpp" line="655"/>
+        <location filename="../source/favoritestab.cpp" line="657"/>
         <source>List noire</source>
         <translation>List noire</translation>
     </message>
     <message numerus="yes">
-        <location filename="../source/favoritestab.cpp" line="655"/>
+        <location filename="../source/favoritestab.cpp" line="657"/>
         <source>%n tag(s) figurant dans la liste noire détécté(s) sur cette image : %1. Voulez-vous l&apos;afficher tout de même ?</source>
         <translation>
             <numerusform>%n tag figurant dans la liste noire détécté sur cette image : %1. Voulez-vous l&apos;afficher tout de même ?</numerusform>
@@ -1833,17 +1835,17 @@ p, li { white-space: pre-wrap; }
         </translation>
     </message>
     <message>
-        <location filename="../source/favoritestab.cpp" line="862"/>
+        <location filename="../source/favoritestab.cpp" line="864"/>
         <source>Grabber - Marquer comme vu</source>
         <translation>Grabber - Marquer comme vu</translation>
     </message>
     <message>
-        <location filename="../source/favoritestab.cpp" line="862"/>
+        <location filename="../source/favoritestab.cpp" line="864"/>
         <source>Êtes-vous sûr de vouloir marquer tous vos favoris comme vus ?</source>
         <translation>Êtes-vous sûr de vouloir marquer tous vos favoris comme vus ?</translation>
     </message>
     <message>
-        <location filename="../source/favoritestab.cpp" line="877"/>
+        <location filename="../source/favoritestab.cpp" line="879"/>
         <source>Marquage comme vu de %1...</source>
         <translation>Marquage comme vu de &quot;%1&quot;...</translation>
     </message>
@@ -2071,8 +2073,8 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="802"/>
-        <location filename="../source/mainwindow.cpp" line="382"/>
-        <location filename="../source/mainwindow.cpp" line="406"/>
+        <location filename="../source/mainwindow.cpp" line="390"/>
+        <location filename="../source/mainwindow.cpp" line="414"/>
         <source>Nouvel onglet</source>
         <translation>Nouvel onglet</translation>
     </message>
@@ -2114,7 +2116,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../ui/mainwindow.ui" line="505"/>
         <location filename="../ui/mainwindow.ui" line="850"/>
-        <location filename="../source/mainwindow.cpp" line="224"/>
+        <location filename="../source/mainwindow.cpp" line="227"/>
         <source>Favoris</source>
         <translation>Favoris</translation>
     </message>
@@ -2189,66 +2191,66 @@ p, li { white-space: pre-wrap; }
         <translation>À propos de Qt</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="814"/>
+        <location filename="../source/mainwindow.cpp" line="822"/>
         <source> Fait</source>
         <translation> Fait</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="756"/>
+        <location filename="../source/mainwindow.cpp" line="764"/>
         <source>&lt;b&gt;Nom :&lt;/b&gt; %1&lt;br/&gt;&lt;b&gt;Note :&lt;/b&gt; %2 %%&lt;br/&gt;&lt;b&gt;Dernière vue :&lt;/b&gt; %3</source>
         <translation>&lt;b&gt;Nom :&lt;/b&gt; %1&lt;br/&gt;&lt;b&gt;Note :&lt;/b&gt; %2 %%&lt;br/&gt;&lt;b&gt;Dernière vue :&lt;/b&gt; %3</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="56"/>
+        <location filename="../source/mainwindow.cpp" line="59"/>
         <source>Chemin : %1</source>
         <translation>Chemin : %1</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="831"/>
+        <location filename="../source/mainwindow.cpp" line="839"/>
         <source>Sauvegarde...</source>
         <translation>Sauvegarde...</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="854"/>
+        <location filename="../source/mainwindow.cpp" line="862"/>
         <source>Ouverture de la fenêtre des options...</source>
         <translation>Ouverture de la fenêtre des options...</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="870"/>
+        <location filename="../source/mainwindow.cpp" line="878"/>
         <source>Ouverture de la fenêtre des sources...</source>
         <translation>Ouverture de la fenêtre des sources...</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="878"/>
+        <location filename="../source/mainwindow.cpp" line="886"/>
         <source>Sauvegarde des nouvelles sources...</source>
         <translation>Sauvegarde des nouvelles sources...</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="909"/>
+        <location filename="../source/mainwindow.cpp" line="917"/>
         <source>Vous n&apos;avez pas précisé de dossier de sauvegarde !</source>
         <translation>Vous n&apos;avez pas précisé de dossier de sauvegarde !</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="1004"/>
+        <location filename="../source/mainwindow.cpp" line="1006"/>
         <source>site &quot;%1&quot; not found.</source>
         <translation>site &quot;%1&quot; non trouvé.</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="810"/>
+        <location filename="../source/mainwindow.cpp" line="818"/>
         <source>Traduction des textes en %1...</source>
         <translation>Traduction des textes en %1...</translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="14"/>
-        <location filename="../source/mainwindow.cpp" line="113"/>
-        <location filename="../source/mainwindow.cpp" line="206"/>
-        <location filename="../source/mainwindow.cpp" line="1840"/>
-        <location filename="../source/mainwindow.cpp" line="1842"/>
+        <location filename="../source/mainwindow.cpp" line="116"/>
+        <location filename="../source/mainwindow.cpp" line="209"/>
+        <location filename="../source/mainwindow.cpp" line="1847"/>
+        <location filename="../source/mainwindow.cpp" line="1849"/>
         <source>Grabber</source>
         <translation>Grabber</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="750"/>
+        <location filename="../source/mainwindow.cpp" line="758"/>
         <source>dd/MM/yyyy</source>
         <translation>dd/MM/yyyy</translation>
     </message>
@@ -2257,7 +2259,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Sources</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="282"/>
+        <location filename="../source/mainwindow.cpp" line="285"/>
         <source>Erreur lors de l&apos;analyse du fichier XML : %1 (%2 - %3).</source>
         <translation>Erreur lors de l&apos;analyse du fichier XML : %1 (%2 - %3).</translation>
     </message>
@@ -2266,7 +2268,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Danbooru Downloader</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="113"/>
+        <location filename="../source/mainwindow.cpp" line="116"/>
         <source>L&apos;extension pour Mozilla Firefox &quot;Danbooru Downloader&quot; a été détéctée sur votre système. Souhaitez-vous en importer les préférences ?</source>
         <translation>L&apos;extension pour Mozilla Firefox &quot;Danbooru Downloader&quot; a été détéctée sur votre système. Souhaitez-vous en importer les préférences ?</translation>
     </message>
@@ -2275,14 +2277,14 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Aucun résultat depuis le %1.</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="917"/>
+        <location filename="../source/mainwindow.cpp" line="925"/>
         <source>Téléchargement groupé commencé.</source>
         <translation>Téléchargement groupé commencé.</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="1004"/>
-        <location filename="../source/mainwindow.cpp" line="1064"/>
-        <location filename="../source/mainwindow.cpp" line="1066"/>
+        <location filename="../source/mainwindow.cpp" line="1006"/>
+        <location filename="../source/mainwindow.cpp" line="1070"/>
+        <location filename="../source/mainwindow.cpp" line="1072"/>
         <source>&lt;b&gt;Attention :&lt;/b&gt; %1</source>
         <translation>&lt;b&gt;Attention :&lt;/b&gt; %1</translation>
     </message>
@@ -2291,37 +2293,37 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Page %1 sur %2 (%3 sur %4)</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="55"/>
+        <location filename="../source/mainwindow.cpp" line="58"/>
         <source>Version du logiciel : %1.</source>
         <translation>Version du logiciel : %1.</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="205"/>
+        <location filename="../source/mainwindow.cpp" line="208"/>
         <source>Il semblerait que Imgbrd-Grabber n&apos;ait pas été fermé correctement la dernière fois.</source>
         <translation>Il semblerait que Imgbrd-Grabber n&apos;ait pas été fermé correctement la dernière fois.</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="206"/>
+        <location filename="../source/mainwindow.cpp" line="209"/>
         <source>Il semblerait que l&apos;application n&apos;ait pas été arrêtée correctement lors de sa dernière utilisation. Voulez-vous restaurer votre dernière seesion ?</source>
         <translation>Il semblerait que l&apos;application n&apos;ait pas été arrêtée correctement lors de sa dernière utilisation. Voulez-vous restaurer votre dernière session ?</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="556"/>
+        <location filename="../source/mainwindow.cpp" line="564"/>
         <source>Groupes (%1/%2)</source>
         <translation>Groupes (%1/%2)</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="560"/>
+        <location filename="../source/mainwindow.cpp" line="568"/>
         <source>Ajout d&apos;une image en téléchargement unique : %1</source>
         <translation>Ajout d&apos;une image en téléchargement unique : %1</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="650"/>
+        <location filename="../source/mainwindow.cpp" line="658"/>
         <source>La limite d&apos;images par page doit être supérieure ou égale à 1.</source>
         <translation>La limite d&apos;images par page doit être supérieure ou égale à 1.</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="655"/>
+        <location filename="../source/mainwindow.cpp" line="663"/>
         <source>La limite d&apos;imagessupérieure ou égale à 0.</source>
         <translation>La limite d&apos;images doit être supérieure ou égale à 0.</translation>
     </message>
@@ -2362,12 +2364,12 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Liste noire</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="904"/>
+        <location filename="../source/mainwindow.cpp" line="912"/>
         <source>Lancement d&apos;un téléchargement groupé annulé car un autre est déjà en cours d&apos;éxecution.</source>
         <translation>Lancement d&apos;un téléchargement groupé annulé car un autre est déjà en cours d&apos;éxecution.</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="914"/>
+        <location filename="../source/mainwindow.cpp" line="922"/>
         <source>Vous n&apos;avez pas précisé de nom de fichier !</source>
         <translation>Vous n&apos;avez pas précisé de nom de fichier !</translation>
     </message>
@@ -2376,7 +2378,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Execution de la commande d&apos;initialisation &quot;%1&quot;</translation>
     </message>
     <message numerus="yes">
-        <location filename="../source/mainwindow.cpp" line="1031"/>
+        <location filename="../source/mainwindow.cpp" line="1037"/>
         <source>Page reçue &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt; (%n résultat(s))</source>
         <translation>
             <numerusform>Page reçue &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt; (%n résultat)</numerusform>
@@ -2384,12 +2386,12 @@ p, li { white-space: pre-wrap; }
         </translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="1066"/>
+        <location filename="../source/mainwindow.cpp" line="1072"/>
         <source>toutes les images provenant de %1 ont été ignorées.</source>
         <translation>toutes les images provenant de %1 ont été ignorées.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../source/mainwindow.cpp" line="1078"/>
+        <location filename="../source/mainwindow.cpp" line="1084"/>
         <source>Toutes les urls des images ont été reçues (%n image(s)).</source>
         <translation>
             <numerusform>Toutes les urls des images ont été reçues (%n image).</numerusform>
@@ -2397,22 +2399,22 @@ p, li { white-space: pre-wrap; }
         </translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="1080"/>
+        <location filename="../source/mainwindow.cpp" line="1086"/>
         <source>Préparation des images, veuillez patienter...</source>
         <translation>Préparation des images, veuillez patienter...</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="1128"/>
+        <location filename="../source/mainwindow.cpp" line="1134"/>
         <source>Téléchargement des détails des images.</source>
         <translation>Téléchargement des détails des images.</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="1130"/>
+        <location filename="../source/mainwindow.cpp" line="1136"/>
         <source>Téléchargement des images directement.</source>
         <translation>Téléchargement des images directement.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../source/mainwindow.cpp" line="1247"/>
+        <location filename="../source/mainwindow.cpp" line="1254"/>
         <source>%n fichier(s) non trouvé(s) sur le serveur.</source>
         <translation>
             <numerusform>%n fichier non trouvé sur le serveur.</numerusform>
@@ -2420,83 +2422,83 @@ p, li { white-space: pre-wrap; }
         </translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="1254"/>
+        <location filename="../source/mainwindow.cpp" line="1261"/>
         <source>Des erreurs sont survenues pendant le téléchargement des images. Voulez vous relancer le téléchargement de celles-ci ? (%1/%2)</source>
         <translation>Des erreurs sont survenues pendant le téléchargement des images. Voulez vous relancer le téléchargement de celles-ci ? (%1/%2)</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="1439"/>
+        <location filename="../source/mainwindow.cpp" line="1446"/>
         <source>Copie depuis &lt;a href=&quot;file:///%1&quot;&gt;%1&lt;/a&gt; vers &lt;a href=&quot;file:///%2&quot;&gt;%2&lt;/a&gt;</source>
         <translation>Copie depuis &lt;a href=&quot;file:///%1&quot;&gt;%1&lt;/a&gt; vers &lt;a href=&quot;file:///%2&quot;&gt;%2&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="1445"/>
+        <location filename="../source/mainwindow.cpp" line="1452"/>
         <source>Déplacement depuis &lt;a href=&quot;file:///%1&quot;&gt;%1&lt;/a&gt; vers &lt;a href=&quot;file:///%2&quot;&gt;%2&lt;/a&gt;</source>
         <translation>Déplacement depuis &lt;a href=&quot;file:///%1&quot;&gt;%1&lt;/a&gt; vers &lt;a href=&quot;file:///%2&quot;&gt;%2&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="1452"/>
+        <location filename="../source/mainwindow.cpp" line="1459"/>
         <source>MD5 &quot;%1&quot; de l&apos;image &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt; déjà existant dans le fichier &lt;a href=&quot;file:///%3&quot;&gt;%3&lt;/a&gt;</source>
         <translation>MD5 &quot;%1&quot; de l&apos;image &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt; déjà existant dans le fichier &lt;a href=&quot;file:///%3&quot;&gt;%3&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="1501"/>
+        <location filename="../source/mainwindow.cpp" line="1508"/>
         <source>Erreur inconnue pour l&apos;image: &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;. &quot;%2&quot;</source>
         <translation>Erreur inconnue pour l&apos;image : &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;. &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="1606"/>
+        <location filename="../source/mainwindow.cpp" line="1613"/>
         <source>Mise en pause des téléchargements...</source>
         <translation>Mise en pause des téléchargements...</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="1616"/>
+        <location filename="../source/mainwindow.cpp" line="1623"/>
         <source>Reprise des téléchargements...</source>
         <translation>Reprise des téléchargements...</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="1647"/>
-        <location filename="../source/mainwindow.cpp" line="1652"/>
         <location filename="../source/mainwindow.cpp" line="1654"/>
+        <location filename="../source/mainwindow.cpp" line="1659"/>
+        <location filename="../source/mainwindow.cpp" line="1661"/>
         <source>Enregistrer la liste de liens</source>
         <translation>Enregistrer la liste de liens</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="1647"/>
-        <location filename="../source/mainwindow.cpp" line="1689"/>
+        <location filename="../source/mainwindow.cpp" line="1654"/>
+        <location filename="../source/mainwindow.cpp" line="1696"/>
         <source>Liens Imageboard-Grabber (*.igl)</source>
         <translation>Liens Imageboard-Grabber (*.igl)</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="1652"/>
+        <location filename="../source/mainwindow.cpp" line="1659"/>
         <source>Liste de liens enregistrée avec succès !</source>
         <translation>Liste de liens enregistrée avec succès !</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="1654"/>
-        <location filename="../source/mainwindow.cpp" line="1696"/>
+        <location filename="../source/mainwindow.cpp" line="1661"/>
+        <location filename="../source/mainwindow.cpp" line="1703"/>
         <source>Erreur lors de l&apos;ouverture du fichier.</source>
         <translation>Erreur lors de l&apos;ouverture du fichier.</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="1689"/>
-        <location filename="../source/mainwindow.cpp" line="1694"/>
         <location filename="../source/mainwindow.cpp" line="1696"/>
+        <location filename="../source/mainwindow.cpp" line="1701"/>
+        <location filename="../source/mainwindow.cpp" line="1703"/>
         <source>Charger une liste de liens</source>
         <translation>Charger une liste de liens</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="1694"/>
+        <location filename="../source/mainwindow.cpp" line="1701"/>
         <source>Liste de liens chargée avec succès !</source>
         <translation>Liste de liens chargée avec succès !</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="1783"/>
+        <location filename="../source/mainwindow.cpp" line="1790"/>
         <source>Choisir un dossier de sauvegarde</source>
         <translation>Choisir un dossier de sauvegarde</translation>
     </message>
     <message numerus="yes">
-        <location filename="../source/mainwindow.cpp" line="1842"/>
+        <location filename="../source/mainwindow.cpp" line="1849"/>
         <source>%n téléchargement(s) en cours</source>
         <translation>
             <numerusform>%n téléchargement en cours</numerusform>
@@ -2504,17 +2506,17 @@ p, li { white-space: pre-wrap; }
         </translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="1277"/>
+        <location filename="../source/mainwindow.cpp" line="1284"/>
         <source>Téléchargement groupé terminé</source>
         <translation>Téléchargement groupé commencé</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="1310"/>
+        <location filename="../source/mainwindow.cpp" line="1317"/>
         <source>Tags reçus</source>
         <translation>Tags reçus</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="1590"/>
+        <location filename="../source/mainwindow.cpp" line="1597"/>
         <source>Annulation des téléchargements...</source>
         <translation>Annulation des téléchargements...</translation>
     </message>
@@ -2523,22 +2525,22 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Certains tags de l&apos;image sont blacklistés.</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="54"/>
+        <location filename="../source/mainwindow.cpp" line="57"/>
         <source>Nouvelle session démarée.</source>
         <translation>Nouvelle session démarée.</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="79"/>
+        <location filename="../source/mainwindow.cpp" line="82"/>
         <source>Activation du proxy général sur l&apos;hôte &quot;%1&quot; et le port %2.</source>
         <translation>Activation du proxy général sur l&apos;hôte &quot;%1&quot; et le port %2.</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="350"/>
+        <location filename="../source/mainwindow.cpp" line="353"/>
         <source>Fichier sites.txt du modèle %1 introuvable.</source>
         <translation>Fichier sites.txt du modèle %1 introuvable.</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="354"/>
+        <location filename="../source/mainwindow.cpp" line="357"/>
         <source>Aucune source valide trouvée dans le fichier model.xml de %1.</source>
         <translation>Aucune source valide trouvée dans le fichier model.xml de %1.</translation>
     </message>
@@ -2551,18 +2553,18 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Erreur lors de la commande d&apos;initialisation : %1.</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="1189"/>
-        <location filename="../source/mainwindow.cpp" line="1362"/>
+        <location filename="../source/mainwindow.cpp" line="1195"/>
+        <location filename="../source/mainwindow.cpp" line="1369"/>
         <source>Image ignorée.</source>
         <translation>Image ignorée.</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="1424"/>
+        <location filename="../source/mainwindow.cpp" line="1431"/>
         <source>Chargement de l&apos;image depuis &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;</source>
         <translation>Chargement de l&apos;image depuis &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;</translation>
     </message>
     <message numerus="yes">
-        <location filename="../source/mainwindow.cpp" line="1244"/>
+        <location filename="../source/mainwindow.cpp" line="1251"/>
         <source>%n fichier(s) récupéré(s) avec succès.</source>
         <translation>
             <numerusform>%n fichier récupéré avec succès.</numerusform>
@@ -2570,7 +2572,7 @@ p, li { white-space: pre-wrap; }
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../source/mainwindow.cpp" line="1245"/>
+        <location filename="../source/mainwindow.cpp" line="1252"/>
         <source>%n fichier(s) ignoré(s).</source>
         <translation>
             <numerusform>%n fichier ignoré.</numerusform>
@@ -2578,7 +2580,7 @@ p, li { white-space: pre-wrap; }
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../source/mainwindow.cpp" line="1246"/>
+        <location filename="../source/mainwindow.cpp" line="1253"/>
         <source>%n fichier(s) déjà existant(s).</source>
         <translation>
             <numerusform>%n fichier déjà existant.</numerusform>
@@ -2586,7 +2588,7 @@ p, li { white-space: pre-wrap; }
         </translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="1559"/>
+        <location filename="../source/mainwindow.cpp" line="1566"/>
         <source>Impossible de créer le dossier de destination: %1.</source>
         <translation>Impossible de créer le dossier de destination: %1.</translation>
     </message>
@@ -2595,7 +2597,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Impossible d&apos;ouvrir le fichier de destination: %1.</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="1576"/>
+        <location filename="../source/mainwindow.cpp" line="1583"/>
         <source>Rien n&apos;a été reçu pour l&apos;image: &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;.</source>
         <translation>Rien n&apos;a été reçu pour l&apos;image : &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;.</translation>
     </message>
@@ -2608,8 +2610,8 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Execution groupée de &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="1204"/>
-        <location filename="../source/mainwindow.cpp" line="1379"/>
+        <location filename="../source/mainwindow.cpp" line="1210"/>
+        <location filename="../source/mainwindow.cpp" line="1386"/>
         <source>Fichier déjà existant : &lt;a href=&quot;file:///%1&quot;&gt;%1&lt;/a&gt;</source>
         <translation>Fichier déjà existant : &lt;a href=&quot;file:///%1&quot;&gt;%1&lt;/a&gt;</translation>
     </message>
@@ -2643,7 +2645,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">le dd/MM/yyyy à hh:mm</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="974"/>
+        <location filename="../source/mainwindow.cpp" line="982"/>
         <source>Téléchargement des pages, veuillez patienter...</source>
         <translation>Téléchargement des pages, veuillez patienter...</translation>
     </message>
@@ -2652,7 +2654,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Page reçue &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="1064"/>
+        <location filename="../source/mainwindow.cpp" line="1070"/>
         <source>rien n&apos;a été reçu depuis %1. Raisons possibles : tag incorrect, page trop éloignée.</source>
         <translation>rien n&apos;a été reçu depuis %1. Raisons possibles : tag incorrect, page trop éloignée.</translation>
     </message>
@@ -2661,22 +2663,22 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Toutes les urls des images ont été reçues.</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="1105"/>
+        <location filename="../source/mainwindow.cpp" line="1111"/>
         <source>Téléchargement des images en cours...</source>
         <translation>Téléchargement des images en cours...</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="1474"/>
+        <location filename="../source/mainwindow.cpp" line="1481"/>
         <source>Image reçue depuis &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;</source>
         <translation>Image reçue depuis &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="1008"/>
+        <location filename="../source/mainwindow.cpp" line="1013"/>
         <source>Chargement de la page &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;</source>
         <translation>Chargement de la page &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="57"/>
+        <location filename="../source/mainwindow.cpp" line="60"/>
         <source>Chargement des préférences depuis &lt;a href=&quot;file:///%1&quot;&gt;%1&lt;/a&gt;</source>
         <translation>Chargement des préférences depuis &lt;a href=&quot;file:///%1&quot;&gt;%1&lt;/a&gt;</translation>
     </message>
@@ -2697,13 +2699,13 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Explicit</translation>
     </message>
     <message>
-        <location filename="../source/mainwindow.cpp" line="1242"/>
-        <location filename="../source/mainwindow.cpp" line="1254"/>
+        <location filename="../source/mainwindow.cpp" line="1249"/>
+        <location filename="../source/mainwindow.cpp" line="1261"/>
         <source>Récupération des images</source>
         <translation>Récupération des images</translation>
     </message>
     <message numerus="yes">
-        <location filename="../source/mainwindow.cpp" line="1248"/>
+        <location filename="../source/mainwindow.cpp" line="1255"/>
         <source>%n erreur(s).</source>
         <translation>
             <numerusform>%n erreur.</numerusform>
@@ -3073,8 +3075,9 @@ p, li { white-space: pre-wrap; }
         <location filename="../ui/optionswindow.ui" line="1577"/>
         <location filename="../ui/optionswindow.ui" line="1598"/>
         <location filename="../ui/optionswindow.ui" line="1619"/>
-        <location filename="../ui/optionswindow.ui" line="1685"/>
-        <location filename="../ui/optionswindow.ui" line="1707"/>
+        <location filename="../ui/optionswindow.ui" line="1647"/>
+        <location filename="../ui/optionswindow.ui" line="1713"/>
+        <location filename="../ui/optionswindow.ui" line="1735"/>
         <source>Couleur</source>
         <translation>Couleur</translation>
     </message>
@@ -3087,6 +3090,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../ui/optionswindow.ui" line="1584"/>
         <location filename="../ui/optionswindow.ui" line="1605"/>
         <location filename="../ui/optionswindow.ui" line="1626"/>
+        <location filename="../ui/optionswindow.ui" line="1654"/>
         <source>Police</source>
         <translation>Police</translation>
     </message>
@@ -3119,7 +3123,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../ui/optionswindow.ui" line="139"/>
-        <location filename="../ui/optionswindow.ui" line="2000"/>
+        <location filename="../ui/optionswindow.ui" line="2028"/>
         <source>Base de données</source>
         <translation>Base de données</translation>
     </message>
@@ -3317,84 +3321,89 @@ p, li { white-space: pre-wrap; }
         <translation>Ignorés</translation>
     </message>
     <message>
-        <location filename="../ui/optionswindow.ui" line="1642"/>
+        <location filename="../ui/optionswindow.ui" line="1635"/>
+        <source>Cercle</source>
+        <translation>Cercle</translation>
+    </message>
+    <message>
+        <location filename="../ui/optionswindow.ui" line="1670"/>
         <source>Serveurs</source>
         <translation>Serveurs</translation>
     </message>
     <message>
-        <location filename="../ui/optionswindow.ui" line="1648"/>
-        <location filename="../ui/optionswindow.ui" line="1725"/>
+        <location filename="../ui/optionswindow.ui" line="1676"/>
+        <location filename="../ui/optionswindow.ui" line="1753"/>
         <source>Marges horizontales</source>
         <translation>Marges horizontales</translation>
     </message>
     <message>
-        <location filename="../ui/optionswindow.ui" line="1697"/>
+        <location filename="../ui/optionswindow.ui" line="1725"/>
         <source>#000000</source>
         <translation>#000000</translation>
     </message>
     <message>
-        <location filename="../ui/optionswindow.ui" line="1719"/>
+        <location filename="../ui/optionswindow.ui" line="1747"/>
         <source>Images</source>
         <translation>Images</translation>
     </message>
     <message>
-        <location filename="../ui/optionswindow.ui" line="1742"/>
+        <location filename="../ui/optionswindow.ui" line="1770"/>
         <source>Marges verticales</source>
         <translation>Marges verticales</translation>
     </message>
     <message>
-        <location filename="../ui/optionswindow.ui" line="1820"/>
+        <location filename="../ui/optionswindow.ui" line="1848"/>
         <source>Type</source>
         <translation>Type</translation>
     </message>
     <message>
-        <location filename="../ui/optionswindow.ui" line="1828"/>
+        <location filename="../ui/optionswindow.ui" line="1856"/>
         <source>HTTP</source>
         <translation>HTTP</translation>
     </message>
     <message>
-        <location filename="../ui/optionswindow.ui" line="1833"/>
+        <location filename="../ui/optionswindow.ui" line="1861"/>
         <source>SOCKS v5</source>
         <translation>SOCKS v5</translation>
     </message>
     <message>
-        <location filename="../ui/optionswindow.ui" line="1901"/>
+        <location filename="../ui/optionswindow.ui" line="1929"/>
         <source>Début</source>
         <translation>Début</translation>
     </message>
     <message>
-        <location filename="../ui/optionswindow.ui" line="1948"/>
+        <location filename="../ui/optionswindow.ui" line="1976"/>
         <source>Fin</source>
         <translation>Fin</translation>
     </message>
     <message>
-        <location filename="../ui/optionswindow.ui" line="1964"/>
+        <location filename="../ui/optionswindow.ui" line="1992"/>
         <source>Identifiants</source>
         <translation>Identifiants</translation>
     </message>
     <message>
-        <location filename="../ui/optionswindow.ui" line="1970"/>
+        <location filename="../ui/optionswindow.ui" line="1998"/>
         <source>Hôte</source>
         <translation>Hôte</translation>
     </message>
     <message>
-        <location filename="../ui/optionswindow.ui" line="1980"/>
+        <location filename="../ui/optionswindow.ui" line="2008"/>
         <source>Utilisateur</source>
         <translation>Utilisateur</translation>
     </message>
     <message>
-        <location filename="../ui/optionswindow.ui" line="1990"/>
+        <location filename="../ui/optionswindow.ui" line="2018"/>
         <source>Mot de passe</source>
         <translation>Mot de passe</translation>
     </message>
     <message>
-        <location filename="../ui/optionswindow.ui" line="2010"/>
+        <location filename="../ui/optionswindow.ui" line="2038"/>
         <source>Driver</source>
         <translation>Driver</translation>
     </message>
     <message>
-        <location filename="../ui/optionswindow.ui" line="1668"/>
-        <location filename="../ui/optionswindow.ui" line="1759"/>
+        <location filename="../ui/optionswindow.ui" line="1696"/>
+        <location filename="../ui/optionswindow.ui" line="1787"/>
         <source>Bordures</source>
         <translation>Bordures</translation>
     </message>
@@ -3415,17 +3424,17 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Vous devez être conscient des risques de sécurité impliqués lors de l&apos;envoi de votre mot de passe à travers un canal non chiffré. Bien que votre mot de passe sera haché, il est encore théoriquement possible pour quelqu&apos;un de voler votre compte en créant un faux cookie en fonction de votre mot de passe hashé.</translation>
     </message>
     <message>
-        <location filename="../ui/optionswindow.ui" line="1783"/>
+        <location filename="../ui/optionswindow.ui" line="1811"/>
         <source>Utiliser un proxy</source>
         <translation>Utiliser un proxy</translation>
     </message>
     <message>
-        <location filename="../ui/optionswindow.ui" line="1796"/>
+        <location filename="../ui/optionswindow.ui" line="1824"/>
         <source>Serveur</source>
         <translation>Serveur</translation>
     </message>
     <message>
-        <location filename="../ui/optionswindow.ui" line="1803"/>
+        <location filename="../ui/optionswindow.ui" line="1831"/>
         <source>Port</source>
         <translation>Port</translation>
     </message>
@@ -3439,8 +3448,8 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../ui/optionswindow.ui" line="1219"/>
-        <location filename="../ui/optionswindow.ui" line="1851"/>
-        <location filename="../ui/optionswindow.ui" line="1911"/>
+        <location filename="../ui/optionswindow.ui" line="1879"/>
+        <location filename="../ui/optionswindow.ui" line="1939"/>
         <source>Image</source>
         <translation>Image</translation>
     </message>
@@ -3563,14 +3572,14 @@ p, li { white-space: pre-wrap; }
         <translation>Automatique</translation>
     </message>
     <message>
-        <location filename="../ui/optionswindow.ui" line="1861"/>
-        <location filename="../ui/optionswindow.ui" line="1921"/>
+        <location filename="../ui/optionswindow.ui" line="1889"/>
+        <location filename="../ui/optionswindow.ui" line="1949"/>
         <source>Symboles disponibles : les mêmes que dans la partie sauvegarde.</source>
         <translation>Symboles disponibles : les mêmes que dans l&apos;onglet &quot;Sauvegarde&quot;.</translation>
     </message>
     <message>
-        <location filename="../ui/optionswindow.ui" line="1871"/>
-        <location filename="../ui/optionswindow.ui" line="1931"/>
+        <location filename="../ui/optionswindow.ui" line="1899"/>
+        <location filename="../ui/optionswindow.ui" line="1959"/>
         <source>Tag</source>
         <translation>Tag</translation>
     </message>
@@ -3595,24 +3604,24 @@ p, li { white-space: pre-wrap; }
         <translation>Tags personnage</translation>
     </message>
     <message>
-        <location filename="../ui/optionswindow.ui" line="1881"/>
-        <location filename="../ui/optionswindow.ui" line="1938"/>
+        <location filename="../ui/optionswindow.ui" line="1909"/>
+        <location filename="../ui/optionswindow.ui" line="1966"/>
         <source>Symboles disponibles : &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt; : le tag&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt; : type du tag, &quot;general&quot;, &quot;artist&quot;, &quot;copyright&quot;, &quot;character&quot;, &quot;model&quot; ou &quot;photo_set&quot;&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt; : le numéro du type de tag (varie entre 0 et 6)</source>
         <translation>Symboles disponibles : &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt; : le tag&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt; : type du tag, &quot;general&quot;, &quot;artist&quot;, &quot;copyright&quot;, &quot;character&quot;, &quot;model&quot; ou &quot;photo_set&quot;&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt; : le numéro du type de tag (varie entre 0 et 6)</translation>
     </message>
     <message>
         <location filename="../ui/optionswindow.ui" line="135"/>
-        <location filename="../ui/optionswindow.ui" line="1895"/>
+        <location filename="../ui/optionswindow.ui" line="1923"/>
         <source>Commandes</source>
         <translation>Commandes</translation>
     </message>
     <message>
-        <location filename="../source/optionswindow.cpp" line="230"/>
+        <location filename="../source/optionswindow.cpp" line="233"/>
         <source>Choisir un dossier de sauvegarde</source>
         <translation>Choisir un dossier de sauvegarde</translation>
     </message>
     <message>
-        <location filename="../source/optionswindow.cpp" line="236"/>
+        <location filename="../source/optionswindow.cpp" line="239"/>
         <source>Choisir un dossier de sauvegarde pour les favoris</source>
         <translation>Choisir un dossier de sauvegarde pour les favoris</translation>
     </message>
@@ -3625,104 +3634,106 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">VOTRE_MOT_DE_PASSE</translation>
     </message>
     <message>
-        <location filename="../source/optionswindow.cpp" line="342"/>
-        <location filename="../source/optionswindow.cpp" line="348"/>
-        <location filename="../source/optionswindow.cpp" line="354"/>
-        <location filename="../source/optionswindow.cpp" line="360"/>
-        <location filename="../source/optionswindow.cpp" line="366"/>
-        <location filename="../source/optionswindow.cpp" line="372"/>
-        <location filename="../source/optionswindow.cpp" line="378"/>
-        <location filename="../source/optionswindow.cpp" line="384"/>
-        <location filename="../source/optionswindow.cpp" line="455"/>
+        <location filename="../source/optionswindow.cpp" line="352"/>
+        <location filename="../source/optionswindow.cpp" line="358"/>
+        <location filename="../source/optionswindow.cpp" line="364"/>
+        <location filename="../source/optionswindow.cpp" line="370"/>
+        <location filename="../source/optionswindow.cpp" line="376"/>
+        <location filename="../source/optionswindow.cpp" line="382"/>
+        <location filename="../source/optionswindow.cpp" line="388"/>
+        <location filename="../source/optionswindow.cpp" line="394"/>
+        <location filename="../source/optionswindow.cpp" line="400"/>
+        <location filename="../source/optionswindow.cpp" line="478"/>
         <source>Grabber - Choisir une couleur</source>
         <translation>Grabber - Choisir une couleur</translation>
     </message>
     <message>
-        <location filename="../source/optionswindow.cpp" line="392"/>
-        <location filename="../source/optionswindow.cpp" line="399"/>
-        <location filename="../source/optionswindow.cpp" line="406"/>
-        <location filename="../source/optionswindow.cpp" line="413"/>
-        <location filename="../source/optionswindow.cpp" line="420"/>
-        <location filename="../source/optionswindow.cpp" line="427"/>
-        <location filename="../source/optionswindow.cpp" line="434"/>
-        <location filename="../source/optionswindow.cpp" line="441"/>
+        <location filename="../source/optionswindow.cpp" line="408"/>
+        <location filename="../source/optionswindow.cpp" line="415"/>
+        <location filename="../source/optionswindow.cpp" line="422"/>
+        <location filename="../source/optionswindow.cpp" line="429"/>
+        <location filename="../source/optionswindow.cpp" line="436"/>
+        <location filename="../source/optionswindow.cpp" line="443"/>
+        <location filename="../source/optionswindow.cpp" line="450"/>
+        <location filename="../source/optionswindow.cpp" line="457"/>
+        <location filename="../source/optionswindow.cpp" line="464"/>
         <source>Grabber - Choisir une police</source>
         <translation>Grabber - Choisir une police</translation>
     </message>
     <message>
-        <location filename="../source/optionswindow.cpp" line="465"/>
+        <location filename="../source/optionswindow.cpp" line="488"/>
         <source>Général</source>
         <comment>update</comment>
         <translation>Général</translation>
     </message>
     <message>
-        <location filename="../source/optionswindow.cpp" line="466"/>
+        <location filename="../source/optionswindow.cpp" line="489"/>
         <source>Sources</source>
         <comment>update</comment>
         <translation>Sources</translation>
     </message>
     <message>
-        <location filename="../source/optionswindow.cpp" line="467"/>
+        <location filename="../source/optionswindow.cpp" line="490"/>
         <source>Log</source>
         <comment>update</comment>
         <translation>Log</translation>
     </message>
     <message>
-        <location filename="../source/optionswindow.cpp" line="468"/>
+        <location filename="../source/optionswindow.cpp" line="491"/>
         <source>Sauvegarde</source>
         <comment>update</comment>
         <translation>Sauvegarde</translation>
     </message>
     <message>
-        <location filename="../source/optionswindow.cpp" line="469"/>
+        <location filename="../source/optionswindow.cpp" line="492"/>
         <source>Nom de fichier</source>
         <comment>update</comment>
         <translation>Nom de fichier</translation>
     </message>
     <message>
-        <location filename="../source/optionswindow.cpp" line="470"/>
+        <location filename="../source/optionswindow.cpp" line="493"/>
         <source>Noms multiples</source>
         <comment>update</comment>
         <translation>Noms multiples</translation>
     </message>
     <message>
-        <location filename="../source/optionswindow.cpp" line="471"/>
+        <location filename="../source/optionswindow.cpp" line="494"/>
         <source>Tags artiste</source>
         <comment>update</comment>
         <translation>Tags artiste</translation>
     </message>
     <message>
-        <location filename="../source/optionswindow.cpp" line="472"/>
+        <location filename="../source/optionswindow.cpp" line="495"/>
         <source>Tags série</source>
         <comment>update</comment>
         <translation>Tags série</translation>
     </message>
     <message>
-        <location filename="../source/optionswindow.cpp" line="473"/>
+        <location filename="../source/optionswindow.cpp" line="496"/>
         <source>Tags personnage</source>
         <comment>update</comment>
         <translation>Tags personnage</translation>
     </message>
     <message>
-        <location filename="../source/optionswindow.cpp" line="474"/>
+        <location filename="../source/optionswindow.cpp" line="497"/>
         <source>Symbole personnalisé</source>
         <comment>update</comment>
         <translation>Symbole personnalisé</translation>
     </message>
     <message>
-        <location filename="../source/optionswindow.cpp" line="475"/>
+        <location filename="../source/optionswindow.cpp" line="498"/>
         <source>Interface</source>
         <comment>update</comment>
         <translation>Interface</translation>
     </message>
     <message>
-        <location filename="../source/optionswindow.cpp" line="476"/>
+        <location filename="../source/optionswindow.cpp" line="499"/>
         <source>Coloration</source>
         <comment>update</comment>
         <translation>Coloration</translation>
     </message>
     <message>
-        <location filename="../source/optionswindow.cpp" line="477"/>
+        <location filename="../source/optionswindow.cpp" line="500"/>
         <source>Marges et bordures</source>
         <comment>update</comment>
         <translation>Marges et bordures</translation>
@@ -3733,40 +3744,40 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Connexion</translation>
     </message>
     <message>
-        <location filename="../source/optionswindow.cpp" line="478"/>
+        <location filename="../source/optionswindow.cpp" line="501"/>
         <source>Proxy</source>
         <comment>update</comment>
         <translation>Proxy</translation>
     </message>
     <message>
-        <location filename="../source/optionswindow.cpp" line="479"/>
+        <location filename="../source/optionswindow.cpp" line="502"/>
         <source>Commandes</source>
         <comment>update</comment>
         <translation>Commandes</translation>
     </message>
     <message>
-        <location filename="../source/optionswindow.cpp" line="480"/>
+        <location filename="../source/optionswindow.cpp" line="503"/>
         <source>Base de données</source>
         <comment>update</comment>
         <translation>Base de données</translation>
     </message>
     <message>
-        <location filename="../source/optionswindow.cpp" line="557"/>
+        <location filename="../source/optionswindow.cpp" line="580"/>
         <source>Une erreur est survenue lors de la création du dossier de sauvegarde.</source>
         <translation>Une erreur est survenue lors de la création du dossier de sauvegarde.</translation>
     </message>
     <message>
-        <location filename="../source/optionswindow.cpp" line="572"/>
+        <location filename="../source/optionswindow.cpp" line="595"/>
         <source>Une erreur est survenue lors de la création du dossier de sauvegarde des favoris.</source>
         <translation>Une erreur est survenue lors de la création du dossier de sauvegarde des favoris.</translation>
     </message>
     <message>
-        <location filename="../source/optionswindow.cpp" line="692"/>
+        <location filename="../source/optionswindow.cpp" line="717"/>
         <source>Activation du proxy général sur l&apos;hôte &quot;%1&quot; et le port %2.</source>
         <translation>Activation du proxy général sur l&apos;hôte &quot;%1&quot; et le port %2.</translation>
     </message>
     <message>
-        <location filename="../source/optionswindow.cpp" line="697"/>
+        <location filename="../source/optionswindow.cpp" line="722"/>
         <source>Désactivation du proxy général.</source>
         <translation>Désactivation du proxy général.</translation>
     </message>
@@ -3851,142 +3862,142 @@ p, li { white-space: pre-wrap; }
         <translation>&gt;&gt;</translation>
     </message>
     <message>
-        <location filename="../source/pooltab.cpp" line="121"/>
+        <location filename="../source/pooltab.cpp" line="122"/>
         <source>Mise à jour des options de l&apos;onglet &quot;%1&quot;.</source>
         <translation>Mise à jour des options de l&apos;onglet &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location filename="../source/pooltab.cpp" line="142"/>
+        <location filename="../source/pooltab.cpp" line="143"/>
         <source>Sauvegarde des sources...</source>
         <translation>Sauvegarde des sources...</translation>
     </message>
     <message>
-        <location filename="../source/pooltab.cpp" line="155"/>
+        <location filename="../source/pooltab.cpp" line="156"/>
         <source>Mise à jour des cases à cocher.</source>
         <translation>Mise à jour des cases à cocher.</translation>
     </message>
     <message>
-        <location filename="../source/pooltab.cpp" line="185"/>
+        <location filename="../source/pooltab.cpp" line="186"/>
         <source>Chargement des résultats...</source>
         <translation>Chargement des résultats...</translation>
     </message>
     <message>
-        <location filename="../source/pooltab.cpp" line="221"/>
+        <location filename="../source/pooltab.cpp" line="222"/>
         <source>Recherche</source>
         <translation>Recherche</translation>
     </message>
     <message>
-        <location filename="../source/pooltab.cpp" line="244"/>
+        <location filename="../source/pooltab.cpp" line="245"/>
         <source>Chargement de la page &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;</source>
         <translation>Chargement de la page &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../source/pooltab.cpp" line="269"/>
+        <location filename="../source/pooltab.cpp" line="270"/>
         <source>Réception de la page &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;</source>
         <translation>Réception de la page &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../source/pooltab.cpp" line="290"/>
+        <location filename="../source/pooltab.cpp" line="291"/>
         <source>serveur hors-ligne</source>
         <translation>serveur hors-ligne</translation>
     </message>
     <message>
-        <location filename="../source/pooltab.cpp" line="292"/>
+        <location filename="../source/pooltab.cpp" line="293"/>
         <source>trop de tags</source>
         <translation>trop de tags</translation>
     </message>
     <message>
-        <location filename="../source/pooltab.cpp" line="294"/>
+        <location filename="../source/pooltab.cpp" line="295"/>
         <source>page trop éloignée</source>
         <translation>page trop éloignée</translation>
     </message>
     <message>
-        <location filename="../source/pooltab.cpp" line="337"/>
+        <location filename="../source/pooltab.cpp" line="338"/>
         <source>Aucun résultat</source>
         <translation>Aucun résultat</translation>
     </message>
     <message>
-        <location filename="../source/pooltab.cpp" line="337"/>
+        <location filename="../source/pooltab.cpp" line="338"/>
         <source>Raisons possibles : %1</source>
         <translation>Raisons possibles : %1</translation>
     </message>
     <message>
-        <location filename="../source/pooltab.cpp" line="340"/>
+        <location filename="../source/pooltab.cpp" line="341"/>
         <source>Page %1 sur %2 (%3 sur %4)</source>
         <translation>Page %1 sur %2 (%3 sur %4)</translation>
     </message>
     <message>
-        <location filename="../source/pooltab.cpp" line="352"/>
+        <location filename="../source/pooltab.cpp" line="353"/>
         <source>Des modificateurs ont été otés de la recherche car ils ne sont pas compatibles avec cet imageboard : %1.</source>
         <translation>Des modificateurs ont été otés de la recherche car ils ne sont pas compatibles avec cet imageboard : %1.</translation>
     </message>
     <message>
-        <location filename="../source/pooltab.cpp" line="442"/>
+        <location filename="../source/pooltab.cpp" line="443"/>
         <source>Image #%1 ignorée. Raison : %2.</source>
         <translation>Image #%1 ignorée. Raison : %2.</translation>
     </message>
     <message>
-        <location filename="../source/pooltab.cpp" line="516"/>
+        <location filename="../source/pooltab.cpp" line="517"/>
         <source>&lt;b&gt;Attention :&lt;/b&gt; %1</source>
         <translation>&lt;b&gt;Attention :&lt;/b&gt; %1</translation>
     </message>
     <message>
-        <location filename="../source/pooltab.cpp" line="516"/>
+        <location filename="../source/pooltab.cpp" line="517"/>
         <source>une des miniatures est vide (&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;).</source>
         <translation>une des miniatures est vide (&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;).</translation>
     </message>
     <message>
-        <location filename="../source/pooltab.cpp" line="559"/>
+        <location filename="../source/pooltab.cpp" line="560"/>
         <source>&lt;b&gt;Tags :&lt;/b&gt; %1&lt;br/&gt;&lt;br/&gt;</source>
         <translation>&lt;b&gt;Tags :&lt;/b&gt; %1&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../source/pooltab.cpp" line="560"/>
+        <location filename="../source/pooltab.cpp" line="561"/>
         <source>&lt;b&gt;ID :&lt;/b&gt; %1&lt;br/&gt;</source>
         <translation>&lt;b&gt;ID :&lt;/b&gt; %1&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../source/pooltab.cpp" line="561"/>
+        <location filename="../source/pooltab.cpp" line="562"/>
         <source>&lt;b&gt;Classe :&lt;/b&gt; %1&lt;br/&gt;</source>
         <translation>&lt;b&gt;Classe :&lt;/b&gt; %1&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../source/pooltab.cpp" line="562"/>
+        <location filename="../source/pooltab.cpp" line="563"/>
         <source>&lt;b&gt;Score :&lt;/b&gt; %1&lt;br/&gt;</source>
         <translation>&lt;b&gt;Score :&lt;/b&gt; %1&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../source/pooltab.cpp" line="563"/>
+        <location filename="../source/pooltab.cpp" line="564"/>
         <source>&lt;b&gt;Posteur :&lt;/b&gt; %1&lt;br/&gt;&lt;br/&gt;</source>
         <translation>&lt;b&gt;Posteur :&lt;/b&gt; %1&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../source/pooltab.cpp" line="564"/>
+        <location filename="../source/pooltab.cpp" line="565"/>
         <source>&lt;b&gt;Dimensions :&lt;/b&gt; %1 x %2&lt;br/&gt;</source>
         <translation>&lt;b&gt;Dimensions :&lt;/b&gt; %1 x %2&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../source/pooltab.cpp" line="565"/>
+        <location filename="../source/pooltab.cpp" line="566"/>
         <source>&lt;b&gt;Taille :&lt;/b&gt; %1 %2&lt;br/&gt;</source>
         <translation>&lt;b&gt;Taille :&lt;/b&gt; %1 %2&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../source/pooltab.cpp" line="566"/>
+        <location filename="../source/pooltab.cpp" line="567"/>
         <source>&lt;b&gt;Date :&lt;/b&gt; %1</source>
         <translation>&lt;b&gt;Date :&lt;/b&gt; %1</translation>
     </message>
     <message>
-        <location filename="../source/pooltab.cpp" line="566"/>
+        <location filename="../source/pooltab.cpp" line="567"/>
         <source>&apos;le &apos;dd/MM/yyyy&apos; à &apos;hh:mm</source>
         <translation>&apos;le &apos;dd/MM/yyyy&apos; à &apos;hh:mm</translation>
     </message>
     <message>
-        <location filename="../source/pooltab.cpp" line="592"/>
+        <location filename="../source/pooltab.cpp" line="593"/>
         <source>List noire</source>
         <translation>List noire</translation>
     </message>
     <message numerus="yes">
-        <location filename="../source/pooltab.cpp" line="592"/>
+        <location filename="../source/pooltab.cpp" line="593"/>
         <source>%n tag(s) figurant dans la liste noire détécté(s) sur cette image : %1. Voulez-vous l&apos;afficher tout de même ?</source>
         <translation>
             <numerusform>%n tag figurant dans la liste noire détécté sur cette image : %1. Voulez-vous l&apos;afficher tout de même ?</numerusform>
@@ -3994,32 +4005,32 @@ p, li { white-space: pre-wrap; }
         </translation>
     </message>
     <message>
-        <location filename="../source/pooltab.cpp" line="696"/>
+        <location filename="../source/pooltab.cpp" line="697"/>
         <source>Retirer des favoris</source>
         <translation>Retirer des favoris</translation>
     </message>
     <message>
-        <location filename="../source/pooltab.cpp" line="698"/>
+        <location filename="../source/pooltab.cpp" line="699"/>
         <source>Ajouter aux favoris</source>
         <translation>Ajouter aux favoris</translation>
     </message>
     <message>
-        <location filename="../source/pooltab.cpp" line="701"/>
+        <location filename="../source/pooltab.cpp" line="702"/>
         <source>Ne pas garder pour plus tard</source>
         <translation>Ne pas garder pour plus tard</translation>
     </message>
     <message>
-        <location filename="../source/pooltab.cpp" line="703"/>
+        <location filename="../source/pooltab.cpp" line="704"/>
         <source>Garder pour plus tard</source>
         <translation>Garder pour plus tard</translation>
     </message>
     <message>
-        <location filename="../source/pooltab.cpp" line="705"/>
+        <location filename="../source/pooltab.cpp" line="706"/>
         <source>Ouvrir dans un nouvel onglet</source>
         <translation>Ouvrir dans un nouvel onglet</translation>
     </message>
     <message>
-        <location filename="../source/pooltab.cpp" line="706"/>
+        <location filename="../source/pooltab.cpp" line="707"/>
         <source>Ouvrir dans une nouvelle fenêtre</source>
         <translation>Ouvrir dans une nouvelle fenêtre</translation>
     </message>
@@ -4258,7 +4269,7 @@ p, li { white-space: pre-wrap; }
         <translation>%v/%m</translation>
     </message>
     <message>
-        <location filename="../source/sitewindow.cpp" line="99"/>
+        <location filename="../source/sitewindow.cpp" line="91"/>
         <source>Impossible de deviner le type du site. Êtes-vous sûr de l&apos;url ?</source>
         <translation>Impossible de deviner le type du site. Êtes-vous sûr de l&apos;url ?</translation>
     </message>
@@ -4296,9 +4307,19 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../source/sourceswindow.cpp" line="66"/>
-        <location filename="../source/sourceswindow.cpp" line="221"/>
+        <location filename="../source/sourceswindow.cpp" line="224"/>
         <source>Options</source>
         <translation>Options</translation>
+    </message>
+    <message>
+        <location filename="../source/sourceswindow.cpp" line="283"/>
+        <source>Une mise à jour de cette source est disponible, mais pour une autre version du programme.</source>
+        <translation>Une mise à jour de cette source est disponible, mais pour une autre version du programme.</translation>
+    </message>
+    <message>
+        <location filename="../source/sourceswindow.cpp" line="288"/>
+        <source>Une mise à jour de cette source est disponible.</source>
+        <translation>Une mise à jour de cette source est disponible.</translation>
     </message>
     <message>
         <source>Grabber - Supprimer un site</source>
@@ -4466,132 +4487,132 @@ Voulez-vous régler ces options maintenant ? Vous devez régler le dossier de sa
         <translation>&gt;&gt;</translation>
     </message>
     <message>
-        <location filename="../source/tagtab.cpp" line="124"/>
+        <location filename="../source/tagtab.cpp" line="125"/>
         <source>Mise à jour des options de l&apos;onglet &quot;%1&quot;.</source>
         <translation>Mise à jour des options de l&apos;onglet &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location filename="../source/tagtab.cpp" line="145"/>
+        <location filename="../source/tagtab.cpp" line="146"/>
         <source>Sauvegarde des sources...</source>
         <translation>Sauvegarde des sources...</translation>
     </message>
     <message>
-        <location filename="../source/tagtab.cpp" line="158"/>
+        <location filename="../source/tagtab.cpp" line="159"/>
         <source>Mise à jour des cases à cocher.</source>
         <translation>Mise à jour des cases à cocher.</translation>
     </message>
     <message>
-        <location filename="../source/tagtab.cpp" line="188"/>
+        <location filename="../source/tagtab.cpp" line="189"/>
         <source>Chargement des résultats...</source>
         <translation>Chargement des résultats...</translation>
     </message>
     <message>
-        <location filename="../source/tagtab.cpp" line="225"/>
+        <location filename="../source/tagtab.cpp" line="226"/>
         <source>Recherche</source>
         <translation>Recherche</translation>
     </message>
     <message>
-        <location filename="../source/tagtab.cpp" line="250"/>
+        <location filename="../source/tagtab.cpp" line="251"/>
         <source>Chargement de la page &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;</source>
         <translation>Chargement de la page &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../source/tagtab.cpp" line="278"/>
+        <location filename="../source/tagtab.cpp" line="279"/>
         <source>Réception de la page &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;</source>
         <translation>Réception de la page &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../source/tagtab.cpp" line="301"/>
+        <location filename="../source/tagtab.cpp" line="303"/>
         <source>serveur hors-ligne</source>
         <translation>serveur hors-ligne</translation>
     </message>
     <message>
-        <location filename="../source/tagtab.cpp" line="303"/>
+        <location filename="../source/tagtab.cpp" line="305"/>
         <source>trop de tags</source>
         <translation>trop de tags</translation>
     </message>
     <message>
-        <location filename="../source/tagtab.cpp" line="305"/>
+        <location filename="../source/tagtab.cpp" line="307"/>
         <source>page trop éloignée</source>
         <translation>page trop éloignée</translation>
     </message>
     <message>
-        <location filename="../source/tagtab.cpp" line="348"/>
+        <location filename="../source/tagtab.cpp" line="350"/>
         <source>Aucun résultat</source>
         <translation>Aucun résultat</translation>
     </message>
     <message>
-        <location filename="../source/tagtab.cpp" line="348"/>
+        <location filename="../source/tagtab.cpp" line="350"/>
         <source>Raisons possibles : %1</source>
         <translation>Raisons possibles : %1</translation>
     </message>
     <message>
-        <location filename="../source/tagtab.cpp" line="351"/>
+        <location filename="../source/tagtab.cpp" line="353"/>
         <source>Page %1 sur %2 (%3 sur %4)</source>
         <translation>Page %1 sur %2 (%3 sur %4)</translation>
     </message>
     <message>
-        <location filename="../source/tagtab.cpp" line="363"/>
+        <location filename="../source/tagtab.cpp" line="365"/>
         <source>Des modificateurs ont été otés de la recherche car ils ne sont pas compatibles avec cet imageboard : %1.</source>
         <translation>Des modificateurs ont été otés de la recherche car ils ne sont pas compatibles avec cet imageboard : %1.</translation>
     </message>
     <message>
-        <location filename="../source/tagtab.cpp" line="468"/>
+        <location filename="../source/tagtab.cpp" line="470"/>
         <source>Image #%1 ignorée. Raison : %2.</source>
         <translation>Image #%1 ignorée. Raison : %2.</translation>
     </message>
     <message>
-        <location filename="../source/tagtab.cpp" line="547"/>
+        <location filename="../source/tagtab.cpp" line="556"/>
         <source>&lt;b&gt;Attention :&lt;/b&gt; %1</source>
         <translation>&lt;b&gt;Attention :&lt;/b&gt; %1</translation>
     </message>
     <message>
-        <location filename="../source/tagtab.cpp" line="547"/>
+        <location filename="../source/tagtab.cpp" line="556"/>
         <source>une des miniatures est vide (&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;).</source>
         <translation>une des miniatures est vide (&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;).</translation>
     </message>
     <message>
-        <location filename="../source/tagtab.cpp" line="589"/>
+        <location filename="../source/tagtab.cpp" line="598"/>
         <source>Grabber</source>
         <translation>Grabber</translation>
     </message>
     <message>
-        <location filename="../source/tagtab.cpp" line="589"/>
+        <location filename="../source/tagtab.cpp" line="598"/>
         <source>Certains tags de l&apos;image sont dans la liste blanche : &quot;%1&quot;. Cependant, certains dans la liste noire : &quot;%2&quot;. Voulez-vous la télécharger tout de même ?</source>
         <translation>Certains tags de l&apos;image sont dans la liste blanche : &quot;%1&quot;. Cependant, certains dans la liste noire : &quot;%2&quot;. Voulez-vous la télécharger tout de même ?</translation>
     </message>
     <message>
-        <location filename="../source/tagtab.cpp" line="632"/>
+        <location filename="../source/tagtab.cpp" line="641"/>
         <source>&lt;b&gt;Tags :&lt;/b&gt; %1</source>
         <translation>&lt;b&gt;Tags :&lt;/b&gt; %1</translation>
     </message>
     <message>
-        <location filename="../source/tagtab.cpp" line="633"/>
+        <location filename="../source/tagtab.cpp" line="642"/>
         <source>&lt;br/&gt;&lt;br/&gt;&lt;b&gt;ID :&lt;/b&gt; %1</source>
         <translation>&lt;br/&gt;&lt;br/&gt;&lt;b&gt;ID :&lt;/b&gt; %1</translation>
     </message>
     <message>
-        <location filename="../source/tagtab.cpp" line="634"/>
+        <location filename="../source/tagtab.cpp" line="643"/>
         <source>&lt;br/&gt;&lt;b&gt;Classe :&lt;/b&gt; %1</source>
         <translation>&lt;br/&gt;&lt;b&gt;Classe :&lt;/b&gt; %1</translation>
     </message>
     <message>
-        <location filename="../source/tagtab.cpp" line="635"/>
+        <location filename="../source/tagtab.cpp" line="644"/>
         <source>&lt;br/&gt;&lt;b&gt;Score :&lt;/b&gt; %1</source>
         <translation>&lt;br/&gt;&lt;b&gt;Score :&lt;/b&gt; %1</translation>
     </message>
     <message>
-        <location filename="../source/tagtab.cpp" line="636"/>
+        <location filename="../source/tagtab.cpp" line="645"/>
         <source>&lt;br/&gt;&lt;b&gt;Posteur :&lt;/b&gt; %1</source>
         <translation>&lt;br/&gt;&lt;b&gt;Posteur :&lt;/b&gt; %1</translation>
     </message>
     <message>
-        <location filename="../source/tagtab.cpp" line="637"/>
+        <location filename="../source/tagtab.cpp" line="646"/>
         <source>&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Dimensions :&lt;/b&gt; %1 x %2</source>
         <translation>&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Dimensions :&lt;/b&gt; %1 x %2</translation>
     </message>
     <message>
-        <location filename="../source/tagtab.cpp" line="638"/>
+        <location filename="../source/tagtab.cpp" line="647"/>
         <source>&lt;br/&gt;&lt;b&gt;Taille :&lt;/b&gt; %1 %2</source>
         <translation>&lt;br/&gt;&lt;b&gt;Taille :&lt;/b&gt; %1 %2</translation>
     </message>
@@ -4628,22 +4649,22 @@ Voulez-vous régler ces options maintenant ? Vous devez régler le dossier de sa
         <translation type="obsolete">&lt;b&gt;Date :&lt;/b&gt; %1</translation>
     </message>
     <message>
-        <location filename="../source/tagtab.cpp" line="639"/>
+        <location filename="../source/tagtab.cpp" line="648"/>
         <source>&apos;le &apos;dd/MM/yyyy&apos; à &apos;hh:mm</source>
         <translation>&apos;le &apos;dd/MM/yyyy&apos; à &apos;hh:mm</translation>
     </message>
     <message>
-        <location filename="../source/tagtab.cpp" line="639"/>
+        <location filename="../source/tagtab.cpp" line="648"/>
         <source>&lt;br/&gt;&lt;b&gt;Date :&lt;/b&gt; %1</source>
         <translation>&lt;br/&gt;&lt;b&gt;Date :&lt;/b&gt; %1</translation>
     </message>
     <message>
-        <location filename="../source/tagtab.cpp" line="668"/>
+        <location filename="../source/tagtab.cpp" line="677"/>
         <source>List noire</source>
         <translation>List noire</translation>
     </message>
     <message numerus="yes">
-        <location filename="../source/tagtab.cpp" line="668"/>
+        <location filename="../source/tagtab.cpp" line="677"/>
         <source>%n tag(s) figurant dans la liste noire détécté(s) sur cette image : %1. Voulez-vous l&apos;afficher tout de même ?</source>
         <translation>
             <numerusform>%n tag figurant dans la liste noire détécté sur cette image : %1. Voulez-vous l&apos;afficher tout de même ?</numerusform>
@@ -4651,32 +4672,32 @@ Voulez-vous régler ces options maintenant ? Vous devez régler le dossier de sa
         </translation>
     </message>
     <message>
-        <location filename="../source/tagtab.cpp" line="805"/>
+        <location filename="../source/tagtab.cpp" line="814"/>
         <source>Retirer des favoris</source>
         <translation>Retirer des favoris</translation>
     </message>
     <message>
-        <location filename="../source/tagtab.cpp" line="807"/>
+        <location filename="../source/tagtab.cpp" line="816"/>
         <source>Ajouter aux favoris</source>
         <translation>Ajouter aux favoris</translation>
     </message>
     <message>
-        <location filename="../source/tagtab.cpp" line="810"/>
+        <location filename="../source/tagtab.cpp" line="819"/>
         <source>Ne pas garder pour plus tard</source>
         <translation>Ne pas garder pour plus tard</translation>
     </message>
     <message>
-        <location filename="../source/tagtab.cpp" line="812"/>
+        <location filename="../source/tagtab.cpp" line="821"/>
         <source>Garder pour plus tard</source>
         <translation>Garder pour plus tard</translation>
     </message>
     <message>
-        <location filename="../source/tagtab.cpp" line="814"/>
+        <location filename="../source/tagtab.cpp" line="823"/>
         <source>Ouvrir dans un nouvel onglet</source>
         <translation>Ouvrir dans un nouvel onglet</translation>
     </message>
     <message>
-        <location filename="../source/tagtab.cpp" line="815"/>
+        <location filename="../source/tagtab.cpp" line="824"/>
         <source>Ouvrir dans une nouvelle fenêtre</source>
         <translation>Ouvrir dans une nouvelle fenêtre</translation>
     </message>
@@ -4684,8 +4705,8 @@ Voulez-vous régler ces options maintenant ? Vous devez régler le dossier de sa
 <context>
     <name>zoomWindow</name>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="406"/>
-        <location filename="../source/zoomwindow.cpp" line="666"/>
+        <location filename="../source/zoomwindow.cpp" line="412"/>
+        <location filename="../source/zoomwindow.cpp" line="672"/>
         <source>Fermer</source>
         <translation>Fermer</translation>
     </message>
@@ -4735,27 +4756,27 @@ Voulez-vous régler ces options maintenant ? Vous devez régler le dossier de sa
         <translation>Enregistrer sous...</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="79"/>
+        <location filename="../source/zoomwindow.cpp" line="85"/>
         <source>Safe</source>
         <translation>Safe</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="80"/>
+        <location filename="../source/zoomwindow.cpp" line="86"/>
         <source>Questionable</source>
         <translation>Questionable</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="81"/>
+        <location filename="../source/zoomwindow.cpp" line="87"/>
         <source>Explicit</source>
         <translation>Explicit</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="184"/>
+        <location filename="../source/zoomwindow.cpp" line="190"/>
         <source>Dossier inexistant</source>
         <translation>Dossier inexistant</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="184"/>
+        <location filename="../source/zoomwindow.cpp" line="190"/>
         <source>Le dossier de sauvegarde n&apos;existe pas encore. Le creer ?</source>
         <translation>Le dossier de sauvegarde n&apos;existe pas encore. Le creer ?</translation>
     </message>
@@ -4766,43 +4787,43 @@ Voulez-vous régler ces options maintenant ? Vous devez régler le dossier de sa
 %1</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="207"/>
+        <location filename="../source/zoomwindow.cpp" line="213"/>
         <source>Retirer des favoris</source>
         <translation>Retirer des favoris</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="208"/>
+        <location filename="../source/zoomwindow.cpp" line="214"/>
         <source>Choisir comme image</source>
         <translation>Choisir comme image</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="211"/>
+        <location filename="../source/zoomwindow.cpp" line="217"/>
         <source>Ajouter aux favoris</source>
         <translation>Ajouter aux favoris</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="214"/>
+        <location filename="../source/zoomwindow.cpp" line="220"/>
         <source>Ne pas garder pour plus tard</source>
         <translation>Ne pas garder pour plus tard</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="216"/>
+        <location filename="../source/zoomwindow.cpp" line="222"/>
         <source>Garder pour plus tard</source>
         <translation>Garder pour plus tard</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="224"/>
+        <location filename="../source/zoomwindow.cpp" line="230"/>
         <source>Ouvrir dans un nouvel onglet</source>
         <translation>Ouvrir dans un nouvel onglet</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="225"/>
+        <location filename="../source/zoomwindow.cpp" line="231"/>
         <source>Ouvrir dans une nouvelle fenêtre</source>
         <translation>Ouvrir dans une nouvelle fenêtre</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="405"/>
-        <location filename="../source/zoomwindow.cpp" line="688"/>
+        <location filename="../source/zoomwindow.cpp" line="411"/>
+        <location filename="../source/zoomwindow.cpp" line="694"/>
         <source>Fichier déjà existant</source>
         <translation>Fichier déjà existant</translation>
     </message>
@@ -4819,39 +4840,39 @@ Voulez-vous régler ces options maintenant ? Vous devez régler le dossier de sa
 %1</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="219"/>
+        <location filename="../source/zoomwindow.cpp" line="225"/>
         <source>Ne plus ignorer</source>
         <translation>Ne plus ignorer</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="221"/>
+        <location filename="../source/zoomwindow.cpp" line="227"/>
         <source>Ignorer</source>
         <translation>Ignorer</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="328"/>
+        <location filename="../source/zoomwindow.cpp" line="334"/>
         <source>Chargement de l&apos;image depuis &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;</source>
         <translation>Chargement de l&apos;image depuis &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="410"/>
-        <location filename="../source/zoomwindow.cpp" line="686"/>
+        <location filename="../source/zoomwindow.cpp" line="416"/>
+        <location filename="../source/zoomwindow.cpp" line="692"/>
         <source>Fichier déjà existant (fav)</source>
         <translation>Fichier déjà existant (fav)</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="411"/>
-        <location filename="../source/zoomwindow.cpp" line="664"/>
+        <location filename="../source/zoomwindow.cpp" line="417"/>
+        <location filename="../source/zoomwindow.cpp" line="670"/>
         <source>Fermer (fav)</source>
         <translation>Fermer (fav)</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="462"/>
+        <location filename="../source/zoomwindow.cpp" line="468"/>
         <source>Image reçue depuis &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;</source>
         <translation>Image reçue depuis &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="505"/>
+        <location filename="../source/zoomwindow.cpp" line="511"/>
         <source>Image non trouvée. Nouvel essai avec l&apos;extension %1...</source>
         <translation>Image non trouvée. Nouvel essai avec l&apos;extension %1...</translation>
     </message>
@@ -4862,23 +4883,23 @@ Voulez-vous régler ces options maintenant ? Vous devez régler le dossier de sa
 %2</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="567"/>
+        <location filename="../source/zoomwindow.cpp" line="573"/>
         <source>Sauvegarde... (fav)</source>
         <translation>Sauvegarde... (fav)</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="587"/>
-        <location filename="../source/zoomwindow.cpp" line="589"/>
+        <location filename="../source/zoomwindow.cpp" line="593"/>
+        <location filename="../source/zoomwindow.cpp" line="595"/>
         <source>Erreur</source>
         <translation>Erreur</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="587"/>
+        <location filename="../source/zoomwindow.cpp" line="593"/>
         <source>Vous n&apos;avez pas précisé de dossier de sauvegarde ! Voulez-vous ouvrir les options ?</source>
         <translation>Vous n&apos;avez pas précisé de dossier de sauvegarde ! Voulez-vous ouvrir les options ?</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="589"/>
+        <location filename="../source/zoomwindow.cpp" line="595"/>
         <source>Vous n&apos;avez pas précisé de format de sauvegarde ! Voulez-vous ouvrir les options ?</source>
         <translation>Vous n&apos;avez pas précisé de format de sauvegarde ! Voulez-vous ouvrir les options ?</translation>
     </message>
@@ -4901,47 +4922,47 @@ Voulez-vous régler ces options maintenant ? Vous devez régler le dossier de sa
         <translation type="obsolete">erreur lors de la commande d&apos;initialisation : %1.</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="618"/>
+        <location filename="../source/zoomwindow.cpp" line="624"/>
         <source>Sauvegarde de l&apos;image dans le fichier &lt;a href=&quot;file:///%1&quot;&gt;%1&lt;/a&gt;</source>
         <translation>Sauvegarde de l&apos;image dans le fichier &lt;a href=&quot;file:///%1&quot;&gt;%1&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="636"/>
+        <location filename="../source/zoomwindow.cpp" line="642"/>
         <source>Copie depuis &lt;a href=&quot;file:///%1&quot;&gt;%1&lt;/a&gt; vers &lt;a href=&quot;file:///%2&quot;&gt;%2&lt;/a&gt;</source>
         <translation>Copie depuis &lt;a href=&quot;file:///%1&quot;&gt;%1&lt;/a&gt; vers &lt;a href=&quot;file:///%2&quot;&gt;%2&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="640"/>
+        <location filename="../source/zoomwindow.cpp" line="646"/>
         <source>Copié ! (fav)</source>
         <translation>Copié ! (fav)</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="642"/>
+        <location filename="../source/zoomwindow.cpp" line="648"/>
         <source>Copié !</source>
         <translation>Copié !</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="646"/>
+        <location filename="../source/zoomwindow.cpp" line="652"/>
         <source>Déplacement depuis &lt;a href=&quot;file:///%1&quot;&gt;%1&lt;/a&gt; vers &lt;a href=&quot;file:///%2&quot;&gt;%2&lt;/a&gt;</source>
         <translation>Déplacement depuis &lt;a href=&quot;file:///%1&quot;&gt;%1&lt;/a&gt; vers &lt;a href=&quot;file:///%2&quot;&gt;%2&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="651"/>
+        <location filename="../source/zoomwindow.cpp" line="657"/>
         <source>Déplacé ! (fav)</source>
         <translation>Déplacé ! (fav)</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="653"/>
+        <location filename="../source/zoomwindow.cpp" line="659"/>
         <source>Déplacé !</source>
         <translation>Déplacé !</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="658"/>
+        <location filename="../source/zoomwindow.cpp" line="664"/>
         <source>Ignoré ! (fav)</source>
         <translation>Ignoré ! (fav)</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="660"/>
+        <location filename="../source/zoomwindow.cpp" line="666"/>
         <source>Ignoré !</source>
         <translation>Ignoré !</translation>
     </message>
@@ -4958,12 +4979,12 @@ Voulez-vous régler ces options maintenant ? Vous devez régler le dossier de sa
         <translation type="obsolete">Sauvegardé &lt;a href=&quot;file:///%1&quot;&gt;%1&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="630"/>
+        <location filename="../source/zoomwindow.cpp" line="636"/>
         <source>Sauvegardé ! (fav)</source>
         <translation>Sauvegardé ! (fav)</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="757"/>
+        <location filename="../source/zoomwindow.cpp" line="763"/>
         <source>Chargement de l&apos;image stoppé.</source>
         <translation>Chargement de l&apos;image stoppé.</translation>
     </message>
@@ -4973,9 +4994,9 @@ Voulez-vous régler ces options maintenant ? Vous devez régler le dossier de sa
         <translation>Enregistrer</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="543"/>
-        <location filename="../source/zoomwindow.cpp" line="556"/>
-        <location filename="../source/zoomwindow.cpp" line="572"/>
+        <location filename="../source/zoomwindow.cpp" line="549"/>
+        <location filename="../source/zoomwindow.cpp" line="562"/>
+        <location filename="../source/zoomwindow.cpp" line="578"/>
         <source>Sauvegarde...</source>
         <translation>Sauvegarde...</translation>
     </message>
@@ -4984,12 +5005,12 @@ Voulez-vous régler ces options maintenant ? Vous devez régler le dossier de sa
         <translation type="obsolete">Sauvegarde de l&apos;image (%1) dans le fichier &lt;a href=&quot;file:///%2&quot;&gt;%2&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="632"/>
+        <location filename="../source/zoomwindow.cpp" line="638"/>
         <source>Sauvegardé !</source>
         <translation>Sauvegardé !</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="700"/>
+        <location filename="../source/zoomwindow.cpp" line="706"/>
         <source>Enregistrer l&apos;image</source>
         <translation>Enregistrer l&apos;image</translation>
     </message>
