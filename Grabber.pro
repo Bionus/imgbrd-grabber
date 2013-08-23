@@ -1,6 +1,6 @@
 # Options
 CONFIG += use_qscintilla
-#CONFIG += use_breakpad
+CONFIG += use_breakpad
 APP_VERSION = \\\"3.4.0\\\"
 DEFINES += VERSION=$$APP_VERSION
 
@@ -22,14 +22,17 @@ RC_FILE = icon.rc
 CODECFORTR = UTF-8
 TRANSLATIONS += languages/English.ts languages/Français.ts languages/Russian.ts
 
+
 # Google-Breakpad
 use_breakpad {
 	DEFINES += USE_BREAKPAD=1
 	win32 {
+		QMAKE_LFLAGS_RELEASE = /INCREMENTAL:NO /DEBUG
+		QMAKE_CFLAGS_RELEASE = -O2 -MD -zi
 		BREAKPAD = D:/Programmation/C++/Qt/google-breakpad
-		Debug:LIBS += $${BREAKPAD}/src/client/windows/Debug/lib/common.lib \
-					  $${BREAKPAD}/src/client/windows/Debug/lib/crash_generation_client.lib \
-					  $${BREAKPAD}/src/client/windows/Debug/lib/exception_handler.lib
+		Debug:LIBS	 += $${BREAKPAD}/src/client/windows/Debug/lib/common.lib \
+						$${BREAKPAD}/src/client/windows/Debug/lib/crash_generation_client.lib \
+						$${BREAKPAD}/src/client/windows/Debug/lib/exception_handler.lib
 		Release:LIBS += $${BREAKPAD}/src/client/windows/Release/lib/common.lib \
 						$${BREAKPAD}/src/client/windows/Release/lib/crash_generation_client.lib \
 						$${BREAKPAD}/src/client/windows/Release/lib/exception_handler.lib
