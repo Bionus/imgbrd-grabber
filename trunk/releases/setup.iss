@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Grabber"
-#define MyAppVersion "3.4.0"
+#define MyAppVersion "3.4.1"
 #define MyAppPublisher "Bionus"
 #define MyAppURL "http://code.google.com/p/imgbrd-grabber/"
 #define MyAppExeName "Grabber.exe"
@@ -104,8 +104,9 @@ Source: "D:\Programmation\C++\Qt\Grabber\release\imageformats\qtga.dll"; DestDir
 Source: "D:\Programmation\C++\Qt\Grabber\release\imageformats\qtiff.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\imageformats\qwbmp.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\languages\English.qm"; DestDir: "{app}\languages"; Flags: ignoreversion         
-Source: "D:\Programmation\C++\Qt\Grabber\release\languages\Français.qm"; DestDir: "{app}\languages"; Flags: ignoreversion
+Source: "D:\Programmation\C++\Qt\Grabber\release\languages\Français.qm"; DestDir: "{app}\languages"; Flags: ignoreversion    
 Source: "D:\Programmation\C++\Qt\Grabber\release\languages\Russian.qm"; DestDir: "{app}\languages"; Flags: ignoreversion
+Source: "D:\Programmation\C++\Qt\Grabber\release\platforms\qwindows.dll"; DestDir: "{app}\platforms"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Booru-on-rails\icon.png"; DestDir: "{%UserProfile}\Grabber\sites\Booru-on-rails"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Booru-on-rails\model.xml"; DestDir: "{%UserProfile}\Grabber\sites\Booru-on-rails"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Booru-on-rails\sites.txt"; DestDir: "{%UserProfile}\Grabber\sites\Booru-on-rails";   
