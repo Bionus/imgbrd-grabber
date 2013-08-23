@@ -28,6 +28,7 @@ class optionsWindow : public QDialog
 		void on_buttonFolder_clicked();
 		void on_buttonFolderFavorites_clicked();
 		void on_lineColoringArtists_textChanged();
+		void on_lineColoringCircles_textChanged();
 		void on_lineColoringCopyrights_textChanged();
 		void on_lineColoringCharacters_textChanged();
 		void on_lineColoringModels_textChanged();
@@ -36,6 +37,7 @@ class optionsWindow : public QDialog
 		void on_lineColoringBlacklisteds_textChanged();
 		void on_lineColoringIgnoreds_textChanged();
 		void on_buttonColoringArtistsColor_clicked();
+		void on_buttonColoringCirclesColor_clicked();
 		void on_buttonColoringCopyrightsColor_clicked();
 		void on_buttonColoringCharactersColor_clicked();
 		void on_buttonColoringModelsColor_clicked();
@@ -44,6 +46,7 @@ class optionsWindow : public QDialog
 		void on_buttonColoringBlacklistedsColor_clicked();
 		void on_buttonColoringIgnoredsColor_clicked();
 		void on_buttonColoringArtistsFont_clicked();
+		void on_buttonColoringCirclesFont_clicked();
 		void on_buttonColoringCopyrightsFont_clicked();
 		void on_buttonColoringCharactersFont_clicked();
 		void on_buttonColoringModelsFont_clicked();
