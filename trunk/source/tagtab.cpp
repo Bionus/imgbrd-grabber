@@ -400,8 +400,8 @@ void tagTab::finishedLoading(Page* page)
 		qSort(taglist.begin(), taglist.end(), sortByFrequency);
 
 		// Then we show them, styled if possible
-		QStringList tlist = QStringList() << "artists" << "copyrights" << "characters" << "models" << "generals" << "favorites" << "blacklisteds";
-		QStringList defaults = QStringList() << "#aa0000" << "#aa00aa" << "#00aa00" << "#0000ee" << "#000000" << "#ffc0cb" << "#000000";
+		QStringList tlist = QStringList() << "artists" << "circles" << "copyrights" << "characters" << "models" << "generals" << "favorites" << "blacklisteds";
+		QStringList defaults = QStringList() << "#aa0000" << "#55bbff" << "#aa00aa" << "#00aa00" << "#0000ee" << "#000000" << "#ffc0cb" << "#000000";
 		QMap<QString,QString> styles;
 		QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
 		for (int i = 0; i < tlist.size(); i++)
@@ -503,8 +503,8 @@ void tagTab::finishedLoadingTags(Page *page)
 	qSort(taglist.begin(), taglist.end(), sortByFrequency);
 
 	// Then we show them, styled if possible
-	QStringList tlist = QStringList() << "artists" << "copyrights" << "characters" << "models" << "generals" << "favorites" << "blacklisteds";
-	QStringList defaults = QStringList() << "#aa0000" << "#aa00aa" << "#00aa00" << "#0000ee" << "#000000" << "#ffc0cb" << "#000000";
+	QStringList tlist = QStringList() << "artists" << "circles" << "copyrights" << "characters" << "models" << "generals" << "favorites" << "blacklisteds";
+	QStringList defaults = QStringList() << "#aa0000" << "#55bbff" << "#aa00aa" << "#00aa00" << "#0000ee" << "#000000" << "#ffc0cb" << "#000000";
 	QMap<QString,QString> styles;
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
 	for (int i = 0; i < tlist.size(); i++)
