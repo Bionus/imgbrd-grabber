@@ -1,14 +1,19 @@
 #summary Download list.
 
 = Changes to the downloads =
-The downloads have moved because google code will soon close its downloads.
+The downloads have moved because Google Code will soon disable its downloads feature.
 
-= Windows =
+You can find the new downloads list [http://www.bionus.fr.cr/imgbrd-grabber/downloads.html here].
+
+= Direct links =
+== Windows ==
   * [http://www.bionus.fr.cr/imgbrd-grabber/downloads/Grabber_3.4.0.exe 3.4.0] <font color="green">Featured</font>
   * [http://www.bionus.fr.cr/imgbrd-grabber/downloads/Grabber_3.3.0.exe 3.3.0]
   * [http://www.bionus.fr.cr/imgbrd-grabber/downloads/Grabber_3.2.6.exe 3.2.6]
   * [http://www.bionus.fr.cr/imgbrd-grabber/downloads/Grabber_3.2.1.exe 3.2.1]
-
-= Linux =
+== Linux ==
   * [http://www.bionus.fr.cr/imgbrd-grabber/downloads/Grabber_3.2.6.tar.gz 3.2.6] <font color="green">Featured</font>
   * [http://www.bionus.fr.cr/imgbrd-grabber/downloads/Grabber_3.1.4.tar.gz 3.1.4]
+
+= Mirrors =
+  * [https://googledrive.com/host/0B9j07AwMZbxDLU9Td2VwVUJ6Tnc Google Drive]
