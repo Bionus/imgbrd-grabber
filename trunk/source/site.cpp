@@ -82,8 +82,8 @@ void Site::loginFinished()
 
 QNetworkReply *Site::get(QUrl url, Page *page, QString ref, Image *img)
 {
-	/*if (!m_loggedIn)
-	{ login(); }*/
+	if (!m_loggedIn)
+	{ login(); }
 
 	//qDebug() << url;
 	/*QString u = url.toString();

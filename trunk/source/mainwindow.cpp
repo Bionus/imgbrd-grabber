@@ -1046,13 +1046,18 @@ void mainWindow::getAllFinishedLoading(Page* p)
 	}
 
 	QList<Image*> imgs = QList<Image*>(), ims = p->images();
-	QStringList blacklistedtags(m_settings->value("blacklistedtags").toString().split(' ', QString::SkipEmptyParts));
-	for (int i = 0; i < ims.size(); i++)
+	if (m_groupBatchs[n][4] == "true")
+	{ imgs = ims; }
+	else
 	{
-		if (ims[i]->blacklisted(blacklistedtags).isEmpty())
-		{ imgs.append(ims[i]); }
-		else
-		{ log("Blacklisted: "+ims[i]->blacklisted(blacklistedtags).join(", ")); }
+		QStringList blacklistedtags(m_settings->value("blacklistedtags").toString().split(' ', QString::SkipEmptyParts));
+		for (int i = 0; i < ims.size(); i++)
+		{
+			if (ims[i]->blacklisted(blacklistedtags).isEmpty())
+			{ imgs.append(ims[i]); }
+			else
+			{ log("Blacklisted: "+ims[i]->blacklisted(blacklistedtags).join(", ")); }
+		}
 	}
 
 	m_progressBars[n]->setMaximum(imgs.size());
@@ -1428,7 +1433,7 @@ void mainWindow::getAllGetImage(Image* img)
 	bool next = true;
 	if (md5Duplicate.isEmpty() || whatToDo == "save")
 	{
-		log(tr("Chargement de l'image depuis <a href=\"%1\">%1</a>").arg(img->fileUrl().toString()));
+		log(tr("Chargement de l'image depuis <a href=\"%1\">%1</a> %2").arg(img->fileUrl().toString()).arg(m_getAllDownloading.size()));
 		m_progressdialog->loadingImage(img->url());
 		m_downloadTime.insert(img->url(), new QTime);
 		m_downloadTime[img->url()]->start();
@@ -1478,7 +1483,7 @@ void mainWindow::getAllPerformImage(Image* img)
 
 	if (reply->error() == QNetworkReply::OperationCanceledError)
 	{ return; }
-	log(tr("Image reçue depuis <a href=\"%1\">%1</a>").arg(reply->url().toString()));
+	log(tr("Image reçue depuis <a href=\"%1\">%1</a> %2").arg(reply->url().toString()).arg(m_getAllDownloading.size()));
 
 	// Row
 	int site_id = m_progressdialog->batch(img->url());
