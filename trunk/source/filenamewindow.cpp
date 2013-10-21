@@ -55,7 +55,7 @@ void FilenameWindow::on_lineClassic_textChanged(QString text)
 
 void FilenameWindow::on_buttonHelpClassic_clicked()
 {
-	QMessageBox::information(this, tr("Grabber") + " - " + tr("Aide"), tr(
+	QMessageBox::information(this, tr("Aide"), tr(
 		"Symboles disponibles : <i>%artist%</i>, <i>%general%</i>, <i>%copyright%</i>, <i>%character%</i>, <i>%all%</i>, <i>%filename%</i>, <i>%ext%</i>, <i>%rating%</i>, <i>%website%</i>, <i>%md5%</i>.<br/><br/>"
 		"<i>%artist%</i> : tags de nom d'artiste<br/>"
 		"<i>%general%</i> : tags d'image génériques<br/>"
@@ -80,7 +80,7 @@ void FilenameWindow::on_buttonHelpClassic_clicked()
 
 void FilenameWindow::on_buttonHelpJavascript_clicked()
 {
-	QMessageBox::information(this, tr("Grabber") + " - " + tr("Aide"), tr(
+	QMessageBox::information(this, tr("Aide"), tr(
 		"Variables disponibles : <i>artist</i>, <i>general</i>, <i>copyright</i>, <i>character</i>, <i>all</i>, <i>filename</i>, <i>ext</i>, <i>rating</i>, <i>website</i>, <i>md5</i>.<br/><br/>"
 		"<i>artist</i> : tags de nom d'artiste<br/>"
 		"<i>general</i> : tags d'image génériques<br/>"

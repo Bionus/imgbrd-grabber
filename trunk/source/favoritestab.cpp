@@ -861,7 +861,7 @@ void favoritesTab::viewed()
 {
 	if (m_currentTags.isEmpty())
 	{
-		int reponse = QMessageBox::question(this, tr("Grabber - Marquer comme vu"), tr("Êtes-vous sûr de vouloir marquer tous vos favoris comme vus ?"), QMessageBox::Yes | QMessageBox::No);
+		int reponse = QMessageBox::question(this, tr("Marquer comme vu"), tr("Êtes-vous sûr de vouloir marquer tous vos favoris comme vus ?"), QMessageBox::Yes | QMessageBox::No);
 		if (reponse == QMessageBox::Yes)
 		{
 			QStringList keys = m_favorites->keys();

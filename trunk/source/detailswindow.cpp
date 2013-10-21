@@ -61,6 +61,7 @@ detailsWindow::detailsWindow(Image *image, QWidget *parent) : QDialog(parent), u
 		fontCharacters.fromString(settings.value("Coloring/Fonts/characters").toString());
 		fontModels.fromString(settings.value("Coloring/Fonts/models").toString());
 		fontGenerals.fromString(settings.value("Coloring/Fonts/generals").toString());
+	ui->labelTags->setTextInteractionFlags(Qt::TextBrowserInteraction);
 	ui->labelTags->setStyleSheet(
 		"a				{ text-decoration:none; font-weight:normal;																		} "\
 		".blacklisted	{ font-weight:bold; text-decoration:underline; color:#000000;													} "\

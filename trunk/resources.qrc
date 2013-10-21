@@ -34,5 +34,6 @@
         <file>images/colors/red.png</file>
         <file>images/colors/black.png</file>
         <file>sounds/finished.wav</file>
+        <file>images/icons/browser.png</file>
     </qresource>
 </RCC>
