@@ -48,6 +48,7 @@ class zoomWindow : public QDialog
 		void contextMenu(QPoint);
 		void openInNewTab();
 		void openInNewWindow();
+		void openInBrowser();
 		void favorite();
 		void setfavorite();
 		void unfavorite();

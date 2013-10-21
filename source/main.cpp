@@ -46,6 +46,11 @@ mainWindow *_mainwindow;
 int main(int argc, char *argv[])
 {
 	QApplication app(argc, argv);
+	app.setApplicationName("Grabber");
+	app.setApplicationDisplayName("Grabber");
+	app.setApplicationVersion(VERSION);
+	app.setOrganizationName("Bionus");
+	app.setOrganizationDomain("bionus.fr.cr");
 
 	#if USE_BREAKPAD
 		QDir dir = QFileInfo(argv[0]).dir();

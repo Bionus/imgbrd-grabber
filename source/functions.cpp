@@ -4,6 +4,7 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QProcess>
+#include <QStandardPaths>
 #include <QApplication>
 #include <QDebug>
 #include <QDesktopServices>
@@ -30,7 +31,7 @@ void error(QWidget *parent, QString error)
 
 /**
  * Sort a list non case-sensitively.
- * @param	sList	The list that will be ordered
+ * @param   sList   The list that will be ordered
  */
 void sortNonCaseSensitive(QStringList &sList)
 {
@@ -323,7 +324,9 @@ QString savePath(QString file)
 {
 	if (QFile(QDir::toNativeSeparators(qApp->applicationDirPath()+"/settings.ini")).exists())
 	{ return QDir::toNativeSeparators(qApp->applicationDirPath()+"/"+file); }
-	return QDir::toNativeSeparators(QDir::homePath()+"/Grabber/"+file);
+	if (QFile(QDir::toNativeSeparators(QDir::homePath()+"/Grabber/settings.ini")).exists())
+	{ return QDir::toNativeSeparators(QDir::homePath()+"/Grabber/"+file); }
+	return QDir::toNativeSeparators(QStandardPaths::writableLocation(QStandardPaths::DataLocation)+"/"+file);
 }
 
 /**
@@ -350,7 +353,7 @@ int levenshtein(QString s1, QString s2)
 }
 
 /**
- * Opens the explorer and select the file.
+ * Opens the file explorer and select the file.
  * @param	pathIn	The path to the file.
  */
 void showInGraphicalShell(const QString &pathIn)
