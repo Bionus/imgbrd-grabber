@@ -1,0 +1,48 @@
+#summary Explanation for compiling from source.
+
+= Introduction =
+
+Tired of waiting for the next update? Want to get the latest developer version? You can compile the program yourself.
+
+
+= Windows =
+
+== Dependancies ==
+
+Bullets with '*' are mandatory, other are optionals. Note that the used compilator is MSVC 2010. You can use MinGW or a more recent version of MSVC if it works for you. However know that this is the one I use to push releases and updates.
+* *Qt 5.1.1 (msvc 2010 - x86)
+* *Visual Studio 2010 compilator
+* QScintilla2 (for syntax highlighting in Javascript filename window)
+* Google Breakpad (to handle crash and show a nice-looking crash window and backup traces)
+
+== Instructions ==
+
+=== Grabber ===
+You can clone the SVN and get the latest sources with this command: " svn checkout http://imgbrd-grabber.googlecode.com/svn/trunk/ imgbrd-grabber-read-only". If you use a client such as TortoiseSVN, the path is "http://imgbrd-grabber.googlecode.com/svn/trunk/".
+
+=== Qt ===
+You can find the 5.1.1 MSVC 2010 x86 version here: download.qt-project.org/official_releases/qt/5.1/5.1.1/qt-windows-opensource-5.1.1-msvc2010-x86-offline.exe
+Just download and install.
+
+=== Visual Studio 2010 ===
+You can use the free Visual Studio C++ Express version to compile (actually only the compiler is required). You can find it here: http://www.microsoft.com/visualstudio/eng/downloads#d-2010-express
+Just download and install.
+
+=== QScintilla ===
+If you don't want to use QScintilla, edit the "Grabber.pro" file and comment the "CONFIG += use_qscintilla" line (add a '#' sign at the beginning of the line).
+Else, you can find it here: http://www.riverbankcomputing.com/software/qscintilla/download
+# Download
+# Open the Qt command prompt (you can find it in the start menu)
+# Add Visual Studio compiler to the path by typing "C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\vcvarsall.bat" (with quotes, else it will give you an error message on "C:\Program") in the prompt
+# Browse to where you installed QScintilla using the "cd" command (for example, "cd C:\Users\Bionus\Desktop\QScintilla-gpl-2.7.2"). If it's on another hard drive, use the "cd /D" command
+# Type "cd Qt4Qt5" (without quotes)
+# Type "qmake qscintilla.pro" (without quotes)
+# Type "nmake" (without quotes)
+# Type "nmake install" (without quotes)
+# The dlls should now have been installed and the headers added to Qt
+
+=== Google Breakpad ===
+If you don't want to use QScintilla, edit the "Grabber.pro" file and comment the "CONFIG += use_breakpad" line (add a '#' sign at the beginning of the line).
+If you want to use it, I won't explain here how to configure it to work with Qt, but only with the project. Beware that it's a real pain to have it work with Qt on Windows.
+# Open "Grabber.pro"
+# Edit the "BREAKPAD = D:/Programmation/C++/Qt/google-breakpad" line to match where you cloned google breakpad
