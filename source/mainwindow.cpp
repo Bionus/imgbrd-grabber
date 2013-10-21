@@ -96,6 +96,14 @@ void mainWindow::init()
 
 	loadSites();
 
+	if (m_sites.size() == 0)
+	{
+		QMessageBox::critical(this, tr("Aucune source trouvée"), tr("Aucune source n'a été trouvée. Auriez-vous un problème de configuration ? Essayez de réinstaller."));
+		qApp->quit();
+		this->deleteLater();
+		return;
+	}
+
 	ui->actionClosetab->setShortcut(QKeySequence::Close);
 	ui->actionAddtab->setShortcut(QKeySequence::AddTab);
 	ui->actionQuit->setShortcut(QKeySequence::Quit);
@@ -113,7 +121,7 @@ void mainWindow::init()
 		QSettings profiles(path+"/profiles.ini", QSettings::IniFormat);
 		if (QFile::exists(path+"/"+profiles.value("Profile0/Path").toString()+"/extensions/danbooru_downloader@cuberocks.net.xpi"))
 		{
-			int reponse = QMessageBox::question(this, tr("Grabber"), tr("L'extension pour Mozilla Firefox \"Danbooru Downloader\" a été détéctée sur votre système. Souhaitez-vous en importer les préférences ?"), QMessageBox::Yes | QMessageBox::No);
+			int reponse = QMessageBox::question(this, "", tr("L'extension pour Mozilla Firefox \"Danbooru Downloader\" a été détéctée sur votre système. Souhaitez-vous en importer les préférences ?"), QMessageBox::Yes | QMessageBox::No);
 			if (reponse == QMessageBox::Yes)
 			{
 				QFile prefs(path+"/"+profiles.value("Profile0/Path").toString()+"/prefs.js");
@@ -187,13 +195,13 @@ void mainWindow::init()
 	restoreState(m_settings->value("state").toByteArray());
 
 	// Selected ones
-	QString sel = '1'+QString().fill('0', m_sites.count()-1);
-	QString sav = m_settings->value("sites", sel).toString();
-	for (int i = 0; i < sel.count(); i++)
+	QString sav = m_settings->value("sites", "1").toString();
+	for (int i = 0; i < m_sites.count(); i++)
 	{
 		if (sav.count() <= i)
-		{ sav[i] = '0'; }
-		m_selectedSources.append(sav.at(i) == '1' ? true : false);
+		{ m_selectedSources.append(false); }
+		else
+		{ m_selectedSources.append(sav.at(i) == '1' ? true : false); }
 	}
 
 	QPushButton *add = new QPushButton(QIcon(":/images/add.png"), "", this);
@@ -206,7 +214,7 @@ void mainWindow::init()
 	if (crashed && !restore)
 	{
 		log(tr("Il semblerait que Imgbrd-Grabber n'ait pas été fermé correctement la dernière fois."));
-		int reponse = QMessageBox::question(this, tr("Grabber"), tr("Il semblerait que l'application n'ait pas été arrêtée correctement lors de sa dernière utilisation. Voulez-vous restaurer votre dernière seesion ?"), QMessageBox::Yes | QMessageBox::No);
+		int reponse = QMessageBox::question(this, "", tr("Il semblerait que l'application n'ait pas été arrêtée correctement lors de sa dernière utilisation. Voulez-vous restaurer votre dernière seesion ?"), QMessageBox::Yes | QMessageBox::No);
 		if (reponse == QMessageBox::Yes)
 		{ restore = true; }
 	}
@@ -602,16 +610,17 @@ void mainWindow::batchClear()
 void mainWindow::batchClearSel()
 {
 	QList<QTableWidgetItem *> selected = ui->tableBatchGroups->selectedItems();
+	QList<int> todelete = QList<int>();
 	int count = selected.size();
-	QSet<int> todelete = QSet<int>();
 	for (int i = 0; i < count; i++)
-	{ todelete.insert(selected.at(i)->row()); }
+	{ todelete.append(selected.at(i)->row()); }
+	qSort(todelete);
 	int rem = 0;
 	foreach (int i, todelete)
 	{
-		m_groupBatchs.removeAt(i-rem);
-		m_progressBars.removeAt(i-rem);
-		ui->tableBatchGroups->removeRow(i-rem);
+		m_groupBatchs.removeAt(i - rem);
+		m_progressBars.removeAt(i - rem);
+		ui->tableBatchGroups->removeRow(i - rem);
 		rem++;
 	}
 
@@ -619,12 +628,13 @@ void mainWindow::batchClearSel()
 	count = selected.size();
 	todelete.clear();
 	for (int i = 0; i < count; i++)
-	{ todelete.insert(selected.at(i)->row()); }
+	{ todelete.append(selected.at(i)->row()); }
+	qSort(todelete);
 	rem = 0;
 	foreach (int i, todelete)
 	{
-		m_batchs.removeAt(i-rem);
-		ui->tableBatchUniques->removeRow(i-rem);
+		m_batchs.removeAt(i - rem);
+		ui->tableBatchUniques->removeRow(i - rem);
 		rem++;
 	}
 	updateGroupCount();
@@ -725,7 +735,7 @@ void mainWindow::updateFavoritesDock()
 	}
 
 	QStringList assoc = QStringList() << "name" << "note" << "lastviewed";
-	QString order = assoc[ui->comboOrderFav->currentIndex()];
+	QString order = assoc[qMax(ui->comboOrderFav->currentIndex(), 0)];
 	bool reverse = (ui->comboAscFav->currentIndex() == 1);
 	m_favorites = loadFavorites();
 	QStringList keys = m_favorites.keys();
@@ -816,9 +826,7 @@ void mainWindow::loadLanguage(const QString& rLanguage, bool shutup)
 		if (!shutup)
 		{
 			log(tr("Traduction des textes en %1...").arg(m_currLang));
-				/*#if defined(Q_OS_WIN)
-					ui->retranslateUi(this);
-				#endif*/
+			ui->retranslateUi(this);
 			logUpdate(tr(" Fait"));
 		}
 	}
@@ -960,7 +968,20 @@ void mainWindow::getAll(bool all)
 	else
 	{
 		for (int i = 0; i < m_batchs.size(); i++)
-		{ m_getAllRemaining.append(new Image(m_batchs.at(i), m_timezonedecay, new Page(m_sites[m_batchs.at(i).value("site")], &m_sites, m_batchs.at(i).value("tags").split(" "), 1, 1, QStringList(), false, this))); }
+		{
+			if (m_batchs.at(i).value("file_url").isEmpty())
+			{
+				/*Page *page = new Page(m_sites[site], &m_sites, m_groupBatchs.at(i).at(0).split(' '), m_groupBatchs.at(i).at(1).toInt()+r, pp, QStringList(), false, this);
+				connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(getAllFinishedLoading(Page*)));
+				page->load();
+				log(tr("Chargement de la page <a href=\"%1\">%1</a>").arg(page->url().toString().toHtmlEscaped()));
+				m_groupBatchs[i][8] += (m_groupBatchs[i][8] == "" ? "" : "¤") + QString::number((int)page);
+				m_getAllPages.append(page);
+				m_progressdialog->setImagesCount(m_progressdialog->count() + 1);*/
+			}
+			else
+			{ m_getAllRemaining.append(new Image(m_batchs.at(i), m_timezonedecay, new Page(m_sites[m_batchs.at(i).value("site")], &m_sites, m_batchs.at(i).value("tags").split(" "), 1, 1, QStringList(), false, this))); }
+		}
 	}
 	m_getAllLimit = m_batchs.size();
 
@@ -1234,16 +1255,21 @@ void mainWindow::_getAll()
 			case 1:	m_progressdialog->close();				break;
 			case 2:	openTray();								break;
 			case 3:	QSound::play(":/sounds/finished.wav");	break;
-			case 4:	shutDown();								break;
+
+			case 4:
+				qDebug() << m_progressdialog->count();
+				if (false)
+				{ shutDown(); }
+				break;
 		}
 		if (m_progressdialog->endRemove())
 		{
 			int rem = 0;
 			foreach (int i, m_batchDownloading)
 			{
-				m_groupBatchs.removeAt(i-rem);
-				m_progressBars.removeAt(i-rem);
-				ui->tableBatchGroups->removeRow(i-rem);
+				m_groupBatchs.removeAt(i - rem);
+				m_progressBars.removeAt(i - rem);
+				ui->tableBatchGroups->removeRow(i - rem);
 				rem++;
 			}
 		}
@@ -1849,7 +1875,7 @@ void mainWindow::decreaseDownloads()
 void mainWindow::updateDownloads()
 {
 	if (m_downloads == 0)
-	{ setWindowTitle(tr("Grabber")); }
+	{ setWindowTitle(""); }
 	else
-	{ setWindowTitle(tr("Grabber") + " - " + tr("%n téléchargement(s) en cours", "", m_downloads)); }
+	{ setWindowTitle(tr("%n téléchargement(s) en cours", "", m_downloads)); }
 }

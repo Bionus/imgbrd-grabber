@@ -66,7 +66,7 @@ AddGroupWindow::AddGroupWindow(QString selected, QStringList sites, QStringList 
 			layout->addLayout(layoutButtons);
 	this->setLayout(layout);
 	this->setWindowIcon(QIcon(":/images/icon.ico"));
-	this->setWindowTitle(tr("Grabber")+" - "+tr("Ajouter groupe"));
+	this->setWindowTitle(tr("Ajouter groupe"));
 	this->setWindowFlags(Qt::Window);
 	this->resize(QSize(400, 0));
 }

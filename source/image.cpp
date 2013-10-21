@@ -31,28 +31,28 @@ Image::Image(QMap<QString, QString> details, int timezonedecay, Page* parent)
 	if (details.contains("tags_general"))
 	{
 		QStringList t = details["tags_general"].split(" ");
-		for (int i = 0; i < t.count(); i++)
+		for (int i = 0; i < t.count(); ++i)
 		{
 			QString tg = t.at(i);
 			tg.replace("&amp;", "&");
 			m_tags.append(Tag(tg, "general"));
 		}
 		t = details["tags_artist"].split(" ");
-		for (int i = 0; i < t.count(); i++)
+		for (int i = 0; i < t.count(); ++i)
 		{
 			QString tg = t.at(i);
 			tg.replace("&amp;", "&");
 			m_tags.append(Tag(tg, "artist"));
 		}
 		t = details["tags_character"].split(" ");
-		for (int i = 0; i < t.count(); i++)
+		for (int i = 0; i < t.count(); ++i)
 		{
 			QString tg = t.at(i);
 			tg.replace("&amp;", "&");
 			m_tags.append(Tag(tg, "character"));
 		}
 		t = details["tags_copyright"].split(" ");
-		for (int i = 0; i < t.count(); i++)
+		for (int i = 0; i < t.count(); ++i)
 		{
 			QString tg = t.at(i);
 			tg.replace("&amp;", "&");
@@ -66,7 +66,7 @@ Image::Image(QMap<QString, QString> details, int timezonedecay, Page* parent)
 		{ t = details["tags"].split(", "); }
 		else
 		{ t = details["tags"].split(" "); }
-		for (int i = 0; i < t.count(); i++)
+		for (int i = 0; i < t.count(); ++i)
 		{
 			QString tg = t.at(i);
 			tg.replace("&amp;", "&");
@@ -301,7 +301,7 @@ QString Image::filter(QStringList filters)
 	QStringList types = QStringList() << "rating" << "source" << mathematicaltypes;
 	bool invert;
 	QString filter, type;
-	for (int i = 0; i < filters.count(); i++)
+	for (int i = 0; i < filters.count(); ++i)
 	{
 		invert = false;
 		filter = filters.at(i);
@@ -424,7 +424,7 @@ QString analyse(QStringList tokens, QString text, QStringList tags)
 		pos += reg.matchedLength()+cap.count('<')-cap.count('>');
 	}
 	QString r = ret;
-	for (int i = 0; i < tokens.size(); i++)
+	for (int i = 0; i < tokens.size(); ++i)
 	{ r.replace(QRegExp("%"+tokens.at(i)+"(?::([0-9]+))?%"), ""); }
 	reg = QRegExp("\"([^\"]+)\"");
 	pos = 0;
@@ -494,11 +494,11 @@ QString Image::path(QString fn, QString pth, bool complex)
 	QRegExp reg;
 	reg.setCaseSensitivity(Qt::CaseInsensitive);
 	reg.setPatternSyntax(QRegExp::Wildcard);
-	for (int i = 0; i < m_tags.size(); i++)
+	for (int i = 0; i < m_tags.size(); ++i)
 	{
 		QString t = m_tags[i].text();
 		bool removed = false;
-		for (int j = 0; j < remove.size(); j++)
+		for (int j = 0; j < remove.size(); ++j)
 		{
 			reg.setPattern(remove.at(j));
 			if (reg.exactMatch(t))
@@ -506,7 +506,7 @@ QString Image::path(QString fn, QString pth, bool complex)
 		}
 		if (!removed)
 		{
-			for (int r = 0; r < scustom.size(); r++)
+			for (int r = 0; r < scustom.size(); ++r)
 			{
 				if (!custom.contains(scustom.keys().at(r)))
 				{ custom.insert(scustom.keys().at(r), QStringList()); }
@@ -520,11 +520,11 @@ QString Image::path(QString fn, QString pth, bool complex)
 	}
 	if (settings.value("copyright_useshorter", true).toBool())
 	{
-		for (int i = 0; i < details["copyrights"].size(); i++)
+		for (int i = 0; i < details["copyrights"].size(); ++i)
 		{
 			found = false;
 			cop = details["copyrights"].at(i);
-			for (int r = 0; r < copyrights.size(); r++)
+			for (int r = 0; r < copyrights.size(); ++r)
 			{
 				if (copyrights.at(r).left(cop.size()) == cop.left(copyrights.at(r).size()))
 				{
@@ -553,7 +553,7 @@ QString Image::path(QString fn, QString pth, bool complex)
 	replaces.insert("md5", QStrP(m_md5, ""));
 	replaces.insert("date", QStrP(m_createdAt.toString(tr("dd-MM-yyyy HH.mm")), ""));
 	replaces.insert("id", QStrP(QString::number(m_id), "0"));
-	for (int i = 0; i < search.size(); i++)
+	for (int i = 0; i < search.size(); ++i)
 	{ replaces.insert("search_"+QString::number(i+1), QStrP(search[i], "")); }
 	replaces.insert("search", QStrP(search.join(settings.value("separator").toString()), ""));
 	replaces.insert("artist", getReplace("artist", details, &settings));
@@ -567,13 +567,13 @@ QString Image::path(QString fn, QString pth, bool complex)
 	replaces.insert("general", QStrP(details["generals"].join(settings.value("separator").toString()), ""));
 	replaces.insert("allo", QStrP(details["allos"].join(" "), ""));
 	replaces.insert("all", QStrP(details["alls"].join(" "), ""));
-	for (int i = 0; i < custom.size(); i++)
+	for (int i = 0; i < custom.size(); ++i)
 	{ replaces.insert(custom.keys().at(i), QStrP(custom.values().at(i).join(settings.value("separator").toString()), "")); }
 
 	// Filename
 	QString filename = fn;
 	QMap<QString,QString> filenames = getFilenames();
-	for (int i = 0; i < filenames.size(); i++)
+	for (int i = 0; i < filenames.size(); ++i)
 	{
 		QString cond = filenames.keys().at(i);
 		if (cond.startsWith("%") && cond.endsWith("%"))
@@ -600,7 +600,7 @@ QString Image::path(QString fn, QString pth, bool complex)
 
 		QString inits = "";
 		QStringList keys = replaces.keys();
-		for (int i = 0; i < replaces.size(); i++)
+		for (int i = 0; i < replaces.size(); ++i)
 		{
 			QString key = keys.at(i);
 			QString res = replaces[key].first.isEmpty() ? replaces[key].second : replaces[key].first;
@@ -641,7 +641,7 @@ QString Image::path(QString fn, QString pth, bool complex)
 			(filename.contains("%model%") ? details["models"] : QStringList()) +
 			(filename.contains("%general%") ? details["generals"] : QStringList());
 		QStringList l = details["alls"];
-		for (int i = 0; i < rem.size(); i++)
+		for (int i = 0; i < rem.size(); ++i)
 		{ l.removeAll(rem.at(i)); }
 		replaces.insert("all", QStrP(l.join(settings.value("separator").toString()), ""));
 
@@ -670,7 +670,7 @@ QString Image::path(QString fn, QString pth, bool complex)
 
 		// We replace everything
 		QStringList keys = replaces.keys();
-		for (int i = 0; i < replaces.size(); i++)
+		for (int i = 0; i < replaces.size(); ++i)
 		{
 			QString key = keys.at(i);
 			QString res = replaces[key].first.isEmpty() ? replaces[key].second : replaces[key].first;
@@ -681,9 +681,9 @@ QString Image::path(QString fn, QString pth, bool complex)
 
 			// We only cut the name if it is not a folder
 			if (complex && !filename.right(filename.length()-filename.indexOf("%"+key+"%")).contains("/"))
-			{ filename.replace("%"+key+"%", res.left(259-pth.length()-1-filename.length())); }
+			{ filename.replace("%"+key+"%", res.left(259-pth.length()-1-filename.length()).trimmed()); }
 			else
-			{ filename.replace("%"+key+"%", res); }
+			{ filename.replace("%"+key+"%", res.trimmed()); }
 		}
 	}
 
@@ -774,9 +774,9 @@ QStringList Image::blacklisted(QStringList blacklistedtags)
 	QRegExp reg;
 	reg.setCaseSensitivity(Qt::CaseInsensitive);
 	reg.setPatternSyntax(QRegExp::Wildcard);
-	for (int i = 0; i < blacklistedtags.size(); i++)
+	for (int i = 0; i < blacklistedtags.size(); ++i)
 	{
-		for (int t = 0; t < m_tags.count(); t++)
+		for (int t = 0; t < m_tags.count(); ++t)
 		{
 			if (!blacklistedtags.at(i).trimmed().isEmpty())
 			{
@@ -797,14 +797,14 @@ QStringList Image::stylishedTags(QStringList ignored)
 	QStringList tlist = QStringList() << "blacklisteds" << "ignoreds" << "artists" << "circles" << "copyrights" << "characters" << "models" << "generals" << "favorites";
 	QStringList defaults = QStringList() << "000000" << "999999" << "aa0000" << "55bbff" << "aa00aa" << "00aa00" << "0000ee" << "000000" << "ffc0cb";
 	QMap<QString,QString> styles;
-	for (int i = 0; i < tlist.size(); i++)
+	for (int i = 0; i < tlist.size(); ++i)
 	{
 		QFont font;
 		font.fromString(settings.value("Coloring/Fonts/"+tlist.at(i)).toString());
 		styles[tlist.at(i)] = "color:"+settings.value("Coloring/Colors/"+tlist.at(i), "#"+defaults.at(i)).toString()+"; "+qfonttocss(font);
 	}
 	QStringList t;
-	for (int i = 0; i < m_tags.size(); i++)
+	for (int i = 0; i < m_tags.size(); ++i)
 	{
 		Tag tag = m_tags.at(i);
 		QString type = blacklistedtags.contains(tag.text(), Qt::CaseInsensitive) ? "blacklisteds" : (ignored.contains(tag.text(), Qt::CaseInsensitive) ? "ignored" : tag.type());

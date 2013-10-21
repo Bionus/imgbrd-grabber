@@ -41,6 +41,7 @@ zoomWindow::zoomWindow(Image *image, Site *site, QMap<QString,Site*> *sites, QWi
 
 	m_labelTagsLeft = new QAffiche(QVariant(), 0, QColor(), this);
 		m_labelTagsLeft->setContextMenuPolicy(Qt::CustomContextMenu);
+		m_labelTagsLeft->setTextInteractionFlags(Qt::TextBrowserInteraction);
 		connect(m_labelTagsLeft, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenu(QPoint)));
 		connect(m_labelTagsLeft, SIGNAL(linkActivated(QString)), this, SLOT(openUrl(QString)));
 		connect(m_labelTagsLeft, SIGNAL(linkHovered(QString)), this, SLOT(linkHovered(QString)));
@@ -50,6 +51,7 @@ zoomWindow::zoomWindow(Image *image, Site *site, QMap<QString,Site*> *sites, QWi
 	m_labelTagsTop = new QAffiche(QVariant(), 0, QColor(), this);
 		m_labelTagsTop->setWordWrap(true);
 		m_labelTagsTop->setContextMenuPolicy(Qt::CustomContextMenu);
+		m_labelTagsTop->setTextInteractionFlags(Qt::TextBrowserInteraction);
 		connect(m_labelTagsTop, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenu(QPoint)));
 		connect(m_labelTagsTop, SIGNAL(linkActivated(QString)), this, SLOT(openUrl(QString)));
 		connect(m_labelTagsTop, SIGNAL(linkHovered(QString)), this, SLOT(linkHovered(QString)));
@@ -229,6 +231,7 @@ void zoomWindow::contextMenu(QPoint)
 		// Onglets
 		menu->addAction(QIcon(":/images/icons/tab.png"), tr("Ouvrir dans un nouvel onglet"), this, SLOT(openInNewTab()));
 		menu->addAction(QIcon(":/images/icons/window.png"), tr("Ouvrir dans une nouvelle fenêtre"), this, SLOT(openInNewWindow()));
+		menu->addAction(QIcon(":/images/icons/browser.png"), tr("Ouvrir dans le navigateur"), this, SLOT(openInBrowser()));
 	}
 	menu->exec(QCursor::pos());
 }
@@ -238,6 +241,12 @@ void zoomWindow::openInNewWindow()
 {
 	QProcess myProcess;
 	myProcess.startDetached(m_program, QStringList(link));
+}
+void zoomWindow::openInBrowser()
+{
+	Page *p = new Page(m_site, m_sites, QStringList() << link, 1);
+	QDesktopServices::openUrl(p->url());
+	p->deleteLater();
 }
 void zoomWindow::favorite()
 {

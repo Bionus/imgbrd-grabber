@@ -349,55 +349,55 @@ void optionsWindow::on_lineColoringIgnoreds_textChanged()
 
 void optionsWindow::on_buttonColoringArtistsColor_clicked()
 {
-	QColor color = QColorDialog::getColor(QColor(ui->lineColoringArtists->text()), this, tr("Grabber - Choisir une couleur"));
+	QColor color = QColorDialog::getColor(QColor(ui->lineColoringArtists->text()), this, tr("Choisir une couleur"));
 	if (color.isValid())
 	{ ui->lineColoringArtists->setText(color.name()); }
 }
 void optionsWindow::on_buttonColoringCirclesColor_clicked()
 {
-	QColor color = QColorDialog::getColor(QColor(ui->lineColoringCircles->text()), this, tr("Grabber - Choisir une couleur"));
+	QColor color = QColorDialog::getColor(QColor(ui->lineColoringCircles->text()), this, tr("Choisir une couleur"));
 	if (color.isValid())
 	{ ui->lineColoringCircles->setText(color.name()); }
 }
 void optionsWindow::on_buttonColoringCopyrightsColor_clicked()
 {
-    QColor color = QColorDialog::getColor(QColor(ui->lineColoringCopyrights->text()), this, tr("Grabber - Choisir une couleur"));
+    QColor color = QColorDialog::getColor(QColor(ui->lineColoringCopyrights->text()), this, tr("Choisir une couleur"));
     if (color.isValid())
     { ui->lineColoringCopyrights->setText(color.name()); }
 }
 void optionsWindow::on_buttonColoringCharactersColor_clicked()
 {
-    QColor color = QColorDialog::getColor(QColor(ui->lineColoringCharacters->text()), this, tr("Grabber - Choisir une couleur"));
+    QColor color = QColorDialog::getColor(QColor(ui->lineColoringCharacters->text()), this, tr("Choisir une couleur"));
     if (color.isValid())
     { ui->lineColoringCharacters->setText(color.name()); }
 }
 void optionsWindow::on_buttonColoringModelsColor_clicked()
 {
-    QColor color = QColorDialog::getColor(QColor(ui->lineColoringModels->text()), this, tr("Grabber - Choisir une couleur"));
+    QColor color = QColorDialog::getColor(QColor(ui->lineColoringModels->text()), this, tr("Choisir une couleur"));
     if (color.isValid())
     { ui->lineColoringModels->setText(color.name()); }
 }
 void optionsWindow::on_buttonColoringGeneralsColor_clicked()
 {
-    QColor color = QColorDialog::getColor(QColor(ui->lineColoringGenerals->text()), this, tr("Grabber - Choisir une couleur"));
+    QColor color = QColorDialog::getColor(QColor(ui->lineColoringGenerals->text()), this, tr("Choisir une couleur"));
     if (color.isValid())
     { ui->lineColoringGenerals->setText(color.name()); }
 }
 void optionsWindow::on_buttonColoringFavoritesColor_clicked()
 {
-    QColor color = QColorDialog::getColor(QColor(ui->lineColoringFavorites->text()), this, tr("Grabber - Choisir une couleur"));
+    QColor color = QColorDialog::getColor(QColor(ui->lineColoringFavorites->text()), this, tr("Choisir une couleur"));
     if (color.isValid())
     { ui->lineColoringFavorites->setText(color.name()); }
 }
 void optionsWindow::on_buttonColoringBlacklistedsColor_clicked()
 {
-    QColor color = QColorDialog::getColor(QColor(ui->lineColoringBlacklisteds->text()), this, tr("Grabber - Choisir une couleur"));
+    QColor color = QColorDialog::getColor(QColor(ui->lineColoringBlacklisteds->text()), this, tr("Choisir une couleur"));
     if (color.isValid())
     { ui->lineColoringBlacklisteds->setText(color.name()); }
 }
 void optionsWindow::on_buttonColoringIgnoredsColor_clicked()
 {
-    QColor color = QColorDialog::getColor(QColor(ui->lineColoringIgnoreds->text()), this, tr("Grabber - Choisir une couleur"));
+    QColor color = QColorDialog::getColor(QColor(ui->lineColoringIgnoreds->text()), this, tr("Choisir une couleur"));
     if (color.isValid())
     { ui->lineColoringIgnoreds->setText(color.name()); }
 }
@@ -405,63 +405,63 @@ void optionsWindow::on_buttonColoringIgnoredsColor_clicked()
 void optionsWindow::on_buttonColoringArtistsFont_clicked()
 {
 	bool ok = false;
-	QFont police = QFontDialog::getFont(&ok, ui->lineColoringArtists->font(), this, tr("Grabber - Choisir une police"));
+	QFont police = QFontDialog::getFont(&ok, ui->lineColoringArtists->font(), this, tr("Choisir une police"));
 	if (ok)
 	{ ui->lineColoringArtists->setFont(police); }
 }
 void optionsWindow::on_buttonColoringCirclesFont_clicked()
 {
 	bool ok = false;
-	QFont police = QFontDialog::getFont(&ok, ui->lineColoringCircles->font(), this, tr("Grabber - Choisir une police"));
+	QFont police = QFontDialog::getFont(&ok, ui->lineColoringCircles->font(), this, tr("Choisir une police"));
 	if (ok)
 	{ ui->lineColoringCircles->setFont(police); }
 }
 void optionsWindow::on_buttonColoringCopyrightsFont_clicked()
 {
     bool ok = false;
-    QFont police = QFontDialog::getFont(&ok, ui->lineColoringCopyrights->font(), this, tr("Grabber - Choisir une police"));
+    QFont police = QFontDialog::getFont(&ok, ui->lineColoringCopyrights->font(), this, tr("Choisir une police"));
     if (ok)
     { ui->lineColoringCopyrights->setFont(police); }
 }
 void optionsWindow::on_buttonColoringCharactersFont_clicked()
 {
     bool ok = false;
-    QFont police = QFontDialog::getFont(&ok, ui->lineColoringCharacters->font(), this, tr("Grabber - Choisir une police"));
+    QFont police = QFontDialog::getFont(&ok, ui->lineColoringCharacters->font(), this, tr("Choisir une police"));
     if (ok)
     { ui->lineColoringCharacters->setFont(police); }
 }
 void optionsWindow::on_buttonColoringModelsFont_clicked()
 {
     bool ok = false;
-    QFont police = QFontDialog::getFont(&ok, ui->lineColoringModels->font(), this, tr("Grabber - Choisir une police"));
+    QFont police = QFontDialog::getFont(&ok, ui->lineColoringModels->font(), this, tr("Choisir une police"));
     if (ok)
     { ui->lineColoringModels->setFont(police); }
 }
 void optionsWindow::on_buttonColoringGeneralsFont_clicked()
 {
     bool ok = false;
-    QFont police = QFontDialog::getFont(&ok, ui->lineColoringGenerals->font(), this, tr("Grabber - Choisir une police"));
+    QFont police = QFontDialog::getFont(&ok, ui->lineColoringGenerals->font(), this, tr("Choisir une police"));
     if (ok)
     { ui->lineColoringGenerals->setFont(police); }
 }
 void optionsWindow::on_buttonColoringFavoritesFont_clicked()
 {
     bool ok = false;
-    QFont police = QFontDialog::getFont(&ok, ui->lineColoringFavorites->font(), this, tr("Grabber - Choisir une police"));
+    QFont police = QFontDialog::getFont(&ok, ui->lineColoringFavorites->font(), this, tr("Choisir une police"));
     if (ok)
     { ui->lineColoringFavorites->setFont(police); }
 }
 void optionsWindow::on_buttonColoringBlacklistedsFont_clicked()
 {
     bool ok = false;
-    QFont police = QFontDialog::getFont(&ok, ui->lineColoringBlacklisteds->font(), this, tr("Grabber - Choisir une police"));
+    QFont police = QFontDialog::getFont(&ok, ui->lineColoringBlacklisteds->font(), this, tr("Choisir une police"));
     if (ok)
     { ui->lineColoringBlacklisteds->setFont(police); }
 }
 void optionsWindow::on_buttonColoringIgnoredsFont_clicked()
 {
     bool ok = false;
-    QFont police = QFontDialog::getFont(&ok, ui->lineColoringIgnoreds->font(), this, tr("Grabber - Choisir une police"));
+    QFont police = QFontDialog::getFont(&ok, ui->lineColoringIgnoreds->font(), this, tr("Choisir une police"));
     if (ok)
     { ui->lineColoringIgnoreds->setFont(police); }
 }
@@ -475,7 +475,7 @@ void optionsWindow::on_lineBorderColor_textChanged()
 }
 void optionsWindow::on_buttonBorderColor_clicked()
 {
-    QColor color = QColorDialog::getColor(QColor(ui->lineBorderColor->text()), this, tr("Grabber - Choisir une couleur"));
+    QColor color = QColorDialog::getColor(QColor(ui->lineBorderColor->text()), this, tr("Choisir une couleur"));
     if (color.isValid())
     { ui->lineBorderColor->setText(color.name()); }
 }
