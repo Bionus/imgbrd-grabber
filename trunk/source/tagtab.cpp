@@ -104,8 +104,8 @@ void tagTab::closeEvent(QCloseEvent *e)
 
 	qDeleteAll(m_pages);
 	m_pages.clear();
-	qDeleteAll(m_images);
-	m_images.clear();
+	/*qDeleteAll(m_images);
+	m_images.clear();*/
 	qDeleteAll(m_checkboxes);
 	m_checkboxes.clear();
 	for (int i = 0; i < m_layouts.size(); i++)
