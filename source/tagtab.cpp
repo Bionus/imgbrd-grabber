@@ -703,6 +703,8 @@ void tagTab::setTags(QString tags)
 
 void tagTab::getPage()
 {
+	if (m_pages.empty())
+		return;
 	QStringList actuals, keys = m_sites->keys();
 	for (int i = 0; i < m_checkboxes.count(); i++)
 	{
@@ -719,6 +721,8 @@ void tagTab::getPage()
 }
 void tagTab::getAll()
 {
+	if (m_pages.empty())
+		return;
 	QStringList actuals, keys = m_sites->keys();
 	for (int i = 0; i < m_checkboxes.count(); i++)
 	{
@@ -734,6 +738,8 @@ void tagTab::getAll()
 }
 void tagTab::getSel()
 {
+	if (m_selectedImagesPtrs.empty())
+		return;
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
 	foreach (Image *img, m_selectedImagesPtrs)
 	{

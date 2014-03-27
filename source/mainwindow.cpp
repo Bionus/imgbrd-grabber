@@ -1196,7 +1196,7 @@ void mainWindow::_getAll()
 			}
 
 			QString p = img->folder().isEmpty() ? pth : img->folder();
-			QFile f(p+"/"+img->path(path, p));
+			QFile f(p+"/"+img->path(path, p, m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + 1));
 			if (!f.exists())
 			{
 				bool detected = false;
@@ -1358,7 +1358,7 @@ void mainWindow::getAllPerformTags(Image* img)
 		path = m_groupBatchs[site_id][6];
 		p = m_groupBatchs[site_id][7];
 	}
-	path = img->path(path, p);
+	path = img->path(path, p, m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + 1);
 
 	// Save path
 	p.replace("\\", "/");
@@ -1447,7 +1447,7 @@ void mainWindow::getAllGetImage(Image* img)
 		path = m_groupBatchs[site_id][6];
 		p = m_groupBatchs[site_id][7];
 	}
-	path = img->path(path, p);
+	path = img->path(path, p, m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + 1);
 	path.replace("%n%", QString::number(m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors));
 	if (path.left(1) == QDir::toNativeSeparators("/"))	{ path = path.right(path.length()-1);	}
 	if (p.right(1) == QDir::toNativeSeparators("/"))	{ p = p.left(p.length()-1);				}
@@ -1579,7 +1579,7 @@ void mainWindow::saveImage(Image *img, QNetworkReply *reply, QString path, QStri
 	{ path = m_settings->value("Save/filename").toString(); }
 	if (p == "")
 	{ p = img->folder().isEmpty() ? m_settings->value("Save/path").toString() : img->folder(); }
-	path = img->path(path, p);
+	path = img->path(path, p, m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + 1);
 	if (getAll)
 	{ path.replace("%n%", QString::number(m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors)); }
 
