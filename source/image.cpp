@@ -20,6 +20,7 @@ Image::Image(QMap<QString, QString> details, int timezonedecay, Page* parent)
 	m_rating = details.contains("rating") ? details["rating"] : "";
 	m_filename = details.contains("filename") ? details["filename"] : "";
 	m_folder = details.contains("folder") ? details["folder"] : "";
+	m_search = parent != NULL ? parent->search() : QStringList();
 	QMap<QString,QString> assoc;
 		assoc["s"] = tr("Safe");
 		assoc["q"] = tr("Questionable");
@@ -539,7 +540,6 @@ QString Image::path(QString fn, QString pth, int counter, bool complex)
 	}
 	else
 	{ copyrights = details["copyrights"]; }
-	QStringList search = m_parent != NULL ? m_parent->search() : QStringList();
 
 	QString ext = m_url.section('.', -1);
 	if (ext.length() > 5)
@@ -553,9 +553,9 @@ QString Image::path(QString fn, QString pth, int counter, bool complex)
 	replaces.insert("md5", QStrP(m_md5, ""));
 	replaces.insert("date", QStrP(m_createdAt.toString(tr("dd-MM-yyyy HH.mm")), ""));
 	replaces.insert("id", QStrP(QString::number(m_id), "0"));
-	for (int i = 0; i < search.size(); ++i)
-	{ replaces.insert("search_"+QString::number(i+1), QStrP(search[i], "")); }
-	replaces.insert("search", QStrP(search.join(settings.value("separator").toString()), ""));
+	for (int i = 0; i < m_search.size(); ++i)
+	{ replaces.insert("search_"+QString::number(i+1), QStrP(m_search[i], "")); }
+	replaces.insert("search", QStrP(m_search.join(settings.value("separator").toString()), ""));
 	replaces.insert("artist", getReplace("artist", details, &settings));
 	replaces.insert("copyright", getReplace("copyright", details, &settings));
 	replaces.insert("character", getReplace("character", details, &settings));
