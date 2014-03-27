@@ -299,9 +299,13 @@ void Page::parse()
 						.replace("{ext}", d["ext"]);
 					}
 				}
-				if (!d["preview_url"].startsWith("http://") && !d["preview_url"].startsWith("https://"))
+				if (d["preview_url"].startsWith("//"))
+				{ d["preview_url"] = "http:"+d["preview_url"]; }
+				else if (!d["preview_url"].startsWith("http://") && !d["preview_url"].startsWith("https://"))
 				{ d["preview_url"] = "http://"+m_site->value("Url")+QString(d["preview_url"].startsWith("/") ? "" : "/")+d["preview_url"]; }
-				if (!d["file_url"].startsWith("http://") && !d["file_url"].startsWith("https://"))
+				if (d["file_url"].startsWith("//"))
+				{ d["file_url"] = "http:"+d["file_url"]; }
+				else if (!d["file_url"].startsWith("http://") && !d["file_url"].startsWith("https://"))
 				{ d["file_url"] = "http://"+m_site->value("Url")+QString(d["file_url"].startsWith("/") ? "" : "/")+d["file_url"]; }
 				d["page_url"] = m_site->value("Urls/Html/Post");
 				QString t = m_search.join(" ");
@@ -368,11 +372,15 @@ void Page::parse()
 				}
 				if (!d.contains("ext") || d["ext"].isEmpty())
 				{ d["ext"] = "jpg"; }
-				if (!d["preview_url"].startsWith("http://") && !d["preview_url"].startsWith("https://"))
+				if (d["preview_url"].startsWith("//"))
+				{ d["preview_url"] = "http:"+d["preview_url"]; }
+				else if (!d["preview_url"].startsWith("http://") && !d["preview_url"].startsWith("https://"))
 				{ d["preview_url"] = "http://"+m_site->value("Url")+QString(d["preview_url"].startsWith("/") ? "" : "/")+d["preview_url"]; }
 				if (!d["sample_url"].startsWith("http://") && !d["sample_url"].startsWith("https://"))
 				{ d["sample_url"] = "http://"+m_site->value("Url")+QString(d["sample_url"].startsWith("/") ? "" : "/")+d["sample_url"]; }
-				if (!d["file_url"].startsWith("http://") && !d["file_url"].startsWith("https://"))
+				if (d["file_url"].startsWith("//"))
+				{ d["file_url"] = "http:"+d["file_url"]; }
+				else if (!d["file_url"].startsWith("http://") && !d["file_url"].startsWith("https://"))
 				{ d["file_url"] = "http://"+m_site->value("Url")+QString(d["file_url"].startsWith("/") ? "" : "/")+d["file_url"]; }
 				if (m_site->contains("Urls/Rss/Image"))
 				{
@@ -450,10 +458,14 @@ void Page::parse()
 			}
 			if (!d.contains("ext") || d["ext"].isEmpty())
 			{ d["ext"] = "jpg"; }
-			if (!d["preview_url"].startsWith("http://") && !d["preview_url"].startsWith("https://"))
+			if (d["preview_url"].startsWith("//"))
+			{ d["preview_url"] = "http:"+d["preview_url"]; }
+			else if (!d["preview_url"].startsWith("http://") && !d["preview_url"].startsWith("https://"))
 			{ d["preview_url"] = "http://"+m_site->value("Url")+QString(d["preview_url"].startsWith("/") ? "" : "/")+d["preview_url"]; }
 			if (!d.contains("file_url"))
 			{ d["file_url"] = d["preview_url"]; }
+			else if (d["file_url"].startsWith("//"))
+			{ d["file_url"] = "http:"+d["file_url"]; }
 			else if (!d["file_url"].startsWith("http://") && !d["file_url"].startsWith("https://"))
 			{ d["file_url"] = "http://"+m_site->value("Url")+QString(d["file_url"].startsWith("/") ? "" : "/")+d["file_url"]; }
 			if (m_site->contains("Urls/Html/Image"))
@@ -537,10 +549,14 @@ void Page::parse()
 					for (int i = 0; i < infos.count(); i++)
 					{ d[infos.at(i)] = sc.value(infos.at(i)).toString().trimmed(); }
 				}
-				if (!d["preview_url"].startsWith("http://") && !d["preview_url"].startsWith("https://"))
+				if (d["preview_url"].startsWith("//"))
+				{ d["preview_url"] = "http:"+d["preview_url"]; }
+				else if (!d["preview_url"].startsWith("http://") && !d["preview_url"].startsWith("https://"))
 				{ d["preview_url"] = "http://"+m_site->value("Url")+QString(d["preview_url"].startsWith("/") ? "" : "/")+d["preview_url"]; }
 				if (!d.contains("file_url") || d["file_url"].isEmpty())
 				{ d["file_url"] = d["preview_url"]; }
+				else if (d["file_url"].startsWith("//"))
+				{ d["file_url"] = "http:"+d["file_url"]; }
 				else if (!d["file_url"].startsWith("http://") && !d["file_url"].startsWith("https://"))
 				{ d["file_url"] = "http://"+m_site->value("Url")+QString(d["file_url"].startsWith("/") ? "" : "/")+d["file_url"]; }
 				if (m_site->contains("Urls/Json/Image"))

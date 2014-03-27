@@ -470,7 +470,7 @@ QStrP getReplace(QString setting, QMap<QString,QStringList> details, QSettings *
 	second = settings->value(setting+"_empty").toString();
 	return QStrP(first, second);
 }
-QString Image::path(QString fn, QString pth, bool complex)
+QString Image::path(QString fn, QString pth, int counter, bool complex)
 {
 	if (!m_filename.isEmpty())
 	{ fn = m_filename; }
@@ -630,7 +630,7 @@ QString Image::path(QString fn, QString pth, bool complex)
 		// Conditionals
 		if (complex)
 		{
-			QStringList tokens = QStringList() << "artist" << "general" << "copyright" << "character" << "model" << "model|artist" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "allo" << "date" << "date:([^%]+)" << "search_(\\d+)" << "score" << custom.keys();
+			QStringList tokens = QStringList() << "artist" << "general" << "copyright" << "character" << "model" << "model|artist" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "allo" << "date" << "date:([^%]+)" << "count(:\\d+)?(:\\d+)?" << "search_(\\d+)" << "score" << custom.keys();
 			filename = analyse(tokens, filename, details["allos"]);
 		}
 
@@ -651,6 +651,11 @@ QString Image::path(QString fn, QString pth, bool complex)
 		int p = 0;
 		while ((p = rxdate.indexIn(filename, p)) != -1)
 		{ filename.replace(rxdate.cap(0), m_createdAt.toString(rxdate.cap(1))); }
+		QRegExp rxcounter("%count(:\\d+)?(:\\d+)?%");
+		rxcounter.setMinimal(true);
+		p = 0;
+		while ((p = rxcounter.indexIn(filename, p)) != -1)
+		{ filename.replace(rxcounter.cap(0), rxcounter.captureCount() > 0 ? QString::number(counter, 'f', rxcounter.cap(1).toInt()) : QString::number(counter)); }
 		QRegExp rxsize("%([^:]+):([^%]+)%");
 		rxsize.setMinimal(true);
 		p = 0;
