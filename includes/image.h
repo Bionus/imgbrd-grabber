@@ -103,6 +103,7 @@ class Image : public QObject
 		QList<Pool*>	m_pools;
 		QTime			m_timer;
 		QSettings		*m_settings;
+		QStringList		m_search;
 		Site			*m_parentSite;
 };
 
