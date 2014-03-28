@@ -1,7 +1,7 @@
 # Options
 CONFIG += use_qscintilla
 #CONFIG += use_breakpad
-APP_VERSION = \\\"3.4.2\\\"
+APP_VERSION = \\\"3.5.0\\\"
 DEFINES += VERSION=$$APP_VERSION
 
 # General
