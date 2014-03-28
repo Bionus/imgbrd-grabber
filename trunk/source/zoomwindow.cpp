@@ -636,9 +636,18 @@ QString zoomWindow::saveImage(bool fav)
 			else
 			{
 				addMd5(m_image->md5(), fp);
-				f.open(QIODevice::WriteOnly);
+				f.open(QFile::WriteOnly);
 				f.write(m_data);
 				f.close();
+			}
+
+			if (settings.value("Textfile/activate", false).toBool())
+			{
+				QString contents = m_image->path(settings.value("Textfile/content", "%all%").toString(), "");
+				QFile file_tags(fp + ".txt");
+				file_tags.open(QFile::WriteOnly);
+				file_tags.write(contents.toLatin1());
+				file_tags.close();
 			}
 
 			if (fav)

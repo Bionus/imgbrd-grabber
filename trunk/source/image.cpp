@@ -471,21 +471,24 @@ QStrP getReplace(QString setting, QMap<QString,QStringList> details, QSettings *
 	second = settings->value(setting+"_empty").toString();
 	return QStrP(first, second);
 }
-QString Image::path(QString fn, QString pth, int counter, bool complex)
+QString Image::path(QString fn, QString pth, int counter, bool complex, bool simple)
 {
-	if (!m_filename.isEmpty())
-	{ fn = m_filename; }
-	if (!m_folder.isEmpty())
-	{ pth = m_folder; }
-
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
 	QStringList ignore = loadIgnored(), remove = settings.value("ignoredtags").toString().split(' ', QString::SkipEmptyParts);
 
-	settings.beginGroup("Save");
-	if (fn.isEmpty())
-	{ fn = settings.value("filename").toString(); }
-	if (pth.isEmpty())
-	{ pth = settings.value("path").toString(); }
+	if (!simple)
+	{
+		if (!m_filename.isEmpty())
+		{ fn = m_filename; }
+		if (!m_folder.isEmpty())
+		{ pth = m_folder; }
+
+		settings.beginGroup("Save");
+		if (fn.isEmpty())
+		{ fn = settings.value("filename").toString(); }
+		if (pth.isEmpty())
+		{ pth = settings.value("path").toString(); }
+	}
 
 	QStringList copyrights;
 	QString cop;

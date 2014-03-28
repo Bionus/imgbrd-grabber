@@ -1608,6 +1608,15 @@ void mainWindow::saveImage(Image *img, QNetworkReply *reply, QString path, QStri
 				f.open(QIODevice::WriteOnly);
 				f.write(data);
 				f.close();
+
+				if (m_settings->value("Textfile/activate", false).toBool())
+				{
+					QString contents = img->path(m_settings->value("Textfile/content", "%all%").toString(), "");
+					QFile file_tags(fp + ".txt");
+					file_tags.open(QFile::WriteOnly);
+					file_tags.write(contents.toLatin1());
+					file_tags.close();
+				}
 			}
 			else
 			{
