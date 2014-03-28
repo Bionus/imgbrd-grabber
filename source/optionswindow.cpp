@@ -84,6 +84,10 @@ optionsWindow::optionsWindow(QWidget *parent) : QDialog(parent), ui(new Ui::opti
     ui->checkAutocompletion->setChecked(settings.value("autocompletion", true).toBool());
     ui->checkUseregexfortags->setChecked(settings.value("useregexfortags", true).toBool());
 
+	ui->checkTextfileActivate->setChecked(settings.value("Textfile/activate", false).toBool());
+	ui->textEditTextfileContent->setEnabled(settings.value("Textfile/activate", false).toBool());
+	ui->textEditTextfileContent->setPlainText(settings.value("Textfile/content", "%all%").toString());
+
     settings.beginGroup("Save");
         ui->checkDownloadOriginals->setChecked(settings.value("downloadoriginals", true).toBool());
         ui->checkReplaceBlanks->setChecked(settings.value("replaceblanks", false).toBool());
@@ -489,8 +493,9 @@ void optionsWindow::setCategory(QString value)
         tr("Sources", "update") <<
         tr("Log", "update") <<
         tr("Sauvegarde", "update") <<
-        tr("Nom de fichier", "update") <<
-        tr("Noms multiples", "update") <<
+		tr("Nom de fichier", "update") <<
+		tr("Fichier texte séparé", "update") <<
+		tr("Noms multiples", "update") <<
         tr("Tags artiste", "update") <<
         tr("Tags série", "update") <<
         tr("Tags personnage", "update") <<
@@ -560,6 +565,11 @@ void optionsWindow::save()
     settings.setValue("resizeInsteadOfCropping", ui->checkResizeInsteadOfCropping->isChecked());
     settings.setValue("autocompletion", ui->checkAutocompletion->isChecked());
     settings.setValue("useregexfortags", ui->checkUseregexfortags->isChecked());
+
+	settings.beginGroup("Textfile");
+		settings.setValue("activate", ui->checkTextfileActivate->isChecked());
+		settings.setValue("content", ui->textEditTextfileContent->toPlainText());
+	settings.endGroup();
 
     settings.beginGroup("Save");
         settings.setValue("downloadoriginals", ui->checkDownloadOriginals->isChecked());

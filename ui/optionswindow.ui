@@ -17,8 +17,8 @@
    <iconset resource="../resources.qrc">
     <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0">
      <property name="spacing">
       <number>0</number>
@@ -82,6 +82,11 @@
         <item>
          <property name="text">
           <string>Noms multiples</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Fichier texte séparé</string>
          </property>
         </item>
         <item>
@@ -151,9 +156,9 @@
         </sizepolicy>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>5</number>
        </property>
-       <widget class="QWidget" name="page1">
+       <widget class="QWidget" name="pageGeneral">
         <layout class="QFormLayout" name="formLayout_14">
          <property name="fieldGrowthPolicy">
           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
@@ -347,7 +352,7 @@
         <zorder>label_65</zorder>
         <zorder>lineAdd</zorder>
        </widget>
-       <widget class="QWidget" name="page2">
+       <widget class="QWidget" name="pageSources">
         <layout class="QFormLayout" name="formLayout_2">
          <property name="fieldGrowthPolicy">
           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
@@ -537,7 +542,7 @@
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="page3">
+       <widget class="QWidget" name="pageInterfaceLog">
         <layout class="QFormLayout" name="formLayout_3">
          <item row="0" column="0" colspan="2">
           <widget class="QCheckBox" name="checkShowLog">
@@ -558,7 +563,7 @@
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="page4">
+       <widget class="QWidget" name="pageSave">
         <layout class="QFormLayout" name="formLayout_17">
          <property name="fieldGrowthPolicy">
           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
@@ -801,6 +806,47 @@ p, li { white-space: pre-wrap; }
             </widget>
            </item>
           </layout>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="pageSaveTextfile">
+        <layout class="QFormLayout" name="formLayout_12">
+         <item row="1" column="0" colspan="2">
+          <widget class="QLabel" name="label_81">
+           <property name="text">
+            <string>&lt;i&gt;À chaque fois qu'une image est sauvegardée, un fichier texte séparé sera enregistré avec le même nom au même endroit, contenant les tags de l'image en question.&lt;/i&gt;</string>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0" colspan="2">
+          <widget class="QCheckBox" name="checkTextfileActivate">
+           <property name="text">
+            <string>Activer les fichiers textes séparés</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0" colspan="2">
+          <widget class="QLabel" name="label_35">
+           <property name="text">
+            <string>Contenu du fichier texte</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0" colspan="2">
+          <widget class="QPlainTextEdit" name="textEditTextfileContent"/>
+         </item>
+         <item row="4" column="0" colspan="2">
+          <widget class="QLabel" name="label_80">
+           <property name="text">
+            <string>Symboles disponibles : les mêmes que dans la partie sauvegarde.</string>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+          </widget>
          </item>
         </layout>
        </widget>
@@ -1137,7 +1183,7 @@ p, li { white-space: pre-wrap; }
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="page10">
+       <widget class="QWidget" name="pageSaveCustomSymbols">
         <layout class="QFormLayout" name="layoutCustom">
          <item row="0" column="0" colspan="2">
           <widget class="QPushButton" name="buttonCustom">
@@ -1148,7 +1194,7 @@ p, li { white-space: pre-wrap; }
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="page11">
+       <widget class="QWidget" name="pageInterface">
         <layout class="QFormLayout" name="formLayout_7">
          <property name="fieldGrowthPolicy">
           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
@@ -1399,7 +1445,7 @@ p, li { white-space: pre-wrap; }
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="page12">
+       <widget class="QWidget" name="pageInterfaceColoring">
         <layout class="QFormLayout" name="formLayout_11">
          <item row="0" column="0">
           <widget class="QLabel" name="label_30">
@@ -1659,7 +1705,7 @@ p, li { white-space: pre-wrap; }
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="page13">
+       <widget class="QWidget" name="pageInterfaceMargins">
         <layout class="QFormLayout" name="formLayout_9">
          <property name="fieldGrowthPolicy">
           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
@@ -1803,7 +1849,7 @@ p, li { white-space: pre-wrap; }
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="page15">
+       <widget class="QWidget" name="pageProxy">
         <layout class="QFormLayout" name="formLayout_10">
          <item row="0" column="0" colspan="2">
           <widget class="QCheckBox" name="checkProxyUse">
@@ -1815,7 +1861,16 @@ p, li { white-space: pre-wrap; }
          <item row="1" column="0" colspan="2">
           <widget class="QWidget" name="widgetProxy" native="true">
            <layout class="QFormLayout" name="formLayout_16">
-            <property name="margin">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
              <number>0</number>
             </property>
             <item row="1" column="0">
@@ -1868,7 +1923,7 @@ p, li { white-space: pre-wrap; }
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="page16">
+       <widget class="QWidget" name="pageCommands">
         <layout class="QFormLayout" name="formLayout_18">
          <property name="fieldGrowthPolicy">
           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
@@ -1915,7 +1970,7 @@ p, li { white-space: pre-wrap; }
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="pageCommandsSql">
+       <widget class="QWidget" name="pageCommandsDatabase">
         <layout class="QFormLayout" name="formLayout_13">
          <item row="1" column="0" colspan="2">
           <widget class="QGroupBox" name="groupBox_4">
@@ -2051,7 +2106,7 @@ p, li { white-space: pre-wrap; }
      </item>
     </layout>
    </item>
-   <item>
+   <item row="1" column="0">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -2409,6 +2464,22 @@ p, li { white-space: pre-wrap; }
     <hint type="destinationlabel">
      <x>300</x>
      <y>183</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkTextfileActivate</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>textEditTextfileContent</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>262</x>
+     <y>26</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>340</x>
+     <y>143</y>
     </hint>
    </hints>
   </connection>
