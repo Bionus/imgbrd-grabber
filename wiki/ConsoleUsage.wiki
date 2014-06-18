@@ -1,0 +1,26 @@
+#summary How to use the program's feature through command line.
+
+= Introduction =
+
+Starting 3.6.0 version, Grabber can be totally run through the command line.
+
+
+= Compilation =
+
+There is two ways to use the command line.
+
+When compiling Grabber, just uncomment "CONFIG += use_cli" to set the CLI to be the default behavior. The downside is that running it in GUI mode with the "-g" or "--gui" command will pop up a console too if not run from a terminal already.
+
+If you keep it commented or just use the precompiled version, Grabber will start with its GUI by default, which can be disabled with the "-c" or "--cli" commands.
+
+
+= Commands =
+
+In this part I'll consider that you are using the precompiled version, which has "CONFIG += use_cli" commented.
+
+== Count the number of images for a search ==
+Prints the result followed by a new line to stdout.
+{{{
+./grabber.exe -c -t "inugami_kira" -s "danbooru.donmai.us" --return-count
+285
+}}}
