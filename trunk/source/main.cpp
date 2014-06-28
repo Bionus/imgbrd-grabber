@@ -149,7 +149,7 @@ int main(int argc, char *argv[])
 	if (parser.isSet(returnTagsOption))
 		dwnldr->getTags();
 	if (parser.isSet(returnImagesOption))
-		dwnldr->getImages();
+		dwnldr->getUrls();
 
 	if (gui)
 	{

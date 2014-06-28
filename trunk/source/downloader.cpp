@@ -181,6 +181,73 @@ void Downloader::finishedLoadingImages(Page *page)
 			images.append(img);
 		}
 
+	QList<Image*> imgs;
+	int i = 0;
+	foreach (Image *img, images)
+		if (m_max <= 0 || i++ < m_max)
+			imgs.append(img);
+
+	if (m_quit)
+		returnString("An error occured");
+	else
+		emit finishedImages(imgs);
+}
+
+void Downloader::getUrls()
+{
+	if (m_sites->empty())
+	{
+		std::cerr << "No valid source found" << std::endl;
+		return;
+	}
+
+	m_waiting = 0;
+
+	for (int i = 0; i < m_sites->size(); ++i)
+	{
+		int pages = (int)ceil((float)m_max / m_perpage);
+		if (pages <= 0 || m_perpage <= 0 || m_max <= 0)
+			pages = 1;
+		for (int p = 0; p < pages; ++p)
+		{
+			Page *page = new Page(m_sites->at(i), Site::getAllSites(), m_tags, m_page + p, m_perpage, m_postfiltering, true, this);
+			connect(page, &Page::finishedLoading, this, &Downloader::finishedLoadingUrls);
+
+			m_pages->append(page);
+			m_waiting++;
+		}
+	}
+
+	for (int i = 0; i < m_pages->size(); ++i)
+	{
+		log("Loading page '"+m_pages->at(i)->url().toString()+"'");
+		m_pages->at(i)->load();
+	}
+}
+void Downloader::finishedLoadingUrls(Page *page)
+{
+	log("Received page '"+page->url().toString()+"'");
+
+	m_waiting--;
+	if (m_waiting > 0)
+		return;
+
+	QList<Image*> images;
+	for (int i = 0; i < m_pages->size(); ++i)
+		foreach (Image *img, m_pages->at(i)->images())
+		{
+			if (m_noduplicates)
+			{
+				bool found = false;
+				foreach (Image *image, images)
+					if (image->md5() == img->md5())
+						found = true;
+				if (found)
+					continue;
+			}
+			images.append(img);
+		}
+
 	QStringList urls;
 	int i = 0;
 	foreach (Image *img, images)
@@ -190,7 +257,7 @@ void Downloader::finishedLoadingImages(Page *page)
 	if (m_quit)
 		returnStringList(urls);
 	else
-		emit finishedImages(urls);
+		emit finishedUrls(urls);
 }
 
 void Downloader::returnInt(int ret)

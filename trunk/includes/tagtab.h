@@ -8,6 +8,7 @@
 #include "searchtab.h"
 #include "page.h"
 #include "mainwindow.h"
+#include "downloader.h"
 
 
 
@@ -104,6 +105,7 @@ class tagTab : public searchTab
 		QList<QLabel*>					m_labels;
 		QList<QMap<QString,QString> >	m_history;
 		QStringList						m_modifiers, m_ignored;
+		Downloader						*m_downloader;
 };
 
 #endif // TAGTAB_H
