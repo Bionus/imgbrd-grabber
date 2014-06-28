@@ -1103,7 +1103,7 @@
     </message>
     <message>
         <location filename="../ui/aboutwindow.ui" line="89"/>
-        <source>Traduction russe par Станислав Егоров.</source>
+        <source>Traduction russe par Николай Тихонов.</source>
         <translation>Перевод на русский выполнил Николай Тихонов.</translation>
     </message>
     <message>

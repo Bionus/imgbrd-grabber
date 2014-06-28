@@ -1101,8 +1101,8 @@
     </message>
     <message>
         <location filename="../ui/aboutwindow.ui" line="89"/>
-        <source>Traduction russe par Станислав Егоров.</source>
-        <translation>Russian translation byr Станислав Егоров.</translation>
+        <source>Traduction russe par Николай Тихонов.</source>
+        <translation>Russian translation byr Николай Тихонов.</translation>
     </message>
     <message>
         <location filename="../source/aboutwindow.cpp" line="37"/>
