@@ -1,6 +1,7 @@
 #include <QSettings>
 #include <QFile>
 #include <QDebug>
+#include <iostream>
 #include "page.h"
 #include "json.h"
 #include "math.h"
@@ -279,7 +280,14 @@ void Page::parse()
 				if (m_site->contains("Urls/Xml/Image"))
 				{
 					if (m_site->value("Urls/Xml/Image").contains("->"))
-					{ d["file_url"].replace(m_site->value("Urls/Xml/Image").left(m_site->value("Urls/Xml/Image").indexOf("->")), m_site->value("Urls/Xml/Image").right(m_site->value("Urls/Xml/Image").size() - m_site->value("Urls/Xml/Image").indexOf("->")-2)); }
+					{
+						QStringList replaces = m_site->value("Urls/Xml/Image").split('&');
+						foreach (QString rep, replaces)
+						{
+							QRegExp rgx(rep.left(rep.indexOf("->")));
+							d["file_url"].replace(rgx, rep.right(rep.size() - rep.indexOf("->") - 2));
+						}
+					}
 					else
 					{
 						d["file_url"] = m_site->value("Urls/Xml/Image");
@@ -386,7 +394,14 @@ void Page::parse()
 				if (m_site->contains("Urls/Rss/Image"))
 				{
 					if (m_site->value("Urls/Rss/Image").contains("->"))
-					{ d["file_url"].replace(m_site->value("Urls/Rss/Image").left(m_site->value("Urls/Rss/Image").indexOf("->")), m_site->value("Urls/Rss/Image").right(m_site->value("Urls/Rss/Image").size()-m_site->value("Urls/Rss/Image").indexOf("->")-2)); }
+					{
+						QStringList replaces = m_site->value("Urls/Rss/Image").split('&');
+						foreach (QString rep, replaces)
+						{
+							QRegExp rgx(rep.left(rep.indexOf("->")));
+							d["file_url"].replace(rgx, rep.right(rep.size() - rep.indexOf("->") - 2));
+						}
+					}
 					else
 					{
 						d["file_url"] = m_site->value("Urls/Rss/Image");
@@ -474,7 +489,7 @@ void Page::parse()
 			{
 				if (m_site->value("Urls/Html/Image").contains("->"))
 				{
-					QStringList replaces = m_site->value("Urls/Html/Image").split("&");
+					QStringList replaces = m_site->value("Urls/Html/Image").split('&');
 					foreach (QString rep, replaces)
 					{
 						QRegExp rgx(rep.left(rep.indexOf("->")));

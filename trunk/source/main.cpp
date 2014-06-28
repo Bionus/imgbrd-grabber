@@ -122,13 +122,16 @@ int main(int argc, char *argv[])
 		gui = false;
 		if (parser.isSet(guiOption))
 			gui = true;
+		if (!parser.isSet(verboseOption))
+			qInstallMessageHandler(noMessageOutput);
 	#else
 		if (parser.isSet(cliOption))
+		{
 			gui = false;
+			if (!parser.isSet(verboseOption))
+				qInstallMessageHandler(noMessageOutput);
+		}
 	#endif
-
-	if (!parser.isSet(verboseOption))
-		qInstallMessageHandler(noMessageOutput);
 
 	Downloader *dwnldr = new Downloader(parser.value(tagsOption).split(" ", QString::SkipEmptyParts),
 										parser.value(postfilteringOption).split(" ", QString::SkipEmptyParts),
