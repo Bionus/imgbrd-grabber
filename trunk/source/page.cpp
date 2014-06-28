@@ -10,6 +10,7 @@
 Page::Page(Site *site, QMap<QString,Site*> *sites, QStringList tags, int page, int limit, QStringList postFiltering, bool smart, QObject *parent, int pool) : QObject(parent), m_site(site), m_postFiltering(postFiltering), m_errors(QStringList()), m_imagesPerPage(limit), m_currentSource(0), m_smart(smart)
 {
 	m_website = m_site->url();
+	m_imagesCount = 0;
 
 	QString text = " "+tags.join(" ")+" ";
 	text.replace(" rating:s ", " rating:safe ", Qt::CaseInsensitive)
@@ -771,11 +772,21 @@ void Page::parseTags()
 		rxlast.indexIn(source, 0);
 		m_imagesCount = rxlast.cap(1).remove(",").toInt();
 	}
-	if (m_site->contains("Regex/LastPage") && m_imagesCount < 1)
+	if (m_imagesCount < 1)
+	{
+		foreach (Tag tag, m_tags)
+		{
+			if (tag.text() == m_search.join(" "))
+			{ m_imagesCount = tag.count(); }
+		}
+	}
+	if (m_site->contains("Regex/LastPage") && (m_imagesCount < 1 || m_imagesCount % 1000 == 0))
 	{
 		QRegExp rxlast(m_site->value("Regex/LastPage"));
 		rxlast.indexIn(source, 0);
-		m_imagesCount = rxlast.cap(1).remove(",").toInt() * m_imagesPerPage;
+		int c = rxlast.cap(1).remove(",").toInt() * m_imagesPerPage;
+		if (c != 0)
+			m_imagesCount = c;
 	}
 
 	// Wiki

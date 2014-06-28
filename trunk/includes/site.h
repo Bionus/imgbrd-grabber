@@ -22,7 +22,6 @@ class Site : public QObject
 {
 	Q_OBJECT
 
-
 	public:
 		enum LoginResult
 		{
@@ -46,6 +45,7 @@ class Site : public QObject
 		QVariant setting(QString key, QVariant def = QVariant());
 		QNetworkReply *get(QUrl url, Page *page = NULL, QString referer = "", Image *img = NULL);
 		QNetworkReply *get(QString url, Page *page = NULL, QString referer = "", Image *img = NULL) { return get(QUrl(url), page, referer, img); }
+		static QMap<QString, Site*> *getAllSites();
 
 	public slots:
 		void login();
