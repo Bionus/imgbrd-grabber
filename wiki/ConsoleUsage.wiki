@@ -2,7 +2,7 @@
 
 = Introduction =
 
-Starting 3.6.0 version, Grabber can be totally run through the command line.
+Starting 4.0.0 version, Grabber can be totally run through the command line.
 
 
 = Compilation =
@@ -114,7 +114,7 @@ You can use the "-m" or "--max" option to choose how many images you want to ret
 
 Mixed together, they can allow to get multiple pages for a single request. For example, "-i 2 -m 10" will return the same result as "-i 10", but will use 5 requests to do so.
 {{{
-./grabber.exe -c -t "inugami_kira" -s "danbooru.donmai.us" -i 10 --return-images
+./grabber -c -t "inugami_kira" -s "danbooru.donmai.us" -i 10 --return-images
 http://danbooru.donmai.us/data/3fccf5d7c6a0fe066cb0c6d3d584dba4.jpg
 http://danbooru.donmai.us/data/92bde7d2b5b5b045e3d03e2544499f4b.jpg
 http://danbooru.donmai.us/data/27de992712f6bae5c03357cf4e63ea0a.jpg
@@ -126,7 +126,7 @@ http://danbooru.donmai.us/data/dacde25c81be108389854c32f1bdeb3d.jpg
 http://danbooru.donmai.us/data/100cd43adb60f390309d14c1ce8bb853.jpg
 http://danbooru.donmai.us/data/7a3fa58e9e669c2fdc2fb6596e13ed40.jpg
 
-./grabber.exe -c -t "inugami_kira" -s "danbooru.donmai.us" -i 2 -m 10 --return-images
+./grabber -c -t "inugami_kira" -s "danbooru.donmai.us" -i 2 -m 10 --return-images
 http://danbooru.donmai.us/data/3fccf5d7c6a0fe066cb0c6d3d584dba4.jpg
 http://danbooru.donmai.us/data/92bde7d2b5b5b045e3d03e2544499f4b.jpg
 http://danbooru.donmai.us/data/27de992712f6bae5c03357cf4e63ea0a.jpg
