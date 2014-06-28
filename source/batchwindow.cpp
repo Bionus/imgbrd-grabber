@@ -158,7 +158,7 @@ int batchWindow::batch(QString url)
 	int i = indexOf(url);
 	if (i == -1)
 		return -1;
-	return ui->tableWidget->item(i, 1)->text().toInt() - 1;
+	return ui->tableWidget->item(i, 1)->text().toInt();
 }
 void batchWindow::loadingImage(QString url)
 {

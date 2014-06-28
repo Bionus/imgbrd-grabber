@@ -6,12 +6,12 @@
 			<Tags>/{tags}?p={page}</Tags>
 			<Post>/{id}</Post>
 			<Limit>22</Limit>
-			<Image>\.240\.->.full.&amp;\.600\.->.full.</Image>
+			<Image>\.240\.->.full.&amp;\.600\.->.full.&amp;/240/->/full/&amp;/600/->/full/</Image>
 		</Html>
 		<Rss>
 			<Tags>/{tags}?s=id&amp;xml&amp;p={page}</Tags>
 			<Limit>100</Limit>
-			<Image>\.240\.->.full.&amp;\.600\.->.full.</Image>
+			<Image>\.240\.->.full.&amp;\.600\.->.full.&amp;/240/->/full/&amp;/600/->/full/</Image>
 		</Rss>
 	</Urls>
 	<Regex>
