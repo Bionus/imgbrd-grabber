@@ -18,9 +18,89 @@ If you keep it commented or just use the precompiled version, Grabber will start
 
 In this part I'll consider that you are using the precompiled version, which has "CONFIG += use_cli" commented.
 
-== Count the number of images for a search ==
+== Help ==
+You can find help with the "-?", "-h", or "--help" commands.
+
+== Sources ==
+You can set a source using the "-s" or "--sources" parameter, followed by the list of hosts to connect, separated by spaces. For example:
+{{{
+./grabber -c -s "danbooru.donmai.us gelbooru.com"
+}}}
+
+
+= Usage =
+
+== Count the number of images ==
 Prints the result followed by a new line to stdout.
 {{{
-./grabber.exe -c -t "inugami_kira" -s "danbooru.donmai.us" --return-count
-285
+./grabber -c -t "inugami_kira" -s "danbooru.donmai.us" --return-count
+288
+
+./grabber -c -t "inugami_kira" -s "gelbooru.com" --return-count
+297
+
+./grabber -c -t "inugami_kira" -s "danbooru.donmai.us gelbooru.com" --return-count
+585
+}}}
+
+== Get tags ==
+Prints each result separated by a new line. Each part is separated by a tabulation character.
+{{{
+./grabber -c -t "inugami_kira" -s "danbooru.donmai.us" --return-tags
+inugami_kira    288     artist
+highres 458000  general
+1girl   1090000 general
+absurdres       87000   general
+thighhighs      257000  general
+...
+
+./grabber -c -t "inugami_kira" -s "danbooru.donmai.us gelbooru.com" --return-tags
+inugami_kira    585     artist
+highres 1078790 general
+1girl   1736509 general
+absurdres       203970  general
+thighhighs      613879  general
+...
+}}}
+
+== Get images ==
+Prints each result separated by a new line.
+{{{
+./grabber -c -t "inugami_kira" -s "danbooru.donmai.us" -i 5 -p 3 --return-images
+http://danbooru.donmai.us/data/10d3ae95f0f5b7ea65cd3f07e541cfdf.jpg
+http://danbooru.donmai.us/data/3612d866e07f13d632132c99f704fc57.jpg
+http://danbooru.donmai.us/data/8766a8dad81082c631fbcb25328029e4.jpg
+http://danbooru.donmai.us/data/a820e3967048b0d7c7a197de748d7505.jpg
+http://danbooru.donmai.us/data/85ba43a3470236f16807d102ebb9befe.jpg
+
+./grabber -c -t "inugami_kira" -s "gelbooru.com" -i 5 -p 3 --return-images
+http://simg2.gelbooru.com/images/2080/8766a8dad81082c631fbcb25328029e4.png
+http://simg2.gelbooru.com/images/2080/3612d866e07f13d632132c99f704fc57.png
+http://simg2.gelbooru.com/images/2080/10d3ae95f0f5b7ea65cd3f07e541cfdf.png
+http://simg2.gelbooru.com/images/2080/7a3fa58e9e669c2fdc2fb6596e13ed40.png
+http://simg2.gelbooru.com/images/2077/eea3d1e72f2f33521ccf68874b408d38.png
+
+./grabber -c -t "inugami_kira" -s "danbooru.donmai.us gelbooru.com" -i 5 -p 3 --return-images
+http://danbooru.donmai.us/data/10d3ae95f0f5b7ea65cd3f07e541cfdf.jpg
+http://danbooru.donmai.us/data/3612d866e07f13d632132c99f704fc57.jpg
+http://danbooru.donmai.us/data/8766a8dad81082c631fbcb25328029e4.jpg
+http://danbooru.donmai.us/data/a820e3967048b0d7c7a197de748d7505.jpg
+http://danbooru.donmai.us/data/85ba43a3470236f16807d102ebb9befe.jpg
+http://simg2.gelbooru.com/images/2080/8766a8dad81082c631fbcb25328029e4.png
+http://simg2.gelbooru.com/images/2080/3612d866e07f13d632132c99f704fc57.png
+http://simg2.gelbooru.com/images/2080/10d3ae95f0f5b7ea65cd3f07e541cfdf.png
+http://simg2.gelbooru.com/images/2080/7a3fa58e9e669c2fdc2fb6596e13ed40.png
+http://simg2.gelbooru.com/images/2077/eea3d1e72f2f33521ccf68874b408d38.png
+}}}
+
+You can use the "-n" or "--no-duplicates" option to remove duplicate results when downloading from several sources based on MD5.
+{{{
+./grabber -c -t "inugami_kira" -s "danbooru.donmai.us gelbooru.com" -i 5 -p 3 --return-images --no-duplicates
+http://danbooru.donmai.us/data/10d3ae95f0f5b7ea65cd3f07e541cfdf.jpg
+http://danbooru.donmai.us/data/3612d866e07f13d632132c99f704fc57.jpg
+http://danbooru.donmai.us/data/8766a8dad81082c631fbcb25328029e4.jpg
+http://danbooru.donmai.us/data/a820e3967048b0d7c7a197de748d7505.jpg
+http://danbooru.donmai.us/data/85ba43a3470236f16807d102ebb9befe.jpg
+http://simg2.gelbooru.com/images/2080/7a3fa58e9e669c2fdc2fb6596e13ed40.png
+http://simg2.gelbooru.com/images/2077/eea3d1e72f2f33521ccf68874b408d38.png
 }}}
