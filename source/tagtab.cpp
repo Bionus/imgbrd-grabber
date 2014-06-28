@@ -274,7 +274,7 @@ void tagTab::load()
 void tagTab::finishedLoading(Page* page)
 {
 	if (m_stop)
-	{ return; }
+		return;
 
 	log(tr("Réception de la page <a href=\"%1\">%1</a>").arg(page->url().toString().toHtmlEscaped()));
 
@@ -285,7 +285,7 @@ void tagTab::finishedLoading(Page* page)
 	int perpage = page->site()->value("Urls/Selected/Tags").contains("{limit}") ? ui->spinImagesPerPage->value() : imgs.size();
 	int maxpage = ceil(page->imagesCount() / ((float)perpage));
 	if (maxpage < m_pagemax || m_pagemax == -1)
-	{ m_pagemax = maxpage; }
+		m_pagemax = maxpage;
 	ui->buttonNextPage->setEnabled(maxpage > ui->spinPage->value() || page->imagesCount() == -1 || (page->imagesCount() == 0 && page->images().count() > 0));
 	ui->buttonLastPage->setEnabled(maxpage > ui->spinPage->value());
 
@@ -293,7 +293,7 @@ void tagTab::finishedLoading(Page* page)
 	{
 		int pos = m_pages.values().indexOf(page);
 		if (pos < 0)
-		{ return; }
+			return;
 		QLabel *txt = new QLabel(this);
 		m_labels.append(txt);
 			if (imgs.count() == 0)
@@ -337,7 +337,10 @@ void tagTab::finishedLoading(Page* page)
 							}
 						}
 						if (lev == 0)
-						{ results[tag] = tag; c--; }
+						{
+							results[tag] = tag;
+							c--;
+						}
 					}
 					if (c > 0)
 					{

@@ -223,9 +223,9 @@
         </item>
         <item>
          <widget class="QWidget" name="widgetDownloadButtons" native="true">
-          <layout class="QHBoxLayout" name="horizontalLayout">
+          <layout class="QVBoxLayout" name="verticalLayout_2">
            <property name="spacing">
-            <number>6</number>
+            <number>3</number>
            </property>
            <property name="leftMargin">
             <number>0</number>
@@ -240,46 +240,74 @@
             <number>0</number>
            </property>
            <item>
-            <widget class="QPushButton" name="pushButton">
-             <property name="text">
-              <string>Télécharger la séléction</string>
-             </property>
-            </widget>
+            <layout class="QHBoxLayout" name="horizontalLayout">
+             <item>
+              <widget class="QPushButton" name="buttonClear">
+               <property name="text">
+                <string>Tout effacer</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="buttonClearSel">
+               <property name="text">
+                <string>Effacer la séléction</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButton_14">
+               <property name="text">
+                <string>Tout télécharger</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButton">
+               <property name="text">
+                <string>Télécharger la séléction</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </item>
            <item>
-            <widget class="QPushButton" name="pushButton_14">
-             <property name="text">
-              <string>Tout télécharger</string>
+            <layout class="QHBoxLayout" name="horizontalLayout_4">
+             <property name="leftMargin">
+              <number>0</number>
              </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="buttonSaveLinkList">
-             <property name="text">
-              <string>Sauvegarder</string>
+             <property name="topMargin">
+              <number>0</number>
              </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="buttonLoadLinkList">
-             <property name="text">
-              <string>Charger</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="buttonClearSel">
-             <property name="text">
-              <string>Effacer la séléction</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="buttonClear">
-             <property name="text">
-              <string>Tout effacer</string>
-             </property>
-            </widget>
+             <item>
+              <widget class="QPushButton" name="buttonMoveDown">
+               <property name="text">
+                <string>Move down</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="buttonLoadLinkList">
+               <property name="text">
+                <string>Charger</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="buttonSaveLinkList">
+               <property name="text">
+                <string>Sauvegarder</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="buttonMoveUp">
+               <property name="text">
+                <string>Move up</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </item>
           </layout>
          </widget>
@@ -307,8 +335,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>98</width>
-             <height>28</height>
+             <width>553</width>
+             <height>443</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_8">
@@ -935,13 +963,6 @@
   <tabstop>tableBatchGroups</tabstop>
   <tabstop>pushButton_12</tabstop>
   <tabstop>tableBatchUniques</tabstop>
-  <tabstop>pushButton_13</tabstop>
-  <tabstop>pushButton</tabstop>
-  <tabstop>pushButton_14</tabstop>
-  <tabstop>buttonSaveLinkList</tabstop>
-  <tabstop>buttonLoadLinkList</tabstop>
-  <tabstop>buttonClearSel</tabstop>
-  <tabstop>buttonClear</tabstop>
   <tabstop>scrollArea</tabstop>
   <tabstop>buttonClearlog</tabstop>
   <tabstop>buttonOpenLog</tabstop>
@@ -1288,8 +1309,8 @@
    <slot>addUnique()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>313</x>
-     <y>476</y>
+     <x>536</x>
+     <y>468</y>
     </hint>
     <hint type="destinationlabel">
      <x>804</x>
@@ -1304,8 +1325,8 @@
    <slot>batchSel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>331</x>
-     <y>527</y>
+     <x>785</x>
+     <y>498</y>
     </hint>
     <hint type="destinationlabel">
      <x>216</x>
@@ -1320,8 +1341,8 @@
    <slot>getAll()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>438</x>
-     <y>527</y>
+     <x>645</x>
+     <y>498</y>
     </hint>
     <hint type="destinationlabel">
      <x>302</x>
@@ -1336,8 +1357,8 @@
    <slot>batchClearSel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>705</x>
-     <y>527</y>
+     <x>506</x>
+     <y>498</y>
     </hint>
     <hint type="destinationlabel">
      <x>629</x>
@@ -1352,8 +1373,8 @@
    <slot>batchClear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>786</x>
-     <y>527</y>
+     <x>366</x>
+     <y>498</y>
     </hint>
     <hint type="destinationlabel">
      <x>742</x>
@@ -1457,6 +1478,38 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>buttonMoveUp</sender>
+   <signal>clicked()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>batchMoveUp()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>685</x>
+     <y>515</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>220</x>
+     <y>518</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonMoveDown</sender>
+   <signal>clicked()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>batchMoveDown()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>309</x>
+     <y>515</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>800</x>
+     <y>511</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>help()</slot>
@@ -1496,5 +1549,7 @@
   <slot>addPoolTab()</slot>
   <slot>md5FixOpen()</slot>
   <slot>updateCompleters()</slot>
+  <slot>batchMoveUp()</slot>
+  <slot>batchMoveDown()</slot>
  </slots>
 </ui>

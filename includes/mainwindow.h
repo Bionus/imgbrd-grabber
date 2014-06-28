@@ -79,8 +79,10 @@ class mainWindow : public QMainWindow
         void finishedLoadingPreview(Image*);
 		void webZoom(int);*/
         // Batch download management
-        void batchClear();
-        void batchClearSel();
+		void batchClear();
+		void batchClearSel();
+		void batchMoveUp();
+		void batchMoveDown();
         void batchSel();
         void batchChange(int);
         void updateBatchGroups(int, int);
