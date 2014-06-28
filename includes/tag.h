@@ -15,7 +15,7 @@ class Tag
         void setType(QString);
         void setCount(int);
         QString text();
-        QString type();
+		QString type();
         int		count();
 
     private:
