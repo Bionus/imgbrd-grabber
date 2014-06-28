@@ -9,7 +9,7 @@
 			<Image>\.240\.->.full.&amp;\.600\.->.full.</Image>
 		</Html>
 		<Rss>
-			<Tags>/{tags}?xml&amp;p={page}</Tags>
+			<Tags>/{tags}?s=id&amp;xml&amp;p={page}</Tags>
 			<Limit>100</Limit>
 			<Image>\.240\.->.full.&amp;\.600\.->.full.</Image>
 		</Rss>
