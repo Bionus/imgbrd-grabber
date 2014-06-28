@@ -19,13 +19,15 @@ class Downloader : public QObject
 		void getPageCount();
 		void getTags();
 		void getImages();
+		void getUrls();
 		void setQuit(bool quit);
 
 	signals:
 		void finished(QNetworkReply*);
 		void finishedPageCount(int);
 		void finishedTags(QList<Tag>);
-		void finishedImages(QStringList);
+		void finishedImages(QList<Image*>);
+		void finishedUrls(QStringList);
 
 	public slots:
 		void returnInt(int ret);
@@ -35,6 +37,7 @@ class Downloader : public QObject
 		void finishedLoadingPageCount(Page *page);
 		void finishedLoadingTags(Page *page);
 		void finishedLoadingImages(Page *page);
+		void finishedLoadingUrls(Page *page);
 
 	private:
 		QList<Site*> *m_sites;

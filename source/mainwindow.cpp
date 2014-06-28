@@ -549,6 +549,104 @@ void mainWindow::batchClearSel()
 	}
 	updateGroupCount();
 }
+
+void mainWindow::batchMoveUp()
+{
+	QList<QTableWidgetItem *> selected = ui->tableBatchGroups->selectedItems();
+	if (selected.count() <= 0)
+		return;
+
+	QList<int> rows;
+	int count = selected.size();
+	for (int i = 0; i < count; i++)
+	{
+		int sourceRow = selected.at(i)->row();
+		if (rows.contains(sourceRow))
+			continue;
+		else
+			rows.append(sourceRow);
+	}
+	foreach (int sourceRow, rows)
+	{
+		int destRow = sourceRow - 1;
+		if (destRow < 0 || destRow >= ui->tableBatchGroups->rowCount())
+			return;
+
+		QList<QTableWidgetItem*> sourceItems;
+		for (int col = 0; col < ui->tableBatchGroups->columnCount(); ++col)
+			sourceItems << ui->tableBatchGroups->takeItem(sourceRow, col);
+		QList<QTableWidgetItem*> destItems;
+		for (int col = 0; col < ui->tableBatchGroups->columnCount(); ++col)
+			destItems << ui->tableBatchGroups->takeItem(destRow, col);
+
+		for (int col = 0; col < ui->tableBatchGroups->columnCount(); ++col)
+			ui->tableBatchGroups->setItem(sourceRow, col, destItems.at(col));
+		for (int col = 0; col < ui->tableBatchGroups->columnCount(); ++col)
+			ui->tableBatchGroups->setItem(destRow, col, sourceItems.at(col));
+	}
+
+	if (!selected.empty())
+	{
+		QItemSelectionModel* selectionModel = new QItemSelectionModel(ui->tableBatchGroups->model());
+		QItemSelection selection;
+		for (int i = 0; i < count; i++)
+		{
+			QModelIndex index = ui->tableBatchGroups->model()->index(selected.at(i)->row(), selected.at(i)->column());
+			selection.select(index, index);
+		}
+		selectionModel->select(selection, QItemSelectionModel::ClearAndSelect);
+		ui->tableBatchGroups->setSelectionModel(selectionModel);
+	}
+}
+void mainWindow::batchMoveDown()
+{
+	QList<QTableWidgetItem *> selected = ui->tableBatchGroups->selectedItems();
+	if (selected.count() <= 0)
+		return;
+
+	QList<int> rows;
+	int count = selected.size();
+	for (int i = 0; i < count; i++)
+	{
+		int sourceRow = selected.at(i)->row();
+		if (rows.contains(sourceRow))
+			continue;
+		else
+			rows.append(sourceRow);
+	}
+	foreach (int sourceRow, rows)
+	{
+		int destRow = sourceRow + 1;
+		if (destRow < 0 || destRow >= ui->tableBatchGroups->rowCount())
+			return;
+
+		QList<QTableWidgetItem*> sourceItems;
+		for (int col = 0; col < ui->tableBatchGroups->columnCount(); ++col)
+			sourceItems << ui->tableBatchGroups->takeItem(sourceRow, col);
+		QList<QTableWidgetItem*> destItems;
+		for (int col = 0; col < ui->tableBatchGroups->columnCount(); ++col)
+			destItems << ui->tableBatchGroups->takeItem(destRow, col);
+
+		for (int col = 0; col < ui->tableBatchGroups->columnCount(); ++col)
+			ui->tableBatchGroups->setItem(sourceRow, col, destItems.at(col));
+		for (int col = 0; col < ui->tableBatchGroups->columnCount(); ++col)
+			ui->tableBatchGroups->setItem(destRow, col, sourceItems.at(col));
+	}
+
+	if (!selected.empty())
+	{
+		QItemSelectionModel* selectionModel = new QItemSelectionModel(ui->tableBatchGroups->model());
+		QItemSelection selection;
+		for (int i = 0; i < count; i++)
+		{
+			QModelIndex index = ui->tableBatchGroups->model()->index(selected.at(i)->row(), selected.at(i)->column());
+			selection.select(index, index);
+		}
+		selectionModel->select(selection, QItemSelectionModel::ClearAndSelect);
+		ui->tableBatchGroups->setSelectionModel(selectionModel);
+	}
+}
+
 void mainWindow::batchChange(int)
 {
 	/*if (!m_tabs[0]->ui->checkMergeResults->isChecked())
