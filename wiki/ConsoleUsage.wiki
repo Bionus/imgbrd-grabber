@@ -64,6 +64,7 @@ thighhighs      613879  general
 }}}
 
 == Get images ==
+=== Basis ===
 Prints each result separated by a new line.
 {{{
 ./grabber -c -t "inugami_kira" -s "danbooru.donmai.us" -i 5 -p 3 --return-images
@@ -93,6 +94,7 @@ http://simg2.gelbooru.com/images/2080/7a3fa58e9e669c2fdc2fb6596e13ed40.png
 http://simg2.gelbooru.com/images/2077/eea3d1e72f2f33521ccf68874b408d38.png
 }}}
 
+=== Duplicates ===
 You can use the "-n" or "--no-duplicates" option to remove duplicate results when downloading from several sources based on MD5.
 {{{
 ./grabber -c -t "inugami_kira" -s "danbooru.donmai.us gelbooru.com" -i 5 -p 3 --return-images --no-duplicates
@@ -105,6 +107,7 @@ http://simg2.gelbooru.com/images/2080/7a3fa58e9e669c2fdc2fb6596e13ed40.png
 http://simg2.gelbooru.com/images/2077/eea3d1e72f2f33521ccf68874b408d38.png
 }}}
 
+=== Images per page ===
 You can use the "-i" or "--perpage" option to choose how many images per page the program should return. Default value is 20.
 
 You can use the "-m" or "--max" option to choose how many images you want to return. By default, the program returns everything it finds on the requested pages.
