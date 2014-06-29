@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Grabber"
-#define MyAppVersion "3.5.0"
+#define MyAppVersion "4.0.0a"
 #define MyAppPublisher "Bionus"
 #define MyAppURL "http://code.google.com/p/imgbrd-grabber/"
 #define MyAppExeName "Grabber.exe"
@@ -73,9 +73,9 @@ Source: "D:\Programmation\C++\Qt\Grabber\release\CDR.exe"; DestDir: "{app}"; Fla
 Source: "D:\Programmation\C++\Qt\Grabber\release\CrashReporter.exe"; DestDir: "{app}"; Flags: ignoreversion   
 Source: "D:\Programmation\C++\Qt\Grabber\release\Grabber.exe"; DestDir: "{app}"; Flags: ignoreversion   
 Source: "D:\Programmation\C++\Qt\Grabber\release\words.txt"; DestDir: "{app}";    
-Source: "D:\Programmation\C++\Qt\Grabber\release\icudt51.dll"; DestDir: "{app}"; Flags: ignoreversion         
-Source: "D:\Programmation\C++\Qt\Grabber\release\icuin51.dll"; DestDir: "{app}"; Flags: ignoreversion         
-Source: "D:\Programmation\C++\Qt\Grabber\release\icuuc51.dll"; DestDir: "{app}"; Flags: ignoreversion         
+Source: "D:\Programmation\C++\Qt\Grabber\release\icudt52.dll"; DestDir: "{app}"; Flags: ignoreversion         
+Source: "D:\Programmation\C++\Qt\Grabber\release\icuin52.dll"; DestDir: "{app}"; Flags: ignoreversion         
+Source: "D:\Programmation\C++\Qt\Grabber\release\icuuc52.dll"; DestDir: "{app}"; Flags: ignoreversion         
 Source: "D:\Programmation\C++\Qt\Grabber\release\libeay32.dll"; DestDir: "{app}"; Flags: ignoreversion         
 Source: "D:\Programmation\C++\Qt\Grabber\release\libEGL.dll"; DestDir: "{app}"; Flags: ignoreversion         
 Source: "D:\Programmation\C++\Qt\Grabber\release\libGLESv2.dll"; DestDir: "{app}"; Flags: ignoreversion         
@@ -143,9 +143,8 @@ Type: filesandordirs; Name: "{app}\languages\updater"
 Type: filesandordirs; Name: "{app}\sites"    
 Type: files; Name: "{app}\Updater.exe"       
 Type: files; Name: "{app}\VERSION"
-Type: files; Name: "{app}\MD5"                   
-Type: files; Name: "{app}\libgcc_s_dw2-1.dll"                      
-Type: files; Name: "{app}\mingwm10.dll"                   
+Type: files; Name: "{app}\MD5"         
+Type: files; Name: "{app}\libgcc_s_dw2-1.dll"                    
 Type: files; Name: "{app}\QtCore4.dll"                       
 Type: files; Name: "{app}\QtGui4.dll"                       
 Type: files; Name: "{app}\QtNetwork4.dll"                       
