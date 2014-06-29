@@ -83,6 +83,7 @@ void Page::fallback(bool bload)
 
 	QRegExp pool("pool:(\\d+)");
 	QString url;
+	int pl = -1;
 	int pos = -1;
 	if ((pos = pool.indexIn(t)) != -1)
 	{
@@ -92,6 +93,7 @@ void Page::fallback(bool bload)
 			{
 				url = m_site->value("Urls/"+QString::number(i)+"/Pools");
 				url.replace("{pool}", pool.cap(1));
+				pl = pool.cap(1).toInt();
 				m_currentSource = i;
 				m_format = m_site->value("Selected").split('/').at(m_currentSource-1);
 				t = t.remove(pos, pool.cap(0).length()).trimmed();
@@ -119,7 +121,7 @@ void Page::fallback(bool bload)
 	QString pseudo = m_site->setting("auth/pseudo", settings.value("Login/pseudo", "").toString()).toString();
 	QString password = m_site->setting("auth/password", settings.value("Login/password", "").toString()).toString();
 
-	m_originalUrl = url;
+	m_originalUrl = QString(url);
 	url.replace("{page}", QString::number(p));
 	url.replace("{tags}", QUrl::toPercentEncoding(t));
 	url.replace("{limit}", QString::number(m_imagesPerPage));
@@ -127,7 +129,7 @@ void Page::fallback(bool bload)
 	url.replace("{password}", password);
 	m_url = QUrl::fromEncoded(url.toUtf8());
 
-	if (pool.indexIn(t) != -1 && m_site->contains("Urls/Html/Pools"))
+	if ((pool.cap(1) >= 0 || pool.indexIn(t) != -1) && m_site->contains("Urls/Html/Pools"))
 	{
 		QString url = m_site->value("Urls/Html/Pools");
 		url.replace("{page}", QString::number(p));
@@ -453,7 +455,6 @@ void Page::parse()
 
 		// Getting images
 		QRegExp rx(m_site->value("Regex/Image"));
-		qDebug() << m_source;
 		QStringList order = m_site->value("Regex/Order").split('|');
 		rx.setMinimal(true);
 		int pos = 0, id = 0;
