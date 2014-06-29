@@ -15,8 +15,8 @@
 		</Rss>
 	</Urls>
 	<Regex>
-		<Tags>&lt;li[^&gt;]*&gt;\s*&lt;a [^&gt;]+&gt;([^&gt;]+)&lt;/a&gt;\s*&lt;span&gt;([^&lt;]+) ([0-9]+)&lt;/span&gt;\s*&lt;/li&gt;</Tags>
-		<TagsOrder>tag|type|count</TagsOrder>
+		<Tags>&lt;li[^&gt;]*&gt;\s*&lt;a [^&gt;]+&gt;([^&gt;]+)&lt;/a&gt;\s*(?:&lt;span&gt;([^&lt;]+) ([0-9]+)&lt;/span&gt;|([^&lt;]*))\s*&lt;/li&gt;</Tags>
+		<TagsOrder>tag|type|count|type</TagsOrder>
 		<Image>&lt;a href=['&quot;]/([^'&quot;]+)['&quot;][^&gt;]*&gt;[^&lt;]*(?:&lt;b&gt;[^&lt;]*&lt;/b&gt;)?[^&lt;]*(?:&lt;span&gt;[^&lt;]*&lt;/span&gt;)?[^&lt;]*(&lt;img\s*src=['&quot;]([^'&quot;]*)['&quot;][^&gt;]*/?&gt;)</Image>
 		<Order>id|image|preview_url</Order>
 		<Count>has ([0-9,]+) .*images\.</Count>

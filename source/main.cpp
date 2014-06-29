@@ -111,9 +111,11 @@ int main(int argc, char *argv[])
 	QCommandLineOption returnCountOption(QStringList() << "rc" << "return-count", "Return total image count.");
 	QCommandLineOption returnTagsOption(QStringList() << "rt" << "return-tags", "Return tags.");
 	QCommandLineOption returnImagesOption(QStringList() << "ri" << "return-images", "Return images url.");
+	QCommandLineOption downloadOption(QStringList() << "download", "Download found images.");
 	parser.addOption(returnCountOption);
 	parser.addOption(returnTagsOption);
 	parser.addOption(returnImagesOption);
+	parser.addOption(downloadOption);
 
 	parser.process(app);
 
