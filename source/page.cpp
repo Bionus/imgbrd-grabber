@@ -1,6 +1,5 @@
 #include <QSettings>
 #include <QFile>
-#include <QDebug>
 #include <iostream>
 #include "page.h"
 #include "json.h"
@@ -129,7 +128,7 @@ void Page::fallback(bool bload)
 	url.replace("{password}", password);
 	m_url = QUrl::fromEncoded(url.toUtf8());
 
-	if ((pool.cap(1) >= 0 || pool.indexIn(t) != -1) && m_site->contains("Urls/Html/Pools"))
+	if ((pl >= 0 || pool.indexIn(t) != -1) && m_site->contains("Urls/Html/Pools"))
 	{
 		QString url = m_site->value("Urls/Html/Pools");
 		url.replace("{page}", QString::number(p));
