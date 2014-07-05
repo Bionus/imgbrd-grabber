@@ -7,20 +7,24 @@
 
 class Tag
 {
-    public:
-        explicit Tag(QString text, QString type = "unknown", int count = 1);
-        ~Tag();
-        QString stylished(QStringList);
-        void setText(QString);
-        void setType(QString);
-        void setCount(int);
-        QString text();
-		QString type();
-        int		count();
+	public:
+		explicit Tag(QString text, QString type = "unknown", int count = 1, QStringList related = QStringList());
+		~Tag();
+		QString stylished(QStringList) const;
+		void setText(QString);
+		void setType(QString);
+		void setCount(int);
+		void setRelated(QStringList);
+		QString		text() const;
+		QString		type() const;
+		int			shortType() const;
+		int			count() const;
+		QStringList	related() const;
 
-    private:
-        QString	m_text, m_type;
-        int		m_count;
+	private:
+		QString		m_text, m_type;
+		int			m_count;
+		QStringList	m_related;
 };
 
 bool sortByFrequency(Tag, Tag);

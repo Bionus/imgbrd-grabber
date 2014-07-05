@@ -3,7 +3,8 @@
 
 
 
-Tag::Tag(QString text, QString type, int count) : m_text(text), m_type(type), m_count(count)
+Tag::Tag(QString text, QString type, int count, QStringList related)
+	: m_text(text), m_type(type), m_count(count), m_related(related)
 {
 	m_text.replace("&#39;", "'");
 
@@ -21,20 +22,23 @@ Tag::Tag(QString text, QString type, int count) : m_text(text), m_type(type), m_
 Tag::~Tag()
 { }
 
-QString Tag::stylished(QStringList favs)
+QString Tag::stylished(QStringList favs) const
 {
 	if (favs.contains(m_text))
 	{ return "<span style=\"color:pink\">"+m_text+"</span>"; }
 	return m_text;
 }
 
-void Tag::setText(QString text)	{ m_text = text;	}
-void Tag::setType(QString type)	{ m_type = type;	}
-void Tag::setCount(int count)	{ m_count = count;	}
+void Tag::setText(QString text)		{ m_text = text;	}
+void Tag::setType(QString type)		{ m_type = type;	}
+void Tag::setCount(int count)		{ m_count = count;	}
+void Tag::setRelated(QStringList r)	{ m_related = r;	}
 
-QString	Tag::text()		{ return m_text;	}
-QString	Tag::type()		{ return m_type;	}
-int		Tag::count()	{ return m_count;	}
+QString		Tag::text() const		{ return m_text;	}
+QString		Tag::type() const		{ return m_type;	}
+int			Tag::shortType() const	{ return m_type == "general" ? 0 : (m_type == "artist" ? 1 : (m_type == "copyright" ? 3 : 4)); }
+int			Tag::count() const		{ return m_count;	}
+QStringList	Tag::related() const	{ return m_related;	}
 
 bool sortByFrequency(Tag s1, Tag s2)
 { return s1.count() > s2.count(); }
