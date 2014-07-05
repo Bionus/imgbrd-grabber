@@ -20,7 +20,7 @@ tagTab::tagTab(int id, QMap<QString,Site*> *sites, QMap<QString,QString> *favori
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
 	m_ignored = loadIgnored();
 
-	// Search field
+	// Search fields
 	m_search = new TextEdit(m_favorites->keys(), this);
 	m_postFiltering = new TextEdit(m_favorites->keys(), this);
 		m_search->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -30,26 +30,23 @@ tagTab::tagTab(int id, QMap<QString,Site*> *sites, QMap<QString,QString> *favori
 			QStringList completion;
 			QFile words("words.txt");
 			if (words.open(QIODevice::ReadOnly | QIODevice::Text))
-			{
 				while (!words.atEnd())
-				{
-					QByteArray line = words.readLine();
-					completion.append(QString(line).trimmed().split(" ", QString::SkipEmptyParts));
-				}
-				for (int i = 0; i < sites->size(); i++)
-				{
-					if (sites->value(sites->keys().at(i))->contains("Modifiers"))
-					{ m_modifiers.append(sites->value(sites->keys().at(i))->value("Modifiers").trimmed().split(" ", QString::SkipEmptyParts)); }
-				}
-				completion.append(m_modifiers);
-				completion.append(m_favorites->keys());
-				completion.removeDuplicates();
-				completion.sort();
-				QCompleter *completer = new QCompleter(completion, this);
-					completer->setCaseSensitivity(Qt::CaseInsensitive);
-				m_search->setCompleter(completer);
-				m_postFiltering->setCompleter(completer);
-			}
+					completion.append(QString(words.readLine()).trimmed().split(" ", QString::SkipEmptyParts));
+			QFile wordsc("wordsc.txt");
+			if (wordsc.open(QIODevice::ReadOnly | QIODevice::Text))
+				while (!wordsc.atEnd())
+					completion.append(QString(wordsc.readLine()).trimmed().split(" ", QString::SkipEmptyParts));
+			for (int i = 0; i < sites->size(); i++)
+				if (sites->value(sites->keys().at(i))->contains("Modifiers"))
+					m_modifiers.append(sites->value(sites->keys().at(i))->value("Modifiers").trimmed().split(" ", QString::SkipEmptyParts));
+			completion.append(m_modifiers);
+			completion.append(m_favorites->keys());
+			completion.removeDuplicates();
+			completion.sort();
+			QCompleter *completer = new QCompleter(completion, this);
+				completer->setCaseSensitivity(Qt::CaseInsensitive);
+			m_search->setCompleter(completer);
+			m_postFiltering->setCompleter(completer);
 		}
 		connect(m_search, SIGNAL(returnPressed()), this, SLOT(load()));
 		connect(m_search, SIGNAL(favoritesChanged()), _mainwindow, SLOT(updateFavorites()));

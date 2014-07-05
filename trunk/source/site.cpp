@@ -6,6 +6,7 @@
 #include <QDir>
 #include "site.h"
 #include "functions.h"
+#include "json.h"
 
 
 
@@ -85,16 +86,6 @@ QNetworkReply *Site::get(QUrl url, Page *page, QString ref, Image *img)
 {
 	if (!m_loggedIn)
 	{ login(); }
-
-	//qDebug() << url;
-	/*QString u = url.toString();
-	u = u.replace(".com/", ".com.s45.incloak.com/");
-	u = u.replace(".us/", ".us.s45.incloak.com/");
-	u = u.replace(".net/", ".net.s45.incloak.com/");
-	u = u.replace(".org/", ".org.s45.incloak.com/");
-	//u = u.replace("//", "/");
-	url = QUrl(u);*/
-	//qDebug() << url;
 
 	QNetworkRequest request(url);
 	QString referer = m_settings->value("referer"+(!ref.isEmpty() ? "_"+ref : ""), "").toString();
@@ -248,6 +239,32 @@ QMap<QString, Site*> *Site::getAllSites()
 		}
 	}
 	return stes;
+}
+
+void Site::loadTags(int page, int limit)
+{
+	initManager();
+	m_tagsReply = m_manager->get(QNetworkRequest(QUrl("http://danbooru.donmai.us/tags.json?search[hide_empty]=yes&limit="+QString::number(limit)+"&page=" + QString::number(page))));
+	connect(m_tagsReply, SIGNAL(finished()), this, SLOT(finishedTags()));
+}
+void Site::finishedTags()
+{
+	QString source = m_tagsReply->readAll();
+	m_tagsReply->deleteLater();
+	QList<Tag> tags;
+	QVariant src = Json::parse(source);
+	if (!src.isNull())
+	{
+		QList<QVariant> sourc = src.toList();
+		for (int id = 0; id < sourc.count(); id++)
+		{
+			QMap<QString, QVariant> sc = sourc.at(id).toMap();
+			int cat = sc.value("category").toInt();
+			QString cty = cat == 0 ? "general" : (cat == 1 ? "artist" : (cat == 3 ? "copyright" : "character"));
+			tags.append(Tag(sc.value("name").toString(), cty, sc.value("post_count").toInt(), sc.value("related_tags").toString().split(' ')));
+		}
+	}
+	emit finishedLoadingTags(tags);
 }
 
 bool Site::contains(QString what)				{ return m_data.contains(what); }
