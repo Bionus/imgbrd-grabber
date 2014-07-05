@@ -95,6 +95,8 @@ int main(int argc, char *argv[])
 	QCommandLineOption postfilteringOption(QStringList() << "r" << "postfilter", "Filter results.", "filter");
 	QCommandLineOption noDuplicatesOption(QStringList() << "n" << "no-duplicates", "Remove duplicates from results.");
 	QCommandLineOption verboseOption(QStringList() << "d" << "debug", "Show debug messages.");
+	QCommandLineOption tagsMinOption(QStringList() << "tm" << "tags-min", "Minimum count for tags to be returned.", "count", "0");
+	QCommandLineOption tagsFormatOption(QStringList() << "tf" << "tags-format", "Format for returning tags.", "format", "%tag\t%count\t%type");
 	parser.addOption(tagsOption);
 	parser.addOption(sourceOption);
 	parser.addOption(pageOption);
@@ -106,14 +108,18 @@ int main(int argc, char *argv[])
 	parser.addOption(passwordOption);
 	parser.addOption(blacklistOption);
 	parser.addOption(postfilteringOption);
+	parser.addOption(tagsMinOption);
+	parser.addOption(tagsFormatOption);
 	parser.addOption(noDuplicatesOption);
 	parser.addOption(verboseOption);
 	QCommandLineOption returnCountOption(QStringList() << "rc" << "return-count", "Return total image count.");
-	QCommandLineOption returnTagsOption(QStringList() << "rt" << "return-tags", "Return tags.");
+	QCommandLineOption returnTagsOption(QStringList() << "rt" << "return-tags", "Return tags for a search.");
+	QCommandLineOption returnPureTagsOption(QStringList() << "rp" << "return-pure-tags", "Return tags.");
 	QCommandLineOption returnImagesOption(QStringList() << "ri" << "return-images", "Return images url.");
 	QCommandLineOption downloadOption(QStringList() << "download", "Download found images.");
 	parser.addOption(returnCountOption);
 	parser.addOption(returnTagsOption);
+	parser.addOption(returnPureTagsOption);
 	parser.addOption(returnImagesOption);
 	parser.addOption(downloadOption);
 
@@ -146,12 +152,16 @@ int main(int argc, char *argv[])
 										parser.value(userOption),
 										parser.value(passwordOption),
 										parser.isSet(blacklistOption),
-										parser.isSet(noDuplicatesOption));
+										parser.isSet(noDuplicatesOption),
+										parser.value(tagsMinOption).toInt(),
+										parser.value(tagsFormatOption));
 	dwnldr->setQuit(true);
 
 	if (parser.isSet(returnCountOption))
 		dwnldr->getPageCount();
 	if (parser.isSet(returnTagsOption))
+		dwnldr->getPageTags();
+	if (parser.isSet(returnPureTagsOption))
 		dwnldr->getTags();
 	if (parser.isSet(returnImagesOption))
 		dwnldr->getUrls();

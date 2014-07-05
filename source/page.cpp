@@ -38,7 +38,6 @@ Page::Page(Site *site, QMap<QString,Site*> *sites, QStringList tags, int page, i
 	{ tags.removeAll(modifiers[k]); }
 	m_search = tags;
 
-
 	m_page = page;
 	m_pool = pool;
 	fallback(false);
