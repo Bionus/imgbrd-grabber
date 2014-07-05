@@ -1,4 +1,5 @@
 #summary How to use the program's feature through command line.
+#labels Featured
 
 = Introduction =
 
@@ -137,4 +138,40 @@ http://danbooru.donmai.us/data/092d892110825a6cbdf1bde24241c030.jpg
 http://danbooru.donmai.us/data/dacde25c81be108389854c32f1bdeb3d.jpg
 http://danbooru.donmai.us/data/100cd43adb60f390309d14c1ce8bb853.jpg
 http://danbooru.donmai.us/data/7a3fa58e9e669c2fdc2fb6596e13ed40.jpg
+}}}
+
+== Get tags list ==
+=== Basis ===
+Prints each result separated by a new line.
+{{{
+./grabber -c -s "danbooru.donmai.us" -i 5 --return-pure-tags
+tsukimare_mitsuki       1       artist
+pukapukapukka2007       1       artist
+aria1211        1       artist
+ksnatc-t_am     1       artist
+joyacuson       1       artist
+}}}
+
+=== Count filter ===
+You can use the "--tm" or "--tags-min" to return only tags with a count superior or equal to this option.
+{{{
+./grabber -c -s "danbooru.donmai.us" -i 100 --tags-min 10 --return-pure-tags
+emererre        10      artist
+hitsuji_(hitsuji_kikaku)        12      artist
+hitomi_(pokemon_ranger) 11      character
+seneo   41      artist
+}}}
+
+=== Tags format ===
+You can use the "--tf" or "--tags-format" to change the format tags are returned.
+
+Available replacements are "%tag", "%count", "%type" and "%stype".
+
+Default value is "%tag\t%count\t%type"
+{{{
+./grabber -c -s "danbooru.donmai.us" -i 100 --tags-format "%stype %tag (%count)" --tags-min 10 --return-pure-tags
+1 emererre (10)
+1 hitsuji_(hitsuji_kikaku) (12)
+4 hitomi_(pokemon_ranger) (11)
+1 seneo (41)
 }}}
