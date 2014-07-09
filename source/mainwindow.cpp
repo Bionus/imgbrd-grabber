@@ -476,7 +476,7 @@ void mainWindow::updateGroupCount()
 {
 	int groups = 0;
 	for (int i = 0; i < ui->tableBatchGroups->rowCount(); i++)
-	{ groups += ui->tableBatchGroups->item(i, 5)->text().toInt(); }
+		groups += ui->tableBatchGroups->item(i, 5)->text().toInt();
 	ui->labelGroups->setText(tr("Groupes (%1/%2)").arg(ui->tableBatchGroups->rowCount()).arg(groups));
 }
 void mainWindow::batchAddUnique(QMap<QString,QString> values)
@@ -1065,7 +1065,11 @@ void mainWindow::getAll(bool all)
 	if (m_getAllPages.isEmpty())
 	{
 		if (m_getAllRemaining.isEmpty())
-		{ return; }
+		{
+			m_getAll = false;
+			ui->widgetDownloadButtons->setEnabled(true);
+			return;
+		}
 		else
 		{ getAllImages(); }
 	}
@@ -1817,10 +1821,17 @@ bool mainWindow::loadLinkList(QString filename)
 			}
 			else
 			{
-				ui->tableBatchGroups->setRowCount(ui->tableBatchGroups->rowCount()+1);
+				QTableWidgetItem *item;
+				if (infos.at(1).toInt() < 0
+					|| infos.at(2).toInt() < 1
+					|| infos.at(3).toInt() < 1)
+				{
+					log(tr("Erreur lors de la lecture d'une ligne du fichier de liens."));
+					continue;
+				}
+				ui->tableBatchGroups->setRowCount(ui->tableBatchGroups->rowCount() + 1);
 				QString last = infos.takeLast();
 				int max = last.right(last.indexOf("/")+1).toInt(), val = last.left(last.indexOf("/")).toInt();
-				QTableWidgetItem *item;
 				for (int t = 0; t < infos.count(); t++)
 				{
 					item = new QTableWidgetItem;
