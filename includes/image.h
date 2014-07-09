@@ -61,8 +61,9 @@ class Image : public QObject
 		Page		*page();
 		QByteArray	data();
 		void		setUrl(QString);
-		void		setData(QByteArray data);
+		void		setData(QByteArray);
 		void		setFileSize(int);
+		void		setSavePath(QString);
 		QSettings	*settings();
 		QNetworkReply	*imageReply();
 		QNetworkReply	*tagsReply();
@@ -92,7 +93,7 @@ class Image : public QObject
 		Page			*m_parent;
 		int				m_id, m_score, m_parentId, m_fileSize, m_authorId, m_previewTry;
 		bool			m_hasChildren, m_hasNote, m_hasComments, m_hasScore;
-		QString			m_url, m_md5, m_author, m_status, m_rating, m_source, m_site, m_filename, m_folder;
+		QString			m_url, m_md5, m_author, m_status, m_rating, m_source, m_site, m_filename, m_folder, m_savePath;
 		QUrl			m_pageUrl, m_fileUrl, m_sampleUrl, m_previewUrl;
 		QSize			m_size;
 		QPixmap			m_imagePreview;

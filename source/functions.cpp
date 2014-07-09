@@ -107,7 +107,7 @@ void loadMd5s()
 	f.open(QFile::ReadOnly);
 	QString line;
 	while ((line = f.readLine()) != "")
-	{ _md5.insert(line.left(32), line.mid(32)); }
+		_md5.insert(line.left(32), line.mid(32));
 	f.close();
 }
 
@@ -118,9 +118,10 @@ void saveMd5s()
 {
 	QFile f(savePath("md5s.txt"));
 	f.open(QFile::WriteOnly | QFile::Truncate);
-	QStringList md5s = _md5.keys(), paths = _md5.values();
+	QStringList md5s = _md5.keys();
+	QStringList paths = _md5.values();
 	for (int i = 0; i < md5s.size(); i++)
-	{ f.write(QString(md5s[i] + paths[i] + "\r\n").toUtf8()); }
+		f.write(QString(md5s[i] + paths[i] + "\r\n").toUtf8());
 	f.close();
 }
 
@@ -134,12 +135,9 @@ QString md5Exists(QString md5)
 	if (_md5.contains(md5))
 	{
 		if (QFile::exists(_md5[md5]))
-		{ return _md5[md5]; }
-		else
-		{
-			removeMd5(md5);
-			return QString();
-		}
+			return _md5[md5];
+
+		removeMd5(md5);
 	}
 	return QString();
 }
