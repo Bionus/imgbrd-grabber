@@ -185,6 +185,10 @@ void tagTab::load()
 {
 	log(tr("Chargement des résultats..."));
 
+	ui->buttonGetAll->setEnabled(false);
+	ui->buttonGetpage->setEnabled(false);
+	ui->buttonGetSel->setEnabled(false);
+
 	m_stop = true;
 	m_parent->ui->labelWiki->setText("");
 	m_pagemax = -1;
@@ -474,6 +478,10 @@ void tagTab::finishedLoading(Page* page)
 			img->loadPreview();
 		}
 	}
+
+	ui->buttonGetAll->setDisabled(m_images.empty());
+	ui->buttonGetpage->setDisabled(m_images.empty());
+	ui->buttonGetSel->setDisabled(m_images.empty());
 }
 
 void tagTab::finishedLoadingTags(Page *page)
@@ -520,7 +528,7 @@ void tagTab::finishedLoadingTags(Page *page)
 		{ taglist[i].setType("favorite"); }
 		QString n = taglist[i].text();
 		n.replace(" ", "_");
-		tags += "<a href=\""+n+"\" style=\""+(styles.contains(taglist[i].type()+"s") ? styles[taglist[i].type()+"s"] : styles["generals"])+"\">"+taglist[i].text()+"</a>"+(taglist[i].count() > 0 ? " <span style=\"color:#aaa\">("+QString("%L1").arg(taglist[i].count())+")</span>" : "")+"<br/>";
+		tags += "<a href=\""+n+"\" style=\""+(styles.contains(taglist[i].type()+"s") ? styles[taglist[i].type()+"s"] : styles["generals"])+"\">"+taglist[i].text().replace('_', ' ')+"</a>"+(taglist[i].count() > 0 ? " <span style=\"color:#aaa\">("+QString("%L1").arg(taglist[i].count())+")</span>" : "")+"<br/>";
 	}
 	m_tags = tags;
 	m_parent->ui->labelTags->setText(tags);
@@ -715,8 +723,11 @@ void tagTab::getPage()
 	bool unloaded = settings.value("getunloadedpages", false).toBool();
 	for (int i = 0; i < actuals.count(); i++)
 	{
-		int perpage = unloaded ? ui->spinImagesPerPage->value() : m_pages.value(actuals.at(i))->images().count();
-		emit batchAddGroup(QStringList() << m_search->toPlainText()+" "+settings.value("add").toString().trimmed() << QString::number(ui->spinPage->value()) << QString::number(perpage) << QString::number(perpage) << settings.value("downloadblacklist").toString() << actuals.at(i) << settings.value("Save/filename").toString() << settings.value("Save/path").toString() << "");
+		if (m_pages.contains(actuals.at(i)))
+		{
+			int perpage = unloaded ? ui->spinImagesPerPage->value() : m_pages.value(actuals.at(i))->images().count();
+			emit batchAddGroup(QStringList() << m_search->toPlainText()+" "+settings.value("add").toString().trimmed() << QString::number(ui->spinPage->value()) << QString::number(perpage) << QString::number(perpage) << settings.value("downloadblacklist").toString() << actuals.at(i) << settings.value("Save/filename").toString() << settings.value("Save/path").toString() << "");
+		}
 	}
 }
 void tagTab::getAll()
@@ -740,6 +751,7 @@ void tagTab::getSel()
 {
 	if (m_selectedImagesPtrs.empty())
 		return;
+
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
 	foreach (Image *img, m_selectedImagesPtrs)
 	{
