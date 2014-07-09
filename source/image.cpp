@@ -825,7 +825,6 @@ QStringList Image::stylishedTags(QStringList ignored)
 
 
 QString			Image::url()			{ return m_url;				}
-QString			Image::md5()			{ return m_md5;				}
 QString			Image::author()			{ return m_author;			}
 QString			Image::status()			{ return m_status;			}
 QString			Image::rating()			{ return m_rating;			}
@@ -871,4 +870,22 @@ void	Image::setData(QByteArray d)
 	m_data = d;
 	if (m_md5.isEmpty())
 	{ m_md5 = QCryptographicHash::hash(m_data, QCryptographicHash::Md5).toHex(); }
+}
+void Image::setSavePath(QString savePath)
+{
+	m_savePath = savePath;
+}
+
+QString Image::md5()
+{
+	if (m_md5 == "" && m_savePath != "")
+	{
+		QCryptographicHash hash(QCryptographicHash::Md5);
+		QFile f(m_savePath);
+		f.open(QFile::ReadOnly);
+		while (!f.atEnd())
+			hash.addData(f.read(8192));
+		m_md5 = hash.result().toHex();
+	}
+	return m_md5;
 }

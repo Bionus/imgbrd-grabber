@@ -1228,7 +1228,7 @@ void mainWindow::_getAll()
 			if (!f.exists())
 			{
 				bool detected = false;
-				QStringList tags = site_id >= 0 ? m_groupBatchs[site_id][0].split(' ') : QStringList();
+				QStringList tags = site_id >= 0 ? m_groupBatchs[site_id - 1][0].split(' ') : QStringList();
 				QList<QChar> modifiers = QList<QChar>() << '~';
 				for (int r = 0; r < tags.size(); r++)
 				{
@@ -1643,11 +1643,13 @@ void mainWindow::saveImage(Image *img, QNetworkReply *reply, QString path, QStri
 			QByteArray data = reply->readAll();
 			if (!data.isEmpty())
 			{
-				addMd5(img->md5(), fp);
 				QFile f(fp);
 				f.open(QIODevice::WriteOnly);
 				f.write(data);
 				f.close();
+
+				img->setData(data);
+				addMd5(img->md5(), fp);
 
 				if (m_settings->value("Textfile/activate", false).toBool())
 				{
@@ -1794,17 +1796,12 @@ bool mainWindow::loadLinkList(QString filename)
 		QString links = f.readAll();
 		f.close();
 
-		QStringList det;
-		if (version == 1)
-		{ det = links.split("\r\n", QString::SkipEmptyParts); }
-		else
-		{ det = links.split(QString((char)28), QString::SkipEmptyParts); }
-		if (det.size() < 1)
-		{ return false; }
+		QStringList det = links.split(version == 1 ? "\r\n" : QString((char)28), QString::SkipEmptyParts);
+		if (det.empty())
+			return false;
 
-		for (int i = 0; i < det.size(); i++)
+		foreach (QString link, det)
 		{
-			QString link = det[i];
 			m_allow = false;
 			QStringList infos;
 			if (version == 1)
@@ -1834,15 +1831,14 @@ bool mainWindow::loadLinkList(QString filename)
 				int max = last.right(last.indexOf("/")+1).toInt(), val = last.left(last.indexOf("/")).toInt();
 				for (int t = 0; t < infos.count(); t++)
 				{
-					item = new QTableWidgetItem;
-						item->setText(infos.at(t));
-					int r = t+1;
+					item = new QTableWidgetItem(infos.at(t));
+					int r = t + 1;
 					if (r == 1) { r = 0; }
 					else if (r == 6) { r = 1; }
 					else if (r == 7) { r = 5; }
 					else if (r == 8) { r = 6; }
 					else if (r == 5) { r = 7; }
-					ui->tableBatchGroups->setItem(ui->tableBatchGroups->rowCount()-1, r+1, item);
+					ui->tableBatchGroups->setItem(ui->tableBatchGroups->rowCount() - 1, r + 1, item);
 				}
 				m_groupBatchs.append(infos);
 				QTableWidgetItem *it = new QTableWidgetItem(QIcon(":/images/colors/"+QString(val == max ? "green" : (val > 0 ? "blue" : "black"))+".png"), QString::number(m_groupBatchs.indexOf(infos) + 1));
