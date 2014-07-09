@@ -175,3 +175,13 @@ Default value is "%tag\t%count\t%type"
 4 hitomi_(pokemon_ranger) (11)
 1 seneo (41)
 }}}
+
+= Examples =
+
+== Update the auto-completion list manually ==
+Note that this is long and very constraining for the server. So please don't overdo it. The software already automatically updates the tag list as they arrive. This is just if you notice that many of your searched tags are not in the list.
+
+It can take a while (250 pages of 500ko each), so you might want to turn debugging on to see the current download status.
+{{{
+./grabber -c -s "danbooru.donmai.us" -i 1000 -m 250000 --tags-format "%tag" --tags-min 10 --return-pure-tags > tags.txt
+}}}
