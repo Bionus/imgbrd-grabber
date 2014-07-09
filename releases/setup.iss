@@ -103,7 +103,9 @@ Source: "D:\Programmation\C++\Qt\Grabber\release\imageformats\qtiff.dll"; DestDi
 Source: "D:\Programmation\C++\Qt\Grabber\release\imageformats\qwbmp.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\languages\English.qm"; DestDir: "{app}\languages"; Flags: ignoreversion         
 Source: "D:\Programmation\C++\Qt\Grabber\release\languages\Français.qm"; DestDir: "{app}\languages"; Flags: ignoreversion    
-Source: "D:\Programmation\C++\Qt\Grabber\release\languages\Russian.qm"; DestDir: "{app}\languages"; Flags: ignoreversion
+Source: "D:\Programmation\C++\Qt\Grabber\release\languages\Russian.qm"; DestDir: "{app}\languages"; Flags: ignoreversion   
+Source: "D:\Programmation\C++\Qt\Grabber\release\platforms\qminimal.dll"; DestDir: "{app}\platforms"; Flags: ignoreversion
+Source: "D:\Programmation\C++\Qt\Grabber\release\platforms\qoffscreen.dll"; DestDir: "{app}\platforms"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\platforms\qwindows.dll"; DestDir: "{app}\platforms"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Booru-on-rails\icon.png"; DestDir: "{localappdata}\Bionus\Grabber\sites\Booru-on-rails"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Booru-on-rails\model.xml"; DestDir: "{localappdata}\Bionus\Grabber\sites\Booru-on-rails"; Flags: ignoreversion
