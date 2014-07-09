@@ -325,7 +325,7 @@ void Page::parse()
 				int timezonedecay = QDateTime::currentDateTime().time().hour()-QDateTime::currentDateTime().toUTC().addSecs(-60*60*4).time().hour();
 				Image *img = new Image(d, timezonedecay, this);
 				QString error = img->filter(m_postFiltering);
-				if (error.isEmpty())
+				if (error.isEmpty() && !d["file_url"].endsWith("/." + d["ext"]))
 				{ m_images.append(img); }
 				else
 				{
@@ -419,7 +419,7 @@ void Page::parse()
 				int timezonedecay = QDateTime::currentDateTime().time().hour()-QDateTime::currentDateTime().toUTC().addSecs(-60*60*4).time().hour();
 				Image *img = new Image(d, timezonedecay, this);
 				QString error = img->filter(m_postFiltering);
-				if (error.isEmpty())
+				if (error.isEmpty() && !d["file_url"].endsWith("/." + d["ext"]))
 				{ m_images.append(img); }
 				else
 				{
@@ -517,7 +517,7 @@ void Page::parse()
 			int timezonedecay = QDateTime::currentDateTime().time().hour()-QDateTime::currentDateTime().toUTC().addSecs(-60*60*4).time().hour();
 			Image *img = new Image(d, timezonedecay, this);
 			QString error = img->filter(m_postFiltering);
-			if (error.isEmpty())
+			if (error.isEmpty() && !d["file_url"].endsWith("/." + d["ext"]))
 			{ m_images.append(img); }
 			else
 			{
@@ -622,7 +622,7 @@ void Page::parse()
 				int timezonedecay = QDateTime::currentDateTime().time().hour()-QDateTime::currentDateTime().toUTC().addSecs(-60*60*4).time().hour();
 				Image *img = new Image(d, timezonedecay, this);
 				QString error = img->filter(m_postFiltering);
-				if (error.isEmpty())
+				if (error.isEmpty() && !d["file_url"].endsWith("/." + d["ext"]))
 				{ m_images.append(img); }
 				else
 				{
