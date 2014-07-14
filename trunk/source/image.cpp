@@ -136,6 +136,12 @@ void Image::parsePreview()
 		return;
 	}
 
+	// Loading error
+	if (m_loadPreview->error() != QNetworkReply::NoError)
+	{
+		log(tr("<b>Erreur :</b> %1").arg(tr("erreur de chargement de la miniature (%1)").arg(m_loadPreview->errorString())));
+	}
+
 	// Load preview from raw result
 	QByteArray data = m_loadPreview->readAll();
 	m_imagePreview.loadFromData(data);
@@ -145,7 +151,7 @@ void Image::parsePreview()
 	// If nothing has been received
 	if (m_imagePreview.isNull() && m_previewTry <= 3)
 	{
-		//log(tr("<b>Attention :</b> %1").arg(tr("une des miniatures est vide (<a href=\"%1\">%1</a>). Nouvel essai (%2/%3)...").arg(m_previewUrl.toString()).arg(m_previewTry).arg(3)));
+		log(tr("<b>Attention :</b> %1").arg(tr("une des miniatures est vide (<a href=\"%1\">%1</a>). Nouvel essai (%2/%3)...").arg(m_previewUrl.toString()).arg(m_previewTry).arg(3)));
 		loadPreview();
 	}
 	else
@@ -737,6 +743,8 @@ void Image::finishedImageS()
 		loadImage();
 		return;
 	}
+
+	m_data = m_loadImage->readAll();
 
 	emit finishedImage(this);
 }
