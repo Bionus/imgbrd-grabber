@@ -22,6 +22,7 @@ class Downloader : public QObject
 		void getImages();
 		void getUrls();
 		void setQuit(bool quit);
+		void downloadImages(QList<Image*> images);
 		void loadNext();
 
 	signals:
@@ -30,6 +31,7 @@ class Downloader : public QObject
 		void finishedTags(QList<Tag>);
 		void finishedPageTags(QList<Tag>);
 		void finishedImages(QList<Image*>);
+		void finishedImage(Image *image);
 		void finishedUrls(QStringList);
 
 	public slots:
@@ -42,10 +44,12 @@ class Downloader : public QObject
 		void finishedLoadingPageTags(Page *page);
 		void finishedLoadingImages(Page *page);
 		void finishedLoadingUrls(Page *page);
+		void finishedLoadingImage(Image *image);
 
 	private:
 		QList<Site*> *m_sites;
 		QList<Page*> *m_pages, *m_pagesC, *m_pagesT, *m_opages, *m_opagesC, *m_opagesT;
+		QList<Image*> *m_images;
 		QList<QPair<Site*, int>> *m_pagesP, *m_opagesP;
 		QStringList m_tags, m_postfiltering, m_sources;
 		int m_page, m_max, m_perpage, m_waiting;

@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Grabber"
-#define MyAppVersion "4.0.0a"
+#define MyAppVersion "4.0.0a2"
 #define MyAppPublisher "Bionus"
 #define MyAppURL "http://code.google.com/p/imgbrd-grabber/"
 #define MyAppExeName "Grabber.exe"
@@ -93,14 +93,18 @@ Source: "D:\Programmation\C++\Qt\Grabber\release\Qt5Xml.dll"; DestDir: "{app}"; 
 Source: "D:\Programmation\C++\Qt\Grabber\release\ssleay32.dll"; DestDir: "{app}"; Flags: ignoreversion     
 Source: "D:\Programmation\C++\Qt\Grabber\release\crashreporter\English.qm"; DestDir: "{app}\crashreporter"; Flags: ignoreversion         
 Source: "D:\Programmation\C++\Qt\Grabber\release\crashreporter\Français.qm"; DestDir: "{app}\crashreporter"; Flags: ignoreversion  
-Source: "D:\Programmation\C++\Qt\Grabber\release\imageformats\qgif.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
-Source: "D:\Programmation\C++\Qt\Grabber\release\imageformats\qico.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
+Source: "D:\Programmation\C++\Qt\Grabber\release\imageformats\qdds.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
+Source: "D:\Programmation\C++\Qt\Grabber\release\imageformats\qgif.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion      
+Source: "D:\Programmation\C++\Qt\Grabber\release\imageformats\qicns.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
+Source: "D:\Programmation\C++\Qt\Grabber\release\imageformats\qico.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion   
+Source: "D:\Programmation\C++\Qt\Grabber\release\imageformats\qjp2.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\imageformats\qjpeg.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\imageformats\qmng.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\imageformats\qsvg.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\imageformats\qtga.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\imageformats\qtiff.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
-Source: "D:\Programmation\C++\Qt\Grabber\release\imageformats\qwbmp.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
+Source: "D:\Programmation\C++\Qt\Grabber\release\imageformats\qwbmp.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion   
+Source: "D:\Programmation\C++\Qt\Grabber\release\imageformats\qwebp.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\languages\English.qm"; DestDir: "{app}\languages"; Flags: ignoreversion         
 Source: "D:\Programmation\C++\Qt\Grabber\release\languages\Français.qm"; DestDir: "{app}\languages"; Flags: ignoreversion    
 Source: "D:\Programmation\C++\Qt\Grabber\release\languages\Russian.qm"; DestDir: "{app}\languages"; Flags: ignoreversion   

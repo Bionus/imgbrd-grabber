@@ -165,6 +165,8 @@ int main(int argc, char *argv[])
 		dwnldr->getTags();
 	if (parser.isSet(returnImagesOption))
 		dwnldr->getUrls();
+	if (parser.isSet(downloadOption))
+		dwnldr->getImages();
 
 	if (gui)
 	{

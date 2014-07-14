@@ -1,6 +1,8 @@
 #include "downloader.h"
 #include <iostream>
 #include <QApplication>
+#include <QFile>
+#include <QDir>
 
 Downloader::Downloader()
 {}
@@ -30,6 +32,7 @@ Downloader::Downloader(QStringList tags, QStringList postfiltering, QStringList 
 	m_opagesP = new QList<QPair<Site*, int>>();
 	m_waiting = 0;
 	m_results = new QList<Tag>();
+	m_images = new QList<Image*>();
 }
 
 void Downloader::setQuit(bool quit)
@@ -197,6 +200,15 @@ void Downloader::loadNext()
 		page->load();
 		return;
 	}
+
+	if (!m_images->isEmpty())
+	{
+		Image *image = m_images->takeFirst();
+		log("Loading image '"+image->url()+"'");
+		connect(image, &Image::finishedImage, this, &Downloader::finishedLoadingImage);
+		image->loadImage();
+		return;
+	}
 }
 void Downloader::finishedLoadingTags(QList<Tag> tags)
 {
@@ -281,9 +293,46 @@ void Downloader::finishedLoadingImages(Page *page)
 			imgs.append(img);
 
 	if (m_quit)
-		returnString("An error occured");
+		downloadImages(imgs);
 	else
 		emit finishedImages(imgs);
+}
+
+void Downloader::downloadImages(QList<Image*> images)
+{
+	m_images->clear();
+	m_images->append(images);
+	m_waiting = images.size();
+
+	loadNext();
+}
+void Downloader::finishedLoadingImage(Image *image)
+{
+	log("Received image '"+image->url()+"'");
+
+	if (m_quit)
+	{
+		QString path = image->path(m_filename, m_location);
+		path = (m_location.endsWith('/') ? m_location.left(m_location.length() - 1) : m_location) + "/" + (path.startsWith('/') ? path.right(path.length() - 1) : path);
+		QFile f(QDir::toNativeSeparators(path));
+		if (f.open(QFile::WriteOnly))
+		{
+			f.write(image->data());
+			f.close();
+			log("Saved to '"+path+"'");
+		}
+	}
+	else
+		emit finishedImage(image);
+
+	if (--m_waiting > 0)
+	{
+		loadNext();
+		return;
+	}
+
+	if (m_quit)
+		returnString("Downloaded images successfully.");
 }
 
 void Downloader::getUrls()
