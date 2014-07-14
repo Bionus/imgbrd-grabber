@@ -1640,7 +1640,7 @@ void mainWindow::saveImage(Image *img, QNetworkReply *reply, QString path, QStri
 		}
 		else
 		{
-			QByteArray data = reply->readAll();
+			QByteArray data = img->data().isEmpty() ? reply->readAll() : img->data();
 			if (!data.isEmpty())
 			{
 				QFile f(fp);
