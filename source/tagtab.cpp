@@ -725,8 +725,17 @@ void tagTab::getPage()
 	{
 		if (m_pages.contains(actuals.at(i)))
 		{
-			int perpage = unloaded ? ui->spinImagesPerPage->value() : m_pages.value(actuals.at(i))->images().count();
-			emit batchAddGroup(QStringList() << m_search->toPlainText()+" "+settings.value("add").toString().trimmed() << QString::number(ui->spinPage->value()) << QString::number(perpage) << QString::number(perpage) << settings.value("downloadblacklist").toString() << actuals.at(i) << settings.value("Save/filename").toString() << settings.value("Save/path").toString() << "");
+			int perpage = unloaded ? ui->spinImagesPerPage->value() : (m_pages.value(actuals.at(i))->images().count() > ui->spinImagesPerPage->value() ? m_pages.value(actuals.at(i))->images().count() : ui->spinImagesPerPage->value());
+			emit batchAddGroup(QStringList()
+							   << m_search->toPlainText() + " " + settings.value("add").toString().trimmed()
+							   << QString::number(ui->spinPage->value())
+							   << QString::number(perpage)
+							   << QString::number(perpage)
+							   << settings.value("downloadblacklist").toString()
+							   << actuals.at(i)
+							   << settings.value("Save/filename").toString()
+							   << settings.value("Save/path").toString()
+							   << "");
 		}
 	}
 }
