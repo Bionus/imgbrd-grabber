@@ -263,6 +263,7 @@ void Downloader::getImages()
 void Downloader::finishedLoadingImages(Page *page)
 {
 	log("Received page '"+page->url().toString()+"'");
+    emit finishedImagesPage(page);
 
 	if (--m_waiting > 0)
 	{
@@ -366,6 +367,7 @@ void Downloader::getUrls()
 void Downloader::finishedLoadingUrls(Page *page)
 {
 	log("Received page '"+page->url().toString()+"'");
+    emit finishedUrlsPage(page);
 
 	if (--m_waiting > 0)
 	{
@@ -432,4 +434,13 @@ void Downloader::returnStringList(QStringList ret)
 	foreach (QString str, ret)
 		std::cout << str.toStdString() << std::endl;
 	qApp->quit();
+}
+
+void Downloader::setData(QVariant data)
+{
+    m_data = data;
+}
+QVariant Downloader::getData()
+{
+    return m_data;
 }

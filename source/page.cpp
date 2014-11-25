@@ -193,7 +193,7 @@ void Page::abortTags()
 	}
 }
 
-void _parseSetImageUrl(Site* site, QString setting, QString ret)
+QString _parseSetImageUrl(Site* site, QString setting, QString ret, QMap<QString,QString> *d)
 {
     if (site->contains(setting))
     {
@@ -209,9 +209,9 @@ void _parseSetImageUrl(Site* site, QString setting, QString ret)
         else
         {
             ret = site->value(setting);
-            ret.replace("{id}", d["id"])
-            .replace("{md5}", d["md5"])
-            .replace("{ext}", d["ext"]);
+            ret.replace("{id}", d->value("id"))
+            .replace("{md5}", d->value("md5"))
+            .replace("{ext}", d->value("ext"));
         }
     }
     if (ret.startsWith("//"))
@@ -311,9 +311,9 @@ void Page::parse()
                 { d["file_url"] = d["preview_url"]; }
                 if (!d.contains("sample_url"))
                 { d["sample_url"] = d["preview_url"]; }
-                d["file_url"] = _parseSetImageUrl(m_site, "Urls/Xml/Image", d["file_url"]);
-                d["sample_url"] = _parseSetImageUrl(m_site, "Urls/Xml/Sample", d["sample_url"]);
-                d["preview_url"] = _parseSetImageUrl(m_site, "Urls/Xml/Preview", d["preview_url"]);
+                d["file_url"] = _parseSetImageUrl(m_site, "Urls/Xml/Image", d["file_url"], &d);
+                d["sample_url"] = _parseSetImageUrl(m_site, "Urls/Xml/Sample", d["sample_url"], &d);
+                d["preview_url"] = _parseSetImageUrl(m_site, "Urls/Xml/Preview", d["preview_url"], &d);
 				d["page_url"] = m_site->value("Urls/Html/Post");
 				QString t = m_search.join(" ");
 				if (m_site->contains("DefaultTag") && t.isEmpty())
@@ -379,9 +379,9 @@ void Page::parse()
 				}
 				if (!d.contains("ext") || d["ext"].isEmpty())
 				{ d["ext"] = "jpg"; }
-                d["file_url"] = _parseSetImageUrl(m_site, "Urls/Rss/Image", d["file_url"]);
-                d["sample_url"] = _parseSetImageUrl(m_site, "Urls/Rss/Sample", d["sample_url"]);
-                d["preview_url"] = _parseSetImageUrl(m_site, "Urls/Rss/Preview", d["preview_url"]);
+                d["file_url"] = _parseSetImageUrl(m_site, "Urls/Rss/Image", d["file_url"], &d);
+                d["sample_url"] = _parseSetImageUrl(m_site, "Urls/Rss/Sample", d["sample_url"], &d);
+                d["preview_url"] = _parseSetImageUrl(m_site, "Urls/Rss/Preview", d["preview_url"], &d);
 				d["page_url"] = m_site->value("Urls/Html/Post");
 				QString t = m_search.join(" ");
 				if (m_site->contains("DefaultTag") && t.isEmpty())
@@ -450,9 +450,9 @@ void Page::parse()
             { d["file_url"] = d["preview_url"]; }
             if (!d.contains("sample_url"))
             { d["sample_url"] = d["preview_url"]; }
-            d["file_url"] = _parseSetImageUrl(m_site, "Urls/Xml/Image", d["file_url"]);
-            d["sample_url"] = _parseSetImageUrl(m_site, "Urls/Xml/Sample", d["sample_url"]);
-            d["preview_url"] = _parseSetImageUrl(m_site, "Urls/Xml/Preview", d["preview_url"]);
+            d["file_url"] = _parseSetImageUrl(m_site, "Urls/Html/Image", d["file_url"], &d);
+            d["sample_url"] = _parseSetImageUrl(m_site, "Urls/Html/Sample", d["sample_url"], &d);
+            d["preview_url"] = _parseSetImageUrl(m_site, "Urls/Html/Preview", d["preview_url"], &d);
 			if (!d.contains("page_url"))
 			{
 				d["page_url"] = m_site->value("Urls/Html/Post");
@@ -518,9 +518,9 @@ void Page::parse()
                 { d["file_url"] = d["preview_url"]; }
                 if (!d.contains("sample_url"))
                 { d["sample_url"] = d["preview_url"]; }
-                d["file_url"] = _parseSetImageUrl(m_site, "Urls/Json/Image", d["file_url"]);
-                d["sample_url"] = _parseSetImageUrl(m_site, "Urls/Json/Sample", d["sample_url"]);
-                d["preview_url"] = _parseSetImageUrl(m_site, "Urls/Json/Preview", d["preview_url"]);
+                d["file_url"] = _parseSetImageUrl(m_site, "Urls/Json/Image", d["file_url"], &d);
+                d["sample_url"] = _parseSetImageUrl(m_site, "Urls/Json/Sample", d["sample_url"], &d);
+                d["preview_url"] = _parseSetImageUrl(m_site, "Urls/Json/Preview", d["preview_url"], &d);
 				d["page_url"] = m_site->value("Urls/Html/Post");
 				QString t = m_search.join(" ");
 				if (m_site->contains("DefaultTag") && t.isEmpty())
