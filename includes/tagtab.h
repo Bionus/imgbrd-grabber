@@ -104,7 +104,7 @@ class tagTab : public searchTab
 		QList<QGridLayout*>				m_layouts;
 		QList<QLabel*>					m_labels;
 		QList<QMap<QString,QString> >	m_history;
-		QStringList						m_modifiers, m_ignored;
+		QStringList						m_modifiers, m_ignored, m_completion;
 		Downloader						*m_downloader;
 };
 
