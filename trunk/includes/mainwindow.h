@@ -17,6 +17,7 @@
 #include "favoritestab.h"
 #include "commands.h"
 #include "site.h"
+#include "downloader.h"
 
 
 
@@ -93,6 +94,8 @@ class mainWindow : public QMainWindow
         void batchAddUnique(QMap<QString,QString>);
         // Batch download
         void getAll(bool all = true);
+        void getAllFinishedPage(Page *page);
+        void getAllFinishedImages(QList<Image*> images);
         void getAllImages();
         void getAllFinishedLoading(Page*);
 		void getAllGetImage(Image*);
@@ -170,6 +173,7 @@ class mainWindow : public QMainWindow
         QList<QMap<QString,QString> >	m_details, m_batchs;
         QSet<int>						m_batchDownloading;
 		QStringList			m_lineFilename_completer, m_lineFolder_completer;
+        QList<Downloader*>  m_downloaders;
 };
 
 #endif // MAINWINDOW_H
