@@ -250,10 +250,6 @@ void zoomWindow::openInBrowser()
 }
 void zoomWindow::favorite()
 {
-	QString image = saveImage();
-	QPixmap pix(image);
-	pix.scaled(QSize(150, 150), Qt::KeepAspectRatio, Qt::SmoothTransformation).save(savePath("thumbs/"+link+".png"));
-
 	m_favorites.append(link);
 
 	QFile f(savePath("favorites.txt"));
@@ -282,17 +278,21 @@ void zoomWindow::setfavorite()
 void zoomWindow::unfavorite()
 {
 	m_favorites.removeAll(link);
+
 	QFile f(savePath("favorites.txt"));
 	f.open(QIODevice::ReadOnly);
 		QString favs = f.readAll();
 	f.close();
+
 	favs.replace("\r\n", "\n").replace("\r", "\n").replace("\n", "\r\n");
 	QRegExp reg(link+"\\|(.+)\\r\\n");
 	reg.setMinimal(true);
 	favs.remove(reg);
+
 	f.open(QIODevice::WriteOnly);
 		f.write(favs.toUtf8());
 	f.close();
+
 	if (QFile::exists(savePath("thumbs/"+link+".png")))
 	{ QFile::remove(savePath("thumbs/"+link+".png")); }
 
@@ -353,10 +353,11 @@ void zoomWindow::load()
 void zoomWindow::sslErrorHandler(QNetworkReply* qnr, QList<QSslError>)
 { qnr->ignoreSslErrors(); }
 
+#define PERCENT 0.05f
 #define TIME 500
-void zoomWindow::downloadProgress(qint64, qint64)
+void zoomWindow::downloadProgress(qint64 bytesReceived, qint64 bytesTotal)
 {
-	if (m_imageTime->elapsed() > TIME)
+    if (m_imageTime->elapsed() > TIME || bytesReceived / bytesTotal > PERCENT)
 	{
 		m_imageTime->restart();
 		m_data.append(m_reply->readAll());
@@ -530,6 +531,10 @@ void zoomWindow::replyFinishedZoom()
 
 
 
+/**
+ * Updates the image label to use the current image.
+ * @param onlysize true to update the image quickly
+ */
 void zoomWindow::update(bool onlysize)
 {
 	if (m_url.section('.', -1).toUpper() != "GIF")

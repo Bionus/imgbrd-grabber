@@ -477,6 +477,16 @@ QStrP getReplace(QString setting, QMap<QString,QStringList> details, QSettings *
 	second = settings->value(setting+"_empty").toString();
 	return QStrP(first, second);
 }
+
+/**
+ * Return the filename of the image according to the user's settings.
+ * @param fn The user's filename.
+ * @param pth The user's root save path.
+ * @param counter Current image count (used for batch downloads).
+ * @param complex Whether the filename is complex or not (contains conditionals).
+ * @param simple True to force using the fn and pth parameters.
+ * @return The filename of the image, with any token replaced.
+ */
 QString Image::path(QString fn, QString pth, int counter, bool complex, bool simple)
 {
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
@@ -556,8 +566,8 @@ QString Image::path(QString fn, QString pth, int counter, bool complex, bool sim
 
 	QMap<QString,QStrP> replaces = QMap<QString,QStrP>();
 	replaces.insert("ext", QStrP(ext, "jpg"));
-	replaces.insert("filename", QStrP(m_url.section('/', -1).section('.', 0, -2), ""));
-	replaces.insert("website", QStrP(m_parentSite->url(), ""));
+    replaces.insert("filename", QStrP(m_url.section('/', -1).section('.', 0, -2), ""));
+    replaces.insert("website", QStrP(m_parentSite->url(), ""));
 	replaces.insert("websitename", QStrP(m_parentSite->name(), ""));
 	replaces.insert("md5", QStrP(m_md5, ""));
 	replaces.insert("date", QStrP(m_createdAt.toString(tr("dd-MM-yyyy HH.mm")), ""));
@@ -765,25 +775,32 @@ void Image::abortImage()
 	}
 }
 
+/**
+ * Try to guess the size of the image in pixels for sorting.
+ * @return The guessed number of pixels in the image.
+ */
 int Image::value()
 {
-	int pixels;
 	if (!m_size.isEmpty())
-	{ pixels = m_size.width()*m_size.height(); }
-	else
-	{
-		pixels = 1200*900;
-		QStringList tags;
-		for (int t = 0; t < m_tags.size(); t++)
-		{ tags.append(m_tags[t].text().toLower()); }
-		if (tags.contains("incredibly_absurdres"))	{ pixels = 10000*10000; }
-		else if (tags.contains("absurdres"))		{ pixels = 3200*2400; }
-		else if (tags.contains("highres"))			{ pixels = 1600*1200; }
-		else if (tags.contains("lowres"))			{ pixels = 500*500; }
-	}
-	return pixels;
+        return m_size.width() * m_size.height();
+
+    QStringList tags;
+    for (int t = 0; t < m_tags.size(); t++)
+    { tags.append(m_tags[t].text().toLower()); }
+
+    if (tags.contains("incredibly_absurdres"))	{ return 10000 * 10000; }
+    else if (tags.contains("absurdres"))		{ return 3200 * 2400; }
+    else if (tags.contains("highres"))			{ return 1600 * 1200; }
+    else if (tags.contains("lowres"))			{ return 500 * 500; }
+
+    return 1200 * 900;
 }
 
+/**
+ * Checks whether an image contains blacklisted tags.
+ * @param blacklistedtags The list of blacklisted tags.
+ * @return The blacklisted tags found in the image (empty list if none).
+ */
 QStringList Image::blacklisted(QStringList blacklistedtags)
 {
 	QStringList detected;
@@ -829,7 +846,6 @@ QStringList Image::stylishedTags(QStringList ignored)
 	t.sort();
 	return t;
 }
-
 
 
 QString			Image::url()			{ return m_url;				}
@@ -886,6 +902,7 @@ void Image::setSavePath(QString savePath)
 
 QString Image::md5()
 {
+    // If we know the path to the image but not its md5, we calculate it first
 	if (m_md5 == "" && m_savePath != "")
 	{
 		QCryptographicHash hash(QCryptographicHash::Md5);
@@ -895,5 +912,6 @@ QString Image::md5()
 			hash.addData(f.read(8192));
 		m_md5 = hash.result().toHex();
 	}
+
 	return m_md5;
 }
