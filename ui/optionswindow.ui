@@ -156,7 +156,7 @@
         </sizepolicy>
        </property>
        <property name="currentIndex">
-        <number>5</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="pageGeneral">
         <layout class="QFormLayout" name="formLayout_14">
@@ -425,7 +425,7 @@
            </property>
           </widget>
          </item>
-         <item row="6" column="0" colspan="2">
+         <item row="7" column="0" colspan="2">
           <widget class="QCheckBox" name="checkUseregexfortags">
            <property name="text">
             <string>Récupérer les tags les plus précis lors de la recherche d'images</string>
@@ -538,6 +538,23 @@
              <string>RSS</string>
             </property>
            </item>
+          </widget>
+         </item>
+         <item row="6" column="0">
+          <widget class="QLabel" name="label_82">
+           <property name="text">
+            <string>Auto tag add</string>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="1">
+          <widget class="QSpinBox" name="spinAutoTagAdd">
+           <property name="maximum">
+            <number>100000</number>
+           </property>
+           <property name="value">
+            <number>10</number>
+           </property>
           </widget>
          </item>
         </layout>
@@ -1861,16 +1878,7 @@ p, li { white-space: pre-wrap; }
          <item row="1" column="0" colspan="2">
           <widget class="QWidget" name="widgetProxy" native="true">
            <layout class="QFormLayout" name="formLayout_16">
-            <property name="leftMargin">
-             <number>0</number>
-            </property>
-            <property name="topMargin">
-             <number>0</number>
-            </property>
-            <property name="rightMargin">
-             <number>0</number>
-            </property>
-            <property name="bottomMargin">
+            <property name="margin">
              <number>0</number>
             </property>
             <item row="1" column="0">

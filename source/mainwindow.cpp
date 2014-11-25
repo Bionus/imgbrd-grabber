@@ -33,13 +33,6 @@
 extern QMap<QDateTime,QString> _log;
 extern QMap<QString,QString> _md5;
 
-/*
-  deviantart.org
-  g.e-hentai.org
-  minitokyo.net
-  pixiv.net
-*/
-
 
 
 mainWindow::mainWindow(QString program, QStringList tags, QMap<QString,QString> params) : ui(new Ui::mainWindow), m_currentFav(-1), m_downloads(0), m_loaded(false), m_getAll(false), m_program(program), m_tags(tags), m_params(params)
@@ -235,15 +228,7 @@ void mainWindow::init()
 	ui->tableBatchUniques->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
 	on_buttonInitSettings_clicked();
 
-	// Console usage
-	if (this->m_params.keys().contains("batch"))
-	{
-		batchAddGroup(QStringList() << m_tags.join(" ") << m_params.value("page", "1") << m_params.value("limit", m_settings->value("limit", 20).toString()) << this->m_params.value("limit", m_settings->value("limit", 20).toString()) << this->m_params.value("ignore", m_settings->value("downloadblacklist", "false").toString()) << this->m_params.value("booru", m_sites.keys().at(0)) << this->m_params.value("filename", m_settings->value("Save/filename").toString()) << this->m_params.value("path", m_settings->value("Save/path").toString()) << "");
-		ui->tabWidget->setCurrentIndex(2);
-		if (!m_params.keys().contains("dontstart"))
-		{ getAll(); }
-	}
-	else if (!m_tags.isEmpty() || m_settings->value("start", "none").toString() == "firstpage")
+    if (!m_tags.isEmpty() || m_settings->value("start", "none").toString() == "firstpage")
 	{
 		if (!m_tags.isEmpty() && m_tags.first().endsWith(".igl"))
 		{

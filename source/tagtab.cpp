@@ -27,23 +27,22 @@ tagTab::tagTab(int id, QMap<QString,Site*> *sites, QMap<QString,QString> *favori
 		m_postFiltering->setContextMenuPolicy(Qt::CustomContextMenu);
 		if (settings.value("autocompletion", true).toBool())
 		{
-			QStringList completion;
 			QFile words("words.txt");
 			if (words.open(QIODevice::ReadOnly | QIODevice::Text))
 				while (!words.atEnd())
-					completion.append(QString(words.readLine()).trimmed().split(" ", QString::SkipEmptyParts));
-			QFile wordsc("wordsc.txt");
+					m_completion.append(QString(words.readLine()).trimmed().split(" ", QString::SkipEmptyParts));
+			QFile wordsc(savePath("wordsc.txt"));
 			if (wordsc.open(QIODevice::ReadOnly | QIODevice::Text))
 				while (!wordsc.atEnd())
-					completion.append(QString(wordsc.readLine()).trimmed().split(" ", QString::SkipEmptyParts));
+					m_completion.append(QString(wordsc.readLine()).trimmed().split(" ", QString::SkipEmptyParts));
 			for (int i = 0; i < sites->size(); i++)
 				if (sites->value(sites->keys().at(i))->contains("Modifiers"))
 					m_modifiers.append(sites->value(sites->keys().at(i))->value("Modifiers").trimmed().split(" ", QString::SkipEmptyParts));
-			completion.append(m_modifiers);
-			completion.append(m_favorites->keys());
-			completion.removeDuplicates();
-			completion.sort();
-			QCompleter *completer = new QCompleter(completion, this);
+			m_completion.append(m_modifiers);
+			m_completion.append(m_favorites->keys());
+			m_completion.removeDuplicates();
+			m_completion.sort();
+			QCompleter *completer = new QCompleter(m_completion, this);
 				completer->setCaseSensitivity(Qt::CaseInsensitive);
 			m_search->setCompleter(completer);
 			m_postFiltering->setCompleter(completer);
@@ -486,9 +485,12 @@ void tagTab::finishedLoading(Page* page)
 
 void tagTab::finishedLoadingTags(Page *page)
 {
+	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
+
 	// Tags for this page
 	QList<Tag> taglist;
 	QStringList tagsGot;
+	QStringList toAdd;
 	for (int i = 0; i < m_pages.count(); i++)
 	{
 		QList<Tag> tags = m_pages.value(m_pages.keys().at(i))->tags();
@@ -496,6 +498,12 @@ void tagTab::finishedLoadingTags(Page *page)
 		{
 			if (!tags[t].text().isEmpty())
 			{
+				if (tags[t].count() >= settings.value("tagsautoadd", 10).toInt()
+					&& !m_completion.contains(tags[t].text()))
+				{
+					toAdd.append(tags[t].text());
+					m_completion.append(tags[t].text());
+				}
 				if (tagsGot.contains(tags[t].text()))
 				{ taglist[tagsGot.indexOf(tags[t].text())].setCount(taglist[tagsGot.indexOf(tags[t].text())].count()+tags[t].count()); }
 				else
@@ -506,6 +514,12 @@ void tagTab::finishedLoadingTags(Page *page)
 			}
 		}
 	}
+	QFile wordsc(savePath("wordsc.txt"));
+	if (wordsc.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text))
+	{
+		wordsc.write(QString('\n').toLatin1());
+		wordsc.write(toAdd.join(' ').toLatin1());
+	}
 
 	// We sort tags by frequency
 	qSort(taglist.begin(), taglist.end(), sortByFrequency);
@@ -514,7 +528,6 @@ void tagTab::finishedLoadingTags(Page *page)
 	QStringList tlist = QStringList() << "artists" << "circles" << "copyrights" << "characters" << "models" << "generals" << "favorites" << "blacklisteds";
 	QStringList defaults = QStringList() << "#aa0000" << "#55bbff" << "#aa00aa" << "#00aa00" << "#0000ee" << "#000000" << "#ffc0cb" << "#000000";
 	QMap<QString,QString> styles;
-	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
 	for (int i = 0; i < tlist.size(); i++)
 	{
 		QFont font;

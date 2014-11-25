@@ -56,7 +56,7 @@ class zoomWindow : public QDialog
 		void unviewitlater();
 		void ignore();
 		void unignore();
-		void downloadProgress(qint64, qint64);
+        void downloadProgress(qint64 bytesReceived, qint64 bytesTotal);
 		void colore();
 		void sslErrorHandler(QNetworkReply*, QList<QSslError>);
 
