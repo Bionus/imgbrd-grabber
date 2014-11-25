@@ -3,6 +3,7 @@
 
 #include "page.h"
 #include "image.h"
+#include <QVariant>
 
 
 
@@ -24,6 +25,8 @@ class Downloader : public QObject
 		void setQuit(bool quit);
 		void downloadImages(QList<Image*> images);
 		void loadNext();
+        void setData(QVariant data);
+        QVariant getData();
 
 	signals:
 		void finished(QNetworkReply*);
@@ -31,8 +34,10 @@ class Downloader : public QObject
 		void finishedTags(QList<Tag>);
 		void finishedPageTags(QList<Tag>);
 		void finishedImages(QList<Image*>);
+        void finishedImagesPage(Page *page);
 		void finishedImage(Image *image);
 		void finishedUrls(QStringList);
+        void finishedUrlsPage(Page *page);
 
 	public slots:
 		void returnInt(int ret);
@@ -58,6 +63,7 @@ class Downloader : public QObject
 		QList<Tag> *m_results;
 		int m_tagsmin;
 		QString m_tagsformat;
+        QVariant m_data;
 };
 
 #endif // DOWNLOADER_H
