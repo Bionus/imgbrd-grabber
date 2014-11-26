@@ -7,13 +7,13 @@ You can find the new downloads list [http://www.bionus.fr.cr/imgbrd-grabber/down
 
 = Direct links =
 == Windows ==
-  * [http://www.bionus.fr.cr/imgbrd-grabber/downloads/Grabber_4.0.a.exe 4.0.0 alpha]
-  * [http://www.bionus.fr.cr/imgbrd-grabber/downloads/Grabber_3.4.1.exe 3.5.0] <font color="green">Featured</font>
+  * [http://www.bionus.fr.cr/imgbrd-grabber/downloads/Grabber_4.0.1.exe 4.0.1] <font color="green">Featured</font>
+  * [http://www.bionus.fr.cr/imgbrd-grabber/downloads/Grabber_4.0.0.exe 4.0.0]
+  * [http://www.bionus.fr.cr/imgbrd-grabber/downloads/Grabber_3.5.0.exe 3.5.0]
   * [http://www.bionus.fr.cr/imgbrd-grabber/downloads/Grabber_3.4.1.exe 3.4.1]
   * [http://www.bionus.fr.cr/imgbrd-grabber/downloads/Grabber_3.3.0.exe 3.3.0]
-  * [http://www.bionus.fr.cr/imgbrd-grabber/downloads/Grabber_3.2.6.exe 3.2.6]
-  * [http://www.bionus.fr.cr/imgbrd-grabber/downloads/Grabber_3.2.1.exe 3.2.1]
-[http://www.bionus.fr.cr/imgbrd-grabber/downloads/Grabber.exe Latest snapshot]
+  * [http://www.bionus.fr.cr/imgbrd-grabber/downloads/Grabber_3.2.7.exe 3.2.7]
+[http://www.bionus.fr.cr/imgbrd-grabber/downloads/Grabber.exe Latest snapshot] (make sure to install the latest version first)
 
 == Linux ==
   * [http://www.bionus.fr.cr/imgbrd-grabber/downloads/Grabber_3.2.6.tar.gz 3.2.6] <font color="green">Featured</font>
