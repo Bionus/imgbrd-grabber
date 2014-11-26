@@ -9,9 +9,9 @@ Tired of waiting for the next update? Want to get the latest developer version? 
 
 == Dependancies ==
 
-Bullets with '`*`' are mandatory, other are optionals. Note that the used compilator is MSVC 2010. You can use MinGW or a more recent version of MSVC if it works for you. However know that this is the one I use to push releases and updates.
-  * `*`Qt 5.1.1 (msvc 2010 - x86)
-  * `*`Visual Studio 2010 compilator
+Bullets with '`*`' are mandatory, other are optionals. Note that the used compiler is MSVC 2013. You can use MinGW or a more recent version of MSVC if it works for you. However know that this is the one I use to push releases and updates.
+  * `*`Qt 5.3.1 (msvc 2013 - x86)
+  * `*`Visual Studio 2013 compiler
   * QScintilla2 (for syntax highlighting in Javascript filename window)
   * Google Breakpad (to handle crash and show a nice-looking crash window and backup traces)
 
@@ -21,7 +21,7 @@ Bullets with '`*`' are mandatory, other are optionals. Note that the used compil
 You can clone the SVN and get the latest sources with this command: " svn checkout http://imgbrd-grabber.googlecode.com/svn/trunk/ imgbrd-grabber-read-only". If you use a client such as TortoiseSVN, the path is "http://imgbrd-grabber.googlecode.com/svn/trunk/".
 
 === Qt ===
-You can find the 5.1.1 MSVC 2010 x86 version here: http://download.qt-project.org/official_releases/qt/5.1/5.1.1/qt-windows-opensource-5.1.1-msvc2010-x86-offline.exe
+You can find the 5.3.1 MSVC 2013 x86 version here: http://download.qt-project.org/official_releases/qt/5.3/5.3.1/qt-opensource-windows-x86-msvc2013-5.3.1.exe
 Just download and install.
 
 === Compiler ===
@@ -64,7 +64,7 @@ Bullets with '`*`' are mandatory, other are optionals.
 You can clone the SVN and get the latest sources with this command: " svn checkout http://imgbrd-grabber.googlecode.com/svn/trunk/ imgbrd-grabber-read-only".
 
 === Qt ===
-You can find the 5.1.1 x86 version here: http://download.qt-project.org/official_releases/qt/5.1/5.1.1/qt-linux-opensource-5.1.1-x86-offline.run
+You can find the 5.3.1 x86 version here: http://download.qt-project.org/official_releases/qt/5.3/5.3.1/qt-opensource-linux-x86-5.3.1.run
 Just download and install.
 
 === Compiler ===
