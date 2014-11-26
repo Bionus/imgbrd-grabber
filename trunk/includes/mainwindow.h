@@ -97,7 +97,6 @@ class mainWindow : public QMainWindow
         void getAllFinishedPage(Page *page);
         void getAllFinishedImages(QList<Image*> images);
         void getAllImages();
-        void getAllFinishedLoading(Page*);
 		void getAllGetImage(Image*);
         void getAllPerformTags(Image*);
         void getAllPerformImage(Image*);

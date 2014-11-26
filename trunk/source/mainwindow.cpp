@@ -972,6 +972,7 @@ void mainWindow::getAll(bool all)
 		{
 			if (m_batchs.at(i).value("file_url").isEmpty())
 			{
+                // If we cannot get the image's url, we try looking for it
 				/*Page *page = new Page(m_sites[site], &m_sites, m_groupBatchs.at(i).at(0).split(' '), m_groupBatchs.at(i).at(1).toInt()+r, pp, QStringList(), false, this);
 				connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(getAllFinishedLoading(Page*)));
 				page->load();
@@ -1021,22 +1022,21 @@ void mainWindow::getAll(bool all)
 			{
 				int i = ui->tableBatchGroups->item(j, 0)->text().toInt() - 1;
 
-                QString site = m_groupBatchs.at(i).at(5);
-
-                Downloader *downloader = new Downloader(m_groupBatchs.at(i).at(0).split(' '),
-                                                 QStringList(),
-                                                 QStringList(site),
-                                                 m_groupBatchs.at(i).at(1).toInt(),
-                                                 m_groupBatchs.at(i).at(3).toInt(),
-                                                 m_groupBatchs.at(i).at(2).toInt(),
-                                                 m_groupBatchs.at(i).at(7),
-                                                 m_groupBatchs.at(i).at(6),
-                                                 m_settings->value("login/pseudo").toString(),
-                                                 m_settings->value("login/password").toString(),
-                                                 m_groupBatchs.at(i).at(4) == "true",
-                                                 false,
-                                                 0,
-                                                 "");
+                QStringList b = m_groupBatchs.at(i);
+                Downloader *downloader = new Downloader(b.at(0).split(' '),
+                                                        QStringList(),
+                                                        QStringList(b.at(5)),
+                                                        b.at(1).toInt(),
+                                                        b.at(3).toInt(),
+                                                        b.at(2).toInt(),
+                                                        b.at(7),
+                                                        b.at(6),
+                                                        m_settings->value("login/pseudo").toString(),
+                                                        m_settings->value("login/password").toString(),
+                                                        b.at(4) == "true",
+                                                        false,
+                                                        0,
+                                                        "");
                 connect(downloader, &Downloader::finishedImages, this, &mainWindow::getAllFinishedImages);
                 connect(downloader, &Downloader::finishedImagesPage, this, &mainWindow::getAllFinishedPage);
                 m_downloaders.append(downloader);
@@ -1047,7 +1047,7 @@ void mainWindow::getAll(bool all)
                 int pages = (int)ceil((float)m_groupBatchs.at(i).at(3).toInt() / m_groupBatchs.at(i).at(2).toInt());
                 if (pages <= 0 || m_groupBatchs.at(i).at(2).toInt() <= 0 || m_groupBatchs.at(i).at(3).toInt() <= 0)
                     pages = 1;
-                m_progressdialog->setCount(m_progressdialog->count() + pages);
+                m_progressdialog->setImagesCount(m_progressdialog->count() + pages);
 
                 m_getAllLimit += m_groupBatchs.at(i).at(3).toDouble();
                 m_batchDownloading.insert(i);
@@ -1077,7 +1077,7 @@ void mainWindow::getAllFinishedPage(Page *page)
 
     m_groupBatchs[d->getData().toInt()][8] += (m_groupBatchs[d->getData().toInt()][8] == "" ? "" : "¤") + QString::number((int)page);
     m_getAllPages.append(page);
-    m_progressdialog->setValue(m_progressdialog->value() + 1);
+    m_progressdialog->setImages(m_progressdialog->images() + 1);
 }
 void mainWindow::getAllFinishedImages(QList<Image*> images)
 {
@@ -1088,57 +1088,9 @@ void mainWindow::getAllFinishedImages(QList<Image*> images)
         getAllImages();
 }
 
-void mainWindow::getAllFinishedLoading(Page* p)
-{
-	log(tr("Page reçue <a href=\"%1\">%1</a> (%n résultat(s))", "", p->images().count()).arg(p->url().toString().toHtmlEscaped()));
-	int n = 0;
-	for (int i = 0; i < m_groupBatchs.count(); i++)
-	{
-		if (m_groupBatchs[i][8].split("¤", QString::SkipEmptyParts).contains(QString::number((int)p)))
-		{
-			n = i;
-			break;
-		}
-	}
-
-	QList<Image*> imgs = QList<Image*>(), ims = p->images();
-	if (m_groupBatchs[n][4] == "true")
-	{ imgs = ims; }
-	else
-	{
-		QStringList blacklistedtags(m_settings->value("blacklistedtags").toString().split(' ', QString::SkipEmptyParts));
-		for (int i = 0; i < ims.size(); i++)
-		{
-			if (ims[i]->blacklisted(blacklistedtags).isEmpty())
-			{ imgs.append(ims[i]); }
-			else
-			{ log("Blacklisted: "+ims[i]->blacklisted(blacklistedtags).join(", ")); }
-		}
-	}
-
-	m_progressBars[n]->setMaximum(max(0, imgs.size()));
-	while (imgs.size() > m_groupBatchs[n][2].toInt())
-	{ imgs.removeAt(m_groupBatchs[n][2].toInt()); }
-	m_getAllRemaining.append(imgs);
-	m_getAllCount++;
-	m_progressdialog->setImages(m_getAllCount);
-
-	if (m_getAllCount == m_getAllPages.count())
-	{
-		if (m_getAllRemaining.isEmpty())
-		{
-			if (ims.isEmpty())
-			{ error(this, tr("<b>Attention :</b> %1").arg(tr("rien n'a été reçu depuis %1. Raisons possibles : tag incorrect, page trop éloignée.").arg(p->site()->value("Url")))); }
-			else
-			{ error(this, tr("<b>Attention :</b> %1").arg(tr("toutes les images provenant de %1 ont été ignorées.").arg(p->site()->value("Url")))); }
-			return;
-		}
-		getAllImages();
-	}
-}
 void mainWindow::getAllImages()
 {
-	// Si la limite d'images n'est pas un multiple du nombre d'images par page, on retire celles en trop
+    // Si la limite d'images est dépassée, on retire celles en trop
 	while (m_getAllRemaining.count() > m_getAllLimit)
 	{ m_getAllRemaining.removeLast(); }
 
@@ -1202,7 +1154,7 @@ void mainWindow::getAllImages()
 void mainWindow::_getAll()
 {
 	if (m_progressdialog->cancelled())
-	{ return; }
+        return;
 
 	if (m_getAllRemaining.size() > 0)
 	{
@@ -1216,19 +1168,13 @@ void mainWindow::_getAll()
 		else
 		{
             Image *img = m_getAllDownloading.at(0);
-            qDebug() << img;
-            qDebug() << img->url();
 
 			// Row
-			int site_id = m_progressdialog->batch(img->url());
-            qDebug() << site_id;
+            int site_id = m_progressdialog->batch(img->url());
 			int row = -1;
-            for (int i = 0; i < ui->tableBatchGroups->rowCount(); ++i) {
-                qDebug() << ui->tableBatchGroups->item(i, 0)->text();
+            for (int i = 0; i < ui->tableBatchGroups->rowCount(); ++i)
                 if (ui->tableBatchGroups->item(i, 0)->text().toInt() == site_id)
-					row = i;
-            }
-            qDebug() << row;
+                    row = i;
 
 			// Path
 			QString path = m_settings->value("Save/filename").toString();
@@ -1371,7 +1317,8 @@ void mainWindow::imageUrlChanged(QString before, QString after)
 void mainWindow::getAllProgress(Image *img, qint64 bytesReceived, qint64 bytesTotal)
 {
 	if (!m_downloadTimeLast.contains(img->url()) || m_downloadTimeLast[img->url()] == NULL)
-	{ return; }
+        return;
+
 	if (m_downloadTimeLast[img->url()]->elapsed() >= 1000)
 	{
 		m_downloadTimeLast[img->url()]->restart();
@@ -1388,7 +1335,7 @@ void mainWindow::getAllProgress(Image *img, qint64 bytesReceived, qint64 bytesTo
 void mainWindow::getAllPerformTags(Image* img)
 {
 	if (m_progressdialog->cancelled())
-	{ return; }
+        return;
 
 	log(tr("Tags reçus"));
 
