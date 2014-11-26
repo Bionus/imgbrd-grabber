@@ -5,7 +5,7 @@ CONFIG += use_qscintilla
 
 # Global
 TARGET = Grabber
-APP_VERSION = \\\"4.0.0a\\\"
+APP_VERSION = \\\"4.0.1\\\"
 
 # General
 TEMPLATE = app
