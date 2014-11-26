@@ -598,7 +598,7 @@ void Page::parse()
 		firstImage = m_imagesPerPage * (m_page - 1);
 		lastImage = m_imagesPerPage;
 	}
-	while (firstImage > 0)
+    while (firstImage > 0)
 	{
 		m_images.removeFirst();
 		firstImage--;
