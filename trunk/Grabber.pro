@@ -59,3 +59,9 @@ use_breakpad {
 HEADERS += includes/*.h
 FORMS += ui/*.ui
 SOURCES += source/*.cpp
+
+OTHER_FILES += \
+    icon.rc \
+    VERSION \
+    LICENSE \
+    README.md

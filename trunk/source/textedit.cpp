@@ -21,7 +21,7 @@ TextEdit::TextEdit(QStringList favs, QWidget *parent) : QTextEdit(parent), c(0),
 	setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	setFixedHeight(sizeHint().height());
-	connect(this, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(customContextMenuRequested(QPoint)));
+    connect(this, &QTextEdit::customContextMenuRequested, this, &TextEdit::customContextMenuRequested);
 }
 
 TextEdit::~TextEdit()
@@ -37,15 +37,30 @@ QSize TextEdit::sizeHint() const
 	return (style()->sizeFromContents(QStyle::CT_LineEdit, &opt, QSize(w, h).expandedTo(QApplication::globalStrut()), this));
 }
 
+/**
+ * Ignore all wheel events on the field.
+ * @param e The Qt event.
+ */
 void TextEdit::wheelEvent(QWheelEvent *e)
-{ e->ignore(); }
+{
+    e->ignore();
+}
 
+/**
+ * Colorize the contents of the text field.
+ */
 void TextEdit::doColor()
 {
 	QString txt = " "+this->toPlainText().toHtmlEscaped()+" ";
+
+    // Color favorited tags
 	for (int i = 0; i < m_favorites.size(); i++)
-	{ txt.replace(" "+m_favorites.at(i)+" ", " <span style=\"color:#ffc0cb\">"+m_favorites.at(i)+"</span> "); }
-	QRegExp r1(" ~([^ ]+)"), r2(" -([^ ]+)"), r3(" (user|fav|md5|pool|rating|source|status|approver|unlocked|sub|id|width|height|score|mpixels|filesize|date|gentags|arttags|chartags|copytags|status|status|approver|order|parent):([^ ]*)");
+        txt.replace(" "+m_favorites.at(i)+" ", " <span style=\"color:#ffc0cb\">"+m_favorites.at(i)+"</span> ");
+
+    // Color metatags
+    QRegExp r1(" ~([^ ]+)"),
+            r2(" -([^ ]+)"),
+            r3(" (user|fav|md5|pool|rating|source|status|approver|unlocked|sub|id|width|height|score|mpixels|filesize|date|gentags|arttags|chartags|copytags|status|status|approver|order|parent):([^ ]*)");
 	int pos = 0;
 	while ((pos = r1.indexIn(txt, pos)) != -1)
 	{
@@ -67,6 +82,8 @@ void TextEdit::doColor()
 		txt.replace(r3.cap(0), rep);
 		pos += rep.length();
 	}
+
+    // Setup cursor
 	QTextCursor crsr = textCursor();
 	pos = crsr.columnNumber();
 	int lengh = crsr.selectionEnd()-crsr.selectionStart();
@@ -75,6 +92,11 @@ void TextEdit::doColor()
 	crsr.setPosition(pos, QTextCursor::KeepAnchor);
 	setTextCursor(crsr);
 }
+
+/**
+ * Set the text of the field and color it.
+ * @param text The text the field should be set to.
+ */
 void TextEdit::setText(const QString &text)
 {
 	QTextEdit::setText(text);
@@ -83,18 +105,19 @@ void TextEdit::setText(const QString &text)
 
 void TextEdit::setCompleter(QCompleter *completer)
 {
+    if (!completer)
+        return;
+
+    // Disconnect the previous completer
 	if (c)
-	{ QObject::disconnect(c, 0, this, 0); }
+        QObject::disconnect(c, 0, this, 0);
 
+    // Set the new completer and connect it to the field
 	c = completer;
-
-	if (!c)
-	{ return; }
-
 	c->setWidget(this);
 	c->setCompletionMode(QCompleter::PopupCompletion);
-	c->setCaseSensitivity(Qt::CaseInsensitive);
-	QObject::connect(c, SIGNAL(activated(QString)), this, SLOT(insertCompletion(QString)));
+    c->setCaseSensitivity(Qt::CaseInsensitive);
+    QObject::connect(c, SIGNAL(activated(QString)), this, SLOT(insertCompletion(QString)));
 }
 
 QCompleter *TextEdit::completer() const
@@ -105,7 +128,8 @@ QCompleter *TextEdit::completer() const
 void TextEdit::insertCompletion(const QString& completion)
 {
 	if (c->widget() != this)
-	{ return; }
+        return;
+
 	QTextCursor tc = textCursor();
 	int extra = completion.length() - c->completionPrefix().length();
 	tc.movePosition(QTextCursor::Left);
@@ -127,7 +151,8 @@ QString TextEdit::textUnderCursor() const
 void TextEdit::focusInEvent(QFocusEvent *e)
 {
 	if (c)
-	{ c->setWidget(this); }
+        c->setWidget(this);
+
 	QTextEdit::focusInEvent(e);
 }
 
@@ -173,7 +198,7 @@ void TextEdit::keyPressEvent(QKeyEvent *e)
 
 	const bool ctrlOrShift = e->modifiers() & (Qt::ControlModifier | Qt::ShiftModifier);
 	if (!c || (ctrlOrShift && e->text().isEmpty()))
-	{ return; }
+        return;
 
 	static QString eow(" ");
 	bool hasModifier = (e->modifiers() != Qt::NoModifier) && !ctrlOrShift;
@@ -186,7 +211,7 @@ void TextEdit::keyPressEvent(QKeyEvent *e)
 	}
 
 	if (completionPrefix != c->completionPrefix())
-	{ c->setCompletionPrefix(completionPrefix); }
+        c->setCompletionPrefix(completionPrefix);
 
 	QRect cr = cursorRect();
 	cr.setWidth(c->popup()->sizeHintForColumn(0) + c->popup()->verticalScrollBar()->sizeHint().width());

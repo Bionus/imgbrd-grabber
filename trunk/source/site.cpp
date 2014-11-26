@@ -13,7 +13,11 @@
 Site::Site(QString type, QString url, QMap<QString, QString> data) : m_type(type), m_url(url), m_data(data), m_manager(NULL), m_loggedIn(false), m_triedLogin(false), m_loginCheck(false), m_updateVersion("")
 { load(); }
 Site::~Site()
-{ delete m_settings; }
+{
+    delete m_settings;
+    delete m_manager;
+    delete m_cookieJar;
+}
 void Site::load()
 {
 	m_settings = new QSettings(savePath("sites/"+m_type+"/"+m_url+"/settings.ini"), QSettings::IniFormat);
@@ -24,7 +28,10 @@ void Site::initManager()
 {
 	if (m_manager == NULL)
 	{
+        m_cookieJar = new QNetworkCookieJar(this);
+
 		m_manager = new QNetworkAccessManager(this);
+        m_manager->setCookieJar(m_cookieJar);
 		connect(m_manager, SIGNAL(finished(QNetworkReply*)), this, SIGNAL(finished(QNetworkReply*)));
 		connect(m_manager, SIGNAL(sslErrors(QNetworkReply*,QList<QSslError>)), this, SLOT(sslErrorHandler(QNetworkReply*,QList<QSslError>)));
 	}
@@ -85,7 +92,7 @@ void Site::loginFinished()
 QNetworkReply *Site::get(QUrl url, Page *page, QString ref, Image *img)
 {
 	if (!m_loggedIn)
-	{ login(); }
+        login();
 
 	QNetworkRequest request(url);
 	QString referer = m_settings->value("referer"+(!ref.isEmpty() ? "_"+ref : ""), "").toString();
@@ -107,9 +114,10 @@ QNetworkReply *Site::get(QUrl url, Page *page, QString ref, Image *img)
 		{
 			QString key = headers.keys().at(i);
 			request.setRawHeader(key.toLatin1(), headers[key].toString().toLatin1());
-		}
+        }
+        request.setRawHeader("User-Agent", "Mozilla/5.0 (Symbian; U; N8-00; fi-FI) AppleWebKit/534.3 (KHTML, like Gecko) Qt/4.7.4 Mobile Safari/534.3");
 
-	initManager();
+    initManager();
 	return m_manager->get(request);
 }
 void Site::sslErrorHandler(QNetworkReply* qnr, QList<QSslError>)
@@ -117,7 +125,7 @@ void Site::sslErrorHandler(QNetworkReply* qnr, QList<QSslError>)
 void Site::finishedReply(QNetworkReply *r)
 {
 	if (r != m_loginReply)
-	{ emit finished(r); }
+        emit finished(r);
 }
 
 void Site::checkForUpdates()

@@ -23,7 +23,7 @@ Downloader::Downloader(QStringList tags, QStringList postfiltering, QStringList 
 	}
 
 	m_pages = new QList<Page*>();
-	m_pagesC = new QList<Page*>();
+    m_pagesC = new QList<Page*>();
 	m_pagesT = new QList<Page*>();
 	m_pagesP = new QList<QPair<Site*, int>>();
 	m_opages = new QList<Page*>();
