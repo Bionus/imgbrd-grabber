@@ -1,5 +1,6 @@
 #include <QSettings>
 #include <QFile>
+#include <QNetworkCookie>
 #include <iostream>
 #include "page.h"
 #include "json.h"
@@ -223,7 +224,7 @@ QString _parseSetImageUrl(Site* site, QString setting, QString ret, QMap<QString
 
 void Page::parse()
 {
-	m_source = m_reply->readAll();
+    m_source = m_reply->readAll();
 
 	// Check redirection
 	QUrl redir = m_reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
@@ -425,15 +426,15 @@ void Page::parse()
 
 		// Getting images
 		QRegExp rx(m_site->value("Regex/Image"));
-		QStringList order = m_site->value("Regex/Order").split('|');
+        QStringList order = m_site->value("Regex/Order").split('|');
 		rx.setMinimal(true);
-		int pos = 0, id = 0;
+        int pos = 0, id = 0;
 		while ((pos = rx.indexIn(m_source, pos)) != -1)
-		{
+        {
 			pos += rx.matchedLength();
 			QMap<QString,QString> d;
 			for (int i = 0; i < order.size(); i++)
-			{ d[order.at(i)] = rx.cap(i+1); }
+            { d[order.at(i)] = rx.cap(i+1); }
 			if (order.contains("json") && !d["json"].isEmpty())
 			{
 				QVariant src = Json::parse(d["json"]);
@@ -581,6 +582,13 @@ void Page::parse()
 		rxlast.indexIn(m_source, 0);
 		m_imagesCount = rxlast.cap(1).remove(",").toInt() * m_imagesPerPage;
 	}
+
+    // Remove first n images (according to site settings)
+    int skip = m_site->setting("ignore/always", 0).toInt();
+    if (m_page == m_site->value("FirstPage").toInt())
+        skip = m_site->setting("ignore/1", 0).toInt();
+    for (int i = 0; i < skip; ++i)
+        m_images.removeFirst();
 
 	// Virtual paging
 	int firstImage = 0;

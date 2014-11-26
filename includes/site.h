@@ -71,6 +71,7 @@ class Site : public QObject
 		QSettings *m_settings;
 		QString m_sessionId;
 		QNetworkAccessManager *m_manager;
+        QNetworkCookieJar *m_cookieJar;
 		QNetworkReply *m_loginReply, *m_updateReply, *m_tagsReply;
 		bool m_loggedIn, m_triedLogin, m_loginCheck;
 		QString m_updateVersion;
