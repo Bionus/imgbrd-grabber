@@ -20,7 +20,9 @@ SourcesSettingsWindow::SourcesSettingsWindow(Site *site, QWidget *parent) : QDia
 	QStringList referers_image = QStringList() << "" << "none" << "host" << "page" << "details" << "image";
 	ui->comboReferer->setCurrentIndex(referers.indexOf(settings.value("referer", "none").toString()));
 	ui->comboRefererPreview->setCurrentIndex(referers_preview.indexOf(settings.value("referer_preview", "").toString()));
-	ui->comboRefererImage->setCurrentIndex(referers_image.indexOf(settings.value("referer_image", "").toString()));
+    ui->comboRefererImage->setCurrentIndex(referers_image.indexOf(settings.value("referer_image", "").toString()));
+    ui->spinIgnoreAlways->setValue(settings.value("ignore/always", 0).toInt());
+    ui->spinIgnore1->setValue(settings.value("ignore/1", 0).toInt());
 
 	ui->checkSourcesDefault->setChecked(settings.value("sources/usedefault", true).toBool());
 	QStringList sources = QStringList() << "xml" << "json" << "regex" << "rss";
@@ -111,8 +113,10 @@ void SourcesSettingsWindow::save()
 	QStringList referers_preview = QStringList() << "" << "none" << "host" << "page" << "image";
 	QStringList referers_image = QStringList() << "" << "none" << "host" << "page" << "details" << "image";
 	settings.setValue("referer", referers[ui->comboReferer->currentIndex()]);
-	settings.setValue("referer_preview", referers_preview[ui->comboRefererPreview->currentIndex()]);
-	settings.setValue("referer_image", referers_image[ui->comboRefererImage->currentIndex()]);
+    settings.setValue("referer_preview", referers_preview[ui->comboRefererPreview->currentIndex()]);
+    settings.setValue("referer_image", referers_image[ui->comboRefererImage->currentIndex()]);
+    settings.setValue("ignore/always", ui->spinIgnoreAlways->value());
+    settings.setValue("ignore/1", ui->spinIgnore1->value());
 
 	QStringList sources = QStringList() << "xml" << "json" << "regex" << "rss";
 	settings.setValue("sources/usedefault", ui->checkSourcesDefault->isChecked());

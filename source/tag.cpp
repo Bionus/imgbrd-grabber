@@ -22,10 +22,16 @@ Tag::Tag(QString text, QString type, int count, QStringList related)
 Tag::~Tag()
 { }
 
+/**
+ * Return the colored tag.
+ * @param favs The list of the user's favorite tags.
+ * @return The HTML colored tag.
+ */
 QString Tag::stylished(QStringList favs) const
 {
 	if (favs.contains(m_text))
-	{ return "<span style=\"color:pink\">"+m_text+"</span>"; }
+        return "<span style=\"color:pink\">"+m_text+"</span>";
+
 	return m_text;
 }
 
