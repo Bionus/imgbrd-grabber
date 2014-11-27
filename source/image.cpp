@@ -540,10 +540,9 @@ QString Image::path(QString fn, QString pth, int counter, bool complex, bool sim
 	}
 	if (settings.value("copyright_useshorter", true).toBool())
 	{
-		for (int i = 0; i < details["copyrights"].size(); ++i)
+		for (QString cop : details["copyrights"])
 		{
 			found = false;
-			cop = details["copyrights"].at(i);
 			for (int r = 0; r < copyrights.size(); ++r)
 			{
 				if (copyrights.at(r).left(cop.size()) == cop.left(copyrights.at(r).size()))
@@ -560,9 +559,10 @@ QString Image::path(QString fn, QString pth, int counter, bool complex, bool sim
 	else
 	{ copyrights = details["copyrights"]; }
 
+	// Find extension
 	QString ext = m_url.section('.', -1);
 	if (ext.length() > 5)
-	{ ext = "jpg"; }
+		ext = "jpg";
 
 	QMap<QString,QStrP> replaces = QMap<QString,QStrP>();
 	replaces.insert("ext", QStrP(ext, "jpg"));
@@ -579,7 +579,7 @@ QString Image::path(QString fn, QString pth, int counter, bool complex, bool sim
 	replaces.insert("copyright", getReplace("copyright", details, &settings));
 	replaces.insert("character", getReplace("character", details, &settings));
 	replaces.insert("model", getReplace("model", details, &settings));
-	replaces.insert("rating", QStrP(m_rating, ""));
+	replaces.insert("rating", QStrP(m_rating, "unknown"));
 	replaces.insert("score", QStrP(QString::number(m_score), ""));
 	replaces.insert("height", QStrP(QString::number(m_size.height()), "0"));
 	replaces.insert("width", QStrP(QString::number(m_size.width()), "0"));
