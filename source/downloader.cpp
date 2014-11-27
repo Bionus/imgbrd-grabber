@@ -3,6 +3,7 @@
 #include <QApplication>
 #include <QFile>
 #include <QDir>
+#include <qmath.h>
 
 Downloader::Downloader()
 {}
@@ -25,11 +26,11 @@ Downloader::Downloader(QStringList tags, QStringList postfiltering, QStringList 
 	m_pages = new QList<Page*>();
     m_pagesC = new QList<Page*>();
 	m_pagesT = new QList<Page*>();
-	m_pagesP = new QList<QPair<Site*, int>>();
+	m_pagesP = new QList<QPair<Site*, int> >();
 	m_opages = new QList<Page*>();
 	m_opagesC = new QList<Page*>();
 	m_opagesT = new QList<Page*>();
-	m_opagesP = new QList<QPair<Site*, int>>();
+	m_opagesP = new QList<QPair<Site*, int> >();
 	m_waiting = 0;
 	m_results = new QList<Tag>();
 	m_images = new QList<Image*>();
@@ -152,7 +153,7 @@ void Downloader::getTags()
 
 	for (int i = 0; i < m_sites->size(); ++i)
 	{
-		int pages = (int)ceil((float)m_max / m_perpage);
+		int pages = qCeil((float)m_max / m_perpage);
 		if (pages <= 0 || m_perpage <= 0 || m_max <= 0)
 			pages = 1;
 		Site *site = m_sites->at(i);
@@ -244,7 +245,7 @@ void Downloader::getImages()
 
 	for (int i = 0; i < m_sites->size(); ++i)
 	{
-		int pages = (int)ceil((float)m_max / m_perpage);
+		int pages = qCeil((float)m_max / m_perpage);
 		if (pages <= 0 || m_perpage <= 0 || m_max <= 0)
 			pages = 1;
 		for (int p = 0; p < pages; ++p)
@@ -348,7 +349,7 @@ void Downloader::getUrls()
 
 	for (int i = 0; i < m_sites->size(); ++i)
 	{
-		int pages = (int)ceil((float)m_max / m_perpage);
+		int pages = qCeil((float)m_max / m_perpage);
 		if (pages <= 0 || m_perpage <= 0 || m_max <= 0)
 			pages = 1;
 		for (int p = 0; p < pages; ++p)

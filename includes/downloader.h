@@ -55,7 +55,7 @@ class Downloader : public QObject
 		QList<Site*> *m_sites;
 		QList<Page*> *m_pages, *m_pagesC, *m_pagesT, *m_opages, *m_opagesC, *m_opagesT;
 		QList<Image*> *m_images;
-		QList<QPair<Site*, int>> *m_pagesP, *m_opagesP;
+		QList<QPair<Site*, int> > *m_pagesP, *m_opagesP;
 		QStringList m_tags, m_postfiltering, m_sources;
 		int m_page, m_max, m_perpage, m_waiting;
 		QString m_location, m_filename, m_user, m_password;
