@@ -83,15 +83,17 @@ void Site::login()
 }
 void Site::loginFinished()
 {
-	m_loggedIn = m_manager->cookieJar()->cookiesForUrl(m_loginReply->url()).isEmpty();
-	log(tr("Connexion à %1 (%2) terminée (%2).").arg(m_name, m_url, m_loggedIn ? "succès" : "échec"));
+	m_loggedIn = m_cookieJar->cookiesForUrl(m_loginReply->url()).isEmpty();
+
 	m_triedLogin = true;
+	log(tr("Connexion à %1 (%2) terminée (%2).").arg(m_name, m_url, m_loggedIn ? "succès" : "échec"));
+
 	emit loggedIn(m_loggedIn ? LoginSuccess : LoginError);
 }
 
 QNetworkReply *Site::get(QUrl url, Page *page, QString ref, Image *img)
 {
-	if (!m_loggedIn)
+	if (!m_loggedIn && !m_triedLogin)
         login();
 
 	QNetworkRequest request(url);
@@ -153,6 +155,12 @@ void Site::checkForUpdatesDone()
 	emit checkForUpdatesFinished(this);
 }
 
+void _prependUrl(QMap<QString,QString> *details, QString url, QString key, QString lkey = NULL)
+{
+	if (details->contains(key))
+		details->insert(lkey == NULL ? key : lkey, "http://" + url + details->value(key));
+}
+
 QMap<QString, Site*> *Site::getAllSites()
 {
 	QMap<QString, Site*> *stes = new QMap<QString, Site*>();
@@ -190,14 +198,16 @@ QMap<QString, Site*> *Site::getAllSites()
 					{
 						while (!f.atEnd())
 						{
-							QString line = f.readLine();
-							line.remove("\n").remove("\r");
+							QString line = f.readLine().trimmed();
 
 							QStringList srcs;
 							QSettings sets(savePath("sites/"+dir[i]+"/"+line+"/settings.ini"), QSettings::IniFormat);
 							if (!sets.value("sources/usedefault", true).toBool())
 							{
-								srcs = QStringList() << sets.value("sources/source_1").toString() << sets.value("sources/source_2").toString() << sets.value("sources/source_3").toString() << sets.value("sources/source_4").toString();
+								srcs = QStringList() << sets.value("sources/source_1").toString()
+													 << sets.value("sources/source_2").toString()
+													 << sets.value("sources/source_3").toString()
+													 << sets.value("sources/source_4").toString();
 								srcs.removeAll("");
 								if (srcs.isEmpty())
 								{ srcs = source; }
@@ -211,27 +221,22 @@ QMap<QString, Site*> *Site::getAllSites()
 							{ srcs = source; }
 
 							QMap<QString,QString> details = detals;
+							details["Model"] = dir[i];
+							details["Url"] = line;
+							details["Selected"] = srcs.join("/").toLower();
 							for (int j = 0; j < srcs.size(); j++)
 							{
 								QString sr = srcs[j] == "Regex" ? "Html" : srcs[j];
-								details["Urls/"+QString::number(j+1)+"/Tags"] = "http://"+line+details["Urls/"+sr+"/Tags"];
-								if (details.contains("Urls/"+sr+"/Limit"))
-								{ details["Urls/"+QString::number(j+1)+"/Limit"] = details["Urls/"+sr+"/Limit"]; }
-								if (details.contains("Urls/"+sr+"/Home"))
-								{ details["Urls/"+QString::number(j+1)+"/Home"] = "http://"+line+details["Urls/"+sr+"/Home"]; }
-								if (details.contains("Urls/"+sr+"/Pools"))
-								{ details["Urls/"+QString::number(j+1)+"/Pools"] = "http://"+line+details["Urls/"+sr+"/Pools"]; }
+								_prependUrl(&details, line, "Urls/"+sr+"/Tags", "Urls/"+QString::number(j+1)+"/Tags");
+								_prependUrl(&details, line, "Urls/"+sr+"/Limit", "Urls/"+QString::number(j+1)+"/Limit");
+								_prependUrl(&details, line, "Urls/"+sr+"/Home", "Urls/"+QString::number(j+1)+"/Home");
+								_prependUrl(&details, line, "Urls/"+sr+"/Pools", "Urls/"+QString::number(j+1)+"/Pools");
 							}
-							details["Model"] = dir[i];
-							details["Url"] = line;
-							details["Urls/Html/Post"] = "http://"+line+details["Urls/Html/Post"];
-							if (details.contains("Urls/Html/Tags"))
-							{ details["Urls/Html/Tags"] = "http://"+line+details["Urls/Html/Tags"]; }
-							if (details.contains("Urls/Html/Home"))
-							{ details["Urls/Html/Home"] = "http://"+line+details["Urls/Html/Home"]; }
-							if (details.contains("Urls/Html/Pools"))
-							{ details["Urls/Html/Pools"] = "http://"+line+details["Urls/Html/Pools"]; }
-							details["Selected"] = srcs.join("/").toLower();
+							_prependUrl(&details, line, "Urls/Html/Post");
+							_prependUrl(&details, line, "Urls/Html/Tags");
+							_prependUrl(&details, line, "Urls/Html/Home");
+							_prependUrl(&details, line, "Urls/Html/Pools");
+
 							Site *site = new Site(dir[i], line, details);
 							stes->insert(line, site);
 						}
@@ -252,7 +257,7 @@ QMap<QString, Site*> *Site::getAllSites()
 void Site::loadTags(int page, int limit)
 {
 	initManager();
-	m_tagsReply = m_manager->get(QNetworkRequest(QUrl("http://danbooru.donmai.us/tags.json?search[hide_empty]=yes&limit="+QString::number(limit)+"&page=" + QString::number(page))));
+	m_tagsReply = m_manager->get(QNetworkRequest(QUrl("http://"+m_url+"/tags.json?search[hide_empty]=yes&limit="+QString::number(limit)+"&page=" + QString::number(page))));
 	connect(m_tagsReply, SIGNAL(finished()), this, SLOT(finishedTags()));
 }
 void Site::finishedTags()
@@ -268,8 +273,10 @@ void Site::finishedTags()
 		{
 			QMap<QString, QVariant> sc = sourc.at(id).toMap();
 			int cat = sc.value("category").toInt();
-			QString cty = cat == 0 ? "general" : (cat == 1 ? "artist" : (cat == 3 ? "copyright" : "character"));
-			tags.append(Tag(sc.value("name").toString(), cty, sc.value("post_count").toInt(), sc.value("related_tags").toString().split(' ')));
+			tags.append(Tag(sc.value("name").toString(),
+							cat == 0 ? "general" : (cat == 1 ? "artist" : (cat == 3 ? "copyright" : "character")),
+							sc.value("post_count").toInt(),
+							sc.value("related_tags").toString().split(' ')));
 		}
 	}
 	emit finishedLoadingTags(tags);
