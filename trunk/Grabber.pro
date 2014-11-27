@@ -16,6 +16,7 @@ QT += network xml sql script designer multimedia
 
 # Additionnal
 CONFIG += plugin
+CONFIG += c++11
 RESOURCES += resources.qrc
 RC_FILE = icon.rc
 CODECFORTR = UTF-8

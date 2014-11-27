@@ -89,6 +89,7 @@ optionsWindow::optionsWindow(QWidget *parent) : QDialog(parent), ui(new Ui::opti
 	ui->textEditTextfileContent->setEnabled(settings.value("Textfile/activate", false).toBool());
 	ui->textEditTextfileContent->setPlainText(settings.value("Textfile/content", "%all%").toString());
 
+	ui->comboBatchEnd->setCurrentIndex(settings.value("Batch/end", 0).toInt());
 	settings.beginGroup("Save");
 		ui->checkDownloadOriginals->setChecked(settings.value("downloadoriginals", true).toBool());
 		ui->checkReplaceBlanks->setChecked(settings.value("replaceblanks", false).toBool());
@@ -573,6 +574,7 @@ void optionsWindow::save()
 		settings.setValue("content", ui->textEditTextfileContent->toPlainText());
 	settings.endGroup();
 
+	settings.setValue("Batch/end", ui->comboBatchEnd->currentIndex());
 	settings.beginGroup("Save");
 		settings.setValue("downloadoriginals", ui->checkDownloadOriginals->isChecked());
 		settings.setValue("replaceblanks", ui->checkReplaceBlanks->isChecked());
