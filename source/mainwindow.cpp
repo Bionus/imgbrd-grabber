@@ -429,7 +429,10 @@ void mainWindow::closeCurrentTab()
 
 void mainWindow::batchAddGroup(const QStringList& values)
 {
-	m_groupBatchs.append(values);
+	QStringList vals(values);
+	vals.append("true");
+	m_groupBatchs.append(vals);
+
 	QTableWidgetItem *item;
 	ui->tableBatchGroups->setRowCount(ui->tableBatchGroups->rowCount()+1);
 	m_allow = false;
@@ -502,6 +505,7 @@ void mainWindow::batchClear()
 }
 void mainWindow::batchClearSel()
 {
+	// Delete group batchs
 	QList<QTableWidgetItem *> selected = ui->tableBatchGroups->selectedItems();
 	QList<int> todelete = QList<int>();
 	int count = selected.size();
@@ -512,6 +516,7 @@ void mainWindow::batchClearSel()
 	int rem = 0;
 	foreach (int i, todelete)
 	{
+		m_groupBatchs[i][m_groupBatchs.at(i).count() - 1] = "false";
 		int id = ui->tableBatchGroups->item(i - rem, 0)->text().toInt();
 		m_progressBars[id - 1]->deleteLater();
 		m_progressBars[id - 1] = nullptr;
@@ -519,6 +524,7 @@ void mainWindow::batchClearSel()
 		rem++;
 	}
 
+	// Delete single image downloads
 	selected = ui->tableBatchUniques->selectedItems();
 	count = selected.size();
 	todelete.clear();
@@ -1016,13 +1022,12 @@ void mainWindow::getAll(bool all)
 	if (all || !todownload.isEmpty())
 	{
 		m_progressdialog->setImagesCount(0);
+		int active = 0;
         for (int j = 0; j < m_groupBatchs.count(); ++j)
 		{
-			if (all || todownload.contains(j))
+			if (m_groupBatchs[j][m_groupBatchs[j].count() - 1] == "true" && (all || todownload.contains(j)))
 			{
-				int i = ui->tableBatchGroups->item(j, 0)->text().toInt() - 1;
-
-                QStringList b = m_groupBatchs.at(i);
+				QStringList b = m_groupBatchs.at(j);
                 Downloader *downloader = new Downloader(b.at(0).split(' '),
                                                         QStringList(),
                                                         QStringList(b.at(5)),
@@ -1040,17 +1045,18 @@ void mainWindow::getAll(bool all)
                 connect(downloader, &Downloader::finishedImages, this, &mainWindow::getAllFinishedImages);
                 connect(downloader, &Downloader::finishedImagesPage, this, &mainWindow::getAllFinishedPage);
                 m_downloaders.append(downloader);
-                downloader->setData(i);
+				downloader->setData(j	);
                 downloader->setQuit(false);
                 downloader->getImages();
 
-                int pages = (int)ceil((float)m_groupBatchs.at(i).at(3).toInt() / m_groupBatchs.at(i).at(2).toInt());
-                if (pages <= 0 || m_groupBatchs.at(i).at(2).toInt() <= 0 || m_groupBatchs.at(i).at(3).toInt() <= 0)
+				int pages = (int)ceil((float)b.at(3).toInt() / b.at(2).toInt());
+				if (pages <= 0 || b.at(2).toInt() <= 0 || b.at(3).toInt() <= 0)
                     pages = 1;
                 m_progressdialog->setImagesCount(m_progressdialog->count() + pages);
 
-                m_getAllLimit += m_groupBatchs.at(i).at(3).toDouble();
-                m_batchDownloading.insert(i);
+				m_getAllLimit += b.at(3).toDouble();
+				m_batchDownloading.insert(j);
+				++active;
 			}
 		}
 	}
@@ -1170,11 +1176,11 @@ void mainWindow::_getAll()
             Image *img = m_getAllDownloading.at(0);
 
 			// Row
-            int site_id = m_progressdialog->batch(img->url());
+			int site_id = m_progressdialog->batch(img->url());
 			int row = -1;
             for (int i = 0; i < ui->tableBatchGroups->rowCount(); ++i)
                 if (ui->tableBatchGroups->item(i, 0)->text().toInt() == site_id)
-                    row = i;
+					row = i;
 
 			// Path
 			QString path = m_settings->value("Save/filename").toString();
@@ -1258,7 +1264,7 @@ void mainWindow::_getAll()
 			int rem = 0;
 			foreach (int i, m_batchDownloading)
 			{
-				m_groupBatchs.removeAt(i - rem);
+				m_groupBatchs[i][m_groupBatchs[i].count() - 1] = "false";
 				m_progressBars.removeAt(i - rem);
 				ui->tableBatchGroups->removeRow(i - rem);
 				rem++;
@@ -1804,6 +1810,7 @@ bool mainWindow::loadLinkList(QString filename)
 					else if (r == 5) { r = 7; }
 					ui->tableBatchGroups->setItem(ui->tableBatchGroups->rowCount() - 1, r + 1, item);
 				}
+				infos.append("true");
 				m_groupBatchs.append(infos);
 				QTableWidgetItem *it = new QTableWidgetItem(QIcon(":/images/colors/"+QString(val == max ? "green" : (val > 0 ? "blue" : "black"))+".png"), QString::number(m_groupBatchs.indexOf(infos) + 1));
 				it->setFlags(it->flags() ^ Qt::ItemIsEditable);

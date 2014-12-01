@@ -1,6 +1,7 @@
 #include <QtScript>
 #include "image.h"
 #include "functions.h"
+#include <QDebug>
 
 
 
@@ -14,6 +15,13 @@ Image::Image(QMap<QString, QString> details, int timezonedecay, Page* parent)
 		return;
 	}
 	m_url = details.contains("file_url") ? (details["file_url"].startsWith("//") ? "http:"+details["file_url"] : (details["file_url"].startsWith("/") ? "http://"+m_site+details["file_url"] : details["file_url"])) : "";
+	if (details.contains("image") && details["image"].contains("MB // gif\" height=\"") && !m_url.endsWith(".gif", Qt::CaseInsensitive)) {
+		QString ext = m_url.section('.', -1);
+		if (ext.length() > 5)
+			m_url += ".gif";
+		else
+			m_url = m_url.left(m_url.length() - ext.length()) + "gif";
+	}
 	m_md5 = details.contains("md5") ? details["md5"] : "";
 	m_author = details.contains("author") ? details["author"] : "";
 	m_status = details.contains("status") ? details["status"] : "";
