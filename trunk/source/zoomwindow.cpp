@@ -135,6 +135,7 @@ void zoomWindow::go()
  */
 zoomWindow::~zoomWindow()
 {
+	delete m_imageTime;
 	if (movie != NULL)
 	{ movie->deleteLater(); }
 	m_labelTagsTop->deleteLater();
