@@ -29,12 +29,18 @@ tagTab::tagTab(int id, QMap<QString,Site*> *sites, QMap<QString,QString> *favori
 		{
 			QFile words("words.txt");
 			if (words.open(QIODevice::ReadOnly | QIODevice::Text))
+			{
 				while (!words.atEnd())
 					m_completion.append(QString(words.readLine()).trimmed().split(" ", QString::SkipEmptyParts));
+				words.close();
+			}
 			QFile wordsc(savePath("wordsc.txt"));
 			if (wordsc.open(QIODevice::ReadOnly | QIODevice::Text))
+			{
 				while (!wordsc.atEnd())
 					m_completion.append(QString(wordsc.readLine()).trimmed().split(" ", QString::SkipEmptyParts));
+				wordsc.close();
+			}
 			for (int i = 0; i < sites->size(); i++)
 				if (sites->value(sites->keys().at(i))->contains("Modifiers"))
 					m_modifiers.append(sites->value(sites->keys().at(i))->value("Modifiers").trimmed().split(" ", QString::SkipEmptyParts));
@@ -528,6 +534,7 @@ void tagTab::finishedLoadingTags(Page *page)
 	{
 		wordsc.write(QString('\n').toLatin1());
 		wordsc.write(toAdd.join(' ').toLatin1());
+		wordsc.close();
 	}
 
 	// We sort tags by frequency
