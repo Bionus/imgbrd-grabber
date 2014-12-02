@@ -436,7 +436,7 @@ void mainWindow::batchAddGroup(const QStringList& values)
 	QTableWidgetItem *item;
 	ui->tableBatchGroups->setRowCount(ui->tableBatchGroups->rowCount()+1);
 	m_allow = false;
-	QTableWidgetItem *it = new QTableWidgetItem(QIcon(":/images/colors/black.png"), QString::number(m_groupBatchs.indexOf(values) + 1));
+	QTableWidgetItem *it = new QTableWidgetItem(QIcon(":/images/colors/black.png"), QString::number(m_groupBatchs.indexOf(vals) + 1));
 	it->setFlags(it->flags() ^ Qt::ItemIsEditable);
 	ui->tableBatchGroups->setItem(ui->tableBatchGroups->rowCount()-1, 0, it);
 	for (int t = 0; t < values.count(); t++)
@@ -1222,6 +1222,7 @@ void mainWindow::_getAll()
 					m_progressBars[site_id - 1]->setValue(m_progressBars[site_id - 1]->value()+1);
 					if (m_progressBars[site_id - 1]->value() >= m_progressBars[site_id - 1]->maximum())
 					{ ui->tableBatchGroups->item(row, 0)->setIcon(QIcon(":/images/colors/green.png")); }
+					img->deleteLater();
 					_getAll();
 				}
 				else
@@ -1241,9 +1242,9 @@ void mainWindow::_getAll()
 					{ ui->tableBatchGroups->item(row, 0)->setIcon(QIcon(":/images/colors/green.png")); }
 				}
 				m_getAllDownloading.removeAt(0);
+				img->deleteLater();
 				_getAll();
 			}
-			img->deleteLater();
 		}
 	}
 	else if (m_getAllDownloading.isEmpty() && m_getAll)
