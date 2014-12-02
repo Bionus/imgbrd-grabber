@@ -1,8 +1,6 @@
 #include <QtScript>
 #include "image.h"
 #include "functions.h"
-#include <QDebug>
-
 
 
 Image::Image(QMap<QString, QString> details, int timezonedecay, Page* parent)
@@ -127,8 +125,11 @@ void Image::loadPreview()
 }
 void Image::abortPreview()
 {
-	if (m_loadPreview != NULL && m_loadPreview->isRunning())
-	{ m_loadPreview->abort(); }
+	if (m_loadPreview != NULL)
+	{
+		if (m_loadPreview->isRunning())
+		{ m_loadPreview->abort(); }
+	}
 }
 void Image::parsePreview()
 {
@@ -172,8 +173,11 @@ void Image::loadDetails()
 }
 void Image::abortTags()
 {
-	if (m_loadDetails != NULL && m_loadDetails->isRunning())
-	{ m_loadDetails->abort(); }
+	if (m_loadDetails != NULL)
+	{
+		if (m_loadDetails->isRunning())
+		{ m_loadDetails->abort(); }
+	}
 }
 void Image::parseDetails()
 {
