@@ -115,7 +115,11 @@ Image::Image(QMap<QString, QString> details, int timezonedecay, Page* parent)
 	m_settings = new QSettings(savePath("sites/"+m_parentSite->value("Model")+"/"+m_site+"/settings.ini"), QSettings::IniFormat, this);
 }
 Image::~Image()
-{ }
+{
+	m_loadPreview->deleteLater();
+	m_loadDetails->deleteLater();
+	m_loadImage->deleteLater();
+}
 
 void Image::loadPreview()
 {
