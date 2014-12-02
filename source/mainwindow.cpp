@@ -577,7 +577,7 @@ void mainWindow::batchMoveUp()
 
 	if (!selected.empty())
 	{
-		QItemSelectionModel* selectionModel = new QItemSelectionModel(ui->tableBatchGroups->model());
+		QItemSelectionModel* selectionModel = new QItemSelectionModel(ui->tableBatchGroups->model(), this);
 		QItemSelection selection;
 		for (int i = 0; i < count; i++)
 		{
@@ -625,7 +625,7 @@ void mainWindow::batchMoveDown()
 
 	if (!selected.empty())
 	{
-		QItemSelectionModel* selectionModel = new QItemSelectionModel(ui->tableBatchGroups->model());
+		QItemSelectionModel* selectionModel = new QItemSelectionModel(ui->tableBatchGroups->model(), this);
 		QItemSelection selection;
 		for (int i = 0; i < count; i++)
 		{
@@ -1087,7 +1087,10 @@ void mainWindow::getAllFinishedPage(Page *page)
 }
 void mainWindow::getAllFinishedImages(QList<Image*> images)
 {
-    m_downloaders.removeAll((Downloader*)QObject::sender());
+	Downloader* downloader = (Downloader*)QObject::sender();
+	m_downloaders.removeAll(downloader);
+	downloader->deleteLater();
+
     m_getAllRemaining.append(images);
 
     if (m_downloaders.isEmpty())
@@ -1097,8 +1100,8 @@ void mainWindow::getAllFinishedImages(QList<Image*> images)
 void mainWindow::getAllImages()
 {
     // Si la limite d'images est dépassée, on retire celles en trop
-	while (m_getAllRemaining.count() > m_getAllLimit)
-	{ m_getAllRemaining.removeLast(); }
+	while (m_getAllRemaining.count() > m_getAllLimit && !m_getAllRemaining.isEmpty())
+		m_getAllRemaining.takeLast()->deleteLater();
 
 	log(tr("Toutes les urls des images ont été reçues (%n image(s)).", "", m_getAllRemaining.count()));
 

@@ -84,8 +84,6 @@ class zoomWindow : public QDialog
 		QMovie *movie;
 		QTimer *m_resizeTimer;
 		QTime *m_imageTime;
-		QByteArray d;
-		QNetworkAccessManager *m;
 		QPushButton *buttonSave, *buttonSaveNQuit, *buttonSaveas, *m_buttonSaveNQuit;
 		QString link, m_program;
 		QNetworkReply *m_reply;
