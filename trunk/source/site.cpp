@@ -117,7 +117,7 @@ QNetworkReply *Site::get(QUrl url, Page *page, QString ref, Image *img)
 			QString key = headers.keys().at(i);
 			request.setRawHeader(key.toLatin1(), headers[key].toString().toLatin1());
         }
-        request.setRawHeader("User-Agent", "Mozilla/5.0 (Symbian; U; N8-00; fi-FI) AppleWebKit/534.3 (KHTML, like Gecko) Qt/4.7.4 Mobile Safari/534.3");
+		request.setRawHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.3; rv:36.0) Gecko/20100101 Firefox/36.");
 
     initManager();
 	return m_manager->get(request);
