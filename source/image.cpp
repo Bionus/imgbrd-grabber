@@ -621,10 +621,23 @@ QString Image::path(QString fn, QString pth, int counter, bool complex, bool sim
 		{ filename = filenames.value(cond); }
 	}
 
+	// Remove duplicates in %all%
+	QStringList rem = (filename.contains("%artist%") ? details["artists"] : QStringList()) +
+		(filename.contains("%copyright%") ? copyrights : QStringList()) +
+		(filename.contains("%character%") ? details["characters"] : QStringList()) +
+		(filename.contains("%model%") ? details["models"] : QStringList()) +
+		(filename.contains("%general%") ? details["generals"] : QStringList());
+	QStringList l = details["alls"];
+	for (int i = 0; i < rem.size(); ++i)
+	{ l.removeAll(rem.at(i)); }
+	replaces.insert("all", QStrP(l.join(settings.value("separator").toString()), ""));
+
 	if (filename.startsWith("javascript:"))
 	{
+		// We remove the "javascript:" part
 		filename = filename.right(filename.length() - 11);
 
+		// Variables initialization
 		QString inits = "";
 		QStringList keys = replaces.keys();
 		for (int i = 0; i < replaces.size(); ++i)
@@ -635,16 +648,20 @@ QString Image::path(QString fn, QString pth, int counter, bool complex, bool sim
 			{ res = res.replace("\\", "_").replace("%", "_").replace("/", "_").replace(":", "_").replace("|", "_").replace("*", "_").replace("?", "_").replace("\"", "_").replace("<", "_").replace(">", "_").replace("__", "_").replace("__", "_").replace("__", "_").trimmed(); }
 			if (!settings.value("replaceblanks", false).toBool())
 			{ res.replace("_", " "); }
+
 			inits += "var " + key + " = \"" + res + "\";\r\n";
 		}
 
-		if (QScriptEngine().evaluate(QScriptProgram(inits + filename)).isError())
+		// Script execution
+		QScriptEngine engine;
+		QScriptValue result = engine.evaluate(QScriptProgram(inits + filename));
+		if (result.isError())
 		{
-			error(0, tr("Erreur d'évaluation du Javascript :<br/>") + QScriptEngine().evaluate(QScriptProgram(inits + filename)).toString());
+			error(0, tr("Erreur d'évaluation du Javascript :<br/>") + result.toString());
 			return QString();
 		}
 
-		filename = QScriptEngine().evaluate(QScriptProgram(inits + filename)).toString();
+		filename = result.toString();
 	}
 	else
 	{
@@ -661,18 +678,7 @@ QString Image::path(QString fn, QString pth, int counter, bool complex, bool sim
 			filename = analyse(tokens, filename, details["allos"]);
 		}
 
-		// No duplicates in %all%
-		QStringList rem = (filename.contains("%artist%") ? details["artists"] : QStringList()) +
-			(filename.contains("%copyright%") ? copyrights : QStringList()) +
-			(filename.contains("%character%") ? details["characters"] : QStringList()) +
-			(filename.contains("%model%") ? details["models"] : QStringList()) +
-			(filename.contains("%general%") ? details["generals"] : QStringList());
-		QStringList l = details["alls"];
-		for (int i = 0; i < rem.size(); ++i)
-		{ l.removeAll(rem.at(i)); }
-		replaces.insert("all", QStrP(l.join(settings.value("separator").toString()), ""));
-
-		// Complex expressions
+		// Complex expressions using regexes
 		QRegExp rxdate("%date:([^%]+)%");
 		rxdate.setMinimal(true);
 		int p = 0;
@@ -693,8 +699,7 @@ QString Image::path(QString fn, QString pth, int counter, bool complex, bool sim
 			if (replaces.contains(key) && length >= 0)
 			{
 				QString res = replaces[key].first.isEmpty() ? replaces[key].second : replaces[key].first;
-				res = res.left(length);
-				filename.replace(rxsize.cap(0), res);
+				filename.replace(rxsize.cap(0), res.left(length));
 			}
 			else
 			{ p += rxsize.matchedLength(); }
@@ -718,6 +723,10 @@ QString Image::path(QString fn, QString pth, int counter, bool complex, bool sim
 			{ filename.replace("%"+key+"%", res.trimmed()); }
 		}
 	}
+
+	// Trim directory names
+	filename = filename.trimmed();
+	filename.replace(QRegExp(" */ *"), "/");
 
 	// We remove empty directory names
 	while (filename.indexOf("//") >= 0)
@@ -918,6 +927,7 @@ QString Image::md5()
 		f.open(QFile::ReadOnly);
 		while (!f.atEnd())
 			hash.addData(f.read(8192));
+		f.close();
 		m_md5 = hash.result().toHex();
 	}
 
