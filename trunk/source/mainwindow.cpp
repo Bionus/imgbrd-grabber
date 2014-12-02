@@ -1010,9 +1010,9 @@ void mainWindow::getAll(bool all)
 	count = selected.size();
 	m_batchDownloading.clear();
 
-	m_progressdialog->setText(tr("Téléchargement des pages, veuillez patienter..."));
 	connect(m_progressdialog, SIGNAL(rejected()), this, SLOT(getAllCancel()));
 	m_progressdialog->clear();
+	m_progressdialog->setText(tr("Téléchargement des pages, veuillez patienter..."));
 
 	QSet<int> todownload = QSet<int>();
 	for (int i = 0; i < count; i++)
@@ -1167,7 +1167,8 @@ void mainWindow::_getAll()
 
 	if (m_getAllRemaining.size() > 0)
 	{
-		m_getAllDownloading.prepend(m_getAllRemaining.takeFirst());
+		Image *img = m_getAllRemaining.takeFirst();
+		m_getAllDownloading.prepend(img);
 
 		if (m_must_get_tags)
 		{
@@ -1176,8 +1177,6 @@ void mainWindow::_getAll()
 		}
 		else
 		{
-            Image *img = m_getAllDownloading.at(0);
-
 			// Row
 			int site_id = m_progressdialog->batch(img->url());
 			int row = -1;
@@ -1244,6 +1243,7 @@ void mainWindow::_getAll()
 				m_getAllDownloading.removeAt(0);
 				_getAll();
 			}
+			img->deleteLater();
 		}
 	}
 	else if (m_getAllDownloading.isEmpty() && m_getAll)
@@ -1409,6 +1409,7 @@ void mainWindow::getAllPerformTags(Image* img)
 			{ ui->tableBatchGroups->item(row, 0)->setIcon(QIcon(":/images/colors/green.png")); }
 			m_getAllDownloadingSpeeds.remove(img->url());
 			m_getAllDownloading.removeAt(m_getAllId);
+			img->deleteLater();
 			_getAll();
 		}
 		else
@@ -1429,6 +1430,7 @@ void mainWindow::getAllPerformTags(Image* img)
 		}
 		m_getAllDownloadingSpeeds.remove(img->url());
 		m_getAllDownloading.removeAt(m_getAllId);
+		img->deleteLater();
 		_getAll();
 	}
 }
@@ -1506,6 +1508,7 @@ void mainWindow::getAllGetImage(Image* img)
 		m_progressdialog->setImages(m_progressdialog->images()+1);
 		m_getAllDownloadingSpeeds.remove(img->url());
 		m_getAllDownloading.removeAt(m_getAllId);
+		img->deleteLater();
 		_getAll();
 	}
 }
@@ -1576,6 +1579,7 @@ void mainWindow::getAllPerformImage(Image* img)
 	m_getAllDownloadingSpeeds.remove(img->url());
 	m_getAllDownloading.removeAt(m_getAllId);
 
+	img->deleteLater();
 	_getAll();
 }
 void mainWindow::saveImage(Image *img, QNetworkReply *reply, QString path, QString p, bool getAll)
