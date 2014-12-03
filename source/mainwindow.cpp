@@ -946,17 +946,9 @@ void mainWindow::getAll(bool all)
     m_downloaders.clear();
 	m_getAllDownloadingSpeeds.clear();
 
-	for (Image *image : m_getAllRemaining)
-		image->deleteLater();
 	m_getAllRemaining.clear();
-	for (Image *image : m_getAllFailed)
-		image->deleteLater();
 	m_getAllFailed.clear();
-	for (Image *image : m_getAllDownloading)
-		image->deleteLater();
 	m_getAllDownloading.clear();
-	for (Page *page : m_getAllPages)
-		page->deleteLater();
 	m_getAllPages.clear();
 
 	QList<QTableWidgetItem *> selected = ui->tableBatchUniques->selectedItems();
@@ -1228,7 +1220,7 @@ void mainWindow::_getAll()
 					if (m_progressBars[site_id - 1]->value() >= m_progressBars[site_id - 1]->maximum())
 					{ ui->tableBatchGroups->item(row, 0)->setIcon(QIcon(":/images/colors/green.png")); }
 					img->deleteLater();
-					qDebug() << "DELETE ignored" << QString::number((int)img, 16);
+					// qDebug() << "DELETE ignored" << QString::number((int)img, 16);
 					_getAll();
 				}
 				else
@@ -1249,7 +1241,7 @@ void mainWindow::_getAll()
 				}
 				m_getAllDownloading.removeAll(img);
 				img->deleteLater();
-				qDebug() << "DELETE already" << QString::number((int)img, 16);
+				// qDebug() << "DELETE already" << QString::number((int)img, 16);
 				_getAll();
 			}
 		}
@@ -1418,7 +1410,7 @@ void mainWindow::getAllPerformTags(Image* img)
 			m_getAllDownloadingSpeeds.remove(img->url());
 			m_getAllDownloading.removeAt(m_getAllId);
 			img->deleteLater();
-			qDebug() << "DELETE tags ignored" << QString::number((int)img, 16);
+			// qDebug() << "DELETE tags ignored" << QString::number((int)img, 16);
 			_getAll();
 		}
 		else
@@ -1440,7 +1432,7 @@ void mainWindow::getAllPerformTags(Image* img)
 		m_getAllDownloadingSpeeds.remove(img->url());
 		m_getAllDownloading.removeAt(m_getAllId);
 		img->deleteLater();
-		qDebug() << "DELETE tags already" << QString::number((int)img, 16);
+		// qDebug() << "DELETE tags already" << QString::number((int)img, 16);
 		_getAll();
 	}
 }
@@ -1519,7 +1511,7 @@ void mainWindow::getAllGetImage(Image* img)
 		m_getAllDownloadingSpeeds.remove(img->url());
 		m_getAllDownloading.removeAt(m_getAllId);
 		img->deleteLater();
-		qDebug() << "DELETE next" << QString::number((int)img, 16);
+		// qDebug() << "DELETE next" << QString::number((int)img, 16);
 		_getAll();
 	}
 }
@@ -1591,7 +1583,7 @@ void mainWindow::getAllPerformImage(Image* img)
 	m_getAllDownloading.removeAt(m_getAllId);
 
 	img->deleteLater();
-	qDebug() << "DELETE performimage" << QString::number((int)img, 16);
+	// qDebug() << "DELETE performimage" << QString::number((int)img, 16);
 	_getAll();
 }
 void mainWindow::saveImage(Image *img, QNetworkReply *reply, QString path, QString p, bool getAll)
