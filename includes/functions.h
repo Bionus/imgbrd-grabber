@@ -33,6 +33,8 @@ void		clearLayout(QLayout *layout);
 QString		stripTags(QString);
 QString		getUnit(int*);
 QString		getUnit(float*);
+QString		getExtension(QString url);
+QString		setExtension(QString url, QString extension);
 
 void		showInGraphicalShell(const QString &);
 void		shutDown(int timeout = 0);

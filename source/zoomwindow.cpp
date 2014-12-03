@@ -58,6 +58,7 @@ zoomWindow::zoomWindow(Image *image, Site *site, QMap<QString,Site*> *sites, QWi
 		connect(m_labelTagsTop, SIGNAL(middleClicked()), this, SLOT(openInNewTab()));
 		ui->verticalLayout->insertWidget(0, m_labelTagsTop, 0);
 
+	m_imageTime = NULL;
 	go();
 }
 void zoomWindow::go()
@@ -135,13 +136,16 @@ void zoomWindow::go()
  */
 zoomWindow::~zoomWindow()
 {
-	delete m_imageTime;
+	if (m_imageTime != NULL)
+		delete m_imageTime;
+	if (image != NULL)
+		delete image;
 	if (movie != NULL)
-	{ movie->deleteLater(); }
+		movie->deleteLater();
+
 	m_labelTagsTop->deleteLater();
 	m_labelTagsLeft->deleteLater();
-	if (image != NULL)
-	{ delete image; }
+
 	delete ui;
 }
 

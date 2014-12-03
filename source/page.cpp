@@ -584,15 +584,12 @@ void Page::parse()
 	}
 
 	// Remove first n images (according to site settings)
-	if (m_search.empty())
-	{
-		int skip = m_site->setting("ignore/always", 0).toInt();
-		if (m_page == m_site->value("FirstPage").toInt())
-			skip = m_site->setting("ignore/1", 0).toInt();
+	int skip = m_site->setting("ignore/always", 0).toInt();
+	if (m_page == m_site->value("FirstPage").toInt())
+		skip = m_site->setting("ignore/1", 0).toInt();
+	if (m_images.size() > m_imagesPerPage && m_images.size() > skip)
 		for (int i = 0; i < skip; ++i)
-			if (!m_images.empty())
-				m_images.removeFirst();
-	}
+			m_images.removeFirst();
 
 	// Virtual paging
 	int firstImage = 0;
