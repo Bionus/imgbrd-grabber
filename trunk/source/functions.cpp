@@ -565,3 +565,29 @@ QMap<QString,QString> stringToMap(QString map, QString gen, QString mid)
 	{ res.insert(keys[i], values[i]); }
 	return res;
 }
+
+QString getExtension(QString url)
+{
+	QString ext;
+	if (url.contains('.'))
+	{
+		ext = url.section('.', -1);
+		if (ext.contains('?'))
+			ext = ext.section('?', 0, -2);
+	}
+	return ext;
+}
+
+QString setExtension(QString url, QString extension)
+{
+	int pPos = url.lastIndexOf('.');
+	if (pPos != -1)
+	{
+		int qPos = url.indexOf('?', pPos);
+		if (qPos != -1)
+			url.replace(pPos + 1, qPos - pPos - 1, extension);
+		else
+			url = url.left(pPos) + "." + extension;
+	}
+	return url;
+}
