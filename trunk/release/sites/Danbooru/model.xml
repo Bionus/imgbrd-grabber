@@ -20,7 +20,7 @@
 		</Html>
 	</Urls>
 	<Regex>
-		<Tags>&lt;li class=&quot;[^&quot;]*tag-type-([^&quot;]+)&quot;[^&gt;]*&gt;.*&lt;a href=&quot;[^&quot;]+&quot;[^&gt;]*&gt;([^&lt;\?]+)&lt;/a&gt;.*&lt;span class=&quot;post-count&quot;&gt;(\d+)&lt;/span&gt;.*&lt;/li&gt;</Tags>
+		<Tags>&lt;li class=&quot;?[^&quot;&gt;]*tag-type-([^&quot;&gt;]+)(?:|&quot;[^&gt;]*)&gt;.*&lt;a href=&quot;[^&quot;]+&quot;[^&gt;]*&gt;([^&lt;\?]+)&lt;\/a&gt;.*&lt;span class=&quot;?post-count&quot;?&gt;(\d+)&lt;\/span&gt;.*&lt;\/li&gt;</Tags>
 		<Image>Post.register\((\{(?:.+)\})\);</Image>
 		<Order>json</Order>
 		<LastPage>&lt;link href=&quot;[^&quot;]*\?.*page=(\d+)[^&quot;]*&quot; rel=&quot;last&quot; title=&quot;Last Page&quot;&gt;</LastPage>

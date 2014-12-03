@@ -180,7 +180,6 @@ void Image::parsePreview()
 
 void Image::loadDetails()
 {
-	qDebug() << "loadDetails" << QString::number((int)this, 16);
 	m_loadDetails = m_parentSite->get(m_pageUrl);
 	m_loadDetails->setParent(this);
 
@@ -751,7 +750,6 @@ QString Image::path(QString fn, QString pth, int counter, bool complex, bool sim
 
 void Image::loadImage()
 {
-	qDebug() << "loadImage" << QString::number((int)this, 16);
 	m_loadImage = m_parentSite->get(m_url, m_parent, "image", this);
 	m_loadImage->setParent(this);
 	//m_timer.start();
