@@ -945,13 +945,18 @@ void mainWindow::getAll(bool all)
 
     m_downloaders.clear();
 	m_getAllDownloadingSpeeds.clear();
-	qDeleteAll(m_getAllRemaining);
+
+	for (Image *image : m_getAllRemaining)
+		image->deleteLater();
 	m_getAllRemaining.clear();
-	qDeleteAll(m_getAllFailed);
+	for (Image *image : m_getAllFailed)
+		image->deleteLater();
 	m_getAllFailed.clear();
-	qDeleteAll(m_getAllDownloading);
+	for (Image *image : m_getAllDownloading)
+		image->deleteLater();
 	m_getAllDownloading.clear();
-	qDeleteAll(m_getAllPages);
+	for (Page *page : m_getAllPages)
+		page->deleteLater();
 	m_getAllPages.clear();
 
 	QList<QTableWidgetItem *> selected = ui->tableBatchUniques->selectedItems();
@@ -1168,12 +1173,12 @@ void mainWindow::_getAll()
 	if (m_getAllRemaining.size() > 0)
 	{
 		Image *img = m_getAllRemaining.takeFirst();
-		m_getAllDownloading.prepend(img);
+		m_getAllDownloading.append(img);
 
 		if (m_must_get_tags)
 		{
-			m_getAllDownloading.at(0)->loadDetails();
-			connect(m_getAllDownloading.at(0), SIGNAL(finishedLoadingTags(Image*)), this, SLOT(getAllPerformTags(Image*)));
+			img->loadDetails();
+			connect(img, SIGNAL(finishedLoadingTags(Image*)), this, SLOT(getAllPerformTags(Image*)));
 		}
 		else
 		{
@@ -1213,7 +1218,7 @@ void mainWindow::_getAll()
 				}
 				if (detected && site_id >= 0 && m_groupBatchs[site_id - 1][4] == "false")
 				{
-					m_getAllDownloading.removeAt(0);
+					m_getAllDownloading.removeAll(img);
 					m_progressdialog->setValue(m_progressdialog->value()+img->value());
 					m_progressdialog->setImages(m_progressdialog->images()+1);
 					m_getAllIgnored++;
@@ -1223,6 +1228,7 @@ void mainWindow::_getAll()
 					if (m_progressBars[site_id - 1]->value() >= m_progressBars[site_id - 1]->maximum())
 					{ ui->tableBatchGroups->item(row, 0)->setIcon(QIcon(":/images/colors/green.png")); }
 					img->deleteLater();
+					qDebug() << "DELETE ignored" << QString::number((int)img, 16);
 					_getAll();
 				}
 				else
@@ -1241,8 +1247,9 @@ void mainWindow::_getAll()
 					if (m_progressBars[site_id - 1]->value() >= m_progressBars[site_id - 1]->maximum())
 					{ ui->tableBatchGroups->item(row, 0)->setIcon(QIcon(":/images/colors/green.png")); }
 				}
-				m_getAllDownloading.removeAt(0);
+				m_getAllDownloading.removeAll(img);
 				img->deleteLater();
+				qDebug() << "DELETE already" << QString::number((int)img, 16);
 				_getAll();
 			}
 		}
@@ -1411,6 +1418,7 @@ void mainWindow::getAllPerformTags(Image* img)
 			m_getAllDownloadingSpeeds.remove(img->url());
 			m_getAllDownloading.removeAt(m_getAllId);
 			img->deleteLater();
+			qDebug() << "DELETE tags ignored" << QString::number((int)img, 16);
 			_getAll();
 		}
 		else
@@ -1432,6 +1440,7 @@ void mainWindow::getAllPerformTags(Image* img)
 		m_getAllDownloadingSpeeds.remove(img->url());
 		m_getAllDownloading.removeAt(m_getAllId);
 		img->deleteLater();
+		qDebug() << "DELETE tags already" << QString::number((int)img, 16);
 		_getAll();
 	}
 }
@@ -1510,6 +1519,7 @@ void mainWindow::getAllGetImage(Image* img)
 		m_getAllDownloadingSpeeds.remove(img->url());
 		m_getAllDownloading.removeAt(m_getAllId);
 		img->deleteLater();
+		qDebug() << "DELETE next" << QString::number((int)img, 16);
 		_getAll();
 	}
 }
@@ -1581,6 +1591,7 @@ void mainWindow::getAllPerformImage(Image* img)
 	m_getAllDownloading.removeAt(m_getAllId);
 
 	img->deleteLater();
+	qDebug() << "DELETE performimage" << QString::number((int)img, 16);
 	_getAll();
 }
 void mainWindow::saveImage(Image *img, QNetworkReply *reply, QString path, QString p, bool getAll)

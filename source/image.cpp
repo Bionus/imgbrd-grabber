@@ -5,6 +5,7 @@
 
 Image::Image(QMap<QString, QString> details, int timezonedecay, Page* parent)
 {
+	// Parents
 	m_site = parent != NULL ? parent->website() : (details.contains("website") ? details["website"] : "");
 	m_parentSite = parent != NULL ? parent->site() : (details.contains("site") ? (Site*)details["site"].toInt() : NULL);
 	if (m_parentSite == NULL)
@@ -12,28 +13,52 @@ Image::Image(QMap<QString, QString> details, int timezonedecay, Page* parent)
 		log("Image has null parent, aborting creation.");
 		return;
 	}
+
+	// Get file url and try to improve it to save bandwidth
 	m_url = details.contains("file_url") ? (details["file_url"].startsWith("//") ? "http:"+details["file_url"] : (details["file_url"].startsWith("/") ? "http://"+m_site+details["file_url"] : details["file_url"])) : "";
-	if (details.contains("image") && details["image"].contains("MB // gif\" height=\"") && !m_url.endsWith(".gif", Qt::CaseInsensitive)) {
-		QString ext = m_url.section('.', -1);
-		if (ext.length() > 5)
-			m_url += ".gif";
-		else
-			m_url = m_url.left(m_url.length() - ext.length()) + "gif";
+	QString ext = getExtension(m_url);
+	if (details.contains("sample_url"))
+	{
+		QString sampleExt = getExtension(details["sample_url"]);
+		if (sampleExt != "jpg" && sampleExt != ext)
+			m_url = setExtension(m_url, sampleExt);
 	}
+	else if (details.contains("image") && details["image"].contains("MB // gif\" height=\"") && !m_url.endsWith(".gif", Qt::CaseInsensitive))
+	{ m_url = setExtension(m_url, "gif"); }
+
+	// Other details
 	m_md5 = details.contains("md5") ? details["md5"] : "";
 	m_author = details.contains("author") ? details["author"] : "";
 	m_status = details.contains("status") ? details["status"] : "";
-	m_rating = details.contains("rating") ? details["rating"] : "";
 	m_filename = details.contains("filename") ? details["filename"] : "";
 	m_folder = details.contains("folder") ? details["folder"] : "";
 	m_search = parent != NULL ? parent->search() : QStringList();
+	m_id = details.contains("id") ? details["id"].toInt() : 0;
+	m_score = details.contains("score") ? details["score"].toInt() : 0;
+	m_hasScore = details.contains("score");
+	m_parentId = details.contains("parent_id") ? details["parent_id"].toInt() : 0;
+	m_fileSize = details.contains("file_size") ? details["file_size"].toInt() : 0;
+	m_authorId = details.contains("creator_id") ? details["creator_id"].toInt() : 0;
+	m_hasChildren = details.contains("has_children") ? details["has_children"] == "true" : false;
+	m_hasNote = details.contains("has_note") ? details["has_note"] == "true" : false;
+	m_hasComments = details.contains("has_comments") ? details["has_comments"] == "true" : false;
+	m_pageUrl = details.contains("page_url") ? QUrl(details["page_url"]) : QUrl();
+	m_fileUrl = details.contains("file_url") ? QUrl(details["file_url"].startsWith("/") ? "http://"+m_site+details["file_url"] : details["file_url"]) : QUrl();
+	m_sampleUrl = details.contains("sample_url") ? QUrl(details["sample_url"].startsWith("/") ? "http://"+m_site+details["sample_url"] : details["sample_url"]) : QUrl();
+	m_previewUrl = details.contains("preview_url") ? QUrl(details["preview_url"].startsWith("/") ? "http://"+m_site+details["preview_url"] : details["preview_url"]) : QUrl();
+	m_size = QSize(details.contains("width") ? details["width"].toInt() : 0, details.contains("height") ? details["height"].toInt() : 0);
+	m_source = details.contains("source") ? details["source"] : "";
+
+	// Rating
+	m_rating = details.contains("rating") ? details["rating"] : "";
 	QMap<QString,QString> assoc;
 		assoc["s"] = tr("Safe");
 		assoc["q"] = tr("Questionable");
 		assoc["e"] = tr("Explicit");
 	if (assoc.contains(m_rating))
 	{ m_rating = assoc[m_rating]; }
-	m_source = details.contains("source") ? details["source"] : "";
+
+	// Tags
 	m_tags = QList<Tag>();
 	if (details.contains("tags_general"))
 	{
@@ -80,12 +105,8 @@ Image::Image(QMap<QString, QString> details, int timezonedecay, Page* parent)
 			m_tags.append(Tag(tg));
 		}
 	}
-	m_id = details.contains("id") ? details["id"].toInt() : 0;
-	m_score = details.contains("score") ? details["score"].toInt() : 0;
-	m_hasScore = details.contains("score");
-	m_parentId = details.contains("parent_id") ? details["parent_id"].toInt() : 0;
-	m_fileSize = details.contains("file_size") ? details["file_size"].toInt() : 0;
-	m_authorId = details.contains("creator_id") ? details["creator_id"].toInt() : 0;
+
+	// Creation date
 	m_createdAt = QDateTime();
 	if (details.contains("created_at"))
 	{
@@ -94,16 +115,9 @@ Image::Image(QMap<QString, QString> details, int timezonedecay, Page* parent)
 		else
 		{ m_createdAt = qDateTimeFromString(details["created_at"], timezonedecay); }
 	}
-	m_hasChildren = details.contains("has_children") ? details["has_children"] == "true" : false;
-	m_hasNote = details.contains("has_note") ? details["has_note"] == "true" : false;
-	m_hasComments = details.contains("has_comments") ? details["has_comments"] == "true" : false;
-	m_pageUrl = details.contains("page_url") ? QUrl(details["page_url"]) : QUrl();
-	m_fileUrl = details.contains("file_url") ? QUrl(details["file_url"].startsWith("/") ? "http://"+m_site+details["file_url"] : details["file_url"]) : QUrl();
-	m_sampleUrl = details.contains("sample_url") ? QUrl(details["sample_url"].startsWith("/") ? "http://"+m_site+details["sample_url"] : details["sample_url"]) : QUrl();
-	m_previewUrl = details.contains("preview_url") ? QUrl(details["preview_url"].startsWith("/") ? "http://"+m_site+details["preview_url"] : details["preview_url"]) : QUrl();
-	m_size = QSize(details.contains("width") ? details["width"].toInt() : 0, details.contains("height") ? details["height"].toInt() : 0);
-	m_parent = parent;
 
+	// Tech details
+	m_parent = parent;
 	m_previewTry = 0;
 	m_loadPreview = NULL;
 	m_loadDetails = NULL;
@@ -166,6 +180,7 @@ void Image::parsePreview()
 
 void Image::loadDetails()
 {
+	qDebug() << "loadDetails" << QString::number((int)this, 16);
 	m_loadDetails = m_parentSite->get(m_pageUrl);
 	m_loadDetails->setParent(this);
 
@@ -565,10 +580,7 @@ QString Image::path(QString fn, QString pth, int counter, bool complex, bool sim
 	else
 	{ copyrights = details["copyrights"]; }
 
-	// Find extension
-	QString ext = m_url.section('.', -1);
-	if (ext.length() > 5)
-		ext = "jpg";
+	QString ext = getExtension(m_url);
 
 	QMap<QString,QStrP> replaces = QMap<QString,QStrP>();
 	replaces.insert("ext", QStrP(ext, "jpg"));
@@ -739,6 +751,7 @@ QString Image::path(QString fn, QString pth, int counter, bool complex, bool sim
 
 void Image::loadImage()
 {
+	qDebug() << "loadImage" << QString::number((int)this, 16);
 	m_loadImage = m_parentSite->get(m_url, m_parent, "image", this);
 	m_loadImage->setParent(this);
 	//m_timer.start();
@@ -756,15 +769,26 @@ void Image::finishedImageS()
 		return;
 	}
 
-	if (m_loadImage->error() == QNetworkReply::ContentNotFoundError && m_url.section('.', -1) != "jpeg")
+	bool sampleFallback = m_settings->value("Save/samplefallback", true).toBool();
+	QString ext = getExtension(m_url);
+	if (m_loadImage->error() == QNetworkReply::ContentNotFoundError
+			&& (ext != "webm" || (sampleFallback && !m_sampleUrl.isEmpty())))
 	{
-		QString ext = m_url.section('.', -1);
-		QMap<QString,QString> nextext;
-		nextext["jpg"] = "png";
-		nextext["png"] = "gif";
-		nextext["gif"] = "jpeg";
-		setUrl(m_url.section('.', 0, -2)+"."+nextext[ext]);
-		log(tr("Image non trouvée. Nouvel essai avec l'extension %1...").arg(nextext[ext]));
+		if (ext == "webm")
+		{
+			setUrl(m_sampleUrl.toString());
+			log(tr("Image non trouvée. Nouvel essai avec son sample..."));
+		}
+		else
+		{
+			QMap<QString,QString> nextext;
+			nextext["jpg"] = "png";
+			nextext["png"] = "gif";
+			nextext["gif"] = "jpeg";
+			nextext["jpeg"] = "webm";
+			setUrl(m_url.section('.', 0, -2)+"."+nextext[ext]);
+			log(tr("Image non trouvée. Nouvel essai avec l'extension %1...").arg(nextext[ext]));
+		}
 		loadImage();
 		return;
 	}

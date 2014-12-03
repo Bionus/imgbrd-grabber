@@ -86,7 +86,7 @@ void Site::loginFinished()
 	m_loggedIn = m_cookieJar->cookiesForUrl(m_loginReply->url()).isEmpty();
 
 	m_triedLogin = true;
-	log(tr("Connexion à %1 (%2) terminée (%2).").arg(m_name, m_url, m_loggedIn ? "succès" : "échec"));
+	log(tr("Connexion à %1 (%2) terminée (%3).").arg(m_name, m_url, m_loggedIn ? "succès" : "échec"));
 
 	emit loggedIn(m_loggedIn ? LoginSuccess : LoginError);
 }
