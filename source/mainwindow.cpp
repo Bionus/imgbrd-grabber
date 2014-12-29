@@ -491,6 +491,13 @@ void mainWindow::saveFolder()
 	if (dir.exists())
 	{ showInGraphicalShell(path); }
 }
+void mainWindow::openSettingsFolder()
+{
+	QDir dir(savePath(""));
+	if (dir.exists())
+	{ showInGraphicalShell(dir.absolutePath()); }
+}
+
 void mainWindow::batchClear()
 {
 	m_batchs.clear();

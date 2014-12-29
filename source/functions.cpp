@@ -104,11 +104,13 @@ QDateTime qDateTimeFromString(QString str, int timezonedecay)
 void loadMd5s()
 {
 	QFile f(savePath("md5s.txt"));
-	f.open(QFile::ReadOnly);
-	QString line;
-	while ((line = f.readLine()) != "")
-		_md5.insert(line.left(32), line.mid(32));
-	f.close();
+	if (f.open(QFile::ReadOnly))
+	{
+		QString line;
+		while ((line = f.readLine()) != "")
+			_md5.insert(line.left(32), line.mid(32));
+		f.close();
+	}
 }
 
 /**
@@ -117,12 +119,14 @@ void loadMd5s()
 void saveMd5s()
 {
 	QFile f(savePath("md5s.txt"));
-	f.open(QFile::WriteOnly | QFile::Truncate);
-	QStringList md5s = _md5.keys();
-	QStringList paths = _md5.values();
-	for (int i = 0; i < md5s.size(); i++)
-		f.write(QString(md5s[i] + paths[i] + "\r\n").toUtf8());
-	f.close();
+	if (f.open(QFile::WriteOnly | QFile::Truncate))
+	{
+		QStringList md5s = _md5.keys();
+		QStringList paths = _md5.values();
+		for (int i = 0; i < md5s.size(); i++)
+			f.write(QString(md5s[i] + paths[i] + "\r\n").toUtf8());
+		f.close();
+	}
 }
 
 /**
@@ -131,9 +135,11 @@ void saveMd5s()
 void saveMd5(QString md5, QString path)
 {
 	QFile f(savePath("md5s.txt"));
-	f.open(QFile::WriteOnly | QFile::Append);
-	f.write(QString(md5 + path + "\r\n").toUtf8());
-	f.close();
+	if (f.open(QFile::WriteOnly | QFile::Append))
+	{
+		f.write(QString(md5 + path + "\r\n").toUtf8());
+		f.close();
+	}
 }
 
 /**
