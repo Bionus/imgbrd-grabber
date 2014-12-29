@@ -755,6 +755,8 @@ void tagTab::getPage()
 		if (m_pages.contains(actuals.at(i)))
 		{
 			int perpage = unloaded ? ui->spinImagesPerPage->value() : (m_pages.value(actuals.at(i))->images().count() > ui->spinImagesPerPage->value() ? m_pages.value(actuals.at(i))->images().count() : ui->spinImagesPerPage->value());
+			if (perpage <= 0)
+				continue;
 			emit batchAddGroup(QStringList()
 							   << m_search->toPlainText() + " " + settings.value("add").toString().trimmed()
 							   << QString::number(ui->spinPage->value())
@@ -772,6 +774,7 @@ void tagTab::getAll()
 {
 	if (m_pages.empty())
 		return;
+
 	QStringList actuals, keys = m_sites->keys();
 	for (int i = 0; i < m_checkboxes.count(); i++)
 	{
@@ -782,7 +785,16 @@ void tagTab::getAll()
 	for (int i = 0; i < actuals.count(); i++)
 	{
 		int limit = m_sites->value(actuals.at(i))->contains("Urls/1/Limit") ? m_sites->value(actuals.at(i))->value("Urls/1/Limit").toInt() : 0;
-		emit batchAddGroup(QStringList() << m_search->toPlainText()+" "+settings.value("add").toString().trimmed() << "1" << QString::number(qMin((limit > 0 ? limit : 200), qMax(m_pages.value(actuals.at(i))->images().count(), m_pages.value(actuals.at(i))->imagesCount()))) << QString::number(qMax(m_pages.value(actuals.at(i))->images().count(), m_pages.value(actuals.at(i))->imagesCount())) << settings.value("downloadblacklist").toString() << actuals.at(i) << settings.value("Save/filename").toString() << settings.value("Save/path").toString() << "");
+		emit batchAddGroup(QStringList()
+						   << m_search->toPlainText()+" "+settings.value("add").toString().trimmed()
+						   << "1"
+						   << QString::number(qMin((limit > 0 ? limit : 200), qMax(m_pages.value(actuals.at(i))->images().count(), m_pages.value(actuals.at(i))->imagesCount())))
+						   << QString::number(qMax(m_pages.value(actuals.at(i))->images().count(), m_pages.value(actuals.at(i))->imagesCount()))
+						   << settings.value("downloadblacklist").toString()
+						   << actuals.at(i)
+						   << settings.value("Save/filename").toString()
+						   << settings.value("Save/path").toString()
+						   << "");
 	}
 }
 void tagTab::getSel()

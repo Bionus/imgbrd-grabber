@@ -1294,7 +1294,7 @@ void mainWindow::_getAll()
 			{
 				m_getAll = true;
 				m_progressdialog->clear();
-				qDeleteAll(m_getAllRemaining);
+				//qDeleteAll(m_getAllRemaining);
 				m_getAllRemaining.clear();
 				m_getAllRemaining = m_getAllFailed;
 				m_getAllFailed.clear();
@@ -1500,7 +1500,7 @@ void mainWindow::getAllGetImage(Image* img)
 	else
 	{
 		m_getAllIgnored++;
-		log(tr("MD5 \"%1\" de l'image <a href=\"%2\">%2</a> déjà existant dans le fichier <a href=\"file:///%3\">%3</a>").arg(img->md5(), md5Duplicate));
+		log(tr("MD5 \"%1\" de l'image <a href=\"%2\">%2</a> déjà existant dans le fichier <a href=\"file:///%3\">%3</a>").arg(img->md5(), img->url(), md5Duplicate));
 	}
 
 	// Continue to next image
@@ -1521,6 +1521,7 @@ void mainWindow::getAllPerformImage(Image* img)
 	{ return; }
 
 	QNetworkReply* reply = img->imageReply();
+	bool del = true;
 
 	if (reply->error() == QNetworkReply::OperationCanceledError)
 	{ return; }
@@ -1568,6 +1569,7 @@ void mainWindow::getAllPerformImage(Image* img)
 	{
 		m_progressdialog->errorImage(img->url());
 		m_getAllFailed.append(m_getAllDownloading[m_getAllId]);
+		del = false;
 	}
 
 	if (site_id >= 0)
@@ -1582,7 +1584,8 @@ void mainWindow::getAllPerformImage(Image* img)
 	m_getAllDownloadingSpeeds.remove(img->url());
 	m_getAllDownloading.removeAt(m_getAllId);
 
-	img->deleteLater();
+	if (del)
+		img->deleteLater();
 	// qDebug() << "DELETE performimage" << QString::number((int)img, 16);
 	_getAll();
 }
@@ -1659,14 +1662,18 @@ void mainWindow::getAllCancel()
 {
 	log(tr("Annulation des téléchargements..."));
 	m_progressdialog->cancel();
-	for (int i = 0; i < m_getAllDownloading.size(); i++)
+	for (Image *image : m_getAllDownloading)
 	{
-		m_getAllDownloading[i]->abortTags();
-		m_getAllDownloading[i]->abortImage();
+		image->abortTags();
+		image->abortImage();
+	}
+	for (Downloader *downloader : m_downloaders)
+	{
+		downloader->cancel();
 	}
 	m_progressdialog->clear();
 	m_getAll = false;
-	ui->widgetDownloadButtons->setDisabled(m_getAll);
+	ui->widgetDownloadButtons->setEnabled(true);
 	DONE();
 }
 void mainWindow::getAllPause()

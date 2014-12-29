@@ -259,11 +259,6 @@ void Page::parse()
 	// XML
 	if (m_format == "xml")
 	{
-		QFile f("C:/Users/Spark/Desktop/test.html");
-		f.open(QFile::WriteOnly);
-		f.write(m_source.toLatin1());
-		f.close();
-
 		// Initializations
 		QDomDocument doc;
 		QString errorMsg;

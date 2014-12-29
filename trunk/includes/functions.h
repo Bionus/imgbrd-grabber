@@ -47,6 +47,7 @@ void		logUpdate(QString);
 
 void		loadMd5s();
 void		saveMd5s();
+void		saveMd5(QString md5, QString path);
 QString		md5Exists(QString);
 void		addMd5(QString, QString);
 void		setMd5(QString, QString);

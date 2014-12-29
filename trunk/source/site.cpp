@@ -228,9 +228,10 @@ QMap<QString, Site*> *Site::getAllSites()
 							{
 								QString sr = srcs[j] == "Regex" ? "Html" : srcs[j];
 								_prependUrl(&details, line, "Urls/"+sr+"/Tags", "Urls/"+QString::number(j+1)+"/Tags");
-								_prependUrl(&details, line, "Urls/"+sr+"/Limit", "Urls/"+QString::number(j+1)+"/Limit");
 								_prependUrl(&details, line, "Urls/"+sr+"/Home", "Urls/"+QString::number(j+1)+"/Home");
 								_prependUrl(&details, line, "Urls/"+sr+"/Pools", "Urls/"+QString::number(j+1)+"/Pools");
+								if (details.contains("Urls/"+sr+"/Limit"))
+									details["Urls/"+QString::number(j+1)+"/Limit"] = details["Urls/"+sr+"/Limit"];
 							}
 							_prependUrl(&details, line, "Urls/Html/Post");
 							_prependUrl(&details, line, "Urls/Html/Tags");

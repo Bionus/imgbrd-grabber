@@ -34,6 +34,15 @@ use_qscintilla {
 	LIBS += -lqscintilla2
 }
 
+# SSL
+win32 {
+    LIBS += -L"C:/OpenSSL-Win32/lib" -llibeay32
+    INCLUDEPATH += C:/OpenSSL-Win32/include
+}
+unix {
+    PKGCONFIG += openssl
+}
+
 # Google-Breakpad
 use_breakpad {
 	DEFINES += USE_BREAKPAD=1
