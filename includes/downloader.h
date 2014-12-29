@@ -50,6 +50,7 @@ class Downloader : public QObject
 		void finishedLoadingImages(Page *page);
 		void finishedLoadingUrls(Page *page);
 		void finishedLoadingImage(Image *image);
+		void cancel();
 
 	private:
 		QList<Site*> *m_sites;
@@ -64,6 +65,7 @@ class Downloader : public QObject
 		int m_tagsmin;
 		QString m_tagsformat;
         QVariant m_data;
+		bool m_cancelled;
 };
 
 #endif // DOWNLOADER_H

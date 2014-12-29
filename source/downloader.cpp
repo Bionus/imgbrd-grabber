@@ -50,10 +50,12 @@ void Downloader::getPageCount()
 	}
 
 	m_waiting = 0;
+	m_cancelled = false;
+	auto sites = Site::getAllSites();
 
 	for (int i = 0; i < m_sites->size(); ++i)
 	{
-		Page *page = new Page(m_sites->at(i), Site::getAllSites(), m_tags, m_page, m_perpage, m_postfiltering, true, this);
+		Page *page = new Page(m_sites->at(i), sites, m_tags, m_page, m_perpage, m_postfiltering, true, this);
 		connect(page, &Page::finishedLoadingTags, this, &Downloader::finishedLoadingPageCount);
 
 		m_pagesC->append(page);
@@ -65,6 +67,9 @@ void Downloader::getPageCount()
 }
 void Downloader::finishedLoadingPageCount(Page *page)
 {
+	if (m_cancelled)
+		return;
+
 	log("Received page '"+page->url().toString()+"'");
 
 	if (--m_waiting > 0)
@@ -92,10 +97,12 @@ void Downloader::getPageTags()
 	}
 
 	m_waiting = 0;
+	m_cancelled = false;
+	auto sites = Site::getAllSites();
 
 	for (int i = 0; i < m_sites->size(); ++i)
 	{
-		Page *page = new Page(m_sites->at(i), Site::getAllSites(), m_tags, m_page, m_perpage, m_postfiltering, true, this);
+		Page *page = new Page(m_sites->at(i), sites, m_tags, m_page, m_perpage, m_postfiltering, true, this);
 		connect(page, &Page::finishedLoadingTags, this, &Downloader::finishedLoadingPageTags);
 
 		m_pagesT->append(page);
@@ -107,6 +114,9 @@ void Downloader::getPageTags()
 }
 void Downloader::finishedLoadingPageTags(Page *page)
 {
+	if (m_cancelled)
+		return;
+
 	log("Received tags '"+page->url().toString()+"'");
 
 	if (--m_waiting > 0)
@@ -150,6 +160,7 @@ void Downloader::getTags()
 	}
 
 	m_waiting = 0;
+	m_cancelled = false;
 
 	for (int i = 0; i < m_sites->size(); ++i)
 	{
@@ -170,6 +181,9 @@ void Downloader::getTags()
 }
 void Downloader::loadNext()
 {
+	if (m_cancelled)
+		return;
+
 	if (!m_opagesP->isEmpty())
 	{
 		QPair<Site*, int> tag = m_opagesP->takeFirst();
@@ -213,6 +227,9 @@ void Downloader::loadNext()
 }
 void Downloader::finishedLoadingTags(QList<Tag> tags)
 {
+	if (m_cancelled)
+		return;
+
 	log("Received pure tags");
 
 	m_results->append(tags);
@@ -242,6 +259,8 @@ void Downloader::getImages()
 	}
 
 	m_waiting = 0;
+	m_cancelled = false;
+	auto sites = Site::getAllSites();
 
 	for (int i = 0; i < m_sites->size(); ++i)
 	{
@@ -250,7 +269,7 @@ void Downloader::getImages()
 			pages = 1;
 		for (int p = 0; p < pages; ++p)
 		{
-			Page *page = new Page(m_sites->at(i), Site::getAllSites(), m_tags, m_page + p, m_perpage, m_postfiltering, true, this);
+			Page *page = new Page(m_sites->at(i), sites, m_tags, m_page + p, m_perpage, m_postfiltering, true, this);
 			connect(page, &Page::finishedLoading, this, &Downloader::finishedLoadingImages);
 
 			m_pages->append(page);
@@ -263,6 +282,9 @@ void Downloader::getImages()
 }
 void Downloader::finishedLoadingImages(Page *page)
 {
+	if (m_cancelled)
+		return;
+
 	log("Received page '"+page->url().toString()+"'");
     emit finishedImagesPage(page);
 
@@ -310,6 +332,9 @@ void Downloader::downloadImages(QList<Image*> images)
 }
 void Downloader::finishedLoadingImage(Image *image)
 {
+	if (m_cancelled)
+		return;
+
 	log("Received image '"+image->url()+"'");
 
 	if (m_quit)
@@ -346,6 +371,8 @@ void Downloader::getUrls()
 	}
 
 	m_waiting = 0;
+	m_cancelled = false;
+	auto sites = Site::getAllSites();
 
 	for (int i = 0; i < m_sites->size(); ++i)
 	{
@@ -354,7 +381,7 @@ void Downloader::getUrls()
 			pages = 1;
 		for (int p = 0; p < pages; ++p)
 		{
-			Page *page = new Page(m_sites->at(i), Site::getAllSites(), m_tags, m_page + p, m_perpage, m_postfiltering, true, this);
+			Page *page = new Page(m_sites->at(i), sites, m_tags, m_page + p, m_perpage, m_postfiltering, true, this);
 			connect(page, &Page::finishedLoading, this, &Downloader::finishedLoadingUrls);
 
 			m_pages->append(page);
@@ -367,6 +394,9 @@ void Downloader::getUrls()
 }
 void Downloader::finishedLoadingUrls(Page *page)
 {
+	if (m_cancelled)
+		return;
+
 	log("Received page '"+page->url().toString()+"'");
     emit finishedUrlsPage(page);
 
@@ -444,4 +474,9 @@ void Downloader::setData(QVariant data)
 QVariant Downloader::getData()
 {
     return m_data;
+}
+
+void Downloader::cancel()
+{
+	m_cancelled = true;
 }
