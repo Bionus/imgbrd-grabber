@@ -433,6 +433,8 @@
     <addaction name="actionClosetab"/>
     <addaction name="separator"/>
     <addaction name="actionFolder"/>
+    <addaction name="actionSettingsFolder"/>
+    <addaction name="separator"/>
     <addaction name="actionQuit"/>
    </widget>
    <addaction name="menuFichier"/>
@@ -955,6 +957,11 @@
   <action name="actionMd5Fix">
    <property name="text">
     <string>Réparateur de liste de md5</string>
+   </property>
+  </action>
+  <action name="actionSettingsFolder">
+   <property name="text">
+    <string>Ouvrir le dossier des options</string>
    </property>
   </action>
  </widget>
@@ -1510,6 +1517,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionSettingsFolder</sender>
+   <signal>triggered()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>openSettingsFolder()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>270</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>help()</slot>
@@ -1551,5 +1574,6 @@
   <slot>updateCompleters()</slot>
   <slot>batchMoveUp()</slot>
   <slot>batchMoveDown()</slot>
+  <slot>openSettingsFolder()</slot>
  </slots>
 </ui>
