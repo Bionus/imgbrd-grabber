@@ -56,6 +56,7 @@ class mainWindow : public QMainWindow
         void optionsClosed();
         void aboutAuthor();
         void saveFolder();
+		void openSettingsFolder();
         void blacklistFix();
         void emptyDirsFix();
 		void md5FixOpen();
