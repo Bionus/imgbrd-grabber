@@ -755,7 +755,7 @@ void tagTab::getPage()
 		if (m_pages.contains(actuals.at(i)))
 		{
 			int perpage = unloaded ? ui->spinImagesPerPage->value() : (m_pages.value(actuals.at(i))->images().count() > ui->spinImagesPerPage->value() ? m_pages.value(actuals.at(i))->images().count() : ui->spinImagesPerPage->value());
-			if (perpage <= 0)
+			if (perpage <= 0 || m_pages.value(actuals.at(i))->images().count() <= 0)
 				continue;
 			emit batchAddGroup(QStringList()
 							   << m_search->toPlainText() + " " + settings.value("add").toString().trimmed()
@@ -785,11 +785,15 @@ void tagTab::getAll()
 	for (int i = 0; i < actuals.count(); i++)
 	{
 		int limit = m_sites->value(actuals.at(i))->contains("Urls/1/Limit") ? m_sites->value(actuals.at(i))->value("Urls/1/Limit").toInt() : 0;
+		int v1 = qMin((limit > 0 ? limit : 200), qMax(m_pages.value(actuals.at(i))->images().count(), m_pages.value(actuals.at(i))->imagesCount()));
+		int v2 = qMax(m_pages.value(actuals.at(i))->images().count(), m_pages.value(actuals.at(i))->imagesCount());
+		if (v1 == 0 && v2 == 0)
+			continue;
 		emit batchAddGroup(QStringList()
 						   << m_search->toPlainText()+" "+settings.value("add").toString().trimmed()
 						   << "1"
-						   << QString::number(qMin((limit > 0 ? limit : 200), qMax(m_pages.value(actuals.at(i))->images().count(), m_pages.value(actuals.at(i))->imagesCount())))
-						   << QString::number(qMax(m_pages.value(actuals.at(i))->images().count(), m_pages.value(actuals.at(i))->imagesCount()))
+						   << QString::number(v1)
+						   << QString::number(v2)
 						   << settings.value("downloadblacklist").toString()
 						   << actuals.at(i)
 						   << settings.value("Save/filename").toString()
