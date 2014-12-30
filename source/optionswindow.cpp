@@ -91,6 +91,7 @@ optionsWindow::optionsWindow(QWidget *parent) : QDialog(parent), ui(new Ui::opti
 
 	ui->comboBatchEnd->setCurrentIndex(settings.value("Batch/end", 0).toInt());
 	settings.beginGroup("Save");
+		ui->spinAutomaticRetries->setValue(settings.value("automaticretries", 0).toInt());
 		ui->checkDownloadOriginals->setChecked(settings.value("downloadoriginals", true).toBool());
 		ui->checkSampleFallback->setChecked(settings.value("samplefallback", true).toBool());
 		ui->checkReplaceBlanks->setChecked(settings.value("replaceblanks", false).toBool());
@@ -577,6 +578,7 @@ void optionsWindow::save()
 
 	settings.setValue("Batch/end", ui->comboBatchEnd->currentIndex());
 	settings.beginGroup("Save");
+		settings.setValue("automaticretries", ui->spinAutomaticRetries->value());
 		settings.setValue("downloadoriginals", ui->checkDownloadOriginals->isChecked());
 		settings.setValue("samplefallback", ui->checkSampleFallback->isChecked());
 		settings.setValue("replaceblanks", ui->checkReplaceBlanks->isChecked());
