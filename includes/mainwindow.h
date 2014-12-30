@@ -174,6 +174,7 @@ class mainWindow : public QMainWindow
         QSet<int>						m_batchDownloading;
 		QStringList			m_lineFilename_completer, m_lineFolder_completer;
         QList<Downloader*>  m_downloaders;
+		int					m_batchAutomaticRetries;
 };
 
 #endif // MAINWINDOW_H
