@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Grabber"
-#define MyAppVersion "4.0.3"
+#define MyAppVersion "4.0.5"
 #define MyAppPublisher "Bionus"
 #define MyAppURL "http://code.google.com/p/imgbrd-grabber/"
 #define MyAppExeName "Grabber.exe"
@@ -34,8 +34,11 @@ SolidCompression=yes
 ChangesAssociations=yes         
 
 [CustomMessages] 
-english.IGL=Imageboard-Grabber Links
-french.IGL=Liens Imageboard-Grabber
+en.IGL=Imageboard-Grabber Links
+fr.IGL=Liens Imageboard-Grabber
+vcredist2013_title=Visual C++ 2013 Redistributable
+vcredist2013_size=6.2 MB
+vcredist2013_size_x64=6.9 MB
 
 [Registry]
 Root: HKCR; Subkey: ".igl"; ValueType: string; ValueName: ""; ValueData: "Imageboard-Grabber"; Flags: uninsdeletevalue 
@@ -44,15 +47,15 @@ Root: HKCR; Subkey: "Imageboard-Grabber\DefaultIcon"; ValueType: string; ValueNa
 Root: HKCR; Subkey: "Imageboard-Grabber\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\{#MyAppExeName}"" ""%1""" 
 
 [Languages]
-Name: "english"; MessagesFile: "compiler:Default.isl"
+Name: "en"; MessagesFile: "compiler:Default.isl"
 Name: "brazilianportuguese"; MessagesFile: "compiler:Languages\BrazilianPortuguese.isl"
 Name: "catalan"; MessagesFile: "compiler:Languages\Catalan.isl"
 Name: "czech"; MessagesFile: "compiler:Languages\Czech.isl"
 Name: "danish"; MessagesFile: "compiler:Languages\Danish.isl"
 Name: "dutch"; MessagesFile: "compiler:Languages\Dutch.isl"
 Name: "finnish"; MessagesFile: "compiler:Languages\Finnish.isl"
-Name: "french"; MessagesFile: "compiler:Languages\French.isl"
-Name: "german"; MessagesFile: "compiler:Languages\German.isl"
+Name: "fr"; MessagesFile: "compiler:Languages\French.isl"
+Name: "de"; MessagesFile: "compiler:Languages\German.isl"
 Name: "hebrew"; MessagesFile: "compiler:Languages\Hebrew.isl"
 Name: "hungarian"; MessagesFile: "compiler:Languages\Hungarian.isl"
 Name: "italian"; MessagesFile: "compiler:Languages\Italian.isl"
@@ -63,6 +66,9 @@ Name: "portuguese"; MessagesFile: "compiler:Languages\Portuguese.isl"
 Name: "russian"; MessagesFile: "compiler:Languages\Russian.isl"
 Name: "slovenian"; MessagesFile: "compiler:Languages\Slovenian.isl"
 Name: "spanish"; MessagesFile: "compiler:Languages\Spanish.isl"   
+  
+#include "scripts\products.iss"
+#include "scripts\products\vcredist2013.iss"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
@@ -182,3 +188,10 @@ Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}"; Fil
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, "&", "&&")}}"; Flags: nowait postinstall skipifsilent
 
+[Code]
+function InitializeSetup(): Boolean;
+begin
+  // initwinversion();
+  vcredist2013();
+  Result := true;
+end;
