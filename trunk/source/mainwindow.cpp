@@ -35,7 +35,7 @@ extern QMap<QString,QString> _md5;
 
 
 
-mainWindow::mainWindow(QString program, QStringList tags, QMap<QString,QString> params) : ui(new Ui::mainWindow), m_currentFav(-1), m_downloads(0), m_loaded(false), m_getAll(false), m_program(program), m_tags(tags), m_params(params)
+mainWindow::mainWindow(QString program, QStringList tags, QMap<QString,QString> params) : ui(new Ui::mainWindow), m_currentFav(-1), m_downloads(0), m_loaded(false), m_getAll(false), m_program(program), m_tags(tags), m_params(params), m_batchAutomaticRetries(0)
 { }
 void mainWindow::init()
 {
@@ -1075,7 +1075,10 @@ void mainWindow::getAll(bool all)
             return;
 		}
 		else
-		{ getAllImages(); }
+		{
+			m_batchAutomaticRetries = m_settings->value("Save/automaticretries", 0).toInt();
+			getAllImages();
+		}
 	}
 
 	m_progressdialog->show();
@@ -1098,7 +1101,10 @@ void mainWindow::getAllFinishedImages(QList<Image*> images)
     m_getAllRemaining.append(images);
 
     if (m_downloaders.isEmpty())
+	{
+		m_batchAutomaticRetries = m_settings->value("Save/automaticretries", 0).toInt();
         getAllImages();
+	}
 }
 
 void mainWindow::getAllImages()
@@ -1282,21 +1288,30 @@ void mainWindow::_getAll()
 		}
 		activateWindow();
 		m_getAll = false;
-		QMessageBox::information(
-			this,
-			tr("Récupération des images"),
-			QString(
-				tr("%n fichier(s) récupéré(s) avec succès.", "", m_getAllDownloaded)+"\r\n"+
-				tr("%n fichier(s) ignoré(s).", "", m_getAllIgnored)+"\r\n"+
-				tr("%n fichier(s) déjà existant(s).", "", m_getAllExists)+"\r\n"+
-				tr("%n fichier(s) non trouvé(s) sur le serveur.", "", m_getAll404s)+"\r\n"+
-				tr("%n erreur(s).", "", m_getAllErrors)
-			)
-		);
+		if (m_getAllErrors <= 0 || m_batchAutomaticRetries <= 0)
+		{
+			QMessageBox::information(
+				this,
+				tr("Récupération des images"),
+				QString(
+					tr("%n fichier(s) récupéré(s) avec succès.", "", m_getAllDownloaded)+"\r\n"+
+					tr("%n fichier(s) ignoré(s).", "", m_getAllIgnored)+"\r\n"+
+					tr("%n fichier(s) déjà existant(s).", "", m_getAllExists)+"\r\n"+
+					tr("%n fichier(s) non trouvé(s) sur le serveur.", "", m_getAll404s)+"\r\n"+
+					tr("%n erreur(s).", "", m_getAllErrors)
+				)
+			);
+		}
 		int reponse = QMessageBox::No;
 		if (m_getAllErrors > 0)
 		{
-			reponse = QMessageBox::question(this, tr("Récupération des images"), tr("Des erreurs sont survenues pendant le téléchargement des images. Voulez vous relancer le téléchargement de celles-ci ? (%1/%2)").arg(m_getAllErrors).arg(m_getAllDownloaded + m_getAllIgnored + m_getAllExists + m_getAll404s + m_getAllErrors), QMessageBox::Yes | QMessageBox::No);
+			if (m_batchAutomaticRetries > 0)
+			{
+				m_batchAutomaticRetries--;
+				reponse = QMessageBox::Yes;
+			}
+			else
+			{ reponse = QMessageBox::question(this, tr("Récupération des images"), tr("Des erreurs sont survenues pendant le téléchargement des images. Voulez vous relancer le téléchargement de celles-ci ? (%1/%2)").arg(m_getAllErrors).arg(m_getAllDownloaded + m_getAllIgnored + m_getAllExists + m_getAll404s + m_getAllErrors), QMessageBox::Yes | QMessageBox::No); }
 			if (reponse == QMessageBox::Yes)
 			{
 				m_getAll = true;
