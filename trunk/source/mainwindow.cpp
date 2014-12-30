@@ -257,12 +257,10 @@ void mainWindow::init()
 
 	m_loaded = true;
 	logShow();
+	log("Fin de l'initialisation.");
 }
 void mainWindow::loadSites()
 {
-	// TODO: fix crash on qDeleteAll here
-	// qDeleteAll(m_sites);
-
 	m_sites.clear();
 	m_sites = *Site::getAllSites();
 }

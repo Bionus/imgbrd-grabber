@@ -475,7 +475,7 @@ void log(QString l, Log)
 	//_log.insert(time, (type == Error ? QObject::tr("<b>Erreur :</b> %1").arg(l) : (type == Warning ? QObject::tr("<b>Attention :</b> %1").arg(l) : (type == Notice ? QObject::tr("<b>Notice :</b> %1").arg(l) : l))));
 	//_mainwindow->logShow();
 
-	qDebug() << l;
+	qDebug() << time.toString("hh:mm:ss.zzz") << l;
 }
 void logCommand(QString l)
 {
