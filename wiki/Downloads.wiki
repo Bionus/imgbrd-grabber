@@ -1,24 +1,16 @@
 #summary Download list.
 
-= Changes to the downloads =
-The downloads have moved because Google Code will soon disable its downloads feature.
+[http://www.bionus.fr.cr/imgbrd-grabber/downloads.html Downloads]
 
-You can find the new downloads list [http://www.bionus.fr.cr/imgbrd-grabber/downloads.html here].
+= Download list =
+The downloads have moved because Google Code have disabled its downloads feature.
 
-= Direct links =
-== Windows ==
-  * [http://www.bionus.fr.cr/imgbrd-grabber/downloads/Grabber_4.0.1.exe 4.0.1] <font color="green">Featured</font>
-  * [http://www.bionus.fr.cr/imgbrd-grabber/downloads/Grabber_4.0.0.exe 4.0.0]
-  * [http://www.bionus.fr.cr/imgbrd-grabber/downloads/Grabber_3.5.0.exe 3.5.0]
-  * [http://www.bionus.fr.cr/imgbrd-grabber/downloads/Grabber_3.4.1.exe 3.4.1]
-  * [http://www.bionus.fr.cr/imgbrd-grabber/downloads/Grabber_3.3.0.exe 3.3.0]
-  * [http://www.bionus.fr.cr/imgbrd-grabber/downloads/Grabber_3.2.7.exe 3.2.7]
-[http://www.bionus.fr.cr/imgbrd-grabber/downloads/Grabber.exe Latest snapshot] (make sure to install the latest version first)
+You can find the download list [http://www.bionus.fr.cr/imgbrd-grabber/downloads.html here].
 
-== Linux ==
-  * [http://www.bionus.fr.cr/imgbrd-grabber/downloads/Grabber_3.2.6.tar.gz 3.2.6] <font color="green">Featured</font>
-  * [http://www.bionus.fr.cr/imgbrd-grabber/downloads/Grabber_3.1.4.tar.gz 3.1.4]
+= Windows snapshot =
+[http://www.bionus.fr.cr/imgbrd-grabber/downloads/Grabber.exe Latest snapshot] (make sure to install the latest full version first)
 
 = Mirrors =
+Mirrors are usually not updated as fast as the website, so use it only if you cannot access the website.
   * [https://googledrive.com/host/0B9j07AwMZbxDLU9Td2VwVUJ6Tnc Google Drive]
   * [https://skydrive.live.com/redir?resid=865D66DC92FCEFA5!124&authkey=!ANp8C5QMjubMtWg SkyDrive]
