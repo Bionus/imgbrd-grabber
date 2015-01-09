@@ -250,15 +250,16 @@ void mainWindow::init()
 	updateFavorites(true);
 	updateKeepForLater();
 
-	m_lineFilename_completer = QStringList(m_settings->value("Save/filename").toString());
+	//m_lineFilename_completer = QStringList(m_settings->value("Save/filename").toString());
 	m_lineFolder_completer = QStringList(m_settings->value("Save/path").toString());
 	ui->lineFolder->setCompleter(new QCompleter(m_lineFolder_completer));
-	ui->lineFilename->setCompleter(new QCompleter(m_lineFilename_completer));
+	//ui->lineFilename->setCompleter(new QCompleter(m_lineFilename_completer));
 
 	m_loaded = true;
 	logShow();
 	log("Fin de l'initialisation.");
 }
+
 void mainWindow::loadSites()
 {
 	m_sites.clear();
@@ -1657,11 +1658,23 @@ void mainWindow::saveImage(Image *img, QNetworkReply *reply, QString path, QStri
 
 				if (m_settings->value("Textfile/activate", false).toBool())
 				{
-					QString contents = img->path(m_settings->value("Textfile/content", "%all%").toString(), "");
+					QString contents = img->path(m_settings->value("Textfile/content", "%all%").toString(), "", true, false, false);
 					QFile file_tags(fp + ".txt");
-					file_tags.open(QFile::WriteOnly);
-					file_tags.write(contents.toLatin1());
-					file_tags.close();
+					if (file_tags.open(QFile::WriteOnly | QFile::Text))
+					{
+						file_tags.write(contents.toLatin1());
+						file_tags.close();
+					}
+				}
+				if (m_settings->value("SaveLog/activate", false).toBool() && !m_settings->value("SaveLog/file", "").toString().isEmpty())
+				{
+					QString contents = img->path(m_settings->value("SaveLog/format", "%website% - %md5% - %all%").toString(), "", true, false, false);
+					QFile file_tags(m_settings->value("SaveLog/file", "").toString());
+					if (file_tags.open(QFile::WriteOnly | QFile::Append | QFile::Text))
+					{
+						file_tags.write(contents.toUtf8() + "\n");
+						file_tags.close();
+					}
 				}
 			}
 			else
@@ -1896,13 +1909,23 @@ void mainWindow::on_buttonSaveSettings_clicked()
 	if (!QDir(ui->lineFolder->text()).exists())
 	{ QDir::root().mkpath(ui->lineFolder->text()); }
 	m_settings->setValue("Save/path_real", ui->lineFolder->text());
-	m_settings->setValue("Save/filename_real", ui->lineFilename->text());
+	m_settings->setValue("Save/filename_real", ui->comboFilename->currentText());
 	saveSettings();
 }
 void mainWindow::on_buttonInitSettings_clicked()
 {
+	QFile f(savePath("filenamehistory.txt"));
+	if (f.open(QFile::ReadOnly | QFile::Text))
+	{
+		QString line;
+		while ((line = f.readLine()) > 0)
+			if (!line.trimmed().isEmpty())
+				ui->comboFilename->insertItem(0, line.trimmed());
+		f.close();
+	}
+
 	ui->lineFolder->setText(m_settings->value("Save/path_real").toString());
-	ui->lineFilename->setText(m_settings->value("Save/filename_real").toString());
+	ui->comboFilename->setCurrentText(m_settings->value("Save/filename_real").toString());
 	Commands::get()->init(m_settings);
 	saveSettings();
 }
@@ -1913,17 +1936,35 @@ void mainWindow::updateCompleters()
 		m_lineFolder_completer.append(ui->lineFolder->text());
 		ui->lineFolder->setCompleter(new QCompleter(m_lineFolder_completer));
 	}
-	if (ui->labelFilename->text() != m_settings->value("Save/filename").toString())
+	/*if (ui->labelFilename->tex+t() != m_settings->value("Save/filename").toString())
 	{
 		m_lineFilename_completer.append(ui->lineFilename->text());
 		ui->lineFilename->setCompleter(new QCompleter(m_lineFilename_completer));
-	}
+	}*/
 }
 void mainWindow::saveSettings()
 {
+	// Filename combobox
+	QString txt = ui->comboFilename->currentText();
+	for (int i = ui->comboFilename->count() - 1; i >= 0; --i)
+		if (ui->comboFilename->itemText(i) == txt)
+			ui->comboFilename->removeItem(i);
+	ui->comboFilename->insertItem(0, txt);
+	ui->comboFilename->setCurrentIndex(0);
+	ui->labelFilename->setText(validateFilename(ui->comboFilename->currentText()));
+
+	// Save filename history
+	QFile f(savePath("filenamehistory.txt"));
+	if (f.open(QFile::WriteOnly | QFile::Text | QFile::Truncate))
+	{
+		for (int i = 0; i < ui->comboFilename->count(); ++i)
+			f.write(QString(ui->comboFilename->itemText(i) + "\n").toUtf8());
+		f.close();
+	}
+
+	// Update settings
 	m_settings->setValue("Save/path", ui->lineFolder->text());
-	m_settings->setValue("Save/filename", ui->lineFilename->text());
-	ui->labelFilename->setText(validateFilename(ui->lineFilename->text()));
+	m_settings->setValue("Save/filename", ui->comboFilename->currentText());
 	m_settings->sync();
 }
 

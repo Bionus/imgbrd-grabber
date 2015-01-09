@@ -86,7 +86,8 @@ Source: "D:\Programmation\C++\Qt\Grabber\release\icuuc52.dll";  DestDir: "{app}"
 Source: "D:\Programmation\C++\Qt\Grabber\release\libeay32.dll"; DestDir: "{app}"; Flags: ignoreversion         
 Source: "D:\Programmation\C++\Qt\Grabber\release\libEGL.dll";   DestDir: "{app}"; Flags: ignoreversion         
 Source: "D:\Programmation\C++\Qt\Grabber\release\libGLESv2.dll";    DestDir: "{app}"; Flags: ignoreversion         
-Source: "D:\Programmation\C++\Qt\Grabber\release\libmysql.dll";     DestDir: "{app}"; Flags: ignoreversion        
+Source: "D:\Programmation\C++\Qt\Grabber\release\libmysql.dll";     DestDir: "{app}"; Flags: ignoreversion         
+Source: "D:\Programmation\C++\Qt\Grabber\release\libssl32.dll";     DestDir: "{app}"; Flags: ignoreversion        
 Source: "D:\Programmation\C++\Qt\Grabber\release\qscintilla2.dll";  DestDir: "{app}"; Flags: ignoreversion      
 Source: "D:\Programmation\C++\Qt\Grabber\release\Qt5Core.dll";      DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\Qt5Gui.dll";       DestDir: "{app}"; Flags: ignoreversion           

@@ -89,6 +89,12 @@ optionsWindow::optionsWindow(QWidget *parent) : QDialog(parent), ui(new Ui::opti
 	ui->textEditTextfileContent->setEnabled(settings.value("Textfile/activate", false).toBool());
 	ui->textEditTextfileContent->setPlainText(settings.value("Textfile/content", "%all%").toString());
 
+	ui->checkSaveLogEnable->setChecked(settings.value("SaveLog/activate", false).toBool());
+	ui->lineSaveLogFile->setEnabled(settings.value("SaveLog/activate", false).toBool());
+	ui->lineSaveLogFile->setText(settings.value("SaveLog/file", "").toString());
+	ui->lineSaveLogFormat->setEnabled(settings.value("SaveLog/activate", false).toBool());
+	ui->lineSaveLogFormat->setText(settings.value("SaveLog/format", "%website% - %md5% - %all%").toString());
+
 	ui->comboBatchEnd->setCurrentIndex(settings.value("Batch/end", 0).toInt());
 	settings.beginGroup("Save");
 		ui->spinAutomaticRetries->setValue(settings.value("automaticretries", 0).toInt());
@@ -499,6 +505,7 @@ void optionsWindow::setCategory(QString value)
 		tr("Sauvegarde", "update") <<
 		tr("Nom de fichier", "update") <<
 		tr("Fichier texte séparé", "update") <<
+		tr("Log séparé", "update") <<
 		tr("Noms multiples", "update") <<
 		tr("Tags artiste", "update") <<
 		tr("Tags série", "update") <<
@@ -574,6 +581,12 @@ void optionsWindow::save()
 	settings.beginGroup("Textfile");
 		settings.setValue("activate", ui->checkTextfileActivate->isChecked());
 		settings.setValue("content", ui->textEditTextfileContent->toPlainText());
+	settings.endGroup();
+
+	settings.beginGroup("SaveLog");
+		settings.setValue("activate", ui->checkSaveLogEnable->isChecked());
+		settings.setValue("file", ui->lineSaveLogFile->text());
+		settings.setValue("format", ui->lineSaveLogFormat->text());
 	settings.endGroup();
 
 	settings.setValue("Batch/end", ui->comboBatchEnd->currentIndex());
