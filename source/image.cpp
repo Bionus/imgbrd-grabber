@@ -507,7 +507,7 @@ QStrP getReplace(QString setting, QMap<QString,QStringList> details, QSettings *
  * @param simple True to force using the fn and pth parameters.
  * @return The filename of the image, with any token replaced.
  */
-QString Image::path(QString fn, QString pth, int counter, bool complex, bool simple)
+QString Image::path(QString fn, QString pth, int counter, bool complex, bool simple, bool maxlength)
 {
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
 	QStringList ignore = loadIgnored(), remove = settings.value("ignoredtags").toString().split(' ', QString::SkipEmptyParts);
@@ -726,7 +726,7 @@ QString Image::path(QString fn, QString pth, int counter, bool complex, bool sim
 			{ res.replace("_", " "); }
 
 			// We only cut the name if it is not a folder
-			if (complex && !filename.right(filename.length()-filename.indexOf("%"+key+"%")).contains("/"))
+			if (complex && !filename.right(filename.length()-filename.indexOf("%"+key+"%")).contains("/") && maxlength)
 			{ filename.replace("%"+key+"%", res.left(259-pth.length()-1-filename.length()).trimmed()); }
 			else
 			{ filename.replace("%"+key+"%", res.trimmed()); }
@@ -742,8 +742,11 @@ QString Image::path(QString fn, QString pth, int counter, bool complex, bool sim
 	{ filename.replace("//", "/"); }
 
 	// Max filename size option
-	if (complex && filename.length() > settings.value("limit").toInt() && settings.value("limit").toInt() > 0)
-	{ filename = filename.left(filename.length()-ext.length()-1).left(settings.value("limit").toInt()-ext.length()-1) + filename.right(ext.length()+1); }
+	if (maxlength)
+	{
+		if (complex && filename.length() > settings.value("limit").toInt() && settings.value("limit").toInt() > 0)
+		{ filename = filename.left(filename.length()-ext.length()-1).left(settings.value("limit").toInt()-ext.length()-1) + filename.right(ext.length()+1); }
+	}
 
 	return QDir::toNativeSeparators(filename);
 }

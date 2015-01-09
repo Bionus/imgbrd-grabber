@@ -136,8 +136,8 @@ void zoomWindow::go()
  */
 zoomWindow::~zoomWindow()
 {
-	if (m_imageTime != NULL)
-		delete m_imageTime;
+	/*if (m_imageTime != NULL)
+		delete m_imageTime;*/
 	if (image != NULL)
 		delete image;
 	if (movie != NULL)
@@ -653,11 +653,23 @@ QString zoomWindow::saveImage(bool fav)
 
 			if (settings.value("Textfile/activate", false).toBool())
 			{
-				QString contents = m_image->path(settings.value("Textfile/content", "%all%").toString(), "");
+				QString contents = m_image->path(settings.value("Textfile/content", "%all%").toString(), "", true, false, false);
 				QFile file_tags(fp + ".txt");
-				file_tags.open(QFile::WriteOnly);
-				file_tags.write(contents.toLatin1());
-				file_tags.close();
+				if (file_tags.open(QFile::WriteOnly | QFile::Text))
+				{
+					file_tags.write(contents.toUtf8());
+					file_tags.close();
+				}
+			}
+			if (settings.value("SaveLog/activate", false).toBool() && !settings.value("SaveLog/file", "").toString().isEmpty())
+			{
+				QString contents = m_image->path(settings.value("SaveLog/format", "%website% - %md5% - %all%").toString(), "", true, false, false);
+				QFile file_tags(settings.value("SaveLog/file", "").toString());
+				if (file_tags.open(QFile::WriteOnly | QFile::Append | QFile::Text))
+				{
+					file_tags.write(contents.toUtf8() + "\n");
+					file_tags.close();
+				}
 			}
 
 			if (fav)

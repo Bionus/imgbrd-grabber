@@ -91,6 +91,11 @@
         </item>
         <item>
          <property name="text">
+          <string>Log séparé</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
           <string>Tags artiste</string>
          </property>
         </item>
@@ -156,7 +161,7 @@
         </sizepolicy>
        </property>
        <property name="currentIndex">
-        <number>3</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="pageGeneral">
         <layout class="QFormLayout" name="formLayout_14">
@@ -919,6 +924,69 @@ p, li { white-space: pre-wrap; }
           <widget class="QLabel" name="label_80">
            <property name="text">
             <string>Symboles disponibles : les mêmes que dans la partie sauvegarde.</string>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="pageSaveLog">
+        <layout class="QFormLayout" name="formLayout_21">
+         <item row="0" column="0" colspan="2">
+          <widget class="QCheckBox" name="checkSaveLogEnable">
+           <property name="text">
+            <string>Activer le log séparé</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="labelSaveLogFile">
+           <property name="text">
+            <string>Fichier de log</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="labelSaveLogFormat">
+           <property name="text">
+            <string>Format de ligne</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <layout class="QHBoxLayout" name="layoutSaveLogFile">
+           <item>
+            <widget class="QLineEdit" name="lineSaveLogFile"/>
+           </item>
+           <item>
+            <widget class="QPushButton" name="buttonSaveLogFile">
+             <property name="text">
+              <string>Parcourir</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="3" column="1">
+          <layout class="QHBoxLayout" name="layoutSaveLogFormat">
+           <item>
+            <widget class="QLineEdit" name="lineSaveLogFormat"/>
+           </item>
+           <item>
+            <widget class="QPushButton" name="buttonSaveLogFormat">
+             <property name="text">
+              <string>...</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="1" column="0" colspan="2">
+          <widget class="QLabel" name="labelSaveLogEnable">
+           <property name="text">
+            <string>&lt;i&gt;À chaque fois qu'une image est sauvegardée, une ligne sera ajoutée au fichier séletionné.&lt;/i&gt;</string>
            </property>
            <property name="wordWrap">
             <bool>true</bool>
@@ -2557,6 +2625,70 @@ p, li { white-space: pre-wrap; }
     <hint type="destinationlabel">
      <x>340</x>
      <y>143</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkSaveLogEnable</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>lineSaveLogFile</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>275</x>
+     <y>26</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>506</x>
+     <y>78</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkSaveLogEnable</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>buttonSaveLogFile</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>608</x>
+     <y>25</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>602</x>
+     <y>74</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkSaveLogEnable</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>lineSaveLogFormat</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>454</x>
+     <y>29</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>449</x>
+     <y>106</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkSaveLogEnable</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>buttonSaveLogFormat</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>582</x>
+     <y>28</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>583</x>
+     <y>108</y>
     </hint>
    </hints>
   </connection>

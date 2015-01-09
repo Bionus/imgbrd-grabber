@@ -26,7 +26,7 @@ class Image : public QObject
 		~Image();
 		int			value();
 		QString		filter(QStringList);
-		QString		path(QString fn = "", QString pth = "", int counter = 0, bool complex = true, bool simple = false);
+		QString		path(QString fn = "", QString pth = "", int counter = 0, bool complex = true, bool simple = false, bool maxlength = true);
 		QStringList blacklisted(QStringList);
 		QStringList	stylishedTags(QStringList ignored);
 		QString		url();

@@ -24,6 +24,9 @@ SourcesSettingsWindow::SourcesSettingsWindow(Site *site, QWidget *parent) : QDia
     ui->spinIgnoreAlways->setValue(settings.value("ignore/always", 0).toInt());
     ui->spinIgnore1->setValue(settings.value("ignore/1", 0).toInt());
 
+	ui->spinImagesPerPage->setValue(settings.value("download/imagesperpage", 200).toInt());
+	ui->spinSimultaneousDownloads->setValue(settings.value("download/simultaneous", 1).toInt());
+
 	ui->checkSourcesDefault->setChecked(settings.value("sources/usedefault", true).toBool());
 	QStringList sources = QStringList() << "xml" << "json" << "regex" << "rss";
 	ui->comboSources1->setCurrentIndex(sources.indexOf(settings.value("sources/source_1", global.value("source_1", sources[0]).toString()).toString()));
@@ -115,8 +118,11 @@ void SourcesSettingsWindow::save()
 	settings.setValue("referer", referers[ui->comboReferer->currentIndex()]);
     settings.setValue("referer_preview", referers_preview[ui->comboRefererPreview->currentIndex()]);
     settings.setValue("referer_image", referers_image[ui->comboRefererImage->currentIndex()]);
-    settings.setValue("ignore/always", ui->spinIgnoreAlways->value());
-    settings.setValue("ignore/1", ui->spinIgnore1->value());
+	settings.setValue("ignore/always", ui->spinIgnoreAlways->value());
+	settings.setValue("ignore/1", ui->spinIgnore1->value());
+
+	settings.setValue("download/imagesperpage", ui->spinImagesPerPage->value());
+	settings.setValue("download/simultaneous", ui->spinSimultaneousDownloads->value());
 
 	QStringList sources = QStringList() << "xml" << "json" << "regex" << "rss";
 	settings.setValue("sources/usedefault", ui->checkSourcesDefault->isChecked());

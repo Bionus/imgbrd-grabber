@@ -834,9 +834,6 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="1">
-      <widget class="QLineEdit" name="lineFilename"/>
-     </item>
      <item row="2" column="0" colspan="2">
       <widget class="QLabel" name="labelFilename">
        <property name="text">
@@ -864,6 +861,16 @@
         </widget>
        </item>
       </layout>
+     </item>
+     <item row="1" column="1">
+      <widget class="QComboBox" name="comboFilename">
+       <property name="editable">
+        <bool>true</bool>
+       </property>
+       <property name="insertPolicy">
+        <enum>QComboBox::InsertAtTop</enum>
+       </property>
+      </widget>
      </item>
     </layout>
    </widget>
@@ -981,7 +988,6 @@
   <tabstop>scrollArea_4</tabstop>
   <tabstop>lineFolder</tabstop>
   <tabstop>buttonFolder</tabstop>
-  <tabstop>lineFilename</tabstop>
   <tabstop>buttonInitSettings</tabstop>
   <tabstop>buttonSaveSettings</tabstop>
  </tabstops>
@@ -1246,22 +1252,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>lineFilename</sender>
-   <signal>textEdited(QString)</signal>
-   <receiver>mainWindow</receiver>
-   <slot>saveSettings()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>80</x>
-     <y>409</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>-1</x>
-     <y>432</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>actionAddpooltab</sender>
    <signal>triggered()</signal>
    <receiver>mainWindow</receiver>
@@ -1450,22 +1440,6 @@
     <hint type="destinationlabel">
      <x>801</x>
      <y>208</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>lineFilename</sender>
-   <signal>editingFinished()</signal>
-   <receiver>mainWindow</receiver>
-   <slot>updateCompleters()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>143</x>
-     <y>402</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>150</x>
-     <y>543</y>
     </hint>
    </hints>
   </connection>
