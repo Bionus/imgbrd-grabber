@@ -25,7 +25,7 @@ class poolTab : public searchTab
 	Q_OBJECT
 
 	public:
-		explicit poolTab(int id, QMap<QString,Site*> *sites, QMap<QString, QString> *favorites, QDateTime *serverDate, mainWindow *parent);
+		explicit poolTab(int id, QMap<QString,Site*> *sites, QMap<QString, QString> *favorites, mainWindow *parent);
 		~poolTab();
 		Ui::poolTab *ui;
 		QString tags();
@@ -91,7 +91,6 @@ class poolTab : public searchTab
 		mainWindow						*m_parent;
 		TextEdit						*m_search, *m_postFiltering;
 		QCalendarWidget					*m_calendar;
-		QDateTime						*m_serverDate;
 		QMap<QString,QString>			*m_favorites;
 		QMap<QString,Site*>				*m_sites;
 		QMap<QString,Page*>				m_pages;

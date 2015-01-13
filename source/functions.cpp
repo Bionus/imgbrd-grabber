@@ -77,23 +77,37 @@ QMap<QString,QString> getFilenames()
 /**
  * Convert a danbooru-like date (Sat May 14 17:38:04 -0400 2011) to a valid QDateTime.
  * @param	str				The date string.
- * @param	timezonedecay	The number of timezones between the user and the server.
  * @return	The converted date as a QDateTime.
  */
-QDateTime qDateTimeFromString(QString str, int timezonedecay)
+QDateTime qDateTimeFromString(QString str)
 {
+	int timezone = QDateTime::currentDateTime().time().hour() - QDateTime::currentDateTimeUtc().time().hour();
+
 	QDateTime date;
 	if (str[0].isDigit())
 	{
-		date = QDateTime::fromString(str.left(19), "yyyy/MM/dd HH:mm:ss");
-		date = date.addSecs(str.mid(str.length() - 5).toInt() * 36);
+		float decay = 0;
+		date = QDateTime::fromString(str.left(19), "yyyy-MM-dd'T'HH:mm:ss");
+		if (!date.isValid())
+			date = QDateTime::fromString(str.left(19), "yyyy/MM/dd HH:mm:ss");
+		else
+			decay = str.right(6).remove(':').toFloat() / 100;
+
+		if (date.isValid())
+			date = date.addSecs(3600 * (timezone - decay));
 	}
 	else
 	{
 		QStringList months = QStringList() << "Jan" << "Feb" << "Mar" << "Apr" << "May" << "Jun" << "Jul" << "Aug" << "Sep" << "Oct" << "Nov" << "Dec";
+		int year = str.mid(26, 4).toInt();
+		int month = months.indexOf(str.mid(4, 3)) + 1;
+		int day = str.mid(8, 2).toInt();
+		float decay = str.mid(20, 5).toFloat() / 100;
+
 		QTime time = QTime::fromString(str.mid(11, 8), "HH:mm:ss");
-		date.setDate(QDate(str.mid(26,4).toInt(), months.indexOf(str.mid(4,3))+1, str.mid(8,2).toInt()+(str.mid(11,2).toInt() >= 18)));
-		date.setTime(time.addSecs(3600 * timezonedecay));
+		time = time.addSecs(3600 * (timezone - decay));
+		date.setDate(QDate(year, month, day));
+		date.setTime(time);
 	}
 	return date;
 }
@@ -300,11 +314,6 @@ QString validateFilename(QString text)
 	// Field must be filled
 	if (text.isEmpty())
 	{ return QObject::tr("<span style=\"color:red\">Les noms de fichiers ne doivent pas être vides !</span>"); }
-#ifdef Q_OS_WIN
-	// Check for invalid windows characters
-	if (text.contains(':') || text.contains('*') || text.contains('?') || text.contains('"') || text.contains('<') || text.contains('>') || text.contains('|'))
-		return QObject::tr("<span style=\"color:red\">Votre format contient des caractères interdits sur windows ! Caractères interdits : * ? \" : < > |</span>");
-#endif
 	// Can't validate javascript expressions
 	if (text.startsWith("javascript:"))
 	{ return QObject::tr("<span style=\"color:orange\">Impossible de valider les expressions Javascript.</span>"); }
@@ -331,8 +340,14 @@ QString validateFilename(QString text)
 		{ return QObject::tr("<span style=\"color:orange\">Le symbole %%1% n\'existe pas et ne sera pas remplacé.</span>").arg(rx.cap(1)); }
 		pos += rx.matchedLength();
 	}
+#ifdef Q_OS_WIN
+	QString txt = QString(text).remove(rx);
+	// Check for invalid windows characters
+	if (txt.contains(':') || txt.contains('*') || txt.contains('?') || txt.contains('"') || txt.contains('<') || txt.contains('>') || txt.contains('|'))
+		return QObject::tr("<span style=\"color:red\">Votre format contient des caractères interdits sur windows ! Caractères interdits : * ? \" : < > |</span>");
+#endif
 	// Check if code is unique
-	if (!text.contains("%md5%") && !text.contains("%website%") && !text.contains("%count"))
+	if (!text.contains("%md5%") && !text.contains("%website%") && !text.contains("%count") && text.contains("%id%"))
 		return QObject::tr("<span style=\"color:green\">Vous avez choisi d'utiliser le symbole %id%. Sachez que celui-ci est unique pour un site choisi. Le même ID pourra identifier des images différentes en fonction du site.</span>");
 	// All tests passed
 	return QObject::tr("<span style=\"color:green\">Format valide !</span>");

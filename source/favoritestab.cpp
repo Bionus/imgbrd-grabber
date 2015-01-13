@@ -13,7 +13,7 @@ extern mainWindow *_mainwindow;
 
 
 
-favoritesTab::favoritesTab(int id, QMap<QString,Site*> *sites, QMap<QString,QString> *favorites, QDateTime *serverDate, mainWindow *parent) : searchTab(id, parent), ui(new Ui::favoritesTab), m_id(id), m_parent(parent), m_serverDate(serverDate), m_favorites(favorites), m_sites(sites), m_pagemax(-1), m_lastTags(QString()), m_sized(false), m_from_history(false), m_stop(true), m_history_cursor(0), m_currentFav(0), m_history(QList<QMap<QString,QString> >()), m_modifiers(QStringList())
+favoritesTab::favoritesTab(int id, QMap<QString,Site*> *sites, QMap<QString,QString> *favorites, mainWindow *parent) : searchTab(id, parent), ui(new Ui::favoritesTab), m_id(id), m_parent(parent), m_favorites(favorites), m_sites(sites), m_pagemax(-1), m_lastTags(QString()), m_sized(false), m_from_history(false), m_stop(true), m_history_cursor(0), m_currentFav(0), m_history(QList<QMap<QString,QString> >()), m_modifiers(QStringList())
 {
 	ui->setupUi(this);
 	setAttribute(Qt::WA_DeleteOnClose);

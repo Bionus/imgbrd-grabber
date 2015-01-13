@@ -19,7 +19,7 @@ class SearchWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		explicit SearchWindow(QString tags, QDate server, QWidget *parent = 0);
+		explicit SearchWindow(QString tags, QWidget *parent = 0);
 		~SearchWindow();
 
 	public slots:
