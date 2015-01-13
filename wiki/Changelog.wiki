@@ -1,5 +1,40 @@
 #summary Imgbrd-grabber's changelog from v1.0 to v3.1.4
 
+= 4.0 =
+== 4.0.5 ==
+Update to fix starting issues and some small fixes.
+  * Unable to start issues.
+  * Many crashes.
+  * Fix batch download retry on fail.
+  * Fix big batch download initial page download speed.
+  * Add menu to access options folder (issue #265).
+  * Fix batch download cancellation.
+  * Fix issue with adding batch downloads when some sources return empty results (issue #285).
+  * Add option to automatically retry failed images in batch downloads.
+  * Include MSVC 2013 redist requirement in installer.
+
+== 4.0.4 ==
+  * Fix a few crashes with batch downloads introduced in recent versions.
+  * Fix sankaku extensions and tag detection.
+  * Zerochan crash.
+
+== 4.0.3 ==
+  * Fix critical issue with batch downloads when there is no need to download image details.
+  * Fix critical issue when adding batch download.
+
+== 4.0.2 ==
+  * Memory usage greatly improved (especially during batch downloads). *May cause instabilities, even after my tests. If you witness any crashes during batch downloads, feel free to switch back to 4.0.1 and file an issue (or update an existing one if it's already there). Thank you :)*
+  * Fixed some files not being properly closed
+  * Finally fixed batch download removal. Running a batch after deleting others should not crash anymore.
+  * Quickfix for rule34.paheal's gif images.
+  * Fix issue with spaces at the end of folders (issue #267).
+  * Improve javascript filenames performance (200% improvement).
+  * Fix critical crash when searching sakaku while skipping images (now skip only applies to browsing without tags).
+  * Changed get all default limit from 1000 to 200.
+  * Fixed compilation on gcc.
+  * Added end of batch setting to the options window.
+  * Fixed issue with tags containing question marks on danbooru 2.
+
 = 3.1 =
 == 3.1.5 ==
   * Lots of bugfixes, especially crashes.
