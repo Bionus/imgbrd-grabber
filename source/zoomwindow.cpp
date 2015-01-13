@@ -269,13 +269,16 @@ void zoomWindow::setfavorite()
 	if (!QDir(savePath("thumbs")).exists())
 	{ QDir(savePath()).mkdir("thumbs"); }
 
-	if (image->width() > 150 || image->height() > 150)
+	if (image != NULL)
 	{
-		QPixmap img = image->scaled(QSize(150,150), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-		img.save(savePath("thumbs/"+link+".png"), "PNG");
+		if (image->width() > 150 || image->height() > 150)
+		{
+			QPixmap img = image->scaled(QSize(150,150), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+			img.save(savePath("thumbs/"+link+".png"), "PNG");
+		}
+		else
+		{ image->save(savePath("thumbs/"+link+".png"), "PNG"); }
 	}
-	else
-	{ image->save(savePath("thumbs/"+link+".png"), "PNG"); }
 
 	_mainwindow->updateFavorites();
 	_mainwindow->updateFavoritesDock();
@@ -756,6 +759,9 @@ QString zoomWindow::saveImageAs()
 
 void zoomWindow::fullScreen()
 {
+	if (image == NULL)
+		return;
+
 	m_fullScreen = new QAffiche(QVariant(), 0, QColor());
 		m_fullScreen->setStyleSheet("background-color: black");
 		m_fullScreen->setAlignment(Qt::AlignCenter);
