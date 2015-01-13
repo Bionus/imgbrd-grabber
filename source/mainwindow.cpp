@@ -75,9 +75,6 @@ void mainWindow::init()
 		log(tr("Activation du proxy général sur l'hôte \"%1\" et le port %2.").arg(m_settings->value("Proxy/hostName").toString()).arg(m_settings->value("Proxy/port").toInt()));
 	}
 
-	m_serverDate = QDateTime::currentDateTime().toUTC().addSecs(-60*60*4);
-	m_timezonedecay = QDateTime::currentDateTime().time().hour()-m_serverDate.time().hour();
-
 	m_progressdialog = new batchWindow(this);
 	connect(m_progressdialog, SIGNAL(paused()), this, SLOT(getAllPause()));
 
@@ -218,7 +215,7 @@ void mainWindow::init()
 	{ addTab(); }
 
 	// Favorites tab
-	m_favoritesTab = new favoritesTab(m_tabs.size(), &m_sites, &m_favorites, &m_serverDate, this);
+	m_favoritesTab = new favoritesTab(m_tabs.size(), &m_sites, &m_favorites, this);
 	connect(m_favoritesTab, SIGNAL(batchAddGroup(QStringList)), this, SLOT(batchAddGroup(QStringList)));
 	connect(m_favoritesTab, SIGNAL(batchAddUnique(QMap<QString,QString>)), this, SLOT(batchAddUnique(QMap<QString,QString>)));
 	connect(m_favoritesTab, SIGNAL(changed(searchTab*)), this, SLOT(updateTabs()));
@@ -273,7 +270,7 @@ mainWindow::~mainWindow()
 
 int mainWindow::addTab(QString tag)
 {
-	tagTab *w = new tagTab(m_tabs.size(), &m_sites, &m_favorites, &m_serverDate, this);
+	tagTab *w = new tagTab(m_tabs.size(), &m_sites, &m_favorites, this);
 	if (m_tabs.size() > ui->tabWidget->currentIndex())
 	{
 		w->setSources(m_tabs[ui->tabWidget->currentIndex()]->sources());
@@ -302,7 +299,7 @@ int mainWindow::addTab(QString tag)
 }
 int mainWindow::addPoolTab(int pool, QString site)
 {
-	poolTab *w = new poolTab(m_tabs.size(), &m_sites, &m_favorites, &m_serverDate, this);
+	poolTab *w = new poolTab(m_tabs.size(), &m_sites, &m_favorites, this);
 	if (m_tabs.size() > ui->tabWidget->currentIndex())
 	{ w->setSources(m_tabs[ui->tabWidget->currentIndex()]->sources()); }
 	connect(w, SIGNAL(batchAddGroup(QStringList)), this, SLOT(batchAddGroup(QStringList)));
@@ -971,7 +968,7 @@ void mainWindow::getAll(bool all)
 			{
 				tdl.append(row);
                 int i = row;
-				m_getAllRemaining.append(new Image(m_batchs.at(i), m_timezonedecay, new Page(m_sites[m_batchs.at(i).value("site")], &m_sites, m_batchs.at(i).value("tags").split(" "), 1, 1, QStringList(), false, this)));
+				m_getAllRemaining.append(new Image(m_batchs.at(i), new Page(m_sites[m_batchs.at(i).value("site")], &m_sites, m_batchs.at(i).value("tags").split(" "), 1, 1, QStringList(), false, this)));
 			}
 		}
 	}
@@ -991,7 +988,7 @@ void mainWindow::getAll(bool all)
 				m_progressdialog->setImagesCount(m_progressdialog->count() + 1);*/
 			}
 			else
-			{ m_getAllRemaining.append(new Image(m_batchs.at(i), m_timezonedecay, new Page(m_sites[m_batchs.at(i).value("site")], &m_sites, m_batchs.at(i).value("tags").split(" "), 1, 1, QStringList(), false, this))); }
+			{ m_getAllRemaining.append(new Image(m_batchs.at(i), new Page(m_sites[m_batchs.at(i).value("site")], &m_sites, m_batchs.at(i).value("tags").split(" "), 1, 1, QStringList(), false, this))); }
 		}
 	}
 	m_getAllLimit = m_batchs.size();

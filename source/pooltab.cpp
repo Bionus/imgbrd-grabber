@@ -11,7 +11,7 @@ extern mainWindow *_mainwindow;
 
 
 
-poolTab::poolTab(int id, QMap<QString,Site*> *sites, QMap<QString,QString> *favorites, QDateTime *serverDate, mainWindow *parent) : searchTab(id, parent), ui(new Ui::poolTab), m_id(id), m_parent(parent), m_serverDate(serverDate), m_favorites(favorites), m_sites(sites), m_pagemax(-1), m_lastTags(QString()), m_sized(false), m_from_history(false), m_stop(true), m_history_cursor(0), m_history(QList<QMap<QString,QString> >()), m_modifiers(QStringList())
+poolTab::poolTab(int id, QMap<QString,Site*> *sites, QMap<QString,QString> *favorites, mainWindow *parent) : searchTab(id, parent), ui(new Ui::poolTab), m_id(id), m_parent(parent), m_favorites(favorites), m_sites(sites), m_pagemax(-1), m_lastTags(QString()), m_sized(false), m_from_history(false), m_stop(true), m_history_cursor(0), m_history(QList<QMap<QString,QString> >()), m_modifiers(QStringList())
 {
 	ui->setupUi(this);
 	ui->widgetMeant->hide();
@@ -93,7 +93,7 @@ poolTab::~poolTab()
 
 void poolTab::on_buttonSearch_clicked()
 {
-	SearchWindow *sw = new SearchWindow(m_search->toPlainText(), m_serverDate->date(), this);
+	SearchWindow *sw = new SearchWindow(m_search->toPlainText(), this);
 	connect(sw, SIGNAL(accepted(QString)), this, SLOT(setTags(QString)));
 	sw->show();
 }

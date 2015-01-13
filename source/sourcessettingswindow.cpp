@@ -25,7 +25,7 @@ SourcesSettingsWindow::SourcesSettingsWindow(Site *site, QWidget *parent) : QDia
     ui->spinIgnore1->setValue(settings.value("ignore/1", 0).toInt());
 
 	ui->spinImagesPerPage->setValue(settings.value("download/imagesperpage", 200).toInt());
-	ui->spinSimultaneousDownloads->setValue(settings.value("download/simultaneous", 1).toInt());
+	ui->spinSimultaneousDownloads->setValue(settings.value("download/simultaneous", 10).toInt());
 
 	ui->checkSourcesDefault->setChecked(settings.value("sources/usedefault", true).toBool());
 	QStringList sources = QStringList() << "xml" << "json" << "regex" << "rss";
