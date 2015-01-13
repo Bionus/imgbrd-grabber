@@ -22,7 +22,7 @@ class Image : public QObject
 	Q_OBJECT
 
 	public:
-		Image(QMap<QString,QString> details, int timezonedecay = 0, Page *parent = NULL);
+		Image(QMap<QString,QString> details, Page *parent = NULL);
 		~Image();
 		int			value();
 		QString		filter(QStringList);

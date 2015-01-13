@@ -23,7 +23,7 @@ enum Log
 
 void		error(QWidget *, QString);
 void		sortNonCaseSensitive(QStringList &);
-QDateTime	qDateTimeFromString(QString s, int d = 5);
+QDateTime	qDateTimeFromString(QString s);
 QString		savePath(QString s = "");
 int			levenshtein(QString, QString);
 QString		validateFilename(QString);

@@ -8,7 +8,7 @@
 
 
 
-SearchWindow::SearchWindow(QString tags, QDate server, QWidget *parent) : QDialog(parent), ui(new Ui::SearchWindow)
+SearchWindow::SearchWindow(QString tags, QWidget *parent) : QDialog(parent), ui(new Ui::SearchWindow)
 {
 	ui->setupUi(this);
 
@@ -17,8 +17,8 @@ SearchWindow::SearchWindow(QString tags, QDate server, QWidget *parent) : QDialo
 		m_calendar->setLocale(QLocale(settings->value("language", "English").toString().toLower().left(2)));
 		m_calendar->setWindowIcon(QIcon(":/images/icon.ico"));
 		m_calendar->setWindowTitle(tr("Grabber - Choisir une date"));
-		m_calendar->setDateRange(QDate(2000, 1, 1), server);
-		m_calendar->setSelectedDate(server);
+		m_calendar->setDateRange(QDate(2000, 1, 1), QDateTime::currentDateTime().date().addDays(1));
+		m_calendar->setSelectedDate(QDateTime::currentDateTime().date());
 		connect(m_calendar, SIGNAL(activated(QDate)), this, SLOT(setDate(QDate)));
 		connect(m_calendar, SIGNAL(activated(QDate)), m_calendar, SLOT(close()));
 	connect(ui->buttonCalendar, SIGNAL(clicked()), m_calendar, SLOT(show()));

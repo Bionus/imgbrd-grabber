@@ -27,7 +27,7 @@ class tagTab : public searchTab
 	Q_OBJECT
 
 	public:
-		explicit tagTab(int id, QMap<QString, Site*> *sites, QMap<QString, QString> *favorites, QDateTime *serverDate, mainWindow *parent);
+		explicit tagTab(int id, QMap<QString, Site*> *sites, QMap<QString, QString> *favorites, mainWindow *parent);
 		~tagTab();
 		Ui::tagTab *ui;
 		QString tags();
@@ -91,7 +91,6 @@ class tagTab : public searchTab
 		mainWindow						*m_parent;
 		TextEdit						*m_search, *m_postFiltering;
 		QCalendarWidget					*m_calendar;
-		QDateTime						*m_serverDate;
 		QMap<QString,QString>			*m_favorites;
 		QMap<QString,Site*>				*m_sites;
 		QMap<QString,Page*>				m_pages;

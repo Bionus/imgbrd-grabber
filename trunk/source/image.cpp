@@ -3,7 +3,7 @@
 #include "functions.h"
 
 
-Image::Image(QMap<QString, QString> details, int timezonedecay, Page* parent)
+Image::Image(QMap<QString, QString> details, Page* parent)
 {
 	// Parents
 	m_site = parent != NULL ? parent->website() : (details.contains("website") ? details["website"] : "");
@@ -113,7 +113,7 @@ Image::Image(QMap<QString, QString> details, int timezonedecay, Page* parent)
 		if (details["created_at"].toInt() != 0)
 		{ m_createdAt.setTime_t(details["created_at"].toInt()); }
 		else
-		{ m_createdAt = qDateTimeFromString(details["created_at"], timezonedecay); }
+		{ m_createdAt = qDateTimeFromString(details["created_at"]); }
 	}
 
 	// Tech details

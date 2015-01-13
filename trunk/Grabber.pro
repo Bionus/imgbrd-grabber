@@ -1,11 +1,12 @@
 # Options
 CONFIG += use_qscintilla
+CONFIG += use_ssl
 #CONFIG += use_breakpad
 #CONFIG += use_cli
 
 # Global
 TARGET = Grabber
-APP_VERSION = \\\"4.0.5\\\"
+APP_VERSION = \\\"4.0.6\\\"
 
 # General
 TEMPLATE = app
@@ -46,12 +47,14 @@ Release:win32 {
 }
 
 # SSL
-win32 {
-    LIBS += -L"C:/OpenSSL-Win32/lib" -llibeay32
-    INCLUDEPATH += C:/OpenSSL-Win32/include
-}
-unix {
-    PKGCONFIG += openssl
+use_ssl {
+	win32 {
+		LIBS += -L"C:/OpenSSL-Win32/lib" -llibeay32
+		INCLUDEPATH += C:/OpenSSL-Win32/include
+	}
+	unix {
+		PKGCONFIG += openssl
+	}
 }
 
 # Google-Breakpad

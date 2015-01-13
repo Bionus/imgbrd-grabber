@@ -316,8 +316,8 @@ void Page::parse()
 				{ t = m_site->value("DefaultTag"); }
 				d["page_url"].replace("{tags}", QUrl::toPercentEncoding(t));
 				d["page_url"].replace("{id}", d["id"]);
-				int timezonedecay = QDateTime::currentDateTime().time().hour()-QDateTime::currentDateTime().toUTC().addSecs(-60*60*4).time().hour();
-				Image *img = new Image(d, timezonedecay, this);
+
+				Image *img = new Image(d, this);
 				QString error = img->filter(m_postFiltering);
 				if (error.isEmpty() && !d["file_url"].endsWith("/." + d["ext"]))
 				{ m_images.append(img); }
@@ -385,7 +385,7 @@ void Page::parse()
 				d["page_url"].replace("{tags}", QUrl::toPercentEncoding(t));
 				d["page_url"].replace("{id}", d["id"]);
 				int timezonedecay = QDateTime::currentDateTime().time().hour()-QDateTime::currentDateTime().toUTC().addSecs(-60*60*4).time().hour();
-				Image *img = new Image(d, timezonedecay, this);
+				Image *img = new Image(d, this);
 				QString error = img->filter(m_postFiltering);
 				if (error.isEmpty() && !d["file_url"].endsWith("/." + d["ext"]))
 				{ m_images.append(img); }
@@ -460,7 +460,7 @@ void Page::parse()
 			}
 
 			int timezonedecay = QDateTime::currentDateTime().time().hour()-QDateTime::currentDateTime().toUTC().addSecs(-60*60*4).time().hour();
-			Image *img = new Image(d, timezonedecay, this);
+			Image *img = new Image(d, this);
 			QString error = img->filter(m_postFiltering);
 			if (error.isEmpty() && !d["file_url"].endsWith("/." + d["ext"]))
 			{ m_images.append(img); }
@@ -524,7 +524,7 @@ void Page::parse()
 				d["page_url"].replace("{tags}", QUrl::toPercentEncoding(t));
 				d["page_url"].replace("{id}", d["id"]);
 				int timezonedecay = QDateTime::currentDateTime().time().hour()-QDateTime::currentDateTime().toUTC().addSecs(-60*60*4).time().hour();
-				Image *img = new Image(d, timezonedecay, this);
+				Image *img = new Image(d, this);
 				QString error = img->filter(m_postFiltering);
 				if (error.isEmpty() && !d["file_url"].endsWith("/." + d["ext"]))
 				{ m_images.append(img); }
