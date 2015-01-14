@@ -847,13 +847,13 @@ QStringList Image::blacklisted(QStringList blacklistedtags)
 	QRegExp reg;
 	reg.setCaseSensitivity(Qt::CaseInsensitive);
 	reg.setPatternSyntax(QRegExp::Wildcard);
-	for (int i = 0; i < blacklistedtags.size(); ++i)
+	for (QString tag : blacklistedtags)
 	{
 		for (int t = 0; t < m_tags.count(); ++t)
 		{
-			if (!blacklistedtags.at(i).trimmed().isEmpty())
+			if (!tag.trimmed().isEmpty())
 			{
-				reg.setPattern(blacklistedtags.at(i).trimmed());
+				reg.setPattern(tag.trimmed());
 				if (reg.exactMatch(m_tags[t].text()))
 				{ detected.append(m_tags[t].text()); }
 			}
@@ -955,4 +955,20 @@ QString Image::md5()
 	}
 
 	return m_md5;
+}
+
+bool Image::hasTag(QString tag)
+{
+	tag = tag.trimmed();
+	for (Tag t : m_tags)
+		if (t.text().trimmed() == tag)
+			return true;
+	return false;
+}
+bool Image::hasTag(QStringList tags)
+{
+	for (QString tag : tags)
+		if (this->hasTag(tag))
+			return true;
+	return false;
 }

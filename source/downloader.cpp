@@ -8,8 +8,8 @@
 Downloader::Downloader()
 {}
 
-Downloader::Downloader(QStringList tags, QStringList postfiltering, QStringList sources, int page, int max, int perpage, QString location, QString filename, QString user, QString password, bool blacklist, bool noduplicates, int tagsmin, QString tagsformat)
-	: m_tags(tags), m_postfiltering(postfiltering), m_sources(sources), m_page(page), m_max(max), m_perpage(perpage), m_location(location), m_filename(filename), m_user(user), m_password(password), m_blacklist(blacklist), m_noduplicates(noduplicates), m_tagsmin(tagsmin), m_tagsformat(tagsformat)
+Downloader::Downloader(QStringList tags, QStringList postfiltering, QStringList sources, int page, int max, int perpage, QString location, QString filename, QString user, QString password, bool blacklist, QStringList blacklistedtags, bool noduplicates, int tagsmin, QString tagsformat)
+	: m_tags(tags), m_postfiltering(postfiltering), m_sources(sources), m_page(page), m_max(max), m_perpage(perpage), m_location(location), m_filename(filename), m_user(user), m_password(password), m_blacklist(blacklist), m_noduplicates(noduplicates), m_tagsmin(tagsmin), m_tagsformat(tagsformat), m_blacklistedTags(blacklistedtags)
 {
 	m_quit = false;
 	QMap<QString, Site*> *sites = Site::getAllSites();
@@ -32,6 +32,8 @@ Downloader::Downloader(QStringList tags, QStringList postfiltering, QStringList 
 	m_opagesT = new QList<Page*>();
 	m_opagesP = new QList<QPair<Site*, int> >();
 	m_waiting = 0;
+	m_ignored = 0;
+	m_duplicates = 0;
 	m_results = new QList<Tag>();
 	m_images = new QList<Image*>();
 }
@@ -50,6 +52,8 @@ void Downloader::getPageCount()
 	}
 
 	m_waiting = 0;
+	m_ignored = 0;
+	m_duplicates = 0;
 	m_cancelled = false;
 	auto sites = Site::getAllSites();
 
@@ -298,6 +302,14 @@ void Downloader::finishedLoadingImages(Page *page)
 	for (int i = 0; i < m_pages->size(); ++i)
 		foreach (Image *img, m_pages->at(i)->images())
 		{
+			if (!m_blacklist)
+			{
+				if (!img->blacklisted(m_blacklistedTags).empty())
+				{
+					++m_ignored;
+					continue;
+				}
+			}
 			if (m_noduplicates)
 			{
 				bool found = false;
@@ -371,6 +383,8 @@ void Downloader::getUrls()
 	}
 
 	m_waiting = 0;
+	m_ignored = 0;
+	m_duplicates = 0;
 	m_cancelled = false;
 	auto sites = Site::getAllSites();
 
@@ -410,6 +424,14 @@ void Downloader::finishedLoadingUrls(Page *page)
 	for (int i = 0; i < m_pages->size(); ++i)
 		foreach (Image *img, m_pages->at(i)->images())
 		{
+			if (!m_blacklist)
+			{
+				if (!img->blacklisted(m_blacklistedTags).empty())
+				{
+					++m_ignored;
+					continue;
+				}
+			}
 			if (m_noduplicates)
 			{
 				bool found = false;
@@ -480,3 +502,13 @@ void Downloader::cancel()
 {
 	m_cancelled = true;
 }
+
+int Downloader::ignoredCount()
+{
+	return m_ignored;
+}
+int Downloader::duplicatesCount()
+{
+	return m_duplicates;
+}
+

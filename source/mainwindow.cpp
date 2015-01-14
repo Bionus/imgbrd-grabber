@@ -1039,6 +1039,7 @@ void mainWindow::getAll(bool all)
                                                         m_settings->value("login/pseudo").toString(),
                                                         m_settings->value("login/password").toString(),
                                                         b.at(4) == "true",
+														m_settings->value("blacklistedtags").toString().split(' '),
                                                         false,
                                                         0,
                                                         "");
@@ -1092,6 +1093,7 @@ void mainWindow::getAllFinishedImages(QList<Image*> images)
 {
 	Downloader* downloader = (Downloader*)QObject::sender();
 	m_downloaders.removeAll(downloader);
+	m_getAllIgnored += downloader->ignoredCount();
 	downloader->deleteLater();
 
     m_getAllRemaining.append(images);

@@ -141,6 +141,7 @@ int main(int argc, char *argv[])
 		}
 	#endif
 
+	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
 	Downloader *dwnldr = new Downloader(parser.value(tagsOption).split(" ", QString::SkipEmptyParts),
 										parser.value(postfilteringOption).split(" ", QString::SkipEmptyParts),
 										parser.value(sourceOption).split(" ", QString::SkipEmptyParts),
@@ -152,6 +153,7 @@ int main(int argc, char *argv[])
 										parser.value(userOption),
 										parser.value(passwordOption),
 										parser.isSet(blacklistOption),
+										settings.value("blacklistedtags").toString().split(' '),
 										parser.isSet(noDuplicatesOption),
 										parser.value(tagsMinOption).toInt(),
 										parser.value(tagsFormatOption));
