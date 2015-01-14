@@ -67,6 +67,8 @@ class Image : public QObject
 		QSettings	*settings();
 		QNetworkReply	*imageReply();
 		QNetworkReply	*tagsReply();
+		bool		hasTag(QString tag);
+		bool		hasTag(QStringList tags);
 
 	public slots:
 		void loadPreview();
