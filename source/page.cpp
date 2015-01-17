@@ -11,7 +11,8 @@
 Page::Page(Site *site, QMap<QString,Site*> *sites, QStringList tags, int page, int limit, QStringList postFiltering, bool smart, QObject *parent, int pool) : QObject(parent), m_site(site), m_postFiltering(postFiltering), m_errors(QStringList()), m_imagesPerPage(limit), m_currentSource(0), m_smart(smart)
 {
 	m_website = m_site->url();
-	m_imagesCount = 0;
+	m_imagesCount = -1;
+	m_pagesCount = -1;
 
     // Replace shortcuts to increase compatibility
 	QString text = " "+tags.join(" ")+" ";
@@ -67,10 +68,12 @@ void Page::fallback(bool bload)
 
 	m_currentSource++;
 
-	QString t = m_search.join(" ");
+	// Default tag is none is given
+	QString t = m_search.join(" ").trimmed();
 	if (m_site->contains("DefaultTag") && t.isEmpty())
 	{ t = m_site->value("DefaultTag"); }
 
+	// Find page number
 	m_format = m_site->value("Selected").split('/').at(m_currentSource-1);
 	int p = m_page;
 	m_blim = m_site->contains("Urls/"+QString::number(m_currentSource)+"/Limit") ? m_site->value("Urls/"+QString::number(m_currentSource)+"/Limit").toInt() : m_imagesPerPage;
@@ -78,10 +81,11 @@ void Page::fallback(bool bload)
 	{
 		if (m_imagesPerPage > m_blim)
 		{ m_imagesPerPage = m_blim; }
-		p = (int)floor((m_page - 1.) * m_imagesPerPage / m_blim) + 1;
+		p = (int)floor(((m_page - 1.) * m_imagesPerPage) / m_blim) + 1;
 	}
 	p = p - 1 + m_site->value("FirstPage").toInt();
 
+	// Check if we are looking for a pool
 	QRegExp pool("pool:(\\d+)");
 	QString url;
 	int pl = -1;
@@ -118,10 +122,12 @@ void Page::fallback(bool bload)
 		{ url = m_site->value("Urls/"+QString::number(m_currentSource)+"/Tags"); }
 	}
 
+	// GET login information
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
 	QString pseudo = m_site->setting("auth/pseudo", settings.value("Login/pseudo", "").toString()).toString();
 	QString password = m_site->setting("auth/password", settings.value("Login/password", "").toString()).toString();
 
+	// Global replace tokens
 	m_originalUrl = QString(url);
 	url.replace("{page}", QString::number(p));
 	url.replace("{tags}", QUrl::toPercentEncoding(t));
@@ -242,7 +248,8 @@ void Page::parse()
 	qDeleteAll(m_images);
 	m_images.clear();
 	m_tags.clear();
-	//m_imagesCount = -1;
+	/*m_imagesCount = -1;
+	m_pagesCount = -1;*/
 
 	if (m_source.isEmpty())
 	{
@@ -384,7 +391,7 @@ void Page::parse()
 				{ t = m_site->value("DefaultTag"); }
 				d["page_url"].replace("{tags}", QUrl::toPercentEncoding(t));
 				d["page_url"].replace("{id}", d["id"]);
-				int timezonedecay = QDateTime::currentDateTime().time().hour()-QDateTime::currentDateTime().toUTC().addSecs(-60*60*4).time().hour();
+
 				Image *img = new Image(d, this);
 				QString error = img->filter(m_postFiltering);
 				if (error.isEmpty() && !d["file_url"].endsWith("/." + d["ext"]))
@@ -459,7 +466,6 @@ void Page::parse()
 				d["page_url"].replace("{id}", d["id"]);
 			}
 
-			int timezonedecay = QDateTime::currentDateTime().time().hour()-QDateTime::currentDateTime().toUTC().addSecs(-60*60*4).time().hour();
 			Image *img = new Image(d, this);
 			QString error = img->filter(m_postFiltering);
 			if (error.isEmpty() && !d["file_url"].endsWith("/." + d["ext"]))
@@ -523,7 +529,7 @@ void Page::parse()
 				{ t = m_site->value("DefaultTag"); }
 				d["page_url"].replace("{tags}", QUrl::toPercentEncoding(t));
 				d["page_url"].replace("{id}", d["id"]);
-				int timezonedecay = QDateTime::currentDateTime().time().hour()-QDateTime::currentDateTime().toUTC().addSecs(-60*60*4).time().hour();
+
 				Image *img = new Image(d, this);
 				QString error = img->filter(m_postFiltering);
 				if (error.isEmpty() && !d["file_url"].endsWith("/." + d["ext"]))
@@ -563,20 +569,24 @@ void Page::parse()
 	}
 
 	// Getting last page
-	if (m_site->contains("LastPage") && m_imagesCount < 1)
-	{ m_imagesCount = m_site->value("LastPage").toInt() * m_imagesPerPage; }
+	if (m_site->contains("LastPage") && m_pagesCount < 1)
+	{ m_pagesCount = m_site->value("LastPage").toInt(); }
 	if (m_site->contains("Regex/Count") && m_imagesCount < 1)
 	{
 		QRegExp rxlast(m_site->value("Regex/Count"));
 		rxlast.indexIn(m_source, 0);
 		m_imagesCount = rxlast.cap(1).remove(",").toInt();
 	}
-	if (m_site->contains("Regex/LastPage") && m_imagesCount < 1)
+	if (m_site->contains("Regex/LastPage") && m_pagesCount < 1)
 	{
 		QRegExp rxlast(m_site->value("Regex/LastPage"));
 		rxlast.indexIn(m_source, 0);
-		m_imagesCount = rxlast.cap(1).remove(",").toInt() * m_imagesPerPage;
+		m_pagesCount = rxlast.cap(1).remove(",").toInt();
 	}
+
+	// Guess images count
+	if (m_site->contains("Urls/"+QString::number(m_currentSource)+"/Limit") && m_pagesCount > 0)
+	{ m_imagesCount = m_pagesCount * m_site->value("Urls/"+QString::number(m_currentSource)+"/Limit").toInt(); }
 
 	// Remove first n images (according to site settings)
 	int skip = m_site->setting("ignore/always", 0).toInt();
@@ -703,16 +713,20 @@ void Page::parseTags()
 		foreach (Tag tag, m_tags)
 		{
 			if (tag.text() == m_search.join(" "))
-			{ m_imagesCount = tag.count(); }
+			{
+				m_imagesCount = tag.count();
+				if (m_pagesCount < 0)
+					m_pagesCount = (int)ceil((m_imagesCount * 1.) / m_imagesPerPage);
+			}
 		}
 	}
 	if (m_site->contains("Regex/LastPage") && (m_imagesCount < 1 || m_imagesCount % 1000 == 0))
 	{
 		QRegExp rxlast(m_site->value("Regex/LastPage"));
 		rxlast.indexIn(source, 0);
-		int c = rxlast.cap(1).remove(",").toInt() * m_imagesPerPage;
-		if (c != 0)
-			m_imagesCount = c;
+		m_pagesCount = rxlast.cap(1).remove(",").toInt();
+		if (m_pagesCount != 0)
+			m_imagesCount = m_pagesCount * m_imagesPerPage;
 	}
 
 	// Wiki
@@ -737,10 +751,22 @@ void Page::parseTags()
 QList<Image*>	Page::images()		{ return m_images;		}
 Site			*Page::site()		{ return m_site;		}
 QUrl			Page::url()			{ return m_url;			}
-int				Page::imagesCount()	{ return m_imagesCount;	}
 QString			Page::source()		{ return m_source;		}
 QString			Page::website()		{ return m_website;		}
 QString			Page::wiki()		{ return m_wiki;		}
 QList<Tag>		Page::tags()		{ return m_tags;		}
 QStringList		Page::search()		{ return m_search;		}
 QStringList		Page::errors()		{ return m_errors;		}
+
+int Page::imagesCount(bool guess)
+{
+	if (m_imagesCount < 0 && guess && m_pagesCount >= 0)
+		return m_pagesCount * m_imagesPerPage;
+	return m_imagesCount;
+}
+int Page::pagesCount(bool guess)
+{
+	if (m_pagesCount < 0 && guess && m_imagesCount >= 0)
+		return (int)ceil((m_imagesCount * 1.) / m_imagesPerPage);
+	return m_pagesCount;
+}
