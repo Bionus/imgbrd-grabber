@@ -354,8 +354,7 @@ void favoritesTab::finishedLoading(Page* page)
 		{ imgs.append(img); }
 	}
 	m_images.append(imgs);
-	int perpage = page->site()->value("Urls/Selected/Tags").contains("{limit}") ? ui->spinImagesPerPage->value() : imgs.size();
-	int maxpage = ceil(page->imagesCount()/((float)perpage));
+	int maxpage = page->pagesCount();
 
 	if (maxpage < m_pagemax || m_pagemax == -1)
 	{ m_pagemax = maxpage; }
@@ -380,7 +379,7 @@ void favoritesTab::finishedLoading(Page* page)
 				txt->setText("<a href=\""+page->url().toString().toHtmlEscaped()+"\">"+m_sites->key(page->site())+"</a> - "+tr("Aucun résultat depuis le %1").arg(m_loadFavorite.toString(tr("dd/MM/yyyy 'à' hh:mm")))+(reasons.count() > 0 ? "<br/>"+tr("Raisons possibles : %1").arg(reasons.join(", ")) : ""));
 			}
 			else
-			{ txt->setText("<a href=\""+page->url().toString().toHtmlEscaped()+"\">"+m_sites->key(page->site())+"</a> - "+tr("Page %1 sur %2 (%3 sur %4)").arg(ui->spinPage->value()).arg(page->imagesCount() > 0 ? QString::number(maxpage) : "?").arg(imgs.count()).arg(page->imagesCount() > 0 ? QString::number(page->imagesCount()) : "?")); }
+			{ txt->setText("<a href=\""+page->url().toString().toHtmlEscaped()+"\">"+m_sites->key(page->site())+"</a> - "+tr("Page %1 sur %2 (%3 sur %4)").arg(ui->spinPage->value()).arg(page->pagesCount(false) > 0 ? QString::number(maxpage) : "?").arg(imgs.count()).arg(page->imagesCount(false) > 0 ? QString::number(page->imagesCount(false)) : "?")); }
 			txt->setOpenExternalLinks(true);
 			if (page->search().join(" ") != m_currentTags && settings.value("showtagwarning", true).toBool())
 			{
