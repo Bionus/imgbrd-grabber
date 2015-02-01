@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>250</height>
+    <height>267</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -168,6 +168,16 @@
        </item>
        <item row="2" column="1">
         <widget class="QSpinBox" name="spinIgnoreAlways"/>
+       </item>
+       <item row="6" column="0" colspan="2">
+        <widget class="QCheckBox" name="checkSsl">
+         <property name="text">
+          <string>Utiliser une connexion sécurisée (https)</string>
+         </property>
+         <property name="checked">
+          <bool>false</bool>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
