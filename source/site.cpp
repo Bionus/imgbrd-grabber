@@ -294,4 +294,27 @@ QString Site::url()				{ return m_url;				}
 QString Site::type()			{ return m_type;			}
 QString Site::updateVersion()	{ return m_updateVersion;	}
 
+QUrl Site::fixUrl(QString url)
+{
+	return this->fixUrl(url, QUrl());
+}
+QUrl Site::fixUrl(QString url, QUrl old)
+{
+	QString protocol = (m_settings->value("ssl", false).toBool() ? "https" : "http");
+
+	if (url.startsWith("//"))
+	{ return QUrl(protocol + ":" + url); }
+	if (url.startsWith("/"))
+	{ return QUrl(protocol + "://" + m_data.value("Url") + url); }
+
+	if (!url.startsWith("http"))
+	{
+		if (old.isValid())
+		{ return old.resolved(QUrl(url)); }
+		return QUrl(protocol + "://" + m_data.value("Url") + "/" + url);
+	}
+
+	return url;
+}
+
 QNetworkReply *Site::loginReply()	{ return m_loginReply; }

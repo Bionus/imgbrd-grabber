@@ -46,6 +46,8 @@ class Site : public QObject
 		QNetworkReply *get(QUrl url, Page *page = NULL, QString referer = "", Image *img = NULL);
 		QNetworkReply *get(QString url, Page *page = NULL, QString referer = "", Image *img = NULL) { return get(QUrl(url), page, referer, img); }
 		static QMap<QString, Site*> *getAllSites();
+		QUrl fixUrl(QString url);
+		QUrl fixUrl(QString url, QUrl old);
 
 	public slots:
 		void login();

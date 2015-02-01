@@ -23,6 +23,7 @@ SourcesSettingsWindow::SourcesSettingsWindow(Site *site, QWidget *parent) : QDia
     ui->comboRefererImage->setCurrentIndex(referers_image.indexOf(settings.value("referer_image", "").toString()));
     ui->spinIgnoreAlways->setValue(settings.value("ignore/always", 0).toInt());
     ui->spinIgnore1->setValue(settings.value("ignore/1", 0).toInt());
+	ui->checkSsl->setChecked(settings.value("ssl", false).toBool());
 
 	ui->spinImagesPerPage->setValue(settings.value("download/imagesperpage", 200).toInt());
 	ui->spinSimultaneousDownloads->setValue(settings.value("download/simultaneous", 10).toInt());
@@ -120,6 +121,7 @@ void SourcesSettingsWindow::save()
     settings.setValue("referer_image", referers_image[ui->comboRefererImage->currentIndex()]);
 	settings.setValue("ignore/always", ui->spinIgnoreAlways->value());
 	settings.setValue("ignore/1", ui->spinIgnore1->value());
+	settings.setValue("ssl", ui->checkSsl->isChecked());
 
 	settings.setValue("download/imagesperpage", ui->spinImagesPerPage->value());
 	settings.setValue("download/simultaneous", ui->spinSimultaneousDownloads->value());

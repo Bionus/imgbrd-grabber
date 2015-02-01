@@ -15,7 +15,7 @@ Image::Image(QMap<QString, QString> details, Page* parent)
 	}
 
 	// Get file url and try to improve it to save bandwidth
-	m_url = details.contains("file_url") ? (details["file_url"].startsWith("//") ? "http:"+details["file_url"] : (details["file_url"].startsWith("/") ? "http://"+m_site+details["file_url"] : details["file_url"])) : "";
+	m_url = details.contains("file_url") ? m_parentSite->fixUrl(details["file_url"]).toString() : "";
 	QString ext = getExtension(m_url);
 	if (details.contains("sample_url"))
 	{
@@ -42,10 +42,10 @@ Image::Image(QMap<QString, QString> details, Page* parent)
 	m_hasChildren = details.contains("has_children") ? details["has_children"] == "true" : false;
 	m_hasNote = details.contains("has_note") ? details["has_note"] == "true" : false;
 	m_hasComments = details.contains("has_comments") ? details["has_comments"] == "true" : false;
-	m_pageUrl = details.contains("page_url") ? QUrl(details["page_url"]) : QUrl();
-	m_fileUrl = details.contains("file_url") ? QUrl(details["file_url"].startsWith("/") ? "http://"+m_site+details["file_url"] : details["file_url"]) : QUrl();
-	m_sampleUrl = details.contains("sample_url") ? QUrl(details["sample_url"].startsWith("/") ? "http://"+m_site+details["sample_url"] : details["sample_url"]) : QUrl();
-	m_previewUrl = details.contains("preview_url") ? QUrl(details["preview_url"].startsWith("/") ? "http://"+m_site+details["preview_url"] : details["preview_url"]) : QUrl();
+	m_pageUrl = details.contains("page_url") ? m_parentSite->fixUrl(details["page_url"]) : QUrl();
+	m_fileUrl = details.contains("file_url") ? m_parentSite->fixUrl(details["file_url"]) : QUrl();
+	m_sampleUrl = details.contains("sample_url") ? m_parentSite->fixUrl(details["sample_url"]) : QUrl();
+	m_previewUrl = details.contains("preview_url") ? m_parentSite->fixUrl(details["preview_url"]) : QUrl();
 	m_size = QSize(details.contains("width") ? details["width"].toInt() : 0, details.contains("height") ? details["height"].toInt() : 0);
 	m_source = details.contains("source") ? details["source"] : "";
 
