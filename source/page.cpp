@@ -200,9 +200,9 @@ void Page::abortTags()
 	}
 }
 
-QString _parseSetImageUrl(Site* site, QString setting, QString ret, QMap<QString,QString> *d)
+QString _parseSetImageUrl(Site* site, QString setting, QString ret, QMap<QString,QString> *d, bool replaces = true)
 {
-    if (site->contains(setting))
+	if (site->contains(setting) && replaces)
     {
         if (site->value(setting).contains("->"))
         {
@@ -221,11 +221,7 @@ QString _parseSetImageUrl(Site* site, QString setting, QString ret, QMap<QString
             .replace("{ext}", d->value("ext"));
         }
     }
-    if (ret.startsWith("//"))
-    { ret = "http:"+ret; }
-    else if (!ret.startsWith("http://") && !ret.startsWith("https://"))
-    { ret = "http://"+site->value("Url")+QString(ret.startsWith("/") ? "" : "/")+ret; }
-    return ret;
+	return site->fixUrl(ret).toString();
 }
 
 void Page::parse()
@@ -236,10 +232,7 @@ void Page::parse()
 	QUrl redir = m_reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 	if (!redir.isEmpty())
 	{
-		QString loc = redir.toString();
-		if (loc.left(4) != "http")
-		{ redir = QUrl(loc.left(1) == "/" ? "http://" + m_website + loc : "http://" + m_website + "/" + loc); }
-		m_url = redir;
+		m_url = m_site->fixUrl(redir.toString());
 		load();
 		return;
 	}
@@ -296,8 +289,8 @@ void Page::parse()
 				if (database == "array")
 				{
 					QStringList infos, assoc;
-					infos << "created_at" << "status" << "source" << "has_comments" << "file_url" << "sample_url" << "change" << "sample_width" << "has_children" << "preview_url" << "width" << "md5" << "preview_width" << "sample_height" << "parent_id" << "height" << "has_notes" << "creator_id" << "file_size" << "id" << "preview_height" << "rating" << "tags" << "author" << "score" << "tags_artist" << "tags_character" << "tags_copyright" << "tags_general";
-					assoc << "created-at" << "status" << "source" << "has_comments" << "file-url" << "large-file-url" << "change" << "sample_width" << "has-children" << "preview-file-url" << "image-width" << "md5" << "preview_width" << "sample_height" << "parent-id" << "image-height" << "has_notes" << "uploader-id" << "file_size" << "id" << "preview_height" << "rating" << "tag-string" << "uploader-name" << "score" << "tag-string-artist" << "tag-string-character" << "tag-string-copyright" << "tag-string-general";
+					infos << "created_at" << "status" << "source" << "has_comments" << "file_url" << "sample_url" << "change" << "sample_width" << "has_children" << "preview_url" << "width" << "md5" << "preview_width" << "sample_height" << "parent_id" << "height" << "has_notes" << "creator_id" << "file_size" << "id" << "preview_height" << "rating" << "tags" << "author" << "score" << "tags_artist" << "tags_character" << "tags_copyright" << "tags_general" << "ext";
+					assoc << "created-at" << "status" << "source" << "has_comments" << "file-url" << "large-file-url" << "change" << "sample_width" << "has-children" << "preview-file-url" << "image-width" << "md5" << "preview_width" << "sample_height" << "parent-id" << "image-height" << "has_notes" << "uploader-id" << "file_size" << "id" << "preview_height" << "rating" << "tag-string" << "uploader-name" << "score" << "tag-string-artist" << "tag-string-character" << "tag-string-copyright" << "tag-string-general" << "file-ext";
 					for (int i = 0; i < infos.count(); i++)
 					{ d[infos.at(i)] = nodeList.at(id + first).namedItem(assoc.at(i)).toElement().text(); }
 				}
@@ -313,7 +306,7 @@ void Page::parse()
                 if (!d.contains("file_url"))
                 { d["file_url"] = d["preview_url"]; }
                 if (!d.contains("sample_url"))
-                { d["sample_url"] = d["preview_url"]; }
+				{ d["sample_url"] = d["preview_url"]; }
                 d["file_url"] = _parseSetImageUrl(m_site, "Urls/Xml/Image", d["file_url"], &d);
                 d["sample_url"] = _parseSetImageUrl(m_site, "Urls/Xml/Sample", d["sample_url"], &d);
                 d["preview_url"] = _parseSetImageUrl(m_site, "Urls/Xml/Preview", d["preview_url"], &d);
@@ -629,10 +622,7 @@ void Page::parseTags()
 	QUrl redir = m_replyTags->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 	if (!redir.isEmpty())
 	{
-		QString loc = redir.toString();
-		if (loc.left(4) != "http")
-		{ redir = QUrl(loc.left(1) == "/" ? "http://" + m_website + loc : "http://" + m_website + "/" + loc); }
-		m_urlRegex = redir;
+		m_urlRegex = m_site->fixUrl(redir.toString());
 		loadTags();
 		return;
 	}
