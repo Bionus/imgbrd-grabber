@@ -6,13 +6,13 @@
 			<Tags>/posts.xml?login={pseudo}&amp;password_hash={password}&amp;limit={limit}&amp;page={page}&amp;tags={tags}</Tags>
 			<Pools>/posts.xml?login={pseudo}&amp;password_hash={password}&amp;limit={limit}&amp;page={page}&amp;tags=pool:{pool} {tags}</Pools>
 			<Image>/data/{md5}.{ext}</Image>
-			<Preview>/data/preview/{md5}.{ext}</Preview>
+			<Preview>/data/preview/{md5}.jpg</Preview>
 		</Xml>
 		<Json>
 			<Tags>/posts.json?login={pseudo}&amp;password_hash={password}&amp;limit={limit}&amp;page={page}&amp;tags={tags}</Tags>
 			<Pools>/posts.json?login={pseudo}&amp;password_hash={password}&amp;limit={limit}&amp;page={page}&amp;tags=pool:{pool} {tags}</Pools>
 			<Image>/data/{md5}.{ext}</Image>
-			<Preview>/data/preview/{md5}.{ext}</Preview>
+			<Preview>/data/preview/{md5}.jpg</Preview>
 		</Json>
 		<Html>
 			<Tags>/posts?login={pseudo}&amp;password_hash={password}&amp;limit={limit}&amp;page={page}&amp;tags={tags}</Tags>
