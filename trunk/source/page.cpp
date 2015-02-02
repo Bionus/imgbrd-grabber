@@ -134,7 +134,7 @@ void Page::fallback(bool bload)
 	url.replace("{limit}", QString::number(m_imagesPerPage));
 	url.replace("{pseudo}", pseudo);
 	url.replace("{password}", password);
-	m_url = QUrl::fromEncoded(url.toUtf8());
+	m_url = m_site->fixUrl(url);
 
 	if ((pl >= 0 || pool.indexIn(t) != -1) && m_site->contains("Urls/Html/Pools"))
 	{
@@ -145,7 +145,7 @@ void Page::fallback(bool bload)
 		url.replace("{limit}", QString::number(m_imagesPerPage));
 		url.replace("{pseudo}", pseudo);
 		url.replace("{password}", password);
-		m_urlRegex = QUrl::fromEncoded(url.toUtf8());
+		m_urlRegex = m_site->fixUrl(url);
 	}
 	else if (m_site->contains("Urls/Html/Tags"))
 	{
@@ -155,7 +155,7 @@ void Page::fallback(bool bload)
 		url.replace("{limit}", QString::number(m_imagesPerPage));
 		url.replace("{pseudo}", pseudo);
 		url.replace("{password}", password);
-		m_urlRegex = QUrl::fromEncoded(url.toUtf8());
+		m_urlRegex = m_site->fixUrl(url);
 	}
 	else
 	{ m_urlRegex = ""; }
@@ -232,7 +232,7 @@ void Page::parse()
 	QUrl redir = m_reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 	if (!redir.isEmpty())
 	{
-		m_url = m_site->fixUrl(redir.toString());
+		m_url = m_site->fixUrl(redir.toString(), m_url);
 		load();
 		return;
 	}
@@ -622,7 +622,7 @@ void Page::parseTags()
 	QUrl redir = m_replyTags->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 	if (!redir.isEmpty())
 	{
-		m_urlRegex = m_site->fixUrl(redir.toString());
+		m_urlRegex = m_site->fixUrl(redir.toString(), m_urlRegex);
 		loadTags();
 		return;
 	}
