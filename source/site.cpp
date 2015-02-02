@@ -158,7 +158,7 @@ void Site::checkForUpdatesDone()
 void _prependUrl(QMap<QString,QString> *details, QString url, QString key, QString lkey = NULL)
 {
 	if (details->contains(key))
-		details->insert(lkey == NULL ? key : lkey, "http://" + url + details->value(key));
+		details->insert(lkey == NULL ? key : lkey, url + details->value(key));
 }
 
 QMap<QString, Site*> *Site::getAllSites()
@@ -224,19 +224,20 @@ QMap<QString, Site*> *Site::getAllSites()
 							details["Model"] = dir[i];
 							details["Url"] = line;
 							details["Selected"] = srcs.join("/").toLower();
+							QString lineSsl = QString(settings.value("ssl", false).toBool() ? "https" : "http") + "://" + line;
 							for (int j = 0; j < srcs.size(); j++)
 							{
 								QString sr = srcs[j] == "Regex" ? "Html" : srcs[j];
-								_prependUrl(&details, line, "Urls/"+sr+"/Tags", "Urls/"+QString::number(j+1)+"/Tags");
-								_prependUrl(&details, line, "Urls/"+sr+"/Home", "Urls/"+QString::number(j+1)+"/Home");
-								_prependUrl(&details, line, "Urls/"+sr+"/Pools", "Urls/"+QString::number(j+1)+"/Pools");
+								_prependUrl(&details, lineSsl, "Urls/"+sr+"/Tags", "Urls/"+QString::number(j+1)+"/Tags");
+								_prependUrl(&details, lineSsl, "Urls/"+sr+"/Home", "Urls/"+QString::number(j+1)+"/Home");
+								_prependUrl(&details, lineSsl, "Urls/"+sr+"/Pools", "Urls/"+QString::number(j+1)+"/Pools");
 								if (details.contains("Urls/"+sr+"/Limit"))
 									details["Urls/"+QString::number(j+1)+"/Limit"] = details["Urls/"+sr+"/Limit"];
 							}
-							_prependUrl(&details, line, "Urls/Html/Post");
-							_prependUrl(&details, line, "Urls/Html/Tags");
-							_prependUrl(&details, line, "Urls/Html/Home");
-							_prependUrl(&details, line, "Urls/Html/Pools");
+							_prependUrl(&details, lineSsl, "Urls/Html/Post");
+							_prependUrl(&details, lineSsl, "Urls/Html/Tags");
+							_prependUrl(&details, lineSsl, "Urls/Html/Home");
+							_prependUrl(&details, lineSsl, "Urls/Html/Pools");
 
 							Site *site = new Site(dir[i], line, details);
 							stes->insert(line, site);
