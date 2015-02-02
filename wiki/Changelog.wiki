@@ -1,6 +1,18 @@
-#summary Imgbrd-grabber's changelog from v1.0 to v3.1.4
+#summary Imgbrd-grabber's changelog
 
 = 4.0 =
+== 4.0.6 ==
+  * Add global text file setting.
+  * Replace line edit for quick filename in main window by select box.
+  * Fix sources without sites not appearing when adding website.
+  * Fixed date not properly recognized (issue #361).
+  * Fixed timezone detection.
+  * Fixed complex tokens being detected as invalid.
+  * Fix two crashed when favoriting a tag when the image is not yet loaded.
+  * Rewrote the page/image counting to make it clearer and more accurate.
+  * Added option for SSL (issue #368).
+  * Fixed extension for some original images (issue #367).
+
 == 4.0.5 ==
 Update to fix starting issues and some small fixes.
   * Unable to start issues.
