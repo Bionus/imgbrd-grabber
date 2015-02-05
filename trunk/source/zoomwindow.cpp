@@ -187,7 +187,11 @@ void zoomWindow::openSaveDir(bool fav)
 	if (path.right(1) == "/")
 	{ path = path.left(path.length()-1); }
 	path = QDir::toNativeSeparators(path);
-	QString file = m_image->path(fn, path), pth = file.section(QDir::toNativeSeparators("/"), 0, -2), url = path+QDir::toNativeSeparators("/")+pth;
+
+	QStringList files = m_image->path(fn, path);
+	QString file = files.empty() ? "" : files.at(0);
+	QString pth = file.section(QDir::toNativeSeparators("/"), 0, -2);
+	QString url = path+QDir::toNativeSeparators("/")+pth;
 
 	QDir dir(url);
 	if (dir.exists())
@@ -398,6 +402,7 @@ void zoomWindow::replyFinished(Image* img)
 {
 	m_image = img;
 	colore();
+	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
 
 	QStringList pools = QStringList();
 	for (int i = 0; i < img->pools().size(); i++)
@@ -409,32 +414,49 @@ void zoomWindow::replyFinished(Image* img)
 	{ ui->labelPools->show(); }
 	ui->labelPools->setText(pools.join("<br />"));
 
-	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
 	QString path1 = settings.value("Save/path").toString().replace("\\", "/");
-	QString pth1 = m_image->path(settings.value("Save/filename").toString(), path1);
-	if (path1.right(1) == "/")
-	{ path1 = path1.left(path1.length()-1); }
-	QFile file1(path1+"/"+pth1);
+	QStringList pth1s = m_image->path(settings.value("Save/filename").toString(), path1);
+	QString source1;
+	bool file1notexists = false;
+	for (QString pth1 : pth1s)
+	{
+		if (path1.right(1) == "/")
+		{ path1 = path1.left(path1.length()-1); }
+		QFile file(path1+"/"+pth1);
+		if (file.exists())
+			source1 = file.fileName();
+		else
+			file1notexists = true;
+	}
 
 	QString path2 = settings.value("Save/path_favorites").toString().replace("\\", "/");
-	QString pth2 = m_image->path(settings.value("Save/filename_favorites").toString(), path2);
-	if (path2.right(1) == "/")
-	{ path2 = path2.left(path2.length()-1); }
-	QFile file2(path2+"/"+pth2);
-
-	if ((file1.exists() && !path1.isEmpty() && !pth1.isEmpty()) || (file2.exists() && !path2.isEmpty() && !pth2.isEmpty()))
+	QStringList pth2s = m_image->path(settings.value("Save/filename_favorites").toString(), path2);
+	QString source2;
+	bool file2notexists = false;
+	for (QString pth2 : pth2s)
 	{
-		if (file1.exists())
+		if (path2.right(1) == "/")
+		{ path2 = path1.left(path2.length()-1); }
+		QFile file(path2+"/"+pth2);
+		if (file.exists())
+			source2 = file.fileName();
+		else
+			file2notexists = true;
+	}
+
+	if (!file1notexists || !file2notexists)
+	{
+		if (!file1notexists)
 		{
 			ui->buttonSave->setText(tr("Fichier déjà existant"));
 			ui->buttonSaveNQuit->setText(tr("Fermer"));
 		}
-		if (file2.exists())
+		if (!file2notexists)
 		{
 			ui->buttonSaveFav->setText(tr("Fichier déjà existant (fav)"));
 			ui->buttonSaveNQuitFav->setText(tr("Fermer (fav)"));
 		}
-		m_source = file1.exists() ? path1+"/"+pth1 : path2+"/"+pth2;
+		m_source = !file1notexists ? source1 : source2;
 		if (m_url.section('.', -1).toUpper() == "GIF")
 		{
 			this->movie = new QMovie(m_source, QByteArray(), this);
@@ -586,7 +608,7 @@ void zoomWindow::saveNQuitFav()
 	}
 }
 
-QString zoomWindow::saveImage(bool fav)
+QStringList zoomWindow::saveImage(bool fav)
 {
 	if (!m_loaded) // If image is still loading, we wait for it to finish
 	{
@@ -600,7 +622,7 @@ QString zoomWindow::saveImage(bool fav)
 			ui->buttonSave->setText(tr("Sauvegarde..."));
 			m_mustSave = 1;
 		}
-		return QString();
+		return QStringList();
 	}
 
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
@@ -623,125 +645,140 @@ QString zoomWindow::saveImage(bool fav)
 			options->show();
 			connect(options, SIGNAL(closed()), this, SLOT(saveImage()));
 		}
-		return QString();
+		return QStringList();
 	}
 
-	QString path = m_image->path(settings.value("Save/filename"+QString(fav ? "_favorites" : "")).toString(), pth);
-	QString fp = QDir::toNativeSeparators(pth+"/"+path);
-	QFile f(fp);
-	if (!f.exists())
+	QStringList paths = m_image->path(settings.value("Save/filename"+QString(fav ? "_favorites" : "")).toString(), pth);
+	for (QString path : paths)
 	{
-		QDir path_to_file(fp.section(QDir::toNativeSeparators("/"), 0, -2));
-		if (!path_to_file.exists())
+		path = QDir::toNativeSeparators(pth+"/"+path);
+		QFile f(path);
+		if (!f.exists())
 		{
-			QDir dir(pth);
-			if (!dir.mkpath(path.section(QDir::toNativeSeparators("/"), 0, -2)))
-			{ error(this, tr("Erreur lors de la sauvegarde de l'image.\r\n%1").arg(fp)); return QString(); }
-		}
-
-		QString whatToDo = settings.value("Save/md5Duplicates", "save").toString();
-		QString md5Duplicate = md5Exists(m_image->md5());
-		if (md5Duplicate.isEmpty() || whatToDo == "save")
-		{
-			log(tr("Sauvegarde de l'image dans le fichier <a href=\"file:///%1\">%1</a>").arg(f.fileName()));
-			if (!m_source.isEmpty())
-			{ QFile::copy(m_source, f.fileName()); }
-			else
+			QDir path_to_file(path.section(QDir::toNativeSeparators("/"), 0, -2));
+			if (!path_to_file.exists())
 			{
-				addMd5(m_image->md5(), fp);
-				f.open(QFile::WriteOnly);
-				f.write(m_data);
-				f.close();
-			}
-
-			if (settings.value("Textfile/activate", false).toBool())
-			{
-				QString contents = m_image->path(settings.value("Textfile/content", "%all%").toString(), "", true, false, false);
-				QFile file_tags(fp + ".txt");
-				if (file_tags.open(QFile::WriteOnly | QFile::Text))
+				QDir dir(pth);
+				if (!dir.mkpath(path.section(QDir::toNativeSeparators("/"), 0, -2)))
 				{
-					file_tags.write(contents.toUtf8());
-					file_tags.close();
-				}
-			}
-			if (settings.value("SaveLog/activate", false).toBool() && !settings.value("SaveLog/file", "").toString().isEmpty())
-			{
-				QString contents = m_image->path(settings.value("SaveLog/format", "%website% - %md5% - %all%").toString(), "", true, false, false);
-				QFile file_tags(settings.value("SaveLog/file", "").toString());
-				if (file_tags.open(QFile::WriteOnly | QFile::Append | QFile::Text))
-				{
-					file_tags.write(contents.toUtf8() + "\n");
-					file_tags.close();
+					error(this, tr("Erreur lors de la sauvegarde de l'image.\r\n%1").arg(path));
+					return QStringList();
 				}
 			}
 
-			if (fav)
-			{ ui->buttonSaveFav->setText(tr("Sauvegardé ! (fav)")); }
+			QString whatToDo = settings.value("Save/md5Duplicates", "save").toString();
+			QString md5Duplicate = md5Exists(m_image->md5());
+			if (md5Duplicate.isEmpty() || whatToDo == "save")
+			{
+				log(tr("Sauvegarde de l'image dans le fichier <a href=\"file:///%1\">%1</a>").arg(f.fileName()));
+				if (!m_source.isEmpty())
+				{ QFile::copy(m_source, f.fileName()); }
+				else
+				{
+					addMd5(m_image->md5(), path);
+					f.open(QFile::WriteOnly);
+					f.write(m_data);
+					f.close();
+				}
+
+				if (settings.value("Textfile/activate", false).toBool())
+				{
+					QStringList cont = m_image->path(settings.value("Textfile/content", "%all%").toString(), "", true, false, false);
+					if (!cont.isEmpty())
+					{
+						QString contents = cont.at(0);
+						QFile file_tags(path + ".txt");
+						if (file_tags.open(QFile::WriteOnly | QFile::Text))
+						{
+							file_tags.write(contents.toUtf8());
+							file_tags.close();
+						}
+					}
+				}
+				if (settings.value("SaveLog/activate", false).toBool() && !settings.value("SaveLog/file", "").toString().isEmpty())
+				{
+					QStringList cont = m_image->path(settings.value("SaveLog/format", "%website% - %md5% - %all%").toString(), "", true, false, false);
+					if (!cont.isEmpty())
+					{
+						QString contents = cont.at(0);
+						QFile file_tags(settings.value("SaveLog/file", "").toString());
+						if (file_tags.open(QFile::WriteOnly | QFile::Append | QFile::Text))
+						{
+							file_tags.write(contents.toUtf8() + "\n");
+							file_tags.close();
+						}
+					}
+				}
+
+				if (fav)
+				{ ui->buttonSaveFav->setText(tr("Sauvegardé ! (fav)")); }
+				else
+				{ ui->buttonSave->setText(tr("Sauvegardé !")); }
+			}
+			else if (whatToDo == "copy")
+			{
+				log(tr("Copie depuis <a href=\"file:///%1\">%1</a> vers <a href=\"file:///%2\">%2</a>").arg(md5Duplicate).arg(f.fileName()));
+				QFile::copy(md5Duplicate, f.fileName());
+
+				if (fav)
+				{ ui->buttonSaveFav->setText(tr("Copié ! (fav)")); }
+				else
+				{ ui->buttonSave->setText(tr("Copié !")); }
+			}
+			else if (whatToDo == "move")
+			{
+				log(tr("Déplacement depuis <a href=\"file:///%1\">%1</a> vers <a href=\"file:///%2\">%2</a>").arg(md5Duplicate).arg(f.fileName()));
+				QFile::rename(md5Duplicate, f.fileName());
+				setMd5(m_image->md5(), f.fileName());
+
+				if (fav)
+				{ ui->buttonSaveFav->setText(tr("Déplacé ! (fav)")); }
+				else
+				{ ui->buttonSave->setText(tr("Déplacé !")); }
+			}
 			else
-			{ ui->buttonSave->setText(tr("Sauvegardé !")); }
-		}
-		else if (whatToDo == "copy")
-		{
-			log(tr("Copie depuis <a href=\"file:///%1\">%1</a> vers <a href=\"file:///%2\">%2</a>").arg(md5Duplicate).arg(f.fileName()));
-			QFile::copy(md5Duplicate, f.fileName());
+			{
+				if (fav)
+				{ ui->buttonSaveFav->setText(tr("Ignoré ! (fav)")); }
+				else
+				{ ui->buttonSave->setText(tr("Ignoré !")); }
+			}
 
 			if (fav)
-			{ ui->buttonSaveFav->setText(tr("Copié ! (fav)")); }
+			{ ui->buttonSaveNQuitFav->setText(tr("Fermer (fav)")); }
 			else
-			{ ui->buttonSave->setText(tr("Copié !")); }
-		}
-		else if (whatToDo == "move")
-		{
-			log(tr("Déplacement depuis <a href=\"file:///%1\">%1</a> vers <a href=\"file:///%2\">%2</a>").arg(md5Duplicate).arg(f.fileName()));
-			QFile::rename(md5Duplicate, f.fileName());
-			setMd5(m_image->md5(), f.fileName());
+			{ ui->buttonSaveNQuit->setText(tr("Fermer")); }
 
-			if (fav)
-			{ ui->buttonSaveFav->setText(tr("Déplacé ! (fav)")); }
-			else
-			{ ui->buttonSave->setText(tr("Déplacé !")); }
+			// Commands
+			QMap<QString,int> types;
+			types["general"] = 0;
+			types["artist"] = 1;
+			types["general"] = 2;
+			types["copyright"] = 3;
+			types["character"] = 4;
+			types["model"] = 5;
+			types["photo_set"] = 6;
+			Commands::get()->before();
+			for (int i = 0; i < m_image->tags().count(); i++)
+			{ Commands::get()->tag(m_image->tags().at(i)); }
+			Commands::get()->image(m_image, path);
+			Commands::get()->after();
 		}
 		else
 		{
 			if (fav)
-			{ ui->buttonSaveFav->setText(tr("Ignoré ! (fav)")); }
+			{ ui->buttonSaveFav->setText(tr("Fichier déjà existant (fav)")); }
 			else
-			{ ui->buttonSave->setText(tr("Ignoré !")); }
+			{ ui->buttonSave->setText(tr("Fichier déjà existant")); }
 		}
-
-		if (fav)
-		{ ui->buttonSaveNQuitFav->setText(tr("Fermer (fav)")); }
-		else
-		{ ui->buttonSaveNQuit->setText(tr("Fermer")); }
-
-		// Commands
-		QMap<QString,int> types;
-		types["general"] = 0;
-		types["artist"] = 1;
-		types["general"] = 2;
-		types["copyright"] = 3;
-		types["character"] = 4;
-		types["model"] = 5;
-		types["photo_set"] = 6;
-		Commands::get()->before();
-		for (int i = 0; i < m_image->tags().count(); i++)
-		{ Commands::get()->tag(m_image->tags().at(i)); }
-		Commands::get()->image(m_image, fp);
-		Commands::get()->after();
 	}
-	else
-	{
-		if (fav)
-		{ ui->buttonSaveFav->setText(tr("Fichier déjà existant (fav)")); }
-		else
-		{ ui->buttonSave->setText(tr("Fichier déjà existant")); }
-	}
+
 	if (m_mustSave == 2 || m_mustSave == 4)
 	{ close(); }
 	m_mustSave = 0;
-	return pth+"/"+path;
+	return paths;
 }
-QString zoomWindow::saveImageFav()
+QStringList zoomWindow::saveImageFav()
 { return saveImage(true); }
 
 QString zoomWindow::saveImageAs()

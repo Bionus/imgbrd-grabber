@@ -351,14 +351,17 @@ void Downloader::finishedLoadingImage(Image *image)
 
 	if (m_quit)
 	{
-		QString path = image->path(m_filename, m_location);
-		path = (m_location.endsWith('/') ? m_location.left(m_location.length() - 1) : m_location) + "/" + (path.startsWith('/') ? path.right(path.length() - 1) : path);
-		QFile f(QDir::toNativeSeparators(path));
-		if (f.open(QFile::WriteOnly))
+		QStringList paths = image->path(m_filename, m_location);
+		for (QString path : paths)
 		{
-			f.write(image->data());
-			f.close();
-			log("Saved to '"+path+"'");
+			path = (m_location.endsWith('/') ? m_location.left(m_location.length() - 1) : m_location) + "/" + (path.startsWith('/') ? path.right(path.length() - 1) : path);
+			QFile f(QDir::toNativeSeparators(path));
+			if (f.open(QFile::WriteOnly))
+			{
+				f.write(image->data());
+				f.close();
+				log("Saved to '"+path+"'");
+			}
 		}
 	}
 	else

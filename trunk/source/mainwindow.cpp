@@ -1203,8 +1203,17 @@ void mainWindow::_getAll()
 			}
 
 			QString p = img->folder().isEmpty() ? pth : img->folder();
-			QFile f(p+"/"+img->path(path, p, m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + 1));
-			if (!f.exists())
+			QStringList paths = img->path(path, p, m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + 1);
+
+			bool notexists = true;
+			for (QString path : paths)
+			{
+				QFile f(p+"/"+path);
+				if (f.exists())
+				{ notexists = false; }
+			}
+
+			if (notexists)
 			{
 				bool detected = false;
 				QStringList tags = site_id >= 0 ? m_groupBatchs[site_id - 1][0].split(' ') : QStringList();
@@ -1242,7 +1251,7 @@ void mainWindow::_getAll()
 				m_progressdialog->setValue(m_progressdialog->value()+img->value());
 				m_progressdialog->setImages(m_progressdialog->images()+1);
 				m_getAllExists++;
-				log(tr("Fichier déjà existant : <a href=\"file:///%1\">%1</a>").arg(f.fileName()));
+				log(tr("Fichier déjà existant : <a href=\"file:///%1\">%1</a>").arg(paths.at(0)));
 				m_progressdialog->loadedImage(img->url());
 				if (site_id >= 0)
 				{
@@ -1383,7 +1392,8 @@ void mainWindow::getAllPerformTags(Image* img)
 		path = m_groupBatchs[site_id - 1][6];
 		p = m_groupBatchs[site_id - 1][7];
 	}
-	path = img->path(path, p, m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + 1);
+	QStringList paths = img->path(path, p, m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + 1);
+	path = paths.at(0); // FIXME
 
 	// Save path
 	p.replace("\\", "/");
@@ -1480,11 +1490,7 @@ void mainWindow::getAllGetImage(Image* img)
 		path = m_groupBatchs[site_id - 1][6];
 		p = m_groupBatchs[site_id - 1][7];
 	}
-	path = img->path(path, p, m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + 1);
-	path.replace("%n%", QString::number(m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors));
-	if (path.left(1) == QDir::toNativeSeparators("/"))	{ path = path.right(path.length()-1);	}
-	if (p.right(1) == QDir::toNativeSeparators("/"))	{ p = p.left(p.length()-1);				}
-	QString fp = QDir::toNativeSeparators(p+"/"+path);
+	QStringList paths = img->path(path, p, m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + 1);
 
 	// Action
 	QString whatToDo = m_settings->value("Save/md5Duplicates", "save").toString();
@@ -1504,23 +1510,34 @@ void mainWindow::getAllGetImage(Image* img)
 		img->loadImage();
 		next = false;
 	}
-	else if (whatToDo == "copy")
-	{
-		m_getAllIgnored++;
-		log(tr("Copie depuis <a href=\"file:///%1\">%1</a> vers <a href=\"file:///%2\">%2</a>").arg(md5Duplicate).arg(fp));
-		QFile::copy(md5Duplicate, fp);
-	}
-	else if (whatToDo == "move")
-	{
-		m_getAllDownloaded++;
-		log(tr("Déplacement depuis <a href=\"file:///%1\">%1</a> vers <a href=\"file:///%2\">%2</a>").arg(md5Duplicate).arg(fp));
-		QFile::rename(md5Duplicate, fp);
-		setMd5(img->md5(), fp);
-	}
 	else
 	{
-		m_getAllIgnored++;
-		log(tr("MD5 \"%1\" de l'image <a href=\"%2\">%2</a> déjà existant dans le fichier <a href=\"file:///%3\">%3</a>").arg(img->md5(), img->url(), md5Duplicate));
+		for (QString path : paths)
+		{
+			path.replace("%n%", QString::number(m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors));
+			if (path.left(1) == QDir::toNativeSeparators("/"))	{ path = path.right(path.length()-1);	}
+			if (p.right(1) == QDir::toNativeSeparators("/"))	{ p = p.left(p.length()-1);				}
+			QString fp = QDir::toNativeSeparators(p+"/"+path);
+
+			if (whatToDo == "copy")
+			{
+				m_getAllIgnored++;
+				log(tr("Copie depuis <a href=\"file:///%1\">%1</a> vers <a href=\"file:///%2\">%2</a>").arg(md5Duplicate).arg(fp));
+				QFile::copy(md5Duplicate, fp);
+			}
+			else if (whatToDo == "move")
+			{
+				m_getAllDownloaded++;
+				log(tr("Déplacement depuis <a href=\"file:///%1\">%1</a> vers <a href=\"file:///%2\">%2</a>").arg(md5Duplicate).arg(fp));
+				QFile::rename(md5Duplicate, fp);
+				setMd5(img->md5(), fp);
+			}
+			else
+			{
+				m_getAllIgnored++;
+				log(tr("MD5 \"%1\" de l'image <a href=\"%2\">%2</a> déjà existant dans le fichier <a href=\"file:///%3\">%3</a>").arg(img->md5(), img->url(), md5Duplicate));
+			}
+		}
 	}
 
 	// Continue to next image
@@ -1623,70 +1640,82 @@ void mainWindow::saveImage(Image *img, QNetworkReply *reply, QString path, QStri
 	{ path = m_settings->value("Save/filename").toString(); }
 	if (p == "")
 	{ p = img->folder().isEmpty() ? m_settings->value("Save/path").toString() : img->folder(); }
-	path = img->path(path, p, m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + 1);
-	if (getAll)
-	{ path.replace("%n%", QString::number(m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors)); }
+	QStringList paths = img->path(path, p, m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + 1);
 
-	if (path.left(1) == DIR_SEPARATOR)	{ path = path.right(path.length()-1);	}
-	if (p.right(1) == DIR_SEPARATOR)	{ p = p.left(p.length()-1);				}
-	QString fp = QDir::toNativeSeparators(p+"/"+path);
-
-	QString whatToDo = m_settings->value("Save/md5Duplicates", "save").toString();
-	QString md5Duplicate = md5Exists(img->md5());
-	if (md5Duplicate.isEmpty() || whatToDo == "save")
+	QByteArray data = img->data().isEmpty() ? reply->readAll() : img->data();
+	if (!data.isEmpty())
 	{
-		QDir path_to_file(fp.section(QDir::toNativeSeparators("/"), 0, -2)), dir(p);
-		if (!path_to_file.exists() && !dir.mkpath(path.section(QDir::toNativeSeparators("/"), 0, -2)))
+		for (QString path : paths)
 		{
-			log(tr("Impossible de créer le dossier de destination: %1.").arg(p+"/"+path.section('/', 0, -2)), Error);
 			if (getAll)
-			{ m_getAllErrors++; }
-		}
-		else
-		{
-			QByteArray data = img->data().isEmpty() ? reply->readAll() : img->data();
-			if (!data.isEmpty())
+			{ path.replace("%n%", QString::number(m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors)); }
+
+			if (path.left(1) == DIR_SEPARATOR)	{ path = path.right(path.length()-1);	}
+			if (p.right(1) == DIR_SEPARATOR)	{ p = p.left(p.length()-1);				}
+			QString fp = QDir::toNativeSeparators(p+"/"+path);
+
+			QString whatToDo = m_settings->value("Save/md5Duplicates", "save").toString();
+			QString md5Duplicate = md5Exists(img->md5());
+			if (md5Duplicate.isEmpty() || whatToDo == "save")
 			{
-				QFile f(fp);
-				f.open(QIODevice::WriteOnly);
-				f.write(data);
-				f.close();
-
-				img->setData(data);
-				addMd5(img->md5(), fp);
-
-				if (m_settings->value("Textfile/activate", false).toBool())
+				QDir path_to_file(fp.section(QDir::toNativeSeparators("/"), 0, -2)), dir(p);
+				if (!path_to_file.exists() && !dir.mkpath(path.section(QDir::toNativeSeparators("/"), 0, -2)))
 				{
-					QString contents = img->path(m_settings->value("Textfile/content", "%all%").toString(), "", true, false, false);
-					QFile file_tags(fp + ".txt");
-					if (file_tags.open(QFile::WriteOnly | QFile::Text))
+					log(tr("Impossible de créer le dossier de destination: %1.").arg(p+"/"+path.section('/', 0, -2)), Error);
+					if (getAll)
+					{ m_getAllErrors++; }
+				}
+				else
+				{
+					QFile f(fp);
+					f.open(QIODevice::WriteOnly);
+					f.write(data);
+					f.close();
+
+					img->setData(data);
+					addMd5(img->md5(), fp);
+
+					if (m_settings->value("Textfile/activate", false).toBool())
 					{
-						file_tags.write(contents.toLatin1());
-						file_tags.close();
+						QStringList cont = img->path(m_settings->value("Textfile/content", "%all%").toString(), "", true, false, false);
+						if (!cont.isEmpty())
+						{
+							QString contents = cont.at(0);
+							QFile file_tags(fp + ".txt");
+							if (file_tags.open(QFile::WriteOnly | QFile::Text))
+							{
+								file_tags.write(contents.toLatin1());
+								file_tags.close();
+							}
+						}
+					}
+					if (m_settings->value("SaveLog/activate", false).toBool() && !m_settings->value("SaveLog/file", "").toString().isEmpty())
+					{
+						QStringList cont = img->path(m_settings->value("SaveLog/format", "%website% - %md5% - %all%").toString(), "", true, false, false);
+						if (!cont.isEmpty())
+						{
+							QString contents = cont.at(0);
+							QFile file_tags(m_settings->value("SaveLog/file", "").toString());
+							if (file_tags.open(QFile::WriteOnly | QFile::Append | QFile::Text))
+							{
+								file_tags.write(contents.toUtf8() + "\n");
+								file_tags.close();
+							}
+						}
 					}
 				}
-				if (m_settings->value("SaveLog/activate", false).toBool() && !m_settings->value("SaveLog/file", "").toString().isEmpty())
-				{
-					QString contents = img->path(m_settings->value("SaveLog/format", "%website% - %md5% - %all%").toString(), "", true, false, false);
-					QFile file_tags(m_settings->value("SaveLog/file", "").toString());
-					if (file_tags.open(QFile::WriteOnly | QFile::Append | QFile::Text))
-					{
-						file_tags.write(contents.toUtf8() + "\n");
-						file_tags.close();
-					}
-				}
-			}
-			else
-			{
-				log(tr("Rien n'a été reçu pour l'image: <a href=\"%1\">%1</a>.").arg(img->url().toHtmlEscaped()), Error);
-				if (getAll)
-				{ m_getAllErrors++; }
-			}
 
-			for (int i = 0; i < img->tags().count(); i++)
-			{ Commands::get()->tag(img->tags().at(i)); }
-			Commands::get()->image(img, fp);
+				for (int i = 0; i < img->tags().count(); i++)
+				{ Commands::get()->tag(img->tags().at(i)); }
+				Commands::get()->image(img, fp);
+			}
 		}
+	}
+	else
+	{
+		log(tr("Rien n'a été reçu pour l'image: <a href=\"%1\">%1</a>.").arg(img->url().toHtmlEscaped()), Error);
+		if (getAll)
+		{ m_getAllErrors++; }
 	}
 }
 

@@ -465,9 +465,9 @@ QString analyse(QStringList tokens, QString text, QStringList tags)
 }
 
 typedef QPair<QString,QString> QStrP;
-typedef QPair<QString,QStrP> QStrPP;
-QStrP getReplace(QString setting, QMap<QString,QStringList> details, QSettings *settings)
+QList<QStrP> getReplace(QString setting, QMap<QString,QStringList> details, QSettings *settings)
 {
+	QList<QStrP> ret;
 	QString first = "", second = "";
 	int limit = settings->value(setting+"_multiple_limit", 1).toInt();
 	QString separator = settings->value(setting+"_sep", " ").toString();
@@ -495,7 +495,17 @@ QStrP getReplace(QString setting, QMap<QString,QStringList> details, QSettings *
 	else
 	{ first = first = details[setting+"s"].join(separator); }
 	second = settings->value(setting+"_empty").toString();
-	return QStrP(first, second);
+
+	ret.append(QStrP(first, second));
+	ret.append(QStrP(first.isEmpty() ? first : (first+"2"), second.isEmpty() ? second : (second+"2")));
+	return ret;
+}
+
+QString cutLength(QString res, QString filename, QString pth, QString key, bool cut)
+{
+	if (cut && !filename.right(filename.length() - filename.indexOf(key)).contains("/"))
+	{ return res.left(259 - pth.length() - 1 - filename.length()).trimmed(); }
+	return res.trimmed();
 }
 
 /**
@@ -507,7 +517,7 @@ QStrP getReplace(QString setting, QMap<QString,QStringList> details, QSettings *
  * @param simple True to force using the fn and pth parameters.
  * @return The filename of the image, with any token replaced.
  */
-QString Image::path(QString fn, QString pth, int counter, bool complex, bool simple, bool maxlength)
+QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool simple, bool maxlength)
 {
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
 	QStringList ignore = loadIgnored(), remove = settings.value("ignoredtags").toString().split(' ', QString::SkipEmptyParts);
@@ -592,10 +602,6 @@ QString Image::path(QString fn, QString pth, int counter, bool complex, bool sim
 	for (int i = 0; i < m_search.size(); ++i)
 	{ replaces.insert("search_"+QString::number(i+1), QStrP(m_search[i], "")); }
 	replaces.insert("search", QStrP(m_search.join(settings.value("separator").toString()), ""));
-	replaces.insert("artist", getReplace("artist", details, &settings));
-	replaces.insert("copyright", getReplace("copyright", details, &settings));
-	replaces.insert("character", getReplace("character", details, &settings));
-	replaces.insert("model", getReplace("model", details, &settings));
 	replaces.insert("rating", QStrP(m_rating, "unknown"));
 	replaces.insert("score", QStrP(QString::number(m_score), ""));
 	replaces.insert("height", QStrP(QString::number(m_size.height()), "0"));
@@ -667,7 +673,7 @@ QString Image::path(QString fn, QString pth, int counter, bool complex, bool sim
 		if (result.isError())
 		{
 			error(0, tr("Erreur d'évaluation du Javascript :<br/>") + result.toString());
-			return QString();
+			return QStringList();
 		}
 
 		filename = result.toString();
@@ -726,29 +732,61 @@ QString Image::path(QString fn, QString pth, int counter, bool complex, bool sim
 			{ res.replace("_", " "); }
 
 			// We only cut the name if it is not a folder
-			if (complex && !filename.right(filename.length()-filename.indexOf("%"+key+"%")).contains("/") && maxlength)
-			{ filename.replace("%"+key+"%", res.left(259-pth.length()-1-filename.length()).trimmed()); }
-			else
-			{ filename.replace("%"+key+"%", res.trimmed()); }
+			filename.replace("%"+key+"%", cutLength(res, filename, pth, "%"+key+"%", maxlength && complex));
 		}
 	}
 
-	// Trim directory names
-	filename = filename.trimmed();
-	filename.replace(QRegExp(" */ *"), "/");
+	QStringList fns = QStringList() << filename;
+	QStringList keys = QStringList() << "artist" << "copyright" << "character" << "model";
 
-	// We remove empty directory names
-	while (filename.indexOf("//") >= 0)
-	{ filename.replace("//", "/"); }
-
-	// Max filename size option
-	if (maxlength)
+	for (QString key : keys)
 	{
-		if (complex && filename.length() > settings.value("limit").toInt() && settings.value("limit").toInt() > 0)
-		{ filename = filename.left(filename.length()-ext.length()-1).left(settings.value("limit").toInt()-ext.length()-1) + filename.right(ext.length()+1); }
+		QList<QStrP> replaces = getReplace(key, details, &settings);
+		int cnt = fns.count();
+		for (int i = 0; i < cnt; ++i)
+		{
+			if (fns[i].contains("%"+key+"%"))
+			{
+				for (int j = 0; j < replaces.count(); ++j)
+				{
+					QString res = replaces[j].first.isEmpty() ? replaces[j].second : replaces[j].first;
+					res.replace("\\", "_").replace("%", "_").replace("/", "_").replace(":", "_").replace("|", "_").replace("*", "_").replace("?", "_").replace("\"", "_").replace("<", "_").replace(">", "_").replace("__", "_").replace("__", "_").replace("__", "_").trimmed();
+					if (!settings.value("replaceblanks", false).toBool())
+					{ res.replace("_", " "); }
+
+					QString filename = QString(fns[i]);
+					filename = filename.replace("%"+key+"%", cutLength(res, filename, pth, "%"+key+"%", maxlength && complex));
+
+					if (j < replaces.count() - 1)
+						fns.append(filename);
+					else
+						fns[i] = filename;
+				}
+			}
+		}
 	}
 
-	return QDir::toNativeSeparators(filename);
+	for (QString filename : fns)
+	{
+		// Trim directory names
+		filename = filename.trimmed();
+		filename.replace(QRegExp(" */ *"), "/");
+
+		// We remove empty directory names
+		while (filename.indexOf("//") >= 0)
+		{ filename.replace("//", "/"); }
+
+		// Max filename size option
+		if (maxlength)
+		{
+			if (complex && filename.length() > settings.value("limit").toInt() && settings.value("limit").toInt() > 0)
+			{ filename = filename.left(filename.length()-ext.length()-1).left(settings.value("limit").toInt()-ext.length()-1) + filename.right(ext.length()+1); }
+		}
+
+		filename = QDir::toNativeSeparators(filename);
+	}
+
+	return fns;
 }
 
 void Image::loadImage()
