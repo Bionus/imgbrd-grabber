@@ -1,7 +1,7 @@
 # Options
 CONFIG += use_qscintilla
 CONFIG += use_ssl
-#CONFIG += use_breakpad
+CONFIG += use_breakpad
 #CONFIG += use_cli
 
 # Global
