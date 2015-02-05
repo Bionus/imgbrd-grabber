@@ -35,8 +35,8 @@ class zoomWindow : public QDialog
 		void display(QImage, int);
 		void saveNQuit();
 		void saveNQuitFav();
-		QString saveImage(bool fav = false);
-		QString saveImageFav();
+		QStringList saveImage(bool fav = false);
+		QStringList saveImageFav();
 		QString saveImageAs();
 		void fullScreen();
 		void openUrl(QString);

@@ -70,22 +70,29 @@ bool Commands::image(Image *img, QString fp)
 {
 	if (!m_commandImage.isEmpty())
 	{
-		QString exec = img->path(m_commandImage, "", false);
-		exec.replace("%path%", fp);
-		exec.replace(" \\C ", " /C ");
-		log(QObject::tr("Execution de \"%1\"").arg(exec));
-		logCommand(exec);
-		QProcess::execute(exec);
+		QStringList execs = img->path(m_commandImage, "", false);
+		for (QString exec : execs)
+		{
+			exec.replace("%path%", fp);
+			exec.replace(" \\C ", " /C ");
+			log(QObject::tr("Execution de \"%1\"").arg(exec));
+			logCommand(exec);
+			QProcess::execute(exec);
+		}
 	}
 	if (m_mysql && !m_mysqlSettings.image.isEmpty())
 	{
 		start();
-		QString exec = img->path(m_mysqlSettings.image, "", false);
-		exec.replace("%path%", fp);
-		log(QObject::tr("Execution SQL de \"%1\"").arg(exec));
-		logCommandSql(exec);
-		QSqlQuery query;
-		return query.exec(exec);
+		QStringList execs = img->path(m_mysqlSettings.image, "", false);
+		for (QString exec : execs)
+		{
+			exec.replace("%path%", fp);
+			log(QObject::tr("Execution SQL de \"%1\"").arg(exec));
+			logCommandSql(exec);
+			QSqlQuery query;
+			if (!query.exec(exec))
+				return false;
+		}
 	}
 	return true;
 }
