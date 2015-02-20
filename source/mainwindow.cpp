@@ -676,7 +676,8 @@ void mainWindow::updateBatchGroups(int y, int x)
 		}
 		else
 		{
-			m_groupBatchs[y][r-1] = ui->tableBatchGroups->item(y, x)->text();
+			int batchId = ui->tableBatchGroups->item(y, 0)->text().toInt() - 1;
+			m_groupBatchs[batchId][r-1] = ui->tableBatchGroups->item(y, x)->text();
 			saveLinkList(savePath("restore.igl"));
 		}
 	}
@@ -1042,7 +1043,7 @@ void mainWindow::getAll(bool all)
 														m_settings->value("blacklistedtags").toString().split(' '),
                                                         false,
                                                         0,
-                                                        "");
+														"");
                 connect(downloader, &Downloader::finishedImages, this, &mainWindow::getAllFinishedImages);
                 connect(downloader, &Downloader::finishedImagesPage, this, &mainWindow::getAllFinishedPage);
                 m_downloaders.append(downloader);
