@@ -1,12 +1,14 @@
 # Options
-CONFIG += use_qscintilla
 CONFIG += use_ssl
+Release {
+	CONFIG += use_qscintilla
+}
 CONFIG += use_breakpad
 #CONFIG += use_cli
 
 # Global
 TARGET = Grabber
-APP_VERSION = \\\"4.0.6\\\"
+APP_VERSION = \\\"4.1.0\\\"
 
 # General
 TEMPLATE = app

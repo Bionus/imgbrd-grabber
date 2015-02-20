@@ -766,8 +766,11 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 		}
 	}
 
-	for (QString filename : fns)
+	int cnt = fns.count();
+	for (int i = 0; i < cnt; ++i)
 	{
+		QString filename = fns[i];
+
 		// Trim directory names
 		filename = filename.trimmed();
 		filename.replace(QRegExp(" */ *"), "/");
@@ -783,7 +786,7 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 			{ filename = filename.left(filename.length()-ext.length()-1).left(settings.value("limit").toInt()-ext.length()-1) + filename.right(ext.length()+1); }
 		}
 
-		filename = QDir::toNativeSeparators(filename);
+		fns[i] = QDir::toNativeSeparators(filename);
 	}
 
 	return fns;
