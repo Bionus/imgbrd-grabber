@@ -1127,7 +1127,7 @@ void mainWindow::getAllImages()
         int n = -1;
 		for (int r = 0; r < m_groupBatchs.count(); r++)
 		{
-			if (m_groupBatchs[r][8].split("¤", QString::SkipEmptyParts).contains(QString::number((int)m_getAllRemaining[i]->page())))
+			if (m_groupBatchs[r][8].split("¤", QString::SkipEmptyParts).contains(QString::number((qintptr)m_getAllRemaining[i]->page())))
 			{
 				n = r + 1;
 				break;
