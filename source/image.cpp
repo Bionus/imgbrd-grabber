@@ -497,7 +497,6 @@ QList<QStrP> getReplace(QString setting, QMap<QString,QStringList> details, QSet
 	second = settings->value(setting+"_empty").toString();
 
 	ret.append(QStrP(first, second));
-	ret.append(QStrP(first.isEmpty() ? first : (first+"2"), second.isEmpty() ? second : (second+"2")));
 	return ret;
 }
 
@@ -732,7 +731,7 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 			{ res.replace("_", " "); }
 
 			// We only cut the name if it is not a folder
-			filename.replace("%"+key+"%", cutLength(res, filename, pth, "%"+key+"%", maxlength && complex));
+			filename.replace("%"+key+"%", res); // cutLength(res, filename, pth, "%"+key+"%", maxlength && complex)
 		}
 	}
 
@@ -755,7 +754,7 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 					{ res.replace("_", " "); }
 
 					QString filename = QString(fns[i]);
-					filename = filename.replace("%"+key+"%", cutLength(res, filename, pth, "%"+key+"%", maxlength && complex));
+					filename = filename.replace("%"+key+"%", res); // cutLength(res, filename, pth, "%"+key+"%", maxlength && complex));
 
 					if (j < replaces.count() - 1)
 						fns.append(filename);
@@ -780,13 +779,7 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 		{ filename.replace("//", "/"); }
 
 		// Max filename size option
-		if (maxlength)
-		{
-			if (complex && filename.length() > settings.value("limit").toInt() && settings.value("limit").toInt() > 0)
-			{ filename = filename.left(filename.length()-ext.length()-1).left(settings.value("limit").toInt()-ext.length()-1) + filename.right(ext.length()+1); }
-		}
-
-		fns[i] = QDir::toNativeSeparators(filename);
+		fns[i] = fixFilename(filename, pth, maxlength && complex ? 0 : settings.value("limit").toInt());
 	}
 
 	return fns;
