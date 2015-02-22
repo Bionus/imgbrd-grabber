@@ -29,7 +29,6 @@
 #include <QApplication>
 #include <QtGui>
 #include <iostream>
-#include <io.h>
 #include "QAffiche.h"
 #include "QBouton.h"
 #include "downloader.h"

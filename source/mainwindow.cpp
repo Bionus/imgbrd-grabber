@@ -697,6 +697,7 @@ void mainWindow::addGroup()
 	}
 	if (selected.isEmpty() && m_sites.size() > 0)
 	{ selected = m_sites.keys().at(0); }
+
 	AddGroupWindow *wAddGroup = new AddGroupWindow(selected, m_sites.keys(), m_favorites.keys(), this);
 	connect(wAddGroup, SIGNAL(sendData(QStringList)), this, SLOT(batchAddGroup(QStringList)));
 	wAddGroup->show();
@@ -716,6 +717,7 @@ void mainWindow::addUnique()
 	}
 	if (selected.isEmpty() && m_sites.size() > 0)
 	{ selected = m_sites.keys().at(0); }
+
 	AddUniqueWindow *wAddUnique = new AddUniqueWindow(selected, m_sites, this);
 	connect(wAddUnique, SIGNAL(sendData(QMap<QString,QString>)), this, SLOT(batchAddUnique(QMap<QString,QString>)));
 	wAddUnique->show();
@@ -724,6 +726,7 @@ void mainWindow::addUnique()
 void mainWindow::updateFavorites(bool dock)
 {
 	m_favoritesTab->updateFavorites();
+
 	if (dock)
 	{ updateFavoritesDock(); }
 }
