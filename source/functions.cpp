@@ -536,6 +536,8 @@ QString stripTags(QString str)
  */
 void logUpdate(QString l)
 {
+	Q_UNUSED(l);
+
 	/*QDateTime date = _log.keys().at(_log.count()-1);
 	QString message = _log.value(date)+l;
 	_log.insert(date, message);

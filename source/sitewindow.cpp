@@ -9,6 +9,8 @@ extern mainWindow *_mainwindow;
 siteWindow::siteWindow(QMap<QString,Site*> *sites, QWidget *parent)
 	: QDialog(parent), ui(new Ui::siteWindow)
 {
+	Q_UNUSED(sites);
+
 	ui->setupUi(this);
 	ui->progressBar->hide();
 	m_models = new QList<Site*>();

@@ -75,7 +75,7 @@ use_breakpad {
 	}
 	unix {
 		QMAKE_CXXFLAGS += -fpermissive
-		BREAKPAD = /home/spark/Documents/Programmation/C++/Qt/google-breakpad
+		BREAKPAD = ~/Programmation/google-breakpad
 		LIBS += $${BREAKPAD}/src/client/linux/libbreakpad_client.a
 	}
 	INCLUDEPATH += $${BREAKPAD}/src
