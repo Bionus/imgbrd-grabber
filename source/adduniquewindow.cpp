@@ -56,12 +56,13 @@ void AddUniqueWindow::ok(bool close)
 		QString url = m_sites[ui->comboSites->currentText()]->value("Urls/Html/Post");
 		url.replace("{id}", ui->lineId->text());
 		url.replace("{md5}", ui->lineMd5->text());
+
 		QMap<QString,QString> details = QMap<QString,QString>();
 		details.insert("page_url", url);
 		details.insert("id", ui->lineId->text());
 		details.insert("md5", ui->lineMd5->text());
 		details.insert("website", ui->comboSites->currentText());
-		details.insert("site", QString::number((int)m_sites[ui->comboSites->currentText()]));
+		details.insert("site", QString::number((qintptr)m_sites[ui->comboSites->currentText()]));
 		Image *img = new Image(details);
 		img->loadDetails();
 		connect(img, SIGNAL(finishedLoadingTags(Image*)), this, SLOT(addImage(Image*)));

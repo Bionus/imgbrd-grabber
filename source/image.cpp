@@ -7,7 +7,7 @@ Image::Image(QMap<QString, QString> details, Page* parent)
 {
 	// Parents
 	m_site = parent != NULL ? parent->website() : (details.contains("website") ? details["website"] : "");
-	m_parentSite = parent != NULL ? parent->site() : (details.contains("site") ? (Site*)details["site"].toInt() : NULL);
+	m_parentSite = parent != NULL ? parent->site() : (details.contains("site") ? (Site*)details["site"].toLongLong() : NULL);
 	if (m_parentSite == NULL)
 	{
 		log("Image has null parent, aborting creation.");
