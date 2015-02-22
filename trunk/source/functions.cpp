@@ -11,7 +11,9 @@
 #include <QUrl>
 #include "math.h"
 #include "functions.h"
-//#include "mainwindow.h"
+#ifdef Q_OS_WIN
+	#include "windows.h"
+#endif
 
 using namespace std;
 
@@ -376,7 +378,7 @@ QString savePath(QString file)
 int levenshtein(QString s1, QString s2)
 {
 	const size_t len1 = s1.size(), len2 = s2.size();
-	std::vector<std::vector<unsigned int> > d(len1 + 1, vector<unsigned int>(len2 + 1));
+	QVector<QVector<unsigned int> > d(len1 + 1, QVector<unsigned int>(len2 + 1));
 
 	d[0][0] = 0;
 	for(unsigned int i = 1; i <= len1; ++i) d[i][0] = i;
@@ -384,8 +386,13 @@ int levenshtein(QString s1, QString s2)
 
 	for(unsigned int i = 1; i <= len1; ++i)
 		for (unsigned int j = 1; j <= len2; ++j)
-			d[i][j] = std::min( std::min(d[i - 1][j] + 1,d[i][j - 1] + 1),
-				d[i - 1][j - 1] + (s1[i - 1] == s2[j - 1] ? 0 : 1) );
+			d[i][j] = qMin(
+				qMin(
+					d[i - 1][j] + 1,
+					d[i][j - 1] + 1
+				),
+				d[i - 1][j - 1] + (s1[i - 1] == s2[j - 1] ? 0 : 1)
+			);
 
 	return d[len1][len2];
 }
@@ -624,4 +631,72 @@ QString setExtension(QString url, QString extension)
 			url = url.left(pPos) + "." + extension;
 	}
 	return url;
+}
+
+QString fixFilename(QString filename, QString path, int maxlength)
+{
+	QString sep = QDir::toNativeSeparators("/");
+	filename = QDir::toNativeSeparators(filename);
+	path = QDir::toNativeSeparators(path);
+
+	#ifdef Q_OS_WIN
+		// Fix parameters
+		maxlength = maxlength == 0 ? MAX_PATH : maxlength;
+		filename = path + filename;
+
+		// Drive
+		QString drive = "";
+		if (filename.mid(1, 2) == ":\\")
+		{
+			drive = filename.left(3);
+			filename = filename.right(filename.length() - 3);
+		}
+
+		// Forbidden characters
+		filename.remove('<').remove('>').remove(':').remove('"').remove('/').remove('|').remove('?').remove('*');
+
+		// Fobidden directories or filenames
+		QStringList forbidden = QStringList() << "CON" << "PRN" << "AUX" << "NUL" << "COM1" << "COM2" << "COM3" << "COM4" << "COM5" << "COM6" << "COM7" << "COM8" << "COM9" << "LPT1" << "LPT2" << "LPT3" << "LPT4" << "LPT5" << "LPT6" << "LPT7" << "LPT8" << "LPT9";
+
+		// Divide filename
+		QStringList parts = filename.split(sep);
+		QString file = parts.takeLast();
+		QString ext = file.right(file.length() - file.lastIndexOf('.') - 1);
+		file = file.left(file.lastIndexOf('.'));
+
+		// Fix directories
+		for (QString &part : parts)
+		{
+			// A part cannot be one in the forbidden list
+			if (forbidden.contains(part))
+				part = part + "!";
+
+			// A part cannot finish by a period
+			if (part.endsWith('.'))
+				part = part.left(part.length() - 1).trimmed();
+
+			// A part cannot start or finish with a space
+			part = part.trimmed();
+
+			// A part should still allow creating a file
+			if (part.length() > maxlength - 12)
+				part = part.left(maxlength - 12).trimmed();
+		}
+
+		// Join parts back
+		QString dirpart = parts.join(sep);
+		if (dirpart.length() > maxlength - 12)
+			dirpart = dirpart.left(maxlength - 12).trimmed();
+		filename = dirpart + sep + file;
+
+		// A filename cannot exceed MAX_PATH (-1 for <NUL> and -3 for drive "C:\")
+		if (filename.length() > maxlength - 1 - 3 - ext.length() - 1)
+			filename = filename.left(maxlength - 1 - 3 - ext.length() - 1).trimmed();
+
+		// Put extension and drive back
+		filename = drive + filename + "." + ext;
+		filename = filename.right(filename.length() - path.length());
+	#endif
+
+	return filename;
 }
