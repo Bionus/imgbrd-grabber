@@ -810,7 +810,7 @@ void tagTab::getSel()
 	{
 		QStringList tags;
 		foreach (Tag tag, img->tags())
-		{ tags.append(tag.text()); }
+		{ tags.append(tag.typedText()); }
 
 		QMap<QString,QString> values;
 		values.insert("id", QString::number(img->id()));
