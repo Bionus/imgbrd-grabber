@@ -93,11 +93,13 @@ Image::Image(QMap<QString, QString> details, Page* parent)
 	}
 	else if (details.contains("tags"))
 	{
+		// Automatically find tag separator and split the list
 		QStringList t;
 		if (details["tags"].count(", ") != 0 && details["tags"].count(" ") / details["tags"].count(", ") < 2)
 		{ t = details["tags"].split(", "); }
 		else
 		{ t = details["tags"].split(" "); }
+
 		for (int i = 0; i < t.count(); ++i)
 		{
 			QString tg = t.at(i);
