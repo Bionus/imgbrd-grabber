@@ -15,11 +15,12 @@ class Tag
 		void setType(QString);
 		void setCount(int);
 		void setRelated(QStringList);
-		QString		text() const;
-		QString		type() const;
-		int			shortType() const;
-		int			count() const;
-		QStringList	related() const;
+		QString		text()		const;
+		QString		type()		const;
+		int			shortType()	const;
+		int			count()		const;
+		QStringList	related()	const;
+		QString		typedText()	const;
 
 	private:
 		QString		m_text, m_type;

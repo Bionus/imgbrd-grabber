@@ -640,6 +640,8 @@ QString fixFilename(QString filename, QString path, int maxlength)
 	QString sep = QDir::toNativeSeparators("/");
 	filename = QDir::toNativeSeparators(filename);
 	path = QDir::toNativeSeparators(path);
+	if (!path.endsWith(sep))
+		path += sep;
 
 	#ifdef Q_OS_WIN
 		// Fix parameters
