@@ -326,12 +326,12 @@ int mainWindow::addPoolTab(int pool, QString site)
 bool mainWindow::saveTabs(QString filename)
 {
 	QStringList tabs = QStringList();
-	foreach (tagTab *tab, m_tagTabs)
+	for (tagTab *tab : m_tagTabs)
 	{
 		if (tab != NULL)
 		{ tabs.append(tab->tags()+"¤"+QString::number(tab->ui->spinPage->value())+"¤"+QString::number(tab->ui->spinImagesPerPage->value())+"¤"+QString::number(tab->ui->spinColumns->value())); }
 	}
-	foreach (poolTab *tab, m_poolTabs)
+	for (poolTab *tab : m_poolTabs)
 	{
 		if (tab != NULL)
 		{ tabs.append(QString::number(tab->ui->spinPool->value())+"¤"+QString::number(tab->ui->comboSites->currentIndex())+"¤"+tab->tags()+"¤"+QString::number(tab->ui->spinPage->value())+"¤"+QString::number(tab->ui->spinImagesPerPage->value())+"¤"+QString::number(tab->ui->spinColumns->value())+"¤pool"); }
@@ -517,7 +517,7 @@ void mainWindow::batchClearSel()
 			todelete.append(selected.at(i)->row());
 	qSort(todelete);
 	int rem = 0;
-	foreach (int i, todelete)
+	for (int i : todelete)
 	{
 		m_groupBatchs[i][m_groupBatchs.at(i).count() - 1] = "false";
 		int id = ui->tableBatchGroups->item(i - rem, 0)->text().toInt();
@@ -535,7 +535,7 @@ void mainWindow::batchClearSel()
 	{ todelete.append(selected.at(i)->row()); }
 	qSort(todelete);
 	rem = 0;
-	foreach (int i, todelete)
+	for (int i : todelete)
 	{
 		ui->tableBatchUniques->removeRow(i - rem);
 		rem++;
@@ -559,7 +559,7 @@ void mainWindow::batchMoveUp()
 		else
 			rows.append(sourceRow);
 	}
-	foreach (int sourceRow, rows)
+	for (int sourceRow : rows)
 	{
 		int destRow = sourceRow - 1;
 		if (destRow < 0 || destRow >= ui->tableBatchGroups->rowCount())
@@ -607,7 +607,7 @@ void mainWindow::batchMoveDown()
 		else
 			rows.append(sourceRow);
 	}
-	foreach (int sourceRow, rows)
+	for (int sourceRow : rows)
 	{
 		int destRow = sourceRow + 1;
 		if (destRow < 0 || destRow >= ui->tableBatchGroups->rowCount())
@@ -997,7 +997,7 @@ void mainWindow::getAll(bool all)
 	}
 	m_getAllLimit = m_batchs.size();
 
-	foreach (QProgressBar *bar, m_progressBars)
+	for (QProgressBar *bar : m_progressBars)
 		if (bar != nullptr)
 		{
 			bar->setValue(0);
@@ -1289,7 +1289,7 @@ void mainWindow::_getAll()
 		if (m_progressdialog->endRemove())
 		{
 			int rem = 0;
-			foreach (int i, m_batchDownloading)
+			for (int i : m_batchDownloading)
 			{
 				m_groupBatchs[i][m_groupBatchs[i].count() - 1] = "false";
 				m_progressBars.removeAt(i - rem);
@@ -1854,7 +1854,7 @@ bool mainWindow::loadLinkList(QString filename)
 	if (det.empty())
 		return false;
 
-	foreach (QString link, det)
+	for (QString link : det)
 	{
 		m_allow = false;
 		QStringList infos;

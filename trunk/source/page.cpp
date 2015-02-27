@@ -207,7 +207,7 @@ QString _parseSetImageUrl(Site* site, QString setting, QString ret, QMap<QString
         if (site->value(setting).contains("->"))
         {
             QStringList replaces = site->value(setting).split('&');
-            foreach (QString rep, replaces)
+			for (QString rep : replaces)
             {
                 QRegExp rgx(rep.left(rep.indexOf("->")));
                 ret.replace(rgx, rep.right(rep.size() - rep.indexOf("->") - 2));
@@ -700,7 +700,7 @@ void Page::parseTags()
 	}
 	if (m_imagesCount < 1)
 	{
-		foreach (Tag tag, m_tags)
+		for (Tag tag : m_tags)
 		{
 			if (tag.text() == m_search.join(" "))
 			{

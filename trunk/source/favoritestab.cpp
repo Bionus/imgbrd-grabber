@@ -348,7 +348,7 @@ void favoritesTab::finishedLoading(Page* page)
 
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
 	QList<Image*> imgs;
-	foreach (Image *img, page->images())
+	for (Image *img : page->images())
 	{
 		if (img->createdAt() > m_loadFavorite)
 		{ imgs.append(img); }
@@ -713,10 +713,10 @@ void favoritesTab::getAll()
 void favoritesTab::getSel()
 {
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
-	foreach (Image *img, m_selectedImagesPtrs)
+	for (Image *img : m_selectedImagesPtrs)
 	{
 		QStringList tags;
-		foreach (Tag tag, img->tags())
+		for (Tag tag : img->tags())
 		{ tags.append(tag.text()); }
 
 		QMap<QString,QString> values;

@@ -20,7 +20,7 @@ poolTab::poolTab(int id, QMap<QString,Site*> *sites, QMap<QString,QString> *favo
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
 
 	QStringList sources = m_sites->keys();
-	foreach (QString source, sources)
+	for (QString source : sources)
 	{ ui->comboSites->addItem(source); }
 
 	// Search field
@@ -617,10 +617,10 @@ void poolTab::getAll()
 void poolTab::getSel()
 {
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
-	foreach (Image *img, m_selectedImagesPtrs)
+	for (Image *img : m_selectedImagesPtrs)
 	{
 		QStringList tags;
-		foreach (Tag tag, img->tags())
+		for (Tag tag : img->tags())
 		{ tags.append(tag.text()); }
 
 		QMap<QString,QString> values;
@@ -642,7 +642,7 @@ void poolTab::getSel()
 	}
 	m_selectedImagesPtrs.clear();
 	m_selectedImages.clear();
-	foreach (QBouton *l, m_boutons)
+	for (QBouton *l : m_boutons)
 	{ l->setChecked(false); }
 }
 

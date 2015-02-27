@@ -242,7 +242,7 @@ void batchWindow::drawSpeed()
 	m_time->restart();
 
 	int speed = 0;
-	foreach (int sp, m_speeds.values())
+	for (int sp : m_speeds.values())
 	{ speed += sp; }
 	if (m_speeds.size() == m_maxSpeeds)
 	{ m_mean.append(speed); }
