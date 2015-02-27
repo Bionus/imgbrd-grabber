@@ -27,6 +27,7 @@ Image::Image(QMap<QString, QString> details, Page* parent)
 	{ m_url = setExtension(m_url, "gif"); }
 
 	// Other details
+    m_details = details;
 	m_md5 = details.contains("md5") ? details["md5"] : "";
 	m_author = details.contains("author") ? details["author"] : "";
 	m_status = details.contains("status") ? details["status"] : "";
@@ -58,8 +59,7 @@ Image::Image(QMap<QString, QString> details, Page* parent)
 	if (assoc.contains(m_rating))
 	{ m_rating = assoc[m_rating]; }
 
-	// Tags
-	m_tags = QList<Tag>();
+    // Tags
 	if (details.contains("tags_general"))
 	{
 		QStringList t = details["tags_general"].split(" ");
@@ -129,7 +129,9 @@ Image::Image(QMap<QString, QString> details, Page* parent)
 	m_settings = new QSettings(savePath("sites/"+m_parentSite->value("Model")+"/"+m_site+"/settings.ini"), QSettings::IniFormat, this);
 }
 Image::~Image()
-{}
+{
+    delete m_settings;
+}
 
 void Image::loadPreview()
 {
@@ -168,7 +170,7 @@ void Image::parsePreview()
 	QByteArray data = m_loadPreview->readAll();
 	m_imagePreview.loadFromData(data);
 	m_loadPreview->deleteLater();
-	m_loadPreview = NULL;
+    m_loadPreview = nullptr;
 
 	// If nothing has been received
 	if (m_imagePreview.isNull() && m_previewTry <= 3)
@@ -957,6 +959,7 @@ QByteArray		Image::data()			{ return m_data;			}
 QNetworkReply	*Image::imageReply()	{ return m_loadImage;		}
 QNetworkReply	*Image::tagsReply()		{ return m_loadDetails;		}
 QSettings		*Image::settings()		{ return m_settings;		}
+QMap<QString,QString> Image::details()	{ return m_details;         }
 
 void	Image::setUrl(QString u)
 {
