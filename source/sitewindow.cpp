@@ -1,6 +1,7 @@
 #include "sitewindow.h"
 #include "ui_sitewindow.h"
 #include "mainwindow.h"
+#include "functions.h"
 
 extern mainWindow *_mainwindow;
 

@@ -30,7 +30,7 @@ sourcesWindow::sourcesWindow(QList<bool> selected, QMap<QString, Site*> *sites, 
 	if (checkall)
 	{ ui->checkBox->setChecked(true); }
 
-	QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
+    QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
 
 	QStringList k = sites->keys();
 	k.sort();
@@ -42,7 +42,7 @@ sourcesWindow::sourcesWindow(QList<bool> selected, QMap<QString, Site*> *sites, 
 			connect(check, SIGNAL(stateChanged(int)), this, SLOT(checkUpdate()));
 			m_checks << check;
 			ui->gridLayout->addWidget(check, i, 0);
-		QString t = settings->value("Sources/Types", "icon").toString();
+        QString t = settings.value("Sources/Types", "icon").toString();
 		int n = 1;
 		if (t != "hide")
 		{
@@ -195,8 +195,8 @@ void sourcesWindow::insertCheckBox()
 		}
 	}
 
-	QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
-	QString t = settings->value("Sources/Types", "text").toString();
+    QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
+    QString t = settings.value("Sources/Types", "text").toString();
 	for (int i = 0; i < m_sites->count(); i++)
 	{
 		if (k.at(i) != m_checks.at(i)->text())
