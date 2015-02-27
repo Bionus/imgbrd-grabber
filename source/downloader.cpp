@@ -15,7 +15,7 @@ Downloader::Downloader(QStringList tags, QStringList postfiltering, QStringList 
 	QMap<QString, Site*> *sites = Site::getAllSites();
 
 	m_sites = new QList<Site*>();
-	foreach (QString source, sources)
+	for (QString source : sources)
 	{
 		if (!sites->contains(source))
 			std::cerr << "Source '"+source.toStdString()+"' not found" << std::endl;
@@ -131,7 +131,7 @@ void Downloader::finishedLoadingPageTags(Page *page)
 
 	QList<Tag> list;
 	for (int i = 0; i < m_pagesT->size(); ++i)
-		foreach (Tag tag, m_pagesT->at(i)->tags())
+		for (Tag tag : m_pagesT->at(i)->tags())
 		{
 			bool found = false;
 			for (int j = 0; j < list.size(); ++j)
@@ -300,7 +300,7 @@ void Downloader::finishedLoadingImages(Page *page)
 
 	QList<Image*> images;
 	for (int i = 0; i < m_pages->size(); ++i)
-		foreach (Image *img, m_pages->at(i)->images())
+		for (Image *img : m_pages->at(i)->images())
 		{
 			if (!m_blacklist)
 			{
@@ -313,7 +313,7 @@ void Downloader::finishedLoadingImages(Page *page)
 			if (m_noduplicates)
 			{
 				bool found = false;
-				foreach (Image *image, images)
+				for (Image *image : images)
 					if (image->md5() == img->md5())
 						found = true;
 				if (found)
@@ -324,7 +324,7 @@ void Downloader::finishedLoadingImages(Page *page)
 
 	QList<Image*> imgs;
 	int i = 0;
-	foreach (Image *img, images)
+	for (Image *img : images)
 		if (m_max <= 0 || i++ < m_max)
 			imgs.append(img);
 
@@ -425,7 +425,7 @@ void Downloader::finishedLoadingUrls(Page *page)
 
 	QList<Image*> images;
 	for (int i = 0; i < m_pages->size(); ++i)
-		foreach (Image *img, m_pages->at(i)->images())
+		for (Image *img : m_pages->at(i)->images())
 		{
 			if (!m_blacklist)
 			{
@@ -438,7 +438,7 @@ void Downloader::finishedLoadingUrls(Page *page)
 			if (m_noduplicates)
 			{
 				bool found = false;
-				foreach (Image *image, images)
+				for (Image *image : images)
 					if (image->md5() == img->md5())
 						found = true;
 				if (found)
@@ -449,7 +449,7 @@ void Downloader::finishedLoadingUrls(Page *page)
 
 	QStringList urls;
 	int i = 0;
-	foreach (Image *img, images)
+	for (Image *img : images)
 		if (m_max <= 0 || i++ < m_max)
 			urls.append(img->url());
 
@@ -471,7 +471,7 @@ void Downloader::returnString(QString ret)
 }
 void Downloader::returnTagList(QList<Tag> ret)
 {
-	foreach (Tag tag, ret)
+	for (Tag tag : ret)
 	{
 		QString ret = m_tagsformat;
 		ret.replace("\\t", "\t");
@@ -487,7 +487,7 @@ void Downloader::returnTagList(QList<Tag> ret)
 }
 void Downloader::returnStringList(QStringList ret)
 {
-	foreach (QString str, ret)
+	for (QString str : ret)
 		std::cout << str.toStdString() << std::endl;
 	qApp->quit();
 }

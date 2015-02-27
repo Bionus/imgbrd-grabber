@@ -806,10 +806,10 @@ void tagTab::getSel()
 		return;
 
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
-	foreach (Image *img, m_selectedImagesPtrs)
+	for (Image *img : m_selectedImagesPtrs)
 	{
 		QStringList tags;
-		foreach (Tag tag, img->tags())
+		for (Tag tag : img->tags())
 		{ tags.append(tag.typedText()); }
 
 		QMap<QString,QString> values;
@@ -831,7 +831,7 @@ void tagTab::getSel()
 	}
 	m_selectedImagesPtrs.clear();
 	m_selectedImages.clear();
-	foreach (QBouton *l, m_boutons)
+	for (QBouton *l : m_boutons)
 	{ l->setChecked(false); }
 }
 

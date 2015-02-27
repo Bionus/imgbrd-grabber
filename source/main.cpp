@@ -62,14 +62,6 @@ int main(int argc, char *argv[])
 	app.setOrganizationName("Bionus");
 	app.setOrganizationDomain("bionus.fr.cr");
 
-	#if USE_BREAKPAD
-		QDir dir = QFileInfo(argv[0]).dir();
-		QString crashes = savePath("crashes");
-		if (!dir.exists(crashes))
-		{ dir.mkpath(crashes); }
-		CrashHandler::instance()->Init(crashes);
-	#endif
-
 	QCommandLineParser parser;
 	parser.addHelpOption();
 	parser.addVersionOption();
@@ -126,17 +118,22 @@ int main(int argc, char *argv[])
 
 	bool gui = true;
 	#if USE_CLI
-		gui = false;
-		if (parser.isSet(guiOption))
-			gui = true;
-		if (!parser.isSet(verboseOption))
-			qInstallMessageHandler(noMessageOutput);
+		gui = parser.isSet(guiOption);
 	#else
-		if (parser.isSet(cliOption))
+		gui = !parser.isSet(cliOption);
+	#endif
+
+	if (!gui && !parser.isSet(verboseOption))
+		qInstallMessageHandler(noMessageOutput);
+
+	#if USE_BREAKPAD
+		if (gui)
 		{
-			gui = false;
-			if (!parser.isSet(verboseOption))
-				qInstallMessageHandler(noMessageOutput);
+			QDir dir = QFileInfo(argv[0]).dir();
+			QString crashes = savePath("crashes");
+			if (!dir.exists(crashes))
+			{ dir.mkpath(crashes); }
+			CrashHandler::instance()->Init(crashes);
 		}
 	#endif
 

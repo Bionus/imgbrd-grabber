@@ -94,7 +94,7 @@ void AddUniqueWindow::replyFinished(Page *p)
 void AddUniqueWindow::addImage(Image *img)
 {
 	QStringList tags;
-	foreach (Tag tag, img->tags())
+	for (Tag tag : img->tags())
 	{ tags.append(tag.text()); }
 
 	QMap<QString,QString> values;
