@@ -23,7 +23,7 @@ class zoomWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		zoomWindow(Image *, Site *, QMap<QString,Site*> *sites, QWidget *parent = 0);
+        zoomWindow(Image *image, Site *site, QMap<QString,Site*> *sites, QWidget *parent = 0);
 		void go();
 		~zoomWindow();
 		void load();
@@ -73,8 +73,8 @@ class zoomWindow : public QDialog
 	private:
 		mainWindow *m_parent;
 		Ui::zoomWindow *ui;
-		detailsWindow *m_detailsWindow;
-		Image *m_image;
+        detailsWindow *m_detailsWindow;
+        Image *m_image;
 		QMap<QString,QString> regex, m_details;
 		Site *m_site;
 		int timeout, m_loaded, oldsize, m_mustSave;
@@ -83,7 +83,7 @@ class zoomWindow : public QDialog
 		QPixmap *image;
 		QMovie *movie;
 		QTimer *m_resizeTimer;
-		QTime *m_imageTime;
+        QTime *m_imageTime;
 		QPushButton *buttonSave, *buttonSaveNQuit, *buttonSaveas, *m_buttonSaveNQuit;
 		QString link, m_program;
 		QNetworkReply *m_reply;

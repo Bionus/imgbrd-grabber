@@ -15,8 +15,8 @@ Site::Site(QString type, QString url, QMap<QString, QString> data) : m_type(type
 Site::~Site()
 {
     delete m_settings;
-    delete m_manager;
-    delete m_cookieJar;
+    /*delete m_manager;
+    delete m_cookieJar;*/
 }
 void Site::load()
 {
@@ -315,7 +315,7 @@ QUrl Site::fixUrl(QString url, QUrl old)
 		return QUrl(protocol + "://" + m_data.value("Url") + "/" + url);
 	}
 
-	return url;
+    return QUrl(url);
 }
 
 QNetworkReply *Site::loginReply()	{ return m_loginReply; }

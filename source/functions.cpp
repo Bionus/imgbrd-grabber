@@ -700,6 +700,8 @@ QString fixFilename(QString filename, QString path, int maxlength)
 		// Put extension and drive back
 		filename = drive + filename + "." + ext;
 		filename = filename.right(filename.length() - path.length());
+    #else
+        Q_UNUSED(maxlength);
 	#endif
 
 	return filename;

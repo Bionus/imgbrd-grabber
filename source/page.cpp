@@ -21,7 +21,7 @@ Page::Page(Site *site, QMap<QString,Site*> *sites, QStringList tags, int page, i
 		.replace(" rating:e ", " rating:explicit ", Qt::CaseInsensitive)
 		.replace(" -rating:s ", " -rating:safe ", Qt::CaseInsensitive)
 		.replace(" -rating:q ", " -rating:questionable ", Qt::CaseInsensitive)
-		.replace(" -rating:e ", " -rating:explicit ", Qt::CaseInsensitive);
+        .replace(" -rating:e ", " -rating:explicit ", Qt::CaseInsensitive);
 	tags = text.split(" ", QString::SkipEmptyParts);
 	tags.removeDuplicates();
 
@@ -51,7 +51,9 @@ Page::Page(Site *site, QMap<QString,Site*> *sites, QStringList tags, int page, i
 	m_currentUrl = 0;
 }
 Page::~Page()
-{ }
+{
+    qDeleteAll(m_images);
+}
 
 void Page::fallback(bool bload)
 {

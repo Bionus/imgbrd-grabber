@@ -659,7 +659,7 @@ void favoritesTab::webZoom(int id)
 		}
 	}
 
-	zoomWindow *zoom = new zoomWindow(image, image->page()->site(), m_sites, this);
+    zoomWindow *zoom = new zoomWindow(image, image->page()->site(), m_sites, this);
 	zoom->show();
 	connect(zoom, SIGNAL(linkClicked(QString)), this, SLOT(setTags(QString)));
 }

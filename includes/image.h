@@ -19,7 +19,7 @@ class Site;
 
 class Image : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 	public:
 		Image(QMap<QString,QString> details, Page *parent = NULL);
@@ -69,6 +69,7 @@ class Image : public QObject
 		QNetworkReply	*tagsReply();
 		bool		hasTag(QString tag);
 		bool		hasTag(QStringList tags);
+        QMap<QString,QString>   details();
 
 	public slots:
 		void loadPreview();
@@ -108,6 +109,7 @@ class Image : public QObject
 		QSettings		*m_settings;
 		QStringList		m_search;
 		Site			*m_parentSite;
+        QMap<QString,QString>   m_details;
 };
 
 #endif // IMAGE_H

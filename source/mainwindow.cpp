@@ -3,6 +3,9 @@
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QSound>
+#include <QtNetwork>
+#include <QDesktopServices>
+#include <QCloseEvent>
 #include <QtSql/QSqlDatabase>
 #if defined(Q_OS_WIN)
 	#include "windows.h"
@@ -17,7 +20,6 @@
 #include "favoritewindow.h"
 #include "addgroupwindow.h"
 #include "adduniquewindow.h"
-#include "zoomwindow.h"
 #include "batchwindow.h"
 #include "aboutwindow.h"
 #include "blacklistfix.h"
@@ -43,7 +45,7 @@ void mainWindow::init()
 	bool crashed = m_settings->value("crashed", false).toBool();
 
 	m_settings->setValue("crashed", true);
-	m_settings->sync();
+    m_settings->sync();
 
 	loadLanguage(m_settings->value("language", "English").toString(), true);
 	ui->setupUi(this);
@@ -259,12 +261,29 @@ void mainWindow::init()
 
 void mainWindow::loadSites()
 {
-	m_sites.clear();
-	m_sites = *Site::getAllSites();
+    QMap<QString, Site*> *sites = Site::getAllSites();
+
+    QStringList current = m_sites.keys();
+    QStringList news = sites->keys();
+
+    for (int i = 0; i < sites->size(); ++i)
+    {
+        QString k = news[i];
+        if (!current.contains(k))
+        {
+            m_sites.insert(k, sites->value(k));
+        }
+        else
+        {
+            delete sites->value(k);
+        }
+    }
+    delete sites;
 }
 
 mainWindow::~mainWindow()
 {
+    qDeleteAll(m_sites);
 	delete ui;
 }
 
@@ -1089,7 +1108,7 @@ void mainWindow::getAllFinishedPage(Page *page)
 {
     Downloader *d = (Downloader*)QObject::sender();
 
-    m_groupBatchs[d->getData().toInt()][8] += (m_groupBatchs[d->getData().toInt()][8] == "" ? "" : "¤") + QString::number((int)page);
+    m_groupBatchs[d->getData().toInt()][8] += (m_groupBatchs[d->getData().toInt()][8] == "" ? "" : "¤") + QString::number((quintptr)page);
     m_getAllPages.append(page);
     m_progressdialog->setImages(m_progressdialog->images() + 1);
 }

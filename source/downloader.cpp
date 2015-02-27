@@ -20,8 +20,13 @@ Downloader::Downloader(QStringList tags, QStringList postfiltering, QStringList 
 		if (!sites->contains(source))
 			std::cerr << "Source '"+source.toStdString()+"' not found" << std::endl;
 		else
+        {
 			m_sites->append(sites->value(source));
+            sites->remove(source);
+        }
 	}
+    qDeleteAll(*sites);
+    delete sites;
 
 	m_pages = new QList<Page*>();
     m_pagesC = new QList<Page*>();

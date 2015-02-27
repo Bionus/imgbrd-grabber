@@ -137,36 +137,38 @@ int main(int argc, char *argv[])
 		}
 	#endif
 
-	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
-	Downloader *dwnldr = new Downloader(parser.value(tagsOption).split(" ", QString::SkipEmptyParts),
-										parser.value(postfilteringOption).split(" ", QString::SkipEmptyParts),
-										parser.value(sourceOption).split(" ", QString::SkipEmptyParts),
-										parser.value(pageOption).toInt(),
-										parser.value(limitOption).toInt(),
-										parser.value(perpageOption).toInt(),
-										parser.value(pathOption),
-										parser.value(filenameOption),
-										parser.value(userOption),
-										parser.value(passwordOption),
-										parser.isSet(blacklistOption),
-										settings.value("blacklistedtags").toString().split(' '),
-										parser.isSet(noDuplicatesOption),
-										parser.value(tagsMinOption).toInt(),
-										parser.value(tagsFormatOption));
-	dwnldr->setQuit(true);
+    //if (!gui)
+    {
+        QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
+        Downloader *dwnldr = new Downloader(parser.value(tagsOption).split(" ", QString::SkipEmptyParts),
+                                            parser.value(postfilteringOption).split(" ", QString::SkipEmptyParts),
+                                            parser.value(sourceOption).split(" ", QString::SkipEmptyParts),
+                                            parser.value(pageOption).toInt(),
+                                            parser.value(limitOption).toInt(),
+                                            parser.value(perpageOption).toInt(),
+                                            parser.value(pathOption),
+                                            parser.value(filenameOption),
+                                            parser.value(userOption),
+                                            parser.value(passwordOption),
+                                            parser.isSet(blacklistOption),
+                                            settings.value("blacklistedtags").toString().split(' '),
+                                            parser.isSet(noDuplicatesOption),
+                                            parser.value(tagsMinOption).toInt(),
+                                            parser.value(tagsFormatOption));
+        dwnldr->setQuit(true);
 
-	if (parser.isSet(returnCountOption))
-		dwnldr->getPageCount();
-	if (parser.isSet(returnTagsOption))
-		dwnldr->getPageTags();
-	if (parser.isSet(returnPureTagsOption))
-		dwnldr->getTags();
-	if (parser.isSet(returnImagesOption))
-		dwnldr->getUrls();
-	if (parser.isSet(downloadOption))
-		dwnldr->getImages();
-
-	if (gui)
+        if (parser.isSet(returnCountOption))
+            dwnldr->getPageCount();
+        if (parser.isSet(returnTagsOption))
+            dwnldr->getPageTags();
+        if (parser.isSet(returnPureTagsOption))
+            dwnldr->getTags();
+        if (parser.isSet(returnImagesOption))
+            dwnldr->getUrls();
+        if (parser.isSet(downloadOption))
+            dwnldr->getImages();
+    }
+    //else
 	{
 		QStringList tags = parser.positionalArguments();
 		tags.append(parser.value(tagsOption).split(" ", QString::SkipEmptyParts));
