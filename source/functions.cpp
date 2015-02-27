@@ -38,7 +38,7 @@ void error(QWidget *parent, QString error)
 void sortNonCaseSensitive(QStringList &sList)
 {
 	QMap<QString, QString> strMap;
-	foreach (QString str, sList)
+	for (QString str : sList)
 	{ strMap.insert( str.toLower(), str); }
 	sList = strMap.values();
 }

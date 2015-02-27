@@ -57,7 +57,7 @@ void md5Fix::on_buttonStart_clicked()
 
 		QFile f(savePath("md5s.txt"));
 		f.open(QFile::WriteOnly | QFile::Truncate);
-		foreach (QStringPair file, files)
+		for (QStringPair file : files)
 		{
 			QString md5 = "-";
 			if (ui->radioForce->isChecked())

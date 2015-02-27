@@ -67,7 +67,7 @@ void BlacklistFix3::on_buttonOk_clicked()
 	for (int i = 0; i < count; i++)
 	{ todelete.insert(selected.at(i)->row()); }
 	int rem = 0;
-	foreach (int i, todelete)
+	for (int i : todelete)
 	{
 		QFile::remove(m_details.at(ui->tableWidget->item(i-rem, 0)->text().toInt()-1).value("path_full"));
 		ui->tableWidget->removeRow(i-rem);
