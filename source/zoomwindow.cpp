@@ -524,9 +524,8 @@ void zoomWindow::replyFinishedZoom()
 				f.write(m_data);
 				f.close();
 				this->movie = new QMovie(f.fileName(), QByteArray(), this);
-				//m_labelImage->setPixmap(0);
-				m_labelImage->setMovie(movie);
-				movie->start();
+				m_labelImage->setMovie(this->movie);
+				this->movie->start();
 				image = NULL;
 				m_loaded = true;
 			}

@@ -46,6 +46,9 @@ class Page : public QObject
 		void finishedLoading(Page*);
 		void finishedLoadingTags(Page*);
 
+	protected:
+		void parseImage(QMap<QString,QString> data, int position);
+
 	private:
 		Site			*m_site;
 		QString			m_format, m_website, m_source, m_wiki, m_originalUrl;

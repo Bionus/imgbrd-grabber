@@ -83,6 +83,7 @@ void mainWindow::init()
 	ui->tableBatchGroups->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 	ui->tableBatchUniques->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
+	log(tr("Chargement des sources"));
 	loadSites();
 
 	if (m_sites.size() == 0)
@@ -91,6 +92,14 @@ void mainWindow::init()
 		qApp->quit();
 		this->deleteLater();
 		return;
+	}
+	else
+	{
+		QString srsc = "";
+		for (int i = 0; i < m_sites.size(); ++i) {
+			srsc += (i != 0 ? ", " : "") + m_sites.keys().at(i) + " (" + m_sites.values().at(i)->type() + ")";
+		}
+		log(tr("%n source(s) trouvée(s) : %1").arg(srsc));
 	}
 
 	ui->actionClosetab->setShortcut(QKeySequence::Close);
@@ -1777,9 +1786,9 @@ void mainWindow::getAllPause()
 		log(tr("Reprise des téléchargements..."));
 		for (int i = 0; i < m_getAllDownloading.size(); i++)
 		{
-			if (m_getAllDownloading[i]->tagsReply() != NULL)
+			if (m_getAllDownloading[i]->tagsReply() != nullptr)
 			{ m_getAllDownloading[i]->loadDetails(); }
-			if (m_getAllDownloading[i]->imageReply() != NULL)
+			if (m_getAllDownloading[i]->imageReply() != nullptr)
 			{ m_getAllDownloading[i]->loadImage(); }
 		}
 		m_getAll = true;
