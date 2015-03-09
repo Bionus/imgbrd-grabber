@@ -226,6 +226,51 @@ QString _parseSetImageUrl(Site* site, QString setting, QString ret, QMap<QString
 	return site->fixUrl(ret).toString();
 }
 
+
+void Page::parseImage(QMap<QString,QString> d, int position)
+{
+	// Set default values
+	if (!d.contains("ext") || d["ext"].isEmpty())
+	{ d["ext"] = "jpg"; }
+	if (!d.contains("file_url"))
+	{ d["file_url"] = d["preview_url"]; }
+	if (!d.contains("sample_url"))
+	{ d["sample_url"] = d["preview_url"]; }
+
+	// Fix urls
+	d["file_url"] = _parseSetImageUrl(m_site, "Urls/Xml/Image", d["file_url"], &d);
+	d["sample_url"] = _parseSetImageUrl(m_site, "Urls/Xml/Sample", d["sample_url"], &d);
+	d["preview_url"] = _parseSetImageUrl(m_site, "Urls/Xml/Preview", d["preview_url"], &d);
+
+	// Page URL
+	if (!d.contains("page_url"))
+	{
+		d["page_url"] = m_site->value("Urls/Html/Post");
+		QString t = m_search.join(" ");
+		if (m_site->contains("DefaultTag") && t.isEmpty())
+		{ t = m_site->value("DefaultTag"); }
+		d["page_url"].replace("{tags}", QUrl::toPercentEncoding(t));
+		d["page_url"].replace("{id}", d["id"]);
+	}
+
+	// Generate image
+	Image *img = new Image(d, this);
+	QString error = img->filter(m_postFiltering);
+
+	// If the file path is wrong (ends with "/.jpg")
+	if (error.isEmpty() && d["file_url"].endsWith("/." + d["ext"]))
+	{ error = "file url"; }
+
+	// Add if everything is ok
+	if (error.isEmpty())
+	{ m_images.append(img); }
+	else
+	{
+		img->deleteLater();
+		log(tr("Image #%1 ignorée. Raison : %2.").arg(QString::number(position + 1), error));
+	}
+}
+
 void Page::parse()
 {
     m_source = m_reply->readAll();
@@ -303,31 +348,7 @@ void Page::parse()
 					for (int i = 0; i < infos.count(); i++)
 					{ d[infos.at(i)] = nodeList.at(id + first).attributes().namedItem(infos.at(i)).nodeValue().trimmed(); }
 				}
-				if (!d.contains("ext") || d["ext"].isEmpty())
-                { d["ext"] = "jpg"; }
-                if (!d.contains("file_url"))
-                { d["file_url"] = d["preview_url"]; }
-                if (!d.contains("sample_url"))
-				{ d["sample_url"] = d["preview_url"]; }
-                d["file_url"] = _parseSetImageUrl(m_site, "Urls/Xml/Image", d["file_url"], &d);
-                d["sample_url"] = _parseSetImageUrl(m_site, "Urls/Xml/Sample", d["sample_url"], &d);
-                d["preview_url"] = _parseSetImageUrl(m_site, "Urls/Xml/Preview", d["preview_url"], &d);
-				d["page_url"] = m_site->value("Urls/Html/Post");
-				QString t = m_search.join(" ");
-				if (m_site->contains("DefaultTag") && t.isEmpty())
-				{ t = m_site->value("DefaultTag"); }
-				d["page_url"].replace("{tags}", QUrl::toPercentEncoding(t));
-				d["page_url"].replace("{id}", d["id"]);
-
-				Image *img = new Image(d, this);
-				QString error = img->filter(m_postFiltering);
-				if (error.isEmpty() && !d["file_url"].endsWith("/." + d["ext"]))
-				{ m_images.append(img); }
-				else
-				{
-					img->deleteLater();
-					log(tr("Image #%1 ignored. Reason: %2.").arg(QString::number(id + first + 1), error));
-				}
+				this->parseImage(d, id + first);
 			}
 		}
 	}
@@ -375,27 +396,7 @@ void Page::parse()
 					rx.indexIn(d["page_url"]);
 					d.insert("id", rx.cap(1));
 				}
-				if (!d.contains("ext") || d["ext"].isEmpty())
-				{ d["ext"] = "jpg"; }
-                d["file_url"] = _parseSetImageUrl(m_site, "Urls/Rss/Image", d["file_url"], &d);
-                d["sample_url"] = _parseSetImageUrl(m_site, "Urls/Rss/Sample", d["sample_url"], &d);
-                d["preview_url"] = _parseSetImageUrl(m_site, "Urls/Rss/Preview", d["preview_url"], &d);
-				d["page_url"] = m_site->value("Urls/Html/Post");
-				QString t = m_search.join(" ");
-				if (m_site->contains("DefaultTag") && t.isEmpty())
-				{ t = m_site->value("DefaultTag"); }
-				d["page_url"].replace("{tags}", QUrl::toPercentEncoding(t));
-				d["page_url"].replace("{id}", d["id"]);
-
-				Image *img = new Image(d, this);
-				QString error = img->filter(m_postFiltering);
-				if (error.isEmpty() && !d["file_url"].endsWith("/." + d["ext"]))
-				{ m_images.append(img); }
-				else
-				{
-					img->deleteLater();
-					log(tr("Image #%1 ignored. Reason: %2.").arg(QString::number(id + first + 1), error));
-				}
+				this->parseImage(d, id + first);
 			}
 		}
 	}
@@ -426,12 +427,15 @@ void Page::parse()
         QStringList order = m_site->value("Regex/Order").split('|');
 		rx.setMinimal(true);
         int pos = 0, id = 0;
+		qDebug() << rx.pattern();
 		while ((pos = rx.indexIn(m_source, pos)) != -1)
         {
 			pos += rx.matchedLength();
 			QMap<QString,QString> d;
 			for (int i = 0; i < order.size(); i++)
-            { d[order.at(i)] = rx.cap(i+1); }
+			{ d[order.at(i)] = rx.cap(i+1); }
+
+			// JSON elements
 			if (order.contains("json") && !d["json"].isEmpty())
 			{
 				QVariant src = Json::parse(d["json"]);
@@ -442,34 +446,8 @@ void Page::parse()
 					{ d[map.keys().at(i)] = map.values().at(i).toString(); }
 				}
 			}
-			if (!d.contains("ext") || d["ext"].isEmpty())
-            { d["ext"] = "jpg"; }
-            if (!d.contains("file_url"))
-            { d["file_url"] = d["preview_url"]; }
-            if (!d.contains("sample_url"))
-            { d["sample_url"] = d["preview_url"]; }
-            d["file_url"] = _parseSetImageUrl(m_site, "Urls/Html/Image", d["file_url"], &d);
-            d["sample_url"] = _parseSetImageUrl(m_site, "Urls/Html/Sample", d["sample_url"], &d);
-            d["preview_url"] = _parseSetImageUrl(m_site, "Urls/Html/Preview", d["preview_url"], &d);
-			if (!d.contains("page_url"))
-			{
-				d["page_url"] = m_site->value("Urls/Html/Post");
-				QString t = m_search.join(" ");
-				if (m_site->contains("DefaultTag") && t.isEmpty())
-				{ t = m_site->value("DefaultTag"); }
-				d["page_url"].replace("{tags}", QUrl::toPercentEncoding(t));
-				d["page_url"].replace("{id}", d["id"]);
-			}
-
-			Image *img = new Image(d, this);
-			QString error = img->filter(m_postFiltering);
-			if (error.isEmpty() && !d["file_url"].endsWith("/." + d["ext"]))
-			{ m_images.append(img); }
-			else
-			{
-				img->deleteLater();
-				log(tr("Image #%1 ignored. Reason: %2.").arg(QString::number(id+1), error));
-			}
+			qDebug() << d;
+			this->parseImage(d, id + first);
 			id++;
 		}
 	}
@@ -511,29 +489,7 @@ void Page::parse()
 					for (int i = 0; i < infos.count(); i++)
 					{ d[infos.at(i)] = sc.value(infos.at(i)).toString().trimmed(); }
                 }
-                if (!d.contains("file_url"))
-                { d["file_url"] = d["preview_url"]; }
-                if (!d.contains("sample_url"))
-                { d["sample_url"] = d["preview_url"]; }
-                d["file_url"] = _parseSetImageUrl(m_site, "Urls/Json/Image", d["file_url"], &d);
-                d["sample_url"] = _parseSetImageUrl(m_site, "Urls/Json/Sample", d["sample_url"], &d);
-                d["preview_url"] = _parseSetImageUrl(m_site, "Urls/Json/Preview", d["preview_url"], &d);
-				d["page_url"] = m_site->value("Urls/Html/Post");
-				QString t = m_search.join(" ");
-				if (m_site->contains("DefaultTag") && t.isEmpty())
-				{ t = m_site->value("DefaultTag"); }
-				d["page_url"].replace("{tags}", QUrl::toPercentEncoding(t));
-				d["page_url"].replace("{id}", d["id"]);
-
-				Image *img = new Image(d, this);
-				QString error = img->filter(m_postFiltering);
-				if (error.isEmpty() && !d["file_url"].endsWith("/." + d["ext"]))
-				{ m_images.append(img); }
-				else
-				{
-					img->deleteLater();
-					log(tr("Image #%1 ignored. Reason: %2.").arg(QString::number(id + first + 1), error));
-				}
+				this->parseImage(d, id + first);
 			}
 		}
 		else

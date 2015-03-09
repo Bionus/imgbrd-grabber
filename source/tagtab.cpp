@@ -475,14 +475,7 @@ void tagTab::finishedLoading(Page* page)
 			{ tags[r] = tags[r].right(tags[r].size()-1); }
 		}
 		if (!settings.value("blacklistedtags").toString().isEmpty())
-		{
-			QStringList blacklistedtags(settings.value("blacklistedtags").toString().toLower().split(" "));
-			for (int t = 0; t < img->tags().count(); t++)
-			{
-				if (blacklistedtags.contains(img->tags()[t].text().toLower(), Qt::CaseInsensitive) && !tags.contains(img->tags()[t].text().toLower(), Qt::CaseInsensitive))
-				{ detected.append(img->tags()[t].text()); }
-			}
-		}
+		{ detected = img->blacklisted(settings.value("blacklistedtags").toString().toLower().split(" ")); }
 		if (!detected.isEmpty() && settings.value("hideblacklisted", false).toBool())
 		{ log(tr("Image #%1 ignorée. Raison : %2.").arg(i).arg("\""+detected.join(", ")+"\""));; }
 		else

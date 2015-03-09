@@ -6,11 +6,11 @@
 Image::Image(QMap<QString, QString> details, Page* parent)
 {
 	// Parents
-	m_site = parent != NULL ? parent->website() : (details.contains("website") ? details["website"] : "");
-	m_parentSite = parent != NULL ? parent->site() : (details.contains("site") ? (Site*)details["site"].toLongLong() : NULL);
-	if (m_parentSite == NULL)
+	m_site = parent != nullptr ? parent->website() : (details.contains("website") ? details["website"] : "");
+	m_parentSite = parent != nullptr ? parent->site() : (details.contains("site") ? (Site*)details["site"].toLongLong() : nullptr);
+	if (m_parentSite == nullptr)
 	{
-		log("Image has null parent, aborting creation.");
+		log("Image has nullptr parent, aborting creation.");
 		return;
 	}
 
@@ -33,7 +33,7 @@ Image::Image(QMap<QString, QString> details, Page* parent)
 	m_status = details.contains("status") ? details["status"] : "";
 	m_filename = details.contains("filename") ? details["filename"] : "";
 	m_folder = details.contains("folder") ? details["folder"] : "";
-	m_search = parent != NULL ? parent->search() : QStringList();
+	m_search = parent != nullptr ? parent->search() : QStringList();
 	m_id = details.contains("id") ? details["id"].toInt() : 0;
 	m_score = details.contains("score") ? details["score"].toInt() : 0;
 	m_hasScore = details.contains("score");
@@ -121,9 +121,9 @@ Image::Image(QMap<QString, QString> details, Page* parent)
 	// Tech details
 	m_parent = parent;
 	m_previewTry = 0;
-	m_loadPreview = NULL;
-	m_loadDetails = NULL;
-	m_loadImage = NULL;
+	m_loadPreview = nullptr;
+	m_loadDetails = nullptr;
+	m_loadImage = nullptr;
 	m_pools = QList<Pool*>();
 
 	m_settings = new QSettings(savePath("sites/"+m_parentSite->value("Model")+"/"+m_site+"/settings.ini"), QSettings::IniFormat, this);
@@ -143,7 +143,7 @@ void Image::loadPreview()
 }
 void Image::abortPreview()
 {
-	if (m_loadPreview != NULL)
+	if (m_loadPreview != nullptr)
 	{
 		if (m_loadPreview->isRunning())
 		{ m_loadPreview->abort(); }
@@ -170,7 +170,7 @@ void Image::parsePreview()
 	QByteArray data = m_loadPreview->readAll();
 	m_imagePreview.loadFromData(data);
 	m_loadPreview->deleteLater();
-    m_loadPreview = nullptr;
+	m_loadPreview = nullptr;
 
 	// If nothing has been received
 	if (m_imagePreview.isNull() && m_previewTry <= 3)
@@ -191,7 +191,7 @@ void Image::loadDetails()
 }
 void Image::abortTags()
 {
-	if (m_loadDetails != NULL)
+	if (m_loadDetails != nullptr)
 	{
 		if (m_loadDetails->isRunning())
 		{ m_loadDetails->abort(); }
@@ -312,6 +312,9 @@ void Image::parseDetails()
 			emit urlChanged(before, m_url);
 		}
 	}
+
+	m_loadDetails->deleteLater();
+	m_loadDetails = nullptr;
 
 	emit finishedLoadingTags(this);
 }
@@ -833,12 +836,14 @@ void Image::finishedImageS()
 	}
 
 	m_data = m_loadImage->readAll();
+	m_loadImage->deleteLater();
+	m_loadImage = nullptr;
 
 	emit finishedImage(this);
 }
 void Image::downloadProgressImageS(qint64 v1, qint64 v2)
 {
-	if (m_loadImage != NULL && v2 > 0/* && (v1 == v2 || m_timer.elapsed() > 500)*/)
+	if (m_loadImage != nullptr && v2 > 0/* && (v1 == v2 || m_timer.elapsed() > 500)*/)
 	{
 		//m_timer.restart();
 		emit downloadProgressImage(this, v1, v2);
@@ -846,7 +851,7 @@ void Image::downloadProgressImageS(qint64 v1, qint64 v2)
 }
 void Image::abortImage()
 {
-	if (m_loadImage != NULL)
+	if (m_loadImage != nullptr)
 	{
 		if (m_loadImage->isRunning())
 		{ m_loadImage->abort(); }
@@ -1010,4 +1015,9 @@ bool Image::hasTag(QStringList tags)
 		if (this->hasTag(tag))
 			return true;
 	return false;
+}
+
+void Image::unload()
+{
+	m_data.clear();
 }
