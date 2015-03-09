@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Site>
-	<Name>Danbooru (2.0)</Name>
+	<Name>Metabooru</Name>
 	<Urls>
 		<Xml>
 			<Tags>/post/index.xml?login={pseudo}&amp;password_hash={password}&amp;limit={limit}&amp;page={page}&amp;tags={tags}</Tags>

@@ -80,6 +80,7 @@ class Image : public QObject
 		void abortImage();
 		void parsePreview();
 		void parseDetails();
+		void unload();
 
 	private slots:
 		void finishedImageS();
