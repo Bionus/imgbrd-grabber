@@ -28,6 +28,8 @@
 
 #include <QApplication>
 #include <QtGui>
+#include <QCommandLineParser>
+#include <QCommandLineOption>
 #include <iostream>
 #include "QAffiche.h"
 #include "QBouton.h"
