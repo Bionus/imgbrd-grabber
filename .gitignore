@@ -1,0 +1,53 @@
+# Grabber
+
+*.lnk
+*.exe
+*.obj
+*.pdb
+*.res
+*.exe.embed.manifest
+build/
+releases/Grabber_*.tar.gz
+releases/Grabber_*.exe
+releases/Grabber_*.rar
+releases/translation_tools.rar
+
+
+# C++ objects and libs
+
+*.slo
+*.lo
+*.o
+*.a
+*.la
+*.lai
+*.so
+*.dll
+*.dylib
+
+
+# Qt-es
+
+/.qmake.cache
+/.qmake.stash
+*.pro.user
+*.pro.user.*
+*.qbs.user
+*.qbs.user.*
+*.moc
+moc_*.cpp
+qrc_*.cpp
+ui_*.h
+Makefile*
+*-build-*
+
+
+# QtCreator
+
+*.autosave
+
+
+# QtCtreator Qml
+
+*.qmlproject.user
+*.qmlproject.user.*

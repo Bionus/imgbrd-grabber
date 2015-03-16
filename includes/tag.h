@@ -29,5 +29,6 @@ class Tag
 };
 
 bool sortByFrequency(Tag, Tag);
+bool operator==(const Tag &t1, const Tag &t2);
 
 #endif // TAG_H

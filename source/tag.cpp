@@ -56,3 +56,8 @@ QString Tag::typedText() const
 
 bool sortByFrequency(Tag s1, Tag s2)
 { return s1.count() > s2.count(); }
+
+bool operator==(const Tag &t1, const Tag &t2)
+{
+	return t1.text() == t2.text() && t1.type() == t2.type();
+}
