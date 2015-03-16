@@ -290,7 +290,24 @@ void Image::parseDetails()
 			tgs.append(Tag(tag, type, count));
 		}
 		if (!tgs.isEmpty())
-		{ m_tags = tgs; }
+		{
+			m_tags.clear();
+			for (Tag t : tgs)
+			{
+				bool exists = false;
+				for (Tag a : m_tags)
+				{
+					if (a == t)
+					{
+						exists = true;
+						break;
+					}
+				}
+				qDebug() << t.text() << exists;
+				if (!exists)
+					m_tags.append(t);
+			}
+		}
 	}
 
 	// Image url
