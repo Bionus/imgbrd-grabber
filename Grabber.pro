@@ -23,7 +23,7 @@ TEMPLATE = app
 DEPENDPATH += . debug includes languages release source ui
 INCLUDEPATH += . includes source
 DEFINES += VERSION=$$APP_VERSION
-QT += network xml sql script multimedia widgets
+QT += core network xml sql script multimedia widgets
 
 # Additionnal
 CONFIG += plugin
