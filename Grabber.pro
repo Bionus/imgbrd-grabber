@@ -6,6 +6,14 @@ Release {
 CONFIG += use_breakpad
 #CONFIG += use_cli
 
+# Travis settings
+@
+T = $$(TRAVIS)
+!isEmpty(T) {
+	CONFIG -= use_breakpad use_qscintilla
+}
+@
+
 # Global
 TARGET = Grabber
 APP_VERSION = \\\"4.1.1\\\"
