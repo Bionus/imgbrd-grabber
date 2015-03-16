@@ -1,0 +1,7 @@
+install:
+  - sudo apt-get install qt5-default
+
+script:
+  - qmake -project
+  - qmake Grabber.pro
+  - make
