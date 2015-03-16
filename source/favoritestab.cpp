@@ -1,5 +1,4 @@
 #include <QMessageBox>
-#include <QMessageAuthenticationCode>
 #include "favoritestab.h"
 #include "ui_favoritestab.h"
 #include "ui_mainwindow.h"
