@@ -8,14 +8,14 @@ CONFIG += use_breakpad
 
 # Global
 TARGET = Grabber
-APP_VERSION = \\\"4.1.0\\\"
+APP_VERSION = \\\"4.1.1\\\"
 
 # General
 TEMPLATE = app
 DEPENDPATH += . debug includes languages release source ui
 INCLUDEPATH += . includes source
 DEFINES += VERSION=$$APP_VERSION
-QT += network xml sql script designer multimedia
+QT += network xml sql script multimedia
 
 # Additionnal
 CONFIG += plugin

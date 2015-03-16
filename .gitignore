@@ -5,8 +5,13 @@
 *.obj
 *.pdb
 *.res
+*.igl
+*.log
 *.exe.embed.manifest
 build/
+release/*.txt
+release/*.ini
+release/crashreporter/
 releases/Grabber_*.tar.gz
 releases/Grabber_*.exe
 releases/Grabber_*.rar
