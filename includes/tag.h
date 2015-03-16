@@ -2,6 +2,7 @@
 #define TAG_H
 
 #include <QString>
+#include <QStringList>
 
 
 
