@@ -45,7 +45,7 @@
 #include <QtCore/qstringlist.h>
 
 #include <QtCore/qcoreapplication.h>
-#include <QtCore/qcommandlineoption.h>
+#include <qcommandlineoption.h>
 
 QT_BEGIN_NAMESPACE
 
