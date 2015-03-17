@@ -1,6 +1,8 @@
 # Grabber
 
 [![Build Status](https://travis-ci.org/Bionus/imgbrd-grabber.svg)](https://travis-ci.org/Bionus/imgbrd-grabber)
+[![Coverage Status](https://coveralls.io/repos/Bionus/imgbrd-grabber/badge.svg)](https://coveralls.io/r/Bionus/imgbrd-grabber)
+[![GitHub issues](https://img.shields.io/github/issues/Bionus/imgbrd-grabber.svg)](https://github.com/Bionus/imgbrd-grabber/issues)
 
 ## About
 Imgbrd-Grabber is an imageboard/booru downloader with graphical user interface. It can download thousands of images from multiple boorus automatically.
