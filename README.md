@@ -1,20 +1,19 @@
 # Grabber
 
-## About
-Imgbrd-Grabber is an imageboard/booru downloader with graphical user interface. It can download thousands of images from multiple boorus automatically. Its main advantage is its very powerful naming features: just set your filename and folder using all the tokens available and conditionals, and he will generate an image-dependant name, allowing your collection to be sorted in a clean way, unlike what other downloaders may do.
+[![Build Status](https://travis-ci.org/Bionus/imgbrd-grabber.svg)](https://travis-ci.org/Bionus/imgbrd-grabber)
 
-## Source code
-This code was written totally chaotically at the beginning (no comments, bad classes, etc), so you can try to read it, but I feel a little bit ashamed for this. Feel free to send pull requests for any improvement you can see (be it minor or major).
-However with recent versions I'm cleaning the code up, in order to simplify and fix obscure bugs in the program, so it should be getting better with time.
+## About
+Imgbrd-Grabber is an imageboard/booru downloader with graphical user interface. It can download thousands of images from multiple boorus automatically.
+Its main advantage is its very powerful naming features: just set your filename and folder using all the tokens available and conditionals, and he will generate an image-dependant one.
 
 ## Contact
-If you have any questions about the program, found a bug and don't want to use the issue tracker, or anything else, you can contact me by mail in French or in English at [bio.nus@hotmail.fr](mailto:bio.nus@hotmail.fr).
+If you have any questions about the program, found a bug and don't want to use the github issue tracker, or anything, you can contact me by mail in French or in English at [bio.nus@hotmail.fr](mailto:bio.nus@hotmail.fr).
 
 ## Main features
 * Browse images from the internet
 * Download huge amounts of images
 * Download single images using their md5 or id
-* Rename downloaded images using a formatting string, for example "%artist%/%copyright%/%character%/%md5%.%ext%" (someway like how the Firefox extension Danbooru Downloader does), or directly using Javascript code. See Filename for details.
+* Rename downloaded images using a formatting string, for example "%artist%/%copyright%/%character%/%md5%.%ext%" (someway like how the Firefox extension [Danbooru Downloader](https://addons.mozilla.org/fr/firefox/addon/danbooru-downloader/) does), or directly using Javascript code. See {{Filename}} for details.
 * Add and remove imageboards very easily
 * Multiple tabs
 * Display multiple imageboards at the same time in a single tab
@@ -28,8 +27,8 @@ If you have any questions about the program, found a bug and don't want to use t
 * Blacklist
 * Fullscreen
 * Proxy support
-* Comand line interface (CLI)
-... and more!
+* ... and more!
+You can also have a more complete list on the {{Changelog}}.
 
 ## Languages
 * English
@@ -37,7 +36,7 @@ If you have any questions about the program, found a bug and don't want to use t
 * Russian (thanks to Николай Тихонов)
 
 ## Authors
-* Bionus
+* [Bionus](https://github.com/Bionus)
 
 ## Thanks
 * YMI for all his suggestions and helping debbuging the program
