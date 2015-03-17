@@ -155,7 +155,7 @@ void Site::checkForUpdatesDone()
 	emit checkForUpdatesFinished(this);
 }
 
-void _prependUrl(QMap<QString,QString> *details, QString url, QString key, QString lkey = NULL)
+void _prependUrl(QMap<QString,QString> *details, QString url, QString key, QString lkey = QString())
 {
 	if (details->contains(key))
 		details->insert(lkey == NULL ? key : lkey, url + details->value(key));
