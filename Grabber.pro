@@ -90,9 +90,9 @@ use_breakpad {
 }
 
 # Input
-HEADERS += includes/*.h
+HEADERS += includes/*.h vendor/*.h
 FORMS += ui/*.ui
-SOURCES += source/*.cpp
+SOURCES += source/*.cpp vendor/*.cpp
 
 OTHER_FILES += \
     icon.rc \

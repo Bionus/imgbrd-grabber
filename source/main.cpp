@@ -28,8 +28,7 @@
 
 #include <QApplication>
 #include <QtGui>
-#include <QCommandLineParser>
-#include <QCommandLineOption>
+#include <vendor/qcommandlineparser.h>
 #include <iostream>
 #include "QAffiche.h"
 #include "QBouton.h"
