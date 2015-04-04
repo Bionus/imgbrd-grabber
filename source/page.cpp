@@ -424,7 +424,7 @@ void Page::parse()
 
 		// Getting images
 		QRegExp rx(m_site->value("Regex/Image"));
-        QStringList order = m_site->value("Regex/Order").split('|');
+		QStringList order = m_site->value("Regex/Order").split('|');
 		rx.setMinimal(true);
 		int pos = 0, id = 0;
 		while ((pos = rx.indexIn(m_source, pos)) != -1)
