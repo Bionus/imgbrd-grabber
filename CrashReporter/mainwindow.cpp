@@ -62,7 +62,7 @@ void MainWindow::on_buttonQuit_clicked()
 void MainWindow::sendCrashReport()
 {
 	if (ui->checkSend->isChecked())
-	{ QDesktopServices::openUrl(QUrl("http://code.google.com/p/imgbrd-grabber/issues/entry")); }
+	{ QDesktopServices::openUrl(QUrl("https://github.com/Bionus/imgbrd-grabber/issues/new")); }
 	finished();
 }
 void MainWindow::finished()
