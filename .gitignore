@@ -16,6 +16,8 @@ releases/Grabber_*.tar.gz
 releases/Grabber_*.exe
 releases/Grabber_*.rar
 releases/translation_tools.rar
+CrashReporter/debug/
+CrashReporter/release/
 
 
 # C++ objects and libs
