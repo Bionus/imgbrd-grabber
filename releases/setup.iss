@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Grabber"
-#define MyAppVersion "4.1.0"
+#define MyAppVersion "4.1.1"
 #define MyAppPublisher "Bionus"
 #define MyAppURL "http://www.bionus.fr.cr/imgbrd-grabber/"
 #define MyAppExeName "Grabber.exe"
@@ -130,8 +130,11 @@ Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Danbooru\icon.png";      
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Danbooru\model.xml";       DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Danbooru\sites.txt";       DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru";   
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Danbooru\behoimi.org\settings.ini";              DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru\behoimi.org";
-Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Danbooru\chan.sankakucomplex.com\settings.ini";  DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru\chan.sankakucomplex.com";
-Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Danbooru\idol.sankakucomplex.com\settings.ini";  DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru\idol.sankakucomplex.com";    
+Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Sankaku\icon.png";        DestDir: "{localappdata}\Bionus\Grabber\sites\Sankaku"; Flags: ignoreversion
+Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Sankaku\model.xml";       DestDir: "{localappdata}\Bionus\Grabber\sites\Sankaku"; Flags: ignoreversion
+Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Sankaku\sites.txt";       DestDir: "{localappdata}\Bionus\Grabber\sites\Sankaku";   
+Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Sankaku\chan.sankakucomplex.com\settings.ini";  DestDir: "{localappdata}\Bionus\Grabber\sites\Sankaku\chan.sankakucomplex.com";
+Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Sankaku\idol.sankakucomplex.com\settings.ini";  DestDir: "{localappdata}\Bionus\Grabber\sites\Sankaku\idol.sankakucomplex.com";    
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Danbooru (2.0)\icon.png";  DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru (2.0)"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Danbooru (2.0)\model.xml"; DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru (2.0)"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Danbooru (2.0)\sites.txt"; DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru (2.0)";   

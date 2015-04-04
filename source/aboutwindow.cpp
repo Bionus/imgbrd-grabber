@@ -19,7 +19,7 @@ aboutWindow::aboutWindow(QString version, QWidget *parent) : QDialog(parent), ui
 
 	QNetworkAccessManager *m = new QNetworkAccessManager();
 	connect(m, SIGNAL(finished(QNetworkReply*)), this, SLOT(finished(QNetworkReply*)));
-	m->get(QNetworkRequest(QUrl("http://imgbrd-grabber.googlecode.com/svn/trunk/VERSION")));
+	m->get(QNetworkRequest(QUrl("https://raw.githubusercontent.com/Bionus/imgbrd-grabber/master/VERSION")));
 
 	setFixedSize(400, 228);
 }
