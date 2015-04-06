@@ -1,3 +1,6 @@
+#include <QtGlobal>
+#if (QT_VERSION < QT_VERSION_CHECK(5, 2, 0))
+
 /****************************************************************************
 **
 ** Copyright (C) 2013 Laszlo Papp <lpapp@kde.org>
@@ -1018,3 +1021,5 @@ QString QCommandLineParserPrivate::helpText() const
 }
 
 QT_END_NAMESPACE
+
+#endif

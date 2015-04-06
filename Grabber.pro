@@ -52,8 +52,8 @@ Release:win32 {
     DEFINES += _ATL_XP_TARGETING
     QMAKE_CFLAGS += /D _USING_V110_SDK71
     QMAKE_CXXFLAGS += /D _USING_V110_SDK71
-    LIBS *= -Lâ€?%ProgramFiles(x86)%/Microsoft SDKs/Windows/7.1A/Libâ€?
-    INCLUDEPATH += â€?%ProgramFiles(x86)%/Microsoft SDKs/Windows/7.1A/Includeâ€?
+	LIBS *= -L"%ProgramFiles(x86)%/Microsoft SDKs/Windows/7.1A/Lib"
+	INCLUDEPATH += "%ProgramFiles(x86)%/Microsoft SDKs/Windows/7.1A/Include"
 }
 
 # SSL
