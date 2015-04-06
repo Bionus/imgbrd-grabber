@@ -28,7 +28,12 @@
 
 #include <QApplication>
 #include <QtGui>
-#include <vendor/qcommandlineparser.h>
+#include <QtGlobal>
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 2, 0))
+	#include <QCommandLineParser>
+#else
+	#include <vendor/qcommandlineparser.h>
+#endif
 #include <iostream>
 #include "QAffiche.h"
 #include "QBouton.h"
