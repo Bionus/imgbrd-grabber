@@ -124,6 +124,9 @@ Image::Image(QMap<QString, QString> details, Page* parent)
 	m_loadPreview = nullptr;
 	m_loadDetails = nullptr;
 	m_loadImage = nullptr;
+	m_loadingPreview = false;
+	m_loadingDetails = false;
+	m_loadingImage = false;
 	m_pools = QList<Pool*>();
 
 	m_settings = new QSettings(savePath("sites/"+m_parentSite->value("Model")+"/"+m_site+"/settings.ini"), QSettings::IniFormat, this);
@@ -131,6 +134,8 @@ Image::Image(QMap<QString, QString> details, Page* parent)
 Image::~Image()
 {
     delete m_settings;
+
+	m_loadImage->deleteLater();
 }
 
 void Image::loadPreview()
@@ -138,19 +143,19 @@ void Image::loadPreview()
 	m_previewTry++;
 	m_loadPreview = m_parentSite->get(m_previewUrl, m_parent, "preview");
 	m_loadPreview->setParent(this);
+	m_loadingPreview = true;
 
 	connect(m_loadPreview, SIGNAL(finished()), this, SLOT(parsePreview()));
 }
 void Image::abortPreview()
 {
-	if (m_loadPreview != nullptr)
-	{
-		if (m_loadPreview->isRunning())
-		{ m_loadPreview->abort(); }
-	}
+	if (m_loadingPreview && m_loadPreview->isRunning())
+	{ m_loadPreview->abort(); }
 }
 void Image::parsePreview()
 {
+	m_loadingPreview = false;
+
 	// Check redirection
 	QUrl redir = m_loadPreview->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 	if (!redir.isEmpty())
@@ -186,19 +191,19 @@ void Image::loadDetails()
 {
 	m_loadDetails = m_parentSite->get(m_pageUrl);
 	m_loadDetails->setParent(this);
+	m_loadingDetails = true;
 
 	connect(m_loadDetails, SIGNAL(finished()), this, SLOT(parseDetails()));
 }
 void Image::abortTags()
 {
-	if (m_loadDetails != nullptr)
-	{
-		if (m_loadDetails->isRunning())
-		{ m_loadDetails->abort(); }
-	}
+	if (m_loadingDetails && m_loadDetails->isRunning())
+	{ m_loadDetails->abort(); }
 }
 void Image::parseDetails()
 {
+	m_loadingDetails = false;
+
 	// Check redirection
 	QUrl redir = m_loadDetails->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 	if (!redir.isEmpty())
@@ -303,7 +308,6 @@ void Image::parseDetails()
 						break;
 					}
 				}
-				qDebug() << t.text() << exists;
 				if (!exists)
 					m_tags.append(t);
 			}
@@ -809,18 +813,23 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 	return fns;
 }
 
-#include <QDebug>
 void Image::loadImage()
 {
 	m_loadImage = m_parentSite->get(m_url, m_parent, "image", this);
-	m_loadImage->setParent(this);
+	//m_loadImage->setParent(this);
 	//m_timer.start();
+	m_loadingImage = true;
 
-	connect(m_loadImage, SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(downloadProgressImageS(qint64, qint64)));
-	connect(m_loadImage, SIGNAL(finished()), this, SLOT(finishedImageS()));
+	connect(m_loadImage, &QNetworkReply::downloadProgress, this, &Image::downloadProgressImageS);
+	connect(m_loadImage, &QNetworkReply::finished, this, &Image::finishedImageS);
 }
 void Image::finishedImageS()
 {
+	m_loadingImage = false;
+
+	if (m_loadImage->error() == QNetworkReply::OperationCanceledError)
+	{ return; }
+
 	QUrl redir = m_loadImage->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 	if (!redir.isEmpty())
 	{
@@ -854,8 +863,6 @@ void Image::finishedImageS()
 	}
 
 	m_data = m_loadImage->readAll();
-	m_loadImage->deleteLater();
-	m_loadImage = nullptr;
 
 	emit finishedImage(this);
 }
@@ -869,11 +876,8 @@ void Image::downloadProgressImageS(qint64 v1, qint64 v2)
 }
 void Image::abortImage()
 {
-	if (m_loadImage != nullptr)
-	{
-		if (m_loadImage->isRunning())
-		{ m_loadImage->abort(); }
-	}
+	if (m_loadingImage && m_loadImage->isRunning())
+	{ m_loadImage->abort(); }
 }
 
 /**

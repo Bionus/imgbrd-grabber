@@ -173,7 +173,7 @@ class mainWindow : public QMainWindow
         QList<QMap<QString,QString> >	m_details, m_batchs;
         QSet<int>						m_batchDownloading;
 		QStringList			m_lineFilename_completer, m_lineFolder_completer;
-        QList<Downloader*>  m_downloaders;
+		QList<Downloader*>  m_downloaders, m_downloadersDone;
 		int					m_batchAutomaticRetries;
 };
 

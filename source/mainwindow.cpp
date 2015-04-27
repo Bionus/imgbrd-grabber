@@ -948,6 +948,7 @@ void mainWindow::batchSel()
 }
 void mainWindow::getAll(bool all)
 {
+	// Initial checks
 	if (m_getAll)
 	{
 		log(tr("Lancement d'un téléchargement groupé annulé car un autre est déjà en cours d'éxecution."));
@@ -965,9 +966,9 @@ void mainWindow::getAll(bool all)
 	}
 	log(tr("Téléchargement groupé commencé."));
 
+	// Reinitialize variables
 	m_getAll = true;
 	ui->widgetDownloadButtons->setDisabled(m_getAll);
-
 	m_getAllDownloaded = 0;
 	m_getAllExists = 0;
 	m_getAllIgnored = 0;
@@ -977,10 +978,8 @@ void mainWindow::getAll(bool all)
 	m_getAllPageCount = 0;
 	m_getAllBeforeId = -1;
 	m_getAllRequestExists = false;
-
     m_downloaders.clear();
 	m_getAllDownloadingSpeeds.clear();
-
 	m_getAllRemaining.clear();
 	m_getAllFailed.clear();
 	m_getAllDownloading.clear();
@@ -1025,13 +1024,16 @@ void mainWindow::getAll(bool all)
 	}
 	m_getAllLimit = m_batchs.size();
 
+	// Reset progress bars
 	for (QProgressBar *bar : m_progressBars)
+	{
 		if (bar != nullptr)
 		{
 			bar->setValue(0);
 			bar->setMinimum(0);
 			bar->setMaximum(100);
 		}
+	}
 
 	m_allow = false;
 	for (int i = 0; i < ui->tableBatchGroups->rowCount(); i++)
@@ -1125,8 +1127,8 @@ void mainWindow::getAllFinishedImages(QList<Image*> images)
 {
 	Downloader* downloader = (Downloader*)QObject::sender();
 	m_downloaders.removeAll(downloader);
+	m_downloadersDone.append(downloader);
 	m_getAllIgnored += downloader->ignoredCount();
-	downloader->deleteLater();
 
     m_getAllRemaining.append(images);
 
@@ -1302,6 +1304,11 @@ void mainWindow::_getAll()
 	{
 		log("Images download finished.");
 		m_progressdialog->setValue(m_progressdialog->maximum());
+
+		// Delete objects
+		qDeleteAll(m_downloadersDone);
+
+		// Final action
 		switch (m_progressdialog->endAction())
 		{
 			case 1:	m_progressdialog->close();				break;
@@ -1314,6 +1321,7 @@ void mainWindow::_getAll()
 				{ shutDown(); }
 				break;
 		}
+
 		if (m_progressdialog->endRemove())
 		{
 			int rem = 0;
@@ -1592,8 +1600,6 @@ void mainWindow::getAllPerformImage(Image* img)
 	QNetworkReply* reply = img->imageReply();
 	bool del = true;
 
-	if (reply->error() == QNetworkReply::OperationCanceledError)
-	{ return; }
 	log(tr("Image reçue depuis <a href=\"%1\">%1</a> %2").arg(reply->url().toString()).arg(m_getAllDownloading.size()));
 
 	// Row

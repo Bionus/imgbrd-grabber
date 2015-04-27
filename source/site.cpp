@@ -31,7 +31,7 @@ void Site::initManager()
         m_cookieJar = new QNetworkCookieJar(this);
 
 		m_manager = new QNetworkAccessManager(this);
-        m_manager->setCookieJar(m_cookieJar);
+		m_manager->setCookieJar(m_cookieJar);
 		connect(m_manager, SIGNAL(finished(QNetworkReply*)), this, SIGNAL(finished(QNetworkReply*)));
 		connect(m_manager, SIGNAL(sslErrors(QNetworkReply*,QList<QSslError>)), this, SLOT(sslErrorHandler(QNetworkReply*,QList<QSslError>)));
 	}
@@ -122,8 +122,8 @@ QNetworkReply *Site::get(QUrl url, Page *page, QString ref, Image *img)
 	initManager();
 	return m_manager->get(request);
 }
-void Site::sslErrorHandler(QNetworkReply* qnr, QList<QSslError>)
-{ qnr->ignoreSslErrors(); }
+void Site::sslErrorHandler(QNetworkReply* qnr, QList<QSslError> errors)
+{ qDebug() << errors; qnr->ignoreSslErrors(); }
 void Site::finishedReply(QNetworkReply *r)
 {
 	if (r != m_loginReply)
