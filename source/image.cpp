@@ -809,6 +809,7 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 	return fns;
 }
 
+#include <QDebug>
 void Image::loadImage()
 {
 	m_loadImage = m_parentSite->get(m_url, m_parent, "image", this);
