@@ -7,6 +7,34 @@
 
 Downloader::Downloader()
 {}
+Downloader::~Downloader()
+{
+	qDeleteAll(*m_pages);
+	delete m_pages;
+	qDeleteAll(*m_pagesC);
+	delete m_pagesC;
+	qDeleteAll(*m_pagesT);
+	delete m_pagesT;
+
+	qDeleteAll(*m_opages);
+	delete m_opages;
+	qDeleteAll(*m_opagesC);
+	delete m_opagesC;
+	qDeleteAll(*m_opagesT);
+	delete m_opagesT;
+
+	qDeleteAll(*m_images);
+	delete m_images;
+}
+void Downloader::clear()
+{
+	m_pages->clear();
+	m_pagesC->clear();
+	m_pagesT->clear();
+	m_opages->clear();
+	m_opagesC->clear();
+	m_opagesT->clear();
+}
 
 Downloader::Downloader(QStringList tags, QStringList postfiltering, QStringList sources, int page, int max, int perpage, QString location, QString filename, QString user, QString password, bool blacklist, QStringList blacklistedtags, bool noduplicates, int tagsmin, QString tagsformat)
 	: m_tags(tags), m_postfiltering(postfiltering), m_sources(sources), m_page(page), m_max(max), m_perpage(perpage), m_location(location), m_filename(filename), m_user(user), m_password(password), m_blacklist(blacklist), m_noduplicates(noduplicates), m_tagsmin(tagsmin), m_tagsformat(tagsformat), m_blacklistedTags(blacklistedtags)
@@ -498,25 +526,17 @@ void Downloader::returnStringList(QStringList ret)
 }
 
 void Downloader::setData(QVariant data)
-{
-    m_data = data;
-}
+{ m_data = data; }
 QVariant Downloader::getData()
-{
-    return m_data;
-}
+{ return m_data; }
 
 void Downloader::cancel()
-{
-	m_cancelled = true;
-}
+{ m_cancelled = true; }
 
 int Downloader::ignoredCount()
-{
-	return m_ignored;
-}
+{ return m_ignored; }
 int Downloader::duplicatesCount()
-{
-	return m_duplicates;
-}
+{ return m_duplicates; }
 
+QList<Page*> *Downloader::getPages()
+{ return m_pages; }

@@ -41,6 +41,7 @@ class Page : public QObject
 		void parseTags();
 		void abort();
 		void abortTags();
+		void clear();
 
 	signals:
 		void finishedLoading(Page*);

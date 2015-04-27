@@ -864,6 +864,8 @@ void mainWindow::loadLanguage(const QString& rLanguage, bool shutup)
 		}
 	}
 }
+
+// Update interface language
 void mainWindow::changeEvent(QEvent* event)
 {
 	if (event->type() == QEvent::LocaleChange)
@@ -875,6 +877,7 @@ void mainWindow::changeEvent(QEvent* event)
 	QMainWindow::changeEvent(event);
 }
 
+// Save tabs and settings on close
 void mainWindow::closeEvent(QCloseEvent *e)
 {
 	log(tr("Sauvegarde..."));
@@ -897,7 +900,6 @@ void mainWindow::closeEvent(QCloseEvent *e)
 	qApp->quit();
 }
 
-
 void mainWindow::options()
 {
 	log(tr("Ouverture de la fenêtre des options..."));
@@ -908,6 +910,7 @@ void mainWindow::options()
 	options->show();
 	DONE();
 }
+
 void mainWindow::optionsClosed()
 {
 	m_tabs[0]->optionsChanged();
@@ -922,6 +925,7 @@ void mainWindow::advanced()
 	connect(adv, SIGNAL(valid(sourcesWindow*)), this, SLOT(saveAdvanced(sourcesWindow*)));
 	DONE();
 }
+
 void mainWindow::saveAdvanced(sourcesWindow *w)
 {
 	log(tr("Sauvegarde des nouvelles sources..."));
@@ -1306,6 +1310,9 @@ void mainWindow::_getAll()
 		m_progressdialog->setValue(m_progressdialog->maximum());
 
 		// Delete objects
+		for (Downloader *d : m_downloadersDone)
+			for (Page *p : *d->getPages())
+				p->clear();
 		qDeleteAll(m_downloadersDone);
 
 		// Final action
@@ -1647,6 +1654,7 @@ void mainWindow::getAllPerformImage(Image* img)
 		del = false;
 	}
 
+	// Update progress bars
 	if (site_id >= 0)
 	{
 		m_progressBars[site_id - 1]->setValue(m_progressBars[site_id - 1]->value()+1);
@@ -1654,6 +1662,7 @@ void mainWindow::getAllPerformImage(Image* img)
 		{ ui->tableBatchGroups->item(row, 0)->setIcon(QIcon(":/images/colors/green.png")); }
 	}
 
+	// Update dialog infos
 	m_progressdialog->setValue(m_progressdialog->value()+img->value());
 	m_progressdialog->setImages(m_progressdialog->images()+1);
 	m_getAllDownloadingSpeeds.remove(img->url());
@@ -1661,12 +1670,12 @@ void mainWindow::getAllPerformImage(Image* img)
 
 	if (del)
 		img->deleteLater();
-	// qDebug() << "DELETE performimage" << QString::number((int)img, 16);
+
 	_getAll();
 }
 void mainWindow::saveImage(Image *img, QNetworkReply *reply, QString path, QString p, bool getAll)
 {
-	if (reply == NULL || !reply->isReadable())
+	if (img->data().isEmpty() && (reply == NULL || !reply->isReadable()))
 	{
 		reply = img->imageReply();
 		if (reply == NULL || !reply->isReadable())
@@ -1680,6 +1689,7 @@ void mainWindow::saveImage(Image *img, QNetworkReply *reply, QString path, QStri
 	{ p = img->folder().isEmpty() ? m_settings->value("Save/path").toString() : img->folder(); }
 	QStringList paths = img->path(path, p, m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + 1);
 
+	// Get image's content
 	QByteArray data = img->data().isEmpty() ? reply->readAll() : img->data();
 	if (!data.isEmpty())
 	{
@@ -1696,6 +1706,7 @@ void mainWindow::saveImage(Image *img, QNetworkReply *reply, QString path, QStri
 			QString md5Duplicate = md5Exists(img->md5());
 			if (md5Duplicate.isEmpty() || whatToDo == "save")
 			{
+				// Create the reception's directory
 				QDir path_to_file(fp.section(QDir::toNativeSeparators("/"), 0, -2)), dir(p);
 				if (!path_to_file.exists() && !dir.mkpath(path.section(QDir::toNativeSeparators("/"), 0, -2)))
 				{
@@ -1703,6 +1714,8 @@ void mainWindow::saveImage(Image *img, QNetworkReply *reply, QString path, QStri
 					if (getAll)
 					{ m_getAllErrors++; }
 				}
+
+				// Save the file
 				else
 				{
 					QFile f(fp);
@@ -1713,6 +1726,7 @@ void mainWindow::saveImage(Image *img, QNetworkReply *reply, QString path, QStri
 					img->setData(data);
 					addMd5(img->md5(), fp);
 
+					// Save info to a text file
 					if (m_settings->value("Textfile/activate", false).toBool())
 					{
 						QStringList cont = img->path(m_settings->value("Textfile/content", "%all%").toString(), "", true, false, false);
@@ -1727,6 +1741,8 @@ void mainWindow::saveImage(Image *img, QNetworkReply *reply, QString path, QStri
 							}
 						}
 					}
+
+					// Log info to a text file
 					if (m_settings->value("SaveLog/activate", false).toBool() && !m_settings->value("SaveLog/file", "").toString().isEmpty())
 					{
 						QStringList cont = img->path(m_settings->value("SaveLog/format", "%website% - %md5% - %all%").toString(), "", true, false, false);
@@ -1743,6 +1759,7 @@ void mainWindow::saveImage(Image *img, QNetworkReply *reply, QString path, QStri
 					}
 				}
 
+				// Execute commands
 				for (int i = 0; i < img->tags().count(); i++)
 				{ Commands::get()->tag(img->tags().at(i)); }
 				Commands::get()->image(img, fp);
