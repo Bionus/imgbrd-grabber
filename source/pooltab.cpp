@@ -102,7 +102,6 @@ void poolTab::closeEvent(QCloseEvent *e)
 {
 	qDeleteAll(m_pages);
 	m_pages.clear();
-	qDeleteAll(m_images);
 	m_images.clear();
 	qDeleteAll(m_checkboxes);
 	m_checkboxes.clear();
