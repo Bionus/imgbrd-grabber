@@ -693,6 +693,10 @@ void Page::parseTags()
 
 	emit finishedLoadingTags(this);
 }
+void Page::clear()
+{
+	m_images.clear();
+}
 
 QList<Image*>	Page::images()		{ return m_images;		}
 Site			*Page::site()		{ return m_site;		}

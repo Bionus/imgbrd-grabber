@@ -10,6 +10,7 @@
 *.exe.embed.manifest
 *.lib
 build/
+debug/
 release/*.txt
 release/*.ini
 release/crashreporter/

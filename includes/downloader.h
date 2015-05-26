@@ -16,6 +16,7 @@ class Downloader : public QObject
 
 	public:
 		Downloader();
+		~Downloader();
 		Downloader(QStringList tags, QStringList postfiltering, QStringList sources, int page, int max, int perpage, QString location, QString filename, QString user, QString password, bool blacklist, QStringList blacklistedtags, bool noduplicates, int tagsmin, QString tagsformat);
 		void getPageCount();
 		void getTags();
@@ -27,6 +28,7 @@ class Downloader : public QObject
 		void loadNext();
         void setData(QVariant data);
         QVariant getData();
+		QList<Page*> *getPages();
 		int ignoredCount();
 		int duplicatesCount();
 
@@ -53,6 +55,7 @@ class Downloader : public QObject
 		void finishedLoadingUrls(Page *page);
 		void finishedLoadingImage(Image *image);
 		void cancel();
+		void clear();
 
 	private:
 		QList<Site*> *m_sites;
