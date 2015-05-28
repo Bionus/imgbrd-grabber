@@ -213,7 +213,7 @@ QString _parseSetImageUrl(Site* site, QString setting, QString ret, QMap<QString
             {
                 QRegExp rgx(rep.left(rep.indexOf("->")));
                 ret.replace(rgx, rep.right(rep.size() - rep.indexOf("->") - 2));
-            }
+			}
         }
         else
         {
@@ -238,9 +238,9 @@ void Page::parseImage(QMap<QString,QString> d, int position)
 	{ d["sample_url"] = d["preview_url"]; }
 
 	// Fix urls
-	d["file_url"] = _parseSetImageUrl(m_site, "Urls/Xml/Image", d["file_url"], &d);
-	d["sample_url"] = _parseSetImageUrl(m_site, "Urls/Xml/Sample", d["sample_url"], &d);
-	d["preview_url"] = _parseSetImageUrl(m_site, "Urls/Xml/Preview", d["preview_url"], &d);
+	d["file_url"] = _parseSetImageUrl(m_site, "Urls/"+QString::number(m_currentSource)+"/Image", d["file_url"], &d);
+	d["sample_url"] = _parseSetImageUrl(m_site, "Urls/"+QString::number(m_currentSource)+"/Sample", d["sample_url"], &d);
+	d["preview_url"] = _parseSetImageUrl(m_site, "Urls/"+QString::number(m_currentSource)+"/Preview", d["preview_url"], &d);
 
 	// Page URL
 	if (!d.contains("page_url"))
