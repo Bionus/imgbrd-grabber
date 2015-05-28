@@ -32,42 +32,8 @@ sourcesWindow::sourcesWindow(QList<bool> selected, QMap<QString, Site*> *sites, 
 
     QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
 
-	QStringList k = sites->keys();
-	k.sort();
-	for (int i = 0; i < k.count(); i++)
-	{
-		QCheckBox *check = new QCheckBox();
-			check->setChecked(m_selected[i]);
-			check->setText(k.at(i));
-			connect(check, SIGNAL(stateChanged(int)), this, SLOT(checkUpdate()));
-			m_checks << check;
-			ui->gridLayout->addWidget(check, i, 0);
-        QString t = settings.value("Sources/Types", "icon").toString();
-		int n = 1;
-		if (t != "hide")
-		{
-			if (t == "icon" || t == "both")
-			{
-				QLabel *image = new QLabel();
-				image->setPixmap(QPixmap(savePath("sites/"+sites->value(k.at(i))->type()+"/icon.png")));
-				ui->gridLayout->addWidget(image, i, n);
-				m_labels << image;
-				n++;
-			}
-			if (t == "text" || t == "both")
-			{
-				QLabel *type = new QLabel(sites->value(k.at(i))->value("Name"));
-				ui->gridLayout->addWidget(type, i, n);
-				m_labels << type;
-				n++;
-			}
-		}
-		QBouton *del = new QBouton(k.at(i));
-			del->setText(tr("Options"));
-			connect(del, SIGNAL(appui(QString)), this, SLOT(settingsSite(QString)));
-			m_buttons << del;
-			ui->gridLayout->addWidget(del, i, n);
-	}
+	addCheckboxes();
+
 	ui->gridLayout->setColumnStretch(0, 1);
 	connect(ui->checkBox, SIGNAL(clicked()), this, SLOT(checkClicked()));
 	checkUpdate();
@@ -133,7 +99,8 @@ void sourcesWindow::checkClicked()
 void sourcesWindow::valid()
 {
 	for (int i = 0; i < m_selected.count(); i++)
-	{ m_selected[i] = m_checks.at(i)->isChecked(); }
+		m_selected[i] = m_checks.at(i)->isChecked();
+
 	emit valid(m_selected);
 	this->close();
 }
@@ -152,18 +119,22 @@ void sourcesWindow::settingsSite(QString site)
 void sourcesWindow::deleteSite(QString site)
 {
 	int i = m_sites->keys().indexOf(site);
+
 	m_checks.at(i)->hide();
 	ui->gridLayout->removeWidget(m_checks.at(i));
+	m_checks.removeAt(i);
 	m_buttons.at(i)->hide();
 	ui->gridLayout->removeWidget(m_buttons.at(i));
+	m_buttons.removeAt(i);
 	if (!m_labels.isEmpty())
 	{
 		m_labels.at(i)->hide();
 		ui->gridLayout->removeWidget(m_labels.at(i));
+		m_labels.removeAt(i);
 	}
+
 	m_sites->remove(site);
 	m_selected.removeAt(i);
-	m_checks.removeAt(i);
 }
 
 /**
@@ -173,61 +144,93 @@ void sourcesWindow::addSite()
 {
 	siteWindow *sw = new siteWindow(m_sites, this);
 	sw->show();
-	connect(sw, SIGNAL(accepted()), this, SLOT(insertCheckBox()));
+	connect(sw, SIGNAL(accepted()), this, SLOT(updateCheckboxes()));
+}
+
+void sourcesWindow::updateCheckboxes()
+{
+	QStringList k = m_sites->keys();
+	for (int i = 0; i < k.count(); i++)
+	{
+		if (m_checks.at(i)->text() != k.at(i))
+		{
+			m_selected.insert(i, true);
+			break;
+		}
+	}
+
+	removeCheckboxes();
+	addCheckboxes();
+}
+
+void sourcesWindow::removeCheckboxes()
+{
+	for (int i = 0; i < m_checks.count(); i++)
+	{
+		ui->gridLayout->removeWidget(m_checks.at(i));
+		m_checks.at(i)->deleteLater();
+
+		ui->gridLayout->removeWidget(m_buttons.at(i));
+		m_buttons.at(i)->deleteLater();
+
+		if (!m_labels.isEmpty())
+		{
+			m_labels.at(i)->deleteLater();
+			ui->gridLayout->removeWidget(m_labels.at(i));
+		}
+	}
+
+	m_checks.clear();
+	m_buttons.clear();
+	m_labels.clear();
 }
 
 /**
  * Add a site to the list.
  */
-void sourcesWindow::insertCheckBox()
+void sourcesWindow::addCheckboxes()
 {
+	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
+	QString t = settings.value("Sources/Types", "icon").toString();
+
 	QStringList k = m_sites->keys();
-	for (int i = 0; i < m_checks.count(); i++)
+	for (int i = 0; i < k.count(); i++)
 	{
-		m_checks.at(i)->hide();
-		ui->gridLayout->removeWidget(m_checks.at(i));
-		m_buttons.at(i)->hide();
-		ui->gridLayout->removeWidget(m_buttons.at(i));
-		if (!m_labels.isEmpty())
+		QCheckBox *check = new QCheckBox();
+			check->setChecked(m_selected[i]);
+			check->setText(k.at(i));
+			connect(check, SIGNAL(stateChanged(int)), this, SLOT(checkUpdate()));
+			m_checks << check;
+			ui->gridLayout->addWidget(check, i, 0);
+
+		int n = 1;
+		if (t != "hide")
 		{
-			m_labels.at(i)->hide();
-			ui->gridLayout->removeWidget(m_labels.at(i));
+			if (t == "icon" || t == "both")
+			{
+				QLabel *image = new QLabel();
+				image->setPixmap(QPixmap(savePath("sites/"+m_sites->value(k.at(i))->type()+"/icon.png")));
+				ui->gridLayout->addWidget(image, i, n);
+				m_labels << image;
+				n++;
+			}
+			if (t == "text" || t == "both")
+			{
+				QLabel *type = new QLabel(m_sites->value(k.at(i))->value("Name"));
+				ui->gridLayout->addWidget(type, i, n);
+				m_labels << type;
+				n++;
+			}
 		}
+
+		QBouton *del = new QBouton(k.at(i));
+			del->setText(tr("Options"));
+			connect(del, SIGNAL(appui(QString)), this, SLOT(settingsSite(QString)));
+			m_buttons << del;
+			ui->gridLayout->addWidget(del, i, n);
 	}
 
-    QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
-    QString t = settings.value("Sources/Types", "text").toString();
-	for (int i = 0; i < m_sites->count(); i++)
-	{
-		if (k.at(i) != m_checks.at(i)->text())
-		{
-			m_selected.insert(i, false);
-			QCheckBox *check = new QCheckBox();
-				check->setChecked(m_selected[i]);
-				check->setText(k.at(i));
-				m_checks.insert(i, check);
-			if (t != "hide")
-			{
-				if (t == "text" || t == "both")
-				{
-					QLabel *type = new QLabel(m_sites->value(k.at(i))->value("Name"));
-					m_labels.insert(i, type);
-				}
-				if (t == "icon" || t == "both")
-				{
-					QLabel *image = new QLabel();
-					image->setPixmap(QPixmap(savePath("sites/"+m_sites->value(k.at(i))->value("Name")+"/icon.png")));
-					m_labels.insert(i, image);
-				}
-			}
-			QBouton *del = new QBouton(k.at(i));
-				del->setText(tr("Options"));
-				connect(del, SIGNAL(appui(QString)), this, SLOT(settingsSite(QString)));
-				m_buttons.insert(i, del);
-			break;
-		}
-	}
-	int n =  0+(t == "icon" || t == "both")+(t == "text" || t == "both");
+	/*int n =  0+(t == "icon" || t == "both")+(t == "text" || t == "both");
 	for (int i = 0; i < m_checks.count(); i++)
 	{
 		ui->gridLayout->addWidget(m_checks.at(i), i, 0);
@@ -242,21 +245,23 @@ void sourcesWindow::insertCheckBox()
 		}
 		ui->gridLayout->addWidget(m_buttons.at(i), i, n+1);
 		m_buttons.at(i)->show();
-	}
+	}*/
 }
 
 /**
  * Check of uncheck all checkboxes, according to "check".
+ *
  * @param	check	Qt::CheckState saying if we must check or uncheck everithing (0 = uncheck, 2 = check)
  */
 void sourcesWindow::checkAll(int check)
 {
 	for (int i = 0; i < m_checks.count(); i++)
-	{ m_checks.at(i)->setChecked(check == 2); }
+		m_checks.at(i)->setChecked(check == 2);
 }
 
 /**
  * Accessor for the "selected" variable.
+ *
  * @return A bool list corresponding to selected websites.
  */
 QList<bool> sourcesWindow::getSelected()

@@ -31,13 +31,15 @@ class sourcesWindow : public QDialog
 		void closeEvent(QCloseEvent *);
 		void checkAll(int check = 2);
 		void addSite();
-		void insertCheckBox();
 		void settingsSite(QString);
 		void deleteSite(QString);
 		void checkUpdate();
 		void checkClicked();
 		void checkForUpdates();
 		void checkForUpdatesReceived(Site *);
+		void addCheckboxes();
+		void removeCheckboxes();
+		void updateCheckboxes();
 
 	signals:
 		void closed();

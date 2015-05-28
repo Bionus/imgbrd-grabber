@@ -393,7 +393,7 @@ void zoomWindow::display(QImage pix, int size)
 		delete image;
 		image = new QPixmap(QPixmap::fromImage(pix));
 		if (m_url.section('.', -1).toUpper() == "GIF")
-		{ m_labelImage->setPixmap(*image); }
+		{ /*m_labelImage->setPixmap(*image);*/ }
 		else
 		{ update(!m_finished); }
 		m_thread = false;
