@@ -145,9 +145,6 @@ Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Gelbooru (0.2)\icon.png";
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Gelbooru (0.2)\model.xml"; DestDir: "{localappdata}\Bionus\Grabber\sites\Gelbooru (0.2)"; Flags: ignoreversion      
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Gelbooru (0.2)\sites.txt"; DestDir: "{localappdata}\Bionus\Grabber\sites\Gelbooru (0.2)";     
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Gelbooru (0.2)\gelbooru.com\settings.ini"; DestDir: "{localappdata}\Bionus\Grabber\sites\Gelbooru (0.2)\gelbooru.com";     
-Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Metabooru\icon.png";   DestDir: "{localappdata}\Bionus\Grabber\sites\Metabooru"; Flags: ignoreversion
-Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Metabooru\model.xml";  DestDir: "{localappdata}\Bionus\Grabber\sites\Metabooru"; Flags: ignoreversion
-Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Metabooru\sites.txt";  DestDir: "{localappdata}\Bionus\Grabber\sites\Metabooru";     
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Moebooru\icon.png";  DestDir: "{localappdata}\Bionus\Grabber\sites\Metabooru"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Moebooru\model.xml"; DestDir: "{localappdata}\Bionus\Grabber\sites\Metabooru"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Moebooru\sites.txt"; DestDir: "{localappdata}\Bionus\Grabber\sites\Metabooru";     
