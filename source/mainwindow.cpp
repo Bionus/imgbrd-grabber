@@ -1084,7 +1084,7 @@ void mainWindow::getAll(bool all)
                 connect(downloader, &Downloader::finishedImages, this, &mainWindow::getAllFinishedImages);
                 connect(downloader, &Downloader::finishedImagesPage, this, &mainWindow::getAllFinishedPage);
                 m_downloaders.append(downloader);
-				downloader->setData(j	);
+				downloader->setData(j);
                 downloader->setQuit(false);
                 downloader->getImages();
 
@@ -1151,13 +1151,14 @@ void mainWindow::getAllImages()
 
 	log(tr("Toutes les urls des images ont été reçues (%n image(s)).", "", m_getAllRemaining.count()));
 
+	// We add the images to the download dialog
     int count = 0;
     m_progressdialog->setText(tr("Préparation des images, veuillez patienter..."));
 	m_progressdialog->setCount(m_getAllRemaining.count());
 	m_progressdialog->setImagesCount(m_getAllRemaining.count());
 	for (int i = 0; i < m_getAllRemaining.count(); i++)
 	{
-		count += m_getAllRemaining[i]->value();
+		// We find the image's batch ID using its page
         int n = -1;
 		for (int r = 0; r < m_groupBatchs.count(); r++)
 		{
@@ -1167,18 +1168,24 @@ void mainWindow::getAllImages()
 				break;
 			}
 		}
+
+		// We add the image
 		m_progressdialog->addImage(m_getAllRemaining[i]->url(), n, m_getAllRemaining[i]->fileSize());
 		connect(m_getAllRemaining[i], SIGNAL(urlChanged(QString,QString)), m_progressdialog, SLOT(imageUrlChanged(QString,QString)));
 		connect(m_getAllRemaining[i], SIGNAL(urlChanged(QString,QString)), this, SLOT(imageUrlChanged(QString,QString)));
+
 		m_progressdialog->setImages(i+1);
+		count += m_getAllRemaining[i]->value();
 	}
 
+	// Set some values on the batch window
 	m_progressdialog->updateColumns();
 	m_progressdialog->setImagesCount(m_getAllRemaining.count());
 	m_progressdialog->setMaximum(count);
 	m_progressdialog->setText(tr("Téléchargement des images en cours..."));
 	m_progressdialog->setImages(0);
 
+	// Check whether we need to get the tags first (for the filename) or if we can just download the images directly
 	m_must_get_tags = false;
 	QStringList forbidden = QStringList() << "artist" << "copyright" << "character" << "model" << "general";
 	for (int f = 0; f < m_groupBatchs.size(); f++)
@@ -1197,25 +1204,30 @@ void mainWindow::getAllImages()
 			{ m_must_get_tags = true; }
 		}
 	}
-
 	if (m_must_get_tags)
-	{ log(tr("Téléchargement des détails des images.")); }
+		log(tr("Téléchargement des détails des images."));
 	else
-	{ log(tr("Téléchargement des images directement.")); }
+		log(tr("Téléchargement des images directement."));
 
+	// We start the simultaneous downloads
 	for (int i = 0; i < qMax(1, qMin(m_settings->value("Save/simultaneous").toInt(), 10)); i++)
-	{ _getAll(); }
+		_getAll();
 }
+
 void mainWindow::_getAll()
 {
+	// We quit as soon as the user cancels
 	if (m_progressdialog->cancelled())
         return;
 
+	// If there are still images do download
 	if (m_getAllRemaining.size() > 0)
 	{
+		// We take the first image to download
 		Image *img = m_getAllRemaining.takeFirst();
 		m_getAllDownloading.append(img);
 
+		// Get the tags first if necessary
 		if (m_must_get_tags)
 		{
 			img->loadDetails();
@@ -1311,9 +1323,10 @@ void mainWindow::_getAll()
 
 		// Delete objects
 		for (Downloader *d : m_downloadersDone)
-			for (Page *p : *d->getPages())
+			for (Page *p : m_getAllPages)
 				p->clear();
 		qDeleteAll(m_downloadersDone);
+		// qDebug() << "DELETE downloaders";
 
 		// Final action
 		switch (m_progressdialog->endAction())
@@ -1323,9 +1336,7 @@ void mainWindow::_getAll()
 			case 3:	QSound::play(":/sounds/finished.wav");	break;
 
 			case 4:
-				qDebug() << m_progressdialog->count();
-				if (false)
-				{ shutDown(); }
+				shutDown();
 				break;
 		}
 
@@ -1448,13 +1459,6 @@ void mainWindow::getAllPerformTags(Image* img)
 	{ p = p.left(p.length()-1); }
 	QString pth = p+"/"+path;
 
-	int m_getAllId = -1;
-	for (int i = 0; i < m_getAllDownloading.count(); i++)
-	{
-		if (m_getAllDownloading[i]->fileUrl() == img->fileUrl())
-		{ m_getAllId = i; }
-	}
-
 	QFile f(pth);
 	if (!f.exists())	{ f.setFileName(pth.section('.', 0, -2)+".png");	}
 	if (!f.exists())	{ f.setFileName(pth.section('.', 0, -2)+".gif");	}
@@ -1485,7 +1489,7 @@ void mainWindow::getAllPerformTags(Image* img)
 			if (m_progressBars[site_id - 1]->value() >= m_progressBars[site_id]->maximum())
 			{ ui->tableBatchGroups->item(row, 0)->setIcon(QIcon(":/images/colors/green.png")); }
 			m_getAllDownloadingSpeeds.remove(img->url());
-			m_getAllDownloading.removeAt(m_getAllId);
+			m_getAllDownloading.removeAll(img);
 			img->deleteLater();
 			// qDebug() << "DELETE tags ignored" << QString::number((int)img, 16);
 			_getAll();
@@ -1507,7 +1511,7 @@ void mainWindow::getAllPerformTags(Image* img)
 			{ ui->tableBatchGroups->item(row, 0)->setIcon(QIcon(":/images/colors/green.png")); }
 		}
 		m_getAllDownloadingSpeeds.remove(img->url());
-		m_getAllDownloading.removeAt(m_getAllId);
+		m_getAllDownloading.removeAll(img);
 		img->deleteLater();
 		// qDebug() << "DELETE tags already" << QString::number((int)img, 16);
 		_getAll();
@@ -1517,12 +1521,6 @@ void mainWindow::getAllGetImage(Image* img)
 {
 	// Row
 	int site_id = m_progressdialog->batch(img->url());
-	int m_getAllId = -1;
-	for (int i = 0; i < m_getAllDownloading.count(); i++)
-	{
-		if (m_getAllDownloading[i]->url() == img->url())
-		{ m_getAllId = i; }
-	}
 	int row = -1;
 	for (int i = 0; i < ui->tableBatchGroups->rowCount(); ++i)
 		if (ui->tableBatchGroups->item(i, 0)->text().toInt() == site_id)
@@ -1593,7 +1591,7 @@ void mainWindow::getAllGetImage(Image* img)
 		m_progressdialog->setValue(m_progressdialog->value()+img->value());
 		m_progressdialog->setImages(m_progressdialog->images()+1);
 		m_getAllDownloadingSpeeds.remove(img->url());
-		m_getAllDownloading.removeAt(m_getAllId);
+		m_getAllDownloading.removeAll(img);
 		img->deleteLater();
 		// qDebug() << "DELETE next" << QString::number((int)img, 16);
 		_getAll();
@@ -1615,13 +1613,6 @@ void mainWindow::getAllPerformImage(Image* img)
 	for (int i = 0; i < ui->tableBatchGroups->rowCount(); ++i)
 		if (ui->tableBatchGroups->item(i, 0)->text().toInt() == site_id)
 			row = i;
-
-	int m_getAllId = -1;
-	for (int i = 0; i < m_getAllDownloading.count(); i++)
-	{
-		if (m_getAllDownloading[i]->url() == img->url())
-		{ m_getAllId = i; }
-	}
 
 	int errors = m_getAllErrors, e404s = m_getAll404s;
 	if (reply->error() == QNetworkReply::NoError)
@@ -1650,7 +1641,7 @@ void mainWindow::getAllPerformImage(Image* img)
 	else
 	{
 		m_progressdialog->errorImage(img->url());
-		m_getAllFailed.append(m_getAllDownloading[m_getAllId]);
+		m_getAllFailed.append(img);
 		del = false;
 	}
 
@@ -1666,10 +1657,12 @@ void mainWindow::getAllPerformImage(Image* img)
 	m_progressdialog->setValue(m_progressdialog->value()+img->value());
 	m_progressdialog->setImages(m_progressdialog->images()+1);
 	m_getAllDownloadingSpeeds.remove(img->url());
-	m_getAllDownloading.removeAt(m_getAllId);
+	m_getAllDownloading.removeAll(img);
 
-	if (del)
+	if (del) {
 		img->deleteLater();
+		// qDebug() << "DELETE finished" << QString::number((int)img, 16);
+	}
 
 	_getAll();
 }
