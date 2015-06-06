@@ -52,7 +52,7 @@ Page::Page(Site *site, QMap<QString,Site*> *sites, QStringList tags, int page, i
 }
 Page::~Page()
 {
-    qDeleteAll(m_images);
+	// qDeleteAll(m_images);
 }
 
 void Page::fallback(bool bload)
