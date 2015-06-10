@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Grabber"
-#define MyAppVersion "4.1.3"
+#define MyAppVersion "4.1.4"
 #define MyAppPublisher "Bionus"
 #define MyAppURL "http://www.bionus.fr.cr/imgbrd-grabber/"
 #define MyAppExeName "Grabber.exe"
@@ -125,35 +125,35 @@ Source: "D:\Programmation\C++\Qt\Grabber\release\sqldrivers\qsqlodbc.dll";  Dest
 Source: "D:\Programmation\C++\Qt\Grabber\release\sqldrivers\qsqlpsql.dll";  DestDir: "{app}\sqldrivers"; Flags: ignoreversion    
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Booru-on-rails\icon.png";  DestDir: "{localappdata}\Bionus\Grabber\sites\Booru-on-rails"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Booru-on-rails\model.xml"; DestDir: "{localappdata}\Bionus\Grabber\sites\Booru-on-rails"; Flags: ignoreversion
-Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Booru-on-rails\sites.txt"; DestDir: "{localappdata}\Bionus\Grabber\sites\Booru-on-rails";   
+Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Booru-on-rails\sites.txt"; DestDir: "{localappdata}\Bionus\Grabber\sites\Booru-on-rails"; Flags: onlyifdoesntexist
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Danbooru\icon.png";        DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Danbooru\model.xml";       DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru"; Flags: ignoreversion
-Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Danbooru\sites.txt";       DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru";   
+Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Danbooru\sites.txt";       DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru"; Flags: onlyifdoesntexist
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Danbooru\behoimi.org\settings.ini";              DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru\behoimi.org";
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Sankaku\icon.png";        DestDir: "{localappdata}\Bionus\Grabber\sites\Sankaku"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Sankaku\model.xml";       DestDir: "{localappdata}\Bionus\Grabber\sites\Sankaku"; Flags: ignoreversion
-Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Sankaku\sites.txt";       DestDir: "{localappdata}\Bionus\Grabber\sites\Sankaku";   
+Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Sankaku\sites.txt";       DestDir: "{localappdata}\Bionus\Grabber\sites\Sankaku"; Flags: onlyifdoesntexist
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Sankaku\chan.sankakucomplex.com\settings.ini";  DestDir: "{localappdata}\Bionus\Grabber\sites\Sankaku\chan.sankakucomplex.com";
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Sankaku\idol.sankakucomplex.com\settings.ini";  DestDir: "{localappdata}\Bionus\Grabber\sites\Sankaku\idol.sankakucomplex.com";    
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Danbooru (2.0)\icon.png";  DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru (2.0)"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Danbooru (2.0)\model.xml"; DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru (2.0)"; Flags: ignoreversion
-Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Danbooru (2.0)\sites.txt"; DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru (2.0)";   
+Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Danbooru (2.0)\sites.txt"; DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru (2.0)"; Flags: onlyifdoesntexist
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Gelbooru (0.1)\icon.png";  DestDir: "{localappdata}\Bionus\Grabber\sites\Gelbooru (0.1)"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Gelbooru (0.1)\model.xml"; DestDir: "{localappdata}\Bionus\Grabber\sites\Gelbooru (0.1)"; Flags: ignoreversion
-Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Gelbooru (0.1)\sites.txt"; DestDir: "{localappdata}\Bionus\Grabber\sites\Gelbooru (0.1)";     
+Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Gelbooru (0.1)\sites.txt"; DestDir: "{localappdata}\Bionus\Grabber\sites\Gelbooru (0.1)"; Flags: onlyifdoesntexist
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Gelbooru (0.2)\icon.png";  DestDir: "{localappdata}\Bionus\Grabber\sites\Gelbooru (0.2)"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Gelbooru (0.2)\model.xml"; DestDir: "{localappdata}\Bionus\Grabber\sites\Gelbooru (0.2)"; Flags: ignoreversion      
-Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Gelbooru (0.2)\sites.txt"; DestDir: "{localappdata}\Bionus\Grabber\sites\Gelbooru (0.2)";     
+Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Gelbooru (0.2)\sites.txt"; DestDir: "{localappdata}\Bionus\Grabber\sites\Gelbooru (0.2)"; Flags: onlyifdoesntexist
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Gelbooru (0.2)\gelbooru.com\settings.ini"; DestDir: "{localappdata}\Bionus\Grabber\sites\Gelbooru (0.2)\gelbooru.com";     
-Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Moebooru\icon.png";  DestDir: "{localappdata}\Bionus\Grabber\sites\Metabooru"; Flags: ignoreversion
-Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Moebooru\model.xml"; DestDir: "{localappdata}\Bionus\Grabber\sites\Metabooru"; Flags: ignoreversion
-Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Moebooru\sites.txt"; DestDir: "{localappdata}\Bionus\Grabber\sites\Metabooru";     
+Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Moebooru\icon.png";  DestDir: "{localappdata}\Bionus\Grabber\sites\Moebooru"; Flags: ignoreversion
+Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Moebooru\model.xml"; DestDir: "{localappdata}\Bionus\Grabber\sites\Moebooru"; Flags: ignoreversion
+Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Moebooru\sites.txt"; DestDir: "{localappdata}\Bionus\Grabber\sites\Moebooru"; Flags: onlyifdoesntexist
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Shimmie\icon.png";   DestDir: "{localappdata}\Bionus\Grabber\sites\Shimmie"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Shimmie\model.xml";  DestDir: "{localappdata}\Bionus\Grabber\sites\Shimmie"; Flags: ignoreversion
-Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Shimmie\sites.txt";  DestDir: "{localappdata}\Bionus\Grabber\sites\Shimmie";
+Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Shimmie\sites.txt";  DestDir: "{localappdata}\Bionus\Grabber\sites\Shimmie"; Flags: onlyifdoesntexist
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Zerochan\icon.png";  DestDir: "{localappdata}\Bionus\Grabber\sites\Zerochan"; Flags: ignoreversion
 Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Zerochan\model.xml"; DestDir: "{localappdata}\Bionus\Grabber\sites\Zerochan"; Flags: ignoreversion     
-Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Zerochan\sites.txt"; DestDir: "{localappdata}\Bionus\Grabber\sites\Zerochan";         
+Source: "D:\Programmation\C++\Qt\Grabber\release\sites\Zerochan\sites.txt"; DestDir: "{localappdata}\Bionus\Grabber\sites\Zerochan"; Flags: onlyifdoesntexist
 
 [InstallDelete]         
 Type: filesandordirs; Name: "{app}\languages\updater"
