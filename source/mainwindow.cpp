@@ -1326,6 +1326,7 @@ void mainWindow::_getAll()
 			for (Page *p : m_getAllPages)
 				p->clear();
 		qDeleteAll(m_downloadersDone);
+		m_downloadersDone.clear();
 		// qDebug() << "DELETE downloaders";
 
 		// Final action

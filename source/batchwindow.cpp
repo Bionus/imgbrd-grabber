@@ -59,10 +59,7 @@ void batchWindow::closeEvent(QCloseEvent *e)
 void batchWindow::pause()
 {
 	m_paused = !m_paused;
-	if (m_paused)
-	{ ui->labelSpeed->setText(tr("En pause")); }
-	else
-	{ ui->labelSpeed->setText(""); }
+	ui->labelSpeed->setText(m_paused ? tr("En pause") : "");
 	emit paused();
 }
 void batchWindow::cancel()
@@ -72,11 +69,17 @@ bool batchWindow::cancelled()
 void batchWindow::clear()
 {
 	m_cancel = false;
+	m_paused = false;
+
 	m_items = 0;
+	m_value = 0;
 	m_imagesCount = 0;
+	m_images = 0;
 	m_maxSpeeds = 0;
+
 	m_time->restart();
 	m_start->restart();
+
 	ui->tableWidget->clearContents();
 	ui->tableWidget->setRowCount(0);
 	ui->labelMessage->setText("");
@@ -85,10 +88,12 @@ void batchWindow::clear()
 	ui->labelImages->setText("0/0");
 	ui->labelSpeed->setText("");
 	ui->cancelButton->setText(tr("Annuler"));
+
 	qDeleteAll(m_progressBars);
 	m_progressBars.clear();
 	m_speeds.clear();
 	m_urls.clear();
+	m_mean.clear();
 }
 void batchWindow::copyToClipboard()
 {
