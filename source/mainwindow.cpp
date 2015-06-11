@@ -705,7 +705,7 @@ void mainWindow::updateBatchGroups(int y, int x)
 		else
 		{
 			int batchId = ui->tableBatchGroups->item(y, 0)->text().toInt() - 1;
-			m_groupBatchs[batchId][r-1] = ui->tableBatchGroups->item(y, x)->text();
+			m_groupBatchs[batchId][r - 1] = ui->tableBatchGroups->item(y, x)->text();
 			saveLinkList(savePath("restore.igl"));
 		}
 	}
@@ -1323,8 +1323,11 @@ void mainWindow::_getAll()
 
 		// Delete objects
 		for (Downloader *d : m_downloadersDone)
+		{
 			for (Page *p : m_getAllPages)
-				p->clear();
+			{ p->clear(); }
+			d->clear();
+		}
 		qDeleteAll(m_downloadersDone);
 		m_downloadersDone.clear();
 		// qDebug() << "DELETE downloaders";
@@ -1844,12 +1847,18 @@ bool mainWindow::saveLinkList(QString filename)
 {
 	QByteArray links = "[IGL 2]\r\n";
 	for (int i = 0; i < m_groupBatchs.size(); i++)
-		if (m_progressBars.at(i) != nullptr)
+	{
+		if (m_progressBars[i] != nullptr)
 		{
+			while (m_groupBatchs[i].size() > 8)
+				m_groupBatchs[i].removeLast();
+
 			links.append(m_groupBatchs[i].join(QString((char)29)));
 			links.append(QString((char)29)+QString::number(m_progressBars[i]->value())+"/"+QString::number(m_progressBars[i]->maximum()));
 			links.append((char)28);
 		}
+	}
+
 	QStringList vals = QStringList() << "id" << "md5" << "rating" << "tags" << "file_url" << "site" << "filename" << "folder";
 	for (int i = 0; i < m_batchs.size(); i++)
 	{
@@ -1917,7 +1926,6 @@ bool mainWindow::loadLinkList(QString filename)
 		}
 		else
 		{
-			QTableWidgetItem *item;
 			if (infos.at(1).toInt() < 0
 				|| infos.at(2).toInt() < 1
 				|| infos.at(3).toInt() < 1)
@@ -1928,17 +1936,17 @@ bool mainWindow::loadLinkList(QString filename)
 			ui->tableBatchGroups->setRowCount(ui->tableBatchGroups->rowCount() + 1);
 			QString last = infos.takeLast();
 			int max = last.right(last.indexOf("/")+1).toInt(), val = last.left(last.indexOf("/")).toInt();
-			for (int t = 0; t < infos.count(); t++)
-			{
-				item = new QTableWidgetItem(infos.at(t));
-				int r = t + 1;
-				if (r == 1) { r = 0; }
-				else if (r == 6) { r = 1; }
-				else if (r == 7) { r = 5; }
-				else if (r == 8) { r = 6; }
-				else if (r == 5) { r = 7; }
-				ui->tableBatchGroups->setItem(ui->tableBatchGroups->rowCount() - 1, r + 1, item);
-			}
+
+			int row = ui->tableBatchGroups->rowCount() - 1;
+			ui->tableBatchGroups->setItem(row, 1, new QTableWidgetItem(infos[0]));
+			ui->tableBatchGroups->setItem(row, 2, new QTableWidgetItem(infos[5]));
+			ui->tableBatchGroups->setItem(row, 3, new QTableWidgetItem(infos[1]));
+			ui->tableBatchGroups->setItem(row, 4, new QTableWidgetItem(infos[2]));
+			ui->tableBatchGroups->setItem(row, 5, new QTableWidgetItem(infos[3]));
+			ui->tableBatchGroups->setItem(row, 6, new QTableWidgetItem(infos[6]));
+			ui->tableBatchGroups->setItem(row, 7, new QTableWidgetItem(infos[7]));
+			ui->tableBatchGroups->setItem(row, 8, new QTableWidgetItem(infos[4]));
+
 			infos.append("true");
 			m_groupBatchs.append(infos);
 			QTableWidgetItem *it = new QTableWidgetItem(QIcon(":/images/colors/"+QString(val == max ? "green" : (val > 0 ? "blue" : "black"))+".png"), QString::number(m_groupBatchs.indexOf(infos) + 1));
