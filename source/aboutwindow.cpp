@@ -19,7 +19,7 @@ aboutWindow::aboutWindow(QString version, QWidget *parent) : QDialog(parent), ui
 
 	QNetworkAccessManager *m = new QNetworkAccessManager();
 	connect(m, SIGNAL(finished(QNetworkReply*)), this, SLOT(finished(QNetworkReply*)));
-	m->get(QNetworkRequest(QUrl("https://raw.githubusercontent.com/Bionus/imgbrd-grabber/master/VERSION")));
+	m->get(QNetworkRequest(QUrl("https://api.github.com/repos/Bionus/imgbrd-grabber/tags")));
 
 	setFixedSize(400, 228);
 }
@@ -31,8 +31,18 @@ aboutWindow::~aboutWindow()
 
 void aboutWindow::finished(QNetworkReply *r)
 {
-	QString l = r->readAll(), last = l;
-	int latest = version2int(last);
+	QString l = r->readAll();
+	QString last = QString(l);
+
+	QRegExp rx("\"name\":\\s*\"v([^\"]+)\"");
+	QList<int> list;
+	int pos = 0;
+	while ((pos = rx.indexIn(l, pos)) != -1) {
+		list << version2int(rx.cap(1));
+		pos += rx.matchedLength();
+	}
+
+	int latest = list.empty() ? 0 : qMax(list);
 	if (latest <= m_version)
 	{ ui->labelMessage->setText("<p style=\"font-size:8pt; font-style:italic; color:#808080;\">"+tr("Grabber est à jour")+"</p>"); }
 	else
