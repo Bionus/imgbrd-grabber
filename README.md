@@ -62,7 +62,7 @@ sudo apt-get install -qq qt5-qmake qtbase5-dev qtdeclarative5-dev qtscript5-dev 
 sudo apt-get install qt5-default qttools5-dev-tools
 qmake Grabber.pro
 make
-cp Grabber release/Grabber
+mv Grabber release/Grabber
 touch release/settings.ini
 ```
 
