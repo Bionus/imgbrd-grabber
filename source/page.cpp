@@ -216,11 +216,17 @@ QString _parseSetImageUrl(Site* site, QString setting, QString ret, QMap<QString
 			}
         }
         else
-        {
-            ret = site->value(setting);
-            ret.replace("{id}", d->value("id"))
-            .replace("{md5}", d->value("md5"))
-            .replace("{ext}", d->value("ext"));
+		{
+			QStringList options = site->value(setting).split('|');
+			for (QString ret : options)
+			{
+				ret.replace("{id}", d->value("id"))
+				.replace("{md5}", d->value("md5"))
+				.replace("{ext}", d->value("ext"));
+
+				if (!ret.endsWith("/." + d->value("ext")))
+					break;
+			}
         }
     }
 	return site->fixUrl(ret).toString();
@@ -273,7 +279,7 @@ void Page::parseImage(QMap<QString,QString> d, int position)
 
 void Page::parse()
 {
-    m_source = m_reply->readAll();
+	m_source = m_reply->readAll();
 
 	// Check redirection
 	QUrl redir = m_reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
