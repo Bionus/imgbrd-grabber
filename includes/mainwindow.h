@@ -152,7 +152,7 @@ class mainWindow : public QMainWindow
         QTranslator			m_translator;
 		QDateTime			m_loadFavorite;
         QMap<QString,int>	m_countPage;
-		QList<QStringList>	m_groupBatchs;
+		QList<QStringList>	m_groupBatchs; // tags, page, perpage, max, blacklist, source, filename, location
         QList<Image*>		m_getAllRemaining, m_getAllDownloading, m_getAllFailed, m_images;
         QList<Page*>		m_getAllPages, m_pages;
         QList<QAffiche*>	m_favoritesCaptions;

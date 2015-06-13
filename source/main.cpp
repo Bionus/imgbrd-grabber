@@ -143,7 +143,7 @@ int main(int argc, char *argv[])
 		}
 	#endif
 
-    //if (!gui)
+	if (!gui)
     {
         QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
         Downloader *dwnldr = new Downloader(parser.value(tagsOption).split(" ", QString::SkipEmptyParts),
@@ -174,7 +174,7 @@ int main(int argc, char *argv[])
         if (parser.isSet(downloadOption))
             dwnldr->getImages();
     }
-    //else
+	else
 	{
 		QStringList tags = parser.positionalArguments();
 		tags.append(parser.value(tagsOption).split(" ", QString::SkipEmptyParts));

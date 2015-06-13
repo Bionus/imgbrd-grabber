@@ -27,6 +27,7 @@ zoomWindow::zoomWindow(Image *image, Site *site, QMap<QString,Site*> *sites, QWi
 	m_viewItLater = loadViewItLater();
     m_ignore = loadIgnored();
     m_image = new Image(image->details(), image->page());
+	connect(m_image, &Image::urlChanged, this, &zoomWindow::urlChanged);
 
 	m_mustSave = 0;
 
@@ -850,4 +851,10 @@ void zoomWindow::closeEvent(QCloseEvent *e)
 		log(tr("Chargement de l'image stoppé."));
 	}
 	e->accept();
+}
+
+void zoomWindow::urlChanged(QString old, QString nouv)
+{
+	qDebug() << "new url !" << old << nouv;
+	m_url = nouv;
 }

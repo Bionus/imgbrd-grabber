@@ -476,9 +476,12 @@ void mainWindow::batchAddGroup(const QStringList& values)
 		else if (r == 5) { r = 7; }
 		ui->tableBatchGroups->setItem(ui->tableBatchGroups->rowCount()-1, r+1, item);
 	}
+
 	QProgressBar *prog = new QProgressBar(this);
 	prog->setTextVisible(false);
+	prog->setMaximum(values[3].toInt());
 	m_progressBars.append(prog);
+
 	ui->tableBatchGroups->setCellWidget(ui->tableBatchGroups->rowCount()-1, 9, prog);
 	m_allow = true;
 	saveLinkList(savePath("restore.igl"));
@@ -705,7 +708,11 @@ void mainWindow::updateBatchGroups(int y, int x)
 		else
 		{
 			int batchId = ui->tableBatchGroups->item(y, 0)->text().toInt() - 1;
-			m_groupBatchs[batchId][r-1] = ui->tableBatchGroups->item(y, x)->text();
+			m_groupBatchs[batchId][r - 1] = ui->tableBatchGroups->item(y, x)->text();
+
+			if (r - 1 == 3)
+			{ m_progressBars[batchId]->setMaximum(m_groupBatchs[batchId][r - 1].toInt()); }
+
 			saveLinkList(savePath("restore.igl"));
 		}
 	}
@@ -970,6 +977,7 @@ void mainWindow::getAll(bool all)
 	}
 	log(tr("Téléchargement groupé commencé."));
 
+
 	// Reinitialize variables
 	m_getAll = true;
 	ui->widgetDownloadButtons->setDisabled(m_getAll);
@@ -1028,17 +1036,6 @@ void mainWindow::getAll(bool all)
 	}
 	m_getAllLimit = m_batchs.size();
 
-	// Reset progress bars
-	for (QProgressBar *bar : m_progressBars)
-	{
-		if (bar != nullptr)
-		{
-			bar->setValue(0);
-			bar->setMinimum(0);
-			bar->setMaximum(100);
-		}
-	}
-
 	m_allow = false;
 	for (int i = 0; i < ui->tableBatchGroups->rowCount(); i++)
 	{ ui->tableBatchGroups->item(i, 0)->setIcon(QIcon(":/images/colors/black.png")); }
@@ -1065,6 +1062,13 @@ void mainWindow::getAll(bool all)
 		{
 			if (m_groupBatchs[j][m_groupBatchs[j].count() - 1] == "true" && (all || todownload.contains(j)))
 			{
+				if (m_progressBars.length() > j && m_progressBars[j] != nullptr)
+				{
+					m_progressBars[j]->setValue(0);
+					m_progressBars[j]->setMinimum(0);
+					// m_progressBars[j]->setMaximum(100);
+				}
+
 				QStringList b = m_groupBatchs.at(j);
                 Downloader *downloader = new Downloader(b.at(0).split(' '),
                                                         QStringList(),
@@ -1162,7 +1166,7 @@ void mainWindow::getAllImages()
         int n = -1;
 		for (int r = 0; r < m_groupBatchs.count(); r++)
 		{
-			if (m_groupBatchs[r][8].split("¤", QString::SkipEmptyParts).contains(QString::number((qintptr)m_getAllRemaining[i]->page())))
+			if (m_groupBatchs[r].length() > 8 && m_groupBatchs[r][8].split("¤", QString::SkipEmptyParts).contains(QString::number((qintptr)m_getAllRemaining[i]->page())))
 			{
 				n = r + 1;
 				break;
@@ -1286,9 +1290,11 @@ void mainWindow::_getAll()
 					m_getAllIgnored++;
 					log(tr("Image ignorée."));
 					m_progressdialog->loadedImage(img->url());
-					m_progressBars[site_id - 1]->setValue(m_progressBars[site_id - 1]->value()+1);
+
+					m_progressBars[site_id - 1]->setValue(m_progressBars[site_id - 1]->value() + 1);
 					if (m_progressBars[site_id - 1]->value() >= m_progressBars[site_id - 1]->maximum())
 					{ ui->tableBatchGroups->item(row, 0)->setIcon(QIcon(":/images/colors/green.png")); }
+
 					img->deleteLater();
 					// qDebug() << "DELETE ignored" << QString::number((int)img, 16);
 					_getAll();
@@ -1303,12 +1309,14 @@ void mainWindow::_getAll()
 				m_getAllExists++;
 				log(tr("Fichier déjà existant : <a href=\"file:///%1\">%1</a>").arg(paths.at(0)));
 				m_progressdialog->loadedImage(img->url());
+
 				if (site_id >= 0)
 				{
-					m_progressBars[site_id - 1]->setValue(m_progressBars[site_id - 1]->value()+1);
+					m_progressBars[site_id - 1]->setValue(m_progressBars[site_id - 1]->value() + 1);
 					if (m_progressBars[site_id - 1]->value() >= m_progressBars[site_id - 1]->maximum())
 					{ ui->tableBatchGroups->item(row, 0)->setIcon(QIcon(":/images/colors/green.png")); }
 				}
+
 				m_getAllDownloading.removeAll(img);
 				img->deleteLater();
 				// qDebug() << "DELETE already" << QString::number((int)img, 16);
@@ -1323,9 +1331,13 @@ void mainWindow::_getAll()
 
 		// Delete objects
 		for (Downloader *d : m_downloadersDone)
+		{
 			for (Page *p : m_getAllPages)
-				p->clear();
+			{ p->clear(); }
+			d->clear();
+		}
 		qDeleteAll(m_downloadersDone);
+		m_downloadersDone.clear();
 		// qDebug() << "DELETE downloaders";
 
 		// Final action
@@ -1843,12 +1855,18 @@ bool mainWindow::saveLinkList(QString filename)
 {
 	QByteArray links = "[IGL 2]\r\n";
 	for (int i = 0; i < m_groupBatchs.size(); i++)
-		if (m_progressBars.at(i) != nullptr)
+	{
+		if (m_progressBars[i] != nullptr)
 		{
+			while (m_groupBatchs[i].size() > 10)
+				m_groupBatchs[i].removeLast();
+
 			links.append(m_groupBatchs[i].join(QString((char)29)));
 			links.append(QString((char)29)+QString::number(m_progressBars[i]->value())+"/"+QString::number(m_progressBars[i]->maximum()));
 			links.append((char)28);
 		}
+	}
+
 	QStringList vals = QStringList() << "id" << "md5" << "rating" << "tags" << "file_url" << "site" << "filename" << "folder";
 	for (int i = 0; i < m_batchs.size(); i++)
 	{
@@ -1916,7 +1934,6 @@ bool mainWindow::loadLinkList(QString filename)
 		}
 		else
 		{
-			QTableWidgetItem *item;
 			if (infos.at(1).toInt() < 0
 				|| infos.at(2).toInt() < 1
 				|| infos.at(3).toInt() < 1)
@@ -1927,28 +1944,30 @@ bool mainWindow::loadLinkList(QString filename)
 			ui->tableBatchGroups->setRowCount(ui->tableBatchGroups->rowCount() + 1);
 			QString last = infos.takeLast();
 			int max = last.right(last.indexOf("/")+1).toInt(), val = last.left(last.indexOf("/")).toInt();
-			for (int t = 0; t < infos.count(); t++)
-			{
-				item = new QTableWidgetItem(infos.at(t));
-				int r = t + 1;
-				if (r == 1) { r = 0; }
-				else if (r == 6) { r = 1; }
-				else if (r == 7) { r = 5; }
-				else if (r == 8) { r = 6; }
-				else if (r == 5) { r = 7; }
-				ui->tableBatchGroups->setItem(ui->tableBatchGroups->rowCount() - 1, r + 1, item);
-			}
+
+			int row = ui->tableBatchGroups->rowCount() - 1;
+			ui->tableBatchGroups->setItem(row, 1, new QTableWidgetItem(infos[0]));
+			ui->tableBatchGroups->setItem(row, 2, new QTableWidgetItem(infos[5]));
+			ui->tableBatchGroups->setItem(row, 3, new QTableWidgetItem(infos[1]));
+			ui->tableBatchGroups->setItem(row, 4, new QTableWidgetItem(infos[2]));
+			ui->tableBatchGroups->setItem(row, 5, new QTableWidgetItem(infos[3]));
+			ui->tableBatchGroups->setItem(row, 6, new QTableWidgetItem(infos[6]));
+			ui->tableBatchGroups->setItem(row, 7, new QTableWidgetItem(infos[7]));
+			ui->tableBatchGroups->setItem(row, 8, new QTableWidgetItem(infos[4]));
+
 			infos.append("true");
 			m_groupBatchs.append(infos);
 			QTableWidgetItem *it = new QTableWidgetItem(QIcon(":/images/colors/"+QString(val == max ? "green" : (val > 0 ? "blue" : "black"))+".png"), QString::number(m_groupBatchs.indexOf(infos) + 1));
 			it->setFlags(it->flags() ^ Qt::ItemIsEditable);
 			ui->tableBatchGroups->setItem(ui->tableBatchGroups->rowCount()-1, 0, it);
+
 			QProgressBar *prog = new QProgressBar(this);
-			prog->setMaximum(max < 0 ? 0 : max);
+			prog->setMaximum(infos[3].toInt() /*max < 0 ? 0 : max*/);
 			prog->setValue(val < 0 || val > max ? 0 : val);
 			prog->setMinimum(0);
 			prog->setTextVisible(false);
 			m_progressBars.append(prog);
+
 			ui->tableBatchGroups->setCellWidget(ui->tableBatchGroups->rowCount()-1, 9, prog);
 			m_allow = true;
 		}

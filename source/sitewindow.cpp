@@ -67,6 +67,8 @@ void siteWindow::accept()
 	QString url = ui->lineEdit->text();
 	if (url.startsWith("http://"))
 	{ url.remove("http://"); }
+	if (url.startsWith("https://"))
+	{ url.remove("https://"); }
 	if (url.endsWith("/"))
 	{ url = url.left(url.size()-1); }
 

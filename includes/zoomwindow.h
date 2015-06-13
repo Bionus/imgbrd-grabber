@@ -59,6 +59,7 @@ class zoomWindow : public QDialog
         void downloadProgress(qint64 bytesReceived, qint64 bytesTotal);
 		void colore();
 		void sslErrorHandler(QNetworkReply*, QList<QSslError>);
+		void urlChanged(QString, QString);
 
 	protected:
 		void closeEvent(QCloseEvent *);

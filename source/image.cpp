@@ -31,7 +31,7 @@ Image::Image(QMap<QString, QString> details, Page* parent)
 	m_md5 = details.contains("md5") ? details["md5"] : "";
 	m_author = details.contains("author") ? details["author"] : "";
 	m_status = details.contains("status") ? details["status"] : "";
-	m_filename = details.contains("filename") ? details["filename"] : "";
+	m_filename = details.contains("filename") ? QUrl::fromEncoded(details["filename"].toUtf8()).toString() : "";
 	m_folder = details.contains("folder") ? details["folder"] : "";
 	m_search = parent != nullptr ? parent->search() : QStringList();
 	m_id = details.contains("id") ? details["id"].toInt() : 0;
@@ -324,8 +324,9 @@ void Image::parseDetails()
 		while ((pos = rx.indexIn(source, pos)) != -1)
 		{
 			pos += rx.matchedLength();
-			m_url = rx.cap(1);
-			m_fileUrl = rx.cap(1);
+			QString newurl = m_parentSite->fixUrl(rx.cap(1), QUrl(m_url)).toString();
+			m_url = newurl;
+			m_fileUrl = newurl;
 		}
 		if (before != m_url)
 		{
@@ -617,10 +618,12 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 	{ copyrights = details["copyrights"]; }
 
 	QString ext = getExtension(m_url);
+	if ((details["alls"].contains("gif") || details["alls"].contains("animated")) && ext != "gif" && ext != "webm")
+	{ ext = "gif"; }
 
 	QMap<QString,QStrP> replaces = QMap<QString,QStrP>();
 	replaces.insert("ext", QStrP(ext, "jpg"));
-    replaces.insert("filename", QStrP(m_url.section('/', -1).section('.', 0, -2), ""));
+	replaces.insert("filename", QStrP(QUrl::fromPercentEncoding(m_url.section('/', -1).section('.', 0, -2).toUtf8()), ""));
     replaces.insert("website", QStrP(m_parentSite->url(), ""));
 	replaces.insert("websitename", QStrP(m_parentSite->name(), ""));
 	replaces.insert("md5", QStrP(m_md5, ""));
