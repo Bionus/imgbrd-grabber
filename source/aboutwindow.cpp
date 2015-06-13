@@ -1,3 +1,4 @@
+#include <QtGlobal>
 #include "aboutwindow.h"
 #include "ui_aboutwindow.h"
 
