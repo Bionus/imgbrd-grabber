@@ -324,8 +324,9 @@ void Image::parseDetails()
 		while ((pos = rx.indexIn(source, pos)) != -1)
 		{
 			pos += rx.matchedLength();
-			m_url = rx.cap(1);
-			m_fileUrl = rx.cap(1);
+			QString newurl = m_parentSite->fixUrl(rx.cap(1), QUrl(m_url)).toString();
+			m_url = newurl;
+			m_fileUrl = newurl;
 		}
 		if (before != m_url)
 		{
