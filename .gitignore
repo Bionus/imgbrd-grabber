@@ -14,6 +14,7 @@ debug/
 release/*.txt
 release/*.ini
 release/crashreporter/
+release/sites/Danbooru (2.0)/danbooru.donmai.us/
 releases/Grabber_*.tar.gz
 releases/Grabber_*.exe
 releases/Grabber_*.rar
