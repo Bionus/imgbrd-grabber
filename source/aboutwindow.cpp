@@ -43,7 +43,8 @@ void aboutWindow::finished(QNetworkReply *r)
 		pos += rx.matchedLength();
 	}
 
-	int latest = list.empty() ? 0 : qMax(list);
+	qSort(list);
+	int latest = list.empty() ? 0 : list.last();
 	if (latest <= m_version)
 	{ ui->labelMessage->setText("<p style=\"font-size:8pt; font-style:italic; color:#808080;\">"+tr("Grabber est à jour")+"</p>"); }
 	else
