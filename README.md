@@ -50,6 +50,12 @@ The program is licensed under the [Apache License 2.0](http://www.apache.org/lic
 ## Compilation on Linux
 
 ```
+./build.sh
+```
+
+Or if you want to run the commands yourself :
+
+```
 sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa
 sudo apt-get update -qq
 sudo apt-get install -qq qt5-qmake qtbase5-dev qtdeclarative5-dev qtscript5-dev qtmultimedia5-dev libpulse-dev
