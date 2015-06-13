@@ -1056,16 +1056,12 @@ void mainWindow::getAll(bool all)
 
 	if (all || !todownload.isEmpty())
 	{
-		qDebug() << todownload;
-		qDebug() << m_groupBatchs;
 		m_progressdialog->setImagesCount(0);
 		int active = 0;
         for (int j = 0; j < m_groupBatchs.count(); ++j)
 		{
-			qDebug() << m_groupBatchs[j][m_groupBatchs[j].count() - 1] << all << todownload.contains(j);
 			if (m_groupBatchs[j][m_groupBatchs[j].count() - 1] == "true" && (all || todownload.contains(j)))
 			{
-				qDebug() << "in";
 				if (m_progressBars.length() > j && m_progressBars[j] != nullptr)
 				{
 					m_progressBars[j]->setValue(0);
