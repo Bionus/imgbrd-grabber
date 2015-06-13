@@ -617,6 +617,8 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 	{ copyrights = details["copyrights"]; }
 
 	QString ext = getExtension(m_url);
+	if ((details["alls"].contains("gif") || details["alls"].contains("animated")) && ext != "gif" && ext != "webm")
+	{ ext = "gif"; }
 
 	QMap<QString,QStrP> replaces = QMap<QString,QStrP>();
 	replaces.insert("ext", QStrP(ext, "jpg"));
