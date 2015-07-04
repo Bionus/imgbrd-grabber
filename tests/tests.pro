@@ -7,11 +7,12 @@
 QT       += network script xml testlib
 QT       -= gui
 
-TARGET = tst_teststest
-CONFIG   += console
+TARGET    = tests
+CONFIG   += console testcase
 CONFIG   -= app_bundle
 
 TEMPLATE = app
 
-SOURCES += tst_teststest.cpp
+INCLUDEPATH += D:/Programmation/C++/Qt/Grabber/includes
+SOURCES +=  tst_tag.cpp
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
