@@ -3,7 +3,7 @@ CONFIG += use_ssl
 Release {
 	CONFIG += use_qscintilla
 }
-CONFIG += use_breakpad
+#CONFIG += use_breakpad
 #CONFIG += use_cli
 
 # Travis settings

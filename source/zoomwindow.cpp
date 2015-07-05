@@ -855,6 +855,5 @@ void zoomWindow::closeEvent(QCloseEvent *e)
 
 void zoomWindow::urlChanged(QString old, QString nouv)
 {
-	qDebug() << "new url !" << old << nouv;
 	m_url = nouv;
 }

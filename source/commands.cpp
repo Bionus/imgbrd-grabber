@@ -1,6 +1,7 @@
 #include <QProcess>
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlQuery>
+#include <QDir>
 #include "commands.h"
 
 
@@ -70,9 +71,10 @@ bool Commands::image(Image *img, QString fp)
 {
 	if (!m_commandImage.isEmpty())
 	{
-		QStringList execs = img->path(m_commandImage, "", false);
+		QStringList execs = img->path(m_commandImage, "", 0, false, true, false, false);
 		for (QString exec : execs)
 		{
+			exec = QDir::toNativeSeparators(exec);
 			exec.replace("%path%", fp);
 			exec.replace(" \\C ", " /C ");
 			log(QObject::tr("Execution de \"%1\"").arg(exec));
@@ -83,7 +85,7 @@ bool Commands::image(Image *img, QString fp)
 	if (m_mysql && !m_mysqlSettings.image.isEmpty())
 	{
 		start();
-		QStringList execs = img->path(m_mysqlSettings.image, "", false);
+		QStringList execs = img->path(m_mysqlSettings.image, "", 0, false, true, false, false);
 		for (QString exec : execs)
 		{
 			exec.replace("%path%", fp);

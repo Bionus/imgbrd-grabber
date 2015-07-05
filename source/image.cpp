@@ -490,7 +490,7 @@ QString analyse(QStringList tokens, QString text, QStringList tags)
 		{ ret.replace(reg.cap(0), reg.cap(1)); }
 		pos += reg.matchedLength();
 	}
-	return r.contains("%") || ret.contains("\"") ? "" : ret;
+	return r.contains("%") ? "" : ret;
 }
 
 typedef QPair<QString,QString> QStrP;
@@ -545,7 +545,7 @@ QString cutLength(QString res, QString filename, QString pth, QString key, bool 
  * @param simple True to force using the fn and pth parameters.
  * @return The filename of the image, with any token replaced.
  */
-QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool simple, bool maxlength)
+QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool simple, bool maxlength, bool shouldFixFilename)
 {
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
 	QStringList ignore = loadIgnored(), remove = settings.value("ignoredtags").toString().split(' ', QString::SkipEmptyParts);
@@ -719,7 +719,7 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 		// Conditionals
 		if (complex)
 		{
-			QStringList tokens = QStringList() << "artist" << "general" << "copyright" << "character" << "model" << "model|artist" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "allo" << "date" << "date:([^%]+)" << "count(:\\d+)?(:\\d+)?" << "search_(\\d+)" << "score" << custom.keys();
+			QStringList tokens = QStringList() << "artist" << "general" << "copyright" << "character" << "model" << "model|artist" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "allo" << "date" << "date:([^%]+)" << "count(:\\d+)?(:\\d+)?" << "search_(\\d+)" << "score" << "height" << "width" << "path" << custom.keys();
 			filename = analyse(tokens, filename, details["allos"]);
 		}
 
@@ -810,7 +810,8 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 		{ filename.replace("//", "/"); }
 
 		// Max filename size option
-		fns[i] = fixFilename(filename, pth, maxlength && complex ? 0 : settings.value("limit").toInt());
+		if (shouldFixFilename)
+			fns[i] = fixFilename(filename, pth, maxlength && complex ? 0 : settings.value("limit").toInt());
 	}
 
 	return fns;

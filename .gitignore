@@ -9,6 +9,7 @@
 *.log
 *.exe.embed.manifest
 *.lib
+*.sql
 build/
 debug/
 release/*.txt

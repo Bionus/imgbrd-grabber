@@ -640,7 +640,7 @@ QString fixFilename(QString filename, QString path, int maxlength)
 	QString sep = QDir::toNativeSeparators("/");
 	filename = QDir::toNativeSeparators(filename);
 	path = QDir::toNativeSeparators(path);
-	if (!path.endsWith(sep))
+	if (!path.endsWith(sep) && !path.isEmpty())
 		path += sep;
 
 	#ifdef Q_OS_WIN
@@ -691,7 +691,7 @@ QString fixFilename(QString filename, QString path, int maxlength)
 		QString dirpart = parts.join(sep);
 		if (dirpart.length() > maxlength - 12)
 			dirpart = dirpart.left(maxlength - 12).trimmed();
-		filename = dirpart + sep + file;
+		filename = (dirpart.isEmpty() ? "" : dirpart + sep) + file;
 
 		// A filename cannot exceed MAX_PATH (-1 for <NUL> and -3 for drive "C:\")
 		if (filename.length() > maxlength - 1 - 3 - ext.length() - 1)
