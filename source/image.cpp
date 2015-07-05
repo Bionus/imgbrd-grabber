@@ -550,6 +550,7 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
 	QStringList ignore = loadIgnored(), remove = settings.value("ignoredtags").toString().split(' ', QString::SkipEmptyParts);
 
+	settings.beginGroup("Save");
 	if (!simple)
 	{
 		if (!m_filename.isEmpty())
@@ -557,7 +558,6 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 		if (!m_folder.isEmpty())
 		{ pth = m_folder; }
 
-		settings.beginGroup("Save");
 		if (fn.isEmpty())
 		{ fn = settings.value("filename").toString(); }
 		if (pth.isEmpty())
@@ -591,9 +591,12 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 				if (scustom.values().at(r).contains(t))
 				{ custom[scustom.keys().at(r)].append(t); }
 			}
-			details["allos"].append(t);
 			details[ignore.contains(m_tags[i].text(), Qt::CaseInsensitive) ? "generals" : m_tags[i].type()+"s"].append(t);
 			details["alls"].append(t);
+
+			QString underscored = QString(t);
+			underscored.replace(' ', '_');
+			details["allos"].append(underscored);
 		}
 	}
 	if (settings.value("copyright_useshorter", true).toBool())
@@ -621,6 +624,8 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 	if ((details["alls"].contains("gif") || details["alls"].contains("animated")) && ext != "gif" && ext != "webm")
 	{ ext = "gif"; }
 
+	QString tagSeparator = settings.value("separator").toString();
+
 	QMap<QString,QStrP> replaces = QMap<QString,QStrP>();
 	replaces.insert("ext", QStrP(ext, "jpg"));
 	replaces.insert("filename", QStrP(QUrl::fromPercentEncoding(m_url.section('/', -1).section('.', 0, -2).toUtf8()), ""));
@@ -631,16 +636,16 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 	replaces.insert("id", QStrP(QString::number(m_id), "0"));
 	for (int i = 0; i < m_search.size(); ++i)
 	{ replaces.insert("search_"+QString::number(i+1), QStrP(m_search[i], "")); }
-	replaces.insert("search", QStrP(m_search.join(settings.value("separator").toString()), ""));
+	replaces.insert("search", QStrP(m_search.join(tagSeparator), ""));
 	replaces.insert("rating", QStrP(m_rating, "unknown"));
 	replaces.insert("score", QStrP(QString::number(m_score), ""));
 	replaces.insert("height", QStrP(QString::number(m_size.height()), "0"));
 	replaces.insert("width", QStrP(QString::number(m_size.width()), "0"));
-	replaces.insert("general", QStrP(details["generals"].join(settings.value("separator").toString()), ""));
+	replaces.insert("general", QStrP(details["generals"].join(tagSeparator), ""));
 	replaces.insert("allo", QStrP(details["allos"].join(" "), ""));
-	replaces.insert("all", QStrP(details["alls"].join(" "), ""));
+	replaces.insert("all", QStrP(details["alls"].join(tagSeparator), ""));
 	for (int i = 0; i < custom.size(); ++i)
-	{ replaces.insert(custom.keys().at(i), QStrP(custom.values().at(i).join(settings.value("separator").toString()), "")); }
+	{ replaces.insert(custom.keys().at(i), QStrP(custom.values().at(i).join(tagSeparator), "")); }
 
 	// Filename
 	QString filename = fn;
@@ -675,7 +680,7 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 	QStringList l = details["alls"];
 	for (int i = 0; i < rem.size(); ++i)
 	{ l.removeAll(rem.at(i)); }
-	replaces.insert("all", QStrP(l.join(settings.value("separator").toString()), ""));
+	replaces.insert("all", QStrP(l.join(tagSeparator), ""));
 
 	if (filename.startsWith("javascript:"))
 	{
@@ -690,9 +695,11 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 			QString key = keys.at(i);
 			QString res = replaces[key].first.isEmpty() ? replaces[key].second : replaces[key].first;
 			if (key != "allo")
-			{ res = res.replace("\\", "_").replace("%", "_").replace("/", "_").replace(":", "_").replace("|", "_").replace("*", "_").replace("?", "_").replace("\"", "_").replace("<", "_").replace(">", "_").replace("__", "_").replace("__", "_").replace("__", "_").trimmed(); }
-			if (!settings.value("replaceblanks", false).toBool())
-			{ res.replace("_", " "); }
+			{
+				res = res.replace("\\", "_").replace("%", "_").replace("/", "_").replace(":", "_").replace("|", "_").replace("*", "_").replace("?", "_").replace("\"", "_").replace("<", "_").replace(">", "_").replace("__", "_").replace("__", "_").replace("__", "_").trimmed();
+				if (!settings.value("replaceblanks", false).toBool())
+				{ res.replace("_", " "); }
+			}
 
 			inits += "var " + key + " = \"" + res + "\";\r\n";
 		}
@@ -750,6 +757,7 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 			{ p += rxsize.matchedLength(); }
 		}
 
+
 		// We replace everything
 		QStringList keys = replaces.keys();
 		for (int i = 0; i < replaces.size(); ++i)
@@ -757,9 +765,11 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 			QString key = keys.at(i);
 			QString res = replaces[key].first.isEmpty() ? replaces[key].second : replaces[key].first;
 			if (key != "allo")
-			{ res = res.replace("\\", "_").replace("%", "_").replace("/", "_").replace(":", "_").replace("|", "_").replace("*", "_").replace("?", "_").replace("\"", "_").replace("<", "_").replace(">", "_").replace("__", "_").replace("__", "_").replace("__", "_").trimmed(); }
-			if (!settings.value("replaceblanks", false).toBool())
-			{ res.replace("_", " "); }
+			{
+				res = res.replace("\\", "_").replace("%", "_").replace("/", "_").replace(":", "_").replace("|", "_").replace("*", "_").replace("?", "_").replace("\"", "_").replace("<", "_").replace(">", "_").replace("__", "_").replace("__", "_").replace("__", "_").trimmed();
+				if (!settings.value("replaceblanks", false).toBool())
+				{ res.replace("_", " "); }
+			}
 
 			// We only cut the name if it is not a folder
 			filename.replace("%"+key+"%", res); // cutLength(res, filename, pth, "%"+key+"%", maxlength && complex)
