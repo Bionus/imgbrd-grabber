@@ -108,6 +108,7 @@ class mainWindow : public QMainWindow
 		// Tabs
 		int addTab(QString tag = "");
 		int addPoolTab(int pool = 0, QString site = "");
+		void addSearchTab(searchTab*);
 		void updateTabTitle(searchTab*);
 		void tabClosed(tagTab*);
 		void tabClosed(poolTab*);
@@ -124,6 +125,7 @@ class mainWindow : public QMainWindow
 		void updateDownloads();
 		// Others
 		void closeEvent(QCloseEvent*);
+		void onFirstLoad();
 		void advanced();
 		void saveAdvanced(sourcesWindow*);
 		void init();
@@ -171,7 +173,7 @@ class mainWindow : public QMainWindow
         QList<QProgressBar*>			m_progressBars;
         QList<QNetworkReply*>			m_replies;
         QList<QMap<QString,QString> >	m_details, m_batchs;
-        QSet<int>						m_batchDownloading;
+		QSet<int>						m_batchDownloading;
 		QStringList			m_lineFilename_completer, m_lineFolder_completer;
 		QList<Downloader*>  m_downloaders, m_downloadersDone;
 		int					m_batchAutomaticRetries;

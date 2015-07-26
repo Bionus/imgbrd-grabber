@@ -96,9 +96,8 @@ void mainWindow::init()
 	else
 	{
 		QString srsc = "";
-		for (int i = 0; i < m_sites.size(); ++i) {
-			srsc += (i != 0 ? ", " : "") + m_sites.keys().at(i) + " (" + m_sites.values().at(i)->type() + ")";
-		}
+		for (int i = 0; i < m_sites.size(); ++i)
+		{ srsc += (i != 0 ? ", " : "") + m_sites.keys().at(i) + " (" + m_sites.values().at(i)->type() + ")"; }
 		log(tr("%n source(s) trouvée(s) : %1").arg(srsc));
 	}
 
@@ -112,79 +111,10 @@ void mainWindow::init()
 	connect(ui->actionQuit, SIGNAL(triggered()), qApp, SLOT(quit()));
 	connect(ui->actionAboutQt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 
+	// Action on first load
 	if (m_settings->value("firstload", true).toBool())
 	{
-		QSettings cfg(QSettings::IniFormat, QSettings::UserScope, "Mozilla", "Firefox");
-		QString path = QFileInfo(cfg.fileName()).absolutePath()+"/Firefox";
-		QSettings profiles(path+"/profiles.ini", QSettings::IniFormat);
-		if (QFile::exists(path+"/"+profiles.value("Profile0/Path").toString()+"/extensions/danbooru_downloader@cuberocks.net.xpi"))
-		{
-			int reponse = QMessageBox::question(this, "", tr("L'extension pour Mozilla Firefox \"Danbooru Downloader\" a été détéctée sur votre système. Souhaitez-vous en importer les préférences ?"), QMessageBox::Yes | QMessageBox::No);
-			if (reponse == QMessageBox::Yes)
-			{
-				QFile prefs(path+"/"+profiles.value("Profile0/Path").toString()+"/prefs.js");
-				if (prefs.exists())
-				{
-					if (prefs.open(QIODevice::ReadOnly | QIODevice::Text))
-					{
-						QString source;
-						while (!prefs.atEnd())
-						{ source += QString(prefs.readLine()); }
-						QRegExp rx("user_pref\\(\"danbooru.downloader.([^\"]+)\", ([^\\)]+)\\);");
-						int pos = 0;
-						QMap<QString,QString> firefox, assoc;
-						assoc["blacklist"] = "blacklistedtags";
-						assoc["generalTagsSeparator"] = "separator";
-						assoc["multipleArtistsAll"] = "artist_useall";
-						assoc["multipleArtistsDefault"] = "artist_value";
-						assoc["multipleArtistsSeparator"] = "artist_sep";
-						assoc["multipleCharactersAll"] = "character_useall";
-						assoc["multipleCharactersDefault"] = "character_value";
-						assoc["multipleCharactersSeparator"] = "character_sep";
-						assoc["multipleCopyrightsAll"] = "copyright_useall";
-						assoc["multipleCopyrightsDefault"] = "copyright_value";
-						assoc["multipleCopyrightsSeparator"] = "copyright_sep";
-						assoc["noArtist"] = "artist_empty";
-						assoc["noCharacter"] = "character_empty";
-						assoc["noCopyright"] = "copyright_empty";
-						assoc["targetFolder"] = "path";
-						assoc["targetName"] = "filename";
-						while ((pos = rx.indexIn(source, pos)) != -1)
-						{
-							pos += rx.matchedLength();
-							QString value = rx.cap(2);
-							if (value.left(1) == "\"")	{ value = value.right(value.length()-1);	}
-							if (value.right(1) == "\"")	{ value = value.left(value.length()-1);		}
-							firefox[rx.cap(1)] = value;
-						}
-						m_settings->beginGroup("Save");
-						if (firefox.keys().contains("useBlacklist"))
-						{
-							if (firefox["useBlacklist"] == "true")
-							{ m_settings->setValue("downloadblacklist", false); }
-							else
-							{ m_settings->setValue("downloadblacklist", true); }
-						}
-						for (int i = 0; i < firefox.size(); i++)
-						{
-							if (assoc.keys().contains(firefox.keys().at(i)))
-							{
-								QString v =  firefox.values().at(i);
-								v.replace("\\\\", "\\");
-								m_settings->setValue(assoc[firefox.keys().at(i)], v);
-							}
-						}
-						m_settings->endGroup();
-						prefs.close();
-					}
-				}
-			}
-		}
-		else
-		{
-			startWindow *swin = new startWindow(this);
-			swin->show();
-		}
+		this->onFirstLoad();
 		m_settings->setValue("firstload", false);
 	}
 
@@ -258,9 +188,9 @@ void mainWindow::init()
 	updateFavorites(true);
 	updateKeepForLater();
 
-	//m_lineFilename_completer = QStringList(m_settings->value("Save/filename").toString());
 	m_lineFolder_completer = QStringList(m_settings->value("Save/path").toString());
 	ui->lineFolder->setCompleter(new QCompleter(m_lineFolder_completer));
+	//m_lineFilename_completer = QStringList(m_settings->value("Save/filename").toString());
 	//ui->lineFilename->setCompleter(new QCompleter(m_lineFilename_completer));
 
 	m_loaded = true;
@@ -279,13 +209,9 @@ void mainWindow::loadSites()
     {
         QString k = news[i];
         if (!current.contains(k))
-        {
-            m_sites.insert(k, sites->value(k));
-        }
+		{ m_sites.insert(k, sites->value(k)); }
         else
-        {
-            delete sites->value(k);
-        }
+		{ delete sites->value(k); }
     }
     delete sites;
 }
@@ -296,9 +222,104 @@ mainWindow::~mainWindow()
 	delete ui;
 }
 
+void mainWindow::onFirstLoad()
+{
+	QSettings cfg(QSettings::IniFormat, QSettings::UserScope, "Mozilla", "Firefox");
+	QString path = QFileInfo(cfg.fileName()).absolutePath()+"/Firefox";
+	QSettings profiles(path+"/profiles.ini", QSettings::IniFormat);
+
+	if (QFile::exists(path+"/"+profiles.value("Profile0/Path").toString()+"/extensions/danbooru_downloader@cuberocks.net.xpi"))
+	{
+		int reponse = QMessageBox::question(this, "", tr("L'extension pour Mozilla Firefox \"Danbooru Downloader\" a été détéctée sur votre système. Souhaitez-vous en importer les préférences ?"), QMessageBox::Yes | QMessageBox::No);
+		if (reponse == QMessageBox::Yes)
+		{
+			QFile prefs(path+"/"+profiles.value("Profile0/Path").toString()+"/prefs.js");
+			if (prefs.exists() && prefs.open(QIODevice::ReadOnly | QIODevice::Text))
+			{
+				QString source = prefs.readAll();
+				QRegExp rx("user_pref\\(\"danbooru.downloader.([^\"]+)\", ([^\\)]+)\\);");
+				QMap<QString,QString> firefox, assoc;
+				assoc["blacklist"] = "blacklistedtags";
+				assoc["generalTagsSeparator"] = "separator";
+				assoc["multipleArtistsAll"] = "artist_useall";
+				assoc["multipleArtistsDefault"] = "artist_value";
+				assoc["multipleArtistsSeparator"] = "artist_sep";
+				assoc["multipleCharactersAll"] = "character_useall";
+				assoc["multipleCharactersDefault"] = "character_value";
+				assoc["multipleCharactersSeparator"] = "character_sep";
+				assoc["multipleCopyrightsAll"] = "copyright_useall";
+				assoc["multipleCopyrightsDefault"] = "copyright_value";
+				assoc["multipleCopyrightsSeparator"] = "copyright_sep";
+				assoc["noArtist"] = "artist_empty";
+				assoc["noCharacter"] = "character_empty";
+				assoc["noCopyright"] = "copyright_empty";
+				assoc["targetFolder"] = "path";
+				assoc["targetName"] = "filename";
+
+				int pos = 0;
+				while ((pos = rx.indexIn(source, pos)) != -1)
+				{
+					pos += rx.matchedLength();
+					QString value = rx.cap(2);
+					if (value.startsWith('"'))	{ value = value.right(value.length() - 1);	}
+					if (value.endsWith('"'))	{ value = value.left(value.length() - 1);	}
+					firefox[rx.cap(1)] = value;
+				}
+
+				m_settings->beginGroup("Save");
+				if (firefox.keys().contains("useBlacklist"))
+				{
+					if (firefox["useBlacklist"] == "true")
+					{ m_settings->setValue("downloadblacklist", false); }
+					else
+					{ m_settings->setValue("downloadblacklist", true); }
+				}
+				for (int i = 0; i < firefox.size(); i++)
+				{
+					if (assoc.keys().contains(firefox.keys().at(i)))
+					{
+						QString v =  firefox.values().at(i);
+						v.replace("\\\\", "\\");
+						m_settings->setValue(assoc[firefox.keys().at(i)], v);
+					}
+				}
+				m_settings->endGroup();
+				prefs.close();
+			}
+			return;
+		}
+	}
+
+	startWindow *swin = new startWindow(this);
+	swin->show();
+}
+
 int mainWindow::addTab(QString tag)
 {
 	tagTab *w = new tagTab(m_tabs.size(), &m_sites, &m_favorites, this);
+	this->addSearchTab(w);
+
+	if (!tag.isEmpty())
+	{ w->setTags(tag); }
+
+	m_tagTabs.append(w);
+	return m_tabs.size() - 1;
+}
+int mainWindow::addPoolTab(int pool, QString site)
+{
+	poolTab *w = new poolTab(m_tabs.size(), &m_sites, &m_favorites, this);
+	this->addSearchTab(w);
+
+	if (!site.isEmpty())
+	{ w->setSite(site); }
+	if (pool != 0)
+	{ w->setPool(pool, site); }
+
+	m_poolTabs.append(w);
+	return m_tabs.size() - 1;
+}
+void mainWindow::addSearchTab(searchTab *w)
+{
 	if (m_tabs.size() > ui->tabWidget->currentIndex())
 	{
 		w->setSources(m_tabs[ui->tabWidget->currentIndex()]->sources());
@@ -313,55 +334,26 @@ int mainWindow::addTab(QString tag)
 	connect(w, SIGNAL(closed(tagTab*)), this, SLOT(tabClosed(tagTab*)));
 	int index = ui->tabWidget->insertTab(ui->tabWidget->currentIndex()+(!m_tabs.isEmpty()), w, tr("Nouvel onglet"));
 	m_tabs.append(w);
-	m_tagTabs.append(w);
 	ui->tabWidget->setCurrentIndex(index);
 	QPushButton *closeTab = new QPushButton(QIcon(":/images/close.png"), "", this);
 		closeTab->setFlat(true);
 		closeTab->resize(QSize(8,8));
 		connect(closeTab, SIGNAL(clicked()), w, SLOT(deleteLater()));
 		ui->tabWidget->findChild<QTabBar*>()->setTabButton(index, QTabBar::RightSide, closeTab);
-	if (!tag.isEmpty())
-	{ w->setTags(tag); }
 	saveTabs(savePath("tabs.txt"));
-	return m_tabs.size() - 1;
 }
-int mainWindow::addPoolTab(int pool, QString site)
-{
-	poolTab *w = new poolTab(m_tabs.size(), &m_sites, &m_favorites, this);
-	if (m_tabs.size() > ui->tabWidget->currentIndex())
-	{ w->setSources(m_tabs[ui->tabWidget->currentIndex()]->sources()); }
-	connect(w, SIGNAL(batchAddGroup(QStringList)), this, SLOT(batchAddGroup(QStringList)));
-	connect(w, SIGNAL(batchAddUnique(QMap<QString,QString>)), this, SLOT(batchAddUnique(QMap<QString,QString>)));
-	connect(w, SIGNAL(titleChanged(searchTab*)), this, SLOT(updateTabTitle(searchTab*)));
-	connect(w, SIGNAL(changed(searchTab*)), this, SLOT(updateTabs()));
-	connect(w, SIGNAL(closed(poolTab*)), this, SLOT(tabClosed(poolTab*)));
-	int index = ui->tabWidget->insertTab(ui->tabWidget->currentIndex()+(!m_tabs.isEmpty()), w, tr("Nouvel onglet"));
-	m_tabs.append(w);
-	m_poolTabs.append(w);
-	ui->tabWidget->setCurrentIndex(index);
-	QPushButton *closeTab = new QPushButton(QIcon(":/images/close.png"), "", this);
-		closeTab->setFlat(true);
-		closeTab->resize(QSize(8,8));
-		connect(closeTab, SIGNAL(clicked()), w, SLOT(deleteLater()));
-		ui->tabWidget->findChild<QTabBar*>()->setTabButton(index, QTabBar::RightSide, closeTab);
-	if (!site.isEmpty())
-	{ w->setSite(site); }
-	if (pool != 0)
-	{ w->setPool(pool, site); }
-	saveTabs(savePath("tabs.txt"));
-	return m_tabs.size() - 1;
-}
+
 bool mainWindow::saveTabs(QString filename)
 {
 	QStringList tabs = QStringList();
 	for (tagTab *tab : m_tagTabs)
 	{
-		if (tab != NULL)
+		if (tab != nullptr)
 		{ tabs.append(tab->tags()+"¤"+QString::number(tab->ui->spinPage->value())+"¤"+QString::number(tab->ui->spinImagesPerPage->value())+"¤"+QString::number(tab->ui->spinColumns->value())); }
 	}
 	for (poolTab *tab : m_poolTabs)
 	{
-		if (tab != NULL)
+		if (tab != nullptr)
 		{ tabs.append(QString::number(tab->ui->spinPool->value())+"¤"+QString::number(tab->ui->comboSites->currentIndex())+"¤"+tab->tags()+"¤"+QString::number(tab->ui->spinPage->value())+"¤"+QString::number(tab->ui->spinImagesPerPage->value())+"¤"+QString::number(tab->ui->spinColumns->value())+"¤pool"); }
 	}
 
@@ -415,9 +407,13 @@ bool mainWindow::loadTabs(QString filename)
 	return false;
 }
 void mainWindow::updateTabTitle(searchTab *tab)
-{ ui->tabWidget->setTabText(ui->tabWidget->indexOf(tab), tab->windowTitle()); }
+{
+	ui->tabWidget->setTabText(ui->tabWidget->indexOf(tab), tab->windowTitle());
+}
 void mainWindow::updateTabs()
-{ saveTabs(savePath("tabs.txt")); }
+{
+	saveTabs(savePath("tabs.txt"));
+}
 void mainWindow::tabClosed(tagTab *tab)
 {
 	m_tagTabs.removeAll(tab);
@@ -429,7 +425,9 @@ void mainWindow::tabClosed(poolTab *tab)
 	m_tabs.removeAll((searchTab*)tab);
 }
 void mainWindow::tabClosed(searchTab *tab)
-{ m_tabs.removeAll(tab); }
+{
+	m_tabs.removeAll(tab);
+}
 void mainWindow::currentTabChanged(int tab)
 {
 	if (m_loaded)
@@ -1123,6 +1121,12 @@ void mainWindow::getAll(bool all)
 	m_progressdialog->show();
     logShow();
 }
+
+/**
+ * Called when a page have been loaded and parsed.
+ *
+ * @param page The loaded page
+ */
 void mainWindow::getAllFinishedPage(Page *page)
 {
     Downloader *d = (Downloader*)QObject::sender();
@@ -1131,6 +1135,12 @@ void mainWindow::getAllFinishedPage(Page *page)
     m_getAllPages.append(page);
     m_progressdialog->setImages(m_progressdialog->images() + 1);
 }
+
+/**
+ * Called when a page have been loaded and parsed.
+ *
+ * @param images The images results on this page
+ */
 void mainWindow::getAllFinishedImages(QList<Image*> images)
 {
 	Downloader* downloader = (Downloader*)QObject::sender();
@@ -1138,7 +1148,7 @@ void mainWindow::getAllFinishedImages(QList<Image*> images)
 	m_downloadersDone.append(downloader);
 	m_getAllIgnored += downloader->ignoredCount();
 
-    m_getAllRemaining.append(images);
+	m_getAllRemaining.append(images);
 
     if (m_downloaders.isEmpty())
 	{
@@ -1147,6 +1157,9 @@ void mainWindow::getAllFinishedImages(QList<Image*> images)
 	}
 }
 
+/**
+ * Called when all pages have been loaded and parsed from all sources.
+ */
 void mainWindow::getAllImages()
 {
     // Si la limite d'images est dépassée, on retire celles en trop
@@ -1267,6 +1280,7 @@ void mainWindow::_getAll()
 				{ notexists = false; }
 			}
 
+			// If the file does not already exists
 			if (notexists)
 			{
 				bool detected = false;
@@ -1302,13 +1316,16 @@ void mainWindow::_getAll()
 				else
 				{ getAllGetImage(img); }
 			}
+
+			// If the file already exusts
 			else
 			{
-				m_progressdialog->setValue(m_progressdialog->value()+img->value());
-				m_progressdialog->setImages(m_progressdialog->images()+1);
+				m_progressdialog->setValue(m_progressdialog->value() + img->value());
+				m_progressdialog->setImages(m_progressdialog->images() + 1);
+				m_progressdialog->loadedImage(img->url());
+
 				m_getAllExists++;
 				log(tr("Fichier déjà existant : <a href=\"file:///%1\">%1</a>").arg(paths.at(0)));
-				m_progressdialog->loadedImage(img->url());
 
 				if (site_id >= 0)
 				{
@@ -1324,6 +1341,8 @@ void mainWindow::_getAll()
 			}
 		}
 	}
+
+	// When the batch download finishes
 	else if (m_getAllDownloading.isEmpty() && m_getAll)
 	{
 		log("Images download finished.");
@@ -1351,7 +1370,6 @@ void mainWindow::_getAll()
 				shutDown();
 				break;
 		}
-
 		if (m_progressdialog->endRemove())
 		{
 			int rem = 0;
@@ -1365,6 +1383,8 @@ void mainWindow::_getAll()
 		}
 		activateWindow();
 		m_getAll = false;
+
+		// Information about downloads
 		if (m_getAllErrors <= 0 || m_batchAutomaticRetries <= 0)
 		{
 			QMessageBox::information(
@@ -1379,6 +1399,8 @@ void mainWindow::_getAll()
 				)
 			);
 		}
+
+		// Retry in case of error
 		int reponse = QMessageBox::No;
 		if (m_getAllErrors > 0)
 		{
@@ -1407,6 +1429,8 @@ void mainWindow::_getAll()
 			}
 			m_getAllErrors = 0;
 		}
+
+		// End of batch download
 		if (reponse != QMessageBox::Yes)
 		{
 			Commands::get()->after();
