@@ -1492,11 +1492,9 @@ void mainWindow::getAllPerformTags(Image* img)
 		p = m_groupBatchs[site_id - 1][7];
 	}
 
-	qDebug() << 0 << path << p;
 	int cnt = m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + 1;
 	QStringList paths = img->path(path, p, cnt);
 	path = paths.at(0); // FIXME
-	qDebug() << 1 << path << p;
 
 	// Save path
 	p.replace("\\", "/");
@@ -1825,7 +1823,6 @@ void mainWindow::getAllCancel()
 	{
 		downloader->cancel();
 	}
-	m_progressdialog->clear();
 	m_getAll = false;
 	ui->widgetDownloadButtons->setEnabled(true);
 	DONE();
