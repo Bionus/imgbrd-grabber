@@ -16,7 +16,7 @@ T = $$(TRAVIS)
 
 # Global
 TARGET = Grabber
-APP_VERSION = \\\"4.1.4\\\"
+APP_VERSION = \\\"4.1.5\\\"
 
 # General
 TEMPLATE = app
@@ -24,6 +24,11 @@ DEPENDPATH += . debug includes languages release source ui
 INCLUDEPATH += . includes source
 DEFINES += VERSION=$$APP_VERSION
 QT += core network xml sql script multimedia widgets
+
+# Windows specials
+win32 {
+        QT += winextras
+}
 
 # Additionnal
 CONFIG += plugin

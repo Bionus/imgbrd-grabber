@@ -2,7 +2,6 @@
 #include <QTime>
 #include <QCloseEvent>
 #include <QClipboard>
-#include <QDebug>
 #include "batchwindow.h"
 #include "ui_batchwindow.h"
 #include "functions.h"
@@ -11,7 +10,7 @@
 
 
 
-batchWindow::batchWindow(QWidget*) : QDialog(), ui(new Ui::batchWindow), m_imagesCount(0), m_items(0), m_images(0), m_maxSpeeds(0), m_cancel(false), m_paused(false)
+batchWindow::batchWindow(QWidget *parent) : QDialog(), ui(new Ui::batchWindow), m_imagesCount(0), m_items(0), m_images(0), m_maxSpeeds(0), m_cancel(false), m_paused(false)
 {
 	ui->setupUi(this);
 	ui->tableWidget->resizeColumnToContents(0);
@@ -30,11 +29,27 @@ batchWindow::batchWindow(QWidget*) : QDialog(), ui(new Ui::batchWindow), m_image
 	m_time = new QTime;
 	m_time->start();
 	m_start = new QTime;
+
+	#ifdef Q_OS_WIN
+		m_taskBarButton = new QWinTaskbarButton(parent);
+		m_taskBarButton->setWindow(parent->windowHandle());
+
+		m_taskBarProgress = m_taskBarButton->progress();
+		m_taskBarProgress->setVisible(false);
+		m_taskBarProgress->setMinimum(0);
+		m_taskBarProgress->setMaximum(0);
+		m_taskBarProgress->setValue(0);
+	#endif
 }
 
 batchWindow::~batchWindow()
 {
 	delete ui;
+
+	#ifdef Q_OS_WIN
+		m_taskBarButton->deleteLater();
+		m_taskBarProgress->deleteLater();
+	#endif
 }
 void batchWindow::closeEvent(QCloseEvent *e)
 {
@@ -53,6 +68,10 @@ void batchWindow::closeEvent(QCloseEvent *e)
 	else
 	{ clear(); }
 
+	#ifdef Q_OS_WIN
+		m_taskBarProgress->setVisible(false);
+	#endif
+
 	emit closed();
 	e->accept();
 }
@@ -60,10 +79,21 @@ void batchWindow::pause()
 {
 	m_paused = !m_paused;
 	ui->labelSpeed->setText(m_paused ? tr("En pause") : "");
+
+	#ifdef Q_OS_WIN
+		m_taskBarProgress->setPaused(m_paused);
+	#endif
+
 	emit paused();
 }
 void batchWindow::cancel()
-{ m_cancel = true; }
+{
+	m_cancel = true;
+
+	#ifdef Q_OS_WIN
+		m_taskBarProgress->setVisible(false);
+	#endif
+}
 bool batchWindow::cancelled()
 { return m_cancel; }
 void batchWindow::clear()
@@ -94,6 +124,13 @@ void batchWindow::clear()
 	m_speeds.clear();
 	m_urls.clear();
 	m_mean.clear();
+
+	#ifdef Q_OS_WIN
+		m_taskBarProgress->setMinimum(0);
+		m_taskBarProgress->setMaximum(0);
+		m_taskBarProgress->setValue(0);
+		m_taskBarProgress->setVisible(true);
+	#endif
 }
 void batchWindow::copyToClipboard()
 {
@@ -301,18 +338,32 @@ void batchWindow::setValue(int value)
 void batchWindow::setLittleValue(int)
 { /*ui->progressBar->setValue(m_value + value);*/ }
 void batchWindow::setMaximum(int value)
-{ ui->progressBar->setMaximum(value); }
+{
+	/*ui->progressBar->setMaximum(value);
+
+	#ifdef Q_OS_WIN
+		m_taskBarProgress->setMaximum(value);
+	#endif*/
+}
 void batchWindow::setImagesCount(int value)
 {
 	m_imagesCount = value;
 	ui->labelImages->setText(QString("0/%2").arg(m_imagesCount));
 	ui->progressBar->setMaximum(value);
+
+	#ifdef Q_OS_WIN
+		m_taskBarProgress->setMaximum(value);
+	#endif
 }
 void batchWindow::setImages(int value)
 {
 	m_images = value;
 	ui->labelImages->setText(QString("%1/%2").arg(m_images).arg(m_imagesCount));
 	ui->progressBar->setValue(value);
+
+	#ifdef Q_OS_WIN
+		m_taskBarProgress->setValue(value);
+	#endif
 }
 
 int batchWindow::value()		{ return m_value;						}

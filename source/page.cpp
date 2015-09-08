@@ -216,11 +216,17 @@ QString _parseSetImageUrl(Site* site, QString setting, QString ret, QMap<QString
 			}
         }
         else
-        {
-            ret = site->value(setting);
-            ret.replace("{id}", d->value("id"))
-            .replace("{md5}", d->value("md5"))
-            .replace("{ext}", d->value("ext"));
+		{
+			QStringList options = site->value(setting).split('|');
+			for (QString ret : options)
+			{
+				ret.replace("{id}", d->value("id"))
+				.replace("{md5}", d->value("md5"))
+				.replace("{ext}", d->value("ext"));
+
+				if (!ret.endsWith("/." + d->value("ext")))
+					break;
+			}
         }
     }
 	return site->fixUrl(ret).toString();
@@ -273,7 +279,7 @@ void Page::parseImage(QMap<QString,QString> d, int position)
 
 void Page::parse()
 {
-    m_source = m_reply->readAll();
+	m_source = m_reply->readAll();
 
 	// Check redirection
 	QUrl redir = m_reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
@@ -533,9 +539,11 @@ void Page::parse()
 		m_pagesCount = rxlast.cap(1).remove(",").toInt();
 	}
 
-	// Guess images count
-	if (m_site->contains("Urls/"+QString::number(m_currentSource)+"/Limit") && m_pagesCount > 0)
-	{ m_imagesCount = m_pagesCount * m_site->value("Urls/"+QString::number(m_currentSource)+"/Limit").toInt(); }
+    // Guess image or page count
+    if (m_site->contains("Urls/"+QString::number(m_currentSource)+"/Limit") && m_pagesCount > 0 && m_imagesCount < 1)
+    { m_imagesCount = m_pagesCount * m_site->value("Urls/"+QString::number(m_currentSource)+"/Limit").toInt(); }
+    if (m_imagesCount > 0 && m_pagesCount < 1)
+    { m_pagesCount = ceil(((float)m_imagesCount) / m_imagesPerPage); }
 
 	// Remove first n images (according to site settings)
 	int skip = m_site->setting("ignore/always", 0).toInt();

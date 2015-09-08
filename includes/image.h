@@ -26,7 +26,7 @@ class Image : public QObject
 		~Image();
 		int			value();
 		QString		filter(QStringList);
-		QStringList	path(QString fn = "", QString pth = "", int counter = 0, bool complex = true, bool simple = false, bool maxlength = true);
+		QStringList	path(QString fn = "", QString pth = "", int counter = 0, bool complex = true, bool simple = false, bool maxlength = true, bool shouldFixFilename = true);
 		QStringList blacklisted(QStringList);
 		QStringList	stylishedTags(QStringList ignored);
 		QString		url();
@@ -69,7 +69,8 @@ class Image : public QObject
 		QNetworkReply	*tagsReply();
 		bool		hasTag(QString tag);
 		bool		hasTag(QStringList tags);
-        QMap<QString,QString>   details();
+		QMap<QString,QString>   details();
+		QString		detail(QString key);
 
 	public slots:
 		void loadPreview();

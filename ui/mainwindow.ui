@@ -402,6 +402,9 @@
      <height>21</height>
     </rect>
    </property>
+   <property name="nativeMenuBar">
+    <bool>true</bool>
+   </property>
    <widget class="QMenu" name="menu_propos">
     <property name="title">
      <string>Aide</string>
@@ -775,7 +778,7 @@
   </widget>
   <widget class="QDockWidget" name="dockOptions">
    <property name="windowTitle">
-    <string>Options</string>
+    <string>Destination</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>1</number>

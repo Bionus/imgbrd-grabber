@@ -30,6 +30,12 @@ void Site::initManager()
 	{
         m_cookieJar = new QNetworkCookieJar(this);
 
+		// Hotfix "giantessbooru.com"
+		QNetworkCookie cookie("agreed", "true");
+		cookie.setPath("/");
+		cookie.setDomain("giantessbooru.com");
+		m_cookieJar->insertCookie(cookie);
+
 		m_manager = new QNetworkAccessManager(this);
 		m_manager->setCookieJar(m_cookieJar);
 		connect(m_manager, SIGNAL(finished(QNetworkReply*)), this, SIGNAL(finished(QNetworkReply*)));
