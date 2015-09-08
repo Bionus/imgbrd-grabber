@@ -25,6 +25,11 @@ INCLUDEPATH += . includes source
 DEFINES += VERSION=$$APP_VERSION
 QT += core network xml sql script multimedia widgets
 
+# Windows specials
+win32 {
+        QT += winextras
+}
+
 # Additionnal
 CONFIG += plugin
 CONFIG += c++11

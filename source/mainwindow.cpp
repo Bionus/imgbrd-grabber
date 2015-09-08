@@ -77,8 +77,7 @@ void mainWindow::init()
 		log(tr("Activation du proxy général sur l'hôte \"%1\" et le port %2.").arg(m_settings->value("Proxy/hostName").toString()).arg(m_settings->value("Proxy/port").toInt()));
 	}
 
-	m_progressdialog = new batchWindow(this);
-	connect(m_progressdialog, SIGNAL(paused()), this, SLOT(getAllPause()));
+    m_progressdialog = nullptr;
 
 	ui->tableBatchGroups->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 	ui->tableBatchUniques->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
@@ -132,7 +131,7 @@ void mainWindow::init()
 		{ m_selectedSources.append(sav.at(i) == '1' ? true : false); }
 	}
 
-	QPushButton *add = new QPushButton(QIcon(":/images/add.png"), "", this);
+    QPushButton *add = new QPushButton(QIcon(":/images/add.png"), "", this);
 		add->setFlat(true);
 		add->resize(QSize(12,12));
 		connect(add, SIGNAL(clicked()), this, SLOT(addTab()));
@@ -975,6 +974,12 @@ void mainWindow::getAll(bool all)
 	}
 	log(tr("Téléchargement groupé commencé."));
 
+    if (m_progressdialog == nullptr)
+    {
+        m_progressdialog = new batchWindow(this);
+        connect(m_progressdialog, SIGNAL(paused()), this, SLOT(getAllPause()));
+    }
+
 
 	// Reinitialize variables
 	m_getAll = true;
@@ -1299,11 +1304,11 @@ void mainWindow::_getAll()
 				if (detected && site_id >= 0 && m_groupBatchs[site_id - 1][4] == "false")
 				{
 					m_getAllDownloading.removeAll(img);
-					m_progressdialog->setValue(m_progressdialog->value()+img->value());
-					m_progressdialog->setImages(m_progressdialog->images()+1);
+                    m_progressdialog->setValue(m_progressdialog->value() + img->value());
+                    m_progressdialog->setImages(m_progressdialog->images() + 1);
+                    m_progressdialog->loadedImage(img->url());
 					m_getAllIgnored++;
-					log(tr("Image ignorée."));
-					m_progressdialog->loadedImage(img->url());
+                    log(tr("Image ignorée."));
 
 					m_progressBars[site_id - 1]->setValue(m_progressBars[site_id - 1]->value() + 1);
 					if (m_progressBars[site_id - 1]->value() >= m_progressBars[site_id - 1]->maximum())

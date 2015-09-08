@@ -4,6 +4,10 @@
 #include <QDialog>
 #include <QProgressBar>
 #include <QMap>
+#ifdef Q_OS_WIN
+    #include <QWinTaskbarButton>
+    #include <QWinTaskbarProgress>
+#endif
 
 
 
@@ -71,6 +75,10 @@ class batchWindow : public QDialog
 		QList<int>				m_mean;
 		bool					m_cancel, m_paused;
 		QTime					*m_time, *m_start;
+        #ifdef Q_OS_WIN
+            QWinTaskbarButton   *m_taskBarButton;
+            QWinTaskbarProgress *m_taskBarProgress;
+        #endif
 };
 
 #endif // BATCHWINDOW_H
