@@ -25,7 +25,7 @@ en.depinstall_missing=%1 must be installed before setup can continue. Please ins
 de.depinstall_missing=%1 muss installiert werden bevor das Setup fortfahren kann. Bitte installieren Sie %1 und starten Sie das Setup erneut.
 
 en.depinstall_error=An error occured while installing the dependencies. Please restart the computer and run the setup again or install the following dependencies manually:%n
-de.depinstall_error=Ein Fehler ist w‰hrend der Installation der Abgh‰ngigkeiten aufgetreten. Bitte starten Sie den Computer neu und f¸hren Sie das Setup erneut aus oder installieren Sie die folgenden Abh‰ngigkeiten per Hand:%n
+de.depinstall_error=Ein Fehler ist w‰hrend der Installation der Abgh‰ngigkeiten aufgetreten. Bitte starten Sie den Computer neu und fÅEren Sie das Setup erneut aus oder installieren Sie die folgenden Abh‰ngigkeiten per Hand:%n
 
 en.isxdl_langfile=
 de.isxdl_langfile=german2.ini
@@ -215,10 +215,10 @@ begin
 	if CurPageID = wpReady then begin
 		if downloadMemo <> '' then begin
 			//change isxdl language only if it is not english because isxdl default language is already english
-			if (ActiveLanguage() <> 'en') then begin
-				ExtractTemporaryFile(CustomMessage('isxdl_langfile'));
-				isxdl_SetOption('language', ExpandConstant('{tmp}{\}') + CustomMessage('isxdl_langfile'));
-			end;
+			//if (ActiveLanguage() <> 'en') then begin
+			//	ExtractTemporaryFile(CustomMessage('isxdl_langfile'));
+			//	isxdl_SetOption('language', ExpandConstant('{tmp}{\}') + CustomMessage('isxdl_langfile'));
+			//end;
 			//isxdl_SetOption('title', FmtMessage(SetupMessage(msgSetupWindowTitle), [CustomMessage('appname')]));
 
 			if SuppressibleMsgBox(FmtMessage(CustomMessage('depdownload_msg'), [downloadMessage]), mbConfirmation, MB_YESNO, IDYES) = IDNO then

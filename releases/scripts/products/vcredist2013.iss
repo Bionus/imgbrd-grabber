@@ -20,7 +20,7 @@ procedure vcredist2013();
 var
 	version: cardinal;
 begin
-	RegQueryDWordValue(HKLM, 'SOFTWARE\Microsoft\DevDiv\vc\Servicing\12.0\RuntimeMinimum', 'Install', version);
+    RegQueryDWordValue(HKLM, 'SOFTWARE\Microsoft\DevDiv\vc\Servicing\12.0\RuntimeMinimum', 'Install', version);
 
 	if (not IsIA64()) then begin
 		if (version <> 1) then
