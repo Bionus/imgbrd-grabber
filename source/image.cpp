@@ -31,7 +31,7 @@ Image::Image(QMap<QString, QString> details, Page* parent)
 	m_md5 = details.contains("md5") ? details["md5"] : "";
 	m_author = details.contains("author") ? details["author"] : "";
 	m_status = details.contains("status") ? details["status"] : "";
-	m_filename = details.contains("filename") ? QUrl::fromEncoded(details["filename"].toUtf8()).toString() : "";
+	m_filename = details.contains("filename") ? details["filename"] : "";
 	m_folder = details.contains("folder") ? details["folder"] : "";
 	m_search = parent != nullptr ? parent->search() : QStringList();
 	m_id = details.contains("id") ? details["id"].toInt() : 0;
@@ -1001,6 +1001,13 @@ QNetworkReply	*Image::imageReply()	{ return m_loadImage;		}
 QNetworkReply	*Image::tagsReply()		{ return m_loadDetails;		}
 QSettings		*Image::settings()		{ return m_settings;		}
 QMap<QString,QString> Image::details()	{ return m_details;         }
+
+QString Image::detail(QString key)
+{
+	if (m_details.contains(key))
+		return m_details.value(key);
+	return "";
+}
 
 void	Image::setUrl(QString u)
 {

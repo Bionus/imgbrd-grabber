@@ -69,7 +69,8 @@ class Image : public QObject
 		QNetworkReply	*tagsReply();
 		bool		hasTag(QString tag);
 		bool		hasTag(QStringList tags);
-        QMap<QString,QString>   details();
+		QMap<QString,QString>   details();
+		QString		detail(QString key);
 
 	public slots:
 		void loadPreview();

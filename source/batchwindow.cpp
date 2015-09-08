@@ -68,6 +68,10 @@ void batchWindow::closeEvent(QCloseEvent *e)
 	else
 	{ clear(); }
 
+	#ifdef Q_OS_WIN
+		m_taskBarProgress->setVisible(false);
+	#endif
+
 	emit closed();
 	e->accept();
 }
