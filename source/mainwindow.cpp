@@ -2082,7 +2082,7 @@ void mainWindow::saveSettings()
 	QFile f(savePath("filenamehistory.txt"));
 	if (f.open(QFile::WriteOnly | QFile::Text | QFile::Truncate))
 	{
-		for (int i = 0; i < ui->comboFilename->count(); ++i)
+		for (int i = qMax(0, ui->comboFilename->count() - 50); i < ui->comboFilename->count(); ++i)
 			f.write(QString(ui->comboFilename->itemText(i) + "\n").toUtf8());
 		f.close();
 	}
