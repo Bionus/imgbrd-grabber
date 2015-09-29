@@ -1765,7 +1765,7 @@ void mainWindow::saveImage(Image *img, QNetworkReply *reply, QString path, QStri
 					// Save info to a text file
 					if (m_settings->value("Textfile/activate", false).toBool())
 					{
-						QStringList cont = img->path(m_settings->value("Textfile/content", "%all%").toString(), 1, true, true, false, false);
+						QStringList cont = img->path(m_settings->value("Textfile/content", "%all%").toString(), "", 1, true, true, false, false);
 						if (!cont.isEmpty())
 						{
 							QString contents = cont.at(0);
