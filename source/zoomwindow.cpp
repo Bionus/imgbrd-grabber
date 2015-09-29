@@ -688,7 +688,7 @@ QStringList zoomWindow::saveImage(bool fav)
 
 				if (settings.value("Textfile/activate", false).toBool())
 				{
-                    QStringList cont = m_image->path(settings.value("Textfile/content", "%all%").toString(), "", true, false, false);
+					QStringList cont = m_image->path(settings.value("Textfile/content", "%all%").toString(), "", 1, true, true, false, false);
 					if (!cont.isEmpty())
 					{
 						QString contents = cont.at(0);
@@ -702,7 +702,7 @@ QStringList zoomWindow::saveImage(bool fav)
 				}
 				if (settings.value("SaveLog/activate", false).toBool() && !settings.value("SaveLog/file", "").toString().isEmpty())
 				{
-                    QStringList cont = m_image->path(settings.value("SaveLog/format", "%website% - %md5% - %all%").toString(), "", true, false, false);
+					QStringList cont = m_image->path(settings.value("SaveLog/format", "%website% - %md5% - %all%").toString(), "", 1, true, true, false, false);
 					if (!cont.isEmpty())
 					{
 						QString contents = cont.at(0);

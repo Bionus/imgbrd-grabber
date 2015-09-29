@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Grabber"
-#define MyAppVersion "4.1.5"
+#define MyAppVersion "4.1.6"
 #define MyAppPublisher "Bionus"
 #define MyAppURL "https://github.com/Bionus/imgbrd-grabber"
 #define MyAppExeName "Grabber.exe"
@@ -80,25 +80,26 @@ Source: "..\release\CDR.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\release\CrashReporter.exe"; DestDir: "{app}"; Flags: ignoreversion   
 Source: "..\release\Grabber.exe";  DestDir: "{app}"; Flags: ignoreversion   
 Source: "..\release\words.txt";    DestDir: "{app}";    
-Source: "..\release\icudt52.dll";  DestDir: "{app}"; Flags: ignoreversion         
-Source: "..\release\icuin52.dll";  DestDir: "{app}"; Flags: ignoreversion         
-Source: "..\release\icuuc52.dll";  DestDir: "{app}"; Flags: ignoreversion         
+Source: "..\release\icudt54.dll";  DestDir: "{app}"; Flags: ignoreversion         
+Source: "..\release\icuin54.dll";  DestDir: "{app}"; Flags: ignoreversion         
+Source: "..\release\icuuc54.dll";  DestDir: "{app}"; Flags: ignoreversion         
 Source: "..\release\libeay32.dll"; DestDir: "{app}"; Flags: ignoreversion         
 Source: "..\release\libEGL.dll";   DestDir: "{app}"; Flags: ignoreversion         
-Source: "..\release\libGLESv2.dll";    DestDir: "{app}"; Flags: ignoreversion         
-Source: "..\release\libmysql.dll";     DestDir: "{app}"; Flags: ignoreversion         
-Source: "..\release\libssl32.dll";     DestDir: "{app}"; Flags: ignoreversion        
-Source: "..\release\qscintilla2.dll";  DestDir: "{app}"; Flags: ignoreversion      
-Source: "..\release\Qt5Core.dll";      DestDir: "{app}"; Flags: ignoreversion
-Source: "..\release\Qt5Gui.dll";       DestDir: "{app}"; Flags: ignoreversion           
-Source: "..\release\Qt5Multimedia.dll";    DestDir: "{app}"; Flags: ignoreversion       
-Source: "..\release\Qt5Network.dll";       DestDir: "{app}"; Flags: ignoreversion          
-Source: "..\release\Qt5PrintSupport.dll";  DestDir: "{app}"; Flags: ignoreversion      
-Source: "..\release\Qt5Script.dll";  DestDir: "{app}"; Flags: ignoreversion        
-Source: "..\release\Qt5Sql.dll";     DestDir: "{app}"; Flags: ignoreversion           
-Source: "..\release\Qt5Widgets.dll"; DestDir: "{app}"; Flags: ignoreversion           
-Source: "..\release\Qt5Xml.dll";     DestDir: "{app}"; Flags: ignoreversion           
-Source: "..\release\ssleay32.dll";   DestDir: "{app}"; Flags: ignoreversion     
+Source: "..\release\libGLESv2.dll";         DestDir: "{app}"; Flags: ignoreversion         
+Source: "..\release\libmysql.dll";          DestDir: "{app}"; Flags: ignoreversion         
+Source: "..\release\libssl32.dll";          DestDir: "{app}"; Flags: ignoreversion        
+Source: "..\release\qscintilla2.dll";       DestDir: "{app}"; Flags: ignoreversion      
+Source: "..\release\Qt5Core.dll";           DestDir: "{app}"; Flags: ignoreversion
+Source: "..\release\Qt5Gui.dll";            DestDir: "{app}"; Flags: ignoreversion           
+Source: "..\release\Qt5Multimedia.dll";     DestDir: "{app}"; Flags: ignoreversion       
+Source: "..\release\Qt5Network.dll";        DestDir: "{app}"; Flags: ignoreversion          
+Source: "..\release\Qt5PrintSupport.dll";   DestDir: "{app}"; Flags: ignoreversion      
+Source: "..\release\Qt5Script.dll";         DestDir: "{app}"; Flags: ignoreversion        
+Source: "..\release\Qt5Sql.dll";            DestDir: "{app}"; Flags: ignoreversion           
+Source: "..\release\Qt5Widgets.dll";        DestDir: "{app}"; Flags: ignoreversion           
+Source: "..\release\Qt5Xml.dll";            DestDir: "{app}"; Flags: ignoreversion           
+Source: "..\release\Qt5WinExtras.dll";      DestDir: "{app}"; Flags: ignoreversion
+Source: "..\release\ssleay32.dll";          DestDir: "{app}"; Flags: ignoreversion     
 Source: "..\release\crashreporter\English.qm";   DestDir: "{app}\crashreporter"; Flags: ignoreversion         
 Source: "..\release\crashreporter\Français.qm";  DestDir: "{app}\crashreporter"; Flags: ignoreversion  
 Source: "..\release\imageformats\qdds.dll";  DestDir: "{app}\imageformats"; Flags: ignoreversion

@@ -222,12 +222,20 @@ void tagTab::load()
 	ui->widgetMeant->hide();
 	ui->buttonFirstPage->setEnabled(ui->spinPage->value() > 1);
 	ui->buttonPreviousPage->setEnabled(ui->spinPage->value() > 1);
+
+	// Clear results layout
 	for (int i = 0; i < m_layouts.size(); i++)
 	{ clearLayout(m_layouts[i]); }
 	qDeleteAll(m_layouts);
 	m_layouts.clear();
 	m_boutons.clear();
 	clearLayout(ui->layoutResults);
+	ui->verticalLayout->removeWidget(ui->widgetResults);
+	ui->widgetResults->deleteLater();
+	ui->widgetResults = new QWidget(this);
+	ui->layoutResults = new QGridLayout(ui->widgetResults);
+	ui->verticalLayout->insertWidget(0, ui->widgetResults);
+
 	setWindowTitle(m_search->toPlainText().isEmpty() ? tr("Recherche") : m_search->toPlainText().replace("&", "&&"));
 	emit titleChanged(this);
 	m_tags = "";
@@ -279,7 +287,7 @@ void tagTab::load()
 		}
 	}
 	if (ui->checkMergeResults->isChecked() && m_layouts.size() > 0)
-	{ ui->layoutResults->addLayout(m_layouts[0], 0, 0, 1, 1); }
+	{ ui->layoutResults->addLayout(m_layouts[0], 0, 0); }
 	m_page = 0;
 
 	emit changed(this);
@@ -382,11 +390,13 @@ void tagTab::finishedLoading(Page* page)
 			}
 			if (!page->errors().isEmpty() && settings.value("showwarnings", true).toBool())
 			{ txt->setText(txt->text()+"<br/>"+page->errors().join("<br/>")); }
-		int page_x = pos % ui->spinColumns->value(), page_y = (pos / ui->spinColumns->value()) * 2;
-		ui->layoutResults->addWidget(txt, page_y, page_x, 1, 1);
-		ui->layoutResults->setRowMinimumHeight(page_y, height()/20);
+
+		int page_x = pos % ui->spinColumns->value();
+		int page_y = (pos / ui->spinColumns->value()) * 2;
+		ui->layoutResults->addWidget(txt, page_y, page_x);
+		ui->layoutResults->setRowMinimumHeight(page_y, height() / 20);
 		if (m_layouts.size() > pos)
-		{ ui->layoutResults->addLayout(m_layouts[pos], page_y + 1, page_x, 1, 1); }
+		{ ui->layoutResults->addLayout(m_layouts[pos], page_y + 1, page_x); }
 	}
 
 	if (!settings.value("useregexfortags", true).toBool())
