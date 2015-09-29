@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Grabber"
-#define MyAppVersion "4.1.5"
+#define MyAppVersion "4.1.6"
 #define MyAppPublisher "Bionus"
 #define MyAppURL "https://github.com/Bionus/imgbrd-grabber"
 #define MyAppExeName "Grabber.exe"
@@ -80,9 +80,9 @@ Source: "..\release\CDR.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\release\CrashReporter.exe"; DestDir: "{app}"; Flags: ignoreversion   
 Source: "..\release\Grabber.exe";  DestDir: "{app}"; Flags: ignoreversion   
 Source: "..\release\words.txt";    DestDir: "{app}";    
-Source: "..\release\icudt52.dll";  DestDir: "{app}"; Flags: ignoreversion         
-Source: "..\release\icuin52.dll";  DestDir: "{app}"; Flags: ignoreversion         
-Source: "..\release\icuuc52.dll";  DestDir: "{app}"; Flags: ignoreversion         
+Source: "..\release\icudt54.dll";  DestDir: "{app}"; Flags: ignoreversion         
+Source: "..\release\icuin54.dll";  DestDir: "{app}"; Flags: ignoreversion         
+Source: "..\release\icuuc54.dll";  DestDir: "{app}"; Flags: ignoreversion         
 Source: "..\release\libeay32.dll"; DestDir: "{app}"; Flags: ignoreversion         
 Source: "..\release\libEGL.dll";   DestDir: "{app}"; Flags: ignoreversion         
 Source: "..\release\libGLESv2.dll";         DestDir: "{app}"; Flags: ignoreversion         
