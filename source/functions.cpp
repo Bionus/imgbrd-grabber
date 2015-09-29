@@ -700,8 +700,37 @@ QString fixFilename(QString filename, QString path, int maxlength)
 		// Put extension and drive back
 		filename = drive + filename + "." + ext;
 		filename = filename.right(filename.length() - path.length());
-    #else
-        Q_UNUSED(maxlength);
+	#else
+		// Divide filename
+		QStringList parts = filename.split(sep);
+		QString file = parts.takeLast();
+		QString ext = file.right(file.length() - file.lastIndexOf('.') - 1);
+		file = file.left(file.lastIndexOf('.'));
+
+		// Fix directories
+		for (QString &part : parts)
+		{
+			// A part cannot start or finish with a space
+			part = part.trimmed();
+
+			// Trim part
+			if (part.length() > 255)
+				part = part.left(255).trimmed();
+		}
+
+		// Join parts back
+		QString dirpart = parts.join(sep);
+		filename = (dirpart.isEmpty() ? "" : dirpart + sep);
+
+		// A filename cannot exceed a certain length
+		if (file.length() > maxlength - ext.length() - 1)
+			file = file.left(maxlength - ext.length() - 1).trimmed();
+		if (file.length() > 255 - ext.length() - 1)
+			file = file.left(255 - ext.length() - 1).trimmed();
+
+		// Put extension and drive back
+		filename = drive + filename + file + "." + ext;
+		filename = filename.right(filename.length() - path.length());
 	#endif
 
 	return filename;
