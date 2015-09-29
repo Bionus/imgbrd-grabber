@@ -1765,7 +1765,7 @@ void mainWindow::saveImage(Image *img, QNetworkReply *reply, QString path, QStri
 					// Save info to a text file
 					if (m_settings->value("Textfile/activate", false).toBool())
 					{
-						QStringList cont = img->path(m_settings->value("Textfile/content", "%all%").toString(), "", true, false, false);
+						QStringList cont = img->path(m_settings->value("Textfile/content", "%all%").toString(), 1, true, true, false, false);
 						if (!cont.isEmpty())
 						{
 							QString contents = cont.at(0);
@@ -1781,7 +1781,7 @@ void mainWindow::saveImage(Image *img, QNetworkReply *reply, QString path, QStri
 					// Log info to a text file
 					if (m_settings->value("SaveLog/activate", false).toBool() && !m_settings->value("SaveLog/file", "").toString().isEmpty())
 					{
-						QStringList cont = img->path(m_settings->value("SaveLog/format", "%website% - %md5% - %all%").toString(), "", true, false, false);
+						QStringList cont = img->path(m_settings->value("SaveLog/format", "%website% - %md5% - %all%").toString(), "", 1, true, true, false, false);
 						if (!cont.isEmpty())
 						{
 							QString contents = cont.at(0);
