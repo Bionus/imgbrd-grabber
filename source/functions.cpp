@@ -729,7 +729,7 @@ QString fixFilename(QString filename, QString path, int maxlength)
 			file = file.left(255 - ext.length() - 1).trimmed();
 
 		// Put extension and drive back
-		filename = drive + filename + file + "." + ext;
+		filename = filename + file + "." + ext;
 		filename = filename.right(filename.length() - path.length());
 	#endif
 
