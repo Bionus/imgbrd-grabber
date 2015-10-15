@@ -9,13 +9,13 @@
 			<Tags>/index.php?page=post&amp;s=list&amp;limit={limit}&amp;pid={page}&amp;tags={tags}</Tags>
 			<Pools>/index.php?page=pool&amp;s=show&amp;id={pool}</Pools>
 			<Post>/index.php?page=post&amp;s=view&amp;id={id}</Post>
-			<Image>thumbnail_->/&amp;/thumbnails/->//images/&amp;/gelbooru.com/->/simg4.gelbooru.com/</Image>
+			<Image>thumbnail_->&amp;/thumbnails/->//images/&amp;/gelbooru.com/->/simg4.gelbooru.com/</Image>
 		</Html>
 	</Urls>
 	<Regex>
 		<Tags>&lt;li class=&quot;tag-type-([^&quot;]+)&quot;&gt;(?:[^&lt;]*&lt;a[^&gt;]*&gt;[^&lt;]*&lt;/a&gt;)*[^&lt;]*&lt;a[^&gt;]*&gt;([^&lt;]*)&lt;/a&gt;[^&lt;]*&lt;span[^&gt;]*&gt;(\d+)&lt;/span&gt;[^&lt;]*&lt;/li&gt;</Tags>
-		<Image>&lt;span[^&gt;]* id=&quot;?\w(\d+)&quot;?[^&gt;]*&gt;\s*&lt;a [^&gt;]+&gt;\s*&lt;img [^&gt;]*src=&quot;([^&quot;]+)&quot; [^&gt;]*title=&quot;([^&quot;]+)&quot;[^&gt;]*/?&gt;\s*&lt;/a&gt;\s*&lt;/span&gt;</Image>
-		<Order>id|preview_url|tags</Order>
+		<Image>&lt;span[^&gt;]*&gt;\s*&lt;a id=&quot;?\w(\d+)&quot;?[^&gt;]+&gt;\s*&lt;img [^&gt;]*src=&quot;([^&quot;]+\/thumbnail_([^.]+)\.[^&quot;]+)&quot; [^&gt;]*title=&quot;\s*([^&quot;]+)&quot;[^&gt;]*\/?&gt;\s*&lt;\/a&gt;</Image>
+		<Order>id|preview_url|md5|tags</Order>
 		<ImageUrl>&lt;img[^&gt;]+src=&quot;([^&quot;]+)&quot;[^&gt;]+onclick=&quot;Note\.toggle\(\);&quot;[^&gt;]*/&gt;</ImageUrl>
 	</Regex>
 	<Check>
