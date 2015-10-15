@@ -463,10 +463,14 @@ void tagTab::finishedLoading(Page* page)
 		QStringList md5s;
 		for (int i = 0; i < m_images.count(); i++)
 		{
-			if (md5s.contains(m_images.at(i)->md5()))
-			{ m_images.removeAt(i); i--; }
+			QString md5 = m_images.at(i)->md5();
+			if (md5.isEmpty())
+			{ continue; }
+
+			if (md5s.contains(md5))
+			{ m_images.removeAt(i--); }
 			else
-			{ md5s.append(m_images.at(i)->md5()); }
+			{ md5s.append(md5); }
 		}
 		imgs = m_images;
 	}
