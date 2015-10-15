@@ -15,10 +15,11 @@ Tag::Tag(QString text, QString type, int count, QStringList related)
 	if (text.endsWith("(artist)") && type == "unknown")
 	{ m_type = "artist"; }
 
-	QRegExp reg("(artist|copyright|character|model):(.+)");
+	QRegExp reg("(artist|copyright|character|model|unknown):(.+)");
 	if (reg.exactMatch(text) && type == "unknown")
 	{
-		m_type = reg.cap(1);
+		if (reg.cap(1) != "unknown")
+		{ m_type = reg.cap(1); }
 		m_text = reg.cap(2);
 	}
 }

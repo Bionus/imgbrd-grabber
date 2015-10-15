@@ -72,13 +72,7 @@ Image::Image(QMap<QString, QString> details, Page* parent)
 	m_previewUrl = removeCacheUrl(m_previewUrl.toString());
 
 	// Rating
-	m_rating = details.contains("rating") ? details["rating"] : "";
-	QMap<QString,QString> assoc;
-		assoc["s"] = tr("Safe");
-		assoc["q"] = tr("Questionable");
-		assoc["e"] = tr("Explicit");
-	if (assoc.contains(m_rating))
-	{ m_rating = assoc[m_rating]; }
+	setRating(details.contains("rating") ? details["rating"] : "");
 
     // Tags
 	if (details.contains("tags_general"))
@@ -125,7 +119,28 @@ Image::Image(QMap<QString, QString> details, Page* parent)
 		{
 			QString tg = t.at(i);
 			tg.replace("&amp;", "&");
-			m_tags.append(Tag(tg));
+
+			int colon = tg.indexOf(':');
+			if (colon != -1)
+			{
+				QString tp = tg.left(colon);
+				if (tp == "User")
+				{ m_author = tg.mid(colon + 1); }
+				else if (tp == "Score")
+				{ m_score = tg.mid(colon + 1).toInt(); }
+				else if (tp == "Size")
+				{
+					QStringList size = tg.mid(colon + 1).split('x');
+					if (size.size() == 2)
+						m_size = QSize(size[0].toInt(), size[1].toInt());
+				}
+				else if (tp == "Rating")
+				{ setRating(tg.mid(colon + 1)); }
+				else
+				{ m_tags.append(Tag(tg)); }
+			}
+			else
+			{ m_tags.append(Tag(tg)); }
 		}
 	}
 
@@ -1084,4 +1099,17 @@ bool Image::hasTag(QStringList tags)
 void Image::unload()
 {
 	m_data.clear();
+}
+
+void Image::setRating(QString rating)
+{
+	QMap<QString,QString> assoc;
+		assoc["s"] = tr("Safe");
+		assoc["q"] = tr("Questionable");
+		assoc["e"] = tr("Explicit");
+
+	if (assoc.contains(rating))
+	{ m_rating = assoc[m_rating]; }
+	else
+	{ m_rating = rating; }
 }

@@ -71,6 +71,7 @@ class Image : public QObject
 		bool		hasTag(QStringList tags);
 		QMap<QString,QString>   details();
 		QString		detail(QString key);
+		void		setRating(QString rating);
 
 	public slots:
 		void loadPreview();
