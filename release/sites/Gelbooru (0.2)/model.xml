@@ -9,6 +9,7 @@
 			<Tags>/index.php?page=post&amp;s=list&amp;limit={limit}&amp;pid={page}&amp;tags={tags}</Tags>
 			<Pools>/index.php?page=pool&amp;s=show&amp;id={pool}</Pools>
 			<Post>/index.php?page=post&amp;s=view&amp;id={id}</Post>
+			<Image>thumbnail_->/&amp;/thumbnails/->//images/&amp;/gelbooru.com/->/simg4.gelbooru.com/</Image>
 		</Html>
 	</Urls>
 	<Regex>

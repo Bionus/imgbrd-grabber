@@ -3,6 +3,21 @@
 #include "functions.h"
 
 
+
+QString removeCacheUrl(QString url)
+{
+	QString get = url.section('?', 1, 1);
+	if (get.isEmpty())
+		return url;
+
+	bool ok;
+	get.toInt(&ok);
+	if (ok)
+		return url.section('?', 0, 0);
+
+	return url;
+}
+
 Image::Image(QMap<QString, QString> details, Page* parent)
 {
 	// Parents
@@ -49,6 +64,12 @@ Image::Image(QMap<QString, QString> details, Page* parent)
 	m_previewUrl = details.contains("preview_url") ? m_parentSite->fixUrl(details["preview_url"]) : QUrl();
 	m_size = QSize(details.contains("width") ? details["width"].toInt() : 0, details.contains("height") ? details["height"].toInt() : 0);
 	m_source = details.contains("source") ? details["source"] : "";
+
+	// Remove ? in urls
+	m_url = removeCacheUrl(m_url);
+	m_fileUrl = removeCacheUrl(m_fileUrl.toString());
+	m_sampleUrl = removeCacheUrl(m_sampleUrl.toString());
+	m_previewUrl = removeCacheUrl(m_previewUrl.toString());
 
 	// Rating
 	m_rating = details.contains("rating") ? details["rating"] : "";
