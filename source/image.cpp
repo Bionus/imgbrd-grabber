@@ -3,6 +3,21 @@
 #include "functions.h"
 
 
+
+QString removeCacheUrl(QString url)
+{
+	QString get = url.section('?', 1, 1);
+	if (get.isEmpty())
+		return url;
+
+	bool ok;
+	get.toInt(&ok);
+	if (ok)
+		return url.section('?', 0, 0);
+
+	return url;
+}
+
 Image::Image(QMap<QString, QString> details, Page* parent)
 {
 	// Parents
@@ -50,14 +65,14 @@ Image::Image(QMap<QString, QString> details, Page* parent)
 	m_size = QSize(details.contains("width") ? details["width"].toInt() : 0, details.contains("height") ? details["height"].toInt() : 0);
 	m_source = details.contains("source") ? details["source"] : "";
 
+	// Remove ? in urls
+	m_url = removeCacheUrl(m_url);
+	m_fileUrl = removeCacheUrl(m_fileUrl.toString());
+	m_sampleUrl = removeCacheUrl(m_sampleUrl.toString());
+	m_previewUrl = removeCacheUrl(m_previewUrl.toString());
+
 	// Rating
-	m_rating = details.contains("rating") ? details["rating"] : "";
-	QMap<QString,QString> assoc;
-		assoc["s"] = tr("Safe");
-		assoc["q"] = tr("Questionable");
-		assoc["e"] = tr("Explicit");
-	if (assoc.contains(m_rating))
-	{ m_rating = assoc[m_rating]; }
+	setRating(details.contains("rating") ? details["rating"] : "");
 
     // Tags
 	if (details.contains("tags_general"))
@@ -104,7 +119,28 @@ Image::Image(QMap<QString, QString> details, Page* parent)
 		{
 			QString tg = t.at(i);
 			tg.replace("&amp;", "&");
-			m_tags.append(Tag(tg));
+
+			int colon = tg.indexOf(':');
+			if (colon != -1)
+			{
+				QString tp = tg.left(colon);
+				if (tp == "User")
+				{ m_author = tg.mid(colon + 1); }
+				else if (tp == "Score")
+				{ m_score = tg.mid(colon + 1).toInt(); }
+				else if (tp == "Size")
+				{
+					QStringList size = tg.mid(colon + 1).split('x');
+					if (size.size() == 2)
+						m_size = QSize(size[0].toInt(), size[1].toInt());
+				}
+				else if (tp == "Rating")
+				{ setRating(tg.mid(colon + 1)); }
+				else
+				{ m_tags.append(Tag(tg)); }
+			}
+			else
+			{ m_tags.append(Tag(tg)); }
 		}
 	}
 
@@ -490,7 +526,7 @@ QString analyse(QStringList tokens, QString text, QStringList tags)
 		{ ret.replace(reg.cap(0), reg.cap(1)); }
 		pos += reg.matchedLength();
 	}
-	return r.contains("%") ? "" : ret;
+	return ret;
 }
 
 typedef QPair<QString,QString> QStrP;
@@ -625,6 +661,8 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 	{ ext = "gif"; }
 
 	QString tagSeparator = settings.value("separator").toString();
+	QRegularExpression poolRegexp("pool:(\\d+)");
+	QRegularExpressionMatch poolMatch = poolRegexp.match(m_search.join(tagSeparator));
 
 	QMap<QString,QStrP> replaces = QMap<QString,QStrP>();
 	replaces.insert("ext", QStrP(ext, "jpg"));
@@ -637,6 +675,7 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 	for (int i = 0; i < m_search.size(); ++i)
 	{ replaces.insert("search_"+QString::number(i+1), QStrP(m_search[i], "")); }
 	replaces.insert("search", QStrP(m_search.join(tagSeparator), ""));
+	replaces.insert("pool", QStrP(poolMatch.hasMatch() ? poolMatch.captured(1) : "", ""));
 	replaces.insert("rating", QStrP(m_rating, "unknown"));
 	replaces.insert("score", QStrP(QString::number(m_score), ""));
 	replaces.insert("height", QStrP(QString::number(m_size.height()), "0"));
@@ -726,7 +765,7 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 		// Conditionals
 		if (complex)
 		{
-			QStringList tokens = QStringList() << "artist" << "general" << "copyright" << "character" << "model" << "model|artist" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "allo" << "date" << "date:([^%]+)" << "count(:\\d+)?(:\\d+)?" << "search_(\\d+)" << "score" << "height" << "width" << "path" << custom.keys();
+			QStringList tokens = QStringList() << "artist" << "general" << "copyright" << "character" << "model" << "model|artist" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "allo" << "date" << "date:([^%]+)" << "count(:\\d+)?(:\\d+)?" << "search_(\\d+)" << "score" << "height" << "width" << "path" << "pool" << custom.keys();
 			filename = analyse(tokens, filename, details["allos"]);
 		}
 
@@ -1063,4 +1102,17 @@ bool Image::hasTag(QStringList tags)
 void Image::unload()
 {
 	m_data.clear();
+}
+
+void Image::setRating(QString rating)
+{
+	QMap<QString,QString> assoc;
+		assoc["s"] = tr("Safe");
+		assoc["q"] = tr("Questionable");
+		assoc["e"] = tr("Explicit");
+
+	if (assoc.contains(rating))
+	{ m_rating = assoc[m_rating]; }
+	else
+	{ m_rating = rating; }
 }

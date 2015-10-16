@@ -16,7 +16,7 @@ T = $$(TRAVIS)
 
 # Global
 TARGET = Grabber
-APP_VERSION = \\\"4.1.6\\\"
+APP_VERSION = \\\"4.1.7\\\"
 
 # General
 TEMPLATE = app
@@ -78,7 +78,7 @@ use_breakpad {
 	win32 {
 		QMAKE_LFLAGS_RELEASE = /INCREMENTAL:NO /DEBUG
 		QMAKE_CFLAGS_RELEASE = -O2 -MD -zi
-		BREAKPAD = D:/Programmation/C++/Qt/google-breakpad
+                BREAKPAD = D:/bin/google-breakpad
 		Debug:LIBS		= $${BREAKPAD}/src/client/windows/Debug/lib/common.lib \
 						  $${BREAKPAD}/src/client/windows/Debug/lib/crash_generation_client.lib \
 						  $${BREAKPAD}/src/client/windows/Debug/lib/exception_handler.lib

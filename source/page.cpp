@@ -136,6 +136,15 @@ void Page::fallback(bool bload)
 	url.replace("{limit}", QString::number(m_imagesPerPage));
 	url.replace("{pseudo}", pseudo);
 	url.replace("{password}", password);
+	if (m_site->contains("Urls/"+QString::number(m_currentSource)+"/Login") && (!pseudo.isEmpty() || !password.isEmpty())) {
+		QString loginString = m_site->value("Urls/"+QString::number(m_currentSource)+"/Login");
+		loginString.replace("{pseudo}", pseudo);
+		loginString.replace("{password}", password);
+		url.replace("{login}", loginString);
+	}
+	else {
+		url.replace("{login}", "");
+	}
 	m_url = m_site->fixUrl(url);
 
 	if ((pl >= 0 || pool.indexIn(t) != -1) && m_site->contains("Urls/Html/Pools"))
@@ -147,6 +156,15 @@ void Page::fallback(bool bload)
 		url.replace("{limit}", QString::number(m_imagesPerPage));
 		url.replace("{pseudo}", pseudo);
 		url.replace("{password}", password);
+		if (m_site->contains("Urls/Html/Login") && (!pseudo.isEmpty() || !password.isEmpty())) {
+			QString loginString = m_site->value("Urls/Html/Login");
+			loginString.replace("{pseudo}", pseudo);
+			loginString.replace("{password}", password);
+			url.replace("{login}", loginString);
+		}
+		else {
+			url.replace("{login}", "");
+		}
 		m_urlRegex = m_site->fixUrl(url);
 	}
 	else if (m_site->contains("Urls/Html/Tags"))
@@ -157,6 +175,15 @@ void Page::fallback(bool bload)
 		url.replace("{limit}", QString::number(m_imagesPerPage));
 		url.replace("{pseudo}", pseudo);
 		url.replace("{password}", password);
+		if (m_site->contains("Urls/Html/Login") && (!pseudo.isEmpty() || !password.isEmpty())) {
+			QString loginString = m_site->value("Urls/Html/Login");
+			loginString.replace("{pseudo}", pseudo);
+			loginString.replace("{password}", password);
+			url.replace("{login}", loginString);
+		}
+		else {
+			url.replace("{login}", "");
+		}
 		m_urlRegex = m_site->fixUrl(url);
 	}
 	else

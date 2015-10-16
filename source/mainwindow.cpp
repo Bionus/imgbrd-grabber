@@ -138,12 +138,22 @@ void mainWindow::init()
 		ui->tabWidget->setCornerWidget(add);
 
 	bool restore = m_settings->value("start", "none").toString() == "restore";
-	if (crashed && !restore)
+	if (crashed)
 	{
-		log(tr("Il semblerait que Imgbrd-Grabber n'ait pas été fermé correctement la dernière fois."));
-		int reponse = QMessageBox::question(this, "", tr("Il semblerait que l'application n'ait pas été arrêtée correctement lors de sa dernière utilisation. Voulez-vous restaurer votre dernière seesion ?"), QMessageBox::Yes | QMessageBox::No);
-		if (reponse == QMessageBox::Yes)
-		{ restore = true; }
+		if (restore)
+		{
+			log(tr("Il semblerait que Imgbrd-Grabber n'ait pas été fermé correctement la dernière fois."));
+			int reponse = QMessageBox::question(this, "", tr("Il semblerait que l'application n'ait pas été arrêtée correctement lors de sa dernière utilisation. Voulez-vous la charger sans restaurer votre dernière seesion ?"), QMessageBox::Yes | QMessageBox::No);
+			if (reponse == QMessageBox::Yes)
+			{ restore = false; }
+		}
+		else
+		{
+			log(tr("Il semblerait que Imgbrd-Grabber n'ait pas été fermé correctement la dernière fois."));
+			int reponse = QMessageBox::question(this, "", tr("Il semblerait que l'application n'ait pas été arrêtée correctement lors de sa dernière utilisation. Voulez-vous restaurer votre dernière seesion ?"), QMessageBox::Yes | QMessageBox::No);
+			if (reponse == QMessageBox::Yes)
+			{ restore = true; }
+		}
 	}
 	ui->tabWidget->setCurrentIndex(0);
 	if (restore)
@@ -1210,20 +1220,32 @@ void mainWindow::getAllImages()
 	// Check whether we need to get the tags first (for the filename) or if we can just download the images directly
 	m_must_get_tags = false;
 	QStringList forbidden = QStringList() << "artist" << "copyright" << "character" << "model" << "general";
-	for (int f = 0; f < m_groupBatchs.size(); f++)
+	for (int f = 0; f < m_groupBatchs.size() && !m_must_get_tags; f++)
 	{
-		for (int i = 0; i < forbidden.count(); i++)
+		QString fn = m_groupBatchs[f][6];
+		if (fn.startsWith("javascript:") || (fn.contains("%filename%") && m_sites[m_groupBatchs[f][5]]->contains("Regex/ForceImageUrl")))
+		{ m_must_get_tags = true; }
+		else
 		{
-			if (m_groupBatchs[f][6].startsWith("javascript:") || m_groupBatchs[f][6].contains("%"+forbidden.at(i)+"%") || (m_groupBatchs[f][6].contains("%filename%") && m_sites[m_groupBatchs[f][5]]->contains("Regex/ForceImageUrl")))
-			{ m_must_get_tags = true; }
+			for (int i = 0; i < forbidden.count() && !m_must_get_tags; i++)
+			{
+				if (fn.contains("%"+forbidden.at(i)+"%"))
+				{ m_must_get_tags = true; }
+			}
 		}
 	}
-	if (!m_batchs.isEmpty())
+	for (int f = 0; f < m_batchs.size() && !m_must_get_tags; f++)
 	{
-		for (int i = 0; i < forbidden.count(); i++)
+		QString fn = m_batchs[f].value("filename");
+		if (fn.startsWith("javascript:") || (fn.contains("%filename%") && m_sites[m_batchs[f].value("site")]->contains("Regex/ForceImageUrl")))
+		{ m_must_get_tags = true; }
+		else
 		{
-			if (m_settings->value("Save/filename").toString().startsWith("javascript:") || m_settings->value("Save/filename").toString().contains("%"+forbidden.at(i)+"%"))
-			{ m_must_get_tags = true; }
+			for (int i = 0; i < forbidden.count() && !m_must_get_tags; i++)
+			{
+				if (fn.contains("%"+forbidden.at(i)+"%"))
+				{ m_must_get_tags = true; }
+			}
 		}
 	}
 	if (m_must_get_tags)

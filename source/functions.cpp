@@ -326,7 +326,7 @@ QString validateFilename(QString text)
 	if (!text.contains("%md5%") && !text.contains("%id%") && !text.contains("%count"))
 	{ return QObject::tr("<span style=\"color:orange\">Votre nom de fichier n'est pas unique à chaque image et une image risque d'en écraser une précédente lors de la sauvegarde ! Vous devriez utiliser le symbole %md5%, unique à chaque image, pour éviter ce désagrément.</span>"); }
 	// Looking for unknown tokens
-	QStringList tokens = QStringList() << "artist" << "general" << "copyright" << "character" << "model" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "search_(\\d+)" << "allo" << getCustoms().keys() << "date" << "date:([^%]+)" << "score" << "count(:\\d+)?(:\\d+)?";
+	QStringList tokens = QStringList() << "artist" << "general" << "copyright" << "character" << "model" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "search_(\\d+)" << "allo" << getCustoms().keys() << "date" << "date:([^%]+)" << "score" << "count(:\\d+)?(:\\d+)?" << "width" << "height" << "pool";
 	QRegExp rx("%(.+)%");
 	rx.setMinimal(true);
 	int pos = 0;
@@ -497,7 +497,9 @@ void log(QString l, Log)
 	//_log.insert(time, (type == Error ? QObject::tr("<b>Erreur :</b> %1").arg(l) : (type == Warning ? QObject::tr("<b>Attention :</b> %1").arg(l) : (type == Notice ? QObject::tr("<b>Notice :</b> %1").arg(l) : l))));
 	//_mainwindow->logShow();
 
-	//qDebug() << time.toString("hh:mm:ss.zzz") << l;
+	#ifdef QT_DEBUG
+		qDebug() << time.toString("hh:mm:ss.zzz") << l;
+	#endif
 }
 void logCommand(QString l)
 {
