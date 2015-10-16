@@ -123,18 +123,18 @@ Image::Image(QMap<QString, QString> details, Page* parent)
 			int colon = tg.indexOf(':');
 			if (colon != -1)
 			{
-				QString tp = tg.left(colon);
-				if (tp == "User")
+				QString tp = tg.left(colon).toLower();
+				if (tp == "user")
 				{ m_author = tg.mid(colon + 1); }
-				else if (tp == "Score")
+				else if (tp == "score")
 				{ m_score = tg.mid(colon + 1).toInt(); }
-				else if (tp == "Size")
+				else if (tp == "size")
 				{
 					QStringList size = tg.mid(colon + 1).split('x');
 					if (size.size() == 2)
 						m_size = QSize(size[0].toInt(), size[1].toInt());
 				}
-				else if (tp == "Rating")
+				else if (tp == "rating")
 				{ setRating(tg.mid(colon + 1)); }
 				else
 				{ m_tags.append(Tag(tg)); }

@@ -129,8 +129,11 @@ void Page::fallback(bool bload)
 	QString pseudo = m_site->setting("auth/pseudo", settings.value("Login/pseudo", "").toString()).toString();
 	QString password = m_site->setting("auth/password", settings.value("Login/password", "").toString()).toString();
 
+	int pid = m_site->contains("Urls/"+QString::number(m_currentSource)+"/Limit") ? m_site->value("Urls/"+QString::number(m_currentSource)+"/Limit").toInt() * (m_page - 1) : 0;
+
 	// Global replace tokens
 	m_originalUrl = QString(url);
+	url.replace("{pid}", QString::number(pid));
 	url.replace("{page}", QString::number(p));
 	url.replace("{tags}", QUrl::toPercentEncoding(t));
 	url.replace("{limit}", QString::number(m_imagesPerPage));
@@ -150,6 +153,7 @@ void Page::fallback(bool bload)
 	if ((pl >= 0 || pool.indexIn(t) != -1) && m_site->contains("Urls/Html/Pools"))
 	{
 		QString url = m_site->value("Urls/Html/Pools");
+		url.replace("{pid}", QString::number(pid));
 		url.replace("{page}", QString::number(p));
 		url.replace("{pool}", pool.cap(1));
 		url.replace("{tags}", QUrl::toPercentEncoding(t));
@@ -170,6 +174,7 @@ void Page::fallback(bool bload)
 	else if (m_site->contains("Urls/Html/Tags"))
 	{
 		QString url = m_site->value("Urls/Html/"+QString(t.isEmpty() && m_site->contains("Urls/Html/Home") ? "Home" : "Tags"));
+		url.replace("{pid}", QString::number(pid));
 		url.replace("{page}", QString::number(p));
 		url.replace("{tags}", QUrl::toPercentEncoding(t));
 		url.replace("{limit}", QString::number(m_imagesPerPage));
@@ -550,6 +555,7 @@ void Page::parse()
 		}
 	}
 
+
 	// Getting last page
 	if (m_site->contains("LastPage") && m_pagesCount < 1)
 	{ m_pagesCount = m_site->value("LastPage").toInt(); }
@@ -567,10 +573,10 @@ void Page::parse()
 	}
 
     // Guess image or page count
-    if (m_site->contains("Urls/"+QString::number(m_currentSource)+"/Limit") && m_pagesCount > 0 && m_imagesCount < 1)
+	if (m_site->contains("Urls/"+QString::number(m_currentSource)+"/Limit") && m_pagesCount > 0 && m_imagesCount < 1)
     { m_imagesCount = m_pagesCount * m_site->value("Urls/"+QString::number(m_currentSource)+"/Limit").toInt(); }
-    if (m_imagesCount > 0 && m_pagesCount < 1)
-    { m_pagesCount = ceil(((float)m_imagesCount) / m_imagesPerPage); }
+	if (m_imagesCount > 0 && m_pagesCount < 1)
+	{ m_pagesCount = ceil(((float)m_imagesCount) / m_imagesPerPage); }
 
 	// Remove first n images (according to site settings)
 	int skip = m_site->setting("ignore/always", 0).toInt();
@@ -583,7 +589,7 @@ void Page::parse()
 	// Virtual paging
 	int firstImage = 0;
 	int lastImage = m_smart ? m_imagesPerPage : m_images.size();
-	if (!m_originalUrl.contains("{page}"))
+	if (!m_originalUrl.contains("{page}") && !m_originalUrl.contains("{pid}"))
 	{
 		firstImage = m_imagesPerPage * (m_page - 1);
 		lastImage = m_imagesPerPage;
