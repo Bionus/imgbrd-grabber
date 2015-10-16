@@ -526,7 +526,7 @@ QString analyse(QStringList tokens, QString text, QStringList tags)
 		{ ret.replace(reg.cap(0), reg.cap(1)); }
 		pos += reg.matchedLength();
 	}
-	return r.contains("%") ? "" : ret;
+	return ret;
 }
 
 typedef QPair<QString,QString> QStrP;
@@ -661,6 +661,8 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 	{ ext = "gif"; }
 
 	QString tagSeparator = settings.value("separator").toString();
+	QRegularExpression poolRegexp("pool:(\\d+)");
+	QRegularExpressionMatch poolMatch = poolRegexp.match(m_search.join(tagSeparator));
 
 	QMap<QString,QStrP> replaces = QMap<QString,QStrP>();
 	replaces.insert("ext", QStrP(ext, "jpg"));
@@ -673,6 +675,7 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 	for (int i = 0; i < m_search.size(); ++i)
 	{ replaces.insert("search_"+QString::number(i+1), QStrP(m_search[i], "")); }
 	replaces.insert("search", QStrP(m_search.join(tagSeparator), ""));
+	replaces.insert("pool", QStrP(poolMatch.hasMatch() ? poolMatch.captured(1) : "", ""));
 	replaces.insert("rating", QStrP(m_rating, "unknown"));
 	replaces.insert("score", QStrP(QString::number(m_score), ""));
 	replaces.insert("height", QStrP(QString::number(m_size.height()), "0"));
@@ -762,7 +765,7 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 		// Conditionals
 		if (complex)
 		{
-			QStringList tokens = QStringList() << "artist" << "general" << "copyright" << "character" << "model" << "model|artist" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "allo" << "date" << "date:([^%]+)" << "count(:\\d+)?(:\\d+)?" << "search_(\\d+)" << "score" << "height" << "width" << "path" << custom.keys();
+			QStringList tokens = QStringList() << "artist" << "general" << "copyright" << "character" << "model" << "model|artist" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "allo" << "date" << "date:([^%]+)" << "count(:\\d+)?(:\\d+)?" << "search_(\\d+)" << "score" << "height" << "width" << "path" << "pool" << custom.keys();
 			filename = analyse(tokens, filename, details["allos"]);
 		}
 
