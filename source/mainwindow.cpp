@@ -138,12 +138,22 @@ void mainWindow::init()
 		ui->tabWidget->setCornerWidget(add);
 
 	bool restore = m_settings->value("start", "none").toString() == "restore";
-	if (crashed && !restore)
+	if (crashed)
 	{
-		log(tr("Il semblerait que Imgbrd-Grabber n'ait pas été fermé correctement la dernière fois."));
-		int reponse = QMessageBox::question(this, "", tr("Il semblerait que l'application n'ait pas été arrêtée correctement lors de sa dernière utilisation. Voulez-vous restaurer votre dernière seesion ?"), QMessageBox::Yes | QMessageBox::No);
-		if (reponse == QMessageBox::Yes)
-		{ restore = true; }
+		if (restore)
+		{
+			log(tr("Il semblerait que Imgbrd-Grabber n'ait pas été fermé correctement la dernière fois."));
+			int reponse = QMessageBox::question(this, "", tr("Il semblerait que l'application n'ait pas été arrêtée correctement lors de sa dernière utilisation. Voulez-vous la charger sans restaurer votre dernière seesion ?"), QMessageBox::Yes | QMessageBox::No);
+			if (reponse == QMessageBox::Yes)
+			{ restore = false; }
+		}
+		else
+		{
+			log(tr("Il semblerait que Imgbrd-Grabber n'ait pas été fermé correctement la dernière fois."));
+			int reponse = QMessageBox::question(this, "", tr("Il semblerait que l'application n'ait pas été arrêtée correctement lors de sa dernière utilisation. Voulez-vous restaurer votre dernière seesion ?"), QMessageBox::Yes | QMessageBox::No);
+			if (reponse == QMessageBox::Yes)
+			{ restore = true; }
+		}
 	}
 	ui->tabWidget->setCurrentIndex(0);
 	if (restore)
