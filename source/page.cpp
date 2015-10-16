@@ -76,12 +76,13 @@ void Page::fallback(bool bload)
 	{ t = m_site->value("DefaultTag"); }
 
 	// Find page number
+	bool limited = m_site->contains("Urls/"+QString::number(m_currentSource)+"/Limit");
 	m_format = m_site->value("Selected").split('/').at(m_currentSource-1);
 	int p = m_page;
-	m_blim = m_site->contains("Urls/"+QString::number(m_currentSource)+"/Limit") ? m_site->value("Urls/"+QString::number(m_currentSource)+"/Limit").toInt() : m_imagesPerPage;
+	m_blim = limited ? m_site->value("Urls/"+QString::number(m_currentSource)+"/Limit").toInt() : m_imagesPerPage;
 	if (m_smart)
 	{
-		if (m_imagesPerPage > m_blim)
+		if (m_imagesPerPage > m_blim || limited)
 		{ m_imagesPerPage = m_blim; }
 		p = (int)floor(((m_page - 1.) * m_imagesPerPage) / m_blim) + 1;
 	}
