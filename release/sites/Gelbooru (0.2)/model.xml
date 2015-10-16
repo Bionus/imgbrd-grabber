@@ -6,10 +6,11 @@
 			<Tags>/index.php?page=dapi&amp;s=post&amp;q=index&amp;limit={limit}&amp;pid={page}&amp;tags={tags}</Tags>
 		</Xml>
 		<Html>
-			<Tags>/index.php?page=post&amp;s=list&amp;limit={limit}&amp;pid={page}&amp;tags={tags}</Tags>
+			<Tags>/index.php?page=post&amp;s=list&amp;pid={pid}&amp;tags={tags}</Tags>
 			<Pools>/index.php?page=pool&amp;s=show&amp;id={pool}</Pools>
 			<Post>/index.php?page=post&amp;s=view&amp;id={id}</Post>
 			<Image>thumbnail_->&amp;/thumbnails/->//images/&amp;/gelbooru.com/->/simg4.gelbooru.com/</Image>
+			<Limit>42</Limit>
 		</Html>
 	</Urls>
 	<Regex>
@@ -17,6 +18,7 @@
 		<Image>&lt;span[^&gt;]*&gt;\s*&lt;a id=&quot;?\w(\d+)&quot;?[^&gt;]+&gt;\s*&lt;img [^&gt;]*src=&quot;([^&quot;]+\/thumbnail_([^.]+)\.[^&quot;]+)&quot; [^&gt;]*title=&quot;\s*([^&quot;]+)&quot;[^&gt;]*\/?&gt;\s*&lt;\/a&gt;</Image>
 		<Order>id|preview_url|md5|tags</Order>
 		<ImageUrl>&lt;img[^&gt;]+src=&quot;([^&quot;]+)&quot;[^&gt;]+onclick=&quot;Note\.toggle\(\);&quot;[^&gt;]*/&gt;</ImageUrl>
+        <LastPage>&lt;a href=&quot;[^&quot;]+pid=(\d+)[^&quot;]*&quot; alt=&quot;last page&quot;[^&gt;]*&gt;</LastPage>
 	</Regex>
 	<Check>
 		<Url>/</Url>
