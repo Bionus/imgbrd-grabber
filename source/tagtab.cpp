@@ -789,7 +789,7 @@ void tagTab::getAll()
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
 	for (int i = 0; i < actuals.count(); i++)
 	{
-		int limit = m_sites->value(actuals.at(i))->contains("Urls/1/Limit") ? m_sites->value(actuals.at(i))->value("Urls/1/Limit").toInt() : 0;
+		int limit = m_pages.value(actuals.at(i))->highLimit();
 		int v1 = qMin((limit > 0 ? limit : 200), qMax(m_pages.value(actuals.at(i))->images().count(), m_pages.value(actuals.at(i))->imagesCount()));
 		int v2 = qMax(m_pages.value(actuals.at(i))->images().count(), m_pages.value(actuals.at(i))->imagesCount());
 		if (v1 == 0 && v2 == 0)

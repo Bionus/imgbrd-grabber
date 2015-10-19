@@ -750,6 +750,15 @@ QList<Tag>		Page::tags()		{ return m_tags;		}
 QStringList		Page::search()		{ return m_search;		}
 QStringList		Page::errors()		{ return m_errors;		}
 
+int Page::imagesPerPage()
+{ return m_imagesPerPage;	}
+int Page::highLimit()
+{
+	if (m_site->contains("Urls/"+QString::number(m_currentSource)+"/Limit"))
+	{ return m_site->value("Urls/"+QString::number(m_currentSource)+"/Limit").toInt(); }
+	return 0;
+}
+
 int Page::imagesCount(bool guess)
 {
 	if (m_imagesCount < 0 && guess && m_pagesCount >= 0)

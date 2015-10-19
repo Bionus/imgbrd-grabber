@@ -35,6 +35,8 @@ class Page : public QObject
 		QList<Tag>		tags();
 		QStringList		search();
 		QStringList		errors();
+		int				imagesPerPage();
+		int				highLimit();
 
 	public slots:
 		void parse();
