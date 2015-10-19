@@ -326,6 +326,8 @@ void tagTab::finishedLoading(Page* page)
 				{ reasons.append(tr("trop de tags")); }
 				if (ui->spinPage->value() > 1000)
 				{ reasons.append(tr("page trop éloignée")); }
+
+				// Maybe you meant
 				QStringList completion;
 				QFile words("words.txt");
 				if (words.open(QIODevice::ReadOnly | QIODevice::Text) && !m_search->toPlainText().isEmpty())
@@ -475,7 +477,7 @@ void tagTab::finishedLoading(Page* page)
 		imgs = m_images;
 	}
 
-	// Loading images
+	// Loading images thumbnails
 	for (int i = 0; i < imgs.count(); i++)
 	{
 		QStringList detected;
@@ -502,6 +504,7 @@ void tagTab::finishedLoading(Page* page)
 	ui->buttonGetpage->setDisabled(m_images.empty());
 	ui->buttonGetSel->setDisabled(m_images.empty());
 }
+
 
 void tagTab::finishedLoadingTags(Page *page)
 {

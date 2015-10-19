@@ -72,6 +72,7 @@ class Image : public QObject
 		QMap<QString,QString>   details();
 		QString		detail(QString key);
 		void		setRating(QString rating);
+		void		setFileExtension(QString ext);
 
 	public slots:
 		void loadPreview();

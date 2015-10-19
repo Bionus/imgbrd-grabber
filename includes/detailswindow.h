@@ -18,9 +18,10 @@ class detailsWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		explicit detailsWindow(Image *img, QWidget *parent = 0);
+		explicit detailsWindow(Image *image, QWidget *parent = 0);
 		~detailsWindow();
 		void setTags(QString);
+		void setImage(Image *image);
 
 	private:
 		Ui::detailsWindow *ui;

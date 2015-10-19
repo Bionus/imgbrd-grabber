@@ -104,8 +104,8 @@ void zoomWindow::go()
 
 	QString u = m_site->value("Urls/Html/Post");
         u.replace("{id}", QString::number(m_image->id()));
-	m_detailsWindow = new detailsWindow(m_image, this);
-	connect(ui->buttonDetails, SIGNAL(clicked()), m_detailsWindow, SLOT(show()));
+
+	connect(ui->buttonDetails, SIGNAL(clicked()), this, SLOT(showDetails()));
 
 	QString pos = settings.value("tagsposition", "top").toString();
 	if (pos == "auto")
@@ -131,6 +131,8 @@ void zoomWindow::go()
         m_labelTagsLeft->setText(m_image->stylishedTags(m_ignore).join("<br/>"));
 	}
 
+	m_detailsWindow = new detailsWindow(m_image, this);
+
 	connect(m_image, SIGNAL(finishedLoadingTags(Image*)), this, SLOT(replyFinished(Image*)));
     m_image->loadDetails();
 	activateWindow();
@@ -153,6 +155,12 @@ zoomWindow::~zoomWindow()
     m_image->deleteLater();
 
 	delete ui;
+}
+
+void zoomWindow::showDetails()
+{
+	m_detailsWindow->setImage(m_image);
+	m_detailsWindow->show();
 }
 
 void zoomWindow::openUrl(QString url)
@@ -553,6 +561,7 @@ void zoomWindow::replyFinishedZoom()
 		nextext["png"] = "gif";
 		nextext["gif"] = "jpeg";
 		m_url = m_url.section('.', 0, -2)+"."+nextext[ext];
+		m_image->setFileExtension(nextext[ext]);
 		log(tr("Image non trouvée. Nouvel essai avec l'extension %1...").arg(nextext[ext]));
 		load();
 		return;
