@@ -65,10 +65,6 @@ favoritesTab::favoritesTab(int id, QMap<QString,Site*> *sites, QMap<QString,QStr
 	optionsChanged();
 	ui->widgetPlus->hide();
 	setWindowIcon(QIcon());
-	QPalette pal = palette();
-		pal.setColor(backgroundRole(), QColor(255,255,255));
-		setPalette(pal);
-		setAutoFillBackground(true);
 	updateCheckboxes();
 	updateFavorites();
 

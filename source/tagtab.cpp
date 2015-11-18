@@ -77,10 +77,6 @@ tagTab::tagTab(int id, QMap<QString,Site*> *sites, QMap<QString,QString> *favori
 	optionsChanged();
 	ui->widgetPlus->hide();
 	setWindowIcon(QIcon());
-	QPalette pal = palette();
-		pal.setColor(backgroundRole(), QColor(255,255,255));
-		setPalette(pal);
-		setAutoFillBackground(true);
 	updateCheckboxes();
 	m_search->setFocus();
 }
