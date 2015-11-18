@@ -21,7 +21,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="tabGeneral">
       <attribute name="title">
@@ -427,7 +427,11 @@
        <item row="1" column="1">
         <layout class="QHBoxLayout" name="layoutHashPassword">
          <item>
-          <widget class="QLineEdit" name="lineAuthPassword"/>
+          <widget class="QLineEdit" name="lineAuthPassword">
+           <property name="echoMode">
+            <enum>QLineEdit::Password</enum>
+           </property>
+          </widget>
          </item>
          <item>
           <widget class="QPushButton" name="buttonAuthHash">

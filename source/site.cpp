@@ -52,6 +52,8 @@ void Site::login()
 			log(tr("Connexion à %1 (%2)...").arg(m_name, m_url));
 			initManager();
 
+			m_triedLogin = true;
+
 			QString method = m_settings->value("login/method", "post").toString();
 			if (method == "post")
 			{
@@ -89,9 +91,8 @@ void Site::login()
 }
 void Site::loginFinished()
 {
-	m_loggedIn = m_cookieJar->cookiesForUrl(m_loginReply->url()).isEmpty();
+	m_loggedIn = !m_cookieJar->cookiesForUrl(m_loginReply->url()).isEmpty();
 
-	m_triedLogin = true;
 	log(tr("Connexion à %1 (%2) terminée (%3).").arg(m_name, m_url, m_loggedIn ? "succès" : "échec"));
 
 	emit loggedIn(m_loggedIn ? LoginSuccess : LoginError);
