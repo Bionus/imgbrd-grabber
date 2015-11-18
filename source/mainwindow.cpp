@@ -143,14 +143,14 @@ void mainWindow::init()
 		if (restore)
 		{
 			log(tr("Il semblerait que Imgbrd-Grabber n'ait pas été fermé correctement la dernière fois."));
-			int reponse = QMessageBox::question(this, "", tr("Il semblerait que l'application n'ait pas été arrêtée correctement lors de sa dernière utilisation. Voulez-vous la charger sans restaurer votre dernière seesion ?"), QMessageBox::Yes | QMessageBox::No);
+			int reponse = QMessageBox::question(this, "", tr("Il semblerait que l'application n'ait pas été arrêtée correctement lors de sa dernière utilisation. Voulez-vous la charger sans restaurer votre dernière session ?"), QMessageBox::Yes | QMessageBox::No);
 			if (reponse == QMessageBox::Yes)
 			{ restore = false; }
 		}
 		else
 		{
 			log(tr("Il semblerait que Imgbrd-Grabber n'ait pas été fermé correctement la dernière fois."));
-			int reponse = QMessageBox::question(this, "", tr("Il semblerait que l'application n'ait pas été arrêtée correctement lors de sa dernière utilisation. Voulez-vous restaurer votre dernière seesion ?"), QMessageBox::Yes | QMessageBox::No);
+			int reponse = QMessageBox::question(this, "", tr("Il semblerait que l'application n'ait pas été arrêtée correctement lors de sa dernière utilisation. Voulez-vous restaurer votre dernière session ?"), QMessageBox::Yes | QMessageBox::No);
 			if (reponse == QMessageBox::Yes)
 			{ restore = true; }
 		}
@@ -501,7 +501,7 @@ void mainWindow::updateGroupCount()
 		groups += ui->tableBatchGroups->item(i, 5)->text().toInt();
 	ui->labelGroups->setText(tr("Groupes (%1/%2)").arg(ui->tableBatchGroups->rowCount()).arg(groups));
 }
-void mainWindow::batchAddUnique(QMap<QString,QString> values)
+void mainWindow::batchAddUnique(QMap<QString,QString> values, bool save)
 {
 	log(tr("Ajout d'une image en téléchargement unique : %1").arg(values.value("file_url")));
 	m_batchs.append(values);
@@ -514,7 +514,9 @@ void mainWindow::batchAddUnique(QMap<QString,QString> values)
 		item = new QTableWidgetItem(v);
 		ui->tableBatchUniques->setItem(ui->tableBatchUniques->rowCount()-1, t, item);
 	}
-	saveLinkList(savePath("restore.igl"));
+
+	if (save)
+	{ saveLinkList(savePath("restore.igl")); }
 }
 void mainWindow::saveFolder()
 {
@@ -576,6 +578,7 @@ void mainWindow::batchClearSel()
 	for (int i : todelete)
 	{
 		ui->tableBatchUniques->removeRow(i - rem);
+		m_batchs.removeAt(i - rem);
 		rem++;
 	}
 	updateGroupCount();
@@ -1105,7 +1108,8 @@ void mainWindow::getAll(bool all)
                 downloader->setQuit(false);
                 downloader->getImages();
 
-				int pages = (int)ceil((float)b.at(3).toInt() / b.at(2).toInt());
+				int b2 = b.at(2).toInt();
+				int pages = b2 != 0 ? (int)ceil((float)b.at(3).toInt() / b2) : -1;
 				if (pages <= 0 || b.at(2).toInt() <= 0 || b.at(3).toInt() <= 0)
                     pages = 1;
                 m_progressdialog->setImagesCount(m_progressdialog->count() + pages);
@@ -1481,7 +1485,8 @@ void mainWindow::getAllProgress(Image *img, qint64 bytesReceived, qint64 bytesTo
 	if (m_downloadTimeLast[img->url()]->elapsed() >= 1000)
 	{
 		m_downloadTimeLast[img->url()]->restart();
-		float speed = (bytesReceived * 1000) / m_downloadTime[img->url()]->elapsed();
+		int elapsed = m_downloadTime[img->url()]->elapsed();
+		float speed = elapsed != 0 ? (bytesReceived * 1000) / elapsed : 0;
 		m_progressdialog->speedImage(img->url(), speed);
 	}
 	if (img->fileSize() == 0)
@@ -1489,7 +1494,7 @@ void mainWindow::getAllProgress(Image *img, qint64 bytesReceived, qint64 bytesTo
 		img->setFileSize(bytesTotal);
 		m_progressdialog->sizeImage(img->url(), bytesTotal);
 	}
-	m_progressdialog->statusImage(img->url(), (bytesReceived * 100) / bytesTotal);
+	m_progressdialog->statusImage(img->url(), bytesTotal != 0 ? (bytesReceived * 100) / bytesTotal : 0);
 }
 void mainWindow::getAllPerformTags(Image* img)
 {
@@ -1982,7 +1987,7 @@ bool mainWindow::loadLinkList(QString filename)
 			QMap<QString,QString> values;
 			for (int i = 0; i < infos.size(); i++)
 			{ values.insert(vals[i], infos[i]); }
-			batchAddUnique(values);
+			batchAddUnique(values, false);
 		}
 		else
 		{

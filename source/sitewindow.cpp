@@ -128,7 +128,7 @@ void siteWindow::accept()
 		QString sites = f.readAll();
 	f.close();
 	sites.replace("\r\n", "\n").replace("\r", "\n").replace("\n", "\r\n");
-	QStringList stes = sites.split("\r\n");
+	QStringList stes = sites.split("\r\n", QString::SkipEmptyParts);
 	stes.append(url);
 	stes.removeDuplicates();
 	stes.sort();

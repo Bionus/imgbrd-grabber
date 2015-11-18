@@ -130,7 +130,8 @@ void Page::fallback(bool bload)
 	QString pseudo = m_site->setting("auth/pseudo", settings.value("Login/pseudo", "").toString()).toString();
 	QString password = m_site->setting("auth/password", settings.value("Login/password", "").toString()).toString();
 
-	int pid = m_site->contains("Urls/"+QString::number(m_currentSource)+"/Limit") ? m_site->value("Urls/"+QString::number(m_currentSource)+"/Limit").toInt() * (m_page - 1) : 0;
+	int pid = m_site->contains("Urls/"+QString::number(m_currentSource)+"/Limit") ? m_site->value("Urls/"+QString::number(m_currentSource)+"/Limit").toInt() * (m_page - 1) : m_imagesPerPage * (m_page - 1);
+	qDebug() << pid << m_imagesPerPage << m_page << m_imagesPerPage * (m_page - 1);
 
 	// Global replace tokens
 	m_originalUrl = QString(url);
@@ -238,14 +239,14 @@ void Page::abortTags()
 QString _parseSetImageUrl(Site* site, QString setting, QString ret, QMap<QString,QString> *d, bool replaces = true)
 {
 	if (site->contains(setting) && replaces)
-    {
+	{
         if (site->value(setting).contains("->"))
         {
-            QStringList replaces = site->value(setting).split('&');
+			QStringList replaces = site->value(setting).split('&');
 			for (QString rep : replaces)
             {
-                QRegExp rgx(rep.left(rep.indexOf("->")));
-                ret.replace(rgx, rep.right(rep.size() - rep.indexOf("->") - 2));
+				QRegExp rgx(rep.left(rep.indexOf("->")));
+				ret.replace(rgx, rep.right(rep.size() - rep.indexOf("->") - 2));
 			}
         }
         else
@@ -595,7 +596,7 @@ void Page::parse()
 		firstImage = m_imagesPerPage * (m_page - 1);
 		lastImage = m_imagesPerPage;
 	}
-    while (firstImage > 0)
+	while (firstImage > 0 && !m_images.isEmpty())
 	{
 		m_images.removeFirst();
 		firstImage--;
@@ -749,6 +750,15 @@ QString			Page::wiki()		{ return m_wiki;		}
 QList<Tag>		Page::tags()		{ return m_tags;		}
 QStringList		Page::search()		{ return m_search;		}
 QStringList		Page::errors()		{ return m_errors;		}
+
+int Page::imagesPerPage()
+{ return m_imagesPerPage;	}
+int Page::highLimit()
+{
+	if (m_site->contains("Urls/"+QString::number(m_currentSource)+"/Limit"))
+	{ return m_site->value("Urls/"+QString::number(m_currentSource)+"/Limit").toInt(); }
+	return 0;
+}
 
 int Page::imagesCount(bool guess)
 {

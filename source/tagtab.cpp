@@ -77,10 +77,6 @@ tagTab::tagTab(int id, QMap<QString,Site*> *sites, QMap<QString,QString> *favori
 	optionsChanged();
 	ui->widgetPlus->hide();
 	setWindowIcon(QIcon());
-	QPalette pal = palette();
-		pal.setColor(backgroundRole(), QColor(255,255,255));
-		setPalette(pal);
-		setAutoFillBackground(true);
 	updateCheckboxes();
 	m_search->setFocus();
 }
@@ -175,9 +171,12 @@ void tagTab::updateCheckboxes()
 			if (n < -1 && urls.at(i).indexOf('.', m+1) != -1)
 			{ m = urls.at(i).indexOf('.', m+1); }
 		}
+
+		bool isChecked = m_selectedSources.size() > i ? m_selectedSources.at(i) : false;
 		QCheckBox *c = new QCheckBox(urls.at(i).left(m), this);
-			c->setChecked(m_selectedSources.at(i));
+			c->setChecked(isChecked);
 			ui->layoutSourcesList->addWidget(c);
+
 		m_checkboxes.append(c);
 	}
 	DONE();
@@ -326,6 +325,8 @@ void tagTab::finishedLoading(Page* page)
 				{ reasons.append(tr("trop de tags")); }
 				if (ui->spinPage->value() > 1000)
 				{ reasons.append(tr("page trop éloignée")); }
+
+				// Maybe you meant
 				QStringList completion;
 				QFile words("words.txt");
 				if (words.open(QIODevice::ReadOnly | QIODevice::Text) && !m_search->toPlainText().isEmpty())
@@ -475,7 +476,7 @@ void tagTab::finishedLoading(Page* page)
 		imgs = m_images;
 	}
 
-	// Loading images
+	// Loading images thumbnails
 	for (int i = 0; i < imgs.count(); i++)
 	{
 		QStringList detected;
@@ -502,6 +503,7 @@ void tagTab::finishedLoading(Page* page)
 	ui->buttonGetpage->setDisabled(m_images.empty());
 	ui->buttonGetSel->setDisabled(m_images.empty());
 }
+
 
 void tagTab::finishedLoadingTags(Page *page)
 {
@@ -789,7 +791,7 @@ void tagTab::getAll()
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
 	for (int i = 0; i < actuals.count(); i++)
 	{
-		int limit = m_sites->value(actuals.at(i))->contains("Urls/1/Limit") ? m_sites->value(actuals.at(i))->value("Urls/1/Limit").toInt() : 0;
+		int limit = m_pages.value(actuals.at(i))->highLimit();
 		int v1 = qMin((limit > 0 ? limit : 200), qMax(m_pages.value(actuals.at(i))->images().count(), m_pages.value(actuals.at(i))->imagesCount()));
 		int v2 = qMax(m_pages.value(actuals.at(i))->images().count(), m_pages.value(actuals.at(i))->imagesCount());
 		if (v1 == 0 && v2 == 0)

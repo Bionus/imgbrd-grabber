@@ -13,6 +13,47 @@ detailsWindow::detailsWindow(Image *image, QWidget *parent) : QDialog(parent), u
 {
 	ui->setupUi(this);
 
+	this->setImage(image);
+
+	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
+	QFont fontArtists, fontCopyrights, fontCharacters, fontModels, fontGenerals;
+		fontArtists.fromString(settings.value("Coloring/Fonts/artists").toString());
+		fontCopyrights.fromString(settings.value("Coloring/Fonts/copyrights").toString());
+		fontCharacters.fromString(settings.value("Coloring/Fonts/characters").toString());
+		fontModels.fromString(settings.value("Coloring/Fonts/models").toString());
+		fontGenerals.fromString(settings.value("Coloring/Fonts/generals").toString());
+	ui->labelTags->setTextInteractionFlags(Qt::TextBrowserInteraction);
+	ui->labelTags->setStyleSheet(
+		"a				{ text-decoration:none; font-weight:normal;																		} "\
+		".blacklisted	{ font-weight:bold; text-decoration:underline; color:#000000;													} "\
+		".character		{ color:"+settings.value("Coloring/Colors/characters", "#00aa00").toString()+"; "+qfonttocss(fontCharacters)+"	} "\
+		".copyright		{ color:"+settings.value("Coloring/Colors/copyrights", "#00aa00").toString()+"; "+qfonttocss(fontCharacters)+"	} "\
+		".artist		{ color:"+settings.value("Coloring/Colors/artists", "#00aa00").toString()+"; "+qfonttocss(fontCharacters)+"		} "\
+		".model			{ color:"+settings.value("Coloring/Colors/models", "#00aa00").toString()+"; "+qfonttocss(fontCharacters)+"		} "\
+		".general		{ color:"+settings.value("Coloring/Colors/generals", "#00aa00").toString()+"; "+qfonttocss(fontCharacters)+"	} "
+	);
+
+	resize(sizeHint());
+}
+
+/**
+ * Destructor of the detailsWindow class
+ */
+detailsWindow::~detailsWindow()
+{
+	delete ui;
+}
+
+/**
+ * Setter for tags
+ */
+void detailsWindow::setTags(QString tags)
+{
+	ui->labelTags->setText(tags);
+}
+
+void detailsWindow::setImage(Image *image)
+{
 	if (!image->tags().isEmpty())
 	{
 		QString t;
@@ -53,40 +94,4 @@ detailsWindow::detailsWindow(Image *image, QWidget *parent) : QDialog(parent), u
 	ui->labelNotes->setText(image->hasNote() ? tr("oui") : tr("non"));
 	ui->labelComments->setText(image->hasComments() ? tr("oui") : tr("non"));
 	ui->labelParent->setText(image->parentId() != 0 ? tr("oui (#%1)").arg(image->parentId() != 0) : tr("non"));
-
-	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
-	QFont fontArtists, fontCopyrights, fontCharacters, fontModels, fontGenerals;
-		fontArtists.fromString(settings.value("Coloring/Fonts/artists").toString());
-		fontCopyrights.fromString(settings.value("Coloring/Fonts/copyrights").toString());
-		fontCharacters.fromString(settings.value("Coloring/Fonts/characters").toString());
-		fontModels.fromString(settings.value("Coloring/Fonts/models").toString());
-		fontGenerals.fromString(settings.value("Coloring/Fonts/generals").toString());
-	ui->labelTags->setTextInteractionFlags(Qt::TextBrowserInteraction);
-	ui->labelTags->setStyleSheet(
-		"a				{ text-decoration:none; font-weight:normal;																		} "\
-		".blacklisted	{ font-weight:bold; text-decoration:underline; color:#000000;													} "\
-		".character		{ color:"+settings.value("Coloring/Colors/characters", "#00aa00").toString()+"; "+qfonttocss(fontCharacters)+"	} "\
-		".copyright		{ color:"+settings.value("Coloring/Colors/copyrights", "#00aa00").toString()+"; "+qfonttocss(fontCharacters)+"	} "\
-		".artist		{ color:"+settings.value("Coloring/Colors/artists", "#00aa00").toString()+"; "+qfonttocss(fontCharacters)+"		} "\
-		".model			{ color:"+settings.value("Coloring/Colors/models", "#00aa00").toString()+"; "+qfonttocss(fontCharacters)+"		} "\
-		".general		{ color:"+settings.value("Coloring/Colors/generals", "#00aa00").toString()+"; "+qfonttocss(fontCharacters)+"	} "
-	);
-
-	resize(sizeHint());
-}
-
-/**
- * Destructor of the detailsWindow class
- */
-detailsWindow::~detailsWindow()
-{
-	delete ui;
-}
-
-/**
- * Setter for tags
- */
-void detailsWindow::setTags(QString tags)
-{
-	ui->labelTags->setText(tags);
 }

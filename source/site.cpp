@@ -43,14 +43,16 @@ void Site::initManager()
 	}
 }
 
-void Site::login()
+void Site::login(bool force)
 {
-	if (!m_settings->value("login/parameter").toBool() && !m_loggedIn && !m_triedLogin)
+	if (!m_settings->value("login/parameter").toBool() && (force || (!m_loggedIn && !m_triedLogin)))
 	{
 		if (!m_settings->value("login/url", "").toString().isEmpty())
 		{
 			log(tr("Connexion à %1 (%2)...").arg(m_name, m_url));
 			initManager();
+
+			m_triedLogin = true;
 
 			QString method = m_settings->value("login/method", "post").toString();
 			if (method == "post")
@@ -89,9 +91,8 @@ void Site::login()
 }
 void Site::loginFinished()
 {
-	m_loggedIn = m_cookieJar->cookiesForUrl(m_loginReply->url()).isEmpty();
+	m_loggedIn = !m_cookieJar->cookiesForUrl(m_loginReply->url()).isEmpty();
 
-	m_triedLogin = true;
 	log(tr("Connexion à %1 (%2) terminée (%3).").arg(m_name, m_url, m_loggedIn ? "succès" : "échec"));
 
 	emit loggedIn(m_loggedIn ? LoginSuccess : LoginError);
@@ -205,6 +206,8 @@ QMap<QString, Site*> *Site::getAllSites()
 						while (!f.atEnd())
 						{
 							QString line = f.readLine().trimmed();
+							if (line.isEmpty())
+								continue;
 
 							QStringList srcs;
 							QSettings sets(savePath("sites/"+dir[i]+"/"+line+"/settings.ini"), QSettings::IniFormat);

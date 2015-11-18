@@ -92,7 +92,7 @@ class mainWindow : public QMainWindow
         void addUnique();
         void batchAddGroup(const QStringList& values);
 		void updateGroupCount();
-        void batchAddUnique(QMap<QString,QString>);
+		void batchAddUnique(QMap<QString,QString> values, bool save = true);
         // Batch download
         void getAll(bool all = true);
         void getAllFinishedPage(Page *page);

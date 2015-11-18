@@ -2,8 +2,8 @@
 CONFIG += use_ssl
 Release {
 	CONFIG += use_qscintilla
+        CONFIG += use_breakpad
 }
-CONFIG += use_breakpad
 #CONFIG += use_cli
 
 # Travis settings
@@ -79,12 +79,12 @@ use_breakpad {
 		QMAKE_LFLAGS_RELEASE = /INCREMENTAL:NO /DEBUG
 		QMAKE_CFLAGS_RELEASE = -O2 -MD -zi
                 BREAKPAD = D:/bin/google-breakpad
-		Debug:LIBS		= $${BREAKPAD}/src/client/windows/Debug/lib/common.lib \
-						  $${BREAKPAD}/src/client/windows/Debug/lib/crash_generation_client.lib \
-						  $${BREAKPAD}/src/client/windows/Debug/lib/exception_handler.lib
+                Debug:LIBS	+= $${BREAKPAD}/src/client/windows/Debug/lib/common.lib \
+                                   $${BREAKPAD}/src/client/windows/Debug/lib/crash_generation_client.lib \
+                                   $${BREAKPAD}/src/client/windows/Debug/lib/exception_handler.lib
 		Release:LIBS	+= $${BREAKPAD}/src/client/windows/Release/lib/common.lib \
-						   $${BREAKPAD}/src/client/windows/Release/lib/crash_generation_client.lib \
-						   $${BREAKPAD}/src/client/windows/Release/lib/exception_handler.lib
+                                   $${BREAKPAD}/src/client/windows/Release/lib/crash_generation_client.lib \
+                                   $${BREAKPAD}/src/client/windows/Release/lib/exception_handler.lib
 	}
 	unix {
 		QMAKE_CXXFLAGS += -fpermissive

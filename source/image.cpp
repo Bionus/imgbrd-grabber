@@ -1116,3 +1116,9 @@ void Image::setRating(QString rating)
 	else
 	{ m_rating = rating; }
 }
+
+void Image::setFileExtension(QString ext)
+{
+	m_url = m_url.section('.', 0, -2) + "." + ext;
+	m_fileUrl = m_fileUrl.toString().section('.', 0, -2) + "." + ext;
+}

@@ -50,7 +50,7 @@ class Site : public QObject
 		QUrl fixUrl(QString url, QUrl old);
 
 	public slots:
-		void login();
+		void login(bool force = false);
 		void loginFinished();
 		void checkForUpdates();
 		void checkForUpdatesDone();
