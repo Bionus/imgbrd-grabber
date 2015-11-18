@@ -501,7 +501,7 @@ void mainWindow::updateGroupCount()
 		groups += ui->tableBatchGroups->item(i, 5)->text().toInt();
 	ui->labelGroups->setText(tr("Groupes (%1/%2)").arg(ui->tableBatchGroups->rowCount()).arg(groups));
 }
-void mainWindow::batchAddUnique(QMap<QString,QString> values)
+void mainWindow::batchAddUnique(QMap<QString,QString> values, bool save)
 {
 	log(tr("Ajout d'une image en téléchargement unique : %1").arg(values.value("file_url")));
 	m_batchs.append(values);
@@ -514,7 +514,9 @@ void mainWindow::batchAddUnique(QMap<QString,QString> values)
 		item = new QTableWidgetItem(v);
 		ui->tableBatchUniques->setItem(ui->tableBatchUniques->rowCount()-1, t, item);
 	}
-	saveLinkList(savePath("restore.igl"));
+
+	if (save)
+	{ saveLinkList(savePath("restore.igl")); }
 }
 void mainWindow::saveFolder()
 {
@@ -1982,7 +1984,7 @@ bool mainWindow::loadLinkList(QString filename)
 			QMap<QString,QString> values;
 			for (int i = 0; i < infos.size(); i++)
 			{ values.insert(vals[i], infos[i]); }
-			batchAddUnique(values);
+			batchAddUnique(values, false);
 		}
 		else
 		{

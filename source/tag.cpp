@@ -15,12 +15,17 @@ Tag::Tag(QString text, QString type, int count, QStringList related)
 	if (text.endsWith("(artist)") && type == "unknown")
 	{ m_type = "artist"; }
 
-	QRegExp reg("(artist|copyright|character|model|unknown):(.+)");
-	if (reg.exactMatch(text) && type == "unknown")
+	if (m_type == "unknown")
 	{
-		if (reg.cap(1) != "unknown")
-		{ m_type = reg.cap(1); }
-		m_text = reg.cap(2);
+		QStringList prep = QStringList() << "artist" << "copyright" << "character" << "model" << "unknown";
+		foreach (QString pre, prep)
+		{
+			if (text.startsWith(pre + ":"))
+			{
+				m_type = pre;
+				m_text = text.mid(pre.length() + 1);
+			}
+		}
 	}
 }
 Tag::~Tag()

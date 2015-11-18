@@ -238,14 +238,14 @@ void Page::abortTags()
 QString _parseSetImageUrl(Site* site, QString setting, QString ret, QMap<QString,QString> *d, bool replaces = true)
 {
 	if (site->contains(setting) && replaces)
-    {
+	{
         if (site->value(setting).contains("->"))
         {
-            QStringList replaces = site->value(setting).split('&');
+			QStringList replaces = site->value(setting).split('&');
 			for (QString rep : replaces)
             {
-                QRegExp rgx(rep.left(rep.indexOf("->")));
-                ret.replace(rgx, rep.right(rep.size() - rep.indexOf("->") - 2));
+				QRegExp rgx(rep.left(rep.indexOf("->")));
+				ret.replace(rgx, rep.right(rep.size() - rep.indexOf("->") - 2));
 			}
         }
         else
