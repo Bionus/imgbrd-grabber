@@ -43,9 +43,9 @@ void Site::initManager()
 	}
 }
 
-void Site::login()
+void Site::login(bool force)
 {
-	if (!m_settings->value("login/parameter").toBool() && !m_loggedIn && !m_triedLogin)
+	if (!m_settings->value("login/parameter").toBool() && (force || (!m_loggedIn && !m_triedLogin)))
 	{
 		if (!m_settings->value("login/url", "").toString().isEmpty())
 		{
@@ -206,6 +206,8 @@ QMap<QString, Site*> *Site::getAllSites()
 						while (!f.atEnd())
 						{
 							QString line = f.readLine().trimmed();
+							if (line.isEmpty())
+								continue;
 
 							QStringList srcs;
 							QSettings sets(savePath("sites/"+dir[i]+"/"+line+"/settings.ini"), QSettings::IniFormat);

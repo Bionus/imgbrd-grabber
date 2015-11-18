@@ -130,7 +130,8 @@ void Page::fallback(bool bload)
 	QString pseudo = m_site->setting("auth/pseudo", settings.value("Login/pseudo", "").toString()).toString();
 	QString password = m_site->setting("auth/password", settings.value("Login/password", "").toString()).toString();
 
-	int pid = m_site->contains("Urls/"+QString::number(m_currentSource)+"/Limit") ? m_site->value("Urls/"+QString::number(m_currentSource)+"/Limit").toInt() * (m_page - 1) : 0;
+	int pid = m_site->contains("Urls/"+QString::number(m_currentSource)+"/Limit") ? m_site->value("Urls/"+QString::number(m_currentSource)+"/Limit").toInt() * (m_page - 1) : m_imagesPerPage * (m_page - 1);
+	qDebug() << pid << m_imagesPerPage << m_page << m_imagesPerPage * (m_page - 1);
 
 	// Global replace tokens
 	m_originalUrl = QString(url);
@@ -595,7 +596,7 @@ void Page::parse()
 		firstImage = m_imagesPerPage * (m_page - 1);
 		lastImage = m_imagesPerPage;
 	}
-    while (firstImage > 0)
+	while (firstImage > 0 && !m_images.isEmpty())
 	{
 		m_images.removeFirst();
 		firstImage--;

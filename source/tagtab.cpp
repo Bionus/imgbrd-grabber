@@ -171,9 +171,12 @@ void tagTab::updateCheckboxes()
 			if (n < -1 && urls.at(i).indexOf('.', m+1) != -1)
 			{ m = urls.at(i).indexOf('.', m+1); }
 		}
+
+		bool isChecked = m_selectedSources.size() > i ? m_selectedSources.at(i) : false;
 		QCheckBox *c = new QCheckBox(urls.at(i).left(m), this);
-			c->setChecked(m_selectedSources.at(i));
+			c->setChecked(isChecked);
 			ui->layoutSourcesList->addWidget(c);
+
 		m_checkboxes.append(c);
 	}
 	DONE();

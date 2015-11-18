@@ -70,7 +70,7 @@ void SourcesSettingsWindow::deleteSite()
 			QString sites = f.readAll();
 		f.close();
 		sites.replace("\r\n", "\n").replace("\r", "\n").replace("\n", "\r\n");
-		QStringList stes = sites.split("\r\n");
+		QStringList stes = sites.split("\r\n", QString::SkipEmptyParts);
 		stes.removeAll(m_site->url());
 		f.open(QIODevice::WriteOnly);
 			f.write(stes.join("\r\n").toLatin1());
@@ -85,7 +85,7 @@ void SourcesSettingsWindow::testLogin()
 	ui->labelTestCredentials->setText("<i>Connexion...</li>");
 	ui->labelTestLogin->setText("<i>Connexion...</li>");
 	connect(m_site, SIGNAL(loggedIn(Site::LoginResult)), this, SLOT(loginTested(Site::LoginResult)));
-	m_site->login();
+	m_site->login(true);
 }
 void SourcesSettingsWindow::loginTested(Site::LoginResult result)
 {
