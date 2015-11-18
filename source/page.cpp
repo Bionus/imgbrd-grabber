@@ -131,7 +131,6 @@ void Page::fallback(bool bload)
 	QString password = m_site->setting("auth/password", settings.value("Login/password", "").toString()).toString();
 
 	int pid = m_site->contains("Urls/"+QString::number(m_currentSource)+"/Limit") ? m_site->value("Urls/"+QString::number(m_currentSource)+"/Limit").toInt() * (m_page - 1) : m_imagesPerPage * (m_page - 1);
-	qDebug() << pid << m_imagesPerPage << m_page << m_imagesPerPage * (m_page - 1);
 
 	// Global replace tokens
 	m_originalUrl = QString(url);
