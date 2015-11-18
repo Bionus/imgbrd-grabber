@@ -1108,7 +1108,8 @@ void mainWindow::getAll(bool all)
                 downloader->setQuit(false);
                 downloader->getImages();
 
-				int pages = (int)ceil((float)b.at(3).toInt() / b.at(2).toInt());
+				int b2 = b.at(2).toInt();
+				int pages = b2 != 0 ? (int)ceil((float)b.at(3).toInt() / b2) : -1;
 				if (pages <= 0 || b.at(2).toInt() <= 0 || b.at(3).toInt() <= 0)
                     pages = 1;
                 m_progressdialog->setImagesCount(m_progressdialog->count() + pages);
@@ -1484,7 +1485,8 @@ void mainWindow::getAllProgress(Image *img, qint64 bytesReceived, qint64 bytesTo
 	if (m_downloadTimeLast[img->url()]->elapsed() >= 1000)
 	{
 		m_downloadTimeLast[img->url()]->restart();
-		float speed = (bytesReceived * 1000) / m_downloadTime[img->url()]->elapsed();
+		int elapsed = m_downloadTime[img->url()]->elapsed();
+		float speed = elapsed != 0 ? (bytesReceived * 1000) / elapsed : 0;
 		m_progressdialog->speedImage(img->url(), speed);
 	}
 	if (img->fileSize() == 0)
@@ -1492,7 +1494,7 @@ void mainWindow::getAllProgress(Image *img, qint64 bytesReceived, qint64 bytesTo
 		img->setFileSize(bytesTotal);
 		m_progressdialog->sizeImage(img->url(), bytesTotal);
 	}
-	m_progressdialog->statusImage(img->url(), (bytesReceived * 100) / bytesTotal);
+	m_progressdialog->statusImage(img->url(), bytesTotal != 0 ? (bytesReceived * 100) / bytesTotal : 0);
 }
 void mainWindow::getAllPerformTags(Image* img)
 {

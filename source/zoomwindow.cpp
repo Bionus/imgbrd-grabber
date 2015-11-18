@@ -383,7 +383,7 @@ void zoomWindow::sslErrorHandler(QNetworkReply* qnr, QList<QSslError>)
 #define TIME 500
 void zoomWindow::downloadProgress(qint64 bytesReceived, qint64 bytesTotal)
 {
-    if (m_imageTime->elapsed() > TIME || bytesReceived / bytesTotal > PERCENT)
+	if (m_imageTime->elapsed() > TIME || (bytesTotal > 0 && bytesReceived / bytesTotal > PERCENT))
 	{
 		m_imageTime->restart();
 		m_data.append(m_reply->readAll());
@@ -834,7 +834,7 @@ void zoomWindow::resizeEvent(QResizeEvent *e)
 	{
 		if (!m_resizeTimer->isActive())
 		{
-			this->timeout = this->image->width()*this->image->height()/100000;
+			this->timeout = this->image->width()*this->image->height() / 100000;
 			if (this->timeout < 50)		{ this->timeout = 50;	}
 			if (this->timeout > 500)	{ this->timeout = 500;	}
 		}
