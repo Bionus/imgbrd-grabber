@@ -578,6 +578,7 @@ void mainWindow::batchClearSel()
 	for (int i : todelete)
 	{
 		ui->tableBatchUniques->removeRow(i - rem);
+		m_batchs.removeAt(i - rem);
 		rem++;
 	}
 	updateGroupCount();
