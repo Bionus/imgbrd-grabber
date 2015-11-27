@@ -354,11 +354,6 @@ void Page::parse()
 		int errorLine, errorColumn;
 		if (!doc.setContent(m_source, false, &errorMsg, &errorLine, &errorColumn))
 		{
-			QFile file("C:\\Users\\Nicolas\\Desktop\\test.html");
-			file.open(QFile::WriteOnly);
-			file.write(m_source.toUtf8());
-			file.close();
-
 			log(tr("Erreur lors de l'analyse du fichier XML : %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn)));
 			fallback();
 			return;

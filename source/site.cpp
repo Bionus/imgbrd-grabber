@@ -66,6 +66,8 @@ void Site::resetCookieJar()
 	{ m_cookieJar->insertCookie(cookie); }
 
 	m_manager->setCookieJar(m_cookieJar);
+	m_loggedIn = false;
+	m_triedLogin = false;
 }
 
 /**
