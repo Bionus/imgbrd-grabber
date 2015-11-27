@@ -1158,6 +1158,9 @@ void mainWindow::getAllLogin()
 }
 void mainWindow::getAllFinishedLogin(Site *site, Site::LoginResult)
 {
+	if (m_getAllLogins.empty())
+	{ return; }
+
 	m_progressdialog->setValue(m_progressdialog->value() + 1);
 	m_getAllLogins.removeAll(site);
 
