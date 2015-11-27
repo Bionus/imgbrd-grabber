@@ -101,7 +101,9 @@ SOURCES += source/*.cpp vendor/*.cpp
 
 OTHER_FILES += \
     icon.rc \
-    VERSION \
-    LICENSE \
-    README.md \
     .gitignore
+
+DISTFILES += \
+    README.md \
+    LICENSE \
+    NOTICE
