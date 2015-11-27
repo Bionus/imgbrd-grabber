@@ -21,7 +21,14 @@ class startWindow : public QDialog
 		~startWindow();
 
 	public slots:
+		void save();
 		void openOptions();
+		void on_buttonFolder_clicked();
+		void on_buttonFilenamePlus_clicked();
+
+	signals:
+		void languageChanged(QString);
+		void settingsChanged();
 
 	private:
 		Ui::startWindow *ui;

@@ -111,7 +111,7 @@ void mainWindow::init()
 	connect(ui->actionAboutQt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 
 	// Action on first load
-	if (m_settings->value("firstload", true).toBool())
+	if (m_settings->value("firstload", true).toBool() || true)
 	{
 		this->onFirstLoad();
 		m_settings->setValue("firstload", false);
