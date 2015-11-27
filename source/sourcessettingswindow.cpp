@@ -85,9 +85,9 @@ void SourcesSettingsWindow::addCookie()
 
 void SourcesSettingsWindow::on_buttonAuthHash_clicked()
 {
-	QString password = QInputDialog::getText(this, tr("Hasher un mot de passe"), tr("Veuillez entrer votre mot de passe, dans le format adapté.<br/>Par exemple, pour danbooru, le format est \"%1\" (sans les guillemets).").arg("choujin-steiner--%1--").arg(tr("VOTRE_MOT_DE_PASSE")));
+	QString password = QInputDialog::getText(this, tr("Hasher un mot de passe"), tr("Veuillez entrer votre mot de passe ci-dessous.<br/>Il sera ensuite hashé en utilisant le format \"%1\".").arg(m_site->value("PasswordSalt")));
 	if (!password.isEmpty())
-	{ ui->lineAuthPassword->setText(QCryptographicHash::hash(password.toUtf8(), QCryptographicHash::Sha1).toHex()); }
+	{ ui->lineAuthPassword->setText(QCryptographicHash::hash(m_site->value("PasswordSalt").replace("%password%", password).toUtf8(), QCryptographicHash::Sha1).toHex()); }
 }
 
 void SourcesSettingsWindow::deleteSite()
