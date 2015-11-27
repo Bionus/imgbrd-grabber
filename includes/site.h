@@ -38,6 +38,7 @@ class Site : public QObject
 		QString url();
 		QString updateVersion();
 		QNetworkReply *loginReply();
+		QList<QNetworkCookie> cookies();
 		bool contains(QString);
 		QString value(QString);
 		QString operator[](QString key) { return value(key); }
@@ -73,6 +74,7 @@ class Site : public QObject
 		QString m_name;
 		QString m_url;
 		QMap<QString,QString> m_data;
+		QList<QNetworkCookie> m_cookies;
 		QSettings *m_settings;
 		QString m_sessionId;
 		QNetworkAccessManager *m_manager;

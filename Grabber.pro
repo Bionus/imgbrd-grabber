@@ -16,7 +16,7 @@ T = $$(TRAVIS)
 
 # Global
 TARGET = Grabber
-APP_VERSION = \\\"4.1.9\\\"
+APP_VERSION = \\\"4.2.0\\\"
 
 # General
 TEMPLATE = app
