@@ -912,7 +912,8 @@ void Image::finishedImageS()
 			nextext["jpg"] = "png";
 			nextext["png"] = "gif";
 			nextext["gif"] = "jpeg";
-			nextext["jpeg"] = "webm";
+			nextext["jpeg"] = "swf";
+			nextext["swf"] = "webm";
 			setUrl(m_url.section('.', 0, -2)+"."+nextext[ext]);
 			log(tr("Image non trouvée. Nouvel essai avec l'extension %1...").arg(nextext[ext]));
 		}
