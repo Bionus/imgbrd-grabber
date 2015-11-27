@@ -3,6 +3,8 @@
 
 #include <QWidget>
 #include <QList>
+#include <QCheckBox>
+#include <QMap>
 #include "QBouton.h"
 #include "image.h"
 
@@ -13,7 +15,7 @@ class searchTab : public QWidget
     Q_OBJECT
 
     public:
-        searchTab(int id, QWidget *parent = 0);
+		searchTab(int id, QMap<QString,Site*> *sites, QWidget *parent = 0);
         ~searchTab();
 		virtual QList<bool> sources();
         virtual QString tags() = 0;
@@ -22,9 +24,9 @@ class searchTab : public QWidget
 		virtual int imagesPerPage() = 0;
 		virtual int columns() = 0;
 		virtual QString postFilter() = 0;
-        virtual void optionsChanged() = 0;
-        virtual void updateCheckboxes() = 0;
+		virtual void optionsChanged() = 0;
 		virtual void setTags(QString) = 0;
+		virtual void updateCheckboxes() = 0;
 		void selectImage(Image*);
 		void unselectImage(Image*);
 		void toggleImage(Image*);
@@ -35,6 +37,11 @@ class searchTab : public QWidget
 		virtual void setColumns(int columns) = 0;
 		virtual void setPostFilter(QString postfilter) = 0;
 
+	public slots:
+		// Sources
+		void openSourcesWindow();
+		void saveSources(QList<bool>);
+
     signals:
         void titleChanged(searchTab*);
         void changed(searchTab*);
@@ -42,11 +49,13 @@ class searchTab : public QWidget
         void deleted(int);
 
 	protected:
-		int				m_id;
-		QList<QBouton*>	m_boutons;
-		QStringList		m_selectedImages;
-		QList<Image*>	m_selectedImagesPtrs;
-		QList<bool>		m_selectedSources;
+		int					m_id;
+		QList<QBouton*>		m_boutons;
+		QStringList			m_selectedImages;
+		QList<Image*>		m_selectedImagesPtrs;
+		QList<bool>			m_selectedSources;
+		QMap<QString,Site*>	*m_sites;
+		QList<QCheckBox*>	m_checkboxes;
 };
 
 #endif // SEARCHTAB_H

@@ -299,7 +299,10 @@ void mainWindow::onFirstLoad()
 		}
 	}
 
-	startWindow *swin = new startWindow(this);
+	startWindow *swin = new startWindow(&m_sites, this);
+	connect(swin, SIGNAL(languageChanged(QString)), this, SLOT(loadLanguage(QString)));
+	connect(swin, &startWindow::settingsChanged, this, &mainWindow::on_buttonInitSettings_clicked);
+	connect(swin, &startWindow::sourceChanged, this, &mainWindow::setSource);
 	swin->show();
 }
 
@@ -920,11 +923,13 @@ void mainWindow::closeEvent(QCloseEvent *e)
 void mainWindow::options()
 {
 	log(tr("Ouverture de la fenêtre des options..."));
+
 	optionsWindow *options = new optionsWindow(this);
 	connect(options, SIGNAL(languageChanged(QString)), this, SLOT(loadLanguage(QString)));
-	connect(options, SIGNAL(settingsChanged()), this, SLOT(on_buttonInitSettings_clicked()));
-	connect(options, SIGNAL(accepted()), this, SLOT(optionsClosed()));
+	connect(options, &optionsWindow::settingsChanged, this, &mainWindow::on_buttonInitSettings_clicked);
+	connect(options, &QDialog::accepted, this, &mainWindow::optionsClosed);
 	options->show();
+
 	DONE();
 }
 
@@ -947,13 +952,31 @@ void mainWindow::saveAdvanced(sourcesWindow *w)
 {
 	log(tr("Sauvegarde des nouvelles sources..."));
 	m_selectedSources = w->getSelected();
+
 	QString sav;
 	for (int i = 0; i < m_selectedSources.count(); i++)
 	{ sav += (m_selectedSources.at(i) ? "1" : "0"); }
 	m_settings->setValue("sites", sav);
+
 	for (int i = 0; i < m_tabs.count(); i++)
 	{ m_tabs[i]->updateCheckboxes(); }
+
 	DONE();
+}
+
+void mainWindow::setSource(QString source)
+{
+	if (m_tabs.size() < 1)
+		return;
+
+	qDebug() << source;
+
+	QList<bool> sel;
+	QStringList keys = m_sites.keys();
+	for (QString key : keys)
+	{ sel.append(key == source); }
+
+	m_tabs[0]->saveSources(sel);
 }
 
 void mainWindow::aboutAuthor()

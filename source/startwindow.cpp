@@ -14,7 +14,7 @@
  *
  * @param parent	The parent window
  */
-startWindow::startWindow(QWidget *parent) : QDialog(parent), ui(new Ui::startWindow)
+startWindow::startWindow(QMap<QString, Site*> *sites, QWidget *parent) : QDialog(parent), ui(new Ui::startWindow), m_sites(sites)
 {
 	ui->setupUi(this);
 
@@ -24,9 +24,13 @@ startWindow::startWindow(QWidget *parent) : QDialog(parent), ui(new Ui::startWin
 	{ languages[i].remove(".qm", Qt::CaseInsensitive); }
 	ui->comboLanguage->addItems(languages);
 
+	// Sources
+	QStringList sources = m_sites->keys();
+	ui->comboSource->addItems(sources);
+
 	// Default values
 	QDir desktop(QStandardPaths::writableLocation(QStandardPaths::DesktopLocation));
-	ui->lineFolder->setText(desktop.absoluteFilePath("Grabber/"));
+	ui->lineFolder->setText(desktop.absoluteFilePath("Grabber"));
 	ui->lineFilename->setText("%md5%.%ext%");
 
 	connect(this, &QDialog::accepted, this, &startWindow::save);
@@ -91,6 +95,8 @@ void startWindow::save()
 		settings.setValue("language", lang);
 		emit languageChanged(lang);
 	}
+
+	emit sourceChanged(ui->comboSource->currentText());
 
 	settings.sync();
 	emit settingsChanged();

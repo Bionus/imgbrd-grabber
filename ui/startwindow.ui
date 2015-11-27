@@ -10,17 +10,17 @@
     <x>0</x>
     <y>0</y>
     <width>395</width>
-    <height>201</height>
+    <height>206</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Grabber - Premier lancement</string>
+   <string>Premier lancement</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1,0">
    <item>
     <widget class="QLabel" name="welcomeLabel">
      <property name="text">
-      <string>Avant de commencer, le programme a besoin de quelques informations nécéssaires à son bon fonctionnement. Vous pouvez ignorer cette étape, et les dites informations vous seront demandées en temps et en heure.</string>
+      <string>Avant de commencer, le programme a besoin de quelques informations nécéssaires à son bon fonctionnement. Vous pouvez ignorer cette étape, et ces informations vous seront demandées en temps et en heure.</string>
      </property>
      <property name="textFormat">
       <enum>Qt::AutoText</enum>

@@ -2,6 +2,7 @@
 #define STARTWINDOW_H
 
 #include <QDialog>
+#include "site.h"
 
 
 
@@ -17,7 +18,7 @@ class startWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		startWindow(QWidget *parent);
+		startWindow(QMap<QString, Site*> *sites, QWidget *parent);
 		~startWindow();
 
 	public slots:
@@ -27,11 +28,13 @@ class startWindow : public QDialog
 		void on_buttonFilenamePlus_clicked();
 
 	signals:
+		void sourceChanged(QString);
 		void languageChanged(QString);
 		void settingsChanged();
 
 	private:
 		Ui::startWindow *ui;
+		QMap<QString, Site*> *m_sites;
 
 };
 

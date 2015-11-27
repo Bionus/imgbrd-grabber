@@ -144,6 +144,7 @@ class mainWindow : public QMainWindow
 		void loadSites();
 		void imageUrlChanged(QString, QString);
 		void updateCompleters();
+		void setSource(QString site);
 		void saveImage(Image *img, QNetworkReply *reply = NULL, QString path = "", QString p = "", bool getAll = true);
 
     private:

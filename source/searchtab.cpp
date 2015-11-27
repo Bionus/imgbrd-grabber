@@ -1,8 +1,10 @@
 #include "searchtab.h"
+#include "sourceswindow.h"
+#include "functions.h"
 
 
 
-searchTab::searchTab(int id, QWidget *parent) : QWidget(parent), m_id(id)
+searchTab::searchTab(int id, QMap<QString,Site*> *sites, QWidget *parent) : QWidget(parent), m_id(id), m_sites(sites)
 { }
 searchTab::~searchTab()
 { emit deleted(m_id); }
@@ -38,6 +40,27 @@ void searchTab::toggleImage(Image *img)
 		m_selectedImagesPtrs.append(img);
 		m_selectedImages.append(img->url());
 	}
+}
+
+
+
+void searchTab::openSourcesWindow()
+{
+	sourcesWindow *adv = new sourcesWindow(m_selectedSources, m_sites, this);
+	connect(adv, SIGNAL(valid(QList<bool>)), this, SLOT(saveSources(QList<bool>)));
+	adv->show();
+}
+void searchTab::saveSources(QList<bool> sel)
+{
+	log(tr("Sauvegarde des sources..."));
+	m_selectedSources = sel;
+	QString sav;
+	for (int i = 0; i < m_selectedSources.count(); i++)
+	{ sav += (m_selectedSources.at(i) ? "1" : "0"); }
+	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
+	settings.setValue("sites", sav);
+	DONE();
+	updateCheckboxes();
 }
 
 void searchTab::setSources(QList<bool> sources)

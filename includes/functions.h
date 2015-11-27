@@ -10,6 +10,8 @@
 #include <algorithm>
 #include <QString>
 
+#define DONE()	logUpdate(QObject::tr(" Fait"))
+
 
 
 enum Log
