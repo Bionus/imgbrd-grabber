@@ -21,15 +21,17 @@ FilenameWindow::FilenameWindow(QString value, QWidget *parent) : QDialog(parent)
 	{
 		value = value.right(value.length() - 11);
 		m_scintilla->setText(value);
+		ui->lineClassic->setEnabled(false);
 		ui->radioJavascript->toggle();
 	}
 	else
 	{
 		ui->lineClassic->setText(value);
+		m_scintilla->setEnabled(false);
 		ui->radioClassic->toggle();
 	}
 
-	connect(this, SIGNAL(accepted()), this, SLOT(send()));
+	connect(this, &QDialog::accepted, this, &FilenameWindow::send);
 }
 
 FilenameWindow::~FilenameWindow()
@@ -104,10 +106,15 @@ void FilenameWindow::on_buttonHelpJavascript_clicked()
 
 void FilenameWindow::send()
 {
-	#if USE_QSCINTILLA
-		QString text = m_scintilla->text();
-	#else
-		QString text = m_scintilla->toPlainText();
-	#endif
-	emit validated(ui->radioJavascript->isChecked() ? "javascript:"+text : text);
+	if (ui->radioJavascript->isChecked())
+	{
+		#if USE_QSCINTILLA
+			QString text = m_scintilla->text();
+		#else
+			QString text = m_scintilla->toPlainText();
+		#endif
+		emit validated("javascript:"+text);
+	}
+	else
+	{ emit validated(ui->lineClassic->text()); }
 }
