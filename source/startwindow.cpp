@@ -23,10 +23,14 @@ startWindow::startWindow(QMap<QString, Site*> *sites, QWidget *parent) : QDialog
 	for (int i = 0; i < languages.count(); i++)
 	{ languages[i].remove(".qm", Qt::CaseInsensitive); }
 	ui->comboLanguage->addItems(languages);
+	if (languages.contains("English"))
+	{ ui->comboLanguage->setCurrentText("English"); }
 
 	// Sources
 	QStringList sources = m_sites->keys();
 	ui->comboSource->addItems(sources);
+	if (sources.contains("danbooru.donmai.us"))
+	{ ui->comboSource->setCurrentText("danbooru.donmai.us"); }
 
 	// Default values
 	QDir desktop(QStandardPaths::writableLocation(QStandardPaths::DesktopLocation));
