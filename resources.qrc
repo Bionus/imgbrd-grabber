@@ -35,5 +35,14 @@
         <file>images/colors/black.png</file>
         <file>sounds/finished.wav</file>
         <file>images/icons/browser.png</file>
+        <file>images/icons/about.png</file>
+        <file>images/icons/exit.png</file>
+        <file>images/icons/folder-document.png</file>
+        <file>images/icons/folder-images.png</file>
+        <file>images/icons/gear.png</file>
+        <file>images/icons/qt.png</file>
+        <file>images/icons/settings.png</file>
+        <file>images/icons/tab-minus.png</file>
+        <file>images/icons/tab-plus.png</file>
     </qresource>
 </RCC>

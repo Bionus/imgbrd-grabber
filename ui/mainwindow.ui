@@ -879,6 +879,10 @@
    </widget>
   </widget>
   <action name="actionOptions">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/images/icons/settings.png</normaloff>:/images/icons/settings.png</iconset>
+   </property>
    <property name="text">
     <string>Options</string>
    </property>
@@ -887,31 +891,55 @@
    </property>
   </action>
   <action name="actionFolder">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/images/icons/folder-images.png</normaloff>:/images/icons/folder-images.png</iconset>
+   </property>
    <property name="text">
     <string>Ouvrir le dossier de destination</string>
    </property>
   </action>
   <action name="actionQuit">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/images/icons/exit.png</normaloff>:/images/icons/exit.png</iconset>
+   </property>
    <property name="text">
     <string>Quitter</string>
    </property>
   </action>
   <action name="actionAboutGrabber">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/images/icons/about.png</normaloff>:/images/icons/about.png</iconset>
+   </property>
    <property name="text">
     <string>À propos de Grabber</string>
    </property>
   </action>
   <action name="actionAboutQt">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/images/icons/qt.png</normaloff>:/images/icons/qt.png</iconset>
+   </property>
    <property name="text">
     <string>À propos de Qt</string>
    </property>
   </action>
   <action name="actionAddtab">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/images/icons/tab-plus.png</normaloff>:/images/icons/tab-plus.png</iconset>
+   </property>
    <property name="text">
     <string>Nouvel onglet</string>
    </property>
   </action>
   <action name="actionClosetab">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/images/icons/tab-minus.png</normaloff>:/images/icons/tab-minus.png</iconset>
+   </property>
    <property name="text">
     <string>Fermer l'onglet</string>
    </property>
@@ -970,6 +998,10 @@
    </property>
   </action>
   <action name="actionSettingsFolder">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/images/icons/folder-document.png</normaloff>:/images/icons/folder-document.png</iconset>
+   </property>
    <property name="text">
     <string>Ouvrir le dossier des options</string>
    </property>
