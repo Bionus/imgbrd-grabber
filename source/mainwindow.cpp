@@ -1061,10 +1061,6 @@ void mainWindow::getAll(bool all)
 	count = selected.size();
 	m_batchDownloading.clear();
 
-	connect(m_progressdialog, SIGNAL(rejected()), this, SLOT(getAllCancel()));
-	m_progressdialog->clear();
-	m_progressdialog->setText(tr("Téléchargement des pages, veuillez patienter..."));
-
 	QSet<int> todownload = QSet<int>();
 	for (int i = 0; i < count; i++)
 		if (!todownload.contains(selected.at(i)->row()))
@@ -1074,7 +1070,7 @@ void mainWindow::getAll(bool all)
 	{
 		m_progressdialog->setImagesCount(0);
 		int active = 0;
-        for (int j = 0; j < m_groupBatchs.count(); ++j)
+		for (int j = 0; j < m_groupBatchs.count(); ++j)
 		{
 			if (m_groupBatchs[j][m_groupBatchs[j].count() - 1] == "true" && (all || todownload.contains(j)))
 			{
@@ -1086,33 +1082,32 @@ void mainWindow::getAll(bool all)
 				}
 
 				QStringList b = m_groupBatchs.at(j);
-                Downloader *downloader = new Downloader(b.at(0).split(' '),
-                                                        QStringList(),
-                                                        QStringList(b.at(5)),
-                                                        b.at(1).toInt(),
-                                                        b.at(3).toInt(),
-                                                        b.at(2).toInt(),
-                                                        b.at(7),
-                                                        b.at(6),
-                                                        m_settings->value("login/pseudo").toString(),
-                                                        m_settings->value("login/password").toString(),
-                                                        b.at(4) == "true",
+				Downloader *downloader = new Downloader(b.at(0).split(' '),
+														QStringList(),
+														QStringList(b.at(5)),
+														b.at(1).toInt(),
+														b.at(3).toInt(),
+														b.at(2).toInt(),
+														b.at(7),
+														b.at(6),
+														m_settings->value("login/pseudo").toString(),
+														m_settings->value("login/password").toString(),
+														b.at(4) == "true",
 														m_settings->value("blacklistedtags").toString().split(' '),
-                                                        false,
-                                                        0,
+														false,
+														0,
 														"");
-                connect(downloader, &Downloader::finishedImages, this, &mainWindow::getAllFinishedImages);
-                connect(downloader, &Downloader::finishedImagesPage, this, &mainWindow::getAllFinishedPage);
-                m_downloaders.append(downloader);
+				connect(downloader, &Downloader::finishedImages, this, &mainWindow::getAllFinishedImages);
+				connect(downloader, &Downloader::finishedImagesPage, this, &mainWindow::getAllFinishedPage);
+				m_downloaders.append(downloader);
 				downloader->setData(j);
-                downloader->setQuit(false);
-                downloader->getImages();
+				downloader->setQuit(false);
 
 				int b2 = b.at(2).toInt();
 				int pages = b2 != 0 ? (int)ceil((float)b.at(3).toInt() / b2) : -1;
 				if (pages <= 0 || b.at(2).toInt() <= 0 || b.at(3).toInt() <= 0)
-                    pages = 1;
-                m_progressdialog->setImagesCount(m_progressdialog->count() + pages);
+					pages = 1;
+				m_progressdialog->setImagesCount(m_progressdialog->count() + pages);
 
 				m_getAllLimit += b.at(3).toDouble();
 				m_batchDownloading.insert(j);
@@ -1121,24 +1116,82 @@ void mainWindow::getAll(bool all)
 		}
 	}
 
-    //if (m_getAllPages.isEmpty())
-    if (m_downloaders.isEmpty())
+	connect(m_progressdialog, SIGNAL(rejected()), this, SLOT(getAllCancel()));
+
+	if (m_downloaders.isEmpty() && m_getAllRemaining.isEmpty())
 	{
-		if (m_getAllRemaining.isEmpty())
+		m_getAll = false;
+		ui->widgetDownloadButtons->setEnabled(true);
+		return;
+	}
+
+	getAllLogin();
+}
+
+void mainWindow::getAllLogin()
+{
+	m_progressdialog->clear();
+	m_progressdialog->setText(tr("Connexion aux sources, veuillez patienter..."));
+
+	m_getAllLogins.clear();
+	for (Downloader *downloader : m_downloaders)
+	{
+		for (Site *site : *downloader->getSites())
 		{
-			m_getAll = false;
-			ui->widgetDownloadButtons->setEnabled(true);
-            return;
-		}
-		else
-		{
-			m_batchAutomaticRetries = m_settings->value("Save/automaticretries", 0).toInt();
-			getAllImages();
+			if (!m_getAllLogins.contains(site))
+			{ m_getAllLogins.append(site); }
 		}
 	}
 
+	if (m_getAllLogins.empty())
+	{
+		getAllFinishedLogins();
+		return;
+	}
+
+	m_progressdialog->setMaximum(m_getAllLogins.count());
+	for (Site *site : m_getAllLogins)
+	{
+		connect(site, &Site::loggedIn, this, &mainWindow::getAllFinishedLogin);
+		site->login();
+	}
+}
+void mainWindow::getAllFinishedLogin(Site *site, Site::LoginResult)
+{
+	if (m_getAllLogins.empty())
+	{ return; }
+
+	m_progressdialog->setValue(m_progressdialog->value() + 1);
+	m_getAllLogins.removeAll(site);
+
+	if (m_getAllLogins.empty())
+	{ getAllFinishedLogins(); }
+}
+
+void mainWindow::getAllFinishedLogins()
+{
+	getAllGetPages();
+}
+
+void mainWindow::getAllGetPages()
+{
+	m_progressdialog->clear();
+	m_progressdialog->setText(tr("Téléchargement des pages, veuillez patienter..."));
+
+	// Only images to download
+	if (m_downloaders.isEmpty())
+	{
+		m_batchAutomaticRetries = m_settings->value("Save/automaticretries", 0).toInt();
+		getAllImages();
+	}
+	else
+	{
+		for (Downloader *downloader : m_downloaders)
+		{ downloader->getImages(); }
+	}
+
 	m_progressdialog->show();
-    logShow();
+	logShow();
 }
 
 /**

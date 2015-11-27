@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>267</height>
+    <height>272</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,7 +21,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>3</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tabGeneral">
       <attribute name="title">
@@ -466,8 +466,8 @@
       <attribute name="title">
        <string>Connexion</string>
       </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
-       <item>
+      <layout class="QFormLayout" name="formLayout_7">
+       <item row="0" column="0" colspan="2">
         <widget class="QCheckBox" name="checkLoginParameter">
          <property name="text">
           <string>Passage dans l'url</string>
@@ -477,7 +477,7 @@
          </property>
         </widget>
        </item>
-       <item>
+       <item row="1" column="0" colspan="2">
         <widget class="QWidget" name="widget_2" native="true">
          <property name="enabled">
           <bool>false</bool>
@@ -552,8 +552,8 @@
          </layout>
         </widget>
        </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="1,0">
+       <item row="3" column="0" colspan="2">
+        <layout class="QHBoxLayout" name="layoutTestLogin" stretch="1,0">
          <item>
           <widget class="QLabel" name="labelTestLogin">
            <property name="text">
@@ -569,6 +569,16 @@
           </widget>
          </item>
         </layout>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_5">
+         <property name="text">
+          <string>Cookie</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLineEdit" name="lineLoginCookie"/>
        </item>
       </layout>
      </widget>

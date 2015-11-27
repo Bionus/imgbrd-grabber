@@ -251,17 +251,20 @@ QString _parseSetImageUrl(Site* site, QString setting, QString ret, QMap<QString
         else
 		{
 			QStringList options = site->value(setting).split('|');
-			for (QString ret : options)
+			for (QString opt : options)
 			{
-				ret.replace("{id}", d->value("id"))
+				opt.replace("{id}", d->value("id"))
 				.replace("{md5}", d->value("md5"))
 				.replace("{ext}", d->value("ext"));
 
-				if (!ret.endsWith("/." + d->value("ext")))
+				if (!opt.endsWith("/." + d->value("ext")) && !opt.contains('{'))
+				{
+					ret = opt;
 					break;
+				}
 			}
         }
-    }
+	}
 	return site->fixUrl(ret).toString();
 }
 
@@ -351,6 +354,11 @@ void Page::parse()
 		int errorLine, errorColumn;
 		if (!doc.setContent(m_source, false, &errorMsg, &errorLine, &errorColumn))
 		{
+			QFile file("C:\\Users\\Nicolas\\Desktop\\test.html");
+			file.open(QFile::WriteOnly);
+			file.write(m_source.toUtf8());
+			file.close();
+
 			log(tr("Erreur lors de l'analyse du fichier XML : %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn)));
 			fallback();
 			return;

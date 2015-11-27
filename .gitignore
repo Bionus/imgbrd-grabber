@@ -18,7 +18,7 @@ release/lastdump
 release/crashes/
 release/thumbs/
 release/crashreporter/
-release/sites/Danbooru (2.0)/danbooru.donmai.us/
+release/sites/*/*/settings.ini
 releases/Grabber_*.tar.gz
 releases/Grabber_*.exe
 releases/Grabber_*.rar

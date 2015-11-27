@@ -59,8 +59,11 @@ class Site : public QObject
 		void loadTags(int page, int limit);
 		void finishedTags();
 
+	protected:
+		void resetCookieJar();
+
 	signals:
-		void loggedIn(Site::LoginResult);
+		void loggedIn(Site*, Site::LoginResult);
 		void finished(QNetworkReply*);
 		void checkForUpdatesFinished(Site*);
 		void finishedLoadingTags(QList<Tag>);
@@ -73,7 +76,7 @@ class Site : public QObject
 		QSettings *m_settings;
 		QString m_sessionId;
 		QNetworkAccessManager *m_manager;
-        QNetworkCookieJar *m_cookieJar;
+		QNetworkCookieJar *m_cookieJar;
 		QNetworkReply *m_loginReply, *m_updateReply, *m_tagsReply;
 		bool m_loggedIn, m_triedLogin, m_loginCheck;
 		QString m_updateVersion;

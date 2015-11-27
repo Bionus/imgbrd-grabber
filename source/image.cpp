@@ -144,6 +144,13 @@ Image::Image(QMap<QString, QString> details, Page* parent)
 		}
 	}
 
+	// Guess the extension from the URL and tags
+	ext = getExtension(m_url);
+	if ((hasTag("gif") || hasTag("animated_gif")) && ext != "gif" && ext != "webm")
+	{ setFileExtension("gif"); }
+	else if (hasTag("webm") && ext != "gif" && ext != "webm")
+	{ setFileExtension("webm"); }
+
 	// Creation date
 	m_createdAt = QDateTime();
 	if (details.contains("created_at"))
@@ -657,8 +664,6 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 	{ copyrights = details["copyrights"]; }
 
 	QString ext = getExtension(m_url);
-	if ((details["alls"].contains("gif") || details["alls"].contains("animated")) && ext != "gif" && ext != "webm")
-	{ ext = "gif"; }
 
 	QString tagSeparator = settings.value("separator").toString();
 	QRegularExpression poolRegexp("pool:(\\d+)");
@@ -907,7 +912,8 @@ void Image::finishedImageS()
 			nextext["jpg"] = "png";
 			nextext["png"] = "gif";
 			nextext["gif"] = "jpeg";
-			nextext["jpeg"] = "webm";
+			nextext["jpeg"] = "swf";
+			nextext["swf"] = "webm";
 			setUrl(m_url.section('.', 0, -2)+"."+nextext[ext]);
 			log(tr("Image non trouvée. Nouvel essai avec l'extension %1...").arg(nextext[ext]));
 		}

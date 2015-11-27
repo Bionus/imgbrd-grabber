@@ -104,6 +104,10 @@ class mainWindow : public QMainWindow
         void getAllProgress(Image*, qint64, qint64);
 		void getAllCancel();
 		void getAllPause();
+		void getAllLogin();
+		void getAllGetPages();
+		void getAllFinishedLogin(Site *site, Site::LoginResult result);
+		void getAllFinishedLogins();
 		void _getAll();
 		// Tabs
 		int addTab(QString tag = "");
@@ -176,6 +180,7 @@ class mainWindow : public QMainWindow
 		QSet<int>						m_batchDownloading;
 		QStringList			m_lineFilename_completer, m_lineFolder_completer;
 		QList<Downloader*>  m_downloaders, m_downloadersDone;
+		QList<Site*>		m_getAllLogins;
 		int					m_batchAutomaticRetries;
 };
 

@@ -471,6 +471,13 @@ void zoomWindow::replyFinished(Image* img)
 			ui->buttonSaveNQuitFav->setText(tr("Fermer (fav)"));
 		}
 		m_source = !file1notexists ? source1 : source2;
+		log(tr("Image chargée depuis le fichier <a href=\"file:///%1\">%1</a>").arg(m_source));
+
+		// Fix extension when it should be guessed
+		QString fext = m_source.section('.', -1);
+		m_url = m_url.section('.', 0, -2) + "." + fext;
+		m_image->setFileExtension(fext);
+
 		if (m_url.section('.', -1).toUpper() == "GIF")
 		{
 			this->movie = new QMovie(m_source, QByteArray(), this);

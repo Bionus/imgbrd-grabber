@@ -10,39 +10,71 @@
 
 
 
-Site::Site(QString type, QString url, QMap<QString, QString> data) : m_type(type), m_url(url), m_data(data), m_manager(NULL), m_loggedIn(false), m_triedLogin(false), m_loginCheck(false), m_updateVersion("")
-{ load(); }
+Site::Site(QString type, QString url, QMap<QString, QString> data) : m_type(type), m_url(url), m_data(data), m_settings(nullptr), m_manager(nullptr), m_cookieJar(nullptr), m_loggedIn(false), m_triedLogin(false), m_loginCheck(false), m_updateVersion("")
+{
+	load();
+}
+
 Site::~Site()
 {
     delete m_settings;
-    /*delete m_manager;
-    delete m_cookieJar;*/
+	//delete m_manager->deleteLater();
+	//delete m_cookieJar->deleteLater();
 }
+
+/**
+ * Load or reload the settings.
+ */
 void Site::load()
 {
+	// Delete settings if necessary
+	if (m_cookieJar != nullptr)
+	{ m_settings->deleteLater(); }
+
 	m_settings = new QSettings(savePath("sites/"+m_type+"/"+m_url+"/settings.ini"), QSettings::IniFormat);
 	m_name = m_settings->value("name", m_url).toString();
 }
 
+/**
+ * Initialize or reset the site's cookie jar.
+ */
+void Site::resetCookieJar()
+{
+	// Delete cookie jar if necessary
+	if (m_cookieJar != nullptr)
+	{ m_cookieJar->deleteLater(); }
+
+	m_cookieJar = new QNetworkCookieJar(this);
+
+	// Hotfix for "giantessbooru.com"
+	QNetworkCookie cookie("agreed", "true");
+	cookie.setPath("/");
+	cookie.setDomain("giantessbooru.com");
+	m_cookieJar->insertCookie(cookie);
+
+	m_manager->setCookieJar(m_cookieJar);
+}
+
+/**
+ * Initialize the network manager.
+ */
 void Site::initManager()
 {
-	if (m_manager == NULL)
+	if (m_manager == nullptr)
 	{
-        m_cookieJar = new QNetworkCookieJar(this);
-
-		// Hotfix "giantessbooru.com"
-		QNetworkCookie cookie("agreed", "true");
-		cookie.setPath("/");
-		cookie.setDomain("giantessbooru.com");
-		m_cookieJar->insertCookie(cookie);
-
 		m_manager = new QNetworkAccessManager(this);
-		m_manager->setCookieJar(m_cookieJar);
 		connect(m_manager, SIGNAL(finished(QNetworkReply*)), this, SIGNAL(finished(QNetworkReply*)));
 		connect(m_manager, SIGNAL(sslErrors(QNetworkReply*,QList<QSslError>)), this, SLOT(sslErrorHandler(QNetworkReply*,QList<QSslError>)));
+
+		resetCookieJar();
 	}
 }
 
+/**
+ * Try to log into the website.
+ *
+ * @param force	Whether to force login or not
+ */
 void Site::login(bool force)
 {
 	if (!m_settings->value("login/parameter").toBool() && (force || (!m_loggedIn && !m_triedLogin)))
@@ -51,6 +83,9 @@ void Site::login(bool force)
 		{
 			log(tr("Connexion à %1 (%2)...").arg(m_name, m_url));
 			initManager();
+
+			if (force)
+			{ resetCookieJar(); }
 
 			m_triedLogin = true;
 
@@ -87,17 +122,38 @@ void Site::login(bool force)
 		}
 	}
 
-	emit loggedIn(LoginNoLogin);
+	emit loggedIn(this, LoginNoLogin);
 }
+
+/**
+ * Called when the login try is finished.
+ */
 void Site::loginFinished()
 {
-	m_loggedIn = !m_cookieJar->cookiesForUrl(m_loginReply->url()).isEmpty();
+	m_loggedIn = false;
+	QString cookiename = m_settings->value("login/cookie", "").toString();
 
-	log(tr("Connexion à %1 (%2) terminée (%3).").arg(m_name, m_url, m_loggedIn ? "succès" : "échec"));
+	QList<QNetworkCookie> cookies = m_cookieJar->cookiesForUrl(m_loginReply->url());
+	for (QNetworkCookie cookie : cookies)
+	{
+		if (cookie.name() == cookiename && !cookie.value().isEmpty())
+		{ m_loggedIn = true; }
+	}
 
-	emit loggedIn(m_loggedIn ? LoginSuccess : LoginError);
+	log(tr("Connexion à %1 (%2) terminée (%3).").arg(m_name, m_url, m_loggedIn ? tr("succès") : tr("échec")));
+
+	emit loggedIn(this, m_loggedIn ? LoginSuccess : LoginError);
 }
 
+/**
+ * Get an URL from the site.
+ *
+ * @param url	The URL to get
+ * @param page	The related page
+ * @param ref	The type of referer to use (page, image, etc.)
+ * @param img	The related image
+ * @return		The equivalent network request
+ */
 QNetworkReply *Site::get(QUrl url, Page *page, QString ref, Image *img)
 {
 	if (!m_loggedIn && !m_triedLogin)
@@ -129,22 +185,42 @@ QNetworkReply *Site::get(QUrl url, Page *page, QString ref, Image *img)
 	initManager();
 	return m_manager->get(request);
 }
+
+/**
+ * Log SSL errors in debug mode only.
+ *
+ * @param qnr		The network reply who generated the SSL errors
+ * @param errors	The list of SSL errors that occured
+ */
 void Site::sslErrorHandler(QNetworkReply* qnr, QList<QSslError> errors)
 { qDebug() << errors; qnr->ignoreSslErrors(); }
+
+/**
+ * Called when a reply is finished.
+ *
+ * @param r	The finished reply
+ */
 void Site::finishedReply(QNetworkReply *r)
 {
 	if (r != m_loginReply)
         emit finished(r);
 }
 
+/**
+ * Check if an update is available for this source's model file.
+ */
 void Site::checkForUpdates()
 {
-	QString path = m_settings->value("models", "http://imgbrd-grabber.googlecode.com/svn/trunk/release/sites/").toString();
+	QString path = m_settings->value("models", "https://raw.githubusercontent.com/Bionus/imgbrd-grabber/master/release/sites/").toString();
 	QString url = path + m_type + "/model.xml";
 	initManager();
 	m_updateReply = m_manager->get(QNetworkRequest(QUrl(url)));
 	connect(m_updateReply, SIGNAL(finished()), this, SLOT(checkForUpdatesDone()));
 }
+
+/**
+ * Called when the update check is finished.
+ */
 void Site::checkForUpdatesDone()
 {
 	QString source = m_updateReply->readAll();
@@ -314,6 +390,7 @@ QUrl Site::fixUrl(QString url)
 {
 	return this->fixUrl(url, QUrl());
 }
+
 QUrl Site::fixUrl(QString url, QUrl old)
 {
 	QString protocol = (m_settings->value("ssl", false).toBool() ? "https" : "http");
@@ -333,4 +410,7 @@ QUrl Site::fixUrl(QString url, QUrl old)
     return QUrl(url);
 }
 
-QNetworkReply *Site::loginReply()	{ return m_loginReply; }
+QNetworkReply *Site::loginReply()
+{
+	return m_loginReply;
+}

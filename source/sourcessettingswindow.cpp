@@ -14,6 +14,7 @@ SourcesSettingsWindow::SourcesSettingsWindow(Site *site, QWidget *parent) : QDia
 	QSettings settings(savePath("sites/"+m_site->type()+"/"+m_site->url()+"/settings.ini"), QSettings::IniFormat);
 	QSettings global(savePath("settings.ini"), QSettings::IniFormat);
 
+	// Refferers
 	ui->lineSiteName->setText(settings.value("name", m_site->url()).toString());
 	QStringList referers = QStringList() << "none" << "host" << "page" << "image";
 	QStringList referers_preview = QStringList() << "" << "none" << "host" << "page" << "image";
@@ -25,9 +26,11 @@ SourcesSettingsWindow::SourcesSettingsWindow(Site *site, QWidget *parent) : QDia
     ui->spinIgnore1->setValue(settings.value("ignore/1", 0).toInt());
 	ui->checkSsl->setChecked(settings.value("ssl", false).toBool());
 
+	// Download settings
 	ui->spinImagesPerPage->setValue(settings.value("download/imagesperpage", 200).toInt());
 	ui->spinSimultaneousDownloads->setValue(settings.value("download/simultaneous", 10).toInt());
 
+	// Source order
 	ui->checkSourcesDefault->setChecked(settings.value("sources/usedefault", true).toBool());
 	QStringList sources = QStringList() << "xml" << "json" << "regex" << "rss";
 	ui->comboSources1->setCurrentIndex(sources.indexOf(settings.value("sources/source_1", global.value("source_1", sources[0]).toString()).toString()));
@@ -35,15 +38,18 @@ SourcesSettingsWindow::SourcesSettingsWindow(Site *site, QWidget *parent) : QDia
 	ui->comboSources3->setCurrentIndex(sources.indexOf(settings.value("sources/source_3", global.value("source_3", sources[2]).toString()).toString()));
 	ui->comboSources4->setCurrentIndex(sources.indexOf(settings.value("sources/source_4", global.value("source_4", sources[3]).toString()).toString()));
 
+	// Credentials
 	ui->lineAuthPseudo->setText(settings.value("auth/pseudo", "").toString());
 	ui->lineAuthPassword->setText(settings.value("auth/password", "").toString());
 
+	// Login
 	ui->checkLoginParameter->setChecked(settings.value("login/parameter", true).toBool());
 	QStringList methods = QStringList() << "get" << "post";
 	ui->comboLoginMethod->setCurrentIndex(methods.indexOf(settings.value("login/method", "post").toString()));
 	ui->lineLoginUrl->setText(settings.value("login/url", "").toString());
 	ui->lineLoginPseudo->setText(settings.value("login/pseudo", "").toString());
 	ui->lineLoginPassword->setText(settings.value("login/password", "").toString());
+	ui->lineLoginCookie->setText(settings.value("login/cookie", "").toString());
 
 	connect(this, SIGNAL(accepted()), this, SLOT(save()));
 }
@@ -82,12 +88,16 @@ void SourcesSettingsWindow::deleteSite()
 
 void SourcesSettingsWindow::testLogin()
 {
+	save();
+
 	ui->labelTestCredentials->setText("<i>Connexion...</li>");
 	ui->labelTestLogin->setText("<i>Connexion...</li>");
-	connect(m_site, SIGNAL(loggedIn(Site::LoginResult)), this, SLOT(loginTested(Site::LoginResult)));
+
+	connect(m_site, &Site::loggedIn, this, &SourcesSettingsWindow::loginTested);
 	m_site->login(true);
 }
-void SourcesSettingsWindow::loginTested(Site::LoginResult result)
+
+void SourcesSettingsWindow::loginTested(Site*, Site::LoginResult result)
 {
 	switch (result)
 	{
@@ -97,8 +107,8 @@ void SourcesSettingsWindow::loginTested(Site::LoginResult result)
 			break;
 
 		case Site::LoginError:
-			ui->labelTestCredentials->setText("<i>" + tr("Érreur") + "</i>");
-			ui->labelTestLogin->setText("<i>" + tr("Érreur") + "</i>");
+			ui->labelTestCredentials->setText("<i>" + tr("Échec") + "</i>");
+			ui->labelTestLogin->setText("<i>" + tr("Échec") + "</i>");
 			break;
 
 		case Site::LoginNoLogin:
@@ -142,6 +152,7 @@ void SourcesSettingsWindow::save()
 	settings.setValue("login/url", ui->lineLoginUrl->text());
 	settings.setValue("login/pseudo", ui->lineLoginPseudo->text());
 	settings.setValue("login/password", ui->lineLoginPassword->text());
+	settings.setValue("login/cookie", ui->lineLoginCookie->text());
 
 	settings.sync();
 
