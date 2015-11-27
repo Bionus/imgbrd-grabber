@@ -1859,7 +1859,15 @@ void mainWindow::saveImage(Image *img, QNetworkReply *reply, QString path, QStri
 				{
 					QFile f(fp);
 					f.open(QIODevice::WriteOnly);
-					f.write(data);
+					if (f.write(data) < 0)
+					{
+						f.close();
+						f.remove();
+						m_getAllErrors++;
+						m_progressdialog->pause();
+						QMessageBox::critical(m_progressdialog, tr("Erreur"), tr("Une erreur est survenue lors de l'enregistrement de l'image.\n%1\nVeuillez résoudre le problème avant de reprendre le téléchargement.").arg(f.errorString()));
+						return;
+					}
 					f.close();
 
 					img->setData(data);
