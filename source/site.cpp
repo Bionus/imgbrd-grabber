@@ -122,7 +122,7 @@ void Site::login(bool force)
 		}
 	}
 
-	emit loggedIn(LoginNoLogin);
+	emit loggedIn(this, LoginNoLogin);
 }
 
 /**
@@ -140,10 +140,9 @@ void Site::loginFinished()
 		{ m_loggedIn = true; }
 	}
 
-	log(tr("Connexion à %1 (%2) terminée (%3).").arg(m_name, m_url, m_loggedIn ? "succès" : "échec"));
-	qDebug() << m_loggedIn << m_name << m_cookieJar->cookiesForUrl(m_loginReply->url()) << cookiename;
+	log(tr("Connexion à %1 (%2) terminée (%3).").arg(m_name, m_url, m_loggedIn ? tr("succès") : tr("échec")));
 
-	emit loggedIn(m_loggedIn ? LoginSuccess : LoginError);
+	emit loggedIn(this, m_loggedIn ? LoginSuccess : LoginError);
 }
 
 /**

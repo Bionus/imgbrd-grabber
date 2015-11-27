@@ -63,7 +63,7 @@ class Site : public QObject
 		void resetCookieJar();
 
 	signals:
-		void loggedIn(Site::LoginResult);
+		void loggedIn(Site*, Site::LoginResult);
 		void finished(QNetworkReply*);
 		void checkForUpdatesFinished(Site*);
 		void finishedLoadingTags(QList<Tag>);

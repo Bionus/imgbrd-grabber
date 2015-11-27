@@ -540,3 +540,5 @@ int Downloader::duplicatesCount()
 
 QList<Page*> *Downloader::getPages()
 { return m_pages; }
+QList<Site*> *Downloader::getSites()
+{ return m_sites; }

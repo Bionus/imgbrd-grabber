@@ -27,7 +27,7 @@ class SourcesSettingsWindow : public QDialog
 		void deleteSite();
 		void save();
 		void testLogin();
-		void loginTested(Site::LoginResult);
+		void loginTested(Site*, Site::LoginResult);
 
 	signals:
 		void siteDeleted(QString);

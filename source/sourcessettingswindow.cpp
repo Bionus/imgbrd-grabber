@@ -93,11 +93,11 @@ void SourcesSettingsWindow::testLogin()
 	ui->labelTestCredentials->setText("<i>Connexion...</li>");
 	ui->labelTestLogin->setText("<i>Connexion...</li>");
 
-	connect(m_site, SIGNAL(loggedIn(Site::LoginResult)), this, SLOT(loginTested(Site::LoginResult)));
+	connect(m_site, &Site::loggedIn, this, &SourcesSettingsWindow::loginTested);
 	m_site->login(true);
 }
 
-void SourcesSettingsWindow::loginTested(Site::LoginResult result)
+void SourcesSettingsWindow::loginTested(Site*, Site::LoginResult result)
 {
 	switch (result)
 	{

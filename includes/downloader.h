@@ -29,6 +29,7 @@ class Downloader : public QObject
         void setData(QVariant data);
         QVariant getData();
 		QList<Page*> *getPages();
+		QList<Site*> *getSites();
 		int ignoredCount();
 		int duplicatesCount();
 
