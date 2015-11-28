@@ -140,7 +140,7 @@ void saveMd5s()
 		QStringList md5s = _md5.keys();
 		QStringList paths = _md5.values();
 		for (int i = 0; i < md5s.size(); i++)
-			f.write(QString(md5s[i] + paths[i] + "\r\n").toUtf8());
+			f.write(QString(md5s[i] + paths[i] + "\n").toUtf8());
 		f.close();
 	}
 }
@@ -153,7 +153,7 @@ void saveMd5(QString md5, QString path)
 	QFile f(savePath("md5s.txt"));
 	if (f.open(QFile::WriteOnly | QFile::Append))
 	{
-		f.write(QString(md5 + path + "\r\n").toUtf8());
+		f.write(QString(md5 + path + "\n").toUtf8());
 		f.close();
 	}
 }

@@ -578,7 +578,7 @@ void Page::parse()
 	{
 		QRegExp rxlast(m_site->value("Regex/LastPage"));
 		rxlast.indexIn(m_source, 0);
-		m_pagesCount = qMax(rxlast.cap(1).remove(",").toInt(), m_page);
+		m_pagesCount = rxlast.cap(1).remove(",").toInt();
 	}
 
     // Guess image or page count
@@ -723,7 +723,7 @@ void Page::parseTags()
 		int pagesCount = rxlast.cap(1).remove(",").toInt();
 		if (pagesCount != 0)
 		{
-			m_pagesCount = qMax(pagesCount, m_page);
+			m_pagesCount = pagesCount;
 			if (m_imagesCount < 1 || m_imagesCount % 1000 == 0)
 			{ m_imagesCount = m_pagesCount * m_imagesPerPage; }
 		}
