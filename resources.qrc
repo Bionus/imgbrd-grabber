@@ -44,5 +44,6 @@
         <file>images/icons/settings.png</file>
         <file>images/icons/tab-minus.png</file>
         <file>images/icons/tab-plus.png</file>
+        <file>images/icons/bug.png</file>
     </qresource>
 </RCC>

@@ -979,6 +979,15 @@ void mainWindow::setSource(QString source)
 	m_tabs[0]->saveSources(sel);
 }
 
+void mainWindow::aboutWebsite()
+{
+	QDesktopServices::openUrl(QUrl("https://github.com/Bionus/imgbrd-grabber"));
+}
+void mainWindow::aboutReportBug()
+{
+	QDesktopServices::openUrl(QUrl("https://github.com/Bionus/imgbrd-grabber/issues/new"));
+}
+
 void mainWindow::aboutAuthor()
 {
 	aboutWindow *aw = new aboutWindow(QString(VERSION), this);

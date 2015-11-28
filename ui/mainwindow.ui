@@ -410,6 +410,9 @@
      <string>Aide</string>
     </property>
     <addaction name="actionAboutGrabber"/>
+    <addaction name="actionAboutWebsite"/>
+    <addaction name="actionAboutReportBug"/>
+    <addaction name="separator"/>
     <addaction name="actionAboutQt"/>
    </widget>
    <widget class="QMenu" name="menuOutils">
@@ -1006,6 +1009,24 @@
     <string>Ouvrir le dossier des options</string>
    </property>
   </action>
+  <action name="actionAboutWebsite">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/images/icons/browser.png</normaloff>:/images/icons/browser.png</iconset>
+   </property>
+   <property name="text">
+    <string>Site web du projet</string>
+   </property>
+  </action>
+  <action name="actionAboutReportBug">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/images/icons/bug.png</normaloff>:/images/icons/bug.png</iconset>
+   </property>
+   <property name="text">
+    <string>Reporter un problème</string>
+   </property>
+  </action>
  </widget>
  <tabstops>
   <tabstop>tabWidget</tabstop>
@@ -1542,6 +1563,38 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionAboutReportBug</sender>
+   <signal>triggered()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>aboutReportBug()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>270</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionAboutWebsite</sender>
+   <signal>triggered()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>aboutWebsite()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>270</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>help()</slot>
@@ -1584,5 +1637,7 @@
   <slot>batchMoveUp()</slot>
   <slot>batchMoveDown()</slot>
   <slot>openSettingsFolder()</slot>
+  <slot>aboutWebsite()</slot>
+  <slot>aboutReportBug()</slot>
  </slots>
 </ui>

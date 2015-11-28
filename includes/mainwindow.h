@@ -55,6 +55,8 @@ class mainWindow : public QMainWindow
         void options();
         void optionsClosed();
         void aboutAuthor();
+		void aboutWebsite();
+		void aboutReportBug();
         void saveFolder();
 		void openSettingsFolder();
         void blacklistFix();
