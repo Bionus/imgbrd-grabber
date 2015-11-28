@@ -630,6 +630,7 @@ void tagTab::finishedLoadingPreview(Image *img)
 		}
 		else
 		{ download = true; }
+		qDebug() << img->md5() << "download !";
 
 		if (download)
 		{

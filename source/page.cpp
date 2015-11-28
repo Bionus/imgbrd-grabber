@@ -297,19 +297,19 @@ void Page::parseImage(QMap<QString,QString> d, int position)
 
 	// Generate image
 	Image *img = new Image(d, this);
-	QString error = img->filter(m_postFiltering);
+	QStringList errors = img->filter(m_postFiltering);
 
 	// If the file path is wrong (ends with "/.jpg")
-	if (error.isEmpty() && d["file_url"].endsWith("/." + d["ext"]))
-	{ error = "file url"; }
+	if (errors.isEmpty() && d["file_url"].endsWith("/." + d["ext"]))
+	{ errors.append("file url"); }
 
 	// Add if everything is ok
-	if (error.isEmpty())
+	if (errors.isEmpty())
 	{ m_images.append(img); }
 	else
 	{
 		img->deleteLater();
-		log(tr("Image #%1 ignorée. Raison : %2.").arg(QString::number(position + 1), error));
+		log(tr("Image #%1 ignorée. Raison : %2.").arg(QString::number(position + 1), errors.join(", ")));
 	}
 }
 

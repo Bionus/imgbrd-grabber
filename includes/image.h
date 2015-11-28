@@ -25,9 +25,10 @@ class Image : public QObject
 		Image(QMap<QString,QString> details, Page *parent = NULL);
 		~Image();
 		int			value();
-		QString		filter(QStringList);
+		QString		match(QString filter, bool invert = false);
+		QStringList	filter(QStringList filters);
 		QStringList	path(QString fn = "", QString pth = "", int counter = 0, bool complex = true, bool simple = false, bool maxlength = true, bool shouldFixFilename = true);
-		QStringList blacklisted(QStringList);
+		QStringList blacklisted(QStringList, bool invert = true);
 		QStringList	stylishedTags(QStringList ignored);
 		QString		url();
 		QString		md5();

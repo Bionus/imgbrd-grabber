@@ -394,118 +394,136 @@ int toDate(QString text)
 	{ return date.toString("yyyyMMdd").toInt(); }
 	return 0;
 }
-QString Image::filter(QStringList filters)
+
+QString Image::match(QString filter, bool invert)
 {
 	QStringList mathematicaltypes = QStringList() << "id" << "width" << "height" << "score" << "mpixels" << "filesize" << "date";
 	QStringList types = QStringList() << "rating" << "source" << mathematicaltypes;
-	bool invert;
-	QString filter, type;
-	for (int i = 0; i < filters.count(); ++i)
+
+	// Invert the filter by prepending '-'
+	if (filter.startsWith('-'))
 	{
-		invert = false;
-		filter = filters.at(i);
-		if (filter.startsWith('-'))
+		filter = filter.right(filter.length()-1);
+		invert = !invert;
+	}
+
+	// Metatags
+	if (filter.contains(":"))
+	{
+		QString type = filter.section(':', 0, 0).toLower();
+		filter = filter.section(':', 1).toLower();
+		if (!types.contains(type))
+		{ return QObject::tr("unknown type \"%1\" (available types: \"%2\")").arg(filter, types.join("\", \"")); }
+		if (mathematicaltypes.contains(type))
 		{
-			filter = filter.right(filter.length()-1);
-			invert = true;
-		}
-		if (filter.contains(":"))
-		{
-			type = filter.section(':', 0, 0).toLower();
-			filter = filter.section(':', 1).toLower();
-			if (!types.contains(type))
-			{ return QObject::tr("unknown type \"%1\" (available types: \"%2\")").arg(filter, types.join("\", \"")); }
-			if (mathematicaltypes.contains(type))
+			int input = 0;
+			if (type == "id")		{ input = m_id;										}
+			if (type == "width")	{ input = m_size.width();							}
+			if (type == "height")	{ input = m_size.height();							}
+			if (type == "score")	{ input = m_score;									}
+			if (type == "mpixels")	{ input = m_size.width()*m_size.height();			}
+			if (type == "filesize")	{ input = m_fileSize;								}
+			if (type == "date")		{ input = m_createdAt.toString("yyyyMMdd").toInt();	}
+
+			bool cond;
+			if (type == "date")
 			{
-				int input = 0;
-				if (type == "id")		{ input = m_id;										}
-				if (type == "width")	{ input = m_size.width();							}
-				if (type == "height")	{ input = m_size.height();							}
-				if (type == "score")	{ input = m_score;									}
-				if (type == "mpixels")	{ input = m_size.width()*m_size.height();			}
-				if (type == "filesize")	{ input = m_fileSize;								}
-				if (type == "date")		{ input = m_createdAt.toString("yyyyMMdd").toInt();	}
-
-				bool cond;
-				if (type == "date")
-				{
-					if (filter.startsWith("..") || filter.startsWith("<="))
-					{ cond = input <= toDate(filter.right(filter.size()-2)); }
-					else if (filter.endsWith(".."))
-					{ cond = input >= toDate(filter.left(filter.size()-2)); }
-					else if (filter.startsWith(">="))
-					{ cond = input >= toDate(filter.right(filter.size()-2)); }
-					else if (filter.startsWith("<"))
-					{ cond = input < toDate(filter.right(filter.size()-1)); }
-					else if (filter.startsWith(">"))
-					{ cond = input > toDate(filter.right(filter.size()-1)); }
-					else if (filter.contains(".."))
-					{ cond = input >= toDate(filter.left(filter.indexOf(".."))) && input <= toDate(filter.right(filter.size()-filter.indexOf("..")-2));	}
-					else
-					{ cond = input == toDate(filter); }
-				}
+				if (filter.startsWith("..") || filter.startsWith("<="))
+				{ cond = input <= toDate(filter.right(filter.size()-2)); }
+				else if (filter.endsWith(".."))
+				{ cond = input >= toDate(filter.left(filter.size()-2)); }
+				else if (filter.startsWith(">="))
+				{ cond = input >= toDate(filter.right(filter.size()-2)); }
+				else if (filter.startsWith("<"))
+				{ cond = input < toDate(filter.right(filter.size()-1)); }
+				else if (filter.startsWith(">"))
+				{ cond = input > toDate(filter.right(filter.size()-1)); }
+				else if (filter.contains(".."))
+				{ cond = input >= toDate(filter.left(filter.indexOf(".."))) && input <= toDate(filter.right(filter.size()-filter.indexOf("..")-2));	}
 				else
-				{
-					if (filter.startsWith("..") || filter.startsWith("<="))
-					{ cond = input <= filter.right(filter.size()-2).toInt(); }
-					else if (filter.endsWith(".."))
-					{ cond = input >= filter.left(filter.size()-2).toInt(); }
-					else if (filter.startsWith(">="))
-					{ cond = input >= filter.right(filter.size()-2).toInt(); }
-					else if (filter.startsWith("<"))
-					{ cond = input < filter.right(filter.size()-1).toInt(); }
-					else if (filter.startsWith(">"))
-					{ cond = input > filter.right(filter.size()-1).toInt(); }
-					else if (filter.contains(".."))
-					{ cond = input >= filter.left(filter.indexOf("..")).toInt() && input <= filter.right(filter.size()-filter.indexOf("..")-2).toInt();	}
-					else
-					{ cond = input == filter.toInt(); }
-				}
-
-				if (!cond && !invert)
-				{ return QObject::tr("image's %1 does not match").arg(type); }
-				if (cond && invert)
-				{ return QObject::tr("image's %1 match").arg(type); }
+				{ cond = input == toDate(filter); }
 			}
 			else
 			{
-				if (type == "rating")
-				{
-					bool cond = m_rating.toLower().startsWith(filter.left(1));
-					if (!cond && !invert)
-					{ return QObject::tr("image is not \"%1\"").arg(filter); }
-					if (cond && invert)
-					{ return QObject::tr("image is \"%1\"").arg(filter); }
-				}
-				else if (type == "source")
-				{
-					QRegExp rx = QRegExp(filter+"*", Qt::CaseInsensitive, QRegExp::Wildcard);
-					bool cond = rx.exactMatch(m_source);
-					if (!cond && !invert)
-					{ return QObject::tr("image's source does not starts with \"%1\"").arg(filter); }
-					if (cond && invert)
-					{ return QObject::tr("image's source starts with \"%1\"").arg(filter); }
-				}
+				if (filter.startsWith("..") || filter.startsWith("<="))
+				{ cond = input <= filter.right(filter.size()-2).toInt(); }
+				else if (filter.endsWith(".."))
+				{ cond = input >= filter.left(filter.size()-2).toInt(); }
+				else if (filter.startsWith(">="))
+				{ cond = input >= filter.right(filter.size()-2).toInt(); }
+				else if (filter.startsWith("<"))
+				{ cond = input < filter.right(filter.size()-1).toInt(); }
+				else if (filter.startsWith(">"))
+				{ cond = input > filter.right(filter.size()-1).toInt(); }
+				else if (filter.contains(".."))
+				{ cond = input >= filter.left(filter.indexOf("..")).toInt() && input <= filter.right(filter.size()-filter.indexOf("..")-2).toInt();	}
+				else
+				{ cond = input == filter.toInt(); }
 			}
-		}
-		else if (!filter.isEmpty())
-		{
-			bool cond = false;
-			for (int t = 0; t < m_tags.count(); t++)
-			{
-				if (m_tags[t].text().toLower() == filter.toLower())
-				{ cond = true; break; }
-			}
+
 			if (!cond && !invert)
-			{ return QObject::tr("image does not contains \"%1\"").arg(filter); }
+			{ return QObject::tr("image's %1 does not match").arg(type); }
 			if (cond && invert)
-			{ return QObject::tr("image contains \"%1\"").arg(filter); }
+			{ return QObject::tr("image's %1 match").arg(type); }
+		}
+		else
+		{
+			if (type == "rating")
+			{
+				bool cond = m_rating.toLower().startsWith(filter.left(1));
+				if (!cond && !invert)
+				{ return QObject::tr("image is not \"%1\"").arg(filter); }
+				if (cond && invert)
+				{ return QObject::tr("image is \"%1\"").arg(filter); }
+			}
+			else if (type == "source")
+			{
+				QRegExp rx = QRegExp(filter+"*", Qt::CaseInsensitive, QRegExp::Wildcard);
+				bool cond = rx.exactMatch(m_source);
+				if (!cond && !invert)
+				{ return QObject::tr("image's source does not starts with \"%1\"").arg(filter); }
+				if (cond && invert)
+				{ return QObject::tr("image's source starts with \"%1\"").arg(filter); }
+			}
 		}
 	}
+	else if (!filter.isEmpty())
+	{
+		// Check if any tag match the filter (case insensitive plain text with wildcards allowed)
+		bool cond = false;
+		for (Tag tag : m_tags)
+		{
+			QRegExp reg;
+			reg.setCaseSensitivity(Qt::CaseInsensitive);
+			reg.setPatternSyntax(QRegExp::Wildcard);
+			reg.setPattern(filter.trimmed());
+			if (reg.exactMatch(tag.text()))
+			{
+				cond = true;
+				break;
+			}
+		}
+
+		if (!cond && !invert)
+		{ return QObject::tr("image does not contains \"%1\"").arg(filter); }
+		if (cond && invert)
+		{ return QObject::tr("image contains \"%1\"").arg(filter); }
+	}
+
 	return QString();
 }
 
-
+QStringList Image::filter(QStringList filters)
+{
+	QStringList ret;
+	for (QString filter : filters)
+	{
+		QString match = this->match(filter);
+		if (!match.isEmpty())
+			ret.append(match);
+	}
+	return ret;
+}
 
 QString analyse(QStringList tokens, QString text, QStringList tags)
 {
@@ -970,11 +988,12 @@ int Image::value()
 }
 
 /**
- * Checks whether an image contains blacklisted tags.
- * @param blacklistedtags The list of blacklisted tags.
- * @return The blacklisted tags found in the image (empty list if none).
+ * Checks whether an image contains a given set of tags.
+ *
+ * @param blacklistedtags The list of tags to check.
+ * @return The blacklisted tags found in the image (empty list if none is found).
  */
-QStringList Image::blacklisted(QStringList blacklistedtags)
+QStringList Image::blacklisted(QStringList blacklistedtags, bool invert)
 {
 	QStringList detected;
 	QRegExp reg;
@@ -982,15 +1001,8 @@ QStringList Image::blacklisted(QStringList blacklistedtags)
 	reg.setPatternSyntax(QRegExp::Wildcard);
 	for (QString tag : blacklistedtags)
 	{
-		for (int t = 0; t < m_tags.count(); ++t)
-		{
-			if (!tag.trimmed().isEmpty())
-			{
-				reg.setPattern(tag.trimmed());
-				if (reg.exactMatch(m_tags[t].text()))
-				{ detected.append(m_tags[t].text()); }
-			}
-		}
+		if (!this->match(tag, invert).isEmpty())
+		{ detected.append(tag); }
 	}
 	return detected;
 }
