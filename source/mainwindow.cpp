@@ -2034,7 +2034,7 @@ bool mainWindow::saveLinkList(QString filename)
 			while (m_groupBatchs[i].size() > 10)
 				m_groupBatchs[i].removeLast();
 
-			links.append(m_groupBatchs[i].join(QString((char)29)));
+			links.append(m_groupBatchs[i].join(QString((char)29)).replace("\n", "\\n"));
 			links.append(QString((char)29)+QString::number(m_progressBars[i]->value())+"/"+QString::number(m_progressBars[i]->maximum()));
 			links.append((char)28);
 		}
@@ -2079,24 +2079,21 @@ bool mainWindow::loadLinkList(QString filename)
 	if (!f.open(QFile::ReadOnly))
 		return false;
 
+	// Get the file's header to get the version
 	QString header = f.readLine().trimmed();
 	int version = header.mid(5, header.size() - 6).toInt();
 
+	// Read the remaining file
 	QString links = f.readAll();
 	f.close();
-
-	QStringList det = links.split(version == 1 ? "\r\n" : QString((char)28), QString::SkipEmptyParts);
+	QStringList det = links.split(QString((char)28), QString::SkipEmptyParts);
 	if (det.empty())
 		return false;
 
 	for (QString link : det)
 	{
 		m_allow = false;
-		QStringList infos;
-		if (version == 1)
-		{ infos = link.split("¤"); }
-		else
-		{ infos = link.split((char)29); }
+		QStringList infos = link.split((char)29);
 		if (infos.size() == 8)
 		{
 			QStringList vals = QStringList() << "id" << "md5" << "rating" << "tags" << "file_url" << "site" << "filename" << "folder";
@@ -2107,9 +2104,7 @@ bool mainWindow::loadLinkList(QString filename)
 		}
 		else
 		{
-			if (infos.at(1).toInt() < 0
-				|| infos.at(2).toInt() < 1
-				|| infos.at(3).toInt() < 1)
+			if (infos.at(1).toInt() < 0 || infos.at(2).toInt() < 1 || infos.at(3).toInt() < 1)
 			{
 				log(tr("Erreur lors de la lecture d'une ligne du fichier de liens."));
 				continue;
