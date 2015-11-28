@@ -30,12 +30,13 @@ class batchWindow : public QDialog
 		int images();
 		int count();
 		int endAction();
-		bool endRemove();
-		bool cancelled();
 		int indexOf(QString);
 		int batch(QString);
 		void setCount(int);
 		void updateColumns();
+		bool endRemove();
+		bool cancelled();
+		bool isSkipped();
 		bool isPaused();
 
 	public slots:
@@ -60,10 +61,12 @@ class batchWindow : public QDialog
 		void drawSpeed();
 		void imageUrlChanged(QString, QString);
 		void pause();
+		void skip();
 
 	signals:
 		void closed();
 		void paused();
+		void skipped();
 
 	private:
 		Ui::batchWindow			*ui;
@@ -73,7 +76,7 @@ class batchWindow : public QDialog
 		QList<QProgressBar*>	m_progressBars;
 		QMap<QString, int>		m_speeds;
 		QList<int>				m_mean;
-		bool					m_cancel, m_paused;
+		bool					m_cancel, m_paused, m_skip;
 		QTime					*m_time, *m_start;
         #ifdef Q_OS_WIN
             QWinTaskbarButton   *m_taskBarButton;

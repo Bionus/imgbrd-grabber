@@ -1034,6 +1034,7 @@ void mainWindow::getAll(bool all)
 	m_getAllIgnored = 0;
 	m_getAll404s = 0;
 	m_getAllErrors = 0;
+	m_getAllSkipped = 0;
 	m_getAllCount = 0;
 	m_getAllPageCount = 0;
 	m_getAllBeforeId = -1;
@@ -1149,6 +1150,7 @@ void mainWindow::getAll(bool all)
 	}
 
 	connect(m_progressdialog, SIGNAL(rejected()), this, SLOT(getAllCancel()));
+	connect(m_progressdialog, SIGNAL(skipped()), this, SLOT(getAllSkip()));
 
 	if (m_downloaders.isEmpty() && m_getAllRemaining.isEmpty())
 	{
@@ -1350,7 +1352,7 @@ void mainWindow::getAllImages()
 void mainWindow::_getAll()
 {
 	// We quit as soon as the user cancels
-	if (m_progressdialog->cancelled())
+	if (m_progressdialog->cancelled() || m_progressdialog->isSkipped())
         return;
 
 	// If there are still images do download
@@ -1460,100 +1462,7 @@ void mainWindow::_getAll()
 
 	// When the batch download finishes
 	else if (m_getAllDownloading.isEmpty() && m_getAll)
-	{
-		log("Images download finished.");
-		m_progressdialog->setValue(m_progressdialog->maximum());
-
-		// Delete objects
-		for (Downloader *d : m_downloadersDone)
-		{
-			for (Page *p : m_getAllPages)
-			{ p->clear(); }
-			d->clear();
-		}
-		qDeleteAll(m_downloadersDone);
-		m_downloadersDone.clear();
-		// qDebug() << "DELETE downloaders";
-
-		// Final action
-		switch (m_progressdialog->endAction())
-		{
-			case 1:	m_progressdialog->close();				break;
-			case 2:	openTray();								break;
-			case 3:	QSound::play(":/sounds/finished.wav");	break;
-
-			case 4:
-				shutDown();
-				break;
-		}
-		if (m_progressdialog->endRemove())
-		{
-			int rem = 0;
-			for (int i : m_batchDownloading)
-			{
-				m_groupBatchs[i][m_groupBatchs[i].count() - 1] = "false";
-				m_progressBars.removeAt(i - rem);
-				ui->tableBatchGroups->removeRow(i - rem);
-				rem++;
-			}
-		}
-		activateWindow();
-		m_getAll = false;
-
-		// Information about downloads
-		if (m_getAllErrors <= 0 || m_batchAutomaticRetries <= 0)
-		{
-			QMessageBox::information(
-				this,
-				tr("Récupération des images"),
-				QString(
-					tr("%n fichier(s) récupéré(s) avec succès.", "", m_getAllDownloaded)+"\r\n"+
-					tr("%n fichier(s) ignoré(s).", "", m_getAllIgnored)+"\r\n"+
-					tr("%n fichier(s) déjà existant(s).", "", m_getAllExists)+"\r\n"+
-					tr("%n fichier(s) non trouvé(s) sur le serveur.", "", m_getAll404s)+"\r\n"+
-					tr("%n erreur(s).", "", m_getAllErrors)
-				)
-			);
-		}
-
-		// Retry in case of error
-		int reponse = QMessageBox::No;
-		if (m_getAllErrors > 0)
-		{
-			if (m_batchAutomaticRetries > 0)
-			{
-				m_batchAutomaticRetries--;
-				reponse = QMessageBox::Yes;
-			}
-			else
-			{ reponse = QMessageBox::question(this, tr("Récupération des images"), tr("Des erreurs sont survenues pendant le téléchargement des images. Voulez vous relancer le téléchargement de celles-ci ? (%1/%2)").arg(m_getAllErrors).arg(m_getAllDownloaded + m_getAllIgnored + m_getAllExists + m_getAll404s + m_getAllErrors), QMessageBox::Yes | QMessageBox::No); }
-			if (reponse == QMessageBox::Yes)
-			{
-				m_getAll = true;
-				m_progressdialog->clear();
-				//qDeleteAll(m_getAllRemaining);
-				m_getAllRemaining.clear();
-				m_getAllRemaining = m_getAllFailed;
-				m_getAllFailed.clear();
-				m_getAllDownloaded = 0;
-				m_getAllExists = 0;
-				m_getAllIgnored = 0;
-				m_getAll404s = 0;
-				m_getAllCount = 0;
-				m_progressdialog->show();
-				getAllImages();
-			}
-			m_getAllErrors = 0;
-		}
-
-		// End of batch download
-		if (reponse != QMessageBox::Yes)
-		{
-			Commands::get()->after();
-			ui->widgetDownloadButtons->setDisabled(false);
-			log(tr("Téléchargement groupé terminé"));
-		}
-	}
+	{ getAllFinished(); }
 }
 void mainWindow::imageUrlChanged(QString before, QString after)
 {
@@ -1583,7 +1492,7 @@ void mainWindow::getAllProgress(Image *img, qint64 bytesReceived, qint64 bytesTo
 }
 void mainWindow::getAllPerformTags(Image* img)
 {
-	if (m_progressdialog->cancelled())
+	if (m_progressdialog->cancelled() || m_progressdialog->isSkipped())
         return;
 
 	log(tr("Tags reçus"));
@@ -1754,8 +1663,8 @@ void mainWindow::getAllGetImage(Image* img)
 }
 void mainWindow::getAllPerformImage(Image* img)
 {
-	if (m_progressdialog->cancelled())
-	{ return; }
+	if (m_progressdialog->cancelled() || m_progressdialog->isSkipped())
+		return;
 
 	QNetworkReply* reply = img->imageReply();
 	bool del = true;
@@ -1947,6 +1856,120 @@ void mainWindow::getAllCancel()
 	ui->widgetDownloadButtons->setEnabled(true);
 	DONE();
 }
+
+void mainWindow::getAllSkip()
+{
+	log(tr("Saut des téléchargements..."));
+	for (Image *image : m_getAllDownloading)
+	{
+		image->abortTags();
+		image->abortImage();
+	}
+	for (Downloader *downloader : m_downloaders)
+	{
+		downloader->cancel();
+	}
+	m_getAllSkipped += m_getAllRemaining.count() + m_getAllDownloading.count();
+	getAllFinished();
+	DONE();
+}
+
+void mainWindow::getAllFinished()
+{
+	log("Images download finished.");
+	m_progressdialog->setValue(m_progressdialog->maximum());
+
+	// Delete objects
+	for (Downloader *d : m_downloadersDone)
+	{
+		for (Page *p : m_getAllPages)
+		{ p->clear(); }
+		d->clear();
+	}
+	qDeleteAll(m_downloadersDone);
+	m_downloadersDone.clear();
+
+	// Final action
+	switch (m_progressdialog->endAction())
+	{
+		case 1:	m_progressdialog->close();				break;
+		case 2:	openTray();								break;
+		case 3:	QSound::play(":/sounds/finished.wav");	break;
+
+		case 4:
+			shutDown();
+			break;
+	}
+	if (m_progressdialog->endRemove())
+	{
+		int rem = 0;
+		for (int i : m_batchDownloading)
+		{
+			m_groupBatchs[i][m_groupBatchs[i].count() - 1] = "false";
+			m_progressBars.removeAt(i - rem);
+			ui->tableBatchGroups->removeRow(i - rem);
+			rem++;
+		}
+	}
+	activateWindow();
+	m_getAll = false;
+
+	// Information about downloads
+	if (m_getAllErrors <= 0 || m_batchAutomaticRetries <= 0)
+	{
+		QMessageBox::information(
+			this,
+			tr("Récupération des images"),
+			QString(
+				tr("%n fichier(s) récupéré(s) avec succès.", "", m_getAllDownloaded)+"\r\n"+
+				tr("%n fichier(s) ignoré(s).", "", m_getAllIgnored)+"\r\n"+
+				tr("%n fichier(s) déjà existant(s).", "", m_getAllExists)+"\r\n"+
+				tr("%n fichier(s) non trouvé(s) sur le serveur.", "", m_getAll404s)+"\r\n"+
+				tr("%n fichier(s) passé(s).", "", m_getAllSkipped)+"\r\n"+
+				tr("%n erreur(s).", "", m_getAllErrors)
+			)
+		);
+	}
+
+	// Retry in case of error
+	int reponse = QMessageBox::No;
+	if (m_getAllErrors > 0)
+	{
+		if (m_batchAutomaticRetries > 0)
+		{
+			m_batchAutomaticRetries--;
+			reponse = QMessageBox::Yes;
+		}
+		else
+		{ reponse = QMessageBox::question(this, tr("Récupération des images"), tr("Des erreurs sont survenues pendant le téléchargement des images. Voulez vous relancer le téléchargement de celles-ci ? (%1/%2)").arg(m_getAllErrors).arg(m_getAllDownloaded + m_getAllIgnored + m_getAllExists + m_getAll404s + m_getAllErrors), QMessageBox::Yes | QMessageBox::No); }
+		if (reponse == QMessageBox::Yes)
+		{
+			m_getAll = true;
+			m_progressdialog->clear();
+			//qDeleteAll(m_getAllRemaining);
+			m_getAllRemaining.clear();
+			m_getAllRemaining = m_getAllFailed;
+			m_getAllFailed.clear();
+			m_getAllDownloaded = 0;
+			m_getAllExists = 0;
+			m_getAllIgnored = 0;
+			m_getAll404s = 0;
+			m_getAllCount = 0;
+			m_progressdialog->show();
+			getAllImages();
+		}
+		m_getAllErrors = 0;
+	}
+
+	// End of batch download
+	if (reponse != QMessageBox::Yes)
+	{
+		Commands::get()->after();
+		ui->widgetDownloadButtons->setEnabled(true);
+		log(tr("Téléchargement groupé terminé"));
+	}
+}
+
 void mainWindow::getAllPause()
 {
 	if (m_progressdialog->isPaused())

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>426</width>
-    <height>346</height>
+    <width>500</width>
+    <height>350</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -137,7 +137,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton">
+       <widget class="QPushButton" name="buttonCopyToClipboard">
         <property name="text">
          <string>Copier les liens dans le presse-papier</string>
         </property>
@@ -194,7 +194,7 @@
     </widget>
    </item>
    <item row="4" column="0" colspan="3">
-    <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,1,0,0">
+    <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,1,0,0,0">
      <item>
       <widget class="QLabel" name="labelImages">
        <property name="text">
@@ -217,6 +217,13 @@
       </widget>
      </item>
      <item>
+      <widget class="QPushButton" name="buttonSkip">
+       <property name="text">
+        <string>Passer</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="cancelButton">
        <property name="text">
         <string>Annuler</string>
@@ -230,7 +237,7 @@
  <tabstops>
   <tabstop>buttonDetails</tabstop>
   <tabstop>tableWidget</tabstop>
-  <tabstop>pushButton</tabstop>
+  <tabstop>buttonCopyToClipboard</tabstop>
   <tabstop>comboEnd</tabstop>
   <tabstop>checkRemove</tabstop>
   <tabstop>buttonPause</tabstop>
@@ -241,7 +248,7 @@
  </resources>
  <connections>
   <connection>
-   <sender>pushButton</sender>
+   <sender>buttonCopyToClipboard</sender>
    <signal>clicked()</signal>
    <receiver>batchWindow</receiver>
    <slot>copyToClipboard()</slot>
@@ -279,8 +286,8 @@
    <slot>pause()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>291</x>
-     <y>322</y>
+     <x>253</x>
+     <y>335</y>
     </hint>
     <hint type="destinationlabel">
      <x>298</x>
@@ -288,9 +295,26 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>buttonSkip</sender>
+   <signal>clicked()</signal>
+   <receiver>batchWindow</receiver>
+   <slot>skip()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>297</x>
+     <y>320</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>332</x>
+     <y>309</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>copyToClipboard()</slot>
   <slot>pause()</slot>
+  <slot>skip()</slot>
  </slots>
 </ui>
