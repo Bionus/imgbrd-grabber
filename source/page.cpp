@@ -470,11 +470,15 @@ void Page::parse()
 		rx.setMinimal(true);
 		int pos = 0, id = 0;
 		while ((pos = rx.indexIn(m_source, pos)) != -1)
-        {
+		{
 			pos += rx.matchedLength();
 			QMap<QString,QString> d;
 			for (int i = 0; i < order.size(); i++)
-			{ d[order.at(i)] = rx.cap(i+1); }
+			{
+				QString ord = order.at(i);
+				if (!d.contains(ord) || d[ord].isEmpty())
+				{ d[ord] = rx.cap(i + 1); }
+			}
 
 			// JSON elements
 			if (order.contains("json") && !d["json"].isEmpty())
