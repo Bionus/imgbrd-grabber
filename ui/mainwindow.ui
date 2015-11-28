@@ -991,6 +991,10 @@
    </property>
   </action>
   <action name="actionAddpooltab">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/images/icons/tab-poolplus.png</normaloff>:/images/icons/tab-poolplus.png</iconset>
+   </property>
    <property name="text">
     <string>Nouvel onglet pool</string>
    </property>
