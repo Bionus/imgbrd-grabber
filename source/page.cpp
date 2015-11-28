@@ -565,7 +565,6 @@ void Page::parse()
 		}
 	}
 
-
 	// Getting last page
 	if (m_site->contains("LastPage") && m_pagesCount < 1)
 	{ m_pagesCount = m_site->value("LastPage").toInt(); }
@@ -579,7 +578,7 @@ void Page::parse()
 	{
 		QRegExp rxlast(m_site->value("Regex/LastPage"));
 		rxlast.indexIn(m_source, 0);
-		m_pagesCount = rxlast.cap(1).remove(",").toInt();
+		m_pagesCount = qMax(rxlast.cap(1).remove(",").toInt(), m_page);
 	}
 
     // Guess image or page count
@@ -713,17 +712,21 @@ void Page::parseTags()
 			{
 				m_imagesCount = tag.count();
 				if (m_pagesCount < 0)
-					m_pagesCount = (int)ceil((m_imagesCount * 1.) / m_imagesPerPage);
+				{ m_pagesCount = (int)ceil((m_imagesCount * 1.) / m_imagesPerPage); }
 			}
 		}
 	}
-	if (m_site->contains("Regex/LastPage") && (m_imagesCount < 1 || m_imagesCount % 1000 == 0))
+	if (m_site->contains("Regex/LastPage"))
 	{
 		QRegExp rxlast(m_site->value("Regex/LastPage"));
 		rxlast.indexIn(source, 0);
-		m_pagesCount = rxlast.cap(1).remove(",").toInt();
-		if (m_pagesCount != 0)
-			m_imagesCount = m_pagesCount * m_imagesPerPage;
+		int pagesCount = rxlast.cap(1).remove(",").toInt();
+		if (pagesCount != 0)
+		{
+			m_pagesCount = qMax(pagesCount, m_page);
+			if (m_imagesCount < 1 || m_imagesCount % 1000 == 0)
+			{ m_imagesCount = m_pagesCount * m_imagesPerPage; }
+		}
 	}
 
 	// Wiki
