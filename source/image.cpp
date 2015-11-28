@@ -540,14 +540,24 @@ typedef QPair<QString,QString> QStrP;
 QList<QStrP> getReplace(QString setting, QMap<QString,QStringList> details, QSettings *settings)
 {
 	QList<QStrP> ret;
-	QString first = "", second = "";
+	QString first = "";
+	QString second = settings->value(setting+"_empty").toString();
+
 	int limit = settings->value(setting+"_multiple_limit", 1).toInt();
 	QString separator = settings->value(setting+"_sep", " ").toString();
+
 	if (details[setting+"s"].size() > limit)
 	{
 		QString whatToDo = settings->value(setting+"_multiple", "replaceAll").toString();
 		if (whatToDo == "keepAll")
 		{ first = details[setting+"s"].join(separator); }
+		else if (whatToDo == "multiple")
+		{
+			int i;
+			for (i = 0; i < details[setting+"s"].count() - 1; ++i)
+			{ ret.append(QStrP(details[setting+"s"][i], second)); }
+			first = details[setting+"s"][i];
+		}
 		else if (whatToDo == "keepN")
 		{
 			int keepN = settings->value(setting+"_multiple_keepN", 1).toInt();
@@ -566,7 +576,6 @@ QList<QStrP> getReplace(QString setting, QMap<QString,QStringList> details, QSet
 	}
 	else
 	{ first = first = details[setting+"s"].join(separator); }
-	second = settings->value(setting+"_empty").toString();
 
 	ret.append(QStrP(first, second));
 	return ret;

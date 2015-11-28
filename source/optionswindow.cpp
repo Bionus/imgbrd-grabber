@@ -506,7 +506,7 @@ void optionsWindow::setCategory(QString value)
 		tr("Nom de fichier", "update") <<
 		tr("Fichier texte séparé", "update") <<
 		tr("Log séparé", "update") <<
-		tr("Noms multiples", "update") <<
+		tr("Noms conditionnels", "update") <<
 		tr("Tags artiste", "update") <<
 		tr("Tags série", "update") <<
 		tr("Tags personnage", "update") <<
@@ -639,6 +639,7 @@ void optionsWindow::save()
 		else if	(ui->radioArtistsKeepN->isChecked())		{ artistMultiple = "keepN";			}
 		else if	(ui->radioArtistsKeepNThenAdd->isChecked())	{ artistMultiple = "keepNThenAdd";	}
 		else if	(ui->radioArtistsReplaceAll->isChecked())	{ artistMultiple = "replaceAll";	}
+		else if	(ui->radioArtistsMultiple->isChecked())		{ artistMultiple = "multiple";		}
 		settings.setValue("artist_multiple", artistMultiple);
 		settings.setValue("artist_multiple_limit", ui->spinArtistsMoreThanN->value());
 		settings.setValue("artist_multiple_keepN", ui->spinArtistsKeepN->value());
@@ -653,6 +654,7 @@ void optionsWindow::save()
 		else if	(ui->radioCopyrightsKeepN->isChecked())			{ copyrightMultiple = "keepN";			}
 		else if	(ui->radioCopyrightsKeepNThenAdd->isChecked())	{ copyrightMultiple = "keepNThenAdd";	}
 		else if	(ui->radioCopyrightsReplaceAll->isChecked())	{ copyrightMultiple = "replaceAll";		}
+		else if	(ui->radioCopyrightsMultiple->isChecked())		{ copyrightMultiple = "multiple";		}
 		settings.setValue("copyright_multiple", copyrightMultiple);
 		settings.setValue("copyright_multiple_limit", ui->spinCopyrightsMoreThanN->value());
 		settings.setValue("copyright_multiple_keepN", ui->spinCopyrightsKeepN->value());
@@ -666,6 +668,7 @@ void optionsWindow::save()
 		else if	(ui->radioCharactersKeepN->isChecked())			{ characterMultiple = "keepN";			}
 		else if	(ui->radioCharactersKeepNThenAdd->isChecked())	{ characterMultiple = "keepNThenAdd";	}
 		else if	(ui->radioCharactersReplaceAll->isChecked())	{ characterMultiple = "replaceAll";		}
+		else if	(ui->radioCharactersMultiple->isChecked())		{ characterMultiple = "multiple";		}
 		settings.setValue("character_multiple", characterMultiple);
 		settings.setValue("character_multiple_limit", ui->spinCharactersMoreThanN->value());
 		settings.setValue("character_multiple_keepN", ui->spinCharactersKeepN->value());
