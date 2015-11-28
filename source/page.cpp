@@ -506,6 +506,8 @@ void Page::parse()
 			QList<QVariant> sourc = src.toList();
 			if (sourc.isEmpty())
 			{ sourc = src.toMap().value("images").toList(); }
+			if (sourc.isEmpty())
+			{ sourc = src.toMap().value("search").toList(); }
 			for (int id = 0; id < sourc.count(); id++)
 			{
 				sc = sourc.at(id + first).toMap();
