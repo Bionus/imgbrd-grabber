@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Grabber - Options</string>
+   <string>Options</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../resources.qrc">
@@ -2436,8 +2436,8 @@ p, li { white-space: pre-wrap; }
      <y>21</y>
     </hint>
     <hint type="destinationlabel">
-     <x>430</x>
-     <y>54</y>
+     <x>260</x>
+     <y>30</y>
     </hint>
    </hints>
   </connection>

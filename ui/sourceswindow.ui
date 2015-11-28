@@ -20,7 +20,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Grabber - Sources</string>
+   <string>Sources</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../resources.qrc">

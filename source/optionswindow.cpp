@@ -120,6 +120,7 @@ optionsWindow::optionsWindow(QWidget *parent) : QDialog(parent), ui(new Ui::opti
 		else if	(artistMultiple == "keepN")			{ ui->radioArtistsKeepN->setChecked(true);			}
 		else if	(artistMultiple == "keepNThenAdd")	{ ui->radioArtistsKeepNThenAdd->setChecked(true);	}
 		else if	(artistMultiple == "replaceAll")	{ ui->radioArtistsReplaceAll->setChecked(true);		}
+		else if	(artistMultiple == "multiple")		{ ui->radioArtistsMultiple->setChecked(true);		}
 		ui->lineCopyrightsIfNone->setText(settings.value("copyright_empty", "misc").toString());
 		ui->checkCopyrightsUseShorter->setChecked(settings.value("copyright_useshorter", true).toBool());
 		ui->spinCopyrightsMoreThanN->setValue(settings.value("copyright_multiple_limit", 1).toInt());
@@ -133,6 +134,7 @@ optionsWindow::optionsWindow(QWidget *parent) : QDialog(parent), ui(new Ui::opti
 		else if	(copyrightMultiple == "keepN")			{ ui->radioCopyrightsKeepN->setChecked(true);			}
 		else if	(copyrightMultiple == "keepNThenAdd")	{ ui->radioCopyrightsKeepNThenAdd->setChecked(true);	}
 		else if	(copyrightMultiple == "replaceAll")		{ ui->radioCopyrightsReplaceAll->setChecked(true);		}
+		else if	(copyrightMultiple == "multiple")		{ ui->radioCopyrightsMultiple->setChecked(true);		}
 		ui->lineCharactersIfNone->setText(settings.value("character_empty", "unknown").toString());
 		ui->spinCharactersMoreThanN->setValue(settings.value("character_multiple_limit", 1).toInt());
 		ui->spinCharactersKeepN->setValue(settings.value("character_multiple_keepN", 1).toInt());
@@ -145,6 +147,7 @@ optionsWindow::optionsWindow(QWidget *parent) : QDialog(parent), ui(new Ui::opti
 		else if	(characterMultiple == "keepN")			{ ui->radioCharactersKeepN->setChecked(true);			}
 		else if	(characterMultiple == "keepNThenAdd")	{ ui->radioCharactersKeepNThenAdd->setChecked(true);	}
 		else if	(characterMultiple == "replaceAll")		{ ui->radioCharactersReplaceAll->setChecked(true);		}
+		else if	(characterMultiple == "multiple")		{ ui->radioCharactersMultiple->setChecked(true);		}
 		ui->spinLimit->setValue(settings.value("limit", 0).toInt());
 		ui->spinSimultaneous->setValue(settings.value("simultaneous", 1).toInt());
 		QMap<QString,QStringList> customs = getCustoms();
