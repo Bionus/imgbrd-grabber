@@ -1135,14 +1135,14 @@ void Image::unload()
 void Image::setRating(QString rating)
 {
 	QMap<QString,QString> assoc;
-		assoc["s"] = tr("Safe");
-		assoc["q"] = tr("Questionable");
-		assoc["e"] = tr("Explicit");
+		assoc["s"] = "safe";
+		assoc["q"] = "questionable";
+		assoc["e"] = "explicit";
 
 	if (assoc.contains(rating))
-	{ m_rating = assoc[m_rating]; }
+	{ m_rating = assoc.value(rating); }
 	else
-	{ m_rating = rating; }
+	{ m_rating = rating.toLower(); }
 }
 
 void Image::setFileExtension(QString ext)
