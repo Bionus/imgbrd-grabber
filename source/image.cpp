@@ -170,6 +170,7 @@ Image::Image(QMap<QString, QString> details, Page* parent)
 	m_loadingPreview = false;
 	m_loadingDetails = false;
 	m_loadingImage = false;
+	m_tryingSample = false;
 	m_pools = QList<Pool*>();
 
 	m_settings = new QSettings(savePath("sites/"+m_parentSite->value("Model")+"/"+m_site+"/settings.ini"), QSettings::IniFormat, this);
@@ -925,12 +926,12 @@ void Image::finishedImageS()
 
 	bool sampleFallback = m_settings->value("Save/samplefallback", true).toBool();
 	QString ext = getExtension(m_url);
-	if (m_loadImage->error() == QNetworkReply::ContentNotFoundError
-			&& (ext != "webm" || (sampleFallback && !m_sampleUrl.isEmpty())))
+	if (m_loadImage->error() == QNetworkReply::ContentNotFoundError && (ext != "webm" || (sampleFallback && !m_sampleUrl.isEmpty())) && !m_tryingSample)
 	{
 		if (ext == "webm")
 		{
 			setUrl(m_sampleUrl.toString());
+			m_tryingSample = true;
 			log(tr("Image non trouvée. Nouvel essai avec son sample..."));
 		}
 		else
