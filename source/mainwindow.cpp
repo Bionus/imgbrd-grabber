@@ -1023,6 +1023,8 @@ void mainWindow::getAll(bool all)
 	{
 		m_progressdialog = new batchWindow(this);
 		connect(m_progressdialog, SIGNAL(paused()), this, SLOT(getAllPause()));
+		connect(m_progressdialog, SIGNAL(rejected()), this, SLOT(getAllCancel()));
+		connect(m_progressdialog, SIGNAL(skipped()), this, SLOT(getAllSkip()));
 	}
 
 
@@ -1149,9 +1151,6 @@ void mainWindow::getAll(bool all)
 		}
 	}
 
-	connect(m_progressdialog, SIGNAL(rejected()), this, SLOT(getAllCancel()));
-	connect(m_progressdialog, SIGNAL(skipped()), this, SLOT(getAllSkip()));
-
 	if (m_downloaders.isEmpty() && m_getAllRemaining.isEmpty())
 	{
 		m_getAll = false;
@@ -1159,6 +1158,7 @@ void mainWindow::getAll(bool all)
 		return;
 	}
 
+	m_progressdialog->show();
 	getAllLogin();
 }
 
@@ -1168,12 +1168,17 @@ void mainWindow::getAllLogin()
 	m_progressdialog->setText(tr("Connexion aux sources, veuillez patienter..."));
 
 	m_getAllLogins.clear();
+	QQueue<Site*> logins;
 	for (Downloader *downloader : m_downloaders)
 	{
 		for (Site *site : *downloader->getSites())
 		{
+			qDebug() << "downloader" << site->name();
 			if (!m_getAllLogins.contains(site))
-			{ m_getAllLogins.append(site); }
+			{
+				m_getAllLogins.append(site);
+				logins.enqueue(site);
+			}
 		}
 	}
 
@@ -1184,14 +1189,16 @@ void mainWindow::getAllLogin()
 	}
 
 	m_progressdialog->setMaximum(m_getAllLogins.count());
-	for (Site *site : m_getAllLogins)
+	while (!logins.isEmpty())
 	{
+		Site *site = logins.dequeue();
 		connect(site, &Site::loggedIn, this, &mainWindow::getAllFinishedLogin);
 		site->login();
 	}
 }
 void mainWindow::getAllFinishedLogin(Site *site, Site::LoginResult)
 {
+
 	if (m_getAllLogins.empty())
 	{ return; }
 
@@ -1224,7 +1231,6 @@ void mainWindow::getAllGetPages()
 		{ downloader->getImages(); }
 	}
 
-	m_progressdialog->show();
 	logShow();
 }
 
