@@ -1358,7 +1358,7 @@ void mainWindow::getAllImages()
 void mainWindow::_getAll()
 {
 	// We quit as soon as the user cancels
-	if (m_progressdialog->cancelled() || m_progressdialog->isSkipped())
+	if (m_progressdialog->cancelled())
         return;
 
 	// If there are still images do download
@@ -1498,7 +1498,7 @@ void mainWindow::getAllProgress(Image *img, qint64 bytesReceived, qint64 bytesTo
 }
 void mainWindow::getAllPerformTags(Image* img)
 {
-	if (m_progressdialog->cancelled() || m_progressdialog->isSkipped())
+	if (m_progressdialog->cancelled())
         return;
 
 	log(tr("Tags reçus"));
@@ -1669,7 +1669,7 @@ void mainWindow::getAllGetImage(Image* img)
 }
 void mainWindow::getAllPerformImage(Image* img)
 {
-	if (m_progressdialog->cancelled() || m_progressdialog->isSkipped())
+	if (m_progressdialog->cancelled())
 		return;
 
 	QNetworkReply* reply = img->imageReply();
@@ -1866,17 +1866,19 @@ void mainWindow::getAllCancel()
 void mainWindow::getAllSkip()
 {
 	log(tr("Saut des téléchargements..."));
+
+	int count = m_getAllDownloading.count();
 	for (Image *image : m_getAllDownloading)
 	{
 		image->abortTags();
 		image->abortImage();
 	}
-	for (Downloader *downloader : m_downloaders)
-	{
-		downloader->cancel();
-	}
-	m_getAllSkipped += m_getAllRemaining.count() + m_getAllDownloading.count();
-	getAllFinished();
+	m_getAllDownloading.clear();
+
+	m_getAllSkipped += count;
+	for (int i = 0; i < count; ++i)
+		_getAll();
+
 	DONE();
 }
 

@@ -36,7 +36,6 @@ class batchWindow : public QDialog
 		void updateColumns();
 		bool endRemove();
 		bool cancelled();
-		bool isSkipped();
 		bool isPaused();
 
 	public slots:
@@ -76,7 +75,7 @@ class batchWindow : public QDialog
 		QList<QProgressBar*>	m_progressBars;
 		QMap<QString, int>		m_speeds;
 		QList<int>				m_mean;
-		bool					m_cancel, m_paused, m_skip;
+		bool					m_cancel, m_paused;
 		QTime					*m_time, *m_start;
         #ifdef Q_OS_WIN
             QWinTaskbarButton   *m_taskBarButton;

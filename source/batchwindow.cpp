@@ -10,7 +10,7 @@
 
 
 
-batchWindow::batchWindow(QWidget *parent) : QDialog(), ui(new Ui::batchWindow), m_imagesCount(0), m_items(0), m_images(0), m_maxSpeeds(0), m_cancel(false), m_paused(false), m_skip(false)
+batchWindow::batchWindow(QWidget *parent) : QDialog(), ui(new Ui::batchWindow), m_imagesCount(0), m_items(0), m_images(0), m_maxSpeeds(0), m_cancel(false), m_paused(false)
 {
 	ui->setupUi(this);
 	ui->tableWidget->resizeColumnToContents(0);
@@ -89,12 +89,6 @@ void batchWindow::pause()
 }
 void batchWindow::skip()
 {
-	m_skip = true;
-
-	#ifdef Q_OS_WIN
-		m_taskBarProgress->setVisible(false);
-	#endif
-
 	emit skipped();
 }
 void batchWindow::cancel()
@@ -111,7 +105,6 @@ void batchWindow::clear()
 {
 	m_cancel = false;
 	m_paused = false;
-	m_skip = false;
 
 	m_items = 0;
 	m_value = 0;
@@ -385,4 +378,3 @@ int batchWindow::count()		{ return m_imagesCount;					}
 int batchWindow::endAction()	{ return ui->comboEnd->currentIndex();	}
 bool batchWindow::endRemove()	{ return ui->checkRemove->isChecked();	}
 bool batchWindow::isPaused()	{ return m_paused;						}
-bool batchWindow::isSkipped()	{ return m_skip;						}
