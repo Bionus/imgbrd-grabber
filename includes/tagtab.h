@@ -38,6 +38,7 @@ class tagTab : public searchTab
 		QString postFilter();
 
 	public slots:
+		void updateCheckboxes();
 		// Search
 		void firstPage();
 		void previousPage();
@@ -51,10 +52,6 @@ class tagTab : public searchTab
 		void finishedLoading(Page*);
 		void finishedLoadingTags(Page*);
 		void finishedLoadingPreview(Image*);
-		// Sources
-		void openSourcesWindow();
-		void saveSources(QList<bool>);
-		void updateCheckboxes();
 		// Batch
 		void getPage();
 		void getAll();
@@ -92,11 +89,9 @@ class tagTab : public searchTab
 		TextEdit						*m_search, *m_postFiltering;
 		QCalendarWidget					*m_calendar;
 		QMap<QString,QString>			*m_favorites;
-		QMap<QString,Site*>				*m_sites;
 		QMap<QString,Page*>				m_pages;
 		QList<Image*>					m_images;
 		int								m_pagemax;
-		QList<QCheckBox*>				m_checkboxes;
 		QString							m_link, m_lastTags, m_wiki, m_tags;
 		bool							m_sized, m_from_history, m_stop;
 		int								m_page, m_history_cursor;

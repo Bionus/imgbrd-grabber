@@ -18,7 +18,6 @@ release/lastdump
 release/crashes/
 release/thumbs/
 release/crashreporter/
-release/sites/*/*/settings.ini
 releases/Grabber_*.tar.gz
 releases/Grabber_*.exe
 releases/Grabber_*.rar

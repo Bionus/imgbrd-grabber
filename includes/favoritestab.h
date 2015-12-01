@@ -37,6 +37,7 @@ class favoritesTab : public searchTab
 		QString postFilter();
 
 	public slots:
+		void updateCheckboxes();
 		// Search
 		void firstPage();
 		void previousPage();
@@ -50,10 +51,6 @@ class favoritesTab : public searchTab
 		void finishedLoading(Page*);
 		void finishedLoadingTags(Page*);
 		void finishedLoadingPreview(Image*);
-		// Sources
-		void openSourcesWindow();
-		void saveSources(QList<bool>);
-		void updateCheckboxes();
 		// Batch
 		void getPage();
 		void getAll();
@@ -95,12 +92,9 @@ class favoritesTab : public searchTab
 		TextEdit						*m_postFiltering;
 		QDateTime						m_loadFavorite;
 		QMap<QString,QString>			*m_favorites;
-		QMap<QString,Site*>				*m_sites;
 		QMap<QString,Page*>				m_pages;
 		QList<Image*>					m_images;
 		int								m_pagemax;
-		QList<bool>						m_selectedSources;
-		QList<QCheckBox*>				m_checkboxes;
 		QString							m_link, m_lastTags, m_wiki, m_tags, m_currentTags;
 		bool							m_sized, m_from_history, m_stop;
 		int								m_page, m_history_cursor, m_currentFav;

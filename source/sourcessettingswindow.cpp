@@ -3,6 +3,7 @@
 #include <QFile>
 #include <QCryptographicHash>
 #include <QSettings>
+#include <QNetworkCookie>
 #include "sourcessettingswindow.h"
 #include "ui_sourcessettingswindow.h"
 #include "functions.h"
@@ -51,6 +52,24 @@ SourcesSettingsWindow::SourcesSettingsWindow(Site *site, QWidget *parent) : QDia
 	ui->lineLoginPassword->setText(settings.value("login/password", "").toString());
 	ui->lineLoginCookie->setText(settings.value("login/cookie", "").toString());
 
+	// Hide hash if unncessary
+	if (site->value("PasswordSalt").isEmpty())
+	{ ui->buttonAuthHash->hide(); }
+	else
+	{ ui->lineAuthPassword->setEchoMode(QLineEdit::Normal); }
+
+	// Cookies
+	QList<QNetworkCookie> cookies = site->cookies();
+	ui->tableCookies->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+	ui->tableCookies->setRowCount(cookies.count());
+	int row = 0;
+	for (QNetworkCookie cookie : site->cookies())
+	{
+		ui->tableCookies->setItem(row, 0, new QTableWidgetItem(QString(cookie.name())));
+		ui->tableCookies->setItem(row, 1, new QTableWidgetItem(QString(cookie.value())));
+		row++;
+	}
+
 	connect(this, SIGNAL(accepted()), this, SLOT(save()));
 }
 
@@ -59,11 +78,16 @@ SourcesSettingsWindow::~SourcesSettingsWindow()
 	delete ui;
 }
 
+void SourcesSettingsWindow::addCookie()
+{
+	ui->tableCookies->setRowCount(ui->tableCookies->rowCount() + 1);
+}
+
 void SourcesSettingsWindow::on_buttonAuthHash_clicked()
 {
-	QString password = QInputDialog::getText(this, tr("Hasher un mot de passe"), tr("Veuillez entrer votre mot de passe, dans le format adapté.<br/>Par exemple, pour danbooru, le format est \"%1\" (sans les guillemets).").arg("choujin-steiner--%1--").arg(tr("VOTRE_MOT_DE_PASSE")));
+	QString password = QInputDialog::getText(this, tr("Hasher un mot de passe"), tr("Veuillez entrer votre mot de passe ci-dessous.<br/>Il sera ensuite hashé en utilisant le format \"%1\".").arg(m_site->value("PasswordSalt")));
 	if (!password.isEmpty())
-	{ ui->lineAuthPassword->setText(QCryptographicHash::hash(password.toUtf8(), QCryptographicHash::Sha1).toHex()); }
+	{ ui->lineAuthPassword->setText(QCryptographicHash::hash(m_site->value("PasswordSalt").replace("%password%", password).toUtf8(), QCryptographicHash::Sha1).toHex()); }
 }
 
 void SourcesSettingsWindow::deleteSite()
@@ -146,6 +170,7 @@ void SourcesSettingsWindow::save()
 	settings.setValue("auth/pseudo", ui->lineAuthPseudo->text());
 	settings.setValue("auth/password", ui->lineAuthPassword->text());
 
+	// Login
 	QStringList methods = QStringList() << "get" << "post";
 	settings.setValue("login/parameter", ui->checkLoginParameter->isChecked());
 	settings.setValue("login/method", methods[ui->comboLoginMethod->currentIndex()]);
@@ -153,6 +178,17 @@ void SourcesSettingsWindow::save()
 	settings.setValue("login/pseudo", ui->lineLoginPseudo->text());
 	settings.setValue("login/password", ui->lineLoginPassword->text());
 	settings.setValue("login/cookie", ui->lineLoginCookie->text());
+
+	// Cookies
+	QList<QVariant> cookies;
+	for (int i = 0; i < ui->tableCookies->rowCount(); ++i)
+	{
+		QNetworkCookie cookie;
+		cookie.setName(ui->tableCookies->item(i, 0)->text().toLatin1());
+		cookie.setValue(ui->tableCookies->item(i, 1)->text().toLatin1());
+		cookies.append(cookie.toRawForm());
+	}
+	settings.setValue("cookies", cookies);
 
 	settings.sync();
 

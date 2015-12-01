@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>477</width>
     <height>272</height>
    </rect>
   </property>
@@ -181,7 +181,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab">
+     <widget class="QWidget" name="tabDownloads">
       <attribute name="title">
        <string>Téléchargement</string>
       </attribute>
@@ -582,6 +582,34 @@
        </item>
       </layout>
      </widget>
+     <widget class="QWidget" name="tabCookies">
+      <attribute name="title">
+       <string>Cookies</string>
+      </attribute>
+      <layout class="QFormLayout" name="formLayout_8">
+       <item row="0" column="0" colspan="2">
+        <widget class="QTableWidget" name="tableCookies">
+         <column>
+          <property name="text">
+           <string>Nom</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Valeur</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+       <item row="1" column="0" colspan="2">
+        <widget class="QPushButton" name="pushButton">
+         <property name="text">
+          <string>Ajouter</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
    <item>
@@ -639,9 +667,14 @@
  <tabstops>
   <tabstop>tabWidget</tabstop>
   <tabstop>lineSiteName</tabstop>
+  <tabstop>spinIgnore1</tabstop>
+  <tabstop>spinIgnoreAlways</tabstop>
   <tabstop>comboReferer</tabstop>
   <tabstop>comboRefererPreview</tabstop>
   <tabstop>comboRefererImage</tabstop>
+  <tabstop>checkSsl</tabstop>
+  <tabstop>spinImagesPerPage</tabstop>
+  <tabstop>spinSimultaneousDownloads</tabstop>
   <tabstop>checkSourcesDefault</tabstop>
   <tabstop>comboSources1</tabstop>
   <tabstop>comboSources2</tabstop>
@@ -656,6 +689,7 @@
   <tabstop>lineLoginUrl</tabstop>
   <tabstop>lineLoginPseudo</tabstop>
   <tabstop>lineLoginPassword</tabstop>
+  <tabstop>lineLoginCookie</tabstop>
   <tabstop>pushButton_5</tabstop>
   <tabstop>buttonDelete</tabstop>
   <tabstop>buttonCancel</tabstop>
@@ -688,8 +722,8 @@
    <slot>deleteSite()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>196</x>
-     <y>235</y>
+     <x>304</x>
+     <y>261</y>
     </hint>
     <hint type="destinationlabel">
      <x>256</x>
@@ -704,8 +738,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>277</x>
-     <y>235</y>
+     <x>385</x>
+     <y>261</y>
     </hint>
     <hint type="destinationlabel">
      <x>345</x>
@@ -720,8 +754,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>358</x>
-     <y>235</y>
+     <x>466</x>
+     <y>261</y>
     </hint>
     <hint type="destinationlabel">
      <x>368</x>
@@ -752,8 +786,8 @@
    <slot>testLogin()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>300</x>
-     <y>113</y>
+     <x>453</x>
+     <y>120</y>
     </hint>
     <hint type="destinationlabel">
      <x>273</x>
@@ -768,8 +802,8 @@
    <slot>testLogin()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>317</x>
-     <y>178</y>
+     <x>453</x>
+     <y>216</y>
     </hint>
     <hint type="destinationlabel">
      <x>256</x>
@@ -777,9 +811,26 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>SourcesSettingsWindow</receiver>
+   <slot>addCookie()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>431</x>
+     <y>200</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>470</x>
+     <y>190</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>deleteSite()</slot>
   <slot>testLogin()</slot>
+  <slot>addCookie()</slot>
  </slots>
 </ui>

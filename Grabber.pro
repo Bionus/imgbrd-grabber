@@ -16,7 +16,7 @@ T = $$(TRAVIS)
 
 # Global
 TARGET = Grabber
-APP_VERSION = \\\"4.1.9\\\"
+APP_VERSION = \\\"4.2.0\\\"
 
 # General
 TEMPLATE = app
@@ -101,7 +101,9 @@ SOURCES += source/*.cpp vendor/*.cpp
 
 OTHER_FILES += \
     icon.rc \
-    VERSION \
-    LICENSE \
-    README.md \
     .gitignore
+
+DISTFILES += \
+    README.md \
+    LICENSE \
+    NOTICE

@@ -30,12 +30,12 @@ class batchWindow : public QDialog
 		int images();
 		int count();
 		int endAction();
-		bool endRemove();
-		bool cancelled();
 		int indexOf(QString);
 		int batch(QString);
 		void setCount(int);
 		void updateColumns();
+		bool endRemove();
+		bool cancelled();
 		bool isPaused();
 
 	public slots:
@@ -60,10 +60,12 @@ class batchWindow : public QDialog
 		void drawSpeed();
 		void imageUrlChanged(QString, QString);
 		void pause();
+		void skip();
 
 	signals:
 		void closed();
 		void paused();
+		void skipped();
 
 	private:
 		Ui::batchWindow			*ui;

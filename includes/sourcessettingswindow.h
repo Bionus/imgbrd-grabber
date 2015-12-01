@@ -25,6 +25,7 @@ class SourcesSettingsWindow : public QDialog
 	public slots:
 		void on_buttonAuthHash_clicked();
 		void deleteSite();
+		void addCookie();
 		void save();
 		void testLogin();
 		void loginTested(Site*, Site::LoginResult);

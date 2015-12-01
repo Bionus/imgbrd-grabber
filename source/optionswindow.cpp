@@ -120,6 +120,7 @@ optionsWindow::optionsWindow(QWidget *parent) : QDialog(parent), ui(new Ui::opti
 		else if	(artistMultiple == "keepN")			{ ui->radioArtistsKeepN->setChecked(true);			}
 		else if	(artistMultiple == "keepNThenAdd")	{ ui->radioArtistsKeepNThenAdd->setChecked(true);	}
 		else if	(artistMultiple == "replaceAll")	{ ui->radioArtistsReplaceAll->setChecked(true);		}
+		else if	(artistMultiple == "multiple")		{ ui->radioArtistsMultiple->setChecked(true);		}
 		ui->lineCopyrightsIfNone->setText(settings.value("copyright_empty", "misc").toString());
 		ui->checkCopyrightsUseShorter->setChecked(settings.value("copyright_useshorter", true).toBool());
 		ui->spinCopyrightsMoreThanN->setValue(settings.value("copyright_multiple_limit", 1).toInt());
@@ -133,6 +134,7 @@ optionsWindow::optionsWindow(QWidget *parent) : QDialog(parent), ui(new Ui::opti
 		else if	(copyrightMultiple == "keepN")			{ ui->radioCopyrightsKeepN->setChecked(true);			}
 		else if	(copyrightMultiple == "keepNThenAdd")	{ ui->radioCopyrightsKeepNThenAdd->setChecked(true);	}
 		else if	(copyrightMultiple == "replaceAll")		{ ui->radioCopyrightsReplaceAll->setChecked(true);		}
+		else if	(copyrightMultiple == "multiple")		{ ui->radioCopyrightsMultiple->setChecked(true);		}
 		ui->lineCharactersIfNone->setText(settings.value("character_empty", "unknown").toString());
 		ui->spinCharactersMoreThanN->setValue(settings.value("character_multiple_limit", 1).toInt());
 		ui->spinCharactersKeepN->setValue(settings.value("character_multiple_keepN", 1).toInt());
@@ -145,6 +147,7 @@ optionsWindow::optionsWindow(QWidget *parent) : QDialog(parent), ui(new Ui::opti
 		else if	(characterMultiple == "keepN")			{ ui->radioCharactersKeepN->setChecked(true);			}
 		else if	(characterMultiple == "keepNThenAdd")	{ ui->radioCharactersKeepNThenAdd->setChecked(true);	}
 		else if	(characterMultiple == "replaceAll")		{ ui->radioCharactersReplaceAll->setChecked(true);		}
+		else if	(characterMultiple == "multiple")		{ ui->radioCharactersMultiple->setChecked(true);		}
 		ui->spinLimit->setValue(settings.value("limit", 0).toInt());
 		ui->spinSimultaneous->setValue(settings.value("simultaneous", 1).toInt());
 		QMap<QString,QStringList> customs = getCustoms();
@@ -506,7 +509,7 @@ void optionsWindow::setCategory(QString value)
 		tr("Nom de fichier", "update") <<
 		tr("Fichier texte séparé", "update") <<
 		tr("Log séparé", "update") <<
-		tr("Noms multiples", "update") <<
+		tr("Noms conditionnels", "update") <<
 		tr("Tags artiste", "update") <<
 		tr("Tags série", "update") <<
 		tr("Tags personnage", "update") <<
@@ -596,9 +599,10 @@ void optionsWindow::save()
 		settings.setValue("samplefallback", ui->checkSampleFallback->isChecked());
 		settings.setValue("replaceblanks", ui->checkReplaceBlanks->isChecked());
 		settings.setValue("separator", ui->lineSeparator->text());
-		settings.setValue("path", ui->lineFolder->text());
-		settings.setValue("path_real", ui->lineFolder->text());
-		QDir pth = QDir(ui->lineFolder->text());
+		QString folder = fixFilename("", ui->lineFolder->text());
+		settings.setValue("path", folder);
+		settings.setValue("path_real", folder);
+		QDir pth = QDir(folder);
 		if (!pth.exists())
 		{
 			QString op = "";
@@ -610,10 +614,11 @@ void optionsWindow::save()
 			if (pth.path() == op)
 			{ error(this, tr("Une erreur est survenue lors de la création du dossier de sauvegarde.")); }
 			else
-			{ pth.mkpath(ui->lineFolder->text()); }
+			{ pth.mkpath(folder); }
 		}
-		settings.setValue("path_favorites", ui->lineFolderFavorites->text());
-		pth = QDir(ui->lineFolderFavorites->text());
+		folder = fixFilename("", ui->lineFolderFavorites->text());
+		settings.setValue("path_favorites", folder);
+		pth = QDir(folder);
 		if (!pth.exists())
 		{
 			QString op = "";
@@ -625,7 +630,7 @@ void optionsWindow::save()
 			if (pth.path() == op)
 			{ error(this, tr("Une erreur est survenue lors de la création du dossier de sauvegarde des favoris.")); }
 			else
-			{ pth.mkpath(ui->lineFolderFavorites->text()); }
+			{ pth.mkpath(folder); }
 		}
 		QStringList opts = QStringList() << "save" << "copy" << "move" << "ignore";
 		settings.setValue("md5Duplicates", opts.at(ui->comboMd5Duplicates->currentIndex()));
@@ -639,6 +644,7 @@ void optionsWindow::save()
 		else if	(ui->radioArtistsKeepN->isChecked())		{ artistMultiple = "keepN";			}
 		else if	(ui->radioArtistsKeepNThenAdd->isChecked())	{ artistMultiple = "keepNThenAdd";	}
 		else if	(ui->radioArtistsReplaceAll->isChecked())	{ artistMultiple = "replaceAll";	}
+		else if	(ui->radioArtistsMultiple->isChecked())		{ artistMultiple = "multiple";		}
 		settings.setValue("artist_multiple", artistMultiple);
 		settings.setValue("artist_multiple_limit", ui->spinArtistsMoreThanN->value());
 		settings.setValue("artist_multiple_keepN", ui->spinArtistsKeepN->value());
@@ -653,6 +659,7 @@ void optionsWindow::save()
 		else if	(ui->radioCopyrightsKeepN->isChecked())			{ copyrightMultiple = "keepN";			}
 		else if	(ui->radioCopyrightsKeepNThenAdd->isChecked())	{ copyrightMultiple = "keepNThenAdd";	}
 		else if	(ui->radioCopyrightsReplaceAll->isChecked())	{ copyrightMultiple = "replaceAll";		}
+		else if	(ui->radioCopyrightsMultiple->isChecked())		{ copyrightMultiple = "multiple";		}
 		settings.setValue("copyright_multiple", copyrightMultiple);
 		settings.setValue("copyright_multiple_limit", ui->spinCopyrightsMoreThanN->value());
 		settings.setValue("copyright_multiple_keepN", ui->spinCopyrightsKeepN->value());
@@ -666,6 +673,7 @@ void optionsWindow::save()
 		else if	(ui->radioCharactersKeepN->isChecked())			{ characterMultiple = "keepN";			}
 		else if	(ui->radioCharactersKeepNThenAdd->isChecked())	{ characterMultiple = "keepNThenAdd";	}
 		else if	(ui->radioCharactersReplaceAll->isChecked())	{ characterMultiple = "replaceAll";		}
+		else if	(ui->radioCharactersMultiple->isChecked())		{ characterMultiple = "multiple";		}
 		settings.setValue("character_multiple", characterMultiple);
 		settings.setValue("character_multiple_limit", ui->spinCharactersMoreThanN->value());
 		settings.setValue("character_multiple_keepN", ui->spinCharactersKeepN->value());

@@ -140,7 +140,7 @@ void saveMd5s()
 		QStringList md5s = _md5.keys();
 		QStringList paths = _md5.values();
 		for (int i = 0; i < md5s.size(); i++)
-			f.write(QString(md5s[i] + paths[i] + "\r\n").toUtf8());
+			f.write(QString(md5s[i] + paths[i] + "\n").toUtf8());
 		f.close();
 	}
 }
@@ -153,7 +153,7 @@ void saveMd5(QString md5, QString path)
 	QFile f(savePath("md5s.txt"));
 	if (f.open(QFile::WriteOnly | QFile::Append))
 	{
-		f.write(QString(md5 + path + "\r\n").toUtf8());
+		f.write(QString(md5 + path + "\n").toUtf8());
 		f.close();
 	}
 }
@@ -491,7 +491,7 @@ void log(QString l, Log)
 
 	QString v = set.contains("Login/pseudo") && !set.value("Login/pseudo").toString().isEmpty() ? l.replace(set.value("Login/pseudo").toString(), "{pseudo}") : l;
 	v = set.contains("Login/password") && !set.value("Login/password").toString().isEmpty() ? l.replace(set.value("Login/password").toString(), "{password}") : v;
-	f.write(QString("["+time.toString("hh:mm:ss.zzz")+"] "+stripTags(v)+"\r\n").toUtf8());
+	f.write(QString("["+time.toString("hh:mm:ss.zzz")+"] "+stripTags(v)+"\n").toUtf8());
 	f.flush();
 
 	//_log.insert(time, (type == Error ? QObject::tr("<b>Erreur :</b> %1").arg(l) : (type == Warning ? QObject::tr("<b>Attention :</b> %1").arg(l) : (type == Notice ? QObject::tr("<b>Notice :</b> %1").arg(l) : l))));
@@ -637,18 +637,18 @@ QString setExtension(QString url, QString extension)
 	return url;
 }
 
-QString fixFilename(QString filename, QString path, int maxlength)
+QString fixFilename(QString fn, QString path, int maxlength)
 {
 	QString sep = QDir::toNativeSeparators("/");
-	filename = QDir::toNativeSeparators(filename);
+	fn = QDir::toNativeSeparators(fn);
 	path = QDir::toNativeSeparators(path);
-	if (!path.endsWith(sep) && !path.isEmpty())
+	if (!path.endsWith(sep) && !path.isEmpty() && !fn.isEmpty())
 		path += sep;
 
 	#ifdef Q_OS_WIN
 		// Fix parameters
 		maxlength = maxlength == 0 ? MAX_PATH : maxlength;
-		filename = path + filename;
+		QString filename = path + fn;
 
 		// Drive
 		QString drive = "";
@@ -666,9 +666,13 @@ QString fixFilename(QString filename, QString path, int maxlength)
 
 		// Divide filename
 		QStringList parts = filename.split(sep);
-		QString file = parts.takeLast();
-		QString ext = file.right(file.length() - file.lastIndexOf('.') - 1);
-		file = file.left(file.lastIndexOf('.'));
+		QString file, ext;
+		if (!fn.isEmpty())
+		{
+			file = parts.takeLast();
+			ext = file.right(file.length() - file.lastIndexOf('.') - 1);
+			file = file.left(file.lastIndexOf('.'));
+		}
 
 		// Fix directories
 		for (QString &part : parts)
@@ -693,17 +697,19 @@ QString fixFilename(QString filename, QString path, int maxlength)
 		QString dirpart = parts.join(sep);
 		if (dirpart.length() > maxlength - 12)
 			dirpart = dirpart.left(maxlength - 12).trimmed();
-		filename = (dirpart.isEmpty() ? "" : dirpart + sep) + file;
+		filename = (dirpart.isEmpty() ? "" : dirpart + (!fn.isEmpty() ? sep : "")) + file;
 
 		// A filename cannot exceed MAX_PATH (-1 for <NUL> and -3 for drive "C:\")
 		if (filename.length() > maxlength - 1 - 3 - ext.length() - 1)
 			filename = filename.left(maxlength - 1 - 3 - ext.length() - 1).trimmed();
 
 		// Put extension and drive back
-		filename = drive + filename + "." + ext;
-		filename = filename.right(filename.length() - path.length());
+		filename = drive + filename + (!ext.isEmpty() ? "." + ext : "");
+		if (!fn.isEmpty())
+			filename = filename.right(filename.length() - path.length());
 	#else
 		// Divide filename
+		QString filename = fn;
 		QStringList parts = filename.split(sep);
 		QString file = parts.takeLast();
 		QString ext = file.right(file.length() - file.lastIndexOf('.') - 1);

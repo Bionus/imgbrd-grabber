@@ -1,13 +1,20 @@
 # Grabber
 
-[![Build Status](https://travis-ci.org/Bionus/imgbrd-grabber.svg)](https://travis-ci.org/Bionus/imgbrd-grabber)
 [![GitHub release](https://img.shields.io/github/release/Bionus/imgbrd-grabber.svg)](https://github.com/Bionus/imgbrd-grabber/releases/latest)
 [![GitHub downloads](https://img.shields.io/github/downloads/Bionus/imgbrd-grabber/latest/total.svg)](https://github.com/Bionus/imgbrd-grabber/releases/latest)
 [![GitHub issues](https://img.shields.io/github/issues/Bionus/imgbrd-grabber.svg)](https://github.com/Bionus/imgbrd-grabber/issues)
+[![Donate with PayPal](https://img.shields.io/badge/paypal-donate-orange.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=bio%2enus%40hotmail%2efr&lc=FR&item_name=Bionus&item_number=Grabber&currency_code=EUR)
+[![Donate with Patreon](https://img.shields.io/badge/patreon-donate-orange.svg)](https://www.patreon.com/bionus)
+[![Donate Bitcoins](https://img.shields.io/badge/bitcoin-donate-orange.svg)](https://www.coinbase.com/bionus)
+[![Project license](https://img.shields.io/github/license/bionus/imgbrd-grabber.svg)](https://raw.githubusercontent.com/Bionus/imgbrd-grabber/develop/LICENSE)
+[![Build Status](https://travis-ci.org/Bionus/imgbrd-grabber.svg)](https://travis-ci.org/Bionus/imgbrd-grabber)
 
 ## About
 Imgbrd-Grabber is an imageboard/booru downloader with graphical user interface. It can download thousands of images from multiple boorus automatically.
 Its main advantage is its very powerful naming features: just set your filename and folder using all the tokens available and conditionals, and he will generate an image-dependant one.
+
+## Download
+You can download the latest release [here](https://github.com/Bionus/imgbrd-grabber/releases/latest), or find all previous releases [here](https://github.com/Bionus/imgbrd-grabber/releases).
 
 ## Contact
 If you have any questions about the program, found a bug and don't want to use the github issue tracker, or anything, you can contact me by mail in French or in English at [bio.nus@hotmail.fr](mailto:bio.nus@hotmail.fr).

@@ -297,19 +297,19 @@ void Page::parseImage(QMap<QString,QString> d, int position)
 
 	// Generate image
 	Image *img = new Image(d, this);
-	QString error = img->filter(m_postFiltering);
+	QStringList errors = img->filter(m_postFiltering);
 
 	// If the file path is wrong (ends with "/.jpg")
-	if (error.isEmpty() && d["file_url"].endsWith("/." + d["ext"]))
-	{ error = "file url"; }
+	if (errors.isEmpty() && d["file_url"].endsWith("/." + d["ext"]))
+	{ errors.append("file url"); }
 
 	// Add if everything is ok
-	if (error.isEmpty())
+	if (errors.isEmpty())
 	{ m_images.append(img); }
 	else
 	{
 		img->deleteLater();
-		log(tr("Image #%1 ignorée. Raison : %2.").arg(QString::number(position + 1), error));
+		log(tr("Image #%1 ignorée. Raison : %2.").arg(QString::number(position + 1), errors.join(", ")));
 	}
 }
 
@@ -354,11 +354,6 @@ void Page::parse()
 		int errorLine, errorColumn;
 		if (!doc.setContent(m_source, false, &errorMsg, &errorLine, &errorColumn))
 		{
-			QFile file("C:\\Users\\Nicolas\\Desktop\\test.html");
-			file.open(QFile::WriteOnly);
-			file.write(m_source.toUtf8());
-			file.close();
-
 			log(tr("Erreur lors de l'analyse du fichier XML : %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn)));
 			fallback();
 			return;
@@ -475,11 +470,15 @@ void Page::parse()
 		rx.setMinimal(true);
 		int pos = 0, id = 0;
 		while ((pos = rx.indexIn(m_source, pos)) != -1)
-        {
+		{
 			pos += rx.matchedLength();
 			QMap<QString,QString> d;
 			for (int i = 0; i < order.size(); i++)
-			{ d[order.at(i)] = rx.cap(i+1); }
+			{
+				QString ord = order.at(i);
+				if (!d.contains(ord) || d[ord].isEmpty())
+				{ d[ord] = rx.cap(i + 1); }
+			}
 
 			// JSON elements
 			if (order.contains("json") && !d["json"].isEmpty())
@@ -507,6 +506,8 @@ void Page::parse()
 			QList<QVariant> sourc = src.toList();
 			if (sourc.isEmpty())
 			{ sourc = src.toMap().value("images").toList(); }
+			if (sourc.isEmpty())
+			{ sourc = src.toMap().value("search").toList(); }
 			for (int id = 0; id < sourc.count(); id++)
 			{
 				sc = sourc.at(id + first).toMap();
@@ -563,7 +564,6 @@ void Page::parse()
 			}
 		}
 	}
-
 
 	// Getting last page
 	if (m_site->contains("LastPage") && m_pagesCount < 1)
@@ -712,17 +712,21 @@ void Page::parseTags()
 			{
 				m_imagesCount = tag.count();
 				if (m_pagesCount < 0)
-					m_pagesCount = (int)ceil((m_imagesCount * 1.) / m_imagesPerPage);
+				{ m_pagesCount = (int)ceil((m_imagesCount * 1.) / m_imagesPerPage); }
 			}
 		}
 	}
-	if (m_site->contains("Regex/LastPage") && (m_imagesCount < 1 || m_imagesCount % 1000 == 0))
+	if (m_site->contains("Regex/LastPage"))
 	{
 		QRegExp rxlast(m_site->value("Regex/LastPage"));
 		rxlast.indexIn(source, 0);
-		m_pagesCount = rxlast.cap(1).remove(",").toInt();
-		if (m_pagesCount != 0)
-			m_imagesCount = m_pagesCount * m_imagesPerPage;
+		int pagesCount = rxlast.cap(1).remove(",").toInt();
+		if (pagesCount != 0)
+		{
+			m_pagesCount = pagesCount;
+			if (m_imagesCount < 1 || m_imagesCount % 1000 == 0)
+			{ m_imagesCount = m_pagesCount * m_imagesPerPage; }
+		}
 	}
 
 	// Wiki

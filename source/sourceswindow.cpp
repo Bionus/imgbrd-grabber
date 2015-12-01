@@ -273,7 +273,7 @@ void sourcesWindow::checkForUpdates()
 	for (int i = 0; i < m_sites->size(); i++)
 	{
 		Site *site = m_sites->value(keys[i]);
-		site->checkForUpdates();
+		//site->checkForUpdates();
 		connect(site, SIGNAL(checkForUpdatesFinished(Site*)), this, SLOT(checkForUpdatesReceived(Site*)));
 	}
 }

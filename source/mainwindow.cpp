@@ -299,7 +299,10 @@ void mainWindow::onFirstLoad()
 		}
 	}
 
-	startWindow *swin = new startWindow(this);
+	startWindow *swin = new startWindow(&m_sites, this);
+	connect(swin, SIGNAL(languageChanged(QString)), this, SLOT(loadLanguage(QString)));
+	connect(swin, &startWindow::settingsChanged, this, &mainWindow::on_buttonInitSettings_clicked);
+	connect(swin, &startWindow::sourceChanged, this, &mainWindow::setSource);
 	swin->show();
 }
 
@@ -920,11 +923,13 @@ void mainWindow::closeEvent(QCloseEvent *e)
 void mainWindow::options()
 {
 	log(tr("Ouverture de la fenêtre des options..."));
+
 	optionsWindow *options = new optionsWindow(this);
 	connect(options, SIGNAL(languageChanged(QString)), this, SLOT(loadLanguage(QString)));
-	connect(options, SIGNAL(settingsChanged()), this, SLOT(on_buttonInitSettings_clicked()));
-	connect(options, SIGNAL(accepted()), this, SLOT(optionsClosed()));
+	connect(options, &optionsWindow::settingsChanged, this, &mainWindow::on_buttonInitSettings_clicked);
+	connect(options, &QDialog::accepted, this, &mainWindow::optionsClosed);
 	options->show();
+
 	DONE();
 }
 
@@ -947,13 +952,40 @@ void mainWindow::saveAdvanced(sourcesWindow *w)
 {
 	log(tr("Sauvegarde des nouvelles sources..."));
 	m_selectedSources = w->getSelected();
+
 	QString sav;
 	for (int i = 0; i < m_selectedSources.count(); i++)
 	{ sav += (m_selectedSources.at(i) ? "1" : "0"); }
 	m_settings->setValue("sites", sav);
+
 	for (int i = 0; i < m_tabs.count(); i++)
 	{ m_tabs[i]->updateCheckboxes(); }
+
 	DONE();
+}
+
+void mainWindow::setSource(QString source)
+{
+	if (m_tabs.size() < 1)
+		return;
+
+	qDebug() << source;
+
+	QList<bool> sel;
+	QStringList keys = m_sites.keys();
+	for (QString key : keys)
+	{ sel.append(key == source); }
+
+	m_tabs[0]->saveSources(sel);
+}
+
+void mainWindow::aboutWebsite()
+{
+	QDesktopServices::openUrl(QUrl("https://github.com/Bionus/imgbrd-grabber"));
+}
+void mainWindow::aboutReportBug()
+{
+	QDesktopServices::openUrl(QUrl("https://github.com/Bionus/imgbrd-grabber/issues/new"));
 }
 
 void mainWindow::aboutAuthor()
@@ -991,6 +1023,8 @@ void mainWindow::getAll(bool all)
 	{
 		m_progressdialog = new batchWindow(this);
 		connect(m_progressdialog, SIGNAL(paused()), this, SLOT(getAllPause()));
+		connect(m_progressdialog, SIGNAL(rejected()), this, SLOT(getAllCancel()));
+		connect(m_progressdialog, SIGNAL(skipped()), this, SLOT(getAllSkip()));
 	}
 
 
@@ -1002,6 +1036,7 @@ void mainWindow::getAll(bool all)
 	m_getAllIgnored = 0;
 	m_getAll404s = 0;
 	m_getAllErrors = 0;
+	m_getAllSkipped = 0;
 	m_getAllCount = 0;
 	m_getAllPageCount = 0;
 	m_getAllBeforeId = -1;
@@ -1116,8 +1151,6 @@ void mainWindow::getAll(bool all)
 		}
 	}
 
-	connect(m_progressdialog, SIGNAL(rejected()), this, SLOT(getAllCancel()));
-
 	if (m_downloaders.isEmpty() && m_getAllRemaining.isEmpty())
 	{
 		m_getAll = false;
@@ -1125,6 +1158,7 @@ void mainWindow::getAll(bool all)
 		return;
 	}
 
+	m_progressdialog->show();
 	getAllLogin();
 }
 
@@ -1134,12 +1168,17 @@ void mainWindow::getAllLogin()
 	m_progressdialog->setText(tr("Connexion aux sources, veuillez patienter..."));
 
 	m_getAllLogins.clear();
+	QQueue<Site*> logins;
 	for (Downloader *downloader : m_downloaders)
 	{
 		for (Site *site : *downloader->getSites())
 		{
+			qDebug() << "downloader" << site->name();
 			if (!m_getAllLogins.contains(site))
-			{ m_getAllLogins.append(site); }
+			{
+				m_getAllLogins.append(site);
+				logins.enqueue(site);
+			}
 		}
 	}
 
@@ -1150,14 +1189,16 @@ void mainWindow::getAllLogin()
 	}
 
 	m_progressdialog->setMaximum(m_getAllLogins.count());
-	for (Site *site : m_getAllLogins)
+	while (!logins.isEmpty())
 	{
+		Site *site = logins.dequeue();
 		connect(site, &Site::loggedIn, this, &mainWindow::getAllFinishedLogin);
 		site->login();
 	}
 }
 void mainWindow::getAllFinishedLogin(Site *site, Site::LoginResult)
 {
+
 	if (m_getAllLogins.empty())
 	{ return; }
 
@@ -1190,7 +1231,6 @@ void mainWindow::getAllGetPages()
 		{ downloader->getImages(); }
 	}
 
-	m_progressdialog->show();
 	logShow();
 }
 
@@ -1428,100 +1468,7 @@ void mainWindow::_getAll()
 
 	// When the batch download finishes
 	else if (m_getAllDownloading.isEmpty() && m_getAll)
-	{
-		log("Images download finished.");
-		m_progressdialog->setValue(m_progressdialog->maximum());
-
-		// Delete objects
-		for (Downloader *d : m_downloadersDone)
-		{
-			for (Page *p : m_getAllPages)
-			{ p->clear(); }
-			d->clear();
-		}
-		qDeleteAll(m_downloadersDone);
-		m_downloadersDone.clear();
-		// qDebug() << "DELETE downloaders";
-
-		// Final action
-		switch (m_progressdialog->endAction())
-		{
-			case 1:	m_progressdialog->close();				break;
-			case 2:	openTray();								break;
-			case 3:	QSound::play(":/sounds/finished.wav");	break;
-
-			case 4:
-				shutDown();
-				break;
-		}
-		if (m_progressdialog->endRemove())
-		{
-			int rem = 0;
-			for (int i : m_batchDownloading)
-			{
-				m_groupBatchs[i][m_groupBatchs[i].count() - 1] = "false";
-				m_progressBars.removeAt(i - rem);
-				ui->tableBatchGroups->removeRow(i - rem);
-				rem++;
-			}
-		}
-		activateWindow();
-		m_getAll = false;
-
-		// Information about downloads
-		if (m_getAllErrors <= 0 || m_batchAutomaticRetries <= 0)
-		{
-			QMessageBox::information(
-				this,
-				tr("Récupération des images"),
-				QString(
-					tr("%n fichier(s) récupéré(s) avec succès.", "", m_getAllDownloaded)+"\r\n"+
-					tr("%n fichier(s) ignoré(s).", "", m_getAllIgnored)+"\r\n"+
-					tr("%n fichier(s) déjà existant(s).", "", m_getAllExists)+"\r\n"+
-					tr("%n fichier(s) non trouvé(s) sur le serveur.", "", m_getAll404s)+"\r\n"+
-					tr("%n erreur(s).", "", m_getAllErrors)
-				)
-			);
-		}
-
-		// Retry in case of error
-		int reponse = QMessageBox::No;
-		if (m_getAllErrors > 0)
-		{
-			if (m_batchAutomaticRetries > 0)
-			{
-				m_batchAutomaticRetries--;
-				reponse = QMessageBox::Yes;
-			}
-			else
-			{ reponse = QMessageBox::question(this, tr("Récupération des images"), tr("Des erreurs sont survenues pendant le téléchargement des images. Voulez vous relancer le téléchargement de celles-ci ? (%1/%2)").arg(m_getAllErrors).arg(m_getAllDownloaded + m_getAllIgnored + m_getAllExists + m_getAll404s + m_getAllErrors), QMessageBox::Yes | QMessageBox::No); }
-			if (reponse == QMessageBox::Yes)
-			{
-				m_getAll = true;
-				m_progressdialog->clear();
-				//qDeleteAll(m_getAllRemaining);
-				m_getAllRemaining.clear();
-				m_getAllRemaining = m_getAllFailed;
-				m_getAllFailed.clear();
-				m_getAllDownloaded = 0;
-				m_getAllExists = 0;
-				m_getAllIgnored = 0;
-				m_getAll404s = 0;
-				m_getAllCount = 0;
-				m_progressdialog->show();
-				getAllImages();
-			}
-			m_getAllErrors = 0;
-		}
-
-		// End of batch download
-		if (reponse != QMessageBox::Yes)
-		{
-			Commands::get()->after();
-			ui->widgetDownloadButtons->setDisabled(false);
-			log(tr("Téléchargement groupé terminé"));
-		}
-	}
+	{ getAllFinished(); }
 }
 void mainWindow::imageUrlChanged(QString before, QString after)
 {
@@ -1723,7 +1670,7 @@ void mainWindow::getAllGetImage(Image* img)
 void mainWindow::getAllPerformImage(Image* img)
 {
 	if (m_progressdialog->cancelled())
-	{ return; }
+		return;
 
 	QNetworkReply* reply = img->imageReply();
 	bool del = true;
@@ -1836,7 +1783,15 @@ void mainWindow::saveImage(Image *img, QNetworkReply *reply, QString path, QStri
 				{
 					QFile f(fp);
 					f.open(QIODevice::WriteOnly);
-					f.write(data);
+					if (f.write(data) < 0)
+					{
+						f.close();
+						f.remove();
+						m_getAllErrors++;
+						m_progressdialog->pause();
+						QMessageBox::critical(m_progressdialog, tr("Erreur"), tr("Une erreur est survenue lors de l'enregistrement de l'image.\n%1\nVeuillez résoudre le problème avant de reprendre le téléchargement.").arg(f.errorString()));
+						return;
+					}
 					f.close();
 
 					img->setData(data);
@@ -1907,6 +1862,122 @@ void mainWindow::getAllCancel()
 	ui->widgetDownloadButtons->setEnabled(true);
 	DONE();
 }
+
+void mainWindow::getAllSkip()
+{
+	log(tr("Saut des téléchargements..."));
+
+	int count = m_getAllDownloading.count();
+	for (Image *image : m_getAllDownloading)
+	{
+		image->abortTags();
+		image->abortImage();
+	}
+	m_getAllDownloading.clear();
+
+	m_getAllSkipped += count;
+	for (int i = 0; i < count; ++i)
+		_getAll();
+
+	DONE();
+}
+
+void mainWindow::getAllFinished()
+{
+	log("Images download finished.");
+	m_progressdialog->setValue(m_progressdialog->maximum());
+
+	// Delete objects
+	for (Downloader *d : m_downloadersDone)
+	{
+		for (Page *p : m_getAllPages)
+		{ p->clear(); }
+		d->clear();
+	}
+	qDeleteAll(m_downloadersDone);
+	m_downloadersDone.clear();
+
+	// Final action
+	switch (m_progressdialog->endAction())
+	{
+		case 1:	m_progressdialog->close();				break;
+		case 2:	openTray();								break;
+		case 3:	QSound::play(":/sounds/finished.wav");	break;
+
+		case 4:
+			shutDown();
+			break;
+	}
+	if (m_progressdialog->endRemove())
+	{
+		int rem = 0;
+		for (int i : m_batchDownloading)
+		{
+			m_groupBatchs[i][m_groupBatchs[i].count() - 1] = "false";
+			m_progressBars.removeAt(i - rem);
+			ui->tableBatchGroups->removeRow(i - rem);
+			rem++;
+		}
+	}
+	activateWindow();
+	m_getAll = false;
+
+	// Information about downloads
+	if (m_getAllErrors <= 0 || m_batchAutomaticRetries <= 0)
+	{
+		QMessageBox::information(
+			this,
+			tr("Récupération des images"),
+			QString(
+				tr("%n fichier(s) récupéré(s) avec succès.", "", m_getAllDownloaded)+"\r\n"+
+				tr("%n fichier(s) ignoré(s).", "", m_getAllIgnored)+"\r\n"+
+				tr("%n fichier(s) déjà existant(s).", "", m_getAllExists)+"\r\n"+
+				tr("%n fichier(s) non trouvé(s) sur le serveur.", "", m_getAll404s)+"\r\n"+
+				tr("%n fichier(s) passé(s).", "", m_getAllSkipped)+"\r\n"+
+				tr("%n erreur(s).", "", m_getAllErrors)
+			)
+		);
+	}
+
+	// Retry in case of error
+	int reponse = QMessageBox::No;
+	if (m_getAllErrors > 0)
+	{
+		if (m_batchAutomaticRetries > 0)
+		{
+			m_batchAutomaticRetries--;
+			reponse = QMessageBox::Yes;
+		}
+		else
+		{ reponse = QMessageBox::question(this, tr("Récupération des images"), tr("Des erreurs sont survenues pendant le téléchargement des images. Voulez vous relancer le téléchargement de celles-ci ? (%1/%2)").arg(m_getAllErrors).arg(m_getAllDownloaded + m_getAllIgnored + m_getAllExists + m_getAll404s + m_getAllErrors), QMessageBox::Yes | QMessageBox::No); }
+		if (reponse == QMessageBox::Yes)
+		{
+			m_getAll = true;
+			m_progressdialog->clear();
+			//qDeleteAll(m_getAllRemaining);
+			m_getAllRemaining.clear();
+			m_getAllRemaining = m_getAllFailed;
+			m_getAllFailed.clear();
+			m_getAllDownloaded = 0;
+			m_getAllExists = 0;
+			m_getAllIgnored = 0;
+			m_getAll404s = 0;
+			m_getAllCount = 0;
+			m_progressdialog->show();
+			getAllImages();
+		}
+		m_getAllErrors = 0;
+	}
+
+	// End of batch download
+	if (reponse != QMessageBox::Yes)
+	{
+		Commands::get()->after();
+		ui->widgetDownloadButtons->setEnabled(true);
+		log(tr("Téléchargement groupé terminé"));
+	}
+}
+
 void mainWindow::getAllPause()
 {
 	if (m_progressdialog->isPaused())
@@ -1971,7 +2042,7 @@ bool mainWindow::saveLinkList(QString filename)
 			while (m_groupBatchs[i].size() > 10)
 				m_groupBatchs[i].removeLast();
 
-			links.append(m_groupBatchs[i].join(QString((char)29)));
+			links.append(m_groupBatchs[i].join(QString((char)29)).replace("\n", "\\n"));
 			links.append(QString((char)29)+QString::number(m_progressBars[i]->value())+"/"+QString::number(m_progressBars[i]->maximum()));
 			links.append((char)28);
 		}
@@ -2016,24 +2087,21 @@ bool mainWindow::loadLinkList(QString filename)
 	if (!f.open(QFile::ReadOnly))
 		return false;
 
+	// Get the file's header to get the version
 	QString header = f.readLine().trimmed();
 	int version = header.mid(5, header.size() - 6).toInt();
 
+	// Read the remaining file
 	QString links = f.readAll();
 	f.close();
-
-	QStringList det = links.split(version == 1 ? "\r\n" : QString((char)28), QString::SkipEmptyParts);
+	QStringList det = links.split(QString((char)28), QString::SkipEmptyParts);
 	if (det.empty())
 		return false;
 
 	for (QString link : det)
 	{
 		m_allow = false;
-		QStringList infos;
-		if (version == 1)
-		{ infos = link.split("¤"); }
-		else
-		{ infos = link.split((char)29); }
+		QStringList infos = link.split((char)29);
 		if (infos.size() == 8)
 		{
 			QStringList vals = QStringList() << "id" << "md5" << "rating" << "tags" << "file_url" << "site" << "filename" << "folder";
@@ -2044,9 +2112,7 @@ bool mainWindow::loadLinkList(QString filename)
 		}
 		else
 		{
-			if (infos.at(1).toInt() < 0
-				|| infos.at(2).toInt() < 1
-				|| infos.at(3).toInt() < 1)
+			if (infos.at(1).toInt() < 0 || infos.at(2).toInt() < 1 || infos.at(3).toInt() < 1)
 			{
 				log(tr("Erreur lors de la lecture d'une ligne du fichier de liens."));
 				continue;
@@ -2111,9 +2177,11 @@ void mainWindow::on_buttonFolder_clicked()
 }
 void mainWindow::on_buttonSaveSettings_clicked()
 {
-	if (!QDir(ui->lineFolder->text()).exists())
-	{ QDir::root().mkpath(ui->lineFolder->text()); }
-	m_settings->setValue("Save/path_real", ui->lineFolder->text());
+	QString folder = fixFilename("", ui->lineFolder->text());
+	if (!QDir(folder).exists())
+		QDir::root().mkpath(folder);
+
+	m_settings->setValue("Save/path_real", folder);
 	m_settings->setValue("Save/filename_real", ui->comboFilename->currentText());
 	saveSettings();
 }
@@ -2168,7 +2236,8 @@ void mainWindow::saveSettings()
 	}
 
 	// Update settings
-	m_settings->setValue("Save/path", ui->lineFolder->text());
+	QString folder = fixFilename("", ui->lineFolder->text());
+	m_settings->setValue("Save/path", folder);
 	m_settings->setValue("Save/filename", ui->comboFilename->currentText());
 	m_settings->sync();
 }

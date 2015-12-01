@@ -6,12 +6,11 @@
 #include "zoomwindow.h"
 #include "searchwindow.h"
 
-#define DONE()	logUpdate(QObject::tr(" Fait"))
 extern mainWindow *_mainwindow;
 
 
 
-poolTab::poolTab(int id, QMap<QString,Site*> *sites, QMap<QString,QString> *favorites, mainWindow *parent) : searchTab(id, parent), ui(new Ui::poolTab), m_id(id), m_parent(parent), m_favorites(favorites), m_sites(sites), m_pagemax(-1), m_lastTags(QString()), m_sized(false), m_from_history(false), m_stop(true), m_history_cursor(0), m_history(QList<QMap<QString,QString> >()), m_modifiers(QStringList())
+poolTab::poolTab(int id, QMap<QString,Site*> *sites, QMap<QString,QString> *favorites, mainWindow *parent) : searchTab(id, sites, parent), ui(new Ui::poolTab), m_id(id), m_parent(parent), m_favorites(favorites), m_pagemax(-1), m_lastTags(QString()), m_sized(false), m_from_history(false), m_stop(true), m_history_cursor(0), m_history(QList<QMap<QString,QString> >()), m_modifiers(QStringList())
 {
 	ui->setupUi(this);
 	ui->widgetMeant->hide();
@@ -125,27 +124,6 @@ void poolTab::optionsChanged()
 	ui->layoutResults->setHorizontalSpacing(settings.value("Margins/main", 10).toInt());
 }
 
-
-
-void poolTab::openSourcesWindow()
-{
-	sourcesWindow *adv = new sourcesWindow(m_selectedSources, m_sites, this);
-	connect(adv, SIGNAL(valid(QList<bool>)), this, SLOT(saveSources(QList<bool>)));
-	adv->show();
-}
-void poolTab::saveSources(QList<bool> sel)
-{
-	log(tr("Sauvegarde des sources..."));
-	m_selectedSources = sel;
-	QString sav;
-	for (int i = 0; i < m_selectedSources.count(); i++)
-	{ sav += (m_selectedSources.at(i) ? "1" : "0"); }
-	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
-	settings.setValue("sites", sav);
-	DONE();
-	updateCheckboxes();
-}
-
 void poolTab::updateCheckboxes()
 {
 	log(tr("Mise à jour des cases à cocher."));
@@ -166,9 +144,12 @@ void poolTab::updateCheckboxes()
 			if (n < -1 && urls.at(i).indexOf('.', m+1) != -1)
 			{ m = urls.at(i).indexOf('.', m+1); }
 		}
+
+		bool isChecked = m_selectedSources.size() > i ? m_selectedSources.at(i) : false;
 		QCheckBox *c = new QCheckBox(urls.at(i).left(m), this);
-			c->setChecked(m_selectedSources.at(i));
+			c->setChecked(isChecked);
 			ui->layoutSourcesList->addWidget(c);
+
 		m_checkboxes.append(c);
 	}
 	DONE();
@@ -697,7 +678,7 @@ void poolTab::contextMenu()
 		else
 		{ menu->addAction(QIcon(":/images/icons/add.png"), tr("Garder pour plus tard"), this, SLOT(viewitlater())); }
 		menu->addSeparator();
-		menu->addAction(QIcon(":/images/icons/tab.png"), tr("Ouvrir dans un nouvel onglet"), this, SLOT(openInNewTab()));
+		menu->addAction(QIcon(":/images/icons/tab-plus.png"), tr("Ouvrir dans un nouvel onglet"), this, SLOT(openInNewTab()));
 		menu->addAction(QIcon(":/images/icons/window.png"), tr("Ouvrir dans une nouvelle fenêtre"), this, SLOT(openInNewWindow()));
 	}
 	menu->exec(QCursor::pos());

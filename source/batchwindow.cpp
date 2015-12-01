@@ -79,12 +79,17 @@ void batchWindow::pause()
 {
 	m_paused = !m_paused;
 	ui->labelSpeed->setText(m_paused ? tr("En pause") : "");
+	ui->buttonPause->setText(m_paused ? tr("Reprendre") : tr("Pause"));
 
 	#ifdef Q_OS_WIN
 		m_taskBarProgress->setPaused(m_paused);
 	#endif
 
 	emit paused();
+}
+void batchWindow::skip()
+{
+	emit skipped();
 }
 void batchWindow::cancel()
 {

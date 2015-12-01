@@ -28,11 +28,27 @@ Site::~Site()
 void Site::load()
 {
 	// Delete settings if necessary
-	if (m_cookieJar != nullptr)
+	if (m_settings != nullptr)
 	{ m_settings->deleteLater(); }
 
 	m_settings = new QSettings(savePath("sites/"+m_type+"/"+m_url+"/settings.ini"), QSettings::IniFormat);
 	m_name = m_settings->value("name", m_url).toString();
+
+	// Cookies
+	m_cookies.clear();
+	QList<QVariant> cookies = m_settings->value("cookies", "").toList();
+	for (QVariant variant : cookies)
+	{
+		QList<QNetworkCookie> cookiz = QNetworkCookie::parseCookies(variant.toByteArray());
+		for (QNetworkCookie cookie : cookiz)
+		{
+			cookie.setDomain(m_url);
+			cookie.setPath("/");
+			m_cookies.append(cookie);
+		}
+	}
+	if (m_cookieJar != nullptr)
+	{ resetCookieJar(); }
 }
 
 /**
@@ -46,13 +62,12 @@ void Site::resetCookieJar()
 
 	m_cookieJar = new QNetworkCookieJar(this);
 
-	// Hotfix for "giantessbooru.com"
-	QNetworkCookie cookie("agreed", "true");
-	cookie.setPath("/");
-	cookie.setDomain("giantessbooru.com");
-	m_cookieJar->insertCookie(cookie);
+	for (QNetworkCookie cookie : m_cookies)
+	{ m_cookieJar->insertCookie(cookie); }
 
 	m_manager->setCookieJar(m_cookieJar);
+	m_loggedIn = false;
+	m_triedLogin = false;
 }
 
 /**
@@ -413,4 +428,9 @@ QUrl Site::fixUrl(QString url, QUrl old)
 QNetworkReply *Site::loginReply()
 {
 	return m_loginReply;
+}
+
+QList<QNetworkCookie> Site::cookies()
+{
+	return m_cookies;
 }

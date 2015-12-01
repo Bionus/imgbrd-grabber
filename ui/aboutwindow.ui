@@ -60,7 +60,7 @@
      <item>
       <widget class="QLabel" name="labelCreator">
        <property name="text">
-        <string>Grabber est une création de Bionus.&lt;br/&gt;N'hésitez pas à visiter le &lt;a href=&quot;http://code.google.com/p/imgbrd-grabber/&quot;&gt;site&lt;/a&gt; pour rester à jour, ou récupérer des fichiers de site ou des traductions.</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Grabber est une création de Bionus.&lt;br/&gt;N'hésitez pas à visiter le &lt;a href=&quot;https://github.com/Bionus/imgbrd-grabber&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;site&lt;/span&gt;&lt;/a&gt; pour rester à jour, ou récupérer des fichiers de site ou des traductions.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="textFormat">
         <enum>Qt::RichText</enum>
