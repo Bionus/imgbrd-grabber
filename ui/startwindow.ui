@@ -10,13 +10,13 @@
     <x>0</x>
     <y>0</y>
     <width>395</width>
-    <height>206</height>
+    <height>236</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Premier lancement</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1,0">
+  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1,0,0">
    <item>
     <widget class="QLabel" name="welcomeLabel">
      <property name="text">
@@ -110,6 +110,16 @@
       <widget class="QComboBox" name="comboSource"/>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>&lt;i&gt;Si vous utilisez Grabber pour la première fois, il est conseillé de tout d'abord lire la page &lt;a href=&quot;https://github.com/Bionus/imgbrd-grabber/wiki/GettingStarted&quot;&gt;getting started&lt;/a&gt;.&lt;/i&gt;</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
