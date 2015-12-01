@@ -599,9 +599,10 @@ void optionsWindow::save()
 		settings.setValue("samplefallback", ui->checkSampleFallback->isChecked());
 		settings.setValue("replaceblanks", ui->checkReplaceBlanks->isChecked());
 		settings.setValue("separator", ui->lineSeparator->text());
-		settings.setValue("path", ui->lineFolder->text());
-		settings.setValue("path_real", ui->lineFolder->text());
-		QDir pth = QDir(ui->lineFolder->text());
+		QString folder = fixFilename("", ui->lineFolder->text());
+		settings.setValue("path", folder);
+		settings.setValue("path_real", folder);
+		QDir pth = QDir(folder);
 		if (!pth.exists())
 		{
 			QString op = "";
@@ -613,10 +614,11 @@ void optionsWindow::save()
 			if (pth.path() == op)
 			{ error(this, tr("Une erreur est survenue lors de la création du dossier de sauvegarde.")); }
 			else
-			{ pth.mkpath(ui->lineFolder->text()); }
+			{ pth.mkpath(folder); }
 		}
-		settings.setValue("path_favorites", ui->lineFolderFavorites->text());
-		pth = QDir(ui->lineFolderFavorites->text());
+		folder = fixFilename("", ui->lineFolderFavorites->text());
+		settings.setValue("path_favorites", folder);
+		pth = QDir(folder);
 		if (!pth.exists())
 		{
 			QString op = "";
@@ -628,7 +630,7 @@ void optionsWindow::save()
 			if (pth.path() == op)
 			{ error(this, tr("Une erreur est survenue lors de la création du dossier de sauvegarde des favoris.")); }
 			else
-			{ pth.mkpath(ui->lineFolderFavorites->text()); }
+			{ pth.mkpath(folder); }
 		}
 		QStringList opts = QStringList() << "save" << "copy" << "move" << "ignore";
 		settings.setValue("md5Duplicates", opts.at(ui->comboMd5Duplicates->currentIndex()));

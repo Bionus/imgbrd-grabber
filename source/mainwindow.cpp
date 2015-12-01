@@ -2177,9 +2177,11 @@ void mainWindow::on_buttonFolder_clicked()
 }
 void mainWindow::on_buttonSaveSettings_clicked()
 {
-	if (!QDir(ui->lineFolder->text()).exists())
-	{ QDir::root().mkpath(ui->lineFolder->text()); }
-	m_settings->setValue("Save/path_real", ui->lineFolder->text());
+	QString folder = fixFilename("", ui->lineFolder->text());
+	if (!QDir(folder).exists())
+		QDir::root().mkpath(folder);
+
+	m_settings->setValue("Save/path_real", folder);
 	m_settings->setValue("Save/filename_real", ui->comboFilename->currentText());
 	saveSettings();
 }
@@ -2234,7 +2236,8 @@ void mainWindow::saveSettings()
 	}
 
 	// Update settings
-	m_settings->setValue("Save/path", ui->lineFolder->text());
+	QString folder = fixFilename("", ui->lineFolder->text());
+	m_settings->setValue("Save/path", folder);
 	m_settings->setValue("Save/filename", ui->comboFilename->currentText());
 	m_settings->sync();
 }

@@ -637,18 +637,18 @@ QString setExtension(QString url, QString extension)
 	return url;
 }
 
-QString fixFilename(QString filename, QString path, int maxlength)
+QString fixFilename(QString fn, QString path, int maxlength)
 {
 	QString sep = QDir::toNativeSeparators("/");
-	filename = QDir::toNativeSeparators(filename);
+	fn = QDir::toNativeSeparators(fn);
 	path = QDir::toNativeSeparators(path);
-	if (!path.endsWith(sep) && !path.isEmpty())
+	if (!path.endsWith(sep) && !path.isEmpty() && !fn.isEmpty())
 		path += sep;
 
 	#ifdef Q_OS_WIN
 		// Fix parameters
 		maxlength = maxlength == 0 ? MAX_PATH : maxlength;
-		filename = path + filename;
+		QString filename = path + fn;
 
 		// Drive
 		QString drive = "";
@@ -666,9 +666,13 @@ QString fixFilename(QString filename, QString path, int maxlength)
 
 		// Divide filename
 		QStringList parts = filename.split(sep);
-		QString file = parts.takeLast();
-		QString ext = file.right(file.length() - file.lastIndexOf('.') - 1);
-		file = file.left(file.lastIndexOf('.'));
+		QString file, ext;
+		if (!fn.isEmpty())
+		{
+			file = parts.takeLast();
+			ext = file.right(file.length() - file.lastIndexOf('.') - 1);
+			file = file.left(file.lastIndexOf('.'));
+		}
 
 		// Fix directories
 		for (QString &part : parts)
@@ -693,17 +697,19 @@ QString fixFilename(QString filename, QString path, int maxlength)
 		QString dirpart = parts.join(sep);
 		if (dirpart.length() > maxlength - 12)
 			dirpart = dirpart.left(maxlength - 12).trimmed();
-		filename = (dirpart.isEmpty() ? "" : dirpart + sep) + file;
+		filename = (dirpart.isEmpty() ? "" : dirpart + (!fn.isEmpty() ? sep : "")) + file;
 
 		// A filename cannot exceed MAX_PATH (-1 for <NUL> and -3 for drive "C:\")
 		if (filename.length() > maxlength - 1 - 3 - ext.length() - 1)
 			filename = filename.left(maxlength - 1 - 3 - ext.length() - 1).trimmed();
 
 		// Put extension and drive back
-		filename = drive + filename + "." + ext;
-		filename = filename.right(filename.length() - path.length());
+		filename = drive + filename + (!ext.isEmpty() ? "." + ext : "");
+		if (!fn.isEmpty())
+			filename = filename.right(filename.length() - path.length());
 	#else
 		// Divide filename
+		QString filename = fn;
 		QStringList parts = filename.split(sep);
 		QString file = parts.takeLast();
 		QString ext = file.right(file.length() - file.lastIndexOf('.') - 1);
