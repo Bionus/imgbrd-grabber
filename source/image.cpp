@@ -146,10 +146,12 @@ Image::Image(QMap<QString, QString> details, Page* parent)
 
 	// Guess the extension from the URL and tags
 	ext = getExtension(m_url);
-	if ((hasTag("gif") || hasTag("animated_gif")) && ext != "gif" && ext != "webm")
+	if ((hasTag("gif") || hasTag("animated_gif")) && ext != "gif" && ext != "webm" && ext != "mp4")
 	{ setFileExtension("gif"); }
-	else if (hasTag("webm") && ext != "gif" && ext != "webm")
+	else if (hasTag("webm") && ext != "gif" && ext != "webm" && ext != "mp4")
 	{ setFileExtension("webm"); }
+	else if (hasTag("mp4") && ext != "gif" && ext != "webm" && ext != "mp4")
+	{ setFileExtension("mp4"); }
 
 	// Creation date
 	m_createdAt = QDateTime();
