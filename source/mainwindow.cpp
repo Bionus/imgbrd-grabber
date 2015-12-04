@@ -2188,12 +2188,19 @@ void mainWindow::on_buttonSaveSettings_clicked()
 void mainWindow::on_buttonInitSettings_clicked()
 {
 	QFile f(savePath("filenamehistory.txt"));
+	QStringList filenames;
 	if (f.open(QFile::ReadOnly | QFile::Text))
 	{
 		QString line;
 		while ((line = f.readLine()) > 0)
-			if (!line.trimmed().isEmpty())
-				ui->comboFilename->insertItem(0, line.trimmed());
+		{
+			QString l = line.trimmed();
+			if (!l.isEmpty() && !filenames.contains(l))
+			{
+				filenames.append(l);
+				ui->comboFilename->addItem(l);
+			}
+		}
 		f.close();
 	}
 
@@ -2209,7 +2216,7 @@ void mainWindow::updateCompleters()
 		m_lineFolder_completer.append(ui->lineFolder->text());
 		ui->lineFolder->setCompleter(new QCompleter(m_lineFolder_completer));
 	}
-	/*if (ui->labelFilename->tex+t() != m_settings->value("Save/filename").toString())
+	/*if (ui->labelFilename->text() != m_settings->value("Save/filename").toString())
 	{
 		m_lineFilename_completer.append(ui->lineFilename->text());
 		ui->lineFilename->setCompleter(new QCompleter(m_lineFilename_completer));
