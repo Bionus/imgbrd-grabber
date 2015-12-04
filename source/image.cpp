@@ -926,9 +926,9 @@ void Image::finishedImageS()
 
 	bool sampleFallback = m_settings->value("Save/samplefallback", true).toBool();
 	QString ext = getExtension(m_url);
-	if (m_loadImage->error() == QNetworkReply::ContentNotFoundError && (ext != "webm" || (sampleFallback && !m_sampleUrl.isEmpty())) && !m_tryingSample)
+	if (m_loadImage->error() == QNetworkReply::ContentNotFoundError && (ext != "mp4" || (sampleFallback && !m_sampleUrl.isEmpty())) && !m_tryingSample)
 	{
-		if (ext == "webm")
+		if (ext == "mp4")
 		{
 			setUrl(m_sampleUrl.toString());
 			m_tryingSample = true;
@@ -942,6 +942,7 @@ void Image::finishedImageS()
 			nextext["gif"] = "jpeg";
 			nextext["jpeg"] = "swf";
 			nextext["swf"] = "webm";
+			nextext["webm"] = "mp4";
 			setUrl(m_url.section('.', 0, -2)+"."+nextext[ext]);
 			log(tr("Image non trouvée. Nouvel essai avec l'extension %1...").arg(nextext[ext]));
 		}

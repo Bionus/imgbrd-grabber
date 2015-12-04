@@ -560,13 +560,16 @@ void zoomWindow::replyFinishedZoom()
 		if (m_mustSave > 0)
 		{ saveImage(); }
 	}
-	else if (m_reply->error() == QNetworkReply::ContentNotFoundError && m_url.section('.', -1) != "jpeg")
+	else if (m_reply->error() == QNetworkReply::ContentNotFoundError && m_url.section('.', -1) != "mp4")
 	{
 		QString ext = m_url.section('.', -1);
 		QMap<QString,QString> nextext;
 		nextext["jpg"] = "png";
 		nextext["png"] = "gif";
 		nextext["gif"] = "jpeg";
+		nextext["jpeg"] = "swf";
+		nextext["swf"] = "webm";
+		nextext["webm"] = "mp4";
 		m_url = m_url.section('.', 0, -2)+"."+nextext[ext];
 		m_image->setFileExtension(nextext[ext]);
 		log(tr("Image non trouvée. Nouvel essai avec l'extension %1...").arg(nextext[ext]));
