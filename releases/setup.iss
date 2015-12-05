@@ -80,9 +80,6 @@ Source: "..\release\CDR.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\release\CrashReporter.exe"; DestDir: "{app}"; Flags: ignoreversion   
 Source: "..\release\Grabber.exe";  DestDir: "{app}"; Flags: ignoreversion   
 Source: "..\release\words.txt";    DestDir: "{app}";    
-Source: "..\release\icudt54.dll";  DestDir: "{app}"; Flags: ignoreversion         
-Source: "..\release\icuin54.dll";  DestDir: "{app}"; Flags: ignoreversion         
-Source: "..\release\icuuc54.dll";  DestDir: "{app}"; Flags: ignoreversion         
 Source: "..\release\libeay32.dll"; DestDir: "{app}"; Flags: ignoreversion         
 Source: "..\release\libEGL.dll";   DestDir: "{app}"; Flags: ignoreversion         
 Source: "..\release\libGLESv2.dll";         DestDir: "{app}"; Flags: ignoreversion         
