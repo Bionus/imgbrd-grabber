@@ -10,18 +10,19 @@
 [![Build Status](https://travis-ci.org/Bionus/imgbrd-grabber.svg)](https://travis-ci.org/Bionus/imgbrd-grabber)
 
 ## About
-Imgbrd-Grabber is an imageboard/booru downloader with graphical user interface. It can download thousands of images from multiple boorus automatically.
+Imgbrd-Grabber is an imageboard/booru downloader with a graphical user interface. It can download thousands of images from multiple boorus automatically.
 Its main advantage is its very powerful naming features: just set your filename and folder using all the tokens available and conditionals, and he will generate an image-dependant one.
 
 ## Download
 You can download the latest release [here](https://github.com/Bionus/imgbrd-grabber/releases/latest), or find all previous releases [here](https://github.com/Bionus/imgbrd-grabber/releases).
 
 ## Contact
-If you have any questions about the program, found a bug and don't want to use the github issue tracker, or anything, you can contact me by mail in French or in English at [bio.nus@hotmail.fr](mailto:bio.nus@hotmail.fr).
+If you have any questions about the program, found a bug and don't want to use the github issue tracker, or anything, you can contact me by mail in French or in English at [bio.nus@hotmail.fr](mailto:bio.nus@hotmail.fr). Please prefer using Github's built-in issue tracker though, as the answer to your question or problem might help other people!
 
 ## Main features
 * Browse images from the internet
 * Download huge amounts of images
+* Command line interface to download images
 * Download single images using their md5 or id
 * Rename downloaded images using a formatting string, for example "%artist%/%copyright%/%character%/%md5%.%ext%" (someway like how the Firefox extension [Danbooru Downloader](https://addons.mozilla.org/fr/firefox/addon/danbooru-downloader/) does), or directly using Javascript code. See {{Filename}} for details.
 * Add and remove imageboards very easily
@@ -34,11 +35,9 @@ If you have any questions about the program, found a bug and don't want to use t
 * Autodownload
 * Can import settings from Mozilla Firefox extension "danbooru downloader"
 * Can add entries to a database for each image or tag while downloading
-* Blacklist
-* Fullscreen
+* Blacklisting
 * Proxy support
 * ... and more!
-You can also have a more complete list on the {{Changelog}}.
 
 ## Languages
 * English
@@ -48,12 +47,10 @@ You can also have a more complete list on the {{Changelog}}.
 ## Authors
 * [Bionus](https://github.com/Bionus)
 
-## Thanks
+### Special thanks
 * YMI for all his suggestions and helping debbuging the program
-* Николай Тихонов: for the Russian translation
-
-## License
-The program is licensed under the [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0).
+* Николай Тихонов for the Russian translation
+* Everyone who helped make this program better by contributing, suggesting features, or reporting bugs!
 
 ## Compilation on Linux
 
