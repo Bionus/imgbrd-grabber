@@ -203,6 +203,7 @@ void Page::load()
 {
 	if (m_currentSource <= m_site->value("Selected").count('/') + 1)
 	{
+		qDebug() << m_url;
 		m_reply = m_site->get(m_url);
 		connect(m_reply, SIGNAL(finished()), this, SLOT(parse()));
 		m_replyExists = true;

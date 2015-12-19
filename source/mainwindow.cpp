@@ -2187,6 +2187,7 @@ void mainWindow::on_buttonSaveSettings_clicked()
 }
 void mainWindow::on_buttonInitSettings_clicked()
 {
+	// Reload filename history
 	QFile f(savePath("filenamehistory.txt"));
 	QStringList filenames;
 	if (f.open(QFile::ReadOnly | QFile::Text))
@@ -2204,8 +2205,11 @@ void mainWindow::on_buttonInitSettings_clicked()
 		f.close();
 	}
 
+	// Update quick settings dock
 	ui->lineFolder->setText(m_settings->value("Save/path_real").toString());
 	ui->comboFilename->setCurrentText(m_settings->value("Save/filename_real").toString());
+
+	// Save settings
 	Commands::get()->init(m_settings);
 	saveSettings();
 }

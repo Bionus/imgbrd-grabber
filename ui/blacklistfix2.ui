@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>395</width>
-    <height>455</height>
+    <width>600</width>
+    <height>400</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,27 +21,58 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Choisissez les dossiers à tester dans la liste ci-dessous.</string>
+      <string>Choisissez les images à supprimer dans la liste ci-dessous.</string>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="QTreeWidget" name="treeWidget">
-     <property name="selectionMode">
-      <enum>QAbstractItemView::MultiSelection</enum>
+    <widget class="QTableWidget" name="tableWidget">
+     <property name="editTriggers">
+      <set>QAbstractItemView::NoEditTriggers</set>
      </property>
-     <attribute name="headerVisible">
+     <property name="showDropIndicator" stdset="0">
+      <bool>false</bool>
+     </property>
+     <attribute name="horizontalHeaderHighlightSections">
+      <bool>false</bool>
+     </attribute>
+     <attribute name="verticalHeaderDefaultSectionSize">
+      <number>50</number>
+     </attribute>
+     <attribute name="verticalHeaderHighlightSections">
       <bool>false</bool>
      </attribute>
      <column>
       <property name="text">
-       <string>1</string>
+       <string/>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Miniature</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Nom</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Tag</string>
       </property>
      </column>
     </widget>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <item>
+      <widget class="QPushButton" name="buttonSelectBlacklisted">
+       <property name="text">
+        <string>Sélectionner les images trouvées</string>
+       </property>
+      </widget>
+     </item>
      <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
@@ -56,9 +87,9 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="buttonContinue">
+      <widget class="QPushButton" name="buttonOk">
        <property name="text">
-        <string>Continuer</string>
+        <string>Ok</string>
        </property>
       </widget>
      </item>
