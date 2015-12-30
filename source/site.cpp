@@ -331,6 +331,8 @@ QMap<QString, Site*> *Site::getAllSites()
 								_prependUrl(&details, lineSsl, "Urls/"+sr+"/Tags", "Urls/"+QString::number(j+1)+"/Tags");
 								_prependUrl(&details, lineSsl, "Urls/"+sr+"/Home", "Urls/"+QString::number(j+1)+"/Home");
 								_prependUrl(&details, lineSsl, "Urls/"+sr+"/Pools", "Urls/"+QString::number(j+1)+"/Pools");
+								if (details.contains("Urls/"+sr+"/Login"))
+									details["Urls/"+QString::number(j+1)+"/Login"] = details["Urls/"+sr+"/Login"];
 								if (details.contains("Urls/"+sr+"/Limit"))
 									details["Urls/"+QString::number(j+1)+"/Limit"] = details["Urls/"+sr+"/Limit"];
 								if (details.contains("Urls/"+sr+"/Image"))
