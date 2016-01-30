@@ -807,12 +807,22 @@ QStringList zoomWindow::saveImageFav()
 
 QString zoomWindow::saveImageAs()
 {
-    QString path = QFileDialog::getSaveFileName(this, tr("Enregistrer l'image"), m_image->fileUrl().toString().section('/', -1), "Images (*.png *.gif *.jpg *.jpeg)");
-    addMd5(m_image->md5(), path);
-	QFile f(path);
-	f.open(QIODevice::WriteOnly);
-	f.write(m_data);
-	f.close();
+	QString filename = m_image->fileUrl().toString().section('/', -1);
+	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
+	QString lastDir = settings.value("Zoom/lastDir", "").toString();
+
+	QString path = QFileDialog::getSaveFileName(this, tr("Enregistrer l'image"), QDir::toNativeSeparators(lastDir + "/" + filename), "Images (*.png *.gif *.jpg *.jpeg)");
+	if (!path.isEmpty())
+	{
+		addMd5(m_image->md5(), path);
+		settings.setValue("Zoom/lastDir", path.section('/', 0, -2));
+
+		QFile f(path);
+		f.open(QIODevice::WriteOnly);
+		f.write(m_data);
+		f.close();
+	}
+
 	return path;
 }
 
