@@ -1,18 +1,24 @@
-sudo: false
+sudo: true
 
-addons:
-  apt:
-    sources:
-    - ubuntu-sdk-team
-    packages:
-    - qt5-qmake
-    - qtbase5-dev
-    - qtdeclarative5-dev
-    - qtscript5-dev
-    - qtmultimedia5-dev
-    - libpulse-dev
-    - qt5-default
-    - qttools5-dev-tools
+install:
+  - sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa
+  - sudo apt-get update -qq
+  - sudo apt-get install -qq qtmultimedia5-dev libpulse-dev
+  - sudo apt-get install qt5-default qttools5-dev-tools
+
+#addons:
+#  apt:
+#    sources:
+#    - ubuntu-sdk-team
+#    packages:
+#    - qt5-qmake
+#    - qtbase5-dev
+#    - qtdeclarative5-dev
+#    - qtscript5-dev
+#    - qtmultimedia5-dev
+#    - libpulse-dev
+#    - qt5-default
+#    - qttools5-dev-tools
 
 script:
   - qmake Grabber.pro
