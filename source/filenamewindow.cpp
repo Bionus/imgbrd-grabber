@@ -144,7 +144,7 @@ void FilenameWindow::done(int r)
 	if (QDialog::Accepted == r && ui->radioJavascript->isChecked() && !sites->isEmpty())
 	{
 		QMap<QString, QString> info;
-		info.insert("site", QString::number((qintptr)sites->first()));
+		info.insert("site", QString::number((qintptr)sites->value(sites->keys().first())));
 
 		#if USE_QSCINTILLA
 			QString text = m_scintilla->text();
