@@ -55,17 +55,17 @@ void FilenameWindow::on_lineClassic_textChanged(QString text)
 		for (int i = 0; i < cap.length(); ++i)
 		{
 			QChar c = cap.at(i);
-			if (c == "Y")
+			if (c == 'Y')
 			{ format += "' + date.getFullYear() + '"; }
-			else if (c == "M")
+			else if (c == 'M')
 			{ format += "' + date.getMonth() + '"; }
-			else if (c == "d")
+			else if (c == 'd')
 			{ format += "' + date.getDate() + '"; }
-			else if (c == "h")
+			else if (c == 'h')
 			{ format += "' + date.getHours() + '"; }
-			else if (c == "m")
+			else if (c == 'm')
 			{ format += "' + date.getMinutes() + '"; }
-			else if (c == "s")
+			else if (c == 's')
 			{ format += "' + date.getSeconds() + '"; }
 			else
 			{ format += c; }
