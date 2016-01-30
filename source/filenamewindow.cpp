@@ -1,6 +1,7 @@
 #include "functions.h"
 #include "filenamewindow.h"
 #include "ui_filenamewindow.h"
+#include "image.h"
 
 FilenameWindow::FilenameWindow(QString value, QWidget *parent) : QDialog(parent), ui(new Ui::FilenameWindow)
 {
@@ -43,7 +44,38 @@ void FilenameWindow::on_lineClassic_textChanged(QString text)
 {
 	ui->labelValidator->setText(validateFilename(text));
 
-	QString value = "'"+text.replace("\\", "\\\\").replace("'", "\\'").replace(QRegExp("%([^%]+)%"), "' + \\1 + '").remove(" + '' + ").trimmed()+"'";
+	QRegExp date("%date:([^%]+)%");
+	int pos = 0;
+	text = text.replace("\\", "\\\\").replace("'", "\\'");
+
+	while ((pos = date.indexIn(text, pos)) != -1)
+	{
+		QString cap = date.cap(1);
+		QString format = "";
+		for (int i = 0; i < cap.length(); ++i)
+		{
+			QChar c = cap.at(i);
+			if (c == "Y")
+			{ format += "' + date.getFullYear() + '"; }
+			else if (c == "M")
+			{ format += "' + date.getMonth() + '"; }
+			else if (c == "d")
+			{ format += "' + date.getDate() + '"; }
+			else if (c == "h")
+			{ format += "' + date.getHours() + '"; }
+			else if (c == "m")
+			{ format += "' + date.getMinutes() + '"; }
+			else if (c == "s")
+			{ format += "' + date.getSeconds() + '"; }
+			else
+			{ format += c; }
+		}
+
+		text = text.left(pos) + format + text.mid(pos + date.matchedLength());
+		pos += date.matchedLength();
+	}
+
+	QString value = "'"+text.replace(QRegExp("%([^%]+)%"), "' + \\1 + '").remove(" + '' + ").trimmed()+"'";
 	if (value.startsWith("' + "))
 	{ value = value.right(value.length() - 4); }
 	if (value.startsWith("'' + "))
@@ -52,6 +84,7 @@ void FilenameWindow::on_lineClassic_textChanged(QString text)
 	{ value = value.left(value.length() - 4); }
 	if (value.endsWith(" + ''"))
 	{ value = value.left(value.length() - 5); }
+
 	m_scintilla->setText(value);
 }
 
@@ -102,6 +135,38 @@ void FilenameWindow::on_buttonHelpJavascript_clicked()
 		"<i>date</i> : date d'ajout de l'image au format dd-MM-yyyy HH.mm<br/><br/>"
 		"Pour plus d'informations sur le nommage Javascript, cliquez <a href=\"http://code.google.com/p/imgbrd-grabber/wiki/Filename#Javascript\">ici</a>.")
 	);
+}
+
+void FilenameWindow::done(int r)
+{
+	QMap<QString, Site*> *sites = Site::getAllSites();
+
+	if (QDialog::Accepted == r && ui->radioJavascript->isChecked() && !sites->isEmpty())
+	{
+		QMap<QString, QString> info;
+		info.insert("site", QString::number((qintptr)sites->first()));
+
+		#if USE_QSCINTILLA
+			QString text = m_scintilla->text();
+		#else
+			QString text = m_scintilla->toPlainText();
+		#endif
+
+		Image image(info);
+		QStringList det = image.path("javascript:" + text, "");
+
+		if (det.isEmpty())
+		{
+			QMessageBox::StandardButton reply = QMessageBox::question(this, tr("Attention"), tr("Votre script contient des erreurs, êtes-vous sûr de vouloir l'enregistrer ?"), QMessageBox::Yes | QMessageBox::Cancel);
+			if (reply == QMessageBox::Cancel)
+			{
+				return;
+			}
+		}
+	}
+
+	QDialog::done(r);
+	return;
 }
 
 void FilenameWindow::send()

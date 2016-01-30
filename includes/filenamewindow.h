@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QMessageBox>
+#include <QCloseEvent>
 
 #if USE_QSCINTILLA
 	#include <Qsci/qsciscintilla.h>
@@ -33,6 +34,7 @@ class FilenameWindow : public QDialog
 		void on_buttonHelpClassic_clicked();
 		void on_buttonHelpJavascript_clicked();
 		void send();
+		void done(int r);
 
 	signals:
 		void validated(QString);

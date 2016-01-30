@@ -775,7 +775,10 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 				{ res.replace("_", " "); }
 			}
 
-			inits += "var " + key + " = \"" + res + "\";\r\n";
+			if (key == "date")
+			{ inits += "var " + key + " = new Date(\"" + res + "\");\r\n"; }
+			else
+			{ inits += "var " + key + " = \"" + res + "\";\r\n"; }
 		}
 
 		// Script execution
