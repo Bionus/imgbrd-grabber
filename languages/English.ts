@@ -148,6 +148,7 @@
     <name>BlacklistFix</name>
     <message>
         <location filename="../ui/blacklistfix.ui" line="14"/>
+        <location filename="../source/blacklistfix.cpp" line="112"/>
         <source>Réparateur de liste noire</source>
         <translation>Blacklist fixer</translation>
     </message>
@@ -158,60 +159,56 @@
     </message>
     <message>
         <location filename="../ui/blacklistfix.ui" line="34"/>
+        <source>Forcer le calcul du md5</source>
+        <translation>Force md5 calculation</translation>
+    </message>
+    <message>
+        <location filename="../ui/blacklistfix.ui" line="41"/>
+        <source>Récupérer le md5 dans le nom du fichier</source>
+        <translation>Get md5 in filename</translation>
+    </message>
+    <message>
+        <location filename="../ui/blacklistfix.ui" line="51"/>
         <source>Noms de fichiers</source>
         <translation>Filename</translation>
     </message>
     <message>
-        <location filename="../ui/blacklistfix.ui" line="44"/>
+        <location filename="../ui/blacklistfix.ui" line="61"/>
         <source>Liste noire</source>
         <translation>Blacklist</translation>
     </message>
     <message>
-        <location filename="../ui/blacklistfix.ui" line="54"/>
+        <location filename="../ui/blacklistfix.ui" line="71"/>
         <source>Source</source>
         <translation>Source</translation>
     </message>
     <message>
-        <location filename="../ui/blacklistfix.ui" line="79"/>
+        <location filename="../ui/blacklistfix.ui" line="84"/>
+        <source>%v/%m</source>
+        <translation>%v/%m</translation>
+    </message>
+    <message>
+        <location filename="../ui/blacklistfix.ui" line="106"/>
         <source>Continuer</source>
         <translation>Continue</translation>
     </message>
     <message>
-        <location filename="../ui/blacklistfix.ui" line="86"/>
+        <location filename="../ui/blacklistfix.ui" line="113"/>
         <source>Annuler</source>
         <translation>Cancel</translation>
     </message>
-</context>
-<context>
-    <name>BlacklistFix2</name>
     <message>
-        <location filename="../ui/blacklistfix2.ui" line="14"/>
-        <location filename="../source/blacklistfix2.cpp" line="99"/>
-        <source>Réparateur de liste noire</source>
-        <translation>Blacklist fixer</translation>
+        <location filename="../source/blacklistfix.cpp" line="45"/>
+        <source>Ce dossier n&apos;existe pas.</source>
+        <translation>This folder does not exist.</translation>
     </message>
     <message>
-        <location filename="../ui/blacklistfix2.ui" line="24"/>
-        <source>Choisissez les dossiers à tester dans la liste ci-dessous.</source>
-        <translation>Choose folders to look in in the list below.</translation>
-    </message>
-    <message>
-        <location filename="../ui/blacklistfix2.ui" line="38"/>
-        <source>1</source>
-        <translation>1</translation>
-    </message>
-    <message>
-        <location filename="../ui/blacklistfix2.ui" line="61"/>
-        <source>Continuer</source>
-        <translation>Continue</translation>
-    </message>
-    <message>
-        <location filename="../ui/blacklistfix2.ui" line="68"/>
-        <source>Annuler</source>
-        <translation>Cancel</translation>
+        <location filename="../source/blacklistfix.cpp" line="53"/>
+        <source>Si vous voulez récupérer le MD5 depuis le nom de fichier, vous devez include le token %md5% dans celui-ci.</source>
+        <translation>If you want to get the MD5 from the filename, you have to include the %md5% token in it.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../source/blacklistfix2.cpp" line="99"/>
+        <location filename="../source/blacklistfix.cpp" line="112"/>
         <source>Vous vous apprêtez à télécharger les informations de %n image(s). Êtes-vous sûr de vouloir continuer ?</source>
         <translation>
             <numerusform>You are about to download information from %n image. Are you sure you want to continue?</numerusform>
@@ -220,46 +217,100 @@
     </message>
 </context>
 <context>
-    <name>BlacklistFix3</name>
+    <name>BlacklistFix2</name>
     <message>
-        <location filename="../ui/blacklistfix3.ui" line="14"/>
+        <location filename="../ui/blacklistfix2.ui" line="14"/>
         <source>Réparateur de liste noire</source>
         <translation>Blacklist fixer</translation>
     </message>
     <message>
-        <location filename="../ui/blacklistfix3.ui" line="24"/>
+        <location filename="../ui/blacklistfix2.ui" line="24"/>
         <source>Choisissez les images à supprimer dans la liste ci-dessous.</source>
         <translation>Choose images to delete in the list below.</translation>
     </message>
     <message>
-        <location filename="../ui/blacklistfix3.ui" line="52"/>
+        <location filename="../ui/blacklistfix2.ui" line="52"/>
         <source>Miniature</source>
         <translation>Thumbnail</translation>
     </message>
     <message>
-        <location filename="../ui/blacklistfix3.ui" line="57"/>
+        <location filename="../ui/blacklistfix2.ui" line="57"/>
         <source>Nom</source>
         <translation>Name</translation>
     </message>
     <message>
-        <location filename="../ui/blacklistfix3.ui" line="62"/>
+        <location filename="../ui/blacklistfix2.ui" line="62"/>
         <source>Tag</source>
         <translation>Tag</translation>
     </message>
     <message>
-        <location filename="../ui/blacklistfix3.ui" line="72"/>
+        <location filename="../ui/blacklistfix2.ui" line="72"/>
         <source>Sélectionner les images trouvées</source>
         <translation>Select found images</translation>
     </message>
     <message>
-        <location filename="../ui/blacklistfix3.ui" line="92"/>
+        <location filename="../ui/blacklistfix2.ui" line="92"/>
         <source>Ok</source>
         <translation>Ok</translation>
     </message>
     <message>
-        <location filename="../ui/blacklistfix3.ui" line="99"/>
+        <source>Choisissez les dossiers à tester dans la liste ci-dessous.</source>
+        <translation type="vanished">Choose folders to look in in the list below.</translation>
+    </message>
+    <message>
+        <source>1</source>
+        <translation type="vanished">1</translation>
+    </message>
+    <message>
+        <source>Continuer</source>
+        <translation type="vanished">Continue</translation>
+    </message>
+    <message>
+        <location filename="../ui/blacklistfix2.ui" line="99"/>
         <source>Annuler</source>
         <translation>Cancel</translation>
+    </message>
+    <message numerus="yes">
+        <source>Vous vous apprêtez à télécharger les informations de %n image(s). Êtes-vous sûr de vouloir continuer ?</source>
+        <translation type="vanished">
+            <numerusform>You are about to download information from %n image. Are you sure you want to continue?</numerusform>
+            <numerusform>You are about to download information from %n images. Are you sure you want to continue?</numerusform>
+        </translation>
+    </message>
+</context>
+<context>
+    <name>BlacklistFix3</name>
+    <message>
+        <source>Réparateur de liste noire</source>
+        <translation type="vanished">Blacklist fixer</translation>
+    </message>
+    <message>
+        <source>Choisissez les images à supprimer dans la liste ci-dessous.</source>
+        <translation type="vanished">Choose images to delete in the list below.</translation>
+    </message>
+    <message>
+        <source>Miniature</source>
+        <translation type="vanished">Thumbnail</translation>
+    </message>
+    <message>
+        <source>Nom</source>
+        <translation type="vanished">Name</translation>
+    </message>
+    <message>
+        <source>Tag</source>
+        <translation type="vanished">Tag</translation>
+    </message>
+    <message>
+        <source>Sélectionner les images trouvées</source>
+        <translation type="vanished">Select found images</translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation type="vanished">Ok</translation>
+    </message>
+    <message>
+        <source>Annuler</source>
+        <translation type="vanished">Cancel</translation>
     </message>
 </context>
 <context>
@@ -345,20 +396,30 @@
         <translation type="obsolete">Grabber</translation>
     </message>
     <message>
-        <location filename="../source/filenamewindow.cpp" line="60"/>
-        <location filename="../source/filenamewindow.cpp" line="85"/>
+        <location filename="../source/filenamewindow.cpp" line="93"/>
+        <location filename="../source/filenamewindow.cpp" line="118"/>
         <source>Aide</source>
         <translation>Help</translation>
     </message>
     <message>
-        <location filename="../source/filenamewindow.cpp" line="60"/>
+        <location filename="../source/filenamewindow.cpp" line="93"/>
         <source>Symboles disponibles : &lt;i&gt;%artist%&lt;/i&gt;, &lt;i&gt;%general%&lt;/i&gt;, &lt;i&gt;%copyright%&lt;/i&gt;, &lt;i&gt;%character%&lt;/i&gt;, &lt;i&gt;%all%&lt;/i&gt;, &lt;i&gt;%filename%&lt;/i&gt;, &lt;i&gt;%ext%&lt;/i&gt;, &lt;i&gt;%rating%&lt;/i&gt;, &lt;i&gt;%website%&lt;/i&gt;, &lt;i&gt;%md5%&lt;/i&gt;.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist%&lt;/i&gt; : tags de nom d&apos;artiste&lt;br/&gt;&lt;i&gt;%general%&lt;/i&gt; : tags d&apos;image génériques&lt;br/&gt;&lt;i&gt;%copyright%&lt;/i&gt; : tags de copyright, en général le nom de l&apos;anime/manga&lt;br/&gt;&lt;i&gt;%character%&lt;/i&gt; : tags indiquant quels personnages sont présents sur l&apos;image&lt;br/&gt;&lt;i&gt;%all%&lt;/i&gt; : tous les tags&lt;br/&gt;&lt;i&gt;%filename%&lt;/i&gt; : nom du fichier sur le serveur, en général une chaîne alphanumérique&lt;br/&gt;&lt;i&gt;%ext%&lt;/i&gt; : extension de l&apos;image&lt;br/&gt;&lt;i&gt;%rating%&lt;/i&gt; : Questionable, Safe ou Explicit&lt;br/&gt;&lt;i&gt;%score%&lt;/i&gt; : le score de l&apos;image&lt;br/&gt;&lt;i&gt;%website%&lt;/i&gt; : url du site de l&apos;image&lt;br/&gt;&lt;i&gt;%websitename%&lt;/i&gt; : nom du site de l&apos;image&lt;br/&gt;&lt;i&gt;%md5%&lt;/i&gt; : code unique de l&apos;image, composé de 32 caractères alphanumériques&lt;br/&gt;&lt;i&gt;%id%&lt;/i&gt; : identifiant de l&apos;image sur un site donné&lt;br/&gt;&lt;i&gt;%search%&lt;/i&gt; : tags de la recherche&lt;br/&gt;&lt;i&gt;%search_n%&lt;/i&gt; : n-ième tag de la recherche&lt;br/&gt;&lt;i&gt;%date%&lt;/i&gt; : date d&apos;ajout de l&apos;image au format dd-MM-yyyy HH.mm&lt;br/&gt;&lt;i&gt;%date:format%&lt;/i&gt; : date d&apos;ajout de l&apos;image au format donné&lt;br/&gt;&lt;br/&gt;Vous pouvez aussi utiliser les structures conditionnelles. Pour plus d&apos;informations, cliquez &lt;a href=&quot;http://code.google.com/p/imgbrd-grabber/wiki/Filename&quot;&gt;ici&lt;/a&gt;.</source>
         <translation>Available tokens: &lt;i&gt;%artist%&lt;/i&gt;, &lt;i&gt;%general%&lt;/i&gt;, &lt;i&gt;%copyright%&lt;/i&gt;, &lt;i&gt;%character%&lt;/i&gt;, &lt;i&gt;%all%&lt;/i&gt;, &lt;i&gt;%filename%&lt;/i&gt;, &lt;i&gt;%ext%&lt;/i&gt;, &lt;i&gt;%rating%&lt;/i&gt;, &lt;i&gt;%website%&lt;/i&gt;, &lt;i&gt;%md5%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%artist%&lt;/i&gt;: artist name tags&lt;br/&gt;&lt;i&gt;%general%&lt;/i&gt;: generic image tags&lt;br/&gt;&lt;i&gt;%copyright%&lt;/i&gt;: copyright tags, usually the name of the anime/manga&lt;br/&gt;&lt;i&gt;%character%&lt;/i&gt;: tags indicating which characters are present on the image&lt;br/&gt;&lt;i&gt;%all%&lt;/i&gt;: all tags&lt;br/&gt;&lt;i&gt;%filename%&lt;/i&gt;: filename on the server, usually an alphanumeric sequence&lt;br/&gt;&lt;i&gt;%ext%&lt;/i&gt;: image&apos;s extension&lt;br/&gt;&lt;i&gt;%rating%&lt;/i&gt;: Questionable, Safe or Explicit&lt;br/&gt;&lt;i&gt;%score%&lt;/i&gt;: image&apos;s score&lt;br/&gt;&lt;i&gt;%website%&lt;/i&gt;: image&apos;s website url&lt;br/&gt;&lt;i&gt;%websitename%&lt;/i&gt;: image&apos;s website name&lt;br/&gt;&lt;i&gt;%md5%&lt;/i&gt;: image&apos;s unique hashcode, composed of 32 alphanumeric characters&lt;br/&gt;&lt;i&gt;%id%&lt;/i&gt;: image&apos;s identifier on a given websote&lt;br/&gt;&lt;i&gt;%search%&lt;/i&gt;: search tags&lt;br/&gt;&lt;i&gt;%search_n%&lt;/i&gt;: nth search tag&lt;br/&gt;&lt;i&gt;%date%&lt;/i&gt;: image&apos;s date in the format MM-dd-yyyy HH.mm&lt;br/&gt;&lt;i&gt;%date:format%&lt;/i&gt;: image&apos;s date according to the given format&lt;br/&gt;You can also use conditional structures. For further information, click &lt;a href=&quot;http://code.google.com/p/imgbrd-grabber/wiki/Filename&quot;&gt;here&lt;/a&gt;.</translation>
     </message>
     <message>
-        <location filename="../source/filenamewindow.cpp" line="85"/>
+        <location filename="../source/filenamewindow.cpp" line="118"/>
         <source>Variables disponibles : &lt;i&gt;artist&lt;/i&gt;, &lt;i&gt;general&lt;/i&gt;, &lt;i&gt;copyright&lt;/i&gt;, &lt;i&gt;character&lt;/i&gt;, &lt;i&gt;all&lt;/i&gt;, &lt;i&gt;filename&lt;/i&gt;, &lt;i&gt;ext&lt;/i&gt;, &lt;i&gt;rating&lt;/i&gt;, &lt;i&gt;website&lt;/i&gt;, &lt;i&gt;md5&lt;/i&gt;.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;artist&lt;/i&gt; : tags de nom d&apos;artiste&lt;br/&gt;&lt;i&gt;general&lt;/i&gt; : tags d&apos;image génériques&lt;br/&gt;&lt;i&gt;copyright&lt;/i&gt; : tags de copyright, en général le nom de l&apos;anime/manga&lt;br/&gt;&lt;i&gt;character&lt;/i&gt; : tags indiquant quels personnages sont présents sur l&apos;image&lt;br/&gt;&lt;i&gt;all&lt;/i&gt; : tous les tags&lt;br/&gt;&lt;i&gt;filename&lt;/i&gt; : nom du fichier sur le serveur, en général une chaîne alphanumérique&lt;br/&gt;&lt;i&gt;ext&lt;/i&gt; : extension de l&apos;image&lt;br/&gt;&lt;i&gt;rating&lt;/i&gt; : Questionable, Safe ou Explicit&lt;br/&gt;&lt;i&gt;score&lt;/i&gt; : le score de l&apos;image&lt;br/&gt;&lt;i&gt;website&lt;/i&gt; : url du site de l&apos;image&lt;br/&gt;&lt;i&gt;websitename&lt;/i&gt; : nom du site de l&apos;image&lt;br/&gt;&lt;i&gt;md5&lt;/i&gt; : code unique de l&apos;image, composé de 32 caractères alphanumériques&lt;br/&gt;&lt;i&gt;id&lt;/i&gt; : identifiant de l&apos;image sur un site donné&lt;br/&gt;&lt;i&gt;search&lt;/i&gt; : tags de la recherche&lt;br/&gt;&lt;i&gt;search_n&lt;/i&gt; : n-ième tag de la recherche&lt;br/&gt;&lt;i&gt;date&lt;/i&gt; : date d&apos;ajout de l&apos;image au format dd-MM-yyyy HH.mm&lt;br/&gt;&lt;br/&gt;Pour plus d&apos;informations sur le nommage Javascript, cliquez &lt;a href=&quot;http://code.google.com/p/imgbrd-grabber/wiki/Filename#Javascript&quot;&gt;ici&lt;/a&gt;.</source>
         <translation>Available tokens: &lt;i&gt;artist&lt;/i&gt;, &lt;i&gt;general&lt;/i&gt;, &lt;i&gt;copyright&lt;/i&gt;, &lt;i&gt;character&lt;/i&gt;, &lt;i&gt;all&lt;/i&gt;, &lt;i&gt;filename&lt;/i&gt;, &lt;i&gt;ext&lt;/i&gt;, &lt;i&gt;rating&lt;/i&gt;, &lt;i&gt;website&lt;/i&gt;, &lt;i&gt;md5&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;artist&lt;/i&gt;: artist name tags&lt;br/&gt;&lt;i&gt;general&lt;/i&gt;: generic image tags&lt;br/&gt;&lt;i&gt;copyright&lt;/i&gt;: copyright tags, usually the name of the anime/manga&lt;br/&gt;&lt;i&gt;character&lt;/i&gt;: tags indicating which characters are present on the image&lt;br/&gt;&lt;i&gt;all&lt;/i&gt;: all tags&lt;br/&gt;&lt;i&gt;filename&lt;/i&gt;: filename on the server, usually an alphanumeric sequence&lt;br/&gt;&lt;i&gt;ext&lt;/i&gt;: image&apos;s extension&lt;br/&gt;&lt;i&gt;rating&lt;/i&gt;: Questionable, Safe or Explicit&lt;br/&gt;&lt;i&gt;score&lt;/i&gt;: image&apos;s score&lt;br/&gt;&lt;i&gt;website&lt;/i&gt;: image&apos;s website url&lt;br/&gt;&lt;i&gt;website&lt;/i&gt;: image&apos;s website name&lt;br/&gt;&lt;i&gt;md5&lt;/i&gt;: image&apos;s unique hashcode, composed of 32 alphanumeric characters&lt;br/&gt;&lt;i&gt;id&lt;/i&gt;: image&apos;s identifier on a given websote&lt;br/&gt;&lt;i&gt;search&lt;/i&gt;: search tags&lt;br/&gt;&lt;i&gt;search_n&lt;/i&gt;: nth search tag&lt;br/&gt;&lt;i&gt;date&lt;/i&gt;: image&apos;s date in the format MM-dd-yyyy HH.mm&lt;br/&gt;&lt;i&gt;date:format&lt;/i&gt;: image&apos;s date according to the given format&lt;br/&gt;You can also use conditional structures. For further information about Javascript filenaming, click &lt;a href=&quot;http://code.google.com/p/imgbrd-grabber/wiki/Filename#Javascrip&quot;&gt;here&lt;/a&gt;.</translation>
+    </message>
+    <message>
+        <location filename="../source/filenamewindow.cpp" line="160"/>
+        <source>Attention</source>
+        <translation>Warning</translation>
+    </message>
+    <message>
+        <location filename="../source/filenamewindow.cpp" line="160"/>
+        <source>Votre script contient des erreurs, êtes-vous sûr de vouloir l&apos;enregistrer ?</source>
+        <translation>You script contains error, are you sure you want to save it?</translation>
     </message>
     <message>
         <source>Symboles disponibles : &lt;i&gt;%artist%&lt;/i&gt;, &lt;i&gt;%general%&lt;/i&gt;, &lt;i&gt;%copyright%&lt;/i&gt;, &lt;i&gt;%character%&lt;/i&gt;, &lt;i&gt;%all%&lt;/i&gt;, &lt;i&gt;%filename%&lt;/i&gt;, &lt;i&gt;%ext%&lt;/i&gt;, &lt;i&gt;%rating%&lt;/i&gt;, &lt;i&gt;%website%&lt;/i&gt;, &lt;i&gt;%md5%&lt;/i&gt;.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist%&lt;/i&gt; : tags de nom d&apos;artiste&lt;br/&gt;&lt;i&gt;%general%&lt;/i&gt; : tags d&apos;image génériques&lt;br/&gt;&lt;i&gt;%copyright%&lt;/i&gt; : tags de copyright, en général le nom de l&apos;anime/manga&lt;br/&gt;&lt;i&gt;%character%&lt;/i&gt; : tags indiquant quels personnages sont présents sur l&apos;image&lt;br/&gt;&lt;i&gt;%all%&lt;/i&gt; : tous les tags&lt;br/&gt;&lt;i&gt;%filename%&lt;/i&gt; : nom du fichier sur le serveur, en général une chaîne alphanumérique&lt;br/&gt;&lt;i&gt;%ext%&lt;/i&gt; : extension de l&apos;image&lt;br/&gt;&lt;i&gt;%rating%&lt;/i&gt; : Questionable, Safe ou Explicit&lt;br/&gt;&lt;i&gt;%score%&lt;/i&gt; : le score de l&apos;image&lt;br/&gt;&lt;i&gt;%website%&lt;/i&gt; : url du site de l&apos;image&lt;br/&gt;&lt;i&gt;%md5%&lt;/i&gt; : code unique de l&apos;image, composé de 32 caractères alphanumériques&lt;br/&gt;&lt;i&gt;%id%&lt;/i&gt; : identifiant de l&apos;image sur un site donné&lt;br/&gt;&lt;i&gt;%search%&lt;/i&gt; : tags de la recherche&lt;br/&gt;&lt;i&gt;%search_n%&lt;/i&gt; : n-ième tag de la recherche&lt;br/&gt;&lt;i&gt;%date%&lt;/i&gt; : date d&apos;ajout de l&apos;image au format dd-MM-yyyy HH.mm&lt;br/&gt;&lt;i&gt;%date:format%&lt;/i&gt; : date d&apos;ajout de l&apos;image au format donné&lt;br/&gt;&lt;br/&gt;Vous pouvez aussi utiliser les structures conditionnelles. Pour plus d&apos;informations, cliquez &lt;a href=&quot;http://code.google.com/p/imgbrd-grabber/wiki/Filename&quot;&gt;ici&lt;/a&gt;.</source>
@@ -384,42 +445,42 @@
         <translation type="vanished">Explicit</translation>
     </message>
     <message>
-        <location filename="../source/image.cpp" line="215"/>
+        <location filename="../source/image.cpp" line="217"/>
         <source>&lt;b&gt;Erreur :&lt;/b&gt; %1</source>
         <translation>&lt;b&gt;Error:&lt;/b&gt; %1</translation>
     </message>
     <message>
-        <location filename="../source/image.cpp" line="215"/>
+        <location filename="../source/image.cpp" line="217"/>
         <source>erreur de chargement de la miniature (%1)</source>
         <translation>error loading thumbnail (%1)</translation>
     </message>
     <message>
-        <location filename="../source/image.cpp" line="227"/>
+        <location filename="../source/image.cpp" line="229"/>
         <source>&lt;b&gt;Attention :&lt;/b&gt; %1</source>
         <translation>&lt;b&gt;Warning:&lt;/b&gt; %1</translation>
     </message>
     <message>
-        <location filename="../source/image.cpp" line="227"/>
+        <location filename="../source/image.cpp" line="229"/>
         <source>une des miniatures est vide (&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;). Nouvel essai (%2/%3)...</source>
         <translation>one of the thumbnails is empty (&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;). New try (%2/%3)...</translation>
     </message>
     <message>
-        <location filename="../source/image.cpp" line="706"/>
+        <location filename="../source/image.cpp" line="708"/>
         <source>dd-MM-yyyy HH.mm</source>
         <translation>MM-dd-yyyy HH.mm</translation>
     </message>
     <message>
-        <location filename="../source/image.cpp" line="784"/>
+        <location filename="../source/image.cpp" line="789"/>
         <source>Erreur d&apos;évaluation du Javascript :&lt;br/&gt;</source>
         <translation>Error in Javascript evaluation:&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../source/image.cpp" line="935"/>
+        <location filename="../source/image.cpp" line="940"/>
         <source>Image non trouvée. Nouvel essai avec son sample...</source>
         <translation>Image not found. New try with its sample...</translation>
     </message>
     <message>
-        <location filename="../source/image.cpp" line="946"/>
+        <location filename="../source/image.cpp" line="952"/>
         <source>Image non trouvée. Nouvel essai avec l&apos;extension %1...</source>
         <translation>Image not found. New try with extension %1...</translation>
     </message>
@@ -580,47 +641,47 @@
         <translation type="obsolete">&lt;b&gt;Notice :&lt;/b&gt; %1</translation>
     </message>
     <message>
-        <location filename="../source/image.cpp" line="417"/>
+        <location filename="../source/image.cpp" line="419"/>
         <source>unknown type &quot;%1&quot; (available types: &quot;%2&quot;)</source>
         <translation>unknown type &quot;%1&quot; (available types: &quot;%2&quot;)</translation>
     </message>
     <message>
-        <location filename="../source/image.cpp" line="476"/>
+        <location filename="../source/image.cpp" line="478"/>
         <source>image is not &quot;%1&quot;</source>
         <translation>image is not &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../source/image.cpp" line="478"/>
+        <location filename="../source/image.cpp" line="480"/>
         <source>image is &quot;%1&quot;</source>
         <translation>image is &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../source/image.cpp" line="485"/>
+        <location filename="../source/image.cpp" line="487"/>
         <source>image&apos;s source does not starts with &quot;%1&quot;</source>
         <translation>image&apos;s source does not starts with &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../source/image.cpp" line="487"/>
+        <location filename="../source/image.cpp" line="489"/>
         <source>image&apos;s source starts with &quot;%1&quot;</source>
         <translation>image&apos;s source starts with &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../source/image.cpp" line="466"/>
+        <location filename="../source/image.cpp" line="468"/>
         <source>image&apos;s %1 does not match</source>
         <translation>image&apos;s %1 does not match</translation>
     </message>
     <message>
-        <location filename="../source/image.cpp" line="468"/>
+        <location filename="../source/image.cpp" line="470"/>
         <source>image&apos;s %1 match</source>
         <translation>image&apos;s %1 match</translation>
     </message>
     <message>
-        <location filename="../source/image.cpp" line="509"/>
+        <location filename="../source/image.cpp" line="511"/>
         <source>image does not contains &quot;%1&quot;</source>
         <translation>image does not contains &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../source/image.cpp" line="511"/>
+        <location filename="../source/image.cpp" line="513"/>
         <source>image contains &quot;%1&quot;</source>
         <translation>image contains &quot;%1&quot;</translation>
     </message>
@@ -873,12 +934,12 @@
         <translation>Error parsing XML file: %1 (%2 - %3).</translation>
     </message>
     <message>
-        <location filename="../source/site.cpp" line="353"/>
+        <location filename="../source/site.cpp" line="355"/>
         <source>Fichier sites.txt du modèle %1 introuvable.</source>
         <translation>Sites.txt file from the %1 model not found.</translation>
     </message>
     <message>
-        <location filename="../source/site.cpp" line="357"/>
+        <location filename="../source/site.cpp" line="359"/>
         <source>Aucune source valide trouvée dans le fichier model.xml de %1.</source>
         <translation>No valid source has been found in the model.xml file from %1.</translation>
     </message>
@@ -1294,9 +1355,13 @@
 <context>
     <name>batchWindow</name>
     <message>
-        <location filename="../ui/batchwindow.ui" line="20"/>
         <source>Grabber - Téléchargement groupé</source>
-        <translation>Grabber - Batch download</translation>
+        <translation type="vanished">Grabber - Batch download</translation>
+    </message>
+    <message>
+        <location filename="../ui/batchwindow.ui" line="20"/>
+        <source>Téléchargement groupé</source>
+        <translation>Batch download</translation>
     </message>
     <message>
         <location filename="../ui/batchwindow.ui" line="53"/>
@@ -2762,7 +2827,7 @@ Please solve the issue before resuming the download.</translation>
         <translation>Choose a save folder</translation>
     </message>
     <message numerus="yes">
-        <location filename="../source/mainwindow.cpp" line="2260"/>
+        <location filename="../source/mainwindow.cpp" line="2271"/>
         <source>%n téléchargement(s) en cours</source>
         <translation>
             <numerusform>%n download in progress</numerusform>
@@ -2994,32 +3059,36 @@ Please solve the issue before resuming the download.</translation>
         <translation>Blacklist fixer</translation>
     </message>
     <message>
-        <location filename="../ui/md5fix.ui" line="27"/>
+        <location filename="../ui/md5fix.ui" line="37"/>
         <source>Dossier</source>
         <translation>Folder</translation>
     </message>
     <message>
-        <location filename="../ui/md5fix.ui" line="54"/>
+        <location filename="../ui/md5fix.ui" line="64"/>
         <source>Noms de fichiers</source>
         <translation>Filename</translation>
     </message>
     <message>
-        <location filename="../ui/md5fix.ui" line="79"/>
+        <location filename="../ui/md5fix.ui" line="77"/>
+        <source>%v/%m</source>
+        <translation>%v/%m</translation>
+    </message>
+    <message>
+        <location filename="../ui/md5fix.ui" line="99"/>
         <source>Démarrer</source>
         <translation>Start</translation>
     </message>
     <message>
-        <location filename="../ui/md5fix.ui" line="86"/>
+        <location filename="../ui/md5fix.ui" line="106"/>
         <source>Fermer</source>
         <translation>Close</translation>
     </message>
     <message>
-        <location filename="../ui/md5fix.ui" line="98"/>
         <source>%p/%m</source>
-        <translation>%p/%m</translation>
+        <translation type="vanished">%p/%m</translation>
     </message>
     <message>
-        <location filename="../ui/md5fix.ui" line="105"/>
+        <location filename="../ui/md5fix.ui" line="27"/>
         <source>Cet outil va vider votre liste de MD5 et la remplir à nouveau avec les MD5 des fichiers trouvés dans le dossier précisé ci-dessous.</source>
         <translation>This tool will clear your MD5 list and fill it again with the MD5 of the files found in the folder set below.</translation>
     </message>
@@ -3036,20 +3105,29 @@ Please solve the issue before resuming the download.</translation>
         <translation type="obsolete">Cancel</translation>
     </message>
     <message>
-        <location filename="../ui/md5fix.ui" line="37"/>
+        <location filename="../ui/md5fix.ui" line="47"/>
         <source>Forcer le calcul du md5</source>
         <translation>Force md5 calculation</translation>
     </message>
     <message>
-        <location filename="../ui/md5fix.ui" line="44"/>
+        <location filename="../ui/md5fix.ui" line="54"/>
         <source>Récupérer le md5 dans le nom du fichier</source>
         <translation>Get md5 in filename</translation>
     </message>
     <message>
-        <location filename="../source/md5fix.cpp" line="97"/>
-        <location filename="../source/md5fix.cpp" line="100"/>
+        <location filename="../source/md5fix.cpp" line="40"/>
         <source>Ce dossier n&apos;existe pas.</source>
         <translation>This folder doesn&apos;t exists.</translation>
+    </message>
+    <message>
+        <location filename="../source/md5fix.cpp" line="48"/>
+        <source>Si vous voulez récupérer le MD5 depuis le nom de fichier, vous devez include le token %md5% dans celui-ci.</source>
+        <translation>If you want to get the MD5 from the filename, you have to include the %md5% token in it.</translation>
+    </message>
+    <message>
+        <location filename="../source/md5fix.cpp" line="76"/>
+        <source>Impossible d&apos;ouvrir le fichier de MD5.</source>
+        <translation>Unable to open the MD5 file.</translation>
     </message>
 </context>
 <context>
@@ -5165,7 +5243,7 @@ Do you want to set these options now? You have to set the save folder and the fi
     <name>zoomWindow</name>
     <message>
         <location filename="../source/zoomwindow.cpp" line="466"/>
-        <location filename="../source/zoomwindow.cpp" line="771"/>
+        <location filename="../source/zoomwindow.cpp" line="774"/>
         <source>Fermer</source>
         <translation>Close</translation>
     </message>
@@ -5226,18 +5304,18 @@ Do you want to set these options now? You have to set the save folder and the fi
 %1</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="658"/>
-        <location filename="../source/zoomwindow.cpp" line="660"/>
+        <location filename="../source/zoomwindow.cpp" line="661"/>
+        <location filename="../source/zoomwindow.cpp" line="663"/>
         <source>Erreur</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="658"/>
+        <location filename="../source/zoomwindow.cpp" line="661"/>
         <source>Vous n&apos;avez pas précisé de dossier de sauvegarde ! Voulez-vous ouvrir les options ?</source>
         <translation>You did not specified a save folder! Do you want to open the options window?</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="660"/>
+        <location filename="../source/zoomwindow.cpp" line="663"/>
         <source>Vous n&apos;avez pas précisé de format de sauvegarde ! Voulez-vous ouvrir les options ?</source>
         <translation>You did not specified a save format! Do you want to open the options window?</translation>
     </message>
@@ -5268,7 +5346,7 @@ Do you want to set these options now? You have to set the save folder and the fi
     </message>
     <message>
         <location filename="../source/zoomwindow.cpp" line="465"/>
-        <location filename="../source/zoomwindow.cpp" line="793"/>
+        <location filename="../source/zoomwindow.cpp" line="796"/>
         <source>Fichier déjà existant</source>
         <translation>File already exists</translation>
     </message>
@@ -5295,14 +5373,14 @@ Do you want to set these options now? You have to set the save folder and the fi
         <translation type="obsolete">Saving image (%1) in &lt;a href=&quot;file:///%2&quot;&gt;%2&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="807"/>
+        <location filename="../source/zoomwindow.cpp" line="814"/>
         <source>Enregistrer l&apos;image</source>
         <translation>Save image</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="614"/>
-        <location filename="../source/zoomwindow.cpp" line="627"/>
-        <location filename="../source/zoomwindow.cpp" line="643"/>
+        <location filename="../source/zoomwindow.cpp" line="617"/>
+        <location filename="../source/zoomwindow.cpp" line="630"/>
+        <location filename="../source/zoomwindow.cpp" line="646"/>
         <source>Sauvegarde...</source>
         <translation>Saving...</translation>
     </message>
@@ -5363,13 +5441,13 @@ Do you want to set these options now? You have to set the save folder and the fi
     </message>
     <message>
         <location filename="../source/zoomwindow.cpp" line="470"/>
-        <location filename="../source/zoomwindow.cpp" line="791"/>
+        <location filename="../source/zoomwindow.cpp" line="794"/>
         <source>Fichier déjà existant (fav)</source>
         <translation>File already exists (fav)</translation>
     </message>
     <message>
         <location filename="../source/zoomwindow.cpp" line="471"/>
-        <location filename="../source/zoomwindow.cpp" line="769"/>
+        <location filename="../source/zoomwindow.cpp" line="772"/>
         <source>Fermer (fav)</source>
         <translation>Close (fav)</translation>
     </message>
@@ -5384,59 +5462,59 @@ Do you want to set these options now? You have to set the save folder and the fi
         <translation>Image received from &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="572"/>
+        <location filename="../source/zoomwindow.cpp" line="575"/>
         <source>Image non trouvée. Nouvel essai avec l&apos;extension %1...</source>
         <translation>Image not found. New try with extension %1...</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="577"/>
+        <location filename="../source/zoomwindow.cpp" line="580"/>
         <source>Une erreur inattendue est survenue lors du chargement de l&apos;image (%1).
 %2</source>
         <translation>An unexpected error occured loading the image (%1).
 %2</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="741"/>
+        <location filename="../source/zoomwindow.cpp" line="744"/>
         <source>Copie depuis &lt;a href=&quot;file:///%1&quot;&gt;%1&lt;/a&gt; vers &lt;a href=&quot;file:///%2&quot;&gt;%2&lt;/a&gt;</source>
         <translation>Copy from &lt;a href=&quot;file:///%1&quot;&gt;%1&lt;/a&gt; to &lt;a href=&quot;file:///%2&quot;&gt;%2&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="745"/>
+        <location filename="../source/zoomwindow.cpp" line="748"/>
         <source>Copié ! (fav)</source>
         <translation>Copied! (fav)</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="747"/>
+        <location filename="../source/zoomwindow.cpp" line="750"/>
         <source>Copié !</source>
         <translation>Copied!</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="751"/>
+        <location filename="../source/zoomwindow.cpp" line="754"/>
         <source>Déplacement depuis &lt;a href=&quot;file:///%1&quot;&gt;%1&lt;/a&gt; vers &lt;a href=&quot;file:///%2&quot;&gt;%2&lt;/a&gt;</source>
         <translation>Moving from &lt;a href=&quot;file:///%1&quot;&gt;%1&lt;/a&gt; to &lt;a href=&quot;file:///%2&quot;&gt;%2&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="756"/>
+        <location filename="../source/zoomwindow.cpp" line="759"/>
         <source>Déplacé ! (fav)</source>
         <translation>Moved! (fav)</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="758"/>
+        <location filename="../source/zoomwindow.cpp" line="761"/>
         <source>Déplacé !</source>
         <translation>Moved!</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="763"/>
+        <location filename="../source/zoomwindow.cpp" line="766"/>
         <source>Ignoré ! (fav)</source>
         <translation>Ignored! (fav)</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="765"/>
+        <location filename="../source/zoomwindow.cpp" line="768"/>
         <source>Ignoré !</source>
         <translation>Ignored!</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="867"/>
+        <location filename="../source/zoomwindow.cpp" line="880"/>
         <source>Chargement de l&apos;image stoppé.</source>
         <translation>Image loading stopped.</translation>
     </message>
@@ -5445,7 +5523,7 @@ Do you want to set these options now? You have to set the save folder and the fi
         <translation type="obsolete">Executing initialization command &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="638"/>
+        <location filename="../source/zoomwindow.cpp" line="641"/>
         <source>Sauvegarde... (fav)</source>
         <translation>Saving... (fav)</translation>
     </message>
@@ -5458,7 +5536,7 @@ Do you want to set these options now? You have to set the save folder and the fi
         <translation type="obsolete">error while initializing commands: %1.</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="694"/>
+        <location filename="../source/zoomwindow.cpp" line="697"/>
         <source>Sauvegarde de l&apos;image dans le fichier &lt;a href=&quot;file:///%1&quot;&gt;%1&lt;/a&gt;</source>
         <translation>Saving image in &lt;a href=&quot;file:///%1&quot;&gt;%1&lt;/a&gt;</translation>
     </message>
@@ -5475,12 +5553,12 @@ Do you want to set these options now? You have to set the save folder and the fi
         <translation type="obsolete">Saved &lt;a href=&quot;file:///%1&quot;&gt;%1&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="735"/>
+        <location filename="../source/zoomwindow.cpp" line="738"/>
         <source>Sauvegardé ! (fav)</source>
         <translation>Saved! (fav)</translation>
     </message>
     <message>
-        <location filename="../source/zoomwindow.cpp" line="737"/>
+        <location filename="../source/zoomwindow.cpp" line="740"/>
         <source>Sauvegardé !</source>
         <translation>Saved!</translation>
     </message>
