@@ -12,8 +12,6 @@
 #include "zoomwindow.h"
 #include "imagethread.h"
 #include "ui_zoomwindow.h"
-//#include <utime.h>
-#include <sys/utime.h>
 
 extern mainWindow *_mainwindow;
 
