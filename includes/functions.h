@@ -38,6 +38,7 @@ QString		getUnit(float*);
 QString		getExtension(QString url);
 QString		setExtension(QString url, QString extension);
 
+bool		setFileCreationDate(QString path, QDateTime time);
 void		showInGraphicalShell(const QString &);
 void		shutDown(int timeout = 0);
 void		openTray();

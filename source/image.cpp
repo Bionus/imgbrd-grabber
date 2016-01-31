@@ -1,7 +1,7 @@
 #include <QtScript>
 #include "image.h"
 #include "functions.h"
-
+#include "commands.h"
 
 
 QString removeCacheUrl(QString url)
@@ -1037,6 +1037,121 @@ QStringList Image::stylishedTags(QStringList ignored)
 	}
 	t.sort();
 	return t;
+}
+
+Image::SaveResult Image::save(QString path, bool force, bool basic)
+{
+	SaveResult res = SaveResult::Saved;
+	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
+
+	QFile f(path);
+	if (!f.exists() || force)
+	{
+		QDir path_to_file(path.section(QDir::toNativeSeparators("/"), 0, -2));
+		if (!path_to_file.exists())
+		{
+			QDir dir;
+			if (!dir.mkpath(path.section(QDir::toNativeSeparators("/"), 0, -2)))
+				return SaveResult::Error;
+		}
+
+		QString whatToDo = settings.value("Save/md5Duplicates", "save").toString();
+		QString md5Duplicate = md5Exists(md5());
+		if (md5Duplicate.isEmpty() || whatToDo == "save" || force)
+		{
+			log(tr("Sauvegarde de l'image dans le fichier <a href=\"file:///%1\">%1</a>").arg(f.fileName()));
+			if (!m_source.isEmpty())
+			{ QFile::copy(m_source, f.fileName()); }
+			else
+			{
+				addMd5(md5(), path);
+
+				f.open(QFile::WriteOnly);
+				f.write(m_data);
+				f.close();
+			}
+
+			if (settings.value("Save/keepDate", true).toBool())
+				setFileCreationDate(path, createdAt());
+
+			if (settings.value("Textfile/activate", false).toBool() && !basic)
+			{
+				QStringList cont = this->path(settings.value("Textfile/content", "%all%").toString(), "", 1, true, true, false, false);
+				if (!cont.isEmpty())
+				{
+					QString contents = cont.at(0);
+					QFile file_tags(path + ".txt");
+					if (file_tags.open(QFile::WriteOnly | QFile::Text))
+					{
+						file_tags.write(contents.toUtf8());
+						file_tags.close();
+					}
+				}
+			}
+			if (settings.value("SaveLog/activate", false).toBool() && !settings.value("SaveLog/file", "").toString().isEmpty() && !basic)
+			{
+				QStringList cont = this->path(settings.value("SaveLog/format", "%website% - %md5% - %all%").toString(), "", 1, true, true, false, false);
+				if (!cont.isEmpty())
+				{
+					QString contents = cont.at(0);
+					QFile file_tags(settings.value("SaveLog/file", "").toString());
+					if (file_tags.open(QFile::WriteOnly | QFile::Append | QFile::Text))
+					{
+						file_tags.write(contents.toUtf8() + "\n");
+						file_tags.close();
+					}
+				}
+			}
+		}
+		else if (whatToDo == "copy")
+		{
+			log(tr("Copie depuis <a href=\"file:///%1\">%1</a> vers <a href=\"file:///%2\">%2</a>").arg(md5Duplicate).arg(f.fileName()));
+			QFile::copy(md5Duplicate, f.fileName());
+
+			res = SaveResult::Copied;
+		}
+		else if (whatToDo == "move")
+		{
+			log(tr("Déplacement depuis <a href=\"file:///%1\">%1</a> vers <a href=\"file:///%2\">%2</a>").arg(md5Duplicate).arg(f.fileName()));
+			QFile::rename(md5Duplicate, f.fileName());
+			setMd5(md5(), f.fileName());
+
+			res = SaveResult::Moved;
+		}
+		else
+		{ return SaveResult::Ignored; }
+
+		// Commands
+		QMap<QString,int> types;
+		types["general"] = 0;
+		types["artist"] = 1;
+		types["general"] = 2;
+		types["copyright"] = 3;
+		types["character"] = 4;
+		types["model"] = 5;
+		types["photo_set"] = 6;
+		Commands::get()->before();
+		for (int i = 0; i < tags().count(); i++)
+		{ Commands::get()->tag(tags().at(i)); }
+		Commands::get()->image(this, path);
+		Commands::get()->after();
+	}
+	else
+	{ res = SaveResult::AlreadyExists; }
+
+	return res;
+}
+QList<Image::SaveResult> Image::save(QStringList paths)
+{
+	QList<Image::SaveResult> res;
+	for (QString path : paths)
+		res.append(save(path));
+	return res;
+}
+QList<Image::SaveResult> Image::save(QString filename, QString path)
+{
+	QStringList paths = this->path(filename, path);
+	return save(paths);
 }
 
 

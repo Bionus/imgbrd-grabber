@@ -101,6 +101,7 @@ optionsWindow::optionsWindow(QWidget *parent) : QDialog(parent), ui(new Ui::opti
 		ui->checkDownloadOriginals->setChecked(settings.value("downloadoriginals", true).toBool());
 		ui->checkSampleFallback->setChecked(settings.value("samplefallback", true).toBool());
 		ui->checkReplaceBlanks->setChecked(settings.value("replaceblanks", false).toBool());
+		ui->checkKeepDate->setChecked(settings.value("keepDate", true).toBool());
 		ui->lineFolder->setText(settings.value("path_real").toString());
 		ui->lineFolderFavorites->setText(settings.value("path_favorites").toString());
 		QStringList opts = QStringList() << "save" << "copy" << "move" << "ignore";
@@ -598,6 +599,7 @@ void optionsWindow::save()
 		settings.setValue("downloadoriginals", ui->checkDownloadOriginals->isChecked());
 		settings.setValue("samplefallback", ui->checkSampleFallback->isChecked());
 		settings.setValue("replaceblanks", ui->checkReplaceBlanks->isChecked());
+		settings.setValue("keepDate", ui->checkKeepDate->isChecked());
 		settings.setValue("separator", ui->lineSeparator->text());
 		QString folder = fixFilename("", ui->lineFolder->text());
 		settings.setValue("path", folder);

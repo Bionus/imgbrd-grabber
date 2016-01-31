@@ -1639,6 +1639,9 @@ void mainWindow::getAllGetImage(Image* img)
 				m_getAllIgnored++;
 				log(tr("Copie depuis <a href=\"file:///%1\">%1</a> vers <a href=\"file:///%2\">%2</a>").arg(md5Duplicate).arg(fp));
 				QFile::copy(md5Duplicate, fp);
+
+				if (m_settings->value("Save/keepDate", true).toBool())
+					setFileCreationDate(fp, img->createdAt());
 			}
 			else if (whatToDo == "move")
 			{
@@ -1646,6 +1649,9 @@ void mainWindow::getAllGetImage(Image* img)
 				log(tr("Déplacement depuis <a href=\"file:///%1\">%1</a> vers <a href=\"file:///%2\">%2</a>").arg(md5Duplicate).arg(fp));
 				QFile::rename(md5Duplicate, fp);
 				setMd5(img->md5(), fp);
+
+				if (m_settings->value("Save/keepDate", true).toBool())
+					setFileCreationDate(fp, img->createdAt());
 			}
 			else
 			{
@@ -1834,6 +1840,9 @@ void mainWindow::saveImage(Image *img, QNetworkReply *reply, QString path, QStri
 				for (int i = 0; i < img->tags().count(); i++)
 				{ Commands::get()->tag(img->tags().at(i)); }
 				Commands::get()->image(img, fp);
+
+				if (m_settings->value("Save/keepDate", true).toBool())
+					setFileCreationDate(fp, img->createdAt());
 			}
 		}
 	}

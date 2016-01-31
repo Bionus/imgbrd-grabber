@@ -397,6 +397,42 @@ int levenshtein(QString s1, QString s2)
 	return d[len1][len2];
 }
 
+bool setFileCreationDate(QString path, QDateTime datetime)
+{
+	#ifdef Q_OS_WIN
+		LPCWSTR filename = (const wchar_t*)path.utf16();
+		HANDLE hfile = CreateFile(filename, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+		if (hfile == INVALID_HANDLE_VALUE)
+		{
+			log(QObject::tr("Impossible d'ouvrir le fichier (%d)").arg(GetLastError()), Log::Error);
+			return false;
+		}
+		else
+		{
+			LONGLONG ll = Int32x32To64(datetime.toTime_t(), 10000000) + 116444736000000000;
+			FILETIME pcreationtime;
+			pcreationtime.dwLowDateTime = (DWORD) ll;
+			pcreationtime.dwHighDateTime = ll >> 32;
+
+			if (!SetFileTime(hfile, &pcreationtime, NULL, &pcreationtime))
+			{
+				log(QObject::tr("Impossible de changer la date du fichier (%d)").arg(GetLastError()), Log::Error);
+				return false;
+			}
+		}
+		CloseHandle(hfile);
+	#else
+		struct utimbuf timebuffer;
+		timebuffer.modtime = datetime.toTime_t();
+		const char *filename = path.toStdString().c_str();
+		if ((utime(filename, &timebuffer)) < 0)
+		{
+			log(tr("Impossible de changer la date du fichier (%d)").arg(errno), Log::Error);
+			return false;
+		}
+	#endif
+}
+
 /**
  * Opens the file explorer and select the file.
  * @param	pathIn	The path to the file.

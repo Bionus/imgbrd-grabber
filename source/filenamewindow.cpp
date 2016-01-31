@@ -137,6 +137,20 @@ void FilenameWindow::on_buttonHelpJavascript_clicked()
 	);
 }
 
+QString FilenameWindow::format()
+{
+	if (ui->radioJavascript->isChecked())
+	{
+		#if USE_QSCINTILLA
+			return "javascript:" + m_scintilla->text();
+		#else
+			return "javascript:" + m_scintilla->toPlainText();
+		#endif
+	}
+
+	return ui->lineClassic->text();
+}
+
 void FilenameWindow::done(int r)
 {
 	QMap<QString, Site*> *sites = Site::getAllSites();
@@ -146,14 +160,8 @@ void FilenameWindow::done(int r)
 		QMap<QString, QString> info;
 		info.insert("site", QString::number((qintptr)sites->value(sites->keys().first())));
 
-		#if USE_QSCINTILLA
-			QString text = m_scintilla->text();
-		#else
-			QString text = m_scintilla->toPlainText();
-		#endif
-
 		Image image(info);
-		QStringList det = image.path("javascript:" + text, "");
+		QStringList det = image.path(format(), "");
 
 		if (det.isEmpty())
 		{
@@ -171,15 +179,5 @@ void FilenameWindow::done(int r)
 
 void FilenameWindow::send()
 {
-	if (ui->radioJavascript->isChecked())
-	{
-		#if USE_QSCINTILLA
-			QString text = m_scintilla->text();
-		#else
-			QString text = m_scintilla->toPlainText();
-		#endif
-		emit validated("javascript:"+text);
-	}
-	else
-	{ emit validated(ui->lineClassic->text()); }
+	emit validated(format());
 }

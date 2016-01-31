@@ -28,6 +28,7 @@ class FilenameWindow : public QDialog
 	public:
 		explicit FilenameWindow(QString value = "", QWidget *parent = 0);
 		~FilenameWindow();
+		QString format();
 
 	public slots:
 		void on_lineClassic_textChanged(QString);
