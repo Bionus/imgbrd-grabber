@@ -61,7 +61,7 @@ class optionsWindow : public QDialog
 		void on_buttonCustom_clicked();
 		void addCustom(QString, QString);
 		void on_buttonFilenames_clicked();
-		void addFilename(QString, QString);
+		void addFilename(QString, QString, QString);
 		void save();
 
 	signals:
@@ -70,7 +70,7 @@ class optionsWindow : public QDialog
 
 	private:
 		Ui::optionsWindow *ui;
-		QList<QLineEdit*> m_customNames, m_customTags, m_filenamesConditions, m_filenamesFilenames;
+		QList<QLineEdit*> m_customNames, m_customTags, m_filenamesConditions, m_filenamesFilenames, m_filenamesFolders;
 };
 
 #endif // OPTIONSWINDOW_H

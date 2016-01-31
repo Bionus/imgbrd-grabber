@@ -22,14 +22,27 @@ class Image : public QObject
     Q_OBJECT
 
 	public:
+		enum SaveResult
+		{
+			AlreadyExists,
+			Ignored,
+			Moved,
+			Copied,
+			Saved,
+			Error
+		};
+
 		Image(QMap<QString,QString> details, Page *parent = NULL);
 		~Image();
 		int			value();
 		QString		match(QString filter, bool invert = false);
 		QStringList	filter(QStringList filters);
-		QStringList	path(QString fn = "", QString pth = "", int counter = 0, bool complex = true, bool simple = false, bool maxlength = true, bool shouldFixFilename = true);
+		QStringList	path(QString fn = "", QString pth = "", int counter = 0, bool complex = true, bool simple = false, bool maxlength = true, bool shouldFixFilename = true, bool getFull = false);
 		QStringList blacklisted(QStringList, bool invert = true);
 		QStringList	stylishedTags(QStringList ignored);
+		SaveResult  save(QString path, bool force = false, bool basic = false);
+		QList<SaveResult> save(QStringList paths);
+		QList<SaveResult> save(QString filename, QString path);
 		QString		url();
 		QString		md5();
 		QString		author();

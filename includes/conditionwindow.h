@@ -22,7 +22,7 @@ class conditionWindow : public QDialog
 		void accept();
 
 	signals:
-		void validated(QString, QString);
+		void validated(QString, QString, QString);
 
 	private:
 		Ui::conditionWindow *ui;

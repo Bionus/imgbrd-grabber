@@ -12,7 +12,9 @@
 #include "math.h"
 #include "functions.h"
 #ifdef Q_OS_WIN
-	#include "windows.h"
+	#include <windows.h>
+#else
+	#include <utime.h>
 #endif
 
 using namespace std;
@@ -62,16 +64,21 @@ QMap<QString,QStringList> getCustoms()
  * Load multiple filenames from settings.
  * @return	The map with token names as keys and token tags as values.
  */
-QMap<QString,QString> getFilenames()
+QMap<QString,QPair<QString,QString>> getFilenames()
 {
-	QMap<QString,QString> tokens;
+	QMap<QString,QPair<QString,QString>> tokens;
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
 	settings.beginGroup("Filenames");
-	QStringList keys = settings.childKeys();
-	for (int i = 0; i < keys.size(); i++)
+	int count = settings.childKeys().count() / 3;
+	for (int i = 0; i < count; i++)
 	{
-		if (!keys.at(i).isEmpty())
-		{ tokens.insert(keys.at(i), settings.value(keys.at(i)).toString()); }
+		if (settings.contains(QString::number(i) + "_cond"))
+		{
+			QPair<QString,QString> pair;
+			pair.first = settings.value(QString::number(i) + "_fn").toString();
+			pair.second = settings.value(QString::number(i) + "_dir").toString();
+			tokens.insert(settings.value(QString::number(i) + "_cond").toString(), pair);
+		}
 	}
 	return tokens;
 }
@@ -395,6 +402,43 @@ int levenshtein(QString s1, QString s2)
 			);
 
 	return d[len1][len2];
+}
+
+bool setFileCreationDate(QString path, QDateTime datetime)
+{
+	#ifdef Q_OS_WIN
+		LPCWSTR filename = (const wchar_t*)path.utf16();
+		HANDLE hfile = CreateFile(filename, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+		if (hfile == INVALID_HANDLE_VALUE)
+		{
+			log(QObject::tr("Impossible d'ouvrir le fichier (%d)").arg(GetLastError()), Log::Error);
+			return false;
+		}
+		else
+		{
+			LONGLONG ll = Int32x32To64(datetime.toTime_t(), 10000000) + 116444736000000000;
+			FILETIME pcreationtime;
+			pcreationtime.dwLowDateTime = (DWORD) ll;
+			pcreationtime.dwHighDateTime = ll >> 32;
+
+			if (!SetFileTime(hfile, &pcreationtime, NULL, &pcreationtime))
+			{
+				log(QObject::tr("Impossible de changer la date du fichier (%d)").arg(GetLastError()), Log::Error);
+				return false;
+			}
+		}
+		CloseHandle(hfile);
+	#else
+		struct utimbuf timebuffer;
+		timebuffer.modtime = datetime.toTime_t();
+		const char *filename = path.toStdString().c_str();
+		if ((utime(filename, &timebuffer)) < 0)
+		{
+			log(QObject::tr("Impossible de changer la date du fichier (%d)").arg(errno), Log::Error);
+			return false;
+		}
+	#endif
+	return true;
 }
 
 /**

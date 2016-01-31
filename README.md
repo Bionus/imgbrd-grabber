@@ -10,8 +10,8 @@
 [![Build Status](https://travis-ci.org/Bionus/imgbrd-grabber.svg)](https://travis-ci.org/Bionus/imgbrd-grabber)
 
 ## About
-Imgbrd-Grabber is an imageboard/booru downloader with a graphical user interface. It can download thousands of images from multiple boorus automatically.
-Its main advantage is its very powerful naming features: just set your filename and folder using all the tokens available and conditionals, and he will generate an image-dependant one.
+Imgbrd-Grabber is an imageboard/booru downloader which can be used with a great a graphical user interface or through command line. It can download thousands of images from multiple boorus very easily.
+One of its main advantage is its very powerful naming features: just set your filename and folder using all the tokens available and conditionals, and he will generate an image-dependant one.
 
 ## Download
 You can download the latest release [here](https://github.com/Bionus/imgbrd-grabber/releases/latest), or find all previous releases [here](https://github.com/Bionus/imgbrd-grabber/releases).
@@ -21,7 +21,7 @@ If you have any questions about the program, found a bug and don't want to use t
 
 ## Main features
 * Browse images from the internet
-* Download huge amounts of images
+* Download huge amounts of images at once
 * Command line interface to download images
 * Download single images using their md5 or id
 * Rename downloaded images using a formatting string, for example "%artist%/%copyright%/%character%/%md5%.%ext%" (someway like how the Firefox extension [Danbooru Downloader](https://addons.mozilla.org/fr/firefox/addon/danbooru-downloader/) does), or directly using Javascript code. See {{Filename}} for details.
@@ -43,6 +43,9 @@ If you have any questions about the program, found a bug and don't want to use t
 * English
 * French
 * Russian (thanks to Николай Тихонов)
+
+## Default sources
+You can add additional sources very easily, but here's a shot list of some sources that are included and supported by default: Danbooru, Gelbooru, yande.re, Shimmie, Sankaku complex, e621, rule34, safebooru, behoimi...
 
 ## Authors
 * [Bionus](https://github.com/Bionus)

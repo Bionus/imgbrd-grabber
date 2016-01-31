@@ -58,16 +58,24 @@ optionsWindow::optionsWindow(QWidget *parent) : QDialog(parent), ui(new Ui::opti
 	QStringList positions = QStringList() << "top" << "left" << "auto";
 	ui->comboTagsposition->setCurrentIndex(positions.indexOf(settings.value("tagsposition", "top").toString()));
 
-	QMap<QString,QString> filenames = getFilenames();
+	QMap<QString,QPair<QString,QString>> filenames = getFilenames();
 	m_filenamesConditions = QList<QLineEdit*>();
 	m_filenamesFilenames = QList<QLineEdit*>();
 	for (int i = 0; i < filenames.size(); i++)
 	{
 		QLineEdit *leCondition = new QLineEdit(filenames.keys().at(i));
-		QLineEdit *leFilename = new QLineEdit(filenames.values().at(i));
+		QLineEdit *leFilename = new QLineEdit(filenames.values().at(i).first);
+		QLineEdit *leFolder = new QLineEdit(filenames.values().at(i).second);
+
 		m_filenamesConditions.append(leCondition);
 		m_filenamesFilenames.append(leFilename);
-		ui->layoutFilenames->insertRow(i, leCondition, leFilename);
+		m_filenamesFolders.append(leFolder);
+
+		QHBoxLayout *layout = new QHBoxLayout(this);
+		layout->addWidget(leCondition);
+		layout->addWidget(leFilename);
+		layout->addWidget(leFolder);
+		ui->layoutConditionals->addLayout(layout);
 	}
 	QStringList types = QStringList() << "text" << "icon" << "both" << "hide";
 	ui->comboSources->setCurrentIndex(types.indexOf(settings.value("Sources/Types", "icon").toString()));
@@ -101,6 +109,7 @@ optionsWindow::optionsWindow(QWidget *parent) : QDialog(parent), ui(new Ui::opti
 		ui->checkDownloadOriginals->setChecked(settings.value("downloadoriginals", true).toBool());
 		ui->checkSampleFallback->setChecked(settings.value("samplefallback", true).toBool());
 		ui->checkReplaceBlanks->setChecked(settings.value("replaceblanks", false).toBool());
+		ui->checkKeepDate->setChecked(settings.value("keepDate", true).toBool());
 		ui->lineFolder->setText(settings.value("path_real").toString());
 		ui->lineFolderFavorites->setText(settings.value("path_favorites").toString());
 		QStringList opts = QStringList() << "save" << "copy" << "move" << "ignore";
@@ -288,16 +297,24 @@ void optionsWindow::addCustom(QString name, QString tags)
 void optionsWindow::on_buttonFilenames_clicked()
 {
 	conditionWindow *cw = new conditionWindow();
-	connect(cw, SIGNAL(validated(QString, QString)), this, SLOT(addFilename(QString, QString)));
+	connect(cw, SIGNAL(validated(QString, QString, QString)), this, SLOT(addFilename(QString, QString, QString)));
 	cw->show();
 }
-void optionsWindow::addFilename(QString condition, QString filename)
+void optionsWindow::addFilename(QString condition, QString filename, QString folder)
 {
 	QLineEdit *leCondition = new QLineEdit(condition);
 	QLineEdit *leFilename = new QLineEdit(filename);
-	ui->layoutFilenames->insertRow(m_filenamesConditions.size(), leCondition, leFilename);
+	QLineEdit *leFolder = new QLineEdit(folder);
+
 	m_filenamesConditions.append(leCondition);
 	m_filenamesFilenames.append(leFilename);
+	m_filenamesFolders.append(leFolder);
+
+	QHBoxLayout *layout = new QHBoxLayout(this);
+	layout->addWidget(leCondition);
+	layout->addWidget(leFilename);
+	layout->addWidget(leFolder);
+	ui->layoutConditionals->addLayout(layout);
 }
 
 void optionsWindow::on_lineColoringArtists_textChanged()
@@ -555,9 +572,15 @@ void optionsWindow::save()
 	settings.setValue("getunloadedpages", ui->checkGetUnloadedPages->isChecked());
 
 	settings.beginGroup("Filenames");
-		settings.remove("");
 		for (int i = 0; i < m_filenamesConditions.size(); i++)
-		{ settings.setValue(m_filenamesConditions.at(i)->text(), m_filenamesFilenames.at(i)->text()); }
+		{
+			if (!m_filenamesConditions.at(i)->text().isEmpty())
+			{
+				settings.setValue(QString::number(i) + "_cond", m_filenamesConditions.at(i)->text());
+				settings.setValue(QString::number(i) + "_fn", m_filenamesFilenames.at(i)->text());
+				settings.setValue(QString::number(i) + "_dir", m_filenamesFolders.at(i)->text());
+			}
+		}
 	settings.endGroup();
 
 	QStringList types = QStringList() << "text" << "icon" << "both" << "hide";
@@ -598,6 +621,7 @@ void optionsWindow::save()
 		settings.setValue("downloadoriginals", ui->checkDownloadOriginals->isChecked());
 		settings.setValue("samplefallback", ui->checkSampleFallback->isChecked());
 		settings.setValue("replaceblanks", ui->checkReplaceBlanks->isChecked());
+		settings.setValue("keepDate", ui->checkKeepDate->isChecked());
 		settings.setValue("separator", ui->lineSeparator->text());
 		QString folder = fixFilename("", ui->lineFolder->text());
 		settings.setValue("path", folder);

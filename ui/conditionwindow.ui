@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>363</width>
-    <height>112</height>
+    <width>387</width>
+    <height>157</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -24,7 +24,7 @@
    <item row="0" column="0" colspan="2">
     <widget class="QLabel" name="label_3">
      <property name="text">
-      <string>&lt;i&gt;Vous pouvez utiliser un symbole ou un tag en tant que condition&lt;/i&gt;</string>
+      <string>&lt;i&gt;Vous pouvez utiliser un symbole ou des tags en tant que condition.&lt;/i&gt;</string>
      </property>
     </widget>
    </item>
@@ -45,7 +45,7 @@
      </property>
     </widget>
    </item>
-   <item row="3" column="0" colspan="2">
+   <item row="5" column="0" colspan="2">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -57,6 +57,23 @@
    </item>
    <item row="2" column="1">
     <widget class="QLineEdit" name="lineFilename"/>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="label_4">
+     <property name="text">
+      <string>Dossier</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0" colspan="2">
+    <widget class="QLabel" name="label_5">
+     <property name="text">
+      <string>&lt;i&gt;Laisser vide pour utiliser le dossier principal.&lt;/i&gt;</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="QLineEdit" name="lineFolder"/>
    </item>
   </layout>
  </widget>
