@@ -741,8 +741,18 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 				{ filename = filenames.value(cond); }
 			}
 		}
-		else if (details["alls"].contains(cond))
-		{ filename = filenames.value(cond); }
+		else
+		{
+			QStringList options = cond.split(' ');
+			for (QString opt : options)
+			{
+				if (details["alls"].contains(opt))
+				{
+					filename = filenames.value(cond);
+					break;
+				}
+			}
+		}
 	}
 
 	// Remove duplicates in %all%

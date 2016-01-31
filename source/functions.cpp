@@ -433,6 +433,7 @@ bool setFileCreationDate(QString path, QDateTime datetime)
 			return false;
 		}
 	#endif
+	return true;
 }
 
 /**
