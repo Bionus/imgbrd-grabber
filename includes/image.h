@@ -37,7 +37,7 @@ class Image : public QObject
 		int			value();
 		QString		match(QString filter, bool invert = false);
 		QStringList	filter(QStringList filters);
-		QStringList	path(QString fn = "", QString pth = "", int counter = 0, bool complex = true, bool simple = false, bool maxlength = true, bool shouldFixFilename = true);
+		QStringList	path(QString fn = "", QString pth = "", int counter = 0, bool complex = true, bool simple = false, bool maxlength = true, bool shouldFixFilename = true, bool getFull = false);
 		QStringList blacklisted(QStringList, bool invert = true);
 		QStringList	stylishedTags(QStringList ignored);
 		SaveResult  save(QString path, bool force = false, bool basic = false);

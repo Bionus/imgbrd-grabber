@@ -618,7 +618,7 @@ QString cutLength(QString res, QString filename, QString pth, QString key, bool 
  * @param simple True to force using the fn and pth parameters.
  * @return The filename of the image, with any token replaced.
  */
-QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool simple, bool maxlength, bool shouldFixFilename)
+QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool simple, bool maxlength, bool shouldFixFilename, bool getFull)
 {
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
 	QStringList ignore = loadIgnored(), remove = settings.value("ignoredtags").toString().split(' ', QString::SkipEmptyParts);
@@ -723,7 +723,7 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 
 	// Filename
 	QString filename = fn;
-	QMap<QString,QString> filenames = getFilenames();
+	QMap<QString,QPair<QString,QString>> filenames = getFilenames();
 	for (int i = 0; i < filenames.size(); ++i)
 	{
 		QString cond = filenames.keys().at(i);
@@ -738,7 +738,11 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 			if (contains)
 			{
 				if (!replaces[cond.mid(1, cond.size()-2)].first.isEmpty())
-				{ filename = filenames.value(cond); }
+				{
+					filename = filenames.value(cond).first;
+					if (!filenames.value(cond).second.isEmpty())
+					{ pth = filenames.value(cond).second; }
+				}
 			}
 		}
 		else
@@ -748,7 +752,9 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 			{
 				if (details["alls"].contains(opt))
 				{
-					filename = filenames.value(cond);
+					filename = filenames.value(cond).first;
+					if (!filenames.value(cond).second.isEmpty())
+					{ pth = filenames.value(cond).second; }
 					break;
 				}
 			}
@@ -909,6 +915,16 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 		// Max filename size option
 		if (shouldFixFilename)
 			fns[i] = fixFilename(filename, pth, maxlength && complex ? 0 : settings.value("limit").toInt());
+
+		if (getFull)
+		{
+			fns[i] = QDir::toNativeSeparators(fns[i]);
+			if (fns[i].left(1) == QDir::toNativeSeparators("/"))
+			{ fns[i] = fns[i].right(fns[i].length() - 1); }
+			if (fns[i].right(1) == QDir::toNativeSeparators("/"))
+			{ fns[i] = fns[i].left(fns[i].length() - 1); }
+			fns[i] = QDir::toNativeSeparators(pth + "/" + fns[i]);
+		}
 	}
 
 	return fns;

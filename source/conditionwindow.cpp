@@ -15,6 +15,6 @@ conditionWindow::~conditionWindow()
 
 void conditionWindow::accept()
 {
-	emit validated(ui->lineCondition->text(), ui->lineFilename->text());
+	emit validated(ui->lineCondition->text(), ui->lineFilename->text(), ui->lineFolder->text());
 	close();
 }

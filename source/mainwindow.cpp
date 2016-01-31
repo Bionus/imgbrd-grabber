@@ -1394,12 +1394,12 @@ void mainWindow::_getAll()
 			}
 
 			QString p = img->folder().isEmpty() ? pth : img->folder();
-			QStringList paths = img->path(path, p, m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + 1);
+			QStringList paths = img->path(path, p, m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + 1, true, false, true, true, true);
 
 			bool notexists = true;
 			for (QString path : paths)
 			{
-				QFile f(p+"/"+path);
+				QFile f(path);
 				if (f.exists())
 				{ notexists = false; }
 			}
@@ -1519,15 +1519,14 @@ void mainWindow::getAllPerformTags(Image* img)
 		p = m_groupBatchs[site_id - 1][7];
 	}
 
-	int cnt = m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + 1;
-	QStringList paths = img->path(path, p, cnt);
-	path = paths.at(0); // FIXME
-
 	// Save path
 	p.replace("\\", "/");
 	if (p.right(1) == "/")
 	{ p = p.left(p.length()-1); }
-	QString pth = p+"/"+path;
+
+	int cnt = m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + 1;
+	QStringList paths = img->path(path, p, cnt, true, false, true, true, true);
+	QString pth = paths.at(0); // FIXME
 
 	QFile f(pth);
 	if (!f.exists())	{ f.setFileName(pth.section('.', 0, -2)+".png");	}
@@ -1605,7 +1604,7 @@ void mainWindow::getAllGetImage(Image* img)
 		path = m_groupBatchs[site_id - 1][6];
 		p = m_groupBatchs[site_id - 1][7];
 	}
-	QStringList paths = img->path(path, p, m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + 1);
+	QStringList paths = img->path(path, p, m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + 1, true, false, true, true, true);
 
 	// Action
 	QString whatToDo = m_settings->value("Save/md5Duplicates", "save").toString();
@@ -1630,9 +1629,7 @@ void mainWindow::getAllGetImage(Image* img)
 		for (QString path : paths)
 		{
 			path.replace("%n%", QString::number(m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors));
-			if (path.left(1) == QDir::toNativeSeparators("/"))	{ path = path.right(path.length()-1);	}
-			if (p.right(1) == QDir::toNativeSeparators("/"))	{ p = p.left(p.length()-1);				}
-			QString fp = QDir::toNativeSeparators(p+"/"+path);
+			QString fp = QDir::toNativeSeparators(path);
 
 			if (whatToDo == "copy")
 			{
@@ -1756,7 +1753,7 @@ void mainWindow::saveImage(Image *img, QNetworkReply *reply, QString path, QStri
 	{ path = m_settings->value("Save/filename").toString(); }
 	if (p == "")
 	{ p = img->folder().isEmpty() ? m_settings->value("Save/path").toString() : img->folder(); }
-	QStringList paths = img->path(path, p, m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + 1);
+	QStringList paths = img->path(path, p, m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + 1, true, false, true, true, true);
 
 	// Get image's content
 	QByteArray data = img->data().isEmpty() ? reply->readAll() : img->data();
@@ -1766,10 +1763,7 @@ void mainWindow::saveImage(Image *img, QNetworkReply *reply, QString path, QStri
 		{
 			if (getAll)
 			{ path.replace("%n%", QString::number(m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors)); }
-
-			if (path.left(1) == DIR_SEPARATOR)	{ path = path.right(path.length()-1);	}
-			if (p.right(1) == DIR_SEPARATOR)	{ p = p.left(p.length()-1);				}
-			QString fp = QDir::toNativeSeparators(p+"/"+path);
+			QString fp = QDir::toNativeSeparators(path);
 
 			QString whatToDo = m_settings->value("Save/md5Duplicates", "save").toString();
 			QString md5Duplicate = md5Exists(img->md5());

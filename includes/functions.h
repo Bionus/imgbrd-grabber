@@ -67,7 +67,7 @@ QMap<QString,QString>		domToMap(QDomElement);
 QMap<QString,QString>		stringToMap(QString map, QString gen = "{gen}", QString mid = "{mid}");
 
 QMap<QString,QStringList>	getCustoms();
-QMap<QString,QString>		getFilenames();
+QMap<QString,QPair<QString,QString>>	getFilenames();
 
 
 

@@ -161,7 +161,7 @@
         </sizepolicy>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>7</number>
        </property>
        <widget class="QWidget" name="pageGeneral">
         <layout class="QFormLayout" name="formLayout_14">
@@ -1006,13 +1006,29 @@ p, li { white-space: pre-wrap; }
         </layout>
        </widget>
        <widget class="QWidget" name="pageSaveConditionals">
-        <layout class="QFormLayout" name="layoutFilenames">
-         <item row="0" column="0" colspan="2">
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <item>
+          <layout class="QVBoxLayout" name="layoutConditionals"/>
+         </item>
+         <item>
           <widget class="QPushButton" name="buttonFilenames">
            <property name="text">
             <string>Ajouter un nom de fichier conditionnel</string>
            </property>
           </widget>
+         </item>
+         <item>
+          <spacer name="verticalSpacer">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
          </item>
         </layout>
        </widget>

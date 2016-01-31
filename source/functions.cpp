@@ -64,16 +64,21 @@ QMap<QString,QStringList> getCustoms()
  * Load multiple filenames from settings.
  * @return	The map with token names as keys and token tags as values.
  */
-QMap<QString,QString> getFilenames()
+QMap<QString,QPair<QString,QString>> getFilenames()
 {
-	QMap<QString,QString> tokens;
+	QMap<QString,QPair<QString,QString>> tokens;
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
 	settings.beginGroup("Filenames");
-	QStringList keys = settings.childKeys();
-	for (int i = 0; i < keys.size(); i++)
+	int count = settings.childKeys().count() / 3;
+	for (int i = 0; i < count; i++)
 	{
-		if (!keys.at(i).isEmpty())
-		{ tokens.insert(keys.at(i), settings.value(keys.at(i)).toString()); }
+		if (settings.contains(QString::number(i) + "_cond"))
+		{
+			QPair<QString,QString> pair;
+			pair.first = settings.value(QString::number(i) + "_fn").toString();
+			pair.second = settings.value(QString::number(i) + "_dir").toString();
+			tokens.insert(settings.value(QString::number(i) + "_cond").toString(), pair);
+		}
 	}
 	return tokens;
 }
