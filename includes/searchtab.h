@@ -46,7 +46,7 @@ class searchTab : public QWidget
         void titleChanged(searchTab*);
         void changed(searchTab*);
         void closed(searchTab*);
-        void deleted(int);
+		void deleted(int);
 
 	protected:
 		int					m_id;

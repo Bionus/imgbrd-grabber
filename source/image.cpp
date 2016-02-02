@@ -162,6 +162,8 @@ Image::Image(QMap<QString, QString> details, Page* parent)
 		else
 		{ m_createdAt = qDateTimeFromString(details["created_at"]); }
 	}
+	else if (details.contains("date"))
+	{ m_createdAt = QDateTime::fromString(details["date"], Qt::ISODate); }
 
 	// Tech details
 	m_parent = parent;

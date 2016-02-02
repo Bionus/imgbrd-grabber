@@ -508,14 +508,14 @@ void mainWindow::batchAddUnique(QMap<QString,QString> values, bool save)
 {
 	log(tr("Ajout d'une image en téléchargement unique : %1").arg(values.value("file_url")));
 	m_batchs.append(values);
-	QStringList types = QStringList() << "id" << "md5" <<  "rating" << "tags" << "file_url" << "site" << "filename" << "folder";
+	QStringList types = QStringList() << "id" << "md5" <<  "rating" << "tags" << "file_url" << "date" << "site" << "filename" << "folder";
 	QTableWidgetItem *item;
-	ui->tableBatchUniques->setRowCount(ui->tableBatchUniques->rowCount()+1);
+	ui->tableBatchUniques->setRowCount(ui->tableBatchUniques->rowCount() + 1);
 	for (int t = 0; t < types.count(); t++)
 	{
 		QString v = values.value(types.at(t));
 		item = new QTableWidgetItem(v);
-		ui->tableBatchUniques->setItem(ui->tableBatchUniques->rowCount()-1, t, item);
+		ui->tableBatchUniques->setItem(ui->tableBatchUniques->rowCount() - 1, t, item);
 	}
 
 	if (save)
@@ -2051,7 +2051,7 @@ bool mainWindow::saveLinkList(QString filename)
 		}
 	}
 
-	QStringList vals = QStringList() << "id" << "md5" << "rating" << "tags" << "file_url" << "site" << "filename" << "folder";
+	QStringList vals = QStringList() << "id" << "md5" << "rating" << "tags" << "file_url" << "date" << "site" << "filename" << "folder";
 	for (int i = 0; i < m_batchs.size(); i++)
 	{
 		for (int j = 0; j < vals.size(); j++)
@@ -2105,9 +2105,9 @@ bool mainWindow::loadLinkList(QString filename)
 	{
 		m_allow = false;
 		QStringList infos = link.split((char)29);
-		if (infos.size() == 8)
+		if (infos.size() == 9)
 		{
-			QStringList vals = QStringList() << "id" << "md5" << "rating" << "tags" << "file_url" << "site" << "filename" << "folder";
+			QStringList vals = QStringList() << "id" << "md5" << "rating" << "tags" << "file_url" << "date" << "site" << "filename" << "folder";
 			QMap<QString,QString> values;
 			for (int i = 0; i < infos.size(); i++)
 			{ values.insert(vals[i], infos[i]); }

@@ -89,7 +89,16 @@
    <item>
     <widget class="QWidget" name="widgetFavorites" native="true">
      <layout class="QVBoxLayout" name="verticalLayout_3">
-      <property name="margin">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
        <number>0</number>
       </property>
       <item>
@@ -109,7 +118,16 @@
            <property name="spacing">
             <number>0</number>
            </property>
-           <property name="margin">
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
             <number>0</number>
            </property>
            <item>
@@ -268,7 +286,16 @@
    <item>
     <widget class="QWidget" name="widgetResults" native="true">
      <layout class="QVBoxLayout" name="verticalLayout_4">
-      <property name="margin">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
        <number>0</number>
       </property>
       <item>
@@ -586,22 +613,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>buttonGetSel</sender>
-   <signal>clicked()</signal>
-   <receiver>favoritesTab</receiver>
-   <slot>getSel()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>459</x>
-     <y>483</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>515</x>
-     <y>528</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>pushButton</sender>
    <signal>toggled(bool)</signal>
    <receiver>widgetPlus</receiver>
@@ -710,6 +721,22 @@
     <hint type="destinationlabel">
      <x>687</x>
      <y>491</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonGetSel</sender>
+   <signal>clicked()</signal>
+   <receiver>favoritesTab</receiver>
+   <slot>getSel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>432</x>
+     <y>475</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>452</x>
+     <y>489</y>
     </hint>
    </hints>
   </connection>

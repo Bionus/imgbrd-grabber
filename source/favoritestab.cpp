@@ -688,6 +688,9 @@ void favoritesTab::getAll()
 }
 void favoritesTab::getSel()
 {
+	if (m_selectedImagesPtrs.empty())
+		return;
+
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
 	for (Image *img : m_selectedImagesPtrs)
 	{
@@ -701,6 +704,7 @@ void favoritesTab::getSel()
 		values.insert("rating", img->rating());
 		values.insert("tags", tags.join(" "));
 		values.insert("file_url", img->fileUrl().toString());
+		values.insert("date", img->createdAt().toString(Qt::ISODate));
 		values.insert("site", img->site());
 		values.insert("filename", settings.value("Save/filename").toString());
 		values.insert("folder", settings.value("Save/path").toString());
@@ -712,6 +716,11 @@ void favoritesTab::getSel()
 
 		emit batchAddUnique(values);
 	}
+
+	m_selectedImagesPtrs.clear();
+	m_selectedImages.clear();
+	for (QBouton *l : m_boutons)
+	{ l->setChecked(false); }
 }
 
 void favoritesTab::firstPage()

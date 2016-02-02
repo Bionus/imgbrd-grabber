@@ -805,6 +805,7 @@ void tagTab::getSel()
 		values.insert("rating", img->rating());
 		values.insert("tags", tags.join(" "));
 		values.insert("file_url", img->fileUrl().toString());
+		values.insert("date", img->createdAt().toString(Qt::ISODate));
 		values.insert("site", img->site());
 		values.insert("filename", settings.value("Save/filename").toString());
 		values.insert("folder", settings.value("Save/path").toString());
@@ -816,6 +817,7 @@ void tagTab::getSel()
 
 		emit batchAddUnique(values);
 	}
+
 	m_selectedImagesPtrs.clear();
 	m_selectedImages.clear();
 	for (QBouton *l : m_boutons)

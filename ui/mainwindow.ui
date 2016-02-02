@@ -199,6 +199,11 @@
           </column>
           <column>
            <property name="text">
+            <string>Date</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
             <string>Site</string>
            </property>
           </column>
