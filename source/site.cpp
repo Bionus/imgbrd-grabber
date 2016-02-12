@@ -8,6 +8,11 @@
 #include "site.h"
 #include "functions.h"
 #include "json.h"
+#ifdef QT_DEBUG
+	#define CACHE_POLICY QNetworkRequest::PreferCache
+#else
+	#define CACHE_POLICY QNetworkRequest::PreferNetwork
+#endif
 
 
 
@@ -136,7 +141,7 @@ void Site::login(bool force)
 				url.setQuery(query);
 
 				QNetworkRequest request(url);
-				request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::PreferNetwork);
+				request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, CACHE_POLICY);
 
 				m_loginReply = m_manager->get(request);
 				connect(m_loginReply, SIGNAL(finished()), this, SLOT(loginFinished()));
@@ -207,7 +212,7 @@ QNetworkReply *Site::get(QUrl url, Page *page, QString ref, Image *img)
 		request.setRawHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:35.0) Gecko/20100101 Firefox/35.0");
 
 	initManager();
-	request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::PreferNetwork);
+	request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, CACHE_POLICY);
 	return m_manager->get(request);
 }
 
@@ -242,7 +247,7 @@ void Site::checkForUpdates()
 	initManager();
 
 	QNetworkRequest request = QNetworkRequest(QUrl(url));
-	request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::PreferNetwork);
+	request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, CACHE_POLICY);
 
 	m_updateReply = m_manager->get(request);
 	connect(m_updateReply, SIGNAL(finished()), this, SLOT(checkForUpdatesDone()));
@@ -383,7 +388,7 @@ void Site::loadTags(int page, int limit)
 	initManager();
 
 	QNetworkRequest request(QUrl("http://"+m_url+"/tags.json?search[hide_empty]=yes&limit="+QString::number(limit)+"&page=" + QString::number(page)));
-	request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::PreferNetwork);
+	request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, CACHE_POLICY);
 	m_tagsReply = m_manager->get(request);
 	connect(m_tagsReply, SIGNAL(finished()), this, SLOT(finishedTags()));
 }
