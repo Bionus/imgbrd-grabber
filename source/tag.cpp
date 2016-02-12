@@ -1,13 +1,16 @@
 #include <QStringList>
 #include "tag.h"
-#include <QDebug>
+#include <QTextDocument>
 
 
 
 Tag::Tag(QString text, QString type, int count, QStringList related)
-	: m_text(text), m_type(type), m_count(count), m_related(related)
+	: m_type(type), m_count(count), m_related(related)
 {
-	m_text.replace("&#39;", "'");
+	// Decode HTML entities in the tag text
+	QTextDocument htmlEncoded;
+	htmlEncoded.setHtml(text);
+	m_text = htmlEncoded.toPlainText();
 
 	if (type.contains(' '))
 	{ m_type = type.left(type.indexOf(' ')); }

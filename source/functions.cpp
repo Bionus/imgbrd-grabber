@@ -6,7 +6,6 @@
 #include <QProcess>
 #include <QStandardPaths>
 #include <QApplication>
-#include <QDebug>
 #include <QDesktopServices>
 #include <QUrl>
 #include "math.h"
@@ -15,6 +14,9 @@
 	#include <windows.h>
 #else
 	#include <utime.h>
+#endif
+#ifdef QT_DEBUG
+	#include <QDebug>
 #endif
 
 using namespace std;

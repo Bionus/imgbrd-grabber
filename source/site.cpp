@@ -1,6 +1,7 @@
 #include <QFile>
 #include <QNetworkCookie>
 #include <QNetworkCookieJar>
+#include <QNetworkDiskCache>
 #include <QDebug>
 #include <QUrlQuery>
 #include <QDir>
@@ -77,10 +78,17 @@ void Site::initManager()
 {
 	if (m_manager == nullptr)
 	{
+		// Create the access manager and get its slots
 		m_manager = new QNetworkAccessManager(this);
 		connect(m_manager, SIGNAL(finished(QNetworkReply*)), this, SIGNAL(finished(QNetworkReply*)));
 		connect(m_manager, SIGNAL(sslErrors(QNetworkReply*,QList<QSslError>)), this, SLOT(sslErrorHandler(QNetworkReply*,QList<QSslError>)));
 
+		// Cache
+		QNetworkDiskCache *diskCache = new QNetworkDiskCache(this);
+		diskCache->setCacheDirectory(savePath("cache/"));
+		m_manager->setCache(diskCache);
+
+		// Cookies
 		resetCookieJar();
 	}
 }
@@ -128,6 +136,7 @@ void Site::login(bool force)
 				url.setQuery(query);
 
 				QNetworkRequest request(url);
+				request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::PreferNetwork);
 
 				m_loginReply = m_manager->get(request);
 				connect(m_loginReply, SIGNAL(finished()), this, SLOT(loginFinished()));
@@ -198,6 +207,7 @@ QNetworkReply *Site::get(QUrl url, Page *page, QString ref, Image *img)
 		request.setRawHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:35.0) Gecko/20100101 Firefox/35.0");
 
 	initManager();
+	request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::PreferNetwork);
 	return m_manager->get(request);
 }
 
@@ -228,8 +238,13 @@ void Site::checkForUpdates()
 {
 	QString path = m_settings->value("models", "https://raw.githubusercontent.com/Bionus/imgbrd-grabber/master/release/sites/").toString();
 	QString url = path + m_type + "/model.xml";
+
 	initManager();
-	m_updateReply = m_manager->get(QNetworkRequest(QUrl(url)));
+
+	QNetworkRequest request = QNetworkRequest(QUrl(url));
+	request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::PreferNetwork);
+
+	m_updateReply = m_manager->get(request);
 	connect(m_updateReply, SIGNAL(finished()), this, SLOT(checkForUpdatesDone()));
 }
 
@@ -245,10 +260,9 @@ void Site::checkForUpdatesDone()
 		current.open(QFile::ReadOnly);
 		QString compare = current.readAll();
 		current.close();
+
 		if (compare != source)
-		{
-			m_updateVersion = VERSION;
-		}
+		{ m_updateVersion = VERSION; }
 	}
 	emit checkForUpdatesFinished(this);
 }
@@ -367,7 +381,10 @@ QMap<QString, Site*> *Site::getAllSites()
 void Site::loadTags(int page, int limit)
 {
 	initManager();
-	m_tagsReply = m_manager->get(QNetworkRequest(QUrl("http://"+m_url+"/tags.json?search[hide_empty]=yes&limit="+QString::number(limit)+"&page=" + QString::number(page))));
+
+	QNetworkRequest request(QUrl("http://"+m_url+"/tags.json?search[hide_empty]=yes&limit="+QString::number(limit)+"&page=" + QString::number(page)));
+	request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::PreferNetwork);
+	m_tagsReply = m_manager->get(request);
 	connect(m_tagsReply, SIGNAL(finished()), this, SLOT(finishedTags()));
 }
 void Site::finishedTags()

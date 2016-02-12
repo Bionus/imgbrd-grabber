@@ -566,31 +566,34 @@ void Page::parse()
 	}
 
 	// Getting last page
-	if (m_site->contains("LastPage") && m_pagesCount < 1)
-	{ m_pagesCount = m_site->value("LastPage").toInt(); }
-	if (m_site->contains("Regex/Count") && m_imagesCount < 1)
+	if (!m_replyTagsExists)
 	{
-		QRegExp rxlast(m_site->value("Regex/Count"));
-		rxlast.indexIn(m_source, 0);
-		m_imagesCount = rxlast.cap(1).remove(",").toInt();
-	}
-	if (m_site->contains("Regex/LastPage") && m_pagesCount < 1)
-	{
-		QRegExp rxlast(m_site->value("Regex/LastPage"));
-		rxlast.indexIn(m_source, 0);
-		m_pagesCount = rxlast.cap(1).remove(",").toInt();
-		if (m_originalUrl.contains("{pid}"))
+		if (m_site->contains("LastPage") && m_pagesCount < 1)
+		{ m_pagesCount = m_site->value("LastPage").toInt(); }
+		if (m_site->contains("Regex/Count") && m_imagesCount < 1)
 		{
-			int ppid = m_site->contains("Urls/"+QString::number(m_currentSource)+"/Limit") ? m_site->value("Urls/"+QString::number(m_currentSource)+"/Limit").toInt() : m_imagesPerPage;
-			m_pagesCount = floor((float)m_pagesCount / (float)ppid) + 1;
+			QRegExp rxlast(m_site->value("Regex/Count"));
+			rxlast.indexIn(m_source, 0);
+			m_imagesCount = rxlast.cap(1).remove(",").toInt();
 		}
-	}
+		if (m_site->contains("Regex/LastPage") && m_pagesCount < 1)
+		{
+			QRegExp rxlast(m_site->value("Regex/LastPage"));
+			rxlast.indexIn(m_source, 0);
+			m_pagesCount = rxlast.cap(1).remove(",").toInt();
+			if (m_originalUrl.contains("{pid}"))
+			{
+				int ppid = m_site->contains("Urls/"+QString::number(m_currentSource)+"/Limit") ? m_site->value("Urls/"+QString::number(m_currentSource)+"/Limit").toInt() : m_imagesPerPage;
+				m_pagesCount = floor((float)m_pagesCount / (float)ppid) + 1;
+			}
+		}
 
-    // Guess image or page count
-	if (m_site->contains("Urls/"+QString::number(m_currentSource)+"/Limit") && m_pagesCount > 0 && m_imagesCount < 1)
-    { m_imagesCount = m_pagesCount * m_site->value("Urls/"+QString::number(m_currentSource)+"/Limit").toInt(); }
-	if (m_imagesCount > 0 && m_pagesCount < 1)
-	{ m_pagesCount = ceil(((float)m_imagesCount) / m_imagesPerPage); }
+		// Guess image or page count
+		if (m_site->contains("Urls/"+QString::number(m_currentSource)+"/Limit") && m_pagesCount > 0 && m_imagesCount < 1)
+		{ m_imagesCount = m_pagesCount * m_site->value("Urls/"+QString::number(m_currentSource)+"/Limit").toInt(); }
+		if (m_imagesCount > 0 && m_pagesCount < 1)
+		{ m_pagesCount = ceil(((float)m_imagesCount) / m_imagesPerPage); }
+	}
 
 	// Remove first n images (according to site settings)
 	int skip = m_site->setting("ignore/always", 0).toInt();
@@ -713,6 +716,7 @@ void Page::parseTags()
 	{
 		for (Tag tag : m_tags)
 		{
+			qDebug() << tag.text() << m_search.join(" ");
 			if (tag.text() == m_search.join(" "))
 			{
 				m_imagesCount = tag.count();
