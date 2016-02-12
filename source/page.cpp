@@ -720,7 +720,6 @@ void Page::parseTags()
 	{
 		for (Tag tag : m_tags)
 		{
-			qDebug() << tag.text() << m_search.join(" ");
 			if (tag.text() == m_search.join(" "))
 			{
 				m_imagesCount = tag.count();

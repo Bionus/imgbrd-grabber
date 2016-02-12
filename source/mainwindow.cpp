@@ -559,13 +559,15 @@ void mainWindow::batchClearSel()
 		if (!todelete.contains(selected.at(i)->row()))
 			todelete.append(selected.at(i)->row());
 	qSort(todelete);
+
 	int rem = 0;
 	for (int i : todelete)
 	{
-		m_groupBatchs[i][m_groupBatchs.at(i).count() - 1] = "false";
-		int id = ui->tableBatchGroups->item(i - rem, 0)->text().toInt();
+		/*int id = ui->tableBatchGroups->item(i - rem, 0)->text().toInt();
 		m_progressBars[id - 1]->deleteLater();
-		m_progressBars[id - 1] = nullptr;
+		m_progressBars[id - 1] = nullptr;*/
+
+		m_groupBatchs[i][m_groupBatchs.at(i).count() - 1] = "false";
 		ui->tableBatchGroups->removeRow(i - rem);
 		rem++;
 	}
@@ -969,8 +971,6 @@ void mainWindow::setSource(QString source)
 	if (m_tabs.size() < 1)
 		return;
 
-	qDebug() << source;
-
 	QList<bool> sel;
 	QStringList keys = m_sites.keys();
 	for (QString key : keys)
@@ -1173,7 +1173,6 @@ void mainWindow::getAllLogin()
 	{
 		for (Site *site : *downloader->getSites())
 		{
-			qDebug() << "downloader" << site->name();
 			if (!m_getAllLogins.contains(site))
 			{
 				m_getAllLogins.append(site);
@@ -2040,7 +2039,7 @@ bool mainWindow::saveLinkList(QString filename)
 	QByteArray links = "[IGL 2]\r\n";
 	for (int i = 0; i < m_groupBatchs.size(); i++)
 	{
-		if (m_progressBars[i] != nullptr)
+		if (m_progressBars[i] != nullptr && m_groupBatchs[i][m_groupBatchs.at(i).count() - 1] != "false")
 		{
 			while (m_groupBatchs[i].size() > 10)
 				m_groupBatchs[i].removeLast();
