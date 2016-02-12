@@ -579,6 +579,11 @@ void Page::parse()
 		QRegExp rxlast(m_site->value("Regex/LastPage"));
 		rxlast.indexIn(m_source, 0);
 		m_pagesCount = rxlast.cap(1).remove(",").toInt();
+		if (m_originalUrl.contains("{pid}"))
+		{
+			int ppid = m_site->contains("Urls/"+QString::number(m_currentSource)+"/Limit") ? m_site->value("Urls/"+QString::number(m_currentSource)+"/Limit").toInt() : m_imagesPerPage;
+			m_pagesCount = floor((float)m_pagesCount / (float)ppid) + 1;
+		}
 	}
 
     // Guess image or page count
@@ -712,7 +717,10 @@ void Page::parseTags()
 			{
 				m_imagesCount = tag.count();
 				if (m_pagesCount < 0)
-				{ m_pagesCount = (int)ceil((m_imagesCount * 1.) / m_imagesPerPage); }
+				{
+					int ppid = m_site->contains("Urls/"+QString::number(m_currentSource)+"/Limit") ? m_site->value("Urls/"+QString::number(m_currentSource)+"/Limit").toInt() : m_imagesPerPage;
+					m_pagesCount = (int)ceil((float)m_imagesCount / (float)ppid);
+				}
 			}
 		}
 	}
