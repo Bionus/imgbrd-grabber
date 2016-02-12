@@ -388,7 +388,11 @@ void Page::parse()
 					QStringList infos;
 					infos << "created_at" << "status" << "source" << "has_comments" << "file_url" << "sample_url" << "change" << "sample_width" << "has_children" << "preview_url" << "width" << "md5" << "preview_width" << "sample_height" << "parent_id" << "height" << "has_notes" << "creator_id" << "file_size" << "id" << "preview_height" << "rating" << "tags" << "author" << "score";
 					for (int i = 0; i < infos.count(); i++)
-					{ d[infos.at(i)] = nodeList.at(id + first).attributes().namedItem(infos.at(i)).nodeValue().trimmed(); }
+					{
+						d[infos.at(i)] = nodeList.at(id + first).attributes().isEmpty()
+										 ? nodeList.at(id + first).namedItem(infos.at(i)).toElement().text()
+										 : nodeList.at(id + first).attributes().namedItem(infos.at(i)).nodeValue().trimmed();
+					}
 				}
 				this->parseImage(d, id + first);
 			}
