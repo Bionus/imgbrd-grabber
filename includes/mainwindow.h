@@ -177,7 +177,8 @@ class mainWindow : public QMainWindow
 		Commands			*m_commands;
 		favoritesTab		*m_favoritesTab;
         QMap<QString,double>			m_getAllDownloadingSpeeds;
-		QMap<QString,QString>			m_favorites, m_params;
+		QList<Favorite>					m_favorites;
+		QMap<QString,QString>			m_params;
         QMap<QString,QTime*>			m_downloadTime, m_downloadTimeLast;
         QList<QProgressBar*>			m_progressBars;
         QList<QNetworkReply*>			m_replies;

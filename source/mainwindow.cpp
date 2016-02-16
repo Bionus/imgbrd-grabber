@@ -165,7 +165,7 @@ void mainWindow::init()
 	{ addTab(); }
 
 	// Favorites tab
-	m_favoritesTab = new favoritesTab(m_tabs.size(), &m_sites, &m_favorites, this);
+	m_favoritesTab = new favoritesTab(m_tabs.size(), &m_sites, m_favorites, this);
 	connect(m_favoritesTab, SIGNAL(batchAddGroup(QStringList)), this, SLOT(batchAddGroup(QStringList)));
 	connect(m_favoritesTab, SIGNAL(batchAddUnique(QMap<QString,QString>)), this, SLOT(batchAddUnique(QMap<QString,QString>)));
 	connect(m_favoritesTab, SIGNAL(changed(searchTab*)), this, SLOT(updateTabs()));
@@ -308,7 +308,7 @@ void mainWindow::onFirstLoad()
 
 int mainWindow::addTab(QString tag)
 {
-	tagTab *w = new tagTab(m_tabs.size(), &m_sites, &m_favorites, this);
+	tagTab *w = new tagTab(m_tabs.size(), &m_sites, m_favorites, this);
 	this->addSearchTab(w);
 
 	if (!tag.isEmpty())
@@ -319,7 +319,7 @@ int mainWindow::addTab(QString tag)
 }
 int mainWindow::addPoolTab(int pool, QString site)
 {
-	poolTab *w = new poolTab(m_tabs.size(), &m_sites, &m_favorites, this);
+	poolTab *w = new poolTab(m_tabs.size(), &m_sites, m_favorites, this);
 	this->addSearchTab(w);
 
 	if (!site.isEmpty())
@@ -748,7 +748,7 @@ void mainWindow::addGroup()
 	if (selected.isEmpty() && m_sites.size() > 0)
 	{ selected = m_sites.keys().at(0); }
 
-	AddGroupWindow *wAddGroup = new AddGroupWindow(selected, m_sites.keys(), m_favorites.keys(), this);
+	AddGroupWindow *wAddGroup = new AddGroupWindow(selected, m_sites.keys(), m_favorites, this);
 	connect(wAddGroup, SIGNAL(sendData(QStringList)), this, SLOT(batchAddGroup(QStringList)));
 	wAddGroup->show();
 }
@@ -793,40 +793,21 @@ void mainWindow::updateFavoritesDock()
 	QString order = assoc[qMax(ui->comboOrderFav->currentIndex(), 0)];
 	bool reverse = (ui->comboAscFav->currentIndex() == 1);
 	m_favorites = loadFavorites();
-	QStringList keys = m_favorites.keys();
-	QList<QMap<QString,QString> > favorites;
-
-	for (int i = 0; i < keys.size(); i++)
-	{
-		QMap<QString,QString> d;
-		QString tag = keys.at(i);
-		d["id"] = QString::number(i);
-		d["name"] = tag;
-		QStringList xp = m_favorites.value(tag).split("|");
-		d["note"] = xp.isEmpty() ? "50" : xp.takeFirst();
-		d["lastviewed"] = xp.isEmpty() ? QDateTime(QDate(2000, 1, 1), QTime(0, 0, 0, 0)).toString(Qt::ISODate) : xp.takeFirst();
-		tag.remove('\\').remove('/').remove(':').remove('*').remove('?').remove('"').remove('<').remove('>').remove('|');
-		d["tag"] = tag;
-		d["imagepath"] = savePath("thumbs/"+tag+".png");
-		if (!QFile::exists(d["imagepath"]))
-		{ d["imagepath"] = ":/images/noimage.png"; }
-		favorites.append(d);
-	}
-
-	qSort(favorites.begin(), favorites.end(), sortByName);
 	if (order == "note")
-	{ qSort(favorites.begin(), favorites.end(), sortByNote); }
+	{ qSort(m_favorites.begin(), m_favorites.end(), sortByNote); }
 	else if (order == "lastviewed")
-	{ qSort(favorites.begin(), favorites.end(), sortByLastviewed); }
+	{ qSort(m_favorites.begin(), m_favorites.end(), sortByLastviewed); }
+	else
+	{ qSort(m_favorites.begin(), m_favorites.end(), sortByName); }
 	if (reverse)
-	{ favorites = reversed(favorites); }
+	{ m_favorites = reversed(m_favorites); }
 	QString format = tr("dd/MM/yyyy");
 
-	for (int i = 0; i < favorites.size(); i++)
+	for (Favorite fav : m_favorites)
 	{
-		QLabel *lab = new QLabel(QString("<a href=\"%1\" style=\"color:black;text-decoration:none;\">%2</a>").arg(favorites[i]["name"], favorites[i]["tag"]), this);
+		QLabel *lab = new QLabel(QString("<a href=\"%1\" style=\"color:black;text-decoration:none;\">%2</a>").arg(fav.getName(), fav.getName()), this);
 		connect(lab, SIGNAL(linkActivated(QString)), this, SLOT(loadTag(QString)));
-		lab->setToolTip("<img src=\""+favorites[i]["imagepath"]+"\" /><br/>"+tr("<b>Nom :</b> %1<br/><b>Note :</b> %2 %%<br/><b>Dernière vue :</b> %3").arg(favorites[i]["name"], favorites[i]["note"], QDateTime::fromString(favorites[i]["lastviewed"], Qt::ISODate).toString(format)));
+		lab->setToolTip("<img src=\""+fav.getImagePath()+"\" /><br/>"+tr("<b>Nom :</b> %1<br/><b>Note :</b> %2 %%<br/><b>Dernière vue :</b> %3").arg(fav.getName(), QString::number(fav.getNote()), fav.getLastViewed().toString(format)));
 		ui->layoutFavoritesDock->addWidget(lab);
 	}
 }

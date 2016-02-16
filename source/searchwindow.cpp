@@ -23,7 +23,10 @@ SearchWindow::SearchWindow(QString tags, QWidget *parent) : QDialog(parent), ui(
 		connect(m_calendar, SIGNAL(activated(QDate)), m_calendar, SLOT(close()));
 	connect(ui->buttonCalendar, SIGNAL(clicked()), m_calendar, SLOT(show()));
 
-	QStringList favs = loadFavorites().keys();
+	QList<Favorite> favorites = loadFavorites();
+	QStringList favs;
+	for (Favorite fav : favorites)
+		favs.append(fav.getName());
 	m_tags = new TextEdit(favs, this);
 		m_tags->setContextMenuPolicy(Qt::CustomContextMenu);
 		QStringList completion;

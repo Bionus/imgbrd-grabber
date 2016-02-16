@@ -4,7 +4,7 @@
 #include <QSpinBox>
 #include <QComboBox>
 #include "textedit.h"
-
+#include "favorite.h"
 
 
 class AddGroupWindow : public QWidget
@@ -12,7 +12,7 @@ class AddGroupWindow : public QWidget
 	Q_OBJECT
 
 	public:
-		AddGroupWindow(QString, QStringList, QStringList, QWidget *parent);
+		AddGroupWindow(QString, QStringList, QList<Favorite>, QWidget *parent);
 
 	public slots:
 		void ok();

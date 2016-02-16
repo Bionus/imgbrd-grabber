@@ -3,7 +3,7 @@
 
 #include <QString>
 #include <QStringList>
-
+#include "favorite.h"
 
 
 class Tag
@@ -11,7 +11,7 @@ class Tag
 	public:
 		explicit Tag(QString text, QString type = "unknown", int count = 1, QStringList related = QStringList());
 		~Tag();
-		QString stylished(QStringList) const;
+		QString stylished(QList<Favorite>) const;
 		void setText(QString);
 		void setType(QString);
 		void setCount(int);

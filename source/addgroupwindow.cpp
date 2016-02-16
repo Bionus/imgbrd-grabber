@@ -13,8 +13,12 @@
  * @param	favorites	List of favorites tags, needed for coloration
  * @param	parent		The parent window
  */
-AddGroupWindow::AddGroupWindow(QString selected, QStringList sites, QStringList favorites, QWidget *parent) : QWidget(parent), m_sites(sites)
+AddGroupWindow::AddGroupWindow(QString selected, QStringList sites, QList<Favorite> favorites, QWidget *parent) : QWidget(parent), m_sites(sites)
 {
+	QStringList favs;
+	for (Favorite fav : favorites)
+		favs.append(fav.getName());
+
 	QVBoxLayout *layout = new QVBoxLayout;
 		QFormLayout *formLayout = new QFormLayout;
 			m_comboSites = new QComboBox;
@@ -22,7 +26,7 @@ AddGroupWindow::AddGroupWindow(QString selected, QStringList sites, QStringList 
 				m_comboSites->addItems(m_sites);
 				m_comboSites->setCurrentIndex(m_sites.indexOf(selected));
 				formLayout->addRow(tr("&Site"), m_comboSites);
-			m_lineTags = new TextEdit(favorites, this);
+			m_lineTags = new TextEdit(favs, this);
 				m_lineTags->setContextMenuPolicy(Qt::CustomContextMenu);
 				QStringList completion;
 					QFile words("words.txt");

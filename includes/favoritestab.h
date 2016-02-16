@@ -25,7 +25,7 @@ class favoritesTab : public searchTab
 	Q_OBJECT
 
 	public:
-		explicit favoritesTab(int id, QMap<QString,Site*> *sites, QMap<QString, QString> *favorites, mainWindow *parent);
+		explicit favoritesTab(int id, QMap<QString,Site*> *sites, QList<Favorite> favorites, mainWindow *parent);
 		~favoritesTab();
 		Ui::favoritesTab *ui;
 		QList<bool> sources();
@@ -91,7 +91,7 @@ class favoritesTab : public searchTab
 		mainWindow						*m_parent;
 		TextEdit						*m_postFiltering;
 		QDateTime						m_loadFavorite;
-		QMap<QString,QString>			*m_favorites;
+		QList<Favorite>					m_favorites;
 		QMap<QString,Page*>				m_pages;
 		QList<Image*>					m_images;
 		int								m_pagemax;

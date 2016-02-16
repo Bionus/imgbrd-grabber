@@ -256,11 +256,11 @@ QString getUnit(float *value)
 
 /**
  * Load favorites from local file.
- * @return	A QMap<QString,QString> with tags as keys, then the remaining details as value (value1|value2|value3...)
+ * @return	The list of favorites as Favorite objects
  */
-QMap<QString,QString> loadFavorites()
+QList<Favorite> loadFavorites()
 {
-	QMap<QString,QString> favorites;
+	QList<Favorite> favorites;
 	QFile file(savePath("favorites.txt"));
 	if (file.open(QIODevice::ReadOnly))
 	{
@@ -272,7 +272,14 @@ QMap<QString,QString> loadFavorites()
 			{
 				QStringList xp = wrds.at(i).split("|");
 				QString tag = xp.takeFirst();
-				favorites.insert(tag, (xp.isEmpty() ? "" : xp.join("|")));
+				QString path = "thumbs/" + (QString(tag).remove('\\').remove('/').remove(':').remove('*').remove('?').remove('"').remove('<').remove('>').remove('|')) + ".png";
+
+				Favorite fav(i, tag);
+				fav.setNote(xp.isEmpty() ? 50 : xp.takeFirst().toInt());
+				fav.setLastViewed(xp.isEmpty() ? QDateTime(QDate(2000, 1, 1), QTime(0, 0, 0, 0)) : QDateTime::fromString(xp.takeFirst(), Qt::ISODate));
+				fav.setImagePath(QFile::exists(path) ? path : ":/images/noimage.png");
+
+				favorites.append(fav);
 			}
 		}
 		file.close();
