@@ -95,7 +95,7 @@ class favoritesTab : public searchTab
 		QMap<QString,Page*>				m_pages;
 		QList<Image*>					m_images;
 		int								m_pagemax;
-		QString							m_link, m_lastTags, m_wiki, m_tags, m_currentTags;
+		QString							m_lastTags, m_wiki, m_tags, m_currentTags;
 		bool							m_sized, m_from_history, m_stop;
 		int								m_page, m_history_cursor, m_currentFav;
 		QList<QGridLayout*>				m_layouts;

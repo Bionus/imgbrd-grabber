@@ -45,7 +45,7 @@ void favoriteWindow::on_buttonRemove_clicked()
 	f.close();
 
 	favs.replace("\r\n", "\n").replace("\r", "\n").replace("\n", "\r\n");
-	QRegExp reg(favorite.getName() + "\\|(.+)\\r\\n");
+	QRegExp reg(QRegExp::escape(favorite.getName()) + "\\|(.+)\\r\\n");
 	reg.setMinimal(true);
 	favs.remove(reg);
 

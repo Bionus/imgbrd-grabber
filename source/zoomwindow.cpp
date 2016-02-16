@@ -313,7 +313,7 @@ void zoomWindow::unfavorite()
 	f.close();
 
 	favs.replace("\r\n", "\n").replace("\r", "\n").replace("\n", "\r\n");
-	QRegExp reg(link+"\\|(.+)\\r\\n");
+	QRegExp reg(QRegExp::escape(link) + "\\|(.+)\\r\\n");
 	reg.setMinimal(true);
 	favs.remove(reg);
 

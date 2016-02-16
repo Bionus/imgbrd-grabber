@@ -62,8 +62,6 @@ class tagTab : public searchTab
 		void contextMenu();
 		void openInNewTab();
 		void openInNewWindow();
-		void favorite();
-		void unfavorite();
 		void viewitlater();
 		void unviewitlater();
 		// History

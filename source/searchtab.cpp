@@ -1,6 +1,10 @@
 #include "searchtab.h"
 #include "sourceswindow.h"
 #include "functions.h"
+#include "mainwindow.h"
+#include <QFile>
+
+extern mainWindow *_mainwindow;
 
 
 
@@ -62,6 +66,69 @@ void searchTab::saveSources(QList<bool> sel)
 	DONE();
 	updateCheckboxes();
 }
+
+
+void searchTab::favorite()
+{
+	int id = 0;
+	for (Favorite fav : m_favorites)
+		id = qMax(id, fav.getId());
+
+	Favorite newFav(id + 1, m_link);
+	newFav.setNote(50);
+	newFav.setLastViewed(QDateTime::currentDateTime());
+	m_favorites.append(newFav);
+
+	QFile f(savePath("favorites.txt"));
+		f.open(QIODevice::WriteOnly | QIODevice::Append);
+		f.write(QString(newFav.getName() + "|" + QString::number(newFav.getNote()) + "|" + newFav.getLastViewed().toString(Qt::ISODate) + "\r\n").toUtf8());
+	f.close();
+
+	/*QPixmap img = image;
+	if (img.width() > 150 || img.height() > 150)
+	{ img = img.scaled(QSize(150,150), Qt::KeepAspectRatio, Qt::SmoothTransformation); }
+	if (!QDir(savePath("thumbs")).exists())
+	{ QDir(savePath()).mkdir("thumbs"); }
+	img.save(savePath("thumbs/"+m_link+".png"), "PNG");*/
+
+	_mainwindow->updateFavorites();
+}
+
+void searchTab::unfavorite()
+{
+	Favorite favorite(0, "");
+	for (Favorite fav : m_favorites)
+	{
+		if (fav.getName() == m_link)
+		{
+			favorite = fav;
+			m_favorites.removeAll(fav);
+			break;
+		}
+	}
+	if (favorite.getId() == 0)
+		return;
+
+	QFile f(savePath("favorites.txt"));
+	f.open(QIODevice::ReadOnly);
+		QString favs = f.readAll();
+	f.close();
+
+	favs.replace("\r\n", "\n").replace("\r", "\n").replace("\n", "\r\n");
+	QRegExp reg(QRegExp::escape(favorite.getName()) + "\\|(.+)\\r\\n");
+	reg.setMinimal(true);
+	favs.remove(reg);
+
+	f.open(QIODevice::WriteOnly);
+		f.write(favs.toUtf8());
+	f.close();
+
+	if (QFile::exists(savePath("thumbs/" + favorite.getName(true) + ".png")))
+	{ QFile::remove(savePath("thumbs/" + favorite.getName(true) + ".png")); }
+
+	_mainwindow->updateFavorites();
+}
+
 
 void searchTab::setSources(QList<bool> sources)
 { m_selectedSources = sources; }

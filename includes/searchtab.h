@@ -41,6 +41,9 @@ class searchTab : public QWidget
 		// Sources
 		void openSourcesWindow();
 		void saveSources(QList<bool>);
+		// Favorites
+		void favorite();
+		void unfavorite();
 
     signals:
         void titleChanged(searchTab*);
@@ -56,6 +59,8 @@ class searchTab : public QWidget
 		QList<bool>			m_selectedSources;
 		QMap<QString,Site*>	*m_sites;
 		QList<QCheckBox*>	m_checkboxes;
+		QList<Favorite>		m_favorites;
+		QString				m_link;
 };
 
 #endif // SEARCHTAB_H

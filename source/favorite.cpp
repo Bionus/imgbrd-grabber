@@ -1,5 +1,6 @@
 #include "favorite.h"
 #include "functions.h"
+#include <QDebug>
 
 
 Favorite::Favorite(int id, QString name)

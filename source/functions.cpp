@@ -272,7 +272,7 @@ QList<Favorite> loadFavorites()
 			{
 				QStringList xp = wrds.at(i).split("|");
 				QString tag = xp.takeFirst();
-				QString path = "thumbs/" + (QString(tag).remove('\\').remove('/').remove(':').remove('*').remove('?').remove('"').remove('<').remove('>').remove('|')) + ".png";
+				QString path = savePath("thumbs/" + (QString(tag).remove('\\').remove('/').remove(':').remove('*').remove('?').remove('"').remove('<').remove('>').remove('|')) + ".png");
 
 				Favorite fav(i, tag);
 				fav.setNote(xp.isEmpty() ? 50 : xp.takeFirst().toInt());

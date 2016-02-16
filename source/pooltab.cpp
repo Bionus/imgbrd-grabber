@@ -10,8 +10,9 @@ extern mainWindow *_mainwindow;
 
 
 
-poolTab::poolTab(int id, QMap<QString,Site*> *sites, QList<Favorite> favorites, mainWindow *parent) : searchTab(id, sites, parent), ui(new Ui::poolTab), m_id(id), m_parent(parent), m_favorites(favorites), m_pagemax(-1), m_lastTags(QString()), m_sized(false), m_from_history(false), m_stop(true), m_history_cursor(0), m_history(QList<QMap<QString,QString> >()), m_modifiers(QStringList())
+poolTab::poolTab(int id, QMap<QString,Site*> *sites, QList<Favorite> favorites, mainWindow *parent) : searchTab(id, sites, parent), ui(new Ui::poolTab), m_id(id), m_parent(parent), m_pagemax(-1), m_lastTags(QString()), m_sized(false), m_from_history(false), m_stop(true), m_history_cursor(0), m_history(QList<QMap<QString,QString> >()), m_modifiers(QStringList())
 {
+	m_favorites = favorites;
 	ui->setupUi(this);
 	ui->widgetMeant->hide();
 	setAttribute(Qt::WA_DeleteOnClose);
@@ -726,65 +727,6 @@ void poolTab::openInNewWindow()
 {
 	QProcess myProcess;
 	myProcess.startDetached(qApp->arguments().at(0), QStringList(m_link));
-}
-void poolTab::favorite()
-{
-	int id = 0;
-	for (Favorite fav : m_favorites)
-		id = qMax(id, fav.getId());
-
-	Favorite newFav(id + 1, m_link);
-	newFav.setNote(50);
-	newFav.setLastViewed(QDateTime::currentDateTime());
-	m_favorites.append(newFav);
-
-	QFile f(savePath("favorites.txt"));
-		f.open(QIODevice::WriteOnly | QIODevice::Append);
-		f.write(QString(newFav.getName() + "|" + QString::number(newFav.getNote()) + "|" + newFav.getLastViewed().toString(Qt::ISODate) + "\r\n").toUtf8());
-	f.close();
-
-	/*QPixmap img = image;
-	if (img.width() > 150 || img.height() > 150)
-	{ img = img.scaled(QSize(150,150), Qt::KeepAspectRatio, Qt::SmoothTransformation); }
-	if (!QDir(savePath("thumbs")).exists())
-	{ QDir(savePath()).mkdir("thumbs"); }
-	img.save(savePath("thumbs/"+m_link+".png"), "PNG");*/
-
-	_mainwindow->updateFavorites();
-}
-void poolTab::unfavorite()
-{
-	Favorite favorite(0, "");
-	for (Favorite fav : m_favorites)
-	{
-		if (fav.getName() == m_link)
-		{
-			favorite = fav;
-			m_favorites.removeAll(fav);
-			break;
-		}
-	}
-	if (favorite.getId() == 0)
-		return;
-
-	QFile f(savePath("favorites.txt"));
-	f.open(QIODevice::ReadOnly);
-		QString favs = f.readAll();
-	f.close();
-
-	favs.replace("\r\n", "\n").replace("\r", "\n").replace("\n", "\r\n");
-	QRegExp reg(favorite.getName() + "\\|(.+)\\r\\n");
-	reg.setMinimal(true);
-	favs.remove(reg);
-
-	f.open(QIODevice::WriteOnly);
-		f.write(favs.toUtf8());
-	f.close();
-
-	if (QFile::exists(savePath("thumbs/" + favorite.getName(true) + ".png")))
-	{ QFile::remove(savePath("thumbs/" + favorite.getName(true) + ".png")); }
-
-	_mainwindow->updateFavorites();
 }
 void poolTab::viewitlater()
 {
