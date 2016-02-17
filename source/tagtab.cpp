@@ -591,10 +591,7 @@ void tagTab::finishedLoadingPreview(Image *img)
 		{ return; }
 	}
 	if (img->previewImage().isNull())
-	{
-		log(tr("<b>Attention :</b> %1").arg(tr("une des miniatures est vide (<a href=\"%1\">%1</a>).").arg(img->previewUrl().toString())));
 		return;
-	}
 
 	QString unit;
 	int size = img->fileSize();
@@ -656,7 +653,6 @@ void tagTab::finishedLoadingPreview(Image *img)
 		}
 		else
 		{ download = true; }
-		qDebug() << img->md5() << "download !";
 
 		if (download)
 		{

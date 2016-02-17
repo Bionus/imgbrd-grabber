@@ -248,7 +248,7 @@ QString _parseSetImageUrl(Site* site, QString setting, QString ret, QMap<QString
 				ret.replace(rgx, rep.right(rep.size() - rep.indexOf("->") - 2));
 			}
         }
-        else
+		else if (ret.length() < 5)
 		{
 			QStringList options = site->value(setting).split('|');
 			for (QString opt : options)
@@ -374,14 +374,18 @@ void Page::parse()
 		{
 			for (int id = 0; id < nodeList.count(); id++)
 			{
+				QDomNode node = nodeList.at(id + first);
 				QMap<QString,QString> d;
 				if (database == "array")
 				{
+					if (node.namedItem("md5").isNull() << node.namedItem("preview-file-url").isNull())
+						continue;
+
 					QStringList infos, assoc;
 					infos << "created_at" << "status" << "source" << "has_comments" << "file_url" << "sample_url" << "change" << "sample_width" << "has_children" << "preview_url" << "width" << "md5" << "preview_width" << "sample_height" << "parent_id" << "height" << "has_notes" << "creator_id" << "file_size" << "id" << "preview_height" << "rating" << "tags" << "author" << "score" << "tags_artist" << "tags_character" << "tags_copyright" << "tags_general" << "ext";
 					assoc << "created-at" << "status" << "source" << "has_comments" << "file-url" << "large-file-url" << "change" << "sample_width" << "has-children" << "preview-file-url" << "image-width" << "md5" << "preview_width" << "sample_height" << "parent-id" << "image-height" << "has_notes" << "uploader-id" << "file_size" << "id" << "preview_height" << "rating" << "tag-string" << "uploader-name" << "score" << "tag-string-artist" << "tag-string-character" << "tag-string-copyright" << "tag-string-general" << "file-ext";
 					for (int i = 0; i < infos.count(); i++)
-					{ d[infos.at(i)] = nodeList.at(id + first).namedItem(assoc.at(i)).toElement().text(); }
+					{ d[infos.at(i)] = node.namedItem(assoc.at(i)).toElement().text(); }
 				}
 				else
 				{
@@ -389,9 +393,9 @@ void Page::parse()
 					infos << "created_at" << "status" << "source" << "has_comments" << "file_url" << "sample_url" << "change" << "sample_width" << "has_children" << "preview_url" << "width" << "md5" << "preview_width" << "sample_height" << "parent_id" << "height" << "has_notes" << "creator_id" << "file_size" << "id" << "preview_height" << "rating" << "tags" << "author" << "score";
 					for (int i = 0; i < infos.count(); i++)
 					{
-						d[infos.at(i)] = nodeList.at(id + first).attributes().isEmpty()
-										 ? nodeList.at(id + first).namedItem(infos.at(i)).toElement().text()
-										 : nodeList.at(id + first).attributes().namedItem(infos.at(i)).nodeValue().trimmed();
+						d[infos.at(i)] = node.attributes().isEmpty()
+										 ? node.namedItem(infos.at(i)).toElement().text()
+										 : node.attributes().namedItem(infos.at(i)).nodeValue().trimmed();
 					}
 				}
 				this->parseImage(d, id + first);
