@@ -78,7 +78,6 @@ class poolTab : public searchTab
 	signals:
 		void batchAddGroup(QStringList);
 		void batchAddUnique(QMap<QString,QString>);
-		void closed(poolTab*);
 
 	private:
 		int								m_id;

@@ -343,7 +343,7 @@ void mainWindow::addSearchTab(searchTab *w, bool background)
 	connect(w, SIGNAL(batchAddUnique(QMap<QString,QString>)), this, SLOT(batchAddUnique(QMap<QString,QString>)));
 	connect(w, SIGNAL(titleChanged(searchTab*)), this, SLOT(updateTabTitle(searchTab*)));
 	connect(w, SIGNAL(changed(searchTab*)), this, SLOT(updateTabs()));
-	connect(w, SIGNAL(closed(tagTab*)), this, SLOT(tabClosed(tagTab*)));
+	connect(w, SIGNAL(closed(searchTab*)), this, SLOT(tabClosed(searchTab*)));
 	int index = ui->tabWidget->insertTab(ui->tabWidget->currentIndex()+(!m_tabs.isEmpty()), w, tr("Nouvel onglet"));
 	m_tabs.append(w);
 
@@ -364,12 +364,12 @@ bool mainWindow::saveTabs(QString filename)
 	QStringList tabs = QStringList();
 	for (tagTab *tab : m_tagTabs)
 	{
-		if (tab != nullptr)
+		if (tab != nullptr && m_tabs.contains(tab))
 		{ tabs.append(tab->tags()+"¤"+QString::number(tab->ui->spinPage->value())+"¤"+QString::number(tab->ui->spinImagesPerPage->value())+"¤"+QString::number(tab->ui->spinColumns->value())); }
 	}
 	for (poolTab *tab : m_poolTabs)
 	{
-		if (tab != nullptr)
+		if (tab != nullptr && m_tabs.contains(tab))
 		{ tabs.append(QString::number(tab->ui->spinPool->value())+"¤"+QString::number(tab->ui->comboSites->currentIndex())+"¤"+tab->tags()+"¤"+QString::number(tab->ui->spinPage->value())+"¤"+QString::number(tab->ui->spinImagesPerPage->value())+"¤"+QString::number(tab->ui->spinColumns->value())+"¤pool"); }
 	}
 
@@ -430,30 +430,17 @@ void mainWindow::updateTabs()
 {
 	saveTabs(savePath("tabs.txt"));
 }
-void mainWindow::tabClosed(tagTab *tab)
-{
-	m_tagTabs.removeAll(tab);
-	m_tabs.removeAll((searchTab*)tab);
-}
-void mainWindow::tabClosed(poolTab *tab)
-{
-	m_poolTabs.removeAll(tab);
-	m_tabs.removeAll((searchTab*)tab);
-}
 void mainWindow::tabClosed(searchTab *tab)
 {
 	m_tabs.removeAll(tab);
 }
 void mainWindow::currentTabChanged(int tab)
 {
-	if (m_loaded)
+	if (m_loaded && tab < m_tabs.size())
 	{
 		if (ui->tabWidget->widget(tab)->maximumWidth() != 16777214)
 		{
-			searchTab *tb = m_favoritesTab;
-			if (tab < m_tabs.size())
-			{ tb = m_tabs[tab]; }
-
+			searchTab *tb = m_tabs[tab];
 			setTags(tb->results());
 
 			ui->labelWiki->setText("<style>.title { font-weight: bold; } ul { margin-left: -30px; }</style>"+tb->wiki());

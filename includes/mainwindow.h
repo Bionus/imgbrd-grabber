@@ -119,8 +119,6 @@ class mainWindow : public QMainWindow
 		int addPoolTab(int pool = 0, QString site = "");
 		void addSearchTab(searchTab*, bool background = false);
 		void updateTabTitle(searchTab*);
-		void tabClosed(tagTab*);
-		void tabClosed(poolTab*);
 		void tabClosed(searchTab*);
         void currentTabChanged(int);
         void closeCurrentTab();

@@ -83,7 +83,6 @@ class favoritesTab : public searchTab
 	signals:
 		void batchAddGroup(QStringList);
 		void batchAddUnique(QMap<QString,QString>);
-		void closed(searchTab*);
 
 	private:
 		int								m_id;
