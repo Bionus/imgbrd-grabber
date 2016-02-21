@@ -306,10 +306,10 @@ void mainWindow::onFirstLoad()
 	swin->show();
 }
 
-int mainWindow::addTab(QString tag)
+int mainWindow::addTab(QString tag, bool background)
 {
 	tagTab *w = new tagTab(m_tabs.size(), &m_sites, m_favorites, this);
-	this->addSearchTab(w);
+	this->addSearchTab(w, background);
 
 	if (!tag.isEmpty())
 	{ w->setTags(tag); }
@@ -330,7 +330,7 @@ int mainWindow::addPoolTab(int pool, QString site)
 	m_poolTabs.append(w);
 	return m_tabs.size() - 1;
 }
-void mainWindow::addSearchTab(searchTab *w)
+void mainWindow::addSearchTab(searchTab *w, bool background)
 {
 	if (m_tabs.size() > ui->tabWidget->currentIndex())
 	{
@@ -346,12 +346,16 @@ void mainWindow::addSearchTab(searchTab *w)
 	connect(w, SIGNAL(closed(tagTab*)), this, SLOT(tabClosed(tagTab*)));
 	int index = ui->tabWidget->insertTab(ui->tabWidget->currentIndex()+(!m_tabs.isEmpty()), w, tr("Nouvel onglet"));
 	m_tabs.append(w);
-	ui->tabWidget->setCurrentIndex(index);
+
 	QPushButton *closeTab = new QPushButton(QIcon(":/images/close.png"), "", this);
 		closeTab->setFlat(true);
 		closeTab->resize(QSize(8,8));
 		connect(closeTab, SIGNAL(clicked()), w, SLOT(deleteLater()));
 		ui->tabWidget->findChild<QTabBar*>()->setTabButton(index, QTabBar::RightSide, closeTab);
+
+	if (!background)
+		ui->tabWidget->setCurrentIndex(index);
+
 	saveTabs(savePath("tabs.txt"));
 }
 
@@ -449,11 +453,32 @@ void mainWindow::currentTabChanged(int tab)
 			searchTab *tb = m_favoritesTab;
 			if (tab < m_tabs.size())
 			{ tb = m_tabs[tab]; }
-			ui->labelTags->setText(tb->results());
+
+			setTags(tb->results());
+
 			ui->labelWiki->setText("<style>.title { font-weight: bold; } ul { margin-left: -30px; }</style>"+tb->wiki());
 		}
 	}
 }
+
+void mainWindow::setTags(QList<Tag> tags, searchTab *from)
+{
+	if (from != nullptr && m_tabs.indexOf(from) != ui->tabWidget->currentIndex())
+		return;
+
+	clearLayout(ui->dockInternetScrollLayout);
+
+	for (Tag tag : tags)
+	{
+		QAffiche *taglabel = new QAffiche(QString(tag.text()), 0, QColor(), this);
+		taglabel->setText(tag.stylished(m_favorites, true));
+		taglabel->setTextInteractionFlags(Qt::LinksAccessibleByMouse);
+		connect(taglabel, static_cast<void (QAffiche::*)(QString)>(&QAffiche::middleClicked), this, &mainWindow::loadTagTab);
+		connect(taglabel, &QAffiche::linkActivated, this, &mainWindow::loadTagNoTab);
+		ui->dockInternetScrollLayout->addWidget(taglabel);
+	}
+}
+
 void mainWindow::closeCurrentTab()
 {
 	// Unclosable tabs have a maximum width of 16777214 (default: 16777215)
@@ -813,13 +838,19 @@ void mainWindow::updateFavoritesDock()
 }
 void mainWindow::updateKeepForLater()
 {
-	QStringList kpl = loadViewItLater();
-	QStringList text = QStringList();
+	QStringList kfl = loadViewItLater();
 
-	for (int i = 0; i < kpl.size(); i++)
-	{ text.append(QString("<a href=\"%1\" style=\"color:black;text-decoration:none;\">%1</a>").arg(kpl[i])); }
+	clearLayout(ui->dockKflScrollLayout);
 
-	ui->labelKpl->setText(text.join("<br/>"));
+	for (QString tag : kfl)
+	{
+		QAffiche *taglabel = new QAffiche(QString(tag), 0, QColor(), this);
+		taglabel->setText(QString("<a href=\"%1\" style=\"color:black;text-decoration:none;\">%1</a>").arg(tag));
+		taglabel->setTextInteractionFlags(Qt::LinksAccessibleByMouse);
+		connect(taglabel, static_cast<void (QAffiche::*)(QString)>(&QAffiche::middleClicked), this, &mainWindow::loadTagTab);
+		connect(taglabel, &QAffiche::linkActivated, this, &mainWindow::loadTagNoTab);
+		ui->dockKflScrollLayout->addWidget(taglabel);
+	}
 }
 
 
@@ -2136,7 +2167,7 @@ bool mainWindow::loadLinkList(QString filename)
 	return true;
 }
 
-void mainWindow::loadTag(QString tag)
+void mainWindow::loadTag(QString tag, bool newTab)
 {
 	if (tag.startsWith("http://"))
 	{
@@ -2144,8 +2175,18 @@ void mainWindow::loadTag(QString tag)
 		return;
 	}
 
-	if (m_tabs.count() > 0 && ui->tabWidget->currentIndex() < m_tabs.count())
-	{ m_tabs[ui->tabWidget->currentIndex()]->setTags(tag); }
+	if (newTab)
+		addTab(tag, true);
+	else if (m_tabs.count() > 0 && ui->tabWidget->currentIndex() < m_tabs.count())
+		m_tabs[ui->tabWidget->currentIndex()]->setTags(tag);
+}
+void mainWindow::loadTagTab(QString tag)
+{
+	loadTag(tag, true);
+}
+void mainWindow::loadTagNoTab(QString tag)
+{
+	loadTag(tag, false);
 }
 
 void mainWindow::on_buttonFolder_clicked()
@@ -2253,3 +2294,5 @@ void mainWindow::updateDownloads()
 	else
 	{ setWindowTitle(tr("%n téléchargement(s) en cours", "", m_downloads)); }
 }
+
+QSettings* mainWindow::settings() { return m_settings; }

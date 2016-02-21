@@ -139,3 +139,6 @@ int searchTab::id()
 { return m_id; }
 QStringList searchTab::selectedImages()
 { return m_selectedImages; }
+
+QList<Tag> searchTab::results()
+{ return m_tags; }

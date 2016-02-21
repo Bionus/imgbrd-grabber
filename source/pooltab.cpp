@@ -201,8 +201,8 @@ void poolTab::load()
 	clearLayout(ui->layoutResults);
 	setWindowTitle(m_search->toPlainText().isEmpty() ? tr("Recherche") : m_search->toPlainText().replace("&", "&&"));
 	emit titleChanged(this);
-	m_tags = "";
-	m_parent->ui->labelTags->setText("");
+	m_tags.clear();
+	m_parent->setTags(m_tags, this);
 	for (int i = 0; i < m_pages.size(); i++)
 	{
 		m_pages.value(m_pages.keys().at(i))->abort();
@@ -392,16 +392,12 @@ void poolTab::finishedLoading(Page* page)
 				if (favorited)
 					taglist[i].setType("favorite");
 
-				QString n = taglist[i].text();
-				n.replace(" ", "_");
-				tags += "<a href=\""+n+"\" style=\""+(styles.contains(taglist[i].type()+"s") ? styles[taglist[i].type()+"s"] : styles["generals"])+"\">"+taglist[i].text()+"</a>"+(taglist[i].count() > 0 ? " <span style=\"color:#aaa\">("+QString("%L1").arg(taglist[i].count())+")</span>" : "")+"<br/>";
-
 				last = taglist[i].count();
 			}
 		}
 
-		m_tags = tags;
-		m_parent->ui->labelTags->setText(tags);
+		m_tags = taglist;
+		m_parent->setTags(m_tags, this);
 	}
 
 	m_page++;
@@ -463,34 +459,9 @@ void poolTab::finishedLoadingTags(Page *page)
 	// We sort tags by frequency
 	qSort(taglist.begin(), taglist.end(), sortByFrequency);
 
-	// Then we show them, styled if possible
-	QStringList tlist = QStringList() << "artists" << "circles" << "copyrights" << "characters" << "models" << "generals" << "favorites" << "blacklisteds";
-	QStringList defaults = QStringList() << "#aa0000" << "#55bbff" << "#aa00aa" << "#00aa00" << "#0000ee" << "#000000" << "#ffc0cb" << "#000000";
-	QMap<QString,QString> styles;
-	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
-	for (int i = 0; i < tlist.size(); i++)
-	{
-		QFont font;
-		font.fromString(settings.value("Coloring/Fonts/"+tlist.at(i)).toString());
-		styles[tlist.at(i)] = "color:"+settings.value("Coloring/Colors/"+tlist.at(i), defaults.at(i)).toString()+"; "+qfonttocss(font);
-	}
-	QString tags;
-	for (int i = 0; i < taglist.count(); i++)
-	{
-		bool favorited = false;
-		for (Favorite fav : m_favorites)
-			if (fav.getName() == taglist[i].text())
-				favorited = true;
-		if (favorited)
-			taglist[i].setType("favorite");
+	m_tags = taglist;
+	m_parent->setTags(m_tags, this);
 
-		QString n = taglist[i].text();
-		n.replace(" ", "_");
-		tags += "<a href=\""+n+"\" style=\""+(styles.contains(taglist[i].type()+"s") ? styles[taglist[i].type()+"s"] : styles["generals"])+"\">"+taglist[i].text()+"</a>"+(taglist[i].count() > 0 ? " <span style=\"color:#aaa\">("+QString("%L1").arg(taglist[i].count())+")</span>" : "")+"<br/>";
-	}
-
-	m_tags = tags;
-	m_parent->ui->labelTags->setText(tags);
 	if (!page->wiki().isEmpty())
 	{
 		m_wiki = "<style>.title { font-weight: bold; } ul { margin-left: -30px; }</style>"+page->wiki();
@@ -815,6 +786,5 @@ int poolTab::imagesPerPage()	{ return ui->spinImagesPerPage->value();	}
 int poolTab::columns()			{ return ui->spinColumns->value();			}
 QString poolTab::postFilter()	{ return m_postFiltering->toPlainText();	}
 QString poolTab::tags()			{ return m_search->toPlainText();			}
-QString poolTab::results()		{ return m_tags;							}
 QString poolTab::wiki()			{ return m_wiki;							}
 QString poolTab::site()			{ return ui->comboSites->currentText();		}

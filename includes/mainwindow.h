@@ -44,7 +44,8 @@ class mainWindow : public QMainWindow
         explicit mainWindow(QString, QStringList, QMap<QString,QString>);
         ~mainWindow();
 		QMap<QString,Site*> m_sites;
-        Ui::mainWindow *ui;
+		Ui::mainWindow *ui;
+		QSettings* settings();
 
     public slots:
         // Log
@@ -114,16 +115,18 @@ class mainWindow : public QMainWindow
 		void getAllFinishedLogins();
 		void _getAll();
 		// Tabs
-		int addTab(QString tag = "");
+		int addTab(QString tag = "", bool background = false);
 		int addPoolTab(int pool = 0, QString site = "");
-		void addSearchTab(searchTab*);
+		void addSearchTab(searchTab*, bool background = false);
 		void updateTabTitle(searchTab*);
 		void tabClosed(tagTab*);
 		void tabClosed(poolTab*);
 		void tabClosed(searchTab*);
         void currentTabChanged(int);
         void closeCurrentTab();
-        void loadTag(QString tag);
+		void loadTag(QString tag, bool newTab = true);
+		void loadTagTab(QString tag);
+		void loadTagNoTab(QString tag);
         bool saveTabs(QString);
 		bool loadTabs(QString);
         void updateTabs();
@@ -150,6 +153,7 @@ class mainWindow : public QMainWindow
 		void updateCompleters();
 		void setSource(QString site);
 		void saveImage(Image *img, QNetworkReply *reply = NULL, QString path = "", QString p = "", bool getAll = true);
+		void setTags(QList<Tag> tags, searchTab *from = nullptr);
 
     private:
 		int					m_pagemax, m_getAllDownloaded, m_getAllExists, m_getAllIgnored, m_getAll404s, m_getAllErrors, m_getAllSkipped, m_getAllCount, m_getAllPageCount, m_getAllBeforeId, m_remainingPics, m_remainingSites, m_countPics, m_currentFav, m_currentFavCount, m_getAllLimit, m_downloads;

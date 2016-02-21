@@ -19,7 +19,7 @@ class searchTab : public QWidget
         ~searchTab();
 		virtual QList<bool> sources();
         virtual QString tags() = 0;
-        virtual QString results() = 0;
+		QList<Tag> results();
 		virtual QString wiki() = 0;
 		virtual int imagesPerPage() = 0;
 		virtual int columns() = 0;
@@ -61,6 +61,7 @@ class searchTab : public QWidget
 		QList<QCheckBox*>	m_checkboxes;
 		QList<Favorite>		m_favorites;
 		QString				m_link;
+		QList<Tag>			m_tags;
 };
 
 #endif // SEARCHTAB_H

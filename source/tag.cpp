@@ -1,6 +1,10 @@
 #include <QStringList>
-#include "tag.h"
 #include <QTextDocument>
+#include <QSettings>
+#include "tag.h"
+#include "mainwindow.h"
+
+extern mainWindow *_mainwindow;
 
 
 
@@ -39,13 +43,29 @@ Tag::~Tag()
  * @param favs The list of the user's favorite tags.
  * @return The HTML colored tag.
  */
-QString Tag::stylished(QList<Favorite> favs) const
+QString Tag::stylished(QList<Favorite> favs, bool count) const
 {
+	// Favorites
 	for (Favorite fav : favs)
 		if (fav.getName() == m_text)
 			return "<span style=\"color:pink\">" + m_text + "</span>";
 
-	return m_text;
+	QStringList tlist = QStringList() << "artists" << "circles" << "copyrights" << "characters" << "models" << "generals" << "favorites" << "blacklisteds";
+	QStringList defaults = QStringList() << "#aa0000" << "#55bbff" << "#aa00aa" << "#00aa00" << "#0000ee" << "#000000" << "#ffc0cb" << "#000000";
+
+	QSettings *settings = _mainwindow->settings();
+	QString key = tlist.contains(type()+"s") ? type() + "s" : "generals";
+	QFont font;
+	font.fromString(settings->value("Coloring/Fonts/" + key).toString());
+	QString color = settings->value("Coloring/Colors/" + key, defaults.at(tlist.indexOf(key))).toString();
+	QString style = "color:"+color+"; "+qfonttocss(font);
+
+	QString ret;
+	ret = "<a href=\""+text()+"\" style=\""+style+"\">"+text()+"</a>";
+	if (count && this->count() > 0)
+		ret += " <span style=\"color:#aaa\">("+QString("%L1").arg(this->count())+")</span>";
+
+	return ret;
 }
 
 void Tag::setText(QString text)		{ m_text = text;	}

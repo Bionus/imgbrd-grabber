@@ -29,7 +29,6 @@ class poolTab : public searchTab
 		~poolTab();
 		Ui::poolTab *ui;
 		QString tags();
-		QString results();
 		QString wiki();
 		QString site();
 		int imagesPerPage();
@@ -89,7 +88,7 @@ class poolTab : public searchTab
 		QMap<QString,Page*>				m_pages;
 		QList<Image*>					m_images;
 		int								m_pagemax;
-		QString							m_lastTags, m_wiki, m_tags;
+		QString							m_lastTags, m_wiki;
 		bool							m_sized, m_from_history, m_stop;
 		int								m_page, m_history_cursor;
 		QList<QGridLayout*>				m_layouts;
