@@ -32,7 +32,7 @@
      <number>0</number>
     </property>
     <item>
-     <widget class="QTabWidget" name="tabWidget">
+     <widget class="QClosableTabWidget" name="tabWidget">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
         <horstretch>0</horstretch>
@@ -1083,6 +1083,14 @@
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QClosableTabWidget</class>
+   <extends>QTabWidget</extends>
+   <header>qclosabletabwidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>tabWidget</tabstop>
   <tabstop>tableBatchGroups</tabstop>
