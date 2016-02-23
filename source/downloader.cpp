@@ -107,7 +107,7 @@ void Downloader::finishedLoadingPageCount(Page *page)
 	if (m_cancelled)
 		return;
 
-	log("Received page '"+page->url().toString()+"'");
+	log(QString("Received page count '%1' (%2)").arg(page->url().toString(), QString::number(page->images().count())));
 
 	if (--m_waiting > 0)
 	{
@@ -154,7 +154,7 @@ void Downloader::finishedLoadingPageTags(Page *page)
 	if (m_cancelled)
 		return;
 
-	log("Received tags '"+page->url().toString()+"'");
+	log(QString("Received tags '%1' (%2)").arg(page->url().toString(), QString::number(page->tags().count())));
 
 	if (--m_waiting > 0)
 	{
@@ -267,7 +267,7 @@ void Downloader::finishedLoadingTags(QList<Tag> tags)
 	if (m_cancelled)
 		return;
 
-	log("Received pure tags");
+	log(QString("Received pure tags (%1)").arg(tags.count()));
 
 	m_results->append(tags);
 	if (--m_waiting > 0)
@@ -322,7 +322,7 @@ void Downloader::finishedLoadingImages(Page *page)
 	if (m_cancelled)
 		return;
 
-	log("Received page '"+page->url().toString()+"'");
+	log(QString("Received image page '%1' (%2)").arg(page->url().toString(), QString::number(page->images().count())));
     emit finishedImagesPage(page);
 
 	if (--m_waiting > 0)
@@ -333,7 +333,9 @@ void Downloader::finishedLoadingImages(Page *page)
 
 	QList<Image*> images;
 	for (int i = 0; i < m_pages->size(); ++i)
-		for (Image *img : m_pages->at(i)->images())
+	{
+		Page *p = m_pages->at(i);
+		for (Image *img : p->images())
 		{
 			if (!m_blacklist)
 			{
@@ -354,6 +356,7 @@ void Downloader::finishedLoadingImages(Page *page)
 			}
 			images.append(img);
 		}
+	}
 
 	QList<Image*> imgs;
 	int i = 0;
@@ -380,7 +383,7 @@ void Downloader::finishedLoadingImage(Image *image)
 	if (m_cancelled)
 		return;
 
-	log("Received image '"+image->url()+"'");
+	log(QString("Received image '%1'").arg(image->url()));
 
 	if (m_quit)
 	{
@@ -393,7 +396,7 @@ void Downloader::finishedLoadingImage(Image *image)
 			{
 				f.write(image->data());
 				f.close();
-				log("Saved to '"+path+"'");
+				log(QString("Saved to '%1'").arg(path));
 			}
 		}
 	}
@@ -447,8 +450,8 @@ void Downloader::finishedLoadingUrls(Page *page)
 	if (m_cancelled)
 		return;
 
-	log("Received page '"+page->url().toString()+"'");
-    emit finishedUrlsPage(page);
+	log(QString("Received url page '%1' (%2)").arg(page->url().toString(), QString::number(page->images().count())));
+	emit finishedUrlsPage(page);
 
 	if (--m_waiting > 0)
 	{
