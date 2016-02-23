@@ -43,6 +43,7 @@ class Downloader : public QObject
 		void finishedImage(Image *image);
 		void finishedUrls(QStringList);
         void finishedUrlsPage(Page *page);
+		void quit();
 
 	public slots:
 		void returnInt(int ret);

@@ -498,12 +498,12 @@ void Downloader::finishedLoadingUrls(Page *page)
 void Downloader::returnInt(int ret)
 {
 	std::cout << ret << std::endl;
-	qApp->quit();
+	emit quit();
 }
 void Downloader::returnString(QString ret)
 {
 	std::cout << ret.toStdString() << std::endl;
-	qApp->quit();
+	emit quit();
 }
 void Downloader::returnTagList(QList<Tag> ret)
 {
@@ -519,13 +519,13 @@ void Downloader::returnTagList(QList<Tag> ret)
 		ret.replace("%stype", QString::number(tag.shortType()));
 		std::cout << ret.toStdString() << std::endl;
 	}
-	qApp->quit();
+	emit quit();
 }
 void Downloader::returnStringList(QStringList ret)
 {
 	for (QString str : ret)
 		std::cout << str.toStdString() << std::endl;
-	qApp->quit();
+	emit quit();
 }
 
 void Downloader::setData(QVariant data)
