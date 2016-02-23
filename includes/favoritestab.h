@@ -63,9 +63,9 @@ class favoritesTab : public searchTab
 		void historyBack();
 		void historyNext();
 		// Favorites
-		void favoriteProperties(int id = -1);
+		void favoriteProperties(QString);
 		void updateFavorites();
-		void loadFavorite(int);
+		void loadFavorite(QString);
 		void checkFavorites();
 		void loadNextFavorite();
 		void favoritesBack();
@@ -75,7 +75,7 @@ class favoritesTab : public searchTab
 		void optionsChanged();
 		void closeEvent(QCloseEvent*);
 		void toggleImage(int, bool);
-		void addTabFavorite(int);
+		void addTabFavorite(QString);
 		void setImagesPerPage(int);
 		void setColumns(int);
 		void setPostFilter(QString);

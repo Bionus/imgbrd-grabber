@@ -76,7 +76,7 @@ void favoriteWindow::on_openButton_clicked()
 void favoriteWindow::save()
 {
 	Favorite oldFav = favorite;
-	favorite = Favorite(oldFav.getId(), ui->tagLineEdit->text());
+	favorite = Favorite(ui->tagLineEdit->text());
 	favorite.setNote(ui->noteSpinBox->value());
 	favorite.setLastViewed(ui->lastViewedDateTimeEdit->dateTime());
 

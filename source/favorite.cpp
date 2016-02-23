@@ -1,10 +1,10 @@
 #include "favorite.h"
 #include "functions.h"
-#include <QDebug>
+#include <QDir>
 
 
-Favorite::Favorite(int id, QString name)
-	: id(id), name(name)
+Favorite::Favorite(QString name)
+	: name(name)
 {}
 
 void Favorite::setImagePath(QString val)
@@ -14,8 +14,6 @@ void Favorite::setLastViewed(QDateTime val)
 void Favorite::setNote(int val)
 { note = val; }
 
-int Favorite::getId() const
-{ return id; }
 QString Favorite::getName(bool clean) const
 {
 	if (clean)
@@ -29,8 +27,11 @@ QDateTime Favorite::getLastViewed() const
 QString Favorite::getImagePath() const
 { return imagePath; }
 
-bool Favorite::setImage(QPixmap img)
+bool Favorite::setImage(QPixmap& img)
 {
+	if (!QDir(savePath("thumbs")).exists())
+		QDir(savePath()).mkdir("thumbs");
+
 	return img
 			.scaled(QSize(150,150), Qt::KeepAspectRatio, Qt::SmoothTransformation)
 			.save(savePath("thumbs/" + getName(true) + ".png"), "PNG");

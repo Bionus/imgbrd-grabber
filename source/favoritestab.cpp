@@ -138,36 +138,33 @@ void favoritesTab::updateFavorites()
 		QString xt = tr("<b>Nom :</b> %1<br/><b>Note :</b> %2 %%<br/><b>Dernière vue :</b> %3").arg(fav.getName(), QString::number(fav.getNote()), fav.getLastViewed().toString(format));
 		if (display.contains("i"))
 		{
-			QBouton *image = new QBouton(fav.getId(), this, settings.value("resizeInsteadOfCropping", true).toBool(), QColor(), this);
+			QBouton *image = new QBouton(fav.getName(), this, settings.value("resizeInsteadOfCropping", true).toBool(), QColor(), this);
 				image->setIcon(img);
 				image->setIconSize(img.size());
 				image->setFlat(true);
 				image->setToolTip(xt);
-				connect(image, SIGNAL(rightClick(int)), this, SLOT(favoriteProperties(int)));
-				connect(image, SIGNAL(middleClick(int)), this, SLOT(addTabFavorite(int)));
-				connect(image, SIGNAL(appui(int)), this, SLOT(loadFavorite(int)));
+				connect(image, SIGNAL(rightClick(QString)), this, SLOT(favoriteProperties(QString)));
+				connect(image, SIGNAL(middleClick(QString)), this, SLOT(addTabFavorite(QString)));
+				connect(image, SIGNAL(appui(QString)), this, SLOT(loadFavorite(QString)));
 			ui->layoutFavorites->addWidget(image, (i/10)*2, i%10);
 		}
-		QAffiche *caption = new QAffiche(fav.getId(), 0 ,QColor(), this);
-		caption->setText((display.contains("n") ? fav.getName() : "") + (display.contains("d") ? "<br/>("+QString::number(fav.getNote())+" % - "+fav.getLastViewed().toString(format)+")" : ""));
+		QAffiche *caption = new QAffiche(fav.getName(), 0 ,QColor(), this);
+			caption->setText((display.contains("n") ? fav.getName() : "") + (display.contains("d") ? "<br/>("+QString::number(fav.getNote())+" % - "+fav.getLastViewed().toString(format)+")" : ""));
 			caption->setTextFormat(Qt::RichText);
 			caption->setAlignment(Qt::AlignCenter);
 			caption->setToolTip(xt);
 		if (!caption->text().isEmpty())
 		{
-			connect(caption, SIGNAL(clicked(int)), this, SLOT(loadFavorite(int)));
+			connect(caption, SIGNAL(clicked(QString)), this, SLOT(loadFavorite(QString)));
 			ui->layoutFavorites->addWidget(caption, (i/10)*2+1, i%10);
 		}
 		++i;
 	}
 }
 
-void favoritesTab::addTabFavorite(int id)
+void favoritesTab::addTabFavorite(QString name)
 {
-	if (m_favorites.count() < id)
-		return;
-
-	m_parent->addTab(m_favorites[id].getName());
+	m_parent->addTab(name);
 }
 
 void favoritesTab::optionsChanged()
@@ -761,14 +758,21 @@ void favoritesTab::historyNext()
 QString favoritesTab::tags()	{ return m_currentTags;	}
 QString favoritesTab::wiki()	{ return m_wiki;		}
 
-void favoritesTab::loadFavorite(int id)
+void favoritesTab::loadFavorite(QString name)
 {
-	if (m_favorites.count() < id)
+	Favorite fav("");
+	if (name.isEmpty())
+		fav = m_favorites[m_currentFav];
+	else
+		for (Favorite f : m_favorites)
+			if (f.getName() == name)
+				fav = f;
+	if (fav.getName().isEmpty())
 		return;
 
 	ui->widgetResults->show();
-	m_currentTags = m_favorites[id].getName();
-	m_loadFavorite = m_favorites[id].getLastViewed();
+	m_currentTags = fav.getName();
+	m_loadFavorite = fav.getLastViewed();
 
 	load();
 }
@@ -857,14 +861,19 @@ void favoritesTab::favoritesBack()
 		}*/
 	}
 }
-void favoritesTab::favoriteProperties(int id)
+void favoritesTab::favoriteProperties(QString name)
 {
-	if (id == -1)
-		id = m_currentFav;
-	if (m_favorites.count() < id)
+	Favorite fav("");
+	if (name.isEmpty())
+		fav = m_favorites[m_currentFav];
+	else
+		for (Favorite f : m_favorites)
+			if (f.getName() == name)
+				fav = f;
+	if (fav.getName().isEmpty())
 		return;
 
-	favoriteWindow *fwin = new favoriteWindow(m_favorites[id], this);
+	favoriteWindow *fwin = new favoriteWindow(fav, this);
 	connect(fwin, SIGNAL(favoritesChanged()), this, SLOT(updateFavorites()));
 	fwin->show();
 }

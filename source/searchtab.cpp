@@ -70,11 +70,7 @@ void searchTab::saveSources(QList<bool> sel)
 
 void searchTab::favorite()
 {
-	int id = 0;
-	for (Favorite fav : m_favorites)
-		id = qMax(id, fav.getId());
-
-	Favorite newFav(id + 1, m_link);
+	Favorite newFav(m_link);
 	newFav.setNote(50);
 	newFav.setLastViewed(QDateTime::currentDateTime());
 	m_favorites.append(newFav);
@@ -96,7 +92,7 @@ void searchTab::favorite()
 
 void searchTab::unfavorite()
 {
-	Favorite favorite(0, "");
+	Favorite favorite("");
 	for (Favorite fav : m_favorites)
 	{
 		if (fav.getName() == m_link)
@@ -106,7 +102,7 @@ void searchTab::unfavorite()
 			break;
 		}
 	}
-	if (favorite.getId() == 0)
+	if (favorite.getName().isEmpty())
 		return;
 
 	QFile f(savePath("favorites.txt"));

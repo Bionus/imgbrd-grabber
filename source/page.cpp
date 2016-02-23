@@ -378,7 +378,7 @@ void Page::parse()
 				QMap<QString,QString> d;
 				if (database == "array")
 				{
-					if (node.namedItem("md5").isNull() << node.namedItem("preview-file-url").isNull())
+					if (node.namedItem("md5").isNull() && node.namedItem("preview-file-url").isNull())
 						continue;
 
 					QStringList infos, assoc;

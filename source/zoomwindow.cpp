@@ -147,7 +147,7 @@ zoomWindow::~zoomWindow()
 {
 	/*if (m_imageTime != NULL)
 		delete m_imageTime;*/
-	if (image != NULL)
+	if (image != nullptr)
 		delete image;
 	if (movie != NULL)
 		movie->deleteLater();
@@ -289,15 +289,10 @@ void zoomWindow::setfavorite()
 	if (!QDir(savePath("thumbs")).exists())
 	{ QDir(savePath()).mkdir("thumbs"); }
 
-	if (image != NULL)
+	if (image != nullptr)
 	{
-		if (image->width() > 150 || image->height() > 150)
-		{
-			QPixmap img = image->scaled(QSize(150,150), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-			img.save(savePath("thumbs/"+link+".png"), "PNG");
-		}
-		else
-		{ image->save(savePath("thumbs/"+link+".png"), "PNG"); }
+		Favorite fav(link);
+		fav.setImage(*image);
 	}
 
 	_mainwindow->updateFavorites();

@@ -9,12 +9,11 @@
 class Favorite
 {
 	public:
-		Favorite(int id, QString name);
+		Favorite(QString name);
 		void setNote(int);
 		void setLastViewed(QDateTime);
 		void setImagePath(QString);
-		bool setImage(QPixmap);
-		int getId() const;
+		bool setImage(QPixmap&);
 		QString getName(bool clean = false) const;
 		int getNote() const;
 		QDateTime getLastViewed() const;
@@ -22,7 +21,6 @@ class Favorite
 		QPixmap getImage() const;
 
 	private:
-		int id;
 		QString name;
 		int note;
 		QDateTime lastViewed;
