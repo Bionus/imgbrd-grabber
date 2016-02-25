@@ -163,7 +163,10 @@ void mainWindow::init()
 		}
 	}
 	if (m_waitForLogin == 0)
-	{ initialLoginsFinished(); }
+	{
+		m_waitForLogin = 1;
+		initialLoginsFinished();
+	}
 
 	// Favorites tab
 	m_favoritesTab = new favoritesTab(m_tabs.size(), &m_sites, m_favorites, this);
@@ -211,12 +214,9 @@ void mainWindow::init()
 
 void mainWindow::initialLoginsFinished()
 {
-	if (m_waitForLogin > 0)
-	{
-		m_waitForLogin--;
-		if (m_waitForLogin > 0)
-		{ return; }
-	}
+	m_waitForLogin--;
+	if (m_waitForLogin != 0)
+	{ return; }
 
 	ui->tabWidget->setCurrentIndex(0);
 

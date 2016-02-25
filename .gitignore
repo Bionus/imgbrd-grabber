@@ -12,6 +12,7 @@
 *.sql
 build/
 debug/
+cache/
 release/*.txt
 release/*.ini
 release/lastdump
