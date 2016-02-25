@@ -632,7 +632,7 @@ void mainWindow::batchMoveUp()
 
 	QList<int> rows;
 	int count = selected.size();
-	for (int i = 0; i < count; i++)
+	for (int i = 0; i < count; ++i)
 	{
 		int sourceRow = selected.at(i)->row();
 		if (rows.contains(sourceRow))
@@ -680,7 +680,7 @@ void mainWindow::batchMoveDown()
 
 	QList<int> rows;
 	int count = selected.size();
-	for (int i = 0; i < count; i++)
+	for (int i = count - 1; i >= 0; --i)
 	{
 		int sourceRow = selected.at(i)->row();
 		if (rows.contains(sourceRow))
