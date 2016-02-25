@@ -17,6 +17,7 @@ class searchTab : public QWidget
     public:
 		searchTab(int id, QMap<QString,Site*> *sites, QWidget *parent = 0);
         ~searchTab();
+		void mouseReleaseEvent(QMouseEvent *e);
 		virtual QList<bool> sources();
         virtual QString tags() = 0;
 		QList<Tag> results();
@@ -44,6 +45,11 @@ class searchTab : public QWidget
 		// Favorites
 		void favorite();
 		void unfavorite();
+		// Pagination
+		virtual void firstPage() = 0;
+		virtual void previousPage() = 0;
+		virtual void nextPage() = 0;
+		virtual void lastPage() = 0;
 
     signals:
         void titleChanged(searchTab*);

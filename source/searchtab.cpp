@@ -3,6 +3,7 @@
 #include "functions.h"
 #include "mainwindow.h"
 #include <QFile>
+#include <QMouseEvent>
 
 extern mainWindow *_mainwindow;
 
@@ -12,6 +13,14 @@ searchTab::searchTab(int id, QMap<QString,Site*> *sites, QWidget *parent) : QWid
 { }
 searchTab::~searchTab()
 { emit deleted(m_id); }
+
+void searchTab::mouseReleaseEvent(QMouseEvent *e)
+{
+	if (e->button() == Qt::XButton1)
+	{ previousPage(); }
+	else if (e->button() == Qt::XButton2)
+	{ nextPage(); }
+}
 
 
 void searchTab::selectImage(Image *img)
