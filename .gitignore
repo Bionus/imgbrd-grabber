@@ -26,6 +26,12 @@ CrashReporter/debug/
 CrashReporter/release/
 
 
+# CLion
+
+.idea/
+CMakeLists.txt
+
+
 # C++ objects and libs
 
 *.slo

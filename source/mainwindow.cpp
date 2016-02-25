@@ -122,13 +122,20 @@ void mainWindow::init()
 	restoreState(m_settings->value("state").toByteArray());
 
 	// Selected ones
+	QStringList keys = m_sites.keys();
 	QString sav = m_settings->value("sites", "1").toString();
+	m_waitForLogin = 0;
 	for (int i = 0; i < m_sites.count(); i++)
 	{
-		if (sav.count() <= i)
-		{ m_selectedSources.append(false); }
+		if (i < sav.count() && sav[i] == '1')
+		{
+			m_selectedSources.append(true);
+			connect(m_sites[keys[i]], &Site::loggedIn, this, &mainWindow::initialLoginsFinished);
+			m_sites[keys[i]]->login();
+			m_waitForLogin++;
+		}
 		else
-		{ m_selectedSources.append(sav.at(i) == '1' ? true : false); }
+		{ m_selectedSources.append(false); }
 	}
 
 	QPushButton *add = new QPushButton(QIcon(":/images/add.png"), "", this);
@@ -155,14 +162,8 @@ void mainWindow::init()
 			{ restore = true; }
 		}
 	}
-	ui->tabWidget->setCurrentIndex(0);
-	if (restore)
-	{
-		loadLinkList(savePath("restore.igl"));
-		loadTabs(savePath("tabs.txt"));
-	}
-	if (m_tabs.isEmpty())
-	{ addTab(); }
+	if (m_waitForLogin == 0)
+	{ initialLoginsFinished(); }
 
 	// Favorites tab
 	m_favoritesTab = new favoritesTab(m_tabs.size(), &m_sites, m_favorites, this);
@@ -170,6 +171,7 @@ void mainWindow::init()
 	connect(m_favoritesTab, SIGNAL(batchAddUnique(QMap<QString,QString>)), this, SLOT(batchAddUnique(QMap<QString,QString>)));
 	connect(m_favoritesTab, SIGNAL(changed(searchTab*)), this, SLOT(updateTabs()));
 	ui->tabWidget->insertTab(m_tabs.size(), m_favoritesTab, tr("Favoris"));
+	ui->tabWidget->setCurrentIndex(0);
 
 	ui->tableBatchGroups->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
 	ui->tableBatchUniques->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
@@ -205,6 +207,27 @@ void mainWindow::init()
 	m_loaded = true;
 	logShow();
 	log("Fin de l'initialisation.");
+}
+
+void mainWindow::initialLoginsFinished()
+{
+	if (m_waitForLogin > 0)
+	{
+		m_waitForLogin--;
+		if (m_waitForLogin > 0)
+		{ return; }
+	}
+
+	ui->tabWidget->setCurrentIndex(0);
+
+	bool restore = m_settings->value("start", "none").toString() == "restore";
+	if (restore)
+	{
+		loadLinkList(savePath("restore.igl"));
+		loadTabs(savePath("tabs.txt"));
+	}
+	if (m_tabs.isEmpty())
+	{ addTab(); }
 }
 
 void mainWindow::loadSites()
@@ -955,12 +978,20 @@ void mainWindow::saveAdvanced(sourcesWindow *w)
 	m_selectedSources = w->getSelected();
 
 	QString sav;
-	for (int i = 0; i < m_selectedSources.count(); i++)
-	{ sav += (m_selectedSources.at(i) ? "1" : "0"); }
+	for (bool active : m_selectedSources)
+	{ sav += (active ? "1" : "0"); }
 	m_settings->setValue("sites", sav);
 
-	for (int i = 0; i < m_tabs.count(); i++)
-	{ m_tabs[i]->updateCheckboxes(); }
+	// Log into new sources
+	QStringList keys = m_sites.keys();
+	for (int i = 0; i < m_sites.count(); i++)
+	{
+		if (sav.at(i) == '1')
+		{ m_sites[keys[i]]->login(); }
+	}
+
+	for (searchTab* tab : m_tabs)
+	{ tab->updateCheckboxes(); }
 
 	DONE();
 }

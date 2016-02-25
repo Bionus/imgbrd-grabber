@@ -2,7 +2,6 @@
 #include <QNetworkCookie>
 #include <QNetworkCookieJar>
 #include <QNetworkDiskCache>
-#include <QDebug>
 #include <QUrlQuery>
 #include <QDir>
 #include "site.h"
@@ -194,14 +193,16 @@ QNetworkReply *Site::get(QUrl url, Page *page, QString ref, Image *img)
 		{ referer = m_settings->value("referer", "none").toString(); }
 		if (referer != "none" && (referer != "page" || page != NULL))
 		{
+			QString ref;
 			if (referer == "host")
-			{ request.setRawHeader("Referer", QString(url.scheme()+"://"+url.host()).toLatin1()); }
+			{ ref = url.scheme()+"://"+url.host(); }
 			else if (referer == "image")
-			{ request.setRawHeader("Referer", url.toString().toLatin1()); }
+			{ ref = url.toString(); }
 			else if (referer == "page" && page)
-			{ request.setRawHeader("Referer", page->url().toString().toLatin1()); }
+			{ ref = page->url().toString(); }
 			else if (referer == "details" && img)
-			{ request.setRawHeader("Referer", img->pageUrl().toString().toLatin1()); }
+			{ ref = img->pageUrl().toString(); }
+			request.setRawHeader("Referer", ref.toLatin1());
 		}
 		QMap<QString,QVariant> headers = m_settings->value("headers").toMap();
 		for (int i = 0; i < headers.size(); i++)
