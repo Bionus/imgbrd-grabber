@@ -2055,9 +2055,13 @@ void mainWindow::md5FixOpen()
 
 void mainWindow::on_buttonSaveLinkList_clicked()
 {
-	QString save = QFileDialog::getSaveFileName(this, tr("Enregistrer la liste de liens"), QString(), tr("Liens Imageboard-Grabber (*.igl)"));
+	QString lastDir = m_settings->value("linksLastDir", "").toString();
+	QString save = QFileDialog::getSaveFileName(this, tr("Enregistrer la liste de liens"), QDir::toNativeSeparators(lastDir), tr("Liens Imageboard-Grabber (*.igl)"));
 	if (save.isEmpty())
 	{ return; }
+
+	save = QDir::toNativeSeparators(save);
+	m_settings->setValue("linksLastDir", save.section(QDir::toNativeSeparators("/"), 0, -2));
 
 	if (saveLinkList(save))
 	{ QMessageBox::information(this, tr("Enregistrer la liste de liens"), tr("Liste de liens enregistrée avec succès !")); }

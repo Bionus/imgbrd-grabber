@@ -726,7 +726,7 @@ QString zoomWindow::saveImageAs()
 	if (!path.isEmpty())
 	{
 		path = QDir::toNativeSeparators(path);
-		settings.setValue("Zoom/lastDir", path.section('/', 0, -2));
+		settings.setValue("Zoom/lastDir", path.section(QDir::toNativeSeparators("/"), 0, -2));
 
 		m_image->save(path, true, true);
 	}
