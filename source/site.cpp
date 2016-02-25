@@ -4,6 +4,7 @@
 #include <QNetworkDiskCache>
 #include <QUrlQuery>
 #include <QDir>
+#include <QDebug>
 #include "site.h"
 #include "functions.h"
 #include "json.h"
