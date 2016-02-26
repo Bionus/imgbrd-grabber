@@ -228,6 +228,8 @@ void mainWindow::initialLoginsFinished()
 	}
 	if (m_tabs.isEmpty())
 	{ addTab(); }
+
+	m_currentTab = ui->tabWidget->currentWidget();
 }
 
 void mainWindow::loadSites()
@@ -464,7 +466,11 @@ void mainWindow::currentTabChanged(int tab)
 		if (ui->tabWidget->widget(tab)->maximumWidth() != 16777214)
 		{
 			searchTab *tb = m_tabs[tab];
+			if (m_currentTab != nullptr && m_currentTab == ui->tabWidget->currentWidget())
+			{ return; }
+
 			setTags(tb->results());
+			m_currentTab = ui->tabWidget->currentWidget();
 
 			ui->labelWiki->setText("<style>.title { font-weight: bold; } ul { margin-left: -30px; }</style>"+tb->wiki());
 		}
@@ -478,15 +484,21 @@ void mainWindow::setTags(QList<Tag> tags, searchTab *from)
 
 	clearLayout(ui->dockInternetScrollLayout);
 
+	QString text = "";
 	for (Tag tag : tags)
 	{
-		QAffiche *taglabel = new QAffiche(QString(tag.text()), 0, QColor(), this);
-		taglabel->setText(tag.stylished(m_favorites, true));
-		taglabel->setTextInteractionFlags(Qt::LinksAccessibleByMouse);
-		connect(taglabel, static_cast<void (QAffiche::*)(QString)>(&QAffiche::middleClicked), this, &mainWindow::loadTagTab);
-		connect(taglabel, &QAffiche::linkActivated, this, &mainWindow::loadTagNoTab);
-		ui->dockInternetScrollLayout->addWidget(taglabel);
+		if (!text.isEmpty())
+			text += "<br/>";
+		text += tag.stylished(m_favorites, true);
 	}
+
+	QAffiche *taglabel = new QAffiche(QVariant(), 0, QColor(), this);
+	taglabel->setTextInteractionFlags(Qt::LinksAccessibleByMouse);
+	connect(taglabel, static_cast<void (QAffiche::*)(QString)>(&QAffiche::middleClicked), this, &mainWindow::loadTagTab);
+	connect(taglabel, &QAffiche::linkHovered, this, &mainWindow::linkHovered);
+	connect(taglabel, &QAffiche::linkActivated, this, &mainWindow::loadTagNoTab);
+	taglabel->setText(text);
+	ui->dockInternetScrollLayout->addWidget(taglabel);
 }
 
 void mainWindow::closeCurrentTab()
@@ -2203,13 +2215,11 @@ void mainWindow::loadTag(QString tag, bool newTab)
 		m_tabs[ui->tabWidget->currentIndex()]->setTags(tag);
 }
 void mainWindow::loadTagTab(QString tag)
-{
-	loadTag(tag, true);
-}
+{ loadTag(tag.isEmpty() ? m_link : tag, true); }
 void mainWindow::loadTagNoTab(QString tag)
-{
-	loadTag(tag, false);
-}
+{ loadTag(tag.isEmpty() ? m_link : tag, false); }
+void mainWindow::linkHovered(QString tag)
+{ m_link = tag; }
 
 void mainWindow::on_buttonFolder_clicked()
 {

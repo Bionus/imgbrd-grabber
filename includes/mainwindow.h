@@ -125,6 +125,7 @@ class mainWindow : public QMainWindow
 		void loadTag(QString tag, bool newTab = true);
 		void loadTagTab(QString tag);
 		void loadTagNoTab(QString tag);
+		void linkHovered(QString tag);
         bool saveTabs(QString);
 		bool loadTabs(QString);
         void updateTabs();
@@ -161,7 +162,7 @@ class mainWindow : public QMainWindow
         QProcess			*m_process;
         QNetworkReply		*m_getAllRequest;
         batchWindow			*m_progressdialog;
-        QString				m_program, m_currLang, m_currentFavorite;
+		QString				m_program, m_currLang, m_currentFavorite, m_link;
         QStringList			m_tags, m_assoc, m_gotMd5;
         QTranslator			m_translator;
 		QDateTime			m_loadFavorite;
@@ -171,6 +172,7 @@ class mainWindow : public QMainWindow
         QList<Page*>		m_getAllPages, m_pages;
         QList<QAffiche*>	m_favoritesCaptions;
 		QList<QBouton*>		m_favoritesImages, m_mergeButtons, m_webPics;
+		QWidget				*m_currentTab = nullptr;
 		QList<searchTab*>	m_tabs;
 		QList<int>			m_tabsIds;
         QList<tagTab*>      m_tagTabs;
