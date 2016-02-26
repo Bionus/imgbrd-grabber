@@ -208,6 +208,7 @@ void mainWindow::init()
 	//ui->lineFilename->setCompleter(new QCompleter(m_lineFilename_completer));
 
 	m_loaded = true;
+	m_currentTab = nullptr;
 	logShow();
 	log("Fin de l'initialisation.");
 }

@@ -172,7 +172,7 @@ class mainWindow : public QMainWindow
         QList<Page*>		m_getAllPages, m_pages;
         QList<QAffiche*>	m_favoritesCaptions;
 		QList<QBouton*>		m_favoritesImages, m_mergeButtons, m_webPics;
-		QWidget				*m_currentTab = nullptr;
+		QWidget				*m_currentTab;
 		QList<searchTab*>	m_tabs;
 		QList<int>			m_tabsIds;
         QList<tagTab*>      m_tagTabs;
