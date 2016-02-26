@@ -218,8 +218,6 @@ void mainWindow::initialLoginsFinished()
 	if (m_waitForLogin != 0)
 	{ return; }
 
-	ui->tabWidget->setCurrentIndex(0);
-
 	bool restore = m_settings->value("start", "none").toString() == "restore";
 	if (restore)
 	{
@@ -229,6 +227,7 @@ void mainWindow::initialLoginsFinished()
 	if (m_tabs.isEmpty())
 	{ addTab(); }
 
+	ui->tabWidget->setCurrentIndex(0);
 	m_currentTab = ui->tabWidget->currentWidget();
 }
 

@@ -126,7 +126,7 @@ void Site::login(bool force)
 				query.addQueryItem(m_settings->value("login/password", "").toString(), m_settings->value("auth/password", "").toString());
 				postData.setQuery(query);
 
-				QNetworkRequest request(QUrl(m_settings->value("login/url", "").toString()));
+				QNetworkRequest request(fixUrl(m_settings->value("login/url", "").toString()));
 				request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
 
 				m_loginReply = m_manager->post(request, query.query(QUrl::FullyEncoded).toUtf8());
@@ -134,7 +134,7 @@ void Site::login(bool force)
 			}
 			else
 			{
-				QUrl url = QUrl(m_settings->value("login/url", "").toString());
+				QUrl url = fixUrl(m_settings->value("login/url", "").toString());
 				QUrlQuery query;
 				query.addQueryItem(m_settings->value("login/pseudo", "").toString(), m_settings->value("auth/pseudo", "").toString());
 				query.addQueryItem(m_settings->value("login/password", "").toString(), m_settings->value("auth/password", "").toString());
