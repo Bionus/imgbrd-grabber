@@ -364,8 +364,10 @@ QMap<QString, Site*> *Site::getAllSites()
 									details["Urls/"+QString::number(j+1)+"/Preview"] = details["Urls/"+sr+"/Preview"];
 								if (details.contains("Urls/"+sr+"/MaxPage"))
 									details["Urls/"+QString::number(j+1)+"/MaxPage"] = details["Urls/"+sr+"/MaxPage"];
-								if (details.contains("Urls/"+sr+"/AltPage"))
-									details["Urls/"+QString::number(j+1)+"/AltPage"] = details["Urls/"+sr+"/AltPage"];
+								if (details.contains("Urls/"+sr+"/AltPagePrev"))
+									details["Urls/"+QString::number(j+1)+"/AltPagePrev"] = details["Urls/"+sr+"/AltPagePrev"];
+								if (details.contains("Urls/"+sr+"/AltPageNext"))
+									details["Urls/"+QString::number(j+1)+"/AltPageNext"] = details["Urls/"+sr+"/AltPageNext"];
 							}
 							_prependUrl(&details, lineSsl, "Urls/Html/Post");
 							_prependUrl(&details, lineSsl, "Urls/Html/Tags");

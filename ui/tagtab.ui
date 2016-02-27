@@ -119,7 +119,7 @@
         <number>1</number>
        </property>
        <property name="maximum">
-        <number>1000</number>
+        <number>100000</number>
        </property>
       </widget>
      </item>
@@ -231,7 +231,7 @@
            <x>0</x>
            <y>0</y>
            <width>762</width>
-           <height>16</height>
+           <height>40</height>
           </rect>
          </property>
          <layout class="QHBoxLayout" name="layoutSourcesList">

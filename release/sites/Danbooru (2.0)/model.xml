@@ -10,7 +10,8 @@
 			<Preview>/data/preview/{md5}.jpg</Preview>
 			<MaxLimit>200</MaxLimit>
 			<MaxPage>1000</MaxPage>
-			<AltPage>b{id}</AltPage>
+			<AltPagePrev>a{max}</AltPagePrev>
+			<AltPageNext>b{min}</AltPageNext>
 		</Xml>
 		<Json>
 			<Login>login={pseudo}&amp;password_hash={password}&amp;</Login>
@@ -20,7 +21,8 @@
 			<Preview>/data/preview/{md5}.jpg</Preview>
 			<MaxLimit>200</MaxLimit>
 			<MaxPage>1000</MaxPage>
-			<AltPage>b{id}</AltPage>
+			<AltPagePrev>a{max}</AltPagePrev>
+			<AltPageNext>b{min}</AltPageNext>
 		</Json>
 		<Html>
 			<Login>login={pseudo}&amp;password_hash={password}&amp;</Login>
@@ -29,7 +31,8 @@
 			<Post>/posts/{id}</Post>
 			<Image>/preview/->/&amp;/ssd/->/</Image>
 			<MaxPage>1000</MaxPage>
-			<AltPage>b{id}</AltPage>
+			<AltPagePrev>a{max}</AltPagePrev>
+			<AltPageNext>b{min}</AltPageNext>
 		</Html>
 	</Urls>
 	<Regex>

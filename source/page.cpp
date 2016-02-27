@@ -8,8 +8,8 @@
 
 
 
-Page::Page(Site *site, QMap<QString,Site*> *sites, QStringList tags, int page, int limit, QStringList postFiltering, bool smart, QObject *parent, int pool, int lastPageMaxId)
-	: QObject(parent), m_site(site), m_postFiltering(postFiltering), m_errors(QStringList()), m_imagesPerPage(limit), m_currentSource(0), m_smart(smart), m_lastPageMaxId(lastPageMaxId)
+Page::Page(Site *site, QMap<QString,Site*> *sites, QStringList tags, int page, int limit, QStringList postFiltering, bool smart, QObject *parent, int pool, int lastPage, int lastPageMinId, int lastPageMaxId)
+	: QObject(parent), m_site(site), m_postFiltering(postFiltering), m_errors(QStringList()), m_imagesPerPage(limit), m_currentSource(0), m_smart(smart), m_lastPage(lastPage), m_lastPageMinId(lastPageMinId), m_lastPageMaxId(lastPageMaxId)
 {
 	m_website = m_site->url();
 	m_imagesCount = -1;
@@ -136,15 +136,18 @@ void Page::fallback(bool bload)
 	// Global replace tokens
 	m_originalUrl = QString(url);
 	url.replace("{pid}", QString::number(pid));
-	if (!m_site->contains("Urls/"+QString::number(m_currentSource)+"/MaxPage") || p <= m_site->value("Urls/"+QString::number(m_currentSource)+"/MaxPage").toInt() || m_lastPageMaxId <= 0)
+	qDebug() << m_page << m_lastPage << m_lastPageMinId << m_lastPageMaxId;
+	if (!m_site->contains("Urls/"+QString::number(m_currentSource)+"/MaxPage") || p <= m_site->value("Urls/"+QString::number(m_currentSource)+"/MaxPage").toInt() || m_lastPage > m_page + 1 || m_lastPage < m_page - 1)
 	{
 		url.replace("{page}", QString::number(p));
 		url.replace("{altpage}", "");
 	}
 	else
 	{
-		QString altpage = m_site->value("Urls/"+QString::number(m_currentSource)+"/AltPage");
-		altpage.replace("{id}", QString::number(m_lastPageMaxId));
+		QString altpage = m_site->value("Urls/"+QString::number(m_currentSource)+"/AltPage" + (m_lastPage > m_page ? "Prev" : "Next"));
+		qDebug() << "alt" << altpage;
+		altpage.replace("{min}", QString::number(m_lastPageMinId));
+		altpage.replace("{max}", QString::number(m_lastPageMaxId));
 		url.replace("{altpage}", altpage);
 		url.replace("{page}", "");
 	}
