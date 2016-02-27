@@ -3,15 +3,19 @@
 	<Name>Zerochan</Name>
 	<Urls>
 		<Html>
-			<Tags>/{tags}?p={page}</Tags>
+			<Tags>/{tags}?p={page}&amp;o={altpage}</Tags>
 			<Post>/{id}</Post>
 			<Limit>22</Limit>
 			<Image>\.240\.->.full.&amp;\.600\.->.full.&amp;/240/->/full/&amp;/600/->/full/&amp;/s\d\.zerochan->/static.zerochan</Image>
+			<MaxPage>100</MaxPage>
+			<AltPage>{id}</AltPage>
 		</Html>
 		<Rss>
-			<Tags>/{tags}?s=id&amp;xml&amp;p={page}</Tags>
+			<Tags>/{tags}?s=id&amp;xml&amp;p={page}&amp;o={altpage}</Tags>
 			<Limit>100</Limit>
 			<Image>\.240\.->.full.&amp;\.600\.->.full.&amp;/240/->/full/&amp;/600/->/full/&amp;/s\d\.zerochan->/static.zerochan</Image>
+			<MaxPage>100</MaxPage>
+			<AltPage>{id}</AltPage>
 		</Rss>
 	</Urls>
 	<Regex>

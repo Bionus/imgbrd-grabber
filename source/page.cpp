@@ -8,7 +8,8 @@
 
 
 
-Page::Page(Site *site, QMap<QString,Site*> *sites, QStringList tags, int page, int limit, QStringList postFiltering, bool smart, QObject *parent, int pool) : QObject(parent), m_site(site), m_postFiltering(postFiltering), m_errors(QStringList()), m_imagesPerPage(limit), m_currentSource(0), m_smart(smart)
+Page::Page(Site *site, QMap<QString,Site*> *sites, QStringList tags, int page, int limit, QStringList postFiltering, bool smart, QObject *parent, int pool, int lastPageMaxId)
+	: QObject(parent), m_site(site), m_postFiltering(postFiltering), m_errors(QStringList()), m_imagesPerPage(limit), m_currentSource(0), m_smart(smart), m_lastPageMaxId(lastPageMaxId)
 {
 	m_website = m_site->url();
 	m_imagesCount = -1;
@@ -135,7 +136,18 @@ void Page::fallback(bool bload)
 	// Global replace tokens
 	m_originalUrl = QString(url);
 	url.replace("{pid}", QString::number(pid));
-	url.replace("{page}", QString::number(p));
+	if (!m_site->contains("Urls/"+QString::number(m_currentSource)+"/MaxPage") || p <= m_site->value("Urls/"+QString::number(m_currentSource)+"/MaxPage").toInt() || m_lastPageMaxId <= 0)
+	{
+		url.replace("{page}", QString::number(p));
+		url.replace("{altpage}", "");
+	}
+	else
+	{
+		QString altpage = m_site->value("Urls/"+QString::number(m_currentSource)+"/AltPage");
+		altpage.replace("{id}", QString::number(m_lastPageMaxId));
+		url.replace("{altpage}", altpage);
+		url.replace("{page}", "");
+	}
 	url.replace("{tags}", QUrl::toPercentEncoding(t));
 	url.replace("{limit}", QString::number(m_imagesPerPage));
 	url.replace("{pseudo}", pseudo);

@@ -9,7 +9,8 @@ extern mainWindow *_mainwindow;
 
 
 
-searchTab::searchTab(int id, QMap<QString,Site*> *sites, QWidget *parent) : QWidget(parent), m_id(id), m_sites(sites)
+searchTab::searchTab(int id, QMap<QString,Site*> *sites, QWidget *parent)
+	: QWidget(parent), m_id(id), m_sites(sites), m_lastPageMaxId(0)
 { }
 searchTab::~searchTab()
 { emit deleted(m_id); }

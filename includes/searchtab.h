@@ -58,7 +58,7 @@ class searchTab : public QWidget
 		void deleted(int);
 
 	protected:
-		int					m_id;
+		int					m_id, m_lastPageMaxId;
 		QList<QBouton*>		m_boutons;
 		QStringList			m_selectedImages;
 		QList<Image*>		m_selectedImagesPtrs;

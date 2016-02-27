@@ -10,7 +10,8 @@ extern mainWindow *_mainwindow;
 
 
 
-tagTab::tagTab(int id, QMap<QString,Site*> *sites, QList<Favorite> favorites, mainWindow *parent) : searchTab(id, sites, parent), ui(new Ui::tagTab), m_id(id), m_parent(parent), m_favorites(favorites), m_pagemax(-1), m_lastTags(QString()), m_sized(false), m_from_history(false), m_stop(true), m_history_cursor(0), m_history(QList<QMap<QString,QString> >()), m_modifiers(QStringList())
+tagTab::tagTab(int id, QMap<QString,Site*> *sites, QList<Favorite> favorites, mainWindow *parent)
+	: searchTab(id, sites, parent), ui(new Ui::tagTab), m_id(id), m_parent(parent), m_favorites(favorites), m_pagemax(-1), m_lastTags(QString()), m_sized(false), m_from_history(false), m_stop(true), m_history_cursor(0), m_history(QList<QMap<QString,QString> >()), m_modifiers(QStringList())
 {
 	ui->setupUi(this);
 	ui->widgetMeant->hide();
@@ -243,7 +244,7 @@ void tagTab::load()
 			int perpage = ui->spinImagesPerPage->value();
 
             // Load results
-			Page *page = new Page(m_sites->value(m_sites->keys().at(i)), m_sites, tags, ui->spinPage->value(), perpage, m_postFiltering->toPlainText().split(" ", QString::SkipEmptyParts), false, this);
+			Page *page = new Page(m_sites->value(m_sites->keys().at(i)), m_sites, tags, ui->spinPage->value(), perpage, m_postFiltering->toPlainText().split(" ", QString::SkipEmptyParts), false, this, 0, m_lastPageMaxId);
 			log(tr("Chargement de la page <a href=\"%1\">%1</a>").arg(page->url().toString().toHtmlEscaped()));
 			connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(finishedLoading(Page*)));
 			m_pages.insert(page->website(), page);
@@ -282,6 +283,10 @@ void tagTab::finishedLoading(Page* page)
 
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
 	QList<Image*> imgs = page->images();
+	m_lastPageMaxId = 0;
+	for (Image *img : imgs)
+		if (img->id() < m_lastPageMaxId || m_lastPageMaxId == 0)
+			m_lastPageMaxId = img->id();
 	m_images.append(imgs);
 
 	int maxpage = page->pagesCount();
