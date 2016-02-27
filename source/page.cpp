@@ -761,7 +761,7 @@ void Page::parseTags()
 	if (m_site->contains("Regex/LastPage"))
 	{
 		QRegExp rxlast(m_site->value("Regex/LastPage"));
-		rxlast.indexIn(m_source, 0);
+		rxlast.indexIn(source, 0);
 		m_pagesCount = rxlast.cap(1).remove(",").toInt();
 		if (m_originalUrl.contains("{pid}"))
 		{
