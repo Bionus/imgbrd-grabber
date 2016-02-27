@@ -280,19 +280,12 @@ void tagTab::finishedLoading(Page* page)
 		return;
 
 	log(tr("Réception de la page <a href=\"%1\">%1</a>").arg(page->url().toString().toHtmlEscaped()));
-
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
+
+	m_lastPage = page->page();
+	m_lastPageMinId = page->minId();
+	m_lastPageMaxId = page->maxId();
 	QList<Image*> imgs = page->images();
-	m_lastPage = ui->spinPage->value();
-	m_lastPageMinId = 0;
-	m_lastPageMaxId = 0;
-	for (Image *img : imgs)
-	{
-		if (img->id() < m_lastPageMinId || m_lastPageMinId == 0)
-			m_lastPageMinId = img->id();
-		if (img->id() > m_lastPageMaxId || m_lastPageMaxId == 0)
-			m_lastPageMaxId = img->id();
-	}
 	m_images.append(imgs);
 
 	int maxpage = page->pagesCount();

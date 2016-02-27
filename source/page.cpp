@@ -136,7 +136,6 @@ void Page::fallback(bool bload)
 	// Global replace tokens
 	m_originalUrl = QString(url);
 	url.replace("{pid}", QString::number(pid));
-	qDebug() << m_page << m_lastPage << m_lastPageMinId << m_lastPageMaxId;
 	if (!m_site->contains("Urls/"+QString::number(m_currentSource)+"/MaxPage") || p <= m_site->value("Urls/"+QString::number(m_currentSource)+"/MaxPage").toInt() || m_lastPage > m_page + 1 || m_lastPage < m_page - 1)
 	{
 		url.replace("{page}", QString::number(p));
@@ -145,7 +144,6 @@ void Page::fallback(bool bload)
 	else
 	{
 		QString altpage = m_site->value("Urls/"+QString::number(m_currentSource)+"/AltPage" + (m_lastPage > m_page ? "Prev" : "Next"));
-		qDebug() << "alt" << altpage;
 		altpage.replace("{min}", QString::number(m_lastPageMinId));
 		altpage.replace("{max}", QString::number(m_lastPageMaxId));
 		url.replace("{altpage}", altpage);
@@ -212,6 +210,16 @@ void Page::fallback(bool bload)
 
 	if (bload)
 	{ load(); }
+}
+
+void Page::setLastPage(Page *page)
+{
+	m_lastPage = page->page();
+	m_lastPageMaxId = page->maxId();
+	m_lastPageMinId = page->minId();
+
+	m_currentSource--;
+	fallback(false);
 }
 
 void Page::load()
@@ -803,6 +811,8 @@ QStringList		Page::errors()		{ return m_errors;		}
 
 int Page::imagesPerPage()
 { return m_imagesPerPage;	}
+int Page::page()
+{ return m_page;			}
 int Page::highLimit()
 {
 	if (m_site->contains("Urls/"+QString::number(m_currentSource)+"/Limit"))
@@ -821,4 +831,21 @@ int Page::pagesCount(bool guess)
 	if (m_pagesCount < 0 && guess && m_imagesCount >= 0)
 		return (int)ceil((m_imagesCount * 1.) / m_imagesPerPage);
 	return m_pagesCount;
+}
+
+int Page::maxId()
+{
+	int maxId = 0;
+	for (Image *img : m_images)
+		if (img->id() > maxId || maxId == 0)
+			maxId = img->id();
+	return maxId;
+}
+int Page::minId()
+{
+	int minId = 0;
+	for (Image *img : m_images)
+		if (img->id() < minId || minId == 0)
+			minId = img->id();
+	return minId;
 }

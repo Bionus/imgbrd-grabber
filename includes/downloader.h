@@ -60,6 +60,7 @@ class Downloader : public QObject
 		void clear();
 
 	private:
+		Page *m_lastPage;
 		QList<Site*> *m_sites;
 		QList<Page*> *m_pages, *m_pagesC, *m_pagesT, *m_opages, *m_opagesC, *m_opagesT;
 		QList<Image*> *m_images;

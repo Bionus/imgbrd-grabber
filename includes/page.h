@@ -21,6 +21,7 @@ class Page : public QObject
 	public:
 		explicit Page(Site *site, QMap<QString,Site*> *sites, QStringList tags = QStringList(), int page = 1, int limit = 25, QStringList postFiltering = QStringList(), bool smart = false, QObject *parent = 0, int pool = 0, int lastPage = 0, int lastPageMinId = 0, int lastPageMaxId = 0);
 		~Page();
+		void			setLastPage(Page *page);
 		void			load();
 		void			loadTags();
 		void			fallback(bool load = true);
@@ -37,6 +38,9 @@ class Page : public QObject
 		QStringList		errors();
 		int				imagesPerPage();
 		int				highLimit();
+		int				page();
+		int				minId();
+		int				maxId();
 
 	public slots:
 		void parse();

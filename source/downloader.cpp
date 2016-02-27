@@ -69,6 +69,7 @@ Downloader::Downloader(QStringList tags, QStringList postfiltering, QStringList 
 	m_duplicates = 0;
 	m_results = new QList<Tag>();
 	m_images = new QList<Image*>();
+	m_lastPage = nullptr;
 }
 
 void Downloader::setQuit(bool quit)
@@ -232,6 +233,9 @@ void Downloader::loadNext()
 	if (!m_opagesC->isEmpty())
 	{
 		Page *page = m_opagesC->takeFirst();
+		if (m_lastPage != nullptr)
+		{ page->setLastPage(m_lastPage); }
+		m_lastPage = page;
 		log("Loading count '"+page->url().toString()+"'");
 		page->loadTags();
 		return;
@@ -240,6 +244,9 @@ void Downloader::loadNext()
 	if (!m_opagesT->isEmpty())
 	{
 		Page *page = m_opagesT->takeFirst();
+		if (m_lastPage != nullptr)
+		{ page->setLastPage(m_lastPage); }
+		m_lastPage = page;
 		log("Loading tags '"+page->url().toString()+"'");
 		page->loadTags();
 		return;
@@ -248,6 +255,9 @@ void Downloader::loadNext()
 	if (!m_opages->isEmpty())
 	{
 		Page *page = m_opages->takeFirst();
+		if (m_lastPage != nullptr)
+		{ page->setLastPage(m_lastPage); }
+		m_lastPage = page;
 		log("Loading images '"+page->url().toString()+"'");
 		page->load();
 		return;
