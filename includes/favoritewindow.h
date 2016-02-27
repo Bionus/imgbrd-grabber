@@ -3,7 +3,7 @@
 
 #include <QDialog>
 #include <QDateTime>
-
+#include "favorite.h"
 
 
 namespace Ui
@@ -12,13 +12,12 @@ namespace Ui
 }
 
 
-
 class favoriteWindow : public QDialog
 {
 	Q_OBJECT
 
 	public:
-		favoriteWindow(QString, int, QDateTime, QWidget *parent);
+		favoriteWindow(Favorite, QWidget *parent);
 		~favoriteWindow();
 
 	public slots:
@@ -31,9 +30,7 @@ class favoriteWindow : public QDialog
 
 	private:
 		Ui::favoriteWindow *ui;
-		int m_note;
-		QString m_tag;
-		QDateTime m_lastviewed;
+		Favorite favorite;
 
 };
 

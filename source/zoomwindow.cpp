@@ -23,7 +23,9 @@ zoomWindow::zoomWindow(Image *image, Site *site, QMap<QString,Site*> *sites, QWi
 	ui->setupUi(this);
 	setAttribute(Qt::WA_DeleteOnClose);
 
-	m_favorites = loadFavorites().keys();
+	QList<Favorite> favorites = loadFavorites();
+	for (Favorite fav : favorites)
+		m_favorites.append(fav.getName());
 	m_viewItLater = loadViewItLater();
     m_ignore = loadIgnored();
     m_image = new Image(image->details(), image->page());
@@ -145,7 +147,7 @@ zoomWindow::~zoomWindow()
 {
 	/*if (m_imageTime != NULL)
 		delete m_imageTime;*/
-	if (image != NULL)
+	if (image != nullptr)
 		delete image;
 	if (movie != NULL)
 		movie->deleteLater();
@@ -287,15 +289,10 @@ void zoomWindow::setfavorite()
 	if (!QDir(savePath("thumbs")).exists())
 	{ QDir(savePath()).mkdir("thumbs"); }
 
-	if (image != NULL)
+	if (image != nullptr)
 	{
-		if (image->width() > 150 || image->height() > 150)
-		{
-			QPixmap img = image->scaled(QSize(150,150), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-			img.save(savePath("thumbs/"+link+".png"), "PNG");
-		}
-		else
-		{ image->save(savePath("thumbs/"+link+".png"), "PNG"); }
+		Favorite fav(link);
+		fav.setImage(*image);
 	}
 
 	_mainwindow->updateFavorites();
@@ -311,7 +308,7 @@ void zoomWindow::unfavorite()
 	f.close();
 
 	favs.replace("\r\n", "\n").replace("\r", "\n").replace("\n", "\r\n");
-	QRegExp reg(link+"\\|(.+)\\r\\n");
+	QRegExp reg(QRegExp::escape(link) + "\\|(.+)\\r\\n");
 	reg.setMinimal(true);
 	favs.remove(reg);
 
@@ -729,7 +726,7 @@ QString zoomWindow::saveImageAs()
 	if (!path.isEmpty())
 	{
 		path = QDir::toNativeSeparators(path);
-		settings.setValue("Zoom/lastDir", path.section('/', 0, -2));
+		settings.setValue("Zoom/lastDir", path.section(QDir::toNativeSeparators("/"), 0, -2));
 
 		m_image->save(path, true, true);
 	}

@@ -9,6 +9,7 @@
 #include <QLayout>
 #include <algorithm>
 #include <QString>
+#include "favorite.h"
 
 #define DONE()	logUpdate(QObject::tr(" Fait"))
 
@@ -58,9 +59,9 @@ void		removeMd5(QString);
 
 QString fixFilename(QString filename, QString path = "", int maxlength = 0);
 
-QMap<QString,QString>		loadFavorites();
-QStringList					loadViewItLater();
-QStringList					loadIgnored();
+QList<Favorite> loadFavorites();
+QStringList		loadViewItLater();
+QStringList		loadIgnored();
 
 QString						mapToString(QMap<QString,QString> map, QString gen = "{gen}", QString mid = "{mid}");
 QMap<QString,QString>		domToMap(QDomElement);
@@ -78,12 +79,12 @@ QList<T> reversed(const QList<T> & in)
 	std::reverse_copy(in.begin(), in.end(), std::back_inserter(result));
 	return result;
 }
-inline bool sortByNote(const QMap<QString,QString> &s1, const QMap<QString,QString> &s2)
-{ return s1["note"].toInt() < s2["note"].toInt(); }
-inline bool sortByName(const QMap<QString,QString> &s1, const QMap<QString,QString> &s2)
-{ return s1["name"].toLower() < s2["name"].toLower(); }
-inline bool sortByLastviewed(const QMap<QString,QString> &s1, const QMap<QString,QString> &s2)
-{ return QDateTime::fromString(s1["lastviewed"], Qt::ISODate) < QDateTime::fromString(s2["lastviewed"], Qt::ISODate); }
+inline bool sortByNote(const Favorite &s1, const Favorite &s2)
+{ return s1.getNote() < s2.getNote(); }
+inline bool sortByName(const Favorite &s1, const Favorite &s2)
+{ return s1.getName().toLower() < s2.getName().toLower(); }
+inline bool sortByLastviewed(const Favorite &s1, const Favorite &s2)
+{ return s1.getLastViewed() < s2.getLastViewed(); }
 
 
 #endif

@@ -162,6 +162,8 @@ Image::Image(QMap<QString, QString> details, Page* parent)
 		else
 		{ m_createdAt = qDateTimeFromString(details["created_at"]); }
 	}
+	else if (details.contains("date"))
+	{ m_createdAt = QDateTime::fromString(details["date"], Qt::ISODate); }
 
 	// Tech details
 	m_parent = parent;
@@ -227,10 +229,17 @@ void Image::parsePreview()
 	if (m_imagePreview.isNull() && m_previewTry <= 3)
 	{
 		log(tr("<b>Attention :</b> %1").arg(tr("une des miniatures est vide (<a href=\"%1\">%1</a>). Nouvel essai (%2/%3)...").arg(m_previewUrl.toString()).arg(m_previewTry).arg(3)));
-		loadPreview();
+
+		if (hasTag("flash"))
+		{ m_imagePreview.load(":/images/flash.png"); }
+		else
+		{
+			loadPreview();
+			return;
+		}
 	}
-	else
-	{ emit finishedLoadingPreview(this); }
+
+	emit finishedLoadingPreview(this);
 }
 
 void Image::loadDetails()

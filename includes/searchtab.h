@@ -17,9 +17,10 @@ class searchTab : public QWidget
     public:
 		searchTab(int id, QMap<QString,Site*> *sites, QWidget *parent = 0);
         ~searchTab();
+		void mouseReleaseEvent(QMouseEvent *e);
 		virtual QList<bool> sources();
         virtual QString tags() = 0;
-        virtual QString results() = 0;
+		QList<Tag> results();
 		virtual QString wiki() = 0;
 		virtual int imagesPerPage() = 0;
 		virtual int columns() = 0;
@@ -41,21 +42,32 @@ class searchTab : public QWidget
 		// Sources
 		void openSourcesWindow();
 		void saveSources(QList<bool>);
+		// Favorites
+		void favorite();
+		void unfavorite();
+		// Pagination
+		virtual void firstPage() = 0;
+		virtual void previousPage() = 0;
+		virtual void nextPage() = 0;
+		virtual void lastPage() = 0;
 
     signals:
         void titleChanged(searchTab*);
         void changed(searchTab*);
         void closed(searchTab*);
-        void deleted(int);
+		void deleted(int);
 
 	protected:
-		int					m_id;
+		int					m_id, m_lastPage, m_lastPageMaxId, m_lastPageMinId;
 		QList<QBouton*>		m_boutons;
 		QStringList			m_selectedImages;
 		QList<Image*>		m_selectedImagesPtrs;
 		QList<bool>			m_selectedSources;
 		QMap<QString,Site*>	*m_sites;
 		QList<QCheckBox*>	m_checkboxes;
+		QList<Favorite>		m_favorites;
+		QString				m_link;
+		QList<Tag>			m_tags;
 };
 
 #endif // SEARCHTAB_H

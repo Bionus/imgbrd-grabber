@@ -32,7 +32,7 @@
      <number>0</number>
     </property>
     <item>
-     <widget class="QTabWidget" name="tabWidget">
+     <widget class="QClosableTabWidget" name="tabWidget">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
         <horstretch>0</horstretch>
@@ -195,6 +195,11 @@
           <column>
            <property name="text">
             <string>Url</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Date</string>
            </property>
           </column>
           <column>
@@ -455,7 +460,7 @@
    <attribute name="dockWidgetArea">
     <number>1</number>
    </attribute>
-   <widget class="QWidget" name="dockWidgetContentsInternet">
+   <widget class="QWidget" name="dockInternetLayout">
     <layout class="QVBoxLayout" name="verticalLayout">
      <property name="leftMargin">
       <number>0</number>
@@ -470,7 +475,7 @@
       <number>0</number>
      </property>
      <item>
-      <widget class="QScrollArea" name="scrollArea_2">
+      <widget class="QScrollArea" name="dockInternetScroll">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Ignored">
          <horstretch>0</horstretch>
@@ -483,7 +488,7 @@
        <property name="widgetResizable">
         <bool>true</bool>
        </property>
-       <widget class="QWidget" name="scrollAreaWidgetContents_2">
+       <widget class="QWidget" name="dockInternetScrollLayout_2">
         <property name="geometry">
          <rect>
           <x>0</x>
@@ -492,19 +497,42 @@
           <height>36</height>
          </rect>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout_9">
+        <layout class="QVBoxLayout" name="dockInternetScrollLayout_1">
+         <property name="spacing">
+          <number>0</number>
+         </property>
          <item>
-          <widget class="QLabel" name="labelTags">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
+          <spacer name="verticalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
            </property>
-           <property name="text">
-            <string/>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
            </property>
-          </widget>
+          </spacer>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="dockInternetScrollLayout">
+           <property name="spacing">
+            <number>0</number>
+           </property>
+          </layout>
+         </item>
+         <item>
+          <spacer name="verticalSpacer_4">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
          </item>
         </layout>
        </widget>
@@ -520,7 +548,7 @@
    <attribute name="dockWidgetArea">
     <number>1</number>
    </attribute>
-   <widget class="QWidget" name="dockWidgetContentsKfl">
+   <widget class="QWidget" name="dockKflLayout">
     <layout class="QVBoxLayout" name="verticalLayout_7">
      <property name="leftMargin">
       <number>0</number>
@@ -535,7 +563,7 @@
       <number>0</number>
      </property>
      <item>
-      <widget class="QScrollArea" name="scrollArea_3">
+      <widget class="QScrollArea" name="dockKflScroll">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Ignored">
          <horstretch>0</horstretch>
@@ -548,7 +576,7 @@
        <property name="widgetResizable">
         <bool>true</bool>
        </property>
-       <widget class="QWidget" name="scrollAreaWidgetContents_3">
+       <widget class="QWidget" name="dockKflScrollLayout_2">
         <property name="geometry">
          <rect>
           <x>0</x>
@@ -557,19 +585,42 @@
           <height>35</height>
          </rect>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout_10">
+        <layout class="QVBoxLayout" name="dockKflScrollLayout_1">
+         <property name="spacing">
+          <number>0</number>
+         </property>
          <item>
-          <widget class="QLabel" name="labelKpl">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
+          <spacer name="verticalSpacer_5">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
            </property>
-           <property name="text">
-            <string/>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
            </property>
-          </widget>
+          </spacer>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="dockKflScrollLayout">
+           <property name="spacing">
+            <number>0</number>
+           </property>
+          </layout>
+         </item>
+         <item>
+          <spacer name="verticalSpacer_6">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
          </item>
         </layout>
        </widget>
@@ -679,7 +730,7 @@
            <property name="sizeHint" stdset="0">
             <size>
              <width>20</width>
-             <height>52</height>
+             <height>20</height>
             </size>
            </property>
           </spacer>
@@ -699,7 +750,7 @@
            <property name="sizeHint" stdset="0">
             <size>
              <width>20</width>
-             <height>40</height>
+             <height>20</height>
             </size>
            </property>
           </spacer>
@@ -1032,6 +1083,14 @@
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QClosableTabWidget</class>
+   <extends>QTabWidget</extends>
+   <header>qclosabletabwidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>tabWidget</tabstop>
   <tabstop>tableBatchGroups</tabstop>
@@ -1040,8 +1099,8 @@
   <tabstop>scrollArea</tabstop>
   <tabstop>buttonClearlog</tabstop>
   <tabstop>buttonOpenLog</tabstop>
-  <tabstop>scrollArea_2</tabstop>
-  <tabstop>scrollArea_3</tabstop>
+  <tabstop>dockInternetScroll</tabstop>
+  <tabstop>dockKflScroll</tabstop>
   <tabstop>comboOrderFav</tabstop>
   <tabstop>comboAscFav</tabstop>
   <tabstop>scrollArea_5</tabstop>
@@ -1248,22 +1307,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>labelTags</sender>
-   <signal>linkActivated(QString)</signal>
-   <receiver>mainWindow</receiver>
-   <slot>loadTag(QString)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>72</x>
-     <y>69</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>-7</x>
-     <y>77</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>labelWiki</sender>
    <signal>linkActivated(QString)</signal>
    <receiver>mainWindow</receiver>
@@ -1276,22 +1319,6 @@
     <hint type="destinationlabel">
      <x>-12</x>
      <y>480</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>labelKpl</sender>
-   <signal>linkActivated(QString)</signal>
-   <receiver>mainWindow</receiver>
-   <slot>loadTag(QString)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>44</x>
-     <y>127</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>-6</x>
-     <y>190</y>
     </hint>
    </hints>
   </connection>

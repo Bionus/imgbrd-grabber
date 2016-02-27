@@ -11,7 +11,7 @@ class TextEdit : public QTextEdit
 	Q_OBJECT
 
 	public:
-		TextEdit(QStringList, QWidget *parent = 0);
+		TextEdit(QStringList favs, QWidget *parent = 0);
 		~TextEdit();
 		void setCompleter(QCompleter *c);
 		QCompleter *completer() const;

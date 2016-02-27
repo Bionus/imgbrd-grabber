@@ -122,13 +122,20 @@ void mainWindow::init()
 	restoreState(m_settings->value("state").toByteArray());
 
 	// Selected ones
+	QStringList keys = m_sites.keys();
 	QString sav = m_settings->value("sites", "1").toString();
+	m_waitForLogin = 0;
 	for (int i = 0; i < m_sites.count(); i++)
 	{
-		if (sav.count() <= i)
-		{ m_selectedSources.append(false); }
+		if (i < sav.count() && sav[i] == '1')
+		{
+			m_selectedSources.append(true);
+			connect(m_sites[keys[i]], &Site::loggedIn, this, &mainWindow::initialLoginsFinished);
+			m_sites[keys[i]]->login();
+			m_waitForLogin++;
+		}
 		else
-		{ m_selectedSources.append(sav.at(i) == '1' ? true : false); }
+		{ m_selectedSources.append(false); }
 	}
 
 	QPushButton *add = new QPushButton(QIcon(":/images/add.png"), "", this);
@@ -155,21 +162,19 @@ void mainWindow::init()
 			{ restore = true; }
 		}
 	}
-	ui->tabWidget->setCurrentIndex(0);
-	if (restore)
+	if (m_waitForLogin == 0)
 	{
-		loadLinkList(savePath("restore.igl"));
-		loadTabs(savePath("tabs.txt"));
+		m_waitForLogin = 1;
+		initialLoginsFinished();
 	}
-	if (m_tabs.isEmpty())
-	{ addTab(); }
 
 	// Favorites tab
-	m_favoritesTab = new favoritesTab(m_tabs.size(), &m_sites, &m_favorites, this);
+	m_favoritesTab = new favoritesTab(m_tabs.size(), &m_sites, m_favorites, this);
 	connect(m_favoritesTab, SIGNAL(batchAddGroup(QStringList)), this, SLOT(batchAddGroup(QStringList)));
 	connect(m_favoritesTab, SIGNAL(batchAddUnique(QMap<QString,QString>)), this, SLOT(batchAddUnique(QMap<QString,QString>)));
 	connect(m_favoritesTab, SIGNAL(changed(searchTab*)), this, SLOT(updateTabs()));
 	ui->tabWidget->insertTab(m_tabs.size(), m_favoritesTab, tr("Favoris"));
+	ui->tabWidget->setCurrentIndex(0);
 
 	ui->tableBatchGroups->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
 	ui->tableBatchUniques->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
@@ -203,8 +208,28 @@ void mainWindow::init()
 	//ui->lineFilename->setCompleter(new QCompleter(m_lineFilename_completer));
 
 	m_loaded = true;
+	m_currentTab = nullptr;
 	logShow();
 	log("Fin de l'initialisation.");
+}
+
+void mainWindow::initialLoginsFinished()
+{
+	m_waitForLogin--;
+	if (m_waitForLogin != 0)
+	{ return; }
+
+	bool restore = m_settings->value("start", "none").toString() == "restore";
+	if (restore)
+	{
+		loadLinkList(savePath("restore.igl"));
+		loadTabs(savePath("tabs.txt"));
+	}
+	if (m_tabs.isEmpty())
+	{ addTab(); }
+
+	ui->tabWidget->setCurrentIndex(0);
+	m_currentTab = ui->tabWidget->currentWidget();
 }
 
 void mainWindow::loadSites()
@@ -306,10 +331,10 @@ void mainWindow::onFirstLoad()
 	swin->show();
 }
 
-int mainWindow::addTab(QString tag)
+int mainWindow::addTab(QString tag, bool background)
 {
-	tagTab *w = new tagTab(m_tabs.size(), &m_sites, &m_favorites, this);
-	this->addSearchTab(w);
+	tagTab *w = new tagTab(m_tabs.size(), &m_sites, m_favorites, this);
+	this->addSearchTab(w, background);
 
 	if (!tag.isEmpty())
 	{ w->setTags(tag); }
@@ -319,7 +344,7 @@ int mainWindow::addTab(QString tag)
 }
 int mainWindow::addPoolTab(int pool, QString site)
 {
-	poolTab *w = new poolTab(m_tabs.size(), &m_sites, &m_favorites, this);
+	poolTab *w = new poolTab(m_tabs.size(), &m_sites, m_favorites, this);
 	this->addSearchTab(w);
 
 	if (!site.isEmpty())
@@ -330,7 +355,7 @@ int mainWindow::addPoolTab(int pool, QString site)
 	m_poolTabs.append(w);
 	return m_tabs.size() - 1;
 }
-void mainWindow::addSearchTab(searchTab *w)
+void mainWindow::addSearchTab(searchTab *w, bool background)
 {
 	if (m_tabs.size() > ui->tabWidget->currentIndex())
 	{
@@ -343,15 +368,19 @@ void mainWindow::addSearchTab(searchTab *w)
 	connect(w, SIGNAL(batchAddUnique(QMap<QString,QString>)), this, SLOT(batchAddUnique(QMap<QString,QString>)));
 	connect(w, SIGNAL(titleChanged(searchTab*)), this, SLOT(updateTabTitle(searchTab*)));
 	connect(w, SIGNAL(changed(searchTab*)), this, SLOT(updateTabs()));
-	connect(w, SIGNAL(closed(tagTab*)), this, SLOT(tabClosed(tagTab*)));
+	connect(w, SIGNAL(closed(searchTab*)), this, SLOT(tabClosed(searchTab*)));
 	int index = ui->tabWidget->insertTab(ui->tabWidget->currentIndex()+(!m_tabs.isEmpty()), w, tr("Nouvel onglet"));
 	m_tabs.append(w);
-	ui->tabWidget->setCurrentIndex(index);
+
 	QPushButton *closeTab = new QPushButton(QIcon(":/images/close.png"), "", this);
 		closeTab->setFlat(true);
 		closeTab->resize(QSize(8,8));
 		connect(closeTab, SIGNAL(clicked()), w, SLOT(deleteLater()));
 		ui->tabWidget->findChild<QTabBar*>()->setTabButton(index, QTabBar::RightSide, closeTab);
+
+	if (!background)
+		ui->tabWidget->setCurrentIndex(index);
+
 	saveTabs(savePath("tabs.txt"));
 }
 
@@ -360,12 +389,12 @@ bool mainWindow::saveTabs(QString filename)
 	QStringList tabs = QStringList();
 	for (tagTab *tab : m_tagTabs)
 	{
-		if (tab != nullptr)
+		if (tab != nullptr && m_tabs.contains(tab))
 		{ tabs.append(tab->tags()+"¤"+QString::number(tab->ui->spinPage->value())+"¤"+QString::number(tab->ui->spinImagesPerPage->value())+"¤"+QString::number(tab->ui->spinColumns->value())); }
 	}
 	for (poolTab *tab : m_poolTabs)
 	{
-		if (tab != nullptr)
+		if (tab != nullptr && m_tabs.contains(tab))
 		{ tabs.append(QString::number(tab->ui->spinPool->value())+"¤"+QString::number(tab->ui->comboSites->currentIndex())+"¤"+tab->tags()+"¤"+QString::number(tab->ui->spinPage->value())+"¤"+QString::number(tab->ui->spinImagesPerPage->value())+"¤"+QString::number(tab->ui->spinColumns->value())+"¤pool"); }
 	}
 
@@ -426,34 +455,52 @@ void mainWindow::updateTabs()
 {
 	saveTabs(savePath("tabs.txt"));
 }
-void mainWindow::tabClosed(tagTab *tab)
-{
-	m_tagTabs.removeAll(tab);
-	m_tabs.removeAll((searchTab*)tab);
-}
-void mainWindow::tabClosed(poolTab *tab)
-{
-	m_poolTabs.removeAll(tab);
-	m_tabs.removeAll((searchTab*)tab);
-}
 void mainWindow::tabClosed(searchTab *tab)
 {
 	m_tabs.removeAll(tab);
 }
 void mainWindow::currentTabChanged(int tab)
 {
-	if (m_loaded)
+	if (m_loaded && tab < m_tabs.size())
 	{
 		if (ui->tabWidget->widget(tab)->maximumWidth() != 16777214)
 		{
-			searchTab *tb = m_favoritesTab;
-			if (tab < m_tabs.size())
-			{ tb = m_tabs[tab]; }
-			ui->labelTags->setText(tb->results());
+			searchTab *tb = m_tabs[tab];
+			if (m_currentTab != nullptr && m_currentTab == ui->tabWidget->currentWidget())
+			{ return; }
+
+			setTags(tb->results());
+			m_currentTab = ui->tabWidget->currentWidget();
+
 			ui->labelWiki->setText("<style>.title { font-weight: bold; } ul { margin-left: -30px; }</style>"+tb->wiki());
 		}
 	}
 }
+
+void mainWindow::setTags(QList<Tag> tags, searchTab *from)
+{
+	if (from != nullptr && m_tabs.indexOf(from) != ui->tabWidget->currentIndex())
+		return;
+
+	clearLayout(ui->dockInternetScrollLayout);
+
+	QString text = "";
+	for (Tag tag : tags)
+	{
+		if (!text.isEmpty())
+			text += "<br/>";
+		text += tag.stylished(m_favorites, true);
+	}
+
+	QAffiche *taglabel = new QAffiche(QVariant(), 0, QColor(), this);
+	taglabel->setTextInteractionFlags(Qt::LinksAccessibleByMouse);
+	connect(taglabel, static_cast<void (QAffiche::*)(QString)>(&QAffiche::middleClicked), this, &mainWindow::loadTagTab);
+	connect(taglabel, &QAffiche::linkHovered, this, &mainWindow::linkHovered);
+	connect(taglabel, &QAffiche::linkActivated, this, &mainWindow::loadTagNoTab);
+	taglabel->setText(text);
+	ui->dockInternetScrollLayout->addWidget(taglabel);
+}
+
 void mainWindow::closeCurrentTab()
 {
 	// Unclosable tabs have a maximum width of 16777214 (default: 16777215)
@@ -508,14 +555,14 @@ void mainWindow::batchAddUnique(QMap<QString,QString> values, bool save)
 {
 	log(tr("Ajout d'une image en téléchargement unique : %1").arg(values.value("file_url")));
 	m_batchs.append(values);
-	QStringList types = QStringList() << "id" << "md5" <<  "rating" << "tags" << "file_url" << "site" << "filename" << "folder";
+	QStringList types = QStringList() << "id" << "md5" <<  "rating" << "tags" << "file_url" << "date" << "site" << "filename" << "folder";
 	QTableWidgetItem *item;
-	ui->tableBatchUniques->setRowCount(ui->tableBatchUniques->rowCount()+1);
+	ui->tableBatchUniques->setRowCount(ui->tableBatchUniques->rowCount() + 1);
 	for (int t = 0; t < types.count(); t++)
 	{
 		QString v = values.value(types.at(t));
 		item = new QTableWidgetItem(v);
-		ui->tableBatchUniques->setItem(ui->tableBatchUniques->rowCount()-1, t, item);
+		ui->tableBatchUniques->setItem(ui->tableBatchUniques->rowCount() - 1, t, item);
 	}
 
 	if (save)
@@ -559,13 +606,15 @@ void mainWindow::batchClearSel()
 		if (!todelete.contains(selected.at(i)->row()))
 			todelete.append(selected.at(i)->row());
 	qSort(todelete);
+
 	int rem = 0;
 	for (int i : todelete)
 	{
-		m_groupBatchs[i][m_groupBatchs.at(i).count() - 1] = "false";
-		int id = ui->tableBatchGroups->item(i - rem, 0)->text().toInt();
+		/*int id = ui->tableBatchGroups->item(i - rem, 0)->text().toInt();
 		m_progressBars[id - 1]->deleteLater();
-		m_progressBars[id - 1] = nullptr;
+		m_progressBars[id - 1] = nullptr;*/
+
+		m_groupBatchs[i][m_groupBatchs.at(i).count() - 1] = "false";
 		ui->tableBatchGroups->removeRow(i - rem);
 		rem++;
 	}
@@ -595,7 +644,7 @@ void mainWindow::batchMoveUp()
 
 	QList<int> rows;
 	int count = selected.size();
-	for (int i = 0; i < count; i++)
+	for (int i = 0; i < count; ++i)
 	{
 		int sourceRow = selected.at(i)->row();
 		if (rows.contains(sourceRow))
@@ -643,7 +692,7 @@ void mainWindow::batchMoveDown()
 
 	QList<int> rows;
 	int count = selected.size();
-	for (int i = 0; i < count; i++)
+	for (int i = count - 1; i >= 0; --i)
 	{
 		int sourceRow = selected.at(i)->row();
 		if (rows.contains(sourceRow))
@@ -746,7 +795,7 @@ void mainWindow::addGroup()
 	if (selected.isEmpty() && m_sites.size() > 0)
 	{ selected = m_sites.keys().at(0); }
 
-	AddGroupWindow *wAddGroup = new AddGroupWindow(selected, m_sites.keys(), m_favorites.keys(), this);
+	AddGroupWindow *wAddGroup = new AddGroupWindow(selected, m_sites.keys(), m_favorites, this);
 	connect(wAddGroup, SIGNAL(sendData(QStringList)), this, SLOT(batchAddGroup(QStringList)));
 	wAddGroup->show();
 }
@@ -791,52 +840,39 @@ void mainWindow::updateFavoritesDock()
 	QString order = assoc[qMax(ui->comboOrderFav->currentIndex(), 0)];
 	bool reverse = (ui->comboAscFav->currentIndex() == 1);
 	m_favorites = loadFavorites();
-	QStringList keys = m_favorites.keys();
-	QList<QMap<QString,QString> > favorites;
-
-	for (int i = 0; i < keys.size(); i++)
-	{
-		QMap<QString,QString> d;
-		QString tag = keys.at(i);
-		d["id"] = QString::number(i);
-		d["name"] = tag;
-		QStringList xp = m_favorites.value(tag).split("|");
-		d["note"] = xp.isEmpty() ? "50" : xp.takeFirst();
-		d["lastviewed"] = xp.isEmpty() ? QDateTime(QDate(2000, 1, 1), QTime(0, 0, 0, 0)).toString(Qt::ISODate) : xp.takeFirst();
-		tag.remove('\\').remove('/').remove(':').remove('*').remove('?').remove('"').remove('<').remove('>').remove('|');
-		d["tag"] = tag;
-		d["imagepath"] = savePath("thumbs/"+tag+".png");
-		if (!QFile::exists(d["imagepath"]))
-		{ d["imagepath"] = ":/images/noimage.png"; }
-		favorites.append(d);
-	}
-
-	qSort(favorites.begin(), favorites.end(), sortByName);
 	if (order == "note")
-	{ qSort(favorites.begin(), favorites.end(), sortByNote); }
+	{ qSort(m_favorites.begin(), m_favorites.end(), sortByNote); }
 	else if (order == "lastviewed")
-	{ qSort(favorites.begin(), favorites.end(), sortByLastviewed); }
+	{ qSort(m_favorites.begin(), m_favorites.end(), sortByLastviewed); }
+	else
+	{ qSort(m_favorites.begin(), m_favorites.end(), sortByName); }
 	if (reverse)
-	{ favorites = reversed(favorites); }
+	{ m_favorites = reversed(m_favorites); }
 	QString format = tr("dd/MM/yyyy");
 
-	for (int i = 0; i < favorites.size(); i++)
+	for (Favorite fav : m_favorites)
 	{
-		QLabel *lab = new QLabel(QString("<a href=\"%1\" style=\"color:black;text-decoration:none;\">%2</a>").arg(favorites[i]["name"], favorites[i]["tag"]), this);
+		QLabel *lab = new QLabel(QString("<a href=\"%1\" style=\"color:black;text-decoration:none;\">%2</a>").arg(fav.getName(), fav.getName()), this);
 		connect(lab, SIGNAL(linkActivated(QString)), this, SLOT(loadTag(QString)));
-		lab->setToolTip("<img src=\""+favorites[i]["imagepath"]+"\" /><br/>"+tr("<b>Nom :</b> %1<br/><b>Note :</b> %2 %%<br/><b>Dernière vue :</b> %3").arg(favorites[i]["name"], favorites[i]["note"], QDateTime::fromString(favorites[i]["lastviewed"], Qt::ISODate).toString(format)));
+		lab->setToolTip("<img src=\""+fav.getImagePath()+"\" /><br/>"+tr("<b>Nom :</b> %1<br/><b>Note :</b> %2 %%<br/><b>Dernière vue :</b> %3").arg(fav.getName(), QString::number(fav.getNote()), fav.getLastViewed().toString(format)));
 		ui->layoutFavoritesDock->addWidget(lab);
 	}
 }
 void mainWindow::updateKeepForLater()
 {
-	QStringList kpl = loadViewItLater();
-	QStringList text = QStringList();
+	QStringList kfl = loadViewItLater();
 
-	for (int i = 0; i < kpl.size(); i++)
-	{ text.append(QString("<a href=\"%1\" style=\"color:black;text-decoration:none;\">%1</a>").arg(kpl[i])); }
+	clearLayout(ui->dockKflScrollLayout);
 
-	ui->labelKpl->setText(text.join("<br/>"));
+	for (QString tag : kfl)
+	{
+		QAffiche *taglabel = new QAffiche(QString(tag), 0, QColor(), this);
+		taglabel->setText(QString("<a href=\"%1\" style=\"color:black;text-decoration:none;\">%1</a>").arg(tag));
+		taglabel->setTextInteractionFlags(Qt::LinksAccessibleByMouse);
+		connect(taglabel, static_cast<void (QAffiche::*)(QString)>(&QAffiche::middleClicked), this, &mainWindow::loadTagTab);
+		connect(taglabel, &QAffiche::linkActivated, this, &mainWindow::loadTagNoTab);
+		ui->dockKflScrollLayout->addWidget(taglabel);
+	}
 }
 
 
@@ -954,12 +990,20 @@ void mainWindow::saveAdvanced(sourcesWindow *w)
 	m_selectedSources = w->getSelected();
 
 	QString sav;
-	for (int i = 0; i < m_selectedSources.count(); i++)
-	{ sav += (m_selectedSources.at(i) ? "1" : "0"); }
+	for (bool active : m_selectedSources)
+	{ sav += (active ? "1" : "0"); }
 	m_settings->setValue("sites", sav);
 
-	for (int i = 0; i < m_tabs.count(); i++)
-	{ m_tabs[i]->updateCheckboxes(); }
+	// Log into new sources
+	QStringList keys = m_sites.keys();
+	for (int i = 0; i < m_sites.count(); i++)
+	{
+		if (sav.at(i) == '1')
+		{ m_sites[keys[i]]->login(); }
+	}
+
+	for (searchTab* tab : m_tabs)
+	{ tab->updateCheckboxes(); }
 
 	DONE();
 }
@@ -968,8 +1012,6 @@ void mainWindow::setSource(QString source)
 {
 	if (m_tabs.size() < 1)
 		return;
-
-	qDebug() << source;
 
 	QList<bool> sel;
 	QStringList keys = m_sites.keys();
@@ -1173,7 +1215,6 @@ void mainWindow::getAllLogin()
 	{
 		for (Site *site : *downloader->getSites())
 		{
-			qDebug() << "downloader" << site->name();
 			if (!m_getAllLogins.contains(site))
 			{
 				m_getAllLogins.append(site);
@@ -2026,9 +2067,13 @@ void mainWindow::md5FixOpen()
 
 void mainWindow::on_buttonSaveLinkList_clicked()
 {
-	QString save = QFileDialog::getSaveFileName(this, tr("Enregistrer la liste de liens"), QString(), tr("Liens Imageboard-Grabber (*.igl)"));
+	QString lastDir = m_settings->value("linksLastDir", "").toString();
+	QString save = QFileDialog::getSaveFileName(this, tr("Enregistrer la liste de liens"), QDir::toNativeSeparators(lastDir), tr("Liens Imageboard-Grabber (*.igl)"));
 	if (save.isEmpty())
 	{ return; }
+
+	save = QDir::toNativeSeparators(save);
+	m_settings->setValue("linksLastDir", save.section(QDir::toNativeSeparators("/"), 0, -2));
 
 	if (saveLinkList(save))
 	{ QMessageBox::information(this, tr("Enregistrer la liste de liens"), tr("Liste de liens enregistrée avec succès !")); }
@@ -2040,7 +2085,7 @@ bool mainWindow::saveLinkList(QString filename)
 	QByteArray links = "[IGL 2]\r\n";
 	for (int i = 0; i < m_groupBatchs.size(); i++)
 	{
-		if (m_progressBars[i] != nullptr)
+		if (m_progressBars[i] != nullptr && m_groupBatchs[i][m_groupBatchs.at(i).count() - 1] != "false")
 		{
 			while (m_groupBatchs[i].size() > 10)
 				m_groupBatchs[i].removeLast();
@@ -2051,7 +2096,7 @@ bool mainWindow::saveLinkList(QString filename)
 		}
 	}
 
-	QStringList vals = QStringList() << "id" << "md5" << "rating" << "tags" << "file_url" << "site" << "filename" << "folder";
+	QStringList vals = QStringList() << "id" << "md5" << "rating" << "tags" << "file_url" << "date" << "site" << "filename" << "folder";
 	for (int i = 0; i < m_batchs.size(); i++)
 	{
 		for (int j = 0; j < vals.size(); j++)
@@ -2105,9 +2150,9 @@ bool mainWindow::loadLinkList(QString filename)
 	{
 		m_allow = false;
 		QStringList infos = link.split((char)29);
-		if (infos.size() == 8)
+		if (infos.size() == 9)
 		{
-			QStringList vals = QStringList() << "id" << "md5" << "rating" << "tags" << "file_url" << "site" << "filename" << "folder";
+			QStringList vals = QStringList() << "id" << "md5" << "rating" << "tags" << "file_url" << "date" << "site" << "filename" << "folder";
 			QMap<QString,QString> values;
 			for (int i = 0; i < infos.size(); i++)
 			{ values.insert(vals[i], infos[i]); }
@@ -2156,7 +2201,7 @@ bool mainWindow::loadLinkList(QString filename)
 	return true;
 }
 
-void mainWindow::loadTag(QString tag)
+void mainWindow::loadTag(QString tag, bool newTab)
 {
 	if (tag.startsWith("http://"))
 	{
@@ -2164,9 +2209,17 @@ void mainWindow::loadTag(QString tag)
 		return;
 	}
 
-	if (m_tabs.count() > 0 && ui->tabWidget->currentIndex() < m_tabs.count())
-	{ m_tabs[ui->tabWidget->currentIndex()]->setTags(tag); }
+	if (newTab)
+		addTab(tag, true);
+	else if (m_tabs.count() > 0 && ui->tabWidget->currentIndex() < m_tabs.count())
+		m_tabs[ui->tabWidget->currentIndex()]->setTags(tag);
 }
+void mainWindow::loadTagTab(QString tag)
+{ loadTag(tag.isEmpty() ? m_link : tag, true); }
+void mainWindow::loadTagNoTab(QString tag)
+{ loadTag(tag.isEmpty() ? m_link : tag, false); }
+void mainWindow::linkHovered(QString tag)
+{ m_link = tag; }
 
 void mainWindow::on_buttonFolder_clicked()
 {
@@ -2273,3 +2326,5 @@ void mainWindow::updateDownloads()
 	else
 	{ setWindowTitle(tr("%n téléchargement(s) en cours", "", m_downloads)); }
 }
+
+QSettings* mainWindow::settings() { return m_settings; }

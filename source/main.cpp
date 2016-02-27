@@ -161,7 +161,6 @@ int main(int argc, char *argv[])
                                             parser.isSet(noDuplicatesOption),
                                             parser.value(tagsMinOption).toInt(),
                                             parser.value(tagsFormatOption));
-        dwnldr->setQuit(true);
 
         if (parser.isSet(returnCountOption))
             dwnldr->getPageCount();
@@ -173,6 +172,14 @@ int main(int argc, char *argv[])
             dwnldr->getUrls();
         if (parser.isSet(downloadOption))
             dwnldr->getImages();
+
+		dwnldr->setQuit(true);
+
+		QEventLoop loop;
+		QObject::connect(dwnldr, SIGNAL(quit()), &loop, SLOT(quit()));
+		loop.exec();
+
+		return 0;
     }
 	else
 	{

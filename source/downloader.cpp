@@ -69,6 +69,7 @@ Downloader::Downloader(QStringList tags, QStringList postfiltering, QStringList 
 	m_duplicates = 0;
 	m_results = new QList<Tag>();
 	m_images = new QList<Image*>();
+	m_lastPage = nullptr;
 }
 
 void Downloader::setQuit(bool quit)
@@ -107,7 +108,7 @@ void Downloader::finishedLoadingPageCount(Page *page)
 	if (m_cancelled)
 		return;
 
-	log("Received page '"+page->url().toString()+"'");
+	log(QString("Received page count '%1' (%2)").arg(page->url().toString(), QString::number(page->images().count())));
 
 	if (--m_waiting > 0)
 	{
@@ -154,7 +155,7 @@ void Downloader::finishedLoadingPageTags(Page *page)
 	if (m_cancelled)
 		return;
 
-	log("Received tags '"+page->url().toString()+"'");
+	log(QString("Received tags '%1' (%2)").arg(page->url().toString(), QString::number(page->tags().count())));
 
 	if (--m_waiting > 0)
 	{
@@ -232,6 +233,9 @@ void Downloader::loadNext()
 	if (!m_opagesC->isEmpty())
 	{
 		Page *page = m_opagesC->takeFirst();
+		if (m_lastPage != nullptr)
+		{ page->setLastPage(m_lastPage); }
+		m_lastPage = page;
 		log("Loading count '"+page->url().toString()+"'");
 		page->loadTags();
 		return;
@@ -240,6 +244,9 @@ void Downloader::loadNext()
 	if (!m_opagesT->isEmpty())
 	{
 		Page *page = m_opagesT->takeFirst();
+		if (m_lastPage != nullptr)
+		{ page->setLastPage(m_lastPage); }
+		m_lastPage = page;
 		log("Loading tags '"+page->url().toString()+"'");
 		page->loadTags();
 		return;
@@ -248,6 +255,9 @@ void Downloader::loadNext()
 	if (!m_opages->isEmpty())
 	{
 		Page *page = m_opages->takeFirst();
+		if (m_lastPage != nullptr)
+		{ page->setLastPage(m_lastPage); }
+		m_lastPage = page;
 		log("Loading images '"+page->url().toString()+"'");
 		page->load();
 		return;
@@ -267,7 +277,7 @@ void Downloader::finishedLoadingTags(QList<Tag> tags)
 	if (m_cancelled)
 		return;
 
-	log("Received pure tags");
+	log(QString("Received pure tags (%1)").arg(tags.count()));
 
 	m_results->append(tags);
 	if (--m_waiting > 0)
@@ -322,7 +332,7 @@ void Downloader::finishedLoadingImages(Page *page)
 	if (m_cancelled)
 		return;
 
-	log("Received page '"+page->url().toString()+"'");
+	log(QString("Received image page '%1' (%2)").arg(page->url().toString(), QString::number(page->images().count())));
     emit finishedImagesPage(page);
 
 	if (--m_waiting > 0)
@@ -333,7 +343,9 @@ void Downloader::finishedLoadingImages(Page *page)
 
 	QList<Image*> images;
 	for (int i = 0; i < m_pages->size(); ++i)
-		for (Image *img : m_pages->at(i)->images())
+	{
+		Page *p = m_pages->at(i);
+		for (Image *img : p->images())
 		{
 			if (!m_blacklist)
 			{
@@ -354,6 +366,7 @@ void Downloader::finishedLoadingImages(Page *page)
 			}
 			images.append(img);
 		}
+	}
 
 	QList<Image*> imgs;
 	int i = 0;
@@ -380,7 +393,7 @@ void Downloader::finishedLoadingImage(Image *image)
 	if (m_cancelled)
 		return;
 
-	log("Received image '"+image->url()+"'");
+	log(QString("Received image '%1'").arg(image->url()));
 
 	if (m_quit)
 	{
@@ -393,7 +406,7 @@ void Downloader::finishedLoadingImage(Image *image)
 			{
 				f.write(image->data());
 				f.close();
-				log("Saved to '"+path+"'");
+				log(QString("Saved to '%1'").arg(path));
 			}
 		}
 	}
@@ -447,8 +460,8 @@ void Downloader::finishedLoadingUrls(Page *page)
 	if (m_cancelled)
 		return;
 
-	log("Received page '"+page->url().toString()+"'");
-    emit finishedUrlsPage(page);
+	log(QString("Received url page '%1' (%2)").arg(page->url().toString(), QString::number(page->images().count())));
+	emit finishedUrlsPage(page);
 
 	if (--m_waiting > 0)
 	{
@@ -495,12 +508,12 @@ void Downloader::finishedLoadingUrls(Page *page)
 void Downloader::returnInt(int ret)
 {
 	std::cout << ret << std::endl;
-	qApp->quit();
+	emit quit();
 }
 void Downloader::returnString(QString ret)
 {
 	std::cout << ret.toStdString() << std::endl;
-	qApp->quit();
+	emit quit();
 }
 void Downloader::returnTagList(QList<Tag> ret)
 {
@@ -516,13 +529,13 @@ void Downloader::returnTagList(QList<Tag> ret)
 		ret.replace("%stype", QString::number(tag.shortType()));
 		std::cout << ret.toStdString() << std::endl;
 	}
-	qApp->quit();
+	emit quit();
 }
 void Downloader::returnStringList(QStringList ret)
 {
 	for (QString str : ret)
 		std::cout << str.toStdString() << std::endl;
-	qApp->quit();
+	emit quit();
 }
 
 void Downloader::setData(QVariant data)

@@ -6,7 +6,6 @@
 #include <QProcess>
 #include <QStandardPaths>
 #include <QApplication>
-#include <QDebug>
 #include <QDesktopServices>
 #include <QUrl>
 #include "math.h"
@@ -15,6 +14,9 @@
 	#include <windows.h>
 #else
 	#include <utime.h>
+#endif
+#ifdef QT_DEBUG
+	#include <QDebug>
 #endif
 
 using namespace std;
@@ -254,11 +256,11 @@ QString getUnit(float *value)
 
 /**
  * Load favorites from local file.
- * @return	A QMap<QString,QString> with tags as keys, then the remaining details as value (value1|value2|value3...)
+ * @return	The list of favorites as Favorite objects
  */
-QMap<QString,QString> loadFavorites()
+QList<Favorite> loadFavorites()
 {
-	QMap<QString,QString> favorites;
+	QList<Favorite> favorites;
 	QFile file(savePath("favorites.txt"));
 	if (file.open(QIODevice::ReadOnly))
 	{
@@ -270,7 +272,14 @@ QMap<QString,QString> loadFavorites()
 			{
 				QStringList xp = wrds.at(i).split("|");
 				QString tag = xp.takeFirst();
-				favorites.insert(tag, (xp.isEmpty() ? "" : xp.join("|")));
+				QString path = savePath("thumbs/" + (QString(tag).remove('\\').remove('/').remove(':').remove('*').remove('?').remove('"').remove('<').remove('>').remove('|')) + ".png");
+
+				Favorite fav(tag);
+				fav.setNote(xp.isEmpty() ? 50 : xp.takeFirst().toInt());
+				fav.setLastViewed(xp.isEmpty() ? QDateTime(QDate(2000, 1, 1), QTime(0, 0, 0, 0)) : QDateTime::fromString(xp.takeFirst(), Qt::ISODate));
+				fav.setImagePath(QFile::exists(path) ? path : ":/images/noimage.png");
+
+				favorites.append(fav);
 			}
 		}
 		file.close();
@@ -434,7 +443,7 @@ bool setFileCreationDate(QString path, QDateTime datetime)
 		const char *filename = path.toStdString().c_str();
 		if ((utime(filename, &timebuffer)) < 0)
 		{
-			log(QObject::tr("Impossible de changer la date du fichier (%d)").arg(errno), Log::Error);
+			// log(QObject::tr("Impossible de changer la date du fichier (%d)").arg(errno), Log::Error);
 			return false;
 		}
 	#endif
@@ -455,7 +464,7 @@ void showInGraphicalShell(const QString &pathIn)
 		param += QDir::toNativeSeparators(pathIn);
 		QProcess::startDetached("explorer.exe "+param);
 	#elif defined(Q_OS_MAC)
-		Q_UNUSED(parent)
+		// Q_UNUSED(parent)
 		QStringList scriptArgs;
 		scriptArgs << QLatin1String("-e") << QString::fromLatin1("tell application \"Finder\" to reveal POSIX file \"%1\"").arg(pathIn);
 		QProcess::execute(QLatin1String("/usr/bin/osascript"), scriptArgs);
@@ -635,9 +644,9 @@ void clearLayout(QLayout *layout)
 		if (item->layout())
 		{
 			clearLayout(item->layout());
-			delete item->layout();
+			item->layout()->deleteLater();
 		}
-		delete item->widget();
+		item->widget()->deleteLater();
 		delete item;
 	}
 }

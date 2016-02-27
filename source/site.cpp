@@ -1,12 +1,18 @@
 #include <QFile>
 #include <QNetworkCookie>
 #include <QNetworkCookieJar>
-#include <QDebug>
+#include <QNetworkDiskCache>
 #include <QUrlQuery>
 #include <QDir>
+#include <QDebug>
 #include "site.h"
 #include "functions.h"
 #include "json.h"
+#ifdef QT_DEBUG
+	#define CACHE_POLICY QNetworkRequest::PreferCache
+#else
+	#define CACHE_POLICY QNetworkRequest::PreferNetwork
+#endif
 
 
 
@@ -77,10 +83,17 @@ void Site::initManager()
 {
 	if (m_manager == nullptr)
 	{
+		// Create the access manager and get its slots
 		m_manager = new QNetworkAccessManager(this);
 		connect(m_manager, SIGNAL(finished(QNetworkReply*)), this, SIGNAL(finished(QNetworkReply*)));
 		connect(m_manager, SIGNAL(sslErrors(QNetworkReply*,QList<QSslError>)), this, SLOT(sslErrorHandler(QNetworkReply*,QList<QSslError>)));
 
+		// Cache
+		QNetworkDiskCache *diskCache = new QNetworkDiskCache(this);
+		diskCache->setCacheDirectory(savePath("cache/"));
+		m_manager->setCache(diskCache);
+
+		// Cookies
 		resetCookieJar();
 	}
 }
@@ -113,7 +126,7 @@ void Site::login(bool force)
 				query.addQueryItem(m_settings->value("login/password", "").toString(), m_settings->value("auth/password", "").toString());
 				postData.setQuery(query);
 
-				QNetworkRequest request(QUrl(m_settings->value("login/url", "").toString()));
+				QNetworkRequest request(fixUrl(m_settings->value("login/url", "").toString()));
 				request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
 
 				m_loginReply = m_manager->post(request, query.query(QUrl::FullyEncoded).toUtf8());
@@ -121,13 +134,14 @@ void Site::login(bool force)
 			}
 			else
 			{
-				QUrl url = QUrl(m_settings->value("login/url", "").toString());
+				QUrl url = fixUrl(m_settings->value("login/url", "").toString());
 				QUrlQuery query;
 				query.addQueryItem(m_settings->value("login/pseudo", "").toString(), m_settings->value("auth/pseudo", "").toString());
 				query.addQueryItem(m_settings->value("login/password", "").toString(), m_settings->value("auth/password", "").toString());
 				url.setQuery(query);
 
 				QNetworkRequest request(url);
+				request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, CACHE_POLICY);
 
 				m_loginReply = m_manager->get(request);
 				connect(m_loginReply, SIGNAL(finished()), this, SLOT(loginFinished()));
@@ -180,14 +194,16 @@ QNetworkReply *Site::get(QUrl url, Page *page, QString ref, Image *img)
 		{ referer = m_settings->value("referer", "none").toString(); }
 		if (referer != "none" && (referer != "page" || page != NULL))
 		{
+			QString ref;
 			if (referer == "host")
-			{ request.setRawHeader("Referer", QString(url.scheme()+"://"+url.host()).toLatin1()); }
+			{ ref = url.scheme()+"://"+url.host(); }
 			else if (referer == "image")
-			{ request.setRawHeader("Referer", url.toString().toLatin1()); }
+			{ ref = url.toString(); }
 			else if (referer == "page" && page)
-			{ request.setRawHeader("Referer", page->url().toString().toLatin1()); }
+			{ ref = page->url().toString(); }
 			else if (referer == "details" && img)
-			{ request.setRawHeader("Referer", img->pageUrl().toString().toLatin1()); }
+			{ ref = img->pageUrl().toString(); }
+			request.setRawHeader("Referer", ref.toLatin1());
 		}
 		QMap<QString,QVariant> headers = m_settings->value("headers").toMap();
 		for (int i = 0; i < headers.size(); i++)
@@ -198,6 +214,7 @@ QNetworkReply *Site::get(QUrl url, Page *page, QString ref, Image *img)
 		request.setRawHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:35.0) Gecko/20100101 Firefox/35.0");
 
 	initManager();
+	request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, CACHE_POLICY);
 	return m_manager->get(request);
 }
 
@@ -228,8 +245,13 @@ void Site::checkForUpdates()
 {
 	QString path = m_settings->value("models", "https://raw.githubusercontent.com/Bionus/imgbrd-grabber/master/release/sites/").toString();
 	QString url = path + m_type + "/model.xml";
+
 	initManager();
-	m_updateReply = m_manager->get(QNetworkRequest(QUrl(url)));
+
+	QNetworkRequest request = QNetworkRequest(QUrl(url));
+	request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, CACHE_POLICY);
+
+	m_updateReply = m_manager->get(request);
 	connect(m_updateReply, SIGNAL(finished()), this, SLOT(checkForUpdatesDone()));
 }
 
@@ -245,10 +267,9 @@ void Site::checkForUpdatesDone()
 		current.open(QFile::ReadOnly);
 		QString compare = current.readAll();
 		current.close();
+
 		if (compare != source)
-		{
-			m_updateVersion = VERSION;
-		}
+		{ m_updateVersion = VERSION; }
 	}
 	emit checkForUpdatesFinished(this);
 }
@@ -341,6 +362,12 @@ QMap<QString, Site*> *Site::getAllSites()
 									details["Urls/"+QString::number(j+1)+"/Sample"] = details["Urls/"+sr+"/Sample"];
 								if (details.contains("Urls/"+sr+"/Preview"))
 									details["Urls/"+QString::number(j+1)+"/Preview"] = details["Urls/"+sr+"/Preview"];
+								if (details.contains("Urls/"+sr+"/MaxPage"))
+									details["Urls/"+QString::number(j+1)+"/MaxPage"] = details["Urls/"+sr+"/MaxPage"];
+								if (details.contains("Urls/"+sr+"/AltPagePrev"))
+									details["Urls/"+QString::number(j+1)+"/AltPagePrev"] = details["Urls/"+sr+"/AltPagePrev"];
+								if (details.contains("Urls/"+sr+"/AltPageNext"))
+									details["Urls/"+QString::number(j+1)+"/AltPageNext"] = details["Urls/"+sr+"/AltPageNext"];
 							}
 							_prependUrl(&details, lineSsl, "Urls/Html/Post");
 							_prependUrl(&details, lineSsl, "Urls/Html/Tags");
@@ -367,7 +394,10 @@ QMap<QString, Site*> *Site::getAllSites()
 void Site::loadTags(int page, int limit)
 {
 	initManager();
-	m_tagsReply = m_manager->get(QNetworkRequest(QUrl("http://"+m_url+"/tags.json?search[hide_empty]=yes&limit="+QString::number(limit)+"&page=" + QString::number(page))));
+
+	QNetworkRequest request(QUrl("http://"+m_url+"/tags.json?search[hide_empty]=yes&limit="+QString::number(limit)+"&page=" + QString::number(page)));
+	request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, CACHE_POLICY);
+	m_tagsReply = m_manager->get(request);
 	connect(m_tagsReply, SIGNAL(finished()), this, SLOT(finishedTags()));
 }
 void Site::finishedTags()

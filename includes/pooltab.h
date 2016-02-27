@@ -25,11 +25,10 @@ class poolTab : public searchTab
 	Q_OBJECT
 
 	public:
-		explicit poolTab(int id, QMap<QString,Site*> *sites, QMap<QString, QString> *favorites, mainWindow *parent);
+		explicit poolTab(int id, QMap<QString,Site*> *sites, QList<Favorite> favorites, mainWindow *parent);
 		~poolTab();
 		Ui::poolTab *ui;
 		QString tags();
-		QString results();
 		QString wiki();
 		QString site();
 		int imagesPerPage();
@@ -62,8 +61,6 @@ class poolTab : public searchTab
 		void contextMenu();
 		void openInNewTab();
 		void openInNewWindow();
-		void favorite();
-		void unfavorite();
 		void viewitlater();
 		void unviewitlater();
 		// History
@@ -81,18 +78,16 @@ class poolTab : public searchTab
 	signals:
 		void batchAddGroup(QStringList);
 		void batchAddUnique(QMap<QString,QString>);
-		void closed(poolTab*);
 
 	private:
 		int								m_id;
 		mainWindow						*m_parent;
 		TextEdit						*m_search, *m_postFiltering;
 		QCalendarWidget					*m_calendar;
-		QMap<QString,QString>			*m_favorites;
 		QMap<QString,Page*>				m_pages;
 		QList<Image*>					m_images;
 		int								m_pagemax;
-		QString							m_link, m_lastTags, m_wiki, m_tags;
+		QString							m_lastTags, m_wiki;
 		bool							m_sized, m_from_history, m_stop;
 		int								m_page, m_history_cursor;
 		QList<QGridLayout*>				m_layouts;

@@ -55,7 +55,11 @@ You can add additional sources very easily, but here's a shot list of some sourc
 * Николай Тихонов for the Russian translation
 * Everyone who helped make this program better by contributing, suggesting features, or reporting bugs!
 
-## Compilation on Linux
+## Compilation
+
+If you want more info about compilation steps, see the [Compilation](https://github.com/Bionus/imgbrd-grabber/wiki/Compilation) wiki page.
+
+### Linux
 
 ```
 ./build.sh
@@ -74,4 +78,6 @@ mv Grabber release/Grabber
 touch release/settings.ini
 ```
 
-If you want more details, see the [Compilation](https://github.com/Bionus/imgbrd-grabber/wiki/Compilation) wiki page.
+### OS X
+
+See the [OS X compilation](https://github.com/Bionus/imgbrd-grabber/wiki/Compilation#os-x) instructions for compiling Grabber on Mac.

@@ -8,7 +8,8 @@
 
 
 
-Page::Page(Site *site, QMap<QString,Site*> *sites, QStringList tags, int page, int limit, QStringList postFiltering, bool smart, QObject *parent, int pool) : QObject(parent), m_site(site), m_postFiltering(postFiltering), m_errors(QStringList()), m_imagesPerPage(limit), m_currentSource(0), m_smart(smart)
+Page::Page(Site *site, QMap<QString,Site*> *sites, QStringList tags, int page, int limit, QStringList postFiltering, bool smart, QObject *parent, int pool, int lastPage, int lastPageMinId, int lastPageMaxId)
+	: QObject(parent), m_site(site), m_postFiltering(postFiltering), m_errors(QStringList()), m_imagesPerPage(limit), m_currentSource(0), m_smart(smart), m_lastPage(lastPage), m_lastPageMinId(lastPageMinId), m_lastPageMaxId(lastPageMaxId)
 {
 	m_website = m_site->url();
 	m_imagesCount = -1;
@@ -135,7 +136,19 @@ void Page::fallback(bool bload)
 	// Global replace tokens
 	m_originalUrl = QString(url);
 	url.replace("{pid}", QString::number(pid));
-	url.replace("{page}", QString::number(p));
+	if (!m_site->contains("Urls/"+QString::number(m_currentSource)+"/MaxPage") || p <= m_site->value("Urls/"+QString::number(m_currentSource)+"/MaxPage").toInt() || m_lastPage > m_page + 1 || m_lastPage < m_page - 1)
+	{
+		url.replace("{page}", QString::number(p));
+		url.replace("{altpage}", "");
+	}
+	else
+	{
+		QString altpage = m_site->value("Urls/"+QString::number(m_currentSource)+"/AltPage" + (m_lastPage > m_page ? "Prev" : "Next"));
+		altpage.replace("{min}", QString::number(m_lastPageMinId));
+		altpage.replace("{max}", QString::number(m_lastPageMaxId));
+		url.replace("{altpage}", altpage);
+		url.replace("{page}", "");
+	}
 	url.replace("{tags}", QUrl::toPercentEncoding(t));
 	url.replace("{limit}", QString::number(m_imagesPerPage));
 	url.replace("{pseudo}", pseudo);
@@ -199,6 +212,16 @@ void Page::fallback(bool bload)
 	{ load(); }
 }
 
+void Page::setLastPage(Page *page)
+{
+	m_lastPage = page->page();
+	m_lastPageMaxId = page->maxId();
+	m_lastPageMinId = page->minId();
+
+	m_currentSource--;
+	fallback(false);
+}
+
 void Page::load()
 {
 	if (m_currentSource <= m_site->value("Selected").count('/') + 1)
@@ -248,7 +271,7 @@ QString _parseSetImageUrl(Site* site, QString setting, QString ret, QMap<QString
 				ret.replace(rgx, rep.right(rep.size() - rep.indexOf("->") - 2));
 			}
         }
-        else
+		else if (ret.length() < 5)
 		{
 			QStringList options = site->value(setting).split('|');
 			for (QString opt : options)
@@ -374,21 +397,29 @@ void Page::parse()
 		{
 			for (int id = 0; id < nodeList.count(); id++)
 			{
+				QDomNode node = nodeList.at(id + first);
 				QMap<QString,QString> d;
 				if (database == "array")
 				{
+					if (node.namedItem("md5").isNull() && node.namedItem("preview-file-url").isNull())
+						continue;
+
 					QStringList infos, assoc;
 					infos << "created_at" << "status" << "source" << "has_comments" << "file_url" << "sample_url" << "change" << "sample_width" << "has_children" << "preview_url" << "width" << "md5" << "preview_width" << "sample_height" << "parent_id" << "height" << "has_notes" << "creator_id" << "file_size" << "id" << "preview_height" << "rating" << "tags" << "author" << "score" << "tags_artist" << "tags_character" << "tags_copyright" << "tags_general" << "ext";
 					assoc << "created-at" << "status" << "source" << "has_comments" << "file-url" << "large-file-url" << "change" << "sample_width" << "has-children" << "preview-file-url" << "image-width" << "md5" << "preview_width" << "sample_height" << "parent-id" << "image-height" << "has_notes" << "uploader-id" << "file_size" << "id" << "preview_height" << "rating" << "tag-string" << "uploader-name" << "score" << "tag-string-artist" << "tag-string-character" << "tag-string-copyright" << "tag-string-general" << "file-ext";
 					for (int i = 0; i < infos.count(); i++)
-					{ d[infos.at(i)] = nodeList.at(id + first).namedItem(assoc.at(i)).toElement().text(); }
+					{ d[infos.at(i)] = node.namedItem(assoc.at(i)).toElement().text(); }
 				}
 				else
 				{
 					QStringList infos;
 					infos << "created_at" << "status" << "source" << "has_comments" << "file_url" << "sample_url" << "change" << "sample_width" << "has_children" << "preview_url" << "width" << "md5" << "preview_width" << "sample_height" << "parent_id" << "height" << "has_notes" << "creator_id" << "file_size" << "id" << "preview_height" << "rating" << "tags" << "author" << "score";
 					for (int i = 0; i < infos.count(); i++)
-					{ d[infos.at(i)] = nodeList.at(id + first).attributes().namedItem(infos.at(i)).nodeValue().trimmed(); }
+					{
+						d[infos.at(i)] = node.attributes().isEmpty()
+										 ? node.namedItem(infos.at(i)).toElement().text()
+										 : node.attributes().namedItem(infos.at(i)).nodeValue().trimmed();
+					}
 				}
 				this->parseImage(d, id + first);
 			}
@@ -566,26 +597,34 @@ void Page::parse()
 	}
 
 	// Getting last page
-	if (m_site->contains("LastPage") && m_pagesCount < 1)
-	{ m_pagesCount = m_site->value("LastPage").toInt(); }
-	if (m_site->contains("Regex/Count") && m_imagesCount < 1)
+	if (!m_replyTagsExists || m_format == "regex")
 	{
-		QRegExp rxlast(m_site->value("Regex/Count"));
-		rxlast.indexIn(m_source, 0);
-		m_imagesCount = rxlast.cap(1).remove(",").toInt();
-	}
-	if (m_site->contains("Regex/LastPage") && m_pagesCount < 1)
-	{
-		QRegExp rxlast(m_site->value("Regex/LastPage"));
-		rxlast.indexIn(m_source, 0);
-		m_pagesCount = rxlast.cap(1).remove(",").toInt();
-	}
+		if (m_site->contains("LastPage") && m_pagesCount < 1)
+		{ m_pagesCount = m_site->value("LastPage").toInt(); }
+		if (m_site->contains("Regex/Count") && m_imagesCount < 1)
+		{
+			QRegExp rxlast(m_site->value("Regex/Count"));
+			rxlast.indexIn(m_source, 0);
+			m_imagesCount = rxlast.cap(1).remove(",").toInt();
+		}
+		if (m_site->contains("Regex/LastPage") && m_pagesCount < 1)
+		{
+			QRegExp rxlast(m_site->value("Regex/LastPage"));
+			rxlast.indexIn(m_source, 0);
+			m_pagesCount = rxlast.cap(1).remove(",").toInt();
+			if (m_originalUrl.contains("{pid}"))
+			{
+				int ppid = m_site->contains("Urls/"+QString::number(m_currentSource)+"/Limit") ? m_site->value("Urls/"+QString::number(m_currentSource)+"/Limit").toInt() : m_imagesPerPage;
+				m_pagesCount = floor((float)m_pagesCount / (float)ppid) + 1;
+			}
+		}
 
-    // Guess image or page count
-	if (m_site->contains("Urls/"+QString::number(m_currentSource)+"/Limit") && m_pagesCount > 0 && m_imagesCount < 1)
-    { m_imagesCount = m_pagesCount * m_site->value("Urls/"+QString::number(m_currentSource)+"/Limit").toInt(); }
-	if (m_imagesCount > 0 && m_pagesCount < 1)
-	{ m_pagesCount = ceil(((float)m_imagesCount) / m_imagesPerPage); }
+		// Guess image or page count
+		if (m_site->contains("Urls/"+QString::number(m_currentSource)+"/Limit") && m_pagesCount > 0 && m_imagesCount < 1)
+		{ m_imagesCount = m_pagesCount * m_site->value("Urls/"+QString::number(m_currentSource)+"/Limit").toInt(); }
+		if (m_imagesCount > 0 && m_pagesCount < 1)
+		{ m_pagesCount = ceil(((float)m_imagesCount) / m_imagesPerPage); }
+	}
 
 	// Remove first n images (according to site settings)
 	int skip = m_site->setting("ignore/always", 0).toInt();
@@ -712,7 +751,10 @@ void Page::parseTags()
 			{
 				m_imagesCount = tag.count();
 				if (m_pagesCount < 0)
-				{ m_pagesCount = (int)ceil((m_imagesCount * 1.) / m_imagesPerPage); }
+				{
+					int ppid = m_site->contains("Urls/"+QString::number(m_currentSource)+"/Limit") ? m_site->value("Urls/"+QString::number(m_currentSource)+"/Limit").toInt() : m_imagesPerPage;
+					m_pagesCount = (int)ceil((float)m_imagesCount / (float)ppid);
+				}
 			}
 		}
 	}
@@ -720,14 +762,19 @@ void Page::parseTags()
 	{
 		QRegExp rxlast(m_site->value("Regex/LastPage"));
 		rxlast.indexIn(source, 0);
-		int pagesCount = rxlast.cap(1).remove(",").toInt();
-		if (pagesCount != 0)
+		m_pagesCount = rxlast.cap(1).remove(",").toInt();
+		if (m_originalUrl.contains("{pid}"))
 		{
-			m_pagesCount = pagesCount;
-			if (m_imagesCount < 1 || m_imagesCount % 1000 == 0)
-			{ m_imagesCount = m_pagesCount * m_imagesPerPage; }
+			int ppid = m_site->contains("Urls/"+QString::number(m_currentSource)+"/Limit") ? m_site->value("Urls/"+QString::number(m_currentSource)+"/Limit").toInt() : m_imagesPerPage;
+			m_pagesCount = floor((float)m_pagesCount / (float)ppid) + 1;
 		}
 	}
+
+	// Guess image or page count
+	if (m_site->contains("Urls/"+QString::number(m_currentSource)+"/Limit") && m_pagesCount > 0 && m_imagesCount < 1)
+	{ m_imagesCount = m_pagesCount * m_site->value("Urls/"+QString::number(m_currentSource)+"/Limit").toInt(); }
+	if (m_imagesCount > 0 && m_pagesCount < 1)
+	{ m_pagesCount = ceil(((float)m_imagesCount) / m_imagesPerPage); }
 
 	// Wiki
 	m_wiki.clear();
@@ -764,6 +811,8 @@ QStringList		Page::errors()		{ return m_errors;		}
 
 int Page::imagesPerPage()
 { return m_imagesPerPage;	}
+int Page::page()
+{ return m_page;			}
 int Page::highLimit()
 {
 	if (m_site->contains("Urls/"+QString::number(m_currentSource)+"/Limit"))
@@ -782,4 +831,21 @@ int Page::pagesCount(bool guess)
 	if (m_pagesCount < 0 && guess && m_imagesCount >= 0)
 		return (int)ceil((m_imagesCount * 1.) / m_imagesPerPage);
 	return m_pagesCount;
+}
+
+int Page::maxId()
+{
+	int maxId = 0;
+	for (Image *img : m_images)
+		if (img->id() > maxId || maxId == 0)
+			maxId = img->id();
+	return maxId;
+}
+int Page::minId()
+{
+	int minId = 0;
+	for (Image *img : m_images)
+		if (img->id() < minId || minId == 0)
+			minId = img->id();
+	return minId;
 }

@@ -44,7 +44,8 @@ class mainWindow : public QMainWindow
         explicit mainWindow(QString, QStringList, QMap<QString,QString>);
         ~mainWindow();
 		QMap<QString,Site*> m_sites;
-        Ui::mainWindow *ui;
+		Ui::mainWindow *ui;
+		QSettings* settings();
 
     public slots:
         // Log
@@ -114,16 +115,17 @@ class mainWindow : public QMainWindow
 		void getAllFinishedLogins();
 		void _getAll();
 		// Tabs
-		int addTab(QString tag = "");
+		int addTab(QString tag = "", bool background = false);
 		int addPoolTab(int pool = 0, QString site = "");
-		void addSearchTab(searchTab*);
+		void addSearchTab(searchTab*, bool background = false);
 		void updateTabTitle(searchTab*);
-		void tabClosed(tagTab*);
-		void tabClosed(poolTab*);
 		void tabClosed(searchTab*);
         void currentTabChanged(int);
         void closeCurrentTab();
-        void loadTag(QString tag);
+		void loadTag(QString tag, bool newTab = true);
+		void loadTagTab(QString tag);
+		void loadTagNoTab(QString tag);
+		void linkHovered(QString tag);
         bool saveTabs(QString);
 		bool loadTabs(QString);
         void updateTabs();
@@ -150,15 +152,17 @@ class mainWindow : public QMainWindow
 		void updateCompleters();
 		void setSource(QString site);
 		void saveImage(Image *img, QNetworkReply *reply = NULL, QString path = "", QString p = "", bool getAll = true);
+		void setTags(QList<Tag> tags, searchTab *from = nullptr);
+		void initialLoginsFinished();
 
     private:
-		int					m_pagemax, m_getAllDownloaded, m_getAllExists, m_getAllIgnored, m_getAll404s, m_getAllErrors, m_getAllSkipped, m_getAllCount, m_getAllPageCount, m_getAllBeforeId, m_remainingPics, m_remainingSites, m_countPics, m_currentFav, m_currentFavCount, m_getAllLimit, m_downloads;
+		int					m_pagemax, m_getAllDownloaded, m_getAllExists, m_getAllIgnored, m_getAll404s, m_getAllErrors, m_getAllSkipped, m_getAllCount, m_getAllPageCount, m_getAllBeforeId, m_remainingPics, m_remainingSites, m_countPics, m_currentFav, m_currentFavCount, m_getAllLimit, m_downloads, m_waitForLogin;
         bool				m_allow, m_must_get_tags, m_loaded, m_getAllRequestExists, m_getAll;
         QSettings			*m_settings;
         QProcess			*m_process;
         QNetworkReply		*m_getAllRequest;
         batchWindow			*m_progressdialog;
-        QString				m_program, m_currLang, m_currentFavorite;
+		QString				m_program, m_currLang, m_currentFavorite, m_link;
         QStringList			m_tags, m_assoc, m_gotMd5;
         QTranslator			m_translator;
 		QDateTime			m_loadFavorite;
@@ -168,6 +172,7 @@ class mainWindow : public QMainWindow
         QList<Page*>		m_getAllPages, m_pages;
         QList<QAffiche*>	m_favoritesCaptions;
 		QList<QBouton*>		m_favoritesImages, m_mergeButtons, m_webPics;
+		QWidget				*m_currentTab;
 		QList<searchTab*>	m_tabs;
 		QList<int>			m_tabsIds;
         QList<tagTab*>      m_tagTabs;
@@ -177,7 +182,8 @@ class mainWindow : public QMainWindow
 		Commands			*m_commands;
 		favoritesTab		*m_favoritesTab;
         QMap<QString,double>			m_getAllDownloadingSpeeds;
-		QMap<QString,QString>			m_favorites, m_params;
+		QList<Favorite>					m_favorites;
+		QMap<QString,QString>			m_params;
         QMap<QString,QTime*>			m_downloadTime, m_downloadTimeLast;
         QList<QProgressBar*>			m_progressBars;
         QList<QNetworkReply*>			m_replies;

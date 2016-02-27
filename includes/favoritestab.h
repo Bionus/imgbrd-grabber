@@ -25,12 +25,11 @@ class favoritesTab : public searchTab
 	Q_OBJECT
 
 	public:
-		explicit favoritesTab(int id, QMap<QString,Site*> *sites, QMap<QString, QString> *favorites, mainWindow *parent);
+		explicit favoritesTab(int id, QMap<QString,Site*> *sites, QList<Favorite> favorites, mainWindow *parent);
 		~favoritesTab();
 		Ui::favoritesTab *ui;
 		QList<bool> sources();
 		QString tags();
-		QString results();
 		QString wiki();
 		int imagesPerPage();
 		int columns();
@@ -64,9 +63,9 @@ class favoritesTab : public searchTab
 		void historyBack();
 		void historyNext();
 		// Favorites
-		void favoriteProperties(int id = -1);
+		void favoriteProperties(QString);
 		void updateFavorites();
-		void loadFavorite(int);
+		void loadFavorite(QString);
 		void checkFavorites();
 		void loadNextFavorite();
 		void favoritesBack();
@@ -76,7 +75,7 @@ class favoritesTab : public searchTab
 		void optionsChanged();
 		void closeEvent(QCloseEvent*);
 		void toggleImage(int, bool);
-		void addTabFavorite(int);
+		void addTabFavorite(QString);
 		void setImagesPerPage(int);
 		void setColumns(int);
 		void setPostFilter(QString);
@@ -84,18 +83,17 @@ class favoritesTab : public searchTab
 	signals:
 		void batchAddGroup(QStringList);
 		void batchAddUnique(QMap<QString,QString>);
-		void closed(searchTab*);
 
 	private:
 		int								m_id;
 		mainWindow						*m_parent;
 		TextEdit						*m_postFiltering;
 		QDateTime						m_loadFavorite;
-		QMap<QString,QString>			*m_favorites;
+		QList<Favorite>					m_favorites;
 		QMap<QString,Page*>				m_pages;
 		QList<Image*>					m_images;
 		int								m_pagemax;
-		QString							m_link, m_lastTags, m_wiki, m_tags, m_currentTags;
+		QString							m_lastTags, m_wiki, m_currentTags;
 		bool							m_sized, m_from_history, m_stop;
 		int								m_page, m_history_cursor, m_currentFav;
 		QList<QGridLayout*>				m_layouts;

@@ -12,6 +12,7 @@
 *.sql
 build/
 debug/
+cache/
 release/*.txt
 release/*.ini
 release/lastdump
@@ -24,6 +25,12 @@ releases/Grabber_*.rar
 releases/translation_tools.rar
 CrashReporter/debug/
 CrashReporter/release/
+
+
+# CLion
+
+.idea/
+CMakeLists.txt
 
 
 # C++ objects and libs

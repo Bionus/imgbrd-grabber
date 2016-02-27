@@ -19,8 +19,9 @@ class Page : public QObject
 	Q_OBJECT
 
 	public:
-		explicit Page(Site *site, QMap<QString,Site*> *sites, QStringList tags = QStringList(), int page = 1, int limit = 25, QStringList postFiltering = QStringList(), bool smart = false, QObject *parent = 0, int pool = 0);
+		explicit Page(Site *site, QMap<QString,Site*> *sites, QStringList tags = QStringList(), int page = 1, int limit = 25, QStringList postFiltering = QStringList(), bool smart = false, QObject *parent = 0, int pool = 0, int lastPage = 0, int lastPageMinId = 0, int lastPageMaxId = 0);
 		~Page();
+		void			setLastPage(Page *page);
 		void			load();
 		void			loadTags();
 		void			fallback(bool load = true);
@@ -37,6 +38,9 @@ class Page : public QObject
 		QStringList		errors();
 		int				imagesPerPage();
 		int				highLimit();
+		int				page();
+		int				minId();
+		int				maxId();
 
 	public slots:
 		void parse();
@@ -58,7 +62,7 @@ class Page : public QObject
 		QStringList		m_postFiltering, m_search, m_errors;
 		QUrl			m_url, m_urlRegex;
 		QList<Image*>	m_images;
-		int				m_imagesCount, m_pagesCount, m_imagesPerPage, m_currentUrl, m_page, m_blim, m_currentSource, m_pool;
+		int				m_imagesCount, m_pagesCount, m_imagesPerPage, m_currentUrl, m_page, m_blim, m_currentSource, m_pool, m_lastPage, m_lastPageMinId, m_lastPageMaxId;
 		QList<Tag>		m_tags;
 		QNetworkReply	*m_reply, *m_replyTags;
 		bool			m_replyExists, m_replyTagsExists, m_smart;
