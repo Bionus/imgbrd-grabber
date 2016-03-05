@@ -668,10 +668,11 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 		{
 			for (int r = 0; r < scustom.size(); ++r)
 			{
-				if (!custom.contains(scustom.keys().at(r)))
-				{ custom.insert(scustom.keys().at(r), QStringList()); }
-				if (scustom.values().at(r).contains(t))
-				{ custom[scustom.keys().at(r)].append(t); }
+				QString key = scustom.keys().at(r);
+				if (!custom.contains(key))
+				{ custom.insert(key, QStringList()); }
+				if (scustom[key].contains(t, Qt::CaseInsensitive))
+				{ custom[key].append(t); }
 			}
 			details[ignore.contains(m_tags[i].text(), Qt::CaseInsensitive) ? "generals" : m_tags[i].type()+"s"].append(t);
 			details["alls"].append(t);
