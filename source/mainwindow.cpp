@@ -28,6 +28,7 @@
 #include "functions.h"
 #include "json.h"
 #include "commands.h"
+#include "optionswindow.h"
 
 #define DONE()			logUpdate(QObject::tr(" Fait"))
 #define DIR_SEPARATOR	QDir::toNativeSeparators("/")
@@ -258,6 +259,12 @@ mainWindow::~mainWindow()
 
 void mainWindow::onFirstLoad()
 {
+	// Save all default settings
+	optionsWindow *ow = new optionsWindow(this);
+	ow->save();
+	ow->deleteLater();
+
+	// Detect danbooru downloader
 	QSettings cfg(QSettings::IniFormat, QSettings::UserScope, "Mozilla", "Firefox");
 	QString path = QFileInfo(cfg.fileName()).absolutePath()+"/Firefox";
 	QSettings profiles(path+"/profiles.ini", QSettings::IniFormat);
@@ -324,6 +331,7 @@ void mainWindow::onFirstLoad()
 		}
 	}
 
+	// Open startup window
 	startWindow *swin = new startWindow(&m_sites, this);
 	connect(swin, SIGNAL(languageChanged(QString)), this, SLOT(loadLanguage(QString)));
 	connect(swin, &startWindow::settingsChanged, this, &mainWindow::on_buttonInitSettings_clicked);
