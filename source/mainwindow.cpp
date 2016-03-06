@@ -2168,6 +2168,13 @@ bool mainWindow::loadLinkList(QString filename)
 		}
 		else
 		{
+			QString source = infos[5];
+			if (!m_sites.contains(source))
+			{
+				log(tr("Source invalide \"%1\" trouvée dans le fichier IGL.").arg(source));
+				continue;
+			}
+
 			if (infos.at(1).toInt() < 0 || infos.at(2).toInt() < 1 || infos.at(3).toInt() < 1)
 			{
 				log(tr("Erreur lors de la lecture d'une ligne du fichier de liens."));
