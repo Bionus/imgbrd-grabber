@@ -316,9 +316,6 @@ QWidget#scrollAreaWidgetContents {
             <property name="horizontalScrollBarPolicy">
              <enum>Qt::ScrollBarAlwaysOff</enum>
             </property>
-            <property name="sizeAdjustPolicy">
-             <enum>QAbstractScrollArea::AdjustToContents</enum>
-            </property>
             <property name="widgetResizable">
              <bool>true</bool>
             </property>
