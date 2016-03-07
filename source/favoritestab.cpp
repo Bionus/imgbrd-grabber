@@ -134,11 +134,13 @@ void favoritesTab::updateFavorites()
 	int i = 0;
 	for (Favorite fav : m_favorites)
 	{
-		QPixmap img = fav.getImage();
 		QString xt = tr("<b>Nom :</b> %1<br/><b>Note :</b> %2 %%<br/><b>Dernière vue :</b> %3").arg(fav.getName(), QString::number(fav.getNote()), fav.getLastViewed().toString(format));
+		QVBoxLayout *l = new QVBoxLayout(ui->scrollAreaWidgetContents);
+
 		if (display.contains("i"))
 		{
-			QBouton *image = new QBouton(fav.getName(), this, settings.value("resizeInsteadOfCropping", true).toBool(), QColor(), this);
+			QPixmap img = fav.getImage();
+			QBouton *image = new QBouton(fav.getName(), false, 0, QColor(), this);
 				image->setIcon(img);
 				image->setIconSize(img.size());
 				image->setFlat(true);
@@ -146,8 +148,9 @@ void favoritesTab::updateFavorites()
 				connect(image, SIGNAL(rightClick(QString)), this, SLOT(favoriteProperties(QString)));
 				connect(image, SIGNAL(middleClick(QString)), this, SLOT(addTabFavorite(QString)));
 				connect(image, SIGNAL(appui(QString)), this, SLOT(loadFavorite(QString)));
-			ui->layoutFavorites->addWidget(image, (i/10)*2, i%10);
+			l->addWidget(image);
 		}
+
 		QAffiche *caption = new QAffiche(fav.getName(), 0 ,QColor(), this);
 			caption->setText((display.contains("n") ? fav.getName() : "") + (display.contains("d") ? "<br/>("+QString::number(fav.getNote())+" % - "+fav.getLastViewed().toString(format)+")" : ""));
 			caption->setTextFormat(Qt::RichText);
@@ -156,8 +159,10 @@ void favoritesTab::updateFavorites()
 		if (!caption->text().isEmpty())
 		{
 			connect(caption, SIGNAL(clicked(QString)), this, SLOT(loadFavorite(QString)));
-			ui->layoutFavorites->addWidget(caption, (i/10)*2+1, i%10);
+			l->addWidget(caption);
 		}
+
+		ui->layoutFavorites->addLayout(l, i / 8, i % 8);
 		++i;
 	}
 }
@@ -265,24 +270,28 @@ void favoritesTab::load()
 	//qDeleteAll(m_images);
 	m_images.clear();
 
+	m_stop = false;
+
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
 	for (int i = 0; i < m_selectedSources.size(); i++)
 	{
 		if (m_checkboxes.at(i)->isChecked())
 		{
-			QStringList tags = m_currentTags.toLower().trimmed().split(" ", QString::SkipEmptyParts);
-			tags.append(settings.value("add").toString().toLower().trimmed().split(" ", QString::SkipEmptyParts));
-			int perpage = ui->spinImagesPerPage->value();
-			Page *page = new Page(m_sites->value(m_sites->keys().at(i)), m_sites, tags, ui->spinPage->value(), perpage, m_postFiltering->toPlainText().toLower().split(" ", QString::SkipEmptyParts), true, this);
-			log(tr("Chargement de la page <a href=\"%1\">%1</a>").arg(page->url().toString().toHtmlEscaped()));
-			connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(finishedLoading(Page*)));
-			m_pages.insert(page->website(), page);
 			QGridLayout *l = new QGridLayout;
 			l->setHorizontalSpacing(settings.value("Margins/horizontal", 6).toInt());
 			l->setVerticalSpacing(settings.value("Margins/vertical", 6).toInt());
 			m_layouts.append(l);
-			m_stop = false;
+
+			QStringList tags = m_currentTags.toLower().trimmed().split(" ", QString::SkipEmptyParts);
+			tags.append(settings.value("add").toString().toLower().trimmed().split(" ", QString::SkipEmptyParts));
+			int perpage = ui->spinImagesPerPage->value();
+			Page *page = new Page(m_sites->value(m_sites->keys().at(i)), m_sites, tags, ui->spinPage->value(), perpage, m_postFiltering->toPlainText().toLower().split(" ", QString::SkipEmptyParts), true, this);
+			connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(finishedLoading(Page*)));
+			m_pages.insert(page->website(), page);
+
+			log(tr("Chargement de la page <a href=\"%1\">%1</a>").arg(page->url().toString().toHtmlEscaped()));
 			page->load();
+
 			if (settings.value("useregexfortags", true).toBool())
 			{
 				connect(page, SIGNAL(finishedLoadingTags(Page*)), this, SLOT(finishedLoadingTags(Page*)));
@@ -358,8 +367,7 @@ void favoritesTab::finishedLoading(Page* page)
 		ui->layoutResults->setRowMinimumHeight(page_y, height()/20);
 		if (m_layouts.size() > pos)
 		{ ui->layoutResults->addLayout(m_layouts[pos], page_y + 1, page_x, 1, 1); }
-		if (imgs.count() >= settings.value("hidefavorites", 20).toInt())
-		{ ui->widgetFavorites->hide(); }
+		ui->splitter->setSizes(QList<int>() << (imgs.count() >= settings.value("hidefavorites", 20).toInt() ? 0 : 1) << 1);
 	}
 
 	if (!settings.value("useregexfortags", true).toBool())
@@ -533,6 +541,7 @@ void favoritesTab::finishedLoadingPreview(Image *img)
 	{ color = QColor("#000000"); }
 	QBouton *l = new QBouton(position, settings.value("resizeInsteadOfCropping", true).toBool(), settings.value("borders", 3).toInt(), color, this);
 		l->setIcon(img->previewImage());
+		l->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 		l->setCheckable(true);
 		l->setChecked(m_selectedImages.contains(img->url()));
 		QString t;

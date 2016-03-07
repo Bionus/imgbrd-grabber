@@ -7,6 +7,7 @@
 #include "searchtab.h"
 #include "page.h"
 #include "mainwindow.h"
+#include "vendor/flowlayout.h"
 
 
 
