@@ -1153,7 +1153,6 @@ void mainWindow::getAll(bool all)
 
 	if (all || !todownload.isEmpty())
 	{
-		m_progressdialog->setImagesCount(0);
 		int active = 0;
 		for (int j = 0; j < m_groupBatchs.count(); ++j)
 		{
@@ -1192,7 +1191,6 @@ void mainWindow::getAll(bool all)
 				int pages = b2 != 0 ? (int)ceil((float)b.at(3).toInt() / b2) : -1;
 				if (pages <= 0 || b.at(2).toInt() <= 0 || b.at(3).toInt() <= 0)
 					pages = 1;
-				m_progressdialog->setImagesCount(m_progressdialog->count() + pages);
 
 				m_getAllLimit += b.at(3).toDouble();
 				m_batchDownloading.insert(j);
@@ -1237,7 +1235,7 @@ void mainWindow::getAllLogin()
 		return;
 	}
 
-	m_progressdialog->setMaximum(m_getAllLogins.count());
+	m_progressdialog->setImagesCount(m_getAllLogins.count());
 	while (!logins.isEmpty())
 	{
 		Site *site = logins.dequeue();
@@ -1247,11 +1245,10 @@ void mainWindow::getAllLogin()
 }
 void mainWindow::getAllFinishedLogin(Site *site, Site::LoginResult)
 {
-
 	if (m_getAllLogins.empty())
 	{ return; }
 
-	m_progressdialog->setValue(m_progressdialog->value() + 1);
+	m_progressdialog->setImages(m_progressdialog->images() + 1);
 	m_getAllLogins.removeAll(site);
 
 	if (m_getAllLogins.empty())
@@ -1277,7 +1274,10 @@ void mainWindow::getAllGetPages()
 	else
 	{
 		for (Downloader *downloader : m_downloaders)
-		{ downloader->getImages(); }
+		{
+			m_progressdialog->setImagesCount(m_progressdialog->count() + downloader->pagesCount());
+			downloader->getImages();
+		}
 	}
 
 	logShow();
@@ -1294,7 +1294,8 @@ void mainWindow::getAllFinishedPage(Page *page)
 
     m_groupBatchs[d->getData().toInt()][8] += (m_groupBatchs[d->getData().toInt()][8] == "" ? "" : "¤") + QString::number((quintptr)page);
     m_getAllPages.append(page);
-    m_progressdialog->setImages(m_progressdialog->images() + 1);
+
+	m_progressdialog->setImages(m_progressdialog->images() + 1);
 }
 
 /**
@@ -1776,8 +1777,8 @@ void mainWindow::getAllPerformImage(Image* img)
 	}
 
 	// Update dialog infos
-	m_progressdialog->setValue(m_progressdialog->value()+img->value());
-	m_progressdialog->setImages(m_progressdialog->images()+1);
+	m_progressdialog->setImages(m_progressdialog->images() + 1);
+	m_progressdialog->setValue(m_progressdialog->value() + img->value());
 	m_getAllDownloadingSpeeds.remove(img->url());
 	m_getAllDownloading.removeAll(img);
 

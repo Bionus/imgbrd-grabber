@@ -32,6 +32,7 @@ class Downloader : public QObject
 		QList<Site*> *getSites();
 		int ignoredCount();
 		int duplicatesCount();
+		int pagesCount();
 
 	signals:
 		void finished(QNetworkReply*);
