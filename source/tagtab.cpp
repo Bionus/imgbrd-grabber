@@ -668,7 +668,7 @@ void tagTab::finishedLoadingPreview(Image *img)
 	int perpage = img->page()->site()->value("Urls/Selected/Tags").contains("{limit}") ? ui->spinImagesPerPage->value() : img->page()->images().size();
 	perpage = perpage > 0 ? perpage : 20;
 	int pp = perpage;
-	if (ui->checkMergeResults->isChecked())
+	if (ui->checkMergeResults->isChecked() && !m_images.empty())
 	{ pp = m_images.count(); }
 	int pl = ceil(sqrt((double)pp));
 	if (m_layouts.size() > page)
