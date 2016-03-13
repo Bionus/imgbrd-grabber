@@ -159,6 +159,11 @@ void FilenameWindow::done(int r)
 	{
 		QMap<QString, QString> info;
 		info.insert("site", QString::number((qintptr)sites->value(sites->keys().first())));
+		info.insert("tags_general", "general_1 general_2");
+		info.insert("tags_artist", "artist_1 artist_2");
+		info.insert("tags_model", "model_1 model_2");
+		info.insert("tags_character", "character_1 character_2");
+		info.insert("tags_copyright", "copyright_1 copyright_2");
 
 		Image image(info);
 		QStringList det = image.path(format(), "");

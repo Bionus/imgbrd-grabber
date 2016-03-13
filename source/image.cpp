@@ -48,7 +48,7 @@ Image::Image(QMap<QString, QString> details, Page* parent)
 	m_status = details.contains("status") ? details["status"] : "";
 	m_filename = details.contains("filename") ? details["filename"] : "";
 	m_folder = details.contains("folder") ? details["folder"] : "";
-	m_search = parent != nullptr ? parent->search() : QStringList();
+	m_search = parent != nullptr ? parent->search() : (details.contains("search") ? details["search"].split(' ') : QStringList());
 	m_id = details.contains("id") ? details["id"].toInt() : 0;
 	m_score = details.contains("score") ? details["score"].toInt() : 0;
 	m_hasScore = details.contains("score");
@@ -104,6 +104,13 @@ Image::Image(QMap<QString, QString> details, Page* parent)
 			QString tg = t.at(i);
 			tg.replace("&amp;", "&");
 			m_tags.append(Tag(tg, "copyright"));
+		}
+		t = details["tags_model"].split(" ");
+		for (int i = 0; i < t.count(); ++i)
+		{
+			QString tg = t.at(i);
+			tg.replace("&amp;", "&");
+			m_tags.append(Tag(tg, "model"));
 		}
 	}
 	else if (details.contains("tags"))
@@ -719,6 +726,8 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 	replaces.insert("id", QStrP(QString::number(m_id), "0"));
 	for (int i = 0; i < m_search.size(); ++i)
 	{ replaces.insert("search_"+QString::number(i+1), QStrP(m_search[i], "")); }
+	for (int i = m_search.size(); i < 10; ++i)
+	{ replaces.insert("search_"+QString::number(i+1), QStrP("", "")); }
 	replaces.insert("search", QStrP(m_search.join(tagSeparator), ""));
 	replaces.insert("pool", QStrP(poolMatch.hasMatch() ? poolMatch.captured(1) : "", ""));
 	replaces.insert("rating", QStrP(m_rating, "unknown"));
@@ -787,9 +796,19 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 		// We remove the "javascript:" part
 		filename = filename.right(filename.length() - 11);
 
+		// FIXME real multiple filename management shared with normal filenames
+		QStringList repKays = QStringList() << "artist" << "copyright" << "character" << "model";
+		for (QString key : repKays)
+		{
+			QList<QStrP> repls = getReplace(key, details, &settings);
+			replaces.insert(key, repls.first());
+		}
+		// end FIXME
+
 		// Variables initialization
 		QString inits = "";
 		QStringList keys = replaces.keys();
+		qDebug() << keys;
 		for (int i = 0; i < replaces.size(); ++i)
 		{
 			QString key = keys.at(i);
@@ -1096,15 +1115,19 @@ Image::SaveResult Image::save(QString path, bool force, bool basic)
 		if (md5Duplicate.isEmpty() || whatToDo == "save" || force)
 		{
 			log(tr("Sauvegarde de l'image dans le fichier <a href=\"file:///%1\">%1</a>").arg(f.fileName()));
-			if (!m_source.isEmpty())
+			if (!m_source.isEmpty() && QFile::exists(m_source))
 			{ QFile::copy(m_source, f.fileName()); }
 			else
 			{
 				addMd5(md5(), path);
 
-				f.open(QFile::WriteOnly);
-				f.write(m_data);
-				f.close();
+				if (f.open(QFile::WriteOnly))
+				{
+					f.write(m_data);
+					f.close();
+				}
+				else
+				{ log(tr("Impossible d'ouvrir le fichier")); }
 			}
 
 			if (settings.value("Save/keepDate", true).toBool())
