@@ -298,14 +298,19 @@ void Page::parseImage(QMap<QString,QString> d, int position)
 	if (!d.contains("ext") || d["ext"].isEmpty())
 	{ d["ext"] = "jpg"; }
 	if (!d.contains("file_url"))
-	{ d["file_url"] = d["preview_url"]; }
+	{ d["file_url"] = ""; }
 	if (!d.contains("sample_url"))
-	{ d["sample_url"] = d["preview_url"]; }
+	{ d["sample_url"] = ""; }
 
 	// Fix urls
 	d["file_url"] = _parseSetImageUrl(m_site, "Urls/"+QString::number(m_currentSource)+"/Image", d["file_url"], &d);
 	d["sample_url"] = _parseSetImageUrl(m_site, "Urls/"+QString::number(m_currentSource)+"/Sample", d["sample_url"], &d);
 	d["preview_url"] = _parseSetImageUrl(m_site, "Urls/"+QString::number(m_currentSource)+"/Preview", d["preview_url"], &d);
+
+	if (d["file_url"].isEmpty())
+	{ d["file_url"] = d["preview_url"]; }
+	if (d["sample_url"].isEmpty())
+	{ d["sample_url"] = d["preview_url"]; }
 
 	// Page URL
 	if (!d.contains("page_url"))

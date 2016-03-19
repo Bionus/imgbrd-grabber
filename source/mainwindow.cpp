@@ -1840,7 +1840,9 @@ void mainWindow::saveImage(Image *img, QNetworkReply *reply, QString path, QStri
 						f.remove();
 						m_getAllErrors++;
 						m_progressdialog->pause();
-						QMessageBox::critical(m_progressdialog, tr("Erreur"), tr("Une erreur est survenue lors de l'enregistrement de l'image.\n%1\nVeuillez résoudre le problème avant de reprendre le téléchargement.").arg(f.errorString()));
+						QString err = tr("Une erreur est survenue lors de l'enregistrement de l'image.\n%1\n%2\nVeuillez résoudre le problème avant de reprendre le téléchargement.").arg(fp, f.errorString());
+						log(err);
+						QMessageBox::critical(m_progressdialog, tr("Erreur"), err);
 						return;
 					}
 					f.close();
