@@ -1,9 +1,13 @@
+TARGET = Cli
+
+# Command Line Interface
+DEFINES += USE_CLI=1
+CONFIG += console
+
 # Include common config
 !include(../Grabber.pri) {
     error("Could not find the common configuration file!")
 }
-
-TARGET = Cli
 
 # TODO: remove these dependencies
 QT += multimedia widgets
@@ -13,10 +17,6 @@ use_qscintilla {
     LIBS -= -lqscintilla2
 }
 # end TODO
-
-# Command Line Interface
-DEFINES += USE_CLI=1
-CONFIG += console
 
 # Input
 HEADERS += ../includes/*.h ../vendor/*.h
