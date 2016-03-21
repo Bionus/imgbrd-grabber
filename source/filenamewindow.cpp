@@ -2,6 +2,8 @@
 #include "filenamewindow.h"
 #include "ui_filenamewindow.h"
 #include "image.h"
+#include "site.h"
+
 
 FilenameWindow::FilenameWindow(QString value, QWidget *parent) : QDialog(parent), ui(new Ui::FilenameWindow)
 {

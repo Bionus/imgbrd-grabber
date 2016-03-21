@@ -30,6 +30,11 @@ SourcesSettingsWindow::SourcesSettingsWindow(Site *site, QWidget *parent) : QDia
 	// Download settings
 	ui->spinImagesPerPage->setValue(settings.value("download/imagesperpage", 200).toInt());
 	ui->spinSimultaneousDownloads->setValue(settings.value("download/simultaneous", 10).toInt());
+	ui->spinThrottleDetails->setValue(settings.value("download/throttle_details", 0).toInt());
+	ui->spinThrottleImage->setValue(settings.value("download/throttle_image", 0).toInt());
+	ui->spinThrottlePage->setValue(settings.value("download/throttle_page", 0).toInt());
+	ui->spinThrottleRetry->setValue(settings.value("download/throttle_retry", 0).toInt());
+	ui->spinThrottleThumbnail->setValue(settings.value("download/throttle_thumbnail", 0).toInt());
 
 	// Source order
 	ui->checkSourcesDefault->setChecked(settings.value("sources/usedefault", true).toBool());
@@ -159,6 +164,11 @@ void SourcesSettingsWindow::save()
 
 	settings.setValue("download/imagesperpage", ui->spinImagesPerPage->value());
 	settings.setValue("download/simultaneous", ui->spinSimultaneousDownloads->value());
+	settings.setValue("download/throttle_details", ui->spinThrottleDetails->value());
+	settings.setValue("download/throttle_image", ui->spinThrottleImage->value());
+	settings.setValue("download/throttle_page", ui->spinThrottlePage->value());
+	settings.setValue("download/throttle_retry", ui->spinThrottleRetry->value());
+	settings.setValue("download/throttle_thumbnail", ui->spinThrottleThumbnail->value());
 
 	QStringList sources = QStringList() << "xml" << "json" << "regex" << "rss";
 	settings.setValue("sources/usedefault", ui->checkSourcesDefault->isChecked());

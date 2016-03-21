@@ -21,7 +21,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tabGeneral">
       <attribute name="title">
@@ -220,6 +220,91 @@
          </property>
          <property name="value">
           <number>200</number>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_6">
+         <property name="text">
+          <string>Intervalle (vignette)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="label_7">
+         <property name="text">
+          <string>Intervalle (image)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="label_12">
+         <property name="text">
+          <string>Intervalle (page)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="label_13">
+         <property name="text">
+          <string>Intervalle (détails)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0">
+        <widget class="QLabel" name="label_14">
+         <property name="text">
+          <string>Intervale (erreur)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QSpinBox" name="spinThrottleThumbnail">
+         <property name="suffix">
+          <string>s</string>
+         </property>
+         <property name="maximum">
+          <number>3600</number>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QSpinBox" name="spinThrottleImage">
+         <property name="suffix">
+          <string>s</string>
+         </property>
+         <property name="maximum">
+          <number>3600</number>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QSpinBox" name="spinThrottlePage">
+         <property name="suffix">
+          <string>s</string>
+         </property>
+         <property name="maximum">
+          <number>3600</number>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <widget class="QSpinBox" name="spinThrottleDetails">
+         <property name="suffix">
+          <string>s</string>
+         </property>
+         <property name="maximum">
+          <number>3600</number>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1">
+        <widget class="QSpinBox" name="spinThrottleRetry">
+         <property name="suffix">
+          <string>s</string>
+         </property>
+         <property name="maximum">
+          <number>3600</number>
          </property>
         </widget>
        </item>
@@ -697,24 +782,9 @@
  </tabstops>
  <resources>
   <include location="../resources.qrc"/>
+  <include location="../resources.qrc"/>
  </resources>
  <connections>
-  <connection>
-   <sender>checkSourcesDefault</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>widget</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>168</x>
-     <y>56</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>153</x>
-     <y>98</y>
-    </hint>
-   </hints>
-  </connection>
   <connection>
    <sender>buttonDelete</sender>
    <signal>clicked()</signal>
@@ -764,18 +834,34 @@
    </hints>
   </connection>
   <connection>
-   <sender>checkLoginParameter</sender>
+   <sender>pushButton_5</sender>
+   <signal>clicked()</signal>
+   <receiver>SourcesSettingsWindow</receiver>
+   <slot>testLogin()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>453</x>
+     <y>216</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>256</x>
+     <y>193</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkSourcesDefault</sender>
    <signal>toggled(bool)</signal>
-   <receiver>widget_2</receiver>
+   <receiver>widget</receiver>
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>117</x>
-     <y>55</y>
+     <x>168</x>
+     <y>56</y>
     </hint>
     <hint type="destinationlabel">
-     <x>142</x>
-     <y>65</y>
+     <x>153</x>
+     <y>98</y>
     </hint>
    </hints>
   </connection>
@@ -796,22 +882,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>pushButton_5</sender>
-   <signal>clicked()</signal>
-   <receiver>SourcesSettingsWindow</receiver>
-   <slot>testLogin()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>453</x>
-     <y>216</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>256</x>
-     <y>193</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>pushButton</sender>
    <signal>clicked()</signal>
    <receiver>SourcesSettingsWindow</receiver>
@@ -824,6 +894,22 @@
     <hint type="destinationlabel">
      <x>470</x>
      <y>190</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkLoginParameter</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>widget_2</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>117</x>
+     <y>55</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>142</x>
+     <y>65</y>
     </hint>
    </hints>
   </connection>

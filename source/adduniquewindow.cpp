@@ -4,6 +4,7 @@
 #include "ui_adduniquewindow.h"
 #include "functions.h"
 #include "json.h"
+#include "page.h"
 
 
 
