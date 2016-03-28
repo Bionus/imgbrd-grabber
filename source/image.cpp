@@ -49,12 +49,25 @@ Image::Image(QMap<QString, QString> details, Page* parent)
 	m_hasChildren = details.contains("has_children") ? details["has_children"] == "true" : false;
 	m_hasNote = details.contains("has_note") ? details["has_note"] == "true" : false;
 	m_hasComments = details.contains("has_comments") ? details["has_comments"] == "true" : false;
-	m_pageUrl = details.contains("page_url") ? m_parentSite->fixUrl(details["page_url"]) : QUrl();
 	m_fileUrl = details.contains("file_url") ? m_parentSite->fixUrl(details["file_url"]) : QUrl();
 	m_sampleUrl = details.contains("sample_url") ? m_parentSite->fixUrl(details["sample_url"]) : QUrl();
 	m_previewUrl = details.contains("preview_url") ? m_parentSite->fixUrl(details["preview_url"]) : QUrl();
 	m_size = QSize(details.contains("width") ? details["width"].toInt() : 0, details.contains("height") ? details["height"].toInt() : 0);
 	m_source = details.contains("source") ? details["source"] : "";
+
+	// Page URL
+	if (!details.contains("page_url"))
+	{
+		QString pageUrl = m_parentSite->value("Urls/Html/Post");
+		QString t = m_search.join(" ");
+		if (m_parentSite->contains("DefaultTag") && t.isEmpty())
+		{ t = m_parentSite->value("DefaultTag"); }
+		pageUrl.replace("{tags}", QUrl::toPercentEncoding(t));
+		pageUrl.replace("{id}", QString::number(m_id));
+		m_pageUrl = QUrl(pageUrl);
+	}
+	else
+	{ m_pageUrl = m_parentSite->fixUrl(details["page_url"]); }
 
 	// Get file url and try to improve it to save bandwidth
 	m_url = details.contains("file_url") ? m_parentSite->fixUrl(details["file_url"]).toString() : "";

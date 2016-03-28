@@ -305,17 +305,6 @@ void Page::parseImage(QMap<QString,QString> d, int position)
 	if (d["sample_url"].isEmpty())
 	{ d["sample_url"] = d["preview_url"]; }
 
-	// Page URL
-	if (!d.contains("page_url"))
-	{
-		d["page_url"] = m_site->value("Urls/Html/Post");
-		QString t = m_search.join(" ");
-		if (m_site->contains("DefaultTag") && t.isEmpty())
-		{ t = m_site->value("DefaultTag"); }
-		d["page_url"].replace("{tags}", QUrl::toPercentEncoding(t));
-		d["page_url"].replace("{id}", d["id"]);
-	}
-
 	// Generate image
 	Image *img = new Image(d, this);
 	QStringList errors = img->filter(m_postFiltering);
