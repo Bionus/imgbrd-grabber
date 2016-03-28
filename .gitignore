@@ -1,5 +1,6 @@
 # Grabber
 
+symbols/
 *.lnk
 *.exe
 *.obj
@@ -10,8 +11,10 @@
 *.exe.embed.manifest
 *.lib
 *.sql
+*.zip
 build/
 debug/
+{gui,cli}/release/
 cache/
 release/*.txt
 release/*.ini

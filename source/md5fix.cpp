@@ -2,6 +2,7 @@
 #include <QDir>
 #include <QDirIterator>
 #include <QCryptographicHash>
+#include <QMessageBox>
 #include "md5fix.h"
 #include "functions.h"
 #include "ui_md5fix.h"
@@ -64,58 +65,68 @@ void md5Fix::on_buttonStart_clicked()
 		}
 	}
 
-	// Show progresss bar
+	if (files.count() > 0)
+	{
+		// Show progresss bar
+		ui->progressBar->setValue(0);
+		ui->progressBar->setMaximum(files.size());
+		ui->progressBar->show();
+
+		// Open MD5 file
+		QFile f(savePath("md5s.txt"));
+		if (!f.open(QFile::WriteOnly | QFile::Truncate))
+		{
+			error(this, tr("Impossible d'ouvrir le fichier de MD5."));
+			ui->progressBar->hide();
+			ui->buttonStart->setEnabled(true);
+			return;
+		}
+
+		// Parse all files
+		for (QStringPair file : files)
+		{
+			QString md5 = "";
+			if (ui->radioForce->isChecked())
+			{
+				QFile fle(file.second);
+				fle.open(QFile::ReadOnly);
+				md5 = QCryptographicHash::hash(fle.readAll(), QCryptographicHash::Md5).toHex();
+			}
+			else
+			{
+				QRegExp regx("%([^%]*)%");
+				QString reg = QRegExp::escape(ui->lineFilename->text());
+				int pos = 0, cur = 0, id = -1;
+				while ((pos = regx.indexIn(ui->lineFilename->text(), pos)) != -1)
+				{
+					pos += regx.matchedLength();
+					reg.replace(regx.cap(0), "(.+)");
+					if (regx.cap(1) == "md5")
+					{ id = cur; }
+					cur++;
+				}
+				QRegExp rx(reg);
+				rx.setMinimal(true);
+				pos = 0;
+				while ((pos = rx.indexIn(file.first, pos)) != -1)
+				{
+					pos += rx.matchedLength();
+					md5 = rx.cap(id + 1);
+				}
+			}
+			if (!md5.isEmpty())
+			{ f.write(QString(md5 + file.second + "\n").toUtf8()); }
+			ui->progressBar->setValue(ui->progressBar->value() + 1);
+		}
+		f.close();
+	}
+
+	// Hide progresss bar
+	ui->progressBar->hide();
 	ui->progressBar->setValue(0);
-	ui->progressBar->setMaximum(files.size());
-	ui->progressBar->show();
-
-	// Open MD5 file
-	QFile f(savePath("md5s.txt"));
-	if (!f.open(QFile::WriteOnly | QFile::Truncate))
-	{
-		error(this, tr("Impossible d'ouvrir le fichier de MD5."));
-		ui->progressBar->hide();
-		ui->buttonStart->setEnabled(true);
-		return;
-	}
-
-	// Parse all files
-	for (QStringPair file : files)
-	{
-		QString md5 = "";
-		if (ui->radioForce->isChecked())
-		{
-			QFile fle(file.second);
-			fle.open(QFile::ReadOnly);
-			md5 = QCryptographicHash::hash(fle.readAll(), QCryptographicHash::Md5).toHex();
-		}
-		else
-		{
-			QRegExp regx("%([^%]*)%");
-			QString reg = QRegExp::escape(ui->lineFilename->text());
-			int pos = 0, cur = 0, id = -1;
-			while ((pos = regx.indexIn(ui->lineFilename->text(), pos)) != -1)
-			{
-				pos += regx.matchedLength();
-				reg.replace(regx.cap(0), "(.+)");
-				if (regx.cap(1) == "md5")
-				{ id = cur; }
-				cur++;
-			}
-			QRegExp rx(reg);
-			rx.setMinimal(true);
-			pos = 0;
-			while ((pos = rx.indexIn(file.first, pos)) != -1)
-			{
-				pos += rx.matchedLength();
-				md5 = rx.cap(id + 1);
-			}
-		}
-		if (!md5.isEmpty())
-		{ f.write(QString(md5 + file.second + "\n").toUtf8()); }
-		ui->progressBar->setValue(ui->progressBar->value() + 1);
-	}
-	f.close();
+	ui->progressBar->setMaximum(0);
 
 	ui->buttonStart->setEnabled(true);
+
+	QMessageBox::information(this, tr("Terminé"), tr("%n MD5 chargé(s)", "", files.count()));
 }

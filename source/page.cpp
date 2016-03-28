@@ -5,6 +5,7 @@
 #include "page.h"
 #include "json.h"
 #include "math.h"
+#include "site.h"
 
 
 
@@ -46,14 +47,54 @@ Page::Page(Site *site, QMap<QString,Site*> *sites, QStringList tags, int page, i
     // Set values
 	m_page = page;
 	m_pool = pool;
-	fallback(false);
 	m_replyExists = false;
 	m_replyTagsExists = false;
 	m_currentUrl = 0;
+	fallback(false);
 }
 Page::~Page()
 {
 	// qDeleteAll(m_images);
+}
+
+QUrl Page::parseUrl(QString url, int pid, int p, QString t, QString pseudo, QString password)
+{
+	url.replace("{pid}", QString::number(pid));
+	url.replace("{page}", QString::number(p));
+	url.replace("{tags}", QUrl::toPercentEncoding(t));
+	url.replace("{limit}", QString::number(m_imagesPerPage));
+
+	if (!m_site->contains("Urls/"+QString::number(m_currentSource)+"/MaxPage") || p <= m_site->value("Urls/"+QString::number(m_currentSource)+"/MaxPage").toInt() || m_lastPage > m_page + 1 || m_lastPage < m_page - 1)
+	{
+		url.replace("{page}", QString::number(p));
+		url.replace("{altpage}", "");
+	}
+	else
+	{
+		QString altpage = m_site->value("Urls/"+QString::number(m_currentSource)+"/AltPage" + (m_lastPage > m_page ? "Prev" : "Next"));
+		altpage.replace("{min}", QString::number(m_lastPageMinId));
+		altpage.replace("{max}", QString::number(m_lastPageMaxId));
+		altpage.replace("{min-1}", QString::number(m_lastPageMinId-1));
+		altpage.replace("{max-1}", QString::number(m_lastPageMaxId-1));
+		altpage.replace("{min+1}", QString::number(m_lastPageMinId+1));
+		altpage.replace("{max+1}", QString::number(m_lastPageMaxId+1));
+		url.replace("{altpage}", altpage);
+		url.replace("{page}", "");
+	}
+
+	url.replace("{pseudo}", pseudo);
+	url.replace("{password}", password);
+	if (m_site->contains("Urls/Html/Login") && (!pseudo.isEmpty() || !password.isEmpty())) {
+		QString loginString = m_site->value("Urls/Html/Login");
+		loginString.replace("{pseudo}", pseudo);
+		loginString.replace("{password}", password);
+		url.replace("{login}", loginString);
+	}
+	else {
+		url.replace("{login}", "");
+	}
+
+	return m_site->fixUrl(url);
 }
 
 void Page::fallback(bool bload)
@@ -135,75 +176,19 @@ void Page::fallback(bool bload)
 
 	// Global replace tokens
 	m_originalUrl = QString(url);
-	url.replace("{pid}", QString::number(pid));
-	if (!m_site->contains("Urls/"+QString::number(m_currentSource)+"/MaxPage") || p <= m_site->value("Urls/"+QString::number(m_currentSource)+"/MaxPage").toInt() || m_lastPage > m_page + 1 || m_lastPage < m_page - 1)
-	{
-		url.replace("{page}", QString::number(p));
-		url.replace("{altpage}", "");
-	}
-	else
-	{
-		QString altpage = m_site->value("Urls/"+QString::number(m_currentSource)+"/AltPage" + (m_lastPage > m_page ? "Prev" : "Next"));
-		altpage.replace("{min}", QString::number(m_lastPageMinId));
-		altpage.replace("{max}", QString::number(m_lastPageMaxId));
-		url.replace("{altpage}", altpage);
-		url.replace("{page}", "");
-	}
-	url.replace("{tags}", QUrl::toPercentEncoding(t));
-	url.replace("{limit}", QString::number(m_imagesPerPage));
-	url.replace("{pseudo}", pseudo);
-	url.replace("{password}", password);
-	if (m_site->contains("Urls/"+QString::number(m_currentSource)+"/Login") && (!pseudo.isEmpty() || !password.isEmpty())) {
-		QString loginString = m_site->value("Urls/"+QString::number(m_currentSource)+"/Login");
-		loginString.replace("{pseudo}", pseudo);
-		loginString.replace("{password}", password);
-		url.replace("{login}", loginString);
-	}
-	else {
-		url.replace("{login}", "");
-	}
-	m_url = m_site->fixUrl(url);
+	m_url = parseUrl(url, pid, p, t, pseudo, password).toString();
 
 	if ((pl >= 0 || pool.indexIn(t) != -1) && m_site->contains("Urls/Html/Pools"))
 	{
-		QString url = m_site->value("Urls/Html/Pools");
-		url.replace("{pid}", QString::number(pid));
-		url.replace("{page}", QString::number(p));
+		url = m_site->value("Urls/Html/Pools");
+		url = parseUrl(url, pid, p, t, pseudo, password).toString();
 		url.replace("{pool}", pool.cap(1));
-		url.replace("{tags}", QUrl::toPercentEncoding(t));
-		url.replace("{limit}", QString::number(m_imagesPerPage));
-		url.replace("{pseudo}", pseudo);
-		url.replace("{password}", password);
-		if (m_site->contains("Urls/Html/Login") && (!pseudo.isEmpty() || !password.isEmpty())) {
-			QString loginString = m_site->value("Urls/Html/Login");
-			loginString.replace("{pseudo}", pseudo);
-			loginString.replace("{password}", password);
-			url.replace("{login}", loginString);
-		}
-		else {
-			url.replace("{login}", "");
-		}
-		m_urlRegex = m_site->fixUrl(url);
+		m_urlRegex = QUrl(url);
 	}
 	else if (m_site->contains("Urls/Html/Tags"))
 	{
-		QString url = m_site->value("Urls/Html/"+QString(t.isEmpty() && m_site->contains("Urls/Html/Home") ? "Home" : "Tags"));
-		url.replace("{pid}", QString::number(pid));
-		url.replace("{page}", QString::number(p));
-		url.replace("{tags}", QUrl::toPercentEncoding(t));
-		url.replace("{limit}", QString::number(m_imagesPerPage));
-		url.replace("{pseudo}", pseudo);
-		url.replace("{password}", password);
-		if (m_site->contains("Urls/Html/Login") && (!pseudo.isEmpty() || !password.isEmpty())) {
-			QString loginString = m_site->value("Urls/Html/Login");
-			loginString.replace("{pseudo}", pseudo);
-			loginString.replace("{password}", password);
-			url.replace("{login}", loginString);
-		}
-		else {
-			url.replace("{login}", "");
-		}
-		m_urlRegex = m_site->fixUrl(url);
+		url = m_site->value("Urls/Html/"+QString(t.isEmpty() && m_site->contains("Urls/Html/Home") ? "Home" : "Tags"));
+		m_urlRegex = parseUrl(url, pid, p, t, pseudo, password);
 	}
 	else
 	{ m_urlRegex = ""; }
@@ -219,16 +204,21 @@ void Page::setLastPage(Page *page)
 	m_lastPageMinId = page->minId();
 
 	m_currentSource--;
-	fallback(false);
+	if (!page->nextPage().isEmpty())
+	{ m_url = page->nextPage(); }
+	else
+	{ fallback(false); }
 }
 
-void Page::load()
+void Page::load(bool rateLimit)
 {
 	if (m_currentSource <= m_site->value("Selected").count('/') + 1)
 	{
-		m_reply = m_site->get(m_url);
-		connect(m_reply, SIGNAL(finished()), this, SLOT(parse()));
-		m_replyExists = true;
+		m_site->getAsync(rateLimit ? Site::QueryType::Retry : Site::QueryType::List, m_url, [this](QNetworkReply *reply) {
+			m_reply = reply;
+			connect(m_reply, SIGNAL(finished()), this, SLOT(parse()));
+			m_replyExists = true;
+		});
 	}
 }
 void Page::abort()
@@ -258,12 +248,15 @@ void Page::abortTags()
 	}
 }
 
-QString _parseSetImageUrl(Site* site, QString setting, QString ret, QMap<QString,QString> *d, bool replaces = true)
+QString _parseSetImageUrl(Site* site, QString setting, QString ret, QMap<QString,QString> *d, bool replaces = true, QString def = QString())
 {
 	if (site->contains(setting) && replaces)
 	{
         if (site->value(setting).contains("->"))
         {
+			if (ret.isEmpty() && !def.isEmpty())
+				ret = def;
+
 			QStringList replaces = site->value(setting).split('&');
 			for (QString rep : replaces)
             {
@@ -298,25 +291,19 @@ void Page::parseImage(QMap<QString,QString> d, int position)
 	if (!d.contains("ext") || d["ext"].isEmpty())
 	{ d["ext"] = "jpg"; }
 	if (!d.contains("file_url"))
-	{ d["file_url"] = d["preview_url"]; }
+	{ d["file_url"] = ""; }
 	if (!d.contains("sample_url"))
-	{ d["sample_url"] = d["preview_url"]; }
+	{ d["sample_url"] = ""; }
 
 	// Fix urls
-	d["file_url"] = _parseSetImageUrl(m_site, "Urls/"+QString::number(m_currentSource)+"/Image", d["file_url"], &d);
-	d["sample_url"] = _parseSetImageUrl(m_site, "Urls/"+QString::number(m_currentSource)+"/Sample", d["sample_url"], &d);
+	d["file_url"] = _parseSetImageUrl(m_site, "Urls/"+QString::number(m_currentSource)+"/Image", d["file_url"], &d, true, d["preview_url"]);
+	d["sample_url"] = _parseSetImageUrl(m_site, "Urls/"+QString::number(m_currentSource)+"/Sample", d["sample_url"], &d, true, d["preview_url"]);
 	d["preview_url"] = _parseSetImageUrl(m_site, "Urls/"+QString::number(m_currentSource)+"/Preview", d["preview_url"], &d);
 
-	// Page URL
-	if (!d.contains("page_url"))
-	{
-		d["page_url"] = m_site->value("Urls/Html/Post");
-		QString t = m_search.join(" ");
-		if (m_site->contains("DefaultTag") && t.isEmpty())
-		{ t = m_site->value("DefaultTag"); }
-		d["page_url"].replace("{tags}", QUrl::toPercentEncoding(t));
-		d["page_url"].replace("{id}", d["id"]);
-	}
+	if (d["file_url"].isEmpty())
+	{ d["file_url"] = d["preview_url"]; }
+	if (d["sample_url"].isEmpty())
+	{ d["sample_url"] = d["preview_url"]; }
 
 	// Generate image
 	Image *img = new Image(d, this);
@@ -338,8 +325,6 @@ void Page::parseImage(QMap<QString,QString> d, int position)
 
 void Page::parse()
 {
-	m_source = m_reply->readAll();
-
 	// Check redirection
 	QUrl redir = m_reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 	if (!redir.isEmpty())
@@ -348,6 +333,16 @@ void Page::parse()
 		load();
 		return;
 	}
+
+	int statusCode = m_reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+	if (statusCode == 429)
+	{
+		log(tr("Limitation atteinte (429). Nouvel essai."));
+		load(true);
+		return;
+	}
+
+	m_source = m_reply->readAll();
 
 	// Reading reply and resetting vars
 	qDeleteAll(m_images);
@@ -599,6 +594,21 @@ void Page::parse()
 	// Getting last page
 	if (!m_replyTagsExists || m_format == "regex")
 	{
+		// Navigation
+		if (m_site->contains("NextPage") && m_pagesCount < 1)
+		{
+			QRegExp rx(m_site->value("Regex/NextPage"));
+			if (rx.indexIn(m_source, 0) >= 0)
+			{ m_urlNextPage = QUrl(rx.cap(1)); }
+		}
+		if (m_site->contains("PrevPage") && m_pagesCount < 1)
+		{
+			QRegExp rx(m_site->value("Regex/PrevPage"));
+			if (rx.indexIn(m_source, 0) >= 0)
+			{ m_urlPrevPage = QUrl(rx.cap(1)); }
+		}
+
+		// Counting
 		if (m_site->contains("LastPage") && m_pagesCount < 1)
 		{ m_pagesCount = m_site->value("LastPage").toInt(); }
 		if (m_site->contains("Regex/Count") && m_imagesCount < 1)
@@ -736,6 +746,21 @@ void Page::parseTags()
 		}
 	}
 
+	// Navigation
+	if (m_site->contains("NextPage") && m_pagesCount < 1)
+	{
+		QRegExp rx(m_site->value("Regex/NextPage"));
+		if (rx.indexIn(source, 0) >= 0)
+		{ m_urlNextPage = QUrl(rx.cap(1)); }
+	}
+	if (m_site->contains("PrevPage") && m_pagesCount < 1)
+	{
+		QRegExp rx(m_site->value("Regex/PrevPage"));
+		if (rx.indexIn(source, 0) >= 0)
+		{ m_urlPrevPage = QUrl(rx.cap(1)); }
+	}
+
+
 	// Getting last page
 	if (m_site->contains("Regex/Count") && m_imagesCount < 1)
 	{
@@ -808,6 +833,8 @@ QString			Page::wiki()		{ return m_wiki;		}
 QList<Tag>		Page::tags()		{ return m_tags;		}
 QStringList		Page::search()		{ return m_search;		}
 QStringList		Page::errors()		{ return m_errors;		}
+QUrl			Page::nextPage()	{ return m_urlNextPage;	}
+QUrl			Page::prevPage()	{ return m_urlPrevPage;	}
 
 int Page::imagesPerPage()
 { return m_imagesPerPage;	}
@@ -848,4 +875,9 @@ int Page::minId()
 		if (img->id() < minId || minId == 0)
 			minId = img->id();
 	return minId;
+}
+
+void Page::setUrl(QUrl url)
+{
+	m_url = url;
 }

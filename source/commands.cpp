@@ -3,6 +3,7 @@
 #include <QtSql/QSqlQuery>
 #include <QDir>
 #include "commands.h"
+#include "functions.h"
 
 
 

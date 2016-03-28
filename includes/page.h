@@ -6,7 +6,6 @@
 #include <QSslError>
 #include "tag.h"
 #include "image.h"
-#include "site.h"
 #include "functions.h"
 
 
@@ -22,8 +21,9 @@ class Page : public QObject
 		explicit Page(Site *site, QMap<QString,Site*> *sites, QStringList tags = QStringList(), int page = 1, int limit = 25, QStringList postFiltering = QStringList(), bool smart = false, QObject *parent = 0, int pool = 0, int lastPage = 0, int lastPageMinId = 0, int lastPageMaxId = 0);
 		~Page();
 		void			setLastPage(Page *page);
-		void			load();
+		void			load(bool rateLimit = false);
 		void			loadTags();
+		QUrl			parseUrl(QString url, int pid, int p, QString t, QString pseudo, QString password);
 		void			fallback(bool load = true);
 		QList<Image*>	images();
 		Site			*site();
@@ -41,6 +41,9 @@ class Page : public QObject
 		int				page();
 		int				minId();
 		int				maxId();
+		void			setUrl(QUrl url);
+		QUrl			nextPage();
+		QUrl			prevPage();
 
 	public slots:
 		void parse();
@@ -60,7 +63,7 @@ class Page : public QObject
 		Site			*m_site;
 		QString			m_format, m_website, m_source, m_wiki, m_originalUrl;
 		QStringList		m_postFiltering, m_search, m_errors;
-		QUrl			m_url, m_urlRegex;
+		QUrl			m_url, m_urlRegex, m_urlNextPage, m_urlPrevPage;
 		QList<Image*>	m_images;
 		int				m_imagesCount, m_pagesCount, m_imagesPerPage, m_currentUrl, m_page, m_blim, m_currentSource, m_pool, m_lastPage, m_lastPageMinId, m_lastPageMaxId;
 		QList<Tag>		m_tags;

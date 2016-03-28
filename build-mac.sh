@@ -5,7 +5,7 @@ brew install qt5 --with-docs --with-developer --with-d-bus --with-mysql
 brew install gcc
 qmake Grabber.pro
 make
-mv Grabber.app release
+mv gui/Grabber.app release
 mv release/languages $appDir/
 mv release/sites $appDir/
 mv release/words.txt $appDir/

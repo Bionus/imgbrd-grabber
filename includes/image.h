@@ -7,10 +7,8 @@
 #include <QPixmap>
 #include <QSslError>
 #include <QSettings>
-#include "page.h"
 #include "tag.h"
 #include "pool.h"
-#include "site.h"
 
 
 

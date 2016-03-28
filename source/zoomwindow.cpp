@@ -23,6 +23,8 @@ zoomWindow::zoomWindow(Image *image, Site *site, QMap<QString,Site*> *sites, QWi
 	ui->setupUi(this);
 	setAttribute(Qt::WA_DeleteOnClose);
 
+
+
 	QList<Favorite> favorites = loadFavorites();
 	for (Favorite fav : favorites)
 		m_favorites.append(fav.getName());

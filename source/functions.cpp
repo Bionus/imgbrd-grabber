@@ -33,7 +33,7 @@ extern QMap<QString,QString> _md5;
  * @param	error	The error message
  */
 void error(QWidget *parent, QString error)
-{ QMessageBox::critical(parent, "Error", error); }
+{ QMessageBox::critical(parent, QObject::tr("Error"), error); }
 
 /**
  * Sort a list non case-sensitively.
@@ -420,7 +420,7 @@ bool setFileCreationDate(QString path, QDateTime datetime)
 		HANDLE hfile = CreateFile(filename, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 		if (hfile == INVALID_HANDLE_VALUE)
 		{
-			log(QObject::tr("Impossible d'ouvrir le fichier (%d)").arg(GetLastError()), Log::Error);
+			log(QObject::tr("Impossible d'ouvrir le fichier (%d)", "", GetLastError()), Log::Error);
 			return false;
 		}
 		else
@@ -432,7 +432,7 @@ bool setFileCreationDate(QString path, QDateTime datetime)
 
 			if (!SetFileTime(hfile, &pcreationtime, NULL, &pcreationtime))
 			{
-				log(QObject::tr("Impossible de changer la date du fichier (%d)").arg(GetLastError()), Log::Error);
+				log(QObject::tr("Impossible de changer la date du fichier (%d)", "", GetLastError()), Log::Error);
 				return false;
 			}
 		}

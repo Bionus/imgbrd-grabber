@@ -339,16 +339,20 @@ void batchWindow::setValue(int value)
 	ui->progressBar->setValue(m_value);
 	if (ui->progressBar->maximum() <= m_value)
 	{ ui->cancelButton->setText(tr("Fermer")); }
+
+	#ifdef Q_OS_WIN
+		m_taskBarProgress->setValue(value);
+	#endif
 }
 void batchWindow::setLittleValue(int)
 { /*ui->progressBar->setValue(m_value + value);*/ }
 void batchWindow::setMaximum(int value)
 {
-	/*ui->progressBar->setMaximum(value);
+	ui->progressBar->setMaximum(value);
 
 	#ifdef Q_OS_WIN
 		m_taskBarProgress->setMaximum(value);
-	#endif*/
+	#endif
 }
 void batchWindow::setImagesCount(int value)
 {

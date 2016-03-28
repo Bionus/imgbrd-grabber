@@ -4,11 +4,14 @@
 #include <QNetworkDiskCache>
 #include <QUrlQuery>
 #include <QDir>
-#include <QDebug>
+#include <QTimer>
 #include "site.h"
 #include "functions.h"
 #include "json.h"
+#include "page.h"
+#include "image.h"
 #ifdef QT_DEBUG
+	#include <QDebug>
 	#define CACHE_POLICY QNetworkRequest::PreferCache
 #else
 	#define CACHE_POLICY QNetworkRequest::PreferNetwork
@@ -174,19 +177,10 @@ void Site::loginFinished()
 	emit loggedIn(this, m_loggedIn ? LoginSuccess : LoginError);
 }
 
-/**
- * Get an URL from the site.
- *
- * @param url	The URL to get
- * @param page	The related page
- * @param ref	The type of referer to use (page, image, etc.)
- * @param img	The related image
- * @return		The equivalent network request
- */
-QNetworkReply *Site::get(QUrl url, Page *page, QString ref, Image *img)
+QNetworkRequest Site::makeRequest(QUrl url, Page *page, QString ref, Image *img)
 {
 	if (!m_loggedIn && !m_triedLogin)
-        login();
+		login();
 
 	QNetworkRequest request(url);
 	QString referer = m_settings->value("referer"+(!ref.isEmpty() ? "_"+ref : ""), "").toString();
@@ -210,11 +204,49 @@ QNetworkReply *Site::get(QUrl url, Page *page, QString ref, Image *img)
 		{
 			QString key = headers.keys().at(i);
 			request.setRawHeader(key.toLatin1(), headers[key].toString().toLatin1());
-        }
+		}
 		request.setRawHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:35.0) Gecko/20100101 Firefox/35.0");
 
 	initManager();
 	request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, CACHE_POLICY);
+	return request;
+}
+
+/**
+ * Get an URL from the site.
+ *
+ * @param url	The URL to get
+ * @param page	The related page
+ * @param ref	The type of referer to use (page, image, etc.)
+ * @param img	The related image
+ * @return		The equivalent network request
+ */
+void Site::getAsync(QueryType type, QUrl url, std::function<void(QNetworkReply*)> callback, Page *page, QString ref, Image *img)
+{
+	m_lastCallback = callback;
+	m_callbackRequest = this->makeRequest(url, page, ref, img);
+
+	int sinceLastRequest = m_lastRequest.msecsTo(QDateTime::currentDateTime());
+
+	QString key = (type == QueryType::Retry ? "retry" : (type == QueryType::List ? "page" : (type == QueryType::Img ? "image" : (type == QueryType::Thumb ? "thumbnail" : "details"))));
+	int ms = setting("download/throttle_" + key, 0).toInt() * 1000;
+	ms -= sinceLastRequest;
+
+	if (ms > 0)
+	{ QTimer::singleShot(ms, this, SLOT(getCallback())); }
+	else
+	{ getCallback(); }
+}
+void Site::getCallback()
+{
+	m_lastRequest = QDateTime::currentDateTime();
+	m_lastCallback(m_manager->get(m_callbackRequest));
+}
+
+QNetworkReply *Site::get(QUrl url, Page *page, QString ref, Image *img)
+{
+	m_lastRequest = QDateTime::currentDateTime();
+	QNetworkRequest request = this->makeRequest(url, page, ref, img);
 	return m_manager->get(request);
 }
 
@@ -225,7 +257,12 @@ QNetworkReply *Site::get(QUrl url, Page *page, QString ref, Image *img)
  * @param errors	The list of SSL errors that occured
  */
 void Site::sslErrorHandler(QNetworkReply* qnr, QList<QSslError> errors)
-{ qDebug() << errors; qnr->ignoreSslErrors(); }
+{
+	#ifdef QT_DEBUG
+		qDebug() << errors;
+	#endif
+	qnr->ignoreSslErrors();
+}
 
 /**
  * Called when a reply is finished.
@@ -440,6 +477,9 @@ QUrl Site::fixUrl(QString url)
 
 QUrl Site::fixUrl(QString url, QUrl old)
 {
+	if (url.isEmpty())
+		return QUrl();
+
 	QString protocol = (m_settings->value("ssl", false).toBool() ? "https" : "http");
 
 	if (url.startsWith("//"))

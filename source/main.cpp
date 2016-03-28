@@ -27,21 +27,22 @@
 
 
 #include <QApplication>
-#include <QtGui>
 #include <QtGlobal>
+#include <QSettings>
+#include "downloader.h"
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 2, 0))
 	#include <QCommandLineParser>
 #else
 	#include <vendor/qcommandlineparser.h>
 #endif
-#include <iostream>
-#include "QAffiche.h"
-#include "QBouton.h"
-#include "downloader.h"
+#if !USE_CLI
+	#include <QtGui>
+	#include "QAffiche.h"
+	#include "QBouton.h"
+	#include "zoomwindow.h"
+	#include "optionswindow.h"
+#endif
 #include "mainwindow.h"
-#include "zoomwindow.h"
-#include "optionswindow.h"
-
 #if USE_BREAKPAD
 	#include "crashhandler.h"
 #endif
@@ -72,10 +73,7 @@ int main(int argc, char *argv[])
 	parser.addHelpOption();
 	parser.addVersionOption();
 
-	#if USE_CLI
-		QCommandLineOption guiOption(QStringList() << "g" << "gui", "Open the GUI.");
-		parser.addOption(guiOption);
-	#else
+	#if !USE_CLI
 		QCommandLineOption cliOption(QStringList() << "c" << "cli", "Disable the GUI.");
 		parser.addOption(cliOption);
 	#endif
@@ -122,17 +120,15 @@ int main(int argc, char *argv[])
 
 	parser.process(app);
 
-	bool gui = true;
-	#if USE_CLI
-		gui = parser.isSet(guiOption);
-	#else
+	bool gui = false;
+	#if !USE_CLI
 		gui = !parser.isSet(cliOption);
 	#endif
 
 	if (!gui && !parser.isSet(verboseOption))
 		qInstallMessageHandler(noMessageOutput);
 
-	#if USE_BREAKPAD
+	#if USE_BREAKPAD && !USE_CLI
 		if (gui)
 		{
 			QDir dir = QFileInfo(argv[0]).dir();
@@ -174,32 +170,29 @@ int main(int argc, char *argv[])
             dwnldr->getImages();
 
 		dwnldr->setQuit(true);
-
-		QEventLoop loop;
-		QObject::connect(dwnldr, SIGNAL(quit()), &loop, SLOT(quit()));
-		loop.exec();
-
-		return 0;
+		QObject::connect(dwnldr, SIGNAL(quit()), qApp, SLOT(quit()));
     }
-	else
-	{
-		QStringList tags = parser.positionalArguments();
-		tags.append(parser.value(tagsOption).split(" ", QString::SkipEmptyParts));
+	#if !USE_CLI
+		else
+		{
+			QStringList tags = parser.positionalArguments();
+			tags.append(parser.value(tagsOption).split(" ", QString::SkipEmptyParts));
 
-		QMap<QString, QString> params;
-		params.insert("booru", parser.value(sourceOption));
-		params.insert("limit", parser.value(limitOption));
-		params.insert("page", parser.value(pageOption));
-		params.insert("path", parser.value(pathOption));
-		params.insert("filename", parser.value(filenameOption));
-		params.insert("user", parser.value(userOption));
-		params.insert("password", parser.value(passwordOption));
-		params.insert("ignore", parser.isSet(blacklistOption) ? "true" : "false");
+			QMap<QString, QString> params;
+			params.insert("booru", parser.value(sourceOption));
+			params.insert("limit", parser.value(limitOption));
+			params.insert("page", parser.value(pageOption));
+			params.insert("path", parser.value(pathOption));
+			params.insert("filename", parser.value(filenameOption));
+			params.insert("user", parser.value(userOption));
+			params.insert("password", parser.value(passwordOption));
+			params.insert("ignore", parser.isSet(blacklistOption) ? "true" : "false");
 
-		_mainwindow = new mainWindow(argv[0], tags, params);
-		_mainwindow->init();
-		_mainwindow->show();
-	}
+			_mainwindow = new mainWindow(argv[0], tags, params);
+			_mainwindow->init();
+			_mainwindow->show();
+		}
+	#endif
 
 	return app.exec();
 }

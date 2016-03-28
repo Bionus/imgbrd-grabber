@@ -27,13 +27,9 @@ void QBouton::paintEvent(QPaintEvent *event)
 	int p = _border, x = region.x(), y = region.y(), w = iconSize().width(), h = iconSize().height();
 	if (_resizeInsteadOfCropping)
 	{
-		float coef, mcoef;
-		coef = float(region.width())/float(w);
+		float coef = float(region.width())/float(w);
 		coef = float(region.height())/float(h) < coef ? float(region.height())/float(h) : coef;
 		coef = coef > 1 ? 1 : coef;
-		mcoef = float(region.width()-2*p)/float(w);
-		mcoef = float(region.height()-2*p)/float(h) < mcoef ? float(region.height()-2*p)/float(h) : mcoef;
-		mcoef = mcoef > 1 ? 1 : mcoef;
 		w = w*coef;
 		h = h*coef;
 	}

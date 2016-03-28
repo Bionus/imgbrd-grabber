@@ -4,6 +4,7 @@
 #include <QFile>
 #include <QDir>
 #include <qmath.h>
+#include "site.h"
 
 Downloader::Downloader()
 {}
@@ -550,6 +551,13 @@ int Downloader::ignoredCount()
 { return m_ignored; }
 int Downloader::duplicatesCount()
 { return m_duplicates; }
+int Downloader::pagesCount()
+{
+	int pages = qCeil((float)m_max / m_perpage);
+	if (pages <= 0 || m_perpage <= 0 || m_max <= 0)
+		pages = 1;
+	return pages * m_sites->size();
+}
 
 QList<Page*> *Downloader::getPages()
 { return m_pages; }

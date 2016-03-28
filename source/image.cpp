@@ -1,6 +1,8 @@
 #include <QtScript>
+#include "page.h"
 #include "image.h"
 #include "functions.h"
+#include "site.h"
 #include "commands.h"
 
 
@@ -10,6 +12,7 @@ QString removeCacheUrl(QString url)
 	if (get.isEmpty())
 		return url;
 
+	// Only remove ?integer
 	bool ok;
 	get.toInt(&ok);
 	if (ok)
@@ -29,18 +32,6 @@ Image::Image(QMap<QString, QString> details, Page* parent)
 		return;
 	}
 
-	// Get file url and try to improve it to save bandwidth
-	m_url = details.contains("file_url") ? m_parentSite->fixUrl(details["file_url"]).toString() : "";
-	QString ext = getExtension(m_url);
-	if (details.contains("sample_url"))
-	{
-		QString sampleExt = getExtension(details["sample_url"]);
-		if (sampleExt != "jpg" && sampleExt != ext)
-			m_url = setExtension(m_url, sampleExt);
-	}
-	else if (details.contains("image") && details["image"].contains("MB // gif\" height=\"") && !m_url.endsWith(".gif", Qt::CaseInsensitive))
-	{ m_url = setExtension(m_url, "gif"); }
-
 	// Other details
     m_details = details;
 	m_md5 = details.contains("md5") ? details["md5"] : "";
@@ -48,7 +39,7 @@ Image::Image(QMap<QString, QString> details, Page* parent)
 	m_status = details.contains("status") ? details["status"] : "";
 	m_filename = details.contains("filename") ? details["filename"] : "";
 	m_folder = details.contains("folder") ? details["folder"] : "";
-	m_search = parent != nullptr ? parent->search() : QStringList();
+	m_search = parent != nullptr ? parent->search() : (details.contains("search") ? details["search"].split(' ') : QStringList());
 	m_id = details.contains("id") ? details["id"].toInt() : 0;
 	m_score = details.contains("score") ? details["score"].toInt() : 0;
 	m_hasScore = details.contains("score");
@@ -58,12 +49,38 @@ Image::Image(QMap<QString, QString> details, Page* parent)
 	m_hasChildren = details.contains("has_children") ? details["has_children"] == "true" : false;
 	m_hasNote = details.contains("has_note") ? details["has_note"] == "true" : false;
 	m_hasComments = details.contains("has_comments") ? details["has_comments"] == "true" : false;
-	m_pageUrl = details.contains("page_url") ? m_parentSite->fixUrl(details["page_url"]) : QUrl();
 	m_fileUrl = details.contains("file_url") ? m_parentSite->fixUrl(details["file_url"]) : QUrl();
 	m_sampleUrl = details.contains("sample_url") ? m_parentSite->fixUrl(details["sample_url"]) : QUrl();
 	m_previewUrl = details.contains("preview_url") ? m_parentSite->fixUrl(details["preview_url"]) : QUrl();
 	m_size = QSize(details.contains("width") ? details["width"].toInt() : 0, details.contains("height") ? details["height"].toInt() : 0);
 	m_source = details.contains("source") ? details["source"] : "";
+
+	// Page URL
+	if (!details.contains("page_url"))
+	{
+		QString pageUrl = m_parentSite->value("Urls/Html/Post");
+		QString t = m_search.join(" ");
+		if (m_parentSite->contains("DefaultTag") && t.isEmpty())
+		{ t = m_parentSite->value("DefaultTag"); }
+		pageUrl.replace("{tags}", QUrl::toPercentEncoding(t));
+		pageUrl.replace("{id}", QString::number(m_id));
+		m_pageUrl = QUrl(pageUrl);
+	}
+	else
+	{ m_pageUrl = m_parentSite->fixUrl(details["page_url"]); }
+
+	// Get file url and try to improve it to save bandwidth
+	m_url = details.contains("file_url") ? m_parentSite->fixUrl(details["file_url"]).toString() : "";
+	QString ext = getExtension(m_url);
+	if (!m_sampleUrl.isEmpty() && !m_previewUrl.isEmpty())
+	{
+		QString previewExt = getExtension(details["preview_url"]);
+		QString sampleExt = getExtension(details["sample_url"]);
+		if (sampleExt != "jpg" && sampleExt != ext && previewExt == ext)
+			m_url = setExtension(m_url, sampleExt);
+	}
+	else if (details.contains("image") && details["image"].contains("MB // gif\" height=\"") && !m_url.endsWith(".gif", Qt::CaseInsensitive))
+	{ m_url = setExtension(m_url, "gif"); }
 
 	// Remove ? in urls
 	m_url = removeCacheUrl(m_url);
@@ -104,6 +121,13 @@ Image::Image(QMap<QString, QString> details, Page* parent)
 			QString tg = t.at(i);
 			tg.replace("&amp;", "&");
 			m_tags.append(Tag(tg, "copyright"));
+		}
+		t = details["tags_model"].split(" ");
+		for (int i = 0; i < t.count(); ++i)
+		{
+			QString tg = t.at(i);
+			tg.replace("&amp;", "&");
+			m_tags.append(Tag(tg, "model"));
 		}
 	}
 	else if (details.contains("tags"))
@@ -668,10 +692,11 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 		{
 			for (int r = 0; r < scustom.size(); ++r)
 			{
-				if (!custom.contains(scustom.keys().at(r)))
-				{ custom.insert(scustom.keys().at(r), QStringList()); }
-				if (scustom.values().at(r).contains(t))
-				{ custom[scustom.keys().at(r)].append(t); }
+				QString key = scustom.keys().at(r);
+				if (!custom.contains(key))
+				{ custom.insert(key, QStringList()); }
+				if (scustom[key].contains(t, Qt::CaseInsensitive))
+				{ custom[key].append(t); }
 			}
 			details[ignore.contains(m_tags[i].text(), Qt::CaseInsensitive) ? "generals" : m_tags[i].type()+"s"].append(t);
 			details["alls"].append(t);
@@ -718,6 +743,8 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 	replaces.insert("id", QStrP(QString::number(m_id), "0"));
 	for (int i = 0; i < m_search.size(); ++i)
 	{ replaces.insert("search_"+QString::number(i+1), QStrP(m_search[i], "")); }
+	for (int i = m_search.size(); i < 10; ++i)
+	{ replaces.insert("search_"+QString::number(i+1), QStrP("", "")); }
 	replaces.insert("search", QStrP(m_search.join(tagSeparator), ""));
 	replaces.insert("pool", QStrP(poolMatch.hasMatch() ? poolMatch.captured(1) : "", ""));
 	replaces.insert("rating", QStrP(m_rating, "unknown"));
@@ -785,6 +812,15 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 	{
 		// We remove the "javascript:" part
 		filename = filename.right(filename.length() - 11);
+
+		// FIXME real multiple filename management shared with normal filenames
+		QStringList repKays = QStringList() << "artist" << "copyright" << "character" << "model";
+		for (QString key : repKays)
+		{
+			QList<QStrP> repls = getReplace(key, details, &settings);
+			replaces.insert(key, repls.first());
+		}
+		// end FIXME
 
 		// Variables initialization
 		QString inits = "";
@@ -983,8 +1019,11 @@ void Image::finishedImageS()
 			nextext["jpeg"] = "swf";
 			nextext["swf"] = "webm";
 			nextext["webm"] = "mp4";
-			setUrl(m_url.section('.', 0, -2)+"."+nextext[ext]);
-			log(tr("Image non trouvée. Nouvel essai avec l'extension %1...").arg(nextext[ext]));
+
+			QString newext = nextext.contains(ext) ? nextext[ext] : "jpg";
+
+			setUrl(m_url.section('.', 0, -2)+"."+newext);
+			log(tr("Image non trouvée. Nouvel essai avec l'extension %1...").arg(newext));
 		}
 		loadImage();
 		return;
@@ -1095,15 +1134,19 @@ Image::SaveResult Image::save(QString path, bool force, bool basic)
 		if (md5Duplicate.isEmpty() || whatToDo == "save" || force)
 		{
 			log(tr("Sauvegarde de l'image dans le fichier <a href=\"file:///%1\">%1</a>").arg(f.fileName()));
-			if (!m_source.isEmpty())
+			if (!m_source.isEmpty() && QFile::exists(m_source))
 			{ QFile::copy(m_source, f.fileName()); }
 			else
 			{
 				addMd5(md5(), path);
 
-				f.open(QFile::WriteOnly);
-				f.write(m_data);
-				f.close();
+				if (f.open(QFile::WriteOnly))
+				{
+					f.write(m_data);
+					f.close();
+				}
+				else
+				{ log(tr("Impossible d'ouvrir le fichier")); }
 			}
 
 			if (settings.value("Save/keepDate", true).toBool())

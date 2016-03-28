@@ -7,6 +7,9 @@
 #include "blacklistfix2.h"
 #include "functions.h"
 #include "ui_blacklistfix.h"
+#include "page.h"
+
+
 
 BlacklistFix::BlacklistFix(QMap<QString,Site*> sites, QWidget *parent) : QDialog(parent), ui(new Ui::BlacklistFix), m_sites(sites)
 {

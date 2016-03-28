@@ -28,6 +28,7 @@
 #include "functions.h"
 #include "json.h"
 #include "commands.h"
+#include "optionswindow.h"
 
 #define DONE()			logUpdate(QObject::tr(" Fait"))
 #define DIR_SEPARATOR	QDir::toNativeSeparators("/")
@@ -117,11 +118,38 @@ void mainWindow::init()
 		m_settings->setValue("firstload", false);
 	}
 
+	// Crash restoration
+	m_restore = m_settings->value("start", "none").toString() == "restore";
+	if (crashed)
+	{
+		if (m_restore)
+		{
+			log(tr("Il semblerait que Imgbrd-Grabber n'ait pas été fermé correctement la dernière fois."));
+			int reponse = QMessageBox::question(this, "", tr("Il semblerait que l'application n'ait pas été arrêtée correctement lors de sa dernière utilisation. Voulez-vous la charger sans restaurer votre dernière session ?"), QMessageBox::Yes | QMessageBox::No);
+			if (reponse == QMessageBox::Yes)
+			{ m_restore = false; }
+		}
+		else
+		{
+			log(tr("Il semblerait que Imgbrd-Grabber n'ait pas été fermé correctement la dernière fois."));
+			int reponse = QMessageBox::question(this, "", tr("Il semblerait que l'application n'ait pas été arrêtée correctement lors de sa dernière utilisation. Voulez-vous restaurer votre dernière session ?"), QMessageBox::Yes | QMessageBox::No);
+			if (reponse == QMessageBox::Yes)
+			{ m_restore = true; }
+		}
+	}
+
 	// Loading last window state, size and position from the settings file
 	restoreGeometry(m_settings->value("geometry").toByteArray());
 	restoreState(m_settings->value("state").toByteArray());
 
-	// Selected ones
+	// Tab add button
+	QPushButton *add = new QPushButton(QIcon(":/images/add.png"), "", this);
+		add->setFlat(true);
+		add->resize(QSize(12,12));
+		connect(add, SIGNAL(clicked()), this, SLOT(addTab()));
+		ui->tabWidget->setCornerWidget(add);
+
+	// Initial login and selected sources setup
 	QStringList keys = m_sites.keys();
 	QString sav = m_settings->value("sites", "1").toString();
 	m_waitForLogin = 0;
@@ -136,31 +164,6 @@ void mainWindow::init()
 		}
 		else
 		{ m_selectedSources.append(false); }
-	}
-
-	QPushButton *add = new QPushButton(QIcon(":/images/add.png"), "", this);
-		add->setFlat(true);
-		add->resize(QSize(12,12));
-		connect(add, SIGNAL(clicked()), this, SLOT(addTab()));
-		ui->tabWidget->setCornerWidget(add);
-
-	bool restore = m_settings->value("start", "none").toString() == "restore";
-	if (crashed)
-	{
-		if (restore)
-		{
-			log(tr("Il semblerait que Imgbrd-Grabber n'ait pas été fermé correctement la dernière fois."));
-			int reponse = QMessageBox::question(this, "", tr("Il semblerait que l'application n'ait pas été arrêtée correctement lors de sa dernière utilisation. Voulez-vous la charger sans restaurer votre dernière session ?"), QMessageBox::Yes | QMessageBox::No);
-			if (reponse == QMessageBox::Yes)
-			{ restore = false; }
-		}
-		else
-		{
-			log(tr("Il semblerait que Imgbrd-Grabber n'ait pas été fermé correctement la dernière fois."));
-			int reponse = QMessageBox::question(this, "", tr("Il semblerait que l'application n'ait pas été arrêtée correctement lors de sa dernière utilisation. Voulez-vous restaurer votre dernière session ?"), QMessageBox::Yes | QMessageBox::No);
-			if (reponse == QMessageBox::Yes)
-			{ restore = true; }
-		}
 	}
 	if (m_waitForLogin == 0)
 	{
@@ -219,8 +222,7 @@ void mainWindow::initialLoginsFinished()
 	if (m_waitForLogin != 0)
 	{ return; }
 
-	bool restore = m_settings->value("start", "none").toString() == "restore";
-	if (restore)
+	if (m_restore)
 	{
 		loadLinkList(savePath("restore.igl"));
 		loadTabs(savePath("tabs.txt"));
@@ -258,6 +260,12 @@ mainWindow::~mainWindow()
 
 void mainWindow::onFirstLoad()
 {
+	// Save all default settings
+	optionsWindow *ow = new optionsWindow(this);
+	ow->save();
+	ow->deleteLater();
+
+	// Detect danbooru downloader
 	QSettings cfg(QSettings::IniFormat, QSettings::UserScope, "Mozilla", "Firefox");
 	QString path = QFileInfo(cfg.fileName()).absolutePath()+"/Firefox";
 	QSettings profiles(path+"/profiles.ini", QSettings::IniFormat);
@@ -324,6 +332,7 @@ void mainWindow::onFirstLoad()
 		}
 	}
 
+	// Open startup window
 	startWindow *swin = new startWindow(&m_sites, this);
 	connect(swin, SIGNAL(languageChanged(QString)), this, SLOT(loadLanguage(QString)));
 	connect(swin, &startWindow::settingsChanged, this, &mainWindow::on_buttonInitSettings_clicked);
@@ -517,7 +526,7 @@ void mainWindow::batchAddGroup(const QStringList& values)
 	QTableWidgetItem *item;
 	ui->tableBatchGroups->setRowCount(ui->tableBatchGroups->rowCount()+1);
 	m_allow = false;
-	QTableWidgetItem *it = new QTableWidgetItem(QIcon(":/images/colors/black.png"), QString::number(m_groupBatchs.indexOf(vals) + 1));
+	QTableWidgetItem *it = new QTableWidgetItem(getIcon(":/images/colors/black.png"), QString::number(m_groupBatchs.indexOf(vals) + 1));
 	it->setFlags(it->flags() ^ Qt::ItemIsEditable);
 	ui->tableBatchGroups->setItem(ui->tableBatchGroups->rowCount()-1, 0, it);
 	for (int t = 0; t < values.count(); t++)
@@ -538,8 +547,8 @@ void mainWindow::batchAddGroup(const QStringList& values)
 	prog->setTextVisible(false);
 	prog->setMaximum(values[3].toInt());
 	m_progressBars.append(prog);
-
 	ui->tableBatchGroups->setCellWidget(ui->tableBatchGroups->rowCount()-1, 9, prog);
+
 	m_allow = true;
 	saveLinkList(savePath("restore.igl"));
 	updateGroupCount();
@@ -610,9 +619,9 @@ void mainWindow::batchClearSel()
 	int rem = 0;
 	for (int i : todelete)
 	{
-		/*int id = ui->tableBatchGroups->item(i - rem, 0)->text().toInt();
+		int id = ui->tableBatchGroups->item(i - rem, 0)->text().toInt();
 		m_progressBars[id - 1]->deleteLater();
-		m_progressBars[id - 1] = nullptr;*/
+		m_progressBars[id - 1] = nullptr;
 
 		m_groupBatchs[i][m_groupBatchs.at(i).count() - 1] = "false";
 		ui->tableBatchGroups->removeRow(i - rem);
@@ -1131,7 +1140,7 @@ void mainWindow::getAll(bool all)
 
 	m_allow = false;
 	for (int i = 0; i < ui->tableBatchGroups->rowCount(); i++)
-	{ ui->tableBatchGroups->item(i, 0)->setIcon(QIcon(":/images/colors/black.png")); }
+	{ ui->tableBatchGroups->item(i, 0)->setIcon(getIcon(":/images/colors/black.png")); }
 	m_allow = true;
 	Commands::get()->before();
 	selected = ui->tableBatchGroups->selectedItems();
@@ -1145,7 +1154,6 @@ void mainWindow::getAll(bool all)
 
 	if (all || !todownload.isEmpty())
 	{
-		m_progressdialog->setImagesCount(0);
 		int active = 0;
 		for (int j = 0; j < m_groupBatchs.count(); ++j)
 		{
@@ -1184,7 +1192,6 @@ void mainWindow::getAll(bool all)
 				int pages = b2 != 0 ? (int)ceil((float)b.at(3).toInt() / b2) : -1;
 				if (pages <= 0 || b.at(2).toInt() <= 0 || b.at(3).toInt() <= 0)
 					pages = 1;
-				m_progressdialog->setImagesCount(m_progressdialog->count() + pages);
 
 				m_getAllLimit += b.at(3).toDouble();
 				m_batchDownloading.insert(j);
@@ -1229,7 +1236,7 @@ void mainWindow::getAllLogin()
 		return;
 	}
 
-	m_progressdialog->setMaximum(m_getAllLogins.count());
+	m_progressdialog->setImagesCount(m_getAllLogins.count());
 	while (!logins.isEmpty())
 	{
 		Site *site = logins.dequeue();
@@ -1239,11 +1246,10 @@ void mainWindow::getAllLogin()
 }
 void mainWindow::getAllFinishedLogin(Site *site, Site::LoginResult)
 {
-
 	if (m_getAllLogins.empty())
 	{ return; }
 
-	m_progressdialog->setValue(m_progressdialog->value() + 1);
+	m_progressdialog->setImages(m_progressdialog->images() + 1);
 	m_getAllLogins.removeAll(site);
 
 	if (m_getAllLogins.empty())
@@ -1269,7 +1275,10 @@ void mainWindow::getAllGetPages()
 	else
 	{
 		for (Downloader *downloader : m_downloaders)
-		{ downloader->getImages(); }
+		{
+			m_progressdialog->setImagesCount(m_progressdialog->count() + downloader->pagesCount());
+			downloader->getImages();
+		}
 	}
 
 	logShow();
@@ -1286,7 +1295,8 @@ void mainWindow::getAllFinishedPage(Page *page)
 
     m_groupBatchs[d->getData().toInt()][8] += (m_groupBatchs[d->getData().toInt()][8] == "" ? "" : "¤") + QString::number((quintptr)page);
     m_getAllPages.append(page);
-    m_progressdialog->setImages(m_progressdialog->images() + 1);
+
+	m_progressdialog->setImages(m_progressdialog->images() + 1);
 }
 
 /**
@@ -1429,7 +1439,7 @@ void mainWindow::_getAll()
 			QString pth = m_settings->value("Save/path").toString();
 			if (site_id >= 0)
 			{
-				ui->tableBatchGroups->item(row, 0)->setIcon(QIcon(":/images/colors/blue.png"));
+				ui->tableBatchGroups->item(row, 0)->setIcon(getIcon(":/images/colors/blue.png"));
 				path = m_groupBatchs[site_id - 1][6];
 				pth = m_groupBatchs[site_id - 1][7];
 			}
@@ -1472,7 +1482,7 @@ void mainWindow::_getAll()
 
 					m_progressBars[site_id - 1]->setValue(m_progressBars[site_id - 1]->value() + 1);
 					if (m_progressBars[site_id - 1]->value() >= m_progressBars[site_id - 1]->maximum())
-					{ ui->tableBatchGroups->item(row, 0)->setIcon(QIcon(":/images/colors/green.png")); }
+					{ ui->tableBatchGroups->item(row, 0)->setIcon(getIcon(":/images/colors/green.png")); }
 
 					img->deleteLater();
 					// qDebug() << "DELETE ignored" << QString::number((int)img, 16);
@@ -1496,7 +1506,7 @@ void mainWindow::_getAll()
 				{
 					m_progressBars[site_id - 1]->setValue(m_progressBars[site_id - 1]->value() + 1);
 					if (m_progressBars[site_id - 1]->value() >= m_progressBars[site_id - 1]->maximum())
-					{ ui->tableBatchGroups->item(row, 0)->setIcon(QIcon(":/images/colors/green.png")); }
+					{ ui->tableBatchGroups->item(row, 0)->setIcon(getIcon(":/images/colors/green.png")); }
 				}
 
 				m_getAllDownloading.removeAll(img);
@@ -1597,7 +1607,7 @@ void mainWindow::getAllPerformTags(Image* img)
 			m_progressdialog->loadedImage(img->url());
 			m_progressBars[site_id - 1]->setValue(m_progressBars[site_id]->value()+1);
 			if (m_progressBars[site_id - 1]->value() >= m_progressBars[site_id]->maximum())
-			{ ui->tableBatchGroups->item(row, 0)->setIcon(QIcon(":/images/colors/green.png")); }
+			{ ui->tableBatchGroups->item(row, 0)->setIcon(getIcon(":/images/colors/green.png")); }
 			m_getAllDownloadingSpeeds.remove(img->url());
 			m_getAllDownloading.removeAll(img);
 			img->deleteLater();
@@ -1618,7 +1628,7 @@ void mainWindow::getAllPerformTags(Image* img)
 		{
 			m_progressBars[site_id - 1]->setValue(m_progressBars[site_id - 1]->value()+1);
 			if (m_progressBars[site_id - 1]->value() >= m_progressBars[site_id - 1]->maximum())
-			{ ui->tableBatchGroups->item(row, 0)->setIcon(QIcon(":/images/colors/green.png")); }
+			{ ui->tableBatchGroups->item(row, 0)->setIcon(getIcon(":/images/colors/green.png")); }
 		}
 		m_getAllDownloadingSpeeds.remove(img->url());
 		m_getAllDownloading.removeAll(img);
@@ -1641,7 +1651,7 @@ void mainWindow::getAllGetImage(Image* img)
 	QString p = img->folder().isEmpty() ? m_settings->value("Save/path").toString() : img->folder();
 	if (site_id >= 0)
 	{
-		ui->tableBatchGroups->item(row, 0)->setIcon(QIcon(":/images/colors/blue.png"));
+		ui->tableBatchGroups->item(row, 0)->setIcon(getIcon(":/images/colors/blue.png"));
 		path = m_groupBatchs[site_id - 1][6];
 		p = m_groupBatchs[site_id - 1][7];
 	}
@@ -1733,7 +1743,7 @@ void mainWindow::getAllPerformImage(Image* img)
 	{
 		if (site_id >= 0)
 		{
-			ui->tableBatchGroups->item(row, 0)->setIcon(QIcon(":/images/colors/blue.png"));
+			ui->tableBatchGroups->item(row, 0)->setIcon(getIcon(":/images/colors/blue.png"));
 			saveImage(img, reply, m_groupBatchs[site_id - 1][6], m_groupBatchs[site_id - 1][7]);
 		}
 		else
@@ -1764,12 +1774,12 @@ void mainWindow::getAllPerformImage(Image* img)
 	{
 		m_progressBars[site_id - 1]->setValue(m_progressBars[site_id - 1]->value()+1);
 		if (m_progressBars[site_id - 1]->value() >= m_progressBars[site_id - 1]->maximum())
-		{ ui->tableBatchGroups->item(row, 0)->setIcon(QIcon(":/images/colors/green.png")); }
+		{ ui->tableBatchGroups->item(row, 0)->setIcon(getIcon(":/images/colors/green.png")); }
 	}
 
 	// Update dialog infos
-	m_progressdialog->setValue(m_progressdialog->value()+img->value());
-	m_progressdialog->setImages(m_progressdialog->images()+1);
+	m_progressdialog->setImages(m_progressdialog->images() + 1);
+	m_progressdialog->setValue(m_progressdialog->value() + img->value());
 	m_getAllDownloadingSpeeds.remove(img->url());
 	m_getAllDownloading.removeAll(img);
 
@@ -1830,7 +1840,9 @@ void mainWindow::saveImage(Image *img, QNetworkReply *reply, QString path, QStri
 						f.remove();
 						m_getAllErrors++;
 						m_progressdialog->pause();
-						QMessageBox::critical(m_progressdialog, tr("Erreur"), tr("Une erreur est survenue lors de l'enregistrement de l'image.\n%1\nVeuillez résoudre le problème avant de reprendre le téléchargement.").arg(f.errorString()));
+						QString err = tr("Une erreur est survenue lors de l'enregistrement de l'image.\n%1\n%2\nVeuillez résoudre le problème avant de reprendre le téléchargement.").arg(fp, f.errorString());
+						log(err);
+						QMessageBox::critical(m_progressdialog, tr("Erreur"), err);
 						return;
 					}
 					f.close();
@@ -2146,6 +2158,7 @@ bool mainWindow::loadLinkList(QString filename)
 	if (det.empty())
 		return false;
 
+	log(tr("Chargement de %n téléchargement(s)", "", det.count()));
 	for (QString link : det)
 	{
 		m_allow = false;
@@ -2160,6 +2173,13 @@ bool mainWindow::loadLinkList(QString filename)
 		}
 		else
 		{
+			QString source = infos[5];
+			if (!m_sites.contains(source))
+			{
+				log(tr("Source invalide \"%1\" trouvée dans le fichier IGL.").arg(source));
+				continue;
+			}
+
 			if (infos.at(1).toInt() < 0 || infos.at(2).toInt() < 1 || infos.at(3).toInt() < 1)
 			{
 				log(tr("Erreur lors de la lecture d'une ligne du fichier de liens."));
@@ -2181,24 +2201,32 @@ bool mainWindow::loadLinkList(QString filename)
 
 			infos.append("true");
 			m_groupBatchs.append(infos);
-			QTableWidgetItem *it = new QTableWidgetItem(QIcon(":/images/colors/"+QString(val == max ? "green" : (val > 0 ? "blue" : "black"))+".png"), QString::number(m_groupBatchs.indexOf(infos) + 1));
+			QTableWidgetItem *it = new QTableWidgetItem(getIcon(":/images/colors/"+QString(val == max ? "green" : (val > 0 ? "blue" : "black"))+".png"), QString::number(m_groupBatchs.indexOf(infos) + 1));
 			it->setFlags(it->flags() ^ Qt::ItemIsEditable);
 			ui->tableBatchGroups->setItem(ui->tableBatchGroups->rowCount()-1, 0, it);
 
 			QProgressBar *prog = new QProgressBar(this);
-			prog->setMaximum(infos[3].toInt() /*max < 0 ? 0 : max*/);
+			prog->setMaximum(infos[3].toInt());
 			prog->setValue(val < 0 || val > max ? 0 : val);
 			prog->setMinimum(0);
 			prog->setTextVisible(false);
 			m_progressBars.append(prog);
-
 			ui->tableBatchGroups->setCellWidget(ui->tableBatchGroups->rowCount()-1, 9, prog);
+
 			m_allow = true;
 		}
 	}
 	updateGroupCount();
 
 	return true;
+}
+
+QIcon& mainWindow::getIcon(QString path)
+{
+	if (!m_icons.contains(path))
+		m_icons.insert(path, QIcon(path));
+
+	return m_icons[path];
 }
 
 void mainWindow::loadTag(QString tag, bool newTab)

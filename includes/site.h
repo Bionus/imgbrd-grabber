@@ -10,8 +10,8 @@
 #include <QNetworkAccessManager>
 #include <QUrl>
 #include <QSslError>
-#include "page.h"
-#include "image.h"
+#include "tag.h"
+#include <functional>
 
 
 
@@ -23,6 +23,15 @@ class Site : public QObject
 	Q_OBJECT
 
 	public:
+		enum QueryType
+		{
+			List = 0,
+			Img = 1,
+			Thumb = 2,
+			Details = 3,
+			Retry = 4
+		};
+
 		enum LoginResult
 		{
 			LoginError = -1,
@@ -44,8 +53,9 @@ class Site : public QObject
 		QString operator[](QString key) { return value(key); }
 		void insert(QString, QString);
 		QVariant setting(QString key, QVariant def = QVariant());
-		QNetworkReply *get(QUrl url, Page *page = NULL, QString referer = "", Image *img = NULL);
-		QNetworkReply *get(QString url, Page *page = NULL, QString referer = "", Image *img = NULL) { return get(QUrl(url), page, referer, img); }
+		QNetworkRequest makeRequest(QUrl url, Page *page = nullptr, QString referer = "", Image *img = nullptr);
+		QNetworkReply *get(QUrl url, Page *page = nullptr, QString referer = "", Image *img = nullptr);
+		void getAsync(QueryType type, QUrl url, std::function<void(QNetworkReply *)> callback, Page *page = nullptr, QString referer = "", Image *img = nullptr);
 		static QMap<QString, Site*> *getAllSites();
 		QUrl fixUrl(QString url);
 		QUrl fixUrl(QString url, QUrl old);
@@ -59,6 +69,7 @@ class Site : public QObject
 		void finishedReply(QNetworkReply*);
 		void loadTags(int page, int limit);
 		void finishedTags();
+		void getCallback();
 
 	protected:
 		void resetCookieJar();
@@ -82,6 +93,11 @@ class Site : public QObject
 		QNetworkReply *m_loginReply, *m_updateReply, *m_tagsReply;
 		bool m_loggedIn, m_triedLogin, m_loginCheck;
 		QString m_updateVersion;
+
+		// Async
+		std::function<void(QNetworkReply*)> m_lastCallback;
+		QDateTime m_lastRequest;
+		QNetworkRequest m_callbackRequest;
 };
 
 #endif // SITE_H

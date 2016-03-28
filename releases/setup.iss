@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Grabber"
-#define MyAppVersion "4.3.0"
+#define MyAppVersion "4.4.0"
 #define MyAppPublisher "Bionus"
 #define MyAppURL "https://github.com/Bionus/imgbrd-grabber"
 #define MyAppExeName "Grabber.exe"
@@ -75,73 +75,74 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 0,6.1 
 
 [Files]                                                           
-Source: "..\images\icon.ico"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\release\CDR.exe"; DestDir: "{app}"; Flags: ignoreversion   
-Source: "..\release\CrashReporter.exe"; DestDir: "{app}"; Flags: ignoreversion   
-Source: "..\release\Grabber.exe";  DestDir: "{app}"; Flags: ignoreversion   
-Source: "..\release\words.txt";    DestDir: "{app}";    
-Source: "..\release\libeay32.dll"; DestDir: "{app}"; Flags: ignoreversion         
-Source: "..\release\libEGL.dll";   DestDir: "{app}"; Flags: ignoreversion         
-Source: "..\release\libGLESv2.dll";         DestDir: "{app}"; Flags: ignoreversion         
-Source: "..\release\libmysql.dll";          DestDir: "{app}"; Flags: ignoreversion         
-Source: "..\release\libssl32.dll";          DestDir: "{app}"; Flags: ignoreversion        
-Source: "..\release\qscintilla2.dll";       DestDir: "{app}"; Flags: ignoreversion      
-Source: "..\release\Qt5Core.dll";           DestDir: "{app}"; Flags: ignoreversion
-Source: "..\release\Qt5Gui.dll";            DestDir: "{app}"; Flags: ignoreversion           
-Source: "..\release\Qt5Multimedia.dll";     DestDir: "{app}"; Flags: ignoreversion       
-Source: "..\release\Qt5Network.dll";        DestDir: "{app}"; Flags: ignoreversion          
-Source: "..\release\Qt5PrintSupport.dll";   DestDir: "{app}"; Flags: ignoreversion      
-Source: "..\release\Qt5Script.dll";         DestDir: "{app}"; Flags: ignoreversion        
-Source: "..\release\Qt5Sql.dll";            DestDir: "{app}"; Flags: ignoreversion           
-Source: "..\release\Qt5Widgets.dll";        DestDir: "{app}"; Flags: ignoreversion           
-Source: "..\release\Qt5Xml.dll";            DestDir: "{app}"; Flags: ignoreversion           
-Source: "..\release\Qt5WinExtras.dll";      DestDir: "{app}"; Flags: ignoreversion
-Source: "..\release\ssleay32.dll";          DestDir: "{app}"; Flags: ignoreversion     
-Source: "..\release\crashreporter\English.qm";   DestDir: "{app}\crashreporter"; Flags: ignoreversion         
-Source: "..\release\crashreporter\Français.qm";  DestDir: "{app}\crashreporter"; Flags: ignoreversion  
-Source: "..\release\imageformats\qdds.dll";  DestDir: "{app}\imageformats"; Flags: ignoreversion
-Source: "..\release\imageformats\qgif.dll";  DestDir: "{app}\imageformats"; Flags: ignoreversion      
-Source: "..\release\imageformats\qicns.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
-Source: "..\release\imageformats\qico.dll";  DestDir: "{app}\imageformats"; Flags: ignoreversion   
-Source: "..\release\imageformats\qjp2.dll";  DestDir: "{app}\imageformats"; Flags: ignoreversion
-Source: "..\release\imageformats\qjpeg.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
-Source: "..\release\imageformats\qmng.dll";  DestDir: "{app}\imageformats"; Flags: ignoreversion
-Source: "..\release\imageformats\qsvg.dll";  DestDir: "{app}\imageformats"; Flags: ignoreversion
-Source: "..\release\imageformats\qtga.dll";  DestDir: "{app}\imageformats"; Flags: ignoreversion
-Source: "..\release\imageformats\qtiff.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
-Source: "..\release\imageformats\qwbmp.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion   
-Source: "..\release\imageformats\qwebp.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
-Source: "..\release\languages\English.qm";   DestDir: "{app}\languages"; Flags: ignoreversion         
-Source: "..\release\languages\Français.qm";  DestDir: "{app}\languages"; Flags: ignoreversion    
-Source: "..\release\languages\Russian.qm";   DestDir: "{app}\languages"; Flags: ignoreversion   
-Source: "..\release\platforms\qminimal.dll"; DestDir: "{app}\platforms"; Flags: ignoreversion
-Source: "..\release\platforms\qoffscreen.dll"; DestDir: "{app}\platforms"; Flags: ignoreversion
-Source: "..\release\platforms\qwindows.dll";   DestDir: "{app}\platforms"; Flags: ignoreversion                  
-Source: "..\release\sqldrivers\qsqlite.dll";   DestDir: "{app}\sqldrivers"; Flags: ignoreversion               
-Source: "..\release\sqldrivers\qsqlmysql.dll"; DestDir: "{app}\sqldrivers"; Flags: ignoreversion               
-Source: "..\release\sqldrivers\qsqlodbc.dll";  DestDir: "{app}\sqldrivers"; Flags: ignoreversion               
-Source: "..\release\sqldrivers\qsqlpsql.dll";  DestDir: "{app}\sqldrivers"; Flags: ignoreversion    
-Source: "..\release\sites\Booru-on-rails\icon.png";  DestDir: "{localappdata}\Bionus\Grabber\sites\Booru-on-rails"; Flags: ignoreversion
-Source: "..\release\sites\Booru-on-rails\model.xml"; DestDir: "{localappdata}\Bionus\Grabber\sites\Booru-on-rails"; Flags: ignoreversion
-Source: "..\release\sites\Booru-on-rails\sites.txt"; DestDir: "{localappdata}\Bionus\Grabber\sites\Booru-on-rails"; Flags: onlyifdoesntexist
-Source: "..\release\sites\Danbooru\icon.png";        DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru"; Flags: ignoreversion
-Source: "..\release\sites\Danbooru\model.xml";       DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru"; Flags: ignoreversion
-Source: "..\release\sites\Danbooru\sites.txt";       DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru"; Flags: onlyifdoesntexist
+Source: "..\images\icon.ico";                   DestDir: "{app}"; Flags: ignoreversion
+Source: "..\release\CDR.exe";                   DestDir: "{app}"; Flags: ignoreversion   
+Source: "..\release\CrashReporter.exe";         DestDir: "{app}"; Flags: ignoreversion   
+Source: "..\cli\release\Cli.exe";               DestDir: "{app}"; Flags: ignoreversion; DestName: "Grabber.com"
+Source: "..\gui\release\Grabber.exe";           DestDir: "{app}"; Flags: ignoreversion   
+Source: "..\release\words.txt";                 DestDir: "{app}";    
+Source: "..\release\libeay32.dll";              DestDir: "{app}"; Flags: ignoreversion         
+Source: "..\release\libEGL.dll";                DestDir: "{app}"; Flags: ignoreversion         
+Source: "..\release\libGLESv2.dll";             DestDir: "{app}"; Flags: ignoreversion         
+Source: "..\release\libmysql.dll";              DestDir: "{app}"; Flags: ignoreversion         
+Source: "..\release\libssl32.dll";              DestDir: "{app}"; Flags: ignoreversion        
+Source: "..\release\qscintilla2.dll";           DestDir: "{app}"; Flags: ignoreversion      
+Source: "..\release\Qt5Core.dll";               DestDir: "{app}"; Flags: ignoreversion
+Source: "..\release\Qt5Gui.dll";                DestDir: "{app}"; Flags: ignoreversion           
+Source: "..\release\Qt5Multimedia.dll";         DestDir: "{app}"; Flags: ignoreversion       
+Source: "..\release\Qt5Network.dll";            DestDir: "{app}"; Flags: ignoreversion          
+Source: "..\release\Qt5PrintSupport.dll";       DestDir: "{app}"; Flags: ignoreversion      
+Source: "..\release\Qt5Script.dll";             DestDir: "{app}"; Flags: ignoreversion        
+Source: "..\release\Qt5Sql.dll";                DestDir: "{app}"; Flags: ignoreversion           
+Source: "..\release\Qt5Widgets.dll";            DestDir: "{app}"; Flags: ignoreversion           
+Source: "..\release\Qt5Xml.dll";                DestDir: "{app}"; Flags: ignoreversion           
+Source: "..\release\Qt5WinExtras.dll";          DestDir: "{app}"; Flags: ignoreversion
+Source: "..\release\ssleay32.dll";              DestDir: "{app}"; Flags: ignoreversion     
+Source: "..\release\crashreporter\English.qm";  DestDir: "{app}\crashreporter"; Flags: ignoreversion         
+Source: "..\release\crashreporter\Français.qm"; DestDir: "{app}\crashreporter"; Flags: ignoreversion  
+Source: "..\release\imageformats\qdds.dll";     DestDir: "{app}\imageformats"; Flags: ignoreversion
+Source: "..\release\imageformats\qgif.dll";     DestDir: "{app}\imageformats"; Flags: ignoreversion      
+Source: "..\release\imageformats\qicns.dll";    DestDir: "{app}\imageformats"; Flags: ignoreversion
+Source: "..\release\imageformats\qico.dll";     DestDir: "{app}\imageformats"; Flags: ignoreversion   
+Source: "..\release\imageformats\qjp2.dll";     DestDir: "{app}\imageformats"; Flags: ignoreversion
+Source: "..\release\imageformats\qjpeg.dll";    DestDir: "{app}\imageformats"; Flags: ignoreversion
+Source: "..\release\imageformats\qmng.dll";     DestDir: "{app}\imageformats"; Flags: ignoreversion
+Source: "..\release\imageformats\qsvg.dll";     DestDir: "{app}\imageformats"; Flags: ignoreversion
+Source: "..\release\imageformats\qtga.dll";     DestDir: "{app}\imageformats"; Flags: ignoreversion
+Source: "..\release\imageformats\qtiff.dll";    DestDir: "{app}\imageformats"; Flags: ignoreversion
+Source: "..\release\imageformats\qwbmp.dll";    DestDir: "{app}\imageformats"; Flags: ignoreversion   
+Source: "..\release\imageformats\qwebp.dll";    DestDir: "{app}\imageformats"; Flags: ignoreversion
+Source: "..\release\languages\English.qm";      DestDir: "{app}\languages"; Flags: ignoreversion         
+Source: "..\release\languages\Français.qm";     DestDir: "{app}\languages"; Flags: ignoreversion    
+Source: "..\release\languages\Russian.qm";      DestDir: "{app}\languages"; Flags: ignoreversion   
+Source: "..\release\platforms\qminimal.dll";    DestDir: "{app}\platforms"; Flags: ignoreversion
+Source: "..\release\platforms\qoffscreen.dll";  DestDir: "{app}\platforms"; Flags: ignoreversion
+Source: "..\release\platforms\qwindows.dll";    DestDir: "{app}\platforms"; Flags: ignoreversion                  
+Source: "..\release\sqldrivers\qsqlite.dll";    DestDir: "{app}\sqldrivers"; Flags: ignoreversion               
+Source: "..\release\sqldrivers\qsqlmysql.dll";  DestDir: "{app}\sqldrivers"; Flags: ignoreversion               
+Source: "..\release\sqldrivers\qsqlodbc.dll";   DestDir: "{app}\sqldrivers"; Flags: ignoreversion               
+Source: "..\release\sqldrivers\qsqlpsql.dll";   DestDir: "{app}\sqldrivers"; Flags: ignoreversion    
+Source: "..\release\sites\Booru-on-rails\icon.png";     DestDir: "{localappdata}\Bionus\Grabber\sites\Booru-on-rails"; Flags: ignoreversion
+Source: "..\release\sites\Booru-on-rails\model.xml";    DestDir: "{localappdata}\Bionus\Grabber\sites\Booru-on-rails"; Flags: ignoreversion
+Source: "..\release\sites\Booru-on-rails\sites.txt";    DestDir: "{localappdata}\Bionus\Grabber\sites\Booru-on-rails"; Flags: onlyifdoesntexist
+Source: "..\release\sites\Danbooru\icon.png";           DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru"; Flags: ignoreversion
+Source: "..\release\sites\Danbooru\model.xml";          DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru"; Flags: ignoreversion
+Source: "..\release\sites\Danbooru\sites.txt";          DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru"; Flags: onlyifdoesntexist
 Source: "..\release\sites\Danbooru\behoimi.org\settings.ini";              DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru\behoimi.org";
-Source: "..\release\sites\Sankaku\icon.png";        DestDir: "{localappdata}\Bionus\Grabber\sites\Sankaku"; Flags: ignoreversion
-Source: "..\release\sites\Sankaku\model.xml";       DestDir: "{localappdata}\Bionus\Grabber\sites\Sankaku"; Flags: ignoreversion
-Source: "..\release\sites\Sankaku\sites.txt";       DestDir: "{localappdata}\Bionus\Grabber\sites\Sankaku"; Flags: onlyifdoesntexist
+Source: "..\release\sites\Sankaku\icon.png";            DestDir: "{localappdata}\Bionus\Grabber\sites\Sankaku"; Flags: ignoreversion
+Source: "..\release\sites\Sankaku\model.xml";           DestDir: "{localappdata}\Bionus\Grabber\sites\Sankaku"; Flags: ignoreversion
+Source: "..\release\sites\Sankaku\sites.txt";           DestDir: "{localappdata}\Bionus\Grabber\sites\Sankaku"; Flags: onlyifdoesntexist
 Source: "..\release\sites\Sankaku\chan.sankakucomplex.com\settings.ini";  DestDir: "{localappdata}\Bionus\Grabber\sites\Sankaku\chan.sankakucomplex.com";
 Source: "..\release\sites\Sankaku\idol.sankakucomplex.com\settings.ini";  DestDir: "{localappdata}\Bionus\Grabber\sites\Sankaku\idol.sankakucomplex.com";    
-Source: "..\release\sites\Danbooru (2.0)\icon.png";  DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru (2.0)"; Flags: ignoreversion
-Source: "..\release\sites\Danbooru (2.0)\model.xml"; DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru (2.0)"; Flags: ignoreversion
-Source: "..\release\sites\Danbooru (2.0)\sites.txt"; DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru (2.0)"; Flags: onlyifdoesntexist
-Source: "..\release\sites\Gelbooru (0.1)\icon.png";  DestDir: "{localappdata}\Bionus\Grabber\sites\Gelbooru (0.1)"; Flags: ignoreversion
-Source: "..\release\sites\Gelbooru (0.1)\model.xml"; DestDir: "{localappdata}\Bionus\Grabber\sites\Gelbooru (0.1)"; Flags: ignoreversion
-Source: "..\release\sites\Gelbooru (0.1)\sites.txt"; DestDir: "{localappdata}\Bionus\Grabber\sites\Gelbooru (0.1)"; Flags: onlyifdoesntexist
-Source: "..\release\sites\Gelbooru (0.2)\icon.png";  DestDir: "{localappdata}\Bionus\Grabber\sites\Gelbooru (0.2)"; Flags: ignoreversion
-Source: "..\release\sites\Gelbooru (0.2)\model.xml"; DestDir: "{localappdata}\Bionus\Grabber\sites\Gelbooru (0.2)"; Flags: ignoreversion      
-Source: "..\release\sites\Gelbooru (0.2)\sites.txt"; DestDir: "{localappdata}\Bionus\Grabber\sites\Gelbooru (0.2)"; Flags: onlyifdoesntexist
+Source: "..\release\sites\Danbooru (2.0)\icon.png";     DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru (2.0)"; Flags: ignoreversion
+Source: "..\release\sites\Danbooru (2.0)\model.xml";    DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru (2.0)"; Flags: ignoreversion
+Source: "..\release\sites\Danbooru (2.0)\sites.txt";    DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru (2.0)"; Flags: onlyifdoesntexist
+Source: "..\release\sites\Gelbooru (0.1)\icon.png";     DestDir: "{localappdata}\Bionus\Grabber\sites\Gelbooru (0.1)"; Flags: ignoreversion
+Source: "..\release\sites\Gelbooru (0.1)\model.xml";    DestDir: "{localappdata}\Bionus\Grabber\sites\Gelbooru (0.1)"; Flags: ignoreversion
+Source: "..\release\sites\Gelbooru (0.1)\sites.txt";    DestDir: "{localappdata}\Bionus\Grabber\sites\Gelbooru (0.1)"; Flags: onlyifdoesntexist
+Source: "..\release\sites\Gelbooru (0.2)\icon.png";     DestDir: "{localappdata}\Bionus\Grabber\sites\Gelbooru (0.2)"; Flags: ignoreversion
+Source: "..\release\sites\Gelbooru (0.2)\model.xml";    DestDir: "{localappdata}\Bionus\Grabber\sites\Gelbooru (0.2)"; Flags: ignoreversion      
+Source: "..\release\sites\Gelbooru (0.2)\sites.txt";    DestDir: "{localappdata}\Bionus\Grabber\sites\Gelbooru (0.2)"; Flags: onlyifdoesntexist
 Source: "..\release\sites\Gelbooru (0.2)\gelbooru.com\settings.ini"; DestDir: "{localappdata}\Bionus\Grabber\sites\Gelbooru (0.2)\gelbooru.com";     
 Source: "..\release\sites\Moebooru\icon.png";  DestDir: "{localappdata}\Bionus\Grabber\sites\Moebooru"; Flags: ignoreversion
 Source: "..\release\sites\Moebooru\model.xml"; DestDir: "{localappdata}\Bionus\Grabber\sites\Moebooru"; Flags: ignoreversion

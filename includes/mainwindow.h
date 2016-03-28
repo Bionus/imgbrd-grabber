@@ -154,6 +154,7 @@ class mainWindow : public QMainWindow
 		void saveImage(Image *img, QNetworkReply *reply = NULL, QString path = "", QString p = "", bool getAll = true);
 		void setTags(QList<Tag> tags, searchTab *from = nullptr);
 		void initialLoginsFinished();
+		QIcon& getIcon(QString path);
 
     private:
 		int					m_pagemax, m_getAllDownloaded, m_getAllExists, m_getAllIgnored, m_getAll404s, m_getAllErrors, m_getAllSkipped, m_getAllCount, m_getAllPageCount, m_getAllBeforeId, m_remainingPics, m_remainingSites, m_countPics, m_currentFav, m_currentFavCount, m_getAllLimit, m_downloads, m_waitForLogin;
@@ -193,6 +194,8 @@ class mainWindow : public QMainWindow
 		QList<Downloader*>  m_downloaders, m_downloadersDone;
 		QList<Site*>		m_getAllLogins;
 		int					m_batchAutomaticRetries;
+		bool				m_restore;
+		QMap<QString, QIcon>	m_icons;
 };
 
 #endif // MAINWINDOW_H
