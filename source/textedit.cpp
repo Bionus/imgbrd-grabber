@@ -7,7 +7,6 @@
 #include <QMenu>
 #include <QTextDocumentFragment>
 #include <QFile>
-#include <QDebug>
 #include "textedit.h"
 #include "functions.h"
 

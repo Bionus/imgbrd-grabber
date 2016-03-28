@@ -248,12 +248,15 @@ void Page::abortTags()
 	}
 }
 
-QString _parseSetImageUrl(Site* site, QString setting, QString ret, QMap<QString,QString> *d, bool replaces = true)
+QString _parseSetImageUrl(Site* site, QString setting, QString ret, QMap<QString,QString> *d, bool replaces = true, QString def = nullptr)
 {
 	if (site->contains(setting) && replaces)
 	{
         if (site->value(setting).contains("->"))
         {
+			if (ret.isEmpty() && def != nullptr)
+				ret = def;
+
 			QStringList replaces = site->value(setting).split('&');
 			for (QString rep : replaces)
             {
@@ -293,8 +296,8 @@ void Page::parseImage(QMap<QString,QString> d, int position)
 	{ d["sample_url"] = ""; }
 
 	// Fix urls
-	d["file_url"] = _parseSetImageUrl(m_site, "Urls/"+QString::number(m_currentSource)+"/Image", d["file_url"], &d);
-	d["sample_url"] = _parseSetImageUrl(m_site, "Urls/"+QString::number(m_currentSource)+"/Sample", d["sample_url"], &d);
+	d["file_url"] = _parseSetImageUrl(m_site, "Urls/"+QString::number(m_currentSource)+"/Image", d["file_url"], &d, true, d["preview_url"]);
+	d["sample_url"] = _parseSetImageUrl(m_site, "Urls/"+QString::number(m_currentSource)+"/Sample", d["sample_url"], &d, true, d["preview_url"]);
 	d["preview_url"] = _parseSetImageUrl(m_site, "Urls/"+QString::number(m_currentSource)+"/Preview", d["preview_url"], &d);
 
 	if (d["file_url"].isEmpty())

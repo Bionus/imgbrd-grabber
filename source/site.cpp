@@ -17,10 +17,6 @@
 	#define CACHE_POLICY QNetworkRequest::PreferNetwork
 #endif
 
-#ifdef Q_OS_WIN
-	#include <windows.h> // for Sleep
-#endif
-
 
 
 Site::Site(QString type, QString url, QMap<QString, QString> data) : m_type(type), m_url(url), m_data(data), m_settings(nullptr), m_manager(nullptr), m_cookieJar(nullptr), m_loggedIn(false), m_triedLogin(false), m_loginCheck(false), m_updateVersion("")
@@ -481,6 +477,9 @@ QUrl Site::fixUrl(QString url)
 
 QUrl Site::fixUrl(QString url, QUrl old)
 {
+	if (url.isEmpty())
+		return QUrl();
+
 	QString protocol = (m_settings->value("ssl", false).toBool() ? "https" : "http");
 
 	if (url.startsWith("//"))

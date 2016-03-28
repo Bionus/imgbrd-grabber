@@ -12,6 +12,7 @@ QString removeCacheUrl(QString url)
 	if (get.isEmpty())
 		return url;
 
+	// Only remove ?integer
 	bool ok;
 	get.toInt(&ok);
 	if (ok)
@@ -30,18 +31,6 @@ Image::Image(QMap<QString, QString> details, Page* parent)
 		log("Image has nullptr parent, aborting creation.");
 		return;
 	}
-
-	// Get file url and try to improve it to save bandwidth
-	m_url = details.contains("file_url") ? m_parentSite->fixUrl(details["file_url"]).toString() : "";
-	QString ext = getExtension(m_url);
-	if (details.contains("sample_url"))
-	{
-		QString sampleExt = getExtension(details["sample_url"]);
-		if (sampleExt != "jpg" && sampleExt != ext)
-			m_url = setExtension(m_url, sampleExt);
-	}
-	else if (details.contains("image") && details["image"].contains("MB // gif\" height=\"") && !m_url.endsWith(".gif", Qt::CaseInsensitive))
-	{ m_url = setExtension(m_url, "gif"); }
 
 	// Other details
     m_details = details;
@@ -66,6 +55,19 @@ Image::Image(QMap<QString, QString> details, Page* parent)
 	m_previewUrl = details.contains("preview_url") ? m_parentSite->fixUrl(details["preview_url"]) : QUrl();
 	m_size = QSize(details.contains("width") ? details["width"].toInt() : 0, details.contains("height") ? details["height"].toInt() : 0);
 	m_source = details.contains("source") ? details["source"] : "";
+
+	// Get file url and try to improve it to save bandwidth
+	m_url = details.contains("file_url") ? m_parentSite->fixUrl(details["file_url"]).toString() : "";
+	QString ext = getExtension(m_url);
+	if (!m_sampleUrl.isEmpty() && !m_previewUrl.isEmpty())
+	{
+		QString previewExt = getExtension(details["preview_url"]);
+		QString sampleExt = getExtension(details["sample_url"]);
+		if (sampleExt != "jpg" && sampleExt != ext && previewExt == ext)
+			m_url = setExtension(m_url, sampleExt);
+	}
+	else if (details.contains("image") && details["image"].contains("MB // gif\" height=\"") && !m_url.endsWith(".gif", Qt::CaseInsensitive))
+	{ m_url = setExtension(m_url, "gif"); }
 
 	// Remove ? in urls
 	m_url = removeCacheUrl(m_url);
@@ -810,7 +812,6 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 		// Variables initialization
 		QString inits = "";
 		QStringList keys = replaces.keys();
-		qDebug() << keys;
 		for (int i = 0; i < replaces.size(); ++i)
 		{
 			QString key = keys.at(i);
@@ -1005,8 +1006,11 @@ void Image::finishedImageS()
 			nextext["jpeg"] = "swf";
 			nextext["swf"] = "webm";
 			nextext["webm"] = "mp4";
-			setUrl(m_url.section('.', 0, -2)+"."+nextext[ext]);
-			log(tr("Image non trouvée. Nouvel essai avec l'extension %1...").arg(nextext[ext]));
+
+			QString newext = nextext.contains(ext) ? nextext[ext] : "jpg";
+
+			setUrl(m_url.section('.', 0, -2)+"."+newext);
+			log(tr("Image non trouvée. Nouvel essai avec l'extension %1...").arg(newext));
 		}
 		loadImage();
 		return;
