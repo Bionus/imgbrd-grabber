@@ -248,13 +248,13 @@ void Page::abortTags()
 	}
 }
 
-QString _parseSetImageUrl(Site* site, QString setting, QString ret, QMap<QString,QString> *d, bool replaces = true, QString def = nullptr)
+QString _parseSetImageUrl(Site* site, QString setting, QString ret, QMap<QString,QString> *d, bool replaces = true, QString def = QString())
 {
 	if (site->contains(setting) && replaces)
 	{
         if (site->value(setting).contains("->"))
         {
-			if (ret.isEmpty() && def != nullptr)
+			if (ret.isEmpty() && !def.isEmpty())
 				ret = def;
 
 			QStringList replaces = site->value(setting).split('&');
