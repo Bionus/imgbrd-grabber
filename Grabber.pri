@@ -32,7 +32,7 @@ CONFIG += plugin c++11
 RESOURCES += ../resources.qrc
 RC_FILE = ../icon.rc
 CODECFORTR = UTF-8
-TRANSLATIONS += languages/English.ts languages/Français.ts languages/Russian.ts
+TRANSLATIONS += ../languages/English.ts ../languages/Français.ts ../languages/Russian.ts
 
 # Target WinXP
 Release:win32 {

@@ -111,7 +111,7 @@ void FilenameWindow::on_buttonHelpClassic_clicked()
 		"<i>%search_n%</i> : n-ième tag de la recherche<br/>"
 		"<i>%date%</i> : date d'ajout de l'image au format dd-MM-yyyy HH.mm<br/>"
 		"<i>%date:format%</i> : date d'ajout de l'image au format donné<br/><br/>"
-		"Vous pouvez aussi utiliser les structures conditionnelles. Pour plus d'informations, cliquez <a href=\"http://code.google.com/p/imgbrd-grabber/wiki/Filename\">ici</a>.")
+		"Vous pouvez aussi utiliser les structures conditionnelles. Pour plus d'informations, cliquez <a href=\"%s\">ici</a>.").arg("https://github.com/Bionus/imgbrd-grabber/wiki/Filename")
 	);
 }
 
@@ -135,7 +135,7 @@ void FilenameWindow::on_buttonHelpJavascript_clicked()
 		"<i>search</i> : tags de la recherche<br/>"
 		"<i>search_n</i> : n-ième tag de la recherche<br/>"
 		"<i>date</i> : date d'ajout de l'image au format dd-MM-yyyy HH.mm<br/><br/>"
-		"Pour plus d'informations sur le nommage Javascript, cliquez <a href=\"http://code.google.com/p/imgbrd-grabber/wiki/Filename#Javascript\">ici</a>.")
+		"Pour plus d'informations sur le nommage Javascript, cliquez <a href=\"%s\">ici</a>.").arg("https://github.com/Bionus/imgbrd-grabber/wiki/Filename#javascript")
 	);
 }
 

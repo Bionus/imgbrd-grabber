@@ -182,30 +182,35 @@ QNetworkRequest Site::makeRequest(QUrl url, Page *page, QString ref, Image *img)
 	if (!m_loggedIn && !m_triedLogin)
 		login();
 
+	// Force HTTPS if set so in the settings (no mixed content allowed)
+	if (m_settings->value("ssl", false).toBool() && url.scheme() == "http")
+		url.setScheme("https");
+
 	QNetworkRequest request(url);
 	QString referer = m_settings->value("referer"+(!ref.isEmpty() ? "_"+ref : ""), "").toString();
-		if (referer.isEmpty() && !ref.isEmpty())
-		{ referer = m_settings->value("referer", "none").toString(); }
-		if (referer != "none" && (referer != "page" || page != NULL))
-		{
-			QString ref;
-			if (referer == "host")
-			{ ref = url.scheme()+"://"+url.host(); }
-			else if (referer == "image")
-			{ ref = url.toString(); }
-			else if (referer == "page" && page)
-			{ ref = page->url().toString(); }
-			else if (referer == "details" && img)
-			{ ref = img->pageUrl().toString(); }
-			request.setRawHeader("Referer", ref.toLatin1());
-		}
-		QMap<QString,QVariant> headers = m_settings->value("headers").toMap();
-		for (int i = 0; i < headers.size(); i++)
-		{
-			QString key = headers.keys().at(i);
-			request.setRawHeader(key.toLatin1(), headers[key].toString().toLatin1());
-		}
-		request.setRawHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:35.0) Gecko/20100101 Firefox/35.0");
+	if (referer.isEmpty() && !ref.isEmpty())
+	{ referer = m_settings->value("referer", "none").toString(); }
+	if (referer != "none" && (referer != "page" || page != NULL))
+	{
+		QString ref;
+		if (referer == "host")
+		{ ref = url.scheme()+"://"+url.host(); }
+		else if (referer == "image")
+		{ ref = url.toString(); }
+		else if (referer == "page" && page)
+		{ ref = page->url().toString(); }
+		else if (referer == "details" && img)
+		{ ref = img->pageUrl().toString(); }
+		request.setRawHeader("Referer", ref.toLatin1());
+	}
+
+	QMap<QString,QVariant> headers = m_settings->value("headers").toMap();
+	for (int i = 0; i < headers.size(); i++)
+	{
+		QString key = headers.keys().at(i);
+		request.setRawHeader(key.toLatin1(), headers[key].toString().toLatin1());
+	}
+	request.setRawHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:35.0) Gecko/20100101 Firefox/35.0");
 
 	initManager();
 	request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, CACHE_POLICY);
@@ -382,7 +387,7 @@ QMap<QString, Site*> *Site::getAllSites()
 							details["Model"] = dir[i];
 							details["Url"] = line;
 							details["Selected"] = srcs.join("/").toLower();
-							QString lineSsl = QString(settings.value("ssl", false).toBool() ? "https" : "http") + "://" + line;
+							QString lineSsl = QString(sets.value("ssl", false).toBool() ? "https" : "http") + "://" + line;
 							for (int j = 0; j < srcs.size(); j++)
 							{
 								QString sr = srcs[j] == "Regex" ? "Html" : srcs[j];
@@ -432,7 +437,8 @@ void Site::loadTags(int page, int limit)
 {
 	initManager();
 
-	QNetworkRequest request(QUrl("http://"+m_url+"/tags.json?search[hide_empty]=yes&limit="+QString::number(limit)+"&page=" + QString::number(page)));
+	QString protocol = (m_settings->value("ssl", false).toBool() ? "https" : "http");
+	QNetworkRequest request(QUrl(protocol + "://"+m_url+"/tags.json?search[hide_empty]=yes&limit="+QString::number(limit)+"&page=" + QString::number(page)));
 	request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, CACHE_POLICY);
 	m_tagsReply = m_manager->get(request);
 	connect(m_tagsReply, SIGNAL(finished()), this, SLOT(finishedTags()));
@@ -494,7 +500,7 @@ QUrl Site::fixUrl(QString url, QUrl old)
 		return QUrl(protocol + "://" + m_data.value("Url") + "/" + url);
 	}
 
-    return QUrl(url);
+	return QUrl(url);
 }
 
 QNetworkReply *Site::loginReply()
