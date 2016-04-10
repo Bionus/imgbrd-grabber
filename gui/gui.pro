@@ -17,6 +17,6 @@ use_qscintilla {
 }
 
 # Input
-HEADERS += ../includes/*.h ../vendor/*.h
-FORMS += ../ui/*.ui
-SOURCES += ../source/*.cpp ../vendor/*.cpp
+HEADERS += $${PDIR}/includes/*.h $${PDIR}/vendor/*.h
+FORMS += $${PDIR}/ui/*.ui
+SOURCES += $${PDIR}/source/*.cpp $${PDIR}/vendor/*.cpp

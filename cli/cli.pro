@@ -11,7 +11,7 @@ CONFIG += console
 
 # TODO: remove these dependencies
 QT += multimedia widgets
-FORMS += ../ui/*.ui
+FORMS += $${PDIR}/ui/*.ui
 use_qscintilla {
     DEFINES += USE_QSCINTILLA=0
     LIBS -= -lqscintilla2
@@ -19,5 +19,5 @@ use_qscintilla {
 # end TODO
 
 # Input
-HEADERS += ../includes/*.h ../vendor/*.h
-SOURCES += ../source/*.cpp ../vendor/*.cpp
+HEADERS += $${PDIR}/includes/*.h $${PDIR}/vendor/*.h
+SOURCES += $${PDIR}/source/*.cpp $${PDIR}/vendor/*.cpp

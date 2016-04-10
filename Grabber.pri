@@ -1,3 +1,5 @@
+PDIR = $${_PRO_FILE_PWD_}/..
+
 # Options
 CONFIG += use_ssl
 Release {
@@ -17,8 +19,8 @@ APP_VERSION = \\\"4.4.0\\\"
 
 # General
 TEMPLATE = app
-DEPENDPATH += . .. ../includes ../languages ../source ../vendor
-INCLUDEPATH += . .. ../includes ../source ../vendor
+DEPENDPATH += . .. $${PDIR}/includes $${PDIR}/languages $${PDIR}/source $${PDIR}/vendor
+INCLUDEPATH += . .. $${PDIR}/includes $${PDIR}/source $${PDIR}/vendor
 DEFINES += VERSION=$$APP_VERSION
 QT += core network xml sql script
 
@@ -29,10 +31,10 @@ win32 {
 
 # Additionnal
 CONFIG += plugin c++11
-RESOURCES += ../resources.qrc
+RESOURCES += $${PDIR}/resources.qrc
 RC_FILE = ../icon.rc
 CODECFORTR = UTF-8
-TRANSLATIONS += ../languages/English.ts ../languages/Français.ts ../languages/Russian.ts
+TRANSLATIONS += $${PDIR}/languages/English.ts $${PDIR}/languages/Français.ts $${PDIR}/languages/Russian.ts
 
 # Target WinXP
 Release:win32 {
@@ -79,11 +81,11 @@ use_breakpad {
 }
 
 OTHER_FILES += \
-    ../Grabber.pri \
-    ../icon.rc \
-    ../.gitignore
+    $${PDIR}/Grabber.pri \
+    $${PDIR}/icon.rc \
+    $${PDIR}/.gitignore
 
 DISTFILES += \
-    ../README.md \
-    ../LICENSE \
-    ../NOTICE
+    $${PDIR}/README.md \
+    $${PDIR}/LICENSE \
+    $${PDIR}/NOTICE
