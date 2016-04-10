@@ -22,7 +22,7 @@
 	</Regex>
 	<Check>
 		<Url>/</Url>
-		<Regex>Running Shimmie|Running &lt;a href=['&quot;][^'&quot;]+['&quot;]&gt;Shimmie&lt;/a&gt;</Regex>
+		<Regex>Running Shimmie|Shimmie version |Running &lt;a href=['&quot;][^'&quot;]+['&quot;]&gt;Shimmie&lt;/a&gt;</Regex>
 	</Check>
 	<FirstPage>1</FirstPage>
 </Site>
