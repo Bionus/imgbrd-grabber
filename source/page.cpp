@@ -2,6 +2,7 @@
 #include <QFile>
 #include <QNetworkCookie>
 #include <iostream>
+#include <QSet>
 #include "page.h"
 #include "json.h"
 #include "math.h"
