@@ -172,7 +172,7 @@ Image::Image(QMap<QString, QString> details, Page* parent)
 	ext = getExtension(m_url);
 	if ((hasTag("gif") || hasTag("animated_gif")) && ext != "gif" && ext != "webm" && ext != "mp4")
 	{ setFileExtension("gif"); }
-	else if (hasTag("webm") && ext != "gif" && ext != "webm" && ext != "mp4")
+	else if ((hasTag("webm") || hasTag("animated")) && ext != "gif" && ext != "webm" && ext != "mp4")
 	{ setFileExtension("webm"); }
 	else if (hasTag("mp4") && ext != "gif" && ext != "webm" && ext != "mp4")
 	{ setFileExtension("mp4"); }
@@ -1013,12 +1013,24 @@ void Image::finishedImageS()
 		else
 		{
 			QMap<QString,QString> nextext;
-			nextext["jpg"] = "png";
-			nextext["png"] = "gif";
-			nextext["gif"] = "jpeg";
-			nextext["jpeg"] = "swf";
-			nextext["swf"] = "webm";
-			nextext["webm"] = "mp4";
+			if (hasTag("animated"))
+			{
+				nextext["webm"] = "mp4";
+				nextext["mp4"] = "gif";
+				nextext["gif"] = "jpg";
+				nextext["jpg"] = "png";
+				nextext["png"] = "jpeg";
+				nextext["jpeg"] = "swf";
+			}
+			else
+			{
+				nextext["jpg"] = "png";
+				nextext["png"] = "gif";
+				nextext["gif"] = "jpeg";
+				nextext["jpeg"] = "webm";
+				nextext["webm"] = "swf";
+				nextext["swf"] = "mp4";
+			}
 
 			QString newext = nextext.contains(ext) ? nextext[ext] : "jpg";
 
@@ -1314,7 +1326,7 @@ bool Image::hasTag(QString tag)
 {
 	tag = tag.trimmed();
 	for (Tag t : m_tags)
-		if (t.text().trimmed() == tag)
+		if (QString::compare(t.text().trimmed(), tag, Qt::CaseInsensitive) == 0)
 			return true;
 	return false;
 }

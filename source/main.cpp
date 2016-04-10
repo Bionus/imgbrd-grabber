@@ -1,7 +1,6 @@
 /**
  * @file
  * @author  Bionus <bio.nus@hotmail.fr>
- * @version 3.2.2
  *
  * @section LICENSE
  *

@@ -214,6 +214,13 @@ void Page::load(bool rateLimit)
 {
 	if (m_currentSource <= m_site->value("Selected").count('/') + 1)
 	{
+		// Reading reply and resetting vars
+		qDeleteAll(m_images);
+		m_images.clear();
+		m_tags.clear();
+		/*m_imagesCount = -1;
+		m_pagesCount = -1;*/
+
 		m_site->getAsync(rateLimit ? Site::QueryType::Retry : Site::QueryType::List, m_url, [this](QNetworkReply *reply) {
 			m_reply = reply;
 			connect(m_reply, SIGNAL(finished()), this, SLOT(parse()));
@@ -343,13 +350,6 @@ void Page::parse()
 	}
 
 	m_source = m_reply->readAll();
-
-	// Reading reply and resetting vars
-	qDeleteAll(m_images);
-	m_images.clear();
-	m_tags.clear();
-	/*m_imagesCount = -1;
-	m_pagesCount = -1;*/
 
 	if (m_source.isEmpty())
 	{
@@ -683,14 +683,15 @@ void Page::parseTags()
 	}
 
 	QString source = QString::fromUtf8(m_replyTags->readAll());
-	m_tags.clear();
 
 	if (m_site->contains("Regex/Tags"))
 	{
+		m_tags.clear();
 		QRegExp rxtags(m_site->value("Regex/Tags"));
 		rxtags.setMinimal(true);
 		int p = 0;
 		QStringList order = m_site->value("Regex/TagsOrder").split('|', QString::SkipEmptyParts);
+		QSet<QString> got;
 		while ((p = rxtags.indexIn(source, p)) != -1)
 		{
 			p += rxtags.matchedLength();
@@ -742,7 +743,11 @@ void Page::parseTags()
 			}
 			if (type.isEmpty())
 			{ type = "unknown"; }
-			m_tags.append(Tag(tag, type, count));
+			if (!got.contains(tag))
+			{
+				got.insert(tag);
+				m_tags.append(Tag(tag, type, count));
+			}
 		}
 	}
 

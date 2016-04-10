@@ -945,6 +945,36 @@ void mainWindow::changeEvent(QEvent* event)
 // Save tabs and settings on close
 void mainWindow::closeEvent(QCloseEvent *e)
 {
+	// Confirm before closing if there is a batch download or multiple tabs
+	if (m_settings->value("confirm_close", true).toBool() && m_tabs.count() > 1 || m_getAll)
+	{
+		QMessageBox msgBox(this);
+		msgBox.setText(tr("Êtes vous sûr de vouloir quitter ?"));
+		msgBox.setIcon(QMessageBox::Warning);
+		QCheckBox dontShowCheckBox(tr("Ne plus me demander"));
+		dontShowCheckBox.setCheckable(true);
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 2, 0))
+		msgBox.setCheckBox(&dontShowCheckBox);
+#else
+		msgBox.addButton(&dontShowCheckBox, QMessageBox::ResetRole);
+#endif
+		msgBox.addButton(QMessageBox::Yes);
+		msgBox.addButton(QMessageBox::Cancel);
+		msgBox.setDefaultButton(QMessageBox::Cancel);
+		int response = msgBox.exec();
+
+		// Don't close on "cancel"
+		if (response != QMessageBox::Yes)
+		{
+			e->ignore();
+			return;
+		}
+
+		// Remember checkbox
+		if (dontShowCheckBox.checkState() == Qt::Checked)
+		{ m_settings->setValue("confirm_close", false); }
+	}
+
 	log(tr("Sauvegarde..."));
 		saveLinkList(savePath("restore.igl"));
 		saveTabs(savePath("tabs.txt"));
@@ -961,6 +991,7 @@ void mainWindow::closeEvent(QCloseEvent *e)
 		QFile::copy(m_settings->fileName(), savePath("old/settings."+QString(VERSION)+".ini"));
 	DONE();
 	m_loaded = false;
+
 	e->accept();
 	qApp->quit();
 }

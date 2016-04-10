@@ -89,10 +89,18 @@ void siteWindow::accept()
 				{
 					QString curr = map->value("Selected");
 					curr[0] = curr[0].toUpper();
-					QNetworkReply *reply = map->get("http://"+url+map->value("Check/Url"));
-					QEventLoop loop;
-						connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
-					loop.exec();
+
+					QUrl getUrl("http://" + url+map->value("Check/Url"));
+					QNetworkReply *reply;
+					do
+					{
+						reply = map->get(getUrl);
+						QEventLoop loop;
+							connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
+						loop.exec();
+
+						getUrl = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
+					} while (!getUrl.isEmpty());
 					QString source = reply->readAll();
 					if (reply->error() == 0)
 					{
