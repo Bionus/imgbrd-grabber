@@ -45,6 +45,7 @@ optionsWindow::optionsWindow(QWidget *parent) : QDialog(parent), ui(new Ui::opti
 	ui->checkShowTagWarning->setChecked(settings.value("showtagwarning", true).toBool());
 	ui->checkShowWarnings->setChecked(settings.value("showwarnings", true).toBool());
 	ui->checkGetUnloadedPages->setChecked(settings.value("getunloadedpages", false).toBool());
+	ui->checkConfirmClose->setChecked(settings.value("confirm_close", true).toBool());
 
 	ui->spinImagesPerPage->setValue(settings.value("limit", 20).toInt());
 	ui->spinColumns->setValue(settings.value("columns", 1).toInt());
@@ -570,6 +571,7 @@ void optionsWindow::save()
 	settings.setValue("showtagwarning", ui->checkShowTagWarning->isChecked());
 	settings.setValue("showwarnings", ui->checkShowWarnings->isChecked());
 	settings.setValue("getunloadedpages", ui->checkGetUnloadedPages->isChecked());
+	settings.setValue("confirm_close", ui->checkConfirmClose->isChecked());
 
 	settings.beginGroup("Filenames");
 		for (int i = 0; i < m_filenamesConditions.size(); i++)
