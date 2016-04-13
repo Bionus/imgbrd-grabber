@@ -43,6 +43,10 @@ void Site::load()
 	m_settings = new QSettings(savePath("sites/"+m_type+"/"+m_url+"/settings.ini"), QSettings::IniFormat);
 	m_name = m_settings->value("name", m_url).toString();
 
+	// Auth information
+	m_username = m_settings->value("auth/pseudo", "").toString();
+	m_password = m_settings->value("auth/password", "").toString();
+
 	// Cookies
 	m_cookies.clear();
 	QList<QVariant> cookies = m_settings->value("cookies", "").toList();
@@ -125,8 +129,8 @@ void Site::login(bool force)
 			{
 				QUrl postData;
 				QUrlQuery query;
-				query.addQueryItem(m_settings->value("login/pseudo", "").toString(), m_settings->value("auth/pseudo", "").toString());
-				query.addQueryItem(m_settings->value("login/password", "").toString(), m_settings->value("auth/password", "").toString());
+				query.addQueryItem(m_settings->value("login/pseudo", "").toString(), m_username);
+				query.addQueryItem(m_settings->value("login/password", "").toString(), m_password);
 				postData.setQuery(query);
 
 				QNetworkRequest request(fixUrl(m_settings->value("login/url", "").toString()));
@@ -139,8 +143,8 @@ void Site::login(bool force)
 			{
 				QUrl url = fixUrl(m_settings->value("login/url", "").toString());
 				QUrlQuery query;
-				query.addQueryItem(m_settings->value("login/pseudo", "").toString(), m_settings->value("auth/pseudo", "").toString());
-				query.addQueryItem(m_settings->value("login/password", "").toString(), m_settings->value("auth/password", "").toString());
+				query.addQueryItem(m_settings->value("login/pseudo", "").toString(), m_username);
+				query.addQueryItem(m_settings->value("login/password", "").toString(), m_password);
 				url.setQuery(query);
 
 				QNetworkRequest request(url);
@@ -475,6 +479,11 @@ QString Site::name()			{ return m_name;			}
 QString Site::url()				{ return m_url;				}
 QString Site::type()			{ return m_type;			}
 QString Site::updateVersion()	{ return m_updateVersion;	}
+QString Site::username()		{ return m_username;		}
+QString Site::password()		{ return m_password;		}
+
+void Site::setUsername(QString username)	{ m_username = username;	}
+void Site::setPassword(QString password)	{ m_password = password;	}
 
 QUrl Site::fixUrl(QString url)
 {

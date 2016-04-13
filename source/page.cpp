@@ -169,9 +169,8 @@ void Page::fallback(bool bload)
 	}
 
 	// GET login information
-	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
-	QString pseudo = m_site->setting("auth/pseudo", settings.value("Login/pseudo", "").toString()).toString();
-	QString password = m_site->setting("auth/password", settings.value("Login/password", "").toString()).toString();
+	QString pseudo = m_site->username();
+	QString password = m_site->password();
 
 	int pid = m_site->contains("Urls/"+QString::number(m_currentSource)+"/Limit") ? m_site->value("Urls/"+QString::number(m_currentSource)+"/Limit").toInt() * (m_page - 1) : m_imagesPerPage * (m_page - 1);
 
