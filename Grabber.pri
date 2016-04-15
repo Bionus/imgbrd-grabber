@@ -10,7 +10,7 @@ Release {
 @
 T = $$(TRAVIS)
 !isEmpty(T) {
-    CONFIG -= use_breakpad use_qscintilla
+    CONFIG -= use_breakpad use_qscintilla webm_support
 }
 @
 
@@ -31,7 +31,7 @@ win32 {
 
 # Webm
 webm_support {
-    DEFINES += USE_WEBKIT=
+    DEFINES += USE_WEBKIT=1
     QT += webkit webkitwidgets
 }
 

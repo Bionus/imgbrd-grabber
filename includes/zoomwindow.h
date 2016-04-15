@@ -4,7 +4,9 @@
 #include <QtGui>
 #include <QtNetwork>
 #include <QStackedWidget>
-#include <QtWebKitWidgets/QWebView>
+#ifdef USE_WEBKIT
+	#include <QtWebKitWidgets/QWebView>
+#endif
 #include "QAffiche.h"
 #include "image.h"
 #include "mainwindow.h"
@@ -104,7 +106,9 @@ class zoomWindow : public QDialog
 
 		QStackedWidget *m_stackedWidget;
 		QAffiche *m_labelImage;
+#ifdef USE_WEBKIT
 		QWebView *m_webView;
+#endif
 };
 
 #endif

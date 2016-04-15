@@ -92,10 +92,12 @@ void zoomWindow::go()
 		m_labelImage->setSizePolicy(QSizePolicy(QSizePolicy::Ignored,QSizePolicy::Ignored));
 		connect(m_labelImage, SIGNAL(doubleClicked()), this, SLOT(fullScreen()));
 		m_stackedWidget->addWidget(m_labelImage);
+#ifdef USE_WEBKIT
 	m_webView = new QWebView(this);
 		m_webView->setAttribute(Qt::WA_TranslucentBackground);
 		m_webView->setStyleSheet("background:transparent");
 		m_stackedWidget->addWidget(m_webView);
+#endif
 
 	QMap<QString, QString> assoc;
 		assoc["s"] = tr("Safe");
@@ -613,6 +615,7 @@ void zoomWindow::draw()
 
 		image = NULL;
 	}
+#ifdef USE_WEBKIT
 	else if (isVideo)
 	{
 		QString mimetype = mimeReturn(filename);
@@ -633,6 +636,7 @@ void zoomWindow::draw()
 			m_webView->load("file:///" + htmlFile.fileName());
 		}
 	}
+#endif
 	else
 	{
 		if (m_source.isEmpty())
