@@ -3,6 +3,8 @@
 
 #include <QtGui>
 #include <QtNetwork>
+#include <QStackedWidget>
+#include <QtWebKitWidgets/QWebView>
 #include "QAffiche.h"
 #include "image.h"
 #include "mainwindow.h"
@@ -66,6 +68,7 @@ class zoomWindow : public QDialog
 		void closeEvent(QCloseEvent *);
 		void resizeEvent(QResizeEvent *);
 		void save(QString, QPushButton *);
+		void draw();
 
 	signals:
 		void linkClicked(QString);
@@ -80,8 +83,8 @@ class zoomWindow : public QDialog
 		QMap<QString,QString> regex, m_details;
 		Site *m_site;
 		int timeout, m_loaded, oldsize, m_mustSave;
-		QString id, m_url, tags, md5, rating, score, user, format;
-		QAffiche *m_labelImage, *m_labelTagsTop, *m_labelTagsLeft;
+		QString id, m_url, tags, rating, score, user, format;
+		QAffiche *m_labelTagsTop, *m_labelTagsLeft;
 		QPixmap *image;
 		QMovie *movie;
 		QTimer *m_resizeTimer;
@@ -98,6 +101,10 @@ class zoomWindow : public QDialog
 		QString m_source;
 		ImageThread *m_th;
 		QAffiche *m_fullScreen;
+
+		QStackedWidget *m_stackedWidget;
+		QAffiche *m_labelImage;
+		QWebView *m_webView;
 };
 
 #endif

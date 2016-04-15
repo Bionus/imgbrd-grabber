@@ -1,7 +1,7 @@
 PDIR = $${_PRO_FILE_PWD_}/..
 
 # Options
-CONFIG += use_ssl
+CONFIG += use_ssl webm_support
 Release {
     CONFIG += use_breakpad
 }
@@ -27,6 +27,12 @@ QT += core network xml sql script
 # Windows specials
 win32 {
         QT += winextras
+}
+
+# Webm
+webm_support {
+    DEFINES += USE_WEBKIT=
+    QT += webkit webkitwidgets
 }
 
 # Additionnal

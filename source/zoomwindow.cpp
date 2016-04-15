@@ -23,8 +23,6 @@ zoomWindow::zoomWindow(Image *image, Site *site, QMap<QString,Site*> *sites, QWi
 	ui->setupUi(this);
 	setAttribute(Qt::WA_DeleteOnClose);
 
-
-
 	QList<Favorite> favorites = loadFavorites();
 	for (Favorite fav : favorites)
 		m_favorites.append(fav.getName());
@@ -88,16 +86,25 @@ void zoomWindow::go()
 	if (settings.value("autodownload", false).toBool() || (whitelisted && settings.value("whitelist_download", "image").toString() == "image"))
 	{ saveImage(); }
 
+	m_stackedWidget = new QStackedWidget(this);
+		ui->verticalLayout->insertWidget(1, m_stackedWidget, 1);
 	m_labelImage = new QAffiche(QVariant(), 0, QColor(), this);
 		m_labelImage->setSizePolicy(QSizePolicy(QSizePolicy::Ignored,QSizePolicy::Ignored));
 		connect(m_labelImage, SIGNAL(doubleClicked()), this, SLOT(fullScreen()));
-	ui->verticalLayout->insertWidget(1, m_labelImage, 1);
+		m_stackedWidget->addWidget(m_labelImage);
+	m_webView = new QWebView(this);
+		m_webView->setAttribute(Qt::WA_TranslucentBackground);
+		m_webView->setStyleSheet("background:transparent");
+		m_stackedWidget->addWidget(m_webView);
 
 	QMap<QString, QString> assoc;
 		assoc["s"] = tr("Safe");
 		assoc["q"] = tr("Questionable");
 		assoc["e"] = tr("Explicit");
-    m_url = settings.value("Save/downloadoriginals", true).toBool() ? m_image->fileUrl().toString() : (m_image->sampleUrl().isEmpty() ? m_image->fileUrl().toString() : m_image->sampleUrl().toString());
+	QString ext = getExtension(m_image->url());
+	m_url = (!settings.value("Save/downloadoriginals", true).toBool() && !m_image->sampleUrl().isEmpty()) || ext == "zip"
+			? m_image->sampleUrl().toString()
+			: m_image->fileUrl().toString();
 
 	m_format = m_url.section('.', -1).toUpper().toLatin1().data();
 
@@ -400,7 +407,7 @@ void zoomWindow::display(QImage pix, int size)
 		m_size = size;
 		delete image;
 		image = new QPixmap(QPixmap::fromImage(pix));
-		if (m_url.section('.', -1).toUpper() == "GIF")
+		if (m_url.section('.', -1).toLower() == "gif")
 		{ /*m_labelImage->setPixmap(*image);*/ }
 		else
 		{ update(!m_finished); }
@@ -409,6 +416,31 @@ void zoomWindow::display(QImage pix, int size)
 		if (m_fullScreen != NULL && m_fullScreen->isVisible())
 		{ m_fullScreen->setImage(image->scaled(QApplication::desktop()->screenGeometry().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation)); }
 	}
+}
+
+QString mimeReturn(const QFile& file)
+{
+	QMimeDatabase mimeDatabase;
+	QMimeType mimeType = mimeDatabase.mimeTypeForFile(QFileInfo(file));
+
+	if (mimeType.inherits("video/mp4"))
+		return "video/mp4";
+	else if (mimeType.inherits("video/mpeg"))
+		return "video/mpeg";
+	else if (mimeType.inherits("video/ogg"))
+		return "video/ogg";
+	else if (mimeType.inherits("video/quicktime"))
+		return "video/quicktime";
+	else if (mimeType.inherits("video/x-msvideo"))
+		return "video/x-msvideo";
+	else if (mimeType.inherits("video/x-flv"))
+		return "video/x-flv";
+	else if (mimeType.inherits("video/webm"))
+		return "video/webm";
+	else if (mimeType.inherits("text/plain"))
+		return "text";
+
+	return "";
 }
 
 void zoomWindow::replyFinished(Image* img)
@@ -477,20 +509,7 @@ void zoomWindow::replyFinished(Image* img)
 		m_url = m_url.section('.', 0, -2) + "." + fext;
 		m_image->setFileExtension(fext);
 
-		if (m_url.section('.', -1).toUpper() == "GIF")
-		{
-			this->movie = new QMovie(m_source, QByteArray(), this);
-			m_labelImage->setMovie(movie);
-			movie->start();
-		}
-		else
-		{
-			QPixmap *img = new QPixmap;
-			img->load(m_source);
-			this->image = img;
-			m_loaded = true;
-			update();
-		}
+		draw();
 	}
 	else
 	{
@@ -530,32 +549,11 @@ void zoomWindow::replyFinishedZoom()
 	if (m_reply->error() == QNetworkReply::NoError)
 	{
 		m_data.append(m_reply->readAll());
-        m_image->setData(m_data);
-		if (m_url.section('.', -1).toUpper() == "GIF")
-		{
-			QTemporaryFile f;
-			if (f.open())
-			{
-				f.write(m_data);
-				f.close();
-				this->movie = new QMovie(f.fileName(), QByteArray(), this);
-				m_labelImage->setMovie(this->movie);
-				this->movie->start();
-				image = NULL;
-				m_loaded = true;
-			}
-			else
-			{ error(this, tr("Une erreur inattendue est survenue lors du chargement de l'image GIF.\r\n%1").arg(m_reply->url().toString())); }
-		}
-		else
-		{
-			m_thread = true;
-			m_th = new ImageThread(m_data);
-			connect(m_th, SIGNAL(finished(QImage, int)), this, SLOT(display(QImage, int)));
-			connect(m_th, SIGNAL(finished()), m_th, SLOT(deleteLater()));
-			m_th->start();
-			m_loaded = true;
-		}
+		m_image->setData(m_data);
+
+		draw();
+		m_loaded = true;
+
 		if (m_mustSave > 0)
 		{ saveImage(); }
 	}
@@ -582,6 +580,81 @@ void zoomWindow::replyFinishedZoom()
 	m_reply = NULL;
 }
 
+void zoomWindow::draw()
+{
+	QString ext = m_url.section('.', -1).toLower();
+	bool isVideo = ext == "mp4" || ext == "webm" || ext == "flv";
+
+	QString fn = m_url.section('/', -1).toLower();
+
+	QString filename;
+	if (m_source.isEmpty())
+	{
+		if (ext == "gif" || isVideo)
+		{
+			filename = QDir::temp().absoluteFilePath("grabber-" + fn);
+			QFile f(filename);
+			if (f.open(QFile::WriteOnly))
+			{
+				f.write(m_data);
+				f.close();
+			}
+		}
+	}
+	else
+	{ filename = m_source; }
+
+	if (ext == "gif")
+	{
+		this->movie = new QMovie(filename, QByteArray(), this);
+		m_labelImage->setMovie(this->movie);
+		m_stackedWidget->setCurrentWidget(m_labelImage);
+		this->movie->start();
+
+		image = NULL;
+	}
+	else if (isVideo)
+	{
+		QString mimetype = mimeReturn(filename);
+
+		QFile htmlFile(QDir::temp().absoluteFilePath("grabber-" + fn + ".html"));
+		if (htmlFile.open(QFile::WriteOnly | QFile::Text))
+		{
+			QTextStream stream(&htmlFile);
+			stream << "<html>"
+				   << "<style>html, body { padding: 0; margin: 0; background-color: transparent; }</style>"
+				   << "<video width=\"" << m_image->width() << "\" height=\"" << m_image->height() << "\" controls autoplay loop>"
+				   << "<source src=\"file:///" << filename << "\" type=\"" << mimetype << "\">"
+				   << "</video>"
+				   << "</html>";
+			stream.flush();
+
+			m_stackedWidget->setCurrentWidget(m_webView);
+			m_webView->load("file:///" + htmlFile.fileName());
+		}
+	}
+	else
+	{
+		if (m_source.isEmpty())
+		{
+			QPixmap *img = new QPixmap;
+			img->load(m_source);
+			this->image = img;
+
+			m_loaded = true;
+			update();
+		}
+		else
+		{
+			m_thread = true;
+			m_th = new ImageThread(m_data);
+			connect(m_th, SIGNAL(finished(QImage, int)), this, SLOT(display(QImage, int)));
+			connect(m_th, SIGNAL(finished()), m_th, SLOT(deleteLater()));
+			m_th->start();
+		}
+	}
+}
+
 
 
 /**
@@ -590,7 +663,8 @@ void zoomWindow::replyFinishedZoom()
  */
 void zoomWindow::update(bool onlysize)
 {
-	if (m_url.section('.', -1).toUpper() != "GIF")
+	QString ext = m_url.section('.', -1).toLower();
+	if (ext != "gif" && ext != "webm")
 	{
 		if (onlysize && (this->image->width() > m_labelImage->width() || this->image->height() > m_labelImage->height()))
 		{ m_labelImage->setImage(this->image->scaled(m_labelImage->width(), m_labelImage->height(), Qt::KeepAspectRatio, Qt::FastTransformation)); }
@@ -601,6 +675,7 @@ void zoomWindow::update(bool onlysize)
 			else
 			{ m_labelImage->setImage(*this->image); }
 		}
+		m_stackedWidget->setCurrentWidget(m_labelImage);
 	}
 }
 
