@@ -51,8 +51,10 @@ Downloader::Downloader(QStringList tags, QStringList postfiltering, QStringList 
 		else
         {
 			Site *site = sites->value(source);
-			site->setUsername(user);
-			site->setPassword(password);
+			if (user != nullptr)
+			{ site->setUsername(user); }
+			if (password != nullptr)
+			{ site->setPassword(password); }
 			m_sites->append(site);
             sites->remove(source);
         }
