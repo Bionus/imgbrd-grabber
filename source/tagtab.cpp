@@ -733,8 +733,10 @@ void tagTab::getPage()
 			int perpage = unloaded ? ui->spinImagesPerPage->value() : (m_pages.value(actuals.at(i))->images().count() > ui->spinImagesPerPage->value() ? m_pages.value(actuals.at(i))->images().count() : ui->spinImagesPerPage->value());
 			if (perpage <= 0 || m_pages.value(actuals.at(i))->images().count() <= 0)
 				continue;
+
+			QString search = m_pages.value(actuals.at(i))->search().join(' ');
 			emit batchAddGroup(QStringList()
-							   << m_search->toPlainText() + " " + settings.value("add").toString().trimmed()
+							   << search
 							   << QString::number(ui->spinPage->value())
 							   << QString::number(perpage)
 							   << QString::number(perpage)
@@ -755,8 +757,9 @@ void tagTab::getAll()
 	for (int i = 0; i < m_checkboxes.count(); i++)
 	{
 		if (m_checkboxes.at(i)->isChecked())
-		{ actuals.append(keys.at(i)); }
+			actuals.append(keys.at(i));
 	}
+
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
 	for (int i = 0; i < actuals.count(); i++)
 	{
@@ -765,8 +768,10 @@ void tagTab::getAll()
 		int v2 = qMax(m_pages.value(actuals.at(i))->images().count(), m_pages.value(actuals.at(i))->imagesCount());
 		if (v1 == 0 && v2 == 0)
 			continue;
+
+		QString search = m_pages.value(actuals.at(i))->search().join(' ');
 		emit batchAddGroup(QStringList()
-						   << m_search->toPlainText()+" "+settings.value("add").toString().trimmed()
+						   << search
 						   << "1"
 						   << QString::number(v1)
 						   << QString::number(v2)
@@ -787,7 +792,7 @@ void tagTab::getSel()
 	{
 		QStringList tags;
 		for (Tag tag : img->tags())
-		{ tags.append(tag.typedText()); }
+			tags.append(tag.typedText());
 
 		QMap<QString,QString> values;
 		values.insert("id", QString::number(img->id()));

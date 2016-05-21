@@ -1109,7 +1109,6 @@ void mainWindow::getAll(bool all)
 		connect(m_progressdialog, SIGNAL(skipped()), this, SLOT(getAllSkip()));
 	}
 
-
 	// Reinitialize variables
 	m_getAll = true;
 	ui->widgetDownloadButtons->setDisabled(m_getAll);
