@@ -920,7 +920,7 @@ void mainWindow::loadLanguage(const QString& rLanguage, bool shutup)
 		m_currLang = rLanguage;
 		QLocale locale = QLocale(m_currLang);
 		QLocale::setDefault(locale);
-		switchTranslator(m_translator, qApp->applicationDirPath()+"/languages/"+m_currLang);
+		switchTranslator(m_translator, savePath("languages/"+m_currLang));
 		if (!shutup)
 		{
 			log(tr("Traduction des textes en %1...").arg(m_currLang));
