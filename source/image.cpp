@@ -774,6 +774,8 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 	replaces.insert("all", QStrP(details["alls"].join(tagSeparator), ""));
 	for (int i = 0; i < custom.size(); ++i)
 	{ replaces.insert(custom.keys().at(i), QStrP(custom.values().at(i).join(tagSeparator), "")); }
+	replaces.insert("url_file", QStrP(m_url, ""));
+	replaces.insert("url_page", QStrP(m_pageUrl.toString(), ""));
 
 	// Filename
 	QString filename = fn;
@@ -882,7 +884,7 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 		// Conditionals
 		if (complex)
 		{
-			QStringList tokens = QStringList() << "artist" << "general" << "copyright" << "character" << "model" << "model|artist" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "allo" << "date" << "date:([^%]+)" << "count(:\\d+)?(:\\d+)?" << "search_(\\d+)" << "score" << "height" << "width" << "path" << "pool" << custom.keys();
+			QStringList tokens = QStringList() << "artist" << "general" << "copyright" << "character" << "model" << "model|artist" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "allo" << "date" << "date:([^%]+)" << "count(:\\d+)?(:\\d+)?" << "search_(\\d+)" << "score" << "height" << "width" << "path" << "pool" << "url_file" << "url_page" << custom.keys();
 			filename = analyse(tokens, filename, details["allos"]);
 		}
 
@@ -920,7 +922,7 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 		{
 			QString key = keys.at(i);
 			QString res = replaces[key].first.isEmpty() ? replaces[key].second : replaces[key].first;
-			if (key != "allo")
+			if (key != "allo" && key != "url_file" && key != "url_page")
 			{
 				res = res.replace("\\", "_").replace("%", "_").replace("/", "_").replace(":", "_").replace("|", "_").replace("*", "_").replace("?", "_").replace("\"", "_").replace("<", "_").replace(">", "_").replace("__", "_").replace("__", "_").replace("__", "_").trimmed();
 				if (!settings.value("replaceblanks", false).toBool())
