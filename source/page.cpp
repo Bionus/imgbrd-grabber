@@ -105,7 +105,7 @@ void Page::fallback(bool bload)
 		log(tr("Aucune source valide du site n'a retourné de résultat."));
 		m_errors.append(tr("Aucune source valide du site n'a retourné de résultat."));
 		m_currentSource++;
-		//emit finishedLoading(this);
+		emit failedLoading(this);
 		return;
 	}
 	if (m_currentSource > 0)

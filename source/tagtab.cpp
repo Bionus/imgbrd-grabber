@@ -247,6 +247,7 @@ void tagTab::load()
 			Page *page = new Page(m_sites->value(m_sites->keys().at(i)), m_sites, tags, ui->spinPage->value(), perpage, m_postFiltering->toPlainText().split(" ", QString::SkipEmptyParts), false, this, 0, m_lastPage, m_lastPageMinId, m_lastPageMaxId);
 			log(tr("Chargement de la page <a href=\"%1\">%1</a>").arg(page->url().toString().toHtmlEscaped()));
 			connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(finishedLoading(Page*)));
+			connect(page, SIGNAL(failedLoading(Page*)), this, SLOT(failedLoading(Page*)));
 			m_pages.insert(page->website(), page);
 
             // Setup the layout
@@ -418,25 +419,45 @@ void tagTab::finishedLoading(Page* page)
 		m_parent->setTags(m_tags, this);
 	}
 
+	postLoading(page);
+}
+
+void tagTab::failedLoading(Page *page)
+{
+	if (ui->checkMergeResults->isChecked())
+	{
+		postLoading(page);
+	}
+}
+
+void tagTab::postLoading(Page *page)
+{
+	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
+	QList<Image*> imgs;
+
 	m_page++;
 	if (ui->checkMergeResults->isChecked())
 	{
 		if (m_page != m_pages.size())
-		{ return; }
+			return;
+
 		QStringList md5s;
 		for (int i = 0; i < m_images.count(); i++)
 		{
 			QString md5 = m_images.at(i)->md5();
 			if (md5.isEmpty())
-			{ continue; }
+				continue;
 
 			if (md5s.contains(md5))
-			{ m_images.removeAt(i--); }
+				m_images.removeAt(i--);
 			else
-			{ md5s.append(md5); }
+				md5s.append(md5);
 		}
+
 		imgs = m_images;
 	}
+	else
+	{ imgs = page->images(); }
 
 	// Loading images thumbnails
 	for (int i = 0; i < imgs.count(); i++)

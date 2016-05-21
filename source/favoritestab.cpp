@@ -309,7 +309,7 @@ void favoritesTab::load()
 void favoritesTab::finishedLoading(Page* page)
 {
 	if (m_stop)
-	{ return; }
+		return;
 
 	log(tr("Réception de la page <a href=\"%1\">%1</a>").arg(page->url().toString().toHtmlEscaped()));
 
@@ -400,23 +400,47 @@ void favoritesTab::finishedLoading(Page* page)
 		m_parent->setTags(m_tags, this);
 	}
 
+	postLoading(page);
+}
+
+void favoritesTab::failedLoading(Page *page)
+{
+	if (ui->checkMergeResults->isChecked())
+	{
+		postLoading(page);
+	}
+}
+
+void favoritesTab::postLoading(Page *page)
+{
+	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
+	QList<Image*> imgs;
+
 	m_page++;
 	if (ui->checkMergeResults->isChecked())
 	{
 		if (m_page != m_pages.size())
-		{ return; }
+			return;
+
 		QStringList md5s;
 		for (int i = 0; i < m_images.count(); i++)
 		{
-			if (md5s.contains(m_images.at(i)->md5()))
-			{ m_images.removeAt(i); i--; }
+			QString md5 = m_images.at(i)->md5();
+			if (md5.isEmpty())
+				continue;
+
+			if (md5s.contains(md5))
+				m_images.removeAt(i--);
 			else
-			{ md5s.append(m_images.at(i)->md5()); }
+				md5s.append(md5);
 		}
+
 		imgs = m_images;
 	}
+	else
+	{ imgs = page->images(); }
 
-	// Loading images
+	// Loading images thumbnails
 	for (int i = 0; i < imgs.count(); i++)
 	{
 		QStringList detected;
@@ -429,14 +453,7 @@ void favoritesTab::finishedLoading(Page* page)
 			{ tags[r] = tags[r].right(tags[r].size()-1); }
 		}
 		if (!settings.value("blacklistedtags").toString().isEmpty())
-		{
-			QStringList blacklistedtags(settings.value("blacklistedtags").toString().split(" "));
-			for (int t = 0; t < img->tags().count(); t++)
-			{
-				if (blacklistedtags.contains(img->tags()[t].text(), Qt::CaseInsensitive) && !tags.contains(img->tags()[t].text(), Qt::CaseInsensitive))
-				{ detected.append(img->tags()[t].text().toLower()); }
-			}
-		}
+		{ detected = img->blacklisted(settings.value("blacklistedtags").toString().toLower().split(" ")); }
 		if (!detected.isEmpty() && settings.value("hideblacklisted", false).toBool())
 		{ log(tr("Image #%1 ignorée. Raison : %2.").arg(i).arg("\""+detected.join(", ")+"\""));; }
 		else
@@ -445,6 +462,10 @@ void favoritesTab::finishedLoading(Page* page)
 			img->loadPreview();
 		}
 	}
+
+	ui->buttonGetAll->setDisabled(m_images.empty());
+	ui->buttonGetpage->setDisabled(m_images.empty());
+	ui->buttonGetSel->setDisabled(m_images.empty());
 }
 
 void favoritesTab::finishedLoadingTags(Page *page)
