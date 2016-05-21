@@ -380,6 +380,8 @@ QString savePath(QString file)
 {
 	if (QFile(QDir::toNativeSeparators(qApp->applicationDirPath()+"/settings.ini")).exists())
 	{ return QDir::toNativeSeparators(qApp->applicationDirPath()+"/"+file); }
+	if (QFile(QDir::toNativeSeparators(QDir::currentPath()+"/settings.ini")).exists())
+	{ return QDir::toNativeSeparators(QDir::currentPath()+"/"+file); }
 	if (QFile(QDir::toNativeSeparators(QDir::homePath()+"/Grabber/settings.ini")).exists())
 	{ return QDir::toNativeSeparators(QDir::homePath()+"/Grabber/"+file); }
 	return QDir::toNativeSeparators(QStandardPaths::writableLocation(QStandardPaths::DataLocation)+"/"+file);

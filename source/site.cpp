@@ -209,12 +209,12 @@ QNetworkRequest Site::makeRequest(QUrl url, Page *page, QString ref, Image *img)
 	}
 
 	QMap<QString,QVariant> headers = m_settings->value("headers").toMap();
+	request.setRawHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:35.0) Gecko/20100101 Firefox/35.0");
 	for (int i = 0; i < headers.size(); i++)
 	{
 		QString key = headers.keys().at(i);
 		request.setRawHeader(key.toLatin1(), headers[key].toString().toLatin1());
 	}
-	request.setRawHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:35.0) Gecko/20100101 Firefox/35.0");
 
 	initManager();
 	request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, CACHE_POLICY);
