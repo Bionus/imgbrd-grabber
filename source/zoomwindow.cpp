@@ -750,18 +750,20 @@ QStringList zoomWindow::saveImage(bool fav)
 		return QStringList();
 	}
 
-	QStringList paths = m_image->path(settings.value("Save/filename"+QString(fav ? "_favorites" : "")).toString(), pth);
-	for (QString path : paths)
+	QStringList paths;
+	QMap<QString, Image::SaveResult> results = m_image->save(settings.value("Save/filename"+QString(fav ? "_favorites" : "")).toString(), pth);
+	auto it = results.begin();
+	while (it != results.end())
 	{
-		path = QDir::toNativeSeparators(pth+"/"+path);
-		Image::SaveResult res = m_image->save(path);
+		Image::SaveResult res = it.value();
+		paths.append(it.key());
 
 		QPushButton *button = fav ? ui->buttonSaveFav : ui->buttonSave;
 		QPushButton *saveQuit = fav ? ui->buttonSaveNQuitFav : ui->buttonSaveNQuit;
 		switch (res)
 		{
 			case Image::SaveResult::Error:
-				error(this, tr("Erreur lors de la sauvegarde de l'image.\r\n%1").arg(path));
+				error(this, tr("Erreur lors de la sauvegarde de l'image."));
 				return QStringList();
 				break;
 
@@ -786,6 +788,8 @@ QStringList zoomWindow::saveImage(bool fav)
 				break;
 		}
 		saveQuit->setText(fav ? tr("Fermer (fav)") : tr("Fermer"));
+
+		++it;
 	}
 
 	if (m_mustSave == 2 || m_mustSave == 4)

@@ -977,7 +977,10 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 
 		// Max filename size option
 		if (shouldFixFilename)
-			fns[i] = fixFilename(filename, pth, maxlength && complex ? 0 : settings.value("limit").toInt());
+		{
+			int limit = !maxlength ? 0 : settings.value("limit").toInt();
+			fns[i] = fixFilename(filename, pth, limit);
+		}
 
 		if (getFull)
 		{
@@ -1249,16 +1252,16 @@ Image::SaveResult Image::save(QString path, bool force, bool basic)
 
 	return res;
 }
-QList<Image::SaveResult> Image::save(QStringList paths)
+QMap<QString, Image::SaveResult> Image::save(QStringList paths)
 {
-	QList<Image::SaveResult> res;
+	QMap<QString, Image::SaveResult> res;
 	for (QString path : paths)
-		res.append(save(path));
+		res.insert(path, save(path));
 	return res;
 }
-QList<Image::SaveResult> Image::save(QString filename, QString path)
+QMap<QString, Image::SaveResult> Image::save(QString filename, QString path)
 {
-	QStringList paths = this->path(filename, path);
+	QStringList paths = this->path(filename, path, 0, true, false, true, true, true);
 	return save(paths);
 }
 

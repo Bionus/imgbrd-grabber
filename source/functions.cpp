@@ -745,23 +745,23 @@ QString fixFilename(QString fn, QString path, int maxlength)
 
 			// A part should still allow creating a file
 			if (part.length() > maxlength - 12)
-				part = part.left(maxlength - 12).trimmed();
+				part = part.left(qMax(0, maxlength - 12)).trimmed();
 		}
 
 		// Join parts back
 		QString dirpart = parts.join(sep);
 		if (dirpart.length() > maxlength - 12)
-			dirpart = dirpart.left(maxlength - 12).trimmed();
+			dirpart = dirpart.left(qMax(0, maxlength - 12)).trimmed();
 		filename = (dirpart.isEmpty() ? "" : dirpart + (!fn.isEmpty() ? sep : "")) + file;
 
 		// A filename cannot exceed MAX_PATH (-1 for <NUL> and -3 for drive "C:\")
 		if (filename.length() > maxlength - 1 - 3 - ext.length() - 1)
-			filename = filename.left(maxlength - 1 - 3 - ext.length() - 1).trimmed();
+			filename = filename.left(qMax(0, maxlength - 1 - 3 - ext.length() - 1)).trimmed();
 
 		// Put extension and drive back
 		filename = drive + filename + (!ext.isEmpty() ? "." + ext : "");
 		if (!fn.isEmpty())
-			filename = filename.right(filename.length() - path.length());
+			filename = filename.right(filename.length() - filename.lastIndexOf(sep) - 1);
 	#else
 		// Divide filename
 		QString filename = path + fn;

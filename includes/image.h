@@ -39,8 +39,8 @@ class Image : public QObject
 		QStringList blacklisted(QStringList, bool invert = true);
 		QStringList	stylishedTags(QStringList ignored);
 		SaveResult  save(QString path, bool force = false, bool basic = false);
-		QList<SaveResult> save(QStringList paths);
-		QList<SaveResult> save(QString filename, QString path);
+		QMap<QString, Image::SaveResult> save(QStringList paths);
+		QMap<QString, Image::SaveResult> save(QString filename, QString path);
 		QString		url();
 		QString		md5();
 		QString		author();
