@@ -247,6 +247,7 @@ void tagTab::load()
 			Page *page = new Page(m_sites->value(m_sites->keys().at(i)), m_sites, tags, ui->spinPage->value(), perpage, m_postFiltering->toPlainText().split(" ", QString::SkipEmptyParts), false, this, 0, m_lastPage, m_lastPageMinId, m_lastPageMaxId);
 			log(tr("Chargement de la page <a href=\"%1\">%1</a>").arg(page->url().toString().toHtmlEscaped()));
 			connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(finishedLoading(Page*)));
+			connect(page, SIGNAL(failedLoading(Page*)), this, SLOT(failedLoading(Page*)));
 			m_pages.insert(page->website(), page);
 
             // Setup the layout
@@ -418,25 +419,45 @@ void tagTab::finishedLoading(Page* page)
 		m_parent->setTags(m_tags, this);
 	}
 
+	postLoading(page);
+}
+
+void tagTab::failedLoading(Page *page)
+{
+	if (ui->checkMergeResults->isChecked())
+	{
+		postLoading(page);
+	}
+}
+
+void tagTab::postLoading(Page *page)
+{
+	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
+	QList<Image*> imgs;
+
 	m_page++;
 	if (ui->checkMergeResults->isChecked())
 	{
 		if (m_page != m_pages.size())
-		{ return; }
+			return;
+
 		QStringList md5s;
 		for (int i = 0; i < m_images.count(); i++)
 		{
 			QString md5 = m_images.at(i)->md5();
 			if (md5.isEmpty())
-			{ continue; }
+				continue;
 
 			if (md5s.contains(md5))
-			{ m_images.removeAt(i--); }
+				m_images.removeAt(i--);
 			else
-			{ md5s.append(md5); }
+				md5s.append(md5);
 		}
+
 		imgs = m_images;
 	}
+	else
+	{ imgs = page->images(); }
 
 	// Loading images thumbnails
 	for (int i = 0; i < imgs.count(); i++)
@@ -733,8 +754,10 @@ void tagTab::getPage()
 			int perpage = unloaded ? ui->spinImagesPerPage->value() : (m_pages.value(actuals.at(i))->images().count() > ui->spinImagesPerPage->value() ? m_pages.value(actuals.at(i))->images().count() : ui->spinImagesPerPage->value());
 			if (perpage <= 0 || m_pages.value(actuals.at(i))->images().count() <= 0)
 				continue;
+
+			QString search = m_pages.value(actuals.at(i))->search().join(' ');
 			emit batchAddGroup(QStringList()
-							   << m_search->toPlainText() + " " + settings.value("add").toString().trimmed()
+							   << search
 							   << QString::number(ui->spinPage->value())
 							   << QString::number(perpage)
 							   << QString::number(perpage)
@@ -755,8 +778,9 @@ void tagTab::getAll()
 	for (int i = 0; i < m_checkboxes.count(); i++)
 	{
 		if (m_checkboxes.at(i)->isChecked())
-		{ actuals.append(keys.at(i)); }
+			actuals.append(keys.at(i));
 	}
+
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
 	for (int i = 0; i < actuals.count(); i++)
 	{
@@ -765,8 +789,10 @@ void tagTab::getAll()
 		int v2 = qMax(m_pages.value(actuals.at(i))->images().count(), m_pages.value(actuals.at(i))->imagesCount());
 		if (v1 == 0 && v2 == 0)
 			continue;
+
+		QString search = m_pages.value(actuals.at(i))->search().join(' ');
 		emit batchAddGroup(QStringList()
-						   << m_search->toPlainText()+" "+settings.value("add").toString().trimmed()
+						   << search
 						   << "1"
 						   << QString::number(v1)
 						   << QString::number(v2)
@@ -787,7 +813,7 @@ void tagTab::getSel()
 	{
 		QStringList tags;
 		for (Tag tag : img->tags())
-		{ tags.append(tag.typedText()); }
+			tags.append(tag.typedText());
 
 		QMap<QString,QString> values;
 		values.insert("id", QString::number(img->id()));

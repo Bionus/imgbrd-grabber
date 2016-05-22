@@ -69,25 +69,6 @@ Image::Image(QMap<QString, QString> details, Page* parent)
 	else
 	{ m_pageUrl = m_parentSite->fixUrl(details["page_url"]); }
 
-	// Get file url and try to improve it to save bandwidth
-	m_url = details.contains("file_url") ? m_parentSite->fixUrl(details["file_url"]).toString() : "";
-	QString ext = getExtension(m_url);
-	if (!m_sampleUrl.isEmpty() && !m_previewUrl.isEmpty())
-	{
-		QString previewExt = getExtension(details["preview_url"]);
-		QString sampleExt = getExtension(details["sample_url"]);
-		if (sampleExt != "jpg" && sampleExt != ext && previewExt == ext)
-			m_url = setExtension(m_url, sampleExt);
-	}
-	else if (details.contains("image") && details["image"].contains("MB // gif\" height=\"") && !m_url.endsWith(".gif", Qt::CaseInsensitive))
-	{ m_url = setExtension(m_url, "gif"); }
-
-	// Remove ? in urls
-	m_url = removeCacheUrl(m_url);
-	m_fileUrl = removeCacheUrl(m_fileUrl.toString());
-	m_sampleUrl = removeCacheUrl(m_sampleUrl.toString());
-	m_previewUrl = removeCacheUrl(m_previewUrl.toString());
-
 	// Rating
 	setRating(details.contains("rating") ? details["rating"] : "");
 
@@ -168,14 +149,51 @@ Image::Image(QMap<QString, QString> details, Page* parent)
 		}
 	}
 
-	// Guess the extension from the URL and tags
-	ext = getExtension(m_url);
-	if ((hasTag("gif") || hasTag("animated_gif")) && ext != "gif" && ext != "webm" && ext != "mp4")
-	{ setFileExtension("gif"); }
-	else if ((hasTag("webm") || hasTag("animated")) && ext != "gif" && ext != "webm" && ext != "mp4")
-	{ setFileExtension("webm"); }
-	else if (hasTag("mp4") && ext != "gif" && ext != "webm" && ext != "mp4")
-	{ setFileExtension("mp4"); }
+	// Get file url and try to improve it to save bandwidth
+	m_url = details.contains("file_url") ? m_parentSite->fixUrl(details["file_url"]).toString() : "";
+	QString ext = getExtension(m_url);
+	if (m_details.contains("ext"))
+	{
+		QString realExt = m_details["ext"];
+		if (ext != realExt)
+		{ setFileExtension(realExt); }
+	}
+	else if (!m_previewUrl.isEmpty())
+	{
+		bool fixed = false;
+		QString previewExt = getExtension(details["preview_url"]);
+		if (!m_sampleUrl.isEmpty())
+		{
+			// Guess extension from sample url
+			QString sampleExt = getExtension(details["sample_url"]);
+			if (sampleExt != "jpg" && sampleExt != "png" && sampleExt != ext && previewExt == ext)
+			{
+				m_url = setExtension(m_url, sampleExt);
+				fixed = true;
+			}
+		}
+
+		// Guess the extension from the tags
+		if (!fixed)
+		{
+			if ((hasTag("gif") || hasTag("animated_gif")) && ext != "webm" && ext != "mp4")
+			{ setFileExtension("gif"); }
+			else if (hasTag("mp4") && ext != "gif" && ext != "webm")
+			{ setFileExtension("mp4"); }
+			else if (hasTag("animated_png") && ext != "webm" && ext != "mp4")
+			{ setFileExtension("png"); }
+			else if ((hasTag("webm") || hasTag("animated")) && ext != "gif" && ext != "mp4")
+			{ setFileExtension("webm"); }
+		}
+	}
+	else if (details.contains("image") && details["image"].contains("MB // gif\" height=\"") && !m_url.endsWith(".gif", Qt::CaseInsensitive))
+	{ m_url = setExtension(m_url, "gif"); }
+
+	// Remove ? in urls
+	m_url = removeCacheUrl(m_url);
+	m_fileUrl = removeCacheUrl(m_fileUrl.toString());
+	m_sampleUrl = removeCacheUrl(m_sampleUrl.toString());
+	m_previewUrl = removeCacheUrl(m_previewUrl.toString());
 
 	// Creation date
 	m_createdAt = QDateTime();
@@ -756,6 +774,8 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 	replaces.insert("all", QStrP(details["alls"].join(tagSeparator), ""));
 	for (int i = 0; i < custom.size(); ++i)
 	{ replaces.insert(custom.keys().at(i), QStrP(custom.values().at(i).join(tagSeparator), "")); }
+	replaces.insert("url_file", QStrP(m_url, ""));
+	replaces.insert("url_page", QStrP(m_pageUrl.toString(), ""));
 
 	// Filename
 	QString filename = fn;
@@ -864,7 +884,7 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 		// Conditionals
 		if (complex)
 		{
-			QStringList tokens = QStringList() << "artist" << "general" << "copyright" << "character" << "model" << "model|artist" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "allo" << "date" << "date:([^%]+)" << "count(:\\d+)?(:\\d+)?" << "search_(\\d+)" << "score" << "height" << "width" << "path" << "pool" << custom.keys();
+			QStringList tokens = QStringList() << "artist" << "general" << "copyright" << "character" << "model" << "model|artist" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "allo" << "date" << "date:([^%]+)" << "count(:\\d+)?(:\\d+)?" << "search_(\\d+)" << "score" << "height" << "width" << "path" << "pool" << "url_file" << "url_page" << custom.keys();
 			filename = analyse(tokens, filename, details["allos"]);
 		}
 
@@ -902,7 +922,7 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 		{
 			QString key = keys.at(i);
 			QString res = replaces[key].first.isEmpty() ? replaces[key].second : replaces[key].first;
-			if (key != "allo")
+			if (key != "allo" && key != "url_file" && key != "url_page")
 			{
 				res = res.replace("\\", "_").replace("%", "_").replace("/", "_").replace(":", "_").replace("|", "_").replace("*", "_").replace("?", "_").replace("\"", "_").replace("<", "_").replace(">", "_").replace("__", "_").replace("__", "_").replace("__", "_").trimmed();
 				if (!settings.value("replaceblanks", false).toBool())
@@ -959,7 +979,10 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 
 		// Max filename size option
 		if (shouldFixFilename)
-			fns[i] = fixFilename(filename, pth, maxlength && complex ? 0 : settings.value("limit").toInt());
+		{
+			int limit = !maxlength ? 0 : settings.value("limit").toInt();
+			fns[i] = fixFilename(filename, pth, limit);
+		}
 
 		if (getFull)
 		{
@@ -1231,16 +1254,16 @@ Image::SaveResult Image::save(QString path, bool force, bool basic)
 
 	return res;
 }
-QList<Image::SaveResult> Image::save(QStringList paths)
+QMap<QString, Image::SaveResult> Image::save(QStringList paths)
 {
-	QList<Image::SaveResult> res;
+	QMap<QString, Image::SaveResult> res;
 	for (QString path : paths)
-		res.append(save(path));
+		res.insert(path, save(path));
 	return res;
 }
-QList<Image::SaveResult> Image::save(QString filename, QString path)
+QMap<QString, Image::SaveResult> Image::save(QString filename, QString path)
 {
-	QStringList paths = this->path(filename, path);
+	QStringList paths = this->path(filename, path, 0, true, false, true, true, true);
 	return save(paths);
 }
 

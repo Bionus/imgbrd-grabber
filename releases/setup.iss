@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Grabber"
-#define MyAppVersion "4.4.1"
+#define MyAppVersion "4.5.0"
 #define MyAppPublisher "Bionus"
 #define MyAppURL "https://github.com/Bionus/imgbrd-grabber"
 #define MyAppExeName "Grabber.exe"
@@ -128,12 +128,12 @@ Source: "..\release\sites\Booru-on-rails\sites.txt";    DestDir: "{localappdata}
 Source: "..\release\sites\Danbooru\icon.png";           DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru"; Flags: ignoreversion
 Source: "..\release\sites\Danbooru\model.xml";          DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru"; Flags: ignoreversion
 Source: "..\release\sites\Danbooru\sites.txt";          DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru"; Flags: onlyifdoesntexist
-Source: "..\release\sites\Danbooru\behoimi.org\settings.ini";              DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru\behoimi.org";
+Source: "..\release\sites\Danbooru\behoimi.org\settings.ini";              DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru\behoimi.org"; Flags: onlyifdoesntexist
 Source: "..\release\sites\Sankaku\icon.png";            DestDir: "{localappdata}\Bionus\Grabber\sites\Sankaku"; Flags: ignoreversion
 Source: "..\release\sites\Sankaku\model.xml";           DestDir: "{localappdata}\Bionus\Grabber\sites\Sankaku"; Flags: ignoreversion
 Source: "..\release\sites\Sankaku\sites.txt";           DestDir: "{localappdata}\Bionus\Grabber\sites\Sankaku"; Flags: onlyifdoesntexist
-Source: "..\release\sites\Sankaku\chan.sankakucomplex.com\settings.ini";  DestDir: "{localappdata}\Bionus\Grabber\sites\Sankaku\chan.sankakucomplex.com";
-Source: "..\release\sites\Sankaku\idol.sankakucomplex.com\settings.ini";  DestDir: "{localappdata}\Bionus\Grabber\sites\Sankaku\idol.sankakucomplex.com";    
+Source: "..\release\sites\Sankaku\chan.sankakucomplex.com\settings.ini";  DestDir: "{localappdata}\Bionus\Grabber\sites\Sankaku\chan.sankakucomplex.com"; Flags: onlyifdoesntexist
+Source: "..\release\sites\Sankaku\idol.sankakucomplex.com\settings.ini";  DestDir: "{localappdata}\Bionus\Grabber\sites\Sankaku\idol.sankakucomplex.com"; Flags: onlyifdoesntexist    
 Source: "..\release\sites\Danbooru (2.0)\icon.png";     DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru (2.0)"; Flags: ignoreversion
 Source: "..\release\sites\Danbooru (2.0)\model.xml";    DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru (2.0)"; Flags: ignoreversion
 Source: "..\release\sites\Danbooru (2.0)\sites.txt";    DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru (2.0)"; Flags: onlyifdoesntexist
@@ -143,7 +143,7 @@ Source: "..\release\sites\Gelbooru (0.1)\sites.txt";    DestDir: "{localappdata}
 Source: "..\release\sites\Gelbooru (0.2)\icon.png";     DestDir: "{localappdata}\Bionus\Grabber\sites\Gelbooru (0.2)"; Flags: ignoreversion
 Source: "..\release\sites\Gelbooru (0.2)\model.xml";    DestDir: "{localappdata}\Bionus\Grabber\sites\Gelbooru (0.2)"; Flags: ignoreversion      
 Source: "..\release\sites\Gelbooru (0.2)\sites.txt";    DestDir: "{localappdata}\Bionus\Grabber\sites\Gelbooru (0.2)"; Flags: onlyifdoesntexist
-Source: "..\release\sites\Gelbooru (0.2)\gelbooru.com\settings.ini"; DestDir: "{localappdata}\Bionus\Grabber\sites\Gelbooru (0.2)\gelbooru.com";     
+Source: "..\release\sites\Gelbooru (0.2)\gelbooru.com\settings.ini"; DestDir: "{localappdata}\Bionus\Grabber\sites\Gelbooru (0.2)\gelbooru.com"; Flags: onlyifdoesntexist     
 Source: "..\release\sites\Moebooru\icon.png";  DestDir: "{localappdata}\Bionus\Grabber\sites\Moebooru"; Flags: ignoreversion
 Source: "..\release\sites\Moebooru\model.xml"; DestDir: "{localappdata}\Bionus\Grabber\sites\Moebooru"; Flags: ignoreversion
 Source: "..\release\sites\Moebooru\sites.txt"; DestDir: "{localappdata}\Bionus\Grabber\sites\Moebooru"; Flags: onlyifdoesntexist

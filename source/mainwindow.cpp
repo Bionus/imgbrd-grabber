@@ -920,7 +920,7 @@ void mainWindow::loadLanguage(const QString& rLanguage, bool shutup)
 		m_currLang = rLanguage;
 		QLocale locale = QLocale(m_currLang);
 		QLocale::setDefault(locale);
-		switchTranslator(m_translator, qApp->applicationDirPath()+"/languages/"+m_currLang);
+		switchTranslator(m_translator, savePath("languages/"+m_currLang));
 		if (!shutup)
 		{
 			log(tr("Traduction des textes en %1...").arg(m_currLang));
@@ -1109,7 +1109,6 @@ void mainWindow::getAll(bool all)
 		connect(m_progressdialog, SIGNAL(skipped()), this, SLOT(getAllSkip()));
 	}
 
-
 	// Reinitialize variables
 	m_getAll = true;
 	ui->widgetDownloadButtons->setDisabled(m_getAll);
@@ -1206,8 +1205,8 @@ void mainWindow::getAll(bool all)
 														b.at(2).toInt(),
 														b.at(7),
 														b.at(6),
-														m_settings->value("login/pseudo").toString(),
-														m_settings->value("login/password").toString(),
+														nullptr,
+														nullptr,
 														b.at(4) == "true",
 														m_settings->value("blacklistedtags").toString().split(' '),
 														false,

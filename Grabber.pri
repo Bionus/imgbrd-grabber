@@ -1,7 +1,7 @@
 PDIR = $${_PRO_FILE_PWD_}/..
 
 # Options
-CONFIG += use_ssl
+CONFIG += use_ssl webm_support
 Release {
     CONFIG += use_breakpad
 }
@@ -10,12 +10,12 @@ Release {
 @
 T = $$(TRAVIS)
 !isEmpty(T) {
-    CONFIG -= use_breakpad use_qscintilla
+    CONFIG -= use_breakpad use_qscintilla webm_support
 }
 @
 
 # Global
-APP_VERSION = \\\"4.4.1\\\"
+APP_VERSION = \\\"4.5.0\\\"
 
 # General
 TEMPLATE = app
@@ -27,6 +27,12 @@ QT += core network xml sql script
 # Windows specials
 win32 {
         QT += winextras
+}
+
+# Webm
+webm_support {
+    DEFINES += USE_WEBKIT=1
+    QT += webkit webkitwidgets
 }
 
 # Additionnal

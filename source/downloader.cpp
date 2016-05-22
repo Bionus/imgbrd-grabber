@@ -50,7 +50,12 @@ Downloader::Downloader(QStringList tags, QStringList postfiltering, QStringList 
 			std::cerr << "Source '"+source.toStdString()+"' not found" << std::endl;
 		else
         {
-			m_sites->append(sites->value(source));
+			Site *site = sites->value(source);
+			if (user != nullptr)
+			{ site->setUsername(user); }
+			if (password != nullptr)
+			{ site->setPassword(password); }
+			m_sites->append(site);
             sites->remove(source);
         }
 	}

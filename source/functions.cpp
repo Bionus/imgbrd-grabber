@@ -331,18 +331,22 @@ QString validateFilename(QString text)
 {
 	// Field must be filled
 	if (text.isEmpty())
-	{ return QObject::tr("<span style=\"color:red\">Les noms de fichiers ne doivent pas être vides !</span>"); }
+		return QObject::tr("<span style=\"color:red\">Les noms de fichiers ne doivent pas être vides !</span>");
+
 	// Can't validate javascript expressions
 	if (text.startsWith("javascript:"))
-	{ return QObject::tr("<span style=\"color:orange\">Impossible de valider les expressions Javascript.</span>"); }
+		return QObject::tr("<span style=\"color:orange\">Impossible de valider les expressions Javascript.</span>");
+
 	// Field must end by an extension
 	if (!text.endsWith(".%ext%"))
-	{ return QObject::tr("<span style=\"color:orange\">Votre nom de fichier ne finit pas par une extension, symbolisée par %ext% ! Vous risquez de ne pas pouvoir ouvrir vos fichiers.</span>"); }
+		return QObject::tr("<span style=\"color:orange\">Votre nom de fichier ne finit pas par une extension, symbolisée par %ext% ! Vous risquez de ne pas pouvoir ouvrir vos fichiers.</span>");
+
 	// Field must contain an unique token
 	if (!text.contains("%md5%") && !text.contains("%id%") && !text.contains("%count"))
-	{ return QObject::tr("<span style=\"color:orange\">Votre nom de fichier n'est pas unique à chaque image et une image risque d'en écraser une précédente lors de la sauvegarde ! Vous devriez utiliser le symbole %md5%, unique à chaque image, pour éviter ce désagrément.</span>"); }
+		return QObject::tr("<span style=\"color:orange\">Votre nom de fichier n'est pas unique à chaque image et une image risque d'en écraser une précédente lors de la sauvegarde ! Vous devriez utiliser le symbole %md5%, unique à chaque image, pour éviter ce désagrément.</span>");
+
 	// Looking for unknown tokens
-	QStringList tokens = QStringList() << "artist" << "general" << "copyright" << "character" << "model" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "search_(\\d+)" << "allo" << getCustoms().keys() << "date" << "date:([^%]+)" << "score" << "count(:\\d+)?(:\\d+)?" << "width" << "height" << "pool";
+	QStringList tokens = QStringList() << "artist" << "general" << "copyright" << "character" << "model" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "search_(\\d+)" << "allo" << getCustoms().keys() << "date" << "date:([^%]+)" << "score" << "count(:\\d+)?(:\\d+)?" << "width" << "height" << "pool" << "url_file" << "url_page";
 	QRegExp rx("%(.+)%");
 	rx.setMinimal(true);
 	int pos = 0;
@@ -352,21 +356,26 @@ QString validateFilename(QString text)
 		for (int i = 0; i < tokens.length(); i++)
 		{
 			if (QRegExp("%"+tokens[i]+"%").indexIn(rx.cap(0)) != -1)
-			{ found = true; }
+				found = true;
 		}
+
 		if (!found)
-		{ return QObject::tr("<span style=\"color:orange\">Le symbole %%1% n\'existe pas et ne sera pas remplacé.</span>").arg(rx.cap(1)); }
+			return QObject::tr("<span style=\"color:orange\">Le symbole %%1% n\'existe pas et ne sera pas remplacé.</span>").arg(rx.cap(1));
+
 		pos += rx.matchedLength();
 	}
-#ifdef Q_OS_WIN
-	QString txt = QString(text).remove(rx);
+
 	// Check for invalid windows characters
-	if (txt.contains(':') || txt.contains('*') || txt.contains('?') || txt.contains('"') || txt.contains('<') || txt.contains('>') || txt.contains('|'))
-		return QObject::tr("<span style=\"color:red\">Votre format contient des caractères interdits sur windows ! Caractères interdits : * ? \" : < > |</span>");
-#endif
+	#ifdef Q_OS_WIN
+		QString txt = QString(text).remove(rx);
+		if (txt.contains(':') || txt.contains('*') || txt.contains('?') || txt.contains('"') || txt.contains('<') || txt.contains('>') || txt.contains('|'))
+			return QObject::tr("<span style=\"color:red\">Votre format contient des caractères interdits sur windows ! Caractères interdits : * ? \" : < > |</span>");
+	#endif
+
 	// Check if code is unique
 	if (!text.contains("%md5%") && !text.contains("%website%") && !text.contains("%count") && text.contains("%id%"))
 		return QObject::tr("<span style=\"color:green\">Vous avez choisi d'utiliser le symbole %id%. Sachez que celui-ci est unique pour un site choisi. Le même ID pourra identifier des images différentes en fonction du site.</span>");
+
 	// All tests passed
 	return QObject::tr("<span style=\"color:green\">Format valide !</span>");
 }
@@ -380,6 +389,8 @@ QString savePath(QString file)
 {
 	if (QFile(QDir::toNativeSeparators(qApp->applicationDirPath()+"/settings.ini")).exists())
 	{ return QDir::toNativeSeparators(qApp->applicationDirPath()+"/"+file); }
+	if (QFile(QDir::toNativeSeparators(QDir::currentPath()+"/settings.ini")).exists())
+	{ return QDir::toNativeSeparators(QDir::currentPath()+"/"+file); }
 	if (QFile(QDir::toNativeSeparators(QDir::homePath()+"/Grabber/settings.ini")).exists())
 	{ return QDir::toNativeSeparators(QDir::homePath()+"/Grabber/"+file); }
 	return QDir::toNativeSeparators(QStandardPaths::writableLocation(QStandardPaths::DataLocation)+"/"+file);
@@ -743,23 +754,23 @@ QString fixFilename(QString fn, QString path, int maxlength)
 
 			// A part should still allow creating a file
 			if (part.length() > maxlength - 12)
-				part = part.left(maxlength - 12).trimmed();
+				part = part.left(qMax(0, maxlength - 12)).trimmed();
 		}
 
 		// Join parts back
 		QString dirpart = parts.join(sep);
 		if (dirpart.length() > maxlength - 12)
-			dirpart = dirpart.left(maxlength - 12).trimmed();
+			dirpart = dirpart.left(qMax(0, maxlength - 12)).trimmed();
 		filename = (dirpart.isEmpty() ? "" : dirpart + (!fn.isEmpty() ? sep : "")) + file;
 
 		// A filename cannot exceed MAX_PATH (-1 for <NUL> and -3 for drive "C:\")
 		if (filename.length() > maxlength - 1 - 3 - ext.length() - 1)
-			filename = filename.left(maxlength - 1 - 3 - ext.length() - 1).trimmed();
+			filename = filename.left(qMax(0, maxlength - 1 - 3 - ext.length() - 1)).trimmed();
 
 		// Put extension and drive back
 		filename = drive + filename + (!ext.isEmpty() ? "." + ext : "");
 		if (!fn.isEmpty())
-			filename = filename.right(filename.length() - path.length());
+			filename = filename.right(filename.length() - filename.lastIndexOf(sep) - 1);
 	#else
 		// Divide filename
 		QString filename = path + fn;

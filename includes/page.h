@@ -54,6 +54,7 @@ class Page : public QObject
 
 	signals:
 		void finishedLoading(Page*);
+		void failedLoading(Page*);
 		void finishedLoadingTags(Page*);
 
 	protected:

@@ -50,6 +50,8 @@ class tagTab : public searchTab
 		// Loading
 		void load();
 		void finishedLoading(Page*);
+		void failedLoading(Page*);
+		void postLoading(Page*);
 		void finishedLoadingTags(Page*);
 		void finishedLoadingPreview(Image*);
 		// Batch

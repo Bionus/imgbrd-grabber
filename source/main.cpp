@@ -40,11 +40,13 @@
 	#include "QBouton.h"
 	#include "zoomwindow.h"
 	#include "optionswindow.h"
+	#if USE_BREAKPAD
+		#include "crashhandler.h"
+	#endif
 #endif
+
+// TMP
 #include "mainwindow.h"
-#if USE_BREAKPAD
-	#include "crashhandler.h"
-#endif
 
 
 

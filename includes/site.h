@@ -59,6 +59,10 @@ class Site : public QObject
 		static QMap<QString, Site*> *getAllSites();
 		QUrl fixUrl(QString url);
 		QUrl fixUrl(QString url, QUrl old);
+		QString username();
+		QString password();
+		void setUsername(QString);
+		void setPassword(QString);
 
 	public slots:
 		void login(bool force = false);
@@ -93,6 +97,7 @@ class Site : public QObject
 		QNetworkReply *m_loginReply, *m_updateReply, *m_tagsReply;
 		bool m_loggedIn, m_triedLogin, m_loginCheck;
 		QString m_updateVersion;
+		QString m_username, m_password;
 
 		// Async
 		std::function<void(QNetworkReply*)> m_lastCallback;

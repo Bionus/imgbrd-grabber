@@ -24,7 +24,7 @@ optionsWindow::optionsWindow(QWidget *parent) : QDialog(parent), ui(new Ui::opti
 	ui->setupUi(this);
 
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
-	QStringList languages = QDir(qApp->applicationDirPath()+"/languages").entryList(QStringList("*.qm"), QDir::Files);
+	QStringList languages = QDir(savePath("languages")).entryList(QStringList("*.qm"), QDir::Files);
 	for (int i = 0; i < languages.count(); i++)
 	{ languages[i].remove(".qm", Qt::CaseInsensitive); }
 	ui->comboLanguages->addItems(languages);
@@ -515,30 +515,37 @@ void optionsWindow::on_buttonBorderColor_clicked()
 	{ ui->lineBorderColor->setText(color.name()); }
 }
 
-void optionsWindow::updateContainer(QTreeWidgetItem *current, QTreeWidgetItem *)
-{ setCategory(current->text(0)); }
-void optionsWindow::setCategory(QString value)
+void treeWidgetRec(int depth, bool& found, int& index, QTreeWidgetItem *current, QTreeWidgetItem *sel)
 {
-	QStringList texts = QStringList() <<
-		tr("Général", "update") <<
-		tr("Sources", "update") <<
-		tr("Log", "update") <<
-		tr("Sauvegarde", "update") <<
-		tr("Nom de fichier", "update") <<
-		tr("Fichier texte séparé", "update") <<
-		tr("Log séparé", "update") <<
-		tr("Noms conditionnels", "update") <<
-		tr("Tags artiste", "update") <<
-		tr("Tags série", "update") <<
-		tr("Tags personnage", "update") <<
-		tr("Symbole personnalisé", "update") <<
-		tr("Interface", "update") <<
-		tr("Coloration", "update") <<
-		tr("Marges et bordures", "update") <<
-		tr("Proxy", "update") <<
-		tr("Commandes", "update") <<
-		tr("Base de données", "update");
-	ui->stackedWidget->setCurrentIndex(texts.indexOf(value));
+	if (current == sel)
+	{
+		found = true;
+		return;
+	}
+	index++;
+
+	for (int i = 0; i < current->childCount(); ++i)
+	{
+		treeWidgetRec(depth + 1, found, index, current->child(i), sel);
+		if (found)
+			break;
+	}
+}
+
+void optionsWindow::updateContainer(QTreeWidgetItem *current, QTreeWidgetItem *)
+{
+	bool found = false;
+	int index = 0;
+
+	for (int i = 0; i < ui->treeWidget->topLevelItemCount(); ++i)
+	{
+		treeWidgetRec(0, found, index, ui->treeWidget->topLevelItem(i), current);
+		if (found)
+			break;
+	}
+
+	if (found)
+		ui->stackedWidget->setCurrentIndex(index);
 }
 
 void optionsWindow::save()

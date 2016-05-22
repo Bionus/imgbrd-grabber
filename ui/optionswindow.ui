@@ -572,27 +572,6 @@
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="pageInterfaceLog">
-        <layout class="QFormLayout" name="formLayout_3">
-         <item row="0" column="0" colspan="2">
-          <widget class="QCheckBox" name="checkShowLog">
-           <property name="text">
-            <string>Afficher le log</string>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0" colspan="2">
-          <widget class="QCheckBox" name="checkInvertLog">
-           <property name="text">
-            <string>Inverser le log</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
        <widget class="QWidget" name="pageSave">
         <layout class="QFormLayout" name="formLayout_17">
          <property name="fieldGrowthPolicy">
@@ -909,6 +888,33 @@ p, li { white-space: pre-wrap; }
          </item>
         </layout>
        </widget>
+       <widget class="QWidget" name="pageSaveConditionals">
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <item>
+          <layout class="QVBoxLayout" name="layoutConditionals"/>
+         </item>
+         <item>
+          <widget class="QPushButton" name="buttonFilenames">
+           <property name="text">
+            <string>Ajouter un nom de fichier conditionnel</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="verticalSpacer">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </widget>
        <widget class="QWidget" name="pageSaveTextfile">
         <layout class="QFormLayout" name="formLayout_12">
          <item row="1" column="0" colspan="2">
@@ -1010,33 +1016,6 @@ p, li { white-space: pre-wrap; }
             <bool>true</bool>
            </property>
           </widget>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QWidget" name="pageSaveConditionals">
-        <layout class="QVBoxLayout" name="verticalLayout">
-         <item>
-          <layout class="QVBoxLayout" name="layoutConditionals"/>
-         </item>
-         <item>
-          <widget class="QPushButton" name="buttonFilenames">
-           <property name="text">
-            <string>Ajouter un nom de fichier conditionnel</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <spacer name="verticalSpacer">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>20</width>
-             <height>40</height>
-            </size>
-           </property>
-          </spacer>
          </item>
         </layout>
        </widget>
@@ -2049,6 +2028,27 @@ p, li { white-space: pre-wrap; }
          </item>
         </layout>
        </widget>
+       <widget class="QWidget" name="pageInterfaceLog">
+        <layout class="QFormLayout" name="formLayout_3">
+         <item row="0" column="0" colspan="2">
+          <widget class="QCheckBox" name="checkShowLog">
+           <property name="text">
+            <string>Afficher le log</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0" colspan="2">
+          <widget class="QCheckBox" name="checkInvertLog">
+           <property name="text">
+            <string>Inverser le log</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
        <widget class="QWidget" name="pageProxy">
         <layout class="QFormLayout" name="formLayout_10">
          <item row="0" column="0" colspan="2">
@@ -2483,12 +2483,12 @@ p, li { white-space: pre-wrap; }
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>610</x>
-     <y>139</y>
+     <x>260</x>
+     <y>29</y>
     </hint>
     <hint type="destinationlabel">
-     <x>267</x>
-     <y>136</y>
+     <x>178</x>
+     <y>29</y>
     </hint>
    </hints>
   </connection>
@@ -2499,12 +2499,12 @@ p, li { white-space: pre-wrap; }
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>490</x>
-     <y>166</y>
+     <x>219</x>
+     <y>33</y>
     </hint>
     <hint type="destinationlabel">
-     <x>331</x>
-     <y>162</y>
+     <x>178</x>
+     <y>32</y>
     </hint>
    </hints>
   </connection>
@@ -2515,12 +2515,12 @@ p, li { white-space: pre-wrap; }
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>645</x>
-     <y>166</y>
+     <x>259</x>
+     <y>33</y>
     </hint>
     <hint type="destinationlabel">
-     <x>331</x>
-     <y>162</y>
+     <x>178</x>
+     <y>32</y>
     </hint>
    </hints>
   </connection>
@@ -2531,12 +2531,12 @@ p, li { white-space: pre-wrap; }
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>610</x>
-     <y>193</y>
+     <x>260</x>
+     <y>35</y>
     </hint>
     <hint type="destinationlabel">
-     <x>334</x>
-     <y>190</y>
+     <x>178</x>
+     <y>35</y>
     </hint>
    </hints>
   </connection>
@@ -2547,12 +2547,12 @@ p, li { white-space: pre-wrap; }
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>377</x>
-     <y>182</y>
+     <x>260</x>
+     <y>33</y>
     </hint>
     <hint type="destinationlabel">
-     <x>313</x>
-     <y>182</y>
+     <x>178</x>
+     <y>33</y>
     </hint>
    </hints>
   </connection>
@@ -2563,12 +2563,12 @@ p, li { white-space: pre-wrap; }
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>376</x>
-     <y>157</y>
+     <x>219</x>
+     <y>31</y>
     </hint>
     <hint type="destinationlabel">
-     <x>285</x>
-     <y>158</y>
+     <x>178</x>
+     <y>30</y>
     </hint>
    </hints>
   </connection>
@@ -2579,12 +2579,12 @@ p, li { white-space: pre-wrap; }
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>526</x>
-     <y>155</y>
+     <x>259</x>
+     <y>31</y>
     </hint>
     <hint type="destinationlabel">
-     <x>316</x>
-     <y>157</y>
+     <x>178</x>
+     <y>30</y>
     </hint>
    </hints>
   </connection>
@@ -2595,12 +2595,12 @@ p, li { white-space: pre-wrap; }
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>373</x>
-     <y>131</y>
+     <x>260</x>
+     <y>27</y>
     </hint>
     <hint type="destinationlabel">
-     <x>237</x>
-     <y>128</y>
+     <x>178</x>
+     <y>27</y>
     </hint>
    </hints>
   </connection>
@@ -2611,12 +2611,12 @@ p, li { white-space: pre-wrap; }
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>396</x>
-     <y>131</y>
+     <x>260</x>
+     <y>29</y>
     </hint>
     <hint type="destinationlabel">
-     <x>254</x>
-     <y>133</y>
+     <x>178</x>
+     <y>29</y>
     </hint>
    </hints>
   </connection>
@@ -2627,12 +2627,12 @@ p, li { white-space: pre-wrap; }
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>406</x>
-     <y>151</y>
+     <x>219</x>
+     <y>33</y>
     </hint>
     <hint type="destinationlabel">
-     <x>304</x>
-     <y>155</y>
+     <x>178</x>
+     <y>32</y>
     </hint>
    </hints>
   </connection>
@@ -2643,12 +2643,12 @@ p, li { white-space: pre-wrap; }
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>521</x>
-     <y>154</y>
+     <x>259</x>
+     <y>33</y>
     </hint>
     <hint type="destinationlabel">
-     <x>307</x>
-     <y>157</y>
+     <x>178</x>
+     <y>32</y>
     </hint>
    </hints>
   </connection>
@@ -2659,12 +2659,12 @@ p, li { white-space: pre-wrap; }
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>423</x>
-     <y>177</y>
+     <x>260</x>
+     <y>35</y>
     </hint>
     <hint type="destinationlabel">
-     <x>300</x>
-     <y>183</y>
+     <x>178</x>
+     <y>35</y>
     </hint>
    </hints>
   </connection>
@@ -2675,12 +2675,12 @@ p, li { white-space: pre-wrap; }
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>262</x>
-     <y>26</y>
+     <x>260</x>
+     <y>17</y>
     </hint>
     <hint type="destinationlabel">
-     <x>340</x>
-     <y>143</y>
+     <x>260</x>
+     <y>30</y>
     </hint>
    </hints>
   </connection>
@@ -2691,12 +2691,12 @@ p, li { white-space: pre-wrap; }
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>275</x>
-     <y>26</y>
+     <x>260</x>
+     <y>18</y>
     </hint>
     <hint type="destinationlabel">
-     <x>506</x>
-     <y>78</y>
+     <x>219</x>
+     <y>29</y>
     </hint>
    </hints>
   </connection>
@@ -2707,12 +2707,12 @@ p, li { white-space: pre-wrap; }
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>608</x>
-     <y>25</y>
+     <x>260</x>
+     <y>18</y>
     </hint>
     <hint type="destinationlabel">
-     <x>602</x>
-     <y>74</y>
+     <x>259</x>
+     <y>29</y>
     </hint>
    </hints>
   </connection>
@@ -2723,12 +2723,12 @@ p, li { white-space: pre-wrap; }
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>454</x>
-     <y>29</y>
+     <x>260</x>
+     <y>18</y>
     </hint>
     <hint type="destinationlabel">
-     <x>449</x>
-     <y>106</y>
+     <x>219</x>
+     <y>34</y>
     </hint>
    </hints>
   </connection>
@@ -2739,12 +2739,12 @@ p, li { white-space: pre-wrap; }
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>582</x>
-     <y>28</y>
+     <x>260</x>
+     <y>18</y>
     </hint>
     <hint type="destinationlabel">
-     <x>583</x>
-     <y>108</y>
+     <x>259</x>
+     <y>34</y>
     </hint>
    </hints>
   </connection>

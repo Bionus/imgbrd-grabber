@@ -16,11 +16,14 @@
 		</Json>
 		<Html>
 			<Login>login={pseudo}&amp;password_hash={password}&amp;</Login>
-			<Tags>/post/index?{login}limit={limit}&amp;page={page}&amp;tags={tags}</Tags>
-			<Pools>/post/index?{login}limit={limit}&amp;page={page}&amp;tags=pool:{pool} {tags}</Pools>
+			<Tags>/post/index?{login}{altpage}limit={limit}&amp;tags={tags}&amp;page={page}</Tags>
+			<Pools>/post/index?{login}{altpage}limit={limit}&amp;tags=pool:{pool} {tags}&amp;page={page}</Pools>
 			<Post>/post/show/{id}</Post>
 			<Image>/preview/->/&amp;.sankakucomplex->s.sankakucomplex</Image>
 			<Limit>20</Limit>
+			<MaxPage>50</MaxPage>
+			<AltPagePrev>prev={max}&amp;</AltPagePrev>
+			<AltPageNext>next={min-1}&amp;</AltPageNext>
 		</Html>
 	</Urls>
 	<Regex>
