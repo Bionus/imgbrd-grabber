@@ -1,7 +1,7 @@
 PDIR = $${_PRO_FILE_PWD_}/..
 
 # Options
-CONFIG += use_ssl webm_support
+CONFIG += use_ssl
 Release {
     CONFIG += use_breakpad
 }
@@ -15,7 +15,7 @@ T = $$(TRAVIS)
 @
 
 # Global
-APP_VERSION = \\\"4.5.0\\\"
+APP_VERSION = \\\"4.5.1\\\"
 
 # General
 TEMPLATE = app
