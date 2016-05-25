@@ -1,7 +1,7 @@
 PDIR = $${_PRO_FILE_PWD_}/..
 
 # Options
-CONFIG += use_ssl webm_support
+CONFIG += use_ssl
 Release {
     CONFIG += use_breakpad
 }
