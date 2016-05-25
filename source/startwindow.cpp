@@ -19,7 +19,7 @@ startWindow::startWindow(QMap<QString, Site*> *sites, QWidget *parent) : QDialog
 	ui->setupUi(this);
 
 	// Language
-	QStringList languages = QDir(qApp->applicationDirPath()+"/languages").entryList(QStringList("*.qm"), QDir::Files);
+	QStringList languages = QDir(savePath("languages/", true)).entryList(QStringList("*.qm"), QDir::Files);
 	for (int i = 0; i < languages.count(); i++)
 	{ languages[i].remove(".qm", Qt::CaseInsensitive); }
 	ui->comboLanguage->addItems(languages);

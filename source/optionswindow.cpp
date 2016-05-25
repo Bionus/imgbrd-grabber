@@ -24,7 +24,7 @@ optionsWindow::optionsWindow(QWidget *parent) : QDialog(parent), ui(new Ui::opti
 	ui->setupUi(this);
 
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
-	QStringList languages = QDir(savePath("languages")).entryList(QStringList("*.qm"), QDir::Files);
+	QStringList languages = QDir(savePath("languages/", true)).entryList(QStringList("*.qm"), QDir::Files);
 	for (int i = 0; i < languages.count(); i++)
 	{ languages[i].remove(".qm", Qt::CaseInsensitive); }
 	ui->comboLanguages->addItems(languages);

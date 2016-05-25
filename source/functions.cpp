@@ -383,15 +383,17 @@ QString validateFilename(QString text)
 /**
  * Return the path to a specified file in the config folder (since program files is not writable).
  * @param	file	The file.
+ * @param	exists	If the file must already exist beforehand.
  * @return			The absolute path to the file.
  */
-QString savePath(QString file)
+QString savePath(QString file, bool exists)
 {
-	if (QFile(QDir::toNativeSeparators(qApp->applicationDirPath()+"/settings.ini")).exists())
+	QString check = exists ? file : "settings.ini";
+	if (QFile(QDir::toNativeSeparators(qApp->applicationDirPath()+"/"+check)).exists())
 	{ return QDir::toNativeSeparators(qApp->applicationDirPath()+"/"+file); }
-	if (QFile(QDir::toNativeSeparators(QDir::currentPath()+"/settings.ini")).exists())
+	if (QFile(QDir::toNativeSeparators(QDir::currentPath()+"/"+check)).exists())
 	{ return QDir::toNativeSeparators(QDir::currentPath()+"/"+file); }
-	if (QFile(QDir::toNativeSeparators(QDir::homePath()+"/Grabber/settings.ini")).exists())
+	if (QFile(QDir::toNativeSeparators(QDir::homePath()+"/Grabber/"+check)).exists())
 	{ return QDir::toNativeSeparators(QDir::homePath()+"/Grabber/"+file); }
 	return QDir::toNativeSeparators(QStandardPaths::writableLocation(QStandardPaths::DataLocation)+"/"+file);
 }
