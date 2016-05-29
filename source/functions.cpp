@@ -710,6 +710,7 @@ QString fixFilename(QString fn, QString path, int maxlength)
 	path = QDir::toNativeSeparators(path);
 	if (!path.endsWith(sep) && !path.isEmpty() && !fn.isEmpty())
 		path += sep;
+	int pathGroups = path.count(sep);
 
 	#ifdef Q_OS_WIN
 		// Fix parameters
@@ -769,10 +770,16 @@ QString fixFilename(QString fn, QString path, int maxlength)
 		if (filename.length() > maxlength - 1 - 3 - ext.length() - 1)
 			filename = filename.left(qMax(0, maxlength - 1 - 3 - ext.length() - 1)).trimmed();
 
+		// Get separation between filename and path
+		int index = -1;
+		for (int i = 0; i < pathGroups - 1; ++i)
+			index = filename.indexOf(sep, index + 1);
+		index += drive.length();
+
 		// Put extension and drive back
 		filename = drive + filename + (!ext.isEmpty() ? "." + ext : "");
 		if (!fn.isEmpty())
-			filename = filename.right(filename.length() - filename.lastIndexOf(sep) - 1);
+			filename = filename.right(filename.length() - index - 1);
 	#else
 		// Divide filename
 		QString filename = path + fn;

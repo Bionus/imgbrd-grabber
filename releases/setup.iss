@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Grabber"
-#define MyAppVersion "4.5.1"
+#define MyAppVersion "4.5.2"
 #define MyAppPublisher "Bionus"
 #define MyAppURL "https://github.com/Bionus/imgbrd-grabber"
 #define MyAppExeName "Grabber.exe"
@@ -90,6 +90,7 @@ Source: "..\release\qscintilla2.dll";           DestDir: "{app}"; Flags: ignorev
 Source: "..\release\Qt5Core.dll";               DestDir: "{app}"; Flags: ignoreversion
 Source: "..\release\Qt5Gui.dll";                DestDir: "{app}"; Flags: ignoreversion           
 Source: "..\release\Qt5Multimedia.dll";         DestDir: "{app}"; Flags: ignoreversion       
+Source: "..\release\Qt5MultimediaWidgets.dll";  DestDir: "{app}"; Flags: ignoreversion       
 Source: "..\release\Qt5Network.dll";            DestDir: "{app}"; Flags: ignoreversion          
 Source: "..\release\Qt5PrintSupport.dll";       DestDir: "{app}"; Flags: ignoreversion      
 Source: "..\release\Qt5Script.dll";             DestDir: "{app}"; Flags: ignoreversion        

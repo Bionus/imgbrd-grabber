@@ -13,6 +13,8 @@
 #include "imagethread.h"
 #include "ui_zoomwindow.h"
 
+#include <QMediaPlaylist>
+
 extern mainWindow *_mainwindow;
 
 
@@ -92,12 +94,10 @@ void zoomWindow::go()
 		m_labelImage->setSizePolicy(QSizePolicy(QSizePolicy::Ignored,QSizePolicy::Ignored));
 		connect(m_labelImage, SIGNAL(doubleClicked()), this, SLOT(fullScreen()));
 		m_stackedWidget->addWidget(m_labelImage);
-#ifdef USE_WEBKIT
-	m_webView = new QWebView(this);
-		m_webView->setAttribute(Qt::WA_TranslucentBackground);
-		m_webView->setStyleSheet("background:transparent");
-		m_stackedWidget->addWidget(m_webView);
-#endif
+	m_mediaPlayer = new QMediaPlayer(this, QMediaPlayer::VideoSurface);
+		m_videoWidget = new QVideoWidget();
+		m_stackedWidget->addWidget(m_videoWidget);
+		m_mediaPlayer->setVideoOutput(m_videoWidget);
 
 	QMap<QString, QString> assoc;
 		assoc["s"] = tr("Safe");
@@ -615,28 +615,15 @@ void zoomWindow::draw()
 
 		image = NULL;
 	}
-#ifdef USE_WEBKIT
 	else if (isVideo)
 	{
-		QString mimetype = mimeReturn(filename);
-
-		QFile htmlFile(QDir::temp().absoluteFilePath("grabber-" + fn + ".html"));
-		if (htmlFile.open(QFile::WriteOnly | QFile::Text))
-		{
-			QTextStream stream(&htmlFile);
-			stream << "<html>"
-				   << "<style>html, body { padding: 0; margin: 0; background-color: transparent; }</style>"
-				   << "<video width=\"" << m_image->width() << "\" height=\"" << m_image->height() << "\" controls autoplay loop>"
-				   << "<source src=\"file:///" << filename << "\" type=\"" << mimetype << "\">"
-				   << "</video>"
-				   << "</html>";
-			stream.flush();
-
-			m_stackedWidget->setCurrentWidget(m_webView);
-			m_webView->load("file:///" + htmlFile.fileName());
-		}
+		QMediaPlaylist *playlist = new QMediaPlaylist(this);
+		playlist->addMedia(QUrl::fromLocalFile(filename));
+		playlist->setPlaybackMode(QMediaPlaylist::CurrentItemInLoop);
+		m_mediaPlayer->setPlaylist(playlist);
+		m_stackedWidget->setCurrentWidget(m_videoWidget);
+		m_mediaPlayer->play();
 	}
-#endif
 	else
 	{
 		if (m_source.isEmpty())
@@ -826,17 +813,46 @@ void zoomWindow::fullScreen()
 	if (image == NULL)
 		return;
 
-	m_fullScreen = new QAffiche(QVariant(), 0, QColor());
+	QString ext = m_url.section('.', -1).toLower();
+	bool isVideo = ext == "mp4" || ext == "webm" || ext == "flv";
+
+	if (isVideo)
+	{
+		m_videoWidget->setFullScreen(true);
+	}
+	else
+	{
+		m_fullScreen = new QAffiche(QVariant(), 0, QColor());
 		m_fullScreen->setStyleSheet("background-color: black");
 		m_fullScreen->setAlignment(Qt::AlignCenter);
-		if (m_url.section('.', -1).toUpper() == "GIF")
+		if (ext == "gif")
 		{ m_fullScreen->setMovie(movie); }
 		else
 		{ m_fullScreen->setImage(image->scaled(QApplication::desktop()->screenGeometry().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation)); }
 		m_fullScreen->showFullScreen();
-	QShortcut *escape = new QShortcut(QKeySequence(Qt::Key_Escape), m_fullScreen);
-		connect(escape, SIGNAL(activated()), m_fullScreen, SLOT(close()));
-	connect(m_fullScreen, SIGNAL(doubleClicked()), m_fullScreen, SLOT(close()));
+
+		connect(m_fullScreen, SIGNAL(doubleClicked()), m_fullScreen, SLOT(close()));
+	}
+
+	QShortcut *escape = new QShortcut(QKeySequence(Qt::Key_Escape), this);
+	connect(escape, SIGNAL(activated()), this, SLOT(unfullScreen()));
+}
+
+void zoomWindow::unfullScreen()
+{
+	QString ext = m_url.section('.', -1).toLower();
+	bool isVideo = ext == "mp4" || ext == "webm" || ext == "flv";
+
+	if (isVideo)
+	{
+		m_videoWidget->setFullScreen(false);
+	}
+	else
+	{
+		m_fullScreen->close();
+		m_fullScreen->deleteLater();
+		m_fullScreen = nullptr;
+	}
 }
 
 
