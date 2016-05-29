@@ -6,11 +6,14 @@ Release {
     CONFIG += use_breakpad
 }
 
+# TODO: move to gui
+QT += multimedia widgets multimediawidgets
+
 # Travis settings
 @
 T = $$(TRAVIS)
 !isEmpty(T) {
-    CONFIG -= use_breakpad use_qscintilla webm_support
+    CONFIG -= use_breakpad use_qscintilla
 }
 @
 
@@ -27,12 +30,6 @@ QT += core network xml sql script
 # Windows specials
 win32 {
         QT += winextras
-}
-
-# Webm
-webm_support {
-    DEFINES += USE_WEBKIT=1
-    QT += webkit webkitwidgets
 }
 
 # Additionnal

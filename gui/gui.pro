@@ -1,7 +1,6 @@
 TARGET = Grabber
 
 # GUI
-QT += multimedia widgets
 CONFIG += use_qscintilla
 DEPENDPATH += ui
 

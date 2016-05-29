@@ -4,14 +4,15 @@
 #include <QtGui>
 #include <QtNetwork>
 #include <QStackedWidget>
-#ifdef USE_WEBKIT
-	#include <QtWebKitWidgets/QWebView>
-#endif
 #include "QAffiche.h"
 #include "image.h"
 #include "mainwindow.h"
 #include "detailswindow.h"
 #include "imagethread.h"
+
+#include <QVideoWidget>
+#include <QVideoSurfaceFormat>
+#include <QMediaPlayer>
 
 
 
@@ -43,6 +44,7 @@ class zoomWindow : public QDialog
 		QStringList saveImageFav();
 		QString saveImageAs();
 		void fullScreen();
+		void unfullScreen();
 		void openUrl(QString);
 		void openPool(QString);
 		void openPoolId(Page*);
@@ -106,9 +108,8 @@ class zoomWindow : public QDialog
 
 		QStackedWidget *m_stackedWidget;
 		QAffiche *m_labelImage;
-#ifdef USE_WEBKIT
-		QWebView *m_webView;
-#endif
+		QVideoWidget *m_videoWidget;
+		QMediaPlayer *m_mediaPlayer;
 };
 
 #endif
