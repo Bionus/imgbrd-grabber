@@ -1303,6 +1303,14 @@ QNetworkReply	*Image::tagsReply()		{ return m_loadDetails;		}
 QSettings		*Image::settings()		{ return m_settings;		}
 QMap<QString,QString> Image::details()	{ return m_details;         }
 
+QStringList Image::tagsString()
+{
+	QStringList tags;
+	for (Tag tag : m_tags)
+	{ tags.append(tag.text()); }
+	return tags;
+}
+
 QString Image::detail(QString key)
 {
 	if (m_details.contains(key))

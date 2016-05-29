@@ -128,18 +128,14 @@ void BlacklistFix::getAll(Page *p)
 {
 	if (p != nullptr && p->images().size() > 0)
 	{
-		QList<Tag> ts = p->images().at(0)->tags();
-		QStringList tags;
-		for (int i = 0; i < ts.size(); i++)
-		{ tags.append(ts[i].text()); }
-		m_getAll[p->images().at(0)->md5()].insert("tags", tags.join(" "));
-
+		Image *img = p->images().at(0);
+		m_getAll[img->md5()].insert("tags", img->tagsString().join(" "));
 		ui->progressBar->setValue(ui->progressBar->value() + 1);
 	}
 
 	if (!m_details.empty())
 	{
-		QMap<QString,QString> det = m_details.takeFirst();
+		QMap<QString, QString> det = m_details.takeFirst();
 		m_getAll.insert(det.value("md5"), det);
 
 		Page *page = new Page(m_sites.value(ui->comboSource->currentText()), &m_sites, QStringList("md5:" + det.value("md5")), 1, 1);

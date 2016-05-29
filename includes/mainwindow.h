@@ -63,6 +63,7 @@ class mainWindow : public QMainWindow
         void blacklistFix();
         void emptyDirsFix();
 		void md5FixOpen();
+		void renameExisting();
         // Language
         void switchTranslator(QTranslator&, const QString&);
         void loadLanguage(const QString&, bool shutup = false);

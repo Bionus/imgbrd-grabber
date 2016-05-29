@@ -29,6 +29,7 @@
 #include "json.h"
 #include "commands.h"
 #include "optionswindow.h"
+#include "rename-existing/rename-existing-1.h"
 
 #define DONE()			logUpdate(QObject::tr(" Fait"))
 #define DIR_SEPARATOR	QDir::toNativeSeparators("/")
@@ -2093,18 +2094,23 @@ void mainWindow::getAllPause()
 
 void mainWindow::blacklistFix()
 {
-	BlacklistFix *bf = new BlacklistFix(m_sites, this);
-	bf->show();
+	BlacklistFix *win = new BlacklistFix(m_sites, this);
+	win->show();
 }
 void mainWindow::emptyDirsFix()
 {
-	EmptyDirsFix *edf = new EmptyDirsFix(this);
-	edf->show();
+	EmptyDirsFix *win = new EmptyDirsFix(this);
+	win->show();
 }
 void mainWindow::md5FixOpen()
 {
-	md5Fix *md5f = new md5Fix(this);
-	md5f->show();
+	md5Fix *win = new md5Fix(this);
+	win->show();
+}
+void mainWindow::renameExisting()
+{
+	RenameExisting1 *win = new RenameExisting1(m_sites, this);
+	win->show();
 }
 
 void mainWindow::on_buttonSaveLinkList_clicked()

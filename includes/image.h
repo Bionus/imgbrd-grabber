@@ -51,6 +51,7 @@ class Image : public QObject
 		QString		filename();
 		QString		folder();
 		QList<Tag>	tags();
+		QStringList tagsString();
 		QList<Pool*>pools();
 		int			id();
 		int			score();
