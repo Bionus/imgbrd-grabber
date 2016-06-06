@@ -16,6 +16,11 @@ use_qscintilla {
 }
 
 # Input
-HEADERS += $${PDIR}/includes/*.h $${PDIR}/vendor/*.h
-FORMS += $${PDIR}/ui/*.ui
-SOURCES += $${PDIR}/source/*.cpp $${PDIR}/vendor/*.cpp
+HEADERS += $${PDIR}/includes/*.h \
+    $${PDIR}/vendor/*.h \
+    $${PDIR}/source/rename-existing/*.h
+SOURCES += $${PDIR}/source/*.cpp \
+    $${PDIR}/vendor/*.cpp \
+    $${PDIR}/source/rename-existing/*.cpp
+FORMS += $${PDIR}/ui/*.ui \
+    ../source/rename-existing/*.ui

@@ -785,13 +785,7 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 		QString cond = filenames.keys().at(i);
 		if (cond.startsWith("%") && cond.endsWith("%"))
 		{
-			int contains = false;
-			if (replaces.contains(cond.mid(1, cond.size()-2)))
-			{
-				contains = true;
-				break;
-			}
-			if (contains)
+			if (replaces.contains(cond.mid(1, cond.size() - 2)))
 			{
 				if (!replaces[cond.mid(1, cond.size()-2)].first.isEmpty())
 				{
@@ -1027,7 +1021,7 @@ void Image::finishedImageS()
 	QString ext = getExtension(m_url);
 	if (m_loadImage->error() == QNetworkReply::ContentNotFoundError && (ext != "mp4" || (sampleFallback && !m_sampleUrl.isEmpty())) && !m_tryingSample)
 	{
-		if (ext == "mp4")
+		if (hasTag("animated") && ext == "swf" || ext == "mp4")
 		{
 			setUrl(m_sampleUrl.toString());
 			m_tryingSample = true;
@@ -1302,6 +1296,14 @@ QNetworkReply	*Image::imageReply()	{ return m_loadImage;		}
 QNetworkReply	*Image::tagsReply()		{ return m_loadDetails;		}
 QSettings		*Image::settings()		{ return m_settings;		}
 QMap<QString,QString> Image::details()	{ return m_details;         }
+
+QStringList Image::tagsString()
+{
+	QStringList tags;
+	for (Tag tag : m_tags)
+	{ tags.append(tag.text()); }
+	return tags;
+}
 
 QString Image::detail(QString key)
 {
