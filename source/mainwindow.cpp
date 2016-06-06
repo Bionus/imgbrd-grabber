@@ -1219,11 +1219,6 @@ void mainWindow::getAll(bool all)
 				downloader->setData(j);
 				downloader->setQuit(false);
 
-				int b2 = b.at(2).toInt();
-				int pages = b2 != 0 ? (int)ceil((float)b.at(3).toInt() / b2) : -1;
-				if (pages <= 0 || b.at(2).toInt() <= 0 || b.at(3).toInt() <= 0)
-					pages = 1;
-
 				m_getAllLimit += b.at(3).toDouble();
 				m_batchDownloading.insert(j);
 				++active;

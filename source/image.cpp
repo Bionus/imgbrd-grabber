@@ -785,13 +785,7 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 		QString cond = filenames.keys().at(i);
 		if (cond.startsWith("%") && cond.endsWith("%"))
 		{
-			int contains = false;
-			if (replaces.contains(cond.mid(1, cond.size()-2)))
-			{
-				contains = true;
-				break;
-			}
-			if (contains)
+			if (replaces.contains(cond.mid(1, cond.size() - 2)))
 			{
 				if (!replaces[cond.mid(1, cond.size()-2)].first.isEmpty())
 				{
