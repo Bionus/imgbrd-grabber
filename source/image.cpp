@@ -1021,7 +1021,7 @@ void Image::finishedImageS()
 	QString ext = getExtension(m_url);
 	if (m_loadImage->error() == QNetworkReply::ContentNotFoundError && (ext != "mp4" || (sampleFallback && !m_sampleUrl.isEmpty())) && !m_tryingSample)
 	{
-		if (ext == "mp4")
+		if (hasTag("animated") && ext == "swf" || ext == "mp4")
 		{
 			setUrl(m_sampleUrl.toString());
 			m_tryingSample = true;
