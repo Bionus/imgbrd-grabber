@@ -295,8 +295,6 @@ QString _parseSetImageUrl(Site* site, QString setting, QString ret, QMap<QString
 void Page::parseImage(QMap<QString,QString> d, int position)
 {
 	// Set default values
-	if (!d.contains("ext") || d["ext"].isEmpty())
-	{ d["ext"] = "jpg"; }
 	if (!d.contains("file_url"))
 	{ d["file_url"] = ""; }
 	if (!d.contains("sample_url"))
