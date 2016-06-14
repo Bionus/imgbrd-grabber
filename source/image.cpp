@@ -1021,7 +1021,9 @@ void Image::finishedImageS()
 	QString ext = getExtension(m_url);
 	if (m_loadImage->error() == QNetworkReply::ContentNotFoundError && (ext != "mp4" || (sampleFallback && !m_sampleUrl.isEmpty())) && !m_tryingSample)
 	{
-		if (hasTag("animated") && ext == "swf" || ext == "mp4")
+		bool animated = hasTag("gif") || hasTag("animated_gif") || hasTag("mp4") || hasTag("animated_png") || hasTag("webm") || hasTag("animated");
+
+		if (animated && ext == "swf" || ext == "mp4")
 		{
 			setUrl(m_sampleUrl.toString());
 			m_tryingSample = true;
@@ -1030,7 +1032,7 @@ void Image::finishedImageS()
 		else
 		{
 			QMap<QString,QString> nextext;
-			if (hasTag("animated"))
+			if (animated)
 			{
 				nextext["webm"] = "mp4";
 				nextext["mp4"] = "gif";
