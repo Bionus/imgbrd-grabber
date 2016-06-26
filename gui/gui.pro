@@ -12,7 +12,16 @@ DEPENDPATH += ui
 # QScintilla
 use_qscintilla {
 	DEFINES += USE_QSCINTILLA=1
-	LIBS += -lqscintilla2
+	unix:!macx{
+		exists( $(QTDIR)/lib/libqscintilla2-qt5*) {
+			LIBS += -lqscintilla2-qt5
+		}
+		exists($(QTDIR)/lib/libqt5scintilla2*){
+			LIBS += -lqt5scintilla2
+		}
+	} else {
+		LIBS += -lqscintilla2
+	}
 }
 
 # Input
