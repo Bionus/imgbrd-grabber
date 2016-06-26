@@ -579,9 +579,10 @@ QStringList Image::filter(QStringList filters)
 	return ret;
 }
 
-QString analyse(QStringList tokens, QString text, QStringList tags)
+QString analyse(QStringList tokens, QString text, QStringList tags, int depth = 0)
 {
 	QString ret = text;
+
 	QRegExp reg = QRegExp("\\<([^>]+)\\>");
 	int pos = 0;
 	while ((pos = reg.indexIn(text, pos)) != -1)
@@ -589,22 +590,29 @@ QString analyse(QStringList tokens, QString text, QStringList tags)
 		QString cap = reg.cap(1);
 		if (!cap.isEmpty())
 		{
-			cap += QString(">").repeated(cap.count('<')-cap.count('>'));
-			ret.replace("<"+cap+">", analyse(tokens, cap, tags));
+			cap += QString(">").repeated(cap.count('<') - cap.count('>'));
+			ret.replace("<" + cap + ">", analyse(tokens, cap, tags, depth + 1));
 		}
-		pos += reg.matchedLength()+cap.count('<')-cap.count('>');
+		pos += reg.matchedLength() + cap.count('<') - cap.count('>');
 	}
-	QString r = ret;
-	for (int i = 0; i < tokens.size(); ++i)
-	{ r.replace(QRegExp("%"+tokens.at(i)+"(?::([0-9]+))?%"), ""); }
-	reg = QRegExp("\"([^\"]+)\"");
-	pos = 0;
-	while ((pos = reg.indexIn(text, pos)) != -1)
+
+	if (depth > 0)
 	{
-		if (!reg.cap(1).isEmpty() && tags.contains(reg.cap(1)))
-		{ ret.replace(reg.cap(0), reg.cap(1)); }
-		pos += reg.matchedLength();
+		QString r = ret;
+		for (int i = 0; i < tokens.size(); ++i)
+		{ r.replace(QRegExp("%"+tokens.at(i)+"(?::([0-9]+))?%"), ""); }
+		reg = QRegExp("\"([^\"]+)\"");
+		pos = 0;
+		while ((pos = reg.indexIn(text, pos)) != -1)
+		{
+			if (!reg.cap(1).isEmpty() && tags.contains(reg.cap(1)))
+			{ ret.replace(reg.cap(0), reg.cap(1)); }
+			else
+			{ return ""; }
+			pos += reg.matchedLength();
+		}
 	}
+
 	return ret;
 }
 
