@@ -420,31 +420,6 @@ void zoomWindow::display(QImage pix, int size)
 	}
 }
 
-QString mimeReturn(const QFile& file)
-{
-	QMimeDatabase mimeDatabase;
-	QMimeType mimeType = mimeDatabase.mimeTypeForFile(QFileInfo(file));
-
-	if (mimeType.inherits("video/mp4"))
-		return "video/mp4";
-	else if (mimeType.inherits("video/mpeg"))
-		return "video/mpeg";
-	else if (mimeType.inherits("video/ogg"))
-		return "video/ogg";
-	else if (mimeType.inherits("video/quicktime"))
-		return "video/quicktime";
-	else if (mimeType.inherits("video/x-msvideo"))
-		return "video/x-msvideo";
-	else if (mimeType.inherits("video/x-flv"))
-		return "video/x-flv";
-	else if (mimeType.inherits("video/webm"))
-		return "video/webm";
-	else if (mimeType.inherits("text/plain"))
-		return "text";
-
-	return "";
-}
-
 void zoomWindow::replyFinished(Image* img)
 {
 	m_image = img;
@@ -880,6 +855,7 @@ void zoomWindow::closeEvent(QCloseEvent *e)
 	settings.setValue("Zoom/geometry", saveGeometry());
 	settings.setValue("Zoom/plus", ui->buttonPlus->isChecked());
 	settings.sync();
+
     //m_image->abortTags();
 	/*if (m_thread && m_th->isRunning())
 	{ m_th->quit(); }*/
@@ -888,6 +864,7 @@ void zoomWindow::closeEvent(QCloseEvent *e)
 		m_reply->abort();
 		log(tr("Chargement de l'image stoppé."));
 	}
+
 	e->accept();
 }
 
