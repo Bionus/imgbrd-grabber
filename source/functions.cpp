@@ -368,7 +368,7 @@ QString validateFilename(QString text)
 	// Check for invalid windows characters
 	#ifdef Q_OS_WIN
 		QString txt = QString(text).remove(rx);
-		if (txt.contains(':') || txt.contains('*') || txt.contains('?') || txt.contains('"') || txt.contains('<') || txt.contains('>') || txt.contains('|'))
+		if (txt.contains(':') || txt.contains('*') || txt.contains('?') || (txt.contains('"') && txt.count('<') == 0) || txt.count('<') != txt.count('>') || txt.contains('|'))
 			return QObject::tr("<span style=\"color:red\">Votre format contient des caractères interdits sur windows ! Caractères interdits : * ? \" : < > |</span>");
 	#endif
 
