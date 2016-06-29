@@ -22,8 +22,8 @@ APP_VERSION = \\\"4.5.3\\\"
 
 # General
 TEMPLATE = app
-DEPENDPATH += . .. $${PDIR}/includes $${PDIR}/languages $${PDIR}/source $${PDIR}/vendor
-INCLUDEPATH += . .. $${PDIR}/includes $${PDIR}/source $${PDIR}/vendor
+DEPENDPATH += . .. $${PDIR}/languages $${PDIR}/src $${PDIR}/vendor
+INCLUDEPATH += . .. $${PDIR}/src $${PDIR}/vendor
 DEFINES += VERSION=$$APP_VERSION
 QT += core network xml sql script
 
