@@ -19,6 +19,9 @@ use_qscintilla {
 		exists($(QTDIR)/lib/libqt5scintilla2*){
 			LIBS += -lqt5scintilla2
 		}
+		exists(/usr/lib/libqt5scintilla2*){
+			LIBS += -lqt5scintilla2
+		}
 	} else {
 		LIBS += -lqscintilla2
 	}
