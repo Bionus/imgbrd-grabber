@@ -791,32 +791,36 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 	for (int i = 0; i < filenames.size(); ++i)
 	{
 		QString cond = filenames.keys().at(i);
-		if (cond.startsWith("%") && cond.endsWith("%"))
+		QStringList options = cond.split(' ');
+
+		int condPer = cond.count("%");
+		if (condPer > 0 && condPer % 2 == 0)
 		{
-			if (replaces.contains(cond.mid(1, cond.size() - 2)))
+			QRegExp reg("%([^%]+)%");
+			reg.setMinimal(true);
+			int p = 0;
+			while ((p = reg.indexIn(cond, p)) != -1)
 			{
-				if (!replaces[cond.mid(1, cond.size()-2)].first.isEmpty())
+				QString token = reg.cap(1);
+				if (replaces.contains(token))
 				{
-					if (!filenames.value(cond).first.isEmpty())
-					{ filename = filenames.value(cond).first; }
-					if (!filenames.value(cond).second.isEmpty())
-					{ pth = filenames.value(cond).second; }
+					options.removeOne(reg.cap(0));
+					if (!replaces[token].first.isEmpty())
+					{ options.append(replaces[token].first.split(' ')); }
 				}
+				p += reg.matchedLength();
 			}
 		}
-		else
+
+		for (QString opt : options)
 		{
-			QStringList options = cond.split(' ');
-			for (QString opt : options)
+			if (details["alls"].contains(opt))
 			{
-				if (details["alls"].contains(opt))
-				{
-					if (!filenames.value(cond).first.isEmpty())
-					{ filename = filenames.value(cond).first; }
-					if (!filenames.value(cond).second.isEmpty())
-					{ pth = filenames.value(cond).second; }
-					break;
-				}
+				if (!filenames.value(cond).first.isEmpty())
+				{ filename = filenames.value(cond).first; }
+				if (!filenames.value(cond).second.isEmpty())
+				{ pth = filenames.value(cond).second; }
+				break;
 			}
 		}
 	}
