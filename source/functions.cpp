@@ -395,6 +395,10 @@ QString savePath(QString file, bool exists)
 	{ return QDir::toNativeSeparators(QDir::currentPath()+"/"+file); }
 	if (QFile(QDir::toNativeSeparators(QDir::homePath()+"/Grabber/"+check)).exists())
 	{ return QDir::toNativeSeparators(QDir::homePath()+"/Grabber/"+file); }
+	#ifdef __linux__
+	if (QFile(QDir::toNativeSeparators(QDir::homePath()+"/.Grabber/"+check)).exists())
+	{ return QDir::toNativeSeparators(QDir::homePath()+"/.Grabber/"+file); }
+	#endif
 	return QDir::toNativeSeparators(QStandardPaths::writableLocation(QStandardPaths::DataLocation)+"/"+file);
 }
 
