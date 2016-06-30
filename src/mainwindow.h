@@ -7,7 +7,7 @@
 #include <QTranslator>
 #include <QSet>
 #include "sources/sourceswindow.h"
-#include "batchwindow.h"
+#include "batch/batchwindow.h"
 #include "ui/QAffiche.h"
 #include "ui/QBouton.h"
 #include "ui/textedit.h"

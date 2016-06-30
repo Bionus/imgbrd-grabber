@@ -38,7 +38,7 @@
 	#include <QtGui>
 	#include "ui/QAffiche.h"
 	#include "ui/QBouton.h"
-	#include "zoomwindow.h"
+	#include "viewer/zoomwindow.h"
 	#include "settings/optionswindow.h"
 	#if USE_BREAKPAD
 		#include "crashhandler.h"

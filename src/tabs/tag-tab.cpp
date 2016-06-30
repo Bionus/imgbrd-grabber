@@ -3,7 +3,7 @@
 #include "ui_tag-tab.h"
 #include "ui_mainwindow.h"
 #include "ui/QBouton.h"
-#include "zoomwindow.h"
+#include "viewer/zoomwindow.h"
 #include "searchwindow.h"
 
 extern mainWindow *_mainwindow;
