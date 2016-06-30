@@ -19,6 +19,16 @@ use_qscintilla {
 		exists($(QTDIR)/lib/libqt5scintilla2*){
 			LIBS += -lqt5scintilla2
 		}
+		exists(/usr/lib/libqt5scintilla2*){
+			LIBS += -lqt5scintilla2
+		}
+		exists(/usr/lib64/libqt5scintilla2*){
+			LIBS += -lqt5scintilla2
+		}
+		!contains(LIBS, "^-l*.scintilla2.*$"){
+			message("libqscintilla2-qt5/libqt5scintilla2 not found disabling qscintilla support")
+			DEFINES -=USE_QSCINTILLA=1
+		}
 	} else {
 		LIBS += -lqscintilla2
 	}
