@@ -11,14 +11,11 @@ CONFIG += console
 
 # TODO: remove these dependencies
 QT += multimedia widgets
-FORMS += $${PDIR}/vendor/*.ui \
-    $${PDIR}/src/*.ui \
+FORMS += $${PDIR}/src/*.ui \
     $${PDIR}/src/batch/*.ui \
     $${PDIR}/src/settings/*.ui \
     $${PDIR}/src/sources/*.ui \
     $${PDIR}/src/tabs/*.ui \
-    $${PDIR}/src/ui/*.ui \
-    $${PDIR}/src/utils/*.ui \
     $${PDIR}/src/utils/rename-existing/*.ui \
     $${PDIR}/src/utils/blacklist-fix/*.ui \
     $${PDIR}/src/utils/empty-dirs-fix/*.ui \
@@ -38,7 +35,6 @@ HEADERS += $${PDIR}/vendor/*.h \
     $${PDIR}/src/sources/*.h \
     $${PDIR}/src/tabs/*.h \
     $${PDIR}/src/ui/*.h \
-    $${PDIR}/src/utils/*.h \
     $${PDIR}/src/utils/rename-existing/*.h \
     $${PDIR}/src/utils/blacklist-fix/*.h \
     $${PDIR}/src/utils/empty-dirs-fix/*.h \
@@ -51,7 +47,6 @@ SOURCES += $${PDIR}/vendor/*.cpp \
     $${PDIR}/src/sources/*.cpp \
     $${PDIR}/src/tabs/*.cpp \
     $${PDIR}/src/ui/*.cpp \
-    $${PDIR}/src/utils/*.cpp \
     $${PDIR}/src/utils/rename-existing/*.cpp \
     $${PDIR}/src/utils/blacklist-fix/*.cpp \
     $${PDIR}/src/utils/empty-dirs-fix/*.cpp \
