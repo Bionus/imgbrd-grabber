@@ -797,7 +797,8 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 			{
 				if (!replaces[cond.mid(1, cond.size()-2)].first.isEmpty())
 				{
-					filename = filenames.value(cond).first;
+					if (!filenames.value(cond).first.isEmpty())
+					{ filename = filenames.value(cond).first; }
 					if (!filenames.value(cond).second.isEmpty())
 					{ pth = filenames.value(cond).second; }
 				}
@@ -810,7 +811,8 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 			{
 				if (details["alls"].contains(opt))
 				{
-					filename = filenames.value(cond).first;
+					if (!filenames.value(cond).first.isEmpty())
+					{ filename = filenames.value(cond).first; }
 					if (!filenames.value(cond).second.isEmpty())
 					{ pth = filenames.value(cond).second; }
 					break;

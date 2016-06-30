@@ -17,19 +17,19 @@
    <string>Ajouter un symbole personnalisé</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../resources.qrc">
+   <iconset resource="../../resources.qrc">
     <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
   </property>
   <layout class="QFormLayout" name="formLayout">
    <item row="0" column="0" colspan="2">
-    <widget class="QLabel" name="label_3">
+    <widget class="QLabel" name="labelConditionInfo">
      <property name="text">
       <string>&lt;i&gt;Vous pouvez utiliser un symbole ou des tags en tant que condition.&lt;/i&gt;</string>
      </property>
     </widget>
    </item>
    <item row="1" column="0">
-    <widget class="QLabel" name="label">
+    <widget class="QLabel" name="labelCondition">
      <property name="text">
       <string>Condition</string>
      </property>
@@ -39,13 +39,13 @@
     <widget class="QLineEdit" name="lineCondition"/>
    </item>
    <item row="2" column="0">
-    <widget class="QLabel" name="label_2">
+    <widget class="QLabel" name="labelFilename">
      <property name="text">
       <string>Nom de fichier</string>
      </property>
     </widget>
    </item>
-   <item row="5" column="0" colspan="2">
+   <item row="6" column="0" colspan="2">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -58,22 +58,29 @@
    <item row="2" column="1">
     <widget class="QLineEdit" name="lineFilename"/>
    </item>
-   <item row="3" column="0">
-    <widget class="QLabel" name="label_4">
+   <item row="4" column="0">
+    <widget class="QLabel" name="labelFolder">
      <property name="text">
       <string>Dossier</string>
      </property>
     </widget>
    </item>
-   <item row="4" column="0" colspan="2">
-    <widget class="QLabel" name="label_5">
+   <item row="5" column="0" colspan="2">
+    <widget class="QLabel" name="labelFolderEmpty">
      <property name="text">
       <string>&lt;i&gt;Laisser vide pour utiliser le dossier principal.&lt;/i&gt;</string>
      </property>
     </widget>
    </item>
-   <item row="3" column="1">
+   <item row="4" column="1">
     <widget class="QLineEdit" name="lineFolder"/>
+   </item>
+   <item row="3" column="0" colspan="2">
+    <widget class="QLabel" name="labelFilenameEmpty">
+     <property name="text">
+      <string>&lt;i&gt;Laisser vide pour utiliser le nom de fichier principal.&lt;/i&gt;</string>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>
@@ -83,7 +90,8 @@
   <tabstop>buttonBox</tabstop>
  </tabstops>
  <resources>
-  <include location="../resources.qrc"/>
+  <include location="../../resources.qrc"/>
+  <include location="../../resources.qrc"/>
  </resources>
  <connections>
   <connection>
