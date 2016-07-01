@@ -18,6 +18,7 @@ class QBouton : public QPushButton
 
 	public slots:
 		void setId(QVariant);
+		void scale(QPixmap image, float scale);
 		void paintEvent(QPaintEvent *event);
 		
 	signals:
@@ -40,6 +41,7 @@ class QBouton : public QPushButton
 		QSize		_originalSize;
 		QColor		_penColor;
 		int			_border;
+		float		_scale;
 };
 
 #endif

@@ -525,7 +525,6 @@ void poolTab::finishedLoadingPreview(Image *img)
 	if (!detected.isEmpty())
 	{ color = QColor("#000000"); }
 	QBouton *l = new QBouton(position, settings.value("resizeInsteadOfCropping", true).toBool(), settings.value("borders", 3).toInt(), color, this);
-		l->setIcon(img->previewImage());
 		QString t;
 		for (int i = 0; i < img->tags().count(); i++)
 		{ t += " "+img->tags()[i].stylished(m_favorites); }
@@ -539,7 +538,7 @@ void poolTab::finishedLoadingPreview(Image *img)
 			.arg(img->fileSize() == 0 ? " " : tr("<b>Taille :</b> %1 %2<br/>").arg(QString::number(size), unit))
 			.arg(!img->createdAt().isValid() ? " " : tr("<b>Date :</b> %1").arg(img->createdAt().toString(tr("'le 'dd/MM/yyyy' à 'hh:mm"))))
 		);
-		l->setIconSize(img->previewImage().size());
+		l->scale(img->previewImage(), settings.value("upscale", 1.0f).toFloat());
 		l->setFlat(true);
 		connect(l, SIGNAL(appui(int)), this, SLOT(webZoom(int)));
 		connect(l, SIGNAL(rightClick(int)), _mainwindow, SLOT(batchChange(int)));

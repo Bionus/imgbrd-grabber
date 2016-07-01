@@ -4,11 +4,27 @@
 
 
 
-QBouton::QBouton(QVariant id, bool resizeInsteadOfCropping, int border, QColor color, QWidget *parent) : QPushButton(parent), _id(id), _resizeInsteadOfCropping(resizeInsteadOfCropping), _np(false), _originalSize(QSize(-1,-1)), _penColor(color), _border(border)
+QBouton::QBouton(QVariant id, bool resizeInsteadOfCropping, int border, QColor color, QWidget *parent)
+	: QPushButton(parent), _id(id), _resizeInsteadOfCropping(resizeInsteadOfCropping), _np(false), _originalSize(QSize(-1,-1)), _penColor(color), _border(border)
 { }
 
 QBouton::~QBouton()
 { }
+
+void QBouton::scale(QPixmap image, float scale)
+{
+	if (scale > 1.00001f)
+	{
+		QSize size = image.size() * scale;
+		setIcon(image.scaled(size));
+		setIconSize(size);
+	}
+	else
+	{
+		setIcon(image);
+		setIconSize(image.size());
+	}
+}
 
 QVariant QBouton::id()
 { return _id; }
@@ -17,35 +33,51 @@ void QBouton::setId(QVariant id)
 
 void QBouton::paintEvent(QPaintEvent *event)
 {
-	if (!_resizeInsteadOfCropping && _border == 0)
-	{
-		QPushButton::paintEvent(event);
-		return;
-	}
-
 	QRect region = event->rect();
 	int p = _border, x = region.x(), y = region.y(), w = iconSize().width(), h = iconSize().height();
+
+	// Ignore invalid images
 	if (w == 0 || h == 0)
 		return;
 
 	QPainter painter(this);
+
+	// Calculate ratio to resize by keeping proportions
 	if (_resizeInsteadOfCropping)
 	{
 		float coef = qMin(1.0f, qMin(float(region.width()) / float(w), float(region.height()) / float(h)));
 		w *= coef;
 		h *= coef;
 	}
+
+	// Center the image
 	x += (region.width() - w) / 2;
 	y += (region.height() - h) / 2;
-	if (w > h)	{ icon().paint(&painter, x+p, y+p, w-2*p, w-2*p, Qt::AlignLeft | Qt::AlignTop); h = h-((h*2*p)/w)+2*p-1; }
-	else		{ icon().paint(&painter, x+p, y+p, h-2*p, h-2*p, Qt::AlignLeft | Qt::AlignTop); w = w-((w*2*p)/h)+2*p-1; }
+
+	// Draw the image
+	if (w > h)
+	{
+		icon().paint(&painter, x+p, y+p, w-2*p, w-2*p, Qt::AlignLeft | Qt::AlignTop);
+		h -= - ((h*2*p)/w) + 2*p-1;
+	}
+	else
+	{
+		icon().paint(&painter, x+p, y+p, h-2*p, h-2*p, Qt::AlignLeft | Qt::AlignTop);
+		w -= ((w*2*p)/h) + 2*p-1;
+	}
+
+	// Clip borders
 	painter.setClipRect(x, y, w, h);
+
+	// Draw selection overlay
 	if (this->isChecked())
 	{
 		painter.setBrush(QBrush(QColor(0, 0, 255, 128), Qt::Dense4Pattern));
 		painter.setPen(Qt::NoPen);
 		painter.drawRect(x+p, y+p, w-2*p, h-2*p);
 	}
+
+	// Draw borders
 	if (p > 0 && _penColor.isValid())
 	{
 		QPen pen(_penColor);

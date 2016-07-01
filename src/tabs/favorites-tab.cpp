@@ -561,7 +561,6 @@ void favoritesTab::finishedLoadingPreview(Image *img)
 	if (!detected.isEmpty())
 	{ color = QColor("#000000"); }
 	QBouton *l = new QBouton(position, settings.value("resizeInsteadOfCropping", true).toBool(), settings.value("borders", 3).toInt(), color, this);
-		l->setIcon(img->previewImage());
 		l->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 		l->setCheckable(true);
 		l->setChecked(m_selectedImages.contains(img->url()));
@@ -578,7 +577,7 @@ void favoritesTab::finishedLoadingPreview(Image *img)
 			.arg(img->fileSize() == 0 ? " " : tr("<b>Taille :</b> %1 %2<br/>").arg(QString::number(size), unit))
 			.arg(!img->createdAt().isValid() ? " " : tr("<b>Date :</b> %1").arg(img->createdAt().toString(tr("'le 'dd/MM/yyyy' à 'hh:mm"))))
 		);
-		l->setIconSize(img->previewImage().size());
+		l->scale(img->previewImage(), settings.value("upscale", 1.0f).toFloat());
 		l->setFlat(true);
 		connect(l, SIGNAL(appui(int)), this, SLOT(webZoom(int)));
 		connect(l, SIGNAL(toggled(int,bool)), this, SLOT(toggleImage(int,bool)));
