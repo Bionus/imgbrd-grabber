@@ -49,33 +49,25 @@ void QBouton::paintEvent(QPaintEvent *event)
 		w *= coef;
 		h *= coef;
 	}
-
 	// Center the image
 	x += (region.width() - w) / 2;
 	y += (region.height() - h) / 2;
 
-	// Draw the image
+	// Draw image
+	QIcon::Mode mode = this->isChecked() ? QIcon::Selected : QIcon::Normal;
 	if (w > h)
 	{
-		icon().paint(&painter, x+p, y+p, w-2*p, w-2*p, Qt::AlignLeft | Qt::AlignTop);
-		h -= - ((h*2*p)/w) + 2*p-1;
+		icon().paint(&painter, x+p, y+p, w-2*p, w-2*p, Qt::AlignLeft | Qt::AlignTop, mode);
+		h = h-((h*2*p)/w)+2*p-1;
 	}
 	else
 	{
-		icon().paint(&painter, x+p, y+p, h-2*p, h-2*p, Qt::AlignLeft | Qt::AlignTop);
-		w -= ((w*2*p)/h) + 2*p-1;
+		icon().paint(&painter, x+p, y+p, h-2*p, h-2*p, Qt::AlignLeft | Qt::AlignTop, mode);
+		w = w-((w*2*p)/h)+2*p-1;
 	}
 
-	// Clip borders
+	// Clip borders overflows
 	painter.setClipRect(x, y, w, h);
-
-	// Draw selection overlay
-	if (this->isChecked())
-	{
-		painter.setBrush(QBrush(QColor(0, 0, 255, 128), Qt::Dense4Pattern));
-		painter.setPen(Qt::NoPen);
-		painter.drawRect(x+p, y+p, w-2*p, h-2*p);
-	}
 
 	// Draw borders
 	if (p > 0 && _penColor.isValid())
