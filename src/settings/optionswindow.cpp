@@ -91,6 +91,7 @@ optionsWindow::optionsWindow(QWidget *parent) : QDialog(parent), ui(new Ui::opti
 	ui->checkInvertLog->setChecked(settings.value("Log/invert", false).toBool());
 
 	ui->checkResizeInsteadOfCropping->setChecked(settings.value("resizeInsteadOfCropping", true).toBool());
+	ui->spinThumbnailUpscale->setValue(settings.value("thumbnailUpscale", 1.0f).toFloat() * 100);
 	ui->checkAutocompletion->setChecked(settings.value("autocompletion", true).toBool());
 	ui->checkUseregexfortags->setChecked(settings.value("useregexfortags", true).toBool());
 
@@ -610,6 +611,7 @@ void optionsWindow::save()
 	settings.endGroup();
 
 	settings.setValue("resizeInsteadOfCropping", ui->checkResizeInsteadOfCropping->isChecked());
+	settings.setValue("thumbnailUpscale", (float)ui->spinThumbnailUpscale->value() / 100.0f);
 	settings.setValue("autocompletion", ui->checkAutocompletion->isChecked());
 	settings.setValue("useregexfortags", ui->checkUseregexfortags->isChecked());
 
