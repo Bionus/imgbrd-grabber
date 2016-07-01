@@ -1085,7 +1085,7 @@
   </action>
   <action name="actionRenameExistingImages">
    <property name="text">
-    <string>Rename existing images</string>
+    <string>Renommer des images existantes</string>
    </property>
   </action>
  </widget>
