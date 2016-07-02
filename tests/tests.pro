@@ -1,18 +1,19 @@
-#-------------------------------------------------
-#
-# Project created by QtCreator 2015-04-06T21:32:04
-#
-#-------------------------------------------------
+include(../gui/gui.pro)
 
-QT       += network script xml testlib
-QT       -= gui
-
+# Test configuration
+QT       += testlib
 TARGET    = tests
 CONFIG   += console testcase
 CONFIG   -= app_bundle
 
-TEMPLATE = app
+TEMPLATE  = app
 
-INCLUDEPATH += D:/Programmation/C++/Qt/Grabber/includes
-SOURCES +=  tst_tag.cpp
-DEFINES += SRCDIR=\\\"$$PWD/\\\"
+INCLUDEPATH += . .. $${PDIR}/tests
+DEFINES     += SRCDIR=\\\"$$PWD/\\\"
+
+# Remove original main
+SOURCES -= $${PDIR}/src/main/main.cpp
+
+SOURCES += $${PDIR}/tests/*.cpp \
+	$${PDIR}/tests/models/*.cpp
+HEADERS += $${PDIR}/tests/models/*.h
