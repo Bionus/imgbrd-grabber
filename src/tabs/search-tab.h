@@ -6,7 +6,7 @@
 #include <QCheckBox>
 #include <QMap>
 #include "ui/QBouton.h"
-#include "image.h"
+#include "models/image.h"
 
 
 

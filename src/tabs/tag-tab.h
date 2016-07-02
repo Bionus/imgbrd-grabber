@@ -6,7 +6,7 @@
 #include <QCalendarWidget>
 #include "ui/textedit.h"
 #include "search-tab.h"
-#include "page.h"
+#include "models/page.h"
 #include "mainwindow.h"
 #include "downloader.h"
 

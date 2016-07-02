@@ -3,8 +3,8 @@
 
 #include <QMap>
 #include <QDialog>
-#include "image.h"
-#include "site.h"
+#include "models/image.h"
+#include "models/site.h"
 
 
 

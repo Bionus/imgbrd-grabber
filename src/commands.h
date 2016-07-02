@@ -3,8 +3,8 @@
 
 #include <QString>
 #include <QSettings>
-#include "image.h"
-#include "tag.h"
+#include "models/image.h"
+#include "models/tag.h"
 
 
 

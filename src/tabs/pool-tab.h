@@ -5,7 +5,7 @@
 #include <QMap>
 #include <QCalendarWidget>
 #include "ui/textedit.h"
-#include "page.h"
+#include "models/page.h"
 #include "mainwindow.h"
 #include "search-tab.h"
 

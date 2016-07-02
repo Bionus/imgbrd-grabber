@@ -4,7 +4,7 @@
 #include <QFile>
 #include <QDir>
 #include <qmath.h>
-#include "site.h"
+#include "models/site.h"
 
 Downloader::Downloader()
 {}

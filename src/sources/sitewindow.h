@@ -3,7 +3,7 @@
 
 #include <QDialog>
 #include <QtNetwork>
-#include "site.h"
+#include "models/site.h"
 
 
 

@@ -2,7 +2,7 @@
 #define DETAILSWINDOW_H
 
 #include <QDialog>
-#include "image.h"
+#include "models/image.h"
 
 
 

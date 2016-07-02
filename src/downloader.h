@@ -1,8 +1,8 @@
 #ifndef DOWNLOADER_H
 #define DOWNLOADER_H
 
-#include "page.h"
-#include "image.h"
+#include "models/page.h"
+#include "models/image.h"
 #include <QVariant>
 
 

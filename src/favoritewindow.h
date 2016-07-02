@@ -3,7 +3,7 @@
 
 #include <QDialog>
 #include <QDateTime>
-#include "favorite.h"
+#include "models/favorite.h"
 
 
 namespace Ui

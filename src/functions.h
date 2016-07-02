@@ -9,7 +9,7 @@
 #include <QLayout>
 #include <algorithm>
 #include <QString>
-#include "favorite.h"
+#include "models/favorite.h"
 
 #define DONE()	logUpdate(QObject::tr(" Fait"))
 

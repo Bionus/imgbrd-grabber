@@ -4,7 +4,7 @@
 #include <QSpinBox>
 #include <QComboBox>
 #include "ui/textedit.h"
-#include "favorite.h"
+#include "models/favorite.h"
 
 
 class AddGroupWindow : public QWidget

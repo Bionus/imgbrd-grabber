@@ -5,7 +5,7 @@
 #include <QtNetwork>
 #include <QStackedWidget>
 #include "ui/QAffiche.h"
-#include "image.h"
+#include "models/image.h"
 #include "mainwindow.h"
 #include "detailswindow.h"
 #include "imagethread.h"

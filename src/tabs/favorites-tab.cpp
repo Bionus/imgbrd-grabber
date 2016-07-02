@@ -6,7 +6,7 @@
 #include "viewer/zoomwindow.h"
 #include "favoritewindow.h"
 #include "searchwindow.h"
-#include "favorite.h"
+#include "models/favorite.h"
 
 extern mainWindow *_mainwindow;
 

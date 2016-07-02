@@ -16,7 +16,7 @@
 #include "tabs/tag-tab.h"
 #include "tabs/favorites-tab.h"
 #include "commands.h"
-#include "site.h"
+#include "models/site.h"
 #include "downloader.h"
 
 
