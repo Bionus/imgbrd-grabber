@@ -1,6 +1,6 @@
 #include <QTest>
 #include "mainwindow.h"
-#include "models/test-tag.h"
+#include "models/tag-test.h"
 
 QMap<QDateTime, QString> _log;
 QMap<QString, QString> _md5;
@@ -11,7 +11,7 @@ int main(int argc, char** argv)
 {
    int status = 0;
    {
-	  TestTag tc;
+	  TagTest tc;
 	  status |= QTest::qExec(&tc, argc, argv);
    }
    return status;

@@ -1,16 +1,16 @@
-#ifndef TST_TAG_H
-#define TST_TAG_H
+#ifndef TAG_TEST_H
+#define TAG_TEST_H
 
 #include "models/tag.h"
 #include <QSettings>
 
 
-class TestTag : public QObject
+class TagTest : public QObject
 {
 	Q_OBJECT
 
 	public:
-		TestTag();
+        TagTest();
 
 	private slots:
 		void init();
@@ -30,4 +30,4 @@ class TestTag : public QObject
 		QSettings *m_settings;
 };
 
-#endif // TST_TAG_H
+#endif // TAG_TEST_H
