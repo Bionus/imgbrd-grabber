@@ -302,7 +302,7 @@ void zoomWindow::setfavorite()
 
 	if (image != nullptr)
 	{
-		Favorite fav(link);
+		Favorite fav(link, 50, QDateTime::currentDateTime());
 		fav.setImage(*image);
 	}
 

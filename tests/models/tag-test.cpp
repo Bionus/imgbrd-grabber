@@ -1,5 +1,4 @@
 #include <QtTest>
-#include <QString>
 #include "tag-test.h"
 
 
@@ -103,7 +102,7 @@ void TagTest::testStylishedFavorite()
 	Tag tag(m_settings, "tag_text", "artist", 123, QStringList() << "related1" << "related2" << "related3");
 
 	QList<Favorite> favorites;
-	favorites.append(Favorite("tag_text"));
+	favorites.append(Favorite("tag_text", 50, QDateTime::currentDateTime()));
 
 	QCOMPARE(tag.stylished(favorites), QString("<span style=\"color:pink\">tag_text</span>"));
 }
@@ -116,7 +115,7 @@ void TagTest::testStylishedNotFavorite()
 	Tag tag(m_settings, "tag_text", "artist", 123, QStringList() << "related1" << "related2" << "related3");
 
 	QList<Favorite> favorites;
-	favorites.append(Favorite("tag_other"));
+	favorites.append(Favorite("tag_other", 50, QDateTime::currentDateTime()));
 
 	QString expected = "<a href=\"tag_text\" style=\"color:#aa0000; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">tag_text</a>";
 	QCOMPARE(tag.stylished(favorites), expected);

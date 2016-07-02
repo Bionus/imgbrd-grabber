@@ -76,9 +76,7 @@ void favoriteWindow::on_openButton_clicked()
 void favoriteWindow::save()
 {
 	Favorite oldFav = favorite;
-	favorite = Favorite(ui->tagLineEdit->text());
-	favorite.setNote(ui->noteSpinBox->value());
-	favorite.setLastViewed(ui->lastViewedDateTimeEdit->dateTime());
+	favorite = Favorite(ui->tagLineEdit->text(), ui->noteSpinBox->value(), ui->lastViewedDateTimeEdit->dateTime());
 
 	if (QFile::exists(ui->imageLineEdit->text()))
 	{

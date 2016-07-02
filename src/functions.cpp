@@ -274,11 +274,10 @@ QList<Favorite> loadFavorites()
 				QString tag = xp.takeFirst();
 				QString path = savePath("thumbs/" + (QString(tag).remove('\\').remove('/').remove(':').remove('*').remove('?').remove('"').remove('<').remove('>').remove('|')) + ".png");
 
-				Favorite fav(tag);
-				fav.setNote(xp.isEmpty() ? 50 : xp.takeFirst().toInt());
-				fav.setLastViewed(xp.isEmpty() ? QDateTime(QDate(2000, 1, 1), QTime(0, 0, 0, 0)) : QDateTime::fromString(xp.takeFirst(), Qt::ISODate));
-				fav.setImagePath(QFile::exists(path) ? path : ":/images/noimage.png");
-
+				Favorite fav(tag,
+							 xp.isEmpty() ? 50 : xp.takeFirst().toInt(),
+							 xp.isEmpty() ? QDateTime(QDate(2000, 1, 1), QTime(0, 0, 0, 0)) : QDateTime::fromString(xp.takeFirst(), Qt::ISODate),
+							 QFile::exists(path) ? path : ":/images/noimage.png");
 				favorites.append(fav);
 			}
 		}

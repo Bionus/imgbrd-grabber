@@ -789,7 +789,7 @@ QString favoritesTab::wiki()	{ return m_wiki;		}
 
 void favoritesTab::loadFavorite(QString name)
 {
-	Favorite fav("");
+	Favorite fav("", 50, QDateTime::currentDateTime());
 	if (name.isEmpty())
 		fav = m_favorites[m_currentFav];
 	else
@@ -892,7 +892,7 @@ void favoritesTab::favoritesBack()
 }
 void favoritesTab::favoriteProperties(QString name)
 {
-	Favorite fav("");
+	Favorite fav("", 50, QDateTime::currentDateTime());
 	if (name.isEmpty())
 		fav = m_favorites[m_currentFav];
 	else

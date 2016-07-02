@@ -9,7 +9,7 @@
 class Favorite
 {
 	public:
-		Favorite(QString name);
+		Favorite(QString name, int note, QDateTime lastViewed, QString imagePath = "");
 		void setNote(int);
 		void setLastViewed(QDateTime);
 		void setImagePath(QString);
@@ -21,10 +21,10 @@ class Favorite
 		QPixmap getImage() const;
 
 	private:
-		QString name;
-		int note;
-		QDateTime lastViewed;
-		QString imagePath;
+		QString _name;
+		int _note;
+		QDateTime _lastViewed;
+		QString _imagePath;
 };
 
 bool operator==(const Favorite& lhs, const Favorite& rhs);

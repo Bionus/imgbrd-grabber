@@ -3,29 +3,29 @@
 #include <QDir>
 
 
-Favorite::Favorite(QString name)
-	: name(name)
+Favorite::Favorite(QString name, int note, QDateTime lastViewed, QString imagePath)
+	: _name(name), _note(note), _lastViewed(lastViewed), _imagePath(imagePath)
 {}
 
 void Favorite::setImagePath(QString val)
-{ imagePath = val; }
+{ _imagePath = val; }
 void Favorite::setLastViewed(QDateTime val)
-{ lastViewed = val; }
+{ _lastViewed = val; }
 void Favorite::setNote(int val)
-{ note = val; }
+{ _note = val; }
 
 QString Favorite::getName(bool clean) const
 {
 	if (clean)
-		return QString(name).remove('\\').remove('/').remove(':').remove('*').remove('?').remove('"').remove('<').remove('>').remove('|');
-	return name;
+		return QString(_name).remove('\\').remove('/').remove(':').remove('*').remove('?').remove('"').remove('<').remove('>').remove('|');
+	return _name;
 }
 int Favorite::getNote() const
-{ return note; }
+{ return _note; }
 QDateTime Favorite::getLastViewed() const
-{ return lastViewed; }
+{ return _lastViewed; }
 QString Favorite::getImagePath() const
-{ return imagePath; }
+{ return _imagePath; }
 
 bool Favorite::setImage(QPixmap& img)
 {
@@ -38,7 +38,7 @@ bool Favorite::setImage(QPixmap& img)
 }
 QPixmap Favorite::getImage() const
 {
-	QPixmap img(imagePath);
+	QPixmap img(_imagePath);
 	if (img.width() > 150 || img.height() > 150)
 	{
 		img = img.scaled(QSize(150,150), Qt::KeepAspectRatio, Qt::SmoothTransformation);
