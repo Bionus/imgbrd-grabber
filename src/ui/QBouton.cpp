@@ -33,6 +33,13 @@ void QBouton::setId(QVariant id)
 
 void QBouton::paintEvent(QPaintEvent *event)
 {
+	// Used for normal buttons
+	if (!_resizeInsteadOfCropping && _border == 0)
+	{
+		QPushButton::paintEvent(event);
+		return;
+	}
+
 	QRect region = event->rect();
 	int p = _border, x = region.x(), y = region.y(), w = iconSize().width(), h = iconSize().height();
 
