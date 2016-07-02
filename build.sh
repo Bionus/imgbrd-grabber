@@ -2,8 +2,9 @@
 
 add-apt-repository --yes "ppa:ubuntu-sdk-team/ppa"
 apt-get update -qq
-apt-get install -qq "qt5-qmake" "qtbase5-dev" "qtdeclarative5-dev" "qtscript5-dev" "qtmultimedia5-dev" "libpulse-dev"
-apt-get install "qt5-default" "qttools5-dev-tools"
+apt-get install -qq "qt5-qmake" "qtbase5-dev" "qtdeclarative5-dev" "qtscript5-dev" "qtmultimedia5-dev" "libpulse-dev" "qt5-default" "qttools5-dev-tools"
+apt-get install -qq "g++"
+
 qmake "Grabber.pro"
 make
 mv "gui/Grabber" release
