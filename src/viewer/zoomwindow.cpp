@@ -601,7 +601,7 @@ void zoomWindow::draw()
 	}
 	else
 	{
-		if (m_source.isEmpty())
+		if (!m_source.isEmpty())
 		{
 			QPixmap *img = new QPixmap;
 			img->load(m_source);
