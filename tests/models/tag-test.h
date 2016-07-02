@@ -17,12 +17,17 @@ class TagTest : public QObject
 		void cleanup();
 
 		void testText();
+		void testSetText();
 		void testCount();
+		void testSetCount();
 		void testRelated();
+		void testSetRelated();
+		void testType();
+		void testSetType();
 		void testShortType();
+		void testSetTypeShortType();
 		void testStylishedFavorite();
 		void testStylishedNotFavorite();
-		void testType();
 		void testTypedTextGeneral();
 		void testTypedTextArtist();
 
