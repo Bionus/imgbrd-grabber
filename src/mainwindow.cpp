@@ -1143,7 +1143,8 @@ void mainWindow::getAll(bool all)
 			{
 				tdl.append(row);
                 int i = row;
-				m_getAllRemaining.append(new Image(m_batchs.at(i), new Page(m_sites[m_batchs.at(i).value("site")], &m_sites, m_batchs.at(i).value("tags").split(" "), 1, 1, QStringList(), false, this)));
+				Site *site = m_sites[m_batchs.at(i).value("site")];
+				m_getAllRemaining.append(new Image(site, m_batchs.at(i), new Page(site, &m_sites, m_batchs.at(i).value("tags").split(" "), 1, 1, QStringList(), false, this)));
 			}
 		}
 	}
@@ -1163,7 +1164,10 @@ void mainWindow::getAll(bool all)
 				m_progressdialog->setImagesCount(m_progressdialog->count() + 1);*/
 			}
 			else
-			{ m_getAllRemaining.append(new Image(m_batchs.at(i), new Page(m_sites[m_batchs.at(i).value("site")], &m_sites, m_batchs.at(i).value("tags").split(" "), 1, 1, QStringList(), false, this))); }
+			{
+				Site *site = m_sites[m_batchs.at(i).value("site")];
+				m_getAllRemaining.append(new Image(site, m_batchs.at(i), new Page(site, &m_sites, m_batchs.at(i).value("tags").split(" "), 1, 1, QStringList(), false, this)));
+			}
 		}
 	}
 	m_getAllLimit = m_batchs.size();

@@ -19,14 +19,16 @@
 
 
 
-Site::Site(QString type, QString url, QMap<QString, QString> data) : m_type(type), m_url(url), m_data(data), m_settings(nullptr), m_manager(nullptr), m_cookieJar(nullptr), m_loggedIn(false), m_triedLogin(false), m_loginCheck(false), m_updateVersion("")
+Site::Site(QString type, QString url, QMap<QString, QString> data)
+	: m_type(type), m_url(url), m_data(data), m_settings(nullptr), m_manager(nullptr), m_cookieJar(nullptr), m_loggedIn(false), m_triedLogin(false), m_loginCheck(false), m_updateVersion("")
 {
 	load();
 }
 
 Site::~Site()
 {
-    delete m_settings;
+	m_settings->deleteLater();
+
 	//delete m_manager->deleteLater();
 	//delete m_cookieJar->deleteLater();
 }
@@ -39,7 +41,6 @@ void Site::load()
 	// Delete settings if necessary
 	if (m_settings != nullptr)
 	{ m_settings->deleteLater(); }
-
 	m_settings = new QSettings(savePath("sites/"+m_type+"/"+m_url+"/settings.ini"), QSettings::IniFormat);
 	m_name = m_settings->value("name", m_url).toString();
 
@@ -460,7 +461,8 @@ void Site::finishedTags()
 		{
 			QMap<QString, QVariant> sc = sourc.at(id).toMap();
 			int cat = sc.value("category").toInt();
-			tags.append(Tag(sc.value("name").toString(),
+			tags.append(Tag(m_settings,
+							sc.value("name").toString(),
 							cat == 0 ? "general" : (cat == 1 ? "artist" : (cat == 3 ? "copyright" : "character")),
 							sc.value("post_count").toInt(),
 							sc.value("related_tags").toString().split(' ')));
@@ -474,6 +476,7 @@ QString Site::value(QString what)				{ return m_data.value(what); }
 void Site::insert(QString key, QString value)	{ m_data.insert(key, value); }
 
 QVariant Site::setting(QString key, QVariant def)	{ return m_settings->value(key, def); }
+QSettings	*Site::settings()						{ return m_settings; }
 
 QString Site::name()			{ return m_name;			}
 QString Site::url()				{ return m_url;				}

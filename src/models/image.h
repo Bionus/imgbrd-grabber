@@ -30,7 +30,7 @@ class Image : public QObject
 			Error
 		};
 
-		Image(QMap<QString,QString> details, Page *parent = NULL);
+		Image(Site *site, QMap<QString,QString> details, Page *parent = NULL);
 		~Image();
 		int			value();
 		QString		match(QString filter, bool invert = false);

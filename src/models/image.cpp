@@ -21,11 +21,12 @@ QString removeCacheUrl(QString url)
 	return url;
 }
 
-Image::Image(QMap<QString, QString> details, Page* parent)
+Image::Image(Site *site, QMap<QString, QString> details, Page* parent)
+	: m_parentSite(site), m_settings(site->settings())
 {
 	// Parents
 	m_site = parent != nullptr ? parent->website() : (details.contains("website") ? details["website"] : "");
-	m_parentSite = parent != nullptr ? parent->site() : (details.contains("site") ? (Site*)details["site"].toLongLong() : nullptr);
+	//m_parentSite = parent != nullptr ? parent->site() : (details.contains("site") ? (Site*)details["site"].toLongLong() : nullptr);
 	if (m_parentSite == nullptr)
 	{
 		log("Image has nullptr parent, aborting creation.");
@@ -80,35 +81,35 @@ Image::Image(QMap<QString, QString> details, Page* parent)
 		{
 			QString tg = t.at(i);
 			tg.replace("&amp;", "&");
-			m_tags.append(Tag(tg, "general"));
+			m_tags.append(Tag(m_settings, tg, "general"));
 		}
 		t = details["tags_artist"].split(" ");
 		for (int i = 0; i < t.count(); ++i)
 		{
 			QString tg = t.at(i);
 			tg.replace("&amp;", "&");
-			m_tags.append(Tag(tg, "artist"));
+			m_tags.append(Tag(m_settings, tg, "artist"));
 		}
 		t = details["tags_character"].split(" ");
 		for (int i = 0; i < t.count(); ++i)
 		{
 			QString tg = t.at(i);
 			tg.replace("&amp;", "&");
-			m_tags.append(Tag(tg, "character"));
+			m_tags.append(Tag(m_settings, tg, "character"));
 		}
 		t = details["tags_copyright"].split(" ");
 		for (int i = 0; i < t.count(); ++i)
 		{
 			QString tg = t.at(i);
 			tg.replace("&amp;", "&");
-			m_tags.append(Tag(tg, "copyright"));
+			m_tags.append(Tag(m_settings, tg, "copyright"));
 		}
 		t = details["tags_model"].split(" ");
 		for (int i = 0; i < t.count(); ++i)
 		{
 			QString tg = t.at(i);
 			tg.replace("&amp;", "&");
-			m_tags.append(Tag(tg, "model"));
+			m_tags.append(Tag(m_settings, tg, "model"));
 		}
 	}
 	else if (details.contains("tags"))
@@ -142,10 +143,10 @@ Image::Image(QMap<QString, QString> details, Page* parent)
 				else if (tp == "rating")
 				{ setRating(tg.mid(colon + 1)); }
 				else
-				{ m_tags.append(Tag(tg)); }
+				{ m_tags.append(Tag(m_settings, tg)); }
 			}
 			else
-			{ m_tags.append(Tag(tg)); }
+			{ m_tags.append(Tag(m_settings, tg)); }
 		}
 	}
 
@@ -218,13 +219,9 @@ Image::Image(QMap<QString, QString> details, Page* parent)
 	m_loadingImage = false;
 	m_tryingSample = false;
 	m_pools = QList<Pool*>();
-
-	m_settings = new QSettings(savePath("sites/"+m_parentSite->value("Model")+"/"+m_site+"/settings.ini"), QSettings::IniFormat, this);
 }
 Image::~Image()
 {
-    delete m_settings;
-
 	m_loadImage->deleteLater();
 }
 
@@ -389,7 +386,7 @@ void Image::parseDetails()
 			}
 			if (type.isEmpty())
 			{ type = "unknown"; }
-			tgs.append(Tag(tag, type, count));
+			tgs.append(Tag(m_settings, tag, type, count));
 		}
 		if (!tgs.isEmpty())
 		{

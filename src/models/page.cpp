@@ -311,7 +311,7 @@ void Page::parseImage(QMap<QString,QString> d, int position)
 	{ d["sample_url"] = d["preview_url"]; }
 
 	// Generate image
-	Image *img = new Image(d, this);
+	Image *img = new Image(m_site, d, this);
 	QStringList errors = img->filter(m_postFiltering);
 
 	// If the file path is wrong (ends with "/.jpg")
@@ -481,7 +481,7 @@ void Page::parse()
 			{
 				if (!tags.contains(rxtags.cap(2)))
 				{
-					m_tags.append(Tag(rxtags.cap(2), rxtags.cap(1), rxtags.cap(3).toInt()));
+					m_tags.append(Tag(m_site->settings(), rxtags.cap(2), rxtags.cap(1), rxtags.cap(3).toInt()));
 					tags.append(rxtags.cap(2));
 				}
 				p += rxtags.matchedLength();
@@ -744,7 +744,7 @@ void Page::parseTags()
 			if (!got.contains(tag))
 			{
 				got.insert(tag);
-				m_tags.append(Tag(tag, type, count));
+				m_tags.append(Tag(m_site->settings(), tag, type, count));
 			}
 		}
 	}

@@ -1,15 +1,10 @@
-#include <QStringList>
 #include <QTextDocument>
-#include <QSettings>
 #include "tag.h"
-#include "mainwindow.h"
-
-extern mainWindow *_mainwindow;
+#include "functions.h"
 
 
-
-Tag::Tag(QString text, QString type, int count, QStringList related)
-	: m_type(type), m_count(count), m_related(related)
+Tag::Tag(QSettings *settings, QString text, QString type, int count, QStringList related)
+	: m_type(type), m_count(count), m_related(related), m_settings(settings)
 {
 	// Decode HTML entities in the tag text
 	QTextDocument htmlEncoded;
@@ -53,11 +48,10 @@ QString Tag::stylished(QList<Favorite> favs, bool count) const
 	QStringList tlist = QStringList() << "artists" << "circles" << "copyrights" << "characters" << "models" << "generals" << "favorites" << "blacklisteds";
 	QStringList defaults = QStringList() << "#aa0000" << "#55bbff" << "#aa00aa" << "#00aa00" << "#0000ee" << "#000000" << "#ffc0cb" << "#000000";
 
-	QSettings *settings = _mainwindow->settings();
 	QString key = tlist.contains(type()+"s") ? type() + "s" : "generals";
 	QFont font;
-	font.fromString(settings->value("Coloring/Fonts/" + key).toString());
-	QString color = settings->value("Coloring/Colors/" + key, defaults.at(tlist.indexOf(key))).toString();
+	font.fromString(m_settings->value("Coloring/Fonts/" + key).toString());
+	QString color = m_settings->value("Coloring/Colors/" + key, defaults.at(tlist.indexOf(key))).toString();
 	QString style = "color:"+color+"; "+qfonttocss(font);
 
 	QString ret;

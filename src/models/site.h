@@ -53,6 +53,7 @@ class Site : public QObject
 		QString operator[](QString key) { return value(key); }
 		void insert(QString, QString);
 		QVariant setting(QString key, QVariant def = QVariant());
+		QSettings *settings();
 		QNetworkRequest makeRequest(QUrl url, Page *page = nullptr, QString referer = "", Image *img = nullptr);
 		QNetworkReply *get(QUrl url, Page *page = nullptr, QString referer = "", Image *img = nullptr);
 		void getAsync(QueryType type, QUrl url, std::function<void(QNetworkReply *)> callback, Page *page = nullptr, QString referer = "", Image *img = nullptr);

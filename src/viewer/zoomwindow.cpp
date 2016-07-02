@@ -30,7 +30,7 @@ zoomWindow::zoomWindow(Image *image, Site *site, QMap<QString,Site*> *sites, QWi
 		m_favorites.append(fav.getName());
 	m_viewItLater = loadViewItLater();
     m_ignore = loadIgnored();
-    m_image = new Image(image->details(), image->page());
+	m_image = new Image(site, image->details(), image->page());
 	connect(m_image, &Image::urlChanged, this, &zoomWindow::urlChanged);
 
 	m_mustSave = 0;
