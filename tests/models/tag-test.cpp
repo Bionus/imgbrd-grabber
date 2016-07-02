@@ -8,7 +8,7 @@ TagTest::TagTest()
 
 void TagTest::init()
 {
-	m_settings = new QSettings("settings.ini", QSettings::IniFormat);
+	m_settings = new QSettings("test_settings.ini", QSettings::IniFormat);
 }
 void TagTest::cleanup()
 {
