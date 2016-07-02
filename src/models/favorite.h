@@ -10,21 +10,30 @@ class Favorite
 {
 	public:
 		Favorite(QString name, int note, QDateTime lastViewed, QString imagePath = "");
+
+		// Getters and setters
 		void setNote(int);
 		void setLastViewed(QDateTime);
 		void setImagePath(QString);
-		bool setImage(QPixmap&);
+		int			getNote()		const;
+		QDateTime	getLastViewed()	const;
+		QString		getImagePath()	const;
+
+		/**
+		 * @brief Return the name of this favorite.
+		 * @param clean Remove special characters from the name.
+		 * @return The name of this favorite, maybe cleaned.
+		 */
 		QString getName(bool clean = false) const;
-		int getNote() const;
-		QDateTime getLastViewed() const;
-		QString getImagePath() const;
+
+		bool setImage(QPixmap&);
 		QPixmap getImage() const;
 
 	private:
-		QString _name;
-		int _note;
-		QDateTime _lastViewed;
-		QString _imagePath;
+		QString		m_name;
+		int			m_note;
+		QDateTime	m_lastViewed;
+		QString		m_imagePath;
 };
 
 bool operator==(const Favorite& lhs, const Favorite& rhs);
