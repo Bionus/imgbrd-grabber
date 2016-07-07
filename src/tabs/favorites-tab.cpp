@@ -907,6 +907,11 @@ void favoritesTab::favoriteProperties(QString name)
 	fwin->show();
 }
 
+void favoritesTab::focusSearch()
+{
+	//m_search->focusWidget();
+}
+
 void favoritesTab::setImagesPerPage(int ipp)
 { ui->spinImagesPerPage->setValue(ipp); }
 void favoritesTab::setColumns(int columns)

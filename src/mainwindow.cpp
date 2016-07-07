@@ -103,6 +103,12 @@ void mainWindow::init()
 	}
 
 	ui->actionClosetab->setShortcut(QKeySequence::Close);
+	QShortcut *actionCloseTabW = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
+	connect(actionCloseTabW, &QShortcut::activated, ui->actionClosetab, &QAction::trigger);
+
+	QShortcut *actionFocusSearch = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_L), this);
+	connect(actionFocusSearch, &QShortcut::activated, this, &mainWindow::focusSearch);
+
 	ui->actionAddtab->setShortcut(QKeySequence::AddTab);
 	ui->actionQuit->setShortcut(QKeySequence::Quit);
 	ui->actionFolder->setShortcut(QKeySequence::Open);
@@ -257,6 +263,15 @@ mainWindow::~mainWindow()
 {
     qDeleteAll(m_sites);
 	delete ui;
+}
+
+void mainWindow::focusSearch()
+{
+	if (ui->tabWidget->widget(ui->tabWidget->currentIndex())->maximumWidth() != 16777214)
+	{
+		searchTab *tab = dynamic_cast<searchTab *>(ui->tabWidget->widget(ui->tabWidget->currentIndex()));
+		tab->focusSearch();
+	}
 }
 
 void mainWindow::onFirstLoad()

@@ -774,6 +774,11 @@ void poolTab::setSite(QString site)
 	{ ui->comboSites->setCurrentIndex(index); }
 }
 
+void poolTab::focusSearch()
+{
+	ui->spinPool->focusWidget();
+}
+
 void poolTab::setImagesPerPage(int ipp)
 { ui->spinImagesPerPage->setValue(ipp); }
 void poolTab::setColumns(int columns)

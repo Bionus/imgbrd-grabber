@@ -967,6 +967,11 @@ void tagTab::historyNext()
 	}
 }
 
+void tagTab::focusSearch()
+{
+	m_search->setFocus();
+}
+
 void tagTab::setImagesPerPage(int ipp)
 { ui->spinImagesPerPage->setValue(ipp); }
 void tagTab::setColumns(int columns)

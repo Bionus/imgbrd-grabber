@@ -50,6 +50,8 @@ class searchTab : public QWidget
 		virtual void previousPage() = 0;
 		virtual void nextPage() = 0;
 		virtual void lastPage() = 0;
+		// Focus search field
+		virtual void focusSearch() = 0;
 
     signals:
         void titleChanged(searchTab*);

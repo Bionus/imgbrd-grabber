@@ -75,6 +75,7 @@ class poolTab : public searchTab
 		void setImagesPerPage(int ipp);
 		void setColumns(int columns);
 		void setPostFilter(QString postfilter);
+		void focusSearch();
 
 	signals:
 		void batchAddGroup(QStringList);

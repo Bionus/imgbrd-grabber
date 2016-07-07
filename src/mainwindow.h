@@ -130,6 +130,7 @@ class mainWindow : public QMainWindow
         bool saveTabs(QString);
 		bool loadTabs(QString);
         void updateTabs();
+		void focusSearch();
 		// Title
 		void increaseDownloads();
 		void decreaseDownloads();

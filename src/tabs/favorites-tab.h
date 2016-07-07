@@ -81,6 +81,7 @@ class favoritesTab : public searchTab
 		void setImagesPerPage(int);
 		void setColumns(int);
 		void setPostFilter(QString);
+		void focusSearch();
 
 	signals:
 		void batchAddGroup(QStringList);
