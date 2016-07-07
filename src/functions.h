@@ -44,6 +44,7 @@ void		showInGraphicalShell(const QString &);
 void		shutDown(int timeout = 0);
 void		openTray();
 
+void		setLogFile(QString path);
 void		log(QString, Log type = Info);
 void		logCommand(QString);
 void		logCommandSql(QString);

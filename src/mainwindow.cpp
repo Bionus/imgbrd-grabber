@@ -3,6 +3,7 @@
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QSound>
+#include <QShortcut>
 #include <QtNetwork>
 #include <QDesktopServices>
 #include <QCloseEvent>
@@ -1203,7 +1204,7 @@ void mainWindow::getAll(bool all)
 				QStringList b = m_groupBatchs.at(j);
 				Downloader *downloader = new Downloader(b.at(0).split(' '),
 														QStringList(),
-														QStringList(b.at(5)),
+														QList<Site*>() << m_sites[b.at(5)],
 														b.at(1).toInt(),
 														b.at(3).toInt(),
 														b.at(2).toInt(),
@@ -1249,7 +1250,7 @@ void mainWindow::getAllLogin()
 	QQueue<Site*> logins;
 	for (Downloader *downloader : m_downloaders)
 	{
-		for (Site *site : *downloader->getSites())
+		for (Site *site : downloader->getSites())
 		{
 			if (!m_getAllLogins.contains(site))
 			{

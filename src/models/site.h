@@ -38,9 +38,10 @@ class Site : public QObject
 			LoginNoLogin = 1,
 			LoginSuccess = 0
 		};
+		Site(QSettings *settings, QString dir, QString url);
 		Site(QString type, QString url, QMap<QString,QString> data);
 		~Site();
-		void load();
+		void load(QString path = "");
 		void initManager();
 		QString type();
 		QString name();
@@ -57,6 +58,7 @@ class Site : public QObject
 		QNetworkRequest makeRequest(QUrl url, Page *page = nullptr, QString referer = "", Image *img = nullptr);
 		QNetworkReply *get(QUrl url, Page *page = nullptr, QString referer = "", Image *img = nullptr);
 		void getAsync(QueryType type, QUrl url, std::function<void(QNetworkReply *)> callback, Page *page = nullptr, QString referer = "", Image *img = nullptr);
+		static QList<Site*> Site::getSites(QStringList sources);
 		static QMap<QString, Site*> *getAllSites();
 		QUrl fixUrl(QString url);
 		QUrl fixUrl(QString url, QUrl old);

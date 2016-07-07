@@ -330,6 +330,8 @@ void Page::parseImage(QMap<QString,QString> d, int position)
 
 void Page::parse()
 {
+	log("Parse");
+
 	// Check redirection
 	QUrl redir = m_reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 	if (!redir.isEmpty())

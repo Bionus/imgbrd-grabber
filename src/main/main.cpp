@@ -29,6 +29,7 @@
 #include <QtGlobal>
 #include <QSettings>
 #include "downloader.h"
+#include "models/site.h"
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 2, 0))
 	#include <QCommandLineParser>
 #else
@@ -145,7 +146,7 @@ int main(int argc, char *argv[])
         QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
         Downloader *dwnldr = new Downloader(parser.value(tagsOption).split(" ", QString::SkipEmptyParts),
                                             parser.value(postfilteringOption).split(" ", QString::SkipEmptyParts),
-                                            parser.value(sourceOption).split(" ", QString::SkipEmptyParts),
+											Site::getSites(parser.value(sourceOption).split(" ", QString::SkipEmptyParts)),
                                             parser.value(pageOption).toInt(),
                                             parser.value(limitOption).toInt(),
                                             parser.value(perpageOption).toInt(),

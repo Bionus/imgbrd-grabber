@@ -542,22 +542,21 @@ QMap<QString,QString> domToMap(QDomElement dom)
  * Append text in the log in a new line.
  * @param	l	The message to append.
  */
-QFile f, fCommandsLog, fCommandsSqlLog;
+QFile g_logFile, fCommandsLog, fCommandsSqlLog;
+void setLogFile(QString path)
+{
+	g_logFile.setFileName(path);
+	g_logFile.open(QFile::Append | QFile::Text | QFile::Truncate);
+}
+
 void log(QString l, Log)
 {
-	if (!f.isOpen())
-	{
-		f.setFileName(savePath("main.log"));
-		f.open(QFile::Append | QFile::Text | QFile::Truncate);
-	}
+	if (!g_logFile.isOpen())
+		setLogFile(savePath("main.log"));
 
 	QDateTime time = QDateTime::currentDateTime();
-	QSettings set(savePath("settings.ini"), QSettings::IniFormat);
-
-	QString v = set.contains("Login/pseudo") && !set.value("Login/pseudo").toString().isEmpty() ? l.replace(set.value("Login/pseudo").toString(), "{pseudo}") : l;
-	v = set.contains("Login/password") && !set.value("Login/password").toString().isEmpty() ? l.replace(set.value("Login/password").toString(), "{password}") : v;
-	f.write(QString("["+time.toString("hh:mm:ss.zzz")+"] "+stripTags(v)+"\n").toUtf8());
-	f.flush();
+	g_logFile.write(QString("["+time.toString("hh:mm:ss.zzz")+"] "+stripTags(l)+"\n").toUtf8());
+	g_logFile.flush();
 
 	//_log.insert(time, (type == Error ? QObject::tr("<b>Erreur :</b> %1").arg(l) : (type == Warning ? QObject::tr("<b>Attention :</b> %1").arg(l) : (type == Notice ? QObject::tr("<b>Notice :</b> %1").arg(l) : l))));
 	//_mainwindow->logShow();

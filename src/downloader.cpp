@@ -37,31 +37,10 @@ void Downloader::clear()
 	m_opagesT->clear();
 }
 
-Downloader::Downloader(QStringList tags, QStringList postfiltering, QStringList sources, int page, int max, int perpage, QString location, QString filename, QString user, QString password, bool blacklist, QStringList blacklistedtags, bool noduplicates, int tagsmin, QString tagsformat)
-	: m_tags(tags), m_postfiltering(postfiltering), m_sources(sources), m_page(page), m_max(max), m_perpage(perpage), m_location(location), m_filename(filename), m_user(user), m_password(password), m_blacklist(blacklist), m_noduplicates(noduplicates), m_tagsmin(tagsmin), m_tagsformat(tagsformat), m_blacklistedTags(blacklistedtags)
+Downloader::Downloader(QStringList tags, QStringList postfiltering, QList<Site*> sources, int page, int max, int perpage, QString location, QString filename, QString user, QString password, bool blacklist, QStringList blacklistedtags, bool noduplicates, int tagsmin, QString tagsformat)
+	: m_tags(tags), m_postfiltering(postfiltering), m_sites(sources), m_page(page), m_max(max), m_perpage(perpage), m_location(location), m_filename(filename), m_user(user), m_password(password), m_blacklist(blacklist), m_noduplicates(noduplicates), m_tagsmin(tagsmin), m_tagsformat(tagsformat), m_blacklistedTags(blacklistedtags)
 {
 	m_quit = false;
-	QMap<QString, Site*> *sites = Site::getAllSites();
-
-	m_sites = new QList<Site*>();
-	for (QString source : sources)
-	{
-		if (!sites->contains(source))
-			std::cerr << "Source '"+source.toStdString()+"' not found" << std::endl;
-		else
-        {
-			Site *site = sites->value(source);
-			if (user != nullptr)
-			{ site->setUsername(user); }
-			if (password != nullptr)
-			{ site->setPassword(password); }
-			m_sites->append(site);
-            sites->remove(source);
-        }
-	}
-    qDeleteAll(*sites);
-    delete sites;
-
 	m_pages = new QList<Page*>();
     m_pagesC = new QList<Page*>();
 	m_pagesT = new QList<Page*>();
@@ -85,7 +64,7 @@ void Downloader::setQuit(bool quit)
 
 void Downloader::getPageCount()
 {
-	if (m_sites->empty())
+	if (m_sites.empty())
 	{
 		std::cerr << "No valid source found" << std::endl;
 		return;
@@ -97,9 +76,9 @@ void Downloader::getPageCount()
 	m_cancelled = false;
 	auto sites = Site::getAllSites();
 
-	for (int i = 0; i < m_sites->size(); ++i)
+	for (int i = 0; i < m_sites.size(); ++i)
 	{
-		Page *page = new Page(m_sites->at(i), sites, m_tags, m_page, m_perpage, m_postfiltering, true, this);
+		Page *page = new Page(m_sites.at(i), sites, m_tags, m_page, m_perpage, m_postfiltering, true, this);
 		connect(page, &Page::finishedLoadingTags, this, &Downloader::finishedLoadingPageCount);
 
 		m_pagesC->append(page);
@@ -134,7 +113,7 @@ void Downloader::finishedLoadingPageCount(Page *page)
 
 void Downloader::getPageTags()
 {
-	if (m_sites->empty())
+	if (m_sites.empty())
 	{
 		std::cerr << "No valid source found" << std::endl;
 		return;
@@ -144,9 +123,9 @@ void Downloader::getPageTags()
 	m_cancelled = false;
 	auto sites = Site::getAllSites();
 
-	for (int i = 0; i < m_sites->size(); ++i)
+	for (int i = 0; i < m_sites.size(); ++i)
 	{
-		Page *page = new Page(m_sites->at(i), sites, m_tags, m_page, m_perpage, m_postfiltering, true, this);
+		Page *page = new Page(m_sites.at(i), sites, m_tags, m_page, m_perpage, m_postfiltering, true, this);
 		connect(page, &Page::finishedLoadingTags, this, &Downloader::finishedLoadingPageTags);
 
 		m_pagesT->append(page);
@@ -197,7 +176,7 @@ void Downloader::finishedLoadingPageTags(Page *page)
 
 void Downloader::getTags()
 {
-	if (m_sites->empty())
+	if (m_sites.empty())
 	{
 		std::cerr << "No valid source found" << std::endl;
 		return;
@@ -206,12 +185,12 @@ void Downloader::getTags()
 	m_waiting = 0;
 	m_cancelled = false;
 
-	for (int i = 0; i < m_sites->size(); ++i)
+	for (int i = 0; i < m_sites.size(); ++i)
 	{
 		int pages = qCeil((float)m_max / m_perpage);
 		if (pages <= 0 || m_perpage <= 0 || m_max <= 0)
 			pages = 1;
-		Site *site = m_sites->at(i);
+		Site *site = m_sites.at(i);
 		connect(site, &Site::finishedLoadingTags, this, &Downloader::finishedLoadingTags);
 		for (int p = 0; p < pages; ++p)
 		{
@@ -305,7 +284,7 @@ void Downloader::finishedLoadingTags(QList<Tag> tags)
 
 void Downloader::getImages()
 {
-	if (m_sites->empty())
+	if (m_sites.empty())
 	{
 		std::cerr << "No valid source found" << std::endl;
 		return;
@@ -313,16 +292,19 @@ void Downloader::getImages()
 
 	m_waiting = 0;
 	m_cancelled = false;
-	auto sites = Site::getAllSites();
 
-	for (int i = 0; i < m_sites->size(); ++i)
+	auto sites = new QMap<QString,Site*>();
+	for (Site *site : m_sites)
+		sites->insert(site->url(), site);
+
+	for (int i = 0; i < m_sites.size(); ++i)
 	{
 		int pages = qCeil((float)m_max / m_perpage);
 		if (pages <= 0 || m_perpage <= 0 || m_max <= 0)
 			pages = 1;
 		for (int p = 0; p < pages; ++p)
 		{
-			Page *page = new Page(m_sites->at(i), sites, m_tags, m_page + p, m_perpage, m_postfiltering, true, this);
+			Page *page = new Page(m_sites.at(i), sites, m_tags, m_page + p, m_perpage, m_postfiltering, true, this);
 			connect(page, &Page::finishedLoading, this, &Downloader::finishedLoadingImages);
 
 			m_pages->append(page);
@@ -431,7 +413,7 @@ void Downloader::finishedLoadingImage(Image *image)
 
 void Downloader::getUrls()
 {
-	if (m_sites->empty())
+	if (m_sites.empty())
 	{
 		std::cerr << "No valid source found" << std::endl;
 		return;
@@ -443,14 +425,14 @@ void Downloader::getUrls()
 	m_cancelled = false;
 	auto sites = Site::getAllSites();
 
-	for (int i = 0; i < m_sites->size(); ++i)
+	for (int i = 0; i < m_sites.size(); ++i)
 	{
 		int pages = qCeil((float)m_max / m_perpage);
 		if (pages <= 0 || m_perpage <= 0 || m_max <= 0)
 			pages = 1;
 		for (int p = 0; p < pages; ++p)
 		{
-			Page *page = new Page(m_sites->at(i), sites, m_tags, m_page + p, m_perpage, m_postfiltering, true, this);
+			Page *page = new Page(m_sites.at(i), sites, m_tags, m_page + p, m_perpage, m_postfiltering, true, this);
 			connect(page, &Page::finishedLoading, this, &Downloader::finishedLoadingUrls);
 
 			m_pages->append(page);
@@ -561,10 +543,10 @@ int Downloader::pagesCount()
 	int pages = qCeil((float)m_max / m_perpage);
 	if (pages <= 0 || m_perpage <= 0 || m_max <= 0)
 		pages = 1;
-	return pages * m_sites->size();
+	return pages * m_sites.size();
 }
 
 QList<Page*> *Downloader::getPages()
 { return m_pages; }
-QList<Site*> *Downloader::getSites()
+QList<Site*> Downloader::getSites()
 { return m_sites; }
