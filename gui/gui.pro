@@ -12,7 +12,26 @@ DEPENDPATH += ui
 # QScintilla
 use_qscintilla {
 	DEFINES += USE_QSCINTILLA=1
-	LIBS += -lqscintilla2
+	unix:!macx{
+		exists( $(QTDIR)/lib/libqscintilla2-qt5*) {
+			LIBS += -lqscintilla2-qt5
+		}
+		exists($(QTDIR)/lib/libqt5scintilla2*){
+			LIBS += -lqt5scintilla2
+		}
+		exists(/usr/lib/libqt5scintilla2*){
+			LIBS += -lqt5scintilla2
+		}
+		exists(/usr/lib64/libqt5scintilla2*){
+			LIBS += -lqt5scintilla2
+		}
+		!contains(LIBS, "^-l*.scintilla2.*$"){
+			message("libqscintilla2-qt5/libqt5scintilla2 not found disabling qscintilla support")
+			DEFINES -=USE_QSCINTILLA=1
+		}
+	} else {
+		LIBS += -lqscintilla2
+	}
 }
 
 # Input
