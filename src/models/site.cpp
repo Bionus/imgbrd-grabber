@@ -10,6 +10,7 @@
 #include "json.h"
 #include "page.h"
 #include "image.h"
+#include "qcustomnetworkreply.h"
 #ifdef QT_DEBUG
 	#include <QDebug>
 	#define CACHE_POLICY QNetworkRequest::PreferCache
@@ -192,7 +193,6 @@ void Site::initManager()
 	{
 		// Create the access manager and get its slots
 		m_manager = new QNetworkAccessManager(this);
-		log("initManager 2");
 		connect(m_manager, SIGNAL(finished(QNetworkReply*)), this, SIGNAL(finished(QNetworkReply*)));
 		connect(m_manager, SIGNAL(sslErrors(QNetworkReply*,QList<QSslError>)), this, SLOT(sslErrorHandler(QNetworkReply*,QList<QSslError>)));
 
@@ -347,17 +347,45 @@ void Site::getAsync(QueryType type, QUrl url, std::function<void(QNetworkReply*)
 	else
 	{ getCallback(); }
 }
+
 void Site::getCallback()
 {
-	m_lastRequest = QDateTime::currentDateTime();
-	m_lastCallback(m_manager->get(m_callbackRequest));
+    m_lastCallback(this->getRequest(m_callbackRequest));
 }
 
 QNetworkReply *Site::get(QUrl url, Page *page, QString ref, Image *img)
 {
-	m_lastRequest = QDateTime::currentDateTime();
-	QNetworkRequest request = this->makeRequest(url, page, ref, img);
-	return m_manager->get(request);
+    QNetworkRequest request = this->makeRequest(url, page, ref, img);
+    return this->getRequest(request);
+}
+
+QNetworkReply *Site::getRequest(QNetworkRequest request)
+{
+    m_lastRequest = QDateTime::currentDateTime();
+
+    log("getRequest");
+
+    #ifdef TEST
+        QString md5 = QString(QCryptographicHash::hash(request.url().toString().toLatin1(), QCryptographicHash::Md5).toHex());
+        QString path = "resources/" + m_name + "/" + md5;
+        log("getRequest2");
+        qDebug() << "Get from file" << path;
+
+        QFile f(path);
+        if (!f.open(QFile::ReadOnly))
+            return nullptr;
+        QByteArray content = f.readAll();
+
+        QCustomNetworkReply *reply = new QCustomNetworkReply();
+        reply->setHttpStatusCode(200, "OK");
+        reply->setContentType("text/html");
+        reply->setContent(content);
+
+        return reply;
+    #else
+        log("getRequest3");
+        return m_manager->get(request);
+    #endif
 }
 
 /**

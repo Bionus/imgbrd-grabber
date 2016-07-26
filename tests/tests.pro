@@ -1,5 +1,8 @@
 include(../gui/gui.pro)
 
+# Disable unnecessary stuff
+CONFIG -= use_breakpad use_qscintilla
+
 # Test configuration
 QT       += testlib
 TARGET    = tests
@@ -10,10 +13,14 @@ TEMPLATE  = app
 
 INCLUDEPATH += . .. $${PDIR}/tests
 DEFINES     += SRCDIR=\\\"$$PWD/\\\"
+DEFINES     += TEST=1
 
 # Remove original main
 SOURCES -= $${PDIR}/src/main/main.cpp
 
 SOURCES += $${PDIR}/tests/*.cpp \
-	$${PDIR}/tests/models/*.cpp
-HEADERS += $${PDIR}/tests/models/*.h
+    $${PDIR}/tests/models/*.cpp \
+    $${PDIR}/tests/integration/*.cpp
+HEADERS += $${PDIR}/tests/*.h \
+    $${PDIR}/tests/models/*.h \
+    $${PDIR}/tests/integration/*.h

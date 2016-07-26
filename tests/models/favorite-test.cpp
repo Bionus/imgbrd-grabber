@@ -2,9 +2,6 @@
 #include "favorite-test.h"
 
 
-FavoriteTest::FavoriteTest()
-{ }
-
 void FavoriteTest::testGetName()
 {
 	QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:sss");
@@ -101,3 +98,5 @@ void FavoriteTest::testNotEquals()
 
 	QCOMPARE(false, fav1 == fav2);
 }
+
+static FavoriteTest instance;

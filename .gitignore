@@ -1,6 +1,8 @@
 # Grabber
 
 test_settings.ini
+tests/settings.ini
+target_wrapper.bat
 symbols/
 *.lnk
 *.exe

@@ -1,24 +1,26 @@
 #include <QTest>
 #include "mainwindow.h"
-
-#include "models/tag-test.h"
-#include "models/favorite-test.h"
+#include "test-suite.h"
 
 QMap<QDateTime, QString> _log;
 QMap<QString, QString> _md5;
 mainWindow *_mainwindow;
 
 
-int main(int argc, char** argv)
+int main(int argc, char *argv[])
 {
-   int status = 0;
-   {
-	  TagTest tc;
-	  status |= QTest::qExec(&tc, argc, argv);
-   }
-   {
-	  FavoriteTest tc;
-	  status |= QTest::qExec(&tc, argc, argv);
-   }
-   return status;
+    QApplication a(argc, argv);
+
+    int failed = 0;
+    for (QObject *suite : TestSuite::suites)
+    {
+        int result = QTest::qExec(suite);
+        if (result != 0)
+        {
+            failed++;
+        }
+    }
+
+    a.exec();
+    return failed;
 }

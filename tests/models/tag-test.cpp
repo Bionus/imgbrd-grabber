@@ -2,9 +2,6 @@
 #include "tag-test.h"
 
 
-TagTest::TagTest()
-{ }
-
 void TagTest::init()
 {
 	m_settings = new QSettings("test_settings.ini", QSettings::IniFormat);
@@ -120,3 +117,5 @@ void TagTest::testStylishedNotFavorite()
 	QString expected = "<a href=\"tag_text\" style=\"color:#aa0000; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">tag_text</a>";
 	QCOMPARE(tag.stylished(favorites), expected);
 }
+
+static TagTest instance;

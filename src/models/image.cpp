@@ -21,6 +21,65 @@ QString removeCacheUrl(QString url)
 	return url;
 }
 
+Image::Image()
+{ }
+
+// TODO: clean up this mess
+Image::Image(const Image &other)
+{
+    m_parent = other.m_parent;
+
+    m_id = other.m_id;
+    m_score = other.m_score;
+    m_parentId = other.m_parentId;
+    m_fileSize = other.m_fileSize;
+    m_authorId = other.m_authorId;
+    m_previewTry = other.m_previewTry;
+
+    m_hasChildren = other.m_hasChildren;
+    m_hasNote = other.m_hasNote;
+    m_hasComments = other.m_hasComments;
+    m_hasScore = other.m_hasScore;
+
+    m_url = other.m_url;
+    m_md5 = other.m_md5;
+    m_author = other.m_author;
+    m_status = other.m_status;
+    m_rating = other.m_rating;
+    m_source = other.m_source;
+    m_site = other.m_site;
+    m_filename = other.m_filename;
+    m_folder = other.m_folder;
+    m_savePath = other.m_savePath;
+
+    m_pageUrl = other.m_pageUrl;
+    m_fileUrl = other.m_fileUrl;
+    m_sampleUrl = other.m_sampleUrl;
+    m_previewUrl = other.m_previewUrl;
+
+    m_size = other.m_size;
+    m_imagePreview = other.m_imagePreview;
+    m_createdAt = other.m_createdAt;
+    m_data = other.m_data;
+
+    m_loadPreview = other.m_loadPreview;
+    m_loadDetails = other.m_loadDetails;
+    m_loadImage = other.m_loadImage;
+
+    m_tags = other.m_tags;
+    m_pools = other.m_pools;
+    m_timer = other.m_timer;
+    m_settings = other.m_settings;
+    m_search = other.m_search;
+    m_parentSite = other.m_parentSite;
+    m_details = other.m_details;
+
+    m_loadingPreview = other.m_loadingPreview;
+    m_loadingDetails = other.m_loadingDetails;
+    m_loadingImage = other.m_loadingImage;
+    m_tryingSample = other.m_tryingSample;
+}
+
 Image::Image(Site *site, QMap<QString, QString> details, Page* parent)
 	: m_parentSite(site), m_settings(site->settings())
 {

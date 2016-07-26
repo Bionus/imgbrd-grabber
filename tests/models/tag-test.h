@@ -1,16 +1,14 @@
 #ifndef TAG_TEST_H
 #define TAG_TEST_H
 
+#include "test-suite.h"
 #include "models/tag.h"
 #include <QSettings>
 
 
-class TagTest : public QObject
+class TagTest : public TestSuite
 {
 	Q_OBJECT
-
-	public:
-        TagTest();
 
 	private slots:
 		void init();

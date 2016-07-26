@@ -53,8 +53,8 @@ Release:win32 {
 # SSL
 use_ssl {
     win32 {
-        LIBS += -L"C:/OpenSSL-Win32/lib" -llibeay32
-        INCLUDEPATH += C:/OpenSSL-Win32/include
+        LIBS += -L"C:/bin/OpenSSL-Win32/lib" -llibeay32
+        INCLUDEPATH += C:/bin/OpenSSL-Win32/include
     }
     unix {
         PKGCONFIG += openssl

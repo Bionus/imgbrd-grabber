@@ -1,15 +1,13 @@
 #ifndef FAVORITE_TEST_H
 #define FAVORITE_TEST_H
 
+#include "test-suite.h"
 #include "models/favorite.h"
 
 
-class FavoriteTest : public QObject
+class FavoriteTest : public TestSuite
 {
 	Q_OBJECT
-
-	public:
-		FavoriteTest();
 
 	private slots:
 		void testGetName();

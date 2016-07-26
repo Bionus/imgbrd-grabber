@@ -57,7 +57,7 @@ class Site : public QObject
 		QSettings *settings();
 		QNetworkRequest makeRequest(QUrl url, Page *page = nullptr, QString referer = "", Image *img = nullptr);
 		QNetworkReply *get(QUrl url, Page *page = nullptr, QString referer = "", Image *img = nullptr);
-		void getAsync(QueryType type, QUrl url, std::function<void(QNetworkReply *)> callback, Page *page = nullptr, QString referer = "", Image *img = nullptr);
+        void getAsync(QueryType type, QUrl url, std::function<void(QNetworkReply *)> callback, Page *page = nullptr, QString referer = "", Image *img = nullptr);
 		static QList<Site*> getSites(QStringList sources);
 		static QMap<QString, Site*> *getAllSites();
 		QUrl fixUrl(QString url);
@@ -65,7 +65,10 @@ class Site : public QObject
 		QString username();
 		QString password();
 		void setUsername(QString);
-		void setPassword(QString);
+        void setPassword(QString);
+
+    private:
+        QNetworkReply *getRequest(QNetworkRequest request);
 
 	public slots:
 		void login(bool force = false);

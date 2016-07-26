@@ -28,9 +28,10 @@ class Image : public QObject
 			Copied,
 			Saved,
 			Error
-		};
-
-		Image(Site *site, QMap<QString,QString> details, Page *parent = NULL);
+        };
+        Image();
+        Image(Site *site, QMap<QString,QString> details, Page *parent = NULL);
+        Image(const Image &other);
 		~Image();
 		int			value();
 		QString		match(QString filter, bool invert = false);
@@ -129,5 +130,7 @@ class Image : public QObject
         QMap<QString,QString>   m_details;
 		bool			m_loadingPreview, m_loadingDetails, m_loadingImage, m_tryingSample;
 };
+
+Q_DECLARE_METATYPE(Image)
 
 #endif // IMAGE_H
