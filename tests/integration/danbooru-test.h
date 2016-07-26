@@ -15,7 +15,6 @@ class DanbooruTest : public TestSuite
 		void init();
 		void cleanup();
 
-		void testHtml();
 		void testXml();
 
 	private:

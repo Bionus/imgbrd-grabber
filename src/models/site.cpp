@@ -350,7 +350,7 @@ void Site::getAsync(QueryType type, QUrl url, std::function<void(QNetworkReply*)
 
 void Site::getCallback()
 {
-    m_lastCallback(this->getRequest(m_callbackRequest));
+	m_lastCallback(this->getRequest(m_callbackRequest));
 }
 
 QNetworkReply *Site::get(QUrl url, Page *page, QString ref, Image *img)
@@ -363,13 +363,9 @@ QNetworkReply *Site::getRequest(QNetworkRequest request)
 {
     m_lastRequest = QDateTime::currentDateTime();
 
-    log("getRequest");
-
     #ifdef TEST
         QString md5 = QString(QCryptographicHash::hash(request.url().toString().toLatin1(), QCryptographicHash::Md5).toHex());
         QString path = "resources/" + m_name + "/" + md5;
-        log("getRequest2");
-        qDebug() << "Get from file" << path;
 
         QFile f(path);
         if (!f.open(QFile::ReadOnly))
@@ -383,7 +379,6 @@ QNetworkReply *Site::getRequest(QNetworkRequest request)
 
         return reply;
     #else
-        log("getRequest3");
         return m_manager->get(request);
     #endif
 }
