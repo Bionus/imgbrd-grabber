@@ -21,4 +21,4 @@ addons:
 script:
   - qmake Grabber.pro
   - make
-  - tests/tests
+  - cd tests && ./tests
