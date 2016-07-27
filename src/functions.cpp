@@ -819,6 +819,9 @@ QString fixFilename(QString fn, QString path, int maxlength)
 		filename = filename + (!ext.isEmpty() ? "." + ext : "");
 		if (!fn.isEmpty())
 			filename = filename.right(filename.length() - path.length());
+
+		QFileInfo fi(filename);
+		filename = fi.path() + "/" + fi.completeBaseName().left(245) + "." + fi.suffix();
 	#endif
 
 	return filename;
