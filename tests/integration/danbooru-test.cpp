@@ -10,17 +10,19 @@ void DanbooruTest::initTestCase()
 	setLogFile("test_log.log");
 }
 
-void DanbooruTest::init()
+void DanbooruTest::myInit(QString source)
 {
 	m_settings = new QSettings("test_settings.ini", QSettings::IniFormat);
+	QSettings settings("../release/sites/Danbooru (2.0)/danbooru.donmai.us/settings.ini", QSettings::IniFormat);
+	settings.setValue("download/throttle_retry", 0);
+	settings.setValue("download/throttle_page", 0);
+	settings.setValue("download/throttle_thumbnail", 0);
+	settings.setValue("download/throttle_details", 0);
+	settings.setValue("sources/usedefault", false);
+	settings.setValue("sources/source_1", source);
 
 	QList<Site*> sites;
-	Site *site = new Site(m_settings, "../release/sites/Danbooru (2.0)", "danbooru.donmai.us");
-	site->settings()->setValue("download/throttle_retry", 0);
-	site->settings()->setValue("download/throttle_page", 0);
-	site->settings()->setValue("download/throttle_thumbnail", 0);
-	site->settings()->setValue("download/throttle_details", 0);
-	sites.append(site);
+	sites.append(new Site(m_settings, "../release/sites/Danbooru (2.0)", "danbooru.donmai.us"));
 
 	m_downloader = new Downloader(QStringList() << "rating:safe",
 								  QStringList(),
@@ -47,8 +49,41 @@ void DanbooruTest::cleanup()
 }
 
 
+void DanbooruTest::testHtml()
+{
+    myInit("regex");
+
+    QSignalSpy spy(m_downloader, SIGNAL(finishedImages(QList<Image*>)));
+    m_downloader->getImages();
+
+	// Wait for signal
+	QVERIFY(spy.wait());
+
+    // Get results
+    QList<QVariant> arguments = spy.takeFirst();
+    QVariantList variants = arguments.at(0).value<QVariantList>();
+
+    // Convert results
+    QList<Image*> images;
+    QStringList md5s;
+    for (QVariant variant : variants)
+    {
+        Image *img = variant.value<Image*>();
+        images.append(img);
+        md5s.append(img->md5());
+    }
+
+    // Check results
+    md5s = md5s.mid(0, 3);
+    QStringList expected = QStringList() << "testf2b78f4b9c79e6bef0cdc948fbd495cc" << "a6ce80f18652847857a0258f0046282d" << "91d66f4801086eb474fb5c52af8b0418";
+    QCOMPARE(images.count(), 20);
+    QCOMPARE(md5s, expected);
+}
+
 void DanbooruTest::testXml()
 {
+    myInit("xml");
+
     QSignalSpy spy(m_downloader, SIGNAL(finishedImages(QList<Image*>)));
     m_downloader->getImages();
 

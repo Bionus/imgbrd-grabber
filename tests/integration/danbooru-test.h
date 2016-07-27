@@ -12,14 +12,17 @@ class DanbooruTest : public TestSuite
 
 	private slots:
 		void initTestCase();
-		void init();
 		void cleanup();
 
+		void myInit(QString source);
+
+		void testHtml();
 		void testXml();
 
 	private:
 		Downloader	*m_downloader;
 		QSettings	*m_settings;
+		Site		*m_site;
 };
 
 #endif // DANBOORU_TEST_H
