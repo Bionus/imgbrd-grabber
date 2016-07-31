@@ -51,7 +51,6 @@ void TextEdit::wheelEvent(QWheelEvent *e)
 void TextEdit::doColor()
 {
 	QString txt = " "+this->toPlainText().toHtmlEscaped()+" ";
-
     // Color favorited tags
 	for (int i = 0; i < m_favorites.size(); i++)
         txt.replace(" "+m_favorites.at(i)+" ", " <span style=\"color:#ffc0cb\">"+m_favorites.at(i)+"</span> ");
@@ -85,10 +84,20 @@ void TextEdit::doColor()
     // Setup cursor
 	QTextCursor crsr = textCursor();
 	pos = crsr.columnNumber();
-	int lengh = crsr.selectionEnd()-crsr.selectionStart();
+	int start = crsr.selectionStart();
+	int end = crsr.selectionEnd();
 	setHtml(txt.mid(1, txt.length()-2));
-	crsr.setPosition(pos-lengh, QTextCursor::MoveAnchor);
-	crsr.setPosition(pos, QTextCursor::KeepAnchor);
+	//If the cursor is at the right side of (if any) selected text
+	if (pos == end)
+	{
+		crsr.setPosition(start, QTextCursor::MoveAnchor);
+		crsr.setPosition(end, QTextCursor::KeepAnchor);
+	}
+	else
+	{
+		crsr.setPosition(end, QTextCursor::MoveAnchor);
+		crsr.setPosition(start, QTextCursor::KeepAnchor);
+	}
 	setTextCursor(crsr);
 }
 
@@ -182,7 +191,6 @@ void TextEdit::keyPressEvent(QKeyEvent *e)
 				return;
 		}
 	}
-
 	bool isShortcut = ((e->modifiers() & Qt::ControlModifier) && e->key() == Qt::Key_Space); // CTRL+Space
 	if (!c || !isShortcut) // do not process the shortcut when we have a completer
 	{
@@ -194,21 +202,17 @@ void TextEdit::keyPressEvent(QKeyEvent *e)
 		QTextEdit::keyPressEvent(e);
 	}
 	doColor();
-
 	const bool ctrlOrShift = e->modifiers() & (Qt::ControlModifier | Qt::ShiftModifier);
 	if (!c || (ctrlOrShift && e->text().isEmpty()))
         return;
-
 	static QString eow(" ");
 	bool hasModifier = (e->modifiers() != Qt::NoModifier) && !ctrlOrShift;
 	QString completionPrefix = textUnderCursor();
-
 	if (!isShortcut && (hasModifier || e->text().isEmpty()|| completionPrefix.length() < 3 || eow.contains(e->text().right(1))))
 	{
 		c->popup()->hide();
 		return;
 	}
-
 	if (completionPrefix != c->completionPrefix())
         c->setCompletionPrefix(completionPrefix);
 
