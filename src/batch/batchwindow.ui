@@ -20,7 +20,7 @@
    <string>Téléchargement groupé</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../resources.qrc">
+   <iconset resource="../../resources.qrc">
     <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
   </property>
   <property name="modal">
@@ -56,6 +56,45 @@
       <bool>true</bool>
      </property>
     </widget>
+   </item>
+   <item row="4" column="0" colspan="3">
+    <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,1,0,0,0">
+     <item>
+      <widget class="QLabel" name="labelImages">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="labelSpeed">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonPause">
+       <property name="text">
+        <string>Pause</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonSkip">
+       <property name="text">
+        <string>Passer</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="cancelButton">
+       <property name="text">
+        <string>Annuler</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item row="2" column="0" colspan="3">
     <widget class="QWidget" name="details" native="true">
@@ -137,11 +176,22 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="buttonCopyToClipboard">
-        <property name="text">
-         <string>Copier les liens dans le presse-papier</string>
-        </property>
-       </widget>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QCheckBox" name="checkScrollToDownload">
+          <property name="text">
+           <string>Follow downloading images</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="buttonCopyToClipboard">
+          <property name="text">
+           <string>Copier les liens dans le presse-papier</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0,1,0">
@@ -193,58 +243,20 @@
      </layout>
     </widget>
    </item>
-   <item row="4" column="0" colspan="3">
-    <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,1,0,0,0">
-     <item>
-      <widget class="QLabel" name="labelImages">
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="labelSpeed">
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="buttonPause">
-       <property name="text">
-        <string>Pause</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="buttonSkip">
-       <property name="text">
-        <string>Passer</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="cancelButton">
-       <property name="text">
-        <string>Annuler</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
   </layout>
  </widget>
  <tabstops>
   <tabstop>buttonDetails</tabstop>
   <tabstop>tableWidget</tabstop>
-  <tabstop>buttonCopyToClipboard</tabstop>
   <tabstop>comboEnd</tabstop>
   <tabstop>checkRemove</tabstop>
   <tabstop>buttonPause</tabstop>
   <tabstop>cancelButton</tabstop>
  </tabstops>
  <resources>
-  <include location="../resources.qrc"/>
+  <include location="../../resources.qrc"/>
+  <include location="../../resources.qrc"/>
+  <include location="../../resources.qrc"/>
  </resources>
  <connections>
   <connection>

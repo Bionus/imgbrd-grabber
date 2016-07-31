@@ -10,7 +10,8 @@
 
 
 
-batchWindow::batchWindow(QWidget *parent) : QDialog(), ui(new Ui::batchWindow), m_imagesCount(0), m_items(0), m_images(0), m_maxSpeeds(0), m_cancel(false), m_paused(false)
+batchWindow::batchWindow(QWidget *parent)
+	: QDialog(), ui(new Ui::batchWindow), m_imagesCount(0), m_items(0), m_images(0), m_maxSpeeds(0), m_lastDownloading(0), m_cancel(false), m_paused(false)
 {
 	ui->setupUi(this);
 	ui->tableWidget->resizeColumnToContents(0);
@@ -22,6 +23,7 @@ batchWindow::batchWindow(QWidget *parent) : QDialog(), ui(new Ui::batchWindow), 
 	on_buttonDetails_clicked(settings.value("Batch/details", true).toBool());
 	ui->comboEnd->setCurrentIndex(settings.value("Batch/end", 0).toInt());
 	ui->checkRemove->setChecked(settings.value("Batch/remove", false).toBool());
+	ui->checkScrollToDownload->setChecked(settings.value("Batch/scrollToDownload", true).toBool());
 
 	m_speeds = QMap<QString, int>();
 	m_urls = QStringList();
@@ -58,6 +60,7 @@ void batchWindow::closeEvent(QCloseEvent *e)
 	settings.setValue("Batch/details", ui->buttonDetails->isChecked());
 	settings.setValue("Batch/end", ui->comboEnd->currentIndex());
 	settings.setValue("Batch/remove", ui->checkRemove->isChecked());
+	settings.setValue("Batch/scrollToDownload", ui->checkScrollToDownload->isChecked());
 	settings.sync();
 
 	if (m_images < m_imagesCount)
@@ -111,6 +114,7 @@ void batchWindow::clear()
 	m_imagesCount = 0;
 	m_images = 0;
 	m_maxSpeeds = 0;
+	m_lastDownloading = 0;
 
 	m_time->restart();
 	m_start->restart();
@@ -217,7 +221,16 @@ void batchWindow::loadingImage(QString url)
 
 	int i = indexOf(url);
 	if (i != -1)
+	{
 		ui->tableWidget->item(i, 0)->setIcon(QIcon(":/images/colors/blue.png"));
+
+		// Go to downloading image
+		if (ui->checkScrollToDownload->isChecked() && i >= m_lastDownloading)
+		{
+			ui->tableWidget->scrollToItem(ui->tableWidget->item(i, 0));
+			m_lastDownloading = i;
+		}
+	}
 }
 void batchWindow::imageUrlChanged(QString before, QString after)
 {

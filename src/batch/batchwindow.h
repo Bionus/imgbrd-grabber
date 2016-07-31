@@ -70,7 +70,7 @@ class batchWindow : public QDialog
 	private:
 		Ui::batchWindow			*ui;
 		QSize					m_currentSize;
-		int						m_imagesCount, m_items, m_value, m_images, m_maxSpeeds;
+		int						m_imagesCount, m_items, m_value, m_images, m_maxSpeeds, m_lastDownloading;
 		QStringList				m_urls;
 		QList<QProgressBar*>	m_progressBars;
 		QMap<QString, int>		m_speeds;
