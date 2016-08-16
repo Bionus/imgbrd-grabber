@@ -18,12 +18,12 @@ T = $$(TRAVIS)
 @
 
 # Global
-APP_VERSION = \\\"4.5.3\\\"
+APP_VERSION = \\\"4.6.0\\\"
 
 # General
 TEMPLATE = app
-DEPENDPATH += . .. $${PDIR}/includes $${PDIR}/languages $${PDIR}/source $${PDIR}/vendor
-INCLUDEPATH += . .. $${PDIR}/includes $${PDIR}/source $${PDIR}/vendor
+DEPENDPATH += . .. $${PDIR}/languages $${PDIR}/src $${PDIR}/vendor
+INCLUDEPATH += . .. $${PDIR}/src $${PDIR}/vendor
 DEFINES += VERSION=$$APP_VERSION
 QT += core network xml sql script
 
@@ -53,8 +53,8 @@ Release:win32 {
 # SSL
 use_ssl {
     win32 {
-        LIBS += -L"C:/OpenSSL-Win32/lib" -llibeay32
-        INCLUDEPATH += C:/OpenSSL-Win32/include
+        LIBS += -L"C:/bin/OpenSSL-Win32/lib" -llibeay32
+        INCLUDEPATH += C:/bin/OpenSSL-Win32/include
     }
     unix {
         PKGCONFIG += openssl

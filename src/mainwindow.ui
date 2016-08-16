@@ -1,0 +1,1698 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>mainWindow</class>
+ <widget class="QMainWindow" name="mainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>541</height>
+   </rect>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../resources.qrc">
+    <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QHBoxLayout" name="horizontalLayout_3">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <item>
+     <widget class="QClosableTabWidget" name="tabWidget">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="tabShape">
+       <enum>QTabWidget::Rounded</enum>
+      </property>
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <property name="movable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="tabBatch">
+       <property name="maximumSize">
+        <size>
+         <width>16777214</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <attribute name="title">
+        <string>Téléchargements</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <widget class="QLabel" name="labelGroups">
+          <property name="text">
+           <string>Groupes (0/0)</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTableWidget" name="tableBatchGroups">
+          <property name="verticalScrollMode">
+           <enum>QAbstractItemView::ScrollPerPixel</enum>
+          </property>
+          <property name="horizontalScrollMode">
+           <enum>QAbstractItemView::ScrollPerPixel</enum>
+          </property>
+          <attribute name="horizontalHeaderHighlightSections">
+           <bool>false</bool>
+          </attribute>
+          <attribute name="verticalHeaderHighlightSections">
+           <bool>false</bool>
+          </attribute>
+          <column>
+           <property name="text">
+            <string/>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Tags</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Source</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Page</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Images par page</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Limite d'images</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Noms de fichiers</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Dossier</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Récupérer liste noire</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Progression</string>
+           </property>
+          </column>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButton_12">
+          <property name="text">
+           <string>Ajouter</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>Images seules</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTableWidget" name="tableBatchUniques">
+          <property name="editTriggers">
+           <set>QAbstractItemView::NoEditTriggers</set>
+          </property>
+          <property name="showDropIndicator" stdset="0">
+           <bool>false</bool>
+          </property>
+          <property name="dragDropOverwriteMode">
+           <bool>false</bool>
+          </property>
+          <property name="verticalScrollMode">
+           <enum>QAbstractItemView::ScrollPerPixel</enum>
+          </property>
+          <property name="horizontalScrollMode">
+           <enum>QAbstractItemView::ScrollPerPixel</enum>
+          </property>
+          <attribute name="horizontalHeaderHighlightSections">
+           <bool>false</bool>
+          </attribute>
+          <attribute name="verticalHeaderHighlightSections">
+           <bool>false</bool>
+          </attribute>
+          <column>
+           <property name="text">
+            <string>Id</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Md5</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Classe</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Tags</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Url</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Date</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Site</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Noms de fichiers</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Dossier</string>
+           </property>
+          </column>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButton_13">
+          <property name="text">
+           <string>Ajouter</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QWidget" name="widgetDownloadButtons" native="true">
+          <layout class="QVBoxLayout" name="verticalLayout_2">
+           <property name="spacing">
+            <number>3</number>
+           </property>
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout">
+             <item>
+              <widget class="QPushButton" name="buttonClear">
+               <property name="text">
+                <string>Tout effacer</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="buttonClearSel">
+               <property name="text">
+                <string>Effacer la séléction</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButton_14">
+               <property name="text">
+                <string>Tout télécharger</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButton">
+               <property name="text">
+                <string>Télécharger la séléction</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_4">
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QPushButton" name="buttonMoveDown">
+               <property name="text">
+                <string>Move down</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="buttonLoadLinkList">
+               <property name="text">
+                <string>Charger</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="buttonSaveLinkList">
+               <property name="text">
+                <string>Sauvegarder</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="buttonMoveUp">
+               <property name="text">
+                <string>Move up</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tabLog">
+       <property name="maximumSize">
+        <size>
+         <width>16777214</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <attribute name="title">
+        <string>Log</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_4">
+        <item>
+         <widget class="QScrollArea" name="scrollArea">
+          <property name="widgetResizable">
+           <bool>true</bool>
+          </property>
+          <widget class="QWidget" name="scrollAreaWidgetContents">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>553</width>
+             <height>443</height>
+            </rect>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_8">
+            <property name="leftMargin">
+             <number>6</number>
+            </property>
+            <property name="topMargin">
+             <number>6</number>
+            </property>
+            <property name="rightMargin">
+             <number>6</number>
+            </property>
+            <property name="bottomMargin">
+             <number>6</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="labelLog">
+              <property name="text">
+               <string/>
+              </property>
+              <property name="textFormat">
+               <enum>Qt::RichText</enum>
+              </property>
+              <property name="openExternalLinks">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_5">
+          <item>
+           <widget class="QPushButton" name="buttonClearlog">
+            <property name="text">
+             <string>Effacer le log</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="buttonOpenLog">
+            <property name="text">
+             <string>Ouvrir le log</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="nativeMenuBar">
+    <bool>true</bool>
+   </property>
+   <widget class="QMenu" name="menu_propos">
+    <property name="title">
+     <string>Aide</string>
+    </property>
+    <addaction name="actionAboutGrabber"/>
+    <addaction name="actionAboutWebsite"/>
+    <addaction name="actionAboutReportBug"/>
+    <addaction name="separator"/>
+    <addaction name="actionAboutQt"/>
+   </widget>
+   <widget class="QMenu" name="menuOutils">
+    <property name="title">
+     <string>Outils</string>
+    </property>
+    <addaction name="actionBlacklistFix"/>
+    <addaction name="actionEmptyDirsFix"/>
+    <addaction name="actionMd5Fix"/>
+    <addaction name="actionRenameExistingImages"/>
+    <addaction name="separator"/>
+    <addaction name="actionOptions"/>
+   </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>Affichage</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuFichier">
+    <property name="title">
+     <string>Fichier</string>
+    </property>
+    <addaction name="actionAddtab"/>
+    <addaction name="actionAddpooltab"/>
+    <addaction name="actionClosetab"/>
+    <addaction name="separator"/>
+    <addaction name="actionFolder"/>
+    <addaction name="actionSettingsFolder"/>
+    <addaction name="separator"/>
+    <addaction name="actionQuit"/>
+   </widget>
+   <addaction name="menuFichier"/>
+   <addaction name="menuOutils"/>
+   <addaction name="menuView"/>
+   <addaction name="menu_propos"/>
+  </widget>
+  <widget class="QDockWidget" name="dock_internet">
+   <property name="windowTitle">
+    <string>Tags</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="dockInternetLayout">
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QScrollArea" name="dockInternetScroll">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Ignored">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::NoFrame</enum>
+       </property>
+       <property name="widgetResizable">
+        <bool>true</bool>
+       </property>
+       <widget class="QWidget" name="dockInternetScrollLayout_2">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>220</width>
+          <height>36</height>
+         </rect>
+        </property>
+        <layout class="QVBoxLayout" name="dockInternetScrollLayout_1">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <item>
+          <spacer name="verticalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="dockInternetScrollLayout">
+           <property name="spacing">
+            <number>0</number>
+           </property>
+          </layout>
+         </item>
+         <item>
+          <spacer name="verticalSpacer_4">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QDockWidget" name="dock_kfl">
+   <property name="windowTitle">
+    <string>Gardés pour plus tard</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="dockKflLayout">
+    <layout class="QVBoxLayout" name="verticalLayout_7">
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QScrollArea" name="dockKflScroll">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Ignored">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::NoFrame</enum>
+       </property>
+       <property name="widgetResizable">
+        <bool>true</bool>
+       </property>
+       <widget class="QWidget" name="dockKflScrollLayout_2">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>220</width>
+          <height>35</height>
+         </rect>
+        </property>
+        <layout class="QVBoxLayout" name="dockKflScrollLayout_1">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <item>
+          <spacer name="verticalSpacer_5">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="dockKflScrollLayout">
+           <property name="spacing">
+            <number>0</number>
+           </property>
+          </layout>
+         </item>
+         <item>
+          <spacer name="verticalSpacer_6">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QDockWidget" name="dock_favorites">
+   <property name="windowTitle">
+    <string>Favoris</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContentsFavorites">
+    <layout class="QVBoxLayout" name="verticalLayout_5">
+     <property name="leftMargin">
+      <number>6</number>
+     </property>
+     <property name="topMargin">
+      <number>6</number>
+     </property>
+     <property name="rightMargin">
+      <number>6</number>
+     </property>
+     <property name="bottomMargin">
+      <number>6</number>
+     </property>
+     <item>
+      <widget class="QComboBox" name="comboOrderFav">
+       <item>
+        <property name="text">
+         <string>Nom</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Note</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Dernière vue</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="comboAscFav">
+       <item>
+        <property name="text">
+         <string>Ascendant</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Descendant</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item>
+      <widget class="QScrollArea" name="scrollArea_5">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Ignored">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::NoFrame</enum>
+       </property>
+       <property name="widgetResizable">
+        <bool>true</bool>
+       </property>
+       <widget class="QWidget" name="scrollAreaWidgetContents_5">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>208</width>
+          <height>44</height>
+         </rect>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_12">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <spacer name="verticalSpacer_3">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="layoutFavoritesDock">
+           <property name="spacing">
+            <number>0</number>
+           </property>
+          </layout>
+         </item>
+         <item>
+          <spacer name="verticalSpacer">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QDockWidget" name="dock_wiki">
+   <property name="windowTitle">
+    <string>Wiki</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents">
+    <layout class="QVBoxLayout" name="verticalLayout_6">
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QScrollArea" name="scrollArea_4">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Ignored">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::NoFrame</enum>
+       </property>
+       <property name="widgetResizable">
+        <bool>true</bool>
+       </property>
+       <widget class="QWidget" name="scrollAreaWidgetContents_4">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>220</width>
+          <height>36</height>
+         </rect>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_11">
+         <item>
+          <widget class="QLabel" name="labelWiki">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QDockWidget" name="dockOptions">
+   <property name="windowTitle">
+    <string>Destination</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents_2">
+    <layout class="QFormLayout" name="formLayout">
+     <property name="fieldGrowthPolicy">
+      <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+     </property>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Dossier</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <layout class="QHBoxLayout" name="horizontalLayout_6">
+       <property name="spacing">
+        <number>2</number>
+       </property>
+       <item>
+        <widget class="QLineEdit" name="lineFolder"/>
+       </item>
+       <item>
+        <widget class="QPushButton" name="buttonFolder">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>24</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>24</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>...</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Nom</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0" colspan="2">
+      <widget class="QLabel" name="labelFilename">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0" colspan="2">
+      <layout class="QHBoxLayout" name="horizontalLayout_7">
+       <item>
+        <widget class="QPushButton" name="buttonInitSettings">
+         <property name="text">
+          <string>Réinitialiser</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="buttonSaveSettings">
+         <property name="text">
+          <string>Sauvegarder</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="1" column="1">
+      <widget class="QComboBox" name="comboFilename">
+       <property name="editable">
+        <bool>true</bool>
+       </property>
+       <property name="insertPolicy">
+        <enum>QComboBox::InsertAtTop</enum>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <action name="actionOptions">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/images/icons/settings.png</normaloff>:/images/icons/settings.png</iconset>
+   </property>
+   <property name="text">
+    <string>Options</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+P</string>
+   </property>
+  </action>
+  <action name="actionFolder">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/images/icons/folder-images.png</normaloff>:/images/icons/folder-images.png</iconset>
+   </property>
+   <property name="text">
+    <string>Ouvrir le dossier de destination</string>
+   </property>
+  </action>
+  <action name="actionQuit">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/images/icons/exit.png</normaloff>:/images/icons/exit.png</iconset>
+   </property>
+   <property name="text">
+    <string>Quitter</string>
+   </property>
+  </action>
+  <action name="actionAboutGrabber">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/images/icons/about.png</normaloff>:/images/icons/about.png</iconset>
+   </property>
+   <property name="text">
+    <string>À propos de Grabber</string>
+   </property>
+  </action>
+  <action name="actionAboutQt">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/images/icons/qt.png</normaloff>:/images/icons/qt.png</iconset>
+   </property>
+   <property name="text">
+    <string>À propos de Qt</string>
+   </property>
+  </action>
+  <action name="actionAddtab">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/images/icons/tab-plus.png</normaloff>:/images/icons/tab-plus.png</iconset>
+   </property>
+   <property name="text">
+    <string>Nouvel onglet</string>
+   </property>
+  </action>
+  <action name="actionClosetab">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/images/icons/tab-minus.png</normaloff>:/images/icons/tab-minus.png</iconset>
+   </property>
+   <property name="text">
+    <string>Fermer l'onglet</string>
+   </property>
+  </action>
+  <action name="actionBlacklistFix">
+   <property name="text">
+    <string>Réparateur de liste noire</string>
+   </property>
+  </action>
+  <action name="actionEmptyDirsFix">
+   <property name="text">
+    <string>Réparateur de dossiers vides</string>
+   </property>
+  </action>
+  <action name="actionTags">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Tags</string>
+   </property>
+  </action>
+  <action name="actionKfl">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Gardés pour plus tard</string>
+   </property>
+  </action>
+  <action name="actionFavorites">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Favoris</string>
+   </property>
+  </action>
+  <action name="actionAddpooltab">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/images/icons/tab-poolplus.png</normaloff>:/images/icons/tab-poolplus.png</iconset>
+   </property>
+   <property name="text">
+    <string>Nouvel onglet pool</string>
+   </property>
+  </action>
+  <action name="actionMd5Fix">
+   <property name="text">
+    <string>Réparateur de liste de md5</string>
+   </property>
+  </action>
+  <action name="actionSettingsFolder">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/images/icons/folder-document.png</normaloff>:/images/icons/folder-document.png</iconset>
+   </property>
+   <property name="text">
+    <string>Ouvrir le dossier des options</string>
+   </property>
+  </action>
+  <action name="actionAboutWebsite">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/images/icons/browser.png</normaloff>:/images/icons/browser.png</iconset>
+   </property>
+   <property name="text">
+    <string>Site web du projet</string>
+   </property>
+  </action>
+  <action name="actionAboutReportBug">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/images/icons/bug.png</normaloff>:/images/icons/bug.png</iconset>
+   </property>
+   <property name="text">
+    <string>Reporter un problème</string>
+   </property>
+  </action>
+  <action name="actionRenameExistingImages">
+   <property name="text">
+    <string>Renommer des images existantes</string>
+   </property>
+  </action>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QClosableTabWidget</class>
+   <extends>QTabWidget</extends>
+   <header>ui/qclosabletabwidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>tableBatchGroups</tabstop>
+  <tabstop>pushButton_12</tabstop>
+  <tabstop>tableBatchUniques</tabstop>
+  <tabstop>scrollArea</tabstop>
+  <tabstop>buttonClearlog</tabstop>
+  <tabstop>buttonOpenLog</tabstop>
+  <tabstop>dockInternetScroll</tabstop>
+  <tabstop>dockKflScroll</tabstop>
+  <tabstop>comboOrderFav</tabstop>
+  <tabstop>comboAscFav</tabstop>
+  <tabstop>scrollArea_5</tabstop>
+  <tabstop>scrollArea_4</tabstop>
+  <tabstop>lineFolder</tabstop>
+  <tabstop>buttonFolder</tabstop>
+  <tabstop>buttonInitSettings</tabstop>
+  <tabstop>buttonSaveSettings</tabstop>
+ </tabstops>
+ <resources>
+  <include location="../resources.qrc"/>
+  <include location="../resources.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>actionOptions</sender>
+   <signal>triggered()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>options()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionAboutGrabber</sender>
+   <signal>triggered()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>aboutAuthor()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionFolder</sender>
+   <signal>triggered()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>saveFolder()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionAddtab</sender>
+   <signal>triggered()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>addTab()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>540</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionClosetab</sender>
+   <signal>triggered()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>closeCurrentTab()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>270</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionBlacklistFix</sender>
+   <signal>triggered()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>blacklistFix()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>270</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionEmptyDirsFix</sender>
+   <signal>triggered()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>emptyDirsFix()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>270</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionTags</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>dock_internet</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>39</x>
+     <y>78</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionFavorites</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>dock_favorites</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>39</x>
+     <y>267</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionKfl</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>dock_kfl</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>39</x>
+     <y>136</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>comboOrderFav</sender>
+   <signal>currentIndexChanged(QString)</signal>
+   <receiver>mainWindow</receiver>
+   <slot>updateFavoritesDock()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>51</x>
+     <y>185</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>99</x>
+     <y>251</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>comboAscFav</sender>
+   <signal>currentIndexChanged(QString)</signal>
+   <receiver>mainWindow</receiver>
+   <slot>updateFavoritesDock()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>58</x>
+     <y>211</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>98</x>
+     <y>279</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>labelWiki</sender>
+   <signal>linkActivated(QString)</signal>
+   <receiver>mainWindow</receiver>
+   <slot>loadTag(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>33</x>
+     <y>317</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-12</x>
+     <y>480</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lineFolder</sender>
+   <signal>textEdited(QString)</signal>
+   <receiver>mainWindow</receiver>
+   <slot>saveSettings()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>105</x>
+     <y>380</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-2</x>
+     <y>398</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionAddpooltab</sender>
+   <signal>triggered()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>addPoolTab()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>270</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionMd5Fix</sender>
+   <signal>triggered()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>md5FixOpen()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>270</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_12</sender>
+   <signal>clicked()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>addGroup()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>313</x>
+     <y>249</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>804</x>
+     <y>262</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_13</sender>
+   <signal>clicked()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>addUnique()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>536</x>
+     <y>468</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>804</x>
+     <y>483</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>batchSel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>785</x>
+     <y>498</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>216</x>
+     <y>545</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_14</sender>
+   <signal>clicked()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>getAll()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>645</x>
+     <y>498</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>302</x>
+     <y>546</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonClearSel</sender>
+   <signal>clicked()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>batchClearSel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>506</x>
+     <y>498</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>629</x>
+     <y>541</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonClear</sender>
+   <signal>clicked()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>batchClear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>366</x>
+     <y>498</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>742</x>
+     <y>543</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonClearlog</sender>
+   <signal>clicked()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>logClear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>332</x>
+     <y>526</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>476</x>
+     <y>543</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>tabWidget</sender>
+   <signal>currentChanged(int)</signal>
+   <receiver>mainWindow</receiver>
+   <slot>currentTabChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>344</x>
+     <y>32</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-3</x>
+     <y>52</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonOpenLog</sender>
+   <signal>clicked()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>logOpen()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>612</x>
+     <y>526</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>485</x>
+     <y>-5</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>tableBatchGroups</sender>
+   <signal>cellChanged(int,int)</signal>
+   <receiver>mainWindow</receiver>
+   <slot>updateBatchGroups(int,int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>313</x>
+     <y>71</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>801</x>
+     <y>208</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lineFolder</sender>
+   <signal>editingFinished()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>updateCompleters()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>172</x>
+     <y>372</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>126</x>
+     <y>542</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonMoveUp</sender>
+   <signal>clicked()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>batchMoveUp()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>685</x>
+     <y>515</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>220</x>
+     <y>518</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonMoveDown</sender>
+   <signal>clicked()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>batchMoveDown()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>309</x>
+     <y>515</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>800</x>
+     <y>511</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionSettingsFolder</sender>
+   <signal>triggered()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>openSettingsFolder()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>270</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionAboutReportBug</sender>
+   <signal>triggered()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>aboutReportBug()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>270</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionAboutWebsite</sender>
+   <signal>triggered()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>aboutWebsite()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>270</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionRenameExistingImages</sender>
+   <signal>triggered()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>renameExisting()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>270</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>help()</slot>
+  <slot>options()</slot>
+  <slot>aboutAuthor()</slot>
+  <slot>advanced()</slot>
+  <slot>updateFavorites()</slot>
+  <slot>webUpdateTags()</slot>
+  <slot>webUpdatePopular()</slot>
+  <slot>batchClear()</slot>
+  <slot>addGroup()</slot>
+  <slot>addUnique()</slot>
+  <slot>logClear()</slot>
+  <slot>getPage()</slot>
+  <slot>getAll()</slot>
+  <slot>favoritesBack()</slot>
+  <slot>viewed()</slot>
+  <slot>updateBatchGroups(int,int)</slot>
+  <slot>saveFolder()</slot>
+  <slot>widgetPlusChange()</slot>
+  <slot>checkFavorites()</slot>
+  <slot>previousPage()</slot>
+  <slot>nextPage()</slot>
+  <slot>firstPage()</slot>
+  <slot>lastPage()</slot>
+  <slot>addTab()</slot>
+  <slot>closeCurrentTab()</slot>
+  <slot>batchClearSel()</slot>
+  <slot>batchSel()</slot>
+  <slot>blacklistFix()</slot>
+  <slot>emptyDirsFix()</slot>
+  <slot>loadTag(QString)</slot>
+  <slot>updateFavoritesDock()</slot>
+  <slot>currentTabChanged(int)</slot>
+  <slot>logOpen()</slot>
+  <slot>saveSettings()</slot>
+  <slot>addPoolTab()</slot>
+  <slot>md5FixOpen()</slot>
+  <slot>updateCompleters()</slot>
+  <slot>batchMoveUp()</slot>
+  <slot>batchMoveDown()</slot>
+  <slot>openSettingsFolder()</slot>
+  <slot>aboutWebsite()</slot>
+  <slot>aboutReportBug()</slot>
+  <slot>renameExisting()</slot>
+ </slots>
+</ui>
