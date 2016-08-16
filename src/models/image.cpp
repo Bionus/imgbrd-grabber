@@ -286,6 +286,12 @@ Image::~Image()
 
 void Image::loadPreview()
 {
+	if (m_previewUrl.isEmpty())
+	{
+		log(tr("Chargement de miniature annulé (miniature vide)."));
+		return;
+	}
+
 	m_previewTry++;
 	m_loadPreview = m_parentSite->get(m_previewUrl, m_parent, "preview");
 	m_loadPreview->setParent(this);
