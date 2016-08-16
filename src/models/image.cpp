@@ -1420,7 +1420,7 @@ QString Image::md5()
 		{
 			QFile f(m_savePath);
 			f.open(QFile::ReadOnly);
-			hash.addData(f);
+			hash.addData(&f);
 			f.close();
 		}
 
