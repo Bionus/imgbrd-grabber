@@ -820,7 +820,7 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 	replaces.insert("filename", QStrP(QUrl::fromPercentEncoding(m_url.section('/', -1).section('.', 0, -2).toUtf8()), ""));
     replaces.insert("website", QStrP(m_parentSite->url(), ""));
 	replaces.insert("websitename", QStrP(m_parentSite->name(), ""));
-	replaces.insert("md5", QStrP(m_md5, ""));
+	replaces.insert("md5", QStrP(md5(), ""));
 	replaces.insert("date", QStrP(m_createdAt.toString(tr("dd-MM-yyyy HH.mm")), ""));
 	replaces.insert("id", QStrP(QString::number(m_id), "0"));
 	for (int i = 0; i < m_search.size(); ++i)
@@ -1404,15 +1404,26 @@ void Image::setSavePath(QString savePath)
 
 QString Image::md5()
 {
-    // If we know the path to the image but not its md5, we calculate it first
-	if (m_md5 == "" && m_savePath != "")
+    // If we know the path to the image or its content but not its md5, we calculate it first
+    if (m_md5.isEmpty() && (!m_savePath.isEmpty() || !m_data.isEmpty()))
 	{
 		QCryptographicHash hash(QCryptographicHash::Md5);
-		QFile f(m_savePath);
-		f.open(QFile::ReadOnly);
-		while (!f.atEnd())
-			hash.addData(f.read(8192));
-		f.close();
+
+		// Calculate from image data
+		if (!m_data.isEmpty())
+		{
+			hash.addData(m_data);
+		}
+
+		// Calculate from image path
+		else
+		{
+			QFile f(m_savePath);
+			f.open(QFile::ReadOnly);
+			hash.addData(f);
+			f.close();
+		}
+
 		m_md5 = hash.result().toHex();
 	}
 
