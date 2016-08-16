@@ -72,3 +72,12 @@ FORMS += $${PDIR}/src/*.ui \
     $${PDIR}/src/utils/empty-dirs-fix/*.ui \
     $${PDIR}/src/utils/md5-fix/*.ui \
     $${PDIR}/src/viewer/*.ui
+
+# Linux install script
+unix:!macx{
+	isEmpty(PREFIX){
+		PREFIX = /usr/local
+	}
+	target.path = $$PREFIX/bin
+	INSTALLS += target
+}
