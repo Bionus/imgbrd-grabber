@@ -8,15 +8,17 @@ win32 {
 }
 
 unix:!macx{
-	target.path = /usr/local/bin
-	target.files += gui/Grabber
-	config.path = /usr/local/Grabber/example
-	config.files = release/languages release/sites release/words.txt
-	config.extra = touch /usr/local/Grabber/example/settings.ini
-	desktop.path = /usr/share/applications/Grabber
+	isEmpty(PREFIX){
+		PREFIX = /usr/local
+	}
+	config.path = $$PREFIX/share/Grabber/example
+	config.extra = touch release/settings.ini
+	config.files = release/languages release/sites release/words.txt release/settings.ini
+
+	desktop.path = $$PREFIX/share/applications/Grabber
 	desktop.files += release/Grabber.desktop
-	icon.path = /usr/share/icons/128x128/apps
+	icon.path = $$PREFIX/share/icons/128x128/apps
 	icon.extra = cp icon.png Grabber.png
 	icon.files += Grabber.png
-	INSTALLS += target desktop icon config
+	INSTALLS += desktop icon config
 }

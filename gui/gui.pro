@@ -43,3 +43,12 @@ SOURCES += $${PDIR}/source/*.cpp \
     $${PDIR}/source/rename-existing/*.cpp
 FORMS += $${PDIR}/ui/*.ui \
     ../source/rename-existing/*.ui
+
+#linux install script
+unix:!macx{
+	isEmpty(PREFIX){
+		PREFIX = /usr/local
+	}
+	target.path = $$PREFIX/bin
+	INSTALLS += target
+}
