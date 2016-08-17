@@ -722,10 +722,11 @@ QString fixFilename(QString fn, QString path, int maxlength)
 
 QString fixFilenameLinux(QString fn, QString path, int maxlength)
 {
+	// Fix parameters
 	QString sep = "/";
+	QString filename = path + fn;
 
 	// Divide filename
-	QString filename = path + fn;
 	QStringList parts = filename.split(sep);
 	QString file, ext;
 	if (!fn.isEmpty())
@@ -756,13 +757,19 @@ QString fixFilenameLinux(QString fn, QString path, int maxlength)
 	if (file.length() > 255 - ext.length() - 1)
 		file = file.left(255 - ext.length() - 1).trimmed();
 
+	// Get separation between filename and path
+	int index = -1;
+	int pathGroups = path.count(sep);
+	for (int i = 0; i < pathGroups; ++i)
+		index = filename.indexOf(sep, index + 1);
+
 	// Put extension and drive back
 	filename = filename + (!ext.isEmpty() ? "." + ext : "");
 	if (!fn.isEmpty())
-		filename = filename.right(filename.length() - path.length());
+		filename = filename.right(filename.length() - index - 1);
 
 	QFileInfo fi(filename);
-	filename = (fn.isEmpty() ? fi.path() + "/" : "") + fi.completeBaseName().left(245) + "." + fi.suffix();
+	filename = (fi.path() != "." ? fi.path() + "/" : "") + fi.completeBaseName().left(245) + "." + fi.suffix();
 
 	return filename;
 }
@@ -773,9 +780,8 @@ QString fixFilenameLinux(QString fn, QString path, int maxlength)
 
 QString fixFilenameWindows(QString fn, QString path, int maxlength)
 {
-	QString sep = "\\";
-
 	// Fix parameters
+	QString sep = "\\";
 	maxlength = maxlength == 0 ? MAX_PATH : maxlength;
 	QString filename = path + fn;
 
