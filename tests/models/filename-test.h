@@ -17,6 +17,7 @@ class FilenameTest : public TestSuite
 
         void testGetFormat();
         void testPathSimple();
+        void testPathComplex();
         void testPathSimpleJavascript();
         void testExpand();
 

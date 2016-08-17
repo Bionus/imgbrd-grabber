@@ -8,7 +8,7 @@ class Filename
 {
     public:
         Filename(QString format);
-        QStringList	path(Image &img, QString pth = "", int counter = 0, bool complex = true, bool maxlength = true, bool shouldFixFilename = true, bool getFull = false);
+        QStringList	path(Image &img, QSettings *settings, QString pth = "", int counter = 0, bool complex = true, bool maxlength = true, bool shouldFixFilename = true, bool getFull = false);
         QString getFormat();
 
         QString expandConditionals(QString text, QStringList tokens, QStringList tags, int depth = 0);

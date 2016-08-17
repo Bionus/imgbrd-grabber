@@ -99,12 +99,11 @@ QList<QStrP> Filename::getReplace(QString setting, QMap<QString,QStringList> det
  * @param complex Whether the filename is complex or not (contains conditionals).
  * @return The filename of the image, with any token replaced.
  */
-QStringList Filename::path(Image &img, QString pth, int counter, bool complex, bool maxlength, bool shouldFixFilename, bool getFull)
+QStringList Filename::path(Image &img, QSettings *settings, QString pth, int counter, bool complex, bool maxlength, bool shouldFixFilename, bool getFull)
 {
-	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
 	QStringList ignore = loadIgnored();
-	QStringList remove = settings.value("ignoredtags").toString().split(' ', QString::SkipEmptyParts);
-	settings.beginGroup("Save");
+	QStringList remove = settings->value("ignoredtags").toString().split(' ', QString::SkipEmptyParts);
+	settings->beginGroup("Save");
 
 	QStringList copyrights;
 	QString cop;
@@ -142,7 +141,7 @@ QStringList Filename::path(Image &img, QString pth, int counter, bool complex, b
 			details["allos"].append(underscored);
 		}
 	}
-	if (settings.value("copyright_useshorter", true).toBool())
+	if (settings->value("copyright_useshorter", true).toBool())
 	{
 		for (QString cop : details["copyrights"])
 		{
@@ -165,7 +164,7 @@ QStringList Filename::path(Image &img, QString pth, int counter, bool complex, b
 
 	QString ext = getExtension(img.url());
 
-	QString tagSeparator = settings.value("separator").toString();
+	QString tagSeparator = settings->value("separator").toString();
 	QRegularExpression poolRegexp("pool:(\\d+)");
 	QRegularExpressionMatch poolMatch = poolRegexp.match(img.search().join(tagSeparator));
 
@@ -256,7 +255,7 @@ QStringList Filename::path(Image &img, QString pth, int counter, bool complex, b
 		QStringList repKays = QStringList() << "artist" << "copyright" << "character" << "model";
 		for (QString key : repKays)
 		{
-			QList<QStrP> repls = this->getReplace(key, details, &settings);
+			QList<QStrP> repls = this->getReplace(key, details, settings);
 			replaces.insert(key, repls.first());
 		}
 		// end FIXME
@@ -271,7 +270,7 @@ QStringList Filename::path(Image &img, QString pth, int counter, bool complex, b
 			if (key != "allo")
 			{
 				res = res.replace("\\", "_").replace("%", "_").replace("/", "_").replace(":", "_").replace("|", "_").replace("*", "_").replace("?", "_").replace("\"", "_").replace("<", "_").replace(">", "_").replace("__", "_").replace("__", "_").replace("__", "_").trimmed();
-				if (!settings.value("replaceblanks", false).toBool())
+				if (!settings->value("replaceblanks", false).toBool())
 				{ res.replace("_", " "); }
 			}
 
@@ -344,7 +343,7 @@ QStringList Filename::path(Image &img, QString pth, int counter, bool complex, b
 			if (key != "allo" && key != "url_file" && key != "url_page")
 			{
 				res = res.replace("\\", "_").replace("%", "_").replace("/", "_").replace(":", "_").replace("|", "_").replace("*", "_").replace("?", "_").replace("\"", "_").replace("<", "_").replace(">", "_").replace("__", "_").replace("__", "_").replace("__", "_").trimmed();
-				if (!settings.value("replaceblanks", false).toBool())
+				if (!settings->value("replaceblanks", false).toBool())
 				{ res.replace("_", " "); }
 			}
 
@@ -358,7 +357,7 @@ QStringList Filename::path(Image &img, QString pth, int counter, bool complex, b
 
 	for (QString key : keys)
 	{
-		QList<QStrP> replaces = this->getReplace(key, details, &settings);
+		QList<QStrP> replaces = this->getReplace(key, details, settings);
 		int cnt = fns.count();
 		for (int i = 0; i < cnt; ++i)
 		{
@@ -368,7 +367,7 @@ QStringList Filename::path(Image &img, QString pth, int counter, bool complex, b
 				{
 					QString res = replaces[j].first.isEmpty() ? replaces[j].second : replaces[j].first;
 					res.replace("\\", "_").replace("%", "_").replace("/", "_").replace(":", "_").replace("|", "_").replace("*", "_").replace("?", "_").replace("\"", "_").replace("<", "_").replace(">", "_").replace("__", "_").replace("__", "_").replace("__", "_").trimmed();
-					if (!settings.value("replaceblanks", false).toBool())
+					if (!settings->value("replaceblanks", false).toBool())
 					{ res.replace("_", " "); }
 
 					QString filename = QString(fns[i]);
@@ -399,7 +398,7 @@ QStringList Filename::path(Image &img, QString pth, int counter, bool complex, b
 		// Max filename size option
 		if (shouldFixFilename)
 		{
-			int limit = !maxlength ? 0 : settings.value("limit").toInt();
+			int limit = !maxlength ? 0 : settings->value("limit").toInt();
 			fns[i] = fixFilename(filename, pth, limit);
 		}
 

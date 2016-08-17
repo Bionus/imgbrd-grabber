@@ -31,6 +31,8 @@ void FilenameTest::init()
     details["tags_copyright"] = "copyright1";
 
 	m_settings = new QSettings("tests/test_settings.ini", QSettings::IniFormat);
+	m_settings->setValue("Save/character_value", "group");
+
 	m_site = new Site(m_settings, "release/sites/Danbooru (2.0)", "danbooru.donmai.us");
 	m_img = new Image(m_site, details);
 }
@@ -54,6 +56,11 @@ void FilenameTest::testGetFormat()
 void FilenameTest::testPathSimple()
 {
     assertPath("%md5%.%ext%", "1bc29b36f623ba82aaf6724fd3b16718.jpg");
+}
+void FilenameTest::testPathComplex()
+{
+    assertPath("%artist%/%copyright%/%character%/%md5%.%ext%",
+               "artist1/copyright1/group/1bc29b36f623ba82aaf6724fd3b16718.jpg");
 }
 
 void FilenameTest::testPathSimpleJavascript()
@@ -84,8 +91,15 @@ void FilenameTest::assertPath(QString format, QStringList expected, QString path
     if (path.isEmpty())
         path = QDir::homePath();
 
+    // Convert directory separators
+    QStringList expectedNative;
+    for (QString exp : expected)
+    {
+        expectedNative.append(QDir::toNativeSeparators(exp));
+    }
+
     Filename fn(format);
-    QCOMPARE(fn.path(*m_img, path), expected);
+    QCOMPARE(fn.path(*m_img, m_settings, path), expectedNative);
 }
 
 
