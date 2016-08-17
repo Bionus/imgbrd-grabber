@@ -19,12 +19,14 @@ DEFINES     += TEST=1
 @
 T = $$(TRAVIS)
 !isEmpty(T) {
-    QMAKE_CXXFLAGS -= -O2
-    QMAKE_CXXFLAGS_RELEASE -= -O2
+    unix:!macx {
+        QMAKE_CXXFLAGS -= -O2
+        QMAKE_CXXFLAGS_RELEASE -= -O2
 
-    LIBS += -lgcov
-    QMAKE_CXXFLAGS += -g -fprofile-arcs -ftest-coverage -O0
-    QMAKE_LFLAGS += -g -fprofile-arcs -ftest-coverage  -O0
+        LIBS += -lgcov
+        QMAKE_CXXFLAGS += -g -fprofile-arcs -ftest-coverage -O0
+        QMAKE_LFLAGS += -g -fprofile-arcs -ftest-coverage  -O0
+    }
 }
 @
 

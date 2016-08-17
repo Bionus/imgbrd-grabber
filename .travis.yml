@@ -1,30 +1,50 @@
 language: cpp
+compiler: gcc
+
+# Linux build
 sudo: required
 dist: trusty
-compiler:
-  - gcc
 
+# OS X build
+matrix:
+  include:
+    - os: osx
+      osx_image: xcode7
+
+# Qt packages for Linux
 addons:
   apt:
     sources:
-    - sourceline: 'ppa:ubuntu-sdk-team/ppa'
+      - sourceline: 'ppa:ubuntu-sdk-team/ppa'
     packages:
-    - qt5-qmake
-    - qtbase5-dev
-    - qtdeclarative5-dev
-    - qtscript5-dev
-    - qtmultimedia5-dev
-    - libpulse-dev
-    - qt5-default
-    - qttools5-dev-tools
+      - qt5-qmake
+      - qtbase5-dev
+      - qtdeclarative5-dev
+      - qtscript5-dev
+      - qtmultimedia5-dev
+      - libpulse-dev
+      - qt5-default
+      - qttools5-dev-tools
 
+# Qt packages for OS X
+install:
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+      brew update &&
+      brew install qt5 &&
+      PATH=/usr/local/Cellar/qt5/5.6.1-1/bin:$PATH &&
+      export PATH
+    ; fi
+
+# Install code coverage tool for Linux builds
 before_install:
-  - pip install --user codecov
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then pip install --user codecov; fi
 
+# Build Grabber
 script:
   - qmake Grabber.pro
   - make
   - ./tests/tests
 
+# Upload code coverage of Linux builds
 after_success:
-  - codecov -t 068ef4e2-5006-4f45-9545-fbf4e22ad085
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then codecov -t 068ef4e2-5006-4f45-9545-fbf4e22ad085; fi
