@@ -722,7 +722,7 @@ QString fixFilename(QString fn, QString path, int maxlength)
 
 QString fixFilenameLinux(QString fn, QString path, int maxlength)
 {
-	QString sep = QDir::toNativeSeparators("/");
+	QString sep = "/";
 
 	// Divide filename
 	QString filename = path + fn;
@@ -773,7 +773,7 @@ QString fixFilenameLinux(QString fn, QString path, int maxlength)
 
 QString fixFilenameWindows(QString fn, QString path, int maxlength)
 {
-	QString sep = QDir::toNativeSeparators("/");
+	QString sep = "\\";
 
 	// Fix parameters
 	maxlength = maxlength == 0 ? MAX_PATH : maxlength;
