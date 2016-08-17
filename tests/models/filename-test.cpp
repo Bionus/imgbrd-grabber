@@ -81,6 +81,9 @@ void FilenameTest::assertPath(QString format, QString expected, QString path)
 
 void FilenameTest::assertPath(QString format, QStringList expected, QString path)
 {
+    if (path.isEmpty())
+        path = QDir::homePath();
+
     Filename fn(format);
     QCOMPARE(fn.path(*m_img, path), expected);
 }

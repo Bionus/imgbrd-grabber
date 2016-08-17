@@ -21,8 +21,8 @@ class FilenameTest : public TestSuite
         void testExpand();
 
     protected:
-        void assertPath(QString format, QString expected, QString path = "C:/test");
-        void assertPath(QString format, QStringList expected, QString path = "C:/test");
+        void assertPath(QString format, QString expected, QString path = "");
+        void assertPath(QString format, QStringList expected, QString path = "");
         void assertExpand(QString format, QString expected);
 
     private:
