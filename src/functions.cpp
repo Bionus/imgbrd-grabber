@@ -712,117 +712,133 @@ QString fixFilename(QString fn, QString path, int maxlength)
 	path = QDir::toNativeSeparators(path);
 	if (!path.endsWith(sep) && !path.isEmpty() && !fn.isEmpty())
 		path += sep;
-	int pathGroups = path.count(sep);
 
 	#ifdef Q_OS_WIN
-		// Fix parameters
-		maxlength = maxlength == 0 ? MAX_PATH : maxlength;
-		QString filename = path + fn;
-
-		// Drive
-		QString drive = "";
-		if (filename.mid(1, 2) == ":\\")
-		{
-			drive = filename.left(3);
-			filename = filename.right(filename.length() - 3);
-		}
-
-		// Forbidden characters
-		filename.remove('<').remove('>').remove(':').remove('"').remove('/').remove('|').remove('?').remove('*');
-
-		// Fobidden directories or filenames
-		QStringList forbidden = QStringList() << "CON" << "PRN" << "AUX" << "NUL" << "COM1" << "COM2" << "COM3" << "COM4" << "COM5" << "COM6" << "COM7" << "COM8" << "COM9" << "LPT1" << "LPT2" << "LPT3" << "LPT4" << "LPT5" << "LPT6" << "LPT7" << "LPT8" << "LPT9";
-
-		// Divide filename
-		QStringList parts = filename.split(sep);
-		QString file, ext;
-		if (!fn.isEmpty())
-		{
-			file = parts.takeLast();
-			ext = file.right(file.length() - file.lastIndexOf('.') - 1);
-			file = file.left(file.lastIndexOf('.'));
-		}
-
-		// Fix directories
-		for (QString &part : parts)
-		{
-			// A part cannot be one in the forbidden list
-			if (forbidden.contains(part))
-				part = part + "!";
-
-			// A part cannot finish by a period
-			if (part.endsWith('.'))
-				part = part.left(part.length() - 1).trimmed();
-
-			// A part cannot start or finish with a space
-			part = part.trimmed();
-
-			// A part should still allow creating a file
-			if (part.length() > maxlength - 12)
-				part = part.left(qMax(0, maxlength - 12)).trimmed();
-		}
-
-		// Join parts back
-		QString dirpart = parts.join(sep);
-		if (dirpart.length() > maxlength - 12)
-			dirpart = dirpart.left(qMax(0, maxlength - 12)).trimmed();
-		filename = (dirpart.isEmpty() ? "" : dirpart + (!fn.isEmpty() ? sep : "")) + file;
-
-		// A filename cannot exceed MAX_PATH (-1 for <NUL> and -3 for drive "C:\")
-		if (filename.length() > maxlength - 1 - 3 - ext.length() - 1)
-			filename = filename.left(qMax(0, maxlength - 1 - 3 - ext.length() - 1)).trimmed();
-
-		// Get separation between filename and path
-		int index = -1;
-		for (int i = 0; i < pathGroups - 1; ++i)
-			index = filename.indexOf(sep, index + 1);
-		index += drive.length();
-
-		// Put extension and drive back
-		filename = drive + filename + (!ext.isEmpty() ? "." + ext : "");
-		if (!fn.isEmpty())
-			filename = filename.right(filename.length() - index - 1);
+		return fixFilenameWindows(fn, path, maxlength);
 	#else
-		// Divide filename
-		QString filename = path + fn;
-		QStringList parts = filename.split(sep);
-		QString file, ext;
-		if (!fn.isEmpty())
-		{
-			file = parts.takeLast();
-			ext = file.right(file.length() - file.lastIndexOf('.') - 1);
-			file = file.left(file.lastIndexOf('.'));
-		}
-
-		// Fix directories
-		for (QString &part : parts)
-		{
-			// A part cannot start or finish with a space
-			part = part.trimmed();
-
-			// Trim part
-			if (part.length() > 255)
-				part = part.left(255).trimmed();
-		}
-
-		// Join parts back
-		QString dirpart = parts.join(sep);
-		filename = (dirpart.isEmpty() ? "" : dirpart + (!fn.isEmpty() ? sep : "")) + file;
-
-		// A filename cannot exceed a certain length
-		if (file.length() > maxlength - ext.length() - 1)
-			file = file.left(maxlength - ext.length() - 1).trimmed();
-		if (file.length() > 255 - ext.length() - 1)
-			file = file.left(255 - ext.length() - 1).trimmed();
-
-		// Put extension and drive back
-		filename = filename + (!ext.isEmpty() ? "." + ext : "");
-		if (!fn.isEmpty())
-			filename = filename.right(filename.length() - path.length());
-
-		QFileInfo fi(filename);
-		filename = fi.path() + "/" + fi.completeBaseName().left(245) + "." + fi.suffix();
+		return fixFilenameLinux(fn, path, maxlength);
 	#endif
+}
+
+QString fixFilenameLinux(QString fn, QString path, int maxlength)
+{
+	QString sep = QDir::toNativeSeparators("/");
+
+	// Divide filename
+	QString filename = path + fn;
+	QStringList parts = filename.split(sep);
+	QString file, ext;
+	if (!fn.isEmpty())
+	{
+		file = parts.takeLast();
+		ext = file.right(file.length() - file.lastIndexOf('.') - 1);
+		file = file.left(file.lastIndexOf('.'));
+	}
+
+	// Fix directories
+	for (QString &part : parts)
+	{
+		// A part cannot start or finish with a space
+		part = part.trimmed();
+
+		// Trim part
+		if (part.length() > 255)
+			part = part.left(255).trimmed();
+	}
+
+	// Join parts back
+	QString dirpart = parts.join(sep);
+	filename = (dirpart.isEmpty() ? "" : dirpart + (!fn.isEmpty() ? sep : "")) + file;
+
+	// A filename cannot exceed a certain length
+	if (file.length() > maxlength - ext.length() - 1)
+		file = file.left(maxlength - ext.length() - 1).trimmed();
+	if (file.length() > 255 - ext.length() - 1)
+		file = file.left(255 - ext.length() - 1).trimmed();
+
+	// Put extension and drive back
+	filename = filename + (!ext.isEmpty() ? "." + ext : "");
+	if (!fn.isEmpty())
+		filename = filename.right(filename.length() - path.length());
+
+	QFileInfo fi(filename);
+	filename = (fn.isEmpty() ? fi.path() + "/" : "") + fi.completeBaseName().left(245) + "." + fi.suffix();
+
+	return filename;
+}
+
+QString fixFilenameWindows(QString fn, QString path, int maxlength)
+{
+	QString sep = QDir::toNativeSeparators("/");
+
+	// Fix parameters
+	maxlength = maxlength == 0 ? MAX_PATH : maxlength;
+	QString filename = path + fn;
+
+	// Drive
+	QString drive = "";
+	if (filename.mid(1, 2) == ":\\")
+	{
+		drive = filename.left(3);
+		filename = filename.right(filename.length() - 3);
+	}
+
+	// Forbidden characters
+	filename.remove('<').remove('>').remove(':').remove('"').remove('/').remove('|').remove('?').remove('*');
+
+	// Fobidden directories or filenames
+	QStringList forbidden = QStringList() << "CON" << "PRN" << "AUX" << "NUL" << "COM1" << "COM2" << "COM3" << "COM4" << "COM5" << "COM6" << "COM7" << "COM8" << "COM9" << "LPT1" << "LPT2" << "LPT3" << "LPT4" << "LPT5" << "LPT6" << "LPT7" << "LPT8" << "LPT9";
+
+	// Divide filename
+	QStringList parts = filename.split(sep);
+	QString file, ext;
+	if (!fn.isEmpty())
+	{
+		file = parts.takeLast();
+		ext = file.right(file.length() - file.lastIndexOf('.') - 1);
+		file = file.left(file.lastIndexOf('.'));
+	}
+
+	// Fix directories
+	for (QString &part : parts)
+	{
+		// A part cannot be one in the forbidden list
+		if (forbidden.contains(part))
+			part = part + "!";
+
+		// A part cannot finish by a period
+		if (part.endsWith('.'))
+			part = part.left(part.length() - 1).trimmed();
+
+		// A part cannot start or finish with a space
+		part = part.trimmed();
+
+		// A part should still allow creating a file
+		if (part.length() > maxlength - 12)
+			part = part.left(qMax(0, maxlength - 12)).trimmed();
+	}
+
+	// Join parts back
+	QString dirpart = parts.join(sep);
+	if (dirpart.length() > maxlength - 12)
+		dirpart = dirpart.left(qMax(0, maxlength - 12)).trimmed();
+	filename = (dirpart.isEmpty() ? "" : dirpart + (!fn.isEmpty() ? sep : "")) + file;
+
+	// A filename cannot exceed MAX_PATH (-1 for <NUL> and -3 for drive "C:\")
+	if (filename.length() > maxlength - 1 - 3 - ext.length() - 1)
+		filename = filename.left(qMax(0, maxlength - 1 - 3 - ext.length() - 1)).trimmed();
+
+	// Get separation between filename and path
+	int index = -1;
+	int pathGroups = path.count(sep);
+	for (int i = 0; i < pathGroups - 1; ++i)
+		index = filename.indexOf(sep, index + 1);
+	index += drive.length();
+
+	// Put extension and drive back
+	filename = drive + filename + (!ext.isEmpty() ? "." + ext : "");
+	if (!fn.isEmpty())
+		filename = filename.right(filename.length() - index - 1);
 
 	return filename;
 }

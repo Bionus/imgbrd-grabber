@@ -31,7 +31,8 @@ T = $$(TRAVIS)
 # Remove original main
 SOURCES -= $${PDIR}/src/main/main.cpp
 
-SOURCES += $${PDIR}/tests/*.cpp \
+SOURCES += $${PDIR}/tests/test-suite.cpp \
+    $${PDIR}/tests/*.cpp \
     $${PDIR}/tests/models/*.cpp \
     $${PDIR}/tests/integration/*.cpp
 HEADERS += $${PDIR}/tests/*.h \

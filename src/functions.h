@@ -59,6 +59,8 @@ void		setMd5(QString, QString);
 void		removeMd5(QString);
 
 QString fixFilename(QString filename, QString path = "", int maxlength = 0);
+QString fixFilenameWindows(QString filename, QString path = "", int maxlength = 0);
+QString fixFilenameLinux(QString filename, QString path = "", int maxlength = 0);
 
 QList<Favorite> loadFavorites();
 QStringList		loadViewItLater();
