@@ -17,10 +17,13 @@ class FilenameTest : public TestSuite
 
         void testGetFormat();
         void testPathSimple();
+        void testPathSimpleJavascript();
+        void testExpand();
 
     protected:
         void assertPath(QString format, QString expected, QString path = "C:/test");
         void assertPath(QString format, QStringList expected, QString path = "C:/test");
+        void assertExpand(QString format, QString expected);
 
     private:
         QSettings *m_settings;
