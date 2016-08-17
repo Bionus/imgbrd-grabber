@@ -1346,6 +1346,7 @@ QString			Image::status()			{ return m_status;			}
 QString			Image::rating()			{ return m_rating;			}
 QString			Image::source()			{ return m_source;			}
 QString			Image::site()			{ return m_site;			}
+Site			*Image::parentSite()	{ return m_parentSite;		}
 QString			Image::filename()		{ return m_filename;		}
 QString			Image::folder()			{ return m_folder;			}
 QList<Tag>		Image::tags()			{ return m_tags;			}
@@ -1374,6 +1375,7 @@ QNetworkReply	*Image::imageReply()	{ return m_loadImage;		}
 QNetworkReply	*Image::tagsReply()		{ return m_loadDetails;		}
 QSettings		*Image::settings()		{ return m_settings;		}
 QMap<QString,QString> Image::details()	{ return m_details;         }
+QStringList		Image::search()			{ return m_search;			}
 
 QStringList Image::tagsString()
 {

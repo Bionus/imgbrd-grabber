@@ -53,6 +53,7 @@ class Image : public QObject
 		QString		folder();
 		QList<Tag>	tags();
 		QStringList tagsString();
+		QStringList search();
 		QList<Pool*>pools();
 		int			id();
 		int			score();
@@ -79,6 +80,7 @@ class Image : public QObject
 		void		setFileSize(int);
 		void		setSavePath(QString);
 		QSettings	*settings();
+		Site		*parentSite();
 		QNetworkReply	*imageReply();
 		QNetworkReply	*tagsReply();
 		bool		hasTag(QString tag);
