@@ -7,6 +7,7 @@
 [![Donate with Patreon](https://img.shields.io/badge/patreon-donate-orange.svg)](https://www.patreon.com/bionus)
 [![Project license](https://img.shields.io/github/license/bionus/imgbrd-grabber.svg)](https://raw.githubusercontent.com/Bionus/imgbrd-grabber/develop/LICENSE)
 [![Build Status](https://travis-ci.org/Bionus/imgbrd-grabber.svg)](https://travis-ci.org/Bionus/imgbrd-grabber)
+[![Code Coverage](https://codecov.io/gh/Bionus/imgbrd-grabber/branch/master/graph/badge.svg)](https://codecov.io/gh/Bionus/imgbrd-grabber)
 
 ## About
 Imgbrd-Grabber is an imageboard/booru downloader which can be used with a great a graphical user interface or through command line. It can download thousands of images from multiple boorus very easily.

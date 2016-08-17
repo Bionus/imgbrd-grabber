@@ -1,0 +1,21 @@
+codecov:
+  branch: master
+
+coverage:
+  precision: 2
+  round: down
+  range: 70...100
+
+  status:
+    project: true
+    patch: true
+    changes: false
+
+  ignore:
+    - "tests/*"
+    - "vendor/*"
+    - "CrashReporter/*"
+
+comment:
+  layout: "header, diff"
+  behavior: default

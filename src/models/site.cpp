@@ -367,7 +367,7 @@ QNetworkReply *Site::getRequest(QNetworkRequest request)
         QString md5 = QString(QCryptographicHash::hash(request.url().toString().toLatin1(), QCryptographicHash::Md5).toHex());
         QString filename = request.url().fileName();
         QString ext = filename.contains('.') ? filename.mid(filename.lastIndexOf('.') + 1) : "html";
-        QString path = "resources/" + m_name + "/" + md5 + "." + ext;
+        QString path = "tests/resources/" + m_name + "/" + md5 + "." + ext;
         log("Reply from file: " + path);
 
         QFile f(path);

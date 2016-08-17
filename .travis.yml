@@ -18,7 +18,13 @@ addons:
     - qt5-default
     - qttools5-dev-tools
 
+before_install:
+  - pip install --user codecov
+
 script:
   - qmake Grabber.pro
   - make
-  - cd tests && ./tests
+  - ./tests/tests
+
+after_success:
+  - codecov -t 068ef4e2-5006-4f45-9545-fbf4e22ad085
