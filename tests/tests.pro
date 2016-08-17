@@ -15,6 +15,19 @@ INCLUDEPATH += . .. $${PDIR}/tests
 DEFINES     += SRCDIR=\\\"$$PWD/\\\"
 DEFINES     += TEST=1
 
+# Code coverage
+@
+T = $$(TRAVIS)
+!isEmpty(T) {
+    QMAKE_CXXFLAGS -= -O2
+    QMAKE_CXXFLAGS_RELEASE -= -O2
+
+    LIBS += -lgcov
+    QMAKE_CXXFLAGS += -g -fprofile-arcs -ftest-coverage -O0
+    QMAKE_LFLAGS += -g -fprofile-arcs -ftest-coverage  -O0
+}
+@
+
 # Remove original main
 SOURCES -= $${PDIR}/src/main/main.cpp
 

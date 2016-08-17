@@ -7,13 +7,13 @@
 
 void DanbooruTest::initTestCase()
 {
-	setLogFile("test_log.log");
+	setLogFile("tests/test_log.log");
 }
 
 void DanbooruTest::myInit(QString source)
 {
-	m_settings = new QSettings("test_settings.ini", QSettings::IniFormat);
-	QSettings settings("../release/sites/Danbooru (2.0)/danbooru.donmai.us/settings.ini", QSettings::IniFormat);
+	m_settings = new QSettings("tests/test_settings.ini", QSettings::IniFormat);
+	QSettings settings("release/sites/Danbooru (2.0)/danbooru.donmai.us/settings.ini", QSettings::IniFormat);
 	settings.setValue("download/throttle_retry", 0);
 	settings.setValue("download/throttle_page", 0);
 	settings.setValue("download/throttle_thumbnail", 0);
@@ -22,7 +22,7 @@ void DanbooruTest::myInit(QString source)
 	settings.setValue("sources/source_1", source);
 
 	QList<Site*> sites;
-	sites.append(new Site(m_settings, "../release/sites/Danbooru (2.0)", "danbooru.donmai.us"));
+	sites.append(new Site(m_settings, "release/sites/Danbooru (2.0)", "danbooru.donmai.us"));
 
 	m_downloader = new Downloader(QStringList() << "rating:safe",
 								  QStringList(),
