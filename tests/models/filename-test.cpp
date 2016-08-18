@@ -29,6 +29,7 @@ void FilenameTest::init()
     details["tags_artist"] = "artist1";
     details["tags_character"] = "character1 character2";
     details["tags_copyright"] = "copyright1";
+    details["created_at"] = "1471513944";
 
 	m_settings = new QSettings("tests/test_settings.ini", QSettings::IniFormat);
 	m_settings->setValue("Save/character_value", "group");
@@ -87,6 +88,10 @@ void FilenameTest::testPathOptionMax()
 void FilenameTest::testPathOptionMaxDouble()
 {
     assertPath("%md5:maxlength=16,maxlength=8%.%ext%", "1bc29b36.jpg");
+}
+void FilenameTest::testPathOptionDateFormat()
+{
+    assertPath("%date:format=yyyy-MM-dd%.%ext%", "2016-08-18.jpg");
 }
 
 

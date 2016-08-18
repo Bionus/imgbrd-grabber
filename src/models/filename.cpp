@@ -330,9 +330,14 @@ QStringList Filename::path(Image &img, QSettings *settings, QString pth, int cou
 				}
 
 				QString res = replaces[key].first.isEmpty() ? replaces[key].second : replaces[key].first;
+
+				// Apply options
+				if (key == "date" && options.contains("format"))
+				{ res = img.createdAt().toString(options["format"]); }
 				if (options.contains("maxlength"))
 				{ res = res.left(options["maxlength"].toInt()); }
 
+				// Forbidden characters and spaces replacement settings
 				if (key != "allo" && key != "url_file" && key != "url_page")
 				{
 					res = res.replace("\\", "_").replace("%", "_").replace("/", "_").replace(":", "_").replace("|", "_").replace("*", "_").replace("?", "_").replace("\"", "_").replace("<", "_").replace(">", "_").replace("__", "_").replace("__", "_").replace("__", "_").trimmed();
@@ -347,11 +352,6 @@ QStringList Filename::path(Image &img, QSettings *settings, QString pth, int cou
 		}
 
 		// Complex expressions using regexes
-		QRegExp rxdate("%date:([^%]+)%");
-		rxdate.setMinimal(true);
-		p = 0;
-		while ((p = rxdate.indexIn(filename, p)) != -1)
-		{ filename.replace(rxdate.cap(0), img.createdAt().toString(rxdate.cap(1))); }
 		QRegExp rxcounter("%count(:\\d+)?(:\\d+)?%");
 		rxcounter.setMinimal(true);
 		p = 0;

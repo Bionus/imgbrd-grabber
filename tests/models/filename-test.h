@@ -22,6 +22,7 @@ class FilenameTest : public TestSuite
         void testExpand();
         void testPathOptionMax();
         void testPathOptionMaxDouble();
+        void testPathOptionDateFormat();
 
     protected:
         void assertPath(QString format, QString expected, QString path = "");
