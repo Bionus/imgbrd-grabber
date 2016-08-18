@@ -20,6 +20,8 @@ class FilenameTest : public TestSuite
         void testPathComplex();
         void testPathSimpleJavascript();
         void testExpand();
+        void testPathOptionMax();
+        void testPathOptionMaxDouble();
 
     protected:
         void assertPath(QString format, QString expected, QString path = "");

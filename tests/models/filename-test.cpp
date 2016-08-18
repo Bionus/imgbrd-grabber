@@ -80,6 +80,15 @@ void FilenameTest::testExpand()
                  " %md5%.%ext%");
 }
 
+void FilenameTest::testPathOptionMax()
+{
+    assertPath("%md5:maxlength=8%.%ext%", "1bc29b36.jpg");
+}
+void FilenameTest::testPathOptionMaxDouble()
+{
+    assertPath("%md5:maxlength=16,maxlength=8%.%ext%", "1bc29b36.jpg");
+}
+
 
 void FilenameTest::assertPath(QString format, QString expected, QString path)
 {

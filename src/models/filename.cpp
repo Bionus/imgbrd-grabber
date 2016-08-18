@@ -306,10 +306,50 @@ QStringList Filename::path(Image &img, QSettings *settings, QString pth, int cou
 			filename = this->expandConditionals(filename, tokens, details["allos"]);
 		}
 
+		// Replace everything
+		QRegExp replacerx("%([^:]+)(?::([^%]+))?%");
+		replacerx.setMinimal(true);
+		int p = 0;
+		while ((p = replacerx.indexIn(filename, p)) != -1)
+		{
+			QString key = replacerx.cap(1);
+			if (replaces.contains(key))
+			{
+				QMap<QString,QString> options;
+				if (replacerx.captureCount() > 1)
+				{
+					QStringList opts = replacerx.cap(2).split(',');
+					for (QString opt : opts)
+					{
+						int index = opt.indexOf('=');
+						if (index != -1)
+						{ options.insert(opt.left(index), opt.mid(index + 1)); }
+						else
+						{ options.insert(opt, "true"); }
+					}
+				}
+
+				QString res = replaces[key].first.isEmpty() ? replaces[key].second : replaces[key].first;
+				if (options.contains("maxlength"))
+				{ res = res.left(options["maxlength"].toInt()); }
+
+				if (key != "allo" && key != "url_file" && key != "url_page")
+				{
+					res = res.replace("\\", "_").replace("%", "_").replace("/", "_").replace(":", "_").replace("|", "_").replace("*", "_").replace("?", "_").replace("\"", "_").replace("<", "_").replace(">", "_").replace("__", "_").replace("__", "_").replace("__", "_").trimmed();
+					if (!settings->value("replaceblanks", false).toBool())
+					{ res.replace("_", " "); }
+				}
+
+				filename.replace(replacerx.cap(0), res);
+			}
+			else
+			{ p += replacerx.matchedLength(); }
+		}
+
 		// Complex expressions using regexes
 		QRegExp rxdate("%date:([^%]+)%");
 		rxdate.setMinimal(true);
-		int p = 0;
+		p = 0;
 		while ((p = rxdate.indexIn(filename, p)) != -1)
 		{ filename.replace(rxdate.cap(0), img.createdAt().toString(rxdate.cap(1))); }
 		QRegExp rxcounter("%count(:\\d+)?(:\\d+)?%");
@@ -317,39 +357,6 @@ QStringList Filename::path(Image &img, QSettings *settings, QString pth, int cou
 		p = 0;
 		while ((p = rxcounter.indexIn(filename, p)) != -1)
 		{ filename.replace(rxcounter.cap(0), rxcounter.captureCount() > 0 ? QString::number(counter, 'f', rxcounter.cap(1).toInt()) : QString::number(counter)); }
-		QRegExp rxsize("%([^:]+):([^%]+)%");
-		rxsize.setMinimal(true);
-		p = 0;
-		while ((p = rxsize.indexIn(filename, p)) != -1)
-		{
-			QString key = rxsize.cap(1);
-			int length = rxsize.cap(2).toInt();
-			if (replaces.contains(key) && length >= 0)
-			{
-				QString res = replaces[key].first.isEmpty() ? replaces[key].second : replaces[key].first;
-				filename.replace(rxsize.cap(0), res.left(length));
-			}
-			else
-			{ p += rxsize.matchedLength(); }
-		}
-
-
-		// We replace everything
-		QStringList keys = replaces.keys();
-		for (int i = 0; i < replaces.size(); ++i)
-		{
-			QString key = keys.at(i);
-			QString res = replaces[key].first.isEmpty() ? replaces[key].second : replaces[key].first;
-			if (key != "allo" && key != "url_file" && key != "url_page")
-			{
-				res = res.replace("\\", "_").replace("%", "_").replace("/", "_").replace(":", "_").replace("|", "_").replace("*", "_").replace("?", "_").replace("\"", "_").replace("<", "_").replace(">", "_").replace("__", "_").replace("__", "_").replace("__", "_").trimmed();
-				if (!settings->value("replaceblanks", false).toBool())
-				{ res.replace("_", " "); }
-			}
-
-			// We only cut the name if it is not a folder
-			filename.replace("%"+key+"%", res);
-		}
 	}
 
 	QStringList fns = QStringList() << filename;
