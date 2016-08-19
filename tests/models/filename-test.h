@@ -19,10 +19,15 @@ class FilenameTest : public TestSuite
         void testPathSimple();
         void testPathComplex();
         void testPathSimpleJavascript();
-        void testExpand();
+        void testExpandTag();
+        void testExpandTokenSimple();
+        void testExpandTokenComplex();
         void testPathOptionMax();
         void testPathOptionMaxDouble();
         void testPathOptionDateFormat();
+        void testGetReplacesSimple();
+        void testGetReplacesMultiple();
+        void testGetReplacesMatrix();
 
     protected:
         void assertPath(QString format, QString expected, QString path = "");

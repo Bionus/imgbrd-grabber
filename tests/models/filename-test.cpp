@@ -27,12 +27,15 @@ void FilenameTest::init()
     details["source"] = "http://google.com/";
     details["tags_general"] = "tag1 tag2 tag3";
     details["tags_artist"] = "artist1";
+    details["tags_copyright"] = "copyright1 copyright2";
     details["tags_character"] = "character1 character2";
-    details["tags_copyright"] = "copyright1";
     details["created_at"] = "1471513944";
 
 	m_settings = new QSettings("tests/test_settings.ini", QSettings::IniFormat);
 	m_settings->setValue("Save/character_value", "group");
+	m_settings->setValue("Save/character_multiple", "replaceAll");
+	m_settings->setValue("Save/copyright_value", "crossover");
+	m_settings->setValue("Save/copyright_multiple", "replaceAll");
 
 	m_site = new Site(m_settings, "release/sites/Danbooru (2.0)", "danbooru.donmai.us");
 	m_img = new Image(m_site, details);
@@ -61,7 +64,7 @@ void FilenameTest::testPathSimple()
 void FilenameTest::testPathComplex()
 {
     assertPath("%artist%/%copyright%/%character%/%md5%.%ext%",
-               "artist1/copyright1/group/1bc29b36f623ba82aaf6724fd3b16718.jpg");
+               "artist1/crossover/group/1bc29b36f623ba82aaf6724fd3b16718.jpg");
 }
 
 void FilenameTest::testPathSimpleJavascript()
@@ -69,7 +72,7 @@ void FilenameTest::testPathSimpleJavascript()
     assertPath("javascript:md5 + '.' + ext", "1bc29b36f623ba82aaf6724fd3b16718.jpg");
 }
 
-void FilenameTest::testExpand()
+void FilenameTest::testExpandTag()
 {
     assertExpand("<image contains the tag \"tag1\"><\"unknown\" is one of the image tags> %md5%.%ext%",
                  "image contains the tag tag1 %md5%.%ext%");
@@ -79,6 +82,18 @@ void FilenameTest::testExpand()
                  "image contains the tag tag1tag2 is one of the image tags %md5%.%ext%");
     assertExpand("<image contains the tag \"unknown1\"><\"unknown2\" is one of the image tags> %md5%.%ext%",
                  " %md5%.%ext%");
+}
+void FilenameTest::testExpandTokenSimple()
+{
+    assertExpand("image - <%artist% some text><text %nothing%> %md5%.%ext%",
+                 "image - %artist% some text %md5%.%ext%");
+}
+void FilenameTest::testExpandTokenComplex()
+{
+    /*assertExpand("image - <%artist% some text <%nothing% another text> test><<%character% some text> text %nothing%> %md5%.%ext%",
+                 "image - %artist% some text  test %md5%.%ext%");
+    assertExpand("image - <%model% some text <%nothing% another text> test><<%character% some text> text %nothing%> %md5%.%ext%",
+                 "image -  %md5%.%ext%");*/
 }
 
 void FilenameTest::testPathOptionMax()
@@ -92,6 +107,59 @@ void FilenameTest::testPathOptionMaxDouble()
 void FilenameTest::testPathOptionDateFormat()
 {
     assertPath("%date:format=yyyy-MM-dd%.%ext%", "2016-08-18.jpg");
+}
+
+void FilenameTest::testGetReplacesSimple()
+{
+    QString format = "%artist%/%copyright%/%character%/%md5%.%ext%";
+
+    Filename fn(format);
+    m_settings->setValue("Save/character_multiple", "replaceAll");
+    QList<QMap<QString, QPair<QString, QString>>> replaces = fn.getReplaces(format, *m_img, m_settings, QMap<QString, QStringList>());
+
+    QCOMPARE(replaces.count(), 1);
+    QCOMPARE(replaces[0]["artist"].first, QString("artist1"));
+    QCOMPARE(replaces[0]["copyright"].first, QString("crossover"));
+    QCOMPARE(replaces[0]["character"].first, QString("group"));
+}
+void FilenameTest::testGetReplacesMultiple()
+{
+    QString format = "%artist%/%copyright%/%character%/%md5%.%ext%";
+
+    Filename fn(format);
+    m_settings->setValue("Save/character_multiple", "multiple");
+    QList<QMap<QString, QPair<QString, QString>>> replaces = fn.getReplaces(format, *m_img, m_settings, QMap<QString, QStringList>());
+
+    QCOMPARE(replaces.count(), 2);
+    QCOMPARE(replaces[0]["artist"].first, QString("artist1"));
+    QCOMPARE(replaces[0]["copyright"].first, QString("crossover"));
+    QCOMPARE(replaces[0]["character"].first, QString("character1"));
+    QCOMPARE(replaces[1]["artist"].first, QString("artist1"));
+    QCOMPARE(replaces[1]["copyright"].first, QString("crossover"));
+    QCOMPARE(replaces[1]["character"].first, QString("character2"));
+}
+void FilenameTest::testGetReplacesMatrix()
+{
+    QString format = "%artist%/%copyright%/%character%/%md5%.%ext%";
+
+    Filename fn(format);
+    m_settings->setValue("Save/character_multiple", "multiple");
+    m_settings->setValue("Save/copyright_multiple", "multiple");
+    QList<QMap<QString, QPair<QString, QString>>> replaces = fn.getReplaces(format, *m_img, m_settings, QMap<QString, QStringList>());
+
+    QCOMPARE(replaces.count(), 4);
+    QCOMPARE(replaces[0]["artist"].first, QString("artist1"));
+    QCOMPARE(replaces[0]["copyright"].first, QString("copyright1"));
+    QCOMPARE(replaces[0]["character"].first, QString("character1"));
+    QCOMPARE(replaces[1]["artist"].first, QString("artist1"));
+    QCOMPARE(replaces[1]["copyright"].first, QString("copyright2"));
+    QCOMPARE(replaces[1]["character"].first, QString("character1"));
+    QCOMPARE(replaces[2]["artist"].first, QString("artist1"));
+    QCOMPARE(replaces[2]["copyright"].first, QString("copyright1"));
+    QCOMPARE(replaces[2]["character"].first, QString("character2"));
+    QCOMPARE(replaces[3]["artist"].first, QString("artist1"));
+    QCOMPARE(replaces[3]["copyright"].first, QString("copyright2"));
+    QCOMPARE(replaces[3]["character"].first, QString("character2"));
 }
 
 
@@ -113,7 +181,8 @@ void FilenameTest::assertPath(QString format, QStringList expected, QString path
     }
 
     Filename fn(format);
-    QCOMPARE(fn.path(*m_img, m_settings, path), expectedNative);
+    QStringList actual = fn.path(*m_img, m_settings, path);
+    QCOMPARE(actual, expectedNative);
 }
 
 
@@ -122,7 +191,9 @@ void FilenameTest::assertExpand(QString format, QString expected)
     QStringList tokens = QStringList() << "artist" << "general" << "copyright" << "character" << "model" << "model|artist" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "allo" << "date" << "date:([^%]+)" << "count(:\\d+)?(:\\d+)?" << "search_(\\d+)" << "score" << "height" << "width" << "path" << "pool" << "url_file" << "url_page";
 
     Filename fn(format);
-    QCOMPARE(fn.expandConditionals(format, tokens, m_img->tagsString()), expected);
+    QMap<QString, QPair<QString, QString>> replaces = fn.getReplaces(format, *m_img, m_settings, QMap<QString, QStringList>()).first();
+    QString actual = fn.expandConditionals(format, tokens, m_img->tagsString(), replaces);
+    QCOMPARE(actual, expected);
 }
 
 static FilenameTest instance;
