@@ -507,14 +507,17 @@ bool Filename::isValid(QString *error) const
 
 	// Can't validate javascript expressions
 	if (m_format.startsWith("javascript:"))
-		return returnError(QObject::tr("<span style=\"color:orange\">Impossible de valider les expressions Javascript.</span>"), error);
+	{
+		returnError(QObject::tr("<span style=\"color:orange\">Impossible de valider les expressions Javascript.</span>"), error);
+		return true;
+	}
 
 	// Field must end by an extension
 	if (!m_format.endsWith(".%ext%"))
 		return returnError(QObject::tr("<span style=\"color:orange\">Votre nom de fichier ne finit pas par une extension, symbolisée par %ext% ! Vous risquez de ne pas pouvoir ouvrir vos fichiers.</span>"), error);
 
 	// Field must contain an unique token
-	if (!m_format.contains("%md5%") && !m_format.contains("%id%") && !m_format.contains("%count"))
+	if (!m_format.contains("%md5%") && !m_format.contains("%id%") && !m_format.contains("%count%"))
 		return returnError(QObject::tr("<span style=\"color:orange\">Votre nom de fichier n'est pas unique à chaque image et une image risque d'en écraser une précédente lors de la sauvegarde ! Vous devriez utiliser le symbole %md5%, unique à chaque image, pour éviter ce désagrément.</span>"), error);
 
 	// Looking for unknown tokens
@@ -545,10 +548,10 @@ bool Filename::isValid(QString *error) const
 	#endif
 
 	// Check if code is unique
-	if (!m_format.contains("%md5%") && !m_format.contains("%website%") && !m_format.contains("%count") && m_format.contains("%id%"))
+	if (!m_format.contains("%md5%") && !m_format.contains("%website%") && !m_format.contains("%count%") && m_format.contains("%id%"))
 		return returnError(QObject::tr("<span style=\"color:green\">Vous avez choisi d'utiliser le symbole %id%. Sachez que celui-ci est unique pour un site choisi. Le même ID pourra identifier des images différentes en fonction du site.</span>"), error);
 
 	// All tests passed
-	*error = QObject::tr("<span style=\"color:green\">Format valide !</span>");
+	returnError(QObject::tr("<span style=\"color:green\">Format valide !</span>"), error);
 	return true;
 }

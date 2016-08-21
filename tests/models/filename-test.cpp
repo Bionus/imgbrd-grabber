@@ -176,6 +176,18 @@ void FilenameTest::testGetReplacesMatrix()
     QCOMPARE(replaces[3]["character"].first, QString("character2"));
 }
 
+void FilenameTest::testIsValid()
+{
+    QCOMPARE(Filename("%md5%").isValid(), false);
+    QCOMPARE(Filename("toto").isValid(), false);
+    QCOMPARE(Filename("%toto%.%ext%").isValid(), false);
+    QCOMPARE(Filename("%md5%.%ext%").isValid(), true);
+    QCOMPARE(Filename("%id%.%ext%").isValid(), false);
+    QCOMPARE(Filename("%website%/%id%.%ext%").isValid(), true);
+    QCOMPARE(Filename("%artist%/%copyright%/%character%/%md5%.%ext%").isValid(), true);
+    QCOMPARE(Filename("javascript:md5 + '.' + ext;").isValid(), true);
+}
+
 
 void FilenameTest::assertPath(QString format, QString expected, QString path, bool shouldFixFilename)
 {

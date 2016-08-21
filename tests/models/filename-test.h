@@ -30,6 +30,7 @@ class FilenameTest : public TestSuite
         void testGetReplacesSimple();
         void testGetReplacesMultiple();
         void testGetReplacesMatrix();
+        void testIsValid();
 
     protected:
         void assertPath(QString format, QString expected, QString path = "", bool shouldFixFilename = true);
