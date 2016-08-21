@@ -28,57 +28,57 @@ Image::Image()
 // TODO: clean up this mess
 Image::Image(const Image &other)
 {
-    m_parent = other.m_parent;
+	m_parent = other.m_parent;
 
-    m_id = other.m_id;
-    m_score = other.m_score;
-    m_parentId = other.m_parentId;
-    m_fileSize = other.m_fileSize;
-    m_authorId = other.m_authorId;
-    m_previewTry = other.m_previewTry;
+	m_id = other.m_id;
+	m_score = other.m_score;
+	m_parentId = other.m_parentId;
+	m_fileSize = other.m_fileSize;
+	m_authorId = other.m_authorId;
+	m_previewTry = other.m_previewTry;
 
-    m_hasChildren = other.m_hasChildren;
-    m_hasNote = other.m_hasNote;
-    m_hasComments = other.m_hasComments;
-    m_hasScore = other.m_hasScore;
+	m_hasChildren = other.m_hasChildren;
+	m_hasNote = other.m_hasNote;
+	m_hasComments = other.m_hasComments;
+	m_hasScore = other.m_hasScore;
 
-    m_url = other.m_url;
-    m_md5 = other.m_md5;
-    m_author = other.m_author;
-    m_status = other.m_status;
-    m_rating = other.m_rating;
-    m_source = other.m_source;
-    m_site = other.m_site;
-    m_filename = other.m_filename;
-    m_folder = other.m_folder;
-    m_savePath = other.m_savePath;
+	m_url = other.m_url;
+	m_md5 = other.m_md5;
+	m_author = other.m_author;
+	m_status = other.m_status;
+	m_rating = other.m_rating;
+	m_source = other.m_source;
+	m_site = other.m_site;
+	m_filename = other.m_filename;
+	m_folder = other.m_folder;
+	m_savePath = other.m_savePath;
 
-    m_pageUrl = other.m_pageUrl;
-    m_fileUrl = other.m_fileUrl;
-    m_sampleUrl = other.m_sampleUrl;
-    m_previewUrl = other.m_previewUrl;
+	m_pageUrl = other.m_pageUrl;
+	m_fileUrl = other.m_fileUrl;
+	m_sampleUrl = other.m_sampleUrl;
+	m_previewUrl = other.m_previewUrl;
 
-    m_size = other.m_size;
-    m_imagePreview = other.m_imagePreview;
-    m_createdAt = other.m_createdAt;
-    m_data = other.m_data;
+	m_size = other.m_size;
+	m_imagePreview = other.m_imagePreview;
+	m_createdAt = other.m_createdAt;
+	m_data = other.m_data;
 
-    m_loadPreview = other.m_loadPreview;
-    m_loadDetails = other.m_loadDetails;
-    m_loadImage = other.m_loadImage;
+	m_loadPreview = other.m_loadPreview;
+	m_loadDetails = other.m_loadDetails;
+	m_loadImage = other.m_loadImage;
 
-    m_tags = other.m_tags;
-    m_pools = other.m_pools;
-    m_timer = other.m_timer;
-    m_settings = other.m_settings;
-    m_search = other.m_search;
-    m_parentSite = other.m_parentSite;
-    m_details = other.m_details;
+	m_tags = other.m_tags;
+	m_pools = other.m_pools;
+	m_timer = other.m_timer;
+	m_settings = other.m_settings;
+	m_search = other.m_search;
+	m_parentSite = other.m_parentSite;
+	m_details = other.m_details;
 
-    m_loadingPreview = other.m_loadingPreview;
-    m_loadingDetails = other.m_loadingDetails;
-    m_loadingImage = other.m_loadingImage;
-    m_tryingSample = other.m_tryingSample;
+	m_loadingPreview = other.m_loadingPreview;
+	m_loadingDetails = other.m_loadingDetails;
+	m_loadingImage = other.m_loadingImage;
+	m_tryingSample = other.m_tryingSample;
 }
 
 Image::Image(Site *site, QMap<QString, QString> details, Page* parent)
@@ -96,7 +96,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Page* parent)
 	}
 
 	// Other details
-    m_details = details;
+	m_details = details;
 	m_md5 = details.contains("md5") ? details["md5"] : "";
 	m_author = details.contains("author") ? details["author"] : "";
 	m_status = details.contains("status") ? details["status"] : "";
@@ -135,7 +135,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Page* parent)
 	// Rating
 	setRating(details.contains("rating") ? details["rating"] : "");
 
-    // Tags
+	// Tags
 	if (details.contains("tags_general"))
 	{
 		QStringList t = details["tags_general"].split(" ");
@@ -644,43 +644,6 @@ QStringList Image::filter(QStringList filters) const
 	return ret;
 }
 
-QString analyse(QStringList tokens, QString text, QStringList tags, int depth = 0)
-{
-	QString ret = text;
-
-	QRegExp reg = QRegExp("\\<([^>]+)\\>");
-	int pos = 0;
-	while ((pos = reg.indexIn(text, pos)) != -1)
-	{
-		QString cap = reg.cap(1);
-		if (!cap.isEmpty())
-		{
-			cap += QString(">").repeated(cap.count('<') - cap.count('>'));
-			ret.replace("<" + cap + ">", analyse(tokens, cap, tags, depth + 1));
-		}
-		pos += reg.matchedLength() + cap.count('<') - cap.count('>');
-	}
-
-	if (depth > 0)
-	{
-		QString r = ret;
-		for (int i = 0; i < tokens.size(); ++i)
-		{ r.replace(QRegExp("%"+tokens.at(i)+"(?::([0-9]+))?%"), ""); }
-		reg = QRegExp("\"([^\"]+)\"");
-		pos = 0;
-		while ((pos = reg.indexIn(text, pos)) != -1)
-		{
-			if (!reg.cap(1).isEmpty() && tags.contains(reg.cap(1)))
-			{ ret.replace(reg.cap(0), reg.cap(1)); }
-			else
-			{ return ""; }
-			pos += reg.matchedLength();
-		}
-	}
-
-	return ret;
-}
-
 /**
  * Return the filename of the image according to the user's settings.
  * @param fn The user's filename.
@@ -802,18 +765,18 @@ void Image::abortImage()
 int Image::value() const
 {
 	if (!m_size.isEmpty())
-        return m_size.width() * m_size.height();
+		return m_size.width() * m_size.height();
 
-    QStringList tags;
-    for (int t = 0; t < m_tags.size(); t++)
-    { tags.append(m_tags[t].text().toLower()); }
+	QStringList tags;
+	for (int t = 0; t < m_tags.size(); t++)
+	{ tags.append(m_tags[t].text().toLower()); }
 
-    if (tags.contains("incredibly_absurdres"))	{ return 10000 * 10000; }
-    else if (tags.contains("absurdres"))		{ return 3200 * 2400; }
-    else if (tags.contains("highres"))			{ return 1600 * 1200; }
-    else if (tags.contains("lowres"))			{ return 500 * 500; }
+	if (tags.contains("incredibly_absurdres"))	{ return 10000 * 10000; }
+	else if (tags.contains("absurdres"))		{ return 3200 * 2400; }
+	else if (tags.contains("highres"))			{ return 1600 * 1200; }
+	else if (tags.contains("lowres"))			{ return 500 * 500; }
 
-    return 1200 * 900;
+	return 1200 * 900;
 }
 
 /**
@@ -982,41 +945,41 @@ QMap<QString, Image::SaveResult> Image::save(QString filename, QString path)
 
 
 QString			Image::url() const			{ return m_url;				}
-QString			Image::author() const			{ return m_author;			}
-QString			Image::status() const			{ return m_status;			}
-QString			Image::rating() const			{ return m_rating;			}
-QString			Image::source() const			{ return m_source;			}
+QString			Image::author() const		{ return m_author;			}
+QString			Image::status() const		{ return m_status;			}
+QString			Image::rating() const		{ return m_rating;			}
+QString			Image::source() const		{ return m_source;			}
 QString			Image::site() const			{ return m_site;			}
 Site			*Image::parentSite() const	{ return m_parentSite;		}
 QString			Image::filename() const		{ return m_filename;		}
-QString			Image::folder() const			{ return m_folder;			}
+QString			Image::folder() const		{ return m_folder;			}
 QList<Tag>		Image::tags() const			{ return m_tags;			}
-QList<Pool*>	Image::pools() const			{ return m_pools;			}
-int				Image::id() const				{ return m_id;				}
-int				Image::score() const			{ return m_score;			}
+QList<Pool*>	Image::pools() const		{ return m_pools;			}
+int				Image::id() const			{ return m_id;				}
+int				Image::score() const		{ return m_score;			}
 int				Image::parentId() const		{ return m_parentId;		}
 int				Image::fileSize() const		{ return m_fileSize;		}
-int				Image::width() const			{ return m_size.width();	}
-int				Image::height() const			{ return m_size.height();	}
+int				Image::width() const		{ return m_size.width();	}
+int				Image::height() const		{ return m_size.height();	}
 int				Image::authorId() const		{ return m_authorId;		}
-QDateTime		Image::createdAt() const		{ return m_createdAt;		}
+QDateTime		Image::createdAt() const	{ return m_createdAt;		}
 bool			Image::hasChildren() const	{ return m_hasChildren;		}
 bool			Image::hasNote() const		{ return m_hasNote;			}
 bool			Image::hasComments() const	{ return m_hasComments;		}
 bool			Image::hasScore() const		{ return m_hasScore;		}
 QUrl			Image::fileUrl() const		{ return m_fileUrl;			}
-QUrl			Image::sampleUrl() const		{ return m_sampleUrl;		}
-QUrl			Image::previewUrl() const		{ return m_previewUrl;		}
+QUrl			Image::sampleUrl() const	{ return m_sampleUrl;		}
+QUrl			Image::previewUrl() const	{ return m_previewUrl;		}
 QUrl			Image::pageUrl() const		{ return m_pageUrl;			}
 QSize			Image::size() const			{ return m_size;			}
 QPixmap			Image::previewImage() const	{ return m_imagePreview;	}
-Page			*Image::page() const			{ return m_parent;			}
+Page			*Image::page() const		{ return m_parent;			}
 QByteArray		Image::data() const			{ return m_data;			}
 QNetworkReply	*Image::imageReply() const	{ return m_loadImage;		}
-QNetworkReply	*Image::tagsReply() const		{ return m_loadDetails;		}
-QSettings		*Image::settings() const		{ return m_settings;		}
-QMap<QString,QString> Image::details() const	{ return m_details;         }
-QStringList		Image::search() const			{ return m_search;			}
+QNetworkReply	*Image::tagsReply() const	{ return m_loadDetails;		}
+QSettings		*Image::settings() const	{ return m_settings;		}
+QMap<QString,QString> Image::details() const{ return m_details;			}
+QStringList		Image::search() const		{ return m_search;			}
 
 QStringList Image::tagsString() const
 {
@@ -1053,10 +1016,10 @@ void Image::setSavePath(QString savePath)
 
 QString Image::md5() const
 {
-    // If we know the path to the image or its content but not its md5, we calculate it first
-    if (m_md5.isEmpty() && (!m_savePath.isEmpty() || !m_data.isEmpty()))
-    {
-        QCryptographicHash hash(QCryptographicHash::Md5);
+	// If we know the path to the image or its content but not its md5, we calculate it first
+	if (m_md5.isEmpty() && (!m_savePath.isEmpty() || !m_data.isEmpty()))
+	{
+		QCryptographicHash hash(QCryptographicHash::Md5);
 
 		// Calculate from image data
 		if (!m_data.isEmpty())
