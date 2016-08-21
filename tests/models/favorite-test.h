@@ -22,7 +22,7 @@ class FavoriteTest : public TestSuite
 		void testEqualsAll();
 		void testEqualsCase();
 		void testNotEquals();
-#ifdef HEADLESS
+#ifndef HEADLESS
 		void testSetImageFirst();
 		void testGetImageNotExists();
 		void testGetImageBig();

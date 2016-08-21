@@ -104,7 +104,7 @@ void FavoriteTest::testNotEquals()
 	QCOMPARE(true, fav1 != fav2);
 }
 
-#ifdef HEADLESS
+#ifndef HEADLESS
 void FavoriteTest::testSetImageFirst()
 {
 	QFile file(savePath("thumbs/tag1.png"));
