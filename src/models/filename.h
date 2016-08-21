@@ -20,12 +20,11 @@ class Filename
         bool isValid(QString *error = nullptr) const;
 
         QList<QMap<QString, QPair<QString, QString>>> getReplaces(QString filename, Image &img, QSettings *settings, QMap<QString,QStringList> custom) const;
-        QString getPairValue(QPair<QString, QString> pair) const;
         QString expandConditionals(QString text, QStringList tokens, QStringList tags, QMap<QString, QPair<QString, QString>> replaces, int depth = 0) const;
-        QList<QPair<QString,QString>> getReplace(QString setting, QMap<QString,QStringList> details, QSettings *settings) const;
         QMap<QString, QStringList> makeDetails(Image &img, QSettings *settings) const;
 
     protected:
+        QList<QPair<QString,QString>> getReplace(QString setting, QMap<QString,QStringList> details, QSettings *settings) const;
         bool returnError(QString msg, QString *error) const;
 
 	private:

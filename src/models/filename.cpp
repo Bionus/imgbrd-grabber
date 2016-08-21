@@ -10,11 +10,6 @@ Filename::Filename(QString format)
 	: m_format(format)
 { }
 
-QString Filename::getPairValue(QPair<QString, QString> pair) const
-{
-	return (pair.first.isEmpty() ? pair.second : pair.first);
-}
-
 QList<QMap<QString, QPair<QString, QString>>> Filename::getReplaces(QString filename, Image &img, QSettings *settings, QMap<QString, QStringList> custom) const
 {
 	QMap<QString, QPair<QString, QString>> replaces;
@@ -337,46 +332,39 @@ QStringList Filename::path(Image &img, QSettings *settings, QString pth, int cou
 		// We remove the "javascript:" part
 		filename = filename.right(filename.length() - 11);
 
-		// FIXME real multiple filename management shared with normal filenames
-		auto replaces = replacesList.first();
-		QStringList repKays = QStringList() << "artist" << "copyright" << "character" << "model";
-		for (QString key : repKays)
+		for (auto replaces : replacesList)
 		{
-			QList<QStrP> repls = this->getReplace(key, details, settings);
-			replaces.insert(key, repls.first());
-		}
-		// end FIXME
-
-		// Variables initialization
-		QString inits = "";
-		QStringList keys = replaces.keys();
-		for (int i = 0; i < replaces.size(); ++i)
-		{
-			QString key = keys.at(i);
-			QString res = replaces[key].first.isEmpty() ? replaces[key].second : replaces[key].first;
-			if (key != "allo")
+			// Variables initialization
+			QString inits = "";
+			QStringList keys = replaces.keys();
+			for (int i = 0; i < replaces.size(); ++i)
 			{
-				res = res.replace("\\", "_").replace("%", "_").replace("/", "_").replace(":", "_").replace("|", "_").replace("*", "_").replace("?", "_").replace("\"", "_").replace("<", "_").replace(">", "_").replace("__", "_").replace("__", "_").replace("__", "_").trimmed();
-				if (!settings->value("Save/replaceblanks", false).toBool())
-				{ res.replace("_", " "); }
+				QString key = keys.at(i);
+				QString res = replaces[key].first.isEmpty() ? replaces[key].second : replaces[key].first;
+				if (key != "allo")
+				{
+					res = res.replace("\\", "_").replace("%", "_").replace("/", "_").replace(":", "_").replace("|", "_").replace("*", "_").replace("?", "_").replace("\"", "_").replace("<", "_").replace(">", "_").replace("__", "_").replace("__", "_").replace("__", "_").trimmed();
+					if (!settings->value("Save/replaceblanks", false).toBool())
+					{ res.replace("_", " "); }
+				}
+
+				if (key == "date")
+				{ inits += "var " + key + " = new Date(\"" + res + "\");\r\n"; }
+				else
+				{ inits += "var " + key + " = \"" + res + "\";\r\n"; }
 			}
 
-			if (key == "date")
-			{ inits += "var " + key + " = new Date(\"" + res + "\");\r\n"; }
-			else
-			{ inits += "var " + key + " = \"" + res + "\";\r\n"; }
-		}
+			// Script execution
+			QScriptEngine engine;
+			QScriptValue result = engine.evaluate(QScriptProgram(inits + filename));
+			if (result.isError())
+			{
+				error(0, QObject::tr("Erreur d'évaluation du Javascript :<br/>") + result.toString());
+				return QStringList();
+			}
 
-		// Script execution
-		QScriptEngine engine;
-		QScriptValue result = engine.evaluate(QScriptProgram(inits + filename));
-		if (result.isError())
-		{
-			error(0, QObject::tr("Erreur d'évaluation du Javascript :<br/>") + result.toString());
-			return QStringList();
+			fns.append(result.toString());
 		}
-
-		fns.append(result.toString());
 	}
 	else
 	{
