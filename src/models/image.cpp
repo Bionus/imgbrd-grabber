@@ -1050,12 +1050,19 @@ bool Image::hasTag(QString tag) const
 			return true;
 	return false;
 }
-bool Image::hasTag(QStringList tags) const
+bool Image::hasAnyTag(QStringList tags) const
 {
 	for (QString tag : tags)
 		if (this->hasTag(tag))
 			return true;
 	return false;
+}
+bool Image::hasAllTags(QStringList tags) const
+{
+	for (QString tag : tags)
+		if (!this->hasTag(tag))
+			return false;
+	return true;
 }
 
 void Image::unload()

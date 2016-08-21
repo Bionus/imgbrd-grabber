@@ -80,7 +80,8 @@ class Image : public QObject
 		QNetworkReply	*imageReply() const;
 		QNetworkReply	*tagsReply() const;
 		bool		hasTag(QString tag) const;
-		bool		hasTag(QStringList tags) const;
+		bool		hasAnyTag(QStringList tags) const;
+		bool		hasAllTags(QStringList tags) const;
 		QMap<QString,QString>   details() const;
 		QString		detail(QString key) const;
 		void		setUrl(QString);
