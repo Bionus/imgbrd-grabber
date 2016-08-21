@@ -756,10 +756,11 @@ QString fixFilenameLinux(QString fn, QString path, int maxlength, bool invalidCh
 	filename = (dirpart.isEmpty() ? "" : dirpart + (!fn.isEmpty() ? sep : "")) + file;
 
 	// A filename cannot exceed a certain length
-	if (file.length() > maxlength - ext.length() - 1)
-		file = file.left(maxlength - ext.length() - 1).trimmed();
-	if (file.length() > 255 - ext.length() - 1)
-		file = file.left(255 - ext.length() - 1).trimmed();
+	int extlen = ext.isEmpty() ? 0 : ext.length() + 1;
+	if (file.length() > maxlength - extlen)
+		file = file.left(maxlength - extlen).trimmed();
+	if (file.length() > 255 - extlen)
+		file = file.left(255 - extlen).trimmed();
 
 	// Get separation between filename and path
 	int index = -1;
@@ -773,7 +774,8 @@ QString fixFilenameLinux(QString fn, QString path, int maxlength, bool invalidCh
 		filename = filename.right(filename.length() - index - 1);
 
 	QFileInfo fi(filename);
-	filename = (fi.path() != "." ? fi.path() + "/" : "") + fi.completeBaseName().left(245) + "." + fi.suffix();
+	QString suffix = fi.suffix();
+	filename = (fi.path() != "." ? fi.path() + "/" : "") + fi.completeBaseName().left(245) + (suffix.isEmpty() ? "" : "." + fi.suffix());
 
 	return filename;
 }
