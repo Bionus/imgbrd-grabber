@@ -72,6 +72,7 @@ void FavoriteTest::testEquals()
 	Favorite fav2("tag", 100, QDateTime::currentDateTime());
 
 	QCOMPARE(true, fav1 == fav2);
+	QCOMPARE(false, fav1 != fav2);
 }
 void FavoriteTest::testEqualsAll()
 {
@@ -80,6 +81,7 @@ void FavoriteTest::testEqualsAll()
 	Favorite fav2("tag", 50, date);
 
 	QCOMPARE(true, fav1 == fav2);
+	QCOMPARE(false, fav1 != fav2);
 }
 void FavoriteTest::testEqualsCase()
 {
@@ -88,6 +90,7 @@ void FavoriteTest::testEqualsCase()
 	Favorite fav2("TAg", 50, date);
 
 	QCOMPARE(true, fav1 == fav2);
+	QCOMPARE(false, fav1 != fav2);
 }
 
 void FavoriteTest::testNotEquals()
@@ -97,6 +100,7 @@ void FavoriteTest::testNotEquals()
 	Favorite fav2("tag2", 50, date);
 
 	QCOMPARE(false, fav1 == fav2);
+	QCOMPARE(true, fav1 != fav2);
 }
 
 static FavoriteTest instance;
