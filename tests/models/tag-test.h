@@ -21,6 +21,8 @@ class TagTest : public TestSuite
 		void testRelated();
 		void testSetRelated();
 		void testType();
+		void testTypeArtistEnding();
+		void testTypePrefix();
 		void testSetType();
 		void testShortType();
 		void testSetTypeShortType();

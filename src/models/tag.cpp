@@ -14,18 +14,22 @@ Tag::Tag(QSettings *settings, QString text, QString type, int count, QStringList
 	if (type.contains(' '))
 	{ m_type = type.left(type.indexOf(' ')); }
 
-	if (text.endsWith("(artist)") && type == "unknown")
-	{ m_type = "artist"; }
+	// Some artist names end with " (artist)" so we can guess their type
+	if (m_text.endsWith(" (artist)") && type == "unknown")
+	{
+		m_type = "artist";
+		m_text = m_text.left(m_text.length() - 9);
+	}
 
-	if (m_type == "unknown")
+	if (m_type == "unknown" && m_text.contains(':'))
 	{
 		QStringList prep = QStringList() << "artist" << "copyright" << "character" << "model" << "unknown";
 		foreach (QString pre, prep)
 		{
-			if (text.startsWith(pre + ":"))
+			if (m_text.startsWith(pre + ":"))
 			{
 				m_type = pre;
-				m_text = text.mid(pre.length() + 1);
+				m_text = m_text.mid(pre.length() + 1);
 			}
 		}
 	}

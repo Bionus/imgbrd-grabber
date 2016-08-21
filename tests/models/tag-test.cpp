@@ -31,6 +31,20 @@ void TagTest::testType()
 
 	QCOMPARE(tag.type(), QString("artist"));
 }
+void TagTest::testTypeArtistEnding()
+{
+	Tag tag(m_settings, "tag_text (artist)", "unknown", 123, QStringList() << "related1" << "related2" << "related3");
+
+	QCOMPARE(tag.type(), QString("artist"));
+	QCOMPARE(tag.text(), QString("tag_text"));
+}
+void TagTest::testTypePrefix()
+{
+	Tag tag(m_settings, "artist:tag_text", "unknown", 123, QStringList() << "related1" << "related2" << "related3");
+
+	QCOMPARE(tag.type(), QString("artist"));
+	QCOMPARE(tag.text(), QString("tag_text"));
+}
 void TagTest::testSetType()
 {
 	Tag tag(m_settings, "tag_text", "character", 123, QStringList() << "related1" << "related2" << "related3");
