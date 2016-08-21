@@ -8,8 +8,8 @@ Pool::Pool(int id, QString name, int current, int next, int previous)
 Pool::~Pool()
 { }
 
-int		Pool::id()			{ return m_id;			}
-QString	Pool::name()		{ return m_name;		}
-int		Pool::current()		{ return m_current;		}
-int		Pool::next()		{ return m_next;		}
-int		Pool::previous()	{ return m_previous;	}
+int		Pool::id() const		{ return m_id;			}
+QString	Pool::name() const		{ return m_name;		}
+int		Pool::current() const	{ return m_current;		}
+int		Pool::next() const		{ return m_next;		}
+int		Pool::previous() const	{ return m_previous;	}

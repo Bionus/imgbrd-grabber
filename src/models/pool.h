@@ -12,11 +12,11 @@ class Pool
 		~Pool();
 
 		// Getters
-		int		id();
-		QString name();
-		int		current();
-		int		next();
-		int		previous();
+		int		id() const;
+		QString name() const;
+		int		current() const;
+		int		next() const;
+		int		previous() const;
 
 	private:
 		int		m_id;
