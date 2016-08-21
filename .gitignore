@@ -2,6 +2,7 @@
 
 test_settings.ini
 tests/settings.ini
+tests/resources/thumbs/
 target_wrapper.bat
 symbols/
 *.lnk

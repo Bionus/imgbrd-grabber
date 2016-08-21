@@ -22,6 +22,10 @@ class FavoriteTest : public TestSuite
 		void testEqualsAll();
 		void testEqualsCase();
 		void testNotEquals();
+		void testSetImageFirst();
+		void testGetImageNotExists();
+		void testGetImageBig();
+		void testGetImageSmall();
 };
 
 #endif // FAVORITE_TEST_H

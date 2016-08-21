@@ -10,7 +10,7 @@ mainWindow *_mainwindow;
 
 int main(int argc, char *argv[])
 {
-    QCoreApplication a(argc, argv);
+    QGuiApplication a(argc, argv);
 
     QMap<QString,int> results;
     int failed;
