@@ -113,7 +113,6 @@ void FilenameTest::testPathOptionTagNamespace()
 {
     m_settings->setValue("Save/character_multiple", "keepAll");
 
-    assertPath("%character:includenamespace,unsafe%", "character_character1 character_character2", "", true);
     assertPath("%character:includenamespace,unsafe%", "character:character1 character:character2", "", false);
 }
 void FilenameTest::testPathOptionTagSeparator()
