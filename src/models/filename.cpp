@@ -416,6 +416,8 @@ QStringList Filename::path(const Image& img, QSettings *settings, QString pth, i
 					// Apply options
 					if (key == "date" && options.contains("format"))
 					{ res = img.createdAt().toString(options["format"]); }
+					if (key == "count")
+					{ res = options.contains("length") ? QString::number(counter, 'f', options["length"].toInt()) : QString::number(counter); }
 					if (options.contains("maxlength"))
 					{ res = res.left(options["maxlength"].toInt()); }
 					if (key == "all" || key == "allo" || key == "general" || key == "artist" || key == "copyright" || key == "character")
@@ -445,13 +447,6 @@ QStringList Filename::path(const Image& img, QSettings *settings, QString pth, i
 				else
 				{ cFilename.remove(replacerx.cap(0)); }
 			}
-
-			// Complex expressions using regexes
-			QRegExp rxcounter("%count(:\\d+)?(:\\d+)?%");
-			rxcounter.setMinimal(true);
-			p = 0;
-			while ((p = rxcounter.indexIn(cFilename, p)) != -1)
-			{ cFilename.replace(rxcounter.cap(0), rxcounter.captureCount() > 0 ? QString::number(counter, 'f', rxcounter.cap(1).toInt()) : QString::number(counter)); }
 
 			fns.append(cFilename);
 		}
