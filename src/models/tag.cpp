@@ -11,8 +11,10 @@ Tag::Tag(QSettings *settings, QString text, QString type, int count, QStringList
 	htmlEncoded.setHtml(text);
 	m_text = htmlEncoded.toPlainText();
 
-	if (type.contains(' '))
-	{ m_type = type.left(type.indexOf(' ')); }
+	// Sometimes a type is found with multiple words, only the first is relevant
+	int typeSpace = type.indexOf(' ');
+	if (typeSpace != -1)
+	{ m_type = type.left(typeSpace); }
 
 	// Some artist names end with " (artist)" so we can guess their type
 	if (m_text.endsWith(" (artist)") && type == "unknown")

@@ -117,7 +117,6 @@ void TagTest::testStylishedFavorite()
 
 	QCOMPARE(tag.stylished(favorites), QString("<span style=\"color:pink\">tag_text</span>"));
 }
-
 void TagTest::testStylishedNotFavorite()
 {
 	m_settings->setValue("Coloring/Fonts/artists", ",8.25,-1,5,50,0,0,0,0,0");
@@ -130,6 +129,16 @@ void TagTest::testStylishedNotFavorite()
 
 	QString expected = "<a href=\"tag_text\" style=\"color:#aa0000; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">tag_text</a>";
 	QCOMPARE(tag.stylished(favorites), expected);
+}
+void TagTest::testStylishedWithCount()
+{
+	m_settings->setValue("Coloring/Fonts/artists", ",8.25,-1,5,50,0,0,0,0,0");
+	m_settings->setValue("Coloring/Colors/artists", "#aa0000");
+
+	Tag tag(m_settings, "tag_text", "artist", 123, QStringList() << "related1" << "related2" << "related3");
+
+	QString expected = "<a href=\"tag_text\" style=\"color:#aa0000; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">tag_text</a> <span style=\"color:#aaa\">(123)</span>";
+	QCOMPARE(tag.stylished(QList<Favorite>(), true), expected);
 }
 
 void TagTest::testCompare()
@@ -145,6 +154,31 @@ void TagTest::testCompare()
 	QCOMPARE(tag1 == tag3, false);
 	QCOMPARE(tag1 == tag4, false);
 	QCOMPARE(tag1 == tag5, true);
+}
+
+void TagTest::testSortByFrequency()
+{
+	QList<Tag> taglist;
+	taglist.append(Tag(m_settings, "last", "artist", 1, QStringList() << "tag1"));
+	taglist.append(Tag(m_settings, "fourth", "general", 2, QStringList() << "tag2"));
+	taglist.append(Tag(m_settings, "third", "copyright", 3, QStringList() << "tag3"));
+	taglist.append(Tag(m_settings, "second", "character", 4, QStringList() << "tag4"));
+	taglist.append(Tag(m_settings, "first", "unknown", 5, QStringList() << "tag5"));
+
+	qSort(taglist.begin(), taglist.end(), sortByFrequency);
+
+	QCOMPARE(taglist[0].text(), QString("first"));
+	QCOMPARE(taglist[1].text(), QString("second"));
+	QCOMPARE(taglist[2].text(), QString("third"));
+	QCOMPARE(taglist[3].text(), QString("fourth"));
+	QCOMPARE(taglist[4].text(), QString("last"));
+}
+
+void TagTest::testTypeSpaced()
+{
+	Tag tag(m_settings, "artist1", "artist with spaces", 1, QStringList() << "tag1");
+
+	QCOMPARE(tag.type(), QString("artist"));
 }
 
 static TagTest instance;

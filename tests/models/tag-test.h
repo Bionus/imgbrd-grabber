@@ -28,9 +28,12 @@ class TagTest : public TestSuite
 		void testSetTypeShortType();
 		void testStylishedFavorite();
 		void testStylishedNotFavorite();
+		void testStylishedWithCount();
 		void testTypedTextGeneral();
 		void testTypedTextArtist();
 		void testCompare();
+		void testSortByFrequency();
+		void testTypeSpaced();
 
 	private:
 		QSettings *m_settings;
