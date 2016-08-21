@@ -18,6 +18,9 @@ class FilenameTest : public TestSuite
         void testGetFormat();
         void testPathSimple();
         void testPathComplex();
+        void testPathKeepAll();
+        void testPathKeepN();
+        void testPathKeepNThenAdd();
         void testPathEmptyDirs();
         void testPathFull();
         void testPathSimpleJavascript();
@@ -32,6 +35,7 @@ class FilenameTest : public TestSuite
         void testGetReplacesSimple();
         void testGetReplacesMultiple();
         void testGetReplacesMatrix();
+        void testGetReplacesCustom();
         void testIsValid();
         void testUseShorterCopyright();
 

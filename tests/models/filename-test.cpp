@@ -67,6 +67,33 @@ void FilenameTest::testPathComplex()
     assertPath("%artist%/%copyright%/%character%/%md5%.%ext%",
                "artist1/crossover/group/1bc29b36f623ba82aaf6724fd3b16718.jpg");
 }
+void FilenameTest::testPathKeepAll()
+{
+    m_settings->setValue("Save/character_multiple", "keepAll");
+
+    assertPath("%artist%/%copyright%/%character%/%md5%.%ext%",
+               "artist1/crossover/character1 character2/1bc29b36f623ba82aaf6724fd3b16718.jpg");
+}
+void FilenameTest::testPathKeepN()
+{
+    m_settings->setValue("Save/character_multiple", "keepN");
+    m_settings->setValue("Save/character_multiple_keepN", 1);
+
+    assertPath("%artist%/%copyright%/%character%/%md5%.%ext%",
+               "artist1/crossover/character1/1bc29b36f623ba82aaf6724fd3b16718.jpg");
+}
+void FilenameTest::testPathKeepNThenAdd()
+{
+    m_settings->setValue("Save/character_multiple", "keepNThenAdd");
+    m_settings->setValue("Save/character_multiple_keepNThenAdd_keep", 1);
+    m_settings->setValue("Save/character_multiple_keepNThenAdd_add", " (and %count% of %total%)");
+    assertPath("%artist%/%copyright%/%character%/%md5%.%ext%",
+               "artist1/crossover/character1 (and 1 of 2)/1bc29b36f623ba82aaf6724fd3b16718.jpg");
+
+    m_settings->setValue("Save/character_multiple_keepNThenAdd_keep", 2);
+    assertPath("%artist%/%copyright%/%character%/%md5%.%ext%",
+               "artist1/crossover/character1 character2/1bc29b36f623ba82aaf6724fd3b16718.jpg");
+}
 void FilenameTest::testPathEmptyDirs()
 {
     assertPath("%artist%/%test%/%md5%.%ext%",
@@ -190,6 +217,21 @@ void FilenameTest::testGetReplacesMatrix()
     QCOMPARE(replaces[3]["artist"].first, QString("artist1"));
     QCOMPARE(replaces[3]["copyright"].first, QString("copyright2"));
     QCOMPARE(replaces[3]["character"].first, QString("character2"));
+}
+void FilenameTest::testGetReplacesCustom()
+{
+    QString format = "%md5%.%ext%";
+
+    QMap<QString, QStringList> custom;
+    custom.insert("custom1", QStringList() << "tag1 tag2");
+    custom.insert("custom2", QStringList() << "tag3 tag4");
+
+    Filename fn(format);
+    QList<QMap<QString, QPair<QString, QString>>> replaces = fn.getReplaces(format, *m_img, m_settings, custom);
+
+    QCOMPARE(replaces.first().contains("custom1"), true);
+    QCOMPARE(replaces.first().contains("custom2"), true);
+    QCOMPARE(replaces.first().contains("custom3"), false);
 }
 
 void FilenameTest::testIsValid()

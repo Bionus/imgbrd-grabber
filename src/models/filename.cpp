@@ -184,7 +184,7 @@ QList<QPair<QString,QString>> Filename::getReplace(QString setting, QMap<QString
 		else if (whatToDo == "keepN")
 		{
 			int keepN = settings->value(setting+"_multiple_keepN", 1).toInt();
-			first = QStringList(details[setting+"s"].mid(0, qMin(1, keepN))).join(separator);
+			first = QStringList(details[setting+"s"].mid(0, qMax(1, keepN))).join(separator);
 		}
 		else if (whatToDo == "keepNThenAdd")
 		{
@@ -192,7 +192,7 @@ QList<QPair<QString,QString>> Filename::getReplace(QString setting, QMap<QString
 			QString thenAdd = settings->value(setting+"_multiple_keepNThenAdd_add", " (+ %count%)").toString();
 			thenAdd.replace("%total%", QString::number(details[setting+"s"].size()));
 			thenAdd.replace("%count%", QString::number(details[setting+"s"].size() - keepN));
-			first = QStringList(details[setting+"s"].mid(0, qMin(1, keepN))).join(separator) + thenAdd;
+			first = QStringList(details[setting+"s"].mid(0, qMax(1, keepN))).join(separator) + (details[setting+"s"].size() > keepN ? thenAdd : "");
 		}
 		else
 		{ first = settings->value(setting+"_value").toString(); }
