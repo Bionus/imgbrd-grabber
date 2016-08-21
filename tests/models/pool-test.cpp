@@ -7,7 +7,7 @@ void PoolTest::testGetId()
     Pool pool(123, "Test pool", 1, 2, 3);
     QCOMPARE(pool.id(), 123);
 }
-void PoolTest::testGetId()
+void PoolTest::testGetName()
 {
     Pool pool(123, "Test pool", 1, 2, 3);
     QCOMPARE(pool.name(), QString("Test pool"));
