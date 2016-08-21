@@ -8,7 +8,6 @@ de.dotnetfx35lp_lcid=1031
 
 de.dotnetfx35lp_url=http://download.microsoft.com/download/d/1/e/d1e617c3-c7f4-467e-a7de-af832450efd3/dotnetfx35langpack_x86de.exe
 
-
 [Code]
 procedure dotnetfx35lp();
 begin
@@ -19,6 +18,8 @@ begin
 				CustomMessage('dotnetfx35lp_title'),
 				CustomMessage('dotnetfx35lp_size'),
 				CustomMessage('dotnetfx35lp_url'),
-				false, false);
+				false, false, false);
 	end;
 end;
+
+[Setup]

@@ -21,7 +21,7 @@ DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
 LicenseFile=Apache license 2.0.txt
 OutputDir=.
-OutputBaseFilename=Grabber_{#MyAppVersion}
+OutputBaseFilename=Grabber2_{#MyAppVersion}
 SetupIconFile=..\images\icon.ico       
 UninstallDisplayName="{#MyAppName} {#MyAppVersion}"
 UninstallDisplayIcon={app}\icon.ico
@@ -32,10 +32,11 @@ ChangesAssociations=yes
 
 [CustomMessages] 
 en.IGL=Imageboard-Grabber Links
-fr.IGL=Liens Imageboard-Grabber
-vcredist2013_title=Visual C++ 2013 Redistributable
-vcredist2013_size=6.2 MB
-vcredist2013_size_x64=6.9 MB
+fr.IGL=Liens Imageboard-Grabber         
+vcredist2015_title=Visual C++ 2015 Redistributable
+vcredist2015_title_x64=Visual C++ 2015 64-Bit Redistributable
+fr.vcredist2015_size=12.8 Mo
+fr.vcredist2015_size_x64=13.9 Mo
 
 [Registry]
 Root: HKCR; Subkey: ".igl"; ValueType: string; ValueName: ""; ValueData: "Imageboard-Grabber"; Flags: uninsdeletevalue 
@@ -45,27 +46,28 @@ Root: HKCR; Subkey: "Imageboard-Grabber\shell\open\command"; ValueType: string; 
 
 [Languages]
 Name: "en"; MessagesFile: "compiler:Default.isl"
+Name: "de"; MessagesFile: "compiler:Languages\German.isl"
+Name: "fr"; MessagesFile: "compiler:Languages\French.isl"
+Name: "it"; MessagesFile: "compiler:Languages\Italian.isl"
+Name: "nl"; MessagesFile: "compiler:Languages\Dutch.isl"
+Name: "pl"; MessagesFile: "compiler:Languages\Polish.isl"
+Name: "pt"; MessagesFile: "compiler:Languages\Portuguese.isl"
 Name: "brazilianportuguese"; MessagesFile: "compiler:Languages\BrazilianPortuguese.isl"
 Name: "catalan"; MessagesFile: "compiler:Languages\Catalan.isl"
 Name: "czech"; MessagesFile: "compiler:Languages\Czech.isl"
 Name: "danish"; MessagesFile: "compiler:Languages\Danish.isl"
-Name: "dutch"; MessagesFile: "compiler:Languages\Dutch.isl"
-Name: "finnish"; MessagesFile: "compiler:Languages\Finnish.isl"
-Name: "fr"; MessagesFile: "compiler:Languages\French.isl"
-Name: "de"; MessagesFile: "compiler:Languages\German.isl"
+Name: "finnish"; MessagesFile: "compiler:Languages\Finnish.isl"               
 Name: "hebrew"; MessagesFile: "compiler:Languages\Hebrew.isl"
 Name: "hungarian"; MessagesFile: "compiler:Languages\Hungarian.isl"
-Name: "italian"; MessagesFile: "compiler:Languages\Italian.isl"
 Name: "japanese"; MessagesFile: "compiler:Languages\Japanese.isl"
 Name: "norwegian"; MessagesFile: "compiler:Languages\Norwegian.isl"
-Name: "polish"; MessagesFile: "compiler:Languages\Polish.isl"
-Name: "portuguese"; MessagesFile: "compiler:Languages\Portuguese.isl"
 Name: "russian"; MessagesFile: "compiler:Languages\Russian.isl"
 Name: "slovenian"; MessagesFile: "compiler:Languages\Slovenian.isl"
 Name: "spanish"; MessagesFile: "compiler:Languages\Spanish.isl"   
   
 #include "scripts\products.iss"
-#include "scripts\products\vcredist2013.iss"
+#include "scripts\products\msiproduct.iss"
+#include "scripts\products\vcredist2015.iss"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
@@ -188,6 +190,6 @@ Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChang
 [Code]
 function InitializeSetup(): Boolean;
 begin
-  vcredist2013();
+  vcredist2015();
   Result := true;
 end;

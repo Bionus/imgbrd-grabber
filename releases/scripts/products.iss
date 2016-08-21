@@ -5,34 +5,73 @@ DependenciesDir=MyProgramDependencies
 
 en.depdownload_msg=The following applications are required before setup can continue:%n%n%1%nDownload and install now?
 de.depdownload_msg=Die folgenden Programme werden benˆtigt bevor das Setup fortfahren kann:%n%n%1%nJetzt downloaden und installieren?
+fr.depdownload_msg=Les applications suivantes sont nÈcessaires avant l'installation peut continuer:%n%n%1%nTÈlÈchargement et installer maintenant?
+it.depdownload_msg=Le seguenti applicazioni sono necessari per continuare l'installazione:%n%n%1%nScarica ed installare ora?
+nl.depdownload_msg=De volgende toepassingen zijn nodig vÛÛr de installatie kunt doorgaan:%n%n%1%nDownload en installeer nu?
+pl.depdownload_msg=Poniøsze aplikacje sπ wymagane przed instalacjπ aby mÛc kontynuowaÊ:%n%n%1%nCzy pobraÊ je i zainstalowaÊ teraz?
 
 en.depdownload_memo_title=Download dependencies
 de.depdownload_memo_title=Abh‰ngigkeiten downloaden
+fr.depdownload_memo_title=TÈlÈcharger les dÈpendances
+it.depdownload_memo_title=Scarica le dipendenze
+nl.depdownload_memo_title=Download afhankelijkheden
+pl.depdownload_memo_title=Pobierz zaleønoúci
 
 en.depinstall_memo_title=Install dependencies
 de.depinstall_memo_title=Abh‰ngigkeiten installieren
+fr.depinstall_memo_title=Installez les dÈpendances
+it.depinstall_memo_title=installare le dipendenze
+nl.depinstall_memo_title=Installeer afhankelijkheden
+pl.depinstall_memo_title=Zainstaluj zaleønoúci
 
 en.depinstall_title=Installing dependencies
 de.depinstall_title=Installiere Abh‰ngigkeiten
+fr.depinstall_title=Installation des dÈpendances
+it.depinstall_title=installare le dipendenze
+nl.depinstall_title=Installeer afhankelijkheden
+pl.depinstall_title=Instalowanie zaleønoúci
 
 en.depinstall_description=Please wait while Setup installs dependencies on your computer.
 de.depinstall_description=Warten Sie bitte w‰hrend Abh‰ngigkeiten auf Ihrem Computer installiert wird.
+fr.depinstall_description=S'il vous plaÓt patienter pendant que le programme d'installation installe les dÈpendances sur votre ordinateur.
+it.depinstall_description=Per favore attendi che viene installato sul computer dipendenze.
+nl.depinstall_description=Een moment geduld aub Setup installeert afhankelijkheden op uw computer.
+pl.depinstall_description=Instalator instaluje zaleønoúci na komputerze, czekaj.
 
 en.depinstall_status=Installing %1...
 de.depinstall_status=Installiere %1...
+fr.depinstall_status=Installation %1...
+it.depinstall_status=installazione %1...
+nl.depinstall_status=Installeren %1...
+pl.depinstall_status=Instalowanie %1....
 
 en.depinstall_missing=%1 must be installed before setup can continue. Please install %1 and run Setup again.
 de.depinstall_missing=%1 muss installiert werden bevor das Setup fortfahren kann. Bitte installieren Sie %1 und starten Sie das Setup erneut.
+fr.depinstall_missing=%1 doit Ítre installÈ avant l'installation peut continuer. S'il vous plaÓt installer %1 et exÈcutez ‡ nouveau le programme d'installation.
+it.depinstall_missing=%1 deve essere installato per continuare l'installazione. Si prega di installare %1 ed eseguire nuovamente l'installazione.
+nl.depinstall_missing=%1 moet worden geÔnstalleerd vÛÛr de installatie kan worden voortgezet. Installeer %1 en voer Setup opnieuw uit.
+pl.depinstall_missing=%1 musi byÊ zainstalowany przed instalacjπ, aby mog≥a ona byÊ kontynuowana. Zainstaluj %1 i ponownie uruchom program instalacyjny.
 
 en.depinstall_error=An error occured while installing the dependencies. Please restart the computer and run the setup again or install the following dependencies manually:%n
-de.depinstall_error=Ein Fehler ist w‰hrend der Installation der Abgh‰ngigkeiten aufgetreten. Bitte starten Sie den Computer neu und fÅEren Sie das Setup erneut aus oder installieren Sie die folgenden Abh‰ngigkeiten per Hand:%n
+de.depinstall_error=Ein Fehler ist w‰hrend der Installation der Abgh‰ngigkeiten aufgetreten. Bitte starten Sie den Computer neu und f¸hren Sie das Setup erneut aus oder installieren Sie die folgenden Abh‰ngigkeiten per Hand:%n
+fr.depinstall_error=Une erreur est survenue lors de l'installation des dÈpendances . S'il vous plaÓt redÈmarrer l'ordinateur et exÈcuter ‡ nouveau le programme d'installation ou installer les dÈpendances suivantes manuellement:%n
+it.depinstall_error=» verificato un errore durante l'installazione le dipendenze . Si prega di riavviare il computer ed eseguire nuovamente la configurazione o installare le seguenti dipendenze manualmente:%n
+nl.depinstall_error=Er is een fout opgetreden tijdens het installeren van de afhankelijkheden. Gelieve de computer opnieuw op en voer de installatie opnieuw uit of de volgende afhankelijkheden handmatig installeren:%n
+pl.depinstall_error=Wystπpi≥ b≥πd podczas instalowania zaleønoúci. Uruchom ponownie komputer, a nastÍpnie ponownie uruchom program instalacyjny lub rÍcznie zainstaluj nastÍpujπce programy:%n
 
 en.isxdl_langfile=
-de.isxdl_langfile=german2.ini
-
+de.isxdl_langfile=german.ini
+fr.isxdl_langfile=french3.ini
+it.isxdl_langfile=italian.ini
+nl.isxdl_langfile=dutch.ini
+pl.isxdl_langfile=polish.ini
 
 [Files]
-Source: "scripts\isxdl\german2.ini"; Flags: dontcopy
+Source: "scripts\isxdl\german.ini"; Flags: dontcopy
+Source: "scripts\isxdl\french3.ini"; Flags: dontcopy
+Source: "scripts\isxdl\italian.ini"; Flags: dontcopy
+Source: "scripts\isxdl\dutch.ini"; Flags: dontcopy
+Source: "scripts\isxdl\polish.ini"; Flags: dontcopy
 
 [Code]
 type
@@ -40,6 +79,7 @@ type
 		File: String;
 		Title: String;
 		Parameters: String;
+		ForceSuccess : boolean;
 		InstallClean : boolean;
 		MustRebootAfter : boolean;
 	end;
@@ -49,46 +89,49 @@ type
 var
 	installMemo, downloadMemo, downloadMessage: string;
 	products: array of TProduct;
-	delayedReboot: boolean;
+	delayedReboot, isForcedX86: boolean;
 	DependencyPage: TOutputProgressWizardPage;
 
 
-procedure AddProduct(FileName, Parameters, Title, Size, URL: string; InstallClean : boolean; MustRebootAfter : boolean);
+procedure AddProduct(filename, parameters, title, size, url: string; forceSuccess, installClean, mustRebootAfter : boolean);
 var
 	path: string;
 	i: Integer;
 begin
-	installMemo := installMemo + '%1' + Title + #13;
+	installMemo := installMemo + '%1' + title + #13;
 
-	path := ExpandConstant('{src}{\}') + CustomMessage('DependenciesDir') + '\' + FileName;
+	path := ExpandConstant('{src}{\}') + CustomMessage('DependenciesDir') + '\' + filename;
 	if not FileExists(path) then begin
-		path := ExpandConstant('{tmp}{\}') + FileName;
+		path := ExpandConstant('{tmp}{\}') + filename;
 
-		isxdl_AddFile(URL, path);
+		if not FileExists(path) then begin
+			isxdl_AddFile(url, path);
 
-		downloadMemo := downloadMemo + '%1' + Title + #13;
-		downloadMessage := downloadMessage + '	' + Title + ' (' + Size + ')' + #13;
+			downloadMemo := downloadMemo + '%1' + title + #13;
+			downloadMessage := downloadMessage + '	' + title + ' (' + size + ')' + #13;
+		end;
 	end;
 
 	i := GetArrayLength(products);
 	SetArrayLength(products, i + 1);
 	products[i].File := path;
-	products[i].Title := Title;
-	products[i].Parameters := Parameters;
-	products[i].InstallClean := InstallClean;
-	products[i].MustRebootAfter := MustRebootAfter;
+	products[i].Title := title;
+	products[i].Parameters := parameters;
+	products[i].ForceSuccess := forceSuccess;
+	products[i].InstallClean := installClean;
+	products[i].MustRebootAfter := mustRebootAfter;
 end;
 
-function SmartExec(prod : TProduct; var ResultCode : Integer) : boolean;
+function SmartExec(product : TProduct; var resultcode : Integer): boolean;
 begin
-	if (LowerCase(Copy(prod.File,Length(prod.File)-2,3)) = 'exe') then begin
-		Result := Exec(prod.File, prod.Parameters, '', SW_SHOWNORMAL, ewWaitUntilTerminated, ResultCode);
+	if (LowerCase(Copy(product.File, Length(product.File) - 2, 3)) = 'exe') then begin
+		Result := Exec(product.File, product.Parameters, '', SW_SHOWNORMAL, ewWaitUntilTerminated, resultcode);
 	end else begin
-		Result := ShellExec('', prod.File, prod.Parameters, '', SW_SHOWNORMAL, ewWaitUntilTerminated, ResultCode);
+		Result := ShellExec('', product.File, product.Parameters, '', SW_SHOWNORMAL, ewWaitUntilTerminated, resultcode);
 	end;
 end;
 
-function PendingReboot : boolean;
+function PendingReboot: boolean;
 var	names: String;
 begin
 	if (RegQueryMultiStringValue(HKEY_LOCAL_MACHINE, 'SYSTEM\CurrentControlSet\Control\Session Manager', 'PendingFileRenameOperations', names)) then begin
@@ -102,7 +145,7 @@ end;
 
 function InstallProducts: InstallResult;
 var
-	ResultCode, i, productCount, finishCount: Integer;
+	resultCode, i, productCount, finishCount: Integer;
 begin
 	Result := InstallSuccessful;
 	productCount := GetArrayLength(products);
@@ -120,9 +163,8 @@ begin
 			DependencyPage.SetText(FmtMessage(CustomMessage('depinstall_status'), [products[i].Title]), '');
 			DependencyPage.SetProgress(i, productCount);
 
-			if SmartExec(products[i], ResultCode) then begin
-				//setup executed; ResultCode contains the exit code
-				//MsgBox(products[i].Title + ' install executed. Result Code: ' + IntToStr(ResultCode), mbInformation, MB_OK);
+			if SmartExec(products[i], resultCode) then begin
+				//setup executed; resultCode contains the exit code
 				if (products[i].MustRebootAfter) then begin
 					//delay reboot after install if we installed the last dependency anyways
 					if (i = productCount - 1) then begin
@@ -131,10 +173,10 @@ begin
 						Result := InstallRebootRequired;
 					end;
 					break;
-				end else if (ResultCode = 0) then begin
+				end else if (resultCode = 0) or (products[i].ForceSuccess) then begin
 					finishCount := finishCount + 1;
-				end else if (ResultCode = 3010) then begin
-					//ResultCode 3010: A restart is required to complete the installation. This message indicates success.
+				end else if (resultCode = 3010) then begin
+					//Windows Installer resultCode 3010: ERROR_SUCCESS_REBOOT_REQUIRED
 					delayedReboot := true;
 					finishCount := finishCount + 1;
 				end else begin
@@ -142,7 +184,6 @@ begin
 					break;
 				end;
 			end else begin
-				//MsgBox(products[i].Title + ' install failed. Result Code: ' + IntToStr(ResultCode), mbInformation, MB_OK);
 				Result := InstallError;
 				break;
 			end;
@@ -187,8 +228,7 @@ end;
 
 function NeedRestart : boolean;
 begin
-	if (delayedReboot) then
-		Result := true;
+	Result := delayedReboot;
 end;
 
 function UpdateReadyMemo(Space, NewLine, MemoUserInfoInfo, MemoDirInfo, MemoTypeInfo, MemoComponentsInfo, MemoGroupInfo, MemoTasksInfo: String): String;
@@ -215,10 +255,10 @@ begin
 	if CurPageID = wpReady then begin
 		if downloadMemo <> '' then begin
 			//change isxdl language only if it is not english because isxdl default language is already english
-			//if (ActiveLanguage() <> 'en') then begin
-			//	ExtractTemporaryFile(CustomMessage('isxdl_langfile'));
-			//	isxdl_SetOption('language', ExpandConstant('{tmp}{\}') + CustomMessage('isxdl_langfile'));
-			//end;
+			if (ActiveLanguage() <> 'en') then begin
+				ExtractTemporaryFile(CustomMessage('isxdl_langfile'));
+				isxdl_SetOption('language', ExpandConstant('{tmp}{\}') + CustomMessage('isxdl_langfile'));
+			end;
 			//isxdl_SetOption('title', FmtMessage(SetupMessage(msgSetupWindowTitle), [CustomMessage('appname')]));
 
 			if SuppressibleMsgBox(FmtMessage(CustomMessage('depdownload_msg'), [downloadMessage]), mbConfirmation, MB_YESNO, IDYES) = IDNO then
@@ -231,17 +271,17 @@ end;
 
 function IsX86: boolean;
 begin
-	Result := (ProcessorArchitecture = paX86) or (ProcessorArchitecture = paUnknown);
+	Result := isForcedX86 or (ProcessorArchitecture = paX86) or (ProcessorArchitecture = paUnknown);
 end;
 
 function IsX64: boolean;
 begin
-	Result := Is64BitInstallMode and (ProcessorArchitecture = paX64);
+	Result := (not isForcedX86) and Is64BitInstallMode and (ProcessorArchitecture = paX64);
 end;
 
 function IsIA64: boolean;
 begin
-	Result := Is64BitInstallMode and (ProcessorArchitecture = paIA64);
+	Result := (not isForcedX86) and Is64BitInstallMode and (ProcessorArchitecture = paIA64);
 end;
 
 function GetString(x86, x64, ia64: String): String;
@@ -265,3 +305,10 @@ begin
 		Result := '';
 	end;
 end;
+
+procedure SetForceX86(value: boolean);
+begin
+	isForcedX86 := value;
+end;
+
+[Setup]

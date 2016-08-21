@@ -1,7 +1,7 @@
-// SQL Server Express is supported on x64 and EMT64 systems in Windows On Windows (WOW). SQL Server Express is not supported on IA64 systems
-// requires Microsoft .NET Framework 2.0 or later
-// SQLEXPR32.EXE is a smaller package that can be used to install SQL Server Express on 32-bit operating systems only. The larger SQLEXPR.EXE package supports installing onto both 32-bit and 64-bit (WOW install) operating systems. There is no other difference between these packages.
-// http://www.microsoft.com/download/en/details.aspx?id=15291
+; SQL Server Express is supported on x64 and EMT64 systems in Windows On Windows (WOW). SQL Server Express is not supported on IA64 systems
+; requires Microsoft .NET Framework 2.0 or later
+; SQLEXPR32.EXE is a smaller package that can be used to install SQL Server Express on 32-bit operating systems only. The larger SQLEXPR.EXE package supports installing onto both 32-bit and 64-bit (WOW install) operating systems. There is no other difference between these packages.
+; http://www.microsoft.com/download/en/details.aspx?id=15291
 
 [CustomMessages]
 sql2005express_title=SQL Server 2005 Express SP3
@@ -11,7 +11,6 @@ de.sql2005express_size=38,1 MB
 
 en.sql2005express_size_x64=58.1 MB
 de.sql2005express_size_x64=58,1 MB
-
 
 [Code]
 const
@@ -37,6 +36,8 @@ begin
 				CustomMessage('sql2005express_title'),
 				CustomMessage('sql2005express_size' + GetArchitectureString()),
 				GetString(sql2005express_url, sql2005express_url_x64, ''),
-				false, false);
+				false, false, false);
 	end;
 end;
+
+[Setup]
