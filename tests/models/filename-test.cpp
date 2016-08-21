@@ -256,6 +256,10 @@ void FilenameTest::testIsValid()
     QCOMPARE(Filename("%website%/%id%.%ext%").isValid(), true);
     QCOMPARE(Filename("%artist%/%copyright%/%character%/%md5%.%ext%").isValid(), true);
     QCOMPARE(Filename("javascript:md5 + '.' + ext;").isValid(), true);
+
+    QString out;
+    Filename("%toto%.%ext%").isValid(&out);
+    QCOMPARE(out.isEmpty(), false);
 }
 
 void FilenameTest::testUseShorterCopyright()
