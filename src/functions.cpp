@@ -731,9 +731,13 @@ QString fixFilenameLinux(QString fn, QString path, int maxlength, bool invalidCh
 	QString file, ext;
 	if (!fn.isEmpty())
 	{
-		file = parts.takeLast();
-		ext = file.right(file.length() - file.lastIndexOf('.') - 1);
-		file = file.left(file.lastIndexOf('.'));
+		file = parts.takeLast();;
+		int lastDot = file.lastIndexOf('.');
+		if (lastDot != -1)
+		{
+			ext = file.right(file.length() - lastDot - 1);
+			file = file.left(lastDot);
+		}
 	}
 
 	// Fix directories
