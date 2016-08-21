@@ -34,7 +34,6 @@ QString		qfonttocss(QFont);
 float		round(float n, int d = 0);
 void		clearLayout(QLayout *layout);
 QString		stripTags(QString);
-QString		getUnit(int*);
 QString		getUnit(float*);
 QString		getExtension(QString url);
 QString		setExtension(QString url, QString extension);

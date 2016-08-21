@@ -11,6 +11,7 @@ class FunctionsTest : public TestSuite
     private slots:
         void testFixFilenameWindows();
         void testFixFilenameLinux();
+        void testGetUnit();
 
     protected:
         void assertFixFilename(int platform, QString filename, QString path, QString expected);

@@ -19,6 +19,21 @@ void FunctionsTest::testFixFilenameLinux()
     assertFixFilename(1, "folder/image.jpg", "/home/test/", "folder/image.jpg");
 }
 
+void FunctionsTest::testGetUnit()
+{
+    float size1 = 800;
+    QCOMPARE(getUnit(&size1), QString("o"));
+    QCOMPARE(size1, 800.0f);
+
+    float size2 = 2048;
+    QCOMPARE(getUnit(&size2), QString("Kio"));
+    QCOMPARE(size2, 2.0f);
+
+    float size3 = 7340032;
+    QCOMPARE(getUnit(&size3), QString("Mio"));
+    QCOMPARE(size3, 7.0f);
+}
+
 
 void FunctionsTest::assertFixFilename(int platform, QString filename, QString path, QString expected)
 {

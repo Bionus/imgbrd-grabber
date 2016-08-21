@@ -221,22 +221,6 @@ void removeMd5(QString md5)
 	saveMd5s();
 }
 
-QString getUnit(int *value)
-{
-	QString unit = "o";
-	if (*value >= 1024)
-	{
-		*value /= 1024;
-		if (*value >= 1024)
-		{
-			*value /= 1024;
-			unit = "Mio";
-		}
-		else
-		{ unit = "Kio"; }
-	}
-	return unit;
-}
 QString getUnit(float *value)
 {
 	QString unit = "o";
