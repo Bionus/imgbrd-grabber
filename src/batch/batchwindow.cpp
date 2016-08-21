@@ -42,6 +42,9 @@ batchWindow::batchWindow(QWidget *parent)
 		m_taskBarProgress->setMaximum(0);
 		m_taskBarProgress->setValue(0);
 	#endif
+
+	// Allow dialog minimization
+	setWindowFlags(windowFlags() | Qt::WindowMinimizeButtonHint);
 }
 
 batchWindow::~batchWindow()
