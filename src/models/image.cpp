@@ -514,7 +514,7 @@ int toDate(QString text)
 	return 0;
 }
 
-QString Image::match(QString filter, bool invert)
+QString Image::match(QString filter, bool invert) const
 {
 	QStringList mathematicaltypes = QStringList() << "id" << "width" << "height" << "score" << "mpixels" << "filesize" << "date";
 	QStringList types = QStringList() << "rating" << "source" << mathematicaltypes;
@@ -632,7 +632,7 @@ QString Image::match(QString filter, bool invert)
 	return QString();
 }
 
-QStringList Image::filter(QStringList filters)
+QStringList Image::filter(QStringList filters) const
 {
 	QStringList ret;
 	for (QString filter : filters)
@@ -690,7 +690,7 @@ QString analyse(QStringList tokens, QString text, QStringList tags, int depth = 
  * @param simple True to force using the fn and pth parameters.
  * @return The filename of the image, with any token replaced.
  */
-QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool simple, bool maxlength, bool shouldFixFilename, bool getFull)
+QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool simple, bool maxlength, bool shouldFixFilename, bool getFull) const
 {
 	if (!simple)
 	{
@@ -799,7 +799,7 @@ void Image::abortImage()
  * Try to guess the size of the image in pixels for sorting.
  * @return The guessed number of pixels in the image.
  */
-int Image::value()
+int Image::value() const
 {
 	if (!m_size.isEmpty())
         return m_size.width() * m_size.height();
@@ -822,7 +822,7 @@ int Image::value()
  * @param blacklistedtags The list of tags to check.
  * @return The blacklisted tags found in the image (empty list if none is found).
  */
-QStringList Image::blacklisted(QStringList blacklistedtags, bool invert)
+QStringList Image::blacklisted(QStringList blacklistedtags, bool invert) const
 {
 	QStringList detected;
 	QRegExp reg;
@@ -836,7 +836,7 @@ QStringList Image::blacklisted(QStringList blacklistedtags, bool invert)
 	return detected;
 }
 
-QStringList Image::stylishedTags(QStringList ignored)
+QStringList Image::stylishedTags(QStringList ignored) const
 {
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
 	QStringList blacklistedtags(settings.value("blacklistedtags").toString().split(' '));
@@ -981,44 +981,44 @@ QMap<QString, Image::SaveResult> Image::save(QString filename, QString path)
 }
 
 
-QString			Image::url()			{ return m_url;				}
-QString			Image::author()			{ return m_author;			}
-QString			Image::status()			{ return m_status;			}
-QString			Image::rating()			{ return m_rating;			}
-QString			Image::source()			{ return m_source;			}
-QString			Image::site()			{ return m_site;			}
-Site			*Image::parentSite()	{ return m_parentSite;		}
-QString			Image::filename()		{ return m_filename;		}
-QString			Image::folder()			{ return m_folder;			}
-QList<Tag>		Image::tags()			{ return m_tags;			}
-QList<Pool*>	Image::pools()			{ return m_pools;			}
-int				Image::id()				{ return m_id;				}
-int				Image::score()			{ return m_score;			}
-int				Image::parentId()		{ return m_parentId;		}
-int				Image::fileSize()		{ return m_fileSize;		}
-int				Image::width()			{ return m_size.width();	}
-int				Image::height()			{ return m_size.height();	}
-int				Image::authorId()		{ return m_authorId;		}
-QDateTime		Image::createdAt()		{ return m_createdAt;		}
-bool			Image::hasChildren()	{ return m_hasChildren;		}
-bool			Image::hasNote()		{ return m_hasNote;			}
-bool			Image::hasComments()	{ return m_hasComments;		}
-bool			Image::hasScore()		{ return m_hasScore;		}
-QUrl			Image::fileUrl()		{ return m_fileUrl;			}
-QUrl			Image::sampleUrl()		{ return m_sampleUrl;		}
-QUrl			Image::previewUrl()		{ return m_previewUrl;		}
-QUrl			Image::pageUrl()		{ return m_pageUrl;			}
-QSize			Image::size()			{ return m_size;			}
-QPixmap			Image::previewImage()	{ return m_imagePreview;	}
-Page			*Image::page()			{ return m_parent;			}
-QByteArray		Image::data()			{ return m_data;			}
-QNetworkReply	*Image::imageReply()	{ return m_loadImage;		}
-QNetworkReply	*Image::tagsReply()		{ return m_loadDetails;		}
-QSettings		*Image::settings()		{ return m_settings;		}
-QMap<QString,QString> Image::details()	{ return m_details;         }
-QStringList		Image::search()			{ return m_search;			}
+QString			Image::url() const			{ return m_url;				}
+QString			Image::author() const			{ return m_author;			}
+QString			Image::status() const			{ return m_status;			}
+QString			Image::rating() const			{ return m_rating;			}
+QString			Image::source() const			{ return m_source;			}
+QString			Image::site() const			{ return m_site;			}
+Site			*Image::parentSite() const	{ return m_parentSite;		}
+QString			Image::filename() const		{ return m_filename;		}
+QString			Image::folder() const			{ return m_folder;			}
+QList<Tag>		Image::tags() const			{ return m_tags;			}
+QList<Pool*>	Image::pools() const			{ return m_pools;			}
+int				Image::id() const				{ return m_id;				}
+int				Image::score() const			{ return m_score;			}
+int				Image::parentId() const		{ return m_parentId;		}
+int				Image::fileSize() const		{ return m_fileSize;		}
+int				Image::width() const			{ return m_size.width();	}
+int				Image::height() const			{ return m_size.height();	}
+int				Image::authorId() const		{ return m_authorId;		}
+QDateTime		Image::createdAt() const		{ return m_createdAt;		}
+bool			Image::hasChildren() const	{ return m_hasChildren;		}
+bool			Image::hasNote() const		{ return m_hasNote;			}
+bool			Image::hasComments() const	{ return m_hasComments;		}
+bool			Image::hasScore() const		{ return m_hasScore;		}
+QUrl			Image::fileUrl() const		{ return m_fileUrl;			}
+QUrl			Image::sampleUrl() const		{ return m_sampleUrl;		}
+QUrl			Image::previewUrl() const		{ return m_previewUrl;		}
+QUrl			Image::pageUrl() const		{ return m_pageUrl;			}
+QSize			Image::size() const			{ return m_size;			}
+QPixmap			Image::previewImage() const	{ return m_imagePreview;	}
+Page			*Image::page() const			{ return m_parent;			}
+QByteArray		Image::data() const			{ return m_data;			}
+QNetworkReply	*Image::imageReply() const	{ return m_loadImage;		}
+QNetworkReply	*Image::tagsReply() const		{ return m_loadDetails;		}
+QSettings		*Image::settings() const		{ return m_settings;		}
+QMap<QString,QString> Image::details() const	{ return m_details;         }
+QStringList		Image::search() const			{ return m_search;			}
 
-QStringList Image::tagsString()
+QStringList Image::tagsString() const
 {
 	QStringList tags;
 	for (Tag tag : m_tags)
@@ -1026,7 +1026,7 @@ QStringList Image::tagsString()
 	return tags;
 }
 
-QString Image::detail(QString key)
+QString Image::detail(QString key) const
 {
 	if (m_details.contains(key))
 		return m_details.value(key);
@@ -1051,12 +1051,12 @@ void Image::setSavePath(QString savePath)
 	m_savePath = savePath;
 }
 
-QString Image::md5()
+QString Image::md5() const
 {
     // If we know the path to the image or its content but not its md5, we calculate it first
     if (m_md5.isEmpty() && (!m_savePath.isEmpty() || !m_data.isEmpty()))
-	{
-		QCryptographicHash hash(QCryptographicHash::Md5);
+    {
+        QCryptographicHash hash(QCryptographicHash::Md5);
 
 		// Calculate from image data
 		if (!m_data.isEmpty())
@@ -1079,7 +1079,7 @@ QString Image::md5()
 	return m_md5;
 }
 
-bool Image::hasTag(QString tag)
+bool Image::hasTag(QString tag) const
 {
 	tag = tag.trimmed();
 	for (Tag t : m_tags)
@@ -1087,7 +1087,7 @@ bool Image::hasTag(QString tag)
 			return true;
 	return false;
 }
-bool Image::hasTag(QStringList tags)
+bool Image::hasTag(QStringList tags) const
 {
 	for (QString tag : tags)
 		if (this->hasTag(tag))

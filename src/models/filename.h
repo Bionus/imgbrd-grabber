@@ -8,7 +8,7 @@ class Filename
 {
     public:
         Filename(QString format);
-        QStringList	path(Image &img, QSettings *settings, QString pth = "", int counter = 0, bool complex = true, bool maxlength = true, bool shouldFixFilename = true, bool getFull = false) const;
+        QStringList	path(const Image&img, QSettings *settings, QString pth = "", int counter = 0, bool complex = true, bool maxlength = true, bool shouldFixFilename = true, bool getFull = false) const;
         QString getFormat() const;
 
         /**
@@ -19,9 +19,9 @@ class Filename
          */
         bool isValid(QString *error = nullptr) const;
 
-        QList<QMap<QString, QPair<QString, QString>>> getReplaces(QString filename, Image &img, QSettings *settings, QMap<QString,QStringList> custom) const;
+        QList<QMap<QString, QPair<QString, QString>>> getReplaces(QString filename, const Image&img, QSettings *settings, QMap<QString,QStringList> custom) const;
         QString expandConditionals(QString text, QStringList tokens, QStringList tags, QMap<QString, QPair<QString, QString>> replaces, int depth = 0) const;
-        QMap<QString, QStringList> makeDetails(Image &img, QSettings *settings) const;
+        QMap<QString, QStringList> makeDetails(const Image&img, QSettings *settings) const;
 
     protected:
         QList<QPair<QString,QString>> getReplace(QString setting, QMap<QString,QStringList> details, QSettings *settings) const;

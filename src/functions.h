@@ -64,9 +64,7 @@ QList<Favorite> loadFavorites();
 QStringList		loadViewItLater();
 QStringList		loadIgnored();
 
-QString						mapToString(QMap<QString,QString> map, QString gen = "{gen}", QString mid = "{mid}");
 QMap<QString,QString>		domToMap(QDomElement);
-QMap<QString,QString>		stringToMap(QString map, QString gen = "{gen}", QString mid = "{mid}");
 
 QMap<QString,QStringList>	getCustoms();
 QMap<QString,QPair<QString,QString>>	getFilenames();
