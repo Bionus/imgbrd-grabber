@@ -34,6 +34,19 @@ void FunctionsTest::testGetUnit()
     QCOMPARE(size3, 7.0f);
 }
 
+void FunctionsTest::testGetExtension()
+{
+    QCOMPARE(getExtension("http://test.com/file"), QString(""));
+    QCOMPARE(getExtension("http://test.com/file.jpg"), QString("jpg"));
+    QCOMPARE(getExtension("http://test.com/file.jpg?toto=1"), QString("jpg"));
+}
+void FunctionsTest::testSetExtension()
+{
+    QCOMPARE(setExtension("http://test.com/file", "png"), QString("http://test.com/file"));
+    QCOMPARE(setExtension("http://test.com/file.jpg", "png"), QString("http://test.com/file.png"));
+    QCOMPARE(setExtension("http://test.com/file.jpg?toto=1", "png"), QString("http://test.com/file.png?toto=1"));
+}
+
 
 void FunctionsTest::assertFixFilename(int platform, QString filename, QString path, QString expected)
 {

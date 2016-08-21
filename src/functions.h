@@ -30,7 +30,6 @@ QDateTime	qDateTimeFromString(QString s);
 QString		savePath(QString s = "", bool exists = false);
 int			levenshtein(QString, QString);
 QString		qfonttocss(QFont);
-float		round(float n, int d = 0);
 void		clearLayout(QLayout *layout);
 QString		stripTags(QString);
 QString		getUnit(float*);

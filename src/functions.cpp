@@ -569,16 +569,6 @@ void openTray()
 	#endif
 }
 
-/**
- * Rounds a var to the closest integer.
- * @param	d	Number of decimals to keep.
- */
-float round(float n, int d)
-{
-	int p = pow(10., d);
-	return floor(n * p + .5) / p;
-}
-
 void clearLayout(QLayout *layout)
 {
 	QLayoutItem *item;
@@ -597,9 +587,10 @@ void clearLayout(QLayout *layout)
 QString getExtension(QString url)
 {
 	QString ext;
-	if (url.contains('.'))
+	int pPos = url.lastIndexOf('.');
+	if (pPos != -1 && pPos > url.indexOf('/', 7))
 	{
-		ext = url.section('.', -1);
+		ext = url.right(url.length() - pPos - 1);
 		if (ext.contains('?'))
 			ext = ext.section('?', 0, -2);
 	}
@@ -609,7 +600,7 @@ QString getExtension(QString url)
 QString setExtension(QString url, QString extension)
 {
 	int pPos = url.lastIndexOf('.');
-	if (pPos != -1)
+	if (pPos != -1 && pPos > url.indexOf('/', 7))
 	{
 		int qPos = url.indexOf('?', pPos);
 		if (qPos != -1)

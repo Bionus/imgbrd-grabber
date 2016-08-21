@@ -12,6 +12,8 @@ class FunctionsTest : public TestSuite
         void testFixFilenameWindows();
         void testFixFilenameLinux();
         void testGetUnit();
+        void testGetExtension();
+        void testSetExtension();
 
     protected:
         void assertFixFilename(int platform, QString filename, QString path, QString expected);
