@@ -10,7 +10,7 @@ Filename::Filename(QString format)
 	: m_format(format)
 { }
 
-QList<QMap<QString, QPair<QString, QString>>> Filename::getReplaces(QString filename, const Image&img, QSettings *settings, QMap<QString, QStringList> custom) const
+QList<QMap<QString, QPair<QString, QString>>> Filename::getReplaces(QString filename, const Image& img, QSettings *settings, QMap<QString, QStringList> custom) const
 {
 	QMap<QString, QPair<QString, QString>> replaces;
 	QList<QMap<QString, QPair<QString, QString>>> ret;
@@ -68,6 +68,7 @@ QList<QMap<QString, QPair<QString, QString>>> Filename::getReplaces(QString file
 			if (!found)
 			{ copyrights.append(cop); }
 		}
+		details["copyrights"] = copyrights;
 	}
 	else
 	{ copyrights = details["copyrights"]; }
@@ -157,7 +158,7 @@ QString Filename::expandConditionals(QString text, QStringList tokens, QStringLi
 	return ret;
 }
 
-QList<QStrP> Filename::getReplace(QString setting, QMap<QString,QStringList> details, QSettings *settings) const
+QList<QPair<QString,QString>> Filename::getReplace(QString setting, QMap<QString,QStringList> details, QSettings *settings) const
 {
 	settings->beginGroup("Save");
 
@@ -204,7 +205,7 @@ QList<QStrP> Filename::getReplace(QString setting, QMap<QString,QStringList> det
 	return ret;
 }
 
-QMap<QString, QStringList> Filename::makeDetails(const Image&img, QSettings *settings) const
+QMap<QString, QStringList> Filename::makeDetails(const Image& img, QSettings *settings) const
 {
 	QStringList ignore = loadIgnored();
 	QStringList remove = settings->value("ignoredtags").toString().split(' ', QString::SkipEmptyParts);
@@ -245,7 +246,7 @@ QMap<QString, QStringList> Filename::makeDetails(const Image&img, QSettings *set
  * @param complex Whether the filename is complex or not (contains conditionals).
  * @return The filename of the image, with any token replaced.
  */
-QStringList Filename::path(const Image&img, QSettings *settings, QString pth, int counter, bool complex, bool maxlength, bool shouldFixFilename, bool getFull) const
+QStringList Filename::path(const Image& img, QSettings *settings, QString pth, int counter, bool complex, bool maxlength, bool shouldFixFilename, bool getFull) const
 {
 	QStringList remove = settings->value("ignoredtags").toString().split(' ', QString::SkipEmptyParts);
 	QString tagSeparator = settings->value("Save/separator", " ").toString();

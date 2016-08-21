@@ -4,32 +4,31 @@
 
 void FilenameTest::init()
 {
-    QMap<QString,QString> details;
-    details["md5"] = "1bc29b36f623ba82aaf6724fd3b16718";
-    details["ext"] = "jpg";
-    details["author"] = "superauthor";
-    details["status"] = "tested";
-    details["filename"] = "oldfilename";
-    details["search"] = "testing well";
-    details["id"] = "7331";
-    details["score"] = "21";
-    details["parent_id"] = "1337";
-    details["file_size"] = "1234567";
-    details["creator_id"] = "1234";
-    details["has_children"] = "true";
-    details["has_note"] = "true";
-    details["has_comments"] = "true";
-    details["file_url"] = "http://test.com/img/oldfilename.jpg";
-    details["sample_url"] = "http://test.com/sample/oldfilename.jpg";
-    details["preview_url"] = "http://test.com/preview/oldfilename.jpg";
-    details["width"] = "800";
-    details["height"] = "600";
-    details["source"] = "http://google.com/";
-    details["tags_general"] = "tag1 tag2 tag3";
-    details["tags_artist"] = "artist1";
-    details["tags_copyright"] = "copyright1 copyright2";
-    details["tags_character"] = "character1 character2";
-    details["created_at"] = "1471513944";
+    m_details["md5"] = "1bc29b36f623ba82aaf6724fd3b16718";
+    m_details["ext"] = "jpg";
+    m_details["author"] = "superauthor";
+    m_details["status"] = "tested";
+    m_details["filename"] = "oldfilename";
+    m_details["search"] = "testing well";
+    m_details["id"] = "7331";
+    m_details["score"] = "21";
+    m_details["parent_id"] = "1337";
+    m_details["file_size"] = "1234567";
+    m_details["creator_id"] = "1234";
+    m_details["has_children"] = "true";
+    m_details["has_note"] = "true";
+    m_details["has_comments"] = "true";
+    m_details["file_url"] = "http://test.com/img/oldfilename.jpg";
+    m_details["sample_url"] = "http://test.com/sample/oldfilename.jpg";
+    m_details["preview_url"] = "http://test.com/preview/oldfilename.jpg";
+    m_details["width"] = "800";
+    m_details["height"] = "600";
+    m_details["source"] = "http://google.com/";
+    m_details["tags_general"] = "tag1 tag2 tag3";
+    m_details["tags_artist"] = "artist1";
+    m_details["tags_copyright"] = "copyright1 copyright2";
+    m_details["tags_character"] = "character1 character2";
+    m_details["created_at"] = "1471513944";
 
 	m_settings = new QSettings("tests/test_settings.ini", QSettings::IniFormat);
 	m_settings->setValue("Save/separator", " ");
@@ -37,9 +36,10 @@ void FilenameTest::init()
 	m_settings->setValue("Save/character_multiple", "replaceAll");
 	m_settings->setValue("Save/copyright_value", "crossover");
 	m_settings->setValue("Save/copyright_multiple", "replaceAll");
+	m_settings->setValue("Save/replaceblanks", true);
 
 	m_site = new Site(m_settings, "release/sites/Danbooru (2.0)", "danbooru.donmai.us");
-	m_img = new Image(m_site, details);
+	m_img = new Image(m_site, m_details);
 }
 
 void FilenameTest::cleanup()
@@ -186,6 +186,28 @@ void FilenameTest::testIsValid()
     QCOMPARE(Filename("%website%/%id%.%ext%").isValid(), true);
     QCOMPARE(Filename("%artist%/%copyright%/%character%/%md5%.%ext%").isValid(), true);
     QCOMPARE(Filename("javascript:md5 + '.' + ext;").isValid(), true);
+}
+
+void FilenameTest::testUseShorterCopyright()
+{
+    m_img->deleteLater();
+
+    m_details["tags_copyright"] = "test test_2";
+    m_img = new Image(m_site, m_details);
+
+    m_settings->setValue("Save/copyright_useshorter", true);
+    assertPath("%copyright%", "test");
+    m_settings->setValue("Save/copyright_multiple", "keepAll");
+    m_settings->setValue("Save/copyright_useshorter", false);
+    assertPath("%copyright%", "test test_2");
+
+    m_img->deleteLater();
+
+    m_details["tags_copyright"] = "test_2 test";
+    m_img = new Image(m_site, m_details);
+
+    m_settings->setValue("Save/copyright_useshorter", true);
+    assertPath("%copyright%", "test");
 }
 
 

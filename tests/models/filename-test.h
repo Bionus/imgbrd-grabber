@@ -31,6 +31,7 @@ class FilenameTest : public TestSuite
         void testGetReplacesMultiple();
         void testGetReplacesMatrix();
         void testIsValid();
+        void testUseShorterCopyright();
 
     protected:
         void assertPath(QString format, QString expected, QString path = "", bool shouldFixFilename = true);
@@ -41,6 +42,7 @@ class FilenameTest : public TestSuite
         QSettings *m_settings;
         Site *m_site;
         Image *m_img;
+        QMap<QString,QString> m_details;
 };
 
 #endif // FILENAME_TEST_H
