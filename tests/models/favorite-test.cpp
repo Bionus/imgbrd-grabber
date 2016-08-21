@@ -104,6 +104,7 @@ void FavoriteTest::testNotEquals()
 	QCOMPARE(true, fav1 != fav2);
 }
 
+#if !__linux__
 void FavoriteTest::testSetImageFirst()
 {
 	QFile file(savePath("thumbs/tag1.png"));
@@ -163,5 +164,6 @@ void FavoriteTest::testGetImageSmall()
 	QCOMPARE(actual.isNull(), false);
 	QCOMPARE(actual.size(), QSize(150, 150));
 }
+#endif
 
 static FavoriteTest instance;

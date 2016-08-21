@@ -35,9 +35,9 @@ install:
       export PATH
     ; fi
 
-# Install code coverage tool for Linux builds
+# Install code coverage tool for OS X builds
 before_install:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then pip install --user codecov; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then pip install --user codecov; fi
 
 # Build Grabber
 script:
@@ -47,4 +47,4 @@ script:
 
 # Upload code coverage of Linux builds
 after_success:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then codecov -t 068ef4e2-5006-4f45-9545-fbf4e22ad085; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then codecov -t 068ef4e2-5006-4f45-9545-fbf4e22ad085; fi

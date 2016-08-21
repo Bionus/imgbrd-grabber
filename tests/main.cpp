@@ -10,7 +10,11 @@ mainWindow *_mainwindow;
 
 int main(int argc, char *argv[])
 {
-    QGuiApplication a(argc, argv);
+    #if __linux__
+        QCoreApplication a(argc, argv);
+    #else
+        QGuiApplication a(argc, argv);
+    #endif
 
     QMap<QString,int> results;
     int failed;

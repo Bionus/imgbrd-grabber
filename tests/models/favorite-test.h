@@ -22,10 +22,12 @@ class FavoriteTest : public TestSuite
 		void testEqualsAll();
 		void testEqualsCase();
 		void testNotEquals();
+#if !__linux__
 		void testSetImageFirst();
 		void testGetImageNotExists();
 		void testGetImageBig();
 		void testGetImageSmall();
+#endif
 };
 
 #endif // FAVORITE_TEST_H
