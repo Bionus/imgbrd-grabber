@@ -29,7 +29,6 @@ void		sortNonCaseSensitive(QStringList &);
 QDateTime	qDateTimeFromString(QString s);
 QString		savePath(QString s = "", bool exists = false);
 int			levenshtein(QString, QString);
-QString		validateFilename(QString);
 QString		qfonttocss(QFont);
 float		round(float n, int d = 0);
 void		clearLayout(QLayout *layout);

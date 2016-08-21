@@ -305,65 +305,6 @@ QStringList loadIgnored()
 }
 
 /**
- * Check filename format's validity.
- * @param	text	The format to be validated.
- * @return			A QString containing the message (error or not).
- * @todo			Return a constant instead of a QString.
- */
-QString validateFilename(QString text)
-{
-	// Field must be filled
-	if (text.isEmpty())
-		return QObject::tr("<span style=\"color:red\">Les noms de fichiers ne doivent pas être vides !</span>");
-
-	// Can't validate javascript expressions
-	if (text.startsWith("javascript:"))
-		return QObject::tr("<span style=\"color:orange\">Impossible de valider les expressions Javascript.</span>");
-
-	// Field must end by an extension
-	if (!text.endsWith(".%ext%"))
-		return QObject::tr("<span style=\"color:orange\">Votre nom de fichier ne finit pas par une extension, symbolisée par %ext% ! Vous risquez de ne pas pouvoir ouvrir vos fichiers.</span>");
-
-	// Field must contain an unique token
-	if (!text.contains("%md5%") && !text.contains("%id%") && !text.contains("%count"))
-		return QObject::tr("<span style=\"color:orange\">Votre nom de fichier n'est pas unique à chaque image et une image risque d'en écraser une précédente lors de la sauvegarde ! Vous devriez utiliser le symbole %md5%, unique à chaque image, pour éviter ce désagrément.</span>");
-
-	// Looking for unknown tokens
-	QStringList tokens = QStringList() << "artist" << "general" << "copyright" << "character" << "model" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "search_(\\d+)" << "allo" << getCustoms().keys() << "date" << "date:([^%]+)" << "score" << "count(:\\d+)?(:\\d+)?" << "width" << "height" << "pool" << "url_file" << "url_page";
-	QRegExp rx("%(.+)%");
-	rx.setMinimal(true);
-	int pos = 0;
-	while ((pos = rx.indexIn(text, pos)) != -1)
-	{
-		bool found = false;
-		for (int i = 0; i < tokens.length(); i++)
-		{
-			if (QRegExp("%"+tokens[i]+"%").indexIn(rx.cap(0)) != -1)
-				found = true;
-		}
-
-		if (!found)
-			return QObject::tr("<span style=\"color:orange\">Le symbole %%1% n\'existe pas et ne sera pas remplacé.</span>").arg(rx.cap(1));
-
-		pos += rx.matchedLength();
-	}
-
-	// Check for invalid windows characters
-	#ifdef Q_OS_WIN
-		QString txt = QString(text).remove(rx);
-		if (txt.contains(':') || txt.contains('*') || txt.contains('?') || (txt.contains('"') && txt.count('<') == 0) || txt.count('<') != txt.count('>') || txt.contains('|'))
-			return QObject::tr("<span style=\"color:red\">Votre format contient des caractères interdits sur windows ! Caractères interdits : * ? \" : < > |</span>");
-	#endif
-
-	// Check if code is unique
-	if (!text.contains("%md5%") && !text.contains("%website%") && !text.contains("%count") && text.contains("%id%"))
-		return QObject::tr("<span style=\"color:green\">Vous avez choisi d'utiliser le symbole %id%. Sachez que celui-ci est unique pour un site choisi. Le même ID pourra identifier des images différentes en fonction du site.</span>");
-
-	// All tests passed
-	return QObject::tr("<span style=\"color:green\">Format valide !</span>");
-}
-
-/**
  * Return the path to a specified file in the config folder (since program files is not writable).
  * @param	file	The file.
  * @param	exists	If the file must already exist beforehand.

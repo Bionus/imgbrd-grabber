@@ -5,6 +5,7 @@
 #include "functions.h"
 #include "json.h"
 #include "models/page.h"
+#include "models/filename.h"
 
 
 
@@ -35,7 +36,12 @@ void AddUniqueWindow::on_buttonFolder_clicked()
 	{ ui->lineFolder->setText(folder); }
 }
 void AddUniqueWindow::on_lineFilename_textChanged(QString text)
-{ ui->labelFilename->setText(validateFilename(text)); }
+{
+    QString message;
+    Filename fn(text);
+    fn.isValid(&message);
+    ui->labelFilename->setText(message);
+}
 
 /**
  * Search for image in available websites.

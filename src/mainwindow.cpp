@@ -30,6 +30,7 @@
 #include "utils/rename-existing/rename-existing-1.h"
 #include "utils/empty-dirs-fix/empty-dirs-fix-1.h"
 #include "utils/md5-fix/md5-fix.h"
+#include "models/filename.h"
 
 #define DONE()			logUpdate(QObject::tr(" Fait"))
 #define DIR_SEPARATOR	QDir::toNativeSeparators("/")
@@ -2369,7 +2370,10 @@ void mainWindow::saveSettings()
 			ui->comboFilename->removeItem(i);
 	ui->comboFilename->insertItem(0, txt);
 	ui->comboFilename->setCurrentIndex(0);
-	ui->labelFilename->setText(validateFilename(ui->comboFilename->currentText()));
+	QString message;
+	Filename fn(ui->comboFilename->currentText());
+	fn.isValid(&message);
+	ui->labelFilename->setText(message);
 
 	// Save filename history
 	QFile f(savePath("filenamehistory.txt"));

@@ -10,12 +10,12 @@ Filename::Filename(QString format)
 	: m_format(format)
 { }
 
-QString Filename::getPairValue(QPair<QString, QString> pair)
+QString Filename::getPairValue(QPair<QString, QString> pair) const
 {
 	return (pair.first.isEmpty() ? pair.second : pair.first);
 }
 
-QList<QMap<QString, QPair<QString, QString>>> Filename::getReplaces(QString filename, Image &img, QSettings *settings, QMap<QString, QStringList> custom)
+QList<QMap<QString, QPair<QString, QString>>> Filename::getReplaces(QString filename, Image &img, QSettings *settings, QMap<QString, QStringList> custom) const
 {
 	QMap<QString, QPair<QString, QString>> replaces;
 	QList<QMap<QString, QPair<QString, QString>>> ret;
@@ -119,7 +119,7 @@ QList<QMap<QString, QPair<QString, QString>>> Filename::getReplaces(QString file
 	return ret;
 }
 
-QString Filename::expandConditionals(QString text, QStringList tokens, QStringList tags, QMap<QString, QPair<QString, QString>> replaces, int depth)
+QString Filename::expandConditionals(QString text, QStringList tokens, QStringList tags, QMap<QString, QPair<QString, QString>> replaces, int depth) const
 {
 	QString ret = text;
 
@@ -162,7 +162,7 @@ QString Filename::expandConditionals(QString text, QStringList tokens, QStringLi
 	return ret;
 }
 
-QList<QStrP> Filename::getReplace(QString setting, QMap<QString,QStringList> details, QSettings *settings)
+QList<QStrP> Filename::getReplace(QString setting, QMap<QString,QStringList> details, QSettings *settings) const
 {
 	settings->beginGroup("Save");
 
@@ -209,7 +209,7 @@ QList<QStrP> Filename::getReplace(QString setting, QMap<QString,QStringList> det
 	return ret;
 }
 
-QMap<QString, QStringList> Filename::makeDetails(Image &img, QSettings *settings)
+QMap<QString, QStringList> Filename::makeDetails(Image &img, QSettings *settings) const
 {
 	QStringList ignore = loadIgnored();
 	QStringList remove = settings->value("ignoredtags").toString().split(' ', QString::SkipEmptyParts);
@@ -250,7 +250,7 @@ QMap<QString, QStringList> Filename::makeDetails(Image &img, QSettings *settings
  * @param complex Whether the filename is complex or not (contains conditionals).
  * @return The filename of the image, with any token replaced.
  */
-QStringList Filename::path(Image &img, QSettings *settings, QString pth, int counter, bool complex, bool maxlength, bool shouldFixFilename, bool getFull)
+QStringList Filename::path(Image &img, QSettings *settings, QString pth, int counter, bool complex, bool maxlength, bool shouldFixFilename, bool getFull) const
 {
 	QStringList remove = settings->value("ignoredtags").toString().split(' ', QString::SkipEmptyParts);
 	QString tagSeparator = settings->value("Save/separator", " ").toString();
@@ -499,7 +499,68 @@ QStringList Filename::path(Image &img, QSettings *settings, QString pth, int cou
 	return fns;
 }
 
-QString Filename::getFormat()
+QString Filename::getFormat() const
 {
 	return m_format;
+}
+
+bool Filename::returnError(QString msg, QString *error) const
+{
+	if (error != nullptr)
+		*error = msg;
+
+	return false;
+}
+bool Filename::isValid(QString *error) const
+{
+	// Field must be filled
+	if (m_format.isEmpty())
+		return returnError(QObject::tr("<span style=\"color:red\">Les noms de fichiers ne doivent pas être vides !</span>"), error);
+
+	// Can't validate javascript expressions
+	if (m_format.startsWith("javascript:"))
+		return returnError(QObject::tr("<span style=\"color:orange\">Impossible de valider les expressions Javascript.</span>"), error);
+
+	// Field must end by an extension
+	if (!m_format.endsWith(".%ext%"))
+		return returnError(QObject::tr("<span style=\"color:orange\">Votre nom de fichier ne finit pas par une extension, symbolisée par %ext% ! Vous risquez de ne pas pouvoir ouvrir vos fichiers.</span>"), error);
+
+	// Field must contain an unique token
+	if (!m_format.contains("%md5%") && !m_format.contains("%id%") && !m_format.contains("%count"))
+		return returnError(QObject::tr("<span style=\"color:orange\">Votre nom de fichier n'est pas unique à chaque image et une image risque d'en écraser une précédente lors de la sauvegarde ! Vous devriez utiliser le symbole %md5%, unique à chaque image, pour éviter ce désagrément.</span>"), error);
+
+	// Looking for unknown tokens
+	QStringList tokens = QStringList() << "artist" << "general" << "copyright" << "character" << "model" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "search_(\\d+)" << "allo" << getCustoms().keys() << "date" << "date:([^%]+)" << "score" << "count(:\\d+)?(:\\d+)?" << "width" << "height" << "pool" << "url_file" << "url_page";
+	QRegExp rx("%(.+)%");
+	rx.setMinimal(true);
+	int pos = 0;
+	while ((pos = rx.indexIn(m_format, pos)) != -1)
+	{
+		bool found = false;
+		for (int i = 0; i < tokens.length(); i++)
+		{
+			if (QRegExp("%"+tokens[i]+"%").indexIn(rx.cap(0)) != -1)
+				found = true;
+		}
+
+		if (!found)
+			return returnError(QObject::tr("<span style=\"color:orange\">Le symbole %%1% n\'existe pas et ne sera pas remplacé.</span>").arg(rx.cap(1)), error);
+
+		pos += rx.matchedLength();
+	}
+
+	// Check for invalid windows characters
+	#ifdef Q_OS_WIN
+		QString txt = QString(m_format).remove(rx);
+		if (txt.contains(':') || txt.contains('*') || txt.contains('?') || (txt.contains('"') && txt.count('<') == 0) || txt.count('<') != txt.count('>') || txt.contains('|'))
+			return returnError(QObject::tr("<span style=\"color:red\">Votre format contient des caractères interdits sur windows ! Caractères interdits : * ? \" : < > |</span>"), error);
+	#endif
+
+	// Check if code is unique
+	if (!m_format.contains("%md5%") && !m_format.contains("%website%") && !m_format.contains("%count") && m_format.contains("%id%"))
+		return returnError(QObject::tr("<span style=\"color:green\">Vous avez choisi d'utiliser le symbole %id%. Sachez que celui-ci est unique pour un site choisi. Le même ID pourra identifier des images différentes en fonction du site.</span>"), error);
+
+	// All tests passed
+	*error = QObject::tr("<span style=\"color:green\">Format valide !</span>");
+	return true;
 }
