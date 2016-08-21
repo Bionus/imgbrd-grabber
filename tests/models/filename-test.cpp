@@ -67,6 +67,22 @@ void FilenameTest::testPathComplex()
     assertPath("%artist%/%copyright%/%character%/%md5%.%ext%",
                "artist1/crossover/group/1bc29b36f623ba82aaf6724fd3b16718.jpg");
 }
+void FilenameTest::testPathEmptyDirs()
+{
+    assertPath("%artist%/%test%/%md5%.%ext%",
+               "artist1/1bc29b36f623ba82aaf6724fd3b16718.jpg");
+}
+void FilenameTest::testPathFull()
+{
+    assertPath("%md5%.%ext%",
+               "tests/directory/1bc29b36f623ba82aaf6724fd3b16718.jpg",
+               "tests/directory/",
+               true, true);
+    assertPath("%md5%.%ext%",
+               "tests/directory/1bc29b36f623ba82aaf6724fd3b16718.jpg",
+               "tests/directory",
+               true, true);
+}
 
 void FilenameTest::testPathSimpleJavascript()
 {
@@ -178,6 +194,7 @@ void FilenameTest::testGetReplacesMatrix()
 
 void FilenameTest::testIsValid()
 {
+    QCOMPARE(Filename("").isValid(), false);
     QCOMPARE(Filename("%md5%").isValid(), false);
     QCOMPARE(Filename("toto").isValid(), false);
     QCOMPARE(Filename("%toto%.%ext%").isValid(), false);
@@ -211,12 +228,12 @@ void FilenameTest::testUseShorterCopyright()
 }
 
 
-void FilenameTest::assertPath(QString format, QString expected, QString path, bool shouldFixFilename)
+void FilenameTest::assertPath(QString format, QString expected, QString path, bool shouldFixFilename, bool fullPath)
 {
-    assertPath(format, QStringList() << expected, path, shouldFixFilename);
+    assertPath(format, QStringList() << expected, path, shouldFixFilename, fullPath);
 }
 
-void FilenameTest::assertPath(QString format, QStringList expected, QString path, bool shouldFixFilename)
+void FilenameTest::assertPath(QString format, QStringList expected, QString path, bool shouldFixFilename, bool fullPath)
 {
     if (path.isEmpty())
         path = QDir::homePath();
@@ -229,7 +246,7 @@ void FilenameTest::assertPath(QString format, QStringList expected, QString path
     }
 
     Filename fn(format);
-    QStringList actual = fn.path(*m_img, m_settings, path, 0, true, true, shouldFixFilename, false);
+    QStringList actual = fn.path(*m_img, m_settings, path, 0, true, true, shouldFixFilename, fullPath);
     QCOMPARE(actual, expectedNative);
 }
 

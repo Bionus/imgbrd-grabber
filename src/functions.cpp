@@ -764,7 +764,7 @@ QString fixFilenameWindows(QString fn, QString path, int maxlength, bool invalid
 	// Get separation between filename and path
 	int index = -1;
 	int pathGroups = path.count(sep);
-	for (int i = 0; i < pathGroups - 1; ++i)
+	for (int i = 0; i < pathGroups - (!drive.isEmpty() ? 1 : 0); ++i)
 	{ index = filename.indexOf(sep, index + 1); }
 	index += drive.length();
 

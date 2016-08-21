@@ -18,6 +18,8 @@ class FilenameTest : public TestSuite
         void testGetFormat();
         void testPathSimple();
         void testPathComplex();
+        void testPathEmptyDirs();
+        void testPathFull();
         void testPathSimpleJavascript();
         void testExpandTag();
         void testExpandTokenSimple();
@@ -34,8 +36,8 @@ class FilenameTest : public TestSuite
         void testUseShorterCopyright();
 
     protected:
-        void assertPath(QString format, QString expected, QString path = "", bool shouldFixFilename = true);
-        void assertPath(QString format, QStringList expected, QString path = "", bool shouldFixFilename = true);
+        void assertPath(QString format, QString expected, QString path = "", bool shouldFixFilename = true, bool fullPath = false);
+        void assertPath(QString format, QStringList expected, QString path = "", bool shouldFixFilename = true, bool fullPath = false);
         void assertExpand(QString format, QString expected);
 
     private:

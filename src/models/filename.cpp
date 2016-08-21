@@ -440,9 +440,10 @@ QStringList Filename::path(const Image& img, QSettings *settings, QString pth, i
 					}
 
 					cFilename.replace(replacerx.cap(0), res);
+					p += res.length();
 				}
 				else
-				{ p += replacerx.matchedLength(); }
+				{ cFilename.remove(replacerx.cap(0)); }
 			}
 
 			// Complex expressions using regexes
@@ -468,21 +469,22 @@ QStringList Filename::path(const Image& img, QSettings *settings, QString pth, i
 		{ fns[i].replace("//", "/"); }
 
 		// Max filename size option
+		qDebug() << 1 << fns[i];
 		if (shouldFixFilename)
 		{
 			int limit = !maxlength ? 0 : settings->value("Save/limit").toInt();
 			fns[i] = fixFilename(fns[i], pth, limit);
 		}
 
+		qDebug() << 2 << fns[i] << getFull;
 		if (getFull)
 		{
 			fns[i] = QDir::toNativeSeparators(fns[i]);
 			if (fns[i].left(1) == QDir::toNativeSeparators("/"))
 			{ fns[i] = fns[i].right(fns[i].length() - 1); }
-			if (fns[i].right(1) == QDir::toNativeSeparators("/"))
-			{ fns[i] = fns[i].left(fns[i].length() - 1); }
 			fns[i] = QDir::toNativeSeparators(pth + "/" + fns[i]);
 		}
+		qDebug() << 3 << fns[i];
 	}
 
 	return fns;
