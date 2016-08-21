@@ -2201,6 +2201,7 @@ bool mainWindow::loadLinkList(QString filename)
 	// Get the file's header to get the version
 	QString header = f.readLine().trimmed();
 	int version = header.mid(5, header.size() - 6).toInt();
+	Q_UNUSED(version);
 
 	// Read the remaining file
 	QString links = f.readAll();
