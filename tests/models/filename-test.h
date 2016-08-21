@@ -25,13 +25,15 @@ class FilenameTest : public TestSuite
         void testPathOptionMax();
         void testPathOptionMaxDouble();
         void testPathOptionDateFormat();
+        void testPathOptionTagNamespace();
+        void testPathOptionTagSeparator();
         void testGetReplacesSimple();
         void testGetReplacesMultiple();
         void testGetReplacesMatrix();
 
     protected:
-        void assertPath(QString format, QString expected, QString path = "");
-        void assertPath(QString format, QStringList expected, QString path = "");
+        void assertPath(QString format, QString expected, QString path = "", bool shouldFixFilename = true);
+        void assertPath(QString format, QStringList expected, QString path = "", bool shouldFixFilename = true);
         void assertExpand(QString format, QString expected);
 
     private:

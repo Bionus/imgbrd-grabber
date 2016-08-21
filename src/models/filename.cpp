@@ -19,7 +19,7 @@ QList<QMap<QString, QPair<QString, QString>>> Filename::getReplaces(QString file
 {
 	QMap<QString, QPair<QString, QString>> replaces;
 	QList<QMap<QString, QPair<QString, QString>>> ret;
-	QString tagSeparator = settings->value("Save/separator").toString();
+	QString tagSeparator = settings->value("Save/separator", " ").toString();
 	QMap<QString, QStringList> details = makeDetails(img, settings);
 
 	// Pool
@@ -92,7 +92,7 @@ QList<QMap<QString, QPair<QString, QString>>> Filename::getReplaces(QString file
 	QStringList keys = QStringList() << "artist" << "copyright" << "character" << "model";
 	for (QString key : keys)
 	{
-		if (filename.contains("%"+key+"%"))
+		if (filename.contains(QRegExp("%"+key+"(?::[^%]+)?%")))
 		{
 			QList<QPair<QString, QString>> reps = this->getReplace(key, details, settings);
 			int cnt = ret.count();
@@ -253,8 +253,8 @@ QMap<QString, QStringList> Filename::makeDetails(Image &img, QSettings *settings
 QStringList Filename::path(Image &img, QSettings *settings, QString pth, int counter, bool complex, bool maxlength, bool shouldFixFilename, bool getFull)
 {
 	QStringList remove = settings->value("ignoredtags").toString().split(' ', QString::SkipEmptyParts);
+	QString tagSeparator = settings->value("Save/separator", " ").toString();
 
-	QString cop;
 	QMap<QString,QStringList> custom = QMap<QString,QStringList>(), scustom = getCustoms();
 	QMap<QString,QStringList> details = makeDetails(img, settings);
 	QRegExp reg;
@@ -284,7 +284,7 @@ QStringList Filename::path(Image &img, QSettings *settings, QString pth, int cou
 	}
 
 	QString filename = m_format;
-	QMap<QString, QPair<QString, QString>> replaces = this->getReplaces(filename, img, settings, custom).first();
+	auto replacesList = this->getReplaces(filename, img, settings, custom);
 
 	// Conditional filenames
 	QMap<QString,QPair<QString,QString>> filenames = getFilenames();
@@ -302,11 +302,11 @@ QStringList Filename::path(Image &img, QSettings *settings, QString pth, int cou
 			while ((p = reg.indexIn(cond, p)) != -1)
 			{
 				QString token = reg.cap(1);
-				if (replaces.contains(token))
+				if (replacesList.first().contains(token))
 				{
 					options.removeOne(reg.cap(0));
-					if (!replaces[token].first.isEmpty())
-					{ options.append(replaces[token].first.split(' ')); }
+					if (!replacesList.first().value(token).first.isEmpty())
+					{ options.append(replacesList.first().value(token).first.split(' ')); }
 				}
 				p += reg.matchedLength();
 			}
@@ -321,7 +321,7 @@ QStringList Filename::path(Image &img, QSettings *settings, QString pth, int cou
 					filename = filenames.value(cond).first;
 
 					// Update replaces accordingly
-					replaces = this->getReplaces(filename, img, settings, custom).first();
+					replacesList = this->getReplaces(filename, img, settings, custom);
 				}
 				if (!filenames.value(cond).second.isEmpty())
 				{ pth = filenames.value(cond).second; }
@@ -330,12 +330,15 @@ QStringList Filename::path(Image &img, QSettings *settings, QString pth, int cou
 		}
 	}
 
+	QStringList fns;
+
 	if (filename.startsWith("javascript:"))
 	{
 		// We remove the "javascript:" part
 		filename = filename.right(filename.length() - 11);
 
 		// FIXME real multiple filename management shared with normal filenames
+		auto replaces = replacesList.first();
 		QStringList repKays = QStringList() << "artist" << "copyright" << "character" << "model";
 		for (QString key : repKays)
 		{
@@ -373,124 +376,113 @@ QStringList Filename::path(Image &img, QSettings *settings, QString pth, int cou
 			return QStringList();
 		}
 
-		filename = result.toString();
+		fns.append(result.toString());
 	}
 	else
 	{
 		// We get path and remove useless slashes from filename
 		pth.replace("\\", "/");
 		filename.replace("\\", "/");
-		if (filename.left(1) == "/")	{ filename = filename.right(filename.length()-1);	}
-		if (pth.right(1) == "/")		{ pth = pth.left(pth.length()-1);					}
+		if (filename.left(1) == "/")
+		{ filename = filename.right(filename.length() - 1); }
+		if (pth.right(1) == "/")
+		{ pth = pth.left(pth.length() - 1); }
 
-		// Conditionals
-		if (complex)
+		for (auto replaces : replacesList)
 		{
-			QStringList tokens = QStringList() << "artist" << "general" << "copyright" << "character" << "model" << "model|artist" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "allo" << "date" << "date:([^%]+)" << "count(:\\d+)?(:\\d+)?" << "search_(\\d+)" << "score" << "height" << "width" << "path" << "pool" << "url_file" << "url_page" << custom.keys();
-			filename = this->expandConditionals(filename, tokens, details["allos"], replaces);
-		}
+			QString cFilename = QString(filename);
 
-		// Replace everything
-		QRegExp replacerx("%([^:]+)(?::([^%]+))?%");
-		replacerx.setMinimal(true);
-		int p = 0;
-		while ((p = replacerx.indexIn(filename, p)) != -1)
-		{
-			QString key = replacerx.cap(1);
-			if (replaces.contains(key))
+			// Conditionals
+			if (complex)
 			{
-				QMap<QString,QString> options;
-				if (replacerx.captureCount() > 1)
+				QStringList tokens = QStringList() << "artist" << "general" << "copyright" << "character" << "model" << "model|artist" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "allo" << "date" << "date:([^%]+)" << "count(:\\d+)?(:\\d+)?" << "search_(\\d+)" << "score" << "height" << "width" << "path" << "pool" << "url_file" << "url_page" << custom.keys();
+				cFilename = this->expandConditionals(cFilename, tokens, details["allos"], replaces);
+			}
+
+			// Replace everything
+			QRegExp replacerx("%([^:]+)(?::([^%]+))?%");
+			replacerx.setMinimal(true);
+			int p = 0;
+			while ((p = replacerx.indexIn(cFilename, p)) != -1)
+			{
+				QString key = replacerx.cap(1);
+				if (replaces.contains(key))
 				{
-					QStringList opts = replacerx.cap(2).split(',');
-					for (QString opt : opts)
+					QMap<QString,QString> options;
+					if (replacerx.captureCount() > 1)
 					{
-						int index = opt.indexOf('=');
-						if (index != -1)
-						{ options.insert(opt.left(index), opt.mid(index + 1)); }
-						else
-						{ options.insert(opt, "true"); }
+						QStringList opts = replacerx.cap(2).split(',');
+						for (QString opt : opts)
+						{
+							int index = opt.indexOf('=');
+							if (index != -1)
+							{ options.insert(opt.left(index), opt.mid(index + 1)); }
+							else
+							{ options.insert(opt, "true"); }
+						}
 					}
+
+					QString res = replaces[key].first.isEmpty() ? replaces[key].second : replaces[key].first;
+
+					// Apply options
+					if (key == "date" && options.contains("format"))
+					{ res = img.createdAt().toString(options["format"]); }
+					if (options.contains("maxlength"))
+					{ res = res.left(options["maxlength"].toInt()); }
+					if (key == "all" || key == "allo" || key == "general" || key == "artist" || key == "copyright" || key == "character")
+					{
+						QStringList vals = res.split(tagSeparator);
+						if (options.contains("includenamespace"))
+						{
+							QStringList namespaced;
+							for (QString val : vals)
+							{ namespaced.append(key + ":" + val); }
+							vals = namespaced;
+						}
+						res = vals.join(options.contains("separator") ? options["separator"] : tagSeparator);
+					}
+
+					// Forbidden characters and spaces replacement settings
+					if (key != "allo" && !key.startsWith("url_") && !options.contains("unsafe"))
+					{
+						res = res.replace("\\", "_").replace("%", "_").replace("/", "_").replace(":", "_").replace("|", "_").replace("*", "_").replace("?", "_").replace("\"", "_").replace("<", "_").replace(">", "_").replace("__", "_").replace("__", "_").replace("__", "_").trimmed();
+						if (!settings->value("Save/replaceblanks", false).toBool())
+						{ res = res.replace("_", " "); }
+					}
+
+					cFilename.replace(replacerx.cap(0), res);
 				}
-
-				QString res = replaces[key].first.isEmpty() ? replaces[key].second : replaces[key].first;
-
-				// Apply options
-				if (key == "date" && options.contains("format"))
-				{ res = img.createdAt().toString(options["format"]); }
-				if (options.contains("maxlength"))
-				{ res = res.left(options["maxlength"].toInt()); }
-
-				// Forbidden characters and spaces replacement settings
-				if (key != "allo" && key != "url_file" && key != "url_page")
-				{
-					res = res.replace("\\", "_").replace("%", "_").replace("/", "_").replace(":", "_").replace("|", "_").replace("*", "_").replace("?", "_").replace("\"", "_").replace("<", "_").replace(">", "_").replace("__", "_").replace("__", "_").replace("__", "_").trimmed();
-					if (!settings->value("Save/replaceblanks", false).toBool())
-					{ res.replace("_", " "); }
-				}
-
-				filename.replace(replacerx.cap(0), res);
+				else
+				{ p += replacerx.matchedLength(); }
 			}
-			else
-			{ p += replacerx.matchedLength(); }
-		}
 
-		// Complex expressions using regexes
-		QRegExp rxcounter("%count(:\\d+)?(:\\d+)?%");
-		rxcounter.setMinimal(true);
-		p = 0;
-		while ((p = rxcounter.indexIn(filename, p)) != -1)
-		{ filename.replace(rxcounter.cap(0), rxcounter.captureCount() > 0 ? QString::number(counter, 'f', rxcounter.cap(1).toInt()) : QString::number(counter)); }
-	}
+			// Complex expressions using regexes
+			QRegExp rxcounter("%count(:\\d+)?(:\\d+)?%");
+			rxcounter.setMinimal(true);
+			p = 0;
+			while ((p = rxcounter.indexIn(cFilename, p)) != -1)
+			{ cFilename.replace(rxcounter.cap(0), rxcounter.captureCount() > 0 ? QString::number(counter, 'f', rxcounter.cap(1).toInt()) : QString::number(counter)); }
 
-	QStringList fns = QStringList() << filename;
-	QStringList keys = QStringList() << "artist" << "copyright" << "character" << "model";
-
-	for (QString key : keys)
-	{
-		QList<QStrP> replaces = this->getReplace(key, details, settings);
-		int cnt = fns.count();
-		for (int i = 0; i < cnt; ++i)
-		{
-			if (fns[i].contains("%"+key+"%"))
-			{
-				for (int j = 0; j < replaces.count(); ++j)
-				{
-					QString res = replaces[j].first.isEmpty() ? replaces[j].second : replaces[j].first;
-					res.replace("\\", "_").replace("%", "_").replace("/", "_").replace(":", "_").replace("|", "_").replace("*", "_").replace("?", "_").replace("\"", "_").replace("<", "_").replace(">", "_").replace("__", "_").replace("__", "_").replace("__", "_").trimmed();
-					if (!settings->value("Save/replaceblanks", false).toBool())
-					{ res.replace("_", " "); }
-
-					QString filename = QString(fns[i]);
-					filename = filename.replace("%"+key+"%", res);
-
-					if (j < replaces.count() - 1)
-						fns.append(filename);
-					else
-						fns[i] = filename;
-				}
-			}
+			fns.append(cFilename);
 		}
 	}
 
 	int cnt = fns.count();
 	for (int i = 0; i < cnt; ++i)
 	{
-		QString filename = fns[i];
-
 		// Trim directory names
-		filename = filename.trimmed();
-		filename.replace(QRegExp(" */ *"), "/");
+		fns[i] = fns[i].trimmed();
+		fns[i].replace(QRegExp(" */ *"), "/");
 
 		// We remove empty directory names
-		while (filename.indexOf("//") >= 0)
-		{ filename.replace("//", "/"); }
+		while (fns[i].indexOf("//") >= 0)
+		{ fns[i].replace("//", "/"); }
 
 		// Max filename size option
 		if (shouldFixFilename)
 		{
 			int limit = !maxlength ? 0 : settings->value("Save/limit").toInt();
-			fns[i] = fixFilename(filename, pth, limit);
+			fns[i] = fixFilename(fns[i], pth, limit);
 		}
 
 		if (getFull)

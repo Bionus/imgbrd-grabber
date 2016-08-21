@@ -32,6 +32,7 @@ void FilenameTest::init()
     details["created_at"] = "1471513944";
 
 	m_settings = new QSettings("tests/test_settings.ini", QSettings::IniFormat);
+	m_settings->setValue("Save/separator", " ");
 	m_settings->setValue("Save/character_value", "group");
 	m_settings->setValue("Save/character_multiple", "replaceAll");
 	m_settings->setValue("Save/copyright_value", "crossover");
@@ -43,9 +44,9 @@ void FilenameTest::init()
 
 void FilenameTest::cleanup()
 {
-    delete m_settings;
-    delete m_site;
-    delete m_img;
+    m_settings->deleteLater();
+    m_site->deleteLater();
+    m_img->deleteLater();
 }
 
 
@@ -108,6 +109,20 @@ void FilenameTest::testPathOptionDateFormat()
 {
     assertPath("%date:format=yyyy-MM-dd%.%ext%", "2016-08-18.jpg");
 }
+void FilenameTest::testPathOptionTagNamespace()
+{
+    m_settings->setValue("Save/character_multiple", "keepAll");
+
+    assertPath("%character:includenamespace,unsafe%", "character_character1 character_character2", "", true);
+    assertPath("%character:includenamespace,unsafe%", "character:character1 character:character2", "", false);
+}
+void FilenameTest::testPathOptionTagSeparator()
+{
+    m_settings->setValue("Save/character_multiple", "keepAll");
+
+    assertPath("%character:separator=---%", "character1---character2");
+    assertPath("%character:separator=\n%", "character1\ncharacter2");
+}
 
 void FilenameTest::testGetReplacesSimple()
 {
@@ -163,12 +178,12 @@ void FilenameTest::testGetReplacesMatrix()
 }
 
 
-void FilenameTest::assertPath(QString format, QString expected, QString path)
+void FilenameTest::assertPath(QString format, QString expected, QString path, bool shouldFixFilename)
 {
-    assertPath(format, QStringList() << expected, path);
+    assertPath(format, QStringList() << expected, path, shouldFixFilename);
 }
 
-void FilenameTest::assertPath(QString format, QStringList expected, QString path)
+void FilenameTest::assertPath(QString format, QStringList expected, QString path, bool shouldFixFilename)
 {
     if (path.isEmpty())
         path = QDir::homePath();
@@ -181,7 +196,7 @@ void FilenameTest::assertPath(QString format, QStringList expected, QString path
     }
 
     Filename fn(format);
-    QStringList actual = fn.path(*m_img, m_settings, path);
+    QStringList actual = fn.path(*m_img, m_settings, path, 0, true, true, shouldFixFilename, false);
     QCOMPARE(actual, expectedNative);
 }
 

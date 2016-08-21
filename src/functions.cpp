@@ -705,7 +705,7 @@ QString setExtension(QString url, QString extension)
 	return url;
 }
 
-QString fixFilename(QString fn, QString path, int maxlength)
+QString fixFilename(QString fn, QString path, int maxlength, bool invalidChars)
 {
 	QString sep = QDir::toNativeSeparators("/");
 	fn = QDir::toNativeSeparators(fn);
@@ -714,13 +714,13 @@ QString fixFilename(QString fn, QString path, int maxlength)
 		path += sep;
 
 	#ifdef Q_OS_WIN
-		return fixFilenameWindows(fn, path, maxlength);
+		return fixFilenameWindows(fn, path, maxlength, invalidChars);
 	#else
-		return fixFilenameLinux(fn, path, maxlength);
+		return fixFilenameLinux(fn, path, maxlength, invalidChars);
 	#endif
 }
 
-QString fixFilenameLinux(QString fn, QString path, int maxlength)
+QString fixFilenameLinux(QString fn, QString path, int maxlength, bool invalidChars)
 {
 	// Fix parameters
 	QString sep = "/";
@@ -778,7 +778,7 @@ QString fixFilenameLinux(QString fn, QString path, int maxlength)
 	#define MAX_PATH 260
 #endif
 
-QString fixFilenameWindows(QString fn, QString path, int maxlength)
+QString fixFilenameWindows(QString fn, QString path, int maxlength, bool invalidChars)
 {
 	// Fix parameters
 	QString sep = "\\";
@@ -794,7 +794,8 @@ QString fixFilenameWindows(QString fn, QString path, int maxlength)
 	}
 
 	// Forbidden characters
-	filename.remove('<').remove('>').remove(':').remove('"').remove('/').remove('|').remove('?').remove('*');
+	if (invalidChars)
+	{ filename.replace('<', '_').replace('>', '_').replace(':', '_').remove('"').replace('/', '_').replace('|', '_').remove('?').replace('*', '_'); }
 
 	// Fobidden directories or filenames
 	QStringList forbidden = QStringList() << "CON" << "PRN" << "AUX" << "NUL" << "COM1" << "COM2" << "COM3" << "COM4" << "COM5" << "COM6" << "COM7" << "COM8" << "COM9" << "LPT1" << "LPT2" << "LPT3" << "LPT4" << "LPT5" << "LPT6" << "LPT7" << "LPT8" << "LPT9";
@@ -805,50 +806,54 @@ QString fixFilenameWindows(QString fn, QString path, int maxlength)
 	if (!fn.isEmpty())
 	{
 		file = parts.takeLast();
-		ext = file.right(file.length() - file.lastIndexOf('.') - 1);
-		file = file.left(file.lastIndexOf('.'));
+		int lastDot = file.lastIndexOf('.');
+		if (lastDot != -1)
+		{
+			ext = file.right(file.length() - lastDot - 1);
+			file = file.left(lastDot);
+		}
 	}
 
 	// Fix directories
 	for (QString &part : parts)
 	{
 		// A part cannot be one in the forbidden list
-		if (forbidden.contains(part))
-			part = part + "!";
+		if (invalidChars && forbidden.contains(part))
+		{ part = part + "!"; }
 
 		// A part cannot finish by a period
-		if (part.endsWith('.'))
-			part = part.left(part.length() - 1).trimmed();
+		if (invalidChars && part.endsWith('.'))
+		{ part = part.left(part.length() - 1).trimmed(); }
 
 		// A part cannot start or finish with a space
 		part = part.trimmed();
 
 		// A part should still allow creating a file
 		if (part.length() > maxlength - 12)
-			part = part.left(qMax(0, maxlength - 12)).trimmed();
+		{ part = part.left(qMax(0, maxlength - 12)).trimmed(); }
 	}
 
 	// Join parts back
 	QString dirpart = parts.join(sep);
 	if (dirpart.length() > maxlength - 12)
-		dirpart = dirpart.left(qMax(0, maxlength - 12)).trimmed();
+	{ dirpart = dirpart.left(qMax(0, maxlength - 12)).trimmed(); }
 	filename = (dirpart.isEmpty() ? "" : dirpart + (!fn.isEmpty() ? sep : "")) + file;
 
 	// A filename cannot exceed MAX_PATH (-1 for <NUL> and -3 for drive "C:\")
 	if (filename.length() > maxlength - 1 - 3 - ext.length() - 1)
-		filename = filename.left(qMax(0, maxlength - 1 - 3 - ext.length() - 1)).trimmed();
+	{ filename = filename.left(qMax(0, maxlength - 1 - 3 - ext.length() - 1)).trimmed(); }
 
 	// Get separation between filename and path
 	int index = -1;
 	int pathGroups = path.count(sep);
 	for (int i = 0; i < pathGroups - 1; ++i)
-		index = filename.indexOf(sep, index + 1);
+	{ index = filename.indexOf(sep, index + 1); }
 	index += drive.length();
 
 	// Put extension and drive back
 	filename = drive + filename + (!ext.isEmpty() ? "." + ext : "");
 	if (!fn.isEmpty())
-		filename = filename.right(filename.length() - index - 1);
+	{ filename = filename.right(filename.length() - index - 1); }
 
 	return filename;
 }
