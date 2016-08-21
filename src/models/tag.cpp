@@ -87,5 +87,5 @@ bool sortByFrequency(Tag s1, Tag s2)
 
 bool operator==(const Tag &t1, const Tag &t2)
 {
-	return t1.text() == t2.text() && t1.type() == t2.type();
+	return t1.text() == t2.text() && (t1.type() == t2.type() || t1.type() == "unknown" || t2.type() == "unknown");
 }

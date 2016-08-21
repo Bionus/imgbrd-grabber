@@ -132,4 +132,19 @@ void TagTest::testStylishedNotFavorite()
 	QCOMPARE(tag.stylished(favorites), expected);
 }
 
+void TagTest::testCompare()
+{
+	Tag tag1(m_settings, "artist1", "artist", 1, QStringList() << "tag1");
+	Tag tag2(m_settings, "artist1", "artist", 2, QStringList() << "tag2");
+	Tag tag3(m_settings, "artist2", "artist", 3, QStringList() << "tag3");
+	Tag tag4(m_settings, "artist1", "character", 4, QStringList() << "tag4");
+	Tag tag5(m_settings, "artist1", "unknown", 5, QStringList() << "tag5");
+
+	QCOMPARE(tag1 == tag1, true);
+	QCOMPARE(tag1 == tag2, true);
+	QCOMPARE(tag1 == tag3, false);
+	QCOMPARE(tag1 == tag4, false);
+	QCOMPARE(tag1 == tag5, true);
+}
+
 static TagTest instance;

@@ -30,6 +30,7 @@ class TagTest : public TestSuite
 		void testStylishedNotFavorite();
 		void testTypedTextGeneral();
 		void testTypedTextArtist();
+		void testCompare();
 
 	private:
 		QSettings *m_settings;
