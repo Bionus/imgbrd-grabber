@@ -21,6 +21,7 @@ class FilenameTest : public TestSuite
         void testPathKeepAll();
         void testPathKeepN();
         void testPathKeepNThenAdd();
+        void testPathIgnoredTags();
         void testPathEmptyDirs();
         void testPathFull();
         void testPathSimpleJavascript();

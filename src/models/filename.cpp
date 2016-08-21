@@ -210,7 +210,7 @@ QMap<QString, QStringList> Filename::makeDetails(const Image& img, QSettings *se
 	QStringList ignore = loadIgnored();
 	QStringList remove = settings->value("ignoredtags").toString().split(' ', QString::SkipEmptyParts);
 
-	QMap<QString,QStringList> details;
+	QMap<QString, QStringList> details;
 	QRegExp reg;
 	reg.setCaseSensitivity(Qt::CaseInsensitive);
 	reg.setPatternSyntax(QRegExp::Wildcard);
@@ -222,17 +222,17 @@ QMap<QString, QStringList> Filename::makeDetails(const Image& img, QSettings *se
 		{
 			reg.setPattern(remove.at(j));
 			if (reg.exactMatch(t))
-			{ removed = true; }
+				removed = true;
 		}
-		if (!removed)
-		{
-			details[ignore.contains(tag.text(), Qt::CaseInsensitive) ? "generals" : tag.type()+"s"].append(t);
-			details["alls"].append(t);
+		if (removed)
+			continue;
 
-			QString underscored = QString(t);
-			underscored.replace(' ', '_');
-			details["allos"].append(underscored);
-		}
+		details[ignore.contains(tag.text(), Qt::CaseInsensitive) ? "generals" : tag.type()+"s"].append(t);
+		details["alls"].append(t);
+
+		QString underscored = QString(t);
+		underscored.replace(' ', '_');
+		details["allos"].append(underscored);
 	}
 
 	return details;
@@ -264,18 +264,18 @@ QStringList Filename::path(const Image& img, QSettings *settings, QString pth, i
 		{
 			reg.setPattern(remove.at(j));
 			if (reg.exactMatch(t))
-			{ removed = true; }
+				removed = true;
 		}
-		if (!removed)
+		if (removed)
+			continue;
+
+		for (int r = 0; r < scustom.size(); ++r)
 		{
-			for (int r = 0; r < scustom.size(); ++r)
-			{
-				QString key = scustom.keys().at(r);
-				if (!custom.contains(key))
-				{ custom.insert(key, QStringList()); }
-				if (scustom[key].contains(t, Qt::CaseInsensitive))
-				{ custom[key].append(t); }
-			}
+			QString key = scustom.keys().at(r);
+			if (!custom.contains(key))
+			{ custom.insert(key, QStringList()); }
+			if (scustom[key].contains(t, Qt::CaseInsensitive))
+			{ custom[key].append(t); }
 		}
 	}
 
@@ -464,14 +464,12 @@ QStringList Filename::path(const Image& img, QSettings *settings, QString pth, i
 		{ fns[i].replace("//", "/"); }
 
 		// Max filename size option
-		qDebug() << 1 << fns[i];
 		if (shouldFixFilename)
 		{
 			int limit = !maxlength ? 0 : settings->value("Save/limit").toInt();
 			fns[i] = fixFilename(fns[i], pth, limit);
 		}
 
-		qDebug() << 2 << fns[i] << getFull;
 		if (getFull)
 		{
 			fns[i] = QDir::toNativeSeparators(fns[i]);
@@ -479,7 +477,6 @@ QStringList Filename::path(const Image& img, QSettings *settings, QString pth, i
 			{ fns[i] = fns[i].right(fns[i].length() - 1); }
 			fns[i] = QDir::toNativeSeparators(pth + "/" + fns[i]);
 		}
-		qDebug() << 3 << fns[i];
 	}
 
 	return fns;

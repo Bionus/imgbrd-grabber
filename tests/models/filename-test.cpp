@@ -31,6 +31,7 @@ void FilenameTest::init()
     m_details["created_at"] = "1471513944";
 
 	m_settings = new QSettings("tests/test_settings.ini", QSettings::IniFormat);
+	m_settings->setValue("ignoredtags", "");
 	m_settings->setValue("Save/separator", " ");
 	m_settings->setValue("Save/character_value", "group");
 	m_settings->setValue("Save/character_multiple", "replaceAll");
@@ -93,6 +94,16 @@ void FilenameTest::testPathKeepNThenAdd()
     m_settings->setValue("Save/character_multiple_keepNThenAdd_keep", 2);
     assertPath("%artist%/%copyright%/%character%/%md5%.%ext%",
                "artist1/crossover/character1 character2/1bc29b36f623ba82aaf6724fd3b16718.jpg");
+}
+void FilenameTest::testPathIgnoredTags()
+{
+    m_settings->setValue("ignoredtags", "character1");
+    assertPath("%artist%/%copyright%/%character%/%md5%.%ext%",
+               "artist1/crossover/character2/1bc29b36f623ba82aaf6724fd3b16718.jpg");
+
+    m_settings->setValue("ignoredtags", "character*");
+    assertPath("%artist%/%copyright%/%character%/%md5%.%ext%",
+               "artist1/crossover/1bc29b36f623ba82aaf6724fd3b16718.jpg");
 }
 void FilenameTest::testPathEmptyDirs()
 {
