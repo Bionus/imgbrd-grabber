@@ -27,6 +27,7 @@ class FavoriteTest : public TestSuite
 		void testGetImageNotExists();
 		void testGetImageBig();
 		void testGetImageSmall();
+		void testGetImageResize();
 #endif
 };
 

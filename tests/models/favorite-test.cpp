@@ -164,6 +164,20 @@ void FavoriteTest::testGetImageSmall()
 	QCOMPARE(actual.isNull(), false);
 	QCOMPARE(actual.size(), QSize(150, 150));
 }
+void FavoriteTest::testGetImageResize()
+{
+	QFile file(savePath("thumbs/tag1.png"));
+	if (file.exists())
+		file.remove();
+
+	QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:sss");
+	Favorite fav("tag1", 50, date, QDir::currentPath() + "/tests/resources/image_200x200.png");
+	QPixmap actual = fav.getImage();
+
+	QCOMPARE(file.exists(), true);
+	QCOMPARE(actual.isNull(), false);
+	QCOMPARE(actual.size(), QSize(150, 150));
+}
 #endif
 
 static FavoriteTest instance;
