@@ -6,9 +6,6 @@ brew install gcc
 qmake Grabber.pro
 make
 mv gui/Grabber.app release
-mv release/languages $appDir/
-mv release/sites $appDir/
-mv release/words.txt $appDir/
-mv release/CDR.exe $appDir/
+mv release/* $appDir
 touch $appDir/settings.ini
 echo "Grabber has been compiled in the release directory. To run it, type 'open ./release/Grabber.app'"
