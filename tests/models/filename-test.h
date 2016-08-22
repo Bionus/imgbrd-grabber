@@ -39,7 +39,9 @@ class FilenameTest : public TestSuite
         void testGetReplacesCustom();
         void testIsValid();
         void testUseShorterCopyright();
-        void testConditionals();
+        void testConditionalsTag();
+        void testConditionalsToken();
+        void testConditionalsCustom();
         void testCustoms();
 
     protected:

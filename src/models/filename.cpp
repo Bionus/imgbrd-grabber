@@ -48,34 +48,9 @@ QList<QMap<QString, QPair<QString, QString>>> Filename::getReplaces(QString file
 	replaces.insert("url_file", QStrP(img.url(), ""));
 	replaces.insert("url_page", QStrP(img.pageUrl().toString(), ""));
 
-	// Actual copyrights, shortened if necessary
-	QStringList copyrights;
-	bool found;
-	if (settings->value("Save/copyright_useshorter", true).toBool())
-	{
-		for (QString cop : details["copyrights"])
-		{
-			found = false;
-			for (int r = 0; r < copyrights.size(); ++r)
-			{
-				if (copyrights.at(r).left(cop.size()) == cop.left(copyrights.at(r).size()))
-				{
-					if (cop.size() < copyrights.at(r).size())
-					{ copyrights[r] = cop; }
-					found = true;
-				}
-			}
-			if (!found)
-			{ copyrights.append(cop); }
-		}
-		details["copyrights"] = copyrights;
-	}
-	else
-	{ copyrights = details["copyrights"]; }
-
 	// Remove duplicates in %all%
 	QStringList rem = (filename.contains("%artist%") ? details["artists"] : QStringList()) +
-		(filename.contains("%copyright%") ? copyrights : QStringList()) +
+		(filename.contains("%copyright%") ? details["copyrights"] : QStringList()) +
 		(filename.contains("%character%") ? details["characters"] : QStringList()) +
 		(filename.contains("%model%") ? details["models"] : QStringList()) +
 		(filename.contains("%general%") ? details["generals"] : QStringList());
@@ -235,6 +210,28 @@ QMap<QString, QStringList> Filename::makeDetails(const Image& img, QSettings *se
 		details["allos"].append(underscored);
 	}
 
+	// Actual copyrights, shortened if necessary
+	if (settings->value("Save/copyright_useshorter", true).toBool())
+	{
+		QStringList copyrights;
+		for (QString cop : details["copyrights"])
+		{
+			bool found = false;
+			for (int r = 0; r < copyrights.size(); ++r)
+			{
+				if (copyrights.at(r).left(cop.size()) == cop.left(copyrights.at(r).size()))
+				{
+					if (cop.size() < copyrights.at(r).size())
+					{ copyrights[r] = cop; }
+					found = true;
+				}
+			}
+			if (!found)
+			{ copyrights.append(cop); }
+		}
+		details["copyrights"] = copyrights;
+	}
+
 	return details;
 }
 
@@ -289,7 +286,7 @@ QStringList Filename::path(const Image& img, QSettings *settings, QString pth, i
 		QString cond = filenames.keys().at(i);
 		QStringList options = cond.split(' ');
 
-		int condPer = cond.count("%");
+		int condPer = cond.count('%');
 		if (condPer > 0 && condPer % 2 == 0)
 		{
 			QRegExp reg("%([^%]+)%");
@@ -301,6 +298,12 @@ QStringList Filename::path(const Image& img, QSettings *settings, QString pth, i
 				if (replacesList.first().contains(token))
 				{
 					options.removeOne(reg.cap(0));
+
+					// Real tokens
+					if (details.contains(token + "s"))
+					{ options.append(details[token + "s"]); }
+
+					// Custom tokens
 					if (!replacesList.first().value(token).first.isEmpty())
 					{ options.append(replacesList.first().value(token).first.split(' ')); }
 				}

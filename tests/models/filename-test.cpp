@@ -285,7 +285,7 @@ void FilenameTest::testUseShorterCopyright()
     assertPath("%copyright%", "test");
 }
 
-void FilenameTest::testConditionals()
+void FilenameTest::testConditionalsTag()
 {
     m_settings->setValue("Filenames/0_fn", "%md5%.%ext%");
     m_settings->setValue("Filenames/0_dir", QDir::homePath());
@@ -296,6 +296,32 @@ void FilenameTest::testConditionals()
 
     assertPath("%artist%/%copyright%/%character%/%md5%.%ext%", "7331 1bc29b36f623ba82aaf6724fd3b16718.jpg");
 }
+void FilenameTest::testConditionalsToken()
+{
+    m_settings->setValue("Filenames/0_fn", "%md5%.%ext%");
+    m_settings->setValue("Filenames/0_dir", QDir::homePath());
+    m_settings->setValue("Filenames/0_cond", "%model%");
+    m_settings->setValue("Filenames/1_fn", "%id% %md5%.%ext%");
+    m_settings->setValue("Filenames/1_dir", QDir::homePath());
+    m_settings->setValue("Filenames/1_cond", "%character%");
+
+    assertPath("%artist%/%copyright%/%character%/%md5%.%ext%", "7331 1bc29b36f623ba82aaf6724fd3b16718.jpg");
+}
+void FilenameTest::testConditionalsCustom()
+{
+    m_settings->setValue("Save/Customs/custom1", "tag4 tag7");
+    m_settings->setValue("Save/Customs/custom2", "tag1");
+
+    m_settings->setValue("Filenames/0_fn", "%md5%.%ext%");
+    m_settings->setValue("Filenames/0_dir", QDir::homePath());
+    m_settings->setValue("Filenames/0_cond", "%custom1%");
+    m_settings->setValue("Filenames/1_fn", "%id% %md5%.%ext%");
+    m_settings->setValue("Filenames/1_dir", QDir::homePath());
+    m_settings->setValue("Filenames/1_cond", "%custom2%");
+
+    assertPath("%artist%/%copyright%/%character%/%md5%.%ext%", "7331 1bc29b36f623ba82aaf6724fd3b16718.jpg");
+}
+
 void FilenameTest::testCustoms()
 {
     m_settings->setValue("Save/Customs/custom1", "tag1 character1");
