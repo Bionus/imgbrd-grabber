@@ -38,7 +38,7 @@ void Downloader::clear()
 }
 
 Downloader::Downloader(QStringList tags, QStringList postfiltering, QList<Site*> sources, int page, int max, int perpage, QString location, QString filename, QString user, QString password, bool blacklist, QStringList blacklistedtags, bool noduplicates, int tagsmin, QString tagsformat)
-	: m_tags(tags), m_postfiltering(postfiltering), m_sites(sources), m_page(page), m_max(max), m_perpage(perpage), m_location(location), m_filename(filename), m_user(user), m_password(password), m_blacklist(blacklist), m_noduplicates(noduplicates), m_tagsmin(tagsmin), m_tagsformat(tagsformat), m_blacklistedTags(blacklistedtags)
+	: m_tags(tags), m_postfiltering(postfiltering), m_sites(sources), m_page(page), m_max(max), m_perpage(perpage), m_waiting(0), m_ignored(0), m_duplicates(0), m_tagsmin(tagsmin), m_location(location), m_filename(filename), m_user(user), m_password(password), m_blacklist(blacklist), m_noduplicates(noduplicates), m_tagsformat(tagsformat), m_blacklistedTags(blacklistedtags)
 {
 	m_quit = false;
 	m_pages = new QList<Page*>();
@@ -49,9 +49,6 @@ Downloader::Downloader(QStringList tags, QStringList postfiltering, QList<Site*>
 	m_opagesC = new QList<Page*>();
 	m_opagesT = new QList<Page*>();
 	m_opagesP = new QList<QPair<Site*, int> >();
-	m_waiting = 0;
-	m_ignored = 0;
-	m_duplicates = 0;
 	m_results = new QList<Tag>();
 	m_images = new QList<Image*>();
 	m_lastPage = nullptr;
