@@ -5,6 +5,7 @@ tests/settings.ini
 tests/resources/thumbs/
 target_wrapper.bat
 symbols/
+*.lock
 *.lnk
 *.exe
 *.obj
