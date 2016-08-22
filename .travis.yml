@@ -35,9 +35,9 @@ install:
       export PATH
     ; fi
 
-# Install code coverage tool for Linux builds
+# Install code coverage tool
 before_install:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then pip install --user codecov; fi
+  - pip install --user codecov
 
 # Start X before running tests on Linux
 before_script:
@@ -53,6 +53,6 @@ script:
   - make
   - ./tests/tests
 
-# Upload code coverage of Linux builds
+# Upload code coverage
 after_success:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then codecov -t 068ef4e2-5006-4f45-9545-fbf4e22ad085; fi
+  - codecov -t 068ef4e2-5006-4f45-9545-fbf4e22ad085
