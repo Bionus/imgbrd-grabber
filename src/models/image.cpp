@@ -221,7 +221,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Page* parent)
 		if (ext != realExt)
 		{ setFileExtension(realExt); }
 	}
-	else if (!m_previewUrl.isEmpty())
+	else if (ext == "jpg" && !m_previewUrl.isEmpty())
 	{
 		bool fixed = false;
 		QString previewExt = getExtension(details["preview_url"]);
@@ -239,7 +239,9 @@ Image::Image(Site *site, QMap<QString, QString> details, Page* parent)
 		// Guess the extension from the tags
 		if (!fixed)
 		{
-			if ((hasTag("gif") || hasTag("animated_gif")) && ext != "webm" && ext != "mp4")
+			if ((hasTag("swf") || hasTag("flash")) && ext != "swf")
+			{ setFileExtension("swf"); }
+			else if ((hasTag("gif") || hasTag("animated_gif")) && ext != "webm" && ext != "mp4")
 			{ setFileExtension("gif"); }
 			else if (hasTag("mp4") && ext != "gif" && ext != "webm")
 			{ setFileExtension("mp4"); }
