@@ -23,10 +23,12 @@ QString removeCacheUrl(QString url)
 }
 
 Image::Image()
+	: QObject()
 { }
 
 // TODO: clean up this mess
 Image::Image(const Image &other)
+	: QObject(other.parent())
 {
 	m_parent = other.m_parent;
 
@@ -705,7 +707,7 @@ void Image::finishedImageS()
 	{
 		bool animated = hasTag("gif") || hasTag("animated_gif") || hasTag("mp4") || hasTag("animated_png") || hasTag("webm") || hasTag("animated");
 
-		if (animated && ext == "swf" || ext == "mp4")
+		if (animated && (ext == "swf" || ext == "mp4"))
 		{
 			setUrl(m_sampleUrl.toString());
 			m_tryingSample = true;

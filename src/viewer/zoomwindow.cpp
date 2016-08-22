@@ -870,5 +870,6 @@ void zoomWindow::closeEvent(QCloseEvent *e)
 
 void zoomWindow::urlChanged(QString old, QString nouv)
 {
+	Q_UNUSED(old);
 	m_url = nouv;
 }

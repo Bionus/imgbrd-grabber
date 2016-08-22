@@ -963,7 +963,7 @@ void mainWindow::changeEvent(QEvent* event)
 void mainWindow::closeEvent(QCloseEvent *e)
 {
 	// Confirm before closing if there is a batch download or multiple tabs
-	if (m_settings->value("confirm_close", true).toBool() && m_tabs.count() > 1 || m_getAll)
+	if (m_settings->value("confirm_close", true).toBool() && (m_tabs.count() > 1 || m_getAll))
 	{
 		QMessageBox msgBox(this);
 		msgBox.setText(tr("Êtes vous sûr de vouloir quitter ?"));

@@ -632,6 +632,8 @@ QString fixFilename(QString fn, QString path, int maxlength, bool invalidChars)
 
 QString fixFilenameLinux(QString fn, QString path, int maxlength, bool invalidChars)
 {
+	Q_UNUSED(invalidChars);
+
 	// Fix parameters
 	QString sep = "/";
 	QString filename = path + fn;

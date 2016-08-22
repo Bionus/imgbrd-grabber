@@ -396,6 +396,8 @@ void Site::sslErrorHandler(QNetworkReply* qnr, QList<QSslError> errors)
 {
 	#ifdef QT_DEBUG
 		qDebug() << errors;
+	#else
+		Q_UNUSED(errors);
 	#endif
 	qnr->ignoreSslErrors();
 }
