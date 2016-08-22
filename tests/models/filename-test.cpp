@@ -128,6 +128,11 @@ void FilenameTest::testPathSimpleJavascript()
     assertPath("javascript:md5 + '.' + ext", "1bc29b36f623ba82aaf6724fd3b16718.jpg");
 }
 
+void FilenameTest::testPathInvalidJavascript()
+{
+    assertPath("javascript:'", QStringList());
+}
+
 void FilenameTest::testExpandTag()
 {
     assertExpand("<image contains the tag \"tag1\"><\"unknown\" is one of the image tags> %md5%.%ext%",

@@ -33,7 +33,11 @@ extern QMap<QString,QString> _md5;
  * @param	error	The error message
  */
 void error(QWidget *parent, QString error)
-{ QMessageBox::critical(parent, QObject::tr("Erreur"), error); }
+{
+    #ifndef TEST
+        QMessageBox::critical(parent, QObject::tr("Erreur"), error);
+    #endif
+}
 
 /**
  * Sort a list non case-sensitively.

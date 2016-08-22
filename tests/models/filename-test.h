@@ -25,6 +25,7 @@ class FilenameTest : public TestSuite
         void testPathEmptyDirs();
         void testPathFull();
         void testPathSimpleJavascript();
+        void testPathInvalidJavascript();
         void testExpandTag();
         void testExpandTokenSimple();
         void testExpandTokenComplex();
