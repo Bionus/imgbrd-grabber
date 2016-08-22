@@ -10,14 +10,14 @@ mainWindow *_mainwindow;
 
 int main(int argc, char *argv[])
 {
-#ifdef HEADLESS
-    QCoreApplication a(argc, argv);
-#else
-    QGuiApplication a(argc, argv);
-#endif
+    #ifdef HEADLESS
+        QCoreApplication a(argc, argv);
+    #else
+        QGuiApplication a(argc, argv);
+    #endif
 
     QMap<QString,int> results;
-    int failed;
+    int failed = 0;
 
     for (QObject *suite : TestSuite::suites)
     {

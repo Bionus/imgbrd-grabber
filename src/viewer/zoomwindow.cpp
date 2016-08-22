@@ -184,7 +184,7 @@ void zoomWindow::openPool(QString url)
     { emit poolClicked(url.right(url.length() - 5).toInt(), m_image->site()); }
 	else
 	{
-        Page *p = new Page(m_sites->value(m_image->site()), m_sites, QStringList() << "id:"+url, 1, 1, QStringList(), this);
+		Page *p = new Page(m_sites->value(m_image->site()), m_sites, QStringList() << "id:"+url, 1, 1, QStringList(), false, this);
 		connect(p, SIGNAL(finishedLoading(Page*)), this, SLOT(openPoolId(Page*)));
 		p->load();
 	}
