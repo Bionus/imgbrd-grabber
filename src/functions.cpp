@@ -321,19 +321,20 @@ QString savePath(QString file, bool exists)
 {
 	QString check = exists ? file : "settings.ini";
 	#ifdef TEST
-	return QDir::toNativeSeparators(QDir::currentPath()+"/tests/resources/"+file);
+		return QDir::toNativeSeparators(QDir::currentPath()+"/tests/resources/"+file);
+	#else
+		if (QFile(QDir::toNativeSeparators(qApp->applicationDirPath()+"/"+check)).exists())
+		{ return QDir::toNativeSeparators(qApp->applicationDirPath()+"/"+file); }
+		if (QFile(QDir::toNativeSeparators(QDir::currentPath()+"/"+check)).exists())
+		{ return QDir::toNativeSeparators(QDir::currentPath()+"/"+file); }
+		if (QFile(QDir::toNativeSeparators(QDir::homePath()+"/Grabber/"+check)).exists())
+		{ return QDir::toNativeSeparators(QDir::homePath()+"/Grabber/"+file); }
+		#ifdef __linux__
+			if (QFile(QDir::toNativeSeparators(QDir::homePath()+"/.Grabber/"+check)).exists())
+			{ return QDir::toNativeSeparators(QDir::homePath()+"/.Grabber/"+file); }
+		#endif
+		return QDir::toNativeSeparators(QStandardPaths::writableLocation(QStandardPaths::DataLocation)+"/"+file);
 	#endif
-	if (QFile(QDir::toNativeSeparators(qApp->applicationDirPath()+"/"+check)).exists())
-	{ return QDir::toNativeSeparators(qApp->applicationDirPath()+"/"+file); }
-	if (QFile(QDir::toNativeSeparators(QDir::currentPath()+"/"+check)).exists())
-	{ return QDir::toNativeSeparators(QDir::currentPath()+"/"+file); }
-	if (QFile(QDir::toNativeSeparators(QDir::homePath()+"/Grabber/"+check)).exists())
-	{ return QDir::toNativeSeparators(QDir::homePath()+"/Grabber/"+file); }
-	#ifdef __linux__
-	if (QFile(QDir::toNativeSeparators(QDir::homePath()+"/.Grabber/"+check)).exists())
-	{ return QDir::toNativeSeparators(QDir::homePath()+"/.Grabber/"+file); }
-	#endif
-	return QDir::toNativeSeparators(QStandardPaths::writableLocation(QStandardPaths::DataLocation)+"/"+file);
 }
 
 /**
