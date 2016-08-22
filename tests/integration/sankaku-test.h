@@ -14,9 +14,10 @@ class SankakuTest : public TestSuite
 		void initTestCase();
 		void cleanup();
 
-		void myInit(QString source);
+        QList<Image*> getImages(QString site, QString source, QString format, QString tags);
 
 		void testHtml();
+        void testAnimatedUrls();
 
 	private:
 		Downloader	*m_downloader;
