@@ -283,7 +283,7 @@ QStringList Filename::path(const Image& img, QSettings *settings, QString pth, i
 	auto replacesList = this->getReplaces(filename, img, settings, custom);
 
 	// Conditional filenames
-	QMap<QString,QPair<QString,QString>> filenames = getFilenames();
+	QMap<QString, QPair<QString, QString>> filenames = getFilenames();
 	for (int i = 0; i < filenames.size(); ++i)
 	{
 		QString cond = filenames.keys().at(i);

@@ -39,6 +39,8 @@ class FilenameTest : public TestSuite
         void testGetReplacesCustom();
         void testIsValid();
         void testUseShorterCopyright();
+        void testConditionals();
+        void testCustoms();
 
     protected:
         void assertPath(QString format, QString expected, QString path = "", bool shouldFixFilename = true, bool fullPath = false);

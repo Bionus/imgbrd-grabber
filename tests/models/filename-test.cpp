@@ -30,7 +30,8 @@ void FilenameTest::init()
     m_details["tags_character"] = "character1 character2";
     m_details["created_at"] = "1471513944";
 
-	m_settings = new QSettings("tests/test_settings.ini", QSettings::IniFormat);
+	m_settings = new QSettings("tests/resources/settings.ini", QSettings::IniFormat);
+	m_settings->clear();
 	m_settings->setValue("ignoredtags", "");
 	m_settings->setValue("Save/separator", " ");
 	m_settings->setValue("Save/character_value", "group");
@@ -282,6 +283,26 @@ void FilenameTest::testUseShorterCopyright()
 
     m_settings->setValue("Save/copyright_useshorter", true);
     assertPath("%copyright%", "test");
+}
+
+void FilenameTest::testConditionals()
+{
+    m_settings->setValue("Filenames/0_fn", "%md5%.%ext%");
+    m_settings->setValue("Filenames/0_dir", QDir::homePath());
+    m_settings->setValue("Filenames/0_cond", "tag4 tag7");
+    m_settings->setValue("Filenames/1_fn", "%id% %md5%.%ext%");
+    m_settings->setValue("Filenames/1_dir", QDir::homePath());
+    m_settings->setValue("Filenames/1_cond", "character1");
+
+    assertPath("%artist%/%copyright%/%character%/%md5%.%ext%", "7331 1bc29b36f623ba82aaf6724fd3b16718.jpg");
+}
+void FilenameTest::testCustoms()
+{
+    m_settings->setValue("Save/Customs/custom1", "tag1 character1");
+    m_settings->setValue("Save/Customs/custom2", "tag3 tag4");
+
+    assertPath("%custom1%", "tag1 character1");
+    assertPath("%custom2%", "tag3");
 }
 
 

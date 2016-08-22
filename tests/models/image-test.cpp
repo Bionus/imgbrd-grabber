@@ -30,7 +30,7 @@ void ImageTest::init()
     m_details["tags_character"] = "character1 character2";
     m_details["created_at"] = "1471513944";
 
-    m_settings = new QSettings("tests/test_settings.ini", QSettings::IniFormat);
+    m_settings = new QSettings("tests/resources/settings.ini", QSettings::IniFormat);
     m_site = new Site(m_settings, "release/sites/Danbooru (2.0)", "danbooru.donmai.us");
     m_img = new Image(m_site, m_details);
 }

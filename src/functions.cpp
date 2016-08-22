@@ -80,6 +80,7 @@ QMap<QString,QPair<QString,QString>> getFilenames()
 			pair.first = settings.value(QString::number(i) + "_fn").toString();
 			pair.second = settings.value(QString::number(i) + "_dir").toString();
 			tokens.insert(settings.value(QString::number(i) + "_cond").toString(), pair);
+			qDebug() << 1 << i << settings.value(QString::number(i) + "_cond").toString() << pair;
 		}
 	}
 	return tokens;

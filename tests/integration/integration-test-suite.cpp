@@ -11,7 +11,7 @@ void IntegrationTestSuite::initTestCase()
 
 QList<Image*> IntegrationTestSuite::getImages(QString site, QString source, QString format, QString tags)
 {
-	m_settings = new QSettings("tests/test_settings.ini", QSettings::IniFormat);
+    m_settings = new QSettings("tests/resources/settings.ini", QSettings::IniFormat);
     QSettings settings("release/sites/" + site +"/" + source + "/settings.ini", QSettings::IniFormat);
 	settings.setValue("download/throttle_retry", 0);
 	settings.setValue("download/throttle_page", 0);

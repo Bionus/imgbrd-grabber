@@ -1,75 +1,17 @@
 #include <QtTest>
 #include <QStringList>
 #include "danbooru-test.h"
-#include "models/site.h"
 #include "functions.h"
-
-
-void DanbooruTest::initTestCase()
-{
-	setLogFile("tests/test_log.log");
-}
-
-void DanbooruTest::myInit(QString source)
-{
-	m_settings = new QSettings("tests/test_settings.ini", QSettings::IniFormat);
-	QSettings settings("release/sites/Danbooru (2.0)/danbooru.donmai.us/settings.ini", QSettings::IniFormat);
-	settings.setValue("download/throttle_retry", 0);
-	settings.setValue("download/throttle_page", 0);
-	settings.setValue("download/throttle_thumbnail", 0);
-	settings.setValue("download/throttle_details", 0);
-	settings.setValue("sources/usedefault", false);
-	settings.setValue("sources/source_1", source);
-
-	QList<Site*> sites;
-	sites.append(new Site(m_settings, "release/sites/Danbooru (2.0)", "danbooru.donmai.us"));
-
-	m_downloader = new Downloader(QStringList() << "rating:safe",
-								  QStringList(),
-								  sites,
-								  1,
-								  20,
-								  20,
-								  ".",
-								  "%md5%.%ext%",
-								  "",
-								  "",
-								  false,
-								  QStringList(),
-								  false,
-								  0,
-								  "%tag %count %type");
-	m_downloader->setQuit(false);
-}
-
-void DanbooruTest::cleanup()
-{
-	m_downloader->deleteLater();
-	m_settings->deleteLater();
-}
 
 
 void DanbooruTest::testHtml()
 {
-    myInit("regex");
-
-    QSignalSpy spy(m_downloader, SIGNAL(finishedImages(QList<Image*>)));
-    m_downloader->getImages();
-
-	// Wait for signal
-	QVERIFY(spy.wait());
-
-    // Get results
-    QList<QVariant> arguments = spy.takeFirst();
-    QVariantList variants = arguments.at(0).value<QVariantList>();
+    QList<Image*> images = getImages("Danbooru (2.0)", "danbooru.donmai.us", "regex", "rating:safe");
 
     // Convert results
-    QList<Image*> images;
     QStringList md5s;
-    for (QVariant variant : variants)
+    for (Image *img : images)
     {
-        Image *img = variant.value<Image*>();
-        images.append(img);
         md5s.append(img->md5());
     }
 
@@ -82,25 +24,12 @@ void DanbooruTest::testHtml()
 
 void DanbooruTest::testXml()
 {
-    myInit("xml");
-
-    QSignalSpy spy(m_downloader, SIGNAL(finishedImages(QList<Image*>)));
-    m_downloader->getImages();
-
-	// Wait for signal
-	QVERIFY(spy.wait());
-
-    // Get results
-    QList<QVariant> arguments = spy.takeFirst();
-    QVariantList variants = arguments.at(0).value<QVariantList>();
+    QList<Image*> images = getImages("Danbooru (2.0)", "danbooru.donmai.us", "xml", "rating:safe");
 
     // Convert results
-    QList<Image*> images;
     QStringList md5s;
-    for (QVariant variant : variants)
+    for (Image *img : images)
     {
-        Image *img = variant.value<Image*>();
-        images.append(img);
         md5s.append(img->md5());
     }
 
@@ -110,5 +39,6 @@ void DanbooruTest::testXml()
     QCOMPARE(images.count(), 20);
     QCOMPARE(md5s, expected);
 }
+
 
 static DanbooruTest instance;
