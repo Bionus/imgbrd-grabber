@@ -2,12 +2,13 @@
 
 [![GitHub release](https://img.shields.io/github/release/Bionus/imgbrd-grabber.svg)](https://github.com/Bionus/imgbrd-grabber/releases/latest)
 [![GitHub downloads](https://img.shields.io/github/downloads/Bionus/imgbrd-grabber/latest/total.svg)](https://github.com/Bionus/imgbrd-grabber/releases/latest)
+[![GitHub downloads](https://img.shields.io/github/downloads/Bionus/imgbrd-grabber/total.svg)](https://github.com/Bionus/imgbrd-grabber/releases)
 [![GitHub issues](https://img.shields.io/github/issues/Bionus/imgbrd-grabber.svg)](https://github.com/Bionus/imgbrd-grabber/issues)
 [![Donate with PayPal](https://img.shields.io/badge/paypal-donate-orange.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=bio%2enus%40hotmail%2efr&lc=FR&item_name=Bionus&item_number=Grabber&currency_code=EUR)
 [![Donate with Patreon](https://img.shields.io/badge/patreon-donate-orange.svg)](https://www.patreon.com/bionus)
-[![Project license](https://img.shields.io/github/license/bionus/imgbrd-grabber.svg)](https://raw.githubusercontent.com/Bionus/imgbrd-grabber/develop/LICENSE)
 [![Build Status](https://travis-ci.org/Bionus/imgbrd-grabber.svg?branch=master)](https://travis-ci.org/Bionus/imgbrd-grabber)
-[![Code Coverage](https://codecov.io/gh/Bionus/imgbrd-grabber/branch/master/graph/badge.svg)](https://codecov.io/gh/Bionus/imgbrd-grabber)
+[![Code Coverage](https://img.shields.io/codecov/c/github/Bionus/imgbrd-grabber.svg)](https://codecov.io/gh/Bionus/imgbrd-grabber)
+[![Project license](https://img.shields.io/github/license/bionus/imgbrd-grabber.svg)](https://raw.githubusercontent.com/Bionus/imgbrd-grabber/develop/LICENSE)
 
 ## About
 Imgbrd-Grabber is an imageboard/booru downloader which can be used with a great a graphical user interface or through command line. It can download thousands of images from multiple boorus very easily.
