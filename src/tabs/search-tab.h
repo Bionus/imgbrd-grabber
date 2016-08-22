@@ -61,11 +61,11 @@ class searchTab : public QWidget
 
 	protected:
 		int					m_id, m_lastPage, m_lastPageMaxId, m_lastPageMinId;
+		QMap<QString,Site*>	*m_sites;
 		QList<QBouton*>		m_boutons;
 		QStringList			m_selectedImages;
 		QList<Image*>		m_selectedImagesPtrs;
 		QList<bool>			m_selectedSources;
-		QMap<QString,Site*>	*m_sites;
 		QList<QCheckBox*>	m_checkboxes;
 		QList<Favorite>		m_favorites;
 		QString				m_link;

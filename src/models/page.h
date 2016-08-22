@@ -62,14 +62,14 @@ class Page : public QObject
 
 	private:
 		Site			*m_site;
+		QStringList		m_postFiltering, m_errors, m_search;
+		int				m_imagesPerPage, m_currentSource, m_lastPage, m_lastPageMinId, m_lastPageMaxId, m_imagesCount, m_pagesCount, m_currentUrl, m_page, m_blim, m_pool;
+		bool			m_smart, m_replyExists, m_replyTagsExists;
 		QString			m_format, m_website, m_source, m_wiki, m_originalUrl;
-		QStringList		m_postFiltering, m_search, m_errors;
 		QUrl			m_url, m_urlRegex, m_urlNextPage, m_urlPrevPage;
 		QList<Image*>	m_images;
-		int				m_imagesCount, m_pagesCount, m_imagesPerPage, m_currentUrl, m_page, m_blim, m_currentSource, m_pool, m_lastPage, m_lastPageMinId, m_lastPageMaxId;
 		QList<Tag>		m_tags;
 		QNetworkReply	*m_reply, *m_replyTags;
-		bool			m_replyExists, m_replyTagsExists, m_smart;
 };
 
 #endif // PAGE_H
