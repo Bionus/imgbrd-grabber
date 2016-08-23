@@ -12,11 +12,6 @@ class DanbooruTest : public IntegrationTestSuite
 		void testHtml();
 		void testXml();
 		void testPageTags();
-
-	private:
-		Downloader	*m_downloader;
-		QSettings	*m_settings;
-		Site		*m_site;
 };
 
 #endif // DANBOORU_TEST_H
