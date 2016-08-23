@@ -182,7 +182,7 @@ void zoomWindow::openPool(QString url)
     { emit poolClicked(url.right(url.length() - 5).toInt(), m_image->site()); }
 	else
 	{
-		Page *p = new Page(m_sites->value(m_image->site()), m_sites, QStringList() << "id:"+url, 1, 1, QStringList(), false, this);
+		Page *p = new Page(m_sites->value(m_image->site()), m_sites->values(), QStringList() << "id:"+url, 1, 1, QStringList(), false, this);
 		connect(p, SIGNAL(finishedLoading(Page*)), this, SLOT(openPoolId(Page*)));
 		p->load();
 	}
@@ -278,7 +278,7 @@ void zoomWindow::openInNewWindow()
 }
 void zoomWindow::openInBrowser()
 {
-	Page *p = new Page(m_site, m_sites, QStringList() << link, 1);
+	Page *p = new Page(m_site, m_sites->values(), QStringList() << link, 1);
 	QDesktopServices::openUrl(p->url());
 	p->deleteLater();
 }

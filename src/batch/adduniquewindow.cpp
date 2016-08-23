@@ -78,7 +78,7 @@ void AddUniqueWindow::ok(bool close)
 	}
 	else
 	{
-		m_page = new Page(m_sites[ui->comboSites->currentText()], &m_sites, QStringList() << (ui->lineId->text().isEmpty() ? "md5:"+ui->lineMd5->text() : "id:"+ui->lineId->text()) << "status:any", 1, 1);
+		m_page = new Page(m_sites[ui->comboSites->currentText()], m_sites.values(), QStringList() << (ui->lineId->text().isEmpty() ? "md5:"+ui->lineMd5->text() : "id:"+ui->lineId->text()) << "status:any", 1, 1);
 		connect(m_page, SIGNAL(finishedLoading(Page*)), this, SLOT(replyFinished(Page*)));
 		m_page->load();
 	}

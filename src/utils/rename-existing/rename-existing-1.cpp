@@ -146,7 +146,7 @@ void RenameExisting1::getAll(Page *p)
 		QMap<QString,QString> det = m_details.takeFirst();
 		m_getAll.insert(det.value("md5"), QPair<QString,QString>(det.value("path_full"), ""));
 
-		Page *page = new Page(m_sites.value(ui->comboSource->currentText()), &m_sites, QStringList("md5:" + det.value("md5")), 1, 1);
+		Page *page = new Page(m_sites.value(ui->comboSource->currentText()), m_sites.values(), QStringList("md5:" + det.value("md5")), 1, 1);
 		connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(getAll(Page*)));
 		page->load();
 	}

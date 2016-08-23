@@ -236,7 +236,7 @@ void tagTab::load()
 			int perpage = ui->spinImagesPerPage->value();
 
             // Load results
-            Page *page = new Page(m_sites->value(m_sites->keys().at(i)), m_sites, tags, ui->spinPage->value(), perpage, m_postFiltering->toPlainText().split(" ", QString::SkipEmptyParts), false, this, 0, m_lastPage, m_lastPageMinId, m_lastPageMaxId);
+            Page *page = new Page(m_sites->value(m_sites->keys().at(i)), m_sites->values(), tags, ui->spinPage->value(), perpage, m_postFiltering->toPlainText().split(" ", QString::SkipEmptyParts), false, this, 0, m_lastPage, m_lastPageMinId, m_lastPageMaxId);
 			log(tr("Chargement de la page <a href=\"%1\">%1</a>").arg(page->url().toString().toHtmlEscaped()));
 			connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(finishedLoading(Page*)));
 			connect(page, SIGNAL(failedLoading(Page*)), this, SLOT(failedLoading(Page*)));

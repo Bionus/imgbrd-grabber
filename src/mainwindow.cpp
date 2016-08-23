@@ -1161,7 +1161,7 @@ void mainWindow::getAll(bool all)
 				tdl.append(row);
                 int i = row;
 				Site *site = m_sites[m_batchs.at(i).value("site")];
-				m_getAllRemaining.append(new Image(site, m_batchs.at(i), new Page(site, &m_sites, m_batchs.at(i).value("tags").split(" "), 1, 1, QStringList(), false, this)));
+				m_getAllRemaining.append(new Image(site, m_batchs.at(i), new Page(site, m_sites.values(), m_batchs.at(i).value("tags").split(" "), 1, 1, QStringList(), false, this)));
 			}
 		}
 	}
@@ -1183,7 +1183,7 @@ void mainWindow::getAll(bool all)
 			else
 			{
 				Site *site = m_sites[m_batchs.at(i).value("site")];
-				m_getAllRemaining.append(new Image(site, m_batchs.at(i), new Page(site, &m_sites, m_batchs.at(i).value("tags").split(" "), 1, 1, QStringList(), false, this)));
+				m_getAllRemaining.append(new Image(site, m_batchs.at(i), new Page(site, m_sites.values(), m_batchs.at(i).value("tags").split(" "), 1, 1, QStringList(), false, this)));
 			}
 		}
 	}

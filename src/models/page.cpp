@@ -10,7 +10,7 @@
 
 
 
-Page::Page(Site *site, QMap<QString,Site*> *sites, QStringList tags, int page, int limit, QStringList postFiltering, bool smart, QObject *parent, int pool, int lastPage, int lastPageMinId, int lastPageMaxId)
+Page::Page(Site *site, QList<Site*> sites, QStringList tags, int page, int limit, QStringList postFiltering, bool smart, QObject *parent, int pool, int lastPage, int lastPageMinId, int lastPageMaxId)
 	: QObject(parent), m_site(site), m_postFiltering(postFiltering), m_errors(QStringList()), m_imagesPerPage(limit), m_currentSource(0), m_lastPage(lastPage), m_lastPageMinId(lastPageMinId), m_lastPageMaxId(lastPageMaxId), m_smart(smart)
 {
 	m_website = m_site->url();
@@ -30,10 +30,10 @@ Page::Page(Site *site, QMap<QString,Site*> *sites, QStringList tags, int page, i
 
     // Get the list of all enabled modifiers
 	QStringList modifiers = QStringList();
-	for (int i = 0; i < sites->size(); i++)
+	for (Site *site : sites)
 	{
-		if (sites->value(sites->keys().at(i))->contains("Modifiers"))
-		{ modifiers.append(sites->value(sites->keys().at(i))->value("Modifiers").trimmed().split(" ", QString::SkipEmptyParts)); }
+		if (site->contains("Modifiers"))
+		{ modifiers.append(site->value("Modifiers").trimmed().split(" ", QString::SkipEmptyParts)); }
 	}
 	if (m_site->contains("Modifiers"))
 	{
@@ -41,6 +41,8 @@ Page::Page(Site *site, QMap<QString,Site*> *sites, QStringList tags, int page, i
 		for (int j = 0; j < mods.size(); j++)
 		{ modifiers.removeAll(mods[j]); }
 	}
+
+	// Reùpve ùpdofoers from tags
 	for (int k = 0; k < modifiers.size(); k++)
 	{ tags.removeAll(modifiers[k]); }
 	m_search = tags;

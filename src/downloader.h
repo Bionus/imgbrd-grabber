@@ -18,21 +18,21 @@ class Downloader : public QObject
 		Downloader();
 		~Downloader();
 		Downloader(QStringList tags, QStringList postfiltering, QList<Site*> sources, int page, int max, int perpage, QString location, QString filename, QString user, QString password, bool blacklist, QStringList blacklistedtags, bool noduplicates, int tagsmin, QString tagsformat);
-		void getPageCount();
-		void getTags();
-		void getPageTags();
-		void getImages();
-		void getUrls();
 		void setQuit(bool quit);
 		void downloadImages(QList<Image*> images);
 		void loadNext();
         void setData(QVariant data);
-        QVariant getData();
-		QList<Page*> *getPages();
-		QList<Site*> getSites();
-		int ignoredCount();
-		int duplicatesCount();
-		int pagesCount();
+        void getPageCount();
+        void getTags();
+        void getPageTags();
+        void getImages();
+        void getUrls();
+        QVariant getData() const;
+        QList<Page*> getPages() const;
+        QList<Site*> getSites() const;
+        int ignoredCount() const;
+        int duplicatesCount() const;
+        int pagesCount() const;
 
 	signals:
 		void finished(QNetworkReply*);
@@ -70,10 +70,10 @@ class Downloader : public QObject
 		QString m_tagsformat;
 		QStringList m_blacklistedTags;
 
-		QList<Page*> *m_pages, *m_pagesC, *m_pagesT, *m_opages, *m_opagesC, *m_opagesT;
-		QList<Image*> *m_images;
-		QList<QPair<Site*, int> > *m_pagesP, *m_opagesP;
-		QList<Tag> *m_results;
+		QList<Page*> m_pages, m_pagesC, m_pagesT, m_opages, m_opagesC, m_opagesT;
+		QList<Image*> m_images;
+		QList<QPair<Site*, int> > m_pagesP, m_opagesP;
+		QList<Tag> m_results;
         QVariant m_data;
         bool m_cancelled, m_quit;
 };
