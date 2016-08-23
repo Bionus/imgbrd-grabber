@@ -21,6 +21,9 @@ class ImageTest : public TestSuite
         void testUnload();
         void testBlacklisted();
         void testMatchTag();
+        void testMatchUnknown();
+        void testMatchMathematical();
+        void testMatchDate();
         void testMatchRating();
         void testValue();
 

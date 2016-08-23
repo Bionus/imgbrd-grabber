@@ -31,6 +31,7 @@ void ImageTest::init()
     m_details["tags_character"] = "character1 character2";
     m_details["created_at"] = "1471513944";
     m_details["rating"] = "safe";
+    m_details["file_size"] = "358400";
 
     m_settings = new QSettings("tests/resources/settings.ini", QSettings::IniFormat);
     m_site = new Site(m_settings, "release/sites/Danbooru (2.0)", "danbooru.donmai.us");
@@ -149,6 +150,38 @@ void ImageTest::testMatchTag()
     QCOMPARE(m_img->match("-tag1", true), QString());
     QCOMPARE(m_img->match("-character1", true), QString());
     QCOMPARE(m_img->match("-tag7", true), QString("image does not contains \"tag7\""));
+}
+
+void ImageTest::testMatchUnknown()
+{
+    QCOMPARE(m_img->match("toto:test").startsWith("unknown type \"toto\""), true);
+}
+
+void ImageTest::testMatchMathematical()
+{
+    // Basic
+    QCOMPARE(m_img->match("id:>1000"), QString());
+    QCOMPARE(m_img->match("id:<=1000"), QString("image's id does not match"));
+    QCOMPARE(m_img->match("id:>=0", true), QString("image's id match"));
+
+    // Other types
+    QCOMPARE(m_img->match("width:..1000"), QString());
+    QCOMPARE(m_img->match("height:500.."), QString());
+    QCOMPARE(m_img->match("score:10..30"), QString());
+    QCOMPARE(m_img->match("mpixels:<1000000"), QString());
+    QCOMPARE(m_img->match("filesize:358400"), QString());
+}
+
+void ImageTest::testMatchDate()
+{
+    QCOMPARE(m_img->match("date:>08/16/2016"), QString());
+    QCOMPARE(m_img->match("date:>=2016-08-16"), QString());
+    QCOMPARE(m_img->match("date:<08/20/2016"), QString());
+    QCOMPARE(m_img->match("date:<=2016-08-20"), QString());
+    QCOMPARE(m_img->match("date:..08/20/2016"), QString());
+    QCOMPARE(m_img->match("date:2016-08-16.."), QString());
+    QCOMPARE(m_img->match("date:08/16/2016..2016-08-20"), QString());
+    QCOMPARE(m_img->match("date:2016-08-18"), QString());
 }
 
 void ImageTest::testMatchRating()

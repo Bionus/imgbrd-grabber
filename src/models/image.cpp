@@ -536,7 +536,7 @@ QString Image::match(QString filter, bool invert) const
 		QString type = filter.section(':', 0, 0).toLower();
 		filter = filter.section(':', 1).toLower();
 		if (!types.contains(type))
-		{ return QObject::tr("unknown type \"%1\" (available types: \"%2\")").arg(filter, types.join("\", \"")); }
+		{ return QObject::tr("unknown type \"%1\" (available types: \"%2\")").arg(type, types.join("\", \"")); }
 		if (mathematicaltypes.contains(type))
 		{
 			int input = 0;
@@ -544,7 +544,7 @@ QString Image::match(QString filter, bool invert) const
 			if (type == "width")	{ input = m_size.width();							}
 			if (type == "height")	{ input = m_size.height();							}
 			if (type == "score")	{ input = m_score;									}
-			if (type == "mpixels")	{ input = m_size.width()*m_size.height();			}
+			if (type == "mpixels")	{ input = m_size.width() * m_size.height();			}
 			if (type == "filesize")	{ input = m_fileSize;								}
 			if (type == "date")		{ input = m_createdAt.toString("yyyyMMdd").toInt();	}
 
