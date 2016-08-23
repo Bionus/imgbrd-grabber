@@ -621,7 +621,7 @@ void tagTab::finishedLoadingPreview(Image *img)
 			{ download = true; }
 			else if (reponse == QMessageBox::Open)
 			{
-                zoomWindow *zoom = new zoomWindow(img, img->page()->site(), m_sites, this);
+				zoomWindow *zoom = new zoomWindow(img, img->page()->site(), m_sites, m_parent);
 				zoom->show();
 				connect(zoom, SIGNAL(linkClicked(QString)), this, SLOT(setTags(QString)));
 				connect(zoom, SIGNAL(poolClicked(int, QString)), m_parent, SLOT(addPoolTab(int, QString)));
@@ -699,7 +699,7 @@ void tagTab::webZoom(int id)
 		}
 	}
 
-    zoomWindow *zoom = new zoomWindow(image, image->page()->site(), m_sites, this);
+	zoomWindow *zoom = new zoomWindow(image, image->page()->site(), m_sites, m_parent);
 	zoom->show();
 	connect(zoom, SIGNAL(linkClicked(QString)), this, SLOT(setTags(QString)));
 	connect(zoom, SIGNAL(poolClicked(int, QString)), m_parent, SLOT(addPoolTab(int, QString)));

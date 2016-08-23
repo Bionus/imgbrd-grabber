@@ -28,7 +28,7 @@ class zoomWindow : public QDialog
 	Q_OBJECT
 
 	public:
-        zoomWindow(Image *image, Site *site, QMap<QString,Site*> *sites, QWidget *parent = 0);
+		zoomWindow(Image *image, Site *site, QMap<QString,Site*> *sites, mainWindow *parent);
 		void go();
 		~zoomWindow();
 		void load();

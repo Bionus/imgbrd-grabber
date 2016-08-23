@@ -15,12 +15,10 @@
 
 #include <QMediaPlaylist>
 
-extern mainWindow *_mainwindow;
 
 
-
-zoomWindow::zoomWindow(Image *image, Site *site, QMap<QString,Site*> *sites, QWidget *)
-    : QDialog(0, Qt::Window), ui(new Ui::zoomWindow), m_site(site), timeout(300), m_loaded(0), oldsize(0), image(NULL), movie(NULL), m_program(qApp->arguments().at(0)), m_reply(NULL), m_finished(false), m_thread(false), m_data(QByteArray()), m_size(0), m_sites(sites), m_source(), m_th(NULL), m_fullScreen(NULL)
+zoomWindow::zoomWindow(Image *image, Site *site, QMap<QString,Site*> *sites, mainWindow *parent)
+	: QDialog(0, Qt::Window), m_parent(parent), ui(new Ui::zoomWindow), m_site(site), timeout(300), m_loaded(0), oldsize(0), image(NULL), movie(NULL), m_program(qApp->arguments().at(0)), m_reply(NULL), m_finished(false), m_thread(false), m_data(QByteArray()), m_size(0), m_sites(sites), m_source(), m_th(NULL), m_fullScreen(NULL)
 {
 	ui->setupUi(this);
 	setAttribute(Qt::WA_DeleteOnClose);
@@ -272,7 +270,7 @@ void zoomWindow::contextMenu(QPoint)
 	menu->exec(QCursor::pos());
 }
 void zoomWindow::openInNewTab()
-{ _mainwindow->addTab(link); }
+{ m_parent->addTab(link); }
 void zoomWindow::openInNewWindow()
 {
 	QProcess myProcess;
@@ -306,8 +304,8 @@ void zoomWindow::setfavorite()
 		fav.setImage(*image);
 	}
 
-	_mainwindow->updateFavorites();
-	_mainwindow->updateFavoritesDock();
+	m_parent->updateFavorites();
+	m_parent->updateFavoritesDock();
 }
 void zoomWindow::unfavorite()
 {
@@ -330,8 +328,8 @@ void zoomWindow::unfavorite()
 	if (QFile::exists(savePath("thumbs/"+link+".png")))
 	{ QFile::remove(savePath("thumbs/"+link+".png")); }
 
-	_mainwindow->updateFavorites();
-	_mainwindow->updateFavoritesDock();
+	m_parent->updateFavorites();
+	m_parent->updateFavoritesDock();
 }
 void zoomWindow::viewitlater()
 {
@@ -341,7 +339,7 @@ void zoomWindow::viewitlater()
 		f.write(m_viewItLater.join("\r\n").toUtf8());
 	f.close();
 
-	_mainwindow->updateKeepForLater();
+	m_parent->updateKeepForLater();
 }
 void zoomWindow::unviewitlater()
 {
@@ -351,7 +349,7 @@ void zoomWindow::unviewitlater()
 		f.write(m_viewItLater.join("\r\n").toUtf8());
 	f.close();
 
-	_mainwindow->updateKeepForLater();
+	m_parent->updateKeepForLater();
 }
 void zoomWindow::ignore()
 {
@@ -700,7 +698,7 @@ QStringList zoomWindow::saveImage(bool fav)
 		{ reply = QMessageBox::question(this, tr("Erreur"), tr("Vous n'avez pas précisé de format de sauvegarde ! Voulez-vous ouvrir les options ?"), QMessageBox::Yes | QMessageBox::No); }
 		if (reply == QMessageBox::Yes)
 		{
-			optionsWindow *options = new optionsWindow(_mainwindow);
+			optionsWindow *options = new optionsWindow(m_parent);
 			//options->onglets->setCurrentIndex(3);
 			options->setWindowModality(Qt::ApplicationModal);
 			options->show();

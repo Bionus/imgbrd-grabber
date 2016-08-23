@@ -557,7 +557,7 @@ void poolTab::webZoom(int id)
 		}
 	}
 
-    zoomWindow *zoom = new zoomWindow(image, image->page()->site(), m_sites, this);
+	zoomWindow *zoom = new zoomWindow(image, image->page()->site(), m_sites, m_parent);
 	zoom->show();
 	connect(zoom, SIGNAL(linkClicked(QString)), this, SLOT(setTags(QString)));
 	connect(zoom, SIGNAL(poolClicked(int, QString)), this, SLOT(setPool(int, QString)));
