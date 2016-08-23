@@ -12,13 +12,14 @@ namespace Ui
 }
 
 
+class mainWindow;
 
 class optionsWindow : public QDialog
 {
 	Q_OBJECT
 
 	public:
-		explicit optionsWindow(QWidget *parent = 0);
+		explicit optionsWindow(mainWindow *parent = 0);
 		~optionsWindow();
 
 	public slots:
@@ -69,6 +70,7 @@ class optionsWindow : public QDialog
 
 	private:
 		Ui::optionsWindow *ui;
+		mainWindow *m_parent;
 		QList<QLineEdit*> m_customNames, m_customTags, m_filenamesConditions, m_filenamesFilenames, m_filenamesFolders;
 };
 

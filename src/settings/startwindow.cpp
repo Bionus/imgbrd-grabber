@@ -2,6 +2,7 @@
 #include "ui_startwindow.h"
 #include "optionswindow.h"
 #include "filenamewindow.h"
+#include "mainwindow.h"
 #include "functions.h"
 #include <QFileDialog>
 #include <QSettings>
@@ -14,7 +15,8 @@
  *
  * @param parent	The parent window
  */
-startWindow::startWindow(QMap<QString, Site*> *sites, QWidget *parent) : QDialog(parent), ui(new Ui::startWindow), m_sites(sites)
+startWindow::startWindow(QMap<QString, Site*> *sites, mainWindow *parent)
+    : QDialog(parent), ui(new Ui::startWindow), m_parent(parent), m_sites(sites)
 {
 	ui->setupUi(this);
 
@@ -111,7 +113,7 @@ void startWindow::save()
  */
 void startWindow::openOptions()
 {
-	optionsWindow *ow = new optionsWindow(parentWidget());
+	optionsWindow *ow = new optionsWindow(m_parent);
 	ow->show();
 
 	this->close();
