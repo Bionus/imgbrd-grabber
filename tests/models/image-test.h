@@ -26,6 +26,9 @@ class ImageTest : public TestSuite
         void testMatchDate();
         void testMatchRating();
         void testValue();
+        void testLoadPreview();
+        void testLoadImage();
+        void testLoadDetails();
 
     private:
         QSettings *m_settings;

@@ -368,11 +368,19 @@ QNetworkReply *Site::getRequest(QNetworkRequest request)
         QString filename = request.url().fileName();
         QString ext = filename.contains('.') ? filename.mid(filename.lastIndexOf('.') + 1) : "html";
         QString path = "tests/resources/" + m_name + "/" + md5 + "." + ext;
-        log("Reply from file: " + path);
 
         QFile f(path);
         if (!f.open(QFile::ReadOnly))
-            return nullptr;
+        {
+            if (ext != "jpg" && ext != "png")
+                return nullptr;
+
+            f.setFileName("tests/resources/image_1x1.png");
+            if (!f.open(QFile::ReadOnly))
+                return nullptr;
+        }
+
+        log("Reply from file: " + f.fileName());
         QByteArray content = f.readAll();
 
         QCustomNetworkReply *reply = new QCustomNetworkReply();

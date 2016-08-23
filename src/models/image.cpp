@@ -454,7 +454,11 @@ void Image::parseDetails()
 					}
 				}
 				else if (order.at(o) == "count" && count != 0)
-				{ count = rx.cap(o + 1).toLower().endsWith('k') ? rx.cap(3).left(rx.cap(3).length() - 1).toInt() * 1000 : rx.cap(3).toInt(); }
+				{
+					QString countStr = rx.cap(o + 1).toLower();
+					countStr.remove(',');
+					count = countStr.endsWith('k') ? countStr.left(countStr.length() - 1).toFloat() * 1000 : countStr.toInt();
+				}
 			}
 			if (type.isEmpty())
 			{ type = "unknown"; }
