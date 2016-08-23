@@ -61,7 +61,7 @@ void ImageTest::testCopy()
     QCOMPARE(clone.parentSite(), m_img->parentSite());
     QCOMPARE(clone.filename(), m_img->filename());
     QCOMPARE(clone.folder(), m_img->folder());
-    QCOMPARE(clone.pools(), m_img->pools());
+    QCOMPARE(clone.pools().count(), m_img->pools().count());
     QCOMPARE(clone.fileSize(), m_img->fileSize());
     QCOMPARE(clone.score(), m_img->score());
     QCOMPARE(clone.parentId(), m_img->parentId());
