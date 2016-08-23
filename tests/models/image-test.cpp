@@ -166,5 +166,45 @@ void ImageTest::testMatchRating()
     QCOMPARE(m_img->match("rating:explicit", true), QString());
 }
 
+void ImageTest::testValue()
+{
+    // Guess from image size
+    QCOMPARE(m_img->value(), 800 * 600);
+
+    // Even with a tag, still use image size if possible
+    m_details["tags_general"] = "lowres";
+    m_img->deleteLater();
+    m_img = new Image(m_site, m_details);
+    QCOMPARE(m_img->value(), 800 * 600);
+
+    // Default value if nothing is given
+    m_details.remove("width");
+    m_details.remove("height");
+    m_details["tags_general"] = "";
+    m_img->deleteLater();
+    m_img = new Image(m_site, m_details);
+    QCOMPARE(m_img->value(), 1200 * 900);
+
+    m_details["tags_general"] = "incredibly_absurdres";
+    m_img->deleteLater();
+    m_img = new Image(m_site, m_details);
+    QCOMPARE(m_img->value(), 10000 * 10000);
+
+    m_details["tags_general"] = "absurdres";
+    m_img->deleteLater();
+    m_img = new Image(m_site, m_details);
+    QCOMPARE(m_img->value(), 3200 * 2400);
+
+    m_details["tags_general"] = "highres";
+    m_img->deleteLater();
+    m_img = new Image(m_site, m_details);
+    QCOMPARE(m_img->value(), 1600 * 1200);
+
+    m_details["tags_general"] = "lowres";
+    m_img->deleteLater();
+    m_img = new Image(m_site, m_details);
+    QCOMPARE(m_img->value(), 500 * 500);
+}
+
 
 static ImageTest instance;

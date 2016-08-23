@@ -22,6 +22,7 @@ class ImageTest : public TestSuite
         void testBlacklisted();
         void testMatchTag();
         void testMatchRating();
+        void testValue();
 
     private:
         QSettings *m_settings;

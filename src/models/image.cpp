@@ -776,17 +776,19 @@ void Image::abortImage()
  */
 int Image::value() const
 {
+	// Get from image size
 	if (!m_size.isEmpty())
 		return m_size.width() * m_size.height();
 
-	QStringList tags;
-	for (int t = 0; t < m_tags.size(); t++)
-	{ tags.append(m_tags[t].text().toLower()); }
-
-	if (tags.contains("incredibly_absurdres"))	{ return 10000 * 10000; }
-	else if (tags.contains("absurdres"))		{ return 3200 * 2400; }
-	else if (tags.contains("highres"))			{ return 1600 * 1200; }
-	else if (tags.contains("lowres"))			{ return 500 * 500; }
+	// Get from tags
+	if (hasTag("incredibly_absurdres"))
+		return 10000 * 10000;
+	else if (hasTag("absurdres"))
+		return 3200 * 2400;
+	else if (hasTag("highres"))
+		return 1600 * 1200;
+	else if (hasTag("lowres"))
+		return 500 * 500;
 
 	return 1200 * 900;
 }
@@ -1051,7 +1053,7 @@ bool Image::hasTag(QString tag) const
 {
 	tag = tag.trimmed();
 	for (Tag t : m_tags)
-		if (QString::compare(t.text().trimmed(), tag, Qt::CaseInsensitive) == 0)
+		if (QString::compare(t.text(), tag, Qt::CaseInsensitive) == 0)
 			return true;
 	return false;
 }
