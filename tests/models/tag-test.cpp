@@ -130,6 +130,7 @@ void TagTest::testStylishedBasic()
 }
 void TagTest::testStylishedIgnored()
 {
+	m_settings->setValue("Coloring/Fonts/ignoreds", ",8.25,-1,5,50,0,0,0,0,0");
 	Tag tag(m_settings, "tag_text", "artist", 123, QStringList() << "related1" << "related2" << "related3");
 
 	QString expected = "<a href=\"tag_text\" style=\"color:#999999; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">tag_text</a>";
@@ -137,6 +138,7 @@ void TagTest::testStylishedIgnored()
 }
 void TagTest::testStylishedBlacklisted()
 {
+	m_settings->setValue("Coloring/Fonts/blacklisteds", ",8.25,-1,5,50,0,0,0,0,0");
 	Tag tag(m_settings, "tag_text", "artist", 123, QStringList() << "related1" << "related2" << "related3");
 
 	QString expected = "<a href=\"tag_text\" style=\"color:#000000; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">tag_text</a>";
