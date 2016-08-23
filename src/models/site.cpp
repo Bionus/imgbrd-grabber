@@ -174,7 +174,7 @@ void Site::resetCookieJar()
 	if (m_cookieJar != nullptr)
 	{ m_cookieJar->deleteLater(); }
 
-	m_cookieJar = new QNetworkCookieJar(this);
+	m_cookieJar = new QNetworkCookieJar(m_manager);
 
 	for (QNetworkCookie cookie : m_cookies)
 	{ m_cookieJar->insertCookie(cookie); }
@@ -197,7 +197,7 @@ void Site::initManager()
 		connect(m_manager, SIGNAL(sslErrors(QNetworkReply*,QList<QSslError>)), this, SLOT(sslErrorHandler(QNetworkReply*,QList<QSslError>)));
 
 		// Cache
-		QNetworkDiskCache *diskCache = new QNetworkDiskCache(this);
+		QNetworkDiskCache *diskCache = new QNetworkDiskCache(m_manager);
 		diskCache->setCacheDirectory(savePath("cache/"));
 		m_manager->setCache(diskCache);
 

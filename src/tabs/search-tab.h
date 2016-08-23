@@ -15,7 +15,7 @@ class searchTab : public QWidget
     Q_OBJECT
 
     public:
-		searchTab(int id, QMap<QString,Site*> *sites, QWidget *parent = 0);
+        searchTab(int id, QMap<QString,Site*> *sites, QSettings *settings, QWidget *parent = 0);
         ~searchTab();
 		void mouseReleaseEvent(QMouseEvent *e);
 		virtual QList<bool> sources();
@@ -70,6 +70,7 @@ class searchTab : public QWidget
 		QList<Favorite>		m_favorites;
 		QString				m_link;
 		QList<Tag>			m_tags;
+		QSettings			*m_settings;
 };
 
 #endif // SEARCH_TAB_H

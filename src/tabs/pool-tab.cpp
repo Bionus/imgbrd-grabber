@@ -10,14 +10,13 @@ extern mainWindow *_mainwindow;
 
 
 
-poolTab::poolTab(int id, QMap<QString,Site*> *sites, QList<Favorite> favorites, mainWindow *parent) : searchTab(id, sites, parent), ui(new Ui::poolTab), m_id(id), m_parent(parent), m_pagemax(-1), m_lastTags(QString()), m_sized(false), m_from_history(false), m_stop(true), m_history_cursor(0), m_history(QList<QMap<QString,QString> >()), m_modifiers(QStringList())
+poolTab::poolTab(int id, QMap<QString,Site*> *sites, QList<Favorite> favorites, mainWindow *parent)
+	: searchTab(id, sites, parent->settings(), parent), ui(new Ui::poolTab), m_id(id), m_parent(parent), m_pagemax(-1), m_lastTags(QString()), m_sized(false), m_from_history(false), m_stop(true), m_history_cursor(0), m_history(QList<QMap<QString,QString> >()), m_modifiers(QStringList())
 {
 	m_favorites = favorites;
 	ui->setupUi(this);
 	ui->widgetMeant->hide();
 	setAttribute(Qt::WA_DeleteOnClose);
-
-	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
 
 	QStringList sources = m_sites->keys();
 	for (QString source : sources)
@@ -31,7 +30,7 @@ poolTab::poolTab(int id, QMap<QString,Site*> *sites, QList<Favorite> favorites, 
 	m_postFiltering = new TextEdit(favs, this);
 		m_search->setContextMenuPolicy(Qt::CustomContextMenu);
 		m_postFiltering->setContextMenuPolicy(Qt::CustomContextMenu);
-		if (settings.value("autocompletion", true).toBool())
+		if (m_settings->value("autocompletion", true).toBool())
 		{
 			QStringList completion;
 			QFile words("words.txt");
@@ -68,7 +67,7 @@ poolTab::poolTab(int id, QMap<QString,Site*> *sites, QList<Favorite> favorites, 
 
 	// Sources
 	QString sel = '1'+QString().fill('0',m_sites->count()-1);
-	QString sav = settings.value("sites", sel).toString();
+	QString sav = m_settings->value("sites", sel).toString();
 	for (int i = 0; i < sel.count(); i++)
 	{
 		if (sav.count() <= i)
@@ -118,14 +117,13 @@ void poolTab::closeEvent(QCloseEvent *e)
 void poolTab::optionsChanged()
 {
 	log(tr("Mise à jour des options de l'onglet \"%1\".").arg(windowTitle()));
-	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
 	ui->retranslateUi(this);
-	ui->spinImagesPerPage->setValue(settings.value("limit", 20).toInt());
-	ui->spinColumns->setValue(settings.value("columns", 1).toInt());
+	ui->spinImagesPerPage->setValue(m_settings->value("limit", 20).toInt());
+	ui->spinColumns->setValue(m_settings->value("columns", 1).toInt());
 	/*QPalette p = ui->widgetResults->palette();
-	p.setColor(ui->widgetResults->backgroundRole(), QColor(settings.value("serverBorderColor", "#000000").toString()));
+	p.setColor(ui->widgetResults->backgroundRole(), QColor(m_settings->value("serverBorderColor", "#000000").toString()));
 	ui->widgetResults->setPalette(p);*/
-	ui->layoutResults->setHorizontalSpacing(settings.value("Margins/main", 10).toInt());
+	ui->layoutResults->setHorizontalSpacing(m_settings->value("Margins/main", 10).toInt());
 }
 
 void poolTab::updateCheckboxes()
@@ -134,8 +132,7 @@ void poolTab::updateCheckboxes()
 	qDeleteAll(m_checkboxes);
 	m_checkboxes.clear();
 	QStringList urls = m_sites->keys();
-	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
-	int n = settings.value("Sources/Letters", 3).toInt(), m = n;
+	int n = m_settings->value("Sources/Letters", 3).toInt(), m = n;
 	for (int i = 0; i < urls.size(); i++)
 	{
 		if (urls[i].startsWith("www."))
@@ -215,10 +212,8 @@ void poolTab::load()
 	//qDeleteAll(m_images);
 	m_images.clear();
 
-	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
-
 	QStringList tags = m_search->toPlainText().trimmed().split(" ", QString::SkipEmptyParts);
-	tags.append(settings.value("add").toString().trimmed().split(" ", QString::SkipEmptyParts));
+	tags.append(m_settings->value("add").toString().trimmed().split(" ", QString::SkipEmptyParts));
 	tags.prepend("pool:"+QString::number(ui->spinPool->value()));
 	int perpage = ui->spinImagesPerPage->value();
 	Page *page = new Page(m_sites->value(ui->comboSites->currentText()), m_sites, tags, ui->spinPage->value(), perpage, m_postFiltering->toPlainText().split(" ", QString::SkipEmptyParts), true, this);
@@ -226,12 +221,12 @@ void poolTab::load()
 	connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(finishedLoading(Page*)));
 	m_pages.insert(page->website(), page);
 	QGridLayout *l = new QGridLayout;
-	l->setHorizontalSpacing(settings.value("Margins/horizontal", 6).toInt());
-	l->setVerticalSpacing(settings.value("Margins/vertical", 6).toInt());
+	l->setHorizontalSpacing(m_settings->value("Margins/horizontal", 6).toInt());
+	l->setVerticalSpacing(m_settings->value("Margins/vertical", 6).toInt());
 	m_layouts.append(l);
 	m_stop = false;
 	page->load();
-	if (settings.value("useregexfortags", true).toBool())
+	if (m_settings->value("useregexfortags", true).toBool())
 	{
 		connect(page, SIGNAL(finishedLoadingTags(Page*)), this, SLOT(finishedLoadingTags(Page*)));
 		page->loadTags();
@@ -249,7 +244,6 @@ void poolTab::finishedLoading(Page* page)
 
 	log(tr("Réception de la page <a href=\"%1\">%1</a>").arg(page->url().toString().toHtmlEscaped()));
 
-	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
 	QList<Image*> imgs = page->images();
 	m_images.append(imgs);
 
@@ -322,10 +316,10 @@ void poolTab::finishedLoading(Page* page)
 		else
 		{ txt->setText("<a href=\""+page->url().toString().toHtmlEscaped()+"\">"+page->site()->name()+"</a> - "+tr("Page %1 sur %2 (%3 sur %4)").arg(ui->spinPage->value()).arg(page->pagesCount(false) > 0 ? QString::number(maxpage) : "?").arg(imgs.count()).arg(page->imagesCount(false) > 0 ? QString::number(page->imagesCount(false)) : "?")); }
 		txt->setOpenExternalLinks(true);
-		if (page->search().join(" ") != m_search->toPlainText() && settings.value("showtagwarning", true).toBool())
+		if (page->search().join(" ") != m_search->toPlainText() && m_settings->value("showtagwarning", true).toBool())
 		{
 			QStringList uncommon = m_search->toPlainText().trimmed().split(" ", QString::SkipEmptyParts);
-			uncommon.append(settings.value("add").toString().trimmed().split(" ", QString::SkipEmptyParts));
+			uncommon.append(m_settings->value("add").toString().trimmed().split(" ", QString::SkipEmptyParts));
 			for (int i = 0; i < page->search().size(); i++)
 			{
 				if (uncommon.contains(page->search().at(i)))
@@ -334,7 +328,7 @@ void poolTab::finishedLoading(Page* page)
 			if (!uncommon.isEmpty())
 			{ txt->setText(txt->text()+"<br/>"+QString(tr("Des modificateurs ont été otés de la recherche car ils ne sont pas compatibles avec cet imageboard : %1.")).arg(uncommon.join(" "))); }
 		}
-		if (!page->errors().isEmpty() && settings.value("showwarnings", true).toBool())
+		if (!page->errors().isEmpty() && m_settings->value("showwarnings", true).toBool())
 		{ txt->setText(txt->text()+"<br/>"+page->errors().join("<br/>")); }
 	int page_x = pos % ui->spinColumns->value(), page_y = (pos / ui->spinColumns->value()) * 2;
 	ui->layoutResults->addWidget(txt, page_y, page_x, 1, 1);
@@ -342,7 +336,7 @@ void poolTab::finishedLoading(Page* page)
 	if (m_layouts.size() > pos)
 		{ ui->layoutResults->addLayout(m_layouts[pos], page_y + 1, page_x, 1, 1); }
 
-	if (!settings.value("useregexfortags", true).toBool())
+	if (!m_settings->value("useregexfortags", true).toBool())
 	{
 		// Tags for this page
 		QList<Tag> taglist;
@@ -372,12 +366,11 @@ void poolTab::finishedLoading(Page* page)
 		QStringList tlist = QStringList() << "artists" << "circles" << "copyrights" << "characters" << "models" << "generals" << "favorites" << "blacklisteds";
 		QStringList defaults = QStringList() << "#aa0000" << "#55bbff" << "#aa00aa" << "#00aa00" << "#0000ee" << "#000000" << "#ffc0cb" << "#000000";
 		QMap<QString,QString> styles;
-		QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
 		for (int i = 0; i < tlist.size(); i++)
 		{
 			QFont font;
-			font.fromString(settings.value("Coloring/Fonts/"+tlist.at(i)).toString());
-			styles[tlist.at(i)] = "color:"+settings.value("Coloring/Colors/"+tlist.at(i), defaults.at(i)).toString()+"; "+qfonttocss(font);
+			font.fromString(m_settings->value("Coloring/Fonts/"+tlist.at(i)).toString());
+			styles[tlist.at(i)] = "color:"+m_settings->value("Coloring/Colors/"+tlist.at(i), defaults.at(i)).toString()+"; "+qfonttocss(font);
 		}
 		QString tags;
 		int last = 0, h = height()/10;
@@ -414,16 +407,16 @@ void poolTab::finishedLoading(Page* page)
 			if (modifiers.contains(tags[r][0]))
 			{ tags[r] = tags[r].right(tags[r].size()-1); }
 		}
-		if (!settings.value("blacklistedtags").toString().isEmpty())
+		if (!m_settings->value("blacklistedtags").toString().isEmpty())
 		{
-			QStringList blacklistedtags(settings.value("blacklistedtags").toString().toLower().split(" "));
+			QStringList blacklistedtags(m_settings->value("blacklistedtags").toString().toLower().split(" "));
 			for (int t = 0; t < img->tags().count(); t++)
 			{
 				if (blacklistedtags.contains(img->tags()[t].text().toLower(), Qt::CaseInsensitive) && !tags.contains(img->tags()[t].text().toLower(), Qt::CaseInsensitive))
 				{ detected.append(img->tags()[t].text()); }
 			}
 		}
-		if (!detected.isEmpty() && settings.value("hideblacklisted", false).toBool())
+		if (!detected.isEmpty() && m_settings->value("hideblacklisted", false).toBool())
 		{ log(tr("Image #%1 ignorée. Raison : %2.").arg(i).arg("\""+detected.join(", ")+"\""));; }
 		else
 		{
@@ -498,7 +491,6 @@ void poolTab::finishedLoadingPreview(Image *img)
 	else
 	{ unit = "o"; }
 
-	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
 	QColor color;
 	if (img->status() == "pending")
 	{ color = QColor("#0000ff"); }
@@ -520,11 +512,11 @@ void poolTab::finishedLoadingPreview(Image *img)
 			}
 		}
 	}
-	QStringList blacklistedtags(settings.value("blacklistedtags").toString().split(" "));
+	QStringList blacklistedtags(m_settings->value("blacklistedtags").toString().split(" "));
 	QStringList detected = img->blacklisted(blacklistedtags);
 	if (!detected.isEmpty())
 	{ color = QColor("#000000"); }
-	QBouton *l = new QBouton(position, settings.value("resizeInsteadOfCropping", true).toBool(), settings.value("borders", 3).toInt(), color, this);
+	QBouton *l = new QBouton(position, m_settings->value("resizeInsteadOfCropping", true).toBool(), m_settings->value("borders", 3).toInt(), color, this);
 		QString t;
 		for (int i = 0; i < img->tags().count(); i++)
 		{ t += " "+img->tags()[i].stylished(m_favorites); }
@@ -538,7 +530,7 @@ void poolTab::finishedLoadingPreview(Image *img)
 			.arg(img->fileSize() == 0 ? " " : tr("<b>Taille :</b> %1 %2<br/>").arg(QString::number(size), unit))
 			.arg(!img->createdAt().isValid() ? " " : tr("<b>Date :</b> %1").arg(img->createdAt().toString(tr("'le 'dd/MM/yyyy' à 'hh:mm"))))
 		);
-		l->scale(img->previewImage(), settings.value("thumbnailUpscale", 1.0f).toFloat());
+		l->scale(img->previewImage(), m_settings->value("thumbnailUpscale", 1.0f).toFloat());
 		l->setFlat(true);
 		connect(l, SIGNAL(appui(int)), this, SLOT(webZoom(int)));
 		connect(l, SIGNAL(rightClick(int)), _mainwindow, SLOT(batchChange(int)));
@@ -553,12 +545,11 @@ void poolTab::finishedLoadingPreview(Image *img)
 
 void poolTab::webZoom(int id)
 {
-	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
 	Image *image = m_images.at(id);
 
-	if (!settings.value("blacklistedtags").toString().isEmpty())
+	if (!m_settings->value("blacklistedtags").toString().isEmpty())
 	{
-		QStringList blacklistedtags(settings.value("blacklistedtags").toString().split(" "));
+		QStringList blacklistedtags(m_settings->value("blacklistedtags").toString().split(" "));
 		QStringList detected = image->blacklisted(blacklistedtags);
 		if (!detected.isEmpty())
 		{
@@ -576,23 +567,20 @@ void poolTab::webZoom(int id)
 
 void poolTab::getPage()
 {
-	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
-	bool unloaded = settings.value("getunloadedpages", false).toBool();
+	bool unloaded = m_settings->value("getunloadedpages", false).toBool();
 	int perpage = unloaded ? ui->spinImagesPerPage->value() : m_pages.value(ui->comboSites->currentText())->images().count();
-	emit batchAddGroup(QStringList() << "pool:"+QString::number(ui->spinPool->value())+" "+m_search->toPlainText()+" "+settings.value("add").toString().trimmed() << QString::number(ui->spinPage->value()) << QString::number(perpage) << QString::number(perpage) << settings.value("downloadblacklist").toString() << ui->comboSites->currentText() << settings.value("Save/filename").toString() << settings.value("Save/path").toString() << "");
+	emit batchAddGroup(QStringList() << "pool:"+QString::number(ui->spinPool->value())+" "+m_search->toPlainText()+" "+m_settings->value("add").toString().trimmed() << QString::number(ui->spinPage->value()) << QString::number(perpage) << QString::number(perpage) << m_settings->value("downloadblacklist").toString() << ui->comboSites->currentText() << m_settings->value("Save/filename").toString() << m_settings->value("Save/path").toString() << "");
 }
 void poolTab::getAll()
 {
-	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
 	int limit = m_sites->value(ui->comboSites->currentText())->contains("Urls/1/Limit") ? m_sites->value(ui->comboSites->currentText())->value("Urls/1/Limit").toInt() : 0;
-	emit batchAddGroup(QStringList() << "pool:"+QString::number(ui->spinPool->value())+" "+m_search->toPlainText()+" "+settings.value("add").toString().trimmed() << "1" << QString::number(qMin((limit > 0 ? limit : 200), qMax(m_pages.value(ui->comboSites->currentText())->images().count(), m_pages.value(ui->comboSites->currentText())->imagesCount()))) << QString::number(qMax(m_pages.value(ui->comboSites->currentText())->images().count(), m_pages.value(ui->comboSites->currentText())->imagesCount())) << settings.value("downloadblacklist").toString() << ui->comboSites->currentText() << settings.value("Save/filename").toString() << settings.value("Save/path").toString() << "");
+	emit batchAddGroup(QStringList() << "pool:"+QString::number(ui->spinPool->value())+" "+m_search->toPlainText()+" "+m_settings->value("add").toString().trimmed() << "1" << QString::number(qMin((limit > 0 ? limit : 200), qMax(m_pages.value(ui->comboSites->currentText())->images().count(), m_pages.value(ui->comboSites->currentText())->imagesCount()))) << QString::number(qMax(m_pages.value(ui->comboSites->currentText())->images().count(), m_pages.value(ui->comboSites->currentText())->imagesCount())) << m_settings->value("downloadblacklist").toString() << ui->comboSites->currentText() << m_settings->value("Save/filename").toString() << m_settings->value("Save/path").toString() << "");
 }
 void poolTab::getSel()
 {
 	if (m_selectedImagesPtrs.empty())
 		return;
 
-	QSettings settings(savePath("settings.ini"), QSettings::IniFormat, this);
 	for (Image *img : m_selectedImagesPtrs)
 	{
 		QStringList tags;
@@ -607,8 +595,8 @@ void poolTab::getSel()
 		values.insert("file_url", img->fileUrl().toString());
 		values.insert("date", img->createdAt().toString(Qt::ISODate));
 		values.insert("site", img->site());
-		values.insert("filename", settings.value("Save/filename").toString());
-		values.insert("folder", settings.value("Save/path").toString());
+		values.insert("filename", m_settings->value("Save/filename").toString());
+		values.insert("folder", m_settings->value("Save/path").toString());
 
 		values.insert("page_url", m_sites->value(img->site())->value("Urls/Html/Post"));
 		QString t = m_sites->value(img->site())->contains("DefaultTag") ? m_sites->value(img->site())->value("DefaultTag") : "";
