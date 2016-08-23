@@ -302,7 +302,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Page* parent)
 	m_loadingDetails = false;
 	m_loadingImage = false;
 	m_tryingSample = false;
-	m_pools = QList<Pool*>();
+	m_pools = QList<Pool>();
 }
 Image::~Image()
 {
@@ -409,7 +409,7 @@ void Image::parseDetails()
 		{
 			pos += rx.matchedLength();
 			QString previous = rx.cap(1), id = rx.cap(2), name = rx.cap(3), next = rx.cap(4);
-			m_pools.append(new Pool(id.toInt(), name, m_id, next.toInt(), previous.toInt()));
+			m_pools.append(Pool(id.toInt(), name, m_id, next.toInt(), previous.toInt()));
 		}
 	}
 
@@ -979,7 +979,7 @@ Site			*Image::parentSite() const	{ return m_parentSite;		}
 QString			Image::filename() const		{ return m_filename;		}
 QString			Image::folder() const		{ return m_folder;			}
 QList<Tag>		Image::tags() const			{ return m_tags;			}
-QList<Pool*>	Image::pools() const		{ return m_pools;			}
+QList<Pool>		Image::pools() const		{ return m_pools;			}
 int				Image::id() const			{ return m_id;				}
 int				Image::score() const		{ return m_score;			}
 int				Image::parentId() const		{ return m_parentId;		}

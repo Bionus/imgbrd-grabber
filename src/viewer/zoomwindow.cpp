@@ -427,11 +427,8 @@ void zoomWindow::replyFinished(Image* img)
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
 
 	QStringList pools = QStringList();
-	for (int i = 0; i < img->pools().size(); i++)
-	{
-		Pool *p = img->pools().at(i);
-		pools.append((p->previous() != 0 ? "<a href=\""+QString::number(p->previous())+"\">&lt;</a> " : "")+"<a href=\"pool:"+QString::number(p->id())+"\">"+p->name()+"</a>"+(p->next() != 0 ? " <a href=\""+QString::number(p->next())+"\">&gt;</a>" : ""));
-	}
+	for (const Pool &p : img->pools())
+	{ pools.append((p.previous() != 0 ? "<a href=\""+QString::number(p.previous())+"\">&lt;</a> " : "")+"<a href=\"pool:"+QString::number(p.id())+"\">"+p.name()+"</a>"+(p.next() != 0 ? " <a href=\""+QString::number(p.next())+"\">&gt;</a>" : "")); }
 	if (!pools.isEmpty())
 	{ ui->labelPools->show(); }
 	ui->labelPools->setText(pools.join("<br />"));

@@ -54,7 +54,7 @@ class Image : public QObject
 		QList<Tag>	tags() const;
 		QStringList tagsString() const;
 		QStringList search() const;
-		QList<Pool*>pools() const;
+		QList<Pool>	pools() const;
 		int			id() const;
 		int			score() const;
 		int			parentId() const;
@@ -117,7 +117,7 @@ class Image : public QObject
 		int				m_id, m_score, m_parentId, m_fileSize, m_authorId, m_previewTry;
 		bool			m_hasChildren, m_hasNote, m_hasComments, m_hasScore;
 		QString			m_url;
-		QString mutable m_md5;
+		QString	mutable m_md5;
 		QString			m_author, m_status, m_rating, m_source, m_site, m_filename, m_folder, m_savePath;
 		QUrl			m_pageUrl, m_fileUrl, m_sampleUrl, m_previewUrl;
 		QSize			m_size;
@@ -126,12 +126,12 @@ class Image : public QObject
 		QByteArray		m_data;
 		QNetworkReply	*m_loadPreview, *m_loadDetails, *m_loadImage;
 		QList<Tag>		m_tags;
-		QList<Pool*>	m_pools;
+		QList<Pool>		m_pools;
 		QTime			m_timer;
 		QSettings		*m_settings;
 		QStringList		m_search;
 		Site			*m_parentSite;
-        QMap<QString,QString>   m_details;
+		QMap<QString, QString>   m_details;
 		bool			m_loadingPreview, m_loadingDetails, m_loadingImage, m_tryingSample;
 };
 

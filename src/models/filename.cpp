@@ -192,9 +192,6 @@ QMap<QString, QStringList> Filename::makeDetails(const Image& img, QSettings *se
 	for (Tag tag : img.tags())
 	{
 		QString t = tag.text();
-		if (t.isEmpty())
-			continue;
-
 		bool removed = false;
 		for (int j = 0; j < remove.size(); ++j)
 		{
