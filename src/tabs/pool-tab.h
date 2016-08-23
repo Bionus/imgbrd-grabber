@@ -6,7 +6,6 @@
 #include <QCalendarWidget>
 #include "ui/textedit.h"
 #include "models/page.h"
-#include "mainwindow.h"
 #include "search-tab.h"
 
 
@@ -14,9 +13,7 @@
 namespace Ui
 {
 	class poolTab;
-	class mainWindow;
 }
-
 
 
 class mainWindow;
@@ -83,7 +80,6 @@ class poolTab : public searchTab
 
 	private:
 		int								m_id;
-		mainWindow						*m_parent;
 		TextEdit						*m_search, *m_postFiltering;
 		QCalendarWidget					*m_calendar;
 		QMap<QString,Page*>				m_pages;

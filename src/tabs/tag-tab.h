@@ -15,7 +15,6 @@
 namespace Ui
 {
 	class tagTab;
-	class mainWindow;
 }
 
 
@@ -85,7 +84,6 @@ class tagTab : public searchTab
 
 	private:
 		int								m_id;
-		mainWindow						*m_parent;
 		TextEdit						*m_search, *m_postFiltering;
 		QCalendarWidget					*m_calendar;
 		QList<Favorite>					m_favorites;

@@ -5,12 +5,9 @@
 #include <QFile>
 #include <QMouseEvent>
 
-extern mainWindow *_mainwindow;
 
-
-
-searchTab::searchTab(int id, QMap<QString,Site*> *sites, QSettings *settings, QWidget *parent)
-	: QWidget(parent), m_id(id), m_lastPageMaxId(0), m_lastPageMinId(0), m_sites(sites), m_settings(settings)
+searchTab::searchTab(int id, QMap<QString,Site*> *sites, mainWindow *parent)
+	: QWidget(parent), m_id(id), m_lastPageMaxId(0), m_lastPageMinId(0), m_sites(sites), m_parent(parent), m_settings(parent->settings())
 { }
 searchTab::~searchTab()
 { emit deleted(m_id); }
@@ -94,7 +91,7 @@ void searchTab::favorite()
 	{ QDir(savePath()).mkdir("thumbs"); }
 	img.save(savePath("thumbs/"+m_link+".png"), "PNG");*/
 
-	_mainwindow->updateFavorites();
+	m_parent->updateFavorites();
 }
 
 void searchTab::unfavorite()
@@ -129,7 +126,7 @@ void searchTab::unfavorite()
 	if (QFile::exists(savePath("thumbs/" + favorite.getName(true) + ".png")))
 	{ QFile::remove(savePath("thumbs/" + favorite.getName(true) + ".png")); }
 
-	_mainwindow->updateFavorites();
+	m_parent->updateFavorites();
 }
 
 

@@ -1,19 +1,16 @@
 #include <QMessageBox>
 #include "favorites-tab.h"
 #include "ui_favorites-tab.h"
-#include "ui_mainwindow.h"
 #include "ui/QBouton.h"
 #include "viewer/zoomwindow.h"
 #include "favoritewindow.h"
 #include "searchwindow.h"
 #include "models/favorite.h"
 
-extern mainWindow *_mainwindow;
-
 
 
 favoritesTab::favoritesTab(int id, QMap<QString,Site*> *sites, QList<Favorite> favorites, mainWindow *parent)
-	: searchTab(id, sites, parent->settings(), parent), ui(new Ui::favoritesTab), m_id(id), m_parent(parent), m_favorites(favorites), m_pagemax(-1), m_lastTags(QString()), m_sized(false), m_from_history(false), m_stop(true), m_history_cursor(0), m_currentFav(0), m_history(QList<QMap<QString,QString> >()), m_modifiers(QStringList())
+	: searchTab(id, sites, parent), ui(new Ui::favoritesTab), m_id(id), m_favorites(favorites), m_pagemax(-1), m_lastTags(QString()), m_sized(false), m_from_history(false), m_stop(true), m_history_cursor(0), m_currentFav(0), m_history(QList<QMap<QString,QString> >()), m_modifiers(QStringList())
 {
 	ui->setupUi(this);
 	setAttribute(Qt::WA_DeleteOnClose);
@@ -218,7 +215,7 @@ void favoritesTab::load()
 	log(tr("Chargement des résultats..."));
 
 	m_stop = true;
-	m_parent->ui->labelWiki->setText("");
+	m_parent->setWiki("");
 	m_pagemax = -1;
 
 	if (!m_from_history)
@@ -492,7 +489,7 @@ void favoritesTab::finishedLoadingTags(Page *page)
 	if (!page->wiki().isEmpty())
 	{
 		m_wiki = "<style>.title { font-weight: bold; } ul { margin-left: -30px; }</style>"+page->wiki();
-		m_parent->ui->labelWiki->setText(m_wiki);
+		m_parent->setWiki(m_wiki);
 	}
 }
 
@@ -572,7 +569,7 @@ void favoritesTab::finishedLoadingPreview(Image *img)
 		l->setFlat(true);
 		connect(l, SIGNAL(appui(int)), this, SLOT(webZoom(int)));
 		connect(l, SIGNAL(toggled(int,bool)), this, SLOT(toggleImage(int,bool)));
-		connect(l, SIGNAL(rightClick(int)), _mainwindow, SLOT(batchChange(int)));
+		connect(l, SIGNAL(rightClick(int)), m_parent, SLOT(batchChange(int)));
 	int perpage = img->page()->site()->value("Urls/Selected/Tags").contains("{limit}") ? ui->spinImagesPerPage->value() : img->page()->images().size();
 	perpage = perpage > 0 ? perpage : 20;
 	int pp = perpage;
@@ -718,7 +715,7 @@ void favoritesTab::linkHovered(QString url)
 void favoritesTab::linkClicked(QString url)
 {
 	if (Qt::ControlModifier)
-	{ _mainwindow->addTab(url); }
+	{ m_parent->addTab(url); }
 	else
 	{
 		m_currentTags = url;
@@ -726,7 +723,7 @@ void favoritesTab::linkClicked(QString url)
 	}
 }
 void favoritesTab::openInNewTab()
-{ _mainwindow->addTab(m_link); }
+{ m_parent->addTab(m_link); }
 void favoritesTab::openInNewWindow()
 {
 	QProcess myProcess;

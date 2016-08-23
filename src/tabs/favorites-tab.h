@@ -13,7 +13,6 @@
 namespace Ui
 {
 	class favoritesTab;
-	class mainWindow;
 }
 
 
@@ -89,7 +88,6 @@ class favoritesTab : public searchTab
 
 	private:
 		int								m_id;
-		mainWindow						*m_parent;
 		TextEdit						*m_postFiltering;
 		QDateTime						m_loadFavorite;
 		QList<Favorite>					m_favorites;

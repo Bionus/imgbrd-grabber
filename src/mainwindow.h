@@ -157,6 +157,7 @@ class mainWindow : public QMainWindow
 		void setTags(QList<Tag> tags, searchTab *from = nullptr);
 		void initialLoginsFinished();
 		QIcon& getIcon(QString path);
+		void setWiki(QString);
 
     private:
 		int					m_pagemax, m_getAllDownloaded, m_getAllExists, m_getAllIgnored, m_getAll404s, m_getAllErrors, m_getAllSkipped, m_getAllCount, m_getAllPageCount, m_getAllBeforeId, m_remainingPics, m_remainingSites, m_countPics, m_currentFav, m_currentFavCount, m_getAllLimit, m_downloads, m_waitForLogin;

@@ -2273,6 +2273,11 @@ bool mainWindow::loadLinkList(QString filename)
 	return true;
 }
 
+void mainWindow::setWiki(QString wiki)
+{
+	ui->labelWiki->setText(wiki);
+}
+
 QIcon& mainWindow::getIcon(QString path)
 {
 	if (!m_icons.contains(path))

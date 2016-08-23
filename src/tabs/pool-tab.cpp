@@ -1,17 +1,15 @@
 #include <QMessageBox>
+#include <QMenu>
 #include "pool-tab.h"
 #include "ui_pool-tab.h"
-#include "ui_mainwindow.h"
 #include "ui/QBouton.h"
 #include "viewer/zoomwindow.h"
 #include "searchwindow.h"
-
-extern mainWindow *_mainwindow;
-
+#include "mainwindow.h"
 
 
 poolTab::poolTab(int id, QMap<QString,Site*> *sites, QList<Favorite> favorites, mainWindow *parent)
-	: searchTab(id, sites, parent->settings(), parent), ui(new Ui::poolTab), m_id(id), m_parent(parent), m_pagemax(-1), m_lastTags(QString()), m_sized(false), m_from_history(false), m_stop(true), m_history_cursor(0), m_history(QList<QMap<QString,QString> >()), m_modifiers(QStringList())
+	: searchTab(id, sites, parent), ui(new Ui::poolTab), m_id(id), m_pagemax(-1), m_lastTags(QString()), m_sized(false), m_from_history(false), m_stop(true), m_history_cursor(0), m_history(QList<QMap<QString,QString> >()), m_modifiers(QStringList())
 {
 	m_favorites = favorites;
 	ui->setupUi(this);
@@ -57,9 +55,9 @@ poolTab::poolTab(int id, QMap<QString,Site*> *sites, QList<Favorite> favorites, 
 			}
 		}
 		connect(m_search, SIGNAL(returnPressed()), this, SLOT(load()));
-		connect(m_search, SIGNAL(favoritesChanged()), _mainwindow, SLOT(updateFavorites()));
-		connect(m_search, SIGNAL(favoritesChanged()), _mainwindow, SLOT(updateFavoritesDock()));
-		connect(m_search, SIGNAL(kflChanged()), _mainwindow, SLOT(updateKeepForLater()));
+		connect(m_search, SIGNAL(favoritesChanged()), m_parent, SLOT(updateFavorites()));
+		connect(m_search, SIGNAL(favoritesChanged()), m_parent, SLOT(updateFavoritesDock()));
+		connect(m_search, SIGNAL(kflChanged()), m_parent, SLOT(updateKeepForLater()));
 		connect(m_postFiltering, SIGNAL(returnPressed()), this, SLOT(load()));
 		connect(ui->labelMeant, SIGNAL(linkActivated(QString)), this, SLOT(setTags(QString)));
 		ui->layoutFields->insertWidget(3, m_search, 1);
@@ -163,7 +161,7 @@ void poolTab::load()
 	log(tr("Chargement des résultats..."));
 
 	m_stop = true;
-	m_parent->ui->labelWiki->setText("");
+	m_parent->setWiki("");
 	m_pagemax = -1;
 
 	if (!m_from_history)
@@ -458,7 +456,7 @@ void poolTab::finishedLoadingTags(Page *page)
 	if (!page->wiki().isEmpty())
 	{
 		m_wiki = "<style>.title { font-weight: bold; } ul { margin-left: -30px; }</style>"+page->wiki();
-		m_parent->ui->labelWiki->setText(m_wiki);
+		m_parent->setWiki(m_wiki);
 	}
 }
 
@@ -533,7 +531,7 @@ void poolTab::finishedLoadingPreview(Image *img)
 		l->scale(img->previewImage(), m_settings->value("thumbnailUpscale", 1.0f).toFloat());
 		l->setFlat(true);
 		connect(l, SIGNAL(appui(int)), this, SLOT(webZoom(int)));
-		connect(l, SIGNAL(rightClick(int)), _mainwindow, SLOT(batchChange(int)));
+		connect(l, SIGNAL(rightClick(int)), m_parent, SLOT(batchChange(int)));
 	int perpage = img->page()->site()->value("Urls/Selected/Tags").contains("{limit}") ? ui->spinImagesPerPage->value() : img->page()->images().size();
 	perpage = perpage > 0 ? perpage : 20;
 	int pl = ceil(sqrt((double)perpage));
@@ -646,7 +644,7 @@ void poolTab::linkHovered(QString url)
 void poolTab::linkClicked(QString url)
 {
 	if (Qt::ControlModifier)
-	{ _mainwindow->addTab(url); }
+	{ m_parent->addTab(url); }
 	else
 	{
 		m_search->setPlainText(url);
@@ -680,7 +678,7 @@ void poolTab::contextMenu()
 	menu->exec(QCursor::pos());
 }
 void poolTab::openInNewTab()
-{ _mainwindow->addTab(m_link); }
+{ m_parent->addTab(m_link); }
 void poolTab::openInNewWindow()
 {
 	QProcess myProcess;

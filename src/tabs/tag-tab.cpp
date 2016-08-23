@@ -1,17 +1,14 @@
 #include <QMessageBox>
+#include <QMenu>
 #include "tag-tab.h"
 #include "ui_tag-tab.h"
-#include "ui_mainwindow.h"
 #include "ui/QBouton.h"
 #include "viewer/zoomwindow.h"
 #include "searchwindow.h"
 
-extern mainWindow *_mainwindow;
-
-
 
 tagTab::tagTab(int id, QMap<QString,Site*> *sites, QList<Favorite> favorites, mainWindow *parent)
-	: searchTab(id, sites, parent->settings(), parent), ui(new Ui::tagTab), m_id(id), m_parent(parent), m_favorites(favorites), m_pagemax(-1), m_lastTags(QString()), m_sized(false), m_from_history(false), m_stop(true), m_history_cursor(0), m_history(QList<QMap<QString,QString> >()), m_modifiers(QStringList())
+	: searchTab(id, sites, parent), ui(new Ui::tagTab), m_id(id), m_favorites(favorites), m_pagemax(-1), m_lastTags(QString()), m_sized(false), m_from_history(false), m_stop(true), m_history_cursor(0), m_history(QList<QMap<QString,QString> >()), m_modifiers(QStringList())
 {
 	ui->setupUi(this);
 	ui->widgetMeant->hide();
@@ -56,9 +53,9 @@ tagTab::tagTab(int id, QMap<QString,Site*> *sites, QList<Favorite> favorites, ma
 			m_postFiltering->setCompleter(completer);
 		}
 		connect(m_search, SIGNAL(returnPressed()), this, SLOT(load()));
-		connect(m_search, SIGNAL(favoritesChanged()), _mainwindow, SLOT(updateFavorites()));
-		connect(m_search, SIGNAL(favoritesChanged()), _mainwindow, SLOT(updateFavoritesDock()));
-		connect(m_search, SIGNAL(kflChanged()), _mainwindow, SLOT(updateKeepForLater()));
+		connect(m_search, SIGNAL(favoritesChanged()), m_parent, SLOT(updateFavorites()));
+		connect(m_search, SIGNAL(favoritesChanged()), m_parent, SLOT(updateFavoritesDock()));
+		connect(m_search, SIGNAL(kflChanged()), m_parent, SLOT(updateKeepForLater()));
 		connect(m_postFiltering, SIGNAL(returnPressed()), this, SLOT(load()));
 		connect(ui->labelMeant, SIGNAL(linkActivated(QString)), this, SLOT(setTags(QString)));
 		ui->layoutFields->insertWidget(1, m_search, 1);
@@ -171,7 +168,7 @@ void tagTab::load()
 	ui->buttonGetSel->setEnabled(false);
 
 	m_stop = true;
-	m_parent->ui->labelWiki->setText("");
+	m_parent->setWiki("");
 	m_pagemax = -1;
 
 	if (!m_from_history)
@@ -239,7 +236,7 @@ void tagTab::load()
 			int perpage = ui->spinImagesPerPage->value();
 
             // Load results
-			Page *page = new Page(m_sites->value(m_sites->keys().at(i)), m_sites, tags, ui->spinPage->value(), perpage, m_postFiltering->toPlainText().split(" ", QString::SkipEmptyParts), false, this, 0, m_lastPage, m_lastPageMinId, m_lastPageMaxId);
+            Page *page = new Page(m_sites->value(m_sites->keys().at(i)), m_sites, tags, ui->spinPage->value(), perpage, m_postFiltering->toPlainText().split(" ", QString::SkipEmptyParts), false, this, 0, m_lastPage, m_lastPageMinId, m_lastPageMaxId);
 			log(tr("Chargement de la page <a href=\"%1\">%1</a>").arg(page->url().toString().toHtmlEscaped()));
 			connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(finishedLoading(Page*)));
 			connect(page, SIGNAL(failedLoading(Page*)), this, SLOT(failedLoading(Page*)));
@@ -548,7 +545,7 @@ void tagTab::finishedLoadingTags(Page *page)
 	if (!page->wiki().isEmpty())
 	{
 		m_wiki = "<style>.title { font-weight: bold; } ul { margin-left: -30px; }</style>"+page->wiki();
-		m_parent->ui->labelWiki->setText(m_wiki);
+		m_parent->setWiki(m_wiki);
 	}
 
 	int maxpage = page->pagesCount();
@@ -627,7 +624,7 @@ void tagTab::finishedLoadingPreview(Image *img)
                 zoomWindow *zoom = new zoomWindow(img, img->page()->site(), m_sites, this);
 				zoom->show();
 				connect(zoom, SIGNAL(linkClicked(QString)), this, SLOT(setTags(QString)));
-				connect(zoom, SIGNAL(poolClicked(int, QString)), _mainwindow, SLOT(addPoolTab(int, QString)));
+				connect(zoom, SIGNAL(poolClicked(int, QString)), m_parent, SLOT(addPoolTab(int, QString)));
 			}
 		}
 		else
@@ -635,8 +632,8 @@ void tagTab::finishedLoadingPreview(Image *img)
 
 		if (download)
 		{
-			connect(img, SIGNAL(finishedImage(Image*)), _mainwindow, SLOT(saveImage(Image*)));
-			connect(img, SIGNAL(finishedImage(Image*)), _mainwindow, SLOT(decreaseDownloads()));
+			connect(img, SIGNAL(finishedImage(Image*)), m_parent, SLOT(saveImage(Image*)));
+			connect(img, SIGNAL(finishedImage(Image*)), m_parent, SLOT(decreaseDownloads()));
 
 			QString filename = m_settings->value("Save/filename").toString();;
 			bool getTags = filename.startsWith("javascript:") || (filename.contains("%filename%") && img->site().contains("Regex/ForceImageUrl"));
@@ -652,7 +649,7 @@ void tagTab::finishedLoadingPreview(Image *img)
 			else
 			{ img->loadImage(); }
 
-			_mainwindow->increaseDownloads();
+			m_parent->increaseDownloads();
 		}
 	}
 	if (!detected.isEmpty())
@@ -674,7 +671,7 @@ void tagTab::finishedLoadingPreview(Image *img)
 		l->setFlat(true);
 		connect(l, SIGNAL(appui(int)), this, SLOT(webZoom(int)));
 		connect(l, SIGNAL(toggled(int,bool)), this, SLOT(toggleImage(int,bool)));
-		connect(l, SIGNAL(rightClick(int)), _mainwindow, SLOT(batchChange(int)));
+		connect(l, SIGNAL(rightClick(int)), m_parent, SLOT(batchChange(int)));
 	int perpage = img->page()->site()->value("Urls/Selected/Tags").contains("{limit}") ? ui->spinImagesPerPage->value() : img->page()->images().size();
 	perpage = perpage > 0 ? perpage : 20;
 	int pp = perpage;
@@ -705,7 +702,7 @@ void tagTab::webZoom(int id)
     zoomWindow *zoom = new zoomWindow(image, image->page()->site(), m_sites, this);
 	zoom->show();
 	connect(zoom, SIGNAL(linkClicked(QString)), this, SLOT(setTags(QString)));
-	connect(zoom, SIGNAL(poolClicked(int, QString)), _mainwindow, SLOT(addPoolTab(int, QString)));
+	connect(zoom, SIGNAL(poolClicked(int, QString)), m_parent, SLOT(addPoolTab(int, QString)));
 }
 
 void tagTab::toggleImage(int id, bool toggle)
@@ -859,7 +856,7 @@ void tagTab::linkHovered(QString url)
 void tagTab::linkClicked(QString url)
 {
 	if (Qt::ControlModifier)
-	{ _mainwindow->addTab(url); }
+	{ m_parent->addTab(url); }
 	else
 	{
 		m_search->setPlainText(url);
@@ -893,7 +890,7 @@ void tagTab::contextMenu()
 	menu->exec(QCursor::pos());
 }
 void tagTab::openInNewTab()
-{ _mainwindow->addTab(m_link); }
+{ m_parent->addTab(m_link); }
 void tagTab::openInNewWindow()
 {
 	QProcess myProcess;

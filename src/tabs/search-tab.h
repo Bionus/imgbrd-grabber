@@ -10,12 +10,14 @@
 
 
 
+class mainWindow;
+
 class searchTab : public QWidget
 {
     Q_OBJECT
 
     public:
-        searchTab(int id, QMap<QString,Site*> *sites, QSettings *settings, QWidget *parent = 0);
+        searchTab(int id, QMap<QString,Site*> *sites, mainWindow *parent);
         ~searchTab();
 		void mouseReleaseEvent(QMouseEvent *e);
 		virtual QList<bool> sources();
@@ -70,6 +72,7 @@ class searchTab : public QWidget
 		QList<Favorite>		m_favorites;
 		QString				m_link;
 		QList<Tag>			m_tags;
+		mainWindow			*m_parent;
 		QSettings			*m_settings;
 };
 
