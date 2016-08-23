@@ -2,6 +2,8 @@
 #include "tag.h"
 #include "functions.h"
 
+Tag::Tag()
+{ }
 
 Tag::Tag(QSettings *settings, QString text, QString type, int count, QStringList related)
 	: m_type(type), m_count(count), m_related(related), m_settings(settings)

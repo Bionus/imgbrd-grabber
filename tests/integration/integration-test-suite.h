@@ -17,6 +17,7 @@ class IntegrationTestSuite : public TestSuite
 
     protected:
         QList<Image*> getImages(QString site, QString source, QString format, QString tags);
+        QList<Tag> getPageTags(QString site, QString source, QString format, QString tags);
 
     protected:
 		Downloader	*m_downloader;

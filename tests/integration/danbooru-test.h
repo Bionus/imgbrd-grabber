@@ -11,6 +11,7 @@ class DanbooruTest : public IntegrationTestSuite
 	private slots:
 		void testHtml();
 		void testXml();
+		void testPageTags();
 
 	private:
 		Downloader	*m_downloader;

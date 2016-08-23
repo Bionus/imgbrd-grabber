@@ -10,6 +10,7 @@
 class Tag
 {
 	public:
+		Tag();
 		explicit Tag(QSettings *settings, QString text, QString type = "unknown", int count = 1, QStringList related = QStringList());
 		~Tag();
 		QString stylished(QList<Favorite>, bool count = false) const;
@@ -33,5 +34,7 @@ class Tag
 
 bool sortByFrequency(Tag, Tag);
 bool operator==(const Tag &t1, const Tag &t2);
+
+Q_DECLARE_METATYPE(Tag)
 
 #endif // TAG_H

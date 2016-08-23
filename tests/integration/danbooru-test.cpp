@@ -40,5 +40,19 @@ void DanbooruTest::testXml()
     QCOMPARE(md5s, expected);
 }
 
+void DanbooruTest::testPageTags()
+{
+    QList<Tag> tags = getPageTags("Danbooru (2.0)", "danbooru.donmai.us", "regex", "rating:safe");
+
+    QCOMPARE(tags.count(), 25);
+
+    QCOMPARE(tags[0].text(), QString("1girl"));
+    QCOMPARE(tags[0].count(), 1659000);
+    QCOMPARE(tags[1].text(), QString("solo"));
+    QCOMPARE(tags[1].count(), 1380000);
+    QCOMPARE(tags[2].text(), QString("long_hair"));
+    QCOMPARE(tags[2].count(), 1009000);
+}
+
 
 static DanbooruTest instance;
