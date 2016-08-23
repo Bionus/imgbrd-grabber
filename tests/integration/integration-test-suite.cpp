@@ -12,7 +12,12 @@ void IntegrationTestSuite::initTestCase()
 QList<Image*> IntegrationTestSuite::getImages(QString site, QString source, QString format, QString tags)
 {
     m_settings = new QSettings("tests/resources/settings.ini", QSettings::IniFormat);
-    QSettings settings("release/sites/" + site +"/" + source + "/settings.ini", QSettings::IniFormat);
+
+    QDir().mkpath("tests/resources/sites/" + site + "/" + source);
+    QFile::copy("release/sites/" + site +"/model.xml", "tests/resources/sites/" + site +"/model.xml");
+    QFile::copy("release/sites/" + site +"/" + source + "/settings.ini", "tests/resources/sites/" + site +"/" + source + "/settings.ini");
+
+    QSettings settings("tests/resources/sites/" + site +"/" + source + "/settings.ini", QSettings::IniFormat);
     settings.setValue("download/throttle_retry", 0);
     settings.setValue("download/throttle_page", 0);
     settings.setValue("download/throttle_thumbnail", 0);
@@ -21,7 +26,7 @@ QList<Image*> IntegrationTestSuite::getImages(QString site, QString source, QStr
     settings.setValue("sources/source_1", format);
 
     QList<Site*> sites;
-    sites.append(new Site(m_settings, "release/sites/" + site, source));
+    sites.append(new Site(m_settings, "tests/resources/sites/" + site, source));
 
     QList<Image*> result;
     m_downloader = new Downloader(tags.split(' '),
@@ -63,7 +68,12 @@ QList<Image*> IntegrationTestSuite::getImages(QString site, QString source, QStr
 QList<Tag> IntegrationTestSuite::getPageTags(QString site, QString source, QString format, QString tags)
 {
     m_settings = new QSettings("tests/resources/settings.ini", QSettings::IniFormat);
-    QSettings settings("release/sites/" + site +"/" + source + "/settings.ini", QSettings::IniFormat);
+
+    QDir().mkpath("tests/resources/sites/" + site + "/" + source);
+    QFile::copy("release/sites/" + site +"/model.xml", "tests/resources/sites/" + site +"/model.xml");
+    QFile::copy("release/sites/" + site +"/" + source + "/settings.ini", "tests/resources/sites/" + site +"/" + source + "/settings.ini");
+
+    QSettings settings("tests/resources/sites/" + site +"/" + source + "/settings.ini", QSettings::IniFormat);
     settings.setValue("download/throttle_retry", 0);
     settings.setValue("download/throttle_page", 0);
     settings.setValue("download/throttle_thumbnail", 0);
@@ -72,7 +82,7 @@ QList<Tag> IntegrationTestSuite::getPageTags(QString site, QString source, QStri
     settings.setValue("sources/source_1", format);
 
     QList<Site*> sites;
-    sites.append(new Site(m_settings, "release/sites/" + site, source));
+    sites.append(new Site(m_settings, "tests/resources/sites/" + site, source));
 
     QList<Tag> result;
     m_downloader = new Downloader(tags.split(' '),
