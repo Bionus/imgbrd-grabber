@@ -144,6 +144,9 @@ Image::Image(Site *site, QMap<QString, QString> details, Page* parent)
 		for (int i = 0; i < t.count(); ++i)
 		{
 			QString tg = t.at(i);
+			if (tg.isEmpty())
+				continue;
+
 			tg.replace("&amp;", "&");
 			m_tags.append(Tag(m_settings, tg, "general"));
 		}
@@ -151,6 +154,9 @@ Image::Image(Site *site, QMap<QString, QString> details, Page* parent)
 		for (int i = 0; i < t.count(); ++i)
 		{
 			QString tg = t.at(i);
+			if (tg.isEmpty())
+				continue;
+
 			tg.replace("&amp;", "&");
 			m_tags.append(Tag(m_settings, tg, "artist"));
 		}
@@ -158,6 +164,9 @@ Image::Image(Site *site, QMap<QString, QString> details, Page* parent)
 		for (int i = 0; i < t.count(); ++i)
 		{
 			QString tg = t.at(i);
+			if (tg.isEmpty())
+				continue;
+
 			tg.replace("&amp;", "&");
 			m_tags.append(Tag(m_settings, tg, "character"));
 		}
@@ -165,6 +174,9 @@ Image::Image(Site *site, QMap<QString, QString> details, Page* parent)
 		for (int i = 0; i < t.count(); ++i)
 		{
 			QString tg = t.at(i);
+			if (tg.isEmpty())
+				continue;
+
 			tg.replace("&amp;", "&");
 			m_tags.append(Tag(m_settings, tg, "copyright"));
 		}
@@ -172,6 +184,9 @@ Image::Image(Site *site, QMap<QString, QString> details, Page* parent)
 		for (int i = 0; i < t.count(); ++i)
 		{
 			QString tg = t.at(i);
+			if (tg.isEmpty())
+				continue;
+
 			tg.replace("&amp;", "&");
 			m_tags.append(Tag(m_settings, tg, "model"));
 		}
@@ -188,6 +203,9 @@ Image::Image(Site *site, QMap<QString, QString> details, Page* parent)
 		for (int i = 0; i < t.count(); ++i)
 		{
 			QString tg = t.at(i);
+			if (tg.isEmpty())
+				continue;
+
 			tg.replace("&amp;", "&");
 
 			int colon = tg.indexOf(':');
@@ -820,24 +838,13 @@ QStringList Image::blacklisted(QStringList blacklistedtags, bool invert) const
 QStringList Image::stylishedTags(QStringList ignored) const
 {
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
-	QStringList blacklistedtags(settings.value("blacklistedtags").toString().split(' '));
+	QStringList blacklisted = settings.value("blacklistedtags").toString().split(' ');
+	QList<Favorite> favorites = loadFavorites();
 
-	QStringList tlist = QStringList() << "blacklisteds" << "ignoreds" << "artists" << "circles" << "copyrights" << "characters" << "models" << "generals" << "favorites";
-	QStringList defaults = QStringList() << "000000" << "999999" << "aa0000" << "55bbff" << "aa00aa" << "00aa00" << "0000ee" << "000000" << "ffc0cb";
-	QMap<QString,QString> styles;
-	for (int i = 0; i < tlist.size(); ++i)
-	{
-		QFont font;
-		font.fromString(settings.value("Coloring/Fonts/"+tlist.at(i)).toString());
-		styles[tlist.at(i)] = "color:"+settings.value("Coloring/Colors/"+tlist.at(i), "#"+defaults.at(i)).toString()+"; "+qfonttocss(font);
-	}
 	QStringList t;
-	for (int i = 0; i < m_tags.size(); ++i)
-	{
-		Tag tag = m_tags.at(i);
-		QString type = blacklistedtags.contains(tag.text(), Qt::CaseInsensitive) ? "blacklisteds" : (ignored.contains(tag.text(), Qt::CaseInsensitive) ? "ignored" : tag.type());
-		t.append("<a href=\""+tag.text()+"\" style=\""+(styles.contains(type+"s") ? styles[type+"s"] : styles["generals"])+"\">"+tag.text()+"</a>");
-	}
+	for (Tag tag : m_tags)
+		t.append(tag.stylished(favorites, ignored, blacklisted));
+
 	t.sort();
 	return t;
 }

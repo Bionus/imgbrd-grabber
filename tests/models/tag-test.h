@@ -27,8 +27,10 @@ class TagTest : public TestSuite
 		void testSetType();
 		void testShortType();
 		void testSetTypeShortType();
+		void testStylishedBasic();
+		void testStylishedIgnored();
+		void testStylishedBlacklisted();
 		void testStylishedFavorite();
-		void testStylishedNotFavorite();
 		void testStylishedWithCount();
 		void testTypedTextGeneral();
 		void testTypedTextArtist();

@@ -515,7 +515,7 @@ void mainWindow::setTags(QList<Tag> tags, searchTab *from)
 	{
 		if (!text.isEmpty())
 			text += "<br/>";
-		text += tag.stylished(m_favorites, true);
+		text += tag.stylished(m_favorites, QStringList(), QStringList(), true);
 	}
 
 	QAffiche *taglabel = new QAffiche(QVariant(), 0, QColor(), this);

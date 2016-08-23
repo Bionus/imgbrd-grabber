@@ -115,16 +115,7 @@ void TagTest::testTypedTextGeneral()
 	QCOMPARE(tag.typedText(), QString("tag_text"));
 }
 
-void TagTest::testStylishedFavorite()
-{
-	Tag tag(m_settings, "tag_text", "artist", 123, QStringList() << "related1" << "related2" << "related3");
-
-	QList<Favorite> favorites;
-	favorites.append(Favorite("tag_text", 50, QDateTime::currentDateTime()));
-
-	QCOMPARE(tag.stylished(favorites), QString("<span style=\"color:pink\">tag_text</span>"));
-}
-void TagTest::testStylishedNotFavorite()
+void TagTest::testStylishedBasic()
 {
 	m_settings->setValue("Coloring/Fonts/artists", ",8.25,-1,5,50,0,0,0,0,0");
 	m_settings->setValue("Coloring/Colors/artists", "#aa0000");
@@ -137,6 +128,29 @@ void TagTest::testStylishedNotFavorite()
 	QString expected = "<a href=\"tag_text\" style=\"color:#aa0000; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">tag_text</a>";
 	QCOMPARE(tag.stylished(favorites), expected);
 }
+void TagTest::testStylishedIgnored()
+{
+	Tag tag(m_settings, "tag_text", "artist", 123, QStringList() << "related1" << "related2" << "related3");
+
+	QString expected = "<a href=\"tag_text\" style=\"color:#999999; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">tag_text</a>";
+	QCOMPARE(tag.stylished(QList<Favorite>(), QStringList() << "tag_text"), expected);
+}
+void TagTest::testStylishedBlacklisted()
+{
+	Tag tag(m_settings, "tag_text", "artist", 123, QStringList() << "related1" << "related2" << "related3");
+
+	QString expected = "<a href=\"tag_text\" style=\"color:#000000; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">tag_text</a>";
+	QCOMPARE(tag.stylished(QList<Favorite>(), QStringList(), QStringList() << "tag_text"), expected);
+}
+void TagTest::testStylishedFavorite()
+{
+	Tag tag(m_settings, "tag_text", "artist", 123, QStringList() << "related1" << "related2" << "related3");
+
+	QList<Favorite> favorites;
+	favorites.append(Favorite("tag_text", 50, QDateTime::currentDateTime()));
+
+	QCOMPARE(tag.stylished(favorites), QString("<span style=\"color:pink\">tag_text</span>"));
+}
 void TagTest::testStylishedWithCount()
 {
 	m_settings->setValue("Coloring/Fonts/artists", ",8.25,-1,5,50,0,0,0,0,0");
@@ -145,7 +159,7 @@ void TagTest::testStylishedWithCount()
 	Tag tag(m_settings, "tag_text", "artist", 123, QStringList() << "related1" << "related2" << "related3");
 
 	QString expected = "<a href=\"tag_text\" style=\"color:#aa0000; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">tag_text</a> <span style=\"color:#aaa\">(123)</span>";
-	QCOMPARE(tag.stylished(QList<Favorite>(), true), expected);
+	QCOMPARE(tag.stylished(QList<Favorite>(), QStringList(), QStringList(), true), expected);
 }
 
 void TagTest::testCompare()

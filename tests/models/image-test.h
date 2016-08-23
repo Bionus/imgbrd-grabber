@@ -20,6 +20,7 @@ class ImageTest : public TestSuite
         void testHasAllTags();
         void testMd5FromData();
         void testMd5FromFile();
+        void testStylishedTags();
         void testUnload();
         void testBlacklisted();
         void testMatchTag();
