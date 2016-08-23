@@ -34,7 +34,7 @@
 	};
 #else
 	struct MemoryLeakChecker
-	{ }
+	{ };
 #endif
 
 
