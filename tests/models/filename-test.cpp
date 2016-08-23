@@ -24,7 +24,7 @@ void FilenameTest::init()
     m_details["width"] = "800";
     m_details["height"] = "600";
     m_details["source"] = "http://google.com/";
-    m_details["tags_general"] = "tag1 tag2 tag3";
+    m_details["tags_general"] = "tag1 tag2 tag3 test_tag1 test_tag2 test_tag3";
     m_details["tags_artist"] = "artist1";
     m_details["tags_copyright"] = "copyright1 copyright2";
     m_details["tags_character"] = "character1 character2";
@@ -121,6 +121,14 @@ void FilenameTest::testPathFull()
                "tests/directory/1bc29b36f623ba82aaf6724fd3b16718.jpg",
                "tests/directory",
                true, true);
+    assertPath("/%md5%.%ext%",
+               "tests/directory/1bc29b36f623ba82aaf6724fd3b16718.jpg",
+               "tests/directory/",
+               true, true);
+    assertPath("/%md5%.%ext%",
+               "tests/directory/1bc29b36f623ba82aaf6724fd3b16718.jpg",
+               "tests/directory",
+               true, true);
 }
 
 void FilenameTest::testPathSimpleJavascript()
@@ -177,10 +185,12 @@ void FilenameTest::testPathOptionTagNamespace()
 }
 void FilenameTest::testPathOptionTagSeparator()
 {
-    m_settings->setValue("Save/character_multiple", "keepAll");
-
-    assertPath("%character:separator=---%", "character1---character2");
-    assertPath("%character:separator=\n%", "character1\ncharacter2");
+    assertPath("%md5% (%count%).%ext%", "1bc29b36f623ba82aaf6724fd3b16718 (7).jpg");
+    assertPath("%md5% (%count:length=3%).%ext%", "1bc29b36f623ba82aaf6724fd3b16718 (007).jpg");
+}
+void FilenameTest::testPathOptionCount()
+{
+    assertPath("%md5:maxlength=8%.%ext%", "1bc29b36.jpg");
 }
 
 void FilenameTest::testGetReplacesSimple()
@@ -256,7 +266,7 @@ void FilenameTest::testIsValid()
     QCOMPARE(Filename("").isValid(), false);
     QCOMPARE(Filename("%md5%").isValid(), false);
     QCOMPARE(Filename("toto").isValid(), false);
-    QCOMPARE(Filename("%toto%.%ext%").isValid(), false);
+    QCOMPARE(Filename("%toto% %md5%.%ext%").isValid(), false);
     QCOMPARE(Filename("%md5%.%ext%").isValid(), true);
     QCOMPARE(Filename("%id%.%ext%").isValid(), false);
     QCOMPARE(Filename("%website%/%id%.%ext%").isValid(), true);
@@ -336,6 +346,19 @@ void FilenameTest::testCustoms()
     assertPath("%custom2%", "tag3");
 }
 
+void FilenameTest::testReplaceBlanks()
+{
+    m_settings->setValue("Save/separator", "+");
+
+    m_settings->setValue("Save/replaceblanks", false);
+    assertPath("%all%", "tag1+tag2+tag3+test tag1+test tag2+test tag3+artist1+character1+character2+copyright1+copyright2", "", false);
+    assertPath("%allo%", "tag1 tag2 tag3 test_tag1 test_tag2 test_tag3 artist1 character1 character2 copyright1 copyright2", "", false);
+
+    m_settings->setValue("Save/replaceblanks", true);
+    assertPath("%all%", "tag1+tag2+tag3+test_tag1+test_tag2+test_tag3+artist1+character1+character2+copyright1+copyright2", "", false);
+    assertPath("%allo%", "tag1 tag2 tag3 test_tag1 test_tag2 test_tag3 artist1 character1 character2 copyright1 copyright2", "", false);
+}
+
 
 void FilenameTest::assertPath(QString format, QString expected, QString path, bool shouldFixFilename, bool fullPath)
 {
@@ -355,7 +378,7 @@ void FilenameTest::assertPath(QString format, QStringList expected, QString path
     }
 
     Filename fn(format);
-    QStringList actual = fn.path(*m_img, m_settings, path, 0, true, true, shouldFixFilename, fullPath);
+    QStringList actual = fn.path(*m_img, m_settings, path, 7, true, true, shouldFixFilename, fullPath);
     QCOMPARE(actual, expectedNative);
 }
 

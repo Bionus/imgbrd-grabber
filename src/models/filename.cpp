@@ -192,6 +192,9 @@ QMap<QString, QStringList> Filename::makeDetails(const Image& img, QSettings *se
 	for (Tag tag : img.tags())
 	{
 		QString t = tag.text();
+		if (t.isEmpty())
+			continue;
+
 		bool removed = false;
 		for (int j = 0; j < remove.size(); ++j)
 		{
@@ -380,6 +383,8 @@ QStringList Filename::path(const Image& img, QSettings *settings, QString pth, i
 		if (pth.right(1) == "/")
 		{ pth = pth.left(pth.length() - 1); }
 
+		QStringList specialTokens = QStringList() << "count";
+
 		for (auto replaces : replacesList)
 		{
 			QString cFilename = QString(filename);
@@ -387,7 +392,7 @@ QStringList Filename::path(const Image& img, QSettings *settings, QString pth, i
 			// Conditionals
 			if (complex)
 			{
-				QStringList tokens = QStringList() << "artist" << "general" << "copyright" << "character" << "model" << "model|artist" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "allo" << "date" << "date:([^%]+)" << "count(:\\d+)?(:\\d+)?" << "search_(\\d+)" << "score" << "height" << "width" << "path" << "pool" << "url_file" << "url_page" << custom.keys();
+				QStringList tokens = QStringList() << "artist" << "general" << "copyright" << "character" << "model" << "model|artist" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "allo" << "date" << "count" << "search_(\\d+)" << "score" << "height" << "width" << "path" << "pool" << "url_file" << "url_page" << custom.keys();
 				cFilename = this->expandConditionals(cFilename, tokens, details["allos"], replaces);
 			}
 
@@ -398,7 +403,7 @@ QStringList Filename::path(const Image& img, QSettings *settings, QString pth, i
 			while ((p = replacerx.indexIn(cFilename, p)) != -1)
 			{
 				QString key = replacerx.cap(1);
-				if (replaces.contains(key))
+				if (replaces.contains(key) || specialTokens.contains(key))
 				{
 					QMap<QString,QString> options;
 					if (replacerx.captureCount() > 1)
@@ -420,7 +425,7 @@ QStringList Filename::path(const Image& img, QSettings *settings, QString pth, i
 					if (key == "date" && options.contains("format"))
 					{ res = img.createdAt().toString(options["format"]); }
 					if (key == "count")
-					{ res = options.contains("length") ? QString::number(counter, 'f', options["length"].toInt()) : QString::number(counter); }
+					{ res = options.contains("length") ? QString("%1").arg(counter, options["length"].toInt(), 10, QChar('0')) : QString::number(counter); }
 					if (options.contains("maxlength"))
 					{ res = res.left(options["maxlength"].toInt()); }
 					if (key == "all" || key == "allo" || key == "general" || key == "artist" || key == "copyright" || key == "character")
@@ -473,13 +478,9 @@ QStringList Filename::path(const Image& img, QSettings *settings, QString pth, i
 			fns[i] = fixFilename(fns[i], pth, limit);
 		}
 
+		// Include directory in result
 		if (getFull)
-		{
-			fns[i] = QDir::toNativeSeparators(fns[i]);
-			if (fns[i].left(1) == QDir::toNativeSeparators("/"))
-			{ fns[i] = fns[i].right(fns[i].length() - 1); }
-			fns[i] = QDir::toNativeSeparators(pth + "/" + fns[i]);
-		}
+		{ fns[i] = QDir::toNativeSeparators(pth + "/" + fns[i]); }
 	}
 
 	return fns;
@@ -519,7 +520,7 @@ bool Filename::isValid(QString *error) const
 		return returnError(QObject::tr("<span style=\"color:orange\">Votre nom de fichier n'est pas unique à chaque image et une image risque d'en écraser une précédente lors de la sauvegarde ! Vous devriez utiliser le symbole %md5%, unique à chaque image, pour éviter ce désagrément.</span>"), error);
 
 	// Looking for unknown tokens
-	QStringList tokens = QStringList() << "artist" << "general" << "copyright" << "character" << "model" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "search_(\\d+)" << "allo" << getCustoms().keys() << "date" << "date:([^%]+)" << "score" << "count(:\\d+)?(:\\d+)?" << "width" << "height" << "pool" << "url_file" << "url_page";
+	QStringList tokens = QStringList() << "artist" << "general" << "copyright" << "character" << "model" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "search_(\\d+)" << "allo" << getCustoms().keys() << "date" << "score" << "count" << "width" << "height" << "pool" << "url_file" << "url_page";
 	QRegExp rx("%(.+)%");
 	rx.setMinimal(true);
 	int pos = 0;

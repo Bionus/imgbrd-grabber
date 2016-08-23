@@ -34,6 +34,7 @@ class FilenameTest : public TestSuite
         void testPathOptionDateFormat();
         void testPathOptionTagNamespace();
         void testPathOptionTagSeparator();
+        void testPathOptionCount();
         void testGetReplacesSimple();
         void testGetReplacesMultiple();
         void testGetReplacesMatrix();
@@ -44,6 +45,7 @@ class FilenameTest : public TestSuite
         void testConditionalsToken();
         void testConditionalsCustom();
         void testCustoms();
+        void testReplaceBlanks();
 
     protected:
         void assertPath(QString format, QString expected, QString path = "", bool shouldFixFilename = true, bool fullPath = false);
