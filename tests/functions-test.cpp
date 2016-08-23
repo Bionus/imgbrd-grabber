@@ -1,4 +1,3 @@
-#include <QtTest>
 #include "functions-test.h"
 #include "functions.h"
 

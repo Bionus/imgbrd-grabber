@@ -1,4 +1,5 @@
 #include <QtTest>
+#include "test-suite.h"
 #include "image-test.h"
 
 

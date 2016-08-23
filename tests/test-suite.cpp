@@ -5,5 +5,5 @@ QList<QObject*> TestSuite::suites;
 
 TestSuite::TestSuite() : QObject()
 {
-	suites.append(this);
+    suites.append(this);
 }
