@@ -19,6 +19,9 @@ class ImageTest : public TestSuite
         void testHasAnyTag();
         void testHasAllTags();
         void testUnload();
+        void testBlacklisted();
+        void testMatchTag();
+        void testMatchRating();
 
     private:
         QSettings *m_settings;

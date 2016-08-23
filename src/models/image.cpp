@@ -593,6 +593,14 @@ QString Image::match(QString filter, bool invert) const
 		{
 			if (type == "rating")
 			{
+				QMap<QString,QString> assoc;
+				assoc["s"] = "safe";
+				assoc["q"] = "questionable";
+				assoc["e"] = "explicit";
+
+				if (assoc.contains(filter))
+					filter = assoc[filter];
+
 				bool cond = m_rating.toLower().startsWith(filter.left(1));
 				if (!cond && !invert)
 				{ return QObject::tr("image is not \"%1\"").arg(filter); }
@@ -991,13 +999,6 @@ QStringList Image::tagsString() const
 	for (Tag tag : m_tags)
 	{ tags.append(tag.text()); }
 	return tags;
-}
-
-QString Image::detail(QString key) const
-{
-	if (m_details.contains(key))
-		return m_details.value(key);
-	return "";
 }
 
 void	Image::setUrl(QString u)

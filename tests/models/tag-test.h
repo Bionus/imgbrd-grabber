@@ -14,6 +14,7 @@ class TagTest : public TestSuite
 		void init();
 		void cleanup();
 
+		void testDefaultConstructor();
 		void testText();
 		void testSetText();
 		void testCount();

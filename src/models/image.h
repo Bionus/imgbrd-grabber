@@ -83,7 +83,6 @@ class Image : public QObject
 		bool		hasAnyTag(QStringList tags) const;
 		bool		hasAllTags(QStringList tags) const;
 		QMap<QString,QString>   details() const;
-		QString		detail(QString key) const;
 		void		setUrl(QString);
 		void		setData(QByteArray);
 		void		setFileSize(int);

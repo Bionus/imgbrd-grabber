@@ -11,6 +11,13 @@ void TagTest::cleanup()
 	m_settings->deleteLater();
 }
 
+void TagTest::testDefaultConstructor()
+{
+	Tag tag;
+
+	QCOMPARE(tag.text(), QString());
+}
+
 void TagTest::testText()
 {
 	Tag tag(m_settings, "tag_text", "artist", 123, QStringList() << "related1" << "related2" << "related3");

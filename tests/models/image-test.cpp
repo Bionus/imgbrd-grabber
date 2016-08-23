@@ -30,6 +30,7 @@ void ImageTest::init()
     m_details["tags_copyright"] = "copyright1 copyright2";
     m_details["tags_character"] = "character1 character2";
     m_details["created_at"] = "1471513944";
+    m_details["rating"] = "safe";
 
     m_settings = new QSettings("tests/resources/settings.ini", QSettings::IniFormat);
     m_site = new Site(m_settings, "release/sites/Danbooru (2.0)", "danbooru.donmai.us");
@@ -112,6 +113,57 @@ void ImageTest::testUnload()
 
     m_img->unload();
     QCOMPARE(m_img->data().isEmpty(), true);
+}
+
+void ImageTest::testBlacklisted()
+{
+    // Basic
+    QCOMPARE(m_img->blacklisted(QStringList() << "tag8" << "tag7"), QStringList());
+    QCOMPARE(m_img->blacklisted(QStringList() << "tag1" << "tag7"), QStringList() << "tag1");
+    QCOMPARE(m_img->blacklisted(QStringList() << "character1" << "artist1"), QStringList() << "character1" << "artist1");
+
+    // Invert
+    QCOMPARE(m_img->blacklisted(QStringList() << "tag8" << "tag7", false), QStringList() << "tag8" << "tag7");
+    QCOMPARE(m_img->blacklisted(QStringList() << "tag1" << "tag7", false), QStringList() << "tag7");
+    QCOMPARE(m_img->blacklisted(QStringList() << "character1" << "artist1", false), QStringList());
+}
+
+void ImageTest::testMatchTag()
+{
+    // Basic
+    QCOMPARE(m_img->match("tag1"), QString());
+    QCOMPARE(m_img->match("character1"), QString());
+    QCOMPARE(m_img->match("tag7"), QString("image does not contains \"tag7\""));
+
+    // Minus
+    QCOMPARE(m_img->match("-tag1"), QString("image contains \"tag1\""));
+    QCOMPARE(m_img->match("-character1"), QString("image contains \"character1\""));
+    QCOMPARE(m_img->match("-tag7"), QString());
+
+    // Invert
+    QCOMPARE(m_img->match("tag1", true), QString("image contains \"tag1\""));
+    QCOMPARE(m_img->match("character1", true), QString("image contains \"character1\""));
+    QCOMPARE(m_img->match("tag7", true), QString());
+
+    // Invert minus
+    QCOMPARE(m_img->match("-tag1", true), QString());
+    QCOMPARE(m_img->match("-character1", true), QString());
+    QCOMPARE(m_img->match("-tag7", true), QString("image does not contains \"tag7\""));
+}
+
+void ImageTest::testMatchRating()
+{
+    // Basic
+    QCOMPARE(m_img->match("rating:safe"), QString());
+    QCOMPARE(m_img->match("rating:explicit"), QString("image is not \"explicit\""));
+
+    // Short versions
+    QCOMPARE(m_img->match("rating:s"), QString());
+    QCOMPARE(m_img->match("rating:e"), QString("image is not \"explicit\""));
+
+    // Invert
+    QCOMPARE(m_img->match("rating:safe", true), QString("image is \"safe\""));
+    QCOMPARE(m_img->match("rating:explicit", true), QString());
 }
 
 

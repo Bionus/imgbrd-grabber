@@ -3,6 +3,7 @@
 #include "functions.h"
 
 Tag::Tag()
+	: m_type("unknown"), m_count(0), m_settings(Q_NULLPTR)
 { }
 
 Tag::Tag(QSettings *settings, QString text, QString type, int count, QStringList related)
