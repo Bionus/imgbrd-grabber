@@ -42,6 +42,7 @@ QList<QMap<QString, QPair<QString, QString>>> Filename::getReplaces(QString file
 	replaces.insert("width", QStrP(QString::number(img.size().width()), "0"));
 	replaces.insert("general", QStrP(details["generals"].join(tagSeparator), ""));
 	replaces.insert("allo", QStrP(details["allos"].join(" "), ""));
+	replaces.insert("tags", QStrP(details["alls"].join(tagSeparator), ""));
 	replaces.insert("all", QStrP(details["alls"].join(tagSeparator), ""));
 	for (int i = 0; i < custom.size(); ++i)
 	{ replaces.insert(custom.keys().at(i), QStrP(custom.values().at(i).join(tagSeparator), "")); }
@@ -55,9 +56,15 @@ QList<QMap<QString, QPair<QString, QString>>> Filename::getReplaces(QString file
 		(filename.contains("%model%") ? details["models"] : QStringList()) +
 		(filename.contains("%general%") ? details["generals"] : QStringList());
 	QStringList l = details["alls"];
+	QStringList namespaces = details["alls_namespaces"];
 	for (int i = 0; i < rem.size(); ++i)
-	{ l.removeAll(rem.at(i)); }
+	{
+		int index = l.indexOf(rem.at(i));
+		l.removeAt(index);
+		namespaces.removeAt(index);
+	}
 	replaces.insert("all", QStrP(l.join(tagSeparator), ""));
+	replaces.insert("all_namespaces", QStrP(namespaces.join(" "), ""));
 
 	ret.append(replaces);
 	QStringList keys = QStringList() << "artist" << "copyright" << "character" << "model";
@@ -204,6 +211,7 @@ QMap<QString, QStringList> Filename::makeDetails(const Image& img, QSettings *se
 
 		details[ignore.contains(tag.text(), Qt::CaseInsensitive) ? "generals" : tag.type()+"s"].append(t);
 		details["alls"].append(t);
+		details["alls_namespaces"].append(tag.type());
 
 		QString underscored = QString(t);
 		underscored.replace(' ', '_');
@@ -235,14 +243,6 @@ QMap<QString, QStringList> Filename::makeDetails(const Image& img, QSettings *se
 	return details;
 }
 
-/**
- * Return the filename of the image according to the user's settings.
- * @param fn The user's filename.
- * @param pth The user's root save path.
- * @param counter Current image count (used for batch downloads).
- * @param complex Whether the filename is complex or not (contains conditionals).
- * @return The filename of the image, with any token replaced.
- */
 QStringList Filename::path(const Image& img, QSettings *settings, QString pth, int counter, bool complex, bool maxlength, bool shouldFixFilename, bool getFull) const
 {
 	QStringList remove = settings->value("ignoredtags").toString().split(' ', QString::SkipEmptyParts);
@@ -389,7 +389,7 @@ QStringList Filename::path(const Image& img, QSettings *settings, QString pth, i
 			// Conditionals
 			if (complex)
 			{
-				QStringList tokens = QStringList() << "artist" << "general" << "copyright" << "character" << "model" << "model|artist" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "allo" << "date" << "count" << "search_(\\d+)" << "score" << "height" << "width" << "path" << "pool" << "url_file" << "url_page" << custom.keys();
+				QStringList tokens = QStringList() << "tags" << "artist" << "general" << "copyright" << "character" << "model" << "model|artist" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "allo" << "date" << "count" << "search_(\\d+)" << "score" << "height" << "width" << "path" << "pool" << "url_file" << "url_page" << custom.keys();
 				cFilename = this->expandConditionals(cFilename, tokens, details["allos"], replaces);
 			}
 
@@ -425,14 +425,18 @@ QStringList Filename::path(const Image& img, QSettings *settings, QString pth, i
 					{ res = options.contains("length") ? QString("%1").arg(counter, options["length"].toInt(), 10, QChar('0')) : QString::number(counter); }
 					if (options.contains("maxlength"))
 					{ res = res.left(options["maxlength"].toInt()); }
-					if (key == "all" || key == "allo" || key == "general" || key == "artist" || key == "copyright" || key == "character")
+					if (key == "all" || key == "tags" || key == "general" || key == "artist" || key == "copyright" || key == "character")
 					{
 						QStringList vals = res.split(tagSeparator);
 						if (options.contains("includenamespace"))
 						{
 							QStringList namespaced;
-							for (QString val : vals)
-							{ namespaced.append(key + ":" + val); }
+							QStringList namespaces = replaces["all_namespaces"].first.split(' ');
+							for (int i = 0; i < vals.count(); ++i)
+							{
+								QString nspace = key == "all" ? namespaces[i] : key;
+								namespaced.append(nspace + ":" + vals[i]);
+							}
 							vals = namespaced;
 						}
 						res = vals.join(options.contains("separator") ? options["separator"] : tagSeparator);
@@ -517,7 +521,7 @@ bool Filename::isValid(QString *error) const
 		return returnError(QObject::tr("<span style=\"color:orange\">Votre nom de fichier n'est pas unique à chaque image et une image risque d'en écraser une précédente lors de la sauvegarde ! Vous devriez utiliser le symbole %md5%, unique à chaque image, pour éviter ce désagrément.</span>"), error);
 
 	// Looking for unknown tokens
-	QStringList tokens = QStringList() << "artist" << "general" << "copyright" << "character" << "model" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "search_(\\d+)" << "allo" << getCustoms().keys() << "date" << "score" << "count" << "width" << "height" << "pool" << "url_file" << "url_page";
+	QStringList tokens = QStringList() << "tags" << "artist" << "general" << "copyright" << "character" << "model" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "search_(\\d+)" << "allo" << getCustoms().keys() << "date" << "score" << "count" << "width" << "height" << "pool" << "url_file" << "url_page";
 	QRegExp rx("%(.+)%");
 	rx.setMinimal(true);
 	int pos = 0;

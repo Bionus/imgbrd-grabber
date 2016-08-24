@@ -8,8 +8,17 @@ class Filename
 {
     public:
         Filename(QString format);
-        QStringList	path(const Image& img, QSettings *settings, QString pth = "", int counter = 0, bool complex = true, bool maxlength = true, bool shouldFixFilename = true, bool getFull = false) const;
         QString getFormat() const;
+
+        /**
+         * Return the filename of the image according to the user's settings.
+         * @param fn The user's filename.
+         * @param pth The user's root save path.
+         * @param counter Current image count (used for batch downloads).
+         * @param complex Whether the filename is complex or not (contains conditionals).
+         * @return The filename of the image, with any token replaced.
+         */
+        QStringList	path(const Image& img, QSettings *settings, QString pth = "", int counter = 0, bool complex = true, bool maxlength = true, bool shouldFixFilename = true, bool getFull = false) const;
 
         /**
          * Check filename format's validity.
