@@ -2633,7 +2633,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mainwindow.ui" line="1056"/>
         <source>Réparateur de liste de md5</source>
-        <translation>Md5 list fixer</translation>
+        <translation>MD5 list fixer</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1065"/>
@@ -3870,7 +3870,7 @@ Please solve the issue before resuming the download.</translation>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="778"/>
         <source>&lt;i&gt;L&apos;identicité des fichiers est basée sur l&apos;algorithme MD5.&lt;/i&gt;</source>
-        <translation>&lt;i&gt;Files identicity is based on the MD5 algorithm.&lt;/i&gt;</translation>
+        <translation>&lt;i&gt;File's identity is based on the MD5 algorithm.&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="755"/>
@@ -3885,7 +3885,7 @@ Please solve the issue before resuming the download.</translation>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="84"/>
         <source>Noms conditionnels</source>
-        <translation>Conditionnal filenames</translation>
+        <translation>Conditional filenames</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="89"/>
