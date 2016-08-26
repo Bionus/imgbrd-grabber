@@ -381,5 +381,20 @@ void ImageTest::testPath()
 	QCOMPARE(path, QStringList() << "7331.jpg");
 }
 
+void ImageTest::testSave()
+{
+	// Make tmp dir if not already existing
+	QDir tmp("tests/resources/");
+	if (!tmp.exists("tmp"))
+		tmp.mkdir("tmp");
+
+	m_img->setData(QString("test").toLatin1());
+	QMap<QString, Image::SaveResult> res = m_img->save(QString("%id%.%ext%"), QString("tests/resources/tmp/"));
+
+	QCOMPARE(res.count(), 1);
+	QCOMPARE(res.first(), Image::Saved);
+	QCOMPARE(QFile("tests/resources/tmp/7331.jpg").exists(), true);
+}
+
 
 static ImageTest instance;
