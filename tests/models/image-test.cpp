@@ -68,6 +68,13 @@ void ImageTest::testConstructor()
 	img = new Image(m_site, m_details);
 	QCOMPARE(img->pageUrl().toString(), QString("http://test.com/view/7331"));
 	img->deleteLater();
+
+	// CreatedAt from ISO time
+	m_details.remove("created_at");
+	m_details["date"] = "2016-08-26T16:26:30+01:00";
+	img = new Image(m_site, m_details);
+	QCOMPARE(img->createdAt().toString("yyyy-MM-dd HH:mm:ss"), QString("2016-08-26 16:26:30"));
+	img->deleteLater();
 }
 
 void ImageTest::testCopy()
