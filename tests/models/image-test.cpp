@@ -26,10 +26,11 @@ void ImageTest::init()
     m_details["width"] = "800";
     m_details["height"] = "600";
 	m_details["source"] = "http://google.com/toto/toto.jpg";
-    m_details["tags_general"] = "tag1 tag2 tag3";
-    m_details["tags_artist"] = "artist1";
-    m_details["tags_copyright"] = "copyright1 copyright2";
-    m_details["tags_character"] = "character1 character2";
+	m_details["tags_general"] = "tag1 tag2 tag3 ";
+	m_details["tags_artist"] = "artist1 ";
+	m_details["tags_copyright"] = "copyright1 copyright2 ";
+	m_details["tags_character"] = "character1 character2 ";
+	m_details["tags_model"] = "model1 ";
     m_details["created_at"] = "1471513944";
 	m_details["rating"] = "safe";
 	m_details["file_size"] = "358400";
@@ -60,6 +61,12 @@ void ImageTest::testConstructor()
 	// Without parent site
 	img = new Image(nullptr, m_details);
 	QCOMPARE(img->details().isEmpty(), true);
+	img->deleteLater();
+
+	// With a given page URL
+	m_details["page_url"] = "http://test.com/view/7331";
+	img = new Image(m_site, m_details);
+	QCOMPARE(img->pageUrl().toString(), QString("http://test.com/view/7331"));
 	img->deleteLater();
 }
 
@@ -148,18 +155,18 @@ void ImageTest::testStylishedTags()
 {
     QStringList tags = m_img->stylishedTags(QStringList());
 
-    QCOMPARE(tags.count(), 8);
-    /*QCOMPARE(tags[0], QString("<a href=\"artist1\" style=\"color:#aa0000; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">artist1</a>"));
+	QCOMPARE(tags.count(), 9);
+	QCOMPARE(tags[0], QString("<a href=\"artist1\" style=\"color:#aa0000; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">artist1</a>"));
     QCOMPARE(tags[1], QString("<a href=\"character1\" style=\"color:#00aa00; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">character1</a>"));
-    QCOMPARE(tags[6], QString("<a href=\"tag2\" style=\"color:#000000; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">tag2</a>"));*/
+	QCOMPARE(tags[7], QString("<a href=\"tag2\" style=\"color:#000000; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">tag2</a>"));
 
     m_settings->setValue("blacklistedtags", "character1 tag1");
     tags = m_img->stylishedTags(QStringList() << "copyright1" << "tag2");
 
-    QCOMPARE(tags.count(), 8);
-    /*QCOMPARE(tags[1], QString("<a href=\"character1\" style=\"color:#000000; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">character1</a>"));
+	QCOMPARE(tags.count(), 9);
+	QCOMPARE(tags[1], QString("<a href=\"character1\" style=\"color:#000000; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">character1</a>"));
     QCOMPARE(tags[3], QString("<a href=\"copyright1\" style=\"color:#999999; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">copyright1</a>"));
-    QCOMPARE(tags[7], QString("<a href=\"tag3\" style=\"color:#000000; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">tag3</a>"));*/
+	QCOMPARE(tags[8], QString("<a href=\"tag3\" style=\"color:#000000; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">tag3</a>"));
 }
 
 void ImageTest::testUnload()
