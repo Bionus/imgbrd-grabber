@@ -32,6 +32,7 @@ class ImageTest : public TestSuite
         void testLoadPreview();
         void testLoadImage();
         void testLoadDetails();
+		void testPath();
 
     private:
         QSettings *m_settings;

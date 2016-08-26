@@ -8,8 +8,9 @@ void ImageTest::init()
     m_details["md5"] = "1bc29b36f623ba82aaf6724fd3b16718";
     m_details["ext"] = "jpg";
     m_details["author"] = "superauthor";
-    m_details["status"] = "tested";
-    m_details["filename"] = "oldfilename";
+	m_details["status"] = "tested";
+	m_details["filename"] = "";
+	m_details["folder"] = "";
     m_details["search"] = "testing well";
     m_details["id"] = "7331";
     m_details["score"] = "21";
@@ -30,8 +31,9 @@ void ImageTest::init()
     m_details["tags_copyright"] = "copyright1 copyright2";
     m_details["tags_character"] = "character1 character2";
     m_details["created_at"] = "1471513944";
-    m_details["rating"] = "safe";
-    m_details["file_size"] = "358400";
+	m_details["rating"] = "safe";
+	m_details["file_size"] = "358400";
+	m_details["file_size"] = "358400";
 
     m_settings = new QSettings("tests/resources/settings.ini", QSettings::IniFormat);
     m_site = new Site(m_settings, "release/sites/Danbooru (2.0)", "danbooru.donmai.us");
@@ -321,6 +323,31 @@ void ImageTest::testLoadDetails()
     QCOMPARE(tags[3].text(), QString("1girl"));
     QCOMPARE(tags[3].type(), QString("general"));
     QCOMPARE(tags[3].count(), 1679000);
+}
+
+void ImageTest::testPath()
+{
+	QStringList path;
+
+	// Simple
+	path = m_img->path("%md5%.%ext%", "", 0, true, true);
+	QCOMPARE(path, QStringList() << "1bc29b36f623ba82aaf6724fd3b16718.jpg");
+
+	// Not simple (settings)
+	m_settings->setValue("Save/filename", "%id%.%ext%");
+	m_settings->setValue("Save/path", QDir::homePath());
+	path = m_img->path("", "", 0, true, false);
+	QCOMPARE(path, QStringList() << "7331.jpg");
+
+	// Not simple (details)
+	m_settings->setValue("Save/filename", "");
+	m_settings->setValue("Save/path", "");
+	m_details["filename"] = "%id%.%ext%";
+	m_details["folder"] = QDir::homePath();
+	m_img->deleteLater();
+	m_img = new Image(m_site, m_details);
+	path = m_img->path("%md5%.%ext%", "", 0, true, false);
+	QCOMPARE(path, QStringList() << "7331.jpg");
 }
 
 
