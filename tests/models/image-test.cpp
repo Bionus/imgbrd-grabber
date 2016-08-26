@@ -20,7 +20,7 @@ void ImageTest::init()
     m_details["has_children"] = "true";
     m_details["has_note"] = "true";
     m_details["has_comments"] = "true";
-    m_details["file_url"] = "http://test.com/img/oldfilename.jpg";
+	m_details["file_url"] = "http://test.com/img/oldfilename.jpg?123456";
     m_details["sample_url"] = "http://test.com/sample/oldfilename.jpg";
     m_details["preview_url"] = "http://test.com/preview/oldfilename.jpg";
     m_details["width"] = "800";
