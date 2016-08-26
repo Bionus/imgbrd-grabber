@@ -25,7 +25,7 @@ void ImageTest::init()
     m_details["preview_url"] = "http://test.com/preview/oldfilename.jpg";
     m_details["width"] = "800";
     m_details["height"] = "600";
-    m_details["source"] = "http://google.com/";
+	m_details["source"] = "http://google.com/toto/toto.jpg";
     m_details["tags_general"] = "tag1 tag2 tag3";
     m_details["tags_artist"] = "artist1";
     m_details["tags_copyright"] = "copyright1 copyright2";
@@ -57,7 +57,7 @@ void ImageTest::testCopy()
     QCOMPARE(clone.tags(), m_img->tags());
     QCOMPARE(clone.author(), m_img->author());
     QCOMPARE(clone.status(), m_img->status());
-    QCOMPARE(clone.rating(), m_img->rating());
+	QCOMPARE(clone.rating(), m_img->rating());
     QCOMPARE(clone.source(), m_img->source());
     QCOMPARE(clone.site(), m_img->site());
     QCOMPARE(clone.parentSite(), m_img->parentSite());
@@ -237,6 +237,21 @@ void ImageTest::testMatchRating()
     // Invert
     QCOMPARE(m_img->match("rating:safe", true), QString("image is \"safe\""));
     QCOMPARE(m_img->match("rating:explicit", true), QString());
+}
+
+void ImageTest::testMatchSource()
+{
+	// Full
+	QCOMPARE(m_img->match("source:http://google.com/toto/toto.jpg"), QString());
+	QCOMPARE(m_img->match("source:http://test.fr/toto/toto.jpg"), QString("image's source does not starts with \"http://test.fr/toto/toto.jpg\""));
+
+	// Short
+	QCOMPARE(m_img->match("source:http://google.com"), QString());
+	QCOMPARE(m_img->match("source:http://test.fr"), QString("image's source does not starts with \"http://test.fr\""));
+
+	// Invert
+	QCOMPARE(m_img->match("source:http://google.com", true), QString("image's source starts with \"http://google.com\""));
+	QCOMPARE(m_img->match("source:http://test.fr", true), QString());
 }
 
 void ImageTest::testValue()
