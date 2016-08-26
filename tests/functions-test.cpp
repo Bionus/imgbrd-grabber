@@ -35,13 +35,15 @@ void FunctionsTest::testGetUnit()
 
 void FunctionsTest::testGetExtension()
 {
-    QCOMPARE(getExtension("http://test.com/file"), QString(""));
+	QCOMPARE(getExtension(""), QString(""));
+	QCOMPARE(getExtension("http://test.com/file"), QString(""));
     QCOMPARE(getExtension("http://test.com/file.jpg"), QString("jpg"));
     QCOMPARE(getExtension("http://test.com/file.jpg?toto=1"), QString("jpg"));
 }
 void FunctionsTest::testSetExtension()
 {
-    QCOMPARE(setExtension("http://test.com/file", "png"), QString("http://test.com/file"));
+	QCOMPARE(setExtension("", "png"), QString(""));
+	QCOMPARE(setExtension("http://test.com/file", "png"), QString("http://test.com/file"));
     QCOMPARE(setExtension("http://test.com/file.jpg", "png"), QString("http://test.com/file.png"));
     QCOMPARE(setExtension("http://test.com/file.jpg?toto=1", "png"), QString("http://test.com/file.png?toto=1"));
 }

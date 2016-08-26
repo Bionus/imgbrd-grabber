@@ -364,7 +364,7 @@ QNetworkReply *Site::getRequest(QNetworkRequest request)
     m_lastRequest = QDateTime::currentDateTime();
 
     #ifdef TEST
-        QString md5 = QString(QCryptographicHash::hash(request.url().toString().toLatin1(), QCryptographicHash::Md5).toHex());
+		QString md5 = QString(QCryptographicHash::hash(request.url().toString().toLatin1(), QCryptographicHash::Md5).toHex());
         QString filename = request.url().fileName();
         QString ext = filename.contains('.') ? filename.mid(filename.lastIndexOf('.') + 1) : "html";
         QString path = "tests/resources/" + m_name + "/" + md5 + "." + ext;

@@ -121,7 +121,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Page* parent)
 	m_source = details.contains("source") ? details["source"] : "";
 
 	// Page URL
-	if (!details.contains("page_url"))
+	if (!details.contains("page_url") || details["page_url"].isEmpty())
 	{
 		QString pageUrl = m_parentSite->value("Urls/Html/Post");
 		QString t = m_search.join(" ");
@@ -305,9 +305,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Page* parent)
 	m_pools = QList<Pool>();
 }
 Image::~Image()
-{
-	m_loadImage->deleteLater();
-}
+{ }
 
 void Image::loadPreview()
 {
@@ -709,7 +707,7 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 void Image::loadImage()
 {
 	m_loadImage = m_parentSite->get(m_url, m_parent, "image", this);
-	//m_loadImage->setParent(this);
+	m_loadImage->setParent(this);
 	//m_timer.start();
 	m_loadingImage = true;
 
@@ -1103,6 +1101,6 @@ void Image::setRating(QString rating)
 
 void Image::setFileExtension(QString ext)
 {
-	m_url = m_url.section('.', 0, -2) + "." + ext;
-	m_fileUrl = m_fileUrl.toString().section('.', 0, -2) + "." + ext;
+	m_url = setExtension(m_url, ext);
+	m_fileUrl = setExtension(m_fileUrl.toString(), ext);
 }

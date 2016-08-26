@@ -33,8 +33,9 @@ class ImageTest : public TestSuite
 		void testFilter();
         void testValue();
         void testLoadPreview();
-        void testLoadImage();
+		void testLoadImage();
 		void testLoadDetails();
+		void testLoadDetailsImageUrl();
 		void testPath();
 		void testSave();
 

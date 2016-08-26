@@ -21,8 +21,9 @@ void ImageTest::init()
     m_details["has_note"] = "true";
     m_details["has_comments"] = "true";
 	m_details["file_url"] = "http://test.com/img/oldfilename.jpg?123456";
-    m_details["sample_url"] = "http://test.com/sample/oldfilename.jpg";
-    m_details["preview_url"] = "http://test.com/preview/oldfilename.jpg";
+	m_details["sample_url"] = "http://test.com/sample/oldfilename.jpg";
+	m_details["preview_url"] = "http://test.com/preview/oldfilename.jpg";
+	m_details["page_url"] = "";
     m_details["width"] = "800";
     m_details["height"] = "600";
 	m_details["source"] = "http://google.com/toto/toto.jpg";
@@ -363,7 +364,7 @@ void ImageTest::testLoadImage()
 
 void ImageTest::testLoadDetails()
 {
-    // Load preview
+	// Load details
     QSignalSpy spy(m_img, SIGNAL(finishedLoadingTags(Image*)));
     m_img->loadDetails();
     QVERIFY(spy.wait());
@@ -383,6 +384,21 @@ void ImageTest::testLoadDetails()
     QCOMPARE(tags[3].text(), QString("1girl"));
     QCOMPARE(tags[3].type(), QString("general"));
     QCOMPARE(tags[3].count(), 1679000);
+}
+
+void ImageTest::testLoadDetailsImageUrl()
+{
+	m_img->deleteLater();
+	m_details.remove("file_url");
+	m_img = new Image(m_site, m_details);
+
+	// Load details
+	QSignalSpy spy(m_img, SIGNAL(finishedLoadingTags(Image*)));
+	m_img->loadDetails();
+	QVERIFY(spy.wait());
+
+	// Compare result
+	QCOMPARE(m_img->url(), QString("http://danbooru.donmai.us/data/__kousaka_tamaki_to_heart_2_drawn_by_date_senpen__0cc748f006b9636f0c268250ea157995.jpg"));
 }
 
 void ImageTest::testPath()
@@ -417,12 +433,17 @@ void ImageTest::testSave()
 	if (!tmp.exists("tmp"))
 		tmp.mkdir("tmp");
 
+	// Delete already existing
+	QFile file("tests/resources/tmp/7331.jpg");
+	if (file.exists())
+		file.remove();
+
 	m_img->setData(QString("test").toLatin1());
 	QMap<QString, Image::SaveResult> res = m_img->save(QString("%id%.%ext%"), QString("tests/resources/tmp/"));
 
 	QCOMPARE(res.count(), 1);
 	QCOMPARE(res.first(), Image::Saved);
-	QCOMPARE(QFile("tests/resources/tmp/7331.jpg").exists(), true);
+	QCOMPARE(file.exists(), true);
 }
 
 
