@@ -48,6 +48,21 @@ void ImageTest::cleanup()
 }
 
 
+void ImageTest::testConstructor()
+{
+	Image *img;
+
+	// Default
+	img = new Image();
+	QCOMPARE(img->url(), QString());
+	img->deleteLater();
+
+	// Without parent site
+	img = new Image(nullptr, m_details);
+	QCOMPARE(img->details().isEmpty(), true);
+	img->deleteLater();
+}
+
 void ImageTest::testCopy()
 {
     Image clone = *m_img;

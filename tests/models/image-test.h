@@ -14,6 +14,7 @@ class ImageTest : public TestSuite
         void init();
         void cleanup();
 
+		void testConstructor();
         void testCopy();
         void testHasTag();
         void testHasAnyTag();
