@@ -222,6 +222,9 @@ void ImageTest::testMatchDate()
     QCOMPARE(m_img->match("date:2016-08-16.."), QString());
     QCOMPARE(m_img->match("date:08/16/2016..2016-08-20"), QString());
     QCOMPARE(m_img->match("date:2016-08-18"), QString());
+
+	// Invalid date
+	QCOMPARE(m_img->match("date:someday"), QString("image's date does not match"));
 }
 
 void ImageTest::testMatchRating()
