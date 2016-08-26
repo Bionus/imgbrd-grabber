@@ -29,6 +29,7 @@ class ImageTest : public TestSuite
         void testMatchDate();
         void testMatchRating();
 		void testMatchSource();
+		void testFilter();
         void testValue();
         void testLoadPreview();
         void testLoadImage();

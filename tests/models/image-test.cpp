@@ -257,6 +257,19 @@ void ImageTest::testMatchSource()
 	QCOMPARE(m_img->match("source:http://test.fr", true), QString());
 }
 
+void ImageTest::testFilter()
+{
+	QStringList filters;
+
+	// No match
+	filters = m_img->filter(QStringList() << "id:<=10000" << "width:>100");
+	QCOMPARE(filters, QStringList());
+
+	// All match
+	filters = m_img->filter(QStringList() << "id:>10000" << "width:<=100");
+	QCOMPARE(filters, QStringList() << "image's id does not match" << "image's width does not match");
+}
+
 void ImageTest::testValue()
 {
     // Guess from image size
