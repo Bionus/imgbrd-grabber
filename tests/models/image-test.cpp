@@ -511,5 +511,14 @@ void ImageTest::testSaveDuplicate()
 	file.remove();
 }
 
+void ImageTest::testSetUrl()
+{
+	QString url = "http://google.fr";
+
+	QCOMPARE(m_img->url() != url, true);
+	m_img->setUrl(url);
+	QCOMPARE(m_img->url(), url);
+}
+
 
 static ImageTest instance;
