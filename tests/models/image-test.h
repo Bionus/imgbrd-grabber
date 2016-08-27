@@ -38,6 +38,9 @@ class ImageTest : public TestSuite
 		void testLoadDetailsImageUrl();
 		void testPath();
 		void testSave();
+		void testSaveError();
+		void testSaveAlreadyExists();
+		void testSaveDuplicate();
 
     private:
         QSettings *m_settings;
