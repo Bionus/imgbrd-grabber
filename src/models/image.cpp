@@ -516,7 +516,7 @@ void Image::parseDetails()
 		}
 		if (before != m_url)
 		{
-			m_fileSize = 0;
+			setFileSize(0);
 			emit urlChanged(before, m_url);
 		}
 	}
@@ -1014,7 +1014,7 @@ QStringList Image::tagsString() const
 
 void	Image::setUrl(QString u)
 {
-	m_fileSize = 0;
+	setFileSize(0);
 	emit urlChanged(m_url, u);
 	m_url = u;
 }
