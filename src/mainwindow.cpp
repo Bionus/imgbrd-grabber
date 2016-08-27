@@ -944,6 +944,7 @@ void mainWindow::logClear()
 	QFile logFile(savePath("main.log"));
 	if(logFile.open(QIODevice::WriteOnly | QIODevice::Text)){
 		logFile.resize(0);
+		logFile.close();
 	}
 	logShow();
 }
