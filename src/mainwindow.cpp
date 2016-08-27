@@ -41,7 +41,11 @@ extern QMap<QString,QString> _md5;
 
 
 mainWindow::mainWindow(QString program, QStringList tags, QMap<QString,QString> params) : ui(new Ui::mainWindow), m_currentFav(-1), m_downloads(0), m_loaded(false), m_getAll(false), m_program(program), m_tags(tags), m_params(params), m_batchAutomaticRetries(0)
-{ }
+{
+	logwatcher = new QFileSystemWatcher(this);
+	connect(logwatcher, SIGNAL(fileChanged(QString)), this, SLOT(logShow()));
+	logwatcher->addPath(savePath("main.log"));
+}
 void mainWindow::init()
 {
 	m_settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
@@ -904,8 +908,24 @@ void mainWindow::updateKeepForLater()
 
 void mainWindow::logShow()
 {
+	logwatcher->addPath(savePath("main.log"));
 	if (m_loaded)
 	{
+		QFile logFile(savePath("main.log"));
+		if(!logFile.open(QIODevice::ReadOnly | QIODevice::Text)){
+			return;
+		}
+		while(!logFile.atEnd()){
+			const QByteArray line = logFile.readLine();
+			QString str(line);
+			QString timestamp = str.split(' ').at(0);
+			timestamp.replace("[", "").replace("]", "");
+			QStringList logStringTime = str.split(' ');
+			logStringTime.removeFirst();
+			const QString logString = logStringTime.join(' ');
+			_log.insert(QDateTime::fromString(timestamp, "hh:mm:ss.zzz"), logString);
+		}
+		logFile.close();
 		QString txt("");
 		int k;
 		for (int i = 0; i < _log.size(); i++)
@@ -914,11 +934,17 @@ void mainWindow::logShow()
 			txt += QString(i > 0 ? "<br/>" : "")+"["+_log.keys().at(k).toString("hh:mm:ss.zzz")+"] "+_log.values().at(k);
 		}
 		ui->labelLog->setText(txt);
+		ui->labelLog->setAlignment(Qt::AlignTop | Qt::AlignLeft);
+
 	}
 }
 void mainWindow::logClear()
 {
 	_log.clear();
+	QFile logFile(savePath("main.log"));
+	if(logFile.open(QIODevice::WriteOnly | QIODevice::Text)){
+		logFile.resize(0);
+	}
 	logShow();
 }
 void mainWindow::logOpen()

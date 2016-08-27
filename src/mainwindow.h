@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QFileSystemWatcher>
 #include <QSettings>
 #include <QProcess>
 #include <QTranslator>
@@ -199,6 +200,7 @@ class mainWindow : public QMainWindow
 		int					m_batchAutomaticRetries;
 		bool				m_restore;
 		QMap<QString, QIcon>	m_icons;
+		QFileSystemWatcher * logwatcher;
 };
 
 #endif // MAINWINDOW_H
