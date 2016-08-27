@@ -38,6 +38,11 @@ void ImageTest::init()
 	m_details["file_size"] = "358400";
 
     m_settings = new QSettings("tests/resources/settings.ini", QSettings::IniFormat);
+	m_settings->setValue("Coloring/Fonts/artists", ",8.25,-1,5,50,0,0,0,0,0");
+	m_settings->setValue("Coloring/Fonts/copyrights", ",8.25,-1,5,50,0,0,0,0,0");
+	m_settings->setValue("Coloring/Fonts/characters", ",8.25,-1,5,50,0,0,0,0,0");
+	m_settings->setValue("Coloring/Fonts/generals", ",8.25,-1,5,50,0,0,0,0,0");
+
     m_site = new Site(m_settings, "release/sites/Danbooru (2.0)", "danbooru.donmai.us");
     m_img = new Image(m_site, m_details);
 }
