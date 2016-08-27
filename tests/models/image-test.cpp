@@ -1,10 +1,16 @@
 #include <QtTest>
 #include "test-suite.h"
 #include "image-test.h"
+#include "functions.h"
 
 
 void ImageTest::init()
 {
+	// Make tmp dir if not already existing
+	QDir tmp("tests/resources/");
+	if (!tmp.exists("tmp"))
+		tmp.mkdir("tmp");
+
     m_details["md5"] = "1bc29b36f623ba82aaf6724fd3b16718";
     m_details["ext"] = "jpg";
     m_details["author"] = "superauthor";
@@ -42,6 +48,7 @@ void ImageTest::init()
 	m_settings->setValue("Coloring/Fonts/copyrights", ",8.25,-1,5,50,0,0,0,0,0");
 	m_settings->setValue("Coloring/Fonts/characters", ",8.25,-1,5,50,0,0,0,0,0");
 	m_settings->setValue("Coloring/Fonts/generals", ",8.25,-1,5,50,0,0,0,0,0");
+	m_settings->setValue("Save/md5Duplicates", "save");
 
     m_site = new Site(m_settings, "release/sites/Danbooru (2.0)", "danbooru.donmai.us");
     m_img = new Image(m_site, m_details);
@@ -433,11 +440,6 @@ void ImageTest::testPath()
 
 void ImageTest::testSave()
 {
-	// Make tmp dir if not already existing
-	QDir tmp("tests/resources/");
-	if (!tmp.exists("tmp"))
-		tmp.mkdir("tmp");
-
 	// Delete already existing
 	QFile file("tests/resources/tmp/7331.jpg");
 	if (file.exists())
@@ -449,6 +451,64 @@ void ImageTest::testSave()
 	QCOMPARE(res.count(), 1);
 	QCOMPARE(res.first(), Image::Saved);
 	QCOMPARE(file.exists(), true);
+	file.remove();
+}
+void ImageTest::testSaveError()
+{
+	m_img->setData(QString("test").toLatin1());
+	QMap<QString, Image::SaveResult> res = m_img->save(QString("%id%.%ext%"), QString("Z:/../tests/resources/tmp/"));
+
+	QCOMPARE(res.count(), 1);
+	QCOMPARE(res.first(), Image::Error);
+}
+void ImageTest::testSaveAlreadyExists()
+{
+	// Create file if not exists
+	QFile file("tests/resources/tmp/7331.jpg");
+	if (!file.open(QFile::Truncate | QFile::WriteOnly))
+		QFAIL("Cannot create file");
+
+	m_img->setData(QString("test").toLatin1());
+	QMap<QString, Image::SaveResult> res = m_img->save(QString("%id%.%ext%"), QString("tests/resources/tmp/"));
+
+	QCOMPARE(res.count(), 1);
+	QCOMPARE(res.first(), Image::AlreadyExists);
+}
+void ImageTest::testSaveDuplicate()
+{
+	// Delete already existing
+	QFile file("tests/resources/tmp/7331.jpg");
+	if (file.exists())
+		file.remove();
+
+	m_img->setData(QString("test").toLatin1());
+	QMap<QString, Image::SaveResult> res;
+
+	extern QMap<QString, QString> _md5;
+	QFile::copy("tests/resources/image_1x1.png", "tests/resources/tmp/source.png");
+	_md5.insert(m_img->md5(), "tests/resources/tmp/source.png");
+
+	m_settings->setValue("Save/md5Duplicates", "ignore");
+	res = m_img->save(QString("%id%.%ext%"), QString("tests/resources/tmp/"));
+	QCOMPARE(res.count(), 1);
+	QCOMPARE(res.first(), Image::Ignored);
+	QCOMPARE(file.exists(), false);
+
+	m_settings->setValue("Save/md5Duplicates", "copy");
+	res = m_img->save(QString("%id%.%ext%"), QString("tests/resources/tmp/"));
+	QCOMPARE(res.count(), 1);
+	QCOMPARE(res.first(), Image::Copied);
+	QCOMPARE(file.exists(), true);
+	QCOMPARE(QFile("tests/resources/tmp/source.png").exists(), true);
+	file.remove();
+
+	m_settings->setValue("Save/md5Duplicates", "move");
+	res = m_img->save(QString("%id%.%ext%"), QString("tests/resources/tmp/"));
+	QCOMPARE(res.count(), 1);
+	QCOMPARE(res.first(), Image::Moved);
+	QCOMPARE(file.exists(), true);
+	QCOMPARE(QFile("tests/resources/tmp/source.png").exists(), false);
+	file.remove();
 }
 
 
