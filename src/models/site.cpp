@@ -367,20 +367,23 @@ QNetworkReply *Site::getRequest(QNetworkRequest request)
 		QString md5 = QString(QCryptographicHash::hash(request.url().toString().toLatin1(), QCryptographicHash::Md5).toHex());
         QString filename = request.url().fileName();
         QString ext = filename.contains('.') ? filename.mid(filename.lastIndexOf('.') + 1) : "html";
-        QString path = "tests/resources/" + m_name + "/" + md5 + "." + ext;
+		QString path = "tests/resources/" + m_url + "/" + md5 + "." + ext;
 
         QFile f(path);
         if (!f.open(QFile::ReadOnly))
         {
             if (ext != "jpg" && ext != "png")
+			{
+				qDebug() << ("Test file not found: " + f.fileName() + " (" + request.url().toString() + ")");
                 return nullptr;
+			}
 
             f.setFileName("tests/resources/image_1x1.png");
             if (!f.open(QFile::ReadOnly))
                 return nullptr;
         }
 
-        log("Reply from file: " + f.fileName());
+		qDebug() << ("Reply from file: " + f.fileName());
         QByteArray content = f.readAll();
 
         QCustomNetworkReply *reply = new QCustomNetworkReply();
