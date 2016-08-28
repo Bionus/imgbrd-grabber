@@ -502,7 +502,9 @@ void log(QString l, Log)
 	//_mainwindow->logShow();
 
 	#ifdef QT_DEBUG
-		qDebug() << time.toString("hh:mm:ss.zzz") << l;
+		#ifndef TEST
+			qDebug() << time.toString("hh:mm:ss.zzz") << l;
+		#endif
 	#endif
 }
 void logCommand(QString l)
