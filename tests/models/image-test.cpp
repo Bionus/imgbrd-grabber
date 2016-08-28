@@ -474,20 +474,16 @@ void ImageTest::testSave()
 	QCOMPARE(file.exists(), true);
 	file.remove();
 }
+#ifdef Q_OS_WIN
 void ImageTest::testSaveError()
 {
-	#ifdef Q_OS_WIN
-		QString path = "Z:/../tests/resources/tmp/";
-	#else
-		QString path = "/../../../../../../../../";
-	#endif
-
 	m_img->setData(QString("test").toLatin1());
 	QMap<QString, Image::SaveResult> res = m_img->save(QString("%id%.%ext%"), path);
 
 	QCOMPARE(res.count(), 1);
 	QCOMPARE(res.first(), Image::Error);
 }
+#endif
 void ImageTest::testSaveAlreadyExists()
 {
 	// Create file if not exists

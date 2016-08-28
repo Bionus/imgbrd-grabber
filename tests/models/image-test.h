@@ -41,7 +41,9 @@ class ImageTest : public TestSuite
 		void testLoadDetailsImageUrl();
 		void testPath();
 		void testSave();
+#ifdef Q_OS_WIN
 		void testSaveError();
+#endif
 		void testSaveAlreadyExists();
 		void testSaveDuplicate();
 		void testSetUrl();
