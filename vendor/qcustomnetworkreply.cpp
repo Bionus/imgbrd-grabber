@@ -53,13 +53,13 @@ void QCustomNetworkReply::setContent( const QByteArray &content )
     open(ReadOnly | Unbuffered);
     setHeader(QNetworkRequest::ContentLengthHeader, QVariant(content.size()));
 
-    QTimer::singleShot( 0, this, SIGNAL(readyRead()) );
-    QTimer::singleShot( 0, this, SIGNAL(finished()) );
+	QTimer::singleShot( 0, this, SIGNAL(readyRead()) );
+	QTimer::singleShot( 0, this, SIGNAL(finished()) );
 }
 
 void QCustomNetworkReply::abort()
 {
-    // NOOP
+	setError(QNetworkReply::OperationCanceledError, "Aborted");
 }
 
 

@@ -331,6 +331,13 @@ void Image::parsePreview()
 {
 	m_loadingPreview = false;
 
+	// Aborted
+	if (m_loadPreview->error() == QNetworkReply::OperationCanceledError)
+	{
+		m_loadPreview->deleteLater();
+		return;
+	}
+
 	// Check redirection
 	QUrl redir = m_loadPreview->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 	if (!redir.isEmpty())
@@ -386,6 +393,13 @@ void Image::parseDetails()
 {
 	m_loadingDetails = false;
 
+	// Aborted
+	if (m_loadDetails->error() == QNetworkReply::OperationCanceledError)
+	{
+		m_loadDetails->deleteLater();
+		return;
+	}
+
 	// Check redirection
 	QUrl redir = m_loadDetails->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 	if (!redir.isEmpty())
@@ -394,6 +408,7 @@ void Image::parseDetails()
 		loadDetails();
 		return;
 	}
+
 	QString source = QString::fromUtf8(m_loadDetails->readAll());
 
 	// Pools
@@ -718,8 +733,12 @@ void Image::finishedImageS()
 {
 	m_loadingImage = false;
 
+	// Aborted
 	if (m_loadImage->error() == QNetworkReply::OperationCanceledError)
-	{ return; }
+	{
+		m_loadImage->deleteLater();
+		return;
+	}
 
 	QUrl redir = m_loadImage->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 	if (!redir.isEmpty())
