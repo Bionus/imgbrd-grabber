@@ -477,6 +477,8 @@ void ImageTest::testSave()
 #ifdef Q_OS_WIN
 void ImageTest::testSaveError()
 {
+	QString path = "Z:/../tests/resources/tmp/";
+
 	m_img->setData(QString("test").toLatin1());
 	QMap<QString, Image::SaveResult> res = m_img->save(QString("%id%.%ext%"), path);
 
