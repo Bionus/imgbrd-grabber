@@ -452,12 +452,11 @@ QStringList Filename::path(const Image& img, QSettings *settings, QString pth, i
 					}
 
 					cFilename.replace(replacerx.cap(0), res);
-					p += res.length();
 				}
 				else if (ignoredTokens.contains(key))
 				{ p += replacerx.matchedLength(); }
 				else
-				{ cFilename.remove(replacerx.cap(0)); }
+				{ p += replacerx.matchedLength(); }
 			}
 
 			fns.append(cFilename);
