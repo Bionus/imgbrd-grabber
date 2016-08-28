@@ -381,6 +381,7 @@ QStringList Filename::path(const Image& img, QSettings *settings, QString pth, i
 		{ pth = pth.left(pth.length() - 1); }
 
 		QStringList specialTokens = QStringList() << "count";
+		QStringList ignoredTokens = QStringList() << "path";
 
 		for (auto replaces : replacesList)
 		{
@@ -453,6 +454,8 @@ QStringList Filename::path(const Image& img, QSettings *settings, QString pth, i
 					cFilename.replace(replacerx.cap(0), res);
 					p += res.length();
 				}
+				else if (ignoredTokens.contains(key))
+				{ p += replacerx.matchedLength(); }
 				else
 				{ cFilename.remove(replacerx.cap(0)); }
 			}
