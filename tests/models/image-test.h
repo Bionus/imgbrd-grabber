@@ -31,10 +31,13 @@ class ImageTest : public TestSuite
         void testMatchRating();
 		void testMatchSource();
 		void testFilter();
-        void testValue();
-        void testLoadPreview();
+		void testValue();
+		void testLoadPreview();
+		void testLoadPreviewAbort();
 		void testLoadImage();
+		void testLoadImageAbort();
 		void testLoadDetails();
+		void testLoadDetailsAbort();
 		void testLoadDetailsImageUrl();
 		void testPath();
 		void testSave();

@@ -354,48 +354,69 @@ void ImageTest::testValue()
 
 void ImageTest::testLoadPreview()
 {
-    // Load preview
-    QSignalSpy spy(m_img, SIGNAL(finishedLoadingPreview(Image*)));
-    m_img->loadPreview();
-    QVERIFY(spy.wait());
+	// Load preview
+	QSignalSpy spy(m_img, SIGNAL(finishedLoadingPreview(Image*)));
+	m_img->loadPreview();
+	QVERIFY(spy.wait());
 
-    // Compare result
-    QCOMPARE(m_img->previewImage().size(), QSize(1, 1));
+	// Compare result
+	QCOMPARE(m_img->previewImage().size(), QSize(1, 1));
+}
+void ImageTest::testLoadPreviewAbort()
+{
+	QSignalSpy spy(m_img, SIGNAL(finishedLoadingPreview(Image*)));
+	m_img->loadPreview();
+	m_img->abortPreview();
+	QVERIFY(!spy.wait(1000));
 }
 
 void ImageTest::testLoadImage()
 {
-    // Load preview
-    QSignalSpy spy(m_img, SIGNAL(finishedImage(Image*)));
-    m_img->loadImage();
-    QVERIFY(spy.wait());
+	// Load preview
+	QSignalSpy spy(m_img, SIGNAL(finishedImage(Image*)));
+	m_img->loadImage();
+	QVERIFY(spy.wait());
 
-    // Compare result
-    QCOMPARE(m_img->data().isEmpty(), false);
+	// Compare result
+	QCOMPARE(m_img->data().isEmpty(), false);
+}
+void ImageTest::testLoadImageAbort()
+{
+	QSignalSpy spy(m_img, SIGNAL(finishedImage(Image*)));
+	m_img->loadImage();
+	m_img->abortImage();
+	QVERIFY(!spy.wait(1000));
 }
 
 void ImageTest::testLoadDetails()
 {
 	// Load details
-    QSignalSpy spy(m_img, SIGNAL(finishedLoadingTags(Image*)));
-    m_img->loadDetails();
-    QVERIFY(spy.wait());
+	QSignalSpy spy(m_img, SIGNAL(finishedLoadingTags(Image*)));
+	m_img->loadDetails();
+	QVERIFY(spy.wait());
 
-    // Compare result
-    QList<Tag> tags = m_img->tags();
-    QCOMPARE(tags.count(), 23);
-    QCOMPARE(tags[0].text(), QString("to_heart_2"));
-    QCOMPARE(tags[0].type(), QString("copyright"));
-    QCOMPARE(tags[0].count(), 5900);
-    QCOMPARE(tags[1].text(), QString("kousaka_tamaki"));
-    QCOMPARE(tags[1].type(), QString("character"));
-    QCOMPARE(tags[1].count(), 2000);
-    QCOMPARE(tags[2].text(), QString("date_(senpen)"));
-    QCOMPARE(tags[2].type(), QString("artist"));
-    QCOMPARE(tags[2].count(), 251);
-    QCOMPARE(tags[3].text(), QString("1girl"));
-    QCOMPARE(tags[3].type(), QString("general"));
-    QCOMPARE(tags[3].count(), 1679000);
+	// Compare result
+	QList<Tag> tags = m_img->tags();
+	QCOMPARE(tags.count(), 23);
+	QCOMPARE(tags[0].text(), QString("to_heart_2"));
+	QCOMPARE(tags[0].type(), QString("copyright"));
+	QCOMPARE(tags[0].count(), 5900);
+	QCOMPARE(tags[1].text(), QString("kousaka_tamaki"));
+	QCOMPARE(tags[1].type(), QString("character"));
+	QCOMPARE(tags[1].count(), 2000);
+	QCOMPARE(tags[2].text(), QString("date_(senpen)"));
+	QCOMPARE(tags[2].type(), QString("artist"));
+	QCOMPARE(tags[2].count(), 251);
+	QCOMPARE(tags[3].text(), QString("1girl"));
+	QCOMPARE(tags[3].type(), QString("general"));
+	QCOMPARE(tags[3].count(), 1679000);
+}
+void ImageTest::testLoadDetailsAbort()
+{
+	QSignalSpy spy(m_img, SIGNAL(finishedLoadingTags(Image*)));
+	m_img->loadDetails();
+	m_img->abortTags();
+	QVERIFY(!spy.wait(1000));
 }
 
 void ImageTest::testLoadDetailsImageUrl()
