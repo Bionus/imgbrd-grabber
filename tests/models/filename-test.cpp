@@ -108,8 +108,13 @@ void FilenameTest::testPathIgnoredTags()
 }
 void FilenameTest::testPathEmptyDirs()
 {
-    assertPath("%artist%/%test%/%md5%.%ext%",
-               "artist1/1bc29b36f623ba82aaf6724fd3b16718.jpg");
+	assertPath("%artist%/%test%/%md5%.%ext%",
+			   "artist1/1bc29b36f623ba82aaf6724fd3b16718.jpg");
+}
+void FilenameTest::testPathKeptTokens()
+{
+	assertPath("%artist%/%path%/%md5%.%ext%",
+			   "artist1/%path%/1bc29b36f623ba82aaf6724fd3b16718.jpg");
 }
 void FilenameTest::testPathFull()
 {
