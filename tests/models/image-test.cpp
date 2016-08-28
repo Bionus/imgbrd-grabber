@@ -476,8 +476,14 @@ void ImageTest::testSave()
 }
 void ImageTest::testSaveError()
 {
+	#ifdef Q_OS_WIN
+		QString path = "Z:/../tests/resources/tmp/";
+	#else
+		QString path = "/../../../../../../../../";
+	#endif
+
 	m_img->setData(QString("test").toLatin1());
-	QMap<QString, Image::SaveResult> res = m_img->save(QString("%id%.%ext%"), QString("Z:/../tests/resources/tmp/"));
+	QMap<QString, Image::SaveResult> res = m_img->save(QString("%id%.%ext%"), path);
 
 	QCOMPARE(res.count(), 1);
 	QCOMPARE(res.first(), Image::Error);
