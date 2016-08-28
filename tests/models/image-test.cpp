@@ -536,6 +536,66 @@ void ImageTest::testSaveDuplicate()
 	file.remove();
 }
 
+void ImageTest::testSaveTextfile()
+{
+	// Delete already existing
+	QFile file("tests/resources/tmp/7331.jpg");
+	if (file.exists())
+		file.remove();
+
+	m_settings->setValue("Textfile/activate", true);
+	m_settings->setValue("Textfile/content", "id: %id%");
+
+	m_img->setData(QString("test").toLatin1());
+	QMap<QString, Image::SaveResult> res = m_img->save(QString("%id%.%ext%"), QString("tests/resources/tmp/"));
+
+	QFile textFile(file.fileName() + ".txt");
+
+	QCOMPARE(res.count(), 1);
+	QCOMPARE(res.first(), Image::Saved);
+	QCOMPARE(file.exists(), true);
+	QCOMPARE(textFile.exists(), true);
+
+	if (!textFile.open(QFile::ReadOnly | QFile::Text))
+		QFAIL("Could not open text file");
+	QCOMPARE(QString(textFile.readAll()), QString("id: 7331"));
+	textFile.close();
+
+	file.remove();
+	textFile.remove();
+}
+
+void ImageTest::testSaveLog()
+{
+	// Delete already existing
+	QFile file("tests/resources/tmp/7331.jpg");
+	if (file.exists())
+		file.remove();
+	QFile logFile("tests/resources/tmp/savelog.txt");
+	if (logFile.exists())
+		logFile.remove();
+
+	m_settings->setValue("SaveLog/activate", true);
+	m_settings->setValue("SaveLog/format", "id: %id%");
+	m_settings->setValue("SaveLog/file", logFile.fileName());
+
+	m_img->setData(QString("test").toLatin1());
+	QMap<QString, Image::SaveResult> res = m_img->save(QString("%id%.%ext%"), QString("tests/resources/tmp/"));
+
+	QCOMPARE(res.count(), 1);
+	QCOMPARE(res.first(), Image::Saved);
+	QCOMPARE(file.exists(), true);
+	QCOMPARE(logFile.exists(), true);
+
+	if (!logFile.open(QFile::ReadOnly | QFile::Text))
+		QFAIL("Could not open text file");
+	QCOMPARE(QString(logFile.readAll()), QString("id: 7331\n"));
+	logFile.close();
+
+	file.remove();
+	logFile.remove();
+}
+
 void ImageTest::testSetUrl()
 {
 	QString url = "http://google.fr";
