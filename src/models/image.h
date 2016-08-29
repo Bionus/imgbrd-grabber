@@ -17,7 +17,7 @@ class Site;
 
 class Image : public QObject
 {
-    Q_OBJECT
+	Q_OBJECT
 
 	public:
 		enum SaveResult
@@ -28,10 +28,10 @@ class Image : public QObject
 			Copied,
 			Saved,
 			Error
-        };
-        Image();
-        Image(Site *site, QMap<QString,QString> details, Page *parent = NULL);
-        Image(const Image &other);
+		};
+		Image();
+		Image(Site *site, QMap<QString,QString> details, Page *parent = NULL);
+		Image(const Image &other);
 		~Image();
 		int			value() const;
 		QString		match(QString filter, bool invert = false) const;

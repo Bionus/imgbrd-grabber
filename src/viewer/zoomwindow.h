@@ -62,7 +62,7 @@ class zoomWindow : public QDialog
 		void unviewitlater();
 		void ignore();
 		void unignore();
-        void downloadProgress(qint64 bytesReceived, qint64 bytesTotal);
+		void downloadProgress(qint64 bytesReceived, qint64 bytesTotal);
 		void colore();
 		void sslErrorHandler(QNetworkReply*, QList<QSslError>);
 		void urlChanged(QString, QString);
@@ -82,8 +82,8 @@ class zoomWindow : public QDialog
 	private:
 		mainWindow *m_parent;
 		Ui::zoomWindow *ui;
-        detailsWindow *m_detailsWindow;
-        Image *m_image;
+		detailsWindow *m_detailsWindow;
+		Image *m_image;
 		QMap<QString,QString> regex, m_details;
 		Site *m_site;
 		int timeout, m_loaded, oldsize, m_mustSave;
@@ -92,7 +92,7 @@ class zoomWindow : public QDialog
 		QPixmap *image;
 		QMovie *movie;
 		QTimer *m_resizeTimer;
-        QTime *m_imageTime;
+		QTime *m_imageTime;
 		QPushButton *buttonSave, *buttonSaveNQuit, *buttonSaveas, *m_buttonSaveNQuit;
 		QString link, m_program;
 		QNetworkReply *m_reply;

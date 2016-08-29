@@ -45,10 +45,10 @@ FilenameWindow::~FilenameWindow()
 
 void FilenameWindow::on_lineClassic_textChanged(QString text)
 {
-    QString message;
-    Filename fn(text);
-    fn.isValid(&message);
-    ui->labelValidator->setText(message);
+	QString message;
+	Filename fn(text);
+	fn.isValid(&message);
+	ui->labelValidator->setText(message);
 
 	QRegExp date("%date:format=([^%]+)%");
 	int pos = 0;

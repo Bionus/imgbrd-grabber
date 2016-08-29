@@ -21,18 +21,18 @@ class Downloader : public QObject
 		void setQuit(bool quit);
 		void downloadImages(QList<Image*> images);
 		void loadNext();
-        void setData(QVariant data);
-        void getPageCount();
-        void getTags();
-        void getPageTags();
-        void getImages();
-        void getUrls();
-        QVariant getData() const;
-        QList<Page*> getPages() const;
-        QList<Site*> getSites() const;
-        int ignoredCount() const;
-        int duplicatesCount() const;
-        int pagesCount() const;
+		void setData(QVariant data);
+		void getPageCount();
+		void getTags();
+		void getPageTags();
+		void getImages();
+		void getUrls();
+		QVariant getData() const;
+		QList<Page*> getPages() const;
+		QList<Site*> getSites() const;
+		int ignoredCount() const;
+		int duplicatesCount() const;
+		int pagesCount() const;
 
 	signals:
 		void finished(QNetworkReply*);
@@ -40,10 +40,10 @@ class Downloader : public QObject
 		void finishedTags(QList<Tag>);
 		void finishedPageTags(QList<Tag>);
 		void finishedImages(QList<Image*>);
-        void finishedImagesPage(Page *page);
+		void finishedImagesPage(Page *page);
 		void finishedImage(Image *image);
 		void finishedUrls(QStringList);
-        void finishedUrlsPage(Page *page);
+		void finishedUrlsPage(Page *page);
 		void quit();
 
 	public slots:
@@ -74,8 +74,8 @@ class Downloader : public QObject
 		QList<Image*> m_images;
 		QList<QPair<Site*, int> > m_pagesP, m_opagesP;
 		QList<Tag> m_results;
-        QVariant m_data;
-        bool m_cancelled, m_quit;
+		QVariant m_data;
+		bool m_cancelled, m_quit;
 };
 
 #endif // DOWNLOADER_H

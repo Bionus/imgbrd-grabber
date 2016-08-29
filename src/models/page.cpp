@@ -17,18 +17,18 @@ Page::Page(Site *site, QList<Site*> sites, QStringList tags, int page, int limit
 	m_imagesCount = -1;
 	m_pagesCount = -1;
 
-    // Replace shortcuts to increase compatibility
+	// Replace shortcuts to increase compatibility
 	QString text = " "+tags.join(" ")+" ";
 	text.replace(" rating:s ", " rating:safe ", Qt::CaseInsensitive)
 		.replace(" rating:q ", " rating:questionable ", Qt::CaseInsensitive)
 		.replace(" rating:e ", " rating:explicit ", Qt::CaseInsensitive)
 		.replace(" -rating:s ", " -rating:safe ", Qt::CaseInsensitive)
 		.replace(" -rating:q ", " -rating:questionable ", Qt::CaseInsensitive)
-        .replace(" -rating:e ", " -rating:explicit ", Qt::CaseInsensitive);
+		.replace(" -rating:e ", " -rating:explicit ", Qt::CaseInsensitive);
 	tags = text.split(" ", QString::SkipEmptyParts);
 	tags.removeDuplicates();
 
-    // Get the list of all enabled modifiers
+	// Get the list of all enabled modifiers
 	QStringList modifiers = QStringList();
 	for (Site *site : sites)
 	{
@@ -47,7 +47,7 @@ Page::Page(Site *site, QList<Site*> sites, QStringList tags, int page, int limit
 	{ tags.removeAll(modifiers[k]); }
 	m_search = tags;
 
-    // Set values
+	// Set values
 	m_page = page;
 	m_pool = pool;
 	m_replyExists = false;
@@ -261,18 +261,18 @@ QString _parseSetImageUrl(Site* site, QString setting, QString ret, QMap<QString
 {
 	if (site->contains(setting) && replaces)
 	{
-        if (site->value(setting).contains("->"))
-        {
+		if (site->value(setting).contains("->"))
+		{
 			if (ret.isEmpty() && !def.isEmpty())
 				ret = def;
 
 			QStringList replaces = site->value(setting).split('&');
 			for (QString rep : replaces)
-            {
+			{
 				QRegExp rgx(rep.left(rep.indexOf("->")));
 				ret.replace(rgx, rep.right(rep.size() - rep.indexOf("->") - 2));
 			}
-        }
+		}
 		else if (ret.length() < 5)
 		{
 			QStringList options = site->value(setting).split('|');
@@ -288,7 +288,7 @@ QString _parseSetImageUrl(Site* site, QString setting, QString ret, QMap<QString
 					break;
 				}
 			}
-        }
+		}
 	}
 	return site->fixUrl(ret).toString();
 }
@@ -579,7 +579,7 @@ void Page::parse()
 					infos << "created_at" << "status" << "source" << "has_comments" << "file_url" << "sample_url" << "change" << "sample_width" << "has_children" << "preview_url" << "width" << "md5" << "preview_width" << "sample_height" << "parent_id" << "height" << "has_notes" << "creator_id" << "file_size" << "id" << "preview_height" << "rating" << "tags" << "author" << "score";
 					for (int i = 0; i < infos.count(); i++)
 					{ d[infos.at(i)] = sc.value(infos.at(i)).toString().trimmed(); }
-                }
+				}
 				this->parseImage(d, id + first);
 			}
 		}

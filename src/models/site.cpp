@@ -355,46 +355,46 @@ void Site::getCallback()
 
 QNetworkReply *Site::get(QUrl url, Page *page, QString ref, Image *img)
 {
-    QNetworkRequest request = this->makeRequest(url, page, ref, img);
-    return this->getRequest(request);
+	QNetworkRequest request = this->makeRequest(url, page, ref, img);
+	return this->getRequest(request);
 }
 
 QNetworkReply *Site::getRequest(QNetworkRequest request)
 {
-    m_lastRequest = QDateTime::currentDateTime();
+	m_lastRequest = QDateTime::currentDateTime();
 
-    #ifdef TEST
+	#ifdef TEST
 		QString md5 = QString(QCryptographicHash::hash(request.url().toString().toLatin1(), QCryptographicHash::Md5).toHex());
-        QString filename = request.url().fileName();
-        QString ext = filename.contains('.') ? filename.mid(filename.lastIndexOf('.') + 1) : "html";
+		QString filename = request.url().fileName();
+		QString ext = filename.contains('.') ? filename.mid(filename.lastIndexOf('.') + 1) : "html";
 		QString path = "tests/resources/" + m_url + "/" + md5 + "." + ext;
 
-        QFile f(path);
-        if (!f.open(QFile::ReadOnly))
-        {
-            if (ext != "jpg" && ext != "png")
+		QFile f(path);
+		if (!f.open(QFile::ReadOnly))
+		{
+			if (ext != "jpg" && ext != "png")
 			{
 				qDebug() << ("Test file not found: " + f.fileName() + " (" + request.url().toString() + ")");
-                return nullptr;
+				return nullptr;
 			}
 
-            f.setFileName("tests/resources/image_1x1.png");
-            if (!f.open(QFile::ReadOnly))
-                return nullptr;
-        }
+			f.setFileName("tests/resources/image_1x1.png");
+			if (!f.open(QFile::ReadOnly))
+				return nullptr;
+		}
 
 		qDebug() << ("Reply from file: " + f.fileName());
-        QByteArray content = f.readAll();
+		QByteArray content = f.readAll();
 
-        QCustomNetworkReply *reply = new QCustomNetworkReply();
-        reply->setHttpStatusCode(200, "OK");
-        reply->setContentType("text/html");
-        reply->setContent(content);
+		QCustomNetworkReply *reply = new QCustomNetworkReply();
+		reply->setHttpStatusCode(200, "OK");
+		reply->setContentType("text/html");
+		reply->setContent(content);
 
-        return reply;
-    #else
-        return m_manager->get(request);
-    #endif
+		return reply;
+	#else
+		return m_manager->get(request);
+	#endif
 }
 
 /**
@@ -421,7 +421,7 @@ void Site::sslErrorHandler(QNetworkReply* qnr, QList<QSslError> errors)
 void Site::finishedReply(QNetworkReply *r)
 {
 	if (r != m_loginReply)
-        emit finished(r);
+		emit finished(r);
 }
 
 /**

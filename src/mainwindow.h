@@ -23,9 +23,9 @@
 
 namespace Ui
 {
-    class mainWindow;
-    class poolTab;
-    class tagTab;
+	class mainWindow;
+	class poolTab;
+	class tagTab;
 	class favoritesTab;
 }
 
@@ -38,74 +38,74 @@ class favoritesTab;
 
 class mainWindow : public QMainWindow
 {
-    Q_OBJECT
+	Q_OBJECT
 
-    public:
-        explicit mainWindow(QString, QStringList, QMap<QString,QString>);
-        ~mainWindow();
+	public:
+		explicit mainWindow(QString, QStringList, QMap<QString,QString>);
+		~mainWindow();
 		QMap<QString,Site*> m_sites;
 		Ui::mainWindow *ui;
 		QSettings* settings();
 
-    public slots:
-        // Log
-        void logShow();
-        void logClear();
-        void logOpen();
-        // Menus
-        void options();
-        void optionsClosed();
-        void aboutAuthor();
+	public slots:
+		// Log
+		void logShow();
+		void logClear();
+		void logOpen();
+		// Menus
+		void options();
+		void optionsClosed();
+		void aboutAuthor();
 		void aboutWebsite();
 		void aboutReportBug();
-        void saveFolder();
+		void saveFolder();
 		void openSettingsFolder();
-        void blacklistFix();
-        void emptyDirsFix();
+		void blacklistFix();
+		void emptyDirsFix();
 		void md5FixOpen();
 		void renameExisting();
-        // Language
-        void switchTranslator(QTranslator&, const QString&);
-        void loadLanguage(const QString&, bool shutup = false);
-        void changeEvent(QEvent*);
+		// Language
+		void switchTranslator(QTranslator&, const QString&);
+		void loadLanguage(const QString&, bool shutup = false);
+		void changeEvent(QEvent*);
 		// Favorites
 		void updateFavorites(bool dock = false);
-        void updateFavoritesDock();
-        void updateKeepForLater();
+		void updateFavoritesDock();
+		void updateKeepForLater();
 		/*void loadFavorite(int);
 		void favoriteProperties(int);
 		void viewed();
-        void setFavoriteViewed(QString);
-        void favoritesBack();
-        void checkFavorites();
+		void setFavoriteViewed(QString);
+		void favoritesBack();
+		void checkFavorites();
 		void loadNextFavorite();*/
-        // Download
+		// Download
 		/*void web(QString tags = "");
-        void finishedLoading(Page*);
-        void finishedLoadingPreview(Image*);
+		void finishedLoading(Page*);
+		void finishedLoadingPreview(Image*);
 		void webZoom(int);*/
-        // Batch download management
+		// Batch download management
 		void batchClear();
 		void batchClearSel();
 		void batchMoveUp();
 		void batchMoveDown();
-        void batchSel();
-        void batchChange(int);
-        void updateBatchGroups(int, int);
-        void addGroup();
-        void addUnique();
-        void batchAddGroup(const QStringList& values);
+		void batchSel();
+		void batchChange(int);
+		void updateBatchGroups(int, int);
+		void addGroup();
+		void addUnique();
+		void batchAddGroup(const QStringList& values);
 		void updateGroupCount();
 		void batchAddUnique(QMap<QString,QString> values, bool save = true);
-        // Batch download
-        void getAll(bool all = true);
-        void getAllFinishedPage(Page *page);
-        void getAllFinishedImages(QList<Image*> images);
-        void getAllImages();
+		// Batch download
+		void getAll(bool all = true);
+		void getAllFinishedPage(Page *page);
+		void getAllFinishedImages(QList<Image*> images);
+		void getAllImages();
 		void getAllGetImage(Image*);
-        void getAllPerformTags(Image*);
-        void getAllPerformImage(Image*);
-        void getAllProgress(Image*, qint64, qint64);
+		void getAllPerformTags(Image*);
+		void getAllPerformImage(Image*);
+		void getAllProgress(Image*, qint64, qint64);
 		void getAllCancel();
 		void getAllPause();
 		void getAllSkip();
@@ -121,15 +121,15 @@ class mainWindow : public QMainWindow
 		void addSearchTab(searchTab*, bool background = false);
 		void updateTabTitle(searchTab*);
 		void tabClosed(searchTab*);
-        void currentTabChanged(int);
-        void closeCurrentTab();
+		void currentTabChanged(int);
+		void closeCurrentTab();
 		void loadTag(QString tag, bool newTab = true);
 		void loadTagTab(QString tag);
 		void loadTagNoTab(QString tag);
 		void linkHovered(QString tag);
-        bool saveTabs(QString);
+		bool saveTabs(QString);
 		bool loadTabs(QString);
-        void updateTabs();
+		void updateTabs();
 		void focusSearch();
 		// Title
 		void increaseDownloads();
@@ -159,39 +159,39 @@ class mainWindow : public QMainWindow
 		QIcon& getIcon(QString path);
 		void setWiki(QString);
 
-    private:
+	private:
 		int					m_pagemax, m_getAllDownloaded, m_getAllExists, m_getAllIgnored, m_getAll404s, m_getAllErrors, m_getAllSkipped, m_getAllCount, m_getAllPageCount, m_getAllBeforeId, m_remainingPics, m_remainingSites, m_countPics, m_currentFav, m_currentFavCount, m_getAllLimit, m_downloads, m_waitForLogin;
-        bool				m_allow, m_must_get_tags, m_loaded, m_getAllRequestExists, m_getAll;
-        QSettings			*m_settings;
-        QProcess			*m_process;
-        QNetworkReply		*m_getAllRequest;
-        batchWindow			*m_progressdialog;
+		bool				m_allow, m_must_get_tags, m_loaded, m_getAllRequestExists, m_getAll;
+		QSettings			*m_settings;
+		QProcess			*m_process;
+		QNetworkReply		*m_getAllRequest;
+		batchWindow			*m_progressdialog;
 		QString				m_program, m_currLang, m_currentFavorite, m_link;
-        QStringList			m_tags, m_assoc, m_gotMd5;
-        QTranslator			m_translator;
+		QStringList			m_tags, m_assoc, m_gotMd5;
+		QTranslator			m_translator;
 		QDateTime			m_loadFavorite;
-        QMap<QString,int>	m_countPage;
+		QMap<QString,int>	m_countPage;
 		QList<QStringList>	m_groupBatchs; // tags, page, perpage, max, blacklist, source, filename, location
-        QList<Image*>		m_getAllRemaining, m_getAllDownloading, m_getAllFailed, m_images;
-        QList<Page*>		m_getAllPages, m_pages;
-        QList<QAffiche*>	m_favoritesCaptions;
+		QList<Image*>		m_getAllRemaining, m_getAllDownloading, m_getAllFailed, m_images;
+		QList<Page*>		m_getAllPages, m_pages;
+		QList<QAffiche*>	m_favoritesCaptions;
 		QList<QBouton*>		m_favoritesImages, m_mergeButtons, m_webPics;
 		QWidget				*m_currentTab;
 		QList<searchTab*>	m_tabs;
 		QList<int>			m_tabsIds;
-        QList<tagTab*>      m_tagTabs;
-        QList<poolTab*>     m_poolTabs;
-        QList<bool>			m_selectedSources;
-        QList<QLabel*>		m_webSites;
+		QList<tagTab*>	  m_tagTabs;
+		QList<poolTab*>	 m_poolTabs;
+		QList<bool>			m_selectedSources;
+		QList<QLabel*>		m_webSites;
 		Commands			*m_commands;
 		favoritesTab		*m_favoritesTab;
-        QMap<QString,double>			m_getAllDownloadingSpeeds;
+		QMap<QString,double>			m_getAllDownloadingSpeeds;
 		QList<Favorite>					m_favorites;
 		QMap<QString,QString>			m_params;
-        QMap<QString,QTime*>			m_downloadTime, m_downloadTimeLast;
-        QList<QProgressBar*>			m_progressBars;
-        QList<QNetworkReply*>			m_replies;
-        QList<QMap<QString,QString> >	m_details, m_batchs;
+		QMap<QString,QTime*>			m_downloadTime, m_downloadTimeLast;
+		QList<QProgressBar*>			m_progressBars;
+		QList<QNetworkReply*>			m_replies;
+		QList<QMap<QString,QString> >	m_details, m_batchs;
 		QSet<int>						m_batchDownloading;
 		QStringList			m_lineFilename_completer, m_lineFolder_completer;
 		QList<Downloader*>  m_downloaders, m_downloadersDone;

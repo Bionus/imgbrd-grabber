@@ -27,7 +27,7 @@ zoomWindow::zoomWindow(Image *image, Site *site, QMap<QString,Site*> *sites, mai
 	for (Favorite fav : favorites)
 		m_favorites.append(fav.getName());
 	m_viewItLater = loadViewItLater();
-    m_ignore = loadIgnored();
+	m_ignore = loadIgnored();
 	m_image = new Image(site, image->details(), image->page());
 	connect(m_image, &Image::urlChanged, this, &zoomWindow::urlChanged);
 
@@ -74,13 +74,13 @@ void zoomWindow::go()
 	if (!settings.value("whitelistedtags").toString().isEmpty())
 	{
 		QStringList whitelist = settings.value("whitelistedtags").toString().split(" ");
-        for (Tag t : m_image->tags())
+		for (Tag t : m_image->tags())
 		{
-            if (whitelist.contains(t.text()))
-            {
-                whitelisted = true;
-                break;
-            }
+			if (whitelist.contains(t.text()))
+			{
+				whitelisted = true;
+				break;
+			}
 		}
 	}
 	if (settings.value("autodownload", false).toBool() || (whitelisted && settings.value("whitelist_download", "image").toString() == "image"))
@@ -114,16 +114,16 @@ void zoomWindow::go()
 		m_resizeTimer = timer;
 
 	QString u = m_site->value("Urls/Html/Post");
-        u.replace("{id}", QString::number(m_image->id()));
+		u.replace("{id}", QString::number(m_image->id()));
 
 	connect(ui->buttonDetails, SIGNAL(clicked()), this, SLOT(showDetails()));
 
 	QString pos = settings.value("tagsposition", "top").toString();
 	if (pos == "auto")
 	{
-        if (!m_image->size().isEmpty())
+		if (!m_image->size().isEmpty())
 		{
-            if (float(m_image->width())/float(m_image->height()) >= 4./3.)
+			if (float(m_image->width())/float(m_image->height()) >= 4./3.)
 			{ pos = "top"; }
 			else
 			{ pos = "left"; }
@@ -134,18 +134,18 @@ void zoomWindow::go()
 	if (pos == "top")
 	{
 		ui->widgetLeft->hide();
-        m_labelTagsTop->setText(m_image->stylishedTags(m_ignore).join(" "));
+		m_labelTagsTop->setText(m_image->stylishedTags(m_ignore).join(" "));
 	}
 	else
 	{
 		m_labelTagsTop->hide();
-        m_labelTagsLeft->setText(m_image->stylishedTags(m_ignore).join("<br/>"));
+		m_labelTagsLeft->setText(m_image->stylishedTags(m_ignore).join("<br/>"));
 	}
 
 	m_detailsWindow = new detailsWindow(m_image, this);
 
 	connect(m_image, SIGNAL(finishedLoadingTags(Image*)), this, SLOT(replyFinished(Image*)));
-    m_image->loadDetails();
+	m_image->loadDetails();
 	activateWindow();
 }
 
@@ -163,7 +163,7 @@ zoomWindow::~zoomWindow()
 
 	m_labelTagsTop->deleteLater();
 	m_labelTagsLeft->deleteLater();
-    m_image->deleteLater();
+	m_image->deleteLater();
 
 	delete ui;
 }
@@ -179,7 +179,7 @@ void zoomWindow::openUrl(QString url)
 void zoomWindow::openPool(QString url)
 {
 	if (url.startsWith("pool:"))
-    { emit poolClicked(url.right(url.length() - 5).toInt(), m_image->site()); }
+	{ emit poolClicked(url.right(url.length() - 5).toInt(), m_image->site()); }
 	else
 	{
 		Page *p = new Page(m_sites->value(m_image->site()), m_sites->values(), QStringList() << "id:"+url, 1, 1, QStringList(), false, this);
@@ -213,7 +213,7 @@ void zoomWindow::openSaveDir(bool fav)
 	{ path = path.left(path.length()-1); }
 	path = QDir::toNativeSeparators(path);
 
-    QStringList files = m_image->path(fn, path);
+	QStringList files = m_image->path(fn, path);
 	QString file = files.empty() ? "" : files.at(0);
 	QString pth = file.section(QDir::toNativeSeparators("/"), 0, -2);
 	QString url = path+QDir::toNativeSeparators("/")+pth;
@@ -432,7 +432,7 @@ void zoomWindow::replyFinished(Image* img)
 	ui->labelPools->setText(pools.join("<br />"));
 
 	QString path1 = settings.value("Save/path").toString().replace("\\", "/");
-    QStringList pth1s = m_image->path(settings.value("Save/filename").toString(), path1);
+	QStringList pth1s = m_image->path(settings.value("Save/filename").toString(), path1);
 	QString source1;
 	bool file1notexists = false;
 	for (QString pth1 : pth1s)
@@ -447,7 +447,7 @@ void zoomWindow::replyFinished(Image* img)
 	}
 
 	QString path2 = settings.value("Save/path_favorites").toString().replace("\\", "/");
-    QStringList pth2s = m_image->path(settings.value("Save/filename_favorites").toString(), path2);
+	QStringList pth2s = m_image->path(settings.value("Save/filename_favorites").toString(), path2);
 	QString source2;
 	bool file2notexists = false;
 	for (QString pth2 : pth2s)
@@ -486,13 +486,13 @@ void zoomWindow::replyFinished(Image* img)
 	else
 	{
 		if (m_url.isEmpty())
-        { m_url = m_image->url(); }
+		{ m_url = m_image->url(); }
 		load();
 	}
 }
 void zoomWindow::colore()
 {
-    QStringList t = m_image->stylishedTags(m_ignore);
+	QStringList t = m_image->stylishedTags(m_ignore);
 	tags = t.join(" ");
 	if (ui->widgetLeft->isHidden())
 	{ m_labelTagsTop->setText(tags); }
@@ -511,7 +511,7 @@ void zoomWindow::replyFinishedZoom()
 	{
 		m_data.clear();
 		m_url = redir.toString();
-        m_image->setUrl(m_url);
+		m_image->setUrl(m_url);
 		load();
 		return;
 	}
@@ -851,7 +851,7 @@ void zoomWindow::closeEvent(QCloseEvent *e)
 	settings.setValue("Zoom/plus", ui->buttonPlus->isChecked());
 	settings.sync();
 
-    //m_image->abortTags();
+	//m_image->abortTags();
 	/*if (m_thread && m_th->isRunning())
 	{ m_th->quit(); }*/
 	if (m_reply != NULL && m_reply->isRunning())

@@ -34,12 +34,12 @@ extern QMap<QString,QString> _md5;
  */
 void error(QWidget *parent, QString error)
 {
-    #ifndef TEST
-        QMessageBox::critical(parent, QObject::tr("Erreur"), error);
-    #else
-        Q_UNUSED(parent);
-        Q_UNUSED(error);
-    #endif
+	#ifndef TEST
+		QMessageBox::critical(parent, QObject::tr("Erreur"), error);
+	#else
+		Q_UNUSED(parent);
+		Q_UNUSED(error);
+	#endif
 }
 
 /**
