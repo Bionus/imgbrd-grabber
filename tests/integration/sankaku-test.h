@@ -8,9 +8,9 @@ class SankakuTest : public IntegrationTestSuite
 {
 	Q_OBJECT
 
-    private slots:
+	private slots:
 		void testHtml();
-        void testAnimatedUrls();
+		void testAnimatedUrls();
 };
 
 #endif // SANKAKU_TEST_H

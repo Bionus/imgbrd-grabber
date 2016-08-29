@@ -9,7 +9,7 @@ class E621Test : public IntegrationTestSuite
 	Q_OBJECT
 
 	private slots:
-        void testSwfUrls();
+		void testSwfUrls();
 };
 
 #endif // E621_TEST_H

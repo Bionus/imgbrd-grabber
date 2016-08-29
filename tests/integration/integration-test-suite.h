@@ -15,11 +15,11 @@ class IntegrationTestSuite : public TestSuite
 		void initTestCase();
 		void cleanup();
 
-    protected:
-        QList<Image*> getImages(QString site, QString source, QString format, QString tags);
-        QList<Tag> getPageTags(QString site, QString source, QString format, QString tags);
+	protected:
+		QList<Image*> getImages(QString site, QString source, QString format, QString tags);
+		QList<Tag> getPageTags(QString site, QString source, QString format, QString tags);
 
-    protected:
+	protected:
 		Downloader	*m_downloader;
 		QSettings	*m_settings;
 		Site		*m_site;
