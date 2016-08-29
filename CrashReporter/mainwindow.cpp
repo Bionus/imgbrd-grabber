@@ -10,7 +10,6 @@
 #include "ui_mainwindow.h"
 
 
-
 QString savePath(QString file, bool exists = false)
 {
 	#ifdef TEST

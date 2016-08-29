@@ -9,7 +9,7 @@ class ZerochanTest : public IntegrationTestSuite
 	Q_OBJECT
 
 	private slots:
-        void testHtml();
+		void testHtml();
 		void testRss();
 };
 

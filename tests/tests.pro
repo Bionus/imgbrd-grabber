@@ -1,15 +1,14 @@
 include(../gui/gui.pro)
 
 # Disable unnecessary stuff
-CONFIG -= use_breakpad use_qscintilla
+CONFIG  -= use_breakpad use_qscintilla
 
 # Test configuration
-QT       += testlib
-TARGET    = tests
-CONFIG   += console testcase
-CONFIG   -= app_bundle
-
-TEMPLATE  = app
+QT      += testlib
+TARGET   = tests
+CONFIG  += console testcase
+CONFIG  -= app_bundle
+TEMPLATE = app
 
 INCLUDEPATH += . .. $${PDIR}/tests
 DEFINES     += SRCDIR=\\\"$$PWD/\\\"
@@ -19,14 +18,14 @@ DEFINES     += TEST=1
 @
 T = $$(TRAVIS)
 !isEmpty(T) {
-    unix:!macx {
-        QMAKE_CXXFLAGS -= -O2
-        QMAKE_CXXFLAGS_RELEASE -= -O2
+	unix:!macx {
+		QMAKE_CXXFLAGS -= -O2
+		QMAKE_CXXFLAGS_RELEASE -= -O2
 
-        LIBS += -lgcov
-        QMAKE_CXXFLAGS += -g -fprofile-arcs -ftest-coverage -O0
-        QMAKE_LFLAGS += -g -fprofile-arcs -ftest-coverage  -O0
-    }
+		LIBS += -lgcov
+		QMAKE_CXXFLAGS += -g -fprofile-arcs -ftest-coverage -O0
+		QMAKE_LFLAGS += -g -fprofile-arcs -ftest-coverage  -O0
+	}
 }
 @
 
@@ -34,10 +33,10 @@ T = $$(TRAVIS)
 SOURCES -= $${PDIR}/src/main/main.cpp
 
 SOURCES += $${PDIR}/tests/test-suite.cpp \
-    $${PDIR}/tests/main.cpp \
-    $${PDIR}/tests/functions-test.cpp \
-    $${PDIR}/tests/models/*.cpp \
-    $${PDIR}/tests/integration/*.cpp
+	$${PDIR}/tests/main.cpp \
+	$${PDIR}/tests/functions-test.cpp \
+	$${PDIR}/tests/models/*.cpp \
+	$${PDIR}/tests/integration/*.cpp
 HEADERS += $${PDIR}/tests/*.h \
-    $${PDIR}/tests/models/*.h \
-    $${PDIR}/tests/integration/*.h
+	$${PDIR}/tests/models/*.h \
+	$${PDIR}/tests/integration/*.h

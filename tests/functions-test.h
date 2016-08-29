@@ -8,15 +8,15 @@ class FunctionsTest : public TestSuite
 {
 	Q_OBJECT
 
-    private slots:
-        void testFixFilenameWindows();
-        void testFixFilenameLinux();
-        void testGetUnit();
-        void testGetExtension();
-        void testSetExtension();
+	private slots:
+		void testFixFilenameWindows();
+		void testFixFilenameLinux();
+		void testGetUnit();
+		void testGetExtension();
+		void testSetExtension();
 
-    protected:
-        void assertFixFilename(int platform, QString filename, QString path, QString expected);
+	protected:
+		void assertFixFilename(int platform, QString filename, QString path, QString expected);
 };
 
 #endif // FUNCTIONS_TEST_H

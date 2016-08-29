@@ -9,10 +9,10 @@ class BehoimiTest : public IntegrationTestSuite
 	Q_OBJECT
 
 	private slots:
-        void testHtml();
-        void testXml();
-        void testJson();
-        void testPageTags();
+		void testHtml();
+		void testXml();
+		void testJson();
+		void testPageTags();
 };
 
 #endif // BEHOIMI_TEST_H

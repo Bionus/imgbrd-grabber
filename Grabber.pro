@@ -4,7 +4,7 @@ CONFIG += ordered
 SUBDIRS = gui
 SUBDIRS += CrashReporter
 win32 {
-    SUBDIRS += cli
+	SUBDIRS += cli
 }
 SUBDIRS += tests
 
