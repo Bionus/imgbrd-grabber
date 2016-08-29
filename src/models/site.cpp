@@ -465,11 +465,7 @@ QList<Site*> Site::getSites(QStringList sources)
 	for (QString source : sources)
 	{
 		if (sites->contains(source))
-		{
-			Site *site = sites->value(source);
-			ret.append(site);
-			sites->remove(source);
-		}
+		{ ret.append(sites->value(source)); }
 	}
 
 	return ret;
@@ -536,9 +532,8 @@ void Site::finishedTags()
 	emit finishedLoadingTags(tags);
 }
 
-bool Site::contains(QString what)				{ return m_data.contains(what); }
-QString Site::value(QString what)				{ return m_data.value(what); }
-void Site::insert(QString key, QString value)	{ m_data.insert(key, value); }
+bool Site::contains(QString what)	{ return m_data.contains(what);	}
+QString Site::value(QString what)	{ return m_data.value(what);	}
 
 QVariant Site::setting(QString key, QVariant def)	{ return m_settings->value(key, def); }
 QSettings	*Site::settings()						{ return m_settings; }
