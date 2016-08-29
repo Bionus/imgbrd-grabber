@@ -52,7 +52,7 @@ void mainWindow::init()
 	bool crashed = m_settings->value("crashed", false).toBool();
 
 	m_settings->setValue("crashed", true);
-    m_settings->sync();
+	m_settings->sync();
 
 	loadLanguage(m_settings->value("language", "English").toString(), true);
 	ui->setupUi(this);
@@ -195,7 +195,7 @@ void mainWindow::init()
 	ui->tableBatchUniques->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
 	on_buttonInitSettings_clicked();
 
-    if (!m_tags.isEmpty() || m_settings->value("start", "none").toString() == "firstpage")
+	if (!m_tags.isEmpty() || m_settings->value("start", "none").toString() == "firstpage")
 	{
 		if (!m_tags.isEmpty() && m_tags.first().endsWith(".igl"))
 		{
@@ -248,25 +248,25 @@ void mainWindow::initialLoginsFinished()
 
 void mainWindow::loadSites()
 {
-    QMap<QString, Site*> *sites = Site::getAllSites();
+	QMap<QString, Site*> *sites = Site::getAllSites();
 
-    QStringList current = m_sites.keys();
-    QStringList news = sites->keys();
+	QStringList current = m_sites.keys();
+	QStringList news = sites->keys();
 
-    for (int i = 0; i < sites->size(); ++i)
-    {
-        QString k = news[i];
-        if (!current.contains(k))
+	for (int i = 0; i < sites->size(); ++i)
+	{
+		QString k = news[i];
+		if (!current.contains(k))
 		{ m_sites.insert(k, sites->value(k)); }
-        else
+		else
 		{ delete sites->value(k); }
-    }
-    delete sites;
+	}
+	delete sites;
 }
 
 mainWindow::~mainWindow()
 {
-    qDeleteAll(m_sites);
+	qDeleteAll(m_sites);
 	delete ui;
 }
 
@@ -1166,7 +1166,7 @@ void mainWindow::getAll(bool all)
 	m_getAllPageCount = 0;
 	m_getAllBeforeId = -1;
 	m_getAllRequestExists = false;
-    m_downloaders.clear();
+	m_downloaders.clear();
 	m_getAllDownloadingSpeeds.clear();
 	m_getAllRemaining.clear();
 	m_getAllFailed.clear();
@@ -1186,7 +1186,7 @@ void mainWindow::getAll(bool all)
 			else
 			{
 				tdl.append(row);
-                int i = row;
+				int i = row;
 				Site *site = m_sites[m_batchs.at(i).value("site")];
 				m_getAllRemaining.append(new Image(site, m_batchs.at(i), new Page(site, m_sites.values(), m_batchs.at(i).value("tags").split(" "), 1, 1, QStringList(), false, this)));
 			}
@@ -1198,7 +1198,7 @@ void mainWindow::getAll(bool all)
 		{
 			if (m_batchs.at(i).value("file_url").isEmpty())
 			{
-                // If we cannot get the image's url, we try looking for it
+				// If we cannot get the image's url, we try looking for it
 				/*Page *page = new Page(m_sites[site], &m_sites, m_groupBatchs.at(i).at(0).split(' '), m_groupBatchs.at(i).at(1).toInt()+r, pp, QStringList(), false, this);
 				connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(getAllFinishedLoading(Page*)));
 				page->load();
@@ -1364,10 +1364,10 @@ void mainWindow::getAllGetPages()
  */
 void mainWindow::getAllFinishedPage(Page *page)
 {
-    Downloader *d = (Downloader*)QObject::sender();
+	Downloader *d = (Downloader*)QObject::sender();
 
-    m_groupBatchs[d->getData().toInt()][8] += (m_groupBatchs[d->getData().toInt()][8] == "" ? "" : "¤") + QString::number((quintptr)page);
-    m_getAllPages.append(page);
+	m_groupBatchs[d->getData().toInt()][8] += (m_groupBatchs[d->getData().toInt()][8] == "" ? "" : "¤") + QString::number((quintptr)page);
+	m_getAllPages.append(page);
 
 	m_progressdialog->setImages(m_progressdialog->images() + 1);
 }
@@ -1386,10 +1386,10 @@ void mainWindow::getAllFinishedImages(QList<Image*> images)
 
 	m_getAllRemaining.append(images);
 
-    if (m_downloaders.isEmpty())
+	if (m_downloaders.isEmpty())
 	{
 		m_batchAutomaticRetries = m_settings->value("Save/automaticretries", 0).toInt();
-        getAllImages();
+		getAllImages();
 	}
 }
 
@@ -1398,21 +1398,21 @@ void mainWindow::getAllFinishedImages(QList<Image*> images)
  */
 void mainWindow::getAllImages()
 {
-    // Si la limite d'images est dépassée, on retire celles en trop
+	// Si la limite d'images est dépassée, on retire celles en trop
 	while (m_getAllRemaining.count() > m_getAllLimit && !m_getAllRemaining.isEmpty())
 		m_getAllRemaining.takeLast()->deleteLater();
 
 	log(tr("Toutes les urls des images ont été reçues (%n image(s)).", "", m_getAllRemaining.count()));
 
 	// We add the images to the download dialog
-    int count = 0;
-    m_progressdialog->setText(tr("Préparation des images, veuillez patienter..."));
+	int count = 0;
+	m_progressdialog->setText(tr("Préparation des images, veuillez patienter..."));
 	m_progressdialog->setCount(m_getAllRemaining.count());
 	m_progressdialog->setImagesCount(m_getAllRemaining.count());
 	for (int i = 0; i < m_getAllRemaining.count(); i++)
 	{
 		// We find the image's batch ID using its page
-        int n = -1;
+		int n = -1;
 		for (int r = 0; r < m_groupBatchs.count(); r++)
 		{
 			if (m_groupBatchs[r].length() > 8 && m_groupBatchs[r][8].split("¤", QString::SkipEmptyParts).contains(QString::number((qintptr)m_getAllRemaining[i]->page())))
@@ -1483,7 +1483,7 @@ void mainWindow::_getAll()
 {
 	// We quit as soon as the user cancels
 	if (m_progressdialog->cancelled())
-        return;
+		return;
 
 	// If there are still images do download
 	if (m_getAllRemaining.size() > 0)
@@ -1503,8 +1503,8 @@ void mainWindow::_getAll()
 			// Row
 			int site_id = m_progressdialog->batch(img->url());
 			int row = -1;
-            for (int i = 0; i < ui->tableBatchGroups->rowCount(); ++i)
-                if (ui->tableBatchGroups->item(i, 0)->text().toInt() == site_id)
+			for (int i = 0; i < ui->tableBatchGroups->rowCount(); ++i)
+				if (ui->tableBatchGroups->item(i, 0)->text().toInt() == site_id)
 					row = i;
 
 			// Path
@@ -1604,7 +1604,7 @@ void mainWindow::imageUrlChanged(QString before, QString after)
 void mainWindow::getAllProgress(Image *img, qint64 bytesReceived, qint64 bytesTotal)
 {
 	if (!m_downloadTimeLast.contains(img->url()) || m_downloadTimeLast[img->url()] == NULL)
-        return;
+		return;
 
 	if (m_downloadTimeLast[img->url()]->elapsed() >= 1000)
 	{
@@ -1623,7 +1623,7 @@ void mainWindow::getAllProgress(Image *img, qint64 bytesReceived, qint64 bytesTo
 void mainWindow::getAllPerformTags(Image* img)
 {
 	if (m_progressdialog->cancelled())
-        return;
+		return;
 
 	log(tr("Tags reçus"));
 

@@ -30,8 +30,6 @@ sourcesWindow::sourcesWindow(QList<bool> selected, QMap<QString, Site*> *sites, 
 	if (checkall)
 	{ ui->checkBox->setChecked(true); }
 
-    QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
-
 	addCheckboxes();
 
 	ui->gridLayout->setColumnStretch(0, 1);

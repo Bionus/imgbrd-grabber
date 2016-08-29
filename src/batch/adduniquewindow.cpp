@@ -37,10 +37,10 @@ void AddUniqueWindow::on_buttonFolder_clicked()
 }
 void AddUniqueWindow::on_lineFilename_textChanged(QString text)
 {
-    QString message;
-    Filename fn(text);
-    fn.isValid(&message);
-    ui->labelFilename->setText(message);
+	QString message;
+	Filename fn(text);
+	fn.isValid(&message);
+	ui->labelFilename->setText(message);
 }
 
 /**

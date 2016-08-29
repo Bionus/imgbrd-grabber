@@ -243,25 +243,25 @@ void tagTab::load()
 	{
 		if (m_checkboxes.at(i)->isChecked())
 		{
-            // Get the search values
-            QStringList tags = search.trimmed().split(" ", QString::SkipEmptyParts);
+			// Get the search values
+			QStringList tags = search.trimmed().split(" ", QString::SkipEmptyParts);
 			tags.append(m_settings->value("add").toString().trimmed().split(" ", QString::SkipEmptyParts));
 			int perpage = ui->spinImagesPerPage->value();
 
-            // Load results
-            Page *page = new Page(m_sites->value(m_sites->keys().at(i)), m_sites->values(), tags, ui->spinPage->value(), perpage, m_postFiltering->toPlainText().split(" ", QString::SkipEmptyParts), false, this, 0, m_lastPage, m_lastPageMinId, m_lastPageMaxId);
+			// Load results
+			Page *page = new Page(m_sites->value(m_sites->keys().at(i)), m_sites->values(), tags, ui->spinPage->value(), perpage, m_postFiltering->toPlainText().split(" ", QString::SkipEmptyParts), false, this, 0, m_lastPage, m_lastPageMinId, m_lastPageMaxId);
 			log(tr("Chargement de la page <a href=\"%1\">%1</a>").arg(page->url().toString().toHtmlEscaped()));
 			connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(finishedLoading(Page*)));
 			connect(page, SIGNAL(failedLoading(Page*)), this, SLOT(failedLoading(Page*)));
 			m_pages.insert(page->website(), page);
 
-            // Setup the layout
-            QGridLayout *l = new QGridLayout;
-            l->setHorizontalSpacing(m_settings->value("Margins/horizontal", 6).toInt());
-            l->setVerticalSpacing(m_settings->value("Margins/vertical", 6).toInt());
+			// Setup the layout
+			QGridLayout *l = new QGridLayout;
+			l->setHorizontalSpacing(m_settings->value("Margins/horizontal", 6).toInt());
+			l->setVerticalSpacing(m_settings->value("Margins/vertical", 6).toInt());
 			m_layouts.append(l);
 
-            // Load tags if necessary
+			// Load tags if necessary
 			m_stop = false;
 			if (m_settings->value("useregexfortags", true).toBool())
 			{
@@ -269,7 +269,7 @@ void tagTab::load()
 				page->loadTags();
 			}
 
-            // Start loading
+			// Start loading
 			page->load();
 		}
 	}

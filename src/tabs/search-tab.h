@@ -14,14 +14,14 @@ class mainWindow;
 
 class searchTab : public QWidget
 {
-    Q_OBJECT
+	Q_OBJECT
 
-    public:
-        searchTab(int id, QMap<QString,Site*> *sites, mainWindow *parent);
-        ~searchTab();
+	public:
+		searchTab(int id, QMap<QString,Site*> *sites, mainWindow *parent);
+		~searchTab();
 		void mouseReleaseEvent(QMouseEvent *e);
 		virtual QList<bool> sources();
-        virtual QString tags() = 0;
+		virtual QString tags() = 0;
 		QList<Tag> results();
 		virtual QString wiki() = 0;
 		virtual int imagesPerPage() = 0;
@@ -55,10 +55,10 @@ class searchTab : public QWidget
 		// Focus search field
 		virtual void focusSearch() = 0;
 
-    signals:
-        void titleChanged(searchTab*);
-        void changed(searchTab*);
-        void closed(searchTab*);
+	signals:
+		void titleChanged(searchTab*);
+		void changed(searchTab*);
+		void closed(searchTab*);
 		void deleted(int);
 
 	protected:
