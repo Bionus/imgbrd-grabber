@@ -29,6 +29,7 @@ void FilenameTest::init()
     m_details["tags_copyright"] = "copyright1 copyright2";
     m_details["tags_character"] = "character1 character2";
     m_details["created_at"] = "1471513944";
+    m_details["rating"] = "safe";
 
 	m_settings = new QSettings("tests/resources/settings.ini", QSettings::IniFormat);
 	m_settings->clear();
@@ -377,6 +378,14 @@ void FilenameTest::testReplaceBlanks()
     assertPath("%allo%", "tag1 tag2 tag3 test_tag1 test_tag2 test_tag3 artist1 character1 character2 copyright1 copyright2", "", false);
     assertPath("javascript:all", "tag1+tag2+tag3+test_tag1+test_tag2+test_tag3+artist1+character1+character2+copyright1+copyright2", "", false);
     assertPath("javascript:allo", "tag1 tag2 tag3 test_tag1 test_tag2 test_tag3 artist1 character1 character2 copyright1 copyright2", "", false);
+}
+
+void FilenameTest::testCommand()
+{
+     Filename fn("curl -F \"user[name]=User\" -F \"user[password]=1234\" -F \"post[tags]=%all%\" -F \"post[rating]=%rating%\" -F \"post[file]=@%path%\" localhost:9000/post/create");
+
+     QCOMPARE(fn.path(*m_img, m_settings, "", 0, false, false, false, false),
+              QStringList() << "curl -F \"user[name]=User\" -F \"user[password]=1234\" -F \"post[tags]=tag1 tag2 tag3 test_tag1 test_tag2 test_tag3 artist1 character1 character2 copyright1 copyright2\" -F \"post[rating]=safe\" -F \"post[file]=@%path%\" localhost:9000/post/create");
 }
 
 

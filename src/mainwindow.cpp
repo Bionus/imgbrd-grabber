@@ -1959,7 +1959,7 @@ void mainWindow::saveImage(Image *img, QNetworkReply *reply, QString path, QStri
 				// Execute commands
 				for (int i = 0; i < img->tags().count(); i++)
 				{ Commands::get()->tag(img->tags().at(i)); }
-				Commands::get()->image(img, fp);
+				Commands::get()->image(*img, fp);
 
 				if (m_settings->value("Save/keepDate", true).toBool())
 					setFileCreationDate(fp, img->createdAt());

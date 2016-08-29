@@ -4,19 +4,22 @@
 #include <QDir>
 #include "commands.h"
 #include "functions.h"
+#include "models/filename.h"
 
 
 
-Commands *Commands::_instance = NULL;
+Commands *Commands::_instance = Q_NULLPTR;
 Commands* Commands::get()
 {
-	if (Commands::_instance == NULL)
+	if (Commands::_instance == Q_NULLPTR)
 	{ Commands::_instance = new Commands; }
 	return Commands::_instance;
 }
 
 void Commands::init(QSettings *settings)
 {
+	m_settings = settings;
+
 	settings->beginGroup("Exec");
 		m_commandImage = settings->value("image").toString();
 		m_commandTag = settings->value("tag").toString();
@@ -61,44 +64,60 @@ bool Commands::before()
 	if (m_mysql && !m_mysqlSettings.before.isEmpty())
 	{
 		start();
+
 		log(QObject::tr("Execution SQL de \"%1\"").arg(m_mysqlSettings.before));
 		logCommandSql(m_mysqlSettings.before);
+
 		QSqlQuery query;
 		return query.exec(m_mysqlSettings.before);
 	}
+
 	return true;
 }
-bool Commands::image(Image *img, QString fp)
+
+bool Commands::image(const Image &img, QString fp)
 {
+	// Normal commands
 	if (!m_commandImage.isEmpty())
 	{
-		QStringList execs = img->path(m_commandImage, "", 0, false, true, false, false);
+		Filename fn(m_commandImage);
+		QStringList execs = fn.path(img, m_settings, "", 0, false, false, false, false);
+
 		for (QString exec : execs)
 		{
-			exec = QDir::toNativeSeparators(exec);
-			exec.replace("%path%", fp);
-			exec.replace(" \\C ", " /C ");
+			exec.replace("%path%", QDir::toNativeSeparators(fp));
+
 			log(QObject::tr("Execution de \"%1\"").arg(exec));
 			logCommand(exec);
+
 			QProcess::execute(exec);
 		}
 	}
+
+	// SQL commands
 	if (m_mysql && !m_mysqlSettings.image.isEmpty())
 	{
 		start();
-		QStringList execs = img->path(m_mysqlSettings.image, "", 0, false, true, false, false);
+
+		Filename fn(m_mysqlSettings.image);
+		QStringList execs = fn.path(img, m_settings, "", 0, false, false, false, false);
+
 		for (QString exec : execs)
 		{
-			exec.replace("%path%", fp);
+			exec.replace("%path%", QDir::toNativeSeparators(fp));
+
 			log(QObject::tr("Execution SQL de \"%1\"").arg(exec));
 			logCommandSql(exec);
+
 			QSqlQuery query;
 			if (!query.exec(exec))
 				return false;
 		}
 	}
+
 	return true;
 }
+
 bool Commands::tag(Tag tag)
 {
 	QMap<QString,int> types;
@@ -110,6 +129,7 @@ bool Commands::tag(Tag tag)
 	types["model"] = 5;
 	types["photo_set"] = 6;
 	QString original = QString(tag.text()).replace(" ", "_");
+
 	if (!m_commandTag.isEmpty())
 	{
 		QString exec = QString(m_commandTag)
@@ -117,34 +137,45 @@ bool Commands::tag(Tag tag)
 		.replace("%original%", tag.text())
 		.replace("%type%", tag.type())
 		.replace("%number%", QString::number(types[tag.type()]));
+
 		log(QObject::tr("Execution seule de \"%1\"").arg(exec));
 		logCommand(exec);
+
 		QProcess::execute(exec);
 	}
+
 	if (m_mysql && !m_mysqlSettings.tag.isEmpty())
 	{
 		start();
+
 		QString exec = QString(m_mysqlSettings.tag)
 		.replace("%tag%", original)
 		.replace("%original%", tag.text())
 		.replace("%type%", tag.type())
 		.replace("%number%", QString::number(types[tag.type()]));
+
 		log(QObject::tr("Execution SQL de \"%1\"").arg(exec));
 		logCommandSql(exec);
+
 		QSqlQuery query;
 		return query.exec(exec);
 	}
+
 	return true;
 }
+
 bool Commands::after()
 {
 	if (m_mysql && !m_mysqlSettings.after.isEmpty())
 	{
 		start();
+
 		log(QObject::tr("Execution SQL de \"%1\"").arg(m_mysqlSettings.after));
 		logCommandSql(m_mysqlSettings.after);
+
 		QSqlQuery query;
 		return query.exec(m_mysqlSettings.after);
 	}
+
 	return true;
 }
