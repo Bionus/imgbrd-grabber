@@ -1,16 +1,16 @@
-CONFIG += qt
-QT       += core gui widgets designer
+# Basic config
+CONFIG     += qt
+QT         += core gui widgets designer
+TARGET      = CrashReporter
+TEMPLATE    = app
 
-TARGET = CrashReporter
-TEMPLATE = app
+# Source files
+SOURCES    += main.cpp mainwindow.cpp
+HEADERS    += mainwindow.h
+FORMS      += mainwindow.ui
 
-SOURCES += main.cpp\
-        mainwindow.cpp
-
-HEADERS  += mainwindow.h
-
-FORMS    += mainwindow.ui
-
-RESOURCES += resources.qrc
-RC_FILE = icon.rc
-TRANSLATIONS += languages/English.ts languages/Français.ts
+# Resources
+RESOURCES      += resources.qrc
+RC_FILE         = icon.rc
+TRANSLATIONS   += languages/English.ts \
+                  languages/Français.ts

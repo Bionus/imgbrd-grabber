@@ -2,6 +2,7 @@ TEMPLATE = subdirs
 CONFIG += ordered
 
 SUBDIRS = gui
+SUBDIRS += CrashReporter
 win32 {
     SUBDIRS += cli
 }
