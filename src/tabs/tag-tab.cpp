@@ -71,6 +71,10 @@ tagTab::tagTab(int id, QMap<QString,Site*> *sites, QList<Favorite> favorites, ma
 		m_selectedSources.append(sav.at(i) == '1' ? true : false);
 	}
 
+	// Half MD5 field
+	ui->lineMd5->setEnabled(m_settings->value("enable_md5_field", false).toBool());
+	ui->lineMd5->setVisible(m_settings->value("enable_md5_field", false).toBool());
+
 	// Others
 	ui->checkMergeResults->setChecked(m_settings->value("mergeresults", false).toBool());
 	optionsChanged();
@@ -171,10 +175,19 @@ void tagTab::load()
 	m_parent->setWiki("");
 	m_pagemax = -1;
 
+	QString search = m_search->toPlainText();
+	if (!ui->lineMd5->text().isEmpty())
+	{
+		if (!search.isEmpty())
+		{ search += ' '; }
+
+		search += "md5:" + ui->lineMd5->text();
+	}
+
 	if (!m_from_history)
 	{
 		QMap<QString,QString> srch = QMap<QString,QString>();
-		srch["tags"] = m_search->toPlainText();
+		srch["tags"] = search;
 		srch["page"] = QString::number(ui->spinPage->value());
 		srch["ipp"] = QString::number(ui->spinImagesPerPage->value());
 		srch["columns"] = QString::number(ui->spinColumns->value());
@@ -189,9 +202,9 @@ void tagTab::load()
 	}
 	m_from_history = false;
 
-	if (m_search->toPlainText() != m_lastTags && !m_lastTags.isNull() && m_history_cursor == m_history.size() - 1)
+	if (search != m_lastTags && !m_lastTags.isNull() && m_history_cursor == m_history.size() - 1)
 	{ ui->spinPage->setValue(1); }
-	m_lastTags = m_search->toPlainText();
+	m_lastTags = search;
 
 	ui->widgetMeant->hide();
 	ui->buttonFirstPage->setEnabled(ui->spinPage->value() > 1);
@@ -210,7 +223,7 @@ void tagTab::load()
 	ui->layoutResults = new QGridLayout(ui->widgetResults);
 	ui->verticalLayout->insertWidget(0, ui->widgetResults);
 
-	setWindowTitle(m_search->toPlainText().isEmpty() ? tr("Recherche") : m_search->toPlainText().replace("&", "&&"));
+	setWindowTitle(search.isEmpty() ? tr("Recherche") : search.replace("&", "&&"));
 	emit titleChanged(this);
 	m_tags.clear();
 	m_parent->setTags(m_tags, this);
@@ -231,7 +244,7 @@ void tagTab::load()
 		if (m_checkboxes.at(i)->isChecked())
 		{
             // Get the search values
-			QStringList tags = m_search->toPlainText().trimmed().split(" ", QString::SkipEmptyParts);
+            QStringList tags = search.trimmed().split(" ", QString::SkipEmptyParts);
 			tags.append(m_settings->value("add").toString().trimmed().split(" ", QString::SkipEmptyParts));
 			int perpage = ui->spinImagesPerPage->value();
 
