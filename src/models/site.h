@@ -51,7 +51,6 @@ class Site : public QObject
 		bool contains(QString);
 		QString value(QString);
 		QString operator[](QString key) { return value(key); }
-		void insert(QString, QString);
 		QVariant setting(QString key, QVariant def = QVariant());
 		QSettings *settings();
 		QNetworkRequest makeRequest(QUrl url, Page *page = nullptr, QString referer = "", Image *img = nullptr);
