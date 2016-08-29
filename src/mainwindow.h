@@ -161,37 +161,25 @@ class mainWindow : public QMainWindow
 
 	private:
 		int					m_pagemax, m_getAllDownloaded, m_getAllExists, m_getAllIgnored, m_getAll404s, m_getAllErrors, m_getAllSkipped, m_getAllCount, m_getAllPageCount, m_getAllBeforeId, m_remainingPics, m_remainingSites, m_countPics, m_currentFav, m_currentFavCount, m_getAllLimit, m_downloads, m_waitForLogin;
-		bool				m_allow, m_must_get_tags, m_loaded, m_getAllRequestExists, m_getAll;
+		bool				m_allow, m_must_get_tags, m_loaded, m_getAll;
 		QSettings			*m_settings;
-		QProcess			*m_process;
-		QNetworkReply		*m_getAllRequest;
 		batchWindow			*m_progressdialog;
 		QString				m_program, m_currLang, m_currentFavorite, m_link;
-		QStringList			m_tags, m_assoc, m_gotMd5;
+		QStringList			m_tags;
 		QTranslator			m_translator;
 		QDateTime			m_loadFavorite;
-		QMap<QString,int>	m_countPage;
 		QList<QStringList>	m_groupBatchs; // tags, page, perpage, max, blacklist, source, filename, location
 		QList<Image*>		m_getAllRemaining, m_getAllDownloading, m_getAllFailed, m_images;
-		QList<Page*>		m_getAllPages, m_pages;
-		QList<QAffiche*>	m_favoritesCaptions;
-		QList<QBouton*>		m_favoritesImages, m_mergeButtons, m_webPics;
 		QWidget				*m_currentTab;
 		QList<searchTab*>	m_tabs;
-		QList<int>			m_tabsIds;
-		QList<tagTab*>	  m_tagTabs;
-		QList<poolTab*>	 m_poolTabs;
+		QList<tagTab*>		m_tagTabs;
+		QList<poolTab*>		m_poolTabs;
 		QList<bool>			m_selectedSources;
-		QList<QLabel*>		m_webSites;
-		Commands			*m_commands;
 		favoritesTab		*m_favoritesTab;
-		QMap<QString,double>			m_getAllDownloadingSpeeds;
 		QList<Favorite>					m_favorites;
-		QMap<QString,QString>			m_params;
 		QMap<QString,QTime*>			m_downloadTime, m_downloadTimeLast;
 		QList<QProgressBar*>			m_progressBars;
-		QList<QNetworkReply*>			m_replies;
-		QList<QMap<QString,QString> >	m_details, m_batchs;
+		QList<QMap<QString, QString>>	m_batchs;
 		QSet<int>						m_batchDownloading;
 		QStringList			m_lineFilename_completer, m_lineFolder_completer;
 		QList<Downloader*>  m_downloaders, m_downloadersDone;

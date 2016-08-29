@@ -852,14 +852,7 @@ void favoritesTab::favoritesBack()
 		m_currentTags = "";
 		m_currentFav = -1;
 		ui->widgetFavorites->show();
-		/*if (!m_replies.isEmpty() && m_currentFav < 1)
-		{
-			for (int i = 0; i < m_replies.count(); i++)
-			{ m_replies.at(i)->abort(); }
-			qDeleteAll(m_replies);
-			m_replies.clear();
-		}
-		if (!m_webPics.isEmpty() && m_currentFav < 1)
+		/*if (!m_webPics.isEmpty() && m_currentFav < 1)
 		{
 			qDeleteAll(m_webPics);
 			m_webPics.clear();

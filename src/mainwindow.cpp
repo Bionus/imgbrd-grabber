@@ -40,7 +40,7 @@ extern QMap<QString,QString> _md5;
 
 
 
-mainWindow::mainWindow(QString program, QStringList tags, QMap<QString,QString> params) : ui(new Ui::mainWindow), m_currentFav(-1), m_downloads(0), m_loaded(false), m_getAll(false), m_program(program), m_tags(tags), m_params(params), m_batchAutomaticRetries(0)
+mainWindow::mainWindow(QString program, QStringList tags, QMap<QString,QString> params) : ui(new Ui::mainWindow), m_currentFav(-1), m_downloads(0), m_loaded(false), m_getAll(false), m_program(program), m_tags(tags), m_batchAutomaticRetries(0)
 { }
 void mainWindow::init()
 {
@@ -262,6 +262,7 @@ void mainWindow::loadSites()
 
 mainWindow::~mainWindow()
 {
+	m_settings->deleteLater();
 	qDeleteAll(m_sites);
 	delete ui;
 }
@@ -1138,13 +1139,10 @@ void mainWindow::getAll(bool all)
 	m_getAllCount = 0;
 	m_getAllPageCount = 0;
 	m_getAllBeforeId = -1;
-	m_getAllRequestExists = false;
 	m_downloaders.clear();
-	m_getAllDownloadingSpeeds.clear();
 	m_getAllRemaining.clear();
 	m_getAllFailed.clear();
 	m_getAllDownloading.clear();
-	m_getAllPages.clear();
 
 	QList<QTableWidgetItem *> selected = ui->tableBatchUniques->selectedItems();
 	int count = selected.size();
@@ -1177,7 +1175,6 @@ void mainWindow::getAll(bool all)
 				page->load();
 				log(tr("Chargement de la page <a href=\"%1\">%1</a>").arg(page->url().toString().toHtmlEscaped()));
 				m_groupBatchs[i][8] += (m_groupBatchs[i][8] == "" ? "" : "¤") + QString::number((int)page);
-				m_getAllPages.append(page);
 				m_progressdialog->setImagesCount(m_progressdialog->count() + 1);*/
 			}
 			else
@@ -1340,7 +1337,6 @@ void mainWindow::getAllFinishedPage(Page *page)
 	Downloader *d = (Downloader*)QObject::sender();
 
 	m_groupBatchs[d->getData().toInt()][8] += (m_groupBatchs[d->getData().toInt()][8] == "" ? "" : "¤") + QString::number((quintptr)page);
-	m_getAllPages.append(page);
 
 	m_progressdialog->setImages(m_progressdialog->images() + 1);
 }
@@ -1654,7 +1650,6 @@ void mainWindow::getAllPerformTags(Image* img)
 			m_progressBars[site_id - 1]->setValue(m_progressBars[site_id]->value()+1);
 			if (m_progressBars[site_id - 1]->value() >= m_progressBars[site_id]->maximum())
 			{ ui->tableBatchGroups->item(row, 0)->setIcon(getIcon(":/images/colors/green.png")); }
-			m_getAllDownloadingSpeeds.remove(img->url());
 			m_getAllDownloading.removeAll(img);
 			img->deleteLater();
 			// qDebug() << "DELETE tags ignored" << QString::number((int)img, 16);
@@ -1676,7 +1671,6 @@ void mainWindow::getAllPerformTags(Image* img)
 			if (m_progressBars[site_id - 1]->value() >= m_progressBars[site_id - 1]->maximum())
 			{ ui->tableBatchGroups->item(row, 0)->setIcon(getIcon(":/images/colors/green.png")); }
 		}
-		m_getAllDownloadingSpeeds.remove(img->url());
 		m_getAllDownloading.removeAll(img);
 		img->deleteLater();
 		// qDebug() << "DELETE tags already" << QString::number((int)img, 16);
@@ -1717,7 +1711,6 @@ void mainWindow::getAllGetImage(Image* img)
 		m_downloadTimeLast[img->url()]->start();
 		connect(img, SIGNAL(finishedImage(Image*)), this, SLOT(getAllPerformImage(Image*)), Qt::UniqueConnection);
 		connect(img, SIGNAL(downloadProgressImage(Image*,qint64,qint64)), this, SLOT(getAllProgress(Image*,qint64,qint64)), Qt::UniqueConnection);
-		m_getAllDownloadingSpeeds.insert(img->url(), 0);
 		img->loadImage();
 		next = false;
 	}
@@ -1760,7 +1753,6 @@ void mainWindow::getAllGetImage(Image* img)
 	{
 		m_progressdialog->setValue(m_progressdialog->value()+img->value());
 		m_progressdialog->setImages(m_progressdialog->images()+1);
-		m_getAllDownloadingSpeeds.remove(img->url());
 		m_getAllDownloading.removeAll(img);
 		img->deleteLater();
 		// qDebug() << "DELETE next" << QString::number((int)img, 16);
@@ -1826,7 +1818,6 @@ void mainWindow::getAllPerformImage(Image* img)
 	// Update dialog infos
 	m_progressdialog->setImages(m_progressdialog->images() + 1);
 	m_progressdialog->setValue(m_progressdialog->value() + img->value());
-	m_getAllDownloadingSpeeds.remove(img->url());
 	m_getAllDownloading.removeAll(img);
 
 	if (del) {
@@ -1992,8 +1983,6 @@ void mainWindow::getAllFinished()
 	// Delete objects
 	for (Downloader *d : m_downloadersDone)
 	{
-		for (Page *p : m_getAllPages)
-		{ p->clear(); }
 		d->clear();
 	}
 	qDeleteAll(m_downloadersDone);
