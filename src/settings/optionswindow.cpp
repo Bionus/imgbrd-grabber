@@ -92,6 +92,7 @@ optionsWindow::optionsWindow(mainWindow *parent) : QDialog(parent), ui(new Ui::o
 	ui->spinThumbnailUpscale->setValue(settings.value("thumbnailUpscale", 1.0f).toFloat() * 100);
 	ui->checkAutocompletion->setChecked(settings.value("autocompletion", true).toBool());
 	ui->checkUseregexfortags->setChecked(settings.value("useregexfortags", true).toBool());
+	ui->checkEnableMd5Field->setChecked(settings.value("enable_md5_field", false).toBool());
 
 	ui->checkTextfileActivate->setChecked(settings.value("Textfile/activate", false).toBool());
 	ui->textEditTextfileContent->setEnabled(settings.value("Textfile/activate", false).toBool());
@@ -612,6 +613,7 @@ void optionsWindow::save()
 	settings.setValue("thumbnailUpscale", (float)ui->spinThumbnailUpscale->value() / 100.0f);
 	settings.setValue("autocompletion", ui->checkAutocompletion->isChecked());
 	settings.setValue("useregexfortags", ui->checkUseregexfortags->isChecked());
+	settings.setValue("enable_md5_field", ui->checkEnableMd5Field->isChecked());
 
 	settings.beginGroup("Textfile");
 		settings.setValue("activate", ui->checkTextfileActivate->isChecked());
