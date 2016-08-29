@@ -1,6 +1,7 @@
 #include <QProcess>
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlQuery>
+#include <QtSql/QSqlError>
 #include <QDir>
 #include "commands.h"
 #include "functions.h"
@@ -52,7 +53,7 @@ bool Commands::start()
 		db.setPassword(m_mysqlSettings.password);
 		if (!db.open())
 		{
-			log(QObject::tr("Erreur lors de l'initialisation des commandes"));
+			log(QObject::tr("Erreur lors de l'initialisation des commandes: %1").arg(db.lastError().text()));
 			return false;
 		}
 	}

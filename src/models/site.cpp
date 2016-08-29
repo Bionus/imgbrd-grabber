@@ -22,7 +22,7 @@
 
 QMap<QString, Site*> *g_allSites = Q_NULLPTR;
 
-void _prependUrl(QMap<QString,QString> *details, QString url, QString key, QString lkey = QString())
+static void _prependUrl(QMap<QString,QString> *details, QString url, QString key, QString lkey = QString())
 {
 	if (details->contains(key))
 		details->insert(lkey == NULL ? key : lkey, url + details->value(key));
@@ -131,8 +131,8 @@ Site::~Site()
 {
 	m_settings->deleteLater();
 
-	//delete m_manager->deleteLater();
-	//delete m_cookieJar->deleteLater();
+	//m_manager->deleteLater();
+	//m_cookieJar->deleteLater();
 }
 
 /**
@@ -227,13 +227,14 @@ void Site::login(bool force)
 
 			m_triedLogin = true;
 
+			QUrlQuery query;
+			query.addQueryItem(m_settings->value("login/pseudo", "").toString(), m_username);
+			query.addQueryItem(m_settings->value("login/password", "").toString(), m_password);
+
 			QString method = m_settings->value("login/method", "post").toString();
 			if (method == "post")
 			{
 				QUrl postData;
-				QUrlQuery query;
-				query.addQueryItem(m_settings->value("login/pseudo", "").toString(), m_username);
-				query.addQueryItem(m_settings->value("login/password", "").toString(), m_password);
 				postData.setQuery(query);
 
 				QNetworkRequest request(fixUrl(m_settings->value("login/url", "").toString()));
@@ -245,9 +246,6 @@ void Site::login(bool force)
 			else
 			{
 				QUrl url = fixUrl(m_settings->value("login/url", "").toString());
-				QUrlQuery query;
-				query.addQueryItem(m_settings->value("login/pseudo", "").toString(), m_username);
-				query.addQueryItem(m_settings->value("login/password", "").toString(), m_password);
 				url.setQuery(query);
 
 				QNetworkRequest request(url);
@@ -313,11 +311,8 @@ QNetworkRequest Site::makeRequest(QUrl url, Page *page, QString ref, Image *img)
 
 	QMap<QString,QVariant> headers = m_settings->value("headers").toMap();
 	request.setRawHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:35.0) Gecko/20100101 Firefox/35.0");
-	for (int i = 0; i < headers.size(); i++)
-	{
-		QString key = headers.keys().at(i);
-		request.setRawHeader(key.toLatin1(), headers[key].toString().toLatin1());
-	}
+	for (QString key : headers.keys())
+	{ request.setRawHeader(key.toLatin1(), headers[key].toString().toLatin1()); }
 
 	initManager();
 	request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, CACHE_POLICY);
@@ -449,7 +444,7 @@ void Site::checkForUpdates()
 void Site::checkForUpdatesDone()
 {
 	QString source = m_updateReply->readAll();
-	if (source.left(5) == "<?xml")
+	if (source.startsWith("<?xml"))
 	{
 		QFile current(savePath("sites/"+m_type+"/model.xml"));
 		current.open(QFile::ReadOnly);
