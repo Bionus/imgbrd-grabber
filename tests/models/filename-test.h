@@ -48,6 +48,7 @@ class FilenameTest : public TestSuite
         void testConditionalsCustom();
         void testCustoms();
         void testReplaceBlanks();
+        void testCommand();
 
     protected:
         void assertPath(QString format, QString expected, QString path = "", bool shouldFixFilename = true, bool fullPath = false);

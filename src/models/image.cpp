@@ -964,7 +964,7 @@ Image::SaveResult Image::save(QString path, bool force, bool basic)
 		Commands::get()->before();
 		for (int i = 0; i < tags().count(); i++)
 		{ Commands::get()->tag(tags().at(i)); }
-		Commands::get()->image(this, path);
+		Commands::get()->image(*this, path);
 		Commands::get()->after();
 	}
 	else

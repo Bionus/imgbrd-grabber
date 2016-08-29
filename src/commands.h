@@ -28,12 +28,13 @@ class Commands
 		void init(QSettings*);
 		bool start();
 		bool before();
-		bool image(Image*, QString);
+		bool image(const Image &, QString);
 		bool tag(Tag);
 		bool after();
 
 	private:
 		static Commands *_instance;
+		QSettings *m_settings;
 		QString m_commandImage;
 		QString m_commandTag;
 		bool m_mysql;
