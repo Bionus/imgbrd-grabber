@@ -47,7 +47,6 @@ class Site : public QObject
 		QString name();
 		QString url();
 		QString updateVersion();
-		QNetworkReply *loginReply();
 		QList<QNetworkCookie> cookies();
 		bool contains(QString);
 		QString value(QString);
@@ -97,7 +96,6 @@ class Site : public QObject
 		QMap<QString,QString> m_data;
 		QList<QNetworkCookie> m_cookies;
 		QSettings *m_settings;
-		QString m_sessionId;
 		QNetworkAccessManager *m_manager;
 		QNetworkCookieJar *m_cookieJar;
 		QNetworkReply *m_loginReply, *m_updateReply, *m_tagsReply;

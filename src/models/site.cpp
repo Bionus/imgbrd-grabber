@@ -580,11 +580,6 @@ QUrl Site::fixUrl(QString url, QUrl old)
 	return QUrl(url);
 }
 
-QNetworkReply *Site::loginReply()
-{
-	return m_loginReply;
-}
-
 QList<QNetworkCookie> Site::cookies()
 {
 	return m_cookies;
