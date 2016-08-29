@@ -11,10 +11,10 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Grabber Crash Reporter</string>
+   <string>Crash Reporter</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="resources.qrc">
+   <iconset resource="../resources.qrc">
     <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
@@ -167,7 +167,9 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
-  <include location="resources.qrc"/>
+  <include location="../resources.qrc"/>
+  <include location="../resources.qrc"/>
+  <include location="../resources.qrc"/>
  </resources>
  <connections>
   <connection>
@@ -186,5 +188,41 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>buttonQuit</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>sendCrashReport()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>307</x>
+     <y>214</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>349</x>
+     <y>220</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonRestart</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>restart()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>243</x>
+     <y>212</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>173</x>
+     <y>220</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
+ <slots>
+  <slot>sendCrashReport()</slot>
+  <slot>restart()</slot>
+ </slots>
 </ui>

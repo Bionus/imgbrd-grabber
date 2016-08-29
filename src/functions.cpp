@@ -319,10 +319,11 @@ QStringList loadIgnored()
  */
 QString savePath(QString file, bool exists)
 {
-	QString check = exists ? file : "settings.ini";
 	#ifdef TEST
+		Q_UNUSED(exists);
 		return QDir::toNativeSeparators(QDir::currentPath()+"/tests/resources/"+file);
 	#else
+		QString check = exists ? file : "settings.ini";
 		if (QFile(QDir::toNativeSeparators(qApp->applicationDirPath()+"/"+check)).exists())
 		{ return QDir::toNativeSeparators(qApp->applicationDirPath()+"/"+file); }
 		if (QFile(QDir::toNativeSeparators(QDir::currentPath()+"/"+check)).exists())

@@ -19,8 +19,7 @@ class MainWindow : public QMainWindow
 		~MainWindow();
 
 	public slots:
-		void on_buttonRestart_clicked();
-		void on_buttonQuit_clicked();
+		void restart();
 		void sendCrashReport();
 		void finished();
 
