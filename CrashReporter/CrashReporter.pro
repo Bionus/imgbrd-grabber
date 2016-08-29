@@ -1,6 +1,6 @@
 # Basic config
 CONFIG     += qt
-QT         += core gui widgets designer
+QT         += core gui widgets
 TARGET      = CrashReporter
 TEMPLATE    = app
 
