@@ -20,6 +20,8 @@
 
 
 
+QMap<QString, Site*> *g_allSites = Q_NULLPTR;
+
 void _prependUrl(QMap<QString,QString> *details, QString url, QString key, QString lkey = QString())
 {
 	if (details->contains(key))
@@ -33,7 +35,7 @@ Site::Site(QSettings *settings, QString dir, QString url)
 	if (file.open(QIODevice::ReadOnly | QIODevice::Text))
 	{
 		QFileInfo info(dir);
-		m_type = info.baseName();
+		m_type = info.fileName();
 
 		QString source = file.readAll();
 		QDomDocument doc;
@@ -474,120 +476,36 @@ QList<Site*> Site::getSites(QStringList sources)
 			sites->remove(source);
 		}
 	}
-	qDeleteAll(*sites);
-	delete sites;
 
 	return ret;
 }
 QMap<QString, Site*> *Site::getAllSites()
 {
+	if (g_allSites != Q_NULLPTR)
+		return g_allSites;
+
 	QMap<QString, Site*> *stes = new QMap<QString, Site*>();
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
-	QStringList dir = QDir(savePath("sites")).entryList(QDir::Dirs | QDir::NoDotAndDotDot);
+	QStringList dirs = QDir(savePath("sites")).entryList(QDir::Dirs | QDir::NoDotAndDotDot);
 
-	for (int i = 0; i < dir.count(); i++)
+	for (QString dir : dirs)
 	{
-		QFile file(savePath("sites/"+dir.at(i)+"/model.xml"));
-		if (file.open(QIODevice::ReadOnly | QIODevice::Text))
+		QFile f(savePath("sites/"+dir+"/sites.txt"));
+		if (f.open(QIODevice::ReadOnly | QIODevice::Text))
 		{
-			QString source = file.readAll();
-			QDomDocument doc;
-			QString errorMsg;
-			int errorLine, errorColumn;
-			if (!doc.setContent(source, false, &errorMsg, &errorLine, &errorColumn))
-			{ log(tr("Erreur lors de l'analyse du fichier XML : %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn)), Error); }
-			else
+			while (!f.atEnd())
 			{
-				QDomElement docElem = doc.documentElement();
-				QMap<QString,QString> detals = domToMap(docElem);
-				QStringList defaults = QStringList() << "xml" << "json" << "rss" << "regex";
-				QStringList source;
-				for (int s = 0; s < 4; s++)
-				{
-					QString t = settings.value("source_"+QString::number(s+1), defaults.at(s)).toString();
-					t[0] = t[0].toUpper();
-					if (detals.contains("Urls/"+(t == "Regex" ? "Html" : t)+"/Tags"))
-					{ source.append(t); }
-				}
-				if (!source.isEmpty())
-				{
-					QFile f(savePath("sites/"+dir[i]+"/sites.txt"));
-					if (f.open(QIODevice::ReadOnly | QIODevice::Text))
-					{
-						while (!f.atEnd())
-						{
-							QString line = f.readLine().trimmed();
-							if (line.isEmpty())
-								continue;
+				QString line = f.readLine().trimmed();
+				if (line.isEmpty())
+					continue;
 
-							QStringList srcs;
-							QSettings sets(savePath("sites/"+dir[i]+"/"+line+"/settings.ini"), QSettings::IniFormat);
-							if (!sets.value("sources/usedefault", true).toBool())
-							{
-								srcs = QStringList() << sets.value("sources/source_1").toString()
-													 << sets.value("sources/source_2").toString()
-													 << sets.value("sources/source_3").toString()
-													 << sets.value("sources/source_4").toString();
-								srcs.removeAll("");
-								if (srcs.isEmpty())
-								{ srcs = source; }
-								else
-								{
-									for (int i = 0; i < srcs.size(); i++)
-									{ srcs[i][0] = srcs[i][0].toUpper(); }
-								}
-							}
-							else
-							{ srcs = source; }
-
-							QMap<QString,QString> details = detals;
-							details["Model"] = dir[i];
-							details["Url"] = line;
-							details["Selected"] = srcs.join("/").toLower();
-							QString lineSsl = QString(sets.value("ssl", false).toBool() ? "https" : "http") + "://" + line;
-							for (int j = 0; j < srcs.size(); j++)
-							{
-								QString sr = srcs[j] == "Regex" ? "Html" : srcs[j];
-								_prependUrl(&details, lineSsl, "Urls/"+sr+"/Tags", "Urls/"+QString::number(j+1)+"/Tags");
-								_prependUrl(&details, lineSsl, "Urls/"+sr+"/Home", "Urls/"+QString::number(j+1)+"/Home");
-								_prependUrl(&details, lineSsl, "Urls/"+sr+"/Pools", "Urls/"+QString::number(j+1)+"/Pools");
-								if (details.contains("Urls/"+sr+"/Login"))
-									details["Urls/"+QString::number(j+1)+"/Login"] = details["Urls/"+sr+"/Login"];
-								if (details.contains("Urls/"+sr+"/Limit"))
-									details["Urls/"+QString::number(j+1)+"/Limit"] = details["Urls/"+sr+"/Limit"];
-								if (details.contains("Urls/"+sr+"/Image"))
-									details["Urls/"+QString::number(j+1)+"/Image"] = details["Urls/"+sr+"/Image"];
-								if (details.contains("Urls/"+sr+"/Sample"))
-									details["Urls/"+QString::number(j+1)+"/Sample"] = details["Urls/"+sr+"/Sample"];
-								if (details.contains("Urls/"+sr+"/Preview"))
-									details["Urls/"+QString::number(j+1)+"/Preview"] = details["Urls/"+sr+"/Preview"];
-								if (details.contains("Urls/"+sr+"/MaxPage"))
-									details["Urls/"+QString::number(j+1)+"/MaxPage"] = details["Urls/"+sr+"/MaxPage"];
-								if (details.contains("Urls/"+sr+"/AltPagePrev"))
-									details["Urls/"+QString::number(j+1)+"/AltPagePrev"] = details["Urls/"+sr+"/AltPagePrev"];
-								if (details.contains("Urls/"+sr+"/AltPageNext"))
-									details["Urls/"+QString::number(j+1)+"/AltPageNext"] = details["Urls/"+sr+"/AltPageNext"];
-							}
-							_prependUrl(&details, lineSsl, "Urls/Html/Post");
-							_prependUrl(&details, lineSsl, "Urls/Html/Tags");
-							_prependUrl(&details, lineSsl, "Urls/Html/Home");
-							_prependUrl(&details, lineSsl, "Urls/Html/Pools");
-
-							Site *site = new Site(dir[i], line, details);
-							stes->insert(line, site);
-						}
-					}
-					else
-					{ log(tr("Fichier sites.txt du modèle %1 introuvable.").arg(dir[i]), Error); }
-					f.close();
-				}
-				else
-				{ log(tr("Aucune source valide trouvée dans le fichier model.xml de %1.").arg(dir[i])); }
+				stes->insert(line, new Site(&settings, savePath("sites/"+dir), line));
 			}
-			file.close();
 		}
 	}
-	return stes;
+
+	g_allSites = stes;
+	return g_allSites;
 }
 
 void Site::loadTags(int page, int limit)
