@@ -78,5 +78,43 @@ void SiteTest::testGetAllCached()
 	QCOMPARE(sites1, sites2);
 }
 
+void SiteTest::testLoadTags()
+{
+	// Wait for tags
+	QSignalSpy spy(m_site, SIGNAL(finishedLoadingTags(QList<Tag>)));
+	m_site->loadTags(3, 20);
+	QVERIFY(spy.wait());
+
+	// Get results
+	QList<QVariant> arguments = spy.takeFirst();
+	QVariantList variants = arguments.at(0).value<QVariantList>();
+
+	// Convert results
+	QList<Tag> tags;
+	QStringList tagsText;
+	for (QVariant variant : variants)
+	{
+		Tag tag = variant.value<Tag>();
+		tags.append(tag);
+		tagsText.append(tag.text());
+	}
+
+	// Compare results
+	tagsText = tagsText.mid(0, 3);
+	QCOMPARE(tags.count(), 20);
+	QCOMPARE(tagsText, QStringList() << "kameji_(tyariri)" << "the_king_of_fighterx_xiv" << "condom_skirt");
+}
+
+void SiteTest::testCheckForUpdates()
+{
+	// Wait for tags
+	QSignalSpy spy(m_site, SIGNAL(checkForUpdatesFinished(Site*)));
+	m_site->checkForUpdates();
+	QVERIFY(spy.wait());
+
+	// Check result
+	QVERIFY(!m_site->updateVersion().isEmpty());
+}
+
 
 static SiteTest instance;

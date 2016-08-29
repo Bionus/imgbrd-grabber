@@ -29,6 +29,9 @@ class SiteTest : public TestSuite
 		 */
 		void testGetAllCached();
 
+		void testLoadTags();
+		void testCheckForUpdates();
+
 	private:
 		QSettings *m_settings;
 		Site *m_site;

@@ -251,7 +251,7 @@ void Site::login(bool force)
 				QNetworkRequest request(url);
 				request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, CACHE_POLICY);
 
-				m_loginReply = m_manager->get(request);
+				m_loginReply = getRequest(request);
 				connect(m_loginReply, SIGNAL(finished()), this, SLOT(loginFinished()));
 			}
 
@@ -431,10 +431,7 @@ void Site::checkForUpdates()
 
 	initManager();
 
-	QNetworkRequest request = QNetworkRequest(QUrl(url));
-	request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, CACHE_POLICY);
-
-	m_updateReply = m_manager->get(request);
+	m_updateReply = get(QUrl(url));
 	connect(m_updateReply, SIGNAL(finished()), this, SLOT(checkForUpdatesDone()));
 }
 
@@ -447,12 +444,14 @@ void Site::checkForUpdatesDone()
 	if (source.startsWith("<?xml"))
 	{
 		QFile current(savePath("sites/"+m_type+"/model.xml"));
-		current.open(QFile::ReadOnly);
-		QString compare = current.readAll();
-		current.close();
+		if (current.open(QFile::ReadOnly))
+		{
+			QString compare = current.readAll();
+			current.close();
 
-		if (compare != source)
-		{ m_updateVersion = VERSION; }
+			if (compare != source)
+			{ m_updateVersion = VERSION; }
+		}
 	}
 	emit checkForUpdatesFinished(this);
 }
@@ -504,11 +503,10 @@ void Site::loadTags(int page, int limit)
 	initManager();
 
 	QString protocol = (m_settings->value("ssl", false).toBool() ? "https" : "http");
-	QNetworkRequest request(QUrl(protocol + "://"+m_url+"/tags.json?search[hide_empty]=yes&limit="+QString::number(limit)+"&page=" + QString::number(page)));
-	request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, CACHE_POLICY);
-	m_tagsReply = m_manager->get(request);
+	m_tagsReply = get(QUrl(protocol + "://"+m_url+"/tags.json?search[hide_empty]=yes&limit="+QString::number(limit)+"&page=" + QString::number(page)));
 	connect(m_tagsReply, SIGNAL(finished()), this, SLOT(finishedTags()));
 }
+
 void Site::finishedTags()
 {
 	QString source = m_tagsReply->readAll();
