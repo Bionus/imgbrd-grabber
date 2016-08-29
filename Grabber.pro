@@ -1,13 +1,18 @@
+# Multiple-project project
 TEMPLATE = subdirs
-CONFIG += ordered
+CONFIG  += ordered
 
-SUBDIRS = gui
+# List of subprojects
+SUBDIRS  = gui
+SUBDIRS += tests
 SUBDIRS += CrashReporter
+
+# CLI project for Windows
 win32 {
 	SUBDIRS += cli
 }
-SUBDIRS += tests
 
+# Setup script for Linux
 unix:!macx{
 	isEmpty(PREFIX){
 		PREFIX = /usr/local
