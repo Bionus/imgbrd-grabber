@@ -34,7 +34,6 @@ install:
       PATH=/usr/local/Cellar/qt5/5.6.1-1/bin:$PATH &&
       export PATH
     ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then pip install --user codecov; fi
 
 # Start X before running tests on Linux
 before_script:
@@ -52,4 +51,4 @@ script:
 
 # Upload code coverage
 after_success:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then codecov -t 068ef4e2-5006-4f45-9545-fbf4e22ad085; fi
+  - bash <(curl -s https://codecov.io/bash)
