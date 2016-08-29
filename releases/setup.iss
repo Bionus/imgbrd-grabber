@@ -76,7 +76,7 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 [Files]                                                           
 Source: "..\images\icon.ico";                   DestDir: "{app}"; Flags: ignoreversion
 Source: "..\release\CDR.exe";                   DestDir: "{app}"; Flags: ignoreversion   
-Source: "..\release\CrashReporter.exe";         DestDir: "{app}"; Flags: ignoreversion   
+Source: "..\CrashReporter\release\CrashReporter.exe"; DestDir: "{app}"; Flags: ignoreversion   
 Source: "..\cli\release\Cli.exe";               DestDir: "{app}"; Flags: ignoreversion; DestName: "Grabber.com"
 Source: "..\gui\release\Grabber.exe";           DestDir: "{app}"; Flags: ignoreversion   
 Source: "..\release\words.txt";                 DestDir: "{app}";    
