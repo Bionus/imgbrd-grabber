@@ -11,6 +11,11 @@ matrix:
     - os: osx
       osx_image: xcode7
 
+# Codecov token
+env:
+  global:
+    - CODECOV_TOKEN=068ef4e2-5006-4f45-9545-fbf4e22ad085
+
 # Qt packages for Linux
 addons:
   apt:
