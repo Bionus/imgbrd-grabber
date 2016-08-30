@@ -52,7 +52,7 @@ before_script:
 script:
   - qmake Grabber.pro
   - make
-  - ./tests/tests
+  - ./tests/build/release/tests
 
 # Upload code coverage
 after_success:
