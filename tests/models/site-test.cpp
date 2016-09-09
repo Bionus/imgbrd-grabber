@@ -1,4 +1,5 @@
 #include <QtTest>
+#include <QNetworkCookie>
 #include "site-test.h"
 
 
@@ -10,7 +11,7 @@ void SiteTest::init()
 	QFile::copy("release/sites/Danbooru (2.0)/danbooru.donmai.us/settings.ini", "tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/settings.ini");
 
 	m_settings = new QSettings("tests/resources/settings.ini", QSettings::IniFormat);
-	m_site = new Site(m_settings, "release/sites/Danbooru (2.0)", "danbooru.donmai.us");}
+	m_site = new Site(m_settings, "tests/resources/sites/Danbooru (2.0)", "danbooru.donmai.us");}
 
 void SiteTest::cleanup()
 {
@@ -114,6 +115,30 @@ void SiteTest::testCheckForUpdates()
 
 	// Check result
 	QVERIFY(!m_site->updateVersion().isEmpty());
+}
+
+void SiteTest::testCookies()
+{
+	QList<QNetworkCookie> cookies;
+	cookies.append(QNetworkCookie("test_name_1", "test_value_1"));
+	cookies.append(QNetworkCookie("test_name_2", "test_value_2"));
+
+	QList<QVariant> cookiesVariant;
+	for (QNetworkCookie cookie : cookies)
+	{
+		cookiesVariant.append(cookie.toRawForm());
+	}
+	QSettings siteSettings("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/settings.ini", QSettings::IniFormat);
+	siteSettings.setValue("cookies", cookiesVariant);
+
+	m_site->load("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/settings.ini");
+	QList<QNetworkCookie> siteCookies(m_site->cookies());
+
+	QCOMPARE(siteCookies.count(), cookies.count());
+	QCOMPARE(siteCookies[0].name(), cookies[0].name());
+	QCOMPARE(siteCookies[0].value(), cookies[0].value());
+	QCOMPARE(siteCookies[1].name(), cookies[1].name());
+	QCOMPARE(siteCookies[1].value(), cookies[1].value());
 }
 
 

@@ -31,6 +31,7 @@ class SiteTest : public TestSuite
 
 		void testLoadTags();
 		void testCheckForUpdates();
+		void testCookies();
 
 	private:
 		QSettings *m_settings;
