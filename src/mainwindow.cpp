@@ -7,6 +7,7 @@
 #include <QtNetwork>
 #include <QDesktopServices>
 #include <QCloseEvent>
+#include <QScrollBar>
 #include <QtSql/QSqlDatabase>
 #if defined(Q_OS_WIN)
 	#include "windows.h"
@@ -35,17 +36,13 @@
 #define DONE()			logUpdate(QObject::tr(" Fait"))
 #define DIR_SEPARATOR	QDir::toNativeSeparators("/")
 
-extern QMap<QDateTime,QString> _log;
 extern QMap<QString,QString> _md5;
 
 
 
-mainWindow::mainWindow(QString program, QStringList tags, QMap<QString,QString> params) : ui(new Ui::mainWindow), m_currentFav(-1), m_downloads(0), m_loaded(false), m_getAll(false), m_program(program), m_tags(tags), m_batchAutomaticRetries(0)
-{
-	logwatcher = new QFileSystemWatcher(this);
-	connect(logwatcher, SIGNAL(fileChanged(QString)), this, SLOT(logShow()));
-	logwatcher->addPath(savePath("main.log"));
-}
+mainWindow::mainWindow(QString program, QStringList tags, QMap<QString,QString> params)
+	: ui(new Ui::mainWindow), m_currentFav(-1), m_downloads(0), m_loaded(false), m_getAll(false), m_program(program), m_tags(tags), m_batchAutomaticRetries(0), m_showLog(true)
+{ }
 void mainWindow::init()
 {
 	m_settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
@@ -56,6 +53,11 @@ void mainWindow::init()
 
 	loadLanguage(m_settings->value("language", "English").toString(), true);
 	ui->setupUi(this);
+
+	m_showLog = m_settings->value("Log/show", true).toBool();
+	if (!m_showLog)
+	{ ui->tabWidget->removeTab(ui->tabWidget->indexOf(ui->tabLog)); }
+
 	log(tr("Nouvelle session démarée."));
 	log(tr("Version du logiciel : %1.").arg(VERSION));
 	log(tr("Chemin : %1").arg(qApp->applicationDirPath()));
@@ -224,7 +226,6 @@ void mainWindow::init()
 
 	m_loaded = true;
 	m_currentTab = nullptr;
-	logShow();
 	log("Fin de l'initialisation.");
 }
 
@@ -907,47 +908,29 @@ void mainWindow::updateKeepForLater()
 }
 
 
-void mainWindow::logShow()
+void mainWindow::logShow(QDateTime date, QString msg)
 {
-	logwatcher->addPath(savePath("main.log"));
-	if (m_loaded)
-	{
-		QFile logFile(savePath("main.log"));
-		if(!logFile.open(QIODevice::ReadOnly | QIODevice::Text)){
-			return;
-		}
-		while(!logFile.atEnd()){
-			const QByteArray line = logFile.readLine();
-			QString str(line);
-			QString timestamp = str.split(' ').at(0);
-			timestamp.replace("[", "").replace("]", "");
-			QStringList logStringTime = str.split(' ');
-			logStringTime.removeFirst();
-			const QString logString = logStringTime.join(' ');
-			_log.insert(QDateTime::fromString(timestamp, "hh:mm:ss.zzz"), logString);
-		}
-		logFile.close();
-		QString txt("");
-		int k;
-		for (int i = 0; i < _log.size(); i++)
-		{
-			k = m_settings->value("Log/invert", false).toBool() ? _log.size()-i-1 : i;
-			txt += QString(i > 0 ? "<br/>" : "")+"["+_log.keys().at(k).toString("hh:mm:ss.zzz")+"] "+_log.values().at(k);
-		}
-		ui->labelLog->setText(txt);
-		ui->labelLog->setAlignment(Qt::AlignTop | Qt::AlignLeft);
+	if (!m_showLog)
+		return;
 
-	}
+	QString line = "[" + date.toString("hh:mm:ss.zzz") + "] " + msg;
+
+	ui->labelLog->appendHtml(line);
+	ui->labelLog->verticalScrollBar()->setValue(ui->labelLog->verticalScrollBar()->maximum());
 }
 void mainWindow::logClear()
 {
-	_log.clear();
 	QFile logFile(savePath("main.log"));
-	if(logFile.open(QIODevice::WriteOnly | QIODevice::Text)){
+	if (logFile.open(QIODevice::WriteOnly | QIODevice::Text))
+	{
 		logFile.resize(0);
 		logFile.close();
 	}
-	logShow();
+
+	if (m_showLog)
+	{
+		ui->labelLog->clear();
+	}
 }
 void mainWindow::logOpen()
 { QDesktopServices::openUrl("file:///"+savePath("main.log")); }
@@ -1350,8 +1333,6 @@ void mainWindow::getAllGetPages()
 			downloader->getImages();
 		}
 	}
-
-	logShow();
 }
 
 /**

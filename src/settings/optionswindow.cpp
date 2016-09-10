@@ -86,7 +86,6 @@ optionsWindow::optionsWindow(mainWindow *parent) : QDialog(parent), ui(new Ui::o
 	ui->comboFavoritesDisplay->setCurrentIndex(ftypes.indexOf(settings.value("favorites_display", "ind").toString()));
 
 	ui->checkShowLog->setChecked(settings.value("Log/show", true).toBool());
-	ui->checkInvertLog->setChecked(settings.value("Log/invert", false).toBool());
 
 	ui->checkResizeInsteadOfCropping->setChecked(settings.value("resizeInsteadOfCropping", true).toBool());
 	ui->spinThumbnailUpscale->setValue(settings.value("thumbnailUpscale", 1.0f).toFloat() * 100);
@@ -606,7 +605,6 @@ void optionsWindow::save()
 
 	settings.beginGroup("Log");
 		settings.setValue("show", ui->checkShowLog->isChecked());
-		settings.setValue("invert", ui->checkInvertLog->isChecked());
 	settings.endGroup();
 
 	settings.setValue("resizeInsteadOfCropping", ui->checkResizeInsteadOfCropping->isChecked());
