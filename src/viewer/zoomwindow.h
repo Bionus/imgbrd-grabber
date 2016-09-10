@@ -89,7 +89,8 @@ class zoomWindow : public QDialog
 		Image *m_image;
 		QMap<QString,QString> regex, m_details;
 		Site *m_site;
-		int timeout, m_loaded, m_loadedImage, m_loadedDetails, oldsize, m_mustSave;
+		int timeout, oldsize, m_mustSave;
+		bool m_loaded, m_loadedImage, m_loadedDetails;
 		QString id, m_url, tags, rating, score, user, format;
 		QAffiche *m_labelTagsTop, *m_labelTagsLeft;
 		QPixmap *image;

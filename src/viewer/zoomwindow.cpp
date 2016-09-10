@@ -194,7 +194,9 @@ void zoomWindow::openPoolId(Page *p)
 	{ return; }
 	m_image = p->images().at(0);
 	timeout = 300;
-	m_loaded = 0;
+	m_loaded = false;
+	m_loadedDetails = false;
+	m_loadedImage = false;
 	oldsize = 0;
 	m_reply->deleteLater();
 	m_reply = NULL;
@@ -420,18 +422,19 @@ void zoomWindow::display(QImage pix, int size)
 
 void zoomWindow::replyFinishedDetails(Image* img)
 {
-	log("details got");
-
 	m_loadedDetails = true;
 	m_image = img;
 	colore();
 
-	QStringList pools = QStringList();
-	for (const Pool &p : img->pools())
-	{ pools.append((p.previous() != 0 ? "<a href=\""+QString::number(p.previous())+"\">&lt;</a> " : "")+"<a href=\"pool:"+QString::number(p.id())+"\">"+p.name()+"</a>"+(p.next() != 0 ? " <a href=\""+QString::number(p.next())+"\">&gt;</a>" : "")); }
-	if (!pools.isEmpty())
-	{ ui->labelPools->show(); }
-	ui->labelPools->setText(pools.join("<br />"));
+	// Show pool information
+	if (!img->pools().isEmpty())
+	{
+		QStringList pools = QStringList();
+		for (const Pool &p : img->pools())
+		{ pools.append((p.previous() != 0 ? "<a href=\""+QString::number(p.previous())+"\">&lt;</a> " : "")+"<a href=\"pool:"+QString::number(p.id())+"\">"+p.name()+"</a>"+(p.next() != 0 ? " <a href=\""+QString::number(p.next())+"\">&gt;</a>" : "")); }
+		ui->labelPools->setText(pools.join("<br />"));
+		ui->labelPools->show();
+	}
 
 	QString path1 = m_settings->value("Save/path").toString().replace("\\", "/");
 	QStringList pth1s = m_image->path(m_settings->value("Save/filename").toString(), path1);
@@ -463,6 +466,7 @@ void zoomWindow::replyFinishedDetails(Image* img)
 			file2notexists = true;
 	}
 
+	// If the file already exists, we directly display it
 	if (!file1notexists || !file2notexists)
 	{
 		if (!file1notexists)
@@ -482,15 +486,17 @@ void zoomWindow::replyFinishedDetails(Image* img)
 		QString fext = m_source.section('.', -1);
 		m_url = m_url.section('.', 0, -2) + "." + fext;
 		m_image->setFileExtension(fext);
+		m_finished = true;
 
 		draw();
 	}
+
+	// If the file does not exist, we have to load it
 	else
 	{
 		if (m_url.isEmpty())
 		{ m_url = m_image->url(); }
 		load();
-		pendingUpdate();
 	}
 }
 void zoomWindow::colore()
@@ -506,7 +512,6 @@ void zoomWindow::colore()
 
 void zoomWindow::replyFinishedZoom()
 {
-	log("zoom got");
 	delete m_imageTime;
 
 	// Check redirection
@@ -527,9 +532,9 @@ void zoomWindow::replyFinishedZoom()
 		m_data.append(m_reply->readAll());
 		m_image->setData(m_data);
 
-		draw();
 		m_loadedImage = true;
 		pendingUpdate();
+		draw();
 	}
 	else if (m_reply->error() == QNetworkReply::ContentNotFoundError && m_url.section('.', -1) != "mp4")
 	{
@@ -597,11 +602,11 @@ void zoomWindow::pendingUpdate()
 
 void zoomWindow::draw()
 {
-	QString ext = m_url.section('.', -1).toLower();
+	QString fn = m_url.section('/', -1).toLower();
+	QString ext = fn.section('.', -1).toLower();
 	bool isVideo = ext == "mp4" || ext == "webm" || ext == "flv";
 
-	QString fn = m_url.section('/', -1).toLower();
-
+	// We need a filename to display gifs and videos, so we get it if we're not already loading from a file
 	QString filename;
 	if (m_source.isEmpty())
 	{
@@ -619,6 +624,7 @@ void zoomWindow::draw()
 	else
 	{ filename = m_source; }
 
+	// GIF (using QLabel support for QMovie)
 	if (ext == "gif")
 	{
 		this->movie = new QMovie(filename, QByteArray(), this);
@@ -626,37 +632,43 @@ void zoomWindow::draw()
 		m_stackedWidget->setCurrentWidget(m_labelImage);
 		this->movie->start();
 
-		image = NULL;
+		this->image = nullptr;
+		return;
 	}
-	else if (isVideo)
+
+	// Videos (using a media player)
+	if (isVideo)
 	{
 		QMediaPlaylist *playlist = new QMediaPlaylist(this);
 		playlist->addMedia(QUrl::fromLocalFile(filename));
 		playlist->setPlaybackMode(QMediaPlaylist::CurrentItemInLoop);
+
 		m_mediaPlayer->setPlaylist(playlist);
 		m_stackedWidget->setCurrentWidget(m_videoWidget);
 		m_mediaPlayer->play();
+
+		this->image = nullptr;
+		return;
+	}
+
+	// Images
+	if (!m_source.isEmpty())
+	{
+		QPixmap *img = new QPixmap;
+		img->load(m_source);
+		this->image = img;
+
+		m_loadedImage = true;
+		pendingUpdate();
+		update();
 	}
 	else
 	{
-		if (!m_source.isEmpty())
-		{
-			QPixmap *img = new QPixmap;
-			img->load(m_source);
-			this->image = img;
-
-			m_loadedImage = true;
-			update();
-			pendingUpdate();
-		}
-		else
-		{
-			m_thread = true;
-			m_th = new ImageThread(m_data);
-			connect(m_th, SIGNAL(finished(QImage, int)), this, SLOT(display(QImage, int)));
-			connect(m_th, SIGNAL(finished()), m_th, SLOT(deleteLater()));
-			m_th->start();
-		}
+		m_thread = true;
+		m_th = new ImageThread(m_data);
+		connect(m_th, SIGNAL(finished(QImage, int)), this, SLOT(display(QImage, int)));
+		connect(m_th, SIGNAL(finished()), m_th, SLOT(deleteLater()));
+		m_th->start();
 	}
 }
 
@@ -668,20 +680,22 @@ void zoomWindow::draw()
  */
 void zoomWindow::update(bool onlysize)
 {
-	QString ext = m_url.section('.', -1).toLower();
-	if (ext != "gif" && ext != "webm")
+	// Ignore this event for GIF and videos
+	if (this->image == nullptr)
+		return;
+
+	bool needScaling = (this->image->width() > m_labelImage->width() || this->image->height() > m_labelImage->height());
+	if (needScaling && (onlysize || m_loadedImage))
 	{
-		if (onlysize && (this->image->width() > m_labelImage->width() || this->image->height() > m_labelImage->height()))
-		{ m_labelImage->setImage(this->image->scaled(m_labelImage->width(), m_labelImage->height(), Qt::KeepAspectRatio, Qt::FastTransformation)); }
-		else if (m_loaded)
-		{
-			if (this->image->width() > m_labelImage->width() || this->image->height() > m_labelImage->height())
-			{ m_labelImage->setImage(this->image->scaled(m_labelImage->width(), m_labelImage->height(), Qt::KeepAspectRatio, Qt::SmoothTransformation)); }
-			else
-			{ m_labelImage->setImage(*this->image); }
-		}
-		m_stackedWidget->setCurrentWidget(m_labelImage);
+		Qt::TransformationMode mode = onlysize ? Qt::FastTransformation : Qt::SmoothTransformation;
+		m_labelImage->setImage(this->image->scaled(m_labelImage->width(), m_labelImage->height(), Qt::KeepAspectRatio, mode));
 	}
+	else if (m_loadedImage)
+	{
+		m_labelImage->setImage(*this->image);
+	}
+
+	m_stackedWidget->setCurrentWidget(m_labelImage);
 }
 
 void zoomWindow::saveNQuit()
@@ -856,14 +870,10 @@ void zoomWindow::unfullScreen()
 
 void zoomWindow::resizeEvent(QResizeEvent *e)
 {
-	if (m_loaded && m_finished && !m_thread)
+	if (m_loadedImage && m_finished && !m_thread)
 	{
 		if (!m_resizeTimer->isActive())
-		{
-			this->timeout = this->image->width()*this->image->height() / 100000;
-			if (this->timeout < 50)		{ this->timeout = 50;	}
-			if (this->timeout > 500)	{ this->timeout = 500;	}
-		}
+		{ this->timeout = qMin(500, qMax(50, (this->image->width() * this->image->height()) / 100000)); }
 		m_resizeTimer->stop();
 		m_resizeTimer->start(this->timeout);
 		this->update(true);
