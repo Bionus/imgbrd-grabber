@@ -20,8 +20,8 @@ const
   vcredist_version_minor = 0;
   vcredist_version_build = 24210;
 
-    vcredist2015_url = 'https://download.microsoft.com/download/d/e/c/dec58546-c2f5-40a7-b38e-4df8d60b9764/vc_redist.x86.exe';
-    vcredist2015_url_x64 = 'https://download.microsoft.com/download/2/c/6/2c675af0-2155-4961-b32e-289d7addfcec/vc_redist.x64.exe';
+    vcredist2015_url = 'http://download.microsoft.com/download/d/e/c/dec58546-c2f5-40a7-b38e-4df8d60b9764/vc_redist.x86.exe';
+    vcredist2015_url_x64 = 'http://download.microsoft.com/download/2/c/6/2c675af0-2155-4961-b32e-289d7addfcec/vc_redist.x64.exe';
 
     vcredist2015_productcode = '{8FD71E98-EE44-3844-9DAD-9CB0BBBC603C}';
     vcredist2015_productcode_x64 = '{C0B2C673-ECAA-372D-94E5-E89440D087AD}';
