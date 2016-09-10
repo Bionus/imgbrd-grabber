@@ -558,3 +558,22 @@ bool Filename::isValid(QString *error) const
 	returnError(QObject::tr("<span style=\"color:green\">Format valide !</span>"), error);
 	return true;
 }
+
+bool Filename::needExactTags(bool forceImageUrl) const
+{
+	// Javascript filenames always need tags as we don't know what they might do
+	if (m_format.startsWith("javascript:"))
+		return true;
+
+	// If we need the filename and it is returned from the details page
+	if (m_format.contains("%filename%") && forceImageUrl)
+		return true;
+
+	// The filename contains one of the special tags
+	QStringList forbidden = QStringList() << "artist" << "copyright" << "character" << "model" << "general";
+	for (QString token : forbidden)
+		if (m_format.contains("%" + token + "%"))
+			return true;
+
+	return false;
+}

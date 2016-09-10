@@ -28,6 +28,8 @@ class Filename
 		 */
 		bool isValid(QString *error = nullptr) const;
 
+		bool needExactTags(bool forceImageUrl = false) const;
+
 		QList<QMap<QString, QPair<QString, QString>>> getReplaces(QString filename, const Image& img, QSettings *settings, QMap<QString,QStringList> custom) const;
 		QString expandConditionals(QString text, QStringList tokens, QStringList tags, QMap<QString, QPair<QString, QString>> replaces, int depth = 0) const;
 		QMap<QString, QStringList> makeDetails(const Image& img, QSettings *settings) const;

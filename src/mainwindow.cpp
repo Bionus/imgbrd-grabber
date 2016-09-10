@@ -1416,35 +1416,21 @@ void mainWindow::getAllImages()
 	m_progressdialog->setImages(0);
 
 	// Check whether we need to get the tags first (for the filename) or if we can just download the images directly
+	// TODO: having one batch needing it currently causes all batches to need it, should mae it batch (Downloader) dependent
 	m_must_get_tags = false;
-	QStringList forbidden = QStringList() << "artist" << "copyright" << "character" << "model" << "general";
 	for (int f = 0; f < m_groupBatchs.size() && !m_must_get_tags; f++)
 	{
-		QString fn = m_groupBatchs[f][6];
-		if (fn.startsWith("javascript:") || (fn.contains("%filename%") && m_sites[m_groupBatchs[f][5]]->contains("Regex/ForceImageUrl")))
-		{ m_must_get_tags = true; }
-		else
-		{
-			for (int i = 0; i < forbidden.count() && !m_must_get_tags; i++)
-			{
-				if (fn.contains("%"+forbidden.at(i)+"%"))
-				{ m_must_get_tags = true; }
-			}
-		}
+		Filename fn(m_groupBatchs[f][6]);
+		bool forceImageUrl = m_sites[m_groupBatchs[f][5]]->contains("Regex/ForceImageUrl");
+		if (fn.needExactTags(forceImageUrl))
+			m_must_get_tags = true;
 	}
 	for (int f = 0; f < m_batchs.size() && !m_must_get_tags; f++)
 	{
-		QString fn = m_batchs[f].value("filename");
-		if (fn.startsWith("javascript:") || (fn.contains("%filename%") && m_sites[m_batchs[f].value("site")]->contains("Regex/ForceImageUrl")))
-		{ m_must_get_tags = true; }
-		else
-		{
-			for (int i = 0; i < forbidden.count() && !m_must_get_tags; i++)
-			{
-				if (fn.contains("%"+forbidden.at(i)+"%"))
-				{ m_must_get_tags = true; }
-			}
-		}
+		Filename fn(m_batchs[f].value("filename"));
+		bool forceImageUrl = m_sites[m_batchs[f].value("site")]->contains("Regex/ForceImageUrl");
+		if (fn.needExactTags(forceImageUrl))
+			m_must_get_tags = true;
 	}
 	if (m_must_get_tags)
 		log(tr("Téléchargement des détails des images."));
