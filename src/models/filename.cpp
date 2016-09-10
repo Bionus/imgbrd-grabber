@@ -559,6 +559,10 @@ bool Filename::isValid(QString *error) const
 	return true;
 }
 
+bool Filename::needExactTags(Site *site) const
+{
+	return this->needExactTags(site->contains("Regex/ForceImageUrl"));
+}
 bool Filename::needExactTags(bool forceImageUrl) const
 {
 	// Javascript filenames always need tags as we don't know what they might do
