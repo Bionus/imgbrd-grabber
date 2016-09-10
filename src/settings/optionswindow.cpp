@@ -588,6 +588,12 @@ void optionsWindow::save()
 				settings.setValue(QString::number(i) + "_fn", m_filenamesFilenames.at(i)->text());
 				settings.setValue(QString::number(i) + "_dir", m_filenamesFolders.at(i)->text());
 			}
+			else
+			{
+				settings.remove(QString::number(i) + "_cond");
+				settings.remove(QString::number(i) + "_fn");
+				settings.remove(QString::number(i) + "_dir");
+			}
 		}
 	settings.endGroup();
 

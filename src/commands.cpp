@@ -86,6 +86,7 @@ bool Commands::image(const Image &img, QString fp)
 
 		for (QString exec : execs)
 		{
+			exec.replace("%path:nobackslash%", QDir::toNativeSeparators(fp).replace("\\", "/"));
 			exec.replace("%path%", QDir::toNativeSeparators(fp));
 
 			log(QObject::tr("Execution de \"%1\"").arg(exec));
