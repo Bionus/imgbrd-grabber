@@ -499,7 +499,7 @@ void log(QString l, Log type)
 	g_logFile.write(QString("["+time.toString("hh:mm:ss.zzz")+"] "+stripTags(l)+"\n").toUtf8());
 	g_logFile.flush();
 
-	#if TEST
+	#ifndef TEST
 		QString msg = (type == Error ? QObject::tr("<b>Erreur :</b> %1").arg(l) : (type == Warning ? QObject::tr("<b>Attention :</b> %1").arg(l) : (type == Notice ? QObject::tr("<b>Notice :</b> %1").arg(l) : l)));
 		_mainwindow->logShow(time, msg);
 	#endif
