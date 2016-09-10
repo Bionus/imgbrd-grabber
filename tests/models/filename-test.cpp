@@ -200,6 +200,16 @@ void FilenameTest::testPathOptionTagNamespaceComplex()
 			   "artist:artist1\ncharacter:character1\ncharacter:character2\ncopyright:copyright1\ncopyright:copyright2\n\ntag1 tag2 tag3 test_tag1 test_tag2 test_tag3",
 			   "", false);
 }
+void FilenameTest::testPathOptionTagExcludeNamespace()
+{
+	m_settings->setValue("Save/artist_multiple", "keepAll");
+	m_settings->setValue("Save/copyright_multiple", "keepAll");
+	m_settings->setValue("Save/character_multiple", "keepAll");
+	m_settings->setValue("Save/replaceblanks", true);
+
+	assertPath("%all:includenamespace,excludenamespace=general character,unsafe%",
+			   "tag1 tag2 tag3 test_tag1 test_tag2 test_tag3 artist:artist1 character1 character2 copyright:copyright1 copyright:copyright2", "", false);
+}
 void FilenameTest::testPathOptionTagSeparator()
 {
 	assertPath("%md5% (%count%).%ext%", "1bc29b36f623ba82aaf6724fd3b16718 (7).jpg");

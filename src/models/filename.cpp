@@ -431,12 +431,16 @@ QStringList Filename::path(const Image& img, QSettings *settings, QString pth, i
 						QStringList vals = res.split(tagSeparator);
 						if (options.contains("includenamespace"))
 						{
+							QStringList excluded;
+							if (options.contains("excludenamespace"))
+							{ excluded = options["excludenamespace"].split(' '); }
+
 							QStringList namespaced;
 							QStringList namespaces = replaces["all_namespaces"].first.split(' ');
 							for (int i = 0; i < vals.count(); ++i)
 							{
 								QString nspace = key == "all" ? namespaces[i] : key;
-								namespaced.append(nspace + ":" + vals[i]);
+								namespaced.append((!excluded.contains(nspace) ? nspace + ":" : "") + vals[i]);
 							}
 							vals = namespaced;
 						}
