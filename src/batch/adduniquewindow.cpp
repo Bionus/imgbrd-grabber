@@ -5,6 +5,7 @@
 #include "functions.h"
 #include "json.h"
 #include "models/page.h"
+#include "models/filename.h"
 
 
 
@@ -35,7 +36,12 @@ void AddUniqueWindow::on_buttonFolder_clicked()
 	{ ui->lineFolder->setText(folder); }
 }
 void AddUniqueWindow::on_lineFilename_textChanged(QString text)
-{ ui->labelFilename->setText(validateFilename(text)); }
+{
+	QString message;
+	Filename fn(text);
+	fn.isValid(&message);
+	ui->labelFilename->setText(message);
+}
 
 /**
  * Search for image in available websites.
@@ -72,7 +78,7 @@ void AddUniqueWindow::ok(bool close)
 	}
 	else
 	{
-		m_page = new Page(m_sites[ui->comboSites->currentText()], &m_sites, QStringList() << (ui->lineId->text().isEmpty() ? "md5:"+ui->lineMd5->text() : "id:"+ui->lineId->text()) << "status:any", 1, 1);
+		m_page = new Page(m_sites[ui->comboSites->currentText()], m_sites.values(), QStringList() << (ui->lineId->text().isEmpty() ? "md5:"+ui->lineMd5->text() : "id:"+ui->lineId->text()) << "status:any", 1, 1);
 		connect(m_page, SIGNAL(finishedLoading(Page*)), this, SLOT(replyFinished(Page*)));
 		m_page->load();
 	}

@@ -20,7 +20,9 @@
 
 
 
-void _prependUrl(QMap<QString,QString> *details, QString url, QString key, QString lkey = QString())
+QMap<QString, Site*> *g_allSites = Q_NULLPTR;
+
+static void _prependUrl(QMap<QString,QString> *details, QString url, QString key, QString lkey = QString())
 {
 	if (details->contains(key))
 		details->insert(lkey == NULL ? key : lkey, url + details->value(key));
@@ -33,7 +35,7 @@ Site::Site(QSettings *settings, QString dir, QString url)
 	if (file.open(QIODevice::ReadOnly | QIODevice::Text))
 	{
 		QFileInfo info(dir);
-		m_type = info.baseName();
+		m_type = info.fileName();
 
 		QString source = file.readAll();
 		QDomDocument doc;
@@ -129,8 +131,8 @@ Site::~Site()
 {
 	m_settings->deleteLater();
 
-	//delete m_manager->deleteLater();
-	//delete m_cookieJar->deleteLater();
+	//m_manager->deleteLater();
+	//m_cookieJar->deleteLater();
 }
 
 /**
@@ -174,7 +176,7 @@ void Site::resetCookieJar()
 	if (m_cookieJar != nullptr)
 	{ m_cookieJar->deleteLater(); }
 
-	m_cookieJar = new QNetworkCookieJar(this);
+	m_cookieJar = new QNetworkCookieJar(m_manager);
 
 	for (QNetworkCookie cookie : m_cookies)
 	{ m_cookieJar->insertCookie(cookie); }
@@ -197,7 +199,7 @@ void Site::initManager()
 		connect(m_manager, SIGNAL(sslErrors(QNetworkReply*,QList<QSslError>)), this, SLOT(sslErrorHandler(QNetworkReply*,QList<QSslError>)));
 
 		// Cache
-		QNetworkDiskCache *diskCache = new QNetworkDiskCache(this);
+		QNetworkDiskCache *diskCache = new QNetworkDiskCache(m_manager);
 		diskCache->setCacheDirectory(savePath("cache/"));
 		m_manager->setCache(diskCache);
 
@@ -225,13 +227,14 @@ void Site::login(bool force)
 
 			m_triedLogin = true;
 
+			QUrlQuery query;
+			query.addQueryItem(m_settings->value("login/pseudo", "").toString(), m_username);
+			query.addQueryItem(m_settings->value("login/password", "").toString(), m_password);
+
 			QString method = m_settings->value("login/method", "post").toString();
 			if (method == "post")
 			{
 				QUrl postData;
-				QUrlQuery query;
-				query.addQueryItem(m_settings->value("login/pseudo", "").toString(), m_username);
-				query.addQueryItem(m_settings->value("login/password", "").toString(), m_password);
 				postData.setQuery(query);
 
 				QNetworkRequest request(fixUrl(m_settings->value("login/url", "").toString()));
@@ -243,15 +246,14 @@ void Site::login(bool force)
 			else
 			{
 				QUrl url = fixUrl(m_settings->value("login/url", "").toString());
-				QUrlQuery query;
-				query.addQueryItem(m_settings->value("login/pseudo", "").toString(), m_username);
-				query.addQueryItem(m_settings->value("login/password", "").toString(), m_password);
+				qDebug() << url;
 				url.setQuery(query);
+				qDebug() << url;
 
 				QNetworkRequest request(url);
 				request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, CACHE_POLICY);
 
-				m_loginReply = m_manager->get(request);
+				m_loginReply = getRequest(request);
 				connect(m_loginReply, SIGNAL(finished()), this, SLOT(loginFinished()));
 			}
 
@@ -311,11 +313,8 @@ QNetworkRequest Site::makeRequest(QUrl url, Page *page, QString ref, Image *img)
 
 	QMap<QString,QVariant> headers = m_settings->value("headers").toMap();
 	request.setRawHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:35.0) Gecko/20100101 Firefox/35.0");
-	for (int i = 0; i < headers.size(); i++)
-	{
-		QString key = headers.keys().at(i);
-		request.setRawHeader(key.toLatin1(), headers[key].toString().toLatin1());
-	}
+	for (QString key : headers.keys())
+	{ request.setRawHeader(key.toLatin1(), headers[key].toString().toLatin1()); }
 
 	initManager();
 	request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, CACHE_POLICY);
@@ -355,35 +354,57 @@ void Site::getCallback()
 
 QNetworkReply *Site::get(QUrl url, Page *page, QString ref, Image *img)
 {
-    QNetworkRequest request = this->makeRequest(url, page, ref, img);
-    return this->getRequest(request);
+	QNetworkRequest request = this->makeRequest(url, page, ref, img);
+	return this->getRequest(request);
 }
 
 QNetworkReply *Site::getRequest(QNetworkRequest request)
 {
-    m_lastRequest = QDateTime::currentDateTime();
+	m_lastRequest = QDateTime::currentDateTime();
 
-    #ifdef TEST
-        QString md5 = QString(QCryptographicHash::hash(request.url().toString().toLatin1(), QCryptographicHash::Md5).toHex());
-        QString filename = request.url().fileName();
-        QString ext = filename.contains('.') ? filename.mid(filename.lastIndexOf('.') + 1) : "html";
-        QString path = "tests/resources/" + m_name + "/" + md5 + "." + ext;
-        log("Reply from file: " + path);
+	#ifdef TEST
+		QString md5 = QString(QCryptographicHash::hash(request.url().toString().toLatin1(), QCryptographicHash::Md5).toHex());
+		QString filename = request.url().fileName();
+		QString ext = filename.contains('.') ? filename.mid(filename.lastIndexOf('.') + 1) : "html";
+		QString path = "tests/resources/" + m_url + "/" + md5 + "." + ext;
 
-        QFile f(path);
-        if (!f.open(QFile::ReadOnly))
-            return nullptr;
-        QByteArray content = f.readAll();
+		QFile f(path);
+		if (!f.open(QFile::ReadOnly))
+		{
+			md5 = QString(QCryptographicHash::hash(request.url().toString(QUrl::RemoveQuery).toLatin1(), QCryptographicHash::Md5).toHex());
+			f.setFileName("tests/resources/" + m_url + "/" + md5 + "." + ext);
 
-        QCustomNetworkReply *reply = new QCustomNetworkReply();
-        reply->setHttpStatusCode(200, "OK");
-        reply->setContentType("text/html");
-        reply->setContent(content);
+			if (!f.open(QFile::ReadOnly))
+			{
+				// LCOV_EXCL_START
+				if (ext != "jpg" && ext != "png")
+				{
+					qDebug() << ("Test file not found: " + f.fileName() + " (" + request.url().toString() + ")");
+					return nullptr;
+				}
+				// LCOV_EXCL_STOP
 
-        return reply;
-    #else
-        return m_manager->get(request);
-    #endif
+				f.setFileName("tests/resources/image_1x1.png");
+
+				// LCOV_EXCL_START
+				if (!f.open(QFile::ReadOnly))
+					return nullptr;
+				// LCOV_EXCL_STOP
+			}
+		}
+
+		qDebug() << ("Reply from file: " + request.url().toString() + " -> " + f.fileName());
+		QByteArray content = f.readAll();
+
+		QCustomNetworkReply *reply = new QCustomNetworkReply();
+		reply->setHttpStatusCode(200, "OK");
+		reply->setContentType("text/html");
+		reply->setContent(content);
+
+		return reply;
+	#else
+		return m_manager->get(request);
+	#endif
 }
 
 /**
@@ -396,6 +417,8 @@ void Site::sslErrorHandler(QNetworkReply* qnr, QList<QSslError> errors)
 {
 	#ifdef QT_DEBUG
 		qDebug() << errors;
+	#else
+		Q_UNUSED(errors);
 	#endif
 	qnr->ignoreSslErrors();
 }
@@ -408,7 +431,7 @@ void Site::sslErrorHandler(QNetworkReply* qnr, QList<QSslError> errors)
 void Site::finishedReply(QNetworkReply *r)
 {
 	if (r != m_loginReply)
-        emit finished(r);
+		emit finished(r);
 }
 
 /**
@@ -421,10 +444,7 @@ void Site::checkForUpdates()
 
 	initManager();
 
-	QNetworkRequest request = QNetworkRequest(QUrl(url));
-	request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, CACHE_POLICY);
-
-	m_updateReply = m_manager->get(request);
+	m_updateReply = get(QUrl(url));
 	connect(m_updateReply, SIGNAL(finished()), this, SLOT(checkForUpdatesDone()));
 }
 
@@ -434,15 +454,17 @@ void Site::checkForUpdates()
 void Site::checkForUpdatesDone()
 {
 	QString source = m_updateReply->readAll();
-	if (source.left(5) == "<?xml")
+	if (source.startsWith("<?xml"))
 	{
 		QFile current(savePath("sites/"+m_type+"/model.xml"));
-		current.open(QFile::ReadOnly);
-		QString compare = current.readAll();
-		current.close();
+		if (current.open(QFile::ReadOnly))
+		{
+			QString compare = current.readAll();
+			current.close();
 
-		if (compare != source)
-		{ m_updateVersion = VERSION; }
+			if (compare != source)
+			{ m_updateVersion = VERSION; }
+		}
 	}
 	emit checkForUpdatesFinished(this);
 }
@@ -455,126 +477,38 @@ QList<Site*> Site::getSites(QStringList sources)
 	for (QString source : sources)
 	{
 		if (sites->contains(source))
-		{
-			Site *site = sites->value(source);
-			ret.append(site);
-			sites->remove(source);
-		}
+		{ ret.append(sites->value(source)); }
 	}
-	qDeleteAll(*sites);
-	delete sites;
 
 	return ret;
 }
 QMap<QString, Site*> *Site::getAllSites()
 {
+	if (g_allSites != Q_NULLPTR)
+		return g_allSites;
+
 	QMap<QString, Site*> *stes = new QMap<QString, Site*>();
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
-	QStringList dir = QDir(savePath("sites")).entryList(QDir::Dirs | QDir::NoDotAndDotDot);
+	QStringList dirs = QDir(savePath("sites")).entryList(QDir::Dirs | QDir::NoDotAndDotDot);
 
-	for (int i = 0; i < dir.count(); i++)
+	for (QString dir : dirs)
 	{
-		QFile file(savePath("sites/"+dir.at(i)+"/model.xml"));
-		if (file.open(QIODevice::ReadOnly | QIODevice::Text))
+		QFile f(savePath("sites/"+dir+"/sites.txt"));
+		if (f.open(QIODevice::ReadOnly | QIODevice::Text))
 		{
-			QString source = file.readAll();
-			QDomDocument doc;
-			QString errorMsg;
-			int errorLine, errorColumn;
-			if (!doc.setContent(source, false, &errorMsg, &errorLine, &errorColumn))
-			{ log(tr("Erreur lors de l'analyse du fichier XML : %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn)), Error); }
-			else
+			while (!f.atEnd())
 			{
-				QDomElement docElem = doc.documentElement();
-				QMap<QString,QString> detals = domToMap(docElem);
-				QStringList defaults = QStringList() << "xml" << "json" << "rss" << "regex";
-				QStringList source;
-				for (int s = 0; s < 4; s++)
-				{
-					QString t = settings.value("source_"+QString::number(s+1), defaults.at(s)).toString();
-					t[0] = t[0].toUpper();
-					if (detals.contains("Urls/"+(t == "Regex" ? "Html" : t)+"/Tags"))
-					{ source.append(t); }
-				}
-				if (!source.isEmpty())
-				{
-					QFile f(savePath("sites/"+dir[i]+"/sites.txt"));
-					if (f.open(QIODevice::ReadOnly | QIODevice::Text))
-					{
-						while (!f.atEnd())
-						{
-							QString line = f.readLine().trimmed();
-							if (line.isEmpty())
-								continue;
+				QString line = f.readLine().trimmed();
+				if (line.isEmpty())
+					continue;
 
-							QStringList srcs;
-							QSettings sets(savePath("sites/"+dir[i]+"/"+line+"/settings.ini"), QSettings::IniFormat);
-							if (!sets.value("sources/usedefault", true).toBool())
-							{
-								srcs = QStringList() << sets.value("sources/source_1").toString()
-													 << sets.value("sources/source_2").toString()
-													 << sets.value("sources/source_3").toString()
-													 << sets.value("sources/source_4").toString();
-								srcs.removeAll("");
-								if (srcs.isEmpty())
-								{ srcs = source; }
-								else
-								{
-									for (int i = 0; i < srcs.size(); i++)
-									{ srcs[i][0] = srcs[i][0].toUpper(); }
-								}
-							}
-							else
-							{ srcs = source; }
-
-							QMap<QString,QString> details = detals;
-							details["Model"] = dir[i];
-							details["Url"] = line;
-							details["Selected"] = srcs.join("/").toLower();
-							QString lineSsl = QString(sets.value("ssl", false).toBool() ? "https" : "http") + "://" + line;
-							for (int j = 0; j < srcs.size(); j++)
-							{
-								QString sr = srcs[j] == "Regex" ? "Html" : srcs[j];
-								_prependUrl(&details, lineSsl, "Urls/"+sr+"/Tags", "Urls/"+QString::number(j+1)+"/Tags");
-								_prependUrl(&details, lineSsl, "Urls/"+sr+"/Home", "Urls/"+QString::number(j+1)+"/Home");
-								_prependUrl(&details, lineSsl, "Urls/"+sr+"/Pools", "Urls/"+QString::number(j+1)+"/Pools");
-								if (details.contains("Urls/"+sr+"/Login"))
-									details["Urls/"+QString::number(j+1)+"/Login"] = details["Urls/"+sr+"/Login"];
-								if (details.contains("Urls/"+sr+"/Limit"))
-									details["Urls/"+QString::number(j+1)+"/Limit"] = details["Urls/"+sr+"/Limit"];
-								if (details.contains("Urls/"+sr+"/Image"))
-									details["Urls/"+QString::number(j+1)+"/Image"] = details["Urls/"+sr+"/Image"];
-								if (details.contains("Urls/"+sr+"/Sample"))
-									details["Urls/"+QString::number(j+1)+"/Sample"] = details["Urls/"+sr+"/Sample"];
-								if (details.contains("Urls/"+sr+"/Preview"))
-									details["Urls/"+QString::number(j+1)+"/Preview"] = details["Urls/"+sr+"/Preview"];
-								if (details.contains("Urls/"+sr+"/MaxPage"))
-									details["Urls/"+QString::number(j+1)+"/MaxPage"] = details["Urls/"+sr+"/MaxPage"];
-								if (details.contains("Urls/"+sr+"/AltPagePrev"))
-									details["Urls/"+QString::number(j+1)+"/AltPagePrev"] = details["Urls/"+sr+"/AltPagePrev"];
-								if (details.contains("Urls/"+sr+"/AltPageNext"))
-									details["Urls/"+QString::number(j+1)+"/AltPageNext"] = details["Urls/"+sr+"/AltPageNext"];
-							}
-							_prependUrl(&details, lineSsl, "Urls/Html/Post");
-							_prependUrl(&details, lineSsl, "Urls/Html/Tags");
-							_prependUrl(&details, lineSsl, "Urls/Html/Home");
-							_prependUrl(&details, lineSsl, "Urls/Html/Pools");
-
-							Site *site = new Site(dir[i], line, details);
-							stes->insert(line, site);
-						}
-					}
-					else
-					{ log(tr("Fichier sites.txt du modèle %1 introuvable.").arg(dir[i]), Error); }
-					f.close();
-				}
-				else
-				{ log(tr("Aucune source valide trouvée dans le fichier model.xml de %1.").arg(dir[i])); }
+				stes->insert(line, new Site(&settings, savePath("sites/"+dir), line));
 			}
-			file.close();
 		}
 	}
-	return stes;
+
+	g_allSites = stes;
+	return g_allSites;
 }
 
 void Site::loadTags(int page, int limit)
@@ -582,11 +516,10 @@ void Site::loadTags(int page, int limit)
 	initManager();
 
 	QString protocol = (m_settings->value("ssl", false).toBool() ? "https" : "http");
-	QNetworkRequest request(QUrl(protocol + "://"+m_url+"/tags.json?search[hide_empty]=yes&limit="+QString::number(limit)+"&page=" + QString::number(page)));
-	request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, CACHE_POLICY);
-	m_tagsReply = m_manager->get(request);
+	m_tagsReply = get(QUrl(protocol + "://"+m_url+"/tags.json?search[hide_empty]=yes&limit="+QString::number(limit)+"&page=" + QString::number(page)));
 	connect(m_tagsReply, SIGNAL(finished()), this, SLOT(finishedTags()));
 }
+
 void Site::finishedTags()
 {
 	QString source = m_tagsReply->readAll();
@@ -610,9 +543,8 @@ void Site::finishedTags()
 	emit finishedLoadingTags(tags);
 }
 
-bool Site::contains(QString what)				{ return m_data.contains(what); }
-QString Site::value(QString what)				{ return m_data.value(what); }
-void Site::insert(QString key, QString value)	{ m_data.insert(key, value); }
+bool Site::contains(QString what)	{ return m_data.contains(what);	}
+QString Site::value(QString what)	{ return m_data.value(what);	}
 
 QVariant Site::setting(QString key, QVariant def)	{ return m_settings->value(key, def); }
 QSettings	*Site::settings()						{ return m_settings; }
@@ -652,11 +584,6 @@ QUrl Site::fixUrl(QString url, QUrl old)
 	}
 
 	return QUrl(url);
-}
-
-QNetworkReply *Site::loginReply()
-{
-	return m_loginReply;
 }
 
 QList<QNetworkCookie> Site::cookies()

@@ -1,6 +1,7 @@
 #include "favorite.h"
 #include "functions.h"
 #include <QDir>
+#include <QDebug>
 
 
 Favorite::Favorite(QString name, int note, QDateTime lastViewed, QString imagePath)
@@ -32,9 +33,10 @@ bool Favorite::setImage(QPixmap& img)
 	if (!QDir(savePath("thumbs")).exists())
 		QDir(savePath()).mkdir("thumbs");
 
+	m_imagePath = savePath("thumbs/" + getName(true) + ".png");
 	return img
 			.scaled(QSize(150,150), Qt::KeepAspectRatio, Qt::SmoothTransformation)
-			.save(savePath("thumbs/" + getName(true) + ".png"), "PNG");
+			.save(m_imagePath, "PNG");
 }
 QPixmap Favorite::getImage() const
 {

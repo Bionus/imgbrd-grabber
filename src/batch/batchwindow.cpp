@@ -11,7 +11,7 @@
 
 
 batchWindow::batchWindow(QWidget *parent)
-	: QDialog(), ui(new Ui::batchWindow), m_imagesCount(0), m_items(0), m_images(0), m_maxSpeeds(0), m_lastDownloading(0), m_cancel(false), m_paused(false)
+	: QDialog(parent), ui(new Ui::batchWindow), m_imagesCount(0), m_items(0), m_images(0), m_maxSpeeds(0), m_lastDownloading(0), m_cancel(false), m_paused(false)
 {
 	ui->setupUi(this);
 	ui->tableWidget->resizeColumnToContents(0);
@@ -42,6 +42,9 @@ batchWindow::batchWindow(QWidget *parent)
 		m_taskBarProgress->setMaximum(0);
 		m_taskBarProgress->setValue(0);
 	#endif
+
+	// Allow dialog minimization
+	setWindowFlags(windowFlags() | Qt::WindowMinimizeButtonHint);
 }
 
 batchWindow::~batchWindow()
@@ -301,14 +304,14 @@ void batchWindow::drawSpeed()
 	{ return; }
 	m_time->restart();
 
-	int speed = 0;
+	float speed = 0;
 	for (int sp : m_speeds.values())
 	{ speed += sp; }
 	if (m_speeds.size() == m_maxSpeeds)
 	{ m_mean.append(speed); }
 	QString unit = getUnit(&speed)+"/s";
 
-	int speedMean = 0, count = qMin(m_mean.count(), 60);
+	float speedMean = 0, count = qMin(m_mean.count(), 60);
 	if (count > 0)
 	{
 		for (int i = m_mean.count() - count; i < m_mean.count() - 1; i++)

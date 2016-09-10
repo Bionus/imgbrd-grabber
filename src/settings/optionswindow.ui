@@ -1539,7 +1539,7 @@ p, li { white-space: pre-wrap; }
            </item>
           </widget>
          </item>
-         <item row="10" column="0" colspan="2">
+         <item row="11" column="0" colspan="2">
           <widget class="QCheckBox" name="checkShowTagWarning">
            <property name="text">
             <string>Afficher l'avertissement en cas de modificateur incompatible</string>
@@ -1549,7 +1549,7 @@ p, li { white-space: pre-wrap; }
            </property>
           </widget>
          </item>
-         <item row="11" column="0" colspan="2">
+         <item row="12" column="0" colspan="2">
           <widget class="QCheckBox" name="checkShowWarnings">
            <property name="text">
             <string>Afficher les autre avertissements</string>
@@ -1559,14 +1559,14 @@ p, li { white-space: pre-wrap; }
            </property>
           </widget>
          </item>
-         <item row="12" column="0" colspan="2">
+         <item row="13" column="0" colspan="2">
           <widget class="QCheckBox" name="checkGetUnloadedPages">
            <property name="text">
             <string>Télécharger les pages non chargées</string>
            </property>
           </widget>
          </item>
-         <item row="13" column="0" colspan="2">
+         <item row="14" column="0" colspan="2">
           <widget class="QLabel" name="label_66">
            <property name="text">
             <string>&lt;i&gt;Si vous activez cette option, appuyer sur le bouton &quot;Télécharger cette page&quot; prendra en compte les modifications faîtes au nombre d'images par page, numéro de page, etc. même si elles n'ont pas été chargées.</string>
@@ -1639,6 +1639,13 @@ p, li { white-space: pre-wrap; }
            </property>
            <property name="maximum">
             <number>1000</number>
+           </property>
+          </widget>
+         </item>
+         <item row="10" column="0" colspan="2">
+          <widget class="QCheckBox" name="checkEnableMd5Field">
+           <property name="text">
+            <string>Activer le champ de recherche MD5</string>
            </property>
           </widget>
          </item>
@@ -2060,13 +2067,6 @@ p, li { white-space: pre-wrap; }
            </property>
           </widget>
          </item>
-         <item row="1" column="0" colspan="2">
-          <widget class="QCheckBox" name="checkInvertLog">
-           <property name="text">
-            <string>Inverser le log</string>
-           </property>
-          </widget>
-         </item>
         </layout>
        </widget>
        <widget class="QWidget" name="pageProxy">
@@ -2388,7 +2388,6 @@ p, li { white-space: pre-wrap; }
   <tabstop>comboSource3</tabstop>
   <tabstop>comboSource4</tabstop>
   <tabstop>checkShowLog</tabstop>
-  <tabstop>checkInvertLog</tabstop>
   <tabstop>checkDownloadOriginals</tabstop>
   <tabstop>checkAutodownload</tabstop>
   <tabstop>lineFolderFavorites</tabstop>
@@ -2428,6 +2427,7 @@ p, li { white-space: pre-wrap; }
   <tabstop>checkAutocompletion</tabstop>
  </tabstops>
  <resources>
+  <include location="../../resources.qrc"/>
   <include location="../../resources.qrc"/>
   <include location="../../resources.qrc"/>
  </resources>

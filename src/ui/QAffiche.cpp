@@ -108,7 +108,7 @@ bool QAffiche::hitLabel(const QPoint &p)
 Qt::MouseButton QAffiche::lastPressed()
 { return m_lastPressed; }
 
-void QAffiche::setImage(QImage image)
+void QAffiche::setImage(const QImage &image)
 { this->setPixmap(QPixmap::fromImage(image)); }
-void QAffiche::setImage(QPixmap image)
+void QAffiche::setImage(const QPixmap &image)
 { this->setPixmap(image); }

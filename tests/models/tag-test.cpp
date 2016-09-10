@@ -4,11 +4,18 @@
 
 void TagTest::init()
 {
-	m_settings = new QSettings("tests/test_settings.ini", QSettings::IniFormat);
+	m_settings = new QSettings("tests/resources/settings.ini", QSettings::IniFormat);
 }
 void TagTest::cleanup()
 {
 	m_settings->deleteLater();
+}
+
+void TagTest::testDefaultConstructor()
+{
+	Tag tag;
+
+	QCOMPARE(tag.text(), QString());
 }
 
 void TagTest::testText()
@@ -30,6 +37,20 @@ void TagTest::testType()
 	Tag tag(m_settings, "tag_text", "artist", 123, QStringList() << "related1" << "related2" << "related3");
 
 	QCOMPARE(tag.type(), QString("artist"));
+}
+void TagTest::testTypeArtistEnding()
+{
+	Tag tag(m_settings, "tag_text (artist)", "unknown", 123, QStringList() << "related1" << "related2" << "related3");
+
+	QCOMPARE(tag.type(), QString("artist"));
+	QCOMPARE(tag.text(), QString("tag_text"));
+}
+void TagTest::testTypePrefix()
+{
+	Tag tag(m_settings, "artist:tag_text", "unknown", 123, QStringList() << "related1" << "related2" << "related3");
+
+	QCOMPARE(tag.type(), QString("artist"));
+	QCOMPARE(tag.text(), QString("tag_text"));
 }
 void TagTest::testSetType()
 {
@@ -94,17 +115,7 @@ void TagTest::testTypedTextGeneral()
 	QCOMPARE(tag.typedText(), QString("tag_text"));
 }
 
-void TagTest::testStylishedFavorite()
-{
-	Tag tag(m_settings, "tag_text", "artist", 123, QStringList() << "related1" << "related2" << "related3");
-
-	QList<Favorite> favorites;
-	favorites.append(Favorite("tag_text", 50, QDateTime::currentDateTime()));
-
-	QCOMPARE(tag.stylished(favorites), QString("<span style=\"color:pink\">tag_text</span>"));
-}
-
-void TagTest::testStylishedNotFavorite()
+void TagTest::testStylishedBasic()
 {
 	m_settings->setValue("Coloring/Fonts/artists", ",8.25,-1,5,50,0,0,0,0,0");
 	m_settings->setValue("Coloring/Colors/artists", "#aa0000");
@@ -116,6 +127,81 @@ void TagTest::testStylishedNotFavorite()
 
 	QString expected = "<a href=\"tag_text\" style=\"color:#aa0000; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">tag_text</a>";
 	QCOMPARE(tag.stylished(favorites), expected);
+}
+void TagTest::testStylishedIgnored()
+{
+	m_settings->setValue("Coloring/Fonts/ignoreds", ",8.25,-1,5,50,0,0,0,0,0");
+	Tag tag(m_settings, "tag_text", "artist", 123, QStringList() << "related1" << "related2" << "related3");
+
+	QString expected = "<a href=\"tag_text\" style=\"color:#999999; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">tag_text</a>";
+	QCOMPARE(tag.stylished(QList<Favorite>(), QStringList() << "tag_text"), expected);
+}
+void TagTest::testStylishedBlacklisted()
+{
+	m_settings->setValue("Coloring/Fonts/blacklisteds", ",8.25,-1,5,50,0,0,0,0,0");
+	Tag tag(m_settings, "tag_text", "artist", 123, QStringList() << "related1" << "related2" << "related3");
+
+	QString expected = "<a href=\"tag_text\" style=\"color:#000000; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">tag_text</a>";
+	QCOMPARE(tag.stylished(QList<Favorite>(), QStringList(), QStringList() << "tag_text"), expected);
+}
+void TagTest::testStylishedFavorite()
+{
+	Tag tag(m_settings, "tag_text", "artist", 123, QStringList() << "related1" << "related2" << "related3");
+
+	QList<Favorite> favorites;
+	favorites.append(Favorite("tag_text", 50, QDateTime::currentDateTime()));
+
+	QCOMPARE(tag.stylished(favorites), QString("<span style=\"color:pink\">tag_text</span>"));
+}
+void TagTest::testStylishedWithCount()
+{
+	m_settings->setValue("Coloring/Fonts/artists", ",8.25,-1,5,50,0,0,0,0,0");
+	m_settings->setValue("Coloring/Colors/artists", "#aa0000");
+
+	Tag tag(m_settings, "tag_text", "artist", 123, QStringList() << "related1" << "related2" << "related3");
+
+	QString expected = "<a href=\"tag_text\" style=\"color:#aa0000; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">tag_text</a> <span style=\"color:#aaa\">(123)</span>";
+	QCOMPARE(tag.stylished(QList<Favorite>(), QStringList(), QStringList(), true), expected);
+}
+
+void TagTest::testCompare()
+{
+	Tag tag1(m_settings, "artist1", "artist", 1, QStringList() << "tag1");
+	Tag tag2(m_settings, "artist1", "artist", 2, QStringList() << "tag2");
+	Tag tag3(m_settings, "artist2", "artist", 3, QStringList() << "tag3");
+	Tag tag4(m_settings, "artist1", "character", 4, QStringList() << "tag4");
+	Tag tag5(m_settings, "artist1", "unknown", 5, QStringList() << "tag5");
+
+	QCOMPARE(tag1 == tag1, true);
+	QCOMPARE(tag1 == tag2, true);
+	QCOMPARE(tag1 == tag3, false);
+	QCOMPARE(tag1 == tag4, false);
+	QCOMPARE(tag1 == tag5, true);
+}
+
+void TagTest::testSortByFrequency()
+{
+	QList<Tag> taglist;
+	taglist.append(Tag(m_settings, "last", "artist", 1, QStringList() << "tag1"));
+	taglist.append(Tag(m_settings, "fourth", "general", 2, QStringList() << "tag2"));
+	taglist.append(Tag(m_settings, "third", "copyright", 3, QStringList() << "tag3"));
+	taglist.append(Tag(m_settings, "second", "character", 4, QStringList() << "tag4"));
+	taglist.append(Tag(m_settings, "first", "unknown", 5, QStringList() << "tag5"));
+
+	qSort(taglist.begin(), taglist.end(), sortByFrequency);
+
+	QCOMPARE(taglist[0].text(), QString("first"));
+	QCOMPARE(taglist[1].text(), QString("second"));
+	QCOMPARE(taglist[2].text(), QString("third"));
+	QCOMPARE(taglist[3].text(), QString("fourth"));
+	QCOMPARE(taglist[4].text(), QString("last"));
+}
+
+void TagTest::testTypeSpaced()
+{
+	Tag tag(m_settings, "artist1", "artist with spaces", 1, QStringList() << "tag1");
+
+	QCOMPARE(tag.type(), QString("artist"));
 }
 
 static TagTest instance;

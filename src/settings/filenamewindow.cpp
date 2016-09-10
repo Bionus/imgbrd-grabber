@@ -3,6 +3,7 @@
 #include "ui_filenamewindow.h"
 #include "models/image.h"
 #include "models/site.h"
+#include "models/filename.h"
 
 
 FilenameWindow::FilenameWindow(QString value, QWidget *parent) : QDialog(parent), ui(new Ui::FilenameWindow)
@@ -44,9 +45,12 @@ FilenameWindow::~FilenameWindow()
 
 void FilenameWindow::on_lineClassic_textChanged(QString text)
 {
-	ui->labelValidator->setText(validateFilename(text));
+	QString message;
+	Filename fn(text);
+	fn.isValid(&message);
+	ui->labelValidator->setText(message);
 
-	QRegExp date("%date:([^%]+)%");
+	QRegExp date("%date:format=([^%]+)%");
 	int pos = 0;
 	text = text.replace("\\", "\\\\").replace("'", "\\'");
 

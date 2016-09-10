@@ -10,30 +10,30 @@
 
 
 
-Page::Page(Site *site, QMap<QString,Site*> *sites, QStringList tags, int page, int limit, QStringList postFiltering, bool smart, QObject *parent, int pool, int lastPage, int lastPageMinId, int lastPageMaxId)
-	: QObject(parent), m_site(site), m_postFiltering(postFiltering), m_errors(QStringList()), m_imagesPerPage(limit), m_currentSource(0), m_smart(smart), m_lastPage(lastPage), m_lastPageMinId(lastPageMinId), m_lastPageMaxId(lastPageMaxId)
+Page::Page(Site *site, QList<Site*> sites, QStringList tags, int page, int limit, QStringList postFiltering, bool smart, QObject *parent, int pool, int lastPage, int lastPageMinId, int lastPageMaxId)
+	: QObject(parent), m_site(site), m_postFiltering(postFiltering), m_errors(QStringList()), m_imagesPerPage(limit), m_currentSource(0), m_lastPage(lastPage), m_lastPageMinId(lastPageMinId), m_lastPageMaxId(lastPageMaxId), m_smart(smart)
 {
 	m_website = m_site->url();
 	m_imagesCount = -1;
 	m_pagesCount = -1;
 
-    // Replace shortcuts to increase compatibility
+	// Replace shortcuts to increase compatibility
 	QString text = " "+tags.join(" ")+" ";
 	text.replace(" rating:s ", " rating:safe ", Qt::CaseInsensitive)
 		.replace(" rating:q ", " rating:questionable ", Qt::CaseInsensitive)
 		.replace(" rating:e ", " rating:explicit ", Qt::CaseInsensitive)
 		.replace(" -rating:s ", " -rating:safe ", Qt::CaseInsensitive)
 		.replace(" -rating:q ", " -rating:questionable ", Qt::CaseInsensitive)
-        .replace(" -rating:e ", " -rating:explicit ", Qt::CaseInsensitive);
+		.replace(" -rating:e ", " -rating:explicit ", Qt::CaseInsensitive);
 	tags = text.split(" ", QString::SkipEmptyParts);
 	tags.removeDuplicates();
 
-    // Get the list of all enabled modifiers
+	// Get the list of all enabled modifiers
 	QStringList modifiers = QStringList();
-	for (int i = 0; i < sites->size(); i++)
+	for (Site *site : sites)
 	{
-		if (sites->value(sites->keys().at(i))->contains("Modifiers"))
-		{ modifiers.append(sites->value(sites->keys().at(i))->value("Modifiers").trimmed().split(" ", QString::SkipEmptyParts)); }
+		if (site->contains("Modifiers"))
+		{ modifiers.append(site->value("Modifiers").trimmed().split(" ", QString::SkipEmptyParts)); }
 	}
 	if (m_site->contains("Modifiers"))
 	{
@@ -41,11 +41,13 @@ Page::Page(Site *site, QMap<QString,Site*> *sites, QStringList tags, int page, i
 		for (int j = 0; j < mods.size(); j++)
 		{ modifiers.removeAll(mods[j]); }
 	}
+
+	// Reùpve ùpdofoers from tags
 	for (int k = 0; k < modifiers.size(); k++)
 	{ tags.removeAll(modifiers[k]); }
 	m_search = tags;
 
-    // Set values
+	// Set values
 	m_page = page;
 	m_pool = pool;
 	m_replyExists = false;
@@ -259,18 +261,18 @@ QString _parseSetImageUrl(Site* site, QString setting, QString ret, QMap<QString
 {
 	if (site->contains(setting) && replaces)
 	{
-        if (site->value(setting).contains("->"))
-        {
+		if (site->value(setting).contains("->"))
+		{
 			if (ret.isEmpty() && !def.isEmpty())
 				ret = def;
 
 			QStringList replaces = site->value(setting).split('&');
 			for (QString rep : replaces)
-            {
+			{
 				QRegExp rgx(rep.left(rep.indexOf("->")));
 				ret.replace(rgx, rep.right(rep.size() - rep.indexOf("->") - 2));
 			}
-        }
+		}
 		else if (ret.length() < 5)
 		{
 			QStringList options = site->value(setting).split('|');
@@ -286,7 +288,7 @@ QString _parseSetImageUrl(Site* site, QString setting, QString ret, QMap<QString
 					break;
 				}
 			}
-        }
+		}
 	}
 	return site->fixUrl(ret).toString();
 }
@@ -330,8 +332,6 @@ void Page::parseImage(QMap<QString,QString> d, int position)
 
 void Page::parse()
 {
-	log("Parse");
-
 	// Check redirection
 	QUrl redir = m_reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 	if (!redir.isEmpty())
@@ -577,7 +577,7 @@ void Page::parse()
 					infos << "created_at" << "status" << "source" << "has_comments" << "file_url" << "sample_url" << "change" << "sample_width" << "has_children" << "preview_url" << "width" << "md5" << "preview_width" << "sample_height" << "parent_id" << "height" << "has_notes" << "creator_id" << "file_size" << "id" << "preview_height" << "rating" << "tags" << "author" << "score";
 					for (int i = 0; i < infos.count(); i++)
 					{ d[infos.at(i)] = sc.value(infos.at(i)).toString().trimmed(); }
-                }
+				}
 				this->parseImage(d, id + first);
 			}
 		}

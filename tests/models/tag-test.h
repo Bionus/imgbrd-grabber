@@ -14,6 +14,7 @@ class TagTest : public TestSuite
 		void init();
 		void cleanup();
 
+		void testDefaultConstructor();
 		void testText();
 		void testSetText();
 		void testCount();
@@ -21,13 +22,21 @@ class TagTest : public TestSuite
 		void testRelated();
 		void testSetRelated();
 		void testType();
+		void testTypeArtistEnding();
+		void testTypePrefix();
 		void testSetType();
 		void testShortType();
 		void testSetTypeShortType();
+		void testStylishedBasic();
+		void testStylishedIgnored();
+		void testStylishedBlacklisted();
 		void testStylishedFavorite();
-		void testStylishedNotFavorite();
+		void testStylishedWithCount();
 		void testTypedTextGeneral();
 		void testTypedTextArtist();
+		void testCompare();
+		void testSortByFrequency();
+		void testTypeSpaced();
 
 	private:
 		QSettings *m_settings;

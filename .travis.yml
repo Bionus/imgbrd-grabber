@@ -1,30 +1,59 @@
 language: cpp
+compiler: gcc
+
+# Linux build
 sudo: required
 dist: trusty
-compiler:
-  - gcc
 
+# OS X build
+matrix:
+  include:
+    - os: osx
+      osx_image: xcode7
+
+# Codecov token
+env:
+  global:
+    - CODECOV_TOKEN=068ef4e2-5006-4f45-9545-fbf4e22ad085
+
+# Qt packages for Linux
 addons:
   apt:
     sources:
-    - sourceline: 'ppa:ubuntu-sdk-team/ppa'
+      - sourceline: 'ppa:ubuntu-sdk-team/ppa'
     packages:
-    - qt5-qmake
-    - qtbase5-dev
-    - qtdeclarative5-dev
-    - qtscript5-dev
-    - qtmultimedia5-dev
-    - libpulse-dev
-    - qt5-default
-    - qttools5-dev-tools
+      - qt5-qmake
+      - qtbase5-dev
+      - qtdeclarative5-dev
+      - qtscript5-dev
+      - qtmultimedia5-dev
+      - libpulse-dev
+      - qt5-default
+      - qttools5-dev-tools
 
-before_install:
-  - pip install --user codecov
+# Qt packages for OS X
+install:
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+      brew update &&
+      brew install qt5 &&
+      PATH=/usr/local/Cellar/qt5/5.6.1-1/bin:$PATH &&
+      export PATH
+    ; fi
 
+# Start X before running tests on Linux
+before_script:
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+        export DISPLAY=:99.0 &&
+        sh -e /etc/init.d/xvfb start &&
+        sleep 3
+    ; fi
+
+# Build Grabber
 script:
   - qmake Grabber.pro
   - make
-  - ./tests/tests
+  - ./tests/build/release/tests
 
+# Upload code coverage
 after_success:
-  - codecov -t 068ef4e2-5006-4f45-9545-fbf4e22ad085
+  - bash <(curl -s https://codecov.io/bash)

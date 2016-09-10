@@ -29,12 +29,9 @@ void		sortNonCaseSensitive(QStringList &);
 QDateTime	qDateTimeFromString(QString s);
 QString		savePath(QString s = "", bool exists = false);
 int			levenshtein(QString, QString);
-QString		validateFilename(QString);
 QString		qfonttocss(QFont);
-float		round(float n, int d = 0);
 void		clearLayout(QLayout *layout);
 QString		stripTags(QString);
-QString		getUnit(int*);
 QString		getUnit(float*);
 QString		getExtension(QString url);
 QString		setExtension(QString url, QString extension);
@@ -58,15 +55,15 @@ void		addMd5(QString, QString);
 void		setMd5(QString, QString);
 void		removeMd5(QString);
 
-QString fixFilename(QString filename, QString path = "", int maxlength = 0);
+QString fixFilename(QString filename, QString path = "", int maxlength = 0, bool invalidChars = true);
+QString fixFilenameWindows(QString filename, QString path = "", int maxlength = 0, bool invalidChars = true);
+QString fixFilenameLinux(QString filename, QString path = "", int maxlength = 0, bool invalidChars = true);
 
 QList<Favorite> loadFavorites();
 QStringList		loadViewItLater();
 QStringList		loadIgnored();
 
-QString						mapToString(QMap<QString,QString> map, QString gen = "{gen}", QString mid = "{mid}");
 QMap<QString,QString>		domToMap(QDomElement);
-QMap<QString,QString>		stringToMap(QString map, QString gen = "{gen}", QString mid = "{mid}");
 
 QMap<QString,QStringList>	getCustoms();
 QMap<QString,QPair<QString,QString>>	getFilenames();

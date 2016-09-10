@@ -17,9 +17,7 @@
 
 
 
-extern mainWindow *_mainwindow;
-
-optionsWindow::optionsWindow(QWidget *parent) : QDialog(parent), ui(new Ui::optionsWindow)
+optionsWindow::optionsWindow(mainWindow *parent) : QDialog(parent), ui(new Ui::optionsWindow)
 {
 	ui->setupUi(this);
 
@@ -88,12 +86,12 @@ optionsWindow::optionsWindow(QWidget *parent) : QDialog(parent), ui(new Ui::opti
 	ui->comboFavoritesDisplay->setCurrentIndex(ftypes.indexOf(settings.value("favorites_display", "ind").toString()));
 
 	ui->checkShowLog->setChecked(settings.value("Log/show", true).toBool());
-	ui->checkInvertLog->setChecked(settings.value("Log/invert", false).toBool());
 
 	ui->checkResizeInsteadOfCropping->setChecked(settings.value("resizeInsteadOfCropping", true).toBool());
 	ui->spinThumbnailUpscale->setValue(settings.value("thumbnailUpscale", 1.0f).toFloat() * 100);
 	ui->checkAutocompletion->setChecked(settings.value("autocompletion", true).toBool());
 	ui->checkUseregexfortags->setChecked(settings.value("useregexfortags", true).toBool());
+	ui->checkEnableMd5Field->setChecked(settings.value("enable_md5_field", false).toBool());
 
 	ui->checkTextfileActivate->setChecked(settings.value("Textfile/activate", false).toBool());
 	ui->textEditTextfileContent->setEnabled(settings.value("Textfile/activate", false).toBool());
@@ -590,6 +588,12 @@ void optionsWindow::save()
 				settings.setValue(QString::number(i) + "_fn", m_filenamesFilenames.at(i)->text());
 				settings.setValue(QString::number(i) + "_dir", m_filenamesFolders.at(i)->text());
 			}
+			else
+			{
+				settings.remove(QString::number(i) + "_cond");
+				settings.remove(QString::number(i) + "_fn");
+				settings.remove(QString::number(i) + "_dir");
+			}
 		}
 	settings.endGroup();
 
@@ -602,18 +606,18 @@ void optionsWindow::save()
 	if (settings.value("favorites_display", "ind").toString() != ftypes.at(ui->comboFavoritesDisplay->currentIndex()))
 	{
 		settings.setValue("favorites_display", ftypes.at(ui->comboFavoritesDisplay->currentIndex()));
-		_mainwindow->updateFavorites(false);
+		m_parent->updateFavorites(false);
 	}
 
 	settings.beginGroup("Log");
 		settings.setValue("show", ui->checkShowLog->isChecked());
-		settings.setValue("invert", ui->checkInvertLog->isChecked());
 	settings.endGroup();
 
 	settings.setValue("resizeInsteadOfCropping", ui->checkResizeInsteadOfCropping->isChecked());
 	settings.setValue("thumbnailUpscale", (float)ui->spinThumbnailUpscale->value() / 100.0f);
 	settings.setValue("autocompletion", ui->checkAutocompletion->isChecked());
 	settings.setValue("useregexfortags", ui->checkUseregexfortags->isChecked());
+	settings.setValue("enable_md5_field", ui->checkEnableMd5Field->isChecked());
 
 	settings.beginGroup("Textfile");
 		settings.setValue("activate", ui->checkTextfileActivate->isChecked());

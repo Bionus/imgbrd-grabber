@@ -1,5 +1,6 @@
 #include <QtTest>
 #include "favorite-test.h"
+#include "functions.h"
 
 
 void FavoriteTest::testGetName()
@@ -72,6 +73,7 @@ void FavoriteTest::testEquals()
 	Favorite fav2("tag", 100, QDateTime::currentDateTime());
 
 	QCOMPARE(true, fav1 == fav2);
+	QCOMPARE(false, fav1 != fav2);
 }
 void FavoriteTest::testEqualsAll()
 {
@@ -80,6 +82,7 @@ void FavoriteTest::testEqualsAll()
 	Favorite fav2("tag", 50, date);
 
 	QCOMPARE(true, fav1 == fav2);
+	QCOMPARE(false, fav1 != fav2);
 }
 void FavoriteTest::testEqualsCase()
 {
@@ -88,6 +91,7 @@ void FavoriteTest::testEqualsCase()
 	Favorite fav2("TAg", 50, date);
 
 	QCOMPARE(true, fav1 == fav2);
+	QCOMPARE(false, fav1 != fav2);
 }
 
 void FavoriteTest::testNotEquals()
@@ -97,6 +101,83 @@ void FavoriteTest::testNotEquals()
 	Favorite fav2("tag2", 50, date);
 
 	QCOMPARE(false, fav1 == fav2);
+	QCOMPARE(true, fav1 != fav2);
 }
+
+#ifndef HEADLESS
+void FavoriteTest::testSetImageFirst()
+{
+	QFile file(savePath("thumbs/tag1.png"));
+	if (file.exists())
+		file.remove();
+
+	QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:sss");
+	Favorite fav("tag1", 50, date);
+
+	QPixmap img(QDir::currentPath() + "/tests/resources/image_200x200.png");
+	fav.setImage(img);
+
+	QCOMPARE(file.exists(), true);
+}
+void FavoriteTest::testGetImageNotExists()
+{
+	QFile file(savePath("thumbs/tag1.png"));
+	if (file.exists())
+		file.remove();
+
+	QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:sss");
+	Favorite fav("tag1", 50, date);
+
+	QPixmap img = fav.getImage();
+
+	QCOMPARE(img.isNull(), true);
+}
+void FavoriteTest::testGetImageBig()
+{
+	QFile file(savePath("thumbs/tag1.png"));
+	if (file.exists())
+		file.remove();
+
+	QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:sss");
+	Favorite fav("tag1", 50, date);
+
+	QPixmap img(QDir::currentPath() + "/tests/resources/image_200x200.png");
+	fav.setImage(img);
+	QPixmap actual = fav.getImage();
+
+	QCOMPARE(actual.isNull(), false);
+	QCOMPARE(actual.size(), QSize(150, 150));
+}
+void FavoriteTest::testGetImageSmall()
+{
+	QFile file(savePath("thumbs/tag1.png"));
+	if (file.exists())
+		file.remove();
+
+	QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:sss");
+	Favorite fav("tag1", 50, date);
+
+	QPixmap img(QDir::currentPath() + "/tests/resources/image_1x1.png");
+	fav.setImage(img);
+	QPixmap actual = fav.getImage();
+
+	QCOMPARE(actual.isNull(), false);
+	QCOMPARE(actual.size(), QSize(150, 150));
+}
+void FavoriteTest::testGetImageResize()
+{
+	QFile file(savePath("thumbs/tag1.png"));
+	if (file.exists())
+		file.remove();
+
+	QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:sss");
+	Favorite fav("tag1", 50, date, QDir::currentPath() + "/tests/resources/image_200x200.png");
+	QPixmap actual = fav.getImage();
+
+	QCOMPARE(file.exists(), true);
+	QCOMPARE(actual.isNull(), false);
+	QCOMPARE(actual.size(), QSize(150, 150));
+}
+#endif
 
 static FavoriteTest instance;

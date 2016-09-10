@@ -13,8 +13,8 @@ class QAffiche : public QLabel
 	public:
 		QAffiche(QVariant id = QVariant(), int border = 0, QColor color = QColor(), QWidget *parent = 0);
 		~QAffiche();
-		void setImage(QImage);
-		void setImage(QPixmap);
+		void setImage(const QImage &);
+		void setImage(const QPixmap &);
 		Qt::MouseButton lastPressed();
 	
 	signals:

@@ -10,16 +10,18 @@
 
 
 
+class mainWindow;
+
 class searchTab : public QWidget
 {
-    Q_OBJECT
+	Q_OBJECT
 
-    public:
-		searchTab(int id, QMap<QString,Site*> *sites, QWidget *parent = 0);
-        ~searchTab();
+	public:
+		searchTab(int id, QMap<QString,Site*> *sites, mainWindow *parent);
+		~searchTab();
 		void mouseReleaseEvent(QMouseEvent *e);
 		virtual QList<bool> sources();
-        virtual QString tags() = 0;
+		virtual QString tags() = 0;
 		QList<Tag> results();
 		virtual QString wiki() = 0;
 		virtual int imagesPerPage() = 0;
@@ -53,23 +55,25 @@ class searchTab : public QWidget
 		// Focus search field
 		virtual void focusSearch() = 0;
 
-    signals:
-        void titleChanged(searchTab*);
-        void changed(searchTab*);
-        void closed(searchTab*);
+	signals:
+		void titleChanged(searchTab*);
+		void changed(searchTab*);
+		void closed(searchTab*);
 		void deleted(int);
 
 	protected:
 		int					m_id, m_lastPage, m_lastPageMaxId, m_lastPageMinId;
+		QMap<QString,Site*>	*m_sites;
 		QList<QBouton*>		m_boutons;
 		QStringList			m_selectedImages;
 		QList<Image*>		m_selectedImagesPtrs;
 		QList<bool>			m_selectedSources;
-		QMap<QString,Site*>	*m_sites;
 		QList<QCheckBox*>	m_checkboxes;
 		QList<Favorite>		m_favorites;
 		QString				m_link;
 		QList<Tag>			m_tags;
+		mainWindow			*m_parent;
+		QSettings			*m_settings;
 };
 
 #endif // SEARCH_TAB_H

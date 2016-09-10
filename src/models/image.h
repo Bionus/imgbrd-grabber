@@ -17,7 +17,7 @@ class Site;
 
 class Image : public QObject
 {
-    Q_OBJECT
+	Q_OBJECT
 
 	public:
 		enum SaveResult
@@ -28,63 +28,65 @@ class Image : public QObject
 			Copied,
 			Saved,
 			Error
-        };
-        Image();
-        Image(Site *site, QMap<QString,QString> details, Page *parent = NULL);
-        Image(const Image &other);
+		};
+		Image();
+		Image(Site *site, QMap<QString,QString> details, Page *parent = NULL);
+		Image(const Image &other);
 		~Image();
-		int			value();
-		QString		match(QString filter, bool invert = false);
-		QStringList	filter(QStringList filters);
-		QStringList	path(QString fn = "", QString pth = "", int counter = 0, bool complex = true, bool simple = false, bool maxlength = true, bool shouldFixFilename = true, bool getFull = false);
-		QStringList blacklisted(QStringList, bool invert = true);
-		QStringList	stylishedTags(QStringList ignored);
+		int			value() const;
+		QString		match(QString filter, bool invert = false) const;
+		QStringList	filter(QStringList filters) const;
+		QStringList	path(QString fn = "", QString pth = "", int counter = 0, bool complex = true, bool simple = false, bool maxlength = true, bool shouldFixFilename = true, bool getFull = false) const;
+		QStringList blacklisted(QStringList, bool invert = true) const;
+		QStringList	stylishedTags(QStringList ignored) const;
 		SaveResult  save(QString path, bool force = false, bool basic = false);
 		QMap<QString, Image::SaveResult> save(QStringList paths);
 		QMap<QString, Image::SaveResult> save(QString filename, QString path);
-		QString		url();
-		QString		md5();
-		QString		author();
-		QString		status();
-		QString		rating();
-		QString		source();
-		QString		site();
-		QString		filename();
-		QString		folder();
-		QList<Tag>	tags();
-		QStringList tagsString();
-		QList<Pool*>pools();
-		int			id();
-		int			score();
-		int			parentId();
-		int			fileSize();
-		int			width();
-		int			height();
-		int			authorId();
-		QDateTime	createdAt();
-		bool		hasChildren();
-		bool		hasNote();
-		bool		hasComments();
-		bool		hasScore();
-		QUrl		pageUrl();
-		QUrl		fileUrl();
-		QUrl		sampleUrl();
-		QUrl		previewUrl();
-		QSize		size();
-		QPixmap		previewImage();
-		Page		*page();
-		QByteArray	data();
+		QString		url() const;
+		QString		md5() const;
+		QString		author() const;
+		QString		status() const;
+		QString		rating() const;
+		QString		source() const;
+		QString		site() const;
+		QString		filename() const;
+		QString		folder() const;
+		QList<Tag>	tags() const;
+		QStringList tagsString() const;
+		QStringList search() const;
+		QList<Pool>	pools() const;
+		int			id() const;
+		int			score() const;
+		int			parentId() const;
+		int			fileSize() const;
+		int			width() const;
+		int			height() const;
+		int			authorId() const;
+		QDateTime	createdAt() const;
+		bool		hasChildren() const;
+		bool		hasNote() const;
+		bool		hasComments() const;
+		bool		hasScore() const;
+		QUrl		pageUrl() const;
+		QUrl		fileUrl() const;
+		QUrl		sampleUrl() const;
+		QUrl		previewUrl() const;
+		QSize		size() const;
+		QPixmap		previewImage() const;
+		Page		*page() const;
+		QByteArray	data() const;
+		QSettings	*settings() const;
+		Site		*parentSite() const;
+		QNetworkReply	*imageReply() const;
+		QNetworkReply	*tagsReply() const;
+		bool		hasTag(QString tag) const;
+		bool		hasAnyTag(QStringList tags) const;
+		bool		hasAllTags(QStringList tags) const;
+		QMap<QString,QString>   details() const;
 		void		setUrl(QString);
 		void		setData(QByteArray);
 		void		setFileSize(int);
 		void		setSavePath(QString);
-		QSettings	*settings();
-		QNetworkReply	*imageReply();
-		QNetworkReply	*tagsReply();
-		bool		hasTag(QString tag);
-		bool		hasTag(QStringList tags);
-		QMap<QString,QString>   details();
-		QString		detail(QString key);
 		void		setRating(QString rating);
 		void		setFileExtension(QString ext);
 
@@ -114,7 +116,9 @@ class Image : public QObject
 		Page			*m_parent;
 		int				m_id, m_score, m_parentId, m_fileSize, m_authorId, m_previewTry;
 		bool			m_hasChildren, m_hasNote, m_hasComments, m_hasScore;
-		QString			m_url, m_md5, m_author, m_status, m_rating, m_source, m_site, m_filename, m_folder, m_savePath;
+		QString			m_url;
+		QString	mutable m_md5;
+		QString			m_author, m_status, m_rating, m_source, m_site, m_filename, m_folder, m_savePath;
 		QUrl			m_pageUrl, m_fileUrl, m_sampleUrl, m_previewUrl;
 		QSize			m_size;
 		QPixmap			m_imagePreview;
@@ -122,12 +126,12 @@ class Image : public QObject
 		QByteArray		m_data;
 		QNetworkReply	*m_loadPreview, *m_loadDetails, *m_loadImage;
 		QList<Tag>		m_tags;
-		QList<Pool*>	m_pools;
+		QList<Pool>		m_pools;
 		QTime			m_timer;
 		QSettings		*m_settings;
 		QStringList		m_search;
 		Site			*m_parentSite;
-        QMap<QString,QString>   m_details;
+		QMap<QString, QString>   m_details;
 		bool			m_loadingPreview, m_loadingDetails, m_loadingImage, m_tryingSample;
 };
 

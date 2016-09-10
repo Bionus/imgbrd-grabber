@@ -47,17 +47,15 @@ class Site : public QObject
 		QString name();
 		QString url();
 		QString updateVersion();
-		QNetworkReply *loginReply();
 		QList<QNetworkCookie> cookies();
 		bool contains(QString);
 		QString value(QString);
 		QString operator[](QString key) { return value(key); }
-		void insert(QString, QString);
 		QVariant setting(QString key, QVariant def = QVariant());
 		QSettings *settings();
 		QNetworkRequest makeRequest(QUrl url, Page *page = nullptr, QString referer = "", Image *img = nullptr);
 		QNetworkReply *get(QUrl url, Page *page = nullptr, QString referer = "", Image *img = nullptr);
-        void getAsync(QueryType type, QUrl url, std::function<void(QNetworkReply *)> callback, Page *page = nullptr, QString referer = "", Image *img = nullptr);
+		void getAsync(QueryType type, QUrl url, std::function<void(QNetworkReply *)> callback, Page *page = nullptr, QString referer = "", Image *img = nullptr);
 		static QList<Site*> getSites(QStringList sources);
 		static QMap<QString, Site*> *getAllSites();
 		QUrl fixUrl(QString url);
@@ -65,10 +63,10 @@ class Site : public QObject
 		QString username();
 		QString password();
 		void setUsername(QString);
-        void setPassword(QString);
+		void setPassword(QString);
 
-    private:
-        QNetworkReply *getRequest(QNetworkRequest request);
+	private:
+		QNetworkReply *getRequest(QNetworkRequest request);
 
 	public slots:
 		void login(bool force = false);
@@ -97,7 +95,6 @@ class Site : public QObject
 		QMap<QString,QString> m_data;
 		QList<QNetworkCookie> m_cookies;
 		QSettings *m_settings;
-		QString m_sessionId;
 		QNetworkAccessManager *m_manager;
 		QNetworkCookieJar *m_cookieJar;
 		QNetworkReply *m_loginReply, *m_updateReply, *m_tagsReply;
@@ -110,5 +107,7 @@ class Site : public QObject
 		QDateTime m_lastRequest;
 		QNetworkRequest m_callbackRequest;
 };
+
+Q_DECLARE_METATYPE(Site::LoginResult)
 
 #endif // SITE_H

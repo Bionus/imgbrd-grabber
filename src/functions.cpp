@@ -18,11 +18,11 @@
 #ifdef QT_DEBUG
 	#include <QDebug>
 #endif
+#include "mainwindow.h"
 
 using namespace std;
 
-//extern QMap<QDateTime,QString> _log;
-//extern mainWindow *_mainwindow;
+extern mainWindow *_mainwindow;
 extern QMap<QString,QString> _md5;
 
 
@@ -33,7 +33,14 @@ extern QMap<QString,QString> _md5;
  * @param	error	The error message
  */
 void error(QWidget *parent, QString error)
-{ QMessageBox::critical(parent, QObject::tr("Erreur"), error); }
+{
+	#ifndef TEST
+		QMessageBox::critical(parent, QObject::tr("Erreur"), error);
+	#else
+		Q_UNUSED(parent);
+		Q_UNUSED(error);
+	#endif
+}
 
 /**
  * Sort a list non case-sensitively.
@@ -221,22 +228,6 @@ void removeMd5(QString md5)
 	saveMd5s();
 }
 
-QString getUnit(int *value)
-{
-	QString unit = "o";
-	if (*value >= 1024)
-	{
-		*value /= 1024;
-		if (*value >= 1024)
-		{
-			*value /= 1024;
-			unit = "Mio";
-		}
-		else
-		{ unit = "Kio"; }
-	}
-	return unit;
-}
 QString getUnit(float *value)
 {
 	QString unit = "o";
@@ -321,65 +312,6 @@ QStringList loadIgnored()
 }
 
 /**
- * Check filename format's validity.
- * @param	text	The format to be validated.
- * @return			A QString containing the message (error or not).
- * @todo			Return a constant instead of a QString.
- */
-QString validateFilename(QString text)
-{
-	// Field must be filled
-	if (text.isEmpty())
-		return QObject::tr("<span style=\"color:red\">Les noms de fichiers ne doivent pas être vides !</span>");
-
-	// Can't validate javascript expressions
-	if (text.startsWith("javascript:"))
-		return QObject::tr("<span style=\"color:orange\">Impossible de valider les expressions Javascript.</span>");
-
-	// Field must end by an extension
-	if (!text.endsWith(".%ext%"))
-		return QObject::tr("<span style=\"color:orange\">Votre nom de fichier ne finit pas par une extension, symbolisée par %ext% ! Vous risquez de ne pas pouvoir ouvrir vos fichiers.</span>");
-
-	// Field must contain an unique token
-	if (!text.contains("%md5%") && !text.contains("%id%") && !text.contains("%count"))
-		return QObject::tr("<span style=\"color:orange\">Votre nom de fichier n'est pas unique à chaque image et une image risque d'en écraser une précédente lors de la sauvegarde ! Vous devriez utiliser le symbole %md5%, unique à chaque image, pour éviter ce désagrément.</span>");
-
-	// Looking for unknown tokens
-	QStringList tokens = QStringList() << "artist" << "general" << "copyright" << "character" << "model" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "search_(\\d+)" << "allo" << getCustoms().keys() << "date" << "date:([^%]+)" << "score" << "count(:\\d+)?(:\\d+)?" << "width" << "height" << "pool" << "url_file" << "url_page";
-	QRegExp rx("%(.+)%");
-	rx.setMinimal(true);
-	int pos = 0;
-	while ((pos = rx.indexIn(text, pos)) != -1)
-	{
-		bool found = false;
-		for (int i = 0; i < tokens.length(); i++)
-		{
-			if (QRegExp("%"+tokens[i]+"%").indexIn(rx.cap(0)) != -1)
-				found = true;
-		}
-
-		if (!found)
-			return QObject::tr("<span style=\"color:orange\">Le symbole %%1% n\'existe pas et ne sera pas remplacé.</span>").arg(rx.cap(1));
-
-		pos += rx.matchedLength();
-	}
-
-	// Check for invalid windows characters
-	#ifdef Q_OS_WIN
-		QString txt = QString(text).remove(rx);
-		if (txt.contains(':') || txt.contains('*') || txt.contains('?') || (txt.contains('"') && txt.count('<') == 0) || txt.count('<') != txt.count('>') || txt.contains('|'))
-			return QObject::tr("<span style=\"color:red\">Votre format contient des caractères interdits sur windows ! Caractères interdits : * ? \" : < > |</span>");
-	#endif
-
-	// Check if code is unique
-	if (!text.contains("%md5%") && !text.contains("%website%") && !text.contains("%count") && text.contains("%id%"))
-		return QObject::tr("<span style=\"color:green\">Vous avez choisi d'utiliser le symbole %id%. Sachez que celui-ci est unique pour un site choisi. Le même ID pourra identifier des images différentes en fonction du site.</span>");
-
-	// All tests passed
-	return QObject::tr("<span style=\"color:green\">Format valide !</span>");
-}
-
-/**
  * Return the path to a specified file in the config folder (since program files is not writable).
  * @param	file	The file.
  * @param	exists	If the file must already exist beforehand.
@@ -387,18 +319,23 @@ QString validateFilename(QString text)
  */
 QString savePath(QString file, bool exists)
 {
-	QString check = exists ? file : "settings.ini";
-	if (QFile(QDir::toNativeSeparators(qApp->applicationDirPath()+"/"+check)).exists())
-	{ return QDir::toNativeSeparators(qApp->applicationDirPath()+"/"+file); }
-	if (QFile(QDir::toNativeSeparators(QDir::currentPath()+"/"+check)).exists())
-	{ return QDir::toNativeSeparators(QDir::currentPath()+"/"+file); }
-	if (QFile(QDir::toNativeSeparators(QDir::homePath()+"/Grabber/"+check)).exists())
-	{ return QDir::toNativeSeparators(QDir::homePath()+"/Grabber/"+file); }
-	#ifdef __linux__
-	if (QFile(QDir::toNativeSeparators(QDir::homePath()+"/.Grabber/"+check)).exists())
-	{ return QDir::toNativeSeparators(QDir::homePath()+"/.Grabber/"+file); }
+	#ifdef TEST
+		Q_UNUSED(exists);
+		return QDir::toNativeSeparators(QDir::currentPath()+"/tests/resources/"+file);
+	#else
+		QString check = exists ? file : "settings.ini";
+		if (QFile(QDir::toNativeSeparators(qApp->applicationDirPath()+"/"+check)).exists())
+		{ return QDir::toNativeSeparators(qApp->applicationDirPath()+"/"+file); }
+		if (QFile(QDir::toNativeSeparators(QDir::currentPath()+"/"+check)).exists())
+		{ return QDir::toNativeSeparators(QDir::currentPath()+"/"+file); }
+		if (QFile(QDir::toNativeSeparators(QDir::homePath()+"/Grabber/"+check)).exists())
+		{ return QDir::toNativeSeparators(QDir::homePath()+"/Grabber/"+file); }
+		#ifdef __linux__
+			if (QFile(QDir::toNativeSeparators(QDir::homePath()+"/.Grabber/"+check)).exists())
+			{ return QDir::toNativeSeparators(QDir::homePath()+"/.Grabber/"+file); }
+		#endif
+		return QDir::toNativeSeparators(QStandardPaths::writableLocation(QStandardPaths::DataLocation)+"/"+file);
 	#endif
-	return QDir::toNativeSeparators(QStandardPaths::writableLocation(QStandardPaths::DataLocation)+"/"+file);
 }
 
 /**
@@ -553,7 +490,7 @@ void setLogFile(QString path)
 	g_logFile.open(QFile::Append | QFile::Text | QFile::Truncate);
 }
 
-void log(QString l, Log)
+void log(QString l, Log type)
 {
 	if (!g_logFile.isOpen())
 		setLogFile(savePath("main.log"));
@@ -562,11 +499,15 @@ void log(QString l, Log)
 	g_logFile.write(QString("["+time.toString("hh:mm:ss.zzz")+"] "+stripTags(l)+"\n").toUtf8());
 	g_logFile.flush();
 
-	//_log.insert(time, (type == Error ? QObject::tr("<b>Erreur :</b> %1").arg(l) : (type == Warning ? QObject::tr("<b>Attention :</b> %1").arg(l) : (type == Notice ? QObject::tr("<b>Notice :</b> %1").arg(l) : l))));
-	//_mainwindow->logShow();
+	#ifndef TEST
+		QString msg = (type == Error ? QObject::tr("<b>Erreur :</b> %1").arg(l) : (type == Warning ? QObject::tr("<b>Attention :</b> %1").arg(l) : (type == Notice ? QObject::tr("<b>Notice :</b> %1").arg(l) : l)));
+		_mainwindow->logShow(time, msg);
+	#endif
 
 	#ifdef QT_DEBUG
-		qDebug() << time.toString("hh:mm:ss.zzz") << l;
+		#ifndef TEST
+			qDebug() << time.toString("hh:mm:ss.zzz") << l;
+		#endif
 	#endif
 }
 void logCommand(QString l)
@@ -641,16 +582,6 @@ void openTray()
 	#endif
 }
 
-/**
- * Rounds a var to the closest integer.
- * @param	d	Number of decimals to keep.
- */
-float round(float n, int d)
-{
-	int p = pow(10., d);
-	return floor(n * p + .5) / p;
-}
-
 void clearLayout(QLayout *layout)
 {
 	QLayoutItem *item;
@@ -666,25 +597,13 @@ void clearLayout(QLayout *layout)
 	}
 }
 
-QString mapToString(QMap<QString,QString> map, QString gen, QString mid)
-{ return QStringList(map.keys()).join(gen)+mid+QStringList(map.values()).join(gen); }
-
-QMap<QString,QString> stringToMap(QString map, QString gen, QString mid)
-{
-	QStringList keysValues = map.split(mid);
-	QStringList keys = keysValues.at(0).split(gen), values = keysValues.at(1).split(gen);
-	QMap<QString,QString> res = QMap<QString,QString>();
-	for (int i = 0; i < qMax(keys.size(), values.size()); i++)
-	{ res.insert(keys[i], values[i]); }
-	return res;
-}
-
 QString getExtension(QString url)
 {
 	QString ext;
-	if (url.contains('.'))
+	int pPos = url.lastIndexOf('.');
+	if (pPos != -1 && pPos > url.indexOf('/', 7))
 	{
-		ext = url.section('.', -1);
+		ext = url.right(url.length() - pPos - 1);
 		if (ext.contains('?'))
 			ext = ext.section('?', 0, -2);
 	}
@@ -694,7 +613,7 @@ QString getExtension(QString url)
 QString setExtension(QString url, QString extension)
 {
 	int pPos = url.lastIndexOf('.');
-	if (pPos != -1)
+	if (pPos != -1 && pPos > url.indexOf('/', 7))
 	{
 		int qPos = url.indexOf('?', pPos);
 		if (qPos != -1)
@@ -705,124 +624,163 @@ QString setExtension(QString url, QString extension)
 	return url;
 }
 
-QString fixFilename(QString fn, QString path, int maxlength)
+QString fixFilename(QString fn, QString path, int maxlength, bool invalidChars)
 {
 	QString sep = QDir::toNativeSeparators("/");
 	fn = QDir::toNativeSeparators(fn);
 	path = QDir::toNativeSeparators(path);
 	if (!path.endsWith(sep) && !path.isEmpty() && !fn.isEmpty())
 		path += sep;
-	int pathGroups = path.count(sep);
 
 	#ifdef Q_OS_WIN
-		// Fix parameters
-		maxlength = maxlength == 0 ? MAX_PATH : maxlength;
-		QString filename = path + fn;
-
-		// Drive
-		QString drive = "";
-		if (filename.mid(1, 2) == ":\\")
-		{
-			drive = filename.left(3);
-			filename = filename.right(filename.length() - 3);
-		}
-
-		// Forbidden characters
-		filename.remove('<').remove('>').remove(':').remove('"').remove('/').remove('|').remove('?').remove('*');
-
-		// Fobidden directories or filenames
-		QStringList forbidden = QStringList() << "CON" << "PRN" << "AUX" << "NUL" << "COM1" << "COM2" << "COM3" << "COM4" << "COM5" << "COM6" << "COM7" << "COM8" << "COM9" << "LPT1" << "LPT2" << "LPT3" << "LPT4" << "LPT5" << "LPT6" << "LPT7" << "LPT8" << "LPT9";
-
-		// Divide filename
-		QStringList parts = filename.split(sep);
-		QString file, ext;
-		if (!fn.isEmpty())
-		{
-			file = parts.takeLast();
-			ext = file.right(file.length() - file.lastIndexOf('.') - 1);
-			file = file.left(file.lastIndexOf('.'));
-		}
-
-		// Fix directories
-		for (QString &part : parts)
-		{
-			// A part cannot be one in the forbidden list
-			if (forbidden.contains(part))
-				part = part + "!";
-
-			// A part cannot finish by a period
-			if (part.endsWith('.'))
-				part = part.left(part.length() - 1).trimmed();
-
-			// A part cannot start or finish with a space
-			part = part.trimmed();
-
-			// A part should still allow creating a file
-			if (part.length() > maxlength - 12)
-				part = part.left(qMax(0, maxlength - 12)).trimmed();
-		}
-
-		// Join parts back
-		QString dirpart = parts.join(sep);
-		if (dirpart.length() > maxlength - 12)
-			dirpart = dirpart.left(qMax(0, maxlength - 12)).trimmed();
-		filename = (dirpart.isEmpty() ? "" : dirpart + (!fn.isEmpty() ? sep : "")) + file;
-
-		// A filename cannot exceed MAX_PATH (-1 for <NUL> and -3 for drive "C:\")
-		if (filename.length() > maxlength - 1 - 3 - ext.length() - 1)
-			filename = filename.left(qMax(0, maxlength - 1 - 3 - ext.length() - 1)).trimmed();
-
-		// Get separation between filename and path
-		int index = -1;
-		for (int i = 0; i < pathGroups - 1; ++i)
-			index = filename.indexOf(sep, index + 1);
-		index += drive.length();
-
-		// Put extension and drive back
-		filename = drive + filename + (!ext.isEmpty() ? "." + ext : "");
-		if (!fn.isEmpty())
-			filename = filename.right(filename.length() - index - 1);
+		return fixFilenameWindows(fn, path, maxlength, invalidChars);
 	#else
-		// Divide filename
-		QString filename = path + fn;
-		QStringList parts = filename.split(sep);
-		QString file, ext;
-		if (!fn.isEmpty())
-		{
-			file = parts.takeLast();
-			ext = file.right(file.length() - file.lastIndexOf('.') - 1);
-			file = file.left(file.lastIndexOf('.'));
-		}
-
-		// Fix directories
-		for (QString &part : parts)
-		{
-			// A part cannot start or finish with a space
-			part = part.trimmed();
-
-			// Trim part
-			if (part.length() > 255)
-				part = part.left(255).trimmed();
-		}
-
-		// Join parts back
-		QString dirpart = parts.join(sep);
-		filename = (dirpart.isEmpty() ? "" : dirpart + (!fn.isEmpty() ? sep : "")) + file;
-
-		// A filename cannot exceed a certain length
-		if (file.length() > maxlength - ext.length() - 1)
-			file = file.left(maxlength - ext.length() - 1).trimmed();
-		if (file.length() > 255 - ext.length() - 1)
-			file = file.left(255 - ext.length() - 1).trimmed();
-
-		// Put extension and drive back
-		filename = filename + (!ext.isEmpty() ? "." + ext : "");
-		if (!fn.isEmpty())
-			filename = filename.right(filename.length() - path.length());
-
-		QFileInfo fi(filename);
-		filename = fi.path() + "/" + fi.completeBaseName().left(245) + "." + fi.suffix();
+		return fixFilenameLinux(fn, path, maxlength, invalidChars);
 	#endif
+}
+
+QString fixFilenameLinux(QString fn, QString path, int maxlength, bool invalidChars)
+{
+	Q_UNUSED(invalidChars);
+
+	// Fix parameters
+	QString sep = "/";
+	QString filename = path + fn;
+
+	// Divide filename
+	QStringList parts = filename.split(sep);
+	QString file, ext;
+	if (!fn.isEmpty())
+	{
+		file = parts.takeLast();;
+		int lastDot = file.lastIndexOf('.');
+		if (lastDot != -1)
+		{
+			ext = file.right(file.length() - lastDot - 1);
+			file = file.left(lastDot);
+		}
+	}
+
+	// Fix directories
+	for (QString &part : parts)
+	{
+		// A part cannot start or finish with a space
+		part = part.trimmed();
+
+		// Trim part
+		if (part.length() > 255)
+			part = part.left(255).trimmed();
+	}
+
+	// Join parts back
+	QString dirpart = parts.join(sep);
+	filename = (dirpart.isEmpty() ? "" : dirpart + (!fn.isEmpty() ? sep : "")) + file;
+
+	// A filename cannot exceed a certain length
+	int extlen = ext.isEmpty() ? 0 : ext.length() + 1;
+	if (file.length() > maxlength - extlen)
+		file = file.left(maxlength - extlen).trimmed();
+	if (file.length() > 255 - extlen)
+		file = file.left(255 - extlen).trimmed();
+
+	// Get separation between filename and path
+	int index = -1;
+	int pathGroups = path.count(sep);
+	for (int i = 0; i < pathGroups; ++i)
+		index = filename.indexOf(sep, index + 1);
+
+	// Put extension and drive back
+	filename = filename + (!ext.isEmpty() ? "." + ext : "");
+	if (!fn.isEmpty())
+		filename = filename.right(filename.length() - index - 1);
+
+	QFileInfo fi(filename);
+	QString suffix = fi.suffix();
+	filename = (fi.path() != "." ? fi.path() + "/" : "") + fi.completeBaseName().left(245) + (suffix.isEmpty() ? "" : "." + fi.suffix());
+
+	return filename;
+}
+
+#ifndef MAX_PATH
+	#define MAX_PATH 260
+#endif
+
+QString fixFilenameWindows(QString fn, QString path, int maxlength, bool invalidChars)
+{
+	// Fix parameters
+	QString sep = "\\";
+	maxlength = maxlength == 0 ? MAX_PATH : maxlength;
+	QString filename = path + fn;
+
+	// Drive
+	QString drive = "";
+	if (filename.mid(1, 2) == ":\\")
+	{
+		drive = filename.left(3);
+		filename = filename.right(filename.length() - 3);
+	}
+
+	// Forbidden characters
+	if (invalidChars)
+	{ filename.replace('<', '_').replace('>', '_').replace(':', '_').remove('"').replace('/', '_').replace('|', '_').remove('?').replace('*', '_'); }
+
+	// Fobidden directories or filenames
+	QStringList forbidden = QStringList() << "CON" << "PRN" << "AUX" << "NUL" << "COM1" << "COM2" << "COM3" << "COM4" << "COM5" << "COM6" << "COM7" << "COM8" << "COM9" << "LPT1" << "LPT2" << "LPT3" << "LPT4" << "LPT5" << "LPT6" << "LPT7" << "LPT8" << "LPT9";
+
+	// Divide filename
+	QStringList parts = filename.split(sep);
+	QString file, ext;
+	if (!fn.isEmpty())
+	{
+		file = parts.takeLast();
+		int lastDot = file.lastIndexOf('.');
+		if (lastDot != -1)
+		{
+			ext = file.right(file.length() - lastDot - 1);
+			file = file.left(lastDot);
+		}
+	}
+
+	// Fix directories
+	for (QString &part : parts)
+	{
+		// A part cannot be one in the forbidden list
+		if (invalidChars && forbidden.contains(part))
+		{ part = part + "!"; }
+
+		// A part cannot finish by a period
+		if (invalidChars && part.endsWith('.'))
+		{ part = part.left(part.length() - 1).trimmed(); }
+
+		// A part cannot start or finish with a space
+		part = part.trimmed();
+
+		// A part should still allow creating a file
+		if (part.length() > maxlength - 12)
+		{ part = part.left(qMax(0, maxlength - 12)).trimmed(); }
+	}
+
+	// Join parts back
+	QString dirpart = parts.join(sep);
+	if (dirpart.length() > maxlength - 12)
+	{ dirpart = dirpart.left(qMax(0, maxlength - 12)).trimmed(); }
+	filename = (dirpart.isEmpty() ? "" : dirpart + (!fn.isEmpty() ? sep : "")) + file;
+
+	// A filename cannot exceed MAX_PATH (-1 for <NUL> and -3 for drive "C:\")
+	if (filename.length() > maxlength - 1 - 3 - ext.length() - 1)
+	{ filename = filename.left(qMax(0, maxlength - 1 - 3 - ext.length() - 1)).trimmed(); }
+
+	// Get separation between filename and path
+	int index = -1;
+	int pathGroups = path.count(sep);
+	for (int i = 0; i < pathGroups - (!drive.isEmpty() ? 1 : 0); ++i)
+	{ index = filename.indexOf(sep, index + 1); }
+	index += drive.length();
+
+	// Put extension and drive back
+	filename = drive + filename + (!ext.isEmpty() ? "." + ext : "");
+	if (!fn.isEmpty())
+	{ filename = filename.right(filename.length() - index - 1); }
 
 	return filename;
 }

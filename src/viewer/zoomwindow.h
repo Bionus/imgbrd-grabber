@@ -28,20 +28,21 @@ class zoomWindow : public QDialog
 	Q_OBJECT
 
 	public:
-        zoomWindow(Image *image, Site *site, QMap<QString,Site*> *sites, QWidget *parent = 0);
+		zoomWindow(Image *image, Site *site, QMap<QString,Site*> *sites, mainWindow *parent);
 		void go();
 		~zoomWindow();
 		void load();
 
 	public slots:
 		void update(bool onlysize = false);
-		void replyFinished(Image*);
+		void replyFinishedDetails(Image*);
 		void replyFinishedZoom();
 		void display(QImage, int);
 		void saveNQuit();
 		void saveNQuitFav();
-		QStringList saveImage(bool fav = false);
-		QStringList saveImageFav();
+		void saveImage(bool fav = false);
+		void saveImageFav();
+		QStringList saveImageNow(bool fav = false);
 		QString saveImageAs();
 		void fullScreen();
 		void unfullScreen();
@@ -62,11 +63,12 @@ class zoomWindow : public QDialog
 		void unviewitlater();
 		void ignore();
 		void unignore();
-        void downloadProgress(qint64 bytesReceived, qint64 bytesTotal);
+		void downloadProgress(qint64 bytesReceived, qint64 bytesTotal);
 		void colore();
 		void sslErrorHandler(QNetworkReply*, QList<QSslError>);
 		void urlChanged(QString, QString);
 		void showDetails();
+		void pendingUpdate();
 
 	protected:
 		void closeEvent(QCloseEvent *);
@@ -81,18 +83,20 @@ class zoomWindow : public QDialog
 
 	private:
 		mainWindow *m_parent;
+		QSettings *m_settings;
 		Ui::zoomWindow *ui;
-        detailsWindow *m_detailsWindow;
-        Image *m_image;
+		detailsWindow *m_detailsWindow;
+		Image *m_image;
 		QMap<QString,QString> regex, m_details;
 		Site *m_site;
-		int timeout, m_loaded, oldsize, m_mustSave;
+		int timeout, oldsize, m_mustSave;
+		bool m_loaded, m_loadedImage, m_loadedDetails;
 		QString id, m_url, tags, rating, score, user, format;
 		QAffiche *m_labelTagsTop, *m_labelTagsLeft;
 		QPixmap *image;
 		QMovie *movie;
 		QTimer *m_resizeTimer;
-        QTime *m_imageTime;
+		QTime *m_imageTime;
 		QPushButton *buttonSave, *buttonSaveNQuit, *buttonSaveas, *m_buttonSaveNQuit;
 		QString link, m_program;
 		QNetworkReply *m_reply;

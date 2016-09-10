@@ -2,6 +2,9 @@
 #include "tag.h"
 #include "functions.h"
 
+Tag::Tag()
+	: m_type("unknown"), m_count(0), m_settings(Q_NULLPTR)
+{ }
 
 Tag::Tag(QSettings *settings, QString text, QString type, int count, QStringList related)
 	: m_type(type), m_count(count), m_related(related), m_settings(settings)
@@ -11,44 +14,56 @@ Tag::Tag(QSettings *settings, QString text, QString type, int count, QStringList
 	htmlEncoded.setHtml(text);
 	m_text = htmlEncoded.toPlainText();
 
-	if (type.contains(' '))
-	{ m_type = type.left(type.indexOf(' ')); }
+	// Sometimes a type is found with multiple words, only the first is relevant
+	int typeSpace = type.indexOf(' ');
+	if (typeSpace != -1)
+	{ m_type = type.left(typeSpace); }
 
-	if (text.endsWith("(artist)") && type == "unknown")
-	{ m_type = "artist"; }
+	// Some artist names end with " (artist)" so we can guess their type
+	if (m_text.endsWith(" (artist)") && type == "unknown")
+	{
+		m_type = "artist";
+		m_text = m_text.left(m_text.length() - 9);
+	}
 
-	if (m_type == "unknown")
+	if (m_type == "unknown" && m_text.contains(':'))
 	{
 		QStringList prep = QStringList() << "artist" << "copyright" << "character" << "model" << "unknown";
 		foreach (QString pre, prep)
 		{
-			if (text.startsWith(pre + ":"))
+			if (m_text.startsWith(pre + ":"))
 			{
 				m_type = pre;
-				m_text = text.mid(pre.length() + 1);
+				m_text = m_text.mid(pre.length() + 1);
 			}
 		}
 	}
 }
 Tag::~Tag()
 { }
-
+#include <QDebug>
 /**
  * Return the colored tag.
  * @param favs The list of the user's favorite tags.
  * @return The HTML colored tag.
  */
-QString Tag::stylished(QList<Favorite> favs, bool count) const
+QString Tag::stylished(QList<Favorite> favs, QStringList ignored, QStringList blacklisted, bool count) const
 {
 	// Favorites
 	for (Favorite fav : favs)
 		if (fav.getName() == m_text)
 			return "<span style=\"color:pink\">" + m_text + "</span>";
 
-	QStringList tlist = QStringList() << "artists" << "circles" << "copyrights" << "characters" << "models" << "generals" << "favorites" << "blacklisteds";
-	QStringList defaults = QStringList() << "#aa0000" << "#55bbff" << "#aa00aa" << "#00aa00" << "#0000ee" << "#000000" << "#ffc0cb" << "#000000";
+	QStringList tlist = QStringList() << "artists" << "circles" << "copyrights" << "characters" << "models" << "generals" << "favorites" << "blacklisteds" << "ignoreds";
+	QStringList defaults = QStringList() << "#aa0000" << "#55bbff" << "#aa00aa" << "#00aa00" << "#0000ee" << "#000000" << "#ffc0cb" << "#000000" << "#999999";
 
+	// Guess the correct tag family
 	QString key = tlist.contains(type()+"s") ? type() + "s" : "generals";
+	if (blacklisted.contains(text(), Qt::CaseInsensitive))
+		key = "blacklisteds";
+	if (ignored.contains(text(), Qt::CaseInsensitive))
+		key = "ignoreds";
+
 	QFont font;
 	font.fromString(m_settings->value("Coloring/Fonts/" + key).toString());
 	QString color = m_settings->value("Coloring/Colors/" + key, defaults.at(tlist.indexOf(key))).toString();
@@ -83,5 +98,5 @@ bool sortByFrequency(Tag s1, Tag s2)
 
 bool operator==(const Tag &t1, const Tag &t2)
 {
-	return t1.text() == t2.text() && t1.type() == t2.type();
+	return t1.text() == t2.text() && (t1.type() == t2.type() || t1.type() == "unknown" || t2.type() == "unknown");
 }
