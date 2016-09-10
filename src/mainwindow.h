@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QFileSystemWatcher>
 #include <QSettings>
 #include <QProcess>
 #include <QTranslator>
@@ -49,7 +50,7 @@ class mainWindow : public QMainWindow
 
 	public slots:
 		// Log
-		void logShow();
+		void logShow(QDateTime date, QString msg);
 		void logClear();
 		void logOpen();
 		// Menus
@@ -185,8 +186,9 @@ class mainWindow : public QMainWindow
 		QList<Downloader*>  m_downloaders, m_downloadersDone;
 		QList<Site*>		m_getAllLogins;
 		int					m_batchAutomaticRetries;
-		bool				m_restore;
+		bool				m_restore, m_showLog;
 		QMap<QString, QIcon>	m_icons;
+		QFileSystemWatcher * logwatcher;
 };
 
 #endif // MAINWINDOW_H
