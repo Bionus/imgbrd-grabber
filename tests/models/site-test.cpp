@@ -141,5 +141,76 @@ void SiteTest::testCookies()
 	QCOMPARE(siteCookies[1].value(), cookies[1].value());
 }
 
+void SiteTest::testLoginNone()
+{
+	// Prepare settings
+	QSettings siteSettings("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/settings.ini", QSettings::IniFormat);
+	siteSettings.setValue("login/parameter", true);
+	m_site->load("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/settings.ini");
+
+	// Wait for login
+	QSignalSpy spy(m_site, SIGNAL(loggedIn(Site*, Site::LoginResult)));
+	QTimer::singleShot(0, m_site, SLOT(login()));
+	QVERIFY(spy.wait());
+
+	// Get result
+	QList<QVariant> arguments = spy.takeFirst();
+	Site::LoginResult result = arguments.at(1).value<Site::LoginResult>();
+
+	QCOMPARE(result, Site::LoginResult::LoginNoLogin);
+}
+
+void SiteTest::testLoginGet()
+{
+	// Prepare settings
+	QSettings siteSettings("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/settings.ini", QSettings::IniFormat);
+	siteSettings.setValue("auth/pseudo", "user");
+	siteSettings.setValue("auth/password", "somepassword");
+	siteSettings.setValue("login/parameter", false);
+	siteSettings.setValue("login/method", "get");
+	siteSettings.setValue("login/pseudo", "name");
+	siteSettings.setValue("login/password", "password");
+	siteSettings.setValue("login/url", "/session/new");
+	siteSettings.setValue("login/cookie", "_danbooru_session");
+	m_site->load("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/settings.ini");
+
+	// Wait for login
+	QSignalSpy spy(m_site, SIGNAL(loggedIn(Site*, Site::LoginResult)));
+	QTimer::singleShot(0, m_site, SLOT(login()));
+	QVERIFY(spy.wait());
+
+	// Get result
+	QList<QVariant> arguments = spy.takeFirst();
+	Site::LoginResult result = arguments.at(1).value<Site::LoginResult>();
+
+	QCOMPARE(result, Site::LoginResult::LoginError);
+}
+
+void SiteTest::testLoginPost()
+{
+	// Prepare settings
+	QSettings siteSettings("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/settings.ini", QSettings::IniFormat);
+	siteSettings.setValue("auth/pseudo", "user");
+	siteSettings.setValue("auth/password", "somepassword");
+	siteSettings.setValue("login/parameter", false);
+	siteSettings.setValue("login/method", "post");
+	siteSettings.setValue("login/pseudo", "name");
+	siteSettings.setValue("login/password", "password");
+	siteSettings.setValue("login/url", "/session");
+	siteSettings.setValue("login/cookie", "_danbooru_session");
+	m_site->load("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/settings.ini");
+
+	// Wait for login
+	QSignalSpy spy(m_site, SIGNAL(loggedIn(Site*, Site::LoginResult)));
+	QTimer::singleShot(0, m_site, SLOT(login()));
+	QVERIFY(spy.wait());
+
+	// Get result
+	QList<QVariant> arguments = spy.takeFirst();
+	Site::LoginResult result = arguments.at(1).value<Site::LoginResult>();
+
+	QCOMPARE(result, Site::LoginResult::LoginError);
+}
+
 
 static SiteTest instance;

@@ -108,4 +108,6 @@ class Site : public QObject
 		QNetworkRequest m_callbackRequest;
 };
 
+Q_DECLARE_METATYPE(Site::LoginResult)
+
 #endif // SITE_H

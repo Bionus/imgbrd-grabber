@@ -246,7 +246,9 @@ void Site::login(bool force)
 			else
 			{
 				QUrl url = fixUrl(m_settings->value("login/url", "").toString());
+				qDebug() << url;
 				url.setQuery(query);
+				qDebug() << url;
 
 				QNetworkRequest request(url);
 				request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, CACHE_POLICY);
@@ -369,18 +371,29 @@ QNetworkReply *Site::getRequest(QNetworkRequest request)
 		QFile f(path);
 		if (!f.open(QFile::ReadOnly))
 		{
-			if (ext != "jpg" && ext != "png")
-			{
-				qDebug() << ("Test file not found: " + f.fileName() + " (" + request.url().toString() + ")");
-				return nullptr;
-			}
+			md5 = QString(QCryptographicHash::hash(request.url().toString(QUrl::RemoveQuery).toLatin1(), QCryptographicHash::Md5).toHex());
+			f.setFileName("tests/resources/" + m_url + "/" + md5 + "." + ext);
 
-			f.setFileName("tests/resources/image_1x1.png");
 			if (!f.open(QFile::ReadOnly))
-				return nullptr;
+			{
+				// LCOV_EXCL_START
+				if (ext != "jpg" && ext != "png")
+				{
+					qDebug() << ("Test file not found: " + f.fileName() + " (" + request.url().toString() + ")");
+					return nullptr;
+				}
+				// LCOV_EXCL_STOP
+
+				f.setFileName("tests/resources/image_1x1.png");
+
+				// LCOV_EXCL_START
+				if (!f.open(QFile::ReadOnly))
+					return nullptr;
+				// LCOV_EXCL_STOP
+			}
 		}
 
-		qDebug() << ("Reply from file: " + f.fileName());
+		qDebug() << ("Reply from file: " + request.url().toString() + " -> " + f.fileName());
 		QByteArray content = f.readAll();
 
 		QCustomNetworkReply *reply = new QCustomNetworkReply();
