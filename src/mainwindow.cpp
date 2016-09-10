@@ -55,6 +55,9 @@ void mainWindow::init()
 	ui->setupUi(this);
 
 	m_showLog = m_settings->value("Log/show", true).toBool();
+	#if TEST
+		m_showLog = false;
+	#endif
 	if (!m_showLog)
 	{ ui->tabWidget->removeTab(ui->tabWidget->indexOf(ui->tabLog)); }
 
