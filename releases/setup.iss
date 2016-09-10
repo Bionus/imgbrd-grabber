@@ -1,5 +1,5 @@
 ﻿#define MyAppName "Grabber"
-#define MyAppVersion "4.6.0"
+#define MyAppVersion "4.7.0"
 #define MyAppPublisher "Bionus"
 #define MyAppURL "https://github.com/Bionus/imgbrd-grabber"
 #define MyAppExeName "Grabber.exe"
@@ -77,8 +77,8 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 Source: "..\images\icon.ico";                   DestDir: "{app}"; Flags: ignoreversion
 Source: "..\release\CDR.exe";                   DestDir: "{app}"; Flags: ignoreversion   
 Source: "..\CrashReporter\release\CrashReporter.exe"; DestDir: "{app}"; Flags: ignoreversion   
-Source: "..\cli\release\Cli.exe";               DestDir: "{app}"; Flags: ignoreversion; DestName: "Grabber.com"
-Source: "..\gui\release\Grabber.exe";           DestDir: "{app}"; Flags: ignoreversion   
+Source: "..\cli\build\release\Cli.exe";               DestDir: "{app}"; Flags: ignoreversion; DestName: "Grabber.com"
+Source: "..\gui\build\release\Grabber.exe";           DestDir: "{app}"; Flags: ignoreversion   
 Source: "..\release\words.txt";                 DestDir: "{app}";    
 Source: "..\release\libeay32.dll";              DestDir: "{app}"; Flags: ignoreversion         
 Source: "..\release\libEGL.dll";                DestDir: "{app}"; Flags: ignoreversion         
@@ -152,6 +152,7 @@ Source: "..\release\sites\Shimmie\sites.txt";  DestDir: "{localappdata}\Bionus\G
 Source: "..\release\sites\Zerochan\icon.png";  DestDir: "{localappdata}\Bionus\Grabber\sites\Zerochan"; Flags: ignoreversion
 Source: "..\release\sites\Zerochan\model.xml"; DestDir: "{localappdata}\Bionus\Grabber\sites\Zerochan"; Flags: ignoreversion     
 Source: "..\release\sites\Zerochan\sites.txt"; DestDir: "{localappdata}\Bionus\Grabber\sites\Zerochan"; Flags: onlyifdoesntexist
+Source: "..\release\sites\Zerochan\www.zerochan.net\settings.ini"; DestDir: "{localappdata}\Bionus\Grabber\sites\Zerochan\www.zerochan.net"; Flags: onlyifdoesntexist
 
 [InstallDelete]         
 Type: filesandordirs; Name: "{app}\languages\updater"
