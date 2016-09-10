@@ -32,6 +32,9 @@ class SiteTest : public TestSuite
 		void testLoadTags();
 		void testCheckForUpdates();
 		void testCookies();
+		void testLoginNone();
+		void testLoginGet();
+		void testLoginPost();
 
 	private:
 		QSettings *m_settings;
