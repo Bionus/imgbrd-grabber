@@ -23,7 +23,7 @@ class Page : public QObject
 		void			setLastPage(Page *page);
 		void			load(bool rateLimit = false);
 		void			loadTags();
-		QUrl			parseUrl(QString url, int pid, int p, QString t, QString pseudo, QString password);
+		QUrl			parseUrl(QString url, int pid = -1, int p = -1, QString t = "", QString pseudo = "", QString password = "");
 		void			fallback(bool load = true);
 		QList<Image*>	images();
 		Site			*site();

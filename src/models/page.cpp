@@ -42,7 +42,7 @@ Page::Page(Site *site, QList<Site*> sites, QStringList tags, int page, int limit
 		{ modifiers.removeAll(mods[j]); }
 	}
 
-	// Reùpve ùpdofoers from tags
+	// Remove modifiers from tags
 	for (int k = 0; k < modifiers.size(); k++)
 	{ tags.removeAll(modifiers[k]); }
 	m_search = tags;
@@ -62,13 +62,23 @@ Page::~Page()
 
 QUrl Page::parseUrl(QString url, int pid, int p, QString t, QString pseudo, QString password)
 {
-	url.replace("{pid}", QString::number(pid));
-	url.replace("{page}", QString::number(p));
+	if (pid < 0)
+		pid = (this->page() - 1) * this->imagesPerPage();
+	if (p < 0)
+		p = this->page();
+	if (t.isEmpty())
+		t = m_search.join(" ");
+	if (pseudo.isEmpty())
+		pseudo = m_site->username();
+	if (password.isEmpty())
+		password = m_site->password();
+
 	url.replace("{tags}", QUrl::toPercentEncoding(t));
 	url.replace("{limit}", QString::number(m_imagesPerPage));
 
 	if (!m_site->contains("Urls/"+QString::number(m_currentSource)+"/MaxPage") || p <= m_site->value("Urls/"+QString::number(m_currentSource)+"/MaxPage").toInt() || m_lastPage > m_page + 1 || m_lastPage < m_page - 1)
 	{
+		url.replace("{pid}", QString::number(pid));
 		url.replace("{page}", QString::number(p));
 		url.replace("{altpage}", "");
 	}
@@ -83,6 +93,7 @@ QUrl Page::parseUrl(QString url, int pid, int p, QString t, QString pseudo, QStr
 		altpage.replace("{max+1}", QString::number(m_lastPageMaxId+1));
 		url.replace("{altpage}", altpage);
 		url.replace("{page}", "");
+		url.replace("{pid}", "");
 	}
 
 	url.replace("{pseudo}", pseudo);
