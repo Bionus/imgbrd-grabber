@@ -14,6 +14,7 @@ QList<Image*> IntegrationTestSuite::getImages(QString site, QString source, QStr
 	m_settings = new QSettings("tests/resources/settings.ini", QSettings::IniFormat);
 
 	QDir().mkpath("tests/resources/sites/" + site + "/" + source);
+	QFile::remove("tests/resources/sites/" + site +"/model.xml");
 	QFile::copy("release/sites/" + site +"/model.xml", "tests/resources/sites/" + site +"/model.xml");
 	if (QFile::exists("release/sites/" + site +"/" + source + "/settings.ini"))
 	{ QFile::copy("release/sites/" + site +"/" + source + "/settings.ini", "tests/resources/sites/" + site +"/" + source + "/settings.ini"); }

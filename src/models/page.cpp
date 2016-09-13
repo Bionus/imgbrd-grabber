@@ -578,7 +578,7 @@ void Page::parse()
 				{
 					QStringList infos, assoc;
 					infos << "created_at" << "source" << "file_url" << "preview_url" << "width" << "md5" << "height" << "id" << "tags" << "author" << "score";
-					assoc << "created_at" << "source_url" << "image" << "image" << "width" << "id" << "height" << "id_number" << "tags" << "uploader" << "score";
+					assoc << "created_at" << "source_url" << "image" << "image" << "width" << "sha512_hash" << "height" << "id" << "tags" << "uploader" << "score";
 					for (int i = 0; i < infos.count(); i++)
 					{ d[infos.at(i)] = sc.value(assoc.at(i)).toString().trimmed(); }
 				}
