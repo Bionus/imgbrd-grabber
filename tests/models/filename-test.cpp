@@ -398,6 +398,33 @@ void FilenameTest::testCommand()
 			  QStringList() << "curl -F \"user[name]=User\" -F \"user[password]=1234\" -F \"post[tags]=tag1 tag2 tag3 test_tag1 test_tag2 test_tag3 artist1 character1 character2 copyright1 copyright2\" -F \"post[rating]=safe\" -F \"post[file]=@%path%\" localhost:9000/post/create");
 }
 
+void FilenameTest::testNeedExactTagsBasic()
+{
+	Filename fn("%md5%.%ext%");
+	QCOMPARE(fn.needExactTags(false), false);
+}
+void FilenameTest::testNeedExactTagsSite()
+{
+	Filename fn("%md5%.%ext%");
+	QCOMPARE(fn.needExactTags(m_site), false);
+}
+void FilenameTest::testNeedExactTagsJavascript()
+{
+	Filename fn("javascript:md5 + '.' + ext");
+	QCOMPARE(fn.needExactTags(false), true);
+}
+void FilenameTest::testNeedExactTagsFilename()
+{
+	Filename fn("%filename%.%ext%");
+	QCOMPARE(fn.needExactTags(false), false);
+	QCOMPARE(fn.needExactTags(true), true);
+}
+void FilenameTest::testNeedExactTagsToken()
+{
+	Filename fn("%character% %md5%.%ext%");
+	QCOMPARE(fn.needExactTags(false), true);
+}
+
 
 void FilenameTest::assertPath(QString format, QString expected, QString path, bool shouldFixFilename, bool fullPath)
 {

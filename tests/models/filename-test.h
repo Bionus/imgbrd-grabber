@@ -50,6 +50,11 @@ class FilenameTest : public TestSuite
 		void testCustoms();
 		void testReplaceBlanks();
 		void testCommand();
+		void testNeedExactTagsBasic();
+		void testNeedExactTagsSite();
+		void testNeedExactTagsJavascript();
+		void testNeedExactTagsFilename();
+		void testNeedExactTagsToken();
 
 	protected:
 		void assertPath(QString format, QString expected, QString path = "", bool shouldFixFilename = true, bool fullPath = false);
