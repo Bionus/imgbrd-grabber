@@ -228,12 +228,30 @@ void FilenameTest::testPathOptionTagExcludeNamespace()
 }
 void FilenameTest::testPathOptionTagSeparator()
 {
-	assertPath("%md5% (%count%).%ext%", "1bc29b36f623ba82aaf6724fd3b16718 (7).jpg");
-	assertPath("%md5% (%count:length=3%).%ext%", "1bc29b36f623ba82aaf6724fd3b16718 (007).jpg");
+	assertPath("%general:separator=+%", "tag1+tag2+tag3+test_tag1+test_tag2+test_tag3");
 }
 void FilenameTest::testPathOptionCount()
 {
-	assertPath("%md5:maxlength=8%.%ext%", "1bc29b36.jpg");
+	assertPath("%md5% (%count%).%ext%", "1bc29b36f623ba82aaf6724fd3b16718 (7).jpg");
+	assertPath("%md5% (%count:length=3%).%ext%", "1bc29b36f623ba82aaf6724fd3b16718 (007).jpg");
+}
+void FilenameTest::testPathOptionNumSingle()
+{
+	assertPath("%id% (%num%).%ext%",
+			   "7331 (1).jpg",
+			   "tests/resources/tmp/");
+}
+void FilenameTest::testPathOptionNumMultiple()
+{
+	QFile::copy("tests/resources/image_1x1.png", "tests/resources/tmp/7331 (1).jpg");
+	QFile::copy("tests/resources/image_1x1.png", "tests/resources/tmp/7331 (2).jpg");
+
+	assertPath("%id% (%num%).%ext%",
+			   "7331 (3).jpg",
+			   "tests/resources/tmp/");
+
+	QFile::remove("tests/resources/tmp/7331 (1).jpg");
+	QFile::remove("tests/resources/tmp/7331 (2).jpg");
 }
 
 void FilenameTest::testGetReplacesSimple()

@@ -443,6 +443,20 @@ QStringList Filename::path(const Image& img, QSettings *settings, QString pth, i
 				{ cFilename.remove(replacerx.cap(0)); }
 			}
 
+			if (cFilename.contains("%num%"))
+			{
+				QFileInfoList files = QDir(pth).entryInfoList(QStringList() << QString(cFilename).replace("%num%", "*"), QDir::Files, QDir::Name);
+				int num = 1;
+				if (!files.isEmpty())
+				{
+					QString last = files.last().fileName();
+					int pos = cFilename.indexOf("%num%");
+					int len = last.length() - cFilename.length() + 5;
+					num = last.mid(pos, len).toInt() + 1;
+				}
+				cFilename.replace("%num%", QString::number(num));
+			}
+
 			fns.append(cFilename);
 		}
 	}
