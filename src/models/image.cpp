@@ -854,8 +854,7 @@ QStringList Image::blacklisted(QStringList blacklistedtags, bool invert) const
 
 QStringList Image::stylishedTags(QStringList ignored) const
 {
-	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
-	QStringList blacklisted = settings.value("blacklistedtags").toString().split(' ');
+	QStringList blacklisted = m_settings->value("blacklistedtags").toString().split(' ');
 	QList<Favorite> favorites = loadFavorites();
 
 	QStringList t;
@@ -869,7 +868,6 @@ QStringList Image::stylishedTags(QStringList ignored) const
 Image::SaveResult Image::save(QString path, bool force, bool basic)
 {
 	SaveResult res = SaveResult::Saved;
-	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
 
 	QFile f(path);
 	if (!f.exists() || force)
@@ -882,13 +880,13 @@ Image::SaveResult Image::save(QString path, bool force, bool basic)
 				return SaveResult::Error;
 		}
 
-		QString whatToDo = settings.value("Save/md5Duplicates", "save").toString();
+		QString whatToDo = m_settings->value("Save/md5Duplicates", "save").toString();
 		QString md5Duplicate = md5Exists(md5());
 		if (md5Duplicate.isEmpty() || whatToDo == "save" || force)
 		{
-			log(tr("Sauvegarde de l'image dans le fichier <a href=\"file:///%1\">%1</a>").arg(f.fileName()));
+			log(tr("Sauvegarde de l'image dans le fichier <a href=\"file:///%1\">%1</a>").arg(path));
 			if (!m_source.isEmpty() && QFile::exists(m_source))
-			{ QFile::copy(m_source, f.fileName()); }
+			{ QFile::copy(m_source, path); }
 			else
 			{
 				addMd5(md5(), path);
@@ -902,12 +900,9 @@ Image::SaveResult Image::save(QString path, bool force, bool basic)
 				{ log(tr("Impossible d'ouvrir le fichier")); }
 			}
 
-			if (settings.value("Save/keepDate", true).toBool())
-				setFileCreationDate(path, createdAt());
-
-			if (settings.value("Textfile/activate", false).toBool() && !basic)
+			if (m_settings->value("Textfile/activate", false).toBool() && !basic)
 			{
-				QStringList cont = this->path(settings.value("Textfile/content", "%all%").toString(), "", 1, true, true, false, false);
+				QStringList cont = this->path(m_settings->value("Textfile/content", "%all%").toString(), "", 1, true, true, false, false);
 				if (!cont.isEmpty())
 				{
 					QString contents = cont.at(0);
@@ -919,13 +914,13 @@ Image::SaveResult Image::save(QString path, bool force, bool basic)
 					}
 				}
 			}
-			if (settings.value("SaveLog/activate", false).toBool() && !settings.value("SaveLog/file", "").toString().isEmpty() && !basic)
+			if (m_settings->value("SaveLog/activate", false).toBool() && !m_settings->value("SaveLog/file", "").toString().isEmpty() && !basic)
 			{
-				QStringList cont = this->path(settings.value("SaveLog/format", "%website% - %md5% - %all%").toString(), "", 1, true, true, false, false);
+				QStringList cont = this->path(m_settings->value("SaveLog/format", "%website% - %md5% - %all%").toString(), "", 1, true, true, false, false);
 				if (!cont.isEmpty())
 				{
 					QString contents = cont.at(0);
-					QFile file_tags(settings.value("SaveLog/file", "").toString());
+					QFile file_tags(m_settings->value("SaveLog/file", "").toString());
 					if (file_tags.open(QFile::WriteOnly | QFile::Append | QFile::Text))
 					{
 						file_tags.write(contents.toUtf8() + "\n");
@@ -936,21 +931,25 @@ Image::SaveResult Image::save(QString path, bool force, bool basic)
 		}
 		else if (whatToDo == "copy")
 		{
-			log(tr("Copie depuis <a href=\"file:///%1\">%1</a> vers <a href=\"file:///%2\">%2</a>").arg(md5Duplicate).arg(f.fileName()));
-			QFile::copy(md5Duplicate, f.fileName());
+			log(tr("Copie depuis <a href=\"file:///%1\">%1</a> vers <a href=\"file:///%2\">%2</a>").arg(md5Duplicate).arg(path));
+			QFile::copy(md5Duplicate, path);
 
 			res = SaveResult::Copied;
 		}
 		else if (whatToDo == "move")
 		{
-			log(tr("Déplacement depuis <a href=\"file:///%1\">%1</a> vers <a href=\"file:///%2\">%2</a>").arg(md5Duplicate).arg(f.fileName()));
-			QFile::rename(md5Duplicate, f.fileName());
-			setMd5(md5(), f.fileName());
+			log(tr("Déplacement depuis <a href=\"file:///%1\">%1</a> vers <a href=\"file:///%2\">%2</a>").arg(md5Duplicate).arg(path));
+			QFile::rename(md5Duplicate, path);
+			setMd5(md5(), path);
 
 			res = SaveResult::Moved;
 		}
 		else
 		{ return SaveResult::Ignored; }
+
+		// Keep original date
+		if (m_settings->value("Save/keepDate", true).toBool())
+			setFileCreationDate(path, createdAt());
 
 		// Commands
 		QMap<QString,int> types;

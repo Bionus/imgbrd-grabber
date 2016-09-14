@@ -360,7 +360,7 @@ QStringList Filename::path(const Image& img, QSettings *settings, QString pth, i
 		{ pth = pth.left(pth.length() - 1); }
 
 		QStringList specialTokens = QStringList() << "count";
-		QStringList ignoredTokens = QStringList() << "path";
+		QStringList ignoredTokens = QStringList() << "path" << "num";
 
 		for (auto replaces : replacesList)
 		{

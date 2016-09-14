@@ -197,7 +197,6 @@ class mainWindow : public QMainWindow
 		int					m_batchAutomaticRetries;
 		bool				m_restore, m_showLog;
 		QMap<QString, QIcon>	m_icons;
-		QFileSystemWatcher * logwatcher;
 };
 
 #endif // MAINWINDOW_H

@@ -1671,11 +1671,8 @@ void mainWindow::getAllGetImage(Image* img)
 	}
 	else
 	{
-		for (QString path : paths)
+		for (QString fp : paths)
 		{
-			path.replace("%n%", QString::number(m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors));
-			QString fp = QDir::toNativeSeparators(path);
-
 			if (whatToDo == "copy")
 			{
 				m_getAllIgnored++;
