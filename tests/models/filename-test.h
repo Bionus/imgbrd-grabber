@@ -41,6 +41,7 @@ class FilenameTest : public TestSuite
 		void testPathOptionTagSeparator();
 		void testPathOptionCount();
 		void testPathOptionNumSingle();
+		void testPathOptionNumSingleLength();
 		void testPathOptionNumMultiple();
 		void testGetReplacesSimple();
 		void testGetReplacesMultiple();

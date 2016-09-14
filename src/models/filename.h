@@ -38,6 +38,7 @@ class Filename
 		QMap<QString, QStringList> makeDetails(const Image& img, QSettings *settings) const;
 
 	protected:
+		QString optionedValue(QString res, QString key, QString ops, const Image &img, QSettings *settings, QStringList namespaces) const;
 		QList<QPair<QString,QString>> getReplace(QString setting, QMap<QString,QStringList> details, QSettings *settings) const;
 		bool returnError(QString msg, QString *error) const;
 

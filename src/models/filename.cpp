@@ -239,7 +239,6 @@ QMap<QString, QStringList> Filename::makeDetails(const Image& img, QSettings *se
 QStringList Filename::path(const Image& img, QSettings *settings, QString pth, int counter, bool complex, bool maxlength, bool shouldFixFilename, bool getFull) const
 {
 	QStringList remove = settings->value("ignoredtags").toString().split(' ', QString::SkipEmptyParts);
-	QString tagSeparator = settings->value("Save/separator", " ").toString();
 
 	QMap<QString,QStringList> custom = QMap<QString,QStringList>(), scustom = getCustoms();
 	QMap<QString,QStringList> details = makeDetails(img, settings);
@@ -365,6 +364,9 @@ QStringList Filename::path(const Image& img, QSettings *settings, QString pth, i
 		for (auto replaces : replacesList)
 		{
 			QString cFilename = QString(filename);
+			QString hasNum;
+			QString numOptions;
+			QStringList namespaces = replaces["all_namespaces"].first.split(' ');
 
 			// Conditionals
 			if (complex)
@@ -380,81 +382,45 @@ QStringList Filename::path(const Image& img, QSettings *settings, QString pth, i
 			while ((p = replacerx.indexIn(cFilename, p)) != -1)
 			{
 				QString key = replacerx.cap(1);
+				QString options = replacerx.captureCount() > 1 ? replacerx.cap(2) : QString();
+
 				if (replaces.contains(key) || specialTokens.contains(key))
 				{
-					QMap<QString,QString> options;
-					if (replacerx.captureCount() > 1)
-					{
-						QStringList opts = replacerx.cap(2).split(',');
-						for (QString opt : opts)
-						{
-							int index = opt.indexOf('=');
-							if (index != -1)
-							{ options.insert(opt.left(index), opt.mid(index + 1)); }
-							else
-							{ options.insert(opt, "true"); }
-						}
-					}
-
 					QString res = replaces[key].first.isEmpty() ? replaces[key].second : replaces[key].first;
-
-					// Apply options
-					if (key == "date" && options.contains("format"))
-					{ res = img.createdAt().toString(options["format"]); }
 					if (key == "count")
-					{ res = options.contains("length") ? QString("%1").arg(counter, options["length"].toInt(), 10, QChar('0')) : QString::number(counter); }
-					if (options.contains("maxlength"))
-					{ res = res.left(options["maxlength"].toInt()); }
-					if (key == "all" || key == "tags" || key == "general" || key == "artist" || key == "copyright" || key == "character")
-					{
-						QStringList vals = res.split(tagSeparator);
-						if (options.contains("includenamespace"))
-						{
-							QStringList excluded;
-							if (options.contains("excludenamespace"))
-							{ excluded = options["excludenamespace"].split(' '); }
+						res = QString::number(counter);
 
-							QStringList namespaced;
-							QStringList namespaces = replaces["all_namespaces"].first.split(' ');
-							for (int i = 0; i < vals.count(); ++i)
-							{
-								QString nspace = key == "all" ? namespaces[i] : key;
-								namespaced.append((!excluded.contains(nspace) ? nspace + ":" : "") + vals[i]);
-							}
-							vals = namespaced;
-						}
-						res = vals.join(options.contains("separator") ? options["separator"] : tagSeparator);
-					}
-
-					// Forbidden characters and spaces replacement settings
-					if (key != "allo" && !key.startsWith("url_") && !options.contains("unsafe"))
-					{
-						res = res.replace("\\", "_").replace("%", "_").replace("/", "_").replace(":", "_").replace("|", "_").replace("*", "_").replace("?", "_").replace("\"", "_").replace("<", "_").replace(">", "_").replace("__", "_").replace("__", "_").replace("__", "_").trimmed();
-						if (!settings->value("Save/replaceblanks", false).toBool())
-						{ res = res.replace("_", " "); }
-					}
+					res = optionedValue(res, key, options, img, settings, namespaces);
 
 					cFilename.replace(replacerx.cap(0), res);
 					p += res.length();
 				}
 				else if (ignoredTokens.contains(key))
-				{ p += replacerx.matchedLength(); }
+				{
+					if (key == "num")
+					{
+						hasNum = replacerx.cap(0);
+						numOptions = options;
+					}
+
+					p += replacerx.matchedLength();
+				}
 				else
 				{ cFilename.remove(replacerx.cap(0)); }
 			}
 
-			if (cFilename.contains("%num%"))
+			if (!hasNum.isEmpty())
 			{
-				QFileInfoList files = QDir(pth).entryInfoList(QStringList() << QString(cFilename).replace("%num%", "*"), QDir::Files, QDir::Name);
+				QFileInfoList files = QDir(pth).entryInfoList(QStringList() << QString(cFilename).replace(hasNum, "*"), QDir::Files, QDir::Name);
 				int num = 1;
 				if (!files.isEmpty())
 				{
 					QString last = files.last().fileName();
-					int pos = cFilename.indexOf("%num%");
+					int pos = cFilename.indexOf(hasNum);
 					int len = last.length() - cFilename.length() + 5;
 					num = last.mid(pos, len).toInt() + 1;
 				}
-				cFilename.replace("%num%", QString::number(num));
+				cFilename.replace(hasNum, optionedValue(QString::number(num), "num", numOptions, img, settings, namespaces));
 			}
 
 			fns.append(cFilename);
@@ -485,6 +451,62 @@ QStringList Filename::path(const Image& img, QSettings *settings, QString pth, i
 	}
 
 	return fns;
+}
+QString Filename::optionedValue(QString res, QString key, QString ops, const Image& img, QSettings *settings, QStringList namespaces) const
+{
+	QString tagSeparator = settings->value("Save/separator", " ").toString();
+
+	// Parse options
+	QMap<QString,QString> options;
+	if (!ops.isEmpty())
+	{
+		QStringList opts = ops.split(',');
+		for (QString opt : opts)
+		{
+			int index = opt.indexOf('=');
+			if (index != -1)
+			{ options.insert(opt.left(index), opt.mid(index + 1)); }
+			else
+			{ options.insert(opt, "true"); }
+		}
+	}
+
+	// Apply options
+	if (key == "date" && options.contains("format"))
+	{ res = img.createdAt().toString(options["format"]); }
+	if (key == "count" || key == "num")
+	{ res = options.contains("length") ? QString("%1").arg(res.toInt(), options["length"].toInt(), 10, QChar('0')) : res; }
+	if (options.contains("maxlength"))
+	{ res = res.left(options["maxlength"].toInt()); }
+	if (key == "all" || key == "tags" || key == "general" || key == "artist" || key == "copyright" || key == "character")
+	{
+		QStringList vals = res.split(tagSeparator);
+		if (options.contains("includenamespace"))
+		{
+			QStringList excluded;
+			if (options.contains("excludenamespace"))
+			{ excluded = options["excludenamespace"].split(' '); }
+
+			QStringList namespaced;
+			for (int i = 0; i < vals.count(); ++i)
+			{
+				QString nspace = key == "all" ? namespaces[i] : key;
+				namespaced.append((!excluded.contains(nspace) ? nspace + ":" : "") + vals[i]);
+			}
+			vals = namespaced;
+		}
+		res = vals.join(options.contains("separator") ? options["separator"] : tagSeparator);
+	}
+
+	// Forbidden characters and spaces replacement settings
+	if (key != "allo" && !key.startsWith("url_") && !options.contains("unsafe"))
+	{
+		res = res.replace("\\", "_").replace("%", "_").replace("/", "_").replace(":", "_").replace("|", "_").replace("*", "_").replace("?", "_").replace("\"", "_").replace("<", "_").replace(">", "_").replace("__", "_").replace("__", "_").replace("__", "_").trimmed();
+		if (!settings->value("Save/replaceblanks", false).toBool())
+		{ res = res.replace("_", " "); }
+	}
+
+	return res;
 }
 
 QString Filename::getFormat() const

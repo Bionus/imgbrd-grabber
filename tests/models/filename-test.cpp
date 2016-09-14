@@ -241,6 +241,12 @@ void FilenameTest::testPathOptionNumSingle()
 			   "7331 (1).jpg",
 			   "tests/resources/tmp/");
 }
+void FilenameTest::testPathOptionNumSingleLength()
+{
+	assertPath("%id% (%num:length=3%).%ext%",
+			   "7331 (001).jpg",
+			   "tests/resources/tmp/");
+}
 void FilenameTest::testPathOptionNumMultiple()
 {
 	QFile::copy("tests/resources/image_1x1.png", "tests/resources/tmp/7331 (1).jpg");
