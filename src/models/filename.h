@@ -7,8 +7,10 @@
 class Filename
 {
 	public:
+		Filename();
 		Filename(QString format);
 		QString getFormat() const;
+		void setFormat(QString format);
 
 		/**
 		 * Return the filename of the image according to the user's settings.

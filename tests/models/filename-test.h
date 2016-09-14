@@ -15,7 +15,9 @@ class FilenameTest : public TestSuite
 		void init();
 		void cleanup();
 
+		void testDefaultConstructor();
 		void testGetFormat();
+		void testSetFormat();
 		void testPathSimple();
 		void testPathComplex();
 		void testPathKeepAll();

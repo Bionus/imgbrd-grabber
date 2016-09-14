@@ -6,6 +6,8 @@
 
 typedef QPair<QString,QString> QStrP;
 
+Filename::Filename()
+{ }
 Filename::Filename(QString format)
 	: m_format(format)
 { }
@@ -497,6 +499,10 @@ QStringList Filename::path(const Image& img, QSettings *settings, QString pth, i
 QString Filename::getFormat() const
 {
 	return m_format;
+}
+void Filename::setFormat(QString format)
+{
+	m_format = format;
 }
 
 bool Filename::returnError(QString msg, QString *error) const

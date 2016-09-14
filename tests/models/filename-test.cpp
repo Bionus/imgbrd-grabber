@@ -53,10 +53,26 @@ void FilenameTest::cleanup()
 }
 
 
+void FilenameTest::testDefaultConstructor()
+{
+	Filename fn;
+
+	QCOMPARE(fn.getFormat().isEmpty(), true);
+}
+
 void FilenameTest::testGetFormat()
 {
 	QString format = "%md5%.%ext%";
 	Filename fn(format);
+
+	QCOMPARE(fn.getFormat(), format);
+}
+
+void FilenameTest::testSetFormat()
+{
+	QString format = "%md5%.%ext%";
+	Filename fn("%id%.%ext%");
+	fn.setFormat(format);
 
 	QCOMPARE(fn.getFormat(), format);
 }

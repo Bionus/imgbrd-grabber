@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QMap>
 #include "models/site.h"
+#include "models/filename.h"
 
 
 
@@ -21,14 +22,19 @@ class RenameExisting1 : public QDialog
 		~RenameExisting1();
 
 	private slots:
-		void getAll(Page *p = nullptr);
+		void getAll(Page *p);
+		void getTags(Image *img);
+		void loadNext();
 		void on_buttonCancel_clicked();
 		void on_buttonContinue_clicked();
 
 	private:
 		Ui::RenameExisting1						*ui;
 		QMap<QString, Site*>					m_sites;
+		Filename								m_filename;
+		bool									m_needDetails;
 		QList<QMap<QString, QString>>			m_details;
+		QList<Image*>							m_getTags;
 		QMap<QString, QPair<QString, QString>>	m_getAll;
 };
 
