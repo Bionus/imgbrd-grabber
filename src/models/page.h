@@ -59,6 +59,7 @@ class Page : public QObject
 
 	protected:
 		void parseImage(QMap<QString,QString> data, int position);
+		void parseNavigation();
 
 	private:
 		Site			*m_site;
