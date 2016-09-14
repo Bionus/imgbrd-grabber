@@ -52,6 +52,7 @@ class Image : public QObject
 		QString		filename() const;
 		QString		folder() const;
 		QList<Tag>	tags() const;
+		QList<Tag>	filteredTags(QStringList remove) const;
 		QStringList tagsString() const;
 		QStringList search() const;
 		QList<Pool>	pools() const;

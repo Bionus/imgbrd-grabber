@@ -198,20 +198,11 @@ QMap<QString, QStringList> Filename::makeDetails(const Image& img, QSettings *se
 	QRegExp reg;
 	reg.setCaseSensitivity(Qt::CaseInsensitive);
 	reg.setPatternSyntax(QRegExp::Wildcard);
-	for (Tag tag : img.tags())
+	for (Tag tag : img.filteredTags(remove))
 	{
 		QString t = tag.text();
-		bool removed = false;
-		for (int j = 0; j < remove.size(); ++j)
-		{
-			reg.setPattern(remove.at(j));
-			if (reg.exactMatch(t))
-				removed = true;
-		}
-		if (removed)
-			continue;
 
-		details[ignore.contains(tag.text(), Qt::CaseInsensitive) ? "generals" : tag.type()+"s"].append(t);
+		details[ignore.contains(t, Qt::CaseInsensitive) ? "generals" : tag.type()+"s"].append(t);
 		details["alls"].append(t);
 		details["alls_namespaces"].append(tag.type());
 
@@ -252,29 +243,15 @@ QStringList Filename::path(const Image& img, QSettings *settings, QString pth, i
 
 	QMap<QString,QStringList> custom = QMap<QString,QStringList>(), scustom = getCustoms();
 	QMap<QString,QStringList> details = makeDetails(img, settings);
-	QRegExp reg;
-	reg.setCaseSensitivity(Qt::CaseInsensitive);
-	reg.setPatternSyntax(QRegExp::Wildcard);
-	for (Tag tag : img.tags())
+	for (Tag tag : img.filteredTags(remove))
 	{
-		QString t = tag.text();
-		bool removed = false;
-		for (int j = 0; j < remove.size(); ++j)
-		{
-			reg.setPattern(remove.at(j));
-			if (reg.exactMatch(t))
-				removed = true;
-		}
-		if (removed)
-			continue;
-
 		for (int r = 0; r < scustom.size(); ++r)
 		{
 			QString key = scustom.keys().at(r);
 			if (!custom.contains(key))
 			{ custom.insert(key, QStringList()); }
-			if (scustom[key].contains(t, Qt::CaseInsensitive))
-			{ custom[key].append(t); }
+			if (scustom[key].contains(tag.text(), Qt::CaseInsensitive))
+			{ custom[key].append(tag.text()); }
 		}
 	}
 

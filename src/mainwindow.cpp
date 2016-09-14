@@ -668,22 +668,27 @@ void mainWindow::batchClearSel()
 	updateGroupCount();
 }
 
+QList<int> mainWindow::getSelectedRows(QList<QTableWidgetItem*> selected)
+{
+	QList<int> rows;
+	for (QTableWidgetItem *item : selected)
+	{
+		int row = item->row();
+		if (rows.contains(row))
+			continue;
+		else
+			rows.append(row);
+	}
+	return rows;
+}
+
 void mainWindow::batchMoveUp()
 {
 	QList<QTableWidgetItem *> selected = ui->tableBatchGroups->selectedItems();
-	if (selected.count() <= 0)
+	if (selected.isEmpty())
 		return;
 
-	QList<int> rows;
-	int count = selected.size();
-	for (int i = 0; i < count; ++i)
-	{
-		int sourceRow = selected.at(i)->row();
-		if (rows.contains(sourceRow))
-			continue;
-		else
-			rows.append(sourceRow);
-	}
+	QList<int> rows = getSelectedRows(selected);
 	for (int sourceRow : rows)
 	{
 		int destRow = sourceRow - 1;
@@ -703,35 +708,23 @@ void mainWindow::batchMoveUp()
 			ui->tableBatchGroups->setItem(destRow, col, sourceItems.at(col));
 	}
 
-	if (!selected.empty())
+	QItemSelectionModel* selectionModel = new QItemSelectionModel(ui->tableBatchGroups->model(), this);
+	QItemSelection selection;
+	for (int i = 0; i < selected.count(); i++)
 	{
-		QItemSelectionModel* selectionModel = new QItemSelectionModel(ui->tableBatchGroups->model(), this);
-		QItemSelection selection;
-		for (int i = 0; i < count; i++)
-		{
-			QModelIndex index = ui->tableBatchGroups->model()->index(selected.at(i)->row(), selected.at(i)->column());
-			selection.select(index, index);
-		}
-		selectionModel->select(selection, QItemSelectionModel::ClearAndSelect);
-		ui->tableBatchGroups->setSelectionModel(selectionModel);
+		QModelIndex index = ui->tableBatchGroups->model()->index(selected.at(i)->row(), selected.at(i)->column());
+		selection.select(index, index);
 	}
+	selectionModel->select(selection, QItemSelectionModel::ClearAndSelect);
+	ui->tableBatchGroups->setSelectionModel(selectionModel);
 }
 void mainWindow::batchMoveDown()
 {
 	QList<QTableWidgetItem *> selected = ui->tableBatchGroups->selectedItems();
-	if (selected.count() <= 0)
+	if (selected.isEmpty())
 		return;
 
-	QList<int> rows;
-	int count = selected.size();
-	for (int i = count - 1; i >= 0; --i)
-	{
-		int sourceRow = selected.at(i)->row();
-		if (rows.contains(sourceRow))
-			continue;
-		else
-			rows.append(sourceRow);
-	}
+	QList<int> rows = getSelectedRows(selected);
 	for (int sourceRow : rows)
 	{
 		int destRow = sourceRow + 1;
@@ -751,18 +744,15 @@ void mainWindow::batchMoveDown()
 			ui->tableBatchGroups->setItem(destRow, col, sourceItems.at(col));
 	}
 
-	if (!selected.empty())
+	QItemSelectionModel* selectionModel = new QItemSelectionModel(ui->tableBatchGroups->model(), this);
+	QItemSelection selection;
+	for (int i = 0; i < selected.count(); i++)
 	{
-		QItemSelectionModel* selectionModel = new QItemSelectionModel(ui->tableBatchGroups->model(), this);
-		QItemSelection selection;
-		for (int i = 0; i < count; i++)
-		{
-			QModelIndex index = ui->tableBatchGroups->model()->index(selected.at(i)->row(), selected.at(i)->column());
-			selection.select(index, index);
-		}
-		selectionModel->select(selection, QItemSelectionModel::ClearAndSelect);
-		ui->tableBatchGroups->setSelectionModel(selectionModel);
+		QModelIndex index = ui->tableBatchGroups->model()->index(selected.at(i)->row(), selected.at(i)->column());
+		selection.select(index, index);
 	}
+	selectionModel->select(selection, QItemSelectionModel::ClearAndSelect);
+	ui->tableBatchGroups->setSelectionModel(selectionModel);
 }
 
 void mainWindow::batchChange(int)
@@ -811,21 +801,32 @@ void mainWindow::updateBatchGroups(int y, int x)
 		}
 	}
 }
-void mainWindow::addGroup()
+
+QList<Site*> mainWindow::getSelectedSites()
 {
 	if (m_tabs.count() > 0)
-	{ m_selectedSources = m_tabs[0]->sources(); }
-	QString selected;
+		m_selectedSources = m_tabs[0]->sources();
+
+	QList<Site*> selected;
 	for (int i = 0; i < m_selectedSources.count(); i++)
-	{
 		if (m_selectedSources[i])
-		{
-			selected = m_sites.keys().at(i);
-			break;
-		}
-	}
-	if (selected.isEmpty() && m_sites.size() > 0)
-	{ selected = m_sites.keys().at(0); }
+			selected.append(m_sites.values().at(i));
+
+	return selected;
+}
+Site* mainWindow::getSelectedSiteOrDefault()
+{
+	QList<Site*> selected = getSelectedSites();
+
+	if (selected.isEmpty())
+		return m_sites.first();
+
+	return selected.first();
+}
+
+void mainWindow::addGroup()
+{
+	QString selected = getSelectedSiteOrDefault()->name();
 
 	AddGroupWindow *wAddGroup = new AddGroupWindow(selected, m_sites.keys(), m_favorites, this);
 	connect(wAddGroup, SIGNAL(sendData(QStringList)), this, SLOT(batchAddGroup(QStringList)));
@@ -833,19 +834,7 @@ void mainWindow::addGroup()
 }
 void mainWindow::addUnique()
 {
-	if (m_tabs.count() > 0)
-	{ m_selectedSources = m_tabs[0]->sources(); }
-	QString selected;
-	for (int i = 0; i < m_selectedSources.count(); i++)
-	{
-		if (m_selectedSources[i])
-		{
-			selected = m_sites.keys().at(i);
-			break;
-		}
-	}
-	if (selected.isEmpty() && m_sites.size() > 0)
-	{ selected = m_sites.keys().at(0); }
+	QString selected = getSelectedSiteOrDefault()->name();
 
 	AddUniqueWindow *wAddUnique = new AddUniqueWindow(selected, m_sites, this);
 	connect(wAddUnique, SIGNAL(sendData(QMap<QString,QString>)), this, SLOT(batchAddUnique(QMap<QString,QString>)));
@@ -1465,10 +1454,7 @@ void mainWindow::_getAll()
 		{
 			// Row
 			int site_id = m_progressdialog->batch(img->url());
-			int row = -1;
-			for (int i = 0; i < ui->tableBatchGroups->rowCount(); ++i)
-				if (ui->tableBatchGroups->item(i, 0)->text().toInt() == site_id)
-					row = i;
+			int row = getRowForSite(site_id);
 
 			// Path
 			QString path = m_settings->value("Save/filename").toString();
@@ -1494,61 +1480,15 @@ void mainWindow::_getAll()
 			// If the file does not already exists
 			if (notexists)
 			{
-				bool detected = false;
-				QStringList tags = site_id >= 0 ? m_groupBatchs[site_id - 1][0].split(' ') : QStringList();
-				QList<QChar> modifiers = QList<QChar>() << '~';
-				for (int r = 0; r < tags.size(); r++)
-				{
-					if (modifiers.contains(tags[r][0]))
-					{ tags[r] = tags[r].right(tags[r].size()-1); }
-				}
-				if (!m_settings->value("blacklistedtags").toString().isEmpty())
-				{
-					QStringList blacklistedtags(m_settings->value("blacklistedtags").toString().split(' '));
-					detected = !img->blacklisted(blacklistedtags).isEmpty();
-				}
-				if (detected && site_id >= 0 && m_groupBatchs[site_id - 1][4] == "false")
-				{
-					m_getAllDownloading.removeAll(img);
-					m_progressdialog->setValue(m_progressdialog->value() + img->value());
-					m_progressdialog->setImages(m_progressdialog->images() + 1);
-					m_progressdialog->loadedImage(img->url());
-					m_getAllIgnored++;
-					log(tr("Image ignorée."));
-
-					m_progressBars[site_id - 1]->setValue(m_progressBars[site_id - 1]->value() + 1);
-					if (m_progressBars[site_id - 1]->value() >= m_progressBars[site_id - 1]->maximum())
-					{ ui->tableBatchGroups->item(row, 0)->setIcon(getIcon(":/images/colors/green.png")); }
-
-					img->deleteLater();
-					// qDebug() << "DELETE ignored" << QString::number((int)img, 16);
-					_getAll();
-				}
-				else
-				{ getAllGetImage(img); }
+				getAllGetImageIfNotBlacklisted(img, site_id);
 			}
 
-			// If the file already exusts
+			// If the file already exists
 			else
 			{
-				m_progressdialog->setValue(m_progressdialog->value() + img->value());
-				m_progressdialog->setImages(m_progressdialog->images() + 1);
-				m_progressdialog->loadedImage(img->url());
-
 				m_getAllExists++;
 				log(tr("Fichier déjà existant : <a href=\"file:///%1\">%1</a>").arg(paths.at(0)));
-
-				if (site_id >= 0)
-				{
-					m_progressBars[site_id - 1]->setValue(m_progressBars[site_id - 1]->value() + 1);
-					if (m_progressBars[site_id - 1]->value() >= m_progressBars[site_id - 1]->maximum())
-					{ ui->tableBatchGroups->item(row, 0)->setIcon(getIcon(":/images/colors/green.png")); }
-				}
-
-				m_getAllDownloading.removeAll(img);
-				img->deleteLater();
-				// qDebug() << "DELETE already" << QString::number((int)img, 16);
-				_getAll();
+				getAllImageOk(img, site_id);
 			}
 		}
 	}
@@ -1557,6 +1497,52 @@ void mainWindow::_getAll()
 	else if (m_getAllDownloading.isEmpty() && m_getAll)
 	{ getAllFinished(); }
 }
+
+void mainWindow::getAllGetImageIfNotBlacklisted(Image *img, int site_id)
+{
+	// Check if image is blacklisted
+	bool detected = false;
+	if (!m_settings->value("blacklistedtags").toString().isEmpty())
+	{
+		QStringList blacklistedtags(m_settings->value("blacklistedtags").toString().split(' '));
+		detected = !img->blacklisted(blacklistedtags).isEmpty();
+	}
+
+	if (detected && site_id >= 0 && m_groupBatchs[site_id - 1][4] == "false")
+	{
+		m_getAllIgnored++;
+		log(tr("Image ignorée."));
+
+		getAllImageOk(img, site_id);
+	}
+	else
+	{ getAllGetImage(img); }
+}
+
+void mainWindow::getAllImageOk(Image *img, int site_id, bool del)
+{
+	m_progressdialog->setValue(m_progressdialog->value() + img->value());
+	m_progressdialog->setImages(m_progressdialog->images() + 1);
+
+	if (site_id >= 0)
+	{
+		int row = getRowForSite(site_id);
+		m_progressBars[site_id - 1]->setValue(m_progressBars[site_id - 1]->value() + 1);
+		if (m_progressBars[site_id - 1]->value() >= m_progressBars[site_id - 1]->maximum())
+		{ ui->tableBatchGroups->item(row, 0)->setIcon(getIcon(":/images/colors/green.png")); }
+	}
+
+	m_getAllDownloading.removeAll(img);
+
+	if (del)
+	{
+		img->deleteLater();
+		m_progressdialog->loadedImage(img->url());
+	}
+
+	_getAll();
+}
+
 void mainWindow::imageUrlChanged(QString before, QString after)
 {
 	m_downloadTimeLast.insert(after, m_downloadTimeLast[before]);
@@ -1592,10 +1578,7 @@ void mainWindow::getAllPerformTags(Image* img)
 
 	// Row
 	int site_id = m_progressdialog->batch(img->url());
-	int row = -1;
-	for (int i = 0; i < ui->tableBatchGroups->rowCount(); ++i)
-		if (ui->tableBatchGroups->item(i, 0)->text().toInt() == site_id)
-			row = i;
+	int row = getRowForSite(site_id);
 
 	// Getting path
 	QString path = m_settings->value("Save/filename").toString();
@@ -1621,36 +1604,7 @@ void mainWindow::getAllPerformTags(Image* img)
 	if (!f.exists())	{ f.setFileName(pth.section('.', 0, -2)+".jpeg");	}
 	if (!f.exists())
 	{
-		bool detected = false;
-		QStringList tags = site_id >= 0 ? m_groupBatchs[site_id - 1][0].split(' ') : QStringList();
-		QList<QChar> modifiers = QList<QChar>() << '~';
-		for (int r = 0; r < tags.size(); r++)
-		{
-			if (modifiers.contains(tags[r][0]))
-			{ tags[r] = tags[r].right(tags[r].size()-1); }
-		}
-		if (!m_settings->value("blacklistedtags").toString().isEmpty())
-		{
-			QStringList blacklistedtags(m_settings->value("blacklistedtags").toString().split(' '));
-			detected = !img->blacklisted(blacklistedtags).isEmpty();
-		}
-		if (detected && site_id >= 0 && m_groupBatchs[site_id - 1][4] == "false")
-		{
-			m_progressdialog->setValue(m_progressdialog->value()+img->value());
-			m_progressdialog->setImages(m_progressdialog->images()+1);
-			m_getAllIgnored++;
-			log(tr("Image ignorée."));
-			m_progressdialog->loadedImage(img->url());
-			m_progressBars[site_id - 1]->setValue(m_progressBars[site_id]->value()+1);
-			if (m_progressBars[site_id - 1]->value() >= m_progressBars[site_id]->maximum())
-			{ ui->tableBatchGroups->item(row, 0)->setIcon(getIcon(":/images/colors/green.png")); }
-			m_getAllDownloading.removeAll(img);
-			img->deleteLater();
-			// qDebug() << "DELETE tags ignored" << QString::number((int)img, 16);
-			_getAll();
-		}
-		else
-		{ getAllGetImage(img); }
+		getAllGetImageIfNotBlacklisted(img, site_id);
 	}
 	else
 	{
@@ -1671,14 +1625,21 @@ void mainWindow::getAllPerformTags(Image* img)
 		_getAll();
 	}
 }
+
+int mainWindow::getRowForSite(int site_id)
+{
+	if (site_id >= 0)
+		for (int i = 0; i < ui->tableBatchGroups->rowCount(); ++i)
+			if (ui->tableBatchGroups->item(i, 0)->text().toInt() == site_id)
+				return i;
+	return -1;
+}
+
 void mainWindow::getAllGetImage(Image* img)
 {
 	// Row
 	int site_id = m_progressdialog->batch(img->url());
-	int row = -1;
-	for (int i = 0; i < ui->tableBatchGroups->rowCount(); ++i)
-		if (ui->tableBatchGroups->item(i, 0)->text().toInt() == site_id)
-			row = i;
+	int row = getRowForSite(site_id);
 
 	// Path
 	QString path = m_settings->value("Save/filename").toString();
@@ -1765,10 +1726,7 @@ void mainWindow::getAllPerformImage(Image* img)
 
 	// Row
 	int site_id = m_progressdialog->batch(img->url());
-	int row = -1;
-	for (int i = 0; i < ui->tableBatchGroups->rowCount(); ++i)
-		if (ui->tableBatchGroups->item(i, 0)->text().toInt() == site_id)
-			row = i;
+	int row = getRowForSite(site_id);
 
 	int errors = m_getAllErrors, e404s = m_getAll404s;
 	if (reply->error() == QNetworkReply::NoError)
@@ -1801,25 +1759,7 @@ void mainWindow::getAllPerformImage(Image* img)
 		del = false;
 	}
 
-	// Update progress bars
-	if (site_id >= 0)
-	{
-		m_progressBars[site_id - 1]->setValue(m_progressBars[site_id - 1]->value()+1);
-		if (m_progressBars[site_id - 1]->value() >= m_progressBars[site_id - 1]->maximum())
-		{ ui->tableBatchGroups->item(row, 0)->setIcon(getIcon(":/images/colors/green.png")); }
-	}
-
-	// Update dialog infos
-	m_progressdialog->setImages(m_progressdialog->images() + 1);
-	m_progressdialog->setValue(m_progressdialog->value() + img->value());
-	m_getAllDownloading.removeAll(img);
-
-	if (del) {
-		img->deleteLater();
-		// qDebug() << "DELETE finished" << QString::number((int)img, 16);
-	}
-
-	_getAll();
+	getAllImageOk(img, site_id, del);
 }
 void mainWindow::saveImage(Image *img, QNetworkReply *reply, QString path, QString p, bool getAll)
 {

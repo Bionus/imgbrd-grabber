@@ -985,6 +985,33 @@ QMap<QString, Image::SaveResult> Image::save(QString filename, QString path)
 	return save(paths);
 }
 
+QList<Tag> Image::filteredTags(QStringList remove) const
+{
+	QList<Tag> tags;
+
+	QRegExp reg;
+	reg.setCaseSensitivity(Qt::CaseInsensitive);
+	reg.setPatternSyntax(QRegExp::Wildcard);
+	for (Tag tag : m_tags)
+	{
+		bool removed = false;
+		for (QString rem : remove)
+		{
+			reg.setPattern(rem);
+			if (reg.exactMatch(tag.text()))
+			{
+				removed = true;
+				break;
+			}
+		}
+
+		if (!removed)
+			tags.append(tag);
+	}
+
+	return tags;
+}
+
 
 QString			Image::url() const			{ return m_url;				}
 QString			Image::author() const		{ return m_author;			}
