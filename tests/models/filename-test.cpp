@@ -4,6 +4,11 @@
 
 void FilenameTest::init()
 {
+	// Make tmp dir if not already existing
+	QDir tmp("tests/resources/");
+	if (!tmp.exists("tmp"))
+		tmp.mkdir("tmp");
+
 	m_details["md5"] = "1bc29b36f623ba82aaf6724fd3b16718";
 	m_details["ext"] = "jpg";
 	m_details["author"] = "superauthor";
