@@ -159,11 +159,11 @@ QString FilenameWindow::format()
 
 void FilenameWindow::done(int r)
 {
-	QMap<QString, Site*> *sites = Site::getAllSites();
+	QMap<QString, Site*> sites = Site::getAllSites();
 
-	if (QDialog::Accepted == r && ui->radioJavascript->isChecked() && !sites->isEmpty())
+	if (QDialog::Accepted == r && ui->radioJavascript->isChecked() && !sites.isEmpty())
 	{
-		Site *site = sites->value(sites->keys().first());
+		Site *site = sites.value(sites.keys().first());
 
 		QMap<QString, QString> info;
 		info.insert("site", QString::number((qintptr)site));

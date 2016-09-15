@@ -249,20 +249,19 @@ void mainWindow::initialLoginsFinished()
 
 void mainWindow::loadSites()
 {
-	QMap<QString, Site*> *sites = Site::getAllSites();
+	QMap<QString, Site*> sites = Site::getAllSites();
 
 	QStringList current = m_sites.keys();
-	QStringList news = sites->keys();
+	QStringList news = sites.keys();
 
-	for (int i = 0; i < sites->size(); ++i)
+	for (int i = 0; i < sites.size(); ++i)
 	{
 		QString k = news[i];
 		if (!current.contains(k))
-		{ m_sites.insert(k, sites->value(k)); }
-		else
-		{ delete sites->value(k); }
+		{ m_sites.insert(k, sites.value(k)); }
+		/*else
+		{ delete sites->value(k); }*/
 	}
-	delete sites;
 }
 
 mainWindow::~mainWindow()

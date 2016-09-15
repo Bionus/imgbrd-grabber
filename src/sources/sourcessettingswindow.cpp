@@ -202,5 +202,5 @@ void SourcesSettingsWindow::save()
 
 	settings->sync();
 
-	m_site->load();
+	m_site->loadConfig();
 }

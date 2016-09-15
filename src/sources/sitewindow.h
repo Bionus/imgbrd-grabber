@@ -27,7 +27,7 @@ class siteWindow : public QDialog
 
 	private:
 		Ui::siteWindow *ui;
-		QList<Site*> *m_models;
+		QList<Source*> *m_sources;
 };
 
 #endif // SITEWINDOW_H

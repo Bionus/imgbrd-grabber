@@ -277,7 +277,7 @@ void sourcesWindow::checkForUpdates()
 }
 void sourcesWindow::checkForUpdatesReceived(Site *site)
 {
-	if (site->updateVersion() != "")
+	/*if (site->updateVersion() != "")
 	{
 		int pos = m_sites->values().indexOf(site);
 		if (site->updateVersion() != VERSION)
@@ -290,5 +290,5 @@ void sourcesWindow::checkForUpdatesReceived(Site *site)
 			m_labels[pos]->setPixmap(QPixmap(":/images/icons/update.png"));
 			m_labels[pos]->setToolTip(tr("Une mise à jour de cette source est disponible."));
 		}
-	}
+	}*/
 }

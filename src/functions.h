@@ -9,6 +9,8 @@
 #include <QLayout>
 #include <algorithm>
 #include <QString>
+#include <QNetworkReply>
+#include <QSslError>
 #include "models/favorite.h"
 
 #define DONE()	logUpdate(QObject::tr(" Fait"))
@@ -26,6 +28,7 @@ enum Log
 
 void		error(QWidget *, QString);
 void		sortNonCaseSensitive(QStringList &);
+void		sslErrorHandler(QNetworkReply* qnr, QList<QSslError> errors);
 QDateTime	qDateTimeFromString(QString s);
 QString		savePath(QString s = "", bool exists = false);
 int			levenshtein(QString, QString);
