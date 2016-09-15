@@ -73,6 +73,12 @@ FORMS += $${PDIR}/src/*.ui \
 	$${PDIR}/src/utils/md5-fix/*.ui \
 	$${PDIR}/src/viewer/*.ui
 
+# Breakpad files
+use_breakpad {
+	HEADERS += $${PDIR}/crashhandler/*.h
+	SOURCE += $${PDIR}/crashhandler/*.cpp
+}
+
 # Linux install script
 unix:!macx{
 	isEmpty(PREFIX){
