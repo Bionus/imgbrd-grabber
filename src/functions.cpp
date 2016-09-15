@@ -502,6 +502,8 @@ void log(QString l, Log type)
 	#ifndef TEST
 		QString msg = (type == Error ? QObject::tr("<b>Erreur :</b> %1").arg(l) : (type == Warning ? QObject::tr("<b>Attention :</b> %1").arg(l) : (type == Notice ? QObject::tr("<b>Notice :</b> %1").arg(l) : l)));
 		_mainwindow->logShow(time, msg);
+    #else
+        Q_UNUSED(type);
 	#endif
 
 	#ifdef QT_DEBUG
