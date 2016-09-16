@@ -80,6 +80,7 @@ void Site::loadConfig()
 	m_password = m_settings->value("auth/password", "").toString();
 
 	// Cookies
+	m_cookies.clear();
 	QList<QVariant> cookies = m_settings->value("cookies", "").toList();
 	for (QVariant variant : cookies)
 	{

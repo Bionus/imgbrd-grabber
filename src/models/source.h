@@ -42,6 +42,8 @@ class Source : public QObject
 		QString m_name;
 		QList<Site*> m_sites;
 		QList<Api*> m_apis;
+
+		// Check for updates
 		QNetworkAccessManager *m_manager;
 		QNetworkReply *m_updateReply;
 		QString m_updateVersion;

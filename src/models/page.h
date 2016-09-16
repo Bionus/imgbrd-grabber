@@ -7,6 +7,7 @@
 #include "tag.h"
 #include "image.h"
 #include "functions.h"
+#include "page-api.h"
 
 
 
@@ -22,10 +23,9 @@ class Page : public QObject
 		explicit Page(Site *site, QList<Site*> sites, QStringList tags = QStringList(), int page = 1, int limit = 25, QStringList postFiltering = QStringList(), bool smart = false, QObject *parent = 0, int pool = 0, int lastPage = 0, int lastPageMinId = 0, int lastPageMaxId = 0);
 		~Page();
 		void			setLastPage(Page *page);
+		void			fallback(bool load = true);
 		void			load(bool rateLimit = false);
 		void			loadTags();
-		QUrl			parseUrl(QString url, int pid = -1, int p = -1, QString t = "", QString pseudo = "", QString password = "");
-		void			fallback(bool load = true);
 		QList<Image*>	images();
 		Site			*site();
 		int				imagesCount(bool guess = true);
@@ -42,37 +42,32 @@ class Page : public QObject
 		int				page();
 		int				minId();
 		int				maxId();
-		void			setUrl(QUrl url);
 		QUrl			nextPage();
 		QUrl			prevPage();
 
 	public slots:
-		void parse();
-		void parseTags();
 		void abort();
 		void abortTags();
 		void clear();
+
+	protected slots:
+		void loadFinished(PageApi *api, PageApi::LoadResult status);
+		void loadTagsFinished(PageApi *api);
 
 	signals:
 		void finishedLoading(Page*);
 		void failedLoading(Page*);
 		void finishedLoadingTags(Page*);
 
-	protected:
-		void parseImage(QMap<QString,QString> data, int position);
-		void parseNavigation();
-
 	private:
 		Site			*m_site;
-		Api				*m_currentApi;
+		int				m_currentApi;
+		QList<PageApi*>	m_pageApis;
+		int				m_regexApi;
 		QStringList		m_postFiltering, m_errors, m_search;
-		int				m_imagesPerPage, m_currentSource, m_lastPage, m_lastPageMinId, m_lastPageMaxId, m_imagesCount, m_pagesCount, m_currentUrl, m_page, m_blim, m_pool;
-		bool			m_smart, m_replyExists, m_replyTagsExists;
+		int				m_imagesPerPage, m_currentSource, m_lastPage, m_lastPageMinId, m_lastPageMaxId, m_imagesCount, m_pagesCount, m_page, m_blim, m_pool;
+		bool			m_smart;
 		QString			m_format, m_website, m_source, m_wiki, m_originalUrl;
-		QUrl			m_url, m_urlRegex, m_urlNextPage, m_urlPrevPage;
-		QList<Image*>	m_images;
-		QList<Tag>		m_tags;
-		QNetworkReply	*m_reply, *m_replyTags;
 };
 
 #endif // PAGE_H

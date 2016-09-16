@@ -29,7 +29,7 @@ void PageTest::testIncompatibleModifiers()
 	QCOMPARE(page.search().first(), QString("test"));
 }
 
-void PageTest::testParseUrlBasic()
+/*void PageTest::testParseUrlBasic()
 {
 	Page page(m_site, m_sites, QStringList() << "test" << "tag");
 
@@ -56,7 +56,7 @@ void PageTest::testParseUrlAltPage()
 
 	QCOMPARE(page.parseUrl("/posts.xml?{login}limit={limit}&page={page}{altpage}&tags={tags}").toString(),
 			 QString("http://danbooru.donmai.us/posts.xml?login=user&password_hash=pass&limit=25&page=b0&tags=test tag"));
-}
+}*/
 
 
 static PageTest instance;
