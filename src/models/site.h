@@ -55,6 +55,7 @@ class Site : public QObject
 		void getAsync(QueryType type, QUrl url, std::function<void(QNetworkReply *)> callback, Page *page = nullptr, QString referer = "", Image *img = nullptr);
 		static QList<Site*> getSites(QStringList sources);
 		static QMap<QString, Site *> getAllSites();
+		QUrl fixUrl(QUrl url) { return fixUrl(url.toString()); }
 		QUrl fixUrl(QString url);
 		QUrl fixUrl(QString url, QUrl old);
 		QString username();
@@ -92,7 +93,6 @@ class Site : public QObject
 		QString m_name;
 		QString m_url;
 		Source *m_source;
-		QMap<QString,QString> m_data;
 		QList<QNetworkCookie> m_cookies;
 		QSettings *m_settings;
 		QNetworkAccessManager *m_manager;

@@ -1,14 +1,15 @@
 #include <QtTest>
 #include "page-test.h"
 #include "models/tag.h"
+#include "models/source.h"
 
 
 void PageTest::init()
 {
 	m_settings = new QSettings("tests/resources/settings.ini", QSettings::IniFormat);
 
-	m_sites.append(new Site(m_settings, "release/sites/Danbooru (2.0)", "danbooru.donmai.us"));
-	m_site = new Site(m_settings, "release/sites/Gelbooru (0.2)", "gelbooru.com");
+	m_sites.append(new Site("danbooru.donmai.us", new Source("release/sites/Danbooru (2.0)")));
+	m_site = new Site("gelbooru.com", new Source("release/sites/Gelbooru (0.2)"));
 }
 
 void PageTest::cleanup()

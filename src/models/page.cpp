@@ -76,7 +76,8 @@ QUrl Page::parseUrl(QString url, int pid, int p, QString t, QString pseudo, QStr
 	url.replace("{tags}", QUrl::toPercentEncoding(t));
 	url.replace("{limit}", QString::number(m_imagesPerPage));
 
-	if (!m_site->contains("Urls/"+QString::number(m_currentSource)+"/MaxPage") || p <= m_site->value("Urls/"+QString::number(m_currentSource)+"/MaxPage").toInt() || m_lastPage > m_page + 1 || m_lastPage < m_page - 1)
+	Api *currentApi = m_site->getApis().at(m_currentSource - 1);
+	if (!currentApi->contains("Urls/MaxPage") || p <= currentApi->value("Urls/MaxPage").toInt() || m_lastPage > m_page + 1 || m_lastPage < m_page - 1)
 	{
 		url.replace("{pid}", QString::number(pid));
 		url.replace("{page}", QString::number(p));
@@ -84,7 +85,7 @@ QUrl Page::parseUrl(QString url, int pid, int p, QString t, QString pseudo, QStr
 	}
 	else
 	{
-		QString altpage = m_site->value("Urls/"+QString::number(m_currentSource)+"/AltPage" + (m_lastPage > m_page ? "Prev" : "Next"));
+		QString altpage = currentApi->value("Urls/AltPage" + QString(m_lastPage > m_page ? "Prev" : "Next"));
 		altpage.replace("{min}", QString::number(m_lastPageMinId));
 		altpage.replace("{max}", QString::number(m_lastPageMaxId));
 		altpage.replace("{min-1}", QString::number(m_lastPageMinId-1));
@@ -113,7 +114,7 @@ QUrl Page::parseUrl(QString url, int pid, int p, QString t, QString pseudo, QStr
 
 void Page::fallback(bool bload)
 {
-	if (m_currentSource > m_site->value("Selected").count('/'))
+	if (m_currentSource >= m_site->getApis().count())
 	{
 		log(tr("Aucune source valide du site n'a retourné de résultat."));
 		m_errors.append(tr("Aucune source valide du site n'a retourné de résultat."));
@@ -122,9 +123,10 @@ void Page::fallback(bool bload)
 		return;
 	}
 	if (m_currentSource > 0)
-	{ log(tr("Chargement en %1 échoué. Nouvel essai en %2.").arg(m_format).arg(m_site->value("Selected").split('/').at(m_currentSource))); }
+	{ log(tr("Chargement en %1 échoué. Nouvel essai en %2.").arg(m_format).arg(m_site->getApis().at(m_currentSource)->getName())); }
 
 	m_currentSource++;
+	Api *currentApi = m_site->getApis().at(m_currentSource - 1);
 
 	// Default tag is none is given
 	QString t = m_search.join(" ").trimmed();
@@ -132,10 +134,9 @@ void Page::fallback(bool bload)
 	{ t = m_site->value("DefaultTag"); }
 
 	// Find page number
-	bool limited = m_site->contains("Urls/"+QString::number(m_currentSource)+"/Limit");
-	m_format = m_site->value("Selected").split('/').at(m_currentSource-1);
+	bool limited = currentApi->contains("Urls/Limit");
 	int p = m_page;
-	m_blim = limited ? m_site->value("Urls/"+QString::number(m_currentSource)+"/Limit").toInt() : m_imagesPerPage;
+	m_blim = limited ? currentApi->value("Urls/Limit").toInt() : m_imagesPerPage;
 	if (m_smart)
 	{
 		if (m_imagesPerPage > m_blim || limited)
@@ -159,7 +160,7 @@ void Page::fallback(bool bload)
 				url.replace("{pool}", pool.cap(1));
 				pl = pool.cap(1).toInt();
 				m_currentSource = i;
-				m_format = m_site->value("Selected").split('/').at(m_currentSource-1);
+				currentApi = m_site->getApis().at(m_currentSource - 1);
 				t = t.remove(pos, pool.cap(0).length()).trimmed();
 				break;
 			}
@@ -175,10 +176,10 @@ void Page::fallback(bool bload)
 	}
 	if (url.isEmpty())
 	{
-		if (t.isEmpty() && m_site->contains("Urls/"+QString::number(m_currentSource)+"/Home"))
-		{ url = m_site->value("Urls/"+QString::number(m_currentSource)+"/Home"); }
+		if (t.isEmpty() && currentApi->contains("Urls/Home"))
+		{ url = currentApi->value("Urls/Home"); }
 		else
-		{ url = m_site->value("Urls/"+QString::number(m_currentSource)+"/Tags"); }
+		{ url = currentApi->value("Urls/Tags"); }
 	}
 
 	// GET login information
@@ -373,9 +374,10 @@ void Page::parse()
 	}
 
 	int first = m_smart ? ((m_page - 1) * m_imagesPerPage) % m_blim : 0;
+	m_format = m_site->getApis().at(m_currentSource - 1)->getName();
 
 	// XML
-	if (m_format == "xml")
+	if (m_format == "Xml")
 	{
 		// Initializations
 		QDomDocument doc;
@@ -450,7 +452,7 @@ void Page::parse()
 	}
 
 	// RSS
-	else if (m_format == "rss")
+	else if (m_format == "Rss")
 	{
 		// Initializations
 		QDomDocument doc;
@@ -498,7 +500,7 @@ void Page::parse()
 	}
 
 	// Regexes
-	else if (m_format == "regex")
+	else if (m_format == "Html")
 	{
 		// Getting tags
 		if (m_site->contains("Regex/Tags"))
@@ -551,7 +553,7 @@ void Page::parse()
 	}
 
 	// JSON
-	else if (m_format == "json")
+	else if (m_format == "Json")
 	{
 		QVariant src = Json::parse(m_source);
 		if (!src.isNull())
@@ -620,7 +622,7 @@ void Page::parse()
 	}
 
 	// Try to get navigation info on HTML pages
-	if (!m_replyTagsExists || m_format == "regex")
+	if (!m_replyTagsExists || m_format == "Html")
 	{
 		parseNavigation();
 	}

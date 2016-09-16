@@ -46,7 +46,8 @@ void FilenameTest::init()
 	m_settings->setValue("Save/copyright_multiple", "replaceAll");
 	m_settings->setValue("Save/replaceblanks", true);
 
-	m_site = new Site(m_settings, "release/sites/Danbooru (2.0)", "danbooru.donmai.us");
+	m_source = new Source("release/sites/Danbooru (2.0)");
+	m_site = new Site("danbooru.donmai.us", m_source);
 	m_img = new Image(m_site, m_details);
 }
 

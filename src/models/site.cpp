@@ -35,6 +35,11 @@ Site::Site(QString url, Source *source)
 	loadConfig();
 }
 
+Site::~Site()
+{
+	m_settings->deleteLater();
+}
+
 void Site::loadConfig()
 {
 	if (m_settings != nullptr)
@@ -86,7 +91,8 @@ void Site::loadConfig()
 			m_cookies.append(cookie);
 		}
 	}
-	resetCookieJar();
+	if (m_cookieJar != nullptr)
+		resetCookieJar();
 }
 
 
@@ -408,7 +414,7 @@ QString Site::url()				{ return m_url;				}
 QString Site::type()			{ return m_type;			}
 QString Site::username()		{ return m_username;		}
 QString Site::password()		{ return m_password;		}
-QList<Api*> Source::getApis() const		{ return m_apis;			}
+QList<Api*> Site::getApis() const		{ return m_apis;			}
 
 void Site::setUsername(QString username)	{ m_username = username;	}
 void Site::setPassword(QString password)	{ m_password = password;	}
@@ -428,13 +434,13 @@ QUrl Site::fixUrl(QString url, QUrl old)
 	if (url.startsWith("//"))
 	{ return QUrl(protocol + ":" + url); }
 	if (url.startsWith("/"))
-	{ return QUrl(protocol + "://" + m_data.value("Url") + url); }
+	{ return QUrl(protocol + "://" + m_url + url); }
 
 	if (!url.startsWith("http"))
 	{
 		if (old.isValid())
 		{ return old.resolved(QUrl(url)); }
-		return QUrl(protocol + "://" + m_data.value("Url") + "/" + url);
+		return QUrl(protocol + "://" + m_url + "/" + url);
 	}
 
 	return QUrl(url);

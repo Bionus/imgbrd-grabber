@@ -4,6 +4,7 @@
 #include <QSettings>
 #include "test-suite.h"
 #include "downloader.h"
+#include "models/source.h"
 #include "models/site.h"
 
 

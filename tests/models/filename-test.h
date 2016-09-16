@@ -3,6 +3,7 @@
 
 #include "test-suite.h"
 #include "models/filename.h"
+#include "models/source.h"
 #include "models/site.h"
 #include "models/image.h"
 
@@ -68,6 +69,7 @@ class FilenameTest : public TestSuite
 
 	private:
 		QSettings *m_settings;
+		Source *m_source;
 		Site *m_site;
 		Image *m_img;
 		QMap<QString,QString> m_details;

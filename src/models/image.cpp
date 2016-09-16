@@ -316,7 +316,7 @@ void Image::loadPreview()
 	}
 
 	m_previewTry++;
-	m_loadPreview = m_parentSite->get(m_previewUrl, m_parent, "preview");
+	m_loadPreview = m_parentSite->get(m_parentSite->fixUrl(m_previewUrl), m_parent, "preview");
 	m_loadPreview->setParent(this);
 	m_loadingPreview = true;
 
@@ -378,7 +378,7 @@ void Image::parsePreview()
 
 void Image::loadDetails()
 {
-	m_loadDetails = m_parentSite->get(m_pageUrl);
+	m_loadDetails = m_parentSite->get(m_parentSite->fixUrl(m_pageUrl));
 	m_loadDetails->setParent(this);
 	m_loadingDetails = true;
 
@@ -721,7 +721,7 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 
 void Image::loadImage()
 {
-	m_loadImage = m_parentSite->get(m_url, m_parent, "image", this);
+	m_loadImage = m_parentSite->get(m_parentSite->fixUrl(m_url), m_parent, "image", this);
 	m_loadImage->setParent(this);
 	//m_timer.start();
 	m_loadingImage = true;
