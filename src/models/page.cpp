@@ -73,26 +73,19 @@ QUrl Page::parseUrl(QString url, int pid, int p, QString t, QString pseudo, QStr
 	if (password.isEmpty())
 		password = m_site->password();
 
-	qDebug() << 0;
 	url.replace("{tags}", QUrl::toPercentEncoding(t));
 	url.replace("{limit}", QString::number(m_imagesPerPage));
-	qDebug() << 1;
 
-	Api *currentApi = m_site->getApis().at(m_currentSource - 1);
-	qDebug() << 2 << m_currentSource - 1 << m_site->getApis().count();
-	qDebug() << 2 << (void*)currentApi;
-	if (!currentApi->contains("Urls/MaxPage") || p <= currentApi->value("Urls/MaxPage").toInt() || m_lastPage > m_page + 1 || m_lastPage < m_page - 1)
+	m_currentApi = m_site->getApis().at(m_currentSource - 1);
+	if (!m_currentApi->contains("Urls/MaxPage") || p <= m_currentApi->value("Urls/MaxPage").toInt() || m_lastPage > m_page + 1 || m_lastPage < m_page - 1)
 	{
-		qDebug() << 3;
 		url.replace("{pid}", QString::number(pid));
 		url.replace("{page}", QString::number(p));
 		url.replace("{altpage}", "");
-		qDebug() << 4;
 	}
 	else
 	{
-		qDebug() << 5;
-		QString altpage = currentApi->value("Urls/AltPage" + QString(m_lastPage > m_page ? "Prev" : "Next"));
+		QString altpage = m_currentApi->value("Urls/AltPage" + QString(m_lastPage > m_page ? "Prev" : "Next"));
 		altpage.replace("{min}", QString::number(m_lastPageMinId));
 		altpage.replace("{max}", QString::number(m_lastPageMaxId));
 		altpage.replace("{min-1}", QString::number(m_lastPageMinId-1));
@@ -102,9 +95,7 @@ QUrl Page::parseUrl(QString url, int pid, int p, QString t, QString pseudo, QStr
 		url.replace("{altpage}", altpage);
 		url.replace("{page}", "");
 		url.replace("{pid}", "");
-		qDebug() << 6;
 	}
-	qDebug() << 7;
 
 	url.replace("{pseudo}", pseudo);
 	url.replace("{password}", password);
@@ -135,7 +126,7 @@ void Page::fallback(bool bload)
 	{ log(tr("Chargement en %1 échoué. Nouvel essai en %2.").arg(m_format).arg(m_site->getApis().at(m_currentSource)->getName())); }
 
 	m_currentSource++;
-	Api *currentApi = m_site->getApis().at(m_currentSource - 1);
+	m_currentApi = m_site->getApis().at(m_currentSource - 1);
 
 	// Default tag is none is given
 	QString t = m_search.join(" ").trimmed();
@@ -143,9 +134,9 @@ void Page::fallback(bool bload)
 	{ t = m_site->value("DefaultTag"); }
 
 	// Find page number
-	bool limited = currentApi->contains("Urls/Limit");
+	bool limited = m_currentApi->contains("Urls/Limit");
 	int p = m_page;
-	m_blim = limited ? currentApi->value("Urls/Limit").toInt() : m_imagesPerPage;
+	m_blim = limited ? m_currentApi->value("Urls/Limit").toInt() : m_imagesPerPage;
 	if (m_smart)
 	{
 		if (m_imagesPerPage > m_blim || limited)
@@ -161,15 +152,16 @@ void Page::fallback(bool bload)
 	int pos = -1;
 	if ((pos = pool.indexIn(t)) != -1)
 	{
-		for (int i = 1; i <= m_site->value("Selected").count('/') + 1; i++)
+		for (int i = 1; i <= m_site->getApis().count() + 1; i++)
 		{
-			if (m_site->contains("Urls/"+QString::number(i)+"/Pools"))
+			Api *api = m_site->getApis().at(i - 1);
+			if (api->contains("Urls/Pools"))
 			{
-				url = m_site->value("Urls/"+QString::number(i)+"/Pools");
+				url = api->value("Urls/Pools");
 				url.replace("{pool}", pool.cap(1));
 				pl = pool.cap(1).toInt();
 				m_currentSource = i;
-				currentApi = m_site->getApis().at(m_currentSource - 1);
+				m_currentApi = api;
 				t = t.remove(pos, pool.cap(0).length()).trimmed();
 				break;
 			}
@@ -185,17 +177,17 @@ void Page::fallback(bool bload)
 	}
 	if (url.isEmpty())
 	{
-		if (t.isEmpty() && currentApi->contains("Urls/Home"))
-		{ url = currentApi->value("Urls/Home"); }
+		if (t.isEmpty() && m_currentApi->contains("Urls/Home"))
+		{ url = m_currentApi->value("Urls/Home"); }
 		else
-		{ url = currentApi->value("Urls/Tags"); }
+		{ url = m_currentApi->value("Urls/Tags"); }
 	}
 
 	// GET login information
 	QString pseudo = m_site->username();
 	QString password = m_site->password();
 
-	int pid = m_site->contains("Urls/"+QString::number(m_currentSource)+"/Limit") ? m_site->value("Urls/"+QString::number(m_currentSource)+"/Limit").toInt() * (m_page - 1) : m_imagesPerPage * (m_page - 1);
+	int pid = m_currentApi->contains("Urls/Limit") ? m_currentApi->value("Urls/Limit").toInt() * (m_page - 1) : m_imagesPerPage * (m_page - 1);
 
 	// Global replace tokens
 	m_originalUrl = QString(url);
@@ -278,16 +270,16 @@ void Page::abortTags()
 	}
 }
 
-QString _parseSetImageUrl(Site* site, QString setting, QString ret, QMap<QString,QString> *d, bool replaces = true, QString def = QString())
+QString _parseSetImageUrl(Site *site, Api* api, QString setting, QString ret, QMap<QString,QString> *d, bool replaces = true, QString def = QString())
 {
-	if (site->contains(setting) && replaces)
+	if (api->contains(setting) && replaces)
 	{
-		if (site->value(setting).contains("->"))
+		if (api->value(setting).contains("->"))
 		{
 			if (ret.isEmpty() && !def.isEmpty())
 				ret = def;
 
-			QStringList replaces = site->value(setting).split('&');
+			QStringList replaces = api->value(setting).split('&');
 			for (QString rep : replaces)
 			{
 				QRegExp rgx(rep.left(rep.indexOf("->")));
@@ -296,7 +288,7 @@ QString _parseSetImageUrl(Site* site, QString setting, QString ret, QMap<QString
 		}
 		else if (ret.length() < 5)
 		{
-			QStringList options = site->value(setting).split('|');
+			QStringList options = api->value(setting).split('|');
 			for (QString opt : options)
 			{
 				opt.replace("{id}", d->value("id"))
@@ -324,9 +316,9 @@ void Page::parseImage(QMap<QString,QString> d, int position)
 	{ d["sample_url"] = ""; }
 
 	// Fix urls
-	d["file_url"] = _parseSetImageUrl(m_site, "Urls/"+QString::number(m_currentSource)+"/Image", d["file_url"], &d, true, d["preview_url"]);
-	d["sample_url"] = _parseSetImageUrl(m_site, "Urls/"+QString::number(m_currentSource)+"/Sample", d["sample_url"], &d, true, d["preview_url"]);
-	d["preview_url"] = _parseSetImageUrl(m_site, "Urls/"+QString::number(m_currentSource)+"/Preview", d["preview_url"], &d);
+	d["file_url"] = _parseSetImageUrl(m_site, m_currentApi, "Urls/Image", d["file_url"], &d, true, d["preview_url"]);
+	d["sample_url"] = _parseSetImageUrl(m_site, m_currentApi, "Urls/Sample", d["sample_url"], &d, true, d["preview_url"]);
+	d["preview_url"] = _parseSetImageUrl(m_site, m_currentApi, "Urls/Preview", d["preview_url"], &d);
 
 	if (d["file_url"].isEmpty())
 	{ d["file_url"] = d["preview_url"]; }
@@ -666,7 +658,7 @@ void Page::parse()
 	QString t = m_search.join(" ");
 	if (m_site->contains("DefaultTag") && t.isEmpty())
 	{ t = m_site->value("DefaultTag"); }
-	if (!m_search.isEmpty() && !m_site->value("Urls/"+QString::number(m_currentSource)+"/"+(t.isEmpty() && !m_site->contains("Urls/"+QString::number(m_currentSource)+"/Home") ? "Home" : "Tags")).contains("{tags}"))
+	if (!m_search.isEmpty() && !m_currentApi->value("Urls/" + QString(t.isEmpty() && !m_currentApi->contains("Urls/Home") ? "Home" : "Tags")).contains("{tags}"))
 	{ m_errors.append(tr("La recherche par tags est impossible avec la source choisie (%1).").arg(m_format)); }
 
 	emit finishedLoading(this);
@@ -798,7 +790,7 @@ void Page::parseNavigation()
 		m_pagesCount = rxlast.cap(1).remove(",").toInt();
 		if (m_originalUrl.contains("{pid}"))
 		{
-			int ppid = m_site->contains("Urls/"+QString::number(m_currentSource)+"/Limit") ? m_site->value("Urls/"+QString::number(m_currentSource)+"/Limit").toInt() : m_imagesPerPage;
+			int ppid = m_currentApi->contains("Urls/Limit") ? m_currentApi->value("Urls/Limit").toInt() : m_imagesPerPage;
 			m_pagesCount = floor((float)m_pagesCount / (float)ppid) + 1;
 		}
 	}
@@ -845,14 +837,14 @@ int Page::page()
 { return m_page;			}
 int Page::highLimit()
 {
-	if (m_site->contains("Urls/"+QString::number(m_currentSource)+"/Limit"))
-	{ return m_site->value("Urls/"+QString::number(m_currentSource)+"/Limit").toInt(); }
+	if (m_currentApi->contains("Urls/Limit"))
+		return m_currentApi->value("Urls/Limit").toInt();
 	return 0;
 }
 
 int Page::imagesCount(bool guess)
 {
-	int perPage = m_site->contains("Urls/"+QString::number(m_currentSource)+"/Limit") ? m_site->value("Urls/"+QString::number(m_currentSource)+"/Limit").toInt() : m_imagesPerPage;
+	int perPage = m_currentApi->contains("Urls/Limit") ? m_currentApi->value("Urls/Limit").toInt() : m_imagesPerPage;
 
 	if (m_imagesCount < 0 && guess && m_pagesCount >= 0)
 		return m_pagesCount * perPage;
@@ -861,7 +853,7 @@ int Page::imagesCount(bool guess)
 }
 int Page::pagesCount(bool guess)
 {
-	int perPage = m_site->contains("Urls/"+QString::number(m_currentSource)+"/Limit") ? m_site->value("Urls/"+QString::number(m_currentSource)+"/Limit").toInt() : m_imagesPerPage;
+	int perPage = m_currentApi->contains("Urls/Limit") ? m_currentApi->value("Urls/Limit").toInt() : m_imagesPerPage;
 
 	if (m_pagesCount < 0 && guess && m_imagesCount >= 0)
 		return (int)ceil(((float)m_imagesCount) / perPage);
