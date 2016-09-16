@@ -30,7 +30,7 @@ static void _prependUrl(QMap<QString,QString> *details, QString url, QString key
 
 
 Site::Site(QString url, Source *source)
-	: m_url(url), m_source(source), m_settings(nullptr), m_manager(nullptr), m_cookieJar(nullptr), m_loggedIn(false), m_triedLogin(false), m_loginCheck(false)
+	: m_type(source->getName()), m_url(url), m_source(source), m_settings(nullptr), m_manager(nullptr), m_cookieJar(nullptr), m_loggedIn(false), m_triedLogin(false), m_loginCheck(false)
 {
 	loadConfig();
 }
@@ -48,7 +48,7 @@ void Site::loadConfig()
 	m_name = m_settings->value("name", m_url).toString();
 
 	// Apis
-	QStringList defaults = QStringList() << "xml" << "json" << "rss" << "regex";
+	QStringList defaults = QStringList() << "Xml" << "Json" << "Rss" << "Regex";
 	QStringList sources;
 	if (!m_settings->value("sources/usedefault", true).toBool())
 	{
@@ -176,9 +176,7 @@ void Site::login(bool force)
 			else
 			{
 				QUrl url = fixUrl(m_settings->value("login/url", "").toString());
-				qDebug() << url;
 				url.setQuery(query);
-				qDebug() << url;
 
 				QNetworkRequest request(url);
 				request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, CACHE_POLICY);

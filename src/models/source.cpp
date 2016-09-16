@@ -52,6 +52,8 @@ Source::Source(QString dir)
 
 		file.close();
 	}
+	else
+	{ log(tr("Impossible d'ouvrir le fichier de modèle '%1'").arg(m_dir + "/model.xml")); }
 
 	// Get the list of all sites pertaining to this source
 	QFile f(m_dir + "/sites.txt");
@@ -63,10 +65,12 @@ Source::Source(QString dir)
 			if (line.isEmpty())
 				continue;
 
-			Site *site = new Site(m_dir, this);
+			Site *site = new Site(line, this);
 			m_sites.append(site);
 		}
 	}
+	if (m_sites.isEmpty())
+	{ log(tr("Aucun site pour la source %1").arg(m_name)); }
 
 	m_manager = new QNetworkAccessManager(this);
 	connect(m_manager, &QNetworkAccessManager::sslErrors, sslErrorHandler);

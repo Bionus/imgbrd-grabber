@@ -73,18 +73,25 @@ QUrl Page::parseUrl(QString url, int pid, int p, QString t, QString pseudo, QStr
 	if (password.isEmpty())
 		password = m_site->password();
 
+	qDebug() << 0;
 	url.replace("{tags}", QUrl::toPercentEncoding(t));
 	url.replace("{limit}", QString::number(m_imagesPerPage));
+	qDebug() << 1;
 
 	Api *currentApi = m_site->getApis().at(m_currentSource - 1);
+	qDebug() << 2 << m_currentSource - 1 << m_site->getApis().count();
+	qDebug() << 2 << (void*)currentApi;
 	if (!currentApi->contains("Urls/MaxPage") || p <= currentApi->value("Urls/MaxPage").toInt() || m_lastPage > m_page + 1 || m_lastPage < m_page - 1)
 	{
+		qDebug() << 3;
 		url.replace("{pid}", QString::number(pid));
 		url.replace("{page}", QString::number(p));
 		url.replace("{altpage}", "");
+		qDebug() << 4;
 	}
 	else
 	{
+		qDebug() << 5;
 		QString altpage = currentApi->value("Urls/AltPage" + QString(m_lastPage > m_page ? "Prev" : "Next"));
 		altpage.replace("{min}", QString::number(m_lastPageMinId));
 		altpage.replace("{max}", QString::number(m_lastPageMaxId));
@@ -95,7 +102,9 @@ QUrl Page::parseUrl(QString url, int pid, int p, QString t, QString pseudo, QStr
 		url.replace("{altpage}", altpage);
 		url.replace("{page}", "");
 		url.replace("{pid}", "");
+		qDebug() << 6;
 	}
+	qDebug() << 7;
 
 	url.replace("{pseudo}", pseudo);
 	url.replace("{password}", password);
