@@ -79,8 +79,6 @@ Source::Source(QString dir)
 Source::~Source()
 {
 	m_manager->deleteLater();
-	if (m_updateReply != nullptr)
-		m_updateReply->deleteLater();
 }
 
 
