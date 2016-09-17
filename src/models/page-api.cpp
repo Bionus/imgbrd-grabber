@@ -12,11 +12,11 @@
 
 
 PageApi::PageApi(Page *parentPage, Site *site, Api *api, QStringList tags, int page, int limit, QStringList postFiltering, bool smart, QObject *parent, int pool, int lastPage, int lastPageMinId, int lastPageMaxId)
-		: QObject(parent), m_parentPage(parentPage), m_site(site), m_api(api), m_search(tags), m_postFiltering(postFiltering), m_errors(QStringList()), m_imagesPerPage(limit), m_currentSource(0), m_lastPage(lastPage), m_lastPageMinId(lastPageMinId), m_lastPageMaxId(lastPageMaxId), m_smart(smart)
+	: QObject(parent), m_parentPage(parentPage), m_site(site), m_api(api), m_search(tags), m_postFiltering(postFiltering), m_errors(QStringList()), m_imagesPerPage(limit), m_currentSource(0), m_lastPage(lastPage), m_lastPageMinId(lastPageMinId), m_lastPageMaxId(lastPageMaxId), m_smart(smart)
 {
 	m_imagesCount = -1;
-		m_pagesCount = -1;
-		m_search = tags;
+	m_pagesCount = -1;
+	m_search = tags;
 
 	// Set values
 	m_page = page;

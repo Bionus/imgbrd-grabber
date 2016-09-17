@@ -24,14 +24,7 @@ class SiteTest : public TestSuite
 
 		void testGetSites();
 
-		/**
-		 * Multiple calls should always return the very same pointer (not only the same
-		 * data) as the result should be cached.
-		 */
-		//void testGetAllCached();
-
 		void testLoadTags();
-		//void testCheckForUpdates();
 		void testCookies();
 		void testLoginNone();
 		void testLoginGet();

@@ -21,6 +21,7 @@ void SiteTest::init()
 void SiteTest::cleanup()
 {
 	m_settings->deleteLater();
+	m_source->deleteLater();
 	m_site->deleteLater();
 }
 
@@ -76,14 +77,6 @@ void SiteTest::testGetSites()
 	QCOMPARE(sites.first()->type(), QString("Danbooru (2.0)"));
 }
 
-/*void SiteTest::testGetAllCached()
-{
-	QMap<QString, Site*> *sites1 = Site::getAllSites();
-	QMap<QString, Site*> *sites2 = Site::getAllSites();
-
-	QCOMPARE(sites1, sites2);
-}*/
-
 void SiteTest::testLoadTags()
 {
 	// Wait for tags
@@ -110,17 +103,6 @@ void SiteTest::testLoadTags()
 	QCOMPARE(tags.count(), 20);
 	QCOMPARE(tagsText, QStringList() << "kameji_(tyariri)" << "the_king_of_fighterx_xiv" << "condom_skirt");
 }
-
-/*void SiteTest::testCheckForUpdates()
-{
-	// Wait for tags
-	QSignalSpy spy(m_site, SIGNAL(checkForUpdatesFinished(Site*)));
-	m_site->checkForUpdates();
-	QVERIFY(spy.wait());
-
-	// Check result
-	QVERIFY(!m_site->updateVersion().isEmpty());
-}*/
 
 void SiteTest::testCookies()
 {
