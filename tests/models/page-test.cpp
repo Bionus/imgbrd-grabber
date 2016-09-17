@@ -15,9 +15,6 @@ void PageTest::init()
 void PageTest::cleanup()
 {
 	m_settings->deleteLater();
-
-	m_sites.first()->deleteLater();
-	m_site->deleteLater();
 }
 
 
@@ -27,6 +24,26 @@ void PageTest::testIncompatibleModifiers()
 
 	QCOMPARE(page.search().count(), 1);
 	QCOMPARE(page.search().first(), QString("test"));
+}
+
+void PageTest::testLoadAbort()
+{
+	Page page(m_site, m_sites, QStringList() << "test" << "status:deleted");
+
+	QSignalSpy spy(&page, SIGNAL(finishedLoading(Page*)));
+	page.load();
+	page.abort();
+	QVERIFY(!spy.wait(1000));
+}
+
+void PageTest::testLoadTagsAbort()
+{
+	Page page(m_site, m_sites, QStringList() << "test" << "status:deleted");
+
+	QSignalSpy spy(&page, SIGNAL(finishedLoadingTags(Page*)));
+	page.loadTags();
+	page.abortTags();
+	QVERIFY(!spy.wait(1000));
 }
 
 

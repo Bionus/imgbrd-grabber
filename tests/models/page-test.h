@@ -15,6 +15,8 @@ class PageTest : public TestSuite
 		void cleanup();
 
 		void testIncompatibleModifiers();
+		void testLoadAbort();
+		void testLoadTagsAbort();
 
 	private:
 		QSettings *m_settings;

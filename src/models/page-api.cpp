@@ -12,7 +12,7 @@
 
 
 PageApi::PageApi(Page *parentPage, Site *site, Api *api, QStringList tags, int page, int limit, QStringList postFiltering, bool smart, QObject *parent, int pool, int lastPage, int lastPageMinId, int lastPageMaxId)
-	: QObject(parent), m_parentPage(parentPage), m_site(site), m_api(api), m_search(tags), m_postFiltering(postFiltering), m_errors(QStringList()), m_imagesPerPage(limit), m_currentSource(0), m_lastPage(lastPage), m_lastPageMinId(lastPageMinId), m_lastPageMaxId(lastPageMaxId), m_smart(smart)
+	: QObject(parent), m_parentPage(parentPage), m_site(site), m_api(api), m_search(tags), m_postFiltering(postFiltering), m_errors(QStringList()), m_imagesPerPage(limit), m_currentSource(0), m_lastPage(lastPage), m_lastPageMinId(lastPageMinId), m_lastPageMaxId(lastPageMaxId), m_smart(smart), m_reply(nullptr), m_replyTags(nullptr)
 {
 	m_imagesCount = -1;
 	m_pagesCount = -1;
@@ -176,16 +176,12 @@ void PageApi::load(bool rateLimit)
 	m_site->getAsync(rateLimit ? Site::QueryType::Retry : Site::QueryType::List, m_url, [this](QNetworkReply *reply) {
 		m_reply = reply;
 		connect(m_reply, SIGNAL(finished()), this, SLOT(parse()));
-		m_replyExists = true;
 	});
 }
 void PageApi::abort()
 {
-	if (m_replyExists)
-	{
-		if (m_reply->isRunning())
-		{ m_reply->abort(); }
-	}
+	if (m_reply != nullptr && m_reply->isRunning())
+		m_reply->abort();
 }
 
 void PageApi::loadTags()
@@ -194,16 +190,12 @@ void PageApi::loadTags()
 	{
 		m_replyTags = m_site->get(m_urlRegex);
 		connect(m_replyTags, &QNetworkReply::finished, this, &PageApi::parseTags);
-		m_replyTagsExists = true;
 	}
 }
 void PageApi::abortTags()
 {
-	if (m_replyTagsExists)
-	{
-		if (m_replyTags->isRunning())
-		{ m_replyTags->abort(); }
-	}
+	if (m_replyTags != nullptr && m_replyTags->isRunning())
+		m_replyTags->abort();
 }
 
 QString _parseSetImageUrl(Site *site, Api* api, QString settingUrl, QString settingReplaces, QString ret, QMap<QString,QString> *d, bool replaces = true, QString def = QString())
@@ -556,7 +548,7 @@ void PageApi::parse()
 	}
 
 	// Try to get navigation info on HTML pages
-	if (!m_replyTagsExists || m_format == "Html")
+	if (m_replyTags != nullptr || m_format == "Html")
 	{
 		parseNavigation();
 	}
@@ -586,7 +578,7 @@ void PageApi::parse()
 	{ m_images.removeLast(); }
 
 	m_reply->deleteLater();
-	m_replyExists = false;
+	m_reply = nullptr;
 
 	QString t = m_search.join(" ");
 	if (m_site->contains("DefaultTag") && t.isEmpty())
@@ -692,7 +684,7 @@ void PageApi::parseTags()
 	}
 
 	m_replyTags->deleteLater();
-	m_replyTagsExists = false;
+	m_replyTags = nullptr;
 
 	emit finishedLoadingTags(this);
 }

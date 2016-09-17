@@ -31,11 +31,11 @@ class PageApi : public QObject
 		void			load(bool rateLimit = false);
 		void			loadTags();
 		QUrl			parseUrl(QString url, int pid = -1, int p = -1, QString t = "", QString pseudo = "", QString password = "");
-								QList<Image*>	images();
+		QList<Image*>	images();
 		int				imagesCount(bool guess = true);
 		int				pagesCount(bool guess = true);
 		QUrl			url();
-								QString			source();
+		QString			source();
 		QString			wiki();
 		QList<Tag>		tags();
 		QStringList		search();
@@ -57,25 +57,25 @@ class PageApi : public QObject
 		void clear();
 
 	signals:
-				void finishedLoading(PageApi*, LoadResult);
-				void finishedLoadingTags(PageApi*);
+		void finishedLoading(PageApi*, LoadResult);
+		void finishedLoadingTags(PageApi*);
 
 	protected:
 		void parseImage(QMap<QString,QString> data, int position);
 		void parseNavigation();
 
 	private:
-				Page                    *m_parentPage;
-				Site			*m_site;
-				Api			*m_api;
+		Page			*m_parentPage;
+		Site			*m_site;
+		Api				*m_api;
 		QStringList		m_postFiltering, m_errors, m_search;
-				int			m_imagesPerPage, m_currentSource, m_lastPage, m_lastPageMinId, m_lastPageMaxId, m_imagesCount, m_pagesCount, m_page, m_blim, m_pool;
-		bool			m_smart, m_replyExists, m_replyTagsExists;
-				QString			m_format, m_source, m_wiki, m_originalUrl;
+		int				m_imagesPerPage, m_currentSource, m_lastPage, m_lastPageMinId, m_lastPageMaxId, m_imagesCount, m_pagesCount, m_page, m_blim, m_pool;
+		bool			m_smart;
+		QString			m_format, m_source, m_wiki, m_originalUrl;
 		QUrl			m_url, m_urlRegex, m_urlNextPage, m_urlPrevPage;
-				QList<Image*>		m_images;
+		QList<Image*>	m_images;
 		QList<Tag>		m_tags;
-				QNetworkReply		*m_reply, *m_replyTags;
+		QNetworkReply	*m_reply, *m_replyTags;
 };
 
 #endif // PAGE_API_H
