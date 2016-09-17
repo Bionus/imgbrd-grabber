@@ -18,12 +18,6 @@ Api::Api(QString name, QMap<QString, QString> data)
 		m_data["Urls/Login"] = m_data["Urls/"+sr+"/Login"];
 	if (m_data.contains("Urls/"+sr+"/Limit"))
 		m_data["Urls/Limit"] = m_data["Urls/"+sr+"/Limit"];
-	if (m_data.contains("Urls/"+sr+"/Image"))
-		m_data["Urls/Image"] = m_data["Urls/"+sr+"/Image"];
-	if (m_data.contains("Urls/"+sr+"/Sample"))
-		m_data["Urls/Sample"] = m_data["Urls/"+sr+"/Sample"];
-	if (m_data.contains("Urls/"+sr+"/Preview"))
-		m_data["Urls/Preview"] = m_data["Urls/"+sr+"/Preview"];
 	if (m_data.contains("Urls/"+sr+"/MaxPage"))
 		m_data["Urls/MaxPage"] = m_data["Urls/"+sr+"/MaxPage"];
 	if (m_data.contains("Urls/"+sr+"/AltPagePrev"))
