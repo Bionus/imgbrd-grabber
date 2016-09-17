@@ -51,7 +51,7 @@ Page::Page(Site *site, QList<Site*> sites, QStringList tags, int page, int limit
 	for (Api *api : m_site->getApis())
 	{
 		m_pageApis.append(new PageApi(this, m_site, api, m_search, page, limit, postFiltering, smart, parent, pool, lastPage, lastPageMinId, lastPageMaxId));
-		if (api->getName() == "Html")
+		if (api->getName() == "Html" && m_regexApi < 0)
 		{ m_regexApi = m_pageApis.count() - 1; }
 	}
 	m_currentApi = -1;

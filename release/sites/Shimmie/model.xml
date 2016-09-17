@@ -2,11 +2,11 @@
 <Site>
 	<Name>Shimmie</Name>
 	<Urls>
+		<Image>/_images/{md5}.{ext}|/_images/{id}.{ext}</Image>
 		<Html>
 			<Home>/post/list/{page}</Home>
 			<Tags>/post/list/{tags}/{page}</Tags>
 			<Post>/post/view/{id}</Post>
-			<Image>/_images/{md5}.{ext}|/_images/{id}.{ext}</Image>
 		</Html>
 		<Rss>
 			<Tags>/rss/images/{page}</Tags>

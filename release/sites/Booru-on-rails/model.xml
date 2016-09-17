@@ -2,10 +2,10 @@
 <Site>
 	<Name>Booru-on-rails</Name>
 	<Urls>
+		<ThumbnailReplaces>full->thumb&amp;.svg->.png</ThumbnailReplaces>
 		<Json>
 			<Home>/images.json?key={password}&amp;page={page}&amp;nocomments=1&amp;nofav=1</Home>
 			<Tags>/search.json?key={password}&amp;page={page}&amp;q={tags}&amp;nocomments=1&amp;nofav=1</Tags>
-			<Thumbnail>full->thumb&amp;.svg->.png</Thumbnail>
 		</Json>
 		<Html>
 			<Home>/images/page/{page}?key={password}</Home>

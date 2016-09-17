@@ -44,7 +44,7 @@ void Site::loadConfig()
 {
 	if (m_settings != nullptr)
 		m_settings->deleteLater();
-	m_settings = new QSettings(savePath("sites/" + m_source->getName() + "/" + m_url + "/settings.ini"), QSettings::IniFormat);
+	m_settings = new QSettings(m_source->getPath() + "/" + m_url + "/settings.ini", QSettings::IniFormat);
 	m_name = m_settings->value("name", m_url).toString();
 
 	// Apis

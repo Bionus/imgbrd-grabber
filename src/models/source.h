@@ -21,6 +21,7 @@ class Source : public QObject
 
 		// Getters
 		QString getName() const;
+		QString getPath() const;
 		QList<Site*> getSites() const;
 		QList<Api*> getApis() const;
 		Api* getApi(QString name) const;

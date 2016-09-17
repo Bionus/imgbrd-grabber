@@ -213,37 +213,34 @@ void PageApi::abortTags()
 	}
 }
 
-QString _parseSetImageUrl(Site *site, Api* api, QString setting, QString ret, QMap<QString,QString> *d, bool replaces = true, QString def = QString())
+QString _parseSetImageUrl(Site *site, Api* api, QString settingUrl, QString settingReplaces, QString ret, QMap<QString,QString> *d, bool replaces = true, QString def = QString())
 {
-	if (api->contains(setting) && replaces)
+	if (api->contains(settingUrl) && ret.length() < 5)
 	{
-		if (api->value(setting).contains("->"))
+		QStringList options = api->value(settingUrl).split('|');
+		for (QString opt : options)
 		{
-			if (ret.isEmpty() && !def.isEmpty())
-				ret = def;
+			opt.replace("{id}", d->value("id"))
+			.replace("{md5}", d->value("md5"))
+			.replace("{ext}", d->value("ext"));
 
-			QStringList replaces = api->value(setting).split('&');
-			for (QString rep : replaces)
+			if (!opt.endsWith("/." + d->value("ext")) && !opt.contains('{'))
 			{
-				QRegExp rgx(rep.left(rep.indexOf("->")));
-				ret.replace(rgx, rep.right(rep.size() - rep.indexOf("->") - 2));
+				ret = opt;
+				break;
 			}
 		}
-		else if (ret.length() < 5)
-		{
-			QStringList options = api->value(setting).split('|');
-			for (QString opt : options)
-			{
-				opt.replace("{id}", d->value("id"))
-				.replace("{md5}", d->value("md5"))
-				.replace("{ext}", d->value("ext"));
+	}
+	else if (api->contains(settingReplaces) && replaces)
+	{
+		if (ret.isEmpty() && !def.isEmpty())
+			ret = def;
 
-				if (!opt.endsWith("/." + d->value("ext")) && !opt.contains('{'))
-				{
-					ret = opt;
-					break;
-				}
-			}
+		QStringList replaces = api->value(settingReplaces).split('&');
+		for (QString rep : replaces)
+		{
+			QRegExp rgx(rep.left(rep.indexOf("->")));
+			ret.replace(rgx, rep.right(rep.size() - rep.indexOf("->") - 2));
 		}
 	}
 	return site->fixUrl(ret).toString();
@@ -259,9 +256,9 @@ void PageApi::parseImage(QMap<QString,QString> d, int position)
 	{ d["sample_url"] = ""; }
 
 	// Fix urls
-		d["file_url"] = _parseSetImageUrl(m_site, m_api, "Urls/Image", d["file_url"], &d, true, d["preview_url"]);
-		d["sample_url"] = _parseSetImageUrl(m_site, m_api, "Urls/Sample", d["sample_url"], &d, true, d["preview_url"]);
-		d["preview_url"] = _parseSetImageUrl(m_site, m_api, "Urls/Preview", d["preview_url"], &d);
+	d["file_url"] = _parseSetImageUrl(m_site, m_api, "Urls/Image", "Urls/ImageReplaces", d["file_url"], &d, true, d["preview_url"]);
+	d["sample_url"] = _parseSetImageUrl(m_site, m_api, "Urls/Sample", "Urls/SampleReplaces", d["sample_url"], &d, true, d["preview_url"]);
+	d["preview_url"] = _parseSetImageUrl(m_site, m_api, "Urls/Preview", "Urls/PreviewReplaces", d["preview_url"], &d);
 
 	if (d["file_url"].isEmpty())
 	{ d["file_url"] = d["preview_url"]; }
@@ -269,7 +266,7 @@ void PageApi::parseImage(QMap<QString,QString> d, int position)
 	{ d["sample_url"] = d["preview_url"]; }
 
 	// Generate image
-		Image *img = new Image(m_site, d, m_parentPage);
+	Image *img = new Image(m_site, d, m_parentPage);
 	QStringList errors = img->filter(m_postFiltering);
 
 	// If the file path is wrong (ends with "/.jpg")
@@ -311,7 +308,7 @@ void PageApi::parse()
 	{
 		if (m_reply->error() != QNetworkReply::OperationCanceledError)
 		{
-						log("Loading error: "+m_reply->errorString());
+			log("Loading error: "+m_reply->errorString());
 		}
 		emit finishedLoading(this, LoadResult::Error);
 		return;
@@ -329,8 +326,8 @@ void PageApi::parse()
 		int errorLine, errorColumn;
 		if (!doc.setContent(m_source, false, &errorMsg, &errorLine, &errorColumn))
 		{
-						log(tr("Erreur lors de l'analyse du fichier XML : %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn)));
-						emit finishedLoading(this, LoadResult::Error);
+			log(tr("Erreur lors de l'analyse du fichier XML : %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn)));
+			emit finishedLoading(this, LoadResult::Error);
 			return;
 		}
 		QDomElement docElem = doc.documentElement();
@@ -404,8 +401,8 @@ void PageApi::parse()
 		int errorLine, errorColumn;
 		if (!doc.setContent(m_source, false, &errorMsg, &errorLine, &errorColumn))
 		{
-						log(tr("Erreur lors de l'analyse du fichier RSS : %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn)));
-						emit finishedLoading(this, LoadResult::Error);
+			log(tr("Erreur lors de l'analyse du fichier RSS : %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn)));
+			emit finishedLoading(this, LoadResult::Error);
 			return;
 		}
 		QDomElement docElem = doc.documentElement();
@@ -539,7 +536,7 @@ void PageApi::parse()
 			}
 		}
 		else
-				{
+		{
 			emit finishedLoading(this, LoadResult::Error);
 			return;
 		}
@@ -604,7 +601,6 @@ void PageApi::parse()
 		if (!m_search.isEmpty() && !m_api->value("Urls/" + QString(t.isEmpty() && !m_api->contains("Urls/Home") ? "Home" : "Tags")).contains("{tags}"))
 	{ m_errors.append(tr("La recherche par tags est impossible avec la source choisie (%1).").arg(m_format)); }
 
-	qDebug() << "count" << m_images.count();
 	emit finishedLoading(this, LoadResult::Ok);
 }
 void PageApi::parseTags()
@@ -779,14 +775,14 @@ int PageApi::page()
 { return m_page;			}
 int PageApi::highLimit()
 {
-		if (m_api->contains("Urls/Limit"))
-				return m_api->value("Urls/Limit").toInt();
+	if (m_api->contains("Urls/Limit"))
+		return m_api->value("Urls/Limit").toInt();
 	return 0;
 }
 
 int PageApi::imagesCount(bool guess)
 {
-		int perPage = m_api->contains("Urls/Limit") ? m_api->value("Urls/Limit").toInt() : m_imagesPerPage;
+	int perPage = m_api->contains("Urls/Limit") ? m_api->value("Urls/Limit").toInt() : m_imagesPerPage;
 
 	if (m_imagesCount < 0 && guess && m_pagesCount >= 0)
 		return m_pagesCount * perPage;
@@ -795,7 +791,7 @@ int PageApi::imagesCount(bool guess)
 }
 int PageApi::pagesCount(bool guess)
 {
-		int perPage = m_api->contains("Urls/Limit") ? m_api->value("Urls/Limit").toInt() : m_imagesPerPage;
+	int perPage = m_api->contains("Urls/Limit") ? m_api->value("Urls/Limit").toInt() : m_imagesPerPage;
 
 	if (m_pagesCount < 0 && guess && m_imagesCount >= 0)
 		return (int)ceil(((float)m_imagesCount) / perPage);

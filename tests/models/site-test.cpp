@@ -6,12 +6,15 @@
 void SiteTest::init()
 {
 	QDir().mkpath("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us");
+	QFile::remove("tests/resources/sites/Danbooru (2.0)/model.xml");
+	QFile::remove("tests/resources/sites/Danbooru (2.0)/sites.txt");
+	QFile::remove("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/settings.ini");
 	QFile::copy("release/sites/Danbooru (2.0)/model.xml", "tests/resources/sites/Danbooru (2.0)/model.xml");
 	QFile::copy("release/sites/Danbooru (2.0)/sites.txt", "tests/resources/sites/Danbooru (2.0)/sites.txt");
 	QFile::copy("release/sites/Danbooru (2.0)/danbooru.donmai.us/settings.ini", "tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/settings.ini");
 
 	m_settings = new QSettings("tests/resources/settings.ini", QSettings::IniFormat);
-	m_source = new Source("release/sites/Danbooru (2.0)");
+	m_source = new Source("tests/resources/sites/Danbooru (2.0)");
 	m_site = new Site("danbooru.donmai.us", m_source);
 }
 
@@ -132,6 +135,7 @@ void SiteTest::testCookies()
 	}
 	QSettings siteSettings("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/settings.ini", QSettings::IniFormat);
 	siteSettings.setValue("cookies", cookiesVariant);
+	siteSettings.sync();
 
 	m_site->loadConfig();
 	QList<QNetworkCookie> siteCookies(m_site->cookies());
