@@ -22,22 +22,10 @@
 
 
 
-static void _prependUrl(QMap<QString,QString> *details, QString url, QString key, QString lkey = QString())
-{
-	if (details->contains(key))
-		details->insert(lkey == NULL ? key : lkey, url + details->value(key));
-}
-
-
 Site::Site(QString url, Source *source)
 	: m_type(source->getName()), m_url(url), m_source(source), m_settings(nullptr), m_manager(nullptr), m_cookieJar(nullptr), m_loggedIn(false), m_triedLogin(false), m_loginCheck(false)
 {
 	loadConfig();
-}
-
-Site::~Site()
-{
-	m_settings->deleteLater();
 }
 
 void Site::loadConfig()
@@ -94,6 +82,11 @@ void Site::loadConfig()
 	}
 	if (m_cookieJar != nullptr)
 		resetCookieJar();
+}
+
+Site::~Site()
+{
+	m_settings->deleteLater();
 }
 
 
@@ -335,17 +328,6 @@ QNetworkReply *Site::getRequest(QNetworkRequest request)
 	#else
 		return m_manager->get(request);
 	#endif
-}
-
-/**
- * Called when a reply is finished.
- *
- * @param r	The finished reply
- */
-void Site::finishedReply(QNetworkReply *r)
-{
-	if (r != m_loginReply)
-		emit finished(r);
 }
 
 

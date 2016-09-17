@@ -75,7 +75,6 @@ class Site : public QObject
 	public slots:
 		void login(bool force = false);
 		void loginFinished();
-		void finishedReply(QNetworkReply*);
 		void loadTags(int page, int limit);
 		void finishedTags();
 		void getCallback();
