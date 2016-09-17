@@ -89,15 +89,15 @@ PageApi::PageApi(Page *parentPage, Site *site, Api *api, QStringList tags, int p
 
 	if ((pl >= 0 || poolRx.indexIn(t) != -1) && m_api->contains("Urls/Html/Pools"))
 	{
-			url = m_site->value("Urls/Html/Pools");
-			url = parseUrl(url, pid, p, t, pseudo, password).toString();
-			url.replace("{pool}", poolRx.cap(1));
-			m_urlRegex = QUrl(url);
+		url = m_site->value("Urls/Html/Pools");
+		url = parseUrl(url, pid, p, t, pseudo, password).toString();
+		url.replace("{pool}", poolRx.cap(1));
+		m_urlRegex = QUrl(url);
 	}
 	else if (m_api->contains("Urls/Html/Tags"))
 	{
-			url = m_site->value("Urls/Html/"+QString(t.isEmpty() && m_site->contains("Urls/Html/Home") ? "Home" : "Tags"));
-			m_urlRegex = parseUrl(url, pid, p, t, pseudo, password);
+		url = m_site->value("Urls/Html/"+QString(t.isEmpty() && m_site->contains("Urls/Html/Home") ? "Home" : "Tags"));
+		m_urlRegex = parseUrl(url, pid, p, t, pseudo, password);
 	}
 	else
 	{ m_urlRegex = ""; }
@@ -116,14 +116,14 @@ QUrl PageApi::parseUrl(QString url, int pid, int p, QString t, QString pseudo, Q
 	if (t.isEmpty())
 		t = m_search.join(" ");
 	if (pseudo.isEmpty())
-				pseudo = m_site->username();
+		pseudo = m_site->username();
 	if (password.isEmpty())
-				password = m_site->password();
+		password = m_site->password();
 
 	url.replace("{tags}", QUrl::toPercentEncoding(t));
 	url.replace("{limit}", QString::number(m_imagesPerPage));
 
-		if (!m_api->contains("Urls/MaxPage") || p <= m_api->value("Urls/MaxPage").toInt() || m_lastPage > m_page + 1 || m_lastPage < m_page - 1)
+	if (!m_api->contains("Urls/MaxPage") || p <= m_api->value("Urls/MaxPage").toInt() || m_lastPage > m_page + 1 || m_lastPage < m_page - 1)
 	{
 		url.replace("{pid}", QString::number(pid));
 		url.replace("{page}", QString::number(p));
@@ -131,7 +131,7 @@ QUrl PageApi::parseUrl(QString url, int pid, int p, QString t, QString pseudo, Q
 	}
 	else
 	{
-				QString altpage = m_api->value("Urls/AltPage" + QString(m_lastPage > m_page ? "Prev" : "Next"));
+		QString altpage = m_api->value("Urls/AltPage" + QString(m_lastPage > m_page ? "Prev" : "Next"));
 		altpage.replace("{min}", QString::number(m_lastPageMinId));
 		altpage.replace("{max}", QString::number(m_lastPageMaxId));
 		altpage.replace("{min-1}", QString::number(m_lastPageMinId-1));
@@ -143,17 +143,10 @@ QUrl PageApi::parseUrl(QString url, int pid, int p, QString t, QString pseudo, Q
 		url.replace("{pid}", "");
 	}
 
+	bool hasLoginString = m_api->contains("Urls/Login") && (!pseudo.isEmpty() || !password.isEmpty());
+	url.replace("{login}", hasLoginString ? m_api->value("Urls/Login") : "");
 	url.replace("{pseudo}", pseudo);
 	url.replace("{password}", password);
-		if (m_api->contains("Urls/Html/Login") && (!pseudo.isEmpty() || !password.isEmpty())) {
-				QString loginString = m_api->value("Urls/Html/Login");
-		loginString.replace("{pseudo}", pseudo);
-		loginString.replace("{password}", password);
-		url.replace("{login}", loginString);
-	}
-	else {
-		url.replace("{login}", "");
-	}
 
 	return m_site->fixUrl(url);
 }
@@ -168,7 +161,7 @@ void PageApi::setLastPage(Page *page)
 	if (!page->nextPage().isEmpty())
 	{ m_url = page->nextPage(); }
 	else
-		{ /*fallback(false);*/ }
+	{ /*fallback(false);*/ }
 }
 
 void PageApi::load(bool rateLimit)
@@ -181,9 +174,9 @@ void PageApi::load(bool rateLimit)
 	m_pagesCount = -1;*/
 
 	m_site->getAsync(rateLimit ? Site::QueryType::Retry : Site::QueryType::List, m_url, [this](QNetworkReply *reply) {
-			m_reply = reply;
-			connect(m_reply, SIGNAL(finished()), this, SLOT(parse()));
-			m_replyExists = true;
+		m_reply = reply;
+		connect(m_reply, SIGNAL(finished()), this, SLOT(parse()));
+		m_replyExists = true;
 	});
 }
 void PageApi::abort()

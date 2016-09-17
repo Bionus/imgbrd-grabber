@@ -1,12 +1,12 @@
-#ifndef PAGE_TEST_H
-#define PAGE_TEST_H
+#ifndef PAGE_API_TEST_H
+#define PAGE_API_TEST_H
 
 #include "test-suite.h"
 #include "models/site.h"
 #include "models/page.h"
 
 
-class PageTest : public TestSuite
+class PageApiTest : public TestSuite
 {
 	Q_OBJECT
 
@@ -14,7 +14,9 @@ class PageTest : public TestSuite
 		void init();
 		void cleanup();
 
-		void testIncompatibleModifiers();
+		void testParseUrlBasic();
+		void testParseUrlLogin();
+		void testParseUrlAltPage();
 
 	private:
 		QSettings *m_settings;
@@ -22,4 +24,4 @@ class PageTest : public TestSuite
 		Site *m_site;
 };
 
-#endif // PAGE_TEST_H
+#endif // PAGE_API_TEST_H
