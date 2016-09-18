@@ -126,7 +126,7 @@ QString Source::getUpdateVersion() const	{ return m_updateVersion;	}
 
 Api *Source::getApi(QString name) const
 {
-	for (Api *api : m_apis)
+	for (Api *api : this->getApis())
 		if (api->getName() == name)
 			return api;
 	return nullptr;

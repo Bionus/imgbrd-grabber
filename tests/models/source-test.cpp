@@ -4,6 +4,7 @@
 
 void SourceTest::init()
 {
+	QDir().mkpath("tests/resources/sites/tmp");
 	QDir().mkpath("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us");
 	QFile::remove("tests/resources/sites/Danbooru (2.0)/model.xml");
 	QFile::remove("tests/resources/sites/Danbooru (2.0)/sites.txt");
@@ -20,6 +21,36 @@ void SourceTest::cleanup()
 	m_source->deleteLater();
 }
 
+
+void SourceTest::testMissingXml()
+{
+	QFile::remove("tests/resources/sites/tmp/model.xml");
+
+	Source source("tests/resources/sites/tmp");
+	QVERIFY(source.getApis().isEmpty());
+}
+
+void SourceTest::testInvalidXml()
+{
+	QFile f("tests/resources/sites/tmp/model.xml");
+	f.open(QFile::WriteOnly);
+	f.write(QString("test").toUtf8());
+	f.close();
+
+	Source source("tests/resources/sites/tmp");
+	QVERIFY(source.getApis().isEmpty());
+}
+
+void SourceTest::testMissingSites()
+{
+	QFile::remove("tests/resources/sites/tmp/model.xml");
+	QFile::remove("tests/resources/sites/tmp/sites.txt");
+	QFile::copy("release/sites/Danbooru (2.0)/model.xml", "tests/resources/sites/tmp/model.xml");
+
+	Source source("tests/resources/sites/tmp");
+	QVERIFY(!source.getApis().isEmpty());
+	QVERIFY(source.getSites().isEmpty());
+}
 
 void SourceTest::testGetAllCached()
 {
