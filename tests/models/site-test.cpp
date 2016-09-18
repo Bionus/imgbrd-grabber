@@ -196,7 +196,13 @@ void SiteTest::testLoginGet()
 
 	// Wait for login
 	QSignalSpy spy(m_site, SIGNAL(loggedIn(Site*, Site::LoginResult)));
-	QTimer::singleShot(0, [=]() { m_site->login(true); });
+	QTimer *timer = new QTimer(this);
+	timer->setSingleShot(true);
+	connect(timer, &QTimer::timeout, [=]() {
+		m_site->login(true);
+		timer->deleteLater();
+	});
+	timer->start(0);
 	QVERIFY(spy.wait());
 
 	// Get result
@@ -222,7 +228,13 @@ void SiteTest::testLoginPost()
 
 	// Wait for login
 	QSignalSpy spy(m_site, SIGNAL(loggedIn(Site*, Site::LoginResult)));
-	QTimer::singleShot(0, [=]() { m_site->login(true); });
+	QTimer *timer = new QTimer(this);
+	timer->setSingleShot(true);
+	connect(timer, &QTimer::timeout, [=]() {
+		m_site->login(true);
+		timer->deleteLater();
+	});
+	timer->start(0);
 	QVERIFY(spy.wait());
 
 	// Get result
