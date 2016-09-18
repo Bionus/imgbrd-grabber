@@ -18,6 +18,8 @@ class SourceTest : public TestSuite
 		void testMissingXml();
 		void testInvalidXml();
 		void testMissingSites();
+		void testIgnoreEmptySites();
+
 		/**
 		 * Multiple calls should always return the very same pointer (not only the same
 		 * data) as the result should be cached.

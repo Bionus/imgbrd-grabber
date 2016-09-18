@@ -44,6 +44,20 @@ void SourceTest::testInvalidXml()
 void SourceTest::testMissingSites()
 {
 	QFile::remove("tests/resources/sites/tmp/model.xml");
+	QFile::copy("release/sites/Danbooru (2.0)/model.xml", "tests/resources/sites/tmp/model.xml");
+	QFile f("tests/resources/sites/tmp/sites.txt");
+	f.open(QFile::WriteOnly | QFile::Truncate | QFile::Text);
+	f.write(QString("\n\n\r\ndanbooru.donmai.us\n").toUtf8());
+	f.close();
+
+	Source source("tests/resources/sites/tmp");
+	QVERIFY(!source.getApis().isEmpty());
+	QCOMPARE(source.getSites().count(), 1);
+}
+
+void SourceTest::testIgnoreEmptySites()
+{
+	QFile::remove("tests/resources/sites/tmp/model.xml");
 	QFile::remove("tests/resources/sites/tmp/sites.txt");
 	QFile::copy("release/sites/Danbooru (2.0)/model.xml", "tests/resources/sites/tmp/model.xml");
 
