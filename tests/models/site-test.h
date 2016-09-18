@@ -15,6 +15,9 @@ class SiteTest : public TestSuite
 		void init();
 		void cleanup();
 
+		void testDefaultApis();
+		void testNoApis();
+
 		void testSetUsername();
 		void testSetPassword();
 

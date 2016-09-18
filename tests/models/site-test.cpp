@@ -26,6 +26,38 @@ void SiteTest::cleanup()
 }
 
 
+void SiteTest::testDefaultApis()
+{
+	QSettings settings("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/settings.ini", QSettings::IniFormat);
+	settings.setValue("sources/usedefault", false);
+	settings.setValue("sources/source_1", "");
+	settings.setValue("sources/source_2", "");
+	settings.setValue("sources/source_3", "");
+	settings.setValue("sources/source_4", "");
+
+	Source source("tests/resources/sites/Danbooru (2.0)");
+	Site site("danbooru.donmai.us", &source);
+
+	QCOMPARE(site.getApis().count(), 3);
+}
+
+void SiteTest::testNoApis()
+{
+	QSettings settings("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/settings.ini", QSettings::IniFormat);
+	settings.setValue("sources/usedefault", false);
+	settings.setValue("sources/source_1", "1");
+	settings.setValue("sources/source_2", "2");
+	settings.setValue("sources/source_3", "3");
+	settings.setValue("sources/source_4", "4");
+
+	Source source("tests/resources/sites/Danbooru (2.0)");
+	Site site("danbooru.donmai.us", &source);
+
+	QCOMPARE(site.getApis().count(), 0);
+	QCOMPARE(site.contains("Urls/Image"), false);
+	QCOMPARE(site.value("Urls/Image"), QString());
+}
+
 void SiteTest::testSetUsername()
 {
 	QString username = "test";
@@ -164,7 +196,7 @@ void SiteTest::testLoginGet()
 
 	// Wait for login
 	QSignalSpy spy(m_site, SIGNAL(loggedIn(Site*, Site::LoginResult)));
-	QTimer::singleShot(0, m_site, SLOT(login()));
+	QTimer::singleShot(0, [=]() { m_site->login(true); });
 	QVERIFY(spy.wait());
 
 	// Get result
@@ -190,7 +222,7 @@ void SiteTest::testLoginPost()
 
 	// Wait for login
 	QSignalSpy spy(m_site, SIGNAL(loggedIn(Site*, Site::LoginResult)));
-	QTimer::singleShot(0, m_site, SLOT(login()));
+	QTimer::singleShot(0, [=]() { m_site->login(true); });
 	QVERIFY(spy.wait());
 
 	// Get result
