@@ -25,7 +25,7 @@ PageApi::PageApi(Page *parentPage, Site *site, Api *api, QStringList tags, int p
 	// Default tag is none is given
 	QString t = m_search.join(" ").trimmed();
 	if (m_api->contains("DefaultTag") && t.isEmpty())
-			t = m_api->value("DefaultTag");
+		t = m_api->value("DefaultTag");
 
 	// Find page number
 	bool limited = m_api->contains("Urls/Limit");
@@ -33,9 +33,9 @@ PageApi::PageApi(Page *parentPage, Site *site, Api *api, QStringList tags, int p
 	m_blim = limited ? m_api->value("Urls/Limit").toInt() : m_imagesPerPage;
 	if (m_smart)
 	{
-			if (m_imagesPerPage > m_blim || limited)
-			{ m_imagesPerPage = m_blim; }
-			p = (int)floor(((m_page - 1.) * m_imagesPerPage) / m_blim) + 1;
+		if (m_imagesPerPage > m_blim || limited)
+		{ m_imagesPerPage = m_blim; }
+		p = (int)floor(((m_page - 1.) * m_imagesPerPage) / m_blim) + 1;
 	}
 	p = p - 1 + m_api->value("FirstPage").toInt();
 
@@ -46,35 +46,35 @@ PageApi::PageApi(Page *parentPage, Site *site, Api *api, QStringList tags, int p
 	int pos = -1;
 	/*if ((pos = poolRx.indexIn(t)) != -1)
 	{
-			for (int i = 1; i <= m_site->getApis().count() + 1; i++)
+		for (int i = 1; i <= m_site->getApis().count() + 1; i++)
+		{
+			Api *api = m_site->getApis().at(i - 1);
+			if (api->contains("Urls/Pools"))
 			{
-					Api *api = m_site->getApis().at(i - 1);
-					if (api->contains("Urls/Pools"))
-					{
-							url = api->value("Urls/Pools");
-							url.replace("{pool}", poolRx.cap(1));
-							pl = poolRx.cap(1).toInt();
-							m_currentSource = i;
-							m_api = api;
-							t = t.remove(pos, poolRx.cap(0).length()).trimmed();
-							break;
-					}
+				url = api->value("Urls/Pools");
+				url.replace("{pool}", poolRx.cap(1));
+				pl = poolRx.cap(1).toInt();
+				m_currentSource = i;
+				m_api = api;
+				t = t.remove(pos, poolRx.cap(0).length()).trimmed();
+				break;
 			}
-			if (url.isEmpty())
-			{
-					log(tr("Aucune source du site n'est compatible avec les pools."));
-					m_errors.append(tr("Aucune source du site n'est compatible avec les pools."));
-					m_search.removeAll("pool:"+poolRx.cap(1));
-					t.remove(pool);
-					t = t.trimmed();
-			}
+		}
+		if (url.isEmpty())
+		{
+			log(tr("Aucune source du site n'est compatible avec les pools."));
+			m_errors.append(tr("Aucune source du site n'est compatible avec les pools."));
+			m_search.removeAll("pool:"+poolRx.cap(1));
+			t.remove(pool);
+			t = t.trimmed();
+		}
 	}*/
 	if (url.isEmpty())
 	{
-			if (t.isEmpty() && m_api->contains("Urls/Home"))
-			{ url = m_api->value("Urls/Home"); }
-			else
-			{ url = m_api->value("Urls/Tags"); }
+		if (t.isEmpty() && m_api->contains("Urls/Home"))
+		{ url = m_api->value("Urls/Home"); }
+		else
+		{ url = m_api->value("Urls/Tags"); }
 	}
 
 	// GET login information
@@ -692,13 +692,13 @@ void PageApi::parseTags()
 void PageApi::parseNavigation()
 {
 	// Navigation
-	if (m_site->contains("NextPage") && m_urlNextPage.isEmpty())
+	if (m_site->contains("Regex/NextPage") && m_urlNextPage.isEmpty())
 	{
 		QRegExp rx(m_site->value("Regex/NextPage"));
 		if (rx.indexIn(m_source, 0) >= 0)
 		{ m_urlNextPage = QUrl(rx.cap(1)); }
 	}
-	if (m_site->contains("PrevPage") && m_urlPrevPage.isEmpty())
+	if (m_site->contains("Regex/PrevPage") && m_urlPrevPage.isEmpty())
 	{
 		QRegExp rx(m_site->value("Regex/PrevPage"));
 		if (rx.indexIn(m_source, 0) >= 0)
@@ -715,7 +715,7 @@ void PageApi::parseNavigation()
 		m_pagesCount = rxlast.cap(1).remove(",").toInt();
 		if (m_originalUrl.contains("{pid}"))
 		{
-						int ppid = m_api->contains("Urls/Limit") ? m_api->value("Urls/Limit").toInt() : m_imagesPerPage;
+			int ppid = m_api->contains("Urls/Limit") ? m_api->value("Urls/Limit").toInt() : m_imagesPerPage;
 			m_pagesCount = floor((float)m_pagesCount / (float)ppid) + 1;
 		}
 	}
