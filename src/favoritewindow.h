@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QDateTime>
 #include "models/favorite.h"
+#include "models/profile.h"
 
 
 namespace Ui
@@ -17,7 +18,7 @@ class favoriteWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		favoriteWindow(Favorite, QWidget *parent);
+		favoriteWindow(Profile &profile, Favorite favorite, QWidget *parent);
 		~favoriteWindow();
 
 	public slots:
@@ -29,8 +30,9 @@ class favoriteWindow : public QDialog
 		void favoritesChanged();
 
 	private:
-		Ui::favoriteWindow *ui;
-		Favorite favorite;
+		Ui::favoriteWindow	*ui;
+		Profile				&m_profile;
+		Favorite			m_favorite;
 
 };
 

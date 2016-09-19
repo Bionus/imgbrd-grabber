@@ -18,17 +18,15 @@
 
 
 
-zoomWindow::zoomWindow(Image *image, Site *site, QMap<QString,Site*> *sites, mainWindow *parent)
-	: QDialog(0, Qt::Window), m_parent(parent), m_settings(parent->settings()), ui(new Ui::zoomWindow), m_site(site), timeout(300), m_loaded(false), m_loadedImage(false), m_loadedDetails(false), oldsize(0), image(NULL), movie(NULL), m_program(qApp->arguments().at(0)), m_reply(NULL), m_finished(false), m_thread(false), m_data(QByteArray()), m_size(0), m_sites(sites), m_source(), m_th(NULL), m_fullScreen(NULL)
+zoomWindow::zoomWindow(Image *image, Site *site, QMap<QString,Site*> *sites, Profile &profile, mainWindow *parent)
+	: QDialog(0, Qt::Window), m_parent(parent), m_profile(profile), m_settings(parent->settings()), ui(new Ui::zoomWindow), m_site(site), timeout(300), m_loaded(false), m_loadedImage(false), m_loadedDetails(false), oldsize(0), image(NULL), movie(NULL), m_program(qApp->arguments().at(0)), m_reply(NULL), m_finished(false), m_thread(false), m_data(QByteArray()), m_size(0), m_sites(sites), m_source(), m_th(NULL), m_fullScreen(NULL)
 {
 	ui->setupUi(this);
 	setAttribute(Qt::WA_DeleteOnClose);
 
-	QList<Favorite> favorites = loadFavorites();
-	for (Favorite fav : favorites)
-		m_favorites.append(fav.getName());
-	m_viewItLater = loadViewItLater();
-	m_ignore = loadIgnored();
+	m_favorites = profile.getFavorites();
+	m_viewItLater = profile.getKeptForLater();
+	m_ignore = profile.getIgnored();
 	m_image = new Image(site, image->details(), image->page());
 	connect(m_image, &Image::urlChanged, this, &zoomWindow::urlChanged);
 
@@ -246,7 +244,7 @@ void zoomWindow::contextMenu(QPoint)
 	if (!this->link.isEmpty())
 	{
 		// Favoris
-		if (m_favorites.contains(link, Qt::CaseInsensitive))
+		if (m_favorites.contains(Favorite(link)))
 		{
 			menu->addAction(QIcon(":/images/icons/remove.png"), tr("Retirer des favoris"), this, SLOT(unfavorite()));
 			menu->addAction(QIcon(":/images/icons/save.png"), tr("Choisir comme image"), this, SLOT(setfavorite()));
@@ -286,20 +284,17 @@ void zoomWindow::openInBrowser()
 }
 void zoomWindow::favorite()
 {
-	m_favorites.append(link);
+	Favorite fav(link, 50, QDateTime::currentDateTime());
+	if (image != nullptr)
+		fav.setImage(*image);
 
-	QFile f(savePath("favorites.txt"));
-		f.open(QIODevice::WriteOnly | QIODevice::Append);
-		f.write(QString(link+"|50|"+QDateTime::currentDateTime().toString(Qt::ISODate)+"\r\n").toUtf8());
-	f.close();
+	m_profile.addFavorite(fav);
 
-	setfavorite();
+	m_parent->updateFavorites();
+	m_parent->updateFavoritesDock();
 }
 void zoomWindow::setfavorite()
 {
-	if (!QDir(savePath("thumbs")).exists())
-	{ QDir(savePath()).mkdir("thumbs"); }
-
 	if (image != nullptr)
 	{
 		Favorite fav(link, 50, QDateTime::currentDateTime());
@@ -311,24 +306,7 @@ void zoomWindow::setfavorite()
 }
 void zoomWindow::unfavorite()
 {
-	m_favorites.removeAll(link);
-
-	QFile f(savePath("favorites.txt"));
-	f.open(QIODevice::ReadOnly);
-		QString favs = f.readAll();
-	f.close();
-
-	favs.replace("\r\n", "\n").replace("\r", "\n").replace("\n", "\r\n");
-	QRegExp reg(QRegExp::escape(link) + "\\|(.+)\\r\\n");
-	reg.setMinimal(true);
-	favs.remove(reg);
-
-	f.open(QIODevice::WriteOnly);
-		f.write(favs.toUtf8());
-	f.close();
-
-	if (QFile::exists(savePath("thumbs/"+link+".png")))
-	{ QFile::remove(savePath("thumbs/"+link+".png")); }
+	m_profile.removeFavorite(Favorite(link, 50, QDateTime::currentDateTime()));
 
 	m_parent->updateFavorites();
 	m_parent->updateFavoritesDock();
@@ -336,21 +314,11 @@ void zoomWindow::unfavorite()
 void zoomWindow::viewitlater()
 {
 	m_viewItLater.append(link);
-	QFile f(savePath("viewitlater.txt"));
-	f.open(QIODevice::WriteOnly);
-		f.write(m_viewItLater.join("\r\n").toUtf8());
-	f.close();
-
 	m_parent->updateKeepForLater();
 }
 void zoomWindow::unviewitlater()
 {
 	m_viewItLater.removeAll(link);
-	QFile f(savePath("viewitlater.txt"));
-	f.open(QIODevice::WriteOnly);
-		f.write(m_viewItLater.join("\r\n").toUtf8());
-	f.close();
-
 	m_parent->updateKeepForLater();
 }
 void zoomWindow::ignore()

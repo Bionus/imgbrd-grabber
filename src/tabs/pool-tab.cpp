@@ -8,10 +8,10 @@
 #include "mainwindow.h"
 
 
-poolTab::poolTab(int id, QMap<QString,Site*> *sites, QList<Favorite> favorites, mainWindow *parent)
-	: searchTab(id, sites, parent), ui(new Ui::poolTab), m_id(id), m_pagemax(-1), m_lastTags(QString()), m_sized(false), m_from_history(false), m_stop(true), m_history_cursor(0), m_history(QList<QMap<QString,QString> >()), m_modifiers(QStringList())
+poolTab::poolTab(int id, QMap<QString,Site*> *sites, Profile &profile, mainWindow *parent)
+	: searchTab(id, sites, profile, parent), ui(new Ui::poolTab), m_id(id), m_pagemax(-1), m_lastTags(QString()), m_sized(false), m_from_history(false), m_stop(true), m_history_cursor(0), m_history(QList<QMap<QString,QString> >()), m_modifiers(QStringList())
 {
-	m_favorites = favorites;
+	m_favorites = profile.getFavorites();
 	ui->setupUi(this);
 	ui->widgetMeant->hide();
 	setAttribute(Qt::WA_DeleteOnClose);

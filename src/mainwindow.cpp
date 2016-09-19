@@ -41,11 +41,11 @@ extern QMap<QString,QString> _md5;
 
 
 mainWindow::mainWindow(QString program, QStringList tags, QMap<QString,QString> params)
-	: ui(new Ui::mainWindow), m_currentFav(-1), m_downloads(0), m_loaded(false), m_getAll(false), m_program(program), m_tags(tags), m_batchAutomaticRetries(0), m_showLog(true)
+	: ui(new Ui::mainWindow), m_profile(savePath()), m_favorites(m_profile.getFavorites()), m_currentFav(-1), m_downloads(0), m_loaded(false), m_getAll(false), m_program(program), m_tags(tags), m_batchAutomaticRetries(0), m_showLog(true)
 { }
 void mainWindow::init()
 {
-	m_settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
+	m_settings = m_profile.getSettings();
 	bool crashed = m_settings->value("crashed", false).toBool();
 
 	m_settings->setValue("crashed", true);
@@ -76,7 +76,7 @@ void mainWindow::init()
 	ui->menuView->addAction(ui->dock_favorites->toggleViewAction());
 	ui->menuView->addAction(ui->dockOptions->toggleViewAction());
 
-	m_favorites = loadFavorites();
+	m_favorites = m_profile.getFavorites();
 
 	if (m_settings->value("Proxy/use", false).toBool())
 	{
@@ -186,7 +186,7 @@ void mainWindow::init()
 	}
 
 	// Favorites tab
-	m_favoritesTab = new favoritesTab(m_tabs.size(), &m_sites, m_favorites, this);
+	m_favoritesTab = new favoritesTab(m_tabs.size(), &m_sites, m_profile, this);
 	connect(m_favoritesTab, SIGNAL(batchAddGroup(QStringList)), this, SLOT(batchAddGroup(QStringList)));
 	connect(m_favoritesTab, SIGNAL(batchAddUnique(QMap<QString,QString>)), this, SLOT(batchAddUnique(QMap<QString,QString>)));
 	connect(m_favoritesTab, SIGNAL(changed(searchTab*)), this, SLOT(updateTabs()));
@@ -364,7 +364,7 @@ void mainWindow::onFirstLoad()
 
 int mainWindow::addTab(QString tag, bool background)
 {
-	tagTab *w = new tagTab(m_tabs.size(), &m_sites, m_favorites, this);
+	tagTab *w = new tagTab(m_tabs.size(), &m_sites, m_profile, this);
 	this->addSearchTab(w, background);
 
 	if (!tag.isEmpty())
@@ -375,7 +375,7 @@ int mainWindow::addTab(QString tag, bool background)
 }
 int mainWindow::addPoolTab(int pool, QString site)
 {
-	poolTab *w = new poolTab(m_tabs.size(), &m_sites, m_favorites, this);
+	poolTab *w = new poolTab(m_tabs.size(), &m_sites, m_profile, this);
 	this->addSearchTab(w);
 
 	if (!site.isEmpty())
@@ -859,7 +859,7 @@ void mainWindow::updateFavoritesDock()
 	QStringList assoc = QStringList() << "name" << "note" << "lastviewed";
 	QString order = assoc[qMax(ui->comboOrderFav->currentIndex(), 0)];
 	bool reverse = (ui->comboAscFav->currentIndex() == 1);
-	m_favorites = loadFavorites();
+
 	if (order == "note")
 	{ qSort(m_favorites.begin(), m_favorites.end(), sortByNote); }
 	else if (order == "lastviewed")
@@ -880,7 +880,7 @@ void mainWindow::updateFavoritesDock()
 }
 void mainWindow::updateKeepForLater()
 {
-	QStringList kfl = loadViewItLater();
+	QStringList kfl = m_profile.getKeptForLater();
 
 	clearLayout(ui->dockKflScrollLayout);
 

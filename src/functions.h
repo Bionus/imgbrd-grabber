@@ -62,10 +62,6 @@ QString fixFilename(QString filename, QString path = "", int maxlength = 0, bool
 QString fixFilenameWindows(QString filename, QString path = "", int maxlength = 0, bool invalidChars = true);
 QString fixFilenameLinux(QString filename, QString path = "", int maxlength = 0, bool invalidChars = true);
 
-QList<Favorite> loadFavorites();
-QStringList		loadViewItLater();
-QStringList		loadIgnored();
-
 QMap<QString,QString>		domToMap(QDomElement);
 
 QMap<QString,QStringList>	getCustoms();

@@ -9,8 +9,8 @@
 
 
 
-favoritesTab::favoritesTab(int id, QMap<QString,Site*> *sites, QList<Favorite> favorites, mainWindow *parent)
-	: searchTab(id, sites, parent), ui(new Ui::favoritesTab), m_id(id), m_favorites(favorites), m_pagemax(-1), m_lastTags(QString()), m_sized(false), m_from_history(false), m_stop(true), m_history_cursor(0), m_currentFav(0), m_history(QList<QMap<QString,QString> >()), m_modifiers(QStringList())
+favoritesTab::favoritesTab(int id, QMap<QString,Site*> *sites, Profile &profile, mainWindow *parent)
+	: searchTab(id, sites, profile, parent), ui(new Ui::favoritesTab), m_id(id), m_favorites(profile.getFavorites()), m_pagemax(-1), m_lastTags(QString()), m_sized(false), m_from_history(false), m_stop(true), m_history_cursor(0), m_currentFav(0), m_history(QList<QMap<QString,QString> >()), m_modifiers(QStringList())
 {
 	ui->setupUi(this);
 	setAttribute(Qt::WA_DeleteOnClose);
@@ -112,7 +112,7 @@ void favoritesTab::updateFavorites()
 	QStringList assoc = QStringList() << "name" << "note" << "lastviewed";
 	QString order = assoc[ui->comboOrder->currentIndex()];
 	bool reverse = (ui->comboAsc->currentIndex() == 1);
-	m_favorites = loadFavorites();
+
 	if (order == "note")
 	{ qSort(m_favorites.begin(), m_favorites.end(), sortByNote); }
 	else if (order == "lastviewed")
@@ -121,6 +121,7 @@ void favoritesTab::updateFavorites()
 	{ qSort(m_favorites.begin(), m_favorites.end(), sortByName); }
 	if (reverse)
 	{ m_favorites = reversed(m_favorites); }
+
 	QString format = tr("dd/MM/yyyy");
 	clearLayout(ui->layoutFavorites);
 
@@ -879,7 +880,7 @@ void favoritesTab::favoriteProperties(QString name)
 	if (fav.getName().isEmpty())
 		return;
 
-	favoriteWindow *fwin = new favoriteWindow(fav, this);
+	favoriteWindow *fwin = new favoriteWindow(m_profile, fav, this);
 	connect(fwin, SIGNAL(favoritesChanged()), this, SLOT(updateFavorites()));
 	fwin->show();
 }

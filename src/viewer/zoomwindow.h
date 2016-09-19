@@ -6,6 +6,7 @@
 #include <QStackedWidget>
 #include "ui/QAffiche.h"
 #include "models/image.h"
+#include "models/profile.h"
 #include "mainwindow.h"
 #include "detailswindow.h"
 #include "imagethread.h"
@@ -28,7 +29,7 @@ class zoomWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		zoomWindow(Image *image, Site *site, QMap<QString,Site*> *sites, mainWindow *parent);
+		zoomWindow(Image *image, Site *site, QMap<QString,Site*> *sites, Profile &profile, mainWindow *parent);
 		void go();
 		~zoomWindow();
 		void load();
@@ -83,6 +84,10 @@ class zoomWindow : public QDialog
 
 	private:
 		mainWindow *m_parent;
+		Profile &m_profile;
+		QList<Favorite> &m_favorites;
+		QStringList &m_viewItLater;
+		QStringList &m_ignore;
 		QSettings *m_settings;
 		Ui::zoomWindow *ui;
 		detailsWindow *m_detailsWindow;
@@ -102,7 +107,6 @@ class zoomWindow : public QDialog
 		QNetworkReply *m_reply;
 		const char* m_format;
 		bool m_finished, m_thread;
-		QStringList m_favorites, m_viewItLater, m_ignore;
 		QByteArray m_data;
 		int m_size;
 		QMap<QString,Site*> *m_sites;

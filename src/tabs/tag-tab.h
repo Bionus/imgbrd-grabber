@@ -26,7 +26,7 @@ class tagTab : public searchTab
 	Q_OBJECT
 
 	public:
-		explicit tagTab(int id, QMap<QString, Site*> *sites, QList<Favorite> favorites, mainWindow *parent);
+		explicit tagTab(int id, QMap<QString, Site*> *sites, Profile &profile, mainWindow *parent);
 		~tagTab();
 		Ui::tagTab *ui;
 		QString tags();
@@ -84,6 +84,7 @@ class tagTab : public searchTab
 
 	private:
 		int								m_id;
+		QStringList						&m_ignored;
 		TextEdit						*m_search, *m_postFiltering;
 		QCalendarWidget					*m_calendar;
 		QList<Favorite>					m_favorites;
@@ -96,7 +97,7 @@ class tagTab : public searchTab
 		QList<QGridLayout*>				m_layouts;
 		QList<QLabel*>					m_labels;
 		QList<QMap<QString,QString> >	m_history;
-		QStringList						m_modifiers, m_ignored, m_completion;
+		QStringList						m_modifiers, m_completion;
 		Downloader						*m_downloader;
 };
 

@@ -71,8 +71,22 @@ void Profile::sync()
 	}
 }
 
+void Profile::addFavorite(Favorite fav)
+{
+	m_favorites.removeAll(fav);
+	m_favorites.append(fav);
+}
+void Profile::removeFavorite(Favorite fav)
+{
+	m_favorites.removeAll(fav);
 
-QString Profile::getPath() const						{ return m_path;			}
-QSettings *Profile::getSettings() const					{ return m_settings;		}
-const QList<Favorite> &Profile::getFavorites() const	{ return m_favorites;		}
-const QList<QString> &Profile::getKeptForLater() const	{ return m_keptForLater;	}
+	if (QFile::exists(m_path + "/thumbs/" + fav.getName(true) + ".png"))
+		QFile::remove(m_path + "/thumbs/" + fav.getName(true) + ".png");
+}
+
+
+QString Profile::getPath() const			{ return m_path;			}
+QSettings *Profile::getSettings() const		{ return m_settings;		}
+QList<Favorite> &Profile::getFavorites()	{ return m_favorites;		}
+QStringList &Profile::getKeptForLater()		{ return m_keptForLater;	}
+QStringList &Profile::getIgnored()			{ return m_ignored;			}
