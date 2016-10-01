@@ -70,7 +70,7 @@ class PageApi : public QObject
 		Site			*m_site;
 		Api				*m_api;
 		Profile			*m_profile;
-		QStringList		m_postFiltering, m_errors, m_search;
+		QStringList		m_search, m_postFiltering, m_errors;
 		int				m_imagesPerPage, m_currentSource, m_lastPage, m_lastPageMinId, m_lastPageMaxId, m_imagesCount, m_pagesCount, m_page, m_blim, m_pool;
 		bool			m_smart;
 		QString			m_format, m_source, m_wiki, m_originalUrl;

@@ -16,7 +16,7 @@
  * @param parent	The parent window
  */
 startWindow::startWindow(QMap<QString, Site*> *sites, Profile *profile, mainWindow *parent)
-	: QDialog(parent), ui(new Ui::startWindow), m_parent(parent), m_sites(sites), m_profile(profile)
+	: QDialog(parent), ui(new Ui::startWindow), m_parent(parent), m_profile(profile), m_sites(sites)
 {
 	ui->setupUi(this);
 

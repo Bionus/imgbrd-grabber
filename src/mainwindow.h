@@ -172,11 +172,12 @@ class mainWindow : public QMainWindow
 
 	private:
 		Profile				*m_profile;
-		int					m_pagemax, m_getAllDownloaded, m_getAllExists, m_getAllIgnored, m_getAll404s, m_getAllErrors, m_getAllSkipped, m_getAllCount, m_getAllPageCount, m_getAllBeforeId, m_remainingPics, m_remainingSites, m_countPics, m_currentFav, m_currentFavCount, m_getAllLimit, m_downloads, m_waitForLogin;
+		QList<Favorite>		&m_favorites;
+		int					m_pagemax, m_getAllDownloaded, m_getAllExists, m_getAllIgnored, m_getAll404s, m_getAllErrors, m_getAllSkipped, m_getAllCount, m_getAllPageCount, m_getAllBeforeId, m_remainingPics, m_remainingSites, m_countPics, m_getAllLimit, m_downloads, m_waitForLogin;
 		bool				m_allow, m_must_get_tags, m_loaded, m_getAll;
 		QSettings			*m_settings;
 		batchWindow			*m_progressdialog;
-		QString				m_program, m_currLang, m_currentFavorite, m_link;
+		QString				m_program, m_currLang, m_link;
 		QStringList			m_tags;
 		QTranslator			m_translator;
 		QDateTime			m_loadFavorite;
@@ -188,7 +189,6 @@ class mainWindow : public QMainWindow
 		QList<poolTab*>		m_poolTabs;
 		QList<bool>			m_selectedSources;
 		favoritesTab		*m_favoritesTab;
-		QList<Favorite>					&m_favorites;
 		QMap<QString,QTime*>			m_downloadTime, m_downloadTimeLast;
 		QList<QProgressBar*>			m_progressBars;
 		QList<QMap<QString, QString>>	m_batchs;
