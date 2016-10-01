@@ -77,6 +77,20 @@ void ProfileTest::testRemoveFavorite()
 	QCOMPARE(lines.count(), 1);
 	QCOMPARE(lines[0], Favorite("tag_2", 100, QDateTime(QDate(2016, 10, 1), QTime(12, 23, 17))).toString());
 }
+void ProfileTest::testRemoveFavoriteThumb()
+{
+	Favorite fav("tag_1", 20, QDateTime(QDate(2016, 9, 1), QTime(9, 23, 17)));
+
+	QDir(m_profile->getPath()).mkdir("thumb");
+	QFile thumb(m_profile->getPath() + "/thumbs/" + fav.getName(true) + ".png");
+	thumb.open(QFile::WriteOnly | QFile::Truncate);
+	thumb.write(QString("test").toUtf8());
+	thumb.close();
+
+	QVERIFY(thumb.exists());
+	m_profile->removeFavorite(fav);
+	QVERIFY(!thumb.exists());
+}
 
 
 static ProfileTest instance;

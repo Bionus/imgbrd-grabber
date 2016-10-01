@@ -19,6 +19,7 @@ class ProfileTest : public TestSuite
 		void testLoadFavorites();
 		void testAddFavorite();
 		void testRemoveFavorite();
+		void testRemoveFavoriteThumb();
 
 	private:
 		Profile *m_profile;
