@@ -349,7 +349,7 @@ QMap<QString, Site*> Site::getAllSites()
 	QList<Source*> *sources = Source::getAllSources();
 	for (Source *source : *sources)
 		for (Site *site : source->getSites())
-			ret.insert(site->name(), site);
+			ret.insert(site->url(), site);
 
 	return ret;
 }
