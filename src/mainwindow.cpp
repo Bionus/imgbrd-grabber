@@ -999,6 +999,7 @@ void mainWindow::closeEvent(QCloseEvent *e)
 		m_settings->setValue("crashed", false);
 		m_settings->sync();
 		QFile::copy(m_settings->fileName(), savePath("old/settings."+QString(VERSION)+".ini"));
+		m_profile->sync();
 	DONE();
 	m_loaded = false;
 

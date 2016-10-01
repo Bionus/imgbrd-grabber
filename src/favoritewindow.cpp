@@ -62,6 +62,15 @@ void favoriteWindow::save()
 {
 	Favorite oldFav = m_favorite;
 	m_favorite = Favorite(ui->tagLineEdit->text(), ui->noteSpinBox->value(), ui->lastViewedDateTimeEdit->dateTime());
+	m_favorite.setImagePath(savePath("thumbs/" + m_favorite.getName(true) + ".png"));
+
+
+	if (oldFav.getName() != m_favorite.getName())
+	{
+		if (QFile::exists(savePath("thumbs/" + oldFav.getName(true) + ".png")))
+		{ QFile::rename(savePath("thumbs/" + oldFav.getName(true) + ".png"), m_favorite.getImagePath()); }
+		m_profile->removeFavorite(oldFav);
+	}
 
 	if (QFile::exists(ui->imageLineEdit->text()))
 	{
@@ -69,9 +78,6 @@ void favoriteWindow::save()
 		if (!img.isNull())
 		{ m_favorite.setImage(img); }
 	}
-	else if (oldFav.getName() != ui->tagLineEdit->text() && QFile::exists(savePath("thumbs/" + oldFav.getName(true) + ".png")))
-	{ QFile::rename(savePath("thumbs/" + oldFav.getName(true) + ".png"), savePath("thumbs/" + m_favorite.getName(true) + ".png")); }
-
 	m_profile->addFavorite(m_favorite);
 
 	emit favoritesChanged();
