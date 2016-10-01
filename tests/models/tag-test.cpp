@@ -152,6 +152,7 @@ void TagTest::testStylishedBlacklisted()
 }
 void TagTest::testStylishedFavorite()
 {
+	m_settings->setValue("Coloring/Fonts/favorites", ",8.25,-1,5,50,0,0,0,0,0");
 	Tag tag("tag_text", "artist", 123, QStringList() << "related1" << "related2" << "related3");
 
 	QList<Favorite> favorites;
@@ -159,7 +160,8 @@ void TagTest::testStylishedFavorite()
 
 	m_profile = new Profile(m_settings, favorites);
 	QString actual = tag.stylished(m_profile);
-	QCOMPARE(actual, QString("<span style=\"color:pink\">tag_text</span>"));
+	QString expected = "<a href=\"tag_text\" style=\"color:#ffc0cb; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">tag_text</a>";
+	QCOMPARE(actual, expected);
 }
 void TagTest::testStylishedWithCount()
 {
