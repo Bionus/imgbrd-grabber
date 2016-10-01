@@ -15,8 +15,9 @@ Commands::Commands(Profile *profile)
 	QSettings *settings = profile->getSettings();
 
 	settings->beginGroup("Exec");
+		m_commandTagBefore = settings->value("tag_before").toString();
 		m_commandImage = settings->value("image").toString();
-		m_commandTag = settings->value("tag").toString();
+		m_commandTagAfter = settings->value("tag_after", settings->value("tag").toString()).toString();
 		settings->beginGroup("SQL");
 			m_mysqlSettings.driver = settings->value("driver", "QMYSQL").toString();
 			m_mysqlSettings.host = settings->value("host").toString();
@@ -24,8 +25,9 @@ Commands::Commands(Profile *profile)
 			m_mysqlSettings.password = settings->value("password").toString();
 			m_mysqlSettings.database = settings->value("database").toString();
 			m_mysqlSettings.before = settings->value("before").toString();
+			m_mysqlSettings.tagBefore = settings->value("tag_before").toString();
 			m_mysqlSettings.image = settings->value("image").toString();
-			m_mysqlSettings.tag = settings->value("tag").toString();
+			m_mysqlSettings.tagAfter = settings->value("tag_after", settings->value("tag").toString()).toString();
 			m_mysqlSettings.after = settings->value("after").toString();
 		settings->endGroup();
 	settings->endGroup();
@@ -114,7 +116,7 @@ bool Commands::image(const Image &img, QString path)
 	return true;
 }
 
-bool Commands::tag(const Image &img, Tag tag)
+bool Commands::tag(const Image &img, Tag tag, bool after)
 {
 	QMap<QString, int> types;
 	types["general"] = 0;
@@ -126,9 +128,10 @@ bool Commands::tag(const Image &img, Tag tag)
 	types["photo_set"] = 6;
 	QString original = QString(tag.text()).replace(" ", "_");
 
-	if (!m_commandTag.isEmpty())
+	QString command = after ? m_commandTagAfter : m_commandTagBefore;
+	if (!command.isEmpty())
 	{
-		Filename fn(m_commandTag);
+		Filename fn(command);
 		QStringList execs = fn.path(img, m_profile, "", 0, false, false, false, false);
 
 		for (QString exec : execs)
@@ -145,11 +148,12 @@ bool Commands::tag(const Image &img, Tag tag)
 		}
 	}
 
-	if (m_mysql && !m_mysqlSettings.tag.isEmpty())
+	QString commandSql = after ? m_mysqlSettings.tagAfter : m_mysqlSettings.tagBefore;
+	if (m_mysql && !commandSql.isEmpty())
 	{
 		start();
 
-		Filename fn(m_mysqlSettings.tag);
+		Filename fn(commandSql);
 		QStringList execs = fn.path(img, m_profile, "", 0, false, false, false, false);
 
 		for (QString exec : execs)

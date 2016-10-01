@@ -952,19 +952,13 @@ Image::SaveResult Image::save(QString path, bool force, bool basic)
 			setFileCreationDate(path, createdAt());
 
 		// Commands
-		QMap<QString,int> types;
-		types["general"] = 0;
-		types["artist"] = 1;
-		types["general"] = 2;
-		types["copyright"] = 3;
-		types["character"] = 4;
-		types["model"] = 5;
-		types["photo_set"] = 6;
 		Commands &commands = m_profile->getCommands();
 		commands.before();
-		for (Tag tag : tags())
-		{ commands.tag(*this, tag); }
-		commands.image(*this, path);
+			for (Tag tag : tags())
+			{ commands.tag(*this, tag, false); }
+			commands.image(*this, path);
+			for (Tag tag : tags())
+			{ commands.tag(*this, tag, true); }
 		commands.after();
 	}
 	else

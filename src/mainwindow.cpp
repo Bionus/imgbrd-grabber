@@ -1847,8 +1847,10 @@ void mainWindow::saveImage(Image *img, QNetworkReply *reply, QString path, QStri
 				// Execute commands
 				Commands &commands = m_profile->getCommands();
 				for (Tag tag : img->tags())
-				{ commands.tag(*img, tag); }
+				{ commands.tag(*img, tag, false); }
 				commands.image(*img, fp);
+				for (Tag tag : img->tags())
+				{ commands.tag(*img, tag, true); }
 
 				if (m_settings->value("Save/keepDate", true).toBool())
 					setFileCreationDate(fp, img->createdAt());

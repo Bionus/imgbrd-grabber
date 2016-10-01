@@ -229,8 +229,9 @@ optionsWindow::optionsWindow(Profile *profile, mainWindow *parent)
 	settings->endGroup();
 
 	settings->beginGroup("Exec");
+		ui->lineCommandsTagBefore->setText(settings->value("tag_before").toString());
 		ui->lineCommandsImage->setText(settings->value("image").toString());
-		ui->lineCommandsTag->setText(settings->value("tag").toString());
+		ui->lineCommandsTagAfter->setText(settings->value("tag_after", settings->value("tag").toString()).toString());
 		settings->beginGroup("SQL");
 			ui->comboCommandsSqlDriver->addItems(QSqlDatabase::drivers());
 			ui->comboCommandsSqlDriver->setCurrentIndex(QSqlDatabase::drivers().indexOf(settings->value("driver", "QMYSQL").toString()));
@@ -239,8 +240,9 @@ optionsWindow::optionsWindow(Profile *profile, mainWindow *parent)
 			ui->lineCommandsSqlPassword->setText(settings->value("password").toString());
 			ui->lineCommandsSqlDatabase->setText(settings->value("database").toString());
 			ui->lineCommandsSqlBefore->setText(settings->value("before").toString());
+			ui->lineCommandsSqlTagBefore->setText(settings->value("tag_before").toString());
 			ui->lineCommandsSqlImage->setText(settings->value("image").toString());
-			ui->lineCommandsSqlTag->setText(settings->value("tag").toString());
+			ui->lineCommandsSqlTagAfter->setText(settings->value("tag_after", settings->value("tag").toString()).toString());
 			ui->lineCommandsSqlAfter->setText(settings->value("after").toString());
 		settings->endGroup();
 	settings->endGroup();
@@ -773,8 +775,9 @@ void optionsWindow::save()
 	settings->endGroup();
 
 	settings->beginGroup("Exec");
+		settings->setValue("tag_before", ui->lineCommandsTagAfter->text());
 		settings->setValue("image", ui->lineCommandsImage->text());
-		settings->setValue("tag", ui->lineCommandsTag->text());
+		settings->setValue("tag_after", ui->lineCommandsTagBefore->text());
 		settings->beginGroup("SQL");
 			settings->setValue("driver", ui->comboCommandsSqlDriver->currentText());
 			settings->setValue("host", ui->lineCommandsSqlHost->text());
@@ -782,8 +785,9 @@ void optionsWindow::save()
 			settings->setValue("password", ui->lineCommandsSqlPassword->text());
 			settings->setValue("database", ui->lineCommandsSqlDatabase->text());
 			settings->setValue("before", ui->lineCommandsSqlBefore->text());
+			settings->setValue("tag_before", ui->lineCommandsSqlTagBefore->text());
 			settings->setValue("image", ui->lineCommandsSqlImage->text());
-			settings->setValue("tag", ui->lineCommandsSqlTag->text());
+			settings->setValue("tag_after", ui->lineCommandsSqlTagAfter->text());
 			settings->setValue("after", ui->lineCommandsSqlAfter->text());
 		settings->endGroup();
 	settings->endGroup();
