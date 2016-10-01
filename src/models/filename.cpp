@@ -562,7 +562,7 @@ bool Filename::isValid(QString *error) const
 		bool found = false;
 		for (int i = 0; i < tokens.length(); i++)
 		{
-			if (QRegExp("%"+tokens[i]+"%").indexIn(rx.cap(0)) != -1)
+			if (QRegExp("%"+tokens[i]+"(?::[^%]+)?%").indexIn(rx.cap(0)) != -1)
 				found = true;
 		}
 
