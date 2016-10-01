@@ -16,10 +16,17 @@ class ProfileTest : public TestSuite
 		void testConstructorEmpty();
 		void testConstructorPath();
 
+		// Favorites
 		void testLoadFavorites();
 		void testAddFavorite();
 		void testRemoveFavorite();
 		void testRemoveFavoriteThumb();
+
+		// MD5s
+		void testLoadMd5s();
+		void testAddMd5();
+		void testUpdateMd5();
+		void testRemoveMd5();
 
 	private:
 		Profile *m_profile;

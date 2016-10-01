@@ -44,7 +44,7 @@ Profile::Profile(QString path)
 	{
 		QString line;
 		while (!(line = fileMD5.readLine()).isEmpty())
-			m_md5s.insert(line.left(32), line.mid(32));
+			m_md5s.insert(line.left(32), line.mid(32).trimmed());
 
 		fileMD5.close();
 	}

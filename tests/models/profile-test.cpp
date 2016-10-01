@@ -9,6 +9,12 @@ void ProfileTest::init()
 	f.write(Favorite("tag_2", 100, QDateTime(QDate(2016, 10, 1), QTime(12, 23, 17))).toString().toUtf8() + "\r\n");
 	f.close();
 
+	QFile f2("tests/resources/md5s.txt");
+	f2.open(QFile::WriteOnly | QFile::Text);
+	f2.write(QString("5a105e8b9d40e1329780d62ea2265d8atests/resources/image_1x1.png\r\n").toUtf8());
+	f2.write(QString("ad0234829205b9033196ba818f7a872btests/resources/image_1x1.png\r\n").toUtf8());
+	f2.close();
+
 	m_profile = new Profile("tests/resources/");
 }
 
@@ -61,7 +67,7 @@ void ProfileTest::testAddFavorite()
 	QCOMPARE(lines.count(), 3);
 	QCOMPARE(lines[0], Favorite("tag_1", 20, QDateTime(QDate(2016, 9, 1), QTime(9, 23, 17))).toString());
 	QCOMPARE(lines[1], Favorite("tag_2", 100, QDateTime(QDate(2016, 10, 1), QTime(12, 23, 17))).toString());
-	QCOMPARE(lines[2], fav.toString());;
+	QCOMPARE(lines[2], fav.toString());
 }
 
 void ProfileTest::testRemoveFavorite()
@@ -91,6 +97,62 @@ void ProfileTest::testRemoveFavoriteThumb()
 	m_profile->removeFavorite(fav);
 	QVERIFY(!thumb.exists());
 }
+
+void ProfileTest::testLoadMd5s()
+{
+	QCOMPARE(m_profile->md5Exists("5a105e8b9d40e1329780d62ea2265d8a"), QString("tests/resources/image_1x1.png"));
+	QCOMPARE(m_profile->md5Exists("ad0234829205b9033196ba818f7a872b"), QString("tests/resources/image_1x1.png"));
+}
+
+void ProfileTest::testAddMd5()
+{
+	m_profile->addMd5("8ad8757baa8564dc136c1e07507f4a98", "tests/resources/image_1x1.png");
+	QCOMPARE(m_profile->md5Exists("8ad8757baa8564dc136c1e07507f4a98"), QString("tests/resources/image_1x1.png"));
+
+	m_profile->sync();
+
+	QFile f("tests/resources/md5s.txt");
+	f.open(QFile::ReadOnly | QFile::Text);
+	QStringList lines = QString(f.readAll()).split("\n", QString::SkipEmptyParts);
+	f.close();
+
+	QCOMPARE(lines.count(), 3);
+	QVERIFY(lines.contains("5a105e8b9d40e1329780d62ea2265d8atests/resources/image_1x1.png"));
+	QVERIFY(lines.contains("ad0234829205b9033196ba818f7a872btests/resources/image_1x1.png"));
+	QVERIFY(lines.contains("8ad8757baa8564dc136c1e07507f4a98tests/resources/image_1x1.png"));
+}
+
+void ProfileTest::testUpdateMd5()
+{
+	m_profile->setMd5("5a105e8b9d40e1329780d62ea2265d8a", "newpath.png");
+	m_profile->sync();
+
+	QFile f("tests/resources/md5s.txt");
+	f.open(QFile::ReadOnly | QFile::Text);
+	QStringList lines = QString(f.readAll()).split("\n", QString::SkipEmptyParts);
+	f.close();
+
+	QCOMPARE(lines.count(), 2);
+	QVERIFY(lines.contains("5a105e8b9d40e1329780d62ea2265d8anewpath.png"));
+	QVERIFY(lines.contains("ad0234829205b9033196ba818f7a872btests/resources/image_1x1.png"));
+}
+
+void ProfileTest::testRemoveMd5()
+{
+	m_profile->removeMd5("5a105e8b9d40e1329780d62ea2265d8a");
+	QVERIFY(m_profile->md5Exists("5a105e8b9d40e1329780d62ea2265d8a").isEmpty());
+
+	m_profile->sync();
+
+	QFile f("tests/resources/md5s.txt");
+	f.open(QFile::ReadOnly | QFile::Text);
+	QStringList lines = QString(f.readAll()).split("\n", QString::SkipEmptyParts);
+	f.close();
+
+	QCOMPARE(lines.count(), 1);
+	QVERIFY(lines.contains("ad0234829205b9033196ba818f7a872btests/resources/image_1x1.png"));
+}
+
 
 
 static ProfileTest instance;
