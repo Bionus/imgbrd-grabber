@@ -14,7 +14,7 @@ class Profile
 {
 	public:
 		Profile();
-		Profile(QSettings *settings, QList<Favorite> favorites, QStringList keptForLater = QStringList());
+		Profile(QSettings *settings, QList<Favorite> favorites, QStringList keptForLater = QStringList(), QString path = QString());
 		Profile(QString path);
 		~Profile();
 		void sync();

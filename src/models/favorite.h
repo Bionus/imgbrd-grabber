@@ -30,6 +30,9 @@ class Favorite
 		bool setImage(QPixmap&);
 		QPixmap getImage() const;
 
+		QString toString() const;
+		static Favorite fromString(QString path, QString text);
+
 	private:
 		QString		m_name;
 		int			m_note;
