@@ -51,13 +51,8 @@ Tag::~Tag()
  */
 QString Tag::stylished(Profile *profile, QStringList ignored, QStringList blacklisted, bool count) const
 {
-	// Favorites
-	for (Favorite fav : profile->getFavorites())
-		if (fav.getName() == m_text)
-			return "<span style=\"color:pink\">" + m_text + "</span>";
-
-	QStringList tlist = QStringList() << "artists" << "circles" << "copyrights" << "characters" << "models" << "generals" << "favorites" << "blacklisteds" << "ignoreds";
-	QStringList defaults = QStringList() << "#aa0000" << "#55bbff" << "#aa00aa" << "#00aa00" << "#0000ee" << "#000000" << "#ffc0cb" << "#000000" << "#999999";
+	QStringList tlist = QStringList() << "artists" << "circles" << "copyrights" << "characters" << "models" << "generals" << "favorites" << "blacklisteds" << "ignoreds" << "favorites";
+	QStringList defaults = QStringList() << "#aa0000" << "#55bbff" << "#aa00aa" << "#00aa00" << "#0000ee" << "#000000" << "#ffc0cb" << "#000000" << "#999999" << "#ffcccc";
 
 	// Guess the correct tag family
 	QString key = tlist.contains(type()+"s") ? type() + "s" : "generals";
@@ -65,6 +60,9 @@ QString Tag::stylished(Profile *profile, QStringList ignored, QStringList blackl
 		key = "blacklisteds";
 	if (ignored.contains(text(), Qt::CaseInsensitive))
 		key = "ignoreds";
+	for (Favorite fav : profile->getFavorites())
+		if (fav.getName() == m_text)
+			key = "favorites";
 
 	QFont font;
 	font.fromString(profile->getSettings()->value("Coloring/Fonts/" + key).toString());

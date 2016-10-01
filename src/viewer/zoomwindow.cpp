@@ -291,10 +291,19 @@ void zoomWindow::favorite()
 }
 void zoomWindow::setfavorite()
 {
-	if (image != nullptr)
+	if (image == nullptr)
+		return;
+
+	Favorite fav(link, 50, QDateTime::currentDateTime());
+	int pos = m_favorites.indexOf(fav);
+	if (pos >= 0)
 	{
-		Favorite fav(link, 50, QDateTime::currentDateTime());
+		m_favorites[pos].setImage(*image);
+	}
+	else
+	{
 		fav.setImage(*image);
+		m_favorites.append(fav);
 	}
 
 	m_parent->updateFavorites();

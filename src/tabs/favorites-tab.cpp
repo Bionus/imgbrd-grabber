@@ -130,7 +130,8 @@ void favoritesTab::updateFavorites()
 	for (Favorite fav : m_favorites)
 	{
 		QString xt = tr("<b>Nom :</b> %1<br/><b>Note :</b> %2 %%<br/><b>Dernière vue :</b> %3").arg(fav.getName(), QString::number(fav.getNote()), fav.getLastViewed().toString(format));
-		QVBoxLayout *l = new QVBoxLayout(ui->scrollAreaWidgetContents);
+		QWidget *w = new QWidget(ui->scrollAreaWidgetContents);
+		QVBoxLayout *l = new QVBoxLayout(w);
 
 		if (display.contains("i"))
 		{
@@ -157,7 +158,7 @@ void favoritesTab::updateFavorites()
 			l->addWidget(caption);
 		}
 
-		ui->layoutFavorites->addLayout(l, i / 8, i % 8);
+		ui->layoutFavorites->addWidget(w, i / 8, i % 8);
 		++i;
 	}
 }

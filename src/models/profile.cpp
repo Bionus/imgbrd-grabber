@@ -21,10 +21,16 @@ Profile::Profile(QString path)
 		QString favs = fileFavorites.readAll();
 		fileFavorites.close();
 
+		QSet<QString> unique;
 		QStringList wrds = favs.split("\n", QString::SkipEmptyParts);
 		for (QString wrd : wrds)
 		{
-			m_favorites.append(Favorite::fromString(m_path, wrd));
+			Favorite fav = Favorite::fromString(m_path, wrd);
+			if (!unique.contains(fav.getName()))
+			{
+				unique.insert(fav.getName());
+				m_favorites.append(fav);
+			}
 		}
 	}
 
