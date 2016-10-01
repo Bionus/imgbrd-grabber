@@ -9,10 +9,10 @@
 
 
 
-Commands::Commands(Profile& profile)
+Commands::Commands(Profile *profile)
 	: m_profile(profile)
 {
-	QSettings *settings = profile.getSettings();
+	QSettings *settings = profile->getSettings();
 
 	settings->beginGroup("Exec");
 		m_commandImage = settings->value("image").toString();

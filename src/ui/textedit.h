@@ -12,7 +12,7 @@ class TextEdit : public QTextEdit
 	Q_OBJECT
 
 	public:
-		TextEdit(Profile &profile, QWidget *parent = 0);
+		TextEdit(Profile *profile, QWidget *parent = 0);
 		~TextEdit();
 		void setCompleter(QCompleter *c);
 		QCompleter *completer() const;
@@ -45,7 +45,7 @@ class TextEdit : public QTextEdit
 
 	private:
 		QCompleter		*c;
-		Profile			&m_profile;
+		Profile			*m_profile;
 		QList<Favorite>	&m_favorites;
 		QStringList		&m_viewItLater;
 };

@@ -14,7 +14,7 @@
  * @param	favorites	List of favorites tags, needed for coloration
  * @param	parent		The parent window
  */
-AddUniqueWindow::AddUniqueWindow(QString selected, QMap<QString,Site*> sites, Profile &profile, QWidget *parent)
+AddUniqueWindow::AddUniqueWindow(QString selected, QMap<QString,Site*> sites, Profile *profile, QWidget *parent)
 	: QDialog(parent), ui(new Ui::AddUniqueWindow), m_sites(sites), m_profile(profile)
 {
 	ui->setupUi(this);

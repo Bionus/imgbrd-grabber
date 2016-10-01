@@ -18,8 +18,8 @@
 
 
 
-zoomWindow::zoomWindow(Image *image, Site *site, QMap<QString,Site*> *sites, Profile &profile, mainWindow *parent)
-	: QDialog(0, Qt::Window), m_parent(parent), m_profile(profile), m_favorites(profile.getFavorites()), m_viewItLater(profile.getKeptForLater()), m_ignore(profile.getIgnored()), m_settings(parent->settings()), ui(new Ui::zoomWindow), m_site(site), timeout(300), m_loaded(false), m_loadedImage(false), m_loadedDetails(false), oldsize(0), image(NULL), movie(NULL), m_program(qApp->arguments().at(0)), m_reply(NULL), m_finished(false), m_thread(false), m_data(QByteArray()), m_size(0), m_sites(sites), m_source(), m_th(NULL), m_fullScreen(NULL)
+zoomWindow::zoomWindow(Image *image, Site *site, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
+	: QDialog(0, Qt::Window), m_parent(parent), m_profile(profile), m_favorites(profile->getFavorites()), m_viewItLater(profile->getKeptForLater()), m_ignore(profile->getIgnored()), m_settings(parent->settings()), ui(new Ui::zoomWindow), m_site(site), timeout(300), m_loaded(false), m_loadedImage(false), m_loadedDetails(false), oldsize(0), image(NULL), movie(NULL), m_program(qApp->arguments().at(0)), m_reply(NULL), m_finished(false), m_thread(false), m_data(QByteArray()), m_size(0), m_sites(sites), m_source(), m_th(NULL), m_fullScreen(NULL)
 {
 	ui->setupUi(this);
 	setAttribute(Qt::WA_DeleteOnClose);
@@ -285,7 +285,7 @@ void zoomWindow::favorite()
 	if (image != nullptr)
 		fav.setImage(*image);
 
-	m_profile.addFavorite(fav);
+	m_profile->addFavorite(fav);
 
 	m_parent->updateFavorites();
 	m_parent->updateFavoritesDock();
@@ -303,7 +303,7 @@ void zoomWindow::setfavorite()
 }
 void zoomWindow::unfavorite()
 {
-	m_profile.removeFavorite(Favorite(link, 50, QDateTime::currentDateTime()));
+	m_profile->removeFavorite(Favorite(link, 50, QDateTime::currentDateTime()));
 
 	m_parent->updateFavorites();
 	m_parent->updateFavoritesDock();

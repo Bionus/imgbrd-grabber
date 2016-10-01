@@ -49,10 +49,10 @@ Tag::~Tag()
  * @param favs The list of the user's favorite tags.
  * @return The HTML colored tag.
  */
-QString Tag::stylished(Profile &profile, QStringList ignored, QStringList blacklisted, bool count) const
+QString Tag::stylished(Profile *profile, QStringList ignored, QStringList blacklisted, bool count) const
 {
 	// Favorites
-	for (Favorite fav : profile.getFavorites())
+	for (Favorite fav : profile->getFavorites())
 		if (fav.getName() == m_text)
 			return "<span style=\"color:pink\">" + m_text + "</span>";
 
@@ -67,8 +67,8 @@ QString Tag::stylished(Profile &profile, QStringList ignored, QStringList blackl
 		key = "ignoreds";
 
 	QFont font;
-	font.fromString(profile.getSettings()->value("Coloring/Fonts/" + key).toString());
-	QString color = profile.getSettings()->value("Coloring/Colors/" + key, defaults.at(tlist.indexOf(key))).toString();
+	font.fromString(profile->getSettings()->value("Coloring/Fonts/" + key).toString());
+	QString color = profile->getSettings()->value("Coloring/Colors/" + key, defaults.at(tlist.indexOf(key))).toString();
 	QString style = "color:"+color+"; "+qfonttocss(font);
 
 	QString ret;

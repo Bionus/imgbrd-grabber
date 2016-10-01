@@ -41,11 +41,11 @@ extern QMap<QString,QString> _md5;
 
 
 mainWindow::mainWindow(QString program, QStringList tags, QMap<QString,QString> params)
-	: ui(new Ui::mainWindow), m_profile(savePath()), m_favorites(m_profile.getFavorites()), m_currentFav(-1), m_downloads(0), m_loaded(false), m_getAll(false), m_program(program), m_tags(tags), m_batchAutomaticRetries(0), m_showLog(true)
+	: ui(new Ui::mainWindow), m_profile(new Profile(savePath())), m_favorites(m_profile->getFavorites()), m_currentFav(-1), m_downloads(0), m_loaded(false), m_getAll(false), m_program(program), m_tags(tags), m_batchAutomaticRetries(0), m_showLog(true)
 { }
 void mainWindow::init()
 {
-	m_settings = m_profile.getSettings();
+	m_settings = m_profile->getSettings();
 	bool crashed = m_settings->value("crashed", false).toBool();
 
 	m_settings->setValue("crashed", true);
@@ -76,7 +76,7 @@ void mainWindow::init()
 	ui->menuView->addAction(ui->dock_favorites->toggleViewAction());
 	ui->menuView->addAction(ui->dockOptions->toggleViewAction());
 
-	m_favorites = m_profile.getFavorites();
+	m_favorites = m_profile->getFavorites();
 
 	if (m_settings->value("Proxy/use", false).toBool())
 	{
@@ -265,6 +265,7 @@ void mainWindow::loadSites()
 mainWindow::~mainWindow()
 {
 	qDeleteAll(m_sites);
+	delete m_profile;
 	delete ui;
 }
 
@@ -877,7 +878,7 @@ void mainWindow::updateFavoritesDock()
 }
 void mainWindow::updateKeepForLater()
 {
-	QStringList kfl = m_profile.getKeptForLater();
+	QStringList kfl = m_profile->getKeptForLater();
 
 	clearLayout(ui->dockKflScrollLayout);
 
@@ -1185,7 +1186,7 @@ void mainWindow::getAll(bool all)
 	for (int i = 0; i < ui->tableBatchGroups->rowCount(); i++)
 	{ ui->tableBatchGroups->item(i, 0)->setIcon(getIcon(":/images/colors/black.png")); }
 	m_allow = true;
-	m_profile.getCommands().before();
+	m_profile->getCommands().before();
 	selected = ui->tableBatchGroups->selectedItems();
 	count = selected.size();
 	m_batchDownloading.clear();
@@ -1848,7 +1849,7 @@ void mainWindow::saveImage(Image *img, QNetworkReply *reply, QString path, QStri
 				}
 
 				// Execute commands
-				Commands &commands = m_profile.getCommands();
+				Commands &commands = m_profile->getCommands();
 				for (int i = 0; i < img->tags().count(); i++)
 				{ commands.tag(img->tags().at(i)); }
 				commands.image(*img, fp);
@@ -1991,7 +1992,7 @@ void mainWindow::getAllFinished()
 	// End of batch download
 	if (reponse != QMessageBox::Yes)
 	{
-		m_profile.getCommands().after();
+		m_profile->getCommands().after();
 		ui->widgetDownloadButtons->setEnabled(true);
 		log(tr("Téléchargement groupé terminé"));
 	}

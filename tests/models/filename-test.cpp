@@ -49,7 +49,7 @@ void FilenameTest::init()
 
 	m_source = new Source("release/sites/Danbooru (2.0)");
 	m_site = new Site("danbooru.donmai.us", m_source);
-	m_img = new Image(m_site, m_details, *m_profile);
+	m_img = new Image(m_site, m_details, m_profile);
 }
 
 void FilenameTest::cleanup()
@@ -273,7 +273,7 @@ void FilenameTest::testGetReplacesSimple()
 
 	Filename fn(format);
 	m_settings->setValue("Save/character_multiple", "replaceAll");
-	QList<QMap<QString, QPair<QString, QString>>> replaces = fn.getReplaces(format, *m_img, *m_profile, QMap<QString, QStringList>());
+	QList<QMap<QString, QPair<QString, QString>>> replaces = fn.getReplaces(format, *m_img, m_profile, QMap<QString, QStringList>());
 
 	QCOMPARE(replaces.count(), 1);
 	QCOMPARE(replaces[0]["artist"].first, QString("artist1"));
@@ -286,7 +286,7 @@ void FilenameTest::testGetReplacesMultiple()
 
 	Filename fn(format);
 	m_settings->setValue("Save/character_multiple", "multiple");
-	QList<QMap<QString, QPair<QString, QString>>> replaces = fn.getReplaces(format, *m_img, *m_profile, QMap<QString, QStringList>());
+	QList<QMap<QString, QPair<QString, QString>>> replaces = fn.getReplaces(format, *m_img, m_profile, QMap<QString, QStringList>());
 
 	QCOMPARE(replaces.count(), 2);
 	QCOMPARE(replaces[0]["artist"].first, QString("artist1"));
@@ -303,7 +303,7 @@ void FilenameTest::testGetReplacesMatrix()
 	Filename fn(format);
 	m_settings->setValue("Save/character_multiple", "multiple");
 	m_settings->setValue("Save/copyright_multiple", "multiple");
-	QList<QMap<QString, QPair<QString, QString>>> replaces = fn.getReplaces(format, *m_img, *m_profile, QMap<QString, QStringList>());
+	QList<QMap<QString, QPair<QString, QString>>> replaces = fn.getReplaces(format, *m_img, m_profile, QMap<QString, QStringList>());
 
 	QCOMPARE(replaces.count(), 4);
 	QCOMPARE(replaces[0]["artist"].first, QString("artist1"));
@@ -328,7 +328,7 @@ void FilenameTest::testGetReplacesCustom()
 	custom.insert("custom2", QStringList() << "tag3 tag4");
 
 	Filename fn(format);
-	QList<QMap<QString, QPair<QString, QString>>> replaces = fn.getReplaces(format, *m_img, *m_profile, custom);
+	QList<QMap<QString, QPair<QString, QString>>> replaces = fn.getReplaces(format, *m_img, m_profile, custom);
 
 	QCOMPARE(replaces.first().contains("custom1"), true);
 	QCOMPARE(replaces.first().contains("custom2"), true);
@@ -357,7 +357,7 @@ void FilenameTest::testUseShorterCopyright()
 	m_img->deleteLater();
 
 	m_details["tags_copyright"] = "test test_2";
-	m_img = new Image(m_site, m_details, *m_profile);
+	m_img = new Image(m_site, m_details, m_profile);
 
 	m_settings->setValue("Save/copyright_useshorter", true);
 	assertPath("%copyright%", "test");
@@ -368,7 +368,7 @@ void FilenameTest::testUseShorterCopyright()
 	m_img->deleteLater();
 
 	m_details["tags_copyright"] = "test_2 test";
-	m_img = new Image(m_site, m_details, *m_profile);
+	m_img = new Image(m_site, m_details, m_profile);
 
 	m_settings->setValue("Save/copyright_useshorter", true);
 	assertPath("%copyright%", "test");
@@ -441,7 +441,7 @@ void FilenameTest::testCommand()
 {
 	 Filename fn("curl -F \"user[name]=User\" -F \"user[password]=1234\" -F \"post[tags]=%all%\" -F \"post[rating]=%rating%\" -F \"post[file]=@%path%\" localhost:9000/post/create");
 
-	 QCOMPARE(fn.path(*m_img, *m_profile, "", 0, false, false, false, false),
+	 QCOMPARE(fn.path(*m_img, m_profile, "", 0, false, false, false, false),
 			  QStringList() << "curl -F \"user[name]=User\" -F \"user[password]=1234\" -F \"post[tags]=tag1 tag2 tag3 test_tag1 test_tag2 test_tag3 artist1 character1 character2 copyright1 copyright2\" -F \"post[rating]=safe\" -F \"post[file]=@%path%\" localhost:9000/post/create");
 }
 
@@ -491,7 +491,7 @@ void FilenameTest::assertPath(QString format, QStringList expected, QString path
 	}
 
 	Filename fn(format);
-	QStringList actual = fn.path(*m_img, *m_profile, path, 7, true, true, shouldFixFilename, fullPath);
+	QStringList actual = fn.path(*m_img, m_profile, path, 7, true, true, shouldFixFilename, fullPath);
 	QCOMPARE(actual, expectedNative);
 }
 
@@ -501,7 +501,7 @@ void FilenameTest::assertExpand(QString format, QString expected)
 	QStringList tokens = QStringList() << "artist" << "general" << "copyright" << "character" << "model" << "model|artist" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "allo" << "date" << "date:([^%]+)" << "count(:\\d+)?(:\\d+)?" << "search_(\\d+)" << "score" << "height" << "width" << "path" << "pool" << "url_file" << "url_page";
 
 	Filename fn(format);
-	QMap<QString, QPair<QString, QString>> replaces = fn.getReplaces(format, *m_img, *m_profile, QMap<QString, QStringList>()).first();
+	QMap<QString, QPair<QString, QString>> replaces = fn.getReplaces(format, *m_img, m_profile, QMap<QString, QStringList>()).first();
 	QString actual = fn.expandConditionals(format, tokens, m_img->tagsString(), replaces);
 	QCOMPARE(actual, expected);
 }

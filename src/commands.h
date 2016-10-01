@@ -25,7 +25,7 @@ struct MysqlSettings
 class Commands
 {
 	public:
-		Commands(Profile &profile);
+		Commands(Profile *profile);
 		bool start();
 		bool before();
 		bool image(const Image &, QString);
@@ -33,8 +33,7 @@ class Commands
 		bool after();
 
 	private:
-		static Commands *_instance;
-		Profile &m_profile;
+		Profile *m_profile;
 		QString m_commandImage;
 		QString m_commandTag;
 		bool m_mysql;

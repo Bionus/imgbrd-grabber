@@ -51,7 +51,7 @@ class Site : public QObject
 		QList<QNetworkCookie> cookies();
 		QVariant setting(QString key, QVariant def = QVariant());
 		QSettings *settings();
-		Profile &profile();
+		Profile *profile();
 		QNetworkRequest makeRequest(QUrl url, Page *page = nullptr, QString referer = "", Image *img = nullptr);
 		QNetworkReply *get(QUrl url, Page *page = nullptr, QString referer = "", Image *img = nullptr);
 		void getAsync(QueryType type, QUrl url, std::function<void(QNetworkReply *)> callback, Page *page = nullptr, QString referer = "", Image *img = nullptr);

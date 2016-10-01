@@ -12,8 +12,8 @@
 
 
 
-TextEdit::TextEdit(Profile &profile, QWidget *parent)
-	: QTextEdit(parent), c(0), m_profile(profile), m_favorites(profile.getFavorites()), m_viewItLater(profile.getKeptForLater())
+TextEdit::TextEdit(Profile *profile, QWidget *parent)
+	: QTextEdit(parent), c(0), m_profile(profile), m_favorites(profile->getFavorites()), m_viewItLater(profile->getKeptForLater())
 {
 	setTabChangesFocus(true);
 	setWordWrapMode(QTextOption::NoWrap);
@@ -307,24 +307,24 @@ void TextEdit::customContextMenuRequested(QPoint)
 }
 void TextEdit::setFavorite()
 {
-	m_profile.addFavorite(Favorite(toPlainText()));
+	m_profile->addFavorite(Favorite(toPlainText()));
 	emit favoritesChanged();
 }
 void TextEdit::unsetFavorite()
 {
-	m_profile.removeFavorite(Favorite(toPlainText()));
+	m_profile->removeFavorite(Favorite(toPlainText()));
 	emit favoritesChanged();
 }
 void TextEdit::setKfl()
 {
-	m_profile.getKeptForLater().append(toPlainText());
-	m_profile.sync();
+	m_profile->getKeptForLater().append(toPlainText());
+	m_profile->sync();
 	emit kflChanged();
 }
 void TextEdit::unsetKfl()
 {
-	m_profile.getKeptForLater().removeAll(toPlainText());
-	m_profile.sync();
+	m_profile->getKeptForLater().removeAll(toPlainText());
+	m_profile->sync();
 	emit kflChanged();
 }
 void TextEdit::insertFav(QAction *act)

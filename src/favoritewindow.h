@@ -18,7 +18,7 @@ class favoriteWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		favoriteWindow(Profile &profile, Favorite favorite, QWidget *parent);
+		favoriteWindow(Profile *profile, Favorite favorite, QWidget *parent);
 		~favoriteWindow();
 
 	public slots:
@@ -31,7 +31,7 @@ class favoriteWindow : public QDialog
 
 	private:
 		Ui::favoriteWindow	*ui;
-		Profile				&m_profile;
+		Profile				*m_profile;
 		Favorite			m_favorite;
 
 };

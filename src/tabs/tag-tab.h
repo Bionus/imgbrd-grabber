@@ -26,7 +26,7 @@ class tagTab : public searchTab
 	Q_OBJECT
 
 	public:
-		explicit tagTab(int id, QMap<QString, Site*> *sites, Profile &profile, mainWindow *parent);
+		explicit tagTab(int id, QMap<QString, Site*> *sites, Profile *profile, mainWindow *parent);
 		~tagTab();
 		Ui::tagTab *ui;
 		QString tags();

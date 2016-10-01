@@ -23,12 +23,12 @@ QString removeCacheUrl(QString url)
 }
 
 Image::Image()
-	: QObject(), m_profile(Profile())
+	: QObject(), m_profile(nullptr)
 { }
 
 // TODO: clean up this mess
 Image::Image(const Image &other)
-	: QObject(other.parent()), m_profile(other.m_profile)
+	: QObject(other.parent())
 {
 	m_parent = other.m_parent;
 
@@ -72,6 +72,7 @@ Image::Image(const Image &other)
 	m_tags = other.m_tags;
 	m_pools = other.m_pools;
 	m_timer = other.m_timer;
+	m_profile = other.m_profile;
 	m_settings = other.m_settings;
 	m_search = other.m_search;
 	m_parentSite = other.m_parentSite;
@@ -83,10 +84,10 @@ Image::Image(const Image &other)
 	m_tryingSample = other.m_tryingSample;
 }
 
-Image::Image(Site *site, QMap<QString, QString> details, Profile& profile, Page* parent)
+Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page* parent)
 	: m_profile(profile), m_parentSite(site)
 {
-	m_settings = m_profile.getSettings();
+	m_settings = m_profile->getSettings();
 
 	// Parents
 	m_site = parent != nullptr ? parent->website() : (details.contains("website") ? details["website"] : "");
@@ -852,7 +853,7 @@ QStringList Image::blacklisted(QStringList blacklistedtags, bool invert) const
 	return detected;
 }
 
-QStringList Image::stylishedTags(Profile &profile, QStringList ignored) const
+QStringList Image::stylishedTags(Profile *profile, QStringList ignored) const
 {
 	QStringList blacklisted = m_settings->value("blacklistedtags").toString().split(' ');
 
@@ -959,7 +960,7 @@ Image::SaveResult Image::save(QString path, bool force, bool basic)
 		types["character"] = 4;
 		types["model"] = 5;
 		types["photo_set"] = 6;
-		Commands &commands = m_profile.getCommands();
+		Commands &commands = m_profile->getCommands();
 		commands.before();
 		for (int i = 0; i < tags().count(); i++)
 		{ commands.tag(tags().at(i)); }

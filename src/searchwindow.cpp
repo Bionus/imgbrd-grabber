@@ -8,7 +8,7 @@
 
 
 
-SearchWindow::SearchWindow(QString tags, Profile &profile, QWidget *parent)
+SearchWindow::SearchWindow(QString tags, Profile *profile, QWidget *parent)
 	: QDialog(parent), ui(new Ui::SearchWindow)
 {
 	ui->setupUi(this);
@@ -25,7 +25,7 @@ SearchWindow::SearchWindow(QString tags, Profile &profile, QWidget *parent)
 	connect(ui->buttonCalendar, SIGNAL(clicked()), m_calendar, SLOT(show()));
 
 	QStringList favs;
-	for (Favorite fav : profile.getFavorites())
+	for (Favorite fav : profile->getFavorites())
 		favs.append(fav.getName());
 	m_tags = new TextEdit(profile, this);
 		m_tags->setContextMenuPolicy(Qt::CustomContextMenu);

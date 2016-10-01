@@ -12,7 +12,7 @@
  * Constructor of the AddGroupWindow class, generating its window.
  * @param	parent		The parent window
  */
-AddGroupWindow::AddGroupWindow(QString selected, QStringList sites, Profile &profile, QWidget *parent)
+AddGroupWindow::AddGroupWindow(QString selected, QStringList sites, Profile *profile, QWidget *parent)
 	: QWidget(parent), m_sites(sites)
 {
 	QVBoxLayout *layout = new QVBoxLayout;

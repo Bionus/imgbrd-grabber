@@ -17,12 +17,12 @@
 
 
 
-optionsWindow::optionsWindow(Profile &profile, mainWindow *parent)
+optionsWindow::optionsWindow(Profile *profile, mainWindow *parent)
 	: QDialog(parent), ui(new Ui::optionsWindow), m_profile(profile)
 {
 	ui->setupUi(this);
 
-	QSettings *settings = profile.getSettings();
+	QSettings *settings = profile->getSettings();
 	QStringList languages = QDir(savePath("languages/", true)).entryList(QStringList("*.qm"), QDir::Files);
 	for (int i = 0; i < languages.count(); i++)
 	{ languages[i].remove(".qm", Qt::CaseInsensitive); }
@@ -550,7 +550,7 @@ void optionsWindow::updateContainer(QTreeWidgetItem *current, QTreeWidgetItem *)
 
 void optionsWindow::save()
 {
-	QSettings *settings = m_profile.getSettings();
+	QSettings *settings = m_profile->getSettings();
 
 	settings->setValue("blacklistedtags", ui->lineBlacklist->text());
 	settings->setValue("downloadblacklist", ui->checkDownloadBlacklisted->isChecked());
@@ -807,6 +807,6 @@ void optionsWindow::save()
 		emit languageChanged(ui->comboLanguages->currentText());
 	}
 
-	m_profile.sync();
+	m_profile->sync();
 	emit settingsChanged();
 }

@@ -6,7 +6,7 @@
 #include "models/filename.h"
 
 
-FilenameWindow::FilenameWindow(Profile &profile, QString value, QWidget *parent)
+FilenameWindow::FilenameWindow(Profile *profile, QString value, QWidget *parent)
 	: QDialog(parent), ui(new Ui::FilenameWindow), m_profile(profile)
 {
 	ui->setupUi(this);

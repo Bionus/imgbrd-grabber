@@ -12,11 +12,11 @@ Filename::Filename(QString format)
 	: m_format(format)
 { }
 
-QList<QMap<QString, QPair<QString, QString>>> Filename::getReplaces(QString filename, const Image& img, Profile& profile, QMap<QString, QStringList> custom) const
+QList<QMap<QString, QPair<QString, QString>>> Filename::getReplaces(QString filename, const Image &img, Profile *profile, QMap<QString, QStringList> custom) const
 {
 	QMap<QString, QPair<QString, QString>> replaces;
 	QList<QMap<QString, QPair<QString, QString>>> ret;
-	QSettings *settings = profile.getSettings();
+	QSettings *settings = profile->getSettings();
 
 	QString tagSeparator = settings->value("Save/separator", " ").toString();
 	QMap<QString, QStringList> details = makeDetails(img, profile, settings);
@@ -191,9 +191,9 @@ QList<QPair<QString,QString>> Filename::getReplace(QString setting, QMap<QString
 	return ret;
 }
 
-QMap<QString, QStringList> Filename::makeDetails(const Image& img, Profile &profile, QSettings *settings) const
+QMap<QString, QStringList> Filename::makeDetails(const Image& img, Profile *profile, QSettings *settings) const
 {
-	QStringList ignore = profile.getIgnored();
+	QStringList ignore = profile->getIgnored();
 	QStringList remove = settings->value("ignoredtags").toString().split(' ', QString::SkipEmptyParts);
 
 	QMap<QString, QStringList> details;
@@ -238,9 +238,9 @@ QMap<QString, QStringList> Filename::makeDetails(const Image& img, Profile &prof
 	return details;
 }
 
-QStringList Filename::path(const Image& img, Profile& profile, QString pth, int counter, bool complex, bool maxlength, bool shouldFixFilename, bool getFull) const
+QStringList Filename::path(const Image& img, Profile *profile, QString pth, int counter, bool complex, bool maxlength, bool shouldFixFilename, bool getFull) const
 {
-	QSettings *settings = profile.getSettings();
+	QSettings *settings = profile->getSettings();
 	QStringList remove = settings->value("ignoredtags").toString().split(' ', QString::SkipEmptyParts);
 
 	QMap<QString,QStringList> custom = QMap<QString,QStringList>(), scustom = getCustoms(settings);

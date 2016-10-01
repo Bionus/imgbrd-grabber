@@ -48,7 +48,7 @@ Profile::Profile(QString path)
 		fileKfl.close();
 	}
 
-	m_commands = new Commands(*this);
+	m_commands = new Commands(this);
 }
 
 Profile::~Profile()

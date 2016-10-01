@@ -127,7 +127,7 @@ void TagTest::testStylishedBasic()
 
 	Profile profile(m_settings, favorites);
 	QString expected = "<a href=\"tag_text\" style=\"color:#aa0000; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">tag_text</a>";
-	QCOMPARE(tag.stylished(profile), expected);
+	QCOMPARE(tag.stylished(&profile), expected);
 }
 void TagTest::testStylishedIgnored()
 {
@@ -136,7 +136,7 @@ void TagTest::testStylishedIgnored()
 
 	Profile profile(m_settings, QList<Favorite>());
 	QString expected = "<a href=\"tag_text\" style=\"color:#999999; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">tag_text</a>";
-	QCOMPARE(tag.stylished(profile, QStringList() << "tag_text"), expected);
+	QCOMPARE(tag.stylished(&profile, QStringList() << "tag_text"), expected);
 }
 void TagTest::testStylishedBlacklisted()
 {
@@ -145,7 +145,7 @@ void TagTest::testStylishedBlacklisted()
 
 	Profile profile(m_settings, QList<Favorite>());
 	QString expected = "<a href=\"tag_text\" style=\"color:#000000; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">tag_text</a>";
-	QCOMPARE(tag.stylished(profile, QStringList(), QStringList() << "tag_text"), expected);
+	QCOMPARE(tag.stylished(&profile, QStringList(), QStringList() << "tag_text"), expected);
 }
 void TagTest::testStylishedFavorite()
 {
@@ -155,7 +155,7 @@ void TagTest::testStylishedFavorite()
 	favorites.append(Favorite("tag_text", 50, QDateTime::currentDateTime()));
 
 	Profile profile(m_settings, favorites);
-	QCOMPARE(tag.stylished(profile), QString("<span style=\"color:pink\">tag_text</span>"));
+	QCOMPARE(tag.stylished(&profile), QString("<span style=\"color:pink\">tag_text</span>"));
 }
 void TagTest::testStylishedWithCount()
 {
@@ -166,7 +166,7 @@ void TagTest::testStylishedWithCount()
 
 	Profile profile(m_settings, QList<Favorite>());
 	QString expected = "<a href=\"tag_text\" style=\"color:#aa0000; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">tag_text</a> <span style=\"color:#aaa\">(123)</span>";
-	QCOMPARE(tag.stylished(profile, QStringList(), QStringList(), true), expected);
+	QCOMPARE(tag.stylished(&profile, QStringList(), QStringList(), true), expected);
 }
 
 void TagTest::testCompare()

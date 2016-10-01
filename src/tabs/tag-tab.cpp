@@ -7,8 +7,8 @@
 #include "searchwindow.h"
 
 
-tagTab::tagTab(int id, QMap<QString,Site*> *sites, Profile &profile, mainWindow *parent)
-	: searchTab(id, sites, profile, parent), ui(new Ui::tagTab), m_id(id), m_favorites(profile.getFavorites()), m_ignored(profile.getIgnored()), m_pagemax(-1), m_lastTags(QString()), m_sized(false), m_from_history(false), m_stop(true), m_history_cursor(0), m_history(QList<QMap<QString,QString> >()), m_modifiers(QStringList())
+tagTab::tagTab(int id, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
+	: searchTab(id, sites, profile, parent), ui(new Ui::tagTab), m_id(id), m_favorites(profile->getFavorites()), m_ignored(profile->getIgnored()), m_pagemax(-1), m_lastTags(QString()), m_sized(false), m_from_history(false), m_stop(true), m_history_cursor(0), m_history(QList<QMap<QString,QString> >()), m_modifiers(QStringList())
 {
 	ui->setupUi(this);
 	ui->widgetMeant->hide();
@@ -888,7 +888,7 @@ void tagTab::contextMenu()
 		else
 		{ menu->addAction(QIcon(":/images/icons/add.png"), tr("Ajouter aux favoris"), this, SLOT(favorite())); }
 
-		QStringList &vil = m_profile.getKeptForLater();
+		QStringList &vil = m_profile->getKeptForLater();
 		if (vil.contains(m_link, Qt::CaseInsensitive))
 		{ menu->addAction(QIcon(":/images/icons/remove.png"), tr("Ne pas garder pour plus tard"), this, SLOT(unviewitlater())); }
 		else
@@ -909,11 +909,11 @@ void tagTab::openInNewWindow()
 }
 void tagTab::viewitlater()
 {
-	m_profile.getKeptForLater().append(m_link);
+	m_profile->getKeptForLater().append(m_link);
 }
 void tagTab::unviewitlater()
 {
-	m_profile.getKeptForLater().removeAll(m_link);
+	m_profile->getKeptForLater().removeAll(m_link);
 }
 
 void tagTab::historyBack()

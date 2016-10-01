@@ -13,7 +13,7 @@ class Tag
 		Tag();
 		explicit Tag(QString text, QString type = "unknown", int count = 1, QStringList related = QStringList());
 		~Tag();
-		QString stylished(Profile &profile, QStringList ignored = QStringList(), QStringList blacklisted = QStringList(), bool count = false) const;
+		QString stylished(Profile *profile, QStringList ignored = QStringList(), QStringList blacklisted = QStringList(), bool count = false) const;
 		void setText(QString);
 		void setType(QString);
 		void setCount(int);

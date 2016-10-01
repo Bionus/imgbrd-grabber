@@ -15,7 +15,7 @@
  * @param	imagepath	Path to the favorite's image
  * @param	parent		The parent window
  */
-favoriteWindow::favoriteWindow(Profile &profile, Favorite favorite, QWidget *parent)
+favoriteWindow::favoriteWindow(Profile *profile, Favorite favorite, QWidget *parent)
 	: QDialog(parent), ui(new Ui::favoriteWindow), m_profile(profile), m_favorite(favorite)
 {
 	ui->setupUi(this);
@@ -40,7 +40,7 @@ favoriteWindow::~favoriteWindow()
  */
 void favoriteWindow::on_buttonRemove_clicked()
 {
-	m_profile.removeFavorite(m_favorite);
+	m_profile->removeFavorite(m_favorite);
 	emit favoritesChanged();
 	close();
 }
@@ -72,7 +72,7 @@ void favoriteWindow::save()
 	else if (oldFav.getName() != ui->tagLineEdit->text() && QFile::exists(savePath("thumbs/" + oldFav.getName(true) + ".png")))
 	{ QFile::rename(savePath("thumbs/" + oldFav.getName(true) + ".png"), savePath("thumbs/" + m_favorite.getName(true) + ".png")); }
 
-	m_profile.addFavorite(m_favorite);
+	m_profile->addFavorite(m_favorite);
 
 	emit favoritesChanged();
 }

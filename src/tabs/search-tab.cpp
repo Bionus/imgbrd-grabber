@@ -6,7 +6,7 @@
 #include <QMouseEvent>
 
 
-searchTab::searchTab(int id, QMap<QString, Site*> *sites, Profile &profile, mainWindow *parent)
+searchTab::searchTab(int id, QMap<QString, Site*> *sites, Profile *profile, mainWindow *parent)
 	: QWidget(parent), m_profile(profile), m_id(id), m_lastPageMaxId(0), m_lastPageMinId(0), m_sites(sites), m_parent(parent), m_settings(parent->settings())
 { }
 searchTab::~searchTab()

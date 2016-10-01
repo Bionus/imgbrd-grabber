@@ -29,7 +29,7 @@ class zoomWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		zoomWindow(Image *image, Site *site, QMap<QString,Site*> *sites, Profile &profile, mainWindow *parent);
+		zoomWindow(Image *image, Site *site, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent);
 		void go();
 		~zoomWindow();
 		void load();
@@ -84,7 +84,7 @@ class zoomWindow : public QDialog
 
 	private:
 		mainWindow *m_parent;
-		Profile &m_profile;
+		Profile *m_profile;
 		QList<Favorite> &m_favorites;
 		QStringList &m_viewItLater;
 		QStringList &m_ignore;

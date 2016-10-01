@@ -53,7 +53,7 @@ void ImageTest::init()
 
 	m_source = new Source("release/sites/Danbooru (2.0)");
 	m_site = new Site("danbooru.donmai.us", m_source);
-	m_img = new Image(m_site, m_details, *m_profile);
+	m_img = new Image(m_site, m_details, m_profile);
 }
 
 void ImageTest::cleanup()
@@ -74,20 +74,20 @@ void ImageTest::testConstructor()
 	img->deleteLater();
 
 	// Without parent site
-	img = new Image(nullptr, m_details, *m_profile);
+	img = new Image(nullptr, m_details, m_profile);
 	QCOMPARE(img->details().isEmpty(), true);
 	img->deleteLater();
 
 	// With a given page URL
 	m_details["page_url"] = "http://test.com/view/7331";
-	img = new Image(m_site, m_details, *m_profile);
+	img = new Image(m_site, m_details, m_profile);
 	QCOMPARE(img->pageUrl().toString(), QString("http://test.com/view/7331"));
 	img->deleteLater();
 
 	// CreatedAt from ISO time
 	m_details.remove("created_at");
 	m_details["date"] = "2016-08-26T16:26:30+01:00";
-	img = new Image(m_site, m_details, *m_profile);
+	img = new Image(m_site, m_details, m_profile);
 	QCOMPARE(img->createdAt().toString("yyyy-MM-dd HH:mm:ss"), QString("2016-08-26 16:26:30"));
 	img->deleteLater();
 }
@@ -158,7 +158,7 @@ void ImageTest::testMd5FromData()
 {
 	m_details.remove("md5");
 	m_img->deleteLater();
-	m_img = new Image(m_site, m_details, *m_profile);
+	m_img = new Image(m_site, m_details, m_profile);
 	m_img->setData(QString("test").toLatin1());
 
 	QCOMPARE(m_img->md5(), QString("098f6bcd4621d373cade4e832627b4f6"));
@@ -167,7 +167,7 @@ void ImageTest::testMd5FromFile()
 {
 	m_details.remove("md5");
 	m_img->deleteLater();
-	m_img = new Image(m_site, m_details, *m_profile);
+	m_img = new Image(m_site, m_details, m_profile);
 	m_img->setSavePath("tests/resources/image_1x1.png");
 
 	QCOMPARE(m_img->md5(), QString("956ddde86fb5ce85218b21e2f49e5c50"));
@@ -175,7 +175,7 @@ void ImageTest::testMd5FromFile()
 
 void ImageTest::testStylishedTags()
 {
-	QStringList tags = m_img->stylishedTags(*m_profile, QStringList());
+	QStringList tags = m_img->stylishedTags(m_profile, QStringList());
 
 	QCOMPARE(tags.count(), 9);
 	/*QCOMPARE(tags[0], QString("<a href=\"artist1\" style=\"color:#aa0000; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">artist1</a>"));
@@ -183,7 +183,7 @@ void ImageTest::testStylishedTags()
 	QCOMPARE(tags[7], QString("<a href=\"tag2\" style=\"color:#000000; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">tag2</a>"));*/
 
 	m_settings->setValue("blacklistedtags", "character1 tag1");
-	tags = m_img->stylishedTags(*m_profile, QStringList() << "copyright1" << "tag2");
+	tags = m_img->stylishedTags(m_profile, QStringList() << "copyright1" << "tag2");
 
 	QCOMPARE(tags.count(), 9);
 	/*QCOMPARE(tags[1], QString("<a href=\"character1\" style=\"color:#000000; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">character1</a>"));
@@ -322,7 +322,7 @@ void ImageTest::testValue()
 	// Even with a tag, still use image size if possible
 	m_details["tags_general"] = "lowres";
 	m_img->deleteLater();
-	m_img = new Image(m_site, m_details, *m_profile);
+	m_img = new Image(m_site, m_details, m_profile);
 	QCOMPARE(m_img->value(), 800 * 600);
 
 	// Default value if nothing is given
@@ -330,27 +330,27 @@ void ImageTest::testValue()
 	m_details.remove("height");
 	m_details["tags_general"] = "";
 	m_img->deleteLater();
-	m_img = new Image(m_site, m_details, *m_profile);
+	m_img = new Image(m_site, m_details, m_profile);
 	QCOMPARE(m_img->value(), 1200 * 900);
 
 	m_details["tags_general"] = "incredibly_absurdres";
 	m_img->deleteLater();
-	m_img = new Image(m_site, m_details, *m_profile);
+	m_img = new Image(m_site, m_details, m_profile);
 	QCOMPARE(m_img->value(), 10000 * 10000);
 
 	m_details["tags_general"] = "absurdres";
 	m_img->deleteLater();
-	m_img = new Image(m_site, m_details, *m_profile);
+	m_img = new Image(m_site, m_details, m_profile);
 	QCOMPARE(m_img->value(), 3200 * 2400);
 
 	m_details["tags_general"] = "highres";
 	m_img->deleteLater();
-	m_img = new Image(m_site, m_details, *m_profile);
+	m_img = new Image(m_site, m_details, m_profile);
 	QCOMPARE(m_img->value(), 1600 * 1200);
 
 	m_details["tags_general"] = "lowres";
 	m_img->deleteLater();
-	m_img = new Image(m_site, m_details, *m_profile);
+	m_img = new Image(m_site, m_details, m_profile);
 	QCOMPARE(m_img->value(), 500 * 500);
 }
 
@@ -425,7 +425,7 @@ void ImageTest::testLoadDetailsImageUrl()
 {
 	m_img->deleteLater();
 	m_details.remove("file_url");
-	m_img = new Image(m_site, m_details, *m_profile);
+	m_img = new Image(m_site, m_details, m_profile);
 
 	// Load details
 	QSignalSpy spy(m_img, SIGNAL(finishedLoadingTags(Image*)));
@@ -456,7 +456,7 @@ void ImageTest::testPath()
 	m_details["filename"] = "%id%.%ext%";
 	m_details["folder"] = QDir::homePath();
 	m_img->deleteLater();
-	m_img = new Image(m_site, m_details, *m_profile);
+	m_img = new Image(m_site, m_details, m_profile);
 	path = m_img->path("%md5%.%ext%", "", 0, true, false);
 	QCOMPARE(path, QStringList() << "7331.jpg");
 }

@@ -20,7 +20,7 @@ class startWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		startWindow(QMap<QString, Site*> *sites, Profile &profile, mainWindow *parent);
+		startWindow(QMap<QString, Site*> *sites, Profile *profile, mainWindow *parent);
 		~startWindow();
 
 	public slots:
@@ -37,7 +37,7 @@ class startWindow : public QDialog
 	private:
 		Ui::startWindow *ui;
 		mainWindow *m_parent;
-		Profile &m_profile;
+		Profile *m_profile;
 		QMap<QString, Site*> *m_sites;
 
 };
