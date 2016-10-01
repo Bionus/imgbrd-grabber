@@ -12,7 +12,7 @@
 
 
 PageApi::PageApi(Page *parentPage, Site *site, Api *api, QStringList tags, int page, int limit, QStringList postFiltering, bool smart, QObject *parent, int pool, int lastPage, int lastPageMinId, int lastPageMaxId)
-	: QObject(parent), m_parentPage(parentPage), m_site(site), m_api(api), m_search(tags), m_postFiltering(postFiltering), m_errors(QStringList()), m_imagesPerPage(limit), m_currentSource(0), m_lastPage(lastPage), m_lastPageMinId(lastPageMinId), m_lastPageMaxId(lastPageMaxId), m_smart(smart), m_reply(nullptr), m_replyTags(nullptr)
+	: QObject(parent), m_parentPage(parentPage), m_site(site), m_api(api), m_profile(Profile(savePath())), m_search(tags), m_postFiltering(postFiltering), m_errors(QStringList()), m_imagesPerPage(limit), m_currentSource(0), m_lastPage(lastPage), m_lastPageMinId(lastPageMinId), m_lastPageMaxId(lastPageMaxId), m_smart(smart), m_reply(nullptr), m_replyTags(nullptr)
 {
 	m_imagesCount = -1;
 	m_pagesCount = -1;
@@ -43,8 +43,8 @@ PageApi::PageApi(Page *parentPage, Site *site, Api *api, QStringList tags, int p
 	QRegExp poolRx("pool:(\\d+)");
 	QString url;
 	int pl = -1;
-	int pos = -1;
-	/*if ((pos = poolRx.indexIn(t)) != -1)
+	/*int pos = -1;
+	if ((pos = poolRx.indexIn(t)) != -1)
 	{
 		for (int i = 1; i <= m_site->getApis().count() + 1; i++)
 		{
@@ -251,7 +251,7 @@ void PageApi::parseImage(QMap<QString,QString> d, int position)
 	{ d["sample_url"] = d["preview_url"]; }
 
 	// Generate image
-	Image *img = new Image(m_site, d, m_parentPage);
+	Image *img = new Image(m_site, d, m_profile, m_parentPage);
 	QStringList errors = img->filter(m_postFiltering);
 
 	// If the file path is wrong (ends with "/.jpg")
@@ -439,7 +439,7 @@ void PageApi::parse()
 			{
 				if (!tags.contains(rxtags.cap(2)))
 				{
-					m_tags.append(Tag(m_site->settings(), rxtags.cap(2), rxtags.cap(1), rxtags.cap(3).toInt()));
+					m_tags.append(Tag(rxtags.cap(2), rxtags.cap(1), rxtags.cap(3).toInt()));
 					tags.append(rxtags.cap(2));
 				}
 				p += rxtags.matchedLength();
@@ -663,7 +663,7 @@ void PageApi::parseTags()
 			if (!got.contains(tag))
 			{
 				got.insert(tag);
-				m_tags.append(Tag(m_site->settings(), tag, type, count));
+				m_tags.append(Tag(tag, type, count));
 			}
 		}
 	}

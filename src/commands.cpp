@@ -9,17 +9,10 @@
 
 
 
-Commands *Commands::_instance = Q_NULLPTR;
-Commands* Commands::get()
+Commands::Commands(Profile& profile)
+	: m_profile(profile)
 {
-	if (Commands::_instance == Q_NULLPTR)
-	{ Commands::_instance = new Commands; }
-	return Commands::_instance;
-}
-
-void Commands::init(QSettings *settings)
-{
-	m_settings = settings;
+	QSettings *settings = profile.getSettings();
 
 	settings->beginGroup("Exec");
 		m_commandImage = settings->value("image").toString();
@@ -82,7 +75,7 @@ bool Commands::image(const Image &img, QString fp)
 	if (!m_commandImage.isEmpty())
 	{
 		Filename fn(m_commandImage);
-		QStringList execs = fn.path(img, m_settings, "", 0, false, false, false, false);
+		QStringList execs = fn.path(img, m_profile, "", 0, false, false, false, false);
 
 		for (QString exec : execs)
 		{
@@ -102,7 +95,7 @@ bool Commands::image(const Image &img, QString fp)
 		start();
 
 		Filename fn(m_mysqlSettings.image);
-		QStringList execs = fn.path(img, m_settings, "", 0, false, false, false, false);
+		QStringList execs = fn.path(img, m_profile, "", 0, false, false, false, false);
 
 		for (QString exec : execs)
 		{

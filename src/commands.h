@@ -5,6 +5,7 @@
 #include <QSettings>
 #include "models/image.h"
 #include "models/tag.h"
+#include "models/profile.h"
 
 
 
@@ -24,8 +25,7 @@ struct MysqlSettings
 class Commands
 {
 	public:
-		static Commands* get();
-		void init(QSettings*);
+		Commands(Profile &profile);
 		bool start();
 		bool before();
 		bool image(const Image &, QString);
@@ -34,7 +34,7 @@ class Commands
 
 	private:
 		static Commands *_instance;
-		QSettings *m_settings;
+		Profile &m_profile;
 		QString m_commandImage;
 		QString m_commandTag;
 		bool m_mysql;

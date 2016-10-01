@@ -23,12 +23,12 @@ QString removeCacheUrl(QString url)
 }
 
 Image::Image()
-	: QObject()
+	: QObject(), m_profile(Profile())
 { }
 
 // TODO: clean up this mess
 Image::Image(const Image &other)
-	: QObject(other.parent())
+	: QObject(other.parent()), m_profile(other.m_profile)
 {
 	m_parent = other.m_parent;
 
@@ -83,10 +83,10 @@ Image::Image(const Image &other)
 	m_tryingSample = other.m_tryingSample;
 }
 
-Image::Image(Site *site, QMap<QString, QString> details, Page* parent)
-	: m_parentSite(site)
+Image::Image(Site *site, QMap<QString, QString> details, Profile& profile, Page* parent)
+	: m_profile(profile), m_parentSite(site)
 {
-	m_settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
+	m_settings = m_profile.getSettings();
 
 	// Parents
 	m_site = parent != nullptr ? parent->website() : (details.contains("website") ? details["website"] : "");
@@ -148,7 +148,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Page* parent)
 				continue;
 
 			tg.replace("&amp;", "&");
-			m_tags.append(Tag(m_settings, tg, "general"));
+			m_tags.append(Tag(tg, "general"));
 		}
 		t = details["tags_artist"].split(" ");
 		for (int i = 0; i < t.count(); ++i)
@@ -158,7 +158,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Page* parent)
 				continue;
 
 			tg.replace("&amp;", "&");
-			m_tags.append(Tag(m_settings, tg, "artist"));
+			m_tags.append(Tag(tg, "artist"));
 		}
 		t = details["tags_character"].split(" ");
 		for (int i = 0; i < t.count(); ++i)
@@ -168,7 +168,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Page* parent)
 				continue;
 
 			tg.replace("&amp;", "&");
-			m_tags.append(Tag(m_settings, tg, "character"));
+			m_tags.append(Tag(tg, "character"));
 		}
 		t = details["tags_copyright"].split(" ");
 		for (int i = 0; i < t.count(); ++i)
@@ -178,7 +178,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Page* parent)
 				continue;
 
 			tg.replace("&amp;", "&");
-			m_tags.append(Tag(m_settings, tg, "copyright"));
+			m_tags.append(Tag(tg, "copyright"));
 		}
 		t = details["tags_model"].split(" ");
 		for (int i = 0; i < t.count(); ++i)
@@ -188,7 +188,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Page* parent)
 				continue;
 
 			tg.replace("&amp;", "&");
-			m_tags.append(Tag(m_settings, tg, "model"));
+			m_tags.append(Tag(tg, "model"));
 		}
 	}
 	else if (details.contains("tags"))
@@ -225,10 +225,10 @@ Image::Image(Site *site, QMap<QString, QString> details, Page* parent)
 				else if (tp == "rating")
 				{ setRating(tg.mid(colon + 1)); }
 				else
-				{ m_tags.append(Tag(m_settings, tg)); }
+				{ m_tags.append(Tag(tg)); }
 			}
 			else
-			{ m_tags.append(Tag(m_settings, tg)); }
+			{ m_tags.append(Tag(tg)); }
 		}
 	}
 
@@ -493,7 +493,7 @@ void Image::parseDetails()
 			}
 			if (type.isEmpty())
 			{ type = "unknown"; }
-			tgs.append(Tag(m_settings, tag, type, count));
+			tgs.append(Tag(tag, type, count));
 		}
 		if (!tgs.isEmpty())
 		{
@@ -716,7 +716,7 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 	}
 
 	Filename filename(fn);
-	return filename.path(*this, m_settings, pth, counter, complex, maxlength, shouldFixFilename, getFull);
+	return filename.path(*this, m_profile, pth, counter, complex, maxlength, shouldFixFilename, getFull);
 }
 
 void Image::loadImage()
@@ -852,14 +852,13 @@ QStringList Image::blacklisted(QStringList blacklistedtags, bool invert) const
 	return detected;
 }
 
-QStringList Image::stylishedTags(QStringList ignored) const
+QStringList Image::stylishedTags(Profile &profile, QStringList ignored) const
 {
 	QStringList blacklisted = m_settings->value("blacklistedtags").toString().split(' ');
-	QList<Favorite> favorites = loadFavorites();
 
 	QStringList t;
 	for (Tag tag : m_tags)
-		t.append(tag.stylished(favorites, ignored, blacklisted));
+		t.append(tag.stylished(profile, ignored, blacklisted));
 
 	t.sort();
 	return t;
@@ -960,11 +959,12 @@ Image::SaveResult Image::save(QString path, bool force, bool basic)
 		types["character"] = 4;
 		types["model"] = 5;
 		types["photo_set"] = 6;
-		Commands::get()->before();
+		Commands &commands = m_profile.getCommands();
+		commands.before();
 		for (int i = 0; i < tags().count(); i++)
-		{ Commands::get()->tag(tags().at(i)); }
-		Commands::get()->image(*this, path);
-		Commands::get()->after();
+		{ commands.tag(tags().at(i)); }
+		commands.image(*this, path);
+		commands.after();
 	}
 	else
 	{ res = SaveResult::AlreadyExists; }

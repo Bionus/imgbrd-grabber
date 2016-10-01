@@ -19,15 +19,12 @@
 
 
 zoomWindow::zoomWindow(Image *image, Site *site, QMap<QString,Site*> *sites, Profile &profile, mainWindow *parent)
-	: QDialog(0, Qt::Window), m_parent(parent), m_profile(profile), m_settings(parent->settings()), ui(new Ui::zoomWindow), m_site(site), timeout(300), m_loaded(false), m_loadedImage(false), m_loadedDetails(false), oldsize(0), image(NULL), movie(NULL), m_program(qApp->arguments().at(0)), m_reply(NULL), m_finished(false), m_thread(false), m_data(QByteArray()), m_size(0), m_sites(sites), m_source(), m_th(NULL), m_fullScreen(NULL)
+	: QDialog(0, Qt::Window), m_parent(parent), m_profile(profile), m_favorites(profile.getFavorites()), m_viewItLater(profile.getKeptForLater()), m_ignore(profile.getIgnored()), m_settings(parent->settings()), ui(new Ui::zoomWindow), m_site(site), timeout(300), m_loaded(false), m_loadedImage(false), m_loadedDetails(false), oldsize(0), image(NULL), movie(NULL), m_program(qApp->arguments().at(0)), m_reply(NULL), m_finished(false), m_thread(false), m_data(QByteArray()), m_size(0), m_sites(sites), m_source(), m_th(NULL), m_fullScreen(NULL)
 {
 	ui->setupUi(this);
 	setAttribute(Qt::WA_DeleteOnClose);
 
-	m_favorites = profile.getFavorites();
-	m_viewItLater = profile.getKeptForLater();
-	m_ignore = profile.getIgnored();
-	m_image = new Image(site, image->details(), image->page());
+	m_image = new Image(site, image->details(), m_profile, image->page());
 	connect(m_image, &Image::urlChanged, this, &zoomWindow::urlChanged);
 
 	m_mustSave = 0;
@@ -131,12 +128,12 @@ void zoomWindow::go()
 	if (pos == "top")
 	{
 		ui->widgetLeft->hide();
-		m_labelTagsTop->setText(m_image->stylishedTags(m_ignore).join(" "));
+		m_labelTagsTop->setText(m_image->stylishedTags(m_profile, m_ignore).join(" "));
 	}
 	else
 	{
 		m_labelTagsTop->hide();
-		m_labelTagsLeft->setText(m_image->stylishedTags(m_ignore).join("<br/>"));
+		m_labelTagsLeft->setText(m_image->stylishedTags(m_profile, m_ignore).join("<br/>"));
 	}
 
 	m_detailsWindow = new detailsWindow(m_image, this);
@@ -469,7 +466,7 @@ void zoomWindow::replyFinishedDetails(Image* img)
 }
 void zoomWindow::colore()
 {
-	QStringList t = m_image->stylishedTags(m_ignore);
+	QStringList t = m_image->stylishedTags(m_profile, m_ignore);
 	tags = t.join(" ");
 	if (ui->widgetLeft->isHidden())
 	{ m_labelTagsTop->setText(tags); }
@@ -710,7 +707,7 @@ QStringList zoomWindow::saveImageNow(bool fav)
 		{ reply = QMessageBox::question(this, tr("Erreur"), tr("Vous n'avez pas précisé de format de sauvegarde ! Voulez-vous ouvrir les options ?"), QMessageBox::Yes | QMessageBox::No); }
 		if (reply == QMessageBox::Yes)
 		{
-			optionsWindow *options = new optionsWindow(m_parent);
+			optionsWindow *options = new optionsWindow(m_profile, m_parent);
 			//options->onglets->setCurrentIndex(3);
 			options->setWindowModality(Qt::ApplicationModal);
 			options->show();

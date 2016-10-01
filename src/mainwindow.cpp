@@ -214,8 +214,6 @@ void mainWindow::init()
 	for (int i = 0; i < m; i++)
 	{ ui->tableBatchGroups->horizontalHeader()->resizeSection(i, sizes.at(i).toInt()); }
 
-	Commands::get()->init(m_settings);
-
 	updateFavorites(true);
 	updateKeepForLater();
 
@@ -266,7 +264,6 @@ void mainWindow::loadSites()
 
 mainWindow::~mainWindow()
 {
-	m_settings->deleteLater();
 	qDeleteAll(m_sites);
 	delete ui;
 }
@@ -283,7 +280,7 @@ void mainWindow::focusSearch()
 void mainWindow::onFirstLoad()
 {
 	// Save all default settings
-	optionsWindow *ow = new optionsWindow(this);
+	optionsWindow *ow = new optionsWindow(m_profile, this);
 	ow->save();
 	ow->deleteLater();
 
@@ -355,7 +352,7 @@ void mainWindow::onFirstLoad()
 	}
 
 	// Open startup window
-	startWindow *swin = new startWindow(&m_sites, this);
+	startWindow *swin = new startWindow(&m_sites, m_profile, this);
 	connect(swin, SIGNAL(languageChanged(QString)), this, SLOT(loadLanguage(QString)));
 	connect(swin, &startWindow::settingsChanged, this, &mainWindow::on_buttonInitSettings_clicked);
 	connect(swin, &startWindow::sourceChanged, this, &mainWindow::setSource);
@@ -520,7 +517,7 @@ void mainWindow::setTags(QList<Tag> tags, searchTab *from)
 	{
 		if (!text.isEmpty())
 			text += "<br/>";
-		text += tag.stylished(m_favorites, QStringList(), QStringList(), true);
+		text += tag.stylished(m_profile, QStringList(), QStringList(), true);
 	}
 
 	QAffiche *taglabel = new QAffiche(QVariant(), 0, QColor(), this);
@@ -827,7 +824,7 @@ void mainWindow::addGroup()
 {
 	QString selected = getSelectedSiteOrDefault()->name();
 
-	AddGroupWindow *wAddGroup = new AddGroupWindow(selected, m_sites.keys(), m_favorites, this);
+	AddGroupWindow *wAddGroup = new AddGroupWindow(selected, m_sites.keys(), m_profile, this);
 	connect(wAddGroup, SIGNAL(sendData(QStringList)), this, SLOT(batchAddGroup(QStringList)));
 	wAddGroup->show();
 }
@@ -835,7 +832,7 @@ void mainWindow::addUnique()
 {
 	QString selected = getSelectedSiteOrDefault()->name();
 
-	AddUniqueWindow *wAddUnique = new AddUniqueWindow(selected, m_sites, this);
+	AddUniqueWindow *wAddUnique = new AddUniqueWindow(selected, m_sites, m_profile, this);
 	connect(wAddUnique, SIGNAL(sendData(QMap<QString,QString>)), this, SLOT(batchAddUnique(QMap<QString,QString>)));
 	wAddUnique->show();
 }
@@ -1016,7 +1013,7 @@ void mainWindow::options()
 {
 	log(tr("Ouverture de la fenêtre des options..."));
 
-	optionsWindow *options = new optionsWindow(this);
+	optionsWindow *options = new optionsWindow(m_profile, this);
 	connect(options, SIGNAL(languageChanged(QString)), this, SLOT(loadLanguage(QString)));
 	connect(options, &optionsWindow::settingsChanged, this, &mainWindow::on_buttonInitSettings_clicked);
 	connect(options, &QDialog::accepted, this, &mainWindow::optionsClosed);
@@ -1157,7 +1154,7 @@ void mainWindow::getAll(bool all)
 				tdl.append(row);
 				int i = row;
 				Site *site = m_sites[m_batchs.at(i).value("site")];
-				m_getAllRemaining.append(new Image(site, m_batchs.at(i), new Page(site, m_sites.values(), m_batchs.at(i).value("tags").split(" "), 1, 1, QStringList(), false, this)));
+				m_getAllRemaining.append(new Image(site, m_batchs.at(i), m_profile, new Page(site, m_sites.values(), m_batchs.at(i).value("tags").split(" "), 1, 1, QStringList(), false, this)));
 			}
 		}
 	}
@@ -1178,7 +1175,7 @@ void mainWindow::getAll(bool all)
 			else
 			{
 				Site *site = m_sites[m_batchs.at(i).value("site")];
-				m_getAllRemaining.append(new Image(site, m_batchs.at(i), new Page(site, m_sites.values(), m_batchs.at(i).value("tags").split(" "), 1, 1, QStringList(), false, this)));
+				m_getAllRemaining.append(new Image(site, m_batchs.at(i), m_profile, new Page(site, m_sites.values(), m_batchs.at(i).value("tags").split(" "), 1, 1, QStringList(), false, this)));
 			}
 		}
 	}
@@ -1188,7 +1185,7 @@ void mainWindow::getAll(bool all)
 	for (int i = 0; i < ui->tableBatchGroups->rowCount(); i++)
 	{ ui->tableBatchGroups->item(i, 0)->setIcon(getIcon(":/images/colors/black.png")); }
 	m_allow = true;
-	Commands::get()->before();
+	m_profile.getCommands().before();
 	selected = ui->tableBatchGroups->selectedItems();
 	count = selected.size();
 	m_batchDownloading.clear();
@@ -1851,9 +1848,10 @@ void mainWindow::saveImage(Image *img, QNetworkReply *reply, QString path, QStri
 				}
 
 				// Execute commands
+				Commands &commands = m_profile.getCommands();
 				for (int i = 0; i < img->tags().count(); i++)
-				{ Commands::get()->tag(img->tags().at(i)); }
-				Commands::get()->image(*img, fp);
+				{ commands.tag(img->tags().at(i)); }
+				commands.image(*img, fp);
 
 				if (m_settings->value("Save/keepDate", true).toBool())
 					setFileCreationDate(fp, img->createdAt());
@@ -1993,7 +1991,7 @@ void mainWindow::getAllFinished()
 	// End of batch download
 	if (reponse != QMessageBox::Yes)
 	{
-		Commands::get()->after();
+		m_profile.getCommands().after();
 		ui->widgetDownloadButtons->setEnabled(true);
 		log(tr("Téléchargement groupé terminé"));
 	}
@@ -2270,7 +2268,6 @@ void mainWindow::on_buttonInitSettings_clicked()
 	ui->comboFilename->setCurrentText(m_settings->value("Save/filename_real").toString());
 
 	// Save settings
-	Commands::get()->init(m_settings);
 	saveSettings();
 }
 void mainWindow::updateCompleters()

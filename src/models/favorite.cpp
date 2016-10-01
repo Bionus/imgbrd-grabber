@@ -3,7 +3,9 @@
 #include <QDir>
 #include <QDebug>
 
-
+Favorite::Favorite(QString name)
+	: m_name(name), m_note(0), m_lastViewed(QDateTime::currentDateTime()), m_imagePath(QString())
+{}
 Favorite::Favorite(QString name, int note, QDateTime lastViewed, QString imagePath)
 	: m_name(name), m_note(note), m_lastViewed(lastViewed), m_imagePath(imagePath)
 {}

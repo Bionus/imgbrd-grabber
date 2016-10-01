@@ -1,13 +1,15 @@
 #include <QTextDocument>
+#include <QSettings>
 #include "tag.h"
 #include "functions.h"
 
+
 Tag::Tag()
-	: m_type("unknown"), m_count(0), m_settings(Q_NULLPTR)
+	: m_type("unknown"), m_count(0)
 { }
 
-Tag::Tag(QSettings *settings, QString text, QString type, int count, QStringList related)
-	: m_type(type), m_count(count), m_related(related), m_settings(settings)
+Tag::Tag(QString text, QString type, int count, QStringList related)
+	: m_type(type), m_count(count), m_related(related)
 {
 	// Decode HTML entities in the tag text
 	QTextDocument htmlEncoded;
@@ -47,10 +49,10 @@ Tag::~Tag()
  * @param favs The list of the user's favorite tags.
  * @return The HTML colored tag.
  */
-QString Tag::stylished(QList<Favorite> favs, QStringList ignored, QStringList blacklisted, bool count) const
+QString Tag::stylished(Profile &profile, QStringList ignored, QStringList blacklisted, bool count) const
 {
 	// Favorites
-	for (Favorite fav : favs)
+	for (Favorite fav : profile.getFavorites())
 		if (fav.getName() == m_text)
 			return "<span style=\"color:pink\">" + m_text + "</span>";
 
@@ -65,8 +67,8 @@ QString Tag::stylished(QList<Favorite> favs, QStringList ignored, QStringList bl
 		key = "ignoreds";
 
 	QFont font;
-	font.fromString(m_settings->value("Coloring/Fonts/" + key).toString());
-	QString color = m_settings->value("Coloring/Colors/" + key, defaults.at(tlist.indexOf(key))).toString();
+	font.fromString(profile.getSettings()->value("Coloring/Fonts/" + key).toString());
+	QString color = profile.getSettings()->value("Coloring/Colors/" + key, defaults.at(tlist.indexOf(key))).toString();
 	QString style = "color:"+color+"; "+qfonttocss(font);
 
 	QString ret;

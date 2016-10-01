@@ -377,8 +377,7 @@ void Site::finishedTags()
 		{
 			QMap<QString, QVariant> sc = sourc.at(id).toMap();
 			int cat = sc.value("category").toInt();
-			tags.append(Tag(m_settings,
-							sc.value("name").toString(),
+			tags.append(Tag(sc.value("name").toString(),
 							cat == 0 ? "general" : (cat == 1 ? "artist" : (cat == 3 ? "copyright" : "character")),
 							sc.value("post_count").toInt(),
 							sc.value("related_tags").toString().split(' ')));
@@ -395,7 +394,8 @@ QString Site::url()				{ return m_url;				}
 QString Site::type()			{ return m_type;			}
 QString Site::username()		{ return m_username;		}
 QString Site::password()		{ return m_password;		}
-QList<Api*> Site::getApis() const		{ return m_apis;			}
+Source *Site::getSource() const	{ return m_source;			}
+QList<Api*> Site::getApis() const	{ return m_apis;		}
 
 void Site::setUsername(QString username)	{ m_username = username;	}
 void Site::setPassword(QString password)	{ m_password = password;	}

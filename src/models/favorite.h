@@ -9,6 +9,7 @@
 class Favorite
 {
 	public:
+		Favorite(QString name);
 		Favorite(QString name, int note, QDateTime lastViewed, QString imagePath = "");
 
 		// Getters and setters

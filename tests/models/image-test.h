@@ -52,6 +52,7 @@ class ImageTest : public TestSuite
 		void testSetUrl();
 
 	private:
+		Profile *m_profile;
 		QSettings *m_settings;
 		Source *m_source;
 		Site *m_site;

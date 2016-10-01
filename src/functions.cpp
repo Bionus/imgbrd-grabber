@@ -74,14 +74,14 @@ void sslErrorHandler(QNetworkReply* qnr, QList<QSslError> errors)
  * Load custom tokens from settings.
  * @return	The map with token names as keys and token tags as values.
  */
-QMap<QString,QStringList> getCustoms()
+QMap<QString, QStringList> getCustoms(QSettings *settings)
 {
 	QMap<QString,QStringList> tokens;
-	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
-	settings.beginGroup("Save/Customs");
-	QStringList keys = settings.childKeys();
+	settings->beginGroup("Save/Customs");
+	QStringList keys = settings->childKeys();
 	for (int i = 0; i < keys.size(); i++)
-	{ tokens.insert(keys.at(i), settings.value(keys.at(i)).toString().split(' ')); }
+	{ tokens.insert(keys.at(i), settings->value(keys.at(i)).toString().split(' ')); }
+	settings->endGroup();
 	return tokens;
 }
 
@@ -89,22 +89,24 @@ QMap<QString,QStringList> getCustoms()
  * Load multiple filenames from settings.
  * @return	The map with token names as keys and token tags as values.
  */
-QMap<QString,QPair<QString,QString>> getFilenames()
+QMap<QString,QPair<QString,QString>> getFilenames(QSettings *settings)
 {
 	QMap<QString,QPair<QString,QString>> tokens;
-	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
-	settings.beginGroup("Filenames");
-	int count = settings.childKeys().count() / 3;
+
+	settings->beginGroup("Filenames");
+	int count = settings->childKeys().count() / 3;
 	for (int i = 0; i < count; i++)
 	{
-		if (settings.contains(QString::number(i) + "_cond"))
+		if (settings->contains(QString::number(i) + "_cond"))
 		{
 			QPair<QString,QString> pair;
-			pair.first = settings.value(QString::number(i) + "_fn").toString();
-			pair.second = settings.value(QString::number(i) + "_dir").toString();
-			tokens.insert(settings.value(QString::number(i) + "_cond").toString(), pair);
+			pair.first = settings->value(QString::number(i) + "_fn").toString();
+			pair.second = settings->value(QString::number(i) + "_dir").toString();
+			tokens.insert(settings->value(QString::number(i) + "_cond").toString(), pair);
 		}
 	}
+	settings->endGroup();
+
 	return tokens;
 }
 

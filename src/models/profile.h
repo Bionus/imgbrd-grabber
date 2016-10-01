@@ -7,9 +7,14 @@
 #include "favorite.h"
 
 
+
+class Commands;
+
 class Profile
 {
 	public:
+		Profile();
+		Profile(QSettings *settings, QList<Favorite> favorites, QStringList keptForLater = QStringList());
 		Profile(QString path);
 		~Profile();
 		void sync();
@@ -23,6 +28,7 @@ class Profile
 		QList<Favorite> &getFavorites();
 		QStringList &getKeptForLater();
 		QStringList &getIgnored();
+		Commands &getCommands();
 
 	private:
 		QString 		m_path;
@@ -30,6 +36,7 @@ class Profile
 		QList<Favorite>	m_favorites;
 		QStringList		m_keptForLater;
 		QStringList		m_ignored;
+		Commands		*m_commands;
 };
 
 #endif // PROFILE_H

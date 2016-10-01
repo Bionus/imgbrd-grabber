@@ -90,8 +90,9 @@ void Source::checkForUpdates(QString baseUrl)
 	QUrl url(baseUrl + m_name + "/model.xml");
 	QNetworkRequest request(url);
 
+	qDebug() << "checkForUpdates" << baseUrl;
 	m_updateReply = m_manager->get(request);
-	connect(m_updateReply, SIGNAL(finished()), this, SLOT(checkForUpdatesDone()));
+	connect(m_updateReply, &QNetworkReply::finished, this, &Source::checkForUpdatesDone);
 }
 
 /**
@@ -99,6 +100,7 @@ void Source::checkForUpdates(QString baseUrl)
  */
 void Source::checkForUpdatesDone()
 {
+	qDebug() << "checkForUpdatesDone";
 	QString source = m_updateReply->readAll();
 	if (source.startsWith("<?xml"))
 	{
@@ -114,6 +116,7 @@ void Source::checkForUpdatesDone()
 	}
 
 	m_updateReply->deleteLater();
+	m_updateReply = nullptr;
 	emit checkForUpdatesFinished(this);
 }
 

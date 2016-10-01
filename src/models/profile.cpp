@@ -1,7 +1,15 @@
-#include "profile.h"
 #include <QFile>
+#include "profile.h"
+#include "commands.h"
 
 
+Profile::Profile()
+{
+	m_path = "toto";
+}
+Profile::Profile(QSettings *settings, QList<Favorite> favorites, QStringList keptForLater)
+	: m_settings(settings), m_favorites(favorites), m_keptForLater(keptForLater)
+{}
 Profile::Profile(QString path)
 	: m_path(path)
 {
@@ -39,18 +47,23 @@ Profile::Profile(QString path)
 		m_keptForLater = vil.replace("\r\n", "\n").replace("\r", "\n").split("\n");
 		fileKfl.close();
 	}
+
+	m_commands = new Commands(*this);
 }
 
 Profile::~Profile()
 {
 	sync();
 
-	m_settings->deleteLater();
+	//m_settings->deleteLater();
+	//delete m_commands;
 }
 
 
 void Profile::sync()
 {
+	m_settings->sync();
+
 	// Favorites
 	QFile fileFavorites(m_path + "/favorites.txt");
 	if (fileFavorites.open(QFile::WriteOnly | QFile::Text | QFile::Truncate))
@@ -90,3 +103,4 @@ QSettings *Profile::getSettings() const		{ return m_settings;		}
 QList<Favorite> &Profile::getFavorites()	{ return m_favorites;		}
 QStringList &Profile::getKeptForLater()		{ return m_keptForLater;	}
 QStringList &Profile::getIgnored()			{ return m_ignored;			}
+Commands &Profile::getCommands()			{ return *m_commands;		}

@@ -68,6 +68,7 @@ class FilenameTest : public TestSuite
 		void assertExpand(QString format, QString expected);
 
 	private:
+		Profile *m_profile;
 		QSettings *m_settings;
 		Source *m_source;
 		Site *m_site;

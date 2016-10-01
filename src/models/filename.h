@@ -2,6 +2,7 @@
 #define FILENAME_H
 
 #include "image.h"
+#include "profile.h"
 
 
 class Filename
@@ -20,7 +21,7 @@ class Filename
 		 * @param complex Whether the filename is complex or not (contains conditionals).
 		 * @return The filename of the image, with any token replaced.
 		 */
-		QStringList	path(const Image& img, QSettings *settings, QString pth = "", int counter = 0, bool complex = true, bool maxlength = true, bool shouldFixFilename = true, bool getFull = false) const;
+		QStringList	path(const Image& img, Profile &settings, QString pth = "", int counter = 0, bool complex = true, bool maxlength = true, bool shouldFixFilename = true, bool getFull = false) const;
 
 		/**
 		 * Check filename format's validity.
@@ -33,9 +34,9 @@ class Filename
 		bool needExactTags(Site *site) const;
 		bool needExactTags(bool forceImageUrl = false) const;
 
-		QList<QMap<QString, QPair<QString, QString>>> getReplaces(QString filename, const Image& img, QSettings *settings, QMap<QString,QStringList> custom) const;
+		QList<QMap<QString, QPair<QString, QString>>> getReplaces(QString filename, const Image& img, Profile &profile, QMap<QString,QStringList> custom) const;
 		QString expandConditionals(QString text, QStringList tokens, QStringList tags, QMap<QString, QPair<QString, QString>> replaces, int depth = 0) const;
-		QMap<QString, QStringList> makeDetails(const Image& img, QSettings *settings) const;
+		QMap<QString, QStringList> makeDetails(const Image& img, Profile &profile, QSettings *settings) const;
 
 	protected:
 		QString optionedValue(QString res, QString key, QString ops, const Image &img, QSettings *settings, QStringList namespaces) const;

@@ -19,7 +19,7 @@ favoritesTab::favoritesTab(int id, QMap<QString,Site*> *sites, Profile &profile,
 	QStringList favs;
 	for (Favorite fav : m_favorites)
 		favs.append(fav.getName());
-	m_postFiltering = new TextEdit(favs, this);
+	m_postFiltering = new TextEdit(m_profile, this);
 		m_postFiltering->setContextMenuPolicy(Qt::CustomContextMenu);
 		if (m_settings->value("autocompletion", true).toBool())
 		{
@@ -555,7 +555,7 @@ void favoritesTab::finishedLoadingPreview(Image *img)
 		l->setChecked(m_selectedImages.contains(img->url()));
 		QString t;
 		for (int i = 0; i < img->tags().count(); i++)
-		{ t += " "+img->tags()[i].stylished(m_favorites); }
+		{ t += " "+img->tags()[i].stylished(m_profile); }
 		l->setToolTip(QString("%1%2%3%4%5%6%7%8")
 			.arg(img->tags().isEmpty() ? " " : tr("<b>Tags :</b> %1<br/><br/>").arg(t.trimmed()))
 			.arg(img->id() == 0 ? " " : tr("<b>ID :</b> %1<br/>").arg(img->id()))
@@ -597,7 +597,7 @@ void favoritesTab::webZoom(int id)
 		}
 	}
 
-	zoomWindow *zoom = new zoomWindow(image, image->page()->site(), m_sites, m_parent);
+	zoomWindow *zoom = new zoomWindow(image, image->page()->site(), m_sites, m_profile, m_parent);
 	zoom->show();
 	connect(zoom, SIGNAL(linkClicked(QString)), this, SLOT(setTags(QString)));
 }

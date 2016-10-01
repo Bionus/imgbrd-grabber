@@ -10,9 +10,10 @@
 #include <QNetworkAccessManager>
 #include <QUrl>
 #include <QSslError>
+#include <functional>
 #include "tag.h"
 #include "api.h"
-#include <functional>
+#include "profile.h"
 
 
 
@@ -50,6 +51,7 @@ class Site : public QObject
 		QList<QNetworkCookie> cookies();
 		QVariant setting(QString key, QVariant def = QVariant());
 		QSettings *settings();
+		Profile &profile();
 		QNetworkRequest makeRequest(QUrl url, Page *page = nullptr, QString referer = "", Image *img = nullptr);
 		QNetworkReply *get(QUrl url, Page *page = nullptr, QString referer = "", Image *img = nullptr);
 		void getAsync(QueryType type, QUrl url, std::function<void(QNetworkReply *)> callback, Page *page = nullptr, QString referer = "", Image *img = nullptr);
@@ -63,6 +65,7 @@ class Site : public QObject
 		void setUsername(QString);
 		void setPassword(QString);
 		QList<Api*> getApis() const;
+		Source *getSource() const;
 
 		// XML info getters
 		bool contains(QString key) const;

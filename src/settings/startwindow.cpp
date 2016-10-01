@@ -15,8 +15,8 @@
  *
  * @param parent	The parent window
  */
-startWindow::startWindow(QMap<QString, Site*> *sites, mainWindow *parent)
-	: QDialog(parent), ui(new Ui::startWindow), m_parent(parent), m_sites(sites)
+startWindow::startWindow(QMap<QString, Site*> *sites, Profile &profile, mainWindow *parent)
+	: QDialog(parent), ui(new Ui::startWindow), m_parent(parent), m_sites(sites), m_profile(profile)
 {
 	ui->setupUi(this);
 
@@ -58,7 +58,7 @@ void startWindow::on_buttonFolder_clicked()
 }
 void startWindow::on_buttonFilenamePlus_clicked()
 {
-	FilenameWindow *fw = new FilenameWindow(ui->lineFilename->text(), this);
+	FilenameWindow *fw = new FilenameWindow(m_profile, ui->lineFilename->text(), this);
 	connect(fw, SIGNAL(validated(QString)), ui->lineFilename, SLOT(setText(QString)));
 	fw->show();
 }
@@ -113,7 +113,7 @@ void startWindow::save()
  */
 void startWindow::openOptions()
 {
-	optionsWindow *ow = new optionsWindow(m_parent);
+	optionsWindow *ow = new optionsWindow(m_profile, m_parent);
 	ow->show();
 
 	this->close();

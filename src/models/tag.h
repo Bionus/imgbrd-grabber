@@ -3,17 +3,17 @@
 
 #include <QString>
 #include <QStringList>
-#include <QSettings>
 #include "favorite.h"
+#include "profile.h"
 
 
 class Tag
 {
 	public:
 		Tag();
-		explicit Tag(QSettings *settings, QString text, QString type = "unknown", int count = 1, QStringList related = QStringList());
+		explicit Tag(QString text, QString type = "unknown", int count = 1, QStringList related = QStringList());
 		~Tag();
-		QString stylished(QList<Favorite> favs = QList<Favorite>(), QStringList ignored = QStringList(), QStringList blacklisted = QStringList(), bool count = false) const;
+		QString stylished(Profile &profile, QStringList ignored = QStringList(), QStringList blacklisted = QStringList(), bool count = false) const;
 		void setText(QString);
 		void setType(QString);
 		void setCount(int);
@@ -29,7 +29,6 @@ class Tag
 		QString		m_text, m_type;
 		int			m_count;
 		QStringList	m_related;
-		QSettings	*m_settings;
 };
 
 bool sortByFrequency(Tag, Tag);

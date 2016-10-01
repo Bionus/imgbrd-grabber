@@ -5,6 +5,7 @@
 #include <QStringList>
 #include <QDateTime>
 #include <QFont>
+#include <QSettings>
 #include <QDomElement>
 #include <QLayout>
 #include <algorithm>
@@ -64,8 +65,8 @@ QString fixFilenameLinux(QString filename, QString path = "", int maxlength = 0,
 
 QMap<QString,QString>		domToMap(QDomElement);
 
-QMap<QString,QStringList>	getCustoms();
-QMap<QString,QPair<QString,QString>>	getFilenames();
+QMap<QString,QStringList>	getCustoms(QSettings *settings);
+QMap<QString,QPair<QString,QString>>	getFilenames(QSettings *settings);
 
 
 

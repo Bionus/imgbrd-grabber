@@ -12,12 +12,14 @@ Filename::Filename(QString format)
 	: m_format(format)
 { }
 
-QList<QMap<QString, QPair<QString, QString>>> Filename::getReplaces(QString filename, const Image& img, QSettings *settings, QMap<QString, QStringList> custom) const
+QList<QMap<QString, QPair<QString, QString>>> Filename::getReplaces(QString filename, const Image& img, Profile& profile, QMap<QString, QStringList> custom) const
 {
 	QMap<QString, QPair<QString, QString>> replaces;
 	QList<QMap<QString, QPair<QString, QString>>> ret;
+	QSettings *settings = profile.getSettings();
+
 	QString tagSeparator = settings->value("Save/separator", " ").toString();
-	QMap<QString, QStringList> details = makeDetails(img, settings);
+	QMap<QString, QStringList> details = makeDetails(img, profile, settings);
 
 	// Pool
 	QRegularExpression poolRegexp("pool:(\\d+)");
@@ -189,9 +191,9 @@ QList<QPair<QString,QString>> Filename::getReplace(QString setting, QMap<QString
 	return ret;
 }
 
-QMap<QString, QStringList> Filename::makeDetails(const Image& img, QSettings *settings) const
+QMap<QString, QStringList> Filename::makeDetails(const Image& img, Profile &profile, QSettings *settings) const
 {
-	QStringList ignore = loadIgnored();
+	QStringList ignore = profile.getIgnored();
 	QStringList remove = settings->value("ignoredtags").toString().split(' ', QString::SkipEmptyParts);
 
 	QMap<QString, QStringList> details;
@@ -236,12 +238,13 @@ QMap<QString, QStringList> Filename::makeDetails(const Image& img, QSettings *se
 	return details;
 }
 
-QStringList Filename::path(const Image& img, QSettings *settings, QString pth, int counter, bool complex, bool maxlength, bool shouldFixFilename, bool getFull) const
+QStringList Filename::path(const Image& img, Profile& profile, QString pth, int counter, bool complex, bool maxlength, bool shouldFixFilename, bool getFull) const
 {
+	QSettings *settings = profile.getSettings();
 	QStringList remove = settings->value("ignoredtags").toString().split(' ', QString::SkipEmptyParts);
 
-	QMap<QString,QStringList> custom = QMap<QString,QStringList>(), scustom = getCustoms();
-	QMap<QString,QStringList> details = makeDetails(img, settings);
+	QMap<QString,QStringList> custom = QMap<QString,QStringList>(), scustom = getCustoms(settings);
+	QMap<QString,QStringList> details = makeDetails(img, profile, settings);
 	for (Tag tag : img.filteredTags(remove))
 	{
 		for (int r = 0; r < scustom.size(); ++r)
@@ -255,10 +258,10 @@ QStringList Filename::path(const Image& img, QSettings *settings, QString pth, i
 	}
 
 	QString filename = m_format;
-	auto replacesList = this->getReplaces(filename, img, settings, custom);
+	auto replacesList = this->getReplaces(filename, img, profile, custom);
 
 	// Conditional filenames
-	QMap<QString, QPair<QString, QString>> filenames = getFilenames();
+	QMap<QString, QPair<QString, QString>> filenames = getFilenames(settings);
 	for (int i = 0; i < filenames.size(); ++i)
 	{
 		QString cond = filenames.keys().at(i);
@@ -298,7 +301,7 @@ QStringList Filename::path(const Image& img, QSettings *settings, QString pth, i
 					filename = filenames.value(cond).first;
 
 					// Update replaces accordingly
-					replacesList = this->getReplaces(filename, img, settings, custom);
+					replacesList = this->getReplaces(filename, img, profile, custom);
 				}
 				if (!filenames.value(cond).second.isEmpty())
 				{ pth = filenames.value(cond).second; }
@@ -547,7 +550,8 @@ bool Filename::isValid(QString *error) const
 		return returnError(QObject::tr("<span style=\"color:orange\">Votre nom de fichier n'est pas unique à chaque image et une image risque d'en écraser une précédente lors de la sauvegarde ! Vous devriez utiliser le symbole %md5%, unique à chaque image, pour éviter ce désagrément.</span>"), error);
 
 	// Looking for unknown tokens
-	QStringList tokens = QStringList() << "tags" << "artist" << "general" << "copyright" << "character" << "model" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "search_(\\d+)" << "allo" << getCustoms().keys() << "date" << "score" << "count" << "width" << "height" << "pool" << "url_file" << "url_page";
+	auto customs = getCustoms(&QSettings(savePath("settings.ini")));
+	QStringList tokens = QStringList() << "tags" << "artist" << "general" << "copyright" << "character" << "model" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "search_(\\d+)" << "allo" << customs.keys() << "date" << "score" << "count" << "width" << "height" << "pool" << "url_file" << "url_page";
 	QRegExp rx("%(.+)%");
 	rx.setMinimal(true);
 	int pos = 0;
