@@ -69,7 +69,7 @@ bool Commands::before()
 	return true;
 }
 
-bool Commands::image(const Image &img, QString fp)
+bool Commands::image(const Image &img, QString path)
 {
 	// Normal commands
 	if (!m_commandImage.isEmpty())
@@ -79,8 +79,8 @@ bool Commands::image(const Image &img, QString fp)
 
 		for (QString exec : execs)
 		{
-			exec.replace("%path:nobackslash%", QDir::toNativeSeparators(fp).replace("\\", "/"));
-			exec.replace("%path%", QDir::toNativeSeparators(fp));
+			exec.replace("%path:nobackslash%", QDir::toNativeSeparators(path).replace("\\", "/"))
+				.replace("%path%", QDir::toNativeSeparators(path));
 
 			log(QObject::tr("Execution de \"%1\"").arg(exec));
 			logCommand(exec);
@@ -99,7 +99,8 @@ bool Commands::image(const Image &img, QString fp)
 
 		for (QString exec : execs)
 		{
-			exec.replace("%path%", QDir::toNativeSeparators(fp));
+			exec.replace("%path:nobackslash%", QDir::toNativeSeparators(path).replace("\\", "/"))
+				.replace("%path%", QDir::toNativeSeparators(path));
 
 			log(QObject::tr("Execution SQL de \"%1\"").arg(exec));
 			logCommandSql(exec);
@@ -113,9 +114,9 @@ bool Commands::image(const Image &img, QString fp)
 	return true;
 }
 
-bool Commands::tag(Tag tag)
+bool Commands::tag(const Image &img, Tag tag)
 {
-	QMap<QString,int> types;
+	QMap<QString, int> types;
 	types["general"] = 0;
 	types["artist"] = 1;
 	types["general"] = 2;
@@ -127,33 +128,44 @@ bool Commands::tag(Tag tag)
 
 	if (!m_commandTag.isEmpty())
 	{
-		QString exec = QString(m_commandTag)
-		.replace("%tag%", original)
-		.replace("%original%", tag.text())
-		.replace("%type%", tag.type())
-		.replace("%number%", QString::number(types[tag.type()]));
+		Filename fn(m_commandTag);
+		QStringList execs = fn.path(img, m_profile, "", 0, false, false, false, false);
 
-		log(QObject::tr("Execution seule de \"%1\"").arg(exec));
-		logCommand(exec);
+		for (QString exec : execs)
+		{
+			exec.replace("%tag%", original)
+				.replace("%original%", tag.text())
+				.replace("%type%", tag.type())
+				.replace("%number%", QString::number(types[tag.type()]));
 
-		QProcess::execute(exec);
+			log(QObject::tr("Execution seule de \"%1\"").arg(exec));
+			logCommand(exec);
+
+			QProcess::execute(exec);
+		}
 	}
 
 	if (m_mysql && !m_mysqlSettings.tag.isEmpty())
 	{
 		start();
 
-		QString exec = QString(m_mysqlSettings.tag)
-		.replace("%tag%", original)
-		.replace("%original%", tag.text())
-		.replace("%type%", tag.type())
-		.replace("%number%", QString::number(types[tag.type()]));
+		Filename fn(m_mysqlSettings.tag);
+		QStringList execs = fn.path(img, m_profile, "", 0, false, false, false, false);
 
-		log(QObject::tr("Execution SQL de \"%1\"").arg(exec));
-		logCommandSql(exec);
+		for (QString exec : execs)
+		{
+			exec.replace("%tag%", original)
+				.replace("%original%", tag.text())
+				.replace("%type%", tag.type())
+				.replace("%number%", QString::number(types[tag.type()]));
 
-		QSqlQuery query;
-		return query.exec(exec);
+			log(QObject::tr("Execution SQL de \"%1\"").arg(exec));
+			logCommandSql(exec);
+
+			QSqlQuery query;
+			if (!query.exec(exec))
+				return false;
+		}
 	}
 
 	return true;

@@ -962,8 +962,8 @@ Image::SaveResult Image::save(QString path, bool force, bool basic)
 		types["photo_set"] = 6;
 		Commands &commands = m_profile->getCommands();
 		commands.before();
-		for (int i = 0; i < tags().count(); i++)
-		{ commands.tag(tags().at(i)); }
+		for (Tag tag : tags())
+		{ commands.tag(*this, tag); }
 		commands.image(*this, path);
 		commands.after();
 	}

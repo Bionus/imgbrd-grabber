@@ -28,8 +28,8 @@ class Commands
 		Commands(Profile *profile);
 		bool start();
 		bool before();
-		bool image(const Image &, QString);
-		bool tag(Tag);
+		bool image(const Image &img, QString path);
+		bool tag(const Image &img, Tag tag);
 		bool after();
 
 	private:

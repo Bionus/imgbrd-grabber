@@ -1846,8 +1846,8 @@ void mainWindow::saveImage(Image *img, QNetworkReply *reply, QString path, QStri
 
 				// Execute commands
 				Commands &commands = m_profile->getCommands();
-				for (int i = 0; i < img->tags().count(); i++)
-				{ commands.tag(img->tags().at(i)); }
+				for (Tag tag : img->tags())
+				{ commands.tag(*img, tag); }
 				commands.image(*img, fp);
 
 				if (m_settings->value("Save/keepDate", true).toBool())
