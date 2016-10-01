@@ -550,7 +550,9 @@ bool Filename::isValid(QString *error) const
 		return returnError(QObject::tr("<span style=\"color:orange\">Votre nom de fichier n'est pas unique à chaque image et une image risque d'en écraser une précédente lors de la sauvegarde ! Vous devriez utiliser le symbole %md5%, unique à chaque image, pour éviter ce désagrément.</span>"), error);
 
 	// Looking for unknown tokens
-	auto customs = getCustoms(&QSettings(savePath("settings.ini")));
+	QSettings *settings = new QSettings(savePath("settings.ini"));
+	auto customs = getCustoms(settings);
+	settings->deleteLater();
 	QStringList tokens = QStringList() << "tags" << "artist" << "general" << "copyright" << "character" << "model" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "search_(\\d+)" << "allo" << customs.keys() << "date" << "score" << "count" << "width" << "height" << "pool" << "url_file" << "url_page";
 	QRegExp rx("%(.+)%");
 	rx.setMinimal(true);
