@@ -19,8 +19,15 @@ class Profile
 		~Profile();
 		void sync();
 
+		// Favorite management
 		void addFavorite(Favorite fav);
 		void removeFavorite(Favorite fav);
+
+		// MD5 management
+		QString md5Exists(QString);
+		void addMd5(QString, QString);
+		void setMd5(QString, QString);
+		void removeMd5(QString);
 
 		// Getters
 		QString getPath() const;
@@ -37,6 +44,7 @@ class Profile
 		QStringList		m_keptForLater;
 		QStringList		m_ignored;
 		Commands		*m_commands;
+		QMap<QString, QString>	m_md5s;
 };
 
 #endif // PROFILE_H

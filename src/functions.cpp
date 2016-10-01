@@ -23,7 +23,6 @@
 using namespace std;
 
 extern mainWindow *_mainwindow;
-extern QMap<QString,QString> _md5;
 
 
 
@@ -43,18 +42,6 @@ void error(QWidget *parent, QString error)
 }
 
 /**
- * Sort a list non case-sensitively.
- * @param   sList   The list that will be ordered
- */
-void sortNonCaseSensitive(QStringList &sList)
-{
-	QMap<QString, QString> strMap;
-	for (QString str : sList)
-	{ strMap.insert( str.toLower(), str); }
-	sList = strMap.values();
-}
-
-/**
  * Log SSL errors in debug mode only.
  *
  * @param qnr		The network reply who generated the SSL errors
@@ -67,7 +54,11 @@ void sslErrorHandler(QNetworkReply* qnr, QList<QSslError> errors)
 	#else
 		Q_UNUSED(errors);
 	#endif
-	qnr->ignoreSslErrors();
+	#ifndef TEST
+		qnr->ignoreSslErrors();
+	#else
+		Q_UNUSED(qnr);
+	#endif
 }
 
 /**
@@ -146,104 +137,6 @@ QDateTime qDateTimeFromString(QString str)
 		date.setTime(time);
 	}
 	return date;
-}
-
-/**
- * Load md5 file and put its content into the _md5 map.
- */
-void loadMd5s()
-{
-	QFile f(savePath("md5s.txt"));
-	if (f.open(QFile::ReadOnly))
-	{
-		QString line;
-		while ((line = f.readLine()) != "")
-			_md5.insert(line.left(32), line.mid(32));
-		f.close();
-	}
-}
-
-/**
- * Save the _md5 map to the md5 file.
- */
-void saveMd5s()
-{
-	QFile f(savePath("md5s.txt"));
-	if (f.open(QFile::WriteOnly | QFile::Truncate))
-	{
-		QStringList md5s = _md5.keys();
-		QStringList paths = _md5.values();
-		for (int i = 0; i < md5s.size(); i++)
-			f.write(QString(md5s[i] + paths[i] + "\n").toUtf8());
-		f.close();
-	}
-}
-
-/**
- * Append a md5 to the md5 file.
- */
-void saveMd5(QString md5, QString path)
-{
-	QFile f(savePath("md5s.txt"));
-	if (f.open(QFile::WriteOnly | QFile::Append))
-	{
-		f.write(QString(md5 + path + "\n").toUtf8());
-		f.close();
-	}
-}
-
-/**
- * Check if a file with this md5 already exists;
- * @param	md5		The md5 that needs to be checked.
- * @return			A QString containing the path to the already existing file, an empty QString if the md5 does not already exists.
- */
-QString md5Exists(QString md5)
-{
-	if (_md5.contains(md5))
-	{
-		if (QFile::exists(_md5[md5]))
-			return _md5[md5];
-
-		removeMd5(md5);
-	}
-	return QString();
-}
-
-/**
- * Adds a md5 to the _md5 map and adds it to the md5 file.
- * @param	md5		The md5 to add.
- * @param	path	The path to the image with this md5.
- */
-void addMd5(QString md5, QString path)
-{
-	_md5.insert(md5, path);
-	saveMd5(md5, path);
-}
-
-/**
- * Set a md5 to the _md5 map changing the file it is pointing to.
- * @param	md5		The md5 to add.
- * @param	path	The path to the image with this md5.
- */
-void setMd5(QString md5, QString path)
-{
-	bool cont = _md5.contains(md5);
-	_md5[md5] = path;
-
-	if (cont)
-		saveMd5s();
-	else
-		saveMd5(md5, path);
-}
-
-/**
- * Removes a md5 from the _md5 map and removes it from the md5 file.
- * @param	md5		The md5 to remove.
- */
-void removeMd5(QString md5)
-{
-	_md5.remove(md5);
-	saveMd5s();
 }
 
 QString getUnit(float *value)

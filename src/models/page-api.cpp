@@ -43,7 +43,7 @@ PageApi::PageApi(Page *parentPage, Site *site, Api *api, QStringList tags, int p
 	QRegExp poolRx("pool:(\\d+)");
 	QString url;
 	int pl = -1;
-	/*int pos = -1;
+	int pos = -1;
 	if ((pos = poolRx.indexIn(t)) != -1)
 	{
 		for (int i = 1; i <= m_site->getApis().count() + 1; i++)
@@ -68,7 +68,7 @@ PageApi::PageApi(Page *parentPage, Site *site, Api *api, QStringList tags, int p
 			t.remove(pool);
 			t = t.trimmed();
 		}
-	}*/
+	}
 	if (url.isEmpty())
 	{
 		if (t.isEmpty() && m_api->contains("Urls/Home"))

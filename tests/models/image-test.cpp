@@ -11,6 +11,8 @@ void ImageTest::init()
 	if (!tmp.exists("tmp"))
 		tmp.mkdir("tmp");
 
+	QFile::remove("tests/resources/md5s.txt");
+
 	m_details["md5"] = "1bc29b36f623ba82aaf6724fd3b16718";
 	m_details["ext"] = "jpg";
 	m_details["author"] = "superauthor";
@@ -43,7 +45,7 @@ void ImageTest::init()
 	m_details["file_size"] = "358400";
 	m_details["file_size"] = "358400";
 
-	m_profile = new Profile("tests/resources/settings.ini");
+	m_profile = new Profile("tests/resources/");
 	m_settings = m_profile->getSettings();
 	m_settings->setValue("Coloring/Fonts/artists", ",8.25,-1,5,50,0,0,0,0,0");
 	m_settings->setValue("Coloring/Fonts/copyrights", ",8.25,-1,5,50,0,0,0,0,0");
@@ -511,9 +513,8 @@ void ImageTest::testSaveDuplicate()
 	m_img->setData(QString("test").toLatin1());
 	QMap<QString, Image::SaveResult> res;
 
-	extern QMap<QString, QString> _md5;
 	QFile::copy("tests/resources/image_1x1.png", "tests/resources/tmp/source.png");
-	_md5.insert(m_img->md5(), "tests/resources/tmp/source.png");
+	m_profile->addMd5(m_img->md5(), "tests/resources/tmp/source.png");
 
 	m_settings->setValue("Save/md5Duplicates", "ignore");
 	res = m_img->save(QString("%id%.%ext%"), QString("tests/resources/tmp/"));

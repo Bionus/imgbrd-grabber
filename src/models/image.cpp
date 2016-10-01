@@ -881,7 +881,7 @@ Image::SaveResult Image::save(QString path, bool force, bool basic)
 		}
 
 		QString whatToDo = m_settings->value("Save/md5Duplicates", "save").toString();
-		QString md5Duplicate = md5Exists(md5());
+		QString md5Duplicate = m_profile->md5Exists(md5());
 		if (md5Duplicate.isEmpty() || whatToDo == "save" || force)
 		{
 			log(tr("Sauvegarde de l'image dans le fichier <a href=\"file:///%1\">%1</a>").arg(path));
@@ -889,7 +889,7 @@ Image::SaveResult Image::save(QString path, bool force, bool basic)
 			{ QFile::copy(m_source, path); }
 			else
 			{
-				addMd5(md5(), path);
+				m_profile->addMd5(md5(), path);
 
 				if (f.open(QFile::WriteOnly))
 				{
@@ -940,7 +940,7 @@ Image::SaveResult Image::save(QString path, bool force, bool basic)
 		{
 			log(tr("Déplacement depuis <a href=\"file:///%1\">%1</a> vers <a href=\"file:///%2\">%2</a>").arg(md5Duplicate).arg(path));
 			QFile::rename(md5Duplicate, path);
-			setMd5(md5(), path);
+			m_profile->setMd5(md5(), path);
 
 			res = SaveResult::Moved;
 		}
@@ -1068,8 +1068,12 @@ void	Image::setFileSize(int s)		{ m_fileSize = s;			}
 void	Image::setData(QByteArray d)
 {
 	m_data = d;
+
+	// Set MD5 by hashing this data if we don't already have it
 	if (m_md5.isEmpty())
-	{ m_md5 = QCryptographicHash::hash(m_data, QCryptographicHash::Md5).toHex(); }
+	{
+		m_md5 = QCryptographicHash::hash(m_data, QCryptographicHash::Md5).toHex();
+	}
 }
 void Image::setSavePath(QString savePath)
 {

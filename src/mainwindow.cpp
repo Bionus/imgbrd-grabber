@@ -36,8 +36,6 @@
 #define DONE()			logUpdate(QObject::tr(" Fait"))
 #define DIR_SEPARATOR	QDir::toNativeSeparators("/")
 
-extern QMap<QString,QString> _md5;
-
 
 
 mainWindow::mainWindow(QString program, QStringList tags, QMap<QString,QString> params)
@@ -62,8 +60,6 @@ void mainWindow::init()
 	log(tr("Version du logiciel : %1.").arg(VERSION));
 	log(tr("Chemin : %1").arg(qApp->applicationDirPath()));
 	log(tr("Chargement des préférences depuis <a href=\"file:///%1\">%1</a>").arg(savePath("settings.ini")));
-
-	loadMd5s();
 
 	tabifyDockWidget(ui->dock_internet, ui->dock_wiki);
 	tabifyDockWidget(ui->dock_wiki, ui->dock_kfl);
@@ -1651,7 +1647,7 @@ void mainWindow::getAllGetImage(Image* img)
 
 	// Action
 	QString whatToDo = m_settings->value("Save/md5Duplicates", "save").toString();
-	QString md5Duplicate = md5Exists(img->md5());
+	QString md5Duplicate = m_profile->md5Exists(img->md5());
 	bool next = true;
 	if (md5Duplicate.isEmpty() || whatToDo == "save")
 	{
@@ -1684,7 +1680,7 @@ void mainWindow::getAllGetImage(Image* img)
 				m_getAllDownloaded++;
 				log(tr("Déplacement depuis <a href=\"file:///%1\">%1</a> vers <a href=\"file:///%2\">%2</a>").arg(md5Duplicate).arg(fp));
 				QFile::rename(md5Duplicate, fp);
-				setMd5(img->md5(), fp);
+				m_profile->setMd5(img->md5(), fp);
 
 				if (m_settings->value("Save/keepDate", true).toBool())
 					setFileCreationDate(fp, img->createdAt());
@@ -1782,7 +1778,7 @@ void mainWindow::saveImage(Image *img, QNetworkReply *reply, QString path, QStri
 			QString fp = QDir::toNativeSeparators(path);
 
 			QString whatToDo = m_settings->value("Save/md5Duplicates", "save").toString();
-			QString md5Duplicate = md5Exists(img->md5());
+			QString md5Duplicate = m_profile->md5Exists(img->md5());
 			if (md5Duplicate.isEmpty() || whatToDo == "save")
 			{
 				// Create the reception's directory
@@ -1813,7 +1809,7 @@ void mainWindow::saveImage(Image *img, QNetworkReply *reply, QString path, QStri
 					f.close();
 
 					img->setData(data);
-					addMd5(img->md5(), fp);
+					m_profile->addMd5(img->md5(), fp);
 
 					// Save info to a text file
 					if (m_settings->value("Textfile/activate", false).toBool())
