@@ -5,7 +5,7 @@
 
 
 Api::Api(QString name, QMap<QString, QString> data)
-	: m_name(name), m_data(data)
+	: QObject(), m_name(name), m_data(data)
 {
 	QString sr = m_name;
 	if (m_data.contains("Urls/"+sr+"/Tags"))
