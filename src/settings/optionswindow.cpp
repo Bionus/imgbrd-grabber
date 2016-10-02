@@ -274,13 +274,13 @@ void optionsWindow::on_buttonFolderFavorites_clicked()
 void optionsWindow::on_buttonFilenamePlus_clicked()
 {
 	FilenameWindow *fw = new FilenameWindow(m_profile, ui->lineFilename->text(), this);
-	connect(fw, SIGNAL(validated(QString)), ui->lineFilename, SLOT(setText(QString)));
+	connect(fw, &FilenameWindow::validated, ui->lineFilename, &QLineEdit::setText);
 	fw->show();
 }
 void optionsWindow::on_buttonFavoritesPlus_clicked()
 {
 	FilenameWindow *fw = new FilenameWindow(m_profile, ui->lineFavorites->text(), this);
-	connect(fw, SIGNAL(validated(QString)), ui->lineFavorites, SLOT(setText(QString)));
+	connect(fw, &FilenameWindow::validated, ui->lineFavorites, &QLineEdit::setText);
 	fw->show();
 }
 

@@ -42,7 +42,7 @@
 	#include "viewer/zoomwindow.h"
 	#include "settings/optionswindow.h"
 	#if USE_BREAKPAD
-		#include "crashhandler.h"
+		#include "crashhandler/crashhandler.h"
 	#endif
 #endif
 
