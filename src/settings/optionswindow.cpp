@@ -118,6 +118,7 @@ optionsWindow::optionsWindow(Profile *profile, mainWindow *parent)
 		ui->lineFilename->setText(settings->value("filename_real").toString());
 		ui->lineFavorites->setText(settings->value("filename_favorites").toString());
 		ui->lineSeparator->setText(settings->value("separator", " ").toString());
+		ui->checkNoJpeg->setChecked(settings->value("noJpeg", true).toBool());
 		ui->lineArtistsIfNone->setText(settings->value("artist_empty", "anonymous").toString());
 		ui->spinArtistsMoreThanN->setValue(settings->value("artist_multiple_limit", 1).toInt());
 		ui->spinArtistsKeepN->setValue(settings->value("artist_multiple_keepN", 1).toInt());
@@ -641,6 +642,7 @@ void optionsWindow::save()
 		settings->setValue("replaceblanks", ui->checkReplaceBlanks->isChecked());
 		settings->setValue("keepDate", ui->checkKeepDate->isChecked());
 		settings->setValue("separator", ui->lineSeparator->text());
+		settings->setValue("noJpeg", ui->checkNoJpeg->isChecked());
 		QString folder = fixFilename("", ui->lineFolder->text());
 		settings->setValue("path", folder);
 		settings->setValue("path_real", folder);

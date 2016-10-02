@@ -27,7 +27,6 @@ QList<QMap<QString, QPair<QString, QString>>> Filename::getReplaces(QString file
 	replaces.insert("pool", QStrP(poolMatch.hasMatch() ? poolMatch.captured(1) : "", ""));
 
 	// Basic shared values
-	replaces.insert("ext", QStrP(getExtension(img.url()), "jpg"));
 	replaces.insert("filename", QStrP(QUrl::fromPercentEncoding(img.url().section('/', -1).section('.', 0, -2).toUtf8()), ""));
 	replaces.insert("website", QStrP(img.parentSite()->url(), ""));
 	replaces.insert("websitename", QStrP(img.parentSite()->name(), ""));
@@ -52,6 +51,12 @@ QList<QMap<QString, QPair<QString, QString>>> Filename::getReplaces(QString file
 	{ replaces.insert(custom.keys().at(i), QStrP(custom.values().at(i).join(tagSeparator), "")); }
 	replaces.insert("url_file", QStrP(img.url(), ""));
 	replaces.insert("url_page", QStrP(img.pageUrl().toString(), ""));
+
+	// JPEG extension
+	QString ext = getExtension(img.url());
+	if (settings->value("Save/noJpeg", true).toBool() && ext == "jpeg")
+		ext = "jpg";
+	replaces.insert("ext", QStrP(ext, "jpg"));
 
 	// Remove duplicates in %all%
 	QStringList rem = (filename.contains("%artist%") ? details["artists"] : QStringList()) +
