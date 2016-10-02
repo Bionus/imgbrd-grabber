@@ -5,10 +5,13 @@
 #include <QStringList>
 #include <QDateTime>
 #include <QFont>
+#include <QSettings>
 #include <QDomElement>
 #include <QLayout>
 #include <algorithm>
 #include <QString>
+#include <QNetworkReply>
+#include <QSslError>
 #include "models/favorite.h"
 
 #define DONE()	logUpdate(QObject::tr(" Fait"))
@@ -25,7 +28,7 @@ enum Log
 
 
 void		error(QWidget *, QString);
-void		sortNonCaseSensitive(QStringList &);
+void		sslErrorHandler(QNetworkReply* qnr, QList<QSslError> errors);
 QDateTime	qDateTimeFromString(QString s);
 QString		savePath(QString s = "", bool exists = false);
 int			levenshtein(QString, QString);
@@ -47,26 +50,14 @@ void		logCommand(QString);
 void		logCommandSql(QString);
 void		logUpdate(QString);
 
-void		loadMd5s();
-void		saveMd5s();
-void		saveMd5(QString md5, QString path);
-QString		md5Exists(QString);
-void		addMd5(QString, QString);
-void		setMd5(QString, QString);
-void		removeMd5(QString);
-
 QString fixFilename(QString filename, QString path = "", int maxlength = 0, bool invalidChars = true);
 QString fixFilenameWindows(QString filename, QString path = "", int maxlength = 0, bool invalidChars = true);
 QString fixFilenameLinux(QString filename, QString path = "", int maxlength = 0, bool invalidChars = true);
 
-QList<Favorite> loadFavorites();
-QStringList		loadViewItLater();
-QStringList		loadIgnored();
-
 QMap<QString,QString>		domToMap(QDomElement);
 
-QMap<QString,QStringList>	getCustoms();
-QMap<QString,QPair<QString,QString>>	getFilenames();
+QMap<QString,QStringList>	getCustoms(QSettings *settings);
+QMap<QString,QPair<QString,QString>>	getFilenames(QSettings *settings);
 
 
 

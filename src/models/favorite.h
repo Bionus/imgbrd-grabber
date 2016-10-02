@@ -9,6 +9,7 @@
 class Favorite
 {
 	public:
+		Favorite(QString name);
 		Favorite(QString name, int note, QDateTime lastViewed, QString imagePath = "");
 
 		// Getters and setters
@@ -28,6 +29,9 @@ class Favorite
 
 		bool setImage(QPixmap&);
 		QPixmap getImage() const;
+
+		QString toString() const;
+		static Favorite fromString(QString path, QString text);
 
 	private:
 		QString		m_name;

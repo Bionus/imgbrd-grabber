@@ -23,7 +23,7 @@ QString removeCacheUrl(QString url)
 }
 
 Image::Image()
-	: QObject()
+	: QObject(), m_profile(nullptr)
 { }
 
 // TODO: clean up this mess
@@ -72,6 +72,7 @@ Image::Image(const Image &other)
 	m_tags = other.m_tags;
 	m_pools = other.m_pools;
 	m_timer = other.m_timer;
+	m_profile = other.m_profile;
 	m_settings = other.m_settings;
 	m_search = other.m_search;
 	m_parentSite = other.m_parentSite;
@@ -83,10 +84,10 @@ Image::Image(const Image &other)
 	m_tryingSample = other.m_tryingSample;
 }
 
-Image::Image(Site *site, QMap<QString, QString> details, Page* parent)
-	: m_parentSite(site)
+Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page* parent)
+	: m_profile(profile), m_parentSite(site)
 {
-	m_settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
+	m_settings = m_profile->getSettings();
 
 	// Parents
 	m_site = parent != nullptr ? parent->website() : (details.contains("website") ? details["website"] : "");
@@ -148,7 +149,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Page* parent)
 				continue;
 
 			tg.replace("&amp;", "&");
-			m_tags.append(Tag(m_settings, tg, "general"));
+			m_tags.append(Tag(tg, "general"));
 		}
 		t = details["tags_artist"].split(" ");
 		for (int i = 0; i < t.count(); ++i)
@@ -158,7 +159,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Page* parent)
 				continue;
 
 			tg.replace("&amp;", "&");
-			m_tags.append(Tag(m_settings, tg, "artist"));
+			m_tags.append(Tag(tg, "artist"));
 		}
 		t = details["tags_character"].split(" ");
 		for (int i = 0; i < t.count(); ++i)
@@ -168,7 +169,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Page* parent)
 				continue;
 
 			tg.replace("&amp;", "&");
-			m_tags.append(Tag(m_settings, tg, "character"));
+			m_tags.append(Tag(tg, "character"));
 		}
 		t = details["tags_copyright"].split(" ");
 		for (int i = 0; i < t.count(); ++i)
@@ -178,7 +179,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Page* parent)
 				continue;
 
 			tg.replace("&amp;", "&");
-			m_tags.append(Tag(m_settings, tg, "copyright"));
+			m_tags.append(Tag(tg, "copyright"));
 		}
 		t = details["tags_model"].split(" ");
 		for (int i = 0; i < t.count(); ++i)
@@ -188,7 +189,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Page* parent)
 				continue;
 
 			tg.replace("&amp;", "&");
-			m_tags.append(Tag(m_settings, tg, "model"));
+			m_tags.append(Tag(tg, "model"));
 		}
 	}
 	else if (details.contains("tags"))
@@ -225,10 +226,10 @@ Image::Image(Site *site, QMap<QString, QString> details, Page* parent)
 				else if (tp == "rating")
 				{ setRating(tg.mid(colon + 1)); }
 				else
-				{ m_tags.append(Tag(m_settings, tg)); }
+				{ m_tags.append(Tag(tg)); }
 			}
 			else
-			{ m_tags.append(Tag(m_settings, tg)); }
+			{ m_tags.append(Tag(tg)); }
 		}
 	}
 
@@ -316,7 +317,7 @@ void Image::loadPreview()
 	}
 
 	m_previewTry++;
-	m_loadPreview = m_parentSite->get(m_previewUrl, m_parent, "preview");
+	m_loadPreview = m_parentSite->get(m_parentSite->fixUrl(m_previewUrl), m_parent, "preview");
 	m_loadPreview->setParent(this);
 	m_loadingPreview = true;
 
@@ -378,7 +379,7 @@ void Image::parsePreview()
 
 void Image::loadDetails()
 {
-	m_loadDetails = m_parentSite->get(m_pageUrl);
+	m_loadDetails = m_parentSite->get(m_parentSite->fixUrl(m_pageUrl));
 	m_loadDetails->setParent(this);
 	m_loadingDetails = true;
 
@@ -493,7 +494,7 @@ void Image::parseDetails()
 			}
 			if (type.isEmpty())
 			{ type = "unknown"; }
-			tgs.append(Tag(m_settings, tag, type, count));
+			tgs.append(Tag(tag, type, count));
 		}
 		if (!tgs.isEmpty())
 		{
@@ -716,12 +717,12 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 	}
 
 	Filename filename(fn);
-	return filename.path(*this, m_settings, pth, counter, complex, maxlength, shouldFixFilename, getFull);
+	return filename.path(*this, m_profile, pth, counter, complex, maxlength, shouldFixFilename, getFull);
 }
 
 void Image::loadImage()
 {
-	m_loadImage = m_parentSite->get(m_url, m_parent, "image", this);
+	m_loadImage = m_parentSite->get(m_parentSite->fixUrl(m_url), m_parent, "image", this);
 	m_loadImage->setParent(this);
 	//m_timer.start();
 	m_loadingImage = true;
@@ -852,14 +853,13 @@ QStringList Image::blacklisted(QStringList blacklistedtags, bool invert) const
 	return detected;
 }
 
-QStringList Image::stylishedTags(QStringList ignored) const
+QStringList Image::stylishedTags(Profile *profile, QStringList ignored) const
 {
 	QStringList blacklisted = m_settings->value("blacklistedtags").toString().split(' ');
-	QList<Favorite> favorites = loadFavorites();
 
 	QStringList t;
 	for (Tag tag : m_tags)
-		t.append(tag.stylished(favorites, ignored, blacklisted));
+		t.append(tag.stylished(profile, ignored, blacklisted));
 
 	t.sort();
 	return t;
@@ -881,7 +881,7 @@ Image::SaveResult Image::save(QString path, bool force, bool basic)
 		}
 
 		QString whatToDo = m_settings->value("Save/md5Duplicates", "save").toString();
-		QString md5Duplicate = md5Exists(md5());
+		QString md5Duplicate = m_profile->md5Exists(md5());
 		if (md5Duplicate.isEmpty() || whatToDo == "save" || force)
 		{
 			log(tr("Sauvegarde de l'image dans le fichier <a href=\"file:///%1\">%1</a>").arg(path));
@@ -889,7 +889,7 @@ Image::SaveResult Image::save(QString path, bool force, bool basic)
 			{ QFile::copy(m_source, path); }
 			else
 			{
-				addMd5(md5(), path);
+				m_profile->addMd5(md5(), path);
 
 				if (f.open(QFile::WriteOnly))
 				{
@@ -940,7 +940,7 @@ Image::SaveResult Image::save(QString path, bool force, bool basic)
 		{
 			log(tr("Déplacement depuis <a href=\"file:///%1\">%1</a> vers <a href=\"file:///%2\">%2</a>").arg(md5Duplicate).arg(path));
 			QFile::rename(md5Duplicate, path);
-			setMd5(md5(), path);
+			m_profile->setMd5(md5(), path);
 
 			res = SaveResult::Moved;
 		}
@@ -952,19 +952,14 @@ Image::SaveResult Image::save(QString path, bool force, bool basic)
 			setFileCreationDate(path, createdAt());
 
 		// Commands
-		QMap<QString,int> types;
-		types["general"] = 0;
-		types["artist"] = 1;
-		types["general"] = 2;
-		types["copyright"] = 3;
-		types["character"] = 4;
-		types["model"] = 5;
-		types["photo_set"] = 6;
-		Commands::get()->before();
-		for (int i = 0; i < tags().count(); i++)
-		{ Commands::get()->tag(tags().at(i)); }
-		Commands::get()->image(*this, path);
-		Commands::get()->after();
+		Commands &commands = m_profile->getCommands();
+		commands.before();
+			for (Tag tag : tags())
+			{ commands.tag(*this, tag, false); }
+			commands.image(*this, path);
+			for (Tag tag : tags())
+			{ commands.tag(*this, tag, true); }
+		commands.after();
 	}
 	else
 	{ res = SaveResult::AlreadyExists; }
@@ -1067,8 +1062,12 @@ void	Image::setFileSize(int s)		{ m_fileSize = s;			}
 void	Image::setData(QByteArray d)
 {
 	m_data = d;
+
+	// Set MD5 by hashing this data if we don't already have it
 	if (m_md5.isEmpty())
-	{ m_md5 = QCryptographicHash::hash(m_data, QCryptographicHash::Md5).toHex(); }
+	{
+		m_md5 = QCryptographicHash::hash(m_data, QCryptographicHash::Md5).toHex();
+	}
 }
 void Image::setSavePath(QString savePath)
 {

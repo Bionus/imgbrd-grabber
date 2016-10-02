@@ -15,9 +15,8 @@ class PageTest : public TestSuite
 		void cleanup();
 
 		void testIncompatibleModifiers();
-		void testParseUrlBasic();
-		void testParseUrlLogin();
-		void testParseUrlAltPage();
+		void testLoadAbort();
+		void testLoadTagsAbort();
 
 	private:
 		QSettings *m_settings;

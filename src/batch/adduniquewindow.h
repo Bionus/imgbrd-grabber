@@ -5,6 +5,7 @@
 #include <QDialog>
 #include "models/image.h"
 #include "models/site.h"
+#include "models/profile.h"
 
 
 
@@ -20,7 +21,7 @@ class AddUniqueWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		AddUniqueWindow(QString, QMap<QString,Site*> sites, QWidget *parent);
+		AddUniqueWindow(QString, QMap<QString,Site*> sites, Profile *profile, QWidget *parent);
 
 	public slots:
 		void add();
@@ -38,6 +39,7 @@ class AddUniqueWindow : public QDialog
 		Page					*m_page;
 		QMap<QString,Site*>		m_sites;
 		bool					m_close;
+		Profile					*m_profile;
 };
 
 #endif // ADDUNIQUEWINDOW_H

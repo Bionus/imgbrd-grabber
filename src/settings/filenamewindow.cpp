@@ -6,7 +6,8 @@
 #include "models/filename.h"
 
 
-FilenameWindow::FilenameWindow(QString value, QWidget *parent) : QDialog(parent), ui(new Ui::FilenameWindow)
+FilenameWindow::FilenameWindow(Profile *profile, QString value, QWidget *parent)
+	: QDialog(parent), ui(new Ui::FilenameWindow), m_profile(profile)
 {
 	ui->setupUi(this);
 
@@ -159,11 +160,11 @@ QString FilenameWindow::format()
 
 void FilenameWindow::done(int r)
 {
-	QMap<QString, Site*> *sites = Site::getAllSites();
+	QMap<QString, Site*> sites = Site::getAllSites();
 
-	if (QDialog::Accepted == r && ui->radioJavascript->isChecked() && !sites->isEmpty())
+	if (QDialog::Accepted == r && ui->radioJavascript->isChecked() && !sites.isEmpty())
 	{
-		Site *site = sites->value(sites->keys().first());
+		Site *site = sites.value(sites.keys().first());
 
 		QMap<QString, QString> info;
 		info.insert("site", QString::number((qintptr)site));
@@ -173,7 +174,7 @@ void FilenameWindow::done(int r)
 		info.insert("tags_character", "character_1 character_2");
 		info.insert("tags_copyright", "copyright_1 copyright_2");
 
-		Image image(site, info);
+		Image image(site, info, m_profile);
 		QStringList det = image.path(format(), "");
 
 		if (det.isEmpty())

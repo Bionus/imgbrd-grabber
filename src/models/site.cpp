@@ -2,6 +2,7 @@
 #include <QNetworkCookie>
 #include <QNetworkCookieJar>
 #include <QNetworkDiskCache>
+#include <QStringList>
 #include <QUrlQuery>
 #include <QDir>
 #include <QTimer>
@@ -10,6 +11,7 @@
 #include "json.h"
 #include "page.h"
 #include "image.h"
+#include "source.h"
 #include "qcustomnetworkreply.h"
 #ifdef QT_DEBUG
 	#include <QDebug>
@@ -20,131 +22,46 @@
 
 
 
-QMap<QString, Site*> *g_allSites = Q_NULLPTR;
-
-static void _prependUrl(QMap<QString,QString> *details, QString url, QString key, QString lkey = QString())
+Site::Site(QString url, Source *source)
+	: m_type(source->getName()), m_url(url), m_source(source), m_settings(nullptr), m_manager(nullptr), m_cookieJar(nullptr), m_loggedIn(false), m_triedLogin(false), m_loginCheck(false)
 {
-	if (details->contains(key))
-		details->insert(lkey == NULL ? key : lkey, url + details->value(key));
+	loadConfig();
 }
 
-Site::Site(QSettings *settings, QString dir, QString url)
-	: m_url(url), m_settings(nullptr), m_manager(nullptr), m_cookieJar(nullptr), m_loggedIn(false), m_triedLogin(false), m_loginCheck(false), m_updateVersion("")
+void Site::loadConfig()
 {
-	QFile file(dir + "/model.xml");
-	if (file.open(QIODevice::ReadOnly | QIODevice::Text))
-	{
-		QFileInfo info(dir);
-		m_type = info.fileName();
+	if (m_settings != nullptr)
+		m_settings->deleteLater();
+	m_settings = new QSettings(m_source->getPath() + "/" + m_url + "/settings.ini", QSettings::IniFormat);
+	m_name = m_settings->value("name", m_url).toString();
 
-		QString source = file.readAll();
-		QDomDocument doc;
-		QString errorMsg;
-		int errorLine, errorColumn;
-		if (!doc.setContent(source, false, &errorMsg, &errorLine, &errorColumn))
-		{ log(tr("Erreur lors de l'analyse du fichier XML : %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn)), Error); }
+	// Apis
+	QStringList defaults = QStringList() << "Xml" << "Json" << "Rss" << "Regex";
+	QStringList sources;
+	if (!m_settings->value("sources/usedefault", true).toBool())
+	{
+		sources << m_settings->value("sources/source_1").toString()
+				<< m_settings->value("sources/source_2").toString()
+				<< m_settings->value("sources/source_3").toString()
+				<< m_settings->value("sources/source_4").toString();
+		sources.removeAll("");
+		if (sources.isEmpty())
+		{ sources = defaults; }
 		else
 		{
-			QDomElement docElem = doc.documentElement();
-			QMap<QString,QString> detals = domToMap(docElem);
-			QStringList defaults = QStringList() << "xml" << "json" << "rss" << "regex";
-			QStringList source;
-			for (int s = 0; s < 4; s++)
-			{
-				QString t = settings->value("source_"+QString::number(s+1), defaults.at(s)).toString();
-				t[0] = t[0].toUpper();
-				if (detals.contains("Urls/"+(t == "Regex" ? "Html" : t)+"/Tags"))
-				{ source.append(t); }
-			}
-			if (!source.isEmpty())
-			{
-				QStringList srcs;
-				QSettings sets(dir + "/" + url + "/settings.ini", QSettings::IniFormat);
-				if (!sets.value("sources/usedefault", true).toBool())
-				{
-					srcs = QStringList() << sets.value("sources/source_1").toString()
-										 << sets.value("sources/source_2").toString()
-										 << sets.value("sources/source_3").toString()
-										 << sets.value("sources/source_4").toString();
-					srcs.removeAll("");
-					if (srcs.isEmpty())
-					{ srcs = source; }
-					else
-					{
-						for (int i = 0; i < srcs.size(); i++)
-						{ srcs[i][0] = srcs[i][0].toUpper(); }
-					}
-				}
-				else
-				{ srcs = source; }
-
-				QMap<QString,QString> details = detals;
-				details["Model"] = m_type;
-				details["Url"] = url;
-				details["Selected"] = srcs.join("/").toLower();
-				QString lineSsl = QString(sets.value("ssl", false).toBool() ? "https" : "http") + "://" + url;
-				for (int j = 0; j < srcs.size(); j++)
-				{
-					QString sr = srcs[j] == "Regex" ? "Html" : srcs[j];
-					_prependUrl(&details, lineSsl, "Urls/"+sr+"/Tags", "Urls/"+QString::number(j+1)+"/Tags");
-					_prependUrl(&details, lineSsl, "Urls/"+sr+"/Home", "Urls/"+QString::number(j+1)+"/Home");
-					_prependUrl(&details, lineSsl, "Urls/"+sr+"/Pools", "Urls/"+QString::number(j+1)+"/Pools");
-					if (details.contains("Urls/"+sr+"/Login"))
-						details["Urls/"+QString::number(j+1)+"/Login"] = details["Urls/"+sr+"/Login"];
-					if (details.contains("Urls/"+sr+"/Limit"))
-						details["Urls/"+QString::number(j+1)+"/Limit"] = details["Urls/"+sr+"/Limit"];
-					if (details.contains("Urls/"+sr+"/Image"))
-						details["Urls/"+QString::number(j+1)+"/Image"] = details["Urls/"+sr+"/Image"];
-					if (details.contains("Urls/"+sr+"/Sample"))
-						details["Urls/"+QString::number(j+1)+"/Sample"] = details["Urls/"+sr+"/Sample"];
-					if (details.contains("Urls/"+sr+"/Preview"))
-						details["Urls/"+QString::number(j+1)+"/Preview"] = details["Urls/"+sr+"/Preview"];
-					if (details.contains("Urls/"+sr+"/MaxPage"))
-						details["Urls/"+QString::number(j+1)+"/MaxPage"] = details["Urls/"+sr+"/MaxPage"];
-					if (details.contains("Urls/"+sr+"/AltPagePrev"))
-						details["Urls/"+QString::number(j+1)+"/AltPagePrev"] = details["Urls/"+sr+"/AltPagePrev"];
-					if (details.contains("Urls/"+sr+"/AltPageNext"))
-						details["Urls/"+QString::number(j+1)+"/AltPageNext"] = details["Urls/"+sr+"/AltPageNext"];
-				}
-				_prependUrl(&details, lineSsl, "Urls/Html/Post");
-				_prependUrl(&details, lineSsl, "Urls/Html/Tags");
-				_prependUrl(&details, lineSsl, "Urls/Html/Home");
-				_prependUrl(&details, lineSsl, "Urls/Html/Pools");
-
-				m_data = details;
-			}
-			else
-			{ log(tr("Aucune source valide trouvée dans le fichier model.xml de %1.").arg(m_type)); }
+			for (int i = 0; i < sources.count(); i++)
+			{ sources[i][0] = sources[i][0].toUpper(); }
 		}
-		file.close();
 	}
-
-	load(dir + "/" + url + "/settings.ini");
-}
-Site::Site(QString type, QString url, QMap<QString, QString> data)
-	: m_type(type), m_url(url), m_data(data), m_settings(nullptr), m_manager(nullptr), m_cookieJar(nullptr), m_loggedIn(false), m_triedLogin(false), m_loginCheck(false), m_updateVersion("")
-{
-	load();
-}
-
-Site::~Site()
-{
-	m_settings->deleteLater();
-
-	//m_manager->deleteLater();
-	//m_cookieJar->deleteLater();
-}
-
-/**
- * Load or reload the settings.
- */
-void Site::load(QString path)
-{
-	// Delete settings if necessary
-	if (m_settings != nullptr)
-	{ m_settings->deleteLater(); }
-	m_settings = new QSettings(path.isEmpty() ? savePath("sites/"+m_type+"/"+m_url+"/settings.ini") : path, QSettings::IniFormat);
-	m_name = m_settings->value("name", m_url).toString();
+	else
+	{ sources = defaults; }
+	m_apis.clear();
+	for (QString src : sources)
+	{
+		Api *api = m_source->getApi(src == "Regex" ? "Html" : src);
+		if (api != nullptr)
+			m_apis.append(api);
+	}
 
 	// Auth information
 	m_username = m_settings->value("auth/pseudo", "").toString();
@@ -164,7 +81,35 @@ void Site::load(QString path)
 		}
 	}
 	if (m_cookieJar != nullptr)
-	{ resetCookieJar(); }
+		resetCookieJar();
+}
+
+Site::~Site()
+{
+	m_settings->deleteLater();
+}
+
+
+/**
+ * Initialize the network manager.
+ */
+void Site::initManager()
+{
+	if (m_manager == nullptr)
+	{
+		// Create the access manager and get its slots
+		m_manager = new QNetworkAccessManager(this);
+		connect(m_manager, &QNetworkAccessManager::finished, this, &Site::finished);
+		connect(m_manager, &QNetworkAccessManager::sslErrors, sslErrorHandler);
+
+		// Cache
+		QNetworkDiskCache *diskCache = new QNetworkDiskCache(m_manager);
+		diskCache->setCacheDirectory(savePath("cache/"));
+		m_manager->setCache(diskCache);
+
+		// Cookies
+		resetCookieJar();
+	}
 }
 
 /**
@@ -186,27 +131,6 @@ void Site::resetCookieJar()
 	m_triedLogin = false;
 }
 
-/**
- * Initialize the network manager.
- */
-void Site::initManager()
-{
-	if (m_manager == nullptr)
-	{
-		// Create the access manager and get its slots
-		m_manager = new QNetworkAccessManager(this);
-		connect(m_manager, SIGNAL(finished(QNetworkReply*)), this, SIGNAL(finished(QNetworkReply*)));
-		connect(m_manager, SIGNAL(sslErrors(QNetworkReply*,QList<QSslError>)), this, SLOT(sslErrorHandler(QNetworkReply*,QList<QSslError>)));
-
-		// Cache
-		QNetworkDiskCache *diskCache = new QNetworkDiskCache(m_manager);
-		diskCache->setCacheDirectory(savePath("cache/"));
-		m_manager->setCache(diskCache);
-
-		// Cookies
-		resetCookieJar();
-	}
-}
 
 /**
  * Try to log into the website.
@@ -246,9 +170,7 @@ void Site::login(bool force)
 			else
 			{
 				QUrl url = fixUrl(m_settings->value("login/url", "").toString());
-				qDebug() << url;
 				url.setQuery(query);
-				qDebug() << url;
 
 				QNetworkRequest request(url);
 				request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, CACHE_POLICY);
@@ -283,6 +205,7 @@ void Site::loginFinished()
 
 	emit loggedIn(this, m_loggedIn ? LoginSuccess : LoginError);
 }
+
 
 QNetworkRequest Site::makeRequest(QUrl url, Page *page, QString ref, Image *img)
 {
@@ -407,109 +330,30 @@ QNetworkReply *Site::getRequest(QNetworkRequest request)
 	#endif
 }
 
-/**
- * Log SSL errors in debug mode only.
- *
- * @param qnr		The network reply who generated the SSL errors
- * @param errors	The list of SSL errors that occured
- */
-void Site::sslErrorHandler(QNetworkReply* qnr, QList<QSslError> errors)
-{
-	#ifdef QT_DEBUG
-		qDebug() << errors;
-	#else
-		Q_UNUSED(errors);
-	#endif
-	qnr->ignoreSslErrors();
-}
-
-/**
- * Called when a reply is finished.
- *
- * @param r	The finished reply
- */
-void Site::finishedReply(QNetworkReply *r)
-{
-	if (r != m_loginReply)
-		emit finished(r);
-}
-
-/**
- * Check if an update is available for this source's model file.
- */
-void Site::checkForUpdates()
-{
-	QString path = m_settings->value("models", "https://raw.githubusercontent.com/Bionus/imgbrd-grabber/master/release/sites/").toString();
-	QString url = path + m_type + "/model.xml";
-
-	initManager();
-
-	m_updateReply = get(QUrl(url));
-	connect(m_updateReply, SIGNAL(finished()), this, SLOT(checkForUpdatesDone()));
-}
-
-/**
- * Called when the update check is finished.
- */
-void Site::checkForUpdatesDone()
-{
-	QString source = m_updateReply->readAll();
-	if (source.startsWith("<?xml"))
-	{
-		QFile current(savePath("sites/"+m_type+"/model.xml"));
-		if (current.open(QFile::ReadOnly))
-		{
-			QString compare = current.readAll();
-			current.close();
-
-			if (compare != source)
-			{ m_updateVersion = VERSION; }
-		}
-	}
-	emit checkForUpdatesFinished(this);
-}
 
 QList<Site*> Site::getSites(QStringList sources)
 {
-	QMap<QString, Site*> *sites = Site::getAllSites();
+	QMap<QString, Site*> sites = Site::getAllSites();
 
 	QList<Site*> ret;
 	for (QString source : sources)
-	{
-		if (sites->contains(source))
-		{ ret.append(sites->value(source)); }
-	}
+		if (sites.contains(source))
+			ret.append(sites.value(source));
 
 	return ret;
 }
-QMap<QString, Site*> *Site::getAllSites()
+QMap<QString, Site*> Site::getAllSites()
 {
-	if (g_allSites != Q_NULLPTR)
-		return g_allSites;
+	QMap<QString, Site*> ret;
 
-	QMap<QString, Site*> *stes = new QMap<QString, Site*>();
-	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
-	QStringList dirs = QDir(savePath("sites")).entryList(QDir::Dirs | QDir::NoDotAndDotDot);
+	QList<Source*> *sources = Source::getAllSources();
+	for (Source *source : *sources)
+		for (Site *site : source->getSites())
+			ret.insert(site->url(), site);
 
-	for (QString dir : dirs)
-	{
-		QFile f(savePath("sites/"+dir+"/sites.txt"));
-		if (f.open(QIODevice::ReadOnly | QIODevice::Text))
-		{
-			while (!f.atEnd())
-			{
-				QString line = f.readLine().trimmed();
-				if (line.isEmpty())
-					continue;
-
-				stes->insert(line, new Site(&settings, savePath("sites/"+dir), line));
-			}
-		}
-	}
-
-	g_allSites = stes;
-	return g_allSites;
+	return ret;
 }
+
 
 void Site::loadTags(int page, int limit)
 {
@@ -533,8 +377,7 @@ void Site::finishedTags()
 		{
 			QMap<QString, QVariant> sc = sourc.at(id).toMap();
 			int cat = sc.value("category").toInt();
-			tags.append(Tag(m_settings,
-							sc.value("name").toString(),
+			tags.append(Tag(sc.value("name").toString(),
 							cat == 0 ? "general" : (cat == 1 ? "artist" : (cat == 3 ? "copyright" : "character")),
 							sc.value("post_count").toInt(),
 							sc.value("related_tags").toString().split(' ')));
@@ -543,18 +386,16 @@ void Site::finishedTags()
 	emit finishedLoadingTags(tags);
 }
 
-bool Site::contains(QString what)	{ return m_data.contains(what);	}
-QString Site::value(QString what)	{ return m_data.value(what);	}
-
 QVariant Site::setting(QString key, QVariant def)	{ return m_settings->value(key, def); }
 QSettings	*Site::settings()						{ return m_settings; }
 
 QString Site::name()			{ return m_name;			}
 QString Site::url()				{ return m_url;				}
 QString Site::type()			{ return m_type;			}
-QString Site::updateVersion()	{ return m_updateVersion;	}
 QString Site::username()		{ return m_username;		}
 QString Site::password()		{ return m_password;		}
+Source *Site::getSource() const	{ return m_source;			}
+QList<Api*> Site::getApis() const	{ return m_apis;		}
 
 void Site::setUsername(QString username)	{ m_username = username;	}
 void Site::setPassword(QString password)	{ m_password = password;	}
@@ -574,13 +415,13 @@ QUrl Site::fixUrl(QString url, QUrl old)
 	if (url.startsWith("//"))
 	{ return QUrl(protocol + ":" + url); }
 	if (url.startsWith("/"))
-	{ return QUrl(protocol + "://" + m_data.value("Url") + url); }
+	{ return QUrl(protocol + "://" + m_url + url); }
 
 	if (!url.startsWith("http"))
 	{
 		if (old.isValid())
 		{ return old.resolved(QUrl(url)); }
-		return QUrl(protocol + "://" + m_data.value("Url") + "/" + url);
+		return QUrl(protocol + "://" + m_url + "/" + url);
 	}
 
 	return QUrl(url);
@@ -589,4 +430,18 @@ QUrl Site::fixUrl(QString url, QUrl old)
 QList<QNetworkCookie> Site::cookies()
 {
 	return m_cookies;
+}
+
+
+bool Site::contains(QString key) const
+{
+	if (m_apis.isEmpty())
+		return false;
+	return m_apis.first()->contains(key);
+}
+QString Site::value(QString key) const
+{
+	if (m_apis.isEmpty())
+		return QString();
+	return m_apis.first()->value(key);
 }

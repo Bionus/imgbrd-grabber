@@ -48,6 +48,39 @@ void FunctionsTest::testSetExtension()
 	QCOMPARE(setExtension("http://test.com/file.jpg?toto=1", "png"), QString("http://test.com/file.png?toto=1"));
 }
 
+void FunctionsTest::testLevenshtein()
+{
+	QCOMPARE(levenshtein("", ""), 0);
+	QCOMPARE(levenshtein("1", "1"), 0);
+	QCOMPARE(levenshtein("12", "12"), 0);
+
+	QCOMPARE(levenshtein("", "1"), 1);
+	QCOMPARE(levenshtein("", "12"), 2);
+	QCOMPARE(levenshtein("1", ""), 1);
+	QCOMPARE(levenshtein("12", ""), 2);
+
+	QCOMPARE(levenshtein("password", "password1"), 1);
+	QCOMPARE(levenshtein("password", "assword"), 1);
+
+	QCOMPARE(levenshtein("password", "Xassword"), 1);
+	QCOMPARE(levenshtein("password", "passXord"), 1);
+
+	QCOMPARE(levenshtein("12345678", "23456781"), 2);
+	QCOMPARE(levenshtein("12345678", "34567812"), 4);
+	QCOMPARE(levenshtein("12345678", "45678123"), 6);
+	QCOMPARE(levenshtein("12345678", "56781234"), 8);
+	QCOMPARE(levenshtein("12345678", "67812345"), 6);
+	QCOMPARE(levenshtein("12345678", "78123456"), 4);
+	QCOMPARE(levenshtein("12345678", "81234567"), 2);
+
+	QCOMPARE(levenshtein("123", "321"), 2);
+	QCOMPARE(levenshtein("1234", "4321"), 4);
+	QCOMPARE(levenshtein("12345", "54321"), 4);
+	QCOMPARE(levenshtein("123456", "654321"), 6);
+	QCOMPARE(levenshtein("1234567", "7654321"), 6);
+	QCOMPARE(levenshtein("12345678", "87654321"), 8);
+}
+
 
 void FunctionsTest::assertFixFilename(int platform, QString filename, QString path, QString expected)
 {

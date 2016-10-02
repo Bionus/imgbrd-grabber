@@ -8,7 +8,8 @@
 
 
 
-SearchWindow::SearchWindow(QString tags, QWidget *parent) : QDialog(parent), ui(new Ui::SearchWindow)
+SearchWindow::SearchWindow(QString tags, Profile *profile, QWidget *parent)
+	: QDialog(parent), ui(new Ui::SearchWindow)
 {
 	ui->setupUi(this);
 
@@ -23,11 +24,10 @@ SearchWindow::SearchWindow(QString tags, QWidget *parent) : QDialog(parent), ui(
 		connect(m_calendar, SIGNAL(activated(QDate)), m_calendar, SLOT(close()));
 	connect(ui->buttonCalendar, SIGNAL(clicked()), m_calendar, SLOT(show()));
 
-	QList<Favorite> favorites = loadFavorites();
 	QStringList favs;
-	for (Favorite fav : favorites)
+	for (Favorite fav : profile->getFavorites())
 		favs.append(fav.getName());
-	m_tags = new TextEdit(favs, this);
+	m_tags = new TextEdit(profile, this);
 		m_tags->setContextMenuPolicy(Qt::CustomContextMenu);
 		QStringList completion;
 			QFile words("words.txt");

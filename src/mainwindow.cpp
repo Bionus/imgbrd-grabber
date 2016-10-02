@@ -36,16 +36,14 @@
 #define DONE()			logUpdate(QObject::tr(" Fait"))
 #define DIR_SEPARATOR	QDir::toNativeSeparators("/")
 
-extern QMap<QString,QString> _md5;
-
 
 
 mainWindow::mainWindow(QString program, QStringList tags, QMap<QString,QString> params)
-	: ui(new Ui::mainWindow), m_currentFav(-1), m_downloads(0), m_loaded(false), m_getAll(false), m_program(program), m_tags(tags), m_batchAutomaticRetries(0), m_showLog(true)
+	: ui(new Ui::mainWindow), m_profile(new Profile(savePath())), m_favorites(m_profile->getFavorites()), m_downloads(0), m_loaded(false), m_getAll(false), m_program(program), m_tags(tags), m_batchAutomaticRetries(0), m_showLog(true)
 { }
 void mainWindow::init()
 {
-	m_settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
+	m_settings = m_profile->getSettings();
 	bool crashed = m_settings->value("crashed", false).toBool();
 
 	m_settings->setValue("crashed", true);
@@ -63,8 +61,6 @@ void mainWindow::init()
 	log(tr("Chemin : %1").arg(qApp->applicationDirPath()));
 	log(tr("Chargement des préférences depuis <a href=\"file:///%1\">%1</a>").arg(savePath("settings.ini")));
 
-	loadMd5s();
-
 	tabifyDockWidget(ui->dock_internet, ui->dock_wiki);
 	tabifyDockWidget(ui->dock_wiki, ui->dock_kfl);
 	tabifyDockWidget(ui->dock_kfl, ui->dock_favorites);
@@ -76,7 +72,7 @@ void mainWindow::init()
 	ui->menuView->addAction(ui->dock_favorites->toggleViewAction());
 	ui->menuView->addAction(ui->dockOptions->toggleViewAction());
 
-	m_favorites = loadFavorites();
+	m_favorites = m_profile->getFavorites();
 
 	if (m_settings->value("Proxy/use", false).toBool())
 	{
@@ -186,7 +182,7 @@ void mainWindow::init()
 	}
 
 	// Favorites tab
-	m_favoritesTab = new favoritesTab(m_tabs.size(), &m_sites, m_favorites, this);
+	m_favoritesTab = new favoritesTab(m_tabs.size(), &m_sites, m_profile, this);
 	connect(m_favoritesTab, SIGNAL(batchAddGroup(QStringList)), this, SLOT(batchAddGroup(QStringList)));
 	connect(m_favoritesTab, SIGNAL(batchAddUnique(QMap<QString,QString>)), this, SLOT(batchAddUnique(QMap<QString,QString>)));
 	connect(m_favoritesTab, SIGNAL(changed(searchTab*)), this, SLOT(updateTabs()));
@@ -213,8 +209,6 @@ void mainWindow::init()
 	int m = sizes.size() > ui->tableBatchGroups->columnCount() ? ui->tableBatchGroups->columnCount() : sizes.size();
 	for (int i = 0; i < m; i++)
 	{ ui->tableBatchGroups->horizontalHeader()->resizeSection(i, sizes.at(i).toInt()); }
-
-	Commands::get()->init(m_settings);
 
 	updateFavorites(true);
 	updateKeepForLater();
@@ -249,26 +243,25 @@ void mainWindow::initialLoginsFinished()
 
 void mainWindow::loadSites()
 {
-	QMap<QString, Site*> *sites = Site::getAllSites();
+	QMap<QString, Site*> sites = Site::getAllSites();
 
 	QStringList current = m_sites.keys();
-	QStringList news = sites->keys();
+	QStringList news = sites.keys();
 
-	for (int i = 0; i < sites->size(); ++i)
+	for (int i = 0; i < sites.size(); ++i)
 	{
 		QString k = news[i];
 		if (!current.contains(k))
-		{ m_sites.insert(k, sites->value(k)); }
-		else
-		{ delete sites->value(k); }
+		{ m_sites.insert(k, sites.value(k)); }
+		/*else
+		{ delete sites->value(k); }*/
 	}
-	delete sites;
 }
 
 mainWindow::~mainWindow()
 {
-	m_settings->deleteLater();
 	qDeleteAll(m_sites);
+	delete m_profile;
 	delete ui;
 }
 
@@ -284,7 +277,7 @@ void mainWindow::focusSearch()
 void mainWindow::onFirstLoad()
 {
 	// Save all default settings
-	optionsWindow *ow = new optionsWindow(this);
+	optionsWindow *ow = new optionsWindow(m_profile, this);
 	ow->save();
 	ow->deleteLater();
 
@@ -356,7 +349,7 @@ void mainWindow::onFirstLoad()
 	}
 
 	// Open startup window
-	startWindow *swin = new startWindow(&m_sites, this);
+	startWindow *swin = new startWindow(&m_sites, m_profile, this);
 	connect(swin, SIGNAL(languageChanged(QString)), this, SLOT(loadLanguage(QString)));
 	connect(swin, &startWindow::settingsChanged, this, &mainWindow::on_buttonInitSettings_clicked);
 	connect(swin, &startWindow::sourceChanged, this, &mainWindow::setSource);
@@ -365,7 +358,7 @@ void mainWindow::onFirstLoad()
 
 int mainWindow::addTab(QString tag, bool background)
 {
-	tagTab *w = new tagTab(m_tabs.size(), &m_sites, m_favorites, this);
+	tagTab *w = new tagTab(m_tabs.size(), &m_sites, m_profile, this);
 	this->addSearchTab(w, background);
 
 	if (!tag.isEmpty())
@@ -376,7 +369,7 @@ int mainWindow::addTab(QString tag, bool background)
 }
 int mainWindow::addPoolTab(int pool, QString site)
 {
-	poolTab *w = new poolTab(m_tabs.size(), &m_sites, m_favorites, this);
+	poolTab *w = new poolTab(m_tabs.size(), &m_sites, m_profile, this);
 	this->addSearchTab(w);
 
 	if (!site.isEmpty())
@@ -521,7 +514,7 @@ void mainWindow::setTags(QList<Tag> tags, searchTab *from)
 	{
 		if (!text.isEmpty())
 			text += "<br/>";
-		text += tag.stylished(m_favorites, QStringList(), QStringList(), true);
+		text += tag.stylished(m_profile, QStringList(), QStringList(), true);
 	}
 
 	QAffiche *taglabel = new QAffiche(QVariant(), 0, QColor(), this);
@@ -828,7 +821,7 @@ void mainWindow::addGroup()
 {
 	QString selected = getSelectedSiteOrDefault()->name();
 
-	AddGroupWindow *wAddGroup = new AddGroupWindow(selected, m_sites.keys(), m_favorites, this);
+	AddGroupWindow *wAddGroup = new AddGroupWindow(selected, m_sites.keys(), m_profile, this);
 	connect(wAddGroup, SIGNAL(sendData(QStringList)), this, SLOT(batchAddGroup(QStringList)));
 	wAddGroup->show();
 }
@@ -836,7 +829,7 @@ void mainWindow::addUnique()
 {
 	QString selected = getSelectedSiteOrDefault()->name();
 
-	AddUniqueWindow *wAddUnique = new AddUniqueWindow(selected, m_sites, this);
+	AddUniqueWindow *wAddUnique = new AddUniqueWindow(selected, m_sites, m_profile, this);
 	connect(wAddUnique, SIGNAL(sendData(QMap<QString,QString>)), this, SLOT(batchAddUnique(QMap<QString,QString>)));
 	wAddUnique->show();
 }
@@ -860,7 +853,7 @@ void mainWindow::updateFavoritesDock()
 	QStringList assoc = QStringList() << "name" << "note" << "lastviewed";
 	QString order = assoc[qMax(ui->comboOrderFav->currentIndex(), 0)];
 	bool reverse = (ui->comboAscFav->currentIndex() == 1);
-	m_favorites = loadFavorites();
+
 	if (order == "note")
 	{ qSort(m_favorites.begin(), m_favorites.end(), sortByNote); }
 	else if (order == "lastviewed")
@@ -881,7 +874,7 @@ void mainWindow::updateFavoritesDock()
 }
 void mainWindow::updateKeepForLater()
 {
-	QStringList kfl = loadViewItLater();
+	QStringList kfl = m_profile->getKeptForLater();
 
 	clearLayout(ui->dockKflScrollLayout);
 
@@ -1006,6 +999,7 @@ void mainWindow::closeEvent(QCloseEvent *e)
 		m_settings->setValue("crashed", false);
 		m_settings->sync();
 		QFile::copy(m_settings->fileName(), savePath("old/settings."+QString(VERSION)+".ini"));
+		m_profile->sync();
 	DONE();
 	m_loaded = false;
 
@@ -1017,7 +1011,7 @@ void mainWindow::options()
 {
 	log(tr("Ouverture de la fenêtre des options..."));
 
-	optionsWindow *options = new optionsWindow(this);
+	optionsWindow *options = new optionsWindow(m_profile, this);
 	connect(options, SIGNAL(languageChanged(QString)), this, SLOT(loadLanguage(QString)));
 	connect(options, &optionsWindow::settingsChanged, this, &mainWindow::on_buttonInitSettings_clicked);
 	connect(options, &QDialog::accepted, this, &mainWindow::optionsClosed);
@@ -1158,7 +1152,7 @@ void mainWindow::getAll(bool all)
 				tdl.append(row);
 				int i = row;
 				Site *site = m_sites[m_batchs.at(i).value("site")];
-				m_getAllRemaining.append(new Image(site, m_batchs.at(i), new Page(site, m_sites.values(), m_batchs.at(i).value("tags").split(" "), 1, 1, QStringList(), false, this)));
+				m_getAllRemaining.append(new Image(site, m_batchs.at(i), m_profile, new Page(site, m_sites.values(), m_batchs.at(i).value("tags").split(" "), 1, 1, QStringList(), false, this)));
 			}
 		}
 	}
@@ -1179,7 +1173,7 @@ void mainWindow::getAll(bool all)
 			else
 			{
 				Site *site = m_sites[m_batchs.at(i).value("site")];
-				m_getAllRemaining.append(new Image(site, m_batchs.at(i), new Page(site, m_sites.values(), m_batchs.at(i).value("tags").split(" "), 1, 1, QStringList(), false, this)));
+				m_getAllRemaining.append(new Image(site, m_batchs.at(i), m_profile, new Page(site, m_sites.values(), m_batchs.at(i).value("tags").split(" "), 1, 1, QStringList(), false, this)));
 			}
 		}
 	}
@@ -1189,7 +1183,7 @@ void mainWindow::getAll(bool all)
 	for (int i = 0; i < ui->tableBatchGroups->rowCount(); i++)
 	{ ui->tableBatchGroups->item(i, 0)->setIcon(getIcon(":/images/colors/black.png")); }
 	m_allow = true;
-	Commands::get()->before();
+	m_profile->getCommands().before();
 	selected = ui->tableBatchGroups->selectedItems();
 	count = selected.size();
 	m_batchDownloading.clear();
@@ -1654,7 +1648,7 @@ void mainWindow::getAllGetImage(Image* img)
 
 	// Action
 	QString whatToDo = m_settings->value("Save/md5Duplicates", "save").toString();
-	QString md5Duplicate = md5Exists(img->md5());
+	QString md5Duplicate = m_profile->md5Exists(img->md5());
 	bool next = true;
 	if (md5Duplicate.isEmpty() || whatToDo == "save")
 	{
@@ -1687,7 +1681,7 @@ void mainWindow::getAllGetImage(Image* img)
 				m_getAllDownloaded++;
 				log(tr("Déplacement depuis <a href=\"file:///%1\">%1</a> vers <a href=\"file:///%2\">%2</a>").arg(md5Duplicate).arg(fp));
 				QFile::rename(md5Duplicate, fp);
-				setMd5(img->md5(), fp);
+				m_profile->setMd5(img->md5(), fp);
 
 				if (m_settings->value("Save/keepDate", true).toBool())
 					setFileCreationDate(fp, img->createdAt());
@@ -1785,7 +1779,7 @@ void mainWindow::saveImage(Image *img, QNetworkReply *reply, QString path, QStri
 			QString fp = QDir::toNativeSeparators(path);
 
 			QString whatToDo = m_settings->value("Save/md5Duplicates", "save").toString();
-			QString md5Duplicate = md5Exists(img->md5());
+			QString md5Duplicate = m_profile->md5Exists(img->md5());
 			if (md5Duplicate.isEmpty() || whatToDo == "save")
 			{
 				// Create the reception's directory
@@ -1816,7 +1810,7 @@ void mainWindow::saveImage(Image *img, QNetworkReply *reply, QString path, QStri
 					f.close();
 
 					img->setData(data);
-					addMd5(img->md5(), fp);
+					m_profile->addMd5(img->md5(), fp);
 
 					// Save info to a text file
 					if (m_settings->value("Textfile/activate", false).toBool())
@@ -1852,9 +1846,12 @@ void mainWindow::saveImage(Image *img, QNetworkReply *reply, QString path, QStri
 				}
 
 				// Execute commands
-				for (int i = 0; i < img->tags().count(); i++)
-				{ Commands::get()->tag(img->tags().at(i)); }
-				Commands::get()->image(*img, fp);
+				Commands &commands = m_profile->getCommands();
+				for (Tag tag : img->tags())
+				{ commands.tag(*img, tag, false); }
+				commands.image(*img, fp);
+				for (Tag tag : img->tags())
+				{ commands.tag(*img, tag, true); }
 
 				if (m_settings->value("Save/keepDate", true).toBool())
 					setFileCreationDate(fp, img->createdAt());
@@ -1994,7 +1991,7 @@ void mainWindow::getAllFinished()
 	// End of batch download
 	if (reponse != QMessageBox::Yes)
 	{
-		Commands::get()->after();
+		m_profile->getCommands().after();
 		ui->widgetDownloadButtons->setEnabled(true);
 		log(tr("Téléchargement groupé terminé"));
 	}
@@ -2271,7 +2268,6 @@ void mainWindow::on_buttonInitSettings_clicked()
 	ui->comboFilename->setCurrentText(m_settings->value("Save/filename_real").toString());
 
 	// Save settings
-	Commands::get()->init(m_settings);
 	saveSettings();
 }
 void mainWindow::updateCompleters()

@@ -16,10 +16,9 @@ QList<Image*> IntegrationTestSuite::getImages(QString site, QString source, QStr
 	QDir().mkpath("tests/resources/sites/" + site + "/" + source);
 	QFile::remove("tests/resources/sites/" + site +"/model.xml");
 	QFile::copy("release/sites/" + site +"/model.xml", "tests/resources/sites/" + site +"/model.xml");
+	QFile::remove("tests/resources/sites/" + site +"/" + source + "/settings.ini");
 	if (QFile::exists("release/sites/" + site +"/" + source + "/settings.ini"))
 	{ QFile::copy("release/sites/" + site +"/" + source + "/settings.ini", "tests/resources/sites/" + site +"/" + source + "/settings.ini"); }
-	else
-	{ QFile::remove("tests/resources/sites/" + site +"/" + source + "/settings.ini"); }
 
 	QSettings settings("tests/resources/sites/" + site +"/" + source + "/settings.ini", QSettings::IniFormat);
 	settings.setValue("download/throttle_retry", 0);
@@ -30,7 +29,7 @@ QList<Image*> IntegrationTestSuite::getImages(QString site, QString source, QStr
 	settings.setValue("sources/source_1", format);
 
 	QList<Site*> sites;
-	sites.append(new Site(m_settings, "tests/resources/sites/" + site, source));
+	sites.append(new Site(source, new Source("tests/resources/sites/" + site)));
 
 	QList<Image*> result;
 	m_downloader = new Downloader(tags.split(' '),
@@ -86,7 +85,7 @@ QList<Tag> IntegrationTestSuite::getPageTags(QString site, QString source, QStri
 	settings.setValue("sources/source_1", format);
 
 	QList<Site*> sites;
-	sites.append(new Site(m_settings, "tests/resources/sites/" + site, source));
+	sites.append(new Site(source, new Source("tests/resources/sites/" + site)));
 
 	QList<Tag> result;
 	m_downloader = new Downloader(tags.split(' '),

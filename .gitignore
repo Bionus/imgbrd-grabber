@@ -4,6 +4,7 @@ release/sites/*/*/settings.ini
 tests/resources/md5s.txt
 tests/resources/settings.ini
 tests/resources/settings.ini.*
+tests/resources/*.txt
 tests/resources/thumbs/
 tests/resources/tmp/
 tests/resources/sites/

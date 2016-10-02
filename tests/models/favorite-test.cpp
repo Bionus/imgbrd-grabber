@@ -3,16 +3,25 @@
 #include "functions.h"
 
 
+void FavoriteTest::testBasicConstructor()
+{
+	Favorite fav("test");
+
+	QCOMPARE(fav.getName(), QString("test"));
+	QCOMPARE(fav.getNote(), 50);
+	QVERIFY(fav.getLastViewed() > QDateTime::currentDateTime().addSecs(-60) && fav.getLastViewed() < QDateTime::currentDateTime().addSecs(60));
+}
+
 void FavoriteTest::testGetName()
 {
-	QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:sss");
+	QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:ss");
 	Favorite fav("fate/stay_night", 50, date);
 
 	QCOMPARE(fav.getName(), QString("fate/stay_night"));
 }
 void FavoriteTest::testGetNameClean()
 {
-	QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:sss");
+	QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:ss");
 	Favorite fav("fate/stay_night", 50, date);
 
 	QCOMPARE(fav.getName(true), QString("fatestay_night"));
@@ -20,14 +29,14 @@ void FavoriteTest::testGetNameClean()
 
 void FavoriteTest::testGetNote()
 {
-	QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:sss");
+	QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:ss");
 	Favorite fav("fate/stay_night", 50, date);
 
 	QCOMPARE(fav.getNote(), 50);
 }
 void FavoriteTest::testSetNote()
 {
-	QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:sss");
+	QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:ss");
 	Favorite fav("fate/stay_night", 50, date);
 	fav.setNote(100);
 
@@ -36,14 +45,15 @@ void FavoriteTest::testSetNote()
 
 void FavoriteTest::testGetLastViewed()
 {
-	QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:sss");
+	QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:ss");
 	Favorite fav("fate/stay_night", 50, date);
 
 	QCOMPARE(fav.getLastViewed(), date);
+	QCOMPARE(fav.getLastViewed().date().day(), 2);
 }
 void FavoriteTest::testSetLastViewed()
 {
-	QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:sss");
+	QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:ss");
 	Favorite fav("fate/stay_night", 50, QDateTime::currentDateTime());
 	fav.setLastViewed(date);
 
@@ -52,14 +62,14 @@ void FavoriteTest::testSetLastViewed()
 
 void FavoriteTest::testGetImagePath()
 {
-	QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:sss");
+	QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:ss");
 	Favorite fav("fate/stay_night", 50, date, "test/test.jpg");
 
 	QCOMPARE(fav.getImagePath(), QString("test/test.jpg"));
 }
 void FavoriteTest::testSetImagePath()
 {
-	QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:sss");
+	QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:ss");
 	Favorite fav("fate/stay_night", 50, date, "test/test.jpg");
 	fav.setImagePath("test/newimage.jpg");
 
@@ -68,7 +78,7 @@ void FavoriteTest::testSetImagePath()
 
 void FavoriteTest::testEquals()
 {
-	QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:sss");
+	QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:ss");
 	Favorite fav1("tag", 50, date);
 	Favorite fav2("tag", 100, QDateTime::currentDateTime());
 
@@ -77,7 +87,7 @@ void FavoriteTest::testEquals()
 }
 void FavoriteTest::testEqualsAll()
 {
-	QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:sss");
+	QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:ss");
 	Favorite fav1("tag", 50, date);
 	Favorite fav2("tag", 50, date);
 
@@ -86,7 +96,7 @@ void FavoriteTest::testEqualsAll()
 }
 void FavoriteTest::testEqualsCase()
 {
-	QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:sss");
+	QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:ss");
 	Favorite fav1("tag", 50, date);
 	Favorite fav2("TAg", 50, date);
 
@@ -96,7 +106,7 @@ void FavoriteTest::testEqualsCase()
 
 void FavoriteTest::testNotEquals()
 {
-	QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:sss");
+	QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:ss");
 	Favorite fav1("tag1", 50, date);
 	Favorite fav2("tag2", 50, date);
 
@@ -111,7 +121,7 @@ void FavoriteTest::testSetImageFirst()
 	if (file.exists())
 		file.remove();
 
-	QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:sss");
+	QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:ss");
 	Favorite fav("tag1", 50, date);
 
 	QPixmap img(QDir::currentPath() + "/tests/resources/image_200x200.png");
@@ -125,7 +135,7 @@ void FavoriteTest::testGetImageNotExists()
 	if (file.exists())
 		file.remove();
 
-	QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:sss");
+	QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:ss");
 	Favorite fav("tag1", 50, date);
 
 	QPixmap img = fav.getImage();
@@ -138,7 +148,7 @@ void FavoriteTest::testGetImageBig()
 	if (file.exists())
 		file.remove();
 
-	QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:sss");
+	QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:ss");
 	Favorite fav("tag1", 50, date);
 
 	QPixmap img(QDir::currentPath() + "/tests/resources/image_200x200.png");
@@ -154,7 +164,7 @@ void FavoriteTest::testGetImageSmall()
 	if (file.exists())
 		file.remove();
 
-	QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:sss");
+	QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:ss");
 	Favorite fav("tag1", 50, date);
 
 	QPixmap img(QDir::currentPath() + "/tests/resources/image_1x1.png");
@@ -170,7 +180,7 @@ void FavoriteTest::testGetImageResize()
 	if (file.exists())
 		file.remove();
 
-	QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:sss");
+	QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:ss");
 	Favorite fav("tag1", 50, date, QDir::currentPath() + "/tests/resources/image_200x200.png");
 	QPixmap actual = fav.getImage();
 
@@ -179,5 +189,27 @@ void FavoriteTest::testGetImageResize()
 	QCOMPARE(actual.size(), QSize(150, 150));
 }
 #endif
+
+void FavoriteTest::testToString()
+{
+	QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:ss");
+	Favorite fav("fate/stay_night", 50, date);
+
+	QCOMPARE(fav.toString(), QString("fate/stay_night|50|2016-07-02T16:35:12"));
+}
+
+void FavoriteTest::testFromString()
+{
+	QString from = "fate/stay_night|50|2016-07-02T16:35:12";
+
+	QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:ss");
+	Favorite expected("fate/stay_night", 50, date);
+	Favorite actual = Favorite::fromString("", from);
+
+	QCOMPARE(actual.getName(), expected.getName());
+	QCOMPARE(actual.getNote(), expected.getNote());
+	QCOMPARE(actual.getLastViewed(), expected.getLastViewed());
+}
+
 
 static FavoriteTest instance;

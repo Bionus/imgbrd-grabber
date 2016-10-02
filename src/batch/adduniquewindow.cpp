@@ -14,7 +14,8 @@
  * @param	favorites	List of favorites tags, needed for coloration
  * @param	parent		The parent window
  */
-AddUniqueWindow::AddUniqueWindow(QString selected, QMap<QString,Site*> sites, QWidget *parent) : QDialog(parent), ui(new Ui::AddUniqueWindow), m_sites(sites)
+AddUniqueWindow::AddUniqueWindow(QString selected, QMap<QString,Site*> sites, Profile *profile, QWidget *parent)
+	: QDialog(parent), ui(new Ui::AddUniqueWindow), m_sites(sites), m_profile(profile)
 {
 	ui->setupUi(this);
 
@@ -72,7 +73,7 @@ void AddUniqueWindow::ok(bool close)
 		details.insert("md5", ui->lineMd5->text());
 		details.insert("website", ui->comboSites->currentText());
 		details.insert("site", QString::number((qintptr)m_sites[ui->comboSites->currentText()]));
-		Image *img = new Image(site, details);
+		Image *img = new Image(site, details, m_profile);
 		img->loadDetails();
 		connect(img, SIGNAL(finishedLoadingTags(Image*)), this, SLOT(addImage(Image*)));
 	}

@@ -6,19 +6,57 @@
 void SiteTest::init()
 {
 	QDir().mkpath("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us");
+	QFile::remove("tests/resources/sites/Danbooru (2.0)/model.xml");
+	QFile::remove("tests/resources/sites/Danbooru (2.0)/sites.txt");
+	QFile::remove("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/settings.ini");
 	QFile::copy("release/sites/Danbooru (2.0)/model.xml", "tests/resources/sites/Danbooru (2.0)/model.xml");
 	QFile::copy("release/sites/Danbooru (2.0)/sites.txt", "tests/resources/sites/Danbooru (2.0)/sites.txt");
 	QFile::copy("release/sites/Danbooru (2.0)/danbooru.donmai.us/settings.ini", "tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/settings.ini");
 
 	m_settings = new QSettings("tests/resources/settings.ini", QSettings::IniFormat);
-	m_site = new Site(m_settings, "tests/resources/sites/Danbooru (2.0)", "danbooru.donmai.us");}
+	m_source = new Source("tests/resources/sites/Danbooru (2.0)");
+	m_site = new Site("danbooru.donmai.us", m_source);
+}
 
 void SiteTest::cleanup()
 {
 	m_settings->deleteLater();
+	m_source->deleteLater();
 	m_site->deleteLater();
 }
 
+
+void SiteTest::testDefaultApis()
+{
+	QSettings settings("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/settings.ini", QSettings::IniFormat);
+	settings.setValue("sources/usedefault", false);
+	settings.setValue("sources/source_1", "");
+	settings.setValue("sources/source_2", "");
+	settings.setValue("sources/source_3", "");
+	settings.setValue("sources/source_4", "");
+
+	Source source("tests/resources/sites/Danbooru (2.0)");
+	Site site("danbooru.donmai.us", &source);
+
+	QCOMPARE(site.getApis().count(), 3);
+}
+
+void SiteTest::testNoApis()
+{
+	QSettings settings("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/settings.ini", QSettings::IniFormat);
+	settings.setValue("sources/usedefault", false);
+	settings.setValue("sources/source_1", "1");
+	settings.setValue("sources/source_2", "2");
+	settings.setValue("sources/source_3", "3");
+	settings.setValue("sources/source_4", "4");
+
+	Source source("tests/resources/sites/Danbooru (2.0)");
+	Site site("danbooru.donmai.us", &source);
+
+	QCOMPARE(site.getApis().count(), 0);
+	QCOMPARE(site.contains("Urls/Image"), false);
+	QCOMPARE(site.value("Urls/Image"), QString());
+}
 
 void SiteTest::testSetUsername()
 {
@@ -71,14 +109,6 @@ void SiteTest::testGetSites()
 	QCOMPARE(sites.first()->type(), QString("Danbooru (2.0)"));
 }
 
-void SiteTest::testGetAllCached()
-{
-	QMap<QString, Site*> *sites1 = Site::getAllSites();
-	QMap<QString, Site*> *sites2 = Site::getAllSites();
-
-	QCOMPARE(sites1, sites2);
-}
-
 void SiteTest::testLoadTags()
 {
 	// Wait for tags
@@ -106,17 +136,6 @@ void SiteTest::testLoadTags()
 	QCOMPARE(tagsText, QStringList() << "kameji_(tyariri)" << "the_king_of_fighterx_xiv" << "condom_skirt");
 }
 
-void SiteTest::testCheckForUpdates()
-{
-	// Wait for tags
-	QSignalSpy spy(m_site, SIGNAL(checkForUpdatesFinished(Site*)));
-	m_site->checkForUpdates();
-	QVERIFY(spy.wait());
-
-	// Check result
-	QVERIFY(!m_site->updateVersion().isEmpty());
-}
-
 void SiteTest::testCookies()
 {
 	QList<QNetworkCookie> cookies;
@@ -130,8 +149,9 @@ void SiteTest::testCookies()
 	}
 	QSettings siteSettings("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/settings.ini", QSettings::IniFormat);
 	siteSettings.setValue("cookies", cookiesVariant);
+	siteSettings.sync();
 
-	m_site->load("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/settings.ini");
+	m_site->loadConfig();
 	QList<QNetworkCookie> siteCookies(m_site->cookies());
 
 	QCOMPARE(siteCookies.count(), cookies.count());
@@ -146,7 +166,7 @@ void SiteTest::testLoginNone()
 	// Prepare settings
 	QSettings siteSettings("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/settings.ini", QSettings::IniFormat);
 	siteSettings.setValue("login/parameter", true);
-	m_site->load("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/settings.ini");
+	m_site->loadConfig();
 
 	// Wait for login
 	QSignalSpy spy(m_site, SIGNAL(loggedIn(Site*, Site::LoginResult)));
@@ -172,11 +192,17 @@ void SiteTest::testLoginGet()
 	siteSettings.setValue("login/password", "password");
 	siteSettings.setValue("login/url", "/session/new");
 	siteSettings.setValue("login/cookie", "_danbooru_session");
-	m_site->load("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/settings.ini");
+	m_site->loadConfig();
 
 	// Wait for login
 	QSignalSpy spy(m_site, SIGNAL(loggedIn(Site*, Site::LoginResult)));
-	QTimer::singleShot(0, m_site, SLOT(login()));
+	QTimer *timer = new QTimer(this);
+	timer->setSingleShot(true);
+	connect(timer, &QTimer::timeout, [=]() {
+		m_site->login(true);
+		timer->deleteLater();
+	});
+	timer->start(0);
 	QVERIFY(spy.wait());
 
 	// Get result
@@ -198,11 +224,17 @@ void SiteTest::testLoginPost()
 	siteSettings.setValue("login/password", "password");
 	siteSettings.setValue("login/url", "/session");
 	siteSettings.setValue("login/cookie", "_danbooru_session");
-	m_site->load("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/settings.ini");
+	m_site->loadConfig();
 
 	// Wait for login
 	QSignalSpy spy(m_site, SIGNAL(loggedIn(Site*, Site::LoginResult)));
-	QTimer::singleShot(0, m_site, SLOT(login()));
+	QTimer *timer = new QTimer(this);
+	timer->setSingleShot(true);
+	connect(timer, &QTimer::timeout, [=]() {
+		m_site->login(true);
+		timer->deleteLater();
+	});
+	timer->start(0);
 	QVERIFY(spy.wait());
 
 	// Get result

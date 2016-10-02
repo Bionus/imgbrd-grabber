@@ -7,21 +7,19 @@
 #include "searchwindow.h"
 
 
-tagTab::tagTab(int id, QMap<QString,Site*> *sites, QList<Favorite> favorites, mainWindow *parent)
-	: searchTab(id, sites, parent), ui(new Ui::tagTab), m_id(id), m_favorites(favorites), m_pagemax(-1), m_lastTags(QString()), m_sized(false), m_from_history(false), m_stop(true), m_history_cursor(0), m_history(QList<QMap<QString,QString> >()), m_modifiers(QStringList())
+tagTab::tagTab(int id, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
+	: searchTab(id, sites, profile, parent), ui(new Ui::tagTab), m_id(id), m_favorites(profile->getFavorites()), m_ignored(profile->getIgnored()), m_pagemax(-1), m_lastTags(QString()), m_sized(false), m_from_history(false), m_stop(true), m_history_cursor(0), m_history(QList<QMap<QString,QString> >()), m_modifiers(QStringList())
 {
 	ui->setupUi(this);
 	ui->widgetMeant->hide();
 	setAttribute(Qt::WA_DeleteOnClose);
 
-	m_ignored = loadIgnored();
-
 	// Search fields
 	QStringList favs;
 	for (Favorite fav : m_favorites)
 		favs.append(fav.getName());
-	m_search = new TextEdit(favs, this);
-	m_postFiltering = new TextEdit(favs, this);
+	m_search = new TextEdit(m_profile, this);
+	m_postFiltering = new TextEdit(m_profile, this);
 		m_search->setContextMenuPolicy(Qt::CustomContextMenu);
 		m_postFiltering->setContextMenuPolicy(Qt::CustomContextMenu);
 		if (m_settings->value("autocompletion", true).toBool())
@@ -122,7 +120,7 @@ void tagTab::updateCheckboxes()
 
 void tagTab::on_buttonSearch_clicked()
 {
-	SearchWindow *sw = new SearchWindow(m_search->toPlainText(), this);
+	SearchWindow *sw = new SearchWindow(m_search->toPlainText(), m_profile, this);
 	connect(sw, SIGNAL(accepted(QString)), this, SLOT(setTags(QString)));
 	sw->show();
 }
@@ -634,7 +632,7 @@ void tagTab::finishedLoadingPreview(Image *img)
 			{ download = true; }
 			else if (reponse == QMessageBox::Open)
 			{
-				zoomWindow *zoom = new zoomWindow(img, img->page()->site(), m_sites, m_parent);
+				zoomWindow *zoom = new zoomWindow(img, img->page()->site(), m_sites, m_profile, m_parent);
 				zoom->show();
 				connect(zoom, SIGNAL(linkClicked(QString)), this, SLOT(setTags(QString)));
 				connect(zoom, SIGNAL(poolClicked(int, QString)), m_parent, SLOT(addPoolTab(int, QString)));
@@ -671,7 +669,7 @@ void tagTab::finishedLoadingPreview(Image *img)
 		l->setCheckable(true);
 		l->setChecked(m_selectedImages.contains(img->url()));
 		l->setToolTip(QString("%1%2%3%4%5%6%7%8")
-					  .arg(img->tags().isEmpty() ? " " : tr("<b>Tags :</b> %1").arg(img->stylishedTags(m_ignored).join(" ")))
+					  .arg(img->tags().isEmpty() ? " " : tr("<b>Tags :</b> %1").arg(img->stylishedTags(m_profile, m_ignored).join(" ")))
 			.arg(img->id() == 0 ? " " : tr("<br/><br/><b>ID :</b> %1").arg(img->id()))
 			.arg(img->rating().isEmpty() ? " " : tr("<br/><b>Classe :</b> %1").arg(img->rating()))
 			.arg(img->hasScore() ? tr("<br/><b>Score :</b> %1").arg(img->score()) : " ")
@@ -712,7 +710,7 @@ void tagTab::webZoom(int id)
 		}
 	}
 
-	zoomWindow *zoom = new zoomWindow(image, image->page()->site(), m_sites, m_parent);
+	zoomWindow *zoom = new zoomWindow(image, image->page()->site(), m_sites, m_profile, m_parent);
 	zoom->show();
 	connect(zoom, SIGNAL(linkClicked(QString)), this, SLOT(setTags(QString)));
 	connect(zoom, SIGNAL(poolClicked(int, QString)), m_parent, SLOT(addPoolTab(int, QString)));
@@ -890,7 +888,7 @@ void tagTab::contextMenu()
 		else
 		{ menu->addAction(QIcon(":/images/icons/add.png"), tr("Ajouter aux favoris"), this, SLOT(favorite())); }
 
-		QStringList vil = loadViewItLater();
+		QStringList &vil = m_profile->getKeptForLater();
 		if (vil.contains(m_link, Qt::CaseInsensitive))
 		{ menu->addAction(QIcon(":/images/icons/remove.png"), tr("Ne pas garder pour plus tard"), this, SLOT(unviewitlater())); }
 		else
@@ -911,21 +909,11 @@ void tagTab::openInNewWindow()
 }
 void tagTab::viewitlater()
 {
-	QStringList vil = loadViewItLater();
-	vil.append(m_link);
-	QFile f(savePath("viewitlater.txt"));
-	f.open(QIODevice::WriteOnly);
-		f.write(vil.join("\r\n").toUtf8());
-	f.close();
+	m_profile->getKeptForLater().append(m_link);
 }
 void tagTab::unviewitlater()
 {
-	QStringList vil = loadViewItLater();
-	vil.removeAll(m_link);
-	QFile f(savePath("viewitlater.txt"));
-	f.open(QIODevice::WriteOnly);
-		f.write(vil.join("\r\n").toUtf8());
-	f.close();
+	m_profile->getKeptForLater().removeAll(m_link);
 }
 
 void tagTab::historyBack()

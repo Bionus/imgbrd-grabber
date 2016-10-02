@@ -7,6 +7,7 @@
 #include <QMap>
 #include "ui/QBouton.h"
 #include "models/image.h"
+#include "models/profile.h"
 
 
 
@@ -17,7 +18,7 @@ class searchTab : public QWidget
 	Q_OBJECT
 
 	public:
-		searchTab(int id, QMap<QString,Site*> *sites, mainWindow *parent);
+		searchTab(int id, QMap<QString, Site*> *sites, Profile *profile, mainWindow *parent);
 		~searchTab();
 		void mouseReleaseEvent(QMouseEvent *e);
 		virtual QList<bool> sources();
@@ -62,6 +63,7 @@ class searchTab : public QWidget
 		void deleted(int);
 
 	protected:
+		Profile				*m_profile;
 		int					m_id, m_lastPage, m_lastPageMaxId, m_lastPageMinId;
 		QMap<QString,Site*>	*m_sites;
 		QList<QBouton*>		m_boutons;

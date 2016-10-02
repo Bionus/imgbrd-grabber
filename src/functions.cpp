@@ -23,7 +23,6 @@
 using namespace std;
 
 extern mainWindow *_mainwindow;
-extern QMap<QString,QString> _md5;
 
 
 
@@ -43,29 +42,37 @@ void error(QWidget *parent, QString error)
 }
 
 /**
- * Sort a list non case-sensitively.
- * @param   sList   The list that will be ordered
+ * Log SSL errors in debug mode only.
+ *
+ * @param qnr		The network reply who generated the SSL errors
+ * @param errors	The list of SSL errors that occured
  */
-void sortNonCaseSensitive(QStringList &sList)
+void sslErrorHandler(QNetworkReply* qnr, QList<QSslError> errors)
 {
-	QMap<QString, QString> strMap;
-	for (QString str : sList)
-	{ strMap.insert( str.toLower(), str); }
-	sList = strMap.values();
+	#ifdef QT_DEBUG
+		qDebug() << errors;
+	#else
+		Q_UNUSED(errors);
+	#endif
+	#ifndef TEST
+		qnr->ignoreSslErrors();
+	#else
+		Q_UNUSED(qnr);
+	#endif
 }
 
 /**
  * Load custom tokens from settings.
  * @return	The map with token names as keys and token tags as values.
  */
-QMap<QString,QStringList> getCustoms()
+QMap<QString, QStringList> getCustoms(QSettings *settings)
 {
 	QMap<QString,QStringList> tokens;
-	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
-	settings.beginGroup("Save/Customs");
-	QStringList keys = settings.childKeys();
+	settings->beginGroup("Save/Customs");
+	QStringList keys = settings->childKeys();
 	for (int i = 0; i < keys.size(); i++)
-	{ tokens.insert(keys.at(i), settings.value(keys.at(i)).toString().split(' ')); }
+	{ tokens.insert(keys.at(i), settings->value(keys.at(i)).toString().split(' ')); }
+	settings->endGroup();
 	return tokens;
 }
 
@@ -73,22 +80,24 @@ QMap<QString,QStringList> getCustoms()
  * Load multiple filenames from settings.
  * @return	The map with token names as keys and token tags as values.
  */
-QMap<QString,QPair<QString,QString>> getFilenames()
+QMap<QString,QPair<QString,QString>> getFilenames(QSettings *settings)
 {
 	QMap<QString,QPair<QString,QString>> tokens;
-	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
-	settings.beginGroup("Filenames");
-	int count = settings.childKeys().count() / 3;
+
+	settings->beginGroup("Filenames");
+	int count = settings->childKeys().count() / 3;
 	for (int i = 0; i < count; i++)
 	{
-		if (settings.contains(QString::number(i) + "_cond"))
+		if (settings->contains(QString::number(i) + "_cond"))
 		{
 			QPair<QString,QString> pair;
-			pair.first = settings.value(QString::number(i) + "_fn").toString();
-			pair.second = settings.value(QString::number(i) + "_dir").toString();
-			tokens.insert(settings.value(QString::number(i) + "_cond").toString(), pair);
+			pair.first = settings->value(QString::number(i) + "_fn").toString();
+			pair.second = settings->value(QString::number(i) + "_dir").toString();
+			tokens.insert(settings->value(QString::number(i) + "_cond").toString(), pair);
 		}
 	}
+	settings->endGroup();
+
 	return tokens;
 }
 
@@ -130,104 +139,6 @@ QDateTime qDateTimeFromString(QString str)
 	return date;
 }
 
-/**
- * Load md5 file and put its content into the _md5 map.
- */
-void loadMd5s()
-{
-	QFile f(savePath("md5s.txt"));
-	if (f.open(QFile::ReadOnly))
-	{
-		QString line;
-		while ((line = f.readLine()) != "")
-			_md5.insert(line.left(32), line.mid(32));
-		f.close();
-	}
-}
-
-/**
- * Save the _md5 map to the md5 file.
- */
-void saveMd5s()
-{
-	QFile f(savePath("md5s.txt"));
-	if (f.open(QFile::WriteOnly | QFile::Truncate))
-	{
-		QStringList md5s = _md5.keys();
-		QStringList paths = _md5.values();
-		for (int i = 0; i < md5s.size(); i++)
-			f.write(QString(md5s[i] + paths[i] + "\n").toUtf8());
-		f.close();
-	}
-}
-
-/**
- * Append a md5 to the md5 file.
- */
-void saveMd5(QString md5, QString path)
-{
-	QFile f(savePath("md5s.txt"));
-	if (f.open(QFile::WriteOnly | QFile::Append))
-	{
-		f.write(QString(md5 + path + "\n").toUtf8());
-		f.close();
-	}
-}
-
-/**
- * Check if a file with this md5 already exists;
- * @param	md5		The md5 that needs to be checked.
- * @return			A QString containing the path to the already existing file, an empty QString if the md5 does not already exists.
- */
-QString md5Exists(QString md5)
-{
-	if (_md5.contains(md5))
-	{
-		if (QFile::exists(_md5[md5]))
-			return _md5[md5];
-
-		removeMd5(md5);
-	}
-	return QString();
-}
-
-/**
- * Adds a md5 to the _md5 map and adds it to the md5 file.
- * @param	md5		The md5 to add.
- * @param	path	The path to the image with this md5.
- */
-void addMd5(QString md5, QString path)
-{
-	_md5.insert(md5, path);
-	saveMd5(md5, path);
-}
-
-/**
- * Set a md5 to the _md5 map changing the file it is pointing to.
- * @param	md5		The md5 to add.
- * @param	path	The path to the image with this md5.
- */
-void setMd5(QString md5, QString path)
-{
-	bool cont = _md5.contains(md5);
-	_md5[md5] = path;
-
-	if (cont)
-		saveMd5s();
-	else
-		saveMd5(md5, path);
-}
-
-/**
- * Removes a md5 from the _md5 map and removes it from the md5 file.
- * @param	md5		The md5 to remove.
- */
-void removeMd5(QString md5)
-{
-	_md5.remove(md5);
-	saveMd5s();
-}
-
 QString getUnit(float *value)
 {
 	QString unit = "o";
@@ -243,72 +154,6 @@ QString getUnit(float *value)
 		{ unit = "Kio"; }
 	}
 	return unit;
-}
-
-/**
- * Load favorites from local file.
- * @return	The list of favorites as Favorite objects
- */
-QList<Favorite> loadFavorites()
-{
-	QList<Favorite> favorites;
-	QFile file(savePath("favorites.txt"));
-	if (file.open(QIODevice::ReadOnly))
-	{
-		QString favs = file.readAll();
-		QStringList wrds = favs.replace("\r\n", "\n").replace("\r", "\n").split("\n");
-		for (int i = 0; i < wrds.count(); i++)
-		{
-			if (!wrds.at(i).isEmpty())
-			{
-				QStringList xp = wrds.at(i).split("|");
-				QString tag = xp.takeFirst();
-				QString path = savePath("thumbs/" + (QString(tag).remove('\\').remove('/').remove(':').remove('*').remove('?').remove('"').remove('<').remove('>').remove('|')) + ".png");
-
-				Favorite fav(tag,
-							 xp.isEmpty() ? 50 : xp.takeFirst().toInt(),
-							 xp.isEmpty() ? QDateTime(QDate(2000, 1, 1), QTime(0, 0, 0, 0)) : QDateTime::fromString(xp.takeFirst(), Qt::ISODate),
-							 QFile::exists(path) ? path : ":/images/noimage.png");
-				favorites.append(fav);
-			}
-		}
-		file.close();
-	}
-	return favorites;
-}
-
-/**
- * Load view it later tags from local file.
- * @return	A QStringList containing tags to view later
- */
-QStringList loadViewItLater()
-{
-	QStringList viewitlater;
-	QFile file(savePath("viewitlater.txt"));
-	if (file.open(QIODevice::ReadOnly))
-	{
-		QString vil = file.readAll();
-		viewitlater = vil.replace("\r\n", "\n").replace("\r", "\n").split("\n");
-		file.close();
-	}
-	return viewitlater;
-}
-
-/**
- * Load ignored tags from local file.
- * @return	A QStringList containing tags
- */
-QStringList loadIgnored()
-{
-	QStringList ignore;
-	QFile file(savePath("ignore.txt"));
-	if (file.open(QIODevice::ReadOnly))
-	{
-		QString vil = file.readAll();
-		ignore = vil.replace("\r\n", "\n").replace("\r", "\n").split("\n");
-		file.close();
-	}
-	return ignore;
 }
 
 /**
@@ -502,6 +347,8 @@ void log(QString l, Log type)
 	#ifndef TEST
 		QString msg = (type == Error ? QObject::tr("<b>Erreur :</b> %1").arg(l) : (type == Warning ? QObject::tr("<b>Attention :</b> %1").arg(l) : (type == Notice ? QObject::tr("<b>Notice :</b> %1").arg(l) : l)));
 		_mainwindow->logShow(time, msg);
+    #else
+        Q_UNUSED(type);
 	#endif
 
 	#ifdef QT_DEBUG

@@ -3,6 +3,7 @@
 
 #include <QTextEdit>
 #include <QCompleter>
+#include "models/profile.h"
 
 
 
@@ -11,7 +12,7 @@ class TextEdit : public QTextEdit
 	Q_OBJECT
 
 	public:
-		TextEdit(QStringList favs, QWidget *parent = 0);
+		TextEdit(Profile *profile, QWidget *parent = 0);
 		~TextEdit();
 		void setCompleter(QCompleter *c);
 		QCompleter *completer() const;
@@ -43,8 +44,10 @@ class TextEdit : public QTextEdit
 		void kflChanged();
 
 	private:
-		QCompleter *c;
-		QStringList m_favorites;
+		QCompleter		*c;
+		Profile			*m_profile;
+		QList<Favorite>	&m_favorites;
+		QStringList		&m_viewItLater;
 };
 
 #endif

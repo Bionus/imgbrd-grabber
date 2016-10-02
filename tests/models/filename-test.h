@@ -3,6 +3,7 @@
 
 #include "test-suite.h"
 #include "models/filename.h"
+#include "models/source.h"
 #include "models/site.h"
 #include "models/image.h"
 
@@ -36,6 +37,7 @@ class FilenameTest : public TestSuite
 		void testPathOptionMaxDouble();
 		void testPathOptionDateFormat();
 		void testPathOptionTagNamespace();
+		void testPathOptionTagNamespaceSeparator();
 		void testPathOptionTagNamespaceComplex();
 		void testPathOptionTagExcludeNamespace();
 		void testPathOptionTagSeparator();
@@ -67,7 +69,9 @@ class FilenameTest : public TestSuite
 		void assertExpand(QString format, QString expected);
 
 	private:
+		Profile *m_profile;
 		QSettings *m_settings;
+		Source *m_source;
 		Site *m_site;
 		Image *m_img;
 		QMap<QString,QString> m_details;

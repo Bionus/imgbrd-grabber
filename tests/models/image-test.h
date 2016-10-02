@@ -2,6 +2,7 @@
 #define IMAGE_TEST_H
 
 #include "test-suite.h"
+#include "models/source.h"
 #include "models/site.h"
 #include "models/image.h"
 
@@ -51,7 +52,9 @@ class ImageTest : public TestSuite
 		void testSetUrl();
 
 	private:
+		Profile *m_profile;
 		QSettings *m_settings;
+		Source *m_source;
 		Site *m_site;
 		Image *m_img;
 		QMap<QString,QString> m_details;
