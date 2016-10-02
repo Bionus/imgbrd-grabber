@@ -3,7 +3,7 @@
 #include "functions.h"
 #include "site.h"
 
-#define TAGS_SEPARATOR ' '
+#define TAGS_SEPARATOR " "
 
 
 typedef QPair<QString,QString> QStrP;
