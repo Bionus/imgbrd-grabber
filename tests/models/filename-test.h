@@ -37,6 +37,7 @@ class FilenameTest : public TestSuite
 		void testPathOptionMaxDouble();
 		void testPathOptionDateFormat();
 		void testPathOptionTagNamespace();
+		void testPathOptionTagNamespaceSeparator();
 		void testPathOptionTagNamespaceComplex();
 		void testPathOptionTagExcludeNamespace();
 		void testPathOptionTagSeparator();

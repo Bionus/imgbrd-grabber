@@ -3,6 +3,8 @@
 #include "functions.h"
 #include "site.h"
 
+#define TAGS_SEPARATOR ' '
+
 
 typedef QPair<QString,QString> QStrP;
 
@@ -43,10 +45,10 @@ QList<QMap<QString, QPair<QString, QString>>> Filename::getReplaces(QString file
 	replaces.insert("score", QStrP(QString::number(img.score()), ""));
 	replaces.insert("height", QStrP(QString::number(img.size().height()), "0"));
 	replaces.insert("width", QStrP(QString::number(img.size().width()), "0"));
-	replaces.insert("general", QStrP(details["generals"].join(tagSeparator), ""));
-	replaces.insert("allo", QStrP(details["allos"].join(" "), ""));
-	replaces.insert("tags", QStrP(details["alls"].join(tagSeparator), ""));
-	replaces.insert("all", QStrP(details["alls"].join(tagSeparator), ""));
+	replaces.insert("general", QStrP(details["generals"].join(TAGS_SEPARATOR), ""));
+	replaces.insert("allo", QStrP(details["allos"].join(' '), ""));
+	replaces.insert("tags", QStrP(details["alls"].join(TAGS_SEPARATOR), ""));
+	replaces.insert("all", QStrP(details["alls"].join(TAGS_SEPARATOR), ""));
 	for (int i = 0; i < custom.size(); ++i)
 	{ replaces.insert(custom.keys().at(i), QStrP(custom.values().at(i).join(tagSeparator), "")); }
 	replaces.insert("url_file", QStrP(img.url(), ""));
@@ -158,7 +160,7 @@ QList<QPair<QString,QString>> Filename::getReplace(QString setting, QMap<QString
 	QString second = settings->value(setting+"_empty").toString();
 
 	int limit = settings->value(setting+"_multiple_limit", 1).toInt();
-	QString separator = settings->value(setting+"_sep", " ").toString();
+	QString separator = TAGS_SEPARATOR;
 
 	if (details[setting+"s"].size() > limit)
 	{
@@ -488,7 +490,10 @@ QString Filename::optionedValue(QString res, QString key, QString ops, const Ima
 	{ res = res.left(options["maxlength"].toInt()); }
 	if (key == "all" || key == "tags" || key == "general" || key == "artist" || key == "copyright" || key == "character")
 	{
-		QStringList vals = res.split(tagSeparator);
+		QStringList vals = res.split(TAGS_SEPARATOR);
+		tagSeparator = settings->value(key + "_sep", tagSeparator).toString();
+
+		// Namespaces
 		if (options.contains("includenamespace"))
 		{
 			QStringList excluded;
@@ -503,7 +508,10 @@ QString Filename::optionedValue(QString res, QString key, QString ops, const Ima
 			}
 			vals = namespaced;
 		}
-		res = vals.join(options.contains("separator") ? options["separator"] : tagSeparator);
+		if (options.contains("separator"))
+		{ tagSeparator = options["separator"]; }
+
+		res = vals.join(tagSeparator);
 	}
 
 	// Forbidden characters and spaces replacement settings

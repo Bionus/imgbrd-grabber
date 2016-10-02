@@ -212,6 +212,13 @@ void FilenameTest::testPathOptionTagNamespace()
 
 	assertPath("%character:includenamespace,unsafe%", "character:character1 character:character2", "", false);
 }
+void FilenameTest::testPathOptionTagNamespaceSeparator()
+{
+	m_settings->setValue("Save/separator", "c");
+	m_settings->setValue("Save/character_multiple", "keepAll");
+
+	assertPath("%character:includenamespace,unsafe%", "character:character1ccharacter:character2", "", false);
+}
 void FilenameTest::testPathOptionTagNamespaceComplex()
 {
 	m_settings->setValue("Save/artist_multiple", "keepAll");
