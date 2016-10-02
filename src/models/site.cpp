@@ -59,7 +59,7 @@ void Site::loadConfig()
 	for (QString src : sources)
 	{
 		Api *api = m_source->getApi(src == "Regex" ? "Html" : src);
-		if (api != nullptr)
+		if (api != nullptr && !m_apis.contains(api))
 			m_apis.append(api);
 	}
 

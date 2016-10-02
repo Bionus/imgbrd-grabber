@@ -14,7 +14,7 @@ Tag::Tag(QString text, QString type, int count, QStringList related)
 	// Decode HTML entities in the tag text
 	QTextDocument htmlEncoded;
 	htmlEncoded.setHtml(text);
-	m_text = htmlEncoded.toPlainText();
+	m_text = htmlEncoded.toPlainText().replace(' ', '_');
 
 	// Sometimes a type is found with multiple words, only the first is relevant
 	int typeSpace = type.indexOf(' ');
@@ -70,9 +70,9 @@ QString Tag::stylished(Profile *profile, QStringList ignored, QStringList blackl
 	QString style = "color:"+color+"; "+qfonttocss(font);
 
 	QString ret;
-	ret = "<a href=\""+text()+"\" style=\""+style+"\">"+text()+"</a>";
+	ret = "<a href=\"" + text() + "\" style=\"" + style + "\">" + text().replace('_', ' ') + "</a>";
 	if (count && this->count() > 0)
-		ret += " <span style=\"color:#aaa\">("+QString("%L1").arg(this->count())+")</span>";
+		ret += " <span style=\"color:#aaa\">(" + QString("%L1").arg(this->count()) + ")</span>";
 
 	return ret;
 }

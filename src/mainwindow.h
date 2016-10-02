@@ -20,7 +20,7 @@
 #include "commands.h"
 #include "models/site.h"
 #include "models/profile.h"
-#include "downloader.h"
+#include "downloader/downloader.h"
 
 
 

@@ -8,7 +8,7 @@
 #include "search-tab.h"
 #include "models/page.h"
 #include "mainwindow.h"
-#include "downloader.h"
+#include "downloader/downloader.h"
 
 
 
