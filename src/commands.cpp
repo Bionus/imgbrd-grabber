@@ -87,7 +87,9 @@ bool Commands::image(const Image &img, QString path)
 			log(QObject::tr("Execution de \"%1\"").arg(exec));
 			logCommand(exec);
 
-			QProcess::execute(exec);
+			int code = QProcess::execute(exec);
+			if (code != 0)
+				log(QObject::tr("Erreur lors de l'exécution de la commande (code de retour : %1)").arg(code));
 		}
 	}
 
@@ -144,7 +146,9 @@ bool Commands::tag(const Image &img, Tag tag, bool after)
 			log(QObject::tr("Execution seule de \"%1\"").arg(exec));
 			logCommand(exec);
 
-			QProcess::execute(exec);
+			int code = QProcess::execute(exec);
+			if (code != 0)
+				log(QObject::tr("Erreur lors de l'exécution de la commande (code de retour : %1)").arg(code));
 		}
 	}
 
