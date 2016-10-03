@@ -125,6 +125,8 @@ QUrl PageApi::parseUrl(QString url, int pid, int p, QString t, QString pseudo, Q
 
 	if (!m_api->contains("Urls/MaxPage") || p <= m_api->value("Urls/MaxPage").toInt() || m_lastPage > m_page + 1 || m_lastPage < m_page - 1)
 	{
+		if (m_api->contains("Urls/PagePart"))
+		{ url.replace("{pagepart}", m_api->value("Urls/PagePart")); }
 		url.replace("{pid}", QString::number(pid));
 		url.replace("{page}", QString::number(p));
 		url.replace("{altpage}", "");
@@ -139,6 +141,7 @@ QUrl PageApi::parseUrl(QString url, int pid, int p, QString t, QString pseudo, Q
 		altpage.replace("{min+1}", QString::number(m_lastPageMinId+1));
 		altpage.replace("{max+1}", QString::number(m_lastPageMaxId+1));
 		url.replace("{altpage}", altpage);
+		url.replace("{pagepart}", "");
 		url.replace("{page}", "");
 		url.replace("{pid}", "");
 	}
@@ -564,7 +567,7 @@ void PageApi::parse()
 	// Virtual paging
 	int firstImage = 0;
 	int lastImage = m_smart ? m_imagesPerPage : m_images.size();
-	if (!m_originalUrl.contains("{page}") && !m_originalUrl.contains("{pid}"))
+	if (!m_originalUrl.contains("{page}") && !m_originalUrl.contains("{pagepart}") && !m_originalUrl.contains("{pid}"))
 	{
 		firstImage = m_imagesPerPage * (m_page - 1);
 		lastImage = m_imagesPerPage;

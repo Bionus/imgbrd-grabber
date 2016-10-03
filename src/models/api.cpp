@@ -20,6 +20,8 @@ Api::Api(QString name, QMap<QString, QString> data)
 		m_data["Urls/Limit"] = m_data["Urls/"+sr+"/Limit"];
 	if (m_data.contains("Urls/"+sr+"/MaxPage"))
 		m_data["Urls/MaxPage"] = m_data["Urls/"+sr+"/MaxPage"];
+	if (m_data.contains("Urls/"+sr+"/PagePart"))
+		m_data["Urls/PagePart"] = m_data["Urls/"+sr+"/PagePart"];
 	if (m_data.contains("Urls/"+sr+"/AltPagePrev"))
 		m_data["Urls/AltPagePrev"] = m_data["Urls/"+sr+"/AltPagePrev"];
 	if (m_data.contains("Urls/"+sr+"/AltPageNext"))
