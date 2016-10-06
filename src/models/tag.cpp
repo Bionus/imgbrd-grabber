@@ -22,7 +22,7 @@ Tag::Tag(QString text, QString type, int count, QStringList related)
 	{ m_type = type.left(typeSpace); }
 
 	// Some artist names end with " (artist)" so we can guess their type
-	if (m_text.endsWith(" (artist)") && type == "unknown")
+	if (m_text.endsWith("(artist)") && type == "unknown")
 	{
 		m_type = "artist";
 		m_text = m_text.left(m_text.length() - 9);
@@ -70,7 +70,7 @@ QString Tag::stylished(Profile *profile, QStringList ignored, QStringList blackl
 	QString style = "color:"+color+"; "+qfonttocss(font);
 
 	QString ret;
-	ret = "<a href=\"" + text() + "\" style=\"" + style + "\">" + text().replace('_', ' ') + "</a>";
+	ret = "<a href=\"" + text() + "\" style=\"" + style + "\">" + text() + "</a>";
 	if (count && this->count() > 0)
 		ret += " <span style=\"color:#aaa\">(" + QString("%L1").arg(this->count()) + ")</span>";
 
