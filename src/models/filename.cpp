@@ -621,5 +621,9 @@ bool Filename::needExactTags(bool forceImageUrl) const
 		if (m_format.contains("%" + token + "%"))
 			return true;
 
+	// Namespaces come from detailed tags
+	if (m_format.contains("includenamespace"))
+		return true;
+
 	return false;
 }

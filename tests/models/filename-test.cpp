@@ -479,6 +479,11 @@ void FilenameTest::testNeedExactTagsToken()
 	Filename fn("%character% %md5%.%ext%");
 	QCOMPARE(fn.needExactTags(false), true);
 }
+void FilenameTest::testNeedExactTagsOption()
+{
+	Filename fn("%all:includenamespace% %md5%.%ext%");
+	QCOMPARE(fn.needExactTags(false), true);
+}
 
 
 void FilenameTest::assertPath(QString format, QString expected, QString path, bool shouldFixFilename, bool fullPath)
