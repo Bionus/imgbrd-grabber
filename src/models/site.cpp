@@ -294,7 +294,7 @@ QNetworkReply *Site::getRequest(QNetworkRequest request)
 		QFile f(path);
 		if (!f.open(QFile::ReadOnly))
 		{
-			md5 = QString(QCryptographicHash::hash(request.url().toString(QUrl::RemoveQuery).toLatin1(), QCryptographicHash::Md5).toHex());
+			md5 = QString(QCryptographicHash::hash(request.url().toString().toLatin1(), QCryptographicHash::Md5).toHex());
 			f.setFileName("tests/resources/" + m_url + "/" + md5 + "." + ext);
 
 			if (!f.open(QFile::ReadOnly))
