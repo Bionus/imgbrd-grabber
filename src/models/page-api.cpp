@@ -108,7 +108,7 @@ void PageApi::updateUrls()
 		t = m_api->value("DefaultTag");
 
 	// Find page number
-	bool limited = m_api->contains("Urls/Limit");
+	bool limited = m_api->contains("Urls/Limit") && !m_api->contains("Urls/MaxLimit");
 	int p = m_page;
 	m_blim = limited ? m_api->value("Urls/Limit").toInt() : m_imagesPerPage;
 	if (m_smart)
@@ -751,7 +751,7 @@ int PageApi::highLimit()
 
 int PageApi::imagesCount(bool guess)
 {
-	int perPage = m_api->contains("Urls/Limit") ? m_api->value("Urls/Limit").toInt() : m_imagesPerPage;
+	int perPage = m_api->contains("Urls/Limit") && !m_api->contains("Urls/MaxLimit") ? m_api->value("Urls/Limit").toInt() : m_imagesPerPage;
 
 	if (m_imagesCount < 0 && guess && m_pagesCount >= 0)
 		return m_pagesCount * perPage;
@@ -760,7 +760,7 @@ int PageApi::imagesCount(bool guess)
 }
 int PageApi::pagesCount(bool guess)
 {
-	int perPage = m_api->contains("Urls/Limit") ? m_api->value("Urls/Limit").toInt() : m_imagesPerPage;
+	int perPage = m_api->contains("Urls/Limit") && !m_api->contains("Urls/MaxLimit") ? m_api->value("Urls/Limit").toInt() : m_imagesPerPage;
 
 	if (m_pagesCount < 0 && guess && m_imagesCount >= 0)
 		return (int)ceil(((float)m_imagesCount) / perPage);
