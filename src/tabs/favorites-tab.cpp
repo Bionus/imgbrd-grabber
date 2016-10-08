@@ -10,12 +10,12 @@
 
 
 favoritesTab::favoritesTab(int id, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
-	: searchTab(id, sites, profile, parent), ui(new Ui::favoritesTab), m_id(id), m_favorites(profile->getFavorites()), m_pagemax(-1), m_lastTags(QString()), m_sized(false), m_stop(true), m_currentFav(0)
+	: searchTab(id, sites, profile, parent), ui(new Ui::favoritesTab), m_id(id), m_favorites(profile->getFavorites()), m_lastTags(QString()), m_sized(false), m_currentFav(0)
 {
 	ui->setupUi(this);
-	setAttribute(Qt::WA_DeleteOnClose);
 
 	// UI members for SearchTab class
+	ui_checkMergeResults = ui->checkMergeResults;
 	ui_spinPage = ui->spinPage;
 	ui_spinImagesPerPage = ui->spinImagesPerPage;
 	ui_spinColumns = ui->spinColumns;
@@ -27,18 +27,8 @@ favoritesTab::favoritesTab(int id, QMap<QString,Site*> *sites, Profile *profile,
 	ui_buttonHistoryNext = ui->buttonHistoryNext;
 
 	// Search field
-	QStringList favs;
-	for (Favorite fav : m_favorites)
-		favs.append(fav.getName());
-	m_postFiltering = new TextEdit(m_profile, this);
-		if (m_settings->value("autocompletion", true).toBool())
-		{
-			QCompleter *completer = new QCompleter(m_completion, this);
-				completer->setCaseSensitivity(Qt::CaseInsensitive);
-			m_postFiltering->setCompleter(completer);
-		}
-		connect(m_postFiltering, SIGNAL(returnPressed()), this, SLOT(load()));
-		ui->layoutPlus->addWidget(m_postFiltering, 1, 1, 1, 3);
+	m_postFiltering = createAutocomplete();
+	ui->layoutPlus->addWidget(m_postFiltering, 1, 1, 1, 3);
 
 	setSelectedSources(m_settings);
 
@@ -168,10 +158,7 @@ void favoritesTab::optionsChanged()
 void favoritesTab::load()
 {
 	log(tr("Chargement des résultats..."));
-
-	m_stop = true;
-	m_parent->setWiki("");
-	m_pagemax = -1;
+	clear();
 
 	if (!m_from_history)
 	{ addHistory(m_currentTags, ui->spinPage->value(), ui->spinImagesPerPage->value(), ui->spinColumns->value()); }
@@ -183,27 +170,6 @@ void favoritesTab::load()
 
 	ui->buttonFirstPage->setEnabled(ui->spinPage->value() > 1);
 	ui->buttonPreviousPage->setEnabled(ui->spinPage->value() > 1);
-	for (int i = 0; i < m_layouts.size(); i++)
-	{ clearLayout(m_layouts[i]); }
-	qDeleteAll(m_layouts);
-	m_layouts.clear();
-	clearLayout(ui->layoutResults);
-
-	m_tags.clear();
-	m_parent->setTags(m_tags, this);
-	for (int i = 0; i < m_pages.size(); i++)
-	{
-		m_pages.value(m_pages.keys().at(i))->abort();
-		m_pages.value(m_pages.keys().at(i))->abortTags();
-	}
-	//qDeleteAll(m_pages);
-	m_pages.clear();
-	for (int i = 0; i < m_images.size(); i++)
-	{ m_images.at(i)->abortPreview(); }
-	//qDeleteAll(m_images);
-	m_images.clear();
-
-	m_stop = false;
 
 	for (int i = 0; i < m_selectedSources.size(); i++)
 	{
@@ -282,53 +248,10 @@ void favoritesTab::failedLoading(Page *page)
 void favoritesTab::postLoading(Page *page)
 {
 	QList<Image*> imgs;
+	if (!waitForMergedResults(ui->checkMergeResults->isChecked(), page, imgs))
+		return;
 
-	m_page++;
-	if (ui->checkMergeResults->isChecked())
-	{
-		if (m_page != m_pages.size())
-			return;
-
-		QStringList md5s;
-		for (int i = 0; i < m_images.count(); i++)
-		{
-			QString md5 = m_images.at(i)->md5();
-			if (md5.isEmpty())
-				continue;
-
-			if (md5s.contains(md5))
-				m_images.removeAt(i--);
-			else
-				md5s.append(md5);
-		}
-
-		imgs = m_images;
-	}
-	else
-	{ imgs = page->images(); }
-
-	// Loading images thumbnails
-	for (int i = 0; i < imgs.count(); i++)
-	{
-		QStringList detected;
-		Image *img = imgs.at(i);
-		QStringList tags = m_currentTags.split(' ');
-		QList<QChar> modifiers = QList<QChar>() << '~';
-		for (int r = 0; r < tags.size(); r++)
-		{
-			if (modifiers.contains(tags[r][0]))
-			{ tags[r] = tags[r].right(tags[r].size()-1); }
-		}
-		if (!m_settings->value("blacklistedtags").toString().isEmpty())
-		{ detected = img->blacklisted(m_settings->value("blacklistedtags").toString().toLower().split(" ")); }
-		if (!detected.isEmpty() && m_settings->value("hideblacklisted", false).toBool())
-		{ log(tr("Image #%1 ignorée. Raison : %2.").arg(i).arg("\""+detected.join(", ")+"\""));; }
-		else
-		{
-			connect(img, SIGNAL(finishedLoadingPreview(Image*)), this, SLOT(finishedLoadingPreview(Image*)));
-			img->loadPreview();
-		}
-	}
+	loadImageThumbnails(page, imgs);
 
 	ui->buttonGetAll->setDisabled(m_images.empty());
 	ui->buttonGetpage->setDisabled(m_images.empty());
@@ -344,20 +267,6 @@ void favoritesTab::finishedLoadingTags(Page *page)
 		m_wiki = "<style>.title { font-weight: bold; } ul { margin-left: -30px; }</style>"+page->wiki();
 		m_parent->setWiki(m_wiki);
 	}
-}
-
-void favoritesTab::finishedLoadingPreview(Image *img)
-{
-	if (m_stop)
-	{ return; }
-
-	if (img->previewImage().isNull())
-	{
-		log(tr("<b>Attention :</b> %1").arg(tr("une des miniatures est vide (<a href=\"%1\">%1</a>).").arg(img->previewUrl().toString())));
-		return;
-	}
-
-	addResultsImage(img, ui->checkMergeResults->isChecked() && !m_images.empty());
 }
 
 void favoritesTab::toggleImage(int id, bool toggle)

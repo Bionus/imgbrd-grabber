@@ -48,7 +48,6 @@ class favoritesTab : public searchTab
 		void failedLoading(Page*);
 		void postLoading(Page*);
 		void finishedLoadingTags(Page*);
-		void finishedLoadingPreview(Image*);
 		// Batch
 		void getPage();
 		void getAll();
@@ -76,9 +75,8 @@ class favoritesTab : public searchTab
 		TextEdit		*m_postFiltering;
 		QDateTime		m_loadFavorite;
 		QList<Favorite>	&m_favorites;
-		int				m_pagemax;
 		QString			m_lastTags, m_wiki, m_currentTags;
-		bool			m_sized, m_stop;
+		bool			m_sized;
 		int				m_page, m_currentFav;
 };
 

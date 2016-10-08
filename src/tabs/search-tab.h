@@ -11,6 +11,7 @@
 #include <QGridLayout>
 #include <QLabel>
 #include "ui/QBouton.h"
+#include "ui/textedit.h"
 #include "models/image.h"
 #include "models/profile.h"
 
@@ -51,6 +52,9 @@ class searchTab : public QWidget
 		void addHistory(QString tags, int page, int ipp, int cols);
 		QStringList reasonsToFail(Page *page, QStringList complete = QStringList(), QString *meant = nullptr);
 		QColor imageColor(Image *img) const;
+		void clear();
+		TextEdit *createAutocomplete();
+		void loadImageThumbnails(Page *page, const QList<Image*> &imgs);
 
 	public slots:
 		// Sources
@@ -75,8 +79,10 @@ class searchTab : public QWidget
 		void historyBack();
 		void historyNext();
 		// Results
+		bool waitForMergedResults(bool merged, Page *page, QList<Image *> &imgs);
 		void addResultsPage(Page *page, const QList<Image*> &imgs, QString noResultsMessage = nullptr);
 		void addResultsImage(Image *img, bool merge = false);
+		void finishedLoadingPreview(Image*);
 
 	signals:
 		// Tab events
@@ -108,6 +114,9 @@ class searchTab : public QWidget
 		QList<Image*> m_images;
 		QMap<QString, Page*> m_pages;
 		QList<QGridLayout*> m_layouts;
+		int m_page;
+		int m_pagemax;
+		bool m_stop;
 
 		// History
 		bool m_from_history;
@@ -115,6 +124,7 @@ class searchTab : public QWidget
 		QList<QMap<QString,QString>> m_history;
 
 		// UI stuff
+		QCheckBox *ui_checkMergeResults;
 		QSpinBox *ui_spinPage;
 		QSpinBox *ui_spinImagesPerPage;
 		QSpinBox *ui_spinColumns;

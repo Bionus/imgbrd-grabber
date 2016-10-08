@@ -8,13 +8,13 @@
 
 
 tagTab::tagTab(int id, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
-	: searchTab(id, sites, profile, parent), ui(new Ui::tagTab), m_id(id), m_favorites(profile->getFavorites()), m_pagemax(-1), m_lastTags(QString()), m_sized(false), m_stop(true)
+	: searchTab(id, sites, profile, parent), ui(new Ui::tagTab), m_id(id), m_favorites(profile->getFavorites()), m_lastTags(QString()), m_sized(false)
 {
 	ui->setupUi(this);
 	ui->widgetMeant->hide();
-	setAttribute(Qt::WA_DeleteOnClose);
 
 	// UI members for SearchTab class
+	ui_checkMergeResults = ui->checkMergeResults;
 	ui_spinPage = ui->spinPage;
 	ui_spinImagesPerPage = ui->spinImagesPerPage;
 	ui_spinColumns = ui->spinColumns;
@@ -26,23 +26,11 @@ tagTab::tagTab(int id, QMap<QString,Site*> *sites, Profile *profile, mainWindow 
 	ui_buttonHistoryNext = ui->buttonHistoryNext;
 
 	// Search fields
-	m_search = new TextEdit(m_profile, this);
-	m_postFiltering = new TextEdit(m_profile, this);
-		if (m_settings->value("autocompletion", true).toBool())
-		{
-			QCompleter *completer = new QCompleter(m_completion, this);
-				completer->setCaseSensitivity(Qt::CaseInsensitive);
-			m_search->setCompleter(completer);
-			m_postFiltering->setCompleter(completer);
-		}
-		connect(m_search, SIGNAL(returnPressed()), this, SLOT(load()));
-		connect(m_search, SIGNAL(favoritesChanged()), m_parent, SLOT(updateFavorites()));
-		connect(m_search, SIGNAL(favoritesChanged()), m_parent, SLOT(updateFavoritesDock()));
-		connect(m_search, SIGNAL(kflChanged()), m_parent, SLOT(updateKeepForLater()));
-		connect(m_postFiltering, SIGNAL(returnPressed()), this, SLOT(load()));
-		connect(ui->labelMeant, SIGNAL(linkActivated(QString)), this, SLOT(setTags(QString)));
-		ui->layoutFields->insertWidget(1, m_search, 1);
-		ui->layoutPlus->addWidget(m_postFiltering, 1, 1, 1, 3);
+	m_search = createAutocomplete();
+	m_postFiltering = createAutocomplete();
+	ui->layoutFields->insertWidget(1, m_search, 1);
+	ui->layoutPlus->addWidget(m_postFiltering, 1, 1, 1, 3);
+	connect(ui->labelMeant, SIGNAL(linkActivated(QString)), this, SLOT(setTags(QString)));
 
 	setSelectedSources(m_settings);
 
@@ -111,14 +99,11 @@ void tagTab::optionsChanged()
 void tagTab::load()
 {
 	log(tr("Chargement des résultats..."));
+	clear();
 
 	ui->buttonGetAll->setEnabled(false);
 	ui->buttonGetpage->setEnabled(false);
 	ui->buttonGetSel->setEnabled(false);
-
-	m_stop = true;
-	m_parent->setWiki("");
-	m_pagemax = -1;
 
 	QString search = m_search->toPlainText();
 	if (!ui->lineMd5->text().isEmpty())
@@ -142,36 +127,17 @@ void tagTab::load()
 	ui->buttonPreviousPage->setEnabled(ui->spinPage->value() > 1);
 
 	// Clear results layout
-	for (int i = 0; i < m_layouts.size(); i++)
-	{ clearLayout(m_layouts[i]); }
-	qDeleteAll(m_layouts);
-	m_layouts.clear();
-	m_boutons.clear();
 	ui->verticalLayout->removeWidget(ui->widgetResults);
 	ui->widgetResults->deleteLater();
 	ui->widgetResults = new QWidget(this);
 	ui->verticalLayout->insertWidget(0, ui->widgetResults);
 
-	clearLayout(ui->layoutResults);
 	ui->layoutResults->deleteLater();
 	ui->layoutResults = new QGridLayout(ui->widgetResults);
 	ui_layoutResults = ui->layoutResults;
 
 	setWindowTitle(search.isEmpty() ? tr("Recherche") : search.replace("&", "&&"));
 	emit titleChanged(this);
-	m_tags.clear();
-	m_parent->setTags(m_tags, this);
-	for (int i = 0; i < m_pages.size(); i++)
-	{
-		m_pages.value(m_pages.keys().at(i))->abort();
-		m_pages.value(m_pages.keys().at(i))->abortTags();
-	}
-	//qDeleteAll(m_pages);
-	m_pages.clear();
-	for (int i = 0; i < m_images.size(); i++)
-	{ m_images.at(i)->abortPreview(); }
-	//qDeleteAll(m_images);
-	m_images.clear();
 
 	for (int i = 0; i < m_selectedSources.size(); i++)
 	{
@@ -253,102 +219,19 @@ void tagTab::failedLoading(Page *page)
 void tagTab::postLoading(Page *page)
 {
 	QList<Image*> imgs;
+	if (!waitForMergedResults(ui->checkMergeResults->isChecked(), page, imgs))
+		return;
 
-	m_page++;
-	if (ui->checkMergeResults->isChecked())
-	{
-		if (m_page != m_pages.size())
-			return;
-
-		QStringList md5s;
-		for (int i = 0; i < m_images.count(); i++)
-		{
-			QString md5 = m_images.at(i)->md5();
-			if (md5.isEmpty())
-				continue;
-
-			if (md5s.contains(md5))
-				m_images.removeAt(i--);
-			else
-				md5s.append(md5);
-		}
-
-		imgs = m_images;
-	}
-	else
-	{ imgs = page->images(); }
-
-	// Loading images thumbnails
-	for (int i = 0; i < imgs.count(); i++)
-	{
-		QStringList detected;
-		Image *img = imgs.at(i);
-		QStringList tags = m_search->toPlainText().toLower().split(' ');
-		QList<QChar> modifiers = QList<QChar>() << '~';
-		for (int r = 0; r < tags.size(); r++)
-		{
-			if (modifiers.contains(tags[r][0]))
-			{ tags[r] = tags[r].right(tags[r].size()-1); }
-		}
-		if (!m_settings->value("blacklistedtags").toString().isEmpty())
-		{ detected = img->blacklisted(m_settings->value("blacklistedtags").toString().toLower().split(" ")); }
-		if (!detected.isEmpty() && m_settings->value("hideblacklisted", false).toBool())
-		{ log(tr("Image #%1 ignorée. Raison : %2.").arg(i).arg("\""+detected.join(", ")+"\""));; }
-		else
-		{
-			connect(img, SIGNAL(finishedLoadingPreview(Image*)), this, SLOT(finishedLoadingPreview(Image*)));
-			img->loadPreview();
-		}
-	}
+	loadImageThumbnails(page, imgs);
 
 	ui->buttonGetAll->setDisabled(m_images.empty());
 	ui->buttonGetpage->setDisabled(m_images.empty());
 	ui->buttonGetSel->setDisabled(m_images.empty());
 }
 
-
 void tagTab::finishedLoadingTags(Page *page)
 {
-	// Tags for this page
-	QList<Tag> taglist;
-	QStringList tagsGot;
-	QStringList toAdd;
-	for (int i = 0; i < m_pages.count(); i++)
-	{
-		QList<Tag> tags = m_pages.value(m_pages.keys().at(i))->tags();
-		for (int t = 0; t < tags.count(); t++)
-		{
-			if (!tags[t].text().isEmpty())
-			{
-				if (tags[t].count() >= m_settings->value("tagsautoadd", 10).toInt()
-					&& !m_completion.contains(tags[t].text()))
-				{
-					toAdd.append(tags[t].text());
-					m_completion.append(tags[t].text());
-				}
-				if (tagsGot.contains(tags[t].text()))
-				{ taglist[tagsGot.indexOf(tags[t].text())].setCount(taglist[tagsGot.indexOf(tags[t].text())].count()+tags[t].count()); }
-				else
-				{
-					taglist.append(tags[t]);
-					tagsGot.append(tags[t].text());
-				}
-			}
-		}
-	}
-	QFile wordsc(savePath("wordsc.txt"));
-	if (wordsc.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text))
-	{
-		wordsc.write(QString('\n').toLatin1());
-		wordsc.write(toAdd.join(' ').toLatin1());
-		wordsc.close();
-	}
-
-	// We sort tags by frequency
-	qSort(taglist.begin(), taglist.end(), sortByFrequency);
-
-	m_tags = taglist;
-	m_parent->setTags(m_tags, this);
+	setTagsFromPages(m_pages);
 
 	// Wiki
 	if (!page->wiki().isEmpty())
@@ -362,70 +245,6 @@ void tagTab::finishedLoadingTags(Page *page)
 	{ m_pagemax = maxpage; }
 	ui->buttonNextPage->setEnabled(maxpage > ui->spinPage->value() || page->imagesCount() == -1 || (page->imagesCount() == 0 && page->images().count() > 0));
 	ui->buttonLastPage->setEnabled(maxpage > ui->spinPage->value());
-}
-
-void tagTab::finishedLoadingPreview(Image *img)
-{
-	if (m_stop)
-	{ return; }
-
-	int position = m_images.indexOf(img), page = 0;
-	if (!ui->checkMergeResults->isChecked())
-	{
-		page = m_pages.values().indexOf(img->page());
-		if (page < 0)
-		{ return; }
-	}
-	if (img->previewImage().isNull())
-		return;
-
-	QStringList blacklistedtags(m_settings->value("blacklistedtags").toString().split(" "));
-	QStringList detected = img->blacklisted(blacklistedtags);
-	QStringList whitelistedtags(m_settings->value("whitelistedtags").toString().split(" "));
-	QStringList whitelisted = img->blacklisted(whitelistedtags);
-	if (!whitelisted.isEmpty() && m_settings->value("whitelist_download", "image").toString() == "page")
-	{
-		bool download = false;
-		if (!detected.isEmpty())
-		{
-			int reponse = QMessageBox::question(this, tr("Grabber"), tr("Certains tags de l'image sont dans la liste blanche : \"%1\". Cependant, certains dans la liste noire : \"%2\". Voulez-vous la télécharger tout de même ?").arg(whitelisted.join(", "), detected.join(", ")), QMessageBox::Yes | QMessageBox::Open | QMessageBox::No);
-			if (reponse == QMessageBox::Yes)
-			{ download = true; }
-			else if (reponse == QMessageBox::Open)
-			{
-				zoomWindow *zoom = new zoomWindow(img, img->page()->site(), m_sites, m_profile, m_parent);
-				zoom->show();
-				connect(zoom, SIGNAL(linkClicked(QString)), this, SLOT(setTags(QString)));
-				connect(zoom, SIGNAL(poolClicked(int, QString)), m_parent, SLOT(addPoolTab(int, QString)));
-			}
-		}
-		else
-		{ download = true; }
-
-		if (download)
-		{
-			connect(img, SIGNAL(finishedImage(Image*)), m_parent, SLOT(saveImage(Image*)));
-			connect(img, SIGNAL(finishedImage(Image*)), m_parent, SLOT(decreaseDownloads()));
-
-			QString filename = m_settings->value("Save/filename").toString();;
-			bool getTags = filename.startsWith("javascript:") || (filename.contains("%filename%") && img->site().contains("Regex/ForceImageUrl"));
-			QStringList forbidden = QStringList() << "artist" << "copyright" << "character" << "model" << "general";
-			for (int i = 0; i < forbidden.count(); i++)
-			{ getTags = getTags || filename.contains("%"+forbidden.at(i)+"%"); }
-
-			if (getTags)
-			{
-				connect(img, SIGNAL(finishedLoadingTags(Image*)), img, SLOT(loadImage()));
-				img->loadDetails();
-			}
-			else
-			{ img->loadImage(); }
-
-			m_parent->increaseDownloads();
-		}
-	}
-
-	addResultsImage(img, ui->checkMergeResults->isChecked() && !m_images.empty());
 }
 
 void tagTab::toggleImage(int id, bool toggle)

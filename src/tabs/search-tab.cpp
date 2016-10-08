@@ -6,11 +6,14 @@
 #include "functions.h"
 #include "mainwindow.h"
 #include "viewer/zoomwindow.h"
+#include "models/filename.h"
 
 
 searchTab::searchTab(int id, QMap<QString, Site*> *sites, Profile *profile, mainWindow *parent)
-	: QWidget(parent), m_profile(profile), m_id(id), m_lastPageMaxId(0), m_lastPageMinId(0), m_sites(sites), m_parent(parent), m_settings(parent->settings()), m_from_history(false), m_history_cursor(0)
+	: QWidget(parent), m_profile(profile), m_id(id), m_lastPageMaxId(0), m_lastPageMinId(0), m_sites(sites), m_parent(parent), m_settings(parent->settings()), m_pagemax(-1), m_stop(true), m_from_history(false), m_history_cursor(0)
 {
+	setAttribute(Qt::WA_DeleteOnClose);
+
 	// Auto-complete list
 	QFile words("words.txt");
 	if (words.open(QIODevice::ReadOnly | QIODevice::Text))
@@ -193,6 +196,173 @@ QColor searchTab::imageColor(Image *img) const
 	return QColor();
 }
 
+void searchTab::clear()
+{
+	// Reset loading variables
+	m_stop = true;
+	m_pagemax = -1;
+
+	// Clear page details
+	m_tags.clear();
+	m_parent->setTags(m_tags, this);
+	m_parent->setWiki("");
+
+	// Clear layout
+	for (int i = 0; i < m_layouts.size(); i++)
+	{ clearLayout(m_layouts[i]); }
+	qDeleteAll(m_layouts);
+	m_layouts.clear();
+	m_boutons.clear();
+	clearLayout(ui_layoutResults);
+
+	// Abort current loadings
+	for (int i = 0; i < m_pages.size(); i++)
+	{
+		m_pages.value(m_pages.keys().at(i))->abort();
+		m_pages.value(m_pages.keys().at(i))->abortTags();
+	}
+	//qDeleteAll(m_pages);
+	m_pages.clear();
+	for (int i = 0; i < m_images.size(); i++)
+	{ m_images.at(i)->abortPreview(); }
+	//qDeleteAll(m_images);
+	m_images.clear();
+}
+
+TextEdit *searchTab::createAutocomplete()
+{
+	TextEdit *ret = new TextEdit(m_profile, this);
+
+	// Add auto-complete if necessary
+	if (m_settings->value("autocompletion", true).toBool())
+	{
+		QCompleter *completer = new QCompleter(m_completion, ret);
+		completer->setCaseSensitivity(Qt::CaseInsensitive);
+
+		ret->setCompleter(completer);
+	}
+
+	// Connect
+	connect(ret, SIGNAL(returnPressed()), this, SLOT(load()));
+	connect(ret, SIGNAL(favoritesChanged()), m_parent, SLOT(updateFavorites()));
+	connect(ret, SIGNAL(favoritesChanged()), m_parent, SLOT(updateFavoritesDock()));
+	connect(ret, SIGNAL(kflChanged()), m_parent, SLOT(updateKeepForLater()));
+
+	return ret;
+}
+
+void searchTab::loadImageThumbnails(Page *page, const QList<Image *> &imgs)
+{
+	QStringList tags = page->search();
+	for (int i = 0; i < imgs.count(); i++)
+	{
+		QStringList detected;
+		Image *img = imgs.at(i);
+		QList<QChar> modifiers = QList<QChar>() << '~';
+		for (int r = 0; r < tags.size(); r++)
+		{
+			if (modifiers.contains(tags[r][0]))
+			{ tags[r] = tags[r].right(tags[r].size()-1); }
+		}
+		if (!m_settings->value("blacklistedtags").toString().isEmpty())
+		{ detected = img->blacklisted(m_settings->value("blacklistedtags").toString().toLower().split(" ")); }
+		if (!detected.isEmpty() && m_settings->value("hideblacklisted", false).toBool())
+		{ log(tr("Image #%1 ignorée. Raison : %2.").arg(i).arg("\""+detected.join(", ")+"\""));; }
+		else
+		{
+			connect(img, SIGNAL(finishedLoadingPreview(Image*)), this, SLOT(finishedLoadingPreview(Image*)));
+			img->loadPreview();
+		}
+	}
+}
+
+void searchTab::finishedLoadingPreview(Image *img)
+{
+	if (m_stop)
+		return;
+
+	if (img->previewImage().isNull())
+	{
+		log(tr("<b>Attention :</b> %1").arg(tr("une des miniatures est vide (<a href=\"%1\">%1</a>).").arg(img->previewUrl().toString())));
+		return;
+	}
+
+	// Download whitelist images on thumbnail view
+	QStringList blacklistedtags(m_settings->value("blacklistedtags").toString().split(" "));
+	QStringList detected = img->blacklisted(blacklistedtags);
+	QStringList whitelistedtags(m_settings->value("whitelistedtags").toString().split(" "));
+	QStringList whitelisted = img->blacklisted(whitelistedtags);
+	if (!whitelisted.isEmpty() && m_settings->value("whitelist_download", "image").toString() == "page")
+	{
+		bool download = false;
+		if (!detected.isEmpty())
+		{
+			int reponse = QMessageBox::question(this, tr("Grabber"), tr("Certains tags de l'image sont dans la liste blanche : \"%1\". Cependant, certains dans la liste noire : \"%2\". Voulez-vous la télécharger tout de même ?").arg(whitelisted.join(", "), detected.join(", ")), QMessageBox::Yes | QMessageBox::Open | QMessageBox::No);
+			if (reponse == QMessageBox::Yes)
+			{ download = true; }
+			else if (reponse == QMessageBox::Open)
+			{
+				zoomWindow *zoom = new zoomWindow(img, img->page()->site(), m_sites, m_profile, m_parent);
+				zoom->show();
+				connect(zoom, SIGNAL(linkClicked(QString)), this, SLOT(setTags(QString)));
+				connect(zoom, SIGNAL(poolClicked(int, QString)), m_parent, SLOT(addPoolTab(int, QString)));
+			}
+		}
+		else
+		{ download = true; }
+
+		if (download)
+		{
+			connect(img, SIGNAL(finishedImage(Image*)), m_parent, SLOT(saveImage(Image*)));
+			connect(img, SIGNAL(finishedImage(Image*)), m_parent, SLOT(decreaseDownloads()));
+
+			Filename filename(m_settings->value("Save/filename").toString());
+			if (filename.needExactTags(img->page()->site()))
+			{
+				connect(img, SIGNAL(finishedLoadingTags(Image*)), img, SLOT(loadImage()));
+				img->loadDetails();
+			}
+			else
+			{ img->loadImage(); }
+
+			m_parent->increaseDownloads();
+		}
+	}
+
+	bool merge = ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked() && !m_images.empty();
+	addResultsImage(img, merge);
+}
+
+bool searchTab::waitForMergedResults(bool merged, Page *page, QList<Image*> &imgs)
+{
+	m_page++;
+
+	if (!merged)
+	{
+		imgs = page->images();
+		return true;
+	}
+
+	if (m_page != m_pages.size())
+		return false;
+
+	QStringList md5s;
+	for (int i = 0; i < m_images.count(); i++)
+	{
+		QString md5 = m_images.at(i)->md5();
+		if (md5.isEmpty())
+			continue;
+
+		if (md5s.contains(md5))
+			m_images.removeAt(i--);
+		else
+			md5s.append(md5);
+	}
+
+	imgs = m_images;
+	return true;
+}
+
 void searchTab::addResultsPage(Page *page, const QList<Image*> &imgs, QString noResultsMessage)
 {
 	int pos = m_pages.values().indexOf(page);
@@ -247,7 +417,11 @@ void searchTab::addResultsImage(Image *img, bool merge)
 	int position = m_images.indexOf(img);
 	int page = 0;
 	if (!merge)
-	{ page = m_pages.values().indexOf(img->page()); }
+	{
+		page = m_pages.values().indexOf(img->page());
+		if (page < 0)
+		{ return; }
+	}
 
 	float size = img->fileSize();
 	QString unit = getUnit(&size);

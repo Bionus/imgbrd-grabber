@@ -50,7 +50,6 @@ class tagTab : public searchTab
 		void failedLoading(Page*);
 		void postLoading(Page*);
 		void finishedLoadingTags(Page*);
-		void finishedLoadingPreview(Image*);
 		// Batch
 		void getPage();
 		void getAll();
@@ -69,10 +68,8 @@ class tagTab : public searchTab
 		QList<Favorite>	&m_favorites;
 		TextEdit		*m_search, *m_postFiltering;
 		QCalendarWidget	*m_calendar;
-		int				m_pagemax;
 		QString			m_link, m_lastTags, m_wiki;
-		bool			m_sized, m_stop;
-		int				m_page;
+		bool			m_sized;
 		Downloader		*m_downloader;
 };
 

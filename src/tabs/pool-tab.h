@@ -46,7 +46,6 @@ class poolTab : public searchTab
 		void load();
 		void finishedLoading(Page*);
 		void finishedLoadingTags(Page*);
-		void finishedLoadingPreview(Image*);
 		// Batch
 		void getPage();
 		void getAll();
@@ -64,10 +63,8 @@ class poolTab : public searchTab
 		int				m_id;
 		TextEdit		*m_search, *m_postFiltering;
 		QCalendarWidget	*m_calendar;
-		int				m_pagemax;
 		QString			m_lastTags, m_wiki;
-		bool			m_sized, m_stop;
-		int				m_page;
+		bool			m_sized;
 };
 
 #endif // POOL_TAB_H
