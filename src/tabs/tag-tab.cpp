@@ -18,6 +18,9 @@ tagTab::tagTab(int id, QMap<QString,Site*> *sites, Profile *profile, mainWindow 
 	ui_spinPage = ui->spinPage;
 	ui_spinImagesPerPage = ui->spinImagesPerPage;
 	ui_spinColumns = ui->spinColumns;
+	ui_widgetMeant = ui->widgetMeant;
+	ui_labelMeant = ui->labelMeant;
+	ui_layoutResults = ui->layoutResults;
 	ui_layoutSourcesList = ui->layoutSourcesList;
 	ui_buttonHistoryBack = ui->buttonHistoryBack;
 	ui_buttonHistoryNext = ui->buttonHistoryNext;
@@ -144,12 +147,15 @@ void tagTab::load()
 	qDeleteAll(m_layouts);
 	m_layouts.clear();
 	m_boutons.clear();
-	clearLayout(ui->layoutResults);
 	ui->verticalLayout->removeWidget(ui->widgetResults);
 	ui->widgetResults->deleteLater();
 	ui->widgetResults = new QWidget(this);
-	ui->layoutResults = new QGridLayout(ui->widgetResults);
 	ui->verticalLayout->insertWidget(0, ui->widgetResults);
+
+	clearLayout(ui->layoutResults);
+	ui->layoutResults->deleteLater();
+	ui->layoutResults = new QGridLayout(ui->widgetResults);
+	ui_layoutResults = ui->layoutResults;
 
 	setWindowTitle(search.isEmpty() ? tr("Recherche") : search.replace("&", "&&"));
 	emit titleChanged(this);
@@ -228,98 +234,7 @@ void tagTab::finishedLoading(Page* page)
 	ui->buttonLastPage->setEnabled(maxpage > ui->spinPage->value());
 
 	if (!ui->checkMergeResults->isChecked())
-	{
-		int pos = m_pages.values().indexOf(page);
-		if (pos < 0)
-			return;
-		QLabel *txt = new QLabel(this);
-		m_labels.append(txt);
-			if (imgs.count() == 0)
-			{
-				QStringList reasons = QStringList();
-				if (page->source().isEmpty())
-				{ reasons.append(tr("serveur hors-ligne")); }
-				if (m_search->toPlainText().count(" ") > 1)
-				{ reasons.append(tr("trop de tags")); }
-				if (ui->spinPage->value() > 1000)
-				{ reasons.append(tr("page trop éloignée")); }
-
-				// Maybe you meant
-				QStringList completion;
-				QFile words("words.txt");
-				if (words.open(QIODevice::ReadOnly | QIODevice::Text) && !m_search->toPlainText().isEmpty())
-				{
-					while (!words.atEnd())
-					{
-						QByteArray line = words.readLine();
-						completion.append(QString(line).remove("\r\n").remove("\n").split(" ", QString::SkipEmptyParts));
-					}
-					QStringList favs;
-					for (Favorite fav : m_favorites)
-						favs.append(fav.getName());
-					completion.append(favs);
-					completion.removeDuplicates();
-					completion.sort();
-					QStringList tags = m_search->toPlainText().trimmed().split(" ");
-					QMap<QString,QString> results, clean;
-					int c = 0;
-					for (int t = 0; t < tags.size(); t++)
-					{
-						QString tag = tags.at(t);
-						int lev = (tag.length()/3)+2;
-						for (int w = 0; w < completion.size(); w++)
-						{
-							int d = levenshtein(tag, completion.at(w));
-							if (d < lev)
-							{
-								if (results[tag].isEmpty())
-								{ c++; }
-								results[tag] = "<b>"+completion.at(w)+"</b>";
-								clean[tag] = completion.at(w);
-								lev = d;
-							}
-						}
-						if (lev == 0)
-						{
-							results[tag] = tag;
-							c--;
-						}
-					}
-					if (c > 0)
-					{
-						QStringList res = results.values(), cl = clean.values();
-						ui->widgetMeant->show();
-						ui->labelMeant->setText("<a href=\""+cl.join(" ").toHtmlEscaped()+"\" style=\"color:black;text-decoration:none;\">"+res.join(" ")+"</a>");
-					}
-					words.close();
-				}
-				txt->setText("<a href=\""+page->url().toString().toHtmlEscaped()+"\">"+page->site()->name()+"</a> - "+tr("Aucun résultat")+(reasons.count() > 0 ? "<br/>"+tr("Raisons possibles : %1").arg(reasons.join(", ")) : ""));
-			}
-			else
-			{ txt->setText("<a href=\""+page->url().toString().toHtmlEscaped()+"\">"+page->site()->name()+"</a> - "+tr("Page %1 sur %2 (%3 sur %4)").arg(ui->spinPage->value()).arg(page->pagesCount(false) > 0 ? QString::number(maxpage) : "?").arg(imgs.count()).arg(page->imagesCount(false) > 0 ? QString::number(page->imagesCount(false)) : "?")); }
-			txt->setOpenExternalLinks(true);
-			if (page->search().join(" ") != m_search->toPlainText() && m_settings->value("showtagwarning", true).toBool())
-			{
-				QStringList uncommon = m_search->toPlainText().trimmed().split(" ", QString::SkipEmptyParts);
-				uncommon.append(m_settings->value("add").toString().trimmed().split(" ", QString::SkipEmptyParts));
-				for (int i = 0; i < page->search().size(); i++)
-				{
-					if (uncommon.contains(page->search().at(i)))
-					{ uncommon.removeAll(page->search().at(i)); }
-				}
-				if (!uncommon.isEmpty())
-				{ txt->setText(txt->text()+"<br/>"+QString(tr("Des modificateurs ont été otés de la recherche car ils ne sont pas compatibles avec cet imageboard : %1.")).arg(uncommon.join(" "))); }
-			}
-			if (!page->errors().isEmpty() && m_settings->value("showwarnings", true).toBool())
-			{ txt->setText(txt->text()+"<br/>"+page->errors().join("<br/>")); }
-
-		int page_x = pos % ui->spinColumns->value();
-		int page_y = (pos / ui->spinColumns->value()) * 2;
-		ui->layoutResults->addWidget(txt, page_y, page_x);
-		ui->layoutResults->setRowMinimumHeight(page_y, height() / 20);
-		if (m_layouts.size() > pos)
-		{ ui->layoutResults->addLayout(m_layouts[pos], page_y + 1, page_x); }
-	}
+	{ addResultsPage(page, imgs); }
 
 	if (!m_settings->value("useregexfortags", true).toBool())
 	{ setTagsFromPages(m_pages); }

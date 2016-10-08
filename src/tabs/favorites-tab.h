@@ -72,16 +72,14 @@ class favoritesTab : public searchTab
 		void focusSearch();
 
 	private:
-		int					m_id;
-		TextEdit			*m_postFiltering;
-		QDateTime			m_loadFavorite;
-		QList<Favorite>		&m_favorites;
-		QMap<QString,Page*>	m_pages;
-		int					m_pagemax;
-		QString				m_lastTags, m_wiki, m_currentTags;
-		bool				m_sized, m_stop;
-		int					m_page, m_currentFav;
-		QList<QGridLayout*>	m_layouts;
+		int				m_id;
+		TextEdit		*m_postFiltering;
+		QDateTime		m_loadFavorite;
+		QList<Favorite>	&m_favorites;
+		int				m_pagemax;
+		QString			m_lastTags, m_wiki, m_currentTags;
+		bool			m_sized, m_stop;
+		int				m_page, m_currentFav;
 };
 
 #endif // FAVORITES_TAB_H

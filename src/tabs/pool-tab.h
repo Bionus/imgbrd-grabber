@@ -61,15 +61,13 @@ class poolTab : public searchTab
 		void focusSearch();
 
 	private:
-		int					m_id;
-		TextEdit			*m_search, *m_postFiltering;
-		QCalendarWidget		*m_calendar;
-		QMap<QString,Page*>	m_pages;
-		int					m_pagemax;
-		QString				m_lastTags, m_wiki;
-		bool				m_sized, m_stop;
-		int					m_page;
-		QList<QGridLayout*>	m_layouts;
+		int				m_id;
+		TextEdit		*m_search, *m_postFiltering;
+		QCalendarWidget	*m_calendar;
+		int				m_pagemax;
+		QString			m_lastTags, m_wiki;
+		bool			m_sized, m_stop;
+		int				m_page;
 };
 
 #endif // POOL_TAB_H

@@ -7,6 +7,9 @@
 #include <QSpinBox>
 #include <QMap>
 #include <QPushButton>
+#include <QLayout>
+#include <QGridLayout>
+#include <QLabel>
 #include "ui/QBouton.h"
 #include "models/image.h"
 #include "models/profile.h"
@@ -46,6 +49,7 @@ class searchTab : public QWidget
 		void setSelectedSources(QSettings *settings);
 		void setTagsFromPages(const QMap<QString, Page*> &pages);
 		void addHistory(QString tags, int page, int ipp, int cols);
+		QStringList reasonsToFail(Page *page, QStringList complete = QStringList(), QString *meant = nullptr);
 
 	public slots:
 		// Sources
@@ -69,6 +73,8 @@ class searchTab : public QWidget
 		// History
 		void historyBack();
 		void historyNext();
+		// Results
+		void addResultsPage(Page *page, const QList<Image*> &imgs, QString noResultsMessage = nullptr);
 
 	signals:
 		// Tab events
@@ -98,6 +104,8 @@ class searchTab : public QWidget
 
 		QStringList m_completion;
 		QList<Image*> m_images;
+		QMap<QString, Page*> m_pages;
+		QList<QGridLayout*> m_layouts;
 
 		// History
 		bool m_from_history;
@@ -108,6 +116,9 @@ class searchTab : public QWidget
 		QSpinBox *ui_spinPage;
 		QSpinBox *ui_spinImagesPerPage;
 		QSpinBox *ui_spinColumns;
+		QWidget *ui_widgetMeant;
+		QLabel *ui_labelMeant;
+		QGridLayout *ui_layoutResults;
 		QLayout *ui_layoutSourcesList;
 		QPushButton *ui_buttonHistoryBack;
 		QPushButton *ui_buttonHistoryNext;

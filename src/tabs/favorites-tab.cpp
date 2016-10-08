@@ -19,6 +19,9 @@ favoritesTab::favoritesTab(int id, QMap<QString,Site*> *sites, Profile *profile,
 	ui_spinPage = ui->spinPage;
 	ui_spinImagesPerPage = ui->spinImagesPerPage;
 	ui_spinColumns = ui->spinColumns;
+	ui_widgetMeant = nullptr;
+	ui_labelMeant = nullptr;
+	ui_layoutResults = ui->layoutResults;
 	ui_layoutSourcesList = ui->layoutSourcesList;
 	ui_buttonHistoryBack = ui->buttonHistoryBack;
 	ui_buttonHistoryNext = ui->buttonHistoryNext;
@@ -258,43 +261,7 @@ void favoritesTab::finishedLoading(Page* page)
 
 	if (!ui->checkMergeResults->isChecked())
 	{
-		int pos = m_pages.values().indexOf(page);
-		if (pos < 0)
-		{ return; }
-		QLabel *txt = new QLabel(this);
-			if (imgs.count() == 0)
-			{
-				QStringList reasons = QStringList();
-				if (page->source().isEmpty())
-				{ reasons.append(tr("serveur hors-ligne")); }
-				if (m_currentTags.count(" ") > 1)
-				{ reasons.append(tr("trop de tags")); }
-				if (ui->spinPage->value() > 1000)
-				{ reasons.append(tr("page trop éloignée")); }
-				txt->setText("<a href=\""+page->url().toString().toHtmlEscaped()+"\">"+m_sites->key(page->site())+"</a> - "+tr("Aucun résultat depuis le %1").arg(m_loadFavorite.toString(tr("dd/MM/yyyy 'à' hh:mm")))+(reasons.count() > 0 ? "<br/>"+tr("Raisons possibles : %1").arg(reasons.join(", ")) : ""));
-			}
-			else
-			{ txt->setText("<a href=\""+page->url().toString().toHtmlEscaped()+"\">"+m_sites->key(page->site())+"</a> - "+tr("Page %1 sur %2 (%3 sur %4)").arg(ui->spinPage->value()).arg(page->pagesCount(false) > 0 ? QString::number(maxpage) : "?").arg(imgs.count()).arg(page->imagesCount(false) > 0 ? QString::number(page->imagesCount(false)) : "?")); }
-			txt->setOpenExternalLinks(true);
-			if (page->search().join(" ") != m_currentTags && m_settings->value("showtagwarning", true).toBool())
-			{
-				QStringList uncommon = m_currentTags.toLower().trimmed().split(" ", QString::SkipEmptyParts);
-				uncommon.append(m_settings->value("add").toString().toLower().trimmed().split(" ", QString::SkipEmptyParts));
-				for (int i = 0; i < page->search().size(); i++)
-				{
-					if (uncommon.contains(page->search().at(i)))
-					{ uncommon.removeAll(page->search().at(i)); }
-				}
-				if (!uncommon.isEmpty())
-				{ txt->setText(txt->text()+"<br/>"+QString(tr("Des modificateurs ont été otés de la recherche car ils ne sont pas compatibles avec cet imageboard : %1.")).arg(uncommon.join(" "))); }
-			}
-			if (!page->errors().isEmpty() && m_settings->value("showwarnings", true).toBool())
-			{ txt->setText(txt->text()+"<br/>"+page->errors().join("<br/>")); }
-		int page_x = pos % ui->spinColumns->value(), page_y = (pos / ui->spinColumns->value()) * 2;
-		ui->layoutResults->addWidget(txt, page_y, page_x, 1, 1);
-		ui->layoutResults->setRowMinimumHeight(page_y, height()/20);
-		if (m_layouts.size() > pos)
-		{ ui->layoutResults->addLayout(m_layouts[pos], page_y + 1, page_x, 1, 1); }
+		addResultsPage(page, imgs, tr("Aucun résultat depuis le %1").arg(m_loadFavorite.toString(tr("dd/MM/yyyy 'à' hh:mm"))));
 		ui->splitter->setSizes(QList<int>() << (imgs.count() >= m_settings->value("hidefavorites", 20).toInt() ? 0 : 1) << 1);
 	}
 

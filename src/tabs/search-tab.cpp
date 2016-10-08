@@ -109,6 +109,110 @@ void searchTab::setTagsFromPages(const QMap<QString, Page*> &pages)
 	m_parent->setTags(m_tags, this);
 }
 
+QStringList searchTab::reasonsToFail(Page* page, QStringList completion, QString *meant)
+{
+	QStringList reasons = QStringList();
+
+	// If the request yieleded no source, the server may be offline
+	if (page->source().isEmpty())
+	{ reasons.append(tr("serveur hors-ligne")); }
+
+	// Some sources do not allow more than two tags per search
+	if (page->search().count() > 2)
+	{ reasons.append(tr("trop de tags")); }
+
+	// Many sources don't allow browsing after page 1000
+	if (page->page() > 1000)
+	{ reasons.append(tr("page trop éloignée")); }
+
+	// Auto-correct
+	if (meant != nullptr && !page->search().isEmpty())
+	{
+		QMap<QString, QString> results, clean;
+
+		int c = 0;
+		for (QString tag : page->search())
+		{
+			int lev = (tag.length()/3)+2;
+			for (int w = 0; w < completion.size(); w++)
+			{
+				int d = levenshtein(tag, completion.at(w));
+				if (d < lev)
+				{
+					if (results[tag].isEmpty())
+					{ c++; }
+					results[tag] = "<b>"+completion.at(w)+"</b>";
+					clean[tag] = completion.at(w);
+					lev = d;
+				}
+			}
+			if (lev == 0)
+			{
+				results[tag] = tag;
+				c--;
+			}
+		}
+
+		if (c > 0)
+		{
+			QStringList res = results.values(), cl = clean.values();
+			*meant = "<a href=\""+cl.join(" ").toHtmlEscaped()+"\" style=\"color:black;text-decoration:none;\">"+res.join(" ")+"</a>";
+		}
+	}
+
+	return reasons;
+}
+
+void searchTab::addResultsPage(Page *page, const QList<Image*> &imgs, QString noResultsMessage)
+{
+	int pos = m_pages.values().indexOf(page);
+	if (pos < 0)
+		return;
+
+	QLabel *txt = new QLabel(this);
+	if (imgs.count() == 0)
+	{
+		QString meant;
+		QStringList reasons = reasonsToFail(page, m_completion, &meant);
+		if (!meant.isEmpty() && ui_widgetMeant != nullptr)
+		{
+			ui_widgetMeant->show();
+			ui_labelMeant->setText(meant);
+		}
+
+		QString msg = noResultsMessage == nullptr ? tr("Aucun résultat") : noResultsMessage;
+		txt->setText("<a href=\""+page->url().toString().toHtmlEscaped()+"\">"+page->site()->name()+"</a> - "+msg+(reasons.count() > 0 ? "<br/>"+tr("Raisons possibles : %1").arg(reasons.join(", ")) : ""));
+	}
+	else
+	{
+		int pageCount = page->pagesCount(false);
+		int imageCount = page->imagesCount(false);
+		txt->setText("<a href=\""+page->url().toString().toHtmlEscaped()+"\">"+page->site()->name()+"</a> - "+tr("Page %1 sur %2 (%3 sur %4)").arg(page->page()).arg(pageCount > 0 ? QString::number(pageCount) : "?").arg(imgs.count()).arg(imageCount > 0 ? QString::number(imageCount) : "?"));
+	}
+	txt->setOpenExternalLinks(true);
+	/*if (page->search().join(" ") != m_search->toPlainText() && m_settings->value("showtagwarning", true).toBool())
+	{
+		QStringList uncommon = m_search->toPlainText().toLower().trimmed().split(" ", QString::SkipEmptyParts);
+		uncommon.append(m_settings->value("add").toString().toLower().trimmed().split(" ", QString::SkipEmptyParts));
+		for (int i = 0; i < page->search().size(); i++)
+		{
+			if (uncommon.contains(page->search().at(i)))
+			{ uncommon.removeAll(page->search().at(i)); }
+		}
+		if (!uncommon.isEmpty())
+		{ txt->setText(txt->text()+"<br/>"+QString(tr("Des modificateurs ont été otés de la recherche car ils ne sont pas compatibles avec cet imageboard : %1.")).arg(uncommon.join(" "))); }
+	}*/
+	if (!page->errors().isEmpty() && m_settings->value("showwarnings", true).toBool())
+	{ txt->setText(txt->text()+"<br/>"+page->errors().join("<br/>")); }
+
+	int page_x = pos % ui_spinColumns->value();
+	int page_y = (pos / ui_spinColumns->value()) * 2;
+	ui_layoutResults->addWidget(txt, page_y, page_x);
+	ui_layoutResults->setRowMinimumHeight(page_y, height() / 20);
+	if (m_layouts.size() > pos)
+	{ ui_layoutResults->addLayout(m_layouts[pos], page_y + 1, page_x); }
+}
+
 void searchTab::addHistory(QString tags, int page, int ipp, int cols)
 {
 	QMap<QString,QString> srch = QMap<QString,QString>();

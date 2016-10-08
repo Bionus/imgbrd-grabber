@@ -65,19 +65,16 @@ class tagTab : public searchTab
 		void focusSearch();
 
 	private:
-		int								m_id;
-		QList<Favorite>					&m_favorites;
-		QStringList						&m_ignored;
-		TextEdit						*m_search, *m_postFiltering;
-		QCalendarWidget					*m_calendar;
-		QMap<QString,Page*>				m_pages;
-		int								m_pagemax;
-		QString							m_link, m_lastTags, m_wiki;
-		bool							m_sized, m_stop;
-		int								m_page;
-		QList<QGridLayout*>				m_layouts;
-		QList<QLabel*>					m_labels;
-		Downloader						*m_downloader;
+		int				m_id;
+		QList<Favorite>	&m_favorites;
+		QStringList		&m_ignored;
+		TextEdit		*m_search, *m_postFiltering;
+		QCalendarWidget	*m_calendar;
+		int				m_pagemax;
+		QString			m_link, m_lastTags, m_wiki;
+		bool			m_sized, m_stop;
+		int				m_page;
+		Downloader		*m_downloader;
 };
 
 #endif // TAG_TAB_H
