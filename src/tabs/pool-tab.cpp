@@ -9,7 +9,7 @@
 
 
 poolTab::poolTab(int id, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
-	: searchTab(id, sites, profile, parent), ui(new Ui::poolTab), m_id(id), m_pagemax(-1), m_lastTags(QString()), m_sized(false), m_from_history(false), m_stop(true), m_history_cursor(0), m_history(QList<QMap<QString,QString> >()), m_modifiers(QStringList())
+	: searchTab(id, sites, profile, parent), ui(new Ui::poolTab), m_id(id), m_pagemax(-1), m_lastTags(QString()), m_sized(false), m_stop(true)
 {
 	m_favorites = profile->getFavorites();
 	ui->setupUi(this);
@@ -30,29 +30,10 @@ poolTab::poolTab(int id, QMap<QString,Site*> *sites, Profile *profile, mainWindo
 		m_postFiltering->setContextMenuPolicy(Qt::CustomContextMenu);
 		if (m_settings->value("autocompletion", true).toBool())
 		{
-			QStringList completion;
-			QFile words("words.txt");
-			if (words.open(QIODevice::ReadOnly | QIODevice::Text))
-			{
-				while (!words.atEnd())
-				{
-					QByteArray line = words.readLine();
-					completion.append(QString(line).trimmed().split(" ", QString::SkipEmptyParts));
-				}
-				for (int i = 0; i < m_sites->size(); i++)
-				{
-					if (m_sites->value(m_sites->keys().at(i))->contains("Modifiers"))
-					{ m_modifiers.append(m_sites->value(m_sites->keys().at(i))->value("Modifiers").trimmed().split(" ", QString::SkipEmptyParts)); }
-				}
-				completion.append(m_modifiers);
-				completion.append(favs);
-				completion.removeDuplicates();
-				completion.sort();
-				QCompleter *completer = new QCompleter(completion, this);
-					completer->setCaseSensitivity(Qt::CaseInsensitive);
-				m_search->setCompleter(completer);
-				m_postFiltering->setCompleter(completer);
-			}
+			QCompleter *completer = new QCompleter(m_completion, this);
+				completer->setCaseSensitivity(Qt::CaseInsensitive);
+			m_search->setCompleter(completer);
+			m_postFiltering->setCompleter(completer);
 		}
 		connect(m_search, SIGNAL(returnPressed()), this, SLOT(load()));
 		connect(m_search, SIGNAL(favoritesChanged()), m_parent, SLOT(updateFavorites()));
@@ -63,15 +44,7 @@ poolTab::poolTab(int id, QMap<QString,Site*> *sites, Profile *profile, mainWindo
 		ui->layoutFields->insertWidget(3, m_search, 1);
 		ui->layoutPlus->addWidget(m_postFiltering, 1, 1, 1, 3);
 
-	// Sources
-	QString sel = '1'+QString().fill('0',m_sites->count()-1);
-	QString sav = m_settings->value("sites", sel).toString();
-	for (int i = 0; i < sel.count(); i++)
-	{
-		if (sav.count() <= i)
-		{ sav[i] = '0'; }
-		m_selectedSources.append(sav.at(i) == '1' ? true : false);
-	}
+	setSelectedSources(m_settings);
 
 	// Others
 	optionsChanged();
@@ -79,6 +52,14 @@ poolTab::poolTab(int id, QMap<QString,Site*> *sites, Profile *profile, mainWindo
 	setWindowIcon(QIcon());
 	updateCheckboxes();
 	m_search->setFocus();
+
+	// UI members for SearchTab class
+	ui_spinPage = ui->spinPage;
+	ui_spinImagesPerPage = ui->spinImagesPerPage;
+	ui_spinColumns = ui->spinColumns;
+	ui_layoutSourcesList = ui->layoutSourcesList;
+	ui_buttonHistoryBack = ui->buttonHistoryBack;
+	ui_buttonHistoryNext = ui->buttonHistoryNext;
 }
 
 poolTab::~poolTab()
@@ -124,36 +105,6 @@ void poolTab::optionsChanged()
 	ui->layoutResults->setHorizontalSpacing(m_settings->value("Margins/main", 10).toInt());
 }
 
-void poolTab::updateCheckboxes()
-{
-	log(tr("Mise à jour des cases à cocher."));
-	qDeleteAll(m_checkboxes);
-	m_checkboxes.clear();
-	QStringList urls = m_sites->keys();
-	int n = m_settings->value("Sources/Letters", 3).toInt(), m = n;
-	for (int i = 0; i < urls.size(); i++)
-	{
-		if (urls[i].startsWith("www."))
-		{ urls[i] = urls[i].right(urls[i].length() - 4); }
-		else if (urls[i].startsWith("chan."))
-		{ urls[i] = urls[i].right(urls[i].length() - 5); }
-		if (n < 0)
-		{
-			m = urls.at(i).indexOf('.');
-			if (n < -1 && urls.at(i).indexOf('.', m+1) != -1)
-			{ m = urls.at(i).indexOf('.', m+1); }
-		}
-
-		bool isChecked = m_selectedSources.size() > i ? m_selectedSources.at(i) : false;
-		QCheckBox *c = new QCheckBox(urls.at(i).left(m), this);
-			c->setChecked(isChecked);
-			ui->layoutSourcesList->addWidget(c);
-
-		m_checkboxes.append(c);
-	}
-	DONE();
-}
-
 
 
 void poolTab::load()
@@ -165,21 +116,7 @@ void poolTab::load()
 	m_pagemax = -1;
 
 	if (!m_from_history)
-	{
-		QMap<QString,QString> srch = QMap<QString,QString>();
-		srch["tags"] = m_search->toPlainText();
-		srch["page"] = QString::number(ui->spinPage->value());
-		srch["ipp"] = QString::number(ui->spinImagesPerPage->value());
-		srch["columns"] = QString::number(ui->spinColumns->value());
-		m_history.append(srch);
-
-		if (m_history.size() > 1)
-		{
-			m_history_cursor++;
-			ui->buttonHistoryBack->setEnabled(true);
-			ui->buttonHistoryNext->setEnabled(false);
-		}
-	}
+	{ addHistory(m_search->toPlainText(), ui->spinPage->value(), ui->spinImagesPerPage->value(), ui->spinColumns->value()); }
 	m_from_history = false;
 
 	if (m_search->toPlainText() != m_lastTags && !m_lastTags.isNull() && m_history_cursor == m_history.size() - 1)
@@ -335,61 +272,7 @@ void poolTab::finishedLoading(Page* page)
 		{ ui->layoutResults->addLayout(m_layouts[pos], page_y + 1, page_x, 1, 1); }
 
 	if (!m_settings->value("useregexfortags", true).toBool())
-	{
-		// Tags for this page
-		QList<Tag> taglist;
-		QStringList tagsGot;
-		for (int i = 0; i < m_pages.count(); i++)
-		{
-			QList<Tag> tags = m_pages.value(m_pages.keys().at(i))->tags();
-			for (int t = 0; t < tags.count(); t++)
-			{
-				if (!tags[t].text().isEmpty())
-				{
-					if (tagsGot.contains(tags[t].text()))
-					{ taglist[tagsGot.indexOf(tags[t].text())].setCount(taglist[tagsGot.indexOf(tags[t].text())].count()+tags[t].count()); }
-					else
-					{
-						taglist.append(tags[t]);
-						tagsGot.append(tags[t].text());
-					}
-				}
-			}
-		}
-
-		// We sort tags by frequency
-		qSort(taglist.begin(), taglist.end(), sortByFrequency);
-
-		// Then we show them, styled if possible
-		QStringList tlist = QStringList() << "artists" << "circles" << "copyrights" << "characters" << "models" << "generals" << "favorites" << "blacklisteds";
-		QStringList defaults = QStringList() << "#aa0000" << "#55bbff" << "#aa00aa" << "#00aa00" << "#0000ee" << "#000000" << "#ffc0cb" << "#000000";
-		QMap<QString,QString> styles;
-		for (int i = 0; i < tlist.size(); i++)
-		{
-			QFont font;
-			font.fromString(m_settings->value("Coloring/Fonts/"+tlist.at(i)).toString());
-			styles[tlist.at(i)] = "color:"+m_settings->value("Coloring/Colors/"+tlist.at(i), defaults.at(i)).toString()+"; "+qfonttocss(font);
-		}
-		QString tags;
-		int last = 0, h = height()/10;
-		for (int i = 0; i < taglist.size(); i++)
-		{
-			if (i < h || last == taglist[i].count())
-			{
-				bool favorited = false;
-				for (Favorite fav : m_favorites)
-					if (fav.getName() == taglist[i].text())
-						favorited = true;
-				if (favorited)
-					taglist[i].setType("favorite");
-
-				last = taglist[i].count();
-			}
-		}
-
-		m_tags = taglist;
-		m_parent->setTags(m_tags, this);
-	}
+	{ setTagsFromPages(m_pages); }
 
 	m_page++;
 
@@ -426,32 +309,7 @@ void poolTab::finishedLoading(Page* page)
 
 void poolTab::finishedLoadingTags(Page *page)
 {
-	// Tags for this page
-	QList<Tag> taglist;
-	QStringList tagsGot;
-	for (int i = 0; i < m_pages.count(); i++)
-	{
-		QList<Tag> tags = m_pages.value(m_pages.keys().at(i))->tags();
-		for (int t = 0; t < tags.count(); t++)
-		{
-			if (!tags[t].text().isEmpty())
-			{
-				if (tagsGot.contains(tags[t].text()))
-				{ taglist[tagsGot.indexOf(tags[t].text())].setCount(taglist[tagsGot.indexOf(tags[t].text())].count()+tags[t].count()); }
-				else
-				{
-					taglist.append(tags[t]);
-					tagsGot.append(tags[t].text());
-				}
-			}
-		}
-	}
-
-	// We sort tags by frequency
-	qSort(taglist.begin(), taglist.end(), sortByFrequency);
-
-	m_tags = taglist;
-	m_parent->setTags(m_tags, this);
+	setTagsFromPages(m_pages);
 
 	if (!page->wiki().isEmpty())
 	{
@@ -541,28 +399,6 @@ void poolTab::finishedLoadingPreview(Image *img)
 	m_boutons.append(l);
 }
 
-void poolTab::webZoom(int id)
-{
-	Image *image = m_images.at(id);
-
-	if (!m_settings->value("blacklistedtags").toString().isEmpty())
-	{
-		QStringList blacklistedtags(m_settings->value("blacklistedtags").toString().split(" "));
-		QStringList detected = image->blacklisted(blacklistedtags);
-		if (!detected.isEmpty())
-		{
-			int reply = QMessageBox::question(m_parent, tr("List noire"), tr("%n tag(s) figurant dans la liste noire détécté(s) sur cette image : %1. Voulez-vous l'afficher tout de même ?", "", detected.size()).arg(detected.join(", ")), QMessageBox::Yes | QMessageBox::No);
-			if (reply == QMessageBox::No)
-			{ return; }
-		}
-	}
-
-	zoomWindow *zoom = new zoomWindow(image, image->page()->site(), m_sites, m_profile, m_parent);
-	zoom->show();
-	connect(zoom, SIGNAL(linkClicked(QString)), this, SLOT(setTags(QString)));
-	connect(zoom, SIGNAL(poolClicked(int, QString)), this, SLOT(setPool(int, QString)));
-}
-
 void poolTab::getPage()
 {
 	bool unloaded = m_settings->value("getunloadedpages", false).toBool();
@@ -573,41 +409,6 @@ void poolTab::getAll()
 {
 	int limit = m_sites->value(ui->comboSites->currentText())->contains("Urls/1/Limit") ? m_sites->value(ui->comboSites->currentText())->value("Urls/1/Limit").toInt() : 0;
 	emit batchAddGroup(QStringList() << "pool:"+QString::number(ui->spinPool->value())+" "+m_search->toPlainText()+" "+m_settings->value("add").toString().trimmed() << "1" << QString::number(qMin((limit > 0 ? limit : 200), qMax(m_pages.value(ui->comboSites->currentText())->images().count(), m_pages.value(ui->comboSites->currentText())->imagesCount()))) << QString::number(qMax(m_pages.value(ui->comboSites->currentText())->images().count(), m_pages.value(ui->comboSites->currentText())->imagesCount())) << m_settings->value("downloadblacklist").toString() << ui->comboSites->currentText() << m_settings->value("Save/filename").toString() << m_settings->value("Save/path").toString() << "");
-}
-void poolTab::getSel()
-{
-	if (m_selectedImagesPtrs.empty())
-		return;
-
-	for (Image *img : m_selectedImagesPtrs)
-	{
-		QStringList tags;
-		for (Tag tag : img->tags())
-		{ tags.append(tag.text()); }
-
-		QMap<QString,QString> values;
-		values.insert("id", QString::number(img->id()));
-		values.insert("md5", img->md5());
-		values.insert("rating", img->rating());
-		values.insert("tags", tags.join(" "));
-		values.insert("file_url", img->fileUrl().toString());
-		values.insert("date", img->createdAt().toString(Qt::ISODate));
-		values.insert("site", img->site());
-		values.insert("filename", m_settings->value("Save/filename").toString());
-		values.insert("folder", m_settings->value("Save/path").toString());
-
-		values.insert("page_url", m_sites->value(img->site())->value("Urls/Html/Post"));
-		QString t = m_sites->value(img->site())->contains("DefaultTag") ? m_sites->value(img->site())->value("DefaultTag") : "";
-		values["page_url"].replace("{tags}", t);
-		values["page_url"].replace("{id}", values["id"]);
-
-		emit batchAddUnique(values);
-	}
-
-	m_selectedImagesPtrs.clear();
-	m_selectedImages.clear();
-	for (QBouton *l : m_boutons)
-	{ l->setChecked(false); }
 }
 
 void poolTab::firstPage()
@@ -691,41 +492,6 @@ void poolTab::viewitlater()
 void poolTab::unviewitlater()
 {
 	m_profile->getKeptForLater().removeAll(m_link);
-}
-
-void poolTab::historyBack()
-{
-	if (m_history_cursor > 0)
-	{
-		m_from_history = true;
-		m_history_cursor--;
-
-		ui->spinPage->setValue(m_history[m_history_cursor]["page"].toInt());
-		ui->spinImagesPerPage->setValue(m_history[m_history_cursor]["ipp"].toInt());
-		ui->spinColumns->setValue(m_history[m_history_cursor]["columns"].toInt());
-		setTags(m_history[m_history_cursor]["tags"]);
-
-		ui->buttonHistoryNext->setEnabled(true);
-		if (m_history_cursor == 0)
-		{ ui->buttonHistoryBack->setEnabled(false); }
-	}
-}
-void poolTab::historyNext()
-{
-	if (m_history_cursor < m_history.size() - 1)
-	{
-		m_from_history = true;
-		m_history_cursor++;
-
-		ui->spinPage->setValue(m_history[m_history_cursor]["page"].toInt());
-		ui->spinImagesPerPage->setValue(m_history[m_history_cursor]["ipp"].toInt());
-		ui->spinColumns->setValue(m_history[m_history_cursor]["columns"].toInt());
-		setTags(m_history[m_history_cursor]["tags"]);
-
-		ui->buttonHistoryBack->setEnabled(true);
-		if (m_history_cursor == m_history.size() - 1)
-		{ ui->buttonHistoryNext->setEnabled(false); }
-	}
 }
 
 void poolTab::setTags(QString tags)

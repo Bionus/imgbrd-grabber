@@ -37,7 +37,6 @@ class tagTab : public searchTab
 		QString postFilter();
 
 	public slots:
-		void updateCheckboxes();
 		// Search
 		void firstPage();
 		void previousPage();
@@ -45,7 +44,6 @@ class tagTab : public searchTab
 		void lastPage();
 		// Zooms
 		void setTags(QString);
-		void webZoom(int);
 		// Loading
 		void load();
 		void finishedLoading(Page*);
@@ -56,7 +54,6 @@ class tagTab : public searchTab
 		// Batch
 		void getPage();
 		void getAll();
-		void getSel();
 		// Tag list
 		void linkHovered(QString);
 		void linkClicked(QString);
@@ -65,9 +62,6 @@ class tagTab : public searchTab
 		void openInNewWindow();
 		void viewitlater();
 		void unviewitlater();
-		// History
-		void historyBack();
-		void historyNext();
 		// Others
 		void optionsChanged();
 		void closeEvent(QCloseEvent*);
@@ -78,10 +72,6 @@ class tagTab : public searchTab
 		void setPostFilter(QString postfilter);
 		void focusSearch();
 
-	signals:
-		void batchAddGroup(QStringList);
-		void batchAddUnique(QMap<QString,QString>);
-
 	private:
 		int								m_id;
 		QList<Favorite>					&m_favorites;
@@ -89,15 +79,12 @@ class tagTab : public searchTab
 		TextEdit						*m_search, *m_postFiltering;
 		QCalendarWidget					*m_calendar;
 		QMap<QString,Page*>				m_pages;
-		QList<Image*>					m_images;
 		int								m_pagemax;
 		QString							m_link, m_lastTags, m_wiki;
-		bool							m_sized, m_from_history, m_stop;
-		int								m_page, m_history_cursor;
+		bool							m_sized, m_stop;
+		int								m_page;
 		QList<QGridLayout*>				m_layouts;
 		QList<QLabel*>					m_labels;
-		QList<QMap<QString,QString> >	m_history;
-		QStringList						m_modifiers, m_completion;
 		Downloader						*m_downloader;
 };
 

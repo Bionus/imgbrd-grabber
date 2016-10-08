@@ -1,16 +1,260 @@
+#include <QFile>
+#include <QMouseEvent>
+#include <QMessageBox>
 #include "search-tab.h"
 #include "sources/sourceswindow.h"
 #include "functions.h"
 #include "mainwindow.h"
-#include <QFile>
-#include <QMouseEvent>
+#include "viewer/zoomwindow.h"
 
 
 searchTab::searchTab(int id, QMap<QString, Site*> *sites, Profile *profile, mainWindow *parent)
-	: QWidget(parent), m_profile(profile), m_id(id), m_lastPageMaxId(0), m_lastPageMinId(0), m_sites(sites), m_parent(parent), m_settings(parent->settings())
-{ }
+	: QWidget(parent), m_profile(profile), m_id(id), m_lastPageMaxId(0), m_lastPageMinId(0), m_sites(sites), m_parent(parent), m_settings(parent->settings()), m_from_history(false), m_history_cursor(0)
+{
+	// Auto-complete list
+	QFile words("words.txt");
+	if (words.open(QIODevice::ReadOnly | QIODevice::Text))
+	{
+		while (!words.atEnd())
+			m_completion.append(QString(words.readLine()).trimmed().split(" ", QString::SkipEmptyParts));
+		words.close();
+	}
+	QFile wordsc(savePath("wordsc.txt"));
+	if (wordsc.open(QIODevice::ReadOnly | QIODevice::Text))
+	{
+		while (!wordsc.atEnd())
+			m_completion.append(QString(wordsc.readLine()).trimmed().split(" ", QString::SkipEmptyParts));
+		wordsc.close();
+	}
+
+	// Favorite tags
+	for (Favorite fav : m_favorites)
+		m_completion.append(fav.getName());
+
+	// Modifiers
+	for (int i = 0; i < sites->size(); i++)
+		if (sites->value(sites->keys().at(i))->contains("Modifiers"))
+			m_completion.append(sites->value(sites->keys().at(i))->value("Modifiers").trimmed().split(" ", QString::SkipEmptyParts));
+
+	m_completion.removeDuplicates();
+	m_completion.sort();
+}
+
 searchTab::~searchTab()
-{ emit deleted(m_id); }
+{
+	emit deleted(m_id);
+}
+
+
+void searchTab::setSelectedSources(QSettings *settings)
+{
+	QString sel = '1'+QString().fill('0',m_sites->count()-1);
+	QString sav = settings->value("sites", sel).toString();
+	for (int i = 0; i < sel.count(); i++)
+	{
+		if (sav.count() <= i)
+		{ sav[i] = '0'; }
+		m_selectedSources.append(sav.at(i) == '1' ? true : false);
+	}
+}
+
+void searchTab::setTagsFromPages(const QMap<QString, Page*> &pages)
+{
+	// Tags for this page
+	QList<Tag> taglist;
+	QStringList tagsGot;
+	QStringList autocompleteAdd;
+	for (int i = 0; i < pages.count(); i++)
+	{
+		QList<Tag> tags = pages.value(pages.keys().at(i))->tags();
+		for (Tag tag : tags)
+		{
+			if (!tag.text().isEmpty())
+			{
+				// Add to auto-complete list if it has enough count
+				if (tag.count() >= m_settings->value("tagsautoadd", 10).toInt() && !m_completion.contains(tag.text()))
+				{
+					autocompleteAdd.append(tag.text());
+					m_completion.append(tag.text());
+				}
+
+				// If we already have this tag in the list, we increase its count
+				if (tagsGot.contains(tag.text()))
+				{
+					int index = tagsGot.indexOf(tag.text());
+					taglist[index].setCount(taglist[index].count() + tag.count());
+				}
+				else
+				{
+					taglist.append(tag);
+					tagsGot.append(tag.text());
+				}
+			}
+		}
+	}
+
+	// Add new words to auto-complete list
+	QFile wordsc(savePath("wordsc.txt"));
+	if (wordsc.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text))
+	{
+		wordsc.write(QString('\n').toLatin1());
+		wordsc.write(autocompleteAdd.join(' ').toLatin1());
+		wordsc.close();
+	}
+
+	// We sort tags by frequency
+	qSort(taglist.begin(), taglist.end(), sortByFrequency);
+
+	m_tags = taglist;
+	m_parent->setTags(m_tags, this);
+}
+
+void searchTab::addHistory(QString tags, int page, int ipp, int cols)
+{
+	QMap<QString,QString> srch = QMap<QString,QString>();
+	srch["tags"] = tags;
+	srch["page"] = QString::number(page);
+	srch["ipp"] = QString::number(ipp);
+	srch["columns"] = QString::number(cols);
+	m_history.append(srch);
+
+	if (m_history.size() > 1)
+	{
+		m_history_cursor++;
+		ui_buttonHistoryBack->setEnabled(true);
+		ui_buttonHistoryNext->setEnabled(false);
+	}
+}
+void searchTab::historyBack()
+{
+	if (m_history_cursor <= 0)
+		return;
+
+	m_from_history = true;
+	m_history_cursor--;
+
+	ui_spinPage->setValue(m_history[m_history_cursor]["page"].toInt());
+	ui_spinImagesPerPage->setValue(m_history[m_history_cursor]["ipp"].toInt());
+	ui_spinColumns->setValue(m_history[m_history_cursor]["columns"].toInt());
+	setTags(m_history[m_history_cursor]["tags"]);
+
+	ui_buttonHistoryNext->setEnabled(true);
+	if (m_history_cursor == 0)
+	{ ui_buttonHistoryBack->setEnabled(false); }
+}
+void searchTab::historyNext()
+{
+	if (m_history_cursor >= m_history.size() - 1)
+		return;
+
+	m_from_history = true;
+	m_history_cursor++;
+
+	ui_spinPage->setValue(m_history[m_history_cursor]["page"].toInt());
+	ui_spinImagesPerPage->setValue(m_history[m_history_cursor]["ipp"].toInt());
+	ui_spinColumns->setValue(m_history[m_history_cursor]["columns"].toInt());
+	setTags(m_history[m_history_cursor]["tags"]);
+
+	ui_buttonHistoryBack->setEnabled(true);
+	if (m_history_cursor == m_history.size() - 1)
+	{ ui_buttonHistoryNext->setEnabled(false); }
+}
+
+void searchTab::getSel()
+{
+	if (m_selectedImagesPtrs.empty())
+		return;
+
+	for (Image *img : m_selectedImagesPtrs)
+	{
+		QStringList tags;
+		for (Tag tag : img->tags())
+		{ tags.append(tag.typedText()); }
+
+		QMap<QString,QString> values;
+		values.insert("id", QString::number(img->id()));
+		values.insert("md5", img->md5());
+		values.insert("rating", img->rating());
+		values.insert("tags", tags.join(" "));
+		values.insert("file_url", img->fileUrl().toString());
+		values.insert("date", img->createdAt().toString(Qt::ISODate));
+		values.insert("site", img->site());
+		values.insert("filename", m_settings->value("Save/filename").toString());
+		values.insert("folder", m_settings->value("Save/path").toString());
+
+		values.insert("page_url", m_sites->value(img->site())->value("Urls/Html/Post"));
+		QString t = m_sites->value(img->site())->contains("DefaultTag") ? m_sites->value(img->site())->value("DefaultTag") : "";
+		values["page_url"].replace("{tags}", t);
+		values["page_url"].replace("{id}", values["id"]);
+
+		emit batchAddUnique(values);
+	}
+
+	m_selectedImagesPtrs.clear();
+	m_selectedImages.clear();
+	for (QBouton *l : m_boutons)
+	{ l->setChecked(false); }
+}
+
+void searchTab::updateCheckboxes()
+{
+	log(tr("Mise à jour des cases à cocher."));
+
+	qDeleteAll(m_checkboxes);
+	m_checkboxes.clear();
+
+	QStringList urls = m_sites->keys();
+	int n = m_settings->value("Sources/Letters", 3).toInt();
+	int m = n;
+
+	for (int i = 0; i < urls.size(); i++)
+	{
+		QString url = urls[i];
+		if (url.startsWith("www."))
+		{ url = url.right(url.length() - 4); }
+		else if (url.startsWith("chan."))
+		{ url = url.right(url.length() - 5); }
+
+		if (n < 0)
+		{
+			m = url.indexOf('.');
+			if (n < -1 && url.indexOf('.', m+1) != -1)
+			{ m = url.indexOf('.', m+1); }
+		}
+
+		bool isChecked = m_selectedSources.size() > i ? m_selectedSources.at(i) : false;
+		QCheckBox *c = new QCheckBox(url.left(m), this);
+			c->setChecked(isChecked);
+			ui_layoutSourcesList->addWidget(c);
+
+		m_checkboxes.append(c);
+	}
+
+	DONE();
+}
+
+void searchTab::webZoom(int id)
+{
+	Image *image = m_images.at(id);
+
+	if (!m_settings->value("blacklistedtags").toString().isEmpty())
+	{
+		QStringList blacklistedtags(m_settings->value("blacklistedtags").toString().split(" "));
+		QStringList detected = image->blacklisted(blacklistedtags);
+		if (!detected.isEmpty())
+		{
+			int reply = QMessageBox::question(m_parent, tr("List noire"), tr("%n tag(s) figurant dans la liste noire détécté(s) sur cette image : %1. Voulez-vous l'afficher tout de même ?", "", detected.size()).arg(detected.join(", ")), QMessageBox::Yes | QMessageBox::No);
+			if (reply == QMessageBox::No)
+			{ return; }
+		}
+	}
+
+	zoomWindow *zoom = new zoomWindow(image, image->page()->site(), m_sites, m_profile, m_parent);
+	zoom->show();
+	connect(zoom, SIGNAL(linkClicked(QString)), this, SLOT(setTags(QString)));
+	connect(zoom, SIGNAL(poolClicked(int, QString)), m_parent, SLOT(addPoolTab(int, QString)));
+}
+
 
 void searchTab::mouseReleaseEvent(QMouseEvent *e)
 {
