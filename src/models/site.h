@@ -49,6 +49,7 @@ class Site : public QObject
 		QString name();
 		QString url();
 		QList<QNetworkCookie> cookies();
+		bool isLoggedIn();
 		QVariant setting(QString key, QVariant def = QVariant());
 		QSettings *settings();
 		Profile *profile();

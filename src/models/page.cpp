@@ -75,9 +75,10 @@ void Page::fallback(bool bload)
 		emit failedLoading(this);
 		return;
 	}
+
 	m_currentApi++;
 	if (m_currentApi > 0)
-	{ log(tr("Chargement en %1 échoué. Nouvel essai en %2.").arg(m_site->getApis().at(m_currentApi - 1)->getName()).arg(m_site->getApis().at(m_currentApi)->getName())); }
+		log(tr("Chargement en %1 échoué. Nouvel essai en %2.").arg(m_site->getApis().at(m_currentApi - 1)->getName()).arg(m_site->getApis().at(m_currentApi)->getName()));
 
 	if (bload)
 		load();
@@ -88,6 +89,9 @@ void Page::setLastPage(Page *page)
 	m_lastPage = page->page();
 	m_lastPageMaxId = page->maxId();
 	m_lastPageMinId = page->minId();
+
+	for (PageApi *api : m_pageApis)
+		api->setLastPage(page);
 
 	m_currentApi--;
 	if (!page->nextPage().isEmpty())
@@ -184,19 +188,9 @@ int Page::pagesCount(bool guess)
 
 int Page::maxId()
 {
-	return 0;
-	/*int maxId = 0;
-	for (Image *img : m_images)
-		if (img->id() > maxId || maxId == 0)
-			maxId = img->id();
-	return maxId;*/
+	return m_pageApis[m_currentApi]->maxId();
 }
 int Page::minId()
 {
-	return 0;
-	/*int minId = 0;
-	for (Image *img : m_images)
-		if (img->id() < minId || minId == 0)
-			minId = img->id();
-	return minId;*/
+	return m_pageApis[m_currentApi]->minId();
 }

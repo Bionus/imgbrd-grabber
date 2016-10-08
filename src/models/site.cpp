@@ -139,7 +139,7 @@ void Site::resetCookieJar()
  */
 void Site::login(bool force)
 {
-	if (!m_settings->value("login/parameter").toBool() && (force || (!m_loggedIn && !m_triedLogin)))
+	if (!m_settings->value("login/parameter", true).toBool() && (force || (!m_loggedIn && !m_triedLogin)))
 	{
 		if (!m_settings->value("login/url", "").toString().isEmpty())
 		{
@@ -235,7 +235,7 @@ QNetworkRequest Site::makeRequest(QUrl url, Page *page, QString ref, Image *img)
 	}
 
 	QMap<QString,QVariant> headers = m_settings->value("headers").toMap();
-	request.setRawHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:35.0) Gecko/20100101 Firefox/35.0");
+	request.setRawHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:52.0) Gecko/20100101 Firefox/52.0");
 	for (QString key : headers.keys())
 	{ request.setRawHeader(key.toLatin1(), headers[key].toString().toLatin1()); }
 
@@ -430,6 +430,13 @@ QUrl Site::fixUrl(QString url, QUrl old)
 QList<QNetworkCookie> Site::cookies()
 {
 	return m_cookies;
+}
+
+bool Site::isLoggedIn()
+{
+	if (m_settings->value("login/parameter", true).toBool() && !m_username.isEmpty() && !m_password.isEmpty())
+		return true;
+	return m_loggedIn;
 }
 
 

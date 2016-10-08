@@ -13,13 +13,16 @@
 			<Pools>/post/index.json?{login}limit={limit}&amp;page={page}&amp;tags=pool:{pool} {tags}</Pools>
 		</Json>
 		<Html>
-			<Tags>/post/index?{login}{altpage}limit={limit}&amp;tags={tags}&amp;page={page}</Tags>
-			<Pools>/post/index?{login}{altpage}limit={limit}&amp;tags=pool:{pool} {tags}&amp;page={page}</Pools>
+			<Tags>/post/index?{login}limit={limit}&amp;tags={tags}&amp;{pagepart}{altpage}</Tags>
+			<Pools>/post/index?{login}limit={limit}&amp;tags=pool:{pool} {tags}&amp;{pagepart}{altpage}</Pools>
 			<Post>/post/show/{id}</Post>
 			<Limit>20</Limit>
-			<MaxPage>50</MaxPage>
-			<AltPagePrev>prev={max}&amp;</AltPagePrev>
-			<AltPageNext>next={min-1}&amp;</AltPageNext>
+			<MaxLimit>200</MaxLimit>
+			<MaxPage>25</MaxPage>
+			<MaxPageLoggedIn>1000</MaxPageLoggedIn>
+			<PagePart>page={page}</PagePart>
+			<AltPagePrev>prev={max}</AltPagePrev>
+			<AltPageNext>next={min-1}</AltPageNext>
 		</Html>
 	</Urls>
 	<Regex>

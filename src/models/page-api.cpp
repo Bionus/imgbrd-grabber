@@ -17,11 +17,91 @@ PageApi::PageApi(Page *parentPage, Site *site, Api *api, QStringList tags, int p
 	m_imagesCount = -1;
 	m_pagesCount = -1;
 	m_search = tags;
-
-	// Set values
 	m_page = page;
 	m_pool = pool;
 
+	updateUrls();
+}
+PageApi::~PageApi()
+{
+	// qDeleteAll(m_images);
+}
+
+QUrl PageApi::parseUrl(QString url, int pid, int p, QString t, QString pseudo, QString password)
+{
+	if (pid < 0)
+		pid = (this->page() - 1) * this->imagesPerPage();
+	if (p < 0)
+		p = this->page();
+	if (t.isEmpty())
+		t = m_search.join(" ");
+	if (pseudo.isEmpty())
+		pseudo = m_site->username();
+	if (password.isEmpty())
+		password = m_site->password();
+
+	url.replace("{tags}", QUrl::toPercentEncoding(t));
+	url.replace("{limit}", QString::number(m_imagesPerPage));
+
+	int maxPage = -1;
+	if (m_site->isLoggedIn() && m_api->contains("Urls/MaxPageLoggedIn"))
+	{ maxPage = m_api->value("Urls/MaxPageLoggedIn").toInt(); }
+	else if (m_api->contains("Urls/MaxPage"))
+	{ maxPage = m_api->value("Urls/MaxPage").toInt(); }
+
+	m_isAltPage = maxPage >= 0 && p > maxPage && m_page - 1 <= m_lastPage && m_lastPage <= m_page + 1;
+	if (m_isAltPage)
+	{
+		url.replace("{altpage}", m_api->value("Urls/AltPage" + QString(m_lastPage > m_page ? "Prev" : "Next")));
+		url.replace("{pagepart}", "");
+	}
+	else
+	{
+		if (m_api->contains("Urls/PagePart"))
+		{ url.replace("{pagepart}", m_api->value("Urls/PagePart")); }
+		url.replace("{altpage}", "");
+	}
+	url.replace("{min}", QString::number(m_lastPageMinId));
+	url.replace("{max}", QString::number(m_lastPageMaxId));
+	url.replace("{min-1}", QString::number(m_lastPageMinId-1));
+	url.replace("{max-1}", QString::number(m_lastPageMaxId-1));
+	url.replace("{min+1}", QString::number(m_lastPageMinId+1));
+	url.replace("{max+1}", QString::number(m_lastPageMaxId+1));
+	url.replace("{pid}", QString::number(pid));
+	url.replace("{page}", QString::number(p));
+
+	bool hasLoginString = m_api->contains("Urls/Login") && (!pseudo.isEmpty() || !password.isEmpty());
+	url.replace("{login}", hasLoginString ? m_api->value("Urls/Login") : "");
+	url.replace("{pseudo}", pseudo);
+	url.replace("{password}", password);
+	if (url.contains("{appkey}"))
+	{
+		QString appkey = m_site->value("AppkeySalt");
+		appkey.replace("%password%", password);
+		appkey.replace("%username%", pseudo.toLower());
+		url.replace("{appkey}", QCryptographicHash::hash(appkey.toUtf8(), QCryptographicHash::Sha1).toHex());
+	}
+
+	return m_site->fixUrl(url);
+}
+
+void PageApi::setLastPage(Page *page)
+{
+	m_lastPage = page->page();
+	m_lastPageMaxId = page->maxId();
+	m_lastPageMinId = page->minId();
+
+	m_currentSource--;
+	if (!page->nextPage().isEmpty())
+	{ m_url = page->nextPage(); }
+	else
+	{ /*fallback(false);*/ }
+
+	updateUrls();
+}
+
+void PageApi::updateUrls()
+{
 	// Default tag is none is given
 	QString t = m_search.join(" ").trimmed();
 	if (m_api->contains("DefaultTag") && t.isEmpty())
@@ -65,7 +145,7 @@ PageApi::PageApi(Page *parentPage, Site *site, Api *api, QStringList tags, int p
 			log(tr("Aucune source du site n'est compatible avec les pools."));
 			m_errors.append(tr("Aucune source du site n'est compatible avec les pools."));
 			m_search.removeAll("pool:"+poolRx.cap(1));
-			t.remove(pool);
+			t.remove(m_pool);
 			t = t.trimmed();
 		}
 	}
@@ -101,77 +181,6 @@ PageApi::PageApi(Page *parentPage, Site *site, Api *api, QStringList tags, int p
 	}
 	else
 	{ m_urlRegex = ""; }
-}
-PageApi::~PageApi()
-{
-	// qDeleteAll(m_images);
-}
-
-QUrl PageApi::parseUrl(QString url, int pid, int p, QString t, QString pseudo, QString password)
-{
-	if (pid < 0)
-		pid = (this->page() - 1) * this->imagesPerPage();
-	if (p < 0)
-		p = this->page();
-	if (t.isEmpty())
-		t = m_search.join(" ");
-	if (pseudo.isEmpty())
-		pseudo = m_site->username();
-	if (password.isEmpty())
-		password = m_site->password();
-
-	url.replace("{tags}", QUrl::toPercentEncoding(t));
-	url.replace("{limit}", QString::number(m_imagesPerPage));
-
-	if (!m_api->contains("Urls/MaxPage") || p <= m_api->value("Urls/MaxPage").toInt() || m_lastPage > m_page + 1 || m_lastPage < m_page - 1)
-	{
-		if (m_api->contains("Urls/PagePart"))
-		{ url.replace("{pagepart}", m_api->value("Urls/PagePart")); }
-		url.replace("{pid}", QString::number(pid));
-		url.replace("{page}", QString::number(p));
-		url.replace("{altpage}", "");
-	}
-	else
-	{
-		QString altpage = m_api->value("Urls/AltPage" + QString(m_lastPage > m_page ? "Prev" : "Next"));
-		altpage.replace("{min}", QString::number(m_lastPageMinId));
-		altpage.replace("{max}", QString::number(m_lastPageMaxId));
-		altpage.replace("{min-1}", QString::number(m_lastPageMinId-1));
-		altpage.replace("{max-1}", QString::number(m_lastPageMaxId-1));
-		altpage.replace("{min+1}", QString::number(m_lastPageMinId+1));
-		altpage.replace("{max+1}", QString::number(m_lastPageMaxId+1));
-		url.replace("{altpage}", altpage);
-		url.replace("{pagepart}", "");
-		url.replace("{page}", "");
-		url.replace("{pid}", "");
-	}
-
-	bool hasLoginString = m_api->contains("Urls/Login") && (!pseudo.isEmpty() || !password.isEmpty());
-	url.replace("{login}", hasLoginString ? m_api->value("Urls/Login") : "");
-	url.replace("{pseudo}", pseudo);
-	url.replace("{password}", password);
-	if (url.contains("{appkey}"))
-	{
-		QString appkey = m_site->value("AppkeySalt");
-		appkey.replace("%password%", password);
-		appkey.replace("%username%", pseudo.toLower());
-		url.replace("{appkey}", QCryptographicHash::hash(appkey.toUtf8(), QCryptographicHash::Sha1).toHex());
-	}
-
-	return m_site->fixUrl(url);
-}
-
-void PageApi::setLastPage(Page *page)
-{
-	m_lastPage = page->page();
-	m_lastPageMaxId = page->maxId();
-	m_lastPageMinId = page->minId();
-
-	m_currentSource--;
-	if (!page->nextPage().isEmpty())
-	{ m_url = page->nextPage(); }
-	else
-	{ /*fallback(false);*/ }
 }
 
 void PageApi::load(bool rateLimit)
@@ -565,6 +574,8 @@ void PageApi::parse()
 
 	// Remove first n images (according to site settings)
 	int skip = m_site->setting("ignore/always", 0).toInt();
+	if (m_isAltPage)
+		skip = m_site->setting("ignore/alt", 0).toInt();
 	if (m_page == m_site->value("FirstPage").toInt())
 		skip = m_site->setting("ignore/1", 0).toInt();
 	if (m_images.size() > m_imagesPerPage && m_images.size() > skip)

@@ -99,6 +99,17 @@ void tagTab::optionsChanged()
 void tagTab::load()
 {
 	log(tr("Chargement des résultats..."));
+
+	// Save previous pages
+	QStringList keys = m_sites->keys();
+	QMap<QString, Page*> lastPages;
+	for (int i = 0; i < m_selectedSources.size(); i++)
+	{
+		QString site = keys[i];
+		if (m_checkboxes.at(i)->isChecked() && m_pages.contains(site))
+			lastPages.insert(site, m_pages[site]);
+	}
+
 	clear();
 
 	ui->buttonGetAll->setEnabled(false);
@@ -153,6 +164,8 @@ void tagTab::load()
 			log(tr("Chargement de la page <a href=\"%1\">%1</a>").arg(page->url().toString().toHtmlEscaped()));
 			connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(finishedLoading(Page*)));
 			connect(page, SIGNAL(failedLoading(Page*)), this, SLOT(failedLoading(Page*)));
+			if (lastPages.contains(page->website()))
+			{ page->setLastPage(lastPages[page->website()]); }
 			m_pages.insert(page->website(), page);
 
 			// Setup the layout
