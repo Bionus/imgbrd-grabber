@@ -63,7 +63,7 @@ class PageApi : public QObject
 
 	protected:
 		void parseImage(QMap<QString,QString> data, int position);
-		void parseNavigation();
+		void parseNavigation(const QString &source);
 
 	private:
 		Page			*m_parentPage;

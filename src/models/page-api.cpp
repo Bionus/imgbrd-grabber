@@ -551,9 +551,9 @@ void PageApi::parse()
 	}
 
 	// Try to get navigation info on HTML pages
-	if (m_replyTags != nullptr || m_format == "Html")
+	if (m_format == "Html")
 	{
-		parseNavigation();
+		parseNavigation(m_source);
 	}
 
 	// Remove first n images (according to site settings)
@@ -671,7 +671,7 @@ void PageApi::parseTags()
 		}
 	}
 
-	parseNavigation();
+	parseNavigation(source);
 
 	// Wiki
 	m_wiki.clear();
@@ -692,19 +692,19 @@ void PageApi::parseTags()
 	emit finishedLoadingTags(this);
 }
 
-void PageApi::parseNavigation()
+void PageApi::parseNavigation(const QString &source)
 {
 	// Navigation
 	if (m_site->contains("Regex/NextPage") && m_urlNextPage.isEmpty())
 	{
 		QRegExp rx(m_site->value("Regex/NextPage"));
-		if (rx.indexIn(m_source, 0) >= 0)
+		if (rx.indexIn(source, 0) >= 0)
 		{ m_urlNextPage = QUrl(rx.cap(1)); }
 	}
 	if (m_site->contains("Regex/PrevPage") && m_urlPrevPage.isEmpty())
 	{
 		QRegExp rx(m_site->value("Regex/PrevPage"));
-		if (rx.indexIn(m_source, 0) >= 0)
+		if (rx.indexIn(source, 0) >= 0)
 		{ m_urlPrevPage = QUrl(rx.cap(1)); }
 	}
 
@@ -714,12 +714,16 @@ void PageApi::parseNavigation()
 	if (m_site->contains("Regex/LastPage") && m_pagesCount < 1)
 	{
 		QRegExp rxlast(m_site->value("Regex/LastPage"));
-		rxlast.indexIn(m_source, 0);
-		m_pagesCount = rxlast.cap(1).remove(",").toInt();
-		if (m_originalUrl.contains("{pid}"))
+		rxlast.indexIn(source, 0);
+		int cnt = rxlast.cap(1).remove(",").toInt();
+		if (cnt > 0)
 		{
-			int ppid = m_api->contains("Urls/Limit") ? m_api->value("Urls/Limit").toInt() : m_imagesPerPage;
-			m_pagesCount = floor((float)m_pagesCount / (float)ppid) + 1;
+			m_pagesCount = cnt;
+			if (m_originalUrl.contains("{pid}"))
+			{
+				int ppid = m_api->contains("Urls/Limit") ? m_api->value("Urls/Limit").toInt() : m_imagesPerPage;
+				m_pagesCount = floor((float)m_pagesCount / (float)ppid) + 1;
+			}
 		}
 	}
 
@@ -727,7 +731,7 @@ void PageApi::parseNavigation()
 	if (m_site->contains("Regex/Count") && m_imagesCount < 1)
 	{
 		QRegExp rxlast(m_site->value("Regex/Count"));
-		rxlast.indexIn(m_source, 0);
+		rxlast.indexIn(source, 0);
 		m_imagesCount = rxlast.cap(1).remove(",").toInt();
 	}
 	if (m_imagesCount < 1)

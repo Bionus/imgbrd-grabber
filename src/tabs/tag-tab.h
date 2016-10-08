@@ -67,7 +67,6 @@ class tagTab : public searchTab
 	private:
 		int				m_id;
 		QList<Favorite>	&m_favorites;
-		QStringList		&m_ignored;
 		TextEdit		*m_search, *m_postFiltering;
 		QCalendarWidget	*m_calendar;
 		int				m_pagemax;

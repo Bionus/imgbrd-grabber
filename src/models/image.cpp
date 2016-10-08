@@ -853,9 +853,10 @@ QStringList Image::blacklisted(QStringList blacklistedtags, bool invert) const
 	return detected;
 }
 
-QStringList Image::stylishedTags(Profile *profile, QStringList ignored) const
+QStringList Image::stylishedTags(Profile *profile) const
 {
-	QStringList blacklisted = m_settings->value("blacklistedtags").toString().split(' ');
+	QStringList ignored = profile->getIgnored();
+	QStringList blacklisted = profile->getSettings()->value("blacklistedtags").toString().split(' ');
 
 	QStringList t;
 	for (Tag tag : m_tags)

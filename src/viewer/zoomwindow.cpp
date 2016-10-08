@@ -128,12 +128,12 @@ void zoomWindow::go()
 	if (pos == "top")
 	{
 		ui->widgetLeft->hide();
-		m_labelTagsTop->setText(m_image->stylishedTags(m_profile, m_ignore).join(" "));
+		m_labelTagsTop->setText(m_image->stylishedTags(m_profile).join(" "));
 	}
 	else
 	{
 		m_labelTagsTop->hide();
-		m_labelTagsLeft->setText(m_image->stylishedTags(m_profile, m_ignore).join("<br/>"));
+		m_labelTagsLeft->setText(m_image->stylishedTags(m_profile).join("<br/>"));
 	}
 
 	m_detailsWindow = new detailsWindow(m_image, this);
@@ -474,7 +474,7 @@ void zoomWindow::replyFinishedDetails(Image* img)
 }
 void zoomWindow::colore()
 {
-	QStringList t = m_image->stylishedTags(m_profile, m_ignore);
+	QStringList t = m_image->stylishedTags(m_profile);
 	tags = t.join(" ");
 	if (ui->widgetLeft->isHidden())
 	{ m_labelTagsTop->setText(tags); }

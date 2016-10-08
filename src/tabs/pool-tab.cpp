@@ -243,80 +243,13 @@ void poolTab::finishedLoadingPreview(Image *img)
 	if (m_stop)
 	{ return; }
 
-	int position = m_images.indexOf(img), page = 0;
-	page = m_pages.values().indexOf(img->page());
 	if (img->previewImage().isNull())
 	{
 		log(tr("<b>Attention :</b> %1").arg(tr("une des miniatures est vide (<a href=\"%1\">%1</a>).").arg(img->previewUrl().toString())));
 		return;
 	}
 
-	QString unit;
-	int size = img->fileSize();
-	if (size >= 2048)
-	{
-		size /= 1024;
-		if (size >= 2048)
-		{
-			size /= 1024;
-			unit = "mo";
-		}
-		else
-		{ unit = "ko"; }
-	}
-	else
-	{ unit = "o"; }
-
-	QColor color;
-	if (img->status() == "pending")
-	{ color = QColor("#0000ff"); }
-	if (img->parentId() != 0)
-	{ color = QColor("#cccc00"); }
-	if (img->hasChildren())
-	{ color = QColor("#00ff00"); }
-	for (int i = 0; i < img->tags().count(); i++)
-	{
-		if (!m_search->toPlainText().trimmed().split(" ").contains(img->tags()[i].text()))
-		{
-			for (Favorite fav : m_favorites)
-			{
-				if (fav.getName() == img->tags()[i].text())
-				{
-					color = QColor("#ffc0cb");
-					break;
-				}
-			}
-		}
-	}
-	QStringList blacklistedtags(m_settings->value("blacklistedtags").toString().split(" "));
-	QStringList detected = img->blacklisted(blacklistedtags);
-	if (!detected.isEmpty())
-	{ color = QColor("#000000"); }
-	QBouton *l = new QBouton(position, m_settings->value("resizeInsteadOfCropping", true).toBool(), m_settings->value("borders", 3).toInt(), color, this);
-		QString t;
-		for (int i = 0; i < img->tags().count(); i++)
-		{ t += " "+img->tags()[i].stylished(m_profile); }
-		l->setToolTip(QString("%1%2%3%4%5%6%7%8")
-			.arg(img->tags().isEmpty() ? " " : tr("<b>Tags :</b> %1<br/><br/>").arg(t.trimmed()))
-			.arg(img->id() == 0 ? " " : tr("<b>ID :</b> %1<br/>").arg(img->id()))
-			.arg(img->rating().isEmpty() ? " " : tr("<b>Classe :</b> %1<br/>").arg(img->rating()))
-			.arg(img->hasScore() ? tr("<b>Score :</b> %1<br/>").arg(img->score()) : " ")
-			.arg(img->author().isEmpty() ? " " : tr("<b>Posteur :</b> %1<br/><br/>").arg(img->author()))
-			.arg(img->width() == 0 || img->height() == 0 ? " " : tr("<b>Dimensions :</b> %1 x %2<br/>").arg(QString::number(img->width()), QString::number(img->height())))
-			.arg(img->fileSize() == 0 ? " " : tr("<b>Taille :</b> %1 %2<br/>").arg(QString::number(size), unit))
-			.arg(!img->createdAt().isValid() ? " " : tr("<b>Date :</b> %1").arg(img->createdAt().toString(tr("'le 'dd/MM/yyyy' à 'hh:mm"))))
-		);
-		l->scale(img->previewImage(), m_settings->value("thumbnailUpscale", 1.0f).toFloat());
-		l->setFlat(true);
-		connect(l, SIGNAL(appui(int)), this, SLOT(webZoom(int)));
-		connect(l, SIGNAL(rightClick(int)), m_parent, SLOT(batchChange(int)));
-	int perpage = img->page()->site()->value("Urls/Selected/Tags").contains("{limit}") ? ui->spinImagesPerPage->value() : img->page()->images().size();
-	perpage = perpage > 0 ? perpage : 20;
-	int pl = ceil(sqrt((double)perpage));
-	int pp = perpage;
-	if (m_layouts.size() > page)
-	{ m_layouts[page]->addWidget(l, floor(float(position % pp) / pl), position % pl); }
-	m_boutons.append(l);
+	addResultsImage(img);
 }
 
 void poolTab::getPage()

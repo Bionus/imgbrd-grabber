@@ -163,6 +163,36 @@ QStringList searchTab::reasonsToFail(Page* page, QStringList completion, QString
 	return reasons;
 }
 
+QColor searchTab::imageColor(Image *img) const
+{
+	// Blacklisted
+	QStringList blacklistedtags(m_settings->value("blacklistedtags").toString().split(" "));
+	QStringList detected = img->blacklisted(blacklistedtags);
+	if (!detected.isEmpty())
+		return QColor("#000000");
+
+	// Favorited (except for exact favorite search)
+	for (Tag tag : img->tags())
+		if (!img->page()->search().contains(tag.text()))
+			for (Favorite fav : m_favorites)
+				if (fav.getName() == tag.text())
+					return QColor("#ffc0cb");
+
+	// Image with a parent
+	if (img->parentId() != 0)
+		return QColor("#cccc00");
+
+	// Image with children
+	if (img->hasChildren())
+		return QColor("#00ff00");
+
+	// Pending image
+	if (img->status() == "pending")
+		return QColor("#0000ff");
+
+	return QColor();
+}
+
 void searchTab::addResultsPage(Page *page, const QList<Image*> &imgs, QString noResultsMessage)
 {
 	int pos = m_pages.values().indexOf(page);
@@ -185,8 +215,8 @@ void searchTab::addResultsPage(Page *page, const QList<Image*> &imgs, QString no
 	}
 	else
 	{
-		int pageCount = page->pagesCount(false);
-		int imageCount = page->imagesCount(false);
+		int pageCount = page->pagesCount();
+		int imageCount = page->imagesCount();
 		txt->setText("<a href=\""+page->url().toString().toHtmlEscaped()+"\">"+page->site()->name()+"</a> - "+tr("Page %1 sur %2 (%3 sur %4)").arg(page->page()).arg(pageCount > 0 ? QString::number(pageCount) : "?").arg(imgs.count()).arg(imageCount > 0 ? QString::number(imageCount) : "?"));
 	}
 	txt->setOpenExternalLinks(true);
@@ -211,6 +241,46 @@ void searchTab::addResultsPage(Page *page, const QList<Image*> &imgs, QString no
 	ui_layoutResults->setRowMinimumHeight(page_y, height() / 20);
 	if (m_layouts.size() > pos)
 	{ ui_layoutResults->addLayout(m_layouts[pos], page_y + 1, page_x); }
+}
+void searchTab::addResultsImage(Image *img, bool merge)
+{
+	int position = m_images.indexOf(img);
+	int page = 0;
+	if (!merge)
+	{ page = m_pages.values().indexOf(img->page()); }
+
+	float size = img->fileSize();
+	QString unit = getUnit(&size);
+	QColor color = imageColor(img);
+
+	QBouton *l = new QBouton(position, m_settings->value("resizeInsteadOfCropping", true).toBool(), m_settings->value("borders", 3).toInt(), color, this);
+		l->setCheckable(true);
+		l->setChecked(m_selectedImages.contains(img->url()));
+		l->setToolTip(QString("%1%2%3%4%5%6%7%8")
+			.arg(img->tags().isEmpty() ? " " : tr("<b>Tags :</b> %1<br/><br/>").arg(img->stylishedTags(m_profile).join(" ")))
+			.arg(img->id() == 0 ? " " : tr("<b>ID :</b> %1<br/>").arg(img->id()))
+			.arg(img->rating().isEmpty() ? " " : tr("<b>Classe :</b> %1<br/>").arg(img->rating()))
+			.arg(img->hasScore() ? tr("<b>Score :</b> %1<br/>").arg(img->score()) : " ")
+			.arg(img->author().isEmpty() ? " " : tr("<b>Posteur :</b> %1<br/><br/>").arg(img->author()))
+			.arg(img->width() == 0 || img->height() == 0 ? " " : tr("<b>Dimensions :</b> %1 x %2<br/>").arg(QString::number(img->width()), QString::number(img->height())))
+			.arg(img->fileSize() == 0 ? " " : tr("<b>Taille :</b> %1 %2<br/>").arg(QString::number(size), unit))
+			.arg(!img->createdAt().isValid() ? " " : tr("<b>Date :</b> %1").arg(img->createdAt().toString(tr("'le 'dd/MM/yyyy' à 'hh:mm"))))
+		);
+		l->scale(img->previewImage(), m_settings->value("thumbnailUpscale", 1.0f).toFloat());
+		l->setFlat(true);
+		connect(l, SIGNAL(appui(int)), this, SLOT(webZoom(int)));
+		connect(l, SIGNAL(toggled(int,bool)), this, SLOT(toggleImage(int,bool)));
+		connect(l, SIGNAL(rightClick(int)), m_parent, SLOT(batchChange(int)));
+
+	int perpage = img->page()->site()->value("Urls/Selected/Tags").contains("{limit}") ? ui_spinImagesPerPage->value() : img->page()->images().size();
+	perpage = perpage > 0 ? perpage : 20;
+	int pp = perpage;
+	if (merge)
+	{ pp = m_images.count(); }
+	int pl = ceil(sqrt((double)pp));
+	if (m_layouts.size() > page)
+	{ m_layouts[page]->addWidget(l, floor(float(position % pp) / pl), position % pl); }
+	m_boutons.append(l);
 }
 
 void searchTab::addHistory(QString tags, int page, int ipp, int cols)

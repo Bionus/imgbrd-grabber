@@ -50,6 +50,7 @@ class searchTab : public QWidget
 		void setTagsFromPages(const QMap<QString, Page*> &pages);
 		void addHistory(QString tags, int page, int ipp, int cols);
 		QStringList reasonsToFail(Page *page, QStringList complete = QStringList(), QString *meant = nullptr);
+		QColor imageColor(Image *img) const;
 
 	public slots:
 		// Sources
@@ -75,6 +76,7 @@ class searchTab : public QWidget
 		void historyNext();
 		// Results
 		void addResultsPage(Page *page, const QList<Image*> &imgs, QString noResultsMessage = nullptr);
+		void addResultsImage(Image *img, bool merge = false);
 
 	signals:
 		// Tab events

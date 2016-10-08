@@ -177,7 +177,8 @@ void ImageTest::testMd5FromFile()
 
 void ImageTest::testStylishedTags()
 {
-	QStringList tags = m_img->stylishedTags(m_profile, QStringList());
+	m_profile->getIgnored() = QStringList();
+	QStringList tags = m_img->stylishedTags(m_profile);
 
 	QCOMPARE(tags.count(), 9);
 	/*QCOMPARE(tags[0], QString("<a href=\"artist1\" style=\"color:#aa0000; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">artist1</a>"));
@@ -185,7 +186,8 @@ void ImageTest::testStylishedTags()
 	QCOMPARE(tags[7], QString("<a href=\"tag2\" style=\"color:#000000; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">tag2</a>"));*/
 
 	m_settings->setValue("blacklistedtags", "character1 tag1");
-	tags = m_img->stylishedTags(m_profile, QStringList() << "copyright1" << "tag2");
+	m_profile->getIgnored() = QStringList() << "copyright1" << "tag2";
+	tags = m_img->stylishedTags(m_profile);
 
 	QCOMPARE(tags.count(), 9);
 	/*QCOMPARE(tags[1], QString("<a href=\"character1\" style=\"color:#000000; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">character1</a>"));

@@ -8,7 +8,7 @@
 
 
 tagTab::tagTab(int id, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
-	: searchTab(id, sites, profile, parent), ui(new Ui::tagTab), m_id(id), m_favorites(profile->getFavorites()), m_ignored(profile->getIgnored()), m_pagemax(-1), m_lastTags(QString()), m_sized(false), m_stop(true)
+	: searchTab(id, sites, profile, parent), ui(new Ui::tagTab), m_id(id), m_favorites(profile->getFavorites()), m_pagemax(-1), m_lastTags(QString()), m_sized(false), m_stop(true)
 {
 	ui->setupUi(this);
 	ui->widgetMeant->hide();
@@ -230,8 +230,8 @@ void tagTab::finishedLoading(Page* page)
 	int maxpage = page->pagesCount();
 	if (maxpage < m_pagemax || m_pagemax == -1)
 		m_pagemax = maxpage;
-	ui->buttonNextPage->setEnabled(maxpage > ui->spinPage->value() || page->imagesCount() == -1 || (page->imagesCount() == 0 && page->images().count() > 0));
-	ui->buttonLastPage->setEnabled(maxpage > ui->spinPage->value());
+	ui->buttonNextPage->setEnabled(maxpage > ui->spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1 || (page->imagesCount() == 0 && page->images().count() > 0));
+	ui->buttonLastPage->setEnabled(maxpage > ui->spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1);
 
 	if (!ui->checkMergeResults->isChecked())
 	{ addResultsPage(page, imgs); }
@@ -379,46 +379,9 @@ void tagTab::finishedLoadingPreview(Image *img)
 	if (img->previewImage().isNull())
 		return;
 
-	QString unit;
-	int size = img->fileSize();
-	if (size >= 2048)
-	{
-		size /= 1024;
-		if (size >= 2048)
-		{
-			size /= 1024;
-			unit = "mo";
-		}
-		else
-		{ unit = "ko"; }
-	}
-	else
-	{ unit = "o"; }
-
-	QColor color;
-	if (img->status() == "pending")
-	{ color = QColor("#0000ff"); }
-	if (img->parentId() != 0)
-	{ color = QColor("#cccc00"); }
-	if (img->hasChildren())
-	{ color = QColor("#00ff00"); }
-	for (int i = 0; i < img->tags().count(); i++)
-	{
-		if (!m_search->toPlainText().trimmed().split(" ").contains(img->tags()[i].text()))
-		{
-			for (Favorite fav : m_favorites)
-			{
-				if (fav.getName() == img->tags()[i].text())
-				{
-					color = QColor("#ffc0cb");
-					break;
-				}
-			}
-		}
-	}
 	QStringList blacklistedtags(m_settings->value("blacklistedtags").toString().split(" "));
-	QStringList whitelistedtags(m_settings->value("whitelistedtags").toString().split(" "));
 	QStringList detected = img->blacklisted(blacklistedtags);
+	QStringList whitelistedtags(m_settings->value("whitelistedtags").toString().split(" "));
 	QStringList whitelisted = img->blacklisted(whitelistedtags);
 	if (!whitelisted.isEmpty() && m_settings->value("whitelist_download", "image").toString() == "page")
 	{
@@ -461,35 +424,8 @@ void tagTab::finishedLoadingPreview(Image *img)
 			m_parent->increaseDownloads();
 		}
 	}
-	if (!detected.isEmpty())
-	{ color = QColor("#000000"); }
-	QBouton *l = new QBouton(position, m_settings->value("resizeInsteadOfCropping", true).toBool(), m_settings->value("borders", 3).toInt(), color, this);
-		l->setCheckable(true);
-		l->setChecked(m_selectedImages.contains(img->url()));
-		l->setToolTip(QString("%1%2%3%4%5%6%7%8")
-					  .arg(img->tags().isEmpty() ? " " : tr("<b>Tags :</b> %1").arg(img->stylishedTags(m_profile, m_ignored).join(" ")))
-			.arg(img->id() == 0 ? " " : tr("<br/><br/><b>ID :</b> %1").arg(img->id()))
-			.arg(img->rating().isEmpty() ? " " : tr("<br/><b>Classe :</b> %1").arg(img->rating()))
-			.arg(img->hasScore() ? tr("<br/><b>Score :</b> %1").arg(img->score()) : " ")
-			.arg(img->author().isEmpty() ? " " : tr("<br/><b>Posteur :</b> %1").arg(img->author()))
-			.arg(img->width() == 0 || img->height() == 0 ? " " : tr("<br/><br/><b>Dimensions :</b> %1 x %2").arg(QString::number(img->width()), QString::number(img->height())))
-			.arg(img->fileSize() == 0 ? " " : tr("<br/><b>Taille :</b> %1 %2").arg(QString::number(size), unit))
-			.arg(!img->createdAt().isValid() ? " " : tr("<br/><b>Date :</b> %1").arg(img->createdAt().toString(tr("'le 'dd/MM/yyyy' à 'hh:mm"))))
-		);
-		l->scale(img->previewImage(), m_settings->value("thumbnailUpscale", 1.0f).toFloat());
-		l->setFlat(true);
-		connect(l, SIGNAL(appui(int)), this, SLOT(webZoom(int)));
-		connect(l, SIGNAL(toggled(int,bool)), this, SLOT(toggleImage(int,bool)));
-		connect(l, SIGNAL(rightClick(int)), m_parent, SLOT(batchChange(int)));
-	int perpage = img->page()->site()->value("Urls/Selected/Tags").contains("{limit}") ? ui->spinImagesPerPage->value() : img->page()->images().size();
-	perpage = perpage > 0 ? perpage : 20;
-	int pp = perpage;
-	if (ui->checkMergeResults->isChecked() && !m_images.empty())
-	{ pp = m_images.count(); }
-	int pl = ceil(sqrt((double)pp));
-	if (m_layouts.size() > page)
-	{ m_layouts[page]->addWidget(l, floor(float(position % pp) / pl), position % pl); }
-	m_boutons.append(l);
+
+	addResultsImage(img, ui->checkMergeResults->isChecked() && !m_images.empty());
 }
 
 void tagTab::toggleImage(int id, bool toggle)
