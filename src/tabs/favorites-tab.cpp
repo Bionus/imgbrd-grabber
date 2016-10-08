@@ -15,12 +15,19 @@ favoritesTab::favoritesTab(int id, QMap<QString,Site*> *sites, Profile *profile,
 	ui->setupUi(this);
 	setAttribute(Qt::WA_DeleteOnClose);
 
+	// UI members for SearchTab class
+	ui_spinPage = ui->spinPage;
+	ui_spinImagesPerPage = ui->spinImagesPerPage;
+	ui_spinColumns = ui->spinColumns;
+	ui_layoutSourcesList = ui->layoutSourcesList;
+	ui_buttonHistoryBack = ui->buttonHistoryBack;
+	ui_buttonHistoryNext = ui->buttonHistoryNext;
+
 	// Search field
 	QStringList favs;
 	for (Favorite fav : m_favorites)
 		favs.append(fav.getName());
 	m_postFiltering = new TextEdit(m_profile, this);
-		m_postFiltering->setContextMenuPolicy(Qt::CustomContextMenu);
 		if (m_settings->value("autocompletion", true).toBool())
 		{
 			QCompleter *completer = new QCompleter(m_completion, this);
@@ -45,14 +52,6 @@ favoritesTab::favoritesTab(int id, QMap<QString,Site*> *sites, Profile *profile,
 		ui->comboAsc->setCurrentIndex(int(m_settings->value("Favorites/reverse", false).toBool()));
 		m_settings->setValue("reverse", bool(ui->comboAsc->currentIndex() == 1));
 	ui->widgetResults->hide();
-
-	// UI members for SearchTab class
-	ui_spinPage = ui->spinPage;
-	ui_spinImagesPerPage = ui->spinImagesPerPage;
-	ui_spinColumns = ui->spinColumns;
-	ui_layoutSourcesList = ui->layoutSourcesList;
-	ui_buttonHistoryBack = ui->buttonHistoryBack;
-	ui_buttonHistoryNext = ui->buttonHistoryNext;
 }
 
 favoritesTab::~favoritesTab()
@@ -539,27 +538,6 @@ void favoritesTab::lastPage()
 	load();
 }
 
-
-
-void favoritesTab::linkHovered(QString url)
-{ m_link = url; }
-void favoritesTab::linkClicked(QString url)
-{
-	if (Qt::ControlModifier)
-	{ m_parent->addTab(url); }
-	else
-	{
-		m_currentTags = url;
-		load();
-	}
-}
-void favoritesTab::openInNewTab()
-{ m_parent->addTab(m_link); }
-void favoritesTab::openInNewWindow()
-{
-	QProcess myProcess;
-	myProcess.startDetached(qApp->arguments().at(0), QStringList(m_link));
-}
 
 QList<bool> favoritesTab::sources()
 { return m_selectedSources; }

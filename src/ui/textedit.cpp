@@ -21,6 +21,7 @@ TextEdit::TextEdit(Profile *profile, QWidget *parent)
 	setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	setFixedHeight(sizeHint().height());
+	setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(this, &QTextEdit::customContextMenuRequested, this, &TextEdit::customContextMenuRequested);
 }
 

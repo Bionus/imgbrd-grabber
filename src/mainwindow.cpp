@@ -514,7 +514,7 @@ void mainWindow::setTags(QList<Tag> tags, searchTab *from)
 	{
 		if (!text.isEmpty())
 			text += "<br/>";
-		text += tag.stylished(m_profile, QStringList(), QStringList(), true);
+		text += tag.stylished(m_profile, QStringList(), QStringList(), true, true);
 	}
 
 	QAffiche *taglabel = new QAffiche(QVariant(), 0, QColor(), this);
@@ -523,6 +523,11 @@ void mainWindow::setTags(QList<Tag> tags, searchTab *from)
 	connect(taglabel, &QAffiche::linkHovered, this, &mainWindow::linkHovered);
 	connect(taglabel, &QAffiche::linkActivated, this, &mainWindow::loadTagNoTab);
 	taglabel->setText(text);
+
+	// Context menu
+	taglabel->setContextMenuPolicy(Qt::CustomContextMenu);
+	connect(taglabel, &QWidget::customContextMenuRequested, this, &mainWindow::contextMenu);
+
 	ui->dockInternetScrollLayout->addWidget(taglabel);
 }
 
@@ -2203,26 +2208,6 @@ QIcon& mainWindow::getIcon(QString path)
 	return m_icons[path];
 }
 
-void mainWindow::loadTag(QString tag, bool newTab)
-{
-	if (tag.startsWith("http://"))
-	{
-		QDesktopServices::openUrl(tag);
-		return;
-	}
-
-	if (newTab)
-		addTab(tag, true);
-	else if (m_tabs.count() > 0 && ui->tabWidget->currentIndex() < m_tabs.count())
-		m_tabs[ui->tabWidget->currentIndex()]->setTags(tag);
-}
-void mainWindow::loadTagTab(QString tag)
-{ loadTag(tag.isEmpty() ? m_link : tag, true); }
-void mainWindow::loadTagNoTab(QString tag)
-{ loadTag(tag.isEmpty() ? m_link : tag, false); }
-void mainWindow::linkHovered(QString tag)
-{ m_link = tag; }
-
 void mainWindow::on_buttonFolder_clicked()
 {
 	QString folder = QFileDialog::getExistingDirectory(this, tr("Choisir un dossier de sauvegarde"), ui->lineFolder->text());
@@ -2332,3 +2317,68 @@ void mainWindow::updateDownloads()
 }
 
 QSettings* mainWindow::settings() { return m_settings; }
+
+
+
+void mainWindow::loadTag(QString tag, bool newTab)
+{
+	if (tag.startsWith("http://"))
+	{
+		QDesktopServices::openUrl(tag);
+		return;
+	}
+
+	if (newTab)
+		addTab(tag, true);
+	else if (m_tabs.count() > 0 && ui->tabWidget->currentIndex() < m_tabs.count())
+		m_tabs[ui->tabWidget->currentIndex()]->setTags(tag);
+}
+void mainWindow::loadTagTab(QString tag)
+{ loadTag(tag.isEmpty() ? m_link : tag, true); }
+void mainWindow::loadTagNoTab(QString tag)
+{ loadTag(tag.isEmpty() ? m_link : tag, false); }
+void mainWindow::linkHovered(QString tag)
+{
+	m_link = tag;
+}
+void mainWindow::contextMenu()
+{
+	QMenu *menu = new QMenu(this);
+	if (!this->m_link.isEmpty())
+	{
+		bool favorited = false;
+		for (Favorite fav : m_favorites)
+			if (fav.getName() == m_link)
+				favorited = true;
+		if (favorited)
+		{ menu->addAction(QIcon(":/images/icons/remove.png"), tr("Retirer des favoris"), this, SLOT(unfavorite())); }
+		else
+		{ menu->addAction(QIcon(":/images/icons/add.png"), tr("Ajouter aux favoris"), this, SLOT(favorite())); }
+
+		QStringList &vil = m_profile->getKeptForLater();
+		if (vil.contains(m_link, Qt::CaseInsensitive))
+		{ menu->addAction(QIcon(":/images/icons/remove.png"), tr("Ne pas garder pour plus tard"), this, SLOT(unviewitlater())); }
+		else
+		{ menu->addAction(QIcon(":/images/icons/add.png"), tr("Garder pour plus tard"), this, SLOT(viewitlater())); }
+
+		menu->addSeparator();
+		menu->addAction(QIcon(":/images/icons/tab-plus.png"), tr("Ouvrir dans un nouvel onglet"), this, SLOT(openInNewTab()));
+		menu->addAction(QIcon(":/images/icons/window.png"), tr("Ouvrir dans une nouvelle fenêtre"), this, SLOT(openInNewWindow()));
+	}
+	menu->exec(QCursor::pos());
+}
+void mainWindow::openInNewTab()
+{ addTab(m_link); }
+void mainWindow::openInNewWindow()
+{
+	QProcess myProcess;
+	myProcess.startDetached(qApp->arguments().at(0), QStringList(m_link));
+}
+void mainWindow::viewitlater()
+{
+	m_profile->getKeptForLater().append(m_link);
+}
+void mainWindow::unviewitlater()
+{
+	m_profile->getKeptForLater().removeAll(m_link);
+}

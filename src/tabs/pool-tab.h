@@ -50,14 +50,6 @@ class poolTab : public searchTab
 		// Batch
 		void getPage();
 		void getAll();
-		// Tag list
-		void linkHovered(QString);
-		void linkClicked(QString);
-		void contextMenu();
-		void openInNewTab();
-		void openInNewWindow();
-		void viewitlater();
-		void unviewitlater();
 		// Others
 		void optionsChanged();
 		void closeEvent(QCloseEvent*);

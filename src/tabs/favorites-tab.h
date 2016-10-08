@@ -52,11 +52,6 @@ class favoritesTab : public searchTab
 		// Batch
 		void getPage();
 		void getAll();
-		// Tag list
-		void linkHovered(QString);
-		void linkClicked(QString);
-		void openInNewTab();
-		void openInNewWindow();
 		// Favorites
 		void favoriteProperties(QString);
 		void updateFavorites();

@@ -127,10 +127,6 @@ class mainWindow : public QMainWindow
 		void tabClosed(searchTab*);
 		void currentTabChanged(int);
 		void closeCurrentTab();
-		void loadTag(QString tag, bool newTab = true);
-		void loadTagTab(QString tag);
-		void loadTagNoTab(QString tag);
-		void linkHovered(QString tag);
 		bool saveTabs(QString);
 		bool loadTabs(QString);
 		void updateTabs();
@@ -139,6 +135,16 @@ class mainWindow : public QMainWindow
 		void increaseDownloads();
 		void decreaseDownloads();
 		void updateDownloads();
+		// Tag list
+		void loadTag(QString tag, bool newTab = true);
+		void loadTagTab(QString tag);
+		void loadTagNoTab(QString tag);
+		void linkHovered(QString tag);
+		void contextMenu();
+		void openInNewTab();
+		void openInNewWindow();
+		void viewitlater();
+		void unviewitlater();
 		// Others
 		void closeEvent(QCloseEvent*);
 		void onFirstLoad();

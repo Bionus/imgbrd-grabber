@@ -16,6 +16,14 @@ poolTab::poolTab(int id, QMap<QString,Site*> *sites, Profile *profile, mainWindo
 	ui->widgetMeant->hide();
 	setAttribute(Qt::WA_DeleteOnClose);
 
+	// UI members for SearchTab class
+	ui_spinPage = ui->spinPage;
+	ui_spinImagesPerPage = ui->spinImagesPerPage;
+	ui_spinColumns = ui->spinColumns;
+	ui_layoutSourcesList = ui->layoutSourcesList;
+	ui_buttonHistoryBack = ui->buttonHistoryBack;
+	ui_buttonHistoryNext = ui->buttonHistoryNext;
+
 	QStringList sources = m_sites->keys();
 	for (QString source : sources)
 	{ ui->comboSites->addItem(source); }
@@ -26,8 +34,6 @@ poolTab::poolTab(int id, QMap<QString,Site*> *sites, Profile *profile, mainWindo
 		favs.append(fav.getName());
 	m_search = new TextEdit(m_profile, this);
 	m_postFiltering = new TextEdit(m_profile, this);
-		m_search->setContextMenuPolicy(Qt::CustomContextMenu);
-		m_postFiltering->setContextMenuPolicy(Qt::CustomContextMenu);
 		if (m_settings->value("autocompletion", true).toBool())
 		{
 			QCompleter *completer = new QCompleter(m_completion, this);
@@ -52,14 +58,6 @@ poolTab::poolTab(int id, QMap<QString,Site*> *sites, Profile *profile, mainWindo
 	setWindowIcon(QIcon());
 	updateCheckboxes();
 	m_search->setFocus();
-
-	// UI members for SearchTab class
-	ui_spinPage = ui->spinPage;
-	ui_spinImagesPerPage = ui->spinImagesPerPage;
-	ui_spinColumns = ui->spinColumns;
-	ui_layoutSourcesList = ui->layoutSourcesList;
-	ui_buttonHistoryBack = ui->buttonHistoryBack;
-	ui_buttonHistoryNext = ui->buttonHistoryNext;
 }
 
 poolTab::~poolTab()
@@ -438,61 +436,6 @@ void poolTab::lastPage()
 	load();
 }
 
-
-
-void poolTab::linkHovered(QString url)
-{ m_link = url; }
-void poolTab::linkClicked(QString url)
-{
-	if (Qt::ControlModifier)
-	{ m_parent->addTab(url); }
-	else
-	{
-		m_search->setPlainText(url);
-		load();
-	}
-}
-void poolTab::contextMenu()
-{
-	QMenu *menu = new QMenu(this);
-	if (!this->m_link.isEmpty())
-	{
-		bool favorited = false;
-		for (Favorite fav : m_favorites)
-			if (fav.getName() == m_link)
-				favorited = true;
-		if (favorited)
-		{ menu->addAction(QIcon(":/images/icons/remove.png"), tr("Retirer des favoris"), this, SLOT(unfavorite())); }
-		else
-		{ menu->addAction(QIcon(":/images/icons/add.png"), tr("Ajouter aux favoris"), this, SLOT(favorite())); }
-
-		QStringList &vil = m_profile->getKeptForLater();
-		if (vil.contains(m_link, Qt::CaseInsensitive))
-		{ menu->addAction(QIcon(":/images/icons/remove.png"), tr("Ne pas garder pour plus tard"), this, SLOT(unviewitlater())); }
-		else
-		{ menu->addAction(QIcon(":/images/icons/add.png"), tr("Garder pour plus tard"), this, SLOT(viewitlater())); }
-
-		menu->addSeparator();
-		menu->addAction(QIcon(":/images/icons/tab-plus.png"), tr("Ouvrir dans un nouvel onglet"), this, SLOT(openInNewTab()));
-		menu->addAction(QIcon(":/images/icons/window.png"), tr("Ouvrir dans une nouvelle fenêtre"), this, SLOT(openInNewWindow()));
-	}
-	menu->exec(QCursor::pos());
-}
-void poolTab::openInNewTab()
-{ m_parent->addTab(m_link); }
-void poolTab::openInNewWindow()
-{
-	QProcess myProcess;
-	myProcess.startDetached(qApp->arguments().at(0), QStringList(m_link));
-}
-void poolTab::viewitlater()
-{
-	m_profile->getKeptForLater().append(m_link);
-}
-void poolTab::unviewitlater()
-{
-	m_profile->getKeptForLater().removeAll(m_link);
-}
 
 void poolTab::setTags(QString tags)
 {

@@ -49,7 +49,7 @@ Tag::~Tag()
  * @param favs The list of the user's favorite tags.
  * @return The HTML colored tag.
  */
-QString Tag::stylished(Profile *profile, QStringList ignored, QStringList blacklisted, bool count) const
+QString Tag::stylished(Profile *profile, QStringList ignored, QStringList blacklisted, bool count, bool nounderscores) const
 {
 	QStringList tlist = QStringList() << "artists" << "circles" << "copyrights" << "characters" << "models" << "generals" << "favorites" << "blacklisteds" << "ignoreds" << "favorites";
 	QStringList defaults = QStringList() << "#aa0000" << "#55bbff" << "#aa00aa" << "#00aa00" << "#0000ee" << "#000000" << "#ffc0cb" << "#000000" << "#999999" << "#ffcccc";
@@ -70,7 +70,7 @@ QString Tag::stylished(Profile *profile, QStringList ignored, QStringList blackl
 	QString style = "color:"+color+"; "+qfonttocss(font);
 
 	QString ret;
-	ret = "<a href=\"" + text() + "\" style=\"" + style + "\">" + text() + "</a>";
+	ret = "<a href=\"" + text() + "\" style=\"" + style + "\">" + (nounderscores ? text().replace('_', ' ') : text()) + "</a>";
 	if (count && this->count() > 0)
 		ret += " <span style=\"color:#aaa\">(" + QString("%L1").arg(this->count()) + ")</span>";
 
