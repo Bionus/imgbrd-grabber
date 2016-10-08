@@ -68,15 +68,14 @@ Page::~Page()
 
 void Page::fallback(bool bload)
 {
-	m_currentApi++;
-
-	if (m_currentApi >= m_site->getApis().count())
+	if (m_currentApi >= m_site->getApis().count() - 1)
 	{
 		log(tr("Aucune source valide du site n'a retourné de résultat."));
 		m_errors.append(tr("Aucune source valide du site n'a retourné de résultat."));
 		emit failedLoading(this);
 		return;
 	}
+	m_currentApi++;
 	if (m_currentApi > 0)
 	{ log(tr("Chargement en %1 échoué. Nouvel essai en %2.").arg(m_site->getApis().at(m_currentApi - 1)->getName()).arg(m_site->getApis().at(m_currentApi)->getName())); }
 

@@ -150,6 +150,13 @@ QUrl PageApi::parseUrl(QString url, int pid, int p, QString t, QString pseudo, Q
 	url.replace("{login}", hasLoginString ? m_api->value("Urls/Login") : "");
 	url.replace("{pseudo}", pseudo);
 	url.replace("{password}", password);
+	if (url.contains("{appkey}"))
+	{
+		QString appkey = m_site->value("AppkeySalt");
+		appkey.replace("%password%", password);
+		appkey.replace("%username%", pseudo.toLower());
+		url.replace("{appkey}", QCryptographicHash::hash(appkey.toUtf8(), QCryptographicHash::Sha1).toHex());
+	}
 
 	return m_site->fixUrl(url);
 }

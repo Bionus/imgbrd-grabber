@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>477</width>
+    <width>530</width>
     <height>272</height>
    </rect>
   </property>
@@ -695,6 +695,34 @@
        </item>
       </layout>
      </widget>
+     <widget class="QWidget" name="tabHeaders">
+      <attribute name="title">
+       <string>Headers</string>
+      </attribute>
+      <layout class="QFormLayout" name="layoutHeaders">
+       <item row="0" column="0" colspan="2">
+        <widget class="QTableWidget" name="tableHeaders">
+         <column>
+          <property name="text">
+           <string>Nom</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Valeur</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+       <item row="1" column="0" colspan="2">
+        <widget class="QPushButton" name="buttonAddHeader">
+         <property name="text">
+          <string>Ajouter</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
    <item>
@@ -781,6 +809,7 @@
   <tabstop>buttonAccept</tabstop>
  </tabstops>
  <resources>
+  <include location="../../resources.qrc"/>
   <include location="../../resources.qrc"/>
   <include location="../../resources.qrc"/>
  </resources>
@@ -913,10 +942,27 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>buttonAddHeader</sender>
+   <signal>clicked()</signal>
+   <receiver>SourcesSettingsWindow</receiver>
+   <slot>addHeader()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>132</x>
+     <y>212</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>43</x>
+     <y>240</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>deleteSite()</slot>
   <slot>testLogin()</slot>
   <slot>addCookie()</slot>
+  <slot>addHeader()</slot>
  </slots>
 </ui>

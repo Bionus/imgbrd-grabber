@@ -26,6 +26,7 @@ class SourcesSettingsWindow : public QDialog
 		void on_buttonAuthHash_clicked();
 		void deleteSite();
 		void addCookie();
+		void addHeader();
 		void save();
 		void testLogin();
 		void loginTested(Site*, Site::LoginResult);
