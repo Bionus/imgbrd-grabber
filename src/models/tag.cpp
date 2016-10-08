@@ -43,7 +43,76 @@ Tag::Tag(QString text, QString type, int count, QStringList related)
 }
 Tag::~Tag()
 { }
-#include <QDebug>
+
+Tag Tag::FromCapture(QStringList caps, QStringList order)
+{
+	QString type;
+	QString tag;
+	int count = 1;
+
+	// Most common tag orders
+	if (order.empty())
+	{
+		switch (caps.count())
+		{
+			case 4:	order << "type" << "" << "count" << "tag";	break;
+			case 3:	order << "type" << "tag" << "count";		break;
+			case 2:	order << "type" << "tag";					break;
+			case 1:	order << "tag";								break;
+		}
+	}
+
+	int max = qMin(order.size(), caps.size());
+	for (int o = 0; o < max; o++)
+	{
+		QString ord = order[o];
+		QString cap = caps[o];
+
+		if (ord == "tag" && tag.isEmpty())
+		{
+			tag = cap.replace(" ", "_").replace("&amp;", "&").trimmed();
+		}
+		else if (ord == "type" && type.isEmpty())
+		{
+			type = cap.toLower().trimmed();
+			if (type.contains(", "))
+			{ type = type.split(", ").at(0).trimmed(); }
+			if (type == "series")
+			{ type = "copyright"; }
+			else if (type == "mangaka")
+			{ type = "artist"; }
+			else if (type == "game")
+			{ type = "copyright"; }
+			else if (type == "studio")
+			{ type = "circle"; }
+			else if (type == "source")
+			{ type = "general"; }
+			else if (type == "character group")
+			{ type = "general"; }
+			else if (type.length() == 1)
+			{
+				int tpe = type.toInt();
+				if (tpe >= 0 && tpe <= 4)
+				{
+					QStringList types = QStringList() << "general" << "artist" << "unknown" << "copyright" << "character";
+					type = types[tpe];
+				}
+			}
+		}
+		else if (ord == "count" && count != 0)
+		{
+			QString countStr = cap.toLower();
+			countStr.remove(',');
+			count = countStr.endsWith('k') ? countStr.left(countStr.length() - 1).toFloat() * 1000 : countStr.toInt();
+		}
+	}
+
+	if (type.isEmpty())
+	{ type = "unknown"; }
+
+	return Tag(tag, type, count);
+}
+
 /**
  * Return the colored tag.
  * @param favs The list of the user's favorite tags.

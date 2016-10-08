@@ -606,69 +606,28 @@ void PageApi::parseTags()
 
 	if (m_site->contains("Regex/Tags"))
 	{
-		m_tags.clear();
 		QRegExp rxtags(m_site->value("Regex/Tags"));
 		rxtags.setMinimal(true);
-		int p = 0;
-		QStringList order = m_site->value("Regex/TagsOrder").split('|', QString::SkipEmptyParts);
+		int pos = 0;
+		QList<Tag> tgs;
 		QSet<QString> got;
-		while ((p = rxtags.indexIn(source, p)) != -1)
+		QStringList order = m_site->value("Regex/TagsOrder").split('|', QString::SkipEmptyParts);
+		while ((pos = rxtags.indexIn(source, pos)) != -1)
 		{
-			p += rxtags.matchedLength();
-			QString type = "", tag = "";
-			int count = 1;
-			if (order.empty())
+			pos += rxtags.matchedLength();
+
+			QStringList caps = rxtags.capturedTexts();
+			caps.removeFirst();
+			Tag tag = Tag::FromCapture(caps, order);
+
+			if (!got.contains(tag.text()))
 			{
-				switch (rxtags.captureCount())
-				{
-					case 4:	order << "type" << "" << "count" << "tag";	break;
-					case 3:	order << "type" << "tag" << "count";		break;
-					case 2:	order << "type" << "tag";					break;
-					case 1:	order << "tag";								break;
-				}
-			}
-			for (int o = 0; o < order.size(); o++)
-			{
-				if (order.at(o) == "tag" && tag.isEmpty())
-				{ tag = rxtags.cap(o + 1).replace(" ", "_").replace("&amp;", "&").trimmed(); }
-				else if (order.at(o) == "type" && type.isEmpty())
-				{
-					type = rxtags.cap(o + 1).toLower().trimmed();
-					if (type.contains(", "))
-					{ type = type.split(", ").at(0).trimmed(); }
-					if (type == "series")
-					{ type = "copyright"; }
-					else if (type == "mangaka")
-					{ type = "artist"; }
-					else if (type == "game")
-					{ type = "copyright"; }
-					else if (type == "studio")
-					{ type = "circle"; }
-					else if (type == "source")
-					{ type = "general"; }
-					else if (type == "character group")
-					{ type = "general"; }
-					else if (type.length() == 1)
-					{
-						int tpe = type.toInt();
-						if (tpe >= 0 && tpe <= 4)
-						{
-							QStringList types = QStringList() << "general" << "artist" << "unknown" << "copyright" << "character";
-							type = types[tpe];
-						}
-					}
-				}
-				else if (order.at(o) == "count" && count != 0)
-				{ count = rxtags.cap(o + 1).toLower().endsWith('k') ? rxtags.cap(3).left(rxtags.cap(3).length() - 1).toInt() * 1000 : rxtags.cap(3).toInt(); }
-			}
-			if (type.isEmpty())
-			{ type = "unknown"; }
-			if (!got.contains(tag))
-			{
-				got.insert(tag);
-				m_tags.append(Tag(tag, type, count));
+				got.insert(tag.text());
+				tgs.append(tag);
 			}
 		}
+		if (!tgs.isEmpty())
+		{ m_tags = tgs; }
 	}
 
 	parseNavigation(source);

@@ -13,6 +13,7 @@ class Tag
 		Tag();
 		explicit Tag(QString text, QString type = "unknown", int count = 1, QStringList related = QStringList());
 		~Tag();
+		static Tag FromCapture(QStringList caps, QStringList order = QStringList());
 		QString stylished(Profile *profile, QStringList ignored = QStringList(), QStringList blacklisted = QStringList(), bool count = false, bool nounderscores = false) const;
 		void setText(QString);
 		void setType(QString);

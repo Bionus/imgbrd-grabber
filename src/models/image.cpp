@@ -428,92 +428,34 @@ void Image::parseDetails()
 	}
 
 	// Tags
-	QRegExp rx = QRegExp();
+	QRegExp rxtags;
 	if (m_parentSite->contains("Regex/ImageTags"))
-	{ rx = QRegExp(m_parentSite->value("Regex/ImageTags")); }
+	{ rxtags = QRegExp(m_parentSite->value("Regex/ImageTags")); }
 	else if (m_parentSite->contains("Regex/Tags"))
-	{ rx = QRegExp(m_parentSite->value("Regex/Tags")); }
-	if (!rx.isEmpty())
+	{ rxtags = QRegExp(m_parentSite->value("Regex/Tags")); }
+	if (!rxtags.isEmpty())
 	{
-		rx.setMinimal(true);
+		rxtags.setMinimal(true);
 		int pos = 0;
 		QList<Tag> tgs;
+		QSet<QString> got;
 		QStringList order = m_parentSite->value("Regex/TagsOrder").split('|', QString::SkipEmptyParts);
-		while ((pos = rx.indexIn(source, pos)) != -1)
+		while ((pos = rxtags.indexIn(source, pos)) != -1)
 		{
-			pos += rx.matchedLength();
-			QString type = "", tag = "";
-			int count = 1;
-			if (order.empty())
+			pos += rxtags.matchedLength();
+
+			QStringList caps = rxtags.capturedTexts();
+			caps.removeFirst();
+			Tag tag = Tag::FromCapture(caps, order);
+
+			if (!got.contains(tag.text()))
 			{
-				switch (rx.captureCount())
-				{
-					case 4:	order << "type" << "" << "count" << "tag";	break;
-					case 3:	order << "type" << "tag" << "count";		break;
-					case 2:	order << "type" << "tag";					break;
-					case 1:	order << "tag";								break;
-				}
+				got.insert(tag.text());
+				tgs.append(tag);
 			}
-			for (int o = 0; o < order.size(); o++)
-			{
-				if (order.at(o) == "tag" && tag.isEmpty())
-				{ tag = rx.cap(o + 1).replace(" ", "_").replace("&amp;", "&").trimmed(); }
-				else if (order.at(o) == "type" && type.isEmpty())
-				{
-					type = rx.cap(o + 1).toLower().trimmed();
-					if (type.contains(", "))
-					{ type = type.split(", ").at(0).trimmed(); }
-					if (type == "series")
-					{ type = "copyright"; }
-					else if (type == "mangaka")
-					{ type = "artist"; }
-					else if (type == "game")
-					{ type = "copyright"; }
-					else if (type == "studio")
-					{ type = "circle"; }
-					else if (type == "source")
-					{ type = "general"; }
-					else if (type == "character group")
-					{ type = "general"; }
-					else if (type.length() == 1)
-					{
-						int tpe = type.toInt();
-						if (tpe >= 0 && tpe <= 4)
-						{
-							QStringList types = QStringList() << "general" << "artist" << "unknown" << "copyright" << "character";
-							type = types[tpe];
-						}
-					}
-				}
-				else if (order.at(o) == "count" && count != 0)
-				{
-					QString countStr = rx.cap(o + 1).toLower();
-					countStr.remove(',');
-					count = countStr.endsWith('k') ? countStr.left(countStr.length() - 1).toFloat() * 1000 : countStr.toInt();
-				}
-			}
-			if (type.isEmpty())
-			{ type = "unknown"; }
-			tgs.append(Tag(tag, type, count));
 		}
 		if (!tgs.isEmpty())
-		{
-			m_tags.clear();
-			for (Tag t : tgs)
-			{
-				bool exists = false;
-				for (Tag a : m_tags)
-				{
-					if (a == t)
-					{
-						exists = true;
-						break;
-					}
-				}
-				if (!exists)
-					m_tags.append(t);
-			}
-		}
+		{ m_tags = tgs; }
 	}
 
 	// Image url
