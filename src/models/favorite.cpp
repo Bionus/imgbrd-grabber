@@ -3,7 +3,9 @@
 #include <QDir>
 #include <QDebug>
 
-
+Favorite::Favorite(QString name)
+	: Favorite(name, 50, QDateTime::currentDateTime(), QString())
+{}
 Favorite::Favorite(QString name, int note, QDateTime lastViewed, QString imagePath)
 	: m_name(name), m_note(note), m_lastViewed(lastViewed), m_imagePath(imagePath)
 {}
@@ -47,6 +49,25 @@ QPixmap Favorite::getImage() const
 		img.save(savePath("thumbs/" + getName(true) + ".png"), "PNG");
 	}
 	return img;
+}
+
+QString Favorite::toString() const
+{
+	return getName() + "|" + QString::number(getNote()) + "|" + getLastViewed().toString(Qt::ISODate);
+}
+Favorite Favorite::fromString(QString path, QString text)
+{
+	QStringList xp = text.split("|");
+
+	QString tag = xp.takeFirst();
+	int note = xp.isEmpty() ? 50 : xp.takeFirst().toInt();
+	QDateTime lastViewed = xp.isEmpty() ? QDateTime(QDate(2000, 1, 1), QTime(0, 0, 0, 0)) : QDateTime::fromString(xp.takeFirst(), Qt::ISODate);
+
+	QString thumbPath = path + "/thumbs/" + (QString(tag).remove('\\').remove('/').remove(':').remove('*').remove('?').remove('"').remove('<').remove('>').remove('|')) + ".png";
+	if (!QFile::exists(thumbPath))
+		thumbPath = ":/images/noimage.png";
+
+	return Favorite(tag, note, lastViewed, thumbPath);
 }
 
 

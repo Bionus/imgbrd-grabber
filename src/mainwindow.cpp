@@ -36,16 +36,14 @@
 #define DONE()			logUpdate(QObject::tr(" Fait"))
 #define DIR_SEPARATOR	QDir::toNativeSeparators("/")
 
-extern QMap<QString,QString> _md5;
-
 
 
 mainWindow::mainWindow(QString program, QStringList tags, QMap<QString,QString> params)
-	: ui(new Ui::mainWindow), m_currentFav(-1), m_downloads(0), m_loaded(false), m_getAll(false), m_program(program), m_tags(tags), m_batchAutomaticRetries(0), m_showLog(true)
+	: ui(new Ui::mainWindow), m_profile(new Profile(savePath())), m_favorites(m_profile->getFavorites()), m_downloads(0), m_loaded(false), m_getAll(false), m_program(program), m_tags(tags), m_batchAutomaticRetries(0), m_showLog(true)
 { }
 void mainWindow::init()
 {
-	m_settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
+	m_settings = m_profile->getSettings();
 	bool crashed = m_settings->value("crashed", false).toBool();
 
 	m_settings->setValue("crashed", true);
@@ -63,8 +61,6 @@ void mainWindow::init()
 	log(tr("Chemin : %1").arg(qApp->applicationDirPath()));
 	log(tr("Chargement des préférences depuis <a href=\"file:///%1\">%1</a>").arg(savePath("settings.ini")));
 
-	loadMd5s();
-
 	tabifyDockWidget(ui->dock_internet, ui->dock_wiki);
 	tabifyDockWidget(ui->dock_wiki, ui->dock_kfl);
 	tabifyDockWidget(ui->dock_kfl, ui->dock_favorites);
@@ -76,7 +72,7 @@ void mainWindow::init()
 	ui->menuView->addAction(ui->dock_favorites->toggleViewAction());
 	ui->menuView->addAction(ui->dockOptions->toggleViewAction());
 
-	m_favorites = loadFavorites();
+	m_favorites = m_profile->getFavorites();
 
 	if (m_settings->value("Proxy/use", false).toBool())
 	{
@@ -186,7 +182,7 @@ void mainWindow::init()
 	}
 
 	// Favorites tab
-	m_favoritesTab = new favoritesTab(m_tabs.size(), &m_sites, m_favorites, this);
+	m_favoritesTab = new favoritesTab(m_tabs.size(), &m_sites, m_profile, this);
 	connect(m_favoritesTab, SIGNAL(batchAddGroup(QStringList)), this, SLOT(batchAddGroup(QStringList)));
 	connect(m_favoritesTab, SIGNAL(batchAddUnique(QMap<QString,QString>)), this, SLOT(batchAddUnique(QMap<QString,QString>)));
 	connect(m_favoritesTab, SIGNAL(changed(searchTab*)), this, SLOT(updateTabs()));
@@ -214,15 +210,15 @@ void mainWindow::init()
 	for (int i = 0; i < m; i++)
 	{ ui->tableBatchGroups->horizontalHeader()->resizeSection(i, sizes.at(i).toInt()); }
 
-	Commands::get()->init(m_settings);
-
-	updateFavorites(true);
-	updateKeepForLater();
-
 	m_lineFolder_completer = QStringList(m_settings->value("Save/path").toString());
 	ui->lineFolder->setCompleter(new QCompleter(m_lineFolder_completer));
 	//m_lineFilename_completer = QStringList(m_settings->value("Save/filename").toString());
 	//ui->lineFilename->setCompleter(new QCompleter(m_lineFilename_completer));
+
+	connect(m_profile, &Profile::favoritesChanged, this, &mainWindow::updateFavorites);
+	connect(m_profile, &Profile::keptForLaterChanged, this, &mainWindow::updateKeepForLater);
+	updateFavorites();
+	updateKeepForLater();
 
 	m_loaded = true;
 	m_currentTab = nullptr;
@@ -249,26 +245,25 @@ void mainWindow::initialLoginsFinished()
 
 void mainWindow::loadSites()
 {
-	QMap<QString, Site*> *sites = Site::getAllSites();
+	QMap<QString, Site*> sites = Site::getAllSites();
 
 	QStringList current = m_sites.keys();
-	QStringList news = sites->keys();
+	QStringList news = sites.keys();
 
-	for (int i = 0; i < sites->size(); ++i)
+	for (int i = 0; i < sites.size(); ++i)
 	{
 		QString k = news[i];
 		if (!current.contains(k))
-		{ m_sites.insert(k, sites->value(k)); }
-		else
-		{ delete sites->value(k); }
+		{ m_sites.insert(k, sites.value(k)); }
+		/*else
+		{ delete sites->value(k); }*/
 	}
-	delete sites;
 }
 
 mainWindow::~mainWindow()
 {
-	m_settings->deleteLater();
 	qDeleteAll(m_sites);
+	delete m_profile;
 	delete ui;
 }
 
@@ -284,7 +279,7 @@ void mainWindow::focusSearch()
 void mainWindow::onFirstLoad()
 {
 	// Save all default settings
-	optionsWindow *ow = new optionsWindow(this);
+	optionsWindow *ow = new optionsWindow(m_profile, this);
 	ow->save();
 	ow->deleteLater();
 
@@ -356,7 +351,7 @@ void mainWindow::onFirstLoad()
 	}
 
 	// Open startup window
-	startWindow *swin = new startWindow(&m_sites, this);
+	startWindow *swin = new startWindow(&m_sites, m_profile, this);
 	connect(swin, SIGNAL(languageChanged(QString)), this, SLOT(loadLanguage(QString)));
 	connect(swin, &startWindow::settingsChanged, this, &mainWindow::on_buttonInitSettings_clicked);
 	connect(swin, &startWindow::sourceChanged, this, &mainWindow::setSource);
@@ -365,7 +360,7 @@ void mainWindow::onFirstLoad()
 
 int mainWindow::addTab(QString tag, bool background)
 {
-	tagTab *w = new tagTab(m_tabs.size(), &m_sites, m_favorites, this);
+	tagTab *w = new tagTab(m_tabs.size(), &m_sites, m_profile, this);
 	this->addSearchTab(w, background);
 
 	if (!tag.isEmpty())
@@ -376,7 +371,7 @@ int mainWindow::addTab(QString tag, bool background)
 }
 int mainWindow::addPoolTab(int pool, QString site)
 {
-	poolTab *w = new poolTab(m_tabs.size(), &m_sites, m_favorites, this);
+	poolTab *w = new poolTab(m_tabs.size(), &m_sites, m_profile, this);
 	this->addSearchTab(w);
 
 	if (!site.isEmpty())
@@ -521,7 +516,7 @@ void mainWindow::setTags(QList<Tag> tags, searchTab *from)
 	{
 		if (!text.isEmpty())
 			text += "<br/>";
-		text += tag.stylished(m_favorites, QStringList(), QStringList(), true);
+		text += tag.stylished(m_profile, QStringList(), QStringList(), true, true);
 	}
 
 	QAffiche *taglabel = new QAffiche(QVariant(), 0, QColor(), this);
@@ -530,6 +525,11 @@ void mainWindow::setTags(QList<Tag> tags, searchTab *from)
 	connect(taglabel, &QAffiche::linkHovered, this, &mainWindow::linkHovered);
 	connect(taglabel, &QAffiche::linkActivated, this, &mainWindow::loadTagNoTab);
 	taglabel->setText(text);
+
+	// Context menu
+	taglabel->setContextMenuPolicy(Qt::CustomContextMenu);
+	connect(taglabel, &QWidget::customContextMenuRequested, this, &mainWindow::contextMenu);
+
 	ui->dockInternetScrollLayout->addWidget(taglabel);
 }
 
@@ -668,101 +668,61 @@ void mainWindow::batchClearSel()
 	updateGroupCount();
 }
 
-void mainWindow::batchMoveUp()
+QList<int> mainWindow::getSelectedRows(QList<QTableWidgetItem*> selected)
 {
-	QList<QTableWidgetItem *> selected = ui->tableBatchGroups->selectedItems();
-	if (selected.count() <= 0)
-		return;
-
 	QList<int> rows;
-	int count = selected.size();
-	for (int i = 0; i < count; ++i)
+	for (QTableWidgetItem *item : selected)
 	{
-		int sourceRow = selected.at(i)->row();
-		if (rows.contains(sourceRow))
+		int row = item->row();
+		if (rows.contains(row))
 			continue;
 		else
-			rows.append(sourceRow);
+			rows.append(row);
 	}
+	return rows;
+}
+
+void mainWindow::batchMove(int diff)
+{
+	QList<QTableWidgetItem *> selected = ui->tableBatchGroups->selectedItems();
+	if (selected.isEmpty())
+		return;
+
+	QList<int> rows = getSelectedRows(selected);
 	for (int sourceRow : rows)
 	{
-		int destRow = sourceRow - 1;
+		int destRow = sourceRow + diff;
 		if (destRow < 0 || destRow >= ui->tableBatchGroups->rowCount())
 			return;
 
-		QList<QTableWidgetItem*> sourceItems;
 		for (int col = 0; col < ui->tableBatchGroups->columnCount(); ++col)
-			sourceItems << ui->tableBatchGroups->takeItem(sourceRow, col);
-		QList<QTableWidgetItem*> destItems;
-		for (int col = 0; col < ui->tableBatchGroups->columnCount(); ++col)
-			destItems << ui->tableBatchGroups->takeItem(destRow, col);
-
-		for (int col = 0; col < ui->tableBatchGroups->columnCount(); ++col)
-			ui->tableBatchGroups->setItem(sourceRow, col, destItems.at(col));
-		for (int col = 0; col < ui->tableBatchGroups->columnCount(); ++col)
-			ui->tableBatchGroups->setItem(destRow, col, sourceItems.at(col));
-	}
-
-	if (!selected.empty())
-	{
-		QItemSelectionModel* selectionModel = new QItemSelectionModel(ui->tableBatchGroups->model(), this);
-		QItemSelection selection;
-		for (int i = 0; i < count; i++)
 		{
-			QModelIndex index = ui->tableBatchGroups->model()->index(selected.at(i)->row(), selected.at(i)->column());
-			selection.select(index, index);
+			QTableWidgetItem *sourceItem = ui->tableBatchGroups->takeItem(sourceRow, col);
+			QTableWidgetItem *destItem = ui->tableBatchGroups->takeItem(destRow, col);
+
+			ui->tableBatchGroups->setItem(sourceRow, col, destItem);
+			ui->tableBatchGroups->setItem(destRow, col, sourceItem);
 		}
-		selectionModel->select(selection, QItemSelectionModel::ClearAndSelect);
-		ui->tableBatchGroups->setSelectionModel(selectionModel);
 	}
+
+	QItemSelection selection;
+	for (int i = 0; i < selected.count(); i++)
+	{
+		QModelIndex index = ui->tableBatchGroups->model()->index(selected.at(i)->row(), selected.at(i)->column());
+		selection.select(index, index);
+	}
+
+	QItemSelectionModel* selectionModel = new QItemSelectionModel(ui->tableBatchGroups->model(), this);
+	selectionModel->select(selection, QItemSelectionModel::ClearAndSelect);
+	ui->tableBatchGroups->setSelectionModel(selectionModel);
+}
+void mainWindow::batchMoveUp()
+{
+	batchMove(-1);
 }
 void mainWindow::batchMoveDown()
 {
-	QList<QTableWidgetItem *> selected = ui->tableBatchGroups->selectedItems();
-	if (selected.count() <= 0)
-		return;
-
-	QList<int> rows;
-	int count = selected.size();
-	for (int i = count - 1; i >= 0; --i)
-	{
-		int sourceRow = selected.at(i)->row();
-		if (rows.contains(sourceRow))
-			continue;
-		else
-			rows.append(sourceRow);
-	}
-	for (int sourceRow : rows)
-	{
-		int destRow = sourceRow + 1;
-		if (destRow < 0 || destRow >= ui->tableBatchGroups->rowCount())
-			return;
-
-		QList<QTableWidgetItem*> sourceItems;
-		for (int col = 0; col < ui->tableBatchGroups->columnCount(); ++col)
-			sourceItems << ui->tableBatchGroups->takeItem(sourceRow, col);
-		QList<QTableWidgetItem*> destItems;
-		for (int col = 0; col < ui->tableBatchGroups->columnCount(); ++col)
-			destItems << ui->tableBatchGroups->takeItem(destRow, col);
-
-		for (int col = 0; col < ui->tableBatchGroups->columnCount(); ++col)
-			ui->tableBatchGroups->setItem(sourceRow, col, destItems.at(col));
-		for (int col = 0; col < ui->tableBatchGroups->columnCount(); ++col)
-			ui->tableBatchGroups->setItem(destRow, col, sourceItems.at(col));
-	}
-
-	if (!selected.empty())
-	{
-		QItemSelectionModel* selectionModel = new QItemSelectionModel(ui->tableBatchGroups->model(), this);
-		QItemSelection selection;
-		for (int i = 0; i < count; i++)
-		{
-			QModelIndex index = ui->tableBatchGroups->model()->index(selected.at(i)->row(), selected.at(i)->column());
-			selection.select(index, index);
-		}
-		selectionModel->select(selection, QItemSelectionModel::ClearAndSelect);
-		ui->tableBatchGroups->setSelectionModel(selectionModel);
-	}
+	batchMove(1);
 }
 
 void mainWindow::batchChange(int)
@@ -811,55 +771,47 @@ void mainWindow::updateBatchGroups(int y, int x)
 		}
 	}
 }
-void mainWindow::addGroup()
+
+QList<Site*> mainWindow::getSelectedSites()
 {
 	if (m_tabs.count() > 0)
-	{ m_selectedSources = m_tabs[0]->sources(); }
-	QString selected;
-	for (int i = 0; i < m_selectedSources.count(); i++)
-	{
-		if (m_selectedSources[i])
-		{
-			selected = m_sites.keys().at(i);
-			break;
-		}
-	}
-	if (selected.isEmpty() && m_sites.size() > 0)
-	{ selected = m_sites.keys().at(0); }
+		m_selectedSources = m_tabs[0]->sources();
 
-	AddGroupWindow *wAddGroup = new AddGroupWindow(selected, m_sites.keys(), m_favorites, this);
+	QList<Site*> selected;
+	for (int i = 0; i < m_selectedSources.count(); i++)
+		if (m_selectedSources[i])
+			selected.append(m_sites.values().at(i));
+
+	return selected;
+}
+Site* mainWindow::getSelectedSiteOrDefault()
+{
+	QList<Site*> selected = getSelectedSites();
+
+	if (selected.isEmpty())
+		return m_sites.first();
+
+	return selected.first();
+}
+
+void mainWindow::addGroup()
+{
+	QString selected = getSelectedSiteOrDefault()->name();
+
+	AddGroupWindow *wAddGroup = new AddGroupWindow(selected, m_sites.keys(), m_profile, this);
 	connect(wAddGroup, SIGNAL(sendData(QStringList)), this, SLOT(batchAddGroup(QStringList)));
 	wAddGroup->show();
 }
 void mainWindow::addUnique()
 {
-	if (m_tabs.count() > 0)
-	{ m_selectedSources = m_tabs[0]->sources(); }
-	QString selected;
-	for (int i = 0; i < m_selectedSources.count(); i++)
-	{
-		if (m_selectedSources[i])
-		{
-			selected = m_sites.keys().at(i);
-			break;
-		}
-	}
-	if (selected.isEmpty() && m_sites.size() > 0)
-	{ selected = m_sites.keys().at(0); }
+	QString selected = getSelectedSiteOrDefault()->name();
 
-	AddUniqueWindow *wAddUnique = new AddUniqueWindow(selected, m_sites, this);
+	AddUniqueWindow *wAddUnique = new AddUniqueWindow(selected, m_sites, m_profile, this);
 	connect(wAddUnique, SIGNAL(sendData(QMap<QString,QString>)), this, SLOT(batchAddUnique(QMap<QString,QString>)));
 	wAddUnique->show();
 }
 
-void mainWindow::updateFavorites(bool dock)
-{
-	m_favoritesTab->updateFavorites();
-
-	if (dock)
-	{ updateFavoritesDock(); }
-}
-void mainWindow::updateFavoritesDock()
+void mainWindow::updateFavorites()
 {
 	while (!ui->layoutFavoritesDock->isEmpty())
 	{
@@ -871,7 +823,7 @@ void mainWindow::updateFavoritesDock()
 	QStringList assoc = QStringList() << "name" << "note" << "lastviewed";
 	QString order = assoc[qMax(ui->comboOrderFav->currentIndex(), 0)];
 	bool reverse = (ui->comboAscFav->currentIndex() == 1);
-	m_favorites = loadFavorites();
+
 	if (order == "note")
 	{ qSort(m_favorites.begin(), m_favorites.end(), sortByNote); }
 	else if (order == "lastviewed")
@@ -892,7 +844,7 @@ void mainWindow::updateFavoritesDock()
 }
 void mainWindow::updateKeepForLater()
 {
-	QStringList kfl = loadViewItLater();
+	QStringList kfl = m_profile->getKeptForLater();
 
 	clearLayout(ui->dockKflScrollLayout);
 
@@ -1017,6 +969,7 @@ void mainWindow::closeEvent(QCloseEvent *e)
 		m_settings->setValue("crashed", false);
 		m_settings->sync();
 		QFile::copy(m_settings->fileName(), savePath("old/settings."+QString(VERSION)+".ini"));
+		m_profile->sync();
 	DONE();
 	m_loaded = false;
 
@@ -1028,7 +981,7 @@ void mainWindow::options()
 {
 	log(tr("Ouverture de la fenêtre des options..."));
 
-	optionsWindow *options = new optionsWindow(this);
+	optionsWindow *options = new optionsWindow(m_profile, this);
 	connect(options, SIGNAL(languageChanged(QString)), this, SLOT(loadLanguage(QString)));
 	connect(options, &optionsWindow::settingsChanged, this, &mainWindow::on_buttonInitSettings_clicked);
 	connect(options, &QDialog::accepted, this, &mainWindow::optionsClosed);
@@ -1169,7 +1122,7 @@ void mainWindow::getAll(bool all)
 				tdl.append(row);
 				int i = row;
 				Site *site = m_sites[m_batchs.at(i).value("site")];
-				m_getAllRemaining.append(new Image(site, m_batchs.at(i), new Page(site, m_sites.values(), m_batchs.at(i).value("tags").split(" "), 1, 1, QStringList(), false, this)));
+				m_getAllRemaining.append(new Image(site, m_batchs.at(i), m_profile, new Page(site, m_sites.values(), m_batchs.at(i).value("tags").split(" "), 1, 1, QStringList(), false, this)));
 			}
 		}
 	}
@@ -1190,7 +1143,7 @@ void mainWindow::getAll(bool all)
 			else
 			{
 				Site *site = m_sites[m_batchs.at(i).value("site")];
-				m_getAllRemaining.append(new Image(site, m_batchs.at(i), new Page(site, m_sites.values(), m_batchs.at(i).value("tags").split(" "), 1, 1, QStringList(), false, this)));
+				m_getAllRemaining.append(new Image(site, m_batchs.at(i), m_profile, new Page(site, m_sites.values(), m_batchs.at(i).value("tags").split(" "), 1, 1, QStringList(), false, this)));
 			}
 		}
 	}
@@ -1200,7 +1153,7 @@ void mainWindow::getAll(bool all)
 	for (int i = 0; i < ui->tableBatchGroups->rowCount(); i++)
 	{ ui->tableBatchGroups->item(i, 0)->setIcon(getIcon(":/images/colors/black.png")); }
 	m_allow = true;
-	Commands::get()->before();
+	m_profile->getCommands().before();
 	selected = ui->tableBatchGroups->selectedItems();
 	count = selected.size();
 	m_batchDownloading.clear();
@@ -1465,10 +1418,7 @@ void mainWindow::_getAll()
 		{
 			// Row
 			int site_id = m_progressdialog->batch(img->url());
-			int row = -1;
-			for (int i = 0; i < ui->tableBatchGroups->rowCount(); ++i)
-				if (ui->tableBatchGroups->item(i, 0)->text().toInt() == site_id)
-					row = i;
+			int row = getRowForSite(site_id);
 
 			// Path
 			QString path = m_settings->value("Save/filename").toString();
@@ -1494,61 +1444,15 @@ void mainWindow::_getAll()
 			// If the file does not already exists
 			if (notexists)
 			{
-				bool detected = false;
-				QStringList tags = site_id >= 0 ? m_groupBatchs[site_id - 1][0].split(' ') : QStringList();
-				QList<QChar> modifiers = QList<QChar>() << '~';
-				for (int r = 0; r < tags.size(); r++)
-				{
-					if (modifiers.contains(tags[r][0]))
-					{ tags[r] = tags[r].right(tags[r].size()-1); }
-				}
-				if (!m_settings->value("blacklistedtags").toString().isEmpty())
-				{
-					QStringList blacklistedtags(m_settings->value("blacklistedtags").toString().split(' '));
-					detected = !img->blacklisted(blacklistedtags).isEmpty();
-				}
-				if (detected && site_id >= 0 && m_groupBatchs[site_id - 1][4] == "false")
-				{
-					m_getAllDownloading.removeAll(img);
-					m_progressdialog->setValue(m_progressdialog->value() + img->value());
-					m_progressdialog->setImages(m_progressdialog->images() + 1);
-					m_progressdialog->loadedImage(img->url());
-					m_getAllIgnored++;
-					log(tr("Image ignorée."));
-
-					m_progressBars[site_id - 1]->setValue(m_progressBars[site_id - 1]->value() + 1);
-					if (m_progressBars[site_id - 1]->value() >= m_progressBars[site_id - 1]->maximum())
-					{ ui->tableBatchGroups->item(row, 0)->setIcon(getIcon(":/images/colors/green.png")); }
-
-					img->deleteLater();
-					// qDebug() << "DELETE ignored" << QString::number((int)img, 16);
-					_getAll();
-				}
-				else
-				{ getAllGetImage(img); }
+				getAllGetImageIfNotBlacklisted(img, site_id);
 			}
 
-			// If the file already exusts
+			// If the file already exists
 			else
 			{
-				m_progressdialog->setValue(m_progressdialog->value() + img->value());
-				m_progressdialog->setImages(m_progressdialog->images() + 1);
-				m_progressdialog->loadedImage(img->url());
-
 				m_getAllExists++;
 				log(tr("Fichier déjà existant : <a href=\"file:///%1\">%1</a>").arg(paths.at(0)));
-
-				if (site_id >= 0)
-				{
-					m_progressBars[site_id - 1]->setValue(m_progressBars[site_id - 1]->value() + 1);
-					if (m_progressBars[site_id - 1]->value() >= m_progressBars[site_id - 1]->maximum())
-					{ ui->tableBatchGroups->item(row, 0)->setIcon(getIcon(":/images/colors/green.png")); }
-				}
-
-				m_getAllDownloading.removeAll(img);
-				img->deleteLater();
-				// qDebug() << "DELETE already" << QString::number((int)img, 16);
-				_getAll();
+				getAllImageOk(img, site_id);
 			}
 		}
 	}
@@ -1557,6 +1461,52 @@ void mainWindow::_getAll()
 	else if (m_getAllDownloading.isEmpty() && m_getAll)
 	{ getAllFinished(); }
 }
+
+void mainWindow::getAllGetImageIfNotBlacklisted(Image *img, int site_id)
+{
+	// Check if image is blacklisted
+	bool detected = false;
+	if (!m_settings->value("blacklistedtags").toString().isEmpty())
+	{
+		QStringList blacklistedtags(m_settings->value("blacklistedtags").toString().split(' '));
+		detected = !img->blacklisted(blacklistedtags).isEmpty();
+	}
+
+	if (detected && site_id >= 0 && m_groupBatchs[site_id - 1][4] == "false")
+	{
+		m_getAllIgnored++;
+		log(tr("Image ignorée."));
+
+		getAllImageOk(img, site_id);
+	}
+	else
+	{ getAllGetImage(img); }
+}
+
+void mainWindow::getAllImageOk(Image *img, int site_id, bool del)
+{
+	m_progressdialog->setValue(m_progressdialog->value() + img->value());
+	m_progressdialog->setImages(m_progressdialog->images() + 1);
+
+	if (site_id >= 0)
+	{
+		int row = getRowForSite(site_id);
+		m_progressBars[site_id - 1]->setValue(m_progressBars[site_id - 1]->value() + 1);
+		if (m_progressBars[site_id - 1]->value() >= m_progressBars[site_id - 1]->maximum())
+		{ ui->tableBatchGroups->item(row, 0)->setIcon(getIcon(":/images/colors/green.png")); }
+	}
+
+	m_getAllDownloading.removeAll(img);
+
+	if (del)
+	{
+		img->deleteLater();
+		m_progressdialog->loadedImage(img->url());
+	}
+
+	_getAll();
+}
+
 void mainWindow::imageUrlChanged(QString before, QString after)
 {
 	m_downloadTimeLast.insert(after, m_downloadTimeLast[before]);
@@ -1592,10 +1542,7 @@ void mainWindow::getAllPerformTags(Image* img)
 
 	// Row
 	int site_id = m_progressdialog->batch(img->url());
-	int row = -1;
-	for (int i = 0; i < ui->tableBatchGroups->rowCount(); ++i)
-		if (ui->tableBatchGroups->item(i, 0)->text().toInt() == site_id)
-			row = i;
+	int row = getRowForSite(site_id);
 
 	// Getting path
 	QString path = m_settings->value("Save/filename").toString();
@@ -1621,36 +1568,7 @@ void mainWindow::getAllPerformTags(Image* img)
 	if (!f.exists())	{ f.setFileName(pth.section('.', 0, -2)+".jpeg");	}
 	if (!f.exists())
 	{
-		bool detected = false;
-		QStringList tags = site_id >= 0 ? m_groupBatchs[site_id - 1][0].split(' ') : QStringList();
-		QList<QChar> modifiers = QList<QChar>() << '~';
-		for (int r = 0; r < tags.size(); r++)
-		{
-			if (modifiers.contains(tags[r][0]))
-			{ tags[r] = tags[r].right(tags[r].size()-1); }
-		}
-		if (!m_settings->value("blacklistedtags").toString().isEmpty())
-		{
-			QStringList blacklistedtags(m_settings->value("blacklistedtags").toString().split(' '));
-			detected = !img->blacklisted(blacklistedtags).isEmpty();
-		}
-		if (detected && site_id >= 0 && m_groupBatchs[site_id - 1][4] == "false")
-		{
-			m_progressdialog->setValue(m_progressdialog->value()+img->value());
-			m_progressdialog->setImages(m_progressdialog->images()+1);
-			m_getAllIgnored++;
-			log(tr("Image ignorée."));
-			m_progressdialog->loadedImage(img->url());
-			m_progressBars[site_id - 1]->setValue(m_progressBars[site_id]->value()+1);
-			if (m_progressBars[site_id - 1]->value() >= m_progressBars[site_id]->maximum())
-			{ ui->tableBatchGroups->item(row, 0)->setIcon(getIcon(":/images/colors/green.png")); }
-			m_getAllDownloading.removeAll(img);
-			img->deleteLater();
-			// qDebug() << "DELETE tags ignored" << QString::number((int)img, 16);
-			_getAll();
-		}
-		else
-		{ getAllGetImage(img); }
+		getAllGetImageIfNotBlacklisted(img, site_id);
 	}
 	else
 	{
@@ -1667,18 +1585,24 @@ void mainWindow::getAllPerformTags(Image* img)
 		}
 		m_getAllDownloading.removeAll(img);
 		img->deleteLater();
-		// qDebug() << "DELETE tags already" << QString::number((int)img, 16);
 		_getAll();
 	}
 }
+
+int mainWindow::getRowForSite(int site_id)
+{
+	if (site_id >= 0)
+		for (int i = 0; i < ui->tableBatchGroups->rowCount(); ++i)
+			if (ui->tableBatchGroups->item(i, 0)->text().toInt() == site_id)
+				return i;
+	return -1;
+}
+
 void mainWindow::getAllGetImage(Image* img)
 {
 	// Row
 	int site_id = m_progressdialog->batch(img->url());
-	int row = -1;
-	for (int i = 0; i < ui->tableBatchGroups->rowCount(); ++i)
-		if (ui->tableBatchGroups->item(i, 0)->text().toInt() == site_id)
-			row = i;
+	int row = getRowForSite(site_id);
 
 	// Path
 	QString path = m_settings->value("Save/filename").toString();
@@ -1693,7 +1617,7 @@ void mainWindow::getAllGetImage(Image* img)
 
 	// Action
 	QString whatToDo = m_settings->value("Save/md5Duplicates", "save").toString();
-	QString md5Duplicate = md5Exists(img->md5());
+	QString md5Duplicate = m_profile->md5Exists(img->md5());
 	bool next = true;
 	if (md5Duplicate.isEmpty() || whatToDo == "save")
 	{
@@ -1710,11 +1634,8 @@ void mainWindow::getAllGetImage(Image* img)
 	}
 	else
 	{
-		for (QString path : paths)
+		for (QString fp : paths)
 		{
-			path.replace("%n%", QString::number(m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors));
-			QString fp = QDir::toNativeSeparators(path);
-
 			if (whatToDo == "copy")
 			{
 				m_getAllIgnored++;
@@ -1729,7 +1650,7 @@ void mainWindow::getAllGetImage(Image* img)
 				m_getAllDownloaded++;
 				log(tr("Déplacement depuis <a href=\"file:///%1\">%1</a> vers <a href=\"file:///%2\">%2</a>").arg(md5Duplicate).arg(fp));
 				QFile::rename(md5Duplicate, fp);
-				setMd5(img->md5(), fp);
+				m_profile->setMd5(img->md5(), fp);
 
 				if (m_settings->value("Save/keepDate", true).toBool())
 					setFileCreationDate(fp, img->createdAt());
@@ -1749,7 +1670,6 @@ void mainWindow::getAllGetImage(Image* img)
 		m_progressdialog->setImages(m_progressdialog->images()+1);
 		m_getAllDownloading.removeAll(img);
 		img->deleteLater();
-		// qDebug() << "DELETE next" << QString::number((int)img, 16);
 		_getAll();
 	}
 }
@@ -1765,10 +1685,7 @@ void mainWindow::getAllPerformImage(Image* img)
 
 	// Row
 	int site_id = m_progressdialog->batch(img->url());
-	int row = -1;
-	for (int i = 0; i < ui->tableBatchGroups->rowCount(); ++i)
-		if (ui->tableBatchGroups->item(i, 0)->text().toInt() == site_id)
-			row = i;
+	int row = getRowForSite(site_id);
 
 	int errors = m_getAllErrors, e404s = m_getAll404s;
 	if (reply->error() == QNetworkReply::NoError)
@@ -1801,25 +1718,7 @@ void mainWindow::getAllPerformImage(Image* img)
 		del = false;
 	}
 
-	// Update progress bars
-	if (site_id >= 0)
-	{
-		m_progressBars[site_id - 1]->setValue(m_progressBars[site_id - 1]->value()+1);
-		if (m_progressBars[site_id - 1]->value() >= m_progressBars[site_id - 1]->maximum())
-		{ ui->tableBatchGroups->item(row, 0)->setIcon(getIcon(":/images/colors/green.png")); }
-	}
-
-	// Update dialog infos
-	m_progressdialog->setImages(m_progressdialog->images() + 1);
-	m_progressdialog->setValue(m_progressdialog->value() + img->value());
-	m_getAllDownloading.removeAll(img);
-
-	if (del) {
-		img->deleteLater();
-		// qDebug() << "DELETE finished" << QString::number((int)img, 16);
-	}
-
-	_getAll();
+	getAllImageOk(img, site_id, del);
 }
 void mainWindow::saveImage(Image *img, QNetworkReply *reply, QString path, QString p, bool getAll)
 {
@@ -1848,7 +1747,7 @@ void mainWindow::saveImage(Image *img, QNetworkReply *reply, QString path, QStri
 			QString fp = QDir::toNativeSeparators(path);
 
 			QString whatToDo = m_settings->value("Save/md5Duplicates", "save").toString();
-			QString md5Duplicate = md5Exists(img->md5());
+			QString md5Duplicate = m_profile->md5Exists(img->md5());
 			if (md5Duplicate.isEmpty() || whatToDo == "save")
 			{
 				// Create the reception's directory
@@ -1879,7 +1778,7 @@ void mainWindow::saveImage(Image *img, QNetworkReply *reply, QString path, QStri
 					f.close();
 
 					img->setData(data);
-					addMd5(img->md5(), fp);
+					m_profile->addMd5(img->md5(), fp);
 
 					// Save info to a text file
 					if (m_settings->value("Textfile/activate", false).toBool())
@@ -1915,9 +1814,12 @@ void mainWindow::saveImage(Image *img, QNetworkReply *reply, QString path, QStri
 				}
 
 				// Execute commands
-				for (int i = 0; i < img->tags().count(); i++)
-				{ Commands::get()->tag(img->tags().at(i)); }
-				Commands::get()->image(*img, fp);
+				Commands &commands = m_profile->getCommands();
+				for (Tag tag : img->tags())
+				{ commands.tag(*img, tag, false); }
+				commands.image(*img, fp);
+				for (Tag tag : img->tags())
+				{ commands.tag(*img, tag, true); }
 
 				if (m_settings->value("Save/keepDate", true).toBool())
 					setFileCreationDate(fp, img->createdAt());
@@ -2057,7 +1959,7 @@ void mainWindow::getAllFinished()
 	// End of batch download
 	if (reponse != QMessageBox::Yes)
 	{
-		Commands::get()->after();
+		m_profile->getCommands().after();
 		ui->widgetDownloadButtons->setEnabled(true);
 		log(tr("Téléchargement groupé terminé"));
 	}
@@ -2269,26 +2171,6 @@ QIcon& mainWindow::getIcon(QString path)
 	return m_icons[path];
 }
 
-void mainWindow::loadTag(QString tag, bool newTab)
-{
-	if (tag.startsWith("http://"))
-	{
-		QDesktopServices::openUrl(tag);
-		return;
-	}
-
-	if (newTab)
-		addTab(tag, true);
-	else if (m_tabs.count() > 0 && ui->tabWidget->currentIndex() < m_tabs.count())
-		m_tabs[ui->tabWidget->currentIndex()]->setTags(tag);
-}
-void mainWindow::loadTagTab(QString tag)
-{ loadTag(tag.isEmpty() ? m_link : tag, true); }
-void mainWindow::loadTagNoTab(QString tag)
-{ loadTag(tag.isEmpty() ? m_link : tag, false); }
-void mainWindow::linkHovered(QString tag)
-{ m_link = tag; }
-
 void mainWindow::on_buttonFolder_clicked()
 {
 	QString folder = QFileDialog::getExistingDirectory(this, tr("Choisir un dossier de sauvegarde"), ui->lineFolder->text());
@@ -2334,7 +2216,6 @@ void mainWindow::on_buttonInitSettings_clicked()
 	ui->comboFilename->setCurrentText(m_settings->value("Save/filename_real").toString());
 
 	// Save settings
-	Commands::get()->init(m_settings);
 	saveSettings();
 }
 void mainWindow::updateCompleters()
@@ -2398,4 +2279,80 @@ void mainWindow::updateDownloads()
 	{ setWindowTitle(tr("%n téléchargement(s) en cours", "", m_downloads)); }
 }
 
-QSettings* mainWindow::settings() { return m_settings; }
+
+
+void mainWindow::loadTag(QString tag, bool newTab)
+{
+	if (tag.startsWith("http://"))
+	{
+		QDesktopServices::openUrl(tag);
+		return;
+	}
+
+	if (newTab)
+		addTab(tag, true);
+	else if (m_tabs.count() > 0 && ui->tabWidget->currentIndex() < m_tabs.count())
+		m_tabs[ui->tabWidget->currentIndex()]->setTags(tag);
+}
+void mainWindow::loadTagTab(QString tag)
+{ loadTag(tag.isEmpty() ? m_link : tag, true); }
+void mainWindow::loadTagNoTab(QString tag)
+{ loadTag(tag.isEmpty() ? m_link : tag, false); }
+void mainWindow::linkHovered(QString tag)
+{
+	m_link = tag;
+}
+void mainWindow::contextMenu()
+{
+	QMenu *menu = new QMenu(this);
+	if (!this->m_link.isEmpty())
+	{
+		bool favorited = false;
+		for (Favorite fav : m_favorites)
+			if (fav.getName() == m_link)
+				favorited = true;
+		if (favorited)
+		{ menu->addAction(QIcon(":/images/icons/remove.png"), tr("Retirer des favoris"), this, SLOT(unfavorite())); }
+		else
+		{ menu->addAction(QIcon(":/images/icons/add.png"), tr("Ajouter aux favoris"), this, SLOT(favorite())); }
+
+		QStringList &vil = m_profile->getKeptForLater();
+		if (vil.contains(m_link, Qt::CaseInsensitive))
+		{ menu->addAction(QIcon(":/images/icons/remove.png"), tr("Ne pas garder pour plus tard"), this, SLOT(unviewitlater())); }
+		else
+		{ menu->addAction(QIcon(":/images/icons/add.png"), tr("Garder pour plus tard"), this, SLOT(viewitlater())); }
+
+		menu->addSeparator();
+		menu->addAction(QIcon(":/images/icons/tab-plus.png"), tr("Ouvrir dans un nouvel onglet"), this, SLOT(openInNewTab()));
+		menu->addAction(QIcon(":/images/icons/window.png"), tr("Ouvrir dans une nouvelle fenêtre"), this, SLOT(openInNewWindow()));
+	}
+	menu->exec(QCursor::pos());
+}
+
+void mainWindow::openInNewTab()
+{
+	addTab(m_link);
+}
+void mainWindow::openInNewWindow()
+{
+	QProcess myProcess;
+	myProcess.startDetached(qApp->arguments().at(0), QStringList(m_link));
+}
+
+void mainWindow::favorite()
+{
+	m_profile->addFavorite(m_link);
+}
+void mainWindow::unfavorite()
+{
+	m_profile->removeFavorite(m_link);
+}
+
+void mainWindow::viewitlater()
+{
+	m_profile->addKeptForLater(m_link);
+}
+void mainWindow::unviewitlater()
+{
+	m_profile->removeKeptForLater(m_link);
+}

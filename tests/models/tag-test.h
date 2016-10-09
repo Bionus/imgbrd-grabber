@@ -40,6 +40,7 @@ class TagTest : public TestSuite
 
 	private:
 		QSettings *m_settings;
+		Profile *m_profile;
 };
 
 #endif // TAG_TEST_H

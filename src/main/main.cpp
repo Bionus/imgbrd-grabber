@@ -28,7 +28,7 @@
 #include <QApplication>
 #include <QtGlobal>
 #include <QSettings>
-#include "downloader.h"
+#include "downloader/downloader.h"
 #include "models/site.h"
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 2, 0))
 	#include <QCommandLineParser>
@@ -42,7 +42,7 @@
 	#include "viewer/zoomwindow.h"
 	#include "settings/optionswindow.h"
 	#if USE_BREAKPAD
-		#include "crashhandler.h"
+		#include "crashhandler/crashhandler.h"
 	#endif
 #endif
 

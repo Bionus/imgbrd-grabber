@@ -5,6 +5,7 @@
 #include "sitewindow.h"
 #include "sourcessettingswindow.h"
 #include "functions.h"
+#include "models/source.h"
 
 
 
@@ -267,28 +268,35 @@ QList<bool> sourcesWindow::getSelected()
 
 void sourcesWindow::checkForUpdates()
 {
+	QSet<Source*> sources;
 	QStringList keys = m_sites->keys();
 	for (int i = 0; i < m_sites->size(); i++)
+	{ sources.insert(m_sites->value(keys[i])->getSource()); }
+
+	for (Source *source : sources)
 	{
-		Site *site = m_sites->value(keys[i]);
-		//site->checkForUpdates();
-		connect(site, SIGNAL(checkForUpdatesFinished(Site*)), this, SLOT(checkForUpdatesReceived(Site*)));
+		 connect(source, &Source::checkForUpdatesFinished, this, &sourcesWindow::checkForUpdatesReceived);
+		 source->checkForUpdates("https://raw.githubusercontent.com/Bionus/imgbrd-grabber/master/release/sites/");
 	}
 }
-void sourcesWindow::checkForUpdatesReceived(Site *site)
+void sourcesWindow::checkForUpdatesReceived(Source *source)
 {
-	if (site->updateVersion() != "")
+	QString updateVersion = source->getUpdateVersion();
+	if (!updateVersion.isEmpty())
 	{
-		int pos = m_sites->values().indexOf(site);
-		if (site->updateVersion() != VERSION)
+		for (Site *site : source->getSites())
 		{
-			m_labels[pos]->setPixmap(QPixmap(":/images/icons/warning.png"));
-			m_labels[pos]->setToolTip(tr("Une mise à jour de cette source est disponible, mais pour une autre version du programme."));
-		}
-		else
-		{
-			m_labels[pos]->setPixmap(QPixmap(":/images/icons/update.png"));
-			m_labels[pos]->setToolTip(tr("Une mise à jour de cette source est disponible."));
+			int pos = m_sites->values().indexOf(site);
+			if (updateVersion != VERSION)
+			{
+				m_labels[pos]->setPixmap(QPixmap(":/images/icons/warning.png"));
+				m_labels[pos]->setToolTip(tr("Une mise à jour de cette source est disponible, mais pour une autre version du programme."));
+			}
+			else
+			{
+				m_labels[pos]->setPixmap(QPixmap(":/images/icons/update.png"));
+				m_labels[pos]->setToolTip(tr("Une mise à jour de cette source est disponible."));
+			}
 		}
 	}
 }

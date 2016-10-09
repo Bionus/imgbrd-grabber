@@ -18,18 +18,13 @@
 
 
 
-zoomWindow::zoomWindow(Image *image, Site *site, QMap<QString,Site*> *sites, mainWindow *parent)
-	: QDialog(0, Qt::Window), m_parent(parent), m_settings(parent->settings()), ui(new Ui::zoomWindow), m_site(site), timeout(300), m_loaded(false), m_loadedImage(false), m_loadedDetails(false), oldsize(0), image(NULL), movie(NULL), m_program(qApp->arguments().at(0)), m_reply(NULL), m_finished(false), m_thread(false), m_data(QByteArray()), m_size(0), m_sites(sites), m_source(), m_th(NULL), m_fullScreen(NULL)
+zoomWindow::zoomWindow(Image *image, Site *site, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
+	: QDialog(0, Qt::Window), m_parent(parent), m_profile(profile), m_favorites(profile->getFavorites()), m_viewItLater(profile->getKeptForLater()), m_ignore(profile->getIgnored()), m_settings(profile->getSettings()), ui(new Ui::zoomWindow), m_site(site), timeout(300), m_loaded(false), m_loadedImage(false), m_loadedDetails(false), image(NULL), movie(NULL), m_reply(NULL), m_finished(false), m_thread(false), m_data(QByteArray()), m_size(0), m_sites(sites), m_source(), m_th(NULL), m_fullScreen(NULL)
 {
 	ui->setupUi(this);
 	setAttribute(Qt::WA_DeleteOnClose);
 
-	QList<Favorite> favorites = loadFavorites();
-	for (Favorite fav : favorites)
-		m_favorites.append(fav.getName());
-	m_viewItLater = loadViewItLater();
-	m_ignore = loadIgnored();
-	m_image = new Image(site, image->details(), image->page());
+	m_image = new Image(site, image->details(), m_profile, image->page());
 	connect(m_image, &Image::urlChanged, this, &zoomWindow::urlChanged);
 
 	m_mustSave = 0;
@@ -62,6 +57,11 @@ zoomWindow::zoomWindow(Image *image, Site *site, QMap<QString,Site*> *sites, mai
 		connect(m_labelTagsTop, SIGNAL(linkHovered(QString)), this, SLOT(linkHovered(QString)));
 		connect(m_labelTagsTop, SIGNAL(middleClicked()), this, SLOT(openInNewTab()));
 		ui->verticalLayout->insertWidget(0, m_labelTagsTop, 0);
+
+	// Automatically re-color if some settings change
+	connect(m_profile, &Profile::favoritesChanged, this, &zoomWindow::colore);
+	connect(m_profile, &Profile::keptForLaterChanged, this, &zoomWindow::colore);
+	connect(m_profile, &Profile::ignoredChanged, this, &zoomWindow::colore);
 
 	m_imageTime = NULL;
 	go();
@@ -133,12 +133,12 @@ void zoomWindow::go()
 	if (pos == "top")
 	{
 		ui->widgetLeft->hide();
-		m_labelTagsTop->setText(m_image->stylishedTags(m_ignore).join(" "));
+		m_labelTagsTop->setText(m_image->stylishedTags(m_profile).join(" "));
 	}
 	else
 	{
 		m_labelTagsTop->hide();
-		m_labelTagsLeft->setText(m_image->stylishedTags(m_ignore).join("<br/>"));
+		m_labelTagsLeft->setText(m_image->stylishedTags(m_profile).join("<br/>"));
 	}
 
 	m_detailsWindow = new detailsWindow(m_image, this);
@@ -197,7 +197,6 @@ void zoomWindow::openPoolId(Page *p)
 	m_loaded = false;
 	m_loadedDetails = false;
 	m_loadedImage = false;
-	oldsize = 0;
 	m_reply->deleteLater();
 	m_reply = NULL;
 	m_finished = false;
@@ -245,131 +244,98 @@ void zoomWindow::contextMenu(QPoint)
 	QMenu *menu = new QMenu(this);
 	if (!this->link.isEmpty())
 	{
-		// Favoris
-		if (m_favorites.contains(link, Qt::CaseInsensitive))
+		// Favorites
+		if (m_favorites.contains(Favorite(link)))
 		{
 			menu->addAction(QIcon(":/images/icons/remove.png"), tr("Retirer des favoris"), this, SLOT(unfavorite()));
 			menu->addAction(QIcon(":/images/icons/save.png"), tr("Choisir comme image"), this, SLOT(setfavorite()));
 		}
 		else
 		{ menu->addAction(QIcon(":/images/icons/add.png"), tr("Ajouter aux favoris"), this, SLOT(favorite())); }
-		// Garder pour plus tard
+
+		// Keep for later
 		if (m_viewItLater.contains(link, Qt::CaseInsensitive))
 		{ menu->addAction(QIcon(":/images/icons/remove.png"), tr("Ne pas garder pour plus tard"), this, SLOT(unviewitlater())); }
 		else
 		{ menu->addAction(QIcon(":/images/icons/add.png"), tr("Garder pour plus tard"), this, SLOT(viewitlater())); }
-		// Ignorer
+
+		// Ignore
 		if (m_ignore.contains(link, Qt::CaseInsensitive))
 		{ menu->addAction(QIcon(":/images/icons/showed.png"), tr("Ne plus ignorer"), this, SLOT(unignore())); }
 		else
 		{ menu->addAction(QIcon(":/images/icons/hidden.png"), tr("Ignorer"), this, SLOT(ignore())); }
 		menu->addSeparator();
-		// Onglets
+
+		// Tabs
 		menu->addAction(QIcon(":/images/icons/tab-plus.png"), tr("Ouvrir dans un nouvel onglet"), this, SLOT(openInNewTab()));
 		menu->addAction(QIcon(":/images/icons/window.png"), tr("Ouvrir dans une nouvelle fenêtre"), this, SLOT(openInNewWindow()));
 		menu->addAction(QIcon(":/images/icons/browser.png"), tr("Ouvrir dans le navigateur"), this, SLOT(openInBrowser()));
 	}
 	menu->exec(QCursor::pos());
 }
+
 void zoomWindow::openInNewTab()
-{ m_parent->addTab(link); }
+{
+	m_parent->addTab(link);
+}
 void zoomWindow::openInNewWindow()
 {
 	QProcess myProcess;
-	myProcess.startDetached(m_program, QStringList(link));
+	myProcess.startDetached(qApp->arguments().at(0), QStringList(link));
 }
 void zoomWindow::openInBrowser()
 {
-	Page *p = new Page(m_site, m_sites->values(), QStringList() << link, 1);
-	QDesktopServices::openUrl(p->url());
-	p->deleteLater();
+	QDesktopServices::openUrl(m_image->pageUrl());
 }
+
 void zoomWindow::favorite()
 {
-	m_favorites.append(link);
+	Favorite fav(link);
+	if (image != nullptr)
+		fav.setImage(*image);
 
-	QFile f(savePath("favorites.txt"));
-		f.open(QIODevice::WriteOnly | QIODevice::Append);
-		f.write(QString(link+"|50|"+QDateTime::currentDateTime().toString(Qt::ISODate)+"\r\n").toUtf8());
-	f.close();
-
-	setfavorite();
+	m_profile->addFavorite(fav);
 }
 void zoomWindow::setfavorite()
 {
-	if (!QDir(savePath("thumbs")).exists())
-	{ QDir(savePath()).mkdir("thumbs"); }
+	if (image == nullptr)
+		return;
 
-	if (image != nullptr)
+	Favorite fav(link);
+	int pos = m_favorites.indexOf(fav);
+	if (pos >= 0)
 	{
-		Favorite fav(link, 50, QDateTime::currentDateTime());
+		m_favorites[pos].setImage(*image);
+	}
+	else
+	{
 		fav.setImage(*image);
+		m_favorites.append(fav);
 	}
 
-	m_parent->updateFavorites();
-	m_parent->updateFavoritesDock();
+	m_profile->emitFavorite();
 }
 void zoomWindow::unfavorite()
 {
-	m_favorites.removeAll(link);
-
-	QFile f(savePath("favorites.txt"));
-	f.open(QIODevice::ReadOnly);
-		QString favs = f.readAll();
-	f.close();
-
-	favs.replace("\r\n", "\n").replace("\r", "\n").replace("\n", "\r\n");
-	QRegExp reg(QRegExp::escape(link) + "\\|(.+)\\r\\n");
-	reg.setMinimal(true);
-	favs.remove(reg);
-
-	f.open(QIODevice::WriteOnly);
-		f.write(favs.toUtf8());
-	f.close();
-
-	if (QFile::exists(savePath("thumbs/"+link+".png")))
-	{ QFile::remove(savePath("thumbs/"+link+".png")); }
-
-	m_parent->updateFavorites();
-	m_parent->updateFavoritesDock();
+	m_profile->removeFavorite(Favorite(link));
 }
+
 void zoomWindow::viewitlater()
 {
-	m_viewItLater.append(link);
-	QFile f(savePath("viewitlater.txt"));
-	f.open(QIODevice::WriteOnly);
-		f.write(m_viewItLater.join("\r\n").toUtf8());
-	f.close();
-
-	m_parent->updateKeepForLater();
+	m_profile->addKeptForLater(link);
 }
 void zoomWindow::unviewitlater()
 {
-	m_viewItLater.removeAll(link);
-	QFile f(savePath("viewitlater.txt"));
-	f.open(QIODevice::WriteOnly);
-		f.write(m_viewItLater.join("\r\n").toUtf8());
-	f.close();
-
-	m_parent->updateKeepForLater();
+	m_profile->removeKeptForLater(link);
 }
+
 void zoomWindow::ignore()
 {
-	m_ignore.append(link);
-	QFile f(savePath("ignore.txt"));
-	f.open(QIODevice::WriteOnly);
-		f.write(m_ignore.join("\r\n").toUtf8());
-	f.close();
-	colore();
+	m_profile->addIgnored(link);
 }
 void zoomWindow::unignore()
 {
-	m_ignore.removeAll(link);
-	QFile f(savePath("ignore.txt"));
-	f.open(QIODevice::WriteOnly);
-		f.write(m_ignore.join("\r\n").toUtf8());
-	f.close();
-	colore();
+	m_profile->removeIgnored(link);
 }
 
 void zoomWindow::load()
@@ -501,7 +467,7 @@ void zoomWindow::replyFinishedDetails(Image* img)
 }
 void zoomWindow::colore()
 {
-	QStringList t = m_image->stylishedTags(m_ignore);
+	QStringList t = m_image->stylishedTags(m_profile);
 	tags = t.join(" ");
 	if (ui->widgetLeft->isHidden())
 	{ m_labelTagsTop->setText(tags); }
@@ -742,7 +708,7 @@ QStringList zoomWindow::saveImageNow(bool fav)
 		{ reply = QMessageBox::question(this, tr("Erreur"), tr("Vous n'avez pas précisé de format de sauvegarde ! Voulez-vous ouvrir les options ?"), QMessageBox::Yes | QMessageBox::No); }
 		if (reply == QMessageBox::Yes)
 		{
-			optionsWindow *options = new optionsWindow(m_parent);
+			optionsWindow *options = new optionsWindow(m_profile, parentWidget());
 			//options->onglets->setCurrentIndex(3);
 			options->setWindowModality(Qt::ApplicationModal);
 			options->show();

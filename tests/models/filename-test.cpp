@@ -4,6 +4,11 @@
 
 void FilenameTest::init()
 {
+	// Make tmp dir if not already existing
+	QDir tmp("tests/resources/");
+	if (!tmp.exists("tmp"))
+		tmp.mkdir("tmp");
+
 	m_details["md5"] = "1bc29b36f623ba82aaf6724fd3b16718";
 	m_details["ext"] = "jpg";
 	m_details["author"] = "superauthor";
@@ -31,7 +36,8 @@ void FilenameTest::init()
 	m_details["created_at"] = "1471513944";
 	m_details["rating"] = "safe";
 
-	m_settings = new QSettings("tests/resources/settings.ini", QSettings::IniFormat);
+	m_profile = new Profile("tests/resources/settings.ini");
+	m_settings = m_profile->getSettings();
 	m_settings->clear();
 	m_settings->setValue("ignoredtags", "");
 	m_settings->setValue("Save/separator", " ");
@@ -41,22 +47,39 @@ void FilenameTest::init()
 	m_settings->setValue("Save/copyright_multiple", "replaceAll");
 	m_settings->setValue("Save/replaceblanks", true);
 
-	m_site = new Site(m_settings, "release/sites/Danbooru (2.0)", "danbooru.donmai.us");
-	m_img = new Image(m_site, m_details);
+	m_source = new Source("release/sites/Danbooru (2.0)");
+	m_site = new Site("danbooru.donmai.us", m_source);
+	m_img = new Image(m_site, m_details, m_profile);
 }
 
 void FilenameTest::cleanup()
 {
-	m_settings->deleteLater();
+	delete m_profile;
 	m_site->deleteLater();
 	m_img->deleteLater();
 }
 
 
+void FilenameTest::testDefaultConstructor()
+{
+	Filename fn;
+
+	QCOMPARE(fn.getFormat().isEmpty(), true);
+}
+
 void FilenameTest::testGetFormat()
 {
 	QString format = "%md5%.%ext%";
 	Filename fn(format);
+
+	QCOMPARE(fn.getFormat(), format);
+}
+
+void FilenameTest::testSetFormat()
+{
+	QString format = "%md5%.%ext%";
+	Filename fn("%id%.%ext%");
+	fn.setFormat(format);
 
 	QCOMPARE(fn.getFormat(), format);
 }
@@ -189,6 +212,13 @@ void FilenameTest::testPathOptionTagNamespace()
 
 	assertPath("%character:includenamespace,unsafe%", "character:character1 character:character2", "", false);
 }
+void FilenameTest::testPathOptionTagNamespaceSeparator()
+{
+	m_settings->setValue("Save/separator", "c");
+	m_settings->setValue("Save/character_multiple", "keepAll");
+
+	assertPath("%character:includenamespace,unsafe%", "character:character1ccharacter:character2", "", false);
+}
 void FilenameTest::testPathOptionTagNamespaceComplex()
 {
 	m_settings->setValue("Save/artist_multiple", "keepAll");
@@ -212,12 +242,36 @@ void FilenameTest::testPathOptionTagExcludeNamespace()
 }
 void FilenameTest::testPathOptionTagSeparator()
 {
-	assertPath("%md5% (%count%).%ext%", "1bc29b36f623ba82aaf6724fd3b16718 (7).jpg");
-	assertPath("%md5% (%count:length=3%).%ext%", "1bc29b36f623ba82aaf6724fd3b16718 (007).jpg");
+	assertPath("%general:separator=+%", "tag1+tag2+tag3+test_tag1+test_tag2+test_tag3");
 }
 void FilenameTest::testPathOptionCount()
 {
-	assertPath("%md5:maxlength=8%.%ext%", "1bc29b36.jpg");
+	assertPath("%md5% (%count%).%ext%", "1bc29b36f623ba82aaf6724fd3b16718 (7).jpg");
+	assertPath("%md5% (%count:length=3%).%ext%", "1bc29b36f623ba82aaf6724fd3b16718 (007).jpg");
+}
+void FilenameTest::testPathOptionNumSingle()
+{
+	assertPath("%id% (%num%).%ext%",
+			   "7331 (1).jpg",
+			   "tests/resources/tmp/");
+}
+void FilenameTest::testPathOptionNumSingleLength()
+{
+	assertPath("%id% (%num:length=3%).%ext%",
+			   "7331 (001).jpg",
+			   "tests/resources/tmp/");
+}
+void FilenameTest::testPathOptionNumMultiple()
+{
+	QFile::copy("tests/resources/image_1x1.png", "tests/resources/tmp/7331 (1).jpg");
+	QFile::copy("tests/resources/image_1x1.png", "tests/resources/tmp/7331 (2).jpg");
+
+	assertPath("%id% (%num%).%ext%",
+			   "7331 (3).jpg",
+			   "tests/resources/tmp/");
+
+	QFile::remove("tests/resources/tmp/7331 (1).jpg");
+	QFile::remove("tests/resources/tmp/7331 (2).jpg");
 }
 
 void FilenameTest::testGetReplacesSimple()
@@ -226,7 +280,7 @@ void FilenameTest::testGetReplacesSimple()
 
 	Filename fn(format);
 	m_settings->setValue("Save/character_multiple", "replaceAll");
-	QList<QMap<QString, QPair<QString, QString>>> replaces = fn.getReplaces(format, *m_img, m_settings, QMap<QString, QStringList>());
+	QList<QMap<QString, QPair<QString, QString>>> replaces = fn.getReplaces(format, *m_img, m_profile, QMap<QString, QStringList>());
 
 	QCOMPARE(replaces.count(), 1);
 	QCOMPARE(replaces[0]["artist"].first, QString("artist1"));
@@ -239,7 +293,7 @@ void FilenameTest::testGetReplacesMultiple()
 
 	Filename fn(format);
 	m_settings->setValue("Save/character_multiple", "multiple");
-	QList<QMap<QString, QPair<QString, QString>>> replaces = fn.getReplaces(format, *m_img, m_settings, QMap<QString, QStringList>());
+	QList<QMap<QString, QPair<QString, QString>>> replaces = fn.getReplaces(format, *m_img, m_profile, QMap<QString, QStringList>());
 
 	QCOMPARE(replaces.count(), 2);
 	QCOMPARE(replaces[0]["artist"].first, QString("artist1"));
@@ -256,7 +310,7 @@ void FilenameTest::testGetReplacesMatrix()
 	Filename fn(format);
 	m_settings->setValue("Save/character_multiple", "multiple");
 	m_settings->setValue("Save/copyright_multiple", "multiple");
-	QList<QMap<QString, QPair<QString, QString>>> replaces = fn.getReplaces(format, *m_img, m_settings, QMap<QString, QStringList>());
+	QList<QMap<QString, QPair<QString, QString>>> replaces = fn.getReplaces(format, *m_img, m_profile, QMap<QString, QStringList>());
 
 	QCOMPARE(replaces.count(), 4);
 	QCOMPARE(replaces[0]["artist"].first, QString("artist1"));
@@ -281,7 +335,7 @@ void FilenameTest::testGetReplacesCustom()
 	custom.insert("custom2", QStringList() << "tag3 tag4");
 
 	Filename fn(format);
-	QList<QMap<QString, QPair<QString, QString>>> replaces = fn.getReplaces(format, *m_img, m_settings, custom);
+	QList<QMap<QString, QPair<QString, QString>>> replaces = fn.getReplaces(format, *m_img, m_profile, custom);
 
 	QCOMPARE(replaces.first().contains("custom1"), true);
 	QCOMPARE(replaces.first().contains("custom2"), true);
@@ -299,6 +353,7 @@ void FilenameTest::testIsValid()
 	QCOMPARE(Filename("%website%/%id%.%ext%").isValid(), true);
 	QCOMPARE(Filename("%artist%/%copyright%/%character%/%md5%.%ext%").isValid(), true);
 	QCOMPARE(Filename("javascript:md5 + '.' + ext;").isValid(), true);
+	QCOMPARE(Filename("%md5% %date:format=yyyy-MM-dd%.%ext%").isValid(), true);
 
 	QString out;
 	Filename("%toto%.%ext%").isValid(&out);
@@ -310,7 +365,7 @@ void FilenameTest::testUseShorterCopyright()
 	m_img->deleteLater();
 
 	m_details["tags_copyright"] = "test test_2";
-	m_img = new Image(m_site, m_details);
+	m_img = new Image(m_site, m_details, m_profile);
 
 	m_settings->setValue("Save/copyright_useshorter", true);
 	assertPath("%copyright%", "test");
@@ -321,7 +376,7 @@ void FilenameTest::testUseShorterCopyright()
 	m_img->deleteLater();
 
 	m_details["tags_copyright"] = "test_2 test";
-	m_img = new Image(m_site, m_details);
+	m_img = new Image(m_site, m_details, m_profile);
 
 	m_settings->setValue("Save/copyright_useshorter", true);
 	assertPath("%copyright%", "test");
@@ -394,8 +449,40 @@ void FilenameTest::testCommand()
 {
 	 Filename fn("curl -F \"user[name]=User\" -F \"user[password]=1234\" -F \"post[tags]=%all%\" -F \"post[rating]=%rating%\" -F \"post[file]=@%path%\" localhost:9000/post/create");
 
-	 QCOMPARE(fn.path(*m_img, m_settings, "", 0, false, false, false, false),
+	 QCOMPARE(fn.path(*m_img, m_profile, "", 0, false, false, false, false),
 			  QStringList() << "curl -F \"user[name]=User\" -F \"user[password]=1234\" -F \"post[tags]=tag1 tag2 tag3 test_tag1 test_tag2 test_tag3 artist1 character1 character2 copyright1 copyright2\" -F \"post[rating]=safe\" -F \"post[file]=@%path%\" localhost:9000/post/create");
+}
+
+void FilenameTest::testNeedExactTagsBasic()
+{
+	Filename fn("%md5%.%ext%");
+	QCOMPARE(fn.needExactTags(false), false);
+}
+void FilenameTest::testNeedExactTagsSite()
+{
+	Filename fn("%md5%.%ext%");
+	QCOMPARE(fn.needExactTags(m_site), false);
+}
+void FilenameTest::testNeedExactTagsJavascript()
+{
+	Filename fn("javascript:md5 + '.' + ext");
+	QCOMPARE(fn.needExactTags(false), true);
+}
+void FilenameTest::testNeedExactTagsFilename()
+{
+	Filename fn("%filename%.%ext%");
+	QCOMPARE(fn.needExactTags(false), false);
+	QCOMPARE(fn.needExactTags(true), true);
+}
+void FilenameTest::testNeedExactTagsToken()
+{
+	Filename fn("%character% %md5%.%ext%");
+	QCOMPARE(fn.needExactTags(false), true);
+}
+void FilenameTest::testNeedExactTagsOption()
+{
+	Filename fn("%all:includenamespace% %md5%.%ext%");
+	QCOMPARE(fn.needExactTags(false), true);
 }
 
 
@@ -417,7 +504,7 @@ void FilenameTest::assertPath(QString format, QStringList expected, QString path
 	}
 
 	Filename fn(format);
-	QStringList actual = fn.path(*m_img, m_settings, path, 7, true, true, shouldFixFilename, fullPath);
+	QStringList actual = fn.path(*m_img, m_profile, path, 7, true, true, shouldFixFilename, fullPath);
 	QCOMPARE(actual, expectedNative);
 }
 
@@ -427,7 +514,7 @@ void FilenameTest::assertExpand(QString format, QString expected)
 	QStringList tokens = QStringList() << "artist" << "general" << "copyright" << "character" << "model" << "model|artist" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "allo" << "date" << "date:([^%]+)" << "count(:\\d+)?(:\\d+)?" << "search_(\\d+)" << "score" << "height" << "width" << "path" << "pool" << "url_file" << "url_page";
 
 	Filename fn(format);
-	QMap<QString, QPair<QString, QString>> replaces = fn.getReplaces(format, *m_img, m_settings, QMap<QString, QStringList>()).first();
+	QMap<QString, QPair<QString, QString>> replaces = fn.getReplaces(format, *m_img, m_profile, QMap<QString, QStringList>()).first();
 	QString actual = fn.expandConditionals(format, tokens, m_img->tagsString(), replaces);
 	QCOMPARE(actual, expected);
 }

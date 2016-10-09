@@ -2,54 +2,23 @@
 #include "ui_sitewindow.h"
 #include "mainwindow.h"
 #include "functions.h"
+#include "models/source.h"
 
 extern mainWindow *_mainwindow;
 
 
 
-siteWindow::siteWindow(QMap<QString,Site*> *sites, QWidget *parent)
-	: QDialog(parent), ui(new Ui::siteWindow)
+siteWindow::siteWindow(QMap<QString ,Site*> *sites, QWidget *parent)
+	: QDialog(parent), ui(new Ui::siteWindow), m_sites(sites)
 {
 	Q_UNUSED(sites);
 
 	ui->setupUi(this);
 	ui->progressBar->hide();
-	m_models = new QList<Site*>();
 
-	QStringList dir = QDir(savePath("sites")).entryList(QDir::Dirs | QDir::NoDotAndDotDot);
-
-	for (int i = 0; i < dir.count(); i++)
-	{
-		QFile file(savePath("sites/"+dir.at(i)+"/model.xml"));
-		if (file.open(QIODevice::ReadOnly | QIODevice::Text))
-		{
-			QString source = file.readAll();
-			QDomDocument doc;
-			QString errorMsg;
-			int errorLine, errorColumn;
-			if (!doc.setContent(source, false, &errorMsg, &errorLine, &errorColumn))
-			{ log(tr("Erreur lors de l'analyse du fichier XML : %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn)), Error); }
-			else
-			{
-				QDomElement docElem = doc.documentElement();
-				QMap<QString,QString> detals = domToMap(docElem);
-				detals["Model"] = dir[i];
-				Site *site = new Site(dir[i], dir[i], detals);
-				m_models->append(site);
-			}
-			file.close();
-		}
-	}
-
-	QStringList types;
-	for (Site *site : *m_models)
-	{
-		if (!types.contains(site->type()))
-		{
-			types.append(site->type());
-			ui->comboBox->addItem(QIcon(savePath("sites/"+site->type()+"/icon.png")), site->type());
-		}
-	}
+	m_sources = Source::getAllSources();
+	for (Source *source : *m_sources)
+		ui->comboBox->addItem(QIcon(savePath("sites/" + source->getName() + "/icon.png")), source->getName());
 
 	ui->comboBox->setDisabled(true);
 	ui->checkBox->setChecked(true);
@@ -72,25 +41,26 @@ void siteWindow::accept()
 	if (url.endsWith("/"))
 	{ url = url.left(url.size()-1); }
 
-	QString type, name;
+	Source *src = nullptr;
 	QStringList checked;
 	if (ui->checkBox->isChecked())
 	{
 		ui->progressBar->setValue(0);
-		ui->progressBar->setMaximum(m_models->count());
+		ui->progressBar->setMaximum(m_sources->count());
 		ui->progressBar->show();
 
-		for (Site *map : *m_models)
+		for (Source *source : *m_sources)
 		{
-			if (!checked.contains(map->type()))
+			if (!checked.contains(source->getName()) && !source->getSites().isEmpty())
 			{
-				checked.append(map->type());
+				checked.append(source->getName());
+				Site *map = source->getSites().first();
 				if (map->contains("Check/Url") && map->contains("Check/Regex"))
 				{
 					QString curr = map->value("Selected");
 					curr[0] = curr[0].toUpper();
 
-					QUrl getUrl("http://" + url+map->value("Check/Url"));
+					QUrl getUrl("http://" + url + map->value("Check/Url"));
 					QNetworkReply *reply;
 					do
 					{
@@ -101,13 +71,13 @@ void siteWindow::accept()
 
 						getUrl = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 					} while (!getUrl.isEmpty());
-					QString source = reply->readAll();
+					QString res = reply->readAll();
 					if (reply->error() == 0)
 					{
 						QRegExp rx(map->value("Check/Regex"));
-						if (rx.indexIn(source) != -1)
+						if (rx.indexIn(res) != -1)
 						{
-							type = map->type();
+							src = source;
 							break;
 						}
 					}
@@ -117,27 +87,42 @@ void siteWindow::accept()
 				ui->progressBar->setValue(checked.size());
 			}
 		}
-		if (type.isEmpty())
-		{
-			error(this, tr("Impossible de deviner le type du site. Êtes-vous sûr de l'url ?"));
-			ui->comboBox->setDisabled(false);
-			ui->checkBox->setChecked(false);
-			ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
-			ui->progressBar->hide();
-			return;
-		}
 		ui->progressBar->hide();
 	}
 	else
-	{ type = ui->comboBox->currentText().toLower(); }
+	{
+		for (Source *source : *m_sources)
+		{
+			if (source->getName() == ui->comboBox->currentText())
+			{
+				src = source;
+				break;
+			}
+		}
+	}
 
-	QFile f(savePath("sites/"+type+"/sites.txt"));
+	if (src == nullptr)
+	{
+		error(this, tr("Impossible de deviner le type du site. Êtes-vous sûr de l'url ?"));
+		ui->comboBox->setDisabled(false);
+		ui->checkBox->setChecked(false);
+		ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
+		ui->progressBar->hide();
+		return;
+	}
+
+	Site *site = new Site(url, src);
+	src->getSites().append(site);
+	m_sites->insert(site->url(), site);
+
+	// Save new sites
+	QFile f(src->getPath() + "/sites.txt");
 	f.open(QIODevice::ReadOnly);
 		QString sites = f.readAll();
 	f.close();
 	sites.replace("\r\n", "\n").replace("\r", "\n").replace("\n", "\r\n");
 	QStringList stes = sites.split("\r\n", QString::SkipEmptyParts);
-	stes.append(url);
+	stes.append(site->url());
 	stes.removeDuplicates();
 	stes.sort();
 	f.open(QIODevice::WriteOnly);

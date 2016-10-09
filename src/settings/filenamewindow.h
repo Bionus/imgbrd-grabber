@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QMessageBox>
 #include <QCloseEvent>
+#include "models/profile.h"
 
 #if USE_QSCINTILLA
 	#include <Qsci/qsciscintilla.h>
@@ -26,7 +27,7 @@ class FilenameWindow : public QDialog
 	Q_OBJECT
 	
 	public:
-		explicit FilenameWindow(QString value = "", QWidget *parent = 0);
+		explicit FilenameWindow(Profile *profile, QString value = "", QWidget *parent = 0);
 		~FilenameWindow();
 		QString format();
 
@@ -42,6 +43,7 @@ class FilenameWindow : public QDialog
 
 	private:
 		Ui::FilenameWindow *ui;
+		Profile *m_profile;
 		#if USE_QSCINTILLA
 			QsciScintilla *m_scintilla;
 		#else

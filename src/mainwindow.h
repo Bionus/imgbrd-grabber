@@ -7,6 +7,7 @@
 #include <QProcess>
 #include <QTranslator>
 #include <QSet>
+#include <QTableWidgetItem>
 #include "sources/sourceswindow.h"
 #include "batch/batchwindow.h"
 #include "ui/QAffiche.h"
@@ -18,7 +19,8 @@
 #include "tabs/favorites-tab.h"
 #include "commands.h"
 #include "models/site.h"
-#include "downloader.h"
+#include "models/profile.h"
+#include "downloader/downloader.h"
 
 
 
@@ -44,9 +46,7 @@ class mainWindow : public QMainWindow
 	public:
 		explicit mainWindow(QString, QStringList, QMap<QString,QString>);
 		~mainWindow();
-		QMap<QString,Site*> m_sites;
 		Ui::mainWindow *ui;
-		QSettings* settings();
 
 	public slots:
 		// Log
@@ -70,8 +70,7 @@ class mainWindow : public QMainWindow
 		void loadLanguage(const QString&, bool shutup = false);
 		void changeEvent(QEvent*);
 		// Favorites
-		void updateFavorites(bool dock = false);
-		void updateFavoritesDock();
+		void updateFavorites();
 		void updateKeepForLater();
 		/*void loadFavorite(int);
 		void favoriteProperties(int);
@@ -88,6 +87,8 @@ class mainWindow : public QMainWindow
 		// Batch download management
 		void batchClear();
 		void batchClearSel();
+		QList<int> getSelectedRows(QList<QTableWidgetItem*> selected);
+		void batchMove(int);
 		void batchMoveUp();
 		void batchMoveDown();
 		void batchSel();
@@ -124,10 +125,6 @@ class mainWindow : public QMainWindow
 		void tabClosed(searchTab*);
 		void currentTabChanged(int);
 		void closeCurrentTab();
-		void loadTag(QString tag, bool newTab = true);
-		void loadTagTab(QString tag);
-		void loadTagNoTab(QString tag);
-		void linkHovered(QString tag);
 		bool saveTabs(QString);
 		bool loadTabs(QString);
 		void updateTabs();
@@ -136,6 +133,18 @@ class mainWindow : public QMainWindow
 		void increaseDownloads();
 		void decreaseDownloads();
 		void updateDownloads();
+		// Tag list
+		void loadTag(QString tag, bool newTab = true);
+		void loadTagTab(QString tag);
+		void loadTagNoTab(QString tag);
+		void linkHovered(QString tag);
+		void contextMenu();
+		void openInNewTab();
+		void openInNewWindow();
+		void favorite();
+		void unfavorite();
+		void viewitlater();
+		void unviewitlater();
 		// Others
 		void closeEvent(QCloseEvent*);
 		void onFirstLoad();
@@ -160,12 +169,21 @@ class mainWindow : public QMainWindow
 		QIcon& getIcon(QString path);
 		void setWiki(QString);
 
+	protected:
+		int getRowForSite(int site_id);
+		void getAllGetImageIfNotBlacklisted(Image *img, int site_id);
+		void getAllImageOk(Image *img, int site_id, bool del = true);
+		QList<Site*> getSelectedSites();
+		Site* getSelectedSiteOrDefault();
+
 	private:
-		int					m_pagemax, m_getAllDownloaded, m_getAllExists, m_getAllIgnored, m_getAll404s, m_getAllErrors, m_getAllSkipped, m_getAllCount, m_getAllPageCount, m_getAllBeforeId, m_remainingPics, m_remainingSites, m_countPics, m_currentFav, m_currentFavCount, m_getAllLimit, m_downloads, m_waitForLogin;
+		Profile				*m_profile;
+		QList<Favorite>		&m_favorites;
+		int					m_pagemax, m_getAllDownloaded, m_getAllExists, m_getAllIgnored, m_getAll404s, m_getAllErrors, m_getAllSkipped, m_getAllCount, m_getAllPageCount, m_getAllBeforeId, m_remainingPics, m_remainingSites, m_countPics, m_getAllLimit, m_downloads, m_waitForLogin;
 		bool				m_allow, m_must_get_tags, m_loaded, m_getAll;
 		QSettings			*m_settings;
 		batchWindow			*m_progressdialog;
-		QString				m_program, m_currLang, m_currentFavorite, m_link;
+		QString				m_program, m_currLang, m_link;
 		QStringList			m_tags;
 		QTranslator			m_translator;
 		QDateTime			m_loadFavorite;
@@ -177,7 +195,6 @@ class mainWindow : public QMainWindow
 		QList<poolTab*>		m_poolTabs;
 		QList<bool>			m_selectedSources;
 		favoritesTab		*m_favoritesTab;
-		QList<Favorite>					m_favorites;
 		QMap<QString,QTime*>			m_downloadTime, m_downloadTimeLast;
 		QList<QProgressBar*>			m_progressBars;
 		QList<QMap<QString, QString>>	m_batchs;
@@ -188,7 +205,7 @@ class mainWindow : public QMainWindow
 		int					m_batchAutomaticRetries;
 		bool				m_restore, m_showLog;
 		QMap<QString, QIcon>	m_icons;
-		QFileSystemWatcher * logwatcher;
+		QMap<QString, Site*>	m_sites;
 };
 
 #endif // MAINWINDOW_H

@@ -11,7 +11,8 @@
 
 
 
-RenameExisting1::RenameExisting1(QMap<QString,Site*> sites, QWidget *parent) : QDialog(parent), ui(new Ui::RenameExisting1), m_sites(sites)
+RenameExisting1::RenameExisting1(QMap<QString,Site*> sites, QWidget *parent)
+	: QDialog(parent), ui(new Ui::RenameExisting1), m_sites(sites)
 {
 	ui->setupUi(this);
 
@@ -40,6 +41,7 @@ void RenameExisting1::on_buttonContinue_clicked()
 {
 	ui->buttonContinue->setEnabled(false);
 	m_details.clear();
+	m_getTags.clear();
 
 	// Check that directory exists
 	QDir dir(ui->lineFolder->text());
@@ -115,6 +117,10 @@ void RenameExisting1::on_buttonContinue_clicked()
 		}
 	}
 
+	// Check if filename requires details
+	m_filename.setFormat(ui->lineFilenameDestination->text());
+	m_needDetails = m_filename.needExactTags(m_sites.value(ui->comboSource->currentText()));
+
 	int reponse = QMessageBox::question(this, tr("Réparateur de liste noire"), tr("Vous vous apprêtez à télécharger les informations de %n image(s). Êtes-vous sûr de vouloir continuer ?", "", m_details.size()), QMessageBox::Yes | QMessageBox::No);
 	if (reponse == QMessageBox::Yes)
 	{
@@ -123,7 +129,7 @@ void RenameExisting1::on_buttonContinue_clicked()
 		ui->progressBar->setMaximum(m_details.size());
 		ui->progressBar->show();
 
-		getAll();
+		loadNext();
 	}
 	else
 	{
@@ -133,27 +139,53 @@ void RenameExisting1::on_buttonContinue_clicked()
 
 void RenameExisting1::getAll(Page *p)
 {
-	if (p != nullptr && p->images().size() > 0)
-	{
-		Image *img = p->images().at(0);
-		m_getAll[img->md5()].second = img->path(ui->lineFilenameDestination->text(), ui->lineFolder->text(), 0, true, false, true, true, true).first();
+	Image *img = p->images().at(0);
 
+	if (m_needDetails)
+	{
+		m_getTags.append(img);
+	}
+	else
+	{
+		m_getAll[img->md5()].second = img->path(ui->lineFilenameDestination->text(), ui->lineFolder->text(), 0, true, false, true, true, true).first();
 		ui->progressBar->setValue(ui->progressBar->value() + 1);
 	}
 
-	if (!m_details.empty())
+	loadNext();
+}
+
+void RenameExisting1::getTags(Image *img)
+{
+	m_getAll[img->md5()].second = img->path(ui->lineFilenameDestination->text(), ui->lineFolder->text(), 0, true, false, true, true, true).first();
+	ui->progressBar->setValue(ui->progressBar->value() + 1);
+
+	loadNext();
+}
+
+void RenameExisting1::loadNext()
+{
+	if (!m_details.isEmpty())
 	{
 		QMap<QString,QString> det = m_details.takeFirst();
 		m_getAll.insert(det.value("md5"), QPair<QString,QString>(det.value("path_full"), ""));
 
 		Page *page = new Page(m_sites.value(ui->comboSource->currentText()), m_sites.values(), QStringList("md5:" + det.value("md5")), 1, 1);
-		connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(getAll(Page*)));
+		connect(page, &Page::finishedLoading, this, &RenameExisting1::getAll);
 		page->load();
+
+		return;
 	}
-	else
+
+	if (!m_getTags.isEmpty())
 	{
-		RenameExisting2 *nextStep = new RenameExisting2(m_getAll.values(), ui->lineFolder->text(), parentWidget());
-		close();
-		nextStep->show();
+		Image *img = m_getTags.takeFirst();
+		connect(img, &Image::finishedLoadingTags, this, &RenameExisting1::getTags);
+		img->loadDetails();
+
+		return;
 	}
+
+	RenameExisting2 *nextStep = new RenameExisting2(m_getAll.values(), ui->lineFolder->text(), parentWidget());
+	close();
+	nextStep->show();
 }

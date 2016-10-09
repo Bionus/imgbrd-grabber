@@ -15,13 +15,14 @@
  * @param	imagepath	Path to the favorite's image
  * @param	parent		The parent window
  */
-favoriteWindow::favoriteWindow(Favorite fav, QWidget *parent) : QDialog(parent), ui(new Ui::favoriteWindow), favorite(fav)
+favoriteWindow::favoriteWindow(Profile *profile, Favorite favorite, QWidget *parent)
+	: QDialog(parent), ui(new Ui::favoriteWindow), m_profile(profile), m_favorite(favorite)
 {
 	ui->setupUi(this);
 
-	ui->tagLineEdit->setText(favorite.getName());
-	ui->noteSpinBox->setValue(favorite.getNote());
-	ui->lastViewedDateTimeEdit->setDateTime(favorite.getLastViewed());
+	ui->tagLineEdit->setText(m_favorite.getName());
+	ui->noteSpinBox->setValue(m_favorite.getNote());
+	ui->lastViewedDateTimeEdit->setDateTime(m_favorite.getLastViewed());
 
 	connect(this, SIGNAL(accepted()), this, SLOT(save()));
 }
@@ -39,24 +40,7 @@ favoriteWindow::~favoriteWindow()
  */
 void favoriteWindow::on_buttonRemove_clicked()
 {
-	QFile f(savePath("favorites.txt"));
-	f.open(QIODevice::ReadOnly);
-		QString favs = f.readAll();
-	f.close();
-
-	favs.replace("\r\n", "\n").replace("\r", "\n").replace("\n", "\r\n");
-	QRegExp reg(QRegExp::escape(favorite.getName()) + "\\|(.+)\\r\\n");
-	reg.setMinimal(true);
-	favs.remove(reg);
-
-	f.open(QIODevice::WriteOnly);
-		f.write(favs.toUtf8());
-	f.close();
-
-	if (QFile::exists(savePath("thumbs/" + favorite.getName(true) + ".png")))
-	{ QFile::remove(savePath("thumbs/" + favorite.getName(true) + ".png")); }
-	emit favoritesChanged();
-
+	m_profile->removeFavorite(m_favorite);
 	close();
 }
 
@@ -75,30 +59,22 @@ void favoriteWindow::on_openButton_clicked()
  */
 void favoriteWindow::save()
 {
-	Favorite oldFav = favorite;
-	favorite = Favorite(ui->tagLineEdit->text(), ui->noteSpinBox->value(), ui->lastViewedDateTimeEdit->dateTime());
+	Favorite oldFav = m_favorite;
+	m_favorite = Favorite(ui->tagLineEdit->text(), ui->noteSpinBox->value(), ui->lastViewedDateTimeEdit->dateTime());
+	m_favorite.setImagePath(savePath("thumbs/" + m_favorite.getName(true) + ".png"));
+
+	if (oldFav.getName() != m_favorite.getName())
+	{
+		if (QFile::exists(savePath("thumbs/" + oldFav.getName(true) + ".png")))
+		{ QFile::rename(savePath("thumbs/" + oldFav.getName(true) + ".png"), m_favorite.getImagePath()); }
+		m_profile->removeFavorite(oldFav);
+	}
 
 	if (QFile::exists(ui->imageLineEdit->text()))
 	{
 		QPixmap img(ui->imageLineEdit->text());
 		if (!img.isNull())
-		{ favorite.setImage(img); }
+		{ m_favorite.setImage(img); }
 	}
-	else if (oldFav.getName() != ui->tagLineEdit->text() && QFile::exists(savePath("thumbs/" + oldFav.getName(true) + ".png")))
-	{ QFile::rename(savePath("thumbs/" + oldFav.getName(true) + ".png"), savePath("thumbs/" + favorite.getName(true) + ".png")); }
-
-	QFile f(savePath("favorites.txt"));
-	f.open(QIODevice::ReadOnly);
-		QString favorites = f.readAll();
-	f.close();
-
-	favorites.replace("\r\n", "\n").replace("\r", "\n").replace("\n", "\r\n");
-	favorites.remove(oldFav.getName() + "|" + QString::number(oldFav.getNote()) + "|" + oldFav.getLastViewed().toString(Qt::ISODate) + "\r\n");
-	favorites += favorite.getName() + "|" + QString::number(favorite.getNote()) + "|" + favorite.getLastViewed().toString(Qt::ISODate) + "\r\n";
-
-	f.open(QIODevice::WriteOnly);
-		f.write(favorites.toUtf8());
-	f.close();
-
-	emit favoritesChanged();
+	m_profile->addFavorite(m_favorite);
 }

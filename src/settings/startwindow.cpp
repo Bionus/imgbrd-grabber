@@ -2,7 +2,6 @@
 #include "ui_startwindow.h"
 #include "optionswindow.h"
 #include "filenamewindow.h"
-#include "mainwindow.h"
 #include "functions.h"
 #include <QFileDialog>
 #include <QSettings>
@@ -15,8 +14,8 @@
  *
  * @param parent	The parent window
  */
-startWindow::startWindow(QMap<QString, Site*> *sites, mainWindow *parent)
-	: QDialog(parent), ui(new Ui::startWindow), m_parent(parent), m_sites(sites)
+startWindow::startWindow(QMap<QString, Site*> *sites, Profile *profile, QWidget *parent)
+	: QDialog(parent), ui(new Ui::startWindow), m_profile(profile), m_sites(sites)
 {
 	ui->setupUi(this);
 
@@ -58,7 +57,7 @@ void startWindow::on_buttonFolder_clicked()
 }
 void startWindow::on_buttonFilenamePlus_clicked()
 {
-	FilenameWindow *fw = new FilenameWindow(ui->lineFilename->text(), this);
+	FilenameWindow *fw = new FilenameWindow(m_profile, ui->lineFilename->text(), this);
 	connect(fw, SIGNAL(validated(QString)), ui->lineFilename, SLOT(setText(QString)));
 	fw->show();
 }
@@ -113,7 +112,7 @@ void startWindow::save()
  */
 void startWindow::openOptions()
 {
-	optionsWindow *ow = new optionsWindow(m_parent);
+	optionsWindow *ow = new optionsWindow(m_profile, parentWidget());
 	ow->show();
 
 	this->close();

@@ -10,6 +10,7 @@ class FavoriteTest : public TestSuite
 	Q_OBJECT
 
 	private slots:
+		void testBasicConstructor();
 		void testGetName();
 		void testGetNameClean();
 		void testGetNote();
@@ -29,6 +30,8 @@ class FavoriteTest : public TestSuite
 		void testGetImageSmall();
 		void testGetImageResize();
 #endif
+		void testToString();
+		void testFromString();
 };
 
 #endif // FAVORITE_TEST_H

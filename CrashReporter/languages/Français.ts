@@ -1,42 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="fr_FR" sourcelanguage="fr_FR">
+<TS version="2.1">
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../mainwindow.ui" line="20"/>
-        <source>Grabber Crash Reporter</source>
-        <translation>Grabber Crash Reporter</translation>
+        <location filename="../mainwindow.ui" line="14"/>
+        <source>Crash Reporter</source>
+        <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
-        <location filename="../mainwindow.ui" line="31"/>
+    <message>
+        <location filename="../mainwindow.ui" line="25"/>
         <source>&lt;b&gt;Désolé&lt;/b&gt;</source>
-        <translation>&lt;b&gt;Désolé&lt;/b&gt;</translation>
+        <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
-        <location filename="../mainwindow.ui" line="47"/>
+    <message>
+        <location filename="../mainwindow.ui" line="41"/>
         <source>Grabber a rencontré un problème et a planté. Le programme essaiera de réstaurer vos onglets et autres paramètres lors de son prochain démarrage.</source>
-        <translation>Grabber a rencontré un problème et a planté. Le programme essaiera de réstaurer vos onglets et autres paramètres lors de son prochain démarrage.</translation>
+        <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
-        <location filename="../mainwindow.ui" line="63"/>
+    <message>
+        <location filename="../mainwindow.ui" line="57"/>
         <source>Pour nous aider à résoudre le problème, vous pouvez nous envoyer un rapport de crash.</source>
-        <translation>Pour nous aider à résoudre le problème, vous pouvez nous envoyer un rapport de bug.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="73"/>
+        <location filename="../mainwindow.ui" line="67"/>
         <source>Envoyer un rapport de crash</source>
-        <translation>Envoyer un rapport de bug</translation>
-    </message>
-    <message utf8="true">
-        <location filename="../mainwindow.ui" line="95"/>
-        <source>Redémarrer</source>
-        <translation>Redémarrer</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="102"/>
+        <location filename="../mainwindow.ui" line="92"/>
+        <source>Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="99"/>
+        <source>Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="106"/>
+        <source>Dump</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="152"/>
+        <source>Redémarrer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="159"/>
         <source>Quitter</source>
-        <translation>Quitter</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

@@ -23,7 +23,7 @@ QString removeCacheUrl(QString url)
 }
 
 Image::Image()
-	: QObject()
+	: QObject(), m_profile(nullptr)
 { }
 
 // TODO: clean up this mess
@@ -72,6 +72,7 @@ Image::Image(const Image &other)
 	m_tags = other.m_tags;
 	m_pools = other.m_pools;
 	m_timer = other.m_timer;
+	m_profile = other.m_profile;
 	m_settings = other.m_settings;
 	m_search = other.m_search;
 	m_parentSite = other.m_parentSite;
@@ -83,10 +84,10 @@ Image::Image(const Image &other)
 	m_tryingSample = other.m_tryingSample;
 }
 
-Image::Image(Site *site, QMap<QString, QString> details, Page* parent)
-	: m_parentSite(site)
+Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page* parent)
+	: m_profile(profile), m_parentSite(site)
 {
-	m_settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
+	m_settings = m_profile->getSettings();
 
 	// Parents
 	m_site = parent != nullptr ? parent->website() : (details.contains("website") ? details["website"] : "");
@@ -148,7 +149,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Page* parent)
 				continue;
 
 			tg.replace("&amp;", "&");
-			m_tags.append(Tag(m_settings, tg, "general"));
+			m_tags.append(Tag(tg, "general"));
 		}
 		t = details["tags_artist"].split(" ");
 		for (int i = 0; i < t.count(); ++i)
@@ -158,7 +159,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Page* parent)
 				continue;
 
 			tg.replace("&amp;", "&");
-			m_tags.append(Tag(m_settings, tg, "artist"));
+			m_tags.append(Tag(tg, "artist"));
 		}
 		t = details["tags_character"].split(" ");
 		for (int i = 0; i < t.count(); ++i)
@@ -168,7 +169,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Page* parent)
 				continue;
 
 			tg.replace("&amp;", "&");
-			m_tags.append(Tag(m_settings, tg, "character"));
+			m_tags.append(Tag(tg, "character"));
 		}
 		t = details["tags_copyright"].split(" ");
 		for (int i = 0; i < t.count(); ++i)
@@ -178,7 +179,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Page* parent)
 				continue;
 
 			tg.replace("&amp;", "&");
-			m_tags.append(Tag(m_settings, tg, "copyright"));
+			m_tags.append(Tag(tg, "copyright"));
 		}
 		t = details["tags_model"].split(" ");
 		for (int i = 0; i < t.count(); ++i)
@@ -188,7 +189,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Page* parent)
 				continue;
 
 			tg.replace("&amp;", "&");
-			m_tags.append(Tag(m_settings, tg, "model"));
+			m_tags.append(Tag(tg, "model"));
 		}
 	}
 	else if (details.contains("tags"))
@@ -225,10 +226,10 @@ Image::Image(Site *site, QMap<QString, QString> details, Page* parent)
 				else if (tp == "rating")
 				{ setRating(tg.mid(colon + 1)); }
 				else
-				{ m_tags.append(Tag(m_settings, tg)); }
+				{ m_tags.append(Tag(tg)); }
 			}
 			else
-			{ m_tags.append(Tag(m_settings, tg)); }
+			{ m_tags.append(Tag(tg)); }
 		}
 	}
 
@@ -316,7 +317,7 @@ void Image::loadPreview()
 	}
 
 	m_previewTry++;
-	m_loadPreview = m_parentSite->get(m_previewUrl, m_parent, "preview");
+	m_loadPreview = m_parentSite->get(m_parentSite->fixUrl(m_previewUrl), m_parent, "preview");
 	m_loadPreview->setParent(this);
 	m_loadingPreview = true;
 
@@ -378,7 +379,7 @@ void Image::parsePreview()
 
 void Image::loadDetails()
 {
-	m_loadDetails = m_parentSite->get(m_pageUrl);
+	m_loadDetails = m_parentSite->get(m_parentSite->fixUrl(m_pageUrl));
 	m_loadDetails->setParent(this);
 	m_loadingDetails = true;
 
@@ -427,92 +428,17 @@ void Image::parseDetails()
 	}
 
 	// Tags
-	QRegExp rx = QRegExp();
+	QString rxtags;
 	if (m_parentSite->contains("Regex/ImageTags"))
-	{ rx = QRegExp(m_parentSite->value("Regex/ImageTags")); }
+	{ rxtags = m_parentSite->value("Regex/ImageTags"); }
 	else if (m_parentSite->contains("Regex/Tags"))
-	{ rx = QRegExp(m_parentSite->value("Regex/Tags")); }
-	if (!rx.isEmpty())
+	{ rxtags = m_parentSite->value("Regex/Tags"); }
+	if (!rxtags.isEmpty())
 	{
-		rx.setMinimal(true);
-		int pos = 0;
-		QList<Tag> tgs;
 		QStringList order = m_parentSite->value("Regex/TagsOrder").split('|', QString::SkipEmptyParts);
-		while ((pos = rx.indexIn(source, pos)) != -1)
-		{
-			pos += rx.matchedLength();
-			QString type = "", tag = "";
-			int count = 1;
-			if (order.empty())
-			{
-				switch (rx.captureCount())
-				{
-					case 4:	order << "type" << "" << "count" << "tag";	break;
-					case 3:	order << "type" << "tag" << "count";		break;
-					case 2:	order << "type" << "tag";					break;
-					case 1:	order << "tag";								break;
-				}
-			}
-			for (int o = 0; o < order.size(); o++)
-			{
-				if (order.at(o) == "tag" && tag.isEmpty())
-				{ tag = rx.cap(o + 1).replace(" ", "_").replace("&amp;", "&").trimmed(); }
-				else if (order.at(o) == "type" && type.isEmpty())
-				{
-					type = rx.cap(o + 1).toLower().trimmed();
-					if (type.contains(", "))
-					{ type = type.split(", ").at(0).trimmed(); }
-					if (type == "series")
-					{ type = "copyright"; }
-					else if (type == "mangaka")
-					{ type = "artist"; }
-					else if (type == "game")
-					{ type = "copyright"; }
-					else if (type == "studio")
-					{ type = "circle"; }
-					else if (type == "source")
-					{ type = "general"; }
-					else if (type == "character group")
-					{ type = "general"; }
-					else if (type.length() == 1)
-					{
-						int tpe = type.toInt();
-						if (tpe >= 0 && tpe <= 4)
-						{
-							QStringList types = QStringList() << "general" << "artist" << "unknown" << "copyright" << "character";
-							type = types[tpe];
-						}
-					}
-				}
-				else if (order.at(o) == "count" && count != 0)
-				{
-					QString countStr = rx.cap(o + 1).toLower();
-					countStr.remove(',');
-					count = countStr.endsWith('k') ? countStr.left(countStr.length() - 1).toFloat() * 1000 : countStr.toInt();
-				}
-			}
-			if (type.isEmpty())
-			{ type = "unknown"; }
-			tgs.append(Tag(m_settings, tag, type, count));
-		}
+		QList<Tag> tgs = Tag::FromRegexp(rxtags, order, source);
 		if (!tgs.isEmpty())
-		{
-			m_tags.clear();
-			for (Tag t : tgs)
-			{
-				bool exists = false;
-				for (Tag a : m_tags)
-				{
-					if (a == t)
-					{
-						exists = true;
-						break;
-					}
-				}
-				if (!exists)
-					m_tags.append(t);
-			}
-		}
+		{ m_tags = tgs; }
 	}
 
 	// Image url
@@ -716,12 +642,12 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 	}
 
 	Filename filename(fn);
-	return filename.path(*this, m_settings, pth, counter, complex, maxlength, shouldFixFilename, getFull);
+	return filename.path(*this, m_profile, pth, counter, complex, maxlength, shouldFixFilename, getFull);
 }
 
 void Image::loadImage()
 {
-	m_loadImage = m_parentSite->get(m_url, m_parent, "image", this);
+	m_loadImage = m_parentSite->get(m_parentSite->fixUrl(m_url), m_parent, "image", this);
 	m_loadImage->setParent(this);
 	//m_timer.start();
 	m_loadingImage = true;
@@ -852,15 +778,14 @@ QStringList Image::blacklisted(QStringList blacklistedtags, bool invert) const
 	return detected;
 }
 
-QStringList Image::stylishedTags(QStringList ignored) const
+QStringList Image::stylishedTags(Profile *profile) const
 {
-	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
-	QStringList blacklisted = settings.value("blacklistedtags").toString().split(' ');
-	QList<Favorite> favorites = loadFavorites();
+	QStringList ignored = profile->getIgnored();
+	QStringList blacklisted = profile->getSettings()->value("blacklistedtags").toString().split(' ');
 
 	QStringList t;
 	for (Tag tag : m_tags)
-		t.append(tag.stylished(favorites, ignored, blacklisted));
+		t.append(tag.stylished(profile, ignored, blacklisted));
 
 	t.sort();
 	return t;
@@ -869,7 +794,6 @@ QStringList Image::stylishedTags(QStringList ignored) const
 Image::SaveResult Image::save(QString path, bool force, bool basic)
 {
 	SaveResult res = SaveResult::Saved;
-	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
 
 	QFile f(path);
 	if (!f.exists() || force)
@@ -882,16 +806,16 @@ Image::SaveResult Image::save(QString path, bool force, bool basic)
 				return SaveResult::Error;
 		}
 
-		QString whatToDo = settings.value("Save/md5Duplicates", "save").toString();
-		QString md5Duplicate = md5Exists(md5());
+		QString whatToDo = m_settings->value("Save/md5Duplicates", "save").toString();
+		QString md5Duplicate = m_profile->md5Exists(md5());
 		if (md5Duplicate.isEmpty() || whatToDo == "save" || force)
 		{
-			log(tr("Sauvegarde de l'image dans le fichier <a href=\"file:///%1\">%1</a>").arg(f.fileName()));
+			log(tr("Sauvegarde de l'image dans le fichier <a href=\"file:///%1\">%1</a>").arg(path));
 			if (!m_source.isEmpty() && QFile::exists(m_source))
-			{ QFile::copy(m_source, f.fileName()); }
+			{ QFile::copy(m_source, path); }
 			else
 			{
-				addMd5(md5(), path);
+				m_profile->addMd5(md5(), path);
 
 				if (f.open(QFile::WriteOnly))
 				{
@@ -902,12 +826,9 @@ Image::SaveResult Image::save(QString path, bool force, bool basic)
 				{ log(tr("Impossible d'ouvrir le fichier")); }
 			}
 
-			if (settings.value("Save/keepDate", true).toBool())
-				setFileCreationDate(path, createdAt());
-
-			if (settings.value("Textfile/activate", false).toBool() && !basic)
+			if (m_settings->value("Textfile/activate", false).toBool() && !basic)
 			{
-				QStringList cont = this->path(settings.value("Textfile/content", "%all%").toString(), "", 1, true, true, false, false);
+				QStringList cont = this->path(m_settings->value("Textfile/content", "%all%").toString(), "", 1, true, true, false, false);
 				if (!cont.isEmpty())
 				{
 					QString contents = cont.at(0);
@@ -919,13 +840,13 @@ Image::SaveResult Image::save(QString path, bool force, bool basic)
 					}
 				}
 			}
-			if (settings.value("SaveLog/activate", false).toBool() && !settings.value("SaveLog/file", "").toString().isEmpty() && !basic)
+			if (m_settings->value("SaveLog/activate", false).toBool() && !m_settings->value("SaveLog/file", "").toString().isEmpty() && !basic)
 			{
-				QStringList cont = this->path(settings.value("SaveLog/format", "%website% - %md5% - %all%").toString(), "", 1, true, true, false, false);
+				QStringList cont = this->path(m_settings->value("SaveLog/format", "%website% - %md5% - %all%").toString(), "", 1, true, true, false, false);
 				if (!cont.isEmpty())
 				{
 					QString contents = cont.at(0);
-					QFile file_tags(settings.value("SaveLog/file", "").toString());
+					QFile file_tags(m_settings->value("SaveLog/file", "").toString());
 					if (file_tags.open(QFile::WriteOnly | QFile::Append | QFile::Text))
 					{
 						file_tags.write(contents.toUtf8() + "\n");
@@ -936,36 +857,35 @@ Image::SaveResult Image::save(QString path, bool force, bool basic)
 		}
 		else if (whatToDo == "copy")
 		{
-			log(tr("Copie depuis <a href=\"file:///%1\">%1</a> vers <a href=\"file:///%2\">%2</a>").arg(md5Duplicate).arg(f.fileName()));
-			QFile::copy(md5Duplicate, f.fileName());
+			log(tr("Copie depuis <a href=\"file:///%1\">%1</a> vers <a href=\"file:///%2\">%2</a>").arg(md5Duplicate).arg(path));
+			QFile::copy(md5Duplicate, path);
 
 			res = SaveResult::Copied;
 		}
 		else if (whatToDo == "move")
 		{
-			log(tr("Déplacement depuis <a href=\"file:///%1\">%1</a> vers <a href=\"file:///%2\">%2</a>").arg(md5Duplicate).arg(f.fileName()));
-			QFile::rename(md5Duplicate, f.fileName());
-			setMd5(md5(), f.fileName());
+			log(tr("Déplacement depuis <a href=\"file:///%1\">%1</a> vers <a href=\"file:///%2\">%2</a>").arg(md5Duplicate).arg(path));
+			QFile::rename(md5Duplicate, path);
+			m_profile->setMd5(md5(), path);
 
 			res = SaveResult::Moved;
 		}
 		else
 		{ return SaveResult::Ignored; }
 
+		// Keep original date
+		if (m_settings->value("Save/keepDate", true).toBool())
+			setFileCreationDate(path, createdAt());
+
 		// Commands
-		QMap<QString,int> types;
-		types["general"] = 0;
-		types["artist"] = 1;
-		types["general"] = 2;
-		types["copyright"] = 3;
-		types["character"] = 4;
-		types["model"] = 5;
-		types["photo_set"] = 6;
-		Commands::get()->before();
-		for (int i = 0; i < tags().count(); i++)
-		{ Commands::get()->tag(tags().at(i)); }
-		Commands::get()->image(*this, path);
-		Commands::get()->after();
+		Commands &commands = m_profile->getCommands();
+		commands.before();
+			for (Tag tag : tags())
+			{ commands.tag(*this, tag, false); }
+			commands.image(*this, path);
+			for (Tag tag : tags())
+			{ commands.tag(*this, tag, true); }
+		commands.after();
 	}
 	else
 	{ res = SaveResult::AlreadyExists; }
@@ -983,6 +903,33 @@ QMap<QString, Image::SaveResult> Image::save(QString filename, QString path)
 {
 	QStringList paths = this->path(filename, path, 0, true, false, true, true, true);
 	return save(paths);
+}
+
+QList<Tag> Image::filteredTags(QStringList remove) const
+{
+	QList<Tag> tags;
+
+	QRegExp reg;
+	reg.setCaseSensitivity(Qt::CaseInsensitive);
+	reg.setPatternSyntax(QRegExp::Wildcard);
+	for (Tag tag : m_tags)
+	{
+		bool removed = false;
+		for (QString rem : remove)
+		{
+			reg.setPattern(rem);
+			if (reg.exactMatch(tag.text()))
+			{
+				removed = true;
+				break;
+			}
+		}
+
+		if (!removed)
+			tags.append(tag);
+	}
+
+	return tags;
 }
 
 
@@ -1041,8 +988,12 @@ void	Image::setFileSize(int s)		{ m_fileSize = s;			}
 void	Image::setData(QByteArray d)
 {
 	m_data = d;
+
+	// Set MD5 by hashing this data if we don't already have it
 	if (m_md5.isEmpty())
-	{ m_md5 = QCryptographicHash::hash(m_data, QCryptographicHash::Md5).toHex(); }
+	{
+		m_md5 = QCryptographicHash::hash(m_data, QCryptographicHash::Md5).toHex();
+	}
 }
 void Image::setSavePath(QString savePath)
 {

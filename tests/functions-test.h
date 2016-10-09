@@ -14,6 +14,7 @@ class FunctionsTest : public TestSuite
 		void testGetUnit();
 		void testGetExtension();
 		void testSetExtension();
+		void testLevenshtein();
 
 	protected:
 		void assertFixFilename(int platform, QString filename, QString path, QString expected);

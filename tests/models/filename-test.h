@@ -3,6 +3,7 @@
 
 #include "test-suite.h"
 #include "models/filename.h"
+#include "models/source.h"
 #include "models/site.h"
 #include "models/image.h"
 
@@ -15,7 +16,9 @@ class FilenameTest : public TestSuite
 		void init();
 		void cleanup();
 
+		void testDefaultConstructor();
 		void testGetFormat();
+		void testSetFormat();
 		void testPathSimple();
 		void testPathComplex();
 		void testPathKeepAll();
@@ -34,10 +37,14 @@ class FilenameTest : public TestSuite
 		void testPathOptionMaxDouble();
 		void testPathOptionDateFormat();
 		void testPathOptionTagNamespace();
+		void testPathOptionTagNamespaceSeparator();
 		void testPathOptionTagNamespaceComplex();
 		void testPathOptionTagExcludeNamespace();
 		void testPathOptionTagSeparator();
 		void testPathOptionCount();
+		void testPathOptionNumSingle();
+		void testPathOptionNumSingleLength();
+		void testPathOptionNumMultiple();
 		void testGetReplacesSimple();
 		void testGetReplacesMultiple();
 		void testGetReplacesMatrix();
@@ -51,13 +58,22 @@ class FilenameTest : public TestSuite
 		void testReplaceBlanks();
 		void testCommand();
 
+		void testNeedExactTagsBasic();
+		void testNeedExactTagsSite();
+		void testNeedExactTagsJavascript();
+		void testNeedExactTagsFilename();
+		void testNeedExactTagsToken();
+		void testNeedExactTagsOption();
+
 	protected:
 		void assertPath(QString format, QString expected, QString path = "", bool shouldFixFilename = true, bool fullPath = false);
 		void assertPath(QString format, QStringList expected, QString path = "", bool shouldFixFilename = true, bool fullPath = false);
 		void assertExpand(QString format, QString expected);
 
 	private:
+		Profile *m_profile;
 		QSettings *m_settings;
+		Source *m_source;
 		Site *m_site;
 		Image *m_img;
 		QMap<QString,QString> m_details;

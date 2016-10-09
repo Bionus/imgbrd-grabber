@@ -8,7 +8,7 @@
 #include "search-tab.h"
 #include "models/page.h"
 #include "mainwindow.h"
-#include "downloader.h"
+#include "downloader/downloader.h"
 
 
 
@@ -26,7 +26,7 @@ class tagTab : public searchTab
 	Q_OBJECT
 
 	public:
-		explicit tagTab(int id, QMap<QString, Site*> *sites, QList<Favorite> favorites, mainWindow *parent);
+		explicit tagTab(int id, QMap<QString, Site*> *sites, Profile *profile, mainWindow *parent);
 		~tagTab();
 		Ui::tagTab *ui;
 		QString tags();
@@ -37,7 +37,6 @@ class tagTab : public searchTab
 		QString postFilter();
 
 	public slots:
-		void updateCheckboxes();
 		// Search
 		void firstPage();
 		void previousPage();
@@ -45,59 +44,31 @@ class tagTab : public searchTab
 		void lastPage();
 		// Zooms
 		void setTags(QString);
-		void webZoom(int);
 		// Loading
 		void load();
 		void finishedLoading(Page*);
 		void failedLoading(Page*);
 		void postLoading(Page*);
 		void finishedLoadingTags(Page*);
-		void finishedLoadingPreview(Image*);
 		// Batch
 		void getPage();
 		void getAll();
-		void getSel();
-		// Tag list
-		void linkHovered(QString);
-		void linkClicked(QString);
-		void contextMenu();
-		void openInNewTab();
-		void openInNewWindow();
-		void viewitlater();
-		void unviewitlater();
-		// History
-		void historyBack();
-		void historyNext();
 		// Others
 		void optionsChanged();
 		void closeEvent(QCloseEvent*);
 		void on_buttonSearch_clicked();
-		void toggleImage(int, bool);
 		void setImagesPerPage(int ipp);
 		void setColumns(int columns);
 		void setPostFilter(QString postfilter);
 		void focusSearch();
 
-	signals:
-		void batchAddGroup(QStringList);
-		void batchAddUnique(QMap<QString,QString>);
-
 	private:
-		int								m_id;
-		TextEdit						*m_search, *m_postFiltering;
-		QCalendarWidget					*m_calendar;
-		QList<Favorite>					m_favorites;
-		QMap<QString,Page*>				m_pages;
-		QList<Image*>					m_images;
-		int								m_pagemax;
-		QString							m_link, m_lastTags, m_wiki;
-		bool							m_sized, m_from_history, m_stop;
-		int								m_page, m_history_cursor;
-		QList<QGridLayout*>				m_layouts;
-		QList<QLabel*>					m_labels;
-		QList<QMap<QString,QString> >	m_history;
-		QStringList						m_modifiers, m_ignored, m_completion;
-		Downloader						*m_downloader;
+		int				m_id;
+		TextEdit		*m_search, *m_postFiltering;
+		QCalendarWidget	*m_calendar;
+		QString			m_link, m_lastTags, m_wiki;
+		bool			m_sized;
+		Downloader		*m_downloader;
 };
 
 #endif // TAG_TAB_H

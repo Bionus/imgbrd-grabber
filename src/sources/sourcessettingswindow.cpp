@@ -75,6 +75,20 @@ SourcesSettingsWindow::SourcesSettingsWindow(Site *site, QWidget *parent) : QDia
 		row++;
 	}
 
+	// Headers
+	QMap<QString, QVariant> headers = site->settings()->value("headers").toMap();
+	ui->tableHeaders->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+	ui->tableHeaders->setRowCount(headers.count());
+	int headerRow = 0;
+	QMapIterator<QString, QVariant> i(headers);
+	while (i.hasNext())
+	{
+		i.next();
+		ui->tableHeaders->setItem(headerRow, 0, new QTableWidgetItem(i.key()));
+		ui->tableHeaders->setItem(headerRow, 1, new QTableWidgetItem(i.value().toString()));
+		headerRow++;
+	}
+
 	connect(this, SIGNAL(accepted()), this, SLOT(save()));
 }
 
@@ -86,6 +100,10 @@ SourcesSettingsWindow::~SourcesSettingsWindow()
 void SourcesSettingsWindow::addCookie()
 {
 	ui->tableCookies->setRowCount(ui->tableCookies->rowCount() + 1);
+}
+void SourcesSettingsWindow::addHeader()
+{
+	ui->tableHeaders->setRowCount(ui->tableHeaders->rowCount() + 1);
 }
 
 void SourcesSettingsWindow::on_buttonAuthHash_clicked()
@@ -193,6 +211,9 @@ void SourcesSettingsWindow::save()
 	QList<QVariant> cookies;
 	for (int i = 0; i < ui->tableCookies->rowCount(); ++i)
 	{
+		if (ui->tableCookies->item(i, 0)->text().isEmpty())
+			continue;
+
 		QNetworkCookie cookie;
 		cookie.setName(ui->tableCookies->item(i, 0)->text().toLatin1());
 		cookie.setValue(ui->tableCookies->item(i, 1)->text().toLatin1());
@@ -200,7 +221,18 @@ void SourcesSettingsWindow::save()
 	}
 	settings->setValue("cookies", cookies);
 
+	// Headers
+	QMap<QString, QVariant> headers;
+	for (int i = 0; i < ui->tableHeaders->rowCount(); ++i)
+	{
+		if (ui->tableHeaders->item(i, 0)->text().isEmpty())
+			continue;
+
+		headers.insert(ui->tableHeaders->item(i, 0)->text(), ui->tableHeaders->item(i, 1)->text());
+	}
+	settings->setValue("headers", headers);
+
 	settings->sync();
 
-	m_site->load();
+	m_site->loadConfig();
 }

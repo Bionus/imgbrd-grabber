@@ -24,7 +24,7 @@ class favoritesTab : public searchTab
 	Q_OBJECT
 
 	public:
-		explicit favoritesTab(int id, QMap<QString,Site*> *sites, QList<Favorite> favorites, mainWindow *parent);
+		explicit favoritesTab(int id, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent);
 		~favoritesTab();
 		Ui::favoritesTab *ui;
 		QList<bool> sources();
@@ -35,7 +35,6 @@ class favoritesTab : public searchTab
 		QString postFilter();
 
 	public slots:
-		void updateCheckboxes();
 		// Search
 		void firstPage();
 		void previousPage();
@@ -43,26 +42,15 @@ class favoritesTab : public searchTab
 		void lastPage();
 		// Zooms
 		void setTags(QString);
-		void webZoom(int);
 		// Loading
 		void load();
 		void finishedLoading(Page*);
 		void failedLoading(Page*);
 		void postLoading(Page*);
 		void finishedLoadingTags(Page*);
-		void finishedLoadingPreview(Image*);
 		// Batch
 		void getPage();
 		void getAll();
-		void getSel();
-		// Tag list
-		void linkHovered(QString);
-		void linkClicked(QString);
-		void openInNewTab();
-		void openInNewWindow();
-		// History
-		void historyBack();
-		void historyNext();
 		// Favorites
 		void favoriteProperties(QString);
 		void updateFavorites();
@@ -75,31 +63,20 @@ class favoritesTab : public searchTab
 		// Others
 		void optionsChanged();
 		void closeEvent(QCloseEvent*);
-		void toggleImage(int, bool);
 		void addTabFavorite(QString);
 		void setImagesPerPage(int);
 		void setColumns(int);
 		void setPostFilter(QString);
 		void focusSearch();
 
-	signals:
-		void batchAddGroup(QStringList);
-		void batchAddUnique(QMap<QString,QString>);
-
 	private:
-		int								m_id;
-		TextEdit						*m_postFiltering;
-		QDateTime						m_loadFavorite;
-		QList<Favorite>					m_favorites;
-		QMap<QString,Page*>				m_pages;
-		QList<Image*>					m_images;
-		int								m_pagemax;
-		QString							m_lastTags, m_wiki, m_currentTags;
-		bool							m_sized, m_from_history, m_stop;
-		int								m_page, m_history_cursor, m_currentFav;
-		QList<QGridLayout*>				m_layouts;
-		QList<QMap<QString,QString> >	m_history;
-		QStringList						m_modifiers;
+		int				m_id;
+		TextEdit		*m_postFiltering;
+		QDateTime		m_loadFavorite;
+		QList<Favorite>	&m_favorites;
+		QString			m_lastTags, m_wiki, m_currentTags;
+		bool			m_sized;
+		int				m_page, m_currentFav;
 };
 
 #endif // FAVORITES_TAB_H

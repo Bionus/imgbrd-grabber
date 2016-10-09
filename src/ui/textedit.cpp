@@ -12,7 +12,8 @@
 
 
 
-TextEdit::TextEdit(QStringList favs, QWidget *parent) : QTextEdit(parent), c(0), m_favorites(favs)
+TextEdit::TextEdit(Profile *profile, QWidget *parent)
+	: QTextEdit(parent), c(0), m_profile(profile), m_favorites(profile->getFavorites()), m_viewItLater(profile->getKeptForLater())
 {
 	setTabChangesFocus(true);
 	setWordWrapMode(QTextOption::NoWrap);
@@ -20,6 +21,7 @@ TextEdit::TextEdit(QStringList favs, QWidget *parent) : QTextEdit(parent), c(0),
 	setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	setFixedHeight(sizeHint().height());
+	setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(this, &QTextEdit::customContextMenuRequested, this, &TextEdit::customContextMenuRequested);
 }
 
@@ -53,8 +55,8 @@ void TextEdit::doColor()
 	QString txt = " "+this->toPlainText().toHtmlEscaped()+" ";
 
 	// Color favorited tags
-	for (int i = 0; i < m_favorites.size(); i++)
-		txt.replace(" "+m_favorites.at(i)+" ", " <span style=\"color:#ffc0cb\">"+m_favorites.at(i)+"</span> ");
+	for (Favorite fav : m_favorites)
+		txt.replace(" "+fav.getName()+" ", " <span style=\"color:#ffc0cb\">"+fav.getName()+"</span> ");
 
 	// Color metatags
 	QRegExp r1(" ~([^ ]+)"),
@@ -234,8 +236,8 @@ void TextEdit::customContextMenuRequested(QPoint)
 			QActionGroup* favsGroup = new QActionGroup(favs);
 				favsGroup->setExclusive(true);
 				connect(favsGroup, SIGNAL(triggered(QAction *)), this, SLOT(insertFav(QAction *)));
-				for (int i = 0; i < m_favorites.count(); i++)
-				{ favsGroup->addAction(m_favorites.at(i)); }
+				for (Favorite fav : m_favorites)
+				{ favsGroup->addAction(fav.getName()); }
 				if (!toPlainText().isEmpty())
 				{
 					if (m_favorites.contains(toPlainText()))
@@ -252,12 +254,11 @@ void TextEdit::customContextMenuRequested(QPoint)
 			QActionGroup* vilsGroup = new QActionGroup(vils);
 				vilsGroup->setExclusive(true);
 				connect(vilsGroup, SIGNAL(triggered(QAction *)), this, SLOT(insertFav(QAction *)));
-				QStringList viewitlater = loadViewItLater();
-				for (int i = 0; i < viewitlater.count(); i++)
-				{ vilsGroup->addAction(viewitlater.at(i)); }
+				for (QString viewItLater : m_viewItLater)
+				{ vilsGroup->addAction(viewItLater); }
 				if (!toPlainText().isEmpty())
 				{
-					if (viewitlater.contains(toPlainText()))
+					if (m_viewItLater.contains(toPlainText()))
 					{ vils->addAction(QIcon(":/images/icons/remove.png"), tr("Retirer"), this, SLOT(unsetKfl())); }
 					else
 					{ vils->addAction(QIcon(":/images/icons/add.png"), tr("Ajouter"), this, SLOT(setKfl())); }
@@ -305,61 +306,24 @@ void TextEdit::customContextMenuRequested(QPoint)
 			menu->addAction(tr("Coller"), this, SLOT(paste()), QKeySequence::Paste);
 	menu->exec(QCursor::pos());
 }
+
 void TextEdit::setFavorite()
 {
-	m_favorites.append(toPlainText());
-	m_favorites.sort();
-
-	QFile f(savePath("favorites.txt"));
-		f.open(QIODevice::WriteOnly | QIODevice::Append);
-		f.write(QString(toPlainText()+"|50|"+QDateTime::currentDateTime().toString(Qt::ISODate)+"\r\n").toLatin1());
-	f.close();
-
-	emit favoritesChanged();
+	m_profile->addFavorite(Favorite(toPlainText()));
 }
 void TextEdit::unsetFavorite()
 {
-	m_favorites.removeAll(toPlainText());
-	QFile f(savePath("favorites.txt"));
-	f.open(QIODevice::ReadOnly);
-		QString favs = f.readAll();
-	f.close();
-	favs.replace("\r\n", "\n").replace("\r", "\n").replace("\n", "\r\n");
-	QRegExp reg(toPlainText()+"\\|(.+)\\r\\n");
-	reg.setMinimal(true);
-	favs.remove(reg);
-	f.open(QIODevice::WriteOnly);
-		f.write(favs.toLatin1());
-	f.close();
-	if (QFile::exists(savePath("thumbs/"+toPlainText()+".png")))
-	{ QFile::remove(savePath("thumbs/"+toPlainText()+".png")); }
-
-	emit favoritesChanged();
+	m_profile->removeFavorite(Favorite(toPlainText()));
 }
 void TextEdit::setKfl()
 {
-	QStringList viewitlater = loadViewItLater();
-	viewitlater.append(toPlainText());
-
-	QFile f(savePath("viewitlater.txt"));
-	f.open(QIODevice::WriteOnly);
-		f.write(viewitlater.join("\r\n").toLatin1());
-	f.close();
-
-	emit kflChanged();
+	m_profile->addKeptForLater(toPlainText());
 }
 void TextEdit::unsetKfl()
 {
-	QStringList viewitlater = loadViewItLater();
-	viewitlater.removeAll(toPlainText());
-
-	QFile f(savePath("viewitlater.txt"));
-	f.open(QIODevice::WriteOnly);
-		f.write(viewitlater.join("\r\n").toLatin1());
-	f.close();
-
-	emit kflChanged();
+	m_profile->removeKeptForLater(toPlainText());
 }
+
 void TextEdit::insertFav(QAction *act)
 {
 	QString fav = act->text();

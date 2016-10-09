@@ -3,19 +3,25 @@
 #include "functions.h"
 #include "site.h"
 
+#define TAGS_SEPARATOR " "
+
 
 typedef QPair<QString,QString> QStrP;
 
+Filename::Filename()
+{ }
 Filename::Filename(QString format)
 	: m_format(format)
 { }
 
-QList<QMap<QString, QPair<QString, QString>>> Filename::getReplaces(QString filename, const Image& img, QSettings *settings, QMap<QString, QStringList> custom) const
+QList<QMap<QString, QPair<QString, QString>>> Filename::getReplaces(QString filename, const Image &img, Profile *profile, QMap<QString, QStringList> custom) const
 {
 	QMap<QString, QPair<QString, QString>> replaces;
 	QList<QMap<QString, QPair<QString, QString>>> ret;
+	QSettings *settings = profile->getSettings();
+
 	QString tagSeparator = settings->value("Save/separator", " ").toString();
-	QMap<QString, QStringList> details = makeDetails(img, settings);
+	QMap<QString, QStringList> details = makeDetails(img, profile, settings);
 
 	// Pool
 	QRegularExpression poolRegexp("pool:(\\d+)");
@@ -23,7 +29,6 @@ QList<QMap<QString, QPair<QString, QString>>> Filename::getReplaces(QString file
 	replaces.insert("pool", QStrP(poolMatch.hasMatch() ? poolMatch.captured(1) : "", ""));
 
 	// Basic shared values
-	replaces.insert("ext", QStrP(getExtension(img.url()), "jpg"));
 	replaces.insert("filename", QStrP(QUrl::fromPercentEncoding(img.url().section('/', -1).section('.', 0, -2).toUtf8()), ""));
 	replaces.insert("website", QStrP(img.parentSite()->url(), ""));
 	replaces.insert("websitename", QStrP(img.parentSite()->name(), ""));
@@ -40,14 +45,20 @@ QList<QMap<QString, QPair<QString, QString>>> Filename::getReplaces(QString file
 	replaces.insert("score", QStrP(QString::number(img.score()), ""));
 	replaces.insert("height", QStrP(QString::number(img.size().height()), "0"));
 	replaces.insert("width", QStrP(QString::number(img.size().width()), "0"));
-	replaces.insert("general", QStrP(details["generals"].join(tagSeparator), ""));
-	replaces.insert("allo", QStrP(details["allos"].join(" "), ""));
-	replaces.insert("tags", QStrP(details["alls"].join(tagSeparator), ""));
-	replaces.insert("all", QStrP(details["alls"].join(tagSeparator), ""));
+	replaces.insert("general", QStrP(details["generals"].join(TAGS_SEPARATOR), ""));
+	replaces.insert("allo", QStrP(details["allos"].join(' '), ""));
+	replaces.insert("tags", QStrP(details["alls"].join(TAGS_SEPARATOR), ""));
+	replaces.insert("all", QStrP(details["alls"].join(TAGS_SEPARATOR), ""));
 	for (int i = 0; i < custom.size(); ++i)
 	{ replaces.insert(custom.keys().at(i), QStrP(custom.values().at(i).join(tagSeparator), "")); }
 	replaces.insert("url_file", QStrP(img.url(), ""));
 	replaces.insert("url_page", QStrP(img.pageUrl().toString(), ""));
+
+	// JPEG extension
+	QString ext = getExtension(img.url());
+	if (settings->value("Save/noJpeg", true).toBool() && ext == "jpeg")
+		ext = "jpg";
+	replaces.insert("ext", QStrP(ext, "jpg"));
 
 	// Remove duplicates in %all%
 	QStringList rem = (filename.contains("%artist%") ? details["artists"] : QStringList()) +
@@ -149,7 +160,7 @@ QList<QPair<QString,QString>> Filename::getReplace(QString setting, QMap<QString
 	QString second = settings->value(setting+"_empty").toString();
 
 	int limit = settings->value(setting+"_multiple_limit", 1).toInt();
-	QString separator = settings->value(setting+"_sep", " ").toString();
+	QString separator = TAGS_SEPARATOR;
 
 	if (details[setting+"s"].size() > limit)
 	{
@@ -187,29 +198,20 @@ QList<QPair<QString,QString>> Filename::getReplace(QString setting, QMap<QString
 	return ret;
 }
 
-QMap<QString, QStringList> Filename::makeDetails(const Image& img, QSettings *settings) const
+QMap<QString, QStringList> Filename::makeDetails(const Image& img, Profile *profile, QSettings *settings) const
 {
-	QStringList ignore = loadIgnored();
+	QStringList ignore = profile->getIgnored();
 	QStringList remove = settings->value("ignoredtags").toString().split(' ', QString::SkipEmptyParts);
 
 	QMap<QString, QStringList> details;
 	QRegExp reg;
 	reg.setCaseSensitivity(Qt::CaseInsensitive);
 	reg.setPatternSyntax(QRegExp::Wildcard);
-	for (Tag tag : img.tags())
+	for (Tag tag : img.filteredTags(remove))
 	{
 		QString t = tag.text();
-		bool removed = false;
-		for (int j = 0; j < remove.size(); ++j)
-		{
-			reg.setPattern(remove.at(j));
-			if (reg.exactMatch(t))
-				removed = true;
-		}
-		if (removed)
-			continue;
 
-		details[ignore.contains(tag.text(), Qt::CaseInsensitive) ? "generals" : tag.type()+"s"].append(t);
+		details[ignore.contains(t, Qt::CaseInsensitive) ? "generals" : tag.type()+"s"].append(t);
 		details["alls"].append(t);
 		details["alls_namespaces"].append(tag.type());
 
@@ -243,44 +245,30 @@ QMap<QString, QStringList> Filename::makeDetails(const Image& img, QSettings *se
 	return details;
 }
 
-QStringList Filename::path(const Image& img, QSettings *settings, QString pth, int counter, bool complex, bool maxlength, bool shouldFixFilename, bool getFull) const
+QStringList Filename::path(const Image& img, Profile *profile, QString pth, int counter, bool complex, bool maxlength, bool shouldFixFilename, bool getFull) const
 {
+	QSettings *settings = profile->getSettings();
 	QStringList remove = settings->value("ignoredtags").toString().split(' ', QString::SkipEmptyParts);
-	QString tagSeparator = settings->value("Save/separator", " ").toString();
 
-	QMap<QString,QStringList> custom = QMap<QString,QStringList>(), scustom = getCustoms();
-	QMap<QString,QStringList> details = makeDetails(img, settings);
-	QRegExp reg;
-	reg.setCaseSensitivity(Qt::CaseInsensitive);
-	reg.setPatternSyntax(QRegExp::Wildcard);
-	for (Tag tag : img.tags())
+	QMap<QString,QStringList> custom = QMap<QString,QStringList>(), scustom = getCustoms(settings);
+	QMap<QString,QStringList> details = makeDetails(img, profile, settings);
+	for (Tag tag : img.filteredTags(remove))
 	{
-		QString t = tag.text();
-		bool removed = false;
-		for (int j = 0; j < remove.size(); ++j)
-		{
-			reg.setPattern(remove.at(j));
-			if (reg.exactMatch(t))
-				removed = true;
-		}
-		if (removed)
-			continue;
-
 		for (int r = 0; r < scustom.size(); ++r)
 		{
 			QString key = scustom.keys().at(r);
 			if (!custom.contains(key))
 			{ custom.insert(key, QStringList()); }
-			if (scustom[key].contains(t, Qt::CaseInsensitive))
-			{ custom[key].append(t); }
+			if (scustom[key].contains(tag.text(), Qt::CaseInsensitive))
+			{ custom[key].append(tag.text()); }
 		}
 	}
 
 	QString filename = m_format;
-	auto replacesList = this->getReplaces(filename, img, settings, custom);
+	auto replacesList = this->getReplaces(filename, img, profile, custom);
 
 	// Conditional filenames
-	QMap<QString, QPair<QString, QString>> filenames = getFilenames();
+	QMap<QString, QPair<QString, QString>> filenames = getFilenames(settings);
 	for (int i = 0; i < filenames.size(); ++i)
 	{
 		QString cond = filenames.keys().at(i);
@@ -320,7 +308,7 @@ QStringList Filename::path(const Image& img, QSettings *settings, QString pth, i
 					filename = filenames.value(cond).first;
 
 					// Update replaces accordingly
-					replacesList = this->getReplaces(filename, img, settings, custom);
+					replacesList = this->getReplaces(filename, img, profile, custom);
 				}
 				if (!filenames.value(cond).second.isEmpty())
 				{ pth = filenames.value(cond).second; }
@@ -381,11 +369,14 @@ QStringList Filename::path(const Image& img, QSettings *settings, QString pth, i
 		{ pth = pth.left(pth.length() - 1); }
 
 		QStringList specialTokens = QStringList() << "count";
-		QStringList ignoredTokens = QStringList() << "path";
+		QStringList ignoredTokens = QStringList() << "path" << "num";
 
 		for (auto replaces : replacesList)
 		{
 			QString cFilename = QString(filename);
+			QString hasNum;
+			QString numOptions;
+			QStringList namespaces = replaces["all_namespaces"].first.split(' ');
 
 			// Conditionals
 			if (complex)
@@ -401,67 +392,45 @@ QStringList Filename::path(const Image& img, QSettings *settings, QString pth, i
 			while ((p = replacerx.indexIn(cFilename, p)) != -1)
 			{
 				QString key = replacerx.cap(1);
+				QString options = replacerx.captureCount() > 1 ? replacerx.cap(2) : QString();
+
 				if (replaces.contains(key) || specialTokens.contains(key))
 				{
-					QMap<QString,QString> options;
-					if (replacerx.captureCount() > 1)
-					{
-						QStringList opts = replacerx.cap(2).split(',');
-						for (QString opt : opts)
-						{
-							int index = opt.indexOf('=');
-							if (index != -1)
-							{ options.insert(opt.left(index), opt.mid(index + 1)); }
-							else
-							{ options.insert(opt, "true"); }
-						}
-					}
-
 					QString res = replaces[key].first.isEmpty() ? replaces[key].second : replaces[key].first;
-
-					// Apply options
-					if (key == "date" && options.contains("format"))
-					{ res = img.createdAt().toString(options["format"]); }
 					if (key == "count")
-					{ res = options.contains("length") ? QString("%1").arg(counter, options["length"].toInt(), 10, QChar('0')) : QString::number(counter); }
-					if (options.contains("maxlength"))
-					{ res = res.left(options["maxlength"].toInt()); }
-					if (key == "all" || key == "tags" || key == "general" || key == "artist" || key == "copyright" || key == "character")
-					{
-						QStringList vals = res.split(tagSeparator);
-						if (options.contains("includenamespace"))
-						{
-							QStringList excluded;
-							if (options.contains("excludenamespace"))
-							{ excluded = options["excludenamespace"].split(' '); }
+						res = QString::number(counter);
 
-							QStringList namespaced;
-							QStringList namespaces = replaces["all_namespaces"].first.split(' ');
-							for (int i = 0; i < vals.count(); ++i)
-							{
-								QString nspace = key == "all" ? namespaces[i] : key;
-								namespaced.append((!excluded.contains(nspace) ? nspace + ":" : "") + vals[i]);
-							}
-							vals = namespaced;
-						}
-						res = vals.join(options.contains("separator") ? options["separator"] : tagSeparator);
-					}
-
-					// Forbidden characters and spaces replacement settings
-					if (key != "allo" && !key.startsWith("url_") && !options.contains("unsafe"))
-					{
-						res = res.replace("\\", "_").replace("%", "_").replace("/", "_").replace(":", "_").replace("|", "_").replace("*", "_").replace("?", "_").replace("\"", "_").replace("<", "_").replace(">", "_").replace("__", "_").replace("__", "_").replace("__", "_").trimmed();
-						if (!settings->value("Save/replaceblanks", false).toBool())
-						{ res = res.replace("_", " "); }
-					}
+					res = optionedValue(res, key, options, img, settings, namespaces);
 
 					cFilename.replace(replacerx.cap(0), res);
 					p += res.length();
 				}
 				else if (ignoredTokens.contains(key))
-				{ p += replacerx.matchedLength(); }
+				{
+					if (key == "num")
+					{
+						hasNum = replacerx.cap(0);
+						numOptions = options;
+					}
+
+					p += replacerx.matchedLength();
+				}
 				else
 				{ cFilename.remove(replacerx.cap(0)); }
+			}
+
+			if (!hasNum.isEmpty())
+			{
+				QFileInfoList files = QDir(pth).entryInfoList(QStringList() << QString(cFilename).replace(hasNum, "*"), QDir::Files, QDir::Name);
+				int num = 1;
+				if (!files.isEmpty())
+				{
+					QString last = files.last().fileName();
+					int pos = cFilename.indexOf(hasNum);
+					int len = last.length() - cFilename.length() + 5;
+					num = last.mid(pos, len).toInt() + 1;
+				}
+				cFilename.replace(hasNum, optionedValue(QString::number(num), "num", numOptions, img, settings, namespaces));
 			}
 
 			fns.append(cFilename);
@@ -493,10 +462,76 @@ QStringList Filename::path(const Image& img, QSettings *settings, QString pth, i
 
 	return fns;
 }
+QString Filename::optionedValue(QString res, QString key, QString ops, const Image& img, QSettings *settings, QStringList namespaces) const
+{
+	QString tagSeparator = settings->value("Save/separator", " ").toString();
+
+	// Parse options
+	QMap<QString,QString> options;
+	if (!ops.isEmpty())
+	{
+		QStringList opts = ops.split(',');
+		for (QString opt : opts)
+		{
+			int index = opt.indexOf('=');
+			if (index != -1)
+			{ options.insert(opt.left(index), opt.mid(index + 1)); }
+			else
+			{ options.insert(opt, "true"); }
+		}
+	}
+
+	// Apply options
+	if (key == "date" && options.contains("format"))
+	{ res = img.createdAt().toString(options["format"]); }
+	if (key == "count" || key == "num")
+	{ res = options.contains("length") ? QString("%1").arg(res.toInt(), options["length"].toInt(), 10, QChar('0')) : res; }
+	if (options.contains("maxlength"))
+	{ res = res.left(options["maxlength"].toInt()); }
+	if (key == "all" || key == "tags" || key == "general" || key == "artist" || key == "copyright" || key == "character")
+	{
+		QStringList vals = res.split(TAGS_SEPARATOR);
+		tagSeparator = settings->value(key + "_sep", tagSeparator).toString();
+
+		// Namespaces
+		if (options.contains("includenamespace"))
+		{
+			QStringList excluded;
+			if (options.contains("excludenamespace"))
+			{ excluded = options["excludenamespace"].split(' '); }
+
+			QStringList namespaced;
+			for (int i = 0; i < vals.count(); ++i)
+			{
+				QString nspace = key == "all" ? namespaces[i] : key;
+				namespaced.append((!excluded.contains(nspace) ? nspace + ":" : "") + vals[i]);
+			}
+			vals = namespaced;
+		}
+		if (options.contains("separator"))
+		{ tagSeparator = options["separator"]; }
+
+		res = vals.join(tagSeparator);
+	}
+
+	// Forbidden characters and spaces replacement settings
+	if (key != "allo" && !key.startsWith("url_") && !options.contains("unsafe"))
+	{
+		res = res.replace("\\", "_").replace("%", "_").replace("/", "_").replace(":", "_").replace("|", "_").replace("*", "_").replace("?", "_").replace("\"", "_").replace("<", "_").replace(">", "_").replace("__", "_").replace("__", "_").replace("__", "_").trimmed();
+		if (!settings->value("Save/replaceblanks", false).toBool())
+		{ res = res.replace("_", " "); }
+	}
+
+	return res;
+}
 
 QString Filename::getFormat() const
 {
 	return m_format;
+}
+void Filename::setFormat(QString format)
+{
+	m_format = format;
 }
 
 bool Filename::returnError(QString msg, QString *error) const
@@ -528,7 +563,10 @@ bool Filename::isValid(QString *error) const
 		return returnError(QObject::tr("<span style=\"color:orange\">Votre nom de fichier n'est pas unique à chaque image et une image risque d'en écraser une précédente lors de la sauvegarde ! Vous devriez utiliser le symbole %md5%, unique à chaque image, pour éviter ce désagrément.</span>"), error);
 
 	// Looking for unknown tokens
-	QStringList tokens = QStringList() << "tags" << "artist" << "general" << "copyright" << "character" << "model" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "search_(\\d+)" << "allo" << getCustoms().keys() << "date" << "score" << "count" << "width" << "height" << "pool" << "url_file" << "url_page";
+	QSettings *settings = new QSettings(savePath("settings.ini"));
+	auto customs = getCustoms(settings);
+	settings->deleteLater();
+	QStringList tokens = QStringList() << "tags" << "artist" << "general" << "copyright" << "character" << "model" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "search_(\\d+)" << "allo" << customs.keys() << "date" << "score" << "count" << "width" << "height" << "pool" << "url_file" << "url_page";
 	QRegExp rx("%(.+)%");
 	rx.setMinimal(true);
 	int pos = 0;
@@ -537,7 +575,7 @@ bool Filename::isValid(QString *error) const
 		bool found = false;
 		for (int i = 0; i < tokens.length(); i++)
 		{
-			if (QRegExp("%"+tokens[i]+"%").indexIn(rx.cap(0)) != -1)
+			if (QRegExp("%"+tokens[i]+"(?::[^%]+)?%").indexIn(rx.cap(0)) != -1)
 				found = true;
 		}
 
@@ -582,6 +620,10 @@ bool Filename::needExactTags(bool forceImageUrl) const
 	for (QString token : forbidden)
 		if (m_format.contains("%" + token + "%"))
 			return true;
+
+	// Namespaces come from detailed tags
+	if (m_format.contains("includenamespace"))
+		return true;
 
 	return false;
 }

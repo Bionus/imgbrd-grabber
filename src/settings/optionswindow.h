@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QTreeWidgetItem>
+#include "models/profile.h"
 
 
 
@@ -19,7 +20,7 @@ class optionsWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		explicit optionsWindow(mainWindow *parent = 0);
+		explicit optionsWindow(Profile *profile, QWidget *parent = Q_NULLPTR);
 		~optionsWindow();
 
 	public slots:
@@ -70,7 +71,7 @@ class optionsWindow : public QDialog
 
 	private:
 		Ui::optionsWindow *ui;
-		mainWindow *m_parent;
+		Profile *m_profile;
 		QList<QLineEdit*> m_customNames, m_customTags, m_filenamesConditions, m_filenamesFilenames, m_filenamesFolders;
 };
 

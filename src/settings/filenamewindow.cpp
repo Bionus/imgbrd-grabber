@@ -1,12 +1,13 @@
-#include "functions.h"
-#include "filenamewindow.h"
+#include <QDesktopServices>
 #include "ui_filenamewindow.h"
+#include "filenamewindow.h"
 #include "models/image.h"
 #include "models/site.h"
 #include "models/filename.h"
 
 
-FilenameWindow::FilenameWindow(QString value, QWidget *parent) : QDialog(parent), ui(new Ui::FilenameWindow)
+FilenameWindow::FilenameWindow(Profile *profile, QString value, QWidget *parent)
+	: QDialog(parent), ui(new Ui::FilenameWindow), m_profile(profile)
 {
 	ui->setupUi(this);
 
@@ -96,51 +97,11 @@ void FilenameWindow::on_lineClassic_textChanged(QString text)
 
 void FilenameWindow::on_buttonHelpClassic_clicked()
 {
-	QMessageBox::information(this, tr("Aide"), tr(
-		"Symboles disponibles : <i>%artist%</i>, <i>%general%</i>, <i>%copyright%</i>, <i>%character%</i>, <i>%all%</i>, <i>%filename%</i>, <i>%ext%</i>, <i>%rating%</i>, <i>%website%</i>, <i>%md5%</i>.<br/><br/>"
-		"<i>%artist%</i> : tags de nom d'artiste<br/>"
-		"<i>%general%</i> : tags d'image génériques<br/>"
-		"<i>%copyright%</i> : tags de copyright, en général le nom de l'anime/manga<br/>"
-		"<i>%character%</i> : tags indiquant quels personnages sont présents sur l'image<br/>"
-		"<i>%all%</i> : tous les tags<br/>"
-		"<i>%filename%</i> : nom du fichier sur le serveur, en général une chaîne alphanumérique<br/>"
-		"<i>%ext%</i> : extension de l'image<br/>"
-		"<i>%rating%</i> : Questionable, Safe ou Explicit<br/>"
-		"<i>%score%</i> : le score de l'image<br/>"
-		"<i>%website%</i> : url du site de l'image<br/>"
-		"<i>%websitename%</i> : nom du site de l'image<br/>"
-		"<i>%md5%</i> : code unique de l'image, composé de 32 caractères alphanumériques<br/>"
-		"<i>%id%</i> : identifiant de l'image sur un site donné<br/>"
-		"<i>%search%</i> : tags de la recherche<br/>"
-		"<i>%search_n%</i> : n-ième tag de la recherche<br/>"
-		"<i>%date%</i> : date d'ajout de l'image au format dd-MM-yyyy HH.mm<br/>"
-		"<i>%date:format%</i> : date d'ajout de l'image au format donné<br/><br/>"
-		"Vous pouvez aussi utiliser les structures conditionnelles. Pour plus d'informations, cliquez <a href=\"%s\">ici</a>.").arg("https://github.com/Bionus/imgbrd-grabber/wiki/Filename")
-	);
+	QDesktopServices::openUrl(QUrl("https://github.com/Bionus/imgbrd-grabber/wiki/Filename"));
 }
-
 void FilenameWindow::on_buttonHelpJavascript_clicked()
 {
-	QMessageBox::information(this, tr("Aide"), tr(
-		"Variables disponibles : <i>artist</i>, <i>general</i>, <i>copyright</i>, <i>character</i>, <i>all</i>, <i>filename</i>, <i>ext</i>, <i>rating</i>, <i>website</i>, <i>md5</i>.<br/><br/>"
-		"<i>artist</i> : tags de nom d'artiste<br/>"
-		"<i>general</i> : tags d'image génériques<br/>"
-		"<i>copyright</i> : tags de copyright, en général le nom de l'anime/manga<br/>"
-		"<i>character</i> : tags indiquant quels personnages sont présents sur l'image<br/>"
-		"<i>all</i> : tous les tags<br/>"
-		"<i>filename</i> : nom du fichier sur le serveur, en général une chaîne alphanumérique<br/>"
-		"<i>ext</i> : extension de l'image<br/>"
-		"<i>rating</i> : Questionable, Safe ou Explicit<br/>"
-		"<i>score</i> : le score de l'image<br/>"
-		"<i>website</i> : url du site de l'image<br/>"
-		"<i>websitename</i> : nom du site de l'image<br/>"
-		"<i>md5</i> : code unique de l'image, composé de 32 caractères alphanumériques<br/>"
-		"<i>id</i> : identifiant de l'image sur un site donné<br/>"
-		"<i>search</i> : tags de la recherche<br/>"
-		"<i>search_n</i> : n-ième tag de la recherche<br/>"
-		"<i>date</i> : date d'ajout de l'image au format dd-MM-yyyy HH.mm<br/><br/>"
-		"Pour plus d'informations sur le nommage Javascript, cliquez <a href=\"%s\">ici</a>.").arg("https://github.com/Bionus/imgbrd-grabber/wiki/Filename#javascript")
-	);
+	QDesktopServices::openUrl(QUrl("https://github.com/Bionus/imgbrd-grabber/wiki/Filename#javascript"));
 }
 
 QString FilenameWindow::format()
@@ -159,11 +120,11 @@ QString FilenameWindow::format()
 
 void FilenameWindow::done(int r)
 {
-	QMap<QString, Site*> *sites = Site::getAllSites();
+	QMap<QString, Site*> sites = Site::getAllSites();
 
-	if (QDialog::Accepted == r && ui->radioJavascript->isChecked() && !sites->isEmpty())
+	if (QDialog::Accepted == r && ui->radioJavascript->isChecked() && !sites.isEmpty())
 	{
-		Site *site = sites->value(sites->keys().first());
+		Site *site = sites.value(sites.keys().first());
 
 		QMap<QString, QString> info;
 		info.insert("site", QString::number((qintptr)site));
@@ -173,7 +134,7 @@ void FilenameWindow::done(int r)
 		info.insert("tags_character", "character_1 character_2");
 		info.insert("tags_copyright", "copyright_1 copyright_2");
 
-		Image image(site, info);
+		Image image(site, info, m_profile);
 		QStringList det = image.path(format(), "");
 
 		if (det.isEmpty())

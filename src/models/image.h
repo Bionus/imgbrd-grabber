@@ -9,6 +9,7 @@
 #include <QSettings>
 #include "tag.h"
 #include "pool.h"
+#include "profile.h"
 
 
 
@@ -30,7 +31,7 @@ class Image : public QObject
 			Error
 		};
 		Image();
-		Image(Site *site, QMap<QString,QString> details, Page *parent = NULL);
+		Image(Site *site, QMap<QString,QString> details, Profile *profile, Page *parent = NULL);
 		Image(const Image &other);
 		~Image();
 		int			value() const;
@@ -38,7 +39,7 @@ class Image : public QObject
 		QStringList	filter(QStringList filters) const;
 		QStringList	path(QString fn = "", QString pth = "", int counter = 0, bool complex = true, bool simple = false, bool maxlength = true, bool shouldFixFilename = true, bool getFull = false) const;
 		QStringList blacklisted(QStringList, bool invert = true) const;
-		QStringList	stylishedTags(QStringList ignored) const;
+		QStringList	stylishedTags(Profile *profile) const;
 		SaveResult  save(QString path, bool force = false, bool basic = false);
 		QMap<QString, Image::SaveResult> save(QStringList paths);
 		QMap<QString, Image::SaveResult> save(QString filename, QString path);
@@ -52,6 +53,7 @@ class Image : public QObject
 		QString		filename() const;
 		QString		folder() const;
 		QList<Tag>	tags() const;
+		QList<Tag>	filteredTags(QStringList remove) const;
 		QStringList tagsString() const;
 		QStringList search() const;
 		QList<Pool>	pools() const;
@@ -128,6 +130,7 @@ class Image : public QObject
 		QList<Tag>		m_tags;
 		QList<Pool>		m_pools;
 		QTime			m_timer;
+		Profile			*m_profile;
 		QSettings		*m_settings;
 		QStringList		m_search;
 		Site			*m_parentSite;
