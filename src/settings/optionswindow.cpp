@@ -160,20 +160,20 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 		else if	(characterMultiple == "multiple")		{ ui->radioCharactersMultiple->setChecked(true);		}
 		ui->spinLimit->setValue(settings->value("limit", 0).toInt());
 		ui->spinSimultaneous->setValue(settings->value("simultaneous", 1).toInt());
-		QMap<QString,QStringList> customs = getCustoms(settings);
-		settings->beginGroup("Customs");
-			m_customNames = QList<QLineEdit*>();
-			m_customTags = QList<QLineEdit*>();
-			for (int i = 0; i < customs.size(); i++)
-			{
-				QLineEdit *leName = new QLineEdit(customs.keys().at(i));
-				QLineEdit *leTags = new QLineEdit(customs.values().at(i).join(" "));
-				m_customNames.append(leName);
-				m_customTags.append(leTags);
-				ui->layoutCustom->insertRow(i, leName, leTags);
-			}
-		settings->endGroup();
 	settings->endGroup();
+
+	// Custom tokens
+	QMap<QString,QStringList> customs = getCustoms(settings);
+	m_customNames = QList<QLineEdit*>();
+	m_customTags = QList<QLineEdit*>();
+	for (int i = 0; i < customs.size(); i++)
+	{
+		QLineEdit *leName = new QLineEdit(customs.keys().at(i));
+		QLineEdit *leTags = new QLineEdit(customs.values().at(i).join(" "));
+		m_customNames.append(leName);
+		m_customTags.append(leTags);
+		ui->layoutCustom->insertRow(i, leName, leTags);
+	}
 
 	settings->beginGroup("Coloring");
 		settings->beginGroup("Colors");

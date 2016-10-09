@@ -1,5 +1,5 @@
-#define MyAppName "Grabber"
-#define MyAppVersion "4.8.0"
+﻿#define MyAppName "Grabber"
+#define MyAppVersion "4.8.1"
 #define MyAppPublisher "Bionus"
 #define MyAppURL "https://github.com/Bionus/imgbrd-grabber"
 #define MyAppExeName "Grabber.exe"
@@ -118,8 +118,9 @@ Source: "..\release\sites\Danbooru\behoimi.org\settings.ini";              DestD
 Source: "..\release\sites\Sankaku\icon.png";            DestDir: "{localappdata}\Bionus\Grabber\sites\Sankaku"; Flags: ignoreversion
 Source: "..\release\sites\Sankaku\model.xml";           DestDir: "{localappdata}\Bionus\Grabber\sites\Sankaku"; Flags: ignoreversion
 Source: "..\release\sites\Sankaku\sites.txt";           DestDir: "{localappdata}\Bionus\Grabber\sites\Sankaku"; Flags: onlyifdoesntexist
-Source: "..\release\sites\Sankaku\chan.sankakucomplex.com\settings.ini";  DestDir: "{localappdata}\Bionus\Grabber\sites\Sankaku\chan.sankakucomplex.com"; Flags: onlyifdoesntexist
+Source: "..\release\sites\Sankaku\chan.sankakucomplex.com\settings.ini";  DestDir: "{localappdata}\Bionus\Grabber\sites\Sankaku\chan.sankakucomplex.com"; Flags: onlyifdoesntexist    
 Source: "..\release\sites\Sankaku\idol.sankakucomplex.com\settings.ini";  DestDir: "{localappdata}\Bionus\Grabber\sites\Sankaku\idol.sankakucomplex.com"; Flags: onlyifdoesntexist    
+Source: "..\release\sites\Sankaku\capi.sankakucomplex.com\settings.ini";  DestDir: "{localappdata}\Bionus\Grabber\sites\Sankaku\capi.sankakucomplex.com"; Flags: onlyifdoesntexist    
 Source: "..\release\sites\Danbooru (2.0)\icon.png";     DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru (2.0)"; Flags: ignoreversion
 Source: "..\release\sites\Danbooru (2.0)\model.xml";    DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru (2.0)"; Flags: ignoreversion
 Source: "..\release\sites\Danbooru (2.0)\sites.txt";    DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru (2.0)"; Flags: onlyifdoesntexist
