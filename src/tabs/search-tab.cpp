@@ -443,7 +443,7 @@ void searchTab::addResultsImage(Image *img, bool merge)
 		l->scale(img->previewImage(), m_settings->value("thumbnailUpscale", 1.0f).toFloat());
 		l->setFlat(true);
 		connect(l, SIGNAL(appui(int)), this, SLOT(webZoom(int)));
-		connect(l, SIGNAL(toggled(int,bool)), this, SLOT(toggleImage(int,bool)));
+		connect(l, SIGNAL(toggled(int, bool, bool)), this, SLOT(toggleImage(int, bool, bool)));
 		connect(l, SIGNAL(rightClick(int)), m_parent, SLOT(batchChange(int)));
 
 	int perpage = img->page()->site()->value("Urls/Selected/Tags").contains("{limit}") ? ui_spinImagesPerPage->value() : img->page()->images().size();
@@ -454,7 +454,8 @@ void searchTab::addResultsImage(Image *img, bool merge)
 	int pl = ceil(sqrt((double)pp));
 	if (m_layouts.size() > page)
 	{ m_layouts[page]->addWidget(l, floor(float(position % pp) / pl), position % pl); }
-	m_boutons.append(l);
+
+	m_boutons.insert(img, l);
 }
 
 void searchTab::addHistory(QString tags, int page, int ipp, int cols)
@@ -621,6 +622,7 @@ void searchTab::selectImage(Image *img)
 		m_selectedImages.append(img->url());
 	}
 }
+
 void searchTab::unselectImage(Image *img)
 {
 	if (m_selectedImages.contains(img->url()))
@@ -630,9 +632,13 @@ void searchTab::unselectImage(Image *img)
 		m_selectedImages.removeAt(pos);
 	}
 }
+
 void searchTab::toggleImage(Image *img)
 {
-	if (m_selectedImages.contains(img->url()))
+	bool selected = m_selectedImages.contains(img->url());
+	m_boutons[img]->setChecked(!selected);
+
+	if (selected)
 	{
 		int pos = m_selectedImages.indexOf(img->url());
 		m_selectedImagesPtrs.removeAt(pos);
@@ -645,6 +651,26 @@ void searchTab::toggleImage(Image *img)
 	}
 }
 
+void searchTab::toggleImage(int id, bool toggle, bool range)
+{
+	if (toggle)
+		selectImage(m_images[id]);
+	else
+		unselectImage(m_images[id]);
+
+	if (range)
+	{
+		if (id > m_lastToggle)
+			for (int i = m_lastToggle + 1; i < id; ++i)
+				toggleImage(m_images[i]);
+		else
+			for (int i = m_lastToggle - 1; i > id; --i)
+				toggleImage(m_images[i]);
+	}
+
+	m_lastToggle = id;
+}
+
 
 
 void searchTab::openSourcesWindow()
@@ -653,6 +679,7 @@ void searchTab::openSourcesWindow()
 	connect(adv, SIGNAL(valid(QList<bool>)), this, SLOT(saveSources(QList<bool>)));
 	adv->show();
 }
+
 void searchTab::saveSources(QList<bool> sel)
 {
 	log(tr("Sauvegarde des sources..."));

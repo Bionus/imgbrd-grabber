@@ -31,9 +31,9 @@ class QBouton : public QPushButton
 		void middleClick(QVariant);
 		void middleClick(int);
 		void middleClick(QString);
-		void toggled(QVariant, bool);
-		void toggled(int, bool);
-		void toggled(QString, bool);
+		void toggled(QVariant id, bool toggle, bool range);
+		void toggled(int id, bool toggle, bool range);
+		void toggled(QString id, bool toggle, bool range);
 
 	private:
 		QVariant	_id;

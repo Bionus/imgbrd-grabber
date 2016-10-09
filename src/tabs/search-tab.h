@@ -36,9 +36,6 @@ class searchTab : public QWidget
 		virtual QString postFilter() = 0;
 		virtual void optionsChanged() = 0;
 		virtual void setTags(QString) = 0;
-		void selectImage(Image*);
-		void unselectImage(Image*);
-		void toggleImage(Image*);
 		int id();
 		QStringList selectedImages();
 		void setSources(QList<bool> sources);
@@ -83,6 +80,11 @@ class searchTab : public QWidget
 		void addResultsPage(Page *page, const QList<Image*> &imgs, QString noResultsMessage = nullptr);
 		void addResultsImage(Image *img, bool merge = false);
 		void finishedLoadingPreview(Image*);
+		// Image selection
+		void selectImage(Image *img);
+		void unselectImage(Image *img);
+		void toggleImage(Image *img);
+		void toggleImage(int id, bool toggle, bool range);
 
 	signals:
 		// Tab events
@@ -99,7 +101,7 @@ class searchTab : public QWidget
 		Profile				*m_profile;
 		int					m_id, m_lastPage, m_lastPageMaxId, m_lastPageMinId;
 		QMap<QString,Site*>	*m_sites;
-		QList<QBouton*>		m_boutons;
+		QMap<Image*, QBouton*>	m_boutons;
 		QStringList			m_selectedImages;
 		QList<Image*>		m_selectedImagesPtrs;
 		QList<bool>			m_selectedSources;
@@ -117,6 +119,7 @@ class searchTab : public QWidget
 		int m_page;
 		int m_pagemax;
 		bool m_stop;
+		int m_lastToggle;
 
 		// History
 		bool m_from_history;

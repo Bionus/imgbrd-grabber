@@ -93,9 +93,10 @@ void QBouton::mousePressEvent(QMouseEvent *event)
 		if (event->modifiers() & Qt::ControlModifier)
 		{
 			this->toggle();
-			emit this->toggled(_id, this->isChecked());
-			emit this->toggled(_id.toString(), this->isChecked());
-			emit this->toggled(_id.toInt(), this->isChecked());
+			bool range = event->modifiers() & Qt::ShiftModifier;
+			emit this->toggled(_id, this->isChecked(), range);
+			emit this->toggled(_id.toString(), this->isChecked(), range);
+			emit this->toggled(_id.toInt(), this->isChecked(), range);
 		}
 		else
 		{

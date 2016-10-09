@@ -269,14 +269,6 @@ void favoritesTab::finishedLoadingTags(Page *page)
 	}
 }
 
-void favoritesTab::toggleImage(int id, bool toggle)
-{
-	if (toggle)
-	{ selectImage(m_images.at(id)); }
-	else
-	{ unselectImage(m_images.at(id)); }
-}
-
 void favoritesTab::setTags(QString tags)
 {
 	activateWindow();

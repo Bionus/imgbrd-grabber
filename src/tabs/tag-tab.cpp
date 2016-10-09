@@ -260,14 +260,6 @@ void tagTab::finishedLoadingTags(Page *page)
 	ui->buttonLastPage->setEnabled(maxpage > ui->spinPage->value());
 }
 
-void tagTab::toggleImage(int id, bool toggle)
-{
-	if (toggle)
-	{ selectImage(m_images.at(id)); }
-	else
-	{ unselectImage(m_images.at(id)); }
-}
-
 void tagTab::setTags(QString tags)
 {
 	activateWindow();

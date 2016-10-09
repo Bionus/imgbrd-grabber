@@ -63,7 +63,6 @@ class favoritesTab : public searchTab
 		// Others
 		void optionsChanged();
 		void closeEvent(QCloseEvent*);
-		void toggleImage(int, bool);
 		void addTabFavorite(QString);
 		void setImagesPerPage(int);
 		void setColumns(int);
