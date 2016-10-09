@@ -536,6 +536,17 @@ void PageApi::parse()
 					for (int i = 0; i < infos.count(); i++)
 					{ d[infos.at(i)] = sc.value(infos.at(i)).toString().trimmed(); }
 				}
+
+				// Booru-on-rails sizes
+				if (sc.contains("representations"))
+				{
+					QMap<QString, QVariant> sizes = sc.value("representations").toMap();
+					if (sizes.contains("thumb"))
+					{ d["preview_url"] = sizes["thumb"].toString(); }
+					if (sizes.contains("large"))
+					{ d["sample_url"] = sizes["large"].toString(); }
+				}
+
 				this->parseImage(d, id + first);
 			}
 		}
