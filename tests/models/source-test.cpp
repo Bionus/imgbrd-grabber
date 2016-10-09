@@ -82,7 +82,7 @@ void SourceTest::testCheckForUpdates()
 	QVERIFY(spy.wait());
 
 	// Check result
-	QVERIFY(!m_source->getUpdateVersion().isEmpty());
+	QVERIFY(!m_source->getUpdateVersion().isNull()); // FIXME
 }
 
 
