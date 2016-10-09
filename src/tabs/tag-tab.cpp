@@ -259,7 +259,9 @@ void tagTab::finishedLoadingTags(Page *page)
 	ui->buttonNextPage->setEnabled(maxpage > ui->spinPage->value() || page->imagesCount() == -1 || (page->imagesCount() == 0 && page->images().count() > 0));
 	ui->buttonLastPage->setEnabled(maxpage > ui->spinPage->value());
 
-	setPageLabelText(m_pageLabels[page], page, page->images());
+	// Update image and page count
+	if (m_pageLabels.contains(page))
+		setPageLabelText(m_pageLabels[page], page, page->images());
 }
 
 void tagTab::setTags(QString tags)
