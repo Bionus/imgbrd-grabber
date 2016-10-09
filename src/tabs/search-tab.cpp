@@ -213,6 +213,7 @@ void searchTab::clear()
 	qDeleteAll(m_layouts);
 	m_layouts.clear();
 	m_boutons.clear();
+	m_pageLabels.clear();
 	clearLayout(ui_layoutResults);
 
 	// Abort current loadings
@@ -365,6 +366,20 @@ void searchTab::addResultsPage(Page *page, const QList<Image*> &imgs, QString no
 		return;
 
 	QLabel *txt = new QLabel(this);
+	txt->setOpenExternalLinks(true);
+	setPageLabelText(txt, page, imgs, noResultsMessage);
+	m_pageLabels.insert(page, txt);
+
+	int page_x = pos % ui_spinColumns->value();
+	int page_y = (pos / ui_spinColumns->value()) * 2;
+	ui_layoutResults->addWidget(txt, page_y, page_x);
+	ui_layoutResults->setRowMinimumHeight(page_y, height() / 20);
+	if (m_layouts.size() > pos)
+	{ ui_layoutResults->addLayout(m_layouts[pos], page_y + 1, page_x); }
+}
+void searchTab::setPageLabelText(QLabel *txt, Page *page, const QList<Image*> &imgs, QString noResultsMessage)
+{
+	// No results message
 	if (imgs.count() == 0)
 	{
 		QString meant;
@@ -384,7 +399,6 @@ void searchTab::addResultsPage(Page *page, const QList<Image*> &imgs, QString no
 		int imageCount = page->imagesCount();
 		txt->setText("<a href=\""+page->url().toString().toHtmlEscaped()+"\">"+page->site()->name()+"</a> - "+tr("Page %1 sur %2 (%3 sur %4)").arg(page->page()).arg(pageCount > 0 ? QString::number(pageCount) : "?").arg(imgs.count()).arg(imageCount > 0 ? QString::number(imageCount) : "?"));
 	}
-	txt->setOpenExternalLinks(true);
 	/*if (page->search().join(" ") != m_search->toPlainText() && m_settings->value("showtagwarning", true).toBool())
 	{
 		QStringList uncommon = m_search->toPlainText().toLower().trimmed().split(" ", QString::SkipEmptyParts);
@@ -397,15 +411,12 @@ void searchTab::addResultsPage(Page *page, const QList<Image*> &imgs, QString no
 		if (!uncommon.isEmpty())
 		{ txt->setText(txt->text()+"<br/>"+QString(tr("Des modificateurs ont été otés de la recherche car ils ne sont pas compatibles avec cet imageboard : %1.")).arg(uncommon.join(" "))); }
 	}*/
-	if (!page->errors().isEmpty() && m_settings->value("showwarnings", true).toBool())
-	{ txt->setText(txt->text()+"<br/>"+page->errors().join("<br/>")); }
 
-	int page_x = pos % ui_spinColumns->value();
-	int page_y = (pos / ui_spinColumns->value()) * 2;
-	ui_layoutResults->addWidget(txt, page_y, page_x);
-	ui_layoutResults->setRowMinimumHeight(page_y, height() / 20);
-	if (m_layouts.size() > pos)
-	{ ui_layoutResults->addLayout(m_layouts[pos], page_y + 1, page_x); }
+	// Show warnings
+	if (!page->errors().isEmpty() && m_settings->value("showwarnings", true).toBool())
+	{
+		txt->setText(txt->text()+"<br/>"+page->errors().join("<br/>"));
+	}
 }
 void searchTab::addResultsImage(Image *img, bool merge)
 {

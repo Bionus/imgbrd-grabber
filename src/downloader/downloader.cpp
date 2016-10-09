@@ -290,7 +290,6 @@ void Downloader::finishedLoadingImages(Page *page)
 {
 	if (m_cancelled)
 		return;
-	qDebug() << "finishedLoadingImages";
 
 	log(QString("Received image page '%1' (%2)").arg(page->url().toString(), QString::number(page->images().count())));
 	emit finishedImagesPage(page);

@@ -76,6 +76,7 @@ class searchTab : public QWidget
 		virtual void load() = 0;
 		bool waitForMergedResults(bool merged, Page *page, QList<Image *> &imgs);
 		void addResultsPage(Page *page, const QList<Image*> &imgs, QString noResultsMessage = nullptr);
+		void setPageLabelText(QLabel *txt, Page *page, const QList<Image*> &imgs, QString noResultsMessage = nullptr);
 		void addResultsImage(Image *img, bool merge = false);
 		void finishedLoadingPreview(Image*);
 		// Image selection
@@ -113,6 +114,7 @@ class searchTab : public QWidget
 		QStringList m_completion;
 		QList<Image*> m_images;
 		QMap<QString, Page*> m_pages;
+		QMap<Page*, QLabel*> m_pageLabels;
 		QList<QGridLayout*> m_layouts;
 		int m_page;
 		int m_pagemax;

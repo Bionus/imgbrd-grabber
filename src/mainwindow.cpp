@@ -1585,7 +1585,6 @@ void mainWindow::getAllPerformTags(Image* img)
 		}
 		m_getAllDownloading.removeAll(img);
 		img->deleteLater();
-		// qDebug() << "DELETE tags already" << QString::number((int)img, 16);
 		_getAll();
 	}
 }
@@ -1671,7 +1670,6 @@ void mainWindow::getAllGetImage(Image* img)
 		m_progressdialog->setImages(m_progressdialog->images()+1);
 		m_getAllDownloading.removeAll(img);
 		img->deleteLater();
-		// qDebug() << "DELETE next" << QString::number((int)img, 16);
 		_getAll();
 	}
 }
