@@ -77,8 +77,8 @@ FORMS += $${PDIR}/src/*.ui \
 
 # Breakpad files
 use_breakpad {
-	HEADERS += $${PDIR}/crashhandler/*.h
-	SOURCE += $${PDIR}/crashhandler/*.cpp
+	HEADERS += $${PDIR}/src/crashhandler/*.h
+	SOURCES += $${PDIR}/src/crashhandler/*.cpp
 }
 
 # Linux install script
