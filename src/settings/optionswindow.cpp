@@ -13,7 +13,6 @@
 #include "conditionwindow.h"
 #include "filenamewindow.h"
 #include "functions.h"
-#include "mainwindow.h"
 
 
 

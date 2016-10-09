@@ -13,14 +13,12 @@ namespace Ui
 }
 
 
-class mainWindow;
-
 class startWindow : public QDialog
 {
 	Q_OBJECT
 
 	public:
-		startWindow(QMap<QString, Site*> *sites, Profile *profile, mainWindow *parent);
+		startWindow(QMap<QString, Site*> *sites, Profile *profile, QWidget *parent = Q_NULLPTR);
 		~startWindow();
 
 	public slots:
@@ -36,7 +34,6 @@ class startWindow : public QDialog
 
 	private:
 		Ui::startWindow *ui;
-		mainWindow *m_parent;
 		Profile *m_profile;
 		QMap<QString, Site*> *m_sites;
 
