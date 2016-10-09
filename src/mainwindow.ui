@@ -1274,7 +1274,7 @@ QTextEdit {
    <sender>comboOrderFav</sender>
    <signal>currentIndexChanged(QString)</signal>
    <receiver>mainWindow</receiver>
-   <slot>updateFavoritesDock()</slot>
+   <slot>updateFavorites()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>51</x>
@@ -1290,7 +1290,7 @@ QTextEdit {
    <sender>comboAscFav</sender>
    <signal>currentIndexChanged(QString)</signal>
    <receiver>mainWindow</receiver>
-   <slot>updateFavoritesDock()</slot>
+   <slot>updateFavorites()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>58</x>
