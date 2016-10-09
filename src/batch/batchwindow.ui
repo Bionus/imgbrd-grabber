@@ -20,7 +20,7 @@
    <string>Téléchargement groupé</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../../resources.qrc">
+   <iconset resource="../../CrashReporter/resources.qrc">
     <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
   </property>
   <property name="modal">
@@ -180,7 +180,7 @@
         <item>
          <widget class="QCheckBox" name="checkScrollToDownload">
           <property name="text">
-           <string>Follow downloading images</string>
+           <string>Suivre le téléchargement des images</string>
           </property>
          </widget>
         </item>
@@ -254,9 +254,7 @@
   <tabstop>cancelButton</tabstop>
  </tabstops>
  <resources>
-  <include location="../../resources.qrc"/>
-  <include location="../../resources.qrc"/>
-  <include location="../../resources.qrc"/>
+  <include location="../../CrashReporter/resources.qrc"/>
  </resources>
  <connections>
   <connection>
