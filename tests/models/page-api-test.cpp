@@ -54,7 +54,7 @@ void PageApiTest::testParseUrlAltPage()
 	PageApi pageApi(&page, site, site->getApis().first(), tags, 1001);
 	pageApi.setLastPage(&prevPage);
 
-	QCOMPARE(pageApi.parseUrl("/posts.xml?{login}limit={limit}&page={page}{altpage}&tags={tags}").toString(),
+	QCOMPARE(pageApi.parseUrl("/posts.xml?{login}limit={limit}&page={altpage}&tags={tags}").toString(),
 			 QString("http://danbooru.donmai.us/posts.xml?login=user&password_hash=pass&limit=25&page=b0&tags=test tag"));
 }
 
