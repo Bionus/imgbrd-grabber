@@ -103,7 +103,7 @@ class zoomWindow : public QDialog
 		QTimer *m_resizeTimer;
 		QTime *m_imageTime;
 		QPushButton *buttonSave, *buttonSaveNQuit, *buttonSaveas, *m_buttonSaveNQuit;
-		QString link, m_program;
+		QString link;
 		QNetworkReply *m_reply;
 		const char* m_format;
 		bool m_finished, m_thread;

@@ -624,26 +624,8 @@ void PageApi::parseTags()
 
 	if (m_site->contains("Regex/Tags"))
 	{
-		QRegExp rxtags(m_site->value("Regex/Tags"));
-		rxtags.setMinimal(true);
-		int pos = 0;
-		QList<Tag> tgs;
-		QSet<QString> got;
 		QStringList order = m_site->value("Regex/TagsOrder").split('|', QString::SkipEmptyParts);
-		while ((pos = rxtags.indexIn(source, pos)) != -1)
-		{
-			pos += rxtags.matchedLength();
-
-			QStringList caps = rxtags.capturedTexts();
-			caps.removeFirst();
-			Tag tag = Tag::FromCapture(caps, order);
-
-			if (!got.contains(tag.text()))
-			{
-				got.insert(tag.text());
-				tgs.append(tag);
-			}
-		}
+		QList<Tag> tgs = Tag::FromRegexp(m_site->value("Regex/Tags"), order, source);
 		if (!tgs.isEmpty())
 		{ m_tags = tgs; }
 	}

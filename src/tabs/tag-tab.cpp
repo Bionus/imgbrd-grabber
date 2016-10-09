@@ -8,7 +8,7 @@
 
 
 tagTab::tagTab(int id, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
-	: searchTab(id, sites, profile, parent), ui(new Ui::tagTab), m_id(id), m_favorites(profile->getFavorites()), m_lastTags(QString()), m_sized(false)
+	: searchTab(id, sites, profile, parent), ui(new Ui::tagTab), m_id(id), m_lastTags(QString()), m_sized(false)
 {
 	ui->setupUi(this);
 	ui->widgetMeant->hide();

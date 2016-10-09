@@ -44,6 +44,16 @@ Profile::Profile(QString path)
 		m_keptForLater = vil.split("\n", QString::SkipEmptyParts);
 	}
 
+	// Load ignored
+	QFile fileIgnored(m_path + "/ignore.txt");
+	if (fileIgnored.open(QFile::ReadOnly | QFile::Text))
+	{
+		QString ign = fileIgnored.readAll();
+		fileIgnored.close();
+
+		m_ignored = ign.split("\n", QString::SkipEmptyParts);
+	}
+
 	// Load MD5s
 	QFile fileMD5(m_path + "/md5s.txt");
 	if (fileMD5.open(QFile::ReadOnly | QFile::Text))
@@ -95,6 +105,14 @@ void Profile::sync()
 		fileKfl.close();
 	}
 
+	// Ignored
+	QFile fileIgnored(m_path + "/ignore.txt");
+	if (fileIgnored.open(QFile::WriteOnly | QFile::Text | QFile::Truncate))
+	{
+		fileIgnored.write(m_ignored.join("\r\n").toUtf8());
+		fileIgnored.close();
+	}
+
 	// MD5s
 	QFile fileMD5(m_path + "/md5s.txt");
 	if (fileMD5.open(QFile::WriteOnly | QFile::Truncate))
@@ -112,6 +130,8 @@ void Profile::addFavorite(Favorite fav)
 {
 	m_favorites.removeAll(fav);
 	m_favorites.append(fav);
+
+	emit favoritesChanged();
 }
 void Profile::removeFavorite(Favorite fav)
 {
@@ -119,6 +139,40 @@ void Profile::removeFavorite(Favorite fav)
 
 	if (QFile::exists(m_path + "/thumbs/" + fav.getName(true) + ".png"))
 		QFile::remove(m_path + "/thumbs/" + fav.getName(true) + ".png");
+
+	emit favoritesChanged();
+}
+void Profile::emitFavorite()
+{
+	emit favoritesChanged();
+}
+
+void Profile::addKeptForLater(QString tag)
+{
+	m_keptForLater.removeAll(tag);
+	m_keptForLater.append(tag);
+
+	emit keptForLaterChanged();
+}
+void Profile::removeKeptForLater(QString tag)
+{
+	m_keptForLater.removeAll(tag);
+
+	emit keptForLaterChanged();
+}
+
+void Profile::addIgnored(QString tag)
+{
+	m_ignored.removeAll(tag);
+	m_ignored.append(tag);
+
+	emit ignoredChanged();
+}
+void Profile::removeIgnored(QString tag)
+{
+	m_ignored.removeAll(tag);
+
+	emit ignoredChanged();
 }
 
 /**

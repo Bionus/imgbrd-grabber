@@ -46,9 +46,7 @@ class mainWindow : public QMainWindow
 	public:
 		explicit mainWindow(QString, QStringList, QMap<QString,QString>);
 		~mainWindow();
-		QMap<QString,Site*> m_sites;
 		Ui::mainWindow *ui;
-		QSettings* settings();
 
 	public slots:
 		// Log
@@ -72,8 +70,7 @@ class mainWindow : public QMainWindow
 		void loadLanguage(const QString&, bool shutup = false);
 		void changeEvent(QEvent*);
 		// Favorites
-		void updateFavorites(bool dock = false);
-		void updateFavoritesDock();
+		void updateFavorites();
 		void updateKeepForLater();
 		/*void loadFavorite(int);
 		void favoriteProperties(int);
@@ -91,6 +88,7 @@ class mainWindow : public QMainWindow
 		void batchClear();
 		void batchClearSel();
 		QList<int> getSelectedRows(QList<QTableWidgetItem*> selected);
+		void batchMove(int);
 		void batchMoveUp();
 		void batchMoveDown();
 		void batchSel();
@@ -205,6 +203,7 @@ class mainWindow : public QMainWindow
 		int					m_batchAutomaticRetries;
 		bool				m_restore, m_showLog;
 		QMap<QString, QIcon>	m_icons;
+		QMap<QString, Site*>	m_sites;
 };
 
 #endif // MAINWINDOW_H

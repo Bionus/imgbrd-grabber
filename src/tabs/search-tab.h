@@ -60,9 +60,6 @@ class searchTab : public QWidget
 		void updateCheckboxes();
 		// Zooms
 		void webZoom(int);
-		// Favorites
-		void favorite();
-		void unfavorite();
 		// Pagination
 		virtual void firstPage() = 0;
 		virtual void previousPage() = 0;
@@ -76,6 +73,7 @@ class searchTab : public QWidget
 		void historyBack();
 		void historyNext();
 		// Results
+		virtual void load() = 0;
 		bool waitForMergedResults(bool merged, Page *page, QList<Image *> &imgs);
 		void addResultsPage(Page *page, const QList<Image*> &imgs, QString noResultsMessage = nullptr);
 		void addResultsImage(Image *img, bool merge = false);

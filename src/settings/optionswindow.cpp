@@ -17,7 +17,7 @@
 
 
 
-optionsWindow::optionsWindow(Profile *profile, mainWindow *parent)
+optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	: QDialog(parent), ui(new Ui::optionsWindow), m_profile(profile)
 {
 	ui->setupUi(this);
@@ -610,7 +610,7 @@ void optionsWindow::save()
 	if (settings->value("favorites_display", "ind").toString() != ftypes.at(ui->comboFavoritesDisplay->currentIndex()))
 	{
 		settings->setValue("favorites_display", ftypes.at(ui->comboFavoritesDisplay->currentIndex()));
-		m_parent->updateFavorites(false);
+		m_profile->emitFavorite();
 	}
 
 	settings->beginGroup("Log");

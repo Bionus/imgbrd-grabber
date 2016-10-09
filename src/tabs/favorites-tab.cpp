@@ -38,13 +38,15 @@ favoritesTab::favoritesTab(int id, QMap<QString,Site*> *sites, Profile *profile,
 	ui->widgetPlus->hide();
 	setWindowIcon(QIcon());
 	updateCheckboxes();
-	updateFavorites();
 
 	QStringList assoc = QStringList() << "name" << "note" << "lastviewed";
 		ui->comboOrder->setCurrentIndex(assoc.indexOf(m_settings->value("Favorites/order", "name").toString()));
 		ui->comboAsc->setCurrentIndex(int(m_settings->value("Favorites/reverse", false).toBool()));
 		m_settings->setValue("reverse", bool(ui->comboAsc->currentIndex() == 1));
 	ui->widgetResults->hide();
+
+	connect(m_profile, &Profile::favoritesChanged, this, &favoritesTab::updateFavorites);
+	updateFavorites();
 }
 
 favoritesTab::~favoritesTab()
@@ -384,8 +386,8 @@ void favoritesTab::viewed()
 	}
 	else
 	{ setFavoriteViewed(m_currentTags); }
-	updateFavorites();
-	m_parent->updateFavoritesDock();
+
+	m_profile->emitFavorite();
 }
 void favoritesTab::setFavoriteViewed(QString tag)
 {
@@ -418,7 +420,6 @@ void favoritesTab::favoriteProperties(QString name)
 
 	Favorite fav = m_favorites[index];
 	favoriteWindow *fwin = new favoriteWindow(m_profile, fav, this);
-	connect(fwin, SIGNAL(favoritesChanged()), this, SLOT(updateFavorites()));
 	fwin->show();
 }
 

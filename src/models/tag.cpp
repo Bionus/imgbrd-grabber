@@ -112,6 +112,32 @@ Tag Tag::FromCapture(QStringList caps, QStringList order)
 
 	return Tag(tag, type, count);
 }
+QList<Tag> Tag::FromRegexp(QString rx, QStringList order, const QString &source)
+{
+	QRegExp rxtags(rx);
+	rxtags.setMinimal(true);
+
+	QList<Tag> ret;
+	QSet<QString> got;
+
+	int pos = 0;
+	while ((pos = rxtags.indexIn(source, pos)) != -1)
+	{
+		pos += rxtags.matchedLength();
+
+		QStringList caps = rxtags.capturedTexts();
+		caps.removeFirst();
+		Tag tag = Tag::FromCapture(caps, order);
+
+		if (!got.contains(tag.text()))
+		{
+			got.insert(tag.text());
+			ret.append(tag);
+		}
+	}
+
+	return ret;
+}
 
 /**
  * Return the colored tag.

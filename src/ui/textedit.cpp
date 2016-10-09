@@ -306,28 +306,24 @@ void TextEdit::customContextMenuRequested(QPoint)
 			menu->addAction(tr("Coller"), this, SLOT(paste()), QKeySequence::Paste);
 	menu->exec(QCursor::pos());
 }
+
 void TextEdit::setFavorite()
 {
 	m_profile->addFavorite(Favorite(toPlainText()));
-	emit favoritesChanged();
 }
 void TextEdit::unsetFavorite()
 {
 	m_profile->removeFavorite(Favorite(toPlainText()));
-	emit favoritesChanged();
 }
 void TextEdit::setKfl()
 {
-	m_profile->getKeptForLater().append(toPlainText());
-	m_profile->sync();
-	emit kflChanged();
+	m_profile->addKeptForLater(toPlainText());
 }
 void TextEdit::unsetKfl()
 {
-	m_profile->getKeptForLater().removeAll(toPlainText());
-	m_profile->sync();
-	emit kflChanged();
+	m_profile->removeKeptForLater(toPlainText());
 }
+
 void TextEdit::insertFav(QAction *act)
 {
 	QString fav = act->text();

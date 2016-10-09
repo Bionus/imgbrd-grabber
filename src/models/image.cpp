@@ -428,32 +428,15 @@ void Image::parseDetails()
 	}
 
 	// Tags
-	QRegExp rxtags;
+	QString rxtags;
 	if (m_parentSite->contains("Regex/ImageTags"))
-	{ rxtags = QRegExp(m_parentSite->value("Regex/ImageTags")); }
+	{ rxtags = m_parentSite->value("Regex/ImageTags"); }
 	else if (m_parentSite->contains("Regex/Tags"))
-	{ rxtags = QRegExp(m_parentSite->value("Regex/Tags")); }
+	{ rxtags = m_parentSite->value("Regex/Tags"); }
 	if (!rxtags.isEmpty())
 	{
-		rxtags.setMinimal(true);
-		int pos = 0;
-		QList<Tag> tgs;
-		QSet<QString> got;
 		QStringList order = m_parentSite->value("Regex/TagsOrder").split('|', QString::SkipEmptyParts);
-		while ((pos = rxtags.indexIn(source, pos)) != -1)
-		{
-			pos += rxtags.matchedLength();
-
-			QStringList caps = rxtags.capturedTexts();
-			caps.removeFirst();
-			Tag tag = Tag::FromCapture(caps, order);
-
-			if (!got.contains(tag.text()))
-			{
-				got.insert(tag.text());
-				tgs.append(tag);
-			}
-		}
+		QList<Tag> tgs = Tag::FromRegexp(rxtags, order, source);
 		if (!tgs.isEmpty())
 		{ m_tags = tgs; }
 	}

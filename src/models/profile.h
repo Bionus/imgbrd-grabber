@@ -10,8 +10,10 @@
 
 class Commands;
 
-class Profile
+class Profile : public QObject
 {
+	Q_OBJECT
+
 	public:
 		Profile();
 		Profile(QSettings *settings, QList<Favorite> favorites, QStringList keptForLater = QStringList(), QString path = QString());
@@ -22,6 +24,15 @@ class Profile
 		// Favorite management
 		void addFavorite(Favorite fav);
 		void removeFavorite(Favorite fav);
+		void emitFavorite();
+
+		// KFL management
+		void addKeptForLater(QString tag);
+		void removeKeptForLater(QString tag);
+
+		// Ignore management
+		void addIgnored(QString tag);
+		void removeIgnored(QString tag);
 
 		// MD5 management
 		QString md5Exists(QString);
@@ -36,6 +47,11 @@ class Profile
 		QStringList &getKeptForLater();
 		QStringList &getIgnored();
 		Commands &getCommands();
+
+	signals:
+		void favoritesChanged();
+		void keptForLaterChanged();
+		void ignoredChanged();
 
 	private:
 		QString 		m_path;

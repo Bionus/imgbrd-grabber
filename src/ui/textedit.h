@@ -40,8 +40,6 @@ class TextEdit : public QTextEdit
 
 	signals:
 		void returnPressed();
-		void favoritesChanged();
-		void kflChanged();
 
 	private:
 		QCompleter		*c;

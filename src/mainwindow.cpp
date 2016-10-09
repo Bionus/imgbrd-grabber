@@ -210,13 +210,15 @@ void mainWindow::init()
 	for (int i = 0; i < m; i++)
 	{ ui->tableBatchGroups->horizontalHeader()->resizeSection(i, sizes.at(i).toInt()); }
 
-	updateFavorites(true);
-	updateKeepForLater();
-
 	m_lineFolder_completer = QStringList(m_settings->value("Save/path").toString());
 	ui->lineFolder->setCompleter(new QCompleter(m_lineFolder_completer));
 	//m_lineFilename_completer = QStringList(m_settings->value("Save/filename").toString());
 	//ui->lineFilename->setCompleter(new QCompleter(m_lineFilename_completer));
+
+	connect(m_profile, &Profile::favoritesChanged, this, &mainWindow::updateFavorites);
+	connect(m_profile, &Profile::keptForLaterChanged, this, &mainWindow::updateKeepForLater);
+	updateFavorites();
+	updateKeepForLater();
 
 	m_loaded = true;
 	m_currentTab = nullptr;
@@ -680,7 +682,7 @@ QList<int> mainWindow::getSelectedRows(QList<QTableWidgetItem*> selected)
 	return rows;
 }
 
-void mainWindow::batchMoveUp()
+void mainWindow::batchMove(int diff)
 {
 	QList<QTableWidgetItem *> selected = ui->tableBatchGroups->selectedItems();
 	if (selected.isEmpty())
@@ -689,68 +691,38 @@ void mainWindow::batchMoveUp()
 	QList<int> rows = getSelectedRows(selected);
 	for (int sourceRow : rows)
 	{
-		int destRow = sourceRow - 1;
+		int destRow = sourceRow + diff;
 		if (destRow < 0 || destRow >= ui->tableBatchGroups->rowCount())
 			return;
 
-		QList<QTableWidgetItem*> sourceItems;
 		for (int col = 0; col < ui->tableBatchGroups->columnCount(); ++col)
-			sourceItems << ui->tableBatchGroups->takeItem(sourceRow, col);
-		QList<QTableWidgetItem*> destItems;
-		for (int col = 0; col < ui->tableBatchGroups->columnCount(); ++col)
-			destItems << ui->tableBatchGroups->takeItem(destRow, col);
+		{
+			QTableWidgetItem *sourceItem = ui->tableBatchGroups->takeItem(sourceRow, col);
+			QTableWidgetItem *destItem = ui->tableBatchGroups->takeItem(destRow, col);
 
-		for (int col = 0; col < ui->tableBatchGroups->columnCount(); ++col)
-			ui->tableBatchGroups->setItem(sourceRow, col, destItems.at(col));
-		for (int col = 0; col < ui->tableBatchGroups->columnCount(); ++col)
-			ui->tableBatchGroups->setItem(destRow, col, sourceItems.at(col));
+			ui->tableBatchGroups->setItem(sourceRow, col, destItem);
+			ui->tableBatchGroups->setItem(destRow, col, sourceItem);
+		}
 	}
 
-	QItemSelectionModel* selectionModel = new QItemSelectionModel(ui->tableBatchGroups->model(), this);
 	QItemSelection selection;
 	for (int i = 0; i < selected.count(); i++)
 	{
 		QModelIndex index = ui->tableBatchGroups->model()->index(selected.at(i)->row(), selected.at(i)->column());
 		selection.select(index, index);
 	}
+
+	QItemSelectionModel* selectionModel = new QItemSelectionModel(ui->tableBatchGroups->model(), this);
 	selectionModel->select(selection, QItemSelectionModel::ClearAndSelect);
 	ui->tableBatchGroups->setSelectionModel(selectionModel);
 }
+void mainWindow::batchMoveUp()
+{
+	batchMove(-1);
+}
 void mainWindow::batchMoveDown()
 {
-	QList<QTableWidgetItem *> selected = ui->tableBatchGroups->selectedItems();
-	if (selected.isEmpty())
-		return;
-
-	QList<int> rows = getSelectedRows(selected);
-	for (int sourceRow : rows)
-	{
-		int destRow = sourceRow + 1;
-		if (destRow < 0 || destRow >= ui->tableBatchGroups->rowCount())
-			return;
-
-		QList<QTableWidgetItem*> sourceItems;
-		for (int col = 0; col < ui->tableBatchGroups->columnCount(); ++col)
-			sourceItems << ui->tableBatchGroups->takeItem(sourceRow, col);
-		QList<QTableWidgetItem*> destItems;
-		for (int col = 0; col < ui->tableBatchGroups->columnCount(); ++col)
-			destItems << ui->tableBatchGroups->takeItem(destRow, col);
-
-		for (int col = 0; col < ui->tableBatchGroups->columnCount(); ++col)
-			ui->tableBatchGroups->setItem(sourceRow, col, destItems.at(col));
-		for (int col = 0; col < ui->tableBatchGroups->columnCount(); ++col)
-			ui->tableBatchGroups->setItem(destRow, col, sourceItems.at(col));
-	}
-
-	QItemSelectionModel* selectionModel = new QItemSelectionModel(ui->tableBatchGroups->model(), this);
-	QItemSelection selection;
-	for (int i = 0; i < selected.count(); i++)
-	{
-		QModelIndex index = ui->tableBatchGroups->model()->index(selected.at(i)->row(), selected.at(i)->column());
-		selection.select(index, index);
-	}
-	selectionModel->select(selection, QItemSelectionModel::ClearAndSelect);
-	ui->tableBatchGroups->setSelectionModel(selectionModel);
+	batchMove(1);
 }
 
 void mainWindow::batchChange(int)
@@ -839,14 +811,7 @@ void mainWindow::addUnique()
 	wAddUnique->show();
 }
 
-void mainWindow::updateFavorites(bool dock)
-{
-	m_favoritesTab->updateFavorites();
-
-	if (dock)
-	{ updateFavoritesDock(); }
-}
-void mainWindow::updateFavoritesDock()
+void mainWindow::updateFavorites()
 {
 	while (!ui->layoutFavoritesDock->isEmpty())
 	{
@@ -2315,8 +2280,6 @@ void mainWindow::updateDownloads()
 	else
 	{ setWindowTitle(tr("%n téléchargement(s) en cours", "", m_downloads)); }
 }
-
-QSettings* mainWindow::settings() { return m_settings; }
 
 
 

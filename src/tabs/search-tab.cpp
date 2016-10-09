@@ -10,7 +10,7 @@
 
 
 searchTab::searchTab(int id, QMap<QString, Site*> *sites, Profile *profile, mainWindow *parent)
-	: QWidget(parent), m_profile(profile), m_id(id), m_lastPageMaxId(0), m_lastPageMinId(0), m_sites(sites), m_parent(parent), m_settings(parent->settings()), m_pagemax(-1), m_stop(true), m_from_history(false), m_history_cursor(0)
+	: QWidget(parent), m_profile(profile), m_id(id), m_lastPageMaxId(0), m_lastPageMinId(0), m_sites(sites), m_parent(parent), m_settings(profile->getSettings()), m_pagemax(-1), m_stop(true), m_from_history(false), m_history_cursor(0)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 
@@ -232,6 +232,7 @@ void searchTab::clear()
 TextEdit *searchTab::createAutocomplete()
 {
 	TextEdit *ret = new TextEdit(m_profile, this);
+	connect(ret, &TextEdit::returnPressed, this, &searchTab::load);
 
 	// Add auto-complete if necessary
 	if (m_settings->value("autocompletion", true).toBool())
@@ -241,12 +242,6 @@ TextEdit *searchTab::createAutocomplete()
 
 		ret->setCompleter(completer);
 	}
-
-	// Connect
-	connect(ret, SIGNAL(returnPressed()), this, SLOT(load()));
-	connect(ret, SIGNAL(favoritesChanged()), m_parent, SLOT(updateFavorites()));
-	connect(ret, SIGNAL(favoritesChanged()), m_parent, SLOT(updateFavoritesDock()));
-	connect(ret, SIGNAL(kflChanged()), m_parent, SLOT(updateKeepForLater()));
 
 	return ret;
 }
@@ -592,7 +587,7 @@ void searchTab::webZoom(int id)
 		QStringList detected = image->blacklisted(blacklistedtags);
 		if (!detected.isEmpty())
 		{
-			int reply = QMessageBox::question(m_parent, tr("List noire"), tr("%n tag(s) figurant dans la liste noire détécté(s) sur cette image : %1. Voulez-vous l'afficher tout de même ?", "", detected.size()).arg(detected.join(", ")), QMessageBox::Yes | QMessageBox::No);
+			int reply = QMessageBox::question(parentWidget(), tr("List noire"), tr("%n tag(s) figurant dans la liste noire détécté(s) sur cette image : %1. Voulez-vous l'afficher tout de même ?", "", detected.size()).arg(detected.join(", ")), QMessageBox::Yes | QMessageBox::No);
 			if (reply == QMessageBox::No)
 			{ return; }
 		}
@@ -690,62 +685,6 @@ void searchTab::saveSources(QList<bool> sel)
 	m_settings->setValue("sites", sav);
 	DONE();
 	updateCheckboxes();
-}
-
-
-void searchTab::favorite()
-{
-	Favorite newFav(m_link, 50, QDateTime::currentDateTime());
-	m_favorites.append(newFav);
-
-	QFile f(savePath("favorites.txt"));
-		f.open(QIODevice::WriteOnly | QIODevice::Append);
-		f.write(QString(newFav.getName() + "|" + QString::number(newFav.getNote()) + "|" + newFav.getLastViewed().toString(Qt::ISODate) + "\r\n").toUtf8());
-	f.close();
-
-	/*QPixmap img = image;
-	if (img.width() > 150 || img.height() > 150)
-	{ img = img.scaled(QSize(150,150), Qt::KeepAspectRatio, Qt::SmoothTransformation); }
-	if (!QDir(savePath("thumbs")).exists())
-	{ QDir(savePath()).mkdir("thumbs"); }
-	img.save(savePath("thumbs/"+m_link+".png"), "PNG");*/
-
-	m_parent->updateFavorites();
-}
-
-void searchTab::unfavorite()
-{
-	Favorite favorite("", 0, QDateTime::currentDateTime());
-	for (Favorite fav : m_favorites)
-	{
-		if (fav.getName() == m_link)
-		{
-			favorite = fav;
-			m_favorites.removeAll(fav);
-			break;
-		}
-	}
-	if (favorite.getName().isEmpty())
-		return;
-
-	QFile f(savePath("favorites.txt"));
-	f.open(QIODevice::ReadOnly);
-		QString favs = f.readAll();
-	f.close();
-
-	favs.replace("\r\n", "\n").replace("\r", "\n").replace("\n", "\r\n");
-	QRegExp reg(QRegExp::escape(favorite.getName()) + "\\|(.+)\\r\\n");
-	reg.setMinimal(true);
-	favs.remove(reg);
-
-	f.open(QIODevice::WriteOnly);
-		f.write(favs.toUtf8());
-	f.close();
-
-	if (QFile::exists(savePath("thumbs/" + favorite.getName(true) + ".png")))
-	{ QFile::remove(savePath("thumbs/" + favorite.getName(true) + ".png")); }
-
-	m_parent->updateFavorites();
 }
 
 

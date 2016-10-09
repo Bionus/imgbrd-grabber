@@ -26,9 +26,6 @@ class favoriteWindow : public QDialog
 		void on_openButton_clicked();
 		void on_buttonRemove_clicked();
 
-	signals:
-		void favoritesChanged();
-
 	private:
 		Ui::favoriteWindow	*ui;
 		Profile				*m_profile;
