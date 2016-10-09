@@ -141,6 +141,8 @@ class mainWindow : public QMainWindow
 		void contextMenu();
 		void openInNewTab();
 		void openInNewWindow();
+		void favorite();
+		void unfavorite();
 		void viewitlater();
 		void unviewitlater();
 		// Others

@@ -2328,18 +2328,31 @@ void mainWindow::contextMenu()
 	}
 	menu->exec(QCursor::pos());
 }
+
 void mainWindow::openInNewTab()
-{ addTab(m_link); }
+{
+	addTab(m_link);
+}
 void mainWindow::openInNewWindow()
 {
 	QProcess myProcess;
 	myProcess.startDetached(qApp->arguments().at(0), QStringList(m_link));
 }
+
+void mainWindow::favorite()
+{
+	m_profile->addFavorite(m_link);
+}
+void mainWindow::unfavorite()
+{
+	m_profile->removeFavorite(m_link);
+}
+
 void mainWindow::viewitlater()
 {
-	m_profile->getKeptForLater().append(m_link);
+	m_profile->addKeptForLater(m_link);
 }
 void mainWindow::unviewitlater()
 {
-	m_profile->getKeptForLater().removeAll(m_link);
+	m_profile->removeKeptForLater(m_link);
 }
