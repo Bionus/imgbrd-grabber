@@ -245,7 +245,7 @@ QMap<QString, QStringList> Filename::makeDetails(const Image& img, Profile *prof
 	return details;
 }
 
-QStringList Filename::path(const Image& img, Profile *profile, QString pth, int counter, bool complex, bool maxlength, bool shouldFixFilename, bool getFull) const
+QStringList Filename::path(const Image& img, Profile *profile, QString pth, int counter, bool complex, bool maxlength, bool shouldFixFilename, bool getFull, bool keepInvalidTokens) const
 {
 	QSettings *settings = profile->getSettings();
 	QStringList remove = settings->value("ignoredtags").toString().split(' ', QString::SkipEmptyParts);
@@ -415,8 +415,10 @@ QStringList Filename::path(const Image& img, Profile *profile, QString pth, int 
 
 					p += replacerx.matchedLength();
 				}
-				else
+				else if (!keepInvalidTokens)
 				{ cFilename.remove(replacerx.cap(0)); }
+				else
+				{ p += replacerx.matchedLength(); }
 			}
 
 			if (!hasNum.isEmpty())

@@ -134,7 +134,7 @@ bool Commands::tag(const Image &img, Tag tag, bool after)
 	if (!command.isEmpty())
 	{
 		Filename fn(command);
-		QStringList execs = fn.path(img, m_profile, "", 0, false, false, false, false);
+		QStringList execs = fn.path(img, m_profile, "", 0, false, false, false, false, true);
 
 		for (QString exec : execs)
 		{
@@ -158,7 +158,7 @@ bool Commands::tag(const Image &img, Tag tag, bool after)
 		start();
 
 		Filename fn(commandSql);
-		QStringList execs = fn.path(img, m_profile, "", 0, false, false, false, false);
+		QStringList execs = fn.path(img, m_profile, "", 0, false, false, false, false, true);
 
 		for (QString exec : execs)
 		{
