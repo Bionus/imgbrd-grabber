@@ -6,11 +6,13 @@
 		<Json>
 			<Home>/images.json?key={password}&amp;page={page}&amp;nocomments=1&amp;nofav=1</Home>
 			<Tags>/search.json?key={password}&amp;page={page}&amp;q={tags}&amp;nocomments=1&amp;nofav=1</Tags>
+			<Limit>15</Limit>
 		</Json>
 		<Html>
 			<Home>/images/page/{page}?key={password}</Home>
 			<Tags>/search?key={password}&amp;page={page}&amp;sbq={tags}</Tags>
 			<Post>/{id}</Post>
+			<Limit>15</Limit>
 		</Html>
 	</Urls>
 	<Regex>
