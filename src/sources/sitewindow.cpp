@@ -8,8 +8,8 @@ extern mainWindow *_mainwindow;
 
 
 
-siteWindow::siteWindow(QMap<QString,Site*> *sites, QWidget *parent)
-	: QDialog(parent), ui(new Ui::siteWindow)
+siteWindow::siteWindow(QMap<QString ,Site*> *sites, QWidget *parent)
+	: QDialog(parent), ui(new Ui::siteWindow), m_sites(sites)
 {
 	Q_UNUSED(sites);
 
@@ -41,7 +41,7 @@ void siteWindow::accept()
 	if (url.endsWith("/"))
 	{ url = url.left(url.size()-1); }
 
-	QString type, name;
+	Source *src = nullptr;
 	QStringList checked;
 	if (ui->checkBox->isChecked())
 	{
@@ -71,13 +71,13 @@ void siteWindow::accept()
 
 						getUrl = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 					} while (!getUrl.isEmpty());
-					QString source = reply->readAll();
+					QString res = reply->readAll();
 					if (reply->error() == 0)
 					{
 						QRegExp rx(map->value("Check/Regex"));
-						if (rx.indexIn(source) != -1)
+						if (rx.indexIn(res) != -1)
 						{
-							type = map->type();
+							src = source;
 							break;
 						}
 					}
@@ -87,27 +87,42 @@ void siteWindow::accept()
 				ui->progressBar->setValue(checked.size());
 			}
 		}
-		if (type.isEmpty())
-		{
-			error(this, tr("Impossible de deviner le type du site. Êtes-vous sûr de l'url ?"));
-			ui->comboBox->setDisabled(false);
-			ui->checkBox->setChecked(false);
-			ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
-			ui->progressBar->hide();
-			return;
-		}
 		ui->progressBar->hide();
 	}
 	else
-	{ type = ui->comboBox->currentText().toLower(); }
+	{
+		for (Source *source : *m_sources)
+		{
+			if (source->getName() == ui->comboBox->currentText())
+			{
+				src = source;
+				break;
+			}
+		}
+	}
 
-	QFile f(savePath("sites/"+type+"/sites.txt"));
+	if (src == nullptr)
+	{
+		error(this, tr("Impossible de deviner le type du site. Êtes-vous sûr de l'url ?"));
+		ui->comboBox->setDisabled(false);
+		ui->checkBox->setChecked(false);
+		ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
+		ui->progressBar->hide();
+		return;
+	}
+
+	Site *site = new Site(url, src);
+	src->getSites().append(site);
+	m_sites->insert(site->url(), site);
+
+	// Save new sites
+	QFile f(src->getPath() + "/sites.txt");
 	f.open(QIODevice::ReadOnly);
 		QString sites = f.readAll();
 	f.close();
 	sites.replace("\r\n", "\n").replace("\r", "\n").replace("\n", "\r\n");
 	QStringList stes = sites.split("\r\n", QString::SkipEmptyParts);
-	stes.append(url);
+	stes.append(site->url());
 	stes.removeDuplicates();
 	stes.sort();
 	f.open(QIODevice::WriteOnly);
