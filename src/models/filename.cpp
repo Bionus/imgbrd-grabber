@@ -245,7 +245,7 @@ QMap<QString, QStringList> Filename::makeDetails(const Image& img, Profile *prof
 	return details;
 }
 
-QStringList Filename::path(const Image& img, Profile *profile, QString pth, int counter, bool complex, bool maxlength, bool shouldFixFilename, bool getFull) const
+QStringList Filename::path(const Image& img, Profile *profile, QString pth, int counter, bool complex, bool maxlength, bool shouldFixFilename, bool getFull, bool keepInvalidTokens) const
 {
 	QSettings *settings = profile->getSettings();
 	QStringList remove = settings->value("ignoredtags").toString().split(' ', QString::SkipEmptyParts);
@@ -415,8 +415,10 @@ QStringList Filename::path(const Image& img, Profile *profile, QString pth, int 
 
 					p += replacerx.matchedLength();
 				}
-				else
+				else if (!keepInvalidTokens)
 				{ cFilename.remove(replacerx.cap(0)); }
+				else
+				{ p += replacerx.matchedLength(); }
 			}
 
 			if (!hasNum.isEmpty())
@@ -563,7 +565,7 @@ bool Filename::isValid(QString *error) const
 		return returnError(QObject::tr("<span style=\"color:orange\">Votre nom de fichier n'est pas unique à chaque image et une image risque d'en écraser une précédente lors de la sauvegarde ! Vous devriez utiliser le symbole %md5%, unique à chaque image, pour éviter ce désagrément.</span>"), error);
 
 	// Looking for unknown tokens
-	QSettings *settings = new QSettings(savePath("settings.ini"));
+	QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat );
 	auto customs = getCustoms(settings);
 	settings->deleteLater();
 	QStringList tokens = QStringList() << "tags" << "artist" << "general" << "copyright" << "character" << "model" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "search_(\\d+)" << "allo" << customs.keys() << "date" << "score" << "count" << "width" << "height" << "pool" << "url_file" << "url_page";
