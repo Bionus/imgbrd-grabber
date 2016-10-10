@@ -1,7 +1,9 @@
 TARGET = Grabber
 
 # GUI
-CONFIG += use_qscintilla
+Release {
+	CONFIG += use_qscintilla
+}
 DEPENDPATH += ui
 
 # Include common config
