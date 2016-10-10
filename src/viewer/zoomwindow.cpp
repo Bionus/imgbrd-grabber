@@ -31,6 +31,7 @@ zoomWindow::zoomWindow(Image *image, Site *site, QMap<QString,Site*> *sites, Pro
 
 	restoreGeometry(m_settings->value("Zoom/geometry").toByteArray());
 	ui->buttonPlus->setChecked(m_settings->value("Zoom/plus", false).toBool());
+	ui->progressBarDownload->hide();
 
 	QShortcut *escape = new QShortcut(QKeySequence(Qt::Key_Escape), this);
 		connect(escape, SIGNAL(activated()), this, SLOT(close()));
@@ -343,6 +344,10 @@ void zoomWindow::load()
 	log(tr("Chargement de l'image depuis <a href=\"%1\">%1</a>").arg(m_url));
 	m_data.clear();
 
+	ui->progressBarDownload->setMaximum(100);
+	ui->progressBarDownload->setValue(0);
+	ui->progressBarDownload->show();
+
 	m_imageTime = new QTime();
 	m_imageTime->start();
 
@@ -357,6 +362,9 @@ void zoomWindow::sslErrorHandler(QNetworkReply* qnr, QList<QSslError>)
 #define TIME 500
 void zoomWindow::downloadProgress(qint64 bytesReceived, qint64 bytesTotal)
 {
+	ui->progressBarDownload->setMaximum(bytesTotal);
+	ui->progressBarDownload->setValue(bytesReceived);
+
 	if (m_imageTime->elapsed() > TIME || (bytesTotal > 0 && bytesReceived / bytesTotal > PERCENT))
 	{
 		m_imageTime->restart();
@@ -479,6 +487,7 @@ void zoomWindow::colore()
 void zoomWindow::replyFinishedZoom()
 {
 	delete m_imageTime;
+	ui->progressBarDownload->hide();
 
 	// Check redirection
 	QUrl redir = m_reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();

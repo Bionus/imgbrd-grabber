@@ -23,10 +23,10 @@
    <string>Grabber - Image</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../resources.qrc">
+   <iconset resource="../../resources.qrc">
     <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,0,0">
+  <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,0,0,0">
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,1">
      <item>
@@ -61,7 +61,7 @@
              <x>0</x>
              <y>0</y>
              <width>69</width>
-             <height>504</height>
+             <height>477</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -96,6 +96,13 @@
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QProgressBar" name="progressBarDownload">
+     <property name="enabled">
+      <bool>true</bool>
      </property>
     </widget>
    </item>
@@ -230,8 +237,9 @@
   <tabstop>scrollArea</tabstop>
  </tabstops>
  <resources>
-  <include location="../resources.qrc"/>
-  <include location="../resources.qrc"/>
+  <include location="../../resources.qrc"/>
+  <include location="../../resources.qrc"/>
+  <include location="../../resources.qrc"/>
  </resources>
  <connections>
   <connection>
