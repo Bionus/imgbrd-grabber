@@ -690,12 +690,18 @@ void searchTab::saveSources(QList<bool> sel)
 {
 	log(tr("Sauvegarde des sources..."));
 	m_selectedSources = sel;
+
 	QString sav;
 	for (int i = 0; i < m_selectedSources.count(); i++)
 	{ sav += (m_selectedSources.at(i) ? "1" : "0"); }
 	m_settings->setValue("sites", sav);
+
 	DONE();
+
 	updateCheckboxes();
+
+	if (m_history.isEmpty())
+	{ load(); }
 }
 
 
