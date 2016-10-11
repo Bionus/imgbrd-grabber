@@ -10,7 +10,7 @@
 
 
 
-Page::Page(Site *site, QList<Site*> sites, QStringList tags, int page, int limit, QStringList postFiltering, bool smart, QObject *parent, int pool, int lastPage, int lastPageMinId, int lastPageMaxId)
+Page::Page(Profile *profile, Site *site, QList<Site*> sites, QStringList tags, int page, int limit, QStringList postFiltering, bool smart, QObject *parent, int pool, int lastPage, int lastPageMinId, int lastPageMaxId)
 	: QObject(parent), m_site(site), m_regexApi(0), m_postFiltering(postFiltering), m_errors(QStringList()), m_imagesPerPage(limit), m_currentSource(0), m_lastPage(lastPage), m_lastPageMinId(lastPageMinId), m_lastPageMaxId(lastPageMaxId), m_smart(smart)
 {
 	m_website = m_site->url();
@@ -50,7 +50,7 @@ Page::Page(Site *site, QList<Site*> sites, QStringList tags, int page, int limit
 	// Generate pages
 	for (Api *api : m_site->getApis())
 	{
-		m_pageApis.append(new PageApi(this, m_site, api, m_search, page, limit, postFiltering, smart, parent, pool, lastPage, lastPageMinId, lastPageMaxId));
+		m_pageApis.append(new PageApi(this, profile, m_site, api, m_search, page, limit, postFiltering, smart, parent, pool, lastPage, lastPageMinId, lastPageMaxId));
 		if (api->getName() == "Html" && m_regexApi < 0)
 		{ m_regexApi = m_pageApis.count() - 1; }
 	}

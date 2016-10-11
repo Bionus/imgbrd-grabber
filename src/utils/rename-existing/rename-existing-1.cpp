@@ -11,8 +11,8 @@
 
 
 
-RenameExisting1::RenameExisting1(QMap<QString,Site*> sites, QWidget *parent)
-	: QDialog(parent), ui(new Ui::RenameExisting1), m_sites(sites)
+RenameExisting1::RenameExisting1(Profile *profile, QMap<QString,Site*> sites, QWidget *parent)
+	: QDialog(parent), ui(new Ui::RenameExisting1), m_profile(profile), m_sites(sites)
 {
 	ui->setupUi(this);
 
@@ -171,7 +171,7 @@ void RenameExisting1::loadNext()
 		QMap<QString,QString> det = m_details.takeFirst();
 		m_getAll.insert(det.value("md5"), QPair<QString,QString>(det.value("path_full"), ""));
 
-		Page *page = new Page(m_sites.value(ui->comboSource->currentText()), m_sites.values(), QStringList("md5:" + det.value("md5")), 1, 1);
+		Page *page = new Page(m_profile, m_sites.value(ui->comboSource->currentText()), m_sites.values(), QStringList("md5:" + det.value("md5")), 1, 1);
 		connect(page, &Page::finishedLoading, this, &RenameExisting1::getAll);
 		page->load();
 

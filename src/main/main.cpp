@@ -140,10 +140,12 @@ int main(int argc, char *argv[])
 		}
 	#endif
 
+	Profile *profile = new Profile(savePath());
+
 	if (!gui)
 	{
-		QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
-		Downloader *dwnldr = new Downloader(parser.value(tagsOption).split(" ", QString::SkipEmptyParts),
+		Downloader *dwnldr = new Downloader(profile,
+											parser.value(tagsOption).split(" ", QString::SkipEmptyParts),
 											parser.value(postfilteringOption).split(" ", QString::SkipEmptyParts),
 											Site::getSites(parser.value(sourceOption).split(" ", QString::SkipEmptyParts)),
 											parser.value(pageOption).toInt(),
@@ -154,7 +156,7 @@ int main(int argc, char *argv[])
 											parser.value(userOption),
 											parser.value(passwordOption),
 											parser.isSet(blacklistOption),
-											settings.value("blacklistedtags").toString().split(' '),
+											profile->getSettings()->value("blacklistedtags").toString().split(' '),
 											parser.isSet(noDuplicatesOption),
 											parser.value(tagsMinOption).toInt(),
 											parser.value(tagsFormatOption));
@@ -189,7 +191,7 @@ int main(int argc, char *argv[])
 			params.insert("password", parser.value(passwordOption));
 			params.insert("ignore", parser.isSet(blacklistOption) ? "true" : "false");
 
-			_mainwindow = new mainWindow(argv[0], tags, params);
+			_mainwindow = new mainWindow(profile, argv[0], tags, params);
 			_mainwindow->init();
 			_mainwindow->show();
 		}

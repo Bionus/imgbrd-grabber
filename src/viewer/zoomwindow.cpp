@@ -185,7 +185,7 @@ void zoomWindow::openPool(QString url)
 	{ emit poolClicked(url.right(url.length() - 5).toInt(), m_image->site()); }
 	else
 	{
-		Page *p = new Page(m_sites->value(m_image->site()), m_sites->values(), QStringList() << "id:"+url, 1, 1, QStringList(), false, this);
+		Page *p = new Page(m_profile, m_sites->value(m_image->site()), m_sites->values(), QStringList() << "id:"+url, 1, 1, QStringList(), false, this);
 		connect(p, SIGNAL(finishedLoading(Page*)), this, SLOT(openPoolId(Page*)));
 		p->load();
 	}
@@ -536,7 +536,7 @@ void zoomWindow::replyFinishedZoom()
 	{ error(this, tr("Une erreur inattendue est survenue lors du chargement de l'image (%1).\r\n%2").arg(m_reply->error()).arg(m_reply->url().toString())); }
 
 	m_reply->deleteLater();
-	m_reply = NULL;
+	m_reply = nullptr;
 }
 
 void zoomWindow::pendingUpdate()

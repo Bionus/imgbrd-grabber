@@ -28,8 +28,8 @@ void Downloader::clear()
 	m_opagesT.clear();
 }
 
-Downloader::Downloader(QStringList tags, QStringList postfiltering, QList<Site*> sources, int page, int max, int perpage, QString location, QString filename, QString user, QString password, bool blacklist, QStringList blacklistedtags, bool noduplicates, int tagsmin, QString tagsformat)
-	: m_lastPage(nullptr), m_tags(tags), m_postfiltering(postfiltering), m_sites(sources), m_page(page), m_max(max), m_perpage(perpage), m_waiting(0), m_ignored(0), m_duplicates(0), m_tagsmin(tagsmin), m_location(location), m_filename(filename), m_user(user), m_password(password), m_blacklist(blacklist), m_noduplicates(noduplicates), m_tagsformat(tagsformat), m_blacklistedTags(blacklistedtags), m_quit(false)
+Downloader::Downloader(Profile *profile, QStringList tags, QStringList postfiltering, QList<Site*> sources, int page, int max, int perpage, QString location, QString filename, QString user, QString password, bool blacklist, QStringList blacklistedtags, bool noduplicates, int tagsmin, QString tagsformat)
+	: m_profile(profile), m_lastPage(nullptr), m_tags(tags), m_postfiltering(postfiltering), m_sites(sources), m_page(page), m_max(max), m_perpage(perpage), m_waiting(0), m_ignored(0), m_duplicates(0), m_tagsmin(tagsmin), m_location(location), m_filename(filename), m_user(user), m_password(password), m_blacklist(blacklist), m_noduplicates(noduplicates), m_tagsformat(tagsformat), m_blacklistedTags(blacklistedtags), m_quit(false)
 { }
 
 void Downloader::setQuit(bool quit)
@@ -52,7 +52,7 @@ void Downloader::getPageCount()
 
 	for (int i = 0; i < m_sites.size(); ++i)
 	{
-		Page *page = new Page(m_sites.at(i), m_sites, m_tags, m_page, m_perpage, m_postfiltering, true, this);
+		Page *page = new Page(m_profile, m_sites.at(i), m_sites, m_tags, m_page, m_perpage, m_postfiltering, true, this);
 		connect(page, &Page::finishedLoadingTags, this, &Downloader::finishedLoadingPageCount);
 
 		m_pagesC.append(page);
@@ -98,7 +98,7 @@ void Downloader::getPageTags()
 
 	for (int i = 0; i < m_sites.size(); ++i)
 	{
-		Page *page = new Page(m_sites.at(i), m_sites, m_tags, m_page, m_perpage, m_postfiltering, true, this);
+		Page *page = new Page(m_profile, m_sites.at(i), m_sites, m_tags, m_page, m_perpage, m_postfiltering, true, this);
 		connect(page, &Page::finishedLoadingTags, this, &Downloader::finishedLoadingPageTags);
 
 		m_pagesT.append(page);
@@ -274,7 +274,7 @@ void Downloader::getImages()
 			pages = 1;
 		for (int p = 0; p < pages; ++p)
 		{
-			Page *page = new Page(m_sites.at(i), m_sites, m_tags, m_page + p, m_perpage, m_postfiltering, true, this);
+			Page *page = new Page(m_profile, m_sites.at(i), m_sites, m_tags, m_page + p, m_perpage, m_postfiltering, true, this);
 			connect(page, &Page::finishedLoading, this, &Downloader::finishedLoadingImages);
 
 			m_pages.append(page);
@@ -410,7 +410,7 @@ void Downloader::getUrls()
 			pages = 1;
 		for (int p = 0; p < pages; ++p)
 		{
-			Page *page = new Page(m_sites.at(i), m_sites, m_tags, m_page + p, m_perpage, m_postfiltering, true, this);
+			Page *page = new Page(m_profile, m_sites.at(i), m_sites, m_tags, m_page + p, m_perpage, m_postfiltering, true, this);
 			connect(page, &Page::finishedLoading, this, &Downloader::finishedLoadingUrls);
 
 			m_pages.append(page);

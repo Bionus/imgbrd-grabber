@@ -184,7 +184,7 @@ void favoritesTab::load()
 			QStringList tags = m_currentTags.toLower().trimmed().split(" ", QString::SkipEmptyParts);
 			tags.append(m_settings->value("add").toString().toLower().trimmed().split(" ", QString::SkipEmptyParts));
 			int perpage = ui->spinImagesPerPage->value();
-			Page *page = new Page(m_sites->value(m_sites->keys().at(i)), m_sites->values(), tags, ui->spinPage->value(), perpage, m_postFiltering->toPlainText().toLower().split(" ", QString::SkipEmptyParts), true, this);
+			Page *page = new Page(m_profile, m_sites->value(m_sites->keys().at(i)), m_sites->values(), tags, ui->spinPage->value(), perpage, m_postFiltering->toPlainText().toLower().split(" ", QString::SkipEmptyParts), true, this);
 			connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(finishedLoading(Page*)));
 			m_pages.insert(page->website(), page);
 

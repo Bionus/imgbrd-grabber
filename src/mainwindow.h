@@ -43,7 +43,7 @@ class mainWindow : public QMainWindow
 	Q_OBJECT
 
 	public:
-		explicit mainWindow(QString, QStringList, QMap<QString,QString>);
+		explicit mainWindow(Profile *profile, QString program, QStringList tags, QMap<QString,QString> params);
 		~mainWindow();
 		Ui::mainWindow *ui;
 

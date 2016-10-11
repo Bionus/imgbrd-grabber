@@ -38,8 +38,8 @@
 
 
 
-mainWindow::mainWindow(QString program, QStringList tags, QMap<QString,QString> params)
-	: ui(new Ui::mainWindow), m_profile(new Profile(savePath())), m_favorites(m_profile->getFavorites()), m_downloads(0), m_loaded(false), m_getAll(false), m_program(program), m_tags(tags), m_batchAutomaticRetries(0), m_showLog(true)
+mainWindow::mainWindow(Profile *profile, QString program, QStringList tags, QMap<QString,QString> params)
+	: ui(new Ui::mainWindow), m_profile(profile), m_favorites(m_profile->getFavorites()), m_downloads(0), m_loaded(false), m_getAll(false), m_program(program), m_tags(tags), m_batchAutomaticRetries(0), m_showLog(true)
 { }
 void mainWindow::init()
 {
@@ -1089,7 +1089,7 @@ void mainWindow::getAll(bool all)
 				tdl.append(row);
 				int i = row;
 				Site *site = m_sites[m_batchs.at(i).value("site")];
-				m_getAllRemaining.append(QSharedPointer<Image>(new Image(site, m_batchs.at(i), m_profile, new Page(site, m_sites.values(), m_batchs.at(i).value("tags").split(" "), 1, 1, QStringList(), false, this))));
+				m_getAllRemaining.append(QSharedPointer<Image>(new Image(site, m_batchs.at(i), m_profile, new Page(m_profile, site, m_sites.values(), m_batchs.at(i).value("tags").split(" "), 1, 1, QStringList(), false, this))));
 			}
 		}
 	}
@@ -1110,7 +1110,7 @@ void mainWindow::getAll(bool all)
 			else
 			{
 				Site *site = m_sites[m_batchs.at(i).value("site")];
-				m_getAllRemaining.append(QSharedPointer<Image>(new Image(site, m_batchs.at(i), m_profile, new Page(site, m_sites.values(), m_batchs.at(i).value("tags").split(" "), 1, 1, QStringList(), false, this))));
+				m_getAllRemaining.append(QSharedPointer<Image>(new Image(site, m_batchs.at(i), m_profile, new Page(m_profile, site, m_sites.values(), m_batchs.at(i).value("tags").split(" "), 1, 1, QStringList(), false, this))));
 			}
 		}
 	}
@@ -1145,7 +1145,8 @@ void mainWindow::getAll(bool all)
 				}
 
 				QStringList b = m_groupBatchs.at(j);
-				Downloader *downloader = new Downloader(b.at(0).split(' '),
+				Downloader *downloader = new Downloader(m_profile,
+														b.at(0).split(' '),
 														QStringList(),
 														QList<Site*>() << m_sites[b.at(5)],
 														b.at(1).toInt(),
@@ -1982,7 +1983,7 @@ void mainWindow::getAllPause()
 
 void mainWindow::blacklistFix()
 {
-	BlacklistFix1 *win = new BlacklistFix1(m_sites, this);
+	BlacklistFix1 *win = new BlacklistFix1(m_profile, m_sites, this);
 	win->show();
 }
 void mainWindow::emptyDirsFix()
@@ -1997,7 +1998,7 @@ void mainWindow::md5FixOpen()
 }
 void mainWindow::renameExisting()
 {
-	RenameExisting1 *win = new RenameExisting1(m_sites, this);
+	RenameExisting1 *win = new RenameExisting1(m_profile, m_sites, this);
 	win->show();
 }
 
