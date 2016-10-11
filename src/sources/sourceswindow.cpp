@@ -15,7 +15,8 @@
  * @param	sites		QStringList of sites names
  * @param	parent		The parent window
  */
-sourcesWindow::sourcesWindow(QList<bool> selected, QMap<QString, Site*> *sites, QWidget *parent) : QDialog(parent), ui(new Ui::sourcesWindow), m_selected(selected), m_sites(sites)
+sourcesWindow::sourcesWindow(QList<bool> selected, QMap<QString, Site*> *sites, QWidget *parent)
+	: QDialog(parent), ui(new Ui::sourcesWindow), m_selected(selected), m_sites(sites)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	ui->setupUi(this);
@@ -143,8 +144,8 @@ void sourcesWindow::deleteSite(QString site)
 void sourcesWindow::addSite()
 {
 	siteWindow *sw = new siteWindow(m_sites, this);
-	sw->show();
 	connect(sw, SIGNAL(accepted()), this, SLOT(updateCheckboxes()));
+	sw->show();
 }
 
 void sourcesWindow::updateCheckboxes()
@@ -196,7 +197,7 @@ void sourcesWindow::addCheckboxes()
 	QStringList k = m_sites->keys();
 	for (int i = 0; i < k.count(); i++)
 	{
-		QCheckBox *check = new QCheckBox();
+		QCheckBox *check = new QCheckBox(this);
 			check->setChecked(m_selected.size() > i ? m_selected[i] : false);
 			check->setText(k.at(i));
 			connect(check, SIGNAL(stateChanged(int)), this, SLOT(checkUpdate()));
@@ -208,7 +209,7 @@ void sourcesWindow::addCheckboxes()
 		{
 			if (t == "icon" || t == "both")
 			{
-				QLabel *image = new QLabel();
+				QLabel *image = new QLabel(this);
 				image->setPixmap(QPixmap(savePath("sites/"+m_sites->value(k.at(i))->type()+"/icon.png")));
 				ui->gridLayout->addWidget(image, i, n);
 				m_labels << image;
@@ -216,7 +217,7 @@ void sourcesWindow::addCheckboxes()
 			}
 			if (t == "text" || t == "both")
 			{
-				QLabel *type = new QLabel(m_sites->value(k.at(i))->value("Name"));
+				QLabel *type = new QLabel(m_sites->value(k.at(i))->value("Name"), this);
 				ui->gridLayout->addWidget(type, i, n);
 				m_labels << type;
 				n++;
@@ -224,6 +225,7 @@ void sourcesWindow::addCheckboxes()
 		}
 
 		QBouton *del = new QBouton(k.at(i));
+			del->setParent(this);
 			del->setText(tr("Options"));
 			connect(del, SIGNAL(appui(QString)), this, SLOT(settingsSite(QString)));
 			m_buttons << del;

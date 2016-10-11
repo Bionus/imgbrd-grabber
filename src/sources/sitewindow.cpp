@@ -13,6 +13,7 @@ siteWindow::siteWindow(QMap<QString ,Site*> *sites, QWidget *parent)
 {
 	Q_UNUSED(sites);
 
+	setAttribute(Qt::WA_DeleteOnClose);
 	ui->setupUi(this);
 	ui->progressBar->hide();
 

@@ -9,14 +9,13 @@
 
 
 SearchWindow::SearchWindow(QString tags, Profile *profile, QWidget *parent)
-	: QDialog(parent), ui(new Ui::SearchWindow)
+	: QDialog(parent), ui(new Ui::SearchWindow), m_profile(profile)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	ui->setupUi(this);
 
-	QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
-	m_calendar = new QCalendarWidget;
-		m_calendar->setLocale(QLocale(settings->value("language", "English").toString().toLower().left(2)));
+	m_calendar = new QCalendarWidget(this);
+		m_calendar->setLocale(QLocale(profile->getSettings()->value("language", "English").toString().toLower().left(2)));
 		m_calendar->setWindowIcon(QIcon(":/images/icon.ico"));
 		m_calendar->setWindowTitle(tr("Grabber - Choisir une date"));
 		m_calendar->setDateRange(QDate(2000, 1, 1), QDateTime::currentDateTime().date().addDays(1));
@@ -42,7 +41,7 @@ SearchWindow::SearchWindow(QString tags, Profile *profile, QWidget *parent)
 				completion.append(favs);
 				completion.removeDuplicates();
 				completion.sort();
-				QCompleter *completer = new QCompleter(completion, this);
+				QCompleter *completer = new QCompleter(completion, m_tags);
 					completer->setCaseSensitivity(Qt::CaseInsensitive);
 				m_tags->setCompleter(completer);
 			}
@@ -112,8 +111,7 @@ void SearchWindow::on_buttonImage_clicked()
 	QStringList ratings = QStringList() << "rating:safe" << "-rating:safe" << "rating:questionable" << "-rating:questionable" << "rating:explicit" << "-rating:explicit";
 	QStringList status = QStringList() << "deleted" << "active" << "flagged" << "pending" << "any";
 
-	QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
-	QString path = QFileDialog::getOpenFileName(this, tr("Chercher une image"), settings->value("Save/path").toString(), "Images (*.png *.gif *.jpg *.jpeg)");
+	QString path = QFileDialog::getOpenFileName(this, tr("Chercher une image"), profile->getSettings()->value("Save/path").toString(), "Images (*.png *.gif *.jpg *.jpeg)");
 	QFile f(path);
 	QString md5 = "";
 	if (f.exists())
