@@ -996,39 +996,6 @@ void mainWindow::optionsClosed()
 	m_tabs[0]->updateCheckboxes();
 }
 
-void mainWindow::advanced()
-{
-	log(tr("Ouverture de la fenêtre des sources..."));
-	sourcesWindow *adv = new sourcesWindow(m_selectedSources, &m_sites, this);
-	adv->show();
-	connect(adv, SIGNAL(valid(sourcesWindow*)), this, SLOT(saveAdvanced(sourcesWindow*)));
-	DONE();
-}
-
-void mainWindow::saveAdvanced(sourcesWindow *w)
-{
-	log(tr("Sauvegarde des nouvelles sources..."));
-	m_selectedSources = w->getSelected();
-
-	QString sav;
-	for (bool active : m_selectedSources)
-	{ sav += (active ? "1" : "0"); }
-	m_settings->setValue("sites", sav);
-
-	// Log into new sources
-	QStringList keys = m_sites.keys();
-	for (int i = 0; i < m_sites.count(); i++)
-	{
-		if (sav.at(i) == '1')
-		{ m_sites[keys[i]]->login(); }
-	}
-
-	for (searchTab* tab : m_tabs)
-	{ tab->updateCheckboxes(); }
-
-	DONE();
-}
-
 void mainWindow::setSource(QString source)
 {
 	if (m_tabs.size() < 1)

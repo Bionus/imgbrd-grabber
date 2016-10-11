@@ -689,16 +689,24 @@ void searchTab::openSourcesWindow()
 void searchTab::saveSources(QList<bool> sel)
 {
 	log(tr("Sauvegarde des sources..."));
-	m_selectedSources = sel;
 
 	QString sav;
-	for (int i = 0; i < m_selectedSources.count(); i++)
-	{ sav += (m_selectedSources.at(i) ? "1" : "0"); }
+	for (bool enabled : sel)
+	{ sav += (enabled ? "1" : "0"); }
 	m_settings->setValue("sites", sav);
+	m_selectedSources = sel;
 
-	DONE();
+	// Log into new sources
+	QStringList keys = m_sites.keys();
+	for (int i = 0; i < m_sites.count(); i++)
+	{
+		if (sav.at(i) == '1')
+		{ m_sites[keys[i]]->login(); }
+	}
 
 	updateCheckboxes();
+
+	DONE();
 
 	if (m_history.isEmpty())
 	{ load(); }

@@ -1643,7 +1643,6 @@ QTextEdit {
   <slot>help()</slot>
   <slot>options()</slot>
   <slot>aboutAuthor()</slot>
-  <slot>advanced()</slot>
   <slot>updateFavorites()</slot>
   <slot>webUpdateTags()</slot>
   <slot>webUpdatePopular()</slot>

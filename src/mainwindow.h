@@ -8,7 +8,6 @@
 #include <QTranslator>
 #include <QSet>
 #include <QTableWidgetItem>
-#include "sources/sourceswindow.h"
 #include "batch/batchwindow.h"
 #include "ui/QAffiche.h"
 #include "ui/QBouton.h"
@@ -148,8 +147,6 @@ class mainWindow : public QMainWindow
 		// Others
 		void closeEvent(QCloseEvent*);
 		void onFirstLoad();
-		void advanced();
-		void saveAdvanced(sourcesWindow*);
 		void init();
 		void on_buttonSaveLinkList_clicked();
 		void on_buttonLoadLinkList_clicked();
