@@ -374,7 +374,7 @@ void Image::parsePreview()
 		}
 	}
 
-	emit finishedLoadingPreview(this);
+	emit finishedLoadingPreview();
 }
 
 void Image::loadDetails()
@@ -465,7 +465,7 @@ void Image::parseDetails()
 	m_loadDetails->deleteLater();
 	m_loadDetails = nullptr;
 
-	emit finishedLoadingTags(this);
+	emit finishedLoadingTags();
 }
 
 int toDate(QString text)
@@ -719,14 +719,14 @@ void Image::finishedImageS()
 
 	m_data = m_loadImage->readAll();
 
-	emit finishedImage(this);
+	emit finishedImage();
 }
 void Image::downloadProgressImageS(qint64 v1, qint64 v2)
 {
 	if (m_loadImage != nullptr && v2 > 0/* && (v1 == v2 || m_timer.elapsed() > 500)*/)
 	{
 		//m_timer.restart();
-		emit downloadProgressImage(this, v1, v2);
+		emit downloadProgressImage(v1, v2);
 	}
 }
 void Image::abortImage()

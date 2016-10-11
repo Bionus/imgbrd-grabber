@@ -81,7 +81,7 @@ class mainWindow : public QMainWindow
 		// Download
 		/*void web(QString tags = "");
 		void finishedLoading(Page*);
-		void finishedLoadingPreview(Image*);
+		void finishedLoadingPreview(QSharedPointer<Image>);
 		void webZoom(int);*/
 		// Batch download management
 		void batchClear();
@@ -101,12 +101,12 @@ class mainWindow : public QMainWindow
 		// Batch download
 		void getAll(bool all = true);
 		void getAllFinishedPage(Page *page);
-		void getAllFinishedImages(QList<Image*> images);
+		void getAllFinishedImages(QList<QSharedPointer<Image>> images);
 		void getAllImages();
-		void getAllGetImage(Image*);
-		void getAllPerformTags(Image*);
-		void getAllPerformImage(Image*);
-		void getAllProgress(Image*, qint64, qint64);
+		void getAllGetImage(QSharedPointer<Image> img);
+		void getAllPerformTags();
+		void getAllPerformImage();
+		void getAllProgress(qint64, qint64);
 		void getAllCancel();
 		void getAllPause();
 		void getAllSkip();
@@ -160,7 +160,7 @@ class mainWindow : public QMainWindow
 		void imageUrlChanged(QString, QString);
 		void updateCompleters();
 		void setSource(QString site);
-		void saveImage(Image *img, QNetworkReply *reply = NULL, QString path = "", QString p = "", bool getAll = true);
+		void saveImage(QSharedPointer<Image> img, QNetworkReply *reply = nullptr, QString path = "", QString p = "", bool getAll = true);
 		void setTags(QList<Tag> tags, searchTab *from = nullptr);
 		void initialLoginsFinished();
 		QIcon& getIcon(QString path);
@@ -168,8 +168,8 @@ class mainWindow : public QMainWindow
 
 	protected:
 		int getRowForSite(int site_id);
-		void getAllGetImageIfNotBlacklisted(Image *img, int site_id);
-		void getAllImageOk(Image *img, int site_id, bool del = true);
+		void getAllGetImageIfNotBlacklisted(QSharedPointer<Image> img, int site_id);
+		void getAllImageOk(QSharedPointer<Image> img, int site_id, bool del = true);
 		QList<Site*> getSelectedSites();
 		Site* getSelectedSiteOrDefault();
 
@@ -185,7 +185,7 @@ class mainWindow : public QMainWindow
 		QTranslator			m_translator;
 		QDateTime			m_loadFavorite;
 		QList<QStringList>	m_groupBatchs; // tags, page, perpage, max, blacklist, source, filename, location
-		QList<Image*>		m_getAllRemaining, m_getAllDownloading, m_getAllFailed, m_images;
+		QList<QSharedPointer<Image>>	m_getAllRemaining, m_getAllDownloading, m_getAllFailed, m_images;
 		QWidget				*m_currentTab;
 		QList<searchTab*>	m_tabs;
 		QList<tagTab*>		m_tagTabs;

@@ -143,7 +143,7 @@ void poolTab::finishedLoading(Page* page)
 
 	log(tr("Réception de la page <a href=\"%1\">%1</a>").arg(page->url().toString().toHtmlEscaped()));
 
-	QList<Image*> imgs = page->images();
+	QList<QSharedPointer<Image>> imgs = page->images();
 	m_images.append(imgs);
 
 	int maxpage = page->pagesCount();

@@ -203,7 +203,7 @@ void tagTab::finishedLoading(Page* page)
 	m_lastPage = page->page();
 	m_lastPageMinId = page->minId();
 	m_lastPageMaxId = page->maxId();
-	QList<Image*> imgs = page->images();
+	QList<QSharedPointer<Image>> imgs = page->images();
 	m_images.append(imgs);
 
 	int maxpage = page->pagesCount();
@@ -231,7 +231,7 @@ void tagTab::failedLoading(Page *page)
 
 void tagTab::postLoading(Page *page)
 {
-	QList<Image*> imgs;
+	QList<QSharedPointer<Image>> imgs;
 	if (!waitForMergedResults(ui->checkMergeResults->isChecked(), page, imgs))
 		return;
 

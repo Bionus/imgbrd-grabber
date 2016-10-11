@@ -1089,7 +1089,7 @@ void mainWindow::getAll(bool all)
 				tdl.append(row);
 				int i = row;
 				Site *site = m_sites[m_batchs.at(i).value("site")];
-				m_getAllRemaining.append(new Image(site, m_batchs.at(i), m_profile, new Page(site, m_sites.values(), m_batchs.at(i).value("tags").split(" "), 1, 1, QStringList(), false, this)));
+				m_getAllRemaining.append(QSharedPointer<Image>(new Image(site, m_batchs.at(i), m_profile, new Page(site, m_sites.values(), m_batchs.at(i).value("tags").split(" "), 1, 1, QStringList(), false, this))));
 			}
 		}
 	}
@@ -1110,7 +1110,7 @@ void mainWindow::getAll(bool all)
 			else
 			{
 				Site *site = m_sites[m_batchs.at(i).value("site")];
-				m_getAllRemaining.append(new Image(site, m_batchs.at(i), m_profile, new Page(site, m_sites.values(), m_batchs.at(i).value("tags").split(" "), 1, 1, QStringList(), false, this)));
+				m_getAllRemaining.append(QSharedPointer<Image>(new Image(site, m_batchs.at(i), m_profile, new Page(site, m_sites.values(), m_batchs.at(i).value("tags").split(" "), 1, 1, QStringList(), false, this))));
 			}
 		}
 	}
@@ -1274,7 +1274,7 @@ void mainWindow::getAllFinishedPage(Page *page)
  *
  * @param images The images results on this page
  */
-void mainWindow::getAllFinishedImages(QList<Image*> images)
+void mainWindow::getAllFinishedImages(QList<QSharedPointer<Image>> images)
 {
 	Downloader* downloader = (Downloader*)QObject::sender();
 	m_downloaders.removeAll(downloader);
@@ -1321,8 +1321,8 @@ void mainWindow::getAllImages()
 
 		// We add the image
 		m_progressdialog->addImage(m_getAllRemaining[i]->url(), n, m_getAllRemaining[i]->fileSize());
-		connect(m_getAllRemaining[i], SIGNAL(urlChanged(QString,QString)), m_progressdialog, SLOT(imageUrlChanged(QString,QString)));
-		connect(m_getAllRemaining[i], SIGNAL(urlChanged(QString,QString)), this, SLOT(imageUrlChanged(QString,QString)));
+		connect(m_getAllRemaining[i].data(), SIGNAL(urlChanged(QString, QString)), m_progressdialog, SLOT(imageUrlChanged(QString, QString)));
+		connect(m_getAllRemaining[i].data(), SIGNAL(urlChanged(QString, QString)), this, SLOT(imageUrlChanged(QString, QString)));
 
 		m_progressdialog->setImages(i+1);
 		count += m_getAllRemaining[i]->value();
@@ -1372,14 +1372,14 @@ void mainWindow::_getAll()
 	if (m_getAllRemaining.size() > 0)
 	{
 		// We take the first image to download
-		Image *img = m_getAllRemaining.takeFirst();
+		QSharedPointer<Image> img = m_getAllRemaining.takeFirst();
 		m_getAllDownloading.append(img);
 
 		// Get the tags first if necessary
 		if (m_must_get_tags)
 		{
+			connect(img.data(), &Image::finishedLoadingTags, this, &mainWindow::getAllPerformTags);
 			img->loadDetails();
-			connect(img, SIGNAL(finishedLoadingTags(Image*)), this, SLOT(getAllPerformTags(Image*)));
 		}
 		else
 		{
@@ -1429,7 +1429,7 @@ void mainWindow::_getAll()
 	{ getAllFinished(); }
 }
 
-void mainWindow::getAllGetImageIfNotBlacklisted(Image *img, int site_id)
+void mainWindow::getAllGetImageIfNotBlacklisted(QSharedPointer<Image> img, int site_id)
 {
 	// Check if image is blacklisted
 	bool detected = false;
@@ -1450,7 +1450,7 @@ void mainWindow::getAllGetImageIfNotBlacklisted(Image *img, int site_id)
 	{ getAllGetImage(img); }
 }
 
-void mainWindow::getAllImageOk(Image *img, int site_id, bool del)
+void mainWindow::getAllImageOk(QSharedPointer<Image> img, int site_id, bool del)
 {
 	m_progressdialog->setValue(m_progressdialog->value() + img->value());
 	m_progressdialog->setImages(m_progressdialog->images() + 1);
@@ -1481,8 +1481,15 @@ void mainWindow::imageUrlChanged(QString before, QString after)
 	m_downloadTime.insert(after, m_downloadTime[before]);
 	m_downloadTime.remove(before);
 }
-void mainWindow::getAllProgress(Image *img, qint64 bytesReceived, qint64 bytesTotal)
+void mainWindow::getAllProgress(qint64 bytesReceived, qint64 bytesTotal)
 {
+	QSharedPointer<Image> img;
+	for (QSharedPointer<Image> i : m_getAllDownloading)
+		if (i.data() == sender())
+			img = i;
+	if (img.isNull())
+		return;
+
 	if (!m_downloadTimeLast.contains(img->url()) || m_downloadTimeLast[img->url()] == NULL)
 		return;
 
@@ -1500,12 +1507,19 @@ void mainWindow::getAllProgress(Image *img, qint64 bytesReceived, qint64 bytesTo
 	}
 	m_progressdialog->statusImage(img->url(), bytesTotal != 0 ? (bytesReceived * 100) / bytesTotal : 0);
 }
-void mainWindow::getAllPerformTags(Image* img)
+void mainWindow::getAllPerformTags()
 {
 	if (m_progressdialog->cancelled())
 		return;
 
 	log(tr("Tags reçus"));
+
+	QSharedPointer<Image> img;
+	for (QSharedPointer<Image> i : m_getAllDownloading)
+		if (i.data() == sender())
+			img = i;
+	if (img.isNull())
+		return;
 
 	// Row
 	int site_id = m_progressdialog->batch(img->url());
@@ -1565,7 +1579,7 @@ int mainWindow::getRowForSite(int site_id)
 	return -1;
 }
 
-void mainWindow::getAllGetImage(Image* img)
+void mainWindow::getAllGetImage(QSharedPointer<Image> img)
 {
 	// Row
 	int site_id = m_progressdialog->batch(img->url());
@@ -1594,8 +1608,8 @@ void mainWindow::getAllGetImage(Image* img)
 		m_downloadTime[img->url()]->start();
 		m_downloadTimeLast.insert(img->url(), new QTime);
 		m_downloadTimeLast[img->url()]->start();
-		connect(img, SIGNAL(finishedImage(Image*)), this, SLOT(getAllPerformImage(Image*)), Qt::UniqueConnection);
-		connect(img, SIGNAL(downloadProgressImage(Image*,qint64,qint64)), this, SLOT(getAllProgress(Image*,qint64,qint64)), Qt::UniqueConnection);
+		connect(img.data(), &Image::finishedImage, this, &mainWindow::getAllPerformImage, Qt::UniqueConnection);
+		connect(img.data(), &Image::downloadProgressImage, this, &mainWindow::getAllProgress, Qt::UniqueConnection);
 		img->loadImage();
 		next = false;
 	}
@@ -1640,9 +1654,16 @@ void mainWindow::getAllGetImage(Image* img)
 		_getAll();
 	}
 }
-void mainWindow::getAllPerformImage(Image* img)
+void mainWindow::getAllPerformImage()
 {
 	if (m_progressdialog->cancelled())
+		return;
+
+	QSharedPointer<Image> img;
+	for (QSharedPointer<Image> i : m_getAllDownloading)
+		if (i.data() == sender())
+			img = i;
+	if (img.isNull())
 		return;
 
 	QNetworkReply* reply = img->imageReply();
@@ -1687,13 +1708,13 @@ void mainWindow::getAllPerformImage(Image* img)
 
 	getAllImageOk(img, site_id, del);
 }
-void mainWindow::saveImage(Image *img, QNetworkReply *reply, QString path, QString p, bool getAll)
+void mainWindow::saveImage(QSharedPointer<Image> img, QNetworkReply *reply, QString path, QString p, bool getAll)
 {
-	if (img->data().isEmpty() && (reply == NULL || !reply->isReadable()))
+	if (img->data().isEmpty() && (reply == nullptr || !reply->isReadable()))
 	{
 		reply = img->imageReply();
-		if (reply == NULL || !reply->isReadable())
-		{ return; }
+		if (reply == nullptr || !reply->isReadable())
+			return;
 	}
 
 	// Path
@@ -1805,7 +1826,7 @@ void mainWindow::getAllCancel()
 {
 	log(tr("Annulation des téléchargements..."));
 	m_progressdialog->cancel();
-	for (Image *image : m_getAllDownloading)
+	for (QSharedPointer<Image> image : m_getAllDownloading)
 	{
 		image->abortTags();
 		image->abortImage();
@@ -1824,7 +1845,7 @@ void mainWindow::getAllSkip()
 	log(tr("Saut des téléchargements..."));
 
 	int count = m_getAllDownloading.count();
-	for (Image *image : m_getAllDownloading)
+	for (QSharedPointer<Image> image : m_getAllDownloading)
 	{
 		image->abortTags();
 		image->abortImage();

@@ -128,9 +128,10 @@ void BlacklistFix1::getAll(Page *p)
 {
 	if (p != nullptr && p->images().size() > 0)
 	{
-		Image *img = p->images().at(0);
+		QSharedPointer<Image> img = p->images().at(0);
 		m_getAll[img->md5()].insert("tags", img->tagsString().join(" "));
 		ui->progressBar->setValue(ui->progressBar->value() + 1);
+		p->deleteLater();
 	}
 
 	if (!m_details.empty())

@@ -26,7 +26,7 @@ class Page : public QObject
 		void			fallback(bool load = true);
 		void			load(bool rateLimit = false);
 		void			loadTags();
-		QList<Image*>	images();
+		QList<QSharedPointer<Image>> images();
 		Site			*site();
 		int				imagesCount(bool guess = true);
 		int				pagesCount(bool guess = true);

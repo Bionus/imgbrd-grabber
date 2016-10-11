@@ -23,7 +23,7 @@ class RenameExisting1 : public QDialog
 
 	private slots:
 		void getAll(Page *p);
-		void getTags(Image *img);
+		void getTags();
 		void loadNext();
 		void on_buttonCancel_clicked();
 		void on_buttonContinue_clicked();
@@ -34,7 +34,7 @@ class RenameExisting1 : public QDialog
 		Filename								m_filename;
 		bool									m_needDetails;
 		QList<QMap<QString, QString>>			m_details;
-		QList<Image*>							m_getTags;
+		QList<QSharedPointer<Image>>			m_getTags;
 		QMap<QString, QPair<QString, QString>>	m_getAll;
 };
 

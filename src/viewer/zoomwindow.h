@@ -29,14 +29,14 @@ class zoomWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		zoomWindow(Image *image, Site *site, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent);
+		zoomWindow(QSharedPointer<Image> image, Site *site, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent);
 		void go();
 		~zoomWindow();
 		void load();
 
 	public slots:
 		void update(bool onlysize = false);
-		void replyFinishedDetails(Image*);
+		void replyFinishedDetails();
 		void replyFinishedZoom();
 		void display(QImage, int);
 		void saveNQuit();
@@ -91,7 +91,7 @@ class zoomWindow : public QDialog
 		QSettings *m_settings;
 		Ui::zoomWindow *ui;
 		detailsWindow *m_detailsWindow;
-		Image *m_image;
+		QSharedPointer<Image> m_image;
 		QMap<QString,QString> regex, m_details;
 		Site *m_site;
 		int timeout, m_mustSave;

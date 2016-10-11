@@ -63,7 +63,7 @@ Page::Page(Site *site, QList<Site*> sites, QStringList tags, int page, int limit
 }
 Page::~Page()
 {
-	// qDeleteAll(m_images);
+	qDeleteAll(m_pageApis);
 }
 
 void Page::fallback(bool bload)
@@ -157,7 +157,7 @@ QStringList		Page::search()		{ return m_search;								}
 QStringList		Page::errors()		{ return m_errors;								}
 int				Page::imagesPerPage()	{ return m_imagesPerPage;					}
 int				Page::page()		{ return m_page;								}
-QList<Image*>	Page::images()		{ return m_pageApis[m_currentApi]->images();	}
+QList<QSharedPointer<Image>>	Page::images()		{ return m_pageApis[m_currentApi]->images();	}
 QUrl			Page::url()			{ return m_pageApis[m_currentApi]->url();		}
 QString			Page::source()		{ return m_pageApis[m_currentApi]->source();	}
 QList<Tag>		Page::tags()		{ return m_pageApis[m_currentApi]->tags();		}

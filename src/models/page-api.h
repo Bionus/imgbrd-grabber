@@ -32,7 +32,7 @@ class PageApi : public QObject
 		void			load(bool rateLimit = false);
 		void			loadTags();
 		QUrl			parseUrl(QString url, int pid = -1, int p = -1, QString t = "", QString pseudo = "", QString password = "");
-		QList<Image*>	images();
+		QList<QSharedPointer<Image> > images();
 		int				imagesCount(bool guess = true);
 		int				pagesCount(bool guess = true);
 		QUrl			url();
@@ -76,7 +76,7 @@ class PageApi : public QObject
 		bool			m_smart, m_isAltPage;
 		QString			m_format, m_source, m_wiki, m_originalUrl;
 		QUrl			m_url, m_urlRegex, m_urlNextPage, m_urlPrevPage;
-		QList<Image*>	m_images;
+		QList<QSharedPointer<Image>>	m_images;
 		QList<Tag>		m_tags;
 		QNetworkReply	*m_reply, *m_replyTags;
 };

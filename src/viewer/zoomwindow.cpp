@@ -18,14 +18,14 @@
 
 
 
-zoomWindow::zoomWindow(Image *image, Site *site, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
+zoomWindow::zoomWindow(QSharedPointer<Image> image, Site *site, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
 	: QDialog(0, Qt::Window), m_parent(parent), m_profile(profile), m_favorites(profile->getFavorites()), m_viewItLater(profile->getKeptForLater()), m_ignore(profile->getIgnored()), m_settings(profile->getSettings()), ui(new Ui::zoomWindow), m_site(site), timeout(300), m_loaded(false), m_loadedImage(false), m_loadedDetails(false), image(NULL), movie(NULL), m_reply(NULL), m_finished(false), m_thread(false), m_data(QByteArray()), m_size(0), m_sites(sites), m_source(), m_th(NULL), m_fullScreen(NULL)
 {
-	ui->setupUi(this);
 	setAttribute(Qt::WA_DeleteOnClose);
+	ui->setupUi(this);
 
-	m_image = new Image(site, image->details(), m_profile, image->page());
-	connect(m_image, &Image::urlChanged, this, &zoomWindow::urlChanged);
+	m_image = image;
+	connect(m_image.data(), &Image::urlChanged, this, &zoomWindow::urlChanged);
 
 	m_mustSave = 0;
 
@@ -93,7 +93,7 @@ void zoomWindow::go()
 		connect(m_labelImage, SIGNAL(doubleClicked()), this, SLOT(fullScreen()));
 		m_stackedWidget->addWidget(m_labelImage);
 	m_mediaPlayer = new QMediaPlayer(this, QMediaPlayer::VideoSurface);
-		m_videoWidget = new QVideoWidget();
+		m_videoWidget = new QVideoWidget(this);
 		m_stackedWidget->addWidget(m_videoWidget);
 		m_mediaPlayer->setVideoOutput(m_videoWidget);
 
@@ -142,10 +142,10 @@ void zoomWindow::go()
 		m_labelTagsLeft->setText(m_image->stylishedTags(m_profile).join("<br/>"));
 	}
 
-	m_detailsWindow = new detailsWindow(m_image, this);
+	m_detailsWindow = new detailsWindow(this);
 
 	// Load image details (exact tags & co)
-	connect(m_image, SIGNAL(finishedLoadingTags(Image*)), this, SLOT(replyFinishedDetails(Image*)));
+	connect(m_image.data(), &Image::finishedLoadingTags, this, &zoomWindow::replyFinishedDetails);
 	m_image->loadDetails();
 
 	activateWindow();
@@ -165,7 +165,8 @@ zoomWindow::~zoomWindow()
 
 	m_labelTagsTop->deleteLater();
 	m_labelTagsLeft->deleteLater();
-	m_image->deleteLater();
+	//m_image->deleteLater();
+	m_detailsWindow->deleteLater();
 
 	delete ui;
 }
@@ -192,7 +193,11 @@ void zoomWindow::openPool(QString url)
 void zoomWindow::openPoolId(Page *p)
 {
 	if (p->images().size() < 1)
-	{ return; }
+	{
+		p->deleteLater();
+		return;
+	}
+
 	m_image = p->images().at(0);
 	timeout = 300;
 	m_loaded = false;
@@ -204,6 +209,7 @@ void zoomWindow::openPoolId(Page *p)
 	m_size = 0;
 	m_labelImage->hide();
 	ui->verticalLayout->removeWidget(m_labelImage);
+
 	go();
 }
 
@@ -351,7 +357,7 @@ void zoomWindow::load()
 	m_imageTime = new QTime();
 	m_imageTime->start();
 
-	m_reply = m_site->get(m_url, NULL, "image", m_image);
+	m_reply = m_site->get(m_url, NULL, "image", m_image.data());
 	connect(m_reply, SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(downloadProgress(qint64, qint64)));
 	connect(m_reply, SIGNAL(finished()), this, SLOT(replyFinishedZoom()));
 }
@@ -394,17 +400,16 @@ void zoomWindow::display(QImage pix, int size)
 	}
 }
 
-void zoomWindow::replyFinishedDetails(Image* img)
+void zoomWindow::replyFinishedDetails()
 {
 	m_loadedDetails = true;
-	m_image = img;
 	colore();
 
 	// Show pool information
-	if (!img->pools().isEmpty())
+	if (!m_image->pools().isEmpty())
 	{
 		QStringList pools = QStringList();
-		for (const Pool &p : img->pools())
+		for (const Pool &p : m_image->pools())
 		{ pools.append((p.previous() != 0 ? "<a href=\""+QString::number(p.previous())+"\">&lt;</a> " : "")+"<a href=\"pool:"+QString::number(p.id())+"\">"+p.name()+"</a>"+(p.next() != 0 ? " <a href=\""+QString::number(p.next())+"\">&gt;</a>" : "")); }
 		ui->labelPools->setText(pools.join("<br />"));
 		ui->labelPools->show();
@@ -808,7 +813,7 @@ void zoomWindow::fullScreen()
 	}
 	else
 	{
-		m_fullScreen = new QAffiche(QVariant(), 0, QColor());
+		m_fullScreen = new QAffiche(QVariant(), 0, QColor(), this);
 		m_fullScreen->setStyleSheet("background-color: black");
 		m_fullScreen->setAlignment(Qt::AlignCenter);
 		if (ext == "gif")

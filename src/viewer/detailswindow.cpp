@@ -9,11 +9,10 @@
  * Constructor of the detailsWindow class, completing its window.
  * @param	tags		Image's tags (colored or not)
  */
-detailsWindow::detailsWindow(Image *image, QWidget *parent) : QDialog(parent), ui(new Ui::detailsWindow)
+detailsWindow::detailsWindow(QWidget *parent)
+	: QDialog(parent), ui(new Ui::detailsWindow)
 {
 	ui->setupUi(this);
-
-	this->setImage(image);
 
 	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
 	QFont fontArtists, fontCopyrights, fontCharacters, fontModels, fontGenerals;
@@ -52,7 +51,7 @@ void detailsWindow::setTags(QString tags)
 	ui->labelTags->setText(tags);
 }
 
-void detailsWindow::setImage(Image *image)
+void detailsWindow::setImage(QSharedPointer<Image> image)
 {
 	if (!image->tags().isEmpty())
 	{
