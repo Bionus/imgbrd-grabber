@@ -17,6 +17,7 @@
  */
 sourcesWindow::sourcesWindow(QList<bool> selected, QMap<QString, Site*> *sites, QWidget *parent) : QDialog(parent), ui(new Ui::sourcesWindow), m_selected(selected), m_sites(sites)
 {
+	setAttribute(Qt::WA_DeleteOnClose);
 	ui->setupUi(this);
 
 	bool checkall = true;

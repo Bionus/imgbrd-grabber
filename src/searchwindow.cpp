@@ -11,6 +11,7 @@
 SearchWindow::SearchWindow(QString tags, Profile *profile, QWidget *parent)
 	: QDialog(parent), ui(new Ui::SearchWindow)
 {
+	setAttribute(Qt::WA_DeleteOnClose);
 	ui->setupUi(this);
 
 	QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
