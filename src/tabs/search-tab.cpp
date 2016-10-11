@@ -697,11 +697,11 @@ void searchTab::saveSources(QList<bool> sel)
 	m_selectedSources = sel;
 
 	// Log into new sources
-	QStringList keys = m_sites.keys();
-	for (int i = 0; i < m_sites.count(); i++)
+	QStringList keys = m_sites->keys();
+	for (int i = 0; i < m_sites->count(); i++)
 	{
 		if (sav.at(i) == '1')
-		{ m_sites[keys[i]]->login(); }
+		{ m_sites->value(keys[i])->login(); }
 	}
 
 	updateCheckboxes();
