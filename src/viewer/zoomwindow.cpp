@@ -19,8 +19,10 @@
 
 
 zoomWindow::zoomWindow(QSharedPointer<Image> image, Site *site, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
-	: QDialog(0, Qt::Window), m_parent(parent), m_profile(profile), m_favorites(profile->getFavorites()), m_viewItLater(profile->getKeptForLater()), m_ignore(profile->getIgnored()), m_settings(profile->getSettings()), ui(new Ui::zoomWindow), m_site(site), timeout(300), m_loaded(false), m_loadedImage(false), m_loadedDetails(false), image(NULL), movie(NULL), m_reply(NULL), m_finished(false), m_thread(false), m_data(QByteArray()), m_size(0), m_sites(sites), m_source(), m_th(NULL), m_fullScreen(NULL)
+	: QDialog(0, Qt::Window), m_parent(parent), m_profile(profile), m_favorites(profile->getFavorites()), m_viewItLater(profile->getKeptForLater()), m_ignore(profile->getIgnored()), m_settings(profile->getSettings()), ui(new Ui::zoomWindow), m_site(site), timeout(300), m_loaded(false), m_loadedImage(false), m_loadedDetails(false), image(nullptr), movie(nullptr), m_reply(nullptr), m_finished(false), m_thread(false), m_data(QByteArray()), m_size(0), m_sites(sites), m_source(), m_th(nullptr), m_fullScreen(nullptr)
 {
+	m_imageTime = nullptr;
+
 	setAttribute(Qt::WA_DeleteOnClose);
 	ui->setupUi(this);
 
@@ -64,7 +66,6 @@ zoomWindow::zoomWindow(QSharedPointer<Image> image, Site *site, QMap<QString,Sit
 	connect(m_profile, &Profile::keptForLaterChanged, this, &zoomWindow::colore);
 	connect(m_profile, &Profile::ignoredChanged, this, &zoomWindow::colore);
 
-	m_imageTime = NULL;
 	go();
 }
 void zoomWindow::go()
@@ -156,16 +157,15 @@ void zoomWindow::go()
  */
 zoomWindow::~zoomWindow()
 {
-	/*if (m_imageTime != NULL)
-		delete m_imageTime;*/
+	if (m_imageTime != nullptr)
+		delete m_imageTime;
 	if (image != nullptr)
 		delete image;
-	if (movie != NULL)
+	if (movie != nullptr)
 		movie->deleteLater();
 
 	m_labelTagsTop->deleteLater();
 	m_labelTagsLeft->deleteLater();
-	//m_image->deleteLater();
 	m_detailsWindow->deleteLater();
 
 	delete ui;
@@ -204,7 +204,7 @@ void zoomWindow::openPoolId(Page *p)
 	m_loadedDetails = false;
 	m_loadedImage = false;
 	m_reply->deleteLater();
-	m_reply = NULL;
+	m_reply = nullptr;
 	m_finished = false;
 	m_size = 0;
 	m_labelImage->hide();
@@ -354,10 +354,10 @@ void zoomWindow::load()
 	ui->progressBarDownload->setValue(0);
 	ui->progressBarDownload->show();
 
-	m_imageTime = new QTime();
+	m_imageTime = new QTime;
 	m_imageTime->start();
 
-	m_reply = m_site->get(m_url, NULL, "image", m_image.data());
+	m_reply = m_site->get(m_url, nullptr, "image", m_image.data());
 	connect(m_reply, SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(downloadProgress(qint64, qint64)));
 	connect(m_reply, SIGNAL(finished()), this, SLOT(replyFinishedZoom()));
 }
@@ -395,7 +395,7 @@ void zoomWindow::display(QImage pix, int size)
 		{ update(!m_finished); }
 		m_thread = false;
 
-		if (m_fullScreen != NULL && m_fullScreen->isVisible())
+		if (m_fullScreen != nullptr && m_fullScreen->isVisible())
 		{ m_fullScreen->setImage(image->scaled(QApplication::desktop()->screenGeometry().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation)); }
 	}
 }
@@ -492,6 +492,8 @@ void zoomWindow::colore()
 void zoomWindow::replyFinishedZoom()
 {
 	delete m_imageTime;
+	m_imageTime = nullptr;
+
 	ui->progressBarDownload->hide();
 
 	// Check redirection
@@ -510,7 +512,7 @@ void zoomWindow::replyFinishedZoom()
 	if (m_reply->error() == QNetworkReply::NoError)
 	{
 		m_data.append(m_reply->readAll());
-		m_image->setData(m_data);
+		// m_image->setData(m_data);
 
 		m_loadedImage = true;
 		pendingUpdate();
@@ -801,7 +803,7 @@ QString zoomWindow::saveImageAs()
 
 void zoomWindow::fullScreen()
 {
-	if (image == NULL)
+	if (image == nullptr)
 		return;
 
 	QString ext = m_url.section('.', -1).toLower();
@@ -870,7 +872,7 @@ void zoomWindow::closeEvent(QCloseEvent *e)
 	//m_image->abortTags();
 	/*if (m_thread && m_th->isRunning())
 	{ m_th->quit(); }*/
-	if (m_reply != NULL && m_reply->isRunning())
+	if (m_reply != nullptr && m_reply->isRunning())
 	{
 		m_reply->abort();
 		log(tr("Chargement de l'image stoppé."));
