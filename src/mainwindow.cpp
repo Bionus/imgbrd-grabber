@@ -1464,12 +1464,14 @@ void mainWindow::getAllImageOk(QSharedPointer<Image> img, int site_id, bool del)
 		{ ui->tableBatchGroups->item(row, 0)->setIcon(getIcon(":/images/colors/green.png")); }
 	}
 
+	img->unload();
+	m_downloadTimeLast.remove(img->url());
 	m_getAllDownloading.removeAll(img);
 
 	if (del)
 	{
-		img->deleteLater();
 		m_progressdialog->loadedImage(img->url());
+		img->deleteLater();
 	}
 
 	_getAll();
@@ -1484,29 +1486,26 @@ void mainWindow::imageUrlChanged(QString before, QString after)
 }
 void mainWindow::getAllProgress(qint64 bytesReceived, qint64 bytesTotal)
 {
-	QSharedPointer<Image> img;
-	for (QSharedPointer<Image> i : m_getAllDownloading)
-		if (i.data() == sender())
-			img = i;
-	if (img.isNull())
-		return;
-
-	if (!m_downloadTimeLast.contains(img->url()) || m_downloadTimeLast[img->url()] == NULL)
-		return;
-
-	if (m_downloadTimeLast[img->url()]->elapsed() >= 1000)
-	{
-		m_downloadTimeLast[img->url()]->restart();
-		int elapsed = m_downloadTime[img->url()]->elapsed();
-		float speed = elapsed != 0 ? (bytesReceived * 1000) / elapsed : 0;
-		m_progressdialog->speedImage(img->url(), speed);
-	}
+	Image *img = static_cast<Image*>(sender());
+	QString url = img->url();
 	if (img->fileSize() == 0)
 	{
 		img->setFileSize(bytesTotal);
-		m_progressdialog->sizeImage(img->url(), bytesTotal);
+		m_progressdialog->sizeImage(url, bytesTotal);
 	}
-	m_progressdialog->statusImage(img->url(), bytesTotal != 0 ? (bytesReceived * 100) / bytesTotal : 0);
+
+	if (!m_downloadTimeLast.contains(url) || m_downloadTimeLast[url] == nullptr)
+		return;
+
+	if (m_downloadTimeLast[url]->elapsed() >= 1000)
+	{
+		m_downloadTimeLast[url]->restart();
+		int elapsed = m_downloadTime[url]->elapsed();
+		float speed = elapsed != 0 ? (bytesReceived * 1000) / elapsed : 0;
+		m_progressdialog->speedImage(url, speed);
+	}
+
+	m_progressdialog->statusImage(url, bytesTotal != 0 ? (bytesReceived * 100) / bytesTotal : 0);
 }
 void mainWindow::getAllPerformTags()
 {
@@ -1565,6 +1564,7 @@ void mainWindow::getAllPerformTags()
 			if (m_progressBars[site_id - 1]->value() >= m_progressBars[site_id - 1]->maximum())
 			{ ui->tableBatchGroups->item(row, 0)->setIcon(getIcon(":/images/colors/green.png")); }
 		}
+		m_downloadTimeLast.remove(img->url());
 		m_getAllDownloading.removeAll(img);
 		img->deleteLater();
 		_getAll();
@@ -1650,6 +1650,7 @@ void mainWindow::getAllGetImage(QSharedPointer<Image> img)
 	{
 		m_progressdialog->setValue(m_progressdialog->value()+img->value());
 		m_progressdialog->setImages(m_progressdialog->images()+1);
+		m_downloadTimeLast.remove(img->url());
 		m_getAllDownloading.removeAll(img);
 		img->deleteLater();
 		_getAll();
@@ -1682,10 +1683,10 @@ void mainWindow::getAllPerformImage()
 		if (site_id >= 0)
 		{
 			ui->tableBatchGroups->item(row, 0)->setIcon(getIcon(":/images/colors/blue.png"));
-			saveImage(img, reply, m_groupBatchs[site_id - 1][6], m_groupBatchs[site_id - 1][7]);
+			saveImage(img, m_groupBatchs[site_id - 1][6], m_groupBatchs[site_id - 1][7]);
 		}
 		else
-		{ saveImage(img, reply); }
+		{ saveImage(img); }
 	}
 	else if (reply->error() == QNetworkReply::ContentNotFoundError)
 	{ m_getAll404s++; }
@@ -1707,28 +1708,21 @@ void mainWindow::getAllPerformImage()
 		del = false;
 	}
 
+	reply->deleteLater();
 	getAllImageOk(img, site_id, del);
 }
-void mainWindow::saveImage(QSharedPointer<Image> img, QNetworkReply *reply, QString path, QString p, bool getAll)
+void mainWindow::saveImage(QSharedPointer<Image> img, QString path, QString p, bool getAll)
 {
-	if (img->data().isEmpty() && (reply == nullptr || !reply->isReadable()))
-	{
-		reply = img->imageReply();
-		if (reply == nullptr || !reply->isReadable())
-			return;
-	}
-
-	// Path
-	if (path == "")
-	{ path = m_settings->value("Save/filename").toString(); }
-	if (p == "")
-	{ p = img->folder().isEmpty() ? m_settings->value("Save/path").toString() : img->folder(); }
-	QStringList paths = img->path(path, p, m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + 1, true, false, true, true, true);
-
 	// Get image's content
-	QByteArray data = img->data().isEmpty() ? reply->readAll() : img->data();
-	if (!data.isEmpty())
+	if (!img->data().isEmpty())
 	{
+		// Path
+		if (path == "")
+		{ path = m_settings->value("Save/filename").toString(); }
+		if (p == "")
+		{ p = img->folder().isEmpty() ? m_settings->value("Save/path").toString() : img->folder(); }
+		QStringList paths = img->path(path, p, m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + 1, true, false, true, true, true);
+
 		for (QString path : paths)
 		{
 			if (getAll)
@@ -1753,7 +1747,7 @@ void mainWindow::saveImage(QSharedPointer<Image> img, QNetworkReply *reply, QStr
 				{
 					QFile f(fp);
 					f.open(QIODevice::WriteOnly);
-					if (f.write(data) < 0)
+					if (f.write(img->data()) < 0)
 					{
 						f.close();
 						f.remove();
@@ -1766,7 +1760,6 @@ void mainWindow::saveImage(QSharedPointer<Image> img, QNetworkReply *reply, QStr
 					}
 					f.close();
 
-					img->setData(data);
 					m_profile->addMd5(img->md5(), fp);
 
 					// Save info to a text file

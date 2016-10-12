@@ -669,6 +669,7 @@ void Image::finishedImageS()
 	QUrl redir = m_loadImage->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 	if (!redir.isEmpty())
 	{
+		m_loadImage->deleteLater();
 		m_url = redir.toString();
 		loadImage();
 		return;
@@ -678,6 +679,7 @@ void Image::finishedImageS()
 	QString ext = getExtension(m_url);
 	if (m_loadImage->error() == QNetworkReply::ContentNotFoundError && (ext != "mp4" || (sampleFallback && !m_sampleUrl.isEmpty())) && !m_tryingSample)
 	{
+		m_loadImage->deleteLater();
 		bool animated = hasTag("gif") || hasTag("animated_gif") || hasTag("mp4") || hasTag("animated_png") || hasTag("webm") || hasTag("animated");
 
 		if (animated && (ext == "swf" || ext == "mp4"))

@@ -160,7 +160,7 @@ class mainWindow : public QMainWindow
 		void imageUrlChanged(QString, QString);
 		void updateCompleters();
 		void setSource(QString site);
-		void saveImage(QSharedPointer<Image> img, QNetworkReply *reply = nullptr, QString path = "", QString p = "", bool getAll = true);
+		void saveImage(QSharedPointer<Image> img, QString path = "", QString p = "", bool getAll = true);
 		void setTags(QList<Tag> tags, searchTab *from = nullptr);
 		void initialLoginsFinished();
 		QIcon& getIcon(QString path);
