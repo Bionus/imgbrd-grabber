@@ -22,7 +22,6 @@ class IntegrationTestSuite : public TestSuite
 
 	protected:
 		Downloader	*m_downloader;
-		QSettings	*m_settings;
 		Site		*m_site;
 };
 

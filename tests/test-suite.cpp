@@ -3,7 +3,8 @@
 
 QList<QObject*> TestSuite::suites;
 
-TestSuite::TestSuite() : QObject()
+TestSuite::TestSuite()
+	: QObject(), profile("tests/resources/")
 {
 	suites.append(this);
 }

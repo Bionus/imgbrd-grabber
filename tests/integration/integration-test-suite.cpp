@@ -11,8 +11,6 @@ void IntegrationTestSuite::initTestCase()
 
 QList<Image*> IntegrationTestSuite::getImages(QString site, QString source, QString format, QString tags)
 {
-	m_settings = new QSettings("tests/resources/settings.ini", QSettings::IniFormat);
-
 	QDir().mkpath("tests/resources/sites/" + site + "/" + source);
 	QFile::remove("tests/resources/sites/" + site +"/model.xml");
 	QFile::copy("release/sites/" + site +"/model.xml", "tests/resources/sites/" + site +"/model.xml");
@@ -32,7 +30,8 @@ QList<Image*> IntegrationTestSuite::getImages(QString site, QString source, QStr
 	sites.append(new Site(source, new Source("tests/resources/sites/" + site)));
 
 	QList<Image*> result;
-	m_downloader = new Downloader(tags.split(' '),
+	m_downloader = new Downloader(&profile,
+								  tags.split(' '),
 								  QStringList(),
 								  sites,
 								  1,
@@ -70,8 +69,6 @@ QList<Image*> IntegrationTestSuite::getImages(QString site, QString source, QStr
 
 QList<Tag> IntegrationTestSuite::getPageTags(QString site, QString source, QString format, QString tags)
 {
-	m_settings = new QSettings("tests/resources/settings.ini", QSettings::IniFormat);
-
 	QDir().mkpath("tests/resources/sites/" + site + "/" + source);
 	QFile::copy("release/sites/" + site +"/model.xml", "tests/resources/sites/" + site +"/model.xml");
 	QFile::copy("release/sites/" + site +"/" + source + "/settings.ini", "tests/resources/sites/" + site +"/" + source + "/settings.ini");
@@ -88,7 +85,8 @@ QList<Tag> IntegrationTestSuite::getPageTags(QString site, QString source, QStri
 	sites.append(new Site(source, new Source("tests/resources/sites/" + site)));
 
 	QList<Tag> result;
-	m_downloader = new Downloader(tags.split(' '),
+	m_downloader = new Downloader(&profile,
+								  tags.split(' '),
 								  QStringList(),
 								  sites,
 								  1,
@@ -127,5 +125,4 @@ QList<Tag> IntegrationTestSuite::getPageTags(QString site, QString source, QStri
 void IntegrationTestSuite::cleanup()
 {
 	m_downloader->deleteLater();
-	m_settings->deleteLater();
 }

@@ -19,7 +19,6 @@ class PageApiTest : public TestSuite
 		void testParseUrlAltPage();
 
 	private:
-		QSettings *m_settings;
 		QList<Site*> m_sites;
 		Site *m_site;
 };
