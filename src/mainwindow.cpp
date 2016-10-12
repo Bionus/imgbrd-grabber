@@ -1469,10 +1469,7 @@ void mainWindow::getAllImageOk(QSharedPointer<Image> img, int site_id, bool del)
 	m_getAllDownloading.removeAll(img);
 
 	if (del)
-	{
-		m_progressdialog->loadedImage(img->url());
-		img->deleteLater();
-	}
+	{ m_progressdialog->loadedImage(img->url()); }
 
 	_getAll();
 }
@@ -1566,7 +1563,6 @@ void mainWindow::getAllPerformTags()
 		}
 		m_downloadTimeLast.remove(img->url());
 		m_getAllDownloading.removeAll(img);
-		img->deleteLater();
 		_getAll();
 	}
 }
@@ -1652,7 +1648,6 @@ void mainWindow::getAllGetImage(QSharedPointer<Image> img)
 		m_progressdialog->setImages(m_progressdialog->images()+1);
 		m_downloadTimeLast.remove(img->url());
 		m_getAllDownloading.removeAll(img);
-		img->deleteLater();
 		_getAll();
 	}
 }
