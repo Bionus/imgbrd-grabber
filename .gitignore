@@ -40,6 +40,17 @@ CrashReporter/debug/
 CrashReporter/release/
 
 
+# Visual Studio
+
+.vs/
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+Grabber.VC.*
+win32/
+
+
 # CLion
 
 .idea/

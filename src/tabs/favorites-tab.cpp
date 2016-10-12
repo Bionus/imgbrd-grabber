@@ -67,7 +67,6 @@ void favoritesTab::closeEvent(QCloseEvent *e)
 
 	qDeleteAll(m_pages);
 	m_pages.clear();
-	qDeleteAll(m_images);
 	m_images.clear();
 	qDeleteAll(m_checkboxes);
 	m_checkboxes.clear();
@@ -185,7 +184,7 @@ void favoritesTab::load()
 			QStringList tags = m_currentTags.toLower().trimmed().split(" ", QString::SkipEmptyParts);
 			tags.append(m_settings->value("add").toString().toLower().trimmed().split(" ", QString::SkipEmptyParts));
 			int perpage = ui->spinImagesPerPage->value();
-			Page *page = new Page(m_sites->value(m_sites->keys().at(i)), m_sites->values(), tags, ui->spinPage->value(), perpage, m_postFiltering->toPlainText().toLower().split(" ", QString::SkipEmptyParts), true, this);
+			Page *page = new Page(m_profile, m_sites->value(m_sites->keys().at(i)), m_sites->values(), tags, ui->spinPage->value(), perpage, m_postFiltering->toPlainText().toLower().split(" ", QString::SkipEmptyParts), true, this);
 			connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(finishedLoading(Page*)));
 			m_pages.insert(page->website(), page);
 
@@ -213,8 +212,8 @@ void favoritesTab::finishedLoading(Page* page)
 
 	log(tr("Réception de la page <a href=\"%1\">%1</a>").arg(page->url().toString().toHtmlEscaped()));
 
-	QList<Image*> imgs;
-	for (Image *img : page->images())
+	QList<QSharedPointer<Image>> imgs;
+	for (QSharedPointer<Image> img : page->images())
 	{
 		if (img->createdAt() > m_loadFavorite || img->createdAt().isNull())
 		{ imgs.append(img); }
@@ -249,7 +248,7 @@ void favoritesTab::failedLoading(Page *page)
 
 void favoritesTab::postLoading(Page *page)
 {
-	QList<Image*> imgs;
+	QList<QSharedPointer<Image>> imgs;
 	if (!waitForMergedResults(ui->checkMergeResults->isChecked(), page, imgs))
 		return;
 

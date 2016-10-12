@@ -10,7 +10,7 @@
 
 
 
-Page::Page(Site *site, QList<Site*> sites, QStringList tags, int page, int limit, QStringList postFiltering, bool smart, QObject *parent, int pool, int lastPage, int lastPageMinId, int lastPageMaxId)
+Page::Page(Profile *profile, Site *site, QList<Site*> sites, QStringList tags, int page, int limit, QStringList postFiltering, bool smart, QObject *parent, int pool, int lastPage, int lastPageMinId, int lastPageMaxId)
 	: QObject(parent), m_site(site), m_regexApi(0), m_postFiltering(postFiltering), m_errors(QStringList()), m_imagesPerPage(limit), m_currentSource(0), m_lastPage(lastPage), m_lastPageMinId(lastPageMinId), m_lastPageMaxId(lastPageMaxId), m_smart(smart)
 {
 	m_website = m_site->url();
@@ -50,7 +50,7 @@ Page::Page(Site *site, QList<Site*> sites, QStringList tags, int page, int limit
 	// Generate pages
 	for (Api *api : m_site->getApis())
 	{
-		m_pageApis.append(new PageApi(this, m_site, api, m_search, page, limit, postFiltering, smart, parent, pool, lastPage, lastPageMinId, lastPageMaxId));
+		m_pageApis.append(new PageApi(this, profile, m_site, api, m_search, page, limit, postFiltering, smart, parent, pool, lastPage, lastPageMinId, lastPageMaxId));
 		if (api->getName() == "Html" && m_regexApi < 0)
 		{ m_regexApi = m_pageApis.count() - 1; }
 	}
@@ -63,7 +63,7 @@ Page::Page(Site *site, QList<Site*> sites, QStringList tags, int page, int limit
 }
 Page::~Page()
 {
-	// qDeleteAll(m_images);
+	qDeleteAll(m_pageApis);
 }
 
 void Page::fallback(bool bload)
@@ -157,7 +157,7 @@ QStringList		Page::search()		{ return m_search;								}
 QStringList		Page::errors()		{ return m_errors;								}
 int				Page::imagesPerPage()	{ return m_imagesPerPage;					}
 int				Page::page()		{ return m_page;								}
-QList<Image*>	Page::images()		{ return m_pageApis[m_currentApi]->images();	}
+QList<QSharedPointer<Image>>	Page::images()		{ return m_pageApis[m_currentApi]->images();	}
 QUrl			Page::url()			{ return m_pageApis[m_currentApi]->url();		}
 QString			Page::source()		{ return m_pageApis[m_currentApi]->source();	}
 QList<Tag>		Page::tags()		{ return m_pageApis[m_currentApi]->tags();		}

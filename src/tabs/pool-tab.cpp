@@ -115,7 +115,7 @@ void poolTab::load()
 	tags.append(m_settings->value("add").toString().trimmed().split(" ", QString::SkipEmptyParts));
 	tags.prepend("pool:"+QString::number(ui->spinPool->value()));
 	int perpage = ui->spinImagesPerPage->value();
-	Page *page = new Page(m_sites->value(ui->comboSites->currentText()), m_sites->values(), tags, ui->spinPage->value(), perpage, m_postFiltering->toPlainText().split(" ", QString::SkipEmptyParts), true, this);
+	Page *page = new Page(m_profile, m_sites->value(ui->comboSites->currentText()), m_sites->values(), tags, ui->spinPage->value(), perpage, m_postFiltering->toPlainText().split(" ", QString::SkipEmptyParts), true, this);
 	log(tr("Chargement de la page <a href=\"%1\">%1</a>").arg(page->url().toString().toHtmlEscaped()));
 	connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(finishedLoading(Page*)));
 	m_pages.insert(page->website(), page);
@@ -143,7 +143,7 @@ void poolTab::finishedLoading(Page* page)
 
 	log(tr("Réception de la page <a href=\"%1\">%1</a>").arg(page->url().toString().toHtmlEscaped()));
 
-	QList<Image*> imgs = page->images();
+	QList<QSharedPointer<Image>> imgs = page->images();
 	m_images.append(imgs);
 
 	int maxpage = page->pagesCount();

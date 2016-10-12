@@ -11,8 +11,8 @@
 
 
 
-PageApi::PageApi(Page *parentPage, Site *site, Api *api, QStringList tags, int page, int limit, QStringList postFiltering, bool smart, QObject *parent, int pool, int lastPage, int lastPageMinId, int lastPageMaxId)
-	: QObject(parent), m_parentPage(parentPage), m_site(site), m_api(api), m_profile(new Profile(savePath())), m_search(tags), m_postFiltering(postFiltering), m_errors(QStringList()), m_imagesPerPage(limit), m_currentSource(0), m_lastPage(lastPage), m_lastPageMinId(lastPageMinId), m_lastPageMaxId(lastPageMaxId), m_smart(smart), m_reply(nullptr), m_replyTags(nullptr)
+PageApi::PageApi(Page *parentPage, Profile *profile, Site *site, Api *api, QStringList tags, int page, int limit, QStringList postFiltering, bool smart, QObject *parent, int pool, int lastPage, int lastPageMinId, int lastPageMaxId)
+	: QObject(parent), m_parentPage(parentPage), m_profile(profile), m_site(site), m_api(api), m_search(tags), m_postFiltering(postFiltering), m_errors(QStringList()), m_imagesPerPage(limit), m_currentSource(0), m_lastPage(lastPage), m_lastPageMinId(lastPageMinId), m_lastPageMaxId(lastPageMaxId), m_smart(smart), m_reply(nullptr), m_replyTags(nullptr)
 {
 	m_imagesCount = -1;
 	m_pagesCount = -1;
@@ -23,9 +23,7 @@ PageApi::PageApi(Page *parentPage, Site *site, Api *api, QStringList tags, int p
 	updateUrls();
 }
 PageApi::~PageApi()
-{
-	// qDeleteAll(m_images);
-}
+{ }
 
 QUrl PageApi::parseUrl(QString url, int pid, int p, QString t, QString pseudo, QString password)
 {
@@ -186,7 +184,6 @@ void PageApi::updateUrls()
 void PageApi::load(bool rateLimit)
 {
 	// Reading reply and resetting vars
-	qDeleteAll(m_images);
 	m_images.clear();
 	m_tags.clear();
 	/*m_imagesCount = -1;
@@ -270,7 +267,7 @@ void PageApi::parseImage(QMap<QString,QString> d, int position)
 	{ d["sample_url"] = d["preview_url"]; }
 
 	// Generate image
-	Image *img = new Image(m_site, d, m_profile, m_parentPage);
+	QSharedPointer<Image> img = QSharedPointer<Image>(new Image(m_site, d, m_profile, m_parentPage));
 	QStringList errors = img->filter(m_postFiltering);
 
 	// If the file path is wrong (ends with "/.jpg")
@@ -279,7 +276,7 @@ void PageApi::parseImage(QMap<QString,QString> d, int position)
 
 	// Add if everything is ok
 	if (errors.isEmpty())
-	{ m_images.append(img); }
+	{ m_images.append(QSharedPointer<Image>(img)); }
 	else
 	{
 		img->deleteLater();
@@ -721,7 +718,7 @@ void PageApi::clear()
 	m_images.clear();
 }
 
-QList<Image*>	PageApi::images()		{ return m_images;		}
+QList<QSharedPointer<Image>>	PageApi::images()		{ return m_images;		}
 QUrl			PageApi::url()			{ return m_url;			}
 QString			PageApi::source()		{ return m_source;		}
 QString			PageApi::wiki()		{ return m_wiki;		}
@@ -764,7 +761,7 @@ int PageApi::pagesCount(bool guess)
 int PageApi::maxId()
 {
 	int maxId = 0;
-	for (Image *img : m_images)
+	for (QSharedPointer<Image> img : m_images)
 		if (img->id() > maxId || maxId == 0)
 			maxId = img->id();
 	return maxId;
@@ -772,7 +769,7 @@ int PageApi::maxId()
 int PageApi::minId()
 {
 	int minId = 0;
-	for (Image *img : m_images)
+	for (QSharedPointer<Image> img : m_images)
 		if (img->id() < minId || minId == 0)
 			minId = img->id();
 	return minId;

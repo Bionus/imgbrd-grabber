@@ -326,16 +326,26 @@ void TextEdit::unsetKfl()
 
 void TextEdit::insertFav(QAction *act)
 {
-	QString fav = act->text();
+	QString text = act->text();
+
 	QTextCursor cursor = this->textCursor();
 	int pos = cursor.columnNumber();
+
 	QString txt = this->toPlainText();
-	if(!cursor.hasSelection())
-	{ this->setPlainText(txt.mid(0, pos)+fav+txt.mid(pos)); }
+	if (!cursor.hasSelection())
+	{
+		if (pos == 0 && (txt.count() == 0 || txt[0] != ' '))
+			text.append(' ');
+		if (pos == txt.count() && txt[txt.count() - 1] != ' ')
+			text.prepend(' ');
+		this->setPlainText(txt.mid(0, pos) + text + txt.mid(pos));
+	}
 	else
-	{ this->setPlainText(txt.mid(0, cursor.selectionStart())+fav+txt.mid(cursor.selectionEnd())); }
+	{ this->setPlainText(txt.mid(0, cursor.selectionStart()) + text + txt.mid(cursor.selectionEnd())); }
+
 	cursor.clearSelection();
-	cursor.setPosition(pos+fav.length(), QTextCursor::KeepAnchor);
+	cursor.setPosition(pos + text.length(), QTextCursor::KeepAnchor);
+
 	this->setTextCursor(cursor);
 	this->doColor();
 }

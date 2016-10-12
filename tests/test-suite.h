@@ -5,6 +5,9 @@
 #include <QObject>
 #include <QList>
 
+#include "models/profile.h"
+
+
 #ifdef _MSC_VER
 	#include <crtdbg.h>
 
@@ -47,6 +50,9 @@ class TestSuite : public QObject
 
 	public:
 		static QList<QObject*> suites;
+
+	protected:
+		Profile profile;
 };
 
 #endif // TEST_SUITE_H

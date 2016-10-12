@@ -17,7 +17,7 @@ class BlacklistFix1 : public QDialog
 	Q_OBJECT
 
 	public:
-		explicit BlacklistFix1(QMap<QString,Site*> sites, QWidget *parent = 0);
+		explicit BlacklistFix1(Profile *profile, QMap<QString,Site*> sites, QWidget *parent = 0);
 		~BlacklistFix1();
 
 	private slots:
@@ -27,6 +27,7 @@ class BlacklistFix1 : public QDialog
 
 	private:
 		Ui::BlacklistFix1 *ui;
+		Profile *m_profile;
 		QMap<QString,Site*> m_sites;
 		QList<QMap<QString,QString> > m_details;
 		QMap<QString,QMap<QString,QString> > m_getAll;

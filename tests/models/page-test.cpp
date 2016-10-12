@@ -6,21 +6,14 @@
 
 void PageTest::init()
 {
-	m_settings = new QSettings("tests/resources/settings.ini", QSettings::IniFormat);
-
 	m_sites.append(new Site("danbooru.donmai.us", new Source("release/sites/Danbooru (2.0)")));
 	m_site = new Site("gelbooru.com", new Source("release/sites/Gelbooru (0.2)"));
-}
-
-void PageTest::cleanup()
-{
-	m_settings->deleteLater();
 }
 
 
 void PageTest::testIncompatibleModifiers()
 {
-	Page page(m_site, m_sites, QStringList() << "test" << "status:deleted");
+	Page page(&profile, m_site, m_sites, QStringList() << "test" << "status:deleted");
 
 	QCOMPARE(page.search().count(), 1);
 	QCOMPARE(page.search().first(), QString("test"));
@@ -28,7 +21,7 @@ void PageTest::testIncompatibleModifiers()
 
 void PageTest::testLoadAbort()
 {
-	Page page(m_site, m_sites, QStringList() << "test" << "status:deleted");
+	Page page(&profile, m_site, m_sites, QStringList() << "test" << "status:deleted");
 
 	QSignalSpy spy(&page, SIGNAL(finishedLoading(Page*)));
 	page.load();
@@ -38,7 +31,7 @@ void PageTest::testLoadAbort()
 
 void PageTest::testLoadTagsAbort()
 {
-	Page page(m_site, m_sites, QStringList() << "test" << "status:deleted");
+	Page page(&profile, m_site, m_sites, QStringList() << "test" << "status:deleted");
 
 	QSignalSpy spy(&page, SIGNAL(finishedLoadingTags(Page*)));
 	page.loadTags();

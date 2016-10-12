@@ -108,10 +108,10 @@ class Image : public QObject
 		void downloadProgressImageS(qint64, qint64);
 
 	signals:
-		void finishedLoadingPreview(Image*);
-		void finishedLoadingTags(Image*);
-		void finishedImage(Image*);
-		void downloadProgressImage(Image*, qint64, qint64);
+		void finishedLoadingPreview();
+		void finishedLoadingTags();
+		void finishedImage();
+		void downloadProgressImage(qint64, qint64);
 		void urlChanged(QString, QString);
 
 	private:

@@ -160,7 +160,7 @@ void tagTab::load()
 			int perpage = ui->spinImagesPerPage->value();
 
 			// Load results
-			Page *page = new Page(m_sites->value(m_sites->keys().at(i)), m_sites->values(), tags, ui->spinPage->value(), perpage, m_postFiltering->toPlainText().split(" ", QString::SkipEmptyParts), false, this, 0, m_lastPage, m_lastPageMinId, m_lastPageMaxId);
+			Page *page = new Page(m_profile, m_sites->value(m_sites->keys().at(i)), m_sites->values(), tags, ui->spinPage->value(), perpage, m_postFiltering->toPlainText().split(" ", QString::SkipEmptyParts), false, this, 0, m_lastPage, m_lastPageMinId, m_lastPageMaxId);
 			log(tr("Chargement de la page <a href=\"%1\">%1</a>").arg(page->url().toString().toHtmlEscaped()));
 			connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(finishedLoading(Page*)));
 			connect(page, SIGNAL(failedLoading(Page*)), this, SLOT(failedLoading(Page*)));
@@ -203,7 +203,7 @@ void tagTab::finishedLoading(Page* page)
 	m_lastPage = page->page();
 	m_lastPageMinId = page->minId();
 	m_lastPageMaxId = page->maxId();
-	QList<Image*> imgs = page->images();
+	QList<QSharedPointer<Image>> imgs = page->images();
 	m_images.append(imgs);
 
 	int maxpage = page->pagesCount();
@@ -231,7 +231,7 @@ void tagTab::failedLoading(Page *page)
 
 void tagTab::postLoading(Page *page)
 {
-	QList<Image*> imgs;
+	QList<QSharedPointer<Image>> imgs;
 	if (!waitForMergedResults(ui->checkMergeResults->isChecked(), page, imgs))
 		return;
 

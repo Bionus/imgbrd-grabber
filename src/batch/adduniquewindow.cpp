@@ -73,13 +73,13 @@ void AddUniqueWindow::ok(bool close)
 		details.insert("md5", ui->lineMd5->text());
 		details.insert("website", ui->comboSites->currentText());
 		details.insert("site", QString::number((qintptr)m_sites[ui->comboSites->currentText()]));
-		Image *img = new Image(site, details, m_profile);
-		img->loadDetails();
-		connect(img, SIGNAL(finishedLoadingTags(Image*)), this, SLOT(addImage(Image*)));
+		m_image = QSharedPointer<Image>(new Image(site, details, m_profile));
+		connect(m_image.data(), &Image::finishedLoadingTags, this, &AddUniqueWindow::addLoadedImage);
+		m_image->loadDetails();
 	}
 	else
 	{
-		m_page = new Page(m_sites[ui->comboSites->currentText()], m_sites.values(), QStringList() << (ui->lineId->text().isEmpty() ? "md5:"+ui->lineMd5->text() : "id:"+ui->lineId->text()) << "status:any", 1, 1);
+		m_page = new Page(m_profile, m_sites[ui->comboSites->currentText()], m_sites.values(), QStringList() << (ui->lineId->text().isEmpty() ? "md5:"+ui->lineMd5->text() : "id:"+ui->lineId->text()) << "status:any", 1, 1);
 		connect(m_page, SIGNAL(finishedLoading(Page*)), this, SLOT(replyFinished(Page*)));
 		m_page->load();
 	}
@@ -93,19 +93,24 @@ void AddUniqueWindow::replyFinished(Page *p)
 {
 	if (p->images().isEmpty())
 	{
+		p->deleteLater();
 		error(this, tr("Aucune image n'a été trouvée."));
 		return;
 	}
 
-	Image *img = p->images().first();
-	addImage(img);
+	addImage(p->images().first());
+	p->deleteLater();
 }
 
-void AddUniqueWindow::addImage(Image *img)
+void AddUniqueWindow::addLoadedImage()
+{
+	addImage(m_image);
+}
+void AddUniqueWindow::addImage(QSharedPointer<Image> img)
 {
 	QStringList tags;
 	for (Tag tag : img->tags())
-	{ tags.append(tag.text()); }
+		tags.append(tag.text());
 
 	QMap<QString,QString> values;
 	values.insert("id", QString::number(img->id()));
@@ -125,5 +130,5 @@ void AddUniqueWindow::addImage(Image *img)
 	emit sendData(values);
 
 	if (m_close)
-	{ this->close(); }
+		this->close();
 }

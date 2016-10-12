@@ -34,6 +34,7 @@ class SearchWindow : public QDialog
 		Ui::SearchWindow	*ui;
 		QCalendarWidget		*m_calendar;
 		TextEdit			*m_tags;
+		Profile				*m_profile;
 };
 
 #endif // SEARCHWINDOW_H

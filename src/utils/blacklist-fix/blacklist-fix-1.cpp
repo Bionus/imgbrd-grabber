@@ -11,7 +11,8 @@
 
 
 
-BlacklistFix1::BlacklistFix1(QMap<QString,Site*> sites, QWidget *parent) : QDialog(parent), ui(new Ui::BlacklistFix1), m_sites(sites)
+BlacklistFix1::BlacklistFix1(Profile *profile, QMap<QString,Site*> sites, QWidget *parent)
+	: QDialog(parent), ui(new Ui::BlacklistFix1), m_profile(profile), m_sites(sites)
 {
 	ui->setupUi(this);
 
@@ -128,9 +129,10 @@ void BlacklistFix1::getAll(Page *p)
 {
 	if (p != nullptr && p->images().size() > 0)
 	{
-		Image *img = p->images().at(0);
+		QSharedPointer<Image> img = p->images().at(0);
 		m_getAll[img->md5()].insert("tags", img->tagsString().join(" "));
 		ui->progressBar->setValue(ui->progressBar->value() + 1);
+		p->deleteLater();
 	}
 
 	if (!m_details.empty())
@@ -138,7 +140,7 @@ void BlacklistFix1::getAll(Page *p)
 		QMap<QString, QString> det = m_details.takeFirst();
 		m_getAll.insert(det.value("md5"), det);
 
-		Page *page = new Page(m_sites.value(ui->comboSource->currentText()), m_sites.values(), QStringList("md5:" + det.value("md5")), 1, 1);
+		Page *page = new Page(m_profile, m_sites.value(ui->comboSource->currentText()), m_sites.values(), QStringList("md5:" + det.value("md5")), 1, 1);
 		connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(getAll(Page*)));
 		page->load();
 	}

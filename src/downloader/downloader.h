@@ -17,9 +17,9 @@ class Downloader : public QObject
 	public:
 		Downloader();
 		~Downloader();
-		Downloader(QStringList tags, QStringList postfiltering, QList<Site*> sources, int page, int max, int perpage, QString location, QString filename, QString user, QString password, bool blacklist, QStringList blacklistedtags, bool noduplicates, int tagsmin, QString tagsformat);
+		Downloader(Profile *profile, QStringList tags, QStringList postfiltering, QList<Site*> sources, int page, int max, int perpage, QString location, QString filename, QString user, QString password, bool blacklist, QStringList blacklistedtags, bool noduplicates, int tagsmin, QString tagsformat);
 		void setQuit(bool quit);
-		void downloadImages(QList<Image*> images);
+		void downloadImages(QList<QSharedPointer<Image>> images);
 		void loadNext();
 		void setData(QVariant data);
 		void getPageCount();
@@ -39,9 +39,9 @@ class Downloader : public QObject
 		void finishedPageCount(int);
 		void finishedTags(QList<Tag>);
 		void finishedPageTags(QList<Tag>);
-		void finishedImages(QList<Image*>);
+		void finishedImages(QList<QSharedPointer<Image>>);
 		void finishedImagesPage(Page *page);
-		void finishedImage(Image *image);
+		void finishedImage(QSharedPointer<Image> image);
 		void finishedUrls(QStringList);
 		void finishedUrlsPage(Page *page);
 		void quit();
@@ -56,11 +56,12 @@ class Downloader : public QObject
 		void finishedLoadingPageTags(Page *page);
 		void finishedLoadingImages(Page *page);
 		void finishedLoadingUrls(Page *page);
-		void finishedLoadingImage(Image *image);
+		void finishedLoadingImage();
 		void cancel();
 		void clear();
 
 	private:
+		Profile *m_profile;
 		Page *m_lastPage;
 		QStringList m_tags, m_postfiltering;
 		QList<Site*> m_sites;
@@ -71,7 +72,7 @@ class Downloader : public QObject
 		QStringList m_blacklistedTags;
 
 		QList<Page*> m_pages, m_pagesC, m_pagesT, m_opages, m_opagesC, m_opagesT;
-		QList<Image*> m_images;
+		QList<QSharedPointer<Image>> m_images, m_imagesDownloading;
 		QList<QPair<Site*, int> > m_pagesP, m_opagesP;
 		QList<Tag> m_results;
 		QVariant m_data;

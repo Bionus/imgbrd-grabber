@@ -12,7 +12,6 @@ class PageTest : public TestSuite
 
 	private slots:
 		void init();
-		void cleanup();
 
 		void testIncompatibleModifiers();
 		void testLoadAbort();

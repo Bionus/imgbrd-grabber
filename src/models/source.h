@@ -16,7 +16,7 @@ class Source : public QObject
 	Q_OBJECT
 
 	public:
-        Source(QString dir);
+		Source(QString dir);
 		~Source();
 
 		// Getters

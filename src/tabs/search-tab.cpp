@@ -166,7 +166,7 @@ QStringList searchTab::reasonsToFail(Page* page, QStringList completion, QString
 	return reasons;
 }
 
-QColor searchTab::imageColor(Image *img) const
+QColor searchTab::imageColor(QSharedPointer<Image> img) const
 {
 	// Blacklisted
 	QStringList blacklistedtags(m_settings->value("blacklistedtags").toString().split(" "));
@@ -226,7 +226,6 @@ void searchTab::clear()
 	m_pages.clear();
 	for (int i = 0; i < m_images.size(); i++)
 	{ m_images.at(i)->abortPreview(); }
-	//qDeleteAll(m_images);
 	m_images.clear();
 }
 
@@ -247,13 +246,13 @@ TextEdit *searchTab::createAutocomplete()
 	return ret;
 }
 
-void searchTab::loadImageThumbnails(Page *page, const QList<Image *> &imgs)
+void searchTab::loadImageThumbnails(Page *page, const QList<QSharedPointer<Image>> &imgs)
 {
 	QStringList tags = page->search();
 	for (int i = 0; i < imgs.count(); i++)
 	{
 		QStringList detected;
-		Image *img = imgs.at(i);
+		QSharedPointer<Image> img = imgs.at(i);
 		QList<QChar> modifiers = QList<QChar>() << '~';
 		for (int r = 0; r < tags.size(); r++)
 		{
@@ -266,15 +265,22 @@ void searchTab::loadImageThumbnails(Page *page, const QList<Image *> &imgs)
 		{ log(tr("Image #%1 ignorée. Raison : %2.").arg(i).arg("\""+detected.join(", ")+"\""));; }
 		else
 		{
-			connect(img, SIGNAL(finishedLoadingPreview(Image*)), this, SLOT(finishedLoadingPreview(Image*)));
+			connect(img.data(), &Image::finishedLoadingPreview, this, &searchTab::finishedLoadingPreview);
 			img->loadPreview();
 		}
 	}
 }
 
-void searchTab::finishedLoadingPreview(Image *img)
+void searchTab::finishedLoadingPreview()
 {
 	if (m_stop)
+		return;
+
+	QSharedPointer<Image> img;
+	for (QSharedPointer<Image> i : m_images)
+		if (i.data() == sender())
+			img = i;
+	if (img.isNull())
 		return;
 
 	if (img->previewImage().isNull())
@@ -307,29 +313,29 @@ void searchTab::finishedLoadingPreview(Image *img)
 		else
 		{ download = true; }
 
-		if (download)
+		/*if (download)
 		{
-			connect(img, SIGNAL(finishedImage(Image*)), m_parent, SLOT(saveImage(Image*)));
-			connect(img, SIGNAL(finishedImage(Image*)), m_parent, SLOT(decreaseDownloads()));
+			connect(img.data(), SIGNAL(finishedImage(Image*)), m_parent, SLOT(saveImage(Image*)));
+			connect(img.data(), SIGNAL(finishedImage(Image*)), m_parent, SLOT(decreaseDownloads()));
 
 			Filename filename(m_settings->value("Save/filename").toString());
 			if (filename.needExactTags(img->page()->site()))
 			{
-				connect(img, SIGNAL(finishedLoadingTags(Image*)), img, SLOT(loadImage()));
+				connect(img.data(), &Image::finishedLoadingTags, img.data(), &Image::loadImage);
 				img->loadDetails();
 			}
 			else
 			{ img->loadImage(); }
 
 			m_parent->increaseDownloads();
-		}
+		}*/
 	}
 
 	bool merge = ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked() && !m_images.empty();
 	addResultsImage(img, merge);
 }
 
-bool searchTab::waitForMergedResults(bool merged, Page *page, QList<Image*> &imgs)
+bool searchTab::waitForMergedResults(bool merged, Page *page, QList<QSharedPointer<Image>> &imgs)
 {
 	m_page++;
 
@@ -359,7 +365,7 @@ bool searchTab::waitForMergedResults(bool merged, Page *page, QList<Image*> &img
 	return true;
 }
 
-void searchTab::addResultsPage(Page *page, const QList<Image*> &imgs, QString noResultsMessage)
+void searchTab::addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage)
 {
 	int pos = m_pages.values().indexOf(page);
 	if (pos < 0)
@@ -377,7 +383,7 @@ void searchTab::addResultsPage(Page *page, const QList<Image*> &imgs, QString no
 	if (m_layouts.size() > pos)
 	{ ui_layoutResults->addLayout(m_layouts[pos], page_y + 1, page_x); }
 }
-void searchTab::setPageLabelText(QLabel *txt, Page *page, const QList<Image*> &imgs, QString noResultsMessage)
+void searchTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage)
 {
 	// No results message
 	if (imgs.count() == 0)
@@ -418,7 +424,7 @@ void searchTab::setPageLabelText(QLabel *txt, Page *page, const QList<Image*> &i
 		txt->setText(txt->text()+"<br/>"+page->errors().join("<br/>"));
 	}
 }
-void searchTab::addResultsImage(Image *img, bool merge)
+void searchTab::addResultsImage(QSharedPointer<Image> img, bool merge)
 {
 	int position = m_images.indexOf(img);
 	int page = 0;
@@ -520,7 +526,7 @@ void searchTab::getSel()
 	if (m_selectedImagesPtrs.empty())
 		return;
 
-	for (Image *img : m_selectedImagesPtrs)
+	for (QSharedPointer<Image> img : m_selectedImagesPtrs)
 	{
 		QStringList tags;
 		for (Tag tag : img->tags())
@@ -590,7 +596,7 @@ void searchTab::updateCheckboxes()
 
 void searchTab::webZoom(int id)
 {
-	Image *image = m_images.at(id);
+	QSharedPointer<Image> image = m_images.at(id);
 
 	if (!m_settings->value("blacklistedtags").toString().isEmpty())
 	{
@@ -620,33 +626,33 @@ void searchTab::mouseReleaseEvent(QMouseEvent *e)
 }
 
 
-void searchTab::selectImage(Image *img)
+void searchTab::selectImage(QSharedPointer<Image> img)
 {
-	if (!m_selectedImages.contains(img->url()))
+	if (!m_selectedImagesPtrs.contains(img))
 	{
 		m_selectedImagesPtrs.append(img);
 		m_selectedImages.append(img->url());
 	}
 }
 
-void searchTab::unselectImage(Image *img)
+void searchTab::unselectImage(QSharedPointer<Image> img)
 {
-	if (m_selectedImages.contains(img->url()))
+	if (m_selectedImagesPtrs.contains(img))
 	{
-		int pos = m_selectedImages.indexOf(img->url());
+		int pos = m_selectedImagesPtrs.indexOf(img);
 		m_selectedImagesPtrs.removeAt(pos);
 		m_selectedImages.removeAt(pos);
 	}
 }
 
-void searchTab::toggleImage(Image *img)
+void searchTab::toggleImage(QSharedPointer<Image> img)
 {
-	bool selected = m_selectedImages.contains(img->url());
+	bool selected = m_selectedImagesPtrs.contains(img);
 	m_boutons[img]->setChecked(!selected);
 
 	if (selected)
 	{
-		int pos = m_selectedImages.indexOf(img->url());
+		int pos = m_selectedImagesPtrs.indexOf(img);
 		m_selectedImagesPtrs.removeAt(pos);
 		m_selectedImages.removeAt(pos);
 	}
@@ -689,13 +695,27 @@ void searchTab::openSourcesWindow()
 void searchTab::saveSources(QList<bool> sel)
 {
 	log(tr("Sauvegarde des sources..."));
-	m_selectedSources = sel;
+
 	QString sav;
-	for (int i = 0; i < m_selectedSources.count(); i++)
-	{ sav += (m_selectedSources.at(i) ? "1" : "0"); }
+	for (bool enabled : sel)
+	{ sav += (enabled ? "1" : "0"); }
 	m_settings->setValue("sites", sav);
-	DONE();
+	m_selectedSources = sel;
+
+	// Log into new sources
+	QStringList keys = m_sites->keys();
+	for (int i = 0; i < m_sites->count(); i++)
+	{
+		if (sav.at(i) == '1')
+		{ m_sites->value(keys[i])->login(); }
+	}
+
 	updateCheckboxes();
+
+	DONE();
+
+	if (m_history.isEmpty())
+	{ load(); }
 }
 
 

@@ -15,7 +15,8 @@
 #include "qcustomnetworkreply.h"
 #ifdef QT_DEBUG
 	#include <QDebug>
-	#define CACHE_POLICY QNetworkRequest::PreferCache
+	// #define CACHE_POLICY QNetworkRequest::PreferCache
+	#define CACHE_POLICY QNetworkRequest::PreferNetwork
 #else
 	#define CACHE_POLICY QNetworkRequest::PreferNetwork
 #endif
