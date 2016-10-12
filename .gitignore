@@ -48,6 +48,7 @@ CrashReporter/release/
 *.vcxproj.filters
 *.vcxproj.user
 Grabber.VC.*
+win32/
 
 
 # CLion
