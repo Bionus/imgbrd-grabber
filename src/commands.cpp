@@ -32,7 +32,8 @@ Commands::Commands(Profile *profile)
 		settings->endGroup();
 	settings->endGroup();
 
-	m_mysql = !m_mysqlSettings.host.isEmpty() && !m_mysqlSettings.user.isEmpty() && !m_mysqlSettings.database.isEmpty();
+	m_mysql = (m_mysqlSettings.driver == "QSQLITE" && !m_mysqlSettings.database.isEmpty())
+			  || (!m_mysqlSettings.host.isEmpty() && !m_mysqlSettings.user.isEmpty() && !m_mysqlSettings.database.isEmpty());
 	m_started = false;
 }
 
