@@ -35,7 +35,7 @@ install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       brew update &&
       brew install qt5 &&
-      PATH=/usr/local/Cellar/qt5/5.6.1-1/bin:$PATH &&
+      PATH=/usr/local/Cellar/qt5/5.6.2/bin:$PATH &&
       export PATH
     ; fi
 
