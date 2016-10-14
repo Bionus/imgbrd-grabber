@@ -36,8 +36,18 @@ void Site::loadConfig()
 	m_settings = new QSettings(m_source->getPath() + "/" + m_url + "/settings.ini", QSettings::IniFormat);
 	m_name = m_settings->value("name", m_url).toString();
 
-	// Apis
-	QStringList defaults = QStringList() << "Xml" << "Json" << "Rss" << "Regex";
+	// Get default source order
+	QSettings defaultSettings(savePath("settings.ini"), QSettings::IniFormat);
+	QStringList defaults;
+	defaults << defaultSettings.value("source_1").toString()
+			 << defaultSettings.value("source_2").toString()
+			 << defaultSettings.value("source_3").toString()
+			 << defaultSettings.value("source_4").toString();
+	defaults.removeAll("");
+	if (defaults.isEmpty())
+	{ defaults =  QStringList() << "Xml" << "Json" << "Regex" << "Rss"; }
+
+	// Get overriden source order
 	QStringList sources;
 	if (!m_settings->value("sources/usedefault", true).toBool())
 	{
@@ -48,14 +58,13 @@ void Site::loadConfig()
 		sources.removeAll("");
 		if (sources.isEmpty())
 		{ sources = defaults; }
-		else
-		{
-			for (int i = 0; i < sources.count(); i++)
-			{ sources[i][0] = sources[i][0].toUpper(); }
-		}
 	}
 	else
 	{ sources = defaults; }
+	for (int i = 0; i < sources.count(); i++)
+	{ sources[i][0] = sources[i][0].toUpper(); }
+
+	// Apis
 	m_apis.clear();
 	for (QString src : sources)
 	{
