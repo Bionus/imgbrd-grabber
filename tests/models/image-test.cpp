@@ -361,7 +361,7 @@ void ImageTest::testValue()
 void ImageTest::testLoadPreview()
 {
 	// Load preview
-	QSignalSpy spy(m_img, &Image::finishedLoadingPreview);
+	QSignalSpy spy(m_img, SIGNAL(finishedLoadingPreview()));
 	m_img->loadPreview();
 	QVERIFY(spy.wait());
 
@@ -370,7 +370,7 @@ void ImageTest::testLoadPreview()
 }
 void ImageTest::testLoadPreviewAbort()
 {
-	QSignalSpy spy(m_img, &Image::finishedLoadingPreview);
+	QSignalSpy spy(m_img, SIGNAL(finishedLoadingPreview()));
 	m_img->loadPreview();
 	m_img->abortPreview();
 	QVERIFY(!spy.wait(1000));
@@ -379,7 +379,7 @@ void ImageTest::testLoadPreviewAbort()
 void ImageTest::testLoadImage()
 {
 	// Load preview
-	QSignalSpy spy(m_img, &Image::finishedImage);
+	QSignalSpy spy(m_img, SIGNAL(finishedImage()));
 	m_img->loadImage();
 	QVERIFY(spy.wait());
 
@@ -388,7 +388,7 @@ void ImageTest::testLoadImage()
 }
 void ImageTest::testLoadImageAbort()
 {
-	QSignalSpy spy(m_img, &Image::finishedImage);
+	QSignalSpy spy(m_img, SIGNAL(finishedImage()));
 	m_img->loadImage();
 	m_img->abortImage();
 	QVERIFY(!spy.wait(1000));
@@ -397,7 +397,7 @@ void ImageTest::testLoadImageAbort()
 void ImageTest::testLoadDetails()
 {
 	// Load details
-	QSignalSpy spy(m_img, &Image::finishedLoadingTags);
+	QSignalSpy spy(m_img, SIGNAL(finishedLoadingTags()));
 	m_img->loadDetails();
 	QVERIFY(spy.wait());
 
@@ -419,7 +419,7 @@ void ImageTest::testLoadDetails()
 }
 void ImageTest::testLoadDetailsAbort()
 {
-	QSignalSpy spy(m_img, &Image::finishedLoadingTags);
+	QSignalSpy spy(m_img, SIGNAL(finishedLoadingTags()));
 	m_img->loadDetails();
 	m_img->abortTags();
 	QVERIFY(!spy.wait(1000));
@@ -432,7 +432,7 @@ void ImageTest::testLoadDetailsImageUrl()
 	m_img = new Image(m_site, m_details, m_profile);
 
 	// Load details
-	QSignalSpy spy(m_img, &Image::finishedLoadingTags);
+	QSignalSpy spy(m_img, SIGNAL(finishedLoadingTags()));
 	m_img->loadDetails();
 	QVERIFY(spy.wait());
 

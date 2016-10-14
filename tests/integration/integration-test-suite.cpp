@@ -49,7 +49,7 @@ QList<Image*> IntegrationTestSuite::getImages(QString site, QString source, QStr
 	m_downloader->setQuit(false);
 
 	// Wait for downloader
-	QSignalSpy spy(m_downloader, &Downloader::finishedImages);
+	QSignalSpy spy(m_downloader, SIGNAL(finishedImages(QList<QSharedPointer<Image>>)));
 	m_downloader->getImages();
 	if (!spy.wait())
 		return result;
@@ -104,7 +104,7 @@ QList<Tag> IntegrationTestSuite::getPageTags(QString site, QString source, QStri
 	m_downloader->setQuit(false);
 
 	// Wait for downloader
-	QSignalSpy spy(m_downloader, &Downloader::finishedTags);
+	QSignalSpy spy(m_downloader, SIGNAL(finishedTags(QList<Tag>)));
 	m_downloader->getPageTags();
 	if (!spy.wait())
 		return result;
