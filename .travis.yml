@@ -8,7 +8,7 @@ dist: trusty
 # OS X build
 matrix:
   include:
-	- os: osx
+    - os: osx
 
 # Codecov token
 env:
