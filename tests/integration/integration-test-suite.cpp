@@ -49,7 +49,7 @@ QList<Image*> IntegrationTestSuite::getImages(QString site, QString source, QStr
 	m_downloader->setQuit(false);
 
 	// Wait for downloader
-	QSignalSpy spy(m_downloader, SIGNAL(finishedImages(QList<Image*>)));
+	QSignalSpy spy(m_downloader, &Downloader::finishedImages);
 	m_downloader->getImages();
 	if (!spy.wait())
 		return result;
@@ -61,8 +61,8 @@ QList<Image*> IntegrationTestSuite::getImages(QString site, QString source, QStr
 	// Convert results
 	for (QVariant variant : variants)
 	{
-		Image *img = variant.value<Image*>();
-		result.append(img);
+		QSharedPointer<Image> img = variant.value<QSharedPointer<Image>>();
+		result.append(img.data());
 	}
 	return result;
 }
@@ -104,7 +104,7 @@ QList<Tag> IntegrationTestSuite::getPageTags(QString site, QString source, QStri
 	m_downloader->setQuit(false);
 
 	// Wait for downloader
-	QSignalSpy spy(m_downloader, SIGNAL(finishedTags(QList<Tag>)));
+	QSignalSpy spy(m_downloader, &Downloader::finishedTags);
 	m_downloader->getPageTags();
 	if (!spy.wait())
 		return result;
