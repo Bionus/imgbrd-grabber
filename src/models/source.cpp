@@ -10,8 +10,8 @@
 
 QList<Source*> *g_allSources = Q_NULLPTR;
 
-Source::Source(QString dir)
-	: m_dir(dir), m_updateReply(nullptr), m_updateVersion("")
+Source::Source(Profile *profile, QString dir)
+	: m_dir(dir), m_profile(profile), m_updateReply(nullptr), m_updateVersion("")
 {
 	// Load XML details for this source from its model file
 	QFile file(m_dir + "/model.xml");
@@ -124,6 +124,7 @@ QString Source::getPath() const 			{ return m_dir;				}
 QList<Site*> Source::getSites() const		{ return m_sites;			}
 QList<Api*> Source::getApis() const			{ return m_apis;			}
 QString Source::getUpdateVersion() const	{ return m_updateVersion;	}
+Profile *Source::getProfile() const			{ return m_profile;			}
 
 Api *Source::getApi(QString name) const
 {
@@ -135,17 +136,17 @@ Api *Source::getApi(QString name) const
 
 
 
-QList<Source*> *Source::getAllSources()
+QList<Source*> *Source::getAllSources(Profile *profile)
 {
 	if (g_allSources != Q_NULLPTR)
 		return g_allSources;
 
 	QList<Source*> *sources = new QList<Source*>();
-	QStringList dirs = QDir(savePath("sites")).entryList(QDir::Dirs | QDir::NoDotAndDotDot);
+	QStringList dirs = QDir(profile->getPath() + "/sites/").entryList(QDir::Dirs | QDir::NoDotAndDotDot);
 
 	for (QString dir : dirs)
 	{
-		Source *source = new Source(savePath("sites/" + dir));
+		Source *source = new Source(profile, profile->getPath() + "/sites/" + dir);
 		sources->append(source);
 	}
 

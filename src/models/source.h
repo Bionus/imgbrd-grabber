@@ -6,6 +6,7 @@
 #include <QMap>
 #include <QNetworkReply>
 #include "api.h"
+#include "profile.h"
 
 
 
@@ -16,7 +17,7 @@ class Source : public QObject
 	Q_OBJECT
 
 	public:
-		Source(QString dir);
+		Source(Profile *profile, QString dir);
 		~Source();
 
 		// Getters
@@ -24,11 +25,12 @@ class Source : public QObject
 		QString getPath() const;
 		QList<Site*> getSites() const;
 		QList<Api*> getApis() const;
-		Api* getApi(QString name) const;
+		Api *getApi(QString name) const;
 		QString getUpdateVersion() const;
+		Profile *getProfile() const;
 
 		// Get an unique pointer to the list of all sources
-		static QList<Source*> *getAllSources();
+		static QList<Source*> *getAllSources(Profile *profile);
 
 	public slots:
 		// Check if a more recent model.xml exists for this source
@@ -43,6 +45,7 @@ class Source : public QObject
 		QString m_name;
 		QList<Site*> m_sites;
 		QList<Api*> m_apis;
+		Profile *m_profile;
 
 		// Check for updates
 		QNetworkAccessManager *m_manager;

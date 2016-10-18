@@ -27,7 +27,7 @@ QList<Image*> IntegrationTestSuite::getImages(QString site, QString source, QStr
 	settings.setValue("sources/source_1", format);
 
 	QList<Site*> sites;
-	sites.append(new Site(source, new Source("tests/resources/sites/" + site)));
+	sites.append(new Site(source, new Source(&profile, "tests/resources/sites/" + site)));
 
 	QList<Image*> result;
 	m_downloader = new Downloader(&profile,
@@ -82,7 +82,7 @@ QList<Tag> IntegrationTestSuite::getPageTags(QString site, QString source, QStri
 	settings.setValue("sources/source_1", format);
 
 	QList<Site*> sites;
-	sites.append(new Site(source, new Source("tests/resources/sites/" + site)));
+	sites.append(new Site(source, new Source(&profile, "tests/resources/sites/" + site)));
 
 	QList<Tag> result;
 	m_downloader = new Downloader(&profile,

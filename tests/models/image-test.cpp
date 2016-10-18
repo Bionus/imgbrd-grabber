@@ -53,7 +53,7 @@ void ImageTest::init()
 	m_settings->setValue("Coloring/Fonts/generals", ",8.25,-1,5,50,0,0,0,0,0");
 	m_settings->setValue("Save/md5Duplicates", "save");
 
-	m_source = new Source("release/sites/Danbooru (2.0)");
+	m_source = new Source(&profile, "release/sites/Danbooru (2.0)");
 	m_site = new Site("danbooru.donmai.us", m_source);
 	m_img = new Image(m_site, m_details, m_profile);
 }

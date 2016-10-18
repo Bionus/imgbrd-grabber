@@ -149,17 +149,17 @@ void SourcesSettingsWindow::loginTested(Site*, Site::LoginResult result)
 {
 	switch (result)
 	{
-		case Site::LoginSuccess:
+		case Site::LoginResult::Success:
 			ui->labelTestCredentials->setText("<i>" + tr("Succès !") + "</i>");
 			ui->labelTestLogin->setText("<i>" + tr("Succès !") + "</i>");
 			break;
 
-		case Site::LoginError:
+		case Site::LoginResult::Error:
 			ui->labelTestCredentials->setText("<i>" + tr("Échec") + "</i>");
 			ui->labelTestLogin->setText("<i>" + tr("Échec") + "</i>");
 			break;
 
-		case Site::LoginNoLogin:
+		default:
 			ui->labelTestCredentials->setText("<i>" + tr("Impossible de tester") + "</i>");
 			ui->labelTestLogin->setText("<i>" + tr("Impossible de tester") + "</i>");
 			break;

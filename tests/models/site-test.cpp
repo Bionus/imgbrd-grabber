@@ -14,7 +14,7 @@ void SiteTest::init()
 	QFile::copy("release/sites/Danbooru (2.0)/danbooru.donmai.us/settings.ini", "tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/settings.ini");
 
 	m_settings = new QSettings("tests/resources/settings.ini", QSettings::IniFormat);
-	m_source = new Source("tests/resources/sites/Danbooru (2.0)");
+	m_source = new Source(&profile, "tests/resources/sites/Danbooru (2.0)");
 	m_site = new Site("danbooru.donmai.us", m_source);
 }
 
@@ -35,7 +35,7 @@ void SiteTest::testDefaultApis()
 	settings.setValue("sources/source_3", "");
 	settings.setValue("sources/source_4", "");
 
-	Source source("tests/resources/sites/Danbooru (2.0)");
+	Source source(&profile, "tests/resources/sites/Danbooru (2.0)");
 	Site site("danbooru.donmai.us", &source);
 
 	QCOMPARE(site.getApis().count(), 3);
@@ -50,7 +50,7 @@ void SiteTest::testNoApis()
 	settings.setValue("sources/source_3", "3");
 	settings.setValue("sources/source_4", "4");
 
-	Source source("tests/resources/sites/Danbooru (2.0)");
+	Source source(&profile, "tests/resources/sites/Danbooru (2.0)");
 	Site site("danbooru.donmai.us", &source);
 
 	QCOMPARE(site.getApis().count(), 0);
@@ -98,12 +98,12 @@ void SiteTest::testGetSites()
 {
 	QList<Site*> sites;
 
-	sites = Site::getSites(QStringList() << "danbooru.donmai.us");
+	sites = Site::getSites(&profile, QStringList() << "danbooru.donmai.us");
 	QCOMPARE(sites.count(), 1);
 	QCOMPARE(sites.first()->url(), QString("danbooru.donmai.us"));
 	QCOMPARE(sites.first()->type(), QString("Danbooru (2.0)"));
 
-	sites = Site::getSites(QStringList() << "test (does not exist)" << "danbooru.donmai.us");
+	sites = Site::getSites(&profile, QStringList() << "test (does not exist)" << "danbooru.donmai.us");
 	QCOMPARE(sites.count(), 1);
 	QCOMPARE(sites.first()->url(), QString("danbooru.donmai.us"));
 	QCOMPARE(sites.first()->type(), QString("Danbooru (2.0)"));
@@ -177,7 +177,7 @@ void SiteTest::testLoginNone()
 	QList<QVariant> arguments = spy.takeFirst();
 	Site::LoginResult result = arguments.at(1).value<Site::LoginResult>();
 
-	QCOMPARE(result, Site::LoginResult::LoginNoLogin);
+	QCOMPARE(result, Site::LoginResult::Impossible);
 }
 
 void SiteTest::testLoginGet()
@@ -209,7 +209,7 @@ void SiteTest::testLoginGet()
 	QList<QVariant> arguments = spy.takeFirst();
 	Site::LoginResult result = arguments.at(1).value<Site::LoginResult>();
 
-	QCOMPARE(result, Site::LoginResult::LoginError);
+	QCOMPARE(result, Site::LoginResult::Error);
 }
 
 void SiteTest::testLoginPost()
@@ -241,7 +241,7 @@ void SiteTest::testLoginPost()
 	QList<QVariant> arguments = spy.takeFirst();
 	Site::LoginResult result = arguments.at(1).value<Site::LoginResult>();
 
-	QCOMPARE(result, Site::LoginResult::LoginError);
+	QCOMPARE(result, Site::LoginResult::Error);
 }
 
 
