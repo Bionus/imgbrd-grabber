@@ -167,14 +167,14 @@ void Site::login(bool force)
 	bool byParameter = m_settings->value("login/parameter", true).toBool();
 	if (byParameter)
 	{
-		/*QString checkUrl = m_settings->value("login/url", "").toString();
-		if (checkUrl.isEmpty())
+		int maxPageAnonymous = m_settings->value("login/maxPage", 0).toInt();
+		if (maxPageAnonymous <= 0)
 		{
 			emit loggedIn(this, LoginResult::Impossible);
 			return;
-		}*/
+		}
 
-		m_loginPage = new Page(m_source->getProfile(), this, QList<Site*>() << this, QStringList(), 99);
+		m_loginPage = new Page(m_source->getProfile(), this, QList<Site*>() << this, QStringList(), maxPageAnonymous);
 		connect(m_loginPage, &Page::finishedLoading, this, &Site::loginFinished);
 		m_loginPage->load();
 
