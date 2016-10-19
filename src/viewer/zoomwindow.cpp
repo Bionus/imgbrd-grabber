@@ -512,7 +512,7 @@ void zoomWindow::replyFinishedZoom()
 	if (m_reply->error() == QNetworkReply::NoError)
 	{
 		m_data.append(m_reply->readAll());
-		// m_image->setData(m_data);
+		m_image->setData(m_data);
 
 		m_loadedImage = true;
 		pendingUpdate();
