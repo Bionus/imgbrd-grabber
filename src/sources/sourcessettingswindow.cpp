@@ -189,7 +189,7 @@ void SourcesSettingsWindow::save()
 	settings->setValue("download/throttle_retry", ui->spinThrottleRetry->value());
 	settings->setValue("download/throttle_thumbnail", ui->spinThrottleThumbnail->value());
 
-	QStringList sources = QStringList() << "xml" << "json" << "regex" << "rss";
+	QStringList sources = QStringList() << "" << "xml" << "json" << "regex" << "rss";
 	settings->setValue("sources/usedefault", ui->checkSourcesDefault->isChecked());
 	settings->setValue("sources/source_1", sources[ui->comboSources1->currentIndex()]);
 	settings->setValue("sources/source_2", sources[ui->comboSources2->currentIndex()]);
