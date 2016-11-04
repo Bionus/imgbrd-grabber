@@ -130,7 +130,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 		{ t = m_parentSite->value("DefaultTag"); }
 		pageUrl.replace("{tags}", QUrl::toPercentEncoding(t));
 		pageUrl.replace("{id}", QString::number(m_id));
-		m_pageUrl = QUrl(pageUrl);
+		m_pageUrl = m_parentSite->fixUrl(pageUrl);
 	}
 	else
 	{ m_pageUrl = m_parentSite->fixUrl(details["page_url"]); }
