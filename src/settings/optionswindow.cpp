@@ -21,6 +21,10 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 {
 	ui->setupUi(this);
 
+	ui->splitter->setSizes(QList<int>() << 160 << ui->stackedWidget->sizeHint().width());
+	ui->splitter->setStretchFactor(0, 0);
+	ui->splitter->setStretchFactor(1, 1);
+
 	QSettings *settings = profile->getSettings();
 	QStringList languages = QDir(savePath("languages/", true)).entryList(QStringList("*.qm"), QDir::Files);
 	for (int i = 0; i < languages.count(); i++)
