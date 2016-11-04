@@ -73,7 +73,7 @@ sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa
 sudo apt-get update -qq
 sudo apt-get install -qq qt5-qmake qtbase5-dev qtdeclarative5-dev qtscript5-dev qtmultimedia5-dev libpulse-dev
 sudo apt-get install qt5-default qttools5-dev-tools
-qmake Grabber.pro
+QT_SELECT=5 qmake Grabber.pro
 make
 mv gui/Grabber release/Grabber
 touch release/settings.ini
