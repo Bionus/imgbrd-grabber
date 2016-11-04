@@ -143,7 +143,7 @@ void zoomWindow::go()
 		m_labelTagsLeft->setText(m_image->stylishedTags(m_profile).join("<br/>"));
 	}
 
-	m_detailsWindow = new detailsWindow(this);
+	m_detailsWindow = new detailsWindow(m_profile, this);
 
 	// Load image details (exact tags & co)
 	connect(m_image.data(), &Image::finishedLoadingTags, this, &zoomWindow::replyFinishedDetails);
@@ -481,7 +481,7 @@ void zoomWindow::replyFinishedDetails()
 void zoomWindow::colore()
 {
 	QStringList t = m_image->stylishedTags(m_profile);
-	tags = t.join(" ");
+	tags = t.join(' ');
 	if (ui->widgetLeft->isHidden())
 	{ m_labelTagsTop->setText(tags); }
 	else
