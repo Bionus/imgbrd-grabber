@@ -507,12 +507,22 @@ void PageApi::parse()
 		QVariant src = Json::parse(m_source);
 		if (!src.isNull())
 		{
+			// Check JSON error message
+			QMap<QString, QVariant> data = src.toMap();
+			if (data.contains("success") && data["success"].toBool() == false)
+			{
+				log(tr("Réponse JSON d'erreur : \"%1\"").arg(data["reason"].toString()));
+				emit finishedLoading(this, LoadResult::Error);
+				return;
+			}
+
 			QMap<QString, QVariant> sc;
 			QList<QVariant> sourc = src.toList();
 			if (sourc.isEmpty())
-			{ sourc = src.toMap().value("images").toList(); }
+			{ sourc = data.value("images").toList(); }
 			if (sourc.isEmpty())
-			{ sourc = src.toMap().value("search").toList(); }
+			{ sourc = data.value("search").toList(); }
+
 			for (int id = 0; id < sourc.count(); id++)
 			{
 				sc = sourc.at(id + first).toMap();
