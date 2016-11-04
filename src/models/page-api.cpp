@@ -308,9 +308,7 @@ void PageApi::parse()
 	if (m_source.isEmpty())
 	{
 		if (m_reply->error() != QNetworkReply::OperationCanceledError)
-		{
-			log("Loading error: "+m_reply->errorString());
-		}
+		{ log("Loading error: "+m_reply->errorString()); }
 		emit finishedLoading(this, LoadResult::Error);
 		return;
 	}
@@ -558,6 +556,7 @@ void PageApi::parse()
 		}
 		else
 		{
+			log(tr("Erreur lors de l'analyse du fichier JSON : \"%1\"").arg(m_source.left(500)));
 			emit finishedLoading(this, LoadResult::Error);
 			return;
 		}
