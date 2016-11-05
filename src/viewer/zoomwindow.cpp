@@ -804,7 +804,7 @@ QString zoomWindow::saveImageAs()
 
 void zoomWindow::fullScreen()
 {
-	if (image == nullptr)
+	if (image == nullptr && movie == nullptr)
 		return;
 
 	QString ext = m_url.section('.', -1).toLower();
@@ -823,6 +823,7 @@ void zoomWindow::fullScreen()
 		{ m_fullScreen->setMovie(movie); }
 		else
 		{ m_fullScreen->setImage(image->scaled(QApplication::desktop()->screenGeometry().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation)); }
+		m_fullScreen->setWindowFlags(Qt::Window);
 		m_fullScreen->showFullScreen();
 
 		connect(m_fullScreen, SIGNAL(doubleClicked()), m_fullScreen, SLOT(close()));
