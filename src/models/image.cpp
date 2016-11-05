@@ -1072,7 +1072,7 @@ void Image::setFileExtension(QString ext)
 QString Image::getNextExtension(QString ext)
 {
 	bool animated = hasTag("gif") || hasTag("animated_gif") || hasTag("mp4") || hasTag("animated_png") || hasTag("webm") || hasTag("animated");
-	bool isLast = (animated && ext == "swf") || ext == "mp4";
+	bool isLast = animated ? ext == "swf" : ext == "mp4";
 	if (isLast)
 		return QString();
 
