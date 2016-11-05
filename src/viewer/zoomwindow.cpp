@@ -518,21 +518,22 @@ void zoomWindow::replyFinishedZoom()
 		pendingUpdate();
 		draw();
 	}
-	else if (m_reply->error() == QNetworkReply::ContentNotFoundError && m_url.section('.', -1) != "mp4")
+	else if (m_reply->error() == QNetworkReply::ContentNotFoundError)
 	{
 		QString ext = m_url.section('.', -1);
-		QMap<QString,QString> nextext;
-		nextext["jpg"] = "png";
-		nextext["png"] = "gif";
-		nextext["gif"] = "jpeg";
-		nextext["jpeg"] = "swf";
-		nextext["swf"] = "webm";
-		nextext["webm"] = "mp4";
-		m_url = m_url.section('.', 0, -2)+"."+nextext[ext];
-		m_image->setFileExtension(nextext[ext]);
-		log(tr("Image non trouvée. Nouvel essai avec l'extension %1...").arg(nextext[ext]));
-		load();
-		return;
+		QString newext = m_image->getNextExtension(ext);
+		if (newext.isEmpty())
+		{
+			log(tr("Image non trouvée."));
+		}
+		else
+		{
+			m_url = m_url.section('.', 0, -2) + "." + newext;
+			m_image->setFileExtension(newext);
+			log(tr("Image non trouvée. Nouvel essai avec l'extension %1...").arg(newext));
+			load();
+			return;
+		}
 	}
 	else if (m_reply->error() != QNetworkReply::OperationCanceledError)
 	{ error(this, tr("Une erreur inattendue est survenue lors du chargement de l'image (%1).\r\n%2").arg(m_reply->error()).arg(m_reply->url().toString())); }

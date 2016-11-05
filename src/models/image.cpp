@@ -682,8 +682,8 @@ void Image::finishedImageS()
 	{
 		bool sampleFallback = m_settings->value("Save/samplefallback", true).toBool();
 		QString ext = getExtension(m_url);
-		bool animated = hasTag("gif") || hasTag("animated_gif") || hasTag("mp4") || hasTag("animated_png") || hasTag("webm") || hasTag("animated");
-		bool isLast = (animated && ext == "swf") || ext == "mp4";
+		QString newext = getNextExtension(ext);
+		bool isLast = newext.isEmpty();
 
 		if (!isLast || (sampleFallback && !m_sampleUrl.isEmpty() && !m_tryingSample))
 		{
@@ -695,30 +695,8 @@ void Image::finishedImageS()
 			}
 			else
 			{
-				QMap<QString,QString> nextext;
-				if (animated)
-				{
-					nextext["webm"] = "mp4";
-					nextext["mp4"] = "gif";
-					nextext["gif"] = "jpg";
-					nextext["jpg"] = "png";
-					nextext["png"] = "jpeg";
-					nextext["jpeg"] = "swf";
-				}
-				else
-				{
-					nextext["jpg"] = "png";
-					nextext["png"] = "gif";
-					nextext["gif"] = "jpeg";
-					nextext["jpeg"] = "webm";
-					nextext["webm"] = "swf";
-					nextext["swf"] = "mp4";
-				}
-
 				QString oldUrl = m_url;
-				QString newext = nextext.contains(ext) ? nextext[ext] : "jpg";
 				m_url = setExtension(m_url, newext);
-
 				log(tr("Image non trouvée (%1). Nouvel essai avec l'extension %2...").arg(oldUrl, newext));
 			}
 
@@ -1089,4 +1067,38 @@ void Image::setFileExtension(QString ext)
 {
 	m_url = setExtension(m_url, ext);
 	m_fileUrl = setExtension(m_fileUrl.toString(), ext);
+}
+
+QString Image::getNextExtension(QString ext)
+{
+	bool animated = hasTag("gif") || hasTag("animated_gif") || hasTag("mp4") || hasTag("animated_png") || hasTag("webm") || hasTag("animated");
+	bool isLast = (animated && ext == "swf") || ext == "mp4";
+	if (isLast)
+		return QString();
+
+	QMap<QString,QString> nextext;
+	if (animated)
+	{
+		nextext["webm"] = "mp4";
+		nextext["mp4"] = "gif";
+		nextext["gif"] = "jpg";
+		nextext["jpg"] = "png";
+		nextext["png"] = "jpeg";
+		nextext["jpeg"] = "swf";
+	}
+	else
+	{
+		nextext["jpg"] = "png";
+		nextext["png"] = "gif";
+		nextext["gif"] = "jpeg";
+		nextext["jpeg"] = "webm";
+		nextext["webm"] = "swf";
+		nextext["swf"] = "mp4";
+	}
+
+	if (nextext.contains(ext))
+		return nextext[ext];
+
+	return "jpg";
+
 }
