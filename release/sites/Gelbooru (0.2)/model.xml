@@ -7,10 +7,13 @@
 			<Tags>/index.php?page=dapi&amp;s=post&amp;q=index&amp;limit={limit}&amp;pid={page}&amp;tags={tags}</Tags>
 		</Xml>
 		<Html>
-			<Tags>/index.php?page=post&amp;s=list&amp;pid={pid}&amp;tags={tags}</Tags>
+			<Tags>/index.php?page=post&amp;s=list&amp;tags={tags}{pagepart}{altpage}</Tags>
 			<Pools>/index.php?page=pool&amp;s=show&amp;id={pool}</Pools>
 			<Post>/index.php?page=post&amp;s=view&amp;id={id}</Post>
 			<Limit>42</Limit>
+			<MaxPage>476</MaxPage>
+			<PagePart>&amp;pid={pid}</PagePart>
+			<AltPageNext> id:&lt;{min}&amp;p=1</AltPageNext>
 		</Html>
 	</Urls>
 	<Regex>
