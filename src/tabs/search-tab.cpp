@@ -132,11 +132,15 @@ QStringList searchTab::reasonsToFail(Page* page, QStringList completion, QString
 	if (meant != nullptr && !page->search().isEmpty())
 	{
 		QMap<QString, QString> results, clean;
+		QList<QChar> modifiers = QList<QChar>() << '~' << '-';
 
 		int c = 0;
 		for (QString tag : page->search())
 		{
-			int lev = (tag.length()/3)+2;
+			if (modifiers.contains(tag[0]))
+				tag = tag.mid(1);
+
+			int lev = (tag.length() / 3) + 2;
 			for (int w = 0; w < completion.size(); w++)
 			{
 				int d = levenshtein(tag, completion.at(w));
@@ -253,12 +257,11 @@ void searchTab::loadImageThumbnails(Page *page, const QList<QSharedPointer<Image
 	{
 		QStringList detected;
 		QSharedPointer<Image> img = imgs.at(i);
-		QList<QChar> modifiers = QList<QChar>() << '~';
+		QList<QChar> modifiers = QList<QChar>() << '~' << '-';
 		for (int r = 0; r < tags.size(); r++)
-		{
 			if (modifiers.contains(tags[r][0]))
-			{ tags[r] = tags[r].right(tags[r].size()-1); }
-		}
+				tags[r] = tags[r].mid(1);
+
 		if (!m_settings->value("blacklistedtags").toString().isEmpty())
 		{ detected = img->blacklisted(m_settings->value("blacklistedtags").toString().toLower().split(" ")); }
 		if (!detected.isEmpty() && m_settings->value("hideblacklisted", false).toBool())
