@@ -1,5 +1,5 @@
 ﻿#define MyAppName "Grabber"
-#define MyAppVersion "4.8.3"
+#define MyAppVersion "4.9.0"
 #define MyAppPublisher "Bionus"
 #define MyAppURL "https://github.com/Bionus/imgbrd-grabber"
 #define MyAppExeName "Grabber.exe"
