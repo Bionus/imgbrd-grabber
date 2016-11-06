@@ -12,7 +12,7 @@ void SourceTest::init()
 	QFile::copy("release/sites/Danbooru (2.0)/sites.txt", "tests/resources/sites/Danbooru (2.0)/sites.txt");
 
 	m_settings = new QSettings("tests/resources/settings.ini", QSettings::IniFormat);
-	m_source = new Source("tests/resources/sites/Danbooru (2.0)");
+	m_source = new Source(&profile, "tests/resources/sites/Danbooru (2.0)");
 }
 
 void SourceTest::cleanup()
@@ -26,7 +26,7 @@ void SourceTest::testMissingXml()
 {
 	QFile::remove("tests/resources/sites/tmp/model.xml");
 
-	Source source("tests/resources/sites/tmp");
+	Source source(&profile, "tests/resources/sites/tmp");
 	QVERIFY(source.getApis().isEmpty());
 }
 
@@ -37,7 +37,7 @@ void SourceTest::testInvalidXml()
 	f.write(QString("test").toUtf8());
 	f.close();
 
-	Source source("tests/resources/sites/tmp");
+	Source source(&profile, "tests/resources/sites/tmp");
 	QVERIFY(source.getApis().isEmpty());
 }
 
@@ -50,7 +50,7 @@ void SourceTest::testMissingSites()
 	f.write(QString("\n\n\r\ndanbooru.donmai.us\n").toUtf8());
 	f.close();
 
-	Source source("tests/resources/sites/tmp");
+	Source source(&profile, "tests/resources/sites/tmp");
 	QVERIFY(!source.getApis().isEmpty());
 	QCOMPARE(source.getSites().count(), 1);
 }
@@ -61,15 +61,15 @@ void SourceTest::testIgnoreEmptySites()
 	QFile::remove("tests/resources/sites/tmp/sites.txt");
 	QFile::copy("release/sites/Danbooru (2.0)/model.xml", "tests/resources/sites/tmp/model.xml");
 
-	Source source("tests/resources/sites/tmp");
+	Source source(&profile, "tests/resources/sites/tmp");
 	QVERIFY(!source.getApis().isEmpty());
 	QVERIFY(source.getSites().isEmpty());
 }
 
 void SourceTest::testGetAllCached()
 {
-	QList<Source*> *sources1 = Source::getAllSources();
-	QList<Source*> *sources2 = Source::getAllSources();
+	QList<Source*> *sources1 = Source::getAllSources(&profile);
+	QList<Source*> *sources2 = Source::getAllSources(&profile);
 
 	QCOMPARE(sources1, sources2);
 }

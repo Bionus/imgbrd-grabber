@@ -91,6 +91,7 @@ class Image : public QObject
 		void		setSavePath(QString);
 		void		setRating(QString rating);
 		void		setFileExtension(QString ext);
+		QString		getNextExtension(QString current);
 
 	public slots:
 		void loadPreview();

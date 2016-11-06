@@ -346,8 +346,13 @@
           <item row="0" column="1">
            <widget class="QComboBox" name="comboSources1">
             <property name="currentIndex">
-             <number>0</number>
+             <number>1</number>
             </property>
+            <item>
+             <property name="text">
+              <string/>
+             </property>
+            </item>
             <item>
              <property name="text">
               <string>XML</string>
@@ -380,8 +385,13 @@
           <item row="1" column="1">
            <widget class="QComboBox" name="comboSources2">
             <property name="currentIndex">
-             <number>1</number>
+             <number>2</number>
             </property>
+            <item>
+             <property name="text">
+              <string/>
+             </property>
+            </item>
             <item>
              <property name="text">
               <string>XML</string>
@@ -414,8 +424,13 @@
           <item row="2" column="1">
            <widget class="QComboBox" name="comboSources3">
             <property name="currentIndex">
-             <number>2</number>
+             <number>3</number>
             </property>
+            <item>
+             <property name="text">
+              <string/>
+             </property>
+            </item>
             <item>
              <property name="text">
               <string>XML</string>
@@ -448,8 +463,13 @@
           <item row="3" column="1">
            <widget class="QComboBox" name="comboSources4">
             <property name="currentIndex">
-             <number>3</number>
+             <number>4</number>
             </property>
+            <item>
+             <property name="text">
+              <string/>
+             </property>
+            </item>
             <item>
              <property name="text">
               <string>XML</string>

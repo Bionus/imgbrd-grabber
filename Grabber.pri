@@ -30,7 +30,7 @@ T = $$(TRAVIS)
 @
 
 # Global
-APP_VERSION = \\\"4.8.3\\\"
+APP_VERSION = \\\"4.9.0\\\"
 
 # General
 TEMPLATE = app

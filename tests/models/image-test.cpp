@@ -53,7 +53,7 @@ void ImageTest::init()
 	m_settings->setValue("Coloring/Fonts/generals", ",8.25,-1,5,50,0,0,0,0,0");
 	m_settings->setValue("Save/md5Duplicates", "save");
 
-	m_source = new Source("release/sites/Danbooru (2.0)");
+	m_source = new Source(&profile, "release/sites/Danbooru (2.0)");
 	m_site = new Site("danbooru.donmai.us", m_source);
 	m_img = new Image(m_site, m_details, m_profile);
 }
@@ -361,7 +361,7 @@ void ImageTest::testValue()
 void ImageTest::testLoadPreview()
 {
 	// Load preview
-	QSignalSpy spy(m_img, SIGNAL(finishedLoadingPreview(Image*)));
+	QSignalSpy spy(m_img, SIGNAL(finishedLoadingPreview()));
 	m_img->loadPreview();
 	QVERIFY(spy.wait());
 
@@ -370,7 +370,7 @@ void ImageTest::testLoadPreview()
 }
 void ImageTest::testLoadPreviewAbort()
 {
-	QSignalSpy spy(m_img, SIGNAL(finishedLoadingPreview(Image*)));
+	QSignalSpy spy(m_img, SIGNAL(finishedLoadingPreview()));
 	m_img->loadPreview();
 	m_img->abortPreview();
 	QVERIFY(!spy.wait(1000));
@@ -379,7 +379,7 @@ void ImageTest::testLoadPreviewAbort()
 void ImageTest::testLoadImage()
 {
 	// Load preview
-	QSignalSpy spy(m_img, SIGNAL(finishedImage(Image*)));
+	QSignalSpy spy(m_img, SIGNAL(finishedImage()));
 	m_img->loadImage();
 	QVERIFY(spy.wait());
 
@@ -388,7 +388,7 @@ void ImageTest::testLoadImage()
 }
 void ImageTest::testLoadImageAbort()
 {
-	QSignalSpy spy(m_img, SIGNAL(finishedImage(Image*)));
+	QSignalSpy spy(m_img, SIGNAL(finishedImage()));
 	m_img->loadImage();
 	m_img->abortImage();
 	QVERIFY(!spy.wait(1000));
@@ -397,7 +397,7 @@ void ImageTest::testLoadImageAbort()
 void ImageTest::testLoadDetails()
 {
 	// Load details
-	QSignalSpy spy(m_img, SIGNAL(finishedLoadingTags(Image*)));
+	QSignalSpy spy(m_img, SIGNAL(finishedLoadingTags()));
 	m_img->loadDetails();
 	QVERIFY(spy.wait());
 
@@ -419,7 +419,7 @@ void ImageTest::testLoadDetails()
 }
 void ImageTest::testLoadDetailsAbort()
 {
-	QSignalSpy spy(m_img, SIGNAL(finishedLoadingTags(Image*)));
+	QSignalSpy spy(m_img, SIGNAL(finishedLoadingTags()));
 	m_img->loadDetails();
 	m_img->abortTags();
 	QVERIFY(!spy.wait(1000));
@@ -432,7 +432,7 @@ void ImageTest::testLoadDetailsImageUrl()
 	m_img = new Image(m_site, m_details, m_profile);
 
 	// Load details
-	QSignalSpy spy(m_img, SIGNAL(finishedLoadingTags(Image*)));
+	QSignalSpy spy(m_img, SIGNAL(finishedLoadingTags()));
 	m_img->loadDetails();
 	QVERIFY(spy.wait());
 

@@ -308,9 +308,7 @@ void PageApi::parse()
 	if (m_source.isEmpty())
 	{
 		if (m_reply->error() != QNetworkReply::OperationCanceledError)
-		{
-			log("Loading error: "+m_reply->errorString());
-		}
+		{ log("Loading error: "+m_reply->errorString()); }
 		emit finishedLoading(this, LoadResult::Error);
 		return;
 	}
@@ -424,18 +422,27 @@ void PageApi::parse()
 					else
 					{ dat.insert(children.at(i).nodeName(), children.at(i).attributes().namedItem("url").nodeValue().trimmed()); }
 				}
-				// QDateTime::fromString(date, "ddd, dd MMM yyyy hh:mm:ss +0000"); // shimmie date format
+
 				d.insert("page_url", dat["link"]);
 				d.insert("tags", dat["media:keywords"]);
 				d.insert("preview_url", dat["media:thumbnail"]);
-				d.insert("sample_url", dat["media:content"]);
 				d.insert("file_url", dat["media:content"]);
+
+				// Shimmie
+				if (dat.contains("dc:creator"))
+				{ d.insert("author", dat["dc:creator"]); }
+				if (dat.contains("enclosure"))
+				{ d.insert("file_url", dat["enclosure"]); }
+				if (dat.contains("pubDate"))
+				{ d.insert("created_at", QString::number(QDateTime::fromString(dat["pubDate"], "ddd, dd MMM yyyy hh:mm:ss +0000").toTime_t())); }
+
 				if (!d.contains("id"))
 				{
 					QRegExp rx("/(\\d+)");
 					rx.indexIn(d["page_url"]);
 					d.insert("id", rx.cap(1));
 				}
+
 				this->parseImage(d, id + first);
 			}
 		}
@@ -500,12 +507,22 @@ void PageApi::parse()
 		QVariant src = Json::parse(m_source);
 		if (!src.isNull())
 		{
+			// Check JSON error message
+			QMap<QString, QVariant> data = src.toMap();
+			if (data.contains("success") && data["success"].toBool() == false)
+			{
+				log(tr("Réponse JSON d'erreur : \"%1\"").arg(data["reason"].toString()));
+				emit finishedLoading(this, LoadResult::Error);
+				return;
+			}
+
 			QMap<QString, QVariant> sc;
 			QList<QVariant> sourc = src.toList();
 			if (sourc.isEmpty())
-			{ sourc = src.toMap().value("images").toList(); }
+			{ sourc = data.value("images").toList(); }
 			if (sourc.isEmpty())
-			{ sourc = src.toMap().value("search").toList(); }
+			{ sourc = data.value("search").toList(); }
+
 			for (int id = 0; id < sourc.count(); id++)
 			{
 				sc = sourc.at(id + first).toMap();
@@ -549,6 +566,7 @@ void PageApi::parse()
 		}
 		else
 		{
+			log(tr("Erreur lors de l'analyse du fichier JSON : \"%1\"").arg(m_source.left(500)));
 			emit finishedLoading(this, LoadResult::Error);
 			return;
 		}

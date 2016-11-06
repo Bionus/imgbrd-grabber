@@ -120,7 +120,7 @@ QString FilenameWindow::format()
 
 void FilenameWindow::done(int r)
 {
-	QMap<QString, Site*> sites = Site::getAllSites();
+	QMap<QString, Site*> sites = Site::getAllSites(m_profile);
 
 	if (QDialog::Accepted == r && ui->radioJavascript->isChecked() && !sites.isEmpty())
 	{

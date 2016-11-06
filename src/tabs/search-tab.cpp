@@ -10,7 +10,7 @@
 
 
 searchTab::searchTab(int id, QMap<QString, Site*> *sites, Profile *profile, mainWindow *parent)
-	: QWidget(parent), m_profile(profile), m_id(id), m_lastPageMaxId(0), m_lastPageMinId(0), m_sites(sites), m_parent(parent), m_settings(profile->getSettings()), m_pagemax(-1), m_stop(true), m_from_history(false), m_history_cursor(0)
+	: QWidget(parent), m_profile(profile), m_id(id), m_lastPageMaxId(0), m_lastPageMinId(0), m_sites(sites), m_favorites(profile->getFavorites()), m_parent(parent), m_settings(profile->getSettings()), m_pagemax(-1), m_stop(true), m_from_history(false), m_history_cursor(0)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 
@@ -132,11 +132,15 @@ QStringList searchTab::reasonsToFail(Page* page, QStringList completion, QString
 	if (meant != nullptr && !page->search().isEmpty())
 	{
 		QMap<QString, QString> results, clean;
+		QList<QChar> modifiers = QList<QChar>() << '~' << '-';
 
 		int c = 0;
 		for (QString tag : page->search())
 		{
-			int lev = (tag.length()/3)+2;
+			if (modifiers.contains(tag[0]))
+				tag = tag.mid(1);
+
+			int lev = (tag.length() / 3) + 2;
 			for (int w = 0; w < completion.size(); w++)
 			{
 				int d = levenshtein(tag, completion.at(w));
@@ -253,12 +257,11 @@ void searchTab::loadImageThumbnails(Page *page, const QList<QSharedPointer<Image
 	{
 		QStringList detected;
 		QSharedPointer<Image> img = imgs.at(i);
-		QList<QChar> modifiers = QList<QChar>() << '~';
+		QList<QChar> modifiers = QList<QChar>() << '~' << '-';
 		for (int r = 0; r < tags.size(); r++)
-		{
 			if (modifiers.contains(tags[r][0]))
-			{ tags[r] = tags[r].right(tags[r].size()-1); }
-		}
+				tags[r] = tags[r].mid(1);
+
 		if (!m_settings->value("blacklistedtags").toString().isEmpty())
 		{ detected = img->blacklisted(m_settings->value("blacklistedtags").toString().toLower().split(" ")); }
 		if (!detected.isEmpty() && m_settings->value("hideblacklisted", false).toBool())
@@ -707,7 +710,7 @@ void searchTab::saveSources(QList<bool> sel)
 	for (int i = 0; i < m_sites->count(); i++)
 	{
 		if (sav.at(i) == '1')
-		{ m_sites->value(keys[i])->login(); }
+		{ m_sites->value(keys[i])->login(m_profile); }
 	}
 
 	updateCheckboxes();

@@ -105,7 +105,7 @@ class searchTab : public QWidget
 		QList<QSharedPointer<Image>>	m_selectedImagesPtrs;
 		QList<bool>			m_selectedSources;
 		QList<QCheckBox*>	m_checkboxes;
-		QList<Favorite>		m_favorites;
+		QList<Favorite>		&m_favorites;
 		QString				m_link;
 		QList<Tag>			m_tags;
 		mainWindow			*m_parent;

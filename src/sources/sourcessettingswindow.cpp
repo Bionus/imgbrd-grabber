@@ -149,17 +149,17 @@ void SourcesSettingsWindow::loginTested(Site*, Site::LoginResult result)
 {
 	switch (result)
 	{
-		case Site::LoginSuccess:
+		case Site::LoginResult::Success:
 			ui->labelTestCredentials->setText("<i>" + tr("Succès !") + "</i>");
 			ui->labelTestLogin->setText("<i>" + tr("Succès !") + "</i>");
 			break;
 
-		case Site::LoginError:
+		case Site::LoginResult::Error:
 			ui->labelTestCredentials->setText("<i>" + tr("Échec") + "</i>");
 			ui->labelTestLogin->setText("<i>" + tr("Échec") + "</i>");
 			break;
 
-		case Site::LoginNoLogin:
+		default:
 			ui->labelTestCredentials->setText("<i>" + tr("Impossible de tester") + "</i>");
 			ui->labelTestLogin->setText("<i>" + tr("Impossible de tester") + "</i>");
 			break;
@@ -189,7 +189,7 @@ void SourcesSettingsWindow::save()
 	settings->setValue("download/throttle_retry", ui->spinThrottleRetry->value());
 	settings->setValue("download/throttle_thumbnail", ui->spinThrottleThumbnail->value());
 
-	QStringList sources = QStringList() << "xml" << "json" << "regex" << "rss";
+	QStringList sources = QStringList() << "" << "xml" << "json" << "regex" << "rss";
 	settings->setValue("sources/usedefault", ui->checkSourcesDefault->isChecked());
 	settings->setValue("sources/source_1", sources[ui->comboSources1->currentIndex()]);
 	settings->setValue("sources/source_2", sources[ui->comboSources2->currentIndex()]);

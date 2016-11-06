@@ -15,6 +15,7 @@ SearchWindow::SearchWindow(QString tags, Profile *profile, QWidget *parent)
 	ui->setupUi(this);
 
 	m_calendar = new QCalendarWidget(this);
+		m_calendar->setWindowFlags(Qt::Window);
 		m_calendar->setLocale(QLocale(m_profile->getSettings()->value("language", "English").toString().toLower().left(2)));
 		m_calendar->setWindowIcon(QIcon(":/images/icon.ico"));
 		m_calendar->setWindowTitle(tr("Grabber - Choisir une date"));
@@ -46,8 +47,7 @@ SearchWindow::SearchWindow(QString tags, Profile *profile, QWidget *parent)
 				m_tags->setCompleter(completer);
 			}
 		connect(m_tags, SIGNAL(returnPressed()), this, SLOT(accept()));
-
-	ui->formLayout->insertRow(0, tr("Tags"), m_tags);
+	ui->formLayout->setWidget(0, QFormLayout::FieldRole, m_tags);
 
 	QStringList orders = QStringList() << "id" << "id_desc" << "score_asc" << "score" << "mpixels_asc" << "mpixels" << "filesize" << "landscape" << "portrait" << "favcount" << "rank";
 	QStringList ratings = QStringList() << "rating:safe" << "-rating:safe" << "rating:questionable" << "-rating:questionable" << "rating:explicit" << "-rating:explicit";

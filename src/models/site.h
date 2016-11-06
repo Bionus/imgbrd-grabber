@@ -37,9 +37,10 @@ class Site : public QObject
 
 		enum LoginResult
 		{
-			LoginError = -1,
-			LoginNoLogin = 1,
-			LoginSuccess = 0
+			Success = 0,
+			Error = 1,
+			Impossible = 2,
+			Already = 2
 		};
 		Site(QString url, Source *source);
 		~Site();
@@ -55,8 +56,8 @@ class Site : public QObject
 		QNetworkRequest makeRequest(QUrl url, Page *page = nullptr, QString referer = "", Image *img = nullptr);
 		QNetworkReply *get(QUrl url, Page *page = nullptr, QString referer = "", Image *img = nullptr);
 		void getAsync(QueryType type, QUrl url, std::function<void(QNetworkReply *)> callback, Page *page = nullptr, QString referer = "", Image *img = nullptr);
-		static QList<Site*> getSites(QStringList sources);
-		static QMap<QString, Site *> getAllSites();
+		static QList<Site*> getSites(Profile *profile, QStringList sources);
+		static QMap<QString, Site *> getAllSites(Profile *profile);
 		QUrl fixUrl(QUrl url) { return fixUrl(url.toString()); }
 		QUrl fixUrl(QString url);
 		QUrl fixUrl(QString url, QUrl old);
@@ -100,6 +101,7 @@ class Site : public QObject
 		QNetworkAccessManager *m_manager;
 		QNetworkCookieJar *m_cookieJar;
 		QNetworkReply *m_loginReply, *m_updateReply, *m_tagsReply;
+		Page *m_loginPage;
 		bool m_loggedIn, m_triedLogin, m_loginCheck;
 		QString m_username, m_password;
 		QList<Api*> m_apis;

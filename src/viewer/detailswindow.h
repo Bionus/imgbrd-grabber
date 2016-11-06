@@ -18,13 +18,14 @@ class detailsWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		explicit detailsWindow(QWidget *parent = 0);
+		explicit detailsWindow(Profile *profile, QWidget *parent = 0);
 		~detailsWindow();
-		void setTags(QString);
+		void setTags(QString tags);
 		void setImage(QSharedPointer<Image> image);
 
 	private:
 		Ui::detailsWindow *ui;
+		Profile *m_profile;
 
 };
 

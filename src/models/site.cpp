@@ -36,8 +36,18 @@ void Site::loadConfig()
 	m_settings = new QSettings(m_source->getPath() + "/" + m_url + "/settings.ini", QSettings::IniFormat);
 	m_name = m_settings->value("name", m_url).toString();
 
-	// Apis
-	QStringList defaults = QStringList() << "Xml" << "Json" << "Rss" << "Regex";
+	// Get default source order
+	QSettings *pSettings = m_source->getProfile()->getSettings();
+	QStringList defaults;
+	defaults << pSettings->value("source_1").toString()
+			 << pSettings->value("source_2").toString()
+			 << pSettings->value("source_3").toString()
+			 << pSettings->value("source_4").toString();
+	defaults.removeAll("");
+	if (defaults.isEmpty())
+	{ defaults =  QStringList() << "Xml" << "Json" << "Regex" << "Rss"; }
+
+	// Get overriden source order
 	QStringList sources;
 	if (!m_settings->value("sources/usedefault", true).toBool())
 	{
@@ -48,14 +58,13 @@ void Site::loadConfig()
 		sources.removeAll("");
 		if (sources.isEmpty())
 		{ sources = defaults; }
-		else
-		{
-			for (int i = 0; i < sources.count(); i++)
-			{ sources[i][0] = sources[i][0].toUpper(); }
-		}
 	}
 	else
 	{ sources = defaults; }
+	for (int i = 0; i < sources.count(); i++)
+	{ sources[i][0] = sources[i][0].toUpper(); }
+
+	// Apis
 	m_apis.clear();
 	for (QString src : sources)
 	{
@@ -140,51 +149,73 @@ void Site::resetCookieJar()
  */
 void Site::login(bool force)
 {
-	if (!m_settings->value("login/parameter", true).toBool() && (force || (!m_loggedIn && !m_triedLogin)))
+	if (!force && (m_loggedIn || m_triedLogin))
 	{
-		if (!m_settings->value("login/url", "").toString().isEmpty())
-		{
-			log(tr("Connexion à %1 (%2)...").arg(m_name, m_url));
-			initManager();
-
-			if (force)
-			{ resetCookieJar(); }
-
-			m_triedLogin = true;
-
-			QUrlQuery query;
-			query.addQueryItem(m_settings->value("login/pseudo", "").toString(), m_username);
-			query.addQueryItem(m_settings->value("login/password", "").toString(), m_password);
-
-			QString method = m_settings->value("login/method", "post").toString();
-			if (method == "post")
-			{
-				QUrl postData;
-				postData.setQuery(query);
-
-				QNetworkRequest request(fixUrl(m_settings->value("login/url", "").toString()));
-				request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
-
-				m_loginReply = m_manager->post(request, query.query(QUrl::FullyEncoded).toUtf8());
-				connect(m_loginReply, SIGNAL(finished()), this, SLOT(loginFinished()));
-			}
-			else
-			{
-				QUrl url = fixUrl(m_settings->value("login/url", "").toString());
-				url.setQuery(query);
-
-				QNetworkRequest request(url);
-				request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, CACHE_POLICY);
-
-				m_loginReply = getRequest(request);
-				connect(m_loginReply, SIGNAL(finished()), this, SLOT(loginFinished()));
-			}
-
-			return;
-		}
+		emit loggedIn(this, LoginResult::Already);
+		return;
 	}
 
-	emit loggedIn(this, LoginNoLogin);
+	log(tr("Connexion à %1 (%2)...").arg(m_name, m_url));
+	initManager();
+
+	// Clear cookies if we want to force a re-login
+	if (force)
+		resetCookieJar();
+
+	m_triedLogin = true;
+
+	bool byParameter = m_settings->value("login/parameter", true).toBool();
+	if (byParameter)
+	{
+		int maxPageAnonymous = m_settings->value("login/maxPage", 0).toInt();
+		if (maxPageAnonymous <= 0)
+		{
+			emit loggedIn(this, LoginResult::Impossible);
+			return;
+		}
+
+		m_loginPage = new Page(m_source->getProfile(), this, QList<Site*>() << this, QStringList(), maxPageAnonymous);
+		connect(m_loginPage, &Page::finishedLoading, this, &Site::loginFinished);
+		m_loginPage->load();
+
+		return;
+	}
+
+	// Cannot post login information without an URL
+	QString loginUrl = m_settings->value("login/url", "").toString();
+	if (loginUrl.isEmpty())
+	{
+		emit loggedIn(this, LoginResult::Impossible);
+		return;
+	}
+
+	QUrlQuery query;
+	query.addQueryItem(m_settings->value("login/pseudo", "").toString(), m_username);
+	query.addQueryItem(m_settings->value("login/password", "").toString(), m_password);
+
+	QString method = m_settings->value("login/method", "post").toString();
+	if (method == "post")
+	{
+		QUrl postData;
+		postData.setQuery(query);
+
+		QNetworkRequest request(fixUrl(m_settings->value("login/url", "").toString()));
+		request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+
+		m_loginReply = m_manager->post(request, query.query(QUrl::FullyEncoded).toUtf8());
+		connect(m_loginReply, SIGNAL(finished()), this, SLOT(loginFinished()));
+	}
+	else
+	{
+		QUrl url = fixUrl(m_settings->value("login/url", "").toString());
+		url.setQuery(query);
+
+		QNetworkRequest request(url);
+		request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, CACHE_POLICY);
+
+		m_loginReply = getRequest(request);
+		connect(m_loginReply, SIGNAL(finished()), this, SLOT(loginFinished()));
+	}
 }
 
 /**
@@ -192,19 +223,26 @@ void Site::login(bool force)
  */
 void Site::loginFinished()
 {
-	m_loggedIn = false;
-	QString cookiename = m_settings->value("login/cookie", "").toString();
-
-	QList<QNetworkCookie> cookies = m_cookieJar->cookiesForUrl(m_loginReply->url());
-	for (QNetworkCookie cookie : cookies)
+	bool byParameter = m_settings->value("login/parameter", true).toBool();
+	if (byParameter)
 	{
-		if (cookie.name() == cookiename && !cookie.value().isEmpty())
-		{ m_loggedIn = true; }
+		m_loggedIn = !m_loginPage->images().isEmpty();
+	}
+	else
+	{
+		m_loggedIn = false;
+		QString cookiename = m_settings->value("login/cookie", "").toString();
+
+		QList<QNetworkCookie> cookies = m_cookieJar->cookiesForUrl(m_loginReply->url());
+		for (QNetworkCookie cookie : cookies)
+		{
+			if (cookie.name() == cookiename && !cookie.value().isEmpty())
+			{ m_loggedIn = true; }
+		}
 	}
 
 	log(tr("Connexion à %1 (%2) terminée (%3).").arg(m_name, m_url, m_loggedIn ? tr("succès") : tr("échec")));
-
-	emit loggedIn(this, m_loggedIn ? LoginSuccess : LoginError);
+	emit loggedIn(this, m_loggedIn ? LoginResult::Success : LoginResult::Error);
 }
 
 
@@ -332,9 +370,9 @@ QNetworkReply *Site::getRequest(QNetworkRequest request)
 }
 
 
-QList<Site*> Site::getSites(QStringList sources)
+QList<Site*> Site::getSites(Profile *profile, QStringList sources)
 {
-	QMap<QString, Site*> sites = Site::getAllSites();
+	QMap<QString, Site*> sites = Site::getAllSites(profile);
 
 	QList<Site*> ret;
 	for (QString source : sources)
@@ -343,11 +381,11 @@ QList<Site*> Site::getSites(QStringList sources)
 
 	return ret;
 }
-QMap<QString, Site*> Site::getAllSites()
+QMap<QString, Site*> Site::getAllSites(Profile *profile)
 {
 	QMap<QString, Site*> ret;
 
-	QList<Source*> *sources = Source::getAllSources();
+	QList<Source*> *sources = Source::getAllSources(profile);
 	for (Source *source : *sources)
 		for (Site *site : source->getSites())
 			ret.insert(site->url(), site);

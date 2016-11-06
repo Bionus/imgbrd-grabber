@@ -139,15 +139,22 @@ void RenameExisting1::on_buttonContinue_clicked()
 
 void RenameExisting1::getAll(Page *p)
 {
-	QSharedPointer<Image> img = p->images().at(0);
-
-	if (m_needDetails)
+	if (!p->images().isEmpty())
 	{
-		m_getTags.append(img);
+		QSharedPointer<Image> img = p->images().at(0);
+
+		if (m_needDetails)
+		{
+			m_getTags.append(img);
+		}
+		else
+		{
+			m_getAll[img->md5()].second = img->path(ui->lineFilenameDestination->text(), ui->lineFolder->text(), 0, true, false, true, true, true).first();
+			ui->progressBar->setValue(ui->progressBar->value() + 1);
+		}
 	}
 	else
 	{
-		m_getAll[img->md5()].second = img->path(ui->lineFilenameDestination->text(), ui->lineFolder->text(), 0, true, false, true, true, true).first();
 		ui->progressBar->setValue(ui->progressBar->value() + 1);
 	}
 

@@ -11,18 +11,24 @@ extern mainWindow *_mainwindow;
 siteWindow::siteWindow(QMap<QString ,Site*> *sites, QWidget *parent)
 	: QDialog(parent), ui(new Ui::siteWindow), m_sites(sites)
 {
-	Q_UNUSED(sites);
-
 	setAttribute(Qt::WA_DeleteOnClose);
 	ui->setupUi(this);
+
 	ui->progressBar->hide();
-
-	m_sources = Source::getAllSources();
-	for (Source *source : *m_sources)
-		ui->comboBox->addItem(QIcon(savePath("sites/" + source->getName() + "/icon.png")), source->getName());
-
 	ui->comboBox->setDisabled(true);
 	ui->checkBox->setChecked(true);
+
+	QSet<QString> sources;
+	for (Site *site : *sites)
+	{
+		QString name = site->getSource()->getName();
+		if (!sources.contains(name))
+		{
+			sources.insert(name);
+			m_sources->append(site->getSource());
+			ui->comboBox->addItem(QIcon(savePath("sites/" + name + "/icon.png")), name);
+		}
+	}
 }
 
 siteWindow::~siteWindow()
