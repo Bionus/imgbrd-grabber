@@ -2,7 +2,7 @@
 #define SITEWINDOW_H
 
 #include <QDialog>
-#include <QtNetwork>
+#include <QNetworkAccessManager>
 #include "models/site.h"
 
 
@@ -29,6 +29,7 @@ class siteWindow : public QDialog
 		Ui::siteWindow *ui;
 		QList<Source*> *m_sources;
 		QMap<QString ,Site*> *m_sites;
+		QNetworkAccessManager *m_manager;
 };
 
 #endif // SITEWINDOW_H

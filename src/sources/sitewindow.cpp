@@ -1,5 +1,6 @@
 #include "sitewindow.h"
 #include "ui_sitewindow.h"
+#include <QFile>
 #include "mainwindow.h"
 #include "functions.h"
 #include "models/source.h"
@@ -18,18 +19,13 @@ siteWindow::siteWindow(QMap<QString ,Site*> *sites, QWidget *parent)
 	ui->comboBox->setDisabled(true);
 	ui->checkBox->setChecked(true);
 
-	m_sources = new QList<Source*>();
-	QSet<QString> sources;
-	for (Site *site : *sites)
+	m_sources = Source::getAllSources(nullptr);
+	for (Source *source : *m_sources)
 	{
-		QString name = site->getSource()->getName();
-		if (!sources.contains(name))
-		{
-			sources.insert(name);
-			m_sources->append(site->getSource());
-			ui->comboBox->addItem(QIcon(savePath("sites/" + name + "/icon.png")), name);
-		}
+		ui->comboBox->addItem(QIcon(savePath("sites/" + source->getName() + "/icon.png")), source->getName());
 	}
+
+	m_manager = new QNetworkAccessManager(this);
 }
 
 siteWindow::~siteWindow()
@@ -47,10 +43,9 @@ void siteWindow::accept()
 	if (url.startsWith("https://"))
 	{ url.remove("https://"); }
 	if (url.endsWith("/"))
-	{ url = url.left(url.size()-1); }
+	{ url = url.left(url.size() - 1); }
 
 	Source *src = nullptr;
-	QStringList checked;
 	if (ui->checkBox->isChecked())
 	{
 		ui->progressBar->setValue(0);
@@ -59,40 +54,41 @@ void siteWindow::accept()
 
 		for (Source *source : *m_sources)
 		{
-			if (!checked.contains(source->getName()) && !source->getSites().isEmpty())
+			if (source->getApis().isEmpty())
+				continue;
+
+			Api *map = source->getApis().first();
+			if (map->contains("Check/Url") && map->contains("Check/Regex"))
 			{
-				checked.append(source->getName());
-				Site *map = source->getSites().first();
-				if (map->contains("Check/Url") && map->contains("Check/Regex"))
+				QString curr = map->value("Selected");
+				curr[0] = curr[0].toUpper();
+
+				QUrl getUrl("http://" + url + map->value("Check/Url"));
+				QNetworkReply *reply;
+				do
 				{
-					QString curr = map->value("Selected");
-					curr[0] = curr[0].toUpper();
+					reply = m_manager->get(QNetworkRequest(getUrl));
+					QEventLoop loop;
+						connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
+					loop.exec();
 
-					QUrl getUrl("http://" + url + map->value("Check/Url"));
-					QNetworkReply *reply;
-					do
-					{
-						reply = map->get(getUrl);
-						QEventLoop loop;
-							connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
-						loop.exec();
+					getUrl = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
+				} while (!getUrl.isEmpty());
 
-						getUrl = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
-					} while (!getUrl.isEmpty());
-					QString res = reply->readAll();
-					if (reply->error() == 0)
+				QString res = reply->readAll();
+				if (reply->error() == 0)
+				{
+					QRegExp rx(map->value("Check/Regex"));
+					if (rx.indexIn(res) != -1)
 					{
-						QRegExp rx(map->value("Check/Regex"));
-						if (rx.indexIn(res) != -1)
-						{
-							src = source;
-							break;
-						}
+						src = source;
+						break;
 					}
-					else
-					{ log(tr("Erreur lors de la récupération de la page de test : %1.").arg(reply->errorString()), Error); }
 				}
-				ui->progressBar->setValue(checked.size());
+				else
+				{ log(tr("Erreur lors de la récupération de la page de test : %1.").arg(reply->errorString()), Error); }
+
+				ui->progressBar->setValue(ui->progressBar->value() + 1);
 			}
 		}
 		ui->progressBar->hide();
