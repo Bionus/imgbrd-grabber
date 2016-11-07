@@ -2,7 +2,6 @@
 #define SITEWINDOW_H
 
 #include <QDialog>
-#include <QNetworkAccessManager>
 #include "models/site.h"
 
 
@@ -24,12 +23,13 @@ class siteWindow : public QDialog
 
 	public slots:
 		void accept();
+		void finish(Source *source = nullptr);
 
 	private:
 		Ui::siteWindow *ui;
 		QList<Source*> *m_sources;
 		QMap<QString ,Site*> *m_sites;
-		QNetworkAccessManager *m_manager;
+		QString m_url;
 };
 
 #endif // SITEWINDOW_H

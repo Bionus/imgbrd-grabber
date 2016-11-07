@@ -4,6 +4,7 @@
 #include "mainwindow.h"
 #include "functions.h"
 #include "models/source.h"
+#include "models/source-guesser.h"
 
 extern mainWindow *_mainwindow;
 
@@ -24,8 +25,6 @@ siteWindow::siteWindow(QMap<QString ,Site*> *sites, QWidget *parent)
 	{
 		ui->comboBox->addItem(QIcon(savePath("sites/" + source->getName() + "/icon.png")), source->getName());
 	}
-
-	m_manager = new QNetworkAccessManager(this);
 }
 
 siteWindow::~siteWindow()
@@ -37,85 +36,58 @@ void siteWindow::accept()
 {
 	ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 
-	QString url = ui->lineEdit->text();
-	if (url.startsWith("http://"))
-	{ url.remove("http://"); }
-	if (url.startsWith("https://"))
-	{ url.remove("https://"); }
-	if (url.endsWith("/"))
-	{ url = url.left(url.size() - 1); }
+	m_url = ui->lineEdit->text();
+	if (m_url.startsWith("http://"))
+	{ m_url.remove("http://"); }
+	if (m_url.startsWith("https://"))
+	{ m_url.remove("https://"); }
+	if (m_url.endsWith("/"))
+	{ m_url = m_url.left(m_url.size() - 1); }
 
-	Source *src = nullptr;
 	if (ui->checkBox->isChecked())
 	{
 		ui->progressBar->setValue(0);
 		ui->progressBar->setMaximum(m_sources->count());
 		ui->progressBar->show();
 
-		for (Source *source : *m_sources)
-		{
-			if (source->getApis().isEmpty())
-				continue;
+		SourceGuesser sourceGuesser(m_url, *m_sources);
+		connect(&sourceGuesser, &SourceGuesser::progress, ui->progressBar, &QProgressBar::setValue);
+		connect(&sourceGuesser, &SourceGuesser::finished, this, &siteWindow::finish);
+		sourceGuesser.start();
 
-			Api *map = source->getApis().first();
-			if (map->contains("Check/Url") && map->contains("Check/Regex"))
-			{
-				QString curr = map->value("Selected");
-				curr[0] = curr[0].toUpper();
-
-				QUrl getUrl("http://" + url + map->value("Check/Url"));
-				QNetworkReply *reply;
-				do
-				{
-					reply = m_manager->get(QNetworkRequest(getUrl));
-					QEventLoop loop;
-						connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
-					loop.exec();
-
-					getUrl = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
-				} while (!getUrl.isEmpty());
-
-				QString res = reply->readAll();
-				if (reply->error() == 0)
-				{
-					QRegExp rx(map->value("Check/Regex"));
-					if (rx.indexIn(res) != -1)
-					{
-						src = source;
-						break;
-					}
-				}
-				else
-				{ log(tr("Erreur lors de la récupération de la page de test : %1.").arg(reply->errorString()), Error); }
-
-				ui->progressBar->setValue(ui->progressBar->value() + 1);
-			}
-		}
-		ui->progressBar->hide();
-	}
-	else
-	{
-		for (Source *source : *m_sources)
-		{
-			if (source->getName() == ui->comboBox->currentText())
-			{
-				src = source;
-				break;
-			}
-		}
-	}
-
-	if (src == nullptr)
-	{
-		error(this, tr("Impossible de deviner le type du site. Êtes-vous sûr de l'url ?"));
-		ui->comboBox->setDisabled(false);
-		ui->checkBox->setChecked(false);
-		ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
-		ui->progressBar->hide();
 		return;
 	}
 
-	Site *site = new Site(url, src);
+	Source *src = nullptr;
+	for (Source *source : *m_sources)
+	{
+		if (source->getName() == ui->comboBox->currentText())
+		{
+			src = source;
+			break;
+		}
+	}
+	finish(src);
+}
+
+void siteWindow::finish(Source *src)
+{
+	if (ui->checkBox->isChecked())
+	{
+		ui->progressBar->hide();
+
+		if (src == nullptr)
+		{
+			error(this, tr("Impossible de deviner le type du site. Êtes-vous sûr de l'url ?"));
+			ui->comboBox->setDisabled(false);
+			ui->checkBox->setChecked(false);
+			ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
+			ui->progressBar->hide();
+			return;
+		}
+	}
+
+	Site *site = new Site(m_url, src);
 	src->getSites().append(site);
 	m_sites->insert(site->url(), site);
 
