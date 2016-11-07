@@ -11,7 +11,7 @@ class SourceGuesser : public QObject
 
 	public:
 		SourceGuesser(QString url, QList<Source*> sources);
-		void start();
+		Source *start();
 
 	signals:
 		void progress(int current);

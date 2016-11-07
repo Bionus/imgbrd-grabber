@@ -37,12 +37,6 @@ void siteWindow::accept()
 	ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 
 	m_url = ui->lineEdit->text();
-	if (m_url.startsWith("http://"))
-	{ m_url.remove("http://"); }
-	if (m_url.startsWith("https://"))
-	{ m_url.remove("https://"); }
-	if (m_url.endsWith("/"))
-	{ m_url = m_url.left(m_url.size() - 1); }
 
 	if (ui->checkBox->isChecked())
 	{
