@@ -18,6 +18,7 @@ siteWindow::siteWindow(QMap<QString ,Site*> *sites, QWidget *parent)
 	ui->comboBox->setDisabled(true);
 	ui->checkBox->setChecked(true);
 
+	m_sources = new QList<Source*>();
 	QSet<QString> sources;
 	for (Site *site : *sites)
 	{
