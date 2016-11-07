@@ -39,7 +39,7 @@ SourcesSettingsWindow::SourcesSettingsWindow(Site *site, QWidget *parent) : QDia
 
 	// Source order
 	ui->checkSourcesDefault->setChecked(settings->value("sources/usedefault", true).toBool());
-	QStringList sources = QStringList() << "xml" << "json" << "regex" << "rss";
+	QStringList sources = QStringList() << "" << "xml" << "json" << "regex" << "rss";
 	ui->comboSources1->setCurrentIndex(sources.indexOf(settings->value("sources/source_1", global.value("source_1", sources[0]).toString()).toString()));
 	ui->comboSources2->setCurrentIndex(sources.indexOf(settings->value("sources/source_2", global.value("source_2", sources[1]).toString()).toString()));
 	ui->comboSources3->setCurrentIndex(sources.indexOf(settings->value("sources/source_3", global.value("source_3", sources[2]).toString()).toString()));
@@ -191,10 +191,11 @@ void SourcesSettingsWindow::save()
 
 	QStringList sources = QStringList() << "" << "xml" << "json" << "regex" << "rss";
 	settings->setValue("sources/usedefault", ui->checkSourcesDefault->isChecked());
-	settings->setValue("sources/source_1", sources[ui->comboSources1->currentIndex()]);
-	settings->setValue("sources/source_2", sources[ui->comboSources2->currentIndex()]);
-	settings->setValue("sources/source_3", sources[ui->comboSources3->currentIndex()]);
-	settings->setValue("sources/source_4", sources[ui->comboSources4->currentIndex()]);
+	settings->setValue("sources/source_1", sources[qMax(0, ui->comboSources1->currentIndex())]);
+	settings->setValue("sources/source_2", sources[qMax(0, ui->comboSources2->currentIndex())]);
+	settings->setValue("sources/source_3", sources[qMax(0, ui->comboSources3->currentIndex())]);
+	settings->setValue("sources/source_4", sources[qMax(0, ui->comboSources4->currentIndex())]);
+
 
 	settings->setValue("auth/pseudo", ui->lineAuthPseudo->text());
 	settings->setValue("auth/password", ui->lineAuthPassword->text());
