@@ -4,7 +4,6 @@
 #include <QFile>
 #include <QSettings>
 #include "addgroupwindow.h"
-#include "functions.h"
 
 
 
@@ -13,7 +12,7 @@
  * @param	parent		The parent window
  */
 AddGroupWindow::AddGroupWindow(QString selected, QStringList sites, Profile *profile, QWidget *parent)
-	: QWidget(parent), m_sites(sites)
+	: QWidget(parent), m_sites(sites), m_settings(profile->getSettings())
 {
 	QVBoxLayout *layout = new QVBoxLayout;
 		QFormLayout *formLayout = new QFormLayout;
@@ -25,18 +24,11 @@ AddGroupWindow::AddGroupWindow(QString selected, QStringList sites, Profile *pro
 			m_lineTags = new TextEdit(profile, this);
 				m_lineTags->setContextMenuPolicy(Qt::CustomContextMenu);
 				QStringList completion;
-					QFile words("words.txt");
-					if (words.open(QIODevice::ReadOnly | QIODevice::Text))
-					{
-						while (!words.atEnd())
-						{
-							QByteArray line = words.readLine();
-							completion.append(QString(line).remove("\r\n").remove("\n").split(" ", QString::SkipEmptyParts));
-						}
-						QCompleter *completer = new QCompleter(completion, this);
-						completer->setCaseSensitivity(Qt::CaseInsensitive);
-						m_lineTags->setCompleter(completer);
-					}
+					completion.append(profile->getAutoComplete());
+					completion.append(profile->getCustomAutoComplete());
+					QCompleter *completer = new QCompleter(completion, this);
+					completer->setCaseSensitivity(Qt::CaseInsensitive);
+					m_lineTags->setCompleter(completer);
 				formLayout->addRow(tr("&Tags"), m_lineTags);
 			m_spinPage = new QSpinBox;
 				m_spinPage->setRange(1, 1000);
@@ -76,7 +68,6 @@ AddGroupWindow::AddGroupWindow(QString selected, QStringList sites, Profile *pro
  */
 void AddGroupWindow::ok()
 {
-	QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat);
 	QStringList bools = QStringList() << "true" << "false";
 	QStringList values = QStringList() << m_lineTags->toPlainText()
 									   << QString::number(m_spinPage->value())
@@ -84,8 +75,8 @@ void AddGroupWindow::ok()
 									   << QString::number(m_spinLimit->value())
 									   << bools.at(m_comboDwl->currentIndex())
 									   << m_sites.at(m_comboSites->currentIndex())
-									   << settings->value("Save/filename").toString()
-									   << settings->value("Save/path").toString()
+									   << m_settings->value("Save/filename").toString()
+									   << m_settings->value("Save/path").toString()
 									   << "";
 	emit sendData(values);
 	this->close();

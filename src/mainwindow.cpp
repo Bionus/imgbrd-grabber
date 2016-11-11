@@ -59,7 +59,7 @@ void mainWindow::init()
 	log(tr("Nouvelle session démarée."));
 	log(tr("Version du logiciel : %1.").arg(VERSION));
 	log(tr("Chemin : %1").arg(qApp->applicationDirPath()));
-	log(tr("Chargement des préférences depuis <a href=\"file:///%1\">%1</a>").arg(savePath("settings.ini")));
+	log(tr("Chargement des préférences depuis <a href=\"file:///%1\">%1</a>").arg(m_settings->fileName()));
 
 	tabifyDockWidget(ui->dock_internet, ui->dock_wiki);
 	tabifyDockWidget(ui->dock_wiki, ui->dock_kfl);
@@ -233,8 +233,8 @@ void mainWindow::initialLoginsFinished()
 
 	if (m_restore)
 	{
-		loadLinkList(savePath("restore.igl"));
-		loadTabs(savePath("tabs.txt"));
+		loadLinkList(m_profile->getPath() + "/restore.igl");
+		loadTabs(m_profile->getPath() + "/tabs.txt");
 	}
 	if (m_tabs.isEmpty())
 	{ addTab(); }
@@ -408,7 +408,7 @@ void mainWindow::addSearchTab(searchTab *w, bool background)
 	if (!background)
 		ui->tabWidget->setCurrentIndex(index);
 
-	saveTabs(savePath("tabs.txt"));
+	saveTabs(m_profile->getPath() + "/tabs.txt");
 }
 
 bool mainWindow::saveTabs(QString filename)
@@ -480,7 +480,7 @@ void mainWindow::updateTabTitle(searchTab *tab)
 }
 void mainWindow::updateTabs()
 {
-	saveTabs(savePath("tabs.txt"));
+	saveTabs(m_profile->getPath() + "/tabs.txt");
 }
 void mainWindow::tabClosed(searchTab *tab)
 {
@@ -573,7 +573,7 @@ void mainWindow::batchAddGroup(const QStringList& values)
 	ui->tableBatchGroups->setCellWidget(ui->tableBatchGroups->rowCount()-1, 9, prog);
 
 	m_allow = true;
-	saveLinkList(savePath("restore.igl"));
+	saveLinkList(m_profile->getPath() + "/restore.igl");
 	updateGroupCount();
 }
 void mainWindow::updateGroupCount()
@@ -598,7 +598,7 @@ void mainWindow::batchAddUnique(QMap<QString,QString> values, bool save)
 	}
 
 	if (save)
-	{ saveLinkList(savePath("restore.igl")); }
+	{ saveLinkList(m_profile->getPath() + "/restore.igl"); }
 }
 void mainWindow::saveFolder()
 {
@@ -767,7 +767,7 @@ void mainWindow::updateBatchGroups(int y, int x)
 			if (r - 1 == 3)
 			{ m_progressBars[batchId]->setMaximum(m_groupBatchs[batchId][r - 1].toInt()); }
 
-			saveLinkList(savePath("restore.igl"));
+			saveLinkList(m_profile->getPath() + "/restore.igl");
 		}
 	}
 }
@@ -872,7 +872,7 @@ void mainWindow::logShow(QDateTime date, QString msg)
 }
 void mainWindow::logClear()
 {
-	QFile logFile(savePath("main.log"));
+	QFile logFile(m_profile->getPath() + "/main.log");
 	if (logFile.open(QIODevice::WriteOnly | QIODevice::Text))
 	{
 		logFile.resize(0);
@@ -885,7 +885,7 @@ void mainWindow::logClear()
 	}
 }
 void mainWindow::logOpen()
-{ QDesktopServices::openUrl("file:///"+savePath("main.log")); }
+{ QDesktopServices::openUrl("file:///" + m_profile->getPath() + "/main.log"); }
 
 void mainWindow::switchTranslator(QTranslator& translator, const QString& filename)
 {
@@ -956,8 +956,8 @@ void mainWindow::closeEvent(QCloseEvent *e)
 	}
 
 	log(tr("Sauvegarde..."));
-		saveLinkList(savePath("restore.igl"));
-		saveTabs(savePath("tabs.txt"));
+		saveLinkList(m_profile->getPath() + "/restore.igl");
+		saveTabs(m_profile->getPath() + "/tabs.txt");
 		m_settings->setValue("state", saveState());
 		m_settings->setValue("geometry", saveGeometry());
 		QStringList sizes = QStringList();
@@ -968,7 +968,7 @@ void mainWindow::closeEvent(QCloseEvent *e)
 		{ m_tabs.at(i)->deleteLater(); }
 		m_settings->setValue("crashed", false);
 		m_settings->sync();
-		QFile::copy(m_settings->fileName(), savePath("old/settings."+QString(VERSION)+".ini"));
+		QFile::copy(m_settings->fileName(), m_profile->getPath() + "/old/settings."+QString(VERSION)+".ini");
 		m_profile->sync();
 	DONE();
 	m_loaded = false;
@@ -1976,12 +1976,12 @@ void mainWindow::blacklistFix()
 }
 void mainWindow::emptyDirsFix()
 {
-	EmptyDirsFix1 *win = new EmptyDirsFix1(this);
+	EmptyDirsFix1 *win = new EmptyDirsFix1(m_profile, this);
 	win->show();
 }
 void mainWindow::md5FixOpen()
 {
-	md5Fix *win = new md5Fix(this);
+	md5Fix *win = new md5Fix(m_profile, this);
 	win->show();
 }
 void mainWindow::renameExisting()
@@ -2171,7 +2171,7 @@ void mainWindow::on_buttonSaveSettings_clicked()
 void mainWindow::on_buttonInitSettings_clicked()
 {
 	// Reload filename history
-	QFile f(savePath("filenamehistory.txt"));
+	QFile f(m_profile->getPath() + "/filenamehistory.txt");
 	QStringList filenames;
 	if (f.open(QFile::ReadOnly | QFile::Text))
 	{
@@ -2223,7 +2223,7 @@ void mainWindow::saveSettings()
 	ui->labelFilename->setText(message);
 
 	// Save filename history
-	QFile f(savePath("filenamehistory.txt"));
+	QFile f(m_profile->getPath() + "/filenamehistory.txt");
 	if (f.open(QFile::WriteOnly | QFile::Text | QFile::Truncate))
 	{
 		for (int i = qMax(0, ui->comboFilename->count() - 50); i < ui->comboFilename->count(); ++i)

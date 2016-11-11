@@ -5,7 +5,6 @@
 #include <QMessageBox>
 #include "rename-existing-1.h"
 #include "rename-existing-2.h"
-#include "functions.h"
 #include "ui_rename-existing-1.h"
 #include "models/page.h"
 
@@ -16,10 +15,10 @@ RenameExisting1::RenameExisting1(Profile *profile, QMap<QString,Site*> sites, QW
 {
 	ui->setupUi(this);
 
-	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
-	ui->lineFolder->setText(settings.value("Save/path").toString());
-	ui->lineFilenameOrigin->setText(settings.value("Save/filename").toString());
-	ui->lineFilenameDestination->setText(settings.value("Save/filename").toString());
+	QSettings *settings = profile->getSettings();
+	ui->lineFolder->setText(settings->value("Save/path").toString());
+	ui->lineFilenameOrigin->setText(settings->value("Save/filename").toString());
+	ui->lineFilenameDestination->setText(settings->value("Save/filename").toString());
 	ui->comboSource->addItems(m_sites.keys());
 	ui->progressBar->hide();
 

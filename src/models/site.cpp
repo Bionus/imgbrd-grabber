@@ -114,7 +114,7 @@ void Site::initManager()
 
 		// Cache
 		QNetworkDiskCache *diskCache = new QNetworkDiskCache(m_manager);
-		diskCache->setCacheDirectory(savePath("cache/"));
+		diskCache->setCacheDirectory(m_source->getProfile()->getPath() + "/cache/");
 		m_manager->setCache(diskCache);
 
 		// Cookies

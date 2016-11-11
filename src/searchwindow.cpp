@@ -31,21 +31,14 @@ SearchWindow::SearchWindow(QString tags, Profile *profile, QWidget *parent)
 	m_tags = new TextEdit(profile, this);
 		m_tags->setContextMenuPolicy(Qt::CustomContextMenu);
 		QStringList completion;
-			QFile words("words.txt");
-			if (words.open(QIODevice::ReadOnly | QIODevice::Text))
-			{
-				while (!words.atEnd())
-				{
-					QByteArray line = words.readLine();
-					completion.append(QString(line).remove("\r\n").remove("\n").split(" ", QString::SkipEmptyParts));
-				}
-				completion.append(favs);
-				completion.removeDuplicates();
-				completion.sort();
-				QCompleter *completer = new QCompleter(completion, m_tags);
-					completer->setCaseSensitivity(Qt::CaseInsensitive);
-				m_tags->setCompleter(completer);
-			}
+			completion.append(profile->getAutoComplete());
+			completion.append(profile->getCustomAutoComplete());
+			completion.append(favs);
+			completion.removeDuplicates();
+			completion.sort();
+			QCompleter *completer = new QCompleter(completion, m_tags);
+				completer->setCaseSensitivity(Qt::CaseInsensitive);
+			m_tags->setCompleter(completer);
 		connect(m_tags, SIGNAL(returnPressed()), this, SLOT(accept()));
 	ui->formLayout->setWidget(0, QFormLayout::FieldRole, m_tags);
 

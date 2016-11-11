@@ -25,6 +25,7 @@ class AddGroupWindow : public QWidget
 		QSpinBox	*m_spinPage, *m_spinPP, *m_spinLimit;
 		QComboBox	*m_comboDwl, *m_comboSites;
 		QStringList m_sites;
+		QSettings	*m_settings;
 };
 
 #endif // ADDGROUPWINDOW_H

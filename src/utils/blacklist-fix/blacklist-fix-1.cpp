@@ -5,7 +5,6 @@
 #include <QMessageBox>
 #include "blacklist-fix-1.h"
 #include "blacklist-fix-2.h"
-#include "functions.h"
 #include "ui_blacklist-fix-1.h"
 #include "models/page.h"
 
@@ -16,10 +15,10 @@ BlacklistFix1::BlacklistFix1(Profile *profile, QMap<QString,Site*> sites, QWidge
 {
 	ui->setupUi(this);
 
-	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
-	ui->lineFolder->setText(settings.value("Save/path").toString());
-	ui->lineFilename->setText(settings.value("Save/filename").toString());
-	ui->lineBlacklist->setText(settings.value("blacklistedtags").toString());
+	QSettings *settings = profile->getSettings();
+	ui->lineFolder->setText(settings->value("Save/path").toString());
+	ui->lineFilename->setText(settings->value("Save/filename").toString());
+	ui->lineBlacklist->setText(settings->value("blacklistedtags").toString());
 	ui->comboSource->addItems(m_sites.keys());
 	ui->progressBar->hide();
 

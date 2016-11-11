@@ -4,16 +4,17 @@
 #include <QCryptographicHash>
 #include <QMessageBox>
 #include "md5-fix.h"
-#include "functions.h"
 #include "ui_md5-fix.h"
+#include "functions.h"
 
-md5Fix::md5Fix(QWidget *parent) : QDialog(parent), ui(new Ui::md5Fix)
+md5Fix::md5Fix(Profile *profile, QWidget *parent)
+	: QDialog(parent), ui(new Ui::md5Fix), m_profile(profile)
 {
 	ui->setupUi(this);
 
-	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
-	ui->lineFolder->setText(settings.value("Save/path").toString());
-	ui->lineFilename->setText(settings.value("Save/filename").toString());
+	QSettings *settings = profile->getSettings();
+	ui->lineFolder->setText(settings->value("Save/path").toString());
+	ui->lineFilename->setText(settings->value("Save/filename").toString());
 	ui->progressBar->hide();
 
 	resize(size().width(), 0);
@@ -73,7 +74,7 @@ void md5Fix::on_buttonStart_clicked()
 		ui->progressBar->show();
 
 		// Open MD5 file
-		QFile f(savePath("md5s.txt"));
+		QFile f(m_profile->getPath() + "/md5s.txt");
 		if (!f.open(QFile::WriteOnly | QFile::Truncate))
 		{
 			error(this, tr("Impossible d'ouvrir le fichier de MD5."));

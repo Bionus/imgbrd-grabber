@@ -65,6 +65,28 @@ Profile::Profile(QString path)
 		fileMD5.close();
 	}
 
+	// Load auto-complete
+	QFile fileAutoComplete(m_path + "/words.txt");
+	if (fileAutoComplete.open(QFile::ReadOnly | QFile::Text))
+	{
+		QString line;
+		while (!(line = fileAutoComplete.readLine()).isEmpty())
+			m_autoComplete.append(line.trimmed().split(" ", QString::SkipEmptyParts));
+
+		fileAutoComplete.close();
+	}
+
+	// Load custom auto-complete
+	QFile fileCustomAutoComplete(m_path + "/wordsc.txt");
+	if (fileCustomAutoComplete.open(QFile::ReadOnly | QFile::Text))
+	{
+		QString line;
+		while (!(line = fileCustomAutoComplete.readLine()).isEmpty())
+			m_customAutoComplete.append(line.trimmed().split(" ", QString::SkipEmptyParts));
+
+		fileCustomAutoComplete.close();
+	}
+
 	m_commands = new Commands(this);
 }
 
@@ -123,6 +145,14 @@ void Profile::sync()
 			fileMD5.write(QString(md5s[i] + paths[i] + "\n").toUtf8());
 
 		fileMD5.close();
+	}
+
+	// custom auto-complete
+	QFile fileCustomAutoComplete(m_path + "/wordsc.txt");
+	if (fileCustomAutoComplete.open(QFile::WriteOnly | QFile::Text | QFile::Truncate))
+	{
+		fileCustomAutoComplete.write(m_customAutoComplete.join("\r\n").toUtf8());
+		fileCustomAutoComplete.close();
 	}
 }
 
@@ -222,9 +252,17 @@ void Profile::removeMd5(QString md5)
 }
 
 
-QString Profile::getPath() const			{ return m_path;			}
-QSettings *Profile::getSettings() const		{ return m_settings;		}
-QList<Favorite> &Profile::getFavorites()	{ return m_favorites;		}
-QStringList &Profile::getKeptForLater()		{ return m_keptForLater;	}
-QStringList &Profile::getIgnored()			{ return m_ignored;			}
-Commands &Profile::getCommands()			{ return *m_commands;		}
+void Profile::addAutoComplete(QString tag)
+{
+	m_customAutoComplete.append(tag);
+}
+
+
+QString Profile::getPath() const				{ return m_path;				}
+QSettings *Profile::getSettings() const			{ return m_settings;			}
+QList<Favorite> &Profile::getFavorites()		{ return m_favorites;			}
+QStringList &Profile::getKeptForLater()			{ return m_keptForLater;		}
+QStringList &Profile::getIgnored()				{ return m_ignored;				}
+Commands &Profile::getCommands()				{ return *m_commands;			}
+QStringList &Profile::getAutoComplete()			{ return m_autoComplete;		}
+QStringList &Profile::getCustomAutoComplete()	{ return m_customAutoComplete;	}

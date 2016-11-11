@@ -15,20 +15,8 @@ searchTab::searchTab(int id, QMap<QString, Site*> *sites, Profile *profile, main
 	setAttribute(Qt::WA_DeleteOnClose);
 
 	// Auto-complete list
-	QFile words("words.txt");
-	if (words.open(QIODevice::ReadOnly | QIODevice::Text))
-	{
-		while (!words.atEnd())
-			m_completion.append(QString(words.readLine()).trimmed().split(" ", QString::SkipEmptyParts));
-		words.close();
-	}
-	QFile wordsc(savePath("wordsc.txt"));
-	if (wordsc.open(QIODevice::ReadOnly | QIODevice::Text))
-	{
-		while (!wordsc.atEnd())
-			m_completion.append(QString(wordsc.readLine()).trimmed().split(" ", QString::SkipEmptyParts));
-		wordsc.close();
-	}
+	m_completion.append(profile->getAutoComplete());
+	m_completion.append(profile->getCustomAutoComplete());
 
 	// Favorite tags
 	for (Favorite fav : m_favorites)
@@ -66,7 +54,6 @@ void searchTab::setTagsFromPages(const QMap<QString, Page*> &pages)
 	// Tags for this page
 	QList<Tag> taglist;
 	QStringList tagsGot;
-	QStringList autocompleteAdd;
 	for (int i = 0; i < pages.count(); i++)
 	{
 		QList<Tag> tags = pages.value(pages.keys().at(i))->tags();
@@ -77,7 +64,7 @@ void searchTab::setTagsFromPages(const QMap<QString, Page*> &pages)
 				// Add to auto-complete list if it has enough count
 				if (tag.count() >= m_settings->value("tagsautoadd", 10).toInt() && !m_completion.contains(tag.text()))
 				{
-					autocompleteAdd.append(tag.text());
+					m_profile->addAutoComplete(tag.text());
 					m_completion.append(tag.text());
 				}
 
@@ -94,15 +81,6 @@ void searchTab::setTagsFromPages(const QMap<QString, Page*> &pages)
 				}
 			}
 		}
-	}
-
-	// Add new words to auto-complete list
-	QFile wordsc(savePath("wordsc.txt"));
-	if (wordsc.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text))
-	{
-		wordsc.write(QString('\n').toLatin1());
-		wordsc.write(autocompleteAdd.join(' ').toLatin1());
-		wordsc.close();
 	}
 
 	// We sort tags by frequency
