@@ -1,6 +1,7 @@
 #include <QPaintEvent>
 #include <QPainter>
 #include "QBouton.h"
+#include <QDebug>
 
 
 
@@ -11,19 +12,21 @@ QBouton::QBouton(QVariant id, bool resizeInsteadOfCropping, int border, QColor c
 QBouton::~QBouton()
 { }
 
-void QBouton::scale(QPixmap image, float scale)
+void QBouton::scale(QPixmap &image, float scale)
 {
+	QSize size;
 	if (scale > 1.00001f)
 	{
-		QSize size = image.size() * scale;
+		size = image.size() * scale;
 		setIcon(image.scaled(size));
-		setIconSize(size);
 	}
 	else
 	{
 		setIcon(image);
-		setIconSize(image.size());
+		size = image.size();
 	}
+	setIconSize(size);
+	resize(size);
 }
 
 QVariant QBouton::id()

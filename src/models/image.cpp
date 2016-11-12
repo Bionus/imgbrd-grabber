@@ -956,6 +956,7 @@ QUrl			Image::previewUrl() const	{ return m_previewUrl;		}
 QUrl			Image::pageUrl() const		{ return m_pageUrl;			}
 QSize			Image::size() const			{ return m_size;			}
 QPixmap			Image::previewImage() const	{ return m_imagePreview;	}
+QPixmap			&Image::previewImage()		{ return m_imagePreview;	}
 Page			*Image::page() const		{ return m_parent;			}
 QByteArray		Image::data() const			{ return m_data;			}
 QNetworkReply	*Image::imageReply() const	{ return m_loadImage;		}
