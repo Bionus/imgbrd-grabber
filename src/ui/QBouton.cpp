@@ -57,8 +57,12 @@ void QBouton::paintEvent(QPaintEvent *event)
 		h *= coef;
 	}
 	// Center the image
-	x += (region.width() - w) / 2;
-	y += (region.height() - h) / 2;
+	bool center = true;
+	if (center)
+	{
+		x += (region.width() - w) / 2;
+		y += (region.height() - h) / 2;
+	}
 
 	// Draw image
 	QIcon::Mode mode = this->isChecked() ? QIcon::Selected : QIcon::Normal;

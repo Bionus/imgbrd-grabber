@@ -2,7 +2,6 @@
 #include <QMenu>
 #include "tag-tab.h"
 #include "ui_tag-tab.h"
-#include "ui/QBouton.h"
 #include "viewer/zoomwindow.h"
 #include "searchwindow.h"
 

@@ -33,8 +33,7 @@
 #include "utils/md5-fix/md5-fix.h"
 #include "models/filename.h"
 
-#define DONE()			logUpdate(QObject::tr(" Fait"))
-#define DIR_SEPARATOR	QDir::toNativeSeparators("/")
+#define DONE()	logUpdate(QObject::tr(" Fait"))
 
 
 
@@ -543,7 +542,6 @@ void mainWindow::closeCurrentTab()
 void mainWindow::batchAddGroup(const QStringList& values)
 {
 	QStringList vals(values);
-	vals.append("true");
 	m_groupBatchs.append(vals);
 
 	QTableWidgetItem *item;
@@ -642,12 +640,11 @@ void mainWindow::batchClearSel()
 	int rem = 0;
 	for (int i : todelete)
 	{
-		int id = ui->tableBatchGroups->item(i - rem, 0)->text().toInt();
-		m_progressBars[id - 1]->deleteLater();
-		m_progressBars[id - 1] = nullptr;
-
-		m_groupBatchs[i][m_groupBatchs.at(i).count() - 1] = "false";
-		ui->tableBatchGroups->removeRow(i - rem);
+		int pos = i - rem;
+		m_progressBars[pos]->deleteLater();
+		m_progressBars.removeAt(pos);
+		m_groupBatchs.removeAt(pos);
+		ui->tableBatchGroups->removeRow(pos);
 		rem++;
 	}
 
@@ -661,8 +658,9 @@ void mainWindow::batchClearSel()
 	rem = 0;
 	for (int i : todelete)
 	{
-		ui->tableBatchUniques->removeRow(i - rem);
-		m_batchs.removeAt(i - rem);
+		int pos = i - rem;
+		ui->tableBatchUniques->removeRow(pos);
+		m_batchs.removeAt(pos);
 		rem++;
 	}
 	updateGroupCount();
@@ -752,20 +750,18 @@ void mainWindow::updateBatchGroups(int y, int x)
 		if (r == 3 && ui->tableBatchGroups->item(y, x)->text().toInt() < 1)
 		{
 			error(this, tr("La limite d'images par page doit être supérieure ou égale à 1."));
-			ui->tableBatchGroups->item(y, x)->setText(m_groupBatchs[y][r-1]);
+			ui->tableBatchGroups->item(y, x)->setText(m_groupBatchs[y][r - 1]);
 		}
 		else if (r == 4 && ui->tableBatchGroups->item(y, x)->text().toInt() < 0)
 		{
-			error(this, tr("La limite d'imagessupérieure ou égale à 0."));
-			ui->tableBatchGroups->item(y, x)->setText(m_groupBatchs[y][r-1]);
+			error(this, tr("La limite d'images doit être supérieure ou égale à 0."));
+			ui->tableBatchGroups->item(y, x)->setText(m_groupBatchs[y][r - 1]);
 		}
 		else
 		{
-			int batchId = ui->tableBatchGroups->item(y, 0)->text().toInt() - 1;
-			m_groupBatchs[batchId][r - 1] = ui->tableBatchGroups->item(y, x)->text();
-
+			m_groupBatchs[y][r - 1] = ui->tableBatchGroups->item(y, x)->text();
 			if (r - 1 == 3)
-			{ m_progressBars[batchId]->setMaximum(m_groupBatchs[batchId][r - 1].toInt()); }
+			{ m_progressBars[y]->setMaximum(m_groupBatchs[y][r - 1].toInt()); }
 
 			saveLinkList(m_profile->getPath() + "/restore.igl");
 		}
@@ -1135,7 +1131,7 @@ void mainWindow::getAll(bool all)
 		int active = 0;
 		for (int j = 0; j < m_groupBatchs.count(); ++j)
 		{
-			if (m_groupBatchs[j][m_groupBatchs[j].count() - 1] == "true" && (all || todownload.contains(j)))
+			if (all || todownload.contains(j))
 			{
 				if (m_progressBars.length() > j && m_progressBars[j] != nullptr)
 				{
@@ -1283,6 +1279,10 @@ void mainWindow::getAllFinishedImages(QList<QSharedPointer<Image>> images)
 	m_getAllIgnored += downloader->ignoredCount();
 
 	m_getAllRemaining.append(images);
+
+	int row = downloader->getData().toInt();
+	m_progressBars[row]->setValue(0);
+	m_progressBars[row]->setMaximum(images.count());
 
 	if (m_downloaders.isEmpty())
 	{
@@ -1569,11 +1569,7 @@ void mainWindow::getAllPerformTags()
 
 int mainWindow::getRowForSite(int site_id)
 {
-	if (site_id >= 0)
-		for (int i = 0; i < ui->tableBatchGroups->rowCount(); ++i)
-			if (ui->tableBatchGroups->item(i, 0)->text().toInt() == site_id)
-				return i;
-	return -1;
+	return site_id - 1;
 }
 
 void mainWindow::getAllGetImage(QSharedPointer<Image> img)
@@ -1877,9 +1873,10 @@ void mainWindow::getAllFinished()
 		int rem = 0;
 		for (int i : m_batchDownloading)
 		{
-			m_groupBatchs[i][m_groupBatchs[i].count() - 1] = "false";
-			m_progressBars.removeAt(i - rem);
-			ui->tableBatchGroups->removeRow(i - rem);
+			int pos = i - rem;
+			m_progressBars[pos]->deleteLater();
+			m_progressBars.removeAt(pos);
+			ui->tableBatchGroups->removeRow(pos);
 			rem++;
 		}
 	}
@@ -2115,8 +2112,9 @@ bool mainWindow::loadLinkList(QString filename)
 
 			infos.append("true");
 			m_groupBatchs.append(infos);
-			QTableWidgetItem *it = new QTableWidgetItem(getIcon(":/images/colors/"+QString(val == max ? "green" : (val > 0 ? "blue" : "black"))+".png"), QString::number(m_groupBatchs.indexOf(infos) + 1));
+			QTableWidgetItem *it = new QTableWidgetItem(getIcon(":/images/colors/"+QString(val == max ? "green" : (val > 0 ? "blue" : "black"))+".png"), "");
 			it->setFlags(it->flags() ^ Qt::ItemIsEditable);
+			it->setTextAlignment(Qt::AlignCenter);
 			ui->tableBatchGroups->setItem(ui->tableBatchGroups->rowCount()-1, 0, it);
 
 			QProgressBar *prog = new QProgressBar(this);
