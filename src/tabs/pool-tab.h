@@ -31,6 +31,7 @@ class poolTab : public searchTab
 		int imagesPerPage();
 		int columns();
 		QString postFilter();
+		QList<Site*> loadSites() override;
 
 	public slots:
 		// Search
@@ -58,9 +59,8 @@ class poolTab : public searchTab
 
 	private:
 		int				m_id;
-		TextEdit		*m_search, *m_postFiltering;
+		TextEdit		*m_search;
 		QCalendarWidget	*m_calendar;
-		QString			m_lastTags;
 		bool			m_sized;
 };
 

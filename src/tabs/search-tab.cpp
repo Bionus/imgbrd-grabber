@@ -10,7 +10,7 @@
 
 
 searchTab::searchTab(int id, QMap<QString, Site*> *sites, Profile *profile, mainWindow *parent)
-	: QWidget(parent), m_profile(profile), m_id(id), m_lastPageMaxId(0), m_lastPageMinId(0), m_sites(sites), m_favorites(profile->getFavorites()), m_parent(parent), m_settings(profile->getSettings()), m_pagemax(-1), m_stop(true), m_from_history(false), m_history_cursor(0)
+	: QWidget(parent), m_profile(profile), m_id(id), m_lastPageMaxId(0), m_lastPageMinId(0), m_sites(sites), m_favorites(profile->getFavorites()), m_parent(parent), m_settings(profile->getSettings()), m_pagemax(-1), m_stop(true), m_from_history(false), m_history_cursor(0), m_lastTags(QString())
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 
@@ -796,6 +796,83 @@ void searchTab::saveSources(QList<bool> sel)
 }
 
 
+void searchTab::loadTags(QStringList tags)
+{
+	log(tr("Chargement des résultats..."));
+
+	// Append "additional tags" setting
+	tags.append(m_settings->value("add").toString().trimmed().split(" ", QString::SkipEmptyParts));
+
+	// Save previous pages
+	QStringList keys = m_sites->keys();
+	QMap<QString, Page*> lastPages;
+	for (int i = 0; i < m_selectedSources.size(); i++)
+	{
+		QString site = keys[i];
+		if (m_checkboxes.at(i)->isChecked() && m_pages.contains(site))
+			lastPages.insert(site, m_pages[site]);
+	}
+
+	clear();
+
+	// Disable download buttons
+	ui_buttonGetAll->setEnabled(false);
+	ui_buttonGetPage->setEnabled(false);
+	ui_buttonGetSel->setEnabled(false);
+
+	// Get the search values
+	QString search = tags.join(" ");
+	int perpage = ui_spinImagesPerPage->value();
+
+	if (!m_from_history)
+	{ addHistory(search, ui_spinPage->value(), ui_spinImagesPerPage->value(), ui_spinColumns->value()); }
+	m_from_history = false;
+
+	if (search != m_lastTags && !m_lastTags.isNull() && m_history_cursor == m_history.size() - 1)
+	{ ui_spinPage->setValue(1); }
+	m_lastTags = search;
+
+	if (ui_widgetMeant != nullptr)
+		ui_widgetMeant->hide();
+	ui_buttonFirstPage->setEnabled(ui_spinPage->value() > 1);
+	ui_buttonPreviousPage->setEnabled(ui_spinPage->value() > 1);
+
+	for (Site *site : loadSites())
+	{
+		// Load results
+		Page *page = new Page(m_profile, site, m_sites->values(), tags, ui_spinPage->value(), perpage, m_postFiltering->toPlainText().split(" ", QString::SkipEmptyParts), false, this, 0, m_lastPage, m_lastPageMinId, m_lastPageMaxId);
+		connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(finishedLoading(Page*)));
+		connect(page, SIGNAL(failedLoading(Page*)), this, SLOT(failedLoading(Page*)));
+		if (lastPages.contains(page->website()))
+		{ page->setLastPage(lastPages[page->website()]); }
+		m_pages.insert(page->website(), page);
+
+		// Setup the layout
+		QGridLayout *l = new QGridLayout;
+		l->setHorizontalSpacing(m_settings->value("Margins/horizontal", 6).toInt());
+		l->setVerticalSpacing(m_settings->value("Margins/vertical", 6).toInt());
+		m_layouts.append(l);
+
+		// Load tags if necessary
+		log(tr("Chargement de la page <a href=\"%1\">%1</a>").arg(page->url().toString().toHtmlEscaped()));
+		m_stop = false;
+		if (m_settings->value("useregexfortags", true).toBool())
+		{
+			connect(page, SIGNAL(finishedLoadingTags(Page*)), this, SLOT(finishedLoadingTags(Page*)));
+			page->loadTags();
+		}
+
+		// Start loading
+		page->load();
+	}
+	if (ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked() && m_layouts.size() > 0)
+	{ ui_layoutResults->addLayout(m_layouts[0], 0, 0); }
+	m_page = 0;
+
+	emit changed(this);
+}
+
+
 void searchTab::setSources(QList<bool> sources)
 { m_selectedSources = sources; }
 
@@ -810,3 +887,6 @@ QList<Tag> searchTab::results()
 { return m_tags; }
 QString searchTab::wiki()
 { return m_wiki; }
+
+void searchTab::onLoad()
+{ }

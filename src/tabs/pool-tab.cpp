@@ -9,7 +9,7 @@
 
 
 poolTab::poolTab(int id, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
-	: searchTab(id, sites, profile, parent), ui(new Ui::poolTab), m_id(id), m_lastTags(QString()), m_sized(false)
+	: searchTab(id, sites, profile, parent), ui(new Ui::poolTab), m_id(id), m_sized(false)
 {
 	ui->setupUi(this);
 	ui->widgetMeant->hide();
@@ -30,6 +30,8 @@ poolTab::poolTab(int id, QMap<QString,Site*> *sites, Profile *profile, mainWindo
 	ui_buttonGetAll = ui->buttonGetAll;
 	ui_buttonGetPage = ui->buttonGetpage;
 	ui_buttonGetSel = ui->buttonGetSel;
+	ui_buttonFirstPage = ui->buttonFirstPage;
+	ui_buttonPreviousPage = ui->buttonPreviousPage;
 
 	QStringList sources = m_sites->keys();
 	for (QString source : sources)
@@ -80,49 +82,24 @@ void poolTab::closeEvent(QCloseEvent *e)
 }
 
 
-
 void poolTab::load()
 {
-	log(tr("Chargement des résultats..."));
-	clear();
+	// Get the search values
+	QString search = m_search->toPlainText();
+	QStringList tags = search.trimmed().split(" ", QString::SkipEmptyParts);
+	tags.prepend("pool:"+QString::number(ui->spinPool->value()));
 
-	if (!m_from_history)
-	{ addHistory(m_search->toPlainText(), ui->spinPage->value(), ui->spinImagesPerPage->value(), ui->spinColumns->value()); }
-	m_from_history = false;
-
-	if (m_search->toPlainText() != m_lastTags && !m_lastTags.isNull() && m_history_cursor == m_history.size() - 1)
-	{ ui->spinPage->setValue(1); }
-	m_lastTags = m_search->toPlainText();
-
-	ui->widgetMeant->hide();
-	ui->buttonFirstPage->setEnabled(ui->spinPage->value() > 1);
-	ui->buttonPreviousPage->setEnabled(ui->spinPage->value() > 1);
-	setWindowTitle(m_search->toPlainText().isEmpty() ? tr("Recherche") : m_search->toPlainText().replace("&", "&&"));
+	setWindowTitle(search.isEmpty() ? tr("Recherche") : search.replace("&", "&&"));
 	emit titleChanged(this);
 
-	QStringList tags = m_search->toPlainText().trimmed().split(" ", QString::SkipEmptyParts);
-	tags.append(m_settings->value("add").toString().trimmed().split(" ", QString::SkipEmptyParts));
-	tags.prepend("pool:"+QString::number(ui->spinPool->value()));
-	int perpage = ui->spinImagesPerPage->value();
-	Page *page = new Page(m_profile, m_sites->value(ui->comboSites->currentText()), m_sites->values(), tags, ui->spinPage->value(), perpage, m_postFiltering->toPlainText().split(" ", QString::SkipEmptyParts), true, this);
-	log(tr("Chargement de la page <a href=\"%1\">%1</a>").arg(page->url().toString().toHtmlEscaped()));
-	connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(finishedLoading(Page*)));
-	m_pages.insert(page->website(), page);
-	QGridLayout *l = new QGridLayout;
-	l->setHorizontalSpacing(m_settings->value("Margins/horizontal", 6).toInt());
-	l->setVerticalSpacing(m_settings->value("Margins/vertical", 6).toInt());
-	m_layouts.append(l);
-	m_stop = false;
-	page->load();
-	if (m_settings->value("useregexfortags", true).toBool())
-	{
-		connect(page, SIGNAL(finishedLoadingTags(Page*)), this, SLOT(finishedLoadingTags(Page*)));
-		page->loadTags();
-	}
+	loadTags(tags);
+}
 
-	m_page = 0;
-
-	emit changed(this);
+QList<Site*> poolTab::loadSites()
+{
+	QList<Site*> sites;
+	sites.append(m_sites->value(ui->comboSites->currentText()));
+	return sites;
 }
 
 bool poolTab::validateImage(QSharedPointer<Image> img)
@@ -130,6 +107,7 @@ bool poolTab::validateImage(QSharedPointer<Image> img)
 	Q_UNUSED(img);
 	return true;
 }
+
 
 void poolTab::getPage()
 {

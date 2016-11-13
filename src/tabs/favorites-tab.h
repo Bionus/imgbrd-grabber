@@ -32,6 +32,7 @@ class favoritesTab : public searchTab
 		int imagesPerPage();
 		int columns();
 		QString postFilter();
+		QList<Site*> loadSites() override;
 
 	public slots:
 		// Search
@@ -68,10 +69,9 @@ class favoritesTab : public searchTab
 
 	private:
 		int				m_id;
-		TextEdit		*m_postFiltering;
 		QDateTime		m_loadFavorite;
 		QList<Favorite>	&m_favorites;
-		QString			m_lastTags, m_currentTags;
+		QString			m_currentTags;
 		bool			m_sized;
 		int				m_page, m_currentFav;
 };

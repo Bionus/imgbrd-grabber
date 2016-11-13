@@ -42,6 +42,8 @@ class searchTab : public QWidget
 		virtual void setImagesPerPage(int ipp) = 0;
 		virtual void setColumns(int columns) = 0;
 		virtual void setPostFilter(QString postfilter) = 0;
+		virtual QList<Site*> loadSites() = 0;
+		virtual void onLoad();
 
 	protected:
 		void setSelectedSources(QSettings *settings);
@@ -74,6 +76,7 @@ class searchTab : public QWidget
 		void historyNext();
 		// Results
 		virtual void load() = 0;
+		void loadTags(QStringList tags);
 		bool waitForMergedResults(QList<QSharedPointer<Image>> results, QList<QSharedPointer<Image>> &imgs);
 		virtual void addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage = nullptr);
 		virtual void setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage = nullptr);
@@ -133,8 +136,10 @@ class searchTab : public QWidget
 		bool m_from_history;
 		int m_history_cursor;
 		QList<QMap<QString,QString>> m_history;
+		QString m_lastTags;
 
 		// UI stuff
+		TextEdit *m_postFiltering;
 		QCheckBox *ui_checkMergeResults;
 		QSpinBox *ui_spinPage;
 		QSpinBox *ui_spinImagesPerPage;
@@ -150,6 +155,8 @@ class searchTab : public QWidget
 		QPushButton *ui_buttonGetAll;
 		QPushButton *ui_buttonGetPage;
 		QPushButton *ui_buttonGetSel;
+		QPushButton *ui_buttonFirstPage;
+		QPushButton *ui_buttonPreviousPage;
 };
 
 #endif // SEARCH_TAB_H

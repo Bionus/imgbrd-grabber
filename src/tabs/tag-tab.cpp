@@ -7,7 +7,7 @@
 
 
 tagTab::tagTab(int id, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
-	: searchTab(id, sites, profile, parent), ui(new Ui::tagTab), m_id(id), m_lastTags(QString()), m_sized(false)
+	: searchTab(id, sites, profile, parent), ui(new Ui::tagTab), m_id(id), m_sized(false)
 {
 	ui->setupUi(this);
 	ui->widgetMeant->hide();
@@ -28,6 +28,8 @@ tagTab::tagTab(int id, QMap<QString,Site*> *sites, Profile *profile, mainWindow 
 	ui_buttonGetAll = ui->buttonGetAll;
 	ui_buttonGetPage = ui->buttonGetpage;
 	ui_buttonGetSel = ui->buttonGetSel;
+	ui_buttonFirstPage = ui->buttonFirstPage;
+	ui_buttonPreviousPage = ui->buttonPreviousPage;
 
 	// Search fields
 	m_search = createAutocomplete();
@@ -83,102 +85,36 @@ void tagTab::closeEvent(QCloseEvent *e)
 }
 
 
-
 void tagTab::load()
 {
-	log(tr("Chargement des résultats..."));
-
-	// Save previous pages
-	QStringList keys = m_sites->keys();
-	QMap<QString, Page*> lastPages;
-	for (int i = 0; i < m_selectedSources.size(); i++)
-	{
-		QString site = keys[i];
-		if (m_checkboxes.at(i)->isChecked() && m_pages.contains(site))
-			lastPages.insert(site, m_pages[site]);
-	}
-
-	clear();
-
-	ui->buttonGetAll->setEnabled(false);
-	ui->buttonGetpage->setEnabled(false);
-	ui->buttonGetSel->setEnabled(false);
-
-	QString search = m_search->toPlainText();
-	if (!ui->lineMd5->text().isEmpty())
-	{
-		if (!search.isEmpty())
-		{ search += ' '; }
-
-		search += "md5:" + ui->lineMd5->text();
-	}
-
-	if (!m_from_history)
-	{ addHistory(search, ui->spinPage->value(), ui->spinImagesPerPage->value(), ui->spinColumns->value()); }
-	m_from_history = false;
-
-	if (search != m_lastTags && !m_lastTags.isNull() && m_history_cursor == m_history.size() - 1)
-	{ ui->spinPage->setValue(1); }
-	m_lastTags = search;
-
-	ui->widgetMeant->hide();
-	ui->buttonFirstPage->setEnabled(ui->spinPage->value() > 1);
-	ui->buttonPreviousPage->setEnabled(ui->spinPage->value() > 1);
-
 	// Clear results layout
 	ui->verticalLayout->removeWidget(ui->widgetResults);
 	ui->widgetResults->deleteLater();
 	ui->widgetResults = new QWidget(this);
 	ui->verticalLayout->insertWidget(0, ui->widgetResults);
-
 	ui->layoutResults->deleteLater();
 	ui->layoutResults = new QGridLayout(ui->widgetResults);
 	ui_layoutResults = ui->layoutResults;
 
+	// Get the search values
+	QString search = m_search->toPlainText();
+	if (!ui->lineMd5->text().isEmpty())
+		search += " md5:" + ui->lineMd5->text();
+	QStringList tags = search.trimmed().split(" ", QString::SkipEmptyParts);
+
 	setWindowTitle(search.isEmpty() ? tr("Recherche") : search.replace("&", "&&"));
 	emit titleChanged(this);
 
+	loadTags(search.trimmed().split(' ', QString::SkipEmptyParts));
+}
+
+QList<Site*> tagTab::loadSites()
+{
+	QList<Site*> sites;
 	for (int i = 0; i < m_selectedSources.size(); i++)
-	{
 		if (m_checkboxes.at(i)->isChecked())
-		{
-			// Get the search values
-			QStringList tags = search.trimmed().split(" ", QString::SkipEmptyParts);
-			tags.append(m_settings->value("add").toString().trimmed().split(" ", QString::SkipEmptyParts));
-			int perpage = ui->spinImagesPerPage->value();
-
-			// Load results
-			Page *page = new Page(m_profile, m_sites->value(m_sites->keys().at(i)), m_sites->values(), tags, ui->spinPage->value(), perpage, m_postFiltering->toPlainText().split(" ", QString::SkipEmptyParts), false, this, 0, m_lastPage, m_lastPageMinId, m_lastPageMaxId);
-			log(tr("Chargement de la page <a href=\"%1\">%1</a>").arg(page->url().toString().toHtmlEscaped()));
-			connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(finishedLoading(Page*)));
-			connect(page, SIGNAL(failedLoading(Page*)), this, SLOT(failedLoading(Page*)));
-			if (lastPages.contains(page->website()))
-			{ page->setLastPage(lastPages[page->website()]); }
-			m_pages.insert(page->website(), page);
-
-			// Setup the layout
-			QGridLayout *l = new QGridLayout;
-			l->setHorizontalSpacing(m_settings->value("Margins/horizontal", 6).toInt());
-			l->setVerticalSpacing(m_settings->value("Margins/vertical", 6).toInt());
-			m_layouts.append(l);
-
-			// Load tags if necessary
-			m_stop = false;
-			if (m_settings->value("useregexfortags", true).toBool())
-			{
-				connect(page, SIGNAL(finishedLoadingTags(Page*)), this, SLOT(finishedLoadingTags(Page*)));
-				page->loadTags();
-			}
-
-			// Start loading
-			page->load();
-		}
-	}
-	if (ui->checkMergeResults->isChecked() && m_layouts.size() > 0)
-	{ ui->layoutResults->addLayout(m_layouts[0], 0, 0); }
-	m_page = 0;
-
-	emit changed(this);
+			sites.append(m_sites->value(m_sites->keys().at(i)));
+	return sites;
 }
 
 bool tagTab::validateImage(QSharedPointer<Image> img)
@@ -186,6 +122,7 @@ bool tagTab::validateImage(QSharedPointer<Image> img)
 	Q_UNUSED(img);
 	return true;
 }
+
 
 void tagTab::setTags(QString tags)
 {

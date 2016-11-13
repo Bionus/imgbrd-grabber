@@ -34,6 +34,7 @@ class tagTab : public searchTab
 		int imagesPerPage();
 		int columns();
 		QString postFilter();
+		QList<Site*> loadSites() override;
 
 	public slots:
 		// Search
@@ -59,9 +60,9 @@ class tagTab : public searchTab
 
 	private:
 		int				m_id;
-		TextEdit		*m_search, *m_postFiltering;
+		TextEdit		*m_search;
 		QCalendarWidget	*m_calendar;
-		QString			m_link, m_lastTags;
+		QString			m_link;
 		bool			m_sized;
 		Downloader		*m_downloader;
 };
