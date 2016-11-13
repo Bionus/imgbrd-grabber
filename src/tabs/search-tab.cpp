@@ -255,7 +255,7 @@ void searchTab::finishedLoading(Page* page)
 	m_lastPageMinId = page->minId();
 	m_lastPageMaxId = page->maxId();
 
-	QList<QSharedPointer<Image>> imgs = page->images();
+	QList<QSharedPointer<Image>> imgs;
 	for (QSharedPointer<Image> img : page->images())
 		if (validateImage(img))
 			imgs.append(img);
