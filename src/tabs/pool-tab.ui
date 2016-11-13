@@ -377,7 +377,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_2">
+      <widget class="QPushButton" name="buttonGetSel">
        <property name="text">
         <string>Prendre séléctionnés</string>
        </property>
@@ -600,7 +600,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>pushButton_2</sender>
+   <sender>buttonGetSel</sender>
    <signal>clicked()</signal>
    <receiver>poolTab</receiver>
    <slot>getSel()</slot>

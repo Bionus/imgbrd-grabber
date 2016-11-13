@@ -27,7 +27,6 @@ class poolTab : public searchTab
 		~poolTab();
 		Ui::poolTab *ui;
 		QString tags();
-		QString wiki();
 		QString site();
 		int imagesPerPage();
 		int columns();
@@ -44,13 +43,11 @@ class poolTab : public searchTab
 		void setPool(int id, QString site);
 		// Loading
 		void load();
-		void finishedLoading(Page*);
-		void finishedLoadingTags(Page*);
+		bool validateImage(QSharedPointer<Image> img);
 		// Batch
 		void getPage();
 		void getAll();
 		// Others
-		void optionsChanged();
 		void closeEvent(QCloseEvent*);
 		void on_buttonSearch_clicked();
 		void setSite(QString);
@@ -63,7 +60,7 @@ class poolTab : public searchTab
 		int				m_id;
 		TextEdit		*m_search, *m_postFiltering;
 		QCalendarWidget	*m_calendar;
-		QString			m_lastTags, m_wiki;
+		QString			m_lastTags;
 		bool			m_sized;
 };
 

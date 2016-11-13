@@ -332,10 +332,14 @@ void Image::parsePreview()
 {
 	m_loadingPreview = false;
 
+	if (m_loadPreview == nullptr)
+		return;
+
 	// Aborted
 	if (m_loadPreview->error() == QNetworkReply::OperationCanceledError)
 	{
 		m_loadPreview->deleteLater();
+		m_loadPreview = nullptr;
 		return;
 	}
 

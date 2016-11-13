@@ -25,12 +25,15 @@ favoritesTab::favoritesTab(int id, QMap<QString,Site*> *sites, Profile *profile,
 	ui_layoutSourcesList = ui->layoutSourcesList;
 	ui_buttonHistoryBack = ui->buttonHistoryBack;
 	ui_buttonHistoryNext = ui->buttonHistoryNext;
+	ui_buttonNextPage = ui->buttonNextPage;
+	ui_buttonLastPage = ui->buttonLastPage;
+	ui_buttonGetAll = ui->buttonGetAll;
+	ui_buttonGetPage = ui->buttonGetpage;
+	ui_buttonGetSel = ui->buttonGetSel;
 
 	// Search field
 	m_postFiltering = createAutocomplete();
 	ui->layoutPlus->addWidget(m_postFiltering, 1, 1, 1, 3);
-
-	setSelectedSources(m_settings);
 
 	// Others
 	ui->checkMergeResults->setChecked(m_settings->value("mergeresults", false).toBool());
@@ -142,18 +145,6 @@ void favoritesTab::addTabFavorite(QString name)
 	m_parent->addTab(name);
 }
 
-void favoritesTab::optionsChanged()
-{
-	log(tr("Mise à jour des options de l'onglet \"%1\".").arg(windowTitle()));
-	ui->retranslateUi(this);
-	ui->spinImagesPerPage->setValue(m_settings->value("limit", 20).toInt());
-	ui->spinColumns->setValue(m_settings->value("columns", 1).toInt());
-	/*QPalette p = ui->widgetResults->palette();
-	p.setColor(ui->widgetResults->backgroundRole(), QColor(m_settings->value("serverBorderColor", "#000000").toString()));
-	ui->widgetResults->setPalette(p);*/
-	ui->layoutResults->setHorizontalSpacing(m_settings->value("Margins/main", 10).toInt());
-}
-
 
 
 void favoritesTab::load()
@@ -189,6 +180,7 @@ void favoritesTab::load()
 			m_pages.insert(page->website(), page);
 
 			log(tr("Chargement de la page <a href=\"%1\">%1</a>").arg(page->url().toString().toHtmlEscaped()));
+			m_stop = false;
 			page->load();
 
 			if (m_settings->value("useregexfortags", true).toBool())
@@ -205,69 +197,9 @@ void favoritesTab::load()
 	emit changed(this);
 }
 
-void favoritesTab::finishedLoading(Page* page)
+bool favoritesTab::validateImage(QSharedPointer<Image> img)
 {
-	if (m_stop)
-		return;
-
-	log(tr("Réception de la page <a href=\"%1\">%1</a>").arg(page->url().toString().toHtmlEscaped()));
-
-	QList<QSharedPointer<Image>> imgs;
-	for (QSharedPointer<Image> img : page->images())
-	{
-		if (img->createdAt() > m_loadFavorite || img->createdAt().isNull())
-		{ imgs.append(img); }
-	}
-	m_images.append(imgs);
-	int maxpage = page->pagesCount();
-
-	if (maxpage < m_pagemax || m_pagemax == -1)
-	{ m_pagemax = maxpage; }
-	ui->buttonNextPage->setEnabled(maxpage > ui->spinPage->value() || page->imagesCount() == -1 || (page->imagesCount() == 0 && page->images().count() > 0));
-	ui->buttonLastPage->setEnabled(maxpage > ui->spinPage->value());
-
-	if (!ui->checkMergeResults->isChecked())
-	{
-		addResultsPage(page, imgs, tr("Aucun résultat depuis le %1").arg(m_loadFavorite.toString(tr("dd/MM/yyyy 'à' hh:mm"))));
-		ui->splitter->setSizes(QList<int>() << (imgs.count() >= m_settings->value("hidefavorites", 20).toInt() ? 0 : 1) << 1);
-	}
-
-	if (!m_settings->value("useregexfortags", true).toBool())
-	{ setTagsFromPages(m_pages); }
-
-	postLoading(page);
-}
-
-void favoritesTab::failedLoading(Page *page)
-{
-	if (ui->checkMergeResults->isChecked())
-	{
-		postLoading(page);
-	}
-}
-
-void favoritesTab::postLoading(Page *page)
-{
-	QList<QSharedPointer<Image>> imgs;
-	if (!waitForMergedResults(ui->checkMergeResults->isChecked(), page, imgs))
-		return;
-
-	loadImageThumbnails(page, imgs);
-
-	ui->buttonGetAll->setDisabled(m_images.empty());
-	ui->buttonGetpage->setDisabled(m_images.empty());
-	ui->buttonGetSel->setDisabled(m_images.empty());
-}
-
-void favoritesTab::finishedLoadingTags(Page *page)
-{
-	setTagsFromPages(m_pages);
-
-	if (!page->wiki().isEmpty())
-	{
-		m_wiki = "<style>.title { font-weight: bold; } ul { margin-left: -30px; }</style>"+page->wiki();
-		m_parent->setWiki(m_wiki);
-	}
+	return (img->createdAt() > m_loadFavorite || img->createdAt().isNull());
 }
 
 void favoritesTab::setTags(QString tags)
@@ -339,7 +271,6 @@ QList<bool> favoritesTab::sources()
 { return m_selectedSources; }
 
 QString favoritesTab::tags()	{ return m_currentTags;	}
-QString favoritesTab::wiki()	{ return m_wiki;		}
 
 void favoritesTab::loadFavorite(QString name)
 {

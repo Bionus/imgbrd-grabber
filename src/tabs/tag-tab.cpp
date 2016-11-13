@@ -23,6 +23,11 @@ tagTab::tagTab(int id, QMap<QString,Site*> *sites, Profile *profile, mainWindow 
 	ui_layoutSourcesList = ui->layoutSourcesList;
 	ui_buttonHistoryBack = ui->buttonHistoryBack;
 	ui_buttonHistoryNext = ui->buttonHistoryNext;
+	ui_buttonNextPage = ui->buttonNextPage;
+	ui_buttonLastPage = ui->buttonLastPage;
+	ui_buttonGetAll = ui->buttonGetAll;
+	ui_buttonGetPage = ui->buttonGetpage;
+	ui_buttonGetSel = ui->buttonGetSel;
 
 	// Search fields
 	m_search = createAutocomplete();
@@ -30,8 +35,6 @@ tagTab::tagTab(int id, QMap<QString,Site*> *sites, Profile *profile, mainWindow 
 	ui->layoutFields->insertWidget(1, m_search, 1);
 	ui->layoutPlus->addWidget(m_postFiltering, 1, 1, 1, 3);
 	connect(ui->labelMeant, SIGNAL(linkActivated(QString)), this, SLOT(setTags(QString)));
-
-	setSelectedSources(m_settings);
 
 	// Half MD5 field
 	ui->lineMd5->setEnabled(m_settings->value("enable_md5_field", false).toBool());
@@ -77,20 +80,6 @@ void tagTab::closeEvent(QCloseEvent *e)
 
 	emit closed(this);
 	e->accept();
-}
-
-
-
-void tagTab::optionsChanged()
-{
-	log(tr("Mise à jour des options de l'onglet \"%1\".").arg(windowTitle()));
-	ui->retranslateUi(this);
-	ui->spinImagesPerPage->setValue(m_settings->value("limit", 20).toInt());
-	ui->spinColumns->setValue(m_settings->value("columns", 1).toInt());
-	/*QPalette p = ui->widgetResults->palette();
-	p.setColor(ui->widgetResults->backgroundRole(), QColor(m_settings->value("serverBorderColor", "#000000").toString()));
-	ui->widgetResults->setPalette(p);*/
-	ui->layoutResults->setHorizontalSpacing(m_settings->value("Margins/main", 10).toInt());
 }
 
 
@@ -192,75 +181,10 @@ void tagTab::load()
 	emit changed(this);
 }
 
-void tagTab::finishedLoading(Page* page)
+bool tagTab::validateImage(QSharedPointer<Image> img)
 {
-	if (m_stop)
-		return;
-
-	log(tr("Réception de la page <a href=\"%1\">%1</a>").arg(page->url().toString().toHtmlEscaped()));
-
-	m_lastPage = page->page();
-	m_lastPageMinId = page->minId();
-	m_lastPageMaxId = page->maxId();
-	QList<QSharedPointer<Image>> imgs = page->images();
-	m_images.append(imgs);
-
-	int maxpage = page->pagesCount();
-	if (maxpage < m_pagemax || m_pagemax == -1)
-		m_pagemax = maxpage;
-	ui->buttonNextPage->setEnabled(maxpage > ui->spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1 || (page->imagesCount() == 0 && page->images().count() > 0));
-	ui->buttonLastPage->setEnabled(maxpage > ui->spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1);
-
-	if (!ui->checkMergeResults->isChecked())
-	{ addResultsPage(page, imgs); }
-
-	if (!m_settings->value("useregexfortags", true).toBool())
-	{ setTagsFromPages(m_pages); }
-
-	postLoading(page);
-}
-
-void tagTab::failedLoading(Page *page)
-{
-	if (ui->checkMergeResults->isChecked())
-	{
-		postLoading(page);
-	}
-}
-
-void tagTab::postLoading(Page *page)
-{
-	QList<QSharedPointer<Image>> imgs;
-	if (!waitForMergedResults(ui->checkMergeResults->isChecked(), page, imgs))
-		return;
-
-	loadImageThumbnails(page, imgs);
-
-	ui->buttonGetAll->setDisabled(m_images.empty());
-	ui->buttonGetpage->setDisabled(m_images.empty());
-	ui->buttonGetSel->setDisabled(m_images.empty());
-}
-
-void tagTab::finishedLoadingTags(Page *page)
-{
-	setTagsFromPages(m_pages);
-
-	// Wiki
-	if (!page->wiki().isEmpty())
-	{
-		m_wiki = "<style>.title { font-weight: bold; } ul { margin-left: -30px; }</style>"+page->wiki();
-		m_parent->setWiki(m_wiki);
-	}
-
-	int maxpage = page->pagesCount();
-	if (maxpage < m_pagemax || m_pagemax == -1)
-	{ m_pagemax = maxpage; }
-	ui->buttonNextPage->setEnabled(maxpage > ui->spinPage->value() || page->imagesCount() == -1 || (page->imagesCount() == 0 && page->images().count() > 0));
-	ui->buttonLastPage->setEnabled(maxpage > ui->spinPage->value());
-
-	// Update image and page count
-	if (m_pageLabels.contains(page))
-		setPageLabelText(m_pageLabels[page], page, page->images());
+	Q_UNUSED(img);
+	return true;
 }
 
 void tagTab::setTags(QString tags)
@@ -381,4 +305,3 @@ int tagTab::imagesPerPage()		{ return ui->spinImagesPerPage->value();	}
 int tagTab::columns()			{ return ui->spinColumns->value();			}
 QString tagTab::postFilter()	{ return m_postFiltering->toPlainText();	}
 QString tagTab::tags()			{ return m_search->toPlainText();			}
-QString tagTab::wiki()			{ return m_wiki;							}

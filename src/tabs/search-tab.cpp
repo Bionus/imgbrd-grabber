@@ -29,6 +29,8 @@ searchTab::searchTab(int id, QMap<QString, Site*> *sites, Profile *profile, main
 
 	m_completion.removeDuplicates();
 	m_completion.sort();
+
+	setSelectedSources(m_settings);
 }
 
 searchTab::~searchTab()
@@ -47,6 +49,20 @@ void searchTab::setSelectedSources(QSettings *settings)
 		{ sav[i] = '0'; }
 		m_selectedSources.append(sav.at(i) == '1' ? true : false);
 	}
+}
+
+void searchTab::optionsChanged()
+{
+	log(tr("Mise à jour des options de l'onglet \"%1\".").arg(windowTitle()));
+	// ui->retranslateUi(this);
+
+	ui_spinImagesPerPage->setValue(m_settings->value("limit", 20).toInt());
+	ui_spinColumns->setValue(m_settings->value("columns", 1).toInt());
+
+	/*QPalette p = ui->widgetResults->palette();
+	p.setColor(ui->widgetResults->backgroundRole(), QColor(m_settings->value("serverBorderColor", "#000000").toString()));
+	ui->widgetResults->setPalette(p);*/
+	ui_layoutResults->setHorizontalSpacing(m_settings->value("Margins/main", 10).toInt());
 }
 
 void searchTab::setTagsFromPages(const QMap<QString, Page*> &pages)
@@ -228,6 +244,83 @@ TextEdit *searchTab::createAutocomplete()
 	return ret;
 }
 
+void searchTab::finishedLoading(Page* page)
+{
+	if (m_stop)
+		return;
+
+	log(tr("Réception de la page <a href=\"%1\">%1</a>").arg(page->url().toString().toHtmlEscaped()));
+
+	m_lastPage = page->page();
+	m_lastPageMinId = page->minId();
+	m_lastPageMaxId = page->maxId();
+
+	QList<QSharedPointer<Image>> imgs = page->images();
+	for (QSharedPointer<Image> img : page->images())
+		if (validateImage(img))
+			imgs.append(img);
+	m_images.append(imgs);
+
+	int maxpage = page->pagesCount();
+	if (maxpage < m_pagemax || m_pagemax == -1)
+		m_pagemax = maxpage;
+	ui_buttonNextPage->setEnabled(maxpage > ui_spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1 || (page->imagesCount() == 0 && page->images().count() > 0));
+	ui_buttonLastPage->setEnabled(maxpage > ui_spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1);
+
+	if (ui_checkMergeResults == nullptr || !ui_checkMergeResults->isChecked())
+	/*{
+		addResultsPage(page, imgs, tr("Aucun résultat depuis le %1").arg(m_loadFavorite.toString(tr("dd/MM/yyyy 'à' hh:mm"))));
+		ui->splitter->setSizes(QList<int>() << (imgs.count() >= m_settings->value("hidefavorites", 20).toInt() ? 0 : 1) << 1);
+	}*/
+		addResultsPage(page, imgs);
+
+	if (!m_settings->value("useregexfortags", true).toBool())
+		setTagsFromPages(m_pages);
+
+	postLoading(page, imgs);
+}
+
+void searchTab::failedLoading(Page *page)
+{
+	if (ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked())
+		postLoading(page, page->images());
+}
+
+void searchTab::postLoading(Page *page, QList<QSharedPointer<Image>> source)
+{
+	QList<QSharedPointer<Image>> imgs;
+	if (!waitForMergedResults(source, imgs))
+		return;
+
+	loadImageThumbnails(page, imgs);
+
+	ui_buttonGetAll->setDisabled(m_images.empty());
+	ui_buttonGetPage->setDisabled(m_images.empty());
+	ui_buttonGetSel->setDisabled(m_images.empty());
+}
+
+void searchTab::finishedLoadingTags(Page *page)
+{
+	setTagsFromPages(m_pages);
+
+	// Wiki
+	if (!page->wiki().isEmpty())
+	{
+		m_wiki = "<style>.title { font-weight: bold; } ul { margin-left: -30px; }</style>"+page->wiki();
+		m_parent->setWiki(m_wiki);
+	}
+
+	int maxpage = page->pagesCount();
+	if (maxpage < m_pagemax || m_pagemax == -1)
+		m_pagemax = maxpage;
+	ui_buttonNextPage->setEnabled(maxpage > ui_spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1 || (page->imagesCount() == 0 && page->images().count() > 0));
+	ui_buttonLastPage->setEnabled(maxpage > ui_spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1);
+
+	// Update image and page count
+	if (m_pageLabels.contains(page))
+		setPageLabelText(m_pageLabels[page], page, page->images());
+}
+
 void searchTab::loadImageThumbnails(Page *page, const QList<QSharedPointer<Image>> &imgs)
 {
 	QStringList tags = page->search();
@@ -316,13 +409,13 @@ void searchTab::finishedLoadingPreview()
 	addResultsImage(img, merge);
 }
 
-bool searchTab::waitForMergedResults(bool merged, Page *page, QList<QSharedPointer<Image>> &imgs)
+bool searchTab::waitForMergedResults(QList<QSharedPointer<Image>> results, QList<QSharedPointer<Image>> &imgs)
 {
 	m_page++;
 
-	if (!merged)
+	if (ui_checkMergeResults == nullptr || !ui_checkMergeResults->isChecked())
 	{
-		imgs = page->images();
+		imgs = results;
 		return true;
 	}
 
@@ -712,3 +805,5 @@ QStringList searchTab::selectedImages()
 
 QList<Tag> searchTab::results()
 { return m_tags; }
+QString searchTab::wiki()
+{ return m_wiki; }

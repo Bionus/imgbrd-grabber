@@ -25,6 +25,11 @@ poolTab::poolTab(int id, QMap<QString,Site*> *sites, Profile *profile, mainWindo
 	ui_layoutSourcesList = ui->layoutSourcesList;
 	ui_buttonHistoryBack = ui->buttonHistoryBack;
 	ui_buttonHistoryNext = ui->buttonHistoryNext;
+	ui_buttonNextPage = ui->buttonNextPage;
+	ui_buttonLastPage = ui->buttonLastPage;
+	ui_buttonGetAll = ui->buttonGetAll;
+	ui_buttonGetPage = ui->buttonGetpage;
+	ui_buttonGetSel = ui->buttonGetSel;
 
 	QStringList sources = m_sites->keys();
 	for (QString source : sources)
@@ -36,8 +41,6 @@ poolTab::poolTab(int id, QMap<QString,Site*> *sites, Profile *profile, mainWindo
 	ui->layoutFields->insertWidget(3, m_search, 1);
 	ui->layoutPlus->addWidget(m_postFiltering, 1, 1, 1, 3);
 	connect(ui->labelMeant, SIGNAL(linkActivated(QString)), this, SLOT(setTags(QString)));
-
-	setSelectedSources(m_settings);
 
 	// Others
 	optionsChanged();
@@ -74,20 +77,6 @@ void poolTab::closeEvent(QCloseEvent *e)
 
 	emit(closed(this));
 	e->accept();
-}
-
-
-
-void poolTab::optionsChanged()
-{
-	log(tr("Mise à jour des options de l'onglet \"%1\".").arg(windowTitle()));
-	ui->retranslateUi(this);
-	ui->spinImagesPerPage->setValue(m_settings->value("limit", 20).toInt());
-	ui->spinColumns->setValue(m_settings->value("columns", 1).toInt());
-	/*QPalette p = ui->widgetResults->palette();
-	p.setColor(ui->widgetResults->backgroundRole(), QColor(m_settings->value("serverBorderColor", "#000000").toString()));
-	ui->widgetResults->setPalette(p);*/
-	ui->layoutResults->setHorizontalSpacing(m_settings->value("Margins/main", 10).toInt());
 }
 
 
@@ -136,41 +125,10 @@ void poolTab::load()
 	emit changed(this);
 }
 
-void poolTab::finishedLoading(Page* page)
+bool poolTab::validateImage(QSharedPointer<Image> img)
 {
-	if (m_stop)
-	{ return; }
-
-	log(tr("Réception de la page <a href=\"%1\">%1</a>").arg(page->url().toString().toHtmlEscaped()));
-
-	QList<QSharedPointer<Image>> imgs = page->images();
-	m_images.append(imgs);
-
-	int maxpage = page->pagesCount();
-	if (maxpage < m_pagemax || m_pagemax == -1)
-	{ m_pagemax = maxpage; }
-	ui->buttonNextPage->setEnabled(maxpage > ui->spinPage->value() || page->imagesCount() == -1 || (page->imagesCount() == 0 && page->images().count() > 0));
-	ui->buttonLastPage->setEnabled(maxpage > ui->spinPage->value());
-
-	addResultsPage(page, imgs);
-
-	if (!m_settings->value("useregexfortags", true).toBool())
-	{ setTagsFromPages(m_pages); }
-
-	m_page++;
-
-	loadImageThumbnails(page, imgs);
-}
-
-void poolTab::finishedLoadingTags(Page *page)
-{
-	setTagsFromPages(m_pages);
-
-	if (!page->wiki().isEmpty())
-	{
-		m_wiki = "<style>.title { font-weight: bold; } ul { margin-left: -30px; }</style>"+page->wiki();
-		m_parent->setWiki(m_wiki);
-	}
+	Q_UNUSED(img);
+	return true;
 }
 
 void poolTab::getPage()
@@ -251,5 +209,4 @@ int poolTab::imagesPerPage()	{ return ui->spinImagesPerPage->value();	}
 int poolTab::columns()			{ return ui->spinColumns->value();			}
 QString poolTab::postFilter()	{ return m_postFiltering->toPlainText();	}
 QString poolTab::tags()			{ return m_search->toPlainText();			}
-QString poolTab::wiki()			{ return m_wiki;							}
 QString poolTab::site()			{ return ui->comboSites->currentText();		}

@@ -29,7 +29,6 @@ class favoritesTab : public searchTab
 		Ui::favoritesTab *ui;
 		QList<bool> sources();
 		QString tags();
-		QString wiki();
 		int imagesPerPage();
 		int columns();
 		QString postFilter();
@@ -44,10 +43,7 @@ class favoritesTab : public searchTab
 		void setTags(QString);
 		// Loading
 		void load();
-		void finishedLoading(Page*);
-		void failedLoading(Page*);
-		void postLoading(Page*);
-		void finishedLoadingTags(Page*);
+		bool validateImage(QSharedPointer<Image> img);
 		// Batch
 		void getPage();
 		void getAll();
@@ -61,7 +57,6 @@ class favoritesTab : public searchTab
 		void setFavoriteViewed(QString);
 		void viewed();
 		// Others
-		void optionsChanged();
 		void closeEvent(QCloseEvent*);
 		void addTabFavorite(QString);
 		void setImagesPerPage(int);
@@ -74,7 +69,7 @@ class favoritesTab : public searchTab
 		TextEdit		*m_postFiltering;
 		QDateTime		m_loadFavorite;
 		QList<Favorite>	&m_favorites;
-		QString			m_lastTags, m_wiki, m_currentTags;
+		QString			m_lastTags, m_currentTags;
 		bool			m_sized;
 		int				m_page, m_currentFav;
 };

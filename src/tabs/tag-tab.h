@@ -31,7 +31,6 @@ class tagTab : public searchTab
 		Ui::tagTab *ui;
 		QString tags();
 		QString results();
-		QString wiki();
 		int imagesPerPage();
 		int columns();
 		QString postFilter();
@@ -46,15 +45,11 @@ class tagTab : public searchTab
 		void setTags(QString);
 		// Loading
 		void load();
-		void finishedLoading(Page*);
-		void failedLoading(Page*);
-		void postLoading(Page*);
-		void finishedLoadingTags(Page*);
+		bool validateImage(QSharedPointer<Image> img);
 		// Batch
 		void getPage();
 		void getAll();
 		// Others
-		void optionsChanged();
 		void closeEvent(QCloseEvent*);
 		void on_buttonSearch_clicked();
 		void setImagesPerPage(int ipp);
@@ -66,7 +61,7 @@ class tagTab : public searchTab
 		int				m_id;
 		TextEdit		*m_search, *m_postFiltering;
 		QCalendarWidget	*m_calendar;
-		QString			m_link, m_lastTags, m_wiki;
+		QString			m_link, m_lastTags;
 		bool			m_sized;
 		Downloader		*m_downloader;
 };

@@ -30,12 +30,12 @@ class searchTab : public QWidget
 		virtual QList<bool> sources();
 		virtual QString tags() = 0;
 		QList<Tag> results();
-		virtual QString wiki() = 0;
+		QString wiki();
 		virtual int imagesPerPage() = 0;
 		virtual int columns() = 0;
 		virtual QString postFilter() = 0;
-		virtual void optionsChanged() = 0;
 		virtual void setTags(QString) = 0;
+		virtual bool validateImage(QSharedPointer<Image> img) = 0;
 		int id();
 		QStringList selectedImages();
 		void setSources(QList<bool> sources);
@@ -74,16 +74,23 @@ class searchTab : public QWidget
 		void historyNext();
 		// Results
 		virtual void load() = 0;
-		bool waitForMergedResults(bool merged, Page *page, QList<QSharedPointer<Image>> &imgs);
+		bool waitForMergedResults(QList<QSharedPointer<Image>> results, QList<QSharedPointer<Image>> &imgs);
 		void addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage = nullptr);
 		void setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage = nullptr);
 		void addResultsImage(QSharedPointer<Image> img, bool merge = false);
 		void finishedLoadingPreview();
+		// Loading
+		void finishedLoading(Page *page);
+		void failedLoading(Page *page);
+		void postLoading(Page *page, QList<QSharedPointer<Image>> source);
+		void finishedLoadingTags(Page *page);
 		// Image selection
 		void selectImage(QSharedPointer<Image> img);
 		void unselectImage(QSharedPointer<Image> img);
 		void toggleImage(QSharedPointer<Image> img);
 		void toggleImage(int id, bool toggle, bool range);
+		// Others
+		void optionsChanged();
 
 	signals:
 		// Tab events
@@ -110,6 +117,7 @@ class searchTab : public QWidget
 		QList<Tag>			m_tags;
 		mainWindow			*m_parent;
 		QSettings			*m_settings;
+		QString				m_wiki;
 
 		QStringList m_completion;
 		QList<QSharedPointer<Image>> m_images;
@@ -137,6 +145,11 @@ class searchTab : public QWidget
 		QLayout *ui_layoutSourcesList;
 		QPushButton *ui_buttonHistoryBack;
 		QPushButton *ui_buttonHistoryNext;
+		QPushButton *ui_buttonNextPage;
+		QPushButton *ui_buttonLastPage;
+		QPushButton *ui_buttonGetAll;
+		QPushButton *ui_buttonGetPage;
+		QPushButton *ui_buttonGetSel;
 };
 
 #endif // SEARCH_TAB_H
