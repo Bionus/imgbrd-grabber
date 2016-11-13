@@ -104,3 +104,9 @@ DISTFILES += \
 	$${PDIR}/README.md \
 	$${PDIR}/LICENSE \
 	$${PDIR}/NOTICE
+
+HEADERS += \
+    $$PWD/src/custom-network-access-manager.h
+
+SOURCES += \
+    $$PWD/src/custom-network-access-manager.cpp
