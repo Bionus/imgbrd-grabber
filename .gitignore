@@ -40,6 +40,11 @@ CrashReporter/debug/
 CrashReporter/release/
 
 
+# Unix
+
+*~
+
+
 # Visual Studio
 
 .vs/
