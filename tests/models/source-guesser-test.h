@@ -9,6 +9,8 @@ class SourceGuesserTest : public TestSuite
 	Q_OBJECT
 
 	private slots:
+		void initTestCase();
+
 		void testNotFound();
 		void testDanbooru1();
 		void testDanbooru2();

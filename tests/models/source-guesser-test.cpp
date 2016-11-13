@@ -2,6 +2,12 @@
 #include "models/source-guesser.h"
 
 
+void SourceGuesserTest::initTestCase()
+{
+	setupSource("Danbooru");
+	setupSource("Danbooru (2.0)");
+}
+
 void SourceGuesserTest::testNotFound()
 {
 	QList<Source*> sources;

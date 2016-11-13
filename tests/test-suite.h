@@ -47,6 +47,8 @@ class TestSuite : public QObject
 
 	public:
 		explicit TestSuite();
+		void setupSource(QString site);
+		void setupSite(QString site, QString source);
 
 	public:
 		static QList<QObject*> suites;
