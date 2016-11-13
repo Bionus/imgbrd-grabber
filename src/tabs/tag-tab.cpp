@@ -204,14 +204,5 @@ void tagTab::focusSearch()
 	m_search->setFocus();
 }
 
-void tagTab::setImagesPerPage(int ipp)
-{ ui->spinImagesPerPage->setValue(ipp); }
-void tagTab::setColumns(int columns)
-{ ui->spinColumns->setValue(columns); }
-void tagTab::setPostFilter(QString postfilter)
-{ m_postFiltering->setText(postfilter); }
-
-int tagTab::imagesPerPage()		{ return ui->spinImagesPerPage->value();	}
-int tagTab::columns()			{ return ui->spinColumns->value();			}
-QString tagTab::postFilter()	{ return m_postFiltering->toPlainText();	}
-QString tagTab::tags()			{ return m_search->toPlainText();			}
+QString tagTab::tags()
+{ return m_search->toPlainText(); }

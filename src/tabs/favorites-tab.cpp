@@ -306,17 +306,4 @@ void favoritesTab::favoriteProperties(QString name)
 }
 
 void favoritesTab::focusSearch()
-{
-	//m_search->focusWidget();
-}
-
-void favoritesTab::setImagesPerPage(int ipp)
-{ ui->spinImagesPerPage->setValue(ipp); }
-void favoritesTab::setColumns(int columns)
-{ ui->spinColumns->setValue(columns); }
-void favoritesTab::setPostFilter(QString postfilter)
-{ m_postFiltering->setText(postfilter); }
-
-int favoritesTab::imagesPerPage()	{ return ui->spinImagesPerPage->value();	}
-int favoritesTab::columns()			{ return ui->spinColumns->value();			}
-QString favoritesTab::postFilter()	{ return m_postFiltering->toPlainText();	}
+{ }

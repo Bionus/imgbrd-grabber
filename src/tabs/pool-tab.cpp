@@ -149,15 +149,7 @@ void poolTab::focusSearch()
 	ui->spinPool->focusWidget();
 }
 
-void poolTab::setImagesPerPage(int ipp)
-{ ui->spinImagesPerPage->setValue(ipp); }
-void poolTab::setColumns(int columns)
-{ ui->spinColumns->setValue(columns); }
-void poolTab::setPostFilter(QString postfilter)
-{ m_postFiltering->setText(postfilter); }
-
-int poolTab::imagesPerPage()	{ return ui->spinImagesPerPage->value();	}
-int poolTab::columns()			{ return ui->spinColumns->value();			}
-QString poolTab::postFilter()	{ return m_postFiltering->toPlainText();	}
-QString poolTab::tags()			{ return m_search->toPlainText();			}
-QString poolTab::site()			{ return ui->comboSites->currentText();		}
+QString poolTab::tags()
+{ return m_search->toPlainText(); }
+QString poolTab::site()
+{ return ui->comboSites->currentText(); }

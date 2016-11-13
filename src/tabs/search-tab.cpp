@@ -918,3 +918,17 @@ void searchTab::lastPage()
 	ui_spinPage->setValue(m_pagemax);
 	load();
 }
+
+void searchTab::setImagesPerPage(int ipp)
+{ ui_spinImagesPerPage->setValue(ipp); }
+void searchTab::setColumns(int columns)
+{ ui_spinColumns->setValue(columns); }
+void searchTab::setPostFilter(QString postfilter)
+{ m_postFiltering->setText(postfilter); }
+
+int searchTab::imagesPerPage()
+{ return ui_spinImagesPerPage->value(); }
+int searchTab::columns()
+{ return ui_spinColumns->value(); }
+QString searchTab::postFilter()
+{ return m_postFiltering->toPlainText(); }

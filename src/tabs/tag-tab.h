@@ -31,9 +31,6 @@ class tagTab : public searchTab
 		Ui::tagTab *ui;
 		QString tags();
 		QString results();
-		int imagesPerPage();
-		int columns();
-		QString postFilter();
 		QList<Site*> loadSites() override;
 
 	public slots:
@@ -48,9 +45,6 @@ class tagTab : public searchTab
 		// Others
 		void closeEvent(QCloseEvent*);
 		void on_buttonSearch_clicked();
-		void setImagesPerPage(int ipp);
-		void setColumns(int columns);
-		void setPostFilter(QString postfilter);
 		void focusSearch();
 
 	private:

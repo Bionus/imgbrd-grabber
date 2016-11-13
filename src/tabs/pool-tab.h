@@ -28,9 +28,6 @@ class poolTab : public searchTab
 		Ui::poolTab *ui;
 		QString tags();
 		QString site();
-		int imagesPerPage();
-		int columns();
-		QString postFilter();
 		QList<Site*> loadSites() override;
 
 	public slots:
@@ -47,9 +44,6 @@ class poolTab : public searchTab
 		void closeEvent(QCloseEvent*);
 		void on_buttonSearch_clicked();
 		void setSite(QString);
-		void setImagesPerPage(int ipp);
-		void setColumns(int columns);
-		void setPostFilter(QString postfilter);
 		void focusSearch();
 
 	private:

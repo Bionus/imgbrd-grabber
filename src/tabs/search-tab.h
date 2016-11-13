@@ -31,17 +31,17 @@ class searchTab : public QWidget
 		virtual QString tags() = 0;
 		QList<Tag> results();
 		QString wiki();
-		virtual int imagesPerPage() = 0;
-		virtual int columns() = 0;
-		virtual QString postFilter() = 0;
+		int imagesPerPage();
+		int columns();
+		QString postFilter();
 		virtual void setTags(QString) = 0;
 		virtual bool validateImage(QSharedPointer<Image> img) = 0;
 		int id();
 		QStringList selectedImages();
 		void setSources(QList<bool> sources);
-		virtual void setImagesPerPage(int ipp) = 0;
-		virtual void setColumns(int columns) = 0;
-		virtual void setPostFilter(QString postfilter) = 0;
+		void setImagesPerPage(int ipp);
+		void setColumns(int columns);
+		void setPostFilter(QString postfilter);
 		virtual QList<Site*> loadSites() = 0;
 		virtual void onLoad();
 

@@ -29,9 +29,6 @@ class favoritesTab : public searchTab
 		Ui::favoritesTab *ui;
 		QList<bool> sources();
 		QString tags();
-		int imagesPerPage();
-		int columns();
-		QString postFilter();
 		QList<Site*> loadSites() override;
 
 	public slots:
@@ -55,9 +52,6 @@ class favoritesTab : public searchTab
 		// Others
 		void closeEvent(QCloseEvent*);
 		void addTabFavorite(QString);
-		void setImagesPerPage(int);
-		void setColumns(int);
-		void setPostFilter(QString);
 		void focusSearch();
 		void addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage = nullptr) override;
 		void setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage = nullptr) override;
