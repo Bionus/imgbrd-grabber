@@ -324,202 +324,92 @@ void optionsWindow::addFilename(QString condition, QString filename, QString fol
 	ui->layoutConditionals->addLayout(layout);
 }
 
+
+void setColor(QLineEdit *lineEdit, bool button = false)
+{
+	QColor color = button
+		? QColorDialog::getColor(QColor(lineEdit->text()), this, tr("Choisir une couleur"))
+		: QColor(lineEdit->text());
+
+	if (color.isValid())
+	{
+		lineEdit->setText(color.name());
+		lineEdit->setStyleSheet("color:" + color.name());
+	}
+	else if (!button)
+	{ lineEdit->setStyleSheet("color:#000000"); }
+}
+
+void optionsWindow::setFont(QLineEdit *lineEdit)
+{
+	bool ok = false;
+	QFont police = QFontDialog::getFont(&ok, lineEdit->font(), this, tr("Choisir une police"));
+
+	if (ok)
+		lineEdit->setFont(police);
+}
+
 void optionsWindow::on_lineColoringArtists_textChanged()
-{
-	if (QColor(ui->lineColoringArtists->text()).isValid())
-	{ ui->lineColoringArtists->setStyleSheet("color:"+ui->lineColoringArtists->text()); }
-	else
-	{ ui->lineColoringArtists->setStyleSheet("color:#000000"); }
-}
+{ setColor(ui->lineColoringArtists); }
 void optionsWindow::on_lineColoringCircles_textChanged()
-{
-	if (QColor(ui->lineColoringCircles->text()).isValid())
-	{ ui->lineColoringCircles->setStyleSheet("color:"+ui->lineColoringCircles->text()); }
-	else
-	{ ui->lineColoringCircles->setStyleSheet("color:#000000"); }
-}
+{ setColor(ui->lineColoringCircles); }
 void optionsWindow::on_lineColoringCopyrights_textChanged()
-{
-	if (QColor(ui->lineColoringCopyrights->text()).isValid())
-	{ ui->lineColoringCopyrights->setStyleSheet("color:"+ui->lineColoringCopyrights->text()); }
-	else
-	{ ui->lineColoringCopyrights->setStyleSheet("color:#000000"); }
-}
+{ setColor(ui->lineColoringCopyrights); }
 void optionsWindow::on_lineColoringCharacters_textChanged()
-{
-	if (QColor(ui->lineColoringCharacters->text()).isValid())
-	{ ui->lineColoringCharacters->setStyleSheet("color:"+ui->lineColoringCharacters->text()); }
-	else
-	{ ui->lineColoringCharacters->setStyleSheet("color:#000000"); }
-}
+{ setColor(ui->lineColoringCharacters); }
 void optionsWindow::on_lineColoringModels_textChanged()
-{
-	if (QColor(ui->lineColoringModels->text()).isValid())
-	{ ui->lineColoringModels->setStyleSheet("color:"+ui->lineColoringModels->text()); }
-	else
-	{ ui->lineColoringModels->setStyleSheet("color:#000000"); }
-}
+{ setColor(ui->lineColoringModels); }
 void optionsWindow::on_lineColoringGenerals_textChanged()
-{
-	if (QColor(ui->lineColoringGenerals->text()).isValid())
-	{ ui->lineColoringGenerals->setStyleSheet("color:"+ui->lineColoringGenerals->text()); }
-	else
-	{ ui->lineColoringGenerals->setStyleSheet("color:#000000"); }
-}
+{ setColor(ui->lineColoringGenerals); }
 void optionsWindow::on_lineColoringFavorites_textChanged()
-{
-	if (QColor(ui->lineColoringFavorites->text()).isValid())
-	{ ui->lineColoringFavorites->setStyleSheet("color:"+ui->lineColoringFavorites->text()); }
-	else
-	{ ui->lineColoringFavorites->setStyleSheet("color:#000000"); }
-}
+{ setColor(ui->lineColoringFavorites); }
 void optionsWindow::on_lineColoringBlacklisteds_textChanged()
-{
-	if (QColor(ui->lineColoringBlacklisteds->text()).isValid())
-	{ ui->lineColoringBlacklisteds->setStyleSheet("color:"+ui->lineColoringBlacklisteds->text()); }
-	else
-	{ ui->lineColoringBlacklisteds->setStyleSheet("color:#000000"); }
-}
+{ setColor(ui->lineColoringBlacklisteds); }
 void optionsWindow::on_lineColoringIgnoreds_textChanged()
-{
-	if (QColor(ui->lineColoringIgnoreds->text()).isValid())
-	{ ui->lineColoringIgnoreds->setStyleSheet("color:"+ui->lineColoringIgnoreds->text()); }
-	else
-	{ ui->lineColoringIgnoreds->setStyleSheet("color:#000000"); }
-}
+{ setColor(ui->lineColoringIgnoreds); }
+void optionsWindow::on_lineBorderColor_textChanged()
+{ setColor(ui->lineBorderColor); }
 
 void optionsWindow::on_buttonColoringArtistsColor_clicked()
-{
-	QColor color = QColorDialog::getColor(QColor(ui->lineColoringArtists->text()), this, tr("Choisir une couleur"));
-	if (color.isValid())
-	{ ui->lineColoringArtists->setText(color.name()); }
-}
+{ setColor(ui->lineColoringArtists, true); }
 void optionsWindow::on_buttonColoringCirclesColor_clicked()
-{
-	QColor color = QColorDialog::getColor(QColor(ui->lineColoringCircles->text()), this, tr("Choisir une couleur"));
-	if (color.isValid())
-	{ ui->lineColoringCircles->setText(color.name()); }
-}
+{ setColor(ui->lineColoringCircles, true); }
 void optionsWindow::on_buttonColoringCopyrightsColor_clicked()
-{
-	QColor color = QColorDialog::getColor(QColor(ui->lineColoringCopyrights->text()), this, tr("Choisir une couleur"));
-	if (color.isValid())
-	{ ui->lineColoringCopyrights->setText(color.name()); }
-}
+{ setColor(ui->lineColoringCopyrights, true); }
 void optionsWindow::on_buttonColoringCharactersColor_clicked()
-{
-	QColor color = QColorDialog::getColor(QColor(ui->lineColoringCharacters->text()), this, tr("Choisir une couleur"));
-	if (color.isValid())
-	{ ui->lineColoringCharacters->setText(color.name()); }
-}
+{ setColor(ui->lineColoringCharacters, true); }
 void optionsWindow::on_buttonColoringModelsColor_clicked()
-{
-	QColor color = QColorDialog::getColor(QColor(ui->lineColoringModels->text()), this, tr("Choisir une couleur"));
-	if (color.isValid())
-	{ ui->lineColoringModels->setText(color.name()); }
-}
+{ setColor(ui->lineColoringModels, true); }
 void optionsWindow::on_buttonColoringGeneralsColor_clicked()
-{
-	QColor color = QColorDialog::getColor(QColor(ui->lineColoringGenerals->text()), this, tr("Choisir une couleur"));
-	if (color.isValid())
-	{ ui->lineColoringGenerals->setText(color.name()); }
-}
+{ setColor(ui->lineColoringGenerals, true); }
 void optionsWindow::on_buttonColoringFavoritesColor_clicked()
-{
-	QColor color = QColorDialog::getColor(QColor(ui->lineColoringFavorites->text()), this, tr("Choisir une couleur"));
-	if (color.isValid())
-	{ ui->lineColoringFavorites->setText(color.name()); }
-}
+{ setColor(ui->lineColoringFavorites, true); }
 void optionsWindow::on_buttonColoringBlacklistedsColor_clicked()
-{
-	QColor color = QColorDialog::getColor(QColor(ui->lineColoringBlacklisteds->text()), this, tr("Choisir une couleur"));
-	if (color.isValid())
-	{ ui->lineColoringBlacklisteds->setText(color.name()); }
-}
+{ setColor(ui->lineColoringBlacklisteds, true); }
 void optionsWindow::on_buttonColoringIgnoredsColor_clicked()
-{
-	QColor color = QColorDialog::getColor(QColor(ui->lineColoringIgnoreds->text()), this, tr("Choisir une couleur"));
-	if (color.isValid())
-	{ ui->lineColoringIgnoreds->setText(color.name()); }
-}
+{ setColor(ui->lineColoringIgnoreds, true); }
+void optionsWindow::on_buttonBorderColor_clicked()
+{ setColor(ui->lineBorderColor, true); }
 
 void optionsWindow::on_buttonColoringArtistsFont_clicked()
-{
-	bool ok = false;
-	QFont police = QFontDialog::getFont(&ok, ui->lineColoringArtists->font(), this, tr("Choisir une police"));
-	if (ok)
-	{ ui->lineColoringArtists->setFont(police); }
-}
+{ setFont(ui->lineColoringArtists); }
 void optionsWindow::on_buttonColoringCirclesFont_clicked()
-{
-	bool ok = false;
-	QFont police = QFontDialog::getFont(&ok, ui->lineColoringCircles->font(), this, tr("Choisir une police"));
-	if (ok)
-	{ ui->lineColoringCircles->setFont(police); }
-}
+{ setFont(ui->lineColoringCircles); }
 void optionsWindow::on_buttonColoringCopyrightsFont_clicked()
-{
-	bool ok = false;
-	QFont police = QFontDialog::getFont(&ok, ui->lineColoringCopyrights->font(), this, tr("Choisir une police"));
-	if (ok)
-	{ ui->lineColoringCopyrights->setFont(police); }
-}
+{ setFont(ui->lineColoringCopyrights); }
 void optionsWindow::on_buttonColoringCharactersFont_clicked()
-{
-	bool ok = false;
-	QFont police = QFontDialog::getFont(&ok, ui->lineColoringCharacters->font(), this, tr("Choisir une police"));
-	if (ok)
-	{ ui->lineColoringCharacters->setFont(police); }
-}
+{ setFont(ui->lineColoringCharacters); }
 void optionsWindow::on_buttonColoringModelsFont_clicked()
-{
-	bool ok = false;
-	QFont police = QFontDialog::getFont(&ok, ui->lineColoringModels->font(), this, tr("Choisir une police"));
-	if (ok)
-	{ ui->lineColoringModels->setFont(police); }
-}
+{ setFont(ui->lineColoringModels); }
 void optionsWindow::on_buttonColoringGeneralsFont_clicked()
-{
-	bool ok = false;
-	QFont police = QFontDialog::getFont(&ok, ui->lineColoringGenerals->font(), this, tr("Choisir une police"));
-	if (ok)
-	{ ui->lineColoringGenerals->setFont(police); }
-}
+{ setFont(ui->lineColoringGenerals); }
 void optionsWindow::on_buttonColoringFavoritesFont_clicked()
-{
-	bool ok = false;
-	QFont police = QFontDialog::getFont(&ok, ui->lineColoringFavorites->font(), this, tr("Choisir une police"));
-	if (ok)
-	{ ui->lineColoringFavorites->setFont(police); }
-}
+{ setFont(ui->lineColoringFavorites); }
 void optionsWindow::on_buttonColoringBlacklistedsFont_clicked()
-{
-	bool ok = false;
-	QFont police = QFontDialog::getFont(&ok, ui->lineColoringBlacklisteds->font(), this, tr("Choisir une police"));
-	if (ok)
-	{ ui->lineColoringBlacklisteds->setFont(police); }
-}
+{ setFont(ui->lineColoringBlacklisteds); }
 void optionsWindow::on_buttonColoringIgnoredsFont_clicked()
-{
-	bool ok = false;
-	QFont police = QFontDialog::getFont(&ok, ui->lineColoringIgnoreds->font(), this, tr("Choisir une police"));
-	if (ok)
-	{ ui->lineColoringIgnoreds->setFont(police); }
-}
+{ setFont(ui->lineColoringIgnoreds); }
 
-void optionsWindow::on_lineBorderColor_textChanged()
-{
-	if (QColor(ui->lineBorderColor->text()).isValid())
-	{ ui->lineBorderColor->setStyleSheet("color:"+ui->lineBorderColor->text()); }
-	else
-	{ ui->lineBorderColor->setStyleSheet("color:#000000"); }
-}
-void optionsWindow::on_buttonBorderColor_clicked()
-{
-	QColor color = QColorDialog::getColor(QColor(ui->lineBorderColor->text()), this, tr("Choisir une couleur"));
-	if (color.isValid())
-	{ ui->lineBorderColor->setText(color.name()); }
-}
 
 void treeWidgetRec(int depth, bool& found, int& index, QTreeWidgetItem *current, QTreeWidgetItem *sel)
 {
