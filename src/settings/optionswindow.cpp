@@ -325,7 +325,7 @@ void optionsWindow::addFilename(QString condition, QString filename, QString fol
 }
 
 
-void setColor(QLineEdit *lineEdit, bool button = false)
+void optionsWindow::setColor(QLineEdit *lineEdit, bool button)
 {
 	QColor color = button
 		? QColorDialog::getColor(QColor(lineEdit->text()), this, tr("Choisir une couleur"))
