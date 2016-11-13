@@ -64,6 +64,7 @@ class favoritesTab : public searchTab
 		void setPostFilter(QString);
 		void focusSearch();
 		void addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage = nullptr) override;
+		void setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage = nullptr) override;
 
 	private:
 		int				m_id;

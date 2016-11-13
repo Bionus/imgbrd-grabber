@@ -209,6 +209,12 @@ void favoritesTab::addResultsPage(Page *page, const QList<QSharedPointer<Image>>
 	ui->splitter->setSizes(QList<int>() << (imgs.count() >= m_settings->value("hidefavorites", 20).toInt() ? 0 : 1) << 1);
 }
 
+void favoritesTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage)
+{
+	Q_UNUSED(noResultsMessage);
+	searchTab::setPageLabelText(txt, page, imgs, tr("Aucun résultat depuis le %1").arg(m_loadFavorite.toString(tr("dd/MM/yyyy 'à' hh:mm"))));
+}
+
 void favoritesTab::setTags(QString tags)
 {
 	activateWindow();
