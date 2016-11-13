@@ -268,10 +268,6 @@ void searchTab::finishedLoading(Page* page)
 	ui_buttonLastPage->setEnabled(maxpage > ui_spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1);
 
 	if (ui_checkMergeResults == nullptr || !ui_checkMergeResults->isChecked())
-	/*{
-		addResultsPage(page, imgs, tr("Aucun résultat depuis le %1").arg(m_loadFavorite.toString(tr("dd/MM/yyyy 'à' hh:mm"))));
-		ui->splitter->setSizes(QList<int>() << (imgs.count() >= m_settings->value("hidefavorites", 20).toInt() ? 0 : 1) << 1);
-	}*/
 		addResultsPage(page, imgs);
 
 	if (!m_settings->value("useregexfortags", true).toBool())
@@ -318,7 +314,14 @@ void searchTab::finishedLoadingTags(Page *page)
 
 	// Update image and page count
 	if (m_pageLabels.contains(page))
-		setPageLabelText(m_pageLabels[page], page, page->images());
+	{
+		QList<QSharedPointer<Image>> imgs;
+		for (QSharedPointer<Image> img : page->images())
+			if (validateImage(img))
+				imgs.append(img);
+
+		setPageLabelText(m_pageLabels[page], page, imgs);
+	}
 }
 
 void searchTab::loadImageThumbnails(Page *page, const QList<QSharedPointer<Image>> &imgs)

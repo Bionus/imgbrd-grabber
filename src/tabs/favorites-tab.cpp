@@ -202,6 +202,13 @@ bool favoritesTab::validateImage(QSharedPointer<Image> img)
 	return (img->createdAt() > m_loadFavorite || img->createdAt().isNull());
 }
 
+void favoritesTab::addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage)
+{
+	Q_UNUSED(noResultsMessage);
+	searchTab::addResultsPage(page, imgs, tr("Aucun résultat depuis le %1").arg(m_loadFavorite.toString(tr("dd/MM/yyyy 'à' hh:mm"))));
+	ui->splitter->setSizes(QList<int>() << (imgs.count() >= m_settings->value("hidefavorites", 20).toInt() ? 0 : 1) << 1);
+}
+
 void favoritesTab::setTags(QString tags)
 {
 	activateWindow();
