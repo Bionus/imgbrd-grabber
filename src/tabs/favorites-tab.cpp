@@ -218,33 +218,6 @@ void favoritesTab::getAll()
 	}
 }
 
-void favoritesTab::firstPage()
-{
-	ui->spinPage->setValue(1);
-	load();
-}
-void favoritesTab::previousPage()
-{
-	if (ui->spinPage->value() > 1)
-	{
-		ui->spinPage->setValue(ui->spinPage->value()-1);
-		load();
-	}
-}
-void favoritesTab::nextPage()
-{
-	if (ui->spinPage->value() < ui->spinPage->maximum())
-	{
-		ui->spinPage->setValue(ui->spinPage->value()+1);
-		load();
-	}
-}
-void favoritesTab::lastPage()
-{
-	ui->spinPage->setValue(m_pagemax);
-	load();
-}
-
 
 QList<bool> favoritesTab::sources()
 { return m_selectedSources; }

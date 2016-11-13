@@ -63,10 +63,10 @@ class searchTab : public QWidget
 		// Zooms
 		void webZoom(int);
 		// Pagination
-		virtual void firstPage() = 0;
-		virtual void previousPage() = 0;
-		virtual void nextPage() = 0;
-		virtual void lastPage() = 0;
+		void firstPage();
+		void previousPage();
+		void nextPage();
+		void lastPage();
 		// Focus search field
 		virtual void focusSearch() = 0;
 		// Batch

@@ -35,11 +35,6 @@ class favoritesTab : public searchTab
 		QList<Site*> loadSites() override;
 
 	public slots:
-		// Search
-		void firstPage();
-		void previousPage();
-		void nextPage();
-		void lastPage();
 		// Zooms
 		void setTags(QString);
 		// Loading

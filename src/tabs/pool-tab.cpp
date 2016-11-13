@@ -121,33 +121,6 @@ void poolTab::getAll()
 	emit batchAddGroup(QStringList() << "pool:"+QString::number(ui->spinPool->value())+" "+m_search->toPlainText()+" "+m_settings->value("add").toString().trimmed() << "1" << QString::number(qMin((limit > 0 ? limit : 200), qMax(m_pages.value(ui->comboSites->currentText())->images().count(), m_pages.value(ui->comboSites->currentText())->imagesCount()))) << QString::number(qMax(m_pages.value(ui->comboSites->currentText())->images().count(), m_pages.value(ui->comboSites->currentText())->imagesCount())) << m_settings->value("downloadblacklist").toString() << ui->comboSites->currentText() << m_settings->value("Save/filename").toString() << m_settings->value("Save/path").toString() << "");
 }
 
-void poolTab::firstPage()
-{
-	ui->spinPage->setValue(1);
-	load();
-}
-void poolTab::previousPage()
-{
-	if (ui->spinPage->value() > 1)
-	{
-		ui->spinPage->setValue(ui->spinPage->value()-1);
-		load();
-	}
-}
-void poolTab::nextPage()
-{
-	if (ui->spinPage->value() < ui->spinPage->maximum())
-	{
-		ui->spinPage->setValue(ui->spinPage->value()+1);
-		load();
-	}
-}
-void poolTab::lastPage()
-{
-	ui->spinPage->setValue(m_pagemax);
-	load();
-}
-
 
 void poolTab::setTags(QString tags)
 {

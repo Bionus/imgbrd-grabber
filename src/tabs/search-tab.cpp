@@ -890,3 +890,31 @@ QString searchTab::wiki()
 
 void searchTab::onLoad()
 { }
+
+
+void searchTab::firstPage()
+{
+	ui_spinPage->setValue(1);
+	load();
+}
+void searchTab::previousPage()
+{
+	if (ui_spinPage->value() > 1)
+	{
+		ui_spinPage->setValue(ui_spinPage->value() - 1);
+		load();
+	}
+}
+void searchTab::nextPage()
+{
+	if (ui_spinPage->value() < ui_spinPage->maximum())
+	{
+		ui_spinPage->setValue(ui_spinPage->value() + 1);
+		load();
+	}
+}
+void searchTab::lastPage()
+{
+	ui_spinPage->setValue(m_pagemax);
+	load();
+}
