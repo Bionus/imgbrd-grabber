@@ -327,13 +327,14 @@ void optionsWindow::addFilename(QString condition, QString filename, QString fol
 
 void optionsWindow::setColor(QLineEdit *lineEdit, bool button)
 {
+	QString text = lineEdit->text();
 	QColor color = button
-		? QColorDialog::getColor(QColor(lineEdit->text()), this, tr("Choisir une couleur"))
-		: QColor(lineEdit->text());
+		? QColorDialog::getColor(QColor(text), this, tr("Choisir une couleur"))
+		: QColor(text);
 
 	if (color.isValid())
 	{
-		lineEdit->setText(color.name());
+		lineEdit->setText(button ? color.name() : text);
 		lineEdit->setStyleSheet("color:" + color.name());
 	}
 	else if (!button)
