@@ -22,6 +22,9 @@ class SearchWindow : public QDialog
 		explicit SearchWindow(QString tags, Profile *profile, QWidget *parent = 0);
 		~SearchWindow();
 
+	private:
+		QString generateSearch(QString additional = "") const;
+
 	public slots:
 		void setDate(QDate d);
 		void accept();
