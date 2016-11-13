@@ -108,9 +108,9 @@ void Site::initManager()
 	if (m_manager == nullptr)
 	{
 		// Create the access manager and get its slots
-		m_manager = new QNetworkAccessManager(this);
-		connect(m_manager, &QNetworkAccessManager::finished, this, &Site::finished);
-		connect(m_manager, &QNetworkAccessManager::sslErrors, sslErrorHandler);
+		m_manager = new CustomNetworkAccessManager(this);
+		connect(m_manager, &CustomNetworkAccessManager::finished, this, &Site::finished);
+		connect(m_manager, &CustomNetworkAccessManager::sslErrors, sslErrorHandler);
 
 		// Cache
 		QNetworkDiskCache *diskCache = new QNetworkDiskCache(m_manager);
@@ -323,50 +323,7 @@ QNetworkReply *Site::get(QUrl url, Page *page, QString ref, Image *img)
 QNetworkReply *Site::getRequest(QNetworkRequest request)
 {
 	m_lastRequest = QDateTime::currentDateTime();
-
-	#ifdef TEST
-		QString md5 = QString(QCryptographicHash::hash(request.url().toString().toLatin1(), QCryptographicHash::Md5).toHex());
-		QString filename = request.url().fileName();
-		QString ext = filename.contains('.') ? filename.mid(filename.lastIndexOf('.') + 1) : "html";
-		QString path = "tests/resources/pages/" + m_url + "/" + md5 + "." + ext;
-
-		QFile f(path);
-		if (!f.open(QFile::ReadOnly))
-		{
-			md5 = QString(QCryptographicHash::hash(request.url().toString().toLatin1(), QCryptographicHash::Md5).toHex());
-			f.setFileName("tests/resources/pages/" + m_url + "/" + md5 + "." + ext);
-
-			if (!f.open(QFile::ReadOnly))
-			{
-				// LCOV_EXCL_START
-				if (ext != "jpg" && ext != "png")
-				{
-					qDebug() << ("Test file not found: " + f.fileName() + " (" + request.url().toString() + ")");
-					return nullptr;
-				}
-				// LCOV_EXCL_STOP
-
-				f.setFileName("tests/resources/image_1x1.png");
-
-				// LCOV_EXCL_START
-				if (!f.open(QFile::ReadOnly))
-					return nullptr;
-				// LCOV_EXCL_STOP
-			}
-		}
-
-		qDebug() << ("Reply from file: " + request.url().toString() + " -> " + f.fileName());
-		QByteArray content = f.readAll();
-
-		QCustomNetworkReply *reply = new QCustomNetworkReply();
-		reply->setHttpStatusCode(200, "OK");
-		reply->setContentType("text/html");
-		reply->setContent(content);
-
-		return reply;
-	#else
-		return m_manager->get(request);
-	#endif
+	return m_manager->get(request);
 }
 
 

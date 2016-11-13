@@ -7,13 +7,13 @@
 #include <QMap>
 #include <QList>
 #include <QNetworkReply>
-#include <QNetworkAccessManager>
 #include <QUrl>
 #include <QSslError>
 #include <functional>
 #include "tag.h"
 #include "api.h"
 #include "profile.h"
+#include "custom-network-access-manager.h"
 
 
 
@@ -98,7 +98,7 @@ class Site : public QObject
 		Source *m_source;
 		QList<QNetworkCookie> m_cookies;
 		QSettings *m_settings;
-		QNetworkAccessManager *m_manager;
+		CustomNetworkAccessManager *m_manager;
 		QNetworkCookieJar *m_cookieJar;
 		QNetworkReply *m_loginReply, *m_updateReply, *m_tagsReply;
 		Page *m_loginPage;

@@ -1,7 +1,7 @@
 #ifndef SOURCE_GUESSER_H
 #define SOURCE_GUESSER_H
 
-#include <QNetworkAccessManager>
+#include "custom-network-access-manager.h"
 #include "models/source.h"
 
 
@@ -20,7 +20,7 @@ class SourceGuesser : public QObject
 	private:
 		QString m_url;
 		QList<Source*> m_sources;
-		QNetworkAccessManager *m_manager;
+		CustomNetworkAccessManager *m_manager;
 		QMap<QString, QString> m_cache;
 };
 
