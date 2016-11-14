@@ -143,8 +143,8 @@ void sourcesWindow::deleteSite(QString site)
  */
 void sourcesWindow::addSite()
 {
-	siteWindow *sw = new siteWindow(m_sites, this);
-	connect(sw, SIGNAL(accepted()), this, SLOT(updateCheckboxes()));
+	SiteWindow *sw = new SiteWindow(m_sites, this);
+	connect(sw, &SiteWindow::accepted, this, &sourcesWindow::updateCheckboxes);
 	sw->show();
 }
 

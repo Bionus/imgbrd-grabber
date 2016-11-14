@@ -10,8 +10,8 @@ extern mainWindow *_mainwindow;
 
 
 
-siteWindow::siteWindow(QMap<QString ,Site*> *sites, QWidget *parent)
-	: QDialog(parent), ui(new Ui::siteWindow), m_sites(sites)
+SiteWindow::SiteWindow(QMap<QString ,Site*> *sites, QWidget *parent)
+	: QDialog(parent), ui(new Ui::SiteWindow), m_sites(sites)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	ui->setupUi(this);
@@ -27,12 +27,12 @@ siteWindow::siteWindow(QMap<QString ,Site*> *sites, QWidget *parent)
 	}
 }
 
-siteWindow::~siteWindow()
+SiteWindow::~SiteWindow()
 {
 	delete ui;
 }
 
-void siteWindow::accept()
+void SiteWindow::accept()
 {
 	ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 
@@ -46,7 +46,7 @@ void siteWindow::accept()
 
 		SourceGuesser sourceGuesser(m_url, *m_sources);
 		connect(&sourceGuesser, &SourceGuesser::progress, ui->progressBar, &QProgressBar::setValue);
-		connect(&sourceGuesser, &SourceGuesser::finished, this, &siteWindow::finish);
+		connect(&sourceGuesser, &SourceGuesser::finished, this, &SiteWindow::finish);
 		sourceGuesser.start();
 
 		return;
@@ -64,7 +64,7 @@ void siteWindow::accept()
 	finish(src);
 }
 
-void siteWindow::finish(Source *src)
+void SiteWindow::finish(Source *src)
 {
 	if (ui->checkBox->isChecked())
 	{

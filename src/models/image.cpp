@@ -367,7 +367,7 @@ void Image::parsePreview()
 	// If nothing has been received
 	if (m_imagePreview.isNull() && m_previewTry <= 3)
 	{
-		log(tr("<b>Warning:</b> %1").arg(tr("one of the thumbnails is empty (<a href="%1">%1</a>). New try (%2/%3)...").arg(m_previewUrl.toString()).arg(m_previewTry).arg(3)));
+		log(tr("<b>Warning:</b> %1").arg(tr("one of the thumbnails is empty (<a href=\"%1\">%1</a>). New try (%2/%3)...").arg(m_previewUrl.toString()).arg(m_previewTry).arg(3)));
 
 		if (hasTag("flash"))
 		{ m_imagePreview.load(":/images/flash.png"); }
