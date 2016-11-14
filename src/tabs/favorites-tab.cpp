@@ -101,14 +101,14 @@ void favoritesTab::updateFavorites()
 	if (reverse)
 	{ m_favorites = reversed(m_favorites); }
 
-	QString format = tr("dd/MM/yyyy");
+	QString format = tr("MM/dd/yyyy");
 	clearLayout(ui->layoutFavorites);
 
 	QString display = m_settings->value("favorites_display", "ind").toString();
 	int i = 0;
 	for (Favorite fav : m_favorites)
 	{
-		QString xt = tr("<b>Nom :</b> %1<br/><b>Note :</b> %2 %%<br/><b>Dernière vue :</b> %3").arg(fav.getName(), QString::number(fav.getNote()), fav.getLastViewed().toString(format));
+		QString xt = tr("<b>Name:</b> %1<br/><b>Note:</b> %2 %%<br/><b>Last view:</b> %3").arg(fav.getName(), QString::number(fav.getNote()), fav.getLastViewed().toString(format));
 		QWidget *w = new QWidget(ui->scrollAreaWidgetContents);
 		QVBoxLayout *l = new QVBoxLayout(w);
 
@@ -171,14 +171,14 @@ bool favoritesTab::validateImage(QSharedPointer<Image> img)
 void favoritesTab::addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage)
 {
 	Q_UNUSED(noResultsMessage);
-	searchTab::addResultsPage(page, imgs, tr("Aucun résultat depuis le %1").arg(m_loadFavorite.toString(tr("dd/MM/yyyy 'à' hh:mm"))));
+	searchTab::addResultsPage(page, imgs, tr("No result since the %1").arg(m_loadFavorite.toString(tr("MM/dd/yyyy 'at' hh:mm"))));
 	ui->splitter->setSizes(QList<int>() << (imgs.count() >= m_settings->value("hidefavorites", 20).toInt() ? 0 : 1) << 1);
 }
 
 void favoritesTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage)
 {
 	Q_UNUSED(noResultsMessage);
-	searchTab::setPageLabelText(txt, page, imgs, tr("Aucun résultat depuis le %1").arg(m_loadFavorite.toString(tr("dd/MM/yyyy 'à' hh:mm"))));
+	searchTab::setPageLabelText(txt, page, imgs, tr("No result since the %1").arg(m_loadFavorite.toString(tr("MM/dd/yyyy 'at' hh:mm"))));
 }
 
 void favoritesTab::setTags(QString tags)
@@ -259,7 +259,7 @@ void favoritesTab::viewed()
 {
 	if (m_currentTags.isEmpty())
 	{
-		int reponse = QMessageBox::question(this, tr("Marquer comme vu"), tr("Êtes-vous sûr de vouloir marquer tous vos favoris comme vus ?"), QMessageBox::Yes | QMessageBox::No);
+		int reponse = QMessageBox::question(this, tr("Mark as viewed"), tr("Are you sure you want to mark all your favorites as viewed?"), QMessageBox::Yes | QMessageBox::No);
 		if (reponse == QMessageBox::Yes)
 		{
 			for (Favorite fav : m_favorites)
@@ -273,7 +273,7 @@ void favoritesTab::viewed()
 }
 void favoritesTab::setFavoriteViewed(QString tag)
 {
-	log(tr("Marquage comme vu de %1...").arg(tag));
+	log(tr("Marking \"%1\" as viewed...").arg(tag));
 
 	int index = tag.isEmpty() ? m_currentFav : m_favorites.indexOf(tag);
 	if (index < 0)
