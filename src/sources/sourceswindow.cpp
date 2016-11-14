@@ -293,12 +293,12 @@ void sourcesWindow::checkForUpdatesReceived(Source *source)
 			if (updateVersion != VERSION)
 			{
 				m_labels[pos]->setPixmap(QPixmap(":/images/icons/warning.png"));
-				m_labels[pos]->setToolTip(tr("Une mise à jour de cette source est disponible, mais pour une autre version du programme."));
+				m_labels[pos]->setToolTip(tr("An update for this source is available, but for another version of the program."));
 			}
 			else
 			{
 				m_labels[pos]->setPixmap(QPixmap(":/images/icons/update.png"));
-				m_labels[pos]->setToolTip(tr("Une mise à jour de cette source est disponible."));
+				m_labels[pos]->setToolTip(tr("An update for this source is available."));
 			}
 		}
 	}
