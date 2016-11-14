@@ -54,7 +54,7 @@
    <item row="3" column="0">
     <widget class="QLabel" name="labelPP">
      <property name="text">
-      <string>Images par page</string>
+      <string>Images per page</string>
      </property>
     </widget>
    </item>
@@ -74,7 +74,7 @@
    <item row="4" column="0">
     <widget class="QLabel" name="labelLimit">
      <property name="text">
-      <string>Limite d'images</string>
+      <string>Images limit</string>
      </property>
     </widget>
    </item>
@@ -94,7 +94,7 @@
    <item row="5" column="0" colspan="2">
     <widget class="QCheckBox" name="checkBlacklist">
      <property name="text">
-      <string>Télécharger les image de la liste noire</string>
+      <string>Download images with blacklisted tags</string>
      </property>
     </widget>
    </item>
