@@ -1,18 +1,25 @@
 #ifndef ADDGROUPWINDOW_H
 #define ADDGROUPWINDOW_H
 
-#include <QSpinBox>
-#include <QComboBox>
+#include <QDialog>
+#include <QStringList>
+#include <QSettings>
 #include "ui/textedit.h"
-#include "models/favorite.h"
 
 
-class AddGroupWindow : public QWidget
+
+namespace Ui
+{
+	class AddGroupWindow;
+}
+
+
+class AddGroupWindow : public QDialog
 {
 	Q_OBJECT
 
 	public:
-		AddGroupWindow(QString, QStringList, Profile *profile, QWidget *parent);
+		AddGroupWindow(QString selected, QStringList sites, Profile *profile, QWidget *parent);
 
 	public slots:
 		void ok();
@@ -21,11 +28,10 @@ class AddGroupWindow : public QWidget
 		void sendData(QStringList);
 
 	private:
-		TextEdit	*m_lineTags;
-		QSpinBox	*m_spinPage, *m_spinPP, *m_spinLimit;
-		QComboBox	*m_comboDwl, *m_comboSites;
-		QStringList m_sites;
-		QSettings	*m_settings;
+		Ui::AddGroupWindow	*ui;
+		TextEdit			*m_lineTags;
+		QStringList			m_sites;
+		QSettings			*m_settings;
 };
 
 #endif // ADDGROUPWINDOW_H

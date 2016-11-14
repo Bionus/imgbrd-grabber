@@ -22,9 +22,9 @@ AddUniqueWindow::AddUniqueWindow(QString selected, QMap<QString,Site*> sites, Pr
 	ui->comboSites->addItems(m_sites.keys());
 	ui->comboSites->setCurrentIndex(m_sites.keys().indexOf(selected));
 
-	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
-	ui->lineFolder->setText(settings.value("Save/path").toString());
-	ui->lineFilename->setText(settings.value("Save/filename").toString());
+	QSettings *settings = profile->getSettings();
+	ui->lineFolder->setText(settings->value("Save/path").toString());
+	ui->lineFilename->setText(settings->value("Save/filename").toString());
 }
 
 /**
