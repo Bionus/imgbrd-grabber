@@ -72,7 +72,7 @@ void SiteWindow::finish(Source *src)
 
 		if (src == nullptr)
 		{
-			error(this, tr("Impossible de deviner le type du site. Êtes-vous sûr de l'url ?"));
+			error(this, tr("Unable to guess site's type. Are you sure about the url?"));
 			ui->comboBox->setDisabled(false);
 			ui->checkBox->setChecked(false);
 			ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
