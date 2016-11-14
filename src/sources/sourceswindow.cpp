@@ -285,21 +285,21 @@ void sourcesWindow::checkForUpdates()
 void sourcesWindow::checkForUpdatesReceived(Source *source)
 {
 	QString updateVersion = source->getUpdateVersion();
-	if (!updateVersion.isEmpty())
+	if (updateVersion.isEmpty())
+		return;
+
+	for (Site *site : source->getSites())
 	{
-		for (Site *site : source->getSites())
+		int pos = m_sites->values().indexOf(site);
+		if (updateVersion != VERSION)
 		{
-			int pos = m_sites->values().indexOf(site);
-			if (updateVersion != VERSION)
-			{
-				m_labels[pos]->setPixmap(QPixmap(":/images/icons/warning.png"));
-				m_labels[pos]->setToolTip(tr("An update for this source is available, but for another version of the program."));
-			}
-			else
-			{
-				m_labels[pos]->setPixmap(QPixmap(":/images/icons/update.png"));
-				m_labels[pos]->setToolTip(tr("An update for this source is available."));
-			}
+			m_labels[pos]->setPixmap(QPixmap(":/images/icons/warning.png"));
+			m_labels[pos]->setToolTip(tr("An update for this source is available, but for another version of the program."));
+		}
+		else
+		{
+			m_labels[pos]->setPixmap(QPixmap(":/images/icons/update.png"));
+			m_labels[pos]->setToolTip(tr("An update for this source is available."));
 		}
 	}
 }

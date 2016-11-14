@@ -51,7 +51,7 @@ startWindow::~startWindow()
 
 void startWindow::on_buttonFolder_clicked()
 {
-	QString folder = QFileDialog::getExistingDirectory(this, tr("Choisir un dossier de sauvegarde"), ui->lineFolder->text());
+	QString folder = QFileDialog::getExistingDirectory(this, tr("Choose a save folder"), ui->lineFolder->text());
 	if (!folder.isEmpty())
 	{ ui->lineFolder->setText(folder); }
 }
@@ -87,7 +87,7 @@ void startWindow::save()
 			pth.setPath(pth.path().remove(QRegExp("/([^/]+)$")));
 		}
 		if (pth.path() == op)
-		{ error(this, tr("Une erreur est survenue lors de la création du dossier de sauvegarde.")); }
+		{ error(this, tr("An error occured creating the save folder.")); }
 		else
 		{ pth.mkpath(ui->lineFolder->text()); }
 	}
