@@ -14,14 +14,14 @@
    <string>Réparateur de dossiers vides</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../resources.qrc">
+   <iconset resource="../../../resources.qrc">
     <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Choisissez les dossiers à supprimer dans la liste ci-dessous.</string>
+      <string>Choose folders to delete in the list below.</string>
      </property>
     </widget>
    </item>
@@ -50,14 +50,14 @@
      <item>
       <widget class="QPushButton" name="buttonDelete">
        <property name="text">
-        <string>Supprimer</string>
+        <string>Delete</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="buttonCancel">
        <property name="text">
-        <string>Annuler</string>
+        <string>Cancel</string>
        </property>
       </widget>
      </item>
@@ -66,7 +66,9 @@
   </layout>
  </widget>
  <resources>
-  <include location="../resources.qrc"/>
+  <include location="../../../resources.qrc"/>
+  <include location="../../../resources.qrc"/>
+  <include location="../../../resources.qrc"/>
  </resources>
  <connections>
   <connection>

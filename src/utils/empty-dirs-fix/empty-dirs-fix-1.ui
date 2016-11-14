@@ -14,14 +14,14 @@
    <string>Réparateur de dossiers vides</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../resources.qrc">
+   <iconset resource="../../../resources.qrc">
     <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
   </property>
   <layout class="QFormLayout" name="formLayout">
    <item row="0" column="0">
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Dossier</string>
+      <string>Folder</string>
      </property>
     </widget>
    </item>
@@ -46,14 +46,14 @@
      <item>
       <widget class="QPushButton" name="buttonContinue">
        <property name="text">
-        <string>Continuer</string>
+        <string>Continue</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="buttonCancel">
        <property name="text">
-        <string>Annuler</string>
+        <string>Cancel</string>
        </property>
       </widget>
      </item>
@@ -62,42 +62,11 @@
   </layout>
  </widget>
  <resources>
-  <include location="../resources.qrc"/>
+  <include location="../../../resources.qrc"/>
+  <include location="../../../resources.qrc"/>
+  <include location="../../../resources.qrc"/>
  </resources>
- <connections>
-  <connection>
-   <sender>buttonCancel</sender>
-   <signal>clicked()</signal>
-   <receiver>EmptyDirsFix</receiver>
-   <slot>reject()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>226</x>
-     <y>53</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>233</x>
-     <y>45</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonContinue</sender>
-   <signal>clicked()</signal>
-   <receiver>EmptyDirsFix</receiver>
-   <slot>next()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>134</x>
-     <y>47</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>144</x>
-     <y>47</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
  <slots>
   <slot>next()</slot>
  </slots>
