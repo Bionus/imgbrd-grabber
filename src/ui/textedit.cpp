@@ -232,7 +232,7 @@ void TextEdit::keyPressEvent(QKeyEvent *e)
 void TextEdit::customContextMenuRequested(QPoint)
 {
 	QMenu *menu = new QMenu(this);
-		QMenu *favs = new QMenu(tr("Favoris"), menu);
+		QMenu *favs = new QMenu(tr("Favorites"), menu);
 			QActionGroup* favsGroup = new QActionGroup(favs);
 				favsGroup->setExclusive(true);
 				connect(favsGroup, SIGNAL(triggered(QAction *)), this, SLOT(insertFav(QAction *)));
@@ -241,16 +241,16 @@ void TextEdit::customContextMenuRequested(QPoint)
 				if (!toPlainText().isEmpty())
 				{
 					if (m_favorites.contains(toPlainText()))
-					{ favs->addAction(QIcon(":/images/icons/remove.png"), tr("Retirer"), this, SLOT(unsetFavorite())); }
+					{ favs->addAction(QIcon(":/images/icons/remove.png"), tr("Remove"), this, SLOT(unsetFavorite())); }
 					else
-					{ favs->addAction(QIcon(":/images/icons/add.png"), tr("Ajouter"), this, SLOT(setFavorite())); }
+					{ favs->addAction(QIcon(":/images/icons/add.png"), tr("Add"), this, SLOT(setFavorite())); }
 					favs->addSeparator();
 				}
 				favs->addActions(favsGroup->actions());
 				favs->setIcon(QIcon(":/images/icons/favorite.png"));
 				favs->setStyleSheet("* { menu-scrollable: 1 }");
 			menu->addMenu(favs);
-		QMenu *vils = new QMenu(tr("Gardés pour plus tard"), menu);
+		QMenu *vils = new QMenu(tr("Kept for later"), menu);
 			QActionGroup* vilsGroup = new QActionGroup(vils);
 				vilsGroup->setExclusive(true);
 				connect(vilsGroup, SIGNAL(triggered(QAction *)), this, SLOT(insertFav(QAction *)));
@@ -259,15 +259,15 @@ void TextEdit::customContextMenuRequested(QPoint)
 				if (!toPlainText().isEmpty())
 				{
 					if (m_viewItLater.contains(toPlainText()))
-					{ vils->addAction(QIcon(":/images/icons/remove.png"), tr("Retirer"), this, SLOT(unsetKfl())); }
+					{ vils->addAction(QIcon(":/images/icons/remove.png"), tr("Remove"), this, SLOT(unsetKfl())); }
 					else
-					{ vils->addAction(QIcon(":/images/icons/add.png"), tr("Ajouter"), this, SLOT(setKfl())); }
+					{ vils->addAction(QIcon(":/images/icons/add.png"), tr("Add"), this, SLOT(setKfl())); }
 					vils->addSeparator();
 				}
 				vils->addActions(vilsGroup->actions());
 				vils->setIcon(QIcon(":/images/icons/book.png"));
 			menu->addMenu(vils);
-		QMenu *ratings = new QMenu(tr("Classes"), menu);
+		QMenu *ratings = new QMenu(tr("Ratings"), menu);
 			QActionGroup* ratingsGroup = new QActionGroup(favs);
 				ratingsGroup->setExclusive(true);
 				connect(ratingsGroup, SIGNAL(triggered(QAction *)), this, SLOT(insertFav(QAction *)));
@@ -277,7 +277,7 @@ void TextEdit::customContextMenuRequested(QPoint)
 				ratings->addActions(ratingsGroup->actions());
 				ratings->setIcon(QIcon(":/images/ratings/none.png"));
 			menu->addMenu(ratings);
-		QMenu *sortings = new QMenu(tr("Tris"), menu);
+		QMenu *sortings = new QMenu(tr("Sortings"), menu);
 			QActionGroup* sortingsGroup = new QActionGroup(favs);
 				sortingsGroup->setExclusive(true);
 				connect(sortingsGroup, SIGNAL(triggered(QAction *)), this, SLOT(insertFav(QAction *)));
@@ -300,10 +300,10 @@ void TextEdit::customContextMenuRequested(QPoint)
 		menu->addSeparator();
 			if (!textCursor().selection().isEmpty())
 			{
-				menu->addAction(tr("Copier"), this, SLOT(copy()), QKeySequence::Copy);
-				menu->addAction(tr("Couper"), this, SLOT(cut()), QKeySequence::Cut);
+				menu->addAction(tr("Copy"), this, SLOT(copy()), QKeySequence::Copy);
+				menu->addAction(tr("Cut"), this, SLOT(cut()), QKeySequence::Cut);
 			}
-			menu->addAction(tr("Coller"), this, SLOT(paste()), QKeySequence::Paste);
+			menu->addAction(tr("Paste"), this, SLOT(paste()), QKeySequence::Paste);
 	menu->exec(QCursor::pos());
 }
 
