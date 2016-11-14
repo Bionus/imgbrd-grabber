@@ -27,7 +27,7 @@ class FilenameWindow : public QDialog
 	Q_OBJECT
 	
 	public:
-		explicit FilenameWindow(Profile *profile, QString value = "", QWidget *parent = 0);
+		explicit FilenameWindow(Profile *profile, QString value = "", QWidget *parent = Q_NULLPTR);
 		~FilenameWindow();
 		QString format();
 

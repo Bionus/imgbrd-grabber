@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Nommage</string>
+   <string>Filename</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -19,7 +19,7 @@
      <item>
       <widget class="QRadioButton" name="radioClassic">
        <property name="text">
-        <string>Nommage classique</string>
+        <string>Classic filenaming</string>
        </property>
        <property name="checked">
         <bool>true</bool>
@@ -41,7 +41,7 @@
         </size>
        </property>
        <property name="text">
-        <string>?</string>
+        <string notr="true">?</string>
        </property>
       </widget>
      </item>
@@ -65,7 +65,7 @@
      <item>
       <widget class="QRadioButton" name="radioJavascript">
        <property name="text">
-        <string>Nommage Javascript</string>
+        <string>Javascript filenaming</string>
        </property>
       </widget>
      </item>
@@ -84,7 +84,7 @@
         </size>
        </property>
        <property name="text">
-        <string>?</string>
+        <string notr="true">?</string>
        </property>
       </widget>
      </item>

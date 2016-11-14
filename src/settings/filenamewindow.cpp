@@ -139,7 +139,7 @@ void FilenameWindow::done(int r)
 
 		if (det.isEmpty())
 		{
-			QMessageBox::StandardButton reply = QMessageBox::question(this, tr("Attention"), tr("Votre script contient des erreurs, êtes-vous sûr de vouloir l'enregistrer ?"), QMessageBox::Yes | QMessageBox::Cancel);
+			QMessageBox::StandardButton reply = QMessageBox::question(this, tr("Warning"), tr("You script contains error, are you sure you want to save it?"), QMessageBox::Yes | QMessageBox::Cancel);
 			if (reply == QMessageBox::Cancel)
 			{
 				return;
