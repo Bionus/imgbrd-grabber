@@ -1016,7 +1016,7 @@ void mainWindow::aboutReportBug()
 
 void mainWindow::aboutAuthor()
 {
-	aboutWindow *aw = new aboutWindow(QString(VERSION), this);
+	AboutWindow *aw = new AboutWindow(QString(VERSION), this);
 	aw->show();
 }
 

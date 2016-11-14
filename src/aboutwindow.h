@@ -1,5 +1,5 @@
-#ifndef ABOUTWINDOW_H
-#define ABOUTWINDOW_H
+#ifndef ABOUT_WINDOW_H
+#define ABOUT_WINDOW_H
 
 #include <QDialog>
 #include <QNetworkReply>
@@ -8,25 +8,25 @@
 
 namespace Ui
 {
-	class aboutWindow;
+	class AboutWindow;
 }
 
 
 
-class aboutWindow : public QDialog
+class AboutWindow : public QDialog
 {
 	Q_OBJECT
 
 	public:
-		explicit aboutWindow(QString v, QWidget *parent = 0);
-		~aboutWindow();
+		explicit AboutWindow(QString v, QWidget *parent = 0);
+		~AboutWindow();
 
 	public slots:
 		void finished(QNetworkReply *r);
 
 	private:
-		Ui::aboutWindow *ui;
+		Ui::AboutWindow *ui;
 		int m_version;
 };
 
-#endif // ABOUTWINDOW_H
+#endif // ABOUT_WINDOW_H

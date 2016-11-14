@@ -11,7 +11,7 @@ int version2int(QString version)
 	return version.replace("a", "").replace("b", "").toInt() * 10 + beta;
 }
 
-aboutWindow::aboutWindow(QString version, QWidget *parent) : QDialog(parent), ui(new Ui::aboutWindow)
+AboutWindow::AboutWindow(QString version, QWidget *parent) : QDialog(parent), ui(new Ui::AboutWindow)
 {
 	ui->setupUi(this);
 
@@ -25,12 +25,12 @@ aboutWindow::aboutWindow(QString version, QWidget *parent) : QDialog(parent), ui
 	setFixedSize(400, 228);
 }
 
-aboutWindow::~aboutWindow()
+AboutWindow::~AboutWindow()
 {
 	delete ui;
 }
 
-void aboutWindow::finished(QNetworkReply *r)
+void AboutWindow::finished(QNetworkReply *r)
 {
 	QString last = r->readAll();
 
@@ -45,6 +45,6 @@ void aboutWindow::finished(QNetworkReply *r)
 	qSort(list);
 
 	int latest = list.empty() ? 0 : list.last();
-	QString msg = latest <= m_version ? tr("Grabber is up to date") : tr("A new version is available: %1").arg(l);
+	QString msg = latest <= m_version ? tr("Grabber is up to date") : tr("A new version is available: %1").arg(last);
 	ui->labelMessage->setText("<p style=\"font-size:8pt; font-style:italic; color:#808080;\">" + msg + "</p>");
 }
