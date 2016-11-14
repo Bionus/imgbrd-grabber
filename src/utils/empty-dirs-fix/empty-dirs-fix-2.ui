@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Réparateur de dossiers vides</string>
+   <string>Empty folders fixer</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../../../resources.qrc">

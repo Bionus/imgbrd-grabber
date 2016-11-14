@@ -44,7 +44,7 @@ Source *SourceGuesser::start()
 
 				if (reply->error() != 0)
 				{
-					log(tr("Erreur lors de la récupération de la page de test : %1.").arg(reply->errorString()), Error);
+					log(tr("Error getting the test page: %1.").arg(reply->errorString()), Error);
 					emit progress(++current);
 					continue;
 				}
