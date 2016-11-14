@@ -312,7 +312,7 @@ void Image::loadPreview()
 {
 	if (m_previewUrl.isEmpty())
 	{
-		log(tr("Chargement de miniature annulé (miniature vide)."));
+		log(tr("Thumbnail loading cancelled (empty url)."));
 		return;
 	}
 
@@ -355,7 +355,7 @@ void Image::parsePreview()
 	// Loading error
 	if (m_loadPreview->error() != QNetworkReply::NoError)
 	{
-		log(tr("<b>Erreur :</b> %1").arg(tr("erreur de chargement de la miniature (%1)").arg(m_loadPreview->errorString())));
+		log(tr("<b>Error:</b> %1").arg(tr("error loading thumbnail (%1)").arg(m_loadPreview->errorString())));
 	}
 
 	// Load preview from raw result
@@ -367,7 +367,7 @@ void Image::parsePreview()
 	// If nothing has been received
 	if (m_imagePreview.isNull() && m_previewTry <= 3)
 	{
-		log(tr("<b>Attention :</b> %1").arg(tr("une des miniatures est vide (<a href=\"%1\">%1</a>). Nouvel essai (%2/%3)...").arg(m_previewUrl.toString()).arg(m_previewTry).arg(3)));
+		log(tr("<b>Warning:</b> %1").arg(tr("one of the thumbnails is empty (<a href="%1">%1</a>). New try (%2/%3)...").arg(m_previewUrl.toString()).arg(m_previewTry).arg(3)));
 
 		if (hasTag("flash"))
 		{ m_imagePreview.load(":/images/flash.png"); }
@@ -501,7 +501,7 @@ QString Image::match(QString filter, bool invert) const
 		QString type = filter.section(':', 0, 0).toLower();
 		filter = filter.section(':', 1).toLower();
 		if (!types.contains(type))
-		{ return QObject::tr("unknown type \"%1\" (available types: \"%2\")").arg(type, types.join("\", \"")); }
+		{ return tr("unknown type \"%1\" (available types: \"%2\")").arg(type, types.join("\", \"")); }
 		if (mathematicaltypes.contains(type))
 		{
 			int input = 0;
@@ -550,9 +550,9 @@ QString Image::match(QString filter, bool invert) const
 			}
 
 			if (!cond && !invert)
-			{ return QObject::tr("image's %1 does not match").arg(type); }
+			{ return tr("image's %1 does not match").arg(type); }
 			if (cond && invert)
-			{ return QObject::tr("image's %1 match").arg(type); }
+			{ return tr("image's %1 match").arg(type); }
 		}
 		else
 		{
@@ -568,18 +568,18 @@ QString Image::match(QString filter, bool invert) const
 
 				bool cond = m_rating.toLower().startsWith(filter.left(1));
 				if (!cond && !invert)
-				{ return QObject::tr("image is not \"%1\"").arg(filter); }
+				{ return tr("image is not \"%1\"").arg(filter); }
 				if (cond && invert)
-				{ return QObject::tr("image is \"%1\"").arg(filter); }
+				{ return tr("image is \"%1\"").arg(filter); }
 			}
 			else if (type == "source")
 			{
 				QRegExp rx = QRegExp(filter+"*", Qt::CaseInsensitive, QRegExp::Wildcard);
 				bool cond = rx.exactMatch(m_source);
 				if (!cond && !invert)
-				{ return QObject::tr("image's source does not starts with \"%1\"").arg(filter); }
+				{ return tr("image's source does not starts with \"%1\"").arg(filter); }
 				if (cond && invert)
-				{ return QObject::tr("image's source starts with \"%1\"").arg(filter); }
+				{ return tr("image's source starts with \"%1\"").arg(filter); }
 			}
 		}
 	}
@@ -601,9 +601,9 @@ QString Image::match(QString filter, bool invert) const
 		}
 
 		if (!cond && !invert)
-		{ return QObject::tr("image does not contains \"%1\"").arg(filter); }
+		{ return tr("image does not contains \"%1\"").arg(filter); }
 		if (cond && invert)
-		{ return QObject::tr("image contains \"%1\"").arg(filter); }
+		{ return tr("image contains \"%1\"").arg(filter); }
 	}
 
 	return QString();
@@ -695,13 +695,13 @@ void Image::finishedImageS()
 			{
 				setUrl(m_sampleUrl.toString());
 				m_tryingSample = true;
-				log(tr("Image non trouvée. Nouvel essai avec son sample..."));
+				log(tr("Image not found. New try with its sample..."));
 			}
 			else
 			{
 				QString oldUrl = m_url;
 				m_url = setExtension(m_url, newext);
-				log(tr("Image non trouvée (%1). Nouvel essai avec l'extension %2...").arg(oldUrl, newext));
+				log(tr("Image not found. New try with extension %1...").arg(oldUrl, newext));
 			}
 
 			loadImage();
@@ -709,7 +709,7 @@ void Image::finishedImageS()
 		}
 		else
 		{
-			log(tr("Image non trouvée."));
+			log(tr("Image not found."));
 		}
 	}
 	else
@@ -808,7 +808,7 @@ Image::SaveResult Image::save(QString path, bool force, bool basic)
 		QString md5Duplicate = m_profile->md5Exists(md5());
 		if (md5Duplicate.isEmpty() || whatToDo == "save" || force)
 		{
-			log(tr("Sauvegarde de l'image dans le fichier <a href=\"file:///%1\">%1</a>").arg(path));
+			log(tr("Saving image in <a href=\"file:///%1\">%1</a>").arg(path));
 			if (!m_source.isEmpty() && QFile::exists(m_source))
 			{ QFile::copy(m_source, path); }
 			else
@@ -821,7 +821,7 @@ Image::SaveResult Image::save(QString path, bool force, bool basic)
 					f.close();
 				}
 				else
-				{ log(tr("Impossible d'ouvrir le fichier")); }
+				{ log(tr("Unable to open file")); }
 			}
 
 			if (m_settings->value("Textfile/activate", false).toBool() && !basic)
@@ -855,14 +855,14 @@ Image::SaveResult Image::save(QString path, bool force, bool basic)
 		}
 		else if (whatToDo == "copy")
 		{
-			log(tr("Copie depuis <a href=\"file:///%1\">%1</a> vers <a href=\"file:///%2\">%2</a>").arg(md5Duplicate).arg(path));
+			log(tr("Copy from <a href=\"file:///%1\">%1</a> to <a href=\"file:///%2\">%2</a>").arg(md5Duplicate).arg(path));
 			QFile::copy(md5Duplicate, path);
 
 			res = SaveResult::Copied;
 		}
 		else if (whatToDo == "move")
 		{
-			log(tr("Déplacement depuis <a href=\"file:///%1\">%1</a> vers <a href=\"file:///%2\">%2</a>").arg(md5Duplicate).arg(path));
+			log(tr("Moving from <a href=\"file:///%1\">%1</a> to <a href=\"file:///%2\">%2</a>").arg(md5Duplicate).arg(path));
 			QFile::rename(md5Duplicate, path);
 			m_profile->setMd5(md5(), path);
 
