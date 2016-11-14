@@ -116,7 +116,7 @@
      <item>
       <widget class="QPushButton" name="buttonSearch">
        <property name="text">
-        <string>Plus</string>
+        <string>Pl&amp;us</string>
        </property>
       </widget>
      </item>
@@ -139,7 +139,7 @@
      <item>
       <widget class="QPushButton" name="buttonTags">
        <property name="text">
-        <string>Ok</string>
+        <string>O&amp;k</string>
        </property>
       </widget>
      </item>
@@ -379,21 +379,21 @@
      <item>
       <widget class="QPushButton" name="buttonGetSel">
        <property name="text">
-        <string>Get selected</string>
+        <string>Get &amp;selected</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="buttonGetpage">
        <property name="text">
-        <string>Get this page</string>
+        <string>Get this &amp;page</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="buttonGetAll">
        <property name="text">
-        <string>Get all</string>
+        <string>Get &amp;all</string>
        </property>
       </widget>
      </item>

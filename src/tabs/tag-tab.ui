@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Nouvel onglet</string>
+   <string>New tab</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../../resources.qrc">
@@ -71,7 +71,7 @@
            </size>
           </property>
           <property name="text">
-           <string>&lt;</string>
+           <string notr="true">&lt;</string>
           </property>
          </widget>
         </item>
@@ -93,7 +93,7 @@
            </size>
           </property>
           <property name="text">
-           <string>&gt;</string>
+           <string notr="true">&gt;</string>
           </property>
          </widget>
         </item>
@@ -146,7 +146,7 @@
         </size>
        </property>
        <property name="text">
-        <string>+</string>
+        <string notr="true">+</string>
        </property>
        <property name="checkable">
         <bool>true</bool>
@@ -173,7 +173,7 @@
       <item>
        <widget class="QLabel" name="label_2">
         <property name="text">
-         <string>Peut-être avez-vous voulu dire :</string>
+         <string>Maybe you meant:</string>
         </property>
        </widget>
       </item>
@@ -202,7 +202,7 @@
       <item row="1" column="0">
        <widget class="QLabel" name="label_8">
         <property name="text">
-         <string>Post-filtrage</string>
+         <string>Post-filtering</string>
         </property>
        </widget>
       </item>
@@ -261,14 +261,14 @@
       <item row="0" column="2">
        <widget class="QLabel" name="label_7">
         <property name="text">
-         <string>Nombre de colonnes</string>
+         <string>Number of columns</string>
         </property>
        </widget>
       </item>
       <item row="0" column="0">
        <widget class="QLabel" name="label_6">
         <property name="text">
-         <string>Images par page</string>
+         <string>Images per page</string>
         </property>
        </widget>
       </item>
@@ -350,7 +350,7 @@
         </size>
        </property>
        <property name="text">
-        <string>&lt;&lt;</string>
+        <string notr="true">&lt;&lt;</string>
        </property>
       </widget>
      </item>
@@ -366,7 +366,7 @@
         </size>
        </property>
        <property name="text">
-        <string>&lt;</string>
+        <string notr="true">&lt;</string>
        </property>
       </widget>
      </item>
@@ -380,7 +380,7 @@
      <item>
       <widget class="QCheckBox" name="checkMergeResults">
        <property name="text">
-        <string>Fusionner les résultats</string>
+        <string>&amp;Merge results</string>
        </property>
        <property name="checked">
         <bool>true</bool>
@@ -397,21 +397,21 @@
      <item>
       <widget class="QPushButton" name="buttonGetSel">
        <property name="text">
-        <string>Prendre &amp;séléctionnés</string>
+        <string>Get &amp;selected</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="buttonGetpage">
        <property name="text">
-        <string>Prendre cette &amp;page</string>
+        <string>Get this &amp;page</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="buttonGetAll">
        <property name="text">
-        <string>Prendre &amp;tout</string>
+        <string>Get &amp;all</string>
        </property>
       </widget>
      </item>
@@ -427,7 +427,7 @@
         </size>
        </property>
        <property name="text">
-        <string>&gt;</string>
+        <string notr="true">&gt;</string>
        </property>
       </widget>
      </item>
@@ -443,7 +443,7 @@
         </size>
        </property>
        <property name="text">
-        <string>&gt;&gt;</string>
+        <string notr="true">&gt;&gt;</string>
        </property>
       </widget>
      </item>

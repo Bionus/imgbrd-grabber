@@ -53,7 +53,7 @@ void searchTab::setSelectedSources(QSettings *settings)
 
 void searchTab::optionsChanged()
 {
-	log(tr("Mise à jour des options de l'onglet \"%1\".").arg(windowTitle()));
+	log(tr("Updating settings for tab \"%1\".").arg(windowTitle()));
 	// ui->retranslateUi(this);
 
 	ui_spinImagesPerPage->setValue(m_settings->value("limit", 20).toInt());
@@ -112,15 +112,15 @@ QStringList searchTab::reasonsToFail(Page* page, QStringList completion, QString
 
 	// If the request yieleded no source, the server may be offline
 	if (page->source().isEmpty())
-	{ reasons.append(tr("serveur hors-ligne")); }
+	{ reasons.append(tr("server offline")); }
 
 	// Some sources do not allow more than two tags per search
 	if (page->search().count() > 2)
-	{ reasons.append(tr("trop de tags")); }
+	{ reasons.append(tr("too many tags")); }
 
 	// Many sources don't allow browsing after page 1000
 	if (page->page() > 1000)
-	{ reasons.append(tr("page trop éloignée")); }
+	{ reasons.append(tr("page too far")); }
 
 	// Auto-correct
 	if (meant != nullptr && !page->search().isEmpty())
@@ -249,7 +249,7 @@ void searchTab::finishedLoading(Page* page)
 	if (m_stop)
 		return;
 
-	log(tr("Réception de la page <a href=\"%1\">%1</a>").arg(page->url().toString().toHtmlEscaped()));
+	log(tr("Receiving page <a href=\"%1\">%1</a>").arg(page->url().toString().toHtmlEscaped()));
 
 	m_lastPage = page->page();
 	m_lastPageMinId = page->minId();
@@ -339,7 +339,7 @@ void searchTab::loadImageThumbnails(Page *page, const QList<QSharedPointer<Image
 		if (!m_settings->value("blacklistedtags").toString().isEmpty())
 		{ detected = img->blacklisted(m_settings->value("blacklistedtags").toString().toLower().split(" ")); }
 		if (!detected.isEmpty() && m_settings->value("hideblacklisted", false).toBool())
-		{ log(tr("Image #%1 ignorée. Raison : %2.").arg(i).arg("\""+detected.join(", ")+"\""));; }
+		{ log(tr("Image #%1 ignored. Reason: %2.").arg(i).arg("\""+detected.join(", ")+"\""));; }
 		else
 		{
 			connect(img.data(), &Image::finishedLoadingPreview, this, &searchTab::finishedLoadingPreview);
@@ -362,7 +362,7 @@ void searchTab::finishedLoadingPreview()
 
 	if (img->previewImage().isNull())
 	{
-		log(tr("<b>Attention :</b> %1").arg(tr("une des miniatures est vide (<a href=\"%1\">%1</a>).").arg(img->previewUrl().toString())));
+		log(tr("<b>Warning:</b> %1").arg(tr("one of the thumbnails is empty (<a href=\"%1\">%1</a>).").arg(img->previewUrl().toString())));
 		return;
 	}
 
@@ -376,7 +376,7 @@ void searchTab::finishedLoadingPreview()
 		bool download = false;
 		if (!detected.isEmpty())
 		{
-			int reponse = QMessageBox::question(this, tr("Grabber"), tr("Certains tags de l'image sont dans la liste blanche : \"%1\". Cependant, certains dans la liste noire : \"%2\". Voulez-vous la télécharger tout de même ?").arg(whitelisted.join(", "), detected.join(", ")), QMessageBox::Yes | QMessageBox::Open | QMessageBox::No);
+			int reponse = QMessageBox::question(this, "Grabber", tr("Some tags from the image are in the whitelist: %1. However, some tags are in the blacklist: %2. Do you want to download it anyway?").arg(whitelisted.join(", "), detected.join(", ")), QMessageBox::Yes | QMessageBox::Open | QMessageBox::No);
 			if (reponse == QMessageBox::Yes)
 			{ download = true; }
 			else if (reponse == QMessageBox::Open)
@@ -473,14 +473,14 @@ void searchTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPoi
 			ui_labelMeant->setText(meant);
 		}
 
-		QString msg = noResultsMessage == nullptr ? tr("Aucun résultat") : noResultsMessage;
-		txt->setText("<a href=\""+page->url().toString().toHtmlEscaped()+"\">"+page->site()->name()+"</a> - "+msg+(reasons.count() > 0 ? "<br/>"+tr("Raisons possibles : %1").arg(reasons.join(", ")) : ""));
+		QString msg = noResultsMessage == nullptr ? tr("No result") : noResultsMessage;
+		txt->setText("<a href=\""+page->url().toString().toHtmlEscaped()+"\">"+page->site()->name()+"</a> - "+msg+(reasons.count() > 0 ? "<br/>"+tr("Possible reasons: %1").arg(reasons.join(", ")) : ""));
 	}
 	else
 	{
 		int pageCount = page->pagesCount();
 		int imageCount = page->imagesCount();
-		txt->setText("<a href=\""+page->url().toString().toHtmlEscaped()+"\">"+page->site()->name()+"</a> - "+tr("Page %1 sur %2 (%3 sur %4)").arg(page->page()).arg(pageCount > 0 ? QString::number(pageCount) : "?").arg(imgs.count()).arg(imageCount > 0 ? QString::number(imageCount) : "?"));
+		txt->setText("<a href=\""+page->url().toString().toHtmlEscaped()+"\">"+page->site()->name()+"</a> - "+tr("Page %1 of %2 (%3 of %4)").arg(page->page()).arg(pageCount > 0 ? QString::number(pageCount) : "?").arg(imgs.count()).arg(imageCount > 0 ? QString::number(imageCount) : "?"));
 	}
 	/*if (page->search().join(" ") != m_search->toPlainText() && m_settings->value("showtagwarning", true).toBool())
 	{
@@ -520,14 +520,14 @@ void searchTab::addResultsImage(QSharedPointer<Image> img, bool merge)
 		l->setCheckable(true);
 		l->setChecked(m_selectedImages.contains(img->url()));
 		l->setToolTip(QString("%1%2%3%4%5%6%7%8")
-			.arg(img->tags().isEmpty() ? " " : tr("<b>Tags :</b> %1<br/><br/>").arg(img->stylishedTags(m_profile).join(" ")))
-			.arg(img->id() == 0 ? " " : tr("<b>ID :</b> %1<br/>").arg(img->id()))
-			.arg(img->rating().isEmpty() ? " " : tr("<b>Classe :</b> %1<br/>").arg(img->rating()))
-			.arg(img->hasScore() ? tr("<b>Score :</b> %1<br/>").arg(img->score()) : " ")
-			.arg(img->author().isEmpty() ? " " : tr("<b>Posteur :</b> %1<br/><br/>").arg(img->author()))
-			.arg(img->width() == 0 || img->height() == 0 ? " " : tr("<b>Dimensions :</b> %1 x %2<br/>").arg(QString::number(img->width()), QString::number(img->height())))
-			.arg(img->fileSize() == 0 ? " " : tr("<b>Taille :</b> %1 %2<br/>").arg(QString::number(size), unit))
-			.arg(!img->createdAt().isValid() ? " " : tr("<b>Date :</b> %1").arg(img->createdAt().toString(tr("'le 'dd/MM/yyyy' à 'hh:mm"))))
+			.arg(img->tags().isEmpty() ? " " : tr("<b>Tags:</b> %1<br/><br/>").arg(img->stylishedTags(m_profile).join(" ")))
+			.arg(img->id() == 0 ? " " : tr("<b>ID:</b> %1<br/>").arg(img->id()))
+			.arg(img->rating().isEmpty() ? " " : tr("<b>Rating:</b> %1<br/>").arg(img->rating()))
+			.arg(img->hasScore() ? tr("<b>Score:</b> %1<br/>").arg(img->score()) : " ")
+			.arg(img->author().isEmpty() ? " " : tr("<b>User:</b> %1<br/><br/>").arg(img->author()))
+			.arg(img->width() == 0 || img->height() == 0 ? " " : tr("<b>Size:</b> %1 x %2<br/>").arg(QString::number(img->width()), QString::number(img->height())))
+			.arg(img->fileSize() == 0 ? " " : tr("<b>Filesize:</b> %1 %2<br/>").arg(QString::number(size), unit))
+			.arg(!img->createdAt().isValid() ? " " : tr("<b>Date:</b> %1").arg(img->createdAt().toString(tr("'the 'MM/dd/yyyy' at 'hh:mm"))))
 		);
 		l->scale(img->previewImage(), m_settings->value("thumbnailUpscale", 1.0f).toFloat());
 		l->setFlat(true);
@@ -636,7 +636,7 @@ void searchTab::getSel()
 
 void searchTab::updateCheckboxes()
 {
-	log(tr("Mise à jour des cases à cocher."));
+	log(tr("Updating checkboxes."));
 
 	qDeleteAll(m_checkboxes);
 	m_checkboxes.clear();
@@ -681,7 +681,7 @@ void searchTab::webZoom(int id)
 		QStringList detected = image->blacklisted(blacklistedtags);
 		if (!detected.isEmpty())
 		{
-			int reply = QMessageBox::question(parentWidget(), tr("List noire"), tr("%n tag(s) figurant dans la liste noire détécté(s) sur cette image : %1. Voulez-vous l'afficher tout de même ?", "", detected.size()).arg(detected.join(", ")), QMessageBox::Yes | QMessageBox::No);
+			int reply = QMessageBox::question(parentWidget(), tr("Blacklist"), tr("%n tag figuring in the blacklist detected in this image: %1. Do you want to display it anyway?", "", detected.size()).arg(detected.join(", ")), QMessageBox::Yes | QMessageBox::No);
 			if (reply == QMessageBox::No)
 			{ return; }
 		}
@@ -771,7 +771,7 @@ void searchTab::openSourcesWindow()
 
 void searchTab::saveSources(QList<bool> sel)
 {
-	log(tr("Sauvegarde des sources..."));
+	log(tr("Saving sources..."));
 
 	QString sav;
 	for (bool enabled : sel)
@@ -798,7 +798,7 @@ void searchTab::saveSources(QList<bool> sel)
 
 void searchTab::loadTags(QStringList tags)
 {
-	log(tr("Chargement des résultats..."));
+	log(tr("Loading results..."));
 
 	// Append "additional tags" setting
 	tags.append(m_settings->value("add").toString().trimmed().split(" ", QString::SkipEmptyParts));
@@ -854,7 +854,7 @@ void searchTab::loadTags(QStringList tags)
 		m_layouts.append(l);
 
 		// Load tags if necessary
-		log(tr("Chargement de la page <a href=\"%1\">%1</a>").arg(page->url().toString().toHtmlEscaped()));
+		log(tr("Loading page <a href=\"%1\">%1</a>").arg(page->url().toString().toHtmlEscaped()));
 		m_stop = false;
 		if (m_settings->value("useregexfortags", true).toBool())
 		{

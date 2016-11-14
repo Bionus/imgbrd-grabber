@@ -221,7 +221,7 @@
             <item>
              <widget class="QPushButton" name="buttonTags">
               <property name="text">
-               <string>Ok</string>
+               <string>O&amp;k</string>
               </property>
              </widget>
             </item>
@@ -473,28 +473,28 @@ QWidget#scrollAreaWidgetContents {
          <item>
           <widget class="QPushButton" name="buttonMarkAsViewed">
            <property name="text">
-            <string>Mark as viewed</string>
+            <string>Mark as &amp;viewed</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QPushButton" name="buttonGetSel">
            <property name="text">
-            <string>Get selected</string>
+            <string>Get &amp;selected</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QPushButton" name="buttonGetpage">
            <property name="text">
-            <string>Get this page</string>
+            <string>Get this &amp;page</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QPushButton" name="buttonGetAll">
            <property name="text">
-            <string>Get all</string>
+            <string>Get &amp;all</string>
            </property>
           </widget>
          </item>
@@ -541,7 +541,7 @@ QWidget#scrollAreaWidgetContents {
      <item>
       <widget class="QPushButton" name="buttonSourcesList">
        <property name="text">
-        <string>Sources</string>
+        <string>S&amp;ources</string>
        </property>
       </widget>
      </item>
@@ -565,7 +565,7 @@ QWidget#scrollAreaWidgetContents {
      <item>
       <widget class="QPushButton" name="pushButton_2">
        <property name="text">
-        <string>Mark all as viewed</string>
+        <string>Mark all as vie&amp;wed</string>
        </property>
       </widget>
      </item>
