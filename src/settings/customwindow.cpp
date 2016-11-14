@@ -2,18 +2,18 @@
 #include "ui_customwindow.h"
 
 
-
-customWindow::customWindow(QWidget *parent) : QDialog(parent), ui(new Ui::customWindow)
+CustomWindow::CustomWindow(QWidget *parent)
+	: QDialog(parent), ui(new Ui::CustomWindow)
 {
 	ui->setupUi(this);
 }
 
-customWindow::~customWindow()
+CustomWindow::~CustomWindow()
 {
 	delete ui;
 }
 
-void customWindow::accept()
+void CustomWindow::accept()
 {
 	emit validated(ui->lineName->text(), ui->textTags->toPlainText());
 	close();

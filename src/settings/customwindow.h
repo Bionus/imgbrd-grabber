@@ -1,22 +1,21 @@
-#ifndef CUSTOMWINDOW_H
-#define CUSTOMWINDOW_H
+#ifndef CUSTOM_WINDOW_H
+#define CUSTOM_WINDOW_H
 
 #include <QDialog>
 
 
-
 namespace Ui
 {
-	class customWindow;
+	class CustomWindow;
 }
 
-class customWindow : public QDialog
+class CustomWindow : public QDialog
 {
 	Q_OBJECT
 
 	public:
-		explicit customWindow(QWidget *parent = 0);
-		~customWindow();
+		explicit CustomWindow(QWidget *parent = 0);
+		~CustomWindow();
 
 	public slots:
 		void accept();
@@ -25,7 +24,7 @@ class customWindow : public QDialog
 		void validated(QString, QString);
 
 	private:
-		Ui::customWindow *ui;
+		Ui::CustomWindow *ui;
 };
 
-#endif // CUSTOMWINDOW_H
+#endif // CUSTOM_WINDOW_H

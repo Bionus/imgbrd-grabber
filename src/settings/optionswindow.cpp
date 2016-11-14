@@ -289,7 +289,7 @@ void optionsWindow::on_buttonFavoritesPlus_clicked()
 
 void optionsWindow::on_buttonCustom_clicked()
 {
-	customWindow *cw = new customWindow(this);
+	CustomWindow *cw = new CustomWindow(this);
 	connect(cw, SIGNAL(validated(QString, QString)), this, SLOT(addCustom(QString, QString)));
 	cw->show();
 }
