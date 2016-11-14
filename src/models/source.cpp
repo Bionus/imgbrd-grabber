@@ -25,7 +25,7 @@ Source::Source(Profile *profile, QString dir)
 		QString errorMsg;
 		int errorLine, errorColumn;
 		if (!doc.setContent(fileContents, false, &errorMsg, &errorLine, &errorColumn))
-		{ log(tr("Erreur lors de l'analyse du fichier XML : %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn)), Error); }
+		{ log(tr("Error parsing XML file: %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn)), Error); }
 		else
 		{
 			QDomElement docElem = doc.documentElement();
@@ -47,13 +47,13 @@ Source::Source(Profile *profile, QString dir)
 				}
 			}
 			else
-			{ log(tr("Aucune source valide trouvée dans le fichier model.xml de %1.").arg(m_name)); }
+			{ log(tr("No valid source has been found in the model.xml file from %1.").arg(m_name)); }
 		}
 
 		file.close();
 	}
 	else
-	{ log(tr("Impossible d'ouvrir le fichier de modèle '%1'").arg(m_dir + "/model.xml")); }
+	{ log(tr("Impossible to open the model file '%1'").arg(m_dir + "/model.xml")); }
 
 	// Get the list of all sites pertaining to this source
 	QFile f(m_dir + "/sites.txt");
@@ -70,7 +70,7 @@ Source::Source(Profile *profile, QString dir)
 		}
 	}
 	if (m_sites.isEmpty())
-	{ log(tr("Aucun site pour la source %1").arg(m_name)); }
+	{ log(tr("No site for source %1").arg(m_name)); }
 
 	m_manager = new QNetworkAccessManager(this);
 	connect(m_manager, &QNetworkAccessManager::sslErrors, sslErrorHandler);

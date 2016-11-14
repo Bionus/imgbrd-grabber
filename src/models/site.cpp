@@ -155,7 +155,7 @@ void Site::login(bool force)
 		return;
 	}
 
-	log(tr("Connexion à %1 (%2)...").arg(m_name, m_url));
+	log(tr("Logging into %1 (%2)...").arg(m_name, m_url));
 	initManager();
 
 	// Clear cookies if we want to force a re-login
@@ -241,7 +241,7 @@ void Site::loginFinished()
 		}
 	}
 
-	log(tr("Connexion à %1 (%2) terminée (%3).").arg(m_name, m_url, m_loggedIn ? tr("succès") : tr("échec")));
+	log(tr("Logging into %1 (%2) finished (%3).").arg(m_name, m_url, m_loggedIn ? tr("success") : tr("failure")));
 	emit loggedIn(this, m_loggedIn ? LoginResult::Success : LoginResult::Error);
 }
 
