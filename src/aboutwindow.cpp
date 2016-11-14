@@ -32,21 +32,19 @@ aboutWindow::~aboutWindow()
 
 void aboutWindow::finished(QNetworkReply *r)
 {
-	QString l = r->readAll();
-	QString last = QString(l);
+	QString last = r->readAll();
 
 	QRegExp rx("\"name\":\\s*\"v([^\"]+)\"");
 	QList<int> list;
 	int pos = 0;
-	while ((pos = rx.indexIn(l, pos)) != -1) {
+	while ((pos = rx.indexIn(last, pos)) != -1)
+	{
 		list << version2int(rx.cap(1));
 		pos += rx.matchedLength();
 	}
-
 	qSort(list);
+
 	int latest = list.empty() ? 0 : list.last();
-	if (latest <= m_version)
-	{ ui->labelMessage->setText("<p style=\"font-size:8pt; font-style:italic; color:#808080;\">"+tr("Grabber est à jour")+"</p>"); }
-	else
-	{ ui->labelMessage->setText("<p style=\"font-size:8pt; font-style:italic; color:#808080;\">"+tr("Une nouvelle version est disponible : %1").arg(l)+"</p>"); }
+	QString msg = latest <= m_version ? tr("Grabber is up to date") : tr("A new version is available: %1").arg(l);
+	ui->labelMessage->setText("<p style=\"font-size:8pt; font-style:italic; color:#808080;\">" + msg + "</p>");
 }
