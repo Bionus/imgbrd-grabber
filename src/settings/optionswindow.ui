@@ -272,7 +272,7 @@
         <item row="10" column="0">
          <widget class="QLabel" name="label_49">
           <property name="text">
-           <string>Tags ignorés</string>
+           <string>Ignored tags</string>
           </property>
          </widget>
         </item>
@@ -282,7 +282,7 @@
         <item row="11" column="0" colspan="2">
          <widget class="QLabel" name="label_52">
           <property name="text">
-           <string>&lt;i&gt;Ces tags ne seront pas pris en compte lors de la sauvegarde de l'image.&lt;/i&gt;</string>
+           <string>&lt;i&gt;These tags will not be taken in account when saving image.&lt;/i&gt;</string>
           </property>
           <property name="wordWrap">
            <bool>true</bool>
