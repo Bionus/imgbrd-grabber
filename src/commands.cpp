@@ -49,7 +49,7 @@ bool Commands::start()
 		db.setPassword(m_mysqlSettings.password);
 		if (!db.open())
 		{
-			log(QObject::tr("Erreur lors de l'initialisation des commandes: %1").arg(db.lastError().text()));
+			log(QString("Error initializing commands: %1").arg(db.lastError().text()));
 			return false;
 		}
 	}
@@ -62,7 +62,7 @@ bool Commands::before()
 	{
 		start();
 
-		log(QObject::tr("Execution SQL de \"%1\"").arg(m_mysqlSettings.before));
+		log(QString("SQL execution of \"%1\"").arg(m_mysqlSettings.before));
 		logCommandSql(m_mysqlSettings.before);
 
 		QSqlQuery query;
@@ -85,12 +85,12 @@ bool Commands::image(const Image &img, QString path)
 			exec.replace("%path:nobackslash%", QDir::toNativeSeparators(path).replace("\\", "/"))
 				.replace("%path%", QDir::toNativeSeparators(path));
 
-			log(QObject::tr("Execution de \"%1\"").arg(exec));
+			log(QString("Execution of \"%1\"").arg(exec));
 			logCommand(exec);
 
 			int code = QProcess::execute(exec);
 			if (code != 0)
-				log(QObject::tr("Erreur lors de l'exécution de la commande (code de retour : %1)").arg(code));
+				log(QString("Error executing command (return code: %1)").arg(code));
 		}
 	}
 
@@ -107,7 +107,7 @@ bool Commands::image(const Image &img, QString path)
 			exec.replace("%path:nobackslash%", QDir::toNativeSeparators(path).replace("\\", "/"))
 				.replace("%path%", QDir::toNativeSeparators(path));
 
-			log(QObject::tr("Execution SQL de \"%1\"").arg(exec));
+			log(QString("SQL execution of \"%1\"").arg(exec));
 			logCommandSql(exec);
 
 			QSqlQuery query;
@@ -144,12 +144,12 @@ bool Commands::tag(const Image &img, Tag tag, bool after)
 				.replace("%type%", tag.type())
 				.replace("%number%", QString::number(types[tag.type()]));
 
-			log(QObject::tr("Execution seule de \"%1\"").arg(exec));
+			log(QString("Execution of \"%1\"").arg(exec));
 			logCommand(exec);
 
 			int code = QProcess::execute(exec);
 			if (code != 0)
-				log(QObject::tr("Erreur lors de l'exécution de la commande (code de retour : %1)").arg(code));
+				log(QString("Error executing command (return code: %1)").arg(code));
 		}
 	}
 
@@ -168,7 +168,7 @@ bool Commands::tag(const Image &img, Tag tag, bool after)
 				.replace("%type%", tag.type())
 				.replace("%number%", QString::number(types[tag.type()]));
 
-			log(QObject::tr("Execution SQL de \"%1\"").arg(exec));
+			log(QString("SQL execution of \"%1\"").arg(exec));
 			logCommandSql(exec);
 
 			QSqlQuery query;
@@ -186,7 +186,7 @@ bool Commands::after()
 	{
 		start();
 
-		log(QObject::tr("Execution SQL de \"%1\"").arg(m_mysqlSettings.after));
+		log(QString("SQL execution of \"%1\"").arg(m_mysqlSettings.after));
 		logCommandSql(m_mysqlSettings.after);
 
 		QSqlQuery query;

@@ -34,7 +34,7 @@ extern mainWindow *_mainwindow;
 void error(QWidget *parent, QString error)
 {
 	#ifndef TEST
-		QMessageBox::critical(parent, QObject::tr("Erreur"), error);
+		QMessageBox::critical(parent, QObject::tr("Error"), error);
 	#else
 		Q_UNUSED(parent);
 		Q_UNUSED(error);
@@ -218,7 +218,7 @@ bool setFileCreationDate(QString path, QDateTime datetime)
 		HANDLE hfile = CreateFile(filename, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 		if (hfile == INVALID_HANDLE_VALUE)
 		{
-			log(QObject::tr("Impossible d'ouvrir le fichier (%1)").arg(GetLastError()), Log::Error);
+			log(QString("Unable to open file (%1)").arg(GetLastError()), Log::Error);
 			return false;
 		}
 		else
@@ -230,7 +230,7 @@ bool setFileCreationDate(QString path, QDateTime datetime)
 
 			if (!SetFileTime(hfile, &pcreationtime, NULL, &pcreationtime))
 			{
-				log(QObject::tr("Impossible de changer la date du fichier (%1)").arg(GetLastError()), Log::Error);
+				log(QString("Unable to change the file creation date (%1)").arg(GetLastError()), Log::Error);
 				return false;
 			}
 		}
@@ -241,7 +241,7 @@ bool setFileCreationDate(QString path, QDateTime datetime)
 		const char *filename = path.toStdString().c_str();
 		if ((utime(filename, &timebuffer)) < 0)
 		{
-			// log(QObject::tr("Impossible de changer la date du fichier (%d)").arg(errno), Log::Error);
+			// log(QString("Unable to change the file creation date (%d)").arg(errno), Log::Error);
 			return false;
 		}
 	#endif
@@ -345,7 +345,7 @@ void log(QString l, Log type)
 	g_logFile.flush();
 
 	#ifndef TEST
-		QString msg = (type == Error ? QObject::tr("<b>Erreur :</b> %1").arg(l) : (type == Warning ? QObject::tr("<b>Attention :</b> %1").arg(l) : (type == Notice ? QObject::tr("<b>Notice :</b> %1").arg(l) : l)));
+		QString msg = (type == Error ? QObject::tr("<b>Error:</b> %1").arg(l) : (type == Warning ? QObject::tr("<b>Warning:</b> %1").arg(l) : (type == Notice ? QObject::tr("<b>Notice:</b> %1").arg(l) : l)));
 		_mainwindow->logShow(time, msg);
     #else
         Q_UNUSED(type);

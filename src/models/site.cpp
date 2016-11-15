@@ -155,7 +155,7 @@ void Site::login(bool force)
 		return;
 	}
 
-	log(tr("Logging into %1 (%2)...").arg(m_name, m_url));
+	log(QString("Logging into %1 (%2)...").arg(m_name, m_url));
 	initManager();
 
 	// Clear cookies if we want to force a re-login
@@ -241,7 +241,7 @@ void Site::loginFinished()
 		}
 	}
 
-	log(tr("Logging into %1 (%2) finished (%3).").arg(m_name, m_url, m_loggedIn ? tr("success") : tr("failure")));
+	log(QString("Logging into %1 (%2) finished (%3).").arg(m_name, m_url, m_loggedIn ? tr("success") : tr("failure")));
 	emit loggedIn(this, m_loggedIn ? LoginResult::Success : LoginResult::Error);
 }
 

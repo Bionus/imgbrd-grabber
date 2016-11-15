@@ -312,7 +312,7 @@ void Image::loadPreview()
 {
 	if (m_previewUrl.isEmpty())
 	{
-		log(tr("Thumbnail loading cancelled (empty url)."));
+		log("Thumbnail loading cancelled (empty url).");
 		return;
 	}
 
@@ -355,7 +355,7 @@ void Image::parsePreview()
 	// Loading error
 	if (m_loadPreview->error() != QNetworkReply::NoError)
 	{
-		log(tr("<b>Error:</b> %1").arg(tr("error loading thumbnail (%1)").arg(m_loadPreview->errorString())));
+		log(QString("<b>Error:</b> %1").arg(QString("error loading thumbnail (%1)").arg(m_loadPreview->errorString())));
 	}
 
 	// Load preview from raw result
@@ -367,7 +367,7 @@ void Image::parsePreview()
 	// If nothing has been received
 	if (m_imagePreview.isNull() && m_previewTry <= 3)
 	{
-		log(tr("<b>Warning:</b> %1").arg(tr("one of the thumbnails is empty (<a href=\"%1\">%1</a>). New try (%2/%3)...").arg(m_previewUrl.toString()).arg(m_previewTry).arg(3)));
+		log(QString("<b>Warning:</b> %1").arg(QString("one of the thumbnails is empty (<a href=\"%1\">%1</a>). New try (%2/%3)...").arg(m_previewUrl.toString()).arg(m_previewTry).arg(3)));
 
 		if (hasTag("flash"))
 		{ m_imagePreview.load(":/images/flash.png"); }
@@ -695,13 +695,13 @@ void Image::finishedImageS()
 			{
 				setUrl(m_sampleUrl.toString());
 				m_tryingSample = true;
-				log(tr("Image not found. New try with its sample..."));
+				log("Image not found. New try with its sample...");
 			}
 			else
 			{
 				QString oldUrl = m_url;
 				m_url = setExtension(m_url, newext);
-				log(tr("Image not found. New try with extension %1...").arg(oldUrl, newext));
+				log(QString("Image not found. New try with extension %1...").arg(oldUrl, newext));
 			}
 
 			loadImage();
@@ -709,7 +709,7 @@ void Image::finishedImageS()
 		}
 		else
 		{
-			log(tr("Image not found."));
+			log("Image not found.");
 		}
 	}
 	else
@@ -808,7 +808,7 @@ Image::SaveResult Image::save(QString path, bool force, bool basic)
 		QString md5Duplicate = m_profile->md5Exists(md5());
 		if (md5Duplicate.isEmpty() || whatToDo == "save" || force)
 		{
-			log(tr("Saving image in <a href=\"file:///%1\">%1</a>").arg(path));
+			log(QString("Saving image in <a href=\"file:///%1\">%1</a>").arg(path));
 			if (!m_source.isEmpty() && QFile::exists(m_source))
 			{ QFile::copy(m_source, path); }
 			else
@@ -821,7 +821,7 @@ Image::SaveResult Image::save(QString path, bool force, bool basic)
 					f.close();
 				}
 				else
-				{ log(tr("Unable to open file")); }
+				{ log("Unable to open file"); }
 			}
 
 			if (m_settings->value("Textfile/activate", false).toBool() && !basic)
@@ -855,14 +855,14 @@ Image::SaveResult Image::save(QString path, bool force, bool basic)
 		}
 		else if (whatToDo == "copy")
 		{
-			log(tr("Copy from <a href=\"file:///%1\">%1</a> to <a href=\"file:///%2\">%2</a>").arg(md5Duplicate).arg(path));
+			log(QString("Copy from <a href=\"file:///%1\">%1</a> to <a href=\"file:///%2\">%2</a>").arg(md5Duplicate).arg(path));
 			QFile::copy(md5Duplicate, path);
 
 			res = SaveResult::Copied;
 		}
 		else if (whatToDo == "move")
 		{
-			log(tr("Moving from <a href=\"file:///%1\">%1</a> to <a href=\"file:///%2\">%2</a>").arg(md5Duplicate).arg(path));
+			log(QString("Moving from <a href=\"file:///%1\">%1</a> to <a href=\"file:///%2\">%2</a>").arg(md5Duplicate).arg(path));
 			QFile::rename(md5Duplicate, path);
 			m_profile->setMd5(md5(), path);
 
