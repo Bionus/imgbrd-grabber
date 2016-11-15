@@ -53,7 +53,7 @@ void searchTab::setSelectedSources(QSettings *settings)
 
 void searchTab::optionsChanged()
 {
-	log(tr("Updating settings for tab \"%1\".").arg(windowTitle()));
+	log(QString("Updating settings for tab \"%1\".").arg(windowTitle()));
 	// ui->retranslateUi(this);
 
 	ui_spinImagesPerPage->setValue(m_settings->value("limit", 20).toInt());
@@ -249,7 +249,7 @@ void searchTab::finishedLoading(Page* page)
 	if (m_stop)
 		return;
 
-	log(tr("Receiving page <a href=\"%1\">%1</a>").arg(page->url().toString().toHtmlEscaped()));
+	log(QString("Receiving page <a href=\"%1\">%1</a>").arg(page->url().toString().toHtmlEscaped()));
 
 	m_lastPage = page->page();
 	m_lastPageMinId = page->minId();
@@ -339,7 +339,7 @@ void searchTab::loadImageThumbnails(Page *page, const QList<QSharedPointer<Image
 		if (!m_settings->value("blacklistedtags").toString().isEmpty())
 		{ detected = img->blacklisted(m_settings->value("blacklistedtags").toString().toLower().split(" ")); }
 		if (!detected.isEmpty() && m_settings->value("hideblacklisted", false).toBool())
-		{ log(tr("Image #%1 ignored. Reason: %2.").arg(i).arg("\""+detected.join(", ")+"\""));; }
+		{ log(QString("Image #%1 ignored. Reason: %2.").arg(i).arg("\""+detected.join(", ")+"\""));; }
 		else
 		{
 			connect(img.data(), &Image::finishedLoadingPreview, this, &searchTab::finishedLoadingPreview);
@@ -362,7 +362,7 @@ void searchTab::finishedLoadingPreview()
 
 	if (img->previewImage().isNull())
 	{
-		log(tr("<b>Warning:</b> %1").arg(tr("one of the thumbnails is empty (<a href=\"%1\">%1</a>).").arg(img->previewUrl().toString())));
+		log(QString("<b>Warning:</b> %1").arg(tr("one of the thumbnails is empty (<a href=\"%1\">%1</a>).").arg(img->previewUrl().toString())));
 		return;
 	}
 
@@ -636,7 +636,7 @@ void searchTab::getSel()
 
 void searchTab::updateCheckboxes()
 {
-	log(tr("Updating checkboxes."));
+	log(QString("Updating checkboxes."));
 
 	qDeleteAll(m_checkboxes);
 	m_checkboxes.clear();
@@ -771,7 +771,7 @@ void searchTab::openSourcesWindow()
 
 void searchTab::saveSources(QList<bool> sel)
 {
-	log(tr("Saving sources..."));
+	log("Saving sources...");
 
 	QString sav;
 	for (bool enabled : sel)
@@ -798,7 +798,7 @@ void searchTab::saveSources(QList<bool> sel)
 
 void searchTab::loadTags(QStringList tags)
 {
-	log(tr("Loading results..."));
+	log("Loading results...");
 
 	// Append "additional tags" setting
 	tags.append(m_settings->value("add").toString().trimmed().split(" ", QString::SkipEmptyParts));
@@ -854,7 +854,7 @@ void searchTab::loadTags(QStringList tags)
 		m_layouts.append(l);
 
 		// Load tags if necessary
-		log(tr("Loading page <a href=\"%1\">%1</a>").arg(page->url().toString().toHtmlEscaped()));
+		log(QString("Loading page <a href=\"%1\">%1</a>").arg(page->url().toString().toHtmlEscaped()));
 		m_stop = false;
 		if (m_settings->value("useregexfortags", true).toBool())
 		{

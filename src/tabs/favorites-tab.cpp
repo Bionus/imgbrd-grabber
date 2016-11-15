@@ -273,7 +273,7 @@ void favoritesTab::viewed()
 }
 void favoritesTab::setFavoriteViewed(QString tag)
 {
-	log(tr("Marking \"%1\" as viewed...").arg(tag));
+	log(QString("Marking \"%1\" as viewed...").arg(tag));
 
 	int index = tag.isEmpty() ? m_currentFav : m_favorites.indexOf(tag);
 	if (index < 0)
