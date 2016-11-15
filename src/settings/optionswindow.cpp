@@ -263,13 +263,13 @@ void optionsWindow::on_comboSourcesLetters_currentIndexChanged(int i)
 
 void optionsWindow::on_buttonFolder_clicked()
 {
-	QString folder = QFileDialog::getExistingDirectory(this, tr("Choisir un dossier de sauvegarde"), ui->lineFolder->text());
+	QString folder = QFileDialog::getExistingDirectory(this, tr("Choose a save folder"), ui->lineFolder->text());
 	if (!folder.isEmpty())
 	{ ui->lineFolder->setText(folder); }
 }
 void optionsWindow::on_buttonFolderFavorites_clicked()
 {
-	QString folder = QFileDialog::getExistingDirectory(this, tr("Choisir un dossier de sauvegarde pour les favoris"), ui->lineFolderFavorites->text());
+	QString folder = QFileDialog::getExistingDirectory(this, tr("Choose a save folder for favorites"), ui->lineFolderFavorites->text());
 	if (!folder.isEmpty())
 	{ ui->lineFolderFavorites->setText(folder); }
 }
@@ -329,7 +329,7 @@ void optionsWindow::setColor(QLineEdit *lineEdit, bool button)
 {
 	QString text = lineEdit->text();
 	QColor color = button
-		? QColorDialog::getColor(QColor(text), this, tr("Choisir une couleur"))
+		? QColorDialog::getColor(QColor(text), this, tr("Choose a color"))
 		: QColor(text);
 
 	if (color.isValid())
@@ -344,7 +344,7 @@ void optionsWindow::setColor(QLineEdit *lineEdit, bool button)
 void optionsWindow::setFont(QLineEdit *lineEdit)
 {
 	bool ok = false;
-	QFont police = QFontDialog::getFont(&ok, lineEdit->font(), this, tr("Choisir une police"));
+	QFont police = QFontDialog::getFont(&ok, lineEdit->font(), this, tr("Choose a font"));
 
 	if (ok)
 		lineEdit->setFont(police);
@@ -550,7 +550,7 @@ void optionsWindow::save()
 				pth.setPath(pth.path().remove(QRegExp("/([^/]+)$")));
 			}
 			if (pth.path() == op)
-			{ error(this, tr("Une erreur est survenue lors de la création du dossier de sauvegarde.")); }
+			{ error(this, tr("An error occured creating the save folder.")); }
 			else
 			{ pth.mkpath(folder); }
 		}
@@ -566,7 +566,7 @@ void optionsWindow::save()
 				pth.setPath(pth.path().remove(QRegExp("/([^/]+)$")));
 			}
 			if (pth.path() == op)
-			{ error(this, tr("Une erreur est survenue lors de la création du dossier de sauvegarde des favoris.")); }
+			{ error(this, tr("An error occured creating the favorites save folder.")); }
 			else
 			{ pth.mkpath(folder); }
 		}
