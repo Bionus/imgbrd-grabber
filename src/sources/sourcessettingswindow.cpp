@@ -109,14 +109,14 @@ void SourcesSettingsWindow::addHeader()
 
 void SourcesSettingsWindow::on_buttonAuthHash_clicked()
 {
-	QString password = QInputDialog::getText(this, tr("Hasher un mot de passe"), tr("Veuillez entrer votre mot de passe ci-dessous.<br/>Il sera ensuite hashé en utilisant le format \"%1\".").arg(m_site->value("PasswordSalt")));
+	QString password = QInputDialog::getText(this, tr("Hash a password"), tr("Please enter your password below.<br/>It will then be hashed using the format \"%1\".").arg(m_site->value("PasswordSalt")));
 	if (!password.isEmpty())
 	{ ui->lineAuthPassword->setText(QCryptographicHash::hash(m_site->value("PasswordSalt").replace("%password%", password).toUtf8(), QCryptographicHash::Sha1).toHex()); }
 }
 
 void SourcesSettingsWindow::deleteSite()
 {
-	int reponse = QMessageBox::question(this, tr("Grabber - Supprimer un site"), tr("Êtes-vous sûr de vouloir supprimer le site %1 ?").arg(m_site->name()), QMessageBox::Yes | QMessageBox::No);
+	int reponse = QMessageBox::question(this, tr("Delete a site"), tr("Are you sure you want to delete the site %1?").arg(m_site->name()), QMessageBox::Yes | QMessageBox::No);
 	if (reponse == QMessageBox::Yes)
 	{
 		QFile f(savePath("sites/"+m_site->type()+"/sites.txt"));
@@ -150,18 +150,18 @@ void SourcesSettingsWindow::loginTested(Site*, Site::LoginResult result)
 	switch (result)
 	{
 		case Site::LoginResult::Success:
-			ui->labelTestCredentials->setText("<i>" + tr("Succès !") + "</i>");
-			ui->labelTestLogin->setText("<i>" + tr("Succès !") + "</i>");
+			ui->labelTestCredentials->setText("<i>" + tr("Success!") + "</i>");
+			ui->labelTestLogin->setText("<i>" + tr("Success!") + "</i>");
 			break;
 
 		case Site::LoginResult::Error:
-			ui->labelTestCredentials->setText("<i>" + tr("Échec") + "</i>");
-			ui->labelTestLogin->setText("<i>" + tr("Échec") + "</i>");
+			ui->labelTestCredentials->setText("<i>" + tr("Failure") + "</i>");
+			ui->labelTestLogin->setText("<i>" + tr("Failure") + "</i>");
 			break;
 
 		default:
-			ui->labelTestCredentials->setText("<i>" + tr("Impossible de tester") + "</i>");
-			ui->labelTestLogin->setText("<i>" + tr("Impossible de tester") + "</i>");
+			ui->labelTestCredentials->setText("<i>" + tr("Unable to test") + "</i>");
+			ui->labelTestLogin->setText("<i>" + tr("Unable to test") + "</i>");
 			break;
 	}
 }
