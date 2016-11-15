@@ -65,7 +65,7 @@ bool DumpCallback(const char* _dump_dir,const char* _minidump_id,void *context, 
 		mid = QString::fromWCharArray(_minidump_id);
 	#endif
 
-	log("Minidump saved in folder \"%1\" with ID \"%2\" (%3)").arg(dir, mid, success ? "success" : "failure"));
+	log(QString("Minidump saved in folder \"%1\" with ID \"%2\" (%3)").arg(dir, mid, success ? "success" : "failure"));
 	if (success)
 	{
 		QFile f(savePath("lastdump"));

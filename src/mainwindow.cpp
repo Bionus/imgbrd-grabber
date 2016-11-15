@@ -1034,7 +1034,7 @@ void mainWindow::getAll(bool all)
 	}
 	if (m_settings->value("Save/path").toString().isEmpty())
 	{
-		error(this, tr("You did not specified a save folder!"));
+		error(this, tr("You did not specify a save folder!"));
 		return;
 	}
 	else if (m_settings->value("Save/filename").toString().isEmpty())
