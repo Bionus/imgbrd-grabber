@@ -32,7 +32,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="tagLabel">
        <property name="whatsThis">
-        <string>Le tag correspond au favori. Il n'est pas souvent utile de le modifier.</string>
+        <string>Tag corresponding to the favorite. It is not often useful to change it.</string>
        </property>
        <property name="text">
         <string>Tag</string>

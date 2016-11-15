@@ -17,10 +17,10 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Téléchargement groupé</string>
+   <string>Batch download</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../../CrashReporter/resources.qrc">
+   <iconset resource="../../resources.qrc">
     <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
   </property>
   <property name="modal">
@@ -50,7 +50,7 @@
    <item row="1" column="2">
     <widget class="QPushButton" name="buttonDetails">
      <property name="text">
-      <string>Détails</string>
+      <string>Details</string>
      </property>
      <property name="checkable">
       <bool>true</bool>
@@ -83,14 +83,14 @@
      <item>
       <widget class="QPushButton" name="buttonSkip">
        <property name="text">
-        <string>Passer</string>
+        <string>Skip</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="cancelButton">
        <property name="text">
-        <string>Annuler</string>
+        <string>Cancel</string>
        </property>
       </widget>
      </item>
@@ -160,17 +160,17 @@
         </column>
         <column>
          <property name="text">
-          <string>Taille</string>
+          <string>Filesize</string>
          </property>
         </column>
         <column>
          <property name="text">
-          <string>Vitesse</string>
+          <string>Speed</string>
          </property>
         </column>
         <column>
          <property name="text">
-          <string>Progression</string>
+          <string>Progress</string>
          </property>
         </column>
        </widget>
@@ -180,14 +180,14 @@
         <item>
          <widget class="QCheckBox" name="checkScrollToDownload">
           <property name="text">
-           <string>Suivre le téléchargement des images</string>
+           <string>Follow downloaded images</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QPushButton" name="buttonCopyToClipboard">
           <property name="text">
-           <string>Copier les liens dans le presse-papier</string>
+           <string>Copy links to clipboard</string>
           </property>
          </widget>
         </item>
@@ -198,7 +198,7 @@
         <item>
          <widget class="QLabel" name="label">
           <property name="text">
-           <string>À la fin du téléchargement</string>
+           <string>When the download is finished</string>
           </property>
          </widget>
         </item>
@@ -206,27 +206,27 @@
          <widget class="QComboBox" name="comboEnd">
           <item>
            <property name="text">
-            <string>Ne rien faire</string>
+            <string>Do nothing</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>Fermer la fenêtre</string>
+            <string>Close window</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>Ouvrir le lecteur CD</string>
+            <string>Open CD tray</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>Jouer un son</string>
+            <string>Play a sound</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>Éteindre</string>
+            <string>Shutdown</string>
            </property>
           </item>
          </widget>
@@ -234,7 +234,7 @@
         <item>
          <widget class="QCheckBox" name="checkRemove">
           <property name="text">
-           <string>Retirer</string>
+           <string>Remove</string>
           </property>
          </widget>
         </item>
@@ -254,7 +254,9 @@
   <tabstop>cancelButton</tabstop>
  </tabstops>
  <resources>
-  <include location="../../CrashReporter/resources.qrc"/>
+  <include location="../../resources.qrc"/>
+  <include location="../../resources.qrc"/>
+  <include location="../../resources.qrc"/>
  </resources>
  <connections>
   <connection>
