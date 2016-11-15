@@ -190,6 +190,10 @@
       <source>Ce dossier n'existe pas.</source>
       <translation type="unfinished">Ce dossier n'existe pas.</translation>
     </message>
+    <message>
+      <source>Si vous voulez récupérer le MD5 depuis le nom de fichier, vous devez include le token %md5% dans celui-ci.</source>
+      <translation type="unfinished">Si vous voulez récupérer le MD5 depuis le nom de fichier, vous devez include le token %md5% dans celui-ci.</translation>
+    </message>
     <message numerus="yes">
       <source>Vous vous apprêtez à télécharger les informations de %n image(s). Êtes-vous sûr de vouloir continuer ?</source>
       <translation type="unfinished">
@@ -485,6 +489,14 @@
       <translation type="unfinished">Variables disponibles : &lt;i&gt;artist&lt;/i&gt;, &lt;i&gt;general&lt;/i&gt;, &lt;i&gt;copyright&lt;/i&gt;, &lt;i&gt;character&lt;/i&gt;, &lt;i&gt;all&lt;/i&gt;, &lt;i&gt;filename&lt;/i&gt;, &lt;i&gt;ext&lt;/i&gt;, &lt;i&gt;rating&lt;/i&gt;, &lt;i&gt;website&lt;/i&gt;, &lt;i&gt;md5&lt;/i&gt;.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;artist&lt;/i&gt; : tags de nom d'artiste&lt;br/&gt;&lt;i&gt;general&lt;/i&gt; : tags d'image génériques&lt;br/&gt;&lt;i&gt;copyright&lt;/i&gt; : tags de copyright, en général le nom de l'anime/manga&lt;br/&gt;&lt;i&gt;character&lt;/i&gt; : tags indiquant quels personnages sont présents sur l'image&lt;br/&gt;&lt;i&gt;all&lt;/i&gt; : tous les tags&lt;br/&gt;&lt;i&gt;filename&lt;/i&gt; : nom du fichier sur le serveur, en général une chaîne alphanumérique&lt;br/&gt;&lt;i&gt;ext&lt;/i&gt; : extension de l'image&lt;br/&gt;&lt;i&gt;rating&lt;/i&gt; : Questionable, Safe ou Explicit&lt;br/&gt;&lt;i&gt;score&lt;/i&gt; : le score de l'image&lt;br/&gt;&lt;i&gt;website&lt;/i&gt; : url du site de l'image&lt;br/&gt;&lt;i&gt;websitename&lt;/i&gt; : nom du site de l'image&lt;br/&gt;&lt;i&gt;md5&lt;/i&gt; : code unique de l'image, composé de 32 caractères alphanumériques&lt;br/&gt;&lt;i&gt;id&lt;/i&gt; : identifiant de l'image sur un site donné&lt;br/&gt;&lt;i&gt;search&lt;/i&gt; : tags de la recherche&lt;br/&gt;&lt;i&gt;search_n&lt;/i&gt; : n-ième tag de la recherche&lt;br/&gt;&lt;i&gt;date&lt;/i&gt; : date d'ajout de l'image au format dd-MM-yyyy HH.mm&lt;br/&gt;&lt;br/&gt;Pour plus d'informations sur le nommage Javascript, cliquez &lt;a href="http://code.google.com/p/imgbrd-grabber/wiki/Filename#Javascript"&gt;ici&lt;/a&gt;.</translation>
     </message>
     <message>
+      <source>Symboles disponibles : &lt;i&gt;%artist%&lt;/i&gt;, &lt;i&gt;%general%&lt;/i&gt;, &lt;i&gt;%copyright%&lt;/i&gt;, &lt;i&gt;%character%&lt;/i&gt;, &lt;i&gt;%all%&lt;/i&gt;, &lt;i&gt;%filename%&lt;/i&gt;, &lt;i&gt;%ext%&lt;/i&gt;, &lt;i&gt;%rating%&lt;/i&gt;, &lt;i&gt;%website%&lt;/i&gt;, &lt;i&gt;%md5%&lt;/i&gt;.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist%&lt;/i&gt; : tags de nom d'artiste&lt;br/&gt;&lt;i&gt;%general%&lt;/i&gt; : tags d'image génériques&lt;br/&gt;&lt;i&gt;%copyright%&lt;/i&gt; : tags de copyright, en général le nom de l'anime/manga&lt;br/&gt;&lt;i&gt;%character%&lt;/i&gt; : tags indiquant quels personnages sont présents sur l'image&lt;br/&gt;&lt;i&gt;%all%&lt;/i&gt; : tous les tags&lt;br/&gt;&lt;i&gt;%filename%&lt;/i&gt; : nom du fichier sur le serveur, en général une chaîne alphanumérique&lt;br/&gt;&lt;i&gt;%ext%&lt;/i&gt; : extension de l'image&lt;br/&gt;&lt;i&gt;%rating%&lt;/i&gt; : Questionable, Safe ou Explicit&lt;br/&gt;&lt;i&gt;%score%&lt;/i&gt; : le score de l'image&lt;br/&gt;&lt;i&gt;%website%&lt;/i&gt; : url du site de l'image&lt;br/&gt;&lt;i&gt;%websitename%&lt;/i&gt; : nom du site de l'image&lt;br/&gt;&lt;i&gt;%md5%&lt;/i&gt; : code unique de l'image, composé de 32 caractères alphanumériques&lt;br/&gt;&lt;i&gt;%id%&lt;/i&gt; : identifiant de l'image sur un site donné&lt;br/&gt;&lt;i&gt;%search%&lt;/i&gt; : tags de la recherche&lt;br/&gt;&lt;i&gt;%search_n%&lt;/i&gt; : n-ième tag de la recherche&lt;br/&gt;&lt;i&gt;%date%&lt;/i&gt; : date d'ajout de l'image au format dd-MM-yyyy HH.mm&lt;br/&gt;&lt;i&gt;%date:format%&lt;/i&gt; : date d'ajout de l'image au format donné&lt;br/&gt;&lt;br/&gt;Vous pouvez aussi utiliser les structures conditionnelles. Pour plus d'informations, cliquez &lt;a href="%s"&gt;ici&lt;/a&gt;.</source>
+      <translation type="unfinished">Symboles disponibles : &lt;i&gt;%artist%&lt;/i&gt;, &lt;i&gt;%general%&lt;/i&gt;, &lt;i&gt;%copyright%&lt;/i&gt;, &lt;i&gt;%character%&lt;/i&gt;, &lt;i&gt;%all%&lt;/i&gt;, &lt;i&gt;%filename%&lt;/i&gt;, &lt;i&gt;%ext%&lt;/i&gt;, &lt;i&gt;%rating%&lt;/i&gt;, &lt;i&gt;%website%&lt;/i&gt;, &lt;i&gt;%md5%&lt;/i&gt;.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;%artist%&lt;/i&gt; : tags de nom d'artiste&lt;br/&gt;&lt;i&gt;%general%&lt;/i&gt; : tags d'image génériques&lt;br/&gt;&lt;i&gt;%copyright%&lt;/i&gt; : tags de copyright, en général le nom de l'anime/manga&lt;br/&gt;&lt;i&gt;%character%&lt;/i&gt; : tags indiquant quels personnages sont présents sur l'image&lt;br/&gt;&lt;i&gt;%all%&lt;/i&gt; : tous les tags&lt;br/&gt;&lt;i&gt;%filename%&lt;/i&gt; : nom du fichier sur le serveur, en général une chaîne alphanumérique&lt;br/&gt;&lt;i&gt;%ext%&lt;/i&gt; : extension de l'image&lt;br/&gt;&lt;i&gt;%rating%&lt;/i&gt; : Questionable, Safe ou Explicit&lt;br/&gt;&lt;i&gt;%score%&lt;/i&gt; : le score de l'image&lt;br/&gt;&lt;i&gt;%website%&lt;/i&gt; : url du site de l'image&lt;br/&gt;&lt;i&gt;%websitename%&lt;/i&gt; : nom du site de l'image&lt;br/&gt;&lt;i&gt;%md5%&lt;/i&gt; : code unique de l'image, composé de 32 caractères alphanumériques&lt;br/&gt;&lt;i&gt;%id%&lt;/i&gt; : identifiant de l'image sur un site donné&lt;br/&gt;&lt;i&gt;%search%&lt;/i&gt; : tags de la recherche&lt;br/&gt;&lt;i&gt;%search_n%&lt;/i&gt; : n-ième tag de la recherche&lt;br/&gt;&lt;i&gt;%date%&lt;/i&gt; : date d'ajout de l'image au format dd-MM-yyyy HH.mm&lt;br/&gt;&lt;i&gt;%date:format%&lt;/i&gt; : date d'ajout de l'image au format donné&lt;br/&gt;&lt;br/&gt;Vous pouvez aussi utiliser les structures conditionnelles. Pour plus d'informations, cliquez &lt;a href="%s"&gt;ici&lt;/a&gt;.</translation>
+    </message>
+    <message>
+      <source>Variables disponibles : &lt;i&gt;artist&lt;/i&gt;, &lt;i&gt;general&lt;/i&gt;, &lt;i&gt;copyright&lt;/i&gt;, &lt;i&gt;character&lt;/i&gt;, &lt;i&gt;all&lt;/i&gt;, &lt;i&gt;filename&lt;/i&gt;, &lt;i&gt;ext&lt;/i&gt;, &lt;i&gt;rating&lt;/i&gt;, &lt;i&gt;website&lt;/i&gt;, &lt;i&gt;md5&lt;/i&gt;.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;artist&lt;/i&gt; : tags de nom d'artiste&lt;br/&gt;&lt;i&gt;general&lt;/i&gt; : tags d'image génériques&lt;br/&gt;&lt;i&gt;copyright&lt;/i&gt; : tags de copyright, en général le nom de l'anime/manga&lt;br/&gt;&lt;i&gt;character&lt;/i&gt; : tags indiquant quels personnages sont présents sur l'image&lt;br/&gt;&lt;i&gt;all&lt;/i&gt; : tous les tags&lt;br/&gt;&lt;i&gt;filename&lt;/i&gt; : nom du fichier sur le serveur, en général une chaîne alphanumérique&lt;br/&gt;&lt;i&gt;ext&lt;/i&gt; : extension de l'image&lt;br/&gt;&lt;i&gt;rating&lt;/i&gt; : Questionable, Safe ou Explicit&lt;br/&gt;&lt;i&gt;score&lt;/i&gt; : le score de l'image&lt;br/&gt;&lt;i&gt;website&lt;/i&gt; : url du site de l'image&lt;br/&gt;&lt;i&gt;websitename&lt;/i&gt; : nom du site de l'image&lt;br/&gt;&lt;i&gt;md5&lt;/i&gt; : code unique de l'image, composé de 32 caractères alphanumériques&lt;br/&gt;&lt;i&gt;id&lt;/i&gt; : identifiant de l'image sur un site donné&lt;br/&gt;&lt;i&gt;search&lt;/i&gt; : tags de la recherche&lt;br/&gt;&lt;i&gt;search_n&lt;/i&gt; : n-ième tag de la recherche&lt;br/&gt;&lt;i&gt;date&lt;/i&gt; : date d'ajout de l'image au format dd-MM-yyyy HH.mm&lt;br/&gt;&lt;br/&gt;Pour plus d'informations sur le nommage Javascript, cliquez &lt;a href="%s"&gt;ici&lt;/a&gt;.</source>
+      <translation type="unfinished">Variables disponibles : &lt;i&gt;artist&lt;/i&gt;, &lt;i&gt;general&lt;/i&gt;, &lt;i&gt;copyright&lt;/i&gt;, &lt;i&gt;character&lt;/i&gt;, &lt;i&gt;all&lt;/i&gt;, &lt;i&gt;filename&lt;/i&gt;, &lt;i&gt;ext&lt;/i&gt;, &lt;i&gt;rating&lt;/i&gt;, &lt;i&gt;website&lt;/i&gt;, &lt;i&gt;md5&lt;/i&gt;.&lt;br/&gt;&lt;br/&gt;&lt;i&gt;artist&lt;/i&gt; : tags de nom d'artiste&lt;br/&gt;&lt;i&gt;general&lt;/i&gt; : tags d'image génériques&lt;br/&gt;&lt;i&gt;copyright&lt;/i&gt; : tags de copyright, en général le nom de l'anime/manga&lt;br/&gt;&lt;i&gt;character&lt;/i&gt; : tags indiquant quels personnages sont présents sur l'image&lt;br/&gt;&lt;i&gt;all&lt;/i&gt; : tous les tags&lt;br/&gt;&lt;i&gt;filename&lt;/i&gt; : nom du fichier sur le serveur, en général une chaîne alphanumérique&lt;br/&gt;&lt;i&gt;ext&lt;/i&gt; : extension de l'image&lt;br/&gt;&lt;i&gt;rating&lt;/i&gt; : Questionable, Safe ou Explicit&lt;br/&gt;&lt;i&gt;score&lt;/i&gt; : le score de l'image&lt;br/&gt;&lt;i&gt;website&lt;/i&gt; : url du site de l'image&lt;br/&gt;&lt;i&gt;websitename&lt;/i&gt; : nom du site de l'image&lt;br/&gt;&lt;i&gt;md5&lt;/i&gt; : code unique de l'image, composé de 32 caractères alphanumériques&lt;br/&gt;&lt;i&gt;id&lt;/i&gt; : identifiant de l'image sur un site donné&lt;br/&gt;&lt;i&gt;search&lt;/i&gt; : tags de la recherche&lt;br/&gt;&lt;i&gt;search_n&lt;/i&gt; : n-ième tag de la recherche&lt;br/&gt;&lt;i&gt;date&lt;/i&gt; : date d'ajout de l'image au format dd-MM-yyyy HH.mm&lt;br/&gt;&lt;br/&gt;Pour plus d'informations sur le nommage Javascript, cliquez &lt;a href="%s"&gt;ici&lt;/a&gt;.</translation>
+    </message>
+    <message>
       <location filename="../src/settings/filenamewindow.cpp" line="142"/>
       <source>Attention</source>
       <translation type="unfinished">Attention</translation>
@@ -601,6 +613,14 @@
     <message>
       <source>Aucune source du site n'est compatible avec les pools.</source>
       <translation type="unfinished">Aucune source du site n'est compatible avec les pools.</translation>
+    </message>
+    <message>
+      <source>Image #%1 ignorée. Raison : %2.</source>
+      <translation type="unfinished">Image #%1 ignorée. Raison : %2.</translation>
+    </message>
+    <message>
+      <source>Limitation atteinte (429). Nouvel essai.</source>
+      <translation type="unfinished">Limitation atteinte (429). Nouvel essai.</translation>
     </message>
     <message>
       <source>Erreur lors de l'analyse du fichier XML : %1 (%2 - %3).</source>
@@ -1196,6 +1216,10 @@
       <location filename="../src/models/site.cpp" line="204"/>
       <source>échec</source>
       <translation type="unfinished">échec</translation>
+    </message>
+    <message>
+      <source>Erreur lors de l'analyse du fichier XML : %1 (%2 - %3).</source>
+      <translation type="unfinished">Erreur lors de l'analyse du fichier XML : %1 (%2 - %3).</translation>
     </message>
     <message>
       <source>Fichier sites.txt du modèle %1 introuvable.</source>
@@ -2908,6 +2932,36 @@ p, li { white-space: pre-wrap; }
       <translation type="unfinished">Vous n'avez pas précisé de dossier de sauvegarde !</translation>
     </message>
     <message>
+      <location filename="../src/mainwindow.cpp" line="2354"/>
+      <source>Retirer des favoris</source>
+      <translation type="unfinished">Retirer des favoris</translation>
+    </message>
+    <message>
+      <location filename="../src/mainwindow.cpp" line="2356"/>
+      <source>Ajouter aux favoris</source>
+      <translation type="unfinished">Ajouter aux favoris</translation>
+    </message>
+    <message>
+      <location filename="../src/mainwindow.cpp" line="2360"/>
+      <source>Ne pas garder pour plus tard</source>
+      <translation type="unfinished">Ne pas garder pour plus tard</translation>
+    </message>
+    <message>
+      <location filename="../src/mainwindow.cpp" line="2362"/>
+      <source>Garder pour plus tard</source>
+      <translation type="unfinished">Garder pour plus tard</translation>
+    </message>
+    <message>
+      <location filename="../src/mainwindow.cpp" line="2365"/>
+      <source>Ouvrir dans un nouvel onglet</source>
+      <translation type="unfinished">Ouvrir dans un nouvel onglet</translation>
+    </message>
+    <message>
+      <location filename="../src/mainwindow.cpp" line="2366"/>
+      <source>Ouvrir dans une nouvelle fenêtre</source>
+      <translation type="unfinished">Ouvrir dans une nouvelle fenêtre</translation>
+    </message>
+    <message>
       <source>site "%1" not found.</source>
       <translation type="unfinished">site "%1" not found.</translation>
     </message>
@@ -3138,6 +3192,14 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
       <translation type="unfinished">Erreur</translation>
     </message>
     <message>
+      <source>Une erreur est survenue lors de l'enregistrement de l'image.
+%1
+Veuillez résoudre le problème avant de reprendre le téléchargement.</source>
+      <translation type="unfinished">Une erreur est survenue lors de l'enregistrement de l'image.
+%1
+Veuillez résoudre le problème avant de reprendre le téléchargement.</translation>
+    </message>
+    <message>
       <location filename="../src/mainwindow.cpp" line="1894"/>
       <source>Saut des téléchargements...</source>
       <translation type="unfinished">Saut des téléchargements...</translation>
@@ -3226,36 +3288,6 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
         <numerusform>%n téléchargement(s) en cours</numerusform>
         <numerusform>%n téléchargement(s) en cours</numerusform>
       </translation>
-    </message>
-    <message>
-      <location filename="../src/mainwindow.cpp" line="2354"/>
-      <source>Retirer des favoris</source>
-      <translation type="unfinished">Retirer des favoris</translation>
-    </message>
-    <message>
-      <location filename="../src/mainwindow.cpp" line="2356"/>
-      <source>Ajouter aux favoris</source>
-      <translation type="unfinished">Ajouter aux favoris</translation>
-    </message>
-    <message>
-      <location filename="../src/mainwindow.cpp" line="2360"/>
-      <source>Ne pas garder pour plus tard</source>
-      <translation type="unfinished">Ne pas garder pour plus tard</translation>
-    </message>
-    <message>
-      <location filename="../src/mainwindow.cpp" line="2362"/>
-      <source>Garder pour plus tard</source>
-      <translation type="unfinished">Garder pour plus tard</translation>
-    </message>
-    <message>
-      <location filename="../src/mainwindow.cpp" line="2365"/>
-      <source>Ouvrir dans un nouvel onglet</source>
-      <translation type="unfinished">Ouvrir dans un nouvel onglet</translation>
-    </message>
-    <message>
-      <location filename="../src/mainwindow.cpp" line="2366"/>
-      <source>Ouvrir dans une nouvelle fenêtre</source>
-      <translation type="unfinished">Ouvrir dans une nouvelle fenêtre</translation>
     </message>
     <message>
       <location filename="../src/mainwindow.cpp" line="2001"/>
@@ -4626,6 +4658,21 @@ p, li { white-space: pre-wrap; }
       <translation type="unfinished">Nom de fichier</translation>
     </message>
     <message>
+      <source>Fichier texte séparé</source>
+      <comment>update</comment>
+      <translation type="unfinished">Fichier texte séparé</translation>
+    </message>
+    <message>
+      <source>Log séparé</source>
+      <comment>update</comment>
+      <translation type="unfinished">Log séparé</translation>
+    </message>
+    <message>
+      <source>Noms conditionnels</source>
+      <comment>update</comment>
+      <translation type="unfinished">Noms conditionnels</translation>
+    </message>
+    <message>
       <source>Noms multiples</source>
       <comment>update</comment>
       <translation type="unfinished">Noms multiples</translation>
@@ -5194,6 +5241,10 @@ p, li { white-space: pre-wrap; }
       <location filename="../src/sources/sitewindow.ui" line="74"/>
       <source>%v/%m</source>
       <translation type="unfinished">%v/%m</translation>
+    </message>
+    <message>
+      <source>Erreur lors de l'analyse du fichier XML : %1 (%2 - %3).</source>
+      <translation type="unfinished">Erreur lors de l'analyse du fichier XML : %1 (%2 - %3).</translation>
     </message>
     <message>
       <location filename="../src/sources/sitewindow.cpp" line="85"/>
