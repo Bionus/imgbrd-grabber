@@ -20,7 +20,7 @@
    <enum>Qt::DefaultContextMenu</enum>
   </property>
   <property name="windowTitle">
-   <string>Grabber - Image</string>
+   <string>Image</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../../resources.qrc">
@@ -114,35 +114,35 @@
      <item row="0" column="0" rowspan="2">
       <widget class="QPushButton" name="buttonDetails">
        <property name="text">
-        <string>Plus d'infos</string>
+        <string>More details</string>
        </property>
       </widget>
      </item>
      <item row="0" column="1">
       <widget class="QPushButton" name="buttonSave">
        <property name="text">
-        <string>Enregistrer</string>
+        <string>Save</string>
        </property>
       </widget>
      </item>
      <item row="0" column="2">
       <widget class="QPushButton" name="buttonSaveNQuit">
        <property name="text">
-        <string>Enregistrer et fermer</string>
+        <string>Save and close</string>
        </property>
       </widget>
      </item>
      <item row="0" column="3">
       <widget class="QPushButton" name="buttonOpen">
        <property name="text">
-        <string>Dossier de destination</string>
+        <string>Destination folder</string>
        </property>
       </widget>
      </item>
      <item row="0" column="5" rowspan="2">
       <widget class="QPushButton" name="buttonSaveAs">
        <property name="text">
-        <string>Enregistrer sous...</string>
+        <string>Save as...</string>
        </property>
       </widget>
      </item>
@@ -155,7 +155,7 @@
         </size>
        </property>
        <property name="text">
-        <string>+</string>
+        <string notr="true">+</string>
        </property>
        <property name="checkable">
         <bool>true</bool>
@@ -186,21 +186,21 @@
         <item row="1" column="0">
          <widget class="QPushButton" name="buttonSaveFav">
           <property name="text">
-           <string>Enregistrer (fav)</string>
+           <string>Save (fav)</string>
           </property>
          </widget>
         </item>
         <item row="1" column="1">
          <widget class="QPushButton" name="buttonSaveNQuitFav">
           <property name="text">
-           <string>Enregistrer et fermer (fav)</string>
+           <string>Save and close (fav)</string>
           </property>
          </widget>
         </item>
         <item row="1" column="2">
          <widget class="QPushButton" name="buttonOpenFav">
           <property name="text">
-           <string>Dossier de destination (fav)</string>
+           <string>Destination folder (fav)</string>
           </property>
          </widget>
         </item>

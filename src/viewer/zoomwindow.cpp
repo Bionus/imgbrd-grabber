@@ -19,7 +19,7 @@
 
 
 zoomWindow::zoomWindow(QSharedPointer<Image> image, Site *site, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
-	: QDialog(0, Qt::Window), m_parent(parent), m_profile(profile), m_favorites(profile->getFavorites()), m_viewItLater(profile->getKeptForLater()), m_ignore(profile->getIgnored()), m_settings(profile->getSettings()), ui(new Ui::zoomWindow), m_site(site), timeout(300), m_loaded(false), m_loadedImage(false), m_loadedDetails(false), image(nullptr), movie(nullptr), m_reply(nullptr), m_finished(false), m_thread(false), m_data(QByteArray()), m_size(0), m_sites(sites), m_source(), m_th(nullptr), m_fullScreen(nullptr)
+	: QDialog(Q_NULLPTR, Qt::Window), m_parent(parent), m_profile(profile), m_favorites(profile->getFavorites()), m_viewItLater(profile->getKeptForLater()), m_ignore(profile->getIgnored()), m_settings(profile->getSettings()), ui(new Ui::zoomWindow), m_site(site), timeout(300), m_loaded(false), m_loadedImage(false), m_loadedDetails(false), image(nullptr), movie(nullptr), m_reply(nullptr), m_finished(false), m_thread(false), m_data(QByteArray()), m_size(0), m_sites(sites), m_source(), m_th(nullptr), m_fullScreen(nullptr)
 {
 	m_imageTime = nullptr;
 
@@ -231,12 +231,12 @@ void zoomWindow::openSaveDir(bool fav)
 	{ showInGraphicalShell(url); }
 	else
 	{
-		int reply = QMessageBox::question(this, tr("Dossier inexistant"), tr("Le dossier de sauvegarde n'existe pas encore. Le creer ?"), QMessageBox::Yes | QMessageBox::No);
+		int reply = QMessageBox::question(this, tr("Folder does not exist"), tr("The save folder does not exist yet. Create it?"), QMessageBox::Yes | QMessageBox::No);
 		if (reply == QMessageBox::Yes)
 		{
 			QDir dir(path);
 			if (!dir.mkpath(pth))
-			{ error(this, tr("Erreur lors de la création du dossier.\r\n%1").arg(url)); }
+			{ error(this, tr("Error creating folder.\r\n%1").arg(url)); }
 			showInGraphicalShell(url);
 		}
 	}
@@ -254,29 +254,29 @@ void zoomWindow::contextMenu(QPoint)
 		// Favorites
 		if (m_favorites.contains(Favorite(link)))
 		{
-			menu->addAction(QIcon(":/images/icons/remove.png"), tr("Retirer des favoris"), this, SLOT(unfavorite()));
-			menu->addAction(QIcon(":/images/icons/save.png"), tr("Choisir comme image"), this, SLOT(setfavorite()));
+			menu->addAction(QIcon(":/images/icons/remove.png"), tr("Remove from favorites"), this, SLOT(unfavorite()));
+			menu->addAction(QIcon(":/images/icons/save.png"), tr("Choose as image"), this, SLOT(setfavorite()));
 		}
 		else
-		{ menu->addAction(QIcon(":/images/icons/add.png"), tr("Ajouter aux favoris"), this, SLOT(favorite())); }
+		{ menu->addAction(QIcon(":/images/icons/add.png"), tr("Add to favorites"), this, SLOT(favorite())); }
 
 		// Keep for later
 		if (m_viewItLater.contains(link, Qt::CaseInsensitive))
-		{ menu->addAction(QIcon(":/images/icons/remove.png"), tr("Ne pas garder pour plus tard"), this, SLOT(unviewitlater())); }
+		{ menu->addAction(QIcon(":/images/icons/remove.png"), tr("Don't keep for later"), this, SLOT(unviewitlater())); }
 		else
-		{ menu->addAction(QIcon(":/images/icons/add.png"), tr("Garder pour plus tard"), this, SLOT(viewitlater())); }
+		{ menu->addAction(QIcon(":/images/icons/add.png"), tr("Keep for later"), this, SLOT(viewitlater())); }
 
 		// Ignore
 		if (m_ignore.contains(link, Qt::CaseInsensitive))
-		{ menu->addAction(QIcon(":/images/icons/showed.png"), tr("Ne plus ignorer"), this, SLOT(unignore())); }
+		{ menu->addAction(QIcon(":/images/icons/showed.png"), tr("Don't ignore"), this, SLOT(unignore())); }
 		else
-		{ menu->addAction(QIcon(":/images/icons/hidden.png"), tr("Ignorer"), this, SLOT(ignore())); }
+		{ menu->addAction(QIcon(":/images/icons/hidden.png"), tr("Ignore"), this, SLOT(ignore())); }
 		menu->addSeparator();
 
 		// Tabs
-		menu->addAction(QIcon(":/images/icons/tab-plus.png"), tr("Ouvrir dans un nouvel onglet"), this, SLOT(openInNewTab()));
-		menu->addAction(QIcon(":/images/icons/window.png"), tr("Ouvrir dans une nouvelle fenêtre"), this, SLOT(openInNewWindow()));
-		menu->addAction(QIcon(":/images/icons/browser.png"), tr("Ouvrir dans le navigateur"), this, SLOT(openInBrowser()));
+		menu->addAction(QIcon(":/images/icons/tab-plus.png"), tr("Open in a new tab"), this, SLOT(openInNewTab()));
+		menu->addAction(QIcon(":/images/icons/window.png"), tr("Open in new a window"), this, SLOT(openInNewWindow()));
+		menu->addAction(QIcon(":/images/icons/browser.png"), tr("Open in browser"), this, SLOT(openInBrowser()));
 	}
 	menu->exec(QCursor::pos());
 }
@@ -347,7 +347,7 @@ void zoomWindow::unignore()
 
 void zoomWindow::load()
 {
-	log(tr("Chargement de l'image depuis <a href=\"%1\">%1</a>").arg(m_url));
+	log(QString("Loading image from <a href=\"%1\">%1</a>").arg(m_url));
 	m_data.clear();
 
 	ui->progressBarDownload->setMaximum(100);
@@ -450,16 +450,16 @@ void zoomWindow::replyFinishedDetails()
 	{
 		if (!file1notexists)
 		{
-			ui->buttonSave->setText(tr("Fichier déjà existant"));
-			ui->buttonSaveNQuit->setText(tr("Fermer"));
+			ui->buttonSave->setText(tr("File already exists"));
+			ui->buttonSaveNQuit->setText(tr("Close"));
 		}
 		if (!file2notexists)
 		{
-			ui->buttonSaveFav->setText(tr("Fichier déjà existant (fav)"));
-			ui->buttonSaveNQuitFav->setText(tr("Fermer (fav)"));
+			ui->buttonSaveFav->setText(tr("File already exists (fav)"));
+			ui->buttonSaveNQuitFav->setText(tr("Close (fav)"));
 		}
 		m_source = !file1notexists ? source1 : source2;
-		log(tr("Image chargée depuis le fichier <a href=\"file:///%1\">%1</a>").arg(m_source));
+		log(QString("Image loaded from the file <a href=\"file:///%1\">%1</a>").arg(m_source));
 
 		// Fix extension when it should be guessed
 		QString fext = m_source.section('.', -1);
@@ -507,7 +507,7 @@ void zoomWindow::replyFinishedZoom()
 		return;
 	}
 
-	log(tr("Image reçue depuis <a href=\"%1\">%1</a>").arg(m_url));
+	log(QString("Image received from <a href=\"%1\">%1</a>").arg(m_url));
 	m_finished = true;
 	if (m_reply->error() == QNetworkReply::NoError)
 	{
@@ -524,19 +524,19 @@ void zoomWindow::replyFinishedZoom()
 		QString newext = m_image->getNextExtension(ext);
 		if (newext.isEmpty())
 		{
-			log(tr("Image non trouvée."));
+			log("Image not found.");
 		}
 		else
 		{
 			m_url = m_url.section('.', 0, -2) + "." + newext;
 			m_image->setFileExtension(newext);
-			log(tr("Image non trouvée. Nouvel essai avec l'extension %1...").arg(newext));
+			log(QString("Image not found. New try with extension %1...").arg(newext));
 			load();
 			return;
 		}
 	}
 	else if (m_reply->error() != QNetworkReply::OperationCanceledError)
-	{ error(this, tr("Une erreur inattendue est survenue lors du chargement de l'image (%1).\r\n%2").arg(m_reply->error()).arg(m_reply->url().toString())); }
+	{ error(this, tr("An unexpected error occured loading the image (%1).\r\n%2").arg(m_reply->error()).arg(m_reply->url().toString())); }
 
 	m_reply->deleteLater();
 	m_reply = nullptr;
@@ -683,13 +683,13 @@ void zoomWindow::update(bool onlysize)
 
 void zoomWindow::saveNQuit()
 {
-	ui->buttonSaveNQuit->setText(tr("Sauvegarde..."));
+	ui->buttonSaveNQuit->setText(tr("Saving..."));
 	m_mustSave = 2;
 	pendingUpdate();
 }
 void zoomWindow::saveNQuitFav()
 {
-	ui->buttonSaveNQuitFav->setText(tr("Sauvegarde..."));
+	ui->buttonSaveNQuitFav->setText(tr("Saving..."));
 	m_mustSave = 4;
 	pendingUpdate();
 }
@@ -698,12 +698,12 @@ void zoomWindow::saveImage(bool fav)
 {
 	if (fav)
 	{
-		ui->buttonSaveFav->setText(tr("Sauvegarde... (fav)"));
+		ui->buttonSaveFav->setText(tr("Saving... (fav)"));
 		m_mustSave = 3;
 	}
 	else
 	{
-		ui->buttonSave->setText(tr("Sauvegarde..."));
+		ui->buttonSave->setText(tr("Saving..."));
 		m_mustSave = 1;
 	}
 	pendingUpdate();
@@ -720,9 +720,9 @@ QStringList zoomWindow::saveImageNow(bool fav)
 	{
 		int reply;
 		if (pth.isEmpty())
-		{ reply = QMessageBox::question(this, tr("Erreur"), tr("Vous n'avez pas précisé de dossier de sauvegarde ! Voulez-vous ouvrir les options ?"), QMessageBox::Yes | QMessageBox::No); }
+		{ reply = QMessageBox::question(this, tr("Error"), tr("You did not specified a save folder! Do you want to open the options window?"), QMessageBox::Yes | QMessageBox::No); }
 		else
-		{ reply = QMessageBox::question(this, tr("Erreur"), tr("Vous n'avez pas précisé de format de sauvegarde ! Voulez-vous ouvrir les options ?"), QMessageBox::Yes | QMessageBox::No); }
+		{ reply = QMessageBox::question(this, tr("Error"), tr("You did not specified a save format! Do you want to open the options window?"), QMessageBox::Yes | QMessageBox::No); }
 		if (reply == QMessageBox::Yes)
 		{
 			optionsWindow *options = new optionsWindow(m_profile, parentWidget());
@@ -747,31 +747,31 @@ QStringList zoomWindow::saveImageNow(bool fav)
 		switch (res)
 		{
 			case Image::SaveResult::Error:
-				error(this, tr("Erreur lors de la sauvegarde de l'image."));
+				error(this, tr("Error saving image."));
 				return QStringList();
 				break;
 
 			case Image::SaveResult::Saved:
-				button->setText(fav ? tr("Sauvegardé ! (fav)") : tr("Sauvegardé !"));
+				button->setText(fav ? tr("Saved! (fav)") : tr("Saved!"));
 				break;
 
 			case Image::SaveResult::Copied:
-				button->setText(fav ? tr("Copié ! (fav)") : tr("Copié !"));
+				button->setText(fav ? tr("Copied! (fav)") : tr("Copied!"));
 				break;
 
 			case Image::SaveResult::Moved:
-				button->setText(fav ? tr("Déplacé ! (fav)") : tr("Déplacé !"));
+				button->setText(fav ? tr("Moved! (fav)") : tr("Moved!"));
 				break;
 
 			case Image::SaveResult::Ignored:
-				button->setText(fav ? tr("Ignoré ! (fav)") : tr("Ignoré !"));
+				button->setText(fav ? tr("Ignored! (fav)") : tr("Ignored!"));
 				break;
 
 			case Image::SaveResult::AlreadyExists:
-				button->setText(fav ? tr("Fichier déjà existant (fav)") : tr("Fichier déjà existant"));
+				button->setText(fav ? tr("File already exists (fav)") : tr("File already exists"));
 				break;
 		}
-		saveQuit->setText(fav ? tr("Fermer (fav)") : tr("Fermer"));
+		saveQuit->setText(fav ? tr("Close (fav)") : tr("Close"));
 
 		++it;
 	}
@@ -788,7 +788,7 @@ QString zoomWindow::saveImageAs()
 	QString filename = m_image->fileUrl().toString().section('/', -1);
 	QString lastDir = m_settings->value("Zoom/lastDir", "").toString();
 
-	QString path = QFileDialog::getSaveFileName(this, tr("Enregistrer l'image"), QDir::toNativeSeparators(lastDir + "/" + filename), "Images (*.png *.gif *.jpg *.jpeg)");
+	QString path = QFileDialog::getSaveFileName(this, tr("Save image"), QDir::toNativeSeparators(lastDir + "/" + filename), "Images (*.png *.gif *.jpg *.jpeg)");
 	if (!path.isEmpty())
 	{
 		path = QDir::toNativeSeparators(path);
@@ -877,7 +877,7 @@ void zoomWindow::closeEvent(QCloseEvent *e)
 	if (m_reply != nullptr && m_reply->isRunning())
 	{
 		m_reply->abort();
-		log(tr("Chargement de l'image stoppé."));
+		log("Image loading stopped.");
 	}
 
 	e->accept();
