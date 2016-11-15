@@ -33,7 +33,7 @@
 #include "utils/md5-fix/md5-fix.h"
 #include "models/filename.h"
 
-#define DONE()	logUpdate(QObject::tr(" Fait"))
+#define DONE()	logUpdate(" Done")
 
 
 

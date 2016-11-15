@@ -33,7 +33,7 @@ QList<QMap<QString, QPair<QString, QString>>> Filename::getReplaces(QString file
 	replaces.insert("website", QStrP(img.parentSite()->url(), ""));
 	replaces.insert("websitename", QStrP(img.parentSite()->name(), ""));
 	replaces.insert("md5", QStrP(img.md5(), ""));
-	replaces.insert("date", QStrP(img.createdAt().toString(QObject::tr("dd-MM-yyyy HH.mm")), ""));
+	replaces.insert("date", QStrP(img.createdAt().toString(QObject::tr("MM-dd-yyyy HH.mm")), ""));
 	replaces.insert("id", QStrP(QString::number(img.id()), "0"));
 	QStringList search = img.search();
 	for (int i = 0; i < search.size(); ++i)
@@ -351,7 +351,7 @@ QStringList Filename::path(const Image& img, Profile *profile, QString pth, int 
 			QScriptValue result = engine.evaluate(QScriptProgram(inits + filename));
 			if (result.isError())
 			{
-				error(0, QObject::tr("Erreur d'évaluation du Javascript :<br/>") + result.toString());
+				error(0, QObject::tr("Error in Javascript evaluation:<br/>") + result.toString());
 				return QStringList();
 			}
 
@@ -545,24 +545,28 @@ bool Filename::returnError(QString msg, QString *error) const
 }
 bool Filename::isValid(QString *error) const
 {
+	QString red = "<span style=\"color:red\">%1</span>";
+	QString orange = "<span style=\"color:orange\">%1</span>";
+	QString green = "<span style=\"color:green\">%1</span>";
+
 	// Field must be filled
 	if (m_format.isEmpty())
-		return returnError(QObject::tr("<span style=\"color:red\">Les noms de fichiers ne doivent pas être vides !</span>"), error);
+		return returnError(red.arg(QObject::tr("Filename must not be empty!")), error);
 
 	// Can't validate javascript expressions
 	if (m_format.startsWith("javascript:"))
 	{
-		returnError(QObject::tr("<span style=\"color:orange\">Impossible de valider les expressions Javascript.</span>"), error);
+		returnError(orange.arg(QObject::tr("Can't validate Javascript expressions.")), error);
 		return true;
 	}
 
 	// Field must end by an extension
 	if (!m_format.endsWith(".%ext%"))
-		return returnError(QObject::tr("<span style=\"color:orange\">Votre nom de fichier ne finit pas par une extension, symbolisée par %ext% ! Vous risquez de ne pas pouvoir ouvrir vos fichiers.</span>"), error);
+		return returnError(orange.arg(QObject::tr("Your filename doesn't ends by an extension, symbolized by %ext%! You may not be able to open saved files.")), error);
 
 	// Field must contain an unique token
 	if (!m_format.contains("%md5%") && !m_format.contains("%id%") && !m_format.contains("%count%"))
-		return returnError(QObject::tr("<span style=\"color:orange\">Votre nom de fichier n'est pas unique à chaque image et une image risque d'en écraser une précédente lors de la sauvegarde ! Vous devriez utiliser le symbole %md5%, unique à chaque image, pour éviter ce désagrément.</span>"), error);
+		return returnError(orange.arg(QObject::tr("Your filename is not unique to each image and an image may overwrite a previous one at saving! You should use%md5%, which is unique to each image, to avoid this inconvenience.")), error);
 
 	// Looking for unknown tokens
 	QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat );
@@ -582,7 +586,7 @@ bool Filename::isValid(QString *error) const
 		}
 
 		if (!found)
-			return returnError(QObject::tr("<span style=\"color:orange\">Le symbole %%1% n\'existe pas et ne sera pas remplacé.</span>").arg(rx.cap(1)), error);
+			return returnError(orange.arg(QObject::tr("The %%1% token does not exist and will not be replaced.")).arg(rx.cap(1)), error);
 
 		pos += rx.matchedLength();
 	}
@@ -591,15 +595,15 @@ bool Filename::isValid(QString *error) const
 	#ifdef Q_OS_WIN
 		QString txt = QString(m_format).remove(rx);
 		if (txt.contains(':') || txt.contains('*') || txt.contains('?') || (txt.contains('"') && txt.count('<') == 0) || txt.count('<') != txt.count('>') || txt.contains('|'))
-			return returnError(QObject::tr("<span style=\"color:red\">Votre format contient des caractères interdits sur windows ! Caractères interdits : * ? \" : < > |</span>"), error);
+			return returnError(red.arg(QObject::tr("Your format contains characters forbidden on Windows! Forbidden characters: * ? \" : < > |")), error);
 	#endif
 
 	// Check if code is unique
 	if (!m_format.contains("%md5%") && !m_format.contains("%website%") && !m_format.contains("%count%") && m_format.contains("%id%"))
-		return returnError(QObject::tr("<span style=\"color:green\">Vous avez choisi d'utiliser le symbole %id%. Sachez que celui-ci est unique pour un site choisi. Le même ID pourra identifier des images différentes en fonction du site.</span>"), error);
+		return returnError(green.arg(QObject::tr("You have chosen to use the %id% token. Know that it is only unique for a selected site. The same ID can identify different images depending on the site.")), error);
 
 	// All tests passed
-	returnError(QObject::tr("<span style=\"color:green\">Format valide !</span>"), error);
+	returnError(green.arg(QObject::tr("Valid filename!")), error);
 	return true;
 }
 

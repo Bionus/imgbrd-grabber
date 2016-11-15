@@ -14,7 +14,7 @@
 #include <QSslError>
 #include "models/favorite.h"
 
-#define DONE()	logUpdate(QObject::tr(" Fait"))
+#define DONE()	logUpdate(" Done")
 
 
 
