@@ -46,6 +46,7 @@ void FilenameTest::init()
 	m_settings->setValue("Save/character_multiple", "replaceAll");
 	m_settings->setValue("Save/copyright_value", "crossover");
 	m_settings->setValue("Save/copyright_multiple", "replaceAll");
+	m_settings->setValue("Save/character_empty", "unknown");
 	m_settings->setValue("Save/replaceblanks", true);
 
 	m_source = new Source(m_profile, "release/sites/Danbooru (2.0)");
@@ -128,6 +129,10 @@ void FilenameTest::testPathIgnoredTags()
 			   "artist1/crossover/character2/1bc29b36f623ba82aaf6724fd3b16718.jpg");
 
 	m_settings->setValue("ignoredtags", "character*");
+	assertPath("%artist%/%copyright%/%character%/%md5%.%ext%",
+			   "artist1/crossover/unknown/1bc29b36f623ba82aaf6724fd3b16718.jpg");
+
+	m_settings->setValue("Save/character_empty", "");
 	assertPath("%artist%/%copyright%/%character%/%md5%.%ext%",
 			   "artist1/crossover/1bc29b36f623ba82aaf6724fd3b16718.jpg");
 }
@@ -364,6 +369,26 @@ void FilenameTest::testGetReplacesSpecies()
 
 	QCOMPARE(replaces.count(), 1);
 	QCOMPARE(replaces[0]["species"].first, QString("test_species"));
+}
+void FilenameTest::testGetReplacesSpeciesMultiple()
+{
+	QString format = "%species%/%md5%.%ext%";
+
+	m_img->deleteLater();
+	m_details["tags_species"] = "species1 species2 species3";
+	m_img = new Image(m_site, m_details, m_profile);
+
+	Filename fn(format);
+	QList<QMap<QString, QPair<QString, QString>>> replaces = fn.getReplaces(format, *m_img, m_profile, QMap<QString, QStringList>());
+
+	QCOMPARE(replaces.count(), 1);
+	QCOMPARE(replaces[0]["species"].first, QString("multiple"));
+
+	m_settings->setValue("Save/species_multiple", "keepAll");
+	replaces = fn.getReplaces(format, *m_img, m_profile, QMap<QString, QStringList>());
+
+	QCOMPARE(replaces.count(), 1);
+	QCOMPARE(replaces[0]["species"].first, QString("species1 species2 species3"));
 }
 
 void FilenameTest::testIsValid()

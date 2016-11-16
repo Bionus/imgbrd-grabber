@@ -51,6 +51,7 @@ class FilenameTest : public TestSuite
 		void testGetReplacesMatrix();
 		void testGetReplacesCustom();
 		void testGetReplacesSpecies();
+		void testGetReplacesSpeciesMultiple();
 		void testIsValid();
 		void testUseShorterCopyright();
 		void testConditionalsTag();
