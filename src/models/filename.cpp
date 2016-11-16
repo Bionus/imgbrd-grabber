@@ -65,6 +65,7 @@ QList<QMap<QString, QPair<QString, QString>>> Filename::getReplaces(QString file
 		(filename.contains("%copyright%") ? details["copyrights"] : QStringList()) +
 		(filename.contains("%character%") ? details["characters"] : QStringList()) +
 		(filename.contains("%model%") ? details["models"] : QStringList()) +
+		(filename.contains("%species%") ? details["species"] : QStringList()) +
 		(filename.contains("%general%") ? details["generals"] : QStringList());
 	QStringList l = details["alls"];
 	QStringList namespaces = details["alls_namespaces"];
@@ -78,7 +79,7 @@ QList<QMap<QString, QPair<QString, QString>>> Filename::getReplaces(QString file
 	replaces.insert("all_namespaces", QStrP(namespaces.join(" "), ""));
 
 	ret.append(replaces);
-	QStringList keys = QStringList() << "artist" << "copyright" << "character" << "model";
+	QStringList keys = QStringList() << "artist" << "copyright" << "character" << "model" << "species";
 	for (QString key : keys)
 	{
 		if (filename.contains(QRegExp("%"+key+"(?::[^%]+)?%")))
@@ -381,7 +382,7 @@ QStringList Filename::path(const Image& img, Profile *profile, QString pth, int 
 			// Conditionals
 			if (complex)
 			{
-				QStringList tokens = QStringList() << "tags" << "artist" << "general" << "copyright" << "character" << "model" << "model|artist" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "allo" << "date" << "count" << "search_(\\d+)" << "score" << "height" << "width" << "path" << "pool" << "url_file" << "url_page" << custom.keys();
+				QStringList tokens = QStringList() << "tags" << "artist" << "general" << "copyright" << "character" << "model" << "model|artist" << "species" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "allo" << "date" << "count" << "search_(\\d+)" << "score" << "height" << "width" << "path" << "pool" << "url_file" << "url_page" << custom.keys();
 				cFilename = this->expandConditionals(cFilename, tokens, details["allos"], replaces);
 			}
 
@@ -572,7 +573,7 @@ bool Filename::isValid(QString *error) const
 	QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat );
 	auto customs = getCustoms(settings);
 	settings->deleteLater();
-	QStringList tokens = QStringList() << "tags" << "artist" << "general" << "copyright" << "character" << "model" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "search_(\\d+)" << "allo" << customs.keys() << "date" << "score" << "count" << "width" << "height" << "pool" << "url_file" << "url_page";
+	QStringList tokens = QStringList() << "tags" << "artist" << "general" << "copyright" << "character" << "model" << "species" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "search_(\\d+)" << "allo" << customs.keys() << "date" << "score" << "count" << "width" << "height" << "pool" << "url_file" << "url_page";
 	QRegExp rx("%(.+)%");
 	rx.setMinimal(true);
 	int pos = 0;
@@ -622,7 +623,7 @@ bool Filename::needExactTags(bool forceImageUrl) const
 		return true;
 
 	// The filename contains one of the special tags
-	QStringList forbidden = QStringList() << "artist" << "copyright" << "character" << "model" << "general";
+	QStringList forbidden = QStringList() << "artist" << "copyright" << "character" << "model" << "species" << "general";
 	for (QString token : forbidden)
 		if (m_format.contains("%" + token + "%"))
 			return true;

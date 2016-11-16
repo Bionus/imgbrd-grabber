@@ -33,6 +33,7 @@ void FilenameTest::init()
 	m_details["tags_artist"] = "artist1";
 	m_details["tags_copyright"] = "copyright1 copyright2";
 	m_details["tags_character"] = "character1 character2";
+	m_details["tags_species"] = "";
 	m_details["created_at"] = "1471513944";
 	m_details["rating"] = "safe";
 
@@ -274,6 +275,15 @@ void FilenameTest::testPathOptionNumMultiple()
 	QFile::remove("tests/resources/tmp/7331 (2).jpg");
 }
 
+void FilenameTest::testPathSpecies()
+{
+	m_img->deleteLater();
+	m_details["tags_species"] = "test_species";
+	m_img = new Image(m_site, m_details, m_profile);
+
+	assertPath("%species%.%ext%", "test_species.jpg");
+}
+
 void FilenameTest::testGetReplacesSimple()
 {
 	QString format = "%artist%/%copyright%/%character%/%md5%.%ext%";
@@ -340,6 +350,20 @@ void FilenameTest::testGetReplacesCustom()
 	QCOMPARE(replaces.first().contains("custom1"), true);
 	QCOMPARE(replaces.first().contains("custom2"), true);
 	QCOMPARE(replaces.first().contains("custom3"), false);
+}
+void FilenameTest::testGetReplacesSpecies()
+{
+	QString format = "%species%/%md5%.%ext%";
+
+	m_img->deleteLater();
+	m_details["tags_species"] = "test_species";
+	m_img = new Image(m_site, m_details, m_profile);
+
+	Filename fn(format);
+	QList<QMap<QString, QPair<QString, QString>>> replaces = fn.getReplaces(format, *m_img, m_profile, QMap<QString, QStringList>());
+
+	QCOMPARE(replaces.count(), 1);
+	QCOMPARE(replaces[0]["species"].first, QString("test_species"));
 }
 
 void FilenameTest::testIsValid()

@@ -139,9 +139,14 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	setRating(details.contains("rating") ? details["rating"] : "");
 
 	// Tags
-	if (details.contains("tags_general"))
+	QStringList types = QStringList() << "general" << "artist" << "character" << "copyright" << "model" << "species";
+	for (QString typ : types)
 	{
-		QStringList t = details["tags_general"].split(" ");
+		QString key = "tags_" + typ;
+		if (!details.contains(key))
+			continue;
+
+		QStringList t = details[key].split(" ");
 		for (int i = 0; i < t.count(); ++i)
 		{
 			QString tg = t.at(i);
@@ -149,50 +154,10 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 				continue;
 
 			tg.replace("&amp;", "&");
-			m_tags.append(Tag(tg, "general"));
-		}
-		t = details["tags_artist"].split(" ");
-		for (int i = 0; i < t.count(); ++i)
-		{
-			QString tg = t.at(i);
-			if (tg.isEmpty())
-				continue;
-
-			tg.replace("&amp;", "&");
-			m_tags.append(Tag(tg, "artist"));
-		}
-		t = details["tags_character"].split(" ");
-		for (int i = 0; i < t.count(); ++i)
-		{
-			QString tg = t.at(i);
-			if (tg.isEmpty())
-				continue;
-
-			tg.replace("&amp;", "&");
-			m_tags.append(Tag(tg, "character"));
-		}
-		t = details["tags_copyright"].split(" ");
-		for (int i = 0; i < t.count(); ++i)
-		{
-			QString tg = t.at(i);
-			if (tg.isEmpty())
-				continue;
-
-			tg.replace("&amp;", "&");
-			m_tags.append(Tag(tg, "copyright"));
-		}
-		t = details["tags_model"].split(" ");
-		for (int i = 0; i < t.count(); ++i)
-		{
-			QString tg = t.at(i);
-			if (tg.isEmpty())
-				continue;
-
-			tg.replace("&amp;", "&");
-			m_tags.append(Tag(tg, "model"));
+			m_tags.append(Tag(tg, typ));
 		}
 	}
-	else if (details.contains("tags"))
+	if (m_tags.isEmpty() && details.contains("tags"))
 	{
 		// Automatically find tag separator and split the list
 		QStringList t;

@@ -45,10 +45,12 @@ class FilenameTest : public TestSuite
 		void testPathOptionNumSingle();
 		void testPathOptionNumSingleLength();
 		void testPathOptionNumMultiple();
+		void testPathSpecies();
 		void testGetReplacesSimple();
 		void testGetReplacesMultiple();
 		void testGetReplacesMatrix();
 		void testGetReplacesCustom();
+		void testGetReplacesSpecies();
 		void testIsValid();
 		void testUseShorterCopyright();
 		void testConditionalsTag();

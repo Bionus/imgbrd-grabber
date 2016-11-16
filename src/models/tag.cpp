@@ -30,7 +30,7 @@ Tag::Tag(QString text, QString type, int count, QStringList related)
 
 	if (m_type == "unknown" && m_text.contains(':'))
 	{
-		QStringList prep = QStringList() << "artist" << "copyright" << "character" << "model" << "unknown";
+		QStringList prep = QStringList() << "artist" << "copyright" << "character" << "model" << "species" << "unknown";
 		foreach (QString pre, prep)
 		{
 			if (m_text.startsWith(pre + ":"))
@@ -94,7 +94,7 @@ Tag Tag::FromCapture(QStringList caps, QStringList order)
 				int tpe = type.toInt();
 				if (tpe >= 0 && tpe <= 4)
 				{
-					QStringList types = QStringList() << "general" << "artist" << "unknown" << "copyright" << "character";
+					QStringList types = QStringList() << "general" << "artist" << "unknown" << "copyright" << "character" << "species";
 					type = types[tpe];
 				}
 			}
