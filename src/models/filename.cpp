@@ -158,7 +158,7 @@ QList<QPair<QString,QString>> Filename::getReplace(QString setting, QMap<QString
 
 	QList<QStrP> ret;
 	QString first = "";
-	QString second = settings->value(setting+"_empty").toString();
+	QString second = settings->value(setting+"_empty", "unknown").toString();
 
 	int limit = settings->value(setting+"_multiple_limit", 1).toInt();
 	QString separator = TAGS_SEPARATOR;
