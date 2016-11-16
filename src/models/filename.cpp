@@ -156,43 +156,47 @@ QList<QPair<QString,QString>> Filename::getReplace(QString setting, QMap<QString
 {
 	settings->beginGroup("Save");
 
+	QString emptyDefault = setting == "copyright" ? "misc" : (setting == "artist" ? "anonymous" : "unknown");
+	QString multipleDefault = setting == "copyright" ? "crossover" : (setting == "artist" ? "multiple artists" : (setting == "character" ? "group" : "multiple"));
+
 	QList<QStrP> ret;
 	QString first = "";
-	QString second = settings->value(setting+"_empty", "unknown").toString();
+	QString second = settings->value(setting+"_empty", emptyDefault).toString();
 
 	int limit = settings->value(setting+"_multiple_limit", 1).toInt();
 	QString separator = TAGS_SEPARATOR;
 
-	if (details[setting+"s"].size() > limit)
+	QStringList list = details.contains(setting+"s") ? details[setting+"s"] : details[setting];
+	if (list.size() > limit)
 	{
 		QString whatToDo = settings->value(setting+"_multiple", "replaceAll").toString();
 		if (whatToDo == "keepAll")
-		{ first = details[setting+"s"].join(separator); }
+		{ first = list.join(separator); }
 		else if (whatToDo == "multiple")
 		{
 			int i;
-			for (i = 0; i < details[setting+"s"].count() - 1; ++i)
-			{ ret.append(QStrP(details[setting+"s"][i], second)); }
-			first = details[setting+"s"][i];
+			for (i = 0; i < list.count() - 1; ++i)
+			{ ret.append(QStrP(list[i], second)); }
+			first = list[i];
 		}
 		else if (whatToDo == "keepN")
 		{
 			int keepN = settings->value(setting+"_multiple_keepN", 1).toInt();
-			first = QStringList(details[setting+"s"].mid(0, qMax(1, keepN))).join(separator);
+			first = QStringList(list.mid(0, qMax(1, keepN))).join(separator);
 		}
 		else if (whatToDo == "keepNThenAdd")
 		{
 			int keepN = settings->value(setting+"_multiple_keepNThenAdd_keep", 1).toInt();
 			QString thenAdd = settings->value(setting+"_multiple_keepNThenAdd_add", " (+ %count%)").toString();
-			thenAdd.replace("%total%", QString::number(details[setting+"s"].size()));
-			thenAdd.replace("%count%", QString::number(details[setting+"s"].size() - keepN));
-			first = QStringList(details[setting+"s"].mid(0, qMax(1, keepN))).join(separator) + (details[setting+"s"].size() > keepN ? thenAdd : "");
+			thenAdd.replace("%total%", QString::number(list.size()));
+			thenAdd.replace("%count%", QString::number(list.size() - keepN));
+			first = QStringList(list.mid(0, qMax(1, keepN))).join(separator) + (list.size() > keepN ? thenAdd : "");
 		}
 		else
-		{ first = settings->value(setting+"_value").toString(); }
+		{ first = settings->value(setting+"_value", multipleDefault).toString(); }
 	}
 	else
-	{ first = first = details[setting+"s"].join(separator); }
+	{ first = first = list.join(separator); }
 
 	ret.append(QStrP(first, second));
 	settings->endGroup();
