@@ -25,12 +25,27 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	ui->splitter->setStretchFactor(0, 0);
 	ui->splitter->setStretchFactor(1, 1);
 
-	QSettings *settings = profile->getSettings();
-	QStringList languages = QDir(savePath("languages/", true)).entryList(QStringList("*.qm"), QDir::Files);
-	for (int i = 0; i < languages.count(); i++)
-	{ languages[i].remove(".qm", Qt::CaseInsensitive); }
-	ui->comboLanguages->addItems(languages);
+	QSettings fullLanguages(savePath("languages/languages.ini", true), QSettings::IniFormat, this);
+	fullLanguages.setIniCodec("UTF-8");
+	QStringList languageFiles = QDir(savePath("languages/", true)).entryList(QStringList("*.qm"), QDir::Files);
+	QStringList languages;
+	int l = 0;
+	for (QString languageFile : languageFiles)
+	{
+		QString language = languageFile.left(languageFile.length() - 3);
+		languages.append(language);
+		ui->comboLanguages->addItem(fullLanguages.value(language, language).toString());
+		ui->comboLanguages->setItemData(l, language);
+		++l;
+	}
+	if (!languages.contains("English"))
+	{
+		languages.append("English");
+		ui->comboLanguages->addItem("English");
+		ui->comboLanguages->setItemData(l, "English");
+	}
 
+	QSettings *settings = profile->getSettings();
 	ui->comboLanguages->setCurrentIndex(languages.indexOf(settings->value("language", "English").toString()));
 	ui->lineBlacklist->setText(settings->value("blacklistedtags").toString());
 	ui->checkDownloadBlacklisted->setChecked(settings->value("downloadblacklist", false).toBool());
@@ -701,10 +716,11 @@ void optionsWindow::save()
 		log("Désactivation du proxy général.");
 	}
 
-	if (settings->value("language", "English").toString() != ui->comboLanguages->currentText())
+	QString lang = ui->comboLanguages->currentData().toString();
+	if (settings->value("language", "English").toString() != lang)
 	{
-		settings->setValue("language", ui->comboLanguages->currentText());
-		emit languageChanged(ui->comboLanguages->currentText());
+		settings->setValue("language", lang);
+		emit languageChanged(lang);
 	}
 
 	m_profile->sync();
