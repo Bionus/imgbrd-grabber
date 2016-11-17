@@ -9,8 +9,8 @@
 
 
 
-favoritesTab::favoritesTab(int id, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
-	: searchTab(id, sites, profile, parent), ui(new Ui::favoritesTab), m_id(id), m_favorites(profile->getFavorites()), m_sized(false), m_currentFav(0)
+favoritesTab::favoritesTab(QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
+	: searchTab(sites, profile, parent), ui(new Ui::favoritesTab), m_favorites(profile->getFavorites()), m_sized(false), m_currentFav(0)
 {
 	ui->setupUi(this);
 

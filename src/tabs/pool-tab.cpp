@@ -8,8 +8,8 @@
 #include "mainwindow.h"
 
 
-poolTab::poolTab(int id, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
-	: searchTab(id, sites, profile, parent), ui(new Ui::poolTab), m_id(id), m_sized(false)
+poolTab::poolTab(QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
+	: searchTab(sites, profile, parent), ui(new Ui::poolTab), m_sized(false)
 {
 	ui->setupUi(this);
 	ui->widgetMeant->hide();

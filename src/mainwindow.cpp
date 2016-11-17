@@ -180,7 +180,7 @@ void mainWindow::init()
 	}
 
 	// Favorites tab
-	m_favoritesTab = new favoritesTab(m_tabs.size(), &m_sites, m_profile, this);
+	m_favoritesTab = new favoritesTab(&m_sites, m_profile, this);
 	connect(m_favoritesTab, SIGNAL(batchAddGroup(QStringList)), this, SLOT(batchAddGroup(QStringList)));
 	connect(m_favoritesTab, SIGNAL(batchAddUnique(QMap<QString,QString>)), this, SLOT(batchAddUnique(QMap<QString,QString>)));
 	connect(m_favoritesTab, SIGNAL(changed(searchTab*)), this, SLOT(updateTabs()));
@@ -358,7 +358,7 @@ void mainWindow::onFirstLoad()
 
 int mainWindow::addTab(QString tag, bool background)
 {
-	tagTab *w = new tagTab(m_tabs.size(), &m_sites, m_profile, this);
+	tagTab *w = new tagTab(&m_sites, m_profile, this);
 	this->addSearchTab(w, background);
 
 	if (!tag.isEmpty())
@@ -369,7 +369,7 @@ int mainWindow::addTab(QString tag, bool background)
 }
 int mainWindow::addPoolTab(int pool, QString site)
 {
-	poolTab *w = new poolTab(m_tabs.size(), &m_sites, m_profile, this);
+	poolTab *w = new poolTab(&m_sites, m_profile, this);
 	this->addSearchTab(w);
 
 	if (!site.isEmpty())
@@ -543,7 +543,6 @@ void mainWindow::batchAddGroup(const QStringList& values)
 	QStringList vals(values);
 	m_groupBatchs.append(vals);
 
-	QTableWidgetItem *item;
 	ui->tableBatchGroups->setRowCount(ui->tableBatchGroups->rowCount()+1);
 	m_allow = false;
 	QTableWidgetItem *it = new QTableWidgetItem(getIcon(":/images/colors/black.png"), QString::number(m_groupBatchs.indexOf(vals) + 1));
@@ -551,15 +550,16 @@ void mainWindow::batchAddGroup(const QStringList& values)
 	ui->tableBatchGroups->setItem(ui->tableBatchGroups->rowCount()-1, 0, it);
 	for (int t = 0; t < values.count(); t++)
 	{
-		item = new QTableWidgetItem;
-			item->setText(values.at(t));
-			item->setToolTip(values.at(t));
+		QTableWidgetItem *item = new QTableWidgetItem(values.at(t));
+		item->setToolTip(values.at(t));
+
 		int r = t+1;
 		if (r == 1) { r = 0; }
 		else if (r == 6) { r = 1; }
 		else if (r == 7) { r = 5; }
 		else if (r == 8) { r = 6; }
 		else if (r == 5) { r = 7; }
+
 		ui->tableBatchGroups->setItem(ui->tableBatchGroups->rowCount()-1, r+1, item);
 	}
 

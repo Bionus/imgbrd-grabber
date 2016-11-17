@@ -24,7 +24,7 @@ class favoritesTab : public searchTab
 	Q_OBJECT
 
 	public:
-		explicit favoritesTab(int id, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent);
+		explicit favoritesTab(QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent);
 		~favoritesTab();
 		Ui::favoritesTab *ui;
 		QList<bool> sources();
@@ -57,7 +57,6 @@ class favoritesTab : public searchTab
 		void setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage = nullptr) override;
 
 	private:
-		int				m_id;
 		QDateTime		m_loadFavorite;
 		QList<Favorite>	&m_favorites;
 		QString			m_currentTags;

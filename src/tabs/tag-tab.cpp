@@ -6,8 +6,8 @@
 #include "searchwindow.h"
 
 
-tagTab::tagTab(int id, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
-	: searchTab(id, sites, profile, parent), ui(new Ui::tagTab), m_id(id), m_sized(false)
+tagTab::tagTab(QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
+	: searchTab(sites, profile, parent), ui(new Ui::tagTab), m_sized(false)
 {
 	ui->setupUi(this);
 	ui->widgetMeant->hide();

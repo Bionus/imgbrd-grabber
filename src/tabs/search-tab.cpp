@@ -9,8 +9,8 @@
 #include "models/filename.h"
 
 
-searchTab::searchTab(int id, QMap<QString, Site*> *sites, Profile *profile, mainWindow *parent)
-	: QWidget(parent), m_profile(profile), m_id(id), m_lastPageMaxId(0), m_lastPageMinId(0), m_sites(sites), m_favorites(profile->getFavorites()), m_parent(parent), m_settings(profile->getSettings()), m_pagemax(-1), m_stop(true), m_from_history(false), m_history_cursor(0), m_lastTags(QString())
+searchTab::searchTab(QMap<QString, Site*> *sites, Profile *profile, mainWindow *parent)
+	: QWidget(parent), m_profile(profile), m_lastPageMaxId(0), m_lastPageMinId(0), m_sites(sites), m_favorites(profile->getFavorites()), m_parent(parent), m_settings(profile->getSettings()), m_pagemax(-1), m_stop(true), m_from_history(false), m_history_cursor(0), m_lastTags(QString())
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 
@@ -31,11 +31,6 @@ searchTab::searchTab(int id, QMap<QString, Site*> *sites, Profile *profile, main
 	m_completion.sort();
 
 	setSelectedSources(m_settings);
-}
-
-searchTab::~searchTab()
-{
-	emit deleted(m_id);
 }
 
 
@@ -878,8 +873,6 @@ void searchTab::setSources(QList<bool> sources)
 
 QList<bool> searchTab::sources()
 { return m_selectedSources; }
-int searchTab::id()
-{ return m_id; }
 QStringList searchTab::selectedImages()
 { return m_selectedImages; }
 

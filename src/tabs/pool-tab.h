@@ -23,7 +23,7 @@ class poolTab : public searchTab
 	Q_OBJECT
 
 	public:
-		explicit poolTab(int id, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent);
+		explicit poolTab(QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent);
 		~poolTab();
 		Ui::poolTab *ui;
 		QString tags();
