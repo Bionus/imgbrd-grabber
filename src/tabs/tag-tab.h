@@ -50,7 +50,6 @@ class tagTab : public searchTab
 	private:
 		TextEdit		*m_search;
 		QCalendarWidget	*m_calendar;
-		QString			m_link;
 		bool			m_sized;
 		Downloader		*m_downloader;
 };

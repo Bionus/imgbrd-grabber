@@ -113,7 +113,6 @@ class searchTab : public QWidget
 		QList<bool>			m_selectedSources;
 		QList<QCheckBox*>	m_checkboxes;
 		QList<Favorite>		&m_favorites;
-		QString				m_link;
 		QList<Tag>			m_tags;
 		mainWindow			*m_parent;
 		QSettings			*m_settings;
