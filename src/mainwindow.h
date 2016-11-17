@@ -178,7 +178,7 @@ class mainWindow : public QMainWindow
 		Profile				*m_profile;
 		QList<Favorite>		&m_favorites;
 		int					m_getAllDownloaded, m_getAllExists, m_getAllIgnored, m_getAll404s, m_getAllErrors, m_getAllSkipped, m_getAllLimit, m_downloads, m_waitForLogin;
-		bool				m_allow, m_must_get_tags, m_loaded, m_getAll;
+		bool				m_allow, m_mustGetTags, m_loaded, m_getAll;
 		QSettings			*m_settings;
 		batchWindow			*m_progressdialog;
 		QString				m_program, m_currLang, m_link;
