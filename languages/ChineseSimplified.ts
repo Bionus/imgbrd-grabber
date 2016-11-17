@@ -347,47 +347,47 @@
 <context>
     <name>Image</name>
     <message>
-        <location filename="../src/models/image.cpp" line="504"/>
+        <location filename="../src/models/image.cpp" line="469"/>
         <source>unknown type &quot;%1&quot; (available types: &quot;%2&quot;)</source>
         <translation>未知格式 &quot;%1&quot; （可用格式：&quot;%2&quot;）</translation>
     </message>
     <message>
-        <location filename="../src/models/image.cpp" line="553"/>
+        <location filename="../src/models/image.cpp" line="518"/>
         <source>image&apos;s %1 does not match</source>
         <translation>图片的 %1 不符合</translation>
     </message>
     <message>
-        <location filename="../src/models/image.cpp" line="555"/>
+        <location filename="../src/models/image.cpp" line="520"/>
         <source>image&apos;s %1 match</source>
         <translation>图片的 %1 符合</translation>
     </message>
     <message>
-        <location filename="../src/models/image.cpp" line="571"/>
+        <location filename="../src/models/image.cpp" line="536"/>
         <source>image is not &quot;%1&quot;</source>
         <translation>图片不是 &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/models/image.cpp" line="573"/>
+        <location filename="../src/models/image.cpp" line="538"/>
         <source>image is &quot;%1&quot;</source>
         <translation>图片是 &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/models/image.cpp" line="580"/>
+        <location filename="../src/models/image.cpp" line="545"/>
         <source>image&apos;s source does not starts with &quot;%1&quot;</source>
         <translation>图片的来源不以 &quot;%1&quot; 开头</translation>
     </message>
     <message>
-        <location filename="../src/models/image.cpp" line="582"/>
+        <location filename="../src/models/image.cpp" line="547"/>
         <source>image&apos;s source starts with &quot;%1&quot;</source>
         <translation>图片的来源以 &quot;%1&quot; 开头</translation>
     </message>
     <message>
-        <location filename="../src/models/image.cpp" line="604"/>
+        <location filename="../src/models/image.cpp" line="569"/>
         <source>image does not contains &quot;%1&quot;</source>
         <translation>图片不包含 &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/models/image.cpp" line="606"/>
+        <location filename="../src/models/image.cpp" line="571"/>
         <source>image contains &quot;%1&quot;</source>
         <translation>图片包含 &quot;%1&quot;</translation>
     </message>
@@ -494,47 +494,47 @@
         <translation>MM-dd-yyyy HH.mm</translation>
     </message>
     <message>
-        <location filename="../src/models/filename.cpp" line="354"/>
+        <location filename="../src/models/filename.cpp" line="359"/>
         <source>Error in Javascript evaluation:&lt;br/&gt;</source>
         <translation>Javascript 测试失败：&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/models/filename.cpp" line="554"/>
+        <location filename="../src/models/filename.cpp" line="559"/>
         <source>Filename must not be empty!</source>
         <translation>文件名不能为空！</translation>
     </message>
     <message>
-        <location filename="../src/models/filename.cpp" line="559"/>
+        <location filename="../src/models/filename.cpp" line="564"/>
         <source>Can&apos;t validate Javascript expressions.</source>
         <translation>无法验证 Javascript 表达式。</translation>
     </message>
     <message>
-        <location filename="../src/models/filename.cpp" line="565"/>
+        <location filename="../src/models/filename.cpp" line="570"/>
         <source>Your filename doesn&apos;t ends by an extension, symbolized by %ext%! You may not be able to open saved files.</source>
         <translation>你的文件名不以扩展名结束，请添加 %ext%！否则你可能无法打开保存的文件。</translation>
     </message>
     <message>
-        <location filename="../src/models/filename.cpp" line="569"/>
+        <location filename="../src/models/filename.cpp" line="574"/>
         <source>Your filename is not unique to each image and an image may overwrite a previous one at saving! You should use%md5%, which is unique to each image, to avoid this inconvenience.</source>
         <translation>你的文件名不唯一，新图片可能会将之前的图片覆盖！你应该使用 %md5%，因为它是唯一的，可以避免不便。</translation>
     </message>
     <message>
-        <location filename="../src/models/filename.cpp" line="589"/>
+        <location filename="../src/models/filename.cpp" line="594"/>
         <source>The %%1% token does not exist and will not be replaced.</source>
         <translation>%%1% 变量不存在，且不会被替换。</translation>
     </message>
     <message>
-        <location filename="../src/models/filename.cpp" line="598"/>
+        <location filename="../src/models/filename.cpp" line="603"/>
         <source>Your format contains characters forbidden on Windows! Forbidden characters: * ? &quot; : &lt; &gt; |</source>
         <translation>你的文件名格式存在 Windows 不允许的字符！不允许的字符： * ? &quot; : &lt; &gt; |</translation>
     </message>
     <message>
-        <location filename="../src/models/filename.cpp" line="603"/>
+        <location filename="../src/models/filename.cpp" line="608"/>
         <source>You have chosen to use the %id% token. Know that it is only unique for a selected site. The same ID can identify different images depending on the site.</source>
         <translation>你选择使用 %id% 变量。它只在特定的站点唯一。相同的 ID 可能在其他站点代表不同的图片。</translation>
     </message>
     <message>
-        <location filename="../src/models/filename.cpp" line="606"/>
+        <location filename="../src/models/filename.cpp" line="611"/>
         <source>Valid filename!</source>
         <translation>文件名有效！</translation>
     </message>
@@ -2152,7 +2152,7 @@
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="929"/>
-        <location filename="../src/mainwindow.cpp" line="2295"/>
+        <location filename="../src/mainwindow.cpp" line="2325"/>
         <source>Don&apos;t keep for later</source>
         <translation>取消等下再看</translation>
     </message>
@@ -2167,34 +2167,34 @@
         <translation>你还没有指定文件名！</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1186"/>
+        <location filename="../src/mainwindow.cpp" line="1184"/>
         <source>Logging in, please wait...</source>
         <translation>登录中，请稍候...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1236"/>
+        <location filename="../src/mainwindow.cpp" line="1234"/>
         <source>Downloading pages, please wait...</source>
         <translation>下载页面中，请稍候...</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mainwindow.cpp" line="1302"/>
+        <location filename="../src/mainwindow.cpp" line="1300"/>
         <source>All images&apos; urls have been received (%n image(s)).</source>
         <translation>
             <numerusform>已获取所有图片的 url (%n image(s))。</numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1306"/>
+        <location filename="../src/mainwindow.cpp" line="1304"/>
         <source>Preparing images, please wait...</source>
         <translation>准备图片中，请稍候...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1335"/>
+        <location filename="../src/mainwindow.cpp" line="1333"/>
         <source>Downloading images...</source>
         <translation>下载图片中...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1746"/>
+        <location filename="../src/mainwindow.cpp" line="1777"/>
         <source>An error occured saving the image.
 %1
 %2
@@ -2205,140 +2205,140 @@ Please solve the issue before resuming the download.</source>
 请在恢复下载前修复这些问题。</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1748"/>
+        <location filename="../src/mainwindow.cpp" line="1779"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1890"/>
-        <location filename="../src/mainwindow.cpp" line="1912"/>
+        <location filename="../src/mainwindow.cpp" line="1921"/>
+        <location filename="../src/mainwindow.cpp" line="1943"/>
         <source>Getting images</source>
         <translation>获取图片</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mainwindow.cpp" line="1892"/>
+        <location filename="../src/mainwindow.cpp" line="1923"/>
         <source>%n file(s) downloaded successfully.</source>
         <translation>
             <numerusform>%n 个图片已成功下载。</numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mainwindow.cpp" line="1893"/>
+        <location filename="../src/mainwindow.cpp" line="1924"/>
         <source>%n file(s) ignored.</source>
         <translation>
             <numerusform>%n 个文件被忽略。</numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mainwindow.cpp" line="1894"/>
+        <location filename="../src/mainwindow.cpp" line="1925"/>
         <source>%n file(s) already existing.</source>
         <translation>
             <numerusform>%n 个文件已经存在。</numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mainwindow.cpp" line="1895"/>
+        <location filename="../src/mainwindow.cpp" line="1926"/>
         <source>%n file(s) not found on the server.</source>
         <translation>
             <numerusform>%n 个文件在服务器上无法找到。</numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mainwindow.cpp" line="1896"/>
+        <location filename="../src/mainwindow.cpp" line="1927"/>
         <source>%n file(s) skipped.</source>
         <translation>
             <numerusform>%n 个文件被跳过。</numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mainwindow.cpp" line="1897"/>
+        <location filename="../src/mainwindow.cpp" line="1928"/>
         <source>%n error(s).</source>
         <translation>
             <numerusform>%n 个错误。</numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1912"/>
+        <location filename="../src/mainwindow.cpp" line="1943"/>
         <source>Errors occured during the images download. Do you want to restart the download of those images? (%1/%2)</source>
         <translation>下载图片时出现错误。请问你想要重启这些图片的下载吗？(%1/%2)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1992"/>
-        <location filename="../src/mainwindow.cpp" line="2000"/>
-        <location filename="../src/mainwindow.cpp" line="2002"/>
+        <location filename="../src/mainwindow.cpp" line="2022"/>
+        <location filename="../src/mainwindow.cpp" line="2030"/>
+        <location filename="../src/mainwindow.cpp" line="2032"/>
         <source>Save link list</source>
         <translation>保存链接列表</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1992"/>
-        <location filename="../src/mainwindow.cpp" line="2044"/>
+        <location filename="../src/mainwindow.cpp" line="2022"/>
+        <location filename="../src/mainwindow.cpp" line="2074"/>
         <source>Imageboard-Grabber links (*.igl)</source>
         <translation>Imageboard-Grabber 链接列表 (*.igl)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2000"/>
+        <location filename="../src/mainwindow.cpp" line="2030"/>
         <source>Link list saved successfully!</source>
         <translation>链接列表保存成功！</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2002"/>
-        <location filename="../src/mainwindow.cpp" line="2051"/>
+        <location filename="../src/mainwindow.cpp" line="2032"/>
+        <location filename="../src/mainwindow.cpp" line="2081"/>
         <source>Error opening file.</source>
         <translation>打开文件时发生错误。</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2044"/>
-        <location filename="../src/mainwindow.cpp" line="2049"/>
-        <location filename="../src/mainwindow.cpp" line="2051"/>
+        <location filename="../src/mainwindow.cpp" line="2074"/>
+        <location filename="../src/mainwindow.cpp" line="2079"/>
+        <location filename="../src/mainwindow.cpp" line="2081"/>
         <source>Load link list</source>
         <translation>载入链接列表</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2049"/>
+        <location filename="../src/mainwindow.cpp" line="2079"/>
         <source>Link list loaded successfully!</source>
         <translation>链接列表导入完成！</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mainwindow.cpp" line="2071"/>
+        <location filename="../src/mainwindow.cpp" line="2101"/>
         <source>Loading %n download(s)</source>
         <translation>
             <numerusform>正在载入 %n 个下载</numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2150"/>
+        <location filename="../src/mainwindow.cpp" line="2180"/>
         <source>Choose a save folder</source>
         <translation>选择保存文件夹</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mainwindow.cpp" line="2253"/>
+        <location filename="../src/mainwindow.cpp" line="2283"/>
         <source>%n download(s) in progress</source>
         <translation>
             <numerusform>%n 个进行中的下载</numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2289"/>
+        <location filename="../src/mainwindow.cpp" line="2319"/>
         <source>Remove from favorites</source>
         <translation>从收藏移除</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2291"/>
+        <location filename="../src/mainwindow.cpp" line="2321"/>
         <source>Add to favorites</source>
         <translation>添加到收藏</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2297"/>
+        <location filename="../src/mainwindow.cpp" line="2327"/>
         <source>Keep for later</source>
         <translation>等下再看</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2300"/>
+        <location filename="../src/mainwindow.cpp" line="2330"/>
         <source>Open in a new tab</source>
         <translation>在新标签页打开</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2301"/>
+        <location filename="../src/mainwindow.cpp" line="2331"/>
         <source>Open in a new window</source>
         <translation>在新窗口打开</translation>
     </message>
@@ -3288,32 +3288,32 @@ Please solve the issue before resuming the download.</source>
         <translation>驱动</translation>
     </message>
     <message>
-        <location filename="../src/settings/optionswindow.cpp" line="266"/>
+        <location filename="../src/settings/optionswindow.cpp" line="281"/>
         <source>Choose a save folder</source>
         <translation>选择保存的目录</translation>
     </message>
     <message>
-        <location filename="../src/settings/optionswindow.cpp" line="272"/>
+        <location filename="../src/settings/optionswindow.cpp" line="287"/>
         <source>Choose a save folder for favorites</source>
         <translation>选择收藏保存的目录</translation>
     </message>
     <message>
-        <location filename="../src/settings/optionswindow.cpp" line="332"/>
+        <location filename="../src/settings/optionswindow.cpp" line="347"/>
         <source>Choose a color</source>
         <translation>选择一个颜色</translation>
     </message>
     <message>
-        <location filename="../src/settings/optionswindow.cpp" line="347"/>
+        <location filename="../src/settings/optionswindow.cpp" line="362"/>
         <source>Choose a font</source>
         <translation>选择一个字体</translation>
     </message>
     <message>
-        <location filename="../src/settings/optionswindow.cpp" line="553"/>
+        <location filename="../src/settings/optionswindow.cpp" line="568"/>
         <source>An error occured creating the save folder.</source>
         <translation>创建保存目录时出错。</translation>
     </message>
     <message>
-        <location filename="../src/settings/optionswindow.cpp" line="569"/>
+        <location filename="../src/settings/optionswindow.cpp" line="584"/>
         <source>An error occured creating the favorites save folder.</source>
         <translation>创建收藏保存目录时出错。</translation>
     </message>
@@ -3379,97 +3379,97 @@ Please solve the issue before resuming the download.</source>
 <context>
     <name>searchTab</name>
     <message>
-        <location filename="../src/tabs/search-tab.cpp" line="115"/>
+        <location filename="../src/tabs/search-tab.cpp" line="110"/>
         <source>server offline</source>
         <translation>服务器不在线</translation>
     </message>
     <message>
-        <location filename="../src/tabs/search-tab.cpp" line="119"/>
+        <location filename="../src/tabs/search-tab.cpp" line="114"/>
         <source>too many tags</source>
         <translation>太多标签</translation>
     </message>
     <message>
-        <location filename="../src/tabs/search-tab.cpp" line="123"/>
+        <location filename="../src/tabs/search-tab.cpp" line="118"/>
         <source>page too far</source>
         <translation>页面过多</translation>
     </message>
     <message>
-        <location filename="../src/tabs/search-tab.cpp" line="365"/>
+        <location filename="../src/tabs/search-tab.cpp" line="360"/>
         <source>one of the thumbnails is empty (&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;).</source>
         <translation>有一个缩略图是空的 (&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;)。</translation>
     </message>
     <message>
-        <location filename="../src/tabs/search-tab.cpp" line="379"/>
+        <location filename="../src/tabs/search-tab.cpp" line="374"/>
         <source>Some tags from the image are in the whitelist: %1. However, some tags are in the blacklist: %2. Do you want to download it anyway?</source>
         <translation>这个图片中的一些标签是白名单中的：%1。但是，也有一些标签是黑名单中的：%2。你依然想要下载吗？</translation>
     </message>
     <message>
-        <location filename="../src/tabs/search-tab.cpp" line="476"/>
+        <location filename="../src/tabs/search-tab.cpp" line="471"/>
         <source>No result</source>
         <translation>没有结果</translation>
     </message>
     <message>
-        <location filename="../src/tabs/search-tab.cpp" line="477"/>
+        <location filename="../src/tabs/search-tab.cpp" line="472"/>
         <source>Possible reasons: %1</source>
         <translation>可能的原因：%1</translation>
     </message>
     <message>
-        <location filename="../src/tabs/search-tab.cpp" line="483"/>
+        <location filename="../src/tabs/search-tab.cpp" line="478"/>
         <source>Page %1 of %2 (%3 of %4)</source>
         <translation>第 %1 页 共 %2 页 (第 %3 页 共 %4 页)</translation>
     </message>
     <message>
-        <location filename="../src/tabs/search-tab.cpp" line="523"/>
+        <location filename="../src/tabs/search-tab.cpp" line="518"/>
         <source>&lt;b&gt;Tags:&lt;/b&gt; %1&lt;br/&gt;&lt;br/&gt;</source>
         <translation>&lt;b&gt;标签：&lt;/b&gt; %1&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/tabs/search-tab.cpp" line="524"/>
+        <location filename="../src/tabs/search-tab.cpp" line="519"/>
         <source>&lt;b&gt;ID:&lt;/b&gt; %1&lt;br/&gt;</source>
         <translation>&lt;b&gt;ID:&lt;/b&gt; %1&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/tabs/search-tab.cpp" line="525"/>
+        <location filename="../src/tabs/search-tab.cpp" line="520"/>
         <source>&lt;b&gt;Rating:&lt;/b&gt; %1&lt;br/&gt;</source>
         <translation>&lt;b&gt;分级：&lt;/b&gt; %1&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/tabs/search-tab.cpp" line="526"/>
+        <location filename="../src/tabs/search-tab.cpp" line="521"/>
         <source>&lt;b&gt;Score:&lt;/b&gt; %1&lt;br/&gt;</source>
         <translation>&lt;b&gt;得分：&lt;/b&gt; %1&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/tabs/search-tab.cpp" line="527"/>
+        <location filename="../src/tabs/search-tab.cpp" line="522"/>
         <source>&lt;b&gt;User:&lt;/b&gt; %1&lt;br/&gt;&lt;br/&gt;</source>
         <translation>&lt;b&gt;用户：&lt;/b&gt; %1&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/tabs/search-tab.cpp" line="528"/>
+        <location filename="../src/tabs/search-tab.cpp" line="523"/>
         <source>&lt;b&gt;Size:&lt;/b&gt; %1 x %2&lt;br/&gt;</source>
         <translation>&lt;b&gt;大小：&lt;/b&gt; %1 x %2&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/tabs/search-tab.cpp" line="529"/>
+        <location filename="../src/tabs/search-tab.cpp" line="524"/>
         <source>&lt;b&gt;Filesize:&lt;/b&gt; %1 %2&lt;br/&gt;</source>
         <translation>&lt;b&gt;文件大小：&lt;/b&gt; %1 %2&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/tabs/search-tab.cpp" line="530"/>
+        <location filename="../src/tabs/search-tab.cpp" line="525"/>
         <source>&lt;b&gt;Date:&lt;/b&gt; %1</source>
         <translation>&lt;b&gt;日期：&lt;/b&gt; %1</translation>
     </message>
     <message>
-        <location filename="../src/tabs/search-tab.cpp" line="530"/>
+        <location filename="../src/tabs/search-tab.cpp" line="525"/>
         <source>&apos;the &apos;MM/dd/yyyy&apos; at &apos;hh:mm</source>
         <translation>&apos;MM/dd/yyyy&apos; 于 &apos;hh:mm</translation>
     </message>
     <message>
-        <location filename="../src/tabs/search-tab.cpp" line="684"/>
+        <location filename="../src/tabs/search-tab.cpp" line="679"/>
         <source>Blacklist</source>
         <translation>黑名单</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/tabs/search-tab.cpp" line="684"/>
+        <location filename="../src/tabs/search-tab.cpp" line="679"/>
         <source>%n tag figuring in the blacklist detected in this image: %1. Do you want to display it anyway?</source>
         <translation>
             <numerusform>%1 这个图片中的 %n 标签被检测到在黑名单中。你依然想要显示它吗？</numerusform>
@@ -3723,10 +3723,9 @@ Please solve the issue before resuming the download.</source>
         <translation>保存文件夹不存在。创建一个吗？</translation>
     </message>
     <message>
-        <location filename="../src/viewer/zoomwindow.cpp" line="239"/>
         <source>Error creating folder.
 %1</source>
-        <translation>创建文件夹时出错
+        <translation type="vanished">创建文件夹时出错
 %1</translation>
     </message>
     <message>
@@ -3804,11 +3803,22 @@ Please solve the issue before resuming the download.</source>
         <translation>关闭（收藏）</translation>
     </message>
     <message>
+        <source>An unexpected error occured loading the image (%1).
+%2</source>
+        <translation type="vanished">在载入 (%1) 图片时出错。
+%2</translation>
+    </message>
+    <message>
+        <location filename="../src/viewer/zoomwindow.cpp" line="239"/>
+        <source>Error creating folder.
+%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/viewer/zoomwindow.cpp" line="539"/>
         <source>An unexpected error occured loading the image (%1).
 %2</source>
-        <translation>在载入 (%1) 图片时出错。
-%2</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/viewer/zoomwindow.cpp" line="686"/>

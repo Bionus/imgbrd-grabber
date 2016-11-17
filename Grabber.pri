@@ -52,6 +52,7 @@ CODECFORTR = UTF-8
 TRANSLATIONS += $${PDIR}/languages/English.ts \
 				$${PDIR}/languages/French.ts \
 				$${PDIR}/languages/Russian.ts \
+				$${PDIR}/languages/ChineseSimplified.ts \
 				$${PDIR}/languages/YourLanguage.ts
 
 # Target WinXP

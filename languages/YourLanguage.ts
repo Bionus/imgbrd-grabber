@@ -347,47 +347,47 @@
 <context>
     <name>Image</name>
     <message>
-        <location filename="../src/models/image.cpp" line="504"/>
+        <location filename="../src/models/image.cpp" line="469"/>
         <source>unknown type &quot;%1&quot; (available types: &quot;%2&quot;)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/models/image.cpp" line="553"/>
+        <location filename="../src/models/image.cpp" line="518"/>
         <source>image&apos;s %1 does not match</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/models/image.cpp" line="555"/>
+        <location filename="../src/models/image.cpp" line="520"/>
         <source>image&apos;s %1 match</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/models/image.cpp" line="571"/>
+        <location filename="../src/models/image.cpp" line="536"/>
         <source>image is not &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/models/image.cpp" line="573"/>
+        <location filename="../src/models/image.cpp" line="538"/>
         <source>image is &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/models/image.cpp" line="580"/>
+        <location filename="../src/models/image.cpp" line="545"/>
         <source>image&apos;s source does not starts with &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/models/image.cpp" line="582"/>
+        <location filename="../src/models/image.cpp" line="547"/>
         <source>image&apos;s source starts with &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/models/image.cpp" line="604"/>
+        <location filename="../src/models/image.cpp" line="569"/>
         <source>image does not contains &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/models/image.cpp" line="606"/>
+        <location filename="../src/models/image.cpp" line="571"/>
         <source>image contains &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -494,47 +494,47 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/models/filename.cpp" line="354"/>
+        <location filename="../src/models/filename.cpp" line="359"/>
         <source>Error in Javascript evaluation:&lt;br/&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/models/filename.cpp" line="554"/>
+        <location filename="../src/models/filename.cpp" line="559"/>
         <source>Filename must not be empty!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/models/filename.cpp" line="559"/>
+        <location filename="../src/models/filename.cpp" line="564"/>
         <source>Can&apos;t validate Javascript expressions.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/models/filename.cpp" line="565"/>
+        <location filename="../src/models/filename.cpp" line="570"/>
         <source>Your filename doesn&apos;t ends by an extension, symbolized by %ext%! You may not be able to open saved files.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/models/filename.cpp" line="569"/>
+        <location filename="../src/models/filename.cpp" line="574"/>
         <source>Your filename is not unique to each image and an image may overwrite a previous one at saving! You should use%md5%, which is unique to each image, to avoid this inconvenience.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/models/filename.cpp" line="589"/>
+        <location filename="../src/models/filename.cpp" line="594"/>
         <source>The %%1% token does not exist and will not be replaced.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/models/filename.cpp" line="598"/>
+        <location filename="../src/models/filename.cpp" line="603"/>
         <source>Your format contains characters forbidden on Windows! Forbidden characters: * ? &quot; : &lt; &gt; |</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/models/filename.cpp" line="603"/>
+        <location filename="../src/models/filename.cpp" line="608"/>
         <source>You have chosen to use the %id% token. Know that it is only unique for a selected site. The same ID can identify different images depending on the site.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/models/filename.cpp" line="606"/>
+        <location filename="../src/models/filename.cpp" line="611"/>
         <source>Valid filename!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2152,7 +2152,7 @@
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="929"/>
-        <location filename="../src/mainwindow.cpp" line="2295"/>
+        <location filename="../src/mainwindow.cpp" line="2325"/>
         <source>Don&apos;t keep for later</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2167,34 +2167,34 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1186"/>
+        <location filename="../src/mainwindow.cpp" line="1184"/>
         <source>Logging in, please wait...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1236"/>
+        <location filename="../src/mainwindow.cpp" line="1234"/>
         <source>Downloading pages, please wait...</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mainwindow.cpp" line="1302"/>
+        <location filename="../src/mainwindow.cpp" line="1300"/>
         <source>All images&apos; urls have been received (%n image(s)).</source>
         <translation type="unfinished">
             <numerusform></numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1306"/>
+        <location filename="../src/mainwindow.cpp" line="1304"/>
         <source>Preparing images, please wait...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1335"/>
+        <location filename="../src/mainwindow.cpp" line="1333"/>
         <source>Downloading images...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1746"/>
+        <location filename="../src/mainwindow.cpp" line="1777"/>
         <source>An error occured saving the image.
 %1
 %2
@@ -2202,140 +2202,140 @@ Please solve the issue before resuming the download.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1748"/>
+        <location filename="../src/mainwindow.cpp" line="1779"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1890"/>
-        <location filename="../src/mainwindow.cpp" line="1912"/>
+        <location filename="../src/mainwindow.cpp" line="1921"/>
+        <location filename="../src/mainwindow.cpp" line="1943"/>
         <source>Getting images</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mainwindow.cpp" line="1892"/>
+        <location filename="../src/mainwindow.cpp" line="1923"/>
         <source>%n file(s) downloaded successfully.</source>
         <translation type="unfinished">
             <numerusform></numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mainwindow.cpp" line="1893"/>
+        <location filename="../src/mainwindow.cpp" line="1924"/>
         <source>%n file(s) ignored.</source>
         <translation type="unfinished">
             <numerusform></numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mainwindow.cpp" line="1894"/>
+        <location filename="../src/mainwindow.cpp" line="1925"/>
         <source>%n file(s) already existing.</source>
         <translation type="unfinished">
             <numerusform></numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mainwindow.cpp" line="1895"/>
+        <location filename="../src/mainwindow.cpp" line="1926"/>
         <source>%n file(s) not found on the server.</source>
         <translation type="unfinished">
             <numerusform></numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mainwindow.cpp" line="1896"/>
+        <location filename="../src/mainwindow.cpp" line="1927"/>
         <source>%n file(s) skipped.</source>
         <translation type="unfinished">
             <numerusform></numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mainwindow.cpp" line="1897"/>
+        <location filename="../src/mainwindow.cpp" line="1928"/>
         <source>%n error(s).</source>
         <translation type="unfinished">
             <numerusform></numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1912"/>
+        <location filename="../src/mainwindow.cpp" line="1943"/>
         <source>Errors occured during the images download. Do you want to restart the download of those images? (%1/%2)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1992"/>
-        <location filename="../src/mainwindow.cpp" line="2000"/>
-        <location filename="../src/mainwindow.cpp" line="2002"/>
+        <location filename="../src/mainwindow.cpp" line="2022"/>
+        <location filename="../src/mainwindow.cpp" line="2030"/>
+        <location filename="../src/mainwindow.cpp" line="2032"/>
         <source>Save link list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1992"/>
-        <location filename="../src/mainwindow.cpp" line="2044"/>
+        <location filename="../src/mainwindow.cpp" line="2022"/>
+        <location filename="../src/mainwindow.cpp" line="2074"/>
         <source>Imageboard-Grabber links (*.igl)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2000"/>
+        <location filename="../src/mainwindow.cpp" line="2030"/>
         <source>Link list saved successfully!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2002"/>
-        <location filename="../src/mainwindow.cpp" line="2051"/>
+        <location filename="../src/mainwindow.cpp" line="2032"/>
+        <location filename="../src/mainwindow.cpp" line="2081"/>
         <source>Error opening file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2044"/>
-        <location filename="../src/mainwindow.cpp" line="2049"/>
-        <location filename="../src/mainwindow.cpp" line="2051"/>
+        <location filename="../src/mainwindow.cpp" line="2074"/>
+        <location filename="../src/mainwindow.cpp" line="2079"/>
+        <location filename="../src/mainwindow.cpp" line="2081"/>
         <source>Load link list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2049"/>
+        <location filename="../src/mainwindow.cpp" line="2079"/>
         <source>Link list loaded successfully!</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mainwindow.cpp" line="2071"/>
+        <location filename="../src/mainwindow.cpp" line="2101"/>
         <source>Loading %n download(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2150"/>
+        <location filename="../src/mainwindow.cpp" line="2180"/>
         <source>Choose a save folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mainwindow.cpp" line="2253"/>
+        <location filename="../src/mainwindow.cpp" line="2283"/>
         <source>%n download(s) in progress</source>
         <translation type="unfinished">
             <numerusform></numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2289"/>
+        <location filename="../src/mainwindow.cpp" line="2319"/>
         <source>Remove from favorites</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2291"/>
+        <location filename="../src/mainwindow.cpp" line="2321"/>
         <source>Add to favorites</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2297"/>
+        <location filename="../src/mainwindow.cpp" line="2327"/>
         <source>Keep for later</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2300"/>
+        <location filename="../src/mainwindow.cpp" line="2330"/>
         <source>Open in a new tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2301"/>
+        <location filename="../src/mainwindow.cpp" line="2331"/>
         <source>Open in a new window</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3285,32 +3285,32 @@ Please solve the issue before resuming the download.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settings/optionswindow.cpp" line="266"/>
+        <location filename="../src/settings/optionswindow.cpp" line="281"/>
         <source>Choose a save folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settings/optionswindow.cpp" line="272"/>
+        <location filename="../src/settings/optionswindow.cpp" line="287"/>
         <source>Choose a save folder for favorites</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settings/optionswindow.cpp" line="332"/>
+        <location filename="../src/settings/optionswindow.cpp" line="347"/>
         <source>Choose a color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settings/optionswindow.cpp" line="347"/>
+        <location filename="../src/settings/optionswindow.cpp" line="362"/>
         <source>Choose a font</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settings/optionswindow.cpp" line="553"/>
+        <location filename="../src/settings/optionswindow.cpp" line="568"/>
         <source>An error occured creating the save folder.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/settings/optionswindow.cpp" line="569"/>
+        <location filename="../src/settings/optionswindow.cpp" line="584"/>
         <source>An error occured creating the favorites save folder.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3376,97 +3376,97 @@ Please solve the issue before resuming the download.</source>
 <context>
     <name>searchTab</name>
     <message>
-        <location filename="../src/tabs/search-tab.cpp" line="115"/>
+        <location filename="../src/tabs/search-tab.cpp" line="110"/>
         <source>server offline</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/tabs/search-tab.cpp" line="119"/>
+        <location filename="../src/tabs/search-tab.cpp" line="114"/>
         <source>too many tags</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/tabs/search-tab.cpp" line="123"/>
+        <location filename="../src/tabs/search-tab.cpp" line="118"/>
         <source>page too far</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/tabs/search-tab.cpp" line="365"/>
+        <location filename="../src/tabs/search-tab.cpp" line="360"/>
         <source>one of the thumbnails is empty (&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/tabs/search-tab.cpp" line="379"/>
+        <location filename="../src/tabs/search-tab.cpp" line="374"/>
         <source>Some tags from the image are in the whitelist: %1. However, some tags are in the blacklist: %2. Do you want to download it anyway?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/tabs/search-tab.cpp" line="476"/>
+        <location filename="../src/tabs/search-tab.cpp" line="471"/>
         <source>No result</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/tabs/search-tab.cpp" line="477"/>
+        <location filename="../src/tabs/search-tab.cpp" line="472"/>
         <source>Possible reasons: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/tabs/search-tab.cpp" line="483"/>
+        <location filename="../src/tabs/search-tab.cpp" line="478"/>
         <source>Page %1 of %2 (%3 of %4)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/tabs/search-tab.cpp" line="523"/>
+        <location filename="../src/tabs/search-tab.cpp" line="518"/>
         <source>&lt;b&gt;Tags:&lt;/b&gt; %1&lt;br/&gt;&lt;br/&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/tabs/search-tab.cpp" line="524"/>
+        <location filename="../src/tabs/search-tab.cpp" line="519"/>
         <source>&lt;b&gt;ID:&lt;/b&gt; %1&lt;br/&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/tabs/search-tab.cpp" line="525"/>
+        <location filename="../src/tabs/search-tab.cpp" line="520"/>
         <source>&lt;b&gt;Rating:&lt;/b&gt; %1&lt;br/&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/tabs/search-tab.cpp" line="526"/>
+        <location filename="../src/tabs/search-tab.cpp" line="521"/>
         <source>&lt;b&gt;Score:&lt;/b&gt; %1&lt;br/&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/tabs/search-tab.cpp" line="527"/>
+        <location filename="../src/tabs/search-tab.cpp" line="522"/>
         <source>&lt;b&gt;User:&lt;/b&gt; %1&lt;br/&gt;&lt;br/&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/tabs/search-tab.cpp" line="528"/>
+        <location filename="../src/tabs/search-tab.cpp" line="523"/>
         <source>&lt;b&gt;Size:&lt;/b&gt; %1 x %2&lt;br/&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/tabs/search-tab.cpp" line="529"/>
+        <location filename="../src/tabs/search-tab.cpp" line="524"/>
         <source>&lt;b&gt;Filesize:&lt;/b&gt; %1 %2&lt;br/&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/tabs/search-tab.cpp" line="530"/>
+        <location filename="../src/tabs/search-tab.cpp" line="525"/>
         <source>&lt;b&gt;Date:&lt;/b&gt; %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/tabs/search-tab.cpp" line="530"/>
+        <location filename="../src/tabs/search-tab.cpp" line="525"/>
         <source>&apos;the &apos;MM/dd/yyyy&apos; at &apos;hh:mm</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/tabs/search-tab.cpp" line="684"/>
+        <location filename="../src/tabs/search-tab.cpp" line="679"/>
         <source>Blacklist</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/tabs/search-tab.cpp" line="684"/>
+        <location filename="../src/tabs/search-tab.cpp" line="679"/>
         <source>%n tag figuring in the blacklist detected in this image: %1. Do you want to display it anyway?</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -3720,12 +3720,6 @@ Please solve the issue before resuming the download.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/viewer/zoomwindow.cpp" line="239"/>
-        <source>Error creating folder.
-%1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/viewer/zoomwindow.cpp" line="257"/>
         <source>Remove from favorites</source>
         <translation type="unfinished"></translation>
@@ -3797,6 +3791,12 @@ Please solve the issue before resuming the download.</source>
         <location filename="../src/viewer/zoomwindow.cpp" line="459"/>
         <location filename="../src/viewer/zoomwindow.cpp" line="774"/>
         <source>Close (fav)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/viewer/zoomwindow.cpp" line="239"/>
+        <source>Error creating folder.
+%1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
