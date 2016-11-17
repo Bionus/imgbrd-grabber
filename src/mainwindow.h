@@ -115,6 +115,7 @@ class mainWindow : public QMainWindow
 		void getAllFinished();
 		void getAllFinishedLogin(Site *site, Site::LoginResult result);
 		void getAllFinishedLogins();
+		bool needExactTags(QSettings *settings);
 		void _getAll();
 		// Tabs
 		int addTab(QString tag = "", bool background = false);

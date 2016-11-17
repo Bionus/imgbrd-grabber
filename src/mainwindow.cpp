@@ -1337,7 +1337,7 @@ void mainWindow::getAllImages()
 
 	// Check whether we need to get the tags first (for the filename) or if we can just download the images directly
 	// TODO: having one batch needing it currently causes all batches to need it, should mae it batch (Downloader) dependent
-	m_must_get_tags = false;
+	m_must_get_tags = needExactTags(m_settings);
 	for (int f = 0; f < m_groupBatchs.size() && !m_must_get_tags; f++)
 	{
 		Filename fn(m_groupBatchs[f][6]);
@@ -1352,28 +1352,7 @@ void mainWindow::getAllImages()
 		if (fn.needExactTags(forceImageUrl))
 			m_must_get_tags = true;
 	}
-    if (m_settings->value("Textfile/activate", false).toBool())
-    {
-        Filename fn(m_settings->value("Textfile/content", "").toString());
-        if (fn.needExactTags())
-            m_must_get_tags = true;
-    }
-    QList<QString> settings;
-    settings
-        << "Exec/tag_before"
-        << "Exec/image"
-        << "Exec/tag_after"
-        << "Exec/SQL/before"
-        << "Exec/SQL/tag_before"
-        << "Exec/SQL/image"
-        << "Exec/SQL/tag_after"
-        << "Exec/SQL/after";
-    for (int s = 0; s < settings.size() && !m_must_get_tags; s++)
-    {
-        Filename fn(m_settings->value(settings[s], "").toString());
-        if (fn.needExactTags())
-            m_must_get_tags = true;
-    }
+
 	if (m_must_get_tags)
 		log("Downloading images details.");
 	else
@@ -1382,6 +1361,38 @@ void mainWindow::getAllImages()
 	// We start the simultaneous downloads
 	for (int i = 0; i < qMax(1, qMin(m_settings->value("Save/simultaneous").toInt(), 10)); i++)
 		_getAll();
+}
+
+bool mainWindow::needExactTags(QSettings *settings)
+{
+	if (settings->value("Textfile/activate", false).toBool())
+	{
+		Filename fn(settings->value("Textfile/content", "").toString());
+		if (fn.needExactTags())
+			return true;
+	}
+
+	QStringList settingNames = QStringList()
+		<< "Exec/tag_before"
+		<< "Exec/image"
+		<< "Exec/tag_after"
+		<< "Exec/SQL/before"
+		<< "Exec/SQL/tag_before"
+		<< "Exec/SQL/image"
+		<< "Exec/SQL/tag_after"
+		<< "Exec/SQL/after";
+	for (QString setting : settingNames)
+	{
+		QString value = settings->value(setting, "").toString();
+		if (value.isEmpty())
+			continue;
+
+		Filename fn(value);
+		if (fn.needExactTags())
+			return true;
+	}
+
+	return false;
 }
 
 void mainWindow::_getAll()
