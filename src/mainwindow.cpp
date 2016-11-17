@@ -1061,9 +1061,6 @@ void mainWindow::getAll(bool all)
 	m_getAll404s = 0;
 	m_getAllErrors = 0;
 	m_getAllSkipped = 0;
-	m_getAllCount = 0;
-	m_getAllPageCount = 0;
-	m_getAllBeforeId = -1;
 	m_downloaders.clear();
 	m_getAllRemaining.clear();
 	m_getAllFailed.clear();
@@ -1077,6 +1074,7 @@ void mainWindow::getAll(bool all)
 		for (int r = 0; r < count; r++)
 		{
 			int row = selected.at(r)->row();
+
 			if (tdl.contains(row))
 				continue;
 			else
@@ -1337,23 +1335,23 @@ void mainWindow::getAllImages()
 
 	// Check whether we need to get the tags first (for the filename) or if we can just download the images directly
 	// TODO: having one batch needing it currently causes all batches to need it, should mae it batch (Downloader) dependent
-	m_must_get_tags = needExactTags(m_settings);
-	for (int f = 0; f < m_groupBatchs.size() && !m_must_get_tags; f++)
+	m_mustGetTags = needExactTags(m_settings);
+	for (int f = 0; f < m_groupBatchs.size() && !m_mustGetTags; f++)
 	{
 		Filename fn(m_groupBatchs[f][6]);
 		bool forceImageUrl = m_sites[m_groupBatchs[f][5]]->contains("Regex/ForceImageUrl");
 		if (fn.needExactTags(forceImageUrl))
-			m_must_get_tags = true;
+			m_mustGetTags = true;
 	}
-	for (int f = 0; f < m_batchs.size() && !m_must_get_tags; f++)
+	for (int f = 0; f < m_batchs.size() && !m_mustGetTags; f++)
 	{
 		Filename fn(m_batchs[f].value("filename"));
 		bool forceImageUrl = m_sites[m_batchs[f].value("site")]->contains("Regex/ForceImageUrl");
 		if (fn.needExactTags(forceImageUrl))
-			m_must_get_tags = true;
+			m_mustGetTags = true;
 	}
 
-	if (m_must_get_tags)
+	if (m_mustGetTags)
 		log("Downloading images details.");
 	else
 		log("Downloading images directly.");
@@ -1409,7 +1407,7 @@ void mainWindow::_getAll()
 		m_getAllDownloading.append(img);
 
 		// Get the tags first if necessary
-		if (m_must_get_tags)
+		if (m_mustGetTags)
 		{
 			connect(img.data(), &Image::finishedLoadingTags, this, &mainWindow::getAllPerformTags);
 			img->loadDetails();
@@ -1955,7 +1953,6 @@ void mainWindow::getAllFinished()
 			m_getAllExists = 0;
 			m_getAllIgnored = 0;
 			m_getAll404s = 0;
-			m_getAllCount = 0;
 			m_progressdialog->show();
 			getAllImages();
 		}

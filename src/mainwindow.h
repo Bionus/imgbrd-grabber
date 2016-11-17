@@ -177,15 +177,14 @@ class mainWindow : public QMainWindow
 	private:
 		Profile				*m_profile;
 		QList<Favorite>		&m_favorites;
-		int					m_pagemax, m_getAllDownloaded, m_getAllExists, m_getAllIgnored, m_getAll404s, m_getAllErrors, m_getAllSkipped, m_getAllCount, m_getAllPageCount, m_getAllBeforeId, m_remainingPics, m_remainingSites, m_countPics, m_getAllLimit, m_downloads, m_waitForLogin;
+		int					m_getAllDownloaded, m_getAllExists, m_getAllIgnored, m_getAll404s, m_getAllErrors, m_getAllSkipped, m_getAllLimit, m_downloads, m_waitForLogin;
 		bool				m_allow, m_must_get_tags, m_loaded, m_getAll;
 		QSettings			*m_settings;
 		batchWindow			*m_progressdialog;
 		QString				m_program, m_currLang, m_link;
 		QStringList			m_tags;
 		QTranslator			m_translator;
-		QDateTime			m_loadFavorite;
-		QList<QStringList>	m_groupBatchs; // tags, page, perpage, max, blacklist, source, filename, location
+		QList<QStringList>	m_groupBatchs;
 		QList<QSharedPointer<Image>>	m_getAllRemaining, m_getAllDownloading, m_getAllFailed, m_images;
 		QWidget				*m_currentTab;
 		QList<searchTab*>	m_tabs;
