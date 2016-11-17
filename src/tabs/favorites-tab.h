@@ -57,11 +57,10 @@ class favoritesTab : public searchTab
 		void setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage = nullptr) override;
 
 	private:
-		QDateTime		m_loadFavorite;
-		QList<Favorite>	&m_favorites;
-		QString			m_currentTags;
-		bool			m_sized;
-		int				m_page, m_currentFav;
+		QDateTime m_loadFavorite;
+		QString m_currentTags;
+		bool m_sized;
+		int m_currentFav;
 };
 
 #endif // FAVORITES_TAB_H
