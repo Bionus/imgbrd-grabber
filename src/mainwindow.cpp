@@ -1352,6 +1352,28 @@ void mainWindow::getAllImages()
 		if (fn.needExactTags(forceImageUrl))
 			m_must_get_tags = true;
 	}
+    if (m_settings->value("Textfile/activate", false).toBool())
+    {
+        Filename fn(m_settings->value("Textfile/content", "").toString());
+        if (fn.needExactTags())
+            m_must_get_tags = true;
+    }
+    QList<QString> settings;
+    settings
+        << "Exec/tag_before"
+        << "Exec/image"
+        << "Exec/tag_after"
+        << "Exec/SQL/before"
+        << "Exec/SQL/tag_before"
+        << "Exec/SQL/image"
+        << "Exec/SQL/tag_after"
+        << "Exec/SQL/after";
+    for (int s = 0; s < settings.size() && !m_must_get_tags; s++)
+    {
+        Filename fn(m_settings->value(settings[s], "").toString());
+        if (fn.needExactTags())
+            m_must_get_tags = true;
+    }
 	if (m_must_get_tags)
 		log("Downloading images details.");
 	else
