@@ -2577,7 +2577,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="236"/>
         <source>Download</source>
-        <translation>下载</translation>
+        <translation>下载图片</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="247"/>
@@ -2597,7 +2597,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="265"/>
         <source>&lt;i&gt;Images containing a whitelisted tag will be downloaded automatically according to the option above.&lt;/i&gt;</source>
-        <translation>&lt;i&gt;如果图片有在白名单中的标签，它会因为上面这个选项被自动下载。&lt;/i&gt;</translation>
+        <translation>&lt;i&gt;如果图片有在白名单中的标签，启用这个选项将会自动下载。&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="275"/>
@@ -2607,7 +2607,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="285"/>
         <source>&lt;i&gt;These tags will not be taken in account when saving image.&lt;/i&gt;</source>
-        <translation>&lt;i&gt;这些标签在保存图片时不会被考虑。&lt;/i&gt;</translation>
+        <translation>&lt;i&gt;这些标签在保存图片时不会被处理。&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="295"/>
@@ -2758,7 +2758,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="679"/>
         <source>&lt;i&gt;If the filename length is greater than this number, it will be shortened. Leave it to 0 to use the default limit.&lt;/i&gt;</source>
-        <translation>&lt;i&gt;如果一个文件名长度币这个数字长，他会被缩短。输入 0 使用默认限制。&lt;/i&gt;</translation>
+        <translation>&lt;i&gt;如果一个文件名长度比这个数字长，就会被缩短。输入 0 使用默认限制。&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="689"/>
