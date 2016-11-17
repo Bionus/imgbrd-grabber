@@ -3940,18 +3940,6 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
 %2</translation>
     </message>
     <message>
-        <location filename="../src/viewer/zoomwindow.cpp" line="239"/>
-        <source>Error creating folder.
-%1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/viewer/zoomwindow.cpp" line="539"/>
-        <source>An unexpected error occured loading the image (%1).
-%2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/viewer/zoomwindow.cpp" line="686"/>
         <location filename="../src/viewer/zoomwindow.cpp" line="692"/>
         <location filename="../src/viewer/zoomwindow.cpp" line="706"/>
