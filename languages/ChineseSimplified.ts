@@ -11,7 +11,7 @@
     <message>
         <location filename="../src/aboutwindow.ui" line="63"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Grabber is a Bionus&apos; creation.&lt;br/&gt;Please visit the &lt;a href=&quot;https://github.com/Bionus/imgbrd-grabber&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;site&lt;/span&gt;&lt;/a&gt; to stay updated, or retrieve site or translations files.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Grabber 是一个由 Bionus 开发的软件。&lt;br/&gt;请查看 &lt;a href=&quot;https://github.com/Bionus/imgbrd-grabber&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;软件官网/span&gt;&lt;/a&gt; 来保持软件或站点和翻译文件处在最新状态。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Grabber 是一个由 Bionus 开发的软件。&lt;br/&gt;请查看 &lt;a href=&quot;https://github.com/Bionus/imgbrd-grabber&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;软件官网&lt;/span&gt;&lt;/a&gt; 来保持软件或站点和翻译文件处在最新状态。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/aboutwindow.ui" line="79"/>
