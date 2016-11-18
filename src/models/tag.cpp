@@ -1,7 +1,7 @@
 #include <QTextDocument>
 #include <QSettings>
+#include <QSet>
 #include "tag.h"
-#include "functions.h"
 
 
 Tag::Tag()
@@ -140,6 +140,37 @@ QList<Tag> Tag::FromRegexp(QString rx, QStringList order, const QString &source)
 }
 
 /**
+ * Converts a QFont to a CSS string.
+ * @param	font	The font to convert.
+ * @return	The CSS font.
+ */
+QString Tag::qFontToCss(QFont font) const
+{
+	QString style;
+	switch (font.style())
+	{
+		case QFont::StyleNormal:	style = "normal";	break;
+		case QFont::StyleItalic:	style = "italic";	break;
+		case QFont::StyleOblique:	style = "oblique";	break;
+	}
+
+	QString size;
+	if (font.pixelSize() == -1)
+	{ size = QString::number(font.pointSize())+"pt"; }
+	else
+	{ size = QString::number(font.pixelSize())+"px"; }
+
+	// Should be "font.weight() * 8 + 100", but linux doesn't handle weight the same way windows do
+	QString weight = QString::number(font.weight() * 8);
+
+	QStringList decorations;
+	if (font.strikeOut())	{ decorations.append("line-through");	}
+	if (font.underline())	{ decorations.append("underline");		}
+
+	return "font-family:'"+font.family()+"'; font-size:"+size+"; font-style:"+style+"; font-weight:"+weight+"; text-decoration:"+(decorations.isEmpty() ? "none" : decorations.join(" "))+";";
+}
+
+/**
  * Return the colored tag.
  * @param favs The list of the user's favorite tags.
  * @return The HTML colored tag.
@@ -162,7 +193,7 @@ QString Tag::stylished(Profile *profile, QStringList ignored, QStringList blackl
 	QFont font;
 	font.fromString(profile->getSettings()->value("Coloring/Fonts/" + key).toString());
 	QString color = profile->getSettings()->value("Coloring/Colors/" + key, defaults.at(tlist.indexOf(key))).toString();
-	QString style = "color:"+color+"; "+qfonttocss(font);
+	QString style = "color:" + color + "; " + qFontToCss(font);
 
 	QString ret;
 	ret = "<a href=\"" + text() + "\" style=\"" + style + "\">" + (nounderscores ? text().replace('_', ' ') : text()) + "</a>";

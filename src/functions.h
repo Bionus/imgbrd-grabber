@@ -32,7 +32,6 @@ void		sslErrorHandler(QNetworkReply* qnr, QList<QSslError> errors);
 QDateTime	qDateTimeFromString(QString s);
 QString		savePath(QString s = "", bool exists = false);
 int			levenshtein(QString, QString);
-QString		qfonttocss(QFont);
 void		clearLayout(QLayout *layout);
 QString		stripTags(QString);
 QString		getUnit(float*);
