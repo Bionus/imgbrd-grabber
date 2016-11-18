@@ -6,7 +6,6 @@
 #include <QSslError>
 #include "tag.h"
 #include "image.h"
-#include "functions.h"
 #include "page-api.h"
 
 
