@@ -23,7 +23,7 @@
    <string>Image</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../../resources.qrc">
+   <iconset resource="../../CrashReporter/resources.qrc">
     <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,0,0,0">
@@ -111,42 +111,55 @@
      <property name="verticalSpacing">
       <number>0</number>
      </property>
-     <item row="0" column="0" rowspan="2">
-      <widget class="QPushButton" name="buttonDetails">
+     <item row="0" column="7" rowspan="2">
+      <widget class="QPushButton" name="pushButton">
+       <property name="maximumSize">
+        <size>
+         <width>24</width>
+         <height>16777215</height>
+        </size>
+       </property>
        <property name="text">
-        <string>More details</string>
+        <string notr="true">&gt;</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
+     <item row="0" column="2">
       <widget class="QPushButton" name="buttonSave">
        <property name="text">
         <string>Save</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="2">
+     <item row="0" column="1" rowspan="2">
+      <widget class="QPushButton" name="buttonDetails">
+       <property name="text">
+        <string>More details</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
       <widget class="QPushButton" name="buttonSaveNQuit">
        <property name="text">
         <string>Save and close</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="3">
+     <item row="0" column="4">
       <widget class="QPushButton" name="buttonOpen">
        <property name="text">
         <string>Destination folder</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="5" rowspan="2">
+     <item row="0" column="6" rowspan="2">
       <widget class="QPushButton" name="buttonSaveAs">
        <property name="text">
         <string>Save as...</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="4" rowspan="2">
+     <item row="0" column="5" rowspan="2">
       <widget class="QPushButton" name="buttonPlus">
        <property name="maximumSize">
         <size>
@@ -165,7 +178,7 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="1" colspan="3">
+     <item row="1" column="2" colspan="3">
       <widget class="QWidget" name="widget" native="true">
        <layout class="QGridLayout" name="gridLayout">
         <property name="leftMargin">
@@ -220,6 +233,19 @@
        </layout>
       </widget>
      </item>
+     <item row="0" column="0" rowspan="2">
+      <widget class="QPushButton" name="pushButton_2">
+       <property name="maximumSize">
+        <size>
+         <width>24</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string notr="true">&lt;</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
   </layout>
@@ -237,9 +263,7 @@
   <tabstop>scrollArea</tabstop>
  </tabstops>
  <resources>
-  <include location="../../resources.qrc"/>
-  <include location="../../resources.qrc"/>
-  <include location="../../resources.qrc"/>
+  <include location="../../CrashReporter/resources.qrc"/>
  </resources>
  <connections>
   <connection>
@@ -265,7 +289,7 @@
    <slot>saveNQuit()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>457</x>
+     <x>451</x>
      <y>563</y>
     </hint>
     <hint type="destinationlabel">
@@ -281,7 +305,7 @@
    <slot>openSaveDir()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>608</x>
+     <x>590</x>
      <y>563</y>
     </hint>
     <hint type="destinationlabel">
@@ -297,7 +321,7 @@
    <slot>saveImageAs()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>789</x>
+     <x>759</x>
      <y>576</y>
     </hint>
     <hint type="destinationlabel">
@@ -313,8 +337,8 @@
    <slot>openPool(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>383</x>
-     <y>533</y>
+     <x>392</x>
+     <y>506</y>
     </hint>
     <hint type="destinationlabel">
      <x>374</x>
@@ -345,7 +369,7 @@
    <slot>saveNQuitFav()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>457</x>
+     <x>451</x>
      <y>589</y>
     </hint>
     <hint type="destinationlabel">
@@ -361,7 +385,7 @@
    <slot>openSaveDirFav()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>608</x>
+     <x>590</x>
      <y>589</y>
     </hint>
     <hint type="destinationlabel">
@@ -377,12 +401,44 @@
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>621</x>
-     <y>567</y>
+     <x>620</x>
+     <y>576</y>
     </hint>
     <hint type="destinationlabel">
      <x>460</x>
      <y>585</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_2</sender>
+   <signal>clicked()</signal>
+   <receiver>zoomWindow</receiver>
+   <slot>previous()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>21</x>
+     <y>570</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>34</x>
+     <y>593</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>zoomWindow</receiver>
+   <slot>next()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>775</x>
+     <y>566</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>791</x>
+     <y>535</y>
     </hint>
    </hints>
   </connection>
@@ -399,5 +455,7 @@
   <slot>saveImageFav()</slot>
   <slot>saveNQuitFav()</slot>
   <slot>openSaveDirFav()</slot>
+  <slot>next()</slot>
+  <slot>previous()</slot>
  </slots>
 </ui>

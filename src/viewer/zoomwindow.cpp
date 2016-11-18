@@ -18,16 +18,13 @@
 
 
 
-zoomWindow::zoomWindow(QSharedPointer<Image> image, Site *site, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
-	: QDialog(Q_NULLPTR, Qt::Window), m_parent(parent), m_profile(profile), m_favorites(profile->getFavorites()), m_viewItLater(profile->getKeptForLater()), m_ignore(profile->getIgnored()), m_settings(profile->getSettings()), ui(new Ui::zoomWindow), m_site(site), timeout(300), m_loaded(false), m_loadedImage(false), m_loadedDetails(false), image(nullptr), movie(nullptr), m_reply(nullptr), m_finished(false), m_thread(false), m_data(QByteArray()), m_size(0), m_sites(sites), m_source(), m_th(nullptr), m_fullScreen(nullptr)
+zoomWindow::zoomWindow(QList<QSharedPointer<Image> > images, QSharedPointer<Image> image, Site *site, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
+	: QDialog(Q_NULLPTR, Qt::Window), m_parent(parent), m_profile(profile), m_favorites(profile->getFavorites()), m_viewItLater(profile->getKeptForLater()), m_ignore(profile->getIgnored()), m_settings(profile->getSettings()), ui(new Ui::zoomWindow), m_site(site), timeout(300), m_loaded(false), m_loadedImage(false), m_loadedDetails(false), image(nullptr), movie(nullptr), m_reply(nullptr), m_finished(false), m_thread(false), m_data(QByteArray()), m_size(0), m_sites(sites), m_source(), m_th(nullptr), m_fullScreen(nullptr), m_images(images)
 {
 	m_imageTime = nullptr;
 
 	setAttribute(Qt::WA_DeleteOnClose);
 	ui->setupUi(this);
-
-	m_image = image;
-	connect(m_image.data(), &Image::urlChanged, this, &zoomWindow::urlChanged);
 
 	m_mustSave = 0;
 
@@ -66,7 +63,20 @@ zoomWindow::zoomWindow(QSharedPointer<Image> image, Site *site, QMap<QString,Sit
 	connect(m_profile, &Profile::keptForLaterChanged, this, &zoomWindow::colore);
 	connect(m_profile, &Profile::ignoredChanged, this, &zoomWindow::colore);
 
-	go();
+	m_stackedWidget = new QStackedWidget(this);
+		ui->verticalLayout->insertWidget(1, m_stackedWidget, 1);
+	m_labelImage = new QAffiche(QVariant(), 0, QColor(), this);
+		m_labelImage->setSizePolicy(QSizePolicy(QSizePolicy::Ignored,QSizePolicy::Ignored));
+		connect(m_labelImage, SIGNAL(doubleClicked()), this, SLOT(fullScreen()));
+		m_stackedWidget->addWidget(m_labelImage);
+	m_mediaPlayer = new QMediaPlayer(this, QMediaPlayer::VideoSurface);
+		m_videoWidget = new QVideoWidget(this);
+		m_stackedWidget->addWidget(m_videoWidget);
+		m_mediaPlayer->setVideoOutput(m_videoWidget);
+
+	connect(ui->buttonDetails, SIGNAL(clicked()), this, SLOT(showDetails()));
+
+	load(image);
 }
 void zoomWindow::go()
 {
@@ -87,17 +97,6 @@ void zoomWindow::go()
 	if (m_settings->value("autodownload", false).toBool() || (whitelisted && m_settings->value("whitelist_download", "image").toString() == "image"))
 	{ saveImage(); }
 
-	m_stackedWidget = new QStackedWidget(this);
-		ui->verticalLayout->insertWidget(1, m_stackedWidget, 1);
-	m_labelImage = new QAffiche(QVariant(), 0, QColor(), this);
-		m_labelImage->setSizePolicy(QSizePolicy(QSizePolicy::Ignored,QSizePolicy::Ignored));
-		connect(m_labelImage, SIGNAL(doubleClicked()), this, SLOT(fullScreen()));
-		m_stackedWidget->addWidget(m_labelImage);
-	m_mediaPlayer = new QMediaPlayer(this, QMediaPlayer::VideoSurface);
-		m_videoWidget = new QVideoWidget(this);
-		m_stackedWidget->addWidget(m_videoWidget);
-		m_mediaPlayer->setVideoOutput(m_videoWidget);
-
 	QMap<QString, QString> assoc;
 		assoc["s"] = tr("Safe");
 		assoc["q"] = tr("Questionable");
@@ -116,8 +115,6 @@ void zoomWindow::go()
 
 	QString u = m_site->value("Urls/Html/Post");
 		u.replace("{id}", QString::number(m_image->id()));
-
-	connect(ui->buttonDetails, SIGNAL(clicked()), this, SLOT(showDetails()));
 
 	QString pos = m_settings->value("tagsposition", "top").toString();
 	if (pos == "auto")
@@ -146,7 +143,7 @@ void zoomWindow::go()
 	m_detailsWindow = new detailsWindow(m_profile, this);
 
 	// Load image details (exact tags & co)
-	connect(m_image.data(), &Image::finishedLoadingTags, this, &zoomWindow::replyFinishedDetails);
+	connect(m_image.data(), &Image::finishedLoadingTags, this, &zoomWindow::replyFinishedDetails, Qt::UniqueConnection);
 	m_image->loadDetails();
 
 	activateWindow();
@@ -348,7 +345,9 @@ void zoomWindow::unignore()
 void zoomWindow::load()
 {
 	log(QString("Loading image from <a href=\"%1\">%1</a>").arg(m_url));
+
 	m_data.clear();
+	m_source.clear();
 
 	ui->progressBarDownload->setMaximum(100);
 	ui->progressBarDownload->setValue(0);
@@ -371,7 +370,7 @@ void zoomWindow::downloadProgress(qint64 bytesReceived, qint64 bytesTotal)
 	ui->progressBarDownload->setMaximum(bytesTotal);
 	ui->progressBarDownload->setValue(bytesReceived);
 
-	if (m_imageTime->elapsed() > TIME || (bytesTotal > 0 && bytesReceived / bytesTotal > PERCENT))
+	if (m_imageTime != nullptr && m_imageTime->elapsed() > TIME || (bytesTotal > 0 && bytesReceived / bytesTotal > PERCENT))
 	{
 		m_imageTime->restart();
 		m_data.append(m_reply->readAll());
@@ -500,7 +499,6 @@ void zoomWindow::replyFinishedZoom()
 	QUrl redir = m_reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 	if (!redir.isEmpty())
 	{
-		m_data.clear();
 		m_url = redir.toString();
 		m_image->setUrl(m_url);
 		load();
@@ -887,4 +885,39 @@ void zoomWindow::urlChanged(QString old, QString nouv)
 {
 	Q_UNUSED(old);
 	m_url = nouv;
+}
+
+
+void zoomWindow::load(QSharedPointer<Image> image)
+{
+	m_image = image;
+	connect(m_image.data(), &Image::urlChanged, this, &zoomWindow::urlChanged, Qt::UniqueConnection);
+
+	m_size = 0;
+	if (m_thread)
+		m_th->exit(1);
+
+	go();
+}
+
+void zoomWindow::next()
+{
+	m_image->abortTags();
+	m_image->abortImage();
+
+	int index = m_images.indexOf(m_image);
+	index = (index + 1) % m_images.count();
+
+	load(m_images[index]);
+}
+
+void zoomWindow::previous()
+{
+	m_image->abortTags();
+	m_image->abortImage();
+
+	int index = m_images.indexOf(m_image);
+	index = (index + m_images.count() - 1) % m_images.count();
+
+	load(m_images[index]);
 }

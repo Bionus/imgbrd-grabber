@@ -376,7 +376,7 @@ void searchTab::finishedLoadingPreview()
 			{ download = true; }
 			else if (reponse == QMessageBox::Open)
 			{
-				zoomWindow *zoom = new zoomWindow(img, img->page()->site(), m_sites, m_profile, m_parent);
+				zoomWindow *zoom = new zoomWindow(m_images, img, img->page()->site(), m_sites, m_profile, m_parent);
 				zoom->show();
 				connect(zoom, SIGNAL(linkClicked(QString)), this, SLOT(setTags(QString)));
 				connect(zoom, SIGNAL(poolClicked(int, QString)), m_parent, SLOT(addPoolTab(int, QString)));
@@ -682,7 +682,7 @@ void searchTab::webZoom(int id)
 		}
 	}
 
-	zoomWindow *zoom = new zoomWindow(image, image->page()->site(), m_sites, m_profile, m_parent);
+	zoomWindow *zoom = new zoomWindow(m_images, image, image->page()->site(), m_sites, m_profile, m_parent);
 	zoom->show();
 	connect(zoom, SIGNAL(linkClicked(QString)), this, SLOT(setTags(QString)));
 	connect(zoom, SIGNAL(poolClicked(int, QString)), m_parent, SLOT(addPoolTab(int, QString)));

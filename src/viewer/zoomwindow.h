@@ -29,7 +29,7 @@ class zoomWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		zoomWindow(QSharedPointer<Image> image, Site *site, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent);
+		zoomWindow(QList<QSharedPointer<Image>> images, QSharedPointer<Image> image, Site *site, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent);
 		void go();
 		~zoomWindow();
 		void load();
@@ -71,6 +71,11 @@ class zoomWindow : public QDialog
 		void showDetails();
 		void pendingUpdate();
 
+		// Navigation
+		void load(QSharedPointer<Image> image);
+		void next();
+		void previous();
+
 	protected:
 		void closeEvent(QCloseEvent *);
 		void resizeEvent(QResizeEvent *);
@@ -102,7 +107,6 @@ class zoomWindow : public QDialog
 		QMovie *movie;
 		QTimer *m_resizeTimer;
 		QTime *m_imageTime;
-		QPushButton *buttonSave, *buttonSaveNQuit, *buttonSaveas, *m_buttonSaveNQuit;
 		QString link;
 		QNetworkReply *m_reply;
 		const char* m_format;
@@ -118,6 +122,7 @@ class zoomWindow : public QDialog
 		QAffiche *m_labelImage;
 		QVideoWidget *m_videoWidget;
 		QMediaPlayer *m_mediaPlayer;
+		QList<QSharedPointer<Image>> m_images;
 };
 
 #endif
