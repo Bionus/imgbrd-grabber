@@ -1,9 +1,8 @@
-#ifndef IMAGETHREAD_H
-#define IMAGETHREAD_H
+#ifndef IMAGE_THREAD_H
+#define IMAGE_THREAD_H
 
 #include <QThread>
 #include <QPixmap>
-
 
 
 class ImageThread : public QThread
@@ -11,7 +10,7 @@ class ImageThread : public QThread
 	Q_OBJECT
 
 	public:
-		ImageThread(QByteArray data, QObject* parent = 0);
+		ImageThread(const QByteArray &data, QObject* parent = Q_NULLPTR);
 
 	protected:
 		void run();
@@ -21,7 +20,7 @@ class ImageThread : public QThread
 		void finished(QImage, int);
 
 	private:
-		QByteArray m_data;
+		const QByteArray &m_data;
 };
 
-#endif // IMAGETHREAD_H
+#endif // IMAGE_THREAD_H
