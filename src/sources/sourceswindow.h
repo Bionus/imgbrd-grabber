@@ -36,7 +36,7 @@ class sourcesWindow : public QDialog
 		void checkUpdate();
 		void checkClicked();
 		void checkForUpdates();
-		void checkForUpdatesReceived(Source *source);
+		void checkForUpdatesReceived(Source *source, bool isNew);
 		void addCheckboxes();
 		void removeCheckboxes();
 		void updateCheckboxes();

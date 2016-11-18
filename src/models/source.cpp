@@ -11,7 +11,7 @@
 QList<Source*> *g_allSources = Q_NULLPTR;
 
 Source::Source(Profile *profile, QString dir)
-	: m_dir(dir), m_profile(profile), m_updateReply(nullptr), m_updateVersion("")
+	: m_dir(dir), m_profile(profile), m_updater(this, "https://raw.githubusercontent.com/Bionus/imgbrd-grabber/master/release/sites")
 {
 	// Load XML details for this source from its model file
 	QFile file(m_dir + "/model.xml");
@@ -71,60 +71,15 @@ Source::Source(Profile *profile, QString dir)
 	}
 	if (m_sites.isEmpty())
 	{ log(QString("No site for source %1").arg(m_name)); }
-
-	m_manager = new QNetworkAccessManager(this);
-	connect(m_manager, &QNetworkAccessManager::sslErrors, sslErrorHandler);
-}
-
-Source::~Source()
-{
-	m_manager->deleteLater();
 }
 
 
-/**
- * Check if an update is available for this source's model file.
- */
-void Source::checkForUpdates(QString baseUrl)
-{
-	QUrl url(baseUrl + m_name + "/model.xml");
-	QNetworkRequest request(url);
-
-	m_updateReply = m_manager->get(request);
-	connect(m_updateReply, &QNetworkReply::finished, this, &Source::checkForUpdatesDone);
-}
-
-/**
- * Called when the update check is finished.
- */
-void Source::checkForUpdatesDone()
-{
-	QString source = m_updateReply->readAll();
-	if (source.startsWith("<?xml"))
-	{
-		QFile current(m_dir + "/model.xml");
-		if (current.open(QFile::ReadOnly))
-		{
-			QString compare = current.readAll();
-			current.close();
-
-			if (compare != source)
-			{ m_updateVersion = VERSION; }
-		}
-	}
-
-	m_updateReply->deleteLater();
-	m_updateReply = nullptr;
-	emit checkForUpdatesFinished(this);
-}
-
-
-QString Source::getName() const 			{ return m_name;			}
-QString Source::getPath() const 			{ return m_dir;				}
-QList<Site*> Source::getSites() const		{ return m_sites;			}
-QList<Api*> Source::getApis() const			{ return m_apis;			}
-QString Source::getUpdateVersion() const	{ return m_updateVersion;	}
-Profile *Source::getProfile() const			{ return m_profile;			}
+QString Source::getName() const 		{ return m_name;		}
+QString Source::getPath() const 		{ return m_dir;			}
+QList<Site*> Source::getSites() const	{ return m_sites;		}
+QList<Api*> Source::getApis() const		{ return m_apis;		}
+Profile *Source::getProfile() const		{ return m_profile;		}
+SourceUpdater *Source::getUpdater() 	{ return &m_updater;	}
 
 Api *Source::getApi(QString name) const
 {

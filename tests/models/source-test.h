@@ -26,8 +26,6 @@ class SourceTest : public TestSuite
 		 */
 		void testGetAllCached();
 
-		void testCheckForUpdates();
-
 	private:
 		QSettings *m_settings;
 		Source *m_source;

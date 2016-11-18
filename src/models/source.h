@@ -7,7 +7,7 @@
 #include <QNetworkReply>
 #include "api.h"
 #include "profile.h"
-
+#include "updater/source-updater.h"
 
 
 class Site;
@@ -18,7 +18,6 @@ class Source : public QObject
 
 	public:
 		Source(Profile *profile, QString dir);
-		~Source();
 
 		// Getters
 		QString getName() const;
@@ -26,19 +25,11 @@ class Source : public QObject
 		QList<Site*> getSites() const;
 		QList<Api*> getApis() const;
 		Api *getApi(QString name) const;
-		QString getUpdateVersion() const;
 		Profile *getProfile() const;
+		SourceUpdater *getUpdater();
 
 		// Get an unique pointer to the list of all sources
 		static QList<Source*> *getAllSources(Profile *profile);
-
-	public slots:
-		// Check if a more recent model.xml exists for this source
-		void checkForUpdates(QString baseUrl);
-		void checkForUpdatesDone();
-
-	signals:
-		void checkForUpdatesFinished(Source*);
 
 	private:
 		QString m_dir;
@@ -46,11 +37,7 @@ class Source : public QObject
 		QList<Site*> m_sites;
 		QList<Api*> m_apis;
 		Profile *m_profile;
-
-		// Check for updates
-		QNetworkAccessManager *m_manager;
-		QNetworkReply *m_updateReply;
-		QString m_updateVersion;
+		SourceUpdater m_updater;
 };
 
 #endif // SOURCE_H

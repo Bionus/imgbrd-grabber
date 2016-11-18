@@ -46,6 +46,7 @@ HEADERS += $${PDIR}/vendor/*.h \
 	$${PDIR}/src/sources/*.h \
 	$${PDIR}/src/tabs/*.h \
 	$${PDIR}/src/ui/*.h \
+	$${PDIR}/src/updater/*.h \
 	$${PDIR}/src/utils/rename-existing/*.h \
 	$${PDIR}/src/utils/blacklist-fix/*.h \
 	$${PDIR}/src/utils/empty-dirs-fix/*.h \
@@ -61,6 +62,7 @@ SOURCES += $${PDIR}/vendor/*.cpp \
 	$${PDIR}/src/sources/*.cpp \
 	$${PDIR}/src/tabs/*.cpp \
 	$${PDIR}/src/ui/*.cpp \
+	$${PDIR}/src/updater/*.cpp \
 	$${PDIR}/src/utils/rename-existing/*.cpp \
 	$${PDIR}/src/utils/blacklist-fix/*.cpp \
 	$${PDIR}/src/utils/empty-dirs-fix/*.cpp \

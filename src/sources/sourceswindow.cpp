@@ -278,28 +278,21 @@ void sourcesWindow::checkForUpdates()
 
 	for (Source *source : sources)
 	{
-		 connect(source, &Source::checkForUpdatesFinished, this, &sourcesWindow::checkForUpdatesReceived);
-		 source->checkForUpdates("https://raw.githubusercontent.com/Bionus/imgbrd-grabber/master/release/sites/");
+		SourceUpdater *updater = source->getUpdater();
+		connect(updater, &SourceUpdater::finished, this, &sourcesWindow::checkForUpdatesReceived);
+		updater->checkForUpdates();
 	}
 }
-void sourcesWindow::checkForUpdatesReceived(Source *source)
+void sourcesWindow::checkForUpdatesReceived(Source *source, bool isNew)
 {
-	QString updateVersion = source->getUpdateVersion();
-	if (updateVersion.isEmpty())
+	if (!isNew)
 		return;
 
 	for (Site *site : source->getSites())
 	{
 		int pos = m_sites->values().indexOf(site);
-		if (updateVersion != VERSION)
-		{
-			m_labels[pos]->setPixmap(QPixmap(":/images/icons/warning.png"));
-			m_labels[pos]->setToolTip(tr("An update for this source is available, but for another version of the program."));
-		}
-		else
-		{
-			m_labels[pos]->setPixmap(QPixmap(":/images/icons/update.png"));
-			m_labels[pos]->setToolTip(tr("An update for this source is available."));
-		}
+
+		m_labels[pos]->setPixmap(QPixmap(":/images/icons/update.png"));
+		m_labels[pos]->setToolTip(tr("An update for this source is available."));
 	}
 }
