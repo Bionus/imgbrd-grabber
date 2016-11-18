@@ -33,11 +33,15 @@ zoomWindow::zoomWindow(QList<QSharedPointer<Image> > images, QSharedPointer<Imag
 	ui->progressBarDownload->hide();
 
 	QShortcut *escape = new QShortcut(QKeySequence(Qt::Key_Escape), this);
-		connect(escape, SIGNAL(activated()), this, SLOT(close()));
+		connect(escape, &QShortcut::activated, this, &zoomWindow::close);
 	QShortcut *save = new QShortcut(QKeySequence::Save, this);
 		connect(save, SIGNAL(activated()), this, SLOT(saveImage()));
-	QShortcut *saveAs = new QShortcut(QKeySequence("Ctrl+Shift+S"), this);
-		connect(saveAs, SIGNAL(activated()), this, SLOT(saveImageAs()));
+	QShortcut *saveAs = new QShortcut(QKeySequence::SaveAs, this);
+		connect(saveAs, &QShortcut::activated, this, &zoomWindow::saveImageAs);
+	QShortcut *arrowNext = new QShortcut(QKeySequence(Qt::Key_Right), this);
+		connect(arrowNext, &QShortcut::activated, this, &zoomWindow::next);
+	QShortcut *arrowPrevious = new QShortcut(QKeySequence(Qt::Key_Left), this);
+		connect(arrowPrevious, &QShortcut::activated, this, &zoomWindow::previous);
 
 	m_labelTagsLeft = new QAffiche(QVariant(), 0, QColor(), this);
 		m_labelTagsLeft->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -351,7 +355,6 @@ void zoomWindow::load()
 
 	ui->progressBarDownload->setMaximum(100);
 	ui->progressBarDownload->setValue(0);
-	ui->progressBarDownload->show();
 
 	m_imageTime = new QTime;
 	m_imageTime->start();
@@ -367,27 +370,32 @@ void zoomWindow::sslErrorHandler(QNetworkReply* qnr, QList<QSslError>)
 #define TIME 500
 void zoomWindow::downloadProgress(qint64 bytesReceived, qint64 bytesTotal)
 {
+	ui->progressBarDownload->show();
 	ui->progressBarDownload->setMaximum(bytesTotal);
 	ui->progressBarDownload->setValue(bytesReceived);
 
 	if (m_imageTime != nullptr && m_imageTime->elapsed() > TIME || (bytesTotal > 0 && bytesReceived / bytesTotal > PERCENT))
 	{
 		m_imageTime->restart();
-		m_data.append(m_reply->readAll());
-		m_thread = true;
-		m_th = new ImageThread(m_data);
-		connect(m_th, SIGNAL(finished(QImage, int)), this, SLOT(display(QImage, int)));
-		connect(m_th, SIGNAL(finished()), m_th, SLOT(deleteLater()));
-		m_th->start();
+
+		if (!m_thread)
+		{
+			m_data.append(m_reply->readAll());
+			m_thread = true;
+			m_th = new ImageThread(m_data);
+			connect(m_th, SIGNAL(finished(QPixmap*, int)), this, SLOT(display(QPixmap*, int)));
+			connect(m_th, SIGNAL(finished()), m_th, SLOT(deleteLater()));
+			m_th->start();
+		}
 	}
 }
-void zoomWindow::display(QImage pix, int size)
+void zoomWindow::display(QPixmap *pix, int size)
 {
-	if (!pix.size().isEmpty() && size >= m_size)
+	if (!pix->size().isEmpty() && size >= m_size)
 	{
 		m_size = size;
 		delete image;
-		image = new QPixmap(QPixmap::fromImage(pix));
+		image = pix;
 		if (m_url.section('.', -1).toLower() == "gif")
 		{ /*m_labelImage->setPixmap(*image);*/ }
 		else
@@ -514,6 +522,7 @@ void zoomWindow::replyFinishedZoom()
 
 		m_loadedImage = true;
 		pendingUpdate();
+
 		draw();
 	}
 	else if (m_reply->error() == QNetworkReply::ContentNotFoundError)
@@ -647,7 +656,7 @@ void zoomWindow::draw()
 	{
 		m_thread = true;
 		m_th = new ImageThread(m_data);
-		connect(m_th, SIGNAL(finished(QImage, int)), this, SLOT(display(QImage, int)));
+		connect(m_th, SIGNAL(finished(QPixmap*, int)), this, SLOT(display(QPixmap*, int)));
 		connect(m_th, SIGNAL(finished()), m_th, SLOT(deleteLater()));
 		m_th->start();
 	}

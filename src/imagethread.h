@@ -10,17 +10,17 @@ class ImageThread : public QThread
 	Q_OBJECT
 
 	public:
-		ImageThread(const QByteArray &data, QObject* parent = Q_NULLPTR);
+		ImageThread(QByteArray data, QObject* parent = Q_NULLPTR);
 
 	protected:
 		void run();
 
 	signals:
-		void finished(QPixmap, int);
-		void finished(QImage, int);
+		void finished(QPixmap*, int);
+		void finished(QImage*, int);
 
 	private:
-		const QByteArray &m_data;
+		QByteArray m_data;
 };
 
 #endif // IMAGE_THREAD_H

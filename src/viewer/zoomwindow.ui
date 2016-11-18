@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>600</height>
+    <height>561</height>
    </rect>
   </property>
   <property name="baseSize">
@@ -61,7 +61,7 @@
              <x>0</x>
              <y>0</y>
              <width>69</width>
-             <height>477</height>
+             <height>438</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -112,7 +112,7 @@
       <number>0</number>
      </property>
      <item row="0" column="7" rowspan="2">
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="buttonNext">
        <property name="maximumSize">
         <size>
          <width>24</width>
@@ -234,7 +234,7 @@
       </widget>
      </item>
      <item row="0" column="0" rowspan="2">
-      <widget class="QPushButton" name="pushButton_2">
+      <widget class="QPushButton" name="buttonPrev">
        <property name="maximumSize">
         <size>
          <width>24</width>
@@ -411,7 +411,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>pushButton_2</sender>
+   <sender>buttonPrev</sender>
    <signal>clicked()</signal>
    <receiver>zoomWindow</receiver>
    <slot>previous()</slot>
@@ -427,7 +427,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>pushButton</sender>
+   <sender>buttonNext</sender>
    <signal>clicked()</signal>
    <receiver>zoomWindow</receiver>
    <slot>next()</slot>
