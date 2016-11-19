@@ -2,7 +2,6 @@
 #define UPDATE_DIALOG_H
 
 #include <QDialog>
-#include <QProgressDialog>
 #include <QNetworkReply>
 #include <QWidget>
 #include "program-updater.h"
@@ -22,6 +21,7 @@ class UpdateDialog : public QDialog
 		~UpdateDialog();
 
 	public slots:
+		void accept();
 		void checkForUpdates();
 		void downloadUpdate();
 		void resizeToFit();
@@ -29,14 +29,12 @@ class UpdateDialog : public QDialog
 	private slots:
 		void checkForUpdatesDone(QString newVersion, bool available, QString changelog);
 		void downloadProgress(qint64 bytesReceived, qint64 bytesTotal);
-		void downloadFinished();
+		void downloadFinished(QString path);
 
 	private:
 		Ui::UpdateDialog	*ui;
 		QWidget				*m_parent;
 		ProgramUpdater		m_updater;
-		QNetworkReply		*m_updaterReply;
-		QProgressDialog		*m_updaterProgress;
 };
 
 #endif // UPDATE_DIALOG_H

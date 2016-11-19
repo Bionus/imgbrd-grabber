@@ -11,9 +11,9 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Updater</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,1,0">
+  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,1,0,0">
    <property name="sizeConstraint">
     <enum>QLayout::SetMinimumSize</enum>
    </property>
@@ -60,6 +60,13 @@
      </property>
      <property name="text">
       <string notr="true">{ changelog }</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QProgressBar" name="progressDownload">
+     <property name="value">
+      <number>0</number>
      </property>
     </widget>
    </item>

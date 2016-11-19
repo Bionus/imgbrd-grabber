@@ -1,3 +1,5 @@
+#include <QMessageBox>
+#include <QProcess>
 #include "update-dialog.h"
 #include "ui_update-dialog.h"
 
@@ -8,6 +10,7 @@ UpdateDialog::UpdateDialog(QWidget *parent)
 	ui->setupUi(this);
 
 	ui->labelChangelog->setVisible(ui->checkShowChangelog->isChecked());
+	ui->progressDownload->hide();
 	resize(300, 0);
 
 	connect(&m_updater, &ProgramUpdater::finished, this, &UpdateDialog::checkForUpdatesDone);
@@ -46,24 +49,41 @@ void UpdateDialog::checkForUpdatesDone(QString newVersion, bool available, QStri
 	activateWindow();
 }
 
+void UpdateDialog::accept()
+{
+	downloadUpdate();
+}
+
 
 void UpdateDialog::downloadUpdate()
 {
-	m_updaterProgress = new QProgressDialog(tr("Downloading update..."), tr("Abort update"), 0, 100, this);
-	m_updaterProgress->setWindowModality(Qt::WindowModal);
+	ui->progressDownload->show();
 
-	m_updaterReply = m_updater.downloadUpdate();
-	connect(m_updaterReply, &QNetworkReply::downloadProgress, this, &UpdateDialog::downloadProgress);
-	connect(m_updaterReply, &QNetworkReply::finished, this, &UpdateDialog::downloadFinished);
+	m_updater.downloadUpdate();
+	connect(&m_updater, &ProgramUpdater::downloadProgress, this, &UpdateDialog::downloadProgress);
+	connect(&m_updater, &ProgramUpdater::downloadFinished, this, &UpdateDialog::downloadFinished);
 }
 
 void UpdateDialog::downloadProgress(qint64 bytesReceived, qint64 bytesTotal)
 {
-	Q_UNUSED(bytesReceived)
-	Q_UNUSED(bytesTotal)
+	ui->progressDownload->setMaximum(bytesTotal);
+	ui->progressDownload->setValue(bytesReceived);
 }
 
-void UpdateDialog::downloadFinished()
+void UpdateDialog::downloadFinished(QString path)
 {
-	m_parent->close();
+	ui->progressDownload->setValue(ui->progressDownload->maximum());
+
+	int reponse = QMessageBox::question(this, tr("Updater"), tr("To go on with the update, the program must be closed. Do you want to close now?"), QMessageBox::Yes | QMessageBox::No);
+	if (reponse == QMessageBox::Yes)
+	{
+		QProcess::startDetached(path);
+
+		m_parent->close();
+		qApp->exit();
+	}
+	else
+	{
+		close();
+	}
 }
