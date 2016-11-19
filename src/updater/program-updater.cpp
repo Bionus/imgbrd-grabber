@@ -35,7 +35,7 @@ void ProgramUpdater::checkForUpdatesDone()
 	QString changelog = lastRelease["body"].toString();
 
 	int max = versionToInt(latest);
-	int current = versionToInt(QString(VERSION)) - 1;
+	int current = versionToInt(QString(VERSION));
 	bool isNew = max > current;
 
 	m_newVersion = latest;
@@ -50,7 +50,7 @@ void ProgramUpdater::downloadUpdate()
 	QMap<QString, QVariant> lastAsset = lastRelease["assets"].toList().first().toMap();
 
 	QUrl url(lastAsset["browser_download_url"].toString());
-	m_updateFilename = m_downloadReply->url().fileName();
+	m_updateFilename = url.fileName();
 	QNetworkRequest request(url);
 	log(QString("Downloading installer from \"%1\".").arg(url.toString()));
 
