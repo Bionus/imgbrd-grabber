@@ -63,6 +63,8 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	ui->checkShowWarnings->setChecked(settings->value("showwarnings", true).toBool());
 	ui->checkGetUnloadedPages->setChecked(settings->value("getunloadedpages", false).toBool());
 	ui->checkConfirmClose->setChecked(settings->value("confirm_close", true).toBool());
+	QList<int> checkForUpdates = QList<int>() << 0 << 24*60*60 << 7*24*60*60 << 30*24*60*60 << -1;
+	ui->comboCheckForUpdates->setCurrentIndex(checkForUpdates.indexOf(settings->value("check_for_updates", -1).toInt()));
 
 	ui->spinImagesPerPage->setValue(settings->value("limit", 20).toInt());
 	ui->spinColumns->setValue(settings->value("columns", 1).toInt());
@@ -492,6 +494,8 @@ void optionsWindow::save()
 	settings->setValue("showwarnings", ui->checkShowWarnings->isChecked());
 	settings->setValue("getunloadedpages", ui->checkGetUnloadedPages->isChecked());
 	settings->setValue("confirm_close", ui->checkConfirmClose->isChecked());
+	QList<int> checkForUpdates = QList<int>() << 0 << 24*60*60 << 7*24*60*60 << 30*24*60*60 << -1;
+	settings->setValue("check_for_updates", checkForUpdates.at(ui->comboCheckForUpdates->currentIndex()));
 
 	settings->beginGroup("Filenames");
 		for (int i = 0; i < m_filenamesConditions.size(); i++)

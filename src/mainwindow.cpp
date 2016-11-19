@@ -218,6 +218,10 @@ void mainWindow::init()
 	updateFavorites();
 	updateKeepForLater();
 
+	// Check for updates
+	m_updateWindow = new UpdateWindow(this);
+	m_updateWindow->checkForUpdates();
+
 	m_loaded = true;
 	m_currentTab = nullptr;
 	log("Fin de l'initialisation.");

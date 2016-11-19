@@ -5,7 +5,7 @@
 
 
 AboutWindow::AboutWindow(QString version, QWidget *parent)
-	: QDialog(parent), ui(new Ui::AboutWindow), m_updater("https://api.github.com/repos/Bionus/imgbrd-grabber")
+	: QDialog(parent), ui(new Ui::AboutWindow), m_updater()
 {
 	ui->setupUi(this);
 

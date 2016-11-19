@@ -73,6 +73,7 @@ FORMS += $${PDIR}/src/*.ui \
 	$${PDIR}/src/settings/*.ui \
 	$${PDIR}/src/sources/*.ui \
 	$${PDIR}/src/tabs/*.ui \
+	$${PDIR}/src/updater/*.ui \
 	$${PDIR}/src/utils/rename-existing/*.ui \
 	$${PDIR}/src/utils/blacklist-fix/*.ui \
 	$${PDIR}/src/utils/empty-dirs-fix/*.ui \

@@ -14,7 +14,7 @@
    <string>Options</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../../CrashReporter/resources.qrc">
+   <iconset resource="../../resources.qrc">
     <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout">
@@ -323,6 +323,45 @@
           </property>
          </widget>
         </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="labelCheckForUpdates">
+          <property name="text">
+           <string>Check for updates</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QComboBox" name="comboCheckForUpdates">
+          <property name="currentIndex">
+           <number>4</number>
+          </property>
+          <item>
+           <property name="text">
+            <string>Every time</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Once a day</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Once a week</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Once a month</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Never</string>
+           </property>
+          </item>
+         </widget>
+        </item>
        </layout>
        <zorder>label</zorder>
        <zorder>comboLanguages</zorder>
@@ -346,6 +385,8 @@
        <zorder>label_65</zorder>
        <zorder>lineAdd</zorder>
        <zorder>checkConfirmClose</zorder>
+       <zorder>labelCheckForUpdates</zorder>
+       <zorder>comboCheckForUpdates</zorder>
       </widget>
       <widget class="QWidget" name="pageSources">
        <layout class="QFormLayout" name="formLayout_2">
@@ -2420,7 +2461,9 @@
   <tabstop>checkAutocompletion</tabstop>
  </tabstops>
  <resources>
-  <include location="../../CrashReporter/resources.qrc"/>
+  <include location="../../resources.qrc"/>
+  <include location="../../resources.qrc"/>
+  <include location="../../resources.qrc"/>
  </resources>
  <connections>
   <connection>
