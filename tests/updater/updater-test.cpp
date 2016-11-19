@@ -5,11 +5,15 @@
 void UpdaterTest::testCompareEqual()
 {
 	QCOMPARE(m_updater.compareVersions("1.0.0", "1.0.0"), 0);
+	QCOMPARE(m_updater.compareVersions("1.4.0", "1.4.0"), 0);
+	QCOMPARE(m_updater.compareVersions("1.4.7", "1.4.7"), 0);
 }
 
 void UpdaterTest::testCompareEqualAlphas()
 {
 	QCOMPARE(m_updater.compareVersions("1.0.0a2", "1.0.0a2"), 0);
+	QCOMPARE(m_updater.compareVersions("1.4.0a2", "1.4.0a2"), 0);
+	QCOMPARE(m_updater.compareVersions("1.4.7a2", "1.4.7a2"), 0);
 }
 
 
