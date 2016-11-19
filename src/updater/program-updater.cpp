@@ -1,6 +1,7 @@
-#include "program-updater.h"
 #include <QNetworkRequest>
 #include <QNetworkReply>
+#include "program-updater.h"
+#include "json.h"
 
 
 ProgramUpdater::ProgramUpdater()
@@ -24,27 +25,17 @@ void ProgramUpdater::checkForUpdatesDone()
 {
 	m_source = m_checkForUpdatesReply->readAll();
 
-	int max = 0;
-	QString latest;
+	QVariant json = Json::parse(m_source);
+	QMap<QString, QVariant> lastRelease = json.toList().first().toMap();
 
-	QRegExp rx("\"name\":\\s*\"v([^\"]+)\"");
-	int pos = 0;
-	while ((pos = rx.indexIn(m_source, pos)) != -1)
-	{
-		QString version = rx.cap(1);
-		int intVersion = versionToInt(rx.cap(1));
+	QString latest = lastRelease["name"].toString().mid(1);
+	QString changelog = lastRelease["body"].toString();
 
-		if (intVersion > max)
-		{
-			max = intVersion;
-			latest = version;
-		}
-
-		pos += rx.matchedLength();
-	}
-
+	int max = versionToInt(latest);
 	int current = versionToInt(QString(VERSION)) - 1;
-	emit finished(latest, max > current, "* updated\n*test");
+	bool isNew = max > current;
+
+	emit finished(latest, isNew, changelog);
 }
 
 QNetworkReply *ProgramUpdater::downloadUpdate()
