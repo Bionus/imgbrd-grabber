@@ -21,8 +21,6 @@
 zoomWindow::zoomWindow(QList<QSharedPointer<Image> > images, QSharedPointer<Image> image, Site *site, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
 	: QDialog(Q_NULLPTR, Qt::Window), m_parent(parent), m_profile(profile), m_favorites(profile->getFavorites()), m_viewItLater(profile->getKeptForLater()), m_ignore(profile->getIgnored()), m_settings(profile->getSettings()), ui(new Ui::zoomWindow), m_site(site), timeout(300), m_loaded(false), m_loadedImage(false), m_loadedDetails(false), image(nullptr), movie(nullptr), m_reply(nullptr), m_finished(false), m_thread(false), m_data(QByteArray()), m_size(0), m_sites(sites), m_source(), m_th(nullptr), m_fullScreen(nullptr), m_images(images)
 {
-	m_imageTime = nullptr;
-
 	setAttribute(Qt::WA_DeleteOnClose);
 	ui->setupUi(this);
 
@@ -158,8 +156,6 @@ void zoomWindow::go()
  */
 zoomWindow::~zoomWindow()
 {
-	if (m_imageTime != nullptr)
-		delete m_imageTime;
 	if (image != nullptr)
 		delete image;
 	if (movie != nullptr)
@@ -356,8 +352,10 @@ void zoomWindow::load()
 	ui->progressBarDownload->setMaximum(100);
 	ui->progressBarDownload->setValue(0);
 
-	m_imageTime = new QTime;
-	m_imageTime->start();
+	m_imageTime.start();
+
+	if (m_reply != nullptr && m_reply->isRunning())
+		m_reply->abort();
 
 	m_reply = m_site->get(m_url, nullptr, "image", m_image.data());
 	connect(m_reply, SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(downloadProgress(qint64, qint64)));
@@ -374,9 +372,9 @@ void zoomWindow::downloadProgress(qint64 bytesReceived, qint64 bytesTotal)
 	ui->progressBarDownload->setMaximum(bytesTotal);
 	ui->progressBarDownload->setValue(bytesReceived);
 
-	if (m_imageTime != nullptr && m_imageTime->elapsed() > TIME || (bytesTotal > 0 && bytesReceived / bytesTotal > PERCENT))
+	if (m_imageTime.elapsed() > TIME || (bytesTotal > 0 && bytesReceived / bytesTotal > PERCENT))
 	{
-		m_imageTime->restart();
+		m_imageTime.restart();
 
 		if (!m_thread)
 		{
@@ -498,9 +496,6 @@ void zoomWindow::colore()
 
 void zoomWindow::replyFinishedZoom()
 {
-	delete m_imageTime;
-	m_imageTime = nullptr;
-
 	ui->progressBarDownload->hide();
 
 	// Check redirection
@@ -519,7 +514,6 @@ void zoomWindow::replyFinishedZoom()
 	{
 		m_data.append(m_reply->readAll());
 		m_image->setData(m_data);
-
 		m_loadedImage = true;
 		pendingUpdate();
 
@@ -899,12 +893,29 @@ void zoomWindow::urlChanged(QString old, QString nouv)
 
 void zoomWindow::load(QSharedPointer<Image> image)
 {
+	disconnect(m_image.data(), &Image::finishedLoadingTags, this, &zoomWindow::replyFinishedDetails);
+
 	m_image = image;
 	connect(m_image.data(), &Image::urlChanged, this, &zoomWindow::urlChanged, Qt::UniqueConnection);
 
 	m_size = 0;
-	if (m_thread)
-		m_th->exit(1);
+
+	// Preload gallery images
+	int preload = 1;
+	if (preload > 0)
+	{
+		int index = m_images.indexOf(m_image);
+		for (int i = index - preload; i <= index + preload; ++i)
+		{
+			if (i == index)
+				continue;
+
+			int pos = (i + m_images.count()) % m_images.count();
+			log(QString("Preloading data for image #%1").arg(pos));
+			m_images[pos]->loadDetails();
+			m_images[pos]->loadImage();
+		}
+	}
 
 	go();
 }

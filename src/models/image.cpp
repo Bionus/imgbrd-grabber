@@ -266,6 +266,8 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	m_loadImage = nullptr;
 	m_loadingPreview = false;
 	m_loadingDetails = false;
+	m_loadedDetails = false;
+	m_loadedImage = false;
 	m_loadingImage = false;
 	m_tryingSample = false;
 	m_pools = QList<Pool>();
@@ -348,6 +350,15 @@ void Image::parsePreview()
 
 void Image::loadDetails()
 {
+	if (m_loadingDetails)
+		return;
+
+	if (m_loadedDetails)
+	{
+		emit finishedLoadingTags();
+		return;
+	}
+
 	m_loadDetails = m_parentSite->get(m_parentSite->fixUrl(m_pageUrl));
 	m_loadDetails->setParent(this);
 	m_loadingDetails = true;
@@ -433,6 +444,7 @@ void Image::parseDetails()
 
 	m_loadDetails->deleteLater();
 	m_loadDetails = nullptr;
+	m_loadedDetails = true;
 
 	emit finishedLoadingTags();
 }
@@ -616,6 +628,15 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 
 void Image::loadImage()
 {
+	if (m_loadingImage)
+		return;
+
+	if (m_loadedImage)
+	{
+		emit finishedImage();
+		return;
+	}
+
 	if (m_loadImage != nullptr)
 		m_loadImage->deleteLater();
 
@@ -682,6 +703,7 @@ void Image::finishedImageS()
 		m_data = m_loadImage->readAll();
 	}
 
+	m_loadedImage = true;
 	emit finishedImage();
 }
 void Image::downloadProgressImageS(qint64 v1, qint64 v2)

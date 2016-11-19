@@ -106,7 +106,7 @@ class zoomWindow : public QDialog
 		QPixmap *image;
 		QMovie *movie;
 		QTimer *m_resizeTimer;
-		QTime *m_imageTime;
+		QTime m_imageTime;
 		QString link;
 		QNetworkReply *m_reply;
 		const char* m_format;

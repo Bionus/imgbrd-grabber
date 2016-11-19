@@ -137,7 +137,7 @@ class Image : public QObject
 		QStringList		m_search;
 		Site			*m_parentSite;
 		QMap<QString, QString>   m_details;
-		bool			m_loadingPreview, m_loadingDetails, m_loadingImage, m_tryingSample;
+		bool			m_loadingPreview, m_loadingDetails, m_loadingImage, m_tryingSample, m_loadedDetails, m_loadedImage;
 };
 
 Q_DECLARE_METATYPE(Image)
