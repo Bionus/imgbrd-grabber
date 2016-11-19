@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>530</width>
-    <height>272</height>
+    <height>298</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,7 +21,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>4</number>
      </property>
      <widget class="QWidget" name="tabGeneral">
       <attribute name="title">
@@ -657,7 +657,7 @@
          </layout>
         </widget>
        </item>
-       <item row="3" column="0" colspan="2">
+       <item row="4" column="0" colspan="2">
         <layout class="QHBoxLayout" name="layoutTestLogin" stretch="1,0">
          <item>
           <widget class="QLabel" name="labelTestLogin">
@@ -684,6 +684,20 @@
        </item>
        <item row="2" column="1">
         <widget class="QLineEdit" name="lineLoginCookie"/>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="labelLoginMaxPage">
+         <property name="text">
+          <string>Page limit</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QSpinBox" name="spinLoginMaxPage">
+         <property name="maximum">
+          <number>10000</number>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>

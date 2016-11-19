@@ -57,6 +57,7 @@ SourcesSettingsWindow::SourcesSettingsWindow(Site *site, QWidget *parent) : QDia
 	ui->lineLoginPseudo->setText(settings->value("login/pseudo", "").toString());
 	ui->lineLoginPassword->setText(settings->value("login/password", "").toString());
 	ui->lineLoginCookie->setText(settings->value("login/cookie", "").toString());
+	ui->spinLoginMaxPage->setValue(settings->value("login/maxPage", 0).toInt());
 
 	// Hide hash if unncessary
 	if (site->value("PasswordSalt").isEmpty())
@@ -208,6 +209,7 @@ void SourcesSettingsWindow::save()
 	settings->setValue("login/pseudo", ui->lineLoginPseudo->text());
 	settings->setValue("login/password", ui->lineLoginPassword->text());
 	settings->setValue("login/cookie", ui->lineLoginCookie->text());
+	settings->setValue("login/maxPage", ui->spinLoginMaxPage->value());
 
 	// Cookies
 	QList<QVariant> cookies;
