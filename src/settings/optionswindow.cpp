@@ -194,6 +194,7 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 		ui->layoutCustom->insertRow(i, leName, leTags);
 	}
 
+	ui->spinPreload->setValue(settings->value("preload", 0).toInt());
 	settings->beginGroup("Coloring");
 		settings->beginGroup("Colors");
 			ui->lineColoringArtists->setText(settings->value("artists", "#aa0000").toString());
@@ -643,6 +644,7 @@ void optionsWindow::save()
 		settings->endGroup();
 	settings->endGroup();
 
+	settings->setValue("preload", ui->spinPreload->value());
 	settings->beginGroup("Coloring");
 		settings->beginGroup("Colors");
 			settings->setValue("artists", ui->lineColoringArtists->text());

@@ -901,7 +901,7 @@ void zoomWindow::load(QSharedPointer<Image> image)
 	m_size = 0;
 
 	// Preload gallery images
-	int preload = 1;
+	int preload = m_settings->value("preload", 0).toInt();
 	if (preload > 0)
 	{
 		int index = m_images.indexOf(m_image);
