@@ -219,8 +219,8 @@ void mainWindow::init()
 	updateKeepForLater();
 
 	// Check for updates
-	m_updateWindow = new UpdateWindow(this);
-	m_updateWindow->checkForUpdates();
+	m_updateDialog = new UpdateDialog(this);
+	m_updateDialog->checkForUpdates();
 
 	m_loaded = true;
 	m_currentTab = nullptr;

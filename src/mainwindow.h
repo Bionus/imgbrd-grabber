@@ -20,7 +20,7 @@
 #include "models/site.h"
 #include "models/profile.h"
 #include "downloader/downloader.h"
-#include "updater/update-window.h"
+#include "updater/update-dialog.h"
 
 
 
@@ -177,7 +177,7 @@ class mainWindow : public QMainWindow
 
 	private:
 		Profile				*m_profile;
-		UpdateWindow		*m_updateWindow;
+		UpdateDialog		*m_updateDialog;
 		QList<Favorite>		&m_favorites;
 		int					m_getAllDownloaded, m_getAllExists, m_getAllIgnored, m_getAll404s, m_getAllErrors, m_getAllSkipped, m_getAllLimit, m_downloads, m_waitForLogin;
 		bool				m_allow, m_mustGetTags, m_loaded, m_getAll;

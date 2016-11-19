@@ -1,8 +1,8 @@
 #ifndef PROGRAM_UPDATER_H
 #define PROGRAM_UPDATER_H
 
-#include "updater.h"
 #include <QNetworkReply>
+#include "updater.h"
 
 
 class ProgramUpdater : public Updater

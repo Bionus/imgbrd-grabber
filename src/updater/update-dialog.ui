@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>UpdateWindow</class>
- <widget class="QDialog" name="UpdateWindow">
+ <class>UpdateDialog</class>
+ <widget class="QDialog" name="UpdateDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>300</width>
     <height>300</height>
    </rect>
   </property>
@@ -14,8 +14,17 @@
    <string>Dialog</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,1,0">
+   <property name="sizeConstraint">
+    <enum>QLayout::SetMinimumSize</enum>
+   </property>
    <item>
     <widget class="QLabel" name="labelUpdateAvailable">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="text">
       <string>A new version is available.&lt;br/&gt;Do you want to update now?</string>
      </property>
@@ -23,6 +32,12 @@
    </item>
    <item>
     <widget class="QLabel" name="labelVersion">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="text">
       <string notr="true">{ version }</string>
      </property>
@@ -37,6 +52,12 @@
    </item>
    <item>
     <widget class="QLabel" name="labelChangelog">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="text">
       <string notr="true">{ changelog }</string>
      </property>
@@ -59,7 +80,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>UpdateWindow</receiver>
+   <receiver>UpdateDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -75,7 +96,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>UpdateWindow</receiver>
+   <receiver>UpdateDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -91,18 +112,21 @@
   <connection>
    <sender>checkShowChangelog</sender>
    <signal>toggled(bool)</signal>
-   <receiver>labelChangelog</receiver>
-   <slot>setVisible(bool)</slot>
+   <receiver>UpdateDialog</receiver>
+   <slot>resizeToFit()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>56</x>
-     <y>65</y>
+     <x>162</x>
+     <y>67</y>
     </hint>
     <hint type="destinationlabel">
-     <x>72</x>
-     <y>153</y>
+     <x>401</x>
+     <y>52</y>
     </hint>
    </hints>
   </connection>
  </connections>
+ <slots>
+  <slot>resizeToFit()</slot>
+ </slots>
 </ui>
