@@ -41,7 +41,7 @@
       </attribute>
       <column>
        <property name="text">
-        <string>1</string>
+        <string notr="true">Categories</string>
        </property>
       </column>
       <item>
@@ -103,6 +103,11 @@
        <property name="text">
         <string>Interface</string>
        </property>
+       <item>
+        <property name="text">
+         <string>Image window</string>
+        </property>
+       </item>
        <item>
         <property name="text">
          <string>Coloring</string>
@@ -1417,6 +1422,26 @@
           </property>
          </widget>
         </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="labelThumbnailUpscale">
+          <property name="text">
+           <string>Upscaling</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QSpinBox" name="spinThumbnailUpscale">
+          <property name="suffix">
+           <string>%</string>
+          </property>
+          <property name="minimum">
+           <number>100</number>
+          </property>
+          <property name="maximum">
+           <number>1000</number>
+          </property>
+         </widget>
+        </item>
         <item row="2" column="0" colspan="2">
          <widget class="QCheckBox" name="checkAutocompletion">
           <property name="text">
@@ -1427,181 +1452,14 @@
           </property>
          </widget>
         </item>
-        <item row="5" column="0">
-         <widget class="QLabel" name="label_39">
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_26">
           <property name="text">
-           <string>Hide favorites</string>
+           <string>Favorites display</string>
           </property>
          </widget>
         </item>
-        <item row="5" column="1">
-         <widget class="QSpinBox" name="spinHideFavorites">
-          <property name="maximum">
-           <number>1000</number>
-          </property>
-          <property name="value">
-           <number>20</number>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="0" colspan="2">
-         <widget class="QLabel" name="label_40">
-          <property name="text">
-           <string>&lt;i&gt;The favorites list will be hidden as soon as this image number has been reached.&lt;/i&gt;</string>
-          </property>
-          <property name="wordWrap">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="0">
-         <widget class="QLabel" name="label_41">
-          <property name="text">
-           <string>Source's type display</string>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="1">
-         <widget class="QComboBox" name="comboSources">
-          <item>
-           <property name="text">
-            <string>Text</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Image</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Image and text</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Don't show</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item row="8" column="0">
-         <widget class="QLabel" name="label_42">
-          <property name="text">
-           <string>Displayed letters</string>
-          </property>
-         </widget>
-        </item>
-        <item row="8" column="1">
-         <layout class="QHBoxLayout" name="horizontalLayout_9">
-          <item>
-           <widget class="QComboBox" name="comboSourcesLetters">
-            <item>
-             <property name="text">
-              <string>Display n letters</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Before first dot</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Before last dot</string>
-             </property>
-            </item>
-           </widget>
-          </item>
-          <item>
-           <widget class="QSpinBox" name="spinSourcesLetters">
-            <property name="minimum">
-             <number>0</number>
-            </property>
-            <property name="maximum">
-             <number>1000000</number>
-            </property>
-            <property name="value">
-             <number>3</number>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item row="9" column="0" colspan="2">
-         <widget class="QLabel" name="label_43">
-          <property name="text">
-           <string>&lt;i&gt;Number of displayed letters near the sources' checkboxes in the &quot;+&quot; part of the main window.&lt;/i&gt;</string>
-          </property>
-          <property name="wordWrap">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="10" column="0">
-         <widget class="QLabel" name="label_44">
-          <property name="text">
-           <string>Tag list position</string>
-          </property>
-         </widget>
-        </item>
-        <item row="10" column="1">
-         <widget class="QComboBox" name="comboTagsposition">
-          <item>
-           <property name="text">
-            <string>Top</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Left</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Auto</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item row="12" column="0" colspan="2">
-         <widget class="QCheckBox" name="checkShowTagWarning">
-          <property name="text">
-           <string>Show warning if an incompatible modifier is found</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="13" column="0" colspan="2">
-         <widget class="QCheckBox" name="checkShowWarnings">
-          <property name="text">
-           <string>Show other warnings</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="14" column="0" colspan="2">
-         <widget class="QCheckBox" name="checkGetUnloadedPages">
-          <property name="text">
-           <string>Download not loaded pages</string>
-          </property>
-         </widget>
-        </item>
-        <item row="15" column="0" colspan="2">
-         <widget class="QLabel" name="label_66">
-          <property name="text">
-           <string>&lt;i&gt;If you activate this option, pressing the &quot;Get this page&quot; button will take into account modifications made to the number of images per page, the page number, etc. even if they weren't loaded.&lt;/i&gt;</string>
-          </property>
-          <property name="wordWrap">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="1">
+        <item row="3" column="1">
          <widget class="QComboBox" name="comboFavoritesDisplay">
           <item>
            <property name="text">
@@ -1641,48 +1499,216 @@
          </widget>
         </item>
         <item row="4" column="0">
-         <widget class="QLabel" name="label_26">
+         <widget class="QLabel" name="label_39">
           <property name="text">
-           <string>Favorites display</string>
+           <string>Hide favorites</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="labelThumbnailUpscale">
-          <property name="text">
-           <string>Upscaling</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QSpinBox" name="spinThumbnailUpscale">
-          <property name="suffix">
-           <string>%</string>
-          </property>
-          <property name="minimum">
-           <number>100</number>
-          </property>
+        <item row="4" column="1">
+         <widget class="QSpinBox" name="spinHideFavorites">
           <property name="maximum">
            <number>1000</number>
           </property>
+          <property name="value">
+           <number>20</number>
+          </property>
          </widget>
         </item>
-        <item row="11" column="0" colspan="2">
+        <item row="5" column="0" colspan="2">
+         <widget class="QLabel" name="label_40">
+          <property name="text">
+           <string>&lt;i&gt;The favorites list will be hidden as soon as this image number has been reached.&lt;/i&gt;</string>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="0">
+         <widget class="QLabel" name="label_41">
+          <property name="text">
+           <string>Source's type display</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="1">
+         <widget class="QComboBox" name="comboSources">
+          <item>
+           <property name="text">
+            <string>Text</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Image</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Image and text</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Don't show</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="7" column="0">
+         <widget class="QLabel" name="label_42">
+          <property name="text">
+           <string>Displayed letters</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="1">
+         <layout class="QHBoxLayout" name="horizontalLayout_9">
+          <item>
+           <widget class="QComboBox" name="comboSourcesLetters">
+            <item>
+             <property name="text">
+              <string>Display n letters</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Before first dot</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Before last dot</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item>
+           <widget class="QSpinBox" name="spinSourcesLetters">
+            <property name="minimum">
+             <number>0</number>
+            </property>
+            <property name="maximum">
+             <number>1000000</number>
+            </property>
+            <property name="value">
+             <number>3</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="8" column="0" colspan="2">
+         <widget class="QLabel" name="label_43">
+          <property name="text">
+           <string>&lt;i&gt;Number of displayed letters near the sources' checkboxes in the &quot;+&quot; part of the main window.&lt;/i&gt;</string>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="9" column="0" colspan="2">
          <widget class="QCheckBox" name="checkEnableMd5Field">
           <property name="text">
            <string>Enable MD5 search field</string>
           </property>
          </widget>
         </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="label_85">
+        <item row="10" column="0" colspan="2">
+         <widget class="QCheckBox" name="checkShowTagWarning">
           <property name="text">
-           <string>Preload view</string>
+           <string>Show warning if an incompatible modifier is found</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
-        <item row="3" column="1">
+        <item row="11" column="0" colspan="2">
+         <widget class="QCheckBox" name="checkShowWarnings">
+          <property name="text">
+           <string>Show other warnings</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="12" column="0" colspan="2">
+         <widget class="QCheckBox" name="checkGetUnloadedPages">
+          <property name="text">
+           <string>Download not loaded pages</string>
+          </property>
+         </widget>
+        </item>
+        <item row="13" column="0" colspan="2">
+         <widget class="QLabel" name="label_66">
+          <property name="text">
+           <string>&lt;i&gt;If you activate this option, pressing the &quot;Get this page&quot; button will take into account modifications made to the number of images per page, the page number, etc. even if they weren't loaded.&lt;/i&gt;</string>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="pageImageWindow">
+       <layout class="QFormLayout" name="formLayout_22">
+        <item row="0" column="0">
+         <widget class="QLabel" name="labelTagsPosition">
+          <property name="text">
+           <string>Tag list position</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QComboBox" name="comboTagsPosition">
+          <item>
+           <property name="text">
+            <string>Top</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Left</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Auto</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="labelPreload">
+          <property name="text">
+           <string>Preloading</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
          <widget class="QSpinBox" name="spinPreload"/>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="labelSlideshow">
+          <property name="text">
+           <string>Slideshow</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QSpinBox" name="spinSlideshow">
+          <property name="suffix">
+           <string>s</string>
+          </property>
+          <property name="maximum">
+           <number>86400</number>
+          </property>
+         </widget>
         </item>
        </layout>
       </widget>
@@ -2440,7 +2466,6 @@
   <tabstop>lineCopyrightsIfNone</tabstop>
   <tabstop>lineCharactersIfNone</tabstop>
   <tabstop>lineCharactersSeparator</tabstop>
-  <tabstop>comboTagsposition</tabstop>
   <tabstop>checkShowTagWarning</tabstop>
   <tabstop>checkShowWarnings</tabstop>
   <tabstop>checkGetUnloadedPages</tabstop>

@@ -75,9 +75,6 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	ui->comboSource4->setCurrentIndex(sources.indexOf(settings->value("source_4", "rss").toString()));
 	ui->spinAutoTagAdd->setValue(settings->value("tagsautoadd", 10).toInt());
 
-	QStringList positions = QStringList() << "top" << "left" << "auto";
-	ui->comboTagsposition->setCurrentIndex(positions.indexOf(settings->value("tagsposition", "top").toString()));
-
 	QMap<QString,QPair<QString,QString>> filenames = getFilenames(settings);
 	m_filenamesConditions = QList<QLineEdit*>();
 	m_filenamesFilenames = QList<QLineEdit*>();
@@ -196,7 +193,11 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 		ui->layoutCustom->insertRow(i, leName, leTags);
 	}
 
+	QStringList positions = QStringList() << "top" << "left" << "auto";
+	ui->comboTagsPosition->setCurrentIndex(positions.indexOf(settings->value("tagsposition", "top").toString()));
 	ui->spinPreload->setValue(settings->value("preload", 0).toInt());
+	ui->spinSlideshow->setValue(settings->value("slideshow", 0).toInt());
+
 	settings->beginGroup("Coloring");
 		settings->beginGroup("Colors");
 			ui->lineColoringArtists->setText(settings->value("artists", "#aa0000").toString());
@@ -487,8 +488,6 @@ void optionsWindow::save()
 	settings->setValue("start", starts.at(ui->comboStart->currentIndex()));
 	settings->setValue("hidefavorites", ui->spinHideFavorites->value());
 	settings->setValue("autodownload", ui->checkAutodownload->isChecked());
-	QStringList positions = QStringList() << "top" << "left" << "auto";
-	settings->setValue("tagsposition", positions.at(ui->comboTagsposition->currentIndex()));
 	settings->setValue("hideblacklisted", ui->checkHideBlacklisted->isChecked());
 	settings->setValue("showtagwarning", ui->checkShowTagWarning->isChecked());
 	settings->setValue("showwarnings", ui->checkShowWarnings->isChecked());
@@ -648,7 +647,11 @@ void optionsWindow::save()
 		settings->endGroup();
 	settings->endGroup();
 
+	QStringList positions = QStringList() << "top" << "left" << "auto";
+	settings->setValue("tagsposition", positions.at(ui->comboTagsPosition->currentIndex()));
 	settings->setValue("preload", ui->spinPreload->value());
+	settings->setValue("slideshow", ui->spinPreload->value());
+
 	settings->beginGroup("Coloring");
 		settings->beginGroup("Colors");
 			settings->setValue("artists", ui->lineColoringArtists->text());
