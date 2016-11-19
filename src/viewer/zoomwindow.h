@@ -45,8 +45,6 @@ class zoomWindow : public QDialog
 		void saveImageFav();
 		QStringList saveImageNow(bool fav = false);
 		QString saveImageAs();
-		void fullScreen();
-		void unfullScreen();
 		void openUrl(QString);
 		void openPool(QString);
 		void openPoolId(Page*);
@@ -70,6 +68,12 @@ class zoomWindow : public QDialog
 		void urlChanged(QString, QString);
 		void showDetails();
 		void pendingUpdate();
+
+		// Full screen
+		void fullScreen();
+		void unfullScreen();
+		void prepareNextSlide();
+		void toggleSlideshow();
 
 		// Navigation
 		void load(QSharedPointer<Image> image);
@@ -116,7 +120,11 @@ class zoomWindow : public QDialog
 		QMap<QString,Site*> *m_sites;
 		QString m_source;
 		ImageThread *m_th;
+
 		QAffiche *m_fullScreen;
+		QTimer m_slideshow;
+		bool m_isFullscreen;
+		bool m_isSlideshowRunning;
 
 		QStackedWidget *m_stackedWidget;
 		QAffiche *m_labelImage;

@@ -650,7 +650,7 @@ void optionsWindow::save()
 	QStringList positions = QStringList() << "top" << "left" << "auto";
 	settings->setValue("tagsposition", positions.at(ui->comboTagsPosition->currentIndex()));
 	settings->setValue("preload", ui->spinPreload->value());
-	settings->setValue("slideshow", ui->spinPreload->value());
+	settings->setValue("slideshow", ui->spinSlideshow->value());
 
 	settings->beginGroup("Coloring");
 		settings->beginGroup("Colors");

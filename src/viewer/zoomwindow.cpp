@@ -19,7 +19,7 @@
 
 
 zoomWindow::zoomWindow(QList<QSharedPointer<Image> > images, QSharedPointer<Image> image, Site *site, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
-	: QDialog(Q_NULLPTR, Qt::Window), m_parent(parent), m_profile(profile), m_favorites(profile->getFavorites()), m_viewItLater(profile->getKeptForLater()), m_ignore(profile->getIgnored()), m_settings(profile->getSettings()), ui(new Ui::zoomWindow), m_site(site), timeout(300), m_loaded(false), m_loadedImage(false), m_loadedDetails(false), image(nullptr), movie(nullptr), m_reply(nullptr), m_finished(false), m_thread(false), m_data(QByteArray()), m_size(0), m_sites(sites), m_source(), m_th(nullptr), m_fullScreen(nullptr), m_images(images)
+	: QDialog(Q_NULLPTR, Qt::Window), m_parent(parent), m_profile(profile), m_favorites(profile->getFavorites()), m_viewItLater(profile->getKeptForLater()), m_ignore(profile->getIgnored()), m_settings(profile->getSettings()), ui(new Ui::zoomWindow), m_site(site), timeout(300), m_loaded(false), m_loadedImage(false), m_loadedDetails(false), image(nullptr), movie(nullptr), m_reply(nullptr), m_finished(false), m_thread(false), m_data(QByteArray()), m_size(0), m_sites(sites), m_source(), m_th(nullptr), m_fullScreen(nullptr), m_images(images), m_isFullscreen(false), m_isSlideshowRunning(false)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	ui->setupUi(this);
@@ -77,6 +77,9 @@ zoomWindow::zoomWindow(QList<QSharedPointer<Image> > images, QSharedPointer<Imag
 		m_mediaPlayer->setVideoOutput(m_videoWidget);
 
 	connect(ui->buttonDetails, SIGNAL(clicked()), this, SLOT(showDetails()));
+
+	m_slideshow.setSingleShot(true);
+	connect(&m_slideshow, &QTimer::timeout, this, &zoomWindow::next);
 
 	load(image);
 }
@@ -148,7 +151,8 @@ void zoomWindow::go()
 	connect(m_image.data(), &Image::finishedLoadingTags, this, &zoomWindow::replyFinishedDetails, Qt::UniqueConnection);
 	m_image->loadDetails();
 
-	activateWindow();
+	if (!m_isFullscreen)
+		activateWindow();
 }
 
 /**
@@ -811,9 +815,11 @@ void zoomWindow::fullScreen()
 	QString ext = m_url.section('.', -1).toLower();
 	bool isVideo = ext == "mp4" || ext == "webm" || ext == "flv";
 
+	QWidget *widget;
 	if (isVideo)
 	{
 		m_videoWidget->setFullScreen(true);
+		widget = m_videoWidget;
 	}
 	else
 	{
@@ -827,15 +833,29 @@ void zoomWindow::fullScreen()
 		m_fullScreen->setWindowFlags(Qt::Window);
 		m_fullScreen->showFullScreen();
 
-		connect(m_fullScreen, SIGNAL(doubleClicked()), m_fullScreen, SLOT(close()));
+		connect(m_fullScreen, SIGNAL(doubleClicked()), this, SLOT(unfullScreen()));
+		widget = m_fullScreen;
 	}
 
-	QShortcut *escape = new QShortcut(QKeySequence(Qt::Key_Escape), this);
-	connect(escape, SIGNAL(activated()), this, SLOT(unfullScreen()));
+	m_isFullscreen = true;
+	prepareNextSlide();
+
+	QShortcut *escape = new QShortcut(QKeySequence(Qt::Key_Escape), widget);
+		connect(escape, SIGNAL(activated()), this, SLOT(unfullScreen()));
+	QShortcut *arrowNext = new QShortcut(QKeySequence(Qt::Key_Right), widget);
+		connect(arrowNext, &QShortcut::activated, this, &zoomWindow::next);
+	QShortcut *arrowPrevious = new QShortcut(QKeySequence(Qt::Key_Left), widget);
+		connect(arrowPrevious, &QShortcut::activated, this, &zoomWindow::previous);
+	QShortcut *space = new QShortcut(QKeySequence(Qt::Key_Space), widget);
+		connect(space, &QShortcut::activated, this, &zoomWindow::toggleSlideshow);
+
+	widget->setFocus();
 }
 
 void zoomWindow::unfullScreen()
 {
+	m_slideshow.stop();
+
 	QString ext = m_url.section('.', -1).toLower();
 	bool isVideo = ext == "mp4" || ext == "webm" || ext == "flv";
 
@@ -849,6 +869,44 @@ void zoomWindow::unfullScreen()
 		m_fullScreen->deleteLater();
 		m_fullScreen = nullptr;
 	}
+
+	m_isFullscreen = false;
+}
+
+void zoomWindow::prepareNextSlide()
+{
+	// Slideshow is only enabled in fullscreen
+	if (!m_isFullscreen)
+		return;
+
+	// If the slideshow is disabled
+	int interval = m_settings->value("slideshow", 0).toInt();
+	if (interval <= 0)
+		return;
+
+	QString ext = getExtension(m_image->url());
+	bool isVideo = ext == "mp4" || ext == "webm" || ext == "flv";
+
+	// We make sure to wait to see the whole displayed item
+	qint64 additionalInterval = 0;
+	if (isVideo)
+		additionalInterval = m_mediaPlayer->duration();
+	else if (ext == "gif")
+		additionalInterval = movie->nextFrameDelay() * movie->frameCount();
+
+	qint64 totalInterval = interval * 1000 + additionalInterval;
+	m_slideshow.start(totalInterval);
+	m_isSlideshowRunning = true;
+}
+
+void zoomWindow::toggleSlideshow()
+{
+	m_isSlideshowRunning = !m_isSlideshowRunning;
+
+	if (!m_isSlideshowRunning)
+		m_slideshow.stop();
+	else
+		prepareNextSlide();
 }
 
 
@@ -873,8 +931,6 @@ void zoomWindow::closeEvent(QCloseEvent *e)
 	m_settings->sync();
 
 	//m_image->abortTags();
-	/*if (m_thread && m_th->isRunning())
-	{ m_th->quit(); }*/
 	if (m_reply != nullptr && m_reply->isRunning())
 	{
 		m_reply->abort();
@@ -917,6 +973,7 @@ void zoomWindow::load(QSharedPointer<Image> image)
 		}
 	}
 
+	prepareNextSlide();
 	go();
 }
 
