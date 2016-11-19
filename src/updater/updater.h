@@ -9,11 +9,11 @@ class Updater : public QObject
 {
 	Q_OBJECT
 
+	public:
+		int compareVersions(QString a, QString b);
+
 	public slots:
 		virtual void checkForUpdates() = 0;
-
-	protected:
-		int versionToInt(QString version);
 
 	protected:
 		QNetworkAccessManager m_networkAccessManager;

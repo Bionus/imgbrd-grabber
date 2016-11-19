@@ -34,11 +34,9 @@ void ProgramUpdater::checkForUpdatesDone()
 	QString latest = lastRelease["name"].toString().mid(1);
 	QString changelog = lastRelease["body"].toString();
 
-	int max = versionToInt(latest);
-	int current = versionToInt(QString(VERSION));
-	bool isNew = max > current;
-
 	m_newVersion = latest;
+	bool isNew = compareVersions(latest, QString(VERSION)) > 0;
+
 	emit finished(latest, isNew, changelog);
 }
 

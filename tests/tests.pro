@@ -36,7 +36,9 @@ SOURCES += $${PDIR}/tests/test-suite.cpp \
 	$${PDIR}/tests/main.cpp \
 	$${PDIR}/tests/functions-test.cpp \
 	$${PDIR}/tests/models/*.cpp \
+	$${PDIR}/tests/updater/*.cpp \
 	$${PDIR}/tests/integration/*.cpp
 HEADERS += $${PDIR}/tests/*.h \
 	$${PDIR}/tests/models/*.h \
+	$${PDIR}/tests/updater/*.h \
 	$${PDIR}/tests/integration/*.h
