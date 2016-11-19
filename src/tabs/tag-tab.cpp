@@ -102,7 +102,7 @@ void tagTab::load()
 		search += " md5:" + ui->lineMd5->text();
 	QStringList tags = search.trimmed().split(" ", QString::SkipEmptyParts);
 
-	setWindowTitle(search.isEmpty() ? tr("Search") : search.replace("&", "&&"));
+	setWindowTitle(search.isEmpty() ? tr("Search") : QString(search).replace("&", "&&"));
 	emit titleChanged(this);
 
 	loadTags(search.trimmed().split(' ', QString::SkipEmptyParts));
