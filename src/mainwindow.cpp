@@ -26,7 +26,7 @@
 #include "aboutwindow.h"
 #include "functions.h"
 #include "json.h"
-#include "commands.h"
+#include "commands/commands.h"
 #include "utils/blacklist-fix/blacklist-fix-1.h"
 #include "utils/rename-existing/rename-existing-1.h"
 #include "utils/empty-dirs-fix/empty-dirs-fix-1.h"

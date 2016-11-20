@@ -3,7 +3,7 @@
 #include "image.h"
 #include "functions.h"
 #include "site.h"
-#include "commands.h"
+#include "commands/commands.h"
 #include "filename.h"
 
 
