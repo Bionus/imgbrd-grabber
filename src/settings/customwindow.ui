@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>customWindow</class>
- <widget class="QDialog" name="customWindow">
+ <class>CustomWindow</class>
+ <widget class="QDialog" name="CustomWindow">
   <property name="windowModality">
    <enum>Qt::WindowModal</enum>
   </property>
@@ -14,24 +14,24 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Ajouter un symbole personnalisé</string>
+   <string>Add a custom token</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../resources.qrc">
+   <iconset resource="../../resources.qrc">
     <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
   </property>
   <layout class="QFormLayout" name="formLayout">
    <item row="0" column="0" colspan="2">
     <widget class="QLabel" name="label_3">
      <property name="text">
-      <string>&lt;i&gt;Séparer les tags par des espaces ou des sauts de ligne&lt;/i&gt;</string>
+      <string>&lt;i&gt;Separate tags by spaces or line breaks&lt;/i&gt;</string>
      </property>
     </widget>
    </item>
    <item row="1" column="0">
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Nom</string>
+      <string>Name</string>
      </property>
     </widget>
    </item>
@@ -66,13 +66,15 @@
   <tabstop>buttonBox</tabstop>
  </tabstops>
  <resources>
-  <include location="../resources.qrc"/>
+  <include location="../../resources.qrc"/>
+  <include location="../../resources.qrc"/>
+  <include location="../../resources.qrc"/>
  </resources>
  <connections>
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>customWindow</receiver>
+   <receiver>CustomWindow</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -88,7 +90,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>customWindow</receiver>
+   <receiver>CustomWindow</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

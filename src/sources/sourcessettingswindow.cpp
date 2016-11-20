@@ -39,7 +39,7 @@ SourcesSettingsWindow::SourcesSettingsWindow(Site *site, QWidget *parent) : QDia
 
 	// Source order
 	ui->checkSourcesDefault->setChecked(settings->value("sources/usedefault", true).toBool());
-	QStringList sources = QStringList() << "xml" << "json" << "regex" << "rss";
+	QStringList sources = QStringList() << "" << "xml" << "json" << "regex" << "rss";
 	ui->comboSources1->setCurrentIndex(sources.indexOf(settings->value("sources/source_1", global.value("source_1", sources[0]).toString()).toString()));
 	ui->comboSources2->setCurrentIndex(sources.indexOf(settings->value("sources/source_2", global.value("source_2", sources[1]).toString()).toString()));
 	ui->comboSources3->setCurrentIndex(sources.indexOf(settings->value("sources/source_3", global.value("source_3", sources[2]).toString()).toString()));
@@ -57,6 +57,7 @@ SourcesSettingsWindow::SourcesSettingsWindow(Site *site, QWidget *parent) : QDia
 	ui->lineLoginPseudo->setText(settings->value("login/pseudo", "").toString());
 	ui->lineLoginPassword->setText(settings->value("login/password", "").toString());
 	ui->lineLoginCookie->setText(settings->value("login/cookie", "").toString());
+	ui->spinLoginMaxPage->setValue(settings->value("login/maxPage", 0).toInt());
 
 	// Hide hash if unncessary
 	if (site->value("PasswordSalt").isEmpty())
@@ -109,14 +110,14 @@ void SourcesSettingsWindow::addHeader()
 
 void SourcesSettingsWindow::on_buttonAuthHash_clicked()
 {
-	QString password = QInputDialog::getText(this, tr("Hasher un mot de passe"), tr("Veuillez entrer votre mot de passe ci-dessous.<br/>Il sera ensuite hashé en utilisant le format \"%1\".").arg(m_site->value("PasswordSalt")));
+	QString password = QInputDialog::getText(this, tr("Hash a password"), tr("Please enter your password below.<br/>It will then be hashed using the format \"%1\".").arg(m_site->value("PasswordSalt")));
 	if (!password.isEmpty())
 	{ ui->lineAuthPassword->setText(QCryptographicHash::hash(m_site->value("PasswordSalt").replace("%password%", password).toUtf8(), QCryptographicHash::Sha1).toHex()); }
 }
 
 void SourcesSettingsWindow::deleteSite()
 {
-	int reponse = QMessageBox::question(this, tr("Grabber - Supprimer un site"), tr("Êtes-vous sûr de vouloir supprimer le site %1 ?").arg(m_site->name()), QMessageBox::Yes | QMessageBox::No);
+	int reponse = QMessageBox::question(this, tr("Delete a site"), tr("Are you sure you want to delete the site %1?").arg(m_site->name()), QMessageBox::Yes | QMessageBox::No);
 	if (reponse == QMessageBox::Yes)
 	{
 		QFile f(savePath("sites/"+m_site->type()+"/sites.txt"));
@@ -150,18 +151,18 @@ void SourcesSettingsWindow::loginTested(Site*, Site::LoginResult result)
 	switch (result)
 	{
 		case Site::LoginResult::Success:
-			ui->labelTestCredentials->setText("<i>" + tr("Succès !") + "</i>");
-			ui->labelTestLogin->setText("<i>" + tr("Succès !") + "</i>");
+			ui->labelTestCredentials->setText("<i>" + tr("Success!") + "</i>");
+			ui->labelTestLogin->setText("<i>" + tr("Success!") + "</i>");
 			break;
 
 		case Site::LoginResult::Error:
-			ui->labelTestCredentials->setText("<i>" + tr("Échec") + "</i>");
-			ui->labelTestLogin->setText("<i>" + tr("Échec") + "</i>");
+			ui->labelTestCredentials->setText("<i>" + tr("Failure") + "</i>");
+			ui->labelTestLogin->setText("<i>" + tr("Failure") + "</i>");
 			break;
 
 		default:
-			ui->labelTestCredentials->setText("<i>" + tr("Impossible de tester") + "</i>");
-			ui->labelTestLogin->setText("<i>" + tr("Impossible de tester") + "</i>");
+			ui->labelTestCredentials->setText("<i>" + tr("Unable to test") + "</i>");
+			ui->labelTestLogin->setText("<i>" + tr("Unable to test") + "</i>");
 			break;
 	}
 }
@@ -191,10 +192,11 @@ void SourcesSettingsWindow::save()
 
 	QStringList sources = QStringList() << "" << "xml" << "json" << "regex" << "rss";
 	settings->setValue("sources/usedefault", ui->checkSourcesDefault->isChecked());
-	settings->setValue("sources/source_1", sources[ui->comboSources1->currentIndex()]);
-	settings->setValue("sources/source_2", sources[ui->comboSources2->currentIndex()]);
-	settings->setValue("sources/source_3", sources[ui->comboSources3->currentIndex()]);
-	settings->setValue("sources/source_4", sources[ui->comboSources4->currentIndex()]);
+	settings->setValue("sources/source_1", sources[qMax(0, ui->comboSources1->currentIndex())]);
+	settings->setValue("sources/source_2", sources[qMax(0, ui->comboSources2->currentIndex())]);
+	settings->setValue("sources/source_3", sources[qMax(0, ui->comboSources3->currentIndex())]);
+	settings->setValue("sources/source_4", sources[qMax(0, ui->comboSources4->currentIndex())]);
+
 
 	settings->setValue("auth/pseudo", ui->lineAuthPseudo->text());
 	settings->setValue("auth/password", ui->lineAuthPassword->text());
@@ -207,6 +209,7 @@ void SourcesSettingsWindow::save()
 	settings->setValue("login/pseudo", ui->lineLoginPseudo->text());
 	settings->setValue("login/password", ui->lineLoginPassword->text());
 	settings->setValue("login/cookie", ui->lineLoginCookie->text());
+	settings->setValue("login/maxPage", ui->spinLoginMaxPage->value());
 
 	// Cookies
 	QList<QVariant> cookies;

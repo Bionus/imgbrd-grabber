@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>666</width>
-    <height>468</height>
+    <height>471</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,6 +20,9 @@
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
     <widget class="QSplitter" name="splitter">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
      <widget class="QTreeWidget" name="treeWidget">
       <property name="horizontalScrollBarPolicy">
        <enum>Qt::ScrollBarAlwaysOff</enum>
@@ -38,12 +41,12 @@
       </attribute>
       <column>
        <property name="text">
-        <string>1</string>
+        <string notr="true">Categories</string>
        </property>
       </column>
       <item>
        <property name="text">
-        <string>Général</string>
+        <string>General</string>
        </property>
       </item>
       <item>
@@ -53,46 +56,46 @@
       </item>
       <item>
        <property name="text">
-        <string>Sauvegarde</string>
+        <string>Save</string>
        </property>
        <item>
         <property name="text">
-         <string>Nom de fichier</string>
+         <string>Filename</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Noms conditionnels</string>
+         <string>Conditional filenames</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Fichier texte séparé</string>
+         <string>Separate text file</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Log séparé</string>
+         <string>Separate log</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Tags artiste</string>
+         <string>Artist tags</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Tags série</string>
+         <string>Copyright tags</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Tags personnage</string>
+         <string>Character tags</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Symbole personnalisé</string>
+         <string>Custom token</string>
         </property>
        </item>
       </item>
@@ -102,12 +105,17 @@
        </property>
        <item>
         <property name="text">
-         <string>Coloration</string>
+         <string>Image window</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Marges et bordures</string>
+         <string>Coloring</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Margins and borders</string>
         </property>
        </item>
        <item>
@@ -123,11 +131,11 @@
       </item>
       <item>
        <property name="text">
-        <string>Commandes</string>
+        <string>Commands</string>
        </property>
        <item>
         <property name="text">
-         <string>Base de données</string>
+         <string>Database</string>
         </property>
        </item>
       </item>
@@ -150,7 +158,7 @@
         <item row="0" column="0">
          <widget class="QLabel" name="label">
           <property name="text">
-           <string>Langue</string>
+           <string>Language</string>
           </property>
          </widget>
         </item>
@@ -160,7 +168,7 @@
         <item row="1" column="0">
          <widget class="QLabel" name="label_63">
           <property name="text">
-           <string>Au démarrage</string>
+           <string>At start</string>
           </property>
          </widget>
         </item>
@@ -168,17 +176,17 @@
          <widget class="QComboBox" name="comboStart">
           <item>
            <property name="text">
-            <string>Ne rien faire</string>
+            <string>Do nothing</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>Charger la première page</string>
+            <string>Load first page</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>Restaurer la dernière session</string>
+            <string>Restore last session</string>
            </property>
           </item>
          </widget>
@@ -186,7 +194,7 @@
         <item row="3" column="0">
          <widget class="QLabel" name="label_5">
           <property name="text">
-           <string>Liste noire</string>
+           <string>Blacklist</string>
           </property>
          </widget>
         </item>
@@ -196,21 +204,21 @@
         <item row="4" column="0" colspan="2">
          <widget class="QLabel" name="label_2">
           <property name="text">
-           <string>&lt;i&gt;Séparer les tags par des espaces.&lt;/i&gt;</string>
+           <string>&lt;i&gt;Separate tags with spaces.&lt;/i&gt;</string>
           </property>
          </widget>
         </item>
         <item row="5" column="0" colspan="2">
          <widget class="QCheckBox" name="checkHideBlacklisted">
           <property name="text">
-           <string>Ignorer les images contenant un tag de la liste noire</string>
+           <string>Ignore images containing a blacklisted tag</string>
           </property>
          </widget>
         </item>
         <item row="6" column="0" colspan="2">
          <widget class="QLabel" name="label_6">
           <property name="text">
-           <string>&lt;i&gt;Les images contenant un tag de la liste noire ne seront tout simplement pas affichées dans la liste de résultats si cette case est cochée. Sinon, une confirmation sera demandée avant l'affichage d'une de ces images.&lt;/i&gt;</string>
+           <string>&lt;i&gt;Images containing a blacklisted tag will not be displayed in the results if this box is checked. Else, a confirmation will be asked before showing one of these images.&lt;/i&gt;</string>
           </property>
           <property name="wordWrap">
            <bool>true</bool>
@@ -220,7 +228,7 @@
         <item row="7" column="0">
          <widget class="QLabel" name="label_48">
           <property name="text">
-           <string>Liste blanche</string>
+           <string>Whitelist</string>
           </property>
          </widget>
         </item>
@@ -230,28 +238,28 @@
         <item row="8" column="0">
          <widget class="QLabel" name="label_50">
           <property name="text">
-           <string>Télécharger</string>
+           <string>Download</string>
           </property>
          </widget>
         </item>
         <item row="8" column="1">
          <widget class="QComboBox" name="comboWhitelist">
           <property name="currentIndex">
-           <number>1</number>
+           <number>0</number>
           </property>
           <item>
            <property name="text">
-            <string>Ne pas télécharger automatiquement</string>
+            <string>Don't download automatically</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>Au chargement de l'image</string>
+            <string>When loading image</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>Au chargement de la page</string>
+            <string>When loading thumbnail</string>
            </property>
           </item>
          </widget>
@@ -259,7 +267,7 @@
         <item row="9" column="0" colspan="2">
          <widget class="QLabel" name="label_51">
           <property name="text">
-           <string>&lt;i&gt;Les images contenant un tag de la liste blanche seront téléchargées automatiquement en fonction de l'option ci-dessus.&lt;/i&gt;</string>
+           <string>&lt;i&gt;Images containing a whitelisted tag will be downloaded automatically according to the option above.&lt;/i&gt;</string>
           </property>
           <property name="wordWrap">
            <bool>true</bool>
@@ -269,7 +277,7 @@
         <item row="10" column="0">
          <widget class="QLabel" name="label_49">
           <property name="text">
-           <string>Tags ignorés</string>
+           <string>Ignored tags</string>
           </property>
          </widget>
         </item>
@@ -279,7 +287,7 @@
         <item row="11" column="0" colspan="2">
          <widget class="QLabel" name="label_52">
           <property name="text">
-           <string>&lt;i&gt;Ces tags ne seront pas pris en compte lors de la sauvegarde de l'image.&lt;/i&gt;</string>
+           <string>&lt;i&gt;These tags will not be taken in account when saving image.&lt;/i&gt;</string>
           </property>
           <property name="wordWrap">
            <bool>true</bool>
@@ -289,14 +297,14 @@
         <item row="12" column="0" colspan="2">
          <widget class="QCheckBox" name="checkDownloadBlacklisted">
           <property name="text">
-           <string>Télécharger les images de la liste noire</string>
+           <string>Download images containing blacklisted tags</string>
           </property>
          </widget>
         </item>
         <item row="13" column="0">
          <widget class="QLabel" name="label_64">
           <property name="text">
-           <string>Ajouts</string>
+           <string>Adds</string>
           </property>
          </widget>
         </item>
@@ -306,7 +314,7 @@
         <item row="14" column="0" colspan="2">
          <widget class="QLabel" name="label_65">
           <property name="text">
-           <string>&lt;i&gt;Ces tags seront automatiquement ajoutés à chaque recherche.&lt;/i&gt;</string>
+           <string>&lt;i&gt;These tags will be automatically added to every search.&lt;/i&gt;</string>
           </property>
           <property name="wordWrap">
            <bool>true</bool>
@@ -316,8 +324,47 @@
         <item row="15" column="0" colspan="2">
          <widget class="QCheckBox" name="checkConfirmClose">
           <property name="text">
-           <string>Demander confirmation avant la fermeture de la fenêtre</string>
+           <string>Ask for confirmation before closing the window</string>
           </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="labelCheckForUpdates">
+          <property name="text">
+           <string>Check for updates</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QComboBox" name="comboCheckForUpdates">
+          <property name="currentIndex">
+           <number>4</number>
+          </property>
+          <item>
+           <property name="text">
+            <string>Every time</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Once a day</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Once a week</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Once a month</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Never</string>
+           </property>
+          </item>
          </widget>
         </item>
        </layout>
@@ -343,6 +390,8 @@
        <zorder>label_65</zorder>
        <zorder>lineAdd</zorder>
        <zorder>checkConfirmClose</zorder>
+       <zorder>labelCheckForUpdates</zorder>
+       <zorder>comboCheckForUpdates</zorder>
       </widget>
       <widget class="QWidget" name="pageSources">
        <layout class="QFormLayout" name="formLayout_2">
@@ -352,14 +401,14 @@
         <item row="0" column="0">
          <widget class="QLabel" name="label_9">
           <property name="text">
-           <string>Images par page</string>
+           <string>Images per page</string>
           </property>
          </widget>
         </item>
         <item row="1" column="0">
          <widget class="QLabel" name="label_10">
           <property name="text">
-           <string>Nombre de colonnes</string>
+           <string>Number of columns</string>
           </property>
          </widget>
         </item>
@@ -420,7 +469,7 @@
         <item row="7" column="0" colspan="2">
          <widget class="QCheckBox" name="checkUseregexfortags">
           <property name="text">
-           <string>Récupérer les tags les plus précis lors de la recherche d'images</string>
+           <string>Get more precise tags when searching images</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -559,7 +608,7 @@
         <item row="0" column="0" colspan="2">
          <widget class="QCheckBox" name="checkDownloadOriginals">
           <property name="text">
-           <string>Télécharger les images originales</string>
+           <string>Download original images</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -569,7 +618,7 @@
         <item row="1" column="0" colspan="2">
          <widget class="QCheckBox" name="checkSampleFallback">
           <property name="text">
-           <string>Télécharger le sample en cas d'erreur</string>
+           <string>Download sample on error</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -579,14 +628,14 @@
         <item row="2" column="0" colspan="2">
          <widget class="QCheckBox" name="checkAutodownload">
           <property name="text">
-           <string>Télécharger les images automatiquement</string>
+           <string>Download images automatically</string>
           </property>
          </widget>
         </item>
         <item row="3" column="0" colspan="2">
          <widget class="QCheckBox" name="checkKeepDate">
           <property name="text">
-           <string>Conserver la date de création</string>
+           <string>Keep original creation date</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -596,7 +645,7 @@
         <item row="4" column="0">
          <widget class="QLabel" name="label_7">
           <property name="text">
-           <string>Dossier</string>
+           <string>Folder</string>
           </property>
          </widget>
         </item>
@@ -608,7 +657,7 @@
           <item>
            <widget class="QPushButton" name="buttonFolder">
             <property name="text">
-             <string>Parcourir</string>
+             <string>Browse</string>
             </property>
            </widget>
           </item>
@@ -617,7 +666,7 @@
         <item row="5" column="0">
          <widget class="QLabel" name="label_62">
           <property name="text">
-           <string>Favoris</string>
+           <string>Favorites</string>
           </property>
          </widget>
         </item>
@@ -629,7 +678,7 @@
           <item>
            <widget class="QPushButton" name="buttonFolderFavorites">
             <property name="text">
-             <string>Parcourir</string>
+             <string>Browse</string>
             </property>
            </widget>
           </item>
@@ -638,7 +687,7 @@
         <item row="6" column="0">
          <widget class="QLabel" name="label_14">
           <property name="text">
-           <string>Séparateur de tags</string>
+           <string>Tags separator</string>
           </property>
          </widget>
         </item>
@@ -652,14 +701,14 @@
         <item row="7" column="0" colspan="2">
          <widget class="QCheckBox" name="checkReplaceBlanks">
           <property name="text">
-           <string>Remplacer les espaces par des underscores</string>
+           <string>Replace spaces by underscores</string>
           </property>
          </widget>
         </item>
         <item row="9" column="0">
          <widget class="QLabel" name="label_54">
           <property name="text">
-           <string>Longeur limite</string>
+           <string>Max length</string>
           </property>
          </widget>
         </item>
@@ -673,11 +722,7 @@
         <item row="10" column="0" colspan="2">
          <widget class="QLabel" name="label_55">
           <property name="text">
-           <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Si le nom de fichier est plus grand que ce nombre, il sera tronqué. Laissez à 0 pour laisser la limite par défaut.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>&lt;i&gt;If the filename length is greater than this number, it will be shortened. Leave it to 0 to use the default limit.&lt;/i&gt;</string>
           </property>
           <property name="wordWrap">
            <bool>true</bool>
@@ -687,7 +732,7 @@ p, li { white-space: pre-wrap; }
         <item row="11" column="0">
          <widget class="QLabel" name="label_29">
           <property name="text">
-           <string>Téléchargements simultanés</string>
+           <string>Simultaneous downloads</string>
           </property>
          </widget>
         </item>
@@ -704,7 +749,7 @@ p, li { white-space: pre-wrap; }
         <item row="12" column="0">
          <widget class="QLabel" name="label_83">
           <property name="text">
-           <string>À la fin du téléchargement</string>
+           <string>When the download is finished</string>
           </property>
          </widget>
         </item>
@@ -712,27 +757,27 @@ p, li { white-space: pre-wrap; }
          <widget class="QComboBox" name="comboBatchEnd">
           <item>
            <property name="text">
-            <string>Ne rien faire</string>
+            <string>Do nothing</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>Fermer la fenêtre</string>
+            <string>Close window</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>Ouvrir le lecteur CD</string>
+            <string>Open CD tray</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>Jouer un son</string>
+            <string>Play a sound</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>Éteindre</string>
+            <string>Shutdown</string>
            </property>
           </item>
          </widget>
@@ -740,7 +785,7 @@ p, li { white-space: pre-wrap; }
         <item row="13" column="0">
          <widget class="QLabel" name="label_19">
           <property name="text">
-           <string>Si un fichier existe déjà</string>
+           <string>If a file already exists</string>
           </property>
          </widget>
         </item>
@@ -751,22 +796,22 @@ p, li { white-space: pre-wrap; }
           </property>
           <item>
            <property name="text">
-            <string>Sauvegarder</string>
+            <string>Save</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>Copier</string>
+            <string>Copy</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>Déplacer</string>
+            <string>Move</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>Ne pas sauvegarder</string>
+            <string>Don't save</string>
            </property>
           </item>
          </widget>
@@ -774,14 +819,14 @@ p, li { white-space: pre-wrap; }
         <item row="14" column="0" colspan="2">
          <widget class="QLabel" name="label_21">
           <property name="text">
-           <string>&lt;i&gt;L'identicité des fichiers est basée sur l'algorithme MD5.&lt;/i&gt;</string>
+           <string>&lt;i&gt;File's identity is based on the MD5 algorithm.&lt;/i&gt;</string>
           </property>
          </widget>
         </item>
         <item row="15" column="0">
          <widget class="QLabel" name="label_84">
           <property name="text">
-           <string>Retéléchargement automatique</string>
+           <string>Automatic redownload</string>
           </property>
          </widget>
         </item>
@@ -795,7 +840,7 @@ p, li { white-space: pre-wrap; }
         <item row="8" column="0" colspan="2">
          <widget class="QCheckBox" name="checkNoJpeg">
           <property name="text">
-           <string>Remplacer les JPEG par des JPG</string>
+           <string>Replace JPEG by JPG</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -812,7 +857,7 @@ p, li { white-space: pre-wrap; }
         <item row="0" column="0">
          <widget class="QLabel" name="label_8">
           <property name="text">
-           <string>Par défaut</string>
+           <string>Default</string>
           </property>
          </widget>
         </item>
@@ -836,7 +881,7 @@ p, li { white-space: pre-wrap; }
              </size>
             </property>
             <property name="text">
-             <string>...</string>
+             <string notr="true">...</string>
             </property>
            </widget>
           </item>
@@ -845,7 +890,7 @@ p, li { white-space: pre-wrap; }
         <item row="1" column="0">
          <widget class="QLabel" name="label_61">
           <property name="text">
-           <string>Favoris</string>
+           <string>Favorites</string>
           </property>
          </widget>
         </item>
@@ -869,7 +914,7 @@ p, li { white-space: pre-wrap; }
              </size>
             </property>
             <property name="text">
-             <string>...</string>
+             <string notr="true">...</string>
             </property>
            </widget>
           </item>
@@ -885,7 +930,7 @@ p, li { white-space: pre-wrap; }
         <item>
          <widget class="QPushButton" name="buttonFilenames">
           <property name="text">
-           <string>Ajouter un nom de fichier conditionnel</string>
+           <string>Add a conditional filename</string>
           </property>
          </widget>
         </item>
@@ -909,7 +954,7 @@ p, li { white-space: pre-wrap; }
         <item row="1" column="0" colspan="2">
          <widget class="QLabel" name="label_81">
           <property name="text">
-           <string>&lt;i&gt;À chaque fois qu'une image est sauvegardée, un fichier texte séparé sera enregistré avec le même nom au même endroit, contenant les tags de l'image en question.&lt;/i&gt;</string>
+           <string>&lt;i&gt;Each time an image is saved, an external text file will be save with the same name at the same location, containing the image's tags.&lt;/i&gt;</string>
           </property>
           <property name="wordWrap">
            <bool>true</bool>
@@ -919,14 +964,14 @@ p, li { white-space: pre-wrap; }
         <item row="0" column="0" colspan="2">
          <widget class="QCheckBox" name="checkTextfileActivate">
           <property name="text">
-           <string>Activer les fichiers textes séparés</string>
+           <string>Enable external text files</string>
           </property>
          </widget>
         </item>
         <item row="2" column="0" colspan="2">
          <widget class="QLabel" name="label_35">
           <property name="text">
-           <string>Contenu du fichier texte</string>
+           <string>Text file content</string>
           </property>
          </widget>
         </item>
@@ -936,7 +981,7 @@ p, li { white-space: pre-wrap; }
         <item row="4" column="0" colspan="2">
          <widget class="QLabel" name="label_80">
           <property name="text">
-           <string>Symboles disponibles : les mêmes que dans la partie sauvegarde.</string>
+           <string>Available tokens: the same as in the &quot;Save&quot; part.</string>
           </property>
           <property name="wordWrap">
            <bool>true</bool>
@@ -950,21 +995,21 @@ p, li { white-space: pre-wrap; }
         <item row="0" column="0" colspan="2">
          <widget class="QCheckBox" name="checkSaveLogEnable">
           <property name="text">
-           <string>Activer le log séparé</string>
+           <string>Enable external logging</string>
           </property>
          </widget>
         </item>
         <item row="2" column="0">
          <widget class="QLabel" name="labelSaveLogFile">
           <property name="text">
-           <string>Fichier de log</string>
+           <string>Log file</string>
           </property>
          </widget>
         </item>
         <item row="3" column="0">
          <widget class="QLabel" name="labelSaveLogFormat">
           <property name="text">
-           <string>Format de ligne</string>
+           <string>Line format</string>
           </property>
          </widget>
         </item>
@@ -976,7 +1021,7 @@ p, li { white-space: pre-wrap; }
           <item>
            <widget class="QPushButton" name="buttonSaveLogFile">
             <property name="text">
-             <string>Parcourir</string>
+             <string>Browse</string>
             </property>
            </widget>
           </item>
@@ -990,7 +1035,7 @@ p, li { white-space: pre-wrap; }
           <item>
            <widget class="QPushButton" name="buttonSaveLogFormat">
             <property name="text">
-             <string>...</string>
+             <string notr="true">...</string>
             </property>
            </widget>
           </item>
@@ -999,7 +1044,7 @@ p, li { white-space: pre-wrap; }
         <item row="1" column="0" colspan="2">
          <widget class="QLabel" name="labelSaveLogEnable">
           <property name="text">
-           <string>&lt;i&gt;À chaque fois qu'une image est sauvegardée, une ligne sera ajoutée au fichier séletionné.&lt;/i&gt;</string>
+           <string>&lt;i&gt;Each time an image is saved, a new line will be added to the selected file.&lt;/i&gt;</string>
           </property>
           <property name="wordWrap">
            <bool>true</bool>
@@ -1013,7 +1058,7 @@ p, li { white-space: pre-wrap; }
         <item row="0" column="0">
          <widget class="QLabel" name="label_16">
           <property name="text">
-           <string>Si aucun</string>
+           <string>If empty</string>
           </property>
          </widget>
         </item>
@@ -1027,7 +1072,7 @@ p, li { white-space: pre-wrap; }
         <item row="1" column="0">
          <widget class="QLabel" name="label_18">
           <property name="text">
-           <string>Séparateur</string>
+           <string>Separator</string>
           </property>
          </widget>
         </item>
@@ -1041,7 +1086,7 @@ p, li { white-space: pre-wrap; }
         <item row="2" column="0">
          <widget class="QLabel" name="label_71">
           <property name="text">
-           <string>Si plus de n tags</string>
+           <string>If more than n tags</string>
           </property>
          </widget>
         </item>
@@ -1058,21 +1103,21 @@ p, li { white-space: pre-wrap; }
         <item row="3" column="0" colspan="2">
          <widget class="QRadioButton" name="radioArtistsKeepAll">
           <property name="text">
-           <string>Garder tous les tags</string>
+           <string>Keep all tags</string>
           </property>
          </widget>
         </item>
         <item row="5" column="0">
          <widget class="QRadioButton" name="radioArtistsKeepNThenAdd">
           <property name="text">
-           <string>Garder n tags, puis ajouter</string>
+           <string>Keep n tags, then add</string>
           </property>
          </widget>
         </item>
         <item row="6" column="0">
          <widget class="QRadioButton" name="radioArtistsReplaceAll">
           <property name="text">
-           <string>Remplacer tous les tags par</string>
+           <string>Replace all tags by</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -1089,7 +1134,7 @@ p, li { white-space: pre-wrap; }
         <item row="4" column="0">
          <widget class="QRadioButton" name="radioArtistsKeepN">
           <property name="text">
-           <string>Garder n tags</string>
+           <string>Keep n tags</string>
           </property>
          </widget>
         </item>
@@ -1113,7 +1158,7 @@ p, li { white-space: pre-wrap; }
         <item row="7" column="0" colspan="2">
          <widget class="QRadioButton" name="radioArtistsMultiple">
           <property name="text">
-           <string>Un fichier par tag</string>
+           <string>One file per tag</string>
           </property>
          </widget>
         </item>
@@ -1124,7 +1169,7 @@ p, li { white-space: pre-wrap; }
         <item row="0" column="0">
          <widget class="QLabel" name="label_17">
           <property name="text">
-           <string>Si aucun</string>
+           <string>If empty</string>
           </property>
          </widget>
         </item>
@@ -1138,7 +1183,7 @@ p, li { white-space: pre-wrap; }
         <item row="1" column="0">
          <widget class="QLabel" name="label_20">
           <property name="text">
-           <string>Séparateur</string>
+           <string>Separator</string>
           </property>
          </widget>
         </item>
@@ -1152,7 +1197,7 @@ p, li { white-space: pre-wrap; }
         <item row="2" column="0">
          <widget class="QLabel" name="label_70">
           <property name="text">
-           <string>Si plus de n tags</string>
+           <string>If more than n tags</string>
           </property>
          </widget>
         </item>
@@ -1169,7 +1214,7 @@ p, li { white-space: pre-wrap; }
         <item row="4" column="0">
          <widget class="QRadioButton" name="radioCopyrightsKeepN">
           <property name="text">
-           <string>Garder n tags</string>
+           <string>Keep n tags</string>
           </property>
          </widget>
         </item>
@@ -1179,7 +1224,7 @@ p, li { white-space: pre-wrap; }
         <item row="5" column="0">
          <widget class="QRadioButton" name="radioCopyrightsKeepNThenAdd">
           <property name="text">
-           <string>Garder n tags, puis ajouter</string>
+           <string>Keep n tags, then add</string>
           </property>
          </widget>
         </item>
@@ -1200,7 +1245,7 @@ p, li { white-space: pre-wrap; }
         <item row="6" column="0">
          <widget class="QRadioButton" name="radioCopyrightsReplaceAll">
           <property name="text">
-           <string>Remplacer tous les tags par</string>
+           <string>Replace all tags by</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -1217,7 +1262,7 @@ p, li { white-space: pre-wrap; }
         <item row="8" column="0" colspan="2">
          <widget class="QCheckBox" name="checkCopyrightsUseShorter">
           <property name="text">
-           <string>Utiliser le plus court si possible</string>
+           <string>Use shortest if possible</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -1227,14 +1272,14 @@ p, li { white-space: pre-wrap; }
         <item row="3" column="0" colspan="2">
          <widget class="QRadioButton" name="radioCopyrightsKeepAll">
           <property name="text">
-           <string>Garder tous les tags</string>
+           <string>Keep all tags</string>
           </property>
          </widget>
         </item>
         <item row="7" column="0" colspan="2">
          <widget class="QRadioButton" name="radioCopyrightsMultiple">
           <property name="text">
-           <string>Un fichier par tag</string>
+           <string>One file per tag</string>
           </property>
          </widget>
         </item>
@@ -1245,7 +1290,7 @@ p, li { white-space: pre-wrap; }
         <item row="0" column="0">
          <widget class="QLabel" name="label_22">
           <property name="text">
-           <string>Si aucun</string>
+           <string>If empty</string>
           </property>
          </widget>
         </item>
@@ -1259,7 +1304,7 @@ p, li { white-space: pre-wrap; }
         <item row="1" column="0">
          <widget class="QLabel" name="label_23">
           <property name="text">
-           <string>Séparateur</string>
+           <string>Separator</string>
           </property>
          </widget>
         </item>
@@ -1273,7 +1318,7 @@ p, li { white-space: pre-wrap; }
         <item row="2" column="0">
          <widget class="QLabel" name="label_69">
           <property name="text">
-           <string>Si plus de n tags</string>
+           <string>If more than n tags</string>
           </property>
          </widget>
         </item>
@@ -1290,7 +1335,7 @@ p, li { white-space: pre-wrap; }
         <item row="4" column="0">
          <widget class="QRadioButton" name="radioCharactersKeepN">
           <property name="text">
-           <string>Garder n tags</string>
+           <string>Keep n tags</string>
           </property>
          </widget>
         </item>
@@ -1300,7 +1345,7 @@ p, li { white-space: pre-wrap; }
         <item row="5" column="0">
          <widget class="QRadioButton" name="radioCharactersKeepNThenAdd">
           <property name="text">
-           <string>Garder n tags, puis ajouter</string>
+           <string>Keep n tags, then add</string>
           </property>
          </widget>
         </item>
@@ -1321,7 +1366,7 @@ p, li { white-space: pre-wrap; }
         <item row="6" column="0">
          <widget class="QRadioButton" name="radioCharactersReplaceAll">
           <property name="text">
-           <string>Remplacer tous les tags par</string>
+           <string>Replace all tags by</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -1338,14 +1383,14 @@ p, li { white-space: pre-wrap; }
         <item row="3" column="0" colspan="2">
          <widget class="QRadioButton" name="radioCharactersKeepAll">
           <property name="text">
-           <string>Garder tous les tags</string>
+           <string>Keep all tags</string>
           </property>
          </widget>
         </item>
         <item row="7" column="0" colspan="2">
          <widget class="QRadioButton" name="radioCharactersMultiple">
           <property name="text">
-           <string>Un fichier par tag</string>
+           <string>One file per tag</string>
           </property>
          </widget>
         </item>
@@ -1356,7 +1401,7 @@ p, li { white-space: pre-wrap; }
         <item row="0" column="0" colspan="2">
          <widget class="QPushButton" name="buttonCustom">
           <property name="text">
-           <string>Ajouter un symbole personnalisé</string>
+           <string>Add a custom token</string>
           </property>
          </widget>
         </item>
@@ -1367,20 +1412,40 @@ p, li { white-space: pre-wrap; }
         <property name="fieldGrowthPolicy">
          <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
         </property>
-        <item row="0" column="0" colspan="2">
+        <item row="1" column="0" colspan="2">
          <widget class="QCheckBox" name="checkResizeInsteadOfCropping">
           <property name="text">
-           <string>Redimensionnser les miniatures au lieu de les couper</string>
+           <string>Resize previews instead of cropping them</string>
           </property>
           <property name="checked">
            <bool>true</bool>
           </property>
          </widget>
         </item>
-        <item row="2" column="0" colspan="2">
+        <item row="2" column="0">
+         <widget class="QLabel" name="labelThumbnailUpscale">
+          <property name="text">
+           <string>Upscaling</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QSpinBox" name="spinThumbnailUpscale">
+          <property name="suffix">
+           <string>%</string>
+          </property>
+          <property name="minimum">
+           <number>100</number>
+          </property>
+          <property name="maximum">
+           <number>1000</number>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0" colspan="2">
          <widget class="QCheckBox" name="checkAutocompletion">
           <property name="text">
-           <string>Activer l'autocomplétion</string>
+           <string>Enable autocompletion</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -1388,13 +1453,59 @@ p, li { white-space: pre-wrap; }
          </widget>
         </item>
         <item row="4" column="0">
-         <widget class="QLabel" name="label_39">
+         <widget class="QLabel" name="label_26">
           <property name="text">
-           <string>Cacher les favoris</string>
+           <string>Favorites display</string>
           </property>
          </widget>
         </item>
         <item row="4" column="1">
+         <widget class="QComboBox" name="comboFavoritesDisplay">
+          <item>
+           <property name="text">
+            <string>Image, name and details</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Image and name</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Image and details</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Name and details</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Image only</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Name only</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Details only</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="5" column="0">
+         <widget class="QLabel" name="label_39">
+          <property name="text">
+           <string>Hide favorites</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="1">
          <widget class="QSpinBox" name="spinHideFavorites">
           <property name="maximum">
            <number>1000</number>
@@ -1404,28 +1515,28 @@ p, li { white-space: pre-wrap; }
           </property>
          </widget>
         </item>
-        <item row="5" column="0" colspan="2">
+        <item row="6" column="0" colspan="2">
          <widget class="QLabel" name="label_40">
           <property name="text">
-           <string>&lt;i&gt;La liste des favoris sera cachée dès que ce nombre d'images reçues sera atteint.&lt;/i&gt;</string>
+           <string>&lt;i&gt;The favorites list will be hidden as soon as this image number has been reached.&lt;/i&gt;</string>
           </property>
           <property name="wordWrap">
            <bool>true</bool>
           </property>
          </widget>
         </item>
-        <item row="6" column="0">
+        <item row="7" column="0">
          <widget class="QLabel" name="label_41">
           <property name="text">
-           <string>Affichage des types de sources</string>
+           <string>Source's type display</string>
           </property>
          </widget>
         </item>
-        <item row="6" column="1">
+        <item row="7" column="1">
          <widget class="QComboBox" name="comboSources">
           <item>
            <property name="text">
-            <string>Texte</string>
+            <string>Text</string>
            </property>
           </item>
           <item>
@@ -1435,40 +1546,40 @@ p, li { white-space: pre-wrap; }
           </item>
           <item>
            <property name="text">
-            <string>Image et texte</string>
+            <string>Image and text</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>Ne pas afficher</string>
+            <string>Don't show</string>
            </property>
           </item>
          </widget>
         </item>
-        <item row="7" column="0">
+        <item row="8" column="0">
          <widget class="QLabel" name="label_42">
           <property name="text">
-           <string>Lettres affichées</string>
+           <string>Displayed letters</string>
           </property>
          </widget>
         </item>
-        <item row="7" column="1">
+        <item row="8" column="1">
          <layout class="QHBoxLayout" name="horizontalLayout_9">
           <item>
            <widget class="QComboBox" name="comboSourcesLetters">
             <item>
              <property name="text">
-              <string>Afficher n lettres</string>
+              <string>Display n letters</string>
              </property>
             </item>
             <item>
              <property name="text">
-              <string>Avant le premier point</string>
+              <string>Before first dot</string>
              </property>
             </item>
             <item>
              <property name="text">
-              <string>Avant le second point</string>
+              <string>Before last dot</string>
              </property>
             </item>
            </widget>
@@ -1488,50 +1599,27 @@ p, li { white-space: pre-wrap; }
           </item>
          </layout>
         </item>
-        <item row="8" column="0" colspan="2">
+        <item row="9" column="0" colspan="2">
          <widget class="QLabel" name="label_43">
           <property name="text">
-           <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-style:italic;&quot;&gt;Nombre de lettres affichées à côté des cases à cocher des sources en bas de la fenêtre principale.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>&lt;i&gt;Number of displayed letters near the sources' checkboxes in the &quot;+&quot; part of the main window.&lt;/i&gt;</string>
           </property>
           <property name="wordWrap">
            <bool>true</bool>
           </property>
          </widget>
         </item>
-        <item row="9" column="0">
-         <widget class="QLabel" name="label_44">
+        <item row="10" column="0" colspan="2">
+         <widget class="QCheckBox" name="checkEnableMd5Field">
           <property name="text">
-           <string>Position de la liste de tags</string>
+           <string>Enable MD5 search field</string>
           </property>
-         </widget>
-        </item>
-        <item row="9" column="1">
-         <widget class="QComboBox" name="comboTagsposition">
-          <item>
-           <property name="text">
-            <string>Haut</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Gauche</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Automatique</string>
-           </property>
-          </item>
          </widget>
         </item>
         <item row="11" column="0" colspan="2">
          <widget class="QCheckBox" name="checkShowTagWarning">
           <property name="text">
-           <string>Afficher l'avertissement en cas de modificateur incompatible</string>
+           <string>Show warning if an incompatible modifier is found</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -1541,7 +1629,7 @@ p, li { white-space: pre-wrap; }
         <item row="12" column="0" colspan="2">
          <widget class="QCheckBox" name="checkShowWarnings">
           <property name="text">
-           <string>Afficher les autre avertissements</string>
+           <string>Show other warnings</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -1551,90 +1639,81 @@ p, li { white-space: pre-wrap; }
         <item row="13" column="0" colspan="2">
          <widget class="QCheckBox" name="checkGetUnloadedPages">
           <property name="text">
-           <string>Télécharger les pages non chargées</string>
+           <string>Download not loaded pages</string>
           </property>
          </widget>
         </item>
         <item row="14" column="0" colspan="2">
          <widget class="QLabel" name="label_66">
           <property name="text">
-           <string>&lt;i&gt;Si vous activez cette option, appuyer sur le bouton &quot;Télécharger cette page&quot; prendra en compte les modifications faîtes au nombre d'images par page, numéro de page, etc. même si elles n'ont pas été chargées.</string>
+           <string>&lt;i&gt;If you activate this option, pressing the &quot;Get this page&quot; button will take into account modifications made to the number of images per page, the page number, etc. even if they weren't loaded.&lt;/i&gt;</string>
           </property>
           <property name="wordWrap">
            <bool>true</bool>
           </property>
          </widget>
         </item>
-        <item row="3" column="1">
-         <widget class="QComboBox" name="comboFavoritesDisplay">
-          <item>
-           <property name="text">
-            <string>Image, nom et détails</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Image et nom</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Image et détails</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Nom et détails</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Image seulement</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Nom seulement</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Détails seulement</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="label_26">
+        <item row="0" column="0" colspan="2">
+         <widget class="QCheckBox" name="checkResultsScrollArea">
           <property name="text">
-           <string>Affichage des favoris</string>
+           <string>Use a scroll area for the results</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="labelThumbnailUpscale">
+       </layout>
+      </widget>
+      <widget class="QWidget" name="pageImageWindow">
+       <layout class="QFormLayout" name="formLayout_22">
+        <item row="0" column="0">
+         <widget class="QLabel" name="labelTagsPosition">
           <property name="text">
-           <string>Suréchantillonnage</string>
+           <string>Tag list position</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QComboBox" name="comboTagsPosition">
+          <item>
+           <property name="text">
+            <string>Top</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Left</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Auto</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="labelPreload">
+          <property name="text">
+           <string>Preloading</string>
           </property>
          </widget>
         </item>
         <item row="1" column="1">
-         <widget class="QSpinBox" name="spinThumbnailUpscale">
-          <property name="suffix">
-           <string>%</string>
-          </property>
-          <property name="minimum">
-           <number>100</number>
-          </property>
-          <property name="maximum">
-           <number>1000</number>
+         <widget class="QSpinBox" name="spinPreload"/>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="labelSlideshow">
+          <property name="text">
+           <string>Slideshow</string>
           </property>
          </widget>
         </item>
-        <item row="10" column="0" colspan="2">
-         <widget class="QCheckBox" name="checkEnableMd5Field">
-          <property name="text">
-           <string>Activer le champ de recherche MD5</string>
+        <item row="2" column="1">
+         <widget class="QSpinBox" name="spinSlideshow">
+          <property name="suffix">
+           <string>s</string>
+          </property>
+          <property name="maximum">
+           <number>86400</number>
           </property>
          </widget>
         </item>
@@ -1645,56 +1724,56 @@ p, li { white-space: pre-wrap; }
         <item row="0" column="0">
          <widget class="QLabel" name="label_30">
           <property name="text">
-           <string>Artistes</string>
+           <string>Artists</string>
           </property>
          </widget>
         </item>
         <item row="2" column="0">
          <widget class="QLabel" name="label_31">
           <property name="text">
-           <string>Séries</string>
+           <string>Series</string>
           </property>
          </widget>
         </item>
         <item row="3" column="0">
          <widget class="QLabel" name="label_32">
           <property name="text">
-           <string>Personnages</string>
+           <string>Characters</string>
           </property>
          </widget>
         </item>
         <item row="4" column="0">
          <widget class="QLabel" name="label_33">
           <property name="text">
-           <string>Modèles</string>
+           <string>Models</string>
           </property>
          </widget>
         </item>
         <item row="5" column="0">
          <widget class="QLabel" name="label_34">
           <property name="text">
-           <string>Généraux</string>
+           <string>Generals</string>
           </property>
          </widget>
         </item>
         <item row="6" column="0">
          <widget class="QLabel" name="label_45">
           <property name="text">
-           <string>Favoris</string>
+           <string>Favorites</string>
           </property>
          </widget>
         </item>
         <item row="7" column="0">
          <widget class="QLabel" name="label_46">
           <property name="text">
-           <string>Sur liste noire</string>
+           <string>Blacklisted</string>
           </property>
          </widget>
         </item>
         <item row="8" column="0">
          <widget class="QLabel" name="label_58">
           <property name="text">
-           <string>Ignorés</string>
+           <string>Ignored</string>
           </property>
          </widget>
         </item>
@@ -1710,14 +1789,14 @@ p, li { white-space: pre-wrap; }
           <item>
            <widget class="QPushButton" name="buttonColoringArtistsColor">
             <property name="text">
-             <string>Couleur</string>
+             <string>Color</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QPushButton" name="buttonColoringArtistsFont">
             <property name="text">
-             <string>Police</string>
+             <string>Font</string>
             </property>
            </widget>
           </item>
@@ -1731,14 +1810,14 @@ p, li { white-space: pre-wrap; }
           <item>
            <widget class="QPushButton" name="buttonColoringCopyrightsColor">
             <property name="text">
-             <string>Couleur</string>
+             <string>Color</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QPushButton" name="buttonColoringCopyrightsFont">
             <property name="text">
-             <string>Police</string>
+             <string>Font</string>
             </property>
            </widget>
           </item>
@@ -1752,14 +1831,14 @@ p, li { white-space: pre-wrap; }
           <item>
            <widget class="QPushButton" name="buttonColoringCharactersColor">
             <property name="text">
-             <string>Couleur</string>
+             <string>Color</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QPushButton" name="buttonColoringCharactersFont">
             <property name="text">
-             <string>Police</string>
+             <string>Font</string>
             </property>
            </widget>
           </item>
@@ -1773,14 +1852,14 @@ p, li { white-space: pre-wrap; }
           <item>
            <widget class="QPushButton" name="buttonColoringModelsColor">
             <property name="text">
-             <string>Couleur</string>
+             <string>Color</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QPushButton" name="buttonColoringModelsFont">
             <property name="text">
-             <string>Police</string>
+             <string>Font</string>
             </property>
            </widget>
           </item>
@@ -1794,14 +1873,14 @@ p, li { white-space: pre-wrap; }
           <item>
            <widget class="QPushButton" name="buttonColoringGeneralsColor">
             <property name="text">
-             <string>Couleur</string>
+             <string>Color</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QPushButton" name="buttonColoringGeneralsFont">
             <property name="text">
-             <string>Police</string>
+             <string>Font</string>
             </property>
            </widget>
           </item>
@@ -1815,14 +1894,14 @@ p, li { white-space: pre-wrap; }
           <item>
            <widget class="QPushButton" name="buttonColoringFavoritesColor">
             <property name="text">
-             <string>Couleur</string>
+             <string>Color</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QPushButton" name="buttonColoringFavoritesFont">
             <property name="text">
-             <string>Police</string>
+             <string>Font</string>
             </property>
            </widget>
           </item>
@@ -1836,14 +1915,14 @@ p, li { white-space: pre-wrap; }
           <item>
            <widget class="QPushButton" name="buttonColoringBlacklistedsColor">
             <property name="text">
-             <string>Couleur</string>
+             <string>Color</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QPushButton" name="buttonColoringBlacklistedsFont">
             <property name="text">
-             <string>Police</string>
+             <string>Font</string>
             </property>
            </widget>
           </item>
@@ -1857,14 +1936,14 @@ p, li { white-space: pre-wrap; }
           <item>
            <widget class="QPushButton" name="buttonColoringIgnoredsColor">
             <property name="text">
-             <string>Couleur</string>
+             <string>Color</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QPushButton" name="buttonColoringIgnoredsFont">
             <property name="text">
-             <string>Police</string>
+             <string>Font</string>
             </property>
            </widget>
           </item>
@@ -1873,7 +1952,7 @@ p, li { white-space: pre-wrap; }
         <item row="1" column="0">
          <widget class="QLabel" name="label_15">
           <property name="text">
-           <string>Cercle</string>
+           <string>Circle</string>
           </property>
          </widget>
         </item>
@@ -1885,14 +1964,14 @@ p, li { white-space: pre-wrap; }
           <item>
            <widget class="QPushButton" name="buttonColoringCirclesColor">
             <property name="text">
-             <string>Couleur</string>
+             <string>Color</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QPushButton" name="buttonColoringCirclesFont">
             <property name="text">
-             <string>Police</string>
+             <string>Font</string>
             </property>
            </widget>
           </item>
@@ -1908,13 +1987,13 @@ p, li { white-space: pre-wrap; }
         <item row="0" column="0" colspan="2">
          <widget class="QGroupBox" name="groupBox_3">
           <property name="title">
-           <string>Serveurs</string>
+           <string>Hosts</string>
           </property>
           <layout class="QFormLayout" name="formLayout_8">
            <item row="0" column="0">
             <widget class="QLabel" name="label_60">
              <property name="text">
-              <string>Marges horizontales</string>
+              <string>Horizontal margins</string>
              </property>
             </widget>
            </item>
@@ -1934,7 +2013,7 @@ p, li { white-space: pre-wrap; }
               <bool>false</bool>
              </property>
              <property name="text">
-              <string>Bordures</string>
+              <string>Borders</string>
              </property>
             </widget>
            </item>
@@ -1951,7 +2030,7 @@ p, li { white-space: pre-wrap; }
               <bool>false</bool>
              </property>
              <property name="text">
-              <string>Couleur</string>
+              <string>Color</string>
              </property>
             </widget>
            </item>
@@ -1963,7 +2042,7 @@ p, li { white-space: pre-wrap; }
                 <bool>false</bool>
                </property>
                <property name="text">
-                <string>#000000</string>
+                <string notr="true">#000000</string>
                </property>
               </widget>
              </item>
@@ -1973,7 +2052,7 @@ p, li { white-space: pre-wrap; }
                 <bool>false</bool>
                </property>
                <property name="text">
-                <string>Couleur</string>
+                <string>Color</string>
                </property>
               </widget>
              </item>
@@ -1991,7 +2070,7 @@ p, li { white-space: pre-wrap; }
            <item row="0" column="0">
             <widget class="QLabel" name="label_37">
              <property name="text">
-              <string>Marges horizontales</string>
+              <string>Horizontal margins</string>
              </property>
             </widget>
            </item>
@@ -2008,7 +2087,7 @@ p, li { white-space: pre-wrap; }
            <item row="1" column="0">
             <widget class="QLabel" name="label_38">
              <property name="text">
-              <string>Marges verticales</string>
+              <string>Vertical margins</string>
              </property>
             </widget>
            </item>
@@ -2025,7 +2104,7 @@ p, li { white-space: pre-wrap; }
            <item row="2" column="0">
             <widget class="QLabel" name="label_59">
              <property name="text">
-              <string>Bordures</string>
+              <string>Borders</string>
              </property>
             </widget>
            </item>
@@ -2049,7 +2128,7 @@ p, li { white-space: pre-wrap; }
         <item row="0" column="0" colspan="2">
          <widget class="QCheckBox" name="checkShowLog">
           <property name="text">
-           <string>Afficher le log</string>
+           <string>Show log</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -2063,7 +2142,7 @@ p, li { white-space: pre-wrap; }
         <item row="0" column="0" colspan="2">
          <widget class="QCheckBox" name="checkProxyUse">
           <property name="text">
-           <string>Utiliser un proxy</string>
+           <string>Use proxy</string>
           </property>
          </widget>
         </item>
@@ -2085,7 +2164,7 @@ p, li { white-space: pre-wrap; }
            <item row="1" column="0">
             <widget class="QLabel" name="label_56">
              <property name="text">
-              <string>Serveur</string>
+              <string>Host</string>
              </property>
             </widget>
            </item>
@@ -2150,7 +2229,7 @@ p, li { white-space: pre-wrap; }
         <item row="3" column="0">
          <widget class="QLabel" name="label_47">
           <property name="text">
-           <string>Tag (après)</string>
+           <string>Tag (after)</string>
           </property>
          </widget>
         </item>
@@ -2160,7 +2239,7 @@ p, li { white-space: pre-wrap; }
         <item row="0" column="0">
          <widget class="QLabel" name="label_36">
           <property name="text">
-           <string>Tag (avant)</string>
+           <string>Tag (before)</string>
           </property>
          </widget>
         </item>
@@ -2170,7 +2249,7 @@ p, li { white-space: pre-wrap; }
         <item row="1" column="0" colspan="2">
          <widget class="QLabel" name="label_27">
           <property name="text">
-           <string>Symboles additionels : &lt;span style=&quot; font-style:italic;&quot;&gt;%tag%&lt;/span&gt;, &lt;span style=&quot; font-style:italic;&quot;&gt;%type%&lt;/span&gt;, &lt;span style=&quot; font-style:italic;&quot;&gt;%number%&lt;/span&gt;.&lt;br/&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;%tag%&lt;/span&gt; : le tag&lt;br/&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;%type%&lt;/span&gt; : type du tag, &amp;quot;general&amp;quot;, &amp;quot;artist&amp;quot;, &amp;quot;copyright&amp;quot;, &amp;quot;character&amp;quot;, &amp;quot;model&amp;quot; ou &amp;quot;photo_set&amp;quot;&lt;br/&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;%number%&lt;/span&gt; : le numéro du type de tag (varie entre 0 et 6)</string>
+           <string>Additional tags: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: the tag&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;: tag type, &quot;general&quot;, &quot;artist&quot;, &quot;copyright&quot;, &quot;character&quot;, &quot;model&quot; or &quot;photo_set&quot;&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: the tag type number (between 0 and 6)</string>
           </property>
           <property name="wordWrap">
            <bool>true</bool>
@@ -2184,13 +2263,13 @@ p, li { white-space: pre-wrap; }
         <item row="1" column="0" colspan="2">
          <widget class="QGroupBox" name="groupBox_4">
           <property name="title">
-           <string>Commandes</string>
+           <string>Commands</string>
           </property>
           <layout class="QFormLayout" name="formLayout_20">
            <item row="0" column="0">
             <widget class="QLabel" name="label_77">
              <property name="text">
-              <string>Début</string>
+              <string>Start</string>
              </property>
             </widget>
            </item>
@@ -2200,7 +2279,7 @@ p, li { white-space: pre-wrap; }
            <item row="1" column="0">
             <widget class="QLabel" name="label_79">
              <property name="text">
-              <string>Tag (avant)</string>
+              <string>Tag (before)</string>
              </property>
             </widget>
            </item>
@@ -2220,7 +2299,7 @@ p, li { white-space: pre-wrap; }
            <item row="4" column="0">
             <widget class="QLabel" name="label_76">
              <property name="text">
-              <string>Tag (après)</string>
+              <string>Tag (after)</string>
              </property>
             </widget>
            </item>
@@ -2230,7 +2309,7 @@ p, li { white-space: pre-wrap; }
            <item row="5" column="0">
             <widget class="QLabel" name="label_78">
              <property name="text">
-              <string>Fin</string>
+              <string>End</string>
              </property>
             </widget>
            </item>
@@ -2240,7 +2319,7 @@ p, li { white-space: pre-wrap; }
            <item row="2" column="0" colspan="2">
             <widget class="QLabel" name="label_28">
              <property name="text">
-              <string>Symboles additionels : &lt;span style=&quot; font-style:italic;&quot;&gt;%tag%&lt;/span&gt;, &lt;span style=&quot; font-style:italic;&quot;&gt;%type%&lt;/span&gt;, &lt;span style=&quot; font-style:italic;&quot;&gt;%number%&lt;/span&gt;.&lt;br/&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;%tag%&lt;/span&gt; : le tag&lt;br/&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;%type%&lt;/span&gt; : type du tag, &amp;quot;general&amp;quot;, &amp;quot;artist&amp;quot;, &amp;quot;copyright&amp;quot;, &amp;quot;character&amp;quot;, &amp;quot;model&amp;quot; ou &amp;quot;photo_set&amp;quot;&lt;br/&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;%number%&lt;/span&gt; : le numéro du type de tag (varie entre 0 et 6)</string>
+              <string>Additional tags: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: the tag&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;: tag type, &quot;general&quot;, &quot;artist&quot;, &quot;copyright&quot;, &quot;character&quot;, &quot;model&quot; or &quot;photo_set&quot;&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: the tag type number (between 0 and 6)</string>
              </property>
              <property name="wordWrap">
               <bool>true</bool>
@@ -2253,13 +2332,13 @@ p, li { white-space: pre-wrap; }
         <item row="0" column="0" colspan="2">
          <widget class="QGroupBox" name="groupBox">
           <property name="title">
-           <string>Identifiants</string>
+           <string>Credentials</string>
           </property>
           <layout class="QFormLayout" name="formLayout_19">
            <item row="1" column="0">
             <widget class="QLabel" name="label_24">
              <property name="text">
-              <string>Hôte</string>
+              <string>Host</string>
              </property>
             </widget>
            </item>
@@ -2269,7 +2348,7 @@ p, li { white-space: pre-wrap; }
            <item row="2" column="0">
             <widget class="QLabel" name="label_72">
              <property name="text">
-              <string>Utilisateur</string>
+              <string>User</string>
              </property>
             </widget>
            </item>
@@ -2279,7 +2358,7 @@ p, li { white-space: pre-wrap; }
            <item row="3" column="0">
             <widget class="QLabel" name="label_73">
              <property name="text">
-              <string>Mot de passe</string>
+              <string>Password</string>
              </property>
             </widget>
            </item>
@@ -2289,7 +2368,7 @@ p, li { white-space: pre-wrap; }
            <item row="4" column="0">
             <widget class="QLabel" name="label_74">
              <property name="text">
-              <string>Base de données</string>
+              <string>Database</string>
              </property>
             </widget>
            </item>
@@ -2394,7 +2473,6 @@ p, li { white-space: pre-wrap; }
   <tabstop>lineCopyrightsIfNone</tabstop>
   <tabstop>lineCharactersIfNone</tabstop>
   <tabstop>lineCharactersSeparator</tabstop>
-  <tabstop>comboTagsposition</tabstop>
   <tabstop>checkShowTagWarning</tabstop>
   <tabstop>checkShowWarnings</tabstop>
   <tabstop>checkGetUnloadedPages</tabstop>

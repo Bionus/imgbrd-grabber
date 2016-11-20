@@ -11,12 +11,8 @@ void IntegrationTestSuite::initTestCase()
 
 QList<Image*> IntegrationTestSuite::getImages(QString site, QString source, QString format, QString tags)
 {
-	QDir().mkpath("tests/resources/sites/" + site + "/" + source);
-	QFile::remove("tests/resources/sites/" + site +"/model.xml");
-	QFile::copy("release/sites/" + site +"/model.xml", "tests/resources/sites/" + site +"/model.xml");
-	QFile::remove("tests/resources/sites/" + site +"/" + source + "/settings.ini");
-	if (QFile::exists("release/sites/" + site +"/" + source + "/settings.ini"))
-	{ QFile::copy("release/sites/" + site +"/" + source + "/settings.ini", "tests/resources/sites/" + site +"/" + source + "/settings.ini"); }
+	setupSource(site);
+	setupSite(site, source);
 
 	QSettings settings("tests/resources/sites/" + site +"/" + source + "/settings.ini", QSettings::IniFormat);
 	settings.setValue("download/throttle_retry", 0);
@@ -27,7 +23,9 @@ QList<Image*> IntegrationTestSuite::getImages(QString site, QString source, QStr
 	settings.setValue("sources/source_1", format);
 
 	QList<Site*> sites;
-	sites.append(new Site(source, new Source(&profile, "tests/resources/sites/" + site)));
+	Site *ste = new Site(source, new Source(&profile, "tests/resources/sites/" + site));
+	ste->setAutoLogin(false);
+	sites.append(ste);
 
 	QList<Image*> result;
 	m_downloader = new Downloader(&profile,
@@ -82,7 +80,9 @@ QList<Tag> IntegrationTestSuite::getPageTags(QString site, QString source, QStri
 	settings.setValue("sources/source_1", format);
 
 	QList<Site*> sites;
-	sites.append(new Site(source, new Source(&profile, "tests/resources/sites/" + site)));
+	Site *ste = new Site(source, new Source(&profile, "tests/resources/sites/" + site));
+	ste->setAutoLogin(false);
+	sites.append(ste);
 
 	QList<Tag> result;
 	m_downloader = new Downloader(&profile,

@@ -4,16 +4,17 @@
 #include <QCryptographicHash>
 #include <QMessageBox>
 #include "md5-fix.h"
-#include "functions.h"
 #include "ui_md5-fix.h"
+#include "functions.h"
 
-md5Fix::md5Fix(QWidget *parent) : QDialog(parent), ui(new Ui::md5Fix)
+md5Fix::md5Fix(Profile *profile, QWidget *parent)
+	: QDialog(parent), ui(new Ui::md5Fix), m_profile(profile)
 {
 	ui->setupUi(this);
 
-	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
-	ui->lineFolder->setText(settings.value("Save/path").toString());
-	ui->lineFilename->setText(settings.value("Save/filename").toString());
+	QSettings *settings = profile->getSettings();
+	ui->lineFolder->setText(settings->value("Save/path").toString());
+	ui->lineFilename->setText(settings->value("Save/filename").toString());
 	ui->progressBar->hide();
 
 	resize(size().width(), 0);
@@ -38,7 +39,7 @@ void md5Fix::on_buttonStart_clicked()
 	QDir dir(ui->lineFolder->text());
 	if (!dir.exists())
 	{
-		error(this, tr("Ce dossier n'existe pas."));
+		error(this, tr("This folder does not exist."));
 		ui->buttonStart->setEnabled(true);
 		return;
 	}
@@ -46,7 +47,7 @@ void md5Fix::on_buttonStart_clicked()
 	// Make sure the input is valid
 	if (!ui->radioForce->isChecked() && !ui->lineFilename->text().contains("%md5%"))
 	{
-		error(this, tr("Si vous voulez récupérer le MD5 depuis le nom de fichier, vous devez include le token %md5% dans celui-ci."));
+		error(this, tr("If you want to get the MD5 from the filename, you have to include the %md5% token in it."));
 		ui->buttonStart->setEnabled(true);
 		return;
 	}
@@ -73,10 +74,10 @@ void md5Fix::on_buttonStart_clicked()
 		ui->progressBar->show();
 
 		// Open MD5 file
-		QFile f(savePath("md5s.txt"));
+		QFile f(m_profile->getPath() + "/md5s.txt");
 		if (!f.open(QFile::WriteOnly | QFile::Truncate))
 		{
-			error(this, tr("Impossible d'ouvrir le fichier de MD5."));
+			error(this, tr("Unable to open the MD5 file."));
 			ui->progressBar->hide();
 			ui->buttonStart->setEnabled(true);
 			return;
@@ -128,5 +129,5 @@ void md5Fix::on_buttonStart_clicked()
 
 	ui->buttonStart->setEnabled(true);
 
-	QMessageBox::information(this, tr("Terminé"), tr("%n MD5 chargé(s)", "", files.count()));
+	QMessageBox::information(this, tr("Finished"), tr("%n MD5(s) loaded", "", files.count()));
 }

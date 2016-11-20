@@ -11,14 +11,18 @@ class QBouton : public QPushButton
 	Q_OBJECT
  
 	public:
-		QBouton(QVariant id = 0, bool resizeInsteadOfCropping = false, int border = 0, QColor color = QColor(), QWidget *parent = 0);
-		~QBouton();
+		QBouton(QVariant id = 0, bool resizeInsteadOfCropping = false, bool smartSizeHint = false, int border = 0, QColor color = QColor(), QWidget *parent = 0);
 		QVariant id();
-		void mousePressEvent(QMouseEvent *);
+		void mousePressEvent(QMouseEvent *event);
+		virtual QSize sizeHint() const;
+		virtual void resizeEvent(QResizeEvent *event);
+
+	private:
+		QSize getIconSize(int regionWidth, int regionHeight, bool wOnly = false) const;
 
 	public slots:
 		void setId(QVariant);
-		void scale(QPixmap image, float scale);
+		void scale(QPixmap &image, float scale);
 		void paintEvent(QPaintEvent *event);
 		
 	signals:
@@ -37,7 +41,7 @@ class QBouton : public QPushButton
 
 	private:
 		QVariant	_id;
-		bool		_resizeInsteadOfCropping, _np, _toggled;
+		bool		_resizeInsteadOfCropping, _smartSizeHint, _np, _toggled;
 		QSize		_originalSize;
 		QColor		_penColor;
 		int			_border;

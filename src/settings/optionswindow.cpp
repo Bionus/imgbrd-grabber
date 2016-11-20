@@ -25,12 +25,27 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	ui->splitter->setStretchFactor(0, 0);
 	ui->splitter->setStretchFactor(1, 1);
 
-	QSettings *settings = profile->getSettings();
-	QStringList languages = QDir(savePath("languages/", true)).entryList(QStringList("*.qm"), QDir::Files);
-	for (int i = 0; i < languages.count(); i++)
-	{ languages[i].remove(".qm", Qt::CaseInsensitive); }
-	ui->comboLanguages->addItems(languages);
+	QSettings fullLanguages(savePath("languages/languages.ini", true), QSettings::IniFormat, this);
+	fullLanguages.setIniCodec("UTF-8");
+	QStringList languageFiles = QDir(savePath("languages/", true)).entryList(QStringList("*.qm"), QDir::Files);
+	QStringList languages;
+	int l = 0;
+	for (QString languageFile : languageFiles)
+	{
+		QString language = languageFile.left(languageFile.length() - 3);
+		languages.append(language);
+		ui->comboLanguages->addItem(fullLanguages.value(language, language).toString());
+		ui->comboLanguages->setItemData(l, language);
+		++l;
+	}
+	if (!languages.contains("English"))
+	{
+		languages.append("English");
+		ui->comboLanguages->addItem("English");
+		ui->comboLanguages->setItemData(l, "English");
+	}
 
+	QSettings *settings = profile->getSettings();
 	ui->comboLanguages->setCurrentIndex(languages.indexOf(settings->value("language", "English").toString()));
 	ui->lineBlacklist->setText(settings->value("blacklistedtags").toString());
 	ui->checkDownloadBlacklisted->setChecked(settings->value("downloadblacklist", false).toBool());
@@ -48,6 +63,8 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	ui->checkShowWarnings->setChecked(settings->value("showwarnings", true).toBool());
 	ui->checkGetUnloadedPages->setChecked(settings->value("getunloadedpages", false).toBool());
 	ui->checkConfirmClose->setChecked(settings->value("confirm_close", true).toBool());
+	QList<int> checkForUpdates = QList<int>() << 0 << 24*60*60 << 7*24*60*60 << 30*24*60*60 << -1;
+	ui->comboCheckForUpdates->setCurrentIndex(checkForUpdates.indexOf(settings->value("check_for_updates", 24*60*60).toInt()));
 
 	ui->spinImagesPerPage->setValue(settings->value("limit", 20).toInt());
 	ui->spinColumns->setValue(settings->value("columns", 1).toInt());
@@ -57,9 +74,6 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	ui->comboSource3->setCurrentIndex(sources.indexOf(settings->value("source_3", "regex").toString()));
 	ui->comboSource4->setCurrentIndex(sources.indexOf(settings->value("source_4", "rss").toString()));
 	ui->spinAutoTagAdd->setValue(settings->value("tagsautoadd", 10).toInt());
-
-	QStringList positions = QStringList() << "top" << "left" << "auto";
-	ui->comboTagsposition->setCurrentIndex(positions.indexOf(settings->value("tagsposition", "top").toString()));
 
 	QMap<QString,QPair<QString,QString>> filenames = getFilenames(settings);
 	m_filenamesConditions = QList<QLineEdit*>();
@@ -179,6 +193,12 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 		ui->layoutCustom->insertRow(i, leName, leTags);
 	}
 
+	QStringList positions = QStringList() << "top" << "left" << "auto";
+	ui->comboTagsPosition->setCurrentIndex(positions.indexOf(settings->value("tagsposition", "top").toString()));
+	ui->spinPreload->setValue(settings->value("preload", 0).toInt());
+	ui->spinSlideshow->setValue(settings->value("slideshow", 0).toInt());
+	ui->checkResultsScrollArea->setChecked(settings->value("resultsScrollArea", false).toBool());
+
 	settings->beginGroup("Coloring");
 		settings->beginGroup("Colors");
 			ui->lineColoringArtists->setText(settings->value("artists", "#aa0000").toString());
@@ -263,13 +283,13 @@ void optionsWindow::on_comboSourcesLetters_currentIndexChanged(int i)
 
 void optionsWindow::on_buttonFolder_clicked()
 {
-	QString folder = QFileDialog::getExistingDirectory(this, tr("Choisir un dossier de sauvegarde"), ui->lineFolder->text());
+	QString folder = QFileDialog::getExistingDirectory(this, tr("Choose a save folder"), ui->lineFolder->text());
 	if (!folder.isEmpty())
 	{ ui->lineFolder->setText(folder); }
 }
 void optionsWindow::on_buttonFolderFavorites_clicked()
 {
-	QString folder = QFileDialog::getExistingDirectory(this, tr("Choisir un dossier de sauvegarde pour les favoris"), ui->lineFolderFavorites->text());
+	QString folder = QFileDialog::getExistingDirectory(this, tr("Choose a save folder for favorites"), ui->lineFolderFavorites->text());
 	if (!folder.isEmpty())
 	{ ui->lineFolderFavorites->setText(folder); }
 }
@@ -289,7 +309,7 @@ void optionsWindow::on_buttonFavoritesPlus_clicked()
 
 void optionsWindow::on_buttonCustom_clicked()
 {
-	customWindow *cw = new customWindow(this);
+	CustomWindow *cw = new CustomWindow(this);
 	connect(cw, SIGNAL(validated(QString, QString)), this, SLOT(addCustom(QString, QString)));
 	cw->show();
 }
@@ -324,202 +344,93 @@ void optionsWindow::addFilename(QString condition, QString filename, QString fol
 	ui->layoutConditionals->addLayout(layout);
 }
 
+
+void optionsWindow::setColor(QLineEdit *lineEdit, bool button)
+{
+	QString text = lineEdit->text();
+	QColor color = button
+		? QColorDialog::getColor(QColor(text), this, tr("Choose a color"))
+		: QColor(text);
+
+	if (color.isValid())
+	{
+		lineEdit->setText(button ? color.name() : text);
+		lineEdit->setStyleSheet("color:" + color.name());
+	}
+	else if (!button)
+	{ lineEdit->setStyleSheet("color:#000000"); }
+}
+
+void optionsWindow::setFont(QLineEdit *lineEdit)
+{
+	bool ok = false;
+	QFont police = QFontDialog::getFont(&ok, lineEdit->font(), this, tr("Choose a font"));
+
+	if (ok)
+		lineEdit->setFont(police);
+}
+
 void optionsWindow::on_lineColoringArtists_textChanged()
-{
-	if (QColor(ui->lineColoringArtists->text()).isValid())
-	{ ui->lineColoringArtists->setStyleSheet("color:"+ui->lineColoringArtists->text()); }
-	else
-	{ ui->lineColoringArtists->setStyleSheet("color:#000000"); }
-}
+{ setColor(ui->lineColoringArtists); }
 void optionsWindow::on_lineColoringCircles_textChanged()
-{
-	if (QColor(ui->lineColoringCircles->text()).isValid())
-	{ ui->lineColoringCircles->setStyleSheet("color:"+ui->lineColoringCircles->text()); }
-	else
-	{ ui->lineColoringCircles->setStyleSheet("color:#000000"); }
-}
+{ setColor(ui->lineColoringCircles); }
 void optionsWindow::on_lineColoringCopyrights_textChanged()
-{
-	if (QColor(ui->lineColoringCopyrights->text()).isValid())
-	{ ui->lineColoringCopyrights->setStyleSheet("color:"+ui->lineColoringCopyrights->text()); }
-	else
-	{ ui->lineColoringCopyrights->setStyleSheet("color:#000000"); }
-}
+{ setColor(ui->lineColoringCopyrights); }
 void optionsWindow::on_lineColoringCharacters_textChanged()
-{
-	if (QColor(ui->lineColoringCharacters->text()).isValid())
-	{ ui->lineColoringCharacters->setStyleSheet("color:"+ui->lineColoringCharacters->text()); }
-	else
-	{ ui->lineColoringCharacters->setStyleSheet("color:#000000"); }
-}
+{ setColor(ui->lineColoringCharacters); }
 void optionsWindow::on_lineColoringModels_textChanged()
-{
-	if (QColor(ui->lineColoringModels->text()).isValid())
-	{ ui->lineColoringModels->setStyleSheet("color:"+ui->lineColoringModels->text()); }
-	else
-	{ ui->lineColoringModels->setStyleSheet("color:#000000"); }
-}
+{ setColor(ui->lineColoringModels); }
 void optionsWindow::on_lineColoringGenerals_textChanged()
-{
-	if (QColor(ui->lineColoringGenerals->text()).isValid())
-	{ ui->lineColoringGenerals->setStyleSheet("color:"+ui->lineColoringGenerals->text()); }
-	else
-	{ ui->lineColoringGenerals->setStyleSheet("color:#000000"); }
-}
+{ setColor(ui->lineColoringGenerals); }
 void optionsWindow::on_lineColoringFavorites_textChanged()
-{
-	if (QColor(ui->lineColoringFavorites->text()).isValid())
-	{ ui->lineColoringFavorites->setStyleSheet("color:"+ui->lineColoringFavorites->text()); }
-	else
-	{ ui->lineColoringFavorites->setStyleSheet("color:#000000"); }
-}
+{ setColor(ui->lineColoringFavorites); }
 void optionsWindow::on_lineColoringBlacklisteds_textChanged()
-{
-	if (QColor(ui->lineColoringBlacklisteds->text()).isValid())
-	{ ui->lineColoringBlacklisteds->setStyleSheet("color:"+ui->lineColoringBlacklisteds->text()); }
-	else
-	{ ui->lineColoringBlacklisteds->setStyleSheet("color:#000000"); }
-}
+{ setColor(ui->lineColoringBlacklisteds); }
 void optionsWindow::on_lineColoringIgnoreds_textChanged()
-{
-	if (QColor(ui->lineColoringIgnoreds->text()).isValid())
-	{ ui->lineColoringIgnoreds->setStyleSheet("color:"+ui->lineColoringIgnoreds->text()); }
-	else
-	{ ui->lineColoringIgnoreds->setStyleSheet("color:#000000"); }
-}
+{ setColor(ui->lineColoringIgnoreds); }
+void optionsWindow::on_lineBorderColor_textChanged()
+{ setColor(ui->lineBorderColor); }
 
 void optionsWindow::on_buttonColoringArtistsColor_clicked()
-{
-	QColor color = QColorDialog::getColor(QColor(ui->lineColoringArtists->text()), this, tr("Choisir une couleur"));
-	if (color.isValid())
-	{ ui->lineColoringArtists->setText(color.name()); }
-}
+{ setColor(ui->lineColoringArtists, true); }
 void optionsWindow::on_buttonColoringCirclesColor_clicked()
-{
-	QColor color = QColorDialog::getColor(QColor(ui->lineColoringCircles->text()), this, tr("Choisir une couleur"));
-	if (color.isValid())
-	{ ui->lineColoringCircles->setText(color.name()); }
-}
+{ setColor(ui->lineColoringCircles, true); }
 void optionsWindow::on_buttonColoringCopyrightsColor_clicked()
-{
-	QColor color = QColorDialog::getColor(QColor(ui->lineColoringCopyrights->text()), this, tr("Choisir une couleur"));
-	if (color.isValid())
-	{ ui->lineColoringCopyrights->setText(color.name()); }
-}
+{ setColor(ui->lineColoringCopyrights, true); }
 void optionsWindow::on_buttonColoringCharactersColor_clicked()
-{
-	QColor color = QColorDialog::getColor(QColor(ui->lineColoringCharacters->text()), this, tr("Choisir une couleur"));
-	if (color.isValid())
-	{ ui->lineColoringCharacters->setText(color.name()); }
-}
+{ setColor(ui->lineColoringCharacters, true); }
 void optionsWindow::on_buttonColoringModelsColor_clicked()
-{
-	QColor color = QColorDialog::getColor(QColor(ui->lineColoringModels->text()), this, tr("Choisir une couleur"));
-	if (color.isValid())
-	{ ui->lineColoringModels->setText(color.name()); }
-}
+{ setColor(ui->lineColoringModels, true); }
 void optionsWindow::on_buttonColoringGeneralsColor_clicked()
-{
-	QColor color = QColorDialog::getColor(QColor(ui->lineColoringGenerals->text()), this, tr("Choisir une couleur"));
-	if (color.isValid())
-	{ ui->lineColoringGenerals->setText(color.name()); }
-}
+{ setColor(ui->lineColoringGenerals, true); }
 void optionsWindow::on_buttonColoringFavoritesColor_clicked()
-{
-	QColor color = QColorDialog::getColor(QColor(ui->lineColoringFavorites->text()), this, tr("Choisir une couleur"));
-	if (color.isValid())
-	{ ui->lineColoringFavorites->setText(color.name()); }
-}
+{ setColor(ui->lineColoringFavorites, true); }
 void optionsWindow::on_buttonColoringBlacklistedsColor_clicked()
-{
-	QColor color = QColorDialog::getColor(QColor(ui->lineColoringBlacklisteds->text()), this, tr("Choisir une couleur"));
-	if (color.isValid())
-	{ ui->lineColoringBlacklisteds->setText(color.name()); }
-}
+{ setColor(ui->lineColoringBlacklisteds, true); }
 void optionsWindow::on_buttonColoringIgnoredsColor_clicked()
-{
-	QColor color = QColorDialog::getColor(QColor(ui->lineColoringIgnoreds->text()), this, tr("Choisir une couleur"));
-	if (color.isValid())
-	{ ui->lineColoringIgnoreds->setText(color.name()); }
-}
+{ setColor(ui->lineColoringIgnoreds, true); }
+void optionsWindow::on_buttonBorderColor_clicked()
+{ setColor(ui->lineBorderColor, true); }
 
 void optionsWindow::on_buttonColoringArtistsFont_clicked()
-{
-	bool ok = false;
-	QFont police = QFontDialog::getFont(&ok, ui->lineColoringArtists->font(), this, tr("Choisir une police"));
-	if (ok)
-	{ ui->lineColoringArtists->setFont(police); }
-}
+{ setFont(ui->lineColoringArtists); }
 void optionsWindow::on_buttonColoringCirclesFont_clicked()
-{
-	bool ok = false;
-	QFont police = QFontDialog::getFont(&ok, ui->lineColoringCircles->font(), this, tr("Choisir une police"));
-	if (ok)
-	{ ui->lineColoringCircles->setFont(police); }
-}
+{ setFont(ui->lineColoringCircles); }
 void optionsWindow::on_buttonColoringCopyrightsFont_clicked()
-{
-	bool ok = false;
-	QFont police = QFontDialog::getFont(&ok, ui->lineColoringCopyrights->font(), this, tr("Choisir une police"));
-	if (ok)
-	{ ui->lineColoringCopyrights->setFont(police); }
-}
+{ setFont(ui->lineColoringCopyrights); }
 void optionsWindow::on_buttonColoringCharactersFont_clicked()
-{
-	bool ok = false;
-	QFont police = QFontDialog::getFont(&ok, ui->lineColoringCharacters->font(), this, tr("Choisir une police"));
-	if (ok)
-	{ ui->lineColoringCharacters->setFont(police); }
-}
+{ setFont(ui->lineColoringCharacters); }
 void optionsWindow::on_buttonColoringModelsFont_clicked()
-{
-	bool ok = false;
-	QFont police = QFontDialog::getFont(&ok, ui->lineColoringModels->font(), this, tr("Choisir une police"));
-	if (ok)
-	{ ui->lineColoringModels->setFont(police); }
-}
+{ setFont(ui->lineColoringModels); }
 void optionsWindow::on_buttonColoringGeneralsFont_clicked()
-{
-	bool ok = false;
-	QFont police = QFontDialog::getFont(&ok, ui->lineColoringGenerals->font(), this, tr("Choisir une police"));
-	if (ok)
-	{ ui->lineColoringGenerals->setFont(police); }
-}
+{ setFont(ui->lineColoringGenerals); }
 void optionsWindow::on_buttonColoringFavoritesFont_clicked()
-{
-	bool ok = false;
-	QFont police = QFontDialog::getFont(&ok, ui->lineColoringFavorites->font(), this, tr("Choisir une police"));
-	if (ok)
-	{ ui->lineColoringFavorites->setFont(police); }
-}
+{ setFont(ui->lineColoringFavorites); }
 void optionsWindow::on_buttonColoringBlacklistedsFont_clicked()
-{
-	bool ok = false;
-	QFont police = QFontDialog::getFont(&ok, ui->lineColoringBlacklisteds->font(), this, tr("Choisir une police"));
-	if (ok)
-	{ ui->lineColoringBlacklisteds->setFont(police); }
-}
+{ setFont(ui->lineColoringBlacklisteds); }
 void optionsWindow::on_buttonColoringIgnoredsFont_clicked()
-{
-	bool ok = false;
-	QFont police = QFontDialog::getFont(&ok, ui->lineColoringIgnoreds->font(), this, tr("Choisir une police"));
-	if (ok)
-	{ ui->lineColoringIgnoreds->setFont(police); }
-}
+{ setFont(ui->lineColoringIgnoreds); }
 
-void optionsWindow::on_lineBorderColor_textChanged()
-{
-	if (QColor(ui->lineBorderColor->text()).isValid())
-	{ ui->lineBorderColor->setStyleSheet("color:"+ui->lineBorderColor->text()); }
-	else
-	{ ui->lineBorderColor->setStyleSheet("color:#000000"); }
-}
-void optionsWindow::on_buttonBorderColor_clicked()
-{
-	QColor color = QColorDialog::getColor(QColor(ui->lineBorderColor->text()), this, tr("Choisir une couleur"));
-	if (color.isValid())
-	{ ui->lineBorderColor->setText(color.name()); }
-}
 
 void treeWidgetRec(int depth, bool& found, int& index, QTreeWidgetItem *current, QTreeWidgetItem *sel)
 {
@@ -578,13 +489,13 @@ void optionsWindow::save()
 	settings->setValue("start", starts.at(ui->comboStart->currentIndex()));
 	settings->setValue("hidefavorites", ui->spinHideFavorites->value());
 	settings->setValue("autodownload", ui->checkAutodownload->isChecked());
-	QStringList positions = QStringList() << "top" << "left" << "auto";
-	settings->setValue("tagsposition", positions.at(ui->comboTagsposition->currentIndex()));
 	settings->setValue("hideblacklisted", ui->checkHideBlacklisted->isChecked());
 	settings->setValue("showtagwarning", ui->checkShowTagWarning->isChecked());
 	settings->setValue("showwarnings", ui->checkShowWarnings->isChecked());
 	settings->setValue("getunloadedpages", ui->checkGetUnloadedPages->isChecked());
 	settings->setValue("confirm_close", ui->checkConfirmClose->isChecked());
+	QList<int> checkForUpdates = QList<int>() << 0 << 24*60*60 << 7*24*60*60 << 30*24*60*60 << -1;
+	settings->setValue("check_for_updates", checkForUpdates.at(ui->comboCheckForUpdates->currentIndex()));
 
 	settings->beginGroup("Filenames");
 		for (int i = 0; i < m_filenamesConditions.size(); i++)
@@ -659,7 +570,7 @@ void optionsWindow::save()
 				pth.setPath(pth.path().remove(QRegExp("/([^/]+)$")));
 			}
 			if (pth.path() == op)
-			{ error(this, tr("Une erreur est survenue lors de la création du dossier de sauvegarde.")); }
+			{ error(this, tr("An error occured creating the save folder.")); }
 			else
 			{ pth.mkpath(folder); }
 		}
@@ -675,7 +586,7 @@ void optionsWindow::save()
 				pth.setPath(pth.path().remove(QRegExp("/([^/]+)$")));
 			}
 			if (pth.path() == op)
-			{ error(this, tr("Une erreur est survenue lors de la création du dossier de sauvegarde des favoris.")); }
+			{ error(this, tr("An error occured creating the favorites save folder.")); }
 			else
 			{ pth.mkpath(folder); }
 		}
@@ -736,6 +647,12 @@ void optionsWindow::save()
 			{ settings->setValue(m_customNames.at(i)->text(), m_customTags.at(i)->text()); }
 		settings->endGroup();
 	settings->endGroup();
+
+	QStringList positions = QStringList() << "top" << "left" << "auto";
+	settings->setValue("tagsposition", positions.at(ui->comboTagsPosition->currentIndex()));
+	settings->setValue("preload", ui->spinPreload->value());
+	settings->setValue("slideshow", ui->spinSlideshow->value());
+	settings->setValue("resultsScrollArea", ui->checkResultsScrollArea->isChecked());
 
 	settings->beginGroup("Coloring");
 		settings->beginGroup("Colors");
@@ -802,18 +719,19 @@ void optionsWindow::save()
 		QNetworkProxy::ProxyType type = settings->value("Proxy/type", "http") == "http" ? QNetworkProxy::HttpProxy : QNetworkProxy::Socks5Proxy;
 		QNetworkProxy proxy(type, settings->value("Proxy/hostName").toString(), settings->value("Proxy/port").toInt());
 		QNetworkProxy::setApplicationProxy(proxy);
-		log(tr("Activation du proxy général sur l'hôte \"%1\" et le port %2.").arg(settings->value("Proxy/hostName").toString()).arg(settings->value("Proxy/port").toInt()));
+		log(QString("Activation du proxy général sur l'hôte \"%1\" et le port %2.").arg(settings->value("Proxy/hostName").toString()).arg(settings->value("Proxy/port").toInt()));
 	}
 	else if (QNetworkProxy::applicationProxy().type() != QNetworkProxy::NoProxy)
 	{
 		QNetworkProxy::setApplicationProxy(QNetworkProxy::NoProxy);
-		log(tr("Désactivation du proxy général."));
+		log("Désactivation du proxy général.");
 	}
 
-	if (settings->value("language", "English").toString() != ui->comboLanguages->currentText())
+	QString lang = ui->comboLanguages->currentData().toString();
+	if (settings->value("language", "English").toString() != lang)
 	{
-		settings->setValue("language", ui->comboLanguages->currentText());
-		emit languageChanged(ui->comboLanguages->currentText());
+		settings->setValue("language", lang);
+		emit languageChanged(lang);
 	}
 
 	m_profile->sync();

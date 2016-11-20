@@ -30,7 +30,7 @@ T = $$(TRAVIS)
 @
 
 # Global
-APP_VERSION = \\\"4.9.1\\\"
+APP_VERSION = \\\"5.0.0a1\\\"
 
 # General
 TEMPLATE = app
@@ -49,7 +49,11 @@ CONFIG += plugin c++11
 RESOURCES += $${PDIR}/resources.qrc
 RC_FILE = ../icon.rc
 CODECFORTR = UTF-8
-TRANSLATIONS += $${PDIR}/languages/English.ts $${PDIR}/languages/Français.ts $${PDIR}/languages/Russian.ts
+TRANSLATIONS += $${PDIR}/languages/English.ts \
+				$${PDIR}/languages/French.ts \
+				$${PDIR}/languages/Russian.ts \
+				$${PDIR}/languages/ChineseSimplified.ts \
+				$${PDIR}/languages/YourLanguage.ts
 
 # Target WinXP
 Release:win32 {

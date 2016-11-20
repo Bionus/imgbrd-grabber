@@ -29,7 +29,7 @@ class zoomWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		zoomWindow(QSharedPointer<Image> image, Site *site, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent);
+		zoomWindow(QList<QSharedPointer<Image>> images, QSharedPointer<Image> image, Site *site, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent);
 		void go();
 		~zoomWindow();
 		void load();
@@ -38,15 +38,13 @@ class zoomWindow : public QDialog
 		void update(bool onlysize = false);
 		void replyFinishedDetails();
 		void replyFinishedZoom();
-		void display(QImage, int);
+		void display(QPixmap *, int);
 		void saveNQuit();
 		void saveNQuitFav();
 		void saveImage(bool fav = false);
 		void saveImageFav();
 		QStringList saveImageNow(bool fav = false);
 		QString saveImageAs();
-		void fullScreen();
-		void unfullScreen();
 		void openUrl(QString);
 		void openPool(QString);
 		void openPoolId(Page*);
@@ -70,6 +68,17 @@ class zoomWindow : public QDialog
 		void urlChanged(QString, QString);
 		void showDetails();
 		void pendingUpdate();
+
+		// Full screen
+		void fullScreen();
+		void unfullScreen();
+		void prepareNextSlide();
+		void toggleSlideshow();
+
+		// Navigation
+		void load(QSharedPointer<Image> image);
+		void next();
+		void previous();
 
 	protected:
 		void closeEvent(QCloseEvent *);
@@ -101,8 +110,7 @@ class zoomWindow : public QDialog
 		QPixmap *image;
 		QMovie *movie;
 		QTimer *m_resizeTimer;
-		QTime *m_imageTime;
-		QPushButton *buttonSave, *buttonSaveNQuit, *buttonSaveas, *m_buttonSaveNQuit;
+		QTime m_imageTime;
 		QString link;
 		QNetworkReply *m_reply;
 		const char* m_format;
@@ -112,12 +120,17 @@ class zoomWindow : public QDialog
 		QMap<QString,Site*> *m_sites;
 		QString m_source;
 		ImageThread *m_th;
+
 		QAffiche *m_fullScreen;
+		QTimer m_slideshow;
+		bool m_isFullscreen;
+		bool m_isSlideshowRunning;
 
 		QStackedWidget *m_stackedWidget;
 		QAffiche *m_labelImage;
 		QVideoWidget *m_videoWidget;
 		QMediaPlayer *m_mediaPlayer;
+		QList<QSharedPointer<Image>> m_images;
 };
 
 #endif

@@ -7,13 +7,13 @@
 #include <QMap>
 #include <QList>
 #include <QNetworkReply>
-#include <QNetworkAccessManager>
 #include <QUrl>
 #include <QSslError>
 #include <functional>
 #include "tag.h"
 #include "api.h"
 #include "profile.h"
+#include "custom-network-access-manager.h"
 
 
 
@@ -50,7 +50,6 @@ class Site : public QObject
 		QString name();
 		QString url();
 		QList<QNetworkCookie> cookies();
-		bool isLoggedIn();
 		QVariant setting(QString key, QVariant def = QVariant());
 		QSettings *settings();
 		QNetworkRequest makeRequest(QUrl url, Page *page = nullptr, QString referer = "", Image *img = nullptr);
@@ -61,12 +60,17 @@ class Site : public QObject
 		QUrl fixUrl(QUrl url) { return fixUrl(url.toString()); }
 		QUrl fixUrl(QString url);
 		QUrl fixUrl(QString url, QUrl old);
-		QString username();
-		QString password();
-		void setUsername(QString);
-		void setPassword(QString);
 		QList<Api*> getApis() const;
 		Source *getSource() const;
+
+		// Login
+		void setAutoLogin(bool autoLogin);
+		bool autoLogin() const;
+		bool isLoggedIn();
+		QString username() const;
+		QString password() const;
+		void setUsername(QString);
+		void setPassword(QString);
 
 		// XML info getters
 		bool contains(QString key) const;
@@ -98,13 +102,16 @@ class Site : public QObject
 		Source *m_source;
 		QList<QNetworkCookie> m_cookies;
 		QSettings *m_settings;
-		QNetworkAccessManager *m_manager;
+		CustomNetworkAccessManager *m_manager;
 		QNetworkCookieJar *m_cookieJar;
-		QNetworkReply *m_loginReply, *m_updateReply, *m_tagsReply;
-		Page *m_loginPage;
-		bool m_loggedIn, m_triedLogin, m_loginCheck;
-		QString m_username, m_password;
+		QNetworkReply *m_updateReply, *m_tagsReply;
 		QList<Api*> m_apis;
+
+		// Login
+		QNetworkReply *m_loginReply;
+		Page *m_loginPage;
+		bool m_loggedIn, m_triedLogin, m_loginCheck, m_autoLogin;
+		QString m_username, m_password;
 
 		// Async
 		std::function<void(QNetworkReply*)> m_lastCallback;

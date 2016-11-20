@@ -2,6 +2,7 @@
 #define EMPTY_DIRS_FIX_1_H
 
 #include <QDialog>
+#include "models/profile.h"
 
 
 
@@ -17,7 +18,7 @@ class EmptyDirsFix1 : public QDialog
 	Q_OBJECT
 
 	public:
-		explicit EmptyDirsFix1(QWidget *parent = 0);
+		explicit EmptyDirsFix1(Profile *profile, QWidget *parent = Q_NULLPTR);
 		~EmptyDirsFix1();
 
 	public slots:

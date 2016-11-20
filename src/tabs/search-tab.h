@@ -24,24 +24,24 @@ class searchTab : public QWidget
 	Q_OBJECT
 
 	public:
-		searchTab(int id, QMap<QString, Site*> *sites, Profile *profile, mainWindow *parent);
-		~searchTab();
+		searchTab(QMap<QString, Site*> *sites, Profile *profile, mainWindow *parent);
 		void mouseReleaseEvent(QMouseEvent *e);
 		virtual QList<bool> sources();
 		virtual QString tags() = 0;
 		QList<Tag> results();
-		virtual QString wiki() = 0;
-		virtual int imagesPerPage() = 0;
-		virtual int columns() = 0;
-		virtual QString postFilter() = 0;
-		virtual void optionsChanged() = 0;
+		QString wiki();
+		int imagesPerPage();
+		int columns();
+		QString postFilter();
 		virtual void setTags(QString) = 0;
-		int id();
+		virtual bool validateImage(QSharedPointer<Image> img) = 0;
 		QStringList selectedImages();
 		void setSources(QList<bool> sources);
-		virtual void setImagesPerPage(int ipp) = 0;
-		virtual void setColumns(int columns) = 0;
-		virtual void setPostFilter(QString postfilter) = 0;
+		void setImagesPerPage(int ipp);
+		void setColumns(int columns);
+		void setPostFilter(QString postfilter);
+		virtual QList<Site*> loadSites() = 0;
+		virtual void onLoad();
 
 	protected:
 		void setSelectedSources(QSettings *settings);
@@ -52,6 +52,8 @@ class searchTab : public QWidget
 		void clear();
 		TextEdit *createAutocomplete();
 		void loadImageThumbnails(Page *page, const QList<QSharedPointer<Image>> &imgs);
+		QBouton *createImageThumbnail(int position, QSharedPointer<Image> img);
+		int getActualImagesPerPage(Page *page, bool merge);
 
 	public slots:
 		// Sources
@@ -61,10 +63,10 @@ class searchTab : public QWidget
 		// Zooms
 		void webZoom(int);
 		// Pagination
-		virtual void firstPage() = 0;
-		virtual void previousPage() = 0;
-		virtual void nextPage() = 0;
-		virtual void lastPage() = 0;
+		void firstPage();
+		void previousPage();
+		void nextPage();
+		void lastPage();
 		// Focus search field
 		virtual void focusSearch() = 0;
 		// Batch
@@ -74,23 +76,30 @@ class searchTab : public QWidget
 		void historyNext();
 		// Results
 		virtual void load() = 0;
-		bool waitForMergedResults(bool merged, Page *page, QList<QSharedPointer<Image>> &imgs);
-		void addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage = nullptr);
-		void setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage = nullptr);
+		void loadTags(QStringList tags);
+		bool waitForMergedResults(QList<QSharedPointer<Image>> results, QList<QSharedPointer<Image>> &imgs);
+		virtual void addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage = nullptr);
+		virtual void setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage = nullptr);
 		void addResultsImage(QSharedPointer<Image> img, bool merge = false);
 		void finishedLoadingPreview();
+		// Loading
+		void finishedLoading(Page *page);
+		void failedLoading(Page *page);
+		void postLoading(Page *page, QList<QSharedPointer<Image>> source);
+		void finishedLoadingTags(Page *page);
 		// Image selection
 		void selectImage(QSharedPointer<Image> img);
 		void unselectImage(QSharedPointer<Image> img);
 		void toggleImage(QSharedPointer<Image> img);
 		void toggleImage(int id, bool toggle, bool range);
+		// Others
+		void optionsChanged();
 
 	signals:
 		// Tab events
 		void titleChanged(searchTab*);
 		void changed(searchTab*);
 		void closed(searchTab*);
-		void deleted(int);
 
 		// Batch
 		void batchAddGroup(QStringList);
@@ -98,7 +107,7 @@ class searchTab : public QWidget
 
 	protected:
 		Profile				*m_profile;
-		int					m_id, m_lastPage, m_lastPageMaxId, m_lastPageMinId;
+		int					m_lastPage, m_lastPageMaxId, m_lastPageMinId;
 		QMap<QString,Site*>	*m_sites;
 		QMap<QSharedPointer<Image>, QBouton*>	m_boutons;
 		QStringList			m_selectedImages;
@@ -106,16 +115,16 @@ class searchTab : public QWidget
 		QList<bool>			m_selectedSources;
 		QList<QCheckBox*>	m_checkboxes;
 		QList<Favorite>		&m_favorites;
-		QString				m_link;
 		QList<Tag>			m_tags;
 		mainWindow			*m_parent;
 		QSettings			*m_settings;
+		QString				m_wiki;
 
 		QStringList m_completion;
 		QList<QSharedPointer<Image>> m_images;
 		QMap<QString, Page*> m_pages;
 		QMap<Page*, QLabel*> m_pageLabels;
-		QList<QGridLayout*> m_layouts;
+		QMap<Site*, QGridLayout*> m_layouts;
 		int m_page;
 		int m_pagemax;
 		bool m_stop;
@@ -125,8 +134,10 @@ class searchTab : public QWidget
 		bool m_from_history;
 		int m_history_cursor;
 		QList<QMap<QString,QString>> m_history;
+		QString m_lastTags;
 
 		// UI stuff
+		TextEdit *m_postFiltering;
 		QCheckBox *ui_checkMergeResults;
 		QSpinBox *ui_spinPage;
 		QSpinBox *ui_spinImagesPerPage;
@@ -137,6 +148,13 @@ class searchTab : public QWidget
 		QLayout *ui_layoutSourcesList;
 		QPushButton *ui_buttonHistoryBack;
 		QPushButton *ui_buttonHistoryNext;
+		QPushButton *ui_buttonNextPage;
+		QPushButton *ui_buttonLastPage;
+		QPushButton *ui_buttonGetAll;
+		QPushButton *ui_buttonGetPage;
+		QPushButton *ui_buttonGetSel;
+		QPushButton *ui_buttonFirstPage;
+		QPushButton *ui_buttonPreviousPage;
 };
 
 #endif // SEARCH_TAB_H

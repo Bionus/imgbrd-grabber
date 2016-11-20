@@ -11,10 +11,10 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Réparateur de liste noire</string>
+   <string>Md5 list fixer</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../resources.qrc">
+   <iconset resource="../../../resources.qrc">
     <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
   </property>
   <layout class="QFormLayout" name="formLayout">
@@ -24,7 +24,7 @@
    <item row="0" column="0" colspan="2">
     <widget class="QLabel" name="label_3">
      <property name="text">
-      <string>Cet outil va vider votre liste de MD5 et la remplir à nouveau avec les MD5 des fichiers trouvés dans le dossier précisé ci-dessous.</string>
+      <string>This tool will clear your MD5 list and fill it again with the MD5 of the files found in the folder set below.</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -34,7 +34,7 @@
    <item row="1" column="0">
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Dossier</string>
+      <string>Folder</string>
      </property>
     </widget>
    </item>
@@ -44,14 +44,14 @@
    <item row="2" column="0" colspan="2">
     <widget class="QRadioButton" name="radioForce">
      <property name="text">
-      <string>Forcer le calcul du md5</string>
+      <string>Force md5 calculation</string>
      </property>
     </widget>
    </item>
    <item row="3" column="0" colspan="2">
     <widget class="QRadioButton" name="radioFilename">
      <property name="text">
-      <string>Récupérer le md5 dans le nom du fichier</string>
+      <string>Get md5 in filename</string>
      </property>
      <property name="checked">
       <bool>true</bool>
@@ -61,7 +61,7 @@
    <item row="4" column="0">
     <widget class="QLabel" name="label_2">
      <property name="text">
-      <string>Noms de fichiers</string>
+      <string>Filename</string>
      </property>
     </widget>
    </item>
@@ -96,14 +96,14 @@
      <item>
       <widget class="QPushButton" name="buttonStart">
        <property name="text">
-        <string>Démarrer</string>
+        <string>Start</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="buttonCancel">
        <property name="text">
-        <string>Fermer</string>
+        <string>Cancel</string>
        </property>
       </widget>
      </item>
@@ -120,7 +120,9 @@
   <tabstop>buttonCancel</tabstop>
  </tabstops>
  <resources>
-  <include location="../resources.qrc"/>
+  <include location="../../../resources.qrc"/>
+  <include location="../../../resources.qrc"/>
+  <include location="../../../resources.qrc"/>
  </resources>
  <connections>
   <connection>

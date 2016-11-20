@@ -3,7 +3,7 @@
 #include "image.h"
 #include "functions.h"
 #include "site.h"
-#include "commands.h"
+#include "commands/commands.h"
 #include "filename.h"
 
 
@@ -139,9 +139,14 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	setRating(details.contains("rating") ? details["rating"] : "");
 
 	// Tags
-	if (details.contains("tags_general"))
+	QStringList types = QStringList() << "general" << "artist" << "character" << "copyright" << "model" << "species";
+	for (QString typ : types)
 	{
-		QStringList t = details["tags_general"].split(" ");
+		QString key = "tags_" + typ;
+		if (!details.contains(key))
+			continue;
+
+		QStringList t = details[key].split(" ");
 		for (int i = 0; i < t.count(); ++i)
 		{
 			QString tg = t.at(i);
@@ -149,50 +154,10 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 				continue;
 
 			tg.replace("&amp;", "&");
-			m_tags.append(Tag(tg, "general"));
-		}
-		t = details["tags_artist"].split(" ");
-		for (int i = 0; i < t.count(); ++i)
-		{
-			QString tg = t.at(i);
-			if (tg.isEmpty())
-				continue;
-
-			tg.replace("&amp;", "&");
-			m_tags.append(Tag(tg, "artist"));
-		}
-		t = details["tags_character"].split(" ");
-		for (int i = 0; i < t.count(); ++i)
-		{
-			QString tg = t.at(i);
-			if (tg.isEmpty())
-				continue;
-
-			tg.replace("&amp;", "&");
-			m_tags.append(Tag(tg, "character"));
-		}
-		t = details["tags_copyright"].split(" ");
-		for (int i = 0; i < t.count(); ++i)
-		{
-			QString tg = t.at(i);
-			if (tg.isEmpty())
-				continue;
-
-			tg.replace("&amp;", "&");
-			m_tags.append(Tag(tg, "copyright"));
-		}
-		t = details["tags_model"].split(" ");
-		for (int i = 0; i < t.count(); ++i)
-		{
-			QString tg = t.at(i);
-			if (tg.isEmpty())
-				continue;
-
-			tg.replace("&amp;", "&");
-			m_tags.append(Tag(tg, "model"));
+			m_tags.append(Tag(tg, typ));
 		}
 	}
-	else if (details.contains("tags"))
+	if (m_tags.isEmpty() && details.contains("tags"))
 	{
 		// Automatically find tag separator and split the list
 		QStringList t;
@@ -301,18 +266,19 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	m_loadImage = nullptr;
 	m_loadingPreview = false;
 	m_loadingDetails = false;
+	m_loadedDetails = false;
+	m_loadedImage = false;
 	m_loadingImage = false;
 	m_tryingSample = false;
 	m_pools = QList<Pool>();
 }
-Image::~Image()
-{ }
+
 
 void Image::loadPreview()
 {
 	if (m_previewUrl.isEmpty())
 	{
-		log(tr("Chargement de miniature annulé (miniature vide)."));
+		log("Thumbnail loading cancelled (empty url).");
 		return;
 	}
 
@@ -332,10 +298,14 @@ void Image::parsePreview()
 {
 	m_loadingPreview = false;
 
+	if (m_loadPreview == nullptr)
+		return;
+
 	// Aborted
 	if (m_loadPreview->error() == QNetworkReply::OperationCanceledError)
 	{
 		m_loadPreview->deleteLater();
+		m_loadPreview = nullptr;
 		return;
 	}
 
@@ -351,7 +321,7 @@ void Image::parsePreview()
 	// Loading error
 	if (m_loadPreview->error() != QNetworkReply::NoError)
 	{
-		log(tr("<b>Erreur :</b> %1").arg(tr("erreur de chargement de la miniature (%1)").arg(m_loadPreview->errorString())));
+		log(QString("<b>Error:</b> %1").arg(QString("error loading thumbnail (%1)").arg(m_loadPreview->errorString())));
 	}
 
 	// Load preview from raw result
@@ -363,7 +333,7 @@ void Image::parsePreview()
 	// If nothing has been received
 	if (m_imagePreview.isNull() && m_previewTry <= 3)
 	{
-		log(tr("<b>Attention :</b> %1").arg(tr("une des miniatures est vide (<a href=\"%1\">%1</a>). Nouvel essai (%2/%3)...").arg(m_previewUrl.toString()).arg(m_previewTry).arg(3)));
+		log(QString("<b>Warning:</b> %1").arg(QString("one of the thumbnails is empty (<a href=\"%1\">%1</a>). New try (%2/%3)...").arg(m_previewUrl.toString()).arg(m_previewTry).arg(3)));
 
 		if (hasTag("flash"))
 		{ m_imagePreview.load(":/images/flash.png"); }
@@ -379,6 +349,15 @@ void Image::parsePreview()
 
 void Image::loadDetails()
 {
+	if (m_loadingDetails)
+		return;
+
+	if (m_loadedDetails)
+	{
+		emit finishedLoadingTags();
+		return;
+	}
+
 	m_loadDetails = m_parentSite->get(m_parentSite->fixUrl(m_pageUrl));
 	m_loadDetails->setParent(this);
 	m_loadingDetails = true;
@@ -398,6 +377,7 @@ void Image::parseDetails()
 	if (m_loadDetails->error() == QNetworkReply::OperationCanceledError)
 	{
 		m_loadDetails->deleteLater();
+		m_loadDetails = nullptr;
 		return;
 	}
 
@@ -464,6 +444,7 @@ void Image::parseDetails()
 
 	m_loadDetails->deleteLater();
 	m_loadDetails = nullptr;
+	m_loadedDetails = true;
 
 	emit finishedLoadingTags();
 }
@@ -497,7 +478,7 @@ QString Image::match(QString filter, bool invert) const
 		QString type = filter.section(':', 0, 0).toLower();
 		filter = filter.section(':', 1).toLower();
 		if (!types.contains(type))
-		{ return QObject::tr("unknown type \"%1\" (available types: \"%2\")").arg(type, types.join("\", \"")); }
+		{ return tr("unknown type \"%1\" (available types: \"%2\")").arg(type, types.join("\", \"")); }
 		if (mathematicaltypes.contains(type))
 		{
 			int input = 0;
@@ -546,9 +527,9 @@ QString Image::match(QString filter, bool invert) const
 			}
 
 			if (!cond && !invert)
-			{ return QObject::tr("image's %1 does not match").arg(type); }
+			{ return tr("image's %1 does not match").arg(type); }
 			if (cond && invert)
-			{ return QObject::tr("image's %1 match").arg(type); }
+			{ return tr("image's %1 match").arg(type); }
 		}
 		else
 		{
@@ -564,18 +545,18 @@ QString Image::match(QString filter, bool invert) const
 
 				bool cond = m_rating.toLower().startsWith(filter.left(1));
 				if (!cond && !invert)
-				{ return QObject::tr("image is not \"%1\"").arg(filter); }
+				{ return tr("image is not \"%1\"").arg(filter); }
 				if (cond && invert)
-				{ return QObject::tr("image is \"%1\"").arg(filter); }
+				{ return tr("image is \"%1\"").arg(filter); }
 			}
 			else if (type == "source")
 			{
 				QRegExp rx = QRegExp(filter+"*", Qt::CaseInsensitive, QRegExp::Wildcard);
 				bool cond = rx.exactMatch(m_source);
 				if (!cond && !invert)
-				{ return QObject::tr("image's source does not starts with \"%1\"").arg(filter); }
+				{ return tr("image's source does not starts with \"%1\"").arg(filter); }
 				if (cond && invert)
-				{ return QObject::tr("image's source starts with \"%1\"").arg(filter); }
+				{ return tr("image's source starts with \"%1\"").arg(filter); }
 			}
 		}
 	}
@@ -597,9 +578,9 @@ QString Image::match(QString filter, bool invert) const
 		}
 
 		if (!cond && !invert)
-		{ return QObject::tr("image does not contains \"%1\"").arg(filter); }
+		{ return tr("image does not contains \"%1\"").arg(filter); }
 		if (cond && invert)
-		{ return QObject::tr("image contains \"%1\"").arg(filter); }
+		{ return tr("image contains \"%1\"").arg(filter); }
 	}
 
 	return QString();
@@ -647,8 +628,14 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 
 void Image::loadImage()
 {
-	if (m_loadImage != nullptr)
-		m_loadImage->deleteLater();
+	if (m_loadingImage)
+		return;
+
+	if (m_loadedImage)
+	{
+		emit finishedImage();
+		return;
+	}
 
 	m_loadImage = m_parentSite->get(m_parentSite->fixUrl(m_url), m_parent, "image", this);
 	m_loadImage->setParent(this);
@@ -666,6 +653,7 @@ void Image::finishedImageS()
 	if (m_loadImage->error() == QNetworkReply::OperationCanceledError)
 	{
 		m_loadImage->deleteLater();
+		m_loadImage = nullptr;
 		return;
 	}
 
@@ -673,6 +661,7 @@ void Image::finishedImageS()
 	if (!redir.isEmpty())
 	{
 		m_loadImage->deleteLater();
+		m_loadImage = nullptr;
 		m_url = redir.toString();
 		loadImage();
 		return;
@@ -691,13 +680,13 @@ void Image::finishedImageS()
 			{
 				setUrl(m_sampleUrl.toString());
 				m_tryingSample = true;
-				log(tr("Image non trouvée. Nouvel essai avec son sample..."));
+				log("Image not found. New try with its sample...");
 			}
 			else
 			{
 				QString oldUrl = m_url;
 				m_url = setExtension(m_url, newext);
-				log(tr("Image non trouvée (%1). Nouvel essai avec l'extension %2...").arg(oldUrl, newext));
+				log(QString("Image not found. New try with extension %1...").arg(oldUrl, newext));
 			}
 
 			loadImage();
@@ -705,7 +694,7 @@ void Image::finishedImageS()
 		}
 		else
 		{
-			log(tr("Image non trouvée."));
+			log("Image not found.");
 		}
 	}
 	else
@@ -713,6 +702,7 @@ void Image::finishedImageS()
 		m_data = m_loadImage->readAll();
 	}
 
+	m_loadedImage = true;
 	emit finishedImage();
 }
 void Image::downloadProgressImageS(qint64 v1, qint64 v2)
@@ -804,7 +794,7 @@ Image::SaveResult Image::save(QString path, bool force, bool basic)
 		QString md5Duplicate = m_profile->md5Exists(md5());
 		if (md5Duplicate.isEmpty() || whatToDo == "save" || force)
 		{
-			log(tr("Sauvegarde de l'image dans le fichier <a href=\"file:///%1\">%1</a>").arg(path));
+			log(QString("Saving image in <a href=\"file:///%1\">%1</a>").arg(path));
 			if (!m_source.isEmpty() && QFile::exists(m_source))
 			{ QFile::copy(m_source, path); }
 			else
@@ -817,7 +807,7 @@ Image::SaveResult Image::save(QString path, bool force, bool basic)
 					f.close();
 				}
 				else
-				{ log(tr("Impossible d'ouvrir le fichier")); }
+				{ log("Unable to open file"); }
 			}
 
 			if (m_settings->value("Textfile/activate", false).toBool() && !basic)
@@ -851,14 +841,14 @@ Image::SaveResult Image::save(QString path, bool force, bool basic)
 		}
 		else if (whatToDo == "copy")
 		{
-			log(tr("Copie depuis <a href=\"file:///%1\">%1</a> vers <a href=\"file:///%2\">%2</a>").arg(md5Duplicate).arg(path));
+			log(QString("Copy from <a href=\"file:///%1\">%1</a> to <a href=\"file:///%2\">%2</a>").arg(md5Duplicate).arg(path));
 			QFile::copy(md5Duplicate, path);
 
 			res = SaveResult::Copied;
 		}
 		else if (whatToDo == "move")
 		{
-			log(tr("Déplacement depuis <a href=\"file:///%1\">%1</a> vers <a href=\"file:///%2\">%2</a>").arg(md5Duplicate).arg(path));
+			log(QString("Moving from <a href=\"file:///%1\">%1</a> to <a href=\"file:///%2\">%2</a>").arg(md5Duplicate).arg(path));
 			QFile::rename(md5Duplicate, path);
 			m_profile->setMd5(md5(), path);
 
@@ -956,6 +946,7 @@ QUrl			Image::previewUrl() const	{ return m_previewUrl;		}
 QUrl			Image::pageUrl() const		{ return m_pageUrl;			}
 QSize			Image::size() const			{ return m_size;			}
 QPixmap			Image::previewImage() const	{ return m_imagePreview;	}
+QPixmap			&Image::previewImage()		{ return m_imagePreview;	}
 Page			*Image::page() const		{ return m_parent;			}
 QByteArray		Image::data() const			{ return m_data;			}
 QNetworkReply	*Image::imageReply() const	{ return m_loadImage;		}

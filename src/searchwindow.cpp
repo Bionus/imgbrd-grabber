@@ -18,7 +18,7 @@ SearchWindow::SearchWindow(QString tags, Profile *profile, QWidget *parent)
 		m_calendar->setWindowFlags(Qt::Window);
 		m_calendar->setLocale(QLocale(m_profile->getSettings()->value("language", "English").toString().toLower().left(2)));
 		m_calendar->setWindowIcon(QIcon(":/images/icon.ico"));
-		m_calendar->setWindowTitle(tr("Grabber - Choisir une date"));
+		m_calendar->setWindowTitle(tr("Choose a date"));
 		m_calendar->setDateRange(QDate(2000, 1, 1), QDateTime::currentDateTime().date().addDays(1));
 		m_calendar->setSelectedDate(QDateTime::currentDateTime().date());
 		connect(m_calendar, SIGNAL(activated(QDate)), this, SLOT(setDate(QDate)));
@@ -31,21 +31,14 @@ SearchWindow::SearchWindow(QString tags, Profile *profile, QWidget *parent)
 	m_tags = new TextEdit(profile, this);
 		m_tags->setContextMenuPolicy(Qt::CustomContextMenu);
 		QStringList completion;
-			QFile words("words.txt");
-			if (words.open(QIODevice::ReadOnly | QIODevice::Text))
-			{
-				while (!words.atEnd())
-				{
-					QByteArray line = words.readLine();
-					completion.append(QString(line).remove("\r\n").remove("\n").split(" ", QString::SkipEmptyParts));
-				}
-				completion.append(favs);
-				completion.removeDuplicates();
-				completion.sort();
-				QCompleter *completer = new QCompleter(completion, m_tags);
-					completer->setCaseSensitivity(Qt::CaseInsensitive);
-				m_tags->setCompleter(completer);
-			}
+			completion.append(profile->getAutoComplete());
+			completion.append(profile->getCustomAutoComplete());
+			completion.append(favs);
+			completion.removeDuplicates();
+			completion.sort();
+			QCompleter *completer = new QCompleter(completion, m_tags);
+				completer->setCaseSensitivity(Qt::CaseInsensitive);
+			m_tags->setCompleter(completer);
 		connect(m_tags, SIGNAL(returnPressed()), this, SLOT(accept()));
 	ui->formLayout->setWidget(0, QFormLayout::FieldRole, m_tags);
 
@@ -90,6 +83,26 @@ SearchWindow::~SearchWindow()
 	delete ui;
 }
 
+QString SearchWindow::generateSearch(QString additional) const
+{
+	QStringList orders = QStringList() << "id" << "id_desc" << "score_asc" << "score" << "mpixels_asc" << "mpixels" << "filesize" << "landscape" << "portrait" << "favcount" << "rank";
+	QStringList ratings = QStringList() << "rating:safe" << "-rating:safe" << "rating:questionable" << "-rating:questionable" << "rating:explicit" << "-rating:explicit";
+	QStringList status = QStringList() << "deleted" << "active" << "flagged" << "pending" << "any";
+
+	QString prefix = !additional.isEmpty() ? additional + " " : "";
+	QString search = prefix + m_tags->toPlainText();
+	if (ui->comboStatus->currentIndex() != 0)
+		search += " status:" + status.at(ui->comboStatus->currentIndex() - 1);
+	if (ui->comboOrder->currentIndex() != 0)
+		search += " order:" + orders.at(ui->comboOrder->currentIndex() - 1);
+	if (ui->comboRating->currentIndex() != 0)
+		search += " " + ratings.at(ui->comboRating->currentIndex() - 1);
+	if (!ui->lineDate->text().isEmpty())
+		search += " date:" + ui->lineDate->text();
+
+	return search.trimmed();
+}
+
 void SearchWindow::setDate(QDate d)
 {
 	ui->lineDate->setText(d.toString("MM/dd/yyyy"));
@@ -97,21 +110,13 @@ void SearchWindow::setDate(QDate d)
 
 void SearchWindow::accept()
 {
-	QStringList orders = QStringList() << "id" << "id_desc" << "score_asc" << "score" << "mpixels_asc" << "mpixels" << "filesize" << "landscape" << "portrait" << "favcount" << "rank";
-	QStringList ratings = QStringList() << "rating:safe" << "-rating:safe" << "rating:questionable" << "-rating:questionable" << "rating:explicit" << "-rating:explicit";
-	QStringList status = QStringList() << "deleted" << "active" << "flagged" << "pending" << "any";
-
-	emit accepted(QString(m_tags->toPlainText()+" "+(ui->comboStatus->currentIndex() != 0 ? "status:"+status.at(ui->comboStatus->currentIndex()-1) : "")+" "+(ui->comboOrder->currentIndex() != 0 ? "order:"+orders.at(ui->comboOrder->currentIndex()-1) : "")+" "+(ui->comboRating->currentIndex() != 0 ? ratings.at(ui->comboRating->currentIndex()-1) : "")+" "+(!ui->lineDate->text().isEmpty() ? "date:"+ui->lineDate->text() : "")).trimmed());
+	emit accepted(generateSearch());
 	QDialog::accept();
 }
 
 void SearchWindow::on_buttonImage_clicked()
 {
-	QStringList orders = QStringList() << "id" << "id_desc" << "score_asc" << "score" << "mpixels_asc" << "mpixels" << "filesize" << "landscape" << "portrait" << "favcount" << "rank";
-	QStringList ratings = QStringList() << "rating:safe" << "-rating:safe" << "rating:questionable" << "-rating:questionable" << "rating:explicit" << "-rating:explicit";
-	QStringList status = QStringList() << "deleted" << "active" << "flagged" << "pending" << "any";
-
-	QString path = QFileDialog::getOpenFileName(this, tr("Chercher une image"), m_profile->getSettings()->value("Save/path").toString(), "Images (*.png *.gif *.jpg *.jpeg)");
+	QString path = QFileDialog::getOpenFileName(this, tr("Search an image"), m_profile->getSettings()->value("Save/path").toString(), "Images (*.png *.gif *.jpg *.jpeg)");
 	QFile f(path);
 	QString md5 = "";
 	if (f.exists())
@@ -119,6 +124,7 @@ void SearchWindow::on_buttonImage_clicked()
 		f.open(QFile::ReadOnly);
 		md5 = QCryptographicHash::hash(f.readAll(), QCryptographicHash::Md5).toHex();
 	}
-	emit accepted(QString((!md5.isEmpty() ? "md5:"+md5 : "")+" "+m_tags->toPlainText()+" "+(ui->comboStatus->currentIndex() != 0 ? "status:"+status.at(ui->comboStatus->currentIndex()-1) : "")+" "+(ui->comboOrder->currentIndex() != 0 ? "order:"+orders.at(ui->comboOrder->currentIndex()-1) : "")+" "+(ui->comboRating->currentIndex() != 0 ? ratings.at(ui->comboRating->currentIndex()-1) : "")+" "+(!ui->lineDate->text().isEmpty() ? "date:"+ui->lineDate->text() : "")).trimmed());
+
+	emit accepted(generateSearch(!md5.isEmpty() ? "md5:"+md5 : ""));
 	QDialog::accept();
 }

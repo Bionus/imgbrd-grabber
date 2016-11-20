@@ -33,7 +33,6 @@ class Image : public QObject
 		Image();
 		Image(Site *site, QMap<QString,QString> details, Profile *profile, Page *parent = NULL);
 		Image(const Image &other);
-		~Image();
 		int			value() const;
 		QString		match(QString filter, bool invert = false) const;
 		QStringList	filter(QStringList filters) const;
@@ -75,6 +74,7 @@ class Image : public QObject
 		QUrl		previewUrl() const;
 		QSize		size() const;
 		QPixmap		previewImage() const;
+		QPixmap		&previewImage();
 		Page		*page() const;
 		QByteArray	data() const;
 		QSettings	*settings() const;
@@ -136,7 +136,7 @@ class Image : public QObject
 		QStringList		m_search;
 		Site			*m_parentSite;
 		QMap<QString, QString>   m_details;
-		bool			m_loadingPreview, m_loadingDetails, m_loadingImage, m_tryingSample;
+		bool			m_loadingPreview, m_loadingDetails, m_loadingImage, m_tryingSample, m_loadedDetails, m_loadedImage;
 };
 
 Q_DECLARE_METATYPE(Image)

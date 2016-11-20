@@ -5,7 +5,6 @@
 #include <QMessageBox>
 #include "blacklist-fix-1.h"
 #include "blacklist-fix-2.h"
-#include "functions.h"
 #include "ui_blacklist-fix-1.h"
 #include "models/page.h"
 
@@ -16,10 +15,10 @@ BlacklistFix1::BlacklistFix1(Profile *profile, QMap<QString,Site*> sites, QWidge
 {
 	ui->setupUi(this);
 
-	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
-	ui->lineFolder->setText(settings.value("Save/path").toString());
-	ui->lineFilename->setText(settings.value("Save/filename").toString());
-	ui->lineBlacklist->setText(settings.value("blacklistedtags").toString());
+	QSettings *settings = profile->getSettings();
+	ui->lineFolder->setText(settings->value("Save/path").toString());
+	ui->lineFilename->setText(settings->value("Save/filename").toString());
+	ui->lineBlacklist->setText(settings->value("blacklistedtags").toString());
 	ui->comboSource->addItems(m_sites.keys());
 	ui->progressBar->hide();
 
@@ -46,7 +45,7 @@ void BlacklistFix1::on_buttonContinue_clicked()
 	QDir dir(ui->lineFolder->text());
 	if (!dir.exists())
 	{
-		error(this, tr("Ce dossier n'existe pas."));
+		error(this, tr("This directory does not exist."));
 		ui->buttonContinue->setEnabled(true);
 		return;
 	}
@@ -54,7 +53,7 @@ void BlacklistFix1::on_buttonContinue_clicked()
 	// Make sure the input is valid
 	if (!ui->radioForce->isChecked() && !ui->lineFilename->text().contains("%md5%"))
 	{
-		error(this, tr("Si vous voulez récupérer le MD5 depuis le nom de fichier, vous devez include le token %md5% dans celui-ci."));
+		error(this, tr("If you want to get the MD5 from the filename, you have to include the %md5% token in it."));
 		ui->buttonContinue->setEnabled(true);
 		return;
 	}
@@ -113,7 +112,7 @@ void BlacklistFix1::on_buttonContinue_clicked()
 		m_details.append(det);
 	}
 
-	int reponse = QMessageBox::question(this, tr("Réparateur de liste noire"), tr("Vous vous apprêtez à télécharger les informations de %n image(s). Êtes-vous sûr de vouloir continuer ?", "", m_details.size()), QMessageBox::Yes | QMessageBox::No);
+	int reponse = QMessageBox::question(this, tr("Blacklist fixer"), tr("You are about to download information from %n image(s). Are you sure you want to continue?", "", m_details.size()), QMessageBox::Yes | QMessageBox::No);
 	if (reponse == QMessageBox::Yes)
 	{
 		// Show progresss bar

@@ -2,16 +2,16 @@
 #include "empty-dirs-fix-1.h"
 #include "empty-dirs-fix-2.h"
 #include "ui_empty-dirs-fix-1.h"
-#include "functions.h"
 
 
 
-EmptyDirsFix1::EmptyDirsFix1(QWidget *parent) : QDialog(parent), ui(new Ui::EmptyDirsFix1)
+EmptyDirsFix1::EmptyDirsFix1(Profile *profile, QWidget *parent)
+	: QDialog(parent), ui(new Ui::EmptyDirsFix1)
 {
 	ui->setupUi(this);
 
-	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
-	ui->lineFolder->setText(settings.value("Save/path").toString());
+	QSettings *settings = profile->getSettings();
+	ui->lineFolder->setText(settings->value("Save/path").toString());
 }
 EmptyDirsFix1::~EmptyDirsFix1()
 {

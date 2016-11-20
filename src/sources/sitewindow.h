@@ -1,34 +1,35 @@
-#ifndef SITEWINDOW_H
-#define SITEWINDOW_H
+#ifndef SITE_WINDOW_H
+#define SITE_WINDOW_H
 
 #include <QDialog>
-#include <QtNetwork>
 #include "models/site.h"
 
 
 
 namespace Ui
 {
-	class siteWindow;
+	class SiteWindow;
 }
 
 
 
-class siteWindow : public QDialog
+class SiteWindow : public QDialog
 {
 	Q_OBJECT
 
 	public:
-		explicit siteWindow(QMap<QString,Site*> *sites, QWidget *parent = 0);
-		~siteWindow();
+		explicit SiteWindow(QMap<QString,Site*> *sites, QWidget *parent = 0);
+		~SiteWindow();
 
 	public slots:
 		void accept();
+		void finish(Source *source = nullptr);
 
 	private:
-		Ui::siteWindow *ui;
+		Ui::SiteWindow *ui;
 		QList<Source*> *m_sources;
 		QMap<QString ,Site*> *m_sites;
+		QString m_url;
 };
 
-#endif // SITEWINDOW_H
+#endif // SITE_WINDOW_H

@@ -24,6 +24,7 @@ class TagTest : public TestSuite
 		void testType();
 		void testTypeArtistEnding();
 		void testTypePrefix();
+		void testTypePrefixSpecies();
 		void testSetType();
 		void testShortType();
 		void testSetTypeShortType();
@@ -34,6 +35,7 @@ class TagTest : public TestSuite
 		void testStylishedWithCount();
 		void testTypedTextGeneral();
 		void testTypedTextArtist();
+		void testTypedTextSpecies();
 		void testCompare();
 		void testSortByFrequency();
 		void testTypeSpaced();

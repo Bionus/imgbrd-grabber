@@ -84,8 +84,8 @@ void batchWindow::closeEvent(QCloseEvent *e)
 void batchWindow::pause()
 {
 	m_paused = !m_paused;
-	ui->labelSpeed->setText(m_paused ? tr("En pause") : "");
-	ui->buttonPause->setText(m_paused ? tr("Reprendre") : tr("Pause"));
+	ui->labelSpeed->setText(m_paused ? tr("Paused") : "");
+	ui->buttonPause->setText(m_paused ? tr("Resume") : tr("Pause"));
 
 	#ifdef Q_OS_WIN
 		m_taskBarProgress->setPaused(m_paused);
@@ -129,7 +129,7 @@ void batchWindow::clear()
 	ui->progressBar->setMaximum(100);
 	ui->labelImages->setText("0/0");
 	ui->labelSpeed->setText("");
-	ui->cancelButton->setText(tr("Annuler"));
+	ui->cancelButton->setText(tr("Cancel"));
 
 	qDeleteAll(m_progressBars);
 	m_progressBars.clear();
@@ -329,7 +329,7 @@ void batchWindow::drawSpeed()
 	QString fRemaining = remaining > 3600000 ? tr("h 'h' m 'm' s 's'") : (remaining > 60000 ? tr("m 'm' s 's'") : tr("s 's'"));
 
 	ui->labelSpeed->setText(QLocale::system().toString((float)speed, 'f', speed < 10 ? 2 : 0)+" "+unit);
-	ui->labelSpeed->setToolTip(tr("<b>Vitesse moyenne :</b> %1 %2<br/><br/><b>Temps écoulé :</b> %3<br/><b>Temps restant :</b> %4").arg(QLocale::system().toString((float)speedMean, 'f', speedMean < 10 ? 2 : 0), unitMean, tElapsed.toString(fElapsed), tRemaining.toString(fRemaining)));
+	ui->labelSpeed->setToolTip(tr("<b>Average speed:</b> %1 %2<br/><br/><b>Elapsed time:</b> %3<br/><b>Remaining time:</b> %4").arg(QLocale::system().toString((float)speedMean, 'f', speedMean < 10 ? 2 : 0), unitMean, tElapsed.toString(fElapsed), tRemaining.toString(fRemaining)));
 }
 
 void batchWindow::on_buttonDetails_clicked(bool visible)
@@ -354,7 +354,7 @@ void batchWindow::setValue(int value)
 	m_value = value;
 	ui->progressBar->setValue(m_value);
 	if (ui->progressBar->maximum() <= m_value)
-	{ ui->cancelButton->setText(tr("Fermer")); }
+	{ ui->cancelButton->setText(tr("Close")); }
 
 	#ifdef Q_OS_WIN
 		m_taskBarProgress->setValue(value);

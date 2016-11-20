@@ -9,8 +9,8 @@
 
 
 
-favoritesTab::favoritesTab(int id, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
-	: searchTab(id, sites, profile, parent), ui(new Ui::favoritesTab), m_id(id), m_favorites(profile->getFavorites()), m_lastTags(QString()), m_sized(false), m_currentFav(0)
+favoritesTab::favoritesTab(QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
+	: searchTab(sites, profile, parent), ui(new Ui::favoritesTab), m_sized(false), m_currentFav(0)
 {
 	ui->setupUi(this);
 
@@ -25,12 +25,17 @@ favoritesTab::favoritesTab(int id, QMap<QString,Site*> *sites, Profile *profile,
 	ui_layoutSourcesList = ui->layoutSourcesList;
 	ui_buttonHistoryBack = ui->buttonHistoryBack;
 	ui_buttonHistoryNext = ui->buttonHistoryNext;
+	ui_buttonNextPage = ui->buttonNextPage;
+	ui_buttonLastPage = ui->buttonLastPage;
+	ui_buttonGetAll = ui->buttonGetAll;
+	ui_buttonGetPage = ui->buttonGetpage;
+	ui_buttonGetSel = ui->buttonGetSel;
+	ui_buttonFirstPage = ui->buttonFirstPage;
+	ui_buttonPreviousPage = ui->buttonPreviousPage;
 
 	// Search field
 	m_postFiltering = createAutocomplete();
 	ui->layoutPlus->addWidget(m_postFiltering, 1, 1, 1, 3);
-
-	setSelectedSources(m_settings);
 
 	// Others
 	ui->checkMergeResults->setChecked(m_settings->value("mergeresults", false).toBool());
@@ -70,8 +75,8 @@ void favoritesTab::closeEvent(QCloseEvent *e)
 	m_images.clear();
 	qDeleteAll(m_checkboxes);
 	m_checkboxes.clear();
-	for (int i = 0; i < m_layouts.size(); i++)
-	{ clearLayout(m_layouts[i]); }
+	for (Site *site : m_layouts.keys())
+	{ clearLayout(m_layouts[site]); }
 	qDeleteAll(m_layouts);
 	m_layouts.clear();
 
@@ -96,21 +101,21 @@ void favoritesTab::updateFavorites()
 	if (reverse)
 	{ m_favorites = reversed(m_favorites); }
 
-	QString format = tr("dd/MM/yyyy");
+	QString format = tr("MM/dd/yyyy");
 	clearLayout(ui->layoutFavorites);
 
 	QString display = m_settings->value("favorites_display", "ind").toString();
 	int i = 0;
 	for (Favorite fav : m_favorites)
 	{
-		QString xt = tr("<b>Nom :</b> %1<br/><b>Note :</b> %2 %%<br/><b>Dernière vue :</b> %3").arg(fav.getName(), QString::number(fav.getNote()), fav.getLastViewed().toString(format));
+		QString xt = tr("<b>Name:</b> %1<br/><b>Note:</b> %2 %%<br/><b>Last view:</b> %3").arg(fav.getName(), QString::number(fav.getNote()), fav.getLastViewed().toString(format));
 		QWidget *w = new QWidget(ui->scrollAreaWidgetContents);
 		QVBoxLayout *l = new QVBoxLayout(w);
 
 		if (display.contains("i"))
 		{
 			QPixmap img = fav.getImage();
-			QBouton *image = new QBouton(fav.getName(), false, 0, QColor(), this);
+			QBouton *image = new QBouton(fav.getName(), false, false, 0, QColor(), this);
 				image->setIcon(img);
 				image->setIconSize(img.size());
 				image->setFlat(true);
@@ -142,132 +147,38 @@ void favoritesTab::addTabFavorite(QString name)
 	m_parent->addTab(name);
 }
 
-void favoritesTab::optionsChanged()
-{
-	log(tr("Mise à jour des options de l'onglet \"%1\".").arg(windowTitle()));
-	ui->retranslateUi(this);
-	ui->spinImagesPerPage->setValue(m_settings->value("limit", 20).toInt());
-	ui->spinColumns->setValue(m_settings->value("columns", 1).toInt());
-	/*QPalette p = ui->widgetResults->palette();
-	p.setColor(ui->widgetResults->backgroundRole(), QColor(m_settings->value("serverBorderColor", "#000000").toString()));
-	ui->widgetResults->setPalette(p);*/
-	ui->layoutResults->setHorizontalSpacing(m_settings->value("Margins/main", 10).toInt());
-}
-
-
 
 void favoritesTab::load()
 {
-	log(tr("Chargement des résultats..."));
-	clear();
+	loadTags(m_currentTags.trimmed().split(' ', QString::SkipEmptyParts));
+}
 
-	if (!m_from_history)
-	{ addHistory(m_currentTags, ui->spinPage->value(), ui->spinImagesPerPage->value(), ui->spinColumns->value()); }
-	m_from_history = false;
-
-	if (m_currentTags != m_lastTags && !m_lastTags.isNull() && m_history_cursor == m_history.size() - 1)
-	{ ui->spinPage->setValue(1); }
-	m_lastTags = m_currentTags;
-
-	ui->buttonFirstPage->setEnabled(ui->spinPage->value() > 1);
-	ui->buttonPreviousPage->setEnabled(ui->spinPage->value() > 1);
-
+QList<Site*> favoritesTab::loadSites()
+{
+	QList<Site*> sites;
 	for (int i = 0; i < m_selectedSources.size(); i++)
-	{
 		if (m_checkboxes.at(i)->isChecked())
-		{
-			QGridLayout *l = new QGridLayout;
-			l->setHorizontalSpacing(m_settings->value("Margins/horizontal", 6).toInt());
-			l->setVerticalSpacing(m_settings->value("Margins/vertical", 6).toInt());
-			m_layouts.append(l);
-
-			QStringList tags = m_currentTags.toLower().trimmed().split(" ", QString::SkipEmptyParts);
-			tags.append(m_settings->value("add").toString().toLower().trimmed().split(" ", QString::SkipEmptyParts));
-			int perpage = ui->spinImagesPerPage->value();
-			Page *page = new Page(m_profile, m_sites->value(m_sites->keys().at(i)), m_sites->values(), tags, ui->spinPage->value(), perpage, m_postFiltering->toPlainText().toLower().split(" ", QString::SkipEmptyParts), true, this);
-			connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(finishedLoading(Page*)));
-			m_pages.insert(page->website(), page);
-
-			log(tr("Chargement de la page <a href=\"%1\">%1</a>").arg(page->url().toString().toHtmlEscaped()));
-			page->load();
-
-			if (m_settings->value("useregexfortags", true).toBool())
-			{
-				connect(page, SIGNAL(finishedLoadingTags(Page*)), this, SLOT(finishedLoadingTags(Page*)));
-				page->loadTags();
-			}
-		}
-	}
-	if (ui->checkMergeResults->isChecked() && m_layouts.size() > 0)
-	{ ui->layoutResults->addLayout(m_layouts[0], 0, 0, 1, 1); }
-	m_page = 0;
-
-	emit changed(this);
+			sites.append(m_sites->value(m_sites->keys().at(i)));
+	return sites;
 }
 
-void favoritesTab::finishedLoading(Page* page)
+bool favoritesTab::validateImage(QSharedPointer<Image> img)
 {
-	if (m_stop)
-		return;
-
-	log(tr("Réception de la page <a href=\"%1\">%1</a>").arg(page->url().toString().toHtmlEscaped()));
-
-	QList<QSharedPointer<Image>> imgs;
-	for (QSharedPointer<Image> img : page->images())
-	{
-		if (img->createdAt() > m_loadFavorite || img->createdAt().isNull())
-		{ imgs.append(img); }
-	}
-	m_images.append(imgs);
-	int maxpage = page->pagesCount();
-
-	if (maxpage < m_pagemax || m_pagemax == -1)
-	{ m_pagemax = maxpage; }
-	ui->buttonNextPage->setEnabled(maxpage > ui->spinPage->value() || page->imagesCount() == -1 || (page->imagesCount() == 0 && page->images().count() > 0));
-	ui->buttonLastPage->setEnabled(maxpage > ui->spinPage->value());
-
-	if (!ui->checkMergeResults->isChecked())
-	{
-		addResultsPage(page, imgs, tr("Aucun résultat depuis le %1").arg(m_loadFavorite.toString(tr("dd/MM/yyyy 'à' hh:mm"))));
-		ui->splitter->setSizes(QList<int>() << (imgs.count() >= m_settings->value("hidefavorites", 20).toInt() ? 0 : 1) << 1);
-	}
-
-	if (!m_settings->value("useregexfortags", true).toBool())
-	{ setTagsFromPages(m_pages); }
-
-	postLoading(page);
+	return (img->createdAt() > m_loadFavorite || img->createdAt().isNull());
 }
 
-void favoritesTab::failedLoading(Page *page)
+
+void favoritesTab::addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage)
 {
-	if (ui->checkMergeResults->isChecked())
-	{
-		postLoading(page);
-	}
+	Q_UNUSED(noResultsMessage);
+	searchTab::addResultsPage(page, imgs, tr("No result since the %1").arg(m_loadFavorite.toString(tr("MM/dd/yyyy 'at' hh:mm"))));
+	ui->splitter->setSizes(QList<int>() << (imgs.count() >= m_settings->value("hidefavorites", 20).toInt() ? 0 : 1) << 1);
 }
 
-void favoritesTab::postLoading(Page *page)
+void favoritesTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage)
 {
-	QList<QSharedPointer<Image>> imgs;
-	if (!waitForMergedResults(ui->checkMergeResults->isChecked(), page, imgs))
-		return;
-
-	loadImageThumbnails(page, imgs);
-
-	ui->buttonGetAll->setDisabled(m_images.empty());
-	ui->buttonGetpage->setDisabled(m_images.empty());
-	ui->buttonGetSel->setDisabled(m_images.empty());
-}
-
-void favoritesTab::finishedLoadingTags(Page *page)
-{
-	setTagsFromPages(m_pages);
-
-	if (!page->wiki().isEmpty())
-	{
-		m_wiki = "<style>.title { font-weight: bold; } ul { margin-left: -30px; }</style>"+page->wiki();
-		m_parent->setWiki(m_wiki);
-	}
+	Q_UNUSED(noResultsMessage);
+	searchTab::setPageLabelText(txt, page, imgs, tr("No result since the %1").arg(m_loadFavorite.toString(tr("MM/dd/yyyy 'at' hh:mm"))));
 }
 
 void favoritesTab::setTags(QString tags)
@@ -307,39 +218,11 @@ void favoritesTab::getAll()
 	}
 }
 
-void favoritesTab::firstPage()
-{
-	ui->spinPage->setValue(1);
-	load();
-}
-void favoritesTab::previousPage()
-{
-	if (ui->spinPage->value() > 1)
-	{
-		ui->spinPage->setValue(ui->spinPage->value()-1);
-		load();
-	}
-}
-void favoritesTab::nextPage()
-{
-	if (ui->spinPage->value() < ui->spinPage->maximum())
-	{
-		ui->spinPage->setValue(ui->spinPage->value()+1);
-		load();
-	}
-}
-void favoritesTab::lastPage()
-{
-	ui->spinPage->setValue(m_pagemax);
-	load();
-}
-
 
 QList<bool> favoritesTab::sources()
 { return m_selectedSources; }
 
 QString favoritesTab::tags()	{ return m_currentTags;	}
-QString favoritesTab::wiki()	{ return m_wiki;		}
 
 void favoritesTab::loadFavorite(QString name)
 {
@@ -376,7 +259,7 @@ void favoritesTab::viewed()
 {
 	if (m_currentTags.isEmpty())
 	{
-		int reponse = QMessageBox::question(this, tr("Marquer comme vu"), tr("Êtes-vous sûr de vouloir marquer tous vos favoris comme vus ?"), QMessageBox::Yes | QMessageBox::No);
+		int reponse = QMessageBox::question(this, tr("Mark as viewed"), tr("Are you sure you want to mark all your favorites as viewed?"), QMessageBox::Yes | QMessageBox::No);
 		if (reponse == QMessageBox::Yes)
 		{
 			for (Favorite fav : m_favorites)
@@ -390,7 +273,7 @@ void favoritesTab::viewed()
 }
 void favoritesTab::setFavoriteViewed(QString tag)
 {
-	log(tr("Marquage comme vu de %1...").arg(tag));
+	log(QString("Marking \"%1\" as viewed...").arg(tag));
 
 	int index = tag.isEmpty() ? m_currentFav : m_favorites.indexOf(tag);
 	if (index < 0)
@@ -423,17 +306,4 @@ void favoritesTab::favoriteProperties(QString name)
 }
 
 void favoritesTab::focusSearch()
-{
-	//m_search->focusWidget();
-}
-
-void favoritesTab::setImagesPerPage(int ipp)
-{ ui->spinImagesPerPage->setValue(ipp); }
-void favoritesTab::setColumns(int columns)
-{ ui->spinColumns->setValue(columns); }
-void favoritesTab::setPostFilter(QString postfilter)
-{ m_postFiltering->setText(postfilter); }
-
-int favoritesTab::imagesPerPage()	{ return ui->spinImagesPerPage->value();	}
-int favoritesTab::columns()			{ return ui->spinColumns->value();			}
-QString favoritesTab::postFilter()	{ return m_postFiltering->toPlainText();	}
+{ }

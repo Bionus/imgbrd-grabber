@@ -24,30 +24,19 @@ class favoritesTab : public searchTab
 	Q_OBJECT
 
 	public:
-		explicit favoritesTab(int id, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent);
+		explicit favoritesTab(QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent);
 		~favoritesTab();
 		Ui::favoritesTab *ui;
 		QList<bool> sources();
 		QString tags();
-		QString wiki();
-		int imagesPerPage();
-		int columns();
-		QString postFilter();
+		QList<Site*> loadSites() override;
 
 	public slots:
-		// Search
-		void firstPage();
-		void previousPage();
-		void nextPage();
-		void lastPage();
 		// Zooms
 		void setTags(QString);
 		// Loading
 		void load();
-		void finishedLoading(Page*);
-		void failedLoading(Page*);
-		void postLoading(Page*);
-		void finishedLoadingTags(Page*);
+		bool validateImage(QSharedPointer<Image> img);
 		// Batch
 		void getPage();
 		void getAll();
@@ -61,22 +50,17 @@ class favoritesTab : public searchTab
 		void setFavoriteViewed(QString);
 		void viewed();
 		// Others
-		void optionsChanged();
 		void closeEvent(QCloseEvent*);
 		void addTabFavorite(QString);
-		void setImagesPerPage(int);
-		void setColumns(int);
-		void setPostFilter(QString);
 		void focusSearch();
+		void addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage = nullptr) override;
+		void setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage = nullptr) override;
 
 	private:
-		int				m_id;
-		TextEdit		*m_postFiltering;
-		QDateTime		m_loadFavorite;
-		QList<Favorite>	&m_favorites;
-		QString			m_lastTags, m_wiki, m_currentTags;
-		bool			m_sized;
-		int				m_page, m_currentFav;
+		QDateTime m_loadFavorite;
+		QString m_currentTags;
+		bool m_sized;
+		int m_currentFav;
 };
 
 #endif // FAVORITES_TAB_H

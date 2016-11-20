@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Grabber - Recherche</string>
+   <string>Search</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../resources.qrc">
@@ -30,7 +30,7 @@
    <item row="1" column="0">
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Trier par</string>
+      <string>Sort by</string>
      </property>
     </widget>
    </item>
@@ -43,57 +43,57 @@
      </item>
      <item>
       <property name="text">
-       <string>ID (croissant)</string>
+       <string>ID (ascending)</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>ID (décroissant)</string>
+       <string>ID (descending)</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>Score (croissant)</string>
+       <string>Score (ascending)</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>Score (décroissant)</string>
+       <string>Score (descending)</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>Mégapixels (croissant)</string>
+       <string>Megapixels (ascending)</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>Mégapixels (décroissant)</string>
+       <string>Megapixels (descending)</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>Taille de fichier</string>
+       <string>Filesize</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>Orientation paysage</string>
+       <string>Landscape orientation</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>Orientation portrait</string>
+       <string>Portrait orientation</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>Nombre de favoris</string>
+       <string>Favorites count</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>Rang</string>
+       <string>Rank</string>
       </property>
      </item>
     </widget>
@@ -121,7 +121,7 @@
        </item>
        <item>
         <property name="text">
-         <string>Safe (non)</string>
+         <string>Safe (no)</string>
         </property>
        </item>
        <item>
@@ -131,7 +131,7 @@
        </item>
        <item>
         <property name="text">
-         <string>Questionable (non)</string>
+         <string>Questionable (no)</string>
         </property>
        </item>
        <item>
@@ -141,7 +141,7 @@
        </item>
        <item>
         <property name="text">
-         <string>Explicit (non)</string>
+         <string>Explicit (no)</string>
         </property>
        </item>
       </widget>
@@ -151,7 +151,7 @@
    <item row="3" column="0">
     <widget class="QLabel" name="label_4">
      <property name="text">
-      <string>Statut</string>
+      <string>Status</string>
      </property>
     </widget>
    </item>
@@ -164,7 +164,7 @@
      </item>
      <item>
       <property name="text">
-       <string>Supprimée</string>
+       <string>Deleted</string>
       </property>
      </item>
      <item>
@@ -174,17 +174,17 @@
      </item>
      <item>
       <property name="text">
-       <string>Signalée</string>
+       <string>Flagged</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>En attente</string>
+       <string>Pending</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>Tous</string>
+       <string>All</string>
       </property>
      </item>
     </widget>
@@ -204,7 +204,7 @@
      <item>
       <widget class="QPushButton" name="buttonCalendar">
        <property name="text">
-        <string>Calendrier</string>
+        <string>Calendar</string>
        </property>
       </widget>
      </item>
@@ -213,7 +213,7 @@
    <item row="5" column="0" colspan="2">
     <widget class="QLabel" name="label_5">
      <property name="text">
-      <string>&lt;i&gt;N'oubliez pas que certains imageboards empêchent l'utilisation de plus d'un certain nombre de tags pour les membres non premiums.</string>
+      <string>&lt;i&gt;Remember that some imageboards forbid the usage of more than a certain amount of tags for non-premium members.</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>

@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QMap>
+#include "models/profile.h"
 
 
 
@@ -18,7 +19,7 @@ class md5Fix : public QDialog
 	Q_OBJECT
 
 	public:
-		explicit md5Fix(QWidget *parent = 0);
+		explicit md5Fix(Profile *profile, QWidget *parent = Q_NULLPTR);
 		~md5Fix();
 
 	private slots:
@@ -27,6 +28,7 @@ class md5Fix : public QDialog
 
 	private:
 		Ui::md5Fix *ui;
+		Profile *m_profile;
 };
 
 #endif // MD5_FIX_H

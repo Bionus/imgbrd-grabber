@@ -1,5 +1,5 @@
-﻿#define MyAppName "Grabber"
-#define MyAppVersion "4.9.1"
+#define MyAppName "Grabber"
+#define MyAppVersion "5.0.0a1"
 #define MyAppPublisher "Bionus"
 #define MyAppURL "https://github.com/Bionus/imgbrd-grabber"
 #define MyAppExeName "Grabber.exe"
@@ -100,7 +100,8 @@ Source: "..\release\imageformats\qwbmp.dll";    DestDir: "{app}\imageformats"; F
 Source: "..\release\imageformats\qwebp.dll";    DestDir: "{app}\imageformats"; Flags: ignoreversion
 Source: "..\release\languages\English.qm";      DestDir: "{app}\languages"; Flags: ignoreversion         
 Source: "..\release\languages\Français.qm";     DestDir: "{app}\languages"; Flags: ignoreversion    
-Source: "..\release\languages\Russian.qm";      DestDir: "{app}\languages"; Flags: ignoreversion   
+Source: "..\release\languages\Russian.qm";      DestDir: "{app}\languages"; Flags: ignoreversion
+Source: "..\release\languages\ChineseSimplified.qm";      DestDir: "{app}\languages"; Flags: ignoreversion
 Source: "..\release\platforms\qminimal.dll";    DestDir: "{app}\platforms"; Flags: ignoreversion
 Source: "..\release\platforms\qoffscreen.dll";  DestDir: "{app}\platforms"; Flags: ignoreversion
 Source: "..\release\platforms\qwindows.dll";    DestDir: "{app}\platforms"; Flags: ignoreversion                  

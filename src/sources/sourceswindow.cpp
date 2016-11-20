@@ -143,8 +143,8 @@ void sourcesWindow::deleteSite(QString site)
  */
 void sourcesWindow::addSite()
 {
-	siteWindow *sw = new siteWindow(m_sites, this);
-	connect(sw, SIGNAL(accepted()), this, SLOT(updateCheckboxes()));
+	SiteWindow *sw = new SiteWindow(m_sites, this);
+	connect(sw, &SiteWindow::accepted, this, &sourcesWindow::updateCheckboxes);
 	sw->show();
 }
 
@@ -278,28 +278,21 @@ void sourcesWindow::checkForUpdates()
 
 	for (Source *source : sources)
 	{
-		 connect(source, &Source::checkForUpdatesFinished, this, &sourcesWindow::checkForUpdatesReceived);
-		 source->checkForUpdates("https://raw.githubusercontent.com/Bionus/imgbrd-grabber/master/release/sites/");
+		SourceUpdater *updater = source->getUpdater();
+		connect(updater, &SourceUpdater::finished, this, &sourcesWindow::checkForUpdatesReceived);
+		updater->checkForUpdates();
 	}
 }
-void sourcesWindow::checkForUpdatesReceived(Source *source)
+void sourcesWindow::checkForUpdatesReceived(Source *source, bool isNew)
 {
-	QString updateVersion = source->getUpdateVersion();
-	if (!updateVersion.isEmpty())
+	if (!isNew)
+		return;
+
+	for (Site *site : source->getSites())
 	{
-		for (Site *site : source->getSites())
-		{
-			int pos = m_sites->values().indexOf(site);
-			if (updateVersion != VERSION)
-			{
-				m_labels[pos]->setPixmap(QPixmap(":/images/icons/warning.png"));
-				m_labels[pos]->setToolTip(tr("Une mise à jour de cette source est disponible, mais pour une autre version du programme."));
-			}
-			else
-			{
-				m_labels[pos]->setPixmap(QPixmap(":/images/icons/update.png"));
-				m_labels[pos]->setToolTip(tr("Une mise à jour de cette source est disponible."));
-			}
-		}
+		int pos = m_sites->values().indexOf(site);
+
+		m_labels[pos]->setPixmap(QPixmap(":/images/icons/update.png"));
+		m_labels[pos]->setToolTip(tr("An update for this source is available."));
 	}
 }

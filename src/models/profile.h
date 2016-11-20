@@ -40,6 +40,9 @@ class Profile : public QObject
 		void setMd5(QString, QString);
 		void removeMd5(QString);
 
+		// Auto-completion
+		void addAutoComplete(QString tag);
+
 		// Getters
 		QString getPath() const;
 		QSettings *getSettings() const;
@@ -47,6 +50,8 @@ class Profile : public QObject
 		QStringList &getKeptForLater();
 		QStringList &getIgnored();
 		Commands &getCommands();
+		QStringList &getAutoComplete();
+		QStringList &getCustomAutoComplete();
 
 	signals:
 		void favoritesChanged();
@@ -60,6 +65,8 @@ class Profile : public QObject
 		QStringList		m_keptForLater;
 		QStringList		m_ignored;
 		Commands		*m_commands;
+		QStringList		m_autoComplete;
+		QStringList		m_customAutoComplete;
 		QMap<QString, QString>	m_md5s;
 };
 

@@ -140,8 +140,8 @@ void PageApi::updateUrls()
 		}
 		if (url.isEmpty())
 		{
-			log(tr("Aucune source du site n'est compatible avec les pools."));
-			m_errors.append(tr("Aucune source du site n'est compatible avec les pools."));
+			log("No source of this site is compatible with pools.");
+			m_errors.append(tr("No source of this site is compatible with pools."));
 			m_search.removeAll("pool:"+poolRx.cap(1));
 			t.remove(m_pool);
 			t = t.trimmed();
@@ -280,7 +280,7 @@ void PageApi::parseImage(QMap<QString,QString> d, int position)
 	else
 	{
 		img->deleteLater();
-		log(tr("Image #%1 ignorée. Raison : %2.").arg(QString::number(position + 1), errors.join(", ")));
+		log(QString("Image #%1 ignored. Reason: %2.").arg(QString::number(position + 1), errors.join(", ")));
 	}
 }
 
@@ -298,7 +298,7 @@ void PageApi::parse()
 	int statusCode = m_reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 	if (statusCode == 429)
 	{
-		log(tr("Limitation atteinte (429). Nouvel essai."));
+		log("Limit reached (429). New try.");
 		load(true);
 		return;
 	}
@@ -308,7 +308,7 @@ void PageApi::parse()
 	if (m_source.isEmpty())
 	{
 		if (m_reply->error() != QNetworkReply::OperationCanceledError)
-		{ log("Loading error: "+m_reply->errorString()); }
+		{ log(QString("Loading error: %1").arg(m_reply->errorString())); }
 		emit finishedLoading(this, LoadResult::Error);
 		return;
 	}
@@ -325,7 +325,7 @@ void PageApi::parse()
 		int errorLine, errorColumn;
 		if (!doc.setContent(m_source, false, &errorMsg, &errorLine, &errorColumn))
 		{
-			log(tr("Erreur lors de l'analyse du fichier XML : %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn)));
+			log(QString("Error parsing XML file: %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn)));
 			emit finishedLoading(this, LoadResult::Error);
 			return;
 		}
@@ -400,7 +400,7 @@ void PageApi::parse()
 		int errorLine, errorColumn;
 		if (!doc.setContent(m_source, false, &errorMsg, &errorLine, &errorColumn))
 		{
-			log(tr("Erreur lors de l'analyse du fichier RSS : %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn)));
+			log(QString("Error parsing RSS file: %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn)));
 			emit finishedLoading(this, LoadResult::Error);
 			return;
 		}
@@ -511,7 +511,7 @@ void PageApi::parse()
 			QMap<QString, QVariant> data = src.toMap();
 			if (data.contains("success") && data["success"].toBool() == false)
 			{
-				log(tr("Réponse JSON d'erreur : \"%1\"").arg(data["reason"].toString()));
+				log(QString("JSON error reply: \"%1\"").arg(data["reason"].toString()));
 				emit finishedLoading(this, LoadResult::Error);
 				return;
 			}
@@ -566,7 +566,7 @@ void PageApi::parse()
 		}
 		else
 		{
-			log(tr("Erreur lors de l'analyse du fichier JSON : \"%1\"").arg(m_source.left(500)));
+			log(QString("Error parsing JSON file: \"%1\"").arg(m_source.left(500)));
 			emit finishedLoading(this, LoadResult::Error);
 			return;
 		}
@@ -631,7 +631,7 @@ void PageApi::parse()
 	if (m_site->contains("DefaultTag") && t.isEmpty())
 	{ t = m_site->value("DefaultTag"); }
 		if (!m_search.isEmpty() && !m_api->value("Urls/" + QString(t.isEmpty() && !m_api->contains("Urls/Home") ? "Home" : "Tags")).contains("{tags}"))
-	{ m_errors.append(tr("La recherche par tags est impossible avec la source choisie (%1).").arg(m_format)); }
+	{ m_errors.append(tr("Tag search is impossible with the chosen source (%1).").arg(m_format)); }
 
 	emit finishedLoading(this, LoadResult::Ok);
 }

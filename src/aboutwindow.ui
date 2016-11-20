@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>aboutWindow</class>
- <widget class="QWidget" name="aboutWindow">
+ <class>AboutWindow</class>
+ <widget class="QWidget" name="AboutWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>À propos de Grabber</string>
+   <string>About Grabber</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../resources.qrc">
@@ -39,7 +39,7 @@
      <item>
       <widget class="QLabel" name="labelTitle">
        <property name="text">
-        <string>&lt;span style=&quot; font-size:30pt; font-weight:600; color:#505050;&quot;&gt;Grabber&lt;/p&gt;</string>
+        <string notr="true">&lt;span style=&quot; font-size:30pt; font-weight:600; color:#505050;&quot;&gt;Grabber&lt;/p&gt;</string>
        </property>
       </widget>
      </item>
@@ -60,7 +60,7 @@
      <item>
       <widget class="QLabel" name="labelCreator">
        <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Grabber est une création de Bionus.&lt;br/&gt;N'hésitez pas à visiter le &lt;a href=&quot;https://github.com/Bionus/imgbrd-grabber&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;site&lt;/span&gt;&lt;/a&gt; pour rester à jour, ou récupérer des fichiers de site ou des traductions.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Grabber is a Bionus' creation.&lt;br/&gt;Please visit the &lt;a href=&quot;https://github.com/Bionus/imgbrd-grabber&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;site&lt;/span&gt;&lt;/a&gt; to stay updated, or retrieve site or translations files.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="textFormat">
         <enum>Qt::RichText</enum>
@@ -76,7 +76,7 @@
      <item>
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>Merci à YMI pour son aide à la recherche et résolution de bugs, ainsi que toutes ses suggestions pour le programme.</string>
+        <string>Special thanks to YMI for his help looking and solving bugs, as well as suggesting new features for the program.</string>
        </property>
        <property name="wordWrap">
         <bool>true</bool>
@@ -86,7 +86,7 @@
      <item>
       <widget class="QLabel" name="labelCredits">
        <property name="text">
-        <string>Traduction russe par Николай Тихонов.</string>
+        <string>Russian translation byr Николай Тихонов.</string>
        </property>
       </widget>
      </item>
@@ -95,6 +95,8 @@
   </layout>
  </widget>
  <resources>
+  <include location="../resources.qrc"/>
+  <include location="../resources.qrc"/>
   <include location="../resources.qrc"/>
  </resources>
  <connections/>

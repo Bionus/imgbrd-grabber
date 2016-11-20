@@ -22,9 +22,9 @@ AddUniqueWindow::AddUniqueWindow(QString selected, QMap<QString,Site*> sites, Pr
 	ui->comboSites->addItems(m_sites.keys());
 	ui->comboSites->setCurrentIndex(m_sites.keys().indexOf(selected));
 
-	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
-	ui->lineFolder->setText(settings.value("Save/path").toString());
-	ui->lineFilename->setText(settings.value("Save/filename").toString());
+	QSettings *settings = profile->getSettings();
+	ui->lineFolder->setText(settings->value("Save/path").toString());
+	ui->lineFilename->setText(settings->value("Save/filename").toString());
 }
 
 /**
@@ -32,7 +32,7 @@ AddUniqueWindow::AddUniqueWindow(QString selected, QMap<QString,Site*> sites, Pr
  */
 void AddUniqueWindow::on_buttonFolder_clicked()
 {
-	QString folder = QFileDialog::getExistingDirectory(this, tr("Choisir un dossier de sauvegarde"), ui->lineFolder->text());
+	QString folder = QFileDialog::getExistingDirectory(this, tr("Choose a save folder"), ui->lineFolder->text());
 	if (!folder.isEmpty())
 	{ ui->lineFolder->setText(folder); }
 }
@@ -94,7 +94,7 @@ void AddUniqueWindow::replyFinished(Page *p)
 	if (p->images().isEmpty())
 	{
 		p->deleteLater();
-		error(this, tr("Aucune image n'a été trouvée."));
+		error(this, tr("No image found."));
 		return;
 	}
 

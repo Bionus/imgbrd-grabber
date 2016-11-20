@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>304</width>
-    <height>152</height>
+    <height>154</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Grabber - Modifier un favori</string>
+   <string>Edit a favorite</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../resources.qrc">
@@ -32,7 +32,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="tagLabel">
        <property name="whatsThis">
-        <string>Le tag correspond au favori. Il n'est pas souvent utile de le modifier.</string>
+        <string>Tag corresponding to the favorite. It is not often useful to change it.</string>
        </property>
        <property name="text">
         <string>Tag</string>
@@ -45,7 +45,7 @@
      <item row="1" column="0">
       <widget class="QLabel" name="noteLabel">
        <property name="whatsThis">
-        <string>De 0 à 100, la note peut servir à ordonner les favoris par ordre de préférence.</string>
+        <string>Between 0 and 100, the note can be used to sort the favorites in preference order.</string>
        </property>
        <property name="text">
         <string>Note</string>
@@ -68,24 +68,24 @@
      <item row="2" column="0">
       <widget class="QLabel" name="lastViewedLabel">
        <property name="whatsThis">
-        <string>Dernière fois que vous avez cliqué sur &quot;Marquer comme vu&quot;.</string>
+        <string>Last time you clicked on &quot;Mark as viewed&quot;.</string>
        </property>
        <property name="text">
-        <string>Dernière vue</string>
+        <string>Last view</string>
        </property>
       </widget>
      </item>
      <item row="2" column="1">
       <widget class="QDateTimeEdit" name="lastViewedDateTimeEdit">
        <property name="displayFormat">
-        <string>dd/MM/yyyy HH:mm:ss</string>
+        <string>yyyy/MM/dd HH:mm:ss</string>
        </property>
       </widget>
      </item>
      <item row="3" column="0">
       <widget class="QLabel" name="imageLabel">
        <property name="whatsThis">
-        <string>Image dont l'icone sera affichée dans la liste des favoris.</string>
+        <string>Image whose icon will be displayed in the favorites list.</string>
        </property>
        <property name="text">
         <string>Image</string>
@@ -110,7 +110,7 @@
        <item>
         <widget class="QPushButton" name="openButton">
          <property name="text">
-          <string>Parcourir</string>
+          <string>Browse</string>
          </property>
         </widget>
        </item>
@@ -120,6 +120,13 @@
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QPushButton" name="buttonRemove">
+       <property name="text">
+        <string>Delete</string>
+       </property>
+      </widget>
+     </item>
      <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
@@ -132,13 +139,6 @@
         </size>
        </property>
       </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="buttonRemove">
-       <property name="text">
-        <string>Supprimer</string>
-       </property>
-      </widget>
      </item>
      <item>
       <widget class="QDialogButtonBox" name="buttonBox">
@@ -155,6 +155,8 @@
   </layout>
  </widget>
  <resources>
+  <include location="../resources.qrc"/>
+  <include location="../resources.qrc"/>
   <include location="../resources.qrc"/>
  </resources>
  <connections>

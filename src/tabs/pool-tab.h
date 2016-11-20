@@ -23,47 +23,33 @@ class poolTab : public searchTab
 	Q_OBJECT
 
 	public:
-		explicit poolTab(int id, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent);
+		explicit poolTab(QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent);
 		~poolTab();
 		Ui::poolTab *ui;
 		QString tags();
-		QString wiki();
 		QString site();
-		int imagesPerPage();
-		int columns();
-		QString postFilter();
+		QList<Site*> loadSites() override;
 
 	public slots:
-		// Search
-		void firstPage();
-		void previousPage();
-		void nextPage();
-		void lastPage();
 		// Zooms
 		void setTags(QString);
 		void setPool(int id, QString site);
 		// Loading
 		void load();
-		void finishedLoading(Page*);
-		void finishedLoadingTags(Page*);
+		bool validateImage(QSharedPointer<Image> img);
 		// Batch
 		void getPage();
 		void getAll();
 		// Others
-		void optionsChanged();
 		void closeEvent(QCloseEvent*);
 		void on_buttonSearch_clicked();
 		void setSite(QString);
-		void setImagesPerPage(int ipp);
-		void setColumns(int columns);
-		void setPostFilter(QString postfilter);
 		void focusSearch();
 
 	private:
 		int				m_id;
-		TextEdit		*m_search, *m_postFiltering;
+		TextEdit		*m_search;
 		QCalendarWidget	*m_calendar;
-		QString			m_lastTags, m_wiki;
 		bool			m_sized;
 };
 

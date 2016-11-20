@@ -18,7 +18,7 @@ class RenameExisting1 : public QDialog
 	Q_OBJECT
 
 	public:
-		explicit RenameExisting1(Profile *profile, QMap<QString,Site*> sites, QWidget *parent = 0);
+		explicit RenameExisting1(Profile *profile, QMap<QString,Site*> sites, QWidget *parent = Q_NULLPTR);
 		~RenameExisting1();
 
 	private slots:

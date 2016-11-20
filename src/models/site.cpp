@@ -24,7 +24,7 @@
 
 
 Site::Site(QString url, Source *source)
-	: m_type(source->getName()), m_url(url), m_source(source), m_settings(nullptr), m_manager(nullptr), m_cookieJar(nullptr), m_loggedIn(false), m_triedLogin(false), m_loginCheck(false)
+	: m_type(source->getName()), m_url(url), m_source(source), m_settings(nullptr), m_manager(nullptr), m_cookieJar(nullptr), m_loggedIn(false), m_triedLogin(false), m_loginCheck(false), m_autoLogin(true)
 {
 	loadConfig();
 }
@@ -108,13 +108,13 @@ void Site::initManager()
 	if (m_manager == nullptr)
 	{
 		// Create the access manager and get its slots
-		m_manager = new QNetworkAccessManager(this);
-		connect(m_manager, &QNetworkAccessManager::finished, this, &Site::finished);
-		connect(m_manager, &QNetworkAccessManager::sslErrors, sslErrorHandler);
+		m_manager = new CustomNetworkAccessManager(this);
+		connect(m_manager, &CustomNetworkAccessManager::finished, this, &Site::finished);
+		connect(m_manager, &CustomNetworkAccessManager::sslErrors, sslErrorHandler);
 
 		// Cache
 		QNetworkDiskCache *diskCache = new QNetworkDiskCache(m_manager);
-		diskCache->setCacheDirectory(savePath("cache/"));
+		diskCache->setCacheDirectory(m_source->getProfile()->getPath() + "/cache/");
 		m_manager->setCache(diskCache);
 
 		// Cookies
@@ -155,7 +155,7 @@ void Site::login(bool force)
 		return;
 	}
 
-	log(tr("Connexion à %1 (%2)...").arg(m_name, m_url));
+	log(QString("Logging into %1 (%2)...").arg(m_name, m_url));
 	initManager();
 
 	// Clear cookies if we want to force a re-login
@@ -241,14 +241,14 @@ void Site::loginFinished()
 		}
 	}
 
-	log(tr("Connexion à %1 (%2) terminée (%3).").arg(m_name, m_url, m_loggedIn ? tr("succès") : tr("échec")));
+	log(QString("Logging into %1 (%2) finished (%3).").arg(m_name, m_url, m_loggedIn ? tr("success") : tr("failure")));
 	emit loggedIn(this, m_loggedIn ? LoginResult::Success : LoginResult::Error);
 }
 
 
 QNetworkRequest Site::makeRequest(QUrl url, Page *page, QString ref, Image *img)
 {
-	if (!m_loggedIn && !m_triedLogin)
+	if (m_autoLogin && !m_loggedIn && !m_triedLogin)
 		login();
 
 	// Force HTTPS if set so in the settings (no mixed content allowed)
@@ -323,50 +323,7 @@ QNetworkReply *Site::get(QUrl url, Page *page, QString ref, Image *img)
 QNetworkReply *Site::getRequest(QNetworkRequest request)
 {
 	m_lastRequest = QDateTime::currentDateTime();
-
-	#ifdef TEST
-		QString md5 = QString(QCryptographicHash::hash(request.url().toString().toLatin1(), QCryptographicHash::Md5).toHex());
-		QString filename = request.url().fileName();
-		QString ext = filename.contains('.') ? filename.mid(filename.lastIndexOf('.') + 1) : "html";
-		QString path = "tests/resources/pages/" + m_url + "/" + md5 + "." + ext;
-
-		QFile f(path);
-		if (!f.open(QFile::ReadOnly))
-		{
-			md5 = QString(QCryptographicHash::hash(request.url().toString().toLatin1(), QCryptographicHash::Md5).toHex());
-			f.setFileName("tests/resources/pages/" + m_url + "/" + md5 + "." + ext);
-
-			if (!f.open(QFile::ReadOnly))
-			{
-				// LCOV_EXCL_START
-				if (ext != "jpg" && ext != "png")
-				{
-					qDebug() << ("Test file not found: " + f.fileName() + " (" + request.url().toString() + ")");
-					return nullptr;
-				}
-				// LCOV_EXCL_STOP
-
-				f.setFileName("tests/resources/image_1x1.png");
-
-				// LCOV_EXCL_START
-				if (!f.open(QFile::ReadOnly))
-					return nullptr;
-				// LCOV_EXCL_STOP
-			}
-		}
-
-		qDebug() << ("Reply from file: " + request.url().toString() + " -> " + f.fileName());
-		QByteArray content = f.readAll();
-
-		QCustomNetworkReply *reply = new QCustomNetworkReply();
-		reply->setHttpStatusCode(200, "OK");
-		reply->setContentType("text/html");
-		reply->setContent(content);
-
-		return reply;
-	#else
-		return m_manager->get(request);
-	#endif
+	return m_manager->get(request);
 }
 
 
@@ -431,11 +388,15 @@ QSettings	*Site::settings()						{ return m_settings; }
 QString Site::name()			{ return m_name;			}
 QString Site::url()				{ return m_url;				}
 QString Site::type()			{ return m_type;			}
-QString Site::username()		{ return m_username;		}
-QString Site::password()		{ return m_password;		}
 Source *Site::getSource() const	{ return m_source;			}
 QList<Api*> Site::getApis() const	{ return m_apis;		}
 
+
+bool Site::autoLogin() const	{ return m_autoLogin;	}
+QString Site::username() const	{ return m_username;	}
+QString Site::password() const	{ return m_password;	}
+
+void Site::setAutoLogin(bool autoLogin)		{ m_autoLogin = autoLogin;	}
 void Site::setUsername(QString username)	{ m_username = username;	}
 void Site::setPassword(QString password)	{ m_password = password;	}
 

@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Nouvel onglet</string>
+   <string>Favorites</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../../resources.qrc">
@@ -60,7 +60,7 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>Trier par</string>
+            <string>Sort by</string>
            </property>
           </widget>
          </item>
@@ -77,7 +77,7 @@
            </property>
            <item>
             <property name="text">
-             <string>Nom</string>
+             <string>Name</string>
             </property>
            </item>
            <item>
@@ -87,7 +87,7 @@
            </item>
            <item>
             <property name="text">
-             <string>Dernière vue</string>
+             <string>Last view</string>
             </property>
            </item>
           </widget>
@@ -99,12 +99,12 @@
            </property>
            <item>
             <property name="text">
-             <string>Ascendant</string>
+             <string>Ascending</string>
             </property>
            </item>
            <item>
             <property name="text">
-             <string>Descendant</string>
+             <string>Descending</string>
             </property>
            </item>
           </widget>
@@ -173,7 +173,7 @@
                   </size>
                  </property>
                  <property name="text">
-                  <string>&lt;</string>
+                  <string notr="true">&lt;</string>
                  </property>
                 </widget>
                </item>
@@ -195,7 +195,7 @@
                   </size>
                  </property>
                  <property name="text">
-                  <string>&gt;</string>
+                  <string notr="true">&gt;</string>
                  </property>
                 </widget>
                </item>
@@ -221,7 +221,7 @@
             <item>
              <widget class="QPushButton" name="buttonTags">
               <property name="text">
-               <string>Ok</string>
+               <string>O&amp;k</string>
               </property>
              </widget>
             </item>
@@ -234,7 +234,7 @@
                </size>
               </property>
               <property name="text">
-               <string>+</string>
+               <string notr="true">+</string>
               </property>
               <property name="checkable">
                <bool>true</bool>
@@ -268,14 +268,14 @@
              <item row="0" column="2">
               <widget class="QLabel" name="label_7">
                <property name="text">
-                <string>Nombre de colonnes</string>
+                <string>Number of columns</string>
                </property>
               </widget>
              </item>
              <item row="1" column="0">
               <widget class="QLabel" name="label_8">
                <property name="text">
-                <string>Post-filtrage</string>
+                <string>Post-filtering</string>
                </property>
               </widget>
              </item>
@@ -295,7 +295,7 @@
              <item row="0" column="0">
               <widget class="QLabel" name="label_6">
                <property name="text">
-                <string>Images par page</string>
+                <string>Images per page</string>
                </property>
               </widget>
              </item>
@@ -440,7 +440,7 @@ QWidget#scrollAreaWidgetContents {
             </size>
            </property>
            <property name="text">
-            <string>&lt;&lt;</string>
+            <string notr="true">&lt;&lt;</string>
            </property>
           </widget>
          </item>
@@ -456,14 +456,14 @@ QWidget#scrollAreaWidgetContents {
             </size>
            </property>
            <property name="text">
-            <string>&lt;</string>
+            <string notr="true">&lt;</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QPushButton" name="buttonBack">
            <property name="text">
-            <string>Retour</string>
+            <string>Back</string>
            </property>
            <property name="checkable">
             <bool>false</bool>
@@ -473,28 +473,28 @@ QWidget#scrollAreaWidgetContents {
          <item>
           <widget class="QPushButton" name="buttonMarkAsViewed">
            <property name="text">
-            <string>Marquer comme vu</string>
+            <string>Mark as &amp;viewed</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QPushButton" name="buttonGetSel">
            <property name="text">
-            <string>Prendre séléctionnés</string>
+            <string>Get &amp;selected</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QPushButton" name="buttonGetpage">
            <property name="text">
-            <string>Prendre cette page</string>
+            <string>Get this &amp;page</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QPushButton" name="buttonGetAll">
            <property name="text">
-            <string>Prendre tout</string>
+            <string>Get &amp;all</string>
            </property>
           </widget>
          </item>
@@ -510,7 +510,7 @@ QWidget#scrollAreaWidgetContents {
             </size>
            </property>
            <property name="text">
-            <string>&gt;</string>
+            <string notr="true">&gt;</string>
            </property>
           </widget>
          </item>
@@ -526,7 +526,7 @@ QWidget#scrollAreaWidgetContents {
             </size>
            </property>
            <property name="text">
-            <string>&gt;&gt;</string>
+            <string notr="true">&gt;&gt;</string>
            </property>
           </widget>
          </item>
@@ -541,14 +541,14 @@ QWidget#scrollAreaWidgetContents {
      <item>
       <widget class="QPushButton" name="buttonSourcesList">
        <property name="text">
-        <string>Sources</string>
+        <string>S&amp;ources</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QCheckBox" name="checkMergeResults">
        <property name="text">
-        <string>Fusionner les résultats</string>
+        <string>Merge results</string>
        </property>
        <property name="checked">
         <bool>true</bool>
@@ -565,7 +565,7 @@ QWidget#scrollAreaWidgetContents {
      <item>
       <widget class="QPushButton" name="pushButton_2">
        <property name="text">
-        <string>Marquer tous comme vus</string>
+        <string>Mark all as vie&amp;wed</string>
        </property>
       </widget>
      </item>

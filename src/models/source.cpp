@@ -11,7 +11,7 @@
 QList<Source*> *g_allSources = Q_NULLPTR;
 
 Source::Source(Profile *profile, QString dir)
-	: m_dir(dir), m_profile(profile), m_updateReply(nullptr), m_updateVersion("")
+	: m_dir(dir), m_profile(profile), m_updater(this, "https://raw.githubusercontent.com/Bionus/imgbrd-grabber/master/release/sites")
 {
 	// Load XML details for this source from its model file
 	QFile file(m_dir + "/model.xml");
@@ -25,7 +25,7 @@ Source::Source(Profile *profile, QString dir)
 		QString errorMsg;
 		int errorLine, errorColumn;
 		if (!doc.setContent(fileContents, false, &errorMsg, &errorLine, &errorColumn))
-		{ log(tr("Erreur lors de l'analyse du fichier XML : %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn)), Error); }
+		{ log(QString("Error parsing XML file: %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn)), Error); }
 		else
 		{
 			QDomElement docElem = doc.documentElement();
@@ -47,13 +47,13 @@ Source::Source(Profile *profile, QString dir)
 				}
 			}
 			else
-			{ log(tr("Aucune source valide trouvée dans le fichier model.xml de %1.").arg(m_name)); }
+			{ log(QString("No valid source has been found in the model.xml file from %1.").arg(m_name)); }
 		}
 
 		file.close();
 	}
 	else
-	{ log(tr("Impossible d'ouvrir le fichier de modèle '%1'").arg(m_dir + "/model.xml")); }
+	{ log(QString("Impossible to open the model file '%1'").arg(m_dir + "/model.xml")); }
 
 	// Get the list of all sites pertaining to this source
 	QFile f(m_dir + "/sites.txt");
@@ -70,61 +70,16 @@ Source::Source(Profile *profile, QString dir)
 		}
 	}
 	if (m_sites.isEmpty())
-	{ log(tr("Aucun site pour la source %1").arg(m_name)); }
-
-	m_manager = new QNetworkAccessManager(this);
-	connect(m_manager, &QNetworkAccessManager::sslErrors, sslErrorHandler);
-}
-
-Source::~Source()
-{
-	m_manager->deleteLater();
+	{ log(QString("No site for source %1").arg(m_name)); }
 }
 
 
-/**
- * Check if an update is available for this source's model file.
- */
-void Source::checkForUpdates(QString baseUrl)
-{
-	QUrl url(baseUrl + m_name + "/model.xml");
-	QNetworkRequest request(url);
-
-	m_updateReply = m_manager->get(request);
-	connect(m_updateReply, &QNetworkReply::finished, this, &Source::checkForUpdatesDone);
-}
-
-/**
- * Called when the update check is finished.
- */
-void Source::checkForUpdatesDone()
-{
-	QString source = m_updateReply->readAll();
-	if (source.startsWith("<?xml"))
-	{
-		QFile current(m_dir + "/model.xml");
-		if (current.open(QFile::ReadOnly))
-		{
-			QString compare = current.readAll();
-			current.close();
-
-			if (compare != source)
-			{ m_updateVersion = VERSION; }
-		}
-	}
-
-	m_updateReply->deleteLater();
-	m_updateReply = nullptr;
-	emit checkForUpdatesFinished(this);
-}
-
-
-QString Source::getName() const 			{ return m_name;			}
-QString Source::getPath() const 			{ return m_dir;				}
-QList<Site*> Source::getSites() const		{ return m_sites;			}
-QList<Api*> Source::getApis() const			{ return m_apis;			}
-QString Source::getUpdateVersion() const	{ return m_updateVersion;	}
-Profile *Source::getProfile() const			{ return m_profile;			}
+QString Source::getName() const 		{ return m_name;		}
+QString Source::getPath() const 		{ return m_dir;			}
+QList<Site*> Source::getSites() const	{ return m_sites;		}
+QList<Api*> Source::getApis() const		{ return m_apis;		}
+Profile *Source::getProfile() const		{ return m_profile;		}
+SourceUpdater *Source::getUpdater() 	{ return &m_updater;	}
 
 Api *Source::getApi(QString name) const
 {

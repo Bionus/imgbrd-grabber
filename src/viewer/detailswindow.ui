@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>247</width>
+    <width>400</width>
     <height>431</height>
    </rect>
   </property>
@@ -20,7 +20,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Grabber - Détails</string>
+   <string>Details</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../../resources.qrc">
@@ -51,11 +51,7 @@
         <enum>Qt::CustomContextMenu</enum>
        </property>
        <property name="text">
-        <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Inconnus&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;i&gt;Unknown&lt;/i&gt;</string>
        </property>
        <property name="wordWrap">
         <bool>true</bool>
@@ -88,29 +84,21 @@ p, li { white-space: pre-wrap; }
      <item row="2" column="1">
       <widget class="QLabel" name="labelId">
        <property name="text">
-        <string>&lt;i&gt;Inconnu&lt;/i&gt;</string>
+        <string>&lt;i&gt;Unknown&lt;/i&gt;</string>
        </property>
       </widget>
      </item>
      <item row="4" column="0">
       <widget class="QLabel" name="labelFormRating">
        <property name="text">
-        <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Classe&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;b&gt;Rating&lt;/b&gt;</string>
        </property>
       </widget>
      </item>
      <item row="4" column="1">
       <widget class="QLabel" name="labelRating">
        <property name="text">
-        <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Inconnue&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;i&gt;Unknown&lt;/i&gt;</string>
        </property>
        <property name="wordWrap">
         <bool>true</bool>
@@ -127,7 +115,7 @@ p, li { white-space: pre-wrap; }
      <item row="5" column="1">
       <widget class="QLabel" name="labelScore">
        <property name="text">
-        <string>&lt;i&gt;Inconnu&lt;/i&gt;</string>
+        <string>&lt;i&gt;Unknown&lt;/i&gt;</string>
        </property>
        <property name="wordWrap">
         <bool>true</bool>
@@ -137,11 +125,7 @@ p, li { white-space: pre-wrap; }
      <item row="6" column="0">
       <widget class="QLabel" name="labelFormUser">
        <property name="text">
-        <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Posteur&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;b&gt;Author&lt;/b&gt;</string>
        </property>
       </widget>
      </item>
@@ -171,39 +155,35 @@ p, li { white-space: pre-wrap; }
      <item row="8" column="1">
       <widget class="QLabel" name="labelDate">
        <property name="text">
-        <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Inconnue&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;i&gt;Unknown&lt;/i&gt;</string>
        </property>
       </widget>
      </item>
      <item row="9" column="0">
       <widget class="QLabel" name="labelFormSize">
        <property name="text">
-        <string>&lt;b&gt;Dimensions&lt;/b&gt;</string>
+        <string>&lt;b&gt;Size&lt;/b&gt;</string>
        </property>
       </widget>
      </item>
      <item row="9" column="1">
       <widget class="QLabel" name="labelSize">
        <property name="text">
-        <string>&lt;i&gt;Inconnues&lt;/i&gt;</string>
+        <string>&lt;i&gt;Unknown&lt;/i&gt;</string>
        </property>
       </widget>
      </item>
      <item row="10" column="0">
       <widget class="QLabel" name="labelFormFilesize">
        <property name="text">
-        <string>&lt;b&gt;Taille&lt;/b&gt;</string>
+        <string>&lt;b&gt;Filesize&lt;/b&gt;</string>
        </property>
       </widget>
      </item>
      <item row="10" column="1">
       <widget class="QLabel" name="labelFilesize">
        <property name="text">
-        <string>&lt;i&gt;Inconnue&lt;/i&gt;</string>
+        <string>&lt;i&gt;Unknown&lt;/i&gt;</string>
        </property>
       </widget>
      </item>
@@ -217,7 +197,7 @@ p, li { white-space: pre-wrap; }
      <item row="3" column="1">
       <widget class="QLabel" name="labelMd5">
        <property name="text">
-        <string>&lt;i&gt;Inconnu&lt;/i&gt;</string>
+        <string>&lt;i&gt;Unknown&lt;/i&gt;</string>
        </property>
       </widget>
      </item>
@@ -260,7 +240,7 @@ p, li { white-space: pre-wrap; }
         </sizepolicy>
        </property>
        <property name="text">
-        <string>&lt;i&gt;Inconnue&lt;/i&gt;</string>
+        <string>&lt;i&gt;Unknown&lt;/i&gt;</string>
        </property>
        <property name="wordWrap">
         <bool>true</bool>
@@ -279,7 +259,7 @@ p, li { white-space: pre-wrap; }
         </sizepolicy>
        </property>
        <property name="text">
-        <string>&lt;i&gt;Inconnue&lt;/i&gt;</string>
+        <string>&lt;i&gt;Unknown&lt;/i&gt;</string>
        </property>
        <property name="wordWrap">
         <bool>true</bool>
@@ -299,7 +279,7 @@ p, li { white-space: pre-wrap; }
      <item row="16" column="0">
       <widget class="QLabel" name="labelFormPreview">
        <property name="text">
-        <string>&lt;b&gt;Vignette&lt;/b&gt;</string>
+        <string>&lt;b&gt;Thumbnail&lt;/b&gt;</string>
        </property>
       </widget>
      </item>
@@ -312,7 +292,7 @@ p, li { white-space: pre-wrap; }
         </sizepolicy>
        </property>
        <property name="text">
-        <string>&lt;i&gt;Inconnue&lt;/i&gt;</string>
+        <string>&lt;i&gt;Unknown&lt;/i&gt;</string>
        </property>
        <property name="wordWrap">
         <bool>true</bool>
@@ -331,7 +311,7 @@ p, li { white-space: pre-wrap; }
         </sizepolicy>
        </property>
        <property name="text">
-        <string>&lt;i&gt;Inconnue&lt;/i&gt;</string>
+        <string>&lt;i&gt;Unknown&lt;/i&gt;</string>
        </property>
        <property name="wordWrap">
         <bool>true</bool>
@@ -357,7 +337,7 @@ p, li { white-space: pre-wrap; }
         </sizepolicy>
        </property>
        <property name="text">
-        <string>&lt;i&gt;Inconnue&lt;/i&gt;</string>
+        <string>&lt;i&gt;Unknown&lt;/i&gt;</string>
        </property>
        <property name="wordWrap">
         <bool>true</bool>
@@ -370,7 +350,7 @@ p, li { white-space: pre-wrap; }
      <item row="6" column="1">
       <widget class="QLabel" name="labelUser">
        <property name="text">
-        <string>&lt;i&gt;Inconnu&lt;/i&gt;</string>
+        <string>&lt;i&gt;Unknown&lt;/i&gt;</string>
        </property>
        <property name="wordWrap">
         <bool>true</bool>
@@ -412,25 +392,21 @@ p, li { white-space: pre-wrap; }
        <item row="0" column="1">
         <widget class="QLabel" name="labelParent">
          <property name="text">
-          <string>&lt;i&gt;Inconnu&lt;/i&gt;</string>
+          <string>&lt;i&gt;Unknown&lt;/i&gt;</string>
          </property>
         </widget>
        </item>
        <item row="1" column="0">
         <widget class="QLabel" name="labelFormChildren">
          <property name="text">
-          <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Enfants&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;b&gt;Children&lt;/b&gt;</string>
          </property>
         </widget>
        </item>
        <item row="1" column="1">
         <widget class="QLabel" name="labelChildren">
          <property name="text">
-          <string>&lt;i&gt;Inconnu&lt;/i&gt;</string>
+          <string>&lt;i&gt;Unknown&lt;/i&gt;</string>
          </property>
         </widget>
        </item>
@@ -441,14 +417,14 @@ p, li { white-space: pre-wrap; }
        <item row="0" column="0">
         <widget class="QLabel" name="labelFormComments">
          <property name="text">
-          <string>&lt;b&gt;Commentaires&lt;/b&gt;</string>
+          <string>&lt;b&gt;Comments&lt;/b&gt;</string>
          </property>
         </widget>
        </item>
        <item row="0" column="1">
         <widget class="QLabel" name="labelComments">
          <property name="text">
-          <string>&lt;i&gt;Inconnu&lt;/i&gt;</string>
+          <string>&lt;i&gt;Unknown&lt;/i&gt;</string>
          </property>
         </widget>
        </item>
@@ -462,7 +438,7 @@ p, li { white-space: pre-wrap; }
        <item row="1" column="1">
         <widget class="QLabel" name="labelNotes">
          <property name="text">
-          <string>&lt;i&gt;Inconnu&lt;/i&gt;</string>
+          <string>&lt;i&gt;Unknown&lt;/i&gt;</string>
          </property>
         </widget>
        </item>
@@ -489,7 +465,7 @@ p, li { white-space: pre-wrap; }
    <item>
     <widget class="QPushButton" name="pushButton">
      <property name="text">
-      <string>Fermer</string>
+      <string>Close</string>
      </property>
     </widget>
    </item>
