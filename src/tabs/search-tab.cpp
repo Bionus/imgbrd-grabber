@@ -201,8 +201,8 @@ void searchTab::clear()
 	m_parent->setWiki("");
 
 	// Clear layout
-	for (int i = 0; i < m_layouts.size(); i++)
-	{ clearLayout(m_layouts[i]); }
+	for (Site *site : m_layouts.keys())
+	{ clearLayout(m_layouts[site]); }
 	qDeleteAll(m_layouts);
 	m_layouts.clear();
 	m_boutons.clear();
@@ -452,8 +452,9 @@ void searchTab::addResultsPage(Page *page, const QList<QSharedPointer<Image>> &i
 	int page_y = (pos / ui_spinColumns->value()) * 2;
 	ui_layoutResults->addWidget(txt, page_y, page_x);
 	ui_layoutResults->setRowMinimumHeight(page_y, height() / 20);
+
 	if (m_layouts.size() > pos)
-	{ ui_layoutResults->addLayout(m_layouts[pos], page_y + 1, page_x); }
+	{ ui_layoutResults->addLayout(m_layouts[page->site()], page_y + 1, page_x); }
 }
 void searchTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage)
 {
@@ -496,50 +497,67 @@ void searchTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPoi
 		txt->setText(txt->text()+"<br/>"+page->errors().join("<br/>"));
 	}
 }
-void searchTab::addResultsImage(QSharedPointer<Image> img, bool merge)
-{
-	int position = m_images.indexOf(img);
-	int page = 0;
-	if (!merge)
-	{
-		page = m_pages.values().indexOf(img->page());
-		if (page < 0)
-		{ return; }
-	}
 
+QBouton *searchTab::createImageThumbnail(int position, QSharedPointer<Image> img)
+{
 	float size = img->fileSize();
 	QString unit = getUnit(&size);
 	QColor color = imageColor(img);
 
 	QBouton *l = new QBouton(position, m_settings->value("resizeInsteadOfCropping", true).toBool(), m_settings->value("borders", 3).toInt(), color, this);
-		l->setCheckable(true);
-		l->setChecked(m_selectedImages.contains(img->url()));
-		l->setToolTip(QString("%1%2%3%4%5%6%7%8")
-			.arg(img->tags().isEmpty() ? " " : tr("<b>Tags:</b> %1<br/><br/>").arg(img->stylishedTags(m_profile).join(" ")))
-			.arg(img->id() == 0 ? " " : tr("<b>ID:</b> %1<br/>").arg(img->id()))
-			.arg(img->rating().isEmpty() ? " " : tr("<b>Rating:</b> %1<br/>").arg(img->rating()))
-			.arg(img->hasScore() ? tr("<b>Score:</b> %1<br/>").arg(img->score()) : " ")
-			.arg(img->author().isEmpty() ? " " : tr("<b>User:</b> %1<br/><br/>").arg(img->author()))
-			.arg(img->width() == 0 || img->height() == 0 ? " " : tr("<b>Size:</b> %1 x %2<br/>").arg(QString::number(img->width()), QString::number(img->height())))
-			.arg(img->fileSize() == 0 ? " " : tr("<b>Filesize:</b> %1 %2<br/>").arg(QString::number(size), unit))
-			.arg(!img->createdAt().isValid() ? " " : tr("<b>Date:</b> %1").arg(img->createdAt().toString(tr("'the 'MM/dd/yyyy' at 'hh:mm"))))
-		);
-		l->scale(img->previewImage(), m_settings->value("thumbnailUpscale", 1.0f).toFloat());
-		l->setFlat(true);
-		connect(l, SIGNAL(appui(int)), this, SLOT(webZoom(int)));
-		connect(l, SIGNAL(toggled(int, bool, bool)), this, SLOT(toggleImage(int, bool, bool)));
-		connect(l, SIGNAL(rightClick(int)), m_parent, SLOT(batchChange(int)));
+	l->setCheckable(true);
+	l->setChecked(m_selectedImages.contains(img->url()));
+	l->setToolTip(QString("%1%2%3%4%5%6%7%8")
+		.arg(img->tags().isEmpty() ? " " : tr("<b>Tags:</b> %1<br/><br/>").arg(img->stylishedTags(m_profile).join(" ")))
+		.arg(img->id() == 0 ? " " : tr("<b>ID:</b> %1<br/>").arg(img->id()))
+		.arg(img->rating().isEmpty() ? " " : tr("<b>Rating:</b> %1<br/>").arg(img->rating()))
+		.arg(img->hasScore() ? tr("<b>Score:</b> %1<br/>").arg(img->score()) : " ")
+		.arg(img->author().isEmpty() ? " " : tr("<b>User:</b> %1<br/><br/>").arg(img->author()))
+		.arg(img->width() == 0 || img->height() == 0 ? " " : tr("<b>Size:</b> %1 x %2<br/>").arg(QString::number(img->width()), QString::number(img->height())))
+		.arg(img->fileSize() == 0 ? " " : tr("<b>Filesize:</b> %1 %2<br/>").arg(QString::number(size), unit))
+		.arg(!img->createdAt().isValid() ? " " : tr("<b>Date:</b> %1").arg(img->createdAt().toString(tr("'the 'MM/dd/yyyy' at 'hh:mm"))))
+	);
+	l->scale(img->previewImage(), m_settings->value("thumbnailUpscale", 1.0f).toFloat());
+	l->setFlat(true);
 
-	int perpage = img->page()->site()->value("Urls/Selected/Tags").contains("{limit}") ? ui_spinImagesPerPage->value() : img->page()->images().size();
-	perpage = perpage > 0 ? perpage : 20;
-	int pp = perpage;
+	connect(l, SIGNAL(appui(int)), this, SLOT(webZoom(int)));
+	connect(l, SIGNAL(toggled(int, bool, bool)), this, SLOT(toggleImage(int, bool, bool)));
+	connect(l, SIGNAL(rightClick(int)), m_parent, SLOT(batchChange(int)));
+
+	return l;
+}
+
+int searchTab::getActualImagesPerPage(Page *page, bool merge)
+{
+	// If we are using merged results, the images/page corresponds to the total number of images
 	if (merge)
-	{ pp = m_images.count(); }
-	int pl = ceil(sqrt((double)pp));
-	if (m_layouts.size() > page)
-	{ m_layouts[page]->addWidget(l, floor(float(position % pp) / pl), position % pl); }
+		return m_images.count();
 
-	m_boutons.insert(img, l);
+	int imagesPerPage;
+
+	// If we can customize the limit, that means we can have confidence in the spin value
+	if (page->site()->value("Urls/Selected/Tags").contains("{limit}"))
+		imagesPerPage = ui_spinImagesPerPage->value();
+	else
+		imagesPerPage = page->images().size();
+
+	return (imagesPerPage <= 0 ? 20 : imagesPerPage);
+}
+
+void searchTab::addResultsImage(QSharedPointer<Image> img, bool merge)
+{
+	int position = m_images.indexOf(img);
+	QBouton *button = createImageThumbnail(position, img);
+	QGridLayout *layout = m_layouts[merge ? nullptr : img->parentSite()];
+
+	int imagesPerPage = getActualImagesPerPage(img->page(), merge);
+	int imagesPerLine = ceil(sqrt((double)imagesPerPage));
+
+	int row = floor(float(position % imagesPerPage) / imagesPerLine);
+	int column = position % imagesPerLine;
+	layout->addWidget(button, row, column);
+
+	m_boutons.insert(img, button);
 }
 
 void searchTab::addHistory(QString tags, int page, int ipp, int cols)
@@ -846,7 +864,7 @@ void searchTab::loadTags(QStringList tags)
 		QGridLayout *l = new QGridLayout;
 		l->setHorizontalSpacing(m_settings->value("Margins/horizontal", 6).toInt());
 		l->setVerticalSpacing(m_settings->value("Margins/vertical", 6).toInt());
-		m_layouts.append(l);
+		m_layouts.insert(site, l);
 
 		// Load tags if necessary
 		log(QString("Loading page <a href=\"%1\">%1</a>").arg(page->url().toString().toHtmlEscaped()));

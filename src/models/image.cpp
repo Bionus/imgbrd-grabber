@@ -272,12 +272,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	m_tryingSample = false;
 	m_pools = QList<Pool>();
 }
-Image::~Image()
-{
-	m_loadPreview->deleteLater();
-	m_loadDetails->deleteLater();
-	m_loadImage->deleteLater();
-}
+
 
 void Image::loadPreview()
 {

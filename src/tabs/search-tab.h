@@ -52,6 +52,8 @@ class searchTab : public QWidget
 		void clear();
 		TextEdit *createAutocomplete();
 		void loadImageThumbnails(Page *page, const QList<QSharedPointer<Image>> &imgs);
+		QBouton *createImageThumbnail(int position, QSharedPointer<Image> img);
+		int getActualImagesPerPage(Page *page, bool merge);
 
 	public slots:
 		// Sources
@@ -122,7 +124,7 @@ class searchTab : public QWidget
 		QList<QSharedPointer<Image>> m_images;
 		QMap<QString, Page*> m_pages;
 		QMap<Page*, QLabel*> m_pageLabels;
-		QList<QGridLayout*> m_layouts;
+		QMap<Site*, QGridLayout*> m_layouts;
 		int m_page;
 		int m_pagemax;
 		bool m_stop;
