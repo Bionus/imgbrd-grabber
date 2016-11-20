@@ -273,7 +273,11 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	m_pools = QList<Pool>();
 }
 Image::~Image()
-{ }
+{
+	m_loadPreview->deleteLater();
+	m_loadDetails->deleteLater();
+	m_loadImage->deleteLater();
+}
 
 void Image::loadPreview()
 {
@@ -378,6 +382,7 @@ void Image::parseDetails()
 	if (m_loadDetails->error() == QNetworkReply::OperationCanceledError)
 	{
 		m_loadDetails->deleteLater();
+		m_loadDetails = nullptr;
 		return;
 	}
 
@@ -637,9 +642,6 @@ void Image::loadImage()
 		return;
 	}
 
-	if (m_loadImage != nullptr)
-		m_loadImage->deleteLater();
-
 	m_loadImage = m_parentSite->get(m_parentSite->fixUrl(m_url), m_parent, "image", this);
 	m_loadImage->setParent(this);
 	//m_timer.start();
@@ -656,6 +658,7 @@ void Image::finishedImageS()
 	if (m_loadImage->error() == QNetworkReply::OperationCanceledError)
 	{
 		m_loadImage->deleteLater();
+		m_loadImage = nullptr;
 		return;
 	}
 
@@ -663,6 +666,7 @@ void Image::finishedImageS()
 	if (!redir.isEmpty())
 	{
 		m_loadImage->deleteLater();
+		m_loadImage = nullptr;
 		m_url = redir.toString();
 		loadImage();
 		return;

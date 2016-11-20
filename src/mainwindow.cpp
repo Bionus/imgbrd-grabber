@@ -1740,7 +1740,6 @@ void mainWindow::getAllPerformImage()
 		del = false;
 	}
 
-	reply->deleteLater();
 	getAllImageOk(img, site_id, del);
 }
 void mainWindow::saveImage(QSharedPointer<Image> img, QString path, QString p, bool getAll)
@@ -1956,7 +1955,6 @@ void mainWindow::getAllFinished()
 		{
 			m_getAll = true;
 			m_progressdialog->clear();
-			//qDeleteAll(m_getAllRemaining);
 			m_getAllRemaining.clear();
 			m_getAllRemaining = m_getAllFailed;
 			m_getAllFailed.clear();
@@ -1964,10 +1962,10 @@ void mainWindow::getAllFinished()
 			m_getAllExists = 0;
 			m_getAllIgnored = 0;
 			m_getAll404s = 0;
+			m_getAllErrors = 0;
 			m_progressdialog->show();
 			getAllImages();
 		}
-		m_getAllErrors = 0;
 	}
 
 	// End of batch download
