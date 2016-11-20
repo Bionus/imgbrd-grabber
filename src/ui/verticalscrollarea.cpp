@@ -19,7 +19,16 @@ void VerticalScrollArea::resizeEvent(QResizeEvent *event)
 		if (verticalScrollBar()->isVisible())
 			maxWidth -= verticalScrollBar()->width();
 		widget()->setMaximumWidth(maxWidth);
+
+		if (!m_scrollEnabled)
+			widget()->setMaximumHeight(height());
 	}
 
 	QScrollArea::resizeEvent(event);
+}
+
+void VerticalScrollArea::setScrollEnabled(bool enabled)
+{
+	m_scrollEnabled = enabled;
+	setVerticalScrollBarPolicy(enabled ? Qt::ScrollBarAsNeeded : Qt::ScrollBarAlwaysOff);
 }

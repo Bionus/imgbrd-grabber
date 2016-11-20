@@ -504,7 +504,10 @@ QBouton *searchTab::createImageThumbnail(int position, QSharedPointer<Image> img
 	QString unit = getUnit(&size);
 	QColor color = imageColor(img);
 
-	QBouton *l = new QBouton(position, m_settings->value("resizeInsteadOfCropping", true).toBool(), m_settings->value("borders", 3).toInt(), color, this);
+	bool resizeInsteadOfCropping = m_settings->value("resizeInsteadOfCropping", true).toBool();
+	bool resultsScrollArea = m_settings->value("resultsScrollArea", false).toBool();
+
+	QBouton *l = new QBouton(position, resizeInsteadOfCropping, resultsScrollArea, m_settings->value("borders", 3).toInt(), color, this);
 	l->setCheckable(true);
 	l->setChecked(m_selectedImages.contains(img->url()));
 	l->setToolTip(QString("%1%2%3%4%5%6%7%8")

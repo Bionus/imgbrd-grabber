@@ -299,26 +299,66 @@
     </widget>
    </item>
    <item>
-    <layout class="QVBoxLayout" name="verticalLayout">
+    <layout class="QVBoxLayout" name="verticalLayout" stretch="1,0">
      <property name="spacing">
       <number>0</number>
      </property>
      <item>
-      <widget class="QWidget" name="widgetResults" native="true">
-       <layout class="QGridLayout" name="layoutResults">
-        <property name="leftMargin">
-         <number>0</number>
+      <widget class="VerticalScrollArea" name="scrollAreaResults">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QScrollArea {background-color:transparent;}</string>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::NoFrame</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Plain</enum>
+       </property>
+       <property name="lineWidth">
+        <number>0</number>
+       </property>
+       <property name="horizontalScrollBarPolicy">
+        <enum>Qt::ScrollBarAlwaysOff</enum>
+       </property>
+       <property name="sizeAdjustPolicy">
+        <enum>QAbstractScrollArea::AdjustToContents</enum>
+       </property>
+       <property name="widgetResizable">
+        <bool>true</bool>
+       </property>
+       <widget class="QWidget" name="widgetResults">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>778</width>
+          <height>323</height>
+         </rect>
         </property>
-        <property name="topMargin">
-         <number>0</number>
+        <property name="styleSheet">
+         <string notr="true">background-color:transparent;</string>
         </property>
-        <property name="rightMargin">
-         <number>0</number>
-        </property>
-        <property name="bottomMargin">
-         <number>0</number>
-        </property>
-       </layout>
+        <layout class="QGridLayout" name="layoutResults">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+        </layout>
+       </widget>
       </widget>
      </item>
      <item>
@@ -451,6 +491,14 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>VerticalScrollArea</class>
+   <extends>QScrollArea</extends>
+   <header>ui/verticalscrollarea.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="../../resources.qrc"/>
   <include location="../../resources.qrc"/>
@@ -640,8 +688,8 @@
    <slot>getSel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>505</x>
-     <y>508</y>
+     <x>497</x>
+     <y>520</y>
     </hint>
     <hint type="destinationlabel">
      <x>515</x>

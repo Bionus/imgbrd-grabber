@@ -115,7 +115,7 @@ void favoritesTab::updateFavorites()
 		if (display.contains("i"))
 		{
 			QPixmap img = fav.getImage();
-			QBouton *image = new QBouton(fav.getName(), false, 0, QColor(), this);
+			QBouton *image = new QBouton(fav.getName(), false, false, 0, QColor(), this);
 				image->setIcon(img);
 				image->setIconSize(img.size());
 				image->setFlat(true);

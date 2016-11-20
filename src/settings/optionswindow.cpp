@@ -197,6 +197,7 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	ui->comboTagsPosition->setCurrentIndex(positions.indexOf(settings->value("tagsposition", "top").toString()));
 	ui->spinPreload->setValue(settings->value("preload", 0).toInt());
 	ui->spinSlideshow->setValue(settings->value("slideshow", 0).toInt());
+	ui->checkResultsScrollArea->setChecked(settings->value("resultsScrollArea", false).toBool());
 
 	settings->beginGroup("Coloring");
 		settings->beginGroup("Colors");
@@ -651,6 +652,7 @@ void optionsWindow::save()
 	settings->setValue("tagsposition", positions.at(ui->comboTagsPosition->currentIndex()));
 	settings->setValue("preload", ui->spinPreload->value());
 	settings->setValue("slideshow", ui->spinSlideshow->value());
+	settings->setValue("resultsScrollArea", ui->checkResultsScrollArea->isChecked());
 
 	settings->beginGroup("Coloring");
 		settings->beginGroup("Colors");
