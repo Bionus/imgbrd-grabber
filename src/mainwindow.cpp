@@ -1076,6 +1076,7 @@ void mainWindow::getAll(bool all)
 	m_getAllRemaining.clear();
 	m_getAllFailed.clear();
 	m_getAllDownloading.clear();
+	m_getAllSkippedImages.clear();
 
 	QList<QTableWidgetItem *> selected = ui->tableBatchUniques->selectedItems();
 	int count = selected.size();
@@ -1875,6 +1876,7 @@ void mainWindow::getAllSkip()
 		image->abortTags();
 		image->abortImage();
 	}
+	m_getAllSkippedImages.append(m_getAllDownloading);
 	m_getAllDownloading.clear();
 
 	m_getAllSkipped += count;
@@ -1941,40 +1943,46 @@ void mainWindow::getAllFinished()
 	}
 
 	// Retry in case of error
-	int reponse = QMessageBox::No;
-	if (m_getAllErrors > 0)
+	int failedCount = m_getAllErrors + m_getAllSkipped;
+	if (failedCount > 0)
 	{
+		int reponse = QMessageBox::No;
 		if (m_batchAutomaticRetries > 0)
 		{
 			m_batchAutomaticRetries--;
 			reponse = QMessageBox::Yes;
 		}
 		else
-		{ reponse = QMessageBox::question(this, tr("Getting images"), tr("Errors occured during the images download. Do you want to restart the download of those images? (%1/%2)").arg(m_getAllErrors).arg(m_getAllDownloaded + m_getAllIgnored + m_getAllExists + m_getAll404s + m_getAllErrors), QMessageBox::Yes | QMessageBox::No); }
+		{
+			int totalCount = m_getAllDownloaded + m_getAllIgnored + m_getAllExists + m_getAll404s + m_getAllErrors + m_getAllSkipped;
+			reponse = QMessageBox::question(this, tr("Getting images"), tr("Errors occured during the images download. Do you want to restart the download of those images? (%1/%2)").arg(failedCount).arg(totalCount), QMessageBox::Yes | QMessageBox::No);
+		}
+
 		if (reponse == QMessageBox::Yes)
 		{
 			m_getAll = true;
 			m_progressdialog->clear();
 			m_getAllRemaining.clear();
-			m_getAllRemaining = m_getAllFailed;
+			m_getAllRemaining.append(m_getAllFailed);
+			m_getAllRemaining.append(m_getAllSkippedImages);
 			m_getAllFailed.clear();
+			m_getAllSkippedImages.clear();
 			m_getAllDownloaded = 0;
 			m_getAllExists = 0;
 			m_getAllIgnored = 0;
 			m_getAll404s = 0;
 			m_getAllErrors = 0;
+			m_getAllSkipped = 0;
 			m_progressdialog->show();
 			getAllImages();
+			return;
 		}
 	}
 
 	// End of batch download
-	if (reponse != QMessageBox::Yes)
-	{
-		m_profile->getCommands().after();
-		ui->widgetDownloadButtons->setEnabled(true);
-		log("Batch download finished");
-	}
+	m_profile->getCommands().after();
+	ui->widgetDownloadButtons->setEnabled(true);
+	log("Batch download finished");
 }
 
 void mainWindow::getAllPause()

@@ -186,7 +186,7 @@ class mainWindow : public QMainWindow
 		QStringList			m_tags;
 		QTranslator			m_translator;
 		QList<QStringList>	m_groupBatchs;
-		QList<QSharedPointer<Image>>	m_getAllRemaining, m_getAllDownloading, m_getAllFailed, m_images;
+		QList<QSharedPointer<Image>>	m_getAllRemaining, m_getAllDownloading, m_getAllFailed, m_images, m_getAllSkippedImages;
 		QWidget				*m_currentTab;
 		QList<searchTab*>	m_tabs;
 		QList<tagTab*>		m_tagTabs;
