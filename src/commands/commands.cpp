@@ -19,11 +19,6 @@ Commands::Commands(Profile *profile)
 		m_commandImage = settings->value("image").toString();
 		m_commandTagAfter = settings->value("tag_after", settings->value("tag").toString()).toString();
 		settings->beginGroup("SQL");
-			m_mysqlSettings.driver = settings->value("driver", "QMYSQL").toString();
-			m_mysqlSettings.host = settings->value("host").toString();
-			m_mysqlSettings.user = settings->value("user").toString();
-			m_mysqlSettings.password = settings->value("password").toString();
-			m_mysqlSettings.database = settings->value("database").toString();
 			m_mysqlSettings.before = settings->value("before").toString();
 			m_mysqlSettings.tagBefore = settings->value("tag_before").toString();
 			m_mysqlSettings.image = settings->value("image").toString();
@@ -32,42 +27,23 @@ Commands::Commands(Profile *profile)
 		settings->endGroup();
 	settings->endGroup();
 
-	m_mysql = (m_mysqlSettings.driver == "QSQLITE" && !m_mysqlSettings.database.isEmpty())
-			  || (!m_mysqlSettings.host.isEmpty() && !m_mysqlSettings.user.isEmpty() && !m_mysqlSettings.database.isEmpty());
-	m_started = false;
+	m_sqlWorker = new SqlWorker(settings->value("Exec/SQL/driver", "QMYSQL").toString(),
+								settings->value("Exec/SQL/host").toString(),
+								settings->value("Exec/SQL/user").toString(),
+								settings->value("Exec/SQL/password").toString(),
+								settings->value("Exec/SQL/database").toString());
+	m_sqlWorker->setObjectName("SqlThread");
 }
 
 bool Commands::start()
 {
-	if (m_mysql && !m_started)
-	{
-		m_started = true;
-		QSqlDatabase db = QSqlDatabase::addDatabase(m_mysqlSettings.driver);
-		db.setHostName(m_mysqlSettings.host);
-		db.setDatabaseName(m_mysqlSettings.database);
-		db.setUserName(m_mysqlSettings.user);
-		db.setPassword(m_mysqlSettings.password);
-		if (!db.open())
-		{
-			log(QString("Error initializing commands: %1").arg(db.lastError().text()));
-			return false;
-		}
-	}
-	return true;
+	return m_sqlWorker->connect();
 }
 
 bool Commands::before()
 {
-	if (m_mysql && !m_mysqlSettings.before.isEmpty())
-	{
-		start();
-
-		log(QString("SQL execution of \"%1\"").arg(m_mysqlSettings.before));
-		logCommandSql(m_mysqlSettings.before);
-
-		QSqlQuery query;
-		return query.exec(m_mysqlSettings.before);
-	}
+	if (!m_mysqlSettings.before.isEmpty())
+		return sqlExec(m_mysqlSettings.before);
 
 	return true;
 }
@@ -95,10 +71,8 @@ bool Commands::image(const Image &img, QString path)
 	}
 
 	// SQL commands
-	if (m_mysql && !m_mysqlSettings.image.isEmpty())
+	if (!m_mysqlSettings.image.isEmpty())
 	{
-		start();
-
 		Filename fn(m_mysqlSettings.image);
 		QStringList execs = fn.path(img, m_profile, "", 0, false, false, false, false);
 
@@ -107,11 +81,7 @@ bool Commands::image(const Image &img, QString path)
 			exec.replace("%path:nobackslash%", QDir::toNativeSeparators(path).replace("\\", "/"))
 				.replace("%path%", QDir::toNativeSeparators(path));
 
-			log(QString("SQL execution of \"%1\"").arg(exec));
-			logCommandSql(exec);
-
-			QSqlQuery query;
-			if (!query.exec(exec))
+			if (!sqlExec(exec))
 				return false;
 		}
 	}
@@ -154,7 +124,7 @@ bool Commands::tag(const Image &img, Tag tag, bool after)
 	}
 
 	QString commandSql = after ? m_mysqlSettings.tagAfter : m_mysqlSettings.tagBefore;
-	if (m_mysql && !commandSql.isEmpty())
+	if (!commandSql.isEmpty())
 	{
 		start();
 
@@ -168,11 +138,7 @@ bool Commands::tag(const Image &img, Tag tag, bool after)
 				.replace("%type%", tag.type())
 				.replace("%number%", QString::number(types[tag.type()]));
 
-			log(QString("SQL execution of \"%1\"").arg(exec));
-			logCommandSql(exec);
-
-			QSqlQuery query;
-			if (!query.exec(exec))
+			if (!sqlExec(exec))
 				return false;
 		}
 	}
@@ -182,16 +148,15 @@ bool Commands::tag(const Image &img, Tag tag, bool after)
 
 bool Commands::after()
 {
-	if (m_mysql && !m_mysqlSettings.after.isEmpty())
-	{
-		start();
+	if (!m_mysqlSettings.after.isEmpty())
+		return sqlExec(m_mysqlSettings.after);
 
-		log(QString("SQL execution of \"%1\"").arg(m_mysqlSettings.after));
-		logCommandSql(m_mysqlSettings.after);
+	return true;
+}
 
-		QSqlQuery query;
-		return query.exec(m_mysqlSettings.after);
-	}
-
+bool Commands::sqlExec(QString sql)
+{
+	//m_sqlWorker->execute(sql);
+	QMetaObject::invokeMethod(m_sqlWorker, "execute", Qt::QueuedConnection, Q_ARG(QString, sql));
 	return true;
 }
