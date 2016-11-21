@@ -2446,7 +2446,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="14"/>
         <source>Options</source>
-        <translation type="unfinished"></translation>
+        <translation>Опции</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="44"/>
@@ -2456,23 +2456,23 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="49"/>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation>Основное</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="54"/>
         <source>Sources</source>
-        <translation type="unfinished"></translation>
+        <translation>Источники</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="59"/>
         <location filename="../src/settings/optionswindow.ui" line="753"/>
         <source>Save</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранение</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="63"/>
         <source>Filename</source>
-        <translation type="unfinished"></translation>
+        <translation>Имя фаила</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="68"/>
@@ -2492,90 +2492,90 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="83"/>
         <source>Artist tags</source>
-        <translation type="unfinished"></translation>
+        <translation>Теги художника</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="88"/>
         <source>Copyright tags</source>
-        <translation type="unfinished"></translation>
+        <translation>Теги авторского права</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="93"/>
         <source>Character tags</source>
-        <translation type="unfinished"></translation>
+        <translation>Теги персонажей</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="98"/>
         <source>Custom token</source>
-        <translation type="unfinished"></translation>
+        <translation>Свои переменные</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="104"/>
         <source>Interface</source>
-        <translation type="unfinished"></translation>
+        <translation>Интерфейс</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="108"/>
         <source>Coloring</source>
-        <translation type="unfinished"></translation>
+        <translation>Цвета</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="113"/>
         <source>Margins and borders</source>
-        <translation type="unfinished"></translation>
+        <translation>Поля и границы</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="118"/>
         <source>Log</source>
-        <translation type="unfinished"></translation>
+        <translation>Лог</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="124"/>
         <source>Proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>Прокси</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="129"/>
         <location filename="../src/settings/optionswindow.ui" line="2182"/>
         <source>Commands</source>
-        <translation type="unfinished"></translation>
+        <translation>Команды</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="133"/>
         <location filename="../src/settings/optionswindow.ui" line="2287"/>
         <source>Database</source>
-        <translation type="unfinished"></translation>
+        <translation>База данных</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="156"/>
         <source>Language</source>
-        <translation type="unfinished"></translation>
+        <translation>Язык</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="166"/>
         <source>At start</source>
-        <translation type="unfinished"></translation>
+        <translation>В начале</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="174"/>
         <location filename="../src/settings/optionswindow.ui" line="714"/>
         <source>Do nothing</source>
-        <translation type="unfinished"></translation>
+        <translation>Ничего не делать</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="179"/>
         <source>Load first page</source>
-        <translation type="unfinished"></translation>
+        <translation>Загружать первую страницу</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="184"/>
         <source>Restore last session</source>
-        <translation type="unfinished"></translation>
+        <translation>Восстановить последний сеанс</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="192"/>
         <source>Blacklist</source>
-        <translation type="unfinished"></translation>
+        <translation>Черный список</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="202"/>
@@ -2585,7 +2585,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="209"/>
         <source>Ignore images containing a blacklisted tag</source>
-        <translation type="unfinished"></translation>
+        <translation>Игнорировать изображения содержащие теги из черного списка</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="216"/>
@@ -2595,27 +2595,27 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="226"/>
         <source>Whitelist</source>
-        <translation type="unfinished"></translation>
+        <translation>Белый список</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="236"/>
         <source>Download</source>
-        <translation type="unfinished"></translation>
+        <translation>Загрузка</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="247"/>
         <source>Don&apos;t download automatically</source>
-        <translation type="unfinished"></translation>
+        <translation>Не скачивать автоматически</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="252"/>
         <source>When loading image</source>
-        <translation type="unfinished"></translation>
+        <translation>Когда загружается изображение</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="257"/>
         <source>When loading thumbnail</source>
-        <translation type="unfinished"></translation>
+        <translation>Когда загружается миниатюра</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="265"/>
@@ -2625,7 +2625,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="275"/>
         <source>Ignored tags</source>
-        <translation type="unfinished"></translation>
+        <translation>Игнорируемые теги</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="285"/>
@@ -2635,12 +2635,12 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="295"/>
         <source>Download images containing blacklisted tags</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранять изображения с тегами из черного списка</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="302"/>
         <source>Adds</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавления</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="312"/>
@@ -2655,37 +2655,37 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="358"/>
         <source>Images per page</source>
-        <translation type="unfinished"></translation>
+        <translation>Изображений на страницу</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="365"/>
         <source>Number of columns</source>
-        <translation type="unfinished"></translation>
+        <translation>Количество колонок</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="372"/>
         <source>Source 1</source>
-        <translation type="unfinished"></translation>
+        <translation>Источник 1</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="379"/>
         <source>Source 2</source>
-        <translation type="unfinished"></translation>
+        <translation>Источник 2</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="386"/>
         <source>Source 3</source>
-        <translation type="unfinished"></translation>
+        <translation>Источник 3</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="393"/>
         <source>Source 4</source>
-        <translation type="unfinished"></translation>
+        <translation>Источник 4</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="426"/>
         <source>Get more precise tags when searching images</source>
-        <translation type="unfinished"></translation>
+        <translation>Получать больше точных тегов во время поиска изображений</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="437"/>
@@ -2693,7 +2693,7 @@ Please solve the issue before resuming the download.</source>
         <location filename="../src/settings/optionswindow.ui" line="491"/>
         <location filename="../src/settings/optionswindow.ui" line="518"/>
         <source>XML</source>
-        <translation type="unfinished"></translation>
+        <translation>XML</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="442"/>
@@ -2701,7 +2701,7 @@ Please solve the issue before resuming the download.</source>
         <location filename="../src/settings/optionswindow.ui" line="496"/>
         <location filename="../src/settings/optionswindow.ui" line="523"/>
         <source>JSON</source>
-        <translation type="unfinished"></translation>
+        <translation>JSON</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="447"/>
@@ -2709,7 +2709,7 @@ Please solve the issue before resuming the download.</source>
         <location filename="../src/settings/optionswindow.ui" line="501"/>
         <location filename="../src/settings/optionswindow.ui" line="528"/>
         <source>Regex</source>
-        <translation type="unfinished"></translation>
+        <translation>Regex</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="452"/>
@@ -2717,7 +2717,7 @@ Please solve the issue before resuming the download.</source>
         <location filename="../src/settings/optionswindow.ui" line="506"/>
         <location filename="../src/settings/optionswindow.ui" line="533"/>
         <source>RSS</source>
-        <translation type="unfinished"></translation>
+        <translation>RSS</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="541"/>
@@ -2727,7 +2727,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="565"/>
         <source>Download original images</source>
-        <translation type="unfinished"></translation>
+        <translation>Скачивать оригиналы</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="575"/>
@@ -2737,7 +2737,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="585"/>
         <source>Download images automatically</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранять изображения автоматически</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="592"/>
@@ -2747,36 +2747,36 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="602"/>
         <source>Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Папка</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="614"/>
         <location filename="../src/settings/optionswindow.ui" line="635"/>
         <location filename="../src/settings/optionswindow.ui" line="978"/>
         <source>Browse</source>
-        <translation type="unfinished"></translation>
+        <translation>Изменить</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="623"/>
         <location filename="../src/settings/optionswindow.ui" line="847"/>
         <location filename="../src/settings/optionswindow.ui" line="1678"/>
         <source>Favorites</source>
-        <translation type="unfinished"></translation>
+        <translation>Избранное</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="644"/>
         <source>Tags separator</source>
-        <translation type="unfinished"></translation>
+        <translation>Разделитель тегов</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="658"/>
         <source>Replace spaces by underscores</source>
-        <translation type="unfinished"></translation>
+        <translation>Заменять пробелы &quot;_&quot;</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="665"/>
         <source>Max length</source>
-        <translation type="unfinished"></translation>
+        <translation>Максимальная длина</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="679"/>
@@ -2786,52 +2786,52 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="689"/>
         <source>Simultaneous downloads</source>
-        <translation type="unfinished"></translation>
+        <translation>Одновременные загрузки</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="706"/>
         <source>When the download is finished</source>
-        <translation type="unfinished"></translation>
+        <translation>Когда загрузка завершится</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="719"/>
         <source>Close window</source>
-        <translation type="unfinished"></translation>
+        <translation>Закрыть окно</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="724"/>
         <source>Open CD tray</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть дисковод</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="729"/>
         <source>Play a sound</source>
-        <translation type="unfinished"></translation>
+        <translation>Подать звуковой сигнал</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="734"/>
         <source>Shutdown</source>
-        <translation type="unfinished"></translation>
+        <translation>Выключить ПК</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="742"/>
         <source>If a file already exists</source>
-        <translation type="unfinished"></translation>
+        <translation>Если фаил уже существует</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="758"/>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>Копировать</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="763"/>
         <source>Move</source>
-        <translation type="unfinished"></translation>
+        <translation>Переместить</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="768"/>
         <source>Don&apos;t save</source>
-        <translation type="unfinished"></translation>
+        <translation>Не сохранять</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="776"/>
@@ -2851,12 +2851,12 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="814"/>
         <source>Default</source>
-        <translation type="unfinished"></translation>
+        <translation>По умолчанию</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="887"/>
         <source>Add a conditional filename</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавить условное имя фаила</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="911"/>
@@ -2876,7 +2876,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="938"/>
         <source>Available tokens: the same as in the &quot;Save&quot; part.</source>
-        <translation type="unfinished"></translation>
+        <translation>Доступные переменные такие же как во вкладке &quot;Сохранение&quot;.</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="952"/>
@@ -2903,49 +2903,49 @@ Please solve the issue before resuming the download.</source>
         <location filename="../src/settings/optionswindow.ui" line="1126"/>
         <location filename="../src/settings/optionswindow.ui" line="1247"/>
         <source>If empty</source>
-        <translation type="unfinished"></translation>
+        <translation>Если пусто</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1029"/>
         <location filename="../src/settings/optionswindow.ui" line="1140"/>
         <location filename="../src/settings/optionswindow.ui" line="1261"/>
         <source>Separator</source>
-        <translation type="unfinished"></translation>
+        <translation>Разделитель</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1043"/>
         <location filename="../src/settings/optionswindow.ui" line="1154"/>
         <location filename="../src/settings/optionswindow.ui" line="1275"/>
         <source>If more than n tags</source>
-        <translation type="unfinished"></translation>
+        <translation>Если больше чем n тегов</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1060"/>
         <location filename="../src/settings/optionswindow.ui" line="1229"/>
         <location filename="../src/settings/optionswindow.ui" line="1340"/>
         <source>Keep all tags</source>
-        <translation type="unfinished"></translation>
+        <translation>Оставить все теги</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1067"/>
         <location filename="../src/settings/optionswindow.ui" line="1181"/>
         <location filename="../src/settings/optionswindow.ui" line="1302"/>
         <source>Keep n tags, then add</source>
-        <translation type="unfinished"></translation>
+        <translation>Оставить n тегов, затем добавить</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1074"/>
         <location filename="../src/settings/optionswindow.ui" line="1202"/>
         <location filename="../src/settings/optionswindow.ui" line="1323"/>
         <source>Replace all tags by</source>
-        <translation type="unfinished"></translation>
+        <translation>Заменить все теги на</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1091"/>
         <location filename="../src/settings/optionswindow.ui" line="1171"/>
         <location filename="../src/settings/optionswindow.ui" line="1292"/>
         <source>Keep n tags</source>
-        <translation type="unfinished"></translation>
+        <translation>Оставить n тегов</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1115"/>
@@ -2957,27 +2957,27 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1219"/>
         <source>Use shortest if possible</source>
-        <translation type="unfinished"></translation>
+        <translation>Использовать короткие если возможно</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1358"/>
         <source>Add a custom token</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавить пользовательскую переменную</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1372"/>
         <source>Resize previews instead of cropping them</source>
-        <translation type="unfinished"></translation>
+        <translation>Подгонять предпросмотр по размеру вместо обрезания</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1382"/>
         <source>Enable autocompletion</source>
-        <translation type="unfinished"></translation>
+        <translation>Активировать автозавершение</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1392"/>
         <source>Hide favorites</source>
-        <translation type="unfinished"></translation>
+        <translation>Скрыть избранное</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1409"/>
@@ -2987,49 +2987,49 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1419"/>
         <source>Source&apos;s type display</source>
-        <translation type="unfinished"></translation>
+        <translation>Тип отоброжения источника</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1427"/>
         <source>Text</source>
-        <translation type="unfinished"></translation>
+        <translation>Текст</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1432"/>
         <location filename="../src/settings/optionswindow.ui" line="2138"/>
         <location filename="../src/settings/optionswindow.ui" line="2208"/>
         <source>Image</source>
-        <translation type="unfinished"></translation>
+        <translation>Изображение</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1437"/>
         <source>Image and text</source>
-        <translation type="unfinished"></translation>
+        <translation>Изображение и текст</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1442"/>
         <source>Don&apos;t show</source>
-        <translation type="unfinished"></translation>
+        <translation>Ничего</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1450"/>
         <source>Displayed letters</source>
-        <translation type="unfinished"></translation>
+        <translation>Показанные письма</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1460"/>
         <source>Display n letters</source>
-        <translation type="unfinished"></translation>
+        <translation>Показывать n букв</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1465"/>
         <source>Before first dot</source>
-        <translation type="unfinished"></translation>
+        <translation>До первой точки</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1470"/>
         <source>Before last dot</source>
-        <translation type="unfinished"></translation>
+        <translation>После второй точки</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1493"/>
@@ -3039,37 +3039,37 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1503"/>
         <source>Tag list position</source>
-        <translation type="unfinished"></translation>
+        <translation>Позиция списка тегов</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1511"/>
         <source>Top</source>
-        <translation type="unfinished"></translation>
+        <translation>Верх</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1516"/>
         <source>Left</source>
-        <translation type="unfinished"></translation>
+        <translation>Лево</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1521"/>
         <source>Auto</source>
-        <translation type="unfinished"></translation>
+        <translation>Автоматически</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1529"/>
         <source>Show warning if an incompatible modifier is found</source>
-        <translation type="unfinished"></translation>
+        <translation>Предупредить, если несовместимое описание найдено</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1539"/>
         <source>Show other warnings</source>
-        <translation type="unfinished"></translation>
+        <translation>Показать остальные предупреждения</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1549"/>
         <source>Download not loaded pages</source>
-        <translation type="unfinished"></translation>
+        <translation>Загружать непрогруженные страницы</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1556"/>
@@ -3079,42 +3079,42 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1567"/>
         <source>Image, name and details</source>
-        <translation type="unfinished"></translation>
+        <translation>Изображение, название и подробности</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1572"/>
         <source>Image and name</source>
-        <translation type="unfinished"></translation>
+        <translation>Изображение и название</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1577"/>
         <source>Image and details</source>
-        <translation type="unfinished"></translation>
+        <translation>Изображение и подробности</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1582"/>
         <source>Name and details</source>
-        <translation type="unfinished"></translation>
+        <translation>Название и подробности</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1587"/>
         <source>Image only</source>
-        <translation type="unfinished"></translation>
+        <translation>Только изображение</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1592"/>
         <source>Name only</source>
-        <translation type="unfinished"></translation>
+        <translation>Только название</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1597"/>
         <source>Details only</source>
-        <translation type="unfinished"></translation>
+        <translation>Только подробности</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1605"/>
         <source>Favorites display</source>
-        <translation type="unfinished"></translation>
+        <translation>Показать избранное</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1612"/>
@@ -3134,37 +3134,37 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1643"/>
         <source>Artists</source>
-        <translation type="unfinished"></translation>
+        <translation>Художники</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1650"/>
         <source>Series</source>
-        <translation type="unfinished"></translation>
+        <translation>Копирайт</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1657"/>
         <source>Characters</source>
-        <translation type="unfinished"></translation>
+        <translation>Персонажи</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1664"/>
         <source>Models</source>
-        <translation type="unfinished"></translation>
+        <translation>Модели</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1671"/>
         <source>Generals</source>
-        <translation type="unfinished"></translation>
+        <translation>Общие</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1685"/>
         <source>Blacklisted</source>
-        <translation type="unfinished"></translation>
+        <translation>В черном списке</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1692"/>
         <source>Ignored</source>
-        <translation type="unfinished"></translation>
+        <translation>Игнорируемое</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1708"/>
@@ -3179,7 +3179,7 @@ Please solve the issue before resuming the download.</source>
         <location filename="../src/settings/optionswindow.ui" line="1949"/>
         <location filename="../src/settings/optionswindow.ui" line="1971"/>
         <source>Color</source>
-        <translation type="unfinished"></translation>
+        <translation>Цвет</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1715"/>
@@ -3192,75 +3192,75 @@ Please solve the issue before resuming the download.</source>
         <location filename="../src/settings/optionswindow.ui" line="1862"/>
         <location filename="../src/settings/optionswindow.ui" line="1890"/>
         <source>Font</source>
-        <translation type="unfinished"></translation>
+        <translation>Шрифт</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1871"/>
         <source>Circle</source>
-        <translation type="unfinished"></translation>
+        <translation>Круг</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1906"/>
         <source>Hosts</source>
-        <translation type="unfinished"></translation>
+        <translation>Сервера</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1912"/>
         <location filename="../src/settings/optionswindow.ui" line="1989"/>
         <source>Horizontal margins</source>
-        <translation type="unfinished"></translation>
+        <translation>Горизонтальные поля</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1932"/>
         <location filename="../src/settings/optionswindow.ui" line="2023"/>
         <source>Borders</source>
-        <translation type="unfinished"></translation>
+        <translation>Бордюры</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1983"/>
         <source>Images</source>
-        <translation type="unfinished"></translation>
+        <translation>Изображения</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="2006"/>
         <source>Vertical margins</source>
-        <translation type="unfinished"></translation>
+        <translation>Вертикальные поля</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="2047"/>
         <source>Show log</source>
-        <translation type="unfinished"></translation>
+        <translation>Показать лог</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="2061"/>
         <source>Use proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>Использовать прокси</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="2083"/>
         <location filename="../src/settings/optionswindow.ui" line="2257"/>
         <source>Host</source>
-        <translation type="unfinished"></translation>
+        <translation>Хост</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="2090"/>
         <source>Port</source>
-        <translation type="unfinished"></translation>
+        <translation>Порт</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="2107"/>
         <source>Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Вид</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="2115"/>
         <source>HTTP</source>
-        <translation type="unfinished"></translation>
+        <translation>HTTP</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="2120"/>
         <source>SOCKS v5</source>
-        <translation type="unfinished"></translation>
+        <translation>SOCKS v5</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="2148"/>
@@ -3283,62 +3283,62 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="2188"/>
         <source>Start</source>
-        <translation type="unfinished"></translation>
+        <translation>Начало</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="2228"/>
         <source>End</source>
-        <translation type="unfinished"></translation>
+        <translation>Конец</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="2251"/>
         <source>Credentials</source>
-        <translation type="unfinished"></translation>
+        <translation>Полномочия</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="2267"/>
         <source>User</source>
-        <translation type="unfinished"></translation>
+        <translation>Пользователь</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="2277"/>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Пароль</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="2297"/>
         <source>Driver</source>
-        <translation type="unfinished"></translation>
+        <translation>Драйвер</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.cpp" line="281"/>
         <source>Choose a save folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Выберите папку для сохранения</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.cpp" line="287"/>
         <source>Choose a save folder for favorites</source>
-        <translation type="unfinished"></translation>
+        <translation>Выберите папку для сохранения избранных</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.cpp" line="347"/>
         <source>Choose a color</source>
-        <translation type="unfinished"></translation>
+        <translation>Выбор цвета</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.cpp" line="362"/>
         <source>Choose a font</source>
-        <translation type="unfinished"></translation>
+        <translation>Выбор шрифта</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.cpp" line="568"/>
         <source>An error occured creating the save folder.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка при создании папки для сохранения.</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.cpp" line="584"/>
         <source>An error occured creating the favorites save folder.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка при создании папки для сохранения избранных.</translation>
     </message>
 </context>
 <context>
