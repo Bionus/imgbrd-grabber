@@ -231,7 +231,7 @@ void mainWindow::init()
 
 	m_loaded = true;
 	m_currentTab = nullptr;
-	log("Fin de l'initialisation.");
+	log("End of initialization");
 }
 
 void mainWindow::initialLoginsFinished()
