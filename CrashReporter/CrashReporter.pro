@@ -14,4 +14,5 @@ FORMS	+= mainwindow.ui
 RESOURCES    += resources.qrc
 RC_FILE       = icon.rc
 TRANSLATIONS += languages/English.ts \
-				languages/French.ts
+				languages/French.ts \
+				languages/YourLanguage.ts
