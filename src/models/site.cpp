@@ -193,6 +193,12 @@ void Site::login(bool force)
 	query.addQueryItem(m_settings->value("login/pseudo", "").toString(), m_username);
 	query.addQueryItem(m_settings->value("login/password", "").toString(), m_password);
 
+	m_settings->beginGroup("login/fields");
+		QStringList keys = m_settings->childKeys();
+		for (QString key : keys)
+			query.addQueryItem(key, setting(key).toString());
+	m_settings->endGroup();
+
 	QString method = m_settings->value("login/method", "post").toString();
 	if (method == "post")
 	{
