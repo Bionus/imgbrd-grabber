@@ -87,7 +87,8 @@ Source: "..\release\Qt5Xml.dll";                DestDir: "{app}"; Flags: ignorev
 Source: "..\release\Qt5WinExtras.dll";          DestDir: "{app}"; Flags: ignoreversion
 Source: "..\release\ssleay32.dll";              DestDir: "{app}"; Flags: ignoreversion     
 Source: "..\release\crashreporter\English.qm";  DestDir: "{app}\crashreporter"; Flags: ignoreversion         
-Source: "..\release\crashreporter\French.qm"; DestDir: "{app}\crashreporter"; Flags: ignoreversion  
+Source: "..\release\crashreporter\French.qm";   DestDir: "{app}\crashreporter"; Flags: ignoreversion  
+Source: "..\release\crashreporter\Russian.qm";  DestDir: "{app}\crashreporter"; Flags: ignoreversion  
 Source: "..\release\imageformats\qdds.dll";     DestDir: "{app}\imageformats"; Flags: ignoreversion
 Source: "..\release\imageformats\qgif.dll";     DestDir: "{app}\imageformats"; Flags: ignoreversion      
 Source: "..\release\imageformats\qicns.dll";    DestDir: "{app}\imageformats"; Flags: ignoreversion
