@@ -853,6 +853,10 @@ void searchTab::loadTags(QStringList tags)
 	ui_buttonFirstPage->setEnabled(ui_spinPage->value() > 1);
 	ui_buttonPreviousPage->setEnabled(ui_spinPage->value() > 1);
 
+	bool merged = ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked();
+	if (merged)
+		m_layouts.insert(nullptr, createImagesLayout(m_settings));
+
 	for (Site *site : loadSites())
 	{
 		// Load results
@@ -864,10 +868,8 @@ void searchTab::loadTags(QStringList tags)
 		m_pages.insert(page->website(), page);
 
 		// Setup the layout
-		QGridLayout *l = new QGridLayout;
-		l->setHorizontalSpacing(m_settings->value("Margins/horizontal", 6).toInt());
-		l->setVerticalSpacing(m_settings->value("Margins/vertical", 6).toInt());
-		m_layouts.insert(site, l);
+		if (!merged)
+			m_layouts.insert(site, createImagesLayout(m_settings));
 
 		// Load tags if necessary
 		log(QString("Loading page <a href=\"%1\">%1</a>").arg(page->url().toString().toHtmlEscaped()));
@@ -881,11 +883,19 @@ void searchTab::loadTags(QStringList tags)
 		// Start loading
 		page->load();
 	}
-	if (ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked() && m_layouts.size() > 0)
-	{ ui_layoutResults->addLayout(m_layouts[0], 0, 0); }
+	if (merged && m_layouts.size() > 0)
+	{ ui_layoutResults->addLayout(m_layouts[nullptr], 0, 0); }
 	m_page = 0;
 
 	emit changed(this);
+}
+
+QGridLayout *searchTab::createImagesLayout(QSettings *settings)
+{
+	QGridLayout *l = new QGridLayout;
+	l->setHorizontalSpacing(settings->value("Margins/horizontal", 6).toInt());
+	l->setVerticalSpacing(settings->value("Margins/vertical", 6).toInt());
+	return l;
 }
 
 

@@ -54,6 +54,7 @@ class searchTab : public QWidget
 		void loadImageThumbnails(Page *page, const QList<QSharedPointer<Image>> &imgs);
 		QBouton *createImageThumbnail(int position, QSharedPointer<Image> img);
 		int getActualImagesPerPage(Page *page, bool merge);
+		QGridLayout *createImagesLayout(QSettings *settings);
 
 	public slots:
 		// Sources
