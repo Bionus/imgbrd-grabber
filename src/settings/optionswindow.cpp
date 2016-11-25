@@ -25,12 +25,27 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	ui->splitter->setStretchFactor(0, 0);
 	ui->splitter->setStretchFactor(1, 1);
 
-	QSettings *settings = profile->getSettings();
-	QStringList languages = QDir(savePath("languages/", true)).entryList(QStringList("*.qm"), QDir::Files);
-	for (int i = 0; i < languages.count(); i++)
-	{ languages[i].remove(".qm", Qt::CaseInsensitive); }
-	ui->comboLanguages->addItems(languages);
+	QSettings fullLanguages(savePath("languages/languages.ini", true), QSettings::IniFormat, this);
+	fullLanguages.setIniCodec("UTF-8");
+	QStringList languageFiles = QDir(savePath("languages/", true)).entryList(QStringList("*.qm"), QDir::Files);
+	QStringList languages;
+	int l = 0;
+	for (QString languageFile : languageFiles)
+	{
+		QString language = languageFile.left(languageFile.length() - 3);
+		languages.append(language);
+		ui->comboLanguages->addItem(fullLanguages.value(language, language).toString());
+		ui->comboLanguages->setItemData(l, language);
+		++l;
+	}
+	if (!languages.contains("English"))
+	{
+		languages.append("English");
+		ui->comboLanguages->addItem("English");
+		ui->comboLanguages->setItemData(l, "English");
+	}
 
+	QSettings *settings = profile->getSettings();
 	ui->comboLanguages->setCurrentIndex(languages.indexOf(settings->value("language", "English").toString()));
 	ui->lineBlacklist->setText(settings->value("blacklistedtags").toString());
 	ui->checkDownloadBlacklisted->setChecked(settings->value("downloadblacklist", false).toBool());
@@ -48,6 +63,8 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	ui->checkShowWarnings->setChecked(settings->value("showwarnings", true).toBool());
 	ui->checkGetUnloadedPages->setChecked(settings->value("getunloadedpages", false).toBool());
 	ui->checkConfirmClose->setChecked(settings->value("confirm_close", true).toBool());
+	QList<int> checkForUpdates = QList<int>() << 0 << 24*60*60 << 7*24*60*60 << 30*24*60*60 << -1;
+	ui->comboCheckForUpdates->setCurrentIndex(checkForUpdates.indexOf(settings->value("check_for_updates", 24*60*60).toInt()));
 
 	ui->spinImagesPerPage->setValue(settings->value("limit", 20).toInt());
 	ui->spinColumns->setValue(settings->value("columns", 1).toInt());
@@ -57,9 +74,6 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	ui->comboSource3->setCurrentIndex(sources.indexOf(settings->value("source_3", "regex").toString()));
 	ui->comboSource4->setCurrentIndex(sources.indexOf(settings->value("source_4", "rss").toString()));
 	ui->spinAutoTagAdd->setValue(settings->value("tagsautoadd", 10).toInt());
-
-	QStringList positions = QStringList() << "top" << "left" << "auto";
-	ui->comboTagsposition->setCurrentIndex(positions.indexOf(settings->value("tagsposition", "top").toString()));
 
 	QMap<QString,QPair<QString,QString>> filenames = getFilenames(settings);
 	m_filenamesConditions = QList<QLineEdit*>();
@@ -179,6 +193,12 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 		ui->layoutCustom->insertRow(i, leName, leTags);
 	}
 
+	QStringList positions = QStringList() << "top" << "left" << "auto";
+	ui->comboTagsPosition->setCurrentIndex(positions.indexOf(settings->value("tagsposition", "top").toString()));
+	ui->spinPreload->setValue(settings->value("preload", 0).toInt());
+	ui->spinSlideshow->setValue(settings->value("slideshow", 0).toInt());
+	ui->checkResultsScrollArea->setChecked(settings->value("resultsScrollArea", false).toBool());
+
 	settings->beginGroup("Coloring");
 		settings->beginGroup("Colors");
 			ui->lineColoringArtists->setText(settings->value("artists", "#aa0000").toString());
@@ -263,13 +283,13 @@ void optionsWindow::on_comboSourcesLetters_currentIndexChanged(int i)
 
 void optionsWindow::on_buttonFolder_clicked()
 {
-	QString folder = QFileDialog::getExistingDirectory(this, tr("Choisir un dossier de sauvegarde"), ui->lineFolder->text());
+	QString folder = QFileDialog::getExistingDirectory(this, tr("Choose a save folder"), ui->lineFolder->text());
 	if (!folder.isEmpty())
 	{ ui->lineFolder->setText(folder); }
 }
 void optionsWindow::on_buttonFolderFavorites_clicked()
 {
-	QString folder = QFileDialog::getExistingDirectory(this, tr("Choisir un dossier de sauvegarde pour les favoris"), ui->lineFolderFavorites->text());
+	QString folder = QFileDialog::getExistingDirectory(this, tr("Choose a save folder for favorites"), ui->lineFolderFavorites->text());
 	if (!folder.isEmpty())
 	{ ui->lineFolderFavorites->setText(folder); }
 }
@@ -329,7 +349,7 @@ void optionsWindow::setColor(QLineEdit *lineEdit, bool button)
 {
 	QString text = lineEdit->text();
 	QColor color = button
-		? QColorDialog::getColor(QColor(text), this, tr("Choisir une couleur"))
+		? QColorDialog::getColor(QColor(text), this, tr("Choose a color"))
 		: QColor(text);
 
 	if (color.isValid())
@@ -344,7 +364,7 @@ void optionsWindow::setColor(QLineEdit *lineEdit, bool button)
 void optionsWindow::setFont(QLineEdit *lineEdit)
 {
 	bool ok = false;
-	QFont police = QFontDialog::getFont(&ok, lineEdit->font(), this, tr("Choisir une police"));
+	QFont police = QFontDialog::getFont(&ok, lineEdit->font(), this, tr("Choose a font"));
 
 	if (ok)
 		lineEdit->setFont(police);
@@ -469,13 +489,13 @@ void optionsWindow::save()
 	settings->setValue("start", starts.at(ui->comboStart->currentIndex()));
 	settings->setValue("hidefavorites", ui->spinHideFavorites->value());
 	settings->setValue("autodownload", ui->checkAutodownload->isChecked());
-	QStringList positions = QStringList() << "top" << "left" << "auto";
-	settings->setValue("tagsposition", positions.at(ui->comboTagsposition->currentIndex()));
 	settings->setValue("hideblacklisted", ui->checkHideBlacklisted->isChecked());
 	settings->setValue("showtagwarning", ui->checkShowTagWarning->isChecked());
 	settings->setValue("showwarnings", ui->checkShowWarnings->isChecked());
 	settings->setValue("getunloadedpages", ui->checkGetUnloadedPages->isChecked());
 	settings->setValue("confirm_close", ui->checkConfirmClose->isChecked());
+	QList<int> checkForUpdates = QList<int>() << 0 << 24*60*60 << 7*24*60*60 << 30*24*60*60 << -1;
+	settings->setValue("check_for_updates", checkForUpdates.at(ui->comboCheckForUpdates->currentIndex()));
 
 	settings->beginGroup("Filenames");
 		for (int i = 0; i < m_filenamesConditions.size(); i++)
@@ -550,7 +570,7 @@ void optionsWindow::save()
 				pth.setPath(pth.path().remove(QRegExp("/([^/]+)$")));
 			}
 			if (pth.path() == op)
-			{ error(this, tr("Une erreur est survenue lors de la création du dossier de sauvegarde.")); }
+			{ error(this, tr("An error occured creating the save folder.")); }
 			else
 			{ pth.mkpath(folder); }
 		}
@@ -566,7 +586,7 @@ void optionsWindow::save()
 				pth.setPath(pth.path().remove(QRegExp("/([^/]+)$")));
 			}
 			if (pth.path() == op)
-			{ error(this, tr("Une erreur est survenue lors de la création du dossier de sauvegarde des favoris.")); }
+			{ error(this, tr("An error occured creating the favorites save folder.")); }
 			else
 			{ pth.mkpath(folder); }
 		}
@@ -627,6 +647,12 @@ void optionsWindow::save()
 			{ settings->setValue(m_customNames.at(i)->text(), m_customTags.at(i)->text()); }
 		settings->endGroup();
 	settings->endGroup();
+
+	QStringList positions = QStringList() << "top" << "left" << "auto";
+	settings->setValue("tagsposition", positions.at(ui->comboTagsPosition->currentIndex()));
+	settings->setValue("preload", ui->spinPreload->value());
+	settings->setValue("slideshow", ui->spinSlideshow->value());
+	settings->setValue("resultsScrollArea", ui->checkResultsScrollArea->isChecked());
 
 	settings->beginGroup("Coloring");
 		settings->beginGroup("Colors");
@@ -693,18 +719,19 @@ void optionsWindow::save()
 		QNetworkProxy::ProxyType type = settings->value("Proxy/type", "http") == "http" ? QNetworkProxy::HttpProxy : QNetworkProxy::Socks5Proxy;
 		QNetworkProxy proxy(type, settings->value("Proxy/hostName").toString(), settings->value("Proxy/port").toInt());
 		QNetworkProxy::setApplicationProxy(proxy);
-		log(tr("Activation du proxy général sur l'hôte \"%1\" et le port %2.").arg(settings->value("Proxy/hostName").toString()).arg(settings->value("Proxy/port").toInt()));
+		log(QString("Activation du proxy général sur l'hôte \"%1\" et le port %2.").arg(settings->value("Proxy/hostName").toString()).arg(settings->value("Proxy/port").toInt()));
 	}
 	else if (QNetworkProxy::applicationProxy().type() != QNetworkProxy::NoProxy)
 	{
 		QNetworkProxy::setApplicationProxy(QNetworkProxy::NoProxy);
-		log(tr("Désactivation du proxy général."));
+		log("Désactivation du proxy général.");
 	}
 
-	if (settings->value("language", "English").toString() != ui->comboLanguages->currentText())
+	QString lang = ui->comboLanguages->currentData().toString();
+	if (settings->value("language", "English").toString() != lang)
 	{
-		settings->setValue("language", ui->comboLanguages->currentText());
-		emit languageChanged(ui->comboLanguages->currentText());
+		settings->setValue("language", lang);
+		emit languageChanged(lang);
 	}
 
 	m_profile->sync();

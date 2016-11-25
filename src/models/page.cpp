@@ -70,16 +70,15 @@ void Page::fallback(bool bload)
 {
 	if (m_currentApi >= m_site->getApis().count() - 1)
 	{
-		QString msg = tr("No valid source of the site returned result.");
-		log(msg);
-		m_errors.append(msg);
+		log("No valid source of the site returned result.");
+		m_errors.append(tr("No valid source of the site returned result."));
 		emit failedLoading(this);
 		return;
 	}
 
 	m_currentApi++;
 	if (m_currentApi > 0)
-		log(tr("Loading using %1 failed. Retry using %2.").arg(m_site->getApis().at(m_currentApi - 1)->getName()).arg(m_site->getApis().at(m_currentApi)->getName()));
+		log(QString("Loading using %1 failed. Retry using %2.").arg(m_site->getApis().at(m_currentApi - 1)->getName()).arg(m_site->getApis().at(m_currentApi)->getName()));
 
 	if (bload)
 		load();

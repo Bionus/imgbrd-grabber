@@ -6,22 +6,17 @@
 #include "models/image.h"
 #include "models/tag.h"
 #include "models/profile.h"
-
-
+#include "sql-worker.h"
 
 struct MysqlSettings
 {
-	QString driver;
-	QString host;
-	QString user;
-	QString password;
-	QString database;
 	QString before;
 	QString tagBefore;
 	QString image;
 	QString tagAfter;
 	QString after;
 };
+
 
 class Commands
 {
@@ -32,15 +27,17 @@ class Commands
 		bool image(const Image &img, QString path);
 		bool tag(const Image &img, Tag tag, bool after);
 		bool after();
+		bool sqlExec(QString sql);
 
 	private:
 		Profile *m_profile;
+
 		QString m_commandTagBefore;
 		QString m_commandImage;
 		QString m_commandTagAfter;
-		bool m_mysql;
-		bool m_started;
+
 		MysqlSettings m_mysqlSettings;
+		SqlWorker *m_sqlWorker;
 };
 
 #endif // COMMANDS_H

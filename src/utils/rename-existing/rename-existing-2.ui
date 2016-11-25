@@ -11,17 +11,17 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Réparateur de liste noire</string>
+   <string>Rename existing images</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../../resources.qrc">
+   <iconset resource="../../../resources.qrc">
     <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Les images suivantes vont être renommées.</string>
+      <string>The following images will be renamed.</string>
      </property>
     </widget>
    </item>
@@ -44,12 +44,12 @@
      </attribute>
      <column>
       <property name="text">
-       <string>Miniature</string>
+       <string>Thumbnail</string>
       </property>
      </column>
      <column>
       <property name="text">
-       <string>Origine</string>
+       <string>Original</string>
       </property>
      </column>
      <column>
@@ -84,7 +84,7 @@
      <item>
       <widget class="QPushButton" name="buttonCancel">
        <property name="text">
-        <string>Annuler</string>
+        <string>Cancel</string>
        </property>
       </widget>
      </item>
@@ -93,8 +93,9 @@
   </layout>
  </widget>
  <resources>
-  <include location="../../resources.qrc"/>
-  <include location="../../resources.qrc"/>
+  <include location="../../../resources.qrc"/>
+  <include location="../../../resources.qrc"/>
+  <include location="../../../resources.qrc"/>
  </resources>
  <connections/>
 </ui>

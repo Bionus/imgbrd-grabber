@@ -16,10 +16,10 @@
 #include "tabs/pool-tab.h"
 #include "tabs/tag-tab.h"
 #include "tabs/favorites-tab.h"
-#include "commands.h"
 #include "models/site.h"
 #include "models/profile.h"
 #include "downloader/downloader.h"
+#include "updater/update-dialog.h"
 
 
 
@@ -115,6 +115,7 @@ class mainWindow : public QMainWindow
 		void getAllFinished();
 		void getAllFinishedLogin(Site *site, Site::LoginResult result);
 		void getAllFinishedLogins();
+		bool needExactTags(QSettings *settings);
 		void _getAll();
 		// Tabs
 		int addTab(QString tag = "", bool background = false);
@@ -175,17 +176,17 @@ class mainWindow : public QMainWindow
 
 	private:
 		Profile				*m_profile;
+		UpdateDialog		*m_updateDialog;
 		QList<Favorite>		&m_favorites;
-		int					m_pagemax, m_getAllDownloaded, m_getAllExists, m_getAllIgnored, m_getAll404s, m_getAllErrors, m_getAllSkipped, m_getAllCount, m_getAllPageCount, m_getAllBeforeId, m_remainingPics, m_remainingSites, m_countPics, m_getAllLimit, m_downloads, m_waitForLogin;
-		bool				m_allow, m_must_get_tags, m_loaded, m_getAll;
+		int					m_getAllDownloaded, m_getAllExists, m_getAllIgnored, m_getAll404s, m_getAllErrors, m_getAllSkipped, m_getAllLimit, m_downloads, m_waitForLogin;
+		bool				m_allow, m_mustGetTags, m_loaded, m_getAll;
 		QSettings			*m_settings;
 		batchWindow			*m_progressdialog;
 		QString				m_program, m_currLang, m_link;
 		QStringList			m_tags;
 		QTranslator			m_translator;
-		QDateTime			m_loadFavorite;
-		QList<QStringList>	m_groupBatchs; // tags, page, perpage, max, blacklist, source, filename, location
-		QList<QSharedPointer<Image>>	m_getAllRemaining, m_getAllDownloading, m_getAllFailed, m_images;
+		QList<QStringList>	m_groupBatchs;
+		QList<QSharedPointer<Image>>	m_getAllRemaining, m_getAllDownloading, m_getAllFailed, m_images, m_getAllSkippedImages;
 		QWidget				*m_currentTab;
 		QList<searchTab*>	m_tabs;
 		QList<tagTab*>		m_tagTabs;

@@ -1,1 +1,2 @@
 languages/* linguist-documentation
+tests/resources/** linguist-documentation

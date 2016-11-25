@@ -7,11 +7,11 @@
     <x>0</x>
     <y>0</y>
     <width>530</width>
-    <height>272</height>
+    <height>298</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Options de site</string>
+   <string>Site options</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../../resources.qrc">
@@ -21,11 +21,11 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>4</number>
      </property>
      <widget class="QWidget" name="tabGeneral">
       <attribute name="title">
-       <string>Général</string>
+       <string>General</string>
       </attribute>
       <layout class="QFormLayout" name="formLayout_5">
        <property name="fieldGrowthPolicy">
@@ -34,7 +34,7 @@
        <item row="3" column="0">
         <widget class="QLabel" name="labelReferer">
          <property name="text">
-          <string>Referer (par défaut)</string>
+          <string>Referer (default)</string>
          </property>
         </widget>
        </item>
@@ -42,7 +42,7 @@
         <widget class="QComboBox" name="comboReferer">
          <item>
           <property name="text">
-           <string>Aucun</string>
+           <string>None</string>
           </property>
          </item>
          <item>
@@ -65,7 +65,7 @@
        <item row="4" column="0">
         <widget class="QLabel" name="labelRefererPreview">
          <property name="text">
-          <string>Referer (apercu)</string>
+          <string>Referer (preview)</string>
          </property>
         </widget>
        </item>
@@ -73,12 +73,12 @@
         <widget class="QComboBox" name="comboRefererPreview">
          <item>
           <property name="text">
-           <string>Par défaut</string>
+           <string>Default</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>Aucun</string>
+           <string>None</string>
           </property>
          </item>
          <item>
@@ -109,12 +109,12 @@
         <widget class="QComboBox" name="comboRefererImage">
          <item>
           <property name="text">
-           <string>Par défaut</string>
+           <string>Default</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>Aucun</string>
+           <string>None</string>
           </property>
          </item>
          <item>
@@ -129,7 +129,7 @@
          </item>
          <item>
           <property name="text">
-           <string>Détails</string>
+           <string>Details</string>
           </property>
          </item>
          <item>
@@ -142,7 +142,7 @@
        <item row="0" column="0">
         <widget class="QLabel" name="labelSiteName">
          <property name="text">
-          <string>Nom</string>
+          <string>Name</string>
          </property>
         </widget>
        </item>
@@ -152,14 +152,14 @@
        <item row="2" column="0">
         <widget class="QLabel" name="label">
          <property name="text">
-          <string>Ignorer (toujours)</string>
+          <string>Ignore (always)</string>
          </property>
         </widget>
        </item>
        <item row="1" column="0">
         <widget class="QLabel" name="label_2">
          <property name="text">
-          <string>Ignorer (page 1)</string>
+          <string>Ignore (page 1)</string>
          </property>
         </widget>
        </item>
@@ -172,7 +172,7 @@
        <item row="6" column="0" colspan="2">
         <widget class="QCheckBox" name="checkSsl">
          <property name="text">
-          <string>Utiliser une connexion sécurisée (https)</string>
+          <string>Use a secure connection (https)</string>
          </property>
          <property name="checked">
           <bool>false</bool>
@@ -183,13 +183,13 @@
      </widget>
      <widget class="QWidget" name="tabDownloads">
       <attribute name="title">
-       <string>Téléchargement</string>
+       <string>Download</string>
       </attribute>
       <layout class="QFormLayout" name="formLayout">
        <item row="1" column="0">
         <widget class="QLabel" name="label_3">
          <property name="text">
-          <string>Téléchargements simultanés max</string>
+          <string>Max simultaneous downloads</string>
          </property>
         </widget>
        </item>
@@ -206,7 +206,7 @@
        <item row="0" column="0">
         <widget class="QLabel" name="label_4">
          <property name="text">
-          <string>Images par page</string>
+          <string>Images per page</string>
          </property>
         </widget>
        </item>
@@ -226,35 +226,35 @@
        <item row="2" column="0">
         <widget class="QLabel" name="label_6">
          <property name="text">
-          <string>Intervalle (vignette)</string>
+          <string>Interval (thumbnail)</string>
          </property>
         </widget>
        </item>
        <item row="3" column="0">
         <widget class="QLabel" name="label_7">
          <property name="text">
-          <string>Intervalle (image)</string>
+          <string>Interval (image)</string>
          </property>
         </widget>
        </item>
        <item row="4" column="0">
         <widget class="QLabel" name="label_12">
          <property name="text">
-          <string>Intervalle (page)</string>
+          <string>Interval (page)</string>
          </property>
         </widget>
        </item>
        <item row="5" column="0">
         <widget class="QLabel" name="label_13">
          <property name="text">
-          <string>Intervalle (détails)</string>
+          <string>Interval (details)</string>
          </property>
         </widget>
        </item>
        <item row="6" column="0">
         <widget class="QLabel" name="label_14">
          <property name="text">
-          <string>Intervale (erreur)</string>
+          <string>Interval (error)</string>
          </property>
         </widget>
        </item>
@@ -498,7 +498,7 @@
        <item row="0" column="0" colspan="2">
         <widget class="QCheckBox" name="checkSourcesDefault">
          <property name="text">
-          <string>Utiliser les sources par défaut</string>
+          <string>Use default sources</string>
          </property>
          <property name="checked">
           <bool>true</bool>
@@ -509,13 +509,13 @@
      </widget>
      <widget class="QWidget" name="tabCredentials">
       <attribute name="title">
-       <string>Identifiants</string>
+       <string>Credentials</string>
       </attribute>
       <layout class="QFormLayout" name="formLayout_4">
        <item row="0" column="0">
         <widget class="QLabel" name="labelAuthPseudo">
          <property name="text">
-          <string>Pseudo</string>
+          <string>Username</string>
          </property>
         </widget>
        </item>
@@ -525,7 +525,7 @@
        <item row="1" column="0">
         <widget class="QLabel" name="labelAuthPassword">
          <property name="text">
-          <string>Mot de passe</string>
+          <string>Password</string>
          </property>
         </widget>
        </item>
@@ -541,7 +541,7 @@
          <item>
           <widget class="QPushButton" name="buttonAuthHash">
            <property name="text">
-            <string>Hasher un mot de passe</string>
+            <string>Hash password</string>
            </property>
           </widget>
          </item>
@@ -559,7 +559,7 @@
          <item>
           <widget class="QPushButton" name="buttonTestCredentials">
            <property name="text">
-            <string>Tester</string>
+            <string>Test</string>
            </property>
           </widget>
          </item>
@@ -569,13 +569,13 @@
      </widget>
      <widget class="QWidget" name="tabLogin">
       <attribute name="title">
-       <string>Connexion</string>
+       <string>Login</string>
       </attribute>
       <layout class="QFormLayout" name="formLayout_7">
        <item row="0" column="0" colspan="2">
         <widget class="QCheckBox" name="checkLoginParameter">
          <property name="text">
-          <string>Passage dans l'url</string>
+          <string>Through url</string>
          </property>
          <property name="checked">
           <bool>true</bool>
@@ -603,7 +603,7 @@
           <item row="0" column="0">
            <widget class="QLabel" name="label_8">
             <property name="text">
-             <string>Méthode</string>
+             <string>Method</string>
             </property>
            </widget>
           </item>
@@ -627,7 +627,7 @@
           <item row="2" column="0">
            <widget class="QLabel" name="label_9">
             <property name="text">
-             <string>Pseudo</string>
+             <string>Username</string>
             </property>
            </widget>
           </item>
@@ -657,7 +657,7 @@
          </layout>
         </widget>
        </item>
-       <item row="3" column="0" colspan="2">
+       <item row="4" column="0" colspan="2">
         <layout class="QHBoxLayout" name="layoutTestLogin" stretch="1,0">
          <item>
           <widget class="QLabel" name="labelTestLogin">
@@ -669,7 +669,7 @@
          <item>
           <widget class="QPushButton" name="pushButton_5">
            <property name="text">
-            <string>Tester</string>
+            <string>Test</string>
            </property>
           </widget>
          </item>
@@ -685,6 +685,20 @@
        <item row="2" column="1">
         <widget class="QLineEdit" name="lineLoginCookie"/>
        </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="labelLoginMaxPage">
+         <property name="text">
+          <string>Page limit</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QSpinBox" name="spinLoginMaxPage">
+         <property name="maximum">
+          <number>10000</number>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
      <widget class="QWidget" name="tabCookies">
@@ -696,12 +710,12 @@
         <widget class="QTableWidget" name="tableCookies">
          <column>
           <property name="text">
-           <string>Nom</string>
+           <string>Name</string>
           </property>
          </column>
          <column>
           <property name="text">
-           <string>Valeur</string>
+           <string>Value</string>
           </property>
          </column>
         </widget>
@@ -709,7 +723,7 @@
        <item row="1" column="0" colspan="2">
         <widget class="QPushButton" name="pushButton">
          <property name="text">
-          <string>Ajouter</string>
+          <string>Add</string>
          </property>
         </widget>
        </item>
@@ -724,12 +738,12 @@
         <widget class="QTableWidget" name="tableHeaders">
          <column>
           <property name="text">
-           <string>Nom</string>
+           <string>Name</string>
           </property>
          </column>
          <column>
           <property name="text">
-           <string>Valeur</string>
+           <string>Value</string>
           </property>
          </column>
         </widget>
@@ -737,7 +751,7 @@
        <item row="1" column="0" colspan="2">
         <widget class="QPushButton" name="buttonAddHeader">
          <property name="text">
-          <string>Ajouter</string>
+          <string>Add</string>
          </property>
         </widget>
        </item>
@@ -760,6 +774,13 @@
       <number>0</number>
      </property>
      <item>
+      <widget class="QPushButton" name="buttonDelete">
+       <property name="text">
+        <string>Delete</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <spacer name="spacerButtons">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -773,23 +794,16 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="buttonDelete">
-       <property name="text">
-        <string>Supprimer</string>
-       </property>
-      </widget>
-     </item>
-     <item>
       <widget class="QPushButton" name="buttonCancel">
        <property name="text">
-        <string>Annuler</string>
+        <string>Cancel</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="buttonAccept">
        <property name="text">
-        <string>Valider</string>
+        <string>Confirm</string>
        </property>
       </widget>
      </item>
@@ -824,7 +838,6 @@
   <tabstop>lineLoginPassword</tabstop>
   <tabstop>lineLoginCookie</tabstop>
   <tabstop>pushButton_5</tabstop>
-  <tabstop>buttonDelete</tabstop>
   <tabstop>buttonCancel</tabstop>
   <tabstop>buttonAccept</tabstop>
  </tabstops>

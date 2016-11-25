@@ -4,12 +4,8 @@
 #include <QDebug>
 
 
-
-QBouton::QBouton(QVariant id, bool resizeInsteadOfCropping, int border, QColor color, QWidget *parent)
-	: QPushButton(parent), _id(id), _resizeInsteadOfCropping(resizeInsteadOfCropping), _np(false), _originalSize(QSize(-1,-1)), _penColor(color), _border(border)
-{ }
-
-QBouton::~QBouton()
+QBouton::QBouton(QVariant id, bool resizeInsteadOfCropping, bool smartSizeHint, int border, QColor color, QWidget *parent)
+	: QPushButton(parent), _id(id), _resizeInsteadOfCropping(resizeInsteadOfCropping), _smartSizeHint(smartSizeHint), _np(false), _originalSize(QSize(-1,-1)), _penColor(color), _border(border)
 { }
 
 void QBouton::scale(QPixmap &image, float scale)
@@ -43,22 +39,19 @@ void QBouton::paintEvent(QPaintEvent *event)
 		return;
 	}
 
-	QRect region = event->rect();
-	int p = _border, x = region.x(), y = region.y(), w = iconSize().width(), h = iconSize().height();
+	QPainter painter(this);
+	QRect region = _smartSizeHint ? contentsRect() : event->rect();
+	QSize iconSize = getIconSize(region.width(), region.height());
+	int p = _border;
+	int x = region.x();
+	int y = region.y();
+	int w = iconSize.width();
+	int h = iconSize.height();
 
 	// Ignore invalid images
 	if (w == 0 || h == 0)
 		return;
 
-	QPainter painter(this);
-
-	// Calculate ratio to resize by keeping proportions
-	if (_resizeInsteadOfCropping)
-	{
-		float coef = qMin(1.0f, qMin(float(region.width()) / float(w), float(region.height()) / float(h)));
-		w *= coef;
-		h *= coef;
-	}
 	// Center the image
 	bool center = true;
 	if (center)
@@ -91,6 +84,45 @@ void QBouton::paintEvent(QPaintEvent *event)
 		painter.setPen(pen);
 		painter.drawRect(qMax(x,0), qMax(y,0), qMin(w,size().width()), qMin(h,size().height()));
 	}
+}
+
+QSize QBouton::getIconSize(int regionWidth, int regionHeight, bool wOnly) const
+{
+	int w = iconSize().width();
+	int h = iconSize().height();
+
+	if (wOnly && w <= regionWidth)
+		return iconSize();
+
+	// Calculate ratio to resize by keeping proportions
+	if (_resizeInsteadOfCropping)
+	{
+		float coef = wOnly
+					 ? qMin(1.0f, float(regionWidth) / float(w))
+					 : qMin(1.0f, qMin(float(regionWidth) / float(w), float(regionHeight) / float(h)));
+		w *= coef;
+		h *= coef;
+	}
+
+	return QSize(w, h);
+}
+
+void QBouton::resizeEvent(QResizeEvent *event)
+{
+	QPushButton::resizeEvent(event);
+
+	if (_smartSizeHint)
+		updateGeometry();
+}
+
+QSize QBouton::sizeHint() const
+{
+	// Used for normal buttons
+	if (!_smartSizeHint || (!_resizeInsteadOfCropping && _border == 0))
+		return QPushButton::sizeHint();
+
+	QSize current = size();
+	return getIconSize(current.width(), current.height(), true);
 }
 
 void QBouton::mousePressEvent(QMouseEvent *event)

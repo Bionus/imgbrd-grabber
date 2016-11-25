@@ -6,8 +6,8 @@
 #include "searchwindow.h"
 
 
-tagTab::tagTab(int id, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
-	: searchTab(id, sites, profile, parent), ui(new Ui::tagTab), m_id(id), m_sized(false)
+tagTab::tagTab(QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
+	: searchTab(sites, profile, parent), ui(new Ui::tagTab), m_sized(false)
 {
 	ui->setupUi(this);
 	ui->widgetMeant->hide();
@@ -74,8 +74,8 @@ void tagTab::closeEvent(QCloseEvent *e)
 	m_images.clear();
 	qDeleteAll(m_checkboxes);
 	m_checkboxes.clear();
-	for (int i = 0; i < m_layouts.size(); i++)
-	{ clearLayout(m_layouts[i]); }
+	for (Site *site : m_layouts.keys())
+	{ clearLayout(m_layouts[site]); }
 	qDeleteAll(m_layouts);
 	m_layouts.clear();
 	m_boutons.clear();
@@ -87,14 +87,17 @@ void tagTab::closeEvent(QCloseEvent *e)
 
 void tagTab::load()
 {
+	bool resultsScrollArea = m_settings->value("resultsScrollArea", false).toBool();
+
 	// Clear results layout
-	ui->verticalLayout->removeWidget(ui->widgetResults);
-	ui->widgetResults->deleteLater();
+	/*ui->widgetResults->deleteLater();
 	ui->widgetResults = new QWidget(this);
-	ui->verticalLayout->insertWidget(0, ui->widgetResults);
+	ui->scrollAreaResults->setWidget(ui->widgetResults);
 	ui->layoutResults->deleteLater();
-	ui->layoutResults = new QGridLayout(ui->widgetResults);
+	ui->layoutResults = new QGridLayout(ui->widgetResults);*/
+	ui->scrollAreaResults->setScrollEnabled(resultsScrollArea);
 	ui_layoutResults = ui->layoutResults;
+	//ui->widgetResults->setMaximumSize(ui->scrollAreaResults->width(), 16777215);
 
 	// Get the search values
 	QString search = m_search->toPlainText();
@@ -102,7 +105,7 @@ void tagTab::load()
 		search += " md5:" + ui->lineMd5->text();
 	QStringList tags = search.trimmed().split(" ", QString::SkipEmptyParts);
 
-	setWindowTitle(search.isEmpty() ? tr("Recherche") : search.replace("&", "&&"));
+	setWindowTitle(search.isEmpty() ? tr("Search") : QString(search).replace("&", "&&"));
 	emit titleChanged(this);
 
 	loadTags(search.trimmed().split(' ', QString::SkipEmptyParts));

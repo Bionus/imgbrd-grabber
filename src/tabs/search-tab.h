@@ -24,8 +24,7 @@ class searchTab : public QWidget
 	Q_OBJECT
 
 	public:
-		searchTab(int id, QMap<QString, Site*> *sites, Profile *profile, mainWindow *parent);
-		~searchTab();
+		searchTab(QMap<QString, Site*> *sites, Profile *profile, mainWindow *parent);
 		void mouseReleaseEvent(QMouseEvent *e);
 		virtual QList<bool> sources();
 		virtual QString tags() = 0;
@@ -36,7 +35,6 @@ class searchTab : public QWidget
 		QString postFilter();
 		virtual void setTags(QString) = 0;
 		virtual bool validateImage(QSharedPointer<Image> img) = 0;
-		int id();
 		QStringList selectedImages();
 		void setSources(QList<bool> sources);
 		void setImagesPerPage(int ipp);
@@ -54,6 +52,8 @@ class searchTab : public QWidget
 		void clear();
 		TextEdit *createAutocomplete();
 		void loadImageThumbnails(Page *page, const QList<QSharedPointer<Image>> &imgs);
+		QBouton *createImageThumbnail(int position, QSharedPointer<Image> img);
+		int getActualImagesPerPage(Page *page, bool merge);
 
 	public slots:
 		// Sources
@@ -100,7 +100,6 @@ class searchTab : public QWidget
 		void titleChanged(searchTab*);
 		void changed(searchTab*);
 		void closed(searchTab*);
-		void deleted(int);
 
 		// Batch
 		void batchAddGroup(QStringList);
@@ -108,7 +107,7 @@ class searchTab : public QWidget
 
 	protected:
 		Profile				*m_profile;
-		int					m_id, m_lastPage, m_lastPageMaxId, m_lastPageMinId;
+		int					m_lastPage, m_lastPageMaxId, m_lastPageMinId;
 		QMap<QString,Site*>	*m_sites;
 		QMap<QSharedPointer<Image>, QBouton*>	m_boutons;
 		QStringList			m_selectedImages;
@@ -116,7 +115,6 @@ class searchTab : public QWidget
 		QList<bool>			m_selectedSources;
 		QList<QCheckBox*>	m_checkboxes;
 		QList<Favorite>		&m_favorites;
-		QString				m_link;
 		QList<Tag>			m_tags;
 		mainWindow			*m_parent;
 		QSettings			*m_settings;
@@ -126,7 +124,7 @@ class searchTab : public QWidget
 		QList<QSharedPointer<Image>> m_images;
 		QMap<QString, Page*> m_pages;
 		QMap<Page*, QLabel*> m_pageLabels;
-		QList<QGridLayout*> m_layouts;
+		QMap<Site*, QGridLayout*> m_layouts;
 		int m_page;
 		int m_pagemax;
 		bool m_stop;

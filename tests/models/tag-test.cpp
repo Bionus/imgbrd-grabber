@@ -52,6 +52,13 @@ void TagTest::testTypePrefix()
 	QCOMPARE(tag.type(), QString("artist"));
 	QCOMPARE(tag.text(), QString("tag_text"));
 }
+void TagTest::testTypePrefixSpecies()
+{
+	Tag tag("species:tag_text", "unknown", 123, QStringList() << "related1" << "related2" << "related3");
+
+	QCOMPARE(tag.type(), QString("species"));
+	QCOMPARE(tag.text(), QString("tag_text"));
+}
 void TagTest::testSetType()
 {
 	Tag tag("tag_text", "character", 123, QStringList() << "related1" << "related2" << "related3");
@@ -106,6 +113,12 @@ void TagTest::testTypedTextArtist()
 	Tag tag("tag_text", "artist", 123, QStringList() << "related1" << "related2" << "related3");
 
 	QCOMPARE(tag.typedText(), QString("artist:tag_text"));
+}
+void TagTest::testTypedTextSpecies()
+{
+	Tag tag("tag_text", "species", 123, QStringList() << "related1" << "related2" << "related3");
+
+	QCOMPARE(tag.typedText(), QString("species:tag_text"));
 }
 
 void TagTest::testTypedTextGeneral()

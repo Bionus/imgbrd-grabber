@@ -74,16 +74,5 @@ void SourceTest::testGetAllCached()
 	QCOMPARE(sources1, sources2);
 }
 
-void SourceTest::testCheckForUpdates()
-{
-	// Wait for tags
-	QSignalSpy spy(m_source, SIGNAL(checkForUpdatesFinished(Source*)));
-	m_source->checkForUpdates("https://raw.githubusercontent.com/Bionus/imgbrd-grabber/master/release/sites/");
-	QVERIFY(spy.wait());
-
-	// Check result
-	QVERIFY(!m_source->getUpdateVersion().isNull()); // FIXME
-}
-
 
 static SourceTest instance;

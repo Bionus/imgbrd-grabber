@@ -59,13 +59,13 @@
         </size>
        </property>
        <attribute name="title">
-        <string>Téléchargements</string>
+        <string>Downloads</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
          <widget class="QLabel" name="labelGroups">
           <property name="text">
-           <string>Groupes (0/0)</string>
+           <string>Groups (0/0)</string>
           </property>
          </widget>
         </item>
@@ -105,32 +105,32 @@
           </column>
           <column>
            <property name="text">
-            <string>Images par page</string>
+            <string>Images per page</string>
            </property>
           </column>
           <column>
            <property name="text">
-            <string>Limite d'images</string>
+            <string>Images limit</string>
            </property>
           </column>
           <column>
            <property name="text">
-            <string>Noms de fichiers</string>
+            <string>Filename</string>
            </property>
           </column>
           <column>
            <property name="text">
-            <string>Dossier</string>
+            <string>Folder</string>
            </property>
           </column>
           <column>
            <property name="text">
-            <string>Récupérer liste noire</string>
+            <string>Get blacklisted</string>
            </property>
           </column>
           <column>
            <property name="text">
-            <string>Progression</string>
+            <string>Progress</string>
            </property>
           </column>
          </widget>
@@ -138,14 +138,14 @@
         <item>
          <widget class="QPushButton" name="pushButton_12">
           <property name="text">
-           <string>Ajouter</string>
+           <string>Add</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QLabel" name="label_5">
           <property name="text">
-           <string>Images seules</string>
+           <string>Single images</string>
           </property>
          </widget>
         </item>
@@ -184,7 +184,7 @@
           </column>
           <column>
            <property name="text">
-            <string>Classe</string>
+            <string>Rating</string>
            </property>
           </column>
           <column>
@@ -209,12 +209,12 @@
           </column>
           <column>
            <property name="text">
-            <string>Noms de fichiers</string>
+            <string>Filename</string>
            </property>
           </column>
           <column>
            <property name="text">
-            <string>Dossier</string>
+            <string>Folder</string>
            </property>
           </column>
          </widget>
@@ -222,7 +222,7 @@
         <item>
          <widget class="QPushButton" name="pushButton_13">
           <property name="text">
-           <string>Ajouter</string>
+           <string>Add</string>
           </property>
          </widget>
         </item>
@@ -249,28 +249,28 @@
              <item>
               <widget class="QPushButton" name="buttonClear">
                <property name="text">
-                <string>Tout effacer</string>
+                <string>Delete all</string>
                </property>
               </widget>
              </item>
              <item>
               <widget class="QPushButton" name="buttonClearSel">
                <property name="text">
-                <string>Effacer la séléction</string>
+                <string>Delete selected</string>
                </property>
               </widget>
              </item>
              <item>
               <widget class="QPushButton" name="pushButton_14">
                <property name="text">
-                <string>Tout télécharger</string>
+                <string>Download</string>
                </property>
               </widget>
              </item>
              <item>
               <widget class="QPushButton" name="pushButton">
                <property name="text">
-                <string>Télécharger la séléction</string>
+                <string>Download selected</string>
                </property>
               </widget>
              </item>
@@ -294,14 +294,14 @@
              <item>
               <widget class="QPushButton" name="buttonLoadLinkList">
                <property name="text">
-                <string>Charger</string>
+                <string>Load</string>
                </property>
               </widget>
              </item>
              <item>
               <widget class="QPushButton" name="buttonSaveLinkList">
                <property name="text">
-                <string>Sauvegarder</string>
+                <string>Save</string>
                </property>
               </widget>
              </item>
@@ -368,14 +368,14 @@ QTextEdit {
           <item>
            <widget class="QPushButton" name="buttonClearlog">
             <property name="text">
-             <string>Effacer le log</string>
+             <string>Clear log</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QPushButton" name="buttonOpenLog">
             <property name="text">
-             <string>Ouvrir le log</string>
+             <string>Open log</string>
             </property>
            </widget>
           </item>
@@ -401,7 +401,7 @@ QTextEdit {
    </property>
    <widget class="QMenu" name="menu_propos">
     <property name="title">
-     <string>Aide</string>
+     <string>Help</string>
     </property>
     <addaction name="actionAboutGrabber"/>
     <addaction name="actionAboutWebsite"/>
@@ -411,7 +411,7 @@ QTextEdit {
    </widget>
    <widget class="QMenu" name="menuOutils">
     <property name="title">
-     <string>Outils</string>
+     <string>Tools</string>
     </property>
     <addaction name="actionBlacklistFix"/>
     <addaction name="actionEmptyDirsFix"/>
@@ -422,12 +422,12 @@ QTextEdit {
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
-     <string>Affichage</string>
+     <string>View</string>
     </property>
    </widget>
    <widget class="QMenu" name="menuFichier">
     <property name="title">
-     <string>Fichier</string>
+     <string>File</string>
     </property>
     <addaction name="actionAddtab"/>
     <addaction name="actionAddpooltab"/>
@@ -483,7 +483,7 @@ QTextEdit {
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>220</width>
+          <width>215</width>
           <height>36</height>
          </rect>
         </property>
@@ -533,7 +533,7 @@ QTextEdit {
   </widget>
   <widget class="QDockWidget" name="dock_kfl">
    <property name="windowTitle">
-    <string>Gardés pour plus tard</string>
+    <string>Kept for later</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
@@ -571,7 +571,7 @@ QTextEdit {
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>220</width>
+          <width>215</width>
           <height>35</height>
          </rect>
         </property>
@@ -621,7 +621,7 @@ QTextEdit {
   </widget>
   <widget class="QDockWidget" name="dock_favorites">
    <property name="windowTitle">
-    <string>Favoris</string>
+    <string>Favorites</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
@@ -644,7 +644,7 @@ QTextEdit {
       <widget class="QComboBox" name="comboOrderFav">
        <item>
         <property name="text">
-         <string>Nom</string>
+         <string>Name</string>
         </property>
        </item>
        <item>
@@ -654,7 +654,7 @@ QTextEdit {
        </item>
        <item>
         <property name="text">
-         <string>Dernière vue</string>
+         <string>Last viewed</string>
         </property>
        </item>
       </widget>
@@ -663,12 +663,12 @@ QTextEdit {
       <widget class="QComboBox" name="comboAscFav">
        <item>
         <property name="text">
-         <string>Ascendant</string>
+         <string>Ascending</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Descendant</string>
+         <string>Descending</string>
         </property>
        </item>
       </widget>
@@ -692,7 +692,7 @@ QTextEdit {
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>208</width>
+          <width>203</width>
           <height>44</height>
          </rect>
         </property>
@@ -792,7 +792,7 @@ QTextEdit {
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>220</width>
+          <width>215</width>
           <height>36</height>
          </rect>
         </property>
@@ -835,7 +835,7 @@ QTextEdit {
      <item row="0" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>Dossier</string>
+        <string>Folder</string>
        </property>
       </widget>
      </item>
@@ -868,7 +868,7 @@ QTextEdit {
           </size>
          </property>
          <property name="text">
-          <string>...</string>
+          <string notr="true">...</string>
          </property>
         </widget>
        </item>
@@ -877,7 +877,7 @@ QTextEdit {
      <item row="1" column="0">
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>Nom</string>
+        <string>Name</string>
        </property>
       </widget>
      </item>
@@ -896,14 +896,14 @@ QTextEdit {
        <item>
         <widget class="QPushButton" name="buttonInitSettings">
          <property name="text">
-          <string>Réinitialiser</string>
+          <string>Reset</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QPushButton" name="buttonSaveSettings">
          <property name="text">
-          <string>Sauvegarder</string>
+          <string>Save</string>
          </property>
         </widget>
        </item>
@@ -940,7 +940,7 @@ QTextEdit {
      <normaloff>:/images/icons/folder-images.png</normaloff>:/images/icons/folder-images.png</iconset>
    </property>
    <property name="text">
-    <string>Ouvrir le dossier de destination</string>
+    <string>Open destination folder</string>
    </property>
   </action>
   <action name="actionQuit">
@@ -949,7 +949,7 @@ QTextEdit {
      <normaloff>:/images/icons/exit.png</normaloff>:/images/icons/exit.png</iconset>
    </property>
    <property name="text">
-    <string>Quitter</string>
+    <string>Quit</string>
    </property>
   </action>
   <action name="actionAboutGrabber">
@@ -958,7 +958,7 @@ QTextEdit {
      <normaloff>:/images/icons/about.png</normaloff>:/images/icons/about.png</iconset>
    </property>
    <property name="text">
-    <string>À propos de Grabber</string>
+    <string>About Grabber</string>
    </property>
   </action>
   <action name="actionAboutQt">
@@ -967,7 +967,7 @@ QTextEdit {
      <normaloff>:/images/icons/qt.png</normaloff>:/images/icons/qt.png</iconset>
    </property>
    <property name="text">
-    <string>À propos de Qt</string>
+    <string>About Qt</string>
    </property>
   </action>
   <action name="actionAddtab">
@@ -976,7 +976,7 @@ QTextEdit {
      <normaloff>:/images/icons/tab-plus.png</normaloff>:/images/icons/tab-plus.png</iconset>
    </property>
    <property name="text">
-    <string>Nouvel onglet</string>
+    <string>New tab</string>
    </property>
   </action>
   <action name="actionClosetab">
@@ -985,17 +985,17 @@ QTextEdit {
      <normaloff>:/images/icons/tab-minus.png</normaloff>:/images/icons/tab-minus.png</iconset>
    </property>
    <property name="text">
-    <string>Fermer l'onglet</string>
+    <string>Close tab</string>
    </property>
   </action>
   <action name="actionBlacklistFix">
    <property name="text">
-    <string>Réparateur de liste noire</string>
+    <string>Blacklist fixer</string>
    </property>
   </action>
   <action name="actionEmptyDirsFix">
    <property name="text">
-    <string>Réparateur de dossiers vides</string>
+    <string>Empty folders fixer</string>
    </property>
   </action>
   <action name="actionTags">
@@ -1017,7 +1017,10 @@ QTextEdit {
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Gardés pour plus tard</string>
+    <string>Kept for later</string>
+   </property>
+   <property name="toolTip">
+    <string>Kept for later</string>
    </property>
   </action>
   <action name="actionFavorites">
@@ -1028,7 +1031,7 @@ QTextEdit {
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Favoris</string>
+    <string>Favorites</string>
    </property>
   </action>
   <action name="actionAddpooltab">
@@ -1037,12 +1040,12 @@ QTextEdit {
      <normaloff>:/images/icons/tab-poolplus.png</normaloff>:/images/icons/tab-poolplus.png</iconset>
    </property>
    <property name="text">
-    <string>Nouvel onglet pool</string>
+    <string>New pool tab</string>
    </property>
   </action>
   <action name="actionMd5Fix">
    <property name="text">
-    <string>Réparateur de liste de md5</string>
+    <string>MD5 list fixer</string>
    </property>
   </action>
   <action name="actionSettingsFolder">
@@ -1051,7 +1054,7 @@ QTextEdit {
      <normaloff>:/images/icons/folder-document.png</normaloff>:/images/icons/folder-document.png</iconset>
    </property>
    <property name="text">
-    <string>Ouvrir le dossier des options</string>
+    <string>Open options folder</string>
    </property>
   </action>
   <action name="actionAboutWebsite">
@@ -1060,7 +1063,7 @@ QTextEdit {
      <normaloff>:/images/icons/browser.png</normaloff>:/images/icons/browser.png</iconset>
    </property>
    <property name="text">
-    <string>Site web du projet</string>
+    <string>Project website</string>
    </property>
   </action>
   <action name="actionAboutReportBug">
@@ -1069,12 +1072,12 @@ QTextEdit {
      <normaloff>:/images/icons/bug.png</normaloff>:/images/icons/bug.png</iconset>
    </property>
    <property name="text">
-    <string>Reporter un problème</string>
+    <string>Report an issue</string>
    </property>
   </action>
   <action name="actionRenameExistingImages">
    <property name="text">
-    <string>Renommer des images existantes</string>
+    <string>Rename existing images</string>
    </property>
   </action>
  </widget>

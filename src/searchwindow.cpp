@@ -18,7 +18,7 @@ SearchWindow::SearchWindow(QString tags, Profile *profile, QWidget *parent)
 		m_calendar->setWindowFlags(Qt::Window);
 		m_calendar->setLocale(QLocale(m_profile->getSettings()->value("language", "English").toString().toLower().left(2)));
 		m_calendar->setWindowIcon(QIcon(":/images/icon.ico"));
-		m_calendar->setWindowTitle(tr("Grabber - Choisir une date"));
+		m_calendar->setWindowTitle(tr("Choose a date"));
 		m_calendar->setDateRange(QDate(2000, 1, 1), QDateTime::currentDateTime().date().addDays(1));
 		m_calendar->setSelectedDate(QDateTime::currentDateTime().date());
 		connect(m_calendar, SIGNAL(activated(QDate)), this, SLOT(setDate(QDate)));
@@ -116,7 +116,7 @@ void SearchWindow::accept()
 
 void SearchWindow::on_buttonImage_clicked()
 {
-	QString path = QFileDialog::getOpenFileName(this, tr("Chercher une image"), m_profile->getSettings()->value("Save/path").toString(), "Images (*.png *.gif *.jpg *.jpeg)");
+	QString path = QFileDialog::getOpenFileName(this, tr("Search an image"), m_profile->getSettings()->value("Save/path").toString(), "Images (*.png *.gif *.jpg *.jpeg)");
 	QFile f(path);
 	QString md5 = "";
 	if (f.exists())

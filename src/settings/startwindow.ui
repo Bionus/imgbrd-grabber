@@ -10,17 +10,17 @@
     <x>0</x>
     <y>0</y>
     <width>395</width>
-    <height>236</height>
+    <height>224</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Premier lancement</string>
+   <string>First launch</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1,0,0">
    <item>
     <widget class="QLabel" name="welcomeLabel">
      <property name="text">
-      <string>Avant de commencer, le programme a besoin de quelques informations nécéssaires à son bon fonctionnement. Vous pouvez ignorer cette étape, et ces informations vous seront demandées en temps et en heure.</string>
+      <string>Before starting, the program needs some informations to work properly. You can skip this step, and these informations will be asked later.</string>
      </property>
      <property name="textFormat">
       <enum>Qt::AutoText</enum>
@@ -38,14 +38,14 @@
      <item row="0" column="0">
       <widget class="QLabel" name="labelLanguage">
        <property name="text">
-        <string>Langue</string>
+        <string>Language</string>
        </property>
       </widget>
      </item>
      <item row="2" column="0">
       <widget class="QLabel" name="labelFolder">
        <property name="text">
-        <string>Dossier</string>
+        <string>Folder</string>
        </property>
       </widget>
      </item>
@@ -57,7 +57,7 @@
        <item>
         <widget class="QPushButton" name="buttonFolder">
          <property name="text">
-          <string>Parcourir</string>
+          <string>Browse</string>
          </property>
         </widget>
        </item>
@@ -114,7 +114,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>&lt;i&gt;Si vous utilisez Grabber pour la première fois, il est conseillé de tout d'abord lire la page &lt;a href=&quot;https://github.com/Bionus/imgbrd-grabber/wiki/GettingStarted&quot;&gt;getting started&lt;/a&gt;.&lt;/i&gt;</string>
+      <string>&lt;i&gt;If you use Grabber for the first time, it is advised to first read the &lt;a href=&quot;https://github.com/Bionus/imgbrd-grabber/wiki/GettingStarted&quot;&gt;getting started&lt;/a&gt; wiki page.&lt;/i&gt;</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>

@@ -3,7 +3,7 @@
 
 #include <QDialog>
 #include <QNetworkReply>
-
+#include "updater/program-updater.h"
 
 
 namespace Ui
@@ -12,21 +12,20 @@ namespace Ui
 }
 
 
-
 class AboutWindow : public QDialog
 {
 	Q_OBJECT
 
 	public:
-		explicit AboutWindow(QString v, QWidget *parent = 0);
+		explicit AboutWindow(QString v, QWidget *parent = Q_NULLPTR);
 		~AboutWindow();
 
 	public slots:
-		void finished(QNetworkReply *r);
+		void finished(QString newVersion, bool available);
 
 	private:
 		Ui::AboutWindow *ui;
-		int m_version;
+		ProgramUpdater m_updater;
 };
 
 #endif // ABOUT_WINDOW_H

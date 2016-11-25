@@ -1,6 +1,6 @@
 #include <QFile>
 #include "profile.h"
-#include "commands.h"
+#include "commands/commands.h"
 
 
 Profile::Profile()

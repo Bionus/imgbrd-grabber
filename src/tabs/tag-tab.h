@@ -26,7 +26,7 @@ class tagTab : public searchTab
 	Q_OBJECT
 
 	public:
-		explicit tagTab(int id, QMap<QString, Site*> *sites, Profile *profile, mainWindow *parent);
+		explicit tagTab(QMap<QString, Site*> *sites, Profile *profile, mainWindow *parent);
 		~tagTab();
 		Ui::tagTab *ui;
 		QString tags();
@@ -48,10 +48,8 @@ class tagTab : public searchTab
 		void focusSearch();
 
 	private:
-		int				m_id;
 		TextEdit		*m_search;
 		QCalendarWidget	*m_calendar;
-		QString			m_link;
 		bool			m_sized;
 		Downloader		*m_downloader;
 };

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>siteWindow</class>
- <widget class="QDialog" name="siteWindow">
+ <class>SiteWindow</class>
+ <widget class="QDialog" name="SiteWindow">
   <property name="windowModality">
    <enum>Qt::WindowModal</enum>
   </property>
@@ -9,15 +9,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>269</width>
+    <width>290</width>
     <height>99</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Grabber - Ajouter un site</string>
+   <string>Add a site</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../resources.qrc">
+   <iconset resource="../../resources.qrc">
     <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
@@ -27,7 +27,7 @@
       <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
      </property>
      <item row="0" column="0">
-      <widget class="QLabel" name="label">
+      <widget class="QLabel" name="labelType">
        <property name="text">
         <string>Type</string>
        </property>
@@ -41,14 +41,14 @@
        <item>
         <widget class="QCheckBox" name="checkBox">
          <property name="text">
-          <string>Deviner</string>
+          <string>Guess</string>
          </property>
         </widget>
        </item>
       </layout>
      </item>
      <item row="1" column="0">
-      <widget class="QLabel" name="label_2">
+      <widget class="QLabel" name="labelUrl">
        <property name="text">
         <string>Url</string>
        </property>
@@ -95,13 +95,15 @@
   <tabstop>lineEdit</tabstop>
  </tabstops>
  <resources>
-  <include location="../resources.qrc"/>
+  <include location="../../resources.qrc"/>
+  <include location="../../resources.qrc"/>
+  <include location="../../resources.qrc"/>
  </resources>
  <connections>
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>siteWindow</receiver>
+   <receiver>SiteWindow</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -117,7 +119,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>siteWindow</receiver>
+   <receiver>SiteWindow</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

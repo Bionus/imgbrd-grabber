@@ -23,7 +23,7 @@
    <string>Sources</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../resources.qrc">
+   <iconset resource="../../resources.qrc">
     <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0,0">
@@ -45,7 +45,7 @@
    <item>
     <widget class="QCheckBox" name="checkBox">
      <property name="text">
-      <string>Tout cocher</string>
+      <string>Check all</string>
      </property>
      <property name="tristate">
       <bool>true</bool>
@@ -102,6 +102,13 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
+      <widget class="QPushButton" name="pushButton">
+       <property name="text">
+        <string>Add</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <spacer name="buttonAdd">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -115,16 +122,9 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton">
-       <property name="text">
-        <string>Ajouter</string>
-       </property>
-      </widget>
-     </item>
-     <item>
       <widget class="QPushButton" name="buttonCancel">
        <property name="text">
-        <string>Annuler</string>
+        <string>Cancel</string>
        </property>
       </widget>
      </item>
@@ -141,12 +141,13 @@
  </widget>
  <tabstops>
   <tabstop>checkBox</tabstop>
-  <tabstop>pushButton</tabstop>
   <tabstop>buttonCancel</tabstop>
   <tabstop>buttonOk</tabstop>
  </tabstops>
  <resources>
-  <include location="../resources.qrc"/>
+  <include location="../../resources.qrc"/>
+  <include location="../../resources.qrc"/>
+  <include location="../../resources.qrc"/>
  </resources>
  <connections>
   <connection>

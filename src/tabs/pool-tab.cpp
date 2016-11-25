@@ -8,8 +8,8 @@
 #include "mainwindow.h"
 
 
-poolTab::poolTab(int id, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
-	: searchTab(id, sites, profile, parent), ui(new Ui::poolTab), m_id(id), m_sized(false)
+poolTab::poolTab(QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
+	: searchTab(sites, profile, parent), ui(new Ui::poolTab), m_sized(false)
 {
 	ui->setupUi(this);
 	ui->widgetMeant->hide();
@@ -72,8 +72,8 @@ void poolTab::closeEvent(QCloseEvent *e)
 	m_images.clear();
 	qDeleteAll(m_checkboxes);
 	m_checkboxes.clear();
-	for (int i = 0; i < m_layouts.size(); i++)
-	{ clearLayout(m_layouts[i]); }
+	for (Site *site : m_layouts.keys())
+	{ clearLayout(m_layouts[site]); }
 	qDeleteAll(m_layouts);
 	m_layouts.clear();
 
@@ -89,7 +89,7 @@ void poolTab::load()
 	QStringList tags = search.trimmed().split(" ", QString::SkipEmptyParts);
 	tags.prepend("pool:"+QString::number(ui->spinPool->value()));
 
-	setWindowTitle(search.isEmpty() ? tr("Recherche") : search.replace("&", "&&"));
+	setWindowTitle(search.isEmpty() ? tr("Search") : search.replace("&", "&&"));
 	emit titleChanged(this);
 
 	loadTags(tags);

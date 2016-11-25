@@ -24,7 +24,7 @@
 
 
 Site::Site(QString url, Source *source)
-	: m_type(source->getName()), m_url(url), m_source(source), m_settings(nullptr), m_manager(nullptr), m_cookieJar(nullptr), m_loggedIn(false), m_triedLogin(false), m_loginCheck(false)
+	: m_type(source->getName()), m_url(url), m_source(source), m_settings(nullptr), m_manager(nullptr), m_cookieJar(nullptr), m_loggedIn(false), m_triedLogin(false), m_loginCheck(false), m_autoLogin(true)
 {
 	loadConfig();
 }
@@ -155,7 +155,7 @@ void Site::login(bool force)
 		return;
 	}
 
-	log(tr("Logging into %1 (%2)...").arg(m_name, m_url));
+	log(QString("Logging into %1 (%2)...").arg(m_name, m_url));
 	initManager();
 
 	// Clear cookies if we want to force a re-login
@@ -192,6 +192,12 @@ void Site::login(bool force)
 	QUrlQuery query;
 	query.addQueryItem(m_settings->value("login/pseudo", "").toString(), m_username);
 	query.addQueryItem(m_settings->value("login/password", "").toString(), m_password);
+
+	m_settings->beginGroup("login/fields");
+		QStringList keys = m_settings->childKeys();
+		for (QString key : keys)
+			query.addQueryItem(key, setting(key).toString());
+	m_settings->endGroup();
 
 	QString method = m_settings->value("login/method", "post").toString();
 	if (method == "post")
@@ -241,14 +247,14 @@ void Site::loginFinished()
 		}
 	}
 
-	log(tr("Logging into %1 (%2) finished (%3).").arg(m_name, m_url, m_loggedIn ? tr("success") : tr("failure")));
+	log(QString("Logging into %1 (%2) finished (%3).").arg(m_name, m_url, m_loggedIn ? tr("success") : tr("failure")));
 	emit loggedIn(this, m_loggedIn ? LoginResult::Success : LoginResult::Error);
 }
 
 
 QNetworkRequest Site::makeRequest(QUrl url, Page *page, QString ref, Image *img)
 {
-	if (!m_loggedIn && !m_triedLogin)
+	if (m_autoLogin && !m_loggedIn && !m_triedLogin)
 		login();
 
 	// Force HTTPS if set so in the settings (no mixed content allowed)
@@ -388,11 +394,15 @@ QSettings	*Site::settings()						{ return m_settings; }
 QString Site::name()			{ return m_name;			}
 QString Site::url()				{ return m_url;				}
 QString Site::type()			{ return m_type;			}
-QString Site::username()		{ return m_username;		}
-QString Site::password()		{ return m_password;		}
 Source *Site::getSource() const	{ return m_source;			}
 QList<Api*> Site::getApis() const	{ return m_apis;		}
 
+
+bool Site::autoLogin() const	{ return m_autoLogin;	}
+QString Site::username() const	{ return m_username;	}
+QString Site::password() const	{ return m_password;	}
+
+void Site::setAutoLogin(bool autoLogin)		{ m_autoLogin = autoLogin;	}
 void Site::setUsername(QString username)	{ m_username = username;	}
 void Site::setPassword(QString password)	{ m_password = password;	}
 

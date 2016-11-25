@@ -9,8 +9,8 @@
 
 
 
-favoritesTab::favoritesTab(int id, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
-	: searchTab(id, sites, profile, parent), ui(new Ui::favoritesTab), m_id(id), m_favorites(profile->getFavorites()), m_sized(false), m_currentFav(0)
+favoritesTab::favoritesTab(QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
+	: searchTab(sites, profile, parent), ui(new Ui::favoritesTab), m_sized(false), m_currentFav(0)
 {
 	ui->setupUi(this);
 
@@ -75,8 +75,8 @@ void favoritesTab::closeEvent(QCloseEvent *e)
 	m_images.clear();
 	qDeleteAll(m_checkboxes);
 	m_checkboxes.clear();
-	for (int i = 0; i < m_layouts.size(); i++)
-	{ clearLayout(m_layouts[i]); }
+	for (Site *site : m_layouts.keys())
+	{ clearLayout(m_layouts[site]); }
 	qDeleteAll(m_layouts);
 	m_layouts.clear();
 
@@ -101,21 +101,21 @@ void favoritesTab::updateFavorites()
 	if (reverse)
 	{ m_favorites = reversed(m_favorites); }
 
-	QString format = tr("dd/MM/yyyy");
+	QString format = tr("MM/dd/yyyy");
 	clearLayout(ui->layoutFavorites);
 
 	QString display = m_settings->value("favorites_display", "ind").toString();
 	int i = 0;
 	for (Favorite fav : m_favorites)
 	{
-		QString xt = tr("<b>Nom :</b> %1<br/><b>Note :</b> %2 %%<br/><b>Dernière vue :</b> %3").arg(fav.getName(), QString::number(fav.getNote()), fav.getLastViewed().toString(format));
+		QString xt = tr("<b>Name:</b> %1<br/><b>Note:</b> %2 %%<br/><b>Last view:</b> %3").arg(fav.getName(), QString::number(fav.getNote()), fav.getLastViewed().toString(format));
 		QWidget *w = new QWidget(ui->scrollAreaWidgetContents);
 		QVBoxLayout *l = new QVBoxLayout(w);
 
 		if (display.contains("i"))
 		{
 			QPixmap img = fav.getImage();
-			QBouton *image = new QBouton(fav.getName(), false, 0, QColor(), this);
+			QBouton *image = new QBouton(fav.getName(), false, false, 0, QColor(), this);
 				image->setIcon(img);
 				image->setIconSize(img.size());
 				image->setFlat(true);
@@ -171,14 +171,14 @@ bool favoritesTab::validateImage(QSharedPointer<Image> img)
 void favoritesTab::addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage)
 {
 	Q_UNUSED(noResultsMessage);
-	searchTab::addResultsPage(page, imgs, tr("Aucun résultat depuis le %1").arg(m_loadFavorite.toString(tr("dd/MM/yyyy 'à' hh:mm"))));
+	searchTab::addResultsPage(page, imgs, tr("No result since the %1").arg(m_loadFavorite.toString(tr("MM/dd/yyyy 'at' hh:mm"))));
 	ui->splitter->setSizes(QList<int>() << (imgs.count() >= m_settings->value("hidefavorites", 20).toInt() ? 0 : 1) << 1);
 }
 
 void favoritesTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage)
 {
 	Q_UNUSED(noResultsMessage);
-	searchTab::setPageLabelText(txt, page, imgs, tr("Aucun résultat depuis le %1").arg(m_loadFavorite.toString(tr("dd/MM/yyyy 'à' hh:mm"))));
+	searchTab::setPageLabelText(txt, page, imgs, tr("No result since the %1").arg(m_loadFavorite.toString(tr("MM/dd/yyyy 'at' hh:mm"))));
 }
 
 void favoritesTab::setTags(QString tags)
@@ -259,7 +259,7 @@ void favoritesTab::viewed()
 {
 	if (m_currentTags.isEmpty())
 	{
-		int reponse = QMessageBox::question(this, tr("Marquer comme vu"), tr("Êtes-vous sûr de vouloir marquer tous vos favoris comme vus ?"), QMessageBox::Yes | QMessageBox::No);
+		int reponse = QMessageBox::question(this, tr("Mark as viewed"), tr("Are you sure you want to mark all your favorites as viewed?"), QMessageBox::Yes | QMessageBox::No);
 		if (reponse == QMessageBox::Yes)
 		{
 			for (Favorite fav : m_favorites)
@@ -273,7 +273,7 @@ void favoritesTab::viewed()
 }
 void favoritesTab::setFavoriteViewed(QString tag)
 {
-	log(tr("Marquage comme vu de %1...").arg(tag));
+	log(QString("Marking \"%1\" as viewed...").arg(tag));
 
 	int index = tag.isEmpty() ? m_currentFav : m_favorites.indexOf(tag);
 	if (index < 0)
