@@ -338,6 +338,15 @@ QStringList Filename::path(const Image& img, Profile *profile, QString pth, int 
 			{
 				QString key = keys.at(i);
 				QString res = replaces[key].first.isEmpty() ? replaces[key].second : replaces[key].first;
+
+				if (key == "all" || key == "tags" || key == "general" || key == "artist" || key == "copyright" || key == "character")
+				{
+					QStringList vals = res.split(TAGS_SEPARATOR);
+					QString mainSeparator = fixSeparator(settings->value("Save/separator", " ").toString());
+					QString tagSeparator = fixSeparator(settings->value(key + "_sep", mainSeparator).toString());
+					res = vals.join(tagSeparator);
+				}
+
 				if (key != "allo")
 				{
 					res = res.replace("\\", "_").replace("%", "_").replace("/", "_").replace(":", "_").replace("|", "_").replace("*", "_").replace("?", "_").replace("\"", "_").replace("<", "_").replace(">", "_").replace("__", "_").replace("__", "_").replace("__", "_").trimmed();
