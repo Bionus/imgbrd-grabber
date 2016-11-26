@@ -812,7 +812,8 @@ Image::SaveResult Image::save(QString path, bool force, bool basic)
 
 			if (m_settings->value("Textfile/activate", false).toBool() && !basic)
 			{
-				QStringList cont = this->path(m_settings->value("Textfile/content", "%all%").toString(), "", 1, true, true, false, false);
+				QString textfileFormat = m_settings->value("Textfile/content", "%all%").toString();
+				QStringList cont = this->path(textfileFormat, "", 1, true, true, false, false, false);
 				if (!cont.isEmpty())
 				{
 					QString contents = cont.at(0);
@@ -826,7 +827,8 @@ Image::SaveResult Image::save(QString path, bool force, bool basic)
 			}
 			if (m_settings->value("SaveLog/activate", false).toBool() && !m_settings->value("SaveLog/file", "").toString().isEmpty() && !basic)
 			{
-				QStringList cont = this->path(m_settings->value("SaveLog/format", "%website% - %md5% - %all%").toString(), "", 1, true, true, false, false);
+				QString savelogFormat = m_settings->value("SaveLog/format", "%website% - %md5% - %all%").toString();
+				QStringList cont = this->path(savelogFormat, "", 1, true, true, false, false, false);
 				if (!cont.isEmpty())
 				{
 					QString contents = cont.at(0);
