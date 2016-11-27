@@ -1743,40 +1743,6 @@ void mainWindow::getAllPerformImage()
 
 	getAllImageOk(img, site_id, del);
 }
-QString mainWindow::getExtensionFromHeader(const QByteArray &data12)
-{
-	QByteArray data8 = data12.left(8);
-	QByteArray data48 = data12.mid(4, 8);
-	QByteArray data6 = data12.left(6);
-	QByteArray data4 = data12.left(4);
-	QByteArray data3 = data12.left(3);
-
-	// GIF
-	if (data6 == "GIF87a" || data6 == "GIF89a")
-		return "gif";
-
-	// PNG
-	if (data8 == "\211PNG\r\n\032\n")
-		return "png";
-
-	// JPG
-	if (data3 == "\255\216\255")
-		return "jpg";
-
-	// WEBM
-	if (data4 == "\026\069\223\163")
-		return "webm";
-
-	// MP4
-	if (data48 == "ftyp3gp5" || data48 == "ftypMSNV" || data48 == "ftypisom")
-		return "swf";
-
-	// SWF
-	if (data3 == "FWS" || data3 == "CWS" || data3 == "ZWS")
-		return "swf";
-
-	return QString();
-}
 void mainWindow::saveImage(QSharedPointer<Image> img, QString path, QString p, bool getAll)
 {
 	// Get image's content
@@ -1811,18 +1777,6 @@ void mainWindow::saveImage(QSharedPointer<Image> img, QString path, QString p, b
 				// Save the file
 				else
 				{
-					// Detect file extension from image's data headers
-					bool headerDetection = m_settings->value("Save/headerDetection", true).toBool();
-					if (headerDetection)
-					{
-						QString ext = getExtensionFromHeader(img->data().left(12));
-						if (!ext.isEmpty())
-						{
-							log(QString("Setting image extenssion from header: %1 (%2).").arg(ext, fp), Info);
-							fp = setExtension(fp, ext);
-						}
-					}
-
 					QFile f(fp);
 					f.open(QIODevice::WriteOnly);
 					if (f.write(img->data()) < 0)
