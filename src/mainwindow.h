@@ -173,6 +173,7 @@ class mainWindow : public QMainWindow
 		void getAllImageOk(QSharedPointer<Image> img, int site_id, bool del = true);
 		QList<Site*> getSelectedSites();
 		Site* getSelectedSiteOrDefault();
+		QString getExtensionFromHeader(const QByteArray &data12);
 
 	private:
 		Profile				*m_profile;

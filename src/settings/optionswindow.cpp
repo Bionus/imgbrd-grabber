@@ -128,6 +128,7 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 		ui->checkSampleFallback->setChecked(settings->value("samplefallback", true).toBool());
 		ui->checkReplaceBlanks->setChecked(settings->value("replaceblanks", false).toBool());
 		ui->checkKeepDate->setChecked(settings->value("keepDate", true).toBool());
+		ui->checkSaveHeaderDetection->setChecked(settings->value("headerDetection", true).toBool());
 		ui->lineFolder->setText(settings->value("path_real").toString());
 		ui->lineFolderFavorites->setText(settings->value("path_favorites").toString());
 		QStringList opts = QStringList() << "save" << "copy" << "move" << "ignore";
@@ -555,6 +556,7 @@ void optionsWindow::save()
 		settings->setValue("samplefallback", ui->checkSampleFallback->isChecked());
 		settings->setValue("replaceblanks", ui->checkReplaceBlanks->isChecked());
 		settings->setValue("keepDate", ui->checkKeepDate->isChecked());
+		settings->setValue("headerDetection", ui->checkSaveHeaderDetection->isChecked());
 		settings->setValue("separator", ui->lineSeparator->text());
 		settings->setValue("noJpeg", ui->checkNoJpeg->isChecked());
 		QString folder = fixFilename("", ui->lineFolder->text());

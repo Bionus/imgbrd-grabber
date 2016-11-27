@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>666</width>
-    <height>471</height>
+    <height>489</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -642,14 +642,14 @@
           </property>
          </widget>
         </item>
-        <item row="4" column="0">
+        <item row="5" column="0">
          <widget class="QLabel" name="label_7">
           <property name="text">
            <string>Folder</string>
           </property>
          </widget>
         </item>
-        <item row="4" column="1">
+        <item row="5" column="1">
          <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,0">
           <item>
            <widget class="QLineEdit" name="lineFolder"/>
@@ -663,14 +663,14 @@
           </item>
          </layout>
         </item>
-        <item row="5" column="0">
+        <item row="6" column="0">
          <widget class="QLabel" name="label_62">
           <property name="text">
            <string>Favorites</string>
           </property>
          </widget>
         </item>
-        <item row="5" column="1">
+        <item row="6" column="1">
          <layout class="QHBoxLayout" name="horizontalLayout_13">
           <item>
            <widget class="QLineEdit" name="lineFolderFavorites"/>
@@ -684,42 +684,42 @@
           </item>
          </layout>
         </item>
-        <item row="6" column="0">
+        <item row="7" column="0">
          <widget class="QLabel" name="label_14">
           <property name="text">
            <string>Tags separator</string>
           </property>
          </widget>
         </item>
-        <item row="6" column="1">
+        <item row="7" column="1">
          <widget class="QLineEdit" name="lineSeparator">
           <property name="text">
            <string/>
           </property>
          </widget>
         </item>
-        <item row="7" column="0" colspan="2">
+        <item row="8" column="0" colspan="2">
          <widget class="QCheckBox" name="checkReplaceBlanks">
           <property name="text">
            <string>Replace spaces by underscores</string>
           </property>
          </widget>
         </item>
-        <item row="9" column="0">
+        <item row="10" column="0">
          <widget class="QLabel" name="label_54">
           <property name="text">
            <string>Max length</string>
           </property>
          </widget>
         </item>
-        <item row="9" column="1">
+        <item row="10" column="1">
          <widget class="QSpinBox" name="spinLimit">
           <property name="maximum">
            <number>260</number>
           </property>
          </widget>
         </item>
-        <item row="10" column="0" colspan="2">
+        <item row="11" column="0" colspan="2">
          <widget class="QLabel" name="label_55">
           <property name="text">
            <string>&lt;i&gt;If the filename length is greater than this number, it will be shortened. Leave it to 0 to use the default limit.&lt;/i&gt;</string>
@@ -729,14 +729,14 @@
           </property>
          </widget>
         </item>
-        <item row="11" column="0">
+        <item row="12" column="0">
          <widget class="QLabel" name="label_29">
           <property name="text">
            <string>Simultaneous downloads</string>
           </property>
          </widget>
         </item>
-        <item row="11" column="1">
+        <item row="12" column="1">
          <widget class="QSpinBox" name="spinSimultaneous">
           <property name="minimum">
            <number>1</number>
@@ -746,14 +746,14 @@
           </property>
          </widget>
         </item>
-        <item row="12" column="0">
+        <item row="13" column="0">
          <widget class="QLabel" name="label_83">
           <property name="text">
            <string>When the download is finished</string>
           </property>
          </widget>
         </item>
-        <item row="12" column="1">
+        <item row="13" column="1">
          <widget class="QComboBox" name="comboBatchEnd">
           <item>
            <property name="text">
@@ -782,14 +782,14 @@
           </item>
          </widget>
         </item>
-        <item row="13" column="0">
+        <item row="14" column="0">
          <widget class="QLabel" name="label_19">
           <property name="text">
            <string>If a file already exists</string>
           </property>
          </widget>
         </item>
-        <item row="13" column="1">
+        <item row="14" column="1">
          <widget class="QComboBox" name="comboMd5Duplicates">
           <property name="currentIndex">
            <number>0</number>
@@ -816,31 +816,41 @@
           </item>
          </widget>
         </item>
-        <item row="14" column="0" colspan="2">
+        <item row="15" column="0" colspan="2">
          <widget class="QLabel" name="label_21">
           <property name="text">
            <string>&lt;i&gt;File's identity is based on the MD5 algorithm.&lt;/i&gt;</string>
           </property>
          </widget>
         </item>
-        <item row="15" column="0">
+        <item row="16" column="0">
          <widget class="QLabel" name="label_84">
           <property name="text">
            <string>Automatic redownload</string>
           </property>
          </widget>
         </item>
-        <item row="15" column="1">
+        <item row="16" column="1">
          <widget class="QSpinBox" name="spinAutomaticRetries">
           <property name="maximum">
            <number>100</number>
           </property>
          </widget>
         </item>
-        <item row="8" column="0" colspan="2">
+        <item row="9" column="0" colspan="2">
          <widget class="QCheckBox" name="checkNoJpeg">
           <property name="text">
            <string>Replace JPEG by JPG</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0" colspan="2">
+         <widget class="QCheckBox" name="checkSaveHeaderDetection">
+          <property name="text">
+           <string>Get extension from file header</string>
           </property>
           <property name="checked">
            <bool>true</bool>
