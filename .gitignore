@@ -1,5 +1,6 @@
 # Grabber
 
+*.qm
 release/sites/*/*/settings.ini
 tests/resources/md5s.txt
 tests/resources/settings.ini

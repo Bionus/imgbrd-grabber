@@ -231,7 +231,7 @@ void mainWindow::init()
 
 	m_loaded = true;
 	m_currentTab = nullptr;
-	log("Fin de l'initialisation.");
+	log("End of initialization");
 }
 
 void mainWindow::initialLoginsFinished()
@@ -1753,7 +1753,8 @@ void mainWindow::saveImage(QSharedPointer<Image> img, QString path, QString p, b
 		{ path = m_settings->value("Save/filename").toString(); }
 		if (p == "")
 		{ p = img->folder().isEmpty() ? m_settings->value("Save/path").toString() : img->folder(); }
-		QStringList paths = img->path(path, p, m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + 1, true, false, true, true, true);
+		int count = m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + 1;
+		QStringList paths = img->path(path, p, count, true, false, true, true, true);
 
 		for (QString path : paths)
 		{
@@ -1797,7 +1798,7 @@ void mainWindow::saveImage(QSharedPointer<Image> img, QString path, QString p, b
 					// Save info to a text file
 					if (m_settings->value("Textfile/activate", false).toBool())
 					{
-						QStringList cont = img->path(m_settings->value("Textfile/content", "%all%").toString(), "", 1, true, true, false, false);
+						QStringList cont = img->path(m_settings->value("Textfile/content", "%all%").toString(), "", count, true, true, false, false);
 						if (!cont.isEmpty())
 						{
 							QString contents = cont.at(0);
@@ -1813,7 +1814,7 @@ void mainWindow::saveImage(QSharedPointer<Image> img, QString path, QString p, b
 					// Log info to a text file
 					if (m_settings->value("SaveLog/activate", false).toBool() && !m_settings->value("SaveLog/file", "").toString().isEmpty())
 					{
-						QStringList cont = img->path(m_settings->value("SaveLog/format", "%website% - %md5% - %all%").toString(), "", 1, true, true, false, false);
+						QStringList cont = img->path(m_settings->value("SaveLog/format", "%website% - %md5% - %all%").toString(), "", count, true, true, false, false);
 						if (!cont.isEmpty())
 						{
 							QString contents = cont.at(0);

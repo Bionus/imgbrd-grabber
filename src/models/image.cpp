@@ -645,6 +645,44 @@ void Image::loadImage()
 	connect(m_loadImage, &QNetworkReply::downloadProgress, this, &Image::downloadProgressImageS);
 	connect(m_loadImage, &QNetworkReply::finished, this, &Image::finishedImageS);
 }
+QString Image::getExtensionFromHeader(const QByteArray &data12)
+{
+	QByteArray data8 = data12.left(8);
+	QByteArray data48 = data12.mid(4, 8);
+	QByteArray data6 = data12.left(6);
+	QByteArray data4 = data12.left(4);
+	QByteArray data3 = data12.left(3);
+
+	// GIF
+	if (data6 == "GIF87a" || data6 == "GIF89a")
+		return "gif";
+
+	// PNG
+	if (data8 == "\211PNG\r\n\032\n")
+		return "png";
+
+	// JPG
+	if (data3 == "\255\216\255")
+		return "jpg";
+
+	// WEBM
+	if (data4 == "\026\069\223\163")
+		return "webm";
+
+	// MP4
+	if (data48 == "ftyp3gp5" || data48 == "ftypMSNV" || data48 == "ftypisom")
+		return "mp4";
+
+	// SWF
+	if (data3 == "FWS" || data3 == "CWS" || data3 == "ZWS")
+		return "swf";
+
+	// FLV
+	if (data4 == "FLV\001")
+		return "flv";
+
+	return QString();
+}
 void Image::finishedImageS()
 {
 	m_loadingImage = false;
@@ -699,7 +737,7 @@ void Image::finishedImageS()
 	}
 	else
 	{
-		m_data = m_loadImage->readAll();
+		setData(m_loadImage->readAll());
 	}
 
 	m_loadedImage = true;
@@ -812,7 +850,8 @@ Image::SaveResult Image::save(QString path, bool force, bool basic)
 
 			if (m_settings->value("Textfile/activate", false).toBool() && !basic)
 			{
-				QStringList cont = this->path(m_settings->value("Textfile/content", "%all%").toString(), "", 1, true, true, false, false);
+				QString textfileFormat = m_settings->value("Textfile/content", "%all%").toString();
+				QStringList cont = this->path(textfileFormat, "", 1, true, true, false, false, false);
 				if (!cont.isEmpty())
 				{
 					QString contents = cont.at(0);
@@ -826,7 +865,8 @@ Image::SaveResult Image::save(QString path, bool force, bool basic)
 			}
 			if (m_settings->value("SaveLog/activate", false).toBool() && !m_settings->value("SaveLog/file", "").toString().isEmpty() && !basic)
 			{
-				QStringList cont = this->path(m_settings->value("SaveLog/format", "%website% - %md5% - %all%").toString(), "", 1, true, true, false, false);
+				QString savelogFormat = m_settings->value("SaveLog/format", "%website% - %md5% - %all%").toString();
+				QStringList cont = this->path(savelogFormat, "", 1, true, true, false, false, false);
 				if (!cont.isEmpty())
 				{
 					QString contents = cont.at(0);
@@ -946,9 +986,9 @@ QUrl			Image::previewUrl() const	{ return m_previewUrl;		}
 QUrl			Image::pageUrl() const		{ return m_pageUrl;			}
 QSize			Image::size() const			{ return m_size;			}
 QPixmap			Image::previewImage() const	{ return m_imagePreview;	}
-QPixmap			&Image::previewImage()		{ return m_imagePreview;	}
+const QPixmap	&Image::previewImage()		{ return m_imagePreview;	}
 Page			*Image::page() const		{ return m_parent;			}
-QByteArray		Image::data() const			{ return m_data;			}
+const QByteArray&Image::data() const			{ return m_data;			}
 QNetworkReply	*Image::imageReply() const	{ return m_loadImage;		}
 QNetworkReply	*Image::tagsReply() const	{ return m_loadDetails;		}
 QSettings		*Image::settings() const	{ return m_settings;		}
@@ -970,9 +1010,21 @@ void	Image::setUrl(QString u)
 	m_url = u;
 }
 void	Image::setFileSize(int s)		{ m_fileSize = s;			}
-void	Image::setData(QByteArray d)
+void	Image::setData(const QByteArray &d)
 {
 	m_data = d;
+
+	// Detect file extension from data headers
+	bool headerDetection = m_settings->value("Save/headerDetection", true).toBool();
+	if (headerDetection)
+	{
+		QString ext = getExtensionFromHeader(m_data.left(12));
+		if (!ext.isEmpty())
+		{
+			log(QString("Setting image extension from header: '%1' (was '%2').").arg(ext, getExtension(m_url)), Info);
+			setFileExtension(ext);
+		}
+	}
 
 	// Set MD5 by hashing this data if we don't already have it
 	if (m_md5.isEmpty())

@@ -223,7 +223,7 @@ QString _parseSetImageUrl(Site *site, Api* api, QString settingUrl, QString sett
 		{
 			opt.replace("{id}", d->value("id"))
 			.replace("{md5}", d->value("md5"))
-			.replace("{ext}", d->value("ext"));
+			.replace("{ext}", d->value("ext", "jpg"));
 
 			if (!opt.endsWith("/." + d->value("ext")) && !opt.contains('{'))
 			{

@@ -8,7 +8,7 @@ QBouton::QBouton(QVariant id, bool resizeInsteadOfCropping, bool smartSizeHint, 
 	: QPushButton(parent), _id(id), _resizeInsteadOfCropping(resizeInsteadOfCropping), _smartSizeHint(smartSizeHint), _np(false), _originalSize(QSize(-1,-1)), _penColor(color), _border(border)
 { }
 
-void QBouton::scale(QPixmap &image, float scale)
+void QBouton::scale(const QPixmap &image, float scale)
 {
 	QSize size;
 	if (scale > 1.00001f)

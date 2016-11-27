@@ -74,9 +74,9 @@ class Image : public QObject
 		QUrl		previewUrl() const;
 		QSize		size() const;
 		QPixmap		previewImage() const;
-		QPixmap		&previewImage();
+		const QPixmap &previewImage();
 		Page		*page() const;
-		QByteArray	data() const;
+		const QByteArray &data() const;
 		QSettings	*settings() const;
 		Site		*parentSite() const;
 		QNetworkReply	*imageReply() const;
@@ -86,12 +86,13 @@ class Image : public QObject
 		bool		hasAllTags(QStringList tags) const;
 		QMap<QString,QString>   details() const;
 		void		setUrl(QString);
-		void		setData(QByteArray);
+		void		setData(const QByteArray &data);
 		void		setFileSize(int);
 		void		setSavePath(QString);
 		void		setRating(QString rating);
 		void		setFileExtension(QString ext);
 		QString		getNextExtension(QString current);
+		QString		getExtensionFromHeader(const QByteArray &data12);
 
 	public slots:
 		void loadPreview();

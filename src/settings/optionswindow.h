@@ -34,6 +34,7 @@ class optionsWindow : public QDialog
 		void on_lineColoringCircles_textChanged();
 		void on_lineColoringCopyrights_textChanged();
 		void on_lineColoringCharacters_textChanged();
+		void on_lineColoringSpecies_textChanged();
 		void on_lineColoringModels_textChanged();
 		void on_lineColoringGenerals_textChanged();
 		void on_lineColoringFavorites_textChanged();
@@ -43,6 +44,7 @@ class optionsWindow : public QDialog
 		void on_buttonColoringCirclesColor_clicked();
 		void on_buttonColoringCopyrightsColor_clicked();
 		void on_buttonColoringCharactersColor_clicked();
+		void on_buttonColoringSpeciesColor_clicked();
 		void on_buttonColoringModelsColor_clicked();
 		void on_buttonColoringGeneralsColor_clicked();
 		void on_buttonColoringFavoritesColor_clicked();
@@ -52,6 +54,7 @@ class optionsWindow : public QDialog
 		void on_buttonColoringCirclesFont_clicked();
 		void on_buttonColoringCopyrightsFont_clicked();
 		void on_buttonColoringCharactersFont_clicked();
+		void on_buttonColoringSpeciesFont_clicked();
 		void on_buttonColoringModelsFont_clicked();
 		void on_buttonColoringGeneralsFont_clicked();
 		void on_buttonColoringFavoritesFont_clicked();

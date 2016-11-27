@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>353</width>
-    <height>240</height>
+    <height>234</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,8 +21,11 @@
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <widget class="QLabel" name="label">
+      <property name="styleSheet">
+       <string notr="true">font-weight:bold</string>
+      </property>
       <property name="text">
-       <string>&lt;b&gt;Désolé&lt;/b&gt;</string>
+       <string>Sorry</string>
       </property>
       <property name="wordWrap">
        <bool>true</bool>
@@ -38,7 +41,7 @@
        </sizepolicy>
       </property>
       <property name="text">
-       <string>Grabber a rencontré un problème et a planté. Le programme essaiera de réstaurer vos onglets et autres paramètres lors de son prochain démarrage.</string>
+       <string>Grabber encountered a problem and crashed. The program will try to restore your tabs and other settings when it restarts.</string>
       </property>
       <property name="wordWrap">
        <bool>true</bool>
@@ -54,7 +57,7 @@
        </sizepolicy>
       </property>
       <property name="text">
-       <string>Pour nous aider à résoudre le problème, vous pouvez nous envoyer un rapport de crash.</string>
+       <string>To help us fix this crash, you can send us a bug report.</string>
       </property>
       <property name="wordWrap">
        <bool>true</bool>
@@ -64,7 +67,7 @@
     <item>
      <widget class="QCheckBox" name="checkSend">
       <property name="text">
-       <string>Envoyer un rapport de crash</string>
+       <string>Send a bug report</string>
       </property>
      </widget>
     </item>
@@ -149,14 +152,14 @@
       <item>
        <widget class="QPushButton" name="buttonRestart">
         <property name="text">
-         <string>Redémarrer</string>
+         <string>Restart</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="buttonQuit">
         <property name="text">
-         <string>Quitter</string>
+         <string>Quit</string>
         </property>
        </widget>
       </item>

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>666</width>
-    <height>471</height>
+    <height>489</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,6 +18,16 @@
     <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <item row="1" column="0">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
    <item row="0" column="0">
     <widget class="QSplitter" name="splitter">
      <property name="orientation">
@@ -91,6 +101,11 @@
        <item>
         <property name="text">
          <string>Character tags</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Species tags</string>
         </property>
        </item>
        <item>
@@ -642,14 +657,14 @@
           </property>
          </widget>
         </item>
-        <item row="4" column="0">
+        <item row="5" column="0">
          <widget class="QLabel" name="label_7">
           <property name="text">
            <string>Folder</string>
           </property>
          </widget>
         </item>
-        <item row="4" column="1">
+        <item row="5" column="1">
          <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,0">
           <item>
            <widget class="QLineEdit" name="lineFolder"/>
@@ -663,14 +678,14 @@
           </item>
          </layout>
         </item>
-        <item row="5" column="0">
+        <item row="6" column="0">
          <widget class="QLabel" name="label_62">
           <property name="text">
            <string>Favorites</string>
           </property>
          </widget>
         </item>
-        <item row="5" column="1">
+        <item row="6" column="1">
          <layout class="QHBoxLayout" name="horizontalLayout_13">
           <item>
            <widget class="QLineEdit" name="lineFolderFavorites"/>
@@ -684,42 +699,42 @@
           </item>
          </layout>
         </item>
-        <item row="6" column="0">
+        <item row="7" column="0">
          <widget class="QLabel" name="label_14">
           <property name="text">
            <string>Tags separator</string>
           </property>
          </widget>
         </item>
-        <item row="6" column="1">
+        <item row="7" column="1">
          <widget class="QLineEdit" name="lineSeparator">
           <property name="text">
            <string/>
           </property>
          </widget>
         </item>
-        <item row="7" column="0" colspan="2">
+        <item row="8" column="0" colspan="2">
          <widget class="QCheckBox" name="checkReplaceBlanks">
           <property name="text">
            <string>Replace spaces by underscores</string>
           </property>
          </widget>
         </item>
-        <item row="9" column="0">
+        <item row="10" column="0">
          <widget class="QLabel" name="label_54">
           <property name="text">
            <string>Max length</string>
           </property>
          </widget>
         </item>
-        <item row="9" column="1">
+        <item row="10" column="1">
          <widget class="QSpinBox" name="spinLimit">
           <property name="maximum">
            <number>260</number>
           </property>
          </widget>
         </item>
-        <item row="10" column="0" colspan="2">
+        <item row="11" column="0" colspan="2">
          <widget class="QLabel" name="label_55">
           <property name="text">
            <string>&lt;i&gt;If the filename length is greater than this number, it will be shortened. Leave it to 0 to use the default limit.&lt;/i&gt;</string>
@@ -729,14 +744,14 @@
           </property>
          </widget>
         </item>
-        <item row="11" column="0">
+        <item row="12" column="0">
          <widget class="QLabel" name="label_29">
           <property name="text">
            <string>Simultaneous downloads</string>
           </property>
          </widget>
         </item>
-        <item row="11" column="1">
+        <item row="12" column="1">
          <widget class="QSpinBox" name="spinSimultaneous">
           <property name="minimum">
            <number>1</number>
@@ -746,14 +761,14 @@
           </property>
          </widget>
         </item>
-        <item row="12" column="0">
+        <item row="13" column="0">
          <widget class="QLabel" name="label_83">
           <property name="text">
            <string>When the download is finished</string>
           </property>
          </widget>
         </item>
-        <item row="12" column="1">
+        <item row="13" column="1">
          <widget class="QComboBox" name="comboBatchEnd">
           <item>
            <property name="text">
@@ -782,14 +797,14 @@
           </item>
          </widget>
         </item>
-        <item row="13" column="0">
+        <item row="14" column="0">
          <widget class="QLabel" name="label_19">
           <property name="text">
            <string>If a file already exists</string>
           </property>
          </widget>
         </item>
-        <item row="13" column="1">
+        <item row="14" column="1">
          <widget class="QComboBox" name="comboMd5Duplicates">
           <property name="currentIndex">
            <number>0</number>
@@ -816,31 +831,41 @@
           </item>
          </widget>
         </item>
-        <item row="14" column="0" colspan="2">
+        <item row="15" column="0" colspan="2">
          <widget class="QLabel" name="label_21">
           <property name="text">
            <string>&lt;i&gt;File's identity is based on the MD5 algorithm.&lt;/i&gt;</string>
           </property>
          </widget>
         </item>
-        <item row="15" column="0">
+        <item row="16" column="0">
          <widget class="QLabel" name="label_84">
           <property name="text">
            <string>Automatic redownload</string>
           </property>
          </widget>
         </item>
-        <item row="15" column="1">
+        <item row="16" column="1">
          <widget class="QSpinBox" name="spinAutomaticRetries">
           <property name="maximum">
            <number>100</number>
           </property>
          </widget>
         </item>
-        <item row="8" column="0" colspan="2">
+        <item row="9" column="0" colspan="2">
          <widget class="QCheckBox" name="checkNoJpeg">
           <property name="text">
            <string>Replace JPEG by JPG</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0" colspan="2">
+         <widget class="QCheckBox" name="checkSaveHeaderDetection">
+          <property name="text">
+           <string>Get extension from file header</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -1396,6 +1421,117 @@
         </item>
        </layout>
       </widget>
+      <widget class="QWidget" name="pageSaveSpecies">
+       <layout class="QFormLayout" name="formLayout_23">
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_44">
+          <property name="text">
+           <string>If empty</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="lineSpeciesIfNone">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_85">
+          <property name="text">
+           <string>Separator</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLineEdit" name="lineSpeciesSeparator">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_86">
+          <property name="text">
+           <string>If more than n tags</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QSpinBox" name="spinSpeciesMoreThanN">
+          <property name="maximum">
+           <number>100</number>
+          </property>
+          <property name="value">
+           <number>1</number>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0" colspan="2">
+         <widget class="QRadioButton" name="radioSpeciesKeepAll">
+          <property name="text">
+           <string>Keep all tags</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QRadioButton" name="radioSpeciesKeepN">
+          <property name="text">
+           <string>Keep n tags</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QSpinBox" name="spinSpeciesKeepN"/>
+        </item>
+        <item row="5" column="0">
+         <widget class="QRadioButton" name="radioSpeciesKeepNThenAdd">
+          <property name="text">
+           <string>Keep n tags, then add</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="1">
+         <layout class="QHBoxLayout" name="horizontalLayout_21" stretch="1,1">
+          <item>
+           <widget class="QSpinBox" name="spinSpeciesKeepNThenAdd"/>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="lineSpeciesKeepNThenAdd">
+            <property name="text">
+             <string notr="true"> (+ %count%)</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="6" column="0">
+         <widget class="QRadioButton" name="radioSpeciesReplaceAll">
+          <property name="text">
+           <string>Replace all tags by</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="1">
+         <widget class="QLineEdit" name="lineSpeciesReplaceAll">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="0" colspan="2">
+         <widget class="QRadioButton" name="radioSpeciesMultiple">
+          <property name="text">
+           <string>One file per tag</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
       <widget class="QWidget" name="pageSaveCustomSymbols">
        <layout class="QFormLayout" name="layoutCustom">
         <item row="0" column="0" colspan="2">
@@ -1728,55 +1864,6 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="label_31">
-          <property name="text">
-           <string>Series</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="label_32">
-          <property name="text">
-           <string>Characters</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="0">
-         <widget class="QLabel" name="label_33">
-          <property name="text">
-           <string>Models</string>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="0">
-         <widget class="QLabel" name="label_34">
-          <property name="text">
-           <string>Generals</string>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="0">
-         <widget class="QLabel" name="label_45">
-          <property name="text">
-           <string>Favorites</string>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="0">
-         <widget class="QLabel" name="label_46">
-          <property name="text">
-           <string>Blacklisted</string>
-          </property>
-         </widget>
-        </item>
-        <item row="8" column="0">
-         <widget class="QLabel" name="label_58">
-          <property name="text">
-           <string>Ignored</string>
-          </property>
-         </widget>
-        </item>
         <item row="0" column="1">
          <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="1,0,0">
           <item>
@@ -1795,153 +1882,6 @@
           </item>
           <item>
            <widget class="QPushButton" name="buttonColoringArtistsFont">
-            <property name="text">
-             <string>Font</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item row="2" column="1">
-         <layout class="QHBoxLayout" name="horizontalLayout_4">
-          <item>
-           <widget class="QLineEdit" name="lineColoringCopyrights"/>
-          </item>
-          <item>
-           <widget class="QPushButton" name="buttonColoringCopyrightsColor">
-            <property name="text">
-             <string>Color</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="buttonColoringCopyrightsFont">
-            <property name="text">
-             <string>Font</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item row="3" column="1">
-         <layout class="QHBoxLayout" name="horizontalLayout_5">
-          <item>
-           <widget class="QLineEdit" name="lineColoringCharacters"/>
-          </item>
-          <item>
-           <widget class="QPushButton" name="buttonColoringCharactersColor">
-            <property name="text">
-             <string>Color</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="buttonColoringCharactersFont">
-            <property name="text">
-             <string>Font</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item row="4" column="1">
-         <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="1,0,0">
-          <item>
-           <widget class="QLineEdit" name="lineColoringModels"/>
-          </item>
-          <item>
-           <widget class="QPushButton" name="buttonColoringModelsColor">
-            <property name="text">
-             <string>Color</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="buttonColoringModelsFont">
-            <property name="text">
-             <string>Font</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item row="5" column="1">
-         <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="1,0,0">
-          <item>
-           <widget class="QLineEdit" name="lineColoringGenerals"/>
-          </item>
-          <item>
-           <widget class="QPushButton" name="buttonColoringGeneralsColor">
-            <property name="text">
-             <string>Color</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="buttonColoringGeneralsFont">
-            <property name="text">
-             <string>Font</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item row="6" column="1">
-         <layout class="QHBoxLayout" name="horizontalLayout_10">
-          <item>
-           <widget class="QLineEdit" name="lineColoringFavorites"/>
-          </item>
-          <item>
-           <widget class="QPushButton" name="buttonColoringFavoritesColor">
-            <property name="text">
-             <string>Color</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="buttonColoringFavoritesFont">
-            <property name="text">
-             <string>Font</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item row="7" column="1">
-         <layout class="QHBoxLayout" name="horizontalLayout_11">
-          <item>
-           <widget class="QLineEdit" name="lineColoringBlacklisteds"/>
-          </item>
-          <item>
-           <widget class="QPushButton" name="buttonColoringBlacklistedsColor">
-            <property name="text">
-             <string>Color</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="buttonColoringBlacklistedsFont">
-            <property name="text">
-             <string>Font</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item row="8" column="1">
-         <layout class="QHBoxLayout" name="horizontalLayout_12">
-          <item>
-           <widget class="QLineEdit" name="lineColoringIgnoreds"/>
-          </item>
-          <item>
-           <widget class="QPushButton" name="buttonColoringIgnoredsColor">
-            <property name="text">
-             <string>Color</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="buttonColoringIgnoredsFont">
             <property name="text">
              <string>Font</string>
             </property>
@@ -1977,7 +1917,244 @@
           </item>
          </layout>
         </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_31">
+          <property name="text">
+           <string>Series</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <item>
+           <widget class="QLineEdit" name="lineColoringCopyrights"/>
+          </item>
+          <item>
+           <widget class="QPushButton" name="buttonColoringCopyrightsColor">
+            <property name="text">
+             <string>Color</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="buttonColoringCopyrightsFont">
+            <property name="text">
+             <string>Font</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_32">
+          <property name="text">
+           <string>Characters</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <layout class="QHBoxLayout" name="horizontalLayout_5">
+          <item>
+           <widget class="QLineEdit" name="lineColoringCharacters"/>
+          </item>
+          <item>
+           <widget class="QPushButton" name="buttonColoringCharactersColor">
+            <property name="text">
+             <string>Color</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="buttonColoringCharactersFont">
+            <property name="text">
+             <string>Font</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="5" column="0">
+         <widget class="QLabel" name="label_33">
+          <property name="text">
+           <string>Models</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="1">
+         <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="1,0,0">
+          <item>
+           <widget class="QLineEdit" name="lineColoringModels"/>
+          </item>
+          <item>
+           <widget class="QPushButton" name="buttonColoringModelsColor">
+            <property name="text">
+             <string>Color</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="buttonColoringModelsFont">
+            <property name="text">
+             <string>Font</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="6" column="0">
+         <widget class="QLabel" name="label_34">
+          <property name="text">
+           <string>Generals</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="1">
+         <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="1,0,0">
+          <item>
+           <widget class="QLineEdit" name="lineColoringGenerals"/>
+          </item>
+          <item>
+           <widget class="QPushButton" name="buttonColoringGeneralsColor">
+            <property name="text">
+             <string>Color</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="buttonColoringGeneralsFont">
+            <property name="text">
+             <string>Font</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="7" column="0">
+         <widget class="QLabel" name="label_45">
+          <property name="text">
+           <string>Favorites</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="1">
+         <layout class="QHBoxLayout" name="horizontalLayout_10">
+          <item>
+           <widget class="QLineEdit" name="lineColoringFavorites"/>
+          </item>
+          <item>
+           <widget class="QPushButton" name="buttonColoringFavoritesColor">
+            <property name="text">
+             <string>Color</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="buttonColoringFavoritesFont">
+            <property name="text">
+             <string>Font</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="8" column="0">
+         <widget class="QLabel" name="label_46">
+          <property name="text">
+           <string>Blacklisted</string>
+          </property>
+         </widget>
+        </item>
+        <item row="8" column="1">
+         <layout class="QHBoxLayout" name="horizontalLayout_11">
+          <item>
+           <widget class="QLineEdit" name="lineColoringBlacklisteds"/>
+          </item>
+          <item>
+           <widget class="QPushButton" name="buttonColoringBlacklistedsColor">
+            <property name="text">
+             <string>Color</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="buttonColoringBlacklistedsFont">
+            <property name="text">
+             <string>Font</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="9" column="0">
+         <widget class="QLabel" name="label_58">
+          <property name="text">
+           <string>Ignored</string>
+          </property>
+         </widget>
+        </item>
+        <item row="9" column="1">
+         <layout class="QHBoxLayout" name="horizontalLayout_12">
+          <item>
+           <widget class="QLineEdit" name="lineColoringIgnoreds"/>
+          </item>
+          <item>
+           <widget class="QPushButton" name="buttonColoringIgnoredsColor">
+            <property name="text">
+             <string>Color</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="buttonColoringIgnoredsFont">
+            <property name="text">
+             <string>Font</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="label_87">
+          <property name="text">
+           <string>Species</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <layout class="QHBoxLayout" name="horizontalLayout_22">
+          <item>
+           <widget class="QLineEdit" name="lineColoringSpecies"/>
+          </item>
+          <item>
+           <widget class="QPushButton" name="buttonColoringSpeciesColor">
+            <property name="text">
+             <string>Color</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="buttonColoringSpeciesFont">
+            <property name="text">
+             <string>Font</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
        </layout>
+       <zorder>label_30</zorder>
+       <zorder>label_31</zorder>
+       <zorder>label_32</zorder>
+       <zorder>label_33</zorder>
+       <zorder>label_34</zorder>
+       <zorder>label_45</zorder>
+       <zorder>label_46</zorder>
+       <zorder>label_58</zorder>
+       <zorder>label_15</zorder>
+       <zorder>buttonColoringCharactersColor_2</zorder>
+       <zorder>lineColoringFavorites</zorder>
+       <zorder>label_87</zorder>
+       <zorder>layoutWidget_2</zorder>
       </widget>
       <widget class="QWidget" name="pageInterfaceMargins">
        <layout class="QFormLayout" name="formLayout_9">
@@ -2391,16 +2568,6 @@
        </layout>
       </widget>
      </widget>
-    </widget>
-   </item>
-   <item row="1" column="0">
-    <widget class="QDialogButtonBox" name="buttonBox">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-     </property>
     </widget>
    </item>
   </layout>

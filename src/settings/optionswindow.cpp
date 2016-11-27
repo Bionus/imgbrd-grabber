@@ -128,6 +128,7 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 		ui->checkSampleFallback->setChecked(settings->value("samplefallback", true).toBool());
 		ui->checkReplaceBlanks->setChecked(settings->value("replaceblanks", false).toBool());
 		ui->checkKeepDate->setChecked(settings->value("keepDate", true).toBool());
+		ui->checkSaveHeaderDetection->setChecked(settings->value("headerDetection", true).toBool());
 		ui->lineFolder->setText(settings->value("path_real").toString());
 		ui->lineFolderFavorites->setText(settings->value("path_favorites").toString());
 		QStringList opts = QStringList() << "save" << "copy" << "move" << "ignore";
@@ -136,6 +137,7 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 		ui->lineFavorites->setText(settings->value("filename_favorites").toString());
 		ui->lineSeparator->setText(settings->value("separator", " ").toString());
 		ui->checkNoJpeg->setChecked(settings->value("noJpeg", true).toBool());
+
 		ui->lineArtistsIfNone->setText(settings->value("artist_empty", "anonymous").toString());
 		ui->spinArtistsMoreThanN->setValue(settings->value("artist_multiple_limit", 1).toInt());
 		ui->spinArtistsKeepN->setValue(settings->value("artist_multiple_keepN", 1).toInt());
@@ -149,6 +151,7 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 		else if	(artistMultiple == "keepNThenAdd")	{ ui->radioArtistsKeepNThenAdd->setChecked(true);	}
 		else if	(artistMultiple == "replaceAll")	{ ui->radioArtistsReplaceAll->setChecked(true);		}
 		else if	(artistMultiple == "multiple")		{ ui->radioArtistsMultiple->setChecked(true);		}
+
 		ui->lineCopyrightsIfNone->setText(settings->value("copyright_empty", "misc").toString());
 		ui->checkCopyrightsUseShorter->setChecked(settings->value("copyright_useshorter", true).toBool());
 		ui->spinCopyrightsMoreThanN->setValue(settings->value("copyright_multiple_limit", 1).toInt());
@@ -163,6 +166,7 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 		else if	(copyrightMultiple == "keepNThenAdd")	{ ui->radioCopyrightsKeepNThenAdd->setChecked(true);	}
 		else if	(copyrightMultiple == "replaceAll")		{ ui->radioCopyrightsReplaceAll->setChecked(true);		}
 		else if	(copyrightMultiple == "multiple")		{ ui->radioCopyrightsMultiple->setChecked(true);		}
+
 		ui->lineCharactersIfNone->setText(settings->value("character_empty", "unknown").toString());
 		ui->spinCharactersMoreThanN->setValue(settings->value("character_multiple_limit", 1).toInt());
 		ui->spinCharactersKeepN->setValue(settings->value("character_multiple_keepN", 1).toInt());
@@ -176,6 +180,21 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 		else if	(characterMultiple == "keepNThenAdd")	{ ui->radioCharactersKeepNThenAdd->setChecked(true);	}
 		else if	(characterMultiple == "replaceAll")		{ ui->radioCharactersReplaceAll->setChecked(true);		}
 		else if	(characterMultiple == "multiple")		{ ui->radioCharactersMultiple->setChecked(true);		}
+
+		ui->lineSpeciesIfNone->setText(settings->value("species_empty", "unknown").toString());
+		ui->spinSpeciesMoreThanN->setValue(settings->value("species_multiple_limit", 1).toInt());
+		ui->spinSpeciesKeepN->setValue(settings->value("species_multiple_keepN", 1).toInt());
+		ui->spinSpeciesKeepNThenAdd->setValue(settings->value("species_multiple_keepNThenAdd_keep", 1).toInt());
+		ui->lineSpeciesKeepNThenAdd->setText(settings->value("species_multiple_keepNThenAdd_add", " (+ %count%)").toString());
+		ui->lineSpeciesSeparator->setText(settings->value("species_sep", "+").toString());
+		ui->lineSpeciesReplaceAll->setText(settings->value("species_value", "multiple").toString());
+		QString speciesMultiple = settings->value("species_multiple", "keepAll").toString();
+		if		(speciesMultiple == "keepAll")		{ ui->radioSpeciesKeepAll->setChecked(true);		}
+		else if	(speciesMultiple == "keepN")		{ ui->radioSpeciesKeepN->setChecked(true);			}
+		else if	(speciesMultiple == "keepNThenAdd")	{ ui->radioSpeciesKeepNThenAdd->setChecked(true);	}
+		else if	(speciesMultiple == "replaceAll")	{ ui->radioSpeciesReplaceAll->setChecked(true);		}
+		else if	(speciesMultiple == "multiple")		{ ui->radioSpeciesMultiple->setChecked(true);		}
+
 		ui->spinLimit->setValue(settings->value("limit", 0).toInt());
 		ui->spinSimultaneous->setValue(settings->value("simultaneous", 1).toInt());
 	settings->endGroup();
@@ -205,6 +224,7 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 			ui->lineColoringCircles->setText(settings->value("circles", "#55bbff").toString());
 			ui->lineColoringCopyrights->setText(settings->value("copyrights", "#aa00aa").toString());
 			ui->lineColoringCharacters->setText(settings->value("characters", "#00aa00").toString());
+			ui->lineColoringSpecies->setText(settings->value("species", "#ee6600").toString());
 			ui->lineColoringModels->setText(settings->value("models", "#0000ee").toString());
 			ui->lineColoringGenerals->setText(settings->value("generals", "#000000").toString());
 			ui->lineColoringFavorites->setText(settings->value("favorites", "#ffc0cb").toString());
@@ -212,11 +232,12 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 			ui->lineColoringIgnoreds->setText(settings->value("ignoreds", "#999999").toString());
 		settings->endGroup();
 		settings->beginGroup("Fonts");
-			QFont fontArtists, fontCircles, fontCopyrights, fontCharacters, fontModels, fontGenerals, fontFavorites, fontBlacklisteds, fontIgnoreds;
+			QFont fontArtists, fontCircles, fontCopyrights, fontCharacters, fontSpecies, fontModels, fontGenerals, fontFavorites, fontBlacklisteds, fontIgnoreds;
 			fontArtists.fromString(settings->value("artists").toString());
 			fontCircles.fromString(settings->value("circles").toString());
 			fontCopyrights.fromString(settings->value("copyrights").toString());
 			fontCharacters.fromString(settings->value("characters").toString());
+			fontSpecies.fromString(settings->value("species").toString());
 			fontModels.fromString(settings->value("models").toString());
 			fontGenerals.fromString(settings->value("generals").toString());
 			fontFavorites.fromString(settings->value("favorites").toString());
@@ -226,6 +247,7 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 			ui->lineColoringCircles->setFont(fontCircles);
 			ui->lineColoringCopyrights->setFont(fontCopyrights);
 			ui->lineColoringCharacters->setFont(fontCharacters);
+			ui->lineColoringSpecies->setFont(fontSpecies);
 			ui->lineColoringModels->setFont(fontModels);
 			ui->lineColoringGenerals->setFont(fontGenerals);
 			ui->lineColoringFavorites->setFont(fontFavorites);
@@ -378,6 +400,8 @@ void optionsWindow::on_lineColoringCopyrights_textChanged()
 { setColor(ui->lineColoringCopyrights); }
 void optionsWindow::on_lineColoringCharacters_textChanged()
 { setColor(ui->lineColoringCharacters); }
+void optionsWindow::on_lineColoringSpecies_textChanged()
+{ setColor(ui->lineColoringSpecies); }
 void optionsWindow::on_lineColoringModels_textChanged()
 { setColor(ui->lineColoringModels); }
 void optionsWindow::on_lineColoringGenerals_textChanged()
@@ -399,6 +423,8 @@ void optionsWindow::on_buttonColoringCopyrightsColor_clicked()
 { setColor(ui->lineColoringCopyrights, true); }
 void optionsWindow::on_buttonColoringCharactersColor_clicked()
 { setColor(ui->lineColoringCharacters, true); }
+void optionsWindow::on_buttonColoringSpeciesColor_clicked()
+{ setColor(ui->lineColoringSpecies, true); }
 void optionsWindow::on_buttonColoringModelsColor_clicked()
 { setColor(ui->lineColoringModels, true); }
 void optionsWindow::on_buttonColoringGeneralsColor_clicked()
@@ -420,6 +446,8 @@ void optionsWindow::on_buttonColoringCopyrightsFont_clicked()
 { setFont(ui->lineColoringCopyrights); }
 void optionsWindow::on_buttonColoringCharactersFont_clicked()
 { setFont(ui->lineColoringCharacters); }
+void optionsWindow::on_buttonColoringSpeciesFont_clicked()
+{ setFont(ui->lineColoringSpecies); }
 void optionsWindow::on_buttonColoringModelsFont_clicked()
 { setFont(ui->lineColoringModels); }
 void optionsWindow::on_buttonColoringGeneralsFont_clicked()
@@ -555,6 +583,7 @@ void optionsWindow::save()
 		settings->setValue("samplefallback", ui->checkSampleFallback->isChecked());
 		settings->setValue("replaceblanks", ui->checkReplaceBlanks->isChecked());
 		settings->setValue("keepDate", ui->checkKeepDate->isChecked());
+		settings->setValue("headerDetection", ui->checkSaveHeaderDetection->isChecked());
 		settings->setValue("separator", ui->lineSeparator->text());
 		settings->setValue("noJpeg", ui->checkNoJpeg->isChecked());
 		QString folder = fixFilename("", ui->lineFolder->text());
@@ -610,6 +639,7 @@ void optionsWindow::save()
 		settings->setValue("artist_multiple_keepNThenAdd_add", ui->lineArtistsKeepNThenAdd->text());
 		settings->setValue("artist_sep", ui->lineArtistsSeparator->text());
 		settings->setValue("artist_value", ui->lineArtistsReplaceAll->text());
+
 		settings->setValue("copyright_empty", ui->lineCopyrightsIfNone->text());
 		settings->setValue("copyright_useshorter", ui->checkCopyrightsUseShorter->isChecked());
 		QString copyrightMultiple;
@@ -625,6 +655,7 @@ void optionsWindow::save()
 		settings->setValue("copyright_multiple_keepNThenAdd_add", ui->lineCopyrightsKeepNThenAdd->text());
 		settings->setValue("copyright_sep", ui->lineCopyrightsSeparator->text());
 		settings->setValue("copyright_value", ui->lineCopyrightsReplaceAll->text());
+
 		settings->setValue("character_empty", ui->lineCharactersIfNone->text());
 		QString characterMultiple;
 		if		(ui->radioCharactersKeepAll->isChecked())		{ characterMultiple = "keepAll";		}
@@ -639,6 +670,22 @@ void optionsWindow::save()
 		settings->setValue("character_multiple_keepNThenAdd_add", ui->lineCharactersKeepNThenAdd->text());
 		settings->setValue("character_sep", ui->lineCharactersSeparator->text());
 		settings->setValue("character_value", ui->lineCharactersReplaceAll->text());
+
+		settings->setValue("species_empty", ui->lineSpeciesIfNone->text());
+		QString speciesMultiple;
+		if		(ui->radioSpeciesKeepAll->isChecked())		{ speciesMultiple = "keepAll";		}
+		else if	(ui->radioSpeciesKeepN->isChecked())		{ speciesMultiple = "keepN";		}
+		else if	(ui->radioSpeciesKeepNThenAdd->isChecked())	{ speciesMultiple = "keepNThenAdd";	}
+		else if	(ui->radioSpeciesReplaceAll->isChecked())	{ speciesMultiple = "replaceAll";	}
+		else if	(ui->radioSpeciesMultiple->isChecked())		{ speciesMultiple = "multiple";		}
+		settings->setValue("species_multiple", speciesMultiple);
+		settings->setValue("species_multiple_limit", ui->spinSpeciesMoreThanN->value());
+		settings->setValue("species_multiple_keepN", ui->spinSpeciesKeepN->value());
+		settings->setValue("species_multiple_keepNThenAdd_keep", ui->spinSpeciesKeepNThenAdd->value());
+		settings->setValue("species_multiple_keepNThenAdd_add", ui->lineSpeciesKeepNThenAdd->text());
+		settings->setValue("species_sep", ui->lineSpeciesSeparator->text());
+		settings->setValue("species_value", ui->lineSpeciesReplaceAll->text());
+
 		settings->setValue("limit", ui->spinLimit->value());
 		settings->setValue("simultaneous", ui->spinSimultaneous->value());
 		settings->beginGroup("Customs");
@@ -660,6 +707,7 @@ void optionsWindow::save()
 			settings->setValue("circles", ui->lineColoringCircles->text());
 			settings->setValue("copyrights", ui->lineColoringCopyrights->text());
 			settings->setValue("characters", ui->lineColoringCharacters->text());
+			settings->setValue("species", ui->lineColoringSpecies->text());
 			settings->setValue("models", ui->lineColoringModels->text());
 			settings->setValue("generals", ui->lineColoringGenerals->text());
 			settings->setValue("favorites", ui->lineColoringFavorites->text());
@@ -671,6 +719,7 @@ void optionsWindow::save()
 			settings->setValue("circles", ui->lineColoringCircles->font().toString());
 			settings->setValue("copyrights", ui->lineColoringCopyrights->font().toString());
 			settings->setValue("characters", ui->lineColoringCharacters->font().toString());
+			settings->setValue("species", ui->lineColoringSpecies->font().toString());
 			settings->setValue("models", ui->lineColoringModels->font().toString());
 			settings->setValue("generals", ui->lineColoringGenerals->font().toString());
 			settings->setValue("favorites", ui->lineColoringFavorites->font().toString());

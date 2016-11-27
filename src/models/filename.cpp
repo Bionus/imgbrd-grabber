@@ -20,7 +20,7 @@ QList<QMap<QString, QPair<QString, QString>>> Filename::getReplaces(QString file
 	QList<QMap<QString, QPair<QString, QString>>> ret;
 	QSettings *settings = profile->getSettings();
 
-	QString tagSeparator = settings->value("Save/separator", " ").toString();
+	QString tagSeparator = fixSeparator(settings->value("Save/separator", " ").toString());
 	QMap<QString, QStringList> details = makeDetails(img, profile, settings);
 
 	// Pool
@@ -75,7 +75,7 @@ QList<QMap<QString, QPair<QString, QString>>> Filename::getReplaces(QString file
 		l.removeAt(index);
 		namespaces.removeAt(index);
 	}
-	replaces.insert("all", QStrP(l.join(tagSeparator), ""));
+	replaces.insert("all", QStrP(l.join(TAGS_SEPARATOR), ""));
 	replaces.insert("all_namespaces", QStrP(namespaces.join(" "), ""));
 
 	ret.append(replaces);
@@ -338,6 +338,15 @@ QStringList Filename::path(const Image& img, Profile *profile, QString pth, int 
 			{
 				QString key = keys.at(i);
 				QString res = replaces[key].first.isEmpty() ? replaces[key].second : replaces[key].first;
+
+				if (key == "all" || key == "tags" || key == "general" || key == "artist" || key == "copyright" || key == "character")
+				{
+					QStringList vals = res.split(TAGS_SEPARATOR);
+					QString mainSeparator = fixSeparator(settings->value("Save/separator", " ").toString());
+					QString tagSeparator = fixSeparator(settings->value(key + "_sep", mainSeparator).toString());
+					res = vals.join(tagSeparator);
+				}
+
 				if (key != "allo")
 				{
 					res = res.replace("\\", "_").replace("%", "_").replace("/", "_").replace(":", "_").replace("|", "_").replace("*", "_").replace("?", "_").replace("\"", "_").replace("<", "_").replace(">", "_").replace("__", "_").replace("__", "_").replace("__", "_").trimmed();
@@ -367,7 +376,7 @@ QStringList Filename::path(const Image& img, Profile *profile, QString pth, int 
 	{
 		// We get path and remove useless slashes from filename
 		pth.replace("\\", "/");
-		filename.replace("\\", "/");
+		//filename.replace("\\", "/");
 		if (filename.left(1) == "/")
 		{ filename = filename.right(filename.length() - 1); }
 		if (pth.right(1) == "/")
@@ -471,7 +480,7 @@ QStringList Filename::path(const Image& img, Profile *profile, QString pth, int 
 }
 QString Filename::optionedValue(QString res, QString key, QString ops, const Image& img, QSettings *settings, QStringList namespaces) const
 {
-	QString tagSeparator = settings->value("Save/separator", " ").toString();
+	QString mainSeparator = fixSeparator(settings->value("Save/separator", " ").toString());
 
 	// Parse options
 	QMap<QString,QString> options;
@@ -498,7 +507,7 @@ QString Filename::optionedValue(QString res, QString key, QString ops, const Ima
 	if (key == "all" || key == "tags" || key == "general" || key == "artist" || key == "copyright" || key == "character")
 	{
 		QStringList vals = res.split(TAGS_SEPARATOR);
-		tagSeparator = settings->value(key + "_sep", tagSeparator).toString();
+		QString tagSeparator = fixSeparator(settings->value(key + "_sep", mainSeparator).toString());
 
 		// Namespaces
 		if (options.contains("includenamespace"))
@@ -516,20 +525,28 @@ QString Filename::optionedValue(QString res, QString key, QString ops, const Ima
 			vals = namespaced;
 		}
 		if (options.contains("separator"))
-		{ tagSeparator = options["separator"]; }
+		{ tagSeparator = fixSeparator(options["separator"]); }
 
 		res = vals.join(tagSeparator);
 	}
 
 	// Forbidden characters and spaces replacement settings
-	if (key != "allo" && !key.startsWith("url_") && !options.contains("unsafe"))
+	if (key != "allo" && !key.startsWith("url_"))
 	{
-		res = res.replace("\\", "_").replace("%", "_").replace("/", "_").replace(":", "_").replace("|", "_").replace("*", "_").replace("?", "_").replace("\"", "_").replace("<", "_").replace(">", "_").replace("__", "_").replace("__", "_").replace("__", "_").trimmed();
-		if (!settings->value("Save/replaceblanks", false).toBool())
+		if (!options.contains("unsafe"))
+		{ res = res.replace("\\", "_").replace("%", "_").replace("/", "_").replace(":", "_").replace("|", "_").replace("*", "_").replace("?", "_").replace("\"", "_").replace("<", "_").replace(">", "_").replace("__", "_").replace("__", "_").replace("__", "_").trimmed(); }
+		if (!options.contains("underscores") && (!settings->value("Save/replaceblanks", false).toBool() || options.contains("spaces")))
 		{ res = res.replace("_", " "); }
 	}
 
 	return res;
+}
+
+QString Filename::fixSeparator(QString separator) const
+{
+	return QString(separator)
+		.replace("\\n", "\n")
+		.replace("\\r", "\r");
 }
 
 QString Filename::getFormat() const

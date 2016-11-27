@@ -13,6 +13,7 @@
 #include "imagethread.h"
 #include "ui_zoomwindow.h"
 #include "models/filename.h"
+#include "functions.h"
 
 #include <QMediaPlaylist>
 
@@ -518,6 +519,7 @@ void zoomWindow::replyFinishedZoom()
 	{
 		m_data.append(m_reply->readAll());
 		m_image->setData(m_data);
+		m_url = m_url.section('.', 0, -2) + "." + getExtension(m_image->url());
 		m_loadedImage = true;
 		pendingUpdate();
 

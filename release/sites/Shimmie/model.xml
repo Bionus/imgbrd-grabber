@@ -3,6 +3,7 @@
 	<Name>Shimmie</Name>
 	<Urls>
 		<Image>/_images/{md5}.{ext}|/_images/{id}.{ext}</Image>
+		<Preview>/_thumbs/{md5}.jpg|/_thumbs/{id}.jpg</Preview>
 		<Html>
 			<Home>/post/list/{page}</Home>
 			<Tags>/post/list/{tags}/{page}</Tags>

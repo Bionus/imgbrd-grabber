@@ -22,7 +22,7 @@ class QBouton : public QPushButton
 
 	public slots:
 		void setId(QVariant);
-		void scale(QPixmap &image, float scale);
+		void scale(const QPixmap &image, float scale);
 		void paintEvent(QPaintEvent *event);
 		
 	signals:

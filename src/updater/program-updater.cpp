@@ -17,7 +17,7 @@ ProgramUpdater::ProgramUpdater(QString baseUrl)
 
 void ProgramUpdater::checkForUpdates()
 {
-	QUrl url(m_baseUrl + "/releases");
+	QUrl url(m_baseUrl + "/releases/latest");
 	QNetworkRequest request(url);
 
 	m_checkForUpdatesReply = m_networkAccessManager.get(request);
@@ -29,7 +29,7 @@ void ProgramUpdater::checkForUpdatesDone()
 	m_source = m_checkForUpdatesReply->readAll();
 
 	QVariant json = Json::parse(m_source);
-	QMap<QString, QVariant> lastRelease = json.toList().first().toMap();
+	QMap<QString, QVariant> lastRelease = json.toMap();
 
 	QString latest = lastRelease["name"].toString().mid(1);
 	QString changelog = lastRelease["body"].toString();
@@ -44,7 +44,7 @@ void ProgramUpdater::checkForUpdatesDone()
 void ProgramUpdater::downloadUpdate()
 {
 	QVariant json = Json::parse(m_source);
-	QMap<QString, QVariant> lastRelease = json.toList().first().toMap();
+	QMap<QString, QVariant> lastRelease = json.toMap();
 	QMap<QString, QVariant> lastAsset = lastRelease["assets"].toList().first().toMap();
 
 	QUrl url(lastAsset["browser_download_url"].toString());
