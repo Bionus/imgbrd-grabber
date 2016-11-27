@@ -74,9 +74,9 @@ class Image : public QObject
 		QUrl		previewUrl() const;
 		QSize		size() const;
 		QPixmap		previewImage() const;
-		QPixmap		&previewImage();
+		const QPixmap &previewImage();
 		Page		*page() const;
-		QByteArray	data() const;
+		const QByteArray &data() const;
 		QSettings	*settings() const;
 		Site		*parentSite() const;
 		QNetworkReply	*imageReply() const;
