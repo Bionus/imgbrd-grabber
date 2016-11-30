@@ -16,6 +16,7 @@
 #include "functions.h"
 
 #include <QMediaPlaylist>
+#include <QScrollBar>
 
 
 
@@ -144,6 +145,7 @@ void zoomWindow::go()
 	{
 		m_labelTagsTop->hide();
 		m_labelTagsLeft->setText(m_image->stylishedTags(m_profile).join("<br/>"));
+		m_labelTagsLeft->setMinimumWidth(m_labelTagsLeft->sizeHint().width() + ui->scrollArea->verticalScrollBar()->sizeHint().width());
 	}
 
 	m_detailsWindow = new detailsWindow(m_profile, this);
