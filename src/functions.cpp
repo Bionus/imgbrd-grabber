@@ -406,7 +406,7 @@ void openTray()
 void clearLayout(QLayout *layout)
 {
 	QLayoutItem *item;
-	while((item = layout->takeAt(0)))
+	while ((item = layout->takeAt(0)))
 	{
 		if (item->layout())
 		{

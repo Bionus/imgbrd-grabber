@@ -88,16 +88,7 @@ void tagTab::closeEvent(QCloseEvent *e)
 void tagTab::load()
 {
 	bool resultsScrollArea = m_settings->value("resultsScrollArea", false).toBool();
-
-	// Clear results layout
-	/*ui->widgetResults->deleteLater();
-	ui->widgetResults = new QWidget(this);
-	ui->scrollAreaResults->setWidget(ui->widgetResults);
-	ui->layoutResults->deleteLater();
-	ui->layoutResults = new QGridLayout(ui->widgetResults);*/
 	ui->scrollAreaResults->setScrollEnabled(resultsScrollArea);
-	ui_layoutResults = ui->layoutResults;
-	//ui->widgetResults->setMaximumSize(ui->scrollAreaResults->width(), 16777215);
 
 	// Get the search values
 	QString search = m_search->toPlainText();

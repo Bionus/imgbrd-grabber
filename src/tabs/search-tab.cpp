@@ -201,6 +201,8 @@ void searchTab::clear()
 	m_parent->setWiki("");
 
 	// Clear layout
+	for (int i = 0; i < ui_layoutResults->rowCount(); ++i)
+	{ ui_layoutResults->setRowMinimumHeight(i, 0); }
 	for (Site *site : m_layouts.keys())
 	{ clearLayout(m_layouts[site]); }
 	qDeleteAll(m_layouts);
