@@ -977,6 +977,12 @@ void zoomWindow::load(QSharedPointer<Image> image)
 		}
 	}
 
+	// Reset buttons
+	ui->buttonSave->setText(tr("Save"));
+	ui->buttonSaveFav->setText(tr("Save"));
+	ui->buttonSaveNQuit->setText(tr("Save and close"));
+	ui->buttonSaveNQuitFav->setText(tr("Save and close"));
+
 	prepareNextSlide();
 	go();
 }
