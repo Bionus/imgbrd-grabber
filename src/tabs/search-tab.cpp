@@ -453,7 +453,7 @@ void searchTab::addResultsPage(Page *page, const QList<QSharedPointer<Image>> &i
 	int page_x = pos % ui_spinColumns->value();
 	int page_y = (pos / ui_spinColumns->value()) * 2;
 	ui_layoutResults->addWidget(txt, page_y, page_x);
-	ui_layoutResults->setRowMinimumHeight(page_y, height() / 20);
+	ui_layoutResults->setRowMinimumHeight(page_y, txt->sizeHint().height() + 10);
 
 	if (m_layouts.size() > pos)
 	{ ui_layoutResults->addLayout(m_layouts[page->site()], page_y + 1, page_x); }
