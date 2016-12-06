@@ -176,6 +176,7 @@ void Site::login(bool force)
 
 		m_loginPage = new Page(m_source->getProfile(), this, QList<Site*>() << this, QStringList(), maxPageAnonymous);
 		connect(m_loginPage, &Page::finishedLoading, this, &Site::loginFinished);
+		connect(m_loginPage, &Page::failedLoading, this, &Site::loginFinished);
 		m_loginPage->load();
 
 		return;
