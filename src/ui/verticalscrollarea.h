@@ -14,6 +14,9 @@ class VerticalScrollArea : public QScrollArea
 		virtual void resizeEvent(QResizeEvent *event);
 		void setScrollEnabled(bool enabled);
 
+	protected:
+		void updateWidgetSize();
+
 	private:
 		bool m_scrollEnabled;
 };
