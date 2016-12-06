@@ -407,7 +407,7 @@ void zoomWindow::display(QPixmap *pix, int size)
 		{ update(!m_finished); }
 		m_thread = false;
 
-		if (m_fullScreen != nullptr && m_fullScreen->isVisible())
+		if (m_isFullscreen && m_fullScreen != nullptr && m_fullScreen->isVisible())
 		{ m_fullScreen->setImage(image->scaled(QApplication::desktop()->screenGeometry().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation)); }
 	}
 }
@@ -625,6 +625,9 @@ void zoomWindow::draw()
 		this->movie->start();
 
 		this->image = nullptr;
+
+		if (m_isFullscreen && m_fullScreen != nullptr && m_fullScreen->isVisible())
+		{ m_fullScreen->setMovie(movie); }
 		return;
 	}
 
@@ -653,6 +656,9 @@ void zoomWindow::draw()
 		m_loadedImage = true;
 		pendingUpdate();
 		update();
+
+		if (m_isFullscreen && m_fullScreen != nullptr && m_fullScreen->isVisible())
+		{ m_fullScreen->setImage(image->scaled(QApplication::desktop()->screenGeometry().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation)); }
 	}
 	else
 	{
