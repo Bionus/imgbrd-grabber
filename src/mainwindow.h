@@ -173,6 +173,7 @@ class mainWindow : public QMainWindow
 		void getAllImageOk(QSharedPointer<Image> img, int site_id, bool del = true);
 		QList<Site*> getSelectedSites();
 		Site* getSelectedSiteOrDefault();
+		void initialLoginsDone();
 
 	private:
 		Profile				*m_profile;

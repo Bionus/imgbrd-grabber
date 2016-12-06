@@ -161,22 +161,27 @@ void mainWindow::init()
 	QStringList keys = m_sites.keys();
 	QString sav = m_settings->value("sites", "1").toString();
 	m_waitForLogin = 0;
+	QList<Site*> requiredLogins;
 	for (int i = 0; i < m_sites.count(); i++)
 	{
 		if (i < sav.count() && sav[i] == '1')
 		{
 			m_selectedSources.append(true);
 			connect(m_sites[keys[i]], &Site::loggedIn, this, &mainWindow::initialLoginsFinished);
-			m_sites[keys[i]]->login();
-			m_waitForLogin++;
+			requiredLogins.append(m_sites[keys[i]]);
 		}
 		else
 		{ m_selectedSources.append(false); }
 	}
-	if (m_waitForLogin == 0)
+	if (requiredLogins.isEmpty())
 	{
-		m_waitForLogin = 1;
-		initialLoginsFinished();
+		initialLoginsDone();
+	}
+	else
+	{
+		m_waitForLogin += requiredLogins.count();
+		for (Site *site : requiredLogins)
+			site->login();
 	}
 
 	// Favorites tab
@@ -236,10 +241,17 @@ void mainWindow::init()
 
 void mainWindow::initialLoginsFinished()
 {
+	disconnect((Site*)sender(), &Site::loggedIn, this, &mainWindow::initialLoginsFinished);
+
 	m_waitForLogin--;
 	if (m_waitForLogin != 0)
-	{ return; }
+		return;
 
+	initialLoginsDone();
+}
+
+void mainWindow::initialLoginsDone()
+{
 	if (m_restore)
 	{
 		loadLinkList(m_profile->getPath() + "/restore.igl");
