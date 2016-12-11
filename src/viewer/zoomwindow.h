@@ -69,6 +69,10 @@ class zoomWindow : public QDialog
 		void showDetails();
 		void pendingUpdate();
 
+		// Context menus
+		void imageContextMenu();
+		void copyImageFileToClipboard();
+
 		// Full screen
 		void fullScreen();
 		void unfullScreen();
@@ -120,6 +124,7 @@ class zoomWindow : public QDialog
 		QMap<QString,Site*> *m_sites;
 		QString m_source;
 		ImageThread *m_th;
+		QString m_imagePath;
 
 		QAffiche *m_fullScreen;
 		QTimer m_slideshow;

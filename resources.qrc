@@ -46,5 +46,6 @@
         <file>images/icons/bug.png</file>
         <file>images/icons/tab-poolplus.png</file>
         <file>images/flash.png</file>
+        <file>images/icons/copy.png</file>
     </qresource>
 </RCC>
