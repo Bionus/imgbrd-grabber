@@ -68,6 +68,7 @@ class zoomWindow : public QDialog
 		void urlChanged(QString, QString);
 		void showDetails();
 		void pendingUpdate();
+		void updateButtonPlus();
 
 		// Context menus
 		void imageContextMenu();

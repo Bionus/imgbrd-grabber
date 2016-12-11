@@ -81,6 +81,7 @@ zoomWindow::zoomWindow(QList<QSharedPointer<Image> > images, QSharedPointer<Imag
 		m_mediaPlayer->setVideoOutput(m_videoWidget);
 
 	connect(ui->buttonDetails, SIGNAL(clicked()), this, SLOT(showDetails()));
+	connect(ui->buttonPlus, &QPushButton::toggled, this, &zoomWindow::updateButtonPlus);
 
 	m_labelImage->setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(m_labelImage, &QAffiche::customContextMenuRequested, this, &zoomWindow::imageContextMenu);
@@ -1057,4 +1058,9 @@ void zoomWindow::previous()
 	index = (index + m_images.count() - 1) % m_images.count();
 
 	load(m_images[index]);
+}
+
+void zoomWindow::updateButtonPlus()
+{
+	ui->buttonPlus->setText(ui->buttonPlus->isChecked() ? "-" : "+");
 }
