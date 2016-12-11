@@ -1019,9 +1019,10 @@ void	Image::setData(const QByteArray &d)
 	if (headerDetection)
 	{
 		QString ext = getExtensionFromHeader(m_data.left(12));
-		if (!ext.isEmpty())
+		QString currentExt = getExtension(m_url);
+		if (!ext.isEmpty() && ext != currentExt)
 		{
-			log(QString("Setting image extension from header: '%1' (was '%2').").arg(ext, getExtension(m_url)), Info);
+			log(QString("Setting image extension from header: '%1' (was '%2').").arg(ext, currentExt), Info);
 			setFileExtension(ext);
 		}
 	}

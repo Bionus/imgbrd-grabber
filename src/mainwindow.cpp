@@ -132,18 +132,18 @@ void mainWindow::init()
 	if (crashed)
 	{
 		log("It seems that Imgbrd-Grabber hasn't shut down properly last time.");
+
+		QString msg;
 		if (m_restore)
-		{
-			int reponse = QMessageBox::question(this, "", tr("It seems that the application was not properly closed for its last use. Do you want to start without restoring your last session?"), QMessageBox::Yes | QMessageBox::No);
-			if (reponse == QMessageBox::Yes)
-				m_restore = false;
-		}
+			msg = tr("It seems that the application was not properly closed for its last use. Do you want to start without restoring your last session?");
 		else
-		{
-			int reponse = QMessageBox::question(this, "", tr("It seems that the application was not properly closed for its last use. Do you want to restore your last session?"), QMessageBox::Yes | QMessageBox::No);
-			if (reponse == QMessageBox::Yes)
-				m_restore = true;
-		}
+			msg = tr("It seems that the application was not properly closed for its last use. Do you want to restore your last session?");
+
+		QMessageBox dlg(QMessageBox::Question, "Grabber", msg, QMessageBox::Yes | QMessageBox::No);
+		dlg.setWindowIcon(windowIcon());
+		int response = dlg.exec();
+		if (response == QMessageBox::Yes)
+			m_restore = !m_restore;
 	}
 
 	// Loading last window state, size and position from the settings file
@@ -161,22 +161,27 @@ void mainWindow::init()
 	QStringList keys = m_sites.keys();
 	QString sav = m_settings->value("sites", "1").toString();
 	m_waitForLogin = 0;
+	QList<Site*> requiredLogins;
 	for (int i = 0; i < m_sites.count(); i++)
 	{
 		if (i < sav.count() && sav[i] == '1')
 		{
 			m_selectedSources.append(true);
 			connect(m_sites[keys[i]], &Site::loggedIn, this, &mainWindow::initialLoginsFinished);
-			m_sites[keys[i]]->login();
-			m_waitForLogin++;
+			requiredLogins.append(m_sites[keys[i]]);
 		}
 		else
 		{ m_selectedSources.append(false); }
 	}
-	if (m_waitForLogin == 0)
+	if (requiredLogins.isEmpty())
 	{
-		m_waitForLogin = 1;
-		initialLoginsFinished();
+		initialLoginsDone();
+	}
+	else
+	{
+		m_waitForLogin += requiredLogins.count();
+		for (Site *site : requiredLogins)
+			site->login();
 	}
 
 	// Favorites tab
@@ -236,10 +241,17 @@ void mainWindow::init()
 
 void mainWindow::initialLoginsFinished()
 {
+	disconnect((Site*)sender(), &Site::loggedIn, this, &mainWindow::initialLoginsFinished);
+
 	m_waitForLogin--;
 	if (m_waitForLogin != 0)
-	{ return; }
+		return;
 
+	initialLoginsDone();
+}
+
+void mainWindow::initialLoginsDone()
+{
 	if (m_restore)
 	{
 		loadLinkList(m_profile->getPath() + "/restore.igl");

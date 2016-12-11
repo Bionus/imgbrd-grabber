@@ -9,21 +9,13 @@ VerticalScrollArea::VerticalScrollArea(QWidget *parent)
 	setWidgetResizable(true);
 	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+
+	setScrollEnabled(true);
 }
 
 void VerticalScrollArea::resizeEvent(QResizeEvent *event)
 {
-	if (widget())
-	{
-		int maxWidth = width();
-		if (verticalScrollBar()->isVisible())
-			maxWidth -= verticalScrollBar()->width();
-		widget()->setMaximumWidth(maxWidth);
-
-		if (!m_scrollEnabled)
-			widget()->setMaximumHeight(height());
-	}
-
+	updateWidgetSize();
 	QScrollArea::resizeEvent(event);
 }
 
@@ -31,4 +23,19 @@ void VerticalScrollArea::setScrollEnabled(bool enabled)
 {
 	m_scrollEnabled = enabled;
 	setVerticalScrollBarPolicy(enabled ? Qt::ScrollBarAsNeeded : Qt::ScrollBarAlwaysOff);
+	updateWidgetSize();
+}
+
+void VerticalScrollArea::updateWidgetSize()
+{
+	if (widget())
+	{
+		int maxWidth = width();
+		if (m_scrollEnabled && verticalScrollBar()->isVisible())
+			maxWidth -= verticalScrollBar()->width();
+		widget()->setMaximumWidth(maxWidth);
+
+		if (!m_scrollEnabled)
+			widget()->setMaximumHeight(height());
+	}
 }

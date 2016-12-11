@@ -23,7 +23,7 @@
    <string>Image</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../../CrashReporter/resources.qrc">
+   <iconset resource="../../resources.qrc">
     <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,0,0,0">
@@ -52,6 +52,12 @@
           <property name="frameShadow">
            <enum>QFrame::Plain</enum>
           </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="sizeAdjustPolicy">
+           <enum>QAbstractScrollArea::AdjustToContents</enum>
+          </property>
           <property name="widgetResizable">
            <bool>true</bool>
           </property>
@@ -69,9 +75,6 @@
              <number>0</number>
             </property>
             <property name="topMargin">
-             <number>0</number>
-            </property>
-            <property name="rightMargin">
              <number>0</number>
             </property>
             <property name="bottomMargin">
@@ -263,7 +266,9 @@
   <tabstop>scrollArea</tabstop>
  </tabstops>
  <resources>
-  <include location="../../CrashReporter/resources.qrc"/>
+  <include location="../../resources.qrc"/>
+  <include location="../../resources.qrc"/>
+  <include location="../../resources.qrc"/>
  </resources>
  <connections>
   <connection>
