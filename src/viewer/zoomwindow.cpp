@@ -197,9 +197,7 @@ void zoomWindow::copyImageFileToClipboard()
 
 	QMimeData* mimeData = new QMimeData();
 	mimeData->setUrls({ QUrl::fromLocalFile(path) });
-
-	QClipboard *clipboard = QApplication::clipboard();
-	clipboard->setMimeData(mimeData);
+	QApplication::clipboard()->setMimeData(mimeData);
 }
 
 void zoomWindow::showDetails()
@@ -304,6 +302,11 @@ void zoomWindow::contextMenu(QPoint)
 		{ menu->addAction(QIcon(":/images/icons/hidden.png"), tr("Ignore"), this, SLOT(ignore())); }
 		menu->addSeparator();
 
+		// Copy
+		menu->addAction(QIcon(":/images/icons/copy.png"), tr("Copy tag"), this, SLOT(copyTagToClipboard()));
+		menu->addAction(QIcon(":/images/icons/copy.png"), tr("Copy all tags"), this, SLOT(copyAllTagsToClipboard()));
+		menu->addSeparator();
+
 		// Tabs
 		menu->addAction(QIcon(":/images/icons/tab-plus.png"), tr("Open in a new tab"), this, SLOT(openInNewTab()));
 		menu->addAction(QIcon(":/images/icons/window.png"), tr("Open in new a window"), this, SLOT(openInNewWindow()));
@@ -324,6 +327,18 @@ void zoomWindow::openInNewWindow()
 void zoomWindow::openInBrowser()
 {
 	QDesktopServices::openUrl(m_image->pageUrl());
+}
+void zoomWindow::copyTagToClipboard()
+{
+	QApplication::clipboard()->setText(this->link);
+}
+void zoomWindow::copyAllTagsToClipboard()
+{
+	QStringList tags;
+	for (Tag tag : m_image->tags())
+		tags.append(tag.text());
+
+	QApplication::clipboard()->setText(tags.join(' '));
 }
 
 void zoomWindow::favorite()

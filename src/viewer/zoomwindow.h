@@ -72,6 +72,8 @@ class zoomWindow : public QDialog
 		// Context menus
 		void imageContextMenu();
 		void copyImageFileToClipboard();
+		void copyTagToClipboard();
+		void copyAllTagsToClipboard();
 
 		// Full screen
 		void fullScreen();
