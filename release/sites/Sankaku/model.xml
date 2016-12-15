@@ -2,7 +2,7 @@
 <Site>
 	<Name>Sankaku</Name>
 	<Urls>
-		<ImageReplaces>/preview/->/&amp;i.sankakucomplex->is.sankakucomplex</ImageReplaces>
+		<ImageReplaces>/preview/->/&amp;([^s]).sankakucomplex->\1s.sankakucomplex</ImageReplaces>
 		<Login>login={pseudo}&amp;password_hash={password}&amp;appkey={appkey}&amp;</Login>
 		<Xml>
 			<Tags>/post/index.xml?{login}limit={limit}&amp;page={page}&amp;tags={tags}</Tags>

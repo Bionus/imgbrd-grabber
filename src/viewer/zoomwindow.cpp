@@ -580,9 +580,10 @@ void zoomWindow::replyFinishedZoom()
 		}
 		else
 		{
+			QString oldUrl = m_url;
 			m_url = m_url.section('.', 0, -2) + "." + newext;
 			m_image->setFileExtension(newext);
-			log(QString("Image not found. New try with extension %1...").arg(newext));
+			log(QString("Image not found. New try with extension %1 (%2)...").arg(newext, oldUrl));
 			load();
 			return;
 		}
