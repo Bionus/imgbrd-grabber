@@ -6,8 +6,6 @@
 #include "ui_batchwindow.h"
 #include "functions.h"
 
-#define SAMPLES 100
-
 
 
 batchWindow::batchWindow(QWidget *parent)

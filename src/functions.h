@@ -35,6 +35,7 @@ int			levenshtein(QString, QString);
 void		clearLayout(QLayout *layout);
 QString		stripTags(QString);
 QString		getUnit(float*);
+QString		getExtension(QUrl url);
 QString		getExtension(QString url);
 QString		setExtension(QString url, QString extension);
 

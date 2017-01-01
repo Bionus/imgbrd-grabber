@@ -418,6 +418,8 @@ void clearLayout(QLayout *layout)
 	}
 }
 
+QString getExtension(QUrl url)
+{ return getExtension(url.toString()); }
 QString getExtension(QString url)
 {
 	QString ext;
