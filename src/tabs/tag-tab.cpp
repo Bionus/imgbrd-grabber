@@ -99,7 +99,7 @@ void tagTab::load()
 	setWindowTitle(search.isEmpty() ? tr("Search") : QString(search).replace("&", "&&"));
 	emit titleChanged(this);
 
-	loadTags(search.trimmed().split(' ', QString::SkipEmptyParts));
+	loadTags(tags);
 }
 
 QList<Site*> tagTab::loadSites()
