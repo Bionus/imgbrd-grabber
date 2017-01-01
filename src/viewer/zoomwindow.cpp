@@ -615,7 +615,7 @@ void zoomWindow::replyFinishedZoom()
 		}
 	}
 	else if (m_reply->error() != QNetworkReply::OperationCanceledError)
-	{ error(this, tr("An unexpected error occured loading the image (%1).\r\n%2").arg(m_reply->error()).arg(m_reply->url().toString())); }
+	{ error(this, tr("An unexpected error occured loading the image (%1 - %2).\r\n%3").arg(m_reply->error()).arg(m_reply->errorString()).arg(m_reply->url().toString())); }
 
 	m_reply->deleteLater();
 	m_reply = nullptr;
