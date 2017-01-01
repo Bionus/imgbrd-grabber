@@ -141,7 +141,7 @@ QString Filename::expandConditionals(QString text, QStringList tokens, QStringLi
 		pos = 0;
 		while ((pos = reg.indexIn(text, pos)) != -1)
 		{
-			if (!reg.cap(1).isEmpty() && tags.contains(reg.cap(1)))
+			if (!reg.cap(1).isEmpty() && tags.contains(reg.cap(1), Qt::CaseInsensitive))
 			{ ret.replace(reg.cap(0), reg.cap(1)); }
 			else
 			{ return ""; }
