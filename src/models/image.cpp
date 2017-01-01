@@ -199,7 +199,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	}
 
 	// Get file url and try to improve it to save bandwidth
-	m_url = details.contains("file_url") ? m_parentSite->fixUrl(details["file_url"]).toString() : "";
+	m_url = m_fileUrl.toString();
 	QString ext = getExtension(m_url);
 	if (m_details.contains("ext"))
 	{
@@ -998,12 +998,20 @@ QSize			Image::size() const			{ return m_size;			}
 QPixmap			Image::previewImage() const	{ return m_imagePreview;	}
 const QPixmap	&Image::previewImage()		{ return m_imagePreview;	}
 Page			*Image::page() const		{ return m_parent;			}
-const QByteArray&Image::data() const			{ return m_data;			}
+const QByteArray&Image::data() const		{ return m_data;			}
 QNetworkReply	*Image::imageReply() const	{ return m_loadImage;		}
 QNetworkReply	*Image::tagsReply() const	{ return m_loadDetails;		}
 QSettings		*Image::settings() const	{ return m_settings;		}
 QMap<QString,QString> Image::details() const{ return m_details;			}
 QStringList		Image::search() const		{ return m_search;			}
+
+QUrl Image::getDisplayableUrl() const
+{
+	if (!m_sampleUrl.isEmpty() && !m_settings->value("Save/downloadoriginals", true).toBool())
+		return m_sampleUrl;
+
+	return m_url;
+}
 
 QStringList Image::tagsString() const
 {

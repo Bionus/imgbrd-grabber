@@ -110,16 +110,7 @@ void zoomWindow::go()
 	if (m_settings->value("autodownload", false).toBool() || (whitelisted && m_settings->value("whitelist_download", "image").toString() == "image"))
 	{ saveImage(); }
 
-	QMap<QString, QString> assoc;
-		assoc["s"] = tr("Safe");
-		assoc["q"] = tr("Questionable");
-		assoc["e"] = tr("Explicit");
-	QString ext = getExtension(m_image->url());
-	m_url = (!m_settings->value("Save/downloadoriginals", true).toBool() && !m_image->sampleUrl().isEmpty()) || ext == "zip"
-			? m_image->sampleUrl().toString()
-			: m_image->fileUrl().toString();
-
-	m_format = m_url.section('.', -1).toUpper().toLatin1().data();
+	m_url = m_image->getDisplayableUrl().toString();
 
 	QTimer *timer = new QTimer(this);
 		connect(timer, SIGNAL(timeout()), this, SLOT(update()));

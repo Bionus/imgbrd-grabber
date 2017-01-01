@@ -93,6 +93,7 @@ class Image : public QObject
 		void		setFileExtension(QString ext);
 		QString		getNextExtension(QString current);
 		QString		getExtensionFromHeader(const QByteArray &data12);
+		QUrl		getDisplayableUrl() const;
 
 	public slots:
 		void loadPreview();

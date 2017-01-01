@@ -2151,10 +2151,7 @@
        <zorder>label_46</zorder>
        <zorder>label_58</zorder>
        <zorder>label_15</zorder>
-       <zorder>buttonColoringCharactersColor_2</zorder>
-       <zorder>lineColoringFavorites</zorder>
        <zorder>label_87</zorder>
-       <zorder>layoutWidget_2</zorder>
       </widget>
       <widget class="QWidget" name="pageInterfaceMargins">
        <layout class="QFormLayout" name="formLayout_9">

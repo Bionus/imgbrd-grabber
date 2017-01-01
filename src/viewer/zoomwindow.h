@@ -124,7 +124,6 @@ class zoomWindow : public QDialog
 		QTime m_imageTime;
 		QString link;
 		QNetworkReply *m_reply;
-		const char* m_format;
 		bool m_finished, m_thread;
 		QByteArray m_data;
 		int m_size;
