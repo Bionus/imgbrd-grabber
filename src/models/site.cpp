@@ -307,7 +307,8 @@ void Site::getAsync(QueryType type, QUrl url, std::function<void(QNetworkReply*)
 	int sinceLastRequest = m_lastRequest.msecsTo(QDateTime::currentDateTime());
 
 	QString key = (type == QueryType::Retry ? "retry" : (type == QueryType::List ? "page" : (type == QueryType::Img ? "image" : (type == QueryType::Thumb ? "thumbnail" : "details"))));
-	int ms = setting("download/throttle_" + key, 0).toInt() * 1000;
+	int def = (type == QueryType::Retry ? 60 : 0);
+	int ms = setting("download/throttle_" + key, def).toInt() * 1000;
 	ms -= sinceLastRequest;
 
 	if (ms > 0)

@@ -347,7 +347,7 @@ void Image::parsePreview()
 	emit finishedLoadingPreview();
 }
 
-void Image::loadDetails()
+void Image::loadDetails(bool rateLimit)
 {
 	if (m_loadingDetails)
 		return;
@@ -358,11 +358,13 @@ void Image::loadDetails()
 		return;
 	}
 
-	m_loadDetails = m_parentSite->get(m_parentSite->fixUrl(m_pageUrl));
-	m_loadDetails->setParent(this);
-	m_loadingDetails = true;
+	m_parentSite->getAsync(rateLimit ? Site::QueryType::Retry : Site::QueryType::Details, m_parentSite->fixUrl(m_pageUrl), [this](QNetworkReply *reply) {
+		m_loadDetails = reply;
+		m_loadDetails->setParent(this);
+		m_loadingDetails = true;
 
-	connect(m_loadDetails, SIGNAL(finished()), this, SLOT(parseDetails()));
+		connect(m_loadDetails, SIGNAL(finished()), this, SLOT(parseDetails()));
+	});
 }
 void Image::abortTags()
 {
@@ -387,6 +389,14 @@ void Image::parseDetails()
 	{
 		m_pageUrl = redir;
 		loadDetails();
+		return;
+	}
+
+	int statusCode = m_loadDetails->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+	if (statusCode == 429)
+	{
+		log("Details limit reached (429). New try.");
+		loadDetails(true);
 		return;
 	}
 
