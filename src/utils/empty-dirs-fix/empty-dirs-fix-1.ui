@@ -66,7 +66,40 @@
   <include location="../../../resources.qrc"/>
   <include location="../../../resources.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>buttonCancel</sender>
+   <signal>clicked()</signal>
+   <receiver>EmptyDirsFix1</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>236</x>
+     <y>52</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>266</x>
+     <y>43</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonContinue</sender>
+   <signal>clicked()</signal>
+   <receiver>EmptyDirsFix1</receiver>
+   <slot>next()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>133</x>
+     <y>47</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>91</x>
+     <y>52</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
  <slots>
   <slot>next()</slot>
  </slots>

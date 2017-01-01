@@ -4,7 +4,6 @@
 #include "ui_empty-dirs-fix-1.h"
 
 
-
 EmptyDirsFix1::EmptyDirsFix1(Profile *profile, QWidget *parent)
 	: QDialog(parent), ui(new Ui::EmptyDirsFix1)
 {
@@ -13,6 +12,7 @@ EmptyDirsFix1::EmptyDirsFix1(Profile *profile, QWidget *parent)
 	QSettings *settings = profile->getSettings();
 	ui->lineFolder->setText(settings->value("Save/path").toString());
 }
+
 EmptyDirsFix1::~EmptyDirsFix1()
 {
 	delete ui;

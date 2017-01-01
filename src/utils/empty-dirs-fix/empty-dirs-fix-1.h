@@ -12,7 +12,6 @@ namespace Ui
 }
 
 
-
 class EmptyDirsFix1 : public QDialog
 {
 	Q_OBJECT
