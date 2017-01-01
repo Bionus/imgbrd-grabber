@@ -184,8 +184,15 @@ zoomWindow::~zoomWindow()
 void zoomWindow::imageContextMenu()
 {
 	QMenu *menu = new QMenu(this);
+
+	// Copy actions
 	menu->addAction(QIcon(":/images/icons/copy.png"), tr("Copy file"), this, SLOT(copyImageFileToClipboard()));
 	menu->addAction(QIcon(":/images/icons/document-binary.png"), tr("Copy data"), this, SLOT(copyImageDataToClipboard()));
+	menu->addSeparator();
+
+	// Reverse search actions
+	menu->addAction(QIcon(":/images/sources/saucenao.png"), tr("SauceNAO"), this, SLOT(reverseSearchSauceNao()));
+
 	menu->exec(QCursor::pos());
 }
 void zoomWindow::copyImageFileToClipboard()
@@ -204,6 +211,10 @@ void zoomWindow::copyImageFileToClipboard()
 void zoomWindow::copyImageDataToClipboard()
 {
 	QApplication::clipboard()->setPixmap(*image);
+}
+void zoomWindow::reverseSearchSauceNao()
+{
+	QDesktopServices::openUrl(QUrl("https://saucenao.com/search.php?db=999&url=" + m_image->fileUrl().toEncoded()));
 }
 
 void zoomWindow::showDetails()

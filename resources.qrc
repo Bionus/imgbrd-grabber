@@ -48,5 +48,6 @@
         <file>images/flash.png</file>
         <file>images/icons/copy.png</file>
         <file>images/icons/document-binary.png</file>
+        <file>images/sources/saucenao.png</file>
     </qresource>
 </RCC>
