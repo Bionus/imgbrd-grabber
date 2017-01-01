@@ -43,7 +43,7 @@ zoomWindow::zoomWindow(QList<QSharedPointer<Image> > images, QSharedPointer<Imag
 	QShortcut *arrowPrevious = new QShortcut(QKeySequence(Qt::Key_Left), this);
 		connect(arrowPrevious, &QShortcut::activated, this, &zoomWindow::previous);
 	QShortcut *copyImageFile = new QShortcut(QKeySequence::Copy, this);
-		connect(copyImageFile, &QShortcut::activated, this, &zoomWindow::copyImageFileToClipboard);
+		connect(copyImageFile, &QShortcut::activated, this, &zoomWindow::copyImageDataToClipboard);
 
 	m_labelTagsLeft = new QAffiche(QVariant(), 0, QColor(), this);
 		m_labelTagsLeft->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -184,7 +184,8 @@ zoomWindow::~zoomWindow()
 void zoomWindow::imageContextMenu()
 {
 	QMenu *menu = new QMenu(this);
-	menu->addAction(QIcon(":/images/icons/copy.png"), tr("Copy"), this, SLOT(copyImageFileToClipboard()));
+	menu->addAction(QIcon(":/images/icons/copy.png"), tr("Copy file"), this, SLOT(copyImageFileToClipboard()));
+	menu->addAction(QIcon(":/images/icons/document-binary.png"), tr("Copy data"), this, SLOT(copyImageDataToClipboard()));
 	menu->exec(QCursor::pos());
 }
 void zoomWindow::copyImageFileToClipboard()
@@ -199,6 +200,10 @@ void zoomWindow::copyImageFileToClipboard()
 	QMimeData* mimeData = new QMimeData();
 	mimeData->setUrls({ QUrl::fromLocalFile(path) });
 	QApplication::clipboard()->setMimeData(mimeData);
+}
+void zoomWindow::copyImageDataToClipboard()
+{
+	QApplication::clipboard()->setPixmap(*image);
 }
 
 void zoomWindow::showDetails()

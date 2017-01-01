@@ -47,5 +47,6 @@
         <file>images/icons/tab-poolplus.png</file>
         <file>images/flash.png</file>
         <file>images/icons/copy.png</file>
+        <file>images/icons/document-binary.png</file>
     </qresource>
 </RCC>
