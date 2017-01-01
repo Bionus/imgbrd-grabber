@@ -49,5 +49,7 @@
         <file>images/icons/copy.png</file>
         <file>images/icons/document-binary.png</file>
         <file>images/sources/saucenao.png</file>
+        <file>images/sources/iqdb.png</file>
+        <file>images/sources/tineye.png</file>
     </qresource>
 </RCC>

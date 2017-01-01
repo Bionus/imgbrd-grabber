@@ -192,6 +192,8 @@ void zoomWindow::imageContextMenu()
 
 	// Reverse search actions
 	menu->addAction(QIcon(":/images/sources/saucenao.png"), tr("SauceNAO"), this, SLOT(reverseSearchSauceNao()));
+	menu->addAction(QIcon(":/images/sources/iqdb.png"), tr("IQDB"), this, SLOT(reverseSearchIqdb()));
+	menu->addAction(QIcon(":/images/sources/tineye.png"), tr("TinEye"), this, SLOT(reverseSearchTinEye()));
 
 	menu->exec(QCursor::pos());
 }
@@ -215,6 +217,14 @@ void zoomWindow::copyImageDataToClipboard()
 void zoomWindow::reverseSearchSauceNao()
 {
 	QDesktopServices::openUrl(QUrl("https://saucenao.com/search.php?db=999&url=" + m_image->fileUrl().toEncoded()));
+}
+void zoomWindow::reverseSearchIqdb()
+{
+	QDesktopServices::openUrl(QUrl("https://iqdb.org/?url=" + m_image->fileUrl().toEncoded()));
+}
+void zoomWindow::reverseSearchTinEye()
+{
+	QDesktopServices::openUrl(QUrl("https://www.tineye.com/search/?url=" + m_image->fileUrl().toEncoded()));
 }
 
 void zoomWindow::showDetails()

@@ -75,6 +75,8 @@ class zoomWindow : public QDialog
 		void copyImageFileToClipboard();
 		void copyImageDataToClipboard();
 		void reverseSearchSauceNao();
+		void reverseSearchIqdb();
+		void reverseSearchTinEye();
 		void copyTagToClipboard();
 		void copyAllTagsToClipboard();
 
