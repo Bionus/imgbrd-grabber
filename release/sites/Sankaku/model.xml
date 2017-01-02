@@ -30,6 +30,7 @@
 		<Image>&lt;span[^&gt;]* id=&quot;?p(\d+)&quot;?&gt;&lt;a[^&gt;]*&gt;&lt;img[^&gt;]* src=&quot;([^&quot;]+\/preview\/\w{2}\/\w{2}\/([^.]+)\.[^&quot;]+)&quot; title=&quot;([^&quot;]+)&quot;[^&gt;]+&gt;&lt;\/a&gt;&lt;\/span&gt;</Image>
 		<Order>id|preview_url|md5|tags</Order>
 		<LastPage>&lt;link href=&quot;[^&quot;]*\?.*page=(\d+)[^&quot;]*&quot; rel=&quot;last&quot; title=&quot;Last Page&quot;&gt;</LastPage>
+		<Count>class=&quot;?tag-type-none&quot;? title=&quot;Post Count: ([^&quot;]+)&quot;</Count>
 		<Pools>&lt;div class=&quot;status-notice&quot; id=&quot;pool\d+&quot;&gt;[^&lt;]*Pool:[^&lt;]*(?:&lt;a href=&quot;/post/show/(\d+)&quot; &gt;&amp;lt;&amp;lt;&lt;/a&gt;)?[^&lt;]*&lt;a href=&quot;/pool/show/(\d+)&quot; &gt;([^&lt;]+)&lt;/a&gt;[^&lt;]*(?:&lt;a href=&quot;/post/show/(\d+)&quot; &gt;&amp;gt;&amp;gt;&lt;/a&gt;)?[^&lt;]*&lt;/div&gt;</Pools>
 		<Wiki>&lt;div id=&quot;sidebar-wiki&quot;(?:[^&gt;]+)&gt;(.+)&lt;/div&gt;</Wiki>
 	</Regex>
