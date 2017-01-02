@@ -44,6 +44,8 @@ zoomWindow::zoomWindow(QList<QSharedPointer<Image> > images, QSharedPointer<Imag
 		connect(arrowPrevious, &QShortcut::activated, this, &zoomWindow::previous);
 	QShortcut *copyImageFile = new QShortcut(QKeySequence::Copy, this);
 		connect(copyImageFile, &QShortcut::activated, this, &zoomWindow::copyImageDataToClipboard);
+	QShortcut *toggleFullscreen = new QShortcut(QKeySequence::FullScreen, this);
+		connect(toggleFullscreen, &QShortcut::activated, this, &zoomWindow::toggleFullScreen);
 
 	m_labelTagsLeft = new QAffiche(QVariant(), 0, QColor(), this);
 		m_labelTagsLeft->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -73,7 +75,7 @@ zoomWindow::zoomWindow(QList<QSharedPointer<Image> > images, QSharedPointer<Imag
 		ui->verticalLayout->insertWidget(1, m_stackedWidget, 1);
 	m_labelImage = new QAffiche(QVariant(), 0, QColor(), this);
 		m_labelImage->setSizePolicy(QSizePolicy(QSizePolicy::Ignored,QSizePolicy::Ignored));
-		connect(m_labelImage, SIGNAL(doubleClicked()), this, SLOT(fullScreen()));
+		connect(m_labelImage, SIGNAL(doubleClicked()), this, SLOT(openFile()));
 		m_stackedWidget->addWidget(m_labelImage);
 	m_mediaPlayer = new QMediaPlayer(this, QMediaPlayer::VideoSurface);
 		m_videoWidget = new QVideoWidget(this);
@@ -879,6 +881,13 @@ QString zoomWindow::saveImageAs()
 }
 
 
+void zoomWindow::toggleFullScreen()
+{
+	if (m_isFullscreen)
+		unfullScreen();
+	else
+		fullScreen();
+}
 
 void zoomWindow::fullScreen()
 {
@@ -915,6 +924,8 @@ void zoomWindow::fullScreen()
 
 	QShortcut *escape = new QShortcut(QKeySequence(Qt::Key_Escape), widget);
 		connect(escape, SIGNAL(activated()), this, SLOT(unfullScreen()));
+	QShortcut *toggleFullscreen = new QShortcut(QKeySequence::FullScreen, widget);
+		connect(toggleFullscreen, SIGNAL(activated()), this, SLOT(unfullScreen()));
 	QShortcut *arrowNext = new QShortcut(QKeySequence(Qt::Key_Right), widget);
 		connect(arrowNext, &QShortcut::activated, this, &zoomWindow::next);
 	QShortcut *arrowPrevious = new QShortcut(QKeySequence(Qt::Key_Left), widget);
@@ -1081,4 +1092,16 @@ void zoomWindow::previous()
 void zoomWindow::updateButtonPlus()
 {
 	ui->buttonPlus->setText(ui->buttonPlus->isChecked() ? "-" : "+");
+}
+
+void zoomWindow::openFile()
+{
+	QString path = m_imagePath;
+	if (path.isEmpty())
+	{
+		QMap<QString, Image::SaveResult> files = m_image->save(m_settings->value("Save/filename").toString(), QDir::tempPath());
+		path = files.firstKey();
+	}
+
+	QDesktopServices::openUrl(QUrl::fromLocalFile(path));
 }

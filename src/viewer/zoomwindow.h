@@ -69,6 +69,7 @@ class zoomWindow : public QDialog
 		void showDetails();
 		void pendingUpdate();
 		void updateButtonPlus();
+		void openFile();
 
 		// Context menus
 		void imageContextMenu();
@@ -81,6 +82,7 @@ class zoomWindow : public QDialog
 		void copyAllTagsToClipboard();
 
 		// Full screen
+		void toggleFullScreen();
 		void fullScreen();
 		void unfullScreen();
 		void prepareNextSlide();
