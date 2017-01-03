@@ -1917,11 +1917,9 @@ void mainWindow::getAllFinished()
 	{
 		case 1:	m_progressdialog->close();				break;
 		case 2:	openTray();								break;
-		case 3:	QSound::play(":/sounds/finished.wav");	break;
-
-		case 4:
-			shutDown();
-			break;
+		case 3:	saveFolder();							break;
+		case 4:	QSound::play(":/sounds/finished.wav");	break;
+		case 5: shutDown();								break;
 	}
 	if (m_progressdialog->endRemove())
 	{

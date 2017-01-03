@@ -221,6 +221,11 @@
           </item>
           <item>
            <property name="text">
+            <string>Open destination folder</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
             <string>Play a sound</string>
            </property>
           </item>
