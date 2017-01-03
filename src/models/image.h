@@ -94,6 +94,7 @@ class Image : public QObject
 		QString		getNextExtension(QString current);
 		QString		getExtensionFromHeader(const QByteArray &data12);
 		QUrl		getDisplayableUrl() const;
+		bool		isVideo() const;
 
 	public slots:
 		void loadPreview();

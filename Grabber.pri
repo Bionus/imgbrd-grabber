@@ -19,7 +19,7 @@ RCC_DIR     = $$DESTDIR/qrc
 UI_DIR      = $$DESTDIR/ui
 
 # TODO: move to gui
-QT += multimedia widgets multimediawidgets
+QT += widgets multimedia
 
 # Travis settings
 @

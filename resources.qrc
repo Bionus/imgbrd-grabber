@@ -51,5 +51,6 @@
         <file>images/sources/saucenao.png</file>
         <file>images/sources/iqdb.png</file>
         <file>images/sources/tineye.png</file>
+        <file>images/play-overlay.png</file>
     </qresource>
 </RCC>

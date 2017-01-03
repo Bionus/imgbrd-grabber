@@ -15,7 +15,6 @@
 #include "models/filename.h"
 #include "functions.h"
 
-#include <QMediaPlaylist>
 #include <QScrollBar>
 
 
@@ -77,10 +76,6 @@ zoomWindow::zoomWindow(QList<QSharedPointer<Image> > images, QSharedPointer<Imag
 		m_labelImage->setSizePolicy(QSizePolicy(QSizePolicy::Ignored,QSizePolicy::Ignored));
 		connect(m_labelImage, SIGNAL(doubleClicked()), this, SLOT(openFile()));
 		m_stackedWidget->addWidget(m_labelImage);
-	m_mediaPlayer = new QMediaPlayer(this, QMediaPlayer::VideoSurface);
-		m_videoWidget = new QVideoWidget(this);
-		m_stackedWidget->addWidget(m_videoWidget);
-		m_mediaPlayer->setVideoOutput(m_videoWidget);
 
 	connect(ui->buttonDetails, SIGNAL(clicked()), this, SLOT(showDetails()));
 	connect(ui->buttonPlus, &QPushButton::toggled, this, &zoomWindow::updateButtonPlus);
@@ -652,6 +647,10 @@ void zoomWindow::pendingUpdate()
 			if (!saveImageNow(true).isEmpty())
 				close();
 			break;
+
+		case 5:
+			openFile(true);
+			break;
 	}
 }
 
@@ -659,25 +658,21 @@ void zoomWindow::draw()
 {
 	QString fn = m_url.section('/', -1).toLower();
 	QString ext = fn.section('.', -1).toLower();
-	bool isVideo = ext == "mp4" || ext == "webm" || ext == "flv";
 
-	// We need a filename to display gifs and videos, so we get it if we're not already loading from a file
+	// We need a filename to display animations, so we get it if we're not already loading from a file
 	QString filename;
-	if (m_source.isEmpty())
+	if (!m_source.isEmpty())
+	{ filename = m_source; }
+	else if (ext == "gif")
 	{
-		if (ext == "gif" || isVideo)
+		filename = QDir::temp().absoluteFilePath("grabber-" + fn);
+		QFile f(filename);
+		if (f.open(QFile::WriteOnly))
 		{
-			filename = QDir::temp().absoluteFilePath("grabber-" + fn);
-			QFile f(filename);
-			if (f.open(QFile::WriteOnly))
-			{
-				f.write(m_data);
-				f.close();
-			}
+			f.write(m_data);
+			f.close();
 		}
 	}
-	else
-	{ filename = m_source; }
 
 	// GIF (using QLabel support for QMovie)
 	if (ext == "gif")
@@ -691,21 +686,6 @@ void zoomWindow::draw()
 
 		if (m_isFullscreen && m_fullScreen != nullptr && m_fullScreen->isVisible())
 		{ m_fullScreen->setMovie(movie); }
-		return;
-	}
-
-	// Videos (using a media player)
-	if (isVideo)
-	{
-		QMediaPlaylist *playlist = new QMediaPlaylist(this);
-		playlist->addMedia(QUrl::fromLocalFile(filename));
-		playlist->setPlaybackMode(QMediaPlaylist::CurrentItemInLoop);
-
-		m_mediaPlayer->setPlaylist(playlist);
-		m_stackedWidget->setCurrentWidget(m_videoWidget);
-		m_mediaPlayer->play();
-
-		this->image = nullptr;
 		return;
 	}
 
@@ -741,7 +721,7 @@ void zoomWindow::draw()
  */
 void zoomWindow::update(bool onlysize)
 {
-	// Ignore this event for GIF and videos
+	// Ignore this event for animations
 	if (this->image == nullptr)
 		return;
 
@@ -895,29 +875,20 @@ void zoomWindow::fullScreen()
 		return;
 
 	QString ext = m_url.section('.', -1).toLower();
-	bool isVideo = ext == "mp4" || ext == "webm" || ext == "flv";
 
 	QWidget *widget;
-	if (isVideo)
-	{
-		m_videoWidget->setFullScreen(true);
-		widget = m_videoWidget;
-	}
+	m_fullScreen = new QAffiche(QVariant(), 0, QColor(), this);
+	m_fullScreen->setStyleSheet("background-color: black");
+	m_fullScreen->setAlignment(Qt::AlignCenter);
+	if (ext == "gif")
+	{ m_fullScreen->setMovie(movie); }
 	else
-	{
-		m_fullScreen = new QAffiche(QVariant(), 0, QColor(), this);
-		m_fullScreen->setStyleSheet("background-color: black");
-		m_fullScreen->setAlignment(Qt::AlignCenter);
-		if (ext == "gif")
-		{ m_fullScreen->setMovie(movie); }
-		else
-		{ m_fullScreen->setImage(image->scaled(QApplication::desktop()->screenGeometry().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation)); }
-		m_fullScreen->setWindowFlags(Qt::Window);
-		m_fullScreen->showFullScreen();
+	{ m_fullScreen->setImage(image->scaled(QApplication::desktop()->screenGeometry().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation)); }
+	m_fullScreen->setWindowFlags(Qt::Window);
+	m_fullScreen->showFullScreen();
 
-		connect(m_fullScreen, SIGNAL(doubleClicked()), this, SLOT(unfullScreen()));
-		widget = m_fullScreen;
-	}
+	connect(m_fullScreen, SIGNAL(doubleClicked()), this, SLOT(unfullScreen()));
+	widget = m_fullScreen;
 
 	m_isFullscreen = true;
 	prepareNextSlide();
@@ -940,19 +911,9 @@ void zoomWindow::unfullScreen()
 {
 	m_slideshow.stop();
 
-	QString ext = m_url.section('.', -1).toLower();
-	bool isVideo = ext == "mp4" || ext == "webm" || ext == "flv";
-
-	if (isVideo)
-	{
-		m_videoWidget->setFullScreen(false);
-	}
-	else
-	{
-		m_fullScreen->close();
-		m_fullScreen->deleteLater();
-		m_fullScreen = nullptr;
-	}
+	m_fullScreen->close();
+	m_fullScreen->deleteLater();
+	m_fullScreen = nullptr;
 
 	m_isFullscreen = false;
 }
@@ -968,14 +929,10 @@ void zoomWindow::prepareNextSlide()
 	if (interval <= 0)
 		return;
 
-	QString ext = getExtension(m_image->url());
-	bool isVideo = ext == "mp4" || ext == "webm" || ext == "flv";
-
 	// We make sure to wait to see the whole displayed item
 	qint64 additionalInterval = 0;
-	if (isVideo)
-		additionalInterval = m_mediaPlayer->duration();
-	else if (ext == "gif")
+	QString ext = getExtension(m_image->url());
+	if (ext == "gif")
 		additionalInterval = movie->nextFrameDelay() * movie->frameCount();
 
 	qint64 totalInterval = interval * 1000 + additionalInterval;
@@ -1038,6 +995,19 @@ void zoomWindow::load(QSharedPointer<Image> image)
 	m_image = image;
 	connect(m_image.data(), &Image::urlChanged, this, &zoomWindow::urlChanged, Qt::UniqueConnection);
 
+	// Update image label to show the thumbnail while waiting for the full size image
+	QPixmap base = m_image->previewImage();
+	QPixmap overlay = QPixmap(":/images/play-overlay.png");
+	QSize size = base.size() * 2 * m_settings->value("thumbnailUpscale", 1.0f).toFloat();
+	QPixmap result(size.width(), size.height());
+	result.fill(Qt::transparent);
+	{
+		QPainter painter(&result);
+		painter.drawPixmap(0, 0, size.width(), size.height(), base);
+		painter.drawPixmap(qMax(0, (size.width() - overlay.width()) / 2), qMax(0, (size.height() - overlay.height()) / 2), overlay.width(), overlay.height(), overlay);
+	}
+	m_labelImage->setPixmap(result);
+
 	m_size = 0;
 
 	// Preload gallery images
@@ -1094,8 +1064,15 @@ void zoomWindow::updateButtonPlus()
 	ui->buttonPlus->setText(ui->buttonPlus->isChecked() ? "-" : "+");
 }
 
-void zoomWindow::openFile()
+void zoomWindow::openFile(bool now)
 {
+	if (!now)
+	{
+		m_mustSave = 5;
+		pendingUpdate();
+		return;
+	}
+
 	QString path = m_imagePath;
 	if (path.isEmpty())
 	{

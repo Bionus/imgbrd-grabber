@@ -1166,5 +1166,10 @@ QString Image::getNextExtension(QString ext)
 		return nextext[ext];
 
 	return "jpg";
+}
 
+bool Image::isVideo() const
+{
+	QString ext = getExtension(m_url);
+	return ext == "mp4" || ext == "webm";
 }

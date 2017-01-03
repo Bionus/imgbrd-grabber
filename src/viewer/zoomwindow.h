@@ -11,17 +11,12 @@
 #include "detailswindow.h"
 #include "imagethread.h"
 
-#include <QVideoWidget>
-#include <QVideoSurfaceFormat>
-#include <QMediaPlayer>
-
 
 
 namespace Ui
 {
 	class zoomWindow;
 }
-
 
 
 class zoomWindow : public QDialog
@@ -69,7 +64,7 @@ class zoomWindow : public QDialog
 		void showDetails();
 		void pendingUpdate();
 		void updateButtonPlus();
-		void openFile();
+		void openFile(bool now = false);
 
 		// Context menus
 		void imageContextMenu();
@@ -141,8 +136,6 @@ class zoomWindow : public QDialog
 
 		QStackedWidget *m_stackedWidget;
 		QAffiche *m_labelImage;
-		QVideoWidget *m_videoWidget;
-		QMediaPlayer *m_mediaPlayer;
 		QList<QSharedPointer<Image>> m_images;
 };
 
