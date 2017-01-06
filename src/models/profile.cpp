@@ -147,13 +147,19 @@ void Profile::sync()
 		fileMD5.close();
 	}
 
-	// custom auto-complete
+	// Custom auto-complete
 	QFile fileCustomAutoComplete(m_path + "/wordsc.txt");
 	if (fileCustomAutoComplete.open(QFile::WriteOnly | QFile::Text | QFile::Truncate))
 	{
 		fileCustomAutoComplete.write(m_customAutoComplete.join("\r\n").toUtf8());
 		fileCustomAutoComplete.close();
 	}
+
+	// Update commands settings
+	Commands *oldCommands = m_commands;
+	Commands *newCommands = new Commands(this);
+	m_commands = newCommands;
+	delete oldCommands;
 }
 
 void Profile::addFavorite(Favorite fav)
