@@ -285,6 +285,17 @@ void searchTab::postLoading(Page *page, QList<QSharedPointer<Image>> source)
 	if (!waitForMergedResults(source, imgs))
 		return;
 
+	if (ui_checkMergeResults->isChecked())
+	{
+		QLabel *txt = new QLabel(this);
+		txt->setOpenExternalLinks(true);
+		setMergedLabelText(txt, imgs);
+		m_pageLabels.insert(nullptr, txt);
+
+		ui_layoutResults->addWidget(txt, 0, 0);
+		ui_layoutResults->setRowMinimumHeight(0, txt->sizeHint().height() + 10);
+	}
+
 	loadImageThumbnails(page, imgs);
 
 	ui_buttonGetAll->setDisabled(m_images.empty());
@@ -310,15 +321,15 @@ void searchTab::finishedLoadingTags(Page *page)
 	ui_buttonLastPage->setEnabled(maxpage > ui_spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1);
 
 	// Update image and page count
-	if (m_pageLabels.contains(page))
-	{
-		QList<QSharedPointer<Image>> imgs;
-		for (QSharedPointer<Image> img : page->images())
-			if (validateImage(img))
-				imgs.append(img);
+	QList<QSharedPointer<Image>> imgs;
+	for (QSharedPointer<Image> img : page->images())
+		if (validateImage(img))
+			imgs.append(img);
 
+	if (ui_checkMergeResults->isChecked() && m_pageLabels.contains(nullptr))
+		setMergedLabelText(m_pageLabels[nullptr], imgs);
+	else if (m_pageLabels.contains(page))
 		setPageLabelText(m_pageLabels[page], page, imgs);
-	}
 }
 
 void searchTab::loadImageThumbnails(Page *page, const QList<QSharedPointer<Image>> &imgs)
@@ -458,6 +469,33 @@ void searchTab::addResultsPage(Page *page, const QList<QSharedPointer<Image>> &i
 	if (m_layouts.size() > pos)
 	{ ui_layoutResults->addLayout(m_layouts[page->site()], page_y + 1, page_x); }
 }
+void searchTab::setMergedLabelText(QLabel *txt, const QList<QSharedPointer<Image>> &imgs)
+{
+	int maxPage = 0;
+	for (Page *p : m_pages)
+	{
+		int pagesCount = p->pagesCount();
+		if (pagesCount > maxPage)
+			maxPage = pagesCount;
+	}
+
+	int sumImages = 0;
+	for (Page *p : m_pages)
+	{
+		int imagesCount = p->imagesCount();
+		if (imagesCount > 0)
+			sumImages += p->imagesCount();
+	}
+
+	QString links;
+	if (m_pages.count() > 5)
+		links = "Multiple sources";
+	else
+		for (Page *p : m_pages)
+			links += QString(!links.isEmpty() ? ", " : "") + "<a href=\""+p->url().toString().toHtmlEscaped()+"\">"+p->site()->name()+"</a>";
+
+	txt->setText(QString(links + " - Page %1 of %2 (%3 of max %4)").arg(ui_spinPage->value()).arg(maxPage).arg(imgs.count()).arg(sumImages));
+}
 void searchTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage)
 {
 	// No results message
@@ -470,7 +508,6 @@ void searchTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPoi
 			ui_widgetMeant->show();
 			ui_labelMeant->setText(meant);
 		}
-
 		QString msg = noResultsMessage == nullptr ? tr("No result") : noResultsMessage;
 		txt->setText("<a href=\""+page->url().toString().toHtmlEscaped()+"\">"+page->site()->name()+"</a> - "+msg+(reasons.count() > 0 ? "<br/>"+tr("Possible reasons: %1").arg(reasons.join(", ")) : ""));
 	}
@@ -492,7 +529,6 @@ void searchTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPoi
 		if (!uncommon.isEmpty())
 		{ txt->setText(txt->text()+"<br/>"+QString(tr("Des modificateurs ont été otés de la recherche car ils ne sont pas compatibles avec cet imageboard : %1.")).arg(uncommon.join(" "))); }
 	}*/
-
 	// Show warnings
 	if (!page->errors().isEmpty() && m_settings->value("showwarnings", true).toBool())
 	{
@@ -886,7 +922,7 @@ void searchTab::loadTags(QStringList tags)
 		page->load();
 	}
 	if (merged && m_layouts.size() > 0)
-	{ ui_layoutResults->addLayout(m_layouts[nullptr], 0, 0); }
+	{ ui_layoutResults->addLayout(m_layouts[nullptr], 1, 0); }
 	m_page = 0;
 
 	emit changed(this);

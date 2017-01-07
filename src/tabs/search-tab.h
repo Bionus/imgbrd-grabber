@@ -80,6 +80,7 @@ class searchTab : public QWidget
 		void loadTags(QStringList tags);
 		bool waitForMergedResults(QList<QSharedPointer<Image>> results, QList<QSharedPointer<Image>> &imgs);
 		virtual void addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage = nullptr);
+		void setMergedLabelText(QLabel *txt, const QList<QSharedPointer<Image>> &imgs);
 		virtual void setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage = nullptr);
 		void addResultsImage(QSharedPointer<Image> img, bool merge = false);
 		void finishedLoadingPreview();
