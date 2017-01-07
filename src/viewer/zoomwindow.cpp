@@ -996,17 +996,24 @@ void zoomWindow::load(QSharedPointer<Image> image)
 	connect(m_image.data(), &Image::urlChanged, this, &zoomWindow::urlChanged, Qt::UniqueConnection);
 
 	// Update image label to show the thumbnail while waiting for the full size image
-	QPixmap base = m_image->previewImage();
-	QPixmap overlay = QPixmap(":/images/play-overlay.png");
-	QSize size = base.size() * 2 * m_settings->value("thumbnailUpscale", 1.0f).toFloat();
-	QPixmap result(size.width(), size.height());
-	result.fill(Qt::transparent);
+	QSize size = m_image->previewImage().size() * 2 * m_settings->value("thumbnailUpscale", 1.0f).toFloat();
+	if (m_image->isVideo())
 	{
-		QPainter painter(&result);
-		painter.drawPixmap(0, 0, size.width(), size.height(), base);
-		painter.drawPixmap(qMax(0, (size.width() - overlay.width()) / 2), qMax(0, (size.height() - overlay.height()) / 2), overlay.width(), overlay.height(), overlay);
+		QPixmap base = m_image->previewImage();
+		QPixmap overlay = QPixmap(":/images/play-overlay.png");
+		QPixmap result(size.width(), size.height());
+		result.fill(Qt::transparent);
+		{
+			QPainter painter(&result);
+			painter.drawPixmap(0, 0, size.width(), size.height(), base);
+			painter.drawPixmap(qMax(0, (size.width() - overlay.width()) / 2), qMax(0, (size.height() - overlay.height()) / 2), overlay.width(), overlay.height(), overlay);
+		}
+		m_labelImage->setPixmap(result);
 	}
-	m_labelImage->setPixmap(result);
+	else
+	{
+		m_labelImage->setPixmap(m_image->previewImage().scaled(size, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+	}
 
 	m_size = 0;
 
