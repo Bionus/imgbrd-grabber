@@ -537,7 +537,7 @@ QWidget#scrollAreaWidgetContents {
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="layoutControls" stretch="0,0,0,0">
+    <layout class="QHBoxLayout" name="layoutControls" stretch="1,1,1,1">
      <item>
       <widget class="QPushButton" name="buttonSourcesList">
        <property name="text">
@@ -556,9 +556,15 @@ QWidget#scrollAreaWidgetContents {
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="labelMergeResults">
-       <property name="text">
-        <string/>
+      <widget class="QProgressBar" name="progressMergeResults">
+       <property name="value">
+        <number>0</number>
+       </property>
+       <property name="textVisible">
+        <bool>false</bool>
+       </property>
+       <property name="format">
+        <string notr="true">%p%</string>
        </property>
       </widget>
      </item>

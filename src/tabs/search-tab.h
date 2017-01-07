@@ -10,6 +10,7 @@
 #include <QLayout>
 #include <QGridLayout>
 #include <QLabel>
+#include <QProgressBar>
 #include "ui/QBouton.h"
 #include "ui/textedit.h"
 #include "models/image.h"
@@ -141,6 +142,7 @@ class searchTab : public QWidget
 		// UI stuff
 		TextEdit *m_postFiltering;
 		QCheckBox *ui_checkMergeResults;
+		QProgressBar *ui_progressMergeResults;
 		QSpinBox *ui_spinPage;
 		QSpinBox *ui_spinImagesPerPage;
 		QSpinBox *ui_spinColumns;

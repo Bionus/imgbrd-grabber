@@ -16,6 +16,7 @@ poolTab::poolTab(QMap<QString,Site*> *sites, Profile *profile, mainWindow *paren
 
 	// UI members for SearchTab class
 	ui_checkMergeResults = nullptr;
+	ui_progressMergeResults = nullptr;
 	ui_spinPage = ui->spinPage;
 	ui_spinImagesPerPage = ui->spinImagesPerPage;
 	ui_spinColumns = ui->spinColumns;

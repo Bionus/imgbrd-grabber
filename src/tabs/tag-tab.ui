@@ -370,7 +370,7 @@
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,1,0,1,1,1,1,0,0">
+    <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,1,1,1,1,1,1,0,0">
      <item>
       <widget class="QPushButton" name="buttonFirstPage">
        <property name="enabled">
@@ -421,9 +421,18 @@
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="labelMergeResults">
-       <property name="text">
-        <string/>
+      <widget class="QProgressBar" name="progressMergeResults">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="value">
+        <number>0</number>
+       </property>
+       <property name="textVisible">
+        <bool>false</bool>
+       </property>
+       <property name="format">
+        <string notr="true">%p%</string>
        </property>
       </widget>
      </item>

@@ -281,12 +281,18 @@ void searchTab::failedLoading(Page *page)
 
 void searchTab::postLoading(Page *page, QList<QSharedPointer<Image>> source)
 {
+	if (ui_progressMergeResults != nullptr)
+		ui_progressMergeResults->setValue(ui_progressMergeResults->value() + 1);
+
 	QList<QSharedPointer<Image>> imgs;
 	if (!waitForMergedResults(source, imgs))
 		return;
 
-	if (ui_checkMergeResults->isChecked())
+	if (ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked())
 	{
+		if (ui_progressMergeResults != nullptr)
+			ui_progressMergeResults->hide();
+
 		QLabel *txt = new QLabel(this);
 		txt->setOpenExternalLinks(true);
 		setMergedLabelText(txt, imgs);
@@ -326,7 +332,7 @@ void searchTab::finishedLoadingTags(Page *page)
 		if (validateImage(img))
 			imgs.append(img);
 
-	if (ui_checkMergeResults->isChecked() && m_pageLabels.contains(nullptr))
+	if (ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked() && m_pageLabels.contains(nullptr))
 		setMergedLabelText(m_pageLabels[nullptr], imgs);
 	else if (m_pageLabels.contains(page))
 		setPageLabelText(m_pageLabels[page], page, imgs);
@@ -924,6 +930,13 @@ void searchTab::loadTags(QStringList tags)
 	if (merged && m_layouts.size() > 0)
 	{ ui_layoutResults->addLayout(m_layouts[nullptr], 1, 0); }
 	m_page = 0;
+
+	if (merged && ui_progressMergeResults != nullptr)
+	{
+		ui_progressMergeResults->setValue(0);
+		ui_progressMergeResults->setMaximum(m_pages.count());
+		ui_progressMergeResults->show();
+	}
 
 	emit changed(this);
 }
