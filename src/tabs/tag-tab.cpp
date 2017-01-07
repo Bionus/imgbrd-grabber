@@ -15,6 +15,7 @@ tagTab::tagTab(QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
 	// UI members for SearchTab class
 	ui_checkMergeResults = ui->checkMergeResults;
 	ui_progressMergeResults = ui->progressMergeResults;
+	ui_stackedMergeResults = ui->stackedMergeResults;
 	ui_spinPage = ui->spinPage;
 	ui_spinImagesPerPage = ui->spinImagesPerPage;
 	ui_spinColumns = ui->spinColumns;
@@ -43,7 +44,6 @@ tagTab::tagTab(QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
 	ui->checkMergeResults->setChecked(m_settings->value("mergeresults", false).toBool());
 	optionsChanged();
 	ui->widgetPlus->hide();
-	ui->progressMergeResults->hide();
 	setWindowIcon(QIcon());
 	updateCheckboxes();
 	m_search->setFocus();

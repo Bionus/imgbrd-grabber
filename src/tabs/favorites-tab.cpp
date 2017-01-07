@@ -17,6 +17,7 @@ favoritesTab::favoritesTab(QMap<QString,Site*> *sites, Profile *profile, mainWin
 	// UI members for SearchTab class
 	ui_checkMergeResults = ui->checkMergeResults;
 	ui_progressMergeResults = ui->progressMergeResults;
+	ui_stackedMergeResults = ui->stackedMergeResults;
 	ui_spinPage = ui->spinPage;
 	ui_spinImagesPerPage = ui->spinImagesPerPage;
 	ui_spinColumns = ui->spinColumns;
@@ -50,7 +51,6 @@ favoritesTab::favoritesTab(QMap<QString,Site*> *sites, Profile *profile, mainWin
 		ui->comboAsc->setCurrentIndex(int(m_settings->value("Favorites/reverse", false).toBool()));
 		m_settings->setValue("reverse", bool(ui->comboAsc->currentIndex() == 1));
 	ui->widgetResults->hide();
-	ui->progressMergeResults->hide();
 
 	connect(m_profile, &Profile::favoritesChanged, this, &favoritesTab::updateFavorites);
 	updateFavorites();

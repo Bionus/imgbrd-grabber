@@ -291,7 +291,7 @@ void searchTab::postLoading(Page *page, QList<QSharedPointer<Image>> source)
 	if (ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked())
 	{
 		if (ui_progressMergeResults != nullptr)
-			ui_progressMergeResults->hide();
+			ui_stackedMergeResults->setCurrentIndex(1);
 
 		QLabel *txt = new QLabel(this);
 		txt->setOpenExternalLinks(true);
@@ -935,7 +935,7 @@ void searchTab::loadTags(QStringList tags)
 	{
 		ui_progressMergeResults->setValue(0);
 		ui_progressMergeResults->setMaximum(m_pages.count());
-		ui_progressMergeResults->show();
+		ui_stackedMergeResults->setCurrentIndex(0);
 	}
 
 	emit changed(this);

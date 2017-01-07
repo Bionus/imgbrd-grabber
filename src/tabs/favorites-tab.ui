@@ -29,7 +29,7 @@
    <iconset resource="../../resources.qrc">
     <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2">
+  <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,0">
    <item>
     <widget class="QSplitter" name="splitter">
      <property name="orientation">
@@ -556,16 +556,43 @@ QWidget#scrollAreaWidgetContents {
       </widget>
      </item>
      <item>
-      <widget class="QProgressBar" name="progressMergeResults">
-       <property name="value">
-        <number>0</number>
+      <widget class="QStackedWidget" name="stackedMergeResults">
+       <property name="currentIndex">
+        <number>1</number>
        </property>
-       <property name="textVisible">
-        <bool>false</bool>
-       </property>
-       <property name="format">
-        <string notr="true">%p%</string>
-       </property>
+       <widget class="QWidget" name="page">
+        <layout class="QVBoxLayout" name="verticalLayout_5">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QProgressBar" name="progressMergeResults">
+           <property name="value">
+            <number>0</number>
+           </property>
+           <property name="textVisible">
+            <bool>false</bool>
+           </property>
+           <property name="format">
+            <string notr="true">%p%</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="page_2"/>
       </widget>
      </item>
      <item>
