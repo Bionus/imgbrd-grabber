@@ -6,6 +6,7 @@
 		<Post>/{id}</Post>
 		<Html>
 			<Tags>/{tags}?{pagepart}{altpage}</Tags>
+			<Post>/{id}</Post>
 			<Limit>22</Limit>
 			<MaxPage>100</MaxPage>
 			<PagePart>p={page}</PagePart>
