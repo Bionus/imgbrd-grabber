@@ -52,44 +52,34 @@ void TextEdit::wheelEvent(QWheelEvent *e)
  */
 void TextEdit::doColor()
 {
-	QString txt = " "+this->toPlainText().toHtmlEscaped()+" ";
+	QString txt = " " + this->toPlainText().toHtmlEscaped() + " ";
 
 	// Color favorited tags
 	for (Favorite fav : m_favorites)
 		txt.replace(" "+fav.getName()+" ", " <span style=\"color:#ffc0cb\">"+fav.getName()+"</span> ");
 
 	// Color metatags
-	QRegExp r1(" ~([^ ]+)"),
-			r2(" -([^ ]+)"),
-			r3(" (user|fav|md5|pool|rating|source|status|approver|unlocked|sub|id|width|height|score|mpixels|filesize|date|gentags|arttags|chartags|copytags|status|status|approver|order|parent):([^ ]*)");
-	int pos = 0;
-	while ((pos = r1.indexIn(txt, pos)) != -1)
-	{
-		QString rep = " <span style=\"color:green\">~"+r1.cap(1)+"</span>";
-		txt.replace(r1.cap(0), rep);
-		pos += rep.length();
-	}
-	pos = 0;
-	while ((pos = r2.indexIn(txt, pos)) != -1)
-	{
-		QString rep = " <span style=\"color:red\">-"+r2.cap(1)+"</span>";
-		txt.replace(r2.cap(0), rep);
-		pos += rep.length();
-	}
-	pos = 0;
-	while ((pos = r3.indexIn(txt, pos)) != -1)
-	{
-		QString rep = " <span style=\"color:brown\">"+r3.cap(1)+":"+r3.cap(2)+"</span>";
-		txt.replace(r3.cap(0), rep);
-		pos += rep.length();
-	}
+	QRegExp regexOr(" ~([^ ]+) "),
+			regexExclude(" -([^ ]+) "),
+			regexMeta(" (user|fav|md5|pool|rating|source|status|approver|unlocked|sub|id|width|height|score|mpixels|filesize|date|gentags|arttags|chartags|copytags|status|status|approver|order|parent):([^ ]*) "),
+			regexMd5(" ([0-9A-F]{32}) ", Qt::CaseInsensitive);
+	txt.replace(regexOr, " <span style=\"color:green\">\\1</span> ");
+	txt.replace(regexExclude, " <span style=\"color:red\">\\1</span> ");
+	txt.replace(regexMeta, " <span style=\"color:brown\">\\1:\\2</span> ");
+	txt.replace(regexMd5, " <span style=\"color:purple\">\\1</span> ");
+
+	// Replace spaces to not be trimmed by the HTML renderer
+	txt = txt.mid(1, txt.length() - 2);
+	txt.replace(" ", "&nbsp;");
+	txt.replace("<span&nbsp;style=", "<span style=");
 
 	// Setup cursor
 	QTextCursor crsr = textCursor();
-	pos = crsr.columnNumber();
+	int pos = crsr.columnNumber();
 	int start = crsr.selectionStart();
 	int end = crsr.selectionEnd();
-	setHtml(txt.mid(1, txt.length()-2));
+	setHtml(txt);
+
 	//If the cursor is at the right side of (if any) selected text
 	if (pos == end)
 	{

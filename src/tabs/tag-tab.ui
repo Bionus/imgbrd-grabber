@@ -25,7 +25,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0,0,2,0">
    <item>
-    <layout class="QHBoxLayout" name="layoutFields" stretch="0,1,0,0,0,0">
+    <layout class="QHBoxLayout" name="layoutFields" stretch="0,0,0,0,0">
      <property name="spacing">
       <number>6</number>
      </property>
@@ -98,13 +98,6 @@
          </widget>
         </item>
        </layout>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="lineMd5">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
       </widget>
      </item>
      <item>
@@ -694,22 +687,6 @@
     <hint type="destinationlabel">
      <x>515</x>
      <y>528</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>lineMd5</sender>
-   <signal>returnPressed()</signal>
-   <receiver>buttonTags</receiver>
-   <slot>click()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>432</x>
-     <y>24</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>703</x>
-     <y>23</y>
     </hint>
    </hints>
   </connection>

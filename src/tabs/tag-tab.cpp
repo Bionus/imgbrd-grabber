@@ -38,10 +38,6 @@ tagTab::tagTab(QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
 	ui->layoutPlus->addWidget(m_postFiltering, 1, 1, 1, 3);
 	connect(ui->labelMeant, SIGNAL(linkActivated(QString)), this, SLOT(setTags(QString)));
 
-	// Half MD5 field
-	ui->lineMd5->setEnabled(m_settings->value("enable_md5_field", false).toBool());
-	ui->lineMd5->setVisible(m_settings->value("enable_md5_field", false).toBool());
-
 	// Others
 	ui->checkMergeResults->setChecked(m_settings->value("mergeresults", false).toBool());
 	optionsChanged();
@@ -91,10 +87,14 @@ void tagTab::load()
 	ui->scrollAreaResults->setScrollEnabled(resultsScrollArea);
 
 	// Get the search values
-	QString search = m_search->toPlainText();
-	if (!ui->lineMd5->text().isEmpty())
-		search += " md5:" + ui->lineMd5->text();
-	QStringList tags = search.trimmed().split(" ", QString::SkipEmptyParts);
+	QString search = m_search->toPlainText().trimmed();
+	if (m_settings->value("enable_md5_fast_search", true).toBool())
+	{
+		QRegExp md5Matcher("^[0-9A-F]{32}$", Qt::CaseInsensitive);
+		if (md5Matcher.exactMatch(search))
+			search.prepend("md5:");
+	}
+	QStringList tags = search.split(" ", QString::SkipEmptyParts);
 
 	setWindowTitle(search.isEmpty() ? tr("Search") : QString(search).replace("&", "&&"));
 	emit titleChanged(this);
