@@ -559,6 +559,8 @@ void PageApi::parse()
 					{ d["preview_url"] = sizes["thumb"].toString(); }
 					if (sizes.contains("large"))
 					{ d["sample_url"] = sizes["large"].toString(); }
+					if (sizes.contains("full"))
+					{ d["file_url"] = sizes["full"].toString(); }
 				}
 
 				this->parseImage(d, id + first);
