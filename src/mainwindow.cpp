@@ -133,17 +133,13 @@ void mainWindow::init()
 	{
 		log("It seems that Imgbrd-Grabber hasn't shut down properly last time.");
 
-		QString msg;
-		if (m_restore)
-			msg = tr("It seems that the application was not properly closed for its last use. Do you want to start without restoring your last session?");
-		else
-			msg = tr("It seems that the application was not properly closed for its last use. Do you want to restore your last session?");
-
+		QString msg = tr("It seems that the application was not properly closed for its last use. Do you want to restore your last session?");
 		QMessageBox dlg(QMessageBox::Question, "Grabber", msg, QMessageBox::Yes | QMessageBox::No);
 		dlg.setWindowIcon(windowIcon());
+		dlg.setDefaultButton(QMessageBox::Yes);
+
 		int response = dlg.exec();
-		if (response == QMessageBox::Yes)
-			m_restore = !m_restore;
+		m_restore = response == QMessageBox::Yes;
 	}
 
 	// Loading last window state, size and position from the settings file
