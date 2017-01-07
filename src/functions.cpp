@@ -141,19 +141,29 @@ QDateTime qDateTimeFromString(QString str)
 
 QString getUnit(float *value)
 {
-	QString unit = "o";
+	QString unit = QObject::tr("b");
 	if (*value >= 1024)
 	{
 		*value /= 1024;
 		if (*value >= 1024)
 		{
 			*value /= 1024;
-			unit = "Mio";
+			unit = QObject::tr("Mib");
 		}
 		else
-		{ unit = "Kio"; }
+		{
+			unit = QObject::tr("Kib");
+		}
 	}
 	return unit;
+}
+
+QString formatFilesize(float size)
+{
+	QString unit = getUnit(&size);
+	float round = size > 100 ? 1 : (size >= 10 ? 10 : 100);
+	float roundedSize = static_cast<float>(static_cast<int>(size * round + 0.5)) / round;
+	return QString("%1 %2").arg(roundedSize).arg(unit);
 }
 
 /**
