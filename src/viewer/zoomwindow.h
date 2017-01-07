@@ -65,6 +65,7 @@ class zoomWindow : public QDialog
 		void pendingUpdate();
 		void updateButtonPlus();
 		void openFile(bool now = false);
+		void updateWindowTitle();
 
 		// Context menus
 		void imageContextMenu();

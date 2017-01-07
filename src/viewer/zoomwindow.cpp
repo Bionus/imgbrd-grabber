@@ -546,6 +546,8 @@ void zoomWindow::replyFinishedDetails()
 		{ m_url = m_image->url(); }
 		load();
 	}
+
+	updateWindowTitle();
 }
 void zoomWindow::colore()
 {
@@ -1040,8 +1042,33 @@ void zoomWindow::load(QSharedPointer<Image> image)
 	ui->buttonSaveNQuit->setText(tr("Save and close"));
 	ui->buttonSaveNQuitFav->setText(tr("Save and close"));
 
+	// Window title
+	updateWindowTitle();
+
 	prepareNextSlide();
 	go();
+}
+
+void zoomWindow::updateWindowTitle()
+{
+	QStringList infos;
+
+	// Extension
+	infos.append(getExtension(m_image->fileUrl()).toUpper());
+
+	// Filesize
+	if (m_image->fileSize() != 0)
+		infos.append(formatFilesize(m_image->fileSize()));
+
+	// Image size
+	if (!m_image->size().isEmpty())
+		infos.append(QString("%1 x %2").arg(m_image->size().width()).arg(m_image->size().height()));
+
+	// Update title if there are infos to show
+	if (infos.isEmpty())
+		setWindowTitle(tr("Image"));
+	else
+		setWindowTitle(QString(tr("Image") + " (%1)").arg(infos.join(", ")));
 }
 
 void zoomWindow::next()
