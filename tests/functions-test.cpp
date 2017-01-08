@@ -21,15 +21,15 @@ void FunctionsTest::testFixFilenameLinux()
 void FunctionsTest::testGetUnit()
 {
 	float size1 = 800;
-	QCOMPARE(getUnit(&size1), QString("b"));
+	QCOMPARE(getUnit(&size1), QString("B"));
 	QCOMPARE(size1, 800.0f);
 
 	float size2 = 2048;
-	QCOMPARE(getUnit(&size2), QString("Kib"));
+	QCOMPARE(getUnit(&size2), QString("KiB"));
 	QCOMPARE(size2, 2.0f);
 
 	float size3 = 7340032;
-	QCOMPARE(getUnit(&size3), QString("Mib"));
+	QCOMPARE(getUnit(&size3), QString("MiB"));
 	QCOMPARE(size3, 7.0f);
 }
 

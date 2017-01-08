@@ -141,18 +141,18 @@ QDateTime qDateTimeFromString(QString str)
 
 QString getUnit(float *value)
 {
-	QString unit = QObject::tr("b");
+	QString unit = QObject::tr("B");
 	if (*value >= 1024)
 	{
 		*value /= 1024;
 		if (*value >= 1024)
 		{
 			*value /= 1024;
-			unit = QObject::tr("Mib");
+			unit = QObject::tr("MiB");
 		}
 		else
 		{
-			unit = QObject::tr("Kib");
+			unit = QObject::tr("KiB");
 		}
 	}
 	return unit;
