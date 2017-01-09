@@ -4,7 +4,7 @@
 #include <QString>
 #include <QList>
 #include <QSettings>
-#include "favorite.h"
+#include "models/favorite.h"
 
 
 

@@ -3,7 +3,7 @@
 
 #include <QString>
 #include <QStringList>
-#include "favorite.h"
+#include "models/favorite.h"
 #include "profile.h"
 
 

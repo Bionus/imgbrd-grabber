@@ -9,6 +9,18 @@ CONFIG += console
 	error("Could not find the common configuration file!")
 }
 
+# Include library
+DEPENDPATH += $${PDIR}/lib
+INCLUDEPATH += $${PDIR}/lib/src
+CONFIG(release, debug|release) {
+	LIBS = -L$${PDIR}/lib/build/release/ -llib
+	PRE_TARGETDEPS = $${PDIR}/lib/build/release/lib.lib
+}
+else {
+	LIBS = -L$${PDIR}/lib/build/debug/ -llib
+	PRE_TARGETDEPS = $${PDIR}/lib/build/debug/lib.lib
+}
+
 # TODO: remove these dependencies
 QT += multimedia widgets
 FORMS += $${PDIR}/src/*.ui \
