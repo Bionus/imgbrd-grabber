@@ -95,6 +95,7 @@ class Image : public QObject
 		QString		getExtensionFromHeader(const QByteArray &data12);
 		QUrl		getDisplayableUrl() const;
 		bool		isVideo() const;
+		void		setTags(QList<Tag> tags);
 
 	public slots:
 		void loadPreview();

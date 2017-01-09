@@ -74,30 +74,7 @@ Tag Tag::FromCapture(QStringList caps, QStringList order)
 		}
 		else if (ord == "type" && type.isEmpty())
 		{
-			type = cap.toLower().trimmed();
-			if (type.contains(", "))
-			{ type = type.split(", ").at(0).trimmed(); }
-			if (type == "series")
-			{ type = "copyright"; }
-			else if (type == "mangaka")
-			{ type = "artist"; }
-			else if (type == "game")
-			{ type = "copyright"; }
-			else if (type == "studio")
-			{ type = "circle"; }
-			else if (type == "source")
-			{ type = "general"; }
-			else if (type == "character group")
-			{ type = "general"; }
-			else if (type.length() == 1)
-			{
-				int tpe = type.toInt();
-				if (tpe >= 0 && tpe <= 4)
-				{
-					QStringList types = QStringList() << "general" << "artist" << "unknown" << "copyright" << "character" << "species";
-					type = types[tpe];
-				}
-			}
+			type = Tag::GetType(type, QStringList() << "general" << "artist" << "unknown" << "copyright" << "character" << "species");
 		}
 		else if (ord == "count" && count != 0)
 		{
@@ -112,6 +89,7 @@ Tag Tag::FromCapture(QStringList caps, QStringList order)
 
 	return Tag(tag, type, count);
 }
+
 QList<Tag> Tag::FromRegexp(QString rx, QStringList order, const QString &source)
 {
 	QRegExp rxtags(rx);
@@ -137,6 +115,35 @@ QList<Tag> Tag::FromRegexp(QString rx, QStringList order, const QString &source)
 	}
 
 	return ret;
+}
+
+QString Tag::GetType(QString type, QStringList ids)
+{
+	type = type.toLower().trimmed();
+	if (type.contains(", "))
+		type = type.split(", ").at(0).trimmed();
+
+	if (type == "series")
+		return "copyright";
+	if (type == "mangaka")
+		return "artist";
+	if (type == "game")
+		return "copyright";
+	if (type == "studio")
+		return "circle";
+	if (type == "source")
+		return "general";
+	if (type == "character group")
+		return "general";
+
+	if (type.length() == 1)
+	{
+		int typeId = type.toInt();
+		if (typeId >= 0 && typeId < ids.count())
+			return ids[typeId];
+	}
+
+	return type;
 }
 
 /**

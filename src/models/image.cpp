@@ -1059,6 +1059,10 @@ void Image::setSavePath(QString savePath)
 {
 	m_savePath = savePath;
 }
+void Image::setTags(QList<Tag> tags)
+{
+	m_tags = tags;
+}
 
 QString Image::md5() const
 {
