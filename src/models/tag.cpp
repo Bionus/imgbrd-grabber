@@ -74,7 +74,7 @@ Tag Tag::FromCapture(QStringList caps, QStringList order)
 		}
 		else if (ord == "type" && type.isEmpty())
 		{
-			type = Tag::GetType(type, QStringList() << "general" << "artist" << "unknown" << "copyright" << "character" << "species");
+			type = Tag::GetType(cap, QStringList() << "general" << "artist" << "unknown" << "copyright" << "character" << "species");
 		}
 		else if (ord == "count" && count != 0)
 		{
