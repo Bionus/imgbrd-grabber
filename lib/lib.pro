@@ -3,6 +3,21 @@
 	error("Could not find the common configuration file!")
 }
 
+# Code coverage
+@
+T = $$(TRAVIS)
+!isEmpty(T) {
+	unix:!macx {
+		QMAKE_CXXFLAGS -= -O2
+		QMAKE_CXXFLAGS_RELEASE -= -O2
+
+		LIBS += -lgcov
+		QMAKE_CXXFLAGS += -g -fprofile-arcs -ftest-coverage -O0
+		QMAKE_LFLAGS += -g -fprofile-arcs -ftest-coverage  -O0
+	}
+}
+@
+
 # Library project
 TEMPLATE = lib
 TARGET = lib
