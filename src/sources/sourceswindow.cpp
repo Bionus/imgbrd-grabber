@@ -8,15 +8,14 @@
 #include "models/source.h"
 
 
-
 /**
  * Constructor of the sourcesWindow, generating checkboxes and delete buttons
  * @param	selected	Bool list of currently selected websites, in the alphabetical order
  * @param	sites		QStringList of sites names
  * @param	parent		The parent window
  */
-sourcesWindow::sourcesWindow(QList<bool> selected, QMap<QString, Site*> *sites, QWidget *parent)
-	: QDialog(parent), ui(new Ui::sourcesWindow), m_selected(selected), m_sites(sites)
+sourcesWindow::sourcesWindow(Profile *profile, QList<bool> selected, QMap<QString, Site*> *sites, QWidget *parent)
+	: QDialog(parent), ui(new Ui::sourcesWindow), m_profile(profile), m_selected(selected), m_sites(sites)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	ui->setupUi(this);
@@ -143,7 +142,7 @@ void sourcesWindow::deleteSite(QString site)
  */
 void sourcesWindow::addSite()
 {
-	SiteWindow *sw = new SiteWindow(m_sites, this);
+	SiteWindow *sw = new SiteWindow(m_profile, m_sites, this);
 	connect(sw, &SiteWindow::accepted, this, &sourcesWindow::updateCheckboxes);
 	sw->show();
 }

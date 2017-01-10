@@ -6,12 +6,9 @@
 #include "models/source.h"
 #include "models/source-guesser.h"
 
-extern mainWindow *_mainwindow;
 
-
-
-SiteWindow::SiteWindow(QMap<QString ,Site*> *sites, QWidget *parent)
-	: QDialog(parent), ui(new Ui::SiteWindow), m_sites(sites)
+SiteWindow::SiteWindow(Profile *profile, QMap<QString ,Site*> *sites, QWidget *parent)
+	: QDialog(parent), ui(new Ui::SiteWindow), m_profile(profile), m_sites(sites)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	ui->setupUi(this);
@@ -99,7 +96,7 @@ void SiteWindow::finish(Source *src)
 		f.write(stes.join("\r\n").toLatin1());
 	f.close();
 
-	_mainwindow->loadSites();
+	m_profile->addSite(site);
 
 	emit accepted();
 	close();

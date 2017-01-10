@@ -9,6 +9,16 @@ CONFIG += console
 	error("Could not find the common configuration file!")
 }
 
+# Include library
+DEPENDPATH += $${PDIR}/lib
+INCLUDEPATH += $${PDIR}/lib/src
+CONFIG(release, debug|release) {
+	LIBS = -L$${PDIR}/lib/build/release/ -llib
+}
+else {
+	LIBS = -L$${PDIR}/lib/build/debug/ -llib
+}
+
 # TODO: remove these dependencies
 QT += multimedia widgets
 FORMS += $${PDIR}/src/*.ui \
@@ -32,9 +42,6 @@ use_qscintilla {
 HEADERS += $${PDIR}/vendor/*.h \
 	$${PDIR}/src/*.h \
 	$${PDIR}/src/batch/*.h \
-	$${PDIR}/src/commands/*.h \
-	$${PDIR}/src/downloader/*.h \
-	$${PDIR}/src/models/*.h \
 	$${PDIR}/src/settings/*.h \
 	$${PDIR}/src/sources/*.h \
 	$${PDIR}/src/tabs/*.h \
@@ -49,9 +56,6 @@ SOURCES += $${PDIR}/vendor/*.cpp \
 	$${PDIR}/src/main/main.cpp \
 	$${PDIR}/src/*.cpp \
 	$${PDIR}/src/batch/*.cpp \
-	$${PDIR}/src/commands/*.cpp \
-	$${PDIR}/src/downloader/*.cpp \
-	$${PDIR}/src/models/*.cpp \
 	$${PDIR}/src/settings/*.cpp \
 	$${PDIR}/src/sources/*.cpp \
 	$${PDIR}/src/tabs/*.cpp \

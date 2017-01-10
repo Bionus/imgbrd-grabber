@@ -3,13 +3,17 @@ TEMPLATE = subdirs
 CONFIG  += ordered
 
 # List of subprojects
-SUBDIRS  = gui
+SUBDIRS  = lib
+SUBDIRS += gui
 SUBDIRS += tests
 SUBDIRS += CrashReporter
+gui.depends = lib
+tests.depends = lib
 
 # CLI project for Windows
 win32 {
 	SUBDIRS += cli
+	cli.depends = lib
 }
 
 # Setup script for Linux

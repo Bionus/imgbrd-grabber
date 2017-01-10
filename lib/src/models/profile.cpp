@@ -1,5 +1,6 @@
 #include <QFile>
 #include "profile.h"
+#include "site.h"
 #include "commands/commands.h"
 
 
@@ -261,6 +262,13 @@ void Profile::removeMd5(QString md5)
 void Profile::addAutoComplete(QString tag)
 {
 	m_customAutoComplete.append(tag);
+}
+
+
+void Profile::addSite(Site *site)
+{
+	Q_UNUSED(site);
+	emit sitesChanged();
 }
 
 

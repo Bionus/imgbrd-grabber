@@ -4,11 +4,11 @@
 #include <QString>
 #include <QList>
 #include <QSettings>
-#include "favorite.h"
-
+#include "models/favorite.h"
 
 
 class Commands;
+class Site;
 
 class Profile : public QObject
 {
@@ -43,6 +43,9 @@ class Profile : public QObject
 		// Auto-completion
 		void addAutoComplete(QString tag);
 
+		// Sites management
+		void addSite(Site *site);
+
 		// Getters
 		QString getPath() const;
 		QSettings *getSettings() const;
@@ -57,6 +60,7 @@ class Profile : public QObject
 		void favoritesChanged();
 		void keptForLaterChanged();
 		void ignoredChanged();
+		void sitesChanged();
 
 	private:
 		QString 		m_path;

@@ -248,7 +248,7 @@ QString _parseSetImageUrl(Site *site, Api* api, QString settingUrl, QString sett
 }
 
 
-void PageApi::parseImage(QMap<QString,QString> d, int position)
+void PageApi::parseImage(QMap<QString,QString> d, int position, QList<Tag> tags)
 {
 	// Set default values
 	if (!d.contains("file_url"))
@@ -276,7 +276,13 @@ void PageApi::parseImage(QMap<QString,QString> d, int position)
 
 	// Add if everything is ok
 	if (errors.isEmpty())
-	{ m_images.append(QSharedPointer<Image>(img)); }
+	{
+		// If we could get detailed tags information
+		if (!tags.isEmpty())
+			img->setTags(tags);
+
+		m_images.append(QSharedPointer<Image>(img));
+	}
 	else
 	{
 		img->deleteLater();
@@ -525,6 +531,8 @@ void PageApi::parse()
 
 			for (int id = 0; id < sourc.count(); id++)
 			{
+				QList<Tag> tags;
+
 				sc = sourc.at(id + first).toMap();
 				QMap<QString,QString> d;
 				if (sc.contains("tag_string"))
@@ -551,6 +559,22 @@ void PageApi::parse()
 					{ d[infos.at(i)] = sc.value(infos.at(i)).toString().trimmed(); }
 				}
 
+				// Tags as objects (Sankaku)
+				if (sc.contains("tags") && m_api->contains("Regex/TagTypes"))
+				{
+					QList<QVariant> tgs = sc["tags"].toList();
+					if (!tgs.isEmpty())
+					{
+						QStringList tagTypes = m_api->value("Regex/TagTypes").split(',');
+						for (QVariant tagData : tgs)
+						{
+							QMap<QString, QVariant> tag = tagData.toMap();
+							if (tag.contains("name"))
+								tags.append(Tag(tag["name"].toString(), Tag::GetType(tag["type"].toString(), tagTypes), tag["count"].toInt()));
+						}
+					}
+				}
+
 				// Booru-on-rails sizes
 				if (sc.contains("representations"))
 				{
@@ -563,7 +587,7 @@ void PageApi::parse()
 					{ d["file_url"] = sizes["full"].toString(); }
 				}
 
-				this->parseImage(d, id + first);
+				this->parseImage(d, id + first, tags);
 			}
 		}
 		else
