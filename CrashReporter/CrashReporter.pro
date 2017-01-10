@@ -11,8 +11,8 @@ HEADERS	+= mainwindow.h
 FORMS	+= mainwindow.ui
 
 # Resources
-RESOURCES    += resources.qrc
-RC_FILE       = icon.rc
+RESOURCES    += resources/resources.qrc
+RC_FILE       = resources/icon.rc
 TRANSLATIONS += languages/English.ts \
 				languages/French.ts \
 				languages/Russian.ts \

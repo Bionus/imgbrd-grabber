@@ -46,8 +46,8 @@ win32 {
 
 # Additionnal
 CONFIG += plugin c++11
-RESOURCES += $${PDIR}/resources.qrc
-RC_FILE = ../icon.rc
+RESOURCES += $${PDIR}/resources/resources.qrc
+RC_FILE = ../resources/icon.rc
 CODECFORTR = UTF-8
 TRANSLATIONS += $${PDIR}/languages/English.ts \
 				$${PDIR}/languages/French.ts \
