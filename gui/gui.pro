@@ -51,7 +51,6 @@ HEADERS += $${PDIR}/vendor/*.h \
 	$${PDIR}/src/*.h \
 	$${PDIR}/src/batch/*.h \
 	$${PDIR}/src/commands/*.h \
-	$${PDIR}/src/models/*.h \
 	$${PDIR}/src/downloader/*.h \
 	$${PDIR}/src/settings/*.h \
 	$${PDIR}/src/sources/*.h \
@@ -69,7 +68,6 @@ SOURCES += $${PDIR}/vendor/*.cpp \
 	$${PDIR}/src/batch/*.cpp \
 	$${PDIR}/src/commands/*.cpp \
 	$${PDIR}/src/downloader/*.cpp \
-	$${PDIR}/src/models/*.cpp \
 	$${PDIR}/src/settings/*.cpp \
 	$${PDIR}/src/sources/*.cpp \
 	$${PDIR}/src/tabs/*.cpp \

@@ -9,6 +9,7 @@ TARGET = lib
 CONFIG += staticlib
 
 # Input
+INCLUDEPATH += $${PDIR}/lib/src
 HEADERS += $${PDIR}/vendor/*.h \
 #	$${PDIR}/lib/src/*.h \
 	$${PDIR}/lib/src/models/*.h
