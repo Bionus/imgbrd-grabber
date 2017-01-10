@@ -1,8 +1,8 @@
+#include <QFile>
 #include "custom-network-access-manager.h"
-#ifdef TEST
-	#include <QFile>
-	#include "vendor/qcustomnetworkreply.h"
-#endif
+#include "vendor/qcustomnetworkreply.h"
+
+bool CustomNetworkAccessManager::TestMode = false;
 
 
 CustomNetworkAccessManager::CustomNetworkAccessManager(QObject *parent)
@@ -11,7 +11,8 @@ CustomNetworkAccessManager::CustomNetworkAccessManager(QObject *parent)
 
 QNetworkReply *CustomNetworkAccessManager::get(const QNetworkRequest &request)
 {
-	#ifdef TEST
+	if (CustomNetworkAccessManager::TestMode)
+	{
 		QString md5 = QString(QCryptographicHash::hash(request.url().toString().toLatin1(), QCryptographicHash::Md5).toHex());
 		QString filename = request.url().fileName();
 		QString ext = filename.contains('.') ? filename.mid(filename.lastIndexOf('.') + 1) : "html";
@@ -52,7 +53,7 @@ QNetworkReply *CustomNetworkAccessManager::get(const QNetworkRequest &request)
 		reply->setContent(content);
 
 		return reply;
-	#else
-		return QNetworkAccessManager::get(request);
-	#endif
+	}
+
+	return QNetworkAccessManager::get(request);
 }

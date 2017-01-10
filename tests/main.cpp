@@ -1,6 +1,7 @@
 #include <QTest>
 #include "mainwindow.h"
 #include "test-suite.h"
+#include "custom-network-access-manager.h"
 #include <iostream>
 
 QMap<QDateTime, QString> _log;
@@ -17,6 +18,8 @@ int main(int argc, char *argv[])
 
 	QMap<QString,int> results;
 	int failed = 0;
+
+	CustomNetworkAccessManager::TestMode = true;
 
 	for (QObject *suite : TestSuite::suites)
 	{
