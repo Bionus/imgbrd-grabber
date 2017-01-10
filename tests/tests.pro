@@ -29,6 +29,14 @@ T = $$(TRAVIS)
 }
 @
 
+# Link library as whole
+CONFIG(release, debug|release) {
+	LIBS = -L$${PDIR}/lib/build/release/ --whole-archive -llib
+}
+else {
+	LIBS = -L$${PDIR}/lib/build/debug/ --whole-archive -llib
+}
+
 # Remove original main
 SOURCES -= $${PDIR}/gui/src/main/main.cpp
 
