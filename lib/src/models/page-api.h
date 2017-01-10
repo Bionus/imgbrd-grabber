@@ -6,7 +6,7 @@
 #include <QSslError>
 #include "tag.h"
 #include "image.h"
-#include "functions.h"
+#include "gui/src/functions.h"
 #include "profile.h"
 
 

@@ -34,8 +34,6 @@ APP_VERSION = \\\"5.0.1\\\"
 
 # General
 TEMPLATE = app
-DEPENDPATH += . .. $${PDIR}/languages $${PDIR}/src $${PDIR}/vendor
-INCLUDEPATH += . .. $${PDIR}/src $${PDIR}/vendor
 DEFINES += VERSION=$$APP_VERSION
 QT += core network xml sql script
 

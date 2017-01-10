@@ -21,17 +21,17 @@ else {
 
 # TODO: remove these dependencies
 QT += multimedia widgets
-FORMS += $${PDIR}/src/*.ui \
-	$${PDIR}/src/batch/*.ui \
-	$${PDIR}/src/settings/*.ui \
-	$${PDIR}/src/sources/*.ui \
-	$${PDIR}/src/tabs/*.ui \
-	$${PDIR}/src/updater/*.ui \
-	$${PDIR}/src/utils/rename-existing/*.ui \
-	$${PDIR}/src/utils/blacklist-fix/*.ui \
-	$${PDIR}/src/utils/empty-dirs-fix/*.ui \
-	$${PDIR}/src/utils/md5-fix/*.ui \
-	$${PDIR}/src/viewer/*.ui
+FORMS += $${PDIR}/gui/src/*.ui \
+	$${PDIR}/gui/src/batch/*.ui \
+	$${PDIR}/gui/src/settings/*.ui \
+	$${PDIR}/gui/src/sources/*.ui \
+	$${PDIR}/gui/src/tabs/*.ui \
+	$${PDIR}/gui/src/updater/*.ui \
+	$${PDIR}/gui/src/utils/rename-existing/*.ui \
+	$${PDIR}/gui/src/utils/blacklist-fix/*.ui \
+	$${PDIR}/gui/src/utils/empty-dirs-fix/*.ui \
+	$${PDIR}/gui/src/utils/md5-fix/*.ui \
+	$${PDIR}/gui/src/viewer/*.ui
 use_qscintilla {
 	DEFINES += USE_QSCINTILLA=0
 	LIBS -= -lqscintilla2
@@ -39,30 +39,31 @@ use_qscintilla {
 # end TODO
 
 # Input
+INCLUDEPATH += $${PDIR} $${PDIR}/gui/src
 HEADERS += $${PDIR}/vendor/*.h \
-	$${PDIR}/src/*.h \
-	$${PDIR}/src/batch/*.h \
-	$${PDIR}/src/settings/*.h \
-	$${PDIR}/src/sources/*.h \
-	$${PDIR}/src/tabs/*.h \
-	$${PDIR}/src/ui/*.h \
-	$${PDIR}/src/updater/*.h \
-	$${PDIR}/src/utils/rename-existing/*.h \
-	$${PDIR}/src/utils/blacklist-fix/*.h \
-	$${PDIR}/src/utils/empty-dirs-fix/*.h \
-	$${PDIR}/src/utils/md5-fix/*.h \
-	$${PDIR}/src/viewer/*.h
+	$${PDIR}/gui/src/*.h \
+	$${PDIR}/gui/src/batch/*.h \
+	$${PDIR}/gui/src/settings/*.h \
+	$${PDIR}/gui/src/sources/*.h \
+	$${PDIR}/gui/src/tabs/*.h \
+	$${PDIR}/gui/src/ui/*.h \
+	$${PDIR}/gui/src/updater/*.h \
+	$${PDIR}/gui/src/utils/rename-existing/*.h \
+	$${PDIR}/gui/src/utils/blacklist-fix/*.h \
+	$${PDIR}/gui/src/utils/empty-dirs-fix/*.h \
+	$${PDIR}/gui/src/utils/md5-fix/*.h \
+	$${PDIR}/gui/src/viewer/*.h
 SOURCES += $${PDIR}/vendor/*.cpp \
-	$${PDIR}/src/main/main.cpp \
-	$${PDIR}/src/*.cpp \
-	$${PDIR}/src/batch/*.cpp \
-	$${PDIR}/src/settings/*.cpp \
-	$${PDIR}/src/sources/*.cpp \
-	$${PDIR}/src/tabs/*.cpp \
-	$${PDIR}/src/ui/*.cpp \
-	$${PDIR}/src/updater/*.cpp \
-	$${PDIR}/src/utils/rename-existing/*.cpp \
-	$${PDIR}/src/utils/blacklist-fix/*.cpp \
-	$${PDIR}/src/utils/empty-dirs-fix/*.cpp \
-	$${PDIR}/src/utils/md5-fix/*.cpp \
-	$${PDIR}/src/viewer/*.cpp
+	$${PDIR}/gui/src/main/main.cpp \
+	$${PDIR}/gui/src/*.cpp \
+	$${PDIR}/gui/src/batch/*.cpp \
+	$${PDIR}/gui/src/settings/*.cpp \
+	$${PDIR}/gui/src/sources/*.cpp \
+	$${PDIR}/gui/src/tabs/*.cpp \
+	$${PDIR}/gui/src/ui/*.cpp \
+	$${PDIR}/gui/src/updater/*.cpp \
+	$${PDIR}/gui/src/utils/rename-existing/*.cpp \
+	$${PDIR}/gui/src/utils/blacklist-fix/*.cpp \
+	$${PDIR}/gui/src/utils/empty-dirs-fix/*.cpp \
+	$${PDIR}/gui/src/utils/md5-fix/*.cpp \
+	$${PDIR}/gui/src/viewer/*.cpp

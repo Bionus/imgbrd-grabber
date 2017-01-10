@@ -1,28 +1,7 @@
 #include "favorite.h"
 #include <QDir>
 #include <QDebug>
-
-
-// TODO: remove this
-#include <QApplication>
-#include <QStandardPaths>
-QString _savePath(QString file = "", bool exists = false)
-{
-	QString check = exists ? file : "settings.ini";
-	if (QDir(QDir::currentPath()+"/tests/resources/").exists())
-	{ return QDir::toNativeSeparators(QDir::currentPath()+"/tests/resources/"+file); }
-	if (QFile(QDir::toNativeSeparators(qApp->applicationDirPath()+"/"+check)).exists())
-	{ return QDir::toNativeSeparators(qApp->applicationDirPath()+"/"+file); }
-	if (QFile(QDir::toNativeSeparators(QDir::currentPath()+"/"+check)).exists())
-	{ return QDir::toNativeSeparators(QDir::currentPath()+"/"+file); }
-	if (QFile(QDir::toNativeSeparators(QDir::homePath()+"/Grabber/"+check)).exists())
-	{ return QDir::toNativeSeparators(QDir::homePath()+"/Grabber/"+file); }
-	#ifdef __linux__
-		if (QFile(QDir::toNativeSeparators(QDir::homePath()+"/.Grabber/"+check)).exists())
-		{ return QDir::toNativeSeparators(QDir::homePath()+"/.Grabber/"+file); }
-	#endif
-	return QDir::toNativeSeparators(QStandardPaths::writableLocation(QStandardPaths::DataLocation)+"/"+file);
-}
+#include "gui/src/functions.h"
 
 
 Favorite::Favorite(QString name)
@@ -54,10 +33,10 @@ QString Favorite::getImagePath() const
 
 bool Favorite::setImage(QPixmap& img)
 {
-	if (!QDir(_savePath("thumbs")).exists())
-		QDir(_savePath()).mkdir("thumbs");
+	if (!QDir(savePath("thumbs")).exists())
+		QDir(savePath()).mkdir("thumbs");
 
-	m_imagePath = _savePath("thumbs/" + getName(true) + ".png");
+	m_imagePath = savePath("thumbs/" + getName(true) + ".png");
 	return img
 			.scaled(QSize(150,150), Qt::KeepAspectRatio, Qt::SmoothTransformation)
 			.save(m_imagePath, "PNG");
@@ -68,7 +47,7 @@ QPixmap Favorite::getImage() const
 	if (img.width() > 150 || img.height() > 150)
 	{
 		img = img.scaled(QSize(150,150), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-		img.save(_savePath("thumbs/" + getName(true) + ".png"), "PNG");
+		img.save(savePath("thumbs/" + getName(true) + ".png"), "PNG");
 	}
 	return img;
 }

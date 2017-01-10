@@ -1,6 +1,6 @@
 #include <QtScript>
 #include "filename.h"
-#include "functions.h"
+#include "gui/src/functions.h"
 #include "site.h"
 
 #define TAGS_SEPARATOR " "

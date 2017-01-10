@@ -4,7 +4,7 @@
 #include <QtSql/QSqlError>
 #include <QDir>
 #include "commands.h"
-#include "functions.h"
+#include "gui/src/functions.h"
 #include "models/filename.h"
 
 

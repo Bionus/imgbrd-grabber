@@ -4,7 +4,7 @@
 #include <QFile>
 #include "program-updater.h"
 #include "functions.h"
-#include "json.h"
+#include "vendor/json.h"
 
 
 ProgramUpdater::ProgramUpdater()

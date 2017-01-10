@@ -4,7 +4,7 @@
 #include <QFileInfo>
 #include "source.h"
 #include "site.h"
-#include "functions.h"
+#include "gui/src/functions.h"
 
 
 

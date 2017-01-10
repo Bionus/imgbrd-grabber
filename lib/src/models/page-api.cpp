@@ -5,7 +5,7 @@
 #include <QSet>
 #include "page.h"
 #include "page-api.h"
-#include "json.h"
+#include "vendor/json.h"
 #include "math.h"
 #include "site.h"
 
