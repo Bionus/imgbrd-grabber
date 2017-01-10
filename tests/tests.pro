@@ -23,19 +23,11 @@ T = $$(TRAVIS)
 		QMAKE_CXXFLAGS_RELEASE -= -O2
 
 		LIBS += -lgcov
-		QMAKE_CXXFLAGS += -g -fprofile-arcs -ftest-coverage -O0
-		QMAKE_LFLAGS += -g -fprofile-arcs -ftest-coverage  -O0
+		QMAKE_CXXFLAGS += -g -fprofile-arcs -ftest-coverage -O0 --coverage
+		QMAKE_LFLAGS += -g -fprofile-arcs -ftest-coverage  -O0 --coverage
 	}
 }
 @
-
-# Link library as whole
-CONFIG(release, debug|release) {
-	LIBS = -L$${PDIR}/lib/build/release/ --whole-archive -llib
-}
-else {
-	LIBS = -L$${PDIR}/lib/build/debug/ --whole-archive -llib
-}
 
 # Remove original main
 SOURCES -= $${PDIR}/gui/src/main/main.cpp
