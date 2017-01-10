@@ -21,7 +21,7 @@ class sourcesWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		explicit sourcesWindow(QList<bool> selected, QMap<QString,Site*> *sites, QWidget *parent = 0);
+		explicit sourcesWindow(Profile *profile, QList<bool> selected, QMap<QString,Site*> *sites, QWidget *parent = 0);
 		~sourcesWindow();
 		QList<bool> getSelected();
 		int getColumns();
@@ -47,6 +47,7 @@ class sourcesWindow : public QDialog
 
 	private:
 		Ui::sourcesWindow *ui;
+		Profile *m_profile;
 		QList<bool> m_selected;
 		QList<QCheckBox*> m_checks;
 		QList<QLabel*> m_labels;

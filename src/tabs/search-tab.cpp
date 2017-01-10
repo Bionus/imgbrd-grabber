@@ -824,7 +824,7 @@ void searchTab::toggleImage(int id, bool toggle, bool range)
 
 void searchTab::openSourcesWindow()
 {
-	sourcesWindow *adv = new sourcesWindow(m_selectedSources, m_sites, this);
+	sourcesWindow *adv = new sourcesWindow(m_profile, m_selectedSources, m_sites, this);
 	connect(adv, SIGNAL(valid(QList<bool>)), this, SLOT(saveSources(QList<bool>)));
 	adv->show();
 }

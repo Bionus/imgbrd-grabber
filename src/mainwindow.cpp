@@ -216,6 +216,7 @@ void mainWindow::init()
 
 	connect(m_profile, &Profile::favoritesChanged, this, &mainWindow::updateFavorites);
 	connect(m_profile, &Profile::keptForLaterChanged, this, &mainWindow::updateKeepForLater);
+	connect(m_profile, &Profile::sitesChanged, this, &mainWindow::loadSites);
 	updateFavorites();
 	updateKeepForLater();
 
