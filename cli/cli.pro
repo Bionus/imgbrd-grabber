@@ -42,8 +42,6 @@ use_qscintilla {
 HEADERS += $${PDIR}/vendor/*.h \
 	$${PDIR}/src/*.h \
 	$${PDIR}/src/batch/*.h \
-	$${PDIR}/src/commands/*.h \
-	$${PDIR}/src/downloader/*.h \
 	$${PDIR}/src/settings/*.h \
 	$${PDIR}/src/sources/*.h \
 	$${PDIR}/src/tabs/*.h \
@@ -58,8 +56,6 @@ SOURCES += $${PDIR}/vendor/*.cpp \
 	$${PDIR}/src/main/main.cpp \
 	$${PDIR}/src/*.cpp \
 	$${PDIR}/src/batch/*.cpp \
-	$${PDIR}/src/commands/*.cpp \
-	$${PDIR}/src/downloader/*.cpp \
 	$${PDIR}/src/settings/*.cpp \
 	$${PDIR}/src/sources/*.cpp \
 	$${PDIR}/src/tabs/*.cpp \
