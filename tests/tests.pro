@@ -30,7 +30,7 @@ T = $$(TRAVIS)
 @
 
 # Remove original main
-SOURCES -= $${PDIR}/src/main/main.cpp
+SOURCES -= $${PDIR}/gui/src/main/main.cpp
 
 SOURCES += $${PDIR}/tests/test-suite.cpp \
 	$${PDIR}/tests/main.cpp \
