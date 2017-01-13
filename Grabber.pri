@@ -31,10 +31,12 @@ T = $$(TRAVIS)
 
 # Global
 APP_VERSION = \\\"5.0.1\\\"
+PREFIX = \\\"$$(PREFIX)\\\"
 
 # General
 TEMPLATE = app
 DEFINES += VERSION=$$APP_VERSION
+DEFINES += PREFIX=$$PREFIX
 QT += core network xml sql script
 
 # Windows specials
