@@ -3,6 +3,7 @@
 #include "optionswindow.h"
 #include "filenamewindow.h"
 #include "functions.h"
+#include "language-loader.h"
 #include <QFileDialog>
 #include <QSettings>
 #include <QDesktopServices>
@@ -20,12 +21,11 @@ startWindow::startWindow(QMap<QString, Site*> *sites, Profile *profile, QWidget 
 	ui->setupUi(this);
 
 	// Language
-	QStringList languages = QDir(savePath("languages/", true)).entryList(QStringList("*.qm"), QDir::Files);
-	for (int i = 0; i < languages.count(); i++)
-	{ languages[i].remove(".qm", Qt::CaseInsensitive); }
-	ui->comboLanguage->addItems(languages);
-	if (languages.contains("English"))
-	{ ui->comboLanguage->setCurrentText("English"); }
+	LanguageLoader languageLoader(savePath("languages/", true));
+	QMap<QString, QString> languages = languageLoader.getAllLanguages();
+	for (QString language : languages.keys())
+	{ ui->comboLanguage->addItem(languages[language], language); }
+	ui->comboLanguage->setCurrentText("English");
 
 	// Sources
 	QStringList sources = m_sites->keys();
@@ -94,7 +94,7 @@ void startWindow::save()
 	settings.endGroup();
 
 	// Language
-	QString lang = ui->comboLanguage->currentText();
+	QString lang = ui->comboLanguage->currentData().toString();
 	if (settings.value("language", "English").toString() != lang)
 	{
 		settings.setValue("language", lang);

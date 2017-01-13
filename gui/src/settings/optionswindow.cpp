@@ -13,6 +13,7 @@
 #include "conditionwindow.h"
 #include "filenamewindow.h"
 #include "functions.h"
+#include "language-loader.h"
 
 
 
@@ -25,28 +26,13 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	ui->splitter->setStretchFactor(0, 0);
 	ui->splitter->setStretchFactor(1, 1);
 
-	QSettings fullLanguages(savePath("languages/languages.ini", true), QSettings::IniFormat, this);
-	fullLanguages.setIniCodec("UTF-8");
-	QStringList languageFiles = QDir(savePath("languages/", true)).entryList(QStringList("*.qm"), QDir::Files);
-	QStringList languages;
-	int l = 0;
-	for (QString languageFile : languageFiles)
-	{
-		QString language = languageFile.left(languageFile.length() - 3);
-		languages.append(language);
-		ui->comboLanguages->addItem(fullLanguages.value(language, language).toString());
-		ui->comboLanguages->setItemData(l, language);
-		++l;
-	}
-	if (!languages.contains("English"))
-	{
-		languages.append("English");
-		ui->comboLanguages->addItem("English");
-		ui->comboLanguages->setItemData(l, "English");
-	}
+	LanguageLoader languageLoader(savePath("languages/", true));
+	QMap<QString, QString> languages = languageLoader.getAllLanguages();
+	for (QString language : languages.keys())
+	{ ui->comboLanguages->addItem(languages[language], language); }
 
 	QSettings *settings = profile->getSettings();
-	ui->comboLanguages->setCurrentIndex(languages.indexOf(settings->value("language", "English").toString()));
+	ui->comboLanguages->setCurrentText(languages[settings->value("language", "English").toString()]);
 	ui->lineBlacklist->setText(settings->value("blacklistedtags").toString());
 	ui->checkDownloadBlacklisted->setChecked(settings->value("downloadblacklist", false).toBool());
 	ui->lineWhitelist->setText(settings->value("whitelistedtags").toString());
