@@ -10,6 +10,7 @@ class SankakuTest : public IntegrationTestSuite
 
 	private slots:
 		void testHtml();
+		void testJson();
 		void testAnimatedUrls();
 };
 
