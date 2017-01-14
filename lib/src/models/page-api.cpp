@@ -587,6 +587,14 @@ void PageApi::parse()
 					{ d["file_url"] = sizes["full"].toString(); }
 				}
 
+				// Object creation date
+				if (sc.contains("created_at"))
+				{
+					QMap<QString, QVariant> time = sc.value("created_at").toMap();
+					if (!time.isEmpty() && time.contains("s"))
+					{ d["created_at"] = time.value("s").toString(); }
+				}
+
 				this->parseImage(d, id + first, tags);
 			}
 		}
