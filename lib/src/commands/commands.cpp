@@ -62,7 +62,7 @@ bool Commands::image(const Image &img, QString path)
 				.replace("%path%", QDir::toNativeSeparators(path));
 
 			log(QString("Execution of \"%1\"").arg(exec));
-			logCommand(exec);
+			Logger::getInstance().logCommand(exec);
 
 			int code = QProcess::execute(exec);
 			if (code != 0)
@@ -115,7 +115,7 @@ bool Commands::tag(const Image &img, Tag tag, bool after)
 				.replace("%number%", QString::number(types[tag.type()]));
 
 			log(QString("Execution of \"%1\"").arg(exec));
-			logCommand(exec);
+			Logger::getInstance().logCommand(exec);
 
 			int code = QProcess::execute(exec);
 			if (code != 0)

@@ -13,18 +13,8 @@
 #include <QNetworkReply>
 #include <QSslError>
 #include "models/favorite.h"
+#include "logger.h"
 
-#define DONE()	logUpdate(" Done")
-
-
-
-enum Log
-{
-	Info,
-	Notice,
-	Warning,
-	Error
-};
 
 
 void		error(QWidget *, QString);
@@ -44,12 +34,6 @@ bool		setFileCreationDate(QString path, QDateTime time);
 void		showInGraphicalShell(const QString &);
 void		shutDown(int timeout = 0);
 void		openTray();
-
-void		setLogFile(QString path);
-void		log(QString, Log type = Info);
-void		logCommand(QString);
-void		logCommandSql(QString);
-void		logUpdate(QString);
 
 QString fixFilename(QString filename, QString path = "", int maxlength = 0, bool invalidChars = true);
 QString fixFilenameWindows(QString filename, QString path = "", int maxlength = 0, bool invalidChars = true);

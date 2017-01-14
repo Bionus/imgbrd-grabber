@@ -46,13 +46,7 @@
 	#endif
 #endif
 
-// TMP
-#include "mainwindow.h"
 
-
-
-QMap<QString, QString> _md5;
-mainWindow *_mainwindow;
 
 void noMessageOutput(QtMsgType type, const QMessageLogContext& context, const QString& message)
 {
@@ -191,9 +185,9 @@ int main(int argc, char *argv[])
 			params.insert("password", parser.value(passwordOption));
 			params.insert("ignore", parser.isSet(blacklistOption) ? "true" : "false");
 
-			_mainwindow = new mainWindow(profile, argv[0], tags, params);
-			_mainwindow->init();
-			_mainwindow->show();
+			mainWindow *mainwindow = new mainWindow(profile, argv[0], tags, params);
+			mainwindow->init();
+			mainwindow->show();
 		}
 	#endif
 

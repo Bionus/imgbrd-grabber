@@ -25,7 +25,7 @@ Source::Source(Profile *profile, QString dir)
 		QString errorMsg;
 		int errorLine, errorColumn;
 		if (!doc.setContent(fileContents, false, &errorMsg, &errorLine, &errorColumn))
-		{ log(QString("Error parsing XML file: %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn)), Error); }
+		{ log(QString("Error parsing XML file: %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn)), Logger::Error); }
 		else
 		{
 			QDomElement docElem = doc.documentElement();

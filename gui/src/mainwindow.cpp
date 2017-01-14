@@ -32,8 +32,6 @@
 #include "utils/md5-fix/md5-fix.h"
 #include "models/filename.h"
 
-#define DONE()	logUpdate(" Done")
-
 
 
 mainWindow::mainWindow(Profile *profile, QString program, QStringList tags, QMap<QString,QString> params)
@@ -218,6 +216,9 @@ void mainWindow::init()
 	connect(m_profile, &Profile::sitesChanged, this, &mainWindow::loadSites);
 	updateFavorites();
 	updateKeepForLater();
+
+	if (m_showLog)
+		connect(&Logger::getInstance(), &Logger::newLog, this, &mainWindow::logShow);
 
 	// Check for updates
 	int cfuInterval = m_settings->value("check_for_updates", 24*60*60).toInt();
@@ -1733,7 +1734,7 @@ void mainWindow::getAllPerformImage()
 	{ m_getAll404s++; }
 	else
 	{
-		log(QString("Unknown error for the image: <a href=\"%1\">%1</a>. \"%2\"").arg(img->url().toHtmlEscaped(), reply->errorString()), Error);
+		log(QString("Unknown error for the image: <a href=\"%1\">%1</a>. \"%2\"").arg(img->url().toHtmlEscaped(), reply->errorString()), Logger::Error);
 		m_getAllErrors++;
 	}
 
@@ -1778,7 +1779,7 @@ void mainWindow::saveImage(QSharedPointer<Image> img, QString path, QString p, b
 				QDir path_to_file(fp.section(QDir::toNativeSeparators("/"), 0, -2)), dir(p);
 				if (!path_to_file.exists() && !dir.mkpath(path.section(QDir::toNativeSeparators("/"), 0, -2)))
 				{
-					log(QString("Impossible to create the destination folder: %1.").arg(p+"/"+path.section('/', 0, -2)), Error);
+					log(QString("Impossible to create the destination folder: %1.").arg(p+"/"+path.section('/', 0, -2)), Logger::Error);
 					if (getAll)
 					{ m_getAllErrors++; }
 				}
@@ -1851,7 +1852,7 @@ void mainWindow::saveImage(QSharedPointer<Image> img, QString path, QString p, b
 	}
 	else
 	{
-		log(QString("Nothing has been received for the image: <a href=\"%1\">%1</a>.").arg(img->url().toHtmlEscaped()), Error);
+		log(QString("Nothing has been received for the image: <a href=\"%1\">%1</a>.").arg(img->url().toHtmlEscaped()), Logger::Error);
 		if (getAll)
 		{ m_getAllErrors++; }
 	}

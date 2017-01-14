@@ -6,7 +6,7 @@
 
 void IntegrationTestSuite::initTestCase()
 {
-	setLogFile("tests/test_log.log");
+	Logger::getInstance().setLogFile("tests/test_log.log");
 }
 
 QList<Image*> IntegrationTestSuite::getImages(QString site, QString source, QString format, QString tags)

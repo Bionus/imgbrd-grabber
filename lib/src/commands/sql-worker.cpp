@@ -42,7 +42,7 @@ bool SqlWorker::execute(QString sql)
 		return false;
 
 	log(QString("SQL execution of \"%1\"").arg(sql));
-	logCommandSql(sql);
+	Logger::getInstance().logCommandSql(sql);
 
 	QSqlQuery query;
 	return query.exec(sql);

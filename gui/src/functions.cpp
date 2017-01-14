@@ -18,11 +18,8 @@
 #ifdef QT_DEBUG
 	#include <QDebug>
 #endif
-#include "mainwindow.h"
 
 using namespace std;
-
-extern mainWindow *_mainwindow;
 
 
 
@@ -227,7 +224,7 @@ bool setFileCreationDate(QString path, QDateTime datetime)
 		HANDLE hfile = CreateFile(filename, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 		if (hfile == INVALID_HANDLE_VALUE)
 		{
-			log(QString("Unable to open file (%1)").arg(GetLastError()), Log::Error);
+			log(QString("Unable to open file (%1)").arg(GetLastError()), Logger::Error);
 			return false;
 		}
 		else
@@ -239,7 +236,7 @@ bool setFileCreationDate(QString path, QDateTime datetime)
 
 			if (!SetFileTime(hfile, &pcreationtime, NULL, &pcreationtime))
 			{
-				log(QString("Unable to change the file creation date (%1)").arg(GetLastError()), Log::Error);
+				log(QString("Unable to change the file creation date (%1)").arg(GetLastError()), Logger::Error);
 				return false;
 			}
 		}
@@ -250,7 +247,7 @@ bool setFileCreationDate(QString path, QDateTime datetime)
 		const char *filename = path.toStdString().c_str();
 		if ((utime(filename, &timebuffer)) < 0)
 		{
-			// log(QString("Unable to change the file creation date (%d)").arg(errno), Log::Error);
+			// log(QString("Unable to change the file creation date (%d)").arg(errno), Logger::Error);
 			return false;
 		}
 	#endif
@@ -308,84 +305,12 @@ QMap<QString,QString> domToMap(QDomElement dom)
 }
 
 /**
- * Append text in the log in a new line.
- * @param	l	The message to append.
- */
-QFile g_logFile, fCommandsLog, fCommandsSqlLog;
-void setLogFile(QString path)
-{
-	g_logFile.setFileName(path);
-	g_logFile.open(QFile::Append | QFile::Text | QFile::Truncate);
-}
-
-void log(QString l, Log type)
-{
-	if (!g_logFile.isOpen())
-		setLogFile(savePath("main.log"));
-
-	QDateTime time = QDateTime::currentDateTime();
-	g_logFile.write(QString("["+time.toString("hh:mm:ss.zzz")+"] "+stripTags(l)+"\n").toUtf8());
-	g_logFile.flush();
-
-	#ifndef TEST
-		QString msg = (type == Error ? QObject::tr("<b>Error:</b> %1").arg(l) : (type == Warning ? QObject::tr("<b>Warning:</b> %1").arg(l) : (type == Notice ? QObject::tr("<b>Notice:</b> %1").arg(l) : l)));
-		_mainwindow->logShow(time, msg);
-    #else
-        Q_UNUSED(type);
-	#endif
-
-	#ifdef QT_DEBUG
-		#ifndef TEST
-			qDebug() << time.toString("hh:mm:ss.zzz") << l;
-		#endif
-	#endif
-}
-void logCommand(QString l)
-{
-	if (!fCommandsLog.isOpen())
-	{
-		fCommandsLog.setFileName(savePath("commands.log"));
-		fCommandsLog.open(QFile::Append | QFile::Text | QFile::Truncate);
-	}
-
-	fCommandsLog.write(QString(l+"\r\n").toUtf8());
-	fCommandsLog.flush();
-}
-void logCommandSql(QString l)
-{
-	if (!fCommandsSqlLog.isOpen())
-	{
-		fCommandsSqlLog.setFileName(savePath("commands.sql"));
-		fCommandsSqlLog.open(QFile::Append | QFile::Text | QFile::Truncate);
-	}
-
-	fCommandsSqlLog.write(QString(l+"\r\n").toUtf8());
-	fCommandsSqlLog.flush();
-}
-
-/**
  * Removes HTML from a string.
  * @param	str		The string to remove HTML from.
  * @return			The string without html.
  */
 QString stripTags(QString str)
 { return str.remove(QRegExp("<[^>]*>")); }
-
-/**
- * Append text in the log at the end of the current line.
- * @param	l	The message to append.
- */
-void logUpdate(QString l)
-{
-	Q_UNUSED(l);
-
-	/*QDateTime date = _log.keys().at(_log.count()-1);
-	QString message = _log.value(date)+l;
-	_log.insert(date, message);
-	_mainwindow->logShow();
-
-	qDebug() << l;*/
-}
 
 /**
  * Shut down computer after a certain period of time.

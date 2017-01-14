@@ -44,7 +44,7 @@ Source *SourceGuesser::start()
 
 				if (reply->error() != 0)
 				{
-					log(QString("Error getting the test page: %1.").arg(reply->errorString()), Error);
+					log(QString("Error getting the test page: %1.").arg(reply->errorString()), Logger::Error);
 					emit progress(++current);
 					continue;
 				}
