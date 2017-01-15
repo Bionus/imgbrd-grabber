@@ -1,5 +1,5 @@
-#ifndef HEADER_FUNCTIONS
-#define HEADER_FUNCTIONS
+#ifndef FUNCTIONS_H
+#define FUNCTIONS_H
 
 #include <QMap>
 #include <QStringList>
@@ -60,5 +60,4 @@ inline bool sortByName(const Favorite &s1, const Favorite &s2)
 inline bool sortByLastviewed(const Favorite &s1, const Favorite &s2)
 { return s1.getLastViewed() < s2.getLastViewed(); }
 
-
-#endif
+#endif // FUNCTIONS_H

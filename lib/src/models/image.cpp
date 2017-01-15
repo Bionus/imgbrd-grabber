@@ -1,7 +1,7 @@
 #include <QtScript>
 #include "page.h"
 #include "image.h"
-#include "gui/src/functions.h"
+#include "functions.h"
 #include "site.h"
 #include "commands/commands.h"
 #include "filename.h"

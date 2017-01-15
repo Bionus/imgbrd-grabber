@@ -1,6 +1,6 @@
 #include "source.h"
 #include "site.h"
-#include "gui/src/functions.h"
+#include "functions.h"
 
 
 

@@ -1,6 +1,6 @@
 #include "source-guesser.h"
 #include <QEventLoop>
-#include "gui/src/functions.h"
+#include "functions.h"
 
 
 SourceGuesser::SourceGuesser(QString url, QList<Source*> sources)

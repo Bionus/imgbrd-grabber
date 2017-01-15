@@ -2,7 +2,7 @@
 #include <QtSql/QSqlQuery>
 #include <QtSql/QSqlError>
 #include "sql-worker.h"
-#include "gui/src/functions.h"
+#include "functions.h"
 
 
 SqlWorker::SqlWorker(QString driver, QString host, QString user, QString password, QString database, QObject *parent)

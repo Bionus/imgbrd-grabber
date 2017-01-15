@@ -1,7 +1,6 @@
 #include "favorite.h"
 #include <QDir>
-#include <QDebug>
-#include "gui/src/functions.h"
+#include "functions.h"
 
 
 Favorite::Favorite(QString name)

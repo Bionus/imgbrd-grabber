@@ -1,5 +1,5 @@
 #include "logger.h"
-#include "gui/src/functions.h"
+#include "functions.h"
 
 
 void Logger::setLogFile(QString path)

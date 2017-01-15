@@ -7,7 +7,7 @@
 #include <QDir>
 #include <QTimer>
 #include "site.h"
-#include "gui/src/functions.h"
+#include "functions.h"
 #include "vendor/json.h"
 #include "page.h"
 #include "image.h"
