@@ -21,7 +21,7 @@ addons:
     sources:
       - sourceline: 'ppa:ubuntu-sdk-team/ppa'
     packages:
-      - qt5-qmake
+      - qt5-qmakeexport OUTPUT_FILE="~/Grabber_$TRAVIS_BUILD_NUMBER.app.zip"
       - qtbase5-dev
       - qtdeclarative5-dev
       - qtscript5-dev
@@ -43,9 +43,9 @@ install:
 # Start X before running tests on Linux
 before_script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-        export DISPLAY=:99.0 &&
-        sh -e /etc/init.d/xvfb start &&
-        sleep 3
+      export DISPLAY=:99.0 &&
+      sh -e /etc/init.d/xvfb start &&
+      sleep 3
     ; fi
 
 # Build Grabber
@@ -57,3 +57,13 @@ script:
 # Upload code coverage
 after_success:
   - bash <(curl -s https://codecov.io/bash)
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+      zip -r Grabber.zip release
+      export OUTPUT_FILE="~/Grabber_$TRAVIS_BUILD_NUMBER.zip"
+      sshpass -p "$SSH_PASS" scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no Grabber.zip $SSH_USER@$SSH_HOST:$OUTPUT_FILE
+    ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+      zip -r Grabber.app.zip release/Grabber.app
+      export OUTPUT_FILE="~/Grabber_$TRAVIS_BUILD_NUMBER.app.zip"
+      sshpass -p "$SSH_PASS" scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no Grabber.app.zip $SSH_USER@$SSH_HOST:$OUTPUT_FILE
+    ; fi
