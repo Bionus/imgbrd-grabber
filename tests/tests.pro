@@ -1,7 +1,12 @@
-include(../gui/gui.pro)
+# Include common config
+!include(../Grabber.pri) {
+	error("Could not find the common configuration file!")
+}
 
-# Disable unnecessary stuff
-CONFIG  -= use_breakpad use_qscintilla
+# Include library
+!include(../lib/depends.pri) {
+	error("Could not find lib dependency configuration file!")
+}
 
 # Test configuration
 QT      += testlib
