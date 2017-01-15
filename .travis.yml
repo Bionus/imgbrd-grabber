@@ -61,12 +61,14 @@ after_success:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]] && [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then
       cp "gui/build/release/Grabber" release &&
       touch "release/settings.ini" &&
+      rm "release/CDR.exe" &&
       zip -r Grabber.zip release &&
       export OUTPUT_FILE="Grabber_$BUILD_LABEL.zip" &&
       sshpass -p "$SSH_PASS" scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no Grabber.zip $SSH_USER@$SSH_HOST:$OUTPUT_FILE
     ; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then
       touch "release/settings.ini" &&
+      rm "release/CDR.exe" &&
       mv gui/Grabber.app release &&
       mv release/* $release/Grabber.app/Contents/MacOS/ &&
       zip -r Grabber.app.zip release/Grabber.app &&
