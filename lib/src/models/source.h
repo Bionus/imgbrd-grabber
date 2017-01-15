@@ -7,7 +7,7 @@
 #include <QNetworkReply>
 #include "api.h"
 #include "profile.h"
-#include "gui/src/updater/source-updater.h"
+#include "updater/source-updater.h"
 
 
 class Site;

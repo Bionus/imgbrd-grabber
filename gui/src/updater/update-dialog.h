@@ -4,7 +4,7 @@
 #include <QDialog>
 #include <QNetworkReply>
 #include <QWidget>
-#include "program-updater.h"
+#include "updater/program-updater.h"
 
 
 namespace Ui
