@@ -57,13 +57,13 @@ script:
 # Upload code coverage
 after_success:
   - bash <(curl -s https://codecov.io/bash)
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]] && [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then
       zip -r Grabber.zip release &&
-      OUTPUT_FILE="~/Grabber_$TRAVIS_BUILD_NUMBER.zip"
+      OUTPUT_FILE="~/Grabber.$TRAVIS_BRANCH.$TRAVIS_TAG.zip"
       sshpass -p "$SSH_PASS" scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no Grabber.zip $SSH_USER@$SSH_HOST:$OUTPUT_FILE
     ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then
       zip -r Grabber.app.zip release/Grabber.app &&
-      OUTPUT_FILE="~/Grabber_$TRAVIS_BUILD_NUMBER.app.zip"
+      OUTPUT_FILE="~/Grabber.$TRAVIS_BRANCH.$TRAVIS_TAG.app.zip"
       sshpass -p "$SSH_PASS" scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no Grabber.app.zip $SSH_USER@$SSH_HOST:$OUTPUT_FILE
     ; fi
