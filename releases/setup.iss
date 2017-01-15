@@ -22,10 +22,10 @@ AllowNoIcons=yes
 LicenseFile=Apache license 2.0.txt
 OutputDir=.
 OutputBaseFilename=Grabber_{#MyAppVersion}
-SetupIconFile=..\images\icon.ico       
+SetupIconFile=..\resources\images\icon.ico       
 UninstallDisplayName="{#MyAppName} {#MyAppVersion}"
 UninstallDisplayIcon={app}\icon.ico
-WizardSmallImageFile=..\icon.bmp
+WizardSmallImageFile=..\resources\icon.bmp
 Compression=lzma
 SolidCompression=yes
 ChangesAssociations=yes         
@@ -61,7 +61,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 0,6.1 
 
 [Files]                                                           
-Source: "..\images\icon.ico";                   DestDir: "{app}"; Flags: ignoreversion
+Source: "..\resources\images\icon.ico";         DestDir: "{app}"; Flags: ignoreversion
 Source: "..\release\CDR.exe";                   DestDir: "{app}"; Flags: ignoreversion   
 Source: "..\CrashReporter\release\CrashReporter.exe"; DestDir: "{app}"; Flags: ignoreversion   
 Source: "..\cli\build\release\Cli.exe";               DestDir: "{app}"; Flags: ignoreversion; DestName: "Grabber.com"

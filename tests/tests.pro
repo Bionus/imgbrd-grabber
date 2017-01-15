@@ -32,7 +32,7 @@ T = $$(TRAVIS)
 @
 
 # Input
-INCLUDEPATH += $${PWD}
+INCLUDEPATH += $${PWD} $${PDIR}/lib/src
 SOURCES += $${PWD}/test-suite.cpp \
 	$${PWD}/main.cpp \
 	$${PWD}/functions-test.cpp \
