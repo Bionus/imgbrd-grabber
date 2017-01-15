@@ -4,6 +4,7 @@
 #include <QDir>
 #include <QStringList>
 #include <QDesktopServices>
+#include <QUrl>
 
 
 /**
