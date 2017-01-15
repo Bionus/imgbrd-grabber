@@ -1,26 +1,24 @@
-PRO = $${_PRO_FILE_PWD_}
-
 # Include common config
 !include(../Grabber.pri) {
 	error("Could not find the common configuration file!")
 }
 
-# Library project
+# General
 TEMPLATE = lib
 TARGET = lib
 CONFIG += staticlib
 
 # Input
-INCLUDEPATH += $${PDIR} $${PRO}/src
-HEADERS += $${PDIR}/vendor/*.h \
-	$${PRO}/src/*.h \
-	$${PRO}/src/commands/*.h \
-	$${PRO}/src/downloader/*.h \
-	$${PRO}/src/models/*.h \
-	$${PRO}/src/updater/*.h
-SOURCES += $${PDIR}/vendor/*.cpp \
-	$${PRO}/src/*.cpp \
-	$${PRO}/src/commands/*.cpp \
-	$${PRO}/src/downloader/*.cpp \
-	$${PRO}/src/models/*.cpp \
-	$${PRO}/src/updater/*.cpp
+INCLUDEPATH += $${PWD}/src
+HEADERS += $${PWD}/src/*.h \
+	$${PWD}/src/commands/*.h \
+	$${PWD}/src/downloader/*.h \
+	$${PWD}/src/models/*.h \
+	$${PWD}/src/updater/*.h \
+	$${PWD}/src/vendor/*.h
+SOURCES += $${PWD}/src/*.cpp \
+	$${PWD}/src/commands/*.cpp \
+	$${PWD}/src/downloader/*.cpp \
+	$${PWD}/src/models/*.cpp \
+	$${PWD}/src/updater/*.cpp \
+	$${PWD}/src/vendor/*.cpp
