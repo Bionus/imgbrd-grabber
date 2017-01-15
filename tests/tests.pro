@@ -32,14 +32,14 @@ T = $$(TRAVIS)
 @
 
 # Input
-INCLUDEPATH += $${PWD} $${PDIR}/lib/src
-SOURCES += $${PWD}/test-suite.cpp \
-	$${PWD}/main.cpp \
-	$${PWD}/functions-test.cpp \
-	$${PWD}/models/*.cpp \
-	$${PWD}/updater/*.cpp \
-	$${PWD}/integration/*.cpp
-HEADERS += $${PWD}/*.h \
-	$${PWD}/models/*.h \
-	$${PWD}/updater/*.h \
-	$${PWD}/integration/*.h
+INCLUDEPATH += $${PWD}/src/ $${PDIR}/lib/src
+SOURCES += $${PWD}/src/test-suite.cpp \
+	$${PWD}/src/main.cpp \
+	$${PWD}/src/functions-test.cpp \
+	$${PWD}/src/models/*.cpp \
+	$${PWD}/src/updater/*.cpp \
+	$${PWD}/src/integration/*.cpp
+HEADERS += $${PWD}/src/*.h \
+	$${PWD}/src/models/*.h \
+	$${PWD}/src/updater/*.h \
+	$${PWD}/src/integration/*.h
