@@ -29,6 +29,7 @@ addons:
       - libpulse-dev
       - qt5-default
       - qttools5-dev-tools
+      - sshpass
 
 # Qt packages for OS X
 install:
