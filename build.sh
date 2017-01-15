@@ -8,7 +8,7 @@ apt-get install -qq "g++"
 QT_SELECT=5 qmake "Grabber.pro"
 make
 
-mv "gui/Grabber" release
+mv "gui/build/release/Grabber" release
 touch "release/settings.ini"
 
 echo "Grabber has been compiled in the release directory. To run it, type './release/Grabber'"

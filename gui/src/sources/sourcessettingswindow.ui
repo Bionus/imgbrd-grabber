@@ -1,0 +1,1001 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SourcesSettingsWindow</class>
+ <widget class="QDialog" name="SourcesSettingsWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>530</width>
+    <height>298</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Site options</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../../resources.qrc">
+    <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="tabGeneral">
+      <attribute name="title">
+       <string>General</string>
+      </attribute>
+      <layout class="QFormLayout" name="formLayout_5">
+       <property name="fieldGrowthPolicy">
+        <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+       </property>
+       <item row="3" column="0">
+        <widget class="QLabel" name="labelReferer">
+         <property name="text">
+          <string>Referer (default)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QComboBox" name="comboReferer">
+         <item>
+          <property name="text">
+           <string>None</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Site</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Page</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Image</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="labelRefererPreview">
+         <property name="text">
+          <string>Referer (preview)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QComboBox" name="comboRefererPreview">
+         <item>
+          <property name="text">
+           <string>Default</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>None</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Site</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Page</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Image</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="labelRefererImage">
+         <property name="text">
+          <string>Referer (image)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <widget class="QComboBox" name="comboRefererImage">
+         <item>
+          <property name="text">
+           <string>Default</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>None</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Site</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Page</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Details</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Image</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="labelSiteName">
+         <property name="text">
+          <string>Name</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="lineSiteName"/>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Ignore (always)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>Ignore (page 1)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QSpinBox" name="spinIgnore1"/>
+       </item>
+       <item row="2" column="1">
+        <widget class="QSpinBox" name="spinIgnoreAlways"/>
+       </item>
+       <item row="6" column="0" colspan="2">
+        <widget class="QCheckBox" name="checkSsl">
+         <property name="text">
+          <string>Use a secure connection (https)</string>
+         </property>
+         <property name="checked">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tabDownloads">
+      <attribute name="title">
+       <string>Download</string>
+      </attribute>
+      <layout class="QFormLayout" name="formLayout">
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_3">
+         <property name="text">
+          <string>Max simultaneous downloads</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QSpinBox" name="spinSimultaneousDownloads">
+         <property name="minimum">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+          <number>10</number>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_4">
+         <property name="text">
+          <string>Images per page</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QSpinBox" name="spinImagesPerPage">
+         <property name="minimum">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+          <number>1000</number>
+         </property>
+         <property name="value">
+          <number>200</number>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_6">
+         <property name="text">
+          <string>Interval (thumbnail)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="label_7">
+         <property name="text">
+          <string>Interval (image)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="label_12">
+         <property name="text">
+          <string>Interval (page)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="label_13">
+         <property name="text">
+          <string>Interval (details)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0">
+        <widget class="QLabel" name="label_14">
+         <property name="text">
+          <string>Interval (error)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QSpinBox" name="spinThrottleThumbnail">
+         <property name="suffix">
+          <string>s</string>
+         </property>
+         <property name="maximum">
+          <number>3600</number>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QSpinBox" name="spinThrottleImage">
+         <property name="suffix">
+          <string>s</string>
+         </property>
+         <property name="maximum">
+          <number>3600</number>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QSpinBox" name="spinThrottlePage">
+         <property name="suffix">
+          <string>s</string>
+         </property>
+         <property name="maximum">
+          <number>3600</number>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <widget class="QSpinBox" name="spinThrottleDetails">
+         <property name="suffix">
+          <string>s</string>
+         </property>
+         <property name="maximum">
+          <number>3600</number>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1">
+        <widget class="QSpinBox" name="spinThrottleRetry">
+         <property name="suffix">
+          <string>s</string>
+         </property>
+         <property name="maximum">
+          <number>3600</number>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tabSources">
+      <attribute name="title">
+       <string>Sources</string>
+      </attribute>
+      <layout class="QFormLayout" name="formLayout_3">
+       <item row="1" column="0" colspan="2">
+        <widget class="QWidget" name="widget" native="true">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <layout class="QFormLayout" name="formLayout_2">
+          <property name="fieldGrowthPolicy">
+           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+          </property>
+          <property name="leftMargin">
+           <number>18</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item row="0" column="0">
+           <widget class="QLabel" name="labelSources1">
+            <property name="text">
+             <string>Source 1</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QComboBox" name="comboSources1">
+            <property name="currentIndex">
+             <number>1</number>
+            </property>
+            <item>
+             <property name="text">
+              <string/>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>XML</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>JSON</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Regex</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>RSS</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="labelSources2">
+            <property name="text">
+             <string>Source 2</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QComboBox" name="comboSources2">
+            <property name="currentIndex">
+             <number>2</number>
+            </property>
+            <item>
+             <property name="text">
+              <string/>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>XML</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>JSON</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Regex</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>RSS</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="labelSources3">
+            <property name="text">
+             <string>Source 3</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QComboBox" name="comboSources3">
+            <property name="currentIndex">
+             <number>3</number>
+            </property>
+            <item>
+             <property name="text">
+              <string/>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>XML</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>JSON</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Regex</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>RSS</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="labelSources4">
+            <property name="text">
+             <string>Source 4</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QComboBox" name="comboSources4">
+            <property name="currentIndex">
+             <number>4</number>
+            </property>
+            <item>
+             <property name="text">
+              <string/>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>XML</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>JSON</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Regex</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>RSS</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="0" column="0" colspan="2">
+        <widget class="QCheckBox" name="checkSourcesDefault">
+         <property name="text">
+          <string>Use default sources</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tabCredentials">
+      <attribute name="title">
+       <string>Credentials</string>
+      </attribute>
+      <layout class="QFormLayout" name="formLayout_4">
+       <item row="0" column="0">
+        <widget class="QLabel" name="labelAuthPseudo">
+         <property name="text">
+          <string>Username</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="lineAuthPseudo"/>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="labelAuthPassword">
+         <property name="text">
+          <string>Password</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <layout class="QHBoxLayout" name="layoutHashPassword">
+         <item>
+          <widget class="QLineEdit" name="lineAuthPassword">
+           <property name="echoMode">
+            <enum>QLineEdit::Password</enum>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="buttonAuthHash">
+           <property name="text">
+            <string>Hash password</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="2" column="0" colspan="2">
+        <layout class="QHBoxLayout" name="layoutTestCredentials" stretch="1,0">
+         <item>
+          <widget class="QLabel" name="labelTestCredentials">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="buttonTestCredentials">
+           <property name="text">
+            <string>Test</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tabLogin">
+      <attribute name="title">
+       <string>Login</string>
+      </attribute>
+      <layout class="QFormLayout" name="formLayout_7">
+       <item row="0" column="0" colspan="2">
+        <widget class="QCheckBox" name="checkLoginParameter">
+         <property name="text">
+          <string>Through url</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0" colspan="2">
+        <widget class="QWidget" name="widget_2" native="true">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <layout class="QFormLayout" name="formLayout_6">
+          <property name="leftMargin">
+           <number>18</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_8">
+            <property name="text">
+             <string>Method</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QComboBox" name="comboLoginMethod">
+            <property name="currentIndex">
+             <number>1</number>
+            </property>
+            <item>
+             <property name="text">
+              <string>GET</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>POST</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_9">
+            <property name="text">
+             <string>Username</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="label_10">
+            <property name="text">
+             <string>Password</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_11">
+            <property name="text">
+             <string>URL</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="lineLoginUrl"/>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLineEdit" name="lineLoginPseudo"/>
+          </item>
+          <item row="3" column="1">
+           <widget class="QLineEdit" name="lineLoginPassword"/>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="4" column="0" colspan="2">
+        <layout class="QHBoxLayout" name="layoutTestLogin" stretch="1,0">
+         <item>
+          <widget class="QLabel" name="labelTestLogin">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_5">
+           <property name="text">
+            <string>Test</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_5">
+         <property name="text">
+          <string>Cookie</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLineEdit" name="lineLoginCookie"/>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="labelLoginMaxPage">
+         <property name="text">
+          <string>Page limit</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QSpinBox" name="spinLoginMaxPage">
+         <property name="maximum">
+          <number>10000</number>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tabCookies">
+      <attribute name="title">
+       <string>Cookies</string>
+      </attribute>
+      <layout class="QFormLayout" name="formLayout_8">
+       <item row="0" column="0" colspan="2">
+        <widget class="QTableWidget" name="tableCookies">
+         <column>
+          <property name="text">
+           <string>Name</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Value</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+       <item row="1" column="0" colspan="2">
+        <widget class="QPushButton" name="pushButton">
+         <property name="text">
+          <string>Add</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tabHeaders">
+      <attribute name="title">
+       <string>Headers</string>
+      </attribute>
+      <layout class="QFormLayout" name="layoutHeaders">
+       <item row="0" column="0" colspan="2">
+        <widget class="QTableWidget" name="tableHeaders">
+         <column>
+          <property name="text">
+           <string>Name</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Value</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+       <item row="1" column="0" colspan="2">
+        <widget class="QPushButton" name="buttonAddHeader">
+         <property name="text">
+          <string>Add</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="layoutButtons">
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QPushButton" name="buttonDelete">
+       <property name="text">
+        <string>Delete</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="spacerButtons">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonCancel">
+       <property name="text">
+        <string>Cancel</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonAccept">
+       <property name="text">
+        <string>Confirm</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>lineSiteName</tabstop>
+  <tabstop>spinIgnore1</tabstop>
+  <tabstop>spinIgnoreAlways</tabstop>
+  <tabstop>comboReferer</tabstop>
+  <tabstop>comboRefererPreview</tabstop>
+  <tabstop>comboRefererImage</tabstop>
+  <tabstop>checkSsl</tabstop>
+  <tabstop>spinImagesPerPage</tabstop>
+  <tabstop>spinSimultaneousDownloads</tabstop>
+  <tabstop>checkSourcesDefault</tabstop>
+  <tabstop>comboSources1</tabstop>
+  <tabstop>comboSources2</tabstop>
+  <tabstop>comboSources3</tabstop>
+  <tabstop>comboSources4</tabstop>
+  <tabstop>lineAuthPseudo</tabstop>
+  <tabstop>lineAuthPassword</tabstop>
+  <tabstop>buttonAuthHash</tabstop>
+  <tabstop>buttonTestCredentials</tabstop>
+  <tabstop>checkLoginParameter</tabstop>
+  <tabstop>comboLoginMethod</tabstop>
+  <tabstop>lineLoginUrl</tabstop>
+  <tabstop>lineLoginPseudo</tabstop>
+  <tabstop>lineLoginPassword</tabstop>
+  <tabstop>lineLoginCookie</tabstop>
+  <tabstop>pushButton_5</tabstop>
+  <tabstop>buttonCancel</tabstop>
+  <tabstop>buttonAccept</tabstop>
+ </tabstops>
+ <resources>
+  <include location="../../resources.qrc"/>
+  <include location="../../resources.qrc"/>
+  <include location="../../resources.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>buttonDelete</sender>
+   <signal>clicked()</signal>
+   <receiver>SourcesSettingsWindow</receiver>
+   <slot>deleteSite()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>304</x>
+     <y>261</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>256</x>
+     <y>210</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonCancel</sender>
+   <signal>clicked()</signal>
+   <receiver>SourcesSettingsWindow</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>385</x>
+     <y>261</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>345</x>
+     <y>208</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonAccept</sender>
+   <signal>clicked()</signal>
+   <receiver>SourcesSettingsWindow</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>466</x>
+     <y>261</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>368</x>
+     <y>205</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_5</sender>
+   <signal>clicked()</signal>
+   <receiver>SourcesSettingsWindow</receiver>
+   <slot>testLogin()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>453</x>
+     <y>216</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>256</x>
+     <y>193</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkSourcesDefault</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>widget</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>168</x>
+     <y>56</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>153</x>
+     <y>98</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonTestCredentials</sender>
+   <signal>clicked()</signal>
+   <receiver>SourcesSettingsWindow</receiver>
+   <slot>testLogin()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>453</x>
+     <y>120</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>273</x>
+     <y>141</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>SourcesSettingsWindow</receiver>
+   <slot>addCookie()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>431</x>
+     <y>200</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>470</x>
+     <y>190</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkLoginParameter</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>widget_2</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>117</x>
+     <y>55</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>142</x>
+     <y>65</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonAddHeader</sender>
+   <signal>clicked()</signal>
+   <receiver>SourcesSettingsWindow</receiver>
+   <slot>addHeader()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>132</x>
+     <y>212</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>43</x>
+     <y>240</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>deleteSite()</slot>
+  <slot>testLogin()</slot>
+  <slot>addCookie()</slot>
+  <slot>addHeader()</slot>
+ </slots>
+</ui>

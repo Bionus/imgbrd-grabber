@@ -20,6 +20,7 @@
 		<LastPage>&lt;a href=['&quot;]/post/list(?:/[^/]+)?/(\d*)['&quot;]&gt;Last&lt;/a&gt;</LastPage>
 		<ImageUrl>&lt;img.+ id=['&quot;]main_image['&quot;] src=['&quot;]([^']+)['&quot;][^&gt;]*&gt;</ImageUrl>
 		<ForceImageUrl>true</ForceImageUrl>
+		<ImageDate>&lt;time datetime=['&quot;]([^'&quot;]+)['&quot;]&gt;</ImageDate>
 	</Regex>
 	<Check>
 		<Url>/</Url>

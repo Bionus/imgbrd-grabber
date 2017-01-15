@@ -1,10 +1,7 @@
-PDIR = $${_PRO_FILE_PWD_}/..
+PDIR = $${PWD}
 
 # Options
 CONFIG += use_ssl
-Release {
-	CONFIG += use_breakpad
-}
 
 # Share build artifacts between projects without cluttering
 CONFIG(debug, debug|release) {
@@ -18,42 +15,26 @@ MOC_DIR     = $$DESTDIR/moc
 RCC_DIR     = $$DESTDIR/qrc
 UI_DIR      = $$DESTDIR/ui
 
-# TODO: move to gui
-QT += multimedia widgets multimediawidgets
-
-# Travis settings
-@
-T = $$(TRAVIS)
-!isEmpty(T) {
-	CONFIG -= use_breakpad use_qscintilla
-}
-@
-
 # Global
-APP_VERSION = \\\"5.0.1\\\"
+APP_VERSION = \\\"5.1.0\\\"
+PREFIX = \\\"$$(PREFIX)\\\"
 
 # General
 TEMPLATE = app
-DEPENDPATH += . .. $${PDIR}/languages $${PDIR}/src $${PDIR}/vendor
-INCLUDEPATH += . .. $${PDIR}/src $${PDIR}/vendor
 DEFINES += VERSION=$$APP_VERSION
+DEFINES += PREFIX=$$PREFIX
 QT += core network xml sql script
-
-# Windows specials
-win32 {
-	QT += winextras
-}
 
 # Additionnal
 CONFIG += plugin c++11
-RESOURCES += $${PDIR}/resources.qrc
-RC_FILE = ../icon.rc
+RESOURCES += $${PWD}/resources/resources.qrc
+RC_FILE = ../resources/icon.rc
 CODECFORTR = UTF-8
-TRANSLATIONS += $${PDIR}/languages/English.ts \
-				$${PDIR}/languages/French.ts \
-				$${PDIR}/languages/Russian.ts \
-				$${PDIR}/languages/ChineseSimplified.ts \
-				$${PDIR}/languages/YourLanguage.ts
+TRANSLATIONS += $${PWD}/languages/English.ts \
+				$${PWD}/languages/French.ts \
+				$${PWD}/languages/Russian.ts \
+				$${PWD}/languages/ChineseSimplified.ts \
+				$${PWD}/languages/YourLanguage.ts
 
 # Target WinXP
 Release:win32 {
@@ -77,34 +58,12 @@ use_ssl {
 	}
 }
 
-# Google-Breakpad
-use_breakpad {
-	DEFINES += USE_BREAKPAD=1
-	win32 {
-		QMAKE_LFLAGS_RELEASE = /INCREMENTAL:NO /DEBUG
-		QMAKE_CFLAGS_RELEASE = -O2 -MD -zi
-		BREAKPAD = D:/bin/google-breakpad
-		Debug:LIBS   += $${BREAKPAD}/src/client/windows/Debug/lib/common.lib \
-						$${BREAKPAD}/src/client/windows/Debug/lib/crash_generation_client.lib \
-						$${BREAKPAD}/src/client/windows/Debug/lib/exception_handler.lib
-		Release:LIBS += $${BREAKPAD}/src/client/windows/Release/lib/common.lib \
-						$${BREAKPAD}/src/client/windows/Release/lib/crash_generation_client.lib \
-						$${BREAKPAD}/src/client/windows/Release/lib/exception_handler.lib
-	}
-	unix {
-		QMAKE_CXXFLAGS += -fpermissive
-		BREAKPAD = ~/Programmation/google-breakpad
-		LIBS += $${BREAKPAD}/src/client/linux/libbreakpad_client.a
-	}
-	INCLUDEPATH += $${BREAKPAD}/src
-}
-
 OTHER_FILES += \
-	$${PDIR}/Grabber.pri \
-	$${PDIR}/icon.rc \
-	$${PDIR}/.gitignore
+	$${PWD}/Grabber.pri \
+	$${PWD}/icon.rc \
+	$${PWD}/.gitignore
 
 DISTFILES += \
-	$${PDIR}/README.md \
-	$${PDIR}/LICENSE \
-	$${PDIR}/NOTICE
+	$${PWD}/README.md \
+	$${PWD}/LICENSE \
+	$${PWD}/NOTICE

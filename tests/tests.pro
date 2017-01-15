@@ -1,7 +1,12 @@
-include(../gui/gui.pro)
+# Include common config
+!include(../Grabber.pri) {
+	error("Could not find the common configuration file!")
+}
 
-# Disable unnecessary stuff
-CONFIG  -= use_breakpad use_qscintilla
+# Include library
+!include(../lib/lib.pri) {
+	error("Could not find lib dependency configuration file!")
+}
 
 # Test configuration
 QT      += testlib
@@ -9,10 +14,7 @@ TARGET   = tests
 CONFIG  += console testcase
 CONFIG  -= app_bundle
 TEMPLATE = app
-
-INCLUDEPATH += . .. $${PDIR}/tests
-DEFINES     += SRCDIR=\\\"$$PWD/\\\"
-DEFINES     += TEST=1
+DEFINES += TEST=1
 
 # Code coverage
 @
@@ -23,22 +25,21 @@ T = $$(TRAVIS)
 		QMAKE_CXXFLAGS_RELEASE -= -O2
 
 		LIBS += -lgcov
-		QMAKE_CXXFLAGS += -g -fprofile-arcs -ftest-coverage -O0
-		QMAKE_LFLAGS += -g -fprofile-arcs -ftest-coverage  -O0
+		QMAKE_CXXFLAGS += -g -fprofile-arcs -ftest-coverage -O0 --coverage
+		QMAKE_LFLAGS += -g -fprofile-arcs -ftest-coverage  -O0 --coverage
 	}
 }
 @
 
-# Remove original main
-SOURCES -= $${PDIR}/src/main/main.cpp
-
-SOURCES += $${PDIR}/tests/test-suite.cpp \
-	$${PDIR}/tests/main.cpp \
-	$${PDIR}/tests/functions-test.cpp \
-	$${PDIR}/tests/models/*.cpp \
-	$${PDIR}/tests/updater/*.cpp \
-	$${PDIR}/tests/integration/*.cpp
-HEADERS += $${PDIR}/tests/*.h \
-	$${PDIR}/tests/models/*.h \
-	$${PDIR}/tests/updater/*.h \
-	$${PDIR}/tests/integration/*.h
+# Input
+INCLUDEPATH += $${PWD} $${PDIR}/lib/src
+SOURCES += $${PWD}/test-suite.cpp \
+	$${PWD}/main.cpp \
+	$${PWD}/functions-test.cpp \
+	$${PWD}/models/*.cpp \
+	$${PWD}/updater/*.cpp \
+	$${PWD}/integration/*.cpp
+HEADERS += $${PWD}/*.h \
+	$${PWD}/models/*.h \
+	$${PWD}/updater/*.h \
+	$${PWD}/integration/*.h

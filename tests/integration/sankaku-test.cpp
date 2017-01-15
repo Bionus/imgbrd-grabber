@@ -8,45 +8,39 @@ void SankakuTest::testHtml()
 {
 	QList<Image*> images = getImages("Sankaku", "idol.sankakucomplex.com", "regex", "rating:safe");
 
-	// Convert results
-	QStringList md5s;
-	for (Image *img : images)
-	{
-		md5s.append(img->md5());
-	}
+	// Check results
+	QCOMPARE(images.count(), 20);
+	QCOMPARE(images[0]->md5(), QString("7af162c8a2e5299d737de002fce087cf"));
+	QCOMPARE(images[1]->md5(), QString("8dd5c24458feb851c4dfbb302ebf5c06"));
+	QCOMPARE(images[2]->md5(), QString("33347fcbeb76b6d7d2c31a5d491d53ee"));
+}
+
+void SankakuTest::testJson()
+{
+	QList<Image*> images = getImages("Sankaku", "idol.sankakucomplex.com", "json", "rating:safe");
 
 	// Check results
-	md5s = md5s.mid(0, 3);
-	QStringList expected = QStringList() << "7af162c8a2e5299d737de002fce087cf" << "8dd5c24458feb851c4dfbb302ebf5c06" << "33347fcbeb76b6d7d2c31a5d491d53ee";
 	QCOMPARE(images.count(), 20);
-	QCOMPARE(md5s, expected);
+	QCOMPARE(images[0]->md5(), QString("26d8d649afde8fab74f1cf09607daebb"));
+	QCOMPARE(images[0]->createdAt(), QDateTime::fromMSecsSinceEpoch(1484391423000));
+	QCOMPARE(images[1]->md5(), QString("c68c77540ab3813c9bc7c5059f3a0ac2"));
+	QCOMPARE(images[1]->createdAt(), QDateTime::fromMSecsSinceEpoch(1484391415000));
+	QCOMPARE(images[2]->md5(), QString("6b154030d5b017b75917d160fc22203a"));
+	QCOMPARE(images[2]->createdAt(), QDateTime::fromMSecsSinceEpoch(1484391403000));
 }
 
 void SankakuTest::testAnimatedUrls()
 {
 	QList<Image*> images = getImages("Sankaku", "idol.sankakucomplex.com", "regex", "animated rating:safe");
 
-	// Convert results
-	QStringList md5s, urls;
-	for (Image *img : images)
-	{
-		md5s.append(img->md5());
-		urls.append(img->url());
-	}
-
 	// Check results
-	md5s = md5s.mid(0, 3);
-	QStringList expected = QStringList() << "6e7901eea2a5a2d2b96244593ed190df" << "97b3355a7af0bfabc67f2678a4a837fd" << "d9f7f5089da4a677846d77da2c146088";
 	QCOMPARE(images.count(), 20);
-	QCOMPARE(md5s, expected);
-
-	// Compare URLs
-	QStringList expectedUrls = QStringList()
-							   << "https://is.sankakucomplex.com/data/6e/79/6e7901eea2a5a2d2b96244593ed190df.gif"
-							   << "https://is.sankakucomplex.com/data/97/b3/97b3355a7af0bfabc67f2678a4a837fd.gif"
-							   << "https://is.sankakucomplex.com/data/d9/f7/d9f7f5089da4a677846d77da2c146088.webm";
-	QStringList actualUrls = urls.mid(0, 3);
-	QCOMPARE(actualUrls, expectedUrls);
+	QCOMPARE(images[0]->md5(), QString("6e7901eea2a5a2d2b96244593ed190df"));
+	QCOMPARE(images[0]->url(), QString("https://is.sankakucomplex.com/data/6e/79/6e7901eea2a5a2d2b96244593ed190df.gif"));
+	QCOMPARE(images[1]->md5(), QString("97b3355a7af0bfabc67f2678a4a837fd"));
+	QCOMPARE(images[1]->url(), QString("https://is.sankakucomplex.com/data/97/b3/97b3355a7af0bfabc67f2678a4a837fd.gif"));
+	QCOMPARE(images[2]->md5(), QString("d9f7f5089da4a677846d77da2c146088"));
+	QCOMPARE(images[2]->url(), QString("https://is.sankakucomplex.com/data/d9/f7/d9f7f5089da4a677846d77da2c146088.webm"));
 }
 
 

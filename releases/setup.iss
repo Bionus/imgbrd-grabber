@@ -1,5 +1,5 @@
 #define MyAppName "Grabber"
-#define MyAppVersion "5.0.1"
+#define MyAppVersion "5.1.0"
 #define MyAppPublisher "Bionus"
 #define MyAppURL "https://github.com/Bionus/imgbrd-grabber"
 #define MyAppExeName "Grabber.exe"
@@ -22,10 +22,10 @@ AllowNoIcons=yes
 LicenseFile=Apache license 2.0.txt
 OutputDir=.
 OutputBaseFilename=Grabber_{#MyAppVersion}
-SetupIconFile=..\images\icon.ico       
+SetupIconFile=..\resources\images\icon.ico       
 UninstallDisplayName="{#MyAppName} {#MyAppVersion}"
 UninstallDisplayIcon={app}\icon.ico
-WizardSmallImageFile=..\icon.bmp
+WizardSmallImageFile=..\resources\icon.bmp
 Compression=lzma
 SolidCompression=yes
 ChangesAssociations=yes         
@@ -61,7 +61,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 0,6.1 
 
 [Files]                                                           
-Source: "..\images\icon.ico";                   DestDir: "{app}"; Flags: ignoreversion
+Source: "..\resources\images\icon.ico";         DestDir: "{app}"; Flags: ignoreversion
 Source: "..\release\CDR.exe";                   DestDir: "{app}"; Flags: ignoreversion   
 Source: "..\CrashReporter\release\CrashReporter.exe"; DestDir: "{app}"; Flags: ignoreversion   
 Source: "..\cli\build\release\Cli.exe";               DestDir: "{app}"; Flags: ignoreversion; DestName: "Grabber.com"
@@ -76,7 +76,6 @@ Source: "..\release\qscintilla2.dll";           DestDir: "{app}"; Flags: ignorev
 Source: "..\release\Qt5Core.dll";               DestDir: "{app}"; Flags: ignoreversion
 Source: "..\release\Qt5Gui.dll";                DestDir: "{app}"; Flags: ignoreversion           
 Source: "..\release\Qt5Multimedia.dll";         DestDir: "{app}"; Flags: ignoreversion       
-Source: "..\release\Qt5MultimediaWidgets.dll";  DestDir: "{app}"; Flags: ignoreversion       
 Source: "..\release\Qt5Network.dll";            DestDir: "{app}"; Flags: ignoreversion
 Source: "..\release\Qt5OpenGL.dll";             DestDir: "{app}"; Flags: ignoreversion
 Source: "..\release\Qt5PrintSupport.dll";       DestDir: "{app}"; Flags: ignoreversion      

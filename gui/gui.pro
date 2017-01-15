@@ -1,14 +1,33 @@
+# General
 TARGET = Grabber
-
-# GUI
-Release {
-	CONFIG += use_qscintilla
-}
+DEFINES += GUI=1
 DEPENDPATH += ui
+QT += widgets multimedia
+Release {
+	CONFIG += use_breakpad use_qscintilla
+}
+
+# Travis settings
+@
+T = $$(TRAVIS)
+!isEmpty(T) {
+	CONFIG -= use_breakpad use_qscintilla
+}
+@
 
 # Include common config
 !include(../Grabber.pri) {
 	error("Could not find the common configuration file!")
+}
+
+# Include library
+!include(../lib/lib.pri) {
+	error("Could not find lib dependency configuration file!")
+}
+
+# Windows specials
+win32 {
+	QT += winextras
 }
 
 # QScintilla
@@ -37,55 +56,50 @@ use_qscintilla {
 }
 
 # Input
+INCLUDEPATH += $${PDIR} $${PWD}/src
 HEADERS += $${PDIR}/vendor/*.h \
-	$${PDIR}/src/*.h \
-	$${PDIR}/src/batch/*.h \
-	$${PDIR}/src/commands/*.h \
-	$${PDIR}/src/models/*.h \
-	$${PDIR}/src/downloader/*.h \
-	$${PDIR}/src/settings/*.h \
-	$${PDIR}/src/sources/*.h \
-	$${PDIR}/src/tabs/*.h \
-	$${PDIR}/src/ui/*.h \
-	$${PDIR}/src/updater/*.h \
-	$${PDIR}/src/utils/rename-existing/*.h \
-	$${PDIR}/src/utils/blacklist-fix/*.h \
-	$${PDIR}/src/utils/empty-dirs-fix/*.h \
-	$${PDIR}/src/utils/md5-fix/*.h \
-	$${PDIR}/src/viewer/*.h
+	$${PWD}/src/*.h \
+	$${PWD}/src/batch/*.h \
+	$${PWD}/src/settings/*.h \
+	$${PWD}/src/sources/*.h \
+	$${PWD}/src/tabs/*.h \
+	$${PWD}/src/ui/*.h \
+	$${PWD}/src/updater/*.h \
+	$${PWD}/src/utils/rename-existing/*.h \
+	$${PWD}/src/utils/blacklist-fix/*.h \
+	$${PWD}/src/utils/empty-dirs-fix/*.h \
+	$${PWD}/src/utils/md5-fix/*.h \
+	$${PWD}/src/viewer/*.h
 SOURCES += $${PDIR}/vendor/*.cpp \
-	$${PDIR}/src/main/main.cpp \
-	$${PDIR}/src/*.cpp \
-	$${PDIR}/src/batch/*.cpp \
-	$${PDIR}/src/commands/*.cpp \
-	$${PDIR}/src/downloader/*.cpp \
-	$${PDIR}/src/models/*.cpp \
-	$${PDIR}/src/settings/*.cpp \
-	$${PDIR}/src/sources/*.cpp \
-	$${PDIR}/src/tabs/*.cpp \
-	$${PDIR}/src/ui/*.cpp \
-	$${PDIR}/src/updater/*.cpp \
-	$${PDIR}/src/utils/rename-existing/*.cpp \
-	$${PDIR}/src/utils/blacklist-fix/*.cpp \
-	$${PDIR}/src/utils/empty-dirs-fix/*.cpp \
-	$${PDIR}/src/utils/md5-fix/*.cpp \
-	$${PDIR}/src/viewer/*.cpp
-FORMS += $${PDIR}/src/*.ui \
-	$${PDIR}/src/batch/*.ui \
-	$${PDIR}/src/settings/*.ui \
-	$${PDIR}/src/sources/*.ui \
-	$${PDIR}/src/tabs/*.ui \
-	$${PDIR}/src/updater/*.ui \
-	$${PDIR}/src/utils/rename-existing/*.ui \
-	$${PDIR}/src/utils/blacklist-fix/*.ui \
-	$${PDIR}/src/utils/empty-dirs-fix/*.ui \
-	$${PDIR}/src/utils/md5-fix/*.ui \
-	$${PDIR}/src/viewer/*.ui
+	$${PWD}/src/main/main.cpp \
+	$${PWD}/src/*.cpp \
+	$${PWD}/src/batch/*.cpp \
+	$${PWD}/src/settings/*.cpp \
+	$${PWD}/src/sources/*.cpp \
+	$${PWD}/src/tabs/*.cpp \
+	$${PWD}/src/ui/*.cpp \
+	$${PWD}/src/updater/*.cpp \
+	$${PWD}/src/utils/rename-existing/*.cpp \
+	$${PWD}/src/utils/blacklist-fix/*.cpp \
+	$${PWD}/src/utils/empty-dirs-fix/*.cpp \
+	$${PWD}/src/utils/md5-fix/*.cpp \
+	$${PWD}/src/viewer/*.cpp
+FORMS += $${PWD}/src/*.ui \
+	$${PWD}/src/batch/*.ui \
+	$${PWD}/src/settings/*.ui \
+	$${PWD}/src/sources/*.ui \
+	$${PWD}/src/tabs/*.ui \
+	$${PWD}/src/updater/*.ui \
+	$${PWD}/src/utils/rename-existing/*.ui \
+	$${PWD}/src/utils/blacklist-fix/*.ui \
+	$${PWD}/src/utils/empty-dirs-fix/*.ui \
+	$${PWD}/src/utils/md5-fix/*.ui \
+	$${PWD}/src/viewer/*.ui
 
 # Breakpad files
 use_breakpad {
-	HEADERS += $${PDIR}/src/crashhandler/*.h
-	SOURCES += $${PDIR}/src/crashhandler/*.cpp
+	HEADERS += $${PWD}/src/crashhandler/*.h
+	SOURCES += $${PWD}/src/crashhandler/*.cpp
 }
 
 # Linux install script
@@ -95,4 +109,26 @@ unix:!macx{
 	}
 	target.path = $$PREFIX/bin
 	INSTALLS += target
+}
+
+# Google-Breakpad
+use_breakpad {
+	DEFINES += USE_BREAKPAD=1
+	win32 {
+		QMAKE_LFLAGS_RELEASE = /INCREMENTAL:NO /DEBUG
+		QMAKE_CFLAGS_RELEASE = -O2 -MD -zi
+		BREAKPAD = D:/bin/google-breakpad
+		Debug:LIBS   += $${BREAKPAD}/src/client/windows/Debug/lib/common.lib \
+						$${BREAKPAD}/src/client/windows/Debug/lib/crash_generation_client.lib \
+						$${BREAKPAD}/src/client/windows/Debug/lib/exception_handler.lib
+		Release:LIBS += $${BREAKPAD}/src/client/windows/Release/lib/common.lib \
+						$${BREAKPAD}/src/client/windows/Release/lib/crash_generation_client.lib \
+						$${BREAKPAD}/src/client/windows/Release/lib/exception_handler.lib
+	}
+	unix {
+		QMAKE_CXXFLAGS += -fpermissive
+		BREAKPAD = ~/Programmation/google-breakpad
+		LIBS += $${BREAKPAD}/src/client/linux/libbreakpad_client.a
+	}
+	INCLUDEPATH += $${BREAKPAD}/src
 }

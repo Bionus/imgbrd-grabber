@@ -17,7 +17,7 @@ void DerpibooruTest::testHtml()
 
 	// Check results
 	ids = ids.mid(0, 3);
-	QList<int> expected = QList<int>() << 1248663 << 1248661 << 1248660;
+	QList<int> expected = QList<int>() << 1334191 << 1334187 << 1334186;
 	QCOMPARE(images.count(), 15);
 	QCOMPARE(ids, expected);
 }
