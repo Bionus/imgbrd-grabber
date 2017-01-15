@@ -59,12 +59,17 @@ script:
 after_success:
   - bash <(curl -s https://codecov.io/bash)
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]] && [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then
+      cp "gui/build/release/Grabber" release &&
+      touch "release/settings.ini" &&
       zip -r Grabber.zip release &&
-      OUTPUT_FILE="~/Grabber.$TRAVIS_BRANCH.$TRAVIS_TAG.zip"
+      export OUTPUT_FILE="Grabber.$TRAVIS_BRANCH.$TRAVIS_TAG.zip" &&
       sshpass -p "$SSH_PASS" scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no Grabber.zip $SSH_USER@$SSH_HOST:$OUTPUT_FILE
     ; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then
+      touch "release/settings.ini" &&
+      mv gui/Grabber.app release &&
+      mv release/* $release/Grabber.app/Contents/MacOS/ &&
       zip -r Grabber.app.zip release/Grabber.app &&
-      OUTPUT_FILE="~/Grabber.$TRAVIS_BRANCH.$TRAVIS_TAG.app.zip"
+      export OUTPUT_FILE="Grabber.$TRAVIS_BRANCH.$TRAVIS_TAG.app.zip" &&
       sshpass -p "$SSH_PASS" scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no Grabber.app.zip $SSH_USER@$SSH_HOST:$OUTPUT_FILE
     ; fi
