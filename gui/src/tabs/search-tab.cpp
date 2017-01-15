@@ -7,6 +7,7 @@
 #include "mainwindow.h"
 #include "viewer/zoomwindow.h"
 #include "models/filename.h"
+#include "helpers.h"
 
 
 searchTab::searchTab(QMap<QString, Site*> *sites, Profile *profile, mainWindow *parent)

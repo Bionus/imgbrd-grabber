@@ -1,4 +1,4 @@
-#include <QApplication>
+#include <QCoreApplication>
 #include <QtGlobal>
 #include "downloader/downloader.h"
 #include "models/site.h"
@@ -18,9 +18,8 @@ void noMessageOutput(QtMsgType type, const QMessageLogContext& context, const QS
 
 int main(int argc, char *argv[])
 {
-	QApplication app(argc, argv);
+	QCoreApplication app(argc, argv);
 	app.setApplicationName("Grabber");
-	app.setApplicationDisplayName("Grabber");
 	app.setApplicationVersion(VERSION);
 	app.setOrganizationName("Bionus");
 	app.setOrganizationDomain("bionus.fr.cr");
@@ -95,14 +94,16 @@ int main(int argc, char *argv[])
 
 	if (parser.isSet(returnCountOption))
 		dwnldr->getPageCount();
-	if (parser.isSet(returnTagsOption))
+	else if (parser.isSet(returnTagsOption))
 		dwnldr->getPageTags();
-	if (parser.isSet(returnPureTagsOption))
+	else if (parser.isSet(returnPureTagsOption))
 		dwnldr->getTags();
-	if (parser.isSet(returnImagesOption))
+	else if (parser.isSet(returnImagesOption))
 		dwnldr->getUrls();
-	if (parser.isSet(downloadOption))
+	else if (parser.isSet(downloadOption))
 		dwnldr->getImages();
+	else
+		parser.showHelp();
 
 	dwnldr->setQuit(true);
 	QObject::connect(dwnldr, SIGNAL(quit()), qApp, SLOT(quit()));

@@ -6,6 +6,7 @@
 #include "viewer/zoomwindow.h"
 #include "searchwindow.h"
 #include "mainwindow.h"
+#include "helpers.h"
 
 
 poolTab::poolTab(QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)

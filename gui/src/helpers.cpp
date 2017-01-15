@@ -42,3 +42,18 @@ void showInGraphicalShell(const QString &pathIn)
 		QDesktopServices::openUrl(QUrl("file:///"+pathIn));
 	#endif
 }
+
+void clearLayout(QLayout *layout)
+{
+	QLayoutItem *item;
+	while ((item = layout->takeAt(0)))
+	{
+		if (item->layout())
+		{
+			clearLayout(item->layout());
+			item->layout()->deleteLater();
+		}
+		item->widget()->deleteLater();
+		delete item;
+	}
+}

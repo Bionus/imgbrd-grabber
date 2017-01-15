@@ -6,6 +6,7 @@
 #include "favoritewindow.h"
 #include "searchwindow.h"
 #include "models/favorite.h"
+#include "helpers.h"
 
 
 

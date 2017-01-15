@@ -4,6 +4,7 @@
 #include "ui_tag-tab.h"
 #include "viewer/zoomwindow.h"
 #include "searchwindow.h"
+#include "helpers.h"
 
 
 tagTab::tagTab(QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)

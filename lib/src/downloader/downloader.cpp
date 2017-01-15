@@ -1,6 +1,5 @@
 #include "downloader.h"
 #include <iostream>
-#include <QApplication>
 #include <QFile>
 #include <QDir>
 #include <qmath.h>

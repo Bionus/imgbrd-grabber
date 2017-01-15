@@ -2,9 +2,6 @@ PDIR = $${_PRO_FILE_PWD_}/..
 
 # Options
 CONFIG += use_ssl
-Release {
-	CONFIG += use_breakpad
-}
 
 # Share build artifacts between projects without cluttering
 CONFIG(debug, debug|release) {
@@ -17,17 +14,6 @@ OBJECTS_DIR = $$DESTDIR/obj
 MOC_DIR     = $$DESTDIR/moc
 RCC_DIR     = $$DESTDIR/qrc
 UI_DIR      = $$DESTDIR/ui
-
-# TODO: move to gui
-QT += widgets multimedia
-
-# Travis settings
-@
-T = $$(TRAVIS)
-!isEmpty(T) {
-	CONFIG -= use_breakpad use_qscintilla
-}
-@
 
 # Global
 APP_VERSION = \\\"5.1.0\\\"
@@ -75,28 +61,6 @@ use_ssl {
 	unix {
 		PKGCONFIG += openssl
 	}
-}
-
-# Google-Breakpad
-use_breakpad {
-	DEFINES += USE_BREAKPAD=1
-	win32 {
-		QMAKE_LFLAGS_RELEASE = /INCREMENTAL:NO /DEBUG
-		QMAKE_CFLAGS_RELEASE = -O2 -MD -zi
-		BREAKPAD = D:/bin/google-breakpad
-		Debug:LIBS   += $${BREAKPAD}/src/client/windows/Debug/lib/common.lib \
-						$${BREAKPAD}/src/client/windows/Debug/lib/crash_generation_client.lib \
-						$${BREAKPAD}/src/client/windows/Debug/lib/exception_handler.lib
-		Release:LIBS += $${BREAKPAD}/src/client/windows/Release/lib/common.lib \
-						$${BREAKPAD}/src/client/windows/Release/lib/crash_generation_client.lib \
-						$${BREAKPAD}/src/client/windows/Release/lib/exception_handler.lib
-	}
-	unix {
-		QMAKE_CXXFLAGS += -fpermissive
-		BREAKPAD = ~/Programmation/google-breakpad
-		LIBS += $${BREAKPAD}/src/client/linux/libbreakpad_client.a
-	}
-	INCLUDEPATH += $${BREAKPAD}/src
 }
 
 OTHER_FILES += \

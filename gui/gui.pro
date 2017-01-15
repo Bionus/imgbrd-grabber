@@ -1,10 +1,19 @@
+# General
 TARGET = Grabber
-
-# GUI
-Release {
-	CONFIG += use_qscintilla
-}
+DEFINES += GUI=1
 DEPENDPATH += ui
+QT += widgets multimedia
+Release {
+	CONFIG += use_breakpad use_qscintilla
+}
+
+# Travis settings
+@
+T = $$(TRAVIS)
+!isEmpty(T) {
+	CONFIG -= use_breakpad use_qscintilla
+}
+@
 
 # Include common config
 !include(../Grabber.pri) {
@@ -42,50 +51,50 @@ use_qscintilla {
 }
 
 # Input
-INCLUDEPATH += $${PDIR} $${PDIR}/gui/src
+INCLUDEPATH += $${PDIR} $${PWD}/src
 HEADERS += $${PDIR}/vendor/*.h \
-	$${PDIR}/gui/src/*.h \
-	$${PDIR}/gui/src/batch/*.h \
-	$${PDIR}/gui/src/settings/*.h \
-	$${PDIR}/gui/src/sources/*.h \
-	$${PDIR}/gui/src/tabs/*.h \
-	$${PDIR}/gui/src/ui/*.h \
-	$${PDIR}/gui/src/updater/*.h \
-	$${PDIR}/gui/src/utils/rename-existing/*.h \
-	$${PDIR}/gui/src/utils/blacklist-fix/*.h \
-	$${PDIR}/gui/src/utils/empty-dirs-fix/*.h \
-	$${PDIR}/gui/src/utils/md5-fix/*.h \
-	$${PDIR}/gui/src/viewer/*.h
+	$${PWD}/src/*.h \
+	$${PWD}/src/batch/*.h \
+	$${PWD}/src/settings/*.h \
+	$${PWD}/src/sources/*.h \
+	$${PWD}/src/tabs/*.h \
+	$${PWD}/src/ui/*.h \
+	$${PWD}/src/updater/*.h \
+	$${PWD}/src/utils/rename-existing/*.h \
+	$${PWD}/src/utils/blacklist-fix/*.h \
+	$${PWD}/src/utils/empty-dirs-fix/*.h \
+	$${PWD}/src/utils/md5-fix/*.h \
+	$${PWD}/src/viewer/*.h
 SOURCES += $${PDIR}/vendor/*.cpp \
 	$${PDIR}/gui/src/main/main.cpp \
-	$${PDIR}/gui/src/*.cpp \
-	$${PDIR}/gui/src/batch/*.cpp \
-	$${PDIR}/gui/src/settings/*.cpp \
-	$${PDIR}/gui/src/sources/*.cpp \
-	$${PDIR}/gui/src/tabs/*.cpp \
-	$${PDIR}/gui/src/ui/*.cpp \
-	$${PDIR}/gui/src/updater/*.cpp \
-	$${PDIR}/gui/src/utils/rename-existing/*.cpp \
-	$${PDIR}/gui/src/utils/blacklist-fix/*.cpp \
-	$${PDIR}/gui/src/utils/empty-dirs-fix/*.cpp \
-	$${PDIR}/gui/src/utils/md5-fix/*.cpp \
-	$${PDIR}/gui/src/viewer/*.cpp
-FORMS += $${PDIR}/gui/src/*.ui \
-	$${PDIR}/gui/src/batch/*.ui \
-	$${PDIR}/gui/src/settings/*.ui \
-	$${PDIR}/gui/src/sources/*.ui \
-	$${PDIR}/gui/src/tabs/*.ui \
-	$${PDIR}/gui/src/updater/*.ui \
-	$${PDIR}/gui/src/utils/rename-existing/*.ui \
-	$${PDIR}/gui/src/utils/blacklist-fix/*.ui \
-	$${PDIR}/gui/src/utils/empty-dirs-fix/*.ui \
-	$${PDIR}/gui/src/utils/md5-fix/*.ui \
-	$${PDIR}/gui/src/viewer/*.ui
+	$${PWD}/src/*.cpp \
+	$${PWD}/src/batch/*.cpp \
+	$${PWD}/src/settings/*.cpp \
+	$${PWD}/src/sources/*.cpp \
+	$${PWD}/src/tabs/*.cpp \
+	$${PWD}/src/ui/*.cpp \
+	$${PWD}/src/updater/*.cpp \
+	$${PWD}/src/utils/rename-existing/*.cpp \
+	$${PWD}/src/utils/blacklist-fix/*.cpp \
+	$${PWD}/src/utils/empty-dirs-fix/*.cpp \
+	$${PWD}/src/utils/md5-fix/*.cpp \
+	$${PWD}/src/viewer/*.cpp
+FORMS += $${PWD}/src/*.ui \
+	$${PWD}/src/batch/*.ui \
+	$${PWD}/src/settings/*.ui \
+	$${PWD}/src/sources/*.ui \
+	$${PWD}/src/tabs/*.ui \
+	$${PWD}/src/updater/*.ui \
+	$${PWD}/src/utils/rename-existing/*.ui \
+	$${PWD}/src/utils/blacklist-fix/*.ui \
+	$${PWD}/src/utils/empty-dirs-fix/*.ui \
+	$${PWD}/src/utils/md5-fix/*.ui \
+	$${PWD}/src/viewer/*.ui
 
 # Breakpad files
 use_breakpad {
-	HEADERS += $${PDIR}/gui/src/crashhandler/*.h
-	SOURCES += $${PDIR}/gui/src/crashhandler/*.cpp
+	HEADERS += $${PWD}/src/crashhandler/*.h
+	SOURCES += $${PWD}/src/crashhandler/*.cpp
 }
 
 # Linux install script
@@ -95,4 +104,26 @@ unix:!macx{
 	}
 	target.path = $$PREFIX/bin
 	INSTALLS += target
+}
+
+# Google-Breakpad
+use_breakpad {
+	DEFINES += USE_BREAKPAD=1
+	win32 {
+		QMAKE_LFLAGS_RELEASE = /INCREMENTAL:NO /DEBUG
+		QMAKE_CFLAGS_RELEASE = -O2 -MD -zi
+		BREAKPAD = D:/bin/google-breakpad
+		Debug:LIBS   += $${BREAKPAD}/src/client/windows/Debug/lib/common.lib \
+						$${BREAKPAD}/src/client/windows/Debug/lib/crash_generation_client.lib \
+						$${BREAKPAD}/src/client/windows/Debug/lib/exception_handler.lib
+		Release:LIBS += $${BREAKPAD}/src/client/windows/Release/lib/common.lib \
+						$${BREAKPAD}/src/client/windows/Release/lib/crash_generation_client.lib \
+						$${BREAKPAD}/src/client/windows/Release/lib/exception_handler.lib
+	}
+	unix {
+		QMAKE_CXXFLAGS += -fpermissive
+		BREAKPAD = ~/Programmation/google-breakpad
+		LIBS += $${BREAKPAD}/src/client/linux/libbreakpad_client.a
+	}
+	INCLUDEPATH += $${BREAKPAD}/src
 }

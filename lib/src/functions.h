@@ -7,7 +7,6 @@
 #include <QFont>
 #include <QSettings>
 #include <QDomElement>
-#include <QLayout>
 #include <algorithm>
 #include <QString>
 #include <QNetworkReply>
@@ -21,7 +20,6 @@ void		sslErrorHandler(QNetworkReply* qnr, QList<QSslError> errors);
 QDateTime	qDateTimeFromString(QString s);
 QString		savePath(QString s = "", bool exists = false);
 int			levenshtein(QString, QString);
-void		clearLayout(QLayout *layout);
 QString		stripTags(QString);
 QString		getUnit(float *size);
 QString		formatFilesize(float size);

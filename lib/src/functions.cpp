@@ -1,11 +1,10 @@
 #include <QSettings>
 #include <QFile>
-#include <QMessageBox>
 #include <QDir>
 #include <QFileInfo>
 #include <QProcess>
 #include <QStandardPaths>
-#include <QApplication>
+#include <QCoreApplication>
 #include <QDesktopServices>
 #include <QUrl>
 #include "math.h"
@@ -322,21 +321,6 @@ void openTray()
 	#else
 		QProcess::startDetached("eject cdrom");
 	#endif
-}
-
-void clearLayout(QLayout *layout)
-{
-	QLayoutItem *item;
-	while ((item = layout->takeAt(0)))
-	{
-		if (item->layout())
-		{
-			clearLayout(item->layout());
-			item->layout()->deleteLater();
-		}
-		item->widget()->deleteLater();
-		delete item;
-	}
 }
 
 QString getExtension(QUrl url)
