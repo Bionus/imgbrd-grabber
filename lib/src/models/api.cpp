@@ -20,6 +20,7 @@ Api::Api(QString name, QMap<QString, QString> data)
 
 
 QString Api::getName() const	{ return m_name;	}
+bool Api::needAuth() const	{ return contains("Urls/NeedAuth") && value("Urls/NeedAuth").toLower() == "true";	}
 
 bool Api::contains(QString key) const	{ return m_data.contains(key);	}
 QString Api::value(QString key) const	{ return m_data.value(key);		}

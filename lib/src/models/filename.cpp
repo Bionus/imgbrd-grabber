@@ -629,11 +629,13 @@ bool Filename::isValid(QString *error) const
 	return true;
 }
 
-bool Filename::needExactTags(Site *site) const
+bool Filename::needExactTags(Site *site, QString api) const
 {
-	return this->needExactTags(site->contains("Regex/ForceImageUrl"));
+	bool forceImageUrl = site != nullptr && site->contains("Regex/ForceImageUrl");
+	bool needDate = site != nullptr && api == "Html" && site->contains("Regex/ImageDate");
+	return needExactTags(forceImageUrl, needDate);
 }
-bool Filename::needExactTags(bool forceImageUrl) const
+bool Filename::needExactTags(bool forceImageUrl, bool needDate) const
 {
 	// Javascript filenames always need tags as we don't know what they might do
 	if (m_format.startsWith("javascript:"))
@@ -641,6 +643,10 @@ bool Filename::needExactTags(bool forceImageUrl) const
 
 	// If we need the filename and it is returned from the details page
 	if (m_format.contains("%filename%") && forceImageUrl)
+		return true;
+
+	// If we need the date and it is returned from the details page
+	if (m_format.contains("%date%") && needDate || true)
 		return true;
 
 	// The filename contains one of the special tags

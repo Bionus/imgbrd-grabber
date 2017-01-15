@@ -24,7 +24,7 @@
 
 
 Site::Site(QString url, Source *source)
-	: m_type(source->getName()), m_url(url), m_source(source), m_settings(nullptr), m_manager(nullptr), m_cookieJar(nullptr), m_loggedIn(false), m_triedLogin(false), m_loginCheck(false), m_autoLogin(true)
+	: m_type(source->getName()), m_url(url), m_source(source), m_settings(nullptr), m_manager(nullptr), m_cookieJar(nullptr), m_loggedIn(LoginStatus::Unknown), m_loginCheck(false), m_autoLogin(true)
 {
 	loadConfig();
 }
@@ -137,8 +137,7 @@ void Site::resetCookieJar()
 	{ m_cookieJar->insertCookie(cookie); }
 
 	m_manager->setCookieJar(m_cookieJar);
-	m_loggedIn = false;
-	m_triedLogin = false;
+	m_loggedIn = LoginStatus::Unknown;
 }
 
 
@@ -149,7 +148,7 @@ void Site::resetCookieJar()
  */
 void Site::login(bool force)
 {
-	if (!force && (m_loggedIn || m_triedLogin))
+	if (!force && m_loggedIn != LoginStatus::Unknown && m_loggedIn != LoginStatus::Pending)
 	{
 		emit loggedIn(this, LoginResult::Already);
 		return;
@@ -162,7 +161,7 @@ void Site::login(bool force)
 	if (force)
 		resetCookieJar();
 
-	m_triedLogin = true;
+	m_loggedIn = LoginStatus::Pending;
 
 	bool byParameter = m_settings->value("login/parameter", true).toBool();
 	if (byParameter)
@@ -231,31 +230,32 @@ void Site::login(bool force)
 void Site::loginFinished()
 {
 	bool byParameter = m_settings->value("login/parameter", true).toBool();
+	bool ok = false;
 	if (byParameter)
 	{
-		m_loggedIn = !m_loginPage->images().isEmpty();
+		ok = !m_loginPage->images().isEmpty();
 	}
 	else
 	{
-		m_loggedIn = false;
 		QString cookiename = m_settings->value("login/cookie", "").toString();
 
 		QList<QNetworkCookie> cookies = m_cookieJar->cookiesForUrl(m_loginReply->url());
 		for (QNetworkCookie cookie : cookies)
 		{
 			if (cookie.name() == cookiename && !cookie.value().isEmpty())
-			{ m_loggedIn = true; }
+			{ ok = true; }
 		}
 	}
+	m_loggedIn = ok ? LoginStatus::LoggedIn : LoginStatus::LoggedOut;
 
-	log(QString("Logging into %1 (%2) finished (%3).").arg(m_name, m_url, m_loggedIn ? tr("success") : tr("failure")));
-	emit loggedIn(this, m_loggedIn ? LoginResult::Success : LoginResult::Error);
+	log(QString("Logging into %1 (%2) finished (%3).").arg(m_name, m_url, ok ? tr("success") : tr("failure")));
+	emit loggedIn(this, ok ? LoginResult::Success : LoginResult::Error);
 }
 
 
 QNetworkRequest Site::makeRequest(QUrl url, Page *page, QString ref, Image *img)
 {
-	if (m_autoLogin && !m_loggedIn && !m_triedLogin)
+	if (m_autoLogin && m_loggedIn == LoginStatus::Unknown)
 		login();
 
 	// Force HTTPS if set so in the settings (no mixed content allowed)
@@ -396,8 +396,29 @@ QSettings	*Site::settings()						{ return m_settings; }
 QString Site::name()			{ return m_name;			}
 QString Site::url()				{ return m_url;				}
 QString Site::type()			{ return m_type;			}
+
 Source *Site::getSource() const	{ return m_source;			}
-QList<Api*> Site::getApis() const	{ return m_apis;		}
+QList<Api*> Site::getApis(bool filterAuth) const
+{
+	if (!filterAuth)
+		return m_apis;
+
+	QList<Api*> ret;
+	bool loggedIn = isLoggedIn(true);
+	for (Api *api : m_apis)
+		if (!api->needAuth() || loggedIn)
+			ret.append(api);
+
+	return ret;
+}
+Api *Site::firstValidApi() const
+{
+	bool loggedIn = isLoggedIn(true);
+	for (Api *api : m_apis)
+		if (!api->needAuth() || loggedIn)
+			return api;
+	return nullptr;
+}
 
 
 bool Site::autoLogin() const	{ return m_autoLogin;	}
@@ -408,12 +429,12 @@ void Site::setAutoLogin(bool autoLogin)		{ m_autoLogin = autoLogin;	}
 void Site::setUsername(QString username)	{ m_username = username;	}
 void Site::setPassword(QString password)	{ m_password = password;	}
 
-QUrl Site::fixUrl(QString url)
+QUrl Site::fixUrl(QString url) const
 {
 	return this->fixUrl(url, QUrl());
 }
 
-QUrl Site::fixUrl(QString url, QUrl old)
+QUrl Site::fixUrl(QString url, QUrl old) const
 {
 	if (url.isEmpty())
 		return QUrl();
@@ -435,16 +456,20 @@ QUrl Site::fixUrl(QString url, QUrl old)
 	return QUrl(url);
 }
 
-QList<QNetworkCookie> Site::cookies()
+QList<QNetworkCookie> Site::cookies() const
 {
 	return m_cookies;
 }
 
-bool Site::isLoggedIn()
+bool Site::isLoggedIn(bool unknown) const
 {
 	if (m_settings->value("login/parameter", true).toBool() && !m_username.isEmpty() && !m_password.isEmpty())
 		return true;
-	return m_loggedIn;
+
+	if (unknown)
+		return m_loggedIn != LoginStatus::LoggedOut;
+
+	return m_loggedIn == LoginStatus::LoggedIn;
 }
 
 

@@ -310,7 +310,10 @@ QMap<QString,QString> domToMap(QDomElement dom)
  * @return			The string without html.
  */
 QString stripTags(QString str)
-{ return str.remove(QRegExp("<[^>]*>")); }
+{
+	static QRegExp strip("<[^>]*>");
+	return str.remove(strip);
+}
 
 /**
  * Shut down computer after a certain period of time.

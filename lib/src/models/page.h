@@ -61,6 +61,7 @@ class Page : public QObject
 	private:
 		Site			*m_site;
 		int				m_currentApi;
+		QList<Api*>		m_siteApis;
 		QList<PageApi*>	m_pageApis;
 		int				m_regexApi;
 		QStringList		m_postFiltering, m_errors, m_search;

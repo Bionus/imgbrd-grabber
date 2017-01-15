@@ -17,6 +17,7 @@ class Api : public QObject
 
 		// Getters
 		QString getName() const;
+		bool needAuth() const;
 
 		// XML info getters
 		bool contains(QString key) const;

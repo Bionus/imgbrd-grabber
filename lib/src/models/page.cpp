@@ -48,7 +48,8 @@ Page::Page(Profile *profile, Site *site, QList<Site*> sites, QStringList tags, i
 	m_search = tags;
 
 	// Generate pages
-	for (Api *api : m_site->getApis())
+	m_siteApis = m_site->getApis(true);
+	for (Api *api : m_siteApis)
 	{
 		m_pageApis.append(new PageApi(this, profile, m_site, api, m_search, page, limit, postFiltering, smart, parent, pool, lastPage, lastPageMinId, lastPageMaxId));
 		if (api->getName() == "Html" && m_regexApi < 0)
@@ -68,7 +69,7 @@ Page::~Page()
 
 void Page::fallback(bool bload)
 {
-	if (m_currentApi >= m_site->getApis().count() - 1)
+	if (m_currentApi >= m_siteApis.count() - 1)
 	{
 		log("No valid source of the site returned result.");
 		m_errors.append(tr("No valid source of the site returned result."));
@@ -78,7 +79,7 @@ void Page::fallback(bool bload)
 
 	m_currentApi++;
 	if (m_currentApi > 0)
-		log(QString("Loading using %1 failed. Retry using %2.").arg(m_site->getApis().at(m_currentApi - 1)->getName()).arg(m_site->getApis().at(m_currentApi)->getName()));
+		log(QString("Loading using %1 failed. Retry using %2.").arg(m_siteApis[m_currentApi - 1]->getName()).arg(m_siteApis[m_currentApi]->getName()));
 
 	if (bload)
 		load();

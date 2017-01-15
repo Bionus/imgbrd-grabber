@@ -42,6 +42,14 @@ class Site : public QObject
 			Impossible = 2,
 			Already = 2
 		};
+		enum LoginStatus
+		{
+			Unknown = 0,
+			Pending = 1,
+			LoggedOut = 2,
+			LoggedIn = 3,
+		};
+
 		Site(QString url, Source *source);
 		~Site();
 		void loadConfig();
@@ -49,7 +57,7 @@ class Site : public QObject
 		QString type();
 		QString name();
 		QString url();
-		QList<QNetworkCookie> cookies();
+		QList<QNetworkCookie> cookies() const;
 		QVariant setting(QString key, QVariant def = QVariant());
 		QSettings *settings();
 		QNetworkRequest makeRequest(QUrl url, Page *page = nullptr, QString referer = "", Image *img = nullptr);
@@ -57,16 +65,19 @@ class Site : public QObject
 		void getAsync(QueryType type, QUrl url, std::function<void(QNetworkReply *)> callback, Page *page = nullptr, QString referer = "", Image *img = nullptr);
 		static QList<Site*> getSites(Profile *profile, QStringList sources);
 		static QMap<QString, Site *> getAllSites(Profile *profile);
-		QUrl fixUrl(QUrl url) { return fixUrl(url.toString()); }
-		QUrl fixUrl(QString url);
-		QUrl fixUrl(QString url, QUrl old);
-		QList<Api*> getApis() const;
+		QUrl fixUrl(QUrl url) const { return fixUrl(url.toString()); }
+		QUrl fixUrl(QString url) const;
+		QUrl fixUrl(QString url, QUrl old) const;
+
+		// Api
+		QList<Api*> getApis(bool filterAuth = false) const;
 		Source *getSource() const;
+		Api *firstValidApi() const;
 
 		// Login
 		void setAutoLogin(bool autoLogin);
 		bool autoLogin() const;
-		bool isLoggedIn();
+		bool isLoggedIn(bool unknown = false) const;
 		QString username() const;
 		QString password() const;
 		void setUsername(QString);
@@ -110,7 +121,8 @@ class Site : public QObject
 		// Login
 		QNetworkReply *m_loginReply;
 		Page *m_loginPage;
-		bool m_loggedIn, m_triedLogin, m_loginCheck, m_autoLogin;
+		LoginStatus m_loggedIn;
+		bool m_loginCheck, m_autoLogin;
 		QString m_username, m_password;
 
 		// Async

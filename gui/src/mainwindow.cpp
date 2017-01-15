@@ -1360,15 +1360,19 @@ void mainWindow::getAllImages()
 	for (int f = 0; f < m_groupBatchs.size() && !m_mustGetTags; f++)
 	{
 		Filename fn(m_groupBatchs[f][6]);
-		bool forceImageUrl = m_sites[m_groupBatchs[f][5]]->contains("Regex/ForceImageUrl");
-		if (fn.needExactTags(forceImageUrl))
+		Site *site = m_sites[m_groupBatchs[f][5]];
+		Api *api = site->firstValidApi();
+		QString apiName = api == nullptr ? "" : api->getName();
+		if (fn.needExactTags(site, apiName))
 			m_mustGetTags = true;
 	}
 	for (int f = 0; f < m_batchs.size() && !m_mustGetTags; f++)
 	{
 		Filename fn(m_batchs[f].value("filename"));
-		bool forceImageUrl = m_sites[m_batchs[f].value("site")]->contains("Regex/ForceImageUrl");
-		if (fn.needExactTags(forceImageUrl))
+		Site *site = m_sites[m_batchs[f].value("site")];
+		Api *api = site->firstValidApi();
+		QString apiName = api == nullptr ? "" : api->getName();
+		if (fn.needExactTags(site, apiName))
 			m_mustGetTags = true;
 	}
 
