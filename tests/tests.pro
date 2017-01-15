@@ -4,7 +4,7 @@
 }
 
 # Include library
-!include(../lib/depends.pri) {
+!include(../lib/lib.pri) {
 	error("Could not find lib dependency configuration file!")
 }
 

@@ -1,4 +1,4 @@
-PDIR = $${_PRO_FILE_PWD_}/..
+PDIR = $${PWD}
 
 # Options
 CONFIG += use_ssl
@@ -32,14 +32,14 @@ win32 {
 
 # Additionnal
 CONFIG += plugin c++11
-RESOURCES += $${PDIR}/resources/resources.qrc
+RESOURCES += $${PWD}/resources/resources.qrc
 RC_FILE = ../resources/icon.rc
 CODECFORTR = UTF-8
-TRANSLATIONS += $${PDIR}/languages/English.ts \
-				$${PDIR}/languages/French.ts \
-				$${PDIR}/languages/Russian.ts \
-				$${PDIR}/languages/ChineseSimplified.ts \
-				$${PDIR}/languages/YourLanguage.ts
+TRANSLATIONS += $${PWD}/languages/English.ts \
+				$${PWD}/languages/French.ts \
+				$${PWD}/languages/Russian.ts \
+				$${PWD}/languages/ChineseSimplified.ts \
+				$${PWD}/languages/YourLanguage.ts
 
 # Target WinXP
 Release:win32 {
@@ -64,11 +64,11 @@ use_ssl {
 }
 
 OTHER_FILES += \
-	$${PDIR}/Grabber.pri \
-	$${PDIR}/icon.rc \
-	$${PDIR}/.gitignore
+	$${PWD}/Grabber.pri \
+	$${PWD}/icon.rc \
+	$${PWD}/.gitignore
 
 DISTFILES += \
-	$${PDIR}/README.md \
-	$${PDIR}/LICENSE \
-	$${PDIR}/NOTICE
+	$${PWD}/README.md \
+	$${PWD}/LICENSE \
+	$${PWD}/NOTICE
