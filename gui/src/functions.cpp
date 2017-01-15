@@ -140,6 +140,13 @@ QDateTime qDateTimeFromString(QString str)
 	}
 	else
 	{
+		QLocale myLoc(QLocale::English);
+		date = myLoc.toDateTime(str, "ddd MMM dd HH:mm:ss yyyy");
+		if (!date.isValid())
+			date = myLoc.toDateTime(str, "ddd MMM  d HH:mm:ss yyyy");
+		if (date.isValid())
+			return date;
+
 		QStringList months = QStringList() << "Jan" << "Feb" << "Mar" << "Apr" << "May" << "Jun" << "Jul" << "Aug" << "Sep" << "Oct" << "Nov" << "Dec";
 		int year = str.mid(26, 4).toInt();
 		int month = months.indexOf(str.mid(4, 3)) + 1;

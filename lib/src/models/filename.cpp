@@ -632,7 +632,7 @@ bool Filename::isValid(QString *error) const
 bool Filename::needExactTags(Site *site, QString api) const
 {
 	bool forceImageUrl = site != nullptr && site->contains("Regex/ForceImageUrl");
-	bool needDate = site != nullptr && api == "Html" && site->contains("Regex/ImageDate");
+	bool needDate = site != nullptr && (api == "Html" || api == "Rss") && site->contains("Regex/ImageDate");
 	return needExactTags(forceImageUrl, needDate);
 }
 bool Filename::needExactTags(bool forceImageUrl, bool needDate) const

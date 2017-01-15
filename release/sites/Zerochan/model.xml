@@ -29,6 +29,7 @@
 		<LastPage>page (?:[0-9,]+) of ([0-9,]+)</LastPage>
 		<ImageUrl>&lt;div id=&quot;large&quot;&gt;\s*&lt;a href=&quot;([^&quot;]+)&quot;[^&gt;]* tabindex=&quot;1&quot;&gt;</ImageUrl>
 		<ForceImageUrl>true</ForceImageUrl>
+		<ImageDate>Entry by &lt;a href=&quot;[^&quot;]+&quot;&gt;[^&lt;]+&lt;\/a&gt;\s*&lt;span title=&quot;([^&quot;]+)&quot;&gt;</ImageDate>
 	</Regex>
 	<Check>
 		<Url>/</Url>
