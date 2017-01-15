@@ -253,12 +253,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	// Creation date
 	m_createdAt = QDateTime();
 	if (details.contains("created_at"))
-	{
-		if (details["created_at"].toInt() != 0)
-		{ m_createdAt.setTime_t(details["created_at"].toInt()); }
-		else
-		{ m_createdAt = qDateTimeFromString(details["created_at"]); }
-	}
+	{ m_createdAt = qDateTimeFromString(details["created_at"]); }
 	else if (details.contains("date"))
 	{ m_createdAt = QDateTime::fromString(details["date"], Qt::ISODate); }
 
@@ -453,6 +448,19 @@ void Image::parseDetails()
 		{
 			setFileSize(0);
 			emit urlChanged(before, m_url);
+		}
+	}
+
+	// Image date
+	if ((!m_createdAt.isValid() || m_parentSite->contains("Regex/ForceImageDate")) && m_parentSite->contains("Regex/ImageDate"))
+	{
+		QRegExp rx = QRegExp(m_parentSite->value("Regex/ImageDate"));
+		rx.setMinimal(true);
+		int pos = 0;
+		while ((pos = rx.indexIn(source, pos)) != -1)
+		{
+			pos += rx.matchedLength();
+			m_createdAt = qDateTimeFromString(rx.cap(1));
 		}
 	}
 

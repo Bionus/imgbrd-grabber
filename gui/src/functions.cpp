@@ -105,12 +105,30 @@ QMap<QString,QPair<QString,QString>> getFilenames(QSettings *settings)
  */
 QDateTime qDateTimeFromString(QString str)
 {
+	QDateTime date;
 	int timezone = QDateTime::currentDateTime().time().hour() - QDateTime::currentDateTimeUtc().time().hour();
 
-	QDateTime date;
-	if (str[0].isDigit())
+	int toInt = str.toInt();
+	if (toInt != 0)
+	{
+		date.setTime_t(toInt);
+	}
+	else if (str.length() == 19)
+	{
+		date = QDateTime::fromString(str, "yyyy/MM/dd HH:mm:ss");
+		if (!date.isValid())
+			date = QDateTime::fromString(str, "yyyy-MM-dd HH:mm:ss");
+	}
+	else if (str.length() == 16)
+	{
+		date = QDateTime::fromString(str, "yyyy/MM/dd HH:mm");
+		if (!date.isValid())
+			date = QDateTime::fromString(str, "yyyy-MM-dd HH:mm");
+	}
+	else if (str[0].isDigit())
 	{
 		float decay = 0;
+
 		date = QDateTime::fromString(str.left(19), "yyyy-MM-dd'T'HH:mm:ss");
 		if (!date.isValid())
 			date = QDateTime::fromString(str.left(19), "yyyy/MM/dd HH:mm:ss");
@@ -133,6 +151,7 @@ QDateTime qDateTimeFromString(QString str)
 		date.setDate(QDate(year, month, day));
 		date.setTime(time);
 	}
+
 	return date;
 }
 
