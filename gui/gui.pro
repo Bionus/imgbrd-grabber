@@ -12,13 +12,8 @@ DEPENDPATH += ui
 }
 
 # Include library
-DEPENDPATH += $${PDIR}/lib
-INCLUDEPATH += $${PDIR}/lib/src
-CONFIG(release, debug|release) {
-	LIBS = -L$${PDIR}/lib/build/release/ -llib
-}
-else {
-	LIBS = -L$${PDIR}/lib/build/debug/ -llib
+!include(../lib/depends.pri) {
+	error("Could not find lib dependency configuration file!")
 }
 
 # QScintilla
