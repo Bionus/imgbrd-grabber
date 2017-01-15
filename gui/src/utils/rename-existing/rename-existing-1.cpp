@@ -7,7 +7,7 @@
 #include "rename-existing-2.h"
 #include "ui_rename-existing-1.h"
 #include "models/page.h"
-
+#include "helpers.h"
 
 
 RenameExisting1::RenameExisting1(Profile *profile, QMap<QString,Site*> sites, QWidget *parent)

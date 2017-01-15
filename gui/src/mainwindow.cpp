@@ -31,6 +31,7 @@
 #include "utils/empty-dirs-fix/empty-dirs-fix-1.h"
 #include "utils/md5-fix/md5-fix.h"
 #include "models/filename.h"
+#include "helpers.h"
 
 
 

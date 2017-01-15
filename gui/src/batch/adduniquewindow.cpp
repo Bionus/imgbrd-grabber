@@ -3,6 +3,7 @@
 #include "adduniquewindow.h"
 #include "ui_adduniquewindow.h"
 #include "functions.h"
+#include "helpers.h"
 #include "vendor/json.h"
 #include "models/page.h"
 #include "models/filename.h"

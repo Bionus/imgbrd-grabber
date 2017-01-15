@@ -6,6 +6,8 @@
 #include "md5-fix.h"
 #include "ui_md5-fix.h"
 #include "functions.h"
+#include "helpers.h"
+
 
 md5Fix::md5Fix(Profile *profile, QWidget *parent)
 	: QDialog(parent), ui(new Ui::md5Fix), m_profile(profile)

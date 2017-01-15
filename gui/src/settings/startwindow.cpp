@@ -7,6 +7,7 @@
 #include <QFileDialog>
 #include <QSettings>
 #include <QDesktopServices>
+#include "helpers.h"
 
 
 

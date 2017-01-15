@@ -17,7 +17,6 @@
 
 
 
-void		error(QWidget *, QString);
 void		sslErrorHandler(QNetworkReply* qnr, QList<QSslError> errors);
 QDateTime	qDateTimeFromString(QString s);
 QString		savePath(QString s = "", bool exists = false);
@@ -31,7 +30,6 @@ QString		getExtension(QString url);
 QString		setExtension(QString url, QString extension);
 
 bool		setFileCreationDate(QString path, QDateTime time);
-void		showInGraphicalShell(const QString &);
 void		shutDown(int timeout = 0);
 void		openTray();
 

@@ -14,7 +14,7 @@
 #include "ui_zoomwindow.h"
 #include "models/filename.h"
 #include "functions.h"
-
+#include "helpers.h"
 #include <QScrollBar>
 
 

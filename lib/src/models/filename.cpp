@@ -365,7 +365,7 @@ QStringList Filename::path(const Image& img, Profile *profile, QString pth, int 
 			QScriptValue result = engine.evaluate(QScriptProgram(inits + filename));
 			if (result.isError())
 			{
-				error(0, QObject::tr("Error in Javascript evaluation:<br/>") + result.toString());
+				log("Error in Javascript evaluation:<br/>" + result.toString());
 				return QStringList();
 			}
 

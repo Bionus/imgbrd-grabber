@@ -7,7 +7,7 @@
 #include "blacklist-fix-2.h"
 #include "ui_blacklist-fix-1.h"
 #include "models/page.h"
-
+#include "helpers.h"
 
 
 BlacklistFix1::BlacklistFix1(Profile *profile, QMap<QString,Site*> sites, QWidget *parent)

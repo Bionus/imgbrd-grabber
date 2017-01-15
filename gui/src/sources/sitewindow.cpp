@@ -5,6 +5,7 @@
 #include "functions.h"
 #include "models/source.h"
 #include "models/source-guesser.h"
+#include "helpers.h"
 
 
 SiteWindow::SiteWindow(Profile *profile, QMap<QString ,Site*> *sites, QWidget *parent)
