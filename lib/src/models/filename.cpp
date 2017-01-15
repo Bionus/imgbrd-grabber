@@ -646,7 +646,7 @@ bool Filename::needExactTags(bool forceImageUrl, bool needDate) const
 		return true;
 
 	// If we need the date and it is returned from the details page
-	if (m_format.contains("%date%") && needDate || true)
+	if (m_format.contains("%date%") && needDate)
 		return true;
 
 	// The filename contains one of the special tags
