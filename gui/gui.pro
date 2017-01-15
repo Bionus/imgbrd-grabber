@@ -25,6 +25,11 @@ T = $$(TRAVIS)
 	error("Could not find lib dependency configuration file!")
 }
 
+# Windows specials
+win32 {
+	QT += winextras
+}
+
 # QScintilla
 use_qscintilla {
 	DEFINES += USE_QSCINTILLA=1
@@ -66,7 +71,7 @@ HEADERS += $${PDIR}/vendor/*.h \
 	$${PWD}/src/utils/md5-fix/*.h \
 	$${PWD}/src/viewer/*.h
 SOURCES += $${PDIR}/vendor/*.cpp \
-	$${PDIR}/gui/src/main/main.cpp \
+	$${PWD}/src/main/main.cpp \
 	$${PWD}/src/*.cpp \
 	$${PWD}/src/batch/*.cpp \
 	$${PWD}/src/settings/*.cpp \

@@ -25,11 +25,6 @@ DEFINES += VERSION=$$APP_VERSION
 DEFINES += PREFIX=$$PREFIX
 QT += core network xml sql script
 
-# Windows specials
-win32 {
-	QT += winextras
-}
-
 # Additionnal
 CONFIG += plugin c++11
 RESOURCES += $${PWD}/resources/resources.qrc

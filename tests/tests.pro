@@ -14,9 +14,7 @@ TARGET   = tests
 CONFIG  += console testcase
 CONFIG  -= app_bundle
 TEMPLATE = app
-
-INCLUDEPATH += . .. $${PWD}
-DEFINES     += TEST=1
+DEFINES += TEST=1
 
 # Code coverage
 @
@@ -33,9 +31,8 @@ T = $$(TRAVIS)
 }
 @
 
-# Remove original main
-SOURCES -= $${PDIR}/gui/src/main/main.cpp
-
+# Input
+INCLUDEPATH += $${PWD}
 SOURCES += $${PWD}/test-suite.cpp \
 	$${PWD}/main.cpp \
 	$${PWD}/functions-test.cpp \
