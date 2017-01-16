@@ -59,14 +59,14 @@ void TextEdit::doColor()
 		txt.replace(" "+fav.getName()+" ", " <span style=\"color:#ffc0cb\">"+fav.getName()+"</span> ");
 
 	// Color metatags
-	QRegExp regexOr(" ~([^ ]+) "),
-			regexExclude(" -([^ ]+) "),
-			regexMeta(" (user|fav|md5|pool|rating|source|status|approver|unlocked|sub|id|width|height|score|mpixels|filesize|date|gentags|arttags|chartags|copytags|status|status|approver|order|parent):([^ ]*) ", Qt::CaseInsensitive),
-			regexMd5(" ([0-9A-F]{32}) ", Qt::CaseInsensitive);
-	txt.replace(regexOr, " <span style=\"color:green\">\\1</span> ");
-	txt.replace(regexExclude, " <span style=\"color:red\">\\1</span> ");
-	txt.replace(regexMeta, " <span style=\"color:brown\">\\1:\\2</span> ");
-	txt.replace(regexMd5, " <span style=\"color:purple\">\\1</span> ");
+	QRegExp regexOr(" ~([^ ]+)"),
+			regexExclude(" -([^ ]+)"),
+			regexMeta(" (user|fav|md5|pool|rating|source|status|approver|unlocked|sub|id|width|height|score|mpixels|filesize|date|gentags|arttags|chartags|copytags|status|status|approver|order|parent):([^ ]*)", Qt::CaseInsensitive),
+			regexMd5(" ([0-9A-F]{32})", Qt::CaseInsensitive);
+	txt.replace(regexOr, " <span style=\"color:green\">~\\1</span>");
+	txt.replace(regexExclude, " <span style=\"color:red\">-\\1</span>");
+	txt.replace(regexMeta, " <span style=\"color:brown\">\\1:\\2</span>");
+	txt.replace(regexMd5, " <span style=\"color:purple\">\\1</span>");
 
 	// Replace spaces to not be trimmed by the HTML renderer
 	txt = txt.mid(1, txt.length() - 2);

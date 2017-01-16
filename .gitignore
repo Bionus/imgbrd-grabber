@@ -36,6 +36,7 @@ release/crashreporter/
 releases/Grabber_*.tar.gz
 releases/Grabber_*.exe
 releases/Grabber_*.rar
+releases/release.sh
 releases/translation_tools.rar
 CrashReporter/debug/
 CrashReporter/release/
