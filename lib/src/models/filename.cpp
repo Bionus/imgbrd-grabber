@@ -652,7 +652,7 @@ bool Filename::needExactTags(bool forceImageUrl, bool needDate) const
 	// The filename contains one of the special tags
 	QStringList forbidden = QStringList() << "artist" << "copyright" << "character" << "model" << "species" << "general";
 	for (QString token : forbidden)
-		if (m_format.contains("%" + token + "%"))
+		if (m_format.contains(QRegExp("%" + token + "(?::([^%]+))?%")))
 			return true;
 
 	// Namespaces come from detailed tags
