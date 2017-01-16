@@ -342,8 +342,8 @@ QStringList Filename::path(const Image& img, Profile *profile, QString pth, int 
 				if (key == "all" || key == "tags" || key == "general" || key == "artist" || key == "copyright" || key == "character")
 				{
 					QStringList vals = res.split(TAGS_SEPARATOR);
-					QString mainSeparator = fixSeparator(settings->value("Save/separator", " ").toString());
-					QString tagSeparator = fixSeparator(settings->value(key + "_sep", mainSeparator).toString());
+					QString mainSeparator = settings->value("Save/separator", " ").toString();
+					QString tagSeparator = fixSeparator(settings->value("Save/" + key + "_sep", mainSeparator).toString());
 					res = vals.join(tagSeparator);
 				}
 
@@ -480,7 +480,7 @@ QStringList Filename::path(const Image& img, Profile *profile, QString pth, int 
 }
 QString Filename::optionedValue(QString res, QString key, QString ops, const Image& img, QSettings *settings, QStringList namespaces) const
 {
-	QString mainSeparator = fixSeparator(settings->value("Save/separator", " ").toString());
+	QString mainSeparator = settings->value("Save/separator", " ").toString();
 
 	// Parse options
 	QMap<QString,QString> options;
@@ -507,7 +507,7 @@ QString Filename::optionedValue(QString res, QString key, QString ops, const Ima
 	if (key == "all" || key == "tags" || key == "general" || key == "artist" || key == "copyright" || key == "character")
 	{
 		QStringList vals = res.split(TAGS_SEPARATOR);
-		QString tagSeparator = fixSeparator(settings->value(key + "_sep", mainSeparator).toString());
+		QString tagSeparator = fixSeparator(settings->value("Save/" + key + "_sep", mainSeparator).toString());
 
 		// Namespaces
 		if (options.contains("includenamespace"))
