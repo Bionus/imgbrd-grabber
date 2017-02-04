@@ -753,12 +753,12 @@ void optionsWindow::save()
 		QNetworkProxy::ProxyType type = settings->value("Proxy/type", "http") == "http" ? QNetworkProxy::HttpProxy : QNetworkProxy::Socks5Proxy;
 		QNetworkProxy proxy(type, settings->value("Proxy/hostName").toString(), settings->value("Proxy/port").toInt());
 		QNetworkProxy::setApplicationProxy(proxy);
-		log(QString("Activation du proxy général sur l'hôte \"%1\" et le port %2.").arg(settings->value("Proxy/hostName").toString()).arg(settings->value("Proxy/port").toInt()));
+		log(QString("Enabling application proxy on host \"%1\" and port %2.").arg(settings->value("Proxy/hostName").toString()).arg(settings->value("Proxy/port").toInt()));
 	}
 	else if (QNetworkProxy::applicationProxy().type() != QNetworkProxy::NoProxy)
 	{
 		QNetworkProxy::setApplicationProxy(QNetworkProxy::NoProxy);
-		log("Désactivation du proxy général.");
+		log("Disabling application proxy.");
 	}
 
 	QString lang = ui->comboLanguages->currentData().toString();
