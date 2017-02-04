@@ -654,6 +654,8 @@ void zoomWindow::pendingUpdate()
 			openFile(true);
 			break;
 	}
+
+	m_mustSave = 0;
 }
 
 void zoomWindow::draw()
@@ -994,6 +996,7 @@ void zoomWindow::load(QSharedPointer<Image> image)
 {
 	disconnect(m_image.data(), &Image::finishedLoadingTags, this, &zoomWindow::replyFinishedDetails);
 
+	m_imagePath = "";
 	m_image = image;
 	connect(m_image.data(), &Image::urlChanged, this, &zoomWindow::urlChanged, Qt::UniqueConnection);
 
