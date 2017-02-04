@@ -2315,7 +2315,7 @@ void mainWindow::updateDownloads()
 
 
 
-void mainWindow::loadTag(QString tag, bool newTab)
+void mainWindow::loadTag(QString tag, bool newTab, bool background)
 {
 	if (tag.startsWith("http://"))
 	{
@@ -2324,7 +2324,7 @@ void mainWindow::loadTag(QString tag, bool newTab)
 	}
 
 	if (newTab)
-		addTab(tag, true);
+		addTab(tag, background);
 	else if (m_tabs.count() > 0 && ui->tabWidget->currentIndex() < m_tabs.count())
 		m_tabs[ui->tabWidget->currentIndex()]->setTags(tag);
 }
@@ -2389,4 +2389,43 @@ void mainWindow::viewitlater()
 void mainWindow::unviewitlater()
 {
 	m_profile->removeKeptForLater(m_link);
+}
+
+
+void mainWindow::dragEnterEvent(QDragEnterEvent *event)
+{
+	const QMimeData* mimeData = event->mimeData();
+	if (mimeData->hasUrls())
+	{
+		QList<QUrl> urlList = mimeData->urls();
+		for (int i = 0; i < urlList.size() && i < 32; ++i)
+		{
+			QString path = urlList.at(i).toLocalFile();
+			QFileInfo fileInfo(path);
+			if (fileInfo.exists() && fileInfo.isFile())
+			{
+				event->acceptProposedAction();
+			}
+		}
+	}
+}
+
+void mainWindow::dropEvent(QDropEvent* event)
+{
+	const QMimeData* mimeData = event->mimeData();
+	if (mimeData->hasUrls())
+	{
+		QList<QUrl> urlList = mimeData->urls();
+		for (int i = 0; i < urlList.size() && i < 32; ++i)
+		{
+			QFile file(urlList.at(i).toLocalFile());
+			if (file.open(QFile::ReadOnly))
+			{
+				QString md5 = QCryptographicHash::hash(file.readAll(), QCryptographicHash::Md5).toHex();
+				file.close();
+
+				loadTag("md5:" + md5, true, false);
+			}
+		}
+	}
 }

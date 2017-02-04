@@ -134,7 +134,7 @@ class mainWindow : public QMainWindow
 		void decreaseDownloads();
 		void updateDownloads();
 		// Tag list
-		void loadTag(QString tag, bool newTab = true);
+		void loadTag(QString tag, bool newTab = true, bool background = true);
 		void loadTagTab(QString tag);
 		void loadTagNoTab(QString tag);
 		void linkHovered(QString tag);
@@ -166,6 +166,10 @@ class mainWindow : public QMainWindow
 		void initialLoginsFinished();
 		QIcon& getIcon(QString path);
 		void setWiki(QString);
+
+		// Drag & drop
+		void dragEnterEvent(QDragEnterEvent *event);
+		void dropEvent(QDropEvent* event);
 
 	protected:
 		int getRowForSite(int site_id);
