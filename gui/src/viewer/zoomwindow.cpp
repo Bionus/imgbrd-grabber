@@ -252,29 +252,37 @@ void zoomWindow::openPoolId(Page *p)
 
 void zoomWindow::openSaveDir(bool fav)
 {
-	QString path = m_settings->value("Save/path"+QString(fav ? "_favorites" : "")).toString().replace("\\", "/"), fn = m_settings->value("Save/filename"+QString(fav ? "_favorites" : "")).toString();
-
-	if (path.right(1) == "/")
-	{ path = path.left(path.length()-1); }
-	path = QDir::toNativeSeparators(path);
-
-	QStringList files = m_image->path(fn, path);
-	QString file = files.empty() ? "" : files.at(0);
-	QString pth = file.section(QDir::toNativeSeparators("/"), 0, -2);
-	QString url = path+QDir::toNativeSeparators("/")+pth;
-
-	QDir dir(url);
-	if (dir.exists())
-	{ showInGraphicalShell(url); }
+	// If the file was already saved, we focus on it
+	if (!m_imagePath.isEmpty())
+	{
+		showInGraphicalShell(m_imagePath);
+	}
 	else
 	{
-		int reply = QMessageBox::question(this, tr("Folder does not exist"), tr("The save folder does not exist yet. Create it?"), QMessageBox::Yes | QMessageBox::No);
-		if (reply == QMessageBox::Yes)
+		QString path = m_settings->value("Save/path"+QString(fav ? "_favorites" : "")).toString().replace("\\", "/"), fn = m_settings->value("Save/filename"+QString(fav ? "_favorites" : "")).toString();
+
+		if (path.right(1) == "/")
+		{ path = path.left(path.length()-1); }
+		path = QDir::toNativeSeparators(path);
+
+		QStringList files = m_image->path(fn, path);
+		QString file = files.empty() ? "" : files.at(0);
+		QString pth = file.section(QDir::toNativeSeparators("/"), 0, -2);
+		QString url = path+QDir::toNativeSeparators("/")+pth;
+
+		QDir dir(url);
+		if (dir.exists())
+		{ showInGraphicalShell(url); }
+		else
 		{
-			QDir dir(path);
-			if (!dir.mkpath(pth))
-			{ error(this, tr("Error creating folder.\r\n%1").arg(url)); }
-			showInGraphicalShell(url);
+			int reply = QMessageBox::question(this, tr("Folder does not exist"), tr("The save folder does not exist yet. Create it?"), QMessageBox::Yes | QMessageBox::No);
+			if (reply == QMessageBox::Yes)
+			{
+				QDir dir(path);
+				if (!dir.mkpath(pth))
+				{ error(this, tr("Error creating folder.\r\n%1").arg(url)); }
+				showInGraphicalShell(url);
+			}
 		}
 	}
 }
