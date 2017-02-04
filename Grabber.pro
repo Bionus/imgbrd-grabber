@@ -21,14 +21,20 @@ unix:!macx{
 	isEmpty(PREFIX){
 		PREFIX = /usr/local
 	}
-	config.path = $$PREFIX/share/Grabber/example
-	config.extra = touch release/settings.ini
-	config.files = release/languages release/sites release/words.txt release/settings.ini
 
-	desktop.path = $$PREFIX/share/applications/Grabber
+	config.path = $$PREFIX/share/Grabber
+	config.extra = touch release/settings.ini
+	config.files = release/sites release/words.txt release/settings.ini
+
+	languages.path = $$PREFIX/share/Grabber
+	languages.files = release/languages
+
+	desktop.path = $$PREFIX/share/applications
 	desktop.files += release/Grabber.desktop
-	icon.path = $$PREFIX/share/icons/128x128/apps
-	icon.extra = cp icon.png Grabber.png
-	icon.files += Grabber.png
-	INSTALLS += desktop icon config
+
+	icon.path = $$PREFIX/share/pixmaps
+	icon.extra = cp resources/icon.png resources/Grabber.png
+	icon.files += resources/Grabber.png
+
+	INSTALLS += desktop icon config languages
 }
