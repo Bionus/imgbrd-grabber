@@ -20,7 +20,7 @@ namespace Ui
 }
 
 
-class zoomWindow : public QDialog
+class zoomWindow : public QWidget
 {
 	Q_OBJECT
 

@@ -21,7 +21,7 @@
 
 
 zoomWindow::zoomWindow(QList<QSharedPointer<Image> > images, QSharedPointer<Image> image, Site *site, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
-	: QDialog(Q_NULLPTR, Qt::Window), m_parent(parent), m_profile(profile), m_favorites(profile->getFavorites()), m_viewItLater(profile->getKeptForLater()), m_ignore(profile->getIgnored()), m_settings(profile->getSettings()), ui(new Ui::zoomWindow), m_site(site), timeout(300), m_loaded(false), m_loadedImage(false), m_loadedDetails(false), image(nullptr), movie(nullptr), m_reply(nullptr), m_finished(false), m_thread(false), m_data(QByteArray()), m_size(0), m_sites(sites), m_source(), m_th(nullptr), m_fullScreen(nullptr), m_images(images), m_isFullscreen(false), m_isSlideshowRunning(false), m_imagePath("")
+	: QWidget(Q_NULLPTR, Qt::Window), m_parent(parent), m_profile(profile), m_favorites(profile->getFavorites()), m_viewItLater(profile->getKeptForLater()), m_ignore(profile->getIgnored()), m_settings(profile->getSettings()), ui(new Ui::zoomWindow), m_site(site), timeout(300), m_loaded(false), m_loadedImage(false), m_loadedDetails(false), image(nullptr), movie(nullptr), m_reply(nullptr), m_finished(false), m_thread(false), m_data(QByteArray()), m_size(0), m_sites(sites), m_source(), m_th(nullptr), m_fullScreen(nullptr), m_images(images), m_isFullscreen(false), m_isSlideshowRunning(false), m_imagePath("")
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	ui->setupUi(this);
