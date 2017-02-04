@@ -8,6 +8,7 @@
 #include <QMessageBox>
 #include "functions.h"
 #include "settings/optionswindow.h"
+#include "reverse-search/reverse-search-loader.h"
 #include "ui/QAffiche.h"
 #include "zoomwindow.h"
 #include "imagethread.h"
@@ -148,6 +149,9 @@ void zoomWindow::go()
 	connect(m_image.data(), &Image::finishedLoadingTags, this, &zoomWindow::replyFinishedDetails, Qt::UniqueConnection);
 	m_image->loadDetails();
 
+	ReverseSearchLoader loader(m_settings);
+	m_reverseSearchEngines = loader.getAllReverseSearchEngines();
+
 	if (!m_isFullscreen)
 		activateWindow();
 }
@@ -179,9 +183,10 @@ void zoomWindow::imageContextMenu()
 	menu->addSeparator();
 
 	// Reverse search actions
-	menu->addAction(QIcon(":/images/sources/saucenao.png"), tr("SauceNAO"), this, SLOT(reverseSearchSauceNao()));
-	menu->addAction(QIcon(":/images/sources/iqdb.png"), tr("IQDB"), this, SLOT(reverseSearchIqdb()));
-	menu->addAction(QIcon(":/images/sources/tineye.png"), tr("TinEye"), this, SLOT(reverseSearchTinEye()));
+	for (auto engine : m_reverseSearchEngines)
+	{
+		menu->addAction(engine.icon(), engine.name(), this, [this, engine]{ engine.searchByUrl(m_image->fileUrl()); });
+	}
 
 	menu->exec(QCursor::pos());
 }
@@ -201,18 +206,6 @@ void zoomWindow::copyImageFileToClipboard()
 void zoomWindow::copyImageDataToClipboard()
 {
 	QApplication::clipboard()->setPixmap(*image);
-}
-void zoomWindow::reverseSearchSauceNao()
-{
-	QDesktopServices::openUrl(QUrl("https://saucenao.com/search.php?db=999&url=" + m_image->fileUrl().toEncoded()));
-}
-void zoomWindow::reverseSearchIqdb()
-{
-	QDesktopServices::openUrl(QUrl("https://iqdb.org/?url=" + m_image->fileUrl().toEncoded()));
-}
-void zoomWindow::reverseSearchTinEye()
-{
-	QDesktopServices::openUrl(QUrl("https://www.tineye.com/search/?url=" + m_image->fileUrl().toEncoded()));
 }
 
 void zoomWindow::showDetails()
