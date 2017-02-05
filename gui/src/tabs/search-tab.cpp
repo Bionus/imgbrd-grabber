@@ -932,6 +932,9 @@ void searchTab::loadTags(QStringList tags)
 	{ ui_layoutResults->addLayout(m_layouts[nullptr], 1, 0); }
 	m_page = 0;
 
+	auto spacer = new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
+	ui_layoutResults->addItem(spacer, m_layouts.count() * 2, 0);
+
 	if (merged && ui_progressMergeResults != nullptr)
 	{
 		ui_progressMergeResults->setValue(0);
