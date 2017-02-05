@@ -48,14 +48,6 @@ If you have any questions about the program, found a bug and don't want to use t
 ## Default sources
 You can add additional sources very easily, but here's a shot list of some sources that are included and supported by default: Danbooru, Gelbooru, yande.re, Shimmie, Sankaku complex, e621, rule34, safebooru, behoimi...
 
-## Authors
-* [Bionus](https://github.com/Bionus)
-
-### Special thanks
-* YMI for all his suggestions and helping debbuging the program
-* Николай Тихонов for the Russian translation
-* Everyone who helped make this program better by contributing, suggesting features, or reporting bugs!
-
 ## Compilation
 
 If you want more info about compilation steps, see the [Compilation](https://github.com/Bionus/imgbrd-grabber/wiki/Compilation) wiki page.
