@@ -7,6 +7,7 @@
 #include "ui/QAffiche.h"
 #include "models/image.h"
 #include "models/profile.h"
+#include "reverse-search/reverse-search-engine.h"
 #include "mainwindow.h"
 #include "detailswindow.h"
 #include "imagethread.h"
@@ -19,14 +20,14 @@ namespace Ui
 }
 
 
-class zoomWindow : public QDialog
+class zoomWindow : public QWidget
 {
 	Q_OBJECT
 
 	public:
 		zoomWindow(QList<QSharedPointer<Image>> images, QSharedPointer<Image> image, Site *site, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent);
-		void go();
 		~zoomWindow();
+		void go();
 		void load();
 
 	public slots:
@@ -71,9 +72,6 @@ class zoomWindow : public QDialog
 		void imageContextMenu();
 		void copyImageFileToClipboard();
 		void copyImageDataToClipboard();
-		void reverseSearchSauceNao();
-		void reverseSearchIqdb();
-		void reverseSearchTinEye();
 		void copyTagToClipboard();
 		void copyAllTagsToClipboard();
 
@@ -138,6 +136,7 @@ class zoomWindow : public QDialog
 		QStackedWidget *m_stackedWidget;
 		QAffiche *m_labelImage;
 		QList<QSharedPointer<Image>> m_images;
+		QList<ReverseSearchEngine> m_reverseSearchEngines;
 };
 
 #endif

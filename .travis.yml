@@ -10,11 +10,6 @@ matrix:
   include:
     - os: osx
 
-# Codecov token
-env:
-  global:
-    - CODECOV_TOKEN=068ef4e2-5006-4f45-9545-fbf4e22ad085
-
 # Qt packages for Linux
 addons:
   apt:
@@ -29,11 +24,13 @@ addons:
       - libpulse-dev
       - qt5-default
       - qttools5-dev-tools
+      - sshpass
 
 # Qt packages for OS X
 install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       brew update &&
+      brew install http://git.io/sshpass.rb &&
       brew install qt5 &&
       QT_PATH=$(find /usr/local/Cellar/qt5/* -maxdepth 0 -type d | head -1)
       PATH=$QT_PATH/bin:$PATH &&
@@ -43,9 +40,9 @@ install:
 # Start X before running tests on Linux
 before_script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-        export DISPLAY=:99.0 &&
-        sh -e /etc/init.d/xvfb start &&
-        sleep 3
+      export DISPLAY=:99.0 &&
+      sh -e /etc/init.d/xvfb start &&
+      sleep 3
     ; fi
 
 # Build Grabber
@@ -57,3 +54,25 @@ script:
 # Upload code coverage
 after_success:
   - bash <(curl -s https://codecov.io/bash)
+  - if [[ "$TRAVIS_TAG" == "" ]]; then
+      export BUILD_LABEL=$TRAVIS_BRANCH
+    ; else
+      export BUILD_LABEL=$TRAVIS_TAG
+    ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]] && [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then
+      cp "gui/build/release/Grabber" release &&
+      touch "release/settings.ini" &&
+      rm "release/CDR.exe" &&
+      zip -r Grabber.zip release &&
+      export OUTPUT_FILE="Grabber_${BUILD_LABEL}_linux.zip" &&
+      sshpass -p "$SSH_PASS" scp -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no Grabber.zip $SSH_USER@$SSH_HOST:$OUTPUT_FILE
+    ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then
+      touch "release/settings.ini" &&
+      rm "release/CDR.exe" &&
+      mv release/* gui/build/release/Grabber.app/Contents/MacOS/ &&
+      mv gui/build/release/Grabber.app release &&
+      zip -r Grabber.app.zip release/Grabber.app &&
+      export OUTPUT_FILE="Grabber_${BUILD_LABEL}_mac.app.zip" &&
+      sshpass -p "$SSH_PASS" scp -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no Grabber.app.zip $SSH_USER@$SSH_HOST:$OUTPUT_FILE
+    ; fi

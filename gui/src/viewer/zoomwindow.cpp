@@ -8,6 +8,7 @@
 #include <QMessageBox>
 #include "functions.h"
 #include "settings/optionswindow.h"
+#include "reverse-search/reverse-search-loader.h"
 #include "ui/QAffiche.h"
 #include "zoomwindow.h"
 #include "imagethread.h"
@@ -20,7 +21,7 @@
 
 
 zoomWindow::zoomWindow(QList<QSharedPointer<Image> > images, QSharedPointer<Image> image, Site *site, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
-	: QDialog(Q_NULLPTR, Qt::Window), m_parent(parent), m_profile(profile), m_favorites(profile->getFavorites()), m_viewItLater(profile->getKeptForLater()), m_ignore(profile->getIgnored()), m_settings(profile->getSettings()), ui(new Ui::zoomWindow), m_site(site), timeout(300), m_loaded(false), m_loadedImage(false), m_loadedDetails(false), image(nullptr), movie(nullptr), m_reply(nullptr), m_finished(false), m_thread(false), m_data(QByteArray()), m_size(0), m_sites(sites), m_source(), m_th(nullptr), m_fullScreen(nullptr), m_images(images), m_isFullscreen(false), m_isSlideshowRunning(false), m_imagePath("")
+	: QWidget(Q_NULLPTR, Qt::Window), m_parent(parent), m_profile(profile), m_favorites(profile->getFavorites()), m_viewItLater(profile->getKeptForLater()), m_ignore(profile->getIgnored()), m_settings(profile->getSettings()), ui(new Ui::zoomWindow), m_site(site), timeout(300), m_loaded(false), m_loadedImage(false), m_loadedDetails(false), image(nullptr), movie(nullptr), m_reply(nullptr), m_finished(false), m_thread(false), m_data(QByteArray()), m_size(0), m_sites(sites), m_source(), m_th(nullptr), m_fullScreen(nullptr), m_images(images), m_isFullscreen(false), m_isSlideshowRunning(false), m_imagePath("")
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	ui->setupUi(this);
@@ -148,6 +149,9 @@ void zoomWindow::go()
 	connect(m_image.data(), &Image::finishedLoadingTags, this, &zoomWindow::replyFinishedDetails, Qt::UniqueConnection);
 	m_image->loadDetails();
 
+	ReverseSearchLoader loader(m_settings);
+	m_reverseSearchEngines = loader.getAllReverseSearchEngines();
+
 	if (!m_isFullscreen)
 		activateWindow();
 }
@@ -179,9 +183,10 @@ void zoomWindow::imageContextMenu()
 	menu->addSeparator();
 
 	// Reverse search actions
-	menu->addAction(QIcon(":/images/sources/saucenao.png"), tr("SauceNAO"), this, SLOT(reverseSearchSauceNao()));
-	menu->addAction(QIcon(":/images/sources/iqdb.png"), tr("IQDB"), this, SLOT(reverseSearchIqdb()));
-	menu->addAction(QIcon(":/images/sources/tineye.png"), tr("TinEye"), this, SLOT(reverseSearchTinEye()));
+	for (auto engine : m_reverseSearchEngines)
+	{
+		menu->addAction(engine.icon(), engine.name(), this, [this, engine]{ engine.searchByUrl(m_image->fileUrl()); });
+	}
 
 	menu->exec(QCursor::pos());
 }
@@ -201,18 +206,6 @@ void zoomWindow::copyImageFileToClipboard()
 void zoomWindow::copyImageDataToClipboard()
 {
 	QApplication::clipboard()->setPixmap(*image);
-}
-void zoomWindow::reverseSearchSauceNao()
-{
-	QDesktopServices::openUrl(QUrl("https://saucenao.com/search.php?db=999&url=" + m_image->fileUrl().toEncoded()));
-}
-void zoomWindow::reverseSearchIqdb()
-{
-	QDesktopServices::openUrl(QUrl("https://iqdb.org/?url=" + m_image->fileUrl().toEncoded()));
-}
-void zoomWindow::reverseSearchTinEye()
-{
-	QDesktopServices::openUrl(QUrl("https://www.tineye.com/search/?url=" + m_image->fileUrl().toEncoded()));
 }
 
 void zoomWindow::showDetails()
@@ -259,29 +252,37 @@ void zoomWindow::openPoolId(Page *p)
 
 void zoomWindow::openSaveDir(bool fav)
 {
-	QString path = m_settings->value("Save/path"+QString(fav ? "_favorites" : "")).toString().replace("\\", "/"), fn = m_settings->value("Save/filename"+QString(fav ? "_favorites" : "")).toString();
-
-	if (path.right(1) == "/")
-	{ path = path.left(path.length()-1); }
-	path = QDir::toNativeSeparators(path);
-
-	QStringList files = m_image->path(fn, path);
-	QString file = files.empty() ? "" : files.at(0);
-	QString pth = file.section(QDir::toNativeSeparators("/"), 0, -2);
-	QString url = path+QDir::toNativeSeparators("/")+pth;
-
-	QDir dir(url);
-	if (dir.exists())
-	{ showInGraphicalShell(url); }
+	// If the file was already saved, we focus on it
+	if (!m_imagePath.isEmpty())
+	{
+		showInGraphicalShell(m_imagePath);
+	}
 	else
 	{
-		int reply = QMessageBox::question(this, tr("Folder does not exist"), tr("The save folder does not exist yet. Create it?"), QMessageBox::Yes | QMessageBox::No);
-		if (reply == QMessageBox::Yes)
+		QString path = m_settings->value("Save/path"+QString(fav ? "_favorites" : "")).toString().replace("\\", "/"), fn = m_settings->value("Save/filename"+QString(fav ? "_favorites" : "")).toString();
+
+		if (path.right(1) == "/")
+		{ path = path.left(path.length()-1); }
+		path = QDir::toNativeSeparators(path);
+
+		QStringList files = m_image->path(fn, path);
+		QString file = files.empty() ? "" : files.at(0);
+		QString pth = file.section(QDir::toNativeSeparators("/"), 0, -2);
+		QString url = path+QDir::toNativeSeparators("/")+pth;
+
+		QDir dir(url);
+		if (dir.exists())
+		{ showInGraphicalShell(url); }
+		else
 		{
-			QDir dir(path);
-			if (!dir.mkpath(pth))
-			{ error(this, tr("Error creating folder.\r\n%1").arg(url)); }
-			showInGraphicalShell(url);
+			int reply = QMessageBox::question(this, tr("Folder does not exist"), tr("The save folder does not exist yet. Create it?"), QMessageBox::Yes | QMessageBox::No);
+			if (reply == QMessageBox::Yes)
+			{
+				QDir dir(path);
+				if (!dir.mkpath(pth))
+				{ error(this, tr("Error creating folder.\r\n%1").arg(url)); }
+				showInGraphicalShell(url);
+			}
 		}
 	}
 }
@@ -654,6 +655,8 @@ void zoomWindow::pendingUpdate()
 			openFile(true);
 			break;
 	}
+
+	m_mustSave = 0;
 }
 
 void zoomWindow::draw()
@@ -994,6 +997,7 @@ void zoomWindow::load(QSharedPointer<Image> image)
 {
 	disconnect(m_image.data(), &Image::finishedLoadingTags, this, &zoomWindow::replyFinishedDetails);
 
+	m_imagePath = "";
 	m_image = image;
 	connect(m_image.data(), &Image::urlChanged, this, &zoomWindow::urlChanged, Qt::UniqueConnection);
 
