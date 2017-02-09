@@ -431,6 +431,9 @@ void zoomWindow::sslErrorHandler(QNetworkReply* qnr, QList<QSslError>)
 #define TIME 500
 void zoomWindow::downloadProgress(qint64 bytesReceived, qint64 bytesTotal)
 {
+	 if (m_image->isVideo() || m_url.section('.', -1).toLower() == "gif")
+		 return;
+
 	ui->progressBarDownload->show();
 	ui->progressBarDownload->setMaximum(bytesTotal);
 	ui->progressBarDownload->setValue(bytesReceived);
@@ -658,6 +661,10 @@ void zoomWindow::pendingUpdate()
 
 void zoomWindow::draw()
 {
+	// Videos don't get drawn
+	if (m_image->isVideo())
+		return;
+
 	QString fn = m_url.section('/', -1).toLower();
 	QString ext = fn.section('.', -1).toLower();
 
@@ -720,19 +727,19 @@ void zoomWindow::draw()
  * Updates the image label to use the current image.
  * @param onlysize true to update the image quickly
  */
-void zoomWindow::update(bool onlysize)
+void zoomWindow::update(bool onlysize, bool force)
 {
 	// Only used for images
-	if (m_displayMovie != nullptr)
+	if (m_displayImage.isNull())
 		return;
 
 	bool needScaling = (m_displayImage.width() > m_labelImage->width() || m_displayImage.height() > m_labelImage->height());
-	if (needScaling && (onlysize || m_loadedImage))
+	if (needScaling && (onlysize || m_loadedImage || force))
 	{
 		Qt::TransformationMode mode = onlysize ? Qt::FastTransformation : Qt::SmoothTransformation;
 		m_labelImage->setImage(m_displayImage.scaled(m_labelImage->width(), m_labelImage->height(), Qt::KeepAspectRatio, mode));
 	}
-	else if (m_loadedImage)
+	else if (m_loadedImage || force)
 	{
 		m_labelImage->setImage(m_displayImage);
 	}
@@ -993,6 +1000,7 @@ void zoomWindow::showThumbnail()
 	if (size.isEmpty())
 	{ size = m_image->previewImage().size() * 2 * m_settings->value("thumbnailUpscale", 1.0f).toFloat(); }
 
+	// Videos get a static resizable overlay
 	if (m_image->isVideo())
 	{
 		QPixmap base = m_image->previewImage();
@@ -1004,12 +1012,21 @@ void zoomWindow::showThumbnail()
 			painter.drawPixmap(0, 0, size.width(), size.height(), base);
 			painter.drawPixmap(qMax(0, (size.width() - overlay.width()) / 2), qMax(0, (size.height() - overlay.height()) / 2), overlay.width(), overlay.height(), overlay);
 		}
-		m_labelImage->setPixmap(result);
+		m_displayImage = result;
+		update(false, true);
 	}
+
+	// Gifs get non-resizable thumbnails
+	else if (m_url.section('.', -1).toLower() == "gif")
+	{
+		m_labelImage->setPixmap(m_image->previewImage().scaled(size, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+	}
+
+	// Other images get a resizable thumbnail
 	else
 	{
 		m_displayImage = m_image->previewImage().scaled(size, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-		display(&m_displayImage, m_size + 1);
+		update(false, true);
 	}
 }
 

@@ -31,7 +31,7 @@ class zoomWindow : public QWidget
 		void load();
 
 	public slots:
-		void update(bool onlysize = false);
+		void update(bool onlysize = false, bool force = false);
 		void replyFinishedDetails();
 		void replyFinishedZoom();
 		void display(QPixmap *, int);
@@ -143,7 +143,6 @@ class zoomWindow : public QWidget
 		// Display
 		QPixmap m_displayImage;
 		QMovie *m_displayMovie;
-		bool m_isAnimated;
 };
 
 #endif
