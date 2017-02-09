@@ -91,7 +91,11 @@ class zoomWindow : public QWidget
 		void closeEvent(QCloseEvent *);
 		void resizeEvent(QResizeEvent *);
 		void save(QString, QPushButton *);
+		void showEvent(QShowEvent *);
 		void draw();
+
+	private:
+		void showThumbnail();
 
 	signals:
 		void linkClicked(QString);
@@ -114,8 +118,6 @@ class zoomWindow : public QWidget
 		bool m_loaded, m_loadedImage, m_loadedDetails;
 		QString id, m_url, tags, rating, score, user, format;
 		QAffiche *m_labelTagsTop, *m_labelTagsLeft;
-		QPixmap *image;
-		QMovie *movie;
 		QTimer *m_resizeTimer;
 		QTime m_imageTime;
 		QString link;
@@ -137,6 +139,11 @@ class zoomWindow : public QWidget
 		QAffiche *m_labelImage;
 		QList<QSharedPointer<Image>> m_images;
 		QList<ReverseSearchEngine> m_reverseSearchEngines;
+
+		// Display
+		QPixmap m_displayImage;
+		QMovie *m_displayMovie;
+		bool m_isAnimated;
 };
 
 #endif

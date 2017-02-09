@@ -21,7 +21,7 @@
 
 
 zoomWindow::zoomWindow(QList<QSharedPointer<Image> > images, QSharedPointer<Image> image, Site *site, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
-	: QWidget(Q_NULLPTR, Qt::Window), m_parent(parent), m_profile(profile), m_favorites(profile->getFavorites()), m_viewItLater(profile->getKeptForLater()), m_ignore(profile->getIgnored()), m_settings(profile->getSettings()), ui(new Ui::zoomWindow), m_site(site), timeout(300), m_loaded(false), m_loadedImage(false), m_loadedDetails(false), image(nullptr), movie(nullptr), m_reply(nullptr), m_finished(false), m_thread(false), m_data(QByteArray()), m_size(0), m_sites(sites), m_source(), m_th(nullptr), m_fullScreen(nullptr), m_images(images), m_isFullscreen(false), m_isSlideshowRunning(false), m_imagePath("")
+	: QWidget(Q_NULLPTR, Qt::Window), m_parent(parent), m_profile(profile), m_favorites(profile->getFavorites()), m_viewItLater(profile->getKeptForLater()), m_ignore(profile->getIgnored()), m_settings(profile->getSettings()), ui(new Ui::zoomWindow), m_site(site), timeout(300), m_loaded(false), m_loadedImage(false), m_loadedDetails(false), m_displayImage(QPixmap()), m_displayMovie(nullptr), m_reply(nullptr), m_finished(false), m_thread(false), m_data(QByteArray()), m_size(0), m_sites(sites), m_source(), m_th(nullptr), m_fullScreen(nullptr), m_images(images), m_isFullscreen(false), m_isSlideshowRunning(false), m_imagePath("")
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	ui->setupUi(this);
@@ -161,10 +161,8 @@ void zoomWindow::go()
  */
 zoomWindow::~zoomWindow()
 {
-	if (image != nullptr)
-		delete image;
-	if (movie != nullptr)
-		movie->deleteLater();
+	if (m_displayMovie != nullptr)
+		m_displayMovie->deleteLater();
 
 	m_labelTagsTop->deleteLater();
 	m_labelTagsLeft->deleteLater();
@@ -205,7 +203,7 @@ void zoomWindow::copyImageFileToClipboard()
 }
 void zoomWindow::copyImageDataToClipboard()
 {
-	QApplication::clipboard()->setPixmap(*image);
+	QApplication::clipboard()->setPixmap(m_displayImage);
 }
 
 void zoomWindow::showDetails()
@@ -360,25 +358,25 @@ void zoomWindow::copyAllTagsToClipboard()
 void zoomWindow::favorite()
 {
 	Favorite fav(link);
-	if (image != nullptr)
-		fav.setImage(*image);
+	if (m_loadedImage)
+		fav.setImage(m_displayImage);
 
 	m_profile->addFavorite(fav);
 }
 void zoomWindow::setfavorite()
 {
-	if (image == nullptr)
+	if (!m_loadedImage)
 		return;
 
 	Favorite fav(link);
 	int pos = m_favorites.indexOf(fav);
 	if (pos >= 0)
 	{
-		m_favorites[pos].setImage(*image);
+		m_favorites[pos].setImage(m_displayImage);
 	}
 	else
 	{
-		fav.setImage(*image);
+		fav.setImage(m_displayImage);
 		m_favorites.append(fav);
 	}
 
@@ -457,16 +455,15 @@ void zoomWindow::display(QPixmap *pix, int size)
 	if (!pix->size().isEmpty() && size >= m_size)
 	{
 		m_size = size;
-		delete image;
-		image = pix;
+		m_displayImage = *pix;
 		if (m_url.section('.', -1).toLower() == "gif")
-		{ /*m_labelImage->setPixmap(*image);*/ }
+		{ /*m_labelImage->setPixmap(m_displayImage);*/ }
 		else
 		{ update(!m_finished); }
 		m_thread = false;
 
 		if (m_isFullscreen && m_fullScreen != nullptr && m_fullScreen->isVisible())
-		{ m_fullScreen->setImage(image->scaled(QApplication::desktop()->screenGeometry().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation)); }
+		{ m_fullScreen->setImage(m_displayImage.scaled(QApplication::desktop()->screenGeometry().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation)); }
 	}
 }
 
@@ -682,31 +679,30 @@ void zoomWindow::draw()
 	// GIF (using QLabel support for QMovie)
 	if (ext == "gif")
 	{
-		this->movie = new QMovie(filename, QByteArray(), this);
-		m_labelImage->setMovie(this->movie);
+		m_displayMovie = new QMovie(filename, QByteArray(), this);
+		m_labelImage->setMovie(m_displayMovie);
 		m_stackedWidget->setCurrentWidget(m_labelImage);
-		this->movie->start();
+		m_displayMovie->start();
 
-		this->image = nullptr;
+		m_displayImage = QPixmap();
 
 		if (m_isFullscreen && m_fullScreen != nullptr && m_fullScreen->isVisible())
-		{ m_fullScreen->setMovie(movie); }
+		{ m_fullScreen->setMovie(m_displayMovie); }
 		return;
 	}
 
 	// Images
 	if (!m_source.isEmpty())
 	{
-		QPixmap *img = new QPixmap;
-		img->load(m_source);
-		this->image = img;
+		m_displayImage = QPixmap();
+		m_displayImage.load(m_source);
 
 		m_loadedImage = true;
 		pendingUpdate();
 		update();
 
 		if (m_isFullscreen && m_fullScreen != nullptr && m_fullScreen->isVisible())
-		{ m_fullScreen->setImage(image->scaled(QApplication::desktop()->screenGeometry().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation)); }
+		{ m_fullScreen->setImage(m_displayImage.scaled(QApplication::desktop()->screenGeometry().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation)); }
 	}
 	else
 	{
@@ -726,19 +722,19 @@ void zoomWindow::draw()
  */
 void zoomWindow::update(bool onlysize)
 {
-	// Ignore this event for animations
-	if (this->image == nullptr)
+	// Only used for images
+	if (m_displayMovie != nullptr)
 		return;
 
-	bool needScaling = (this->image->width() > m_labelImage->width() || this->image->height() > m_labelImage->height());
+	bool needScaling = (m_displayImage.width() > m_labelImage->width() || m_displayImage.height() > m_labelImage->height());
 	if (needScaling && (onlysize || m_loadedImage))
 	{
 		Qt::TransformationMode mode = onlysize ? Qt::FastTransformation : Qt::SmoothTransformation;
-		m_labelImage->setImage(this->image->scaled(m_labelImage->width(), m_labelImage->height(), Qt::KeepAspectRatio, mode));
+		m_labelImage->setImage(m_displayImage.scaled(m_labelImage->width(), m_labelImage->height(), Qt::KeepAspectRatio, mode));
 	}
 	else if (m_loadedImage)
 	{
-		m_labelImage->setImage(*this->image);
+		m_labelImage->setImage(m_displayImage);
 	}
 
 	m_stackedWidget->setCurrentWidget(m_labelImage);
@@ -876,7 +872,7 @@ void zoomWindow::toggleFullScreen()
 
 void zoomWindow::fullScreen()
 {
-	if (image == nullptr && movie == nullptr)
+	if (!m_loadedImage && m_displayMovie == nullptr)
 		return;
 
 	QString ext = m_url.section('.', -1).toLower();
@@ -886,9 +882,9 @@ void zoomWindow::fullScreen()
 	m_fullScreen->setStyleSheet("background-color: black");
 	m_fullScreen->setAlignment(Qt::AlignCenter);
 	if (ext == "gif")
-	{ m_fullScreen->setMovie(movie); }
+	{ m_fullScreen->setMovie(m_displayMovie); }
 	else
-	{ m_fullScreen->setImage(image->scaled(QApplication::desktop()->screenGeometry().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation)); }
+	{ m_fullScreen->setImage(m_displayImage.scaled(QApplication::desktop()->screenGeometry().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation)); }
 	m_fullScreen->setWindowFlags(Qt::Window);
 	m_fullScreen->showFullScreen();
 
@@ -938,7 +934,7 @@ void zoomWindow::prepareNextSlide()
 	qint64 additionalInterval = 0;
 	QString ext = getExtension(m_image->url());
 	if (ext == "gif")
-		additionalInterval = movie->nextFrameDelay() * movie->frameCount();
+		additionalInterval = m_displayMovie->nextFrameDelay() * m_displayMovie->frameCount();
 
 	qint64 totalInterval = interval * 1000 + additionalInterval;
 	m_slideshow.start(totalInterval);
@@ -959,10 +955,10 @@ void zoomWindow::toggleSlideshow()
 
 void zoomWindow::resizeEvent(QResizeEvent *e)
 {
-	if (m_loadedImage && m_finished && !m_thread)
+	if (!m_thread)
 	{
 		if (!m_resizeTimer->isActive())
-		{ this->timeout = qMin(500, qMax(50, (this->image->width() * this->image->height()) / 100000)); }
+		{ this->timeout = qMin(500, qMax(50, (m_displayImage.width() * m_displayImage.height()) / 100000)); }
 		m_resizeTimer->stop();
 		m_resizeTimer->start(this->timeout);
 		this->update(true);
@@ -986,23 +982,17 @@ void zoomWindow::closeEvent(QCloseEvent *e)
 	e->accept();
 }
 
-void zoomWindow::urlChanged(QString old, QString nouv)
+void zoomWindow::showEvent(QShowEvent *e)
 {
-	Q_UNUSED(old);
-	m_url = nouv;
+	showThumbnail();
 }
 
-
-void zoomWindow::load(QSharedPointer<Image> image)
+void zoomWindow::showThumbnail()
 {
-	disconnect(m_image.data(), &Image::finishedLoadingTags, this, &zoomWindow::replyFinishedDetails);
+	QSize size = m_image->size();
+	if (size.isEmpty())
+	{ size = m_image->previewImage().size() * 2 * m_settings->value("thumbnailUpscale", 1.0f).toFloat(); }
 
-	m_imagePath = "";
-	m_image = image;
-	connect(m_image.data(), &Image::urlChanged, this, &zoomWindow::urlChanged, Qt::UniqueConnection);
-
-	// Update image label to show the thumbnail while waiting for the full size image
-	QSize size = m_image->previewImage().size() * 2 * m_settings->value("thumbnailUpscale", 1.0f).toFloat();
 	if (m_image->isVideo())
 	{
 		QPixmap base = m_image->previewImage();
@@ -1018,10 +1008,29 @@ void zoomWindow::load(QSharedPointer<Image> image)
 	}
 	else
 	{
-		m_labelImage->setPixmap(m_image->previewImage().scaled(size, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+		m_displayImage = m_image->previewImage().scaled(size, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+		display(&m_displayImage, m_size + 1);
 	}
+}
 
+void zoomWindow::urlChanged(QString old, QString nouv)
+{
+	Q_UNUSED(old);
+	m_url = nouv;
+}
+
+
+void zoomWindow::load(QSharedPointer<Image> image)
+{
+	disconnect(m_image.data(), &Image::finishedLoadingTags, this, &zoomWindow::replyFinishedDetails);
+
+	m_imagePath = "";
+	m_image = image;
+	connect(m_image.data(), &Image::urlChanged, this, &zoomWindow::urlChanged, Qt::UniqueConnection);
 	m_size = 0;
+
+	if (isVisible())
+	{ showThumbnail(); }
 
 	// Preload gallery images
 	int preload = m_settings->value("preload", 0).toInt();
