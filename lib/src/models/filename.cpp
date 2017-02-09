@@ -594,7 +594,7 @@ bool Filename::isValid(QString *error) const
 	QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat );
 	auto customs = getCustoms(settings);
 	settings->deleteLater();
-	QStringList tokens = QStringList() << "tags" << "artist" << "general" << "copyright" << "character" << "model" << "species" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "search_(\\d+)" << "allo" << customs.keys() << "date" << "score" << "count" << "width" << "height" << "pool" << "url_file" << "url_page";
+	QStringList tokens = QStringList() << "tags" << "artist" << "general" << "copyright" << "character" << "model" << "species" << "filename" << "rating" << "md5" << "website" << "websitename" << "ext" << "all" << "id" << "search" << "search_(\\d+)" << "allo" << customs.keys() << "date" << "score" << "count" << "width" << "height" << "pool" << "url_file" << "url_page";
 	QRegExp rx("%(.+)%");
 	rx.setMinimal(true);
 	int pos = 0;
@@ -621,7 +621,7 @@ bool Filename::isValid(QString *error) const
 	#endif
 
 	// Check if code is unique
-	if (!m_format.contains("%md5%") && !m_format.contains("%website%") && !m_format.contains("%count%") && m_format.contains("%id%"))
+	if (!m_format.contains("%md5%") && !m_format.contains("%website%") && !m_format.contains("%websitename%") && !m_format.contains("%count%") && m_format.contains("%id%"))
 		return returnError(green.arg(QObject::tr("You have chosen to use the %id% token. Know that it is only unique for a selected site. The same ID can identify different images depending on the site.")), error);
 
 	// All tests passed
