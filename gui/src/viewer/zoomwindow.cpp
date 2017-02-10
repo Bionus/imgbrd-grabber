@@ -1003,6 +1003,9 @@ void zoomWindow::showThumbnail()
 	// Videos get a static resizable overlay
 	if (m_image->isVideo())
 	{
+		// A video thumbnail should not be upscaled to more than three times its size
+		//size = size.boundedTo(m_image->previewImage().size() * 3 * m_settings->value("thumbnailUpscale", 1.0f).toFloat());
+
 		QPixmap base = m_image->previewImage();
 		QPixmap overlay = QPixmap(":/images/play-overlay.png");
 		QPixmap result(size.width(), size.height());
