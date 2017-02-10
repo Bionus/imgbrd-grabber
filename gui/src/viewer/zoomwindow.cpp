@@ -538,6 +538,7 @@ void zoomWindow::replyFinishedDetails()
 			ui->buttonSaveNQuitFav->setText(tr("Close (fav)"));
 		}
 		m_source = !file1notexists ? source1 : source2;
+		m_imagePath = m_source;
 		log(QString("Image loaded from the file <a href=\"file:///%1\">%1</a>").arg(m_source));
 
 		// Fix extension when it should be guessed
