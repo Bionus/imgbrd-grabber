@@ -92,6 +92,7 @@ class zoomWindow : public QWidget
 		void resizeEvent(QResizeEvent *);
 		void save(QString, QPushButton *);
 		void showEvent(QShowEvent *);
+		void mouseReleaseEvent(QMouseEvent *);
 		void draw();
 
 	private:

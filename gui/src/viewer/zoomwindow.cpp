@@ -1159,3 +1159,14 @@ void zoomWindow::openFile(bool now)
 
 	QDesktopServices::openUrl(QUrl::fromLocalFile(path));
 }
+
+void zoomWindow::mouseReleaseEvent(QMouseEvent *e)
+{
+	if (e->button() == Qt::MiddleButton)
+	{
+		close();
+		return;
+	}
+
+	QWidget::mouseReleaseEvent(e);
+}
