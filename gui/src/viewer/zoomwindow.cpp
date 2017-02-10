@@ -136,16 +136,20 @@ void zoomWindow::go()
 		else
 		{ pos = "top"; }
 	}
+
 	if (pos == "top")
 	{
 		ui->widgetLeft->hide();
 		m_labelTagsTop->setText(m_image->stylishedTags(m_profile).join(" "));
+		m_labelTagsTop->show();
 	}
 	else
 	{
 		m_labelTagsTop->hide();
 		m_labelTagsLeft->setText(m_image->stylishedTags(m_profile).join("<br/>"));
 		m_labelTagsLeft->setMinimumWidth(m_labelTagsLeft->sizeHint().width() + ui->scrollArea->verticalScrollBar()->sizeHint().width());
+		m_labelTagsLeft->show();
+		ui->widgetLeft->show();
 	}
 
 	m_detailsWindow = new detailsWindow(m_profile, this);
