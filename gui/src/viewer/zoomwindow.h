@@ -10,7 +10,7 @@
 #include "reverse-search/reverse-search-engine.h"
 #include "mainwindow.h"
 #include "detailswindow.h"
-#include "imagethread.h"
+#include "threads/image-thread.h"
 
 
 

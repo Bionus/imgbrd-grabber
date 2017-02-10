@@ -11,7 +11,7 @@
 #include "reverse-search/reverse-search-loader.h"
 #include "ui/QAffiche.h"
 #include "zoomwindow.h"
-#include "imagethread.h"
+#include "threads/image-thread.h"
 #include "ui_zoomwindow.h"
 #include "models/filename.h"
 #include "functions.h"
