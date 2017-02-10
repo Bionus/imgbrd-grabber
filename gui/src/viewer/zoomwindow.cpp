@@ -1162,7 +1162,7 @@ void zoomWindow::openFile(bool now)
 
 void zoomWindow::mouseReleaseEvent(QMouseEvent *e)
 {
-	if (e->button() == Qt::MiddleButton)
+	if (e->button() == Qt::MiddleButton && m_settings->value("imageCloseMiddleClick", true).toBool())
 	{
 		close();
 		return;
@@ -1173,20 +1173,23 @@ void zoomWindow::mouseReleaseEvent(QMouseEvent *e)
 
 void zoomWindow::wheelEvent(QWheelEvent *e)
 {
-	// Ignore events if we already got one less than 500ms ago
-	if (!m_lastWheelEvent.isNull() && m_lastWheelEvent.elapsed() <= 500)
-		e->ignore();
-	m_lastWheelEvent.start();
+	if (m_settings->value("imageNavigateScroll", true).toBool())
+	{
+		// Ignore events if we already got one less than 500ms ago
+		if (!m_lastWheelEvent.isNull() && m_lastWheelEvent.elapsed() <= 500)
+			e->ignore();
+		m_lastWheelEvent.start();
 
-	if (e->delta() <= -120)
-	{
-		previous();
-		return;
-	}
-	if (e->delta() >= 120)
-	{
-		next();
-		return;
+		if (e->delta() <= -120)
+		{
+			previous();
+			return;
+		}
+		if (e->delta() >= 120)
+		{
+			next();
+			return;
+		}
 	}
 
 	QWidget::wheelEvent(e);
