@@ -91,7 +91,6 @@ zoomWindow::zoomWindow(QList<QSharedPointer<Image> > images, QSharedPointer<Imag
 	ui->overlayLayout->removeWidget(ui->progressBarDownload);
 	ui->overlayLayout->addWidget(ui->progressBarDownload, 0, 0, Qt::AlignBottom);
 	ui->progressBarDownload->raise();
-	ui->progressBarDownload->show();
 
 	load(image);
 }
