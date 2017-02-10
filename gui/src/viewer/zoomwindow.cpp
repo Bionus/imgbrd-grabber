@@ -1032,13 +1032,13 @@ void zoomWindow::showThumbnail()
 	// Gifs get non-resizable thumbnails
 	else if (m_url.section('.', -1).toLower() == "gif")
 	{
-		m_labelImage->setPixmap(m_image->previewImage().scaled(size, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+		m_labelImage->setPixmap(m_image->previewImage().scaled(size, Qt::IgnoreAspectRatio, Qt::FastTransformation));
 	}
 
 	// Other images get a resizable thumbnail
 	else
 	{
-		m_displayImage = m_image->previewImage().scaled(size, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+		m_displayImage = m_image->previewImage().scaled(size, Qt::IgnoreAspectRatio, Qt::FastTransformation);
 		update(false, true);
 	}
 }
