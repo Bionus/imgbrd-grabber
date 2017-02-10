@@ -93,6 +93,7 @@ class zoomWindow : public QWidget
 		void save(QString, QPushButton *);
 		void showEvent(QShowEvent *);
 		void mouseReleaseEvent(QMouseEvent *);
+		void wheelEvent(QWheelEvent *);
 		void draw();
 
 	private:
@@ -130,6 +131,7 @@ class zoomWindow : public QWidget
 		QString m_source;
 		ImageThread *m_th;
 		QString m_imagePath;
+		QTime m_lastWheelEvent;
 
 		QAffiche *m_fullScreen;
 		QTimer m_slideshow;
