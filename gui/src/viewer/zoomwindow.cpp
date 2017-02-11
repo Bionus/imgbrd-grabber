@@ -1059,7 +1059,8 @@ void zoomWindow::load(QSharedPointer<Image> image)
 	connect(m_image.data(), &Image::urlChanged, this, &zoomWindow::urlChanged, Qt::UniqueConnection);
 	m_size = 0;
 
-	if (isVisible())
+	// Show the thumbnail if the image was not already preloaded
+	if (isVisible() && m_image->data().isEmpty())
 	{ showThumbnail(); }
 
 	// Preload gallery images
