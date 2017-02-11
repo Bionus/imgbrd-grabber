@@ -957,7 +957,6 @@ void zoomWindow::closeEvent(QCloseEvent *e)
 
 	m_image->abortTags();
 	m_image->abortImage();
-	m_image->unload();
 
 	e->accept();
 }
