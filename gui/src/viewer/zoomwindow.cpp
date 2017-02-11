@@ -21,7 +21,7 @@
 
 
 zoomWindow::zoomWindow(QList<QSharedPointer<Image> > images, QSharedPointer<Image> image, Site *site, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
-	: QWidget(Q_NULLPTR, Qt::Window), m_parent(parent), m_profile(profile), m_favorites(profile->getFavorites()), m_viewItLater(profile->getKeptForLater()), m_ignore(profile->getIgnored()), m_settings(profile->getSettings()), ui(new Ui::zoomWindow), m_site(site), timeout(300), m_loaded(false), m_loadedImage(false), m_loadedDetails(false), m_displayImage(QPixmap()), m_displayMovie(nullptr), m_finished(false), m_thread(false), m_size(0), m_sites(sites), m_source(), m_fullScreen(nullptr), m_images(images), m_isFullscreen(false), m_isSlideshowRunning(false), m_imagePath("")
+	: QWidget(Q_NULLPTR, Qt::Window), m_parent(parent), m_profile(profile), m_favorites(profile->getFavorites()), m_viewItLater(profile->getKeptForLater()), m_ignore(profile->getIgnored()), m_settings(profile->getSettings()), ui(new Ui::zoomWindow), m_site(site), timeout(300), m_loaded(false), m_loadedImage(false), m_loadedDetails(false), m_displayImage(QPixmap()), m_displayMovie(nullptr), m_finished(false), m_size(0), m_sites(sites), m_source(), m_fullScreen(nullptr), m_images(images), m_isFullscreen(false), m_isSlideshowRunning(false), m_imagePath("")
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	ui->setupUi(this);
@@ -96,9 +96,15 @@ zoomWindow::zoomWindow(QList<QSharedPointer<Image> > images, QSharedPointer<Imag
 	m_imageLoaderThread.setObjectName("Image loader thread");
 	m_imageLoader = new ImageLoader();
 	m_imageLoader->moveToThread(&m_imageLoaderThread);
+	m_imageLoaderQueueThread.setObjectName("Image loader queue thread");
+	m_imageLoaderQueue = new ImageLoaderQueue(m_imageLoader);
+	m_imageLoaderQueue->moveToThread(&m_imageLoaderQueueThread);
 	connect(&m_imageLoaderThread, &QThread::finished, m_imageLoader, &QObject::deleteLater);
-	connect(this, &zoomWindow::loadImage, m_imageLoader, &ImageLoader::load);
-	connect(m_imageLoader, &ImageLoader::finished, this, &zoomWindow::display);
+	connect(&m_imageLoaderQueueThread, &QThread::finished, m_imageLoaderQueue, &QObject::deleteLater);
+	connect(this, &zoomWindow::loadImage, m_imageLoaderQueue, &ImageLoaderQueue::load);
+	connect(this, &zoomWindow::clearLoadQueue, m_imageLoaderQueue, &ImageLoaderQueue::clear);
+	connect(m_imageLoaderQueue, &ImageLoaderQueue::finished, this, &zoomWindow::display);
+	m_imageLoaderQueueThread.start();
 	m_imageLoaderThread.start();
 
 	load(image);
@@ -456,12 +462,7 @@ void zoomWindow::downloadProgress(qint64 bytesReceived, qint64 bytesTotal)
 	if (m_imageTime.elapsed() > TIME || (bytesTotal > 0 && bytesReceived / bytesTotal > PERCENT))
 	{
 		m_imageTime.restart();
-
-		if (!m_thread)
-		{
-			m_thread = true;
-			emit loadImage(m_image->data());
-		}
+		emit loadImage(m_image->data());
 	}
 }
 void zoomWindow::display(const QPixmap &pix, int size)
@@ -471,7 +472,6 @@ void zoomWindow::display(const QPixmap &pix, int size)
 		m_size = size;
 		m_displayImage = pix;
 		update(!m_finished);
-		m_thread = false;
 
 		if (m_isFullscreen && m_fullScreen != nullptr && m_fullScreen->isVisible())
 		{ m_fullScreen->setImage(m_displayImage.scaled(QApplication::desktop()->screenGeometry().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation)); }
@@ -692,7 +692,6 @@ void zoomWindow::draw()
 	}
 	else
 	{
-		m_thread = true;
 		emit loadImage(m_image->data());
 	}
 }
@@ -938,14 +937,12 @@ void zoomWindow::toggleSlideshow()
 
 void zoomWindow::resizeEvent(QResizeEvent *e)
 {
-	if (!m_thread)
-	{
-		if (!m_resizeTimer->isActive())
-		{ this->timeout = qMin(500, qMax(50, (m_displayImage.width() * m_displayImage.height()) / 100000)); }
-		m_resizeTimer->stop();
-		m_resizeTimer->start(this->timeout);
-		this->update(true);
-	}
+	if (!m_resizeTimer->isActive())
+	{ this->timeout = qMin(500, qMax(50, (m_displayImage.width() * m_displayImage.height()) / 100000)); }
+	m_resizeTimer->stop();
+	m_resizeTimer->start(this->timeout);
+	this->update(true);
+
 	QWidget::resizeEvent(e);
 }
 
@@ -1015,6 +1012,7 @@ void zoomWindow::urlChanged(QString old, QString nouv)
 
 void zoomWindow::load(QSharedPointer<Image> image)
 {
+	emit clearLoadQueue();
 	disconnect(m_image.data(), &Image::finishedLoadingTags, this, &zoomWindow::replyFinishedDetails);
 
 	m_imagePath = "";

@@ -17,6 +17,7 @@ class ImageLoader : public QObject
 
 	signals:
 		void finished(const QPixmap &, int);
+		void failed();
 };
 
 #endif // IMAGE_LOADER_H

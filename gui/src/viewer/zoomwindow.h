@@ -11,6 +11,7 @@
 #include "mainwindow.h"
 #include "detailswindow.h"
 #include "threads/image-loader.h"
+#include "threads/image-loader-queue.h"
 
 
 
@@ -104,6 +105,7 @@ class zoomWindow : public QWidget
 		void poolClicked(int, QString);
 		void linkMiddleClicked(QString);
 		void loadImage(const QByteArray &);
+		void clearLoadQueue();
 
 	private:
 		mainWindow *m_parent;
@@ -146,9 +148,10 @@ class zoomWindow : public QWidget
 		QMovie *m_displayMovie;
 
 		// Threads
-		bool m_thread;
 		QThread m_imageLoaderThread;
+		QThread m_imageLoaderQueueThread;
 		ImageLoader *m_imageLoader;
+		ImageLoaderQueue *m_imageLoaderQueue;
 };
 
 #endif
