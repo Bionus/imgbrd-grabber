@@ -438,6 +438,7 @@ void zoomWindow::load()
 
 	ui->progressBarDownload->setMaximum(100);
 	ui->progressBarDownload->setValue(0);
+	ui->progressBarDownload->show();
 
 	connect(m_image.data(), &Image::downloadProgressImage, this, &zoomWindow::downloadProgress);
 	connect(m_image.data(), &Image::finishedImage, this, &zoomWindow::replyFinishedZoom);
@@ -455,7 +456,6 @@ void zoomWindow::downloadProgress(qint64 bytesReceived, qint64 bytesTotal)
 	 if (m_image->isVideo() || m_url.section('.', -1).toLower() == "gif")
 		 return;
 
-	ui->progressBarDownload->show();
 	ui->progressBarDownload->setMaximum(bytesTotal);
 	ui->progressBarDownload->setValue(bytesReceived);
 
