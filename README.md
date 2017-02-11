@@ -43,7 +43,8 @@ If you have any questions about the program, found a bug and don't want to use t
 ## Languages
 * English
 * French
-* Russian (thanks to Николай Тихонов)
+* Russian
+* Chinese (simplified)
 
 ## Default sources
 You can add additional sources very easily, but here's a shot list of some sources that are included and supported by default: Danbooru, Gelbooru, yande.re, Shimmie, Sankaku complex, e621, rule34, safebooru, behoimi...
