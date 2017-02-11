@@ -11,6 +11,8 @@ class ImageThread : public QObject
 
 	public:
 		ImageThread(QObject *parent = Q_NULLPTR);
+
+	public slots:
 		void start(const QByteArray &data);
 
 	signals:

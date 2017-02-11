@@ -93,10 +93,13 @@ zoomWindow::zoomWindow(QList<QSharedPointer<Image> > images, QSharedPointer<Imag
 	ui->progressBarDownload->raise();
 
 	// Threads
-	m_imageLoaderThread = new QThread(this);
-	m_imageLoader = new ImageThread(this);
-	m_imageLoader->moveToThread(m_imageLoaderThread);
+	m_imageLoaderThread.setObjectName("Image loader thread");
+	m_imageLoader = new ImageThread();
+	m_imageLoader->moveToThread(&m_imageLoaderThread);
+	connect(&m_imageLoaderThread, &QThread::finished, m_imageLoader, &QObject::deleteLater);
+	connect(this, &zoomWindow::loadImage, m_imageLoader, &ImageThread::start);
 	connect(m_imageLoader, &ImageThread::finished, this, &zoomWindow::display);
+	m_imageLoaderThread.start();
 
 	load(image);
 }
@@ -182,6 +185,9 @@ zoomWindow::~zoomWindow()
 	m_labelTagsTop->deleteLater();
 	m_labelTagsLeft->deleteLater();
 	m_detailsWindow->deleteLater();
+
+	m_imageLoaderThread.quit();
+	m_imageLoaderThread.wait(100);
 
 	delete ui;
 }
@@ -454,7 +460,7 @@ void zoomWindow::downloadProgress(qint64 bytesReceived, qint64 bytesTotal)
 		if (!m_thread)
 		{
 			m_thread = true;
-			m_imageLoader->start(m_image->data());
+			emit loadImage(m_image->data());
 		}
 	}
 }
@@ -687,7 +693,7 @@ void zoomWindow::draw()
 	else
 	{
 		m_thread = true;
-		m_imageLoader->start(m_image->data());
+		emit loadImage(m_image->data());
 	}
 }
 

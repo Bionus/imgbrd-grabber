@@ -103,6 +103,7 @@ class zoomWindow : public QWidget
 		void linkClicked(QString);
 		void poolClicked(int, QString);
 		void linkMiddleClicked(QString);
+		void loadImage(const QByteArray &);
 
 	private:
 		mainWindow *m_parent;
@@ -123,7 +124,7 @@ class zoomWindow : public QWidget
 		QTimer *m_resizeTimer;
 		QTime m_imageTime;
 		QString link;
-		bool m_finished, m_thread;
+		bool m_finished;
 		int m_size;
 		QMap<QString,Site*> *m_sites;
 		QString m_source;
@@ -145,7 +146,8 @@ class zoomWindow : public QWidget
 		QMovie *m_displayMovie;
 
 		// Threads
-		QThread *m_imageLoaderThread;
+		bool m_thread;
+		QThread m_imageLoaderThread;
 		ImageThread *m_imageLoader;
 };
 
