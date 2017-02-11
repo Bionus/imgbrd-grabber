@@ -1,26 +1,20 @@
 #ifndef IMAGE_THREAD_H
 #define IMAGE_THREAD_H
 
-#include <QThread>
 #include <QPixmap>
+#include <QByteArray>
 
 
-class ImageThread : public QThread
+class ImageThread : public QObject
 {
 	Q_OBJECT
 
 	public:
-		ImageThread(QByteArray data, QObject* parent = Q_NULLPTR);
-
-	protected:
-		void run();
+		ImageThread(QObject *parent = Q_NULLPTR);
+		void start(const QByteArray &data);
 
 	signals:
-		void finished(QPixmap*, int);
-		void finished(QImage*, int);
-
-	private:
-		QByteArray m_data;
+		void finished(const QPixmap &, int);
 };
 
 #endif // IMAGE_THREAD_H

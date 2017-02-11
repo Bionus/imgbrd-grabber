@@ -1,13 +1,13 @@
 #include "image-thread.h"
 
 
-ImageThread::ImageThread(QByteArray data, QObject* parent)
-	: QThread(parent), m_data(data)
+ImageThread::ImageThread(QObject* parent)
+	: QObject(parent)
 { }
 
-void ImageThread::run()
+void ImageThread::start(const QByteArray &data)
 {
-	QPixmap *img = new QPixmap();
-	if (img->loadFromData(m_data))
-		emit finished(img, m_data.size());
+	QPixmap img;
+	if (img.loadFromData(data))
+		emit finished(img, data.size());
 }

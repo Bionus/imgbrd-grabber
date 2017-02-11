@@ -655,13 +655,12 @@ void Image::loadImage()
 
 	if (m_loadedImage)
 	{
-		emit finishedImage();
+		emit finishedImage(QNetworkReply::NoError, "");
 		return;
 	}
 
 	m_loadImage = m_parentSite->get(m_parentSite->fixUrl(m_url), m_parent, "image", this);
 	m_loadImage->setParent(this);
-	//m_timer.start();
 	m_loadingImage = true;
 
 	connect(m_loadImage, &QNetworkReply::downloadProgress, this, &Image::downloadProgressImageS);
@@ -759,19 +758,23 @@ void Image::finishedImageS()
 	}
 	else
 	{
-		setData(m_loadImage->readAll());
+		m_data.append(m_loadImage->readAll());
 	}
 
 	m_loadedImage = true;
-	emit finishedImage();
+	emit finishedImage(m_loadImage->error(), m_loadImage->errorString());
+
+	m_loadImage->deleteLater();
+	m_loadImage = nullptr;
 }
 void Image::downloadProgressImageS(qint64 v1, qint64 v2)
 {
-	if (m_loadImage != nullptr && v2 > 0/* && (v1 == v2 || m_timer.elapsed() > 500)*/)
-	{
-		//m_timer.restart();
-		emit downloadProgressImage(v1, v2);
-	}
+	if (m_loadImage == nullptr || v2 <= 0)
+		return;
+
+	m_data.append(m_loadImage->readAll());
+
+	emit downloadProgressImage(v1, v2);
 }
 void Image::abortImage()
 {

@@ -21,7 +21,7 @@
 
 
 zoomWindow::zoomWindow(QList<QSharedPointer<Image> > images, QSharedPointer<Image> image, Site *site, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
-	: QWidget(Q_NULLPTR, Qt::Window), m_parent(parent), m_profile(profile), m_favorites(profile->getFavorites()), m_viewItLater(profile->getKeptForLater()), m_ignore(profile->getIgnored()), m_settings(profile->getSettings()), ui(new Ui::zoomWindow), m_site(site), timeout(300), m_loaded(false), m_loadedImage(false), m_loadedDetails(false), m_displayImage(QPixmap()), m_displayMovie(nullptr), m_reply(nullptr), m_finished(false), m_thread(false), m_data(QByteArray()), m_size(0), m_sites(sites), m_source(), m_th(nullptr), m_fullScreen(nullptr), m_images(images), m_isFullscreen(false), m_isSlideshowRunning(false), m_imagePath("")
+	: QWidget(Q_NULLPTR, Qt::Window), m_parent(parent), m_profile(profile), m_favorites(profile->getFavorites()), m_viewItLater(profile->getKeptForLater()), m_ignore(profile->getIgnored()), m_settings(profile->getSettings()), ui(new Ui::zoomWindow), m_site(site), timeout(300), m_loaded(false), m_loadedImage(false), m_loadedDetails(false), m_displayImage(QPixmap()), m_displayMovie(nullptr), m_finished(false), m_thread(false), m_size(0), m_sites(sites), m_source(), m_fullScreen(nullptr), m_images(images), m_isFullscreen(false), m_isSlideshowRunning(false), m_imagePath("")
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	ui->setupUi(this);
@@ -91,6 +91,12 @@ zoomWindow::zoomWindow(QList<QSharedPointer<Image> > images, QSharedPointer<Imag
 	ui->overlayLayout->removeWidget(ui->progressBarDownload);
 	ui->overlayLayout->addWidget(ui->progressBarDownload, 0, 0, Qt::AlignBottom);
 	ui->progressBarDownload->raise();
+
+	// Threads
+	m_imageLoaderThread = new QThread(this);
+	m_imageLoader = new ImageThread(this);
+	m_imageLoader->moveToThread(m_imageLoaderThread);
+	connect(m_imageLoader, &ImageThread::finished, this, &zoomWindow::display);
 
 	load(image);
 }
@@ -247,8 +253,6 @@ void zoomWindow::openPoolId(Page *p)
 	m_loaded = false;
 	m_loadedDetails = false;
 	m_loadedImage = false;
-	m_reply->deleteLater();
-	m_reply = nullptr;
 	m_finished = false;
 	m_size = 0;
 	m_labelImage->hide();
@@ -418,20 +422,16 @@ void zoomWindow::load()
 {
 	log(QString("Loading image from <a href=\"%1\">%1</a>").arg(m_url));
 
-	m_data.clear();
 	m_source.clear();
 
 	ui->progressBarDownload->setMaximum(100);
 	ui->progressBarDownload->setValue(0);
 
+	connect(m_image.data(), &Image::downloadProgressImage, this, &zoomWindow::downloadProgress);
+	connect(m_image.data(), &Image::finishedImage, this, &zoomWindow::replyFinishedZoom);
+
 	m_imageTime.start();
-
-	if (m_reply != nullptr && m_reply->isRunning())
-		m_reply->abort();
-
-	m_reply = m_site->get(m_url, nullptr, "image", m_image.data());
-	connect(m_reply, SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(downloadProgress(qint64, qint64)));
-	connect(m_reply, SIGNAL(finished()), this, SLOT(replyFinishedZoom()));
+	m_image->loadImage();
 }
 void zoomWindow::sslErrorHandler(QNetworkReply* qnr, QList<QSslError>)
 { qnr->ignoreSslErrors(); }
@@ -453,25 +453,18 @@ void zoomWindow::downloadProgress(qint64 bytesReceived, qint64 bytesTotal)
 
 		if (!m_thread)
 		{
-			m_data.append(m_reply->readAll());
 			m_thread = true;
-			m_th = new ImageThread(m_data);
-			connect(m_th, SIGNAL(finished(QPixmap*, int)), this, SLOT(display(QPixmap*, int)));
-			connect(m_th, SIGNAL(finished()), m_th, SLOT(deleteLater()));
-			m_th->start();
+			m_imageLoader->start(m_image->data());
 		}
 	}
 }
-void zoomWindow::display(QPixmap *pix, int size)
+void zoomWindow::display(const QPixmap &pix, int size)
 {
-	if (!pix->size().isEmpty() && size >= m_size)
+	if (!pix.size().isEmpty() && size >= m_size)
 	{
 		m_size = size;
-		m_displayImage = *pix;
-		if (m_url.section('.', -1).toLower() == "gif")
-		{ /*m_labelImage->setPixmap(m_displayImage);*/ }
-		else
-		{ update(!m_finished); }
+		m_displayImage = pix;
+		update(!m_finished);
 		m_thread = false;
 
 		if (m_isFullscreen && m_fullScreen != nullptr && m_fullScreen->isVisible())
@@ -571,55 +564,25 @@ void zoomWindow::colore()
 	m_detailsWindow->setTags(tags);
 }
 
-void zoomWindow::replyFinishedZoom()
+void zoomWindow::replyFinishedZoom(QNetworkReply::NetworkError err, QString errorString)
 {
-	ui->progressBarDownload->hide();
-
-	// Check redirection
-	QUrl redir = m_reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
-	if (!redir.isEmpty())
-	{
-		m_url = redir.toString();
-		m_image->setUrl(m_url);
-		load();
-		return;
-	}
-
 	log(QString("Image received from <a href=\"%1\">%1</a>").arg(m_url));
-	m_finished = true;
-	if (m_reply->error() == QNetworkReply::NoError)
-	{
-		m_data.append(m_reply->readAll());
-		m_image->setData(m_data);
-		m_url = m_url.section('.', 0, -2) + "." + getExtension(m_image->url());
-		m_loadedImage = true;
-		pendingUpdate();
 
+	ui->progressBarDownload->hide();
+	m_finished = true;
+
+	if (err == QNetworkReply::NoError)
+	{
+		m_url = m_image->url();
+		m_loadedImage = true;
+
+		pendingUpdate();
 		draw();
 	}
-	else if (m_reply->error() == QNetworkReply::ContentNotFoundError)
-	{
-		QString ext = m_url.section('.', -1);
-		QString newext = m_image->getNextExtension(ext);
-		if (newext.isEmpty())
-		{
-			log("Image not found.");
-		}
-		else
-		{
-			QString oldUrl = m_url;
-			m_url = m_url.section('.', 0, -2) + "." + newext;
-			m_image->setFileExtension(newext);
-			log(QString("Image not found. New try with extension %1 (%2)...").arg(newext, oldUrl));
-			load();
-			return;
-		}
-	}
-	else if (m_reply->error() != QNetworkReply::OperationCanceledError)
-	{ error(this, tr("An unexpected error occured loading the image (%1 - %2).\r\n%3").arg(m_reply->error()).arg(m_reply->errorString()).arg(m_reply->url().toString())); }
-
-	m_reply->deleteLater();
-	m_reply = nullptr;
+	else if (err == QNetworkReply::ContentNotFoundError)
+	{ log("Image not found."); }
+	else if (err != QNetworkReply::OperationCanceledError)
+	{ error(this, tr("An unexpected error occured loading the image (%1 - %2).\r\n%3").arg(err).arg(errorString).arg(m_image->url())); }
 }
 
 void zoomWindow::pendingUpdate()
@@ -688,7 +651,7 @@ void zoomWindow::draw()
 		QFile f(filename);
 		if (f.open(QFile::WriteOnly))
 		{
-			f.write(m_data);
+			f.write(m_image->data());
 			f.close();
 		}
 	}
@@ -724,10 +687,7 @@ void zoomWindow::draw()
 	else
 	{
 		m_thread = true;
-		m_th = new ImageThread(m_data);
-		connect(m_th, SIGNAL(finished(QPixmap*, int)), this, SLOT(display(QPixmap*, int)));
-		connect(m_th, SIGNAL(finished()), m_th, SLOT(deleteLater()));
-		m_th->start();
+		m_imageLoader->start(m_image->data());
 	}
 }
 
@@ -989,18 +949,16 @@ void zoomWindow::closeEvent(QCloseEvent *e)
 	m_settings->setValue("Zoom/plus", ui->buttonPlus->isChecked());
 	m_settings->sync();
 
-	//m_image->abortTags();
-	if (m_reply != nullptr && m_reply->isRunning())
-	{
-		m_reply->abort();
-		log("Image loading stopped.");
-	}
+	m_image->abortTags();
+	m_image->abortImage();
+	m_image->unload();
 
 	e->accept();
 }
 
 void zoomWindow::showEvent(QShowEvent *e)
 {
+	Q_UNUSED(e);
 	showThumbnail();
 }
 
@@ -1064,7 +1022,7 @@ void zoomWindow::load(QSharedPointer<Image> image)
 	{ showThumbnail(); }
 
 	// Preload gallery images
-	int preload = m_settings->value("preload", 0).toInt();
+	int preload = 0; // m_settings->value("preload", 0).toInt();
 	if (preload > 0)
 	{
 		int index = m_images.indexOf(m_image);

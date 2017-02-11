@@ -33,8 +33,8 @@ class zoomWindow : public QWidget
 	public slots:
 		void update(bool onlysize = false, bool force = false);
 		void replyFinishedDetails();
-		void replyFinishedZoom();
-		void display(QPixmap *, int);
+		void replyFinishedZoom(QNetworkReply::NetworkError error = QNetworkReply::NoError, QString errorString = "");
+		void display(const QPixmap &, int);
 		void saveNQuit();
 		void saveNQuitFav();
 		void saveImage(bool fav = false);
@@ -123,13 +123,10 @@ class zoomWindow : public QWidget
 		QTimer *m_resizeTimer;
 		QTime m_imageTime;
 		QString link;
-		QNetworkReply *m_reply;
 		bool m_finished, m_thread;
-		QByteArray m_data;
 		int m_size;
 		QMap<QString,Site*> *m_sites;
 		QString m_source;
-		ImageThread *m_th;
 		QString m_imagePath;
 		QTime m_lastWheelEvent;
 
@@ -146,6 +143,10 @@ class zoomWindow : public QWidget
 		// Display
 		QPixmap m_displayImage;
 		QMovie *m_displayMovie;
+
+		// Threads
+		QThread *m_imageLoaderThread;
+		ImageThread *m_imageLoader;
 };
 
 #endif
