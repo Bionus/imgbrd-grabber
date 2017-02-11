@@ -10,7 +10,7 @@
 #include "reverse-search/reverse-search-engine.h"
 #include "mainwindow.h"
 #include "detailswindow.h"
-#include "threads/image-thread.h"
+#include "threads/image-loader.h"
 
 
 
@@ -148,7 +148,7 @@ class zoomWindow : public QWidget
 		// Threads
 		bool m_thread;
 		QThread m_imageLoaderThread;
-		ImageThread *m_imageLoader;
+		ImageLoader *m_imageLoader;
 };
 
 #endif

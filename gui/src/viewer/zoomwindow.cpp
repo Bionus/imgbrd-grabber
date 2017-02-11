@@ -11,7 +11,7 @@
 #include "reverse-search/reverse-search-loader.h"
 #include "ui/QAffiche.h"
 #include "zoomwindow.h"
-#include "threads/image-thread.h"
+#include "threads/image-loader.h"
 #include "ui_zoomwindow.h"
 #include "models/filename.h"
 #include "functions.h"
@@ -94,11 +94,11 @@ zoomWindow::zoomWindow(QList<QSharedPointer<Image> > images, QSharedPointer<Imag
 
 	// Threads
 	m_imageLoaderThread.setObjectName("Image loader thread");
-	m_imageLoader = new ImageThread();
+	m_imageLoader = new ImageLoader();
 	m_imageLoader->moveToThread(&m_imageLoaderThread);
 	connect(&m_imageLoaderThread, &QThread::finished, m_imageLoader, &QObject::deleteLater);
-	connect(this, &zoomWindow::loadImage, m_imageLoader, &ImageThread::start);
-	connect(m_imageLoader, &ImageThread::finished, this, &zoomWindow::display);
+	connect(this, &zoomWindow::loadImage, m_imageLoader, &ImageLoader::load);
+	connect(m_imageLoader, &ImageLoader::finished, this, &zoomWindow::display);
 	m_imageLoaderThread.start();
 
 	load(image);
