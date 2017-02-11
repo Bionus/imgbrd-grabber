@@ -14,7 +14,7 @@
    <string>Options</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../../../resources/resources.qrc">
+   <iconset resource="../../../CrashReporter/resources.qrc">
     <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout">
@@ -2348,49 +2348,74 @@
            <property name="bottomMargin">
             <number>0</number>
            </property>
-           <item row="1" column="0">
-            <widget class="QLabel" name="label_56">
-             <property name="text">
-              <string>Host</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="label_57">
-             <property name="text">
-              <string>Port</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="1">
-            <widget class="QSpinBox" name="spinProxyPort">
-             <property name="maximum">
-              <number>99999</number>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QLineEdit" name="lineProxyHostName"/>
-           </item>
-           <item row="0" column="0">
-            <widget class="QLabel" name="label_4">
-             <property name="text">
-              <string>Type</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QComboBox" name="comboProxyType">
-             <item>
-              <property name="text">
-               <string>HTTP</string>
+           <item row="1" column="0" colspan="2">
+            <widget class="QWidget" name="widgetCustomProxy" native="true">
+             <layout class="QFormLayout" name="formLayout_25">
+              <property name="leftMargin">
+               <number>0</number>
               </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>SOCKS v5</string>
+              <property name="topMargin">
+               <number>0</number>
               </property>
-             </item>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
+              <property name="bottomMargin">
+               <number>0</number>
+              </property>
+              <item row="0" column="0">
+               <widget class="QLabel" name="label_4">
+                <property name="text">
+                 <string>Type</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QComboBox" name="comboProxyType">
+                <item>
+                 <property name="text">
+                  <string>HTTP</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>SOCKS v5</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="label_56">
+                <property name="text">
+                 <string>Host</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QLineEdit" name="lineProxyHostName"/>
+              </item>
+              <item row="2" column="0">
+               <widget class="QLabel" name="label_57">
+                <property name="text">
+                 <string>Port</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="1">
+               <widget class="QSpinBox" name="spinProxyPort">
+                <property name="maximum">
+                 <number>99999</number>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item row="0" column="0" colspan="2">
+            <widget class="QCheckBox" name="checkProxyUseSystem">
+             <property name="text">
+              <string>Use system-wide proxy settings</string>
+             </property>
             </widget>
            </item>
           </layout>
@@ -2612,8 +2637,6 @@
   <tabstop>lineColoringIgnoreds</tabstop>
   <tabstop>buttonColoringIgnoredsColor</tabstop>
   <tabstop>buttonColoringIgnoredsFont</tabstop>
-  <tabstop>lineProxyHostName</tabstop>
-  <tabstop>spinProxyPort</tabstop>
   <tabstop>buttonBox</tabstop>
   <tabstop>comboLanguages</tabstop>
   <tabstop>comboStart</tabstop>
@@ -2670,10 +2693,7 @@
   <tabstop>checkAutocompletion</tabstop>
  </tabstops>
  <resources>
-  <include location="../../../resources/resources.qrc"/>
-  <include location="../../../resources/resources.qrc"/>
-  <include location="../../../resources/resources.qrc"/>
-  <include location="../../../resources/resources.qrc"/>
+  <include location="../../../CrashReporter/resources.qrc"/>
  </resources>
  <connections>
   <connection>
@@ -2683,8 +2703,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>311</x>
-     <y>433</y>
+     <x>320</x>
+     <y>479</y>
     </hint>
     <hint type="destinationlabel">
      <x>157</x>
@@ -2699,8 +2719,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>379</x>
-     <y>433</y>
+     <x>388</x>
+     <y>479</y>
     </hint>
     <hint type="destinationlabel">
      <x>286</x>
@@ -2731,12 +2751,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>260</x>
-     <y>21</y>
+     <x>539</x>
+     <y>34</y>
     </hint>
     <hint type="destinationlabel">
-     <x>260</x>
-     <y>30</y>
+     <x>539</x>
+     <y>71</y>
     </hint>
    </hints>
   </connection>
@@ -2747,12 +2767,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>260</x>
-     <y>29</y>
+     <x>360</x>
+     <y>28</y>
     </hint>
     <hint type="destinationlabel">
-     <x>178</x>
-     <y>29</y>
+     <x>278</x>
+     <y>28</y>
     </hint>
    </hints>
   </connection>
@@ -2763,12 +2783,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>219</x>
-     <y>33</y>
+     <x>319</x>
+     <y>32</y>
     </hint>
     <hint type="destinationlabel">
-     <x>178</x>
-     <y>32</y>
+     <x>278</x>
+     <y>31</y>
     </hint>
    </hints>
   </connection>
@@ -2779,12 +2799,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>259</x>
-     <y>33</y>
+     <x>359</x>
+     <y>32</y>
     </hint>
     <hint type="destinationlabel">
-     <x>178</x>
-     <y>32</y>
+     <x>278</x>
+     <y>31</y>
     </hint>
    </hints>
   </connection>
@@ -2795,12 +2815,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>260</x>
-     <y>35</y>
+     <x>360</x>
+     <y>34</y>
     </hint>
     <hint type="destinationlabel">
-     <x>178</x>
-     <y>35</y>
+     <x>278</x>
+     <y>34</y>
     </hint>
    </hints>
   </connection>
@@ -2811,12 +2831,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>260</x>
-     <y>33</y>
+     <x>360</x>
+     <y>32</y>
     </hint>
     <hint type="destinationlabel">
-     <x>178</x>
-     <y>33</y>
+     <x>278</x>
+     <y>32</y>
     </hint>
    </hints>
   </connection>
@@ -2827,12 +2847,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>219</x>
-     <y>31</y>
+     <x>319</x>
+     <y>30</y>
     </hint>
     <hint type="destinationlabel">
-     <x>178</x>
-     <y>30</y>
+     <x>278</x>
+     <y>29</y>
     </hint>
    </hints>
   </connection>
@@ -2843,12 +2863,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>259</x>
-     <y>31</y>
+     <x>359</x>
+     <y>30</y>
     </hint>
     <hint type="destinationlabel">
-     <x>178</x>
-     <y>30</y>
+     <x>278</x>
+     <y>29</y>
     </hint>
    </hints>
   </connection>
@@ -2859,12 +2879,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>260</x>
-     <y>27</y>
+     <x>360</x>
+     <y>26</y>
     </hint>
     <hint type="destinationlabel">
-     <x>178</x>
-     <y>27</y>
+     <x>278</x>
+     <y>26</y>
     </hint>
    </hints>
   </connection>
@@ -2875,12 +2895,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>260</x>
-     <y>29</y>
+     <x>360</x>
+     <y>28</y>
     </hint>
     <hint type="destinationlabel">
-     <x>178</x>
-     <y>29</y>
+     <x>278</x>
+     <y>28</y>
     </hint>
    </hints>
   </connection>
@@ -2891,12 +2911,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>219</x>
-     <y>33</y>
+     <x>319</x>
+     <y>32</y>
     </hint>
     <hint type="destinationlabel">
-     <x>178</x>
-     <y>32</y>
+     <x>278</x>
+     <y>31</y>
     </hint>
    </hints>
   </connection>
@@ -2907,12 +2927,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>259</x>
-     <y>33</y>
+     <x>359</x>
+     <y>32</y>
     </hint>
     <hint type="destinationlabel">
-     <x>178</x>
-     <y>32</y>
+     <x>278</x>
+     <y>31</y>
     </hint>
    </hints>
   </connection>
@@ -2923,12 +2943,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>260</x>
-     <y>35</y>
+     <x>360</x>
+     <y>34</y>
     </hint>
     <hint type="destinationlabel">
-     <x>178</x>
-     <y>35</y>
+     <x>278</x>
+     <y>34</y>
     </hint>
    </hints>
   </connection>
@@ -2939,12 +2959,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>260</x>
-     <y>17</y>
+     <x>360</x>
+     <y>16</y>
     </hint>
     <hint type="destinationlabel">
-     <x>260</x>
-     <y>30</y>
+     <x>360</x>
+     <y>29</y>
     </hint>
    </hints>
   </connection>
@@ -2955,12 +2975,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>260</x>
-     <y>18</y>
+     <x>360</x>
+     <y>17</y>
     </hint>
     <hint type="destinationlabel">
-     <x>219</x>
-     <y>29</y>
+     <x>319</x>
+     <y>28</y>
     </hint>
    </hints>
   </connection>
@@ -2971,12 +2991,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>260</x>
-     <y>18</y>
+     <x>360</x>
+     <y>17</y>
     </hint>
     <hint type="destinationlabel">
-     <x>259</x>
-     <y>29</y>
+     <x>359</x>
+     <y>28</y>
     </hint>
    </hints>
   </connection>
@@ -2987,12 +3007,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>260</x>
-     <y>18</y>
+     <x>360</x>
+     <y>17</y>
     </hint>
     <hint type="destinationlabel">
-     <x>219</x>
-     <y>34</y>
+     <x>319</x>
+     <y>33</y>
     </hint>
    </hints>
   </connection>
@@ -3003,12 +3023,28 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>260</x>
-     <y>18</y>
+     <x>360</x>
+     <y>17</y>
     </hint>
     <hint type="destinationlabel">
-     <x>259</x>
-     <y>34</y>
+     <x>359</x>
+     <y>33</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkProxyUseSystem</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>widgetCustomProxy</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>308</x>
+     <y>57</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>308</x>
+     <y>70</y>
     </hint>
    </hints>
   </connection>

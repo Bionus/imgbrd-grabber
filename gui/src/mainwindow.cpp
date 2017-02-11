@@ -73,10 +73,18 @@ void mainWindow::init()
 
 	if (m_settings->value("Proxy/use", false).toBool())
 	{
-		QNetworkProxy::ProxyType type = m_settings->value("Proxy/type", "http").toString() == "http" ? QNetworkProxy::HttpProxy : QNetworkProxy::Socks5Proxy;
-		QNetworkProxy proxy(type, m_settings->value("Proxy/hostName").toString(), m_settings->value("Proxy/port").toInt());
-		QNetworkProxy::setApplicationProxy(proxy);
-		log(QString("Activation of the general proxy on the host \"%1\" and port %2.").arg(m_settings->value("Proxy/hostName").toString()).arg(m_settings->value("Proxy/port").toInt()));
+		bool useSystem = m_settings->value("Proxy/useSystem", false).toBool();
+		QNetworkProxyFactory::setUseSystemConfiguration(useSystem);
+
+		if (!useSystem)
+		{
+			QNetworkProxy::ProxyType type = m_settings->value("Proxy/type", "http").toString() == "http" ? QNetworkProxy::HttpProxy : QNetworkProxy::Socks5Proxy;
+			QNetworkProxy proxy(type, m_settings->value("Proxy/hostName").toString(), m_settings->value("Proxy/port").toInt());
+			QNetworkProxy::setApplicationProxy(proxy);
+			log(QString("Enabling application proxy on host \"%1\" and port %2.").arg(m_settings->value("Proxy/hostName").toString()).arg(m_settings->value("Proxy/port").toInt()));
+		}
+		else
+		{ log(QString("Enabling system-wide proxy.")); }
 	}
 
 	m_progressdialog = nullptr;
