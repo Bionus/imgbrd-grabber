@@ -724,12 +724,25 @@ void zoomWindow::update(bool onlysize, bool force)
 
 void zoomWindow::saveNQuit()
 {
+	if (!m_imagePath.isEmpty())
+	{
+		close();
+		return;
+	}
+
 	ui->buttonSaveNQuit->setText(tr("Saving..."));
 	m_mustSave = 2;
 	pendingUpdate();
 }
 void zoomWindow::saveNQuitFav()
 {
+
+	if (!m_imagePath.isEmpty())
+	{
+		close();
+		return;
+	}
+
 	ui->buttonSaveNQuitFav->setText(tr("Saving..."));
 	m_mustSave = 4;
 	pendingUpdate();
