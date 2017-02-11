@@ -974,7 +974,9 @@ void zoomWindow::showThumbnail()
 	if (m_image->isVideo())
 	{
 		// A video thumbnail should not be upscaled to more than three times its size
-		//size = size.boundedTo(m_image->previewImage().size() * 3 * m_settings->value("thumbnailUpscale", 1.0f).toFloat());
+		QSize maxSize = QSize(500, 500) * m_settings->value("thumbnailUpscale", 1.0f).toFloat();
+		if (size.width() > maxSize.width() || size.height() > maxSize.height())
+		{ size.scale(maxSize, Qt::KeepAspectRatio); }
 
 		QPixmap base = m_image->previewImage();
 		QPixmap overlay = QPixmap(":/images/play-overlay.png");
