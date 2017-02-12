@@ -86,6 +86,9 @@ void poolTab::closeEvent(QCloseEvent *e)
 
 void poolTab::load()
 {
+	bool resultsScrollArea = m_settings->value("resultsScrollArea", true).toBool();
+	ui->scrollAreaResults->setScrollEnabled(resultsScrollArea);
+
 	// Get the search values
 	QString search = m_search->toPlainText();
 	QStringList tags = search.trimmed().split(" ", QString::SkipEmptyParts);
