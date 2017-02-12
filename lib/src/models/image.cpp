@@ -1131,6 +1131,7 @@ bool Image::hasAllTags(QStringList tags) const
 
 void Image::unload()
 {
+	m_loadedImage = false;
 	m_data.clear();
 }
 
