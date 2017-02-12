@@ -2097,17 +2097,8 @@ bool mainWindow::saveLinkList(QString filename)
 	{
 		if (m_progressBars[i] != nullptr && m_groupBatchs[i].unk != "false")
 		{
-			DownloadQueryGroup b = m_groupBatchs[i];
-			links += b.tags + fieldSeparator;
-			links += QString::number(b.page) + fieldSeparator;
-			links += QString::number(b.perpage) + fieldSeparator;
-			links += QString::number(b.total) + fieldSeparator;
-			links += (b.getBlacklisted ? "true" : "false") + fieldSeparator;
-			links += b.site + fieldSeparator;
-			links += b.filename.replace("\n", "\\n") + fieldSeparator;
-			links += b.path + fieldSeparator;
-			links += "" + fieldSeparator;
-			links += QString::number(m_progressBars[i]->value())+"/"+QString::number(m_progressBars[i]->maximum());
+			links += m_groupBatchs[i].toString(fieldSeparator);
+			links += fieldSeparator + QString::number(m_progressBars[i]->value())+"/"+QString::number(m_progressBars[i]->maximum());
 			links += lineSeparator;
 		}
 	}

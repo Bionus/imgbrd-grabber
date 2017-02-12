@@ -15,3 +15,16 @@ DownloadQueryGroup::DownloadQueryGroup(QSettings *settings, QString tags, int pa
 DownloadQueryGroup::DownloadQueryGroup(QString tags, int page, int perpage, int total, bool getBlacklisted, QString site, QString filename, QString path, QString unk)
 	: tags(tags), page(page), perpage(perpage), total(total), getBlacklisted(getBlacklisted), site(site), filename(filename), path(path), unk(unk)
 { }
+
+
+QString DownloadQueryGroup::toString(QString separator) const
+{
+	return tags + separator +
+			QString::number(page) + separator +
+			QString::number(perpage) + separator +
+			QString::number(total) + separator +
+			(getBlacklisted ? "true" : "false") + separator +
+			site + separator +
+			QString(filename).replace("\n", "\\n") + separator +
+			path + separator;
+}
