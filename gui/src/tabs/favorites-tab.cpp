@@ -153,6 +153,9 @@ void favoritesTab::addTabFavorite(QString name)
 
 void favoritesTab::load()
 {
+	bool resultsScrollArea = m_settings->value("resultsScrollArea", true).toBool();
+	ui->scrollAreaResults->setScrollEnabled(resultsScrollArea);
+
 	loadTags(m_currentTags.trimmed().split(' ', QString::SkipEmptyParts));
 }
 
