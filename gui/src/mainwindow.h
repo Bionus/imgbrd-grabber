@@ -95,7 +95,7 @@ class mainWindow : public QMainWindow
 		void updateBatchGroups(int, int);
 		void addGroup();
 		void addUnique();
-		void batchAddGroup(const QStringList& values);
+		void batchAddGroup(const DownloadQueryGroup& values);
 		void updateGroupCount();
 		void batchAddUnique(QMap<QString,QString> values, bool save = true);
 		// Batch download
@@ -178,6 +178,7 @@ class mainWindow : public QMainWindow
 		QList<Site*> getSelectedSites();
 		Site* getSelectedSiteOrDefault();
 		void initialLoginsDone();
+		void addTableItem(QTableWidget *table, int row, int col, QString text);
 
 	private:
 		Profile				*m_profile;
@@ -190,7 +191,7 @@ class mainWindow : public QMainWindow
 		QString				m_program, m_currLang, m_link;
 		QStringList			m_tags;
 		QTranslator			m_translator;
-		QList<QStringList>	m_groupBatchs;
+		QList<DownloadQueryGroup>		m_groupBatchs;
 		QList<QSharedPointer<Image>>	m_getAllRemaining, m_getAllDownloading, m_getAllFailed, m_images, m_getAllSkippedImages;
 		QWidget				*m_currentTab;
 		QList<searchTab*>	m_tabs;

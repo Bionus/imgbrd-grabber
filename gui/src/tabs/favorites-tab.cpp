@@ -203,8 +203,9 @@ void favoritesTab::getPage()
 	bool unloaded = m_settings->value("getunloadedpages", false).toBool();
 	for (int i = 0; i < actuals.count(); i++)
 	{
+		QString search = m_currentTags+" "+m_settings->value("add").toString().toLower().trimmed();
 		int perpage = unloaded ? ui->spinImagesPerPage->value() : m_pages.value(actuals.at(i))->images().count();
-		emit batchAddGroup(QStringList() << m_currentTags+" "+m_settings->value("add").toString().toLower().trimmed() << QString::number(ui->spinPage->value()) << QString::number(perpage) << QString::number(perpage) << m_settings->value("downloadblacklist").toString() << actuals.at(i) << m_settings->value("Save/filename").toString() << m_settings->value("Save/path").toString() << "");
+		emit batchAddGroup(DownloadQueryGroup(m_settings, search, ui->spinPage->value(), perpage, perpage, actuals.at(i)));
 	}
 }
 void favoritesTab::getAll()
@@ -217,8 +218,11 @@ void favoritesTab::getAll()
 	}
 	for (int i = 0; i < actuals.count(); i++)
 	{
+		QString search = m_currentTags+" "+m_settings->value("add").toString().toLower().trimmed();
 		int limit = m_sites->value(actuals.at(i))->contains("Urls/1/Limit") ? m_sites->value(actuals.at(i))->value("Urls/1/Limit").toInt() : 0;
-		emit batchAddGroup(QStringList() << m_currentTags+" "+m_settings->value("add").toString().toLower().trimmed() << "1" << QString::number(qMin((limit > 0 ? limit : 1000), qMax(m_pages.value(actuals.at(i))->images().count(), m_pages.value(actuals.at(i))->imagesCount()))) << QString::number(qMax(m_pages.value(actuals.at(i))->images().count(), m_pages.value(actuals.at(i))->imagesCount())) << m_settings->value("downloadblacklist").toString() << actuals.at(i) << m_settings->value("Save/filename").toString() << m_settings->value("Save/path").toString() << "");
+		int perpage = qMin((limit > 0 ? limit : 1000), qMax(m_pages.value(actuals.at(i))->images().count(), m_pages.value(actuals.at(i))->imagesCount()));
+		int total = qMax(m_pages.value(actuals.at(i))->images().count(), m_pages.value(actuals.at(i))->imagesCount());
+		emit batchAddGroup(DownloadQueryGroup(m_settings, search, 1, perpage, total, actuals.at(i)));
 	}
 }
 

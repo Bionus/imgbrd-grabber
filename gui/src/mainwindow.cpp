@@ -188,9 +188,9 @@ void mainWindow::init()
 
 	// Favorites tab
 	m_favoritesTab = new favoritesTab(&m_sites, m_profile, this);
-	connect(m_favoritesTab, SIGNAL(batchAddGroup(QStringList)), this, SLOT(batchAddGroup(QStringList)));
-	connect(m_favoritesTab, SIGNAL(batchAddUnique(QMap<QString,QString>)), this, SLOT(batchAddUnique(QMap<QString,QString>)));
-	connect(m_favoritesTab, SIGNAL(changed(searchTab*)), this, SLOT(updateTabs()));
+	/*connect(m_favoritesTab, &searchTab::batchAddGroup, this, &mainWindow::batchAddGroup);
+	connect(m_favoritesTab, &searchTab::batchAddUnique, this, &mainWindow::batchAddUnique);
+	connect(m_favoritesTab, &searchTab::changed, this, &mainWindow::updateTabs);*/
 	ui->tabWidget->insertTab(m_tabs.size(), m_favoritesTab, tr("Favorites"));
 	ui->tabWidget->setCurrentIndex(0);
 
@@ -418,11 +418,11 @@ void mainWindow::addSearchTab(searchTab *w, bool background)
 		w->setColumns(m_tabs[ui->tabWidget->currentIndex()]->columns());
 		w->setPostFilter(m_tabs[ui->tabWidget->currentIndex()]->postFilter());
 	}
-	connect(w, SIGNAL(batchAddGroup(QStringList)), this, SLOT(batchAddGroup(QStringList)));
+	connect(w, &searchTab::batchAddGroup, this, &mainWindow::batchAddGroup);
 	connect(w, SIGNAL(batchAddUnique(QMap<QString,QString>)), this, SLOT(batchAddUnique(QMap<QString,QString>)));
-	connect(w, SIGNAL(titleChanged(searchTab*)), this, SLOT(updateTabTitle(searchTab*)));
-	connect(w, SIGNAL(changed(searchTab*)), this, SLOT(updateTabs()));
-	connect(w, SIGNAL(closed(searchTab*)), this, SLOT(tabClosed(searchTab*)));
+	connect(w, &searchTab::titleChanged, this, &mainWindow::updateTabTitle);
+	connect(w, &searchTab::changed, this, &mainWindow::updateTabs);
+	connect(w, &searchTab::closed, this, &mainWindow::tabClosed);
 	int index = ui->tabWidget->insertTab(ui->tabWidget->currentIndex()+(!m_tabs.isEmpty()), w, tr("New tab"));
 	m_tabs.append(w);
 
@@ -567,34 +567,40 @@ void mainWindow::closeCurrentTab()
 	{ ui->tabWidget->widget(ui->tabWidget->currentIndex())->deleteLater(); }
 }
 
-void mainWindow::batchAddGroup(const QStringList& values)
+void mainWindow::addTableItem(QTableWidget *table, int row, int col, QString text)
 {
-	QStringList vals(values);
-	m_groupBatchs.append(vals);
+	QTableWidgetItem *item = new QTableWidgetItem(text);
+	item->setToolTip(text);
 
-	ui->tableBatchGroups->setRowCount(ui->tableBatchGroups->rowCount()+1);
+	table->setItem(row, col, item);
+
+}
+
+void mainWindow::batchAddGroup(const DownloadQueryGroup &values)
+{
+	m_groupBatchs.append(values);
+	int pos = m_groupBatchs.count();
+
+	ui->tableBatchGroups->setRowCount(ui->tableBatchGroups->rowCount() + 1);
+	int row = ui->tableBatchGroups->rowCount() - 1;
 	m_allow = false;
-	QTableWidgetItem *it = new QTableWidgetItem(getIcon(":/images/colors/black.png"), QString::number(m_groupBatchs.indexOf(vals) + 1));
-	it->setFlags(it->flags() ^ Qt::ItemIsEditable);
-	ui->tableBatchGroups->setItem(ui->tableBatchGroups->rowCount()-1, 0, it);
-	for (int t = 0; t < values.count(); t++)
-	{
-		QTableWidgetItem *item = new QTableWidgetItem(values.at(t));
-		item->setToolTip(values.at(t));
 
-		int r = t+1;
-		if (r == 1) { r = 0; }
-		else if (r == 6) { r = 1; }
-		else if (r == 7) { r = 5; }
-		else if (r == 8) { r = 6; }
-		else if (r == 5) { r = 7; }
+	QTableWidgetItem *item = new QTableWidgetItem(getIcon(":/images/colors/black.png"), QString::number(pos));
+	item->setFlags(item->flags() ^ Qt::ItemIsEditable);
+	ui->tableBatchGroups->setItem(row, 0, item);
 
-		ui->tableBatchGroups->setItem(ui->tableBatchGroups->rowCount()-1, r+1, item);
-	}
+	addTableItem(ui->tableBatchGroups, row, 1, values.tags);
+	addTableItem(ui->tableBatchGroups, row, 2, values.site);
+	addTableItem(ui->tableBatchGroups, row, 3, QString::number(values.page));
+	addTableItem(ui->tableBatchGroups, row, 4, QString::number(values.perpage));
+	addTableItem(ui->tableBatchGroups, row, 5, QString::number(values.total));
+	addTableItem(ui->tableBatchGroups, row, 6, values.filename);
+	addTableItem(ui->tableBatchGroups, row, 7, values.path);
+	addTableItem(ui->tableBatchGroups, row, 8, values.getBlacklisted ? "true" : "false");
 
 	QProgressBar *prog = new QProgressBar(this);
 	prog->setTextVisible(false);
-	prog->setMaximum(values[3].toInt());
+	prog->setMaximum(values.total);
 	m_progressBars.append(prog);
 	ui->tableBatchGroups->setCellWidget(ui->tableBatchGroups->rowCount()-1, 9, prog);
 
@@ -768,31 +774,43 @@ void mainWindow::updateBatchGroups(int y, int x)
 {
 	if (m_allow && x > 0)
 	{
-		int r = x - 1;
-		if (r == 0) { r = 1; }
-		else if (r == 1) { r = 6; }
-		else if (r == 5) { r = 7; }
-		else if (r == 6) { r = 8; }
-		else if (r == 7) { r = 5; }
+		QString val = ui->tableBatchGroups->item(y, x)->text();
+		int toInt = val.toInt();
 
-		if (r == 3 && ui->tableBatchGroups->item(y, x)->text().toInt() < 1)
+		switch (x)
 		{
-			error(this, tr("The image per page value must be greater or equal to 1."));
-			ui->tableBatchGroups->item(y, x)->setText(m_groupBatchs[y][r - 1]);
-		}
-		else if (r == 4 && ui->tableBatchGroups->item(y, x)->text().toInt() < 0)
-		{
-			error(this, tr("The image limit must be greater or equal to 0."));
-			ui->tableBatchGroups->item(y, x)->setText(m_groupBatchs[y][r - 1]);
-		}
-		else
-		{
-			m_groupBatchs[y][r - 1] = ui->tableBatchGroups->item(y, x)->text();
-			if (r - 1 == 3)
-			{ m_progressBars[y]->setMaximum(m_groupBatchs[y][r - 1].toInt()); }
+			case 1:	m_groupBatchs[y].tags = val;						break;
+			case 2:	m_groupBatchs[y].site = val;						break;
+			case 3:	m_groupBatchs[y].page = toInt;						break;
+			case 6:	m_groupBatchs[y].filename = val;					break;
+			case 7:	m_groupBatchs[y].path = val;						break;
+			case 8:	m_groupBatchs[y].getBlacklisted = (val != "false");	break;
 
-			saveLinkList(m_profile->getPath() + "/restore.igl");
+			case 4:
+				if (toInt < 1)
+				{
+					error(this, tr("The image per page value must be greater or equal to 1."));
+					ui->tableBatchGroups->item(y, x)->setText(QString::number(m_groupBatchs[y].perpage));
+				}
+				else
+				{ m_groupBatchs[y].page = toInt; }
+				break;
+
+			case 5:
+				if (toInt < 0)
+				{
+					error(this, tr("The image limit must be greater or equal to 0."));
+					ui->tableBatchGroups->item(y, x)->setText(QString::number(m_groupBatchs[y].total));
+				}
+				else
+				{
+					m_groupBatchs[y].total = toInt;
+					m_progressBars[y]->setMaximum(toInt);
+				}
+				break;
 		}
+
+		saveLinkList(m_profile->getPath() + "/restore.igl");
 	}
 }
 
@@ -823,7 +841,7 @@ void mainWindow::addGroup()
 	QString selected = getSelectedSiteOrDefault()->name();
 
 	AddGroupWindow *wAddGroup = new AddGroupWindow(selected, m_sites.keys(), m_profile, this);
-	connect(wAddGroup, SIGNAL(sendData(QStringList)), this, SLOT(batchAddGroup(QStringList)));
+	connect(wAddGroup, &AddGroupWindow::sendData, this, &mainWindow::batchAddGroup);
 	wAddGroup->show();
 }
 void mainWindow::addUnique()
@@ -1167,19 +1185,19 @@ void mainWindow::getAll(bool all)
 					// m_progressBars[j]->setMaximum(100);
 				}
 
-				QStringList b = m_groupBatchs.at(j);
+				DownloadQueryGroup b = m_groupBatchs[j];
 				Downloader *downloader = new Downloader(m_profile,
-														b.at(0).split(' '),
+														b.tags.split(' '),
 														QStringList(),
-														QList<Site*>() << m_sites[b.at(5)],
-														b.at(1).toInt(),
-														b.at(3).toInt(),
-														b.at(2).toInt(),
-														b.at(7),
-														b.at(6),
+														QList<Site*>() << m_sites[b.site],
+														b.page,
+														b.total,
+														b.perpage,
+														b.path,
+														b.filename,
 														nullptr,
 														nullptr,
-														b.at(4) == "true",
+														b.getBlacklisted,
 														m_settings->value("blacklistedtags").toString().split(' '),
 														false,
 														0,
@@ -1190,7 +1208,7 @@ void mainWindow::getAll(bool all)
 				downloader->setData(j);
 				downloader->setQuit(false);
 
-				m_getAllLimit += b.at(3).toDouble();
+				m_getAllLimit += b.total;
 				m_batchDownloading.insert(j);
 				++active;
 			}
@@ -1288,7 +1306,8 @@ void mainWindow::getAllFinishedPage(Page *page)
 {
 	Downloader *d = (Downloader*)QObject::sender();
 
-	m_groupBatchs[d->getData().toInt()][8] += (m_groupBatchs[d->getData().toInt()][8] == "" ? "" : "¤") + QString::number((quintptr)page);
+	int pos = d->getData().toInt();
+	m_groupBatchs[pos].unk += (m_groupBatchs[pos].unk == "" ? "" : "¤") + QString::number((quintptr)page);
 
 	m_progressdialog->setImages(m_progressdialog->images() + 1);
 }
@@ -1340,7 +1359,7 @@ void mainWindow::getAllImages()
 		int n = -1;
 		for (int r = 0; r < m_groupBatchs.count(); r++)
 		{
-			if (m_groupBatchs[r].length() > 8 && m_groupBatchs[r][8].split("¤", QString::SkipEmptyParts).contains(QString::number((qintptr)m_getAllRemaining[i]->page())))
+			if (m_groupBatchs[r].unk.split("¤", QString::SkipEmptyParts).contains(QString::number((qintptr)m_getAllRemaining[i]->page())))
 			{
 				n = r + 1;
 				break;
@@ -1368,8 +1387,8 @@ void mainWindow::getAllImages()
 	m_mustGetTags = needExactTags(m_settings);
 	for (int f = 0; f < m_groupBatchs.size() && !m_mustGetTags; f++)
 	{
-		Filename fn(m_groupBatchs[f][6]);
-		Site *site = m_sites[m_groupBatchs[f][5]];
+		Filename fn(m_groupBatchs[f].filename);
+		Site *site = m_sites[m_groupBatchs[f].site];
 		Api *api = site->firstValidApi();
 		QString apiName = api == nullptr ? "" : api->getName();
 		if (fn.needExactTags(site, apiName))
@@ -1458,8 +1477,8 @@ void mainWindow::_getAll()
 			if (site_id >= 0)
 			{
 				ui->tableBatchGroups->item(row, 0)->setIcon(getIcon(":/images/colors/blue.png"));
-				path = m_groupBatchs[site_id - 1][6];
-				pth = m_groupBatchs[site_id - 1][7];
+				path = m_groupBatchs[site_id - 1].filename;
+				pth = m_groupBatchs[site_id - 1].page;
 			}
 
 			QString p = img->folder().isEmpty() ? pth : img->folder();
@@ -1504,7 +1523,7 @@ void mainWindow::getAllGetImageIfNotBlacklisted(QSharedPointer<Image> img, int s
 		detected = !img->blacklisted(blacklistedtags).isEmpty();
 	}
 
-	if (detected && site_id >= 0 && m_groupBatchs[site_id - 1][4] == "false")
+	if (detected && site_id >= 0 && !m_groupBatchs[site_id - 1].getBlacklisted)
 	{
 		m_getAllIgnored++;
 		log("Image ignored.");
@@ -1591,8 +1610,8 @@ void mainWindow::getAllPerformTags()
 	QString p = img->folder().isEmpty() ? m_settings->value("Save/path").toString() : img->folder();
 	if (site_id >= 0)
 	{
-		path = m_groupBatchs[site_id - 1][6];
-		p = m_groupBatchs[site_id - 1][7];
+		path = m_groupBatchs[site_id - 1].filename;
+		p = m_groupBatchs[site_id - 1].page;
 	}
 
 	// Save path
@@ -1648,8 +1667,8 @@ void mainWindow::getAllGetImage(QSharedPointer<Image> img)
 	if (site_id >= 0)
 	{
 		ui->tableBatchGroups->item(row, 0)->setIcon(getIcon(":/images/colors/blue.png"));
-		path = m_groupBatchs[site_id - 1][6];
-		p = m_groupBatchs[site_id - 1][7];
+		path = m_groupBatchs[site_id - 1].filename;
+		p = m_groupBatchs[site_id - 1].path;
 	}
 	QStringList paths = img->path(path, p, m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + 1, true, false, true, true, true);
 
@@ -1738,7 +1757,7 @@ void mainWindow::getAllPerformImage()
 		if (site_id >= 0)
 		{
 			ui->tableBatchGroups->item(row, 0)->setIcon(getIcon(":/images/colors/blue.png"));
-			saveImage(img, m_groupBatchs[site_id - 1][6], m_groupBatchs[site_id - 1][7]);
+			saveImage(img, m_groupBatchs[site_id - 1].filename, m_groupBatchs[site_id - 1].path);
 		}
 		else
 		{ saveImage(img); }
@@ -2071,17 +2090,26 @@ void mainWindow::on_buttonSaveLinkList_clicked()
 }
 bool mainWindow::saveLinkList(QString filename)
 {
+	QString fieldSeparator((char)29);
+	QString lineSeparator((char)28);
+
 	QByteArray links = "[IGL 2]\r\n";
 	for (int i = 0; i < m_groupBatchs.size(); i++)
 	{
-		if (m_progressBars[i] != nullptr && m_groupBatchs[i][m_groupBatchs.at(i).count() - 1] != "false")
+		if (m_progressBars[i] != nullptr && m_groupBatchs[i].unk != "false")
 		{
-			while (m_groupBatchs[i].size() > 10)
-				m_groupBatchs[i].removeLast();
-
-			links.append(m_groupBatchs[i].join(QString((char)29)).replace("\n", "\\n"));
-			links.append(QString((char)29)+QString::number(m_progressBars[i]->value())+"/"+QString::number(m_progressBars[i]->maximum()));
-			links.append((char)28);
+			DownloadQueryGroup b = m_groupBatchs[i];
+			links += b.tags + fieldSeparator;
+			links += QString::number(b.page) + fieldSeparator;
+			links += QString::number(b.perpage) + fieldSeparator;
+			links += QString::number(b.total) + fieldSeparator;
+			links += (b.getBlacklisted ? "true" : "false") + fieldSeparator;
+			links += b.site + fieldSeparator;
+			links += b.filename.replace("\n", "\\n") + fieldSeparator;
+			links += b.path + fieldSeparator;
+			links += "" + fieldSeparator;
+			links += QString::number(m_progressBars[i]->value())+"/"+QString::number(m_progressBars[i]->maximum());
+			links += lineSeparator;
 		}
 	}
 
@@ -2091,10 +2119,10 @@ bool mainWindow::saveLinkList(QString filename)
 		for (int j = 0; j < vals.size(); j++)
 		{
 			if (j != 0)
-			{ links.append((char)29); }
+			{ links.append(fieldSeparator); }
 			links.append(m_batchs[i][vals[j]]);
 		}
-		links.append((char)28);
+		links.append(lineSeparator);
 	}
 
 	QFile f(filename);
@@ -2129,10 +2157,13 @@ bool mainWindow::loadLinkList(QString filename)
 	int version = header.mid(5, header.size() - 6).toInt();
 	Q_UNUSED(version);
 
+	QString fieldSeparator((char)29);
+	QString lineSeparator((char)28);
+
 	// Read the remaining file
 	QString links = f.readAll();
 	f.close();
-	QStringList det = links.split(QString((char)28), QString::SkipEmptyParts);
+	QStringList det = links.split(lineSeparator, QString::SkipEmptyParts);
 	if (det.empty())
 		return false;
 
@@ -2140,7 +2171,7 @@ bool mainWindow::loadLinkList(QString filename)
 	for (QString link : det)
 	{
 		m_allow = false;
-		QStringList infos = link.split((char)29);
+		QStringList infos = link.split(fieldSeparator);
 		if (infos.size() == 9)
 		{
 			QStringList vals = QStringList() << "id" << "md5" << "rating" << "tags" << "file_url" << "date" << "site" << "filename" << "folder";
@@ -2163,22 +2194,25 @@ bool mainWindow::loadLinkList(QString filename)
 				log("Error reading a line from the links file.");
 				continue;
 			}
+
+			DownloadQueryGroup values(infos[0], infos[1].toInt(), infos[2].toInt(), infos[3].toInt(), infos[4] != "false", infos[5], infos[6], infos[7]);
+
 			ui->tableBatchGroups->setRowCount(ui->tableBatchGroups->rowCount() + 1);
 			QString last = infos.takeLast();
 			int max = last.right(last.indexOf("/")+1).toInt(), val = last.left(last.indexOf("/")).toInt();
 
 			int row = ui->tableBatchGroups->rowCount() - 1;
-			ui->tableBatchGroups->setItem(row, 1, new QTableWidgetItem(infos[0]));
-			ui->tableBatchGroups->setItem(row, 2, new QTableWidgetItem(infos[5]));
-			ui->tableBatchGroups->setItem(row, 3, new QTableWidgetItem(infos[1]));
-			ui->tableBatchGroups->setItem(row, 4, new QTableWidgetItem(infos[2]));
-			ui->tableBatchGroups->setItem(row, 5, new QTableWidgetItem(infos[3]));
-			ui->tableBatchGroups->setItem(row, 6, new QTableWidgetItem(infos[6]));
-			ui->tableBatchGroups->setItem(row, 7, new QTableWidgetItem(infos[7]));
-			ui->tableBatchGroups->setItem(row, 8, new QTableWidgetItem(infos[4]));
+			addTableItem(ui->tableBatchGroups, row, 1, values.tags);
+			addTableItem(ui->tableBatchGroups, row, 2, values.site);
+			addTableItem(ui->tableBatchGroups, row, 3, QString::number(values.page));
+			addTableItem(ui->tableBatchGroups, row, 4, QString::number(values.perpage));
+			addTableItem(ui->tableBatchGroups, row, 5, QString::number(values.total));
+			addTableItem(ui->tableBatchGroups, row, 6, values.filename);
+			addTableItem(ui->tableBatchGroups, row, 7, values.path);
+			addTableItem(ui->tableBatchGroups, row, 8, values.getBlacklisted ? "true" : "false");
 
 			infos.append("true");
-			m_groupBatchs.append(infos);
+			m_groupBatchs.append(values);
 			QTableWidgetItem *it = new QTableWidgetItem(getIcon(":/images/colors/"+QString(val == max ? "green" : (val > 0 ? "blue" : "black"))+".png"), "");
 			it->setFlags(it->flags() ^ Qt::ItemIsEditable);
 			it->setTextAlignment(Qt::AlignCenter);

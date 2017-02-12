@@ -5,7 +5,7 @@
 #include <QStringList>
 #include <QSettings>
 #include "ui/textedit.h"
-
+#include "downloader/download-query-group.h"
 
 
 namespace Ui
@@ -25,7 +25,7 @@ class AddGroupWindow : public QDialog
 		void ok();
 
 	signals:
-		void sendData(QStringList);
+		void sendData(const DownloadQueryGroup &);
 
 	private:
 		Ui::AddGroupWindow	*ui;

@@ -27,7 +27,6 @@ class poolTab : public searchTab
 		~poolTab();
 		Ui::poolTab *ui;
 		QString tags();
-		QString site();
 		QList<Site*> loadSites() override;
 
 	public slots:

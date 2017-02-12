@@ -17,6 +17,7 @@
 #include "ui/verticalscrollarea.h"
 #include "models/image.h"
 #include "models/profile.h"
+#include "downloader/download-query-group.h"
 
 
 
@@ -107,7 +108,7 @@ class searchTab : public QWidget
 		void closed(searchTab*);
 
 		// Batch
-		void batchAddGroup(QStringList);
+		void batchAddGroup(const DownloadQueryGroup &);
 		void batchAddUnique(QMap<QString,QString>);
 
 	protected:

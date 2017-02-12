@@ -146,16 +146,7 @@ void tagTab::getPage()
 				continue;
 
 			QString search = m_pages.value(actuals.at(i))->search().join(' ');
-			emit batchAddGroup(QStringList()
-							   << search
-							   << QString::number(ui->spinPage->value())
-							   << QString::number(perpage)
-							   << QString::number(perpage)
-							   << m_settings->value("downloadblacklist").toString()
-							   << actuals.at(i)
-							   << m_settings->value("Save/filename").toString()
-							   << m_settings->value("Save/path").toString()
-							   << "");
+			emit batchAddGroup(DownloadQueryGroup(m_settings, search, ui->spinPage->value(), perpage, perpage, actuals.at(i)));
 		}
 	}
 }
@@ -180,16 +171,7 @@ void tagTab::getAll()
 			continue;
 
 		QString search = m_pages.value(actuals.at(i))->search().join(' ');
-		emit batchAddGroup(QStringList()
-						   << search
-						   << "1"
-						   << QString::number(v1)
-						   << QString::number(v2)
-						   << m_settings->value("downloadblacklist").toString()
-						   << actuals.at(i)
-						   << m_settings->value("Save/filename").toString()
-						   << m_settings->value("Save/path").toString()
-						   << "");
+		emit batchAddGroup(DownloadQueryGroup(m_settings, search, 1, v1, v2, actuals.at(i)));
 	}
 }
 

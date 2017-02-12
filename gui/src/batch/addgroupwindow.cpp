@@ -2,7 +2,6 @@
 #include "ui_addgroupwindow.h"
 
 
-
 /**
  * Constructor of the AddGroupWindow class, generating its window.
  * @param	parent		The parent window
@@ -30,15 +29,7 @@ AddGroupWindow::AddGroupWindow(QString selected, QStringList sites, Profile *pro
  */
 void AddGroupWindow::ok()
 {
-	QStringList values = QStringList() << m_lineTags->toPlainText()
-									   << QString::number(ui->spinPage->value())
-									   << QString::number(ui->spinPP->value())
-									   << QString::number(ui->spinLimit->value())
-									   << (ui->checkBlacklist->isChecked() ? "true" : "false")
-									   << m_sites.at(ui->comboSites->currentIndex())
-									   << m_settings->value("Save/filename").toString()
-									   << m_settings->value("Save/path").toString()
-									   << "";
-	emit sendData(values);
+	QString site = m_sites.at(ui->comboSites->currentIndex());
+	emit sendData(DownloadQueryGroup(m_lineTags->toPlainText(), ui->spinPage->value(), ui->spinPP->value(), ui->spinLimit->value(), ui->checkBlacklist->isChecked(), site, m_settings->value("Save/filename").toString(), m_settings->value("Save/path").toString()));
 	close();
 }
