@@ -550,7 +550,7 @@ QBouton *searchTab::createImageThumbnail(int position, QSharedPointer<Image> img
 	QColor color = imageColor(img);
 
 	bool resizeInsteadOfCropping = m_settings->value("resizeInsteadOfCropping", true).toBool();
-	bool resultsScrollArea = m_settings->value("resultsScrollArea", false).toBool();
+	bool resultsScrollArea = m_settings->value("resultsScrollArea", true).toBool();
 
 	QBouton *l = new QBouton(position, resizeInsteadOfCropping, resultsScrollArea, m_settings->value("borders", 3).toInt(), color, this);
 	l->setCheckable(true);

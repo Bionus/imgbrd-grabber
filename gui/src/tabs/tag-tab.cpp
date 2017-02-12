@@ -86,7 +86,7 @@ void tagTab::closeEvent(QCloseEvent *e)
 
 void tagTab::load()
 {
-	bool resultsScrollArea = m_settings->value("resultsScrollArea", false).toBool();
+	bool resultsScrollArea = m_settings->value("resultsScrollArea", true).toBool();
 	ui->scrollAreaResults->setScrollEnabled(resultsScrollArea);
 
 	// Get the search values

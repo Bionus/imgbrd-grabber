@@ -202,7 +202,7 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	ui->comboTagsPosition->setCurrentIndex(positions.indexOf(settings->value("tagsposition", "top").toString()));
 	ui->spinPreload->setValue(settings->value("preload", 0).toInt());
 	ui->spinSlideshow->setValue(settings->value("slideshow", 0).toInt());
-	ui->checkResultsScrollArea->setChecked(settings->value("resultsScrollArea", false).toBool());
+	ui->checkResultsScrollArea->setChecked(settings->value("resultsScrollArea", true).toBool());
 	ui->checkImageCloseMiddleClick->setChecked(settings->value("imageCloseMiddleClick", true).toBool());
 	ui->checkImageNavigateScroll->setChecked(settings->value("imageNavigateScroll", true).toBool());
 
