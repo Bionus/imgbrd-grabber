@@ -34,6 +34,7 @@ poolTab::poolTab(QMap<QString,Site*> *sites, Profile *profile, mainWindow *paren
 	ui_buttonGetSel = ui->buttonGetSel;
 	ui_buttonFirstPage = ui->buttonFirstPage;
 	ui_buttonPreviousPage = ui->buttonPreviousPage;
+	ui_scrollAreaResults = ui->scrollAreaResults;
 
 	QStringList sources = m_sites->keys();
 	for (QString source : sources)
@@ -86,9 +87,6 @@ void poolTab::closeEvent(QCloseEvent *e)
 
 void poolTab::load()
 {
-	bool resultsScrollArea = m_settings->value("resultsScrollArea", true).toBool();
-	ui->scrollAreaResults->setScrollEnabled(resultsScrollArea);
-
 	// Get the search values
 	QString search = m_search->toPlainText();
 	QStringList tags = search.trimmed().split(" ", QString::SkipEmptyParts);

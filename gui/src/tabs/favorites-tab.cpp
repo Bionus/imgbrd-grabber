@@ -35,6 +35,7 @@ favoritesTab::favoritesTab(QMap<QString,Site*> *sites, Profile *profile, mainWin
 	ui_buttonGetSel = ui->buttonGetSel;
 	ui_buttonFirstPage = ui->buttonFirstPage;
 	ui_buttonPreviousPage = ui->buttonPreviousPage;
+	ui_scrollAreaResults = ui->scrollAreaResults;
 
 	// Search field
 	m_postFiltering = createAutocomplete();
@@ -153,9 +154,6 @@ void favoritesTab::addTabFavorite(QString name)
 
 void favoritesTab::load()
 {
-	bool resultsScrollArea = m_settings->value("resultsScrollArea", true).toBool();
-	ui->scrollAreaResults->setScrollEnabled(resultsScrollArea);
-
 	loadTags(m_currentTags.trimmed().split(' ', QString::SkipEmptyParts));
 }
 

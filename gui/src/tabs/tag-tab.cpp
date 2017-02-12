@@ -33,6 +33,7 @@ tagTab::tagTab(QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
 	ui_buttonGetSel = ui->buttonGetSel;
 	ui_buttonFirstPage = ui->buttonFirstPage;
 	ui_buttonPreviousPage = ui->buttonPreviousPage;
+	ui_scrollAreaResults = ui->scrollAreaResults;
 
 	// Search fields
 	m_search = createAutocomplete();
@@ -86,9 +87,6 @@ void tagTab::closeEvent(QCloseEvent *e)
 
 void tagTab::load()
 {
-	bool resultsScrollArea = m_settings->value("resultsScrollArea", true).toBool();
-	ui->scrollAreaResults->setScrollEnabled(resultsScrollArea);
-
 	// Get the search values
 	QString search = m_search->toPlainText().trimmed();
 	if (m_settings->value("enable_md5_fast_search", true).toBool())

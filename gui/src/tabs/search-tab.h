@@ -14,6 +14,7 @@
 #include <QStackedWidget>
 #include "ui/QBouton.h"
 #include "ui/textedit.h"
+#include "ui/verticalscrollarea.h"
 #include "models/image.h"
 #include "models/profile.h"
 
@@ -161,6 +162,7 @@ class searchTab : public QWidget
 		QPushButton *ui_buttonGetSel;
 		QPushButton *ui_buttonFirstPage;
 		QPushButton *ui_buttonPreviousPage;
+		VerticalScrollArea *ui_scrollAreaResults;
 };
 
 #endif // SEARCH_TAB_H

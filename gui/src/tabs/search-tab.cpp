@@ -861,6 +861,10 @@ void searchTab::loadTags(QStringList tags)
 {
 	log("Loading results...");
 
+	// Enable or disable scroll mode
+	bool resultsScrollArea = m_settings->value("resultsScrollArea", true).toBool();
+	ui_scrollAreaResults->setScrollEnabled(resultsScrollArea);
+
 	// Append "additional tags" setting
 	tags.append(m_settings->value("add").toString().trimmed().split(" ", QString::SkipEmptyParts));
 
