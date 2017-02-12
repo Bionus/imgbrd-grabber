@@ -666,27 +666,7 @@ void searchTab::getSel()
 
 	for (QSharedPointer<Image> img : m_selectedImagesPtrs)
 	{
-		QStringList tags;
-		for (Tag tag : img->tags())
-		{ tags.append(tag.typedText()); }
-
-		QMap<QString,QString> values;
-		values.insert("id", QString::number(img->id()));
-		values.insert("md5", img->md5());
-		values.insert("rating", img->rating());
-		values.insert("tags", tags.join(" "));
-		values.insert("file_url", img->fileUrl().toString());
-		values.insert("date", img->createdAt().toString(Qt::ISODate));
-		values.insert("site", img->site());
-		values.insert("filename", m_settings->value("Save/filename").toString());
-		values.insert("folder", m_settings->value("Save/path").toString());
-
-		values.insert("page_url", m_sites->value(img->site())->value("Urls/Html/Post"));
-		QString t = m_sites->value(img->site())->contains("DefaultTag") ? m_sites->value(img->site())->value("DefaultTag") : "";
-		values["page_url"].replace("{tags}", t);
-		values["page_url"].replace("{id}", values["id"]);
-
-		emit batchAddUnique(values);
+		emit batchAddUnique(DownloadQueryImage(m_settings, img, img->parentSite()));
 	}
 
 	m_selectedImagesPtrs.clear();

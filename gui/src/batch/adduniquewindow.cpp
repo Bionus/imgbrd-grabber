@@ -109,27 +109,8 @@ void AddUniqueWindow::addLoadedImage()
 }
 void AddUniqueWindow::addImage(QSharedPointer<Image> img)
 {
-	QStringList tags;
-	for (Tag tag : img->tags())
-		tags.append(tag.text());
-
-	QMap<QString,QString> values;
-	values.insert("id", QString::number(img->id()));
-	values.insert("md5", img->md5());
-	values.insert("rating", img->rating());
-	values.insert("tags", tags.join(" "));
-	values.insert("file_url", img->fileUrl().toString());
-	values.insert("site", ui->comboSites->currentText());
-	values.insert("filename", ui->lineFilename->text());
-	values.insert("folder", ui->lineFolder->text());
-
-	values.insert("page_url", m_sites[ui->comboSites->currentText()]->value("Urls/Html/Post"));
-	QString t = m_sites[ui->comboSites->currentText()]->contains("DefaultTag") ? m_sites[ui->comboSites->currentText()]->value("DefaultTag") : "";
-	values["page_url"].replace("{tags}", t);
-	values["page_url"].replace("{id}", values["id"]);
-
-	emit sendData(values);
+	emit sendData(DownloadQueryImage(img, m_sites[ui->comboSites->currentText()], ui->lineFilename->text(), ui->lineFolder->text()));
 
 	if (m_close)
-		this->close();
+		close();
 }

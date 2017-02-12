@@ -20,6 +20,7 @@
 #include "models/profile.h"
 #include "downloader/downloader.h"
 #include "updater/update-dialog.h"
+#include "downloader/download-query-image.h"
 
 
 
@@ -97,7 +98,7 @@ class mainWindow : public QMainWindow
 		void addUnique();
 		void batchAddGroup(const DownloadQueryGroup& values);
 		void updateGroupCount();
-		void batchAddUnique(QMap<QString,QString> values, bool save = true);
+		void batchAddUnique(const DownloadQueryImage &query, bool save = true);
 		// Batch download
 		void getAll(bool all = true);
 		void getAllFinishedPage(Page *page);
@@ -201,7 +202,7 @@ class mainWindow : public QMainWindow
 		favoritesTab		*m_favoritesTab;
 		QMap<QString,QTime*>			m_downloadTime, m_downloadTimeLast;
 		QList<QProgressBar*>			m_progressBars;
-		QList<QMap<QString, QString>>	m_batchs;
+		QList<DownloadQueryImage>		m_batchs;
 		QSet<int>						m_batchDownloading;
 		QStringList			m_lineFilename_completer, m_lineFolder_completer;
 		QList<Downloader*>  m_downloaders, m_downloadersDone;

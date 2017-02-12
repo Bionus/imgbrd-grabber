@@ -18,6 +18,7 @@
 #include "models/image.h"
 #include "models/profile.h"
 #include "downloader/download-query-group.h"
+#include "downloader/download-query-image.h"
 
 
 
@@ -109,7 +110,7 @@ class searchTab : public QWidget
 
 		// Batch
 		void batchAddGroup(const DownloadQueryGroup &);
-		void batchAddUnique(QMap<QString,QString>);
+		void batchAddUnique(const DownloadQueryImage &);
 
 	protected:
 		Profile				*m_profile;

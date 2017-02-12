@@ -188,9 +188,9 @@ void mainWindow::init()
 
 	// Favorites tab
 	m_favoritesTab = new favoritesTab(&m_sites, m_profile, this);
-	/*connect(m_favoritesTab, &searchTab::batchAddGroup, this, &mainWindow::batchAddGroup);
-	connect(m_favoritesTab, &searchTab::batchAddUnique, this, &mainWindow::batchAddUnique);
-	connect(m_favoritesTab, &searchTab::changed, this, &mainWindow::updateTabs);*/
+	connect(m_favoritesTab, &searchTab::batchAddGroup, this, &mainWindow::batchAddGroup);
+	connect(m_favoritesTab, SIGNAL(batchAddUnique(DownloadQueryImage)), this, SLOT(batchAddUnique(DownloadQueryImage,bool)));
+	connect(m_favoritesTab, &searchTab::changed, this, &mainWindow::updateTabs);
 	ui->tabWidget->insertTab(m_tabs.size(), m_favoritesTab, tr("Favorites"));
 	ui->tabWidget->setCurrentIndex(0);
 
@@ -419,7 +419,7 @@ void mainWindow::addSearchTab(searchTab *w, bool background)
 		w->setPostFilter(m_tabs[ui->tabWidget->currentIndex()]->postFilter());
 	}
 	connect(w, &searchTab::batchAddGroup, this, &mainWindow::batchAddGroup);
-	connect(w, SIGNAL(batchAddUnique(QMap<QString,QString>)), this, SLOT(batchAddUnique(QMap<QString,QString>)));
+	connect(w, SIGNAL(batchAddUnique(const DownloadQueryImage &)), this, SLOT(batchAddUnique(const DownloadQueryImage &)));
 	connect(w, &searchTab::titleChanged, this, &mainWindow::updateTabTitle);
 	connect(w, &searchTab::changed, this, &mainWindow::updateTabs);
 	connect(w, &searchTab::closed, this, &mainWindow::tabClosed);
@@ -615,19 +615,23 @@ void mainWindow::updateGroupCount()
 		groups += ui->tableBatchGroups->item(i, 5)->text().toInt();
 	ui->labelGroups->setText(tr("Groups (%1/%2)").arg(ui->tableBatchGroups->rowCount()).arg(groups));
 }
-void mainWindow::batchAddUnique(QMap<QString,QString> values, bool save)
+void mainWindow::batchAddUnique(const DownloadQueryImage &query, bool save)
 {
-	log(QString("Adding single image: %1").arg(values.value("file_url")));
-	m_batchs.append(values);
-	QStringList types = QStringList() << "id" << "md5" <<  "rating" << "tags" << "file_url" << "date" << "site" << "filename" << "folder";
-	QTableWidgetItem *item;
+	log(QString("Adding single image: %1").arg(query.values["file_url"]));
+
+	m_batchs.append(query);
 	ui->tableBatchUniques->setRowCount(ui->tableBatchUniques->rowCount() + 1);
-	for (int t = 0; t < types.count(); t++)
-	{
-		QString v = values.value(types.at(t));
-		item = new QTableWidgetItem(v);
-		ui->tableBatchUniques->setItem(ui->tableBatchUniques->rowCount() - 1, t, item);
-	}
+
+	int row = ui->tableBatchUniques->rowCount() - 1;
+	addTableItem(ui->tableBatchUniques, row, 0, query.values["id"]);
+	addTableItem(ui->tableBatchUniques, row, 1, query.values["md5"]);
+	addTableItem(ui->tableBatchUniques, row, 2, query.values["rating"]);
+	addTableItem(ui->tableBatchUniques, row, 3, query.values["tags"]);
+	addTableItem(ui->tableBatchUniques, row, 4, query.values["file_url"]);
+	addTableItem(ui->tableBatchUniques, row, 5, query.values["date"]);
+	addTableItem(ui->tableBatchUniques, row, 6, query.site->name());
+	addTableItem(ui->tableBatchUniques, row, 7, query.filename);
+	addTableItem(ui->tableBatchUniques, row, 8, query.path);
 
 	if (save)
 	{ saveLinkList(m_profile->getPath() + "/restore.igl"); }
@@ -849,7 +853,7 @@ void mainWindow::addUnique()
 	QString selected = getSelectedSiteOrDefault()->name();
 
 	AddUniqueWindow *wAddUnique = new AddUniqueWindow(selected, m_sites, m_profile, this);
-	connect(wAddUnique, SIGNAL(sendData(QMap<QString,QString>)), this, SLOT(batchAddUnique(QMap<QString,QString>)));
+	connect(wAddUnique, SIGNAL(sendData(DownloadQueryImage)), this, SLOT(batchAddUnique(DownloadQueryImage)));
 	wAddUnique->show();
 }
 
@@ -1129,8 +1133,8 @@ void mainWindow::getAll(bool all)
 			{
 				tdl.append(row);
 				int i = row;
-				Site *site = m_sites[m_batchs.at(i).value("site")];
-				m_getAllRemaining.append(QSharedPointer<Image>(new Image(site, m_batchs.at(i), m_profile, new Page(m_profile, site, m_sites.values(), m_batchs.at(i).value("tags").split(" "), 1, 1, QStringList(), false, this))));
+				Site *site = m_batchs[i].site;
+				m_getAllRemaining.append(QSharedPointer<Image>(new Image(site, m_batchs[i].values, m_profile, new Page(m_profile, site, m_sites.values(), m_batchs[i].values.value("tags").split(" "), 1, 1, QStringList(), false, this))));
 			}
 		}
 	}
@@ -1138,7 +1142,7 @@ void mainWindow::getAll(bool all)
 	{
 		for (int i = 0; i < m_batchs.size(); i++)
 		{
-			if (m_batchs.at(i).value("file_url").isEmpty())
+			if (m_batchs[i].values.value("file_url").isEmpty())
 			{
 				// If we cannot get the image's url, we try looking for it
 				/*Page *page = new Page(m_sites[site], &m_sites, m_groupBatchs.at(i).at(0).split(' '), m_groupBatchs.at(i).at(1).toInt()+r, pp, QStringList(), false, this);
@@ -1150,8 +1154,8 @@ void mainWindow::getAll(bool all)
 			}
 			else
 			{
-				Site *site = m_sites[m_batchs.at(i).value("site")];
-				m_getAllRemaining.append(QSharedPointer<Image>(new Image(site, m_batchs.at(i), m_profile, new Page(m_profile, site, m_sites.values(), m_batchs.at(i).value("tags").split(" "), 1, 1, QStringList(), false, this))));
+				Site *site = m_batchs[i].site;
+				m_getAllRemaining.append(QSharedPointer<Image>(new Image(site, m_batchs[i].values, m_profile, new Page(m_profile, site, m_sites.values(), m_batchs[i].values["tags"].split(" "), 1, 1, QStringList(), false, this))));
 			}
 		}
 	}
@@ -1396,8 +1400,8 @@ void mainWindow::getAllImages()
 	}
 	for (int f = 0; f < m_batchs.size() && !m_mustGetTags; f++)
 	{
-		Filename fn(m_batchs[f].value("filename"));
-		Site *site = m_sites[m_batchs[f].value("site")];
+		Filename fn(m_batchs[f].filename);
+		Site *site = m_batchs[f].site;
 		Api *api = site->firstValidApi();
 		QString apiName = api == nullptr ? "" : api->getName();
 		if (fn.needExactTags(site, apiName))
@@ -2103,16 +2107,10 @@ bool mainWindow::saveLinkList(QString filename)
 		}
 	}
 
-	QStringList vals = QStringList() << "id" << "md5" << "rating" << "tags" << "file_url" << "date" << "site" << "filename" << "folder";
 	for (int i = 0; i < m_batchs.size(); i++)
 	{
-		for (int j = 0; j < vals.size(); j++)
-		{
-			if (j != 0)
-			{ links.append(fieldSeparator); }
-			links.append(m_batchs[i][vals[j]]);
-		}
-		links.append(lineSeparator);
+		links += m_batchs[i].toString(fieldSeparator);
+		links += lineSeparator;
 	}
 
 	QFile f(filename);
@@ -2164,11 +2162,14 @@ bool mainWindow::loadLinkList(QString filename)
 		QStringList infos = link.split(fieldSeparator);
 		if (infos.size() == 9)
 		{
-			QStringList vals = QStringList() << "id" << "md5" << "rating" << "tags" << "file_url" << "date" << "site" << "filename" << "folder";
-			QMap<QString,QString> values;
-			for (int i = 0; i < infos.size(); i++)
-			{ values.insert(vals[i], infos[i]); }
-			batchAddUnique(values, false);
+			QString source = infos[6];
+			if (!m_sites.contains(source))
+			{
+				log(QString("Invalid source \"%1\" found in the IGL file.").arg(source));
+				continue;
+			}
+
+			batchAddUnique(DownloadQueryImage(infos[0].toInt(), infos[1], infos[2], infos[3], infos[4], infos[5], m_sites[source], infos[7], infos[8]), false);
 		}
 		else
 		{
