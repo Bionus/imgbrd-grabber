@@ -473,6 +473,9 @@ void zoomWindow::display(const QPixmap &pix, int size)
 		m_displayImage = pix;
 		update(!m_finished);
 
+		if (!pix.size().isEmpty() && m_image->size().isEmpty())
+		{ m_image->setSize(pix.size()); }
+
 		if (m_isFullscreen && m_fullScreen != nullptr && m_fullScreen->isVisible())
 		{ m_fullScreen->setImage(m_displayImage.scaled(QApplication::desktop()->screenGeometry().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation)); }
 	}

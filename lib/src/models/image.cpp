@@ -1048,7 +1048,8 @@ void	Image::setUrl(QString u)
 	emit urlChanged(m_url, u);
 	m_url = u;
 }
-void	Image::setFileSize(int s)		{ m_fileSize = s;			}
+void	Image::setSize(QSize size)	{ m_size = size;	}
+void	Image::setFileSize(int s)	{ m_fileSize = s;	}
 void	Image::setData(const QByteArray &d)
 {
 	m_data = d;
