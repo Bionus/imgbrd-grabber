@@ -105,7 +105,7 @@ class mainWindow : public QMainWindow
 		void getAllImages();
 		void getAllGetImage(QSharedPointer<Image> img);
 		void getAllPerformTags();
-		void getAllPerformImage();
+		void getAllPerformImage(QNetworkReply::NetworkError error, QString errorString);
 		void getAllProgress(qint64, qint64);
 		void getAllCancel();
 		void getAllPause();

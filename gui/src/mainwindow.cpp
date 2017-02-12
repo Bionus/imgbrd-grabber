@@ -1730,7 +1730,7 @@ void mainWindow::getAllGetImage(QSharedPointer<Image> img)
 		_getAll();
 	}
 }
-void mainWindow::getAllPerformImage()
+void mainWindow::getAllPerformImage(QNetworkReply::NetworkError error, QString errorString)
 {
 	if (m_progressdialog->cancelled())
 		return;
@@ -1742,17 +1742,16 @@ void mainWindow::getAllPerformImage()
 	if (img.isNull())
 		return;
 
-	QNetworkReply* reply = img->imageReply();
 	bool del = true;
 
-	log(QString("Image received from <a href=\"%1\">%1</a> %2").arg(reply->url().toString()).arg(m_getAllDownloading.size()));
+	log(QString("Image received from <a href=\"%1\">%1</a> %2").arg(img->url()).arg(m_getAllDownloading.size()));
 
 	// Row
 	int site_id = m_progressdialog->batch(img->url());
 	int row = getRowForSite(site_id);
 
 	int errors = m_getAllErrors, e404s = m_getAll404s;
-	if (reply->error() == QNetworkReply::NoError)
+	if (error == QNetworkReply::NoError)
 	{
 		if (site_id >= 0)
 		{
@@ -1762,11 +1761,11 @@ void mainWindow::getAllPerformImage()
 		else
 		{ saveImage(img); }
 	}
-	else if (reply->error() == QNetworkReply::ContentNotFoundError)
+	else if (error == QNetworkReply::ContentNotFoundError)
 	{ m_getAll404s++; }
 	else
 	{
-		log(QString("Unknown error for the image: <a href=\"%1\">%1</a>. \"%2\"").arg(img->url().toHtmlEscaped(), reply->errorString()), Logger::Error);
+		log(QString("Unknown error for the image: <a href=\"%1\">%1</a>. \"%2\"").arg(img->url().toHtmlEscaped(), errorString), Logger::Error);
 		m_getAllErrors++;
 	}
 

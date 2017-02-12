@@ -761,11 +761,14 @@ void Image::finishedImageS()
 		m_data.append(m_loadImage->readAll());
 	}
 
-	m_loadedImage = true;
-	emit finishedImage(m_loadImage->error(), m_loadImage->errorString());
+	QNetworkReply::NetworkError error = m_loadImage->error();
+	QString errorString = m_loadImage->errorString();
 
+	m_loadedImage = true;
 	m_loadImage->deleteLater();
 	m_loadImage = nullptr;
+
+	emit finishedImage(error, errorString);
 }
 void Image::downloadProgressImageS(qint64 v1, qint64 v2)
 {
