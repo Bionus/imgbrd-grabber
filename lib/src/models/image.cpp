@@ -759,6 +759,9 @@ void Image::finishedImageS()
 	else
 	{
 		m_data.append(m_loadImage->readAll());
+
+		if (m_fileSize <= 0)
+		{ m_fileSize = m_data.size(); }
 	}
 
 	QNetworkReply::NetworkError error = m_loadImage->error();
