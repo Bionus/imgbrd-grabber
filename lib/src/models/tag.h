@@ -28,8 +28,7 @@ class Tag
 		QStringList	related()	const;
 		QString		typedText()	const;
 
-	protected:
-		QString qFontToCss(QFont font) const;
+		static QString qFontToCss(QFont font);
 
 	private:
 		QString		m_text, m_type;
