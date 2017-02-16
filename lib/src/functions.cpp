@@ -147,21 +147,17 @@ QDateTime qDateTimeFromString(QString str)
 
 QString getUnit(float *value)
 {
-	QString unit = QObject::tr("B");
-	if (*value >= 1024)
+	QStringList units = FILESIZE_UNITS;
+	int multiplier = FILESIZE_MULTIPLIER;
+
+	int power = 0;
+	while (*value >= multiplier && power < units.count() - 1)
 	{
 		*value /= 1024;
-		if (*value >= 1024)
-		{
-			*value /= 1024;
-			unit = QObject::tr("MiB");
-		}
-		else
-		{
-			unit = QObject::tr("KiB");
-		}
+		power++;
 	}
-	return unit;
+
+	return units[power];
 }
 
 QString formatFilesize(float size)

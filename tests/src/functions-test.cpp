@@ -20,16 +20,18 @@ void FunctionsTest::testFixFilenameLinux()
 
 void FunctionsTest::testGetUnit()
 {
+	QStringList units = FILESIZE_UNITS;
+
 	float size1 = 800;
-	QCOMPARE(getUnit(&size1), QString("B"));
+	QCOMPARE(getUnit(&size1), QString(units[0]));
 	QCOMPARE(size1, 800.0f);
 
 	float size2 = 2048;
-	QCOMPARE(getUnit(&size2), QString("KiB"));
+	QCOMPARE(getUnit(&size2), QString(units[1]));
 	QCOMPARE(size2, 2.0f);
 
 	float size3 = 7340032;
-	QCOMPARE(getUnit(&size3), QString("MiB"));
+	QCOMPARE(getUnit(&size3), QString(units[2]));
 	QCOMPARE(size3, 7.0f);
 }
 
