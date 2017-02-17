@@ -35,10 +35,10 @@
 
 
 
-mainWindow::mainWindow(Profile *profile, QString program, QStringList tags, QMap<QString,QString> params)
-	: ui(new Ui::mainWindow), m_profile(profile), m_favorites(m_profile->getFavorites()), m_downloads(0), m_loaded(false), m_getAll(false), m_program(program), m_tags(tags), m_batchAutomaticRetries(0), m_showLog(true)
+mainWindow::mainWindow(Profile *profile)
+	: ui(new Ui::mainWindow), m_profile(profile), m_favorites(m_profile->getFavorites()), m_downloads(0), m_loaded(false), m_getAll(false), m_forcedTab(false), m_batchAutomaticRetries(0), m_showLog(true)
 { }
-void mainWindow::init()
+void mainWindow::init(QStringList args, QMap<QString,QString> params)
 {
 	m_settings = m_profile->getSettings();
 	bool crashed = m_settings->value("crashed", false).toBool();
@@ -159,6 +159,17 @@ void mainWindow::init()
 		connect(add, SIGNAL(clicked()), this, SLOT(addTab()));
 		ui->tabWidget->setCornerWidget(add);
 
+	// Favorites tab
+	m_favoritesTab = new favoritesTab(&m_sites, m_profile, this);
+	connect(m_favoritesTab, &searchTab::batchAddGroup, this, &mainWindow::batchAddGroup);
+	connect(m_favoritesTab, SIGNAL(batchAddUnique(DownloadQueryImage)), this, SLOT(batchAddUnique(DownloadQueryImage)));
+	connect(m_favoritesTab, &searchTab::changed, this, &mainWindow::updateTabs);
+	ui->tabWidget->insertTab(m_tabs.size(), m_favoritesTab, tr("Favorites"));
+	ui->tabWidget->setCurrentIndex(0);
+
+	// Load given files
+	parseArgs(args, params);
+
 	// Initial login and selected sources setup
 	QStringList keys = m_sites.keys();
 	QString sav = m_settings->value("sites", "1").toString();
@@ -186,29 +197,9 @@ void mainWindow::init()
 			site->login();
 	}
 
-	// Favorites tab
-	m_favoritesTab = new favoritesTab(&m_sites, m_profile, this);
-	connect(m_favoritesTab, &searchTab::batchAddGroup, this, &mainWindow::batchAddGroup);
-	connect(m_favoritesTab, SIGNAL(batchAddUnique(DownloadQueryImage)), this, SLOT(batchAddUnique(DownloadQueryImage)));
-	connect(m_favoritesTab, &searchTab::changed, this, &mainWindow::updateTabs);
-	ui->tabWidget->insertTab(m_tabs.size(), m_favoritesTab, tr("Favorites"));
-	ui->tabWidget->setCurrentIndex(0);
-
 	ui->tableBatchGroups->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
 	ui->tableBatchUniques->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
 	on_buttonInitSettings_clicked();
-
-	if (!m_tags.isEmpty() || m_settings->value("start", "none").toString() == "firstpage")
-	{
-		if (!m_tags.isEmpty() && m_tags.first().endsWith(".igl"))
-		{
-			loadLinkList(m_tags.first());
-			ui->tabWidget->setCurrentIndex(m_tagTabs.size()+1);
-			m_tags.clear();
-		}
-		else
-		{ m_tagTabs[0]->setTags(this->m_tags.join(" ")); }
-	}
 
 	QStringList sizes = m_settings->value("batch", "100,100,100,100,100,100,100,100,100").toString().split(',');
 	int m = sizes.size() > ui->tableBatchGroups->columnCount() ? ui->tableBatchGroups->columnCount() : sizes.size();
@@ -240,9 +231,38 @@ void mainWindow::init()
 		m_updateDialog->checkForUpdates();
 	}
 
-	m_loaded = true;
 	m_currentTab = nullptr;
 	log("End of initialization");
+}
+
+void mainWindow::parseArgs(QStringList args, QMap<QString,QString> params)
+{
+	// When we use Grabber to open a file
+	QStringList tags;
+	if (args.count() == 1 && QFile::exists(args[0]))
+	{
+		// Load an IGL file
+		QFileInfo info(args[0]);
+		if (info.suffix() == "igl")
+		{
+			loadLinkList(info.absoluteFilePath());
+			ui->tabWidget->setCurrentIndex(m_tabs.size() + 1);
+			m_forcedTab = true;
+			return;
+		}
+
+		// Search any image by its MD5
+		loadMd5(info.absoluteFilePath(), true, false, false);
+		return;
+	}
+
+	// Other positional arguments are treated as tags
+	tags.append(args);
+	tags.append(params.value("tags").split(' ', QString::SkipEmptyParts));
+	if (!tags.isEmpty() || m_settings->value("start", "none").toString() == "firstpage")
+	{
+		loadTag(tags.join(" "), true, false, false);
+	}
 }
 
 void mainWindow::initialLoginsFinished()
@@ -266,8 +286,11 @@ void mainWindow::initialLoginsDone()
 	if (m_tabs.isEmpty())
 	{ addTab(); }
 
-	ui->tabWidget->setCurrentIndex(0);
+	if (!m_forcedTab)
+	{ ui->tabWidget->setCurrentIndex(0); }
+
 	m_currentTab = ui->tabWidget->currentWidget();
+	m_loaded = true;
 }
 
 void mainWindow::loadSites()
@@ -385,10 +408,10 @@ void mainWindow::onFirstLoad()
 	swin->show();
 }
 
-int mainWindow::addTab(QString tag, bool background)
+int mainWindow::addTab(QString tag, bool background, bool save)
 {
 	tagTab *w = new tagTab(&m_sites, m_profile, this);
-	this->addSearchTab(w, background);
+	this->addSearchTab(w, background, save);
 
 	if (!tag.isEmpty())
 	{ w->setTags(tag); }
@@ -396,10 +419,10 @@ int mainWindow::addTab(QString tag, bool background)
 	m_tagTabs.append(w);
 	return m_tabs.size() - 1;
 }
-int mainWindow::addPoolTab(int pool, QString site)
+int mainWindow::addPoolTab(int pool, QString site, bool background, bool save)
 {
 	poolTab *w = new poolTab(&m_sites, m_profile, this);
-	this->addSearchTab(w);
+	this->addSearchTab(w, background, save);
 
 	if (!site.isEmpty())
 	{ w->setSite(site); }
@@ -409,7 +432,7 @@ int mainWindow::addPoolTab(int pool, QString site)
 	m_poolTabs.append(w);
 	return m_tabs.size() - 1;
 }
-void mainWindow::addSearchTab(searchTab *w, bool background)
+void mainWindow::addSearchTab(searchTab *w, bool background, bool save)
 {
 	if (m_tabs.size() > ui->tabWidget->currentIndex())
 	{
@@ -423,7 +446,9 @@ void mainWindow::addSearchTab(searchTab *w, bool background)
 	connect(w, &searchTab::titleChanged, this, &mainWindow::updateTabTitle);
 	connect(w, &searchTab::changed, this, &mainWindow::updateTabs);
 	connect(w, &searchTab::closed, this, &mainWindow::tabClosed);
-	int index = ui->tabWidget->insertTab(ui->tabWidget->currentIndex()+(!m_tabs.isEmpty()), w, tr("New tab"));
+
+	int pos = m_loaded ? ui->tabWidget->currentIndex() + (!m_tabs.isEmpty()) : m_tabs.count();
+	int index = ui->tabWidget->insertTab(pos, w, tr("New tab"));
 	m_tabs.append(w);
 
 	QPushButton *closeTab = new QPushButton(QIcon(":/images/close.png"), "", this);
@@ -435,7 +460,8 @@ void mainWindow::addSearchTab(searchTab *w, bool background)
 	if (!background)
 		ui->tabWidget->setCurrentIndex(index);
 
-	saveTabs(m_profile->getPath() + "/tabs.txt");
+	if (save)
+		saveTabs(m_profile->getPath() + "/tabs.txt");
 }
 
 bool mainWindow::saveTabs(QString filename)
@@ -477,7 +503,7 @@ bool mainWindow::loadTabs(QString filename)
 			{
 				if (infos[infos.size() - 1] == "pool")
 				{
-					addPoolTab();
+					addPoolTab(0, "", true);
 					int i = m_poolTabs.size() - 1;
 					m_poolTabs[i]->ui->spinPool->setValue(infos[0].toInt());
 					m_poolTabs[i]->ui->comboSites->setCurrentIndex(infos[1].toInt());
@@ -488,7 +514,7 @@ bool mainWindow::loadTabs(QString filename)
 				}
 				else
 				{
-					addTab();
+					addTab("", true);
 					int i = m_tagTabs.size() - 1;
 					m_tagTabs[i]->ui->spinPage->setValue(infos[1].toInt());
 					m_tagTabs[i]->ui->spinImagesPerPage->setValue(infos[2].toInt());
@@ -507,7 +533,10 @@ void mainWindow::updateTabTitle(searchTab *tab)
 }
 void mainWindow::updateTabs()
 {
-	saveTabs(m_profile->getPath() + "/tabs.txt");
+	if (m_loaded)
+	{
+		saveTabs(m_profile->getPath() + "/tabs.txt");
+	}
 }
 void mainWindow::tabClosed(searchTab *tab)
 {
@@ -2378,7 +2407,18 @@ void mainWindow::updateDownloads()
 
 
 
-void mainWindow::loadTag(QString tag, bool newTab, bool background)
+void mainWindow::loadMd5(QString path, bool newTab, bool background, bool save)
+{
+	QFile file(path);
+	if (file.open(QFile::ReadOnly))
+	{
+		QString md5 = QCryptographicHash::hash(file.readAll(), QCryptographicHash::Md5).toHex();
+		file.close();
+
+		loadTag("md5:" + md5, newTab, background, save);
+	}
+}
+void mainWindow::loadTag(QString tag, bool newTab, bool background, bool save)
 {
 	if (tag.startsWith("http://"))
 	{
@@ -2387,7 +2427,7 @@ void mainWindow::loadTag(QString tag, bool newTab, bool background)
 	}
 
 	if (newTab)
-		addTab(tag, background);
+		addTab(tag, background, save);
 	else if (m_tabs.count() > 0 && ui->tabWidget->currentIndex() < m_tabs.count())
 		m_tabs[ui->tabWidget->currentIndex()]->setTags(tag);
 }
@@ -2481,14 +2521,7 @@ void mainWindow::dropEvent(QDropEvent* event)
 		QList<QUrl> urlList = mimeData->urls();
 		for (int i = 0; i < urlList.size() && i < 32; ++i)
 		{
-			QFile file(urlList.at(i).toLocalFile());
-			if (file.open(QFile::ReadOnly))
-			{
-				QString md5 = QCryptographicHash::hash(file.readAll(), QCryptographicHash::Md5).toHex();
-				file.close();
-
-				loadTag("md5:" + md5, true, false);
-			}
+			loadMd5(urlList.at(i).toLocalFile(), true, false);
 		}
 	}
 }

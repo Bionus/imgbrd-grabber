@@ -45,7 +45,7 @@ class mainWindow : public QMainWindow
 	Q_OBJECT
 
 	public:
-		explicit mainWindow(Profile *profile, QString program, QStringList tags, QMap<QString,QString> params);
+		explicit mainWindow(Profile *profile);
 		~mainWindow();
 		Ui::mainWindow *ui;
 
@@ -121,9 +121,9 @@ class mainWindow : public QMainWindow
 		bool needExactTags(QSettings *settings);
 		void _getAll();
 		// Tabs
-		int addTab(QString tag = "", bool background = false);
-		int addPoolTab(int pool = 0, QString site = "");
-		void addSearchTab(searchTab*, bool background = false);
+		int addTab(QString tag = "", bool background = false, bool save = true);
+		int addPoolTab(int pool = 0, QString site = "", bool background = false, bool save = true);
+		void addSearchTab(searchTab*, bool background = false, bool save = true);
 		void updateTabTitle(searchTab*);
 		void tabClosed(searchTab*);
 		void currentTabChanged(int);
@@ -137,7 +137,8 @@ class mainWindow : public QMainWindow
 		void decreaseDownloads();
 		void updateDownloads();
 		// Tag list
-		void loadTag(QString tag, bool newTab = true, bool background = true);
+		void loadMd5(QString path, bool newTab = true, bool background = true, bool save = true);
+		void loadTag(QString tag, bool newTab = true, bool background = true, bool save = true);
 		void loadTagTab(QString tag);
 		void loadTagNoTab(QString tag);
 		void linkHovered(QString tag);
@@ -151,7 +152,8 @@ class mainWindow : public QMainWindow
 		// Others
 		void closeEvent(QCloseEvent*);
 		void onFirstLoad();
-		void init();
+		void init(QStringList args, QMap<QString,QString> params);
+		void parseArgs(QStringList args, QMap<QString,QString> params);
 		void on_buttonSaveLinkList_clicked();
 		void on_buttonLoadLinkList_clicked();
 		bool saveLinkList(QString filename);
@@ -188,11 +190,10 @@ class mainWindow : public QMainWindow
 		UpdateDialog		*m_updateDialog;
 		QList<Favorite>		&m_favorites;
 		int					m_getAllDownloaded, m_getAllExists, m_getAllIgnored, m_getAll404s, m_getAllErrors, m_getAllSkipped, m_getAllLimit, m_downloads, m_waitForLogin;
-		bool				m_allow, m_mustGetTags, m_loaded, m_getAll;
+		bool				m_allow, m_mustGetTags, m_loaded, m_getAll, m_forcedTab;
 		QSettings			*m_settings;
 		batchWindow			*m_progressdialog;
-		QString				m_program, m_currLang, m_link;
-		QStringList			m_tags;
+		QString				m_currLang, m_link;
 		QTranslator			m_translator;
 		QList<DownloadQueryGroup>		m_groupBatchs;
 		QList<QSharedPointer<Image>>	m_getAllRemaining, m_getAllDownloading, m_getAllFailed, m_images, m_getAllSkippedImages;
