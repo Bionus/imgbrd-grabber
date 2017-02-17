@@ -7,6 +7,7 @@
 #include <QProcess>
 #include <QTranslator>
 #include <QSet>
+#include <QQueue>
 #include <QTableWidgetItem>
 #include "batch/batchwindow.h"
 #include "ui/QAffiche.h"
@@ -112,6 +113,7 @@ class mainWindow : public QMainWindow
 		void getAllPause();
 		void getAllSkip();
 		void getAllLogin();
+		void getNextPack();
 		void getAllGetPages();
 		void getAllFinished();
 		void getAllFinishedLogin(Site *site, Site::LoginResult result);
@@ -203,9 +205,11 @@ class mainWindow : public QMainWindow
 		QMap<QString,QTime*>			m_downloadTime, m_downloadTimeLast;
 		QList<QProgressBar*>			m_progressBars;
 		QList<DownloadQueryImage>		m_batchs;
+		QMap<int, DownloadQueryGroup>	m_batchPending;
 		QSet<int>						m_batchDownloading;
 		QStringList			m_lineFilename_completer, m_lineFolder_completer;
 		QList<Downloader*>  m_downloaders, m_downloadersDone;
+		QQueue<Downloader*>	m_waitingDownloaders;
 		QList<Site*>		m_getAllLogins;
 		int					m_batchAutomaticRetries;
 		bool				m_restore, m_showLog;

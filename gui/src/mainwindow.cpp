@@ -1177,7 +1177,6 @@ void mainWindow::getAll(bool all)
 
 	if (all || !todownload.isEmpty())
 	{
-		int active = 0;
 		for (int j = 0; j < m_groupBatchs.count(); ++j)
 		{
 			if (all || todownload.contains(j))
@@ -1190,36 +1189,14 @@ void mainWindow::getAll(bool all)
 				}
 
 				DownloadQueryGroup b = m_groupBatchs[j];
-				Downloader *downloader = new Downloader(m_profile,
-														b.tags.split(' '),
-														QStringList(),
-														QList<Site*>() << m_sites[b.site],
-														b.page,
-														b.total,
-														b.perpage,
-														b.path,
-														b.filename,
-														nullptr,
-														nullptr,
-														b.getBlacklisted,
-														m_settings->value("blacklistedtags").toString().split(' '),
-														false,
-														0,
-														"");
-				connect(downloader, &Downloader::finishedImages, this, &mainWindow::getAllFinishedImages);
-				connect(downloader, &Downloader::finishedImagesPage, this, &mainWindow::getAllFinishedPage);
-				m_downloaders.append(downloader);
-				downloader->setData(j);
-				downloader->setQuit(false);
-
+				m_batchPending.insert(j, b);
 				m_getAllLimit += b.total;
 				m_batchDownloading.insert(j);
-				++active;
 			}
 		}
 	}
 
-	if (m_downloaders.isEmpty() && m_getAllRemaining.isEmpty())
+	if (m_batchPending.isEmpty() && m_getAllRemaining.isEmpty())
 	{
 		m_getAll = false;
 		ui->widgetDownloadButtons->setEnabled(true);
@@ -1277,6 +1254,54 @@ void mainWindow::getAllFinishedLogin(Site *site, Site::LoginResult)
 
 void mainWindow::getAllFinishedLogins()
 {
+	bool usePacking = m_settings->value("packing_enable", true).toBool();
+	int realConstImagesPerPack = m_settings->value("packing_size", 1000).toInt();
+
+	for (int j : m_batchPending.keys())
+	{
+		DownloadQueryGroup b = m_batchPending[j];
+
+		int constImagesPerPack = usePacking ? realConstImagesPerPack : b.total;
+		int pagesPerPack = qCeil((float)constImagesPerPack / b.perpage);
+		int imagesPerPack = pagesPerPack * b.perpage;
+		int packs = qCeil((float)b.total / imagesPerPack);
+
+		for (int i = 0; i < packs; ++i)
+		{
+			Downloader *downloader = new Downloader(m_profile,
+													b.tags.split(' '),
+													QStringList(),
+													QList<Site*>() << m_sites[b.site],
+													b.page + i * pagesPerPack,
+													(i == packs - 1 ? b.total % imagesPerPack : imagesPerPack),
+													b.perpage,
+													b.path,
+													b.filename,
+													nullptr,
+													nullptr,
+													b.getBlacklisted,
+													m_settings->value("blacklistedtags").toString().split(' '),
+													false,
+													0,
+													"");
+			downloader->setData(j);
+			downloader->setQuit(false);
+
+			connect(downloader, &Downloader::finishedImages, this, &mainWindow::getAllFinishedImages);
+			connect(downloader, &Downloader::finishedImagesPage, this, &mainWindow::getAllFinishedPage);
+
+			m_waitingDownloaders.enqueue(downloader);
+		}
+	}
+
+	getNextPack();
+}
+
+void mainWindow::getNextPack()
+{
+	m_downloaders.clear();
+	m_downloaders.append(m_waitingDownloaders.dequeue());
+
 	getAllGetPages();
 }
 
@@ -1356,7 +1381,6 @@ void mainWindow::getAllImages()
 	int count = 0;
 	m_progressdialog->setText(tr("Preparing images, please wait..."));
 	m_progressdialog->setCount(m_getAllRemaining.count());
-	m_progressdialog->setImagesCount(m_getAllRemaining.count());
 	for (int i = 0; i < m_getAllRemaining.count(); i++)
 	{
 		// We find the image's batch ID using its page
@@ -1381,10 +1405,10 @@ void mainWindow::getAllImages()
 
 	// Set some values on the batch window
 	m_progressdialog->updateColumns();
-	m_progressdialog->setImagesCount(m_getAllRemaining.count());
-	m_progressdialog->setMaximum(count);
+	m_progressdialog->setImagesCount(m_getAllLimit);
+	//m_progressdialog->setMaximum(count);
 	m_progressdialog->setText(tr("Downloading images..."));
-	m_progressdialog->setImages(0);
+	m_progressdialog->setImages(m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors);
 
 	// Check whether we need to get the tags first (for the filename) or if we can just download the images directly
 	// TODO: having one batch needing it currently causes all batches to need it, should mae it batch (Downloader) dependent
@@ -1540,7 +1564,7 @@ void mainWindow::getAllGetImageIfNotBlacklisted(QSharedPointer<Image> img, int s
 
 void mainWindow::getAllImageOk(QSharedPointer<Image> img, int site_id, bool del)
 {
-	m_progressdialog->setValue(m_progressdialog->value() + img->value());
+	//m_progressdialog->setValue(m_progressdialog->value() + img->value());
 	m_progressdialog->setImages(m_progressdialog->images() + 1);
 
 	if (site_id >= 0)
@@ -1637,7 +1661,7 @@ void mainWindow::getAllPerformTags()
 	}
 	else
 	{
-		m_progressdialog->setValue(m_progressdialog->value()+img->value());
+		//m_progressdialog->setValue(m_progressdialog->value()+img->value());
 		m_progressdialog->setImages(m_progressdialog->images()+1);
 		m_getAllExists++;
 		log(QString("File already exists: <a href=\"file:///%1\">%1</a>").arg(f.fileName()));
@@ -1727,7 +1751,7 @@ void mainWindow::getAllGetImage(QSharedPointer<Image> img)
 	// Continue to next image
 	if (next)
 	{
-		m_progressdialog->setValue(m_progressdialog->value()+img->value());
+		//m_progressdialog->setValue(m_progressdialog->value()+img->value());
 		m_progressdialog->setImages(m_progressdialog->images()+1);
 		m_downloadTimeLast.remove(img->url());
 		m_getAllDownloading.removeAll(img);
@@ -1933,6 +1957,12 @@ void mainWindow::getAllSkip()
 
 void mainWindow::getAllFinished()
 {
+	if (!m_waitingDownloaders.isEmpty())
+	{
+		getNextPack();
+		return;
+	}
+
 	log("Images download finished.");
 	m_progressdialog->setValue(m_progressdialog->maximum());
 
