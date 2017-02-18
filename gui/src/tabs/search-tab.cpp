@@ -810,7 +810,7 @@ void searchTab::openSourcesWindow()
 	adv->show();
 }
 
-void searchTab::saveSources(QList<bool> sel)
+void searchTab::saveSources(QList<bool> sel, bool canLoad)
 {
 	log("Saving sources...");
 
@@ -832,7 +832,7 @@ void searchTab::saveSources(QList<bool> sel)
 
 	DONE();
 
-	if (m_history.isEmpty())
+	if (m_history.isEmpty() && canLoad)
 	{ load(); }
 }
 
