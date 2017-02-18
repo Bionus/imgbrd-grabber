@@ -71,6 +71,7 @@ class zoomWindow : public QWidget
 
 		// Context menus
 		void imageContextMenu();
+		void reverseImageSearch(int i);
 		void copyImageFileToClipboard();
 		void copyImageDataToClipboard();
 		void copyTagToClipboard();
@@ -141,6 +142,7 @@ class zoomWindow : public QWidget
 		QStackedWidget *m_stackedWidget;
 		QAffiche *m_labelImage;
 		QList<QSharedPointer<Image>> m_images;
+		QSignalMapper *m_reverseSearchSignalMapper;
 		QList<ReverseSearchEngine> m_reverseSearchEngines;
 
 		// Display

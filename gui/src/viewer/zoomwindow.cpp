@@ -208,12 +208,24 @@ void zoomWindow::imageContextMenu()
 	menu->addSeparator();
 
 	// Reverse search actions
-	for (auto engine : m_reverseSearchEngines)
+	m_reverseSearchSignalMapper = new QSignalMapper(this);
+	connect(m_reverseSearchSignalMapper, SIGNAL(mapped(int)), this, SLOT(reverseImageSearch(int)));
+	for (int i = 0; i < m_reverseSearchEngines.count(); ++i)
 	{
-		menu->addAction(engine.icon(), engine.name(), this, [this, engine]{ engine.searchByUrl(m_image->fileUrl()); });
+		ReverseSearchEngine engine = m_reverseSearchEngines[i];
+		QAction *subMenuAct = menu->addAction(engine.icon(), engine.name());
+		connect(subMenuAct, SIGNAL(triggered()), m_reverseSearchSignalMapper, SLOT(map()));
+		m_reverseSearchSignalMapper->setMapping(subMenuAct, i);
 	}
 
 	menu->exec(QCursor::pos());
+}
+void zoomWindow::reverseImageSearch(int i)
+{
+	if (m_reverseSearchEngines.count() < i)
+		return;
+
+	m_reverseSearchEngines[i].searchByUrl(m_image->fileUrl());
 }
 void zoomWindow::copyImageFileToClipboard()
 {
