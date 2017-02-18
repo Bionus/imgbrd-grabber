@@ -131,7 +131,7 @@ void tagTab::write(QJsonObject &json) const
 	// Sites
 	QJsonArray sites;
 	for (Site *site : loadSites())
-		sites.append(site->name());
+		sites.append(site->url());
 	json["sites"] = sites;
 }
 
@@ -156,7 +156,7 @@ bool tagTab::read(const QJsonObject &json)
 		selectedSources.append(site.toString());
 	QList<bool> selectedSourcesBool;
 	for (Site *site : *m_sites)
-		selectedSourcesBool.append(selectedSources.contains(site->name()));
+		selectedSourcesBool.append(selectedSources.contains(site->url()));
 	saveSources(selectedSourcesBool);
 
 	// Tags
