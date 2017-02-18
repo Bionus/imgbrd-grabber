@@ -32,6 +32,7 @@
 #include "utils/md5-fix/md5-fix.h"
 #include "models/filename.h"
 #include "helpers.h"
+#include "downloader/download-query-loader.h"
 
 
 
@@ -2152,34 +2153,7 @@ void mainWindow::on_buttonSaveLinkList_clicked()
 }
 bool mainWindow::saveLinkList(QString filename)
 {
-	QString fieldSeparator((char)29);
-	QString lineSeparator((char)28);
-
-	QByteArray links = "[IGL 2]\r\n";
-	for (int i = 0; i < m_groupBatchs.size(); i++)
-	{
-		if (m_progressBars[i] != nullptr && m_groupBatchs[i].unk != "false")
-		{
-			links += m_groupBatchs[i].toString(fieldSeparator);
-			links += fieldSeparator + QString::number(m_progressBars[i]->value())+"/"+QString::number(m_progressBars[i]->maximum());
-			links += lineSeparator;
-		}
-	}
-
-	for (int i = 0; i < m_batchs.size(); i++)
-	{
-		links += m_batchs[i].toString(fieldSeparator);
-		links += lineSeparator;
-	}
-
-	QFile f(filename);
-	if (f.open(QFile::WriteOnly))
-	{
-		f.write(links);
-		f.close();
-		return true;
-	}
-	return false;
+	return DownloadQueryLoader::save(filename, m_batchs, m_groupBatchs);
 }
 
 void mainWindow::on_buttonLoadLinkList_clicked()
@@ -2195,90 +2169,51 @@ void mainWindow::on_buttonLoadLinkList_clicked()
 }
 bool mainWindow::loadLinkList(QString filename)
 {
-	QFile f(filename);
-	if (!f.open(QFile::ReadOnly))
+	QList<DownloadQueryImage> newBatchs;
+	QList<DownloadQueryGroup> newGroupBatchs;
+
+	if (!DownloadQueryLoader::load(filename, newBatchs, newGroupBatchs, m_sites))
 		return false;
 
-	// Get the file's header to get the version
-	QString header = f.readLine().trimmed();
-	int version = header.mid(5, header.size() - 6).toInt();
-	Q_UNUSED(version);
+	log(tr("Loading %n download(s)", "", newBatchs.count() + newGroupBatchs.count()));
 
-	QString fieldSeparator((char)29);
-	QString lineSeparator((char)28);
-
-	// Read the remaining file
-	QString links = f.readAll();
-	f.close();
-	QStringList det = links.split(lineSeparator, QString::SkipEmptyParts);
-	if (det.empty())
-		return false;
-
-	log(tr("Loading %n download(s)", "", det.count()));
-	for (QString link : det)
+	m_allow = false;
+	for (auto queryImage : newBatchs)
 	{
-		m_allow = false;
-		QStringList infos = link.split(fieldSeparator);
-		if (infos.size() == 9)
-		{
-			QString source = infos[6];
-			if (!m_sites.contains(source))
-			{
-				log(QString("Invalid source \"%1\" found in the IGL file.").arg(source));
-				continue;
-			}
-
-			batchAddUnique(DownloadQueryImage(infos[0].toInt(), infos[1], infos[2], infos[3], infos[4], infos[5], m_sites[source], infos[7], infos[8]), false);
-		}
-		else
-		{
-			QString source = infos[5];
-			if (!m_sites.contains(source))
-			{
-				log(QString("Invalid source \"%1\" found in the IGL file.").arg(source));
-				continue;
-			}
-
-			if (infos.at(1).toInt() < 0 || infos.at(2).toInt() < 1 || infos.at(3).toInt() < 1)
-			{
-				log("Error reading a line from the links file.");
-				continue;
-			}
-
-			DownloadQueryGroup values(infos[0], infos[1].toInt(), infos[2].toInt(), infos[3].toInt(), infos[4] != "false", infos[5], infos[6], infos[7]);
-
-			ui->tableBatchGroups->setRowCount(ui->tableBatchGroups->rowCount() + 1);
-			QString last = infos.takeLast();
-			int max = last.right(last.indexOf("/")+1).toInt(), val = last.left(last.indexOf("/")).toInt();
-
-			int row = ui->tableBatchGroups->rowCount() - 1;
-			addTableItem(ui->tableBatchGroups, row, 1, values.tags);
-			addTableItem(ui->tableBatchGroups, row, 2, values.site);
-			addTableItem(ui->tableBatchGroups, row, 3, QString::number(values.page));
-			addTableItem(ui->tableBatchGroups, row, 4, QString::number(values.perpage));
-			addTableItem(ui->tableBatchGroups, row, 5, QString::number(values.total));
-			addTableItem(ui->tableBatchGroups, row, 6, values.filename);
-			addTableItem(ui->tableBatchGroups, row, 7, values.path);
-			addTableItem(ui->tableBatchGroups, row, 8, values.getBlacklisted ? "true" : "false");
-
-			infos.append("true");
-			m_groupBatchs.append(values);
-			QTableWidgetItem *it = new QTableWidgetItem(getIcon(":/images/colors/"+QString(val == max ? "green" : (val > 0 ? "blue" : "black"))+".png"), "");
-			it->setFlags(it->flags() ^ Qt::ItemIsEditable);
-			it->setTextAlignment(Qt::AlignCenter);
-			ui->tableBatchGroups->setItem(ui->tableBatchGroups->rowCount()-1, 0, it);
-
-			QProgressBar *prog = new QProgressBar(this);
-			prog->setMaximum(infos[3].toInt());
-			prog->setValue(val < 0 || val > max ? 0 : val);
-			prog->setMinimum(0);
-			prog->setTextVisible(false);
-			m_progressBars.append(prog);
-			ui->tableBatchGroups->setCellWidget(ui->tableBatchGroups->rowCount()-1, 9, prog);
-
-			m_allow = true;
-		}
+		batchAddUnique(queryImage, false);
 	}
+	for (auto queryGroup : newGroupBatchs)
+	{
+		ui->tableBatchGroups->setRowCount(ui->tableBatchGroups->rowCount() + 1);
+		QString last = queryGroup.unk;
+		int max = last.right(last.indexOf("/")+1).toInt(), val = last.left(last.indexOf("/")).toInt();
+
+		int row = ui->tableBatchGroups->rowCount() - 1;
+		addTableItem(ui->tableBatchGroups, row, 1, queryGroup.tags);
+		addTableItem(ui->tableBatchGroups, row, 2, queryGroup.site);
+		addTableItem(ui->tableBatchGroups, row, 3, QString::number(queryGroup.page));
+		addTableItem(ui->tableBatchGroups, row, 4, QString::number(queryGroup.perpage));
+		addTableItem(ui->tableBatchGroups, row, 5, QString::number(queryGroup.total));
+		addTableItem(ui->tableBatchGroups, row, 6, queryGroup.filename);
+		addTableItem(ui->tableBatchGroups, row, 7, queryGroup.path);
+		addTableItem(ui->tableBatchGroups, row, 8, queryGroup.getBlacklisted ? "true" : "false");
+
+		queryGroup.unk = "true";
+		m_groupBatchs.append(queryGroup);
+		QTableWidgetItem *it = new QTableWidgetItem(getIcon(":/images/colors/"+QString(val == max ? "green" : (val > 0 ? "blue" : "black"))+".png"), "");
+		it->setFlags(it->flags() ^ Qt::ItemIsEditable);
+		it->setTextAlignment(Qt::AlignCenter);
+		ui->tableBatchGroups->setItem(ui->tableBatchGroups->rowCount()-1, 0, it);
+
+		QProgressBar *prog = new QProgressBar(this);
+		prog->setMaximum(queryGroup.total);
+		prog->setValue(val < 0 || val > max ? 0 : val);
+		prog->setMinimum(0);
+		prog->setTextVisible(false);
+		m_progressBars.append(prog);
+		ui->tableBatchGroups->setCellWidget(ui->tableBatchGroups->rowCount()-1, 9, prog);
+	}
+	m_allow = true;
 	updateGroupCount();
 
 	return true;

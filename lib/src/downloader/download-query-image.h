@@ -5,6 +5,7 @@
 #include <QString>
 #include <QSettings>
 #include <QMap>
+#include <QJsonObject>
 #include "models/image.h"
 #include "models/site.h"
 
@@ -20,6 +21,8 @@ class DownloadQueryImage
 
 		// Serialization
 		QString toString(QString separator) const;
+		void write(QJsonObject &json) const;
+		bool read(const QJsonObject &json, QMap<QString, Site *> &sites);
 
 		// Public members
 		Site *site;

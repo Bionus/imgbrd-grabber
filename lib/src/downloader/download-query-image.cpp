@@ -1,4 +1,5 @@
 #include "download-query-image.h"
+#include <QJsonArray>
 
 
 DownloadQueryImage::DownloadQueryImage()
@@ -65,4 +66,46 @@ QString DownloadQueryImage::toString(QString separator) const
 			site->name() + separator +
 			filename + separator +
 			path;
+}
+
+void DownloadQueryImage::write(QJsonObject &json) const
+{
+	json["id"] = values["id"].toInt();
+	json["md5"] = values["md5"];
+	json["rating"] = values["rating"];
+	json["tags"] = QJsonArray::fromStringList(values["tags"].split(' '));
+	json["file_url"] = values["file_url"];
+	json["date"] = values["date"];
+
+	json["site"] = site->name();
+	json["filename"] = QString(filename).replace("\n", "\\n");
+	json["path"] = path;
+}
+
+bool DownloadQueryImage::read(const QJsonObject &json, QMap<QString, Site*> &sites)
+{
+	QStringList tags;
+	QJsonArray jsonTags = json["tags"].toArray();
+	for (auto tag : jsonTags)
+		tags.append(tag.toString());
+
+	values["id"] = json["id"].toInt();
+	values["md5"] = json["md5"].toString();
+	values["rating"] = json["rating"].toString();
+	values["tags"] = tags.join(' ');
+	values["file_url"] = json["file_url"].toString();
+	values["date"] = json["date"].toString();
+
+	filename = json["filename"].toString().replace("\\n", "\n");
+	path = json["path"].toString();
+
+	// Get site
+	QString sitename = json["site"].toString();
+	if (!sites.contains(sitename))
+	{
+		return false;
+	}
+	site = sites[sitename];
+
+	return true;
 }

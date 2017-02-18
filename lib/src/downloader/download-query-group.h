@@ -4,6 +4,8 @@
 #include <QMetaType>
 #include <QString>
 #include <QSettings>
+#include <QJsonObject>
+#include "models/site.h"
 
 
 class DownloadQueryGroup
@@ -16,6 +18,8 @@ class DownloadQueryGroup
 
 		// Serialization
 		QString toString(QString separator) const;
+		void write(QJsonObject &json) const;
+		bool read(const QJsonObject &json, QMap<QString, Site *> &sites);
 
 		// Public members
 		QString tags;
