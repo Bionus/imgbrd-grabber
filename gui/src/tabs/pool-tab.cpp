@@ -123,6 +123,31 @@ void poolTab::write(QJsonObject &json) const
 	json["postFiltering"] = QJsonArray::fromStringList(m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts));
 }
 
+bool poolTab::read(const QJsonObject &json)
+{
+	ui->spinPool->setValue(json["pool"].toInt());
+	ui->comboSites->setCurrentText(json["site"].toString());
+	ui->spinPage->setValue(json["page"].toInt());
+	ui->spinImagesPerPage->setValue(json["perpage"].toInt());
+	ui->spinColumns->setValue(json["columns"].toInt());
+
+	// Tags
+	QStringList tags;
+	QJsonArray jsonTags = json["tags"].toArray();
+	for (auto tag : jsonTags)
+		tags.append(tag.toString());
+	setTags(tags.join(' '));
+
+	// Post filtering
+	QStringList postFilters;
+	QJsonArray jsonPostFilters = json["postFiltering"].toArray();
+	for (auto tag : jsonPostFilters)
+		postFilters.append(tag.toString());
+	setPostFilter(postFilters.join(' '));
+
+	return true;
+}
+
 
 void poolTab::getPage()
 {

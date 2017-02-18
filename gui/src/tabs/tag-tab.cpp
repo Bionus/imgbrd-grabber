@@ -134,6 +134,39 @@ void tagTab::write(QJsonObject &json) const
 	json["sites"] = sites;
 }
 
+bool tagTab::read(const QJsonObject &json)
+{
+	ui->spinPage->setValue(json["page"].toInt());
+	ui->spinImagesPerPage->setValue(json["perpage"].toInt());
+	ui->spinColumns->setValue(json["columns"].toInt());
+
+	// Tags
+	QStringList tags;
+	QJsonArray jsonTags = json["tags"].toArray();
+	for (auto tag : jsonTags)
+		tags.append(tag.toString());
+	setTags(tags.join(' '));
+
+	// Post filtering
+	QStringList postFilters;
+	QJsonArray jsonPostFilters = json["postFiltering"].toArray();
+	for (auto tag : jsonPostFilters)
+		postFilters.append(tag.toString());
+	setPostFilter(postFilters.join(' '));
+
+	// Sources
+	QStringList selectedSources;
+	QJsonArray jsonSelectedSources = json["sites"].toArray();
+	for (auto site : jsonSelectedSources)
+		selectedSources.append(site.toString());
+	QList<bool> selectedSourcesBool;
+	for (Site *site : *m_sites)
+		selectedSourcesBool.append(selectedSources.contains(site->name()));
+	saveSources(selectedSourcesBool);
+
+	return true;
+}
+
 
 void tagTab::setTags(QString tags)
 {

@@ -34,6 +34,7 @@ class tagTab : public searchTab
 		QString results();
 		QList<Site*> loadSites() const override;
 		void write(QJsonObject &json) const;
+		bool read(const QJsonObject &json);
 
 	public slots:
 		// Zooms

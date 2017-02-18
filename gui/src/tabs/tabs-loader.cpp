@@ -79,55 +79,14 @@ bool TabsLoader::load(QString path, QList<tagTab*> &tagTabs, QList<poolTab*> &po
 					if (type == "tag")
 					{
 						tagTab *tab = new tagTab(&sites, profile, parent);
-						tab->ui->spinPage->setValue(infos["page"].toInt());
-						tab->ui->spinImagesPerPage->setValue(infos["perpage"].toInt());
-						tab->ui->spinColumns->setValue(infos["columns"].toInt());
-
-						QStringList selectedSources;
-						QJsonArray jsonSelectedSources = infos["sites"].toArray();
-						for (auto site : jsonSelectedSources)
-							selectedSources.append(site.toString());
-						QList<bool> selectedSourcesBool;
-						for (Site *site : sites)
-							selectedSourcesBool.append(selectedSources.contains(site->name()));
-						tab->saveSources(selectedSourcesBool);
-
-						QStringList tags;
-						QJsonArray jsonTags = infos["tags"].toArray();
-						for (auto tag : jsonTags)
-							tags.append(tag.toString());
-						tab->setTags(tags.join(' '));
-
-						QStringList postFilters;
-						QJsonArray jsonPostFilters = infos["postFiltering"].toArray();
-						for (auto tag : jsonPostFilters)
-							postFilters.append(tag.toString());
-						tab->setPostFilter(postFilters.join(' '));
-
-						tagTabs.append(tab);
+						if (tab->read(infos))
+							tagTabs.append(tab);
 					}
 					else if (type == "pool")
 					{
 						poolTab *tab = new poolTab(&sites, profile, parent);
-						tab->ui->spinPool->setValue(infos["pool"].toInt());
-						tab->ui->comboSites->setCurrentText(infos["site"].toString());
-						tab->ui->spinPage->setValue(infos["page"].toInt());
-						tab->ui->spinImagesPerPage->setValue(infos["perpage"].toInt());
-						tab->ui->spinColumns->setValue(infos["columns"].toInt());
-
-						QStringList tags;
-						QJsonArray jsonTags = infos["tags"].toArray();
-						for (auto tag : jsonTags)
-							tags.append(tag.toString());
-						tab->setTags(tags.join(' '));
-
-						QStringList postFilters;
-						QJsonArray jsonPostFilters = infos["postFiltering"].toArray();
-						for (auto tag : jsonPostFilters)
-							postFilters.append(tag.toString());
-						tab->setPostFilter(postFilters.join(' '));
-
-						poolTabs.append(tab);
+						if (tab->read(infos))
+							poolTabs.append(tab);
 					}
 				}
 				return true;

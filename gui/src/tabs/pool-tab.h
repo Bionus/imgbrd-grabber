@@ -30,6 +30,7 @@ class poolTab : public searchTab
 		QString tags() const;
 		QList<Site*> loadSites() const override;
 		void write(QJsonObject &json) const;
+		bool read(const QJsonObject &json);
 
 	public slots:
 		// Zooms
