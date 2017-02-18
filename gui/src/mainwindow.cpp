@@ -468,15 +468,16 @@ void mainWindow::addSearchTab(searchTab *w, bool background, bool save)
 
 bool mainWindow::saveTabs(QString filename)
 {
-	return TabsLoader::save(filename, m_tabs);
+	return TabsLoader::save(filename, m_tabs, (searchTab*)m_currentTab);
 }
 bool mainWindow::loadTabs(QString filename)
 {
 	QList<searchTab*> allTabs;
 	QList<tagTab*> tagTabs;
 	QList<poolTab*> poolTabs;
+	int currentTab;
 
-	if (!TabsLoader::load(filename, tagTabs, poolTabs, allTabs, m_profile, m_sites, this))
+	if (!TabsLoader::load(filename, tagTabs, poolTabs, allTabs, currentTab, m_profile, m_sites, this))
 		return false;
 
 	for (auto tab : allTabs)
@@ -484,6 +485,9 @@ bool mainWindow::loadTabs(QString filename)
 
 	m_tagTabs.append(tagTabs);
 	m_poolTabs.append(poolTabs);
+
+	ui->tabWidget->setCurrentIndex(currentTab);
+	m_forcedTab = true;
 
 	return true;
 }

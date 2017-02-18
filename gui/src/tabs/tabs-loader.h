@@ -12,8 +12,8 @@
 class TabsLoader
 {
 	public:
-		static bool load(QString path, QList<tagTab*> &tagTabs, QList<poolTab*> &poolTabs, QList<searchTab*> &allTabs, Profile *profile, QMap<QString, Site *> &sites, mainWindow *parent);
-		static bool save(QString path, QList<searchTab*> &allTabs);
+		static bool load(QString path, QList<tagTab*> &tagTabs, QList<poolTab*> &poolTabs, QList<searchTab*> &allTabs, int &currentTab, Profile *profile, QMap<QString, Site *> &sites, mainWindow *parent);
+		static bool save(QString path, QList<searchTab*> &allTabs, searchTab *currentTab);
 };
 
 #endif // TABS_LOADER_H

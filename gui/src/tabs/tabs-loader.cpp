@@ -7,7 +7,7 @@
 #include "ui_pool-tab.h"
 
 
-bool TabsLoader::load(QString path, QList<tagTab*> &tagTabs, QList<poolTab*> &poolTabs, QList<searchTab*> &allTabs, Profile *profile, QMap<QString, Site*> &sites, mainWindow *parent)
+bool TabsLoader::load(QString path, QList<tagTab*> &tagTabs, QList<poolTab*> &poolTabs, QList<searchTab*> &allTabs, int &currentTab, Profile *profile, QMap<QString, Site*> &sites, mainWindow *parent)
 {
 	QFile f(path);
 	if (!f.open(QFile::ReadOnly))
@@ -55,6 +55,7 @@ bool TabsLoader::load(QString path, QList<tagTab*> &tagTabs, QList<poolTab*> &po
 				}
 			}
 		}
+		currentTab = 0;
 
 		return true;
 	}
@@ -70,6 +71,7 @@ bool TabsLoader::load(QString path, QList<tagTab*> &tagTabs, QList<poolTab*> &po
 		switch (version)
 		{
 			case 2:
+				currentTab = object["current"].toInt();
 				QJsonArray tabs = object["tabs"].toArray();
 				for (auto tab : tabs)
 				{
@@ -103,7 +105,7 @@ bool TabsLoader::load(QString path, QList<tagTab*> &tagTabs, QList<poolTab*> &po
 	return false;
 }
 
-bool TabsLoader::save(QString path, QList<searchTab*> &allTabs)
+bool TabsLoader::save(QString path, QList<searchTab*> &allTabs, searchTab *currentTab)
 {
 	QFile saveFile(path);
 	if (!saveFile.open(QFile::WriteOnly))
@@ -122,6 +124,7 @@ bool TabsLoader::save(QString path, QList<searchTab*> &allTabs)
 	// Generate result
 	QJsonObject full;
 	full["version"] = 2;
+	full["current"] = allTabs.indexOf(currentTab);
 	full["tabs"] = tabsJson;
 
 	// Write result
