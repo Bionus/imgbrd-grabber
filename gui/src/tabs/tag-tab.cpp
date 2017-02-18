@@ -120,7 +120,7 @@ bool tagTab::validateImage(QSharedPointer<Image> img)
 
 void tagTab::write(QJsonObject &json) const
 {
-	json["type"] = "tag";
+	json["type"] = QString("tag");
 	json["tags"] = QJsonArray::fromStringList(m_search->toPlainText().split(' ', QString::SkipEmptyParts));
 	json["page"] = ui->spinPage->value();
 	json["perpage"] = ui->spinImagesPerPage->value();

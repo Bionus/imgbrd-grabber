@@ -113,7 +113,7 @@ bool poolTab::validateImage(QSharedPointer<Image> img)
 
 void poolTab::write(QJsonObject &json) const
 {
-	json["type"] = "pool";
+	json["type"] = QString("pool");
 	json["pool"] = ui->spinPool->value();
 	json["site"] = ui->comboSites->currentText();
 	json["tags"] = QJsonArray::fromStringList(m_search->toPlainText().split(' ', QString::SkipEmptyParts));
