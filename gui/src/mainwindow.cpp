@@ -33,6 +33,7 @@
 #include "models/filename.h"
 #include "helpers.h"
 #include "downloader/download-query-loader.h"
+#include "tabs/tabs-loader.h"
 
 
 
@@ -467,66 +468,28 @@ void mainWindow::addSearchTab(searchTab *w, bool background, bool save)
 
 bool mainWindow::saveTabs(QString filename)
 {
-	QStringList tabs = QStringList();
-	for (tagTab *tab : m_tagTabs)
-	{
-		if (tab != nullptr && m_tabs.contains(tab))
-		{ tabs.append(tab->tags()+"¤"+QString::number(tab->ui->spinPage->value())+"¤"+QString::number(tab->ui->spinImagesPerPage->value())+"¤"+QString::number(tab->ui->spinColumns->value())); }
-	}
-	for (poolTab *tab : m_poolTabs)
-	{
-		if (tab != nullptr && m_tabs.contains(tab))
-		{ tabs.append(QString::number(tab->ui->spinPool->value())+"¤"+QString::number(tab->ui->comboSites->currentIndex())+"¤"+tab->tags()+"¤"+QString::number(tab->ui->spinPage->value())+"¤"+QString::number(tab->ui->spinImagesPerPage->value())+"¤"+QString::number(tab->ui->spinColumns->value())+"¤pool"); }
-	}
-
-	QFile f(filename);
-	if (f.open(QFile::WriteOnly))
-	{
-		f.write(tabs.join("\r\n").toUtf8());
-		f.close();
-		return true;
-	}
-	return false;
+	return TabsLoader::save(filename, m_tagTabs, m_poolTabs, m_tabs);
 }
 bool mainWindow::loadTabs(QString filename)
 {
-	QFile f(filename);
-	if (f.open(QFile::ReadOnly))
-	{
-		QString links = f.readAll().trimmed();
-		f.close();
+	QList<tagTab*> tagTabs;
+	QList<poolTab*> poolTabs;
 
-		QStringList tabs = links.split("\r\n");
-		for (int j = 0; j < tabs.size(); j++)
-		{
-			QStringList infos = tabs[j].split("¤");
-			if (infos.size() > 3)
-			{
-				if (infos[infos.size() - 1] == "pool")
-				{
-					addPoolTab(0, "", true);
-					int i = m_poolTabs.size() - 1;
-					m_poolTabs[i]->ui->spinPool->setValue(infos[0].toInt());
-					m_poolTabs[i]->ui->comboSites->setCurrentIndex(infos[1].toInt());
-					m_poolTabs[i]->ui->spinPage->setValue(infos[2].toInt());
-					m_poolTabs[i]->ui->spinImagesPerPage->setValue(infos[4].toInt());
-					m_poolTabs[i]->ui->spinColumns->setValue(infos[5].toInt());
-					m_poolTabs[i]->setTags(infos[2]);
-				}
-				else
-				{
-					addTab("", true);
-					int i = m_tagTabs.size() - 1;
-					m_tagTabs[i]->ui->spinPage->setValue(infos[1].toInt());
-					m_tagTabs[i]->ui->spinImagesPerPage->setValue(infos[2].toInt());
-					m_tagTabs[i]->ui->spinColumns->setValue(infos[3].toInt());
-					m_tagTabs[i]->setTags(infos[0]);
-				}
-			}
-		}
-		return true;
+	if (!TabsLoader::load(filename, tagTabs, poolTabs, m_profile, m_sites, this))
+		return false;
+
+	for (auto tab : tagTabs)
+	{
+		addSearchTab(tab, true);
+		m_tagTabs.append(tab);
 	}
-	return false;
+	for (auto tab : poolTabs)
+	{
+		addSearchTab(tab, true);
+		m_poolTabs.append(tab);
+	}
+
+	return true;
 }
 void mainWindow::updateTabTitle(searchTab *tab)
 {
