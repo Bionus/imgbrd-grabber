@@ -92,7 +92,7 @@ void poolTab::load()
 	QStringList tags = search.trimmed().split(" ", QString::SkipEmptyParts);
 	tags.prepend("pool:"+QString::number(ui->spinPool->value()));
 
-	setWindowTitle(search.isEmpty() ? tr("Search") : search.replace("&", "&&"));
+	setWindowTitle("Pool #" + QString::number(ui->spinPool->value()) + (search.isEmpty() ? "" : " - " + QString(search).replace("&", "&&")));
 	emit titleChanged(this);
 
 	loadTags(tags);
