@@ -171,6 +171,11 @@ bool favoritesTab::validateImage(QSharedPointer<Image> img)
 	return (img->createdAt() > m_loadFavorite || img->createdAt().isNull());
 }
 
+void favoritesTab::write(QJsonObject &json) const
+{
+	Q_UNUSED(json);
+}
+
 
 void favoritesTab::addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage)
 {

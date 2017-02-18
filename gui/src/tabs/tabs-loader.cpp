@@ -7,7 +7,7 @@
 #include "ui_pool-tab.h"
 
 
-bool TabsLoader::load(QString path, QList<tagTab*> &tagTabs, QList<poolTab*> &poolTabs, Profile *profile, QMap<QString, Site*> &sites, mainWindow *parent)
+bool TabsLoader::load(QString path, QList<tagTab*> &tagTabs, QList<poolTab*> &poolTabs, QList<searchTab*> &allTabs, Profile *profile, QMap<QString, Site*> &sites, mainWindow *parent)
 {
 	QFile f(path);
 	if (!f.open(QFile::ReadOnly))
@@ -80,13 +80,19 @@ bool TabsLoader::load(QString path, QList<tagTab*> &tagTabs, QList<poolTab*> &po
 					{
 						tagTab *tab = new tagTab(&sites, profile, parent);
 						if (tab->read(infos))
+						{
 							tagTabs.append(tab);
+							allTabs.append(tab);
+						}
 					}
 					else if (type == "pool")
 					{
 						poolTab *tab = new poolTab(&sites, profile, parent);
 						if (tab->read(infos))
+						{
 							poolTabs.append(tab);
+							allTabs.append(tab);
+						}
 					}
 				}
 				return true;
@@ -97,7 +103,7 @@ bool TabsLoader::load(QString path, QList<tagTab*> &tagTabs, QList<poolTab*> &po
 	return false;
 }
 
-bool TabsLoader::save(QString path, QList<tagTab*> &tagTabs, QList<poolTab*> &poolTabs, QList<searchTab*> &allTabs)
+bool TabsLoader::save(QString path, QList<searchTab*> &allTabs)
 {
 	QFile saveFile(path);
 	if (!saveFile.open(QFile::WriteOnly))
@@ -106,20 +112,8 @@ bool TabsLoader::save(QString path, QList<tagTab*> &tagTabs, QList<poolTab*> &po
 	}
 
 	QJsonArray tabsJson;
-	for (tagTab *tab : tagTabs)
+	for (auto tab : allTabs)
 	{
-		if (tab == nullptr || !allTabs.contains(tab))
-			continue;
-
-		QJsonObject tabJson;
-		tab->write(tabJson);
-		tabsJson.append(tabJson);
-	}
-	for (poolTab *tab : poolTabs)
-	{
-		if (tab == nullptr || !allTabs.contains(tab))
-			continue;
-
 		QJsonObject tabJson;
 		tab->write(tabJson);
 		tabsJson.append(tabJson);

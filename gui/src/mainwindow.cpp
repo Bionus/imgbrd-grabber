@@ -468,26 +468,22 @@ void mainWindow::addSearchTab(searchTab *w, bool background, bool save)
 
 bool mainWindow::saveTabs(QString filename)
 {
-	return TabsLoader::save(filename, m_tagTabs, m_poolTabs, m_tabs);
+	return TabsLoader::save(filename, m_tabs);
 }
 bool mainWindow::loadTabs(QString filename)
 {
+	QList<searchTab*> allTabs;
 	QList<tagTab*> tagTabs;
 	QList<poolTab*> poolTabs;
 
-	if (!TabsLoader::load(filename, tagTabs, poolTabs, m_profile, m_sites, this))
+	if (!TabsLoader::load(filename, tagTabs, poolTabs, allTabs, m_profile, m_sites, this))
 		return false;
 
-	for (auto tab : tagTabs)
-	{
+	for (auto tab : allTabs)
 		addSearchTab(tab, true, false);
-		m_tagTabs.append(tab);
-	}
-	for (auto tab : poolTabs)
-	{
-		addSearchTab(tab, true, false);
-		m_poolTabs.append(tab);
-	}
+
+	m_tagTabs.append(tagTabs);
+	m_poolTabs.append(poolTabs);
 
 	return true;
 }

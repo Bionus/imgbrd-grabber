@@ -47,6 +47,7 @@ class searchTab : public QWidget
 		void setPostFilter(QString postfilter);
 		virtual QList<Site*> loadSites() const = 0;
 		virtual void onLoad();
+		virtual void write(QJsonObject &json) const = 0;
 
 	protected:
 		void setSelectedSources(QSettings *settings);

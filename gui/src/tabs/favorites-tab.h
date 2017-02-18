@@ -30,6 +30,7 @@ class favoritesTab : public searchTab
 		QList<bool> sources();
 		QString tags() const;
 		QList<Site*> loadSites() const override;
+		void write(QJsonObject &json) const override;
 
 	public slots:
 		// Zooms
