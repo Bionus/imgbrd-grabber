@@ -63,7 +63,7 @@ QString DownloadQueryImage::toString(QString separator) const
 			values["tags"] + separator +
 			values["file_url"] + separator +
 			values["date"] + separator +
-			site->name() + separator +
+			site->url() + separator +
 			filename + separator +
 			path;
 }
@@ -77,7 +77,7 @@ void DownloadQueryImage::write(QJsonObject &json) const
 	json["file_url"] = values["file_url"];
 	json["date"] = values["date"];
 
-	json["site"] = site->name();
+	json["site"] = site->url();
 	json["filename"] = QString(filename).replace("\n", "\\n");
 	json["path"] = path;
 }

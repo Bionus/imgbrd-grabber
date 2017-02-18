@@ -19,7 +19,7 @@ class AddGroupWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		AddGroupWindow(QString selected, QStringList sites, Profile *profile, QWidget *parent);
+		AddGroupWindow(QString selected, QMap<QString, Site*> sites, Profile *profile, QWidget *parent);
 
 	public slots:
 		void ok();
@@ -28,10 +28,10 @@ class AddGroupWindow : public QDialog
 		void sendData(const DownloadQueryGroup &);
 
 	private:
-		Ui::AddGroupWindow	*ui;
-		TextEdit			*m_lineTags;
-		QStringList			m_sites;
-		QSettings			*m_settings;
+		Ui::AddGroupWindow		*ui;
+		TextEdit				*m_lineTags;
+		QMap<QString, Site*>	m_sites;
+		QSettings				*m_settings;
 };
 
 #endif // ADDGROUPWINDOW_H

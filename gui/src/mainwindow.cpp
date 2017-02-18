@@ -583,7 +583,7 @@ void mainWindow::batchAddGroup(const DownloadQueryGroup &values)
 	ui->tableBatchGroups->setItem(row, 0, item);
 
 	addTableItem(ui->tableBatchGroups, row, 1, values.tags);
-	addTableItem(ui->tableBatchGroups, row, 2, values.site);
+	addTableItem(ui->tableBatchGroups, row, 2, values.site->url());
 	addTableItem(ui->tableBatchGroups, row, 3, QString::number(values.page));
 	addTableItem(ui->tableBatchGroups, row, 4, QString::number(values.perpage));
 	addTableItem(ui->tableBatchGroups, row, 5, QString::number(values.total));
@@ -777,11 +777,19 @@ void mainWindow::updateBatchGroups(int y, int x)
 		switch (x)
 		{
 			case 1:	m_groupBatchs[y].tags = val;						break;
-			case 2:	m_groupBatchs[y].site = val;						break;
 			case 3:	m_groupBatchs[y].page = toInt;						break;
 			case 6:	m_groupBatchs[y].filename = val;					break;
 			case 7:	m_groupBatchs[y].path = val;						break;
 			case 8:	m_groupBatchs[y].getBlacklisted = (val != "false");	break;
+
+			case 2:
+				if (!m_sites.contains(val))
+				{
+					error(this, tr("This source is not valid."));
+					ui->tableBatchGroups->item(y, x)->setText(m_groupBatchs[y].site->url());
+				}
+				m_groupBatchs[y].site = m_sites.value(val);
+				break;
 
 			case 4:
 				if (toInt < 1)
@@ -837,7 +845,7 @@ void mainWindow::addGroup()
 {
 	QString selected = getSelectedSiteOrDefault()->name();
 
-	AddGroupWindow *wAddGroup = new AddGroupWindow(selected, m_sites.keys(), m_profile, this);
+	AddGroupWindow *wAddGroup = new AddGroupWindow(selected, m_sites, m_profile, this);
 	connect(wAddGroup, &AddGroupWindow::sendData, this, &mainWindow::batchAddGroup);
 	wAddGroup->show();
 }
@@ -1264,7 +1272,7 @@ void mainWindow::getAllFinishedLogins()
 			Downloader *downloader = new Downloader(m_profile,
 													b.tags.split(' '),
 													QStringList(),
-													QList<Site*>() << m_sites[b.site],
+													QList<Site*>() << b.site,
 													b.page + i * pagesPerPack,
 													(i == packs - 1 ? b.total % imagesPerPack : imagesPerPack),
 													b.perpage,
@@ -1409,7 +1417,7 @@ void mainWindow::getAllImages()
 	for (int f = 0; f < m_groupBatchs.size() && !m_mustGetTags; f++)
 	{
 		Filename fn(m_groupBatchs[f].filename);
-		Site *site = m_sites[m_groupBatchs[f].site];
+		Site *site = m_groupBatchs[f].site;
 		Api *api = site->firstValidApi();
 		QString apiName = api == nullptr ? "" : api->getName();
 		if (fn.needExactTags(site, apiName))
@@ -2153,7 +2161,7 @@ bool mainWindow::loadLinkList(QString filename)
 
 		int row = ui->tableBatchGroups->rowCount() - 1;
 		addTableItem(ui->tableBatchGroups, row, 1, queryGroup.tags);
-		addTableItem(ui->tableBatchGroups, row, 2, queryGroup.site);
+		addTableItem(ui->tableBatchGroups, row, 2, queryGroup.site->url());
 		addTableItem(ui->tableBatchGroups, row, 3, QString::number(queryGroup.page));
 		addTableItem(ui->tableBatchGroups, row, 4, QString::number(queryGroup.perpage));
 		addTableItem(ui->tableBatchGroups, row, 5, QString::number(queryGroup.total));
