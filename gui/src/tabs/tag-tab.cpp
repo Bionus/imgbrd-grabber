@@ -126,6 +126,7 @@ void tagTab::write(QJsonObject &json) const
 	json["perpage"] = ui->spinImagesPerPage->value();
 	json["columns"] = ui->spinColumns->value();
 	json["postFiltering"] = QJsonArray::fromStringList(m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts));
+	json["mergeResults"] = ui->checkMergeResults->isChecked();
 
 	// Sites
 	QJsonArray sites;
@@ -139,6 +140,7 @@ bool tagTab::read(const QJsonObject &json)
 	ui->spinPage->setValue(json["page"].toInt());
 	ui->spinImagesPerPage->setValue(json["perpage"].toInt());
 	ui->spinColumns->setValue(json["columns"].toInt());
+	ui->checkMergeResults->setChecked(json["mergeResults"].toBool());
 
 	// Tags
 	QStringList tags;
