@@ -118,6 +118,15 @@ bool tagTab::validateImage(QSharedPointer<Image> img)
 	return true;
 }
 
+void tagTab::write(QJsonObject &json) const
+{
+	json["type"] = "tag";
+	json["tags"] = tags();
+	json["page"] = ui->spinPage->value();
+	json["perpage"] = ui->spinImagesPerPage->value();
+	json["columns"] = ui->spinColumns->value();
+}
+
 
 void tagTab::setTags(QString tags)
 {
@@ -181,5 +190,5 @@ void tagTab::focusSearch()
 	m_search->setFocus();
 }
 
-QString tagTab::tags()
+QString tagTab::tags() const
 { return m_search->toPlainText(); }

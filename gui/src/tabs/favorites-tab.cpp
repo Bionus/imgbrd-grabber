@@ -230,7 +230,8 @@ void favoritesTab::getAll()
 QList<bool> favoritesTab::sources()
 { return m_selectedSources; }
 
-QString favoritesTab::tags()	{ return m_currentTags;	}
+QString favoritesTab::tags() const
+{ return m_currentTags;	}
 
 void favoritesTab::loadFavorite(QString name)
 {

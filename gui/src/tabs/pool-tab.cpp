@@ -111,6 +111,17 @@ bool poolTab::validateImage(QSharedPointer<Image> img)
 	return true;
 }
 
+void poolTab::write(QJsonObject &json) const
+{
+	json["type"] = "pool";
+	json["pool"] = ui->spinPool->value();
+	json["site"] = ui->comboSites->currentText();
+	json["tags"] = tags();
+	json["page"] = ui->spinPage->value();
+	json["perpage"] = ui->spinImagesPerPage->value();
+	json["columns"] = ui->spinColumns->value();
+}
+
 
 void poolTab::getPage()
 {
@@ -158,5 +169,5 @@ void poolTab::focusSearch()
 	ui->spinPool->focusWidget();
 }
 
-QString poolTab::tags()
+QString poolTab::tags() const
 { return m_search->toPlainText(); }

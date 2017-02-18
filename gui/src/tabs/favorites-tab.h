@@ -28,7 +28,7 @@ class favoritesTab : public searchTab
 		~favoritesTab();
 		Ui::favoritesTab *ui;
 		QList<bool> sources();
-		QString tags();
+		QString tags() const;
 		QList<Site*> loadSites() override;
 
 	public slots:

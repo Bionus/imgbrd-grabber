@@ -122,12 +122,7 @@ bool TabsLoader::save(QString path, QList<tagTab*> &tagTabs, QList<poolTab*> &po
 			continue;
 
 		QJsonObject tabJson;
-		tabJson["type"] = "tag";
-		tabJson["tags"] = tab->tags();
-		tabJson["page"] = tab->ui->spinPage->value();
-		tabJson["perpage"] = tab->ui->spinImagesPerPage->value();
-		tabJson["columns"] = tab->ui->spinColumns->value();
-
+		tab->write(tabJson);
 		tabsJson.append(tabJson);
 	}
 	for (poolTab *tab : poolTabs)
@@ -136,14 +131,7 @@ bool TabsLoader::save(QString path, QList<tagTab*> &tagTabs, QList<poolTab*> &po
 			continue;
 
 		QJsonObject tabJson;
-		tabJson["type"] = "pool";
-		tabJson["pool"] = tab->ui->spinPool->value();
-		tabJson["site"] = tab->ui->comboSites->currentText();
-		tabJson["tags"] = tab->tags();
-		tabJson["page"] = tab->ui->spinPage->value();
-		tabJson["perpage"] = tab->ui->spinImagesPerPage->value();
-		tabJson["columns"] = tab->ui->spinColumns->value();
-
+		tab->write(tabJson);
 		tabsJson.append(tabJson);
 	}
 

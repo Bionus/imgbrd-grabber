@@ -32,7 +32,7 @@ class searchTab : public QWidget
 		searchTab(QMap<QString, Site*> *sites, Profile *profile, mainWindow *parent);
 		void mouseReleaseEvent(QMouseEvent *e);
 		virtual QList<bool> sources();
-		virtual QString tags() = 0;
+		virtual QString tags() const = 0;
 		QList<Tag> results();
 		QString wiki();
 		int imagesPerPage();

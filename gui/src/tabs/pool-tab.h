@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QMap>
 #include <QCalendarWidget>
+#include <QJsonObject>
 #include "ui/textedit.h"
 #include "models/page.h"
 #include "search-tab.h"
@@ -26,8 +27,9 @@ class poolTab : public searchTab
 		explicit poolTab(QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent);
 		~poolTab();
 		Ui::poolTab *ui;
-		QString tags();
+		QString tags() const;
 		QList<Site*> loadSites() override;
+		void write(QJsonObject &json) const;
 
 	public slots:
 		// Zooms
