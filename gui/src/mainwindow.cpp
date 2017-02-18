@@ -480,12 +480,12 @@ bool mainWindow::loadTabs(QString filename)
 
 	for (auto tab : tagTabs)
 	{
-		addSearchTab(tab, true);
+		addSearchTab(tab, true, false);
 		m_tagTabs.append(tab);
 	}
 	for (auto tab : poolTabs)
 	{
-		addSearchTab(tab, true);
+		addSearchTab(tab, true, false);
 		m_poolTabs.append(tab);
 	}
 

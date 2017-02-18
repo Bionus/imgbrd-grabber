@@ -131,19 +131,19 @@ bool poolTab::read(const QJsonObject &json)
 	ui->spinImagesPerPage->setValue(json["perpage"].toInt());
 	ui->spinColumns->setValue(json["columns"].toInt());
 
-	// Tags
-	QStringList tags;
-	QJsonArray jsonTags = json["tags"].toArray();
-	for (auto tag : jsonTags)
-		tags.append(tag.toString());
-	setTags(tags.join(' '));
-
 	// Post filtering
 	QStringList postFilters;
 	QJsonArray jsonPostFilters = json["postFiltering"].toArray();
 	for (auto tag : jsonPostFilters)
 		postFilters.append(tag.toString());
 	setPostFilter(postFilters.join(' '));
+
+	// Tags
+	QStringList tags;
+	QJsonArray jsonTags = json["tags"].toArray();
+	for (auto tag : jsonTags)
+		tags.append(tag.toString());
+	setTags(tags.join(' '));
 
 	return true;
 }

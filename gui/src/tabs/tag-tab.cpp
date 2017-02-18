@@ -142,13 +142,6 @@ bool tagTab::read(const QJsonObject &json)
 	ui->spinColumns->setValue(json["columns"].toInt());
 	ui->checkMergeResults->setChecked(json["mergeResults"].toBool());
 
-	// Tags
-	QStringList tags;
-	QJsonArray jsonTags = json["tags"].toArray();
-	for (auto tag : jsonTags)
-		tags.append(tag.toString());
-	setTags(tags.join(' '));
-
 	// Post filtering
 	QStringList postFilters;
 	QJsonArray jsonPostFilters = json["postFiltering"].toArray();
@@ -165,6 +158,13 @@ bool tagTab::read(const QJsonObject &json)
 	for (Site *site : *m_sites)
 		selectedSourcesBool.append(selectedSources.contains(site->name()));
 	saveSources(selectedSourcesBool);
+
+	// Tags
+	QStringList tags;
+	QJsonArray jsonTags = json["tags"].toArray();
+	for (auto tag : jsonTags)
+		tags.append(tag.toString());
+	setTags(tags.join(' '));
 
 	return true;
 }
