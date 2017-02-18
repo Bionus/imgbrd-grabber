@@ -83,6 +83,15 @@ bool TabsLoader::load(QString path, QList<tagTab*> &tagTabs, QList<poolTab*> &po
 						tab->ui->spinImagesPerPage->setValue(infos["perpage"].toInt());
 						tab->ui->spinColumns->setValue(infos["columns"].toInt());
 
+						QStringList selectedSources;
+						QJsonArray jsonSelectedSources = infos["sites"].toArray();
+						for (auto site : jsonSelectedSources)
+							selectedSources.append(site.toString());
+						QList<bool> selectedSourcesBool;
+						for (Site *site : sites)
+							selectedSourcesBool.append(selectedSources.contains(site->name()));
+						tab->saveSources(selectedSourcesBool);
+
 						QStringList tags;
 						QJsonArray jsonTags = infos["tags"].toArray();
 						for (auto tag : jsonTags)
