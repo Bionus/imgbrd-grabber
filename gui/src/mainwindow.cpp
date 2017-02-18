@@ -449,8 +449,12 @@ void mainWindow::addSearchTab(searchTab *w, bool background, bool save)
 	connect(w, &searchTab::changed, this, &mainWindow::updateTabs);
 	connect(w, &searchTab::closed, this, &mainWindow::tabClosed);
 
+	QString title = w->windowTitle();
+	if (title.isEmpty())
+	{ title = "New tab"; }
+
 	int pos = m_loaded ? ui->tabWidget->currentIndex() + (!m_tabs.isEmpty()) : m_tabs.count();
-	int index = ui->tabWidget->insertTab(pos, w, tr("New tab"));
+	int index = ui->tabWidget->insertTab(pos, w, title);
 	m_tabs.append(w);
 
 	QPushButton *closeTab = new QPushButton(QIcon(":/images/close.png"), "", this);
