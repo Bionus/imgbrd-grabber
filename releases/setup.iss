@@ -85,6 +85,7 @@ Source: "..\release\Qt5Widgets.dll";            DestDir: "{app}"; Flags: ignorev
 Source: "..\release\Qt5Xml.dll";                DestDir: "{app}"; Flags: ignoreversion           
 Source: "..\release\Qt5WinExtras.dll";          DestDir: "{app}"; Flags: ignoreversion
 Source: "..\release\ssleay32.dll";              DestDir: "{app}"; Flags: ignoreversion     
+Source: "..\release\crashreporter\ChineseSimplified.qm"; DestDir: "{app}\crashreporter"; Flags: ignoreversion         
 Source: "..\release\crashreporter\English.qm";  DestDir: "{app}\crashreporter"; Flags: ignoreversion         
 Source: "..\release\crashreporter\French.qm";   DestDir: "{app}\crashreporter"; Flags: ignoreversion  
 Source: "..\release\crashreporter\Russian.qm";  DestDir: "{app}\crashreporter"; Flags: ignoreversion  
@@ -98,10 +99,10 @@ Source: "..\release\imageformats\qtga.dll";     DestDir: "{app}\imageformats"; F
 Source: "..\release\imageformats\qtiff.dll";    DestDir: "{app}\imageformats"; Flags: ignoreversion
 Source: "..\release\imageformats\qwbmp.dll";    DestDir: "{app}\imageformats"; Flags: ignoreversion   
 Source: "..\release\imageformats\qwebp.dll";    DestDir: "{app}\imageformats"; Flags: ignoreversion
+Source: "..\release\languages\ChineseSimplified.qm"; DestDir: "{app}\languages"; Flags: ignoreversion
 Source: "..\release\languages\English.qm";      DestDir: "{app}\languages"; Flags: ignoreversion         
 Source: "..\release\languages\French.qm";       DestDir: "{app}\languages"; Flags: ignoreversion    
 Source: "..\release\languages\Russian.qm";      DestDir: "{app}\languages"; Flags: ignoreversion
-Source: "..\release\languages\ChineseSimplified.qm";      DestDir: "{app}\languages"; Flags: ignoreversion
 Source: "..\release\languages\languages.ini";   DestDir: "{app}\languages"; Flags: ignoreversion
 Source: "..\release\platforms\qminimal.dll";    DestDir: "{app}\platforms"; Flags: ignoreversion
 Source: "..\release\platforms\qoffscreen.dll";  DestDir: "{app}\platforms"; Flags: ignoreversion

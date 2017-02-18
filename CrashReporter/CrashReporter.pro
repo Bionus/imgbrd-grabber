@@ -15,5 +15,6 @@ RESOURCES    += resources.qrc
 RC_FILE       = icon.rc
 TRANSLATIONS += languages/English.ts \
 				languages/French.ts \
+				languages/ChineseSimplified.ts \
 				languages/Russian.ts \
 				languages/YourLanguage.ts
