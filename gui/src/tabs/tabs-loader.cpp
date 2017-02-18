@@ -82,7 +82,18 @@ bool TabsLoader::load(QString path, QList<tagTab*> &tagTabs, QList<poolTab*> &po
 						tab->ui->spinPage->setValue(infos["page"].toInt());
 						tab->ui->spinImagesPerPage->setValue(infos["perpage"].toInt());
 						tab->ui->spinColumns->setValue(infos["columns"].toInt());
-						tab->setTags(infos["tags"].toString());
+
+						QStringList tags;
+						QJsonArray jsonTags = infos["tags"].toArray();
+						for (auto tag : jsonTags)
+							tags.append(tag.toString());
+						tab->setTags(tags.join(' '));
+
+						QStringList postFilters;
+						QJsonArray jsonPostFilters = infos["postFiltering"].toArray();
+						for (auto tag : jsonPostFilters)
+							postFilters.append(tag.toString());
+						tab->setPostFilter(postFilters.join(' '));
 
 						tagTabs.append(tab);
 					}
@@ -94,7 +105,18 @@ bool TabsLoader::load(QString path, QList<tagTab*> &tagTabs, QList<poolTab*> &po
 						tab->ui->spinPage->setValue(infos["page"].toInt());
 						tab->ui->spinImagesPerPage->setValue(infos["perpage"].toInt());
 						tab->ui->spinColumns->setValue(infos["columns"].toInt());
-						tab->setTags(infos["tags"].toString());
+
+						QStringList tags;
+						QJsonArray jsonTags = infos["tags"].toArray();
+						for (auto tag : jsonTags)
+							tags.append(tag.toString());
+						tab->setTags(tags.join(' '));
+
+						QStringList postFilters;
+						QJsonArray jsonPostFilters = infos["postFiltering"].toArray();
+						for (auto tag : jsonPostFilters)
+							postFilters.append(tag.toString());
+						tab->setPostFilter(postFilters.join(' '));
 
 						poolTabs.append(tab);
 					}

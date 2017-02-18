@@ -98,7 +98,7 @@ void poolTab::load()
 	loadTags(tags);
 }
 
-QList<Site*> poolTab::loadSites()
+QList<Site*> poolTab::loadSites() const
 {
 	QList<Site*> sites;
 	sites.append(m_sites->value(ui->comboSites->currentText()));
@@ -116,10 +116,11 @@ void poolTab::write(QJsonObject &json) const
 	json["type"] = "pool";
 	json["pool"] = ui->spinPool->value();
 	json["site"] = ui->comboSites->currentText();
-	json["tags"] = tags();
+	json["tags"] = QJsonArray::fromStringList(m_search->toPlainText().split(' ', QString::SkipEmptyParts));
 	json["page"] = ui->spinPage->value();
 	json["perpage"] = ui->spinImagesPerPage->value();
 	json["columns"] = ui->spinColumns->value();
+	json["postFiltering"] = QJsonArray::fromStringList(m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts));
 }
 
 

@@ -28,7 +28,7 @@ class poolTab : public searchTab
 		~poolTab();
 		Ui::poolTab *ui;
 		QString tags() const;
-		QList<Site*> loadSites() override;
+		QList<Site*> loadSites() const override;
 		void write(QJsonObject &json) const;
 
 	public slots:

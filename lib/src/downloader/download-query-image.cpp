@@ -73,7 +73,7 @@ void DownloadQueryImage::write(QJsonObject &json) const
 	json["id"] = values["id"].toInt();
 	json["md5"] = values["md5"];
 	json["rating"] = values["rating"];
-	json["tags"] = QJsonArray::fromStringList(values["tags"].split(' '));
+	json["tags"] = QJsonArray::fromStringList(values["tags"].split(' ', QString::SkipEmptyParts));
 	json["file_url"] = values["file_url"];
 	json["date"] = values["date"];
 

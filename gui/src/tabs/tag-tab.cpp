@@ -103,7 +103,7 @@ void tagTab::load()
 	loadTags(tags);
 }
 
-QList<Site*> tagTab::loadSites()
+QList<Site*> tagTab::loadSites() const
 {
 	QList<Site*> sites;
 	for (int i = 0; i < m_selectedSources.size(); i++)
@@ -121,10 +121,17 @@ bool tagTab::validateImage(QSharedPointer<Image> img)
 void tagTab::write(QJsonObject &json) const
 {
 	json["type"] = "tag";
-	json["tags"] = tags();
+	json["tags"] = QJsonArray::fromStringList(m_search->toPlainText().split(' ', QString::SkipEmptyParts));
 	json["page"] = ui->spinPage->value();
 	json["perpage"] = ui->spinImagesPerPage->value();
 	json["columns"] = ui->spinColumns->value();
+	json["postFiltering"] = QJsonArray::fromStringList(m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts));
+
+	// Sites
+	QJsonArray sites;
+	for (Site *site : loadSites())
+		sites.append(site->name());
+	json["sites"] = sites;
 }
 
 

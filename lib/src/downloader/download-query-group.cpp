@@ -32,7 +32,7 @@ QString DownloadQueryGroup::toString(QString separator) const
 
 void DownloadQueryGroup::write(QJsonObject &json) const
 {
-	json["tags"] = QJsonArray::fromStringList(tags.split(' '));
+	json["tags"] = QJsonArray::fromStringList(tags.split(' ', QString::SkipEmptyParts));
 	json["page"] = page;
 	json["perpage"] = perpage;
 	json["total"] = total;

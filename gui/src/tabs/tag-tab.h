@@ -32,7 +32,7 @@ class tagTab : public searchTab
 		Ui::tagTab *ui;
 		QString tags() const;
 		QString results();
-		QList<Site*> loadSites() override;
+		QList<Site*> loadSites() const override;
 		void write(QJsonObject &json) const;
 
 	public slots:

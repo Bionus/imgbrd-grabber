@@ -157,7 +157,7 @@ void favoritesTab::load()
 	loadTags(m_currentTags.trimmed().split(' ', QString::SkipEmptyParts));
 }
 
-QList<Site*> favoritesTab::loadSites()
+QList<Site*> favoritesTab::loadSites() const
 {
 	QList<Site*> sites;
 	for (int i = 0; i < m_selectedSources.size(); i++)

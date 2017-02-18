@@ -45,7 +45,7 @@ class searchTab : public QWidget
 		void setImagesPerPage(int ipp);
 		void setColumns(int columns);
 		void setPostFilter(QString postfilter);
-		virtual QList<Site*> loadSites() = 0;
+		virtual QList<Site*> loadSites() const = 0;
 		virtual void onLoad();
 
 	protected:
