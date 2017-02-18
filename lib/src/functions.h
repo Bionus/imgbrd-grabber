@@ -16,11 +16,11 @@
 
 
 // Filesize units
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN)
 	// 1 KB = 1024 B
 	#define FILESIZE_UNITS QStringList() << QObject::tr("B") << QObject::tr("KB") << QObject::tr("MB") << QObject::tr("GB");
 	#define FILESIZE_MULTIPLIER 1024
-#elif Q_OS_MACOS
+#elif defined(Q_OS_MACOS)
 	// 1 KB = 1000 B
 	#define FILESIZE_UNITS QStringList() << QObject::tr("B") << QObject::tr("KB") << QObject::tr("MB") << QObject::tr("GB");
 	#define FILESIZE_MULTIPLIER 1000
