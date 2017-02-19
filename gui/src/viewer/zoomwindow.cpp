@@ -1058,13 +1058,15 @@ void zoomWindow::load(QSharedPointer<Image> image)
 	int preload = m_settings->value("preload", 0).toInt();
 	if (preload > 0)
 	{
+		QSet<int> preloaded;
 		int index = m_images.indexOf(m_image);
 		for (int i = index - preload; i <= index + preload; ++i)
 		{
-			if (i == index)
+			int pos = (i + m_images.count()) % m_images.count();
+			if (pos < 0 || pos == index || pos > m_images.count() || preloaded.contains(pos))
 				continue;
 
-			int pos = (i + m_images.count()) % m_images.count();
+			preloaded.insert(pos);
 			log(QString("Preloading data for image #%1").arg(pos));
 			m_images[pos]->loadDetails();
 			m_images[pos]->loadImage();
