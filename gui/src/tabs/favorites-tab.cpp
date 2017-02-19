@@ -35,6 +35,7 @@ favoritesTab::favoritesTab(QMap<QString,Site*> *sites, Profile *profile, mainWin
 	ui_buttonGetSel = ui->buttonGetSel;
 	ui_buttonFirstPage = ui->buttonFirstPage;
 	ui_buttonPreviousPage = ui->buttonPreviousPage;
+	ui_scrollAreaResults = ui->scrollAreaResults;
 
 	// Search field
 	m_postFiltering = createAutocomplete();
@@ -156,7 +157,7 @@ void favoritesTab::load()
 	loadTags(m_currentTags.trimmed().split(' ', QString::SkipEmptyParts));
 }
 
-QList<Site*> favoritesTab::loadSites()
+QList<Site*> favoritesTab::loadSites() const
 {
 	QList<Site*> sites;
 	for (int i = 0; i < m_selectedSources.size(); i++)
@@ -168,6 +169,11 @@ QList<Site*> favoritesTab::loadSites()
 bool favoritesTab::validateImage(QSharedPointer<Image> img)
 {
 	return (img->createdAt() > m_loadFavorite || img->createdAt().isNull());
+}
+
+void favoritesTab::write(QJsonObject &json) const
+{
+	Q_UNUSED(json);
 }
 
 
@@ -202,8 +208,9 @@ void favoritesTab::getPage()
 	bool unloaded = m_settings->value("getunloadedpages", false).toBool();
 	for (int i = 0; i < actuals.count(); i++)
 	{
+		QString search = m_currentTags+" "+m_settings->value("add").toString().toLower().trimmed();
 		int perpage = unloaded ? ui->spinImagesPerPage->value() : m_pages.value(actuals.at(i))->images().count();
-		emit batchAddGroup(QStringList() << m_currentTags+" "+m_settings->value("add").toString().toLower().trimmed() << QString::number(ui->spinPage->value()) << QString::number(perpage) << QString::number(perpage) << m_settings->value("downloadblacklist").toString() << actuals.at(i) << m_settings->value("Save/filename").toString() << m_settings->value("Save/path").toString() << "");
+		emit batchAddGroup(DownloadQueryGroup(m_settings, search, ui->spinPage->value(), perpage, perpage, m_sites->value(actuals.at(i))));
 	}
 }
 void favoritesTab::getAll()
@@ -216,8 +223,11 @@ void favoritesTab::getAll()
 	}
 	for (int i = 0; i < actuals.count(); i++)
 	{
+		QString search = m_currentTags+" "+m_settings->value("add").toString().toLower().trimmed();
 		int limit = m_sites->value(actuals.at(i))->contains("Urls/1/Limit") ? m_sites->value(actuals.at(i))->value("Urls/1/Limit").toInt() : 0;
-		emit batchAddGroup(QStringList() << m_currentTags+" "+m_settings->value("add").toString().toLower().trimmed() << "1" << QString::number(qMin((limit > 0 ? limit : 1000), qMax(m_pages.value(actuals.at(i))->images().count(), m_pages.value(actuals.at(i))->imagesCount()))) << QString::number(qMax(m_pages.value(actuals.at(i))->images().count(), m_pages.value(actuals.at(i))->imagesCount())) << m_settings->value("downloadblacklist").toString() << actuals.at(i) << m_settings->value("Save/filename").toString() << m_settings->value("Save/path").toString() << "");
+		int perpage = qMin((limit > 0 ? limit : 1000), qMax(m_pages.value(actuals.at(i))->images().count(), m_pages.value(actuals.at(i))->imagesCount()));
+		int total = qMax(m_pages.value(actuals.at(i))->images().count(), m_pages.value(actuals.at(i))->imagesCount());
+		emit batchAddGroup(DownloadQueryGroup(m_settings, search, 1, perpage, total, m_sites->value(actuals.at(i))));
 	}
 }
 
@@ -225,7 +235,8 @@ void favoritesTab::getAll()
 QList<bool> favoritesTab::sources()
 { return m_selectedSources; }
 
-QString favoritesTab::tags()	{ return m_currentTags;	}
+QString favoritesTab::tags() const
+{ return m_currentTags;	}
 
 void favoritesTab::loadFavorite(QString name)
 {

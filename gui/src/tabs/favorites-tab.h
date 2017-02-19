@@ -28,8 +28,9 @@ class favoritesTab : public searchTab
 		~favoritesTab();
 		Ui::favoritesTab *ui;
 		QList<bool> sources();
-		QString tags();
-		QList<Site*> loadSites() override;
+		QString tags() const;
+		QList<Site*> loadSites() const override;
+		void write(QJsonObject &json) const override;
 
 	public slots:
 		// Zooms

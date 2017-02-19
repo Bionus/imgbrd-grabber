@@ -655,13 +655,12 @@ void Image::loadImage()
 
 	if (m_loadedImage)
 	{
-		emit finishedImage();
+		emit finishedImage(QNetworkReply::NoError, "");
 		return;
 	}
 
 	m_loadImage = m_parentSite->get(m_parentSite->fixUrl(m_url), m_parent, "image", this);
 	m_loadImage->setParent(this);
-	//m_timer.start();
 	m_loadingImage = true;
 
 	connect(m_loadImage, &QNetworkReply::downloadProgress, this, &Image::downloadProgressImageS);
@@ -759,19 +758,29 @@ void Image::finishedImageS()
 	}
 	else
 	{
-		setData(m_loadImage->readAll());
+		m_data.append(m_loadImage->readAll());
+
+		if (m_fileSize <= 0)
+		{ m_fileSize = m_data.size(); }
 	}
 
+	QNetworkReply::NetworkError error = m_loadImage->error();
+	QString errorString = m_loadImage->errorString();
+
 	m_loadedImage = true;
-	emit finishedImage();
+	m_loadImage->deleteLater();
+	m_loadImage = nullptr;
+
+	emit finishedImage(error, errorString);
 }
 void Image::downloadProgressImageS(qint64 v1, qint64 v2)
 {
-	if (m_loadImage != nullptr && v2 > 0/* && (v1 == v2 || m_timer.elapsed() > 500)*/)
-	{
-		//m_timer.restart();
-		emit downloadProgressImage(v1, v2);
-	}
+	if (m_loadImage == nullptr || v2 <= 0)
+		return;
+
+	m_data.append(m_loadImage->readAll());
+
+	emit downloadProgressImage(v1, v2);
 }
 void Image::abortImage()
 {
@@ -1039,7 +1048,8 @@ void	Image::setUrl(QString u)
 	emit urlChanged(m_url, u);
 	m_url = u;
 }
-void	Image::setFileSize(int s)		{ m_fileSize = s;			}
+void	Image::setSize(QSize size)	{ m_size = size;	}
+void	Image::setFileSize(int s)	{ m_fileSize = s;	}
 void	Image::setData(const QByteArray &d)
 {
 	m_data = d;
@@ -1125,6 +1135,7 @@ bool Image::hasAllTags(QStringList tags) const
 
 void Image::unload()
 {
+	m_loadedImage = false;
 	m_data.clear();
 }
 

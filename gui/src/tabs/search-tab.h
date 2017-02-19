@@ -14,8 +14,11 @@
 #include <QStackedWidget>
 #include "ui/QBouton.h"
 #include "ui/textedit.h"
+#include "ui/verticalscrollarea.h"
 #include "models/image.h"
 #include "models/profile.h"
+#include "downloader/download-query-group.h"
+#include "downloader/download-query-image.h"
 
 
 
@@ -29,7 +32,7 @@ class searchTab : public QWidget
 		searchTab(QMap<QString, Site*> *sites, Profile *profile, mainWindow *parent);
 		void mouseReleaseEvent(QMouseEvent *e);
 		virtual QList<bool> sources();
-		virtual QString tags() = 0;
+		virtual QString tags() const = 0;
 		QList<Tag> results();
 		QString wiki();
 		int imagesPerPage();
@@ -42,8 +45,9 @@ class searchTab : public QWidget
 		void setImagesPerPage(int ipp);
 		void setColumns(int columns);
 		void setPostFilter(QString postfilter);
-		virtual QList<Site*> loadSites() = 0;
+		virtual QList<Site*> loadSites() const = 0;
 		virtual void onLoad();
+		virtual void write(QJsonObject &json) const = 0;
 
 	protected:
 		void setSelectedSources(QSettings *settings);
@@ -61,7 +65,7 @@ class searchTab : public QWidget
 	public slots:
 		// Sources
 		void openSourcesWindow();
-		void saveSources(QList<bool>);
+		void saveSources(QList<bool> sel, bool canLoad = true);
 		void updateCheckboxes();
 		// Zooms
 		void webZoom(int);
@@ -106,8 +110,8 @@ class searchTab : public QWidget
 		void closed(searchTab*);
 
 		// Batch
-		void batchAddGroup(QStringList);
-		void batchAddUnique(QMap<QString,QString>);
+		void batchAddGroup(const DownloadQueryGroup &);
+		void batchAddUnique(const DownloadQueryImage &);
 
 	protected:
 		Profile				*m_profile;
@@ -161,6 +165,7 @@ class searchTab : public QWidget
 		QPushButton *ui_buttonGetSel;
 		QPushButton *ui_buttonFirstPage;
 		QPushButton *ui_buttonPreviousPage;
+		VerticalScrollArea *ui_scrollAreaResults;
 };
 
 #endif // SEARCH_TAB_H

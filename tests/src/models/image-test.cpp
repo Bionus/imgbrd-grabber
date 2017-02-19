@@ -379,7 +379,7 @@ void ImageTest::testLoadPreviewAbort()
 void ImageTest::testLoadImage()
 {
 	// Load preview
-	QSignalSpy spy(m_img, SIGNAL(finishedImage()));
+	QSignalSpy spy(m_img, SIGNAL(finishedImage(QNetworkReply::NetworkError,QString)));
 	m_img->loadImage();
 	QVERIFY(spy.wait());
 

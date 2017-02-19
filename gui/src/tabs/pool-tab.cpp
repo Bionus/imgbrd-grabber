@@ -34,6 +34,7 @@ poolTab::poolTab(QMap<QString,Site*> *sites, Profile *profile, mainWindow *paren
 	ui_buttonGetSel = ui->buttonGetSel;
 	ui_buttonFirstPage = ui->buttonFirstPage;
 	ui_buttonPreviousPage = ui->buttonPreviousPage;
+	ui_scrollAreaResults = ui->scrollAreaResults;
 
 	QStringList sources = m_sites->keys();
 	for (QString source : sources)
@@ -91,13 +92,13 @@ void poolTab::load()
 	QStringList tags = search.trimmed().split(" ", QString::SkipEmptyParts);
 	tags.prepend("pool:"+QString::number(ui->spinPool->value()));
 
-	setWindowTitle(search.isEmpty() ? tr("Search") : search.replace("&", "&&"));
+	setWindowTitle("Pool #" + QString::number(ui->spinPool->value()) + (search.isEmpty() ? "" : " - " + QString(search).replace("&", "&&")));
 	emit titleChanged(this);
 
 	loadTags(tags);
 }
 
-QList<Site*> poolTab::loadSites()
+QList<Site*> poolTab::loadSites() const
 {
 	QList<Site*> sites;
 	sites.append(m_sites->value(ui->comboSites->currentText()));
@@ -110,17 +111,62 @@ bool poolTab::validateImage(QSharedPointer<Image> img)
 	return true;
 }
 
+void poolTab::write(QJsonObject &json) const
+{
+	json["type"] = QString("pool");
+	json["pool"] = ui->spinPool->value();
+	json["site"] = ui->comboSites->currentText();
+	json["tags"] = QJsonArray::fromStringList(m_search->toPlainText().split(' ', QString::SkipEmptyParts));
+	json["page"] = ui->spinPage->value();
+	json["perpage"] = ui->spinImagesPerPage->value();
+	json["columns"] = ui->spinColumns->value();
+	json["postFiltering"] = QJsonArray::fromStringList(m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts));
+}
+
+bool poolTab::read(const QJsonObject &json)
+{
+	ui->spinPool->setValue(json["pool"].toInt());
+	ui->comboSites->setCurrentText(json["site"].toString());
+	ui->spinPage->setValue(json["page"].toInt());
+	ui->spinImagesPerPage->setValue(json["perpage"].toInt());
+	ui->spinColumns->setValue(json["columns"].toInt());
+
+	// Post filtering
+	QStringList postFilters;
+	QJsonArray jsonPostFilters = json["postFiltering"].toArray();
+	for (auto tag : jsonPostFilters)
+		postFilters.append(tag.toString());
+	setPostFilter(postFilters.join(' '));
+
+	// Tags
+	QStringList tags;
+	QJsonArray jsonTags = json["tags"].toArray();
+	for (auto tag : jsonTags)
+		tags.append(tag.toString());
+	setTags(tags.join(' '));
+
+	return true;
+}
+
 
 void poolTab::getPage()
 {
 	bool unloaded = m_settings->value("getunloadedpages", false).toBool();
 	int perpage = unloaded ? ui->spinImagesPerPage->value() : m_pages.value(ui->comboSites->currentText())->images().count();
-	emit batchAddGroup(QStringList() << "pool:"+QString::number(ui->spinPool->value())+" "+m_search->toPlainText()+" "+m_settings->value("add").toString().trimmed() << QString::number(ui->spinPage->value()) << QString::number(perpage) << QString::number(perpage) << m_settings->value("downloadblacklist").toString() << ui->comboSites->currentText() << m_settings->value("Save/filename").toString() << m_settings->value("Save/path").toString() << "");
+	QString tags = "pool:"+QString::number(ui->spinPool->value())+" "+m_search->toPlainText()+" "+m_settings->value("add").toString().trimmed();
+	Site *site = m_sites->value(ui->comboSites->currentText());
+
+	emit batchAddGroup(DownloadQueryGroup(m_settings, tags, ui->spinPage->value(), perpage, perpage, site));
 }
 void poolTab::getAll()
 {
+	QString tags = "pool:"+QString::number(ui->spinPool->value())+" "+m_search->toPlainText()+" "+m_settings->value("add").toString().trimmed();
 	int limit = m_sites->value(ui->comboSites->currentText())->contains("Urls/1/Limit") ? m_sites->value(ui->comboSites->currentText())->value("Urls/1/Limit").toInt() : 0;
-	emit batchAddGroup(QStringList() << "pool:"+QString::number(ui->spinPool->value())+" "+m_search->toPlainText()+" "+m_settings->value("add").toString().trimmed() << "1" << QString::number(qMin((limit > 0 ? limit : 200), qMax(m_pages.value(ui->comboSites->currentText())->images().count(), m_pages.value(ui->comboSites->currentText())->imagesCount()))) << QString::number(qMax(m_pages.value(ui->comboSites->currentText())->images().count(), m_pages.value(ui->comboSites->currentText())->imagesCount())) << m_settings->value("downloadblacklist").toString() << ui->comboSites->currentText() << m_settings->value("Save/filename").toString() << m_settings->value("Save/path").toString() << "");
+	int perpage = qMin((limit > 0 ? limit : 200), qMax(m_pages.value(ui->comboSites->currentText())->images().count(), m_pages.value(ui->comboSites->currentText())->imagesCount()));
+	int total = qMax(m_pages.value(ui->comboSites->currentText())->images().count(), m_pages.value(ui->comboSites->currentText())->imagesCount());
+	Site *site = m_sites->value(ui->comboSites->currentText());
+
+	emit batchAddGroup(DownloadQueryGroup(m_settings, tags, 1, perpage, total, site));
 }
 
 
@@ -151,7 +197,5 @@ void poolTab::focusSearch()
 	ui->spinPool->focusWidget();
 }
 
-QString poolTab::tags()
+QString poolTab::tags() const
 { return m_search->toPlainText(); }
-QString poolTab::site()
-{ return ui->comboSites->currentText(); }

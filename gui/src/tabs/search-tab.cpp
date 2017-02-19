@@ -550,7 +550,7 @@ QBouton *searchTab::createImageThumbnail(int position, QSharedPointer<Image> img
 	QColor color = imageColor(img);
 
 	bool resizeInsteadOfCropping = m_settings->value("resizeInsteadOfCropping", true).toBool();
-	bool resultsScrollArea = m_settings->value("resultsScrollArea", false).toBool();
+	bool resultsScrollArea = m_settings->value("resultsScrollArea", true).toBool();
 
 	QBouton *l = new QBouton(position, resizeInsteadOfCropping, resultsScrollArea, m_settings->value("borders", 3).toInt(), color, this);
 	l->setCheckable(true);
@@ -666,27 +666,7 @@ void searchTab::getSel()
 
 	for (QSharedPointer<Image> img : m_selectedImagesPtrs)
 	{
-		QStringList tags;
-		for (Tag tag : img->tags())
-		{ tags.append(tag.typedText()); }
-
-		QMap<QString,QString> values;
-		values.insert("id", QString::number(img->id()));
-		values.insert("md5", img->md5());
-		values.insert("rating", img->rating());
-		values.insert("tags", tags.join(" "));
-		values.insert("file_url", img->fileUrl().toString());
-		values.insert("date", img->createdAt().toString(Qt::ISODate));
-		values.insert("site", img->site());
-		values.insert("filename", m_settings->value("Save/filename").toString());
-		values.insert("folder", m_settings->value("Save/path").toString());
-
-		values.insert("page_url", m_sites->value(img->site())->value("Urls/Html/Post"));
-		QString t = m_sites->value(img->site())->contains("DefaultTag") ? m_sites->value(img->site())->value("DefaultTag") : "";
-		values["page_url"].replace("{tags}", t);
-		values["page_url"].replace("{id}", values["id"]);
-
-		emit batchAddUnique(values);
+		emit batchAddUnique(DownloadQueryImage(m_settings, img, img->parentSite()));
 	}
 
 	m_selectedImagesPtrs.clear();
@@ -830,7 +810,7 @@ void searchTab::openSourcesWindow()
 	adv->show();
 }
 
-void searchTab::saveSources(QList<bool> sel)
+void searchTab::saveSources(QList<bool> sel, bool canLoad)
 {
 	log("Saving sources...");
 
@@ -852,7 +832,7 @@ void searchTab::saveSources(QList<bool> sel)
 
 	DONE();
 
-	if (m_history.isEmpty())
+	if (m_history.isEmpty() && canLoad)
 	{ load(); }
 }
 
@@ -860,6 +840,10 @@ void searchTab::saveSources(QList<bool> sel)
 void searchTab::loadTags(QStringList tags)
 {
 	log("Loading results...");
+
+	// Enable or disable scroll mode
+	bool resultsScrollArea = m_settings->value("resultsScrollArea", true).toBool();
+	ui_scrollAreaResults->setScrollEnabled(resultsScrollArea);
 
 	// Append "additional tags" setting
 	tags.append(m_settings->value("add").toString().trimmed().split(" ", QString::SkipEmptyParts));

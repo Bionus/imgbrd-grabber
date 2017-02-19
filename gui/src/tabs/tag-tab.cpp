@@ -33,6 +33,7 @@ tagTab::tagTab(QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
 	ui_buttonGetSel = ui->buttonGetSel;
 	ui_buttonFirstPage = ui->buttonFirstPage;
 	ui_buttonPreviousPage = ui->buttonPreviousPage;
+	ui_scrollAreaResults = ui->scrollAreaResults;
 
 	// Search fields
 	m_search = createAutocomplete();
@@ -86,9 +87,6 @@ void tagTab::closeEvent(QCloseEvent *e)
 
 void tagTab::load()
 {
-	bool resultsScrollArea = m_settings->value("resultsScrollArea", false).toBool();
-	ui->scrollAreaResults->setScrollEnabled(resultsScrollArea);
-
 	// Get the search values
 	QString search = m_search->toPlainText().trimmed();
 	if (m_settings->value("enable_md5_fast_search", true).toBool())
@@ -105,7 +103,7 @@ void tagTab::load()
 	loadTags(tags);
 }
 
-QList<Site*> tagTab::loadSites()
+QList<Site*> tagTab::loadSites() const
 {
 	QList<Site*> sites;
 	for (int i = 0; i < m_selectedSources.size(); i++)
@@ -117,6 +115,57 @@ QList<Site*> tagTab::loadSites()
 bool tagTab::validateImage(QSharedPointer<Image> img)
 {
 	Q_UNUSED(img);
+	return true;
+}
+
+void tagTab::write(QJsonObject &json) const
+{
+	json["type"] = QString("tag");
+	json["tags"] = QJsonArray::fromStringList(m_search->toPlainText().split(' ', QString::SkipEmptyParts));
+	json["page"] = ui->spinPage->value();
+	json["perpage"] = ui->spinImagesPerPage->value();
+	json["columns"] = ui->spinColumns->value();
+	json["postFiltering"] = QJsonArray::fromStringList(m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts));
+	json["mergeResults"] = ui->checkMergeResults->isChecked();
+
+	// Sites
+	QJsonArray sites;
+	for (Site *site : loadSites())
+		sites.append(site->url());
+	json["sites"] = sites;
+}
+
+bool tagTab::read(const QJsonObject &json)
+{
+	ui->spinPage->setValue(json["page"].toInt());
+	ui->spinImagesPerPage->setValue(json["perpage"].toInt());
+	ui->spinColumns->setValue(json["columns"].toInt());
+	ui->checkMergeResults->setChecked(json["mergeResults"].toBool());
+
+	// Post filtering
+	QStringList postFilters;
+	QJsonArray jsonPostFilters = json["postFiltering"].toArray();
+	for (auto tag : jsonPostFilters)
+		postFilters.append(tag.toString());
+	setPostFilter(postFilters.join(' '));
+
+	// Sources
+	QStringList selectedSources;
+	QJsonArray jsonSelectedSources = json["sites"].toArray();
+	for (auto site : jsonSelectedSources)
+		selectedSources.append(site.toString());
+	QList<bool> selectedSourcesBool;
+	for (Site *site : *m_sites)
+		selectedSourcesBool.append(selectedSources.contains(site->url()));
+	saveSources(selectedSourcesBool, false);
+
+	// Tags
+	QStringList tags;
+	QJsonArray jsonTags = json["tags"].toArray();
+	for (auto tag : jsonTags)
+		tags.append(tag.toString());
+	setTags(tags.join(' '));
+
 	return true;
 }
 
@@ -148,16 +197,7 @@ void tagTab::getPage()
 				continue;
 
 			QString search = m_pages.value(actuals.at(i))->search().join(' ');
-			emit batchAddGroup(QStringList()
-							   << search
-							   << QString::number(ui->spinPage->value())
-							   << QString::number(perpage)
-							   << QString::number(perpage)
-							   << m_settings->value("downloadblacklist").toString()
-							   << actuals.at(i)
-							   << m_settings->value("Save/filename").toString()
-							   << m_settings->value("Save/path").toString()
-							   << "");
+			emit batchAddGroup(DownloadQueryGroup(m_settings, search, ui->spinPage->value(), perpage, perpage, m_sites->value(actuals.at(i))));
 		}
 	}
 }
@@ -182,16 +222,7 @@ void tagTab::getAll()
 			continue;
 
 		QString search = m_pages.value(actuals.at(i))->search().join(' ');
-		emit batchAddGroup(QStringList()
-						   << search
-						   << "1"
-						   << QString::number(v1)
-						   << QString::number(v2)
-						   << m_settings->value("downloadblacklist").toString()
-						   << actuals.at(i)
-						   << m_settings->value("Save/filename").toString()
-						   << m_settings->value("Save/path").toString()
-						   << "");
+		emit batchAddGroup(DownloadQueryGroup(m_settings, search, 1, v1, v2, m_sites->value(actuals.at(i))));
 	}
 }
 
@@ -201,5 +232,5 @@ void tagTab::focusSearch()
 	m_search->setFocus();
 }
 
-QString tagTab::tags()
+QString tagTab::tags() const
 { return m_search->toPlainText(); }

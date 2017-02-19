@@ -10,7 +10,8 @@
 #include "reverse-search/reverse-search-engine.h"
 #include "mainwindow.h"
 #include "detailswindow.h"
-#include "imagethread.h"
+#include "threads/image-loader.h"
+#include "threads/image-loader-queue.h"
 
 
 
@@ -31,10 +32,10 @@ class zoomWindow : public QWidget
 		void load();
 
 	public slots:
-		void update(bool onlysize = false);
+		void update(bool onlysize = false, bool force = false);
 		void replyFinishedDetails();
-		void replyFinishedZoom();
-		void display(QPixmap *, int);
+		void replyFinishedZoom(QNetworkReply::NetworkError error = QNetworkReply::NoError, QString errorString = "");
+		void display(const QPixmap &, int);
 		void saveNQuit();
 		void saveNQuitFav();
 		void saveImage(bool fav = false);
@@ -70,6 +71,7 @@ class zoomWindow : public QWidget
 
 		// Context menus
 		void imageContextMenu();
+		void reverseImageSearch(int i);
 		void copyImageFileToClipboard();
 		void copyImageDataToClipboard();
 		void copyTagToClipboard();
@@ -91,12 +93,20 @@ class zoomWindow : public QWidget
 		void closeEvent(QCloseEvent *);
 		void resizeEvent(QResizeEvent *);
 		void save(QString, QPushButton *);
+		void showEvent(QShowEvent *);
+		void mouseReleaseEvent(QMouseEvent *);
+		void wheelEvent(QWheelEvent *);
 		void draw();
+
+	private:
+		void showThumbnail();
 
 	signals:
 		void linkClicked(QString);
 		void poolClicked(int, QString);
 		void linkMiddleClicked(QString);
+		void loadImage(const QByteArray &);
+		void clearLoadQueue();
 
 	private:
 		mainWindow *m_parent;
@@ -114,19 +124,15 @@ class zoomWindow : public QWidget
 		bool m_loaded, m_loadedImage, m_loadedDetails;
 		QString id, m_url, tags, rating, score, user, format;
 		QAffiche *m_labelTagsTop, *m_labelTagsLeft;
-		QPixmap *image;
-		QMovie *movie;
 		QTimer *m_resizeTimer;
 		QTime m_imageTime;
 		QString link;
-		QNetworkReply *m_reply;
-		bool m_finished, m_thread;
-		QByteArray m_data;
+		bool m_finished;
 		int m_size;
 		QMap<QString,Site*> *m_sites;
 		QString m_source;
-		ImageThread *m_th;
 		QString m_imagePath;
+		QTime m_lastWheelEvent;
 
 		QAffiche *m_fullScreen;
 		QTimer m_slideshow;
@@ -136,7 +142,18 @@ class zoomWindow : public QWidget
 		QStackedWidget *m_stackedWidget;
 		QAffiche *m_labelImage;
 		QList<QSharedPointer<Image>> m_images;
+		QSignalMapper *m_reverseSearchSignalMapper;
 		QList<ReverseSearchEngine> m_reverseSearchEngines;
+
+		// Display
+		QPixmap m_displayImage;
+		QMovie *m_displayMovie;
+
+		// Threads
+		QThread m_imageLoaderThread;
+		QThread m_imageLoaderQueueThread;
+		ImageLoader *m_imageLoader;
+		ImageLoaderQueue *m_imageLoaderQueue;
 };
 
 #endif

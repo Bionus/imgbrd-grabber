@@ -47,8 +47,8 @@ void detailsWindow::setImage(QSharedPointer<Image> image)
 	if (!image->sampleUrl().isEmpty())	{ ui->labelSample->setText("<a href=\""+image->sampleUrl().toString()+"\">"+image->sampleUrl().toString()+"</a>");		}
 	if (!image->previewUrl().isEmpty())	{ ui->labelPreview->setText("<a href=\""+image->previewUrl().toString()+"\">"+image->previewUrl().toString()+"</a>");	}
 	if (!image->author().isEmpty())		{ ui->labelUser->setText(image->author()+(image->authorId() != 0 ? " (#"+QString::number(image->authorId())+")" : ""));	}
-	if (image->fileSize() != 0)			{ ui->labelFilesize->setText(formatFilesize(image->fileSize()));														}
 	if (!image->size().isEmpty())		{ ui->labelSize->setText(QString::number(image->width())+"x"+QString::number(image->height()));	}
+	if (image->fileSize() != 0)			{ ui->labelFilesize->setText(formatFilesize(image->fileSize())); }
 
 	ui->labelScore->setText(QString::number(image->score()));
 	ui->labelChildren->setText(image->hasChildren() ? tr("yes") : tr("no"));

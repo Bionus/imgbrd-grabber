@@ -9,6 +9,7 @@
 #include <QFile>
 #include "textedit.h"
 #include "functions.h"
+#include "models/tag.h"
 
 
 
@@ -55,8 +56,12 @@ void TextEdit::doColor()
 	QString txt = " " + this->toPlainText().toHtmlEscaped() + " ";
 
 	// Color favorited tags
+	QFont fontFavs;
+	fontFavs.fromString(m_profile->getSettings()->value("Coloring/Fonts/favorites").toString());
+	QString colorFavs = m_profile->getSettings()->value("Coloring/Colors/favorites", "#ffc0cb").toString();
+	QString styleFavs = "color:" + colorFavs + "; " + Tag::qFontToCss(fontFavs);
 	for (Favorite fav : m_favorites)
-		txt.replace(" "+fav.getName()+" ", " <span style=\"color:#ffc0cb\">"+fav.getName()+"</span> ");
+		txt.replace(" "+fav.getName()+" ", " <span style=\""+styleFavs+"\">"+fav.getName()+"</span> ");
 
 	// Color metatags
 	QRegExp regexOr(" ~([^ ]+)"),
@@ -70,8 +75,17 @@ void TextEdit::doColor()
 
 	// Replace spaces to not be trimmed by the HTML renderer
 	txt = txt.mid(1, txt.length() - 2);
-	txt.replace(" ", "&nbsp;");
-	txt.replace("<span&nbsp;style=", "<span style=");
+	int depth = 0;
+	for (int i = 0; i < txt.length(); ++i)
+	{
+		if (txt[i] == ' ' && depth == 0)
+			txt[i] = (char)29;
+		else if (txt[i] == '<')
+			depth++;
+		else if (txt[i] == '>')
+			depth--;
+	}
+	txt.replace((char)29, "&nbsp;");
 
 	// Setup cursor
 	QTextCursor crsr = textCursor();

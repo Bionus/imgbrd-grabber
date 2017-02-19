@@ -202,7 +202,9 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	ui->comboTagsPosition->setCurrentIndex(positions.indexOf(settings->value("tagsposition", "top").toString()));
 	ui->spinPreload->setValue(settings->value("preload", 0).toInt());
 	ui->spinSlideshow->setValue(settings->value("slideshow", 0).toInt());
-	ui->checkResultsScrollArea->setChecked(settings->value("resultsScrollArea", false).toBool());
+	ui->checkResultsScrollArea->setChecked(settings->value("resultsScrollArea", true).toBool());
+	ui->checkImageCloseMiddleClick->setChecked(settings->value("imageCloseMiddleClick", true).toBool());
+	ui->checkImageNavigateScroll->setChecked(settings->value("imageNavigateScroll", true).toBool());
 
 	settings->beginGroup("Coloring");
 		settings->beginGroup("Colors");
@@ -253,6 +255,7 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 
 	settings->beginGroup("Proxy");
 		ui->checkProxyUse->setChecked(settings->value("use", false).toBool());
+		ui->checkProxyUseSystem->setChecked(settings->value("useSystem", false).toBool());
 		QStringList ptypes = QStringList() << "http" << "socks5";
 		ui->comboProxyType->setCurrentIndex(ptypes.indexOf(settings->value("type", "http").toString()));
 		ui->widgetProxy->setEnabled(settings->value("use", false).toBool());
@@ -685,6 +688,8 @@ void optionsWindow::save()
 	settings->setValue("preload", ui->spinPreload->value());
 	settings->setValue("slideshow", ui->spinSlideshow->value());
 	settings->setValue("resultsScrollArea", ui->checkResultsScrollArea->isChecked());
+	settings->setValue("imageCloseMiddleClick", ui->checkImageCloseMiddleClick->isChecked());
+	settings->setValue("imageNavigateScroll", ui->checkImageNavigateScroll->isChecked());
 
 	settings->beginGroup("Coloring");
 		settings->beginGroup("Colors");
@@ -724,6 +729,7 @@ void optionsWindow::save()
 
 	settings->beginGroup("Proxy");
 		settings->setValue("use", ui->checkProxyUse->isChecked());
+		settings->setValue("useSystem", ui->checkProxyUseSystem->isChecked());
 		QStringList ptypes = QStringList() << "http" << "socks5";
 		settings->setValue("type", ptypes.at(ui->comboProxyType->currentIndex()));
 		settings->setValue("hostName", ui->lineProxyHostName->text());
@@ -750,10 +756,18 @@ void optionsWindow::save()
 
 	if (settings->value("Proxy/use", false).toBool())
 	{
-		QNetworkProxy::ProxyType type = settings->value("Proxy/type", "http") == "http" ? QNetworkProxy::HttpProxy : QNetworkProxy::Socks5Proxy;
-		QNetworkProxy proxy(type, settings->value("Proxy/hostName").toString(), settings->value("Proxy/port").toInt());
-		QNetworkProxy::setApplicationProxy(proxy);
-		log(QString("Enabling application proxy on host \"%1\" and port %2.").arg(settings->value("Proxy/hostName").toString()).arg(settings->value("Proxy/port").toInt()));
+		bool useSystem = settings->value("Proxy/useSystem", false).toBool();
+		QNetworkProxyFactory::setUseSystemConfiguration(useSystem);
+
+		if (!useSystem)
+		{
+			QNetworkProxy::ProxyType type = settings->value("Proxy/type", "http") == "http" ? QNetworkProxy::HttpProxy : QNetworkProxy::Socks5Proxy;
+			QNetworkProxy proxy(type, settings->value("Proxy/hostName").toString(), settings->value("Proxy/port").toInt());
+			QNetworkProxy::setApplicationProxy(proxy);
+			log(QString("Enabling application proxy on host \"%1\" and port %2.").arg(settings->value("Proxy/hostName").toString()).arg(settings->value("Proxy/port").toInt()));
+		}
+		else
+		{ log(QString("Enabling system-wide proxy.")); }
 	}
 	else if (QNetworkProxy::applicationProxy().type() != QNetworkProxy::NoProxy)
 	{

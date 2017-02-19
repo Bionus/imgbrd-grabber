@@ -151,7 +151,7 @@ QString Tag::GetType(QString type, QStringList ids)
  * @param	font	The font to convert.
  * @return	The CSS font.
  */
-QString Tag::qFontToCss(QFont font) const
+QString Tag::qFontToCss(QFont font)
 {
 	QString style;
 	switch (font.style())

@@ -87,7 +87,8 @@ class Image : public QObject
 		QMap<QString,QString>   details() const;
 		void		setUrl(QString);
 		void		setData(const QByteArray &data);
-		void		setFileSize(int);
+		void		setSize(QSize size);
+		void		setFileSize(int size);
 		void		setSavePath(QString);
 		void		setRating(QString rating);
 		void		setFileExtension(QString ext);
@@ -115,7 +116,7 @@ class Image : public QObject
 	signals:
 		void finishedLoadingPreview();
 		void finishedLoadingTags();
-		void finishedImage();
+		void finishedImage(QNetworkReply::NetworkError, QString);
 		void downloadProgressImage(qint64, qint64);
 		void urlChanged(QString, QString);
 

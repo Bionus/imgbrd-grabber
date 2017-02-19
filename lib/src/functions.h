@@ -15,6 +15,22 @@
 #include "logger.h"
 
 
+// Filesize units
+#if defined(Q_OS_WIN)
+	// 1 KB = 1024 B
+	#define FILESIZE_UNITS QStringList() << QObject::tr("B") << QObject::tr("KB") << QObject::tr("MB") << QObject::tr("GB");
+	#define FILESIZE_MULTIPLIER 1024
+#elif defined(Q_OS_MACOS)
+	// 1 KB = 1000 B
+	#define FILESIZE_UNITS QStringList() << QObject::tr("B") << QObject::tr("KB") << QObject::tr("MB") << QObject::tr("GB");
+	#define FILESIZE_MULTIPLIER 1000
+#else
+	// 1 KiB = 1024 B
+	#define FILESIZE_UNITS QStringList() << QObject::tr("B") << QObject::tr("KiB") << QObject::tr("MiB") << QObject::tr("GiB");
+	#define FILESIZE_MULTIPLIER 1024
+#endif
+
+
 
 void		sslErrorHandler(QNetworkReply* qnr, QList<QSslError> errors);
 QDateTime	qDateTimeFromString(QString s);

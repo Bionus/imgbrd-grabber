@@ -63,6 +63,7 @@ HEADERS += $${PDIR}/vendor/*.h \
 	$${PWD}/src/settings/*.h \
 	$${PWD}/src/sources/*.h \
 	$${PWD}/src/tabs/*.h \
+	$${PWD}/src/threads/*.h \
 	$${PWD}/src/ui/*.h \
 	$${PWD}/src/updater/*.h \
 	$${PWD}/src/utils/rename-existing/*.h \
@@ -77,6 +78,7 @@ SOURCES += $${PDIR}/vendor/*.cpp \
 	$${PWD}/src/settings/*.cpp \
 	$${PWD}/src/sources/*.cpp \
 	$${PWD}/src/tabs/*.cpp \
+	$${PWD}/src/threads/*.cpp \
 	$${PWD}/src/ui/*.cpp \
 	$${PWD}/src/updater/*.cpp \
 	$${PWD}/src/utils/rename-existing/*.cpp \

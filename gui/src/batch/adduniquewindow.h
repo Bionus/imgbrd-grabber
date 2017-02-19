@@ -6,6 +6,7 @@
 #include "models/image.h"
 #include "models/site.h"
 #include "models/profile.h"
+#include "downloader/download-query-image.h"
 
 
 
@@ -32,7 +33,7 @@ class AddUniqueWindow : public QDialog
 		void on_lineFilename_textChanged(QString);
 
 	signals:
-		void sendData(QMap<QString,QString>);
+		void sendData(const DownloadQueryImage &);
 
 	private:
 		Ui::AddUniqueWindow		*ui;

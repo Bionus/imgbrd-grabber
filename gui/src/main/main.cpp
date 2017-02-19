@@ -172,9 +172,6 @@ int main(int argc, char *argv[])
 	#if !USE_CLI
 		else
 		{
-			QStringList tags = parser.positionalArguments();
-			tags.append(parser.value(tagsOption).split(" ", QString::SkipEmptyParts));
-
 			QMap<QString, QString> params;
 			params.insert("booru", parser.value(sourceOption));
 			params.insert("limit", parser.value(limitOption));
@@ -184,9 +181,10 @@ int main(int argc, char *argv[])
 			params.insert("user", parser.value(userOption));
 			params.insert("password", parser.value(passwordOption));
 			params.insert("ignore", parser.isSet(blacklistOption) ? "true" : "false");
+			params.insert("tags", parser.value(tagsOption));
 
-			mainWindow *mainwindow = new mainWindow(profile, argv[0], tags, params);
-			mainwindow->init();
+			mainWindow *mainwindow = new mainWindow(profile);
+			mainwindow->init(parser.positionalArguments(), params);
 			mainwindow->show();
 		}
 	#endif

@@ -7,6 +7,7 @@
 #include <QProcess>
 #include <QTranslator>
 #include <QSet>
+#include <QQueue>
 #include <QTableWidgetItem>
 #include "batch/batchwindow.h"
 #include "ui/QAffiche.h"
@@ -20,6 +21,7 @@
 #include "models/profile.h"
 #include "downloader/downloader.h"
 #include "updater/update-dialog.h"
+#include "downloader/download-query-image.h"
 
 
 
@@ -43,7 +45,7 @@ class mainWindow : public QMainWindow
 	Q_OBJECT
 
 	public:
-		explicit mainWindow(Profile *profile, QString program, QStringList tags, QMap<QString,QString> params);
+		explicit mainWindow(Profile *profile);
 		~mainWindow();
 		Ui::mainWindow *ui;
 
@@ -95,9 +97,9 @@ class mainWindow : public QMainWindow
 		void updateBatchGroups(int, int);
 		void addGroup();
 		void addUnique();
-		void batchAddGroup(const QStringList& values);
+		void batchAddGroup(const DownloadQueryGroup& values);
 		void updateGroupCount();
-		void batchAddUnique(QMap<QString,QString> values, bool save = true);
+		void batchAddUnique(const DownloadQueryImage &query, bool save = true);
 		// Batch download
 		void getAll(bool all = true);
 		void getAllFinishedPage(Page *page);
@@ -105,12 +107,13 @@ class mainWindow : public QMainWindow
 		void getAllImages();
 		void getAllGetImage(QSharedPointer<Image> img);
 		void getAllPerformTags();
-		void getAllPerformImage();
+		void getAllPerformImage(QNetworkReply::NetworkError error, QString errorString);
 		void getAllProgress(qint64, qint64);
 		void getAllCancel();
 		void getAllPause();
 		void getAllSkip();
 		void getAllLogin();
+		void getNextPack();
 		void getAllGetPages();
 		void getAllFinished();
 		void getAllFinishedLogin(Site *site, Site::LoginResult result);
@@ -118,9 +121,9 @@ class mainWindow : public QMainWindow
 		bool needExactTags(QSettings *settings);
 		void _getAll();
 		// Tabs
-		int addTab(QString tag = "", bool background = false);
-		int addPoolTab(int pool = 0, QString site = "");
-		void addSearchTab(searchTab*, bool background = false);
+		int addTab(QString tag = "", bool background = false, bool save = true);
+		int addPoolTab(int pool = 0, QString site = "", bool background = false, bool save = true);
+		void addSearchTab(searchTab*, bool background = false, bool save = true);
 		void updateTabTitle(searchTab*);
 		void tabClosed(searchTab*);
 		void currentTabChanged(int);
@@ -134,7 +137,8 @@ class mainWindow : public QMainWindow
 		void decreaseDownloads();
 		void updateDownloads();
 		// Tag list
-		void loadTag(QString tag, bool newTab = true, bool background = true);
+		void loadMd5(QString path, bool newTab = true, bool background = true, bool save = true);
+		void loadTag(QString tag, bool newTab = true, bool background = true, bool save = true);
 		void loadTagTab(QString tag);
 		void loadTagNoTab(QString tag);
 		void linkHovered(QString tag);
@@ -148,7 +152,8 @@ class mainWindow : public QMainWindow
 		// Others
 		void closeEvent(QCloseEvent*);
 		void onFirstLoad();
-		void init();
+		void init(QStringList args, QMap<QString,QString> params);
+		void parseArgs(QStringList args, QMap<QString,QString> params);
 		void on_buttonSaveLinkList_clicked();
 		void on_buttonLoadLinkList_clicked();
 		bool saveLinkList(QString filename);
@@ -178,19 +183,19 @@ class mainWindow : public QMainWindow
 		QList<Site*> getSelectedSites();
 		Site* getSelectedSiteOrDefault();
 		void initialLoginsDone();
+		void addTableItem(QTableWidget *table, int row, int col, QString text);
 
 	private:
 		Profile				*m_profile;
 		UpdateDialog		*m_updateDialog;
 		QList<Favorite>		&m_favorites;
 		int					m_getAllDownloaded, m_getAllExists, m_getAllIgnored, m_getAll404s, m_getAllErrors, m_getAllSkipped, m_getAllLimit, m_downloads, m_waitForLogin;
-		bool				m_allow, m_mustGetTags, m_loaded, m_getAll;
+		bool				m_allow, m_mustGetTags, m_loaded, m_getAll, m_forcedTab;
 		QSettings			*m_settings;
 		batchWindow			*m_progressdialog;
-		QString				m_program, m_currLang, m_link;
-		QStringList			m_tags;
+		QString				m_currLang, m_link;
 		QTranslator			m_translator;
-		QList<QStringList>	m_groupBatchs;
+		QList<DownloadQueryGroup>		m_groupBatchs;
 		QList<QSharedPointer<Image>>	m_getAllRemaining, m_getAllDownloading, m_getAllFailed, m_images, m_getAllSkippedImages;
 		QWidget				*m_currentTab;
 		QList<searchTab*>	m_tabs;
@@ -200,10 +205,12 @@ class mainWindow : public QMainWindow
 		favoritesTab		*m_favoritesTab;
 		QMap<QString,QTime*>			m_downloadTime, m_downloadTimeLast;
 		QList<QProgressBar*>			m_progressBars;
-		QList<QMap<QString, QString>>	m_batchs;
+		QList<DownloadQueryImage>		m_batchs;
+		QMap<int, DownloadQueryGroup>	m_batchPending;
 		QSet<int>						m_batchDownloading;
 		QStringList			m_lineFilename_completer, m_lineFolder_completer;
 		QList<Downloader*>  m_downloaders, m_downloadersDone;
+		QQueue<Downloader*>	m_waitingDownloaders;
 		QList<Site*>		m_getAllLogins;
 		int					m_batchAutomaticRetries;
 		bool				m_restore, m_showLog;

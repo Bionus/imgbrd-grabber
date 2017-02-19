@@ -43,7 +43,8 @@ If you have any questions about the program, found a bug and don't want to use t
 ## Languages
 * English
 * French
-* Russian (thanks to Николай Тихонов)
+* Russian
+* Chinese (simplified)
 
 ## Default sources
 You can add additional sources very easily, but here's a shot list of some sources that are included and supported by default: Danbooru, Gelbooru, yande.re, Shimmie, Sankaku complex, e621, rule34, safebooru, behoimi...
@@ -67,7 +68,7 @@ sudo apt-get install -qq qt5-qmake qtbase5-dev qtdeclarative5-dev qtscript5-dev 
 sudo apt-get install qt5-default qttools5-dev-tools
 QT_SELECT=5 qmake Grabber.pro
 make
-mv gui/Grabber release/Grabber
+mv gui/build/release/Grabber release/Grabber
 touch release/settings.ini
 ```
 
