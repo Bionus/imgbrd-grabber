@@ -1174,14 +1174,15 @@ void zoomWindow::wheelEvent(QWheelEvent *e)
 			e->ignore();
 		m_lastWheelEvent.start();
 
-		if (e->delta() <= -120)
-		{
-			previous();
-			return;
-		}
-		if (e->delta() >= 120)
+		int angle = e->angleDelta().y();
+		if (angle <= -120) // Scroll down
 		{
 			next();
+			return;
+		}
+		if (angle >= 120) // Scroll up
+		{
+			previous();
 			return;
 		}
 	}
