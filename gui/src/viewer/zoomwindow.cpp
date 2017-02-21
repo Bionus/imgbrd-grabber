@@ -1026,7 +1026,7 @@ void zoomWindow::showThumbnail()
 	}
 
 	// Other images get a resizable thumbnail
-	else
+	else if (m_displayImage.isNull())
 	{
 		m_displayImage = m_image->previewImage().scaled(size, Qt::IgnoreAspectRatio, Qt::FastTransformation);
 		update(false, true);
