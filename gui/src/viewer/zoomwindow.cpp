@@ -835,6 +835,7 @@ QStringList zoomWindow::saveImageNow(bool fav)
 
 			case Image::SaveResult::Ignored:
 				button->setText(fav ? tr("Ignored! (fav)") : tr("Ignored!"));
+				m_imagePath = m_profile->md5Exists(m_image->md5());
 				break;
 
 			case Image::SaveResult::AlreadyExists:
