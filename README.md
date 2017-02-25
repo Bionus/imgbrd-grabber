@@ -14,6 +14,8 @@
 Imgbrd-Grabber is an imageboard/booru downloader which can be used with a great a graphical user interface or through command line. It can download thousands of images from multiple boorus very easily.
 One of its main advantage is its very powerful naming features: just set your filename and folder using all the tokens available and conditionals, and he will generate an image-dependant one.
 
+It works on Windows, Mac, and Linux.
+
 ## Download
 You can download the latest release [here](https://github.com/Bionus/imgbrd-grabber/releases/latest), or find all previous releases [here](https://github.com/Bionus/imgbrd-grabber/releases).
 
