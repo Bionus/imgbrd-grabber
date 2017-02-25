@@ -12,7 +12,7 @@
 
 Imageboard/booru downloader which can download thousands of images from multiple boorus very easily. It can either be used through its graphical user intertface or command-line.
 
-Thanks to its powerful naming features, you just have to set your filename and save directory using all the tokens available, and the program will generate a filename using the image's information! With this, you can store and manage your pictures in advanced directory structures, and save image with custom filenames!
+Thanks to its powerful naming features, you just have to set your filename and save directory using all the tokens available, and the program will generate a filename using the image's information. With this, you can store and manage your pictures in advanced directory structures, and save image with custom filenames!
 
 Grabber works on Windows, Mac, and Linux.
 
@@ -21,8 +21,8 @@ You can download the latest release [here](https://github.com/Bionus/imgbrd-grab
 
 ## Main features
 * Browse images from the internet
-* Download huge amounts of images at once
-* Save images using a custom format, for example "%artist%/%copyright%/%character%/%md5%.%ext%", or using Javascript code. See [Filename](https://github.com/Bionus/imgbrd-grabber/wiki/Commands) for details.
+* Download thousands of images at once
+* Save images using a custom format, for example `%artist%/%copyright%/%character%/%md5%.%ext%`, or using Javascript code. See [Filename](https://github.com/Bionus/imgbrd-grabber/wiki/Commands) for details.
 * Add your own imageboards very easily
 * Authentication for sources behind a login wall
 * Command line interface to download images
