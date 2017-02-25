@@ -719,6 +719,17 @@ void zoomWindow::draw()
  */
 void zoomWindow::update(bool onlysize, bool force)
 {
+	// Update image alignment
+	QString ext = m_url.section('.', -1).toLower();
+	QString type;
+	if (m_image->isVideo())
+	{ type = "imagePositionVideo"; }
+	else if (ext == "gif")
+	{ type = "imagePositionAnimation"; }
+	else
+	{ type = "imagePositionImage"; }
+	m_labelImage->setAlignment(getAlignments(type));
+
 	// Only used for images
 	if (m_displayImage.isNull())
 		return;
@@ -735,6 +746,17 @@ void zoomWindow::update(bool onlysize, bool force)
 	}
 
 	m_stackedWidget->setCurrentWidget(m_labelImage);
+}
+
+Qt::Alignment zoomWindow::getAlignments(QString type)
+{
+	QString vertical = m_settings->value(type + "V", "center").toString();
+	QString horizontal = m_settings->value(type + "H", "left").toString();
+
+	Qt::Alignment vAlign = vertical == "top" ? Qt::AlignTop : (vertical == "bottom" ? Qt::AlignBottom : Qt::AlignVCenter);
+	Qt::Alignment hAlign = horizontal == "left" ? Qt::AlignLeft : (horizontal == "right" ? Qt::AlignRight : Qt::AlignHCenter);
+
+	return vAlign | hAlign;
 }
 
 void zoomWindow::saveNQuit()

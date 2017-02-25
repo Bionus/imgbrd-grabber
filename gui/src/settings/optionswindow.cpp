@@ -205,6 +205,14 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	ui->checkResultsScrollArea->setChecked(settings->value("resultsScrollArea", true).toBool());
 	ui->checkImageCloseMiddleClick->setChecked(settings->value("imageCloseMiddleClick", true).toBool());
 	ui->checkImageNavigateScroll->setChecked(settings->value("imageNavigateScroll", true).toBool());
+	QStringList positionsV = QStringList() << "top" << "center" << "bottom";
+	QStringList positionsH = QStringList() << "left" << "center" << "right";
+	ui->comboImagePositionImageV->setCurrentIndex(positionsV.indexOf(settings->value("imagePositionImageV", "center").toString()));
+	ui->comboImagePositionImageH->setCurrentIndex(positionsH.indexOf(settings->value("imagePositionImageH", "left").toString()));
+	ui->comboImagePositionAnimationV->setCurrentIndex(positionsV.indexOf(settings->value("imagePositionAnimationV", "center").toString()));
+	ui->comboImagePositionAnimationH->setCurrentIndex(positionsH.indexOf(settings->value("imagePositionAnimationH", "left").toString()));
+	ui->comboImagePositionVideoV->setCurrentIndex(positionsV.indexOf(settings->value("imagePositionVideoV", "center").toString()));
+	ui->comboImagePositionVideoH->setCurrentIndex(positionsH.indexOf(settings->value("imagePositionVideoH", "left").toString()));
 
 	settings->beginGroup("Coloring");
 		settings->beginGroup("Colors");
@@ -690,6 +698,14 @@ void optionsWindow::save()
 	settings->setValue("resultsScrollArea", ui->checkResultsScrollArea->isChecked());
 	settings->setValue("imageCloseMiddleClick", ui->checkImageCloseMiddleClick->isChecked());
 	settings->setValue("imageNavigateScroll", ui->checkImageNavigateScroll->isChecked());
+	QStringList positionsV = QStringList() << "top" << "center" << "bottom";
+	QStringList positionsH = QStringList() << "left" << "center" << "right";
+	settings->setValue("imagePositionImageV", positionsV.at(ui->comboImagePositionImageV->currentIndex()));
+	settings->setValue("imagePositionImageH", positionsH.at(ui->comboImagePositionImageH->currentIndex()));
+	settings->setValue("imagePositionAnimationV", positionsV.at(ui->comboImagePositionAnimationV->currentIndex()));
+	settings->setValue("imagePositionAnimationH", positionsH.at(ui->comboImagePositionAnimationH->currentIndex()));
+	settings->setValue("imagePositionVideoV", positionsV.at(ui->comboImagePositionVideoV->currentIndex()));
+	settings->setValue("imagePositionVideoH", positionsH.at(ui->comboImagePositionVideoH->currentIndex()));
 
 	settings->beginGroup("Coloring");
 		settings->beginGroup("Colors");
