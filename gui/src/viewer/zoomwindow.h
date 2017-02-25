@@ -100,6 +100,7 @@ class zoomWindow : public QWidget
 
 	private:
 		void showThumbnail();
+		Qt::Alignment getAlignments(QString type);
 
 	signals:
 		void linkClicked(QString);

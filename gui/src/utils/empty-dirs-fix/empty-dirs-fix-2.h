@@ -19,19 +19,15 @@ class EmptyDirsFix2 : public QDialog
 	Q_OBJECT
 
 	public:
-		explicit EmptyDirsFix2(QString folder, QWidget *parent = 0);
+		explicit EmptyDirsFix2(QStringList folders, QWidget *parent = 0);
 		~EmptyDirsFix2();
-		void mkList(QDir);
-		bool isEmpty(QDir);
 		bool removeDir(QString);
-		QString remakePath(QTreeWidgetItem*);
 
 	private slots:
 		void deleteSel();
 
 	private:
-		Ui::EmptyDirsFix2	*ui;
-		QString				m_folder;
+		Ui::EmptyDirsFix2 *ui;
 };
 
 #endif // EMPTY_DIRS_FIX_2_H

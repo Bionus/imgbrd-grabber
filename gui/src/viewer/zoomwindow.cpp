@@ -230,9 +230,9 @@ void zoomWindow::reverseImageSearch(int i)
 void zoomWindow::copyImageFileToClipboard()
 {
 	QString path = m_imagePath;
-	if (path.isEmpty())
+	if (path.isEmpty() || !QFile::exists(path))
 	{
-		QMap<QString, Image::SaveResult> files = m_image->save(m_settings->value("Save/filename").toString(), QDir::tempPath());
+		QMap<QString, Image::SaveResult> files = m_image->save(m_settings->value("Save/filename").toString(), m_profile->tempPath(), false);
 		path = files.firstKey();
 	}
 
@@ -719,6 +719,17 @@ void zoomWindow::draw()
  */
 void zoomWindow::update(bool onlysize, bool force)
 {
+	// Update image alignment
+	QString ext = m_url.section('.', -1).toLower();
+	QString type;
+	if (m_image->isVideo())
+	{ type = "imagePositionVideo"; }
+	else if (ext == "gif")
+	{ type = "imagePositionAnimation"; }
+	else
+	{ type = "imagePositionImage"; }
+	m_labelImage->setAlignment(getAlignments(type));
+
 	// Only used for images
 	if (m_displayImage.isNull())
 		return;
@@ -735,6 +746,17 @@ void zoomWindow::update(bool onlysize, bool force)
 	}
 
 	m_stackedWidget->setCurrentWidget(m_labelImage);
+}
+
+Qt::Alignment zoomWindow::getAlignments(QString type)
+{
+	QString vertical = m_settings->value(type + "V", "center").toString();
+	QString horizontal = m_settings->value(type + "H", "left").toString();
+
+	Qt::Alignment vAlign = vertical == "top" ? Qt::AlignTop : (vertical == "bottom" ? Qt::AlignBottom : Qt::AlignVCenter);
+	Qt::Alignment hAlign = horizontal == "left" ? Qt::AlignLeft : (horizontal == "right" ? Qt::AlignRight : Qt::AlignHCenter);
+
+	return vAlign | hAlign;
 }
 
 void zoomWindow::saveNQuit()
@@ -835,6 +857,7 @@ QStringList zoomWindow::saveImageNow(bool fav)
 
 			case Image::SaveResult::Ignored:
 				button->setText(fav ? tr("Ignored! (fav)") : tr("Ignored!"));
+				m_imagePath = m_profile->md5Exists(m_image->md5());
 				break;
 
 			case Image::SaveResult::AlreadyExists:
@@ -1026,7 +1049,7 @@ void zoomWindow::showThumbnail()
 	}
 
 	// Other images get a resizable thumbnail
-	else
+	else if (m_displayImage.isNull())
 	{
 		m_displayImage = m_image->previewImage().scaled(size, Qt::IgnoreAspectRatio, Qt::FastTransformation);
 		update(false, true);
@@ -1051,7 +1074,7 @@ void zoomWindow::load(QSharedPointer<Image> image)
 	m_size = 0;
 
 	// Show the thumbnail if the image was not already preloaded
-	if (isVisible() && m_image->data().isEmpty())
+	if (isVisible() && (m_image->data().isEmpty() || m_image->isVideo()))
 	{ showThumbnail(); }
 
 	// Preload gallery images
@@ -1145,9 +1168,9 @@ void zoomWindow::openFile(bool now)
 	}
 
 	QString path = m_imagePath;
-	if (path.isEmpty())
+	if (path.isEmpty() || !QFile::exists(path))
 	{
-		QMap<QString, Image::SaveResult> files = m_image->save(m_settings->value("Save/filename").toString(), QDir::tempPath());
+		QMap<QString, Image::SaveResult> files = m_image->save(m_settings->value("Save/filename").toString(), m_profile->tempPath(), false);
 		path = files.firstKey();
 	}
 
@@ -1174,14 +1197,15 @@ void zoomWindow::wheelEvent(QWheelEvent *e)
 			e->ignore();
 		m_lastWheelEvent.start();
 
-		if (e->delta() <= -120)
-		{
-			previous();
-			return;
-		}
-		if (e->delta() >= 120)
+		int angle = e->angleDelta().y();
+		if (angle <= -120) // Scroll down
 		{
 			next();
+			return;
+		}
+		if (angle >= 120) // Scroll up
+		{
+			previous();
 			return;
 		}
 	}

@@ -21,6 +21,9 @@ class Profile : public QObject
 		~Profile();
 		void sync();
 
+		// Temporary path
+		QString tempPath() const;
+
 		// Favorite management
 		void addFavorite(Favorite fav);
 		void removeFavorite(Favorite fav);

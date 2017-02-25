@@ -1,4 +1,5 @@
 #include <QFile>
+#include <QDir>
 #include "profile.h"
 #include "site.h"
 #include "commands/commands.h"
@@ -161,6 +162,14 @@ void Profile::sync()
 	Commands *newCommands = new Commands(this);
 	m_commands = newCommands;
 	delete oldCommands;
+}
+
+QString Profile::tempPath() const
+{
+	QString tmp = QDir::tempPath();
+	QString subDir = "Grabber";
+	QDir(tmp).mkpath(subDir);
+	return tmp + QDir::separator() + subDir;
 }
 
 void Profile::addFavorite(Favorite fav)

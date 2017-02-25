@@ -522,6 +522,9 @@ void PageApi::parse()
 				return;
 			}
 
+			if (data.contains("total"))
+			{ m_imagesCount = data.value("total").toInt(); }
+
 			QMap<QString, QVariant> sc;
 			QList<QVariant> sourc = src.toList();
 			if (sourc.isEmpty())

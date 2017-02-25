@@ -4,10 +4,12 @@
 
 
 
-EmptyDirsFix2::EmptyDirsFix2(QString folder, QWidget *parent) : QDialog(parent), ui(new Ui::EmptyDirsFix2), m_folder(folder)
+EmptyDirsFix2::EmptyDirsFix2(QStringList folders, QWidget *parent) : QDialog(parent), ui(new Ui::EmptyDirsFix2)
 {
 	ui->setupUi(this);
-	mkList(QDir(folder));
+
+	for (QString folder : folders)
+	{ ui->listWidget->addItem(new QListWidgetItem(folder)); }
 	ui->listWidget->selectAll();
 }
 EmptyDirsFix2::~EmptyDirsFix2()
@@ -15,29 +17,6 @@ EmptyDirsFix2::~EmptyDirsFix2()
 	delete ui;
 }
 
-void EmptyDirsFix2::mkList(QDir dir)
-{
-	QStringList dirs = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
-	for (int i = 0; i < dirs.size(); i++)
-	{
-		if (isEmpty(QDir(dir.path()+"/"+dirs.at(i))))
-		{ ui->listWidget->addItem(new QListWidgetItem(dir.path()+"/"+dirs.at(i))); }
-		else
-		{ mkList(QDir(dir.path()+"/"+dirs.at(i))); }
-	}
-}
-bool EmptyDirsFix2::isEmpty(QDir dir)
-{
-	QStringList files = dir.entryList(QDir::Files);
-	if (!files.isEmpty())
-	{ return false; }
-
-	QStringList dirs = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
-	bool empty = true;
-	for (int i = 0; i < dirs.size(); i++)
-	{ empty = empty && isEmpty(QDir(dir.path()+"/"+dirs.at(i))); }
-	return empty;
-}
 bool EmptyDirsFix2::removeDir(QString path)
 {
 	path = QDir::toNativeSeparators(path);
@@ -54,6 +33,12 @@ void EmptyDirsFix2::deleteSel()
 	QList<QListWidgetItem*> sel = ui->listWidget->selectedItems();
 	for (int i = 0; i < sel.size(); i++)
 	{ folders.append(sel.at(i)->text()); }
+
+	if (folders.isEmpty())
+	{
+		QMessageBox::information(this, tr("Empty folders fixer"), tr("No folder selected."));
+		return;
+	}
 
 	int reponse = QMessageBox::question(this, tr("Empty folders fixer"), tr("You are about to delete %n folder. Are you sure you want to continue?", "", folders.size()), QMessageBox::Yes | QMessageBox::No);
 	if (reponse == QMessageBox::Yes)

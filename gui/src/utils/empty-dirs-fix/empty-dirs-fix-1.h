@@ -2,6 +2,8 @@
 #define EMPTY_DIRS_FIX_1_H
 
 #include <QDialog>
+#include <QStringList>
+#include <QDir>
 #include "models/profile.h"
 
 
@@ -22,6 +24,10 @@ class EmptyDirsFix1 : public QDialog
 
 	public slots:
 		void next();
+
+	private:
+		QStringList mkList(QDir dir);
+		bool isEmpty(QDir dir);
 
 	private:
 		Ui::EmptyDirsFix1 *ui;

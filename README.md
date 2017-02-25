@@ -1,3 +1,5 @@
+<img src="resources/images/readme-icon.png" align="right" />
+
 # Grabber
 
 [![GitHub release](https://img.shields.io/github/release/Bionus/imgbrd-grabber.svg)](https://github.com/Bionus/imgbrd-grabber/releases/latest)
@@ -10,35 +12,34 @@
 [![Code Coverage](https://img.shields.io/codecov/c/github/Bionus/imgbrd-grabber.svg)](https://codecov.io/gh/Bionus/imgbrd-grabber)
 [![Project license](https://img.shields.io/github/license/bionus/imgbrd-grabber.svg)](https://raw.githubusercontent.com/Bionus/imgbrd-grabber/develop/LICENSE)
 
-## About
-Imgbrd-Grabber is an imageboard/booru downloader which can be used with a great a graphical user interface or through command line. It can download thousands of images from multiple boorus very easily.
-One of its main advantage is its very powerful naming features: just set your filename and folder using all the tokens available and conditionals, and he will generate an image-dependant one.
+Imageboard/booru downloader which can download thousands of images from multiple boorus very easily. It can either be used through its graphical user intertface or command-line.
+
+Thanks to its powerful naming features, you just have to set your filename and save directory using all the tokens available, and the program will generate a filename using the image's information. With this, you can store and manage your pictures in advanced directory structures, and save image with custom filenames!
+
+Grabber works on Windows, Mac, and Linux.
 
 ## Download
 You can download the latest release [here](https://github.com/Bionus/imgbrd-grabber/releases/latest), or find all previous releases [here](https://github.com/Bionus/imgbrd-grabber/releases).
 
-## Contact
-If you have any questions about the program, found a bug and don't want to use the github issue tracker, or anything, you can contact me by mail in French or in English at [bio.nus@hotmail.fr](mailto:bio.nus@hotmail.fr). Please prefer using Github's built-in issue tracker though, as the answer to your question or problem might help other people!
-
 ## Main features
 * Browse images from the internet
-* Download huge amounts of images at once
+* Download thousands of images at once
+* Save images using a custom format, for example `%artist%/%copyright%/%character%/%md5%.%ext%`, or using Javascript code. See [Filename](https://github.com/Bionus/imgbrd-grabber/wiki/Commands) for details.
+* Add your own imageboards very easily
+* Authentication for sources behind a login wall
 * Command line interface to download images
 * Download single images using their md5 or id
-* Rename downloaded images using a formatting string, for example "%artist%/%copyright%/%character%/%md5%.%ext%" (someway like how the Firefox extension [Danbooru Downloader](https://addons.mozilla.org/fr/firefox/addon/danbooru-downloader/) does), or directly using Javascript code. See {{Filename}} for details.
-* Add and remove imageboards very easily
-* Multiple tabs
-* Display multiple imageboards at the same time in a single tab
+* Tabs to make multiple searchs at the same time
+* Able to show results from multiple imageboards at the same time in a single tab
 * Merge results from these imageboards (i.e. remove duplicates in results)
-* Favorite & "View it later" tags
-* Auto-completion in the search field
-* Post-filtering
-* Autodownload
-* Can import settings from Mozilla Firefox extension "danbooru downloader"
-* Can add entries to a database for each image or tag while downloading
-* Blacklisting
+* Favorite and "view it later" tags
+* Auto-completion of tags in the search field
+* Post-filtering (useful for imageboards limiting the number of tags you can use in a single search)
+* Autodownload images as you search according to a whitelist
+* Can add entries to a database for each image or tag while downloading. See [Commands](https://github.com/Bionus/imgbrd-grabber/wiki/Commands) for details.
+* Blacklisting of tags to mark or hide images you don't want to see
 * Proxy support
-* ... and more!
+* ... and a lot more!
 
 ## Languages
 * English
@@ -47,31 +48,16 @@ If you have any questions about the program, found a bug and don't want to use t
 * Chinese (simplified)
 
 ## Default sources
-You can add additional sources very easily, but here's a shot list of some sources that are included and supported by default: Danbooru, Gelbooru, yande.re, Shimmie, Sankaku complex, e621, rule34, safebooru, behoimi...
+You can add additional sources very easily, but here's a shot list of some sources that are included and supported by default: Danbooru, Gelbooru, yande.re, Shimmie, Sankaku complex, e621, Konachan, rule34, safebooru, behoimi, Zerochan...
+
+## Contact
+If you have any questions about the program, found a bug and don't want to use the github issue tracker, or anything, you can contact me by mail in French or in English at [bio.nus@hotmail.fr](mailto:bio.nus@hotmail.fr). Please prefer using Github's built-in issue tracker though, as the answer to your question or problem might help other people!
 
 ## Compilation
-
 If you want more info about compilation steps, see the [Compilation](https://github.com/Bionus/imgbrd-grabber/wiki/Compilation) wiki page.
 
 ### Linux
+Just run the `build.sh` file that you can find at the root of the repository.
 
-```
-./build.sh
-```
-
-Or if you want to run the commands yourself :
-
-```
-sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa
-sudo apt-get update -qq
-sudo apt-get install -qq qt5-qmake qtbase5-dev qtdeclarative5-dev qtscript5-dev qtmultimedia5-dev libpulse-dev
-sudo apt-get install qt5-default qttools5-dev-tools
-QT_SELECT=5 qmake Grabber.pro
-make
-mv gui/build/release/Grabber release/Grabber
-touch release/settings.ini
-```
-
-### OS X
-
-See the [OS X compilation](https://github.com/Bionus/imgbrd-grabber/wiki/Compilation#os-x) instructions for compiling Grabber on Mac.
+### macOS
+See the [macOS compilation](https://github.com/Bionus/imgbrd-grabber/wiki/Compilation#macos) instructions for compiling Grabber on macOS.
