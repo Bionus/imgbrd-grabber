@@ -25,22 +25,22 @@ If you have any questions about the program, found a bug and don't want to use t
 ## Main features
 * Browse images from the internet
 * Download huge amounts of images at once
+* Save downloaded images using a custom format, for example "%artist%/%copyright%/%character%/%md5%.%ext%", or using Javascript code. See {{Filename}} for details.
+* Add and remove imageboards very easily
+* Authentication for sources behind a login wall
 * Command line interface to download images
 * Download single images using their md5 or id
-* Rename downloaded images using a formatting string, for example "%artist%/%copyright%/%character%/%md5%.%ext%" (someway like how the Firefox extension [Danbooru Downloader](https://addons.mozilla.org/fr/firefox/addon/danbooru-downloader/) does), or directly using Javascript code. See {{Filename}} for details.
-* Add and remove imageboards very easily
 * Multiple tabs
 * Display multiple imageboards at the same time in a single tab
 * Merge results from these imageboards (i.e. remove duplicates in results)
-* Favorite & "View it later" tags
+* Favorite and "View it later" tags
 * Auto-completion in the search field
 * Post-filtering
-* Autodownload
-* Can import settings from Mozilla Firefox extension "danbooru downloader"
+* Autodownload using a whitelist
 * Can add entries to a database for each image or tag while downloading
 * Blacklisting
 * Proxy support
-* ... and more!
+* ... and a lot more!
 
 ## Languages
 * English
