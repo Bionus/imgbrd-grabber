@@ -1051,7 +1051,7 @@ void zoomWindow::load(QSharedPointer<Image> image)
 	m_size = 0;
 
 	// Show the thumbnail if the image was not already preloaded
-	if (isVisible() && m_image->data().isEmpty())
+	if (isVisible() && (m_image->data().isEmpty() || m_image->isVideo()))
 	{ showThumbnail(); }
 
 	// Preload gallery images
