@@ -52,28 +52,10 @@ You can add additional sources very easily, but here's a shot list of some sourc
 If you have any questions about the program, found a bug and don't want to use the github issue tracker, or anything, you can contact me by mail in French or in English at [bio.nus@hotmail.fr](mailto:bio.nus@hotmail.fr). Please prefer using Github's built-in issue tracker though, as the answer to your question or problem might help other people!
 
 ## Compilation
-
 If you want more info about compilation steps, see the [Compilation](https://github.com/Bionus/imgbrd-grabber/wiki/Compilation) wiki page.
 
 ### Linux
+Just run the `build.sh` file that you can find at the root of the repository.
 
-```
-./build.sh
-```
-
-Or if you want to run the commands yourself :
-
-```
-sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa
-sudo apt-get update -qq
-sudo apt-get install -qq qt5-qmake qtbase5-dev qtdeclarative5-dev qtscript5-dev qtmultimedia5-dev libpulse-dev
-sudo apt-get install qt5-default qttools5-dev-tools
-QT_SELECT=5 qmake Grabber.pro
-make
-mv gui/build/release/Grabber release/Grabber
-touch release/settings.ini
-```
-
-### OS X
-
-See the [OS X compilation](https://github.com/Bionus/imgbrd-grabber/wiki/Compilation#os-x) instructions for compiling Grabber on Mac.
+### macOS
+See the [macOS compilation](https://github.com/Bionus/imgbrd-grabber/wiki/Compilation#macos) instructions for compiling Grabber on macOS.
