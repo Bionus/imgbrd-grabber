@@ -232,7 +232,7 @@ void zoomWindow::copyImageFileToClipboard()
 	QString path = m_imagePath;
 	if (path.isEmpty())
 	{
-		QMap<QString, Image::SaveResult> files = m_image->save(m_settings->value("Save/filename").toString(), m_profile->tempPath());
+		QMap<QString, Image::SaveResult> files = m_image->save(m_settings->value("Save/filename").toString(), m_profile->tempPath(), false);
 		path = files.firstKey();
 	}
 
@@ -1148,7 +1148,7 @@ void zoomWindow::openFile(bool now)
 	QString path = m_imagePath;
 	if (path.isEmpty())
 	{
-		QMap<QString, Image::SaveResult> files = m_image->save(m_settings->value("Save/filename").toString(), m_profile->tempPath());
+		QMap<QString, Image::SaveResult> files = m_image->save(m_settings->value("Save/filename").toString(), m_profile->tempPath(), false);
 		path = files.firstKey();
 	}
 

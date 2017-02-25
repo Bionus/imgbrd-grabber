@@ -844,7 +844,7 @@ QStringList Image::stylishedTags(Profile *profile) const
 	return t;
 }
 
-Image::SaveResult Image::save(QString path, bool force, bool basic)
+Image::SaveResult Image::save(QString path, bool force, bool basic, bool addMd5)
 {
 	SaveResult res = SaveResult::Saved;
 
@@ -868,7 +868,8 @@ Image::SaveResult Image::save(QString path, bool force, bool basic)
 			{ QFile::copy(m_source, path); }
 			else
 			{
-				m_profile->addMd5(md5(), path);
+				if (addMd5)
+				{ m_profile->addMd5(md5(), path); }
 
 				if (f.open(QFile::WriteOnly))
 				{
@@ -947,17 +948,17 @@ Image::SaveResult Image::save(QString path, bool force, bool basic)
 
 	return res;
 }
-QMap<QString, Image::SaveResult> Image::save(QStringList paths)
+QMap<QString, Image::SaveResult> Image::save(QStringList paths, bool addMd5)
 {
 	QMap<QString, Image::SaveResult> res;
 	for (QString path : paths)
-		res.insert(path, save(path));
+		res.insert(path, save(path, false, false, addMd5));
 	return res;
 }
-QMap<QString, Image::SaveResult> Image::save(QString filename, QString path)
+QMap<QString, Image::SaveResult> Image::save(QString filename, QString path, bool addMd5)
 {
 	QStringList paths = this->path(filename, path, 0, true, false, true, true, true);
-	return save(paths);
+	return save(paths, addMd5);
 }
 
 QList<Tag> Image::filteredTags(QStringList remove) const
