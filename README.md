@@ -1,3 +1,5 @@
+<img src="resources/images/readme-icon.png" align="right" />
+
 # Grabber
 
 [![GitHub release](https://img.shields.io/github/release/Bionus/imgbrd-grabber.svg)](https://github.com/Bionus/imgbrd-grabber/releases/latest)
