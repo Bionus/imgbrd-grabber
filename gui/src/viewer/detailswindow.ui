@@ -23,7 +23,7 @@
    <string>Details</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../../resources.qrc">
+   <iconset resource="../../../CrashReporter/resources.qrc">
     <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
@@ -56,6 +56,9 @@
        <property name="wordWrap">
         <bool>true</bool>
        </property>
+       <property name="textInteractionFlags">
+        <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+       </property>
       </widget>
      </item>
      <item row="1" column="0" colspan="2">
@@ -86,6 +89,9 @@
        <property name="text">
         <string>&lt;i&gt;Unknown&lt;/i&gt;</string>
        </property>
+       <property name="textInteractionFlags">
+        <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+       </property>
       </widget>
      </item>
      <item row="4" column="0">
@@ -103,6 +109,9 @@
        <property name="wordWrap">
         <bool>true</bool>
        </property>
+       <property name="textInteractionFlags">
+        <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+       </property>
       </widget>
      </item>
      <item row="5" column="0">
@@ -119,6 +128,9 @@
        </property>
        <property name="wordWrap">
         <bool>true</bool>
+       </property>
+       <property name="textInteractionFlags">
+        <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
        </property>
       </widget>
      </item>
@@ -157,6 +169,9 @@
        <property name="text">
         <string>&lt;i&gt;Unknown&lt;/i&gt;</string>
        </property>
+       <property name="textInteractionFlags">
+        <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+       </property>
       </widget>
      </item>
      <item row="9" column="0">
@@ -170,6 +185,9 @@
       <widget class="QLabel" name="labelSize">
        <property name="text">
         <string>&lt;i&gt;Unknown&lt;/i&gt;</string>
+       </property>
+       <property name="textInteractionFlags">
+        <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
        </property>
       </widget>
      </item>
@@ -185,6 +203,9 @@
        <property name="text">
         <string>&lt;i&gt;Unknown&lt;/i&gt;</string>
        </property>
+       <property name="textInteractionFlags">
+        <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+       </property>
       </widget>
      </item>
      <item row="3" column="0">
@@ -198,6 +219,9 @@
       <widget class="QLabel" name="labelMd5">
        <property name="text">
         <string>&lt;i&gt;Unknown&lt;/i&gt;</string>
+       </property>
+       <property name="textInteractionFlags">
+        <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
        </property>
       </widget>
      </item>
@@ -355,6 +379,9 @@
        <property name="wordWrap">
         <bool>true</bool>
        </property>
+       <property name="textInteractionFlags">
+        <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+       </property>
       </widget>
      </item>
     </layout>
@@ -472,9 +499,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="../../resources.qrc"/>
-  <include location="../../resources.qrc"/>
-  <include location="../../resources.qrc"/>
+  <include location="../../../CrashReporter/resources.qrc"/>
  </resources>
  <connections>
   <connection>
