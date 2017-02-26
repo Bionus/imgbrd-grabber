@@ -3486,7 +3486,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/sources/sourceswindow.ui" line="48"/>
         <source>Check all</source>
-        <translation>检查所有</translation>
+        <translation>全选</translation>
     </message>
     <message>
         <location filename="../src/sources/sourceswindow.ui" line="107"/>
