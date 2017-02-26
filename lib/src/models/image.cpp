@@ -662,6 +662,7 @@ void Image::loadImage()
 	m_loadImage = m_parentSite->get(m_parentSite->fixUrl(m_url), m_parent, "image", this);
 	m_loadImage->setParent(this);
 	m_loadingImage = true;
+	m_data.clear();
 
 	connect(m_loadImage, &QNetworkReply::downloadProgress, this, &Image::downloadProgressImageS);
 	connect(m_loadImage, &QNetworkReply::finished, this, &Image::finishedImageS);
