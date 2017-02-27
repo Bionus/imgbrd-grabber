@@ -15,6 +15,8 @@ CONFIG  += console testcase
 CONFIG  -= app_bundle
 TEMPLATE = app
 DEFINES += TEST=1
+target.files = 
+INSTALLS += target
 
 # Code coverage
 @
