@@ -289,7 +289,7 @@
     <message>
         <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-1.cpp" line="30"/>
         <source>No empty folder found.</source>
-        <translation type="unfinished"></translation>
+        <translation>Aucun dossie vide trouvé.</translation>
     </message>
 </context>
 <context>
@@ -319,7 +319,7 @@
     <message>
         <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-2.cpp" line="39"/>
         <source>No folder selected.</source>
-        <translation type="unfinished"></translation>
+        <translation>Aucun dossier sélectionné.</translation>
     </message>
     <message numerus="yes">
         <location filename="../gui/src/utils/empty-dirs-fix/empty-dirs-fix-2.cpp" line="43"/>
@@ -636,40 +636,40 @@
         <location filename="../lib/src/functions.h" line="25"/>
         <location filename="../lib/src/functions.h" line="29"/>
         <source>B</source>
-        <translation type="unfinished"></translation>
+        <translation>o</translation>
     </message>
     <message>
         <location filename="../lib/src/functions.h" line="21"/>
         <location filename="../lib/src/functions.h" line="25"/>
         <source>KB</source>
-        <translation type="unfinished"></translation>
+        <translation>Ko</translation>
     </message>
     <message>
         <location filename="../lib/src/functions.h" line="21"/>
         <location filename="../lib/src/functions.h" line="25"/>
         <source>MB</source>
-        <translation type="unfinished"></translation>
+        <translation>Mo</translation>
     </message>
     <message>
         <location filename="../lib/src/functions.h" line="21"/>
         <location filename="../lib/src/functions.h" line="25"/>
         <source>GB</source>
-        <translation type="unfinished"></translation>
+        <translation>Go</translation>
     </message>
     <message>
         <location filename="../lib/src/functions.h" line="29"/>
         <source>KiB</source>
-        <translation type="unfinished"></translation>
+        <translation>Kio</translation>
     </message>
     <message>
         <location filename="../lib/src/functions.h" line="29"/>
         <source>MiB</source>
-        <translation type="unfinished"></translation>
+        <translation>Mio</translation>
     </message>
     <message>
         <location filename="../lib/src/functions.h" line="29"/>
         <source>GiB</source>
-        <translation type="unfinished"></translation>
+        <translation>Gio</translation>
     </message>
 </context>
 <context>
@@ -1295,7 +1295,7 @@
     <message>
         <location filename="../gui/src/sources/sourcessettingswindow.ui" line="691"/>
         <source>Page limit</source>
-        <translation type="unfinished"></translation>
+        <translation>Page max</translation>
     </message>
     <message>
         <location filename="../gui/src/sources/sourcessettingswindow.ui" line="706"/>
@@ -1429,27 +1429,27 @@
         <location filename="../gui/src/updater/update-dialog.ui" line="14"/>
         <location filename="../gui/src/updater/update-dialog.cpp" line="77"/>
         <source>Updater</source>
-        <translation type="unfinished"></translation>
+        <translation>Mise à jour</translation>
     </message>
     <message>
         <location filename="../gui/src/updater/update-dialog.ui" line="29"/>
         <source>A new version is available.&lt;br/&gt;Do you want to update now?</source>
-        <translation type="unfinished"></translation>
+        <translation>Une nouvelle version est disponible.&lt;br/&gt;Voulez-vous mettre à jour maintenant ?</translation>
     </message>
     <message>
         <location filename="../gui/src/updater/update-dialog.ui" line="49"/>
         <source>See changelog</source>
-        <translation type="unfinished"></translation>
+        <translation>Voir les changements</translation>
     </message>
     <message>
         <location filename="../gui/src/updater/update-dialog.cpp" line="46"/>
         <source>Version &lt;b&gt;%1&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Version &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../gui/src/updater/update-dialog.cpp" line="77"/>
         <source>To go on with the update, the program must be closed. Do you want to close now?</source>
-        <translation type="unfinished"></translation>
+        <translation>Pour continuer la mise à jour, le programme doit être fermé. Voulez-vous fermer maintenant ?</translation>
     </message>
 </context>
 <context>
@@ -1468,7 +1468,7 @@
     <message>
         <location filename="../gui/src/batch/batchwindow.ui" line="49"/>
         <source>%p%</source>
-        <translation type="unfinished"></translation>
+        <translation>%p%</translation>
     </message>
     <message>
         <location filename="../gui/src/batch/batchwindow.ui" line="56"/>
@@ -1544,7 +1544,7 @@
     <message>
         <location filename="../gui/src/batch/batchwindow.ui" line="227"/>
         <source>Open destination folder</source>
-        <translation type="unfinished">Ouvrir le dossier de destination</translation>
+        <translation>Ouvrir le dossier de destination</translation>
     </message>
     <message>
         <location filename="../gui/src/batch/batchwindow.ui" line="232"/>
@@ -2346,7 +2346,7 @@
     <message>
         <location filename="../gui/src/mainwindow.cpp" line="792"/>
         <source>This source is not valid.</source>
-        <translation type="unfinished"></translation>
+        <translation>Cette source n&apos;est pas valide.</translation>
     </message>
     <message>
         <location filename="../gui/src/mainwindow.cpp" line="801"/>
@@ -2755,7 +2755,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="108"/>
         <source>Species tags</source>
-        <translation type="unfinished"></translation>
+        <translation>Tags espèce</translation>
     </message>
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="113"/>
@@ -2765,7 +2765,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="123"/>
         <source>Image window</source>
-        <translation type="unfinished"></translation>
+        <translation>Fenêtre d&apos;image</translation>
     </message>
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="128"/>
@@ -2898,32 +2898,32 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="349"/>
         <source>Check for updates</source>
-        <translation type="unfinished"></translation>
+        <translation>Vérification de mise à jour</translation>
     </message>
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="360"/>
         <source>Every time</source>
-        <translation type="unfinished"></translation>
+        <translation>À chaque fois</translation>
     </message>
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="365"/>
         <source>Once a day</source>
-        <translation type="unfinished"></translation>
+        <translation>Une fois par jour</translation>
     </message>
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="370"/>
         <source>Once a week</source>
-        <translation type="unfinished"></translation>
+        <translation>Une fois par semaine</translation>
     </message>
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="375"/>
         <source>Once a month</source>
-        <translation type="unfinished"></translation>
+        <translation>Une fois par mois</translation>
     </message>
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="380"/>
         <source>Never</source>
-        <translation type="unfinished"></translation>
+        <translation>Jamais</translation>
     </message>
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="419"/>
@@ -3104,7 +3104,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="868"/>
         <source>Get extension from file header</source>
-        <translation type="unfinished"></translation>
+        <translation>Récupérer l&apos;extension dans l&apos;en-tête du fichier</translation>
     </message>
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="885"/>
@@ -3233,7 +3233,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="1554"/>
         <source>Use a scroll area for the results</source>
-        <translation type="unfinished"></translation>
+        <translation>Utiliser une zone scrollable pour les résultats</translation>
     </message>
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="1561"/>
@@ -3449,32 +3449,32 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="1825"/>
         <source>Preloading</source>
-        <translation type="unfinished"></translation>
+        <translation>Pré-chargement</translation>
     </message>
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="1835"/>
         <source>Slideshow</source>
-        <translation type="unfinished"></translation>
+        <translation>Diaporama</translation>
     </message>
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="1842"/>
         <source>s</source>
-        <translation type="unfinished">s</translation>
+        <translation>s</translation>
     </message>
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="1852"/>
         <source>Middle click to close window</source>
-        <translation type="unfinished"></translation>
+        <translation>Clic milieu pour fermer la fenêtre</translation>
     </message>
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="1862"/>
         <source>Enable scroll wheel navigation</source>
-        <translation type="unfinished"></translation>
+        <translation>Activer la navigation à la molette</translation>
     </message>
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="1872"/>
         <source>Image position</source>
-        <translation type="unfinished"></translation>
+        <translation>Position des images</translation>
     </message>
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="1890"/>
@@ -3484,31 +3484,31 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
         <location filename="../gui/src/settings/optionswindow.ui" line="2000"/>
         <location filename="../gui/src/settings/optionswindow.ui" line="2022"/>
         <source>Center</source>
-        <translation type="unfinished"></translation>
+        <translation>Centre</translation>
     </message>
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="1895"/>
         <location filename="../gui/src/settings/optionswindow.ui" line="1950"/>
         <location filename="../gui/src/settings/optionswindow.ui" line="2005"/>
         <source>Bottom</source>
-        <translation type="unfinished"></translation>
+        <translation>Bas</translation>
     </message>
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="1917"/>
         <location filename="../gui/src/settings/optionswindow.ui" line="1972"/>
         <location filename="../gui/src/settings/optionswindow.ui" line="2027"/>
         <source>Right</source>
-        <translation type="unfinished"></translation>
+        <translation>Droite</translation>
     </message>
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="1927"/>
         <source>Animation position</source>
-        <translation type="unfinished"></translation>
+        <translation>Position des animations</translation>
     </message>
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="1982"/>
         <source>Video position</source>
-        <translation type="unfinished"></translation>
+        <translation>Position des vidéos</translation>
     </message>
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="2064"/>
@@ -3532,7 +3532,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="2297"/>
         <source>Species</source>
-        <translation type="unfinished"></translation>
+        <translation>Espèces</translation>
     </message>
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="2342"/>
@@ -3575,7 +3575,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="2582"/>
         <source>Use system-wide proxy settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Utiliser les paramètres proxy système</translation>
     </message>
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="2609"/>
@@ -4173,34 +4173,29 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
         <location filename="../gui/src/viewer/zoomwindow.cpp" line="206"/>
         <source>Copy file</source>
-        <translation type="unfinished"></translation>
+        <translation>Copier le fichier</translation>
     </message>
     <message>
         <location filename="../gui/src/viewer/zoomwindow.cpp" line="207"/>
         <source>Copy data</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/src/viewer/zoomwindow.cpp" line="318"/>
-        <source>Error creating folder.
-%1</source>
-        <translation type="unfinished"></translation>
+        <translation>Copier les données</translation>
     </message>
     <message>
         <location filename="../gui/src/viewer/zoomwindow.cpp" line="357"/>
         <source>Copy tag</source>
-        <translation type="unfinished"></translation>
+        <translation>Copier le tag</translation>
     </message>
     <message>
         <location filename="../gui/src/viewer/zoomwindow.cpp" line="358"/>
         <source>Copy all tags</source>
-        <translation type="unfinished"></translation>
+        <translation>Copier tous les tags</translation>
     </message>
     <message>
         <location filename="../gui/src/viewer/zoomwindow.cpp" line="606"/>
         <source>An unexpected error occured loading the image (%1 - %2).
 %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Une erreur non attendue a survenu lors du chargement de l&apos;image (%1 - %2).
+%3</translation>
     </message>
     <message>
         <location filename="../gui/src/viewer/zoomwindow.cpp" line="770"/>
