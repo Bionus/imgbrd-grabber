@@ -89,7 +89,7 @@ bool DownloadQueryImage::read(const QJsonObject &json, QMap<QString, Site*> &sit
 	for (auto tag : jsonTags)
 		tags.append(tag.toString());
 
-	values["id"] = json["id"].toInt();
+	values["id"] = QString::number(json["id"].toInt());
 	values["md5"] = json["md5"].toString();
 	values["rating"] = json["rating"].toString();
 	values["tags"] = tags.join(' ');
