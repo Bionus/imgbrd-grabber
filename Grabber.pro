@@ -33,8 +33,7 @@ unix:!macx{
 	desktop.files += release/Grabber.desktop
 
 	icon.path = $$PREFIX/share/pixmaps
-	icon.extra = cp resources/icon.png resources/Grabber.png
-	icon.files += resources/Grabber.png
+	icon.extra = install -D -m644 resources/icon.png $(INSTALL_ROOT)/$$PREFIX/share/pixmaps/Grabber.png
 
 	INSTALLS += desktop icon config languages
 }

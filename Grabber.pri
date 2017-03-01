@@ -17,12 +17,12 @@ UI_DIR      = $$DESTDIR/ui
 
 # Global
 APP_VERSION = \\\"5.2.2\\\"
-PREFIX = \\\"$$(PREFIX)\\\"
+APP_PREFIX = \\\"$$(PREFIX)\\\"
 
 # General
 TEMPLATE = app
 DEFINES += VERSION=$$APP_VERSION
-DEFINES += PREFIX=$$PREFIX
+DEFINES += PREFIX=$$APP_PREFIX
 QT += core network xml sql script
 
 # Additionnal
