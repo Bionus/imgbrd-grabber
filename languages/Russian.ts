@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="ru_RU" sourcelanguage="en_US">
+<TS version="2.0" language="ru_RU" sourcelanguage="en_US">
 <context>
     <name>AboutWindow</name>
     <message>
@@ -11,27 +11,27 @@
     <message>
         <location filename="../src/aboutwindow.ui" line="63"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Grabber is a Bionus&apos; creation.&lt;br/&gt;Please visit the &lt;a href=&quot;https://github.com/Bionus/imgbrd-grabber&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;site&lt;/span&gt;&lt;/a&gt; to stay updated, or retrieve site or translations files.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Созданно Bionus.&lt;br/&gt;Посетите, пожалуйста, &lt;a href=&quot;https://github.com/Bionus/imgbrd-grabber&quot;&gt;сайт&lt;/a&gt; чтобы быть в курсе событий.&lt;/p&gt;&lt;/body&gt;&lt;/htm&gt;l</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Программа разработна Bionus.&lt;br/&gt;Пожалуйста, посетите &lt;a href=&quot;https://github.com/Bionus/imgbrd-grabber&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;сайт программы&lt;/span&gt;&lt;/a&gt; чтобы быть в курсе обновлений.&lt;/p&gt;&lt;/body&gt;&lt;/htm&gt;l</translation>
     </message>
     <message>
         <location filename="../src/aboutwindow.ui" line="79"/>
         <source>Special thanks to YMI for his help looking and solving bugs, as well as suggesting new features for the program.</source>
-        <translation>Специальное спасибо YMI за его помощь в отловке багов а также за предложение новых возможнотей.</translation>
+        <translation>Отдельное спасибо YMI за его предложения, а также за помощь в поиске и исправлении багов.</translation>
     </message>
     <message>
         <location filename="../src/aboutwindow.ui" line="89"/>
         <source>Russian translation byr Николай Тихонов.</source>
-        <translation>Перевод на русский выполнил Николай Тихонов.</translation>
+        <translation>Перевод на русский: Николай Тихонов.</translation>
     </message>
     <message>
         <location filename="../src/aboutwindow.cpp" line="48"/>
         <source>Grabber is up to date</source>
-        <translation>Grabber последней версии</translation>
+        <translation>Установлена последняя версия</translation>
     </message>
     <message>
         <location filename="../src/aboutwindow.cpp" line="48"/>
         <source>A new version is available: %1</source>
-        <translation>Новая версия доступна: %1</translation>
+        <translation>Доступна новая версия: %1</translation>
     </message>
 </context>
 <context>
@@ -59,7 +59,7 @@
     <message>
         <location filename="../src/batch/addgroupwindow.ui" line="57"/>
         <source>Images per page</source>
-        <translation>Изображений на страницу</translation>
+        <translation>Изображений на странице</translation>
     </message>
     <message>
         <location filename="../src/batch/addgroupwindow.ui" line="77"/>
@@ -69,7 +69,7 @@
     <message>
         <location filename="../src/batch/addgroupwindow.ui" line="97"/>
         <source>Download images with blacklisted tags</source>
-        <translation>Сохранить изображения с тегами из черного списка</translation>
+        <translation>Скачивать изображения с тегами из черного списка</translation>
     </message>
 </context>
 <context>
@@ -97,12 +97,12 @@
     <message>
         <location filename="../src/batch/adduniquewindow.ui" line="58"/>
         <source>Md5</source>
-        <translation>Md5</translation>
+        <translation>MD5</translation>
     </message>
     <message>
         <location filename="../src/batch/adduniquewindow.ui" line="74"/>
         <source>Filename</source>
-        <translation>Название фаила</translation>
+        <translation>Имя файла</translation>
     </message>
     <message>
         <location filename="../src/batch/adduniquewindow.ui" line="91"/>
@@ -112,17 +112,17 @@
     <message>
         <location filename="../src/batch/adduniquewindow.ui" line="103"/>
         <source>Browse</source>
-        <translation>Выбрать</translation>
+        <translation>Изменить</translation>
     </message>
     <message>
         <location filename="../src/batch/adduniquewindow.cpp" line="35"/>
         <source>Choose a save folder</source>
-        <translation>Выбрать папку для сохранения</translation>
+        <translation>Выберите папку для сохранения</translation>
     </message>
     <message>
         <location filename="../src/batch/adduniquewindow.cpp" line="97"/>
         <source>No image found.</source>
-        <translation>Изображение не найдено.</translation>
+        <translation>Изображений не найдено.</translation>
     </message>
 </context>
 <context>
@@ -131,7 +131,7 @@
         <location filename="../src/utils/blacklist-fix/blacklist-fix-1.ui" line="14"/>
         <location filename="../src/utils/blacklist-fix/blacklist-fix-1.cpp" line="115"/>
         <source>Blacklist fixer</source>
-        <translation>Черный список</translation>
+        <translation>Фиксер черного списка</translation>
     </message>
     <message>
         <location filename="../src/utils/blacklist-fix/blacklist-fix-1.ui" line="24"/>
@@ -141,17 +141,17 @@
     <message>
         <location filename="../src/utils/blacklist-fix/blacklist-fix-1.ui" line="34"/>
         <source>Force md5 calculation</source>
-        <translation>УСИЛЕННОЕ вычисление md5</translation>
+        <translation>Принудительно вычислять MD5</translation>
     </message>
     <message>
         <location filename="../src/utils/blacklist-fix/blacklist-fix-1.ui" line="41"/>
         <source>Get md5 in filename</source>
-        <translation>Получить md5 у фаила</translation>
+        <translation>Получать MD5 из имени файла</translation>
     </message>
     <message>
         <location filename="../src/utils/blacklist-fix/blacklist-fix-1.ui" line="51"/>
         <source>Filename</source>
-        <translation>Название фаила</translation>
+        <translation>Имя файла</translation>
     </message>
     <message>
         <location filename="../src/utils/blacklist-fix/blacklist-fix-1.ui" line="61"/>
@@ -176,17 +176,17 @@
     <message>
         <location filename="../src/utils/blacklist-fix/blacklist-fix-1.ui" line="113"/>
         <source>Cancel</source>
-        <translation>Отменить</translation>
+        <translation>Отмена</translation>
     </message>
     <message>
         <location filename="../src/utils/blacklist-fix/blacklist-fix-1.cpp" line="48"/>
         <source>This directory does not exist.</source>
-        <translation>Папки не существует.</translation>
+        <translation>Этой папки не существует.</translation>
     </message>
     <message>
         <location filename="../src/utils/blacklist-fix/blacklist-fix-1.cpp" line="56"/>
         <source>If you want to get the MD5 from the filename, you have to include the %md5% token in it.</source>
-        <translation type="unfinished"></translation>
+        <translation>Если вы хотите получить MD5 из имени файла, вы должны включить в него знак % md5%.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/utils/blacklist-fix/blacklist-fix-1.cpp" line="115"/>
@@ -208,17 +208,17 @@
     <message>
         <location filename="../src/utils/blacklist-fix/blacklist-fix-2.ui" line="24"/>
         <source>Choose images to delete in the list below.</source>
-        <translation>Выберите изображения для удаления.</translation>
+        <translation>Выберите изображения для удаления в списке ниже.</translation>
     </message>
     <message>
         <location filename="../src/utils/blacklist-fix/blacklist-fix-2.ui" line="52"/>
         <source>Thumbnail</source>
-        <translation>Предпросмотр</translation>
+        <translation>Превью</translation>
     </message>
     <message>
         <location filename="../src/utils/blacklist-fix/blacklist-fix-2.ui" line="57"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Имя</translation>
     </message>
     <message>
         <location filename="../src/utils/blacklist-fix/blacklist-fix-2.ui" line="62"/>
@@ -238,7 +238,7 @@
     <message>
         <location filename="../src/utils/blacklist-fix/blacklist-fix-2.ui" line="99"/>
         <source>Cancel</source>
-        <translation>Отменить</translation>
+        <translation>Отмена</translation>
     </message>
 </context>
 <context>
@@ -269,7 +269,7 @@
     <message>
         <location filename="../src/utils/empty-dirs-fix/empty-dirs-fix-1.ui" line="14"/>
         <source>Empty folders fixer</source>
-        <translation>Фиксер пустых папок</translation>
+        <translation type="unfinished">Фиксер пустых папок</translation>
     </message>
     <message>
         <location filename="../src/utils/empty-dirs-fix/empty-dirs-fix-1.ui" line="24"/>
@@ -284,7 +284,7 @@
     <message>
         <location filename="../src/utils/empty-dirs-fix/empty-dirs-fix-1.ui" line="56"/>
         <source>Cancel</source>
-        <translation>Отменить</translation>
+        <translation>Отмена</translation>
     </message>
 </context>
 <context>
@@ -293,7 +293,7 @@
         <location filename="../src/utils/empty-dirs-fix/empty-dirs-fix-2.ui" line="14"/>
         <location filename="../src/utils/empty-dirs-fix/empty-dirs-fix-2.cpp" line="58"/>
         <source>Empty folders fixer</source>
-        <translation>Фиксер пустых папок</translation>
+        <translation type="unfinished">Фиксер пустых папок</translation>
     </message>
     <message>
         <location filename="../src/utils/empty-dirs-fix/empty-dirs-fix-2.ui" line="24"/>
@@ -308,13 +308,13 @@
     <message>
         <location filename="../src/utils/empty-dirs-fix/empty-dirs-fix-2.ui" line="60"/>
         <source>Cancel</source>
-        <translation>Отменить</translation>
+        <translation>Отмена</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/utils/empty-dirs-fix/empty-dirs-fix-2.cpp" line="58"/>
         <source>You are about to delete %n folder. Are you sure you want to continue?</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>Вы собираетесь удалить %n папок. Вы уверены что хотите продолжить?</numerusform>
             <numerusform></numerusform>
             <numerusform></numerusform>
         </translation>
@@ -340,12 +340,12 @@
     <message>
         <location filename="../src/settings/filenamewindow.cpp" line="142"/>
         <source>Warning</source>
-        <translation type="unfinished"></translation>
+        <translation>Предупреждение</translation>
     </message>
     <message>
         <location filename="../src/settings/filenamewindow.cpp" line="142"/>
         <source>You script contains error, are you sure you want to save it?</source>
-        <translation type="unfinished"></translation>
+        <translation>Ваш скрипт содержит ошибки, вы уверены что хотите сохранить его?</translation>
     </message>
 </context>
 <context>
@@ -353,47 +353,47 @@
     <message>
         <location filename="../src/models/image.cpp" line="469"/>
         <source>unknown type &quot;%1&quot; (available types: &quot;%2&quot;)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">неизвестный тип &quot;%1&quot; (доступные типы: &quot;%2&quot;)</translation>
     </message>
     <message>
         <location filename="../src/models/image.cpp" line="518"/>
         <source>image&apos;s %1 does not match</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">%1 изображения не совпадает</translation>
     </message>
     <message>
         <location filename="../src/models/image.cpp" line="520"/>
         <source>image&apos;s %1 match</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">%1 изображения совпадает</translation>
     </message>
     <message>
         <location filename="../src/models/image.cpp" line="536"/>
         <source>image is not &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">изображение не &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/models/image.cpp" line="538"/>
         <source>image is &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">изображение &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/models/image.cpp" line="545"/>
         <source>image&apos;s source does not starts with &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">источник изображения не начинается с &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/models/image.cpp" line="547"/>
         <source>image&apos;s source starts with &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">источник изображения начинается с &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/models/image.cpp" line="569"/>
         <source>image does not contains &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">изображение не содержит &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/models/image.cpp" line="571"/>
         <source>image contains &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">изображение содержит &quot;%1&quot;</translation>
     </message>
 </context>
 <context>
@@ -409,12 +409,12 @@
     <message>
         <location filename="../src/models/page-api.cpp" line="144"/>
         <source>No source of this site is compatible with pools.</source>
-        <translation>Ни один из источников сайта не совместим с объединением.</translation>
+        <translation type="unfinished">Ни один из источников сайта не совместим с объединением.</translation>
     </message>
     <message>
         <location filename="../src/models/page-api.cpp" line="634"/>
         <source>Tag search is impossible with the chosen source (%1).</source>
-        <translation>Теги не поддерживаются выбранным ресурсом (%1).</translation>
+        <translation>Поиск по тегам невозможен для этого ресурса (%1).</translation>
     </message>
 </context>
 <context>
@@ -422,52 +422,52 @@
     <message>
         <location filename="../vendor/qcommandlineparser.cpp" line="358"/>
         <source>Displays version information.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Отображает информацию о версии.</translation>
     </message>
     <message>
         <location filename="../vendor/qcommandlineparser.cpp" line="383"/>
         <source>Displays this help.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Показывает помощь.</translation>
     </message>
     <message>
         <location filename="../vendor/qcommandlineparser.cpp" line="475"/>
         <source>Unknown option &apos;%1&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Неизвестный параметр: %1.</translation>
     </message>
     <message>
         <location filename="../vendor/qcommandlineparser.cpp" line="477"/>
         <source>Unknown options: %1.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Неизвестные параметры: %1.</translation>
     </message>
     <message>
         <location filename="../vendor/qcommandlineparser.cpp" line="569"/>
         <source>Missing value after &apos;%1&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Отсутствует значение после &apos;%1&apos;.</translation>
     </message>
     <message>
         <location filename="../vendor/qcommandlineparser.cpp" line="578"/>
         <source>Unexpected value after &apos;%1&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Неожиданное значение после &apos;%1&apos;.</translation>
     </message>
     <message>
         <location filename="../vendor/qcommandlineparser.cpp" line="979"/>
         <source>[options]</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">[параметры]</translation>
     </message>
     <message>
         <location filename="../vendor/qcommandlineparser.cpp" line="985"/>
         <source>Usage: %1</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Использование: %1</translation>
     </message>
     <message>
         <location filename="../vendor/qcommandlineparser.cpp" line="990"/>
         <source>Options:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Параметры:</translation>
     </message>
     <message>
         <location filename="../vendor/qcommandlineparser.cpp" line="1015"/>
         <source>Arguments:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Аргументы:</translation>
     </message>
 </context>
 <context>
@@ -480,17 +480,17 @@
     <message>
         <location filename="../src/functions.cpp" line="348"/>
         <source>&lt;b&gt;Error:&lt;/b&gt; %1</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Ошибка:&lt;/b&gt; %1</translation>
     </message>
     <message>
         <location filename="../src/functions.cpp" line="348"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt; %1</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Предупреждение:&lt;/b&gt; %1</translation>
     </message>
     <message>
         <location filename="../src/functions.cpp" line="348"/>
         <source>&lt;b&gt;Notice:&lt;/b&gt; %1</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Примечание:&lt;/b&gt; %1</translation>
     </message>
     <message>
         <location filename="../src/models/filename.cpp" line="36"/>
@@ -505,42 +505,42 @@
     <message>
         <location filename="../src/models/filename.cpp" line="559"/>
         <source>Filename must not be empty!</source>
-        <translation>Имя фаила не может быть пустым!</translation>
+        <translation>Имя файла не должно быть пустым!</translation>
     </message>
     <message>
         <location filename="../src/models/filename.cpp" line="564"/>
         <source>Can&apos;t validate Javascript expressions.</source>
-        <translation>Не подтвержденные выражения Javascript.</translation>
+        <translation>Не удается проверить выражения JavaScript.</translation>
     </message>
     <message>
         <location filename="../src/models/filename.cpp" line="570"/>
         <source>Your filename doesn&apos;t ends by an extension, symbolized by %ext%! You may not be able to open saved files.</source>
-        <translation>Название фаила не заканчивается на %ext%! Вы можете не открыть скачанные фаилы.</translation>
+        <translation>Название файла не заканчивается на %ext%! Возможно, вы не сможете открыть скачанные файлы.</translation>
     </message>
     <message>
         <location filename="../src/models/filename.cpp" line="574"/>
         <source>Your filename is not unique to each image and an image may overwrite a previous one at saving! You should use%md5%, which is unique to each image, to avoid this inconvenience.</source>
-        <translation>Имена фаилов могут совпадать и изображение может быть перезаписанно! Вы должны использовать переменную %md5% для того чтобы избежать это.</translation>
+        <translation>Имена файлов не уникальны, при совпадении новые изображения могут затирать старые! Вам следует использовать переменную %md5% для того чтобы избежать этого.</translation>
     </message>
     <message>
         <location filename="../src/models/filename.cpp" line="594"/>
         <source>The %%1% token does not exist and will not be replaced.</source>
-        <translation>%%1% не найден и не будет перезаписан.</translation>
+        <translation>Переменная %%1% не существует и не будет заменена.</translation>
     </message>
     <message>
         <location filename="../src/models/filename.cpp" line="603"/>
         <source>Your format contains characters forbidden on Windows! Forbidden characters: * ? &quot; : &lt; &gt; |</source>
-        <translation type="unfinished"></translation>
+        <translation>Ваш формат содержит символы, запрещённые в Windows! Запрещённые символы: * ? &quot; : &lt; &gt; |</translation>
     </message>
     <message>
         <location filename="../src/models/filename.cpp" line="608"/>
         <source>You have chosen to use the %id% token. Know that it is only unique for a selected site. The same ID can identify different images depending on the site.</source>
-        <translation>Вы выбрали переменную %id%. Она различна для каждого сайта.</translation>
+        <translation>Вы выбрали переменную %id%. Учтите, что она уникальна только внутри сайта. Под тем же ID на другом сайте может быть другое изображение.</translation>
     </message>
     <message>
         <location filename="../src/models/filename.cpp" line="611"/>
         <source>Valid filename!</source>
-        <translation>Подходящее имя фаила!</translation>
+        <translation>Подходящее имя файла!</translation>
     </message>
 </context>
 <context>
@@ -549,7 +549,7 @@
         <location filename="../src/utils/rename-existing/rename-existing-1.ui" line="14"/>
         <location filename="../src/utils/rename-existing/rename-existing-1.cpp" line="123"/>
         <source>Rename existing images</source>
-        <translation type="unfinished"></translation>
+        <translation>Переименовать существующие изображения</translation>
     </message>
     <message>
         <location filename="../src/utils/rename-existing/rename-existing-1.ui" line="24"/>
@@ -559,22 +559,22 @@
     <message>
         <location filename="../src/utils/rename-existing/rename-existing-1.ui" line="34"/>
         <source>Force md5 calculation</source>
-        <translation>УСИЛЕННОЕ вычисление md5</translation>
+        <translation>Принудительно вычислять MD5</translation>
     </message>
     <message>
         <location filename="../src/utils/rename-existing/rename-existing-1.ui" line="41"/>
         <source>Get md5 in filename</source>
-        <translation>Получить md5 у фаила</translation>
+        <translation>Получать MD5 из имени файла</translation>
     </message>
     <message>
         <location filename="../src/utils/rename-existing/rename-existing-1.ui" line="51"/>
         <source>Origin filename</source>
-        <translation type="unfinished"></translation>
+        <translation>Изначальное имя файла</translation>
     </message>
     <message>
         <location filename="../src/utils/rename-existing/rename-existing-1.ui" line="61"/>
         <source>Destintation filename</source>
-        <translation type="unfinished"></translation>
+        <translation>Новое имя файла</translation>
     </message>
     <message>
         <location filename="../src/utils/rename-existing/rename-existing-1.ui" line="71"/>
@@ -594,17 +594,17 @@
     <message>
         <location filename="../src/utils/rename-existing/rename-existing-1.ui" line="113"/>
         <source>Cancel</source>
-        <translation>Отменить</translation>
+        <translation>Отмена</translation>
     </message>
     <message>
         <location filename="../src/utils/rename-existing/rename-existing-1.cpp" line="49"/>
         <source>This folder does not exist.</source>
-        <translation>Папки не существует.</translation>
+        <translation>Этой папки не существует.</translation>
     </message>
     <message>
         <location filename="../src/utils/rename-existing/rename-existing-1.cpp" line="57"/>
         <source>If you want to get the MD5 from the filename, you have to include the %md5% token in it.</source>
-        <translation type="unfinished"></translation>
+        <translation>Если вы хотите получить MD5 из имени файла, вы должны включить в него знак % md5%.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/utils/rename-existing/rename-existing-1.cpp" line="123"/>
@@ -621,27 +621,27 @@
     <message>
         <location filename="../src/utils/rename-existing/rename-existing-2.ui" line="14"/>
         <source>Rename existing images</source>
-        <translation type="unfinished"></translation>
+        <translation>Переименовать существующие изображения</translation>
     </message>
     <message>
         <location filename="../src/utils/rename-existing/rename-existing-2.ui" line="24"/>
         <source>The following images will be renamed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Следующие изображения будут переименованы.</translation>
     </message>
     <message>
         <location filename="../src/utils/rename-existing/rename-existing-2.ui" line="47"/>
         <source>Thumbnail</source>
-        <translation>Предпросмотр</translation>
+        <translation>Превью</translation>
     </message>
     <message>
         <location filename="../src/utils/rename-existing/rename-existing-2.ui" line="52"/>
         <source>Original</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Оригинал</translation>
     </message>
     <message>
         <location filename="../src/utils/rename-existing/rename-existing-2.ui" line="57"/>
         <source>Destination</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Папка для сохранения</translation>
     </message>
     <message>
         <location filename="../src/utils/rename-existing/rename-existing-2.ui" line="80"/>
@@ -651,7 +651,7 @@
     <message>
         <location filename="../src/utils/rename-existing/rename-existing-2.ui" line="87"/>
         <source>Cancel</source>
-        <translation>Отменить</translation>
+        <translation>Отмена</translation>
     </message>
 </context>
 <context>
@@ -679,12 +679,12 @@
     <message>
         <location filename="../src/searchwindow.ui" line="56"/>
         <source>Score (ascending)</source>
-        <translation>Счёт (по возрастанию)</translation>
+        <translation>Оценка (по возрастанию)</translation>
     </message>
     <message>
         <location filename="../src/searchwindow.ui" line="61"/>
         <source>Score (descending)</source>
-        <translation>Счёт (по убыванию)</translation>
+        <translation>Оценка (по убыванию)</translation>
     </message>
     <message>
         <location filename="../src/searchwindow.ui" line="66"/>
@@ -699,7 +699,7 @@
     <message>
         <location filename="../src/searchwindow.ui" line="76"/>
         <source>Filesize</source>
-        <translation>Размер фаила</translation>
+        <translation>Размер файла</translation>
     </message>
     <message>
         <location filename="../src/searchwindow.ui" line="81"/>
@@ -719,7 +719,7 @@
     <message>
         <location filename="../src/searchwindow.ui" line="96"/>
         <source>Rank</source>
-        <translation>Ранк</translation>
+        <translation type="unfinished">Ранк</translation>
     </message>
     <message>
         <location filename="../src/searchwindow.ui" line="104"/>
@@ -827,7 +827,7 @@
     <message>
         <location filename="../src/models/site.cpp" line="244"/>
         <source>success</source>
-        <translation type="unfinished"></translation>
+        <translation>успех</translation>
     </message>
     <message>
         <location filename="../src/models/site.cpp" line="244"/>
@@ -865,7 +865,7 @@
     <message>
         <location filename="../src/sources/sitewindow.cpp" line="75"/>
         <source>Unable to guess site&apos;s type. Are you sure about the url?</source>
-        <translation>Невозможно угадать тип сайта. Вы уверенны что правильно ввели адрес?</translation>
+        <translation>Невозможно определить тип сайта. Вы уверенны что правильно ввели адрес?</translation>
     </message>
 </context>
 <context>
@@ -873,17 +873,17 @@
     <message>
         <location filename="../src/sources/sourcessettingswindow.ui" line="14"/>
         <source>Site options</source>
-        <translation>Опции сайта</translation>
+        <translation>Параметры сайта</translation>
     </message>
     <message>
         <location filename="../src/sources/sourcessettingswindow.ui" line="28"/>
         <source>General</source>
-        <translation>Общее</translation>
+        <translation>Общие</translation>
     </message>
     <message>
         <location filename="../src/sources/sourcessettingswindow.ui" line="37"/>
         <source>Referer (default)</source>
-        <translation>Обращение (по умолчанию)</translation>
+        <translation type="unfinished">Обращение (по умолчанию)</translation>
     </message>
     <message>
         <location filename="../src/sources/sourcessettingswindow.ui" line="45"/>
@@ -916,7 +916,7 @@
     <message>
         <location filename="../src/sources/sourcessettingswindow.ui" line="68"/>
         <source>Referer (preview)</source>
-        <translation>Обращение (предпросмотр)</translation>
+        <translation>Обращение (превью)</translation>
     </message>
     <message>
         <location filename="../src/sources/sourcessettingswindow.ui" line="76"/>
@@ -927,7 +927,7 @@
     <message>
         <location filename="../src/sources/sourcessettingswindow.ui" line="104"/>
         <source>Referer (image)</source>
-        <translation>Обращение (изображение)</translation>
+        <translation type="unfinished">Обращение (изображение)</translation>
     </message>
     <message>
         <location filename="../src/sources/sourcessettingswindow.ui" line="132"/>
@@ -944,17 +944,17 @@
     <message>
         <location filename="../src/sources/sourcessettingswindow.ui" line="155"/>
         <source>Ignore (always)</source>
-        <translation type="unfinished"></translation>
+        <translation>Игнорировать (всегда)</translation>
     </message>
     <message>
         <location filename="../src/sources/sourcessettingswindow.ui" line="162"/>
         <source>Ignore (page 1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Игнорировать(1 страница)</translation>
     </message>
     <message>
         <location filename="../src/sources/sourcessettingswindow.ui" line="175"/>
         <source>Use a secure connection (https)</source>
-        <translation type="unfinished"></translation>
+        <translation>Использовать защищенное соединение (https)</translation>
     </message>
     <message>
         <location filename="../src/sources/sourcessettingswindow.ui" line="186"/>
@@ -969,32 +969,32 @@
     <message>
         <location filename="../src/sources/sourcessettingswindow.ui" line="209"/>
         <source>Images per page</source>
-        <translation>Изображений на страницу</translation>
+        <translation>Изображений на странице</translation>
     </message>
     <message>
         <location filename="../src/sources/sourcessettingswindow.ui" line="229"/>
         <source>Interval (thumbnail)</source>
-        <translation type="unfinished"></translation>
+        <translation>Интервал (миниатюры)</translation>
     </message>
     <message>
         <location filename="../src/sources/sourcessettingswindow.ui" line="236"/>
         <source>Interval (image)</source>
-        <translation type="unfinished"></translation>
+        <translation>Интервал (изображения)</translation>
     </message>
     <message>
         <location filename="../src/sources/sourcessettingswindow.ui" line="243"/>
         <source>Interval (page)</source>
-        <translation type="unfinished"></translation>
+        <translation>Интервал (страница)</translation>
     </message>
     <message>
         <location filename="../src/sources/sourcessettingswindow.ui" line="250"/>
         <source>Interval (details)</source>
-        <translation type="unfinished"></translation>
+        <translation>Интервал (подробности)</translation>
     </message>
     <message>
         <location filename="../src/sources/sourcessettingswindow.ui" line="257"/>
         <source>Interval (error)</source>
-        <translation type="unfinished"></translation>
+        <translation>Интервал (ошибка)</translation>
     </message>
     <message>
         <location filename="../src/sources/sourcessettingswindow.ui" line="264"/>
@@ -1003,7 +1003,7 @@
         <location filename="../src/sources/sourcessettingswindow.ui" line="294"/>
         <location filename="../src/sources/sourcessettingswindow.ui" line="304"/>
         <source>s</source>
-        <translation>s</translation>
+        <translation>с</translation>
     </message>
     <message>
         <location filename="../src/sources/sourcessettingswindow.ui" line="315"/>
@@ -1076,7 +1076,7 @@
         <location filename="../src/sources/sourcessettingswindow.ui" line="518"/>
         <location filename="../src/sources/sourcessettingswindow.ui" line="630"/>
         <source>Username</source>
-        <translation>Псевдо</translation>
+        <translation type="unfinished">Имя пользовалеля</translation>
     </message>
     <message>
         <location filename="../src/sources/sourcessettingswindow.ui" line="528"/>
@@ -1108,7 +1108,7 @@
     <message>
         <location filename="../src/sources/sourcessettingswindow.ui" line="606"/>
         <source>Method</source>
-        <translation>Способ</translation>
+        <translation>Метод</translation>
     </message>
     <message>
         <location filename="../src/sources/sourcessettingswindow.ui" line="617"/>
@@ -1128,18 +1128,18 @@
     <message>
         <location filename="../src/sources/sourcessettingswindow.ui" line="681"/>
         <source>Cookie</source>
-        <translation type="unfinished"></translation>
+        <translation>Куки</translation>
     </message>
     <message>
         <location filename="../src/sources/sourcessettingswindow.ui" line="692"/>
         <source>Cookies</source>
-        <translation type="unfinished"></translation>
+        <translation>Куки</translation>
     </message>
     <message>
         <location filename="../src/sources/sourcessettingswindow.ui" line="704"/>
         <location filename="../src/sources/sourcessettingswindow.ui" line="732"/>
         <source>Value</source>
-        <translation type="unfinished"></translation>
+        <translation>Значение</translation>
     </message>
     <message>
         <location filename="../src/sources/sourcessettingswindow.ui" line="712"/>
@@ -1150,7 +1150,7 @@
     <message>
         <location filename="../src/sources/sourcessettingswindow.ui" line="720"/>
         <source>Headers</source>
-        <translation type="unfinished"></translation>
+        <translation>Заголовки</translation>
     </message>
     <message>
         <location filename="../src/sources/sourcessettingswindow.ui" line="765"/>
@@ -1160,22 +1160,22 @@
     <message>
         <location filename="../src/sources/sourcessettingswindow.ui" line="785"/>
         <source>Cancel</source>
-        <translation>Отменить</translation>
+        <translation>Отмена</translation>
     </message>
     <message>
         <location filename="../src/sources/sourcessettingswindow.ui" line="792"/>
         <source>Confirm</source>
-        <translation>Подтвердить</translation>
+        <translation>Применить</translation>
     </message>
     <message>
         <location filename="../src/sources/sourcessettingswindow.cpp" line="112"/>
         <source>Hash a password</source>
-        <translation>Хеш пароля</translation>
+        <translation>Хешировать пароль</translation>
     </message>
     <message>
         <location filename="../src/sources/sourcessettingswindow.cpp" line="112"/>
         <source>Please enter your password below.&lt;br/&gt;It will then be hashed using the format &quot;%1&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Пожалуйста введите ваш пароль ниже.&lt;br/&gt;Он будет захеширован в формате &quot;%1&quot;.</translation>
     </message>
     <message>
         <location filename="../src/sources/sourcessettingswindow.cpp" line="119"/>
@@ -1191,7 +1191,7 @@
         <location filename="../src/sources/sourcessettingswindow.cpp" line="153"/>
         <location filename="../src/sources/sourcessettingswindow.cpp" line="154"/>
         <source>Success!</source>
-        <translation type="unfinished"></translation>
+        <translation>Успешно!</translation>
     </message>
     <message>
         <location filename="../src/sources/sourcessettingswindow.cpp" line="158"/>
@@ -1203,7 +1203,7 @@
         <location filename="../src/sources/sourcessettingswindow.cpp" line="163"/>
         <location filename="../src/sources/sourcessettingswindow.cpp" line="164"/>
         <source>Unable to test</source>
-        <translation type="unfinished"></translation>
+        <translation>Не получилось протестировать</translation>
     </message>
 </context>
 <context>
@@ -1217,7 +1217,7 @@
         <location filename="../src/ui/textedit.cpp" line="244"/>
         <location filename="../src/ui/textedit.cpp" line="262"/>
         <source>Remove</source>
-        <translation>Удалить</translation>
+        <translation>Убрать</translation>
     </message>
     <message>
         <location filename="../src/ui/textedit.cpp" line="246"/>
@@ -1228,12 +1228,12 @@
     <message>
         <location filename="../src/ui/textedit.cpp" line="253"/>
         <source>Kept for later</source>
-        <translation>На будущее</translation>
+        <translation>На потом</translation>
     </message>
     <message>
         <location filename="../src/ui/textedit.cpp" line="270"/>
         <source>Ratings</source>
-        <translation>Оценки</translation>
+        <translation>Рейтинги</translation>
     </message>
     <message>
         <location filename="../src/ui/textedit.cpp" line="280"/>
@@ -1261,7 +1261,7 @@
     <message>
         <location filename="../src/batch/batchwindow.ui" line="20"/>
         <source>Batch download</source>
-        <translation>Загрузка партией</translation>
+        <translation>Массовая загрузка</translation>
     </message>
     <message>
         <location filename="../src/batch/batchwindow.ui" line="53"/>
@@ -1277,13 +1277,13 @@
     <message>
         <location filename="../src/batch/batchwindow.ui" line="86"/>
         <source>Skip</source>
-        <translation type="unfinished"></translation>
+        <translation>Пропустить</translation>
     </message>
     <message>
         <location filename="../src/batch/batchwindow.ui" line="93"/>
         <location filename="../src/batch/batchwindow.cpp" line="132"/>
         <source>Cancel</source>
-        <translation>Отменить</translation>
+        <translation>Отмена</translation>
     </message>
     <message>
         <location filename="../src/batch/batchwindow.ui" line="153"/>
@@ -1298,7 +1298,7 @@
     <message>
         <location filename="../src/batch/batchwindow.ui" line="163"/>
         <source>Filesize</source>
-        <translation>Размер фаила</translation>
+        <translation>Размер файла</translation>
     </message>
     <message>
         <location filename="../src/batch/batchwindow.ui" line="168"/>
@@ -1313,7 +1313,7 @@
     <message>
         <location filename="../src/batch/batchwindow.ui" line="183"/>
         <source>Follow downloaded images</source>
-        <translation type="unfinished"></translation>
+        <translation>Следовать за загружамыми изображениями</translation>
     </message>
     <message>
         <location filename="../src/batch/batchwindow.ui" line="190"/>
@@ -1323,7 +1323,7 @@
     <message>
         <location filename="../src/batch/batchwindow.ui" line="201"/>
         <source>When the download is finished</source>
-        <translation>Когда загрузка завершится</translation>
+        <translation>После завершения загрузки</translation>
     </message>
     <message>
         <location filename="../src/batch/batchwindow.ui" line="209"/>
@@ -1348,40 +1348,40 @@
     <message>
         <location filename="../src/batch/batchwindow.ui" line="229"/>
         <source>Shutdown</source>
-        <translation>Выключить ПК</translation>
+        <translation>Выключить компъютер</translation>
     </message>
     <message>
         <location filename="../src/batch/batchwindow.ui" line="237"/>
         <source>Remove</source>
-        <translation>Удалить</translation>
+        <translation type="unfinished">Очистить загрузки</translation>
     </message>
     <message>
         <location filename="../src/batch/batchwindow.cpp" line="87"/>
         <source>Paused</source>
-        <translation type="unfinished"></translation>
+        <translation>На паузе</translation>
     </message>
     <message>
         <location filename="../src/batch/batchwindow.cpp" line="88"/>
         <source>Resume</source>
-        <translation type="unfinished"></translation>
+        <translation>Возобновить</translation>
     </message>
     <message>
         <location filename="../src/batch/batchwindow.cpp" line="328"/>
         <location filename="../src/batch/batchwindow.cpp" line="329"/>
         <source>h &apos;h&apos; m &apos;m&apos; s &apos;s&apos;</source>
-        <translation>h &apos;h&apos; m &apos;m&apos; s &apos;s&apos;</translation>
+        <translation>ч &apos;ч&apos; м &apos;м&apos; с &apos;с&apos;</translation>
     </message>
     <message>
         <location filename="../src/batch/batchwindow.cpp" line="328"/>
         <location filename="../src/batch/batchwindow.cpp" line="329"/>
         <source>m &apos;m&apos; s &apos;s&apos;</source>
-        <translation>m &apos;m&apos; s &apos;s&apos;</translation>
+        <translation>м &apos;м&apos; с &apos;с&apos;</translation>
     </message>
     <message>
         <location filename="../src/batch/batchwindow.cpp" line="328"/>
         <location filename="../src/batch/batchwindow.cpp" line="329"/>
         <source>s &apos;s&apos;</source>
-        <translation>s &apos;s&apos;</translation>
+        <translation>с &apos;с&apos;</translation>
     </message>
     <message>
         <location filename="../src/batch/batchwindow.cpp" line="332"/>
@@ -1414,7 +1414,7 @@
     <message>
         <location filename="../src/settings/conditionwindow.ui" line="44"/>
         <source>Filename</source>
-        <translation>Имя фаила</translation>
+        <translation>Имя файла</translation>
     </message>
     <message>
         <location filename="../src/settings/conditionwindow.ui" line="64"/>
@@ -1424,12 +1424,12 @@
     <message>
         <location filename="../src/settings/conditionwindow.ui" line="71"/>
         <source>&lt;i&gt;Leave empty to use the default folder.&lt;/i&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;i&gt;Оставьте пустым чтобы использовать папку по умолчанию.&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../src/settings/conditionwindow.ui" line="81"/>
         <source>&lt;i&gt;Leave empty to use the default filename.&lt;/i&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;i&gt;Оставьте пустым чтобы использовать имя по умолчанию.&lt;/i&gt;</translation>
     </message>
 </context>
 <context>
@@ -1474,17 +1474,17 @@
     <message>
         <location filename="../src/viewer/detailswindow.ui" line="94"/>
         <source>&lt;b&gt;Rating&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Рейтинг&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../src/viewer/detailswindow.ui" line="111"/>
         <source>&lt;b&gt;Score&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Оценка&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../src/viewer/detailswindow.ui" line="128"/>
         <source>&lt;b&gt;Author&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Автор&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../src/viewer/detailswindow.ui" line="151"/>
@@ -1494,7 +1494,7 @@
     <message>
         <location filename="../src/viewer/detailswindow.ui" line="165"/>
         <source>&lt;b&gt;Size&lt;/b&gt;</source>
-        <translation>&lt;b&gt;Размер&lt;/b&gt;</translation>
+        <translation>&lt;b&gt;Разрешение&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../src/viewer/detailswindow.ui" line="179"/>
@@ -1519,12 +1519,12 @@
     <message>
         <location filename="../src/viewer/detailswindow.ui" line="275"/>
         <source>&lt;b&gt;Sample&lt;/b&gt;</source>
-        <translation>&lt;b&gt;Score&lt;/b&gt;</translation>
+        <translation type="unfinished">&lt;b&gt;Образец&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../src/viewer/detailswindow.ui" line="282"/>
         <source>&lt;b&gt;Thumbnail&lt;/b&gt;</source>
-        <translation>&lt;b&gt;Предпросмотр&lt;/b&gt;</translation>
+        <translation type="unfinished">&lt;b&gt;Превью&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../src/viewer/detailswindow.ui" line="327"/>
@@ -1534,12 +1534,12 @@
     <message>
         <location filename="../src/viewer/detailswindow.ui" line="388"/>
         <source>&lt;b&gt;Parent&lt;/b&gt;</source>
-        <translation>&lt;b&gt;Источник&lt;/b&gt;</translation>
+        <translation type="unfinished">&lt;b&gt;Предок&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../src/viewer/detailswindow.ui" line="402"/>
         <source>&lt;b&gt;Children&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;b&gt;Наследник&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../src/viewer/detailswindow.ui" line="420"/>
@@ -1559,7 +1559,7 @@
     <message>
         <location filename="../src/viewer/detailswindow.cpp" line="43"/>
         <source>&apos;the&apos; MM/dd/yyyy &apos;at&apos; hh:mm</source>
-        <translation type="unfinished"></translation>
+        <translation>dd/MM/yyyy&apos; в &apos;hh:mm</translation>
     </message>
     <message>
         <location filename="../src/viewer/detailswindow.cpp" line="59"/>
@@ -1602,7 +1602,7 @@
     <message>
         <location filename="../src/favoritewindow.ui" line="48"/>
         <source>Between 0 and 100, the note can be used to sort the favorites in preference order.</source>
-        <translation>Между 0 и 100,может использоваться для сортировки по приоритету.</translation>
+        <translation>Между 0 и 100, может использоваться для сортировки по приоритету.</translation>
     </message>
     <message>
         <location filename="../src/favoritewindow.ui" line="51"/>
@@ -1617,7 +1617,7 @@
     <message>
         <location filename="../src/favoritewindow.ui" line="71"/>
         <source>Last time you clicked on &quot;Mark as viewed&quot;.</source>
-        <translation>Последний раз вы нажали на &quot;Отметить как просмотренно&quot;.</translation>
+        <translation>Последний раз когда вы нажали &quot;Отметить как просмотренное&quot;.</translation>
     </message>
     <message>
         <location filename="../src/favoritewindow.ui" line="74"/>
@@ -1632,7 +1632,7 @@
     <message>
         <location filename="../src/favoritewindow.ui" line="88"/>
         <source>Image whose icon will be displayed in the favorites list.</source>
-        <translation>Изображение иконка которого будет показываться в списке избранного.</translation>
+        <translation>Изображение, иконка которого будет показываться в списке избранного.</translation>
     </message>
     <message>
         <location filename="../src/favoritewindow.ui" line="91"/>
@@ -1670,17 +1670,17 @@
     <message>
         <location filename="../src/tabs/favorites-tab.ui" line="80"/>
         <source>Name</source>
-        <translation>Название</translation>
+        <translation type="unfinished">Названию</translation>
     </message>
     <message>
         <location filename="../src/tabs/favorites-tab.ui" line="85"/>
         <source>Note</source>
-        <translation>Заметка</translation>
+        <translation type="unfinished">Заметке</translation>
     </message>
     <message>
         <location filename="../src/tabs/favorites-tab.ui" line="90"/>
         <source>Last view</source>
-        <translation>Последний просмотр</translation>
+        <translation type="unfinished">Последнему просмотру</translation>
     </message>
     <message>
         <location filename="../src/tabs/favorites-tab.ui" line="102"/>
@@ -1710,7 +1710,7 @@
     <message>
         <location filename="../src/tabs/favorites-tab.ui" line="298"/>
         <source>Images per page</source>
-        <translation>Изображений на страницу</translation>
+        <translation>Изображений на странице</translation>
     </message>
     <message>
         <location filename="../src/tabs/favorites-tab.ui" line="466"/>
@@ -1730,7 +1730,7 @@
     <message>
         <location filename="../src/tabs/favorites-tab.ui" line="490"/>
         <source>Get this &amp;page</source>
-        <translation>Загрузить эту &amp;страницу</translation>
+        <translation>Скачать всю &amp;страницу</translation>
     </message>
     <message>
         <location filename="../src/tabs/favorites-tab.ui" line="497"/>
@@ -1755,7 +1755,7 @@
     <message>
         <location filename="../src/tabs/favorites-tab.cpp" line="104"/>
         <source>MM/dd/yyyy</source>
-        <translation>MM/dd/yyyy</translation>
+        <translation>dd/MM/yyyy</translation>
     </message>
     <message>
         <location filename="../src/tabs/favorites-tab.cpp" line="111"/>
@@ -1766,13 +1766,13 @@
         <location filename="../src/tabs/favorites-tab.cpp" line="174"/>
         <location filename="../src/tabs/favorites-tab.cpp" line="181"/>
         <source>No result since the %1</source>
-        <translation>Нет результатов c %1</translation>
+        <translation>Нет результатов с %1</translation>
     </message>
     <message>
         <location filename="../src/tabs/favorites-tab.cpp" line="174"/>
         <location filename="../src/tabs/favorites-tab.cpp" line="181"/>
         <source>MM/dd/yyyy &apos;at&apos; hh:mm</source>
-        <translation type="unfinished"></translation>
+        <translation>dd/MM/yyyy&apos; в &apos;hh:mm</translation>
     </message>
     <message>
         <location filename="../src/tabs/favorites-tab.cpp" line="262"/>
@@ -1818,7 +1818,7 @@
     <message>
         <location filename="../src/mainwindow.ui" line="108"/>
         <source>Images per page</source>
-        <translation>Изображений на страницу</translation>
+        <translation>Изображений на странице</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="113"/>
@@ -1829,7 +1829,7 @@
         <location filename="../src/mainwindow.ui" line="118"/>
         <location filename="../src/mainwindow.ui" line="212"/>
         <source>Filename</source>
-        <translation>Имя фаила</translation>
+        <translation>Имя файла</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="123"/>
@@ -1857,7 +1857,7 @@
     <message>
         <location filename="../src/mainwindow.ui" line="148"/>
         <source>Single images</source>
-        <translation>Одиночные изображения</translation>
+        <translation>Отдельные изображения</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="177"/>
@@ -1867,7 +1867,7 @@
     <message>
         <location filename="../src/mainwindow.ui" line="182"/>
         <source>Md5</source>
-        <translation>Md5</translation>
+        <translation>MD5</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="187"/>
@@ -1892,12 +1892,12 @@
     <message>
         <location filename="../src/mainwindow.ui" line="252"/>
         <source>Delete all</source>
-        <translation type="unfinished"></translation>
+        <translation>Очистить список</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="259"/>
         <source>Delete selected</source>
-        <translation>Удалить выбранное</translation>
+        <translation>Удалить из списка</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="266"/>
@@ -1912,7 +1912,7 @@
     <message>
         <location filename="../src/mainwindow.ui" line="290"/>
         <source>Move down</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Поместить ниже</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="297"/>
@@ -1928,7 +1928,7 @@
     <message>
         <location filename="../src/mainwindow.ui" line="311"/>
         <source>Move up</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Поместить выше</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="330"/>
@@ -1963,14 +1963,14 @@
     <message>
         <location filename="../src/mainwindow.ui" line="430"/>
         <source>File</source>
-        <translation>Фаил</translation>
+        <translation>Файл</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="536"/>
         <location filename="../src/mainwindow.ui" line="1020"/>
         <location filename="../src/mainwindow.ui" line="1023"/>
         <source>Kept for later</source>
-        <translation>На будущее</translation>
+        <translation>Оставлено на потом</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="624"/>
@@ -2023,7 +2023,7 @@
     <message>
         <location filename="../src/mainwindow.ui" line="931"/>
         <source>Options</source>
-        <translation>Опции</translation>
+        <translation>Настройки</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="934"/>
@@ -2033,7 +2033,7 @@
     <message>
         <location filename="../src/mainwindow.ui" line="943"/>
         <source>Open destination folder</source>
-        <translation>Открыть папку назначения</translation>
+        <translation>Открыть папку с загрузками</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="952"/>
@@ -2043,12 +2043,12 @@
     <message>
         <location filename="../src/mainwindow.ui" line="961"/>
         <source>About Grabber</source>
-        <translation>О Grabber</translation>
+        <translation>О программе</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="970"/>
         <source>About Qt</source>
-        <translation>О Qt</translation>
+        <translation>О платформе Qt</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="979"/>
@@ -2064,7 +2064,7 @@
     <message>
         <location filename="../src/mainwindow.ui" line="993"/>
         <source>Blacklist fixer</source>
-        <translation>Черный список</translation>
+        <translation>Фиксер черного список</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="998"/>
@@ -2074,47 +2074,47 @@
     <message>
         <location filename="../src/mainwindow.ui" line="1043"/>
         <source>New pool tab</source>
-        <translation>Новая вкладка</translation>
+        <translation type="unfinished">Новая вкладка пула</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1048"/>
         <source>MD5 list fixer</source>
-        <translation>Фиксер мд5 листа</translation>
+        <translation type="unfinished">Фиксер списка MD5 сумм</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1057"/>
         <source>Open options folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть папку с настройками</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1066"/>
         <source>Project website</source>
-        <translation type="unfinished"></translation>
+        <translation>Сайт программы</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1075"/>
         <source>Report an issue</source>
-        <translation type="unfinished"></translation>
+        <translation>Сообщить об ошибке</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1080"/>
         <source>Rename existing images</source>
-        <translation type="unfinished"></translation>
+        <translation>Переименование изображений</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="94"/>
         <source>No source found</source>
-        <translation type="unfinished"></translation>
+        <translation>Источник не найден</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="94"/>
         <source>No source found. Do you have a configuration problem? Try to reinstall the program.</source>
-        <translation type="unfinished"></translation>
+        <translation>Источник не найден. У вас проблемы с конфигурацией? Попробуйте переустановить программу.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="137"/>
         <source>It seems that the application was not properly closed for its last use. Do you want to start without restoring your last session?</source>
-        <translation type="unfinished"></translation>
+        <translation>Видимо приложение в прошлый раз было закрыто некорректно. Хотите ли вы начать новый сеанс?</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="143"/>
@@ -2124,7 +2124,7 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="291"/>
         <source>The Mozilla Firefox addon &quot;Danbooru Downloader&quot; has been detected on your system. Do you want to load its preferences?</source>
-        <translation>Найден аддон &quot;Danbooru Downloader&quot;. Хотите загрузить его настройки?</translation>
+        <translation>Найден плагин &quot;Danbooru Downloader&quot; для Mozilla Firefox. Хотите загрузить его настройки?</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="581"/>
@@ -2134,12 +2134,12 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="751"/>
         <source>The image per page value must be greater or equal to 1.</source>
-        <translation>Изображений на странице должно быть 1 или больше.</translation>
+        <translation>Число изображений на страницу должно быть не меньше 1.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="756"/>
         <source>The image limit must be greater or equal to 0.</source>
-        <translation>Лимит изображений должен быть 0 или больше.</translation>
+        <translation>Лимит изображений должен быть равен или больше 0.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="830"/>
@@ -2154,13 +2154,13 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="927"/>
         <source>Are you sure you want to quit?</source>
-        <translation type="unfinished"></translation>
+        <translation>Вы уверены что хотите выйти?</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="929"/>
         <location filename="../src/mainwindow.cpp" line="2325"/>
         <source>Don&apos;t keep for later</source>
-        <translation>Не сохранять на будущее</translation>
+        <translation>Не оставлять на потом</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="1037"/>
@@ -2170,12 +2170,12 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="1042"/>
         <source>You did not specify a filename!</source>
-        <translation>Вы не выбрали имя фаила!</translation>
+        <translation>Вы не выбрали имя файла!</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="1184"/>
         <source>Logging in, please wait...</source>
-        <translation type="unfinished"></translation>
+        <translation>Вход в аккаунт, пожалуйста, подождите ...</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="1234"/>
@@ -2185,16 +2185,16 @@
     <message numerus="yes">
         <location filename="../src/mainwindow.cpp" line="1300"/>
         <source>All images&apos; urls have been received (%n image(s)).</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>Адреса всех изображений были получены (%n изображение)).</numerusform>
+            <numerusform>Адреса всех изображений были получены (%n изображения)).</numerusform>
+            <numerusform>Адреса всех изображений были получены (%n изображений)).</numerusform>
         </translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="1304"/>
         <source>Preparing images, please wait...</source>
-        <translation>Подготовление изображений, пожалуйста подождите...</translation>
+        <translation>Подготовка изображений, пожалуйста подождите...</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="1333"/>
@@ -2207,7 +2207,10 @@
 %1
 %2
 Please solve the issue before resuming the download.</source>
-        <translation type="unfinished"></translation>
+        <translation>При сохранении изображения произошла ошибка.
+%1
+%2
+Пожалуйста, решите эт проблему перед тем, как возобновить загрузку.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="1779"/>
@@ -2224,45 +2227,45 @@ Please solve the issue before resuming the download.</source>
         <location filename="../src/mainwindow.cpp" line="1923"/>
         <source>%n file(s) downloaded successfully.</source>
         <translation>
-            <numerusform>%n фаил удачно скачан.</numerusform>
-            <numerusform>%n фаила успешно скачано.</numerusform>
-            <numerusform>%n фаилов успешно скачано.</numerusform>
+            <numerusform>%n файл успешно загружен.</numerusform>
+            <numerusform>%n файла успешно загружено.</numerusform>
+            <numerusform>%n файлов успешно загружено.</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mainwindow.cpp" line="1924"/>
         <source>%n file(s) ignored.</source>
         <translation>
-            <numerusform>%n фаил проигнорирован.</numerusform>
-            <numerusform>%n фаила проигнорированно.</numerusform>
-            <numerusform>%n фаилов проигнорированно.</numerusform>
+            <numerusform>%n файл проигнорирован.</numerusform>
+            <numerusform>%n файла проигнорированно.</numerusform>
+            <numerusform>%n файлов проигнорированно.</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mainwindow.cpp" line="1925"/>
         <source>%n file(s) already existing.</source>
         <translation>
-            <numerusform>%n фаил уже существует.</numerusform>
-            <numerusform>%n фаила уже существуют.</numerusform>
-            <numerusform>%n фаилов уже существуют.</numerusform>
+            <numerusform>%n файл уже существует.</numerusform>
+            <numerusform>%n файла уже существуют.</numerusform>
+            <numerusform>%n файлов уже существуют.</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mainwindow.cpp" line="1926"/>
         <source>%n file(s) not found on the server.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n файл не найден на сервере.</numerusform>
+            <numerusform>%n файла не найдено на сервере.</numerusform>
+            <numerusform>%n файлов не найдено на сервере.</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mainwindow.cpp" line="1927"/>
         <source>%n file(s) skipped.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n файл пропущен.</numerusform>
+            <numerusform>%n файла пропущено.</numerusform>
+            <numerusform>%n файлов пропущено.</numerusform>
         </translation>
     </message>
     <message numerus="yes">
@@ -2277,7 +2280,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/mainwindow.cpp" line="1943"/>
         <source>Errors occured during the images download. Do you want to restart the download of those images? (%1/%2)</source>
-        <translation>Некоторые загрузки не были завершены. Хотите повторить? (%1/%2)</translation>
+        <translation>Во время загрузки изображений произошли ошибки. Хотите повторить загрузку? (%1/%2)</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="2022"/>
@@ -2290,18 +2293,18 @@ Please solve the issue before resuming the download.</source>
         <location filename="../src/mainwindow.cpp" line="2022"/>
         <location filename="../src/mainwindow.cpp" line="2074"/>
         <source>Imageboard-Grabber links (*.igl)</source>
-        <translation type="unfinished"></translation>
+        <translation>Список ссылок из программы Imageboard-Grabber(*.igl)</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="2030"/>
         <source>Link list saved successfully!</source>
-        <translation>Список сохранён!</translation>
+        <translation>Список ссылок сохранён!</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="2032"/>
         <location filename="../src/mainwindow.cpp" line="2081"/>
         <source>Error opening file.</source>
-        <translation>Ошибка при открытии фаила.</translation>
+        <translation>Ошибка при открытии файла.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="2074"/>
@@ -2319,23 +2322,23 @@ Please solve the issue before resuming the download.</source>
         <location filename="../src/mainwindow.cpp" line="2101"/>
         <source>Loading %n download(s)</source>
         <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+            <numerusform>Загружается %n загрузка</numerusform>
+            <numerusform>Загружаются %n загрузки</numerusform>
+            <numerusform>Загружаются %n загрузок</numerusform>
         </translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="2180"/>
         <source>Choose a save folder</source>
-        <translation>Выбрать папку для сохранения</translation>
+        <translation>Выберите папку для сохранения</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mainwindow.cpp" line="2283"/>
         <source>%n download(s) in progress</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n загрузка в процессе</numerusform>
+            <numerusform>%n загрузки в процессе</numerusform>
+            <numerusform>%n загрузок в процессе</numerusform>
         </translation>
     </message>
     <message>
@@ -2351,7 +2354,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/mainwindow.cpp" line="2327"/>
         <source>Keep for later</source>
-        <translation>Сохранить на будущее</translation>
+        <translation>Оставить на потом</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="2330"/>
@@ -2369,12 +2372,12 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/utils/md5-fix/md5-fix.ui" line="14"/>
         <source>Md5 list fixer</source>
-        <translation>Фиксер мд5 листа</translation>
+        <translation>Фиксер списка MD5</translation>
     </message>
     <message>
         <location filename="../src/utils/md5-fix/md5-fix.ui" line="27"/>
         <source>This tool will clear your MD5 list and fill it again with the MD5 of the files found in the folder set below.</source>
-        <translation>Эта штука очистит ваш список MD5 и запишет его обратно со значениями существующих фаилов.</translation>
+        <translation>Этот инструмент очистит ваш список MD5 и заново заполнит его значениями MD5 файлов найденных в указанной папке.</translation>
     </message>
     <message>
         <location filename="../src/utils/md5-fix/md5-fix.ui" line="37"/>
@@ -2384,17 +2387,17 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/utils/md5-fix/md5-fix.ui" line="47"/>
         <source>Force md5 calculation</source>
-        <translation>УСИЛЕННОЕ вычисление md5</translation>
+        <translation>Принудительное вычисление MD5</translation>
     </message>
     <message>
         <location filename="../src/utils/md5-fix/md5-fix.ui" line="54"/>
         <source>Get md5 in filename</source>
-        <translation>Получить md5 у фаила</translation>
+        <translation>Получить MD5 из имени файла</translation>
     </message>
     <message>
         <location filename="../src/utils/md5-fix/md5-fix.ui" line="64"/>
         <source>Filename</source>
-        <translation>Имя фаила</translation>
+        <translation>Имя файла</translation>
     </message>
     <message>
         <location filename="../src/utils/md5-fix/md5-fix.ui" line="77"/>
@@ -2409,35 +2412,35 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/utils/md5-fix/md5-fix.ui" line="106"/>
         <source>Cancel</source>
-        <translation>Отменить</translation>
+        <translation>Отмена</translation>
     </message>
     <message>
         <location filename="../src/utils/md5-fix/md5-fix.cpp" line="42"/>
         <source>This folder does not exist.</source>
-        <translation>Папки не существует.</translation>
+        <translation>Этой папки не существует.</translation>
     </message>
     <message>
         <location filename="../src/utils/md5-fix/md5-fix.cpp" line="50"/>
         <source>If you want to get the MD5 from the filename, you have to include the %md5% token in it.</source>
-        <translation type="unfinished"></translation>
+        <translation>Если вы хотите получить MD5 из имени файла, вам нужно добавить в него %md5%.</translation>
     </message>
     <message>
         <location filename="../src/utils/md5-fix/md5-fix.cpp" line="80"/>
         <source>Unable to open the MD5 file.</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удаётся открыть MD5 файл.</translation>
     </message>
     <message>
         <location filename="../src/utils/md5-fix/md5-fix.cpp" line="132"/>
         <source>Finished</source>
-        <translation type="unfinished"></translation>
+        <translation>Завершено</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/utils/md5-fix/md5-fix.cpp" line="132"/>
         <source>%n MD5(s) loaded</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n MD5(s) загружен</numerusform>
+            <numerusform>%n MD5(s) загружено</numerusform>
+            <numerusform>%n MD5(s) загружено</numerusform>
         </translation>
     </message>
 </context>
@@ -2446,7 +2449,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="14"/>
         <source>Options</source>
-        <translation>Опции</translation>
+        <translation>Настройки</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="44"/>
@@ -2456,7 +2459,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="49"/>
         <source>General</source>
-        <translation>Основное</translation>
+        <translation>Общие настройки</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="54"/>
@@ -2472,22 +2475,22 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="63"/>
         <source>Filename</source>
-        <translation>Имя фаила</translation>
+        <translation>Имя файла</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="68"/>
         <source>Conditional filenames</source>
-        <translation type="unfinished"></translation>
+        <translation>Имя с условием</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="73"/>
         <source>Separate text file</source>
-        <translation type="unfinished"></translation>
+        <translation>Файлы с тегами</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="78"/>
         <source>Separate log</source>
-        <translation type="unfinished"></translation>
+        <translation>Файл с логом</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="83"/>
@@ -2497,7 +2500,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="88"/>
         <source>Copyright tags</source>
-        <translation>Теги авторского права</translation>
+        <translation>Теги копирайта</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="93"/>
@@ -2554,7 +2557,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="166"/>
         <source>At start</source>
-        <translation>В начале</translation>
+        <translation>При запуске программы</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="174"/>
@@ -2565,7 +2568,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="179"/>
         <source>Load first page</source>
-        <translation>Загружать первую страницу</translation>
+        <translation>Загрузить первую страницу</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="184"/>
@@ -2580,7 +2583,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="202"/>
         <source>&lt;i&gt;Separate tags with spaces.&lt;/i&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;i&gt;Разделять теги пробелами.&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="209"/>
@@ -2590,7 +2593,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="216"/>
         <source>&lt;i&gt;Images containing a blacklisted tag will not be displayed in the results if this box is checked. Else, a confirmation will be asked before showing one of these images.&lt;/i&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;i&gt;Если включено, изображения с тегами из чёрного списка не будут отображаться в результатах, иначе каждый раз вас будут спрашивать о показе таких изображений.&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="226"/>
@@ -2600,7 +2603,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="236"/>
         <source>Download</source>
-        <translation>Загрузка</translation>
+        <translation>Скачивание</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="247"/>
@@ -2620,7 +2623,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="265"/>
         <source>&lt;i&gt;Images containing a whitelisted tag will be downloaded automatically according to the option above.&lt;/i&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;i&gt;Изображения с тегами из белого списка будут скачиваться автоматически в соответствии с этой установкой.&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="275"/>
@@ -2630,7 +2633,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="285"/>
         <source>&lt;i&gt;These tags will not be taken in account when saving image.&lt;/i&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;i&gt;Эти теги не будут приниматься во внимание при сохранении изображения.&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="295"/>
@@ -2640,17 +2643,17 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="302"/>
         <source>Adds</source>
-        <translation>Добавления</translation>
+        <translation>Дополнительные теги</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="312"/>
         <source>&lt;i&gt;These tags will be automatically added to every search.&lt;/i&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;i&gt;Эти теги будут автоматом добавляться в каждый поисковый запрос.&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="322"/>
         <source>Ask for confirmation before closing the window</source>
-        <translation type="unfinished"></translation>
+        <translation>Спрашивать подтвеждение перед закрытием окна</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="358"/>
@@ -2722,7 +2725,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="541"/>
         <source>Auto tag add</source>
-        <translation type="unfinished"></translation>
+        <translation>Авто-добавенные теги</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="565"/>
@@ -2732,7 +2735,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="575"/>
         <source>Download sample on error</source>
-        <translation type="unfinished"></translation>
+        <translation>Скачивать образец при ошибке</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="585"/>
@@ -2742,7 +2745,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="592"/>
         <source>Keep original creation date</source>
-        <translation type="unfinished"></translation>
+        <translation>Оставлять оригинальную дату создания</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="602"/>
@@ -2781,7 +2784,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="679"/>
         <source>&lt;i&gt;If the filename length is greater than this number, it will be shortened. Leave it to 0 to use the default limit.&lt;/i&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;i&gt;Если длина имени файла будет больше этого значения, то оно будет укорочено. Оставьте 0 чтобы не сокращать имена.&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="689"/>
@@ -2811,42 +2814,42 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="734"/>
         <source>Shutdown</source>
-        <translation>Выключить ПК</translation>
+        <translation>Выключить компьютер</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="742"/>
         <source>If a file already exists</source>
-        <translation>Если фаил уже существует</translation>
+        <translation>Если файл уже существует</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="758"/>
         <source>Copy</source>
-        <translation>Копировать</translation>
+        <translation>Создать копию</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="763"/>
         <source>Move</source>
-        <translation>Переместить</translation>
+        <translation>Заменить</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="768"/>
         <source>Don&apos;t save</source>
-        <translation>Не сохранять</translation>
+        <translation>Не скачивать</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="776"/>
         <source>&lt;i&gt;File&apos;s identity is based on the MD5 algorithm.&lt;/i&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;i&gt;Идентичность файла определяется по его MD5 сумме.&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="783"/>
         <source>Automatic redownload</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Пытаться скачать заново</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="797"/>
         <source>Replace JPEG by JPG</source>
-        <translation type="unfinished"></translation>
+        <translation>Заменять JPEG на JPG(сокращение не влияет на сам файл)</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="814"/>
@@ -2856,22 +2859,22 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="887"/>
         <source>Add a conditional filename</source>
-        <translation>Добавить условное имя фаила</translation>
+        <translation>Добавить условное имя файла</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="911"/>
         <source>&lt;i&gt;Each time an image is saved, an external text file will be save with the same name at the same location, containing the image&apos;s tags.&lt;/i&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;i&gt;Каждый раз при сохранении изображения, с тем же именем в той же папке будет создаваться текстовый файл, содержащий его тэги&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="921"/>
         <source>Enable external text files</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохраненять теги в отдельный текстовый файл</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="928"/>
         <source>Text file content</source>
-        <translation type="unfinished"></translation>
+        <translation>Содержимое текстового файла</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="938"/>
@@ -2881,22 +2884,22 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="952"/>
         <source>Enable external logging</source>
-        <translation type="unfinished"></translation>
+        <translation>Включить сохранение лога в файл</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="959"/>
         <source>Log file</source>
-        <translation type="unfinished"></translation>
+        <translation>Файл лога</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="966"/>
         <source>Line format</source>
-        <translation type="unfinished"></translation>
+        <translation>Формат строк</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1001"/>
         <source>&lt;i&gt;Each time an image is saved, a new line will be added to the selected file.&lt;/i&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;i&gt;При каждом скачивании изображения, в файл лога будет добавляться новая строка.&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1015"/>
@@ -2952,12 +2955,12 @@ Please solve the issue before resuming the download.</source>
         <location filename="../src/settings/optionswindow.ui" line="1236"/>
         <location filename="../src/settings/optionswindow.ui" line="1347"/>
         <source>One file per tag</source>
-        <translation type="unfinished"></translation>
+        <translation>По одному файлу на каждый тег</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1219"/>
         <source>Use shortest if possible</source>
-        <translation>Использовать короткие если возможно</translation>
+        <translation>Использовать самые короткие теги если возможно</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1358"/>
@@ -2967,27 +2970,27 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1372"/>
         <source>Resize previews instead of cropping them</source>
-        <translation>Подгонять предпросмотр по размеру вместо обрезания</translation>
+        <translation>Подгонять превью по размеру вместо обрезания краёв</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1382"/>
         <source>Enable autocompletion</source>
-        <translation>Активировать автозавершение</translation>
+        <translation>Включить автозавершение</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1392"/>
         <source>Hide favorites</source>
-        <translation>Скрыть избранное</translation>
+        <translation>Скрывать избранное</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1409"/>
         <source>&lt;i&gt;The favorites list will be hidden as soon as this image number has been reached.&lt;/i&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;i&gt;Список избранного будет скрыт как только будет достигнуто заданное количество изображений.&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1419"/>
         <source>Source&apos;s type display</source>
-        <translation>Тип отоброжения источника</translation>
+        <translation>Вид отоброжения источника</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1427"/>
@@ -3009,12 +3012,12 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1442"/>
         <source>Don&apos;t show</source>
-        <translation>Ничего</translation>
+        <translation>Не показывать</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1450"/>
         <source>Displayed letters</source>
-        <translation>Показанные письма</translation>
+        <translation>Отображаемые буквы</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1460"/>
@@ -3029,27 +3032,27 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1470"/>
         <source>Before last dot</source>
-        <translation>После второй точки</translation>
+        <translation>После последней точки</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1493"/>
         <source>&lt;i&gt;Number of displayed letters near the sources&apos; checkboxes in the &quot;+&quot; part of the main window.&lt;/i&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;i&gt;Число отображаемых букв рядом с галочками источников в расширенном режиме поиска.&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1503"/>
         <source>Tag list position</source>
-        <translation>Позиция списка тегов</translation>
+        <translation>Расположение списка тегов</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1511"/>
         <source>Top</source>
-        <translation>Верх</translation>
+        <translation>Сверху</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1516"/>
         <source>Left</source>
-        <translation>Лево</translation>
+        <translation>Слева</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1521"/>
@@ -3059,7 +3062,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1529"/>
         <source>Show warning if an incompatible modifier is found</source>
-        <translation>Предупредить, если несовместимое описание найдено</translation>
+        <translation>Предупредить, если найдено несовместимое описание</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1539"/>
@@ -3069,12 +3072,12 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1549"/>
         <source>Download not loaded pages</source>
-        <translation>Загружать непрогруженные страницы</translation>
+        <translation>Скачивать непрогруженные страницы</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1556"/>
         <source>&lt;i&gt;If you activate this option, pressing the &quot;Get this page&quot; button will take into account modifications made to the number of images per page, the page number, etc. even if they weren&apos;t loaded.&lt;/i&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;i&gt;Если активировать эту опцию, то при нажатии на кнопку &quot;Скачать эту страницу&quot; будут приниматься во внимание изменения, внесенные в количество изображений на страницу, количество страниц и т.д., даже если они не были загружены.&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1567"/>
@@ -3114,12 +3117,12 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1605"/>
         <source>Favorites display</source>
-        <translation>Показать избранное</translation>
+        <translation>Отображать в избранном</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1612"/>
         <source>Upscaling</source>
-        <translation type="unfinished"></translation>
+        <translation>Масштаб</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1619"/>
@@ -3129,7 +3132,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1632"/>
         <source>Enable MD5 search field</source>
-        <translation type="unfinished"></translation>
+        <translation>Включить отдельное поле для поиска по MD5</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1643"/>
@@ -3139,7 +3142,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1650"/>
         <source>Series</source>
-        <translation>Копирайт</translation>
+        <translation>Произведения</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1657"/>
@@ -3164,7 +3167,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1692"/>
         <source>Ignored</source>
-        <translation>Игнорируемое</translation>
+        <translation>Игнорируемые</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1708"/>
@@ -3197,12 +3200,12 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1871"/>
         <source>Circle</source>
-        <translation>Круг</translation>
+        <translation>Технические теги</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1906"/>
         <source>Hosts</source>
-        <translation>Сервера</translation>
+        <translation>В режиме поиска по нескольким сайтам</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1912"/>
@@ -3219,7 +3222,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="1983"/>
         <source>Images</source>
-        <translation>Изображения</translation>
+        <translation>В режиме поиска по одному сайту / Объединённые результаты</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="2006"/>
@@ -3229,7 +3232,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="2047"/>
         <source>Show log</source>
-        <translation>Показать лог</translation>
+        <translation>Показывать лог</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="2061"/>
@@ -3250,7 +3253,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="2107"/>
         <source>Type</source>
-        <translation>Вид</translation>
+        <translation>Тип</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="2115"/>
@@ -3266,19 +3269,19 @@ Please solve the issue before resuming the download.</source>
         <location filename="../src/settings/optionswindow.ui" line="2148"/>
         <location filename="../src/settings/optionswindow.ui" line="2218"/>
         <source>Tag (after)</source>
-        <translation type="unfinished"></translation>
+        <translation>Тег (перед)</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="2158"/>
         <location filename="../src/settings/optionswindow.ui" line="2198"/>
         <source>Tag (before)</source>
-        <translation type="unfinished"></translation>
+        <translation>Тег (после)</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="2168"/>
         <location filename="../src/settings/optionswindow.ui" line="2238"/>
         <source>Additional tags: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: the tag&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;: tag type, &quot;general&quot;, &quot;artist&quot;, &quot;copyright&quot;, &quot;character&quot;, &quot;model&quot; or &quot;photo_set&quot;&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: the tag type number (between 0 and 6)</source>
-        <translation type="unfinished"></translation>
+        <translation>Дополнительные теги: &lt;i&gt;%tag%&lt;/i&gt;, &lt;i&gt;%type%&lt;/i&gt;, &lt;i&gt;%number%&lt;/i&gt;.&lt;br/&gt;&lt;i&gt;%tag%&lt;/i&gt;: означает тег&lt;br/&gt;&lt;i&gt;%type%&lt;/i&gt;:означает тип тега, &quot;general&quot;, &quot;artist&quot;, &quot;copyright&quot;, &quot;character&quot;, &quot;model&quot; или &quot;photo_set&quot;&lt;br/&gt;&lt;i&gt;%number%&lt;/i&gt;: Количество тегов этих типов (от 0 до 6)</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.ui" line="2188"/>
@@ -3318,7 +3321,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.cpp" line="287"/>
         <source>Choose a save folder for favorites</source>
-        <translation>Выберите папку для сохранения избранных</translation>
+        <translation>Выберите папку для сохранения избранного</translation>
     </message>
     <message>
         <location filename="../src/settings/optionswindow.cpp" line="347"/>
@@ -3338,7 +3341,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/optionswindow.cpp" line="584"/>
         <source>An error occured creating the favorites save folder.</source>
-        <translation>Ошибка при создании папки для сохранения избранных.</translation>
+        <translation>Ошибка при создании папки для сохранения избранного.</translation>
     </message>
 </context>
 <context>
@@ -3351,7 +3354,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/tabs/pool-tab.ui" line="119"/>
         <source>Pl&amp;us</source>
-        <translation>Pl&amp;us</translation>
+        <translation>Пл&amp;юс</translation>
     </message>
     <message>
         <location filename="../src/tabs/pool-tab.ui" line="142"/>
@@ -3366,7 +3369,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/tabs/pool-tab.ui" line="211"/>
         <source>Images per page</source>
-        <translation>Изображений на страницу</translation>
+        <translation>Изображений на странице</translation>
     </message>
     <message>
         <location filename="../src/tabs/pool-tab.ui" line="231"/>
@@ -3386,7 +3389,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/tabs/pool-tab.ui" line="389"/>
         <source>Get this &amp;page</source>
-        <translation>Загрузить эту &amp;страницу</translation>
+        <translation>Скачать всю &amp;страницу</translation>
     </message>
     <message>
         <location filename="../src/tabs/pool-tab.ui" line="396"/>
@@ -3404,7 +3407,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/tabs/search-tab.cpp" line="110"/>
         <source>server offline</source>
-        <translation>сервер оффлайн</translation>
+        <translation>сервер недоступен</translation>
     </message>
     <message>
         <location filename="../src/tabs/search-tab.cpp" line="114"/>
@@ -3419,7 +3422,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/tabs/search-tab.cpp" line="360"/>
         <source>one of the thumbnails is empty (&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;).</source>
-        <translation>один из предпросмотров пуст (&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;).</translation>
+        <translation type="unfinished">одна из миниатюр пустая (&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;).</translation>
     </message>
     <message>
         <location filename="../src/tabs/search-tab.cpp" line="374"/>
@@ -3429,7 +3432,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/tabs/search-tab.cpp" line="471"/>
         <source>No result</source>
-        <translation>Нет результата</translation>
+        <translation>Ничего не найдено</translation>
     </message>
     <message>
         <location filename="../src/tabs/search-tab.cpp" line="472"/>
@@ -3454,12 +3457,12 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/tabs/search-tab.cpp" line="520"/>
         <source>&lt;b&gt;Rating:&lt;/b&gt; %1&lt;br/&gt;</source>
-        <translation>&lt;b&gt;Оценка:&lt;/b&gt; %1&lt;br/&gt;</translation>
+        <translation>&lt;b&gt;Рейтинг:&lt;/b&gt; %1&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../src/tabs/search-tab.cpp" line="521"/>
         <source>&lt;b&gt;Score:&lt;/b&gt; %1&lt;br/&gt;</source>
-        <translation>&lt;b&gt;Счёт:&lt;/b&gt; %1&lt;br/&gt;</translation>
+        <translation>&lt;b&gt;Оценка:&lt;/b&gt; %1&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../src/tabs/search-tab.cpp" line="522"/>
@@ -3469,12 +3472,12 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/tabs/search-tab.cpp" line="523"/>
         <source>&lt;b&gt;Size:&lt;/b&gt; %1 x %2&lt;br/&gt;</source>
-        <translation>&lt;b&gt;Размер:&lt;/b&gt; %1 x %2&lt;br/&gt;</translation>
+        <translation>&lt;b&gt;Разрешение:&lt;/b&gt; %1 x %2&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../src/tabs/search-tab.cpp" line="524"/>
         <source>&lt;b&gt;Filesize:&lt;/b&gt; %1 %2&lt;br/&gt;</source>
-        <translation>&lt;b&gt;Размер фаила:&lt;/b&gt; %1 %2&lt;br/&gt;</translation>
+        <translation>&lt;b&gt;Размер файла:&lt;/b&gt; %1 %2&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../src/tabs/search-tab.cpp" line="525"/>
@@ -3484,7 +3487,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/tabs/search-tab.cpp" line="525"/>
         <source>&apos;the &apos;MM/dd/yyyy&apos; at &apos;hh:mm</source>
-        <translation type="unfinished"></translation>
+        <translation>dd/MM/yyyy&apos; в &apos;hh:mm</translation>
     </message>
     <message>
         <location filename="../src/tabs/search-tab.cpp" line="679"/>
@@ -3494,8 +3497,8 @@ Please solve the issue before resuming the download.</source>
     <message numerus="yes">
         <location filename="../src/tabs/search-tab.cpp" line="679"/>
         <source>%n tag figuring in the blacklist detected in this image: %1. Do you want to display it anyway?</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>Изображение: %1 содержит тег %n из чёрного списка. Всё равно показать изображение?</numerusform>
             <numerusform></numerusform>
             <numerusform></numerusform>
         </translation>
@@ -3511,7 +3514,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/sources/sourceswindow.ui" line="48"/>
         <source>Check all</source>
-        <translation>Включить все</translation>
+        <translation>Выбрать все</translation>
     </message>
     <message>
         <location filename="../src/sources/sourceswindow.ui" line="107"/>
@@ -3521,7 +3524,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/sources/sourceswindow.ui" line="127"/>
         <source>Cancel</source>
-        <translation>Отменить</translation>
+        <translation>Отмена</translation>
     </message>
     <message>
         <location filename="../src/sources/sourceswindow.ui" line="134"/>
@@ -3531,17 +3534,17 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/sources/sourceswindow.cpp" line="229"/>
         <source>Options</source>
-        <translation>Опции</translation>
+        <translation>Настройки</translation>
     </message>
     <message>
         <location filename="../src/sources/sourceswindow.cpp" line="297"/>
         <source>An update for this source is available, but for another version of the program.</source>
-        <translation>Обновление для этого источника доступно, но для другой версии программы.</translation>
+        <translation>Для этого источника доступно обновление, но для другой версии программы.</translation>
     </message>
     <message>
         <location filename="../src/sources/sourceswindow.cpp" line="302"/>
         <source>An update for this source is available.</source>
-        <translation>Обновление для источника доступно.</translation>
+        <translation>Для этого источника доступно обновление.</translation>
     </message>
 </context>
 <context>
@@ -3554,7 +3557,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/startwindow.ui" line="23"/>
         <source>Before starting, the program needs some informations to work properly. You can skip this step, and these informations will be asked later.</source>
-        <translation type="unfinished"></translation>
+        <translation>Перед началом работы необходимо ввести данные для правильной работы программы. Вы можете пропустить этот шаг, и ввести эти сведения позднее.</translation>
     </message>
     <message>
         <location filename="../src/settings/startwindow.ui" line="41"/>
@@ -3574,7 +3577,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/startwindow.ui" line="69"/>
         <source>Format</source>
-        <translation type="unfinished"></translation>
+        <translation>Формат</translation>
     </message>
     <message>
         <location filename="../src/settings/startwindow.ui" line="93"/>
@@ -3589,17 +3592,17 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/settings/startwindow.ui" line="117"/>
         <source>&lt;i&gt;If you use Grabber for the first time, it is advised to first read the &lt;a href=&quot;https://github.com/Bionus/imgbrd-grabber/wiki/GettingStarted&quot;&gt;getting started&lt;/a&gt; wiki page.&lt;/i&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;i&gt;Если вы используете Граббер в первый раз, советуем ознакомиться с &lt;a href=&quot;https://github.com/Bionus/imgbrd-grabber/wiki/GettingStarted&quot;&gt;информацией для начинающих&lt;/a&gt;(на английском).&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../src/settings/startwindow.ui" line="132"/>
         <source>Options</source>
-        <translation>Опции</translation>
+        <translation>Настройки</translation>
     </message>
     <message>
         <location filename="../src/settings/startwindow.cpp" line="54"/>
         <source>Choose a save folder</source>
-        <translation>Выбрать папку для сохранения</translation>
+        <translation>Выберите папку для сохранения</translation>
     </message>
     <message>
         <location filename="../src/settings/startwindow.cpp" line="90"/>
@@ -3617,7 +3620,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/tabs/tag-tab.ui" line="113"/>
         <source>Pl&amp;us</source>
-        <translation>Pl&amp;us</translation>
+        <translation>Пл&amp;юс</translation>
     </message>
     <message>
         <location filename="../src/tabs/tag-tab.ui" line="136"/>
@@ -3662,7 +3665,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/tabs/tag-tab.ui" line="407"/>
         <source>Get this &amp;page</source>
-        <translation>Загрузить эту &amp;страницу</translation>
+        <translation>Скачать всю &amp;страницу</translation>
     </message>
     <message>
         <location filename="../src/tabs/tag-tab.ui" line="414"/>
@@ -3745,13 +3748,14 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/viewer/zoomwindow.cpp" line="234"/>
         <source>The save folder does not exist yet. Create it?</source>
-        <translation>Папки для сохранения не существует. Создать?</translation>
+        <translation>Папки для сохранения не существует. Создать её?</translation>
     </message>
     <message>
         <location filename="../src/viewer/zoomwindow.cpp" line="239"/>
         <source>Error creating folder.
 %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка при создании папки.
+%1</translation>
     </message>
     <message>
         <location filename="../src/viewer/zoomwindow.cpp" line="257"/>
@@ -3771,12 +3775,12 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/viewer/zoomwindow.cpp" line="265"/>
         <source>Don&apos;t keep for later</source>
-        <translation>Не сохранять на будущее</translation>
+        <translation>Не оставлять на потом</translation>
     </message>
     <message>
         <location filename="../src/viewer/zoomwindow.cpp" line="267"/>
         <source>Keep for later</source>
-        <translation>Сохранить на будущее</translation>
+        <translation>Оставить на потом</translation>
     </message>
     <message>
         <location filename="../src/viewer/zoomwindow.cpp" line="271"/>
@@ -3801,13 +3805,13 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/viewer/zoomwindow.cpp" line="279"/>
         <source>Open in browser</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть в браузере</translation>
     </message>
     <message>
         <location filename="../src/viewer/zoomwindow.cpp" line="453"/>
         <location filename="../src/viewer/zoomwindow.cpp" line="771"/>
         <source>File already exists</source>
-        <translation>Фаил уже существует</translation>
+        <translation>Файл уже существует</translation>
     </message>
     <message>
         <location filename="../src/viewer/zoomwindow.cpp" line="454"/>
@@ -3819,7 +3823,7 @@ Please solve the issue before resuming the download.</source>
         <location filename="../src/viewer/zoomwindow.cpp" line="458"/>
         <location filename="../src/viewer/zoomwindow.cpp" line="771"/>
         <source>File already exists (fav)</source>
-        <translation>Фаил уже существует (избранное)</translation>
+        <translation>Файл уже существует (избранное)</translation>
     </message>
     <message>
         <location filename="../src/viewer/zoomwindow.cpp" line="459"/>
@@ -3860,12 +3864,12 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/viewer/zoomwindow.cpp" line="725"/>
         <source>You did not specified a save format! Do you want to open the options window?</source>
-        <translation>Вы не выбрали формат сохранения! Хотите открыть окно настроек?</translation>
+        <translation>Вы не выбрали формат для сохранения! Хотите открыть окно настроек?</translation>
     </message>
     <message>
         <location filename="../src/viewer/zoomwindow.cpp" line="750"/>
         <source>Error saving image.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка сохранения изображения.</translation>
     </message>
     <message>
         <location filename="../src/viewer/zoomwindow.cpp" line="755"/>
@@ -3880,12 +3884,12 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/viewer/zoomwindow.cpp" line="759"/>
         <source>Copied! (fav)</source>
-        <translation>Копированно! (Избранное)</translation>
+        <translation>Скопировано! (Избранное)</translation>
     </message>
     <message>
         <location filename="../src/viewer/zoomwindow.cpp" line="759"/>
         <source>Copied!</source>
-        <translation>Копированно!</translation>
+        <translation>Скопировано!</translation>
     </message>
     <message>
         <location filename="../src/viewer/zoomwindow.cpp" line="763"/>
@@ -3900,12 +3904,12 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../src/viewer/zoomwindow.cpp" line="767"/>
         <source>Ignored! (fav)</source>
-        <translation>Игнорированно! (избранное)</translation>
+        <translation>Проигнорировано! (избранное)</translation>
     </message>
     <message>
         <location filename="../src/viewer/zoomwindow.cpp" line="767"/>
         <source>Ignored!</source>
-        <translation>Игнорированно!</translation>
+        <translation>Проигнорировано!</translation>
     </message>
     <message>
         <location filename="../src/viewer/zoomwindow.cpp" line="791"/>
