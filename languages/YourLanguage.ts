@@ -1339,11 +1339,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/batch/batchwindow.ui" line="49"/>
-        <source>%p%</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../gui/src/batch/batchwindow.ui" line="56"/>
         <source>Details</source>
         <translation type="unfinished"></translation>
