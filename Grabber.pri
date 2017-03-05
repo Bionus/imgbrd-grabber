@@ -34,6 +34,7 @@ TRANSLATIONS += $${PWD}/languages/English.ts \
 				$${PWD}/languages/French.ts \
 				$${PWD}/languages/Russian.ts \
 				$${PWD}/languages/ChineseSimplified.ts \
+				$${PWD}/languages/Spanish.ts \
 				$${PWD}/languages/YourLanguage.ts
 
 # Target WinXP

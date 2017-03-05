@@ -17,4 +17,5 @@ TRANSLATIONS += languages/English.ts \
 				languages/French.ts \
 				languages/ChineseSimplified.ts \
 				languages/Russian.ts \
+				languages/Spanish.ts \
 				languages/YourLanguage.ts
