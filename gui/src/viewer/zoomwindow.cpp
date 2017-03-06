@@ -1133,7 +1133,7 @@ void zoomWindow::updateWindowTitle()
 		title = tr("Image");
 	else
 		title = QString(tr("Image") + " (%1)").arg(infos.join(", "));
-	setWindowTitle(QString("%1 - %2 (%3/%4)").arg(title, m_image->parentSite()->name(), QString::number(m_images.indexOf(m_image)), QString::number(m_images.count())));
+	setWindowTitle(QString("%1 - %2 (%3/%4)").arg(title, m_image->parentSite()->name(), QString::number(m_images.indexOf(m_image) + 1), QString::number(m_images.count())));
 }
 
 void zoomWindow::next()
