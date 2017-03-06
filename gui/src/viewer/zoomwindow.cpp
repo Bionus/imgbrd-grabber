@@ -192,8 +192,11 @@ zoomWindow::~zoomWindow()
 	m_labelTagsLeft->deleteLater();
 	m_detailsWindow->deleteLater();
 
+	// Quit threads
+	m_imageLoaderQueueThread.quit();
+	m_imageLoaderThread.wait(1000);
 	m_imageLoaderThread.quit();
-	m_imageLoaderThread.wait(100);
+	m_imageLoaderThread.wait(1000);
 
 	delete ui;
 }
