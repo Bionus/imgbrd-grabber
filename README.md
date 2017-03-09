@@ -46,6 +46,7 @@ You can download the latest release [here](https://github.com/Bionus/imgbrd-grab
 * French
 * Russian
 * Chinese (simplified)
+* Spanish
 
 ## Default sources
 You can add additional sources very easily, but here's a shot list of some sources that are included and supported by default: Danbooru, Gelbooru, yande.re, Shimmie, Sankaku complex, e621, Konachan, rule34, safebooru, behoimi, Zerochan...
