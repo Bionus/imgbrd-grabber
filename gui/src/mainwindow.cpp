@@ -165,6 +165,7 @@ void mainWindow::init(QStringList args, QMap<QString,QString> params)
 	m_favoritesTab = new favoritesTab(&m_sites, m_profile, this);
 	connect(m_favoritesTab, &searchTab::batchAddGroup, this, &mainWindow::batchAddGroup);
 	connect(m_favoritesTab, SIGNAL(batchAddUnique(DownloadQueryImage)), this, SLOT(batchAddUnique(DownloadQueryImage)));
+	connect(m_favoritesTab, &searchTab::titleChanged, this, &mainWindow::updateTabTitle);
 	connect(m_favoritesTab, &searchTab::changed, this, &mainWindow::updateTabs);
 	ui->tabWidget->insertTab(m_tabs.size(), m_favoritesTab, tr("Favorites"));
 	ui->tabWidget->setCurrentIndex(0);

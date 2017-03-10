@@ -32,6 +32,9 @@ class favoritesTab : public searchTab
 		QList<Site*> loadSites() const override;
 		void write(QJsonObject &json) const override;
 
+	protected:
+		void changeEvent(QEvent *event) override;
+
 	public slots:
 		// Zooms
 		void setTags(QString);

@@ -199,3 +199,15 @@ void poolTab::focusSearch()
 
 QString poolTab::tags() const
 { return m_search->toPlainText(); }
+
+
+void poolTab::changeEvent(QEvent *event)
+{
+	// Automatically retranslate this tab on language change
+	if (event->type() == QEvent::LanguageChange)
+	{
+		ui->retranslateUi(this);
+	}
+
+	QWidget::changeEvent(event);
+}

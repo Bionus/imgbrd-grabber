@@ -36,6 +36,9 @@ class tagTab : public searchTab
 		void write(QJsonObject &json) const override;
 		bool read(const QJsonObject &json);
 
+	protected:
+		void changeEvent(QEvent *event) override;
+
 	public slots:
 		// Zooms
 		void setTags(QString);
