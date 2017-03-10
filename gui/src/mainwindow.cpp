@@ -1293,6 +1293,10 @@ void mainWindow::getAllFinishedLogins()
 		int imagesPerPack = pagesPerPack * b.perpage;
 		int packs = qCeil((float)b.total / imagesPerPack);
 
+		int lastPageImages = b.total % imagesPerPack;
+		if (lastPageImages == 0)
+			lastPageImages = imagesPerPack;
+
 		for (int i = 0; i < packs; ++i)
 		{
 			Downloader *downloader = new Downloader(m_profile,
@@ -1300,7 +1304,7 @@ void mainWindow::getAllFinishedLogins()
 													QStringList(),
 													QList<Site*>() << b.site,
 													b.page + i * pagesPerPack,
-													(i == packs - 1 ? b.total % imagesPerPack : imagesPerPack),
+													(i == packs - 1 ? lastPageImages : imagesPerPack),
 													b.perpage,
 													b.path,
 													b.filename,
