@@ -123,6 +123,27 @@ void mainWindow::init(QStringList args, QMap<QString,QString> params)
 	ui->actionQuit->setShortcut(QKeySequence::Quit);
 	ui->actionFolder->setShortcut(QKeySequence::Open);
 
+	// On first launch after setup, we restore the setup's language
+	QString setupSettingsFile = savePath("innosetup.ini");
+	if (QFile::exists(setupSettingsFile))
+	{
+		QSettings setupSettings(setupSettingsFile, QSettings::IniFormat);
+		QString setupLanguage = setupSettings.value("language", "en").toString();
+
+		QSettings associations(savePath("languages/languages.ini"), QSettings::IniFormat);
+		associations.beginGroup("innosetup");
+		QStringList keys = associations.childKeys();
+
+		// Only if the setup language is available in Grabber
+		if (keys.contains(setupLanguage))
+		{
+			m_settings->setValue("language", associations.value(setupLanguage).toString());
+		}
+
+		// Remove the setup settings file to not do this every time
+		QFile::remove(setupSettingsFile);
+	}
+
 	loadLanguage(m_settings->value("language", "English").toString());
 
 	connect(ui->actionQuit, SIGNAL(triggered()), qApp, SLOT(quit()));
