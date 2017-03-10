@@ -471,12 +471,15 @@ QStringList Filename::path(const Image& img, Profile *profile, QString pth, int 
 		if (getFull)
 		{ fns[i] = pth + "/" + fns[i]; }
 
-		// Native separators
-		fns[i] = QDir::toNativeSeparators(fns[i]);
+		if (shouldFixFilename)
+		{
+			// Native separators
+			fns[i] = QDir::toNativeSeparators(fns[i]);
 
-		// We remove empty directory names
-		QChar sep = QDir::separator();
-		fns[i].replace(QRegExp::escape(sep) + "+", sep);
+			// We remove empty directory names
+			QChar sep = QDir::separator();
+			fns[i].replace(QRegExp(QRegExp::escape(sep) + "{2,}"), sep);
+		}
 	}
 
 	return fns;
