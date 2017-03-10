@@ -515,14 +515,12 @@ void zoomWindow::replyFinishedDetails()
 	}
 
 	QString path1 = m_settings->value("Save/path").toString().replace("\\", "/");
-	QStringList pth1s = m_image->path(m_settings->value("Save/filename").toString(), path1);
+	QStringList pth1s = m_image->path(m_settings->value("Save/filename").toString(), path1, 0, true, false, true, true, true);
 	QString source1;
 	bool file1notexists = false;
 	for (QString pth1 : pth1s)
 	{
-		if (path1.right(1) == "/")
-		{ path1 = path1.left(path1.length()-1); }
-		QFile file(path1+"/"+pth1);
+		QFile file(pth1);
 		if (file.exists())
 			source1 = file.fileName();
 		else
@@ -530,14 +528,12 @@ void zoomWindow::replyFinishedDetails()
 	}
 
 	QString path2 = m_settings->value("Save/path_favorites").toString().replace("\\", "/");
-	QStringList pth2s = m_image->path(m_settings->value("Save/filename_favorites").toString(), path2);
+	QStringList pth2s = m_image->path(m_settings->value("Save/filename_favorites").toString(), path2, 0, true, false, true, true, true);
 	QString source2;
 	bool file2notexists = false;
 	for (QString pth2 : pth2s)
 	{
-		if (path2.right(1) == "/")
-		{ path2 = path1.left(path2.length()-1); }
-		QFile file(path2+"/"+pth2);
+		QFile file(pth2);
 		if (file.exists())
 			source2 = file.fileName();
 		else
