@@ -48,7 +48,6 @@ void mainWindow::init(QStringList args, QMap<QString,QString> params)
 	m_settings->setValue("crashed", true);
 	m_settings->sync();
 
-	loadLanguage(m_settings->value("language", "English").toString(), true);
 	ui->setupUi(this);
 
 	m_showLog = m_settings->value("Log/show", true).toBool();
@@ -59,6 +58,32 @@ void mainWindow::init(QStringList args, QMap<QString,QString> params)
 	log(QString("Software version: %1.").arg(VERSION));
 	log(QString("Path: %1").arg(qApp->applicationDirPath()));
 	log(QString("Loading preferences from <a href=\"file:///%1\">%1</a>").arg(m_settings->fileName()));
+
+	// On first launch after setup, we restore the setup's language
+	QString setupSettingsFile = savePath("innosetup.ini");
+	if (QFile::exists(setupSettingsFile))
+	{
+		QSettings setupSettings(setupSettingsFile, QSettings::IniFormat);
+		QString setupLanguage = setupSettings.value("language", "en").toString();
+
+		QSettings associations(savePath("languages/languages.ini"), QSettings::IniFormat);
+		associations.beginGroup("innosetup");
+		QStringList keys = associations.childKeys();
+
+		// Only if the setup language is available in Grabber
+		if (keys.contains(setupLanguage))
+		{
+			m_settings->setValue("language", associations.value(setupLanguage).toString());
+		}
+
+		// Remove the setup settings file to not do this every time
+		QFile::remove(setupSettingsFile);
+	}
+
+	// Load translations
+	qApp->installTranslator(&m_translator);
+	qApp->installTranslator(&m_qtTranslator);
+	loadLanguage(m_settings->value("language", "English").toString());
 
 	tabifyDockWidget(ui->dock_internet, ui->dock_wiki);
 	tabifyDockWidget(ui->dock_wiki, ui->dock_kfl);
@@ -122,29 +147,6 @@ void mainWindow::init(QStringList args, QMap<QString,QString> params)
 	ui->actionAddtab->setShortcut(QKeySequence::AddTab);
 	ui->actionQuit->setShortcut(QKeySequence::Quit);
 	ui->actionFolder->setShortcut(QKeySequence::Open);
-
-	// On first launch after setup, we restore the setup's language
-	QString setupSettingsFile = savePath("innosetup.ini");
-	if (QFile::exists(setupSettingsFile))
-	{
-		QSettings setupSettings(setupSettingsFile, QSettings::IniFormat);
-		QString setupLanguage = setupSettings.value("language", "en").toString();
-
-		QSettings associations(savePath("languages/languages.ini"), QSettings::IniFormat);
-		associations.beginGroup("innosetup");
-		QStringList keys = associations.childKeys();
-
-		// Only if the setup language is available in Grabber
-		if (keys.contains(setupLanguage))
-		{
-			m_settings->setValue("language", associations.value(setupLanguage).toString());
-		}
-
-		// Remove the setup settings file to not do this every time
-		QFile::remove(setupSettingsFile);
-	}
-
-	loadLanguage(m_settings->value("language", "English").toString());
 
 	connect(ui->actionQuit, SIGNAL(triggered()), qApp, SLOT(quit()));
 	connect(ui->actionAboutQt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
@@ -960,12 +962,6 @@ void mainWindow::logClear()
 void mainWindow::logOpen()
 { QDesktopServices::openUrl("file:///" + m_profile->getPath() + "/main.log"); }
 
-void mainWindow::switchTranslator(QTranslator& translator, const QString& filename)
-{
-	qApp->removeTranslator(&translator);
-	if (translator.load(filename))
-	{ qApp->installTranslator(&translator); }
-}
 void mainWindow::loadLanguage(const QString& rLanguage, bool shutup)
 {
 	if (m_currLang != rLanguage)
@@ -973,7 +969,10 @@ void mainWindow::loadLanguage(const QString& rLanguage, bool shutup)
 		m_currLang = rLanguage;
 		QLocale locale = QLocale(m_currLang);
 		QLocale::setDefault(locale);
-		switchTranslator(m_translator, savePath("languages/"+m_currLang+".qm", true));
+
+		m_translator.load(savePath("languages/"+m_currLang+".qm", true));
+		m_qtTranslator.load(savePath("languages/qt/"+m_currLang+".qm", true));
+
 		if (!shutup)
 		{
 			log(QString("Translating texts in %1...").arg(m_currLang));
