@@ -34,6 +34,7 @@
 #include "helpers.h"
 #include "downloader/download-query-loader.h"
 #include "tabs/tabs-loader.h"
+#include "theme-loader.h"
 
 
 
@@ -48,8 +49,6 @@ void mainWindow::init(QStringList args, QMap<QString,QString> params)
 	m_settings->setValue("crashed", true);
 	m_settings->sync();
 
-	ui->setupUi(this);
-
 	m_showLog = m_settings->value("Log/show", true).toBool();
 	if (!m_showLog)
 	{ ui->tabWidget->removeTab(ui->tabWidget->indexOf(ui->tabLog)); }
@@ -58,6 +57,10 @@ void mainWindow::init(QStringList args, QMap<QString,QString> params)
 	log(QString("Software version: %1.").arg(VERSION));
 	log(QString("Path: %1").arg(qApp->applicationDirPath()));
 	log(QString("Loading preferences from <a href=\"file:///%1\">%1</a>").arg(m_settings->fileName()));
+
+	ThemeLoader themeLoader(savePath("themes/", true));
+	themeLoader.setTheme(m_settings->value("theme", "Default").toString());
+	ui->setupUi(this);
 
 	// On first launch after setup, we restore the setup's language
 	QString setupSettingsFile = savePath("innosetup.ini");
