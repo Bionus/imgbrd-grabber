@@ -1146,6 +1146,7 @@ void mainWindow::getAll(bool all)
 	m_getAllFailed.clear();
 	m_getAllDownloading.clear();
 	m_getAllSkippedImages.clear();
+	m_batchPending.clear();
 
 	QList<QTableWidgetItem *> selected = ui->tableBatchUniques->selectedItems();
 	int count = selected.size();
