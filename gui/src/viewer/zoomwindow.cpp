@@ -540,8 +540,10 @@ void zoomWindow::replyFinishedDetails()
 			file2notexists = true;
 	}
 
+	QString md5Exists = m_profile->md5Exists(m_image->md5());
+
 	// If the file already exists, we directly display it
-	if (!file1notexists || !file2notexists)
+	if (!md5Exists.isEmpty() || !file1notexists || !file2notexists)
 	{
 		if (!file1notexists)
 		{
@@ -553,7 +555,7 @@ void zoomWindow::replyFinishedDetails()
 			ui->buttonSaveFav->setText(tr("File already exists (fav)"));
 			ui->buttonSaveNQuitFav->setText(tr("Close (fav)"));
 		}
-		m_source = !file1notexists ? source1 : source2;
+		m_source = !md5Exists.isEmpty() ? md5Exists : (!file1notexists ? source1 : source2);
 		m_imagePath = m_source;
 		log(QString("Image loaded from the file <a href=\"file:///%1\">%1</a>").arg(m_source));
 
