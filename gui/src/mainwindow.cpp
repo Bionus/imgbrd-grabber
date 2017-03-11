@@ -252,7 +252,7 @@ void mainWindow::init(QStringList args, QMap<QString,QString> params)
 	// Check for updates
 	int cfuInterval = m_settings->value("check_for_updates", 24*60*60).toInt();
 	QDateTime lastCfu = m_settings->value("last_check_for_updates", QDateTime()).toDateTime();
-	if (cfuInterval > 0 && (!lastCfu.isValid() || lastCfu.addSecs(cfuInterval) <= QDateTime::currentDateTime()))
+	if (cfuInterval >= 0 && (!lastCfu.isValid() || lastCfu.addSecs(cfuInterval) <= QDateTime::currentDateTime()))
 	{
 		m_settings->setValue("last_check_for_updates", QDateTime::currentDateTime());
 
