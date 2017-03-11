@@ -2028,6 +2028,7 @@ void mainWindow::getAllFinished()
 			int pos = i - rem;
 			m_progressBars[pos]->deleteLater();
 			m_progressBars.removeAt(pos);
+			m_groupBatchs.removeAt(pos);
 			ui->tableBatchGroups->removeRow(pos);
 			rem++;
 		}
