@@ -75,16 +75,6 @@ void md5Fix::on_buttonStart_clicked()
 		ui->progressBar->setMaximum(files.size());
 		ui->progressBar->show();
 
-		// Open MD5 file
-		QFile f(m_profile->getPath() + "/md5s.txt");
-		if (!f.open(QFile::WriteOnly | QFile::Truncate))
-		{
-			error(this, tr("Unable to open the MD5 file."));
-			ui->progressBar->hide();
-			ui->buttonStart->setEnabled(true);
-			return;
-		}
-
 		// Parse all files
 		for (QStringPair file : files)
 		{
@@ -118,10 +108,9 @@ void md5Fix::on_buttonStart_clicked()
 				}
 			}
 			if (!md5.isEmpty())
-			{ f.write(QString(md5 + file.second + "\n").toUtf8()); }
+			{ m_profile->addMd5(md5, file.second); }
 			ui->progressBar->setValue(ui->progressBar->value() + 1);
 		}
-		f.close();
 	}
 
 	// Hide progresss bar
