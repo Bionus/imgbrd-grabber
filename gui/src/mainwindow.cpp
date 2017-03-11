@@ -514,8 +514,11 @@ bool mainWindow::loadTabs(QString filename)
 	m_tagTabs.append(tagTabs);
 	m_poolTabs.append(poolTabs);
 
-	ui->tabWidget->setCurrentIndex(currentTab);
-	m_forcedTab = true;
+	if (currentTab >= 0)
+	{
+		ui->tabWidget->setCurrentIndex(currentTab);
+		m_forcedTab = true;
+	}
 
 	return true;
 }
