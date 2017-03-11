@@ -1756,7 +1756,7 @@ void mainWindow::getAllGetImage(QSharedPointer<Image> img)
 		{
 			if (whatToDo == "copy")
 			{
-				m_getAllIgnored++;
+				m_getAllDownloaded++;
 				log(QString("Copy from <a href=\"file:///%1\">%1</a> vers <a href=\"file:///%2\">%2</a>").arg(md5Duplicate).arg(fp));
 				QFile::copy(md5Duplicate, fp);
 
@@ -1775,7 +1775,7 @@ void mainWindow::getAllGetImage(QSharedPointer<Image> img)
 			}
 			else
 			{
-				m_getAllIgnored++;
+				m_getAllExists++;
 				log(QString("MD5 \"%1\" of the image <a href=\"%2\">%2</a> already found in file <a href=\"file:///%3\">%3</a>").arg(img->md5(), img->url(), md5Duplicate));
 			}
 		}
