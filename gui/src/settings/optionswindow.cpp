@@ -15,6 +15,7 @@
 #include "functions.h"
 #include "helpers.h"
 #include "language-loader.h"
+#include "theme-loader.h"
 
 
 
@@ -197,6 +198,13 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 		m_customTags.append(leTags);
 		ui->layoutCustom->insertRow(i, leName, leTags);
 	}
+
+	// Themes
+	ThemeLoader themeLoader(savePath("themes/", true));
+	QStringList themes = themeLoader.getAllThemes();
+	for (QString theme : themes)
+	{ ui->comboTheme->addItem(theme, theme); }
+	ui->comboTheme->setCurrentText(settings->value("theme", "Default").toString());
 
 	QStringList positions = QStringList() << "top" << "left" << "auto";
 	ui->comboTagsPosition->setCurrentIndex(positions.indexOf(settings->value("tagsposition", "top").toString()));
@@ -690,6 +698,12 @@ void optionsWindow::save()
 			{ settings->setValue(m_customNames.at(i)->text(), m_customTags.at(i)->text()); }
 		settings->endGroup();
 	settings->endGroup();
+
+	// Themes
+	QString theme = ui->comboTheme->currentText();
+	ThemeLoader themeLoader(savePath("themes/", true));
+	if (themeLoader.setTheme(theme))
+	{ settings->setValue("theme", theme); }
 
 	QStringList positions = QStringList() << "top" << "left" << "auto";
 	settings->setValue("tagsposition", positions.at(ui->comboTagsPosition->currentIndex()));

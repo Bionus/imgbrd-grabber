@@ -321,3 +321,17 @@ void favoritesTab::favoriteProperties(QString name)
 
 void favoritesTab::focusSearch()
 { }
+
+
+void favoritesTab::changeEvent(QEvent *event)
+{
+	// Automatically retranslate this tab on language change
+	if (event->type() == QEvent::LanguageChange)
+	{
+		ui->retranslateUi(this);
+		setWindowTitle(tr("Favorites"));
+		emit titleChanged(this);
+	}
+
+	QWidget::changeEvent(event);
+}

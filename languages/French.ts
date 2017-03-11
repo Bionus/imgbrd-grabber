@@ -1466,9 +1466,8 @@
         <translation>Téléchargement groupé</translation>
     </message>
     <message>
-        <location filename="../gui/src/batch/batchwindow.ui" line="49"/>
         <source>%p%</source>
-        <translation>%p%</translation>
+        <translation type="vanished">%p%</translation>
     </message>
     <message>
         <location filename="../gui/src/batch/batchwindow.ui" line="56"/>

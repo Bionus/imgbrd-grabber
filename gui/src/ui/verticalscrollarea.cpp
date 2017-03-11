@@ -35,7 +35,6 @@ void VerticalScrollArea::updateWidgetSize()
 			maxWidth -= verticalScrollBar()->width();
 		widget()->setMaximumWidth(maxWidth);
 
-		if (!m_scrollEnabled)
-			widget()->setMaximumHeight(height());
+		widget()->setMaximumHeight(m_scrollEnabled ? QWIDGETSIZE_MAX : height());
 	}
 }

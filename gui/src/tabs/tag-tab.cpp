@@ -234,3 +234,15 @@ void tagTab::focusSearch()
 
 QString tagTab::tags() const
 { return m_search->toPlainText(); }
+
+
+void tagTab::changeEvent(QEvent *event)
+{
+	// Automatically retranslate this tab on language change
+	if (event->type() == QEvent::LanguageChange)
+	{
+		ui->retranslateUi(this);
+	}
+
+	QWidget::changeEvent(event);
+}

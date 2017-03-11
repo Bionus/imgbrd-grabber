@@ -61,6 +61,9 @@
      <property name="text">
       <string notr="true">{ changelog }</string>
      </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
     </widget>
    </item>
    <item>

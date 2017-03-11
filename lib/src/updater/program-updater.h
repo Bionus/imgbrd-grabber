@@ -12,6 +12,7 @@ class ProgramUpdater : public Updater
 	public:
 		ProgramUpdater();
 		ProgramUpdater(QString baseUrl);
+		QUrl latestUrl() const;
 
 	public slots:
 		void checkForUpdates();

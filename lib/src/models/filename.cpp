@@ -460,10 +460,6 @@ QStringList Filename::path(const Image& img, Profile *profile, QString pth, int 
 		fns[i] = fns[i].trimmed();
 		fns[i].replace(QRegExp(" */ *"), "/");
 
-		// We remove empty directory names
-		while (fns[i].indexOf("//") >= 0)
-		{ fns[i].replace("//", "/"); }
-
 		// Max filename size option
 		if (shouldFixFilename)
 		{
@@ -473,7 +469,17 @@ QStringList Filename::path(const Image& img, Profile *profile, QString pth, int 
 
 		// Include directory in result
 		if (getFull)
-		{ fns[i] = QDir::toNativeSeparators(pth + "/" + fns[i]); }
+		{ fns[i] = pth + "/" + fns[i]; }
+
+		if (shouldFixFilename)
+		{
+			// Native separators
+			fns[i] = QDir::toNativeSeparators(fns[i]);
+
+			// We remove empty directory names
+			QChar sep = QDir::separator();
+			fns[i].replace(QRegExp(QRegExp::escape(sep) + "{2,}"), sep);
+		}
 	}
 
 	return fns;

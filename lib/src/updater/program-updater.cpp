@@ -41,6 +41,13 @@ void ProgramUpdater::checkForUpdatesDone()
 }
 
 
+QUrl ProgramUpdater::latestUrl() const
+{
+	QVariant json = Json::parse(m_source);
+	QMap<QString, QVariant> lastRelease = json.toMap();
+	return QUrl(lastRelease["html_url"].toString());
+}
+
 void ProgramUpdater::downloadUpdate()
 {
 	QVariant json = Json::parse(m_source);

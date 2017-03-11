@@ -14,7 +14,7 @@
    <string>Options</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../../../CrashReporter/resources.qrc">
+   <iconset resource="../../../resources/resources.qrc">
     <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout">
@@ -1548,14 +1548,14 @@
         <property name="fieldGrowthPolicy">
          <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
         </property>
-        <item row="0" column="0" colspan="2">
+        <item row="1" column="0" colspan="2">
          <widget class="QCheckBox" name="checkResultsScrollArea">
           <property name="text">
            <string>Use a scroll area for the results</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="0" colspan="2">
+        <item row="2" column="0" colspan="2">
          <widget class="QCheckBox" name="checkResizeInsteadOfCropping">
           <property name="text">
            <string>Resize previews instead of cropping them</string>
@@ -1565,14 +1565,14 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="0">
+        <item row="3" column="0">
          <widget class="QLabel" name="labelThumbnailUpscale">
           <property name="text">
            <string>Upscaling</string>
           </property>
          </widget>
         </item>
-        <item row="2" column="1">
+        <item row="3" column="1">
          <widget class="QSpinBox" name="spinThumbnailUpscale">
           <property name="suffix">
            <string>%</string>
@@ -1585,7 +1585,7 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="0" colspan="2">
+        <item row="4" column="0" colspan="2">
          <widget class="QCheckBox" name="checkAutocompletion">
           <property name="text">
            <string>Enable autocompletion</string>
@@ -1595,14 +1595,14 @@
           </property>
          </widget>
         </item>
-        <item row="4" column="0">
+        <item row="5" column="0">
          <widget class="QLabel" name="label_26">
           <property name="text">
            <string>Favorites display</string>
           </property>
          </widget>
         </item>
-        <item row="4" column="1">
+        <item row="5" column="1">
          <widget class="QComboBox" name="comboFavoritesDisplay">
           <item>
            <property name="text">
@@ -1641,14 +1641,14 @@
           </item>
          </widget>
         </item>
-        <item row="5" column="0">
+        <item row="6" column="0">
          <widget class="QLabel" name="label_39">
           <property name="text">
            <string>Hide favorites</string>
           </property>
          </widget>
         </item>
-        <item row="5" column="1">
+        <item row="6" column="1">
          <widget class="QSpinBox" name="spinHideFavorites">
           <property name="maximum">
            <number>1000</number>
@@ -1658,7 +1658,7 @@
           </property>
          </widget>
         </item>
-        <item row="6" column="0" colspan="2">
+        <item row="7" column="0" colspan="2">
          <widget class="QLabel" name="label_40">
           <property name="text">
            <string>&lt;i&gt;The favorites list will be hidden as soon as this image number has been reached.&lt;/i&gt;</string>
@@ -1668,14 +1668,14 @@
           </property>
          </widget>
         </item>
-        <item row="7" column="0">
+        <item row="8" column="0">
          <widget class="QLabel" name="label_41">
           <property name="text">
            <string>Source's type display</string>
           </property>
          </widget>
         </item>
-        <item row="7" column="1">
+        <item row="8" column="1">
          <widget class="QComboBox" name="comboSources">
           <item>
            <property name="text">
@@ -1699,14 +1699,14 @@
           </item>
          </widget>
         </item>
-        <item row="8" column="0">
+        <item row="9" column="0">
          <widget class="QLabel" name="label_42">
           <property name="text">
            <string>Displayed letters</string>
           </property>
          </widget>
         </item>
-        <item row="8" column="1">
+        <item row="9" column="1">
          <layout class="QHBoxLayout" name="horizontalLayout_9">
           <item>
            <widget class="QComboBox" name="comboSourcesLetters">
@@ -1742,7 +1742,7 @@
           </item>
          </layout>
         </item>
-        <item row="9" column="0" colspan="2">
+        <item row="10" column="0" colspan="2">
          <widget class="QLabel" name="label_43">
           <property name="text">
            <string>&lt;i&gt;Number of displayed letters near the sources' checkboxes in the &quot;+&quot; part of the main window.&lt;/i&gt;</string>
@@ -1752,7 +1752,7 @@
           </property>
          </widget>
         </item>
-        <item row="10" column="0" colspan="2">
+        <item row="11" column="0" colspan="2">
          <widget class="QCheckBox" name="checkShowTagWarning">
           <property name="text">
            <string>Show warning if an incompatible modifier is found</string>
@@ -1762,7 +1762,7 @@
           </property>
          </widget>
         </item>
-        <item row="11" column="0" colspan="2">
+        <item row="12" column="0" colspan="2">
          <widget class="QCheckBox" name="checkShowWarnings">
           <property name="text">
            <string>Show other warnings</string>
@@ -1772,14 +1772,14 @@
           </property>
          </widget>
         </item>
-        <item row="12" column="0" colspan="2">
+        <item row="13" column="0" colspan="2">
          <widget class="QCheckBox" name="checkGetUnloadedPages">
           <property name="text">
            <string>Download not loaded pages</string>
           </property>
          </widget>
         </item>
-        <item row="13" column="0" colspan="2">
+        <item row="14" column="0" colspan="2">
          <widget class="QLabel" name="label_66">
           <property name="text">
            <string>&lt;i&gt;If you activate this option, pressing the &quot;Get this page&quot; button will take into account modifications made to the number of images per page, the page number, etc. even if they weren't loaded.&lt;/i&gt;</string>
@@ -1788,6 +1788,16 @@
            <bool>true</bool>
           </property>
          </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="labelTheme">
+          <property name="text">
+           <string>Theme</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QComboBox" name="comboTheme"/>
         </item>
        </layout>
       </widget>
@@ -2858,7 +2868,10 @@
   <tabstop>checkAutocompletion</tabstop>
  </tabstops>
  <resources>
-  <include location="../../../CrashReporter/resources.qrc"/>
+  <include location="../../../resources/resources.qrc"/>
+  <include location="../../../resources/resources.qrc"/>
+  <include location="../../../resources/resources.qrc"/>
+  <include location="../../../resources/resources.qrc"/>
  </resources>
  <connections>
   <connection>

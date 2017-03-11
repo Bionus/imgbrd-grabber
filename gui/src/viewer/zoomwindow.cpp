@@ -192,8 +192,11 @@ zoomWindow::~zoomWindow()
 	m_labelTagsLeft->deleteLater();
 	m_detailsWindow->deleteLater();
 
+	// Quit threads
+	m_imageLoaderQueueThread.quit();
+	m_imageLoaderThread.wait(1000);
 	m_imageLoaderThread.quit();
-	m_imageLoaderThread.wait(100);
+	m_imageLoaderThread.wait(1000);
 
 	delete ui;
 }
@@ -486,7 +489,10 @@ void zoomWindow::display(const QPixmap &pix, int size)
 		update(!m_finished);
 
 		if (!pix.size().isEmpty() && m_image->size().isEmpty())
-		{ m_image->setSize(pix.size()); }
+		{
+			m_image->setSize(pix.size());
+			updateWindowTitle();
+		}
 
 		if (m_isFullscreen && m_fullScreen != nullptr && m_fullScreen->isVisible())
 		{ m_fullScreen->setImage(m_displayImage.scaled(QApplication::desktop()->screenGeometry().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation)); }
@@ -509,14 +515,12 @@ void zoomWindow::replyFinishedDetails()
 	}
 
 	QString path1 = m_settings->value("Save/path").toString().replace("\\", "/");
-	QStringList pth1s = m_image->path(m_settings->value("Save/filename").toString(), path1);
+	QStringList pth1s = m_image->path(m_settings->value("Save/filename").toString(), path1, 0, true, false, true, true, true);
 	QString source1;
 	bool file1notexists = false;
 	for (QString pth1 : pth1s)
 	{
-		if (path1.right(1) == "/")
-		{ path1 = path1.left(path1.length()-1); }
-		QFile file(path1+"/"+pth1);
+		QFile file(pth1);
 		if (file.exists())
 			source1 = file.fileName();
 		else
@@ -524,22 +528,22 @@ void zoomWindow::replyFinishedDetails()
 	}
 
 	QString path2 = m_settings->value("Save/path_favorites").toString().replace("\\", "/");
-	QStringList pth2s = m_image->path(m_settings->value("Save/filename_favorites").toString(), path2);
+	QStringList pth2s = m_image->path(m_settings->value("Save/filename_favorites").toString(), path2, 0, true, false, true, true, true);
 	QString source2;
 	bool file2notexists = false;
 	for (QString pth2 : pth2s)
 	{
-		if (path2.right(1) == "/")
-		{ path2 = path1.left(path2.length()-1); }
-		QFile file(path2+"/"+pth2);
+		QFile file(pth2);
 		if (file.exists())
 			source2 = file.fileName();
 		else
 			file2notexists = true;
 	}
 
+	QString md5Exists = m_profile->md5Exists(m_image->md5());
+
 	// If the file already exists, we directly display it
-	if (!file1notexists || !file2notexists)
+	if (!md5Exists.isEmpty() || !file1notexists || !file2notexists)
 	{
 		if (!file1notexists)
 		{
@@ -551,7 +555,7 @@ void zoomWindow::replyFinishedDetails()
 			ui->buttonSaveFav->setText(tr("File already exists (fav)"));
 			ui->buttonSaveNQuitFav->setText(tr("Close (fav)"));
 		}
-		m_source = !file1notexists ? source1 : source2;
+		m_source = !md5Exists.isEmpty() ? md5Exists : (!file1notexists ? source1 : source2);
 		m_imagePath = m_source;
 		log(QString("Image loaded from the file <a href=\"file:///%1\">%1</a>").arg(m_source));
 
@@ -597,6 +601,7 @@ void zoomWindow::replyFinishedZoom(QNetworkReply::NetworkError err, QString erro
 		m_url = m_image->url();
 		m_loadedImage = true;
 
+		updateWindowTitle();
 		pendingUpdate();
 		draw();
 	}
@@ -1130,7 +1135,7 @@ void zoomWindow::updateWindowTitle()
 		title = tr("Image");
 	else
 		title = QString(tr("Image") + " (%1)").arg(infos.join(", "));
-	setWindowTitle(QString("%1 - %2 (%3/%4)").arg(title, m_image->parentSite()->name(), QString::number(m_images.indexOf(m_image)), QString::number(m_images.count())));
+	setWindowTitle(QString("%1 - %2 (%3/%4)").arg(title, m_image->parentSite()->name(), QString::number(m_images.indexOf(m_image) + 1), QString::number(m_images.count())));
 }
 
 void zoomWindow::next()

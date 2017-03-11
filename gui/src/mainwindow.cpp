@@ -34,6 +34,7 @@
 #include "helpers.h"
 #include "downloader/download-query-loader.h"
 #include "tabs/tabs-loader.h"
+#include "theme-loader.h"
 
 
 
@@ -48,9 +49,6 @@ void mainWindow::init(QStringList args, QMap<QString,QString> params)
 	m_settings->setValue("crashed", true);
 	m_settings->sync();
 
-	loadLanguage(m_settings->value("language", "English").toString(), true);
-	ui->setupUi(this);
-
 	m_showLog = m_settings->value("Log/show", true).toBool();
 	if (!m_showLog)
 	{ ui->tabWidget->removeTab(ui->tabWidget->indexOf(ui->tabLog)); }
@@ -59,6 +57,36 @@ void mainWindow::init(QStringList args, QMap<QString,QString> params)
 	log(QString("Software version: %1.").arg(VERSION));
 	log(QString("Path: %1").arg(qApp->applicationDirPath()));
 	log(QString("Loading preferences from <a href=\"file:///%1\">%1</a>").arg(m_settings->fileName()));
+
+	ThemeLoader themeLoader(savePath("themes/", true));
+	themeLoader.setTheme(m_settings->value("theme", "Default").toString());
+	ui->setupUi(this);
+
+	// On first launch after setup, we restore the setup's language
+	QString setupSettingsFile = savePath("innosetup.ini");
+	if (QFile::exists(setupSettingsFile))
+	{
+		QSettings setupSettings(setupSettingsFile, QSettings::IniFormat);
+		QString setupLanguage = setupSettings.value("language", "en").toString();
+
+		QSettings associations(savePath("languages/languages.ini"), QSettings::IniFormat);
+		associations.beginGroup("innosetup");
+		QStringList keys = associations.childKeys();
+
+		// Only if the setup language is available in Grabber
+		if (keys.contains(setupLanguage))
+		{
+			m_settings->setValue("language", associations.value(setupLanguage).toString());
+		}
+
+		// Remove the setup settings file to not do this every time
+		QFile::remove(setupSettingsFile);
+	}
+
+	// Load translations
+	qApp->installTranslator(&m_translator);
+	qApp->installTranslator(&m_qtTranslator);
+	loadLanguage(m_settings->value("language", "English").toString());
 
 	tabifyDockWidget(ui->dock_internet, ui->dock_wiki);
 	tabifyDockWidget(ui->dock_wiki, ui->dock_kfl);
@@ -123,8 +151,6 @@ void mainWindow::init(QStringList args, QMap<QString,QString> params)
 	ui->actionQuit->setShortcut(QKeySequence::Quit);
 	ui->actionFolder->setShortcut(QKeySequence::Open);
 
-	loadLanguage(m_settings->value("language", "English").toString());
-
 	connect(ui->actionQuit, SIGNAL(triggered()), qApp, SLOT(quit()));
 	connect(ui->actionAboutQt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 
@@ -165,6 +191,7 @@ void mainWindow::init(QStringList args, QMap<QString,QString> params)
 	m_favoritesTab = new favoritesTab(&m_sites, m_profile, this);
 	connect(m_favoritesTab, &searchTab::batchAddGroup, this, &mainWindow::batchAddGroup);
 	connect(m_favoritesTab, SIGNAL(batchAddUnique(DownloadQueryImage)), this, SLOT(batchAddUnique(DownloadQueryImage)));
+	connect(m_favoritesTab, &searchTab::titleChanged, this, &mainWindow::updateTabTitle);
 	connect(m_favoritesTab, &searchTab::changed, this, &mainWindow::updateTabs);
 	ui->tabWidget->insertTab(m_tabs.size(), m_favoritesTab, tr("Favorites"));
 	ui->tabWidget->setCurrentIndex(0);
@@ -225,7 +252,7 @@ void mainWindow::init(QStringList args, QMap<QString,QString> params)
 	// Check for updates
 	int cfuInterval = m_settings->value("check_for_updates", 24*60*60).toInt();
 	QDateTime lastCfu = m_settings->value("last_check_for_updates", QDateTime()).toDateTime();
-	if (cfuInterval > 0 && (!lastCfu.isValid() || lastCfu.addSecs(cfuInterval) <= QDateTime::currentDateTime()))
+	if (cfuInterval >= 0 && (!lastCfu.isValid() || lastCfu.addSecs(cfuInterval) <= QDateTime::currentDateTime()))
 	{
 		m_settings->setValue("last_check_for_updates", QDateTime::currentDateTime());
 
@@ -490,8 +517,11 @@ bool mainWindow::loadTabs(QString filename)
 	m_tagTabs.append(tagTabs);
 	m_poolTabs.append(poolTabs);
 
-	ui->tabWidget->setCurrentIndex(currentTab);
-	m_forcedTab = true;
+	if (currentTab >= 0)
+	{
+		ui->tabWidget->setCurrentIndex(currentTab);
+		m_forcedTab = true;
+	}
 
 	return true;
 }
@@ -938,12 +968,6 @@ void mainWindow::logClear()
 void mainWindow::logOpen()
 { QDesktopServices::openUrl("file:///" + m_profile->getPath() + "/main.log"); }
 
-void mainWindow::switchTranslator(QTranslator& translator, const QString& filename)
-{
-	qApp->removeTranslator(&translator);
-	if (translator.load(filename))
-	{ qApp->installTranslator(&translator); }
-}
 void mainWindow::loadLanguage(const QString& rLanguage, bool shutup)
 {
 	if (m_currLang != rLanguage)
@@ -951,7 +975,10 @@ void mainWindow::loadLanguage(const QString& rLanguage, bool shutup)
 		m_currLang = rLanguage;
 		QLocale locale = QLocale(m_currLang);
 		QLocale::setDefault(locale);
-		switchTranslator(m_translator, savePath("languages/"+m_currLang+".qm", true));
+
+		m_translator.load(savePath("languages/"+m_currLang+".qm", true));
+		m_qtTranslator.load(savePath("languages/qt/"+m_currLang+".qm", true));
+
 		if (!shutup)
 		{
 			log(QString("Translating texts in %1...").arg(m_currLang));
@@ -1122,6 +1149,7 @@ void mainWindow::getAll(bool all)
 	m_getAllFailed.clear();
 	m_getAllDownloading.clear();
 	m_getAllSkippedImages.clear();
+	m_batchPending.clear();
 
 	QList<QTableWidgetItem *> selected = ui->tableBatchUniques->selectedItems();
 	int count = selected.size();
@@ -1271,6 +1299,10 @@ void mainWindow::getAllFinishedLogins()
 		int imagesPerPack = pagesPerPack * b.perpage;
 		int packs = qCeil((float)b.total / imagesPerPack);
 
+		int lastPageImages = b.total % imagesPerPack;
+		if (lastPageImages == 0)
+			lastPageImages = imagesPerPack;
+
 		for (int i = 0; i < packs; ++i)
 		{
 			Downloader *downloader = new Downloader(m_profile,
@@ -1278,7 +1310,7 @@ void mainWindow::getAllFinishedLogins()
 													QStringList(),
 													QList<Site*>() << b.site,
 													b.page + i * pagesPerPack,
-													(i == packs - 1 ? b.total % imagesPerPack : imagesPerPack),
+													(i == packs - 1 ? lastPageImages : imagesPerPack),
 													b.perpage,
 													b.path,
 													b.filename,
@@ -1728,7 +1760,7 @@ void mainWindow::getAllGetImage(QSharedPointer<Image> img)
 		{
 			if (whatToDo == "copy")
 			{
-				m_getAllIgnored++;
+				m_getAllDownloaded++;
 				log(QString("Copy from <a href=\"file:///%1\">%1</a> vers <a href=\"file:///%2\">%2</a>").arg(md5Duplicate).arg(fp));
 				QFile::copy(md5Duplicate, fp);
 
@@ -1747,7 +1779,7 @@ void mainWindow::getAllGetImage(QSharedPointer<Image> img)
 			}
 			else
 			{
-				m_getAllIgnored++;
+				m_getAllExists++;
 				log(QString("MD5 \"%1\" of the image <a href=\"%2\">%2</a> already found in file <a href=\"file:///%3\">%3</a>").arg(img->md5(), img->url(), md5Duplicate));
 			}
 		}
@@ -1996,6 +2028,7 @@ void mainWindow::getAllFinished()
 			int pos = i - rem;
 			m_progressBars[pos]->deleteLater();
 			m_progressBars.removeAt(pos);
+			m_groupBatchs.removeAt(pos);
 			ui->tableBatchGroups->removeRow(pos);
 			rem++;
 		}

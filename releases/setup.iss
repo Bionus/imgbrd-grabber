@@ -1,5 +1,5 @@
 #define MyAppName "Grabber"
-#define MyAppVersion "5.2.2"
+#define MyAppVersion "5.2.3"
 #define MyAppPublisher "Bionus"
 #define MyAppURL "https://github.com/Bionus/imgbrd-grabber"
 #define MyAppExeName "Grabber.exe"
@@ -89,6 +89,7 @@ Source: "..\release\crashreporter\ChineseSimplified.qm"; DestDir: "{app}\crashre
 Source: "..\release\crashreporter\English.qm";  DestDir: "{app}\crashreporter"; Flags: ignoreversion         
 Source: "..\release\crashreporter\French.qm";   DestDir: "{app}\crashreporter"; Flags: ignoreversion  
 Source: "..\release\crashreporter\Russian.qm";  DestDir: "{app}\crashreporter"; Flags: ignoreversion  
+Source: "..\release\crashreporter\Spanish.qm";  DestDir: "{app}\crashreporter"; Flags: ignoreversion  
 Source: "..\release\imageformats\qdds.dll";     DestDir: "{app}\imageformats"; Flags: ignoreversion
 Source: "..\release\imageformats\qgif.dll";     DestDir: "{app}\imageformats"; Flags: ignoreversion      
 Source: "..\release\imageformats\qicns.dll";    DestDir: "{app}\imageformats"; Flags: ignoreversion
@@ -103,7 +104,11 @@ Source: "..\release\languages\ChineseSimplified.qm"; DestDir: "{app}\languages";
 Source: "..\release\languages\English.qm";      DestDir: "{app}\languages"; Flags: ignoreversion         
 Source: "..\release\languages\French.qm";       DestDir: "{app}\languages"; Flags: ignoreversion    
 Source: "..\release\languages\Russian.qm";      DestDir: "{app}\languages"; Flags: ignoreversion
+Source: "..\release\languages\Spanish.qm";      DestDir: "{app}\languages"; Flags: ignoreversion
 Source: "..\release\languages\languages.ini";   DestDir: "{app}\languages"; Flags: ignoreversion
+Source: "..\release\languages\qt\English.qm";      DestDir: "{app}\languages\qt"; Flags: ignoreversion         
+Source: "..\release\languages\qt\French.qm";       DestDir: "{app}\languages\qt"; Flags: ignoreversion    
+Source: "..\release\languages\qt\Russian.qm";      DestDir: "{app}\languages\qt"; Flags: ignoreversion
 Source: "..\release\platforms\qminimal.dll";    DestDir: "{app}\platforms"; Flags: ignoreversion
 Source: "..\release\platforms\qoffscreen.dll";  DestDir: "{app}\platforms"; Flags: ignoreversion
 Source: "..\release\platforms\qwindows.dll";    DestDir: "{app}\platforms"; Flags: ignoreversion                  
@@ -144,6 +149,7 @@ Source: "..\release\sites\Zerochan\icon.png";  DestDir: "{localappdata}\Bionus\G
 Source: "..\release\sites\Zerochan\model.xml"; DestDir: "{localappdata}\Bionus\Grabber\sites\Zerochan"; Flags: ignoreversion     
 Source: "..\release\sites\Zerochan\sites.txt"; DestDir: "{localappdata}\Bionus\Grabber\sites\Zerochan"; Flags: onlyifdoesntexist
 Source: "..\release\sites\Zerochan\www.zerochan.net\settings.ini"; DestDir: "{localappdata}\Bionus\Grabber\sites\Zerochan\www.zerochan.net"; Flags: onlyifdoesntexist
+Source: "..\release\themes\Default\style.css"; DestDir: "{localappdata}\Bionus\Grabber\themes\Default"; Flags: onlyifdoesntexist
 
 [InstallDelete]         
 Type: filesandordirs; Name: "{app}\languages\updater"
@@ -184,4 +190,13 @@ function InitializeSetup(): Boolean;
 begin
   vcredist2015();
   Result := true;
+end;
+
+procedure CurStepChanged(CurStep: TSetupStep);
+begin
+  if CurStep = ssPostInstall then
+  begin
+    Log('Post install');
+    SaveStringToFile(ExpandConstant('{localappdata}') + '\Bionus\Grabber\innosetup.ini', '[general]' + #13#10 + 'language=' + ExpandConstant('{language}') + #13#10, False);
+  end;
 end;

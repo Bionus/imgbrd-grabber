@@ -67,7 +67,6 @@ class mainWindow : public QMainWindow
 		void md5FixOpen();
 		void renameExisting();
 		// Language
-		void switchTranslator(QTranslator&, const QString&);
 		void loadLanguage(const QString&, bool shutup = false);
 		void changeEvent(QEvent*);
 		// Favorites
@@ -194,7 +193,7 @@ class mainWindow : public QMainWindow
 		QSettings			*m_settings;
 		batchWindow			*m_progressdialog;
 		QString				m_currLang, m_link;
-		QTranslator			m_translator;
+		QTranslator			m_translator, m_qtTranslator;
 		QList<DownloadQueryGroup>		m_groupBatchs;
 		QList<QSharedPointer<Image>>	m_getAllRemaining, m_getAllDownloading, m_getAllFailed, m_images, m_getAllSkippedImages;
 		QWidget				*m_currentTab;
