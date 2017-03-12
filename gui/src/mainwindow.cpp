@@ -176,6 +176,10 @@ void mainWindow::init(QStringList args, QMap<QString,QString> params)
 		m_restore = response == QMessageBox::Yes;
 	}
 
+	// Restore download lists
+	if (m_restore)
+	{ loadLinkList(m_profile->getPath() + "/restore.igl"); }
+
 	// Loading last window state, size and position from the settings file
 	restoreGeometry(m_settings->value("geometry").toByteArray());
 	restoreState(m_settings->value("state").toByteArray());
@@ -308,10 +312,7 @@ void mainWindow::initialLoginsFinished()
 void mainWindow::initialLoginsDone()
 {
 	if (m_restore)
-	{
-		loadLinkList(m_profile->getPath() + "/restore.igl");
-		loadTabs(m_profile->getPath() + "/tabs.txt");
-	}
+	{ loadTabs(m_profile->getPath() + "/tabs.txt"); }
 	if (m_tabs.isEmpty())
 	{ addTab(); }
 
