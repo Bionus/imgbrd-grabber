@@ -1413,7 +1413,7 @@ void mainWindow::getAllImages()
 	while (m_getAllRemaining.count() > m_getAllLimit && !m_getAllRemaining.isEmpty())
 		m_getAllRemaining.takeLast()->deleteLater();
 
-	log(tr("All images' urls have been received (%n image(s)).", "", m_getAllRemaining.count()));
+	log(QString("All images' urls have been received (%1).").arg(m_getAllRemaining.count()));
 
 	// We add the images to the download dialog
 	int count = 0;
