@@ -22,6 +22,7 @@ QList<QMap<QString, QPair<QString, QString>>> Filename::getReplaces(QString file
 
 	QString tagSeparator = fixSeparator(settings->value("Save/separator", " ").toString());
 	QMap<QString, QStringList> details = makeDetails(img, profile, settings);
+	QStringList remove = settings->value("ignoredtags").toString().split(' ', QString::SkipEmptyParts);
 
 	// Pool
 	QRegularExpression poolRegexp("pool:(\\d+)");
@@ -35,7 +36,7 @@ QList<QMap<QString, QPair<QString, QString>>> Filename::getReplaces(QString file
 	replaces.insert("md5", QStrP(img.md5(), ""));
 	replaces.insert("date", QStrP(img.createdAt().toString(QObject::tr("MM-dd-yyyy HH.mm")), ""));
 	replaces.insert("id", QStrP(QString::number(img.id()), "0"));
-	QStringList search = img.search();
+	QStringList search = removeWildards(img.search(), remove);
 	for (int i = 0; i < search.size(); ++i)
 	{ replaces.insert("search_"+QString::number(i+1), QStrP(search[i], "")); }
 	for (int i = search.size(); i < 10; ++i)

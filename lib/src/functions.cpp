@@ -81,6 +81,33 @@ QMap<QString,QPair<QString,QString>> getFilenames(QSettings *settings)
 	return tokens;
 }
 
+QStringList removeWildards(QStringList elements, QStringList remove)
+{
+	QStringList tags;
+
+	QRegExp reg;
+	reg.setCaseSensitivity(Qt::CaseInsensitive);
+	reg.setPatternSyntax(QRegExp::Wildcard);
+	for (QString tag : elements)
+	{
+		bool removed = false;
+		for (QString rem : remove)
+		{
+			reg.setPattern(rem);
+			if (reg.exactMatch(tag))
+			{
+				removed = true;
+				break;
+			}
+		}
+
+		if (!removed)
+			tags.append(tag);
+	}
+
+	return tags;
+}
+
 /**
  * Convert a danbooru-like date (Sat May 14 17:38:04 -0400 2011) to a valid QDateTime.
  * @param	str				The date string.

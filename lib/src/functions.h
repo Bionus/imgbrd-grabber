@@ -56,6 +56,8 @@ QMap<QString,QString>		domToMap(QDomElement);
 QMap<QString,QStringList>	getCustoms(QSettings *settings);
 QMap<QString,QPair<QString,QString>>	getFilenames(QSettings *settings);
 
+QStringList removeWildards(QStringList elements, QStringList remove);
+
 
 
 template <typename T>
