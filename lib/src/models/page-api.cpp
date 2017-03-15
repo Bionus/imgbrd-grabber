@@ -117,6 +117,21 @@ void PageApi::updateUrls()
 	}
 	p = p - 1 + m_api->value("FirstPage").toInt();
 
+	// GET login information
+	QString pseudo = m_site->username();
+	QString password = m_site->password();
+
+	int pid = m_api->contains("Urls/Limit") ? m_api->value("Urls/Limit").toInt() * (m_page - 1) : m_imagesPerPage * (m_page - 1);
+
+	// URL searches
+	if (m_search.count() == 1 && !t.isEmpty() && QUrl(t).isValid())
+	{
+		m_originalUrl = QString(t);
+		m_url = parseUrl(t, pid, p, t, pseudo, password).toString();
+		m_urlRegex = parseUrl(t, pid, p, t, pseudo, password).toString();
+		return;
+	}
+
 	// Check if we are looking for a pool
 	QRegExp poolRx("pool:(\\d+)");
 	QString url;
@@ -154,12 +169,6 @@ void PageApi::updateUrls()
 		else
 		{ url = m_api->value("Urls/Tags"); }
 	}
-
-	// GET login information
-	QString pseudo = m_site->username();
-	QString password = m_site->password();
-
-	int pid = m_api->contains("Urls/Limit") ? m_api->value("Urls/Limit").toInt() * (m_page - 1) : m_imagesPerPage * (m_page - 1);
 
 	// Global replace tokens
 	m_originalUrl = QString(url);
