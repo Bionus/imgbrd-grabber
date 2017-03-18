@@ -124,7 +124,8 @@ void PageApi::updateUrls()
 	int pid = m_api->contains("Urls/Limit") ? m_api->value("Urls/Limit").toInt() * (m_page - 1) : m_imagesPerPage * (m_page - 1);
 
 	// URL searches
-	if (m_search.count() == 1 && !t.isEmpty() && QUrl(t).isValid())
+	QRegExp regexUrl("^https?://[^\\s/$.?#].[^\\s]*$");
+	if (m_search.count() == 1 && !t.isEmpty() && regexUrl.exactMatch(t))
 	{
 		m_originalUrl = QString(t);
 		m_url = parseUrl(t, pid, p, t, pseudo, password).toString();
