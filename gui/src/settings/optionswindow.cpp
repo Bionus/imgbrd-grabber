@@ -221,6 +221,7 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	ui->comboImagePositionAnimationH->setCurrentIndex(positionsH.indexOf(settings->value("imagePositionAnimationH", "left").toString()));
 	ui->comboImagePositionVideoV->setCurrentIndex(positionsV.indexOf(settings->value("imagePositionVideoV", "center").toString()));
 	ui->comboImagePositionVideoH->setCurrentIndex(positionsH.indexOf(settings->value("imagePositionVideoH", "left").toString()));
+	ui->lineImageBackgroundColor->setText(settings->value("imageBackgroundColor", "").toString());
 
 	settings->beginGroup("Coloring");
 		settings->beginGroup("Colors");
@@ -464,6 +465,10 @@ void optionsWindow::on_buttonColoringBlacklistedsFont_clicked()
 void optionsWindow::on_buttonColoringIgnoredsFont_clicked()
 { setFont(ui->lineColoringIgnoreds); }
 
+void optionsWindow::on_buttonImageBackgroundColor_textChanged()
+{ setColor(ui->lineImageBackgroundColor); }
+void optionsWindow::on_buttonImageBackgroundColor_clicked()
+{ setColor(ui->lineImageBackgroundColor, true); }
 
 void treeWidgetRec(int depth, bool& found, int& index, QTreeWidgetItem *current, QTreeWidgetItem *sel)
 {
@@ -720,6 +725,7 @@ void optionsWindow::save()
 	settings->setValue("imagePositionAnimationH", positionsH.at(ui->comboImagePositionAnimationH->currentIndex()));
 	settings->setValue("imagePositionVideoV", positionsV.at(ui->comboImagePositionVideoV->currentIndex()));
 	settings->setValue("imagePositionVideoH", positionsH.at(ui->comboImagePositionVideoH->currentIndex()));
+	settings->setValue("imageBackgroundColor", ui->lineImageBackgroundColor->text());
 
 	settings->beginGroup("Coloring");
 		settings->beginGroup("Colors");

@@ -107,6 +107,15 @@ zoomWindow::zoomWindow(QList<QSharedPointer<Image> > images, QSharedPointer<Imag
 	m_imageLoaderQueueThread.start();
 	m_imageLoaderThread.start();
 
+	// Background color
+	QString bg = m_settings->value("imageBackgroundColor", "").toString();
+	if (!bg.isEmpty())
+	{
+		setStyleSheet("#zoomWindow { background-color:" + bg + "; }");
+		m_labelTagsLeft->setStyleSheet("background-color:" + bg);
+		m_labelTagsTop->setStyleSheet("background-color:" + bg);
+	}
+
 	load(image);
 }
 void zoomWindow::go()
