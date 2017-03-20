@@ -1304,6 +1304,7 @@ void mainWindow::getAllFinishedLogins()
 		if (lastPageImages == 0)
 			lastPageImages = imagesPerPack;
 
+		Downloader *previous = nullptr;
 		for (int i = 0; i < packs; ++i)
 		{
 			Downloader *downloader = new Downloader(m_profile,
@@ -1321,7 +1322,8 @@ void mainWindow::getAllFinishedLogins()
 													m_settings->value("blacklistedtags").toString().split(' '),
 													false,
 													0,
-													"");
+													"",
+													previous);
 			downloader->setData(j);
 			downloader->setQuit(false);
 
@@ -1329,6 +1331,7 @@ void mainWindow::getAllFinishedLogins()
 			connect(downloader, &Downloader::finishedImagesPage, this, &mainWindow::getAllFinishedPage);
 
 			m_waitingDownloaders.enqueue(downloader);
+			previous = downloader;
 		}
 	}
 
