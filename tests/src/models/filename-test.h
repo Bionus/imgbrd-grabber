@@ -60,6 +60,7 @@ class FilenameTest : public TestSuite
 		void testCustoms();
 		void testReplaceBlanks();
 		void testCommand();
+		void testFilenameWithMultipleUnderscores();
 
 		void testNeedExactTagsBasic();
 		void testNeedExactTagsSite();

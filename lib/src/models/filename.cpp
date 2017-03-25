@@ -538,7 +538,7 @@ QString Filename::optionedValue(QString res, QString key, QString ops, const Ima
 	}
 
 	// Forbidden characters and spaces replacement settings
-	if (key != "allo" && !key.startsWith("url_"))
+	if (key != "allo" && !key.startsWith("url_") && key != "filename")
 	{
 		if (!options.contains("unsafe"))
 		{ res = res.replace("\\", "_").replace("%", "_").replace("/", "_").replace(":", "_").replace("|", "_").replace("*", "_").replace("?", "_").replace("\"", "_").replace("<", "_").replace(">", "_").replace("__", "_").replace("__", "_").replace("__", "_").trimmed(); }
