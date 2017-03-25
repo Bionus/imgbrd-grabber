@@ -57,5 +57,7 @@
         <file>images/status/ok.png</file>
         <file>images/status/pending.png</file>
         <file>images/status/unknown.png</file>
+        <file>images/icons/eye-minus.png</file>
+        <file>images/icons/eye-plus.png</file>
     </qresource>
 </RCC>

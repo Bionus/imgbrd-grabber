@@ -358,6 +358,13 @@ void zoomWindow::contextMenu(QPoint)
 		else
 		{ menu->addAction(QIcon(":/images/icons/add.png"), tr("Keep for later"), this, SLOT(viewitlater())); }
 
+		// Blacklist
+		QStringList blacklistedTags = m_settings->value("blacklistedtags").toString().split(' ');
+		if (blacklistedTags.contains(link))
+		{ menu->addAction(QIcon(":/images/icons/eye-plus.png"), tr("Don't blacklist"), this, SLOT(unblacklist())); }
+		else
+		{ menu->addAction(QIcon(":/images/icons/eye-minus.png"), tr("Blacklist"), this, SLOT(blacklist())); }
+
 		// Ignore
 		if (m_ignore.contains(link, Qt::CaseInsensitive))
 		{ menu->addAction(QIcon(":/images/icons/eye-plus.png"), tr("Don't ignore"), this, SLOT(unignore())); }
@@ -452,6 +459,21 @@ void zoomWindow::ignore()
 void zoomWindow::unignore()
 {
 	m_profile->removeIgnored(link);
+}
+
+void zoomWindow::blacklist()
+{
+	QString blacklistedTags = m_settings->value("blacklistedtags").toString();
+	blacklistedTags += " " + link;
+	m_settings->setValue("blacklistedtags", blacklistedTags);
+	colore();
+}
+void zoomWindow::unblacklist()
+{
+	QStringList blacklistedTags = m_settings->value("blacklistedtags").toString().split(' ');
+	blacklistedTags.removeAll(link);
+	m_settings->setValue("blacklistedtags", blacklistedTags.join(' '));
+	colore();
 }
 
 void zoomWindow::load()
