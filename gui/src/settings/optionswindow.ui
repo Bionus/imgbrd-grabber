@@ -2041,6 +2041,27 @@
           </item>
          </layout>
         </item>
+        <item row="8" column="0">
+         <widget class="QLabel" name="label_88">
+          <property name="text">
+           <string>Background color</string>
+          </property>
+         </widget>
+        </item>
+        <item row="8" column="1">
+         <layout class="QHBoxLayout" name="layoutImageBackgroundColor">
+          <item>
+           <widget class="QLineEdit" name="lineImageBackgroundColor"/>
+          </item>
+          <item>
+           <widget class="QPushButton" name="buttonImageBackgroundColor">
+            <property name="text">
+             <string>Color</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
        </layout>
       </widget>
       <widget class="QWidget" name="pageInterfaceColoring">
@@ -2945,12 +2966,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>360</x>
-     <y>28</y>
+     <x>647</x>
+     <y>138</y>
     </hint>
     <hint type="destinationlabel">
-     <x>278</x>
-     <y>28</y>
+     <x>358</x>
+     <y>135</y>
     </hint>
    </hints>
   </connection>
@@ -2961,12 +2982,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>319</x>
-     <y>32</y>
+     <x>528</x>
+     <y>165</y>
     </hint>
     <hint type="destinationlabel">
-     <x>278</x>
-     <y>31</y>
+     <x>408</x>
+     <y>161</y>
     </hint>
    </hints>
   </connection>
@@ -2977,12 +2998,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>359</x>
-     <y>32</y>
+     <x>646</x>
+     <y>165</y>
     </hint>
     <hint type="destinationlabel">
-     <x>278</x>
-     <y>31</y>
+     <x>408</x>
+     <y>161</y>
     </hint>
    </hints>
   </connection>
@@ -2993,12 +3014,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>360</x>
-     <y>34</y>
+     <x>647</x>
+     <y>192</y>
     </hint>
     <hint type="destinationlabel">
-     <x>278</x>
-     <y>34</y>
+     <x>391</x>
+     <y>189</y>
     </hint>
    </hints>
   </connection>
@@ -3009,12 +3030,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>360</x>
-     <y>32</y>
+     <x>647</x>
+     <y>192</y>
     </hint>
     <hint type="destinationlabel">
-     <x>278</x>
-     <y>32</y>
+     <x>391</x>
+     <y>189</y>
     </hint>
    </hints>
   </connection>
@@ -3025,12 +3046,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>319</x>
-     <y>30</y>
+     <x>528</x>
+     <y>165</y>
     </hint>
     <hint type="destinationlabel">
-     <x>278</x>
-     <y>29</y>
+     <x>408</x>
+     <y>161</y>
     </hint>
    </hints>
   </connection>
@@ -3041,12 +3062,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>359</x>
-     <y>30</y>
+     <x>646</x>
+     <y>165</y>
     </hint>
     <hint type="destinationlabel">
-     <x>278</x>
-     <y>29</y>
+     <x>408</x>
+     <y>161</y>
     </hint>
    </hints>
   </connection>
@@ -3057,12 +3078,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>360</x>
-     <y>26</y>
+     <x>647</x>
+     <y>138</y>
     </hint>
     <hint type="destinationlabel">
-     <x>278</x>
-     <y>26</y>
+     <x>358</x>
+     <y>135</y>
     </hint>
    </hints>
   </connection>
@@ -3073,12 +3094,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>360</x>
-     <y>28</y>
+     <x>647</x>
+     <y>138</y>
     </hint>
     <hint type="destinationlabel">
-     <x>278</x>
-     <y>28</y>
+     <x>358</x>
+     <y>135</y>
     </hint>
    </hints>
   </connection>
@@ -3089,12 +3110,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>319</x>
-     <y>32</y>
+     <x>528</x>
+     <y>165</y>
     </hint>
     <hint type="destinationlabel">
-     <x>278</x>
-     <y>31</y>
+     <x>408</x>
+     <y>161</y>
     </hint>
    </hints>
   </connection>
@@ -3105,12 +3126,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>359</x>
-     <y>32</y>
+     <x>646</x>
+     <y>165</y>
     </hint>
     <hint type="destinationlabel">
-     <x>278</x>
-     <y>31</y>
+     <x>408</x>
+     <y>161</y>
     </hint>
    </hints>
   </connection>
@@ -3121,12 +3142,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>360</x>
-     <y>34</y>
+     <x>647</x>
+     <y>192</y>
     </hint>
     <hint type="destinationlabel">
-     <x>278</x>
-     <y>34</y>
+     <x>391</x>
+     <y>189</y>
     </hint>
    </hints>
   </connection>
@@ -3137,12 +3158,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>360</x>
-     <y>16</y>
+     <x>639</x>
+     <y>34</y>
     </hint>
     <hint type="destinationlabel">
-     <x>360</x>
-     <y>29</y>
+     <x>639</x>
+     <y>121</y>
     </hint>
    </hints>
   </connection>
@@ -3153,12 +3174,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>360</x>
-     <y>17</y>
+     <x>639</x>
+     <y>34</y>
     </hint>
     <hint type="destinationlabel">
-     <x>319</x>
-     <y>28</y>
+     <x>565</x>
+     <y>81</y>
     </hint>
    </hints>
   </connection>
@@ -3169,12 +3190,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>360</x>
-     <y>17</y>
+     <x>639</x>
+     <y>34</y>
     </hint>
     <hint type="destinationlabel">
-     <x>359</x>
-     <y>28</y>
+     <x>646</x>
+     <y>83</y>
     </hint>
    </hints>
   </connection>
@@ -3185,12 +3206,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>360</x>
-     <y>17</y>
+     <x>639</x>
+     <y>34</y>
     </hint>
     <hint type="destinationlabel">
-     <x>319</x>
-     <y>33</y>
+     <x>565</x>
+     <y>112</y>
     </hint>
    </hints>
   </connection>
@@ -3201,12 +3222,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>360</x>
-     <y>17</y>
+     <x>639</x>
+     <y>34</y>
     </hint>
     <hint type="destinationlabel">
-     <x>359</x>
-     <y>33</y>
+     <x>646</x>
+     <y>114</y>
     </hint>
    </hints>
   </connection>

@@ -15,8 +15,6 @@
         <file>images/icons/save.png</file>
         <file>images/icons/window.png</file>
         <file>images/icons/book.png</file>
-        <file>images/icons/hidden.png</file>
-        <file>images/icons/showed.png</file>
         <file>images/icons/update.png</file>
         <file>images/icons/warning.png</file>
         <file>images/sortings/id.png</file>
@@ -54,5 +52,12 @@
         <file>images/reverse-search/google.png</file>
         <file>images/reverse-search/yandex.png</file>
         <file>images/play-overlay.png</file>
+        <file>images/status/downloading.png</file>
+        <file>images/status/error.png</file>
+        <file>images/status/ok.png</file>
+        <file>images/status/pending.png</file>
+        <file>images/status/unknown.png</file>
+        <file>images/icons/eye-minus.png</file>
+        <file>images/icons/eye-plus.png</file>
     </qresource>
 </RCC>

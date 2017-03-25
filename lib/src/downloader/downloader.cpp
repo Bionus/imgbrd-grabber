@@ -27,8 +27,8 @@ void Downloader::clear()
 	m_opagesT.clear();
 }
 
-Downloader::Downloader(Profile *profile, QStringList tags, QStringList postfiltering, QList<Site*> sources, int page, int max, int perpage, QString location, QString filename, QString user, QString password, bool blacklist, QStringList blacklistedtags, bool noduplicates, int tagsmin, QString tagsformat)
-	: m_profile(profile), m_lastPage(nullptr), m_tags(tags), m_postfiltering(postfiltering), m_sites(sources), m_page(page), m_max(max), m_perpage(perpage), m_waiting(0), m_ignored(0), m_duplicates(0), m_tagsmin(tagsmin), m_location(location), m_filename(filename), m_user(user), m_password(password), m_blacklist(blacklist), m_noduplicates(noduplicates), m_tagsformat(tagsformat), m_blacklistedTags(blacklistedtags), m_quit(false)
+Downloader::Downloader(Profile *profile, QStringList tags, QStringList postfiltering, QList<Site*> sources, int page, int max, int perpage, QString location, QString filename, QString user, QString password, bool blacklist, QStringList blacklistedtags, bool noduplicates, int tagsmin, QString tagsformat, Downloader *previous)
+	: m_profile(profile), m_lastPage(nullptr), m_tags(tags), m_postfiltering(postfiltering), m_sites(sources), m_page(page), m_max(max), m_perpage(perpage), m_waiting(0), m_ignored(0), m_duplicates(0), m_tagsmin(tagsmin), m_location(location), m_filename(filename), m_user(user), m_password(password), m_blacklist(blacklist), m_noduplicates(noduplicates), m_tagsformat(tagsformat), m_blacklistedTags(blacklistedtags), m_quit(false), m_previous(nullptr)
 { }
 
 void Downloader::setQuit(bool quit)
@@ -282,6 +282,9 @@ void Downloader::getImages()
 		}
 	}
 
+	if (m_previous != nullptr)
+		m_lastPage = m_previous->lastPage();
+
 	loadNext();
 }
 void Downloader::finishedLoadingImages(Page *page)
@@ -532,6 +535,8 @@ int Downloader::pagesCount() const
 		pages = 1;
 	return pages * m_sites.size();
 }
+Page *Downloader::lastPage() const
+{ return m_lastPage; }
 
 QList<Page*> Downloader::getPages() const
 { return m_pages; }

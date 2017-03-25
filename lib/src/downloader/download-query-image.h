@@ -35,6 +35,9 @@ class DownloadQueryImage
 		void initFromData(int id, QString md5, QString rating, QString tags, QString fileUrl, QString date);
 };
 
+bool operator==(const DownloadQueryImage& lhs, const DownloadQueryImage& rhs);
+bool operator!=(const DownloadQueryImage& lhs, const DownloadQueryImage& rhs);
+
 Q_DECLARE_METATYPE(DownloadQueryImage)
 
 #endif // DOWNLOAD_QUERY_IMAGE_H

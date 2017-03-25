@@ -109,3 +109,17 @@ bool DownloadQueryImage::read(const QJsonObject &json, QMap<QString, Site*> &sit
 
 	return true;
 }
+
+
+bool operator==(const DownloadQueryImage& lhs, const DownloadQueryImage& rhs)
+{
+	return lhs.values == rhs.values
+			&& lhs.site == rhs.site
+			&& lhs.filename == rhs.filename
+			&& lhs.path == rhs.path;
+}
+
+bool operator!=(const DownloadQueryImage& lhs, const DownloadQueryImage& rhs)
+{
+	return !(lhs == rhs);
+}

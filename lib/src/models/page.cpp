@@ -26,7 +26,6 @@ Page::Page(Profile *profile, Site *site, QList<Site*> sites, QStringList tags, i
 		.replace(" -rating:q ", " -rating:questionable ", Qt::CaseInsensitive)
 		.replace(" -rating:e ", " -rating:explicit ", Qt::CaseInsensitive);
 	tags = text.split(" ", QString::SkipEmptyParts);
-	tags.removeDuplicates();
 
 	// Get the list of all enabled modifiers
 	QStringList modifiers = QStringList();

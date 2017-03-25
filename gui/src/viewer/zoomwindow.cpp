@@ -107,6 +107,15 @@ zoomWindow::zoomWindow(QList<QSharedPointer<Image> > images, QSharedPointer<Imag
 	m_imageLoaderQueueThread.start();
 	m_imageLoaderThread.start();
 
+	// Background color
+	QString bg = m_settings->value("imageBackgroundColor", "").toString();
+	if (!bg.isEmpty())
+	{
+		setStyleSheet("#zoomWindow { background-color:" + bg + "; }");
+		m_labelTagsLeft->setStyleSheet("background-color:" + bg);
+		m_labelTagsTop->setStyleSheet("background-color:" + bg);
+	}
+
 	load(image);
 }
 void zoomWindow::go()
@@ -349,11 +358,18 @@ void zoomWindow::contextMenu(QPoint)
 		else
 		{ menu->addAction(QIcon(":/images/icons/add.png"), tr("Keep for later"), this, SLOT(viewitlater())); }
 
+		// Blacklist
+		QStringList blacklistedTags = m_settings->value("blacklistedtags").toString().split(' ');
+		if (blacklistedTags.contains(link))
+		{ menu->addAction(QIcon(":/images/icons/eye-plus.png"), tr("Don't blacklist"), this, SLOT(unblacklist())); }
+		else
+		{ menu->addAction(QIcon(":/images/icons/eye-minus.png"), tr("Blacklist"), this, SLOT(blacklist())); }
+
 		// Ignore
 		if (m_ignore.contains(link, Qt::CaseInsensitive))
-		{ menu->addAction(QIcon(":/images/icons/showed.png"), tr("Don't ignore"), this, SLOT(unignore())); }
+		{ menu->addAction(QIcon(":/images/icons/eye-plus.png"), tr("Don't ignore"), this, SLOT(unignore())); }
 		else
-		{ menu->addAction(QIcon(":/images/icons/hidden.png"), tr("Ignore"), this, SLOT(ignore())); }
+		{ menu->addAction(QIcon(":/images/icons/eye-minus.png"), tr("Ignore"), this, SLOT(ignore())); }
 		menu->addSeparator();
 
 		// Copy
@@ -443,6 +459,21 @@ void zoomWindow::ignore()
 void zoomWindow::unignore()
 {
 	m_profile->removeIgnored(link);
+}
+
+void zoomWindow::blacklist()
+{
+	QString blacklistedTags = m_settings->value("blacklistedtags").toString();
+	blacklistedTags += " " + link;
+	m_settings->setValue("blacklistedtags", blacklistedTags);
+	colore();
+}
+void zoomWindow::unblacklist()
+{
+	QStringList blacklistedTags = m_settings->value("blacklistedtags").toString().split(' ');
+	blacklistedTags.removeAll(link);
+	m_settings->setValue("blacklistedtags", blacklistedTags.join(' '));
+	colore();
 }
 
 void zoomWindow::load()
@@ -547,12 +578,12 @@ void zoomWindow::replyFinishedDetails()
 	{
 		if (!file1notexists)
 		{
-			ui->buttonSave->setText(tr("File already exists"));
+			ui->buttonSave->setText(tr("Delete"));
 			ui->buttonSaveNQuit->setText(tr("Close"));
 		}
 		if (!file2notexists)
 		{
-			ui->buttonSaveFav->setText(tr("File already exists (fav)"));
+			ui->buttonSaveFav->setText(tr("Delete (fav)"));
 			ui->buttonSaveNQuitFav->setText(tr("Close (fav)"));
 		}
 		m_source = !md5Exists.isEmpty() ? md5Exists : (!file1notexists ? source1 : source2);
@@ -849,7 +880,7 @@ QStringList zoomWindow::saveImageNow(bool fav)
 				break;
 
 			case Image::SaveResult::Saved:
-				button->setText(fav ? tr("Saved! (fav)") : tr("Saved!"));
+				button->setText(fav ? tr("Delete (fav)") : tr("Delete"));
 				break;
 
 			case Image::SaveResult::Copied:
@@ -866,10 +897,14 @@ QStringList zoomWindow::saveImageNow(bool fav)
 				break;
 
 			case Image::SaveResult::AlreadyExists:
-				button->setText(fav ? tr("File already exists (fav)") : tr("File already exists"));
+				QFile::remove(it.key());
+				m_imagePath = "";
+				button->setText(fav ? tr("Save (fav)") : tr("Save"));
 				break;
 		}
-		saveQuit->setText(fav ? tr("Close (fav)") : tr("Close"));
+		saveQuit->setText(res == Image::SaveResult::AlreadyExists
+						  ? (fav ? tr("Save and close (fav)") : tr("Save and close"))
+						  : (fav ? tr("Close (fav)") : tr("Close")));
 
 		++it;
 	}
@@ -1103,9 +1138,9 @@ void zoomWindow::load(QSharedPointer<Image> image)
 
 	// Reset buttons
 	ui->buttonSave->setText(tr("Save"));
-	ui->buttonSaveFav->setText(tr("Save"));
+	ui->buttonSaveFav->setText(tr("Save (fav)"));
 	ui->buttonSaveNQuit->setText(tr("Save and close"));
-	ui->buttonSaveNQuitFav->setText(tr("Save and close"));
+	ui->buttonSaveNQuitFav->setText(tr("Save and close (fav)"));
 
 	// Window title
 	updateWindowTitle();
