@@ -1349,9 +1349,20 @@ void mainWindow::getAllFinishedLogins()
 void mainWindow::getNextPack()
 {
 	m_downloaders.clear();
-	m_downloaders.append(m_waitingDownloaders.dequeue());
 
-	getAllGetPages();
+	// If there are pending packs
+	if (!m_waitingDownloaders.isEmpty())
+	{
+		m_downloaders.append(m_waitingDownloaders.dequeue());
+		getAllGetPages();
+	}
+
+	// Only images to download
+	else
+	{
+		m_batchAutomaticRetries = m_settings->value("Save/automaticretries", 0).toInt();
+		getAllImages();
+	}
 }
 
 void mainWindow::getAllGetPages()
@@ -1359,19 +1370,10 @@ void mainWindow::getAllGetPages()
 	m_progressdialog->clear();
 	m_progressdialog->setText(tr("Downloading pages, please wait..."));
 
-	// Only images to download
-	if (m_downloaders.isEmpty())
+	for (Downloader *downloader : m_downloaders)
 	{
-		m_batchAutomaticRetries = m_settings->value("Save/automaticretries", 0).toInt();
-		getAllImages();
-	}
-	else
-	{
-		for (Downloader *downloader : m_downloaders)
-		{
-			m_progressdialog->setImagesCount(m_progressdialog->count() + downloader->pagesCount());
-			downloader->getImages();
-		}
+		m_progressdialog->setImagesCount(m_progressdialog->count() + downloader->pagesCount());
+		downloader->getImages();
 	}
 }
 
