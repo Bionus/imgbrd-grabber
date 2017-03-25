@@ -360,9 +360,9 @@ void zoomWindow::contextMenu(QPoint)
 
 		// Ignore
 		if (m_ignore.contains(link, Qt::CaseInsensitive))
-		{ menu->addAction(QIcon(":/images/icons/showed.png"), tr("Don't ignore"), this, SLOT(unignore())); }
+		{ menu->addAction(QIcon(":/images/icons/eye-plus.png"), tr("Don't ignore"), this, SLOT(unignore())); }
 		else
-		{ menu->addAction(QIcon(":/images/icons/hidden.png"), tr("Ignore"), this, SLOT(ignore())); }
+		{ menu->addAction(QIcon(":/images/icons/eye-minus.png"), tr("Ignore"), this, SLOT(ignore())); }
 		menu->addSeparator();
 
 		// Copy
