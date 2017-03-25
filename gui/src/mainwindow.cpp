@@ -606,6 +606,10 @@ void mainWindow::addTableItem(QTableWidget *table, int row, int col, QString tex
 
 void mainWindow::batchAddGroup(const DownloadQueryGroup &values)
 {
+	// Ignore downloads already present in the list
+	if (m_groupBatchs.contains(values))
+		return;
+
 	m_groupBatchs.append(values);
 	int pos = m_groupBatchs.count();
 
@@ -645,6 +649,10 @@ void mainWindow::updateGroupCount()
 }
 void mainWindow::batchAddUnique(const DownloadQueryImage &query, bool save)
 {
+	// Ignore downloads already present in the list
+	if (m_batchs.contains(query))
+		return;
+
 	log(QString("Adding single image: %1").arg(query.values["file_url"]));
 
 	m_batchs.append(query);

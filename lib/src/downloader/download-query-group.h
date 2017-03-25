@@ -33,6 +33,9 @@ class DownloadQueryGroup
 		QString unk;
 };
 
+bool operator==(const DownloadQueryGroup& lhs, const DownloadQueryGroup& rhs);
+bool operator!=(const DownloadQueryGroup& lhs, const DownloadQueryGroup& rhs);
+
 Q_DECLARE_METATYPE(DownloadQueryGroup)
 
 #endif // DOWNLOAD_QUERY_GROUP_H
