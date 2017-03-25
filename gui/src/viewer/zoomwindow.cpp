@@ -578,12 +578,12 @@ void zoomWindow::replyFinishedDetails()
 	{
 		if (!file1notexists)
 		{
-			ui->buttonSave->setText(tr("File already exists"));
+			ui->buttonSave->setText(tr("Delete"));
 			ui->buttonSaveNQuit->setText(tr("Close"));
 		}
 		if (!file2notexists)
 		{
-			ui->buttonSaveFav->setText(tr("File already exists (fav)"));
+			ui->buttonSaveFav->setText(tr("Delete (fav)"));
 			ui->buttonSaveNQuitFav->setText(tr("Close (fav)"));
 		}
 		m_source = !md5Exists.isEmpty() ? md5Exists : (!file1notexists ? source1 : source2);
@@ -880,7 +880,7 @@ QStringList zoomWindow::saveImageNow(bool fav)
 				break;
 
 			case Image::SaveResult::Saved:
-				button->setText(fav ? tr("Saved! (fav)") : tr("Saved!"));
+				button->setText(fav ? tr("Delete (fav)") : tr("Delete"));
 				break;
 
 			case Image::SaveResult::Copied:
@@ -897,10 +897,14 @@ QStringList zoomWindow::saveImageNow(bool fav)
 				break;
 
 			case Image::SaveResult::AlreadyExists:
-				button->setText(fav ? tr("File already exists (fav)") : tr("File already exists"));
+				QFile::remove(it.key());
+				m_imagePath = "";
+				button->setText(fav ? tr("Save (fav)") : tr("Save"));
 				break;
 		}
-		saveQuit->setText(fav ? tr("Close (fav)") : tr("Close"));
+		saveQuit->setText(res == Image::SaveResult::AlreadyExists
+						  ? (fav ? tr("Save and close (fav)") : tr("Save and close"))
+						  : (fav ? tr("Close (fav)") : tr("Close")));
 
 		++it;
 	}
@@ -1134,9 +1138,9 @@ void zoomWindow::load(QSharedPointer<Image> image)
 
 	// Reset buttons
 	ui->buttonSave->setText(tr("Save"));
-	ui->buttonSaveFav->setText(tr("Save"));
+	ui->buttonSaveFav->setText(tr("Save (fav)"));
 	ui->buttonSaveNQuit->setText(tr("Save and close"));
-	ui->buttonSaveNQuitFav->setText(tr("Save and close"));
+	ui->buttonSaveNQuitFav->setText(tr("Save and close (fav)"));
 
 	// Window title
 	updateWindowTitle();
