@@ -617,7 +617,7 @@ void mainWindow::batchAddGroup(const DownloadQueryGroup &values)
 	int row = ui->tableBatchGroups->rowCount() - 1;
 	m_allow = false;
 
-	QTableWidgetItem *item = new QTableWidgetItem(getIcon(":/images/colors/black.png"), QString::number(pos));
+	QTableWidgetItem *item = new QTableWidgetItem(getIcon(":/images/status/pending.png"), QString::number(pos));
 	item->setFlags(item->flags() ^ Qt::ItemIsEditable);
 	ui->tableBatchGroups->setItem(row, 0, item);
 
@@ -1205,7 +1205,7 @@ void mainWindow::getAll(bool all)
 
 	m_allow = false;
 	for (int i = 0; i < ui->tableBatchGroups->rowCount(); i++)
-	{ ui->tableBatchGroups->item(i, 0)->setIcon(getIcon(":/images/colors/black.png")); }
+	{ ui->tableBatchGroups->item(i, 0)->setIcon(getIcon(":/images/status/pending.png")); }
 	m_allow = true;
 	m_profile->getCommands().before();
 	selected = ui->tableBatchGroups->selectedItems();
@@ -1555,7 +1555,7 @@ void mainWindow::_getAll()
 			QString pth = m_settings->value("Save/path").toString();
 			if (site_id >= 0)
 			{
-				ui->tableBatchGroups->item(row, 0)->setIcon(getIcon(":/images/colors/blue.png"));
+				ui->tableBatchGroups->item(row, 0)->setIcon(getIcon(":/images/status/downloading.png"));
 				path = m_groupBatchs[site_id - 1].filename;
 				pth = m_groupBatchs[site_id - 1].page;
 			}
@@ -1623,7 +1623,7 @@ void mainWindow::getAllImageOk(QSharedPointer<Image> img, int site_id, bool del)
 		int row = getRowForSite(site_id);
 		m_progressBars[site_id - 1]->setValue(m_progressBars[site_id - 1]->value() + 1);
 		if (m_progressBars[site_id - 1]->value() >= m_progressBars[site_id - 1]->maximum())
-		{ ui->tableBatchGroups->item(row, 0)->setIcon(getIcon(":/images/colors/green.png")); }
+		{ ui->tableBatchGroups->item(row, 0)->setIcon(getIcon(":/images/status/ok.png")); }
 	}
 
 	img->unload();
@@ -1721,7 +1721,7 @@ void mainWindow::getAllPerformTags()
 		{
 			m_progressBars[site_id - 1]->setValue(m_progressBars[site_id - 1]->value()+1);
 			if (m_progressBars[site_id - 1]->value() >= m_progressBars[site_id - 1]->maximum())
-			{ ui->tableBatchGroups->item(row, 0)->setIcon(getIcon(":/images/colors/green.png")); }
+			{ ui->tableBatchGroups->item(row, 0)->setIcon(getIcon(":/images/status/ok.png")); }
 		}
 		m_downloadTimeLast.remove(img->url());
 		m_getAllDownloading.removeAll(img);
@@ -1745,7 +1745,7 @@ void mainWindow::getAllGetImage(QSharedPointer<Image> img)
 	QString p = img->folder().isEmpty() ? m_settings->value("Save/path").toString() : img->folder();
 	if (site_id >= 0)
 	{
-		ui->tableBatchGroups->item(row, 0)->setIcon(getIcon(":/images/colors/blue.png"));
+		ui->tableBatchGroups->item(row, 0)->setIcon(getIcon(":/images/status/downloading.png"));
 		path = m_groupBatchs[site_id - 1].filename;
 		p = m_groupBatchs[site_id - 1].path;
 	}
@@ -1834,7 +1834,7 @@ void mainWindow::getAllPerformImage(QNetworkReply::NetworkError error, QString e
 	{
 		if (site_id >= 0)
 		{
-			ui->tableBatchGroups->item(row, 0)->setIcon(getIcon(":/images/colors/blue.png"));
+			ui->tableBatchGroups->item(row, 0)->setIcon(getIcon(":/images/status/downloading.png"));
 			saveImage(img, m_groupBatchs[site_id - 1].filename, m_groupBatchs[site_id - 1].path);
 		}
 		else
@@ -2222,7 +2222,7 @@ bool mainWindow::loadLinkList(QString filename)
 
 		queryGroup.unk = "true";
 		m_groupBatchs.append(queryGroup);
-		QTableWidgetItem *it = new QTableWidgetItem(getIcon(":/images/colors/"+QString(val == max ? "green" : (val > 0 ? "blue" : "black"))+".png"), "");
+		QTableWidgetItem *it = new QTableWidgetItem(getIcon(":/images/status/"+QString(val == max ? "ok" : (val > 0 ? "downloading" : "pending"))+".png"), "");
 		it->setFlags(it->flags() ^ Qt::ItemIsEditable);
 		it->setTextAlignment(Qt::AlignCenter);
 		ui->tableBatchGroups->setItem(ui->tableBatchGroups->rowCount()-1, 0, it);

@@ -54,5 +54,10 @@
         <file>images/reverse-search/google.png</file>
         <file>images/reverse-search/yandex.png</file>
         <file>images/play-overlay.png</file>
+        <file>images/status/downloading.png</file>
+        <file>images/status/error.png</file>
+        <file>images/status/ok.png</file>
+        <file>images/status/pending.png</file>
+        <file>images/status/unknown.png</file>
     </qresource>
 </RCC>

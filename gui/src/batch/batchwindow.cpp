@@ -170,7 +170,7 @@ void batchWindow::addImage(QString url, int batch, float size)
 {
 	m_urls.append(url);
 	QTableWidgetItem *id = new QTableWidgetItem(QString::number(m_items+1));
-	id->setIcon(QIcon(":/images/colors/black.png"));
+	id->setIcon(QIcon(":/images/status/pending.png"));
 	ui->tableWidget->setItem(m_items, 0, id);
 	ui->tableWidget->setItem(m_items, 1, new QTableWidgetItem(QString::number(batch)));
 	ui->tableWidget->setItem(m_items, 2, new QTableWidgetItem(url));
@@ -223,7 +223,7 @@ void batchWindow::loadingImage(QString url)
 	int i = indexOf(url);
 	if (i != -1)
 	{
-		ui->tableWidget->item(i, 0)->setIcon(QIcon(":/images/colors/blue.png"));
+		ui->tableWidget->item(i, 0)->setIcon(QIcon(":/images/status/downloading.png"));
 
 		// Go to downloading image
 		if (ui->checkScrollToDownload->isChecked() && i >= m_lastDownloading)
@@ -279,7 +279,7 @@ void batchWindow::loadedImage(QString url)
 	int i = indexOf(url);
 	if (i != -1)
 	{
-		ui->tableWidget->item(i, 0)->setIcon(QIcon(":/images/colors/green.png"));
+		ui->tableWidget->item(i, 0)->setIcon(QIcon(":/images/status/ok.png"));
 		ui->tableWidget->item(i, 4)->setText("");
 		ui->tableWidget->item(i, 5)->setText("100 %");
 	}
@@ -291,7 +291,7 @@ void batchWindow::errorImage(QString url)
 	int i = indexOf(url);
 	if (i != -1)
 	{
-		ui->tableWidget->item(i, 0)->setIcon(QIcon(":/images/colors/red.png"));
+		ui->tableWidget->item(i, 0)->setIcon(QIcon(":/images/status/error.png"));
 		ui->tableWidget->item(i, 4)->setText("");
 	}
 }
