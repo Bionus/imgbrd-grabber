@@ -12,6 +12,9 @@
 #include "page.h"
 #include "image.h"
 #include "source.h"
+#include "profile.h"
+#include "api.h"
+#include "custom-network-access-manager.h"
 #include "vendor/qcustomnetworkreply.h"
 #ifdef QT_DEBUG
 	#include <QDebug>

@@ -3,10 +3,6 @@
 
 #include <QString>
 #include <QSettings>
-#include "models/image.h"
-#include "models/tag.h"
-#include "models/profile.h"
-#include "sql-worker.h"
 
 struct MysqlSettings
 {
@@ -17,6 +13,11 @@ struct MysqlSettings
 	QString after;
 };
 
+
+class Image;
+class Tag;
+class Profile;
+class SqlWorker;
 
 class Commands
 {

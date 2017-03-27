@@ -7,6 +7,7 @@
 #include "searchwindow.h"
 #include "models/favorite.h"
 #include "helpers.h"
+#include "functions.h"
 
 
 

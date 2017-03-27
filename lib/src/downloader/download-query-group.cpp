@@ -1,5 +1,6 @@
 #include "download-query-group.h"
 #include <QJsonArray>
+#include "models/site.h"
 
 
 DownloadQueryGroup::DownloadQueryGroup()

@@ -1,9 +1,14 @@
 #ifndef FILENAME_H
 #define FILENAME_H
 
-#include "image.h"
-#include "profile.h"
+#include <QString>
+#include <QStringList>
+#include <QSettings>
 
+
+class Site;
+class Image;
+class Profile;
 
 class Filename
 {

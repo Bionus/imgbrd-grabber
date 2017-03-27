@@ -1,14 +1,11 @@
 #ifndef DOWNLOADER_H
 #define DOWNLOADER_H
 
-#include "models/page.h"
-#include "models/image.h"
 #include <QVariant>
-
+#include "models/image.h"
 
 
 class Page;
-class Image;
 
 class Downloader : public QObject
 {

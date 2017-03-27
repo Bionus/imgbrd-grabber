@@ -1,13 +1,15 @@
+#include "page-api.h"
 #include <QSettings>
 #include <QFile>
 #include <QNetworkCookie>
 #include <iostream>
 #include <QSet>
 #include "page.h"
-#include "page-api.h"
 #include "vendor/json.h"
 #include "math.h"
+#include "functions.h"
 #include "site.h"
+#include "api.h"
 
 
 

@@ -9,12 +9,11 @@
 #include <QSettings>
 #include "tag.h"
 #include "pool.h"
-#include "profile.h"
-
 
 
 class Page;
 class Site;
+class Profile;
 
 class Image : public QObject
 {

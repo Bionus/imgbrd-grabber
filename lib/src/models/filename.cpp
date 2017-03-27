@@ -1,7 +1,10 @@
-#include <QtScript>
 #include "filename.h"
+#include <QtScript>
+#include <QIcon>
 #include "functions.h"
 #include "site.h"
+#include "profile.h"
+#include "image.h"
 
 #define TAGS_SEPARATOR " "
 

@@ -3,7 +3,6 @@
 
 #include <QString>
 #include <QThread>
-#include "models/image.h"
 
 
 class SqlWorker : public QThread

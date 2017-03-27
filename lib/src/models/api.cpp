@@ -1,7 +1,5 @@
-#include "source.h"
-#include "site.h"
+#include "api.h"
 #include "functions.h"
-
 
 
 Api::Api(QString name, QMap<QString, QString> data)

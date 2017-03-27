@@ -1,4 +1,5 @@
 #include "reverse-search-loader.h"
+#include "reverse-search-engine.h"
 
 
 ReverseSearchLoader::ReverseSearchLoader(QSettings *settings)

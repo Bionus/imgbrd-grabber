@@ -4,8 +4,9 @@
 #include <QFileInfo>
 #include "source.h"
 #include "site.h"
+#include "api.h"
+#include "profile.h"
 #include "functions.h"
-
 
 
 QList<Source*> *g_allSources = Q_NULLPTR;

@@ -5,6 +5,7 @@
 #include "site.h"
 #include "commands/commands.h"
 #include "filename.h"
+#include "profile.h"
 
 
 QString removeCacheUrl(QString url)

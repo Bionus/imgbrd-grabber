@@ -6,9 +6,10 @@
 #include <QSettings>
 #include <QMap>
 #include <QJsonObject>
-#include "models/image.h"
-#include "models/site.h"
 
+
+class Image;
+class Site;
 
 class DownloadQueryImage
 {

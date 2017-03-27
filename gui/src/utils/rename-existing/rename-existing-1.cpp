@@ -7,6 +7,7 @@
 #include "rename-existing-2.h"
 #include "ui_rename-existing-1.h"
 #include "models/page.h"
+#include "models/profile.h"
 #include "helpers.h"
 
 

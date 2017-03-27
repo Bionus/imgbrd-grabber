@@ -35,6 +35,8 @@
 #include "downloader/download-query-loader.h"
 #include "tabs/tabs-loader.h"
 #include "theme-loader.h"
+#include "models/api.h"
+#include "models/profile.h"
 
 
 

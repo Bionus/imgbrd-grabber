@@ -4,16 +4,13 @@
 #include <QMap>
 #include <QNetworkReply>
 #include <QSslError>
-#include "tag.h"
 #include "image.h"
-#include "functions.h"
-#include "profile.h"
-
+#include "tag.h"
 
 
 class Page;
-class Image;
 class Api;
+class Profile;
 
 class PageApi : public QObject
 {
