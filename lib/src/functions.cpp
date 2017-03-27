@@ -22,26 +22,6 @@ using namespace std;
 
 
 /**
- * Log SSL errors in debug mode only.
- *
- * @param qnr		The network reply who generated the SSL errors
- * @param errors	The list of SSL errors that occured
- */
-void sslErrorHandler(QNetworkReply* qnr, QList<QSslError> errors)
-{
-	#ifdef QT_DEBUG
-		qDebug() << errors;
-	#else
-		Q_UNUSED(errors);
-	#endif
-	#ifndef TEST
-		qnr->ignoreSslErrors();
-	#else
-		Q_UNUSED(qnr);
-	#endif
-}
-
-/**
  * Load custom tokens from settings.
  * @return	The map with token names as keys and token tags as values.
  */

@@ -492,8 +492,6 @@ void zoomWindow::load()
 	m_imageTime.start();
 	m_image->loadImage();
 }
-void zoomWindow::sslErrorHandler(QNetworkReply* qnr, QList<QSslError>)
-{ qnr->ignoreSslErrors(); }
 
 #define PERCENT 0.05f
 #define TIME 500

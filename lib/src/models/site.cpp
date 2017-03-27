@@ -110,7 +110,6 @@ void Site::initManager()
 		// Create the access manager and get its slots
 		m_manager = new CustomNetworkAccessManager(this);
 		connect(m_manager, &CustomNetworkAccessManager::finished, this, &Site::finished);
-		connect(m_manager, &CustomNetworkAccessManager::sslErrors, sslErrorHandler);
 
 		// Cache
 		QNetworkDiskCache *diskCache = new QNetworkDiskCache(m_manager);

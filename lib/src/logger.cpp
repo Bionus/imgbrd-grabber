@@ -1,6 +1,10 @@
 #include "logger.h"
 #include "functions.h"
 
+#ifdef QT_DEBUG
+	#include <QDebug>
+#endif
+
 
 void Logger::setLogFile(QString path)
 {

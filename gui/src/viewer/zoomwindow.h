@@ -63,7 +63,6 @@ class zoomWindow : public QWidget
 		void unblacklist();
 		void downloadProgress(qint64 bytesReceived, qint64 bytesTotal);
 		void colore();
-		void sslErrorHandler(QNetworkReply*, QList<QSslError>);
 		void urlChanged(QString, QString);
 		void showDetails();
 		void pendingUpdate();
