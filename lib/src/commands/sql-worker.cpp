@@ -1,6 +1,8 @@
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlQuery>
 #include <QtSql/QSqlError>
+#include <QtSql/QSqlField>
+#include <QtSql/QSqlDriver>
 #include "sql-worker.h"
 #include "functions.h"
 
@@ -34,6 +36,19 @@ bool SqlWorker::connect()
 	}
 
 	return true;
+}
+
+QString SqlWorker::escape(QString text)
+{
+	QSqlDriver *driver = QSqlDatabase::database().driver();
+	if (driver == nullptr)
+		return nullptr;
+
+	QSqlField f;
+	f.setType(QVariant::String);
+	f.setValue(text);
+
+	return driver->formatValue(f);
 }
 
 bool SqlWorker::execute(QString sql)

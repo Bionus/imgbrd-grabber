@@ -546,6 +546,10 @@ QString Filename::optionedValue(QString res, QString key, QString ops, const Ima
 		{ res = res.replace("_", " "); }
 	}
 
+	// Escape if necessary
+	if (m_escapeMethod != nullptr)
+	{ res = m_escapeMethod(res); }
+
 	return res;
 }
 
@@ -563,6 +567,11 @@ QString Filename::getFormat() const
 void Filename::setFormat(QString format)
 {
 	m_format = format;
+}
+
+void Filename::setEscapeMethod(QString (*escapeMethod)(QString))
+{
+	m_escapeMethod = escapeMethod;
 }
 
 bool Filename::returnError(QString msg, QString *error) const

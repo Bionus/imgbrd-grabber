@@ -13,6 +13,7 @@ class SqlWorker : public QThread
 	public:
 		SqlWorker(QString driver, QString host, QString user, QString password, QString database, QObject *parent = 0);
 		bool connect();
+		static QString escape(QString text);
 
 	public slots:
 		bool execute(QString sql);
