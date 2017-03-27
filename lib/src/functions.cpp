@@ -7,6 +7,7 @@
 #include <QCoreApplication>
 #include <QDesktopServices>
 #include <QUrl>
+#include <QLocale>
 #include "math.h"
 #include "functions.h"
 #ifdef Q_OS_WIN
