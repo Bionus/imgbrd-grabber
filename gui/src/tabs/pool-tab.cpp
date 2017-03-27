@@ -3,13 +3,18 @@
 #include "pool-tab.h"
 #include "ui_pool-tab.h"
 #include "ui/QBouton.h"
+#include "ui/textedit.h"
 #include "viewer/zoomwindow.h"
 #include "searchwindow.h"
 #include "mainwindow.h"
+#include "models/page.h"
+#include "models/site.h"
+#include "downloader/download-query-group.h"
+#include "downloader/download-query-image.h"
 #include "helpers.h"
 
 
-poolTab::poolTab(QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
+poolTab::poolTab(QMap<QString, Site*> *sites, Profile *profile, mainWindow *parent)
 	: searchTab(sites, profile, parent), ui(new Ui::poolTab), m_sized(false)
 {
 	ui->setupUi(this);

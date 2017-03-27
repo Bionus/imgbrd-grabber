@@ -3,8 +3,6 @@
 
 #include <QDialog>
 #include <QTreeWidgetItem>
-#include "models/profile.h"
-
 
 
 namespace Ui
@@ -13,7 +11,7 @@ namespace Ui
 }
 
 
-class mainWindow;
+class Profile;
 
 class optionsWindow : public QDialog
 {

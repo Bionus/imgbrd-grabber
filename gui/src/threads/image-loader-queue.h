@@ -3,8 +3,9 @@
 
 #include <QPixmap>
 #include <QByteArray>
-#include "image-loader.h"
 
+
+class ImageLoader;
 
 class ImageLoaderQueue : public QObject
 {

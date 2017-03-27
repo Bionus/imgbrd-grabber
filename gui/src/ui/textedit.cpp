@@ -10,7 +10,7 @@
 #include "textedit.h"
 #include "functions.h"
 #include "models/tag.h"
-
+#include "models/profile.h"
 
 
 TextEdit::TextEdit(Profile *profile, QWidget *parent)

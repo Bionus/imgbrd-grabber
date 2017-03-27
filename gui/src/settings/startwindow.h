@@ -2,9 +2,6 @@
 #define STARTWINDOW_H
 
 #include <QDialog>
-#include "models/site.h"
-#include "models/profile.h"
-
 
 
 namespace Ui
@@ -12,6 +9,9 @@ namespace Ui
 	class startWindow;
 }
 
+
+class Site;
+class Profile;
 
 class startWindow : public QDialog
 {

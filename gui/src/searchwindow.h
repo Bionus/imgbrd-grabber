@@ -3,8 +3,6 @@
 
 #include <QDialog>
 #include <QCalendarWidget>
-#include "ui/textedit.h"
-
 
 
 namespace Ui
@@ -13,6 +11,8 @@ namespace Ui
 }
 
 
+class Profile;
+class TextEdit;
 
 class SearchWindow : public QDialog
 {

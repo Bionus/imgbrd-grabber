@@ -9,36 +9,27 @@
 #include <QSet>
 #include <QQueue>
 #include <QTableWidgetItem>
-#include "batch/batchwindow.h"
-#include "ui/QAffiche.h"
-#include "ui/QBouton.h"
-#include "ui/textedit.h"
-#include "tabs/search-tab.h"
-#include "tabs/pool-tab.h"
-#include "tabs/tag-tab.h"
-#include "tabs/favorites-tab.h"
+#include <QProgressBar>
 #include "models/site.h"
-#include "models/profile.h"
-#include "downloader/downloader.h"
-#include "updater/update-dialog.h"
-#include "downloader/download-query-image.h"
-
 
 
 namespace Ui
 {
 	class mainWindow;
-	class poolTab;
-	class tagTab;
-	class favoritesTab;
 }
-
 
 
 class searchTab;
 class poolTab;
 class tagTab;
 class favoritesTab;
+class batchWindow;
+class UpdateDialog;
+class Profile;
+class Downloader;
+class Favorite;
+class DownloadQueryGroup;
+class DownloadQueryImage;
 
 class mainWindow : public QMainWindow
 {

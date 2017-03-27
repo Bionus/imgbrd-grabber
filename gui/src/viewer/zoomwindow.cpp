@@ -5,7 +5,7 @@
 #include <QMenu>
 #include <QDesktopWidget>
 #include <QFileDialog>
-#include <QMessageBox>
+#include <QScrollBar>
 #include "functions.h"
 #include "settings/optionswindow.h"
 #include "reverse-search/reverse-search-loader.h"
@@ -14,9 +14,13 @@
 #include "threads/image-loader.h"
 #include "ui_zoomwindow.h"
 #include "models/filename.h"
-#include "functions.h"
+#include "models/site.h"
+#include "models/page.h"
+#include "models/profile.h"
 #include "helpers.h"
-#include <QScrollBar>
+#include "threads/image-loader-queue.h"
+#include "detailswindow.h"
+#include "mainwindow.h"
 
 
 

@@ -4,7 +4,7 @@
 #include "favoritewindow.h"
 #include "ui_favoritewindow.h"
 #include "functions.h"
-
+#include "models/profile.h"
 
 
 /**

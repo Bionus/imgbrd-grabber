@@ -3,15 +3,17 @@
 
 #include <QDialog>
 #include <QMap>
-#include "models/site.h"
 #include "models/filename.h"
-
 
 
 namespace Ui
 {
 	class RenameExisting1;
 }
+
+
+class Site;
+class Page;
 
 class RenameExisting1 : public QDialog
 {

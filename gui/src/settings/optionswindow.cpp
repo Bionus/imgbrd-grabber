@@ -16,7 +16,8 @@
 #include "helpers.h"
 #include "language-loader.h"
 #include "theme-loader.h"
-
+#include "models/site.h"
+#include "models/profile.h"
 
 
 optionsWindow::optionsWindow(Profile *profile, QWidget *parent)

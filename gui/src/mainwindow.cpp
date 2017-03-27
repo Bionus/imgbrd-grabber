@@ -8,6 +8,7 @@
 #include <QDesktopServices>
 #include <QCloseEvent>
 #include <QScrollBar>
+#include <QCompleter>
 #include <QtSql/QSqlDatabase>
 #if defined(Q_OS_WIN)
 	#include "windows.h"
@@ -17,6 +18,7 @@
 #include "ui_mainwindow.h"
 #include "ui_tag-tab.h"
 #include "ui_pool-tab.h"
+#include "ui/QAffiche.h"
 #include "settings/optionswindow.h"
 #include "settings/startwindow.h"
 #include "favoritewindow.h"
@@ -32,12 +34,21 @@
 #include "utils/md5-fix/md5-fix.h"
 #include "models/filename.h"
 #include "helpers.h"
+#include "downloader/downloader.h"
 #include "downloader/download-query-loader.h"
-#include "tabs/tabs-loader.h"
+#include "downloader/download-query-image.h"
+#include "downloader/download-query-group.h"
+#include "updater/update-dialog.h"
 #include "theme-loader.h"
 #include "models/api.h"
 #include "models/profile.h"
-
+#include "models/page.h"
+#include "models/favorite.h"
+#include "tabs/tabs-loader.h"
+#include "tabs/search-tab.h"
+#include "tabs/tag-tab.h"
+#include "tabs/pool-tab.h"
+#include "tabs/favorites-tab.h"
 
 
 mainWindow::mainWindow(Profile *profile)

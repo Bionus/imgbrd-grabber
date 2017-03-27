@@ -5,12 +5,7 @@
 #include <QMap>
 #include <QCalendarWidget>
 #include <QJsonObject>
-#include "ui/textedit.h"
 #include "search-tab.h"
-#include "models/page.h"
-#include "mainwindow.h"
-#include "downloader/downloader.h"
-
 
 
 namespace Ui
@@ -19,8 +14,9 @@ namespace Ui
 }
 
 
-
 class mainWindow;
+class Downloader;
+class TextEdit;
 
 class tagTab : public searchTab
 {

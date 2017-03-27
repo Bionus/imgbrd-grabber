@@ -12,17 +12,17 @@
 #include <QLabel>
 #include <QProgressBar>
 #include <QStackedWidget>
-#include "ui/QBouton.h"
-#include "ui/textedit.h"
-#include "ui/verticalscrollarea.h"
 #include "models/image.h"
-#include "models/profile.h"
-#include "downloader/download-query-group.h"
-#include "downloader/download-query-image.h"
-
 
 
 class mainWindow;
+class QBouton;
+class TextEdit;
+class VerticalScrollArea;
+class Profile;
+class Favorite;
+class DownloadQueryGroup;
+class DownloadQueryImage;
 
 class searchTab : public QWidget
 {

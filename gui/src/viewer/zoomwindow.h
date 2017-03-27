@@ -4,15 +4,10 @@
 #include <QtGui>
 #include <QtNetwork>
 #include <QStackedWidget>
-#include "ui/QAffiche.h"
+#include <QPushButton>
 #include "models/image.h"
-#include "models/profile.h"
+#include "models/favorite.h"
 #include "reverse-search/reverse-search-engine.h"
-#include "mainwindow.h"
-#include "detailswindow.h"
-#include "threads/image-loader.h"
-#include "threads/image-loader-queue.h"
-
 
 
 namespace Ui
@@ -20,6 +15,13 @@ namespace Ui
 	class zoomWindow;
 }
 
+
+class QAffiche;
+class Profile;
+class mainWindow;
+class detailsWindow;
+class ImageLoader;
+class ImageLoaderQueue;
 
 class zoomWindow : public QWidget
 {

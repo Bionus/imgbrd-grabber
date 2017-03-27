@@ -7,7 +7,9 @@
 #include "vendor/json.h"
 #include "models/page.h"
 #include "models/filename.h"
-
+#include "models/site.h"
+#include "models/profile.h"
+#include "downloader/download-query-image.h"
 
 
 /**

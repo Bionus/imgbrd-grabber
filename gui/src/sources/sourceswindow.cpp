@@ -6,6 +6,7 @@
 #include "sourcessettingswindow.h"
 #include "functions.h"
 #include "models/source.h"
+#include "ui/QBouton.h"
 
 
 /**

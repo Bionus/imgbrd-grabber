@@ -5,10 +5,7 @@
 #include <QMap>
 #include <QCalendarWidget>
 #include <QJsonObject>
-#include "ui/textedit.h"
-#include "models/page.h"
 #include "search-tab.h"
-
 
 
 namespace Ui
@@ -18,6 +15,7 @@ namespace Ui
 
 
 class mainWindow;
+class TextEdit;
 
 class poolTab : public searchTab
 {

@@ -3,11 +3,14 @@
 
 #include <QString>
 #include <QMap>
-#include "models/profile.h"
-#include "models/site.h"
-#include "tag-tab.h"
-#include "pool-tab.h"
 
+
+class Profile;
+class Site;
+class searchTab;
+class tagTab;
+class poolTab;
+class mainWindow;
 
 class TabsLoader
 {

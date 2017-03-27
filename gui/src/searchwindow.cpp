@@ -4,8 +4,9 @@
 #include <QCryptographicHash>
 #include "searchwindow.h"
 #include "ui_searchwindow.h"
+#include "ui/textedit.h"
+#include "models/profile.h"
 #include "functions.h"
-
 
 
 SearchWindow::SearchWindow(QString tags, Profile *profile, QWidget *parent)
