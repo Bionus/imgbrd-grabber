@@ -2,6 +2,8 @@
 #define DOWNLOAD_QUERY_LOADER_H
 
 #include <QString>
+#include <QList>
+#include <QMap>
 
 
 class Site;
