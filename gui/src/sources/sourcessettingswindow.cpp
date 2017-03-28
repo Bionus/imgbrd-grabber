@@ -1,12 +1,13 @@
+#include "sourcessettingswindow.h"
+#include "ui_sourcessettingswindow.h"
 #include <QMessageBox>
 #include <QInputDialog>
 #include <QFile>
 #include <QCryptographicHash>
 #include <QSettings>
 #include <QNetworkCookie>
-#include "sourcessettingswindow.h"
-#include "ui_sourcessettingswindow.h"
 #include "functions.h"
+
 
 SourcesSettingsWindow::SourcesSettingsWindow(Site *site, QWidget *parent) : QDialog(parent), ui(new Ui::SourcesSettingsWindow), m_site(site)
 {

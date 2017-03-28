@@ -1,4 +1,3 @@
-#include <QSettings>
 #include "detailswindow.h"
 #include "ui_detailswindow.h"
 #include "models/image.h"

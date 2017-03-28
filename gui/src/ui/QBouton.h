@@ -5,7 +5,6 @@
 #include <QVariant>
 
 
-
 class QBouton : public QPushButton
 {
 	Q_OBJECT

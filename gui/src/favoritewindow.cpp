@@ -1,10 +1,10 @@
+#include "favoritewindow.h"
+#include "ui_favoritewindow.h"
 #include <QFile>
 #include <QFileDialog>
 #include <QSettings>
-#include "favoritewindow.h"
-#include "ui_favoritewindow.h"
-#include "functions.h"
 #include "models/profile.h"
+#include "functions.h"
 
 
 /**

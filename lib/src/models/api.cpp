@@ -1,5 +1,4 @@
 #include "api.h"
-#include "functions.h"
 
 
 Api::Api(QString name, QMap<QString, QString> data)

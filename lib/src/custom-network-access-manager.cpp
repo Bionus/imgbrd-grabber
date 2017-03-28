@@ -1,5 +1,6 @@
-#include <QFile>
 #include "custom-network-access-manager.h"
+#include <QFile>
+#include <QDebug>
 #include "vendor/qcustomnetworkreply.h"
 
 bool CustomNetworkAccessManager::TestMode = false;

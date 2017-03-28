@@ -1,23 +1,21 @@
+#include "optionswindow.h"
 #include <QNetworkProxy>
 #include <QSettings>
 #include <QDir>
-#include <QInputDialog>
 #include <QFileDialog>
 #include <QColorDialog>
 #include <QFontDialog>
-#include <QCryptographicHash>
 #include <QSqlDatabase>
-#include "optionswindow.h"
 #include "ui_optionswindow.h"
 #include "customwindow.h"
 #include "conditionwindow.h"
 #include "filenamewindow.h"
-#include "functions.h"
-#include "helpers.h"
 #include "language-loader.h"
 #include "theme-loader.h"
 #include "models/site.h"
 #include "models/profile.h"
+#include "helpers.h"
+#include "functions.h"
 
 
 optionsWindow::optionsWindow(Profile *profile, QWidget *parent)

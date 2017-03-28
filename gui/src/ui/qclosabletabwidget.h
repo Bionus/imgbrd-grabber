@@ -2,7 +2,6 @@
 #define QCLOSABLETABBAR_H
 
 #include <QTabWidget>
-#include <QMouseEvent>
 
 
 class QClosableTabWidget : public QTabWidget

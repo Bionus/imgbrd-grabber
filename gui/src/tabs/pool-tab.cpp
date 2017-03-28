@@ -1,16 +1,12 @@
-#include <QMessageBox>
-#include <QMenu>
 #include "pool-tab.h"
 #include "ui_pool-tab.h"
-#include "ui/QBouton.h"
+#include <QJsonArray>
 #include "ui/textedit.h"
-#include "viewer/zoomwindow.h"
 #include "searchwindow.h"
 #include "mainwindow.h"
 #include "models/page.h"
 #include "models/site.h"
 #include "downloader/download-query-group.h"
-#include "downloader/download-query-image.h"
 #include "helpers.h"
 
 

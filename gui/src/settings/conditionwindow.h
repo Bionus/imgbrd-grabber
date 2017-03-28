@@ -4,7 +4,6 @@
 #include <QDialog>
 
 
-
 namespace Ui
 {
 	class conditionWindow;

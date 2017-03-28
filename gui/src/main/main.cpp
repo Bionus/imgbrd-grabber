@@ -24,10 +24,7 @@
  */
 
 
-
 #include <QApplication>
-#include <QtGlobal>
-#include <QSettings>
 #include "downloader/downloader.h"
 #include "models/profile.h"
 #include "models/site.h"
@@ -38,15 +35,8 @@
 #else
 	#include <vendor/qcommandlineparser.h>
 #endif
-#if !USE_CLI
-	#include <QtGui>
-	#include "ui/QAffiche.h"
-	#include "ui/QBouton.h"
-	#include "viewer/zoomwindow.h"
-	#include "settings/optionswindow.h"
-	#if USE_BREAKPAD
-		#include "crashhandler/crashhandler.h"
-	#endif
+#if !USE_CLI && USE_BREAKPAD
+	#include "crashhandler/crashhandler.h"
 #endif
 
 

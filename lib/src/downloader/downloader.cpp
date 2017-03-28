@@ -3,10 +3,10 @@
 #include <QFile>
 #include <QDir>
 #include <qmath.h>
-#include "functions.h"
 #include "models/site.h"
 #include "models/page.h"
 #include "models/image.h"
+#include "logger.h"
 
 
 Downloader::Downloader()

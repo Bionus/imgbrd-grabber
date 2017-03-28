@@ -1,19 +1,16 @@
-#include <QMessageBox>
 #include "favorites-tab.h"
 #include "ui_favorites-tab.h"
+#include <QMessageBox>
 #include "ui/QBouton.h"
 #include "ui/QAffiche.h"
 #include "ui/textedit.h"
-#include "viewer/zoomwindow.h"
 #include "favoritewindow.h"
-#include "searchwindow.h"
 #include "mainwindow.h"
 #include "models/favorite.h"
 #include "models/page.h"
 #include "models/profile.h"
 #include "models/site.h"
 #include "downloader/download-query-group.h"
-#include "downloader/download-query-image.h"
 #include "helpers.h"
 #include "functions.h"
 

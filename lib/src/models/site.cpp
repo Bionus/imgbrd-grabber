@@ -1,3 +1,4 @@
+#include "site.h"
 #include <QFile>
 #include <QNetworkCookie>
 #include <QNetworkCookieJar>
@@ -6,16 +7,15 @@
 #include <QUrlQuery>
 #include <QDir>
 #include <QTimer>
-#include "site.h"
-#include "functions.h"
-#include "vendor/json.h"
 #include "page.h"
 #include "image.h"
 #include "source.h"
 #include "profile.h"
 #include "api.h"
 #include "custom-network-access-manager.h"
-#include "vendor/qcustomnetworkreply.h"
+#include "vendor/json.h"
+#include "logger.h"
+
 #ifdef QT_DEBUG
 	#include <QDebug>
 	// #define CACHE_POLICY QNetworkRequest::PreferCache

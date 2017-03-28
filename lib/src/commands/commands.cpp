@@ -1,14 +1,11 @@
-#include <QProcess>
-#include <QtSql/QSqlDatabase>
-#include <QtSql/QSqlQuery>
-#include <QtSql/QSqlError>
-#include <QDir>
 #include "commands.h"
-#include "functions.h"
+#include <QProcess>
+#include <QDir>
 #include "models/filename.h"
 #include "models/profile.h"
 #include "models/tag.h"
 #include "sql-worker.h"
+#include "functions.h"
 
 
 

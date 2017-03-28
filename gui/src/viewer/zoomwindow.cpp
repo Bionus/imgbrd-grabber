@@ -1,27 +1,25 @@
+#include "zoomwindow.h"
+#include "ui_zoomwindow.h"
 #include <QApplication>
-#include <QtNetwork>
+#include <QDesktopWidget>
 #include <QMessageBox>
 #include <QShortcut>
 #include <QMenu>
-#include <QDesktopWidget>
 #include <QFileDialog>
 #include <QScrollBar>
-#include "functions.h"
-#include "settings/optionswindow.h"
-#include "reverse-search/reverse-search-loader.h"
 #include "ui/QAffiche.h"
-#include "zoomwindow.h"
-#include "threads/image-loader.h"
-#include "ui_zoomwindow.h"
 #include "models/filename.h"
 #include "models/site.h"
 #include "models/page.h"
 #include "models/profile.h"
-#include "helpers.h"
+#include "reverse-search/reverse-search-loader.h"
+#include "settings/optionswindow.h"
+#include "threads/image-loader.h"
 #include "threads/image-loader-queue.h"
 #include "detailswindow.h"
 #include "mainwindow.h"
-
+#include "helpers.h"
+#include "functions.h"
 
 
 zoomWindow::zoomWindow(QList<QSharedPointer<Image> > images, QSharedPointer<Image> image, Site *site, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)

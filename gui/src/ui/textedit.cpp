@@ -1,16 +1,14 @@
+#include "textedit.h"
 #include <QApplication>
-#include <QCommonStyle>
 #include <QStyleOptionFrameV2>
 #include <QWheelEvent>
 #include <QAbstractItemView>
 #include <QScrollBar>
 #include <QMenu>
 #include <QTextDocumentFragment>
-#include <QFile>
-#include "textedit.h"
-#include "functions.h"
 #include "models/tag.h"
 #include "models/profile.h"
+#include "logger.h"
 
 
 TextEdit::TextEdit(Profile *profile, QWidget *parent)

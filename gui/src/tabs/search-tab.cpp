@@ -1,20 +1,18 @@
-#include <QFile>
+#include "search-tab.h"
 #include <QMouseEvent>
 #include <QMessageBox>
-#include "ui/verticalscrollarea.h"
 #include "ui/textedit.h"
 #include "ui/QBouton.h"
-#include "search-tab.h"
-#include "sources/sourceswindow.h"
-#include "functions.h"
-#include "mainwindow.h"
-#include "viewer/zoomwindow.h"
+#include "ui/verticalscrollarea.h"
 #include "downloader/download-query-image.h"
-#include "models/filename.h"
 #include "models/favorite.h"
 #include "models/page.h"
 #include "models/profile.h"
+#include "sources/sourceswindow.h"
+#include "viewer/zoomwindow.h"
+#include "mainwindow.h"
 #include "helpers.h"
+#include "functions.h"
 
 
 searchTab::searchTab(QMap<QString, Site*> *sites, Profile *profile, mainWindow *parent)

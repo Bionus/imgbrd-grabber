@@ -1,6 +1,6 @@
+#include "filenamewindow.h"
 #include <QDesktopServices>
 #include "ui_filenamewindow.h"
-#include "filenamewindow.h"
 #include "models/image.h"
 #include "models/site.h"
 #include "models/filename.h"

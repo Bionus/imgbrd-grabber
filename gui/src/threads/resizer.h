@@ -1,7 +1,6 @@
 #ifndef RESIZER_H
 #define RESIZER_H
 
-#include <QThread>
 #include <QSize>
 #include <QImage>
 #include <QString>

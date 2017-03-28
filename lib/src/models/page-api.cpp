@@ -1,16 +1,12 @@
 #include "page-api.h"
-#include <QSettings>
-#include <QFile>
-#include <QNetworkCookie>
-#include <iostream>
-#include <QSet>
+#include <QDomDocument>
+#include <math.h>
 #include "page.h"
-#include "vendor/json.h"
-#include "math.h"
-#include "functions.h"
 #include "site.h"
 #include "api.h"
 #include "image.h"
+#include "vendor/json.h"
+#include "logger.h"
 
 
 PageApi::PageApi(Page *parentPage, Profile *profile, Site *site, Api *api, QStringList tags, int page, int limit, QStringList postFiltering, bool smart, QObject *parent, int pool, int lastPage, int lastPageMinId, int lastPageMaxId)

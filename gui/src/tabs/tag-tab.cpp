@@ -1,14 +1,11 @@
-#include <QMessageBox>
-#include <QMenu>
 #include "tag-tab.h"
 #include "ui_tag-tab.h"
+#include <QJsonArray>
 #include "ui/textedit.h"
-#include "viewer/zoomwindow.h"
-#include "searchwindow.h"
 #include "models/page.h"
 #include "models/site.h"
 #include "downloader/download-query-group.h"
-#include "downloader/download-query-image.h"
+#include "searchwindow.h"
 #include "helpers.h"
 
 

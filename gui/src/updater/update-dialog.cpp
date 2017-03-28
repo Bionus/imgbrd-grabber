@@ -1,8 +1,10 @@
-#include <QMessageBox>
-#include <QProcess>
-#include <QDesktopServices>
 #include "update-dialog.h"
 #include "ui_update-dialog.h"
+#include <QMessageBox>
+#include <QProcess>
+#ifndef Q_OS_WIN
+	#include <QDesktopServices>
+#endif
 
 
 UpdateDialog::UpdateDialog(QWidget *parent)

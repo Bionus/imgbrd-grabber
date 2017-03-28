@@ -1,6 +1,6 @@
+#include "profile.h"
 #include <QFile>
 #include <QDir>
-#include "profile.h"
 #include "site.h"
 #include "commands/commands.h"
 

@@ -1,7 +1,5 @@
-#include <QtGlobal>
 #include "aboutwindow.h"
 #include "ui_aboutwindow.h"
-
 
 
 AboutWindow::AboutWindow(QString version, QWidget *parent)

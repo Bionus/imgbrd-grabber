@@ -5,7 +5,7 @@
 #include "source.h"
 #include "api.h"
 #include "custom-network-access-manager.h"
-#include "functions.h"
+#include "logger.h"
 
 
 SourceGuesser::SourceGuesser(QString url, QList<Source*> sources)

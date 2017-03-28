@@ -24,14 +24,12 @@
 #include "batch/adduniquewindow.h"
 #include "batch/batchwindow.h"
 #include "aboutwindow.h"
-#include "functions.h"
 #include "commands/commands.h"
 #include "utils/blacklist-fix/blacklist-fix-1.h"
 #include "utils/rename-existing/rename-existing-1.h"
 #include "utils/empty-dirs-fix/empty-dirs-fix-1.h"
 #include "utils/md5-fix/md5-fix.h"
 #include "models/filename.h"
-#include "helpers.h"
 #include "downloader/downloader.h"
 #include "downloader/download-query-loader.h"
 #include "downloader/download-query-image.h"
@@ -47,6 +45,8 @@
 #include "tabs/tag-tab.h"
 #include "tabs/pool-tab.h"
 #include "tabs/favorites-tab.h"
+#include "helpers.h"
+#include "functions.h"
 
 
 mainWindow::mainWindow(Profile *profile)

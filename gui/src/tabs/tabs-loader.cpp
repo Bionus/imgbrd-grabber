@@ -3,11 +3,11 @@
 #include <QJsonDocument>
 #include <QJsonArray>
 #include <QJsonObject>
+#include "tag-tab.h"
 #include "ui_tag-tab.h"
+#include "pool-tab.h"
 #include "ui_pool-tab.h"
 #include "mainwindow.h"
-#include "pool-tab.h"
-#include "tag-tab.h"
 
 
 bool TabsLoader::load(QString path, QList<tagTab*> &tagTabs, QList<poolTab*> &poolTabs, QList<searchTab*> &allTabs, int &currentTab, Profile *profile, QMap<QString, Site*> &sites, mainWindow *parent)

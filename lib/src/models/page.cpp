@@ -1,15 +1,9 @@
 #include "page.h"
-#include <QSettings>
-#include <QFile>
-#include <QNetworkCookie>
-#include <iostream>
-#include <QSet>
-#include "vendor/json.h"
-#include "math.h"
+#include <math.h>
 #include "site.h"
 #include "api.h"
-#include "functions.h"
-
+#include "vendor/json.h"
+#include "logger.h"
 
 
 Page::Page(Profile *profile, Site *site, QList<Site*> sites, QStringList tags, int page, int limit, QStringList postFiltering, bool smart, QObject *parent, int pool, int lastPage, int lastPageMinId, int lastPageMaxId)

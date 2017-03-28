@@ -1,3 +1,4 @@
+#include "functions.h"
 #include <QSettings>
 #include <QFile>
 #include <QDir>
@@ -9,7 +10,6 @@
 #include <QUrl>
 #include <QLocale>
 #include "math.h"
-#include "functions.h"
 #ifdef Q_OS_WIN
 	#include <windows.h>
 #else
