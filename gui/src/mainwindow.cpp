@@ -2388,7 +2388,7 @@ void mainWindow::loadMd5(QString path, bool newTab, bool background, bool save)
 }
 void mainWindow::loadTag(QString tag, bool newTab, bool background, bool save)
 {
-	if (tag.startsWith("http://"))
+	if (tag.startsWith("http://") || tag.startsWith("https://"))
 	{
 		QDesktopServices::openUrl(tag);
 		return;
