@@ -135,19 +135,24 @@ QStringList searchTab::reasonsToFail(Page* page, QStringList completion, QString
 			if (modifiers.contains(tag[0]))
 				tag = tag.mid(1);
 
-			int lev = (tag.length() / 3) + 2;
-			for (int w = 0; w < completion.size(); w++)
+			int lev = qCeil((tag.length() - 1) / 4.0f);
+			for (QString comp : completion)
 			{
-				int d = levenshtein(tag, completion.at(w));
+				// Ignore tags that are too long
+				if (abs(comp.length() - tag.length()) > lev)
+					continue;
+
+				int d = levenshtein(tag, comp);
 				if (d < lev)
 				{
 					if (results[tag].isEmpty())
 					{ c++; }
-					results[tag] = "<b>"+completion.at(w)+"</b>";
-					clean[tag] = completion.at(w);
+					results[tag] = "<b>"+comp+"</b>";
+					clean[tag] = comp;
 					lev = d;
 				}
 			}
+
 			if (lev == 0)
 			{
 				results[tag] = tag;
