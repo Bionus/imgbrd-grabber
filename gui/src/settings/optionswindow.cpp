@@ -119,6 +119,8 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 		ui->lineFolderFavorites->setText(settings->value("path_favorites").toString());
 		QStringList opts = QStringList() << "save" << "copy" << "move" << "ignore";
 		ui->comboMd5Duplicates->setCurrentIndex(opts.indexOf(settings->value("md5Duplicates", "save").toString()));
+		ui->checkKeepDeletedMd5->setChecked(settings->value("keepDeletedMd5", false).toBool());
+
 		ui->lineFilename->setText(settings->value("filename_real").toString());
 		ui->lineFavorites->setText(settings->value("filename_favorites").toString());
 		ui->lineSeparator->setText(settings->value("separator", " ").toString());
@@ -629,9 +631,12 @@ void optionsWindow::save()
 		}
 		QStringList opts = QStringList() << "save" << "copy" << "move" << "ignore";
 		settings->setValue("md5Duplicates", opts.at(ui->comboMd5Duplicates->currentIndex()));
+		settings->setValue("keepDeletedMd5", ui->checkKeepDeletedMd5->isChecked());
+
 		settings->setValue("filename", ui->lineFilename->text());
 		settings->setValue("filename_real", ui->lineFilename->text());
 		settings->setValue("filename_favorites", ui->lineFavorites->text());
+
 		settings->setValue("artist_empty", ui->lineArtistsIfNone->text());
 		settings->setValue("artist_useall", ui->radioArtistsKeepAll->isChecked());
 		QString artistMultiple;

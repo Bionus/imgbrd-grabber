@@ -221,6 +221,27 @@ void Profile::removeIgnored(QString tag)
 	emit ignoredChanged();
 }
 
+QPair<QString, QString> Profile::md5Action(QString md5)
+{
+	QString action = m_settings->value("Save/md5Duplicates", "save").toString();
+	bool keepDeleted = m_settings->value("Save/keepDeletedMd5", false).toBool();
+
+	bool contains = m_md5s.contains(md5);
+	QString path = contains ? m_md5s[md5] : QString();
+	bool exists = contains && QFile::exists(path);
+
+	if (contains && !exists && !keepDeleted)
+	{
+		removeMd5(md5);
+		path = QString();
+	}
+
+	else if (contains && !exists && keepDeleted)
+		action = "ignore";
+
+	return QPair<QString, QString>(action, path);
+}
+
 /**
  * Check if a file with this md5 already exists;
  * @param	md5		The md5 that needs to be checked.
@@ -233,7 +254,8 @@ QString Profile::md5Exists(QString md5)
 		if (QFile::exists(m_md5s[md5]))
 			return m_md5s[md5];
 
-		removeMd5(md5);
+		if (!m_settings->value("Save/keepDeletedMd5", false).toBool())
+			removeMd5(md5);
 	}
 	return QString();
 }

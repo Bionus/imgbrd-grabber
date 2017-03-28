@@ -14,7 +14,7 @@
    <string>Options</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../../../resources/resources.qrc">
+   <iconset resource="../../../CrashReporter/resources.qrc">
     <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout">
@@ -657,6 +657,16 @@
           </property>
          </widget>
         </item>
+        <item row="4" column="0" colspan="2">
+         <widget class="QCheckBox" name="checkSaveHeaderDetection">
+          <property name="text">
+           <string>Get extension from file header</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
         <item row="5" column="0">
          <widget class="QLabel" name="label_7">
           <property name="text">
@@ -700,58 +710,13 @@
          </layout>
         </item>
         <item row="7" column="0">
-         <widget class="QLabel" name="label_14">
-          <property name="text">
-           <string>Tags separator</string>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="1">
-         <widget class="QLineEdit" name="lineSeparator">
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-        </item>
-        <item row="8" column="0" colspan="2">
-         <widget class="QCheckBox" name="checkReplaceBlanks">
-          <property name="text">
-           <string>Replace spaces by underscores</string>
-          </property>
-         </widget>
-        </item>
-        <item row="10" column="0">
-         <widget class="QLabel" name="label_54">
-          <property name="text">
-           <string>Max length</string>
-          </property>
-         </widget>
-        </item>
-        <item row="10" column="1">
-         <widget class="QSpinBox" name="spinLimit">
-          <property name="maximum">
-           <number>260</number>
-          </property>
-         </widget>
-        </item>
-        <item row="11" column="0" colspan="2">
-         <widget class="QLabel" name="label_55">
-          <property name="text">
-           <string>&lt;i&gt;If the filename length is greater than this number, it will be shortened. Leave it to 0 to use the default limit.&lt;/i&gt;</string>
-          </property>
-          <property name="wordWrap">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="12" column="0">
          <widget class="QLabel" name="label_29">
           <property name="text">
            <string>Simultaneous downloads</string>
           </property>
          </widget>
         </item>
-        <item row="12" column="1">
+        <item row="7" column="1">
          <widget class="QSpinBox" name="spinSimultaneous">
           <property name="minimum">
            <number>1</number>
@@ -761,14 +726,14 @@
           </property>
          </widget>
         </item>
-        <item row="13" column="0">
+        <item row="8" column="0">
          <widget class="QLabel" name="label_83">
           <property name="text">
            <string>When the download is finished</string>
           </property>
          </widget>
         </item>
-        <item row="13" column="1">
+        <item row="8" column="1">
          <widget class="QComboBox" name="comboBatchEnd">
           <item>
            <property name="text">
@@ -797,14 +762,14 @@
           </item>
          </widget>
         </item>
-        <item row="14" column="0">
+        <item row="10" column="0">
          <widget class="QLabel" name="label_19">
           <property name="text">
            <string>If a file already exists</string>
           </property>
          </widget>
         </item>
-        <item row="14" column="1">
+        <item row="10" column="1">
          <widget class="QComboBox" name="comboMd5Duplicates">
           <property name="currentIndex">
            <number>0</number>
@@ -831,44 +796,31 @@
           </item>
          </widget>
         </item>
-        <item row="15" column="0" colspan="2">
+        <item row="11" column="0" colspan="2">
          <widget class="QLabel" name="label_21">
           <property name="text">
            <string>&lt;i&gt;File's identity is based on the MD5 algorithm.&lt;/i&gt;</string>
           </property>
          </widget>
         </item>
-        <item row="16" column="0">
+        <item row="9" column="0">
          <widget class="QLabel" name="label_84">
           <property name="text">
            <string>Automatic redownload</string>
           </property>
          </widget>
         </item>
-        <item row="16" column="1">
+        <item row="9" column="1">
          <widget class="QSpinBox" name="spinAutomaticRetries">
           <property name="maximum">
            <number>100</number>
           </property>
          </widget>
         </item>
-        <item row="9" column="0" colspan="2">
-         <widget class="QCheckBox" name="checkNoJpeg">
+        <item row="12" column="0" colspan="2">
+         <widget class="QCheckBox" name="checkKeepDeletedMd5">
           <property name="text">
-           <string>Replace JPEG by JPG</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="0" colspan="2">
-         <widget class="QCheckBox" name="checkSaveHeaderDetection">
-          <property name="text">
-           <string>Get extension from file header</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
+           <string>Keep deleted files in the MD5 list</string>
           </property>
          </widget>
         </item>
@@ -876,9 +828,6 @@
       </widget>
       <widget class="QWidget" name="pageSaveFilenames">
        <layout class="QFormLayout" name="formLayout_4">
-        <property name="fieldGrowthPolicy">
-         <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-        </property>
         <item row="0" column="0">
          <widget class="QLabel" name="label_8">
           <property name="text">
@@ -944,6 +893,61 @@
            </widget>
           </item>
          </layout>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_14">
+          <property name="text">
+           <string>Tags separator</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QLineEdit" name="lineSeparator">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0" colspan="2">
+         <widget class="QCheckBox" name="checkReplaceBlanks">
+          <property name="text">
+           <string>Replace spaces by underscores</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0" colspan="2">
+         <widget class="QCheckBox" name="checkNoJpeg">
+          <property name="text">
+           <string>Replace JPEG by JPG</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
+         <widget class="QLabel" name="label_54">
+          <property name="text">
+           <string>Max length</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="1">
+         <widget class="QSpinBox" name="spinLimit">
+          <property name="maximum">
+           <number>260</number>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="0" colspan="2">
+         <widget class="QLabel" name="label_55">
+          <property name="text">
+           <string>&lt;i&gt;If the filename length is greater than this number, it will be shortened. Leave it to 0 to use the default limit.&lt;/i&gt;</string>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
         </item>
        </layout>
       </widget>
@@ -2855,9 +2859,6 @@
   <tabstop>checkAutodownload</tabstop>
   <tabstop>lineFolderFavorites</tabstop>
   <tabstop>buttonFolderFavorites</tabstop>
-  <tabstop>lineSeparator</tabstop>
-  <tabstop>checkReplaceBlanks</tabstop>
-  <tabstop>spinLimit</tabstop>
   <tabstop>spinSimultaneous</tabstop>
   <tabstop>lineFilename</tabstop>
   <tabstop>buttonFilenamePlus</tabstop>
@@ -2889,10 +2890,7 @@
   <tabstop>checkAutocompletion</tabstop>
  </tabstops>
  <resources>
-  <include location="../../../resources/resources.qrc"/>
-  <include location="../../../resources/resources.qrc"/>
-  <include location="../../../resources/resources.qrc"/>
-  <include location="../../../resources/resources.qrc"/>
+  <include location="../../../CrashReporter/resources.qrc"/>
  </resources>
  <connections>
   <connection>

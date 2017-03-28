@@ -861,8 +861,9 @@ Image::SaveResult Image::save(QString path, bool force, bool basic, bool addMd5)
 				return SaveResult::Error;
 		}
 
-		QString whatToDo = m_settings->value("Save/md5Duplicates", "save").toString();
-		QString md5Duplicate = m_profile->md5Exists(md5());
+		QPair<QString, QString> md5action = m_profile->md5Action(md5());
+		QString whatToDo = md5action.first;
+		QString md5Duplicate = md5action.second;
 		if (md5Duplicate.isEmpty() || whatToDo == "save" || force)
 		{
 			log(QString("Saving image in <a href=\"file:///%1\">%1</a>").arg(path));

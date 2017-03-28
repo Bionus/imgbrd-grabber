@@ -1763,8 +1763,9 @@ void mainWindow::getAllGetImage(QSharedPointer<Image> img)
 	QStringList paths = img->path(path, p, m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + 1, true, false, true, true, true);
 
 	// Action
-	QString whatToDo = m_settings->value("Save/md5Duplicates", "save").toString();
-	QString md5Duplicate = m_profile->md5Exists(img->md5());
+	QPair<QString, QString> md5action = m_profile->md5Action(img->md5());
+	QString whatToDo = md5action.first;
+	QString md5Duplicate = md5action.second;
 	bool next = true;
 	if (md5Duplicate.isEmpty() || whatToDo == "save")
 	{
@@ -1892,8 +1893,9 @@ void mainWindow::saveImage(QSharedPointer<Image> img, QString path, QString p, b
 			{ path.replace("%n%", QString::number(m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors)); }
 			QString fp = QDir::toNativeSeparators(path);
 
-			QString whatToDo = m_settings->value("Save/md5Duplicates", "save").toString();
-			QString md5Duplicate = m_profile->md5Exists(img->md5());
+			QPair<QString, QString> md5action = m_profile->md5Action(img->md5());
+			QString whatToDo = md5action.first;
+			QString md5Duplicate = md5action.second;
 			if (md5Duplicate.isEmpty() || whatToDo == "save")
 			{
 				// Create the reception's directory

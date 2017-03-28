@@ -27,6 +27,8 @@ class ProfileTest : public TestSuite
 		void testAddMd5();
 		void testUpdateMd5();
 		void testRemoveMd5();
+		void testMd5ActionDontKeepDeleted();
+		void testMd5ActionKeepDeleted();
 
 	private:
 		Profile *m_profile;
