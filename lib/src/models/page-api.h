@@ -3,14 +3,14 @@
 
 #include <QMap>
 #include <QNetworkReply>
-#include <QSslError>
-#include "image.h"
 #include "tag.h"
 
 
 class Page;
 class Api;
 class Profile;
+class Image;
+class Site;
 
 class PageApi : public QObject
 {
@@ -29,7 +29,7 @@ class PageApi : public QObject
 		void			load(bool rateLimit = false);
 		void			loadTags();
 		QUrl			parseUrl(QString url, int pid = -1, int p = -1, QString t = "", QString pseudo = "", QString password = "");
-		QList<QSharedPointer<Image> > images();
+		QList<QSharedPointer<Image>> images();
 		int				imagesCount(bool guess = true);
 		int				pagesCount(bool guess = true);
 		QUrl			url();

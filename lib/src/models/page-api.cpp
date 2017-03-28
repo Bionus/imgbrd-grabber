@@ -10,7 +10,7 @@
 #include "functions.h"
 #include "site.h"
 #include "api.h"
-
+#include "image.h"
 
 
 PageApi::PageApi(Page *parentPage, Profile *profile, Site *site, Api *api, QStringList tags, int page, int limit, QStringList postFiltering, bool smart, QObject *parent, int pool, int lastPage, int lastPageMinId, int lastPageMaxId)

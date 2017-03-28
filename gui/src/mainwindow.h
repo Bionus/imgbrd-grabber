@@ -2,7 +2,6 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QFileSystemWatcher>
 #include <QSettings>
 #include <QProcess>
 #include <QTranslator>

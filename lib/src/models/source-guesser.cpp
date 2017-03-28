@@ -1,5 +1,7 @@
 #include "source-guesser.h"
 #include <QEventLoop>
+#include <QNetworkRequest>
+#include <QNetworkReply>
 #include "source.h"
 #include "api.h"
 #include "custom-network-access-manager.h"

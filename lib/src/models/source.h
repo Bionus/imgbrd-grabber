@@ -3,8 +3,6 @@
 
 #include <QString>
 #include <QList>
-#include <QMap>
-#include <QNetworkReply>
 #include "updater/source-updater.h"
 
 

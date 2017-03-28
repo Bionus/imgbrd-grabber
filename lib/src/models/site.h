@@ -8,7 +8,6 @@
 #include <QList>
 #include <QNetworkReply>
 #include <QUrl>
-#include <QSslError>
 #include <functional>
 #include "models/tag.h"
 

@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QList>
 #include <QMap>
+#include <QUrl>
 
 
 class CustomNetworkAccessManager;

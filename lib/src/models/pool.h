@@ -4,7 +4,6 @@
 #include <QString>
 
 
-
 class Pool
 {
 	public:

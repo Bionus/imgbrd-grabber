@@ -6,6 +6,7 @@
 #include "functions.h"
 #include "models/site.h"
 #include "models/page.h"
+#include "models/image.h"
 
 
 Downloader::Downloader()

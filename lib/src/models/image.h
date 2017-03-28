@@ -5,7 +5,6 @@
 #include <QNetworkReply>
 #include <QDateTime>
 #include <QPixmap>
-#include <QSslError>
 #include <QSettings>
 #include "tag.h"
 #include "pool.h"

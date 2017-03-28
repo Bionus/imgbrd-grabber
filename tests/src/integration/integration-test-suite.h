@@ -6,6 +6,7 @@
 #include "downloader/downloader.h"
 #include "models/source.h"
 #include "models/site.h"
+#include "models/image.h"
 
 
 class IntegrationTestSuite : public TestSuite

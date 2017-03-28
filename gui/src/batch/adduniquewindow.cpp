@@ -9,6 +9,7 @@
 #include "models/filename.h"
 #include "models/site.h"
 #include "models/profile.h"
+#include "models/image.h"
 #include "downloader/download-query-image.h"
 
 
