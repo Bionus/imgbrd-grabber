@@ -254,6 +254,7 @@ void mainWindow::init(QStringList args, QMap<QString,QString> params)
 	ui->lineFolder->setCompleter(new QCompleter(m_lineFolder_completer));
 	//m_lineFilename_completer = QStringList(m_settings->value("Save/filename").toString());
 	//ui->lineFilename->setCompleter(new QCompleter(m_lineFilename_completer));
+	ui->comboFilename->setAutoCompletionCaseSensitivity(Qt::CaseSensitive);
 
 	connect(m_profile, &Profile::favoritesChanged, this, &mainWindow::updateFavorites);
 	connect(m_profile, &Profile::keptForLaterChanged, this, &mainWindow::updateKeepForLater);
