@@ -9,7 +9,10 @@ Thanks to its powerful naming features, you just have to set your filename and s
 
 Grabber works on Windows, Mac, and Linux.
 
+
+
 ## Main features
+
 * Browse images from the internet
 * Download thousands of images at once
 * Save images using a custom format, for example `%artist%/%copyright%/%character%/%md5%.%ext%`, or using Javascript code. See [Filename](https://github.com/Bionus/imgbrd-grabber/wiki/Commands) for details.
@@ -29,15 +32,63 @@ Grabber works on Windows, Mac, and Linux.
 * Proxy support
 * ... and a lot more!
 
+
+
 ## Languages
-* English
-* French
-* Russian
-* Chinese (simplified)
-* Spanish
+
+<div class="flags" markdown="1">
+<div class="flag" markdown="1">
+![](assets/img/flags/en.png)
+
+English
+</div>
+
+<div class="flag" markdown="1">
+![](assets/img/flags/fr.png)
+
+French
+</div>
+
+<div class="flag" markdown="1">
+![](assets/img/flags/ru.png)
+
+Russian
+</div>
+
+<div class="flag" markdown="1">
+![](assets/img/flags/cn.png)
+
+Chinese (simplified)
+</div>
+
+<div class="flag" markdown="1">
+![](assets/img/flags/sp.png)
+
+Spanish
+</div>
+</div>
+
+
 
 ## Default sources
-You can add additional sources very easily, but here's a shot list of some sources that are included and supported by default: Danbooru, Gelbooru, yande.re, Shimmie, Sankaku complex, e621, Konachan, rule34, safebooru, behoimi, Zerochan...
+
+You can add additional sources very easily, but here's a few sources that are included and supported by default:
+* Danbooru
+* Gelbooru
+* yande.re
+* Shimmie
+* Sankaku complex
+* e621
+* Konachan
+* rule34
+* safebooru
+* behoimi
+* Zerochan
+
+
 
 ## Contact
-If you have any questions about the program, found a bug and don't want to use the github issue tracker, or anything, you can contact me by mail in French or in English at [bio.nus@hotmail.fr](mailto:bio.nus@hotmail.fr). Please prefer using Github's built-in issue tracker though, as the answer to your question or problem might help other people!
+
+If you have any questions about the program, found a bug and don't want to use the github issue tracker, or anything, you can contact me by mail in French or in English at [bio.nus@hotmail.fr](mailto:bio.nus@hotmail.fr).
+
+Please prefer using Github's built-in [issue tracker](https://github.com/Bionus/imgbrd-grabber/issues) though, as the answer to your question or problem might help other people!
