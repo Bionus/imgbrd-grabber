@@ -126,8 +126,10 @@ section {
 section h2 {
 	clear: both;
 	text-align: center;
-	margin: 30px 0 20px 0;
+	margin: 30px 0 30px 0;
 	font-size: 30px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #ccc;
 
 	@media screen and (max-width: $screen-xs-max) {
 		font-size: 26px;
@@ -138,6 +140,7 @@ section .feature {
 	clear: both;
 	padding: 20px 0;
 	overflow: hidden;
+	border-bottom: 2px dotted #eee;
 }
 section .feature:first-child {
 	padding-top: 0;
