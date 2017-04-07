@@ -134,24 +134,49 @@ section h2 {
 	}
 }
 
-section article {
+section .feature {
 	clear: both;
-	padding: 20px 0;
+	margin: 20px 0;
 	overflow: hidden;
 }
 
-section article img {
-	width: 40%;
+section .feature > ul {
+	overflow: hidden;
+}
+
+section .feature > p:first-child,
+section .feature > p:last-child {
+	margin-bottom: 0;
+}
+
+section .feature img {
+	width: 30%;
 	float: left;
 	margin-right: 5%;
+
+	@media screen and (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
+		width: 40%;
+	}
+
+	@media screen and (max-width: $screen-xs-max) {
+		width: 100%;
+		float: none;
+		margin-right: 0;
+		margin-bottom: 10px;
+	}
 }
-section article:nth-of-type(2n) img {
+section .feature:nth-of-type(2n) img {
 	float: right;
 	margin-left: 5%;
 	margin-right: 0;
+
+	@media screen and (max-width: $screen-xs-max) {
+		float: none;
+		margin-left: 0;
+	}
 }
 
-section article h3 {
+section .feature h3 {
 	margin-top: 0;
 	font-size: 26px;
 	clear: none;

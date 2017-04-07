@@ -11,26 +11,45 @@ Grabber works on Windows, Mac, and Linux.
 
 
 
-## Main features
+## Features
+
+<div class="feature" markdown="1">
+[![](assets/img/screenshots/search.png)](assets/img/screenshots/search.png)
+
+### Browse
 
 * Browse images from the internet
-* Download thousands of images at once
-* Save images using a custom format, for example `%artist%/%copyright%/%character%/%md5%.%ext%`, or using Javascript code. See [Filename](https://github.com/Bionus/imgbrd-grabber/wiki/Commands) for details.
-* Add your own imageboards very easily
-* Authentication for sources behind a login wall
-* Command line interface to download images
-* Download single images using their md5 or id
 * Tabs to make multiple searchs at the same time
 * Able to show results from multiple imageboards at the same time in a single tab
-* Merge results from these imageboards (i.e. remove duplicates in results)
-* Favorite and "view it later" tags
+* Remove duplicate results from multiple-imageboard searches
 * Auto-completion of tags in the search field
-* Post-filtering (useful for imageboards limiting the number of tags you can use in a single search)
-* Autodownload images as you search according to a whitelist
-* Can add entries to a database for each image or tag while downloading. See [Commands](https://github.com/Bionus/imgbrd-grabber/wiki/Commands) for details.
 * Blacklisting of tags to mark or hide images you don't want to see
 * Proxy support
-* ... and a lot more!
+* Post-filtering (useful for imageboards limiting the number of tags you can use in a single search)
+* Auto-download images as you search according to a whitelist
+</div>
+
+<div class="feature" markdown="1">
+[![](assets/img/screenshots/download.png)](assets/img/screenshots/download.png)
+
+### Download
+
+* Download thousands of images at once
+* Save images using a custom format, for example `%artist%/%copyright%/%character%/%md5%.%ext%`, or using Javascript code. See [Filename](https://github.com/Bionus/imgbrd-grabber/wiki/Filename) for details.
+* Download single images using their MD5 or ID
+* Favorite and "view it later" tags
+* Command line interface to download images
+</div>
+
+<div class="feature" markdown="1">
+[![](assets/img/screenshots/sources.png)](assets/img/screenshots/sources.png)
+
+### Many sources
+
+* Add your own imageboards very easily
+* Authentication for sources behind a login wall
+* Can add entries to a database for each image or tag while downloading. See [Commands](https://github.com/Bionus/imgbrd-grabber/wiki/Commands) for details.
+</div>
 
 
 
