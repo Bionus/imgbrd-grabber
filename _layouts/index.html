@@ -16,7 +16,7 @@
       <header>
         <div class="container">
           {% if site.icon %}
-            <img src="{{ '/assets/img/' | append: site.icon }}" alt="" />
+            <img src="{{ '/assets/img/' | append: site.icon | relative_url }}" alt="" />
           {% endif %}
 
           <div class="hright">
