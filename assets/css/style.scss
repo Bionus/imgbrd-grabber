@@ -136,8 +136,15 @@ section h2 {
 
 section .feature {
 	clear: both;
-	margin: 20px 0;
+	padding: 20px 0;
 	overflow: hidden;
+}
+section .feature:first-child {
+	padding-top: 0;
+}
+section .feature:last-child {
+	padding-bottom: 0;
+	border-bottom: none;
 }
 
 section .feature > ul {

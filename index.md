@@ -13,6 +13,7 @@ Grabber works on Windows, Mac, and Linux.
 
 ## Features
 
+<div class="features" markdown="1">
 <div class="feature" markdown="1">
 [![](assets/img/screenshots/search.png)](assets/img/screenshots/search.png)
 
@@ -49,6 +50,7 @@ Grabber works on Windows, Mac, and Linux.
 * Add your own imageboards very easily
 * Authentication for sources behind a login wall
 * Can add entries to a database for each image or tag while downloading. See [Commands](https://github.com/Bionus/imgbrd-grabber/wiki/Commands) for details.
+</div>
 </div>
 
 
