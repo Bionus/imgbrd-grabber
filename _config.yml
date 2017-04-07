@@ -9,3 +9,9 @@ lang: en_US
 
 gems:
 - jekyll-seo-tag
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      image: assets/img/icon.png
