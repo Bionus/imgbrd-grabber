@@ -4,6 +4,16 @@
 @import "fonts";
 
 
+/* Responsive */
+
+$screen-xs-max: 767px;
+$screen-sm-min: 768px;
+$screen-sm-max: 991px;
+$screen-md-min: 992px;
+$screen-md-max: 1199px;
+$screen-lg-min: 1200px;
+
+
 /* Global */
 
 html {
@@ -16,6 +26,10 @@ html {
 body {
 	color: #333;
 	margin-bottom: 80px;
+
+	@media screen and (max-width: $screen-xs-max) {
+		margin-bottom: 50px;
+	}
 }
 
 img {
@@ -29,11 +43,21 @@ header {
 	background-image: url('../img/lightnoise.png');
 	background-color: #eaeff2;
 	padding: 50px 0;
+
+	@media screen and (max-width: $screen-xs-max) {
+		padding: 15px 0;
+		text-align: center;
+	}
 }
 
 header img {
 	float: left;
 	margin: 40px 50px 0 0;
+
+	@media screen and (max-width: $screen-xs-max) {
+		float: none;
+		margin: 0 0 20px 0;
+	}
 }
 
 header h1 {
@@ -63,6 +87,10 @@ header p.download a {
 	color: #fff;
 	font-size: 20px;
 	text-align: center;
+
+	@media screen and (max-width: $screen-xs-max) {
+		width: 100%;
+	}
 }
 header p.download a:hover,
 header p.download a:active {
@@ -85,12 +113,21 @@ header nav ul {
 
 section {
 	padding: 30px 0;
+
+	@media screen and (max-width: $screen-xs-max) {
+		padding: 15px 0;
+	}
 }
 
 section h2 {
 	clear: both;
 	text-align: center;
 	margin: 30px 0 20px 0;
+	font-size: 30px;
+
+	@media screen and (max-width: $screen-xs-max) {
+		font-size: 26px;
+	}
 }
 
 section article {
@@ -121,6 +158,10 @@ section .flags .flag {
 	width: 20%;
 	text-align: center;
 	overflow: hidden;
+
+	@media screen and (max-width: $screen-xs-max) {
+		width: 50%;
+	}
 }
 section .flags .flag:last-child {
 	float: none;
@@ -143,6 +184,11 @@ footer {
     width: 100%;
     overflow: hidden;
     line-height: 20px;
+
+	@media screen and (max-width: $screen-xs-max) {
+		padding: 15px 0;
+		height: 50px;
+	}
 }
 
 footer p {
