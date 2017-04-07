@@ -1,1 +1,7 @@
-theme: jekyll-theme-minimal
+title:
+subtitle:
+description:
+icon: icon.png
+show_download: true
+google_analytics:
+theme:

@@ -1,0 +1,62 @@
+  <!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <title>{{ site.title | default: site.github.repository_name }}</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}" />
+    <meta name="viewport" content="width=device-width" />
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <div class="container">
+          {% if site.icon %}
+            <img src="{{ '/assets/img/' | append: site.icon }}" alt="" />
+          {% endif %}
+
+          <div class="hright">
+            <h1>{{ site.title | default: site.github.repository_name }}</h1>
+            {% if site.subtitle %}
+              <p class="subtitle">{{ site.subtitle }}</p>
+            {% endif %}
+            <p class="description">{{ site.description | default: site.github.project_tagline }}</p>
+
+            {% if site.show_download %}
+              <p class="download"><a href="{{ site.github.releases_url | append: '/latest' }}">Free Download</a></p>
+            {% endif %}
+            <p class="view"><a href="{{ site.github.repository_url }}">View the Project on GitHub</a></p>
+          </div>
+        </div>
+      </header>
+
+      <section>
+        <div class="container">
+          {{ content }}
+        </div>
+      </section>
+
+      <footer>
+        <div class="container">
+          <p>This project is maintained by <a href="{{ site.github.owner_url }}">{{ site.github.owner_name }}</a></p>
+        </div>
+      </footer>
+    </div>
+
+    {% if site.google_analytics %}
+      <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+          ga('create', '{{ site.google_analytics }}', 'auto');
+          ga('send', 'pageview');
+      </script>
+    {% endif %}
+  </body>
+</html>

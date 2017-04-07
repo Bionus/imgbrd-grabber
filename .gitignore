@@ -1,3 +1,9 @@
+# Jekyll
+
+_site
+.sass-cache
+
+
 # Grabber
 
 *.qm

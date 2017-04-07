@@ -1,0 +1,132 @@
+---
+---
+
+@import "fonts";
+
+
+/* Global */
+
+html {
+	position: relative;
+	min-height: 100%;
+	font: 14px/1.5 "Noto Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-weight:400;
+}
+
+body {
+	color: #333;
+	margin-bottom: 80px;
+}
+
+img {
+	max-width: 100%;
+}
+
+
+/* Header */
+
+header {
+	background-image: url('../img/lightnoise.png');
+	background-color: #eaeff2;
+	padding: 50px 0;
+}
+
+header img {
+	float: left;
+	margin: 40px 50px 0 0;
+}
+
+header h1 {
+	margin-top: 0;
+}
+
+header .hright {
+	overflow: hidden;
+}
+
+header p.subtitle {
+	font-size: 20px;
+}
+
+header p.download {
+	margin-top: 25px;
+	margin-bottom: 5px;
+}
+header p.download a {
+	display: block;
+	width: 300px;
+	height: 50px;
+	padding: 8px 0;
+	line-height: 36px;
+	background-color: #4a4;
+	border-radius: 4px;
+	color: #fff;
+	font-size: 20px;
+	text-align: center;
+}
+header p.download a:hover,
+header p.download a:active {
+	text-decoration: none;
+	background-color: #6b6;
+}
+
+header p.view {
+	margin-bottom: 0;
+}
+
+header nav ul {
+	list-style: none;
+	padding-left: 0;
+}
+
+
+
+/* Body */
+
+section {
+	padding: 30px 0;
+}
+
+section article {
+	clear: both;
+	padding: 20px 0;
+	overflow: hidden;
+}
+
+section article img {
+	width: 40%;
+	float: left;
+	margin-right: 5%;
+}
+section article:nth-of-type(2n) img {
+	float: right;
+	margin-left: 5%;
+	margin-right: 0;
+}
+
+section article h2 {
+	margin-top: 0;
+	font-size: 26px;
+}
+
+
+/* Footer */
+
+footer {
+	background-color: #eaeff2;
+	padding: 30px 0;
+	height: 80px;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 20px;
+}
+
+footer p {
+	margin: 0;
+	text-align: center;
+	font-size: 12px;
+	color: #555;
+}
