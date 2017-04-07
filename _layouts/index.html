@@ -10,13 +10,14 @@
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+    {% seo title=false %}
   </head>
   <body>
     <div class="wrapper">
       <header>
         <div class="container">
-          {% if site.icon %}
-            <img src="{{ '/assets/img/' | append: site.icon | relative_url }}" alt="" />
+          {% if site.logo %}
+            <img src="{{ site.logo | relative_url }}" alt="" />
           {% endif %}
 
           <div class="hright">
