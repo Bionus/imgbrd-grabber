@@ -19,7 +19,6 @@ Grabber works on Windows, Mac, and Linux.
 
 ### Browse
 
-* Browse images from the internet
 * Tabs to make multiple searchs at the same time
 * Able to show results from multiple imageboards at the same time in a single tab
 * Remove duplicate results from multiple-imageboard searches
@@ -36,20 +35,33 @@ Grabber works on Windows, Mac, and Linux.
 ### Download
 
 * Download thousands of images at once
-* Save images using a custom format, for example `%artist%/%copyright%/%character%/%md5%.%ext%`, or using Javascript code. See [Filename](https://github.com/Bionus/imgbrd-grabber/wiki/Filename) for details.
 * Download single images using their MD5 or ID
-* Favorite and "view it later" tags
 * Command line interface to download images
 </div>
 
 <div class="feature" markdown="1">
 [![](assets/img/screenshots/sources.png)](assets/img/screenshots/sources.png)
 
-### Many sources
+### Customize
 
 * Add your own imageboards very easily
 * Authentication for sources behind a login wall
+* Theme support using CSS. See [Themes](https://github.com/Bionus/imgbrd-grabber/wiki/Themes) for details.
+* Many sources included by default, such as: Danbooru, Gelbooru, yande.re, Shimmie, Sankaku complex, e621, Konachan, rule34, safebooru, behoimi, Zerochan...
+</div>
+
+<div class="feature" markdown="1">
+[![](assets/img/screenshots/download.png)](assets/img/screenshots/download.png)
+
+### Organize
+
+* Save images using a custom format, for example `%artist%/%copyright%/%character%/%md5%.%ext%`, or using Javascript code. See [Filename](https://github.com/Bionus/imgbrd-grabber/wiki/Filename) for details.
+* Favorite tags to keep track of new images
+* "View it later" tags to save a search for later
+* Support saving images directly to a local booru, such as [Shimmie](https://github.com/Bionus/imgbrd-grabber/wiki/Shimmie), [Gelbooru](https://github.com/Bionus/imgbrd-grabber/wiki/Gelbooru) or [MyImouto](https://github.com/Bionus/imgbrd-grabber/wiki/MyImouto).
 * Can add entries to a database for each image or tag while downloading. See [Commands](https://github.com/Bionus/imgbrd-grabber/wiki/Commands) for details.
+* Conditional filenames triggered by a tag
+* Rename already downloaded images
 </div>
 </div>
 
@@ -88,23 +100,6 @@ Chinese (simplified)
 Spanish
 </div>
 </div>
-
-
-
-## Default sources
-
-You can add additional sources very easily, but here's a few sources that are included and supported by default:
-* Danbooru
-* Gelbooru
-* yande.re
-* Shimmie
-* Sankaku complex
-* e621
-* Konachan
-* rule34
-* safebooru
-* behoimi
-* Zerochan
 
 
 
