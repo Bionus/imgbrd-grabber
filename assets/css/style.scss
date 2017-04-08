@@ -191,6 +191,13 @@ section .feature:last-child {
 	border-bottom: none;
 }
 
+section .feature > p:first-child a {
+	display: none;
+}
+section .feature > p:first-child a:first-child {
+	display: inline;
+}
+
 section .feature > ul {
 	overflow: hidden;
 }
