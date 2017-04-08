@@ -125,7 +125,7 @@ Behoimi
 </div>
 
 <div class="feature" markdown="1">
-[![](assets/img/screenshots/download.png)](assets/img/screenshots/download.png)
+[![](assets/img/screenshots/filename.png)](assets/img/screenshots/filename.png)
 
 ### Organize
 
