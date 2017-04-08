@@ -136,6 +136,34 @@ section h2 {
 	}
 }
 
+section .sources > p {
+	margin-bottom: 25px;
+	text-align: center;
+	margin-top: -15px;
+}
+
+section .sources .source {
+	float: left;
+	width: 20%;
+	text-align: center;
+	overflow: hidden;
+	margin-bottom: 20px;
+
+	@media screen and (max-width: $screen-xs-max) {
+		width: 40%;
+	}
+}
+section .sources .source:last-child {
+	float: none;
+}
+
+section .sources .source p {
+	margin-bottom: 0;
+}
+section .sources .source img {
+	margin-bottom: 10px;
+}
+
 section .feature {
 	clear: both;
 	padding: 20px 0;

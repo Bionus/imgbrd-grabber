@@ -11,6 +11,80 @@ Grabber works on Windows, Mac, and Linux.
 
 
 
+## Sources
+
+<div class="sources" markdown="1">
+<i>Note that those are only a few sources present by default, but you can add as many as you want very easily!</i>
+
+<div class="source" markdown="1">
+![](assets/img/sources/danbooru.png)
+
+Danbooru
+</div>
+
+<div class="source" markdown="1">
+![](assets/img/sources/gelbooru.png)
+
+Gelbooru
+</div>
+
+<div class="source" markdown="1">
+![](assets/img/sources/shimmie.png)
+
+Shimmie
+</div>
+
+<div class="source" markdown="1">
+![](assets/img/sources/sankaku.png)
+
+Sankaku Complex
+</div>
+
+<div class="source" markdown="1">
+![](assets/img/sources/yandere.png)
+
+Yande.re
+</div>
+
+<div class="source" markdown="1">
+![](assets/img/sources/e621.png)
+
+e621
+</div>
+
+<div class="source" markdown="1">
+![](assets/img/sources/konachan.png)
+
+Konachan
+</div>
+
+<div class="source" markdown="1">
+![](assets/img/sources/zerochan.png)
+
+Zerochan
+</div>
+
+<div class="source" markdown="1">
+![](assets/img/sources/rule34.png)
+
+rule34
+</div>
+
+<div class="source" markdown="1">
+![](assets/img/sources/safebooru.png)
+
+Safebooru
+</div>
+
+<div class="source" markdown="1">
+![](assets/img/sources/behoimi.png)
+
+Behoimi
+</div>
+</div>
+
+
+
 ## Features
 
 <div class="features" markdown="1">
@@ -47,7 +121,7 @@ Grabber works on Windows, Mac, and Linux.
 * Add your own imageboards very easily
 * Authentication for sources behind a login wall
 * Theme support using CSS. See [Themes](https://github.com/Bionus/imgbrd-grabber/wiki/Themes) for details.
-* Many sources included by default, such as: Danbooru, Gelbooru, yande.re, Shimmie, Sankaku complex, e621, Konachan, rule34, safebooru, behoimi, Zerochan...
+* Lots of options to customize the program's behaviour
 </div>
 
 <div class="feature" markdown="1">
