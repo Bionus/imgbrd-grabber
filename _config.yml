@@ -7,6 +7,13 @@ google_analytics:
 theme:
 lang: en_US
 
+exclude:
+- release/
+- releases/
+- cli/build/
+- gui/build/
+- tests/build/
+
 gems:
 - jekyll-seo-tag
 
