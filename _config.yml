@@ -17,6 +17,9 @@ exclude:
 gems:
 - jekyll-seo-tag
 
+webmaster_verifications:
+  google: HUsU9v5lhoPPeKdafhViSRi1NofQwzQrRwLN1nEzsA8
+
 defaults:
   - scope:
       path: ""
