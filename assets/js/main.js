@@ -9,7 +9,7 @@ $(function() {
 		feature++;
 	}),
 	$('.fancybox').fancybox({
-		thumbs: true,
+		thumbs: false,
 		fullScreen: false
 	});
 });
