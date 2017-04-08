@@ -52,6 +52,11 @@ header .nav {
 	background-color: #fff;
 	border-radius: 0 0 10px 10px;
 	overflow: hidden;
+	margin-top: 0;
+
+	@media screen and (max-width: $screen-xs-max) {
+		border-radius: 0;
+	}
 }
 header .nav > li > a:focus,
 header .nav > li > a:hover {
@@ -163,7 +168,7 @@ section .sources .source {
 	margin-bottom: 20px;
 
 	@media screen and (max-width: $screen-xs-max) {
-		width: 40%;
+		width: 33.333%;
 	}
 }
 section .sources .source:last-child {
