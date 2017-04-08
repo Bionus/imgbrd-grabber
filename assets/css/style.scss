@@ -45,7 +45,20 @@ ul {
 
 header {
 	background-image: url('../img/lightnoise.png');
-	background-color: #eaeff2;
+	background-color: #eef;
+}
+
+header .nav {
+	background-color: #fff;
+	border-radius: 0 0 10px 10px;
+	overflow: hidden;
+}
+header .nav > li > a:focus,
+header .nav > li > a:hover {
+	background-color: #f5f5ff;
+}
+
+header .head {
 	padding: 50px 0;
 
 	@media screen and (max-width: $screen-xs-max) {
@@ -54,7 +67,7 @@ header {
 	}
 }
 
-header img {
+header .head img {
 	float: left;
 	margin: 40px 50px 0 0;
 

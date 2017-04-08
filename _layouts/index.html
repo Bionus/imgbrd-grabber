@@ -16,21 +16,29 @@
     <div class="wrapper">
       <header>
         <div class="container">
-          {% if site.logo %}
-            <img src="{{ site.logo | relative_url }}" alt="" />
-          {% endif %}
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="{{ site.github.repository_url }}/wiki">Documentation</a></li>
+            <li><a href="{{ site.github.repository_url }}/blob/master/LICENSE">License</a></li>
+            <li><a href="{{ site.github.repository_url }}/issues">Issue tracker</a></li>
+          </ul>
 
-          <div class="hright">
-            <h1>{{ site.title | default: site.github.repository_name }}</h1>
-            {% if site.subtitle %}
-              <p class="subtitle">{{ site.subtitle }}</p>
+          <div class="head">
+            {% if site.logo %}
+              <img src="{{ site.logo | relative_url }}" alt="" />
             {% endif %}
-            <p class="description">{{ site.description | default: site.github.project_tagline }}</p>
 
-            {% if site.show_download %}
-              <p class="download"><a href="{{ site.github.releases_url | append: '/latest' }}">Free Download</a></p>
-            {% endif %}
-            <p class="view"><a href="{{ site.github.repository_url }}">View the Project on GitHub</a></p>
+            <div class="hright">
+              <h1>{{ site.title | default: site.github.repository_name }}</h1>
+              {% if site.subtitle %}
+                <p class="subtitle">{{ site.subtitle }}</p>
+              {% endif %}
+              <p class="description">{{ site.description | default: site.github.project_tagline }}</p>
+
+              {% if site.show_download %}
+                <p class="download"><a href="{{ site.github.releases_url | append: '/latest' }}">Free Download</a></p>
+              {% endif %}
+              <p class="view"><a href="{{ site.github.repository_url }}">View the Project on GitHub</a></p>
+            </div>
           </div>
         </div>
       </header>
