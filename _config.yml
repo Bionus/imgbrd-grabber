@@ -3,7 +3,7 @@ subtitle: Booru browsing made easy
 description: Very customizable imageboard/booru browser and mass downloader, with powerful filenaming features.
 logo: assets/img/icon.png
 show_download: true
-google_analytics:
+google_analytics: UA-22768717-4
 theme:
 lang: en_US
 
