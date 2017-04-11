@@ -292,25 +292,36 @@ void searchTab::failedLoading(Page *page)
 
 void searchTab::postLoading(Page *page, QList<QSharedPointer<Image>> source)
 {
-	if (ui_progressMergeResults != nullptr)
-		ui_progressMergeResults->setValue(ui_progressMergeResults->value() + 1);
+	m_page++;
 
-	QList<QSharedPointer<Image>> imgs;
-	if (!waitForMergedResults(source, imgs))
-		return;
+	bool merged = ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked();
+	QList<QSharedPointer<Image>> imgs = merged ? mergeResults(source) : source;
 
-	if (ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked())
+	if (merged)
 	{
+		// Increase the progress bar status
 		if (ui_progressMergeResults != nullptr)
+			ui_progressMergeResults->setValue(ui_progressMergeResults->value() + 1);
+
+		// Hide progress bar when we load the last page
+		if (ui_stackedMergeResults != nullptr)
 			ui_stackedMergeResults->setCurrentIndex(1);
 
-		QLabel *txt = new QLabel(this);
-		txt->setOpenExternalLinks(true);
-		setMergedLabelText(txt, imgs);
-		m_pageLabels.insert(nullptr, txt);
+		// Create the label when loading the first page
+		if (m_page == 1)
+		{
+			QLabel *txt = new QLabel(this);
+			txt->setOpenExternalLinks(true);
+			setMergedLabelText(txt, m_images);
+			m_pageLabels.insert(nullptr, txt);
 
-		ui_layoutResults->addWidget(txt, 0, 0);
-		ui_layoutResults->setRowMinimumHeight(0, txt->sizeHint().height() + 10);
+			ui_layoutResults->addWidget(txt, 0, 0);
+			ui_layoutResults->setRowMinimumHeight(0, txt->sizeHint().height() + 10);
+		}
+
+		// Re-organize grid
+		if (!m_boutons.isEmpty())
+			redoLayout(m_layouts[nullptr]);
 	}
 
 	loadImageThumbnails(page, imgs);
@@ -344,7 +355,7 @@ void searchTab::finishedLoadingTags(Page *page)
 			imgs.append(img);
 
 	if (ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked() && m_pageLabels.contains(nullptr))
-		setMergedLabelText(m_pageLabels[nullptr], imgs);
+		setMergedLabelText(m_pageLabels[nullptr], m_images);
 	else if (m_pageLabels.contains(page))
 		setPageLabelText(m_pageLabels[page], page, imgs);
 }
@@ -437,19 +448,8 @@ void searchTab::finishedLoadingPreview()
 	addResultsImage(img, merge);
 }
 
-bool searchTab::waitForMergedResults(QList<QSharedPointer<Image>> results, QList<QSharedPointer<Image>> &imgs)
+QList<QSharedPointer<Image>> searchTab::mergeResults(QList<QSharedPointer<Image>> results)
 {
-	m_page++;
-
-	if (ui_checkMergeResults == nullptr || !ui_checkMergeResults->isChecked())
-	{
-		imgs = results;
-		return true;
-	}
-
-	if (m_page != m_pages.size())
-		return false;
-
 	QStringList md5s;
 	for (int i = 0; i < m_images.count(); i++)
 	{
@@ -458,13 +458,16 @@ bool searchTab::waitForMergedResults(QList<QSharedPointer<Image>> results, QList
 			continue;
 
 		if (md5s.contains(md5))
+		{
+			QSharedPointer<Image> img = m_images[i];
 			m_images.removeAt(i--);
+			results.removeOne(img);
+		}
 		else
 			md5s.append(md5);
 	}
 
-	imgs = m_images;
-	return true;
+	return m_images;
 }
 
 void searchTab::addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage)
@@ -616,6 +619,31 @@ void searchTab::addResultsImage(QSharedPointer<Image> img, bool merge)
 	layout->addWidget(button, row, column);
 
 	m_boutons.insert(img, button);
+}
+
+void searchTab::redoLayout(QGridLayout *layout)
+{
+	QLayoutItem *child;
+	while ((child = layout->takeAt(0)) != 0)
+	{
+		child->widget()->hide();
+		layout->removeItem(child);
+	}
+
+	auto keys = m_boutons.keys();
+	for (auto img : keys)
+	{
+		auto button = m_boutons.value(img);
+		int position  = m_images.indexOf(img);
+
+		int imagesPerPage = m_images.count();
+		int imagesPerLine = ceil(sqrt((double)imagesPerPage));
+		int row = floor(float(position % imagesPerPage) / imagesPerLine);
+		int column = position % imagesPerLine;
+
+		layout->addWidget(button, row, column);
+		button->show();
+	}
 }
 
 void searchTab::addHistory(QString tags, int page, int ipp, int cols)
