@@ -59,5 +59,6 @@
         <file>images/status/unknown.png</file>
         <file>images/icons/eye-minus.png</file>
         <file>images/icons/eye-plus.png</file>
+        <file>images/icons/github.png</file>
     </qresource>
 </RCC>

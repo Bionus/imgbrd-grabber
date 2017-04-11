@@ -49,6 +49,7 @@ class mainWindow : public QMainWindow
 		void optionsClosed();
 		void aboutAuthor();
 		void aboutWebsite();
+		void aboutGithub();
 		void aboutReportBug();
 		void saveFolder();
 		void openSettingsFolder();

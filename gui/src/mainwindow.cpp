@@ -1112,6 +1112,10 @@ void mainWindow::aboutWebsite()
 {
 	QDesktopServices::openUrl(QUrl(PROJECT_WEBSITE_URL));
 }
+void mainWindow::aboutGithub()
+{
+	QDesktopServices::openUrl(QUrl(PROJECT_GITHUB_URL));
+}
 void mainWindow::aboutReportBug()
 {
 	QDesktopServices::openUrl(QUrl(QString(PROJECT_GITHUB_URL) + "/issues/new"));
