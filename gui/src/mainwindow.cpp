@@ -1110,7 +1110,7 @@ void mainWindow::setSource(QString source)
 
 void mainWindow::aboutWebsite()
 {
-	QDesktopServices::openUrl(QUrl(PROJECT_GITHUB_URL));
+	QDesktopServices::openUrl(QUrl(PROJECT_WEBSITE_URL));
 }
 void mainWindow::aboutReportBug()
 {

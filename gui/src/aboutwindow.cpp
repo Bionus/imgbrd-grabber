@@ -8,7 +8,7 @@ AboutWindow::AboutWindow(QString version, QWidget *parent)
 	ui->setupUi(this);
 
 	ui->labelCurrent->setText(version);
-	ui->labelCreator->setText(ui->labelCreator->text().replace("{website}", PROJECT_GITHUB_URL));
+	ui->labelCreator->setText(ui->labelCreator->text().replace("{website}", PROJECT_WEBSITE_URL));
 	setFixedSize(400, 228);
 
 	connect(&m_updater, &ProgramUpdater::finished, this, &AboutWindow::finished);
