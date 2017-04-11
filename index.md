@@ -89,9 +89,9 @@ Behoimi
 
 <div class="features" markdown="1">
 <div class="feature" markdown="1">
-[![](assets/img/screenshots/search.png)](assets/img/screenshots/search.png "You can use Grabber's interface to search the same way as you would on the website directly.")
-[![](assets/img/screenshots/search-multiple.png)](assets/img/screenshots/search-multiple.png "You can search from as many sources as you want at the same time.")
-[![](assets/img/screenshots/search-merged.png)](assets/img/screenshots/search-merged.png "If you don't want to see the same images on different sources, you can easily merge results to remove all duplicates.")
+[![](assets/img/screenshots/search-basic-thumb.png)](assets/img/screenshots/search-basic.png "You can use Grabber's interface to search the same way as you would on the website directly.")
+[![](assets/img/screenshots/search-multiple-thumb.png)](assets/img/screenshots/search-multiple.png "You can search from as many sources as you want at the same time.")
+[![](assets/img/screenshots/search-merged-thumb.png)](assets/img/screenshots/search-merged.png "If you don't want to see the same images on different sources, you can easily merge results to remove all duplicates.")
 
 ### Browse
 
@@ -106,7 +106,7 @@ Behoimi
 </div>
 
 <div class="feature" markdown="1">
-[![](assets/img/screenshots/download.png)](assets/img/screenshots/download.png "If you feel like downloading all results of a given search, it just takes a few clicks to start a download! Then you can just wait for the images to download.")
+[![](assets/img/screenshots/download-thumb.png)](assets/img/screenshots/download.png "If you feel like downloading all results of a given search, it just takes a few clicks to start a download! Then you can just wait for the images to download.")
 
 ### Download
 
@@ -116,7 +116,7 @@ Behoimi
 </div>
 
 <div class="feature" markdown="1">
-[![](assets/img/screenshots/sources.png)](assets/img/screenshots/sources.png "Adding a new source is as easy as copying and pasting its URL.")
+[![](assets/img/screenshots/sources-thumb.png)](assets/img/screenshots/sources.png "Adding a new source is as easy as copying and pasting its URL.")
 
 ### Customize
 
@@ -127,7 +127,7 @@ Behoimi
 </div>
 
 <div class="feature" markdown="1">
-[![](assets/img/screenshots/filename.png)](assets/img/screenshots/filename.png "Download your images where you want, in any directory structure you want, with the filename you want. All of the image's metadata is available for you to use as tokens in the filename.")
+[![](assets/img/screenshots/filename-thumb.png)](assets/img/screenshots/filename.png "Download your images where you want, in any directory structure you want, with the filename you want. All of the image's metadata is available for you to use as tokens in the filename.")
 
 ### Organize
 
