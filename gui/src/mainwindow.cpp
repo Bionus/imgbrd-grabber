@@ -1110,11 +1110,11 @@ void mainWindow::setSource(QString source)
 
 void mainWindow::aboutWebsite()
 {
-	QDesktopServices::openUrl(QUrl("https://github.com/Bionus/imgbrd-grabber"));
+	QDesktopServices::openUrl(QUrl(PROJECT_GITHUB_URL));
 }
 void mainWindow::aboutReportBug()
 {
-	QDesktopServices::openUrl(QUrl("https://github.com/Bionus/imgbrd-grabber/issues/new"));
+	QDesktopServices::openUrl(QUrl(QString(PROJECT_GITHUB_URL) + "/issues/new"));
 }
 
 void mainWindow::aboutAuthor()

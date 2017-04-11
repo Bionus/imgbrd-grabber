@@ -21,9 +21,13 @@ APP_PREFIX = \\\"$$(PREFIX)\\\"
 
 # General
 TEMPLATE = app
+QT += core network xml sql script
+
+# Defines
 DEFINES += VERSION=$$APP_VERSION
 DEFINES += PREFIX=$$APP_PREFIX
-QT += core network xml sql script
+DEFINES += PROJECT_WEBSITE_URL=\\\"https://bionus.github.io/imgbrd-grabber/\\\"
+DEFINES += PROJECT_GITHUB_URL=\\\"https://github.com/Bionus/imgbrd-grabber\\\"
 
 # Additionnal
 CONFIG += plugin c++11

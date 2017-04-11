@@ -97,11 +97,11 @@ void FilenameWindow::on_lineClassic_textChanged(QString text)
 
 void FilenameWindow::on_buttonHelpClassic_clicked()
 {
-	QDesktopServices::openUrl(QUrl("https://github.com/Bionus/imgbrd-grabber/wiki/Filename"));
+	QDesktopServices::openUrl(QUrl(QString(PROJECT_GITHUB_URL) + "/wiki/Filename"));
 }
 void FilenameWindow::on_buttonHelpJavascript_clicked()
 {
-	QDesktopServices::openUrl(QUrl("https://github.com/Bionus/imgbrd-grabber/wiki/Filename#javascript"));
+	QDesktopServices::openUrl(QUrl(QString(PROJECT_GITHUB_URL) + "/wiki/Filename#javascript"));
 }
 
 QString FilenameWindow::format()

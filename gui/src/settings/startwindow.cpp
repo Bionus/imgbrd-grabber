@@ -19,6 +19,7 @@ startWindow::startWindow(QMap<QString, Site*> *sites, Profile *profile, QWidget 
 	: QDialog(parent), ui(new Ui::startWindow), m_profile(profile), m_sites(sites)
 {
 	ui->setupUi(this);
+	ui->labelHelp->setText(ui->labelHelp->text().replace("{website}", PROJECT_WEBSITE_URL));
 
 	// Language
 	LanguageLoader languageLoader(savePath("languages/", true));
