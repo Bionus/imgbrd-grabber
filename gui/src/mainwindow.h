@@ -189,8 +189,6 @@ class mainWindow : public QMainWindow
 		QList<QSharedPointer<Image>>	m_getAllRemaining, m_getAllDownloading, m_getAllFailed, m_images, m_getAllSkippedImages;
 		QWidget				*m_currentTab;
 		QList<searchTab*>	m_tabs;
-		QList<tagTab*>		m_tagTabs;
-		QList<poolTab*>		m_poolTabs;
 		QList<bool>			m_selectedSources;
 		favoritesTab		*m_favoritesTab;
 		QMap<QString,QTime*>			m_downloadTime, m_downloadTimeLast;

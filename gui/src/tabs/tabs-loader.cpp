@@ -10,7 +10,7 @@
 #include "mainwindow.h"
 
 
-bool TabsLoader::load(QString path, QList<tagTab*> &tagTabs, QList<poolTab*> &poolTabs, QList<searchTab*> &allTabs, int &currentTab, Profile *profile, QMap<QString, Site*> &sites, mainWindow *parent)
+bool TabsLoader::load(QString path, QList<searchTab*> &allTabs, int &currentTab, Profile *profile, QMap<QString, Site*> &sites, mainWindow *parent)
 {
 	QFile f(path);
 	if (!f.open(QFile::ReadOnly))
@@ -44,7 +44,7 @@ bool TabsLoader::load(QString path, QList<tagTab*> &tagTabs, QList<poolTab*> &po
 					tab->ui->spinColumns->setValue(infos[5].toInt());
 					tab->setTags(infos[2]);
 
-					poolTabs.append(tab);
+					allTabs.append(tab);
 				}
 				else
 				{
@@ -54,7 +54,7 @@ bool TabsLoader::load(QString path, QList<tagTab*> &tagTabs, QList<poolTab*> &po
 					tab->ui->spinColumns->setValue(infos[3].toInt());
 					tab->setTags(infos[0]);
 
-					tagTabs.append(tab);
+					allTabs.append(tab);
 				}
 			}
 		}
@@ -85,19 +85,13 @@ bool TabsLoader::load(QString path, QList<tagTab*> &tagTabs, QList<poolTab*> &po
 					{
 						tagTab *tab = new tagTab(&sites, profile, parent);
 						if (tab->read(infos))
-						{
-							tagTabs.append(tab);
 							allTabs.append(tab);
-						}
 					}
 					else if (type == "pool")
 					{
 						poolTab *tab = new poolTab(&sites, profile, parent);
 						if (tab->read(infos))
-						{
-							poolTabs.append(tab);
 							allTabs.append(tab);
-						}
 					}
 				}
 				return true;

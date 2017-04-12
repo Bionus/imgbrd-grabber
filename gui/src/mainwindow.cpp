@@ -458,7 +458,6 @@ int mainWindow::addTab(QString tag, bool background, bool save)
 	if (!tag.isEmpty())
 	{ w->setTags(tag); }
 
-	m_tagTabs.append(w);
 	return m_tabs.size() - 1;
 }
 int mainWindow::addPoolTab(int pool, QString site, bool background, bool save)
@@ -471,7 +470,6 @@ int mainWindow::addPoolTab(int pool, QString site, bool background, bool save)
 	if (pool != 0)
 	{ w->setPool(pool, site); }
 
-	m_poolTabs.append(w);
 	return m_tabs.size() - 1;
 }
 void mainWindow::addSearchTab(searchTab *w, bool background, bool save)
@@ -516,19 +514,14 @@ bool mainWindow::saveTabs(QString filename)
 }
 bool mainWindow::loadTabs(QString filename)
 {
-	QList<searchTab*> allTabs;
-	QList<tagTab*> tagTabs;
-	QList<poolTab*> poolTabs;
+	QList<searchTab*> tabs;
 	int currentTab;
 
-	if (!TabsLoader::load(filename, tagTabs, poolTabs, allTabs, currentTab, m_profile, m_sites, this))
+	if (!TabsLoader::load(filename, tabs, currentTab, m_profile, m_sites, this))
 		return false;
 
-	for (auto tab : allTabs)
+	for (auto tab : tabs)
 		addSearchTab(tab, true, false);
-
-	m_tagTabs.append(tagTabs);
-	m_poolTabs.append(poolTabs);
 
 	if (currentTab >= 0)
 	{
