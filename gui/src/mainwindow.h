@@ -1,12 +1,15 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#define CLOSED_TAB_HISTORY_MAX 20
+
 #include <QMainWindow>
 #include <QSettings>
 #include <QProcess>
 #include <QTranslator>
 #include <QSet>
 #include <QQueue>
+#include <QLinkedList>
 #include <QTableWidgetItem>
 #include <QProgressBar>
 #include "models/site.h"
@@ -116,6 +119,7 @@ class mainWindow : public QMainWindow
 		void addSearchTab(searchTab*, bool background = false, bool save = true);
 		void updateTabTitle(searchTab*);
 		void tabClosed(searchTab*);
+		void restoreLastClosedTab();
 		void currentTabChanged(int);
 		void closeCurrentTab();
 		bool saveTabs(QString);
@@ -204,6 +208,7 @@ class mainWindow : public QMainWindow
 		bool				m_restore, m_showLog;
 		QMap<QString, QIcon>	m_icons;
 		QMap<QString, Site*>	m_sites;
+		QLinkedList<QJsonObject>	m_closedTabs;
 };
 
 #endif // MAINWINDOW_H

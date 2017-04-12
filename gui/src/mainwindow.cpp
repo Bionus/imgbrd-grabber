@@ -544,7 +544,27 @@ void mainWindow::updateTabs()
 }
 void mainWindow::tabClosed(searchTab *tab)
 {
+	// Store closed tab information
+	QJsonObject obj;
+	tab->write(obj);
+	m_closedTabs.append(obj);
+	if (m_closedTabs.count() > CLOSED_TAB_HISTORY_MAX) {
+		m_closedTabs.removeFirst();
+	}
+	ui->actionRestoreLastClosedTab->setEnabled(true);
+
 	m_tabs.removeAll(tab);
+}
+void mainWindow::restoreLastClosedTab()
+{
+	if (m_closedTabs.isEmpty())
+		return;
+
+	QJsonObject infos = m_closedTabs.takeLast();
+	searchTab *tab = TabsLoader::loadTab(infos, m_profile, m_sites, this);
+	addSearchTab(tab);
+
+	ui->actionRestoreLastClosedTab->setEnabled(!m_closedTabs.isEmpty());
 }
 void mainWindow::currentTabChanged(int tab)
 {

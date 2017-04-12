@@ -78,21 +78,10 @@ bool TabsLoader::load(QString path, QList<searchTab*> &allTabs, int &currentTab,
 				QJsonArray tabs = object["tabs"].toArray();
 				for (auto tab : tabs)
 				{
-					auto infos = tab.toObject();
-					QString type = infos["type"].toString();
-
-					if (type == "tag")
-					{
-						tagTab *tab = new tagTab(&sites, profile, parent);
-						if (tab->read(infos))
-							allTabs.append(tab);
-					}
-					else if (type == "pool")
-					{
-						poolTab *tab = new poolTab(&sites, profile, parent);
-						if (tab->read(infos))
-							allTabs.append(tab);
-					}
+					QJsonObject infos = tab.toObject();
+					searchTab *tab = loadTab(infos, profile, sites, parent);
+					if (tab != nullptr)
+						allTabs.append(tab);
 				}
 				return true;
 		}
@@ -100,6 +89,26 @@ bool TabsLoader::load(QString path, QList<searchTab*> &allTabs, int &currentTab,
 	}
 
 	return false;
+}
+
+searchTab *TabsLoader::loadTab(QJsonObject infos, Profile *profile, QMap<QString, Site*> &sites, mainWindow *parent)
+{
+	QString type = infos["type"].toString();
+
+	if (type == "tag")
+	{
+		tagTab *tab = new tagTab(&sites, profile, parent);
+		if (tab->read(infos))
+			return tab;
+	}
+	else if (type == "pool")
+	{
+		poolTab *tab = new poolTab(&sites, profile, parent);
+		if (tab->read(infos))
+			return tab;
+	}
+
+	return nullptr;
 }
 
 bool TabsLoader::save(QString path, QList<searchTab*> &allTabs, searchTab *currentTab)
