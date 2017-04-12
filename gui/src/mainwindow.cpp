@@ -2052,19 +2052,6 @@ void mainWindow::getAllFinished()
 		case 4:	QSound::play(":/sounds/finished.wav");	break;
 		case 5: shutDown();								break;
 	}
-	if (m_progressdialog->endRemove())
-	{
-		int rem = 0;
-		for (int i : m_batchDownloading)
-		{
-			int pos = i - rem;
-			m_progressBars[pos]->deleteLater();
-			m_progressBars.removeAt(pos);
-			m_groupBatchs.removeAt(pos);
-			ui->tableBatchGroups->removeRow(pos);
-			rem++;
-		}
-	}
 	activateWindow();
 	m_getAll = false;
 
@@ -2119,6 +2106,21 @@ void mainWindow::getAllFinished()
 			m_progressdialog->show();
 			getAllImages();
 			return;
+		}
+	}
+
+	// Remove after download and retries are finished
+	if (m_progressdialog->endRemove())
+	{
+		int rem = 0;
+		for (int i : m_batchDownloading)
+		{
+			int pos = i - rem;
+			m_progressBars[pos]->deleteLater();
+			m_progressBars.removeAt(pos);
+			m_groupBatchs.removeAt(pos);
+			ui->tableBatchGroups->removeRow(pos);
+			rem++;
 		}
 	}
 
