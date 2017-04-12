@@ -1108,13 +1108,14 @@ void zoomWindow::load(QSharedPointer<Image> image)
 	emit clearLoadQueue();
 	disconnect(m_image.data(), &Image::finishedLoadingTags, this, &zoomWindow::replyFinishedDetails);
 
+	m_displayImage = QPixmap();
 	m_imagePath = "";
 	m_image = image;
 	connect(m_image.data(), &Image::urlChanged, this, &zoomWindow::urlChanged, Qt::UniqueConnection);
 	m_size = 0;
 
 	// Show the thumbnail if the image was not already preloaded
-	if (isVisible() && (m_image->data().isEmpty() || m_image->isVideo()))
+	if (isVisible())
 	{ showThumbnail(); }
 
 	// Preload gallery images
