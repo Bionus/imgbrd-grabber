@@ -615,12 +615,9 @@ void searchTab::addResultsImage(QSharedPointer<Image> img, bool merge)
 	QGridLayout *layout = m_layouts[m_layouts.contains(nullptr) ? nullptr : img->parentSite()];
 
 	int imagesPerPage = getActualImagesPerPage(img->page(), merge);
-	int imagesPerLine = ceil(sqrt((double)imagesPerPage));
+	QPoint pos = getThumbPosition(relativePosition, imagesPerPage);
 
-	int row = floor(float(relativePosition % imagesPerPage) / imagesPerLine);
-	int column = relativePosition % imagesPerLine;
-	layout->addWidget(button, row, column);
-
+	layout->addWidget(button, pos.y(), pos.x());
 	m_boutons.insert(img, button);
 }
 
@@ -640,12 +637,43 @@ void searchTab::redoLayout(QGridLayout *layout)
 		int position  = m_images.indexOf(img);
 
 		int imagesPerPage = m_images.count();
-		int imagesPerLine = ceil(sqrt((double)imagesPerPage));
-		int row = floor(float(position % imagesPerPage) / imagesPerLine);
-		int column = position % imagesPerLine;
+		QPoint pos = getThumbPosition(position, imagesPerPage);
 
-		layout->addWidget(button, row, column);
+		layout->addWidget(button, pos.y(), pos.x());
 		button->show();
+	}
+}
+
+QPoint searchTab::getThumbPosition(int relativePosition, int imagesPerPage)
+{
+	bool flowLayout = m_settings->value("flow_layout", false).toBool();
+	int imagesPerLine = flowLayout ? floor(width() / 150) : ceil(sqrt((double)imagesPerPage));
+
+	if (imagesPerLine < 1) {
+		imagesPerLine = 1;
+	}
+
+	int row = floor(float(relativePosition % imagesPerPage) / imagesPerLine);
+	int column = relativePosition % imagesPerLine;
+
+	return QPoint(column, row);
+}
+
+void searchTab::resizeEvent(QResizeEvent *event)
+{
+	QWidget::resizeEvent(event);
+
+	bool flowLayout = m_settings->value("flow_layout", false).toBool();
+	if (flowLayout)
+	{
+		int oldImagesPerLine = floor(event->oldSize().width() / 150);
+		int newImagesPerLine = floor(width() / 150);
+
+		if (newImagesPerLine != oldImagesPerLine)
+		{
+			for (auto layout : m_layouts)
+				redoLayout(layout);
+		}
 	}
 }
 

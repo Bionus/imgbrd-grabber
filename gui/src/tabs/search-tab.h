@@ -91,6 +91,8 @@ class searchTab : public QWidget
 		void addResultsImage(QSharedPointer<Image> img, bool merge = false);
 		void finishedLoadingPreview();
 		void redoLayout(QGridLayout *layout);
+		QPoint getThumbPosition(int relativePosition, int imagesPerPage);
+		void resizeEvent(QResizeEvent *event);
 		// Loading
 		void finishedLoading(Page *page);
 		void failedLoading(Page *page);
