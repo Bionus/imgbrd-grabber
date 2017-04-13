@@ -45,6 +45,9 @@ void showInGraphicalShell(const QString &pathIn)
 
 void clearLayout(QLayout *layout)
 {
+	if (layout == nullptr)
+		return;
+
 	QLayoutItem *item;
 	while ((item = layout->takeAt(0)))
 	{
