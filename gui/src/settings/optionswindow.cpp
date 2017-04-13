@@ -212,7 +212,7 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	ui->spinPreload->setValue(settings->value("preload", 0).toInt());
 	ui->spinSlideshow->setValue(settings->value("slideshow", 0).toInt());
 	ui->checkResultsScrollArea->setChecked(settings->value("resultsScrollArea", true).toBool());
-	ui->checkResultsFixedWidthLayout->setChecked(settings->value("resultsFixedWidthLayout", true).toBool());
+	ui->checkResultsFixedWidthLayout->setChecked(settings->value("resultsFixedWidthLayout", false).toBool());
 	ui->checkImageCloseMiddleClick->setChecked(settings->value("imageCloseMiddleClick", true).toBool());
 	ui->checkImageNavigateScroll->setChecked(settings->value("imageNavigateScroll", true).toBool());
 	QStringList positionsV = QStringList() << "top" << "center" << "bottom";
