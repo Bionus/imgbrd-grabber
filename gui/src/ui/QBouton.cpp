@@ -44,8 +44,8 @@ void QBouton::paintEvent(QPaintEvent *event)
 	int p = _border;
 	int x = region.x();
 	int y = region.y();
-	int w = iconSize.width();
-	int h = iconSize.height();
+	int w = iconSize.width() + 2*p;
+	int h = iconSize.height() + 2*p;
 
 	// Ignore invalid images
 	if (w == 0 || h == 0)

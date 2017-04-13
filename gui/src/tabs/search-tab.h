@@ -61,6 +61,8 @@ class searchTab : public QWidget
 		QBouton *createImageThumbnail(int position, QSharedPointer<Image> img);
 		int getActualImagesPerPage(Page *page, bool merge);
 		QGridLayout *createImagesLayout(QSettings *settings);
+		int getImagesPerLine(int width, int imagesPerPage) const;
+		QPoint getThumbPosition(int relativePosition, int imagesPerPage) const;
 
 	public slots:
 		// Sources
@@ -91,7 +93,6 @@ class searchTab : public QWidget
 		void addResultsImage(QSharedPointer<Image> img, bool merge = false);
 		void finishedLoadingPreview();
 		void redoLayout(QGridLayout *layout);
-		QPoint getThumbPosition(int relativePosition, int imagesPerPage);
 		void resizeEvent(QResizeEvent *event);
 		// Loading
 		void finishedLoading(Page *page);

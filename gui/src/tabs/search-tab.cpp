@@ -14,6 +14,8 @@
 #include "helpers.h"
 #include "functions.h"
 
+#define FIXED_IMAGE_WIDTH 150
+
 
 searchTab::searchTab(QMap<QString, Site*> *sites, Profile *profile, mainWindow *parent)
 	: QWidget(parent), m_profile(profile), m_lastPageMaxId(0), m_lastPageMinId(0), m_sites(sites), m_favorites(profile->getFavorites()), m_parent(parent), m_settings(profile->getSettings()), m_pagemax(-1), m_stop(true), m_from_history(false), m_history_cursor(0), m_lastTags(QString())
@@ -565,8 +567,10 @@ QBouton *searchTab::createImageThumbnail(int position, QSharedPointer<Image> img
 
 	bool resizeInsteadOfCropping = m_settings->value("resizeInsteadOfCropping", true).toBool();
 	bool resultsScrollArea = m_settings->value("resultsScrollArea", true).toBool();
+	bool fixedWidthLayout = m_settings->value("resultsFixedWidthLayout", false).toBool();
+	int borderSize = m_settings->value("borders", 3).toInt();
 
-	QBouton *l = new QBouton(position, resizeInsteadOfCropping, resultsScrollArea, m_settings->value("borders", 3).toInt(), color, this);
+	QBouton *l = new QBouton(position, resizeInsteadOfCropping, resultsScrollArea, borderSize, color, this);
 	l->setCheckable(true);
 	l->setChecked(m_selectedImages.contains(img->url()));
 	l->setToolTip(QString("%1%2%3%4%5%6%7%8")
@@ -581,6 +585,9 @@ QBouton *searchTab::createImageThumbnail(int position, QSharedPointer<Image> img
 	);
 	l->scale(img->previewImage(), m_settings->value("thumbnailUpscale", 1.0f).toFloat());
 	l->setFlat(true);
+
+	if (fixedWidthLayout)
+		l->setFixedSize(FIXED_IMAGE_WIDTH + borderSize * 2, FIXED_IMAGE_WIDTH + borderSize * 2);
 
 	connect(l, SIGNAL(appui(int)), this, SLOT(webZoom(int)));
 	connect(l, SIGNAL(toggled(int, bool, bool)), this, SLOT(toggleImage(int, bool, bool)));
@@ -644,14 +651,31 @@ void searchTab::redoLayout(QGridLayout *layout)
 	}
 }
 
-QPoint searchTab::getThumbPosition(int relativePosition, int imagesPerPage)
+int searchTab::getImagesPerLine(int width, int imagesPerPage) const
 {
-	bool flowLayout = m_settings->value("resultsFixedWidthLayout", false).toBool();
-	int imagesPerLine = flowLayout ? floor(width() / 150) : ceil(sqrt((double)imagesPerPage));
+	int result;
 
-	if (imagesPerLine < 1) {
-		imagesPerLine = 1;
+	bool fixedWidthLayout = m_settings->value("resultsFixedWidthLayout", false).toBool();
+	if (fixedWidthLayout)
+	{
+		int betweenImages = m_settings->value("Margins/horizontal", 6).toInt();
+		int borderSize = m_settings->value("borders", 3).toInt();
+		int imageWidth = FIXED_IMAGE_WIDTH + borderSize * 2;
+		result = floor((width + betweenImages) / (imageWidth + betweenImages));
 	}
+	else
+	{ result = ceil(sqrt((double)imagesPerPage)); }
+
+	// There must always be at least one image per line
+	if (result < 1)
+		return 1;
+
+	return result;
+}
+
+QPoint searchTab::getThumbPosition(int relativePosition, int imagesPerPage) const
+{
+	int imagesPerLine = getImagesPerLine(width(), imagesPerPage);
 
 	int row = floor(float(relativePosition % imagesPerPage) / imagesPerLine);
 	int column = relativePosition % imagesPerLine;
@@ -663,11 +687,11 @@ void searchTab::resizeEvent(QResizeEvent *event)
 {
 	QWidget::resizeEvent(event);
 
-	bool flowLayout = m_settings->value("resultsFixedWidthLayout", false).toBool();
-	if (flowLayout)
+	bool fixedWidthLayout = m_settings->value("resultsFixedWidthLayout", false).toBool();
+	if (fixedWidthLayout)
 	{
-		int oldImagesPerLine = floor(event->oldSize().width() / 150);
-		int newImagesPerLine = floor(width() / 150);
+		int oldImagesPerLine = getImagesPerLine(event->oldSize().width(), 0);
+		int newImagesPerLine = getImagesPerLine(width(), 0);
 
 		if (newImagesPerLine != oldImagesPerLine)
 		{
