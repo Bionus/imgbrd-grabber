@@ -2248,12 +2248,12 @@
     <message>
         <location filename="../gui/src/mainwindow.ui" line="1094"/>
         <source>Project GitHub</source>
-        <translation type="unfinished"></translation>
+        <translation>Projet GitHub</translation>
     </message>
     <message>
         <location filename="../gui/src/mainwindow.ui" line="1106"/>
         <source>Restore last closed tab</source>
-        <translation type="unfinished"></translation>
+        <translation>Restaurer le dernier onglet fermé</translation>
     </message>
     <message>
         <location filename="../gui/src/mainwindow.ui" line="180"/>
@@ -3027,7 +3027,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="823"/>
         <source>Keep deleted files in the MD5 list</source>
-        <translation type="unfinished"></translation>
+        <translation>Conserver les fichiers supprimés dans la liste MD5</translation>
     </message>
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="900"/>
@@ -3316,7 +3316,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="1799"/>
         <source>Theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Thème</translation>
     </message>
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="1813"/>
@@ -3532,7 +3532,7 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="2051"/>
         <source>Background color</source>
-        <translation type="unfinished"></translation>
+        <translation>Couleur de fond</translation>
     </message>
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="2099"/>
@@ -4142,12 +4142,12 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
     <message>
         <location filename="../gui/src/viewer/zoomwindow.cpp" line="366"/>
         <source>Don&apos;t blacklist</source>
-        <translation type="unfinished"></translation>
+        <translation>Retirer de la liste noire</translation>
     </message>
     <message>
         <location filename="../gui/src/viewer/zoomwindow.cpp" line="368"/>
         <source>Blacklist</source>
-        <translation type="unfinished">Liste noire</translation>
+        <translation>Ajouter à la liste noire</translation>
     </message>
     <message>
         <location filename="../gui/src/viewer/zoomwindow.cpp" line="372"/>
@@ -4178,13 +4178,13 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
         <location filename="../gui/src/viewer/zoomwindow.cpp" line="581"/>
         <location filename="../gui/src/viewer/zoomwindow.cpp" line="883"/>
         <source>Delete</source>
-        <translation type="unfinished">Supprimer</translation>
+        <translation>Supprimer</translation>
     </message>
     <message>
         <location filename="../gui/src/viewer/zoomwindow.cpp" line="586"/>
         <location filename="../gui/src/viewer/zoomwindow.cpp" line="883"/>
         <source>Delete (fav)</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer (fav)</translation>
     </message>
     <message>
         <source>An unexpected error occured loading the image (%1 - %2).
@@ -4229,12 +4229,6 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
         <translation>Copier les données</translation>
     </message>
     <message>
-        <location filename="../gui/src/viewer/zoomwindow.cpp" line="332"/>
-        <source>Error creating folder.
-%1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../gui/src/viewer/zoomwindow.cpp" line="378"/>
         <source>Copy tag</source>
         <translation>Copier le tag</translation>
@@ -4243,12 +4237,6 @@ Veuillez résoudre le problème avant de reprendre le téléchargement.</transla
         <location filename="../gui/src/viewer/zoomwindow.cpp" line="379"/>
         <source>Copy all tags</source>
         <translation>Copier tous les tags</translation>
-    </message>
-    <message>
-        <location filename="../gui/src/viewer/zoomwindow.cpp" line="642"/>
-        <source>An unexpected error occured loading the image (%1 - %2).
-%3</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/src/viewer/zoomwindow.cpp" line="806"/>
