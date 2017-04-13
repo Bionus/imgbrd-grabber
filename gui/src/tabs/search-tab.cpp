@@ -304,7 +304,8 @@ void searchTab::postLoading(Page *page, QList<QSharedPointer<Image>> source)
 			ui_progressMergeResults->setValue(ui_progressMergeResults->value() + 1);
 
 		// Hide progress bar when we load the last page
-		if (ui_stackedMergeResults != nullptr)
+		bool finished = m_page == m_pages.count() || (ui_progressMergeResults != nullptr && ui_progressMergeResults->value() == ui_progressMergeResults->maximum());
+		if (ui_stackedMergeResults != nullptr && finished)
 			ui_stackedMergeResults->setCurrentIndex(1);
 
 		// Create the label when loading the first page
@@ -963,8 +964,9 @@ void searchTab::loadTags(QStringList tags)
 	{
 		ui_progressMergeResults->setValue(0);
 		ui_progressMergeResults->setMaximum(m_pages.count());
-		ui_stackedMergeResults->setCurrentIndex(0);
 	}
+	if (ui_stackedMergeResults != nullptr)
+	{ ui_stackedMergeResults->setCurrentIndex(merged ? 0 : 1); }
 
 	emit changed(this);
 }
