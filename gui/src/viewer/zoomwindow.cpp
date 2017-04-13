@@ -897,7 +897,10 @@ QStringList zoomWindow::saveImageNow(bool fav)
 				break;
 
 			case Image::SaveResult::AlreadyExists:
-				QFile::remove(it.key());
+				QFile f(it.key());
+				if (m_image->data().isEmpty() && f.open(QFile::ReadOnly))
+				{ m_image->setData(f.readAll()); }
+				f.remove();
 				m_imagePath = "";
 				button->setText(fav ? tr("Save (fav)") : tr("Save"));
 				break;
