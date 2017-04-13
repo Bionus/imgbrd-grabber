@@ -646,7 +646,7 @@ void searchTab::redoLayout(QGridLayout *layout)
 
 QPoint searchTab::getThumbPosition(int relativePosition, int imagesPerPage)
 {
-	bool flowLayout = m_settings->value("flow_layout", false).toBool();
+	bool flowLayout = m_settings->value("resultsFixedWidthLayout", false).toBool();
 	int imagesPerLine = flowLayout ? floor(width() / 150) : ceil(sqrt((double)imagesPerPage));
 
 	if (imagesPerLine < 1) {
@@ -663,7 +663,7 @@ void searchTab::resizeEvent(QResizeEvent *event)
 {
 	QWidget::resizeEvent(event);
 
-	bool flowLayout = m_settings->value("flow_layout", false).toBool();
+	bool flowLayout = m_settings->value("resultsFixedWidthLayout", false).toBool();
 	if (flowLayout)
 	{
 		int oldImagesPerLine = floor(event->oldSize().width() / 150);
