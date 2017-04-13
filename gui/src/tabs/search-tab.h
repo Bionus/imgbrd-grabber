@@ -8,11 +8,11 @@
 #include <QMap>
 #include <QPushButton>
 #include <QLayout>
-#include <QGridLayout>
 #include <QLabel>
 #include <QProgressBar>
 #include <QStackedWidget>
 #include "models/image.h"
+#include "ui/fixed-size-grid-layout.h"
 
 
 class mainWindow;
@@ -60,9 +60,10 @@ class searchTab : public QWidget
 		void loadImageThumbnails(Page *page, const QList<QSharedPointer<Image>> &imgs);
 		QBouton *createImageThumbnail(int position, QSharedPointer<Image> img);
 		int getActualImagesPerPage(Page *page, bool merge);
-		QGridLayout *createImagesLayout(QSettings *settings);
-		int getImagesPerLine(int width, int imagesPerPage) const;
-		QPoint getThumbPosition(int relativePosition, int imagesPerPage) const;
+		FixedSizeGridLayout *createImagesLayout(QSettings *settings);
+
+	private:
+		void addLayout(QLayout *layout, int row, int column);
 
 	public slots:
 		// Sources
@@ -92,12 +93,10 @@ class searchTab : public QWidget
 		virtual void setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage = nullptr);
 		void addResultsImage(QSharedPointer<Image> img, bool merge = false);
 		void finishedLoadingPreview();
-		void redoLayout(QGridLayout *layout);
-		void resizeEvent(QResizeEvent *event);
 		// Loading
 		void finishedLoading(Page *page);
 		void failedLoading(Page *page);
-		void postLoading(Page *page, QList<QSharedPointer<Image>> source);
+		void postLoading(Page *page, QList<QSharedPointer<Image>> imgs);
 		void finishedLoadingTags(Page *page);
 		// Image selection
 		void selectImage(QSharedPointer<Image> img);
@@ -136,7 +135,7 @@ class searchTab : public QWidget
 		QList<QSharedPointer<Image>> m_images;
 		QMap<QString, Page*> m_pages;
 		QMap<Page*, QLabel*> m_pageLabels;
-		QMap<Site*, QGridLayout*> m_layouts;
+		QMap<Site*, FixedSizeGridLayout*> m_layouts;
 		int m_page;
 		int m_pagemax;
 		bool m_stop;
