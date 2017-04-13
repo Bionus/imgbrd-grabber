@@ -609,7 +609,7 @@ int searchTab::getActualImagesPerPage(Page *page, bool merge)
 void searchTab::addResultsImage(QSharedPointer<Image> img, bool merge)
 {
 	int absolutePosition = m_images.indexOf(img);
-	int relativePosition = img->page()->images().indexOf(img);
+	int relativePosition = merge ? absolutePosition : img->page()->images().indexOf(img);
 
 	QBouton *button = createImageThumbnail(absolutePosition, img);
 	QGridLayout *layout = m_layouts[m_layouts.contains(nullptr) ? nullptr : img->parentSite()];
