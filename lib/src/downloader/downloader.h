@@ -2,14 +2,10 @@
 #define DOWNLOADER_H
 
 #include <QVariant>
-#include <QNetworkReply>
-#include "models/tag.h"
+#include "models/image.h"
 
 
 class Page;
-class Image;
-class Site;
-class Profile;
 
 class Downloader : public QObject
 {
