@@ -1,4 +1,5 @@
 #include "fixed-size-grid-layout.h"
+#include "math.h"
 
 
 FixedSizeGridLayout::FixedSizeGridLayout(QWidget *parent)
