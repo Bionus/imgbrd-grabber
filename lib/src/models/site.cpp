@@ -441,7 +441,8 @@ QUrl Site::fixUrl(QString url, QUrl old) const
 	if (url.isEmpty())
 		return QUrl();
 
-	QString protocol = (m_settings->value("ssl", false).toBool() ? "https" : "http");
+	bool ssl = m_settings->value("ssl", false).toBool();
+	QString protocol = (ssl ? "https" : "http");
 
 	if (url.startsWith("//"))
 	{ return QUrl(protocol + ":" + url); }
@@ -454,6 +455,9 @@ QUrl Site::fixUrl(QString url, QUrl old) const
 		{ return old.resolved(QUrl(url)); }
 		return QUrl(protocol + "://" + m_url + "/" + url);
 	}
+
+	if (url.startsWith("http://") && ssl)
+	{ return QUrl(protocol + "://" + url.mid(7)); }
 
 	return QUrl(url);
 }

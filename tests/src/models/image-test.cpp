@@ -81,9 +81,9 @@ void ImageTest::testConstructor()
 	img->deleteLater();
 
 	// With a given page URL
-	m_details["page_url"] = "http://test.com/view/7331";
+	m_details["page_url"] = "https://test.com/view/7331";
 	img = new Image(m_site, m_details, m_profile);
-	QCOMPARE(img->pageUrl().toString(), QString("http://test.com/view/7331"));
+	QCOMPARE(img->pageUrl().toString(), QString("https://test.com/view/7331"));
 	img->deleteLater();
 
 	// CreatedAt from ISO time
@@ -437,7 +437,7 @@ void ImageTest::testLoadDetailsImageUrl()
 	QVERIFY(spy.wait());
 
 	// Compare result
-	QCOMPARE(m_img->url(), QString("http://danbooru.donmai.us/data/__kousaka_tamaki_to_heart_2_drawn_by_date_senpen__0cc748f006b9636f0c268250ea157995.jpg"));
+	QCOMPARE(m_img->url(), QString("https://danbooru.donmai.us/data/__kousaka_tamaki_to_heart_2_drawn_by_date_senpen__0cc748f006b9636f0c268250ea157995.jpg"));
 }
 
 void ImageTest::testPath()
