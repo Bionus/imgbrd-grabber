@@ -15,6 +15,7 @@ class FunctionsTest : public TestSuite
 		void testGetExtension();
 		void testSetExtension();
 		void testLevenshtein();
+		void testRemoveWildards();
 
 	protected:
 		void assertFixFilename(int platform, QString filename, QString path, QString expected);

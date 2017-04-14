@@ -83,6 +83,15 @@ void FunctionsTest::testLevenshtein()
 	QCOMPARE(levenshtein("12345678", "87654321"), 8);
 }
 
+void FunctionsTest::testRemoveWildards()
+{
+	QCOMPARE(removeWildards(QStringList(), QStringList()), QStringList());
+	QCOMPARE(removeWildards(QStringList() << "abc" << "def" << "ghi", QStringList()), QStringList() << "abc" << "def" << "ghi");
+	QCOMPARE(removeWildards(QStringList() << "abc" << "def" << "ghi", QStringList() << "a*" << "*f"), QStringList() << "ghi");
+	QCOMPARE(removeWildards(QStringList() << "abc" << "def" << "ghi", QStringList() << "no_wildcard"), QStringList() << "abc" << "def" << "ghi");
+	QCOMPARE(removeWildards(QStringList() << "abc" << "def" << "ghi", QStringList() << "*not_found*"), QStringList() << "abc" << "def" << "ghi");
+}
+
 
 void FunctionsTest::assertFixFilename(int platform, QString filename, QString path, QString expected)
 {
