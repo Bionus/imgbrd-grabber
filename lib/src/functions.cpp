@@ -103,7 +103,6 @@ QDateTime qDateTimeFromString(QString str)
 	if (toInt != 0)
 	{
 		date.setTime_t(toInt);
-		date.setTimeSpec(Qt::UTC);
 	}
 	else if (str.length() == 19)
 	{

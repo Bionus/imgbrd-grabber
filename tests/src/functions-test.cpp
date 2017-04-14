@@ -106,7 +106,7 @@ void FunctionsTest::testRemoveWildards()
 void FunctionsTest::testDateTimeFromString()
 {
 	// Timestamps
-	QCOMPARE(qDateTimeFromString("1492184980").toUTC(),          QDateTime(QDate(2017, 4, 14), QTime(17, 49, 40), Qt::UTC));
+	QCOMPARE(qDateTimeFromString("1492192180").toUTC(),          QDateTime(QDate(2017, 4, 14), QTime(17, 49, 40), Qt::UTC));
 
 	// Standart dates
 	QCOMPARE(qDateTimeFromString("2017/04/14 17:49:40").toUTC(), QDateTime(QDate(2017, 4, 14), QTime(17, 49, 40), Qt::UTC));
