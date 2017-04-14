@@ -127,8 +127,7 @@ QDateTime qDateTimeFromString(QString str)
 			date = QDateTime::fromString(str.left(19), "yyyy/MM/dd HH:mm:ss");
 		else
 			decay = str.right(6).remove(':').toFloat() / 100;
-
-		date.setTimeZone(QTimeZone(3600 * decay));
+		date.setOffsetFromUtc(3600 * decay);
 	}
 	else
 	{
@@ -151,7 +150,7 @@ QDateTime qDateTimeFromString(QString str)
 		QTime time = QTime::fromString(str.mid(11, 8), "HH:mm:ss");
 		date.setDate(QDate(year, month, day));
 		date.setTime(time);
-		date.setTimeZone(QTimeZone(3600 * decay));
+		date.setOffsetFromUtc(3600 * decay);
 	}
 
 	return date;
