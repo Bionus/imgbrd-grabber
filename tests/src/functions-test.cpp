@@ -92,6 +92,27 @@ void FunctionsTest::testRemoveWildards()
 	QCOMPARE(removeWildards(QStringList() << "abc" << "def" << "ghi", QStringList() << "*not_found*"), QStringList() << "abc" << "def" << "ghi");
 }
 
+void FunctionsTest::testDateTimeFromString()
+{
+	// Timestamps
+	QCOMPARE(qDateTimeFromString("1492184980").toUTC(),          QDateTime(QDate(2017, 4, 14), QTime(17, 49, 40), Qt::UTC));
+
+	// Standart dates
+	QCOMPARE(qDateTimeFromString("2017/04/14 17:49:40").toUTC(), QDateTime(QDate(2017, 4, 14), QTime(17, 49, 40), Qt::UTC));
+	QCOMPARE(qDateTimeFromString("2017-04-14 17:49:40").toUTC(), QDateTime(QDate(2017, 4, 14), QTime(17, 49, 40), Qt::UTC));
+	QCOMPARE(qDateTimeFromString("2017/04/14 17:49").toUTC(),    QDateTime(QDate(2017, 4, 14), QTime(17, 49), Qt::UTC));
+	QCOMPARE(qDateTimeFromString("2017-04-14 17:49").toUTC(),    QDateTime(QDate(2017, 4, 14), QTime(17, 49), Qt::UTC));
+
+	// Danbooru dates
+	QCOMPARE(qDateTimeFromString("2017-04-14T17:49:40.498-04:00").toUTC(),  QDateTime(QDate(2017, 4, 14), QTime(17 + 4, 49, 40), Qt::UTC));
+
+	// Gelbooru dates
+	QCOMPARE(qDateTimeFromString("Tue Apr  4 17:49:40 2017").toUTC(), QDateTime(QDate(2017, 4, 4), QTime(17, 49, 40), Qt::UTC));
+	QCOMPARE(qDateTimeFromString("Fri Apr 14 17:49:40 2017").toUTC(), QDateTime(QDate(2017, 4, 14), QTime(17, 49, 40), Qt::UTC));
+	QCOMPARE(qDateTimeFromString("Fri Apr 14 17:49:40 -0500 2017").toUTC(), QDateTime(QDate(2017, 4, 14), QTime(17 + 5, 49, 40), Qt::UTC));
+	QCOMPARE(qDateTimeFromString("Fri Apr 14 23:49:40 -0500 2017").toUTC(), QDateTime(QDate(2017, 4, 15), QTime(4, 49, 40), Qt::UTC));
+}
+
 
 void FunctionsTest::assertFixFilename(int platform, QString filename, QString path, QString expected)
 {

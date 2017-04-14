@@ -9,6 +9,7 @@
 #include <QDesktopServices>
 #include <QUrl>
 #include <QLocale>
+#include <QTimeZone>
 #include "math.h"
 #ifdef Q_OS_WIN
 	#include <windows.h>
@@ -97,24 +98,26 @@ QStringList removeWildards(QStringList elements, QStringList remove)
 QDateTime qDateTimeFromString(QString str)
 {
 	QDateTime date;
-	int timezone = QDateTime::currentDateTime().time().hour() - QDateTime::currentDateTimeUtc().time().hour();
 
 	int toInt = str.toInt();
 	if (toInt != 0)
 	{
 		date.setTime_t(toInt);
+		date.setTimeSpec(Qt::UTC);
 	}
 	else if (str.length() == 19)
 	{
 		date = QDateTime::fromString(str, "yyyy/MM/dd HH:mm:ss");
 		if (!date.isValid())
 			date = QDateTime::fromString(str, "yyyy-MM-dd HH:mm:ss");
+		date.setTimeSpec(Qt::UTC);
 	}
 	else if (str.length() == 16)
 	{
 		date = QDateTime::fromString(str, "yyyy/MM/dd HH:mm");
 		if (!date.isValid())
 			date = QDateTime::fromString(str, "yyyy-MM-dd HH:mm");
+		date.setTimeSpec(Qt::UTC);
 	}
 	else if (str[0].isDigit())
 	{
@@ -126,8 +129,7 @@ QDateTime qDateTimeFromString(QString str)
 		else
 			decay = str.right(6).remove(':').toFloat() / 100;
 
-		if (date.isValid())
-			date = date.addSecs(3600 * (timezone - decay));
+		date.setTimeZone(QTimeZone(3600 * decay));
 	}
 	else
 	{
@@ -136,7 +138,10 @@ QDateTime qDateTimeFromString(QString str)
 		if (!date.isValid())
 			date = myLoc.toDateTime(str, "ddd MMM  d HH:mm:ss yyyy");
 		if (date.isValid())
+		{
+			date.setTimeSpec(Qt::UTC);
 			return date;
+		}
 
 		QStringList months = QStringList() << "Jan" << "Feb" << "Mar" << "Apr" << "May" << "Jun" << "Jul" << "Aug" << "Sep" << "Oct" << "Nov" << "Dec";
 		int year = str.mid(26, 4).toInt();
@@ -145,9 +150,9 @@ QDateTime qDateTimeFromString(QString str)
 		float decay = str.mid(20, 5).toFloat() / 100;
 
 		QTime time = QTime::fromString(str.mid(11, 8), "HH:mm:ss");
-		time = time.addSecs(3600 * (timezone - decay));
 		date.setDate(QDate(year, month, day));
 		date.setTime(time);
+		date.setTimeZone(QTimeZone(3600 * decay));
 	}
 
 	return date;
