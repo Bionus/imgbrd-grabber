@@ -64,6 +64,7 @@ class FilenameTest : public TestSuite
 		void testCommand();
 		void testFilenameWithMultipleUnderscores();
 		void testNeedExactTags();
+		void testEscapeMethod();
 
 	protected:
 		void assertPath(QString format, QString expected, QString path = "", bool shouldFixFilename = true, bool fullPath = false, bool keepInvalidTokens = false);
