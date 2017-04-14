@@ -289,6 +289,21 @@ void FilenameTest::testPathSpecies()
 	assertPath("%species%.%ext%", "test_species.jpg");
 }
 
+void FilenameTest::testPathNoJpeg()
+{
+	m_img->deleteLater();
+	m_details["ext"] = "jpeg";
+	m_settings->setValue("Save/noJpeg", true);
+	m_img = new Image(m_site, m_details, m_profile);
+	assertPath("%ext%", "jpg");
+
+	m_img->deleteLater();
+	m_details["ext"] = "jpeg";
+	m_settings->setValue("Save/noJpeg", false);
+	m_img = new Image(m_site, m_details, m_profile);
+	assertPath("%ext%", "jpeg");
+}
+
 void FilenameTest::testGetReplacesSimple()
 {
 	QString format = "%artist%/%copyright%/%character%/%md5%.%ext%";

@@ -46,6 +46,7 @@ class FilenameTest : public TestSuite
 		void testPathOptionNumSingleLength();
 		void testPathOptionNumMultiple();
 		void testPathSpecies();
+		void testPathNoJpeg();
 		void testGetReplacesSimple();
 		void testGetReplacesMultiple();
 		void testGetReplacesMatrix();
