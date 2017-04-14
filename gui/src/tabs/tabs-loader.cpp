@@ -76,9 +76,9 @@ bool TabsLoader::load(QString path, QList<searchTab*> &allTabs, int &currentTab,
 			case 2:
 				currentTab = object["current"].toInt();
 				QJsonArray tabs = object["tabs"].toArray();
-				for (auto tab : tabs)
+				for (auto tabJson : tabs)
 				{
-					QJsonObject infos = tab.toObject();
+					QJsonObject infos = tabJson.toObject();
 					searchTab *tab = loadTab(infos, profile, sites, parent);
 					if (tab != nullptr)
 						allTabs.append(tab);
