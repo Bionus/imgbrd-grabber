@@ -229,4 +229,31 @@ void TagTest::testTypeSpaced()
 	QCOMPARE(tag.type(), QString("artist"));
 }
 
+void TagTest::testGetType()
+{
+	QStringList ids = QStringList() << "type1" << "type2" << "type3";
+
+	// Basic types
+	QCOMPARE(Tag::GetType("copyright", ids), QString("copyright"));
+	QCOMPARE(Tag::GetType("artist", ids), QString("artist"));
+
+	// Type IDs
+	QCOMPARE(Tag::GetType("0", ids), QString("type1"));
+	QCOMPARE(Tag::GetType("1", ids), QString("type2"));
+	QCOMPARE(Tag::GetType("5", ids), QString("5"));
+	QCOMPARE(Tag::GetType("-1", ids), QString("-1"));
+
+	// Replacements
+	QCOMPARE(Tag::GetType("series", ids), QString("copyright"));
+	QCOMPARE(Tag::GetType("mangaka", ids), QString("artist"));
+	QCOMPARE(Tag::GetType("game", ids), QString("copyright"));
+	QCOMPARE(Tag::GetType("studio", ids), QString("circle"));
+	QCOMPARE(Tag::GetType("source", ids), QString("general"));
+	QCOMPARE(Tag::GetType("character group", ids), QString("general"));
+
+	// Mixed types
+	QCOMPARE(Tag::GetType("copyright, character", ids), QString("copyright"));
+}
+
+
 static TagTest instance;
