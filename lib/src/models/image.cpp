@@ -1192,7 +1192,7 @@ QString Image::getNextExtension(QString ext)
 	if (nextext.contains(ext))
 		return nextext[ext];
 
-	return "jpg";
+	return (animated ? "webm" : "jpg");
 }
 
 bool Image::isVideo() const

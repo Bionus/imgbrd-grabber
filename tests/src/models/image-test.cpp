@@ -610,5 +610,32 @@ void ImageTest::testSetUrl()
 	QCOMPARE(m_img->url(), url);
 }
 
+void ImageTest::testGetNextExtension()
+{
+	// Static images
+	QCOMPARE(m_img->getNextExtension(""), QString("jpg"));
+	QCOMPARE(m_img->getNextExtension("jpg"), QString("png"));
+	QCOMPARE(m_img->getNextExtension("png"), QString("gif"));
+	QCOMPARE(m_img->getNextExtension("gif"), QString("jpeg"));
+	QCOMPARE(m_img->getNextExtension("jpeg"), QString("webm"));
+	QCOMPARE(m_img->getNextExtension("webm"), QString("swf"));
+	QCOMPARE(m_img->getNextExtension("swf"), QString("mp4"));
+	QCOMPARE(m_img->getNextExtension("mp4"), QString());
+
+	m_details["tags_general"] = "animated";
+	m_img->deleteLater();
+	m_img = new Image(m_site, m_details, m_profile);
+
+	// Animated images
+	QCOMPARE(m_img->getNextExtension(""), QString("webm"));
+	QCOMPARE(m_img->getNextExtension("webm"), QString("mp4"));
+	QCOMPARE(m_img->getNextExtension("mp4"), QString("gif"));
+	QCOMPARE(m_img->getNextExtension("gif"), QString("jpg"));
+	QCOMPARE(m_img->getNextExtension("jpg"), QString("png"));
+	QCOMPARE(m_img->getNextExtension("png"), QString("jpeg"));
+	QCOMPARE(m_img->getNextExtension("jpeg"), QString("swf"));
+	QCOMPARE(m_img->getNextExtension("swf"), QString());
+}
+
 
 static ImageTest instance;
