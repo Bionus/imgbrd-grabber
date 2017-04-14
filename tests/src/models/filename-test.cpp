@@ -304,6 +304,12 @@ void FilenameTest::testPathNoJpeg()
 	assertPath("%ext%", "jpeg");
 }
 
+void FilenameTest::testPathKeepInvalidTokens()
+{
+	assertPath("%invalid_token% %ext%", "%invalid_token% jpg", "", true, false, true);
+	assertPath("%ext% %invalid_token%", "jpg %invalid_token%", "", true, false, true);
+}
+
 void FilenameTest::testGetReplacesSimple()
 {
 	QString format = "%artist%/%copyright%/%character%/%md5%.%ext%";
@@ -529,45 +535,30 @@ void FilenameTest::testFilenameWithMultipleUnderscores()
 	assertPath("%filename%", "__fubuki_kantai_collection_drawn_by_minosu__23d36b216c1a3f4e219c4642e221e1a2");
 }
 
-void FilenameTest::testNeedExactTagsBasic()
+void FilenameTest::testNeedExactTags()
 {
-	Filename fn("%md5%.%ext%");
-	QCOMPARE(fn.needExactTags(false), false);
-}
-void FilenameTest::testNeedExactTagsSite()
-{
-	Filename fn("%md5%.%ext%");
-	QCOMPARE(fn.needExactTags(m_site), false);
-}
-void FilenameTest::testNeedExactTagsJavascript()
-{
-	Filename fn("javascript:md5 + '.' + ext");
-	QCOMPARE(fn.needExactTags(false), true);
-}
-void FilenameTest::testNeedExactTagsFilename()
-{
-	Filename fn("%filename%.%ext%");
-	QCOMPARE(fn.needExactTags(false), false);
-	QCOMPARE(fn.needExactTags(true), true);
-}
-void FilenameTest::testNeedExactTagsToken()
-{
-	Filename fn("%character% %md5%.%ext%");
-	QCOMPARE(fn.needExactTags(false), true);
-}
-void FilenameTest::testNeedExactTagsOption()
-{
-	Filename fn("%all:includenamespace% %md5%.%ext%");
-	QCOMPARE(fn.needExactTags(false), true);
+	QCOMPARE(Filename("%md5%.%ext%").needExactTags(false), false);
+	QCOMPARE(Filename("%md5%.%ext%").needExactTags(m_site), false);
+	QCOMPARE(Filename("javascript:md5 + '.' + ext").needExactTags(false), true);
+	QCOMPARE(Filename("%character% %md5%.%ext%").needExactTags(false), true);
+	QCOMPARE(Filename("%all:includenamespace% %md5%.%ext%").needExactTags(false), true);
+
+	Filename filename("%filename%.%ext%");
+	QCOMPARE(filename.needExactTags(false), false);
+	QCOMPARE(filename.needExactTags(true), true);
+
+	Filename date("%date%.%ext%");
+	QCOMPARE(date.needExactTags(false, false), false);
+	QCOMPARE(date.needExactTags(false, true), true);
 }
 
 
-void FilenameTest::assertPath(QString format, QString expected, QString path, bool shouldFixFilename, bool fullPath)
+void FilenameTest::assertPath(QString format, QString expected, QString path, bool shouldFixFilename, bool fullPath, bool keepInvalidTokens)
 {
-	assertPath(format, QStringList() << expected, path, shouldFixFilename, fullPath);
+	assertPath(format, QStringList() << expected, path, shouldFixFilename, fullPath, keepInvalidTokens);
 }
 
-void FilenameTest::assertPath(QString format, QStringList expected, QString path, bool shouldFixFilename, bool fullPath)
+void FilenameTest::assertPath(QString format, QStringList expected, QString path, bool shouldFixFilename, bool fullPath, bool keepInvalidTokens)
 {
 	if (path.isEmpty())
 		path = QDir::homePath();
@@ -580,7 +571,7 @@ void FilenameTest::assertPath(QString format, QStringList expected, QString path
 	}
 
 	Filename fn(format);
-	QStringList actual = fn.path(*m_img, m_profile, path, 7, true, true, shouldFixFilename, fullPath);
+	QStringList actual = fn.path(*m_img, m_profile, path, 7, true, true, shouldFixFilename, fullPath, keepInvalidTokens);
 	QCOMPARE(actual, expectedNative);
 }
 

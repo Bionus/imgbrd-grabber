@@ -47,6 +47,7 @@ class FilenameTest : public TestSuite
 		void testPathOptionNumMultiple();
 		void testPathSpecies();
 		void testPathNoJpeg();
+		void testPathKeepInvalidTokens();
 		void testGetReplacesSimple();
 		void testGetReplacesMultiple();
 		void testGetReplacesMatrix();
@@ -62,17 +63,11 @@ class FilenameTest : public TestSuite
 		void testReplaceBlanks();
 		void testCommand();
 		void testFilenameWithMultipleUnderscores();
-
-		void testNeedExactTagsBasic();
-		void testNeedExactTagsSite();
-		void testNeedExactTagsJavascript();
-		void testNeedExactTagsFilename();
-		void testNeedExactTagsToken();
-		void testNeedExactTagsOption();
+		void testNeedExactTags();
 
 	protected:
-		void assertPath(QString format, QString expected, QString path = "", bool shouldFixFilename = true, bool fullPath = false);
-		void assertPath(QString format, QStringList expected, QString path = "", bool shouldFixFilename = true, bool fullPath = false);
+		void assertPath(QString format, QString expected, QString path = "", bool shouldFixFilename = true, bool fullPath = false, bool keepInvalidTokens = false);
+		void assertPath(QString format, QStringList expected, QString path = "", bool shouldFixFilename = true, bool fullPath = false, bool keepInvalidTokens = false);
 		void assertExpand(QString format, QString expected);
 
 	private:
