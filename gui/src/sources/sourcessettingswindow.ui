@@ -783,6 +783,9 @@
           </layout>
          </widget>
          <widget class="QWidget" name="pageOAuth1">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
           <layout class="QFormLayout" name="formLayout_10">
            <property name="leftMargin">
             <number>18</number>
@@ -829,6 +832,9 @@
           </layout>
          </widget>
          <widget class="QWidget" name="pageOAuth2">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
           <layout class="QFormLayout" name="formLayout_11">
            <property name="leftMargin">
             <number>18</number>
