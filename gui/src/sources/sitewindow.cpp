@@ -81,9 +81,23 @@ void SiteWindow::finish(Source *src)
 		}
 	}
 
+	// Remove unnecessary prefix
+	bool ssl = false;
+	if (m_url.startsWith("http://"))
+	{ m_url.mid(7); }
+	else if (m_url.startsWith("https://"))
+	{
+		m_url.mid(8);
+		ssl = true;
+	}
+
 	Site *site = new Site(m_url, src);
 	src->getSites().append(site);
 	m_sites->insert(site->url(), site);
+
+	// If the user wrote "https://" in the URL, we enable SSL for this site
+	if (ssl)
+	{ site->settings()->setValue("ssl", true); }
 
 	// Save new sites
 	QFile f(src->getPath() + "/sites.txt");
