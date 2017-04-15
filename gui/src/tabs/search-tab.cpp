@@ -276,7 +276,6 @@ void searchTab::finishedLoading(Page* page)
 	// Remove already existing images for merged results
 	bool merged = ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked();
 	QList<QSharedPointer<Image>> imgs = merged ? mergeResults(validImages) : validImages;
-	qDebug() << validImages.count() << imgs.count();
 
 	m_images.append(imgs);
 

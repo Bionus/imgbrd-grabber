@@ -149,9 +149,6 @@ void ProfileTest::testRemoveMd5()
 	QStringList lines = QString(f.readAll()).split("\n", QString::SkipEmptyParts);
 	f.close();
 
-	for (auto line : lines)
-		qDebug() << line;
-
 	QCOMPARE(lines.count(), 1);
 	QVERIFY(lines.contains("ad0234829205b9033196ba818f7a872btests/resources/image_1x1.png"));
 }

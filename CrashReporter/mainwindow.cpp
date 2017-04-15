@@ -4,7 +4,6 @@
 #include <QDir>
 #include <QProcess>
 #include <QSettings>
-#include <QDebug>
 #include <QTranslator>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
