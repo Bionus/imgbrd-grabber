@@ -36,9 +36,9 @@
               <p class="description">{{ site.description | default: site.github.project_tagline }}</p>
 
               {% if site.show_download %}
-                <p class="download"><a href="{{ site.github.releases_url | append: '/latest' }}">Free Download</a></p>
+                <p class="download"><a href="{{ site.github.releases_url | append: '/latest' }}" data-label="Download">Free Download</a></p>
               {% endif %}
-              <p class="view"><a href="{{ site.github.repository_url }}">View the Project on GitHub</a></p>
+              <p class="view"><a href="{{ site.github.repository_url }}" data-label="GitHub project">View the Project on GitHub</a></p>
             </div>
           </div>
         </div>
@@ -52,7 +52,7 @@
 
       <footer>
         <div class="container">
-          <p>This project is maintained by <a href="{{ site.github.owner_url }}">{{ site.github.owner_name }}</a></p>
+          <p>This project is maintained by <a href="{{ site.github.owner_url }}" data-label="Owner">{{ site.github.owner_name }}</a></p>
         </div>
       </footer>
     </div>
@@ -69,6 +69,41 @@
 
           ga('create', '{{ site.google_analytics }}', 'auto');
           ga('send', 'pageview');
+
+          var baseURI = window.location.host;
+          $('a').on('click', function(event) {
+            var th = $(this);
+            var name = th.attr('data-label') ? th.data('label') : th.html();
+            var href = th.attr('href');
+
+            if (href.indexOf(baseURI) === -1) {
+              var redir = false;
+              function loadPage() {
+                if (redir) return;
+                redir = true;
+                document.location = href;
+              }
+
+              var targ = th.attr('target');
+              var target = (targ && !targ.match(/^_(self|parent|top)$/i)) ? targ : false;
+              if (event.ctrlKey || event.shiftKey || event.metaKey || event.which == 2) {
+                target = '_blank';
+              }
+
+              var opts = {
+                'hitType': 'event',
+                'eventCategory': 'Outbound',
+                'eventAction': href,
+                'eventLabel': name ? name.toLowerCase() : href
+              };
+              if (!target) {
+                opts['hitCallback'] = loadPage;
+                setTimeout(loadPage, 1000);
+              }
+
+              ga('send', opts);
+            }
+          });
       </script>
     {% endif %}
   </body>
