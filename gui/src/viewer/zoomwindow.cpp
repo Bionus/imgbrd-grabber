@@ -921,7 +921,9 @@ QStringList zoomWindow::saveImageNow(bool fav)
 
 QString zoomWindow::saveImageAs()
 {
-	QString filename = m_image->fileUrl().toString().section('/', -1);
+	Filename format(m_settings->value("Save/filename").toString());
+	QStringList filenames = format.path(*m_image, m_profile);
+	QString filename = filenames.first().section(QDir::separator(), -1);
 	QString lastDir = m_settings->value("Zoom/lastDir", "").toString();
 
 	QString path = QFileDialog::getSaveFileName(this, tr("Save image"), QDir::toNativeSeparators(lastDir + "/" + filename), "Images (*.png *.gif *.jpg *.jpeg)");
