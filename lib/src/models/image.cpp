@@ -853,17 +853,22 @@ Image::SaveResult Image::save(QString path, bool force, bool basic, bool addMd5)
 	QFile f(path);
 	if (!f.exists() || force)
 	{
-		QDir path_to_file(path.section(QDir::toNativeSeparators("/"), 0, -2));
-		if (!path_to_file.exists())
-		{
-			QDir dir;
-			if (!dir.mkpath(path.section(QDir::toNativeSeparators("/"), 0, -2)))
-				return SaveResult::Error;
-		}
-
 		QPair<QString, QString> md5action = m_profile->md5Action(md5());
 		QString whatToDo = md5action.first;
 		QString md5Duplicate = md5action.second;
+
+		// Only create the destination directory if we're going to put a file there
+		if (md5Duplicate.isEmpty() || force || whatToDo != "ignore")
+		{
+			QDir path_to_file(path.section(QDir::toNativeSeparators("/"), 0, -2));
+			if (!path_to_file.exists())
+			{
+				QDir dir;
+				if (!dir.mkpath(path.section(QDir::toNativeSeparators("/"), 0, -2)))
+					return SaveResult::Error;
+			}
+		}
+
 		if (md5Duplicate.isEmpty() || whatToDo == "save" || force)
 		{
 			log(QString("Saving image in <a href=\"file:///%1\">%1</a>").arg(path));
