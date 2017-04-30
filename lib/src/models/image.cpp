@@ -846,7 +846,7 @@ QStringList Image::stylishedTags(Profile *profile) const
 	return t;
 }
 
-Image::SaveResult Image::save(QString path, bool force, bool basic, bool addMd5, bool startCommands)
+Image::SaveResult Image::save(QString path, bool force, bool basic, bool addMd5, bool startCommands, int count)
 {
 	SaveResult res = SaveResult::Saved;
 
@@ -907,10 +907,11 @@ Image::SaveResult Image::save(QString path, bool force, bool basic, bool addMd5,
 				{ m_profile->addMd5(md5(), path); }
 			}
 
+			// Save info to a text file
 			if (m_settings->value("Textfile/activate", false).toBool() && !basic)
 			{
 				QString textfileFormat = m_settings->value("Textfile/content", "%all%").toString();
-				QStringList cont = this->path(textfileFormat, "", 1, true, true, false, false, false);
+				QStringList cont = this->path(textfileFormat, "", count, true, true, false, false, false);
 				if (!cont.isEmpty())
 				{
 					QString contents = cont.at(0);
@@ -922,10 +923,12 @@ Image::SaveResult Image::save(QString path, bool force, bool basic, bool addMd5,
 					}
 				}
 			}
+
+			// Log info to a text file
 			if (m_settings->value("SaveLog/activate", false).toBool() && !m_settings->value("SaveLog/file", "").toString().isEmpty() && !basic)
 			{
 				QString savelogFormat = m_settings->value("SaveLog/format", "%website% - %md5% - %all%").toString();
-				QStringList cont = this->path(savelogFormat, "", 1, true, true, false, false, false);
+				QStringList cont = this->path(savelogFormat, "", count, true, true, false, false, false);
 				if (!cont.isEmpty())
 				{
 					QString contents = cont.at(0);
@@ -980,17 +983,17 @@ Image::SaveResult Image::save(QString path, bool force, bool basic, bool addMd5,
 
 	return res;
 }
-QMap<QString, Image::SaveResult> Image::save(QStringList paths, bool addMd5, bool startCommands)
+QMap<QString, Image::SaveResult> Image::save(QStringList paths, bool addMd5, bool startCommands, int count)
 {
 	QMap<QString, Image::SaveResult> res;
 	for (QString path : paths)
-		res.insert(path, save(path, false, false, addMd5, startCommands));
+		res.insert(path, save(path, false, false, addMd5, startCommands, count));
 	return res;
 }
 QMap<QString, Image::SaveResult> Image::save(QString filename, QString path, bool addMd5, bool startCommands, int count)
 {
 	QStringList paths = this->path(filename, path, count, true, false, true, true, true);
-	return save(paths, addMd5, startCommands);
+	return save(paths, addMd5, startCommands, count);
 }
 
 QList<Tag> Image::filteredTags(QStringList remove) const
