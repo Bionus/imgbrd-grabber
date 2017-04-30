@@ -871,11 +871,18 @@ Image::SaveResult Image::save(QString path, bool force, bool basic, bool addMd5)
 
 		if (md5Duplicate.isEmpty() || whatToDo == "save" || force)
 		{
-			log(QString("Saving image in <a href=\"file:///%1\">%1</a>").arg(path));
 			if (!m_source.isEmpty() && QFile::exists(m_source))
-			{ QFile::copy(m_source, path); }
+			{
+				log(QString("Saving image in <a href=\"file:///%1\">%1</a> (from <a href=\"file:///%2\">%2</a>)").arg(path).arg(m_source));
+				QFile::copy(m_source, path);
+			}
 			else
 			{
+				if (m_data.isEmpty())
+					return SaveResult::NotLoaded;
+
+				log(QString("Saving image in <a href=\"file:///%1\">%1</a>").arg(path));
+
 				if (addMd5)
 				{ m_profile->addMd5(md5(), path); }
 

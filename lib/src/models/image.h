@@ -26,7 +26,8 @@ class Image : public QObject
 			Moved,
 			Copied,
 			Saved,
-			Error
+			Error,
+			NotLoaded
 		};
 		Image();
 		Image(Site *site, QMap<QString,QString> details, Profile *profile, Page *parent = NULL);
