@@ -846,7 +846,7 @@ QStringList Image::stylishedTags(Profile *profile) const
 	return t;
 }
 
-Image::SaveResult Image::save(QString path, bool force, bool basic, bool addMd5)
+Image::SaveResult Image::save(QString path, bool force, bool basic, bool addMd5, bool startCommands)
 {
 	SaveResult res = SaveResult::Saved;
 
@@ -953,30 +953,32 @@ Image::SaveResult Image::save(QString path, bool force, bool basic, bool addMd5)
 
 		// Commands
 		Commands &commands = m_profile->getCommands();
-		commands.before();
+		if (startCommands)
+		{ commands.before(); }
 			for (Tag tag : tags())
 			{ commands.tag(*this, tag, false); }
 			commands.image(*this, path);
 			for (Tag tag : tags())
 			{ commands.tag(*this, tag, true); }
-		commands.after();
+		if (startCommands)
+		{ commands.after(); }
 	}
 	else
 	{ res = SaveResult::AlreadyExists; }
 
 	return res;
 }
-QMap<QString, Image::SaveResult> Image::save(QStringList paths, bool addMd5)
+QMap<QString, Image::SaveResult> Image::save(QStringList paths, bool addMd5, bool startCommands)
 {
 	QMap<QString, Image::SaveResult> res;
 	for (QString path : paths)
-		res.insert(path, save(path, false, false, addMd5));
+		res.insert(path, save(path, false, false, addMd5, startCommands));
 	return res;
 }
-QMap<QString, Image::SaveResult> Image::save(QString filename, QString path, bool addMd5)
+QMap<QString, Image::SaveResult> Image::save(QString filename, QString path, bool addMd5, bool startCommands)
 {
 	QStringList paths = this->path(filename, path, 0, true, false, true, true, true);
-	return save(paths, addMd5);
+	return save(paths, addMd5, startCommands);
 }
 
 QList<Tag> Image::filteredTags(QStringList remove) const

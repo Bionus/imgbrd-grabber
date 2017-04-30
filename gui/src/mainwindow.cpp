@@ -1779,7 +1779,7 @@ void mainWindow::getAllGetImage(QSharedPointer<Image> img)
 		p = m_groupBatchs[site_id - 1].path;
 	}
 
-	QMap<QString, Image::SaveResult> result = img->save(path, p);
+	QMap<QString, Image::SaveResult> result = img->save(path, p, true, false);
 	bool needLoading = false;
 	for (Image::SaveResult res : result)
 		if (res == Image::SaveResult::NotLoaded)
