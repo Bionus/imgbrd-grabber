@@ -886,9 +886,6 @@ Image::SaveResult Image::save(QString path, bool force, bool basic, bool addMd5,
 
 				log(QString("Saving image in <a href=\"file:///%1\">%1</a>").arg(path));
 
-				if (addMd5)
-				{ m_profile->addMd5(md5(), path); }
-
 				if (f.open(QFile::WriteOnly))
 				{
 					if (f.write(m_data) < 0)
@@ -905,6 +902,9 @@ Image::SaveResult Image::save(QString path, bool force, bool basic, bool addMd5,
 					log("Unable to open file");
 					return SaveResult::Error;
 				}
+
+				if (addMd5)
+				{ m_profile->addMd5(md5(), path); }
 			}
 
 			if (m_settings->value("Textfile/activate", false).toBool() && !basic)
