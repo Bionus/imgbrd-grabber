@@ -40,7 +40,7 @@ class Image : public QObject
 		QStringList	stylishedTags(Profile *profile) const;
 		SaveResult  save(QString path, bool force = false, bool basic = false, bool addMd5 = true, bool startCommands = false);
 		QMap<QString, Image::SaveResult> save(QStringList paths, bool addMd5 = true, bool startCommands = false);
-		QMap<QString, Image::SaveResult> save(QString filename, QString path, bool addMd5 = true, bool startCommands = false);
+		QMap<QString, Image::SaveResult> save(QString filename, QString path, bool addMd5 = true, bool startCommands = false, int count = 0);
 		QString		url() const;
 		QString		md5() const;
 		QString		author() const;

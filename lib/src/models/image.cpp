@@ -987,9 +987,9 @@ QMap<QString, Image::SaveResult> Image::save(QStringList paths, bool addMd5, boo
 		res.insert(path, save(path, false, false, addMd5, startCommands));
 	return res;
 }
-QMap<QString, Image::SaveResult> Image::save(QString filename, QString path, bool addMd5, bool startCommands)
+QMap<QString, Image::SaveResult> Image::save(QString filename, QString path, bool addMd5, bool startCommands, int count)
 {
-	QStringList paths = this->path(filename, path, 0, true, false, true, true, true);
+	QStringList paths = this->path(filename, path, count, true, false, true, true, true);
 	return save(paths, addMd5, startCommands);
 }
 
