@@ -1778,14 +1778,15 @@ void mainWindow::getAllGetImage(QSharedPointer<Image> img)
 		path = m_groupBatchs[site_id - 1].filename;
 		p = m_groupBatchs[site_id - 1].path;
 	}
-	QStringList paths = img->path(path, p, m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + 1, true, false, true, true, true);
 
-	// Action
-	QPair<QString, QString> md5action = m_profile->md5Action(img->md5());
-	QString whatToDo = md5action.first;
-	QString md5Duplicate = md5action.second;
-	bool next = true;
-	if (md5Duplicate.isEmpty() || whatToDo == "save")
+	QMap<QString, Image::SaveResult> result = img->save(path, p);
+	bool needLoading = false;
+	for (Image::SaveResult res : result)
+		if (res == Image::SaveResult::NotLoaded)
+			needLoading = true;
+
+	// If the image needs to be loaded
+	if (needLoading)
 	{
 		log(QString("Loading image from <a href=\"%1\">%1</a> %2").arg(img->fileUrl().toString()).arg(m_getAllDownloading.size()));
 		m_progressdialog->loadingImage(img->url());
@@ -1796,48 +1797,24 @@ void mainWindow::getAllGetImage(QSharedPointer<Image> img)
 		connect(img.data(), &Image::finishedImage, this, &mainWindow::getAllPerformImage, Qt::UniqueConnection);
 		connect(img.data(), &Image::downloadProgressImage, this, &mainWindow::getAllProgress, Qt::UniqueConnection);
 		img->loadImage();
-		next = false;
+		return;
 	}
-	else
+
+	QStringList paths = result.keys();
+	for (QString fp : paths)
 	{
-		for (QString fp : paths)
-		{
-			if (whatToDo == "copy")
-			{
-				m_getAllDownloaded++;
-				log(QString("Copy from <a href=\"file:///%1\">%1</a> vers <a href=\"file:///%2\">%2</a>").arg(md5Duplicate).arg(fp));
-				QFile::copy(md5Duplicate, fp);
-
-				if (m_settings->value("Save/keepDate", true).toBool())
-					setFileCreationDate(fp, img->createdAt());
-			}
-			else if (whatToDo == "move")
-			{
-				m_getAllDownloaded++;
-				log(QString("Move from <a href=\"file:///%1\">%1</a> vers <a href=\"file:///%2\">%2</a>").arg(md5Duplicate).arg(fp));
-				QFile::rename(md5Duplicate, fp);
-				m_profile->setMd5(img->md5(), fp);
-
-				if (m_settings->value("Save/keepDate", true).toBool())
-					setFileCreationDate(fp, img->createdAt());
-			}
-			else
-			{
-				m_getAllExists++;
-				log(QString("MD5 \"%1\" of the image <a href=\"%2\">%2</a> already found in file <a href=\"file:///%3\">%3</a>").arg(img->md5(), img->url(), md5Duplicate));
-			}
-		}
+		if (result[fp] == Image::SaveResult::Ignored)
+		{ m_getAllExists++; }
+		else
+		{ m_getAllDownloaded++; }
 	}
 
 	// Continue to next image
-	if (next)
-	{
-		//m_progressdialog->setValue(m_progressdialog->value()+img->value());
-		m_progressdialog->setImages(m_progressdialog->images()+1);
-		m_downloadTimeLast.remove(img->url());
-		m_getAllDownloading.removeAll(img);
-		_getAll();
-	}
+	//m_progressdialog->setValue(m_progressdialog->value()+img->value());
+	m_progressdialog->setImages(m_progressdialog->images()+1);
+	m_downloadTimeLast.remove(img->url());
+	m_getAllDownloading.removeAll(img);
+	_getAll();
 }
 void mainWindow::getAllPerformImage(QNetworkReply::NetworkError error, QString errorString)
 {

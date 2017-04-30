@@ -942,7 +942,10 @@ Image::SaveResult Image::save(QString path, bool force, bool basic, bool addMd5)
 			res = SaveResult::Moved;
 		}
 		else
-		{ return SaveResult::Ignored; }
+		{
+			log(QString("MD5 \"%1\" of the image <a href=\"%2\">%2</a> already found in file <a href=\"file:///%3\">%3</a>").arg(md5(), url(), md5Duplicate));
+			return SaveResult::Ignored;
+		}
 
 		// Keep original date
 		if (m_settings->value("Save/keepDate", true).toBool())
