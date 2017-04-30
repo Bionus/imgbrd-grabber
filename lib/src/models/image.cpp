@@ -865,7 +865,10 @@ Image::SaveResult Image::save(QString path, bool force, bool basic, bool addMd5,
 			{
 				QDir dir;
 				if (!dir.mkpath(path.section(QDir::toNativeSeparators("/"), 0, -2)))
+				{
+					log(QString("Impossible to create the destination folder: %1.").arg(p+"/"+path.section('/', 0, -2)), Logger::Error);
 					return SaveResult::Error;
+				}
 			}
 		}
 
@@ -888,11 +891,20 @@ Image::SaveResult Image::save(QString path, bool force, bool basic, bool addMd5,
 
 				if (f.open(QFile::WriteOnly))
 				{
-					f.write(m_data);
+					if (f.write(m_data) < 0)
+					{
+						f.close();
+						f.remove();
+						log(QString("File saving error: %1)").arg(f.errorString()));
+						return SaveResult::Error;
+					}
 					f.close();
 				}
 				else
-				{ log("Unable to open file"); }
+				{
+					log("Unable to open file");
+					return SaveResult::Error;
+				}
 			}
 
 			if (m_settings->value("Textfile/activate", false).toBool() && !basic)
