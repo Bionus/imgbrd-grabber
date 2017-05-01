@@ -539,6 +539,8 @@ QString Filename::optionedValue(QString res, QString key, QString ops, const Ima
 
 		res = vals.join(tagSeparator);
 	}
+	if (options.contains("htmlescape"))
+	{ res = res.toHtmlEscaped(); }
 
 	// Forbidden characters and spaces replacement settings
 	if (key != "allo" && !key.startsWith("url_") && key != "filename")
