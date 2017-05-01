@@ -141,6 +141,12 @@ void FilenameTest::testPathEmptyDirs()
 	assertPath("%artist%/%test%/%md5%.%ext%",
 			   "artist1/1bc29b36f623ba82aaf6724fd3b16718.jpg");
 }
+void FilenameTest::testPathEmptyDirsNetworkDrive()
+{
+	assertPath("%md5%.%ext%",
+			   "\\\\NetworkDrive\\Grabber\\1bc29b36f623ba82aaf6724fd3b16718.jpg",
+			   "\\\\NetworkDrive\\Grabber", true, true);
+}
 void FilenameTest::testPathKeptTokens()
 {
 	assertPath("%artist%/%path%/%md5%.%ext%",

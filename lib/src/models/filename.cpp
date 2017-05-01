@@ -485,7 +485,7 @@ QStringList Filename::path(const Image& img, Profile *profile, QString pth, int 
 
 			// We remove empty directory names
 			QChar sep = QDir::separator();
-			fns[i].replace(QRegExp(QRegExp::escape(sep) + "{2,}"), sep);
+			fns[i].replace(QRegExp("(.)" + QRegExp::escape(sep) + "{2,}"), QString("\\1") + sep);
 		}
 	}
 
