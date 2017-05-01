@@ -984,8 +984,15 @@
        </layout>
       </widget>
       <widget class="QWidget" name="pageSaveTextfile">
-       <layout class="QFormLayout" name="formLayout_12">
-        <item row="1" column="0" colspan="2">
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QCheckBox" name="checkTextfileActivate">
+          <property name="text">
+           <string>Enable external text files</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QLabel" name="label_81">
           <property name="text">
            <string>&lt;i&gt;Each time an image is saved, an external text file will be save with the same name at the same location, containing the image's tags.&lt;/i&gt;</string>
@@ -995,31 +1002,56 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="0" colspan="2">
-         <widget class="QCheckBox" name="checkTextfileActivate">
-          <property name="text">
-           <string>Enable external text files</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0" colspan="2">
-         <widget class="QLabel" name="label_35">
-          <property name="text">
-           <string>Text file content</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0" colspan="2">
-         <widget class="QPlainTextEdit" name="textEditTextfileContent"/>
-        </item>
-        <item row="4" column="0" colspan="2">
-         <widget class="QLabel" name="label_80">
-          <property name="text">
-           <string>Available tokens: the same as in the &quot;Save&quot; part.</string>
-          </property>
-          <property name="wordWrap">
-           <bool>true</bool>
-          </property>
+        <item>
+         <widget class="QWidget" name="widgetTextfile" native="true">
+          <layout class="QFormLayout" name="formLayout_12">
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_89">
+             <property name="text">
+              <string>Suffix</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="lineTextfileSuffix">
+             <property name="text">
+              <string>.txt</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0" colspan="2">
+            <widget class="QPlainTextEdit" name="textEditTextfileContent"/>
+           </item>
+           <item row="1" column="0" colspan="2">
+            <widget class="QLabel" name="label_35">
+             <property name="text">
+              <string>Text file content</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0" colspan="2">
+            <widget class="QLabel" name="label_80">
+             <property name="text">
+              <string>Available tokens: the same as in the &quot;Save&quot; part.</string>
+             </property>
+             <property name="wordWrap">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </widget>
         </item>
        </layout>
@@ -2917,8 +2949,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>320</x>
-     <y>479</y>
+     <x>329</x>
+     <y>461</y>
     </hint>
     <hint type="destinationlabel">
      <x>157</x>
@@ -2933,8 +2965,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>388</x>
-     <y>479</y>
+     <x>397</x>
+     <y>461</y>
     </hint>
     <hint type="destinationlabel">
      <x>286</x>
@@ -2965,12 +2997,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>539</x>
-     <y>34</y>
+     <x>360</x>
+     <y>20</y>
     </hint>
     <hint type="destinationlabel">
-     <x>539</x>
-     <y>71</y>
+     <x>360</x>
+     <y>29</y>
     </hint>
    </hints>
   </connection>
@@ -2981,12 +3013,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>647</x>
-     <y>138</y>
+     <x>360</x>
+     <y>28</y>
     </hint>
     <hint type="destinationlabel">
-     <x>358</x>
-     <y>135</y>
+     <x>278</x>
+     <y>28</y>
     </hint>
    </hints>
   </connection>
@@ -2997,12 +3029,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>528</x>
-     <y>165</y>
+     <x>319</x>
+     <y>32</y>
     </hint>
     <hint type="destinationlabel">
-     <x>408</x>
-     <y>161</y>
+     <x>278</x>
+     <y>31</y>
     </hint>
    </hints>
   </connection>
@@ -3013,12 +3045,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>646</x>
-     <y>165</y>
+     <x>359</x>
+     <y>32</y>
     </hint>
     <hint type="destinationlabel">
-     <x>408</x>
-     <y>161</y>
+     <x>278</x>
+     <y>31</y>
     </hint>
    </hints>
   </connection>
@@ -3029,12 +3061,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>647</x>
-     <y>192</y>
+     <x>360</x>
+     <y>34</y>
     </hint>
     <hint type="destinationlabel">
-     <x>391</x>
-     <y>189</y>
+     <x>278</x>
+     <y>34</y>
     </hint>
    </hints>
   </connection>
@@ -3045,12 +3077,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>647</x>
-     <y>192</y>
+     <x>360</x>
+     <y>32</y>
     </hint>
     <hint type="destinationlabel">
-     <x>391</x>
-     <y>189</y>
+     <x>278</x>
+     <y>32</y>
     </hint>
    </hints>
   </connection>
@@ -3061,12 +3093,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>528</x>
-     <y>165</y>
+     <x>319</x>
+     <y>30</y>
     </hint>
     <hint type="destinationlabel">
-     <x>408</x>
-     <y>161</y>
+     <x>278</x>
+     <y>29</y>
     </hint>
    </hints>
   </connection>
@@ -3077,12 +3109,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>646</x>
-     <y>165</y>
+     <x>359</x>
+     <y>30</y>
     </hint>
     <hint type="destinationlabel">
-     <x>408</x>
-     <y>161</y>
+     <x>278</x>
+     <y>29</y>
     </hint>
    </hints>
   </connection>
@@ -3093,12 +3125,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>647</x>
-     <y>138</y>
+     <x>360</x>
+     <y>26</y>
     </hint>
     <hint type="destinationlabel">
-     <x>358</x>
-     <y>135</y>
+     <x>278</x>
+     <y>26</y>
     </hint>
    </hints>
   </connection>
@@ -3109,12 +3141,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>647</x>
-     <y>138</y>
+     <x>360</x>
+     <y>28</y>
     </hint>
     <hint type="destinationlabel">
-     <x>358</x>
-     <y>135</y>
+     <x>278</x>
+     <y>28</y>
     </hint>
    </hints>
   </connection>
@@ -3125,12 +3157,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>528</x>
-     <y>165</y>
+     <x>319</x>
+     <y>32</y>
     </hint>
     <hint type="destinationlabel">
-     <x>408</x>
-     <y>161</y>
+     <x>278</x>
+     <y>31</y>
     </hint>
    </hints>
   </connection>
@@ -3141,12 +3173,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>646</x>
-     <y>165</y>
+     <x>359</x>
+     <y>32</y>
     </hint>
     <hint type="destinationlabel">
-     <x>408</x>
-     <y>161</y>
+     <x>278</x>
+     <y>31</y>
     </hint>
    </hints>
   </connection>
@@ -3157,28 +3189,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>647</x>
-     <y>192</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>391</x>
-     <y>189</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkTextfileActivate</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>textEditTextfileContent</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>639</x>
+     <x>360</x>
      <y>34</y>
     </hint>
     <hint type="destinationlabel">
-     <x>639</x>
-     <y>121</y>
+     <x>278</x>
+     <y>34</y>
     </hint>
    </hints>
   </connection>
@@ -3253,12 +3269,28 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>308</x>
-     <y>57</y>
+     <x>360</x>
+     <y>26</y>
     </hint>
     <hint type="destinationlabel">
-     <x>308</x>
-     <y>70</y>
+     <x>360</x>
+     <y>31</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkTextfileActivate</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>widgetTextfile</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>349</x>
+     <y>28</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>311</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>

@@ -98,8 +98,9 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	ui->checkUseregexfortags->setChecked(settings->value("useregexfortags", true).toBool());
 
 	ui->checkTextfileActivate->setChecked(settings->value("Textfile/activate", false).toBool());
-	ui->textEditTextfileContent->setEnabled(settings->value("Textfile/activate", false).toBool());
+	ui->lineTextfileSuffix->setText(settings->value("Textfile/suffix", ".txt").toString());
 	ui->textEditTextfileContent->setPlainText(settings->value("Textfile/content", "%all%").toString());
+	ui->widgetTextfile->setEnabled(settings->value("Textfile/activate", false).toBool());
 
 	ui->checkSaveLogEnable->setChecked(settings->value("SaveLog/activate", false).toBool());
 	ui->lineSaveLogFile->setEnabled(settings->value("SaveLog/activate", false).toBool());
@@ -578,6 +579,7 @@ void optionsWindow::save()
 
 	settings->beginGroup("Textfile");
 		settings->setValue("activate", ui->checkTextfileActivate->isChecked());
+		settings->setValue("suffix", ui->lineTextfileSuffix->text());
 		settings->setValue("content", ui->textEditTextfileContent->toPlainText());
 	settings->endGroup();
 
