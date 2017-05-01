@@ -860,15 +860,12 @@ Image::SaveResult Image::save(QString path, bool force, bool basic, bool addMd5,
 		// Only create the destination directory if we're going to put a file there
 		if (md5Duplicate.isEmpty() || force || whatToDo != "ignore")
 		{
-			QDir path_to_file(path.section(QDir::toNativeSeparators("/"), 0, -2));
-			if (!path_to_file.exists())
+			QString p = path.section(QDir::toNativeSeparators("/"), 0, -2);
+			QDir path_to_file(p), dir;
+			if (!path_to_file.exists() && !dir.mkpath(p))
 			{
-				QDir dir;
-				if (!dir.mkpath(path.section(QDir::toNativeSeparators("/"), 0, -2)))
-				{
-					log(QString("Impossible to create the destination folder: %1.").arg(p+"/"+path.section('/', 0, -2)), Logger::Error);
-					return SaveResult::Error;
-				}
+				log(QString("Impossible to create the destination folder: %1.").arg(p), Logger::Error);
+				return SaveResult::Error;
 			}
 		}
 
