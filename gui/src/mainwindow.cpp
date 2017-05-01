@@ -1880,94 +1880,21 @@ void mainWindow::saveImage(QSharedPointer<Image> img, QString path, QString p, b
 		if (p == "")
 		{ p = img->folder().isEmpty() ? m_settings->value("Save/path").toString() : img->folder(); }
 		int count = m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + 1;
-		QStringList paths = img->path(path, p, count, true, false, true, true, true);
 
+		QMap<QString, Image::SaveResult> result = img->save(path, p, true, false, count);
+
+		QStringList paths = result.keys();
 		for (QString path : paths)
 		{
-			if (getAll)
-			{ path.replace("%n%", QString::number(m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors)); }
-			QString fp = QDir::toNativeSeparators(path);
-
-			QPair<QString, QString> md5action = m_profile->md5Action(img->md5());
-			QString whatToDo = md5action.first;
-			QString md5Duplicate = md5action.second;
-			if (md5Duplicate.isEmpty() || whatToDo == "save")
+			if (result[path] == Image::SaveResult::Error)
 			{
-				// Create the reception's directory
-				QDir path_to_file(fp.section(QDir::toNativeSeparators("/"), 0, -2)), dir(p);
-				if (!path_to_file.exists() && !dir.mkpath(path.section(QDir::toNativeSeparators("/"), 0, -2)))
-				{
-					log(QString("Impossible to create the destination folder: %1.").arg(p+"/"+path.section('/', 0, -2)), Logger::Error);
-					if (getAll)
-					{ m_getAllErrors++; }
-				}
-
-				// Save the file
-				else
-				{
-					QFile f(fp);
-					f.open(QIODevice::WriteOnly);
-					if (f.write(img->data()) < 0)
-					{
-						f.close();
-						f.remove();
-						m_getAllErrors++;
-						m_progressdialog->pause();
-						QString err = tr("An error occured saving the image.\n%1\n%2\nPlease solve the issue before resuming the download.").arg(fp, f.errorString());
-						log(err);
-						QMessageBox::critical(m_progressdialog, tr("Error"), err);
-						return;
-					}
-					f.close();
-
-					m_profile->addMd5(img->md5(), fp);
-
-					// Save info to a text file
-					if (m_settings->value("Textfile/activate", false).toBool())
-					{
-						QStringList cont = img->path(m_settings->value("Textfile/content", "%all%").toString(), "", count, true, true, false, false);
-						if (!cont.isEmpty())
-						{
-							QString contents = cont.at(0);
-							QFile file_tags(fp + ".txt");
-							if (file_tags.open(QFile::WriteOnly | QFile::Text))
-							{
-								file_tags.write(contents.toLatin1());
-								file_tags.close();
-							}
-						}
-					}
-
-					// Log info to a text file
-					if (m_settings->value("SaveLog/activate", false).toBool() && !m_settings->value("SaveLog/file", "").toString().isEmpty())
-					{
-						QStringList cont = img->path(m_settings->value("SaveLog/format", "%website% - %md5% - %all%").toString(), "", count, true, true, false, false);
-						if (!cont.isEmpty())
-						{
-							QString contents = cont.at(0);
-							QFile file_tags(m_settings->value("SaveLog/file", "").toString());
-							if (file_tags.open(QFile::WriteOnly | QFile::Append | QFile::Text))
-							{
-								file_tags.write(contents.toUtf8() + "\n");
-								file_tags.close();
-							}
-						}
-					}
-				}
-
-				// Execute commands
-				Commands &commands = m_profile->getCommands();
-				for (Tag tag : img->tags())
-				{ commands.tag(*img, tag, false); }
-				commands.image(*img, fp);
-				for (Tag tag : img->tags())
-				{ commands.tag(*img, tag, true); }
-
-				if (m_settings->value("Save/keepDate", true).toBool())
-					setFileCreationDate(fp, img->createdAt());
+				m_getAllErrors++;
+				m_progressdialog->pause();
+				QMessageBox::critical(m_progressdialog, tr("Error"), tr("An error occured saving the image.\n%1\nPlease solve the issue before resuming the download.").arg(path));
 			}
 		}
 	}
+
 	else
 	{
 		log(QString("Nothing has been received for the image: <a href=\"%1\">%1</a>.").arg(img->url().toHtmlEscaped()), Logger::Error);
