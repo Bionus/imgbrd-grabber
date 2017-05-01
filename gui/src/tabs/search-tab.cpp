@@ -433,22 +433,8 @@ void searchTab::finishedLoadingPreview()
 		else
 		{ download = true; }
 
-		/*if (download)
-		{
-			connect(img.data(), SIGNAL(finishedImage(Image*)), m_parent, SLOT(saveImage(Image*)));
-			connect(img.data(), SIGNAL(finishedImage(Image*)), m_parent, SLOT(decreaseDownloads()));
-
-			Filename filename(m_settings->value("Save/filename").toString());
-			if (filename.needExactTags(img->page()->site()))
-			{
-				connect(img.data(), &Image::finishedLoadingTags, img.data(), &Image::loadImage);
-				img->loadDetails();
-			}
-			else
-			{ img->loadImage(); }
-
-			m_parent->increaseDownloads();
-		}*/
+		if (download)
+		{ img->loadAndSave(m_settings->value("Save/filename").toString(), m_settings->value("Save/path").toString()); }
 	}
 
 	bool merge = ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked() && !m_images.empty();
