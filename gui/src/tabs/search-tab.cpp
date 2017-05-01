@@ -2,6 +2,7 @@
 #include <QMouseEvent>
 #include <QMessageBox>
 #include <QSet>
+#include <QMenu>
 #include "ui/textedit.h"
 #include "ui/QBouton.h"
 #include "ui/verticalscrollarea.h"
@@ -10,6 +11,7 @@
 #include "models/favorite.h"
 #include "models/page.h"
 #include "models/profile.h"
+#include "models/filename.h"
 #include "sources/sourceswindow.h"
 #include "viewer/zoomwindow.h"
 #include "mainwindow.h"
@@ -589,6 +591,9 @@ QBouton *searchTab::createImageThumbnail(int position, QSharedPointer<Image> img
 	l->scale(img->previewImage(), m_settings->value("thumbnailUpscale", 1.0f).toFloat());
 	l->setFlat(true);
 
+	l->setContextMenuPolicy(Qt::CustomContextMenu);
+	connect(l, &QWidget::customContextMenuRequested, this, [this, img]{ thumbnailContextMenu(img); });
+
 	if (fixedWidthLayout)
 		l->setFixedSize(FIXED_IMAGE_WIDTH + borderSize * 2, FIXED_IMAGE_WIDTH + borderSize * 2);
 
@@ -597,6 +602,29 @@ QBouton *searchTab::createImageThumbnail(int position, QSharedPointer<Image> img
 	connect(l, SIGNAL(rightClick(int)), m_parent, SLOT(batchChange(int)));
 
 	return l;
+}
+void searchTab::thumbnailContextMenu(QSharedPointer<Image> img)
+{
+	QString fn = m_settings->value("Save/filename").toString();
+	QString path = m_settings->value("Save/path").toString();
+
+	QMenu *menu = new QMenu(this);
+
+	if (m_selectedImagesPtrs.count() > 1)
+	{
+		menu->addAction(QIcon(":/images/icons/save.png"), tr("Save selected"), this, [this, fn, path]{
+			for (QSharedPointer<Image> img : m_selectedImagesPtrs)
+			{ img->loadAndSave(fn, path); }
+		});
+		menu->addSeparator();
+	}
+
+	menu->addAction(QIcon(":/images/icons/save.png"), tr("Save"), this, [img, fn, path]{ img->loadAndSave(fn, path); });
+	menu->addSeparator();
+
+	menu->addAction(QIcon(":/images/icons/browser.png"), tr("Open in browser"), this, [img]{ QDesktopServices::openUrl(img->pageUrl()); });
+
+	menu->exec(QCursor::pos());
 }
 
 int searchTab::getActualImagesPerPage(Page *page, bool merge)
