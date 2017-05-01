@@ -911,8 +911,9 @@ Image::SaveResult Image::save(QString path, bool force, bool basic, bool addMd5,
 				QStringList cont = this->path(textfileFormat, "", count, true, true, false, false, false);
 				if (!cont.isEmpty())
 				{
+					QString suffix = m_settings->value("Textfile/suffix", ".txt").toString();
 					QString contents = cont.at(0);
-					QFile file_tags(path + ".txt");
+					QFile file_tags(path + suffix);
 					if (file_tags.open(QFile::WriteOnly | QFile::Text))
 					{
 						file_tags.write(contents.toUtf8());
