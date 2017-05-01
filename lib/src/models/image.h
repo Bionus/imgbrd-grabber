@@ -96,6 +96,7 @@ class Image : public QObject
 		QUrl		getDisplayableUrl() const;
 		bool		isVideo() const;
 		void		setTags(QList<Tag> tags);
+		void		loadAndSave(QString filename, QString path);
 
 	public slots:
 		void loadPreview();
