@@ -1803,8 +1803,11 @@ void mainWindow::getAllGetImage(QSharedPointer<Image> img)
 	QStringList paths = result.keys();
 	for (QString fp : paths)
 	{
-		if (result[fp] == Image::SaveResult::Ignored)
+		Image::SaveResult res = result[fp];
+		if (res == Image::SaveResult::AlreadyExists)
 		{ m_getAllExists++; }
+		else if (res == Image::SaveResult::Ignored)
+		{ m_getAllIgnored++; }
 		else
 		{ m_getAllDownloaded++; }
 	}
