@@ -610,18 +610,17 @@ void searchTab::thumbnailContextMenu(QSharedPointer<Image> img)
 
 	QMenu *menu = new QMenu(this);
 
-	if (m_selectedImagesPtrs.count() > 1)
+	if (m_selectedImagesPtrs.empty() || !m_selectedImagesPtrs.contains(img))
+	{ menu->addAction(QIcon(":/images/icons/save.png"), tr("Save"), this, [img, fn, path]{ img->loadAndSave(fn, path); }); }
+	if (!m_selectedImagesPtrs.empty())
 	{
 		menu->addAction(QIcon(":/images/icons/save.png"), tr("Save selected"), this, [this, fn, path]{
 			for (QSharedPointer<Image> img : m_selectedImagesPtrs)
 			{ img->loadAndSave(fn, path); }
 		});
-		menu->addSeparator();
 	}
 
-	menu->addAction(QIcon(":/images/icons/save.png"), tr("Save"), this, [img, fn, path]{ img->loadAndSave(fn, path); });
 	menu->addSeparator();
-
 	menu->addAction(QIcon(":/images/icons/browser.png"), tr("Open in browser"), this, [img]{ QDesktopServices::openUrl(img->pageUrl()); });
 
 	menu->exec(QCursor::pos());
