@@ -25,7 +25,7 @@ void Logger::log(QString l, LogLevel level)
 	m_logFile.write(QString("["+time.toString("hh:mm:ss.zzz")+"] "+stripTags(l)+"\n").toUtf8());
 	m_logFile.flush();
 
-	QString msg = (level == Error ? QObject::tr("<b>Error:</b> %1").arg(l) : (level == Warning ? QObject::tr("<b>Warning:</b> %1").arg(l) : (level == Notice ? QObject::tr("<b>Notice:</b> %1").arg(l) : l)));
+	QString msg = (level == Error ? QObject::tr("<b>Error:</b> %1").arg(l) : (level == Warning ? QObject::tr("<b>Warning:</b> %1").arg(l) : l));
 	emit newLog(time, msg);
 
 	#ifdef QT_DEBUG

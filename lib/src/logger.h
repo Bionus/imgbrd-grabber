@@ -17,8 +17,8 @@ class Logger : public QObject
 	public:
 		enum LogLevel
 		{
+			Debug,
 			Info,
-			Notice,
 			Warning,
 			Error
 		};
