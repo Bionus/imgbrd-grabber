@@ -122,7 +122,7 @@ QString Filename::expandConditionals(QString text, QStringList tokens, QStringLi
 	while ((pos = reg.indexIn(text, pos)) != -1)
 	{
 		QString cap = reg.cap(1);
-		if (!cap.isEmpty())
+		if (!cap.isEmpty() && !cap.startsWith('<'))
 		{
 			cap += QString(">").repeated(cap.count('<') - cap.count('>'));
 			ret.replace("<" + cap + ">", this->expandConditionals(cap, tokens, tags, replaces, depth + 1));
@@ -152,6 +152,9 @@ QString Filename::expandConditionals(QString text, QStringList tokens, QStringLi
 			pos += reg.matchedLength();
 		}
 	}
+
+	if (depth == 0)
+	{ ret.replace(QRegExp("<<([^>]*)>>"), "<\\1>"); }
 
 	return ret;
 }

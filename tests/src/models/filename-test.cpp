@@ -199,6 +199,11 @@ void FilenameTest::testExpandTokenComplex()
 	assertExpand("image - <%model% some text <%nothing% another text> test><<%character% some text> text %nothing%> %md5%.%ext%",
 				 "image -  %md5%.%ext%");*/
 }
+void FilenameTest::testExpandEscaping()
+{
+	assertExpand("<<Value>>%md5%<</Value>>",
+				 "<Value>%md5%</Value>");
+}
 
 void FilenameTest::testPathOptionMax()
 {

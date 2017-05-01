@@ -33,6 +33,7 @@ class FilenameTest : public TestSuite
 		void testExpandTag();
 		void testExpandTokenSimple();
 		void testExpandTokenComplex();
+		void testExpandEscaping();
 		void testPathOptionMax();
 		void testPathOptionMaxDouble();
 		void testPathOptionDateFormat();
