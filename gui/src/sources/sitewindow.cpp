@@ -84,12 +84,14 @@ void SiteWindow::finish(Source *src)
 	// Remove unnecessary prefix
 	bool ssl = false;
 	if (m_url.startsWith("http://"))
-	{ m_url.mid(7); }
+	{ m_url = m_url.mid(7); }
 	else if (m_url.startsWith("https://"))
 	{
-		m_url.mid(8);
+		m_url = m_url.mid(8);
 		ssl = true;
 	}
+	if (m_url.endsWith('/'))
+	{ m_url = m_url.left(m_url.length() - 1); }
 
 	Site *site = new Site(m_url, src);
 	src->getSites().append(site);
