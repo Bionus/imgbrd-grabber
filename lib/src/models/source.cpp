@@ -75,6 +75,12 @@ Source::Source(Profile *profile, QString dir)
 	{ log(QString("No site for source %1").arg(m_name)); }
 }
 
+Source::~Source()
+{
+	qDeleteAll(m_apis);
+	qDeleteAll(m_sites);
+}
+
 
 QString Source::getName() const 		{ return m_name;		}
 QString Source::getPath() const 		{ return m_dir;			}

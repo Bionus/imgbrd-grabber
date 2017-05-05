@@ -16,6 +16,7 @@ class Source : public QObject
 
 	public:
 		Source(Profile *profile, QString dir);
+		~Source();
 
 		// Getters
 		QString getName() const;

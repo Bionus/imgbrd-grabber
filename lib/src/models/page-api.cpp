@@ -275,7 +275,7 @@ void PageApi::parseImage(QMap<QString,QString> d, int position, QList<Tag> tags)
 	{ d["sample_url"] = d["preview_url"]; }
 
 	// Generate image
-	QSharedPointer<Image> img = QSharedPointer<Image>(new Image(m_site, d, m_profile, m_parentPage));
+	QSharedPointer<Image> img(new Image(m_site, d, m_profile, m_parentPage));
 	QStringList errors = img->filter(m_postFiltering);
 
 	// If the file path is wrong (ends with "/.jpg")

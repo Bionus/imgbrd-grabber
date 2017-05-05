@@ -50,7 +50,7 @@ QNetworkReply *CustomNetworkAccessManager::get(const QNetworkRequest &request)
 		qDebug() << ("Reply from file: " + request.url().toString() + " -> " + f.fileName());
 		QByteArray content = f.readAll();
 
-		QCustomNetworkReply *reply = new QCustomNetworkReply();
+		QCustomNetworkReply *reply = new QCustomNetworkReply(this);
 		reply->setHttpStatusCode(200, "OK");
 		reply->setContentType("text/html");
 		reply->setContent(content);
