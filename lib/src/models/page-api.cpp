@@ -14,6 +14,9 @@ PageApi::PageApi(Page *parentPage, Profile *profile, Site *site, Api *api, QStri
 {
 	m_imagesCount = -1;
 	m_pagesCount = -1;
+	m_imagesCountSafe = false;
+	m_pagesCountSafe = false;
+
 	m_search = tags;
 	m_page = page;
 	m_pool = pool;
@@ -351,10 +354,7 @@ void PageApi::parse()
 		if (count == 0 && database == "array")
 		{ count = docElem.elementsByTagName("total-count").at(0).toElement().text().toInt(); }
 		if (count > 0)
-		{
-			m_imagesCount = count;
-			m_pagesCount = ceil(((float)count) / m_imagesPerPage);
-		}
+		{ setImageCount(count, true); }
 
 		// Reading posts
 		QDomNodeList nodeList = docElem.elementsByTagName("post");
@@ -531,7 +531,7 @@ void PageApi::parse()
 			}
 
 			if (data.contains("total"))
-			{ m_imagesCount = data.value("total").toInt(); }
+			{ setImageCount(data.value("total").toInt(), true); }
 
 			QMap<QString, QVariant> sc;
 			QList<QVariant> sourc = src.toList();
@@ -740,7 +740,7 @@ void PageApi::parseNavigation(const QString &source)
 
 	// Last page
 	if (m_site->contains("LastPage") && m_pagesCount < 1)
-	{ m_pagesCount = m_site->value("LastPage").toInt(); }
+	{ setPageCount(m_site->value("LastPage").toInt(), true); }
 	if (m_site->contains("Regex/LastPage") && m_pagesCount < 1)
 	{
 		QRegExp rxlast(m_site->value("Regex/LastPage"));
@@ -748,12 +748,13 @@ void PageApi::parseNavigation(const QString &source)
 		int cnt = rxlast.cap(1).remove(",").toInt();
 		if (cnt > 0)
 		{
-			m_pagesCount = cnt;
+			int pagesCount = cnt;
 			if (m_originalUrl.contains("{pid}"))
 			{
 				int ppid = m_api->contains("Urls/Limit") ? m_api->value("Urls/Limit").toInt() : m_imagesPerPage;
-				m_pagesCount = floor((float)m_pagesCount / (float)ppid) + 1;
+				pagesCount = floor((float)pagesCount / (float)ppid) + 1;
 			}
+			setPageCount(pagesCount, true);
 		}
 	}
 
@@ -762,16 +763,14 @@ void PageApi::parseNavigation(const QString &source)
 	{
 		QRegExp rxlast(m_site->value("Regex/Count"));
 		rxlast.indexIn(source, 0);
-		m_imagesCount = rxlast.cap(1).remove(",").toInt();
+		setImageCount(rxlast.cap(1).remove(",").toInt(), true);
 	}
 	if (m_imagesCount < 1)
 	{
 		for (Tag tag : m_tags)
 		{
 			if (tag.text() == m_search.join(" "))
-			{
-				m_imagesCount = tag.count();
-			}
+			{ setImageCount(tag.count(), false); }
 		}
 	}
 }
@@ -841,4 +840,28 @@ int PageApi::minId()
 void PageApi::setUrl(QUrl url)
 {
 	m_url = url;
+}
+
+void PageApi::setImageCount(int count, bool sure)
+{
+	if (m_imagesCount <= 0 || (!m_imagesCountSafe && sure))
+	{
+		m_imagesCount = count;
+		m_imagesCountSafe = sure;
+
+		if (sure)
+		{ setPageCount(ceil(((float)count) / m_imagesPerPage), false); }
+	}
+}
+
+void PageApi::setPageCount(int count, bool sure)
+{
+	if (m_pagesCount <= 0 || (!m_pagesCountSafe && sure))
+	{
+		m_pagesCount = count;
+		m_pagesCountSafe = sure;
+
+		if (sure)
+		{ setImageCount(count * m_imagesPerPage, false); }
+	}
 }

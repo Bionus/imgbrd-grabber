@@ -62,6 +62,8 @@ class PageApi : public QObject
 		void parseImage(QMap<QString,QString> data, int position, QList<Tag> tags = QList<Tag>());
 		void parseNavigation(const QString &source);
 		void updateUrls();
+		void setImageCount(int count, bool sure);
+		void setPageCount(int count, bool sure);
 
 	private:
 		Page			*m_parentPage;
@@ -69,13 +71,15 @@ class PageApi : public QObject
 		Site			*m_site;
 		Api				*m_api;
 		QStringList		m_search, m_postFiltering, m_errors;
-		int				m_imagesPerPage, m_currentSource, m_lastPage, m_lastPageMinId, m_lastPageMaxId, m_imagesCount, m_pagesCount, m_page, m_blim, m_pool;
+		int				m_imagesPerPage, m_currentSource, m_lastPage, m_lastPageMinId, m_lastPageMaxId, m_page, m_blim, m_pool;
 		bool			m_smart, m_isAltPage;
 		QString			m_format, m_source, m_wiki, m_originalUrl;
 		QUrl			m_url, m_urlRegex, m_urlNextPage, m_urlPrevPage;
 		QList<QSharedPointer<Image>>	m_images;
 		QList<Tag>		m_tags;
 		QNetworkReply	*m_reply, *m_replyTags;
+		int				m_imagesCount, m_pagesCount;
+		bool			m_imagesCountSafe, m_pagesCountSafe;
 };
 
 #endif // PAGE_API_H
