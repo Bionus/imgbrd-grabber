@@ -36,6 +36,8 @@
 	#include <vendor/qcommandlineparser.h>
 #endif
 #if !USE_CLI && USE_BREAKPAD
+	#include <QFileInfo>
+	#include <QDir>
 	#include "crashhandler/crashhandler.h"
 #endif
 
