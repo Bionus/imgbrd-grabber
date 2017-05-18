@@ -801,6 +801,7 @@ int PageApi::highLimit()
 	return 0;
 }
 
+bool PageApi::isImageCountSure() { return m_imagesCountSafe; }
 int PageApi::imagesCount(bool guess)
 {
 	int perPage = m_api->contains("Urls/Limit") && !m_api->contains("Urls/MaxLimit") ? m_api->value("Urls/Limit").toInt() : m_imagesPerPage;
@@ -810,6 +811,7 @@ int PageApi::imagesCount(bool guess)
 
 	return m_imagesCount;
 }
+bool PageApi::isPageCountSure() { return m_pagesCountSafe; }
 int PageApi::pagesCount(bool guess)
 {
 	int perPage = m_api->contains("Urls/Limit") && !m_api->contains("Urls/MaxLimit") ? m_api->value("Urls/Limit").toInt() : m_imagesPerPage;
@@ -850,7 +852,7 @@ void PageApi::setImageCount(int count, bool sure)
 		m_imagesCountSafe = sure;
 
 		if (sure)
-		{ setPageCount(ceil(((float)count) / m_imagesPerPage), false); }
+		{ setPageCount(ceil(((float)count) / m_imagesPerPage), true); }
 	}
 }
 

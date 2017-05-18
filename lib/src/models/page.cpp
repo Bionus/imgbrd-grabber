@@ -163,7 +163,7 @@ int				Page::highLimit()	{ return m_pageApis[m_currentApi]->highLimit(); }
 
 int Page::imagesCount(bool guess)
 {
-	if (m_regexApi >= 0)
+	if (m_regexApi >= 0 && !m_pageApis[m_currentApi]->isImageCountSure())
 	{
 		int count = m_pageApis[m_regexApi]->imagesCount(false);
 		if (count >= 0)
@@ -173,7 +173,7 @@ int Page::imagesCount(bool guess)
 }
 int Page::pagesCount(bool guess)
 {
-	if (m_regexApi >= 0)
+	if (m_regexApi >= 0 && !m_pageApis[m_currentApi]->isPageCountSure())
 	{
 		int count = m_pageApis[m_regexApi]->pagesCount(false);
 		if (count >= 0)

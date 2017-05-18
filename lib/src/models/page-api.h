@@ -30,6 +30,8 @@ class PageApi : public QObject
 		void			loadTags();
 		QUrl			parseUrl(QString url, int pid = -1, int p = -1, QString t = "", QString pseudo = "", QString password = "");
 		QList<QSharedPointer<Image>> images();
+		bool			isImageCountSure();
+		bool			isPageCountSure();
 		int				imagesCount(bool guess = true);
 		int				pagesCount(bool guess = true);
 		QUrl			url();
