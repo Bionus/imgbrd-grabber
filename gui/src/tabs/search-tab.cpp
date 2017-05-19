@@ -287,7 +287,7 @@ void searchTab::finishedLoading(Page* page)
 	ui_buttonNextPage->setEnabled(maxpage > ui_spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1 || (page->imagesCount() == 0 && page->images().count() > 0));
 	ui_buttonLastPage->setEnabled(maxpage > ui_spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1);
 
-	if (ui_checkMergeResults == nullptr || !ui_checkMergeResults->isChecked())
+	if (!merged)
 		addResultsPage(page, imgs);
 
 	if (!m_settings->value("useregexfortags", true).toBool())
@@ -906,6 +906,7 @@ void searchTab::saveSources(QList<bool> sel, bool canLoad)
 
 	DONE();
 
+	m_mergedMd5s.clear();
 	if (m_history.isEmpty() && canLoad)
 	{ load(); }
 }
