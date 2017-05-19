@@ -144,8 +144,8 @@ void FilenameTest::testPathEmptyDirs()
 void FilenameTest::testPathEmptyDirsNetworkDrive()
 {
 	assertPath("%md5%.%ext%",
-			   "\\\\NetworkDrive\\Grabber\\1bc29b36f623ba82aaf6724fd3b16718.jpg",
-			   "\\\\NetworkDrive\\Grabber", true, true);
+			   "//NetworkDrive/Grabber/1bc29b36f623ba82aaf6724fd3b16718.jpg",
+			   "//NetworkDrive/Grabber", true, true);
 }
 void FilenameTest::testPathKeptTokens()
 {
