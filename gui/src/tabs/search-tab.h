@@ -88,12 +88,15 @@ class searchTab : public QWidget
 		// Results
 		virtual void load() = 0;
 		void loadTags(QStringList tags);
-		QList<QSharedPointer<Image>> mergeResults(QList<QSharedPointer<Image>> results);
 		virtual void addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage = nullptr);
 		void setMergedLabelText(QLabel *txt, const QList<QSharedPointer<Image>> &imgs);
 		virtual void setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage = nullptr);
 		void addResultsImage(QSharedPointer<Image> img, bool merge = false);
 		void finishedLoadingPreview();
+		// Merged
+		QList<QSharedPointer<Image>> mergeResults(int page, QList<QSharedPointer<Image>> results);
+		void addMergedMd5(int page, QString md5);
+		bool containsMergedMd5(int page, QString md5);
 		// Loading
 		void finishedLoading(Page *page);
 		void failedLoading(Page *page);
@@ -147,6 +150,7 @@ class searchTab : public QWidget
 		int m_history_cursor;
 		QList<QMap<QString,QString>> m_history;
 		QString m_lastTags;
+		QList<QPair<int, QSet<QString>>> m_mergedMd5s;
 
 		// UI stuff
 		TextEdit *m_postFiltering;

@@ -277,7 +277,7 @@ void searchTab::finishedLoading(Page* page)
 
 	// Remove already existing images for merged results
 	bool merged = ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked();
-	QList<QSharedPointer<Image>> imgs = merged ? mergeResults(validImages) : validImages;
+	QList<QSharedPointer<Image>> imgs = merged ? mergeResults(page->page(), validImages) : validImages;
 
 	m_images.append(imgs);
 
@@ -441,27 +441,67 @@ void searchTab::finishedLoadingPreview()
 	addResultsImage(img, merge);
 }
 
-QList<QSharedPointer<Image>> searchTab::mergeResults(QList<QSharedPointer<Image>> results)
+QList<QSharedPointer<Image>> searchTab::mergeResults(int page, QList<QSharedPointer<Image>> results)
 {
-	QSet<QString> md5s;
+	QSet<QString> pageMd5s;
 	for (QSharedPointer<Image> img : m_images)
 	{
 		QString md5 = img->md5();
 		if (md5.isEmpty())
 			continue;
 
-		md5s.insert(md5);
+		pageMd5s.insert(md5);
+		addMergedMd5(page, md5);
 	}
 
 	QList<QSharedPointer<Image>> ret;
 	for (QSharedPointer<Image> img : results)
 	{
 		QString md5 = img->md5();
-		if (md5.isEmpty() || !md5s.contains(img->md5()))
+		if (md5.isEmpty() || (!pageMd5s.contains(md5) && !containsMergedMd5(page, md5)))
+		{
 			ret.append(img);
+
+			if (!md5.isEmpty())
+			{
+				pageMd5s.insert(md5);
+				addMergedMd5(page, md5);
+			}
+		}
 	}
 
 	return ret;
+}
+
+void searchTab::addMergedMd5(int page, QString md5)
+{
+	for (QPair<int, QSet<QString>> &pair : m_mergedMd5s)
+	{
+		if (pair.first == page)
+		{
+			pair.second.insert(md5);
+			return;
+		}
+	}
+
+	QSet<QString> set;
+	set.insert(md5);
+	m_mergedMd5s.append(QPair<int, QSet<QString>>(page, set));
+}
+
+bool searchTab::containsMergedMd5(int page, QString md5)
+{
+	for (const QPair<int, QSet<QString>> &pair : m_mergedMd5s)
+	{
+		// We only check the sets before the page was loaded
+		if (pair.first == page)
+			break;
+
+		if (pair.second.contains(md5))
+			return true;
+	}
+
+	return false;
 }
 
 void searchTab::addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage)
@@ -907,6 +947,8 @@ void searchTab::loadTags(QStringList tags)
 	{ addHistory(search, ui_spinPage->value(), ui_spinImagesPerPage->value(), ui_spinColumns->value()); }
 	m_from_history = false;
 
+	if (search != m_lastTags && !m_lastTags.isNull())
+	{ m_mergedMd5s.clear(); }
 	if (search != m_lastTags && !m_lastTags.isNull() && m_history_cursor == m_history.size() - 1)
 	{ ui_spinPage->setValue(1); }
 	m_lastTags = search;
