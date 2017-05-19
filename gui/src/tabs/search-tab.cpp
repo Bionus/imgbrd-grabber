@@ -656,7 +656,10 @@ void searchTab::thumbnailContextMenu(QSharedPointer<Image> img)
 	mapperSave->setMapping(actionSave, img.data());
 
 	if (!m_selectedImagesPtrs.empty())
-	{ menu->addAction(QIcon(":/images/icons/save.png"), tr("Save selected"), this, &searchTab::contextSaveSelected); }
+	{
+		QAction *actionSaveSelected = menu->addAction(QIcon(":/images/icons/save.png"), tr("Save selected"));
+		connect(actionSaveSelected, &QAction::triggered, this, &searchTab::contextSaveSelected);
+	}
 
 	menu->addSeparator();
 
