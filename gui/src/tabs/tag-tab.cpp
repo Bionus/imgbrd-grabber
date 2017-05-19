@@ -68,22 +68,10 @@ void tagTab::on_buttonSearch_clicked()
 
 void tagTab::closeEvent(QCloseEvent *e)
 {
-	emit closed(this);
-
 	m_settings->setValue("mergeresults", ui->checkMergeResults->isChecked());
 	m_settings->sync();
 
-	qDeleteAll(m_pages);
-	m_pages.clear();
-	m_images.clear();
-	qDeleteAll(m_checkboxes);
-	m_checkboxes.clear();
-	for (Site *site : m_layouts.keys())
-	{ clearLayout(m_layouts[site]); }
-	qDeleteAll(m_layouts);
-	m_layouts.clear();
-	m_boutons.clear();
-
+	emit closed(this);
 	e->accept();
 }
 

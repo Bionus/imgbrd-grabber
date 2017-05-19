@@ -79,16 +79,6 @@ void favoritesTab::closeEvent(QCloseEvent *e)
 	m_settings->endGroup();
 	m_settings->sync();
 
-	qDeleteAll(m_pages);
-	m_pages.clear();
-	m_images.clear();
-	qDeleteAll(m_checkboxes);
-	m_checkboxes.clear();
-	for (Site *site : m_layouts.keys())
-	{ clearLayout(m_layouts[site]); }
-	qDeleteAll(m_layouts);
-	m_layouts.clear();
-
 	emit(closed(this));
 	e->accept();
 }
