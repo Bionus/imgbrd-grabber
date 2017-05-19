@@ -650,8 +650,7 @@ void searchTab::thumbnailContextMenu(QSharedPointer<Image> img)
 
 	QMenu *menu = new QMenu(this);
 
-	if (m_selectedImagesPtrs.empty() || !m_selectedImagesPtrs.contains(img))
-	{ menu->addAction(QIcon(":/images/icons/save.png"), tr("Save"), this, [img, fn, path]{ img->loadAndSave(fn, path); }); }
+	menu->addAction(QIcon(":/images/icons/save.png"), tr("Save"), this, [img, fn, path]{ img->loadAndSave(fn, path); });
 	if (!m_selectedImagesPtrs.empty())
 	{
 		menu->addAction(QIcon(":/images/icons/save.png"), tr("Save selected"), this, [this, fn, path]{
