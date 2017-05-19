@@ -643,26 +643,52 @@ QBouton *searchTab::createImageThumbnail(int position, QSharedPointer<Image> img
 
 	return l;
 }
+
 void searchTab::thumbnailContextMenu(QSharedPointer<Image> img)
+{
+	QMenu *menu = new QMenu(this);
+
+	// Save image
+	QSignalMapper *mapperSave = new QSignalMapper(this);
+	connect(mapperSave, SIGNAL(mapped(QObject*)), this, SLOT(contextSaveImage(QObject*)));
+	QAction *actionSave = menu->addAction(QIcon(":/images/icons/save.png"), tr("Save"));
+	connect(actionSave, SIGNAL(triggered()), mapperSave, SLOT(map()));
+	mapperSave->setMapping(actionSave, img.data());
+
+	if (!m_selectedImagesPtrs.empty())
+	{ menu->addAction(QIcon(":/images/icons/save.png"), tr("Save selected"), this, &searchTab::contextSaveSelected); }
+
+	menu->addSeparator();
+
+	// Open image
+	QSignalMapper *mapperOpen = new QSignalMapper(this);
+	connect(mapperOpen, SIGNAL(mapped(QObject*)), this, SLOT(contextOpenImageInBrowser(QObject*)));
+	QAction *actionOpen = menu->addAction(QIcon(":/images/icons/browser.png"), tr("Open in browser"));
+	connect(actionOpen, SIGNAL(triggered()), mapperOpen, SLOT(map()));
+	mapperOpen->setMapping(actionOpen, img.data());
+
+	menu->exec(QCursor::pos());
+}
+void searchTab::contextSaveImage(QObject *image)
 {
 	QString fn = m_settings->value("Save/filename").toString();
 	QString path = m_settings->value("Save/path").toString();
 
-	QMenu *menu = new QMenu(this);
+	Image *img = (Image*)image;
+	img->loadAndSave(fn, path);
+}
+void searchTab::contextOpenImageInBrowser(QObject *image)
+{
+	Image *img = (Image*)image;
+	QDesktopServices::openUrl(img->pageUrl());
+}
+void searchTab::contextSaveSelected()
+{
+	QString fn = m_settings->value("Save/filename").toString();
+	QString path = m_settings->value("Save/path").toString();
 
-	menu->addAction(QIcon(":/images/icons/save.png"), tr("Save"), this, [img, fn, path]{ img->loadAndSave(fn, path); });
-	if (!m_selectedImagesPtrs.empty())
-	{
-		menu->addAction(QIcon(":/images/icons/save.png"), tr("Save selected"), this, [this, fn, path]{
-			for (QSharedPointer<Image> img : m_selectedImagesPtrs)
-			{ img->loadAndSave(fn, path); }
-		});
-	}
-
-	menu->addSeparator();
-	menu->addAction(QIcon(":/images/icons/browser.png"), tr("Open in browser"), this, [img]{ QDesktopServices::openUrl(img->pageUrl()); });
-
-	menu->exec(QCursor::pos());
+	for (QSharedPointer<Image> img : m_selectedImagesPtrs)
+		img->loadAndSave(fn, path);
 }
 
 int searchTab::getActualImagesPerPage(Page *page, bool merge)

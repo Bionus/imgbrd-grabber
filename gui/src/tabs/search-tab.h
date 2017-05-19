@@ -60,9 +60,14 @@ class searchTab : public QWidget
 		TextEdit *createAutocomplete();
 		void loadImageThumbnails(Page *page, const QList<QSharedPointer<Image>> &imgs);
 		QBouton *createImageThumbnail(int position, QSharedPointer<Image> img);
-		void thumbnailContextMenu(QSharedPointer<Image> img);
 		int getActualImagesPerPage(Page *page, bool merge);
 		FixedSizeGridLayout *createImagesLayout(QSettings *settings);
+		void thumbnailContextMenu(QSharedPointer<Image> img);
+
+	protected slots:
+		void contextSaveImage(QObject *image);
+		void contextOpenImageInBrowser(QObject *image);
+		void contextSaveSelected();
 
 	private:
 		void addLayout(QLayout *layout, int row, int column);
