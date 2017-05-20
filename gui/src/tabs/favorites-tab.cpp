@@ -16,7 +16,7 @@
 
 
 favoritesTab::favoritesTab(QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
-	: searchTab(sites, profile, parent), ui(new Ui::favoritesTab), m_sized(false), m_currentFav(0)
+	: searchTab(sites, profile, parent), ui(new Ui::favoritesTab), m_currentFav(0)
 {
 	ui->setupUi(this);
 

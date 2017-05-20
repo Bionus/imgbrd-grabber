@@ -59,7 +59,6 @@ class favoritesTab : public searchTab
 	private:
 		QDateTime m_loadFavorite;
 		QString m_currentTags;
-		bool m_sized;
 		int m_currentFav;
 };
 

@@ -11,7 +11,7 @@
 
 
 poolTab::poolTab(QMap<QString, Site*> *sites, Profile *profile, mainWindow *parent)
-	: searchTab(sites, profile, parent), ui(new Ui::poolTab), m_sized(false)
+	: searchTab(sites, profile, parent), ui(new Ui::poolTab)
 {
 	ui->setupUi(this);
 	ui->widgetMeant->hide();

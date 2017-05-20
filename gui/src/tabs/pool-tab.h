@@ -50,10 +50,7 @@ class poolTab : public searchTab
 		void focusSearch();
 
 	private:
-		int				m_id;
-		TextEdit		*m_search;
-		QCalendarWidget	*m_calendar;
-		bool			m_sized;
+		TextEdit *m_search;
 };
 
 #endif // POOL_TAB_H
