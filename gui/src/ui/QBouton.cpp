@@ -1,10 +1,11 @@
 #include "QBouton.h"
 #include <QPainter>
 #include <QPaintEvent>
+#include <QDebug>
 
 
 QBouton::QBouton(QVariant id, bool resizeInsteadOfCropping, bool smartSizeHint, int border, QColor color, QWidget *parent)
-	: QPushButton(parent), _id(id), _resizeInsteadOfCropping(resizeInsteadOfCropping), _smartSizeHint(smartSizeHint), _np(false), _originalSize(QSize(-1,-1)), _penColor(color), _border(border)
+	: QPushButton(parent), _id(id), _resizeInsteadOfCropping(resizeInsteadOfCropping), _smartSizeHint(smartSizeHint), _np(false), _originalSize(QSize(-1,-1)), _penColor(color), _border(border), _progress(0), _progressMax(0)
 { }
 
 void QBouton::scale(const QPixmap &image, float scale)
@@ -29,10 +30,18 @@ QVariant QBouton::id()
 void QBouton::setId(QVariant id)
 { _id = id; }
 
+void QBouton::setProgress(qint64 current, qint64 max)
+{
+	_progress = current;
+	_progressMax = max;
+
+	repaint();
+}
+
 void QBouton::paintEvent(QPaintEvent *event)
 {
 	// Used for normal buttons
-	if (!_resizeInsteadOfCropping && _border == 0)
+	if (!_resizeInsteadOfCropping && _border == 0 && _progressMax == 0)
 	{
 		QPushButton::paintEvent(event);
 		return;
@@ -74,6 +83,25 @@ void QBouton::paintEvent(QPaintEvent *event)
 
 	// Clip borders overflows
 	painter.setClipRect(x, y, w, h);
+
+	// Draw progress
+	if (_progressMax > 0 && _progress > 0 && _progress != _progressMax)
+	{
+		int lineHeight = 6;
+		int a = p + lineHeight/2;
+
+		float ratio = (float)_progress / _progressMax;
+		QPoint p1(qMax(x, 0) + a, qMax(y, 0) + a);
+		QPoint p2(p1.x() + (iconSize.width() - a) * ratio, p1.y());
+
+		if (p2.x() > p1.x())
+		{
+			QPen pen(QColor(0, 200, 0));
+			pen.setWidth(lineHeight);
+			painter.setPen(pen);
+			painter.drawLine(p1, p2);
+		}
+	}
 
 	// Draw borders
 	if (p > 0 && _penColor.isValid())

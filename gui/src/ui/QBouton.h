@@ -21,6 +21,7 @@ class QBouton : public QPushButton
 
 	public slots:
 		void setId(QVariant);
+		void setProgress(qint64 current, qint64 max);
 		void scale(const QPixmap &image, float scale);
 		void paintEvent(QPaintEvent *event);
 		
@@ -45,6 +46,8 @@ class QBouton : public QPushButton
 		QColor		_penColor;
 		int			_border;
 		float		_scale;
+		qint64		_progress;
+		qint64		_progressMax;
 };
 
 #endif

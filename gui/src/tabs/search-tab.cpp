@@ -676,6 +676,7 @@ void searchTab::contextSaveImage(QObject *image)
 	QString path = m_settings->value("Save/path").toString();
 
 	Image *img = (Image*)image;
+	connect(img, SIGNAL(downloadProgressImage(qint64, qint64)), m_boutons[img], SLOT(setProgress(qint64, qint64)));
 	img->loadAndSave(fn, path);
 }
 void searchTab::contextSaveSelected()
@@ -711,7 +712,7 @@ void searchTab::addResultsImage(QSharedPointer<Image> img, bool merge)
 	int imagesPerPage = getActualImagesPerPage(img->page(), merge);
 
 	QBouton *button = createImageThumbnail(absolutePosition, img);
-	m_boutons.insert(img, button);
+	m_boutons.insert(img.data(), button);
 
 	FixedSizeGridLayout *layout = m_layouts[m_layouts.contains(nullptr) ? nullptr : img->parentSite()];
 	layout->addFixedSizeWidget(button, relativePosition, imagesPerPage);
@@ -875,7 +876,7 @@ void searchTab::unselectImage(QSharedPointer<Image> img)
 void searchTab::toggleImage(QSharedPointer<Image> img)
 {
 	bool selected = m_selectedImagesPtrs.contains(img);
-	m_boutons[img]->setChecked(!selected);
+	m_boutons[img.data()]->setChecked(!selected);
 
 	if (selected)
 	{

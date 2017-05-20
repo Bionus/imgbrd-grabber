@@ -129,7 +129,7 @@ class searchTab : public QWidget
 		Profile				*m_profile;
 		int					m_lastPage, m_lastPageMaxId, m_lastPageMinId;
 		QMap<QString,Site*>	*m_sites;
-		QMap<QSharedPointer<Image>, QBouton*>	m_boutons;
+		QMap<Image*, QBouton*>	m_boutons;
 		QStringList			m_selectedImages;
 		QList<QSharedPointer<Image>>	m_selectedImagesPtrs;
 		QList<bool>			m_selectedSources;
