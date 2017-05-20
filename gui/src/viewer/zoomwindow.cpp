@@ -113,7 +113,11 @@ zoomWindow::zoomWindow(QList<QSharedPointer<Image> > images, QSharedPointer<Imag
 	// Background color
 	QString bg = m_settings->value("imageBackgroundColor", "").toString();
 	if (!bg.isEmpty())
-	{ setStyleSheet("#zoomWindow, QLabel, #scrollAreaWidgetContents { background-color:" + bg + "; }"); }
+	{
+		setStyleSheet("#zoomWindow, #scrollAreaWidgetContents { background-color:" + bg + "; }");
+		m_labelTagsLeft->setStyleSheet("background-color:" + bg);
+		m_labelTagsTop->setStyleSheet("background-color:" + bg);
+	}
 
 	load(image);
 }
