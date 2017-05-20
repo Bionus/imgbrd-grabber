@@ -68,6 +68,7 @@ class searchTab : public QWidget
 		void contextSaveImage(QObject *image);
 		void contextOpenImageInBrowser(QObject *image);
 		void contextSaveSelected();
+		void contextSearchMd5(QObject *image);
 
 	private:
 		void addLayout(QLayout *layout, int row, int column);

@@ -670,6 +670,13 @@ void searchTab::thumbnailContextMenu(QSharedPointer<Image> img)
 	connect(actionOpen, SIGNAL(triggered()), mapperOpen, SLOT(map()));
 	mapperOpen->setMapping(actionOpen, img.data());
 
+	// Search MD5
+	QSignalMapper *mapperMd5 = new QSignalMapper(this);
+	connect(mapperMd5, SIGNAL(mapped(QObject*)), this, SLOT(contextSearchMd5(QObject*)));
+	QAction *actionMd5 = menu->addAction(tr("Search MD5"));
+	connect(actionMd5, SIGNAL(triggered()), mapperMd5, SLOT(map()));
+	mapperMd5->setMapping(actionMd5, img.data());
+
 	menu->exec(QCursor::pos());
 }
 void searchTab::contextSaveImage(QObject *image)
@@ -692,6 +699,11 @@ void searchTab::contextSaveSelected()
 
 	for (QSharedPointer<Image> img : m_selectedImagesPtrs)
 		img->loadAndSave(fn, path);
+}
+void searchTab::contextSearchMd5(QObject *image)
+{
+	Image *img = (Image*)image;
+	m_parent->addTab("md5:" + img->md5());
 }
 
 int searchTab::getActualImagesPerPage(Page *page, bool merge)
