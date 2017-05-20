@@ -75,6 +75,7 @@ class zoomWindow : public QWidget
 		// Context menus
 		void imageContextMenu();
 		void reverseImageSearch(int i);
+		void contextSearchMd5();
 		void copyImageFileToClipboard();
 		void copyImageDataToClipboard();
 		void copyTagToClipboard();

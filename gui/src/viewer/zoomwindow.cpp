@@ -232,8 +232,13 @@ void zoomWindow::imageContextMenu()
 		connect(subMenuAct, SIGNAL(triggered()), m_reverseSearchSignalMapper, SLOT(map()));
 		m_reverseSearchSignalMapper->setMapping(subMenuAct, i);
 	}
+	menu->addAction(tr("Search MD5"), this, SLOT(contextSearchMd5()));
 
 	menu->exec(QCursor::pos());
+}
+void zoomWindow::contextSearchMd5()
+{
+	m_parent->addTab("md5:" + m_image->md5());
 }
 void zoomWindow::reverseImageSearch(int i)
 {
