@@ -15,7 +15,7 @@ ImageContextMenu::ImageContextMenu(QSettings *settings, QSharedPointer<Image> im
 	addAction(QIcon(":/images/icons/browser.png"), tr("Open in browser"), this, SLOT(openInBrowser()));
 
 	// Reverse search actions
-	QMenu *reverseSearchMenu = addMenu(tr("Web services"));
+	QMenu *reverseSearchMenu = addMenu(QIcon(":/images/icons/globe.png"), tr("Web services"));
 	QSignalMapper *reverseSearchMapper = new QSignalMapper(this);
 	connect(reverseSearchMapper, SIGNAL(mapped(int)), this, SLOT(reverseImageSearch(int)));
 	for (int i = 0; i < m_reverseSearchEngines.count(); ++i)
