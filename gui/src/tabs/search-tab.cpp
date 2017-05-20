@@ -676,7 +676,8 @@ void searchTab::contextSaveImage(QObject *image)
 	QString path = m_settings->value("Save/path").toString();
 
 	Image *img = (Image*)image;
-	connect(img, SIGNAL(downloadProgressImage(qint64, qint64)), m_boutons[img], SLOT(setProgress(qint64, qint64)));
+	if (m_boutons.contains(img))
+	{ connect(img, SIGNAL(downloadProgressImage(qint64, qint64)), m_boutons[img], SLOT(setProgress(qint64, qint64))); }
 	img->loadAndSave(fn, path);
 }
 void searchTab::contextSaveSelected()
@@ -685,7 +686,11 @@ void searchTab::contextSaveSelected()
 	QString path = m_settings->value("Save/path").toString();
 
 	for (QSharedPointer<Image> img : m_selectedImagesPtrs)
+	{
+		if (m_boutons.contains(img.data()))
+		{ connect(img.data(), SIGNAL(downloadProgressImage(qint64, qint64)), m_boutons[img.data()], SLOT(setProgress(qint64, qint64))); }
 		img->loadAndSave(fn, path);
+	}
 }
 
 int searchTab::getActualImagesPerPage(Page *page, bool merge)
