@@ -96,12 +96,6 @@ QList<Site*> poolTab::loadSites() const
 	return sites;
 }
 
-bool poolTab::validateImage(QSharedPointer<Image> img)
-{
-	Q_UNUSED(img);
-	return true;
-}
-
 void poolTab::write(QJsonObject &json) const
 {
 	json["type"] = QString("pool");

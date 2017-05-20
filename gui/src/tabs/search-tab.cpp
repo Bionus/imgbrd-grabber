@@ -1072,6 +1072,22 @@ FixedSizeGridLayout *searchTab::createImagesLayout(QSettings *settings)
 }
 
 
+bool searchTab::validateImage(QSharedPointer<Image> img)
+{
+	Q_UNUSED(img);
+	return true;
+}
+
+QList<Site*> searchTab::loadSites() const
+{
+	QList<Site*> sites;
+	for (int i = 0; i < m_selectedSources.size(); i++)
+		if (m_checkboxes.at(i)->isChecked())
+			sites.append(m_sites->value(m_sites->keys().at(i)));
+	return sites;
+}
+
+
 void searchTab::setSources(QList<bool> sources)
 { m_selectedSources = sources; }
 

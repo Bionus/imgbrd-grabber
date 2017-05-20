@@ -39,7 +39,6 @@ class poolTab : public searchTab
 		void setPool(int id, QString site);
 		// Loading
 		void load();
-		bool validateImage(QSharedPointer<Image> img);
 		// Batch
 		void getPage();
 		void getAll();

@@ -94,21 +94,6 @@ void tagTab::load()
 	loadTags(tags);
 }
 
-QList<Site*> tagTab::loadSites() const
-{
-	QList<Site*> sites;
-	for (int i = 0; i < m_selectedSources.size(); i++)
-		if (m_checkboxes.at(i)->isChecked())
-			sites.append(m_sites->value(m_sites->keys().at(i)));
-	return sites;
-}
-
-bool tagTab::validateImage(QSharedPointer<Image> img)
-{
-	Q_UNUSED(img);
-	return true;
-}
-
 void tagTab::write(QJsonObject &json) const
 {
 	json["type"] = QString("tag");

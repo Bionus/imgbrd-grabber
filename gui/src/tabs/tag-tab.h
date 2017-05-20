@@ -27,7 +27,6 @@ class tagTab : public searchTab
 		~tagTab();
 		Ui::tagTab *ui;
 		QString tags() const;
-		QList<Site*> loadSites() const override;
 		void write(QJsonObject &json) const override;
 		bool read(const QJsonObject &json);
 
@@ -39,7 +38,6 @@ class tagTab : public searchTab
 		void setTags(QString);
 		// Loading
 		void load();
-		bool validateImage(QSharedPointer<Image> img);
 		// Batch
 		void getPage();
 		void getAll();
