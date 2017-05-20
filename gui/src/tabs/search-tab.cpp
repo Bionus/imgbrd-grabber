@@ -654,14 +654,14 @@ void searchTab::thumbnailContextMenu(QSharedPointer<Image> img)
 	// Save image
 	QSignalMapper *mapperSave = new QSignalMapper(this);
 	connect(mapperSave, SIGNAL(mapped(QObject*)), this, SLOT(contextSaveImage(QObject*)));
-	QAction *actionSave = new QAction(QIcon(":/images/icons/save.png"), tr("Save"));
+	QAction *actionSave = new QAction(QIcon(":/images/icons/save.png"), tr("Save"), menu);
 	menu->insertAction(first, actionSave);
 	connect(actionSave, SIGNAL(triggered()), mapperSave, SLOT(map()));
 	mapperSave->setMapping(actionSave, img.data());
 
 	if (!m_selectedImagesPtrs.empty())
 	{
-		QAction *actionSaveSelected = new QAction(QIcon(":/images/icons/save.png"), tr("Save selected"));
+		QAction *actionSaveSelected = new QAction(QIcon(":/images/icons/save.png"), tr("Save selected"), menu);
 		connect(actionSaveSelected, &QAction::triggered, this, &searchTab::contextSaveSelected);
 		menu->insertAction(first, actionSaveSelected);
 	}
