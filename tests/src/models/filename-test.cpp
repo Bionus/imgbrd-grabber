@@ -182,7 +182,7 @@ void FilenameTest::testPathInvalidJavascript()
 	assertPath("javascript:'", QStringList());
 }
 
-void FilenameTest::testExpandTag()
+void FilenameTest::testExpandTagSimple()
 {
 	assertExpand("<image contains the tag \"tag1\"><\"unknown\" is one of the image tags> %md5%.%ext%",
 				 "image contains the tag tag1 %md5%.%ext%");
@@ -193,10 +193,22 @@ void FilenameTest::testExpandTag()
 	assertExpand("<image contains the tag \"unknown1\"><\"unknown2\" is one of the image tags> %md5%.%ext%",
 				 " %md5%.%ext%");
 }
+void FilenameTest::testExpandTagInvert()
+{
+	assertExpand("<image does not contain the tag !\"tag1\"><!\"unknown\" is not one of the image tags> %md5%.%ext%",
+				 "unknown is not one of the image tags %md5%.%ext%");
+	assertExpand("<image does not contain the tag !\"unknown\"><!\"tag2\" is not one of the image tags> %md5%.%ext%",
+				 "image does not contain the tag unknown %md5%.%ext%");
+}
 void FilenameTest::testExpandTokenSimple()
 {
 	assertExpand("image - <%artist% some text><text %nothing%> %md5%.%ext%",
 				 "image - %artist% some text %md5%.%ext%");
+}
+void FilenameTest::testExpandTokenInvert()
+{
+	assertExpand("image - <!%artist% some text><text !%nothing%> %md5%.%ext%",
+				 "image - text %nothing% %md5%.%ext%");
 }
 void FilenameTest::testExpandTokenComplex()
 {

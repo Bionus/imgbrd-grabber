@@ -132,21 +132,30 @@ QString Filename::expandConditionals(QString text, QStringList tokens, QStringLi
 
 	if (depth > 0)
 	{
-		QString r = ret;
-		for (QString token : tokens)
-		{
-			if (replaces.contains(token) && !replaces[token].first.isEmpty())
-			{ r.replace(QRegExp("%"+token+"(?::[^%]+)?%"), ""); }
-		}
-		if (r.contains(QRegExp("%[^:%]+(?::[^%]+)?%")))
-		{ return ""; }
-
-		reg = QRegExp("\"([^\"]+)\"");
+		// Token-based conditions
+		reg = QRegExp("(!)?(%([^:%]+)(?::[^%]+)?%)");
 		pos = 0;
 		while ((pos = reg.indexIn(text, pos)) != -1)
 		{
-			if (!reg.cap(1).isEmpty() && tags.contains(reg.cap(1), Qt::CaseInsensitive))
-			{ ret.replace(reg.cap(0), reg.cap(1)); }
+			bool invert = !reg.cap(1).isEmpty();
+			QString fullToken = reg.cap(2);
+			QString token = reg.cap(3);
+			if ((replaces.contains(token) && !replaces[token].first.isEmpty()) == !invert)
+			{ ret.replace(reg.cap(0), fullToken); }
+			else
+			{ return ""; }
+			pos += reg.matchedLength();
+		}
+
+		// Tag-based conditions
+		reg = QRegExp("(!)?\"([^\"]+)\"");
+		pos = 0;
+		while ((pos = reg.indexIn(text, pos)) != -1)
+		{
+			bool invert = !reg.cap(1).isEmpty();
+			QString tag = reg.cap(2);
+			if (tags.contains(tag, Qt::CaseInsensitive) == !invert)
+			{ ret.replace(reg.cap(0), tag); }
 			else
 			{ return ""; }
 			pos += reg.matchedLength();
