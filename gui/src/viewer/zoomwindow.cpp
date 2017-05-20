@@ -222,12 +222,13 @@ void zoomWindow::imageContextMenu()
 	menu->addSeparator();
 
 	// Reverse search actions
+	QMenu *reverseSearchMenu = menu->addMenu(tr("Web services"));
 	m_reverseSearchSignalMapper = new QSignalMapper(this);
 	connect(m_reverseSearchSignalMapper, SIGNAL(mapped(int)), this, SLOT(reverseImageSearch(int)));
 	for (int i = 0; i < m_reverseSearchEngines.count(); ++i)
 	{
 		ReverseSearchEngine engine = m_reverseSearchEngines[i];
-		QAction *subMenuAct = menu->addAction(engine.icon(), engine.name());
+		QAction *subMenuAct = reverseSearchMenu->addAction(engine.icon(), engine.name());
 		connect(subMenuAct, SIGNAL(triggered()), m_reverseSearchSignalMapper, SLOT(map()));
 		m_reverseSearchSignalMapper->setMapping(subMenuAct, i);
 	}
