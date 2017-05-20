@@ -232,7 +232,7 @@ void zoomWindow::imageContextMenu()
 		connect(subMenuAct, SIGNAL(triggered()), reverseSearchMapper, SLOT(map()));
 		reverseSearchMapper->setMapping(subMenuAct, i);
 	}
-	menu->addAction(tr("Search MD5"), this, SLOT(contextSearchMd5()));
+	menu->addAction(QIcon(":/images/icons/hash.png"), tr("Search MD5"), this, SLOT(contextSearchMd5()));
 
 	menu->exec(QCursor::pos());
 }

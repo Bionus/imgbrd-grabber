@@ -673,7 +673,7 @@ void searchTab::thumbnailContextMenu(QSharedPointer<Image> img)
 	// Search MD5
 	QSignalMapper *mapperMd5 = new QSignalMapper(this);
 	connect(mapperMd5, SIGNAL(mapped(QObject*)), this, SLOT(contextSearchMd5(QObject*)));
-	QAction *actionMd5 = menu->addAction(tr("Search MD5"));
+	QAction *actionMd5 = menu->addAction(QIcon(":/images/icons/hash.png"), tr("Search MD5"));
 	connect(actionMd5, SIGNAL(triggered()), mapperMd5, SLOT(map()));
 	mapperMd5->setMapping(actionMd5, img.data());
 
