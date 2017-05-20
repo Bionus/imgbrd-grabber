@@ -15,6 +15,7 @@ QList<ReverseSearchEngine> ReverseSearchLoader::getAllReverseSearchEngines() con
 	ret.append(ReverseSearchEngine(QIcon(":/images/reverse-search/google.png"), "Google", "https://www.google.com/searchbyimage?image_url={url}"));
 	ret.append(ReverseSearchEngine(QIcon(":/images/reverse-search/tineye.png"), "TinEye", "https://www.tineye.com/search/?url={url}"));
 	ret.append(ReverseSearchEngine(QIcon(":/images/reverse-search/yandex.png"), "Yandex", "https://yandex.ru/images/search?rpt=imageview&img_url={url}"));
+	ret.append(ReverseSearchEngine(QIcon(":/images/reverse-search/waifu2x.png"), "waifu2x", "http://waifu2x.udp.jp/index.html?url={url}"));
 
 	return ret;
 }
