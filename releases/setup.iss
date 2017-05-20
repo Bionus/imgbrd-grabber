@@ -1,5 +1,5 @@
 #define MyAppName "Grabber"
-#define MyAppVersion "5.2.4"
+#define MyAppVersion "5.3.0"
 #define MyAppPublisher "Bionus"
 #define MyAppURL "https://github.com/Bionus/imgbrd-grabber"
 #define MyAppExeName "Grabber.exe"
@@ -132,6 +132,7 @@ Source: "..\release\sites\Sankaku\capi.sankakucomplex.com\settings.ini";  DestDi
 Source: "..\release\sites\Danbooru (2.0)\icon.png";     DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru (2.0)"; Flags: ignoreversion
 Source: "..\release\sites\Danbooru (2.0)\model.xml";    DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru (2.0)"; Flags: ignoreversion
 Source: "..\release\sites\Danbooru (2.0)\sites.txt";    DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru (2.0)"; Flags: onlyifdoesntexist
+Source: "..\release\sites\Danbooru (2.0)\danbooru.donmai.us\settings.ini";              DestDir: "{localappdata}\Bionus\Grabber\sites\Danbooru (2.0)\danbooru.donmai.us"; Flags: onlyifdoesntexist
 Source: "..\release\sites\Gelbooru (0.1)\icon.png";     DestDir: "{localappdata}\Bionus\Grabber\sites\Gelbooru (0.1)"; Flags: ignoreversion
 Source: "..\release\sites\Gelbooru (0.1)\model.xml";    DestDir: "{localappdata}\Bionus\Grabber\sites\Gelbooru (0.1)"; Flags: ignoreversion
 Source: "..\release\sites\Gelbooru (0.1)\sites.txt";    DestDir: "{localappdata}\Bionus\Grabber\sites\Gelbooru (0.1)"; Flags: onlyifdoesntexist

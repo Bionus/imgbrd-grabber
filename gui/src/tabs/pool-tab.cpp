@@ -1,15 +1,16 @@
-#include <QMessageBox>
-#include <QMenu>
 #include "pool-tab.h"
 #include "ui_pool-tab.h"
-#include "ui/QBouton.h"
-#include "viewer/zoomwindow.h"
+#include <QJsonArray>
+#include "ui/textedit.h"
 #include "searchwindow.h"
 #include "mainwindow.h"
+#include "models/page.h"
+#include "models/site.h"
+#include "downloader/download-query-group.h"
 #include "helpers.h"
 
 
-poolTab::poolTab(QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
+poolTab::poolTab(QMap<QString, Site*> *sites, Profile *profile, mainWindow *parent)
 	: searchTab(sites, profile, parent), ui(new Ui::poolTab), m_sized(false)
 {
 	ui->setupUi(this);
@@ -70,16 +71,6 @@ void poolTab::on_buttonSearch_clicked()
 
 void poolTab::closeEvent(QCloseEvent *e)
 {
-	qDeleteAll(m_pages);
-	m_pages.clear();
-	m_images.clear();
-	qDeleteAll(m_checkboxes);
-	m_checkboxes.clear();
-	for (Site *site : m_layouts.keys())
-	{ clearLayout(m_layouts[site]); }
-	qDeleteAll(m_layouts);
-	m_layouts.clear();
-
 	emit(closed(this));
 	e->accept();
 }

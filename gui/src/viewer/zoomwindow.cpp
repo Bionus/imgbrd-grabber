@@ -1,23 +1,26 @@
+#include "zoomwindow.h"
+#include "ui_zoomwindow.h"
 #include <QApplication>
-#include <QtNetwork>
+#include <QDesktopWidget>
 #include <QMessageBox>
 #include <QShortcut>
 #include <QMenu>
-#include <QDesktopWidget>
 #include <QFileDialog>
-#include <QMessageBox>
-#include "functions.h"
-#include "settings/optionswindow.h"
-#include "reverse-search/reverse-search-loader.h"
-#include "ui/QAffiche.h"
-#include "zoomwindow.h"
-#include "threads/image-loader.h"
-#include "ui_zoomwindow.h"
-#include "models/filename.h"
-#include "functions.h"
-#include "helpers.h"
 #include <QScrollBar>
-
+#include "ui/QAffiche.h"
+#include "models/filename.h"
+#include "models/site.h"
+#include "models/page.h"
+#include "models/profile.h"
+#include "reverse-search/reverse-search-loader.h"
+#include "settings/optionswindow.h"
+#include "threads/image-loader.h"
+#include "threads/image-loader-queue.h"
+#include "detailswindow.h"
+#include "mainwindow.h"
+#include "helpers.h"
+#include "functions.h"
+#include "image-context-menu.h"
 
 
 zoomWindow::zoomWindow(QList<QSharedPointer<Image> > images, QSharedPointer<Image> image, Site *site, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
@@ -110,11 +113,7 @@ zoomWindow::zoomWindow(QList<QSharedPointer<Image> > images, QSharedPointer<Imag
 	// Background color
 	QString bg = m_settings->value("imageBackgroundColor", "").toString();
 	if (!bg.isEmpty())
-	{
-		setStyleSheet("#zoomWindow { background-color:" + bg + "; }");
-		m_labelTagsLeft->setStyleSheet("background-color:" + bg);
-		m_labelTagsTop->setStyleSheet("background-color:" + bg);
-	}
+	{ setStyleSheet("#zoomWindow, QLabel, #scrollAreaWidgetContents { background-color:" + bg + "; }"); }
 
 	load(image);
 }
@@ -212,32 +211,21 @@ zoomWindow::~zoomWindow()
 
 void zoomWindow::imageContextMenu()
 {
-	QMenu *menu = new QMenu(this);
+	QMenu *menu = new ImageContextMenu(m_settings, m_image, m_parent, this);
 
 	// Copy actions
-	menu->addAction(QIcon(":/images/icons/copy.png"), tr("Copy file"), this, SLOT(copyImageFileToClipboard()));
-	menu->addAction(QIcon(":/images/icons/document-binary.png"), tr("Copy data"), this, SLOT(copyImageDataToClipboard()));
-	menu->addSeparator();
+	QAction *copyImageAction = new QAction(QIcon(":/images/icons/copy.png"), tr("Copy file"));
+	connect(copyImageAction, SIGNAL(triggered()), this, SLOT(copyImageFileToClipboard()));
+	QAction *copyDataAction = new QAction(QIcon(":/images/icons/document-binary.png"), tr("Copy data"));
+	connect(copyDataAction, SIGNAL(triggered()), this, SLOT(copyImageDataToClipboard()));
 
-	// Reverse search actions
-	m_reverseSearchSignalMapper = new QSignalMapper(this);
-	connect(m_reverseSearchSignalMapper, SIGNAL(mapped(int)), this, SLOT(reverseImageSearch(int)));
-	for (int i = 0; i < m_reverseSearchEngines.count(); ++i)
-	{
-		ReverseSearchEngine engine = m_reverseSearchEngines[i];
-		QAction *subMenuAct = menu->addAction(engine.icon(), engine.name());
-		connect(subMenuAct, SIGNAL(triggered()), m_reverseSearchSignalMapper, SLOT(map()));
-		m_reverseSearchSignalMapper->setMapping(subMenuAct, i);
-	}
+	// Insert actionsat the beginning
+	QAction *first = menu->actions().first();
+	menu->insertAction(first, copyImageAction);
+	menu->insertAction(first, copyDataAction);
+	menu->insertSeparator(first);
 
 	menu->exec(QCursor::pos());
-}
-void zoomWindow::reverseImageSearch(int i)
-{
-	if (m_reverseSearchEngines.count() < i)
-		return;
-
-	m_reverseSearchEngines[i].searchByUrl(m_image->fileUrl());
 }
 void zoomWindow::copyImageFileToClipboard()
 {
@@ -492,8 +480,6 @@ void zoomWindow::load()
 	m_imageTime.start();
 	m_image->loadImage();
 }
-void zoomWindow::sslErrorHandler(QNetworkReply* qnr, QList<QSslError>)
-{ qnr->ignoreSslErrors(); }
 
 #define PERCENT 0.05f
 #define TIME 500
@@ -897,7 +883,10 @@ QStringList zoomWindow::saveImageNow(bool fav)
 				break;
 
 			case Image::SaveResult::AlreadyExists:
-				QFile::remove(it.key());
+				QFile f(it.key());
+				if (m_image->data().isEmpty() && f.open(QFile::ReadOnly))
+				{ m_image->setData(f.readAll()); }
+				f.remove();
 				m_imagePath = "";
 				button->setText(fav ? tr("Save (fav)") : tr("Save"));
 				break;
@@ -918,7 +907,9 @@ QStringList zoomWindow::saveImageNow(bool fav)
 
 QString zoomWindow::saveImageAs()
 {
-	QString filename = m_image->fileUrl().toString().section('/', -1);
+	Filename format(m_settings->value("Save/filename").toString());
+	QStringList filenames = format.path(*m_image, m_profile);
+	QString filename = filenames.first().section(QDir::separator(), -1);
 	QString lastDir = m_settings->value("Zoom/lastDir", "").toString();
 
 	QString path = QFileDialog::getSaveFileName(this, tr("Save image"), QDir::toNativeSeparators(lastDir + "/" + filename), "Images (*.png *.gif *.jpg *.jpeg)");
@@ -1108,13 +1099,14 @@ void zoomWindow::load(QSharedPointer<Image> image)
 	emit clearLoadQueue();
 	disconnect(m_image.data(), &Image::finishedLoadingTags, this, &zoomWindow::replyFinishedDetails);
 
+	m_displayImage = QPixmap();
 	m_imagePath = "";
 	m_image = image;
 	connect(m_image.data(), &Image::urlChanged, this, &zoomWindow::urlChanged, Qt::UniqueConnection);
 	m_size = 0;
 
 	// Show the thumbnail if the image was not already preloaded
-	if (isVisible() && (m_image->data().isEmpty() || m_image->isVideo()))
+	if (isVisible())
 	{ showThumbnail(); }
 
 	// Preload gallery images

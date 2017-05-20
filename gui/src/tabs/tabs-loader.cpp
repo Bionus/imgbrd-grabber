@@ -3,11 +3,14 @@
 #include <QJsonDocument>
 #include <QJsonArray>
 #include <QJsonObject>
+#include "tag-tab.h"
 #include "ui_tag-tab.h"
+#include "pool-tab.h"
 #include "ui_pool-tab.h"
+#include "mainwindow.h"
 
 
-bool TabsLoader::load(QString path, QList<tagTab*> &tagTabs, QList<poolTab*> &poolTabs, QList<searchTab*> &allTabs, int &currentTab, Profile *profile, QMap<QString, Site*> &sites, mainWindow *parent)
+bool TabsLoader::load(QString path, QList<searchTab*> &allTabs, int &currentTab, Profile *profile, QMap<QString, Site*> &sites, mainWindow *parent)
 {
 	QFile f(path);
 	if (!f.open(QFile::ReadOnly))
@@ -41,7 +44,7 @@ bool TabsLoader::load(QString path, QList<tagTab*> &tagTabs, QList<poolTab*> &po
 					tab->ui->spinColumns->setValue(infos[5].toInt());
 					tab->setTags(infos[2]);
 
-					poolTabs.append(tab);
+					allTabs.append(tab);
 				}
 				else
 				{
@@ -51,7 +54,7 @@ bool TabsLoader::load(QString path, QList<tagTab*> &tagTabs, QList<poolTab*> &po
 					tab->ui->spinColumns->setValue(infos[3].toInt());
 					tab->setTags(infos[0]);
 
-					tagTabs.append(tab);
+					allTabs.append(tab);
 				}
 			}
 		}
@@ -73,29 +76,12 @@ bool TabsLoader::load(QString path, QList<tagTab*> &tagTabs, QList<poolTab*> &po
 			case 2:
 				currentTab = object["current"].toInt();
 				QJsonArray tabs = object["tabs"].toArray();
-				for (auto tab : tabs)
+				for (auto tabJson : tabs)
 				{
-					auto infos = tab.toObject();
-					QString type = infos["type"].toString();
-
-					if (type == "tag")
-					{
-						tagTab *tab = new tagTab(&sites, profile, parent);
-						if (tab->read(infos))
-						{
-							tagTabs.append(tab);
-							allTabs.append(tab);
-						}
-					}
-					else if (type == "pool")
-					{
-						poolTab *tab = new poolTab(&sites, profile, parent);
-						if (tab->read(infos))
-						{
-							poolTabs.append(tab);
-							allTabs.append(tab);
-						}
-					}
+					QJsonObject infos = tabJson.toObject();
+					searchTab *tab = loadTab(infos, profile, sites, parent);
+					if (tab != nullptr)
+						allTabs.append(tab);
 				}
 				return true;
 		}
@@ -103,6 +89,26 @@ bool TabsLoader::load(QString path, QList<tagTab*> &tagTabs, QList<poolTab*> &po
 	}
 
 	return false;
+}
+
+searchTab *TabsLoader::loadTab(QJsonObject infos, Profile *profile, QMap<QString, Site*> &sites, mainWindow *parent)
+{
+	QString type = infos["type"].toString();
+
+	if (type == "tag")
+	{
+		tagTab *tab = new tagTab(&sites, profile, parent);
+		if (tab->read(infos))
+			return tab;
+	}
+	else if (type == "pool")
+	{
+		poolTab *tab = new poolTab(&sites, profile, parent);
+		if (tab->read(infos))
+			return tab;
+	}
+
+	return nullptr;
 }
 
 bool TabsLoader::save(QString path, QList<searchTab*> &allTabs, searchTab *currentTab)

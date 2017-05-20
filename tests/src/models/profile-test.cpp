@@ -154,5 +154,56 @@ void ProfileTest::testRemoveMd5()
 }
 
 
+void ProfileTest::testMd5ActionDontKeepDeleted()
+{
+	m_profile->getSettings()->setValue("Save/md5Duplicates", "move");
+	m_profile->getSettings()->setValue("Save/keepDeletedMd5", false);
+
+	QPair<QString, QString> action;
+
+	action = m_profile->md5Action("new");
+	QCOMPARE(action.first, QString("move"));
+	QCOMPARE(action.second, QString(""));
+
+	m_profile->addMd5("new", "tests/resources/image_1x1.png");
+
+	action = m_profile->md5Action("new");
+	QCOMPARE(action.first, QString("move"));
+	QCOMPARE(action.second, QString("tests/resources/image_1x1.png"));
+
+	m_profile->removeMd5("new");
+
+	action = m_profile->md5Action("new");
+	QCOMPARE(action.first, QString("move"));
+	QCOMPARE(action.second, QString(""));
+
+	// Restore state
+	m_profile->getSettings()->setValue("Save/md5Duplicates", "save");
+}
+
+void ProfileTest::testMd5ActionKeepDeleted()
+{
+	m_profile->getSettings()->setValue("Save/md5Duplicates", "move");
+	m_profile->getSettings()->setValue("Save/keepDeletedMd5", true);
+
+	QPair<QString, QString> action;
+
+	action = m_profile->md5Action("new");
+	QCOMPARE(action.first, QString("move"));
+	QCOMPARE(action.second, QString(""));
+
+	m_profile->addMd5("new", "NON_EXISTING_FILE");
+
+	action = m_profile->md5Action("new");
+	QCOMPARE(action.first, QString("ignore"));
+	QCOMPARE(action.second, QString("NON_EXISTING_FILE"));
+
+	// Restore state
+	m_profile->removeMd5("new");
+	m_profile->getSettings()->setValue("Save/md5Duplicates", "save");
+	m_profile->getSettings()->setValue("Save/keepDeletedMd5", false);
+}
+
+
 
 static ProfileTest instance;

@@ -39,6 +39,7 @@ class TagTest : public TestSuite
 		void testCompare();
 		void testSortByFrequency();
 		void testTypeSpaced();
+		void testGetType();
 
 	private:
 		QSettings *m_settings;

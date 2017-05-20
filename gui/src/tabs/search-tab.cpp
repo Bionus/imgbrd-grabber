@@ -1,13 +1,26 @@
-#include <QFile>
+#include "search-tab.h"
 #include <QMouseEvent>
 #include <QMessageBox>
-#include "search-tab.h"
-#include "sources/sourceswindow.h"
-#include "functions.h"
-#include "mainwindow.h"
-#include "viewer/zoomwindow.h"
+#include <QSet>
+#include <QMenu>
+#include "ui/textedit.h"
+#include "ui/QBouton.h"
+#include "ui/verticalscrollarea.h"
+#include "ui/fixed-size-grid-layout.h"
+#include "downloader/download-query-image.h"
+#include "models/favorite.h"
+#include "models/page.h"
+#include "models/profile.h"
 #include "models/filename.h"
+#include "sources/sourceswindow.h"
+#include "viewer/zoomwindow.h"
+#include "reverse-search/reverse-search-loader.h"
+#include "mainwindow.h"
 #include "helpers.h"
+#include "functions.h"
+#include "image-context-menu.h"
+
+#define FIXED_IMAGE_WIDTH 150
 
 
 searchTab::searchTab(QMap<QString, Site*> *sites, Profile *profile, mainWindow *parent)
@@ -32,6 +45,20 @@ searchTab::searchTab(QMap<QString, Site*> *sites, Profile *profile, mainWindow *
 	m_completion.sort();
 
 	setSelectedSources(m_settings);
+}
+
+searchTab::~searchTab()
+{
+	qDeleteAll(m_pages);
+	m_pages.clear();
+	m_images.clear();
+	qDeleteAll(m_checkboxes);
+	m_checkboxes.clear();
+	for (Site *site : m_layouts.keys())
+	{ clearLayout(m_layouts[site]); }
+	qDeleteAll(m_layouts);
+	m_layouts.clear();
+	m_boutons.clear();
 }
 
 
@@ -130,19 +157,24 @@ QStringList searchTab::reasonsToFail(Page* page, QStringList completion, QString
 			if (modifiers.contains(tag[0]))
 				tag = tag.mid(1);
 
-			int lev = (tag.length() / 3) + 2;
-			for (int w = 0; w < completion.size(); w++)
+			int lev = qCeil((tag.length() - 1) / 4.0f);
+			for (QString comp : completion)
 			{
-				int d = levenshtein(tag, completion.at(w));
+				// Ignore tags that are too long
+				if (abs(comp.length() - tag.length()) > lev)
+					continue;
+
+				int d = levenshtein(tag, comp);
 				if (d < lev)
 				{
 					if (results[tag].isEmpty())
 					{ c++; }
-					results[tag] = "<b>"+completion.at(w)+"</b>";
-					clean[tag] = completion.at(w);
+					results[tag] = "<b>"+comp+"</b>";
+					clean[tag] = comp;
 					lev = d;
 				}
 			}
+
 			if (lev == 0)
 			{
 				results[tag] = tag;
@@ -253,10 +285,16 @@ void searchTab::finishedLoading(Page* page)
 	m_lastPageMinId = page->minId();
 	m_lastPageMaxId = page->maxId();
 
-	QList<QSharedPointer<Image>> imgs;
+	// Filter images depending on tabs
+	QList<QSharedPointer<Image>> validImages;
 	for (QSharedPointer<Image> img : page->images())
 		if (validateImage(img))
-			imgs.append(img);
+			validImages.append(img);
+
+	// Remove already existing images for merged results
+	bool merged = ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked();
+	QList<QSharedPointer<Image>> imgs = merged ? mergeResults(page->page(), validImages) : validImages;
+
 	m_images.append(imgs);
 
 	int maxpage = page->pagesCount();
@@ -265,7 +303,7 @@ void searchTab::finishedLoading(Page* page)
 	ui_buttonNextPage->setEnabled(maxpage > ui_spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1 || (page->imagesCount() == 0 && page->images().count() > 0));
 	ui_buttonLastPage->setEnabled(maxpage > ui_spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1);
 
-	if (ui_checkMergeResults == nullptr || !ui_checkMergeResults->isChecked())
+	if (!merged)
 		addResultsPage(page, imgs);
 
 	if (!m_settings->value("useregexfortags", true).toBool())
@@ -280,27 +318,33 @@ void searchTab::failedLoading(Page *page)
 		postLoading(page, page->images());
 }
 
-void searchTab::postLoading(Page *page, QList<QSharedPointer<Image>> source)
+void searchTab::postLoading(Page *page, QList<QSharedPointer<Image>> imgs)
 {
-	if (ui_progressMergeResults != nullptr)
-		ui_progressMergeResults->setValue(ui_progressMergeResults->value() + 1);
+	m_page++;
 
-	QList<QSharedPointer<Image>> imgs;
-	if (!waitForMergedResults(source, imgs))
-		return;
-
-	if (ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked())
+	bool merged = ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked();
+	if (merged)
 	{
+		// Increase the progress bar status
 		if (ui_progressMergeResults != nullptr)
+			ui_progressMergeResults->setValue(ui_progressMergeResults->value() + 1);
+
+		// Hide progress bar when we load the last page
+		bool finished = m_page == m_pages.count() || (ui_progressMergeResults != nullptr && ui_progressMergeResults->value() == ui_progressMergeResults->maximum());
+		if (ui_stackedMergeResults != nullptr && finished)
 			ui_stackedMergeResults->setCurrentIndex(1);
 
-		QLabel *txt = new QLabel(this);
-		txt->setOpenExternalLinks(true);
-		setMergedLabelText(txt, imgs);
-		m_pageLabels.insert(nullptr, txt);
+		// Create the label when loading the first page
+		if (m_page == 1)
+		{
+			QLabel *txt = new QLabel(this);
+			txt->setOpenExternalLinks(true);
+			setMergedLabelText(txt, m_images);
+			m_pageLabels.insert(nullptr, txt);
 
-		ui_layoutResults->addWidget(txt, 0, 0);
-		ui_layoutResults->setRowMinimumHeight(0, txt->sizeHint().height() + 10);
+			ui_layoutResults->addWidget(txt, 0, 0);
+			ui_layoutResults->setRowMinimumHeight(0, txt->sizeHint().height() + 10);
+		}
 	}
 
 	loadImageThumbnails(page, imgs);
@@ -334,7 +378,7 @@ void searchTab::finishedLoadingTags(Page *page)
 			imgs.append(img);
 
 	if (ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked() && m_pageLabels.contains(nullptr))
-		setMergedLabelText(m_pageLabels[nullptr], imgs);
+		setMergedLabelText(m_pageLabels[nullptr], m_images);
 	else if (m_pageLabels.contains(page))
 		setPageLabelText(m_pageLabels[page], page, imgs);
 }
@@ -405,56 +449,75 @@ void searchTab::finishedLoadingPreview()
 		else
 		{ download = true; }
 
-		/*if (download)
-		{
-			connect(img.data(), SIGNAL(finishedImage(Image*)), m_parent, SLOT(saveImage(Image*)));
-			connect(img.data(), SIGNAL(finishedImage(Image*)), m_parent, SLOT(decreaseDownloads()));
-
-			Filename filename(m_settings->value("Save/filename").toString());
-			if (filename.needExactTags(img->page()->site()))
-			{
-				connect(img.data(), &Image::finishedLoadingTags, img.data(), &Image::loadImage);
-				img->loadDetails();
-			}
-			else
-			{ img->loadImage(); }
-
-			m_parent->increaseDownloads();
-		}*/
+		if (download)
+		{ img->loadAndSave(m_settings->value("Save/filename").toString(), m_settings->value("Save/path").toString()); }
 	}
 
 	bool merge = ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked() && !m_images.empty();
 	addResultsImage(img, merge);
 }
 
-bool searchTab::waitForMergedResults(QList<QSharedPointer<Image>> results, QList<QSharedPointer<Image>> &imgs)
+QList<QSharedPointer<Image>> searchTab::mergeResults(int page, QList<QSharedPointer<Image>> results)
 {
-	m_page++;
-
-	if (ui_checkMergeResults == nullptr || !ui_checkMergeResults->isChecked())
+	QSet<QString> pageMd5s;
+	for (QSharedPointer<Image> img : m_images)
 	{
-		imgs = results;
-		return true;
-	}
-
-	if (m_page != m_pages.size())
-		return false;
-
-	QStringList md5s;
-	for (int i = 0; i < m_images.count(); i++)
-	{
-		QString md5 = m_images.at(i)->md5();
+		QString md5 = img->md5();
 		if (md5.isEmpty())
 			continue;
 
-		if (md5s.contains(md5))
-			m_images.removeAt(i--);
-		else
-			md5s.append(md5);
+		pageMd5s.insert(md5);
+		addMergedMd5(page, md5);
 	}
 
-	imgs = m_images;
-	return true;
+	QList<QSharedPointer<Image>> ret;
+	for (QSharedPointer<Image> img : results)
+	{
+		QString md5 = img->md5();
+		if (md5.isEmpty() || (!pageMd5s.contains(md5) && !containsMergedMd5(page, md5)))
+		{
+			ret.append(img);
+
+			if (!md5.isEmpty())
+			{
+				pageMd5s.insert(md5);
+				addMergedMd5(page, md5);
+			}
+		}
+	}
+
+	return ret;
+}
+
+void searchTab::addMergedMd5(int page, QString md5)
+{
+	for (QPair<int, QSet<QString>> &pair : m_mergedMd5s)
+	{
+		if (pair.first == page)
+		{
+			pair.second.insert(md5);
+			return;
+		}
+	}
+
+	QSet<QString> set;
+	set.insert(md5);
+	m_mergedMd5s.append(QPair<int, QSet<QString>>(page, set));
+}
+
+bool searchTab::containsMergedMd5(int page, QString md5)
+{
+	for (const QPair<int, QSet<QString>> &pair : m_mergedMd5s)
+	{
+		// We only check the sets before the page was loaded
+		if (pair.first == page)
+			break;
+
+		if (pair.second.contains(md5))
+			return true;
+	}
+
+	return false;
 }
 
 void searchTab::addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage)
@@ -474,7 +537,7 @@ void searchTab::addResultsPage(Page *page, const QList<QSharedPointer<Image>> &i
 	ui_layoutResults->setRowMinimumHeight(page_y, txt->sizeHint().height() + 10);
 
 	if (m_layouts.size() > pos)
-	{ ui_layoutResults->addLayout(m_layouts[page->site()], page_y + 1, page_x); }
+	{ addLayout(m_layouts[page->site()], page_y + 1, page_x); }
 }
 void searchTab::setMergedLabelText(QLabel *txt, const QList<QSharedPointer<Image>> &imgs)
 {
@@ -551,8 +614,10 @@ QBouton *searchTab::createImageThumbnail(int position, QSharedPointer<Image> img
 
 	bool resizeInsteadOfCropping = m_settings->value("resizeInsteadOfCropping", true).toBool();
 	bool resultsScrollArea = m_settings->value("resultsScrollArea", true).toBool();
+	bool fixedWidthLayout = m_settings->value("resultsFixedWidthLayout", false).toBool();
+	int borderSize = m_settings->value("borders", 3).toInt();
 
-	QBouton *l = new QBouton(position, resizeInsteadOfCropping, resultsScrollArea, m_settings->value("borders", 3).toInt(), color, this);
+	QBouton *l = new QBouton(position, resizeInsteadOfCropping, resultsScrollArea, borderSize, color, this);
 	l->setCheckable(true);
 	l->setChecked(m_selectedImages.contains(img->url()));
 	l->setToolTip(QString("%1%2%3%4%5%6%7%8")
@@ -568,11 +633,64 @@ QBouton *searchTab::createImageThumbnail(int position, QSharedPointer<Image> img
 	l->scale(img->previewImage(), m_settings->value("thumbnailUpscale", 1.0f).toFloat());
 	l->setFlat(true);
 
+	l->setContextMenuPolicy(Qt::CustomContextMenu);
+	connect(l, &QWidget::customContextMenuRequested, this, [this, img]{ thumbnailContextMenu(img); });
+
+	if (fixedWidthLayout)
+		l->setFixedSize(FIXED_IMAGE_WIDTH + borderSize * 2, FIXED_IMAGE_WIDTH + borderSize * 2);
+
 	connect(l, SIGNAL(appui(int)), this, SLOT(webZoom(int)));
 	connect(l, SIGNAL(toggled(int, bool, bool)), this, SLOT(toggleImage(int, bool, bool)));
 	connect(l, SIGNAL(rightClick(int)), m_parent, SLOT(batchChange(int)));
 
 	return l;
+}
+
+void searchTab::thumbnailContextMenu(QSharedPointer<Image> img)
+{
+	QMenu *menu = new ImageContextMenu(m_settings, img, m_parent, this);
+	QAction *first = menu->actions().first();
+
+	// Save image
+	QSignalMapper *mapperSave = new QSignalMapper(this);
+	connect(mapperSave, SIGNAL(mapped(QObject*)), this, SLOT(contextSaveImage(QObject*)));
+	QAction *actionSave = new QAction(QIcon(":/images/icons/save.png"), tr("Save"));
+	menu->insertAction(first, actionSave);
+	connect(actionSave, SIGNAL(triggered()), mapperSave, SLOT(map()));
+	mapperSave->setMapping(actionSave, img.data());
+
+	if (!m_selectedImagesPtrs.empty())
+	{
+		QAction *actionSaveSelected = new QAction(QIcon(":/images/icons/save.png"), tr("Save selected"));
+		connect(actionSaveSelected, &QAction::triggered, this, &searchTab::contextSaveSelected);
+		menu->insertAction(first, actionSaveSelected);
+	}
+
+	menu->insertSeparator(first);
+
+	menu->exec(QCursor::pos());
+}
+void searchTab::contextSaveImage(QObject *image)
+{
+	QString fn = m_settings->value("Save/filename").toString();
+	QString path = m_settings->value("Save/path").toString();
+
+	Image *img = (Image*)image;
+	if (m_boutons.contains(img))
+	{ connect(img, SIGNAL(downloadProgressImage(qint64, qint64)), m_boutons[img], SLOT(setProgress(qint64, qint64))); }
+	img->loadAndSave(fn, path);
+}
+void searchTab::contextSaveSelected()
+{
+	QString fn = m_settings->value("Save/filename").toString();
+	QString path = m_settings->value("Save/path").toString();
+
+	for (QSharedPointer<Image> img : m_selectedImagesPtrs)
+	{
+		if (m_boutons.contains(img.data()))
+		{ connect(img.data(), SIGNAL(downloadProgressImage(qint64, qint64)), m_boutons[img.data()], SLOT(setProgress(qint64, qint64))); }
+		img->loadAndSave(fn, path);
+	}
 }
 
 int searchTab::getActualImagesPerPage(Page *page, bool merge)
@@ -594,18 +712,15 @@ int searchTab::getActualImagesPerPage(Page *page, bool merge)
 
 void searchTab::addResultsImage(QSharedPointer<Image> img, bool merge)
 {
-	int position = m_images.indexOf(img);
-	QBouton *button = createImageThumbnail(position, img);
-	QGridLayout *layout = m_layouts[m_layouts.contains(nullptr) ? nullptr : img->parentSite()];
-
+	int absolutePosition = m_images.indexOf(img);
+	int relativePosition = merge ? absolutePosition : img->page()->images().indexOf(img);
 	int imagesPerPage = getActualImagesPerPage(img->page(), merge);
-	int imagesPerLine = ceil(sqrt((double)imagesPerPage));
 
-	int row = floor(float(position % imagesPerPage) / imagesPerLine);
-	int column = position % imagesPerLine;
-	layout->addWidget(button, row, column);
+	QBouton *button = createImageThumbnail(absolutePosition, img);
+	m_boutons.insert(img.data(), button);
 
-	m_boutons.insert(img, button);
+	FixedSizeGridLayout *layout = m_layouts[m_layouts.contains(nullptr) ? nullptr : img->parentSite()];
+	layout->addFixedSizeWidget(button, relativePosition, imagesPerPage);
 }
 
 void searchTab::addHistory(QString tags, int page, int ipp, int cols)
@@ -766,7 +881,7 @@ void searchTab::unselectImage(QSharedPointer<Image> img)
 void searchTab::toggleImage(QSharedPointer<Image> img)
 {
 	bool selected = m_selectedImagesPtrs.contains(img);
-	m_boutons[img]->setChecked(!selected);
+	m_boutons[img.data()]->setChecked(!selected);
 
 	if (selected)
 	{
@@ -832,6 +947,7 @@ void searchTab::saveSources(QList<bool> sel, bool canLoad)
 
 	DONE();
 
+	m_mergedMd5s.clear();
 	if (m_history.isEmpty() && canLoad)
 	{ load(); }
 }
@@ -873,6 +989,8 @@ void searchTab::loadTags(QStringList tags)
 	{ addHistory(search, ui_spinPage->value(), ui_spinImagesPerPage->value(), ui_spinColumns->value()); }
 	m_from_history = false;
 
+	if (search != m_lastTags && !m_lastTags.isNull())
+	{ m_mergedMd5s.clear(); }
 	if (search != m_lastTags && !m_lastTags.isNull() && m_history_cursor == m_history.size() - 1)
 	{ ui_spinPage->setValue(1); }
 	m_lastTags = search;
@@ -913,7 +1031,7 @@ void searchTab::loadTags(QStringList tags)
 		page->load();
 	}
 	if (merged && m_layouts.size() > 0)
-	{ ui_layoutResults->addLayout(m_layouts[nullptr], 1, 0); }
+	{ addLayout(m_layouts[nullptr], 1, 0); }
 	m_page = 0;
 
 	auto spacer = new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
@@ -923,17 +1041,33 @@ void searchTab::loadTags(QStringList tags)
 	{
 		ui_progressMergeResults->setValue(0);
 		ui_progressMergeResults->setMaximum(m_pages.count());
-		ui_stackedMergeResults->setCurrentIndex(0);
 	}
+	if (ui_stackedMergeResults != nullptr)
+	{ ui_stackedMergeResults->setCurrentIndex(merged ? 0 : 1); }
 
 	emit changed(this);
 }
 
-QGridLayout *searchTab::createImagesLayout(QSettings *settings)
+void searchTab::addLayout(QLayout *layout, int row, int column)
 {
-	QGridLayout *l = new QGridLayout;
+	QWidget *layoutWidget = new QWidget;
+	layoutWidget->setLayout(layout);
+	ui_layoutResults->addWidget(layoutWidget, row, column);
+}
+
+FixedSizeGridLayout *searchTab::createImagesLayout(QSettings *settings)
+{
+	FixedSizeGridLayout *l = new FixedSizeGridLayout;
 	l->setHorizontalSpacing(settings->value("Margins/horizontal", 6).toInt());
 	l->setVerticalSpacing(settings->value("Margins/vertical", 6).toInt());
+
+	bool fixedWidthLayout = m_settings->value("resultsFixedWidthLayout", false).toBool();
+	if (fixedWidthLayout)
+	{
+		int borderSize = settings->value("borders", 3).toInt();
+		l->setFixedWidth(FIXED_IMAGE_WIDTH + borderSize * 2);
+	}
+
 	return l;
 }
 

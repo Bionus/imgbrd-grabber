@@ -1,9 +1,14 @@
 #ifndef SOURCE_GUESSER_H
 #define SOURCE_GUESSER_H
 
-#include "custom-network-access-manager.h"
-#include "models/source.h"
+#include <QObject>
+#include <QList>
+#include <QMap>
+#include <QUrl>
 
+
+class CustomNetworkAccessManager;
+class Source;
 
 class SourceGuesser : public QObject
 {

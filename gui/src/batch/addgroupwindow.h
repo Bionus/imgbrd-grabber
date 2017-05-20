@@ -4,8 +4,6 @@
 #include <QDialog>
 #include <QStringList>
 #include <QSettings>
-#include "ui/textedit.h"
-#include "downloader/download-query-group.h"
 
 
 namespace Ui
@@ -13,6 +11,11 @@ namespace Ui
 	class AddGroupWindow;
 }
 
+
+class Site;
+class Profile;
+class TextEdit;
+class DownloadQueryGroup;
 
 class AddGroupWindow : public QDialog
 {

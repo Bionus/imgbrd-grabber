@@ -4,8 +4,6 @@
 #include <QDialog>
 #include <QStringList>
 #include <QDir>
-#include "models/profile.h"
-
 
 
 namespace Ui
@@ -13,6 +11,8 @@ namespace Ui
 	class EmptyDirsFix1;
 }
 
+
+class Profile;
 
 class EmptyDirsFix1 : public QDialog
 {

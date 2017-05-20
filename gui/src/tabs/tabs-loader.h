@@ -3,16 +3,21 @@
 
 #include <QString>
 #include <QMap>
-#include "models/profile.h"
-#include "models/site.h"
-#include "tag-tab.h"
-#include "pool-tab.h"
+#include <QJsonObject>
 
+
+class Profile;
+class Site;
+class searchTab;
+class tagTab;
+class poolTab;
+class mainWindow;
 
 class TabsLoader
 {
 	public:
-		static bool load(QString path, QList<tagTab*> &tagTabs, QList<poolTab*> &poolTabs, QList<searchTab*> &allTabs, int &currentTab, Profile *profile, QMap<QString, Site *> &sites, mainWindow *parent);
+		static bool load(QString path, QList<searchTab*> &allTabs, int &currentTab, Profile *profile, QMap<QString, Site *> &sites, mainWindow *parent);
+		static searchTab *loadTab(QJsonObject infos, Profile *profile, QMap<QString, Site*> &sites, mainWindow *parent);
 		static bool save(QString path, QList<searchTab*> &allTabs, searchTab *currentTab);
 };
 

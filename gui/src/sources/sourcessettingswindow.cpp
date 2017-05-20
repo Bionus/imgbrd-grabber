@@ -1,12 +1,13 @@
+#include "sourcessettingswindow.h"
+#include "ui_sourcessettingswindow.h"
 #include <QMessageBox>
 #include <QInputDialog>
 #include <QFile>
 #include <QCryptographicHash>
 #include <QSettings>
 #include <QNetworkCookie>
-#include "sourcessettingswindow.h"
-#include "ui_sourcessettingswindow.h"
 #include "functions.h"
+
 
 SourcesSettingsWindow::SourcesSettingsWindow(Site *site, QWidget *parent) : QDialog(parent), ui(new Ui::SourcesSettingsWindow), m_site(site)
 {
@@ -50,13 +51,25 @@ SourcesSettingsWindow::SourcesSettingsWindow(Site *site, QWidget *parent) : QDia
 	ui->lineAuthPassword->setText(settings->value("auth/password", "").toString());
 
 	// Login
-	ui->checkLoginParameter->setChecked(settings->value("login/parameter", true).toBool());
-	QStringList methods = QStringList() << "get" << "post";
-	ui->comboLoginMethod->setCurrentIndex(methods.indexOf(settings->value("login/method", "post").toString()));
-	ui->lineLoginUrl->setText(settings->value("login/url", "").toString());
-	ui->lineLoginPseudo->setText(settings->value("login/pseudo", "").toString());
-	ui->lineLoginPassword->setText(settings->value("login/password", "").toString());
-	ui->lineLoginCookie->setText(settings->value("login/cookie", "").toString());
+	QStringList types = QStringList() << "url" << "get" << "post" << "oauth1" << "oauth2";
+	QString defaultType = settings->value("login/parameter", true).toBool() ? "url" : settings->value("login/method", "post").toString();
+	QString type = settings->value("login/type", defaultType).toString();
+	ui->comboLoginType->setCurrentIndex(types.indexOf(type));
+	ui->lineLoginGetUrl->setText(settings->value("login/get/url", type != "get" ? "" : settings->value("login/url", "").toString()).toString());
+	ui->lineLoginGetPseudo->setText(settings->value("login/get/pseudo", type != "get" ? "" : settings->value("login/pseudo", "").toString()).toString());
+	ui->lineLoginGetPassword->setText(settings->value("login/get/password", type != "get" ? "" : settings->value("login/password", "").toString()).toString());
+	ui->lineLoginGetCookie->setText(settings->value("login/get/cookie", type != "get" ? "" : settings->value("login/cookie", "").toString()).toString());
+	ui->lineLoginPostUrl->setText(settings->value("login/post/url", type != "post" ? "" : settings->value("login/url", "").toString()).toString());
+	ui->lineLoginPostPseudo->setText(settings->value("login/post/pseudo", type != "post" ? "" : settings->value("login/pseudo", "").toString()).toString());
+	ui->lineLoginPostPassword->setText(settings->value("login/post/password", type != "post" ? "" : settings->value("login/password", "").toString()).toString());
+	ui->lineLoginPostCookie->setText(settings->value("login/post/cookie", type != "post" ? "" : settings->value("login/cookie", "").toString()).toString());
+	ui->lineLoginOAuth1RequestTokenUrl->setText(settings->value("login/oauth1/requestTokenUrl", "").toString());
+	ui->lineLoginOAuth1AuthorizeUrl->setText(settings->value("login/oauth1/authorizeUrl", "").toString());
+	ui->lineLoginOAuth1AccessTokenUrl->setText(settings->value("login/oauth1/accessTokenUrl", "").toString());
+	ui->lineLoginOAuth2RequestUrl->setText(settings->value("login/oauth2/requestUrl", "").toString());
+	ui->lineLoginOAuth2TokenUrl->setText(settings->value("login/oauth2/tokenUrl", "").toString());
+	ui->lineLoginOAuth2RefreshTokenUrl->setText(settings->value("login/oauth2/refreshTokenUrl", "").toString());
+	ui->lineLoginOAuth2Scope->setText(settings->value("login/oauth2/scope", "").toString());
 	ui->spinLoginMaxPage->setValue(settings->value("login/maxPage", 0).toInt());
 
 	// Hide hash if unncessary
@@ -202,13 +215,23 @@ void SourcesSettingsWindow::save()
 	settings->setValue("auth/password", ui->lineAuthPassword->text());
 
 	// Login
-	QStringList methods = QStringList() << "get" << "post";
-	settings->setValue("login/parameter", ui->checkLoginParameter->isChecked());
-	settings->setValue("login/method", methods[ui->comboLoginMethod->currentIndex()]);
-	settings->setValue("login/url", ui->lineLoginUrl->text());
-	settings->setValue("login/pseudo", ui->lineLoginPseudo->text());
-	settings->setValue("login/password", ui->lineLoginPassword->text());
-	settings->setValue("login/cookie", ui->lineLoginCookie->text());
+	QStringList types = QStringList() << "url" << "get" << "post" << "oauth1" << "oauth2";
+	settings->setValue("login/type", types[ui->comboLoginType->currentIndex()]);
+	settings->setValue("login/get/url", ui->lineLoginGetUrl->text());
+	settings->setValue("login/get/pseudo", ui->lineLoginGetPseudo->text());
+	settings->setValue("login/get/password", ui->lineLoginGetPassword->text());
+	settings->setValue("login/get/cookie", ui->lineLoginGetCookie->text());
+	settings->setValue("login/post/url", ui->lineLoginPostUrl->text());
+	settings->setValue("login/post/pseudo", ui->lineLoginPostPseudo->text());
+	settings->setValue("login/post/password", ui->lineLoginPostPassword->text());
+	settings->setValue("login/post/cookie", ui->lineLoginPostCookie->text());
+	settings->setValue("login/oauth1/requestTokenUrl", ui->lineLoginOAuth1RequestTokenUrl->text());
+	settings->setValue("login/oauth1/authorizeUrl", ui->lineLoginOAuth1AuthorizeUrl->text());
+	settings->setValue("login/oauth1/accessTokenUrl", ui->lineLoginOAuth1AccessTokenUrl->text());
+	settings->setValue("login/oauth2/requestUrl", ui->lineLoginOAuth2RequestUrl->text());
+	settings->setValue("login/oauth2/tokenUrl", ui->lineLoginOAuth2TokenUrl->text());
+	settings->setValue("login/oauth2/refreshTokenUrl", ui->lineLoginOAuth2RefreshTokenUrl->text());
+	settings->setValue("login/oauth2/scope", ui->lineLoginOAuth2Scope->text());
 	settings->setValue("login/maxPage", ui->spinLoginMaxPage->value());
 
 	// Cookies

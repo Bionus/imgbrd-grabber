@@ -1,6 +1,6 @@
+#include "verticalscrollarea.h"
 #include <QEvent>
 #include <QScrollBar>
-#include "verticalscrollarea.h"
 
 
 VerticalScrollArea::VerticalScrollArea(QWidget *parent)

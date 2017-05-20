@@ -4,9 +4,6 @@
 #include <QDialog>
 #include <QCheckBox>
 #include <QLabel>
-#include "ui/QBouton.h"
-#include "models/site.h"
-
 
 
 namespace Ui
@@ -15,6 +12,10 @@ namespace Ui
 }
 
 
+class QBouton;
+class Site;
+class Source;
+class Profile;
 
 class sourcesWindow : public QDialog
 {

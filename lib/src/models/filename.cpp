@@ -1,7 +1,10 @@
-#include <QtScript>
 #include "filename.h"
-#include "functions.h"
+#include <QtScript>
+#include <QIcon>
 #include "site.h"
+#include "profile.h"
+#include "image.h"
+#include "functions.h"
 
 #define TAGS_SEPARATOR " "
 
@@ -119,7 +122,7 @@ QString Filename::expandConditionals(QString text, QStringList tokens, QStringLi
 	while ((pos = reg.indexIn(text, pos)) != -1)
 	{
 		QString cap = reg.cap(1);
-		if (!cap.isEmpty())
+		if (!cap.isEmpty() && !cap.startsWith('<'))
 		{
 			cap += QString(">").repeated(cap.count('<') - cap.count('>'));
 			ret.replace("<" + cap + ">", this->expandConditionals(cap, tokens, tags, replaces, depth + 1));
@@ -129,26 +132,38 @@ QString Filename::expandConditionals(QString text, QStringList tokens, QStringLi
 
 	if (depth > 0)
 	{
-		QString r = ret;
-		for (QString token : tokens)
-		{
-			if (replaces.contains(token) && !replaces[token].first.isEmpty())
-			{ r.replace(QRegExp("%"+token+"(?::[^%]+)?%"), ""); }
-		}
-		if (r.contains(QRegExp("%[^:%]+(?::[^%]+)?%")))
-		{ return ""; }
-
-		reg = QRegExp("\"([^\"]+)\"");
+		// Token-based conditions
+		reg = QRegExp("(!)?(%([^:%]+)(?::[^%]+)?%)");
 		pos = 0;
 		while ((pos = reg.indexIn(text, pos)) != -1)
 		{
-			if (!reg.cap(1).isEmpty() && tags.contains(reg.cap(1), Qt::CaseInsensitive))
-			{ ret.replace(reg.cap(0), reg.cap(1)); }
+			bool invert = !reg.cap(1).isEmpty();
+			QString fullToken = reg.cap(2);
+			QString token = reg.cap(3);
+			if ((replaces.contains(token) && !replaces[token].first.isEmpty()) == !invert)
+			{ ret.replace(reg.cap(0), fullToken); }
+			else
+			{ return ""; }
+			pos += reg.matchedLength();
+		}
+
+		// Tag-based conditions
+		reg = QRegExp("(!)?\"([^\"]+)\"");
+		pos = 0;
+		while ((pos = reg.indexIn(text, pos)) != -1)
+		{
+			bool invert = !reg.cap(1).isEmpty();
+			QString tag = reg.cap(2);
+			if (tags.contains(tag, Qt::CaseInsensitive) == !invert)
+			{ ret.replace(reg.cap(0), tag); }
 			else
 			{ return ""; }
 			pos += reg.matchedLength();
 		}
 	}
+
+	if (depth == 0)
+	{ ret.replace(QRegExp("<<([^>]*)>>"), "<\\1>"); }
 
 	return ret;
 }
@@ -479,7 +494,7 @@ QStringList Filename::path(const Image& img, Profile *profile, QString pth, int 
 
 			// We remove empty directory names
 			QChar sep = QDir::separator();
-			fns[i].replace(QRegExp(QRegExp::escape(sep) + "{2,}"), sep);
+			fns[i].replace(QRegExp("(.)" + QRegExp::escape(sep) + "{2,}"), QString("\\1") + sep);
 		}
 	}
 
@@ -536,6 +551,8 @@ QString Filename::optionedValue(QString res, QString key, QString ops, const Ima
 
 		res = vals.join(tagSeparator);
 	}
+	if (options.contains("htmlescape"))
+	{ res = res.toHtmlEscaped(); }
 
 	// Forbidden characters and spaces replacement settings
 	if (key != "allo" && !key.startsWith("url_") && key != "filename")
@@ -545,6 +562,10 @@ QString Filename::optionedValue(QString res, QString key, QString ops, const Ima
 		if (!options.contains("underscores") && (!settings->value("Save/replaceblanks", false).toBool() || options.contains("spaces")))
 		{ res = res.replace("_", " "); }
 	}
+
+	// Escape if necessary
+	if (m_escapeMethod != nullptr)
+	{ res = m_escapeMethod(res); }
 
 	return res;
 }
@@ -563,6 +584,11 @@ QString Filename::getFormat() const
 void Filename::setFormat(QString format)
 {
 	m_format = format;
+}
+
+void Filename::setEscapeMethod(QString (*escapeMethod)(QString))
+{
+	m_escapeMethod = escapeMethod;
 }
 
 bool Filename::returnError(QString msg, QString *error) const
@@ -598,9 +624,8 @@ bool Filename::isValid(QString *error) const
 		return returnError(orange.arg(QObject::tr("Your filename is not unique to each image and an image may overwrite a previous one at saving! You should use%md5%, which is unique to each image, to avoid this inconvenience.")), error);
 
 	// Looking for unknown tokens
-	QSettings *settings = new QSettings(savePath("settings.ini"), QSettings::IniFormat );
-	auto customs = getCustoms(settings);
-	settings->deleteLater();
+	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
+	auto customs = getCustoms(&settings);
 	QStringList tokens = QStringList() << "tags" << "artist" << "general" << "copyright" << "character" << "model" << "species" << "filename" << "rating" << "md5" << "website" << "websitename" << "ext" << "all" << "id" << "search" << "search_(\\d+)" << "allo" << customs.keys() << "date" << "score" << "count" << "width" << "height" << "pool" << "url_file" << "url_page";
 	QRegExp rx("%(.+)%");
 	rx.setMinimal(true);

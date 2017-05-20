@@ -1,13 +1,18 @@
-#include <QMessageBox>
 #include "favorites-tab.h"
 #include "ui_favorites-tab.h"
+#include <QMessageBox>
 #include "ui/QBouton.h"
-#include "viewer/zoomwindow.h"
+#include "ui/QAffiche.h"
+#include "ui/textedit.h"
 #include "favoritewindow.h"
-#include "searchwindow.h"
+#include "mainwindow.h"
 #include "models/favorite.h"
+#include "models/page.h"
+#include "models/profile.h"
+#include "models/site.h"
+#include "downloader/download-query-group.h"
 #include "helpers.h"
-
+#include "functions.h"
 
 
 favoritesTab::favoritesTab(QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
@@ -73,16 +78,6 @@ void favoritesTab::closeEvent(QCloseEvent *e)
 		m_settings->setValue("reverse", bool(ui->comboAsc->currentIndex() == 1));
 	m_settings->endGroup();
 	m_settings->sync();
-
-	qDeleteAll(m_pages);
-	m_pages.clear();
-	m_images.clear();
-	qDeleteAll(m_checkboxes);
-	m_checkboxes.clear();
-	for (Site *site : m_layouts.keys())
-	{ clearLayout(m_layouts[site]); }
-	qDeleteAll(m_layouts);
-	m_layouts.clear();
 
 	emit(closed(this));
 	e->accept();

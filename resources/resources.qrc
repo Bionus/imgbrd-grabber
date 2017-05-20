@@ -37,6 +37,8 @@
         <file>images/icons/folder-document.png</file>
         <file>images/icons/folder-images.png</file>
         <file>images/icons/gear.png</file>
+        <file>images/icons/globe.png</file>
+        <file>images/icons/hash.png</file>
         <file>images/icons/qt.png</file>
         <file>images/icons/settings.png</file>
         <file>images/icons/tab-minus.png</file>
@@ -50,6 +52,7 @@
         <file>images/reverse-search/iqdb.png</file>
         <file>images/reverse-search/tineye.png</file>
         <file>images/reverse-search/google.png</file>
+        <file>images/reverse-search/waifu2x.png</file>
         <file>images/reverse-search/yandex.png</file>
         <file>images/play-overlay.png</file>
         <file>images/status/downloading.png</file>
@@ -59,5 +62,7 @@
         <file>images/status/unknown.png</file>
         <file>images/icons/eye-minus.png</file>
         <file>images/icons/eye-plus.png</file>
+        <file>images/icons/github.png</file>
+        <file>images/icons/tab-arrow.png</file>
     </qresource>
 </RCC>

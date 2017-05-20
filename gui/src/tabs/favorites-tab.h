@@ -3,11 +3,7 @@
 
 #include <QWidget>
 #include <QMap>
-#include "ui/textedit.h"
 #include "search-tab.h"
-#include "models/page.h"
-#include "mainwindow.h"
-
 
 
 namespace Ui
@@ -16,8 +12,8 @@ namespace Ui
 }
 
 
-
 class mainWindow;
+class Page;
 
 class favoritesTab : public searchTab
 {

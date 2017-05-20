@@ -16,14 +16,18 @@ RCC_DIR     = $$DESTDIR/qrc
 UI_DIR      = $$DESTDIR/ui
 
 # Global
-APP_VERSION = \\\"5.2.4\\\"
+APP_VERSION = \\\"5.3.0\\\"
 APP_PREFIX = \\\"$$(PREFIX)\\\"
 
 # General
 TEMPLATE = app
+QT += core network xml sql script
+
+# Defines
 DEFINES += VERSION=$$APP_VERSION
 DEFINES += PREFIX=$$APP_PREFIX
-QT += core network xml sql script
+DEFINES += PROJECT_WEBSITE_URL=\\\"https://bionus.github.io/imgbrd-grabber/\\\"
+DEFINES += PROJECT_GITHUB_URL=\\\"https://github.com/Bionus/imgbrd-grabber\\\"
 
 # Additionnal
 CONFIG += plugin c++11
@@ -58,6 +62,21 @@ use_ssl {
 		PKGCONFIG += openssl
 	}
 }
+
+# Code coverage
+@
+T = $$(TRAVIS)
+!isEmpty(T) {
+	unix:!macx {
+		QMAKE_CXXFLAGS -= -O2
+		QMAKE_CXXFLAGS_RELEASE -= -O2
+
+		LIBS += -lgcov
+		QMAKE_CXXFLAGS += -g -fprofile-arcs -ftest-coverage -O0 --coverage
+		QMAKE_LFLAGS += -g -fprofile-arcs -ftest-coverage  -O0 --coverage
+	}
+}
+@
 
 OTHER_FILES += \
 	$${PWD}/Grabber.pri \

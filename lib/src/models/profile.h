@@ -4,6 +4,7 @@
 #include <QString>
 #include <QList>
 #include <QSettings>
+#include <QPair>
 #include "models/favorite.h"
 
 
@@ -38,10 +39,11 @@ class Profile : public QObject
 		void removeIgnored(QString tag);
 
 		// MD5 management
-		QString md5Exists(QString);
-		void addMd5(QString, QString);
-		void setMd5(QString, QString);
-		void removeMd5(QString);
+		QPair<QString, QString> md5Action(QString md5);
+		QString md5Exists(QString md5);
+		void addMd5(QString md5, QString path);
+		void setMd5(QString md5, QString path);
+		void removeMd5(QString md5);
 
 		// Auto-completion
 		void addAutoComplete(QString tag);

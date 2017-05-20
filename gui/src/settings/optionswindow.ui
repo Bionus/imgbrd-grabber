@@ -7,14 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>666</width>
-    <height>489</height>
+    <height>471</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Options</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../../../resources/resources.qrc">
+   <iconset resource="../../../CrashReporter/resources.qrc">
     <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout">
@@ -118,6 +118,11 @@
        <property name="text">
         <string>Interface</string>
        </property>
+       <item>
+        <property name="text">
+         <string>Search results</string>
+        </property>
+       </item>
        <item>
         <property name="text">
          <string>Image window</string>
@@ -657,6 +662,16 @@
           </property>
          </widget>
         </item>
+        <item row="4" column="0" colspan="2">
+         <widget class="QCheckBox" name="checkSaveHeaderDetection">
+          <property name="text">
+           <string>Get extension from file header</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
         <item row="5" column="0">
          <widget class="QLabel" name="label_7">
           <property name="text">
@@ -700,58 +715,13 @@
          </layout>
         </item>
         <item row="7" column="0">
-         <widget class="QLabel" name="label_14">
-          <property name="text">
-           <string>Tags separator</string>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="1">
-         <widget class="QLineEdit" name="lineSeparator">
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-        </item>
-        <item row="8" column="0" colspan="2">
-         <widget class="QCheckBox" name="checkReplaceBlanks">
-          <property name="text">
-           <string>Replace spaces by underscores</string>
-          </property>
-         </widget>
-        </item>
-        <item row="10" column="0">
-         <widget class="QLabel" name="label_54">
-          <property name="text">
-           <string>Max length</string>
-          </property>
-         </widget>
-        </item>
-        <item row="10" column="1">
-         <widget class="QSpinBox" name="spinLimit">
-          <property name="maximum">
-           <number>260</number>
-          </property>
-         </widget>
-        </item>
-        <item row="11" column="0" colspan="2">
-         <widget class="QLabel" name="label_55">
-          <property name="text">
-           <string>&lt;i&gt;If the filename length is greater than this number, it will be shortened. Leave it to 0 to use the default limit.&lt;/i&gt;</string>
-          </property>
-          <property name="wordWrap">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="12" column="0">
          <widget class="QLabel" name="label_29">
           <property name="text">
            <string>Simultaneous downloads</string>
           </property>
          </widget>
         </item>
-        <item row="12" column="1">
+        <item row="7" column="1">
          <widget class="QSpinBox" name="spinSimultaneous">
           <property name="minimum">
            <number>1</number>
@@ -761,14 +731,14 @@
           </property>
          </widget>
         </item>
-        <item row="13" column="0">
+        <item row="8" column="0">
          <widget class="QLabel" name="label_83">
           <property name="text">
            <string>When the download is finished</string>
           </property>
          </widget>
         </item>
-        <item row="13" column="1">
+        <item row="8" column="1">
          <widget class="QComboBox" name="comboBatchEnd">
           <item>
            <property name="text">
@@ -797,14 +767,14 @@
           </item>
          </widget>
         </item>
-        <item row="14" column="0">
+        <item row="10" column="0">
          <widget class="QLabel" name="label_19">
           <property name="text">
            <string>If a file already exists</string>
           </property>
          </widget>
         </item>
-        <item row="14" column="1">
+        <item row="10" column="1">
          <widget class="QComboBox" name="comboMd5Duplicates">
           <property name="currentIndex">
            <number>0</number>
@@ -831,44 +801,31 @@
           </item>
          </widget>
         </item>
-        <item row="15" column="0" colspan="2">
+        <item row="11" column="0" colspan="2">
          <widget class="QLabel" name="label_21">
           <property name="text">
            <string>&lt;i&gt;File's identity is based on the MD5 algorithm.&lt;/i&gt;</string>
           </property>
          </widget>
         </item>
-        <item row="16" column="0">
+        <item row="9" column="0">
          <widget class="QLabel" name="label_84">
           <property name="text">
            <string>Automatic redownload</string>
           </property>
          </widget>
         </item>
-        <item row="16" column="1">
+        <item row="9" column="1">
          <widget class="QSpinBox" name="spinAutomaticRetries">
           <property name="maximum">
            <number>100</number>
           </property>
          </widget>
         </item>
-        <item row="9" column="0" colspan="2">
-         <widget class="QCheckBox" name="checkNoJpeg">
+        <item row="12" column="0" colspan="2">
+         <widget class="QCheckBox" name="checkKeepDeletedMd5">
           <property name="text">
-           <string>Replace JPEG by JPG</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="0" colspan="2">
-         <widget class="QCheckBox" name="checkSaveHeaderDetection">
-          <property name="text">
-           <string>Get extension from file header</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
+           <string>Keep deleted files in the MD5 list</string>
           </property>
          </widget>
         </item>
@@ -876,9 +833,6 @@
       </widget>
       <widget class="QWidget" name="pageSaveFilenames">
        <layout class="QFormLayout" name="formLayout_4">
-        <property name="fieldGrowthPolicy">
-         <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-        </property>
         <item row="0" column="0">
          <widget class="QLabel" name="label_8">
           <property name="text">
@@ -945,6 +899,61 @@
           </item>
          </layout>
         </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_14">
+          <property name="text">
+           <string>Tags separator</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QLineEdit" name="lineSeparator">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0" colspan="2">
+         <widget class="QCheckBox" name="checkReplaceBlanks">
+          <property name="text">
+           <string>Replace spaces by underscores</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0" colspan="2">
+         <widget class="QCheckBox" name="checkNoJpeg">
+          <property name="text">
+           <string>Replace JPEG by JPG</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
+         <widget class="QLabel" name="label_54">
+          <property name="text">
+           <string>Max length</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="1">
+         <widget class="QSpinBox" name="spinLimit">
+          <property name="maximum">
+           <number>260</number>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="0" colspan="2">
+         <widget class="QLabel" name="label_55">
+          <property name="text">
+           <string>&lt;i&gt;If the filename length is greater than this number, it will be shortened. Leave it to 0 to use the default limit.&lt;/i&gt;</string>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
        </layout>
       </widget>
       <widget class="QWidget" name="pageSaveConditionals">
@@ -975,8 +984,15 @@
        </layout>
       </widget>
       <widget class="QWidget" name="pageSaveTextfile">
-       <layout class="QFormLayout" name="formLayout_12">
-        <item row="1" column="0" colspan="2">
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QCheckBox" name="checkTextfileActivate">
+          <property name="text">
+           <string>Enable external text files</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QLabel" name="label_81">
           <property name="text">
            <string>&lt;i&gt;Each time an image is saved, an external text file will be save with the same name at the same location, containing the image's tags.&lt;/i&gt;</string>
@@ -986,31 +1002,56 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="0" colspan="2">
-         <widget class="QCheckBox" name="checkTextfileActivate">
-          <property name="text">
-           <string>Enable external text files</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0" colspan="2">
-         <widget class="QLabel" name="label_35">
-          <property name="text">
-           <string>Text file content</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0" colspan="2">
-         <widget class="QPlainTextEdit" name="textEditTextfileContent"/>
-        </item>
-        <item row="4" column="0" colspan="2">
-         <widget class="QLabel" name="label_80">
-          <property name="text">
-           <string>Available tokens: the same as in the &quot;Save&quot; part.</string>
-          </property>
-          <property name="wordWrap">
-           <bool>true</bool>
-          </property>
+        <item>
+         <widget class="QWidget" name="widgetTextfile" native="true">
+          <layout class="QFormLayout" name="formLayout_12">
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_89">
+             <property name="text">
+              <string>Suffix</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="lineTextfileSuffix">
+             <property name="text">
+              <string>.txt</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0" colspan="2">
+            <widget class="QPlainTextEdit" name="textEditTextfileContent"/>
+           </item>
+           <item row="1" column="0" colspan="2">
+            <widget class="QLabel" name="label_35">
+             <property name="text">
+              <string>Text file content</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0" colspan="2">
+            <widget class="QLabel" name="label_80">
+             <property name="text">
+              <string>Available tokens: the same as in the &quot;Save&quot; part.</string>
+             </property>
+             <property name="wordWrap">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </widget>
         </item>
        </layout>
@@ -1548,31 +1589,24 @@
         <property name="fieldGrowthPolicy">
          <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
         </property>
-        <item row="1" column="0" colspan="2">
-         <widget class="QCheckBox" name="checkResultsScrollArea">
+        <item row="0" column="0">
+         <widget class="QLabel" name="labelTheme">
           <property name="text">
-           <string>Use a scroll area for the results</string>
+           <string>Theme</string>
           </property>
          </widget>
         </item>
-        <item row="2" column="0" colspan="2">
-         <widget class="QCheckBox" name="checkResizeInsteadOfCropping">
-          <property name="text">
-           <string>Resize previews instead of cropping them</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-         </widget>
+        <item row="0" column="1">
+         <widget class="QComboBox" name="comboTheme"/>
         </item>
-        <item row="3" column="0">
+        <item row="1" column="0">
          <widget class="QLabel" name="labelThumbnailUpscale">
           <property name="text">
            <string>Upscaling</string>
           </property>
          </widget>
         </item>
-        <item row="3" column="1">
+        <item row="1" column="1">
          <widget class="QSpinBox" name="spinThumbnailUpscale">
           <property name="suffix">
            <string>%</string>
@@ -1585,24 +1619,14 @@
           </property>
          </widget>
         </item>
-        <item row="4" column="0" colspan="2">
-         <widget class="QCheckBox" name="checkAutocompletion">
-          <property name="text">
-           <string>Enable autocompletion</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="0">
+        <item row="2" column="0">
          <widget class="QLabel" name="label_26">
           <property name="text">
            <string>Favorites display</string>
           </property>
          </widget>
         </item>
-        <item row="5" column="1">
+        <item row="2" column="1">
          <widget class="QComboBox" name="comboFavoritesDisplay">
           <item>
            <property name="text">
@@ -1641,14 +1665,14 @@
           </item>
          </widget>
         </item>
-        <item row="6" column="0">
+        <item row="3" column="0">
          <widget class="QLabel" name="label_39">
           <property name="text">
            <string>Hide favorites</string>
           </property>
          </widget>
         </item>
-        <item row="6" column="1">
+        <item row="3" column="1">
          <widget class="QSpinBox" name="spinHideFavorites">
           <property name="maximum">
            <number>1000</number>
@@ -1658,7 +1682,7 @@
           </property>
          </widget>
         </item>
-        <item row="7" column="0" colspan="2">
+        <item row="4" column="0" colspan="2">
          <widget class="QLabel" name="label_40">
           <property name="text">
            <string>&lt;i&gt;The favorites list will be hidden as soon as this image number has been reached.&lt;/i&gt;</string>
@@ -1668,14 +1692,14 @@
           </property>
          </widget>
         </item>
-        <item row="8" column="0">
+        <item row="5" column="0">
          <widget class="QLabel" name="label_41">
           <property name="text">
            <string>Source's type display</string>
           </property>
          </widget>
         </item>
-        <item row="8" column="1">
+        <item row="5" column="1">
          <widget class="QComboBox" name="comboSources">
           <item>
            <property name="text">
@@ -1699,14 +1723,14 @@
           </item>
          </widget>
         </item>
-        <item row="9" column="0">
+        <item row="6" column="0">
          <widget class="QLabel" name="label_42">
           <property name="text">
            <string>Displayed letters</string>
           </property>
          </widget>
         </item>
-        <item row="9" column="1">
+        <item row="6" column="1">
          <layout class="QHBoxLayout" name="horizontalLayout_9">
           <item>
            <widget class="QComboBox" name="comboSourcesLetters">
@@ -1742,7 +1766,7 @@
           </item>
          </layout>
         </item>
-        <item row="10" column="0" colspan="2">
+        <item row="7" column="0" colspan="2">
          <widget class="QLabel" name="label_43">
           <property name="text">
            <string>&lt;i&gt;Number of displayed letters near the sources' checkboxes in the &quot;+&quot; part of the main window.&lt;/i&gt;</string>
@@ -1752,7 +1776,41 @@
           </property>
          </widget>
         </item>
-        <item row="11" column="0" colspan="2">
+       </layout>
+      </widget>
+      <widget class="QWidget" name="pageInterfaceSearchResults">
+       <layout class="QFormLayout" name="formLayout_24">
+        <item row="0" column="0" colspan="2">
+         <widget class="QCheckBox" name="checkResultsScrollArea">
+          <property name="text">
+           <string>Use a scroll area</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0" colspan="2">
+         <widget class="QCheckBox" name="checkResizeInsteadOfCropping">
+          <property name="text">
+           <string>Resize previews instead of cropping them</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0" colspan="2">
+         <widget class="QCheckBox" name="checkAutocompletion">
+          <property name="text">
+           <string>Enable autocompletion</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0" colspan="2">
          <widget class="QCheckBox" name="checkShowTagWarning">
           <property name="text">
            <string>Show warning if an incompatible modifier is found</string>
@@ -1762,7 +1820,7 @@
           </property>
          </widget>
         </item>
-        <item row="12" column="0" colspan="2">
+        <item row="5" column="0" colspan="2">
          <widget class="QCheckBox" name="checkShowWarnings">
           <property name="text">
            <string>Show other warnings</string>
@@ -1772,14 +1830,14 @@
           </property>
          </widget>
         </item>
-        <item row="13" column="0" colspan="2">
+        <item row="6" column="0" colspan="2">
          <widget class="QCheckBox" name="checkGetUnloadedPages">
           <property name="text">
            <string>Download not loaded pages</string>
           </property>
          </widget>
         </item>
-        <item row="14" column="0" colspan="2">
+        <item row="7" column="0" colspan="2">
          <widget class="QLabel" name="label_66">
           <property name="text">
            <string>&lt;i&gt;If you activate this option, pressing the &quot;Get this page&quot; button will take into account modifications made to the number of images per page, the page number, etc. even if they weren't loaded.&lt;/i&gt;</string>
@@ -1789,15 +1847,15 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="labelTheme">
+        <item row="1" column="0" colspan="2">
+         <widget class="QCheckBox" name="checkResultsFixedWidthLayout">
           <property name="text">
-           <string>Theme</string>
+           <string>Use a fixed-image-width layout</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
           </property>
          </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QComboBox" name="comboTheme"/>
         </item>
        </layout>
       </widget>
@@ -2669,7 +2727,7 @@
       <widget class="QWidget" name="pageCommandsDatabase">
        <layout class="QFormLayout" name="formLayout_13">
         <item row="1" column="0" colspan="2">
-         <widget class="QGroupBox" name="groupBox_4">
+         <widget class="QGroupBox" name="groupBoxSqlCommands">
           <property name="title">
            <string>Commands</string>
           </property>
@@ -2738,7 +2796,7 @@
          </widget>
         </item>
         <item row="0" column="0" colspan="2">
-         <widget class="QGroupBox" name="groupBox">
+         <widget class="QGroupBox" name="groupBoxSqlCredentials">
           <property name="title">
            <string>Credentials</string>
           </property>
@@ -2855,9 +2913,6 @@
   <tabstop>checkAutodownload</tabstop>
   <tabstop>lineFolderFavorites</tabstop>
   <tabstop>buttonFolderFavorites</tabstop>
-  <tabstop>lineSeparator</tabstop>
-  <tabstop>checkReplaceBlanks</tabstop>
-  <tabstop>spinLimit</tabstop>
   <tabstop>spinSimultaneous</tabstop>
   <tabstop>lineFilename</tabstop>
   <tabstop>buttonFilenamePlus</tabstop>
@@ -2869,9 +2924,6 @@
   <tabstop>lineCopyrightsIfNone</tabstop>
   <tabstop>lineCharactersIfNone</tabstop>
   <tabstop>lineCharactersSeparator</tabstop>
-  <tabstop>checkShowTagWarning</tabstop>
-  <tabstop>checkShowWarnings</tabstop>
-  <tabstop>checkGetUnloadedPages</tabstop>
   <tabstop>spinMainMargins</tabstop>
   <tabstop>spinServerBorders</tabstop>
   <tabstop>lineBorderColor</tabstop>
@@ -2884,15 +2936,10 @@
   <tabstop>lineCommandsTagAfter</tabstop>
   <tabstop>buttonCustom</tabstop>
   <tabstop>spinHideFavorites</tabstop>
-  <tabstop>checkResizeInsteadOfCropping</tabstop>
   <tabstop>comboSources</tabstop>
-  <tabstop>checkAutocompletion</tabstop>
  </tabstops>
  <resources>
-  <include location="../../../resources/resources.qrc"/>
-  <include location="../../../resources/resources.qrc"/>
-  <include location="../../../resources/resources.qrc"/>
-  <include location="../../../resources/resources.qrc"/>
+  <include location="../../../CrashReporter/resources.qrc"/>
  </resources>
  <connections>
   <connection>
@@ -2902,8 +2949,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>320</x>
-     <y>479</y>
+     <x>329</x>
+     <y>461</y>
     </hint>
     <hint type="destinationlabel">
      <x>157</x>
@@ -2918,8 +2965,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>388</x>
-     <y>479</y>
+     <x>397</x>
+     <y>461</y>
     </hint>
     <hint type="destinationlabel">
      <x>286</x>
@@ -2950,12 +2997,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>539</x>
-     <y>34</y>
+     <x>360</x>
+     <y>20</y>
     </hint>
     <hint type="destinationlabel">
-     <x>539</x>
-     <y>71</y>
+     <x>360</x>
+     <y>29</y>
     </hint>
    </hints>
   </connection>
@@ -2966,12 +3013,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>647</x>
-     <y>138</y>
+     <x>360</x>
+     <y>28</y>
     </hint>
     <hint type="destinationlabel">
-     <x>358</x>
-     <y>135</y>
+     <x>278</x>
+     <y>28</y>
     </hint>
    </hints>
   </connection>
@@ -2982,12 +3029,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>528</x>
-     <y>165</y>
+     <x>319</x>
+     <y>32</y>
     </hint>
     <hint type="destinationlabel">
-     <x>408</x>
-     <y>161</y>
+     <x>278</x>
+     <y>31</y>
     </hint>
    </hints>
   </connection>
@@ -2998,12 +3045,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>646</x>
-     <y>165</y>
+     <x>359</x>
+     <y>32</y>
     </hint>
     <hint type="destinationlabel">
-     <x>408</x>
-     <y>161</y>
+     <x>278</x>
+     <y>31</y>
     </hint>
    </hints>
   </connection>
@@ -3014,12 +3061,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>647</x>
-     <y>192</y>
+     <x>360</x>
+     <y>34</y>
     </hint>
     <hint type="destinationlabel">
-     <x>391</x>
-     <y>189</y>
+     <x>278</x>
+     <y>34</y>
     </hint>
    </hints>
   </connection>
@@ -3030,12 +3077,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>647</x>
-     <y>192</y>
+     <x>360</x>
+     <y>32</y>
     </hint>
     <hint type="destinationlabel">
-     <x>391</x>
-     <y>189</y>
+     <x>278</x>
+     <y>32</y>
     </hint>
    </hints>
   </connection>
@@ -3046,12 +3093,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>528</x>
-     <y>165</y>
+     <x>319</x>
+     <y>30</y>
     </hint>
     <hint type="destinationlabel">
-     <x>408</x>
-     <y>161</y>
+     <x>278</x>
+     <y>29</y>
     </hint>
    </hints>
   </connection>
@@ -3062,12 +3109,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>646</x>
-     <y>165</y>
+     <x>359</x>
+     <y>30</y>
     </hint>
     <hint type="destinationlabel">
-     <x>408</x>
-     <y>161</y>
+     <x>278</x>
+     <y>29</y>
     </hint>
    </hints>
   </connection>
@@ -3078,12 +3125,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>647</x>
-     <y>138</y>
+     <x>360</x>
+     <y>26</y>
     </hint>
     <hint type="destinationlabel">
-     <x>358</x>
-     <y>135</y>
+     <x>278</x>
+     <y>26</y>
     </hint>
    </hints>
   </connection>
@@ -3094,12 +3141,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>647</x>
-     <y>138</y>
+     <x>360</x>
+     <y>28</y>
     </hint>
     <hint type="destinationlabel">
-     <x>358</x>
-     <y>135</y>
+     <x>278</x>
+     <y>28</y>
     </hint>
    </hints>
   </connection>
@@ -3110,12 +3157,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>528</x>
-     <y>165</y>
+     <x>319</x>
+     <y>32</y>
     </hint>
     <hint type="destinationlabel">
-     <x>408</x>
-     <y>161</y>
+     <x>278</x>
+     <y>31</y>
     </hint>
    </hints>
   </connection>
@@ -3126,12 +3173,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>646</x>
-     <y>165</y>
+     <x>359</x>
+     <y>32</y>
     </hint>
     <hint type="destinationlabel">
-     <x>408</x>
-     <y>161</y>
+     <x>278</x>
+     <y>31</y>
     </hint>
    </hints>
   </connection>
@@ -3142,28 +3189,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>647</x>
-     <y>192</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>391</x>
-     <y>189</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkTextfileActivate</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>textEditTextfileContent</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>639</x>
+     <x>360</x>
      <y>34</y>
     </hint>
     <hint type="destinationlabel">
-     <x>639</x>
-     <y>121</y>
+     <x>278</x>
+     <y>34</y>
     </hint>
    </hints>
   </connection>
@@ -3238,12 +3269,28 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>308</x>
-     <y>57</y>
+     <x>360</x>
+     <y>26</y>
     </hint>
     <hint type="destinationlabel">
-     <x>308</x>
-     <y>70</y>
+     <x>360</x>
+     <y>31</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkTextfileActivate</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>widgetTextfile</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>349</x>
+     <y>28</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>311</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>

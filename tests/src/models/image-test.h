@@ -50,6 +50,7 @@ class ImageTest : public TestSuite
 		void testSaveTextfile();
 		void testSaveLog();
 		void testSetUrl();
+		void testGetNextExtension();
 
 	private:
 		Profile *m_profile;

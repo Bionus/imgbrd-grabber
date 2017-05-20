@@ -1,14 +1,13 @@
 #include "startwindow.h"
+#include <QFileDialog>
+#include <QSettings>
+#include <QStandardPaths>
 #include "ui_startwindow.h"
 #include "optionswindow.h"
 #include "filenamewindow.h"
-#include "functions.h"
 #include "language-loader.h"
-#include <QFileDialog>
-#include <QSettings>
-#include <QDesktopServices>
 #include "helpers.h"
-
+#include "functions.h"
 
 
 /**
@@ -20,6 +19,7 @@ startWindow::startWindow(QMap<QString, Site*> *sites, Profile *profile, QWidget 
 	: QDialog(parent), ui(new Ui::startWindow), m_profile(profile), m_sites(sites)
 {
 	ui->setupUi(this);
+	ui->labelHelp->setText(ui->labelHelp->text().replace("{website}", PROJECT_WEBSITE_URL));
 
 	// Language
 	LanguageLoader languageLoader(savePath("languages/", true));

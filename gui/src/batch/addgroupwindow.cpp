@@ -1,5 +1,9 @@
 #include "addgroupwindow.h"
 #include "ui_addgroupwindow.h"
+#include "ui/textedit.h"
+#include "models/profile.h"
+#include "models/site.h"
+#include "downloader/download-query-group.h"
 
 
 /**

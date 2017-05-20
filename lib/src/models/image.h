@@ -5,16 +5,14 @@
 #include <QNetworkReply>
 #include <QDateTime>
 #include <QPixmap>
-#include <QSslError>
 #include <QSettings>
 #include "tag.h"
 #include "pool.h"
-#include "profile.h"
-
 
 
 class Page;
 class Site;
+class Profile;
 
 class Image : public QObject
 {
@@ -28,7 +26,8 @@ class Image : public QObject
 			Moved,
 			Copied,
 			Saved,
-			Error
+			Error,
+			NotLoaded
 		};
 		Image();
 		Image(Site *site, QMap<QString,QString> details, Profile *profile, Page *parent = NULL);
@@ -39,9 +38,9 @@ class Image : public QObject
 		QStringList	path(QString fn = "", QString pth = "", int counter = 0, bool complex = true, bool simple = false, bool maxlength = true, bool shouldFixFilename = true, bool getFull = false) const;
 		QStringList blacklisted(QStringList, bool invert = true) const;
 		QStringList	stylishedTags(Profile *profile) const;
-		SaveResult  save(QString path, bool force = false, bool basic = false, bool addMd5 = true);
-		QMap<QString, Image::SaveResult> save(QStringList paths, bool addMd5 = true);
-		QMap<QString, Image::SaveResult> save(QString filename, QString path, bool addMd5 = true);
+		SaveResult  save(QString path, bool force = false, bool basic = false, bool addMd5 = true, bool startCommands = false, int count = 1);
+		QMap<QString, Image::SaveResult> save(QStringList paths, bool addMd5 = true, bool startCommands = false, int count = 1);
+		QMap<QString, Image::SaveResult> save(QString filename, QString path, bool addMd5 = true, bool startCommands = false, int count = 1);
 		QString		url() const;
 		QString		md5() const;
 		QString		author() const;
@@ -97,6 +96,7 @@ class Image : public QObject
 		QUrl		getDisplayableUrl() const;
 		bool		isVideo() const;
 		void		setTags(QList<Tag> tags);
+		void		loadAndSave(QString filename, QString path);
 
 	public slots:
 		void loadPreview();

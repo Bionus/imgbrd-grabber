@@ -1,3 +1,4 @@
+#include "site.h"
 #include <QFile>
 #include <QNetworkCookie>
 #include <QNetworkCookieJar>
@@ -6,15 +7,16 @@
 #include <QUrlQuery>
 #include <QDir>
 #include <QTimer>
-#include "site.h"
-#include "functions.h"
-#include "vendor/json.h"
 #include "page.h"
 #include "image.h"
 #include "source.h"
-#include "vendor/qcustomnetworkreply.h"
+#include "profile.h"
+#include "api.h"
+#include "custom-network-access-manager.h"
+#include "vendor/json.h"
+#include "logger.h"
+
 #ifdef QT_DEBUG
-	#include <QDebug>
 	// #define CACHE_POLICY QNetworkRequest::PreferCache
 	#define CACHE_POLICY QNetworkRequest::PreferNetwork
 #else
@@ -110,7 +112,6 @@ void Site::initManager()
 		// Create the access manager and get its slots
 		m_manager = new CustomNetworkAccessManager(this);
 		connect(m_manager, &CustomNetworkAccessManager::finished, this, &Site::finished);
-		connect(m_manager, &CustomNetworkAccessManager::sslErrors, sslErrorHandler);
 
 		// Cache
 		QNetworkDiskCache *diskCache = new QNetworkDiskCache(m_manager);
@@ -439,7 +440,8 @@ QUrl Site::fixUrl(QString url, QUrl old) const
 	if (url.isEmpty())
 		return QUrl();
 
-	QString protocol = (m_settings->value("ssl", false).toBool() ? "https" : "http");
+	bool ssl = m_settings->value("ssl", false).toBool();
+	QString protocol = (ssl ? "https" : "http");
 
 	if (url.startsWith("//"))
 	{ return QUrl(protocol + ":" + url); }
@@ -452,6 +454,9 @@ QUrl Site::fixUrl(QString url, QUrl old) const
 		{ return old.resolved(QUrl(url)); }
 		return QUrl(protocol + "://" + m_url + "/" + url);
 	}
+
+	if (url.startsWith("http://") && ssl)
+	{ return QUrl(protocol + "://" + url.mid(7)); }
 
 	return QUrl(url);
 }

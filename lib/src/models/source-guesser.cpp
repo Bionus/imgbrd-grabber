@@ -1,6 +1,11 @@
 #include "source-guesser.h"
 #include <QEventLoop>
-#include "functions.h"
+#include <QNetworkRequest>
+#include <QNetworkReply>
+#include "source.h"
+#include "api.h"
+#include "custom-network-access-manager.h"
+#include "logger.h"
 
 
 SourceGuesser::SourceGuesser(QString url, QList<Source*> sources)

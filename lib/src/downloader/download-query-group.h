@@ -5,8 +5,9 @@
 #include <QString>
 #include <QSettings>
 #include <QJsonObject>
-#include "models/site.h"
 
+
+class Site;
 
 class DownloadQueryGroup
 {

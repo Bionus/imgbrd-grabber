@@ -15,12 +15,18 @@ QStringList ThemeLoader::getAllThemes() const
 
 bool ThemeLoader::setTheme(QString name)
 {
-	QFile f(m_path + "/" + name + "/style.css");
+	QString dir = QString(m_path).replace('\\', '/') + name + "/";
+
+	QFile f(dir + "style.css");
 	if (!f.open(QFile::ReadOnly | QFile::Text))
 		return false;
 
 	QString css = f.readAll();
 	f.close();
+
+	// Replace urls relative paths by absolute ones
+	css.replace("url(", "url(" + dir);
+
 	qApp->setStyleSheet(css);
 	return true;
 }

@@ -1,5 +1,8 @@
 #include "download-query-image.h"
 #include <QJsonArray>
+#include "models/tag.h"
+#include "models/image.h"
+#include "models/site.h"
 
 
 DownloadQueryImage::DownloadQueryImage()

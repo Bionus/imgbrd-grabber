@@ -3,9 +3,7 @@
 
 #include <QObject>
 #include <QString>
-#include <QList>
 #include <QMap>
-
 
 
 class Api : public QObject

@@ -7,6 +7,8 @@
 #include "blacklist-fix-2.h"
 #include "ui_blacklist-fix-1.h"
 #include "models/page.h"
+#include "models/profile.h"
+#include "models/image.h"
 #include "helpers.h"
 
 

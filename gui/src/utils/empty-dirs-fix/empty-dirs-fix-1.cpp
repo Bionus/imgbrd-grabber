@@ -3,6 +3,7 @@
 #include "empty-dirs-fix-1.h"
 #include "empty-dirs-fix-2.h"
 #include "ui_empty-dirs-fix-1.h"
+#include "models/profile.h"
 
 
 EmptyDirsFix1::EmptyDirsFix1(Profile *profile, QWidget *parent)

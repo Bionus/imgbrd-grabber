@@ -1,11 +1,13 @@
+#include "source.h"
 #include <QStringList>
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
-#include "source.h"
+#include <QDomDocument>
 #include "site.h"
+#include "api.h"
+#include "profile.h"
 #include "functions.h"
-
 
 
 QList<Source*> *g_allSources = Q_NULLPTR;
@@ -71,6 +73,12 @@ Source::Source(Profile *profile, QString dir)
 	}
 	if (m_sites.isEmpty())
 	{ log(QString("No site for source %1").arg(m_name)); }
+}
+
+Source::~Source()
+{
+	qDeleteAll(m_apis);
+	qDeleteAll(m_sites);
 }
 
 

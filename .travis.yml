@@ -32,7 +32,7 @@ install:
       brew update &&
       brew install http://git.io/sshpass.rb &&
       brew install qt5 &&
-      QT_PATH=$(find /usr/local/Cellar/qt5/* -maxdepth 0 -type d | head -1)
+      QT_PATH=$(find /usr/local/Cellar/qt/* -maxdepth 0 -type d | head -1)
       PATH=$QT_PATH/bin:$PATH &&
       export PATH
     ; fi

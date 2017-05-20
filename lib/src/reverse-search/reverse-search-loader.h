@@ -3,8 +3,9 @@
 
 #include <QSettings>
 #include <QList>
-#include "reverse-search-engine.h"
 
+
+class ReverseSearchEngine;
 
 class ReverseSearchLoader
 {

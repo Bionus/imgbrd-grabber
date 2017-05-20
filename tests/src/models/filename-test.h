@@ -26,13 +26,17 @@ class FilenameTest : public TestSuite
 		void testPathKeepNThenAdd();
 		void testPathIgnoredTags();
 		void testPathEmptyDirs();
+		void testPathEmptyDirsNetworkDrive();
 		void testPathKeptTokens();
 		void testPathFull();
 		void testPathSimpleJavascript();
 		void testPathInvalidJavascript();
-		void testExpandTag();
+		void testExpandTagSimple();
+		void testExpandTagInvert();
 		void testExpandTokenSimple();
+		void testExpandTokenInvert();
 		void testExpandTokenComplex();
+		void testExpandEscaping();
 		void testPathOptionMax();
 		void testPathOptionMaxDouble();
 		void testPathOptionDateFormat();
@@ -46,6 +50,8 @@ class FilenameTest : public TestSuite
 		void testPathOptionNumSingleLength();
 		void testPathOptionNumMultiple();
 		void testPathSpecies();
+		void testPathNoJpeg();
+		void testPathKeepInvalidTokens();
 		void testGetReplacesSimple();
 		void testGetReplacesMultiple();
 		void testGetReplacesMatrix();
@@ -61,17 +67,12 @@ class FilenameTest : public TestSuite
 		void testReplaceBlanks();
 		void testCommand();
 		void testFilenameWithMultipleUnderscores();
-
-		void testNeedExactTagsBasic();
-		void testNeedExactTagsSite();
-		void testNeedExactTagsJavascript();
-		void testNeedExactTagsFilename();
-		void testNeedExactTagsToken();
-		void testNeedExactTagsOption();
+		void testNeedExactTags();
+		void testEscapeMethod();
 
 	protected:
-		void assertPath(QString format, QString expected, QString path = "", bool shouldFixFilename = true, bool fullPath = false);
-		void assertPath(QString format, QStringList expected, QString path = "", bool shouldFixFilename = true, bool fullPath = false);
+		void assertPath(QString format, QString expected, QString path = "", bool shouldFixFilename = true, bool fullPath = false, bool keepInvalidTokens = false);
+		void assertPath(QString format, QStringList expected, QString path = "", bool shouldFixFilename = true, bool fullPath = false, bool keepInvalidTokens = false);
 		void assertExpand(QString format, QString expected);
 
 	private:

@@ -1,10 +1,11 @@
 #include <QtScript>
 #include "page.h"
 #include "image.h"
-#include "functions.h"
 #include "site.h"
-#include "commands/commands.h"
 #include "filename.h"
+#include "profile.h"
+#include "commands/commands.h"
+#include "functions.h"
 
 
 QString removeCacheUrl(QString url)
@@ -270,6 +271,27 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	m_loadingImage = false;
 	m_tryingSample = false;
 	m_pools = QList<Pool>();
+}
+
+void Image::loadAndSave(QString filename, QString path)
+{
+	// Load details first if necessary
+	if (Filename(filename).needExactTags(parentSite()))
+	{
+		QEventLoop loopDetails;
+		connect(this, &Image::finishedLoadingTags, &loopDetails, &QEventLoop::quit);
+		loadDetails();
+		loopDetails.exec();
+	}
+
+	// Then we load the image
+	QEventLoop loopImage;
+	connect(this, &Image::finishedImage, &loopImage, &QEventLoop::quit);
+	loadImage();
+	loopImage.exec();
+
+	// We finally save
+	save(filename, path);
 }
 
 
@@ -845,50 +867,74 @@ QStringList Image::stylishedTags(Profile *profile) const
 	return t;
 }
 
-Image::SaveResult Image::save(QString path, bool force, bool basic, bool addMd5)
+Image::SaveResult Image::save(QString path, bool force, bool basic, bool addMd5, bool startCommands, int count)
 {
 	SaveResult res = SaveResult::Saved;
 
 	QFile f(path);
 	if (!f.exists() || force)
 	{
-		QDir path_to_file(path.section(QDir::toNativeSeparators("/"), 0, -2));
-		if (!path_to_file.exists())
+		QPair<QString, QString> md5action = m_profile->md5Action(md5());
+		QString whatToDo = md5action.first;
+		QString md5Duplicate = md5action.second;
+
+		// Only create the destination directory if we're going to put a file there
+		if (md5Duplicate.isEmpty() || force || whatToDo != "ignore")
 		{
-			QDir dir;
-			if (!dir.mkpath(path.section(QDir::toNativeSeparators("/"), 0, -2)))
+			QString p = path.section(QDir::toNativeSeparators("/"), 0, -2);
+			QDir path_to_file(p), dir;
+			if (!path_to_file.exists() && !dir.mkpath(p))
+			{
+				log(QString("Impossible to create the destination folder: %1.").arg(p), Logger::Error);
 				return SaveResult::Error;
+			}
 		}
 
-		QString whatToDo = m_settings->value("Save/md5Duplicates", "save").toString();
-		QString md5Duplicate = m_profile->md5Exists(md5());
 		if (md5Duplicate.isEmpty() || whatToDo == "save" || force)
 		{
-			log(QString("Saving image in <a href=\"file:///%1\">%1</a>").arg(path));
 			if (!m_source.isEmpty() && QFile::exists(m_source))
-			{ QFile::copy(m_source, path); }
+			{
+				log(QString("Saving image in <a href=\"file:///%1\">%1</a> (from <a href=\"file:///%2\">%2</a>)").arg(path).arg(m_source));
+				QFile::copy(m_source, path);
+			}
 			else
 			{
-				if (addMd5)
-				{ m_profile->addMd5(md5(), path); }
+				if (m_data.isEmpty())
+					return SaveResult::NotLoaded;
+
+				log(QString("Saving image in <a href=\"file:///%1\">%1</a>").arg(path));
 
 				if (f.open(QFile::WriteOnly))
 				{
-					f.write(m_data);
+					if (f.write(m_data) < 0)
+					{
+						f.close();
+						f.remove();
+						log(QString("File saving error: %1)").arg(f.errorString()));
+						return SaveResult::Error;
+					}
 					f.close();
 				}
 				else
-				{ log("Unable to open file"); }
+				{
+					log("Unable to open file");
+					return SaveResult::Error;
+				}
+
+				if (addMd5)
+				{ m_profile->addMd5(md5(), path); }
 			}
 
+			// Save info to a text file
 			if (m_settings->value("Textfile/activate", false).toBool() && !basic)
 			{
 				QString textfileFormat = m_settings->value("Textfile/content", "%all%").toString();
-				QStringList cont = this->path(textfileFormat, "", 1, true, true, false, false, false);
+				QStringList cont = this->path(textfileFormat, "", count, true, true, false, false, false);
 				if (!cont.isEmpty())
 				{
+					QString suffix = m_settings->value("Textfile/suffix", ".txt").toString();
 					QString contents = cont.at(0);
-					QFile file_tags(path + ".txt");
+					QFile file_tags(path + suffix);
 					if (file_tags.open(QFile::WriteOnly | QFile::Text))
 					{
 						file_tags.write(contents.toUtf8());
@@ -896,10 +942,12 @@ Image::SaveResult Image::save(QString path, bool force, bool basic, bool addMd5)
 					}
 				}
 			}
+
+			// Log info to a text file
 			if (m_settings->value("SaveLog/activate", false).toBool() && !m_settings->value("SaveLog/file", "").toString().isEmpty() && !basic)
 			{
 				QString savelogFormat = m_settings->value("SaveLog/format", "%website% - %md5% - %all%").toString();
-				QStringList cont = this->path(savelogFormat, "", 1, true, true, false, false, false);
+				QStringList cont = this->path(savelogFormat, "", count, true, true, false, false, false);
 				if (!cont.isEmpty())
 				{
 					QString contents = cont.at(0);
@@ -928,7 +976,10 @@ Image::SaveResult Image::save(QString path, bool force, bool basic, bool addMd5)
 			res = SaveResult::Moved;
 		}
 		else
-		{ return SaveResult::Ignored; }
+		{
+			log(QString("MD5 \"%1\" of the image <a href=\"%2\">%2</a> already found in file <a href=\"file:///%3\">%3</a>").arg(md5(), url(), md5Duplicate));
+			return SaveResult::Ignored;
+		}
 
 		// Keep original date
 		if (m_settings->value("Save/keepDate", true).toBool())
@@ -936,30 +987,32 @@ Image::SaveResult Image::save(QString path, bool force, bool basic, bool addMd5)
 
 		// Commands
 		Commands &commands = m_profile->getCommands();
-		commands.before();
+		if (startCommands)
+		{ commands.before(); }
 			for (Tag tag : tags())
 			{ commands.tag(*this, tag, false); }
 			commands.image(*this, path);
 			for (Tag tag : tags())
 			{ commands.tag(*this, tag, true); }
-		commands.after();
+		if (startCommands)
+		{ commands.after(); }
 	}
 	else
 	{ res = SaveResult::AlreadyExists; }
 
 	return res;
 }
-QMap<QString, Image::SaveResult> Image::save(QStringList paths, bool addMd5)
+QMap<QString, Image::SaveResult> Image::save(QStringList paths, bool addMd5, bool startCommands, int count)
 {
 	QMap<QString, Image::SaveResult> res;
 	for (QString path : paths)
-		res.insert(path, save(path, false, false, addMd5));
+		res.insert(path, save(path, false, false, addMd5, startCommands, count));
 	return res;
 }
-QMap<QString, Image::SaveResult> Image::save(QString filename, QString path, bool addMd5)
+QMap<QString, Image::SaveResult> Image::save(QString filename, QString path, bool addMd5, bool startCommands, int count)
 {
-	QStringList paths = this->path(filename, path, 0, true, false, true, true, true);
-	return save(paths, addMd5);
+	QStringList paths = this->path(filename, path, count, true, false, true, true, true);
+	return save(paths, addMd5, startCommands, count);
 }
 
 QList<Tag> Image::filteredTags(QStringList remove) const
@@ -1190,7 +1243,7 @@ QString Image::getNextExtension(QString ext)
 	if (nextext.contains(ext))
 		return nextext[ext];
 
-	return "jpg";
+	return (animated ? "webm" : "jpg");
 }
 
 bool Image::isVideo() const

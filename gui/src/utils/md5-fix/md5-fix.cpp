@@ -7,6 +7,7 @@
 #include "ui_md5-fix.h"
 #include "functions.h"
 #include "helpers.h"
+#include "models/profile.h"
 
 
 md5Fix::md5Fix(Profile *profile, QWidget *parent)

@@ -35,6 +35,17 @@ void FunctionsTest::testGetUnit()
 	QCOMPARE(size3, 7.0f);
 }
 
+void FunctionsTest::testFormatFilesize()
+{
+	QStringList units = FILESIZE_UNITS;
+
+	QCOMPARE(formatFilesize(800), QString("%1 %2").arg("800").arg(units[0]));
+	QCOMPARE(formatFilesize(1500), QString("%1 %2").arg("1.46").arg(units[1]));
+	QCOMPARE(formatFilesize(2048), QString("%1 %2").arg("2").arg(units[1]));
+	QCOMPARE(formatFilesize(5000000), QString("%1 %2").arg("4.77").arg(units[2]));
+	QCOMPARE(formatFilesize(7340032), QString("%1 %2").arg("7").arg(units[2]));
+}
+
 void FunctionsTest::testGetExtension()
 {
 	QCOMPARE(getExtension(""), QString(""));
@@ -81,6 +92,36 @@ void FunctionsTest::testLevenshtein()
 	QCOMPARE(levenshtein("123456", "654321"), 6);
 	QCOMPARE(levenshtein("1234567", "7654321"), 6);
 	QCOMPARE(levenshtein("12345678", "87654321"), 8);
+}
+
+void FunctionsTest::testRemoveWildards()
+{
+	QCOMPARE(removeWildards(QStringList(), QStringList()), QStringList());
+	QCOMPARE(removeWildards(QStringList() << "abc" << "def" << "ghi", QStringList()), QStringList() << "abc" << "def" << "ghi");
+	QCOMPARE(removeWildards(QStringList() << "abc" << "def" << "ghi", QStringList() << "a*" << "*f"), QStringList() << "ghi");
+	QCOMPARE(removeWildards(QStringList() << "abc" << "def" << "ghi", QStringList() << "no_wildcard"), QStringList() << "abc" << "def" << "ghi");
+	QCOMPARE(removeWildards(QStringList() << "abc" << "def" << "ghi", QStringList() << "*not_found*"), QStringList() << "abc" << "def" << "ghi");
+}
+
+void FunctionsTest::testDateTimeFromString()
+{
+	// Timestamps
+	QCOMPARE(qDateTimeFromString("1492192180").toUTC(),          QDateTime(QDate(2017, 4, 14), QTime(17, 49, 40), Qt::UTC));
+
+	// Standart dates
+	QCOMPARE(qDateTimeFromString("2017/04/14 17:49:40").toUTC(), QDateTime(QDate(2017, 4, 14), QTime(17, 49, 40), Qt::UTC));
+	QCOMPARE(qDateTimeFromString("2017-04-14 17:49:40").toUTC(), QDateTime(QDate(2017, 4, 14), QTime(17, 49, 40), Qt::UTC));
+	QCOMPARE(qDateTimeFromString("2017/04/14 17:49").toUTC(),    QDateTime(QDate(2017, 4, 14), QTime(17, 49), Qt::UTC));
+	QCOMPARE(qDateTimeFromString("2017-04-14 17:49").toUTC(),    QDateTime(QDate(2017, 4, 14), QTime(17, 49), Qt::UTC));
+
+	// Danbooru dates
+	QCOMPARE(qDateTimeFromString("2017-04-14T17:49:40.498-04:00").toUTC(),  QDateTime(QDate(2017, 4, 14), QTime(17 + 4, 49, 40), Qt::UTC));
+
+	// Gelbooru dates
+	QCOMPARE(qDateTimeFromString("Tue Apr  4 17:49:40 2017").toUTC(), QDateTime(QDate(2017, 4, 4), QTime(17, 49, 40), Qt::UTC));
+	QCOMPARE(qDateTimeFromString("Fri Apr 14 17:49:40 2017").toUTC(), QDateTime(QDate(2017, 4, 14), QTime(17, 49, 40), Qt::UTC));
+	QCOMPARE(qDateTimeFromString("Fri Apr 14 17:49:40 -0500 2017").toUTC(), QDateTime(QDate(2017, 4, 14), QTime(17 + 5, 49, 40), Qt::UTC));
+	QCOMPARE(qDateTimeFromString("Fri Apr 14 23:49:40 -0500 2017").toUTC(), QDateTime(QDate(2017, 4, 15), QTime(4, 49, 40), Qt::UTC));
 }
 
 

@@ -1,8 +1,10 @@
-#include <QMessageBox>
-#include <QMenu>
 #include "tag-tab.h"
 #include "ui_tag-tab.h"
-#include "viewer/zoomwindow.h"
+#include <QJsonArray>
+#include "ui/textedit.h"
+#include "models/page.h"
+#include "models/site.h"
+#include "downloader/download-query-group.h"
 #include "searchwindow.h"
 #include "helpers.h"
 
@@ -68,17 +70,6 @@ void tagTab::closeEvent(QCloseEvent *e)
 {
 	m_settings->setValue("mergeresults", ui->checkMergeResults->isChecked());
 	m_settings->sync();
-
-	qDeleteAll(m_pages);
-	m_pages.clear();
-	m_images.clear();
-	qDeleteAll(m_checkboxes);
-	m_checkboxes.clear();
-	for (Site *site : m_layouts.keys())
-	{ clearLayout(m_layouts[site]); }
-	qDeleteAll(m_layouts);
-	m_layouts.clear();
-	m_boutons.clear();
 
 	emit closed(this);
 	e->accept();
