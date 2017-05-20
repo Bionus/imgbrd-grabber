@@ -14,9 +14,11 @@
 #include "models/filename.h"
 #include "sources/sourceswindow.h"
 #include "viewer/zoomwindow.h"
+#include "reverse-search/reverse-search-loader.h"
 #include "mainwindow.h"
 #include "helpers.h"
 #include "functions.h"
+#include "image-context-menu.h"
 
 #define FIXED_IMAGE_WIDTH 150
 
@@ -646,36 +648,25 @@ QBouton *searchTab::createImageThumbnail(int position, QSharedPointer<Image> img
 
 void searchTab::thumbnailContextMenu(QSharedPointer<Image> img)
 {
-	QMenu *menu = new QMenu(this);
+	QMenu *menu = new ImageContextMenu(m_settings, img, m_parent, this);
+	QAction *first = menu->actions().first();
 
 	// Save image
 	QSignalMapper *mapperSave = new QSignalMapper(this);
 	connect(mapperSave, SIGNAL(mapped(QObject*)), this, SLOT(contextSaveImage(QObject*)));
-	QAction *actionSave = menu->addAction(QIcon(":/images/icons/save.png"), tr("Save"));
+	QAction *actionSave = new QAction(QIcon(":/images/icons/save.png"), tr("Save"));
+	menu->insertAction(first, actionSave);
 	connect(actionSave, SIGNAL(triggered()), mapperSave, SLOT(map()));
 	mapperSave->setMapping(actionSave, img.data());
 
 	if (!m_selectedImagesPtrs.empty())
 	{
-		QAction *actionSaveSelected = menu->addAction(QIcon(":/images/icons/save.png"), tr("Save selected"));
+		QAction *actionSaveSelected = new QAction(QIcon(":/images/icons/save.png"), tr("Save selected"));
 		connect(actionSaveSelected, &QAction::triggered, this, &searchTab::contextSaveSelected);
+		menu->insertAction(first, actionSaveSelected);
 	}
 
-	menu->addSeparator();
-
-	// Open image
-	QSignalMapper *mapperOpen = new QSignalMapper(this);
-	connect(mapperOpen, SIGNAL(mapped(QObject*)), this, SLOT(contextOpenImageInBrowser(QObject*)));
-	QAction *actionOpen = menu->addAction(QIcon(":/images/icons/browser.png"), tr("Open in browser"));
-	connect(actionOpen, SIGNAL(triggered()), mapperOpen, SLOT(map()));
-	mapperOpen->setMapping(actionOpen, img.data());
-
-	// Search MD5
-	QSignalMapper *mapperMd5 = new QSignalMapper(this);
-	connect(mapperMd5, SIGNAL(mapped(QObject*)), this, SLOT(contextSearchMd5(QObject*)));
-	QAction *actionMd5 = menu->addAction(QIcon(":/images/icons/hash.png"), tr("Search MD5"));
-	connect(actionMd5, SIGNAL(triggered()), mapperMd5, SLOT(map()));
-	mapperMd5->setMapping(actionMd5, img.data());
+	menu->insertSeparator(first);
 
 	menu->exec(QCursor::pos());
 }
@@ -687,11 +678,6 @@ void searchTab::contextSaveImage(QObject *image)
 	Image *img = (Image*)image;
 	img->loadAndSave(fn, path);
 }
-void searchTab::contextOpenImageInBrowser(QObject *image)
-{
-	Image *img = (Image*)image;
-	QDesktopServices::openUrl(img->pageUrl());
-}
 void searchTab::contextSaveSelected()
 {
 	QString fn = m_settings->value("Save/filename").toString();
@@ -699,11 +685,6 @@ void searchTab::contextSaveSelected()
 
 	for (QSharedPointer<Image> img : m_selectedImagesPtrs)
 		img->loadAndSave(fn, path);
-}
-void searchTab::contextSearchMd5(QObject *image)
-{
-	Image *img = (Image*)image;
-	m_parent->addTab("md5:" + img->md5());
 }
 
 int searchTab::getActualImagesPerPage(Page *page, bool merge)

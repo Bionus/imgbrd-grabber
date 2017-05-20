@@ -20,6 +20,7 @@
 #include "mainwindow.h"
 #include "helpers.h"
 #include "functions.h"
+#include "image-context-menu.h"
 
 
 zoomWindow::zoomWindow(QList<QSharedPointer<Image> > images, QSharedPointer<Image> image, Site *site, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
@@ -214,38 +215,21 @@ zoomWindow::~zoomWindow()
 
 void zoomWindow::imageContextMenu()
 {
-	QMenu *menu = new QMenu(this);
+	QMenu *menu = new ImageContextMenu(m_settings, m_image, m_parent, this);
 
 	// Copy actions
-	menu->addAction(QIcon(":/images/icons/copy.png"), tr("Copy file"), this, SLOT(copyImageFileToClipboard()));
-	menu->addAction(QIcon(":/images/icons/document-binary.png"), tr("Copy data"), this, SLOT(copyImageDataToClipboard()));
-	menu->addSeparator();
+	QAction *copyImageAction = new QAction(QIcon(":/images/icons/copy.png"), tr("Copy file"));
+	connect(copyImageAction, SIGNAL(triggered()), this, SLOT(copyImageFileToClipboard()));
+	QAction *copyDataAction = new QAction(QIcon(":/images/icons/document-binary.png"), tr("Copy data"));
+	connect(copyDataAction, SIGNAL(triggered()), this, SLOT(copyImageDataToClipboard()));
 
-	// Reverse search actions
-	QMenu *reverseSearchMenu = menu->addMenu(tr("Web services"));
-	QSignalMapper *reverseSearchMapper = new QSignalMapper(this);
-	connect(reverseSearchMapper, SIGNAL(mapped(int)), this, SLOT(reverseImageSearch(int)));
-	for (int i = 0; i < m_reverseSearchEngines.count(); ++i)
-	{
-		ReverseSearchEngine engine = m_reverseSearchEngines[i];
-		QAction *subMenuAct = reverseSearchMenu->addAction(engine.icon(), engine.name());
-		connect(subMenuAct, SIGNAL(triggered()), reverseSearchMapper, SLOT(map()));
-		reverseSearchMapper->setMapping(subMenuAct, i);
-	}
-	menu->addAction(QIcon(":/images/icons/hash.png"), tr("Search MD5"), this, SLOT(contextSearchMd5()));
+	// Insert actionsat the beginning
+	QAction *first = menu->actions().first();
+	menu->insertAction(first, copyImageAction);
+	menu->insertAction(first, copyDataAction);
+	menu->insertSeparator(first);
 
 	menu->exec(QCursor::pos());
-}
-void zoomWindow::contextSearchMd5()
-{
-	m_parent->addTab("md5:" + m_image->md5());
-}
-void zoomWindow::reverseImageSearch(int i)
-{
-	if (m_reverseSearchEngines.count() < i)
-		return;
-
-	m_reverseSearchEngines[i].searchByUrl(m_image->fileUrl());
 }
 void zoomWindow::copyImageFileToClipboard()
 {
