@@ -149,8 +149,9 @@ Source: "..\release\sites\Shimmie\sites.txt";  DestDir: "{localappdata}\Bionus\G
 Source: "..\release\sites\Zerochan\icon.png";  DestDir: "{localappdata}\Bionus\Grabber\sites\Zerochan"; Flags: ignoreversion
 Source: "..\release\sites\Zerochan\model.xml"; DestDir: "{localappdata}\Bionus\Grabber\sites\Zerochan"; Flags: ignoreversion     
 Source: "..\release\sites\Zerochan\sites.txt"; DestDir: "{localappdata}\Bionus\Grabber\sites\Zerochan"; Flags: onlyifdoesntexist
-Source: "..\release\sites\Zerochan\www.zerochan.net\settings.ini"; DestDir: "{localappdata}\Bionus\Grabber\sites\Zerochan\www.zerochan.net"; Flags: onlyifdoesntexist
-Source: "..\release\themes\Default\style.css"; DestDir: "{localappdata}\Bionus\Grabber\themes\Default"; Flags: onlyifdoesntexist
+Source: "..\release\sites\Zerochan\www.zerochan.net\settings.ini"; DestDir: "{localappdata}\Bionus\Grabber\sites\Zerochan\www.zerochan.net"; Flags: onlyifdoesntexist          
+Source: "..\release\themes\Default\*"; DestDir: "{localappdata}\Bionus\Grabber\themes\Default"; Flags: onlyifdoesntexist recursesubdirs
+Source: "..\release\themes\QDarkStyleSheet\*"; DestDir: "{localappdata}\Bionus\Grabber\themes\QDarkStyleSheet"; Flags: onlyifdoesntexist recursesubdirs
 
 [InstallDelete]         
 Type: filesandordirs; Name: "{app}\languages\updater"
