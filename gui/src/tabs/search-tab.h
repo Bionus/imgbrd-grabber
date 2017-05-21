@@ -66,6 +66,7 @@ class searchTab : public QWidget
 
 	protected slots:
 		void contextSaveImage(QObject *image);
+		void contextSaveImageAs(QObject *image);
 		void contextSaveSelected();
 
 	private:

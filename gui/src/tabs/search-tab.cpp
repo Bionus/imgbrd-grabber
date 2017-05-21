@@ -3,6 +3,7 @@
 #include <QMessageBox>
 #include <QSet>
 #include <QMenu>
+#include <QFileDialog>
 #include "ui/textedit.h"
 #include "ui/QBouton.h"
 #include "ui/verticalscrollarea.h"
@@ -659,6 +660,14 @@ void searchTab::thumbnailContextMenu(QSharedPointer<Image> img)
 	connect(actionSave, SIGNAL(triggered()), mapperSave, SLOT(map()));
 	mapperSave->setMapping(actionSave, img.data());
 
+	// Save image as...
+	QSignalMapper *mapperSaveAs = new QSignalMapper(this);
+	connect(mapperSaveAs, SIGNAL(mapped(QObject*)), this, SLOT(contextSaveImageAs(QObject*)));
+	QAction *actionSaveAs = new QAction(QIcon(":/images/icons/save-as.png"), tr("Save as..."), menu);
+	menu->insertAction(first, actionSaveAs);
+	connect(actionSaveAs, SIGNAL(triggered()), mapperSaveAs, SLOT(map()));
+	mapperSaveAs->setMapping(actionSaveAs, img.data());
+
 	if (!m_selectedImagesPtrs.empty())
 	{
 		QAction *actionSaveSelected = new QAction(QIcon(":/images/icons/save.png"), tr("Save selected"), menu);
@@ -679,6 +688,23 @@ void searchTab::contextSaveImage(QObject *image)
 	if (m_boutons.contains(img))
 	{ connect(img, SIGNAL(downloadProgressImage(qint64, qint64)), m_boutons[img], SLOT(setProgress(qint64, qint64))); }
 	img->loadAndSave(fn, path);
+}
+void searchTab::contextSaveImageAs(QObject *image)
+{
+	Image *img = (Image*)image;
+
+	Filename format(m_settings->value("Save/filename").toString());
+	QStringList filenames = format.path(*img, m_profile);
+	QString filename = filenames.first().section(QDir::separator(), -1);
+	QString lastDir = m_settings->value("Zoom/lastDir", "").toString();
+
+	QString path = QFileDialog::getSaveFileName(this, tr("Save image"), QDir::toNativeSeparators(lastDir + "/" + filename), "Images (*.png *.gif *.jpg *.jpeg)");
+	if (!path.isEmpty())
+	{
+		path = QDir::toNativeSeparators(path);
+		m_settings->setValue("Zoom/lastDir", path.section(QDir::toNativeSeparators("/"), 0, -2));
+		img->loadAndSave(QStringList() << path, false);
+	}
 }
 void searchTab::contextSaveSelected()
 {
