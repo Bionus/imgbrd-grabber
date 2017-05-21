@@ -16,7 +16,7 @@ RCC_DIR     = $$DESTDIR/qrc
 UI_DIR      = $$DESTDIR/ui
 
 # Global
-APP_VERSION = \\\"5.3.1\\\"
+APP_VERSION = \\\"5.3.2\\\"
 APP_PREFIX = \\\"$$(PREFIX)\\\"
 
 # General
