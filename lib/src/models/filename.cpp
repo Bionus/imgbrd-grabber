@@ -564,7 +564,7 @@ QString Filename::optionedValue(QString res, QString key, QString ops, const Ima
 	}
 
 	// Escape if necessary
-	if (m_escapeMethod != nullptr)
+	if (m_escapeMethod != nullptr && options.contains("escape"))
 	{ res = m_escapeMethod(res); }
 
 	return res;
