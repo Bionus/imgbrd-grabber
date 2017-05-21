@@ -40,13 +40,13 @@ class searchTab : public QWidget
 		int columns();
 		QString postFilter();
 		virtual void setTags(QString) = 0;
-		virtual bool validateImage(QSharedPointer<Image> img) = 0;
+		virtual bool validateImage(QSharedPointer<Image> img);
 		QStringList selectedImages();
 		void setSources(QList<bool> sources);
 		void setImagesPerPage(int ipp);
 		void setColumns(int columns);
 		void setPostFilter(QString postfilter);
-		virtual QList<Site*> loadSites() const = 0;
+		virtual QList<Site*> loadSites() const;
 		virtual void onLoad();
 		virtual void write(QJsonObject &json) const = 0;
 

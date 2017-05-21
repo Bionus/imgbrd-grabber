@@ -3,7 +3,7 @@
 
 
 FixedSizeGridLayout::FixedSizeGridLayout(QWidget *parent)
-	: QGridLayout(parent), m_fixedWidth(0), m_oldWidth(0)
+	: QGridLayout(parent), m_fixedWidth(0), m_width(0), m_oldImagesPerLine(0), m_imagesPerPage(0)
 {
 }
 
@@ -12,25 +12,24 @@ void FixedSizeGridLayout::setFixedWidth(int width)
 	m_fixedWidth = width;
 }
 
-bool FixedSizeGridLayout::shouldRedoLayout(const QRect &rect)
+bool FixedSizeGridLayout::shouldRedoLayout(int width)
 {
-	if (m_oldWidth == 0)
+	if (m_oldImagesPerLine == 0)
 		return true;
 
-	int oldImagesPerLine = getImagesPerLine(m_oldWidth, 0);
-	int newImagesPerLine = getImagesPerLine(rect.width(), 0);
-
-	return newImagesPerLine != oldImagesPerLine;
+	int newImagesPerLine = getImagesPerLine(width, m_imagesPerPage);
+	return newImagesPerLine != m_oldImagesPerLine;
 }
 
 void FixedSizeGridLayout::setGeometry(const QRect &rect)
 {
 	QGridLayout::setGeometry(rect);
 
-	if (shouldRedoLayout(rect))
+	if (shouldRedoLayout(rect.width()))
 		redoLayout(rect.width());
 
-	m_oldWidth = rect.width();
+	m_oldImagesPerLine = getImagesPerLine(rect.width(), m_imagesPerPage);
+	m_width = rect.width();
 }
 
 int FixedSizeGridLayout::getImagesPerLine(int width, int imagesPerPage) const
@@ -84,13 +83,23 @@ void FixedSizeGridLayout::redoLayout(int width)
 		QWidget *widget = children[i];
 		widget->show();
 
-		QPoint pos = getThumbPosition(width, i, children.count());
+		int imagesPerPage = m_imagesPerPage == 0 ? children.count() : m_imagesPerPage;
+		QPoint pos = getThumbPosition(width, i, imagesPerPage);
 		addWidget(widget, pos.y(), pos.x());
 	}
 }
 
 void FixedSizeGridLayout::addFixedSizeWidget(QWidget *widget, int position, int imagesPerPage)
 {
-	QPoint pos = getThumbPosition(m_oldWidth, position, imagesPerPage);
+	// Redo layout if necessary when the total number of images changes in merged results mode
+	if (imagesPerPage != m_imagesPerPage)
+	{
+		m_imagesPerPage = imagesPerPage;
+		if (shouldRedoLayout(m_width))
+			redoLayout(m_width);
+		m_oldImagesPerLine = getImagesPerLine(m_width, m_imagesPerPage);
+	}
+
+	QPoint pos = getThumbPosition(m_width, position, imagesPerPage);
 	addWidget(widget, pos.y(), pos.x());
 }

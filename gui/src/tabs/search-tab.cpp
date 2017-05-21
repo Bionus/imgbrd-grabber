@@ -654,14 +654,14 @@ void searchTab::thumbnailContextMenu(QSharedPointer<Image> img)
 	// Save image
 	QSignalMapper *mapperSave = new QSignalMapper(this);
 	connect(mapperSave, SIGNAL(mapped(QObject*)), this, SLOT(contextSaveImage(QObject*)));
-	QAction *actionSave = new QAction(QIcon(":/images/icons/save.png"), tr("Save"));
+	QAction *actionSave = new QAction(QIcon(":/images/icons/save.png"), tr("Save"), menu);
 	menu->insertAction(first, actionSave);
 	connect(actionSave, SIGNAL(triggered()), mapperSave, SLOT(map()));
 	mapperSave->setMapping(actionSave, img.data());
 
 	if (!m_selectedImagesPtrs.empty())
 	{
-		QAction *actionSaveSelected = new QAction(QIcon(":/images/icons/save.png"), tr("Save selected"));
+		QAction *actionSaveSelected = new QAction(QIcon(":/images/icons/save.png"), tr("Save selected"), menu);
 		connect(actionSaveSelected, &QAction::triggered, this, &searchTab::contextSaveSelected);
 		menu->insertAction(first, actionSaveSelected);
 	}
@@ -1069,6 +1069,22 @@ FixedSizeGridLayout *searchTab::createImagesLayout(QSettings *settings)
 	}
 
 	return l;
+}
+
+
+bool searchTab::validateImage(QSharedPointer<Image> img)
+{
+	Q_UNUSED(img);
+	return true;
+}
+
+QList<Site*> searchTab::loadSites() const
+{
+	QList<Site*> sites;
+	for (int i = 0; i < m_selectedSources.size(); i++)
+		if (m_checkboxes.at(i)->isChecked())
+			sites.append(m_sites->value(m_sites->keys().at(i)));
+	return sites;
 }
 
 

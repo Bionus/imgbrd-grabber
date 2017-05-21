@@ -232,9 +232,15 @@ QString _parseSetImageUrl(Site *site, Api* api, QString settingUrl, QString sett
 		QStringList options = api->value(settingUrl).split('|');
 		for (QString opt : options)
 		{
+			if (opt.contains("{tim}") && d->value("tim").isEmpty())
+				return "";
+
 			opt.replace("{id}", d->value("id"))
 			.replace("{md5}", d->value("md5"))
-			.replace("{ext}", d->value("ext", "jpg"));
+			.replace("{ext}", d->value("ext", "jpg"))
+			.replace("{tim}", d->value("tim"))
+			.replace("{website}", site->url())
+			.replace("{cdn}", QString(site->url()).replace("boards.4chan", "4cdn"));
 
 			if (!opt.endsWith("/." + d->value("ext")) && !opt.contains('{'))
 			{
@@ -266,6 +272,10 @@ void PageApi::parseImage(QMap<QString,QString> d, int position, QList<Tag> tags)
 	{ d["file_url"] = ""; }
 	if (!d.contains("sample_url"))
 	{ d["sample_url"] = ""; }
+
+	// Remove dot before extension
+	if (d.contains("ext") && d["ext"][0] == '.')
+	{ d["ext"] = d["ext"].mid(1); }
 
 	// Fix urls
 	d["file_url"] = _parseSetImageUrl(m_site, m_api, "Urls/Image", "Urls/ImageReplaces", d["file_url"], &d, true, d["preview_url"]);
@@ -533,13 +543,13 @@ void PageApi::parse()
 			if (data.contains("total"))
 			{ setImageCount(data.value("total").toInt(), true); }
 
-			QMap<QString, QVariant> sc;
+			// Get the list of posts
 			QList<QVariant> sourc = src.toList();
-			if (sourc.isEmpty())
-			{ sourc = data.value("images").toList(); }
-			if (sourc.isEmpty())
-			{ sourc = data.value("search").toList(); }
+			QStringList postsKey = QStringList() << "images" << "search" << "posts";
+			for (int i = 0; i < postsKey.count() && sourc.isEmpty(); ++i)
+			{ sourc = data.value(postsKey[i]).toList(); }
 
+			QMap<QString, QVariant> sc;
 			for (int id = 0; id < sourc.count(); id++)
 			{
 				QList<Tag> tags;
@@ -556,11 +566,20 @@ void PageApi::parse()
 				}
 				else if (sc.contains("tag_ids"))
 				{
-					QStringList infos, assoc;
-					infos << "created_at" << "source" << "file_url" << "preview_url" << "width" << "md5" << "height" << "id" << "tags" << "author" << "score";
-					assoc << "created_at" << "source_url" << "image" << "image" << "width" << "sha512_hash" << "height" << "id" << "tags" << "uploader" << "score";
-					for (int i = 0; i < infos.count(); i++)
-					{ d[infos.at(i)] = sc.value(assoc.at(i)).toString().trimmed(); }
+					QStringList from, to;
+					from << "created_at" << "source_url" << "image" << "image" << "width" << "sha512_hash" << "height" << "id" << "tags" << "uploader" << "score";
+					to << "created_at" << "source" << "file_url" << "preview_url" << "width" << "md5" << "height" << "id" << "tags" << "author" << "score";
+					for (int i = 0; i < from.count(); i++)
+					{ d[to[i]] = sc.value(from[i]).toString().trimmed(); }
+				}
+				// 4chan format
+				else if (sc.contains("resto"))
+				{
+					QStringList from, to;
+					from << "now" << "w" << "md5" << "h" << "no" << "com" << "time" << "tim" << "name" << "fsize";
+					to << "created_at" << "width" << "md5" << "height" << "id" << "comment" << "created_at" << "tim" << "author" << "file_size";
+					for (int i = 0; i < from.count(); i++)
+					{ d[to[i]] = sc.value(from[i]).toString().trimmed(); }
 				}
 				else
 				{

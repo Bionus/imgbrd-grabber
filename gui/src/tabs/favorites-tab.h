@@ -25,7 +25,6 @@ class favoritesTab : public searchTab
 		Ui::favoritesTab *ui;
 		QList<bool> sources();
 		QString tags() const;
-		QList<Site*> loadSites() const override;
 		void write(QJsonObject &json) const override;
 
 	protected:
@@ -51,7 +50,6 @@ class favoritesTab : public searchTab
 		void viewed();
 		// Others
 		void closeEvent(QCloseEvent*);
-		void addTabFavorite(QString);
 		void focusSearch();
 		void addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage = nullptr) override;
 		void setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage = nullptr) override;
@@ -59,7 +57,6 @@ class favoritesTab : public searchTab
 	private:
 		QDateTime m_loadFavorite;
 		QString m_currentTags;
-		bool m_sized;
 		int m_currentFav;
 };
 

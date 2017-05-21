@@ -113,7 +113,11 @@ zoomWindow::zoomWindow(QList<QSharedPointer<Image> > images, QSharedPointer<Imag
 	// Background color
 	QString bg = m_settings->value("imageBackgroundColor", "").toString();
 	if (!bg.isEmpty())
-	{ setStyleSheet("#zoomWindow, QLabel, #scrollAreaWidgetContents { background-color:" + bg + "; }"); }
+	{
+		setStyleSheet("#zoomWindow, #scrollAreaWidgetContents { background-color:" + bg + "; }");
+		m_labelTagsLeft->setStyleSheet("background-color:" + bg);
+		m_labelTagsTop->setStyleSheet("background-color:" + bg);
+	}
 
 	load(image);
 }
@@ -214,9 +218,9 @@ void zoomWindow::imageContextMenu()
 	QMenu *menu = new ImageContextMenu(m_settings, m_image, m_parent, this);
 
 	// Copy actions
-	QAction *copyImageAction = new QAction(QIcon(":/images/icons/copy.png"), tr("Copy file"));
+	QAction *copyImageAction = new QAction(QIcon(":/images/icons/copy.png"), tr("Copy file"), menu);
 	connect(copyImageAction, SIGNAL(triggered()), this, SLOT(copyImageFileToClipboard()));
-	QAction *copyDataAction = new QAction(QIcon(":/images/icons/document-binary.png"), tr("Copy data"));
+	QAction *copyDataAction = new QAction(QIcon(":/images/icons/document-binary.png"), tr("Copy data"), menu);
 	connect(copyDataAction, SIGNAL(triggered()), this, SLOT(copyImageDataToClipboard()));
 
 	// Insert actionsat the beginning

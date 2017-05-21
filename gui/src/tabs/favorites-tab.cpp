@@ -16,7 +16,7 @@
 
 
 favoritesTab::favoritesTab(QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
-	: searchTab(sites, profile, parent), ui(new Ui::favoritesTab), m_sized(false), m_currentFav(0)
+	: searchTab(sites, profile, parent), ui(new Ui::favoritesTab), m_currentFav(0)
 {
 	ui->setupUi(this);
 
@@ -120,7 +120,7 @@ void favoritesTab::updateFavorites()
 				image->setFlat(true);
 				image->setToolTip(xt);
 				connect(image, SIGNAL(rightClick(QString)), this, SLOT(favoriteProperties(QString)));
-				connect(image, SIGNAL(middleClick(QString)), this, SLOT(addTabFavorite(QString)));
+				connect(image, SIGNAL(middleClick(QString)), m_parent, SLOT(addTab(QString)));
 				connect(image, SIGNAL(appui(QString)), this, SLOT(loadFavorite(QString)));
 			l->addWidget(image);
 		}
@@ -141,24 +141,10 @@ void favoritesTab::updateFavorites()
 	}
 }
 
-void favoritesTab::addTabFavorite(QString name)
-{
-	m_parent->addTab(name);
-}
-
 
 void favoritesTab::load()
 {
 	loadTags(m_currentTags.trimmed().split(' ', QString::SkipEmptyParts));
-}
-
-QList<Site*> favoritesTab::loadSites() const
-{
-	QList<Site*> sites;
-	for (int i = 0; i < m_selectedSources.size(); i++)
-		if (m_checkboxes.at(i)->isChecked())
-			sites.append(m_sites->value(m_sites->keys().at(i)));
-	return sites;
 }
 
 bool favoritesTab::validateImage(QSharedPointer<Image> img)

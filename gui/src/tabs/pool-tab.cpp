@@ -11,7 +11,7 @@
 
 
 poolTab::poolTab(QMap<QString, Site*> *sites, Profile *profile, mainWindow *parent)
-	: searchTab(sites, profile, parent), ui(new Ui::poolTab), m_sized(false)
+	: searchTab(sites, profile, parent), ui(new Ui::poolTab)
 {
 	ui->setupUi(this);
 	ui->widgetMeant->hide();
@@ -94,12 +94,6 @@ QList<Site*> poolTab::loadSites() const
 	QList<Site*> sites;
 	sites.append(m_sites->value(ui->comboSites->currentText()));
 	return sites;
-}
-
-bool poolTab::validateImage(QSharedPointer<Image> img)
-{
-	Q_UNUSED(img);
-	return true;
 }
 
 void poolTab::write(QJsonObject &json) const

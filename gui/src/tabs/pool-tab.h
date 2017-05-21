@@ -39,7 +39,6 @@ class poolTab : public searchTab
 		void setPool(int id, QString site);
 		// Loading
 		void load();
-		bool validateImage(QSharedPointer<Image> img);
 		// Batch
 		void getPage();
 		void getAll();
@@ -50,10 +49,7 @@ class poolTab : public searchTab
 		void focusSearch();
 
 	private:
-		int				m_id;
-		TextEdit		*m_search;
-		QCalendarWidget	*m_calendar;
-		bool			m_sized;
+		TextEdit *m_search;
 };
 
 #endif // POOL_TAB_H
