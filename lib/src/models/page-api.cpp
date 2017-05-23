@@ -817,6 +817,8 @@ int PageApi::highLimit()
 {
 	if (m_api->contains("Urls/Limit"))
 		return m_api->value("Urls/Limit").toInt();
+	if (m_api->contains("Urls/MaxLimit"))
+		return m_api->value("Urls/MaxLimit").toInt();
 	return 0;
 }
 
