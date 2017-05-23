@@ -285,10 +285,14 @@ void Image::loadAndSave(QStringList paths, bool needTags)
 	}
 
 	// Then we load the image
-	QEventLoop loopImage;
-	connect(this, &Image::finishedImage, &loopImage, &QEventLoop::quit);
-	loadImage();
-	loopImage.exec();
+	//if (!m_loadedImage)
+	{
+		QEventLoop loopImage;
+		connect(this, &Image::finishedImage, &loopImage, &QEventLoop::quit);
+		if (!m_loadingImage)
+		{ loadImage(); }
+		loopImage.exec();
+	}
 
 	// We finally save
 	save(paths);
