@@ -1,21 +1,21 @@
+#include "optionswindow.h"
 #include <QNetworkProxy>
 #include <QSettings>
 #include <QDir>
-#include <QInputDialog>
 #include <QFileDialog>
 #include <QColorDialog>
 #include <QFontDialog>
-#include <QCryptographicHash>
 #include <QSqlDatabase>
-#include "optionswindow.h"
 #include "ui_optionswindow.h"
 #include "customwindow.h"
 #include "conditionwindow.h"
 #include "filenamewindow.h"
-#include "functions.h"
-#include "helpers.h"
 #include "language-loader.h"
-
+#include "theme-loader.h"
+#include "models/site.h"
+#include "models/profile.h"
+#include "helpers.h"
+#include "functions.h"
 
 
 optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
@@ -98,8 +98,9 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	ui->checkUseregexfortags->setChecked(settings->value("useregexfortags", true).toBool());
 
 	ui->checkTextfileActivate->setChecked(settings->value("Textfile/activate", false).toBool());
-	ui->textEditTextfileContent->setEnabled(settings->value("Textfile/activate", false).toBool());
+	ui->lineTextfileSuffix->setText(settings->value("Textfile/suffix", ".txt").toString());
 	ui->textEditTextfileContent->setPlainText(settings->value("Textfile/content", "%all%").toString());
+	ui->widgetTextfile->setEnabled(settings->value("Textfile/activate", false).toBool());
 
 	ui->checkSaveLogEnable->setChecked(settings->value("SaveLog/activate", false).toBool());
 	ui->lineSaveLogFile->setEnabled(settings->value("SaveLog/activate", false).toBool());
@@ -119,6 +120,8 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 		ui->lineFolderFavorites->setText(settings->value("path_favorites").toString());
 		QStringList opts = QStringList() << "save" << "copy" << "move" << "ignore";
 		ui->comboMd5Duplicates->setCurrentIndex(opts.indexOf(settings->value("md5Duplicates", "save").toString()));
+		ui->checkKeepDeletedMd5->setChecked(settings->value("keepDeletedMd5", false).toBool());
+
 		ui->lineFilename->setText(settings->value("filename_real").toString());
 		ui->lineFavorites->setText(settings->value("filename_favorites").toString());
 		ui->lineSeparator->setText(settings->value("separator", " ").toString());
@@ -198,11 +201,19 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 		ui->layoutCustom->insertRow(i, leName, leTags);
 	}
 
+	// Themes
+	ThemeLoader themeLoader(savePath("themes/", true));
+	QStringList themes = themeLoader.getAllThemes();
+	for (QString theme : themes)
+	{ ui->comboTheme->addItem(theme, theme); }
+	ui->comboTheme->setCurrentText(settings->value("theme", "Default").toString());
+
 	QStringList positions = QStringList() << "top" << "left" << "auto";
 	ui->comboTagsPosition->setCurrentIndex(positions.indexOf(settings->value("tagsposition", "top").toString()));
 	ui->spinPreload->setValue(settings->value("preload", 0).toInt());
 	ui->spinSlideshow->setValue(settings->value("slideshow", 0).toInt());
 	ui->checkResultsScrollArea->setChecked(settings->value("resultsScrollArea", true).toBool());
+	ui->checkResultsFixedWidthLayout->setChecked(settings->value("resultsFixedWidthLayout", false).toBool());
 	ui->checkImageCloseMiddleClick->setChecked(settings->value("imageCloseMiddleClick", true).toBool());
 	ui->checkImageNavigateScroll->setChecked(settings->value("imageNavigateScroll", true).toBool());
 	QStringList positionsV = QStringList() << "top" << "center" << "bottom";
@@ -213,6 +224,7 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	ui->comboImagePositionAnimationH->setCurrentIndex(positionsH.indexOf(settings->value("imagePositionAnimationH", "left").toString()));
 	ui->comboImagePositionVideoV->setCurrentIndex(positionsV.indexOf(settings->value("imagePositionVideoV", "center").toString()));
 	ui->comboImagePositionVideoH->setCurrentIndex(positionsH.indexOf(settings->value("imagePositionVideoH", "left").toString()));
+	ui->lineImageBackgroundColor->setText(settings->value("imageBackgroundColor", "").toString());
 
 	settings->beginGroup("Coloring");
 		settings->beginGroup("Colors");
@@ -456,6 +468,10 @@ void optionsWindow::on_buttonColoringBlacklistedsFont_clicked()
 void optionsWindow::on_buttonColoringIgnoredsFont_clicked()
 { setFont(ui->lineColoringIgnoreds); }
 
+void optionsWindow::on_buttonImageBackgroundColor_textChanged()
+{ setColor(ui->lineImageBackgroundColor); }
+void optionsWindow::on_buttonImageBackgroundColor_clicked()
+{ setColor(ui->lineImageBackgroundColor, true); }
 
 void treeWidgetRec(int depth, bool& found, int& index, QTreeWidgetItem *current, QTreeWidgetItem *sel)
 {
@@ -563,6 +579,7 @@ void optionsWindow::save()
 
 	settings->beginGroup("Textfile");
 		settings->setValue("activate", ui->checkTextfileActivate->isChecked());
+		settings->setValue("suffix", ui->lineTextfileSuffix->text());
 		settings->setValue("content", ui->textEditTextfileContent->toPlainText());
 	settings->endGroup();
 
@@ -617,9 +634,12 @@ void optionsWindow::save()
 		}
 		QStringList opts = QStringList() << "save" << "copy" << "move" << "ignore";
 		settings->setValue("md5Duplicates", opts.at(ui->comboMd5Duplicates->currentIndex()));
+		settings->setValue("keepDeletedMd5", ui->checkKeepDeletedMd5->isChecked());
+
 		settings->setValue("filename", ui->lineFilename->text());
 		settings->setValue("filename_real", ui->lineFilename->text());
 		settings->setValue("filename_favorites", ui->lineFavorites->text());
+
 		settings->setValue("artist_empty", ui->lineArtistsIfNone->text());
 		settings->setValue("artist_useall", ui->radioArtistsKeepAll->isChecked());
 		QString artistMultiple;
@@ -691,11 +711,18 @@ void optionsWindow::save()
 		settings->endGroup();
 	settings->endGroup();
 
+	// Themes
+	QString theme = ui->comboTheme->currentText();
+	ThemeLoader themeLoader(savePath("themes/", true));
+	if (themeLoader.setTheme(theme))
+	{ settings->setValue("theme", theme); }
+
 	QStringList positions = QStringList() << "top" << "left" << "auto";
 	settings->setValue("tagsposition", positions.at(ui->comboTagsPosition->currentIndex()));
 	settings->setValue("preload", ui->spinPreload->value());
 	settings->setValue("slideshow", ui->spinSlideshow->value());
 	settings->setValue("resultsScrollArea", ui->checkResultsScrollArea->isChecked());
+	settings->setValue("resultsFixedWidthLayout", ui->checkResultsFixedWidthLayout->isChecked());
 	settings->setValue("imageCloseMiddleClick", ui->checkImageCloseMiddleClick->isChecked());
 	settings->setValue("imageNavigateScroll", ui->checkImageNavigateScroll->isChecked());
 	QStringList positionsV = QStringList() << "top" << "center" << "bottom";
@@ -706,6 +733,7 @@ void optionsWindow::save()
 	settings->setValue("imagePositionAnimationH", positionsH.at(ui->comboImagePositionAnimationH->currentIndex()));
 	settings->setValue("imagePositionVideoV", positionsV.at(ui->comboImagePositionVideoV->currentIndex()));
 	settings->setValue("imagePositionVideoH", positionsH.at(ui->comboImagePositionVideoH->currentIndex()));
+	settings->setValue("imageBackgroundColor", ui->lineImageBackgroundColor->text());
 
 	settings->beginGroup("Coloring");
 		settings->beginGroup("Colors");

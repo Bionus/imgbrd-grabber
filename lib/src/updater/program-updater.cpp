@@ -1,10 +1,10 @@
+#include "program-updater.h"
 #include <QNetworkRequest>
 #include <QNetworkReply>
 #include <QDir>
 #include <QFile>
-#include "program-updater.h"
-#include "functions.h"
 #include "vendor/json.h"
+#include "logger.h"
 
 
 ProgramUpdater::ProgramUpdater()
@@ -40,6 +40,13 @@ void ProgramUpdater::checkForUpdatesDone()
 	emit finished(latest, isNew, changelog);
 }
 
+
+QUrl ProgramUpdater::latestUrl() const
+{
+	QVariant json = Json::parse(m_source);
+	QMap<QString, QVariant> lastRelease = json.toMap();
+	return QUrl(lastRelease["html_url"].toString());
+}
 
 void ProgramUpdater::downloadUpdate()
 {

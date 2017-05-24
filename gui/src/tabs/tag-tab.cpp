@@ -1,14 +1,16 @@
-#include <QMessageBox>
-#include <QMenu>
 #include "tag-tab.h"
 #include "ui_tag-tab.h"
-#include "viewer/zoomwindow.h"
+#include <QJsonArray>
+#include "ui/textedit.h"
+#include "models/page.h"
+#include "models/site.h"
+#include "downloader/download-query-group.h"
 #include "searchwindow.h"
 #include "helpers.h"
 
 
 tagTab::tagTab(QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
-	: searchTab(sites, profile, parent), ui(new Ui::tagTab), m_sized(false)
+	: searchTab(sites, profile, parent), ui(new Ui::tagTab)
 {
 	ui->setupUi(this);
 	ui->widgetMeant->hide();
@@ -69,17 +71,6 @@ void tagTab::closeEvent(QCloseEvent *e)
 	m_settings->setValue("mergeresults", ui->checkMergeResults->isChecked());
 	m_settings->sync();
 
-	qDeleteAll(m_pages);
-	m_pages.clear();
-	m_images.clear();
-	qDeleteAll(m_checkboxes);
-	m_checkboxes.clear();
-	for (Site *site : m_layouts.keys())
-	{ clearLayout(m_layouts[site]); }
-	qDeleteAll(m_layouts);
-	m_layouts.clear();
-	m_boutons.clear();
-
 	emit closed(this);
 	e->accept();
 }
@@ -101,21 +92,6 @@ void tagTab::load()
 	emit titleChanged(this);
 
 	loadTags(tags);
-}
-
-QList<Site*> tagTab::loadSites() const
-{
-	QList<Site*> sites;
-	for (int i = 0; i < m_selectedSources.size(); i++)
-		if (m_checkboxes.at(i)->isChecked())
-			sites.append(m_sites->value(m_sites->keys().at(i)));
-	return sites;
-}
-
-bool tagTab::validateImage(QSharedPointer<Image> img)
-{
-	Q_UNUSED(img);
-	return true;
 }
 
 void tagTab::write(QJsonObject &json) const
@@ -213,16 +189,18 @@ void tagTab::getAll()
 			actuals.append(keys.at(i));
 	}
 
-	for (int i = 0; i < actuals.count(); i++)
+	for (QString actual : actuals)
 	{
-		int limit = m_pages.value(actuals.at(i))->highLimit();
-		int v1 = qMin((limit > 0 ? limit : 200), qMax(m_pages.value(actuals.at(i))->images().count(), m_pages.value(actuals.at(i))->imagesCount()));
-		int v2 = qMax(m_pages.value(actuals.at(i))->images().count(), m_pages.value(actuals.at(i))->imagesCount());
-		if (v1 == 0 && v2 == 0)
+		Page *page = m_pages[actual];
+		int highLimit = page->highLimit();
+		int currentCount = page->images().count();
+		int total = qMax(currentCount, page->imagesCount());
+		int perPage = highLimit > 0 ? qMin(highLimit, total) : currentCount;
+		if (perPage == 0 && total == 0)
 			continue;
 
-		QString search = m_pages.value(actuals.at(i))->search().join(' ');
-		emit batchAddGroup(DownloadQueryGroup(m_settings, search, 1, v1, v2, m_sites->value(actuals.at(i))));
+		QString search = m_pages[actual]->search().join(' ');
+		emit batchAddGroup(DownloadQueryGroup(m_settings, search, 1, perPage, total, m_sites->value(actual)));
 	}
 }
 
@@ -234,3 +212,15 @@ void tagTab::focusSearch()
 
 QString tagTab::tags() const
 { return m_search->toPlainText(); }
+
+
+void tagTab::changeEvent(QEvent *event)
+{
+	// Automatically retranslate this tab on language change
+	if (event->type() == QEvent::LanguageChange)
+	{
+		ui->retranslateUi(this);
+	}
+
+	QWidget::changeEvent(event);
+}

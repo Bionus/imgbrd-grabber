@@ -3,9 +3,10 @@
 
 #include <QTextEdit>
 #include <QCompleter>
-#include "models/profile.h"
 
 
+class Profile;
+class Favorite;
 
 class TextEdit : public QTextEdit
 {

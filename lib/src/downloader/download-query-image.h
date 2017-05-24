@@ -6,9 +6,10 @@
 #include <QSettings>
 #include <QMap>
 #include <QJsonObject>
-#include "models/image.h"
-#include "models/site.h"
 
+
+class Image;
+class Site;
 
 class DownloadQueryImage
 {
@@ -34,6 +35,9 @@ class DownloadQueryImage
 		void initFromImage(QSharedPointer<Image> img);
 		void initFromData(int id, QString md5, QString rating, QString tags, QString fileUrl, QString date);
 };
+
+bool operator==(const DownloadQueryImage& lhs, const DownloadQueryImage& rhs);
+bool operator!=(const DownloadQueryImage& lhs, const DownloadQueryImage& rhs);
 
 Q_DECLARE_METATYPE(DownloadQueryImage)
 

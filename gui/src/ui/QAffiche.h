@@ -5,7 +5,6 @@
 #include <QVariant>
 
 
-
 class QAffiche : public QLabel
 {
 	Q_OBJECT

@@ -408,6 +408,7 @@ QTextEdit {
     </property>
     <addaction name="actionAboutGrabber"/>
     <addaction name="actionAboutWebsite"/>
+    <addaction name="actionAboutGithub"/>
     <addaction name="actionAboutReportBug"/>
     <addaction name="separator"/>
     <addaction name="actionAboutQt"/>
@@ -435,6 +436,7 @@ QTextEdit {
     <addaction name="actionAddtab"/>
     <addaction name="actionAddpooltab"/>
     <addaction name="actionClosetab"/>
+    <addaction name="actionRestoreLastClosedTab"/>
     <addaction name="separator"/>
     <addaction name="actionFolder"/>
     <addaction name="actionSettingsFolder"/>
@@ -1083,6 +1085,30 @@ QTextEdit {
     <string>Rename existing images</string>
    </property>
   </action>
+  <action name="actionAboutGithub">
+   <property name="icon">
+    <iconset resource="../../resources/resources.qrc">
+     <normaloff>:/images/icons/github.png</normaloff>:/images/icons/github.png</iconset>
+   </property>
+   <property name="text">
+    <string>Project GitHub</string>
+   </property>
+  </action>
+  <action name="actionRestoreLastClosedTab">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../../resources/resources.qrc">
+     <normaloff>:/images/icons/tab-arrow.png</normaloff>:/images/icons/tab-arrow.png</iconset>
+   </property>
+   <property name="text">
+    <string>Restore last closed tab</string>
+   </property>
+   <property name="shortcut">
+    <string notr="true">Ctrl+Shift+T</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -1428,7 +1454,7 @@ QTextEdit {
    <slot>getAll()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>645</x>
+     <x>644</x>
      <y>498</y>
     </hint>
     <hint type="destinationlabel">
@@ -1444,7 +1470,7 @@ QTextEdit {
    <slot>batchClearSel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>506</x>
+     <x>503</x>
      <y>498</y>
     </hint>
     <hint type="destinationlabel">
@@ -1460,7 +1486,7 @@ QTextEdit {
    <slot>batchClear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>366</x>
+     <x>362</x>
      <y>498</y>
     </hint>
     <hint type="destinationlabel">
@@ -1645,6 +1671,38 @@ QTextEdit {
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionAboutGithub</sender>
+   <signal>triggered()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>aboutGithub()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>270</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionRestoreLastClosedTab</sender>
+   <signal>triggered()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>restoreLastClosedTab()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>270</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>help()</slot>
@@ -1689,5 +1747,7 @@ QTextEdit {
   <slot>aboutWebsite()</slot>
   <slot>aboutReportBug()</slot>
   <slot>renameExisting()</slot>
+  <slot>aboutGithub()</slot>
+  <slot>restoreLastClosedTab()</slot>
  </slots>
 </ui>

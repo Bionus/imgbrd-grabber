@@ -1,14 +1,11 @@
 #ifndef DOWNLOADER_H
 #define DOWNLOADER_H
 
-#include "models/page.h"
-#include "models/image.h"
 #include <QVariant>
-
+#include "models/image.h"
 
 
 class Page;
-class Image;
 
 class Downloader : public QObject
 {
@@ -17,7 +14,7 @@ class Downloader : public QObject
 	public:
 		Downloader();
 		~Downloader();
-		Downloader(Profile *profile, QStringList tags, QStringList postfiltering, QList<Site*> sources, int page, int max, int perpage, QString location, QString filename, QString user, QString password, bool blacklist, QStringList blacklistedtags, bool noduplicates, int tagsmin, QString tagsformat);
+		Downloader(Profile *profile, QStringList tags, QStringList postfiltering, QList<Site*> sources, int page, int max, int perpage, QString location, QString filename, QString user, QString password, bool blacklist, QStringList blacklistedtags, bool noduplicates, int tagsmin, QString tagsformat, Downloader *previous = nullptr);
 		void setQuit(bool quit);
 		void downloadImages(QList<QSharedPointer<Image>> images);
 		void loadNext();
@@ -33,6 +30,7 @@ class Downloader : public QObject
 		int ignoredCount() const;
 		int duplicatesCount() const;
 		int pagesCount() const;
+		Page *lastPage() const;
 
 	signals:
 		void finished(QNetworkReply*);
@@ -77,6 +75,7 @@ class Downloader : public QObject
 		QList<Tag> m_results;
 		QVariant m_data;
 		bool m_cancelled, m_quit;
+		Downloader *m_previous;
 };
 
 #endif // DOWNLOADER_H

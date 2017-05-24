@@ -5,10 +5,7 @@
 #include <QMap>
 #include <QCalendarWidget>
 #include <QJsonObject>
-#include "ui/textedit.h"
-#include "models/page.h"
 #include "search-tab.h"
-
 
 
 namespace Ui
@@ -18,6 +15,7 @@ namespace Ui
 
 
 class mainWindow;
+class TextEdit;
 
 class poolTab : public searchTab
 {
@@ -32,13 +30,15 @@ class poolTab : public searchTab
 		void write(QJsonObject &json) const override;
 		bool read(const QJsonObject &json);
 
+	protected:
+		void changeEvent(QEvent *event) override;
+
 	public slots:
 		// Zooms
 		void setTags(QString);
 		void setPool(int id, QString site);
 		// Loading
 		void load();
-		bool validateImage(QSharedPointer<Image> img);
 		// Batch
 		void getPage();
 		void getAll();
@@ -49,10 +49,7 @@ class poolTab : public searchTab
 		void focusSearch();
 
 	private:
-		int				m_id;
-		TextEdit		*m_search;
-		QCalendarWidget	*m_calendar;
-		bool			m_sized;
+		TextEdit *m_search;
 };
 
 #endif // POOL_TAB_H

@@ -79,13 +79,13 @@ void SiteTest::testSetPassword()
 void SiteTest::testFixUrlBasic()
 {
 	QCOMPARE(m_site->fixUrl(""), QUrl());
-	QCOMPARE(m_site->fixUrl("http://test.com/dir/toto.jpg"), QUrl("http://test.com/dir/toto.jpg"));
-	QCOMPARE(m_site->fixUrl("//test.com/dir/toto.jpg"), QUrl("http://test.com/dir/toto.jpg"));
+	QCOMPARE(m_site->fixUrl("http://test.com/dir/toto.jpg"), QUrl("https://test.com/dir/toto.jpg"));
+	QCOMPARE(m_site->fixUrl("//test.com/dir/toto.jpg"), QUrl("https://test.com/dir/toto.jpg"));
 }
 void SiteTest::testFixUrlRoot()
 {
-	QCOMPARE(m_site->fixUrl("/dir/toto.jpg"), QUrl("http://danbooru.donmai.us/dir/toto.jpg"));
-	QCOMPARE(m_site->fixUrl("dir/toto.jpg"), QUrl("http://danbooru.donmai.us/dir/toto.jpg"));
+	QCOMPARE(m_site->fixUrl("/dir/toto.jpg"), QUrl("https://danbooru.donmai.us/dir/toto.jpg"));
+	QCOMPARE(m_site->fixUrl("dir/toto.jpg"), QUrl("https://danbooru.donmai.us/dir/toto.jpg"));
 }
 void SiteTest::testFixUrlRelative()
 {

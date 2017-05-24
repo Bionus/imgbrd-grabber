@@ -1,44 +1,37 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#define CLOSED_TAB_HISTORY_MAX 20
+
 #include <QMainWindow>
-#include <QFileSystemWatcher>
 #include <QSettings>
 #include <QProcess>
 #include <QTranslator>
 #include <QSet>
 #include <QQueue>
+#include <QLinkedList>
 #include <QTableWidgetItem>
-#include "batch/batchwindow.h"
-#include "ui/QAffiche.h"
-#include "ui/QBouton.h"
-#include "ui/textedit.h"
-#include "tabs/search-tab.h"
-#include "tabs/pool-tab.h"
-#include "tabs/tag-tab.h"
-#include "tabs/favorites-tab.h"
+#include <QProgressBar>
 #include "models/site.h"
-#include "models/profile.h"
-#include "downloader/downloader.h"
-#include "updater/update-dialog.h"
-#include "downloader/download-query-image.h"
-
 
 
 namespace Ui
 {
 	class mainWindow;
-	class poolTab;
-	class tagTab;
-	class favoritesTab;
 }
-
 
 
 class searchTab;
 class poolTab;
 class tagTab;
 class favoritesTab;
+class batchWindow;
+class UpdateDialog;
+class Profile;
+class Downloader;
+class Favorite;
+class DownloadQueryGroup;
+class DownloadQueryImage;
 
 class mainWindow : public QMainWindow
 {
@@ -59,6 +52,7 @@ class mainWindow : public QMainWindow
 		void optionsClosed();
 		void aboutAuthor();
 		void aboutWebsite();
+		void aboutGithub();
 		void aboutReportBug();
 		void saveFolder();
 		void openSettingsFolder();
@@ -67,7 +61,6 @@ class mainWindow : public QMainWindow
 		void md5FixOpen();
 		void renameExisting();
 		// Language
-		void switchTranslator(QTranslator&, const QString&);
 		void loadLanguage(const QString&, bool shutup = false);
 		void changeEvent(QEvent*);
 		// Favorites
@@ -126,6 +119,7 @@ class mainWindow : public QMainWindow
 		void addSearchTab(searchTab*, bool background = false, bool save = true);
 		void updateTabTitle(searchTab*);
 		void tabClosed(searchTab*);
+		void restoreLastClosedTab();
 		void currentTabChanged(int);
 		void closeCurrentTab();
 		bool saveTabs(QString);
@@ -194,13 +188,11 @@ class mainWindow : public QMainWindow
 		QSettings			*m_settings;
 		batchWindow			*m_progressdialog;
 		QString				m_currLang, m_link;
-		QTranslator			m_translator;
+		QTranslator			m_translator, m_qtTranslator;
 		QList<DownloadQueryGroup>		m_groupBatchs;
 		QList<QSharedPointer<Image>>	m_getAllRemaining, m_getAllDownloading, m_getAllFailed, m_images, m_getAllSkippedImages;
 		QWidget				*m_currentTab;
 		QList<searchTab*>	m_tabs;
-		QList<tagTab*>		m_tagTabs;
-		QList<poolTab*>		m_poolTabs;
 		QList<bool>			m_selectedSources;
 		favoritesTab		*m_favoritesTab;
 		QMap<QString,QTime*>			m_downloadTime, m_downloadTimeLast;
@@ -216,6 +208,7 @@ class mainWindow : public QMainWindow
 		bool				m_restore, m_showLog;
 		QMap<QString, QIcon>	m_icons;
 		QMap<QString, Site*>	m_sites;
+		QLinkedList<QJsonObject>	m_closedTabs;
 };
 
 #endif // MAINWINDOW_H

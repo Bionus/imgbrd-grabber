@@ -1,5 +1,8 @@
 #include "download-query-image.h"
 #include <QJsonArray>
+#include "models/tag.h"
+#include "models/image.h"
+#include "models/site.h"
 
 
 DownloadQueryImage::DownloadQueryImage()
@@ -108,4 +111,18 @@ bool DownloadQueryImage::read(const QJsonObject &json, QMap<QString, Site*> &sit
 	site = sites[sitename];
 
 	return true;
+}
+
+
+bool operator==(const DownloadQueryImage& lhs, const DownloadQueryImage& rhs)
+{
+	return lhs.values == rhs.values
+			&& lhs.site == rhs.site
+			&& lhs.filename == rhs.filename
+			&& lhs.path == rhs.path;
+}
+
+bool operator!=(const DownloadQueryImage& lhs, const DownloadQueryImage& rhs)
+{
+	return !(lhs == rhs);
 }

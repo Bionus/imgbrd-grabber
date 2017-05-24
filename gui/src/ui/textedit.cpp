@@ -1,16 +1,14 @@
+#include "textedit.h"
 #include <QApplication>
-#include <QCommonStyle>
 #include <QStyleOptionFrameV2>
 #include <QWheelEvent>
 #include <QAbstractItemView>
 #include <QScrollBar>
 #include <QMenu>
 #include <QTextDocumentFragment>
-#include <QFile>
-#include "textedit.h"
-#include "functions.h"
 #include "models/tag.h"
-
+#include "models/profile.h"
+#include "logger.h"
 
 
 TextEdit::TextEdit(Profile *profile, QWidget *parent)
@@ -67,11 +65,13 @@ void TextEdit::doColor()
 	QRegExp regexOr(" ~([^ ]+)"),
 			regexExclude(" -([^ ]+)"),
 			regexMeta(" (user|fav|md5|pool|rating|source|status|approver|unlocked|sub|id|width|height|score|mpixels|filesize|date|gentags|arttags|chartags|copytags|status|status|approver|order|parent):([^ ]*)", Qt::CaseInsensitive),
-			regexMd5(" ([0-9A-F]{32})", Qt::CaseInsensitive);
+			regexMd5(" ([0-9A-F]{32})", Qt::CaseInsensitive),
+			regexUrl(" (https?://[^\\s/$.?#].[^\\s]*) ");
 	txt.replace(regexOr, " <span style=\"color:green\">~\\1</span>");
 	txt.replace(regexExclude, " <span style=\"color:red\">-\\1</span>");
 	txt.replace(regexMeta, " <span style=\"color:brown\">\\1:\\2</span>");
 	txt.replace(regexMd5, " <span style=\"color:purple\">\\1</span>");
+	txt.replace(regexUrl, " <span style=\"color:blue\">\\1</span>");
 
 	// Replace spaces to not be trimmed by the HTML renderer
 	txt = txt.mid(1, txt.length() - 2);

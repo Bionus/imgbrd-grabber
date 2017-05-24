@@ -81,9 +81,9 @@ void ImageTest::testConstructor()
 	img->deleteLater();
 
 	// With a given page URL
-	m_details["page_url"] = "http://test.com/view/7331";
+	m_details["page_url"] = "https://test.com/view/7331";
 	img = new Image(m_site, m_details, m_profile);
-	QCOMPARE(img->pageUrl().toString(), QString("http://test.com/view/7331"));
+	QCOMPARE(img->pageUrl().toString(), QString("https://test.com/view/7331"));
 	img->deleteLater();
 
 	// CreatedAt from ISO time
@@ -437,7 +437,7 @@ void ImageTest::testLoadDetailsImageUrl()
 	QVERIFY(spy.wait());
 
 	// Compare result
-	QCOMPARE(m_img->url(), QString("http://danbooru.donmai.us/data/__kousaka_tamaki_to_heart_2_drawn_by_date_senpen__0cc748f006b9636f0c268250ea157995.jpg"));
+	QCOMPARE(m_img->url(), QString("https://danbooru.donmai.us/data/__kousaka_tamaki_to_heart_2_drawn_by_date_senpen__0cc748f006b9636f0c268250ea157995.jpg"));
 }
 
 void ImageTest::testPath()
@@ -608,6 +608,33 @@ void ImageTest::testSetUrl()
 	QCOMPARE(m_img->url() != url, true);
 	m_img->setUrl(url);
 	QCOMPARE(m_img->url(), url);
+}
+
+void ImageTest::testGetNextExtension()
+{
+	// Static images
+	QCOMPARE(m_img->getNextExtension(""), QString("jpg"));
+	QCOMPARE(m_img->getNextExtension("jpg"), QString("png"));
+	QCOMPARE(m_img->getNextExtension("png"), QString("gif"));
+	QCOMPARE(m_img->getNextExtension("gif"), QString("jpeg"));
+	QCOMPARE(m_img->getNextExtension("jpeg"), QString("webm"));
+	QCOMPARE(m_img->getNextExtension("webm"), QString("swf"));
+	QCOMPARE(m_img->getNextExtension("swf"), QString("mp4"));
+	QCOMPARE(m_img->getNextExtension("mp4"), QString());
+
+	m_details["tags_general"] = "animated";
+	m_img->deleteLater();
+	m_img = new Image(m_site, m_details, m_profile);
+
+	// Animated images
+	QCOMPARE(m_img->getNextExtension(""), QString("webm"));
+	QCOMPARE(m_img->getNextExtension("webm"), QString("mp4"));
+	QCOMPARE(m_img->getNextExtension("mp4"), QString("gif"));
+	QCOMPARE(m_img->getNextExtension("gif"), QString("jpg"));
+	QCOMPARE(m_img->getNextExtension("jpg"), QString("png"));
+	QCOMPARE(m_img->getNextExtension("png"), QString("jpeg"));
+	QCOMPARE(m_img->getNextExtension("jpeg"), QString("swf"));
+	QCOMPARE(m_img->getNextExtension("swf"), QString());
 }
 
 

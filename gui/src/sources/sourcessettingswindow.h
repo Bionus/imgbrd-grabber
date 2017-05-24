@@ -6,12 +6,10 @@
 #include "models/site.h"
 
 
-
 namespace Ui
 {
 	class SourcesSettingsWindow;
 }
-
 
 
 class SourcesSettingsWindow : public QDialog

@@ -3,8 +3,6 @@
 
 #include <QDialog>
 #include <QTreeWidgetItem>
-#include "models/profile.h"
-
 
 
 namespace Ui
@@ -13,7 +11,7 @@ namespace Ui
 }
 
 
-class mainWindow;
+class Profile;
 
 class optionsWindow : public QDialog
 {
@@ -65,6 +63,8 @@ class optionsWindow : public QDialog
 		void on_buttonFilenamePlus_clicked();
 		void on_buttonFavoritesPlus_clicked();
 		void on_buttonCustom_clicked();
+		void on_buttonImageBackgroundColor_textChanged();
+		void on_buttonImageBackgroundColor_clicked();
 		void addCustom(QString, QString);
 		void on_buttonFilenames_clicked();
 		void addFilename(QString, QString, QString);

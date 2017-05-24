@@ -1,5 +1,6 @@
-#include <QFile>
 #include "custom-network-access-manager.h"
+#include <QFile>
+#include <QDebug>
 #include "vendor/qcustomnetworkreply.h"
 
 bool CustomNetworkAccessManager::TestMode = false;
@@ -7,7 +8,9 @@ bool CustomNetworkAccessManager::TestMode = false;
 
 CustomNetworkAccessManager::CustomNetworkAccessManager(QObject *parent)
 	: QNetworkAccessManager(parent)
-{}
+{
+	connect(this, &QNetworkAccessManager::sslErrors, this, &CustomNetworkAccessManager::sslErrorHandler);
+}
 
 QNetworkReply *CustomNetworkAccessManager::get(const QNetworkRequest &request)
 {
@@ -47,7 +50,7 @@ QNetworkReply *CustomNetworkAccessManager::get(const QNetworkRequest &request)
 		qDebug() << ("Reply from file: " + request.url().toString() + " -> " + f.fileName());
 		QByteArray content = f.readAll();
 
-		QCustomNetworkReply *reply = new QCustomNetworkReply();
+		QCustomNetworkReply *reply = new QCustomNetworkReply(this);
 		reply->setHttpStatusCode(200, "OK");
 		reply->setContentType("text/html");
 		reply->setContent(content);
@@ -56,4 +59,24 @@ QNetworkReply *CustomNetworkAccessManager::get(const QNetworkRequest &request)
 	}
 
 	return QNetworkAccessManager::get(request);
+}
+
+/**
+ * Log SSL errors in debug mode only.
+ *
+ * @param qnr		The network reply who generated the SSL errors
+ * @param errors	The list of SSL errors that occured
+ */
+void CustomNetworkAccessManager::sslErrorHandler(QNetworkReply* qnr, QList<QSslError> errors)
+{
+	#ifdef QT_DEBUG
+		qDebug() << errors;
+	#else
+		Q_UNUSED(errors);
+	#endif
+	#ifndef TEST
+		qnr->ignoreSslErrors();
+	#else
+		Q_UNUSED(qnr);
+	#endif
 }

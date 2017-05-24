@@ -1,7 +1,9 @@
+#include "tag.h"
 #include <QTextDocument>
 #include <QSettings>
 #include <QSet>
-#include "tag.h"
+#include "favorite.h"
+#include "profile.h"
 
 
 Tag::Tag()

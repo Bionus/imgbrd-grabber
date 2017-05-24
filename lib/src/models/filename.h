@@ -1,9 +1,14 @@
 #ifndef FILENAME_H
 #define FILENAME_H
 
-#include "image.h"
-#include "profile.h"
+#include <QString>
+#include <QStringList>
+#include <QSettings>
 
+
+class Site;
+class Image;
+class Profile;
 
 class Filename
 {
@@ -12,6 +17,7 @@ class Filename
 		Filename(QString format);
 		QString getFormat() const;
 		void setFormat(QString format);
+		void setEscapeMethod(QString (*)(QString));
 
 		/**
 		 * Return the filename of the image according to the user's settings.
@@ -46,6 +52,7 @@ class Filename
 
 	private:
 		QString m_format;
+		QString (*m_escapeMethod)(QString) = nullptr;
 };
 
 #endif // FILENAME_H

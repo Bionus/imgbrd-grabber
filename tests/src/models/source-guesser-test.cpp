@@ -1,5 +1,6 @@
 #include "source-guesser-test.h"
 #include "models/source-guesser.h"
+#include "models/source.h"
 
 
 void SourceGuesserTest::initTestCase()
@@ -13,7 +14,7 @@ void SourceGuesserTest::testNotFound()
 	QList<Source*> sources;
 	sources.append(new Source(&profile, "tests/resources/sites/Danbooru"));
 
-	SourceGuesser guesser("http://danbooru.donmai.us/", sources);
+	SourceGuesser guesser("https://danbooru.donmai.us/", sources);
 	Source *source = guesser.start();
 
 	Q_ASSERT(source == nullptr);
@@ -36,7 +37,7 @@ void SourceGuesserTest::testDanbooru2()
 	QList<Source*> sources;
 	sources.append(new Source(&profile, "tests/resources/sites/Danbooru (2.0)"));
 
-	SourceGuesser guesser("http://danbooru.donmai.us/", sources);
+	SourceGuesser guesser("https://danbooru.donmai.us/", sources);
 	Source *source = guesser.start();
 
 	Q_ASSERT(source != nullptr);

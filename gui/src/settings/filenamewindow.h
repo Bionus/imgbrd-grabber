@@ -4,7 +4,6 @@
 #include <QDialog>
 #include <QMessageBox>
 #include <QCloseEvent>
-#include "models/profile.h"
 
 #if USE_QSCINTILLA
 	#include <Qsci/qsciscintilla.h>
@@ -14,13 +13,13 @@
 #endif
 
 
-
 namespace Ui
 {
 	class FilenameWindow;
 }
 
 
+class Profile;
 
 class FilenameWindow : public QDialog
 {

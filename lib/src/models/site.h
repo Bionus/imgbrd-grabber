@@ -8,18 +8,16 @@
 #include <QList>
 #include <QNetworkReply>
 #include <QUrl>
-#include <QSslError>
 #include <functional>
-#include "tag.h"
-#include "api.h"
-#include "profile.h"
-#include "custom-network-access-manager.h"
-
+#include "models/tag.h"
 
 
 class Page;
 class Image;
 class Source;
+class Api;
+class Profile;
+class CustomNetworkAccessManager;
 
 class Site : public QObject
 {

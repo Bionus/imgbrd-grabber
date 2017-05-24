@@ -1,17 +1,22 @@
-#include <QMessageBox>
 #include "favorites-tab.h"
 #include "ui_favorites-tab.h"
+#include <QMessageBox>
 #include "ui/QBouton.h"
-#include "viewer/zoomwindow.h"
+#include "ui/QAffiche.h"
+#include "ui/textedit.h"
 #include "favoritewindow.h"
-#include "searchwindow.h"
+#include "mainwindow.h"
 #include "models/favorite.h"
+#include "models/page.h"
+#include "models/profile.h"
+#include "models/site.h"
+#include "downloader/download-query-group.h"
 #include "helpers.h"
-
+#include "functions.h"
 
 
 favoritesTab::favoritesTab(QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
-	: searchTab(sites, profile, parent), ui(new Ui::favoritesTab), m_sized(false), m_currentFav(0)
+	: searchTab(sites, profile, parent), ui(new Ui::favoritesTab), m_currentFav(0)
 {
 	ui->setupUi(this);
 
@@ -74,16 +79,6 @@ void favoritesTab::closeEvent(QCloseEvent *e)
 	m_settings->endGroup();
 	m_settings->sync();
 
-	qDeleteAll(m_pages);
-	m_pages.clear();
-	m_images.clear();
-	qDeleteAll(m_checkboxes);
-	m_checkboxes.clear();
-	for (Site *site : m_layouts.keys())
-	{ clearLayout(m_layouts[site]); }
-	qDeleteAll(m_layouts);
-	m_layouts.clear();
-
 	emit(closed(this));
 	e->accept();
 }
@@ -125,7 +120,7 @@ void favoritesTab::updateFavorites()
 				image->setFlat(true);
 				image->setToolTip(xt);
 				connect(image, SIGNAL(rightClick(QString)), this, SLOT(favoriteProperties(QString)));
-				connect(image, SIGNAL(middleClick(QString)), this, SLOT(addTabFavorite(QString)));
+				connect(image, SIGNAL(middleClick(QString)), m_parent, SLOT(addTab(QString)));
 				connect(image, SIGNAL(appui(QString)), this, SLOT(loadFavorite(QString)));
 			l->addWidget(image);
 		}
@@ -146,24 +141,10 @@ void favoritesTab::updateFavorites()
 	}
 }
 
-void favoritesTab::addTabFavorite(QString name)
-{
-	m_parent->addTab(name);
-}
-
 
 void favoritesTab::load()
 {
 	loadTags(m_currentTags.trimmed().split(' ', QString::SkipEmptyParts));
-}
-
-QList<Site*> favoritesTab::loadSites() const
-{
-	QList<Site*> sites;
-	for (int i = 0; i < m_selectedSources.size(); i++)
-		if (m_checkboxes.at(i)->isChecked())
-			sites.append(m_sites->value(m_sites->keys().at(i)));
-	return sites;
 }
 
 bool favoritesTab::validateImage(QSharedPointer<Image> img)
@@ -321,3 +302,17 @@ void favoritesTab::favoriteProperties(QString name)
 
 void favoritesTab::focusSearch()
 { }
+
+
+void favoritesTab::changeEvent(QEvent *event)
+{
+	// Automatically retranslate this tab on language change
+	if (event->type() == QEvent::LanguageChange)
+	{
+		ui->retranslateUi(this);
+		setWindowTitle(tr("Favorites"));
+		emit titleChanged(this);
+	}
+
+	QWidget::changeEvent(event);
+}

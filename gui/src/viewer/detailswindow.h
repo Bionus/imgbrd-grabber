@@ -2,8 +2,6 @@
 #define DETAILSWINDOW_H
 
 #include <QDialog>
-#include "models/image.h"
-
 
 
 namespace Ui
@@ -12,6 +10,8 @@ namespace Ui
 }
 
 
+class Image;
+class Profile;
 
 class detailsWindow : public QDialog
 {

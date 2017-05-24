@@ -3,17 +3,14 @@
 
 #include <QMap>
 #include <QNetworkReply>
-#include <QSslError>
 #include "tag.h"
-#include "image.h"
-#include "functions.h"
-#include "profile.h"
-
 
 
 class Page;
-class Image;
 class Api;
+class Profile;
+class Image;
+class Site;
 
 class PageApi : public QObject
 {
@@ -32,7 +29,9 @@ class PageApi : public QObject
 		void			load(bool rateLimit = false);
 		void			loadTags();
 		QUrl			parseUrl(QString url, int pid = -1, int p = -1, QString t = "", QString pseudo = "", QString password = "");
-		QList<QSharedPointer<Image> > images();
+		QList<QSharedPointer<Image>> images();
+		bool			isImageCountSure();
+		bool			isPageCountSure();
 		int				imagesCount(bool guess = true);
 		int				pagesCount(bool guess = true);
 		QUrl			url();
@@ -65,6 +64,8 @@ class PageApi : public QObject
 		void parseImage(QMap<QString,QString> data, int position, QList<Tag> tags = QList<Tag>());
 		void parseNavigation(const QString &source);
 		void updateUrls();
+		void setImageCount(int count, bool sure);
+		void setPageCount(int count, bool sure);
 
 	private:
 		Page			*m_parentPage;
@@ -72,13 +73,15 @@ class PageApi : public QObject
 		Site			*m_site;
 		Api				*m_api;
 		QStringList		m_search, m_postFiltering, m_errors;
-		int				m_imagesPerPage, m_currentSource, m_lastPage, m_lastPageMinId, m_lastPageMaxId, m_imagesCount, m_pagesCount, m_page, m_blim, m_pool;
+		int				m_imagesPerPage, m_currentSource, m_lastPage, m_lastPageMinId, m_lastPageMaxId, m_page, m_blim, m_pool;
 		bool			m_smart, m_isAltPage;
 		QString			m_format, m_source, m_wiki, m_originalUrl;
 		QUrl			m_url, m_urlRegex, m_urlNextPage, m_urlPrevPage;
 		QList<QSharedPointer<Image>>	m_images;
 		QList<Tag>		m_tags;
 		QNetworkReply	*m_reply, *m_replyTags;
+		int				m_imagesCount, m_pagesCount;
+		bool			m_imagesCountSafe, m_pagesCountSafe;
 };
 
 #endif // PAGE_API_H

@@ -3,11 +3,6 @@
 
 #include <QMap>
 #include <QDialog>
-#include "models/image.h"
-#include "models/site.h"
-#include "models/profile.h"
-#include "downloader/download-query-image.h"
-
 
 
 namespace Ui
@@ -15,6 +10,12 @@ namespace Ui
 	class AddUniqueWindow;
 }
 
+
+class Site;
+class Profile;
+class Image;
+class Page;
+class DownloadQueryImage;
 
 class AddUniqueWindow : public QDialog
 {

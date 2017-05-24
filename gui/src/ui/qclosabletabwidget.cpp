@@ -1,5 +1,6 @@
-#include <QTabBar>
 #include "qclosabletabwidget.h"
+#include <QTabBar>
+#include <QMouseEvent>
 
 
 QClosableTabWidget::QClosableTabWidget(QWidget *parent)

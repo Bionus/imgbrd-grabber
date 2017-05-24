@@ -4,13 +4,9 @@
 #include <QMap>
 #include <QStringList>
 #include <QDateTime>
-#include <QFont>
 #include <QSettings>
 #include <QDomElement>
-#include <algorithm>
 #include <QString>
-#include <QNetworkReply>
-#include <QSslError>
 #include "models/favorite.h"
 #include "logger.h"
 
@@ -31,8 +27,6 @@
 #endif
 
 
-
-void		sslErrorHandler(QNetworkReply* qnr, QList<QSslError> errors);
 QDateTime	qDateTimeFromString(QString s);
 QString		savePath(QString s = "", bool exists = false);
 int			levenshtein(QString, QString);
@@ -55,6 +49,8 @@ QMap<QString,QString>		domToMap(QDomElement);
 
 QMap<QString,QStringList>	getCustoms(QSettings *settings);
 QMap<QString,QPair<QString,QString>>	getFilenames(QSettings *settings);
+
+QStringList removeWildards(QStringList elements, QStringList remove);
 
 
 

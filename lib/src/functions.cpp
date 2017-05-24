@@ -1,3 +1,4 @@
+#include "functions.h"
 #include <QSettings>
 #include <QFile>
 #include <QDir>
@@ -7,8 +8,9 @@
 #include <QCoreApplication>
 #include <QDesktopServices>
 #include <QUrl>
+#include <QLocale>
+#include <QTimeZone>
 #include "math.h"
-#include "functions.h"
 #ifdef Q_OS_WIN
 	#include <windows.h>
 #else
@@ -20,26 +22,6 @@
 
 using namespace std;
 
-
-/**
- * Log SSL errors in debug mode only.
- *
- * @param qnr		The network reply who generated the SSL errors
- * @param errors	The list of SSL errors that occured
- */
-void sslErrorHandler(QNetworkReply* qnr, QList<QSslError> errors)
-{
-	#ifdef QT_DEBUG
-		qDebug() << errors;
-	#else
-		Q_UNUSED(errors);
-	#endif
-	#ifndef TEST
-		qnr->ignoreSslErrors();
-	#else
-		Q_UNUSED(qnr);
-	#endif
-}
 
 /**
  * Load custom tokens from settings.
@@ -81,6 +63,33 @@ QMap<QString,QPair<QString,QString>> getFilenames(QSettings *settings)
 	return tokens;
 }
 
+QStringList removeWildards(QStringList elements, QStringList remove)
+{
+	QStringList tags;
+
+	QRegExp reg;
+	reg.setCaseSensitivity(Qt::CaseInsensitive);
+	reg.setPatternSyntax(QRegExp::Wildcard);
+	for (QString tag : elements)
+	{
+		bool removed = false;
+		for (QString rem : remove)
+		{
+			reg.setPattern(rem);
+			if (reg.exactMatch(tag))
+			{
+				removed = true;
+				break;
+			}
+		}
+
+		if (!removed)
+			tags.append(tag);
+	}
+
+	return tags;
+}
+
 /**
  * Convert a danbooru-like date (Sat May 14 17:38:04 -0400 2011) to a valid QDateTime.
  * @param	str				The date string.
@@ -89,7 +98,6 @@ QMap<QString,QPair<QString,QString>> getFilenames(QSettings *settings)
 QDateTime qDateTimeFromString(QString str)
 {
 	QDateTime date;
-	int timezone = QDateTime::currentDateTime().time().hour() - QDateTime::currentDateTimeUtc().time().hour();
 
 	int toInt = str.toInt();
 	if (toInt != 0)
@@ -101,12 +109,14 @@ QDateTime qDateTimeFromString(QString str)
 		date = QDateTime::fromString(str, "yyyy/MM/dd HH:mm:ss");
 		if (!date.isValid())
 			date = QDateTime::fromString(str, "yyyy-MM-dd HH:mm:ss");
+		date.setTimeSpec(Qt::UTC);
 	}
 	else if (str.length() == 16)
 	{
 		date = QDateTime::fromString(str, "yyyy/MM/dd HH:mm");
 		if (!date.isValid())
 			date = QDateTime::fromString(str, "yyyy-MM-dd HH:mm");
+		date.setTimeSpec(Qt::UTC);
 	}
 	else if (str[0].isDigit())
 	{
@@ -117,9 +127,7 @@ QDateTime qDateTimeFromString(QString str)
 			date = QDateTime::fromString(str.left(19), "yyyy/MM/dd HH:mm:ss");
 		else
 			decay = str.right(6).remove(':').toFloat() / 100;
-
-		if (date.isValid())
-			date = date.addSecs(3600 * (timezone - decay));
+		date.setOffsetFromUtc(3600 * decay);
 	}
 	else
 	{
@@ -128,7 +136,10 @@ QDateTime qDateTimeFromString(QString str)
 		if (!date.isValid())
 			date = myLoc.toDateTime(str, "ddd MMM  d HH:mm:ss yyyy");
 		if (date.isValid())
+		{
+			date.setTimeSpec(Qt::UTC);
 			return date;
+		}
 
 		QStringList months = QStringList() << "Jan" << "Feb" << "Mar" << "Apr" << "May" << "Jun" << "Jul" << "Aug" << "Sep" << "Oct" << "Nov" << "Dec";
 		int year = str.mid(26, 4).toInt();
@@ -137,9 +148,9 @@ QDateTime qDateTimeFromString(QString str)
 		float decay = str.mid(20, 5).toFloat() / 100;
 
 		QTime time = QTime::fromString(str.mid(11, 8), "HH:mm:ss");
-		time = time.addSecs(3600 * (timezone - decay));
 		date.setDate(QDate(year, month, day));
 		date.setTime(time);
+		date.setOffsetFromUtc(3600 * decay);
 	}
 
 	return date;

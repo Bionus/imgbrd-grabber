@@ -1,23 +1,26 @@
+#include "zoomwindow.h"
+#include "ui_zoomwindow.h"
 #include <QApplication>
-#include <QtNetwork>
+#include <QDesktopWidget>
 #include <QMessageBox>
 #include <QShortcut>
 #include <QMenu>
-#include <QDesktopWidget>
 #include <QFileDialog>
-#include <QMessageBox>
-#include "functions.h"
-#include "settings/optionswindow.h"
-#include "reverse-search/reverse-search-loader.h"
-#include "ui/QAffiche.h"
-#include "zoomwindow.h"
-#include "threads/image-loader.h"
-#include "ui_zoomwindow.h"
-#include "models/filename.h"
-#include "functions.h"
-#include "helpers.h"
 #include <QScrollBar>
-
+#include "ui/QAffiche.h"
+#include "models/filename.h"
+#include "models/site.h"
+#include "models/page.h"
+#include "models/profile.h"
+#include "reverse-search/reverse-search-loader.h"
+#include "settings/optionswindow.h"
+#include "threads/image-loader.h"
+#include "threads/image-loader-queue.h"
+#include "detailswindow.h"
+#include "mainwindow.h"
+#include "helpers.h"
+#include "functions.h"
+#include "image-context-menu.h"
 
 
 zoomWindow::zoomWindow(QList<QSharedPointer<Image> > images, QSharedPointer<Image> image, Site *site, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
@@ -107,6 +110,16 @@ zoomWindow::zoomWindow(QList<QSharedPointer<Image> > images, QSharedPointer<Imag
 	m_imageLoaderQueueThread.start();
 	m_imageLoaderThread.start();
 
+	// Background color
+	QString bg = m_settings->value("imageBackgroundColor", "").toString();
+	if (!bg.isEmpty())
+	{
+		setStyleSheet("#zoomWindow, #scrollAreaWidgetContents { background-color:" + bg + "; }");
+		m_labelImage->setStyleSheet("background-color:" + bg);
+		m_labelTagsLeft->setStyleSheet("background-color:" + bg);
+		m_labelTagsTop->setStyleSheet("background-color:" + bg);
+	}
+
 	load(image);
 }
 void zoomWindow::go()
@@ -192,40 +205,32 @@ zoomWindow::~zoomWindow()
 	m_labelTagsLeft->deleteLater();
 	m_detailsWindow->deleteLater();
 
+	// Quit threads
+	m_imageLoaderQueueThread.quit();
+	m_imageLoaderThread.wait(1000);
 	m_imageLoaderThread.quit();
-	m_imageLoaderThread.wait(100);
+	m_imageLoaderThread.wait(1000);
 
 	delete ui;
 }
 
 void zoomWindow::imageContextMenu()
 {
-	QMenu *menu = new QMenu(this);
+	QMenu *menu = new ImageContextMenu(m_settings, m_image, m_parent, this);
 
 	// Copy actions
-	menu->addAction(QIcon(":/images/icons/copy.png"), tr("Copy file"), this, SLOT(copyImageFileToClipboard()));
-	menu->addAction(QIcon(":/images/icons/document-binary.png"), tr("Copy data"), this, SLOT(copyImageDataToClipboard()));
-	menu->addSeparator();
+	QAction *copyImageAction = new QAction(QIcon(":/images/icons/copy.png"), tr("Copy file"), menu);
+	connect(copyImageAction, SIGNAL(triggered()), this, SLOT(copyImageFileToClipboard()));
+	QAction *copyDataAction = new QAction(QIcon(":/images/icons/document-binary.png"), tr("Copy data"), menu);
+	connect(copyDataAction, SIGNAL(triggered()), this, SLOT(copyImageDataToClipboard()));
 
-	// Reverse search actions
-	m_reverseSearchSignalMapper = new QSignalMapper(this);
-	connect(m_reverseSearchSignalMapper, SIGNAL(mapped(int)), this, SLOT(reverseImageSearch(int)));
-	for (int i = 0; i < m_reverseSearchEngines.count(); ++i)
-	{
-		ReverseSearchEngine engine = m_reverseSearchEngines[i];
-		QAction *subMenuAct = menu->addAction(engine.icon(), engine.name());
-		connect(subMenuAct, SIGNAL(triggered()), m_reverseSearchSignalMapper, SLOT(map()));
-		m_reverseSearchSignalMapper->setMapping(subMenuAct, i);
-	}
+	// Insert actionsat the beginning
+	QAction *first = menu->actions().first();
+	menu->insertAction(first, copyImageAction);
+	menu->insertAction(first, copyDataAction);
+	menu->insertSeparator(first);
 
 	menu->exec(QCursor::pos());
-}
-void zoomWindow::reverseImageSearch(int i)
-{
-	if (m_reverseSearchEngines.count() < i)
-		return;
-
-	m_reverseSearchEngines[i].searchByUrl(m_image->fileUrl());
 }
 void zoomWindow::copyImageFileToClipboard()
 {
@@ -346,11 +351,18 @@ void zoomWindow::contextMenu(QPoint)
 		else
 		{ menu->addAction(QIcon(":/images/icons/add.png"), tr("Keep for later"), this, SLOT(viewitlater())); }
 
+		// Blacklist
+		QStringList blacklistedTags = m_settings->value("blacklistedtags").toString().split(' ');
+		if (blacklistedTags.contains(link))
+		{ menu->addAction(QIcon(":/images/icons/eye-plus.png"), tr("Don't blacklist"), this, SLOT(unblacklist())); }
+		else
+		{ menu->addAction(QIcon(":/images/icons/eye-minus.png"), tr("Blacklist"), this, SLOT(blacklist())); }
+
 		// Ignore
 		if (m_ignore.contains(link, Qt::CaseInsensitive))
-		{ menu->addAction(QIcon(":/images/icons/showed.png"), tr("Don't ignore"), this, SLOT(unignore())); }
+		{ menu->addAction(QIcon(":/images/icons/eye-plus.png"), tr("Don't ignore"), this, SLOT(unignore())); }
 		else
-		{ menu->addAction(QIcon(":/images/icons/hidden.png"), tr("Ignore"), this, SLOT(ignore())); }
+		{ menu->addAction(QIcon(":/images/icons/eye-minus.png"), tr("Ignore"), this, SLOT(ignore())); }
 		menu->addSeparator();
 
 		// Copy
@@ -442,6 +454,21 @@ void zoomWindow::unignore()
 	m_profile->removeIgnored(link);
 }
 
+void zoomWindow::blacklist()
+{
+	QString blacklistedTags = m_settings->value("blacklistedtags").toString();
+	blacklistedTags += " " + link;
+	m_settings->setValue("blacklistedtags", blacklistedTags);
+	colore();
+}
+void zoomWindow::unblacklist()
+{
+	QStringList blacklistedTags = m_settings->value("blacklistedtags").toString().split(' ');
+	blacklistedTags.removeAll(link);
+	m_settings->setValue("blacklistedtags", blacklistedTags.join(' '));
+	colore();
+}
+
 void zoomWindow::load()
 {
 	log(QString("Loading image from <a href=\"%1\">%1</a>").arg(m_url));
@@ -458,8 +485,6 @@ void zoomWindow::load()
 	m_imageTime.start();
 	m_image->loadImage();
 }
-void zoomWindow::sslErrorHandler(QNetworkReply* qnr, QList<QSslError>)
-{ qnr->ignoreSslErrors(); }
 
 #define PERCENT 0.05f
 #define TIME 500
@@ -486,7 +511,10 @@ void zoomWindow::display(const QPixmap &pix, int size)
 		update(!m_finished);
 
 		if (!pix.size().isEmpty() && m_image->size().isEmpty())
-		{ m_image->setSize(pix.size()); }
+		{
+			m_image->setSize(pix.size());
+			updateWindowTitle();
+		}
 
 		if (m_isFullscreen && m_fullScreen != nullptr && m_fullScreen->isVisible())
 		{ m_fullScreen->setImage(m_displayImage.scaled(QApplication::desktop()->screenGeometry().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation)); }
@@ -509,14 +537,12 @@ void zoomWindow::replyFinishedDetails()
 	}
 
 	QString path1 = m_settings->value("Save/path").toString().replace("\\", "/");
-	QStringList pth1s = m_image->path(m_settings->value("Save/filename").toString(), path1);
+	QStringList pth1s = m_image->path(m_settings->value("Save/filename").toString(), path1, 0, true, false, true, true, true);
 	QString source1;
 	bool file1notexists = false;
 	for (QString pth1 : pth1s)
 	{
-		if (path1.right(1) == "/")
-		{ path1 = path1.left(path1.length()-1); }
-		QFile file(path1+"/"+pth1);
+		QFile file(pth1);
 		if (file.exists())
 			source1 = file.fileName();
 		else
@@ -524,34 +550,34 @@ void zoomWindow::replyFinishedDetails()
 	}
 
 	QString path2 = m_settings->value("Save/path_favorites").toString().replace("\\", "/");
-	QStringList pth2s = m_image->path(m_settings->value("Save/filename_favorites").toString(), path2);
+	QStringList pth2s = m_image->path(m_settings->value("Save/filename_favorites").toString(), path2, 0, true, false, true, true, true);
 	QString source2;
 	bool file2notexists = false;
 	for (QString pth2 : pth2s)
 	{
-		if (path2.right(1) == "/")
-		{ path2 = path1.left(path2.length()-1); }
-		QFile file(path2+"/"+pth2);
+		QFile file(pth2);
 		if (file.exists())
 			source2 = file.fileName();
 		else
 			file2notexists = true;
 	}
 
+	QString md5Exists = m_profile->md5Exists(m_image->md5());
+
 	// If the file already exists, we directly display it
-	if (!file1notexists || !file2notexists)
+	if (!md5Exists.isEmpty() || !file1notexists || !file2notexists)
 	{
 		if (!file1notexists)
 		{
-			ui->buttonSave->setText(tr("File already exists"));
+			ui->buttonSave->setText(tr("Delete"));
 			ui->buttonSaveNQuit->setText(tr("Close"));
 		}
 		if (!file2notexists)
 		{
-			ui->buttonSaveFav->setText(tr("File already exists (fav)"));
+			ui->buttonSaveFav->setText(tr("Delete (fav)"));
 			ui->buttonSaveNQuitFav->setText(tr("Close (fav)"));
 		}
-		m_source = !file1notexists ? source1 : source2;
+		m_source = !md5Exists.isEmpty() ? md5Exists : (!file1notexists ? source1 : source2);
 		m_imagePath = m_source;
 		log(QString("Image loaded from the file <a href=\"file:///%1\">%1</a>").arg(m_source));
 
@@ -597,6 +623,7 @@ void zoomWindow::replyFinishedZoom(QNetworkReply::NetworkError err, QString erro
 		m_url = m_image->url();
 		m_loadedImage = true;
 
+		updateWindowTitle();
 		pendingUpdate();
 		draw();
 	}
@@ -844,7 +871,7 @@ QStringList zoomWindow::saveImageNow(bool fav)
 				break;
 
 			case Image::SaveResult::Saved:
-				button->setText(fav ? tr("Saved! (fav)") : tr("Saved!"));
+				button->setText(fav ? tr("Delete (fav)") : tr("Delete"));
 				break;
 
 			case Image::SaveResult::Copied:
@@ -861,10 +888,17 @@ QStringList zoomWindow::saveImageNow(bool fav)
 				break;
 
 			case Image::SaveResult::AlreadyExists:
-				button->setText(fav ? tr("File already exists (fav)") : tr("File already exists"));
+				QFile f(it.key());
+				if (m_image->data().isEmpty() && f.open(QFile::ReadOnly))
+				{ m_image->setData(f.readAll()); }
+				f.remove();
+				m_imagePath = "";
+				button->setText(fav ? tr("Save (fav)") : tr("Save"));
 				break;
 		}
-		saveQuit->setText(fav ? tr("Close (fav)") : tr("Close"));
+		saveQuit->setText(res == Image::SaveResult::AlreadyExists
+						  ? (fav ? tr("Save and close (fav)") : tr("Save and close"))
+						  : (fav ? tr("Close (fav)") : tr("Close")));
 
 		++it;
 	}
@@ -878,7 +912,9 @@ QStringList zoomWindow::saveImageNow(bool fav)
 
 QString zoomWindow::saveImageAs()
 {
-	QString filename = m_image->fileUrl().toString().section('/', -1);
+	Filename format(m_settings->value("Save/filename").toString());
+	QStringList filenames = format.path(*m_image, m_profile);
+	QString filename = filenames.first().section(QDir::separator(), -1);
 	QString lastDir = m_settings->value("Zoom/lastDir", "").toString();
 
 	QString path = QFileDialog::getSaveFileName(this, tr("Save image"), QDir::toNativeSeparators(lastDir + "/" + filename), "Images (*.png *.gif *.jpg *.jpeg)");
@@ -1068,13 +1104,14 @@ void zoomWindow::load(QSharedPointer<Image> image)
 	emit clearLoadQueue();
 	disconnect(m_image.data(), &Image::finishedLoadingTags, this, &zoomWindow::replyFinishedDetails);
 
+	m_displayImage = QPixmap();
 	m_imagePath = "";
 	m_image = image;
 	connect(m_image.data(), &Image::urlChanged, this, &zoomWindow::urlChanged, Qt::UniqueConnection);
 	m_size = 0;
 
 	// Show the thumbnail if the image was not already preloaded
-	if (isVisible() && (m_image->data().isEmpty() || m_image->isVideo()))
+	if (isVisible())
 	{ showThumbnail(); }
 
 	// Preload gallery images
@@ -1098,9 +1135,9 @@ void zoomWindow::load(QSharedPointer<Image> image)
 
 	// Reset buttons
 	ui->buttonSave->setText(tr("Save"));
-	ui->buttonSaveFav->setText(tr("Save"));
+	ui->buttonSaveFav->setText(tr("Save (fav)"));
 	ui->buttonSaveNQuit->setText(tr("Save and close"));
-	ui->buttonSaveNQuitFav->setText(tr("Save and close"));
+	ui->buttonSaveNQuitFav->setText(tr("Save and close (fav)"));
 
 	// Window title
 	updateWindowTitle();
@@ -1130,7 +1167,7 @@ void zoomWindow::updateWindowTitle()
 		title = tr("Image");
 	else
 		title = QString(tr("Image") + " (%1)").arg(infos.join(", "));
-	setWindowTitle(QString("%1 - %2 (%3/%4)").arg(title, m_image->parentSite()->name(), QString::number(m_images.indexOf(m_image)), QString::number(m_images.count())));
+	setWindowTitle(QString("%1 - %2 (%3/%4)").arg(title, m_image->parentSite()->name(), QString::number(m_images.indexOf(m_image) + 1), QString::number(m_images.count())));
 }
 
 void zoomWindow::next()

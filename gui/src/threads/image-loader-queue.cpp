@@ -1,4 +1,5 @@
 #include "image-loader-queue.h"
+#include "image-loader.h"
 
 
 ImageLoaderQueue::ImageLoaderQueue(ImageLoader *imageLoader, QObject* parent)

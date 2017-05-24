@@ -4,7 +4,6 @@
 #include <QDir>
 #include <QProcess>
 #include <QSettings>
-#include <QDebug>
 #include <QTranslator>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -75,7 +74,7 @@ void MainWindow::sendCrashReport()
 {
 	if (ui->checkSend->isChecked())
 	{
-		QDesktopServices::openUrl(QUrl("https://github.com/Bionus/imgbrd-grabber/issues/new?labels[]=crash"));
+		QDesktopServices::openUrl(QUrl(QString(PROJECT_GITHUB_URL) + "/issues/new?labels[]=crash"));
 	}
 
 	finished();

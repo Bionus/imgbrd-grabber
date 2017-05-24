@@ -3,14 +3,12 @@
 
 #include <QString>
 #include <QList>
-#include <QMap>
-#include <QNetworkReply>
-#include "api.h"
-#include "profile.h"
 #include "updater/source-updater.h"
 
 
 class Site;
+class Api;
+class Profile;
 
 class Source : public QObject
 {
@@ -18,6 +16,7 @@ class Source : public QObject
 
 	public:
 		Source(Profile *profile, QString dir);
+		~Source();
 
 		// Getters
 		QString getName() const;

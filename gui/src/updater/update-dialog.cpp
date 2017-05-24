@@ -1,7 +1,10 @@
-#include <QMessageBox>
-#include <QProcess>
 #include "update-dialog.h"
 #include "ui_update-dialog.h"
+#include <QMessageBox>
+#include <QProcess>
+#ifndef Q_OS_WIN
+	#include <QDesktopServices>
+#endif
 
 
 UpdateDialog::UpdateDialog(QWidget *parent)
@@ -51,7 +54,12 @@ void UpdateDialog::checkForUpdatesDone(QString newVersion, bool available, QStri
 
 void UpdateDialog::accept()
 {
-	downloadUpdate();
+	#ifdef Q_OS_WIN
+		downloadUpdate();
+	#else
+		QDesktopServices::openUrl(m_updater.latestUrl());
+		close();
+	#endif
 }
 
 

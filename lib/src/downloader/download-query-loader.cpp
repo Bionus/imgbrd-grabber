@@ -3,6 +3,9 @@
 #include <QJsonDocument>
 #include <QJsonArray>
 #include <QJsonObject>
+#include "models/site.h"
+#include "download-query-image.h"
+#include "download-query-group.h"
 
 
 bool DownloadQueryLoader::load(QString path, QList<DownloadQueryImage> &uniques, QList<DownloadQueryGroup> &batchs, QMap<QString, Site*> &sites)

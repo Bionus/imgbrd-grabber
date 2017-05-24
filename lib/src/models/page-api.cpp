@@ -1,14 +1,12 @@
-#include <QSettings>
-#include <QFile>
-#include <QNetworkCookie>
-#include <iostream>
-#include <QSet>
-#include "page.h"
 #include "page-api.h"
-#include "vendor/json.h"
-#include "math.h"
+#include <QDomDocument>
+#include <math.h>
+#include "page.h"
 #include "site.h"
-
+#include "api.h"
+#include "image.h"
+#include "vendor/json.h"
+#include "logger.h"
 
 
 PageApi::PageApi(Page *parentPage, Profile *profile, Site *site, Api *api, QStringList tags, int page, int limit, QStringList postFiltering, bool smart, QObject *parent, int pool, int lastPage, int lastPageMinId, int lastPageMaxId)
@@ -16,6 +14,9 @@ PageApi::PageApi(Page *parentPage, Profile *profile, Site *site, Api *api, QStri
 {
 	m_imagesCount = -1;
 	m_pagesCount = -1;
+	m_imagesCountSafe = false;
+	m_pagesCountSafe = false;
+
 	m_search = tags;
 	m_page = page;
 	m_pool = pool;
@@ -117,6 +118,22 @@ void PageApi::updateUrls()
 	}
 	p = p - 1 + m_api->value("FirstPage").toInt();
 
+	// GET login information
+	QString pseudo = m_site->username();
+	QString password = m_site->password();
+
+	int pid = m_api->contains("Urls/Limit") ? m_api->value("Urls/Limit").toInt() * (m_page - 1) : m_imagesPerPage * (m_page - 1);
+
+	// URL searches
+	QRegExp regexUrl("^https?://[^\\s/$.?#].[^\\s]*$");
+	if (m_search.count() == 1 && !t.isEmpty() && regexUrl.exactMatch(t))
+	{
+		m_originalUrl = QString(t);
+		m_url = parseUrl(t, pid, p, t, pseudo, password).toString();
+		m_urlRegex = parseUrl(t, pid, p, t, pseudo, password).toString();
+		return;
+	}
+
 	// Check if we are looking for a pool
 	QRegExp poolRx("pool:(\\d+)");
 	QString url;
@@ -154,12 +171,6 @@ void PageApi::updateUrls()
 		else
 		{ url = m_api->value("Urls/Tags"); }
 	}
-
-	// GET login information
-	QString pseudo = m_site->username();
-	QString password = m_site->password();
-
-	int pid = m_api->contains("Urls/Limit") ? m_api->value("Urls/Limit").toInt() * (m_page - 1) : m_imagesPerPage * (m_page - 1);
 
 	// Global replace tokens
 	m_originalUrl = QString(url);
@@ -221,9 +232,15 @@ QString _parseSetImageUrl(Site *site, Api* api, QString settingUrl, QString sett
 		QStringList options = api->value(settingUrl).split('|');
 		for (QString opt : options)
 		{
+			if (opt.contains("{tim}") && d->value("tim").isEmpty())
+				return "";
+
 			opt.replace("{id}", d->value("id"))
 			.replace("{md5}", d->value("md5"))
-			.replace("{ext}", d->value("ext", "jpg"));
+			.replace("{ext}", d->value("ext", "jpg"))
+			.replace("{tim}", d->value("tim"))
+			.replace("{website}", site->url())
+			.replace("{cdn}", QString(site->url()).replace("boards.4chan", "4cdn"));
 
 			if (!opt.endsWith("/." + d->value("ext")) && !opt.contains('{'))
 			{
@@ -256,6 +273,10 @@ void PageApi::parseImage(QMap<QString,QString> d, int position, QList<Tag> tags)
 	if (!d.contains("sample_url"))
 	{ d["sample_url"] = ""; }
 
+	// Remove dot before extension
+	if (d.contains("ext") && d["ext"][0] == '.')
+	{ d["ext"] = d["ext"].mid(1); }
+
 	// Fix urls
 	d["file_url"] = _parseSetImageUrl(m_site, m_api, "Urls/Image", "Urls/ImageReplaces", d["file_url"], &d, true, d["preview_url"]);
 	d["sample_url"] = _parseSetImageUrl(m_site, m_api, "Urls/Sample", "Urls/SampleReplaces", d["sample_url"], &d, true, d["preview_url"]);
@@ -267,7 +288,7 @@ void PageApi::parseImage(QMap<QString,QString> d, int position, QList<Tag> tags)
 	{ d["sample_url"] = d["preview_url"]; }
 
 	// Generate image
-	QSharedPointer<Image> img = QSharedPointer<Image>(new Image(m_site, d, m_profile, m_parentPage));
+	QSharedPointer<Image> img(new Image(m_site, d, m_profile, m_parentPage));
 	QStringList errors = img->filter(m_postFiltering);
 
 	// If the file path is wrong (ends with "/.jpg")
@@ -343,10 +364,7 @@ void PageApi::parse()
 		if (count == 0 && database == "array")
 		{ count = docElem.elementsByTagName("total-count").at(0).toElement().text().toInt(); }
 		if (count > 0)
-		{
-			m_imagesCount = count;
-			m_pagesCount = ceil(((float)count) / m_imagesPerPage);
-		}
+		{ setImageCount(count, true); }
 
 		// Reading posts
 		QDomNodeList nodeList = docElem.elementsByTagName("post");
@@ -523,15 +541,15 @@ void PageApi::parse()
 			}
 
 			if (data.contains("total"))
-			{ m_imagesCount = data.value("total").toInt(); }
+			{ setImageCount(data.value("total").toInt(), true); }
+
+			// Get the list of posts
+			QList<QVariant> sourc = src.toList();
+			QStringList postsKey = QStringList() << "images" << "search" << "posts";
+			for (int i = 0; i < postsKey.count() && sourc.isEmpty(); ++i)
+			{ sourc = data.value(postsKey[i]).toList(); }
 
 			QMap<QString, QVariant> sc;
-			QList<QVariant> sourc = src.toList();
-			if (sourc.isEmpty())
-			{ sourc = data.value("images").toList(); }
-			if (sourc.isEmpty())
-			{ sourc = data.value("search").toList(); }
-
 			for (int id = 0; id < sourc.count(); id++)
 			{
 				QList<Tag> tags;
@@ -548,11 +566,20 @@ void PageApi::parse()
 				}
 				else if (sc.contains("tag_ids"))
 				{
-					QStringList infos, assoc;
-					infos << "created_at" << "source" << "file_url" << "preview_url" << "width" << "md5" << "height" << "id" << "tags" << "author" << "score";
-					assoc << "created_at" << "source_url" << "image" << "image" << "width" << "sha512_hash" << "height" << "id" << "tags" << "uploader" << "score";
-					for (int i = 0; i < infos.count(); i++)
-					{ d[infos.at(i)] = sc.value(assoc.at(i)).toString().trimmed(); }
+					QStringList from, to;
+					from << "created_at" << "source_url" << "image" << "image" << "width" << "sha512_hash" << "height" << "id" << "tags" << "uploader" << "score";
+					to << "created_at" << "source" << "file_url" << "preview_url" << "width" << "md5" << "height" << "id" << "tags" << "author" << "score";
+					for (int i = 0; i < from.count(); i++)
+					{ d[to[i]] = sc.value(from[i]).toString().trimmed(); }
+				}
+				// 4chan format
+				else if (sc.contains("resto"))
+				{
+					QStringList from, to;
+					from << "now" << "w" << "md5" << "h" << "no" << "com" << "time" << "tim" << "name" << "fsize";
+					to << "created_at" << "width" << "md5" << "height" << "id" << "comment" << "created_at" << "tim" << "author" << "file_size";
+					for (int i = 0; i < from.count(); i++)
+					{ d[to[i]] = sc.value(from[i]).toString().trimmed(); }
 				}
 				else
 				{
@@ -732,7 +759,7 @@ void PageApi::parseNavigation(const QString &source)
 
 	// Last page
 	if (m_site->contains("LastPage") && m_pagesCount < 1)
-	{ m_pagesCount = m_site->value("LastPage").toInt(); }
+	{ setPageCount(m_site->value("LastPage").toInt(), true); }
 	if (m_site->contains("Regex/LastPage") && m_pagesCount < 1)
 	{
 		QRegExp rxlast(m_site->value("Regex/LastPage"));
@@ -740,12 +767,13 @@ void PageApi::parseNavigation(const QString &source)
 		int cnt = rxlast.cap(1).remove(",").toInt();
 		if (cnt > 0)
 		{
-			m_pagesCount = cnt;
+			int pagesCount = cnt;
 			if (m_originalUrl.contains("{pid}"))
 			{
 				int ppid = m_api->contains("Urls/Limit") ? m_api->value("Urls/Limit").toInt() : m_imagesPerPage;
-				m_pagesCount = floor((float)m_pagesCount / (float)ppid) + 1;
+				pagesCount = floor((float)pagesCount / (float)ppid) + 1;
 			}
+			setPageCount(pagesCount, true);
 		}
 	}
 
@@ -754,16 +782,14 @@ void PageApi::parseNavigation(const QString &source)
 	{
 		QRegExp rxlast(m_site->value("Regex/Count"));
 		rxlast.indexIn(source, 0);
-		m_imagesCount = rxlast.cap(1).remove(",").toInt();
+		setImageCount(rxlast.cap(1).remove(",").toInt(), true);
 	}
 	if (m_imagesCount < 1)
 	{
 		for (Tag tag : m_tags)
 		{
 			if (tag.text() == m_search.join(" "))
-			{
-				m_imagesCount = tag.count();
-			}
+			{ setImageCount(tag.count(), false); }
 		}
 	}
 }
@@ -791,9 +817,12 @@ int PageApi::highLimit()
 {
 	if (m_api->contains("Urls/Limit"))
 		return m_api->value("Urls/Limit").toInt();
+	if (m_api->contains("Urls/MaxLimit"))
+		return m_api->value("Urls/MaxLimit").toInt();
 	return 0;
 }
 
+bool PageApi::isImageCountSure() { return m_imagesCountSafe; }
 int PageApi::imagesCount(bool guess)
 {
 	int perPage = m_api->contains("Urls/Limit") && !m_api->contains("Urls/MaxLimit") ? m_api->value("Urls/Limit").toInt() : m_imagesPerPage;
@@ -803,6 +832,7 @@ int PageApi::imagesCount(bool guess)
 
 	return m_imagesCount;
 }
+bool PageApi::isPageCountSure() { return m_pagesCountSafe; }
 int PageApi::pagesCount(bool guess)
 {
 	int perPage = m_api->contains("Urls/Limit") && !m_api->contains("Urls/MaxLimit") ? m_api->value("Urls/Limit").toInt() : m_imagesPerPage;
@@ -833,4 +863,28 @@ int PageApi::minId()
 void PageApi::setUrl(QUrl url)
 {
 	m_url = url;
+}
+
+void PageApi::setImageCount(int count, bool sure)
+{
+	if (m_imagesCount <= 0 || (!m_imagesCountSafe && sure))
+	{
+		m_imagesCount = count;
+		m_imagesCountSafe = sure;
+
+		if (sure)
+		{ setPageCount(ceil(((float)count) / m_imagesPerPage), true); }
+	}
+}
+
+void PageApi::setPageCount(int count, bool sure)
+{
+	if (m_pagesCount <= 0 || (!m_pagesCountSafe && sure))
+	{
+		m_pagesCount = count;
+		m_pagesCountSafe = sure;
+
+		if (sure)
+		{ setImageCount(count * m_imagesPerPage, false); }
+	}
 }

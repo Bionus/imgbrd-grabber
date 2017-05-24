@@ -4,6 +4,9 @@ QT       += core gui widgets
 TARGET    = CrashReporter
 TEMPLATE  = app
 
+# Defines
+DEFINES += PROJECT_GITHUB_URL=\\\"https://github.com/Bionus/imgbrd-grabber\\\"
+
 # Source files
 SOURCES += main.cpp \
 		   mainwindow.cpp
@@ -17,4 +20,5 @@ TRANSLATIONS += languages/English.ts \
 				languages/French.ts \
 				languages/ChineseSimplified.ts \
 				languages/Russian.ts \
+				languages/Spanish.ts \
 				languages/YourLanguage.ts

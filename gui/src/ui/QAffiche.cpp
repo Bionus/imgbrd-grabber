@@ -1,8 +1,5 @@
-#include <QMouseEvent>
 #include "QAffiche.h"
-
-using namespace std;
-
+#include <QMouseEvent>
 
 
 QAffiche::QAffiche(QVariant id, int border, QColor color, QWidget *parent) : QLabel(parent)

@@ -4,7 +4,6 @@
 #include <QDialog>
 #include <QDateTime>
 #include "models/favorite.h"
-#include "models/profile.h"
 
 
 namespace Ui
@@ -12,6 +11,8 @@ namespace Ui
 	class favoriteWindow;
 }
 
+
+class Profile;
 
 class favoriteWindow : public QDialog
 {

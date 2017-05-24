@@ -5,12 +5,7 @@
 #include <QMap>
 #include <QCalendarWidget>
 #include <QJsonObject>
-#include "ui/textedit.h"
 #include "search-tab.h"
-#include "models/page.h"
-#include "mainwindow.h"
-#include "downloader/downloader.h"
-
 
 
 namespace Ui
@@ -19,8 +14,9 @@ namespace Ui
 }
 
 
-
 class mainWindow;
+class Downloader;
+class TextEdit;
 
 class tagTab : public searchTab
 {
@@ -31,17 +27,17 @@ class tagTab : public searchTab
 		~tagTab();
 		Ui::tagTab *ui;
 		QString tags() const;
-		QString results();
-		QList<Site*> loadSites() const override;
 		void write(QJsonObject &json) const override;
 		bool read(const QJsonObject &json);
+
+	protected:
+		void changeEvent(QEvent *event) override;
 
 	public slots:
 		// Zooms
 		void setTags(QString);
 		// Loading
 		void load();
-		bool validateImage(QSharedPointer<Image> img);
 		// Batch
 		void getPage();
 		void getAll();
@@ -51,10 +47,7 @@ class tagTab : public searchTab
 		void focusSearch();
 
 	private:
-		TextEdit		*m_search;
-		QCalendarWidget	*m_calendar;
-		bool			m_sized;
-		Downloader		*m_downloader;
+		TextEdit *m_search;
 };
 
 #endif // TAG_TAB_H

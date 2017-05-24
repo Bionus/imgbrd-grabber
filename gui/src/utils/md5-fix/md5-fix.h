@@ -3,8 +3,6 @@
 
 #include <QDialog>
 #include <QMap>
-#include "models/profile.h"
-
 
 
 namespace Ui
@@ -13,6 +11,7 @@ namespace Ui
 }
 
 
+class Profile;
 
 class md5Fix : public QDialog
 {

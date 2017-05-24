@@ -1,17 +1,13 @@
-#include <QSettings>
-#include <QFile>
-#include <QNetworkCookie>
-#include <iostream>
-#include <QSet>
 #include "page.h"
-#include "vendor/json.h"
-#include "math.h"
+#include <math.h>
 #include "site.h"
-
+#include "api.h"
+#include "vendor/json.h"
+#include "logger.h"
 
 
 Page::Page(Profile *profile, Site *site, QList<Site*> sites, QStringList tags, int page, int limit, QStringList postFiltering, bool smart, QObject *parent, int pool, int lastPage, int lastPageMinId, int lastPageMaxId)
-	: QObject(parent), m_site(site), m_regexApi(0), m_postFiltering(postFiltering), m_errors(QStringList()), m_imagesPerPage(limit), m_currentSource(0), m_lastPage(lastPage), m_lastPageMinId(lastPageMinId), m_lastPageMaxId(lastPageMaxId), m_smart(smart)
+	: QObject(parent), m_site(site), m_regexApi(-1), m_postFiltering(postFiltering), m_errors(QStringList()), m_imagesPerPage(limit), m_currentSource(0), m_lastPage(lastPage), m_lastPageMinId(lastPageMinId), m_lastPageMaxId(lastPageMaxId), m_smart(smart)
 {
 	m_website = m_site->url();
 	m_imagesCount = -1;
@@ -26,7 +22,6 @@ Page::Page(Profile *profile, Site *site, QList<Site*> sites, QStringList tags, i
 		.replace(" -rating:q ", " -rating:questionable ", Qt::CaseInsensitive)
 		.replace(" -rating:e ", " -rating:explicit ", Qt::CaseInsensitive);
 	tags = text.split(" ", QString::SkipEmptyParts);
-	tags.removeDuplicates();
 
 	// Get the list of all enabled modifiers
 	QStringList modifiers = QStringList();
@@ -168,7 +163,7 @@ int				Page::highLimit()	{ return m_pageApis[m_currentApi]->highLimit(); }
 
 int Page::imagesCount(bool guess)
 {
-	if (m_regexApi >= 0)
+	if (m_regexApi >= 0 && !m_pageApis[m_currentApi]->isImageCountSure())
 	{
 		int count = m_pageApis[m_regexApi]->imagesCount(false);
 		if (count >= 0)
@@ -178,7 +173,7 @@ int Page::imagesCount(bool guess)
 }
 int Page::pagesCount(bool guess)
 {
-	if (m_regexApi >= 0)
+	if (m_regexApi >= 0 && !m_pageApis[m_currentApi]->isPageCountSure())
 	{
 		int count = m_pageApis[m_regexApi]->pagesCount(false);
 		if (count >= 0)

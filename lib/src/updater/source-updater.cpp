@@ -1,8 +1,8 @@
 #include "source-updater.h"
-#include "models/source.h"
 #include <QFile>
 #include <QNetworkRequest>
 #include <QNetworkReply>
+#include "models/source.h"
 
 
 SourceUpdater::SourceUpdater(Source *source, QString baseUrl)

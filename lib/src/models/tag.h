@@ -3,9 +3,10 @@
 
 #include <QString>
 #include <QStringList>
-#include "models/favorite.h"
-#include "profile.h"
+#include <QFont>
 
+
+class Profile;
 
 class Tag
 {

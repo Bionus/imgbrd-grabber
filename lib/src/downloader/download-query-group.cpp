@@ -1,5 +1,6 @@
 #include "download-query-group.h"
 #include <QJsonArray>
+#include "models/site.h"
 
 
 DownloadQueryGroup::DownloadQueryGroup()
@@ -74,4 +75,22 @@ bool DownloadQueryGroup::read(const QJsonObject &json, QMap<QString, Site*> &sit
 	}
 
 	return true;
+}
+
+
+bool operator==(const DownloadQueryGroup& lhs, const DownloadQueryGroup& rhs)
+{
+	return lhs.tags == rhs.tags
+			&& lhs.page == rhs.page
+			&& lhs.perpage == rhs.perpage
+			&& lhs.total == rhs.total
+			&& lhs.getBlacklisted == rhs.getBlacklisted
+			&& lhs.site == rhs.site
+			&& lhs.filename == rhs.filename
+			&& lhs.path == rhs.path;
+}
+
+bool operator!=(const DownloadQueryGroup& lhs, const DownloadQueryGroup& rhs)
+{
+	return !(lhs == rhs);
 }

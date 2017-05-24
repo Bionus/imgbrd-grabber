@@ -1,16 +1,17 @@
-#include <QMessageBox>
-#include <QMenu>
 #include "pool-tab.h"
 #include "ui_pool-tab.h"
-#include "ui/QBouton.h"
-#include "viewer/zoomwindow.h"
+#include <QJsonArray>
+#include "ui/textedit.h"
 #include "searchwindow.h"
 #include "mainwindow.h"
+#include "models/page.h"
+#include "models/site.h"
+#include "downloader/download-query-group.h"
 #include "helpers.h"
 
 
-poolTab::poolTab(QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
-	: searchTab(sites, profile, parent), ui(new Ui::poolTab), m_sized(false)
+poolTab::poolTab(QMap<QString, Site*> *sites, Profile *profile, mainWindow *parent)
+	: searchTab(sites, profile, parent), ui(new Ui::poolTab)
 {
 	ui->setupUi(this);
 	ui->widgetMeant->hide();
@@ -70,16 +71,6 @@ void poolTab::on_buttonSearch_clicked()
 
 void poolTab::closeEvent(QCloseEvent *e)
 {
-	qDeleteAll(m_pages);
-	m_pages.clear();
-	m_images.clear();
-	qDeleteAll(m_checkboxes);
-	m_checkboxes.clear();
-	for (Site *site : m_layouts.keys())
-	{ clearLayout(m_layouts[site]); }
-	qDeleteAll(m_layouts);
-	m_layouts.clear();
-
 	emit(closed(this));
 	e->accept();
 }
@@ -103,12 +94,6 @@ QList<Site*> poolTab::loadSites() const
 	QList<Site*> sites;
 	sites.append(m_sites->value(ui->comboSites->currentText()));
 	return sites;
-}
-
-bool poolTab::validateImage(QSharedPointer<Image> img)
-{
-	Q_UNUSED(img);
-	return true;
 }
 
 void poolTab::write(QJsonObject &json) const
@@ -199,3 +184,15 @@ void poolTab::focusSearch()
 
 QString poolTab::tags() const
 { return m_search->toPlainText(); }
+
+
+void poolTab::changeEvent(QEvent *event)
+{
+	// Automatically retranslate this tab on language change
+	if (event->type() == QEvent::LanguageChange)
+	{
+		ui->retranslateUi(this);
+	}
+
+	QWidget::changeEvent(event);
+}
