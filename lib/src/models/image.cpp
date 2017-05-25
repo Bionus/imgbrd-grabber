@@ -285,7 +285,7 @@ void Image::loadAndSave(QStringList paths, bool needTags)
 	}
 
 	// Then we load the image
-	//if (!m_loadedImage)
+	if (!m_loadedImage)
 	{
 		QEventLoop loopImage;
 		connect(this, &Image::finishedImage, &loopImage, &QEventLoop::quit);
