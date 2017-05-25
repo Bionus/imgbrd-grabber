@@ -936,36 +936,38 @@ Image::SaveResult Image::save(QString path, bool force, bool basic, bool addMd5,
 			}
 
 			// Save info to a text file
-			if (m_settings->value("Textfile/activate", false).toBool() && !basic)
+			if (!basic)
 			{
-				QString textfileFormat = m_settings->value("Textfile/content", "%all%").toString();
-				QStringList cont = this->path(textfileFormat, "", count, true, true, false, false, false);
-				if (!cont.isEmpty())
+				auto logFiles = getExternalLogFiles(m_settings);
+				for (int i : logFiles.keys())
 				{
-					QString suffix = m_settings->value("Textfile/suffix", ".txt").toString();
-					QString contents = cont.at(0);
-					QFile file_tags(path + suffix);
-					if (file_tags.open(QFile::WriteOnly | QFile::Text))
+					auto logFile = logFiles[i];
+					QString textfileFormat = logFile["content"].toString();
+					QStringList cont = this->path(textfileFormat, "", count, true, true, false, false, false);
+					if (!cont.isEmpty())
 					{
-						file_tags.write(contents.toUtf8());
-						file_tags.close();
-					}
-				}
-			}
+						int locationType = logFile["locationType"].toInt();
+						QString contents = cont.first();
 
-			// Log info to a text file
-			if (m_settings->value("SaveLog/activate", false).toBool() && !m_settings->value("SaveLog/file", "").toString().isEmpty() && !basic)
-			{
-				QString savelogFormat = m_settings->value("SaveLog/format", "%website% - %md5% - %all%").toString();
-				QStringList cont = this->path(savelogFormat, "", count, true, true, false, false, false);
-				if (!cont.isEmpty())
-				{
-					QString contents = cont.at(0);
-					QFile file_tags(m_settings->value("SaveLog/file", "").toString());
-					if (file_tags.open(QFile::WriteOnly | QFile::Append | QFile::Text))
-					{
-						file_tags.write(contents.toUtf8() + "\n");
-						file_tags.close();
+						// File path
+						QString fileTagsPath;
+						if (locationType == 0)
+							fileTagsPath = this->path(logFile["filename"].toString(), logFile["path"].toString(), 0, true, false, true, true, true).first();
+						else if (locationType == 1)
+							fileTagsPath = logFile["uniquePath"].toString();
+						else if (locationType == 2)
+							fileTagsPath = path + logFile["suffix"].toString();
+
+						// Append to file if necessary
+						QFile fileTags(m_settings->value("SaveLog/file", "").toString());
+						bool append = fileTags.exists();
+						if (fileTags.open(QFile::WriteOnly | QFile::Append | QFile::Text))
+						{
+							if (append)
+								fileTags.write("\n");
+							fileTags.write(contents.toUtf8());
+							fileTags.close();
+						}
 					}
 				}
 			}
