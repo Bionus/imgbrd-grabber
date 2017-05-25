@@ -273,7 +273,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	m_pools = QList<Pool>();
 }
 
-void Image::loadAndSave(QStringList paths, bool needTags)
+void Image::loadAndSave(QStringList paths, bool needTags, bool force)
 {
 	// Load details first if necessary
 	if (needTags)
@@ -295,7 +295,7 @@ void Image::loadAndSave(QStringList paths, bool needTags)
 	}
 
 	// We finally save
-	save(paths);
+	save(paths, true, false, 1, force);
 }
 void Image::loadAndSave(QString filename, QString path)
 {
@@ -1014,11 +1014,11 @@ Image::SaveResult Image::save(QString path, bool force, bool basic, bool addMd5,
 
 	return res;
 }
-QMap<QString, Image::SaveResult> Image::save(QStringList paths, bool addMd5, bool startCommands, int count)
+QMap<QString, Image::SaveResult> Image::save(QStringList paths, bool addMd5, bool startCommands, int count, bool force)
 {
 	QMap<QString, Image::SaveResult> res;
 	for (QString path : paths)
-		res.insert(path, save(path, false, false, addMd5, startCommands, count));
+		res.insert(path, save(path, force, false, addMd5, startCommands, count));
 	return res;
 }
 QMap<QString, Image::SaveResult> Image::save(QString filename, QString path, bool addMd5, bool startCommands, int count)

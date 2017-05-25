@@ -733,7 +733,7 @@ void searchTab::contextSaveImageAs(QObject *image)
 	{
 		path = QDir::toNativeSeparators(path);
 		m_settings->setValue("Zoom/lastDir", path.section(QDir::toNativeSeparators("/"), 0, -2));
-		img->loadAndSave(QStringList() << path, false);
+		img->loadAndSave(QStringList() << path, false, true);
 	}
 }
 void searchTab::contextSaveSelected()
