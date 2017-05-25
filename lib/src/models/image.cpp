@@ -800,7 +800,7 @@ void Image::finishedImageS()
 	QNetworkReply::NetworkError error = m_loadImage->error();
 	QString errorString = m_loadImage->errorString();
 
-	m_loadedImage = true;
+	m_loadedImage = (error == QNetworkReply::ContentNotFoundError || error == QNetworkReply::NoError);
 	m_loadImage->deleteLater();
 	m_loadImage = nullptr;
 
