@@ -647,6 +647,25 @@ QBouton *searchTab::createImageThumbnail(int position, QSharedPointer<Image> img
 	return l;
 }
 
+QString getImageAlreadyExists(Image *img, Profile *profile)
+{
+	QSettings *settings = profile->getSettings();
+	QString path = settings->value("Save/path").toString().replace("\\", "/");
+	QString fn = settings->value("Save/filename").toString();
+
+	if (!Filename(fn).needExactTags(img->parentSite()))
+	{
+		QStringList files = img->path(fn, path, 0, true, false, true, true, true);
+		for (QString file : files)
+		{
+			if (QFile(file).exists())
+				return file;
+		}
+	}
+
+	return profile->md5Exists(img->md5());
+}
+
 void searchTab::thumbnailContextMenu(QSharedPointer<Image> img)
 {
 	QMenu *menu = new ImageContextMenu(m_settings, img, m_parent, this);
@@ -655,7 +674,11 @@ void searchTab::thumbnailContextMenu(QSharedPointer<Image> img)
 	// Save image
 	QSignalMapper *mapperSave = new QSignalMapper(this);
 	connect(mapperSave, SIGNAL(mapped(QObject*)), this, SLOT(contextSaveImage(QObject*)));
-	QAction *actionSave = new QAction(QIcon(":/images/icons/save.png"), tr("Save"), menu);
+	QAction *actionSave;
+	if (!getImageAlreadyExists(img.data(), m_profile).isEmpty())
+	{ actionSave = new QAction(QIcon(":/images/icons/remove.png"), tr("Delete"), menu); }
+	else
+	{ actionSave = new QAction(QIcon(":/images/icons/save.png"), tr("Save"), menu); }
 	menu->insertAction(first, actionSave);
 	connect(actionSave, SIGNAL(triggered()), mapperSave, SLOT(map()));
 	mapperSave->setMapping(actionSave, img.data());
@@ -681,13 +704,20 @@ void searchTab::thumbnailContextMenu(QSharedPointer<Image> img)
 }
 void searchTab::contextSaveImage(QObject *image)
 {
-	QString fn = m_settings->value("Save/filename").toString();
-	QString path = m_settings->value("Save/path").toString();
-
 	Image *img = (Image*)image;
-	if (m_boutons.contains(img))
-	{ connect(img, SIGNAL(downloadProgressImage(qint64, qint64)), m_boutons[img], SLOT(setProgress(qint64, qint64))); }
-	img->loadAndSave(fn, path);
+
+	QString already = getImageAlreadyExists(img, m_profile);
+	if (!already.isEmpty())
+	{ QFile(already).remove(); }
+	else
+	{
+		QString fn = m_settings->value("Save/filename").toString();
+		QString path = m_settings->value("Save/path").toString();
+
+		if (m_boutons.contains(img))
+		{ connect(img, SIGNAL(downloadProgressImage(qint64, qint64)), m_boutons[img], SLOT(setProgress(qint64, qint64))); }
+		img->loadAndSave(fn, path);
+	}
 }
 void searchTab::contextSaveImageAs(QObject *image)
 {
