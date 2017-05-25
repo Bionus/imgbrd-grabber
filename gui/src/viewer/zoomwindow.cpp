@@ -1233,6 +1233,10 @@ void zoomWindow::wheelEvent(QWheelEvent *e)
 {
 	if (m_settings->value("imageNavigateScroll", true).toBool())
 	{
+		// Ignore events triggered when reaching the bottom of the tag list
+		if (ui->scrollArea->underMouse())
+			return;
+
 		// Ignore events if we already got one less than 500ms ago
 		if (!m_lastWheelEvent.isNull() && m_lastWheelEvent.elapsed() <= 500)
 			e->ignore();
