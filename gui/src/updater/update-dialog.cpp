@@ -12,7 +12,7 @@ UpdateDialog::UpdateDialog(QWidget *parent)
 {
 	ui->setupUi(this);
 
-	ui->labelChangelog->setVisible(ui->checkShowChangelog->isChecked());
+	ui->scrollArea->setVisible(ui->checkShowChangelog->isChecked());
 	ui->progressDownload->hide();
 	resize(300, 0);
 
@@ -26,7 +26,7 @@ UpdateDialog::~UpdateDialog()
 
 void UpdateDialog::resizeToFit()
 {
-	ui->labelChangelog->setVisible(ui->checkShowChangelog->isChecked());
+	ui->scrollArea->setVisible(ui->checkShowChangelog->isChecked());
 	int width = ui->labelUpdateAvailable->size().width();
 
 	ui->labelUpdateAvailable->setMinimumWidth(width);
