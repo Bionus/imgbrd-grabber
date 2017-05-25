@@ -150,6 +150,7 @@ class zoomWindow : public QWidget
 		// Display
 		QPixmap m_displayImage;
 		QMovie *m_displayMovie;
+		bool m_labelImageScaled;
 
 		// Threads
 		QThread m_imageLoaderThread;

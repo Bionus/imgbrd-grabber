@@ -1485,7 +1485,7 @@ void mainWindow::getAllImages()
 
 	// Set some values on the batch window
 	m_progressdialog->updateColumns();
-	m_progressdialog->setImagesCount(m_getAllLimit);
+	m_progressdialog->setImagesCount(qMin(m_getAllLimit, m_getAllRemaining.count()));
 	//m_progressdialog->setMaximum(count);
 	m_progressdialog->setText(tr("Downloading images..."));
 	m_progressdialog->setImages(m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors);
@@ -1963,18 +1963,6 @@ void mainWindow::getAllFinished()
 	qDeleteAll(m_downloadersDone);
 	m_downloadersDone.clear();
 
-	// Final action
-	switch (m_progressdialog->endAction())
-	{
-		case 1:	m_progressdialog->close();				break;
-		case 2:	openTray();								break;
-		case 3:	saveFolder();							break;
-		case 4:	QSound::play(":/sounds/finished.wav");	break;
-		case 5: shutDown();								break;
-	}
-	activateWindow();
-	m_getAll = false;
-
 	// Information about downloads
 	if (m_getAllErrors <= 0 || m_batchAutomaticRetries <= 0)
 	{
@@ -2028,6 +2016,18 @@ void mainWindow::getAllFinished()
 			return;
 		}
 	}
+
+	// Final action
+	switch (m_progressdialog->endAction())
+	{
+		case 1:	m_progressdialog->close();				break;
+		case 2:	openTray();								break;
+		case 3:	saveFolder();							break;
+		case 4:	QSound::play(":/sounds/finished.wav");	break;
+		case 5: shutDown();								break;
+	}
+	activateWindow();
+	m_getAll = false;
 
 	// Remove after download and retries are finished
 	if (m_progressdialog->endRemove())

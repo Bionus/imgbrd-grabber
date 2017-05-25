@@ -581,7 +581,7 @@ void FilenameTest::testEscapeMethod()
 	m_details["md5"] = "good'ol' md5";
 	m_img = new Image(m_site, m_details, m_profile);
 
-	Filename fn("INSERT INTO test (%id%, %md5%, %ext%);");
+	Filename fn("INSERT INTO test (%id:escape%, %md5:escape%, %ext:escape%);");
 	fn.setEscapeMethod([](QString val) { return QString("'%1'").arg(val.replace("'", "''")); });
 
 	QCOMPARE(fn.path(*m_img, m_profile).first(), QString("INSERT INTO test ('7331', 'good''ol'' md5', 'jpg');"));

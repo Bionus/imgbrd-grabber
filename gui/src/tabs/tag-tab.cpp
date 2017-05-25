@@ -189,16 +189,18 @@ void tagTab::getAll()
 			actuals.append(keys.at(i));
 	}
 
-	for (int i = 0; i < actuals.count(); i++)
+	for (QString actual : actuals)
 	{
-		int limit = m_pages.value(actuals.at(i))->highLimit();
-		int v1 = qMin((limit > 0 ? limit : 200), qMax(m_pages.value(actuals.at(i))->images().count(), m_pages.value(actuals.at(i))->imagesCount()));
-		int v2 = qMax(m_pages.value(actuals.at(i))->images().count(), m_pages.value(actuals.at(i))->imagesCount());
-		if (v1 == 0 && v2 == 0)
+		Page *page = m_pages[actual];
+		int highLimit = page->highLimit();
+		int currentCount = page->images().count();
+		int total = qMax(currentCount, page->imagesCount());
+		int perPage = highLimit > 0 ? qMin(highLimit, total) : currentCount;
+		if (perPage == 0 && total == 0)
 			continue;
 
-		QString search = m_pages.value(actuals.at(i))->search().join(' ');
-		emit batchAddGroup(DownloadQueryGroup(m_settings, search, 1, v1, v2, m_sites->value(actuals.at(i))));
+		QString search = m_pages[actual]->search().join(' ');
+		emit batchAddGroup(DownloadQueryGroup(m_settings, search, 1, perPage, total, m_sites->value(actual)));
 	}
 }
 

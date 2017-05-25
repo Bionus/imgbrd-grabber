@@ -24,7 +24,7 @@
 
 
 zoomWindow::zoomWindow(QList<QSharedPointer<Image> > images, QSharedPointer<Image> image, Site *site, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
-	: QWidget(Q_NULLPTR, Qt::Window), m_parent(parent), m_profile(profile), m_favorites(profile->getFavorites()), m_viewItLater(profile->getKeptForLater()), m_ignore(profile->getIgnored()), m_settings(profile->getSettings()), ui(new Ui::zoomWindow), m_site(site), timeout(300), m_loaded(false), m_loadedImage(false), m_loadedDetails(false), m_displayImage(QPixmap()), m_displayMovie(nullptr), m_finished(false), m_size(0), m_sites(sites), m_source(), m_fullScreen(nullptr), m_images(images), m_isFullscreen(false), m_isSlideshowRunning(false), m_imagePath("")
+	: QWidget(Q_NULLPTR, Qt::Window), m_parent(parent), m_profile(profile), m_favorites(profile->getFavorites()), m_viewItLater(profile->getKeptForLater()), m_ignore(profile->getIgnored()), m_settings(profile->getSettings()), ui(new Ui::zoomWindow), m_site(site), timeout(300), m_loaded(false), m_loadedImage(false), m_loadedDetails(false), m_displayImage(QPixmap()), m_displayMovie(nullptr), m_finished(false), m_size(0), m_sites(sites), m_source(), m_fullScreen(nullptr), m_images(images), m_isFullscreen(false), m_isSlideshowRunning(false), m_imagePath(""), m_labelImageScaled(false)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	ui->setupUi(this);
@@ -766,10 +766,12 @@ void zoomWindow::update(bool onlysize, bool force)
 	{
 		Qt::TransformationMode mode = onlysize ? Qt::FastTransformation : Qt::SmoothTransformation;
 		m_labelImage->setImage(m_displayImage.scaled(m_labelImage->width(), m_labelImage->height(), Qt::KeepAspectRatio, mode));
+		m_labelImageScaled = true;
 	}
-	else if (m_loadedImage || force)
+	else if (m_loadedImage || force || (m_labelImageScaled && !needScaling))
 	{
 		m_labelImage->setImage(m_displayImage);
+		m_labelImageScaled = false;
 	}
 
 	m_stackedWidget->setCurrentWidget(m_labelImage);
@@ -1231,6 +1233,10 @@ void zoomWindow::wheelEvent(QWheelEvent *e)
 {
 	if (m_settings->value("imageNavigateScroll", true).toBool())
 	{
+		// Ignore events triggered when reaching the bottom of the tag list
+		if (ui->scrollArea->underMouse())
+			return;
+
 		// Ignore events if we already got one less than 500ms ago
 		if (!m_lastWheelEvent.isNull() && m_lastWheelEvent.elapsed() <= 500)
 			e->ignore();
