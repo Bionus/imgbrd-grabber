@@ -1963,18 +1963,6 @@ void mainWindow::getAllFinished()
 	qDeleteAll(m_downloadersDone);
 	m_downloadersDone.clear();
 
-	// Final action
-	switch (m_progressdialog->endAction())
-	{
-		case 1:	m_progressdialog->close();				break;
-		case 2:	openTray();								break;
-		case 3:	saveFolder();							break;
-		case 4:	QSound::play(":/sounds/finished.wav");	break;
-		case 5: shutDown();								break;
-	}
-	activateWindow();
-	m_getAll = false;
-
 	// Information about downloads
 	if (m_getAllErrors <= 0 || m_batchAutomaticRetries <= 0)
 	{
@@ -2028,6 +2016,18 @@ void mainWindow::getAllFinished()
 			return;
 		}
 	}
+
+	// Final action
+	switch (m_progressdialog->endAction())
+	{
+		case 1:	m_progressdialog->close();				break;
+		case 2:	openTray();								break;
+		case 3:	saveFolder();							break;
+		case 4:	QSound::play(":/sounds/finished.wav");	break;
+		case 5: shutDown();								break;
+	}
+	activateWindow();
+	m_getAll = false;
 
 	// Remove after download and retries are finished
 	if (m_progressdialog->endRemove())
