@@ -5,6 +5,7 @@
 #include <QList>
 #include <QSettings>
 #include <QPair>
+#include <QHash>
 #include "models/favorite.h"
 
 
@@ -76,7 +77,7 @@ class Profile : public QObject
 		Commands		*m_commands;
 		QStringList		m_autoComplete;
 		QStringList		m_customAutoComplete;
-		QMap<QString, QString>	m_md5s;
+		QHash<QString, QString>	m_md5s;
 };
 
 #endif // PROFILE_H
