@@ -60,3 +60,30 @@ void clearLayout(QLayout *layout)
 		delete item;
 	}
 }
+
+#include <QDebug>
+QString parseMarkdown(QString str)
+{
+	// Windows EOL
+	str.replace("\\r\\n", "\\n");
+
+	// Headers
+	QRegExp header("\\n(#+)([^#].*)\\n");
+	header.setMinimal(true);
+	int pos = 0;
+	while ((pos = header.indexIn(str, pos)) != -1) {
+		int level = qMax(1, qMin(6, header.cap(1).length()));
+		QString result = "<h" + QString::number(level) + ">" + header.cap(2).trimmed() + "</h" + QString::number(level) + ">";
+		str.replace(header.cap(0), result);
+		pos += header.matchedLength();
+	}
+
+	// Issue links
+	QRegExp issueLinks("(issue|fix) #(\\d+)");
+	str.replace(issueLinks, "<a href='" + QString(PROJECT_GITHUB_URL) + "/issues/\\2'>\\1 #\\2</a>");
+
+	// Line breaks to HTML
+	str.replace("\n", "<br/>");
+
+	return str;
+}

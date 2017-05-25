@@ -2,6 +2,7 @@
 #include "ui_update-dialog.h"
 #include <QMessageBox>
 #include <QProcess>
+#include "helpers.h"
 #ifndef Q_OS_WIN
 	#include <QDesktopServices>
 #endif
@@ -48,7 +49,8 @@ void UpdateDialog::checkForUpdatesDone(QString newVersion, bool available, QStri
 		return;
 	}
 
-	ui->labelChangelog->setText(changelog);
+	ui->labelChangelog->setTextFormat(Qt::RichText);
+	ui->labelChangelog->setText(parseMarkdown(changelog));
 	ui->labelVersion->setText(tr("Version <b>%1</b>").arg(newVersion));
 
 	show();
