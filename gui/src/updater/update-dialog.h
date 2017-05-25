@@ -17,8 +17,11 @@ class UpdateDialog : public QDialog
 	Q_OBJECT
 
 	public:
-		explicit UpdateDialog(QWidget *parent);
+		explicit UpdateDialog(QWidget *parent = Q_NULLPTR);
 		~UpdateDialog();
+
+	signals:
+		void noUpdateAvailable();
 
 	public slots:
 		void accept();

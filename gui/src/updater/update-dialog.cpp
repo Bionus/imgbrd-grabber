@@ -43,7 +43,10 @@ void UpdateDialog::checkForUpdates()
 void UpdateDialog::checkForUpdatesDone(QString newVersion, bool available, QString changelog)
 {
 	if (!available)
+	{
+		emit noUpdateAvailable();
 		return;
+	}
 
 	ui->labelChangelog->setText(changelog);
 	ui->labelVersion->setText(tr("Version <b>%1</b>").arg(newVersion));
@@ -87,7 +90,9 @@ void UpdateDialog::downloadFinished(QString path)
 	{
 		QProcess::startDetached(path);
 
-		m_parent->close();
+		if (m_parent != Q_NULLPTR)
+		{ m_parent->close();}
+
 		qApp->exit();
 	}
 	else

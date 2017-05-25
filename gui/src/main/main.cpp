@@ -30,6 +30,7 @@
 #include "models/site.h"
 #include "functions.h"
 #include "mainwindow.h"
+#include "updater/update-dialog.h"
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 2, 0))
 	#include <QCommandLineParser>
 #else
@@ -167,6 +168,24 @@ int main(int argc, char *argv[])
 	#if !USE_CLI
 		else
 		{
+			// Check for updates
+			QSettings *settings = profile->getSettings();
+			int cfuInterval = settings->value("check_for_updates", 24*60*60).toInt();
+			QDateTime lastCfu = settings->value("last_check_for_updates", QDateTime()).toDateTime();
+			if (cfuInterval >= 0 && (!lastCfu.isValid() || lastCfu.addSecs(cfuInterval) <= QDateTime::currentDateTime()))
+			{
+				settings->setValue("last_check_for_updates", QDateTime::currentDateTime());
+
+				UpdateDialog *updateDialog = new UpdateDialog();
+				QEventLoop *el = new QEventLoop();
+				QObject::connect(updateDialog, &UpdateDialog::noUpdateAvailable, el, &QEventLoop::quit);
+				QObject::connect(updateDialog, &UpdateDialog::rejected, el, &QEventLoop::quit);
+
+				updateDialog->checkForUpdates();
+				el->exec();
+				el->deleteLater();
+			}
+
 			QMap<QString, QString> params;
 			params.insert("booru", parser.value(sourceOption));
 			params.insert("limit", parser.value(limitOption));
