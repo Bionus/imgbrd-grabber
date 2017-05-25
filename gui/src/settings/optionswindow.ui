@@ -80,12 +80,7 @@
        </item>
        <item>
         <property name="text">
-         <string>Separate text file</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Separate log</string>
+         <string>Separate log files</string>
         </property>
        </item>
        <item>
@@ -986,16 +981,9 @@
       <widget class="QWidget" name="pageSaveTextfile">
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
-         <widget class="QCheckBox" name="checkTextfileActivate">
-          <property name="text">
-           <string>Enable external text files</string>
-          </property>
-         </widget>
-        </item>
-        <item>
          <widget class="QLabel" name="label_81">
           <property name="text">
-           <string>&lt;i&gt;Each time an image is saved, an external text file will be save with the same name at the same location, containing the image's tags.&lt;/i&gt;</string>
+           <string>&lt;i&gt;Each time an image is saved, its information can be added to a separate text file for later processing or for organization purposes.&lt;/i&gt;</string>
           </property>
           <property name="wordWrap">
            <bool>true</bool>
@@ -1003,119 +991,27 @@
          </widget>
         </item>
         <item>
-         <widget class="QWidget" name="widgetTextfile" native="true">
-          <layout class="QFormLayout" name="formLayout_12">
-           <property name="leftMargin">
-            <number>0</number>
-           </property>
-           <property name="topMargin">
-            <number>0</number>
-           </property>
-           <property name="rightMargin">
-            <number>0</number>
-           </property>
-           <property name="bottomMargin">
-            <number>0</number>
-           </property>
-           <item row="0" column="0">
-            <widget class="QLabel" name="label_89">
-             <property name="text">
-              <string>Suffix</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QLineEdit" name="lineTextfileSuffix">
-             <property name="text">
-              <string notr="true">.txt</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0" colspan="2">
-            <widget class="QPlainTextEdit" name="textEditTextfileContent"/>
-           </item>
-           <item row="1" column="0" colspan="2">
-            <widget class="QLabel" name="label_35">
-             <property name="text">
-              <string>Text file content</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="0" colspan="2">
-            <widget class="QLabel" name="label_80">
-             <property name="text">
-              <string>Available tokens: the same as in the &quot;Save&quot; part.</string>
-             </property>
-             <property name="wordWrap">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
+         <layout class="QGridLayout" name="layoutLogFiles"/>
         </item>
-       </layout>
-      </widget>
-      <widget class="QWidget" name="pageSaveLog">
-       <layout class="QFormLayout" name="formLayout_21">
-        <item row="0" column="0" colspan="2">
-         <widget class="QCheckBox" name="checkSaveLogEnable">
+        <item>
+         <widget class="QPushButton" name="buttonAddLogFile">
           <property name="text">
-           <string>Enable external logging</string>
+           <string>Add a separate log file</string>
           </property>
          </widget>
         </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="labelSaveLogFile">
-          <property name="text">
-           <string>Log file</string>
+        <item>
+         <spacer name="verticalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
           </property>
-         </widget>
-        </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="labelSaveLogFormat">
-          <property name="text">
-           <string>Line format</string>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
           </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <layout class="QHBoxLayout" name="layoutSaveLogFile">
-          <item>
-           <widget class="QLineEdit" name="lineSaveLogFile"/>
-          </item>
-          <item>
-           <widget class="QPushButton" name="buttonSaveLogFile">
-            <property name="text">
-             <string>Browse</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item row="3" column="1">
-         <layout class="QHBoxLayout" name="layoutSaveLogFormat">
-          <item>
-           <widget class="QLineEdit" name="lineSaveLogFormat"/>
-          </item>
-          <item>
-           <widget class="QPushButton" name="buttonSaveLogFormat">
-            <property name="text">
-             <string notr="true">...</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item row="1" column="0" colspan="2">
-         <widget class="QLabel" name="labelSaveLogEnable">
-          <property name="text">
-           <string>&lt;i&gt;Each time an image is saved, a new line will be added to the selected file.&lt;/i&gt;</string>
-          </property>
-          <property name="wordWrap">
-           <bool>true</bool>
-          </property>
-         </widget>
+         </spacer>
         </item>
        </layout>
       </widget>
@@ -2994,38 +2890,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>checkProxyUse</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>widgetProxy</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>360</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>360</x>
-     <y>29</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>spinCharactersKeepN</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>radioCharactersKeepN</receiver>
-   <slot>click()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>360</x>
-     <y>28</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>278</x>
-     <y>28</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>spinCharactersKeepNThenAdd</sender>
    <signal>valueChanged(int)</signal>
    <receiver>radioCharactersKeepNThenAdd</receiver>
@@ -3038,54 +2902,6 @@
     <hint type="destinationlabel">
      <x>278</x>
      <y>31</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>lineCharactersKeepNThenAdd</sender>
-   <signal>textEdited(QString)</signal>
-   <receiver>radioCharactersKeepNThenAdd</receiver>
-   <slot>click()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>359</x>
-     <y>32</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>278</x>
-     <y>31</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>lineCharactersReplaceAll</sender>
-   <signal>textEdited(QString)</signal>
-   <receiver>radioCharactersReplaceAll</receiver>
-   <slot>click()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>360</x>
-     <y>34</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>278</x>
-     <y>34</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>lineCopyrightsReplaceAll</sender>
-   <signal>textEdited(QString)</signal>
-   <receiver>radioCopyrightsReplaceAll</receiver>
-   <slot>click()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>360</x>
-     <y>32</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>278</x>
-     <y>32</y>
     </hint>
    </hints>
   </connection>
@@ -3106,18 +2922,50 @@
    </hints>
   </connection>
   <connection>
-   <sender>lineCopyrightsKeepNThenAdd</sender>
+   <sender>spinArtistsKeepNThenAdd</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>radioArtistsKeepNThenAdd</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>528</x>
+     <y>165</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>408</x>
+     <y>161</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lineCopyrightsReplaceAll</sender>
    <signal>textEdited(QString)</signal>
-   <receiver>radioCopyrightsKeepNThenAdd</receiver>
+   <receiver>radioCopyrightsReplaceAll</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>360</x>
+     <y>32</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>278</x>
+     <y>32</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lineCharactersKeepNThenAdd</sender>
+   <signal>textEdited(QString)</signal>
+   <receiver>radioCharactersKeepNThenAdd</receiver>
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>359</x>
-     <y>30</y>
+     <y>32</y>
     </hint>
     <hint type="destinationlabel">
      <x>278</x>
-     <y>29</y>
+     <y>31</y>
     </hint>
    </hints>
   </connection>
@@ -3144,124 +2992,44 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>360</x>
-     <y>28</y>
+     <x>647</x>
+     <y>138</y>
     </hint>
     <hint type="destinationlabel">
-     <x>278</x>
-     <y>28</y>
+     <x>358</x>
+     <y>135</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>spinArtistsKeepNThenAdd</sender>
+   <sender>lineCharactersReplaceAll</sender>
+   <signal>textEdited(QString)</signal>
+   <receiver>radioCharactersReplaceAll</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>360</x>
+     <y>34</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>278</x>
+     <y>34</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>spinCharactersKeepN</sender>
    <signal>valueChanged(int)</signal>
-   <receiver>radioArtistsKeepNThenAdd</receiver>
-   <slot>click()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>319</x>
-     <y>32</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>278</x>
-     <y>31</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>lineArtistsKeepNThenAdd</sender>
-   <signal>textEdited(QString)</signal>
-   <receiver>radioArtistsKeepNThenAdd</receiver>
-   <slot>click()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>359</x>
-     <y>32</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>278</x>
-     <y>31</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>lineArtistsReplaceAll</sender>
-   <signal>textEdited(QString)</signal>
-   <receiver>radioArtistsReplaceAll</receiver>
+   <receiver>radioCharactersKeepN</receiver>
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>360</x>
-     <y>34</y>
+     <y>28</y>
     </hint>
     <hint type="destinationlabel">
      <x>278</x>
-     <y>34</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkSaveLogEnable</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>lineSaveLogFile</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>639</x>
-     <y>34</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>565</x>
-     <y>81</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkSaveLogEnable</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>buttonSaveLogFile</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>639</x>
-     <y>34</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>646</x>
-     <y>83</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkSaveLogEnable</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>lineSaveLogFormat</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>639</x>
-     <y>34</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>565</x>
-     <y>112</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkSaveLogEnable</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>buttonSaveLogFormat</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>639</x>
-     <y>34</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>646</x>
-     <y>114</y>
+     <y>28</y>
     </hint>
    </hints>
   </connection>
@@ -3282,23 +3050,88 @@
    </hints>
   </connection>
   <connection>
-   <sender>checkTextfileActivate</sender>
+   <sender>lineArtistsReplaceAll</sender>
+   <signal>textEdited(QString)</signal>
+   <receiver>radioArtistsReplaceAll</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>647</x>
+     <y>192</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>391</x>
+     <y>189</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkProxyUse</sender>
    <signal>toggled(bool)</signal>
-   <receiver>widgetTextfile</receiver>
+   <receiver>widgetProxy</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>349</x>
-     <y>28</y>
+     <x>360</x>
+     <y>20</y>
     </hint>
     <hint type="destinationlabel">
-     <x>311</x>
-     <y>76</y>
+     <x>360</x>
+     <y>29</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lineCopyrightsKeepNThenAdd</sender>
+   <signal>textEdited(QString)</signal>
+   <receiver>radioCopyrightsKeepNThenAdd</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>359</x>
+     <y>30</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>278</x>
+     <y>29</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lineArtistsKeepNThenAdd</sender>
+   <signal>textEdited(QString)</signal>
+   <receiver>radioArtistsKeepNThenAdd</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>646</x>
+     <y>165</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>408</x>
+     <y>161</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonAddLogFile</sender>
+   <signal>clicked()</signal>
+   <receiver>optionsWindow</receiver>
+   <slot>addLogFile()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>608</x>
+     <y>410</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>659</x>
+     <y>413</y>
     </hint>
    </hints>
   </connection>
  </connections>
  <slots>
   <slot>updateContainer(QTreeWidgetItem*,QTreeWidgetItem*)</slot>
+  <slot>addLogFile()</slot>
  </slots>
 </ui>

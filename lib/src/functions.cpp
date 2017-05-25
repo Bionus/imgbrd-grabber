@@ -63,6 +63,25 @@ QMap<QString,QPair<QString,QString>> getFilenames(QSettings *settings)
 	return tokens;
 }
 
+QMap<int, QMap<QString, QVariant> > getExternalLogFiles(QSettings *settings)
+{
+	QMap<int, QMap<QString, QVariant>> ret;
+
+	settings->beginGroup("LogFiles");
+	for (QString group : settings->childGroups())
+	{
+		settings->beginGroup(group);
+		QMap<QString, QVariant> logSettings;
+		for (QString key : settings->childKeys())
+		{ logSettings.insert(key, settings->value(key)); }
+		ret.insert(group.toInt(), logSettings);
+		settings->endGroup();
+	}
+	settings->endGroup();
+
+	return ret;
+}
+
 QStringList removeWildards(QStringList elements, QStringList remove)
 {
 	QStringList tags;

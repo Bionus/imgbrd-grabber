@@ -1513,9 +1513,10 @@ void mainWindow::getAllImages()
 
 bool mainWindow::needExactTags(QSettings *settings)
 {
-	if (settings->value("Textfile/activate", false).toBool())
+	auto logFiles = getExternalLogFiles(settings);
+	for (int i : logFiles.keys())
 	{
-		Filename fn(settings->value("Textfile/content", "").toString());
+		Filename fn(logFiles[i]["content"].toString());
 		if (fn.needExactTags())
 			return true;
 	}

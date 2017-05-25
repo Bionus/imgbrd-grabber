@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QTreeWidgetItem>
+#include <QSettings>
 
 
 namespace Ui
@@ -68,6 +69,11 @@ class optionsWindow : public QDialog
 		void addCustom(QString, QString);
 		void on_buttonFilenames_clicked();
 		void addFilename(QString, QString, QString);
+		void addLogFile();
+		void showLogFiles(QSettings *settings);
+		void editLogFile(int index);
+		void removeLogFile(int index);
+		void setLogFile(int index, QMap<QString, QVariant> logFile);
 		void save();
 
 	signals:

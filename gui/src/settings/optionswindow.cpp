@@ -6,10 +6,12 @@
 #include <QColorDialog>
 #include <QFontDialog>
 #include <QSqlDatabase>
+#include <QSignalMapper>
 #include "ui_optionswindow.h"
 #include "customwindow.h"
 #include "conditionwindow.h"
 #include "filenamewindow.h"
+#include "log-window.h"
 #include "language-loader.h"
 #include "theme-loader.h"
 #include "models/site.h"
@@ -97,16 +99,8 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	ui->checkAutocompletion->setChecked(settings->value("autocompletion", true).toBool());
 	ui->checkUseregexfortags->setChecked(settings->value("useregexfortags", true).toBool());
 
-	ui->checkTextfileActivate->setChecked(settings->value("Textfile/activate", false).toBool());
-	ui->lineTextfileSuffix->setText(settings->value("Textfile/suffix", ".txt").toString());
-	ui->textEditTextfileContent->setPlainText(settings->value("Textfile/content", "%all%").toString());
-	ui->widgetTextfile->setEnabled(settings->value("Textfile/activate", false).toBool());
-
-	ui->checkSaveLogEnable->setChecked(settings->value("SaveLog/activate", false).toBool());
-	ui->lineSaveLogFile->setEnabled(settings->value("SaveLog/activate", false).toBool());
-	ui->lineSaveLogFile->setText(settings->value("SaveLog/file", "").toString());
-	ui->lineSaveLogFormat->setEnabled(settings->value("SaveLog/activate", false).toBool());
-	ui->lineSaveLogFormat->setText(settings->value("SaveLog/format", "%website% - %md5% - %all%").toString());
+	// External log files
+	showLogFiles(settings);
 
 	ui->comboBatchEnd->setCurrentIndex(settings->value("Batch/end", 0).toInt());
 	settings->beginGroup("Save");
@@ -376,6 +370,82 @@ void optionsWindow::addFilename(QString condition, QString filename, QString fol
 }
 
 
+void optionsWindow::showLogFiles(QSettings *settings)
+{
+	clearLayout(ui->layoutLogFiles);
+
+	auto logFiles = getExternalLogFiles(settings);
+	QSignalMapper *mapperEditLogFile = new QSignalMapper(this);
+	QSignalMapper *mapperRemoveLogFile = new QSignalMapper(this);
+	connect(mapperEditLogFile, SIGNAL(mapped(int)), this, SLOT(editLogFile(int)));
+	connect(mapperRemoveLogFile, SIGNAL(mapped(int)), this, SLOT(removeLogFile(int)));
+	for (int i : logFiles.keys())
+	{
+		auto logFile = logFiles[i];
+
+		QLabel *label = new QLabel(logFile["name"].toString());
+		label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+		ui->layoutLogFiles->addWidget(label, i, 0);
+
+		QPushButton *buttonEdit = new QPushButton("Edit");
+		mapperEditLogFile->setMapping(buttonEdit, i);
+		connect(buttonEdit, SIGNAL(clicked(bool)), mapperEditLogFile, SLOT(map()));
+		ui->layoutLogFiles->addWidget(buttonEdit, i, 1);
+
+		QPushButton *buttonDelete = new QPushButton("Remove");
+		mapperRemoveLogFile->setMapping(buttonDelete, i);
+		connect(buttonDelete, SIGNAL(clicked(bool)), mapperRemoveLogFile, SLOT(map()));
+		ui->layoutLogFiles->addWidget(buttonDelete, i, 2);
+	}
+}
+
+void optionsWindow::addLogFile()
+{
+	LogWindow *logWindow = new LogWindow(-1, m_profile, this);
+	connect(logWindow, &LogWindow::validated, this, &optionsWindow::setLogFile);
+	logWindow->show();
+}
+
+void optionsWindow::editLogFile(int index)
+{
+	LogWindow *logWindow = new LogWindow(index, m_profile, this);
+	connect(logWindow, &LogWindow::validated, this, &optionsWindow::setLogFile);
+	logWindow->show();
+}
+
+void optionsWindow::removeLogFile(int index)
+{
+	QSettings *settings = m_profile->getSettings();
+	settings->beginGroup("LogFiles");
+	settings->beginGroup(QString::number(index));
+	for (QString key : settings->childKeys())
+	{ settings->remove(key); }
+	settings->endGroup();
+	settings->endGroup();
+
+	showLogFiles(settings);
+}
+
+void optionsWindow::setLogFile(int index, QMap<QString, QVariant> logFile)
+{
+	QSettings *settings = m_profile->getSettings();
+	settings->beginGroup("LogFiles");
+
+	if (index < 0)
+	{ index = settings->childGroups().last().toInt() + 1; }
+
+	settings->beginGroup(QString::number(index));
+
+	for (QString key : logFile.keys())
+	{ settings->setValue(key, logFile[key]); }
+
+	settings->endGroup();
+	settings->endGroup();
+
+	showLogFiles(settings);
+}
+
+
 void optionsWindow::setColor(QLineEdit *lineEdit, bool button)
 {
 	QString text = lineEdit->text();
@@ -577,7 +647,7 @@ void optionsWindow::save()
 	settings->setValue("autocompletion", ui->checkAutocompletion->isChecked());
 	settings->setValue("useregexfortags", ui->checkUseregexfortags->isChecked());
 
-	settings->beginGroup("Textfile");
+	/*settings->beginGroup("Textfile");
 		settings->setValue("activate", ui->checkTextfileActivate->isChecked());
 		settings->setValue("suffix", ui->lineTextfileSuffix->text());
 		settings->setValue("content", ui->textEditTextfileContent->toPlainText());
@@ -587,7 +657,7 @@ void optionsWindow::save()
 		settings->setValue("activate", ui->checkSaveLogEnable->isChecked());
 		settings->setValue("file", ui->lineSaveLogFile->text());
 		settings->setValue("format", ui->lineSaveLogFormat->text());
-	settings->endGroup();
+	settings->endGroup();*/
 
 	settings->setValue("Batch/end", ui->comboBatchEnd->currentIndex());
 	settings->beginGroup("Save");
