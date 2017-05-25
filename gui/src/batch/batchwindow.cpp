@@ -372,11 +372,7 @@ void batchWindow::setImagesCount(int value)
 {
 	m_imagesCount = value;
 	ui->labelImages->setText(QString("0/%2").arg(m_imagesCount));
-	ui->progressBar->setMaximum(value);
-
-	#ifdef Q_OS_WIN
-		m_taskBarProgress->setMaximum(value);
-	#endif
+	setMaximum(value);
 }
 void batchWindow::setImages(int value)
 {

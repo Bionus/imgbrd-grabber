@@ -1485,7 +1485,7 @@ void mainWindow::getAllImages()
 
 	// Set some values on the batch window
 	m_progressdialog->updateColumns();
-	m_progressdialog->setImagesCount(m_getAllLimit);
+	m_progressdialog->setImagesCount(qMin(m_getAllLimit, m_getAllRemaining.count()));
 	//m_progressdialog->setMaximum(count);
 	m_progressdialog->setText(tr("Downloading images..."));
 	m_progressdialog->setImages(m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors);
