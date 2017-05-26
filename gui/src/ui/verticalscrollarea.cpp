@@ -4,7 +4,7 @@
 
 
 VerticalScrollArea::VerticalScrollArea(QWidget *parent)
-	: QScrollArea(parent)
+	: QScrollArea(parent), m_endOfScroll(0)
 {
 	setWidgetResizable(true);
 	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -37,4 +37,20 @@ void VerticalScrollArea::updateWidgetSize()
 
 		widget()->setMaximumHeight(m_scrollEnabled ? QWIDGETSIZE_MAX : height());
 	}
+}
+
+void VerticalScrollArea::wheelEvent(QWheelEvent* e)
+{
+	QScrollBar *scrollBar = verticalScrollBar();
+
+	if (scrollBar->value() == scrollBar->maximum())
+	{
+		m_endOfScroll++;
+		if (m_endOfScroll == 3)
+			emit endOfScrollReached();
+	}
+	else
+	{ m_endOfScroll = 0; }
+
+	QScrollArea::wheelEvent(e);
 }
