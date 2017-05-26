@@ -959,7 +959,7 @@ Image::SaveResult Image::save(QString path, bool force, bool basic, bool addMd5,
 							fileTagsPath = path + logFile["suffix"].toString();
 
 						// Append to file if necessary
-						QFile fileTags(m_settings->value("SaveLog/file", "").toString());
+						QFile fileTags(fileTagsPath);
 						bool append = fileTags.exists();
 						if (fileTags.open(QFile::WriteOnly | QFile::Append | QFile::Text))
 						{
