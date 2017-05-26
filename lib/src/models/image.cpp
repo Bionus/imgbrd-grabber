@@ -764,9 +764,11 @@ void Image::finishedImageS()
 		bool sampleFallback = m_settings->value("Save/samplefallback", true).toBool();
 		QString ext = getExtension(m_url);
 		QString newext = getNextExtension(ext);
-		bool isLast = newext.isEmpty();
 
-		if (!isLast || (sampleFallback && !m_sampleUrl.isEmpty() && !m_tryingSample))
+		bool shouldFallback = sampleFallback && !m_sampleUrl.isEmpty();
+		bool isLast = newext.isEmpty() || (shouldFallback && m_tryingSample);
+
+		if (!isLast || (shouldFallback && !m_tryingSample))
 		{
 			if (isLast)
 			{
