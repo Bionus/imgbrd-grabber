@@ -12,10 +12,12 @@
 #include "conditionwindow.h"
 #include "filenamewindow.h"
 #include "log-window.h"
+#include "web-service-window.h"
 #include "language-loader.h"
 #include "theme-loader.h"
 #include "models/site.h"
 #include "models/profile.h"
+#include "reverse-search/reverse-search-loader.h"
 #include "helpers.h"
 #include "functions.h"
 
@@ -101,6 +103,11 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 
 	// External log files
 	showLogFiles(settings);
+
+	// Web services
+	ReverseSearchLoader loader(settings);
+	m_webServices = loader.getAllReverseSearchEngines();
+	showWebServices();
 
 	ui->comboBatchEnd->setCurrentIndex(settings->value("Batch/end", 0).toInt());
 	settings->beginGroup("Save");
@@ -446,6 +453,71 @@ void optionsWindow::setLogFile(int index, QMap<QString, QVariant> logFile)
 }
 
 
+void optionsWindow::showWebServices()
+{
+	clearLayout(ui->layoutWebServices);
+
+	QSignalMapper *mapperEditWebService = new QSignalMapper(this);
+	QSignalMapper *mapperRemoveWebService = new QSignalMapper(this);
+	connect(mapperEditWebService, SIGNAL(mapped(int)), this, SLOT(editWebService(int)));
+	connect(mapperRemoveWebService, SIGNAL(mapped(int)), this, SLOT(removeWebService(int)));
+	for (int i : m_webServices.keys())
+	{
+		auto webService = m_webServices[i];
+
+		QIcon icon = webService.icon();
+		QLabel *labelIcon = new QLabel();
+		labelIcon->setPixmap(icon.pixmap(QSize(16, 16)));
+		labelIcon->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
+		ui->layoutWebServices->addWidget(labelIcon, i, 0);
+
+		QLabel *label = new QLabel(webService.name());
+		label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+		ui->layoutWebServices->addWidget(label, i, 1);
+
+		QPushButton *buttonEdit = new QPushButton("Edit");
+		mapperEditWebService->setMapping(buttonEdit, i);
+		connect(buttonEdit, SIGNAL(clicked(bool)), mapperEditWebService, SLOT(map()));
+		ui->layoutWebServices->addWidget(buttonEdit, i, 2);
+
+		QPushButton *buttonDelete = new QPushButton("Remove");
+		mapperRemoveWebService->setMapping(buttonDelete, i);
+		connect(buttonDelete, SIGNAL(clicked(bool)), mapperRemoveWebService, SLOT(map()));
+		ui->layoutWebServices->addWidget(buttonDelete, i, 3);
+	}
+}
+
+void optionsWindow::addWebService()
+{
+	WebServiceWindow *wsWindow = new WebServiceWindow(-1, nullptr, this);
+	connect(wsWindow, &WebServiceWindow::validated, this, &optionsWindow::setWebService);
+	wsWindow->show();
+}
+
+void optionsWindow::editWebService(int index)
+{
+	WebServiceWindow *wsWindow = new WebServiceWindow(index, &m_webServices[index], this);
+	connect(wsWindow, &WebServiceWindow::validated, this, &optionsWindow::setWebService);
+	wsWindow->show();
+}
+
+void optionsWindow::removeWebService(int index)
+{
+	m_webServices.remove(index);
+	QFile(savePath("webservices/" + index + ".png")).remove();
+	showWebServices();
+}
+
+void optionsWindow::setWebService(int index, ReverseSearchEngine rse)
+{
+	if (index < 0)
+	{ index = m_webServices.keys().last() + 1; }
+
+	m_webServices.insert(index, rse);
+	showWebServices();
+}
+
+
 void optionsWindow::setColor(QLineEdit *lineEdit, bool button)
 {
 	QString text = lineEdit->text();
@@ -779,6 +851,18 @@ void optionsWindow::save()
 			for (int i = 0; i < m_customNames.size(); i++)
 			{ settings->setValue(m_customNames.at(i)->text(), m_customTags.at(i)->text()); }
 		settings->endGroup();
+	settings->endGroup();
+
+	// Web services
+	settings->beginGroup("WebServices");
+	for (int i : m_webServices.keys())
+	{
+		settings->beginGroup(QString::number(i));
+		auto webService = m_webServices[i];
+		settings->setValue("name", webService.name());
+		settings->setValue("url", webService.tpl());
+		settings->endGroup();
+	}
 	settings->endGroup();
 
 	// Themes

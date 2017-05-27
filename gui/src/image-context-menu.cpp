@@ -9,7 +9,7 @@ ImageContextMenu::ImageContextMenu(QSettings *settings, QSharedPointer<Image> im
 {
 	// Load reverse search engines
 	ReverseSearchLoader loader(m_settings);
-	m_reverseSearchEngines = loader.getAllReverseSearchEngines();
+	m_reverseSearchEngines = loader.getAllReverseSearchEngines().values();
 
 	// Open image in browser
 	addAction(QIcon(":/images/icons/browser.png"), tr("Open in browser"), this, SLOT(openInBrowser()));

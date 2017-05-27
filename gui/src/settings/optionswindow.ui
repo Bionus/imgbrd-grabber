@@ -85,6 +85,11 @@
        </item>
        <item>
         <property name="text">
+         <string>Web services</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
          <string>Artist tags</string>
         </property>
        </item>
@@ -1009,6 +1014,33 @@
            <size>
             <width>0</width>
             <height>0</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="pageWebServices">
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <layout class="QGridLayout" name="layoutWebServices"/>
+        </item>
+        <item>
+         <widget class="QPushButton" name="buttonAddWebService">
+          <property name="text">
+           <string>Add a web service</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="verticalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>0</width>
+            <height>366</height>
            </size>
           </property>
          </spacer>
@@ -3120,8 +3152,8 @@
    <slot>addLogFile()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>608</x>
-     <y>410</y>
+     <x>647</x>
+     <y>80</y>
     </hint>
     <hint type="destinationlabel">
      <x>659</x>
@@ -3129,9 +3161,26 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>buttonAddWebService</sender>
+   <signal>clicked()</signal>
+   <receiver>optionsWindow</receiver>
+   <slot>addWebService()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>482</x>
+     <y>43</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>661</x>
+     <y>119</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>updateContainer(QTreeWidgetItem*,QTreeWidgetItem*)</slot>
   <slot>addLogFile()</slot>
+  <slot>addWebService()</slot>
  </slots>
 </ui>

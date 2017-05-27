@@ -2,6 +2,9 @@
 #include <QDesktopServices>
 
 
+ReverseSearchEngine::ReverseSearchEngine()
+{}
+
 ReverseSearchEngine::ReverseSearchEngine(QIcon icon, QString name, QString tpl)
 	: m_icon(icon), m_name(name), m_tpl(tpl)
 {}

@@ -9,6 +9,7 @@
 class ReverseSearchEngine
 {
 	public:
+		ReverseSearchEngine();
 		ReverseSearchEngine(QIcon icon, QString name, QString tpl);
 		void searchByUrl(QUrl url) const;
 

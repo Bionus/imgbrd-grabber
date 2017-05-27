@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QTreeWidgetItem>
 #include <QSettings>
+#include "reverse-search/reverse-search-engine.h"
 
 
 namespace Ui
@@ -69,11 +70,21 @@ class optionsWindow : public QDialog
 		void addCustom(QString, QString);
 		void on_buttonFilenames_clicked();
 		void addFilename(QString, QString, QString);
+
+		// Log files
 		void addLogFile();
 		void showLogFiles(QSettings *settings);
 		void editLogFile(int index);
 		void removeLogFile(int index);
 		void setLogFile(int index, QMap<QString, QVariant> logFile);
+
+		// Web services
+		void addWebService();
+		void showWebServices();
+		void editWebService(int index);
+		void removeWebService(int index);
+		void setWebService(int index, ReverseSearchEngine rse);
+
 		void save();
 
 	signals:
@@ -83,6 +94,7 @@ class optionsWindow : public QDialog
 	private:
 		Ui::optionsWindow *ui;
 		Profile *m_profile;
+		QMap<int, ReverseSearchEngine> m_webServices;
 		QList<QLineEdit*> m_customNames, m_customTags, m_filenamesConditions, m_filenamesFilenames, m_filenamesFolders;
 };
 
