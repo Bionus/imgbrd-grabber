@@ -19,6 +19,7 @@ class ReverseSearchEngine
 		QString tpl() const;
 		int order() const;
 
+		void setId(int id);
 		void setOrder(int order);
 
 	protected:

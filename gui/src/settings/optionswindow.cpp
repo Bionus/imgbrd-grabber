@@ -554,10 +554,16 @@ void optionsWindow::setWebService(ReverseSearchEngine rse, QByteArray favicon)
 	if (rse.id() < 0)
 	{
 		int maxOrder = 0;
+		int maxId = 0;
 		for (auto ws : m_webServices)
+		{
+			if (ws.id() > maxId)
+				maxId = ws.id();
 			if (ws.order() > maxOrder)
 				maxOrder = ws.order();
+		}
 
+		rse.setId(maxId + 1);
 		rse.setOrder(maxOrder + 1);
 		m_webServices.append(rse);
 	}

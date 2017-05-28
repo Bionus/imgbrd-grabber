@@ -47,5 +47,5 @@ QString ReverseSearchEngine::name() const	{ return m_name;	}
 QString ReverseSearchEngine::tpl() const	{ return m_tpl;		}
 int ReverseSearchEngine::order() const		{ return m_order;	}
 
-void ReverseSearchEngine::setOrder(int order)
-{ m_order = order; }
+void ReverseSearchEngine::setId(int id)			{ m_id = id;		}
+void ReverseSearchEngine::setOrder(int order)	{ m_order = order;	}
