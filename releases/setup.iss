@@ -152,6 +152,7 @@ Source: "..\release\sites\Zerochan\sites.txt"; DestDir: "{localappdata}\Bionus\G
 Source: "..\release\sites\Zerochan\www.zerochan.net\settings.ini"; DestDir: "{localappdata}\Bionus\Grabber\sites\Zerochan\www.zerochan.net"; Flags: onlyifdoesntexist          
 Source: "..\release\themes\Default\*"; DestDir: "{localappdata}\Bionus\Grabber\themes\Default"; Flags: onlyifdoesntexist recursesubdirs
 Source: "..\release\themes\QDarkStyleSheet\*"; DestDir: "{localappdata}\Bionus\Grabber\themes\QDarkStyleSheet"; Flags: onlyifdoesntexist recursesubdirs
+Source: "..\release\webservices\*.ico"; DestDir: "{localappdata}\Bionus\Grabber\webservices"; Flags: onlyifdoesntexist
 
 [InstallDelete]         
 Type: filesandordirs; Name: "{app}\languages\updater"
