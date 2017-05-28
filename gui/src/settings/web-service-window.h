@@ -2,6 +2,7 @@
 #define WEB_SERVICE_WINDOW_H
 
 #include <QDialog>
+#include <QNetworkReply>
 #include "reverse-search/reverse-search-engine.h"
 
 
@@ -20,14 +21,16 @@ class WebServiceWindow : public QDialog
 		~WebServiceWindow();
 
 	protected slots:
+		void getFavicon();
 		void save();
 
 	signals:
-		void validated(int index, ReverseSearchEngine webService);
+		void validated(int index, ReverseSearchEngine webService, QByteArray favicon);
 
 	private:
 		Ui::WebServiceWindow *ui;
 		int m_index;
+		QNetworkReply *m_faviconReply;
 };
 
 #endif // WEB_SERVICE_WINDOW_H

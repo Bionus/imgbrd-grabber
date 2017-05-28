@@ -508,10 +508,24 @@ void optionsWindow::removeWebService(int index)
 	showWebServices();
 }
 
-void optionsWindow::setWebService(int index, ReverseSearchEngine rse)
+void optionsWindow::setWebService(int index, ReverseSearchEngine rse, QByteArray favicon)
 {
+	// Generate new ID for new web services
 	if (index < 0)
 	{ index = m_webServices.keys().last() + 1; }
+
+	// Write icon information to disk
+	if (!favicon.isEmpty())
+	{
+		QString faviconPath = savePath("webservices/" + QString::number(index) + ".ico");
+		QFile f(faviconPath);
+		if (f.open(QFile::WriteOnly))
+		{
+			f.write(favicon);
+			f.close();
+		}
+		rse = ReverseSearchEngine(QIcon(faviconPath), rse.name(), rse.tpl());
+	}
 
 	m_webServices.insert(index, rse);
 	showWebServices();

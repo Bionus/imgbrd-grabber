@@ -83,7 +83,7 @@ class optionsWindow : public QDialog
 		void showWebServices();
 		void editWebService(int index);
 		void removeWebService(int index);
-		void setWebService(int index, ReverseSearchEngine rse);
+		void setWebService(int index, ReverseSearchEngine rse, QByteArray favicon);
 
 		void save();
 
