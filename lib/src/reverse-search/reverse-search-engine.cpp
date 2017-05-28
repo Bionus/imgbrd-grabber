@@ -12,6 +12,9 @@ ReverseSearchEngine::ReverseSearchEngine(QString icon, QString name, QString tpl
 
 QIcon ReverseSearchEngine::loadIcon(QString path) const
 {
+	if (path.isEmpty())
+		return QIcon();
+
 	QFile f(path);
 	if (f.open(QFile::ReadOnly))
 	{

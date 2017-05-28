@@ -50,4 +50,6 @@ void WebServiceWindow::save()
 	QString name = ui->lineName->text();
 	QString url = ui->lineUrl->text();
 	emit validated(m_index, ReverseSearchEngine("", name, url), data);
+
+	deleteLater();
 }

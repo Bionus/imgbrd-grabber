@@ -504,7 +504,7 @@ void optionsWindow::editWebService(int index)
 void optionsWindow::removeWebService(int index)
 {
 	m_webServices.remove(index);
-	QFile(savePath("webservices/" + QString::number(index) + ".ico")).remove();
+	QFile(savePath("webservices/") + QString::number(index) + ".ico").remove();
 	showWebServices();
 }
 
@@ -517,7 +517,7 @@ void optionsWindow::setWebService(int index, ReverseSearchEngine rse, QByteArray
 	// Write icon information to disk
 	if (!favicon.isEmpty())
 	{
-		QString faviconPath = savePath("webservices/" + QString::number(index) + ".ico");
+		QString faviconPath = savePath("webservices/") + QString::number(index) + ".ico";
 		QFile f(faviconPath);
 		if (f.open(QFile::WriteOnly))
 		{
