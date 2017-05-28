@@ -504,7 +504,7 @@ void optionsWindow::editWebService(int index)
 void optionsWindow::removeWebService(int index)
 {
 	m_webServices.remove(index);
-	QFile(savePath("webservices/" + index + ".png")).remove();
+	QFile(savePath("webservices/" + QString::number(index) + ".ico")).remove();
 	showWebServices();
 }
 
