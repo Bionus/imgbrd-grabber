@@ -10,12 +10,15 @@ class ReverseSearchEngine
 {
 	public:
 		ReverseSearchEngine();
-		ReverseSearchEngine(QIcon icon, QString name, QString tpl);
+		ReverseSearchEngine(QString icon, QString name, QString tpl);
 		void searchByUrl(QUrl url) const;
 
 		QIcon icon() const;
 		QString name() const;
 		QString tpl() const;
+
+	protected:
+		QIcon loadIcon(QString path) const;
 
 	private:
 		QIcon m_icon;

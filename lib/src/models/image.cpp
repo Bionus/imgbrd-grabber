@@ -699,44 +699,6 @@ void Image::loadImage()
 	connect(m_loadImage, &QNetworkReply::downloadProgress, this, &Image::downloadProgressImageS);
 	connect(m_loadImage, &QNetworkReply::finished, this, &Image::finishedImageS);
 }
-QString Image::getExtensionFromHeader(const QByteArray &data12)
-{
-	QByteArray data8 = data12.left(8);
-	QByteArray data48 = data12.mid(4, 8);
-	QByteArray data6 = data12.left(6);
-	QByteArray data4 = data12.left(4);
-	QByteArray data3 = data12.left(3);
-
-	// GIF
-	if (data6 == "GIF87a" || data6 == "GIF89a")
-		return "gif";
-
-	// PNG
-	if (data8 == "\211PNG\r\n\032\n")
-		return "png";
-
-	// JPG
-	if (data3 == "\255\216\255")
-		return "jpg";
-
-	// WEBM
-	if (data4 == "\026\069\223\163")
-		return "webm";
-
-	// MP4
-	if (data48 == "ftyp3gp5" || data48 == "ftypMSNV" || data48 == "ftypisom")
-		return "mp4";
-
-	// SWF
-	if (data3 == "FWS" || data3 == "CWS" || data3 == "ZWS")
-		return "swf";
-
-	// FLV
-	if (data4 == "FLV\001")
-		return "flv";
-
-	return QString();
-}
 void Image::finishedImageS()
 {
 	m_loadingImage = false;

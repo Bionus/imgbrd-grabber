@@ -49,5 +49,5 @@ void WebServiceWindow::save()
 	// Emit the success signal
 	QString name = ui->lineName->text();
 	QString url = ui->lineUrl->text();
-	emit validated(m_index, ReverseSearchEngine(QIcon(), name, url), data);
+	emit validated(m_index, ReverseSearchEngine("", name, url), data);
 }

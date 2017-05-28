@@ -52,6 +52,7 @@ QMap<QString,QPair<QString,QString>>	getFilenames(QSettings *settings);
 QMap<int, QMap<QString, QVariant>>		getExternalLogFiles(QSettings *settings);
 
 QStringList removeWildards(QStringList elements, QStringList remove);
+QString getExtensionFromHeader(const QByteArray &data12);
 
 
 

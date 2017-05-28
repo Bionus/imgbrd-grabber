@@ -92,7 +92,6 @@ class Image : public QObject
 		void		setRating(QString rating);
 		void		setFileExtension(QString ext);
 		QString		getNextExtension(QString current);
-		QString		getExtensionFromHeader(const QByteArray &data12);
 		QUrl		getDisplayableUrl() const;
 		bool		isVideo() const;
 		void		setTags(QList<Tag> tags);

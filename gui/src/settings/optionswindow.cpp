@@ -524,7 +524,7 @@ void optionsWindow::setWebService(int index, ReverseSearchEngine rse, QByteArray
 			f.write(favicon);
 			f.close();
 		}
-		rse = ReverseSearchEngine(QIcon(faviconPath), rse.name(), rse.tpl());
+		rse = ReverseSearchEngine(faviconPath, rse.name(), rse.tpl());
 	}
 
 	m_webServices.insert(index, rse);
