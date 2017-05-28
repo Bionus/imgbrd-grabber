@@ -81,9 +81,12 @@ class optionsWindow : public QDialog
 		// Web services
 		void addWebService();
 		void showWebServices();
-		void editWebService(int index);
-		void removeWebService(int index);
-		void setWebService(int index, ReverseSearchEngine rse, QByteArray favicon);
+		void editWebService(int id);
+		void removeWebService(int id);
+		void setWebService(ReverseSearchEngine rse, QByteArray favicon);
+		void moveUpWebService(int id);
+		void moveDownWebService(int id);
+		void swapWebServices(int a, int b);
 
 		void save();
 
@@ -94,7 +97,8 @@ class optionsWindow : public QDialog
 	private:
 		Ui::optionsWindow *ui;
 		Profile *m_profile;
-		QMap<int, ReverseSearchEngine> m_webServices;
+		QList<ReverseSearchEngine> m_webServices;
+		QMap<int, int> m_webServicesIds;
 		QList<QLineEdit*> m_customNames, m_customTags, m_filenamesConditions, m_filenamesFilenames, m_filenamesFolders;
 };
 

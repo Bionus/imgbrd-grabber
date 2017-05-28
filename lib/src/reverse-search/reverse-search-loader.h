@@ -11,7 +11,7 @@ class ReverseSearchLoader
 {
 	public:
 		ReverseSearchLoader(QSettings *settings);
-		QMap<int, ReverseSearchEngine> getAllReverseSearchEngines() const;
+		QList<ReverseSearchEngine> getAllReverseSearchEngines() const;
 
 	private:
 		QSettings *m_settings;

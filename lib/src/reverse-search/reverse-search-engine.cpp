@@ -6,8 +6,8 @@
 ReverseSearchEngine::ReverseSearchEngine()
 {}
 
-ReverseSearchEngine::ReverseSearchEngine(QString icon, QString name, QString tpl)
-	: m_icon(loadIcon(icon)), m_name(name), m_tpl(tpl)
+ReverseSearchEngine::ReverseSearchEngine(int id, QString icon, QString name, QString tpl, int order)
+	: m_icon(loadIcon(icon)), m_id(id), m_name(name), m_tpl(tpl), m_order(order)
 {}
 
 QIcon ReverseSearchEngine::loadIcon(QString path) const
@@ -41,6 +41,11 @@ void ReverseSearchEngine::searchByUrl(QUrl url) const
 }
 
 
+int ReverseSearchEngine::id() const			{ return m_id;		}
 QIcon ReverseSearchEngine::icon() const		{ return m_icon;	}
 QString ReverseSearchEngine::name() const	{ return m_name;	}
 QString ReverseSearchEngine::tpl() const	{ return m_tpl;		}
+int ReverseSearchEngine::order() const		{ return m_order;	}
+
+void ReverseSearchEngine::setOrder(int order)
+{ m_order = order; }

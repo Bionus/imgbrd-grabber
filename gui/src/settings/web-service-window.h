@@ -17,7 +17,7 @@ class WebServiceWindow : public QDialog
 	Q_OBJECT
 	
 	public:
-		explicit WebServiceWindow(int index, const ReverseSearchEngine *webService, QWidget *parent = Q_NULLPTR);
+		explicit WebServiceWindow(const ReverseSearchEngine *webService, QWidget *parent = Q_NULLPTR);
 		~WebServiceWindow();
 
 	protected slots:
@@ -25,11 +25,11 @@ class WebServiceWindow : public QDialog
 		void save();
 
 	signals:
-		void validated(int index, ReverseSearchEngine webService, QByteArray favicon);
+		void validated(ReverseSearchEngine webService, QByteArray favicon);
 
 	private:
 		Ui::WebServiceWindow *ui;
-		int m_index;
+		const ReverseSearchEngine *m_webService;
 		QNetworkReply *m_faviconReply;
 };
 

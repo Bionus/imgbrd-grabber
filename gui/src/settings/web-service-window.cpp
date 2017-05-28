@@ -6,8 +6,8 @@
 #include "functions.h"
 
 
-WebServiceWindow::WebServiceWindow(int index, const ReverseSearchEngine *webService, QWidget *parent)
-	: QDialog(parent), ui(new Ui::WebServiceWindow), m_index(index)
+WebServiceWindow::WebServiceWindow(const ReverseSearchEngine *webService, QWidget *parent)
+	: QDialog(parent), ui(new Ui::WebServiceWindow), m_webService(webService)
 {
 	ui->setupUi(this);
 
@@ -38,6 +38,13 @@ void WebServiceWindow::getFavicon()
 
 void WebServiceWindow::save()
 {
+	int id = -1, order = 0;
+	if (m_webService != nullptr)
+	{
+		id = m_webService->id();
+		order = m_webService->order();
+	}
+
 	// Save favicon contents
 	QByteArray data;
 	if (m_faviconReply->error() == QNetworkReply::NoError)
@@ -49,7 +56,7 @@ void WebServiceWindow::save()
 	// Emit the success signal
 	QString name = ui->lineName->text();
 	QString url = ui->lineUrl->text();
-	emit validated(m_index, ReverseSearchEngine("", name, url), data);
+	emit validated(ReverseSearchEngine(id, "", name, url, order), data);
 
 	deleteLater();
 }
