@@ -1317,6 +1317,7 @@ void mainWindow::getAllFinishedLogins()
 	bool usePacking = m_settings->value("packing_enable", true).toBool();
 	int realConstImagesPerPack = m_settings->value("packing_size", 1000).toInt();
 
+	int total = 0;
 	for (int j : m_batchPending.keys())
 	{
 		DownloadQueryGroup b = m_batchPending[j];
@@ -1325,6 +1326,7 @@ void mainWindow::getAllFinishedLogins()
 		int pagesPerPack = qCeil((float)constImagesPerPack / b.perpage);
 		int imagesPerPack = pagesPerPack * b.perpage;
 		int packs = qCeil((float)b.total / imagesPerPack);
+		total += b.total;
 
 		int lastPageImages = b.total % imagesPerPack;
 		if (lastPageImages == 0)
@@ -1361,6 +1363,7 @@ void mainWindow::getAllFinishedLogins()
 		}
 	}
 
+	m_getAllImagesCount = total;
 	getNextPack();
 }
 
@@ -1428,6 +1431,9 @@ void mainWindow::getAllFinishedImages(QList<QSharedPointer<Image>> images)
 	m_progressBars[row]->setValue(0);
 	m_progressBars[row]->setMaximum(images.count());
 
+	// Update image count
+	m_getAllImagesCount -= m_batchPending[row].total - images.count();
+
 	if (m_downloaders.isEmpty())
 	{
 		m_batchAutomaticRetries = m_settings->value("Save/automaticretries", 0).toInt();
@@ -1474,9 +1480,8 @@ void mainWindow::getAllImages()
 
 	// Set some values on the batch window
 	m_progressdialog->updateColumns();
-	m_progressdialog->setImagesCount(qMin(m_getAllLimit, m_getAllRemaining.count()));
-	//m_progressdialog->setMaximum(count);
 	m_progressdialog->setText(tr("Downloading images..."));
+	m_progressdialog->setImagesCount(m_getAllImagesCount);
 	m_progressdialog->setImages(m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors);
 
 	// Check whether we need to get the tags first (for the filename) or if we can just download the images directly
