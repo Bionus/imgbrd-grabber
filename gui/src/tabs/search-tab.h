@@ -94,6 +94,8 @@ class searchTab : public QWidget
 		// Results
 		virtual void load() = 0;
 		void loadTags(QStringList tags);
+		void endlessLoad();
+		void loadPage();
 		virtual void addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage = nullptr);
 		void setMergedLabelText(QLabel *txt, const QList<QSharedPointer<Image>> &imgs);
 		virtual void setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage = nullptr);
@@ -179,6 +181,7 @@ class searchTab : public QWidget
 		QPushButton *ui_buttonGetSel;
 		QPushButton *ui_buttonFirstPage;
 		QPushButton *ui_buttonPreviousPage;
+		QPushButton *ui_buttonEndlessLoad;
 		VerticalScrollArea *ui_scrollAreaResults;
 };
 

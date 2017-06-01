@@ -35,6 +35,7 @@ tagTab::tagTab(QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
 	ui_buttonGetSel = ui->buttonGetSel;
 	ui_buttonFirstPage = ui->buttonFirstPage;
 	ui_buttonPreviousPage = ui->buttonPreviousPage;
+	ui_buttonEndlessLoad = ui->buttonEndlessLoad;
 	ui_scrollAreaResults = ui->scrollAreaResults;
 
 	// Search fields

@@ -320,7 +320,7 @@
      <property name="widgetResizable">
       <bool>true</bool>
      </property>
-     <widget class="QWidget" name="widgetResults">
+     <widget class="QWidget" name="scrollAreaWidget">
       <property name="geometry">
        <rect>
         <x>0</x>
@@ -332,7 +332,7 @@
       <property name="styleSheet">
        <string notr="true">background-color:transparent;</string>
       </property>
-      <layout class="QGridLayout" name="layoutResults">
+      <layout class="QVBoxLayout" name="verticalLayout">
        <property name="leftMargin">
         <number>0</number>
        </property>
@@ -345,6 +345,29 @@
        <property name="bottomMargin">
         <number>0</number>
        </property>
+       <item>
+        <layout class="QGridLayout" name="layoutResults"/>
+       </item>
+       <item>
+        <widget class="QPushButton" name="buttonEndlessLoad">
+         <property name="text">
+          <string>Load more results</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>285</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
       </layout>
      </widget>
     </widget>
@@ -707,6 +730,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>buttonEndlessLoad</sender>
+   <signal>clicked()</signal>
+   <receiver>tagTab</receiver>
+   <slot>endlessLoad()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>51</x>
+     <y>191</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>7</x>
+     <y>188</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>load()</slot>
@@ -723,5 +762,6 @@
   <slot>historyNext()</slot>
   <slot>getAll()</slot>
   <slot>getSel()</slot>
+  <slot>endlessLoad()</slot>
  </slots>
 </ui>

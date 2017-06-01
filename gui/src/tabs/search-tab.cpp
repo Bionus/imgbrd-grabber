@@ -1039,7 +1039,6 @@ void searchTab::loadTags(QStringList tags)
 
 	// Get the search values
 	QString search = tags.join(" ");
-	int perpage = ui_spinImagesPerPage->value();
 
 	if (!m_from_history)
 	{ addHistory(search, ui_spinPage->value(), ui_spinImagesPerPage->value(), ui_spinColumns->value()); }
@@ -1060,14 +1059,31 @@ void searchTab::loadTags(QStringList tags)
 	if (merged)
 		m_layouts.insert(nullptr, createImagesLayout(m_settings));
 
+	loadPage();
+
+	emit changed(this);
+}
+
+void searchTab::endlessLoad()
+{
+	ui_spinPage->setValue(ui_spinPage->value() + 1);
+	loadPage();
+}
+
+void searchTab::loadPage()
+{
+	bool merged = ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked();
+	int perpage = ui_spinImagesPerPage->value();
+	QStringList tags = m_lastTags.split(' ');
+
 	for (Site *site : loadSites())
 	{
 		// Load results
 		Page *page = new Page(m_profile, site, m_sites->values(), tags, ui_spinPage->value(), perpage, m_postFiltering->toPlainText().split(" ", QString::SkipEmptyParts), false, this, 0, m_lastPage, m_lastPageMinId, m_lastPageMaxId);
 		connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(finishedLoading(Page*)));
 		connect(page, SIGNAL(failedLoading(Page*)), this, SLOT(failedLoading(Page*)));
-		if (lastPages.contains(page->website()))
-		{ page->setLastPage(lastPages[page->website()]); }
+		/*if (lastPages.contains(page->website()))
+		{ page->setLastPage(lastPages[page->website()]); }*/
 		m_pages.insert(page->website(), page);
 
 		// Setup the layout
@@ -1090,9 +1106,6 @@ void searchTab::loadTags(QStringList tags)
 	{ addLayout(m_layouts[nullptr], 1, 0); }
 	m_page = 0;
 
-	auto spacer = new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
-	ui_layoutResults->addItem(spacer, m_layouts.count() * 2, 0);
-
 	if (merged && ui_progressMergeResults != nullptr)
 	{
 		ui_progressMergeResults->setValue(0);
@@ -1100,8 +1113,6 @@ void searchTab::loadTags(QStringList tags)
 	}
 	if (ui_stackedMergeResults != nullptr)
 	{ ui_stackedMergeResults->setCurrentIndex(merged ? 0 : 1); }
-
-	emit changed(this);
 }
 
 void searchTab::addLayout(QLayout *layout, int row, int column)
