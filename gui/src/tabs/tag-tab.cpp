@@ -52,6 +52,8 @@ tagTab::tagTab(QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
 	setWindowIcon(QIcon());
 	updateCheckboxes();
 	m_search->setFocus();
+
+	init();
 }
 
 tagTab::~tagTab()

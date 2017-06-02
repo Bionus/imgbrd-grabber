@@ -31,6 +31,7 @@ class searchTab : public QWidget
 	public:
 		searchTab(QMap<QString, Site*> *sites, Profile *profile, mainWindow *parent);
 		~searchTab();
+		void init();
 		void mouseReleaseEvent(QMouseEvent *e);
 		virtual QList<bool> sources();
 		virtual QString tags() const = 0;
@@ -152,6 +153,7 @@ class searchTab : public QWidget
 		int m_pagemax;
 		bool m_stop;
 		int m_lastToggle;
+		bool m_endlessLoadingEnabled;
 
 		// History
 		bool m_from_history;

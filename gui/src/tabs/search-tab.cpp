@@ -48,6 +48,23 @@ searchTab::searchTab(QMap<QString, Site*> *sites, Profile *profile, mainWindow *
 	setSelectedSources(m_settings);
 }
 
+void searchTab::init()
+{
+	m_endlessLoadingEnabled = true;
+	auto infinite = m_settings->value("infiniteScroll", "disabled");
+	infinite = "button";
+
+	if (infinite == "disabled" && ui_buttonEndlessLoad != nullptr)
+	{
+		ui_buttonEndlessLoad->hide();
+	}
+	else if (infinite == "scroll")
+	{
+		ui_buttonEndlessLoad->hide();
+		connect(ui_scrollAreaResults, &VerticalScrollArea::endOfScrollReached, this, &searchTab::endlessLoad);
+	}
+}
+
 searchTab::~searchTab()
 {
 	qDeleteAll(m_pages);
@@ -324,6 +341,8 @@ void searchTab::postLoading(Page *page, QList<QSharedPointer<Image>> imgs)
 	m_page++;
 
 	bool merged = ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked();
+	bool finished = m_page == m_pages.count() || (merged && ui_progressMergeResults != nullptr && ui_progressMergeResults->value() == ui_progressMergeResults->maximum());
+
 	if (merged)
 	{
 		// Increase the progress bar status
@@ -331,7 +350,6 @@ void searchTab::postLoading(Page *page, QList<QSharedPointer<Image>> imgs)
 			ui_progressMergeResults->setValue(ui_progressMergeResults->value() + 1);
 
 		// Hide progress bar when we load the last page
-		bool finished = m_page == m_pages.count() || (ui_progressMergeResults != nullptr && ui_progressMergeResults->value() == ui_progressMergeResults->maximum());
 		if (ui_stackedMergeResults != nullptr && finished)
 			ui_stackedMergeResults->setCurrentIndex(1);
 
@@ -349,6 +367,14 @@ void searchTab::postLoading(Page *page, QList<QSharedPointer<Image>> imgs)
 	}
 
 	loadImageThumbnails(page, imgs);
+
+	if (finished)
+	{
+		// Re-enable endless loading
+		if (ui_buttonEndlessLoad != nullptr && ui_buttonEndlessLoad->isVisible())
+			ui_buttonEndlessLoad->setEnabled(true);
+		m_endlessLoadingEnabled = true;
+	}
 
 	ui_buttonGetAll->setDisabled(m_images.empty());
 	ui_buttonGetPage->setDisabled(m_images.empty());
@@ -1066,6 +1092,9 @@ void searchTab::loadTags(QStringList tags)
 
 void searchTab::endlessLoad()
 {
+	if (!m_endlessLoadingEnabled)
+		return;
+
 	ui_spinPage->setValue(ui_spinPage->value() + 1);
 	loadPage();
 }
@@ -1075,6 +1104,11 @@ void searchTab::loadPage()
 	bool merged = ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked();
 	int perpage = ui_spinImagesPerPage->value();
 	QStringList tags = m_lastTags.split(' ');
+
+	// Disable endless loading
+	if (ui_buttonEndlessLoad != nullptr && ui_buttonEndlessLoad->isVisible())
+		ui_buttonEndlessLoad->setEnabled(false);
+	m_endlessLoadingEnabled = false;
 
 	for (Site *site : loadSites())
 	{

@@ -47,7 +47,10 @@ void VerticalScrollArea::wheelEvent(QWheelEvent* e)
 	{
 		m_endOfScroll++;
 		if (m_endOfScroll == 3)
+		{
+			m_endOfScroll = 0;
 			emit endOfScrollReached();
+		}
 	}
 	else
 	{ m_endOfScroll = 0; }
