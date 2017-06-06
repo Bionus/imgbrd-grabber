@@ -446,6 +446,8 @@ int mainWindow::addTab(QString tag, bool background, bool save)
 
 	if (!tag.isEmpty())
 	{ w->setTags(tag); }
+	else
+	{ w->focusSearch(); }
 
 	return m_tabs.size() - 1;
 }
@@ -458,6 +460,8 @@ int mainWindow::addPoolTab(int pool, QString site, bool background, bool save)
 	{ w->setSite(site); }
 	if (pool != 0)
 	{ w->setPool(pool, site); }
+	else
+	{ w->focusSearch(); }
 
 	return m_tabs.size() - 1;
 }
