@@ -35,6 +35,7 @@ poolTab::poolTab(QMap<QString, Site*> *sites, Profile *profile, mainWindow *pare
 	ui_buttonGetSel = ui->buttonGetSel;
 	ui_buttonFirstPage = ui->buttonFirstPage;
 	ui_buttonPreviousPage = ui->buttonPreviousPage;
+	ui_buttonEndlessLoad = nullptr;
 	ui_scrollAreaResults = ui->scrollAreaResults;
 
 	QStringList sources = m_sites->keys();
