@@ -2390,6 +2390,20 @@ void mainWindow::unviewitlater()
 void mainWindow::dragEnterEvent(QDragEnterEvent *event)
 {
 	const QMimeData* mimeData = event->mimeData();
+
+	// Drop a text containing an URL
+	if (mimeData->hasText())
+	{
+		QString url = mimeData->text();
+		QRegExp regexUrl("^https?://[^\\s/$.?#].[^\\s]*$");
+		if (regexUrl.exactMatch(url))
+		{
+			event->acceptProposedAction();
+			return;
+		}
+	}
+
+	// Drop URLs
 	if (mimeData->hasUrls())
 	{
 		QList<QUrl> urlList = mimeData->urls();
@@ -2400,6 +2414,7 @@ void mainWindow::dragEnterEvent(QDragEnterEvent *event)
 			if (fileInfo.exists() && fileInfo.isFile())
 			{
 				event->acceptProposedAction();
+				return;
 			}
 		}
 	}
@@ -2408,12 +2423,36 @@ void mainWindow::dragEnterEvent(QDragEnterEvent *event)
 void mainWindow::dropEvent(QDropEvent* event)
 {
 	const QMimeData* mimeData = event->mimeData();
+
+	// Drop a text containing an URL
+	if (mimeData->hasText())
+	{
+		QString url = mimeData->text();
+		QRegExp regexUrl("^https?://[^\\s/$.?#].[^\\s]*$");
+		if (regexUrl.exactMatch(url))
+		{
+			QEventLoop loopLoad;
+			QNetworkReply *reply = m_networkAccessManager.get(QNetworkRequest(QUrl(url)));
+			connect(reply, &QNetworkReply::finished, &loopLoad, &QEventLoop::quit);
+			loopLoad.exec();
+
+			if (reply->error() == QNetworkReply::NoError)
+			{
+				QString md5 = QCryptographicHash::hash(reply->readAll(), QCryptographicHash::Md5).toHex();
+				loadTag("md5:" + md5, true, false);
+			}
+			return;
+		}
+	}
+
+	// Drop URLs
 	if (mimeData->hasUrls())
 	{
 		QList<QUrl> urlList = mimeData->urls();
 		for (int i = 0; i < urlList.size() && i < 32; ++i)
 		{
 			loadMd5(urlList.at(i).toLocalFile(), true, false);
+			return;
 		}
 	}
 }

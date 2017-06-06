@@ -207,6 +207,7 @@ class mainWindow : public QMainWindow
 		QMap<QString, QIcon>	m_icons;
 		QMap<QString, Site*>	m_sites;
 		QLinkedList<QJsonObject>	m_closedTabs;
+		QNetworkAccessManager m_networkAccessManager;
 };
 
 #endif // MAINWINDOW_H
