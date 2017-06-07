@@ -36,6 +36,7 @@ QString		formatFilesize(float size);
 QString		getExtension(QUrl url);
 QString		getExtension(QString url);
 QString		setExtension(QString url, QString extension);
+bool		isUrl(QString str);
 
 bool		setFileCreationDate(QString path, QDateTime time);
 void		shutDown(int timeout = 0);

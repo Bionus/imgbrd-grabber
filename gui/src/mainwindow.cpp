@@ -2399,8 +2399,7 @@ void mainWindow::dragEnterEvent(QDragEnterEvent *event)
 	if (mimeData->hasText())
 	{
 		QString url = mimeData->text();
-		QRegExp regexUrl("^https?://[^\\s/$.?#].[^\\s]*$");
-		if (regexUrl.exactMatch(url))
+		if (isUrl(url))
 		{
 			event->acceptProposedAction();
 			return;
@@ -2432,8 +2431,7 @@ void mainWindow::dropEvent(QDropEvent* event)
 	if (mimeData->hasText())
 	{
 		QString url = mimeData->text();
-		QRegExp regexUrl("^https?://[^\\s/$.?#].[^\\s]*$");
-		if (regexUrl.exactMatch(url))
+		if (isUrl(url))
 		{
 			QEventLoop loopLoad;
 			QNetworkReply *reply = m_networkAccessManager.get(QNetworkRequest(QUrl(url)));

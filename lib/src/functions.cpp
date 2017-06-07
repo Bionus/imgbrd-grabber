@@ -378,6 +378,12 @@ QString setExtension(QString url, QString extension)
 	return url;
 }
 
+bool isUrl(QString str)
+{
+	QRegExp regexUrl("^https?://[^\\s/$.?#].[^\\s]*$");
+	return regexUrl.exactMatch(str);
+}
+
 QString fixFilename(QString fn, QString path, int maxlength, bool invalidChars)
 {
 	QString sep = QDir::toNativeSeparators("/");

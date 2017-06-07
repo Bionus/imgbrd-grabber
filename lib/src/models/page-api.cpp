@@ -7,6 +7,7 @@
 #include "image.h"
 #include "vendor/json.h"
 #include "logger.h"
+#include "functions.h"
 
 
 PageApi::PageApi(Page *parentPage, Profile *profile, Site *site, Api *api, QStringList tags, int page, int limit, QStringList postFiltering, bool smart, QObject *parent, int pool, int lastPage, int lastPageMinId, int lastPageMaxId)
@@ -125,8 +126,7 @@ void PageApi::updateUrls()
 	int pid = m_api->contains("Urls/Limit") ? m_api->value("Urls/Limit").toInt() * (m_page - 1) : m_imagesPerPage * (m_page - 1);
 
 	// URL searches
-	QRegExp regexUrl("^https?://[^\\s/$.?#].[^\\s]*$");
-	if (m_search.count() == 1 && !t.isEmpty() && regexUrl.exactMatch(t))
+	if (m_search.count() == 1 && !t.isEmpty() && isUrl(t))
 	{
 		m_originalUrl = QString(t);
 		m_url = parseUrl(t, pid, p, t, pseudo, password).toString();
