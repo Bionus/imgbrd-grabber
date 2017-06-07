@@ -47,6 +47,9 @@ favoritesTab::favoritesTab(QMap<QString,Site*> *sites, Profile *profile, mainWin
 	m_postFiltering = createAutocomplete();
 	ui->layoutPlus->addWidget(m_postFiltering, 1, 1, 1, 3);
 
+	// Open tab with closed result splitter
+	ui->splitter->setSizes(QList<int>() << 1 << 0);
+
 	// Others
 	ui->checkMergeResults->setChecked(m_settings->value("mergeresults", false).toBool());
 	optionsChanged();
