@@ -1,13 +1,12 @@
 language: cpp
 compiler: gcc
 
-# Linux build
-sudo: required
-dist: trusty
-
 # OS X build
 matrix:
   include:
+    - os: linux
+      dist: trusty
+      sudo: required
     - os: osx
 
 # Qt packages for Linux
