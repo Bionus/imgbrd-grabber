@@ -26,7 +26,7 @@ class tagTab : public searchTab
 		explicit tagTab(QMap<QString, Site*> *sites, Profile *profile, mainWindow *parent);
 		~tagTab();
 		Ui::tagTab *ui;
-		QString tags() const;
+		QString tags() const override;
 		void write(QJsonObject &json) const override;
 		bool read(const QJsonObject &json);
 
@@ -35,16 +35,16 @@ class tagTab : public searchTab
 
 	public slots:
 		// Zooms
-		void setTags(QString);
+		void setTags(QString) override;
 		// Loading
-		void load();
+		void load() override;
 		// Batch
 		void getPage();
 		void getAll();
 		// Others
-		void closeEvent(QCloseEvent*);
+		void closeEvent(QCloseEvent*) override;
 		void on_buttonSearch_clicked();
-		void focusSearch();
+		void focusSearch() override;
 
 	private:
 		TextEdit *m_search;

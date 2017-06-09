@@ -25,7 +25,7 @@ class poolTab : public searchTab
 		explicit poolTab(QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent);
 		~poolTab();
 		Ui::poolTab *ui;
-		QString tags() const;
+		QString tags() const override;
 		QList<Site*> loadSites() const override;
 		void write(QJsonObject &json) const override;
 		bool read(const QJsonObject &json);
@@ -35,18 +35,18 @@ class poolTab : public searchTab
 
 	public slots:
 		// Zooms
-		void setTags(QString);
+		void setTags(QString) override;
 		void setPool(int id, QString site);
 		// Loading
-		void load();
+		void load() override;
 		// Batch
 		void getPage();
 		void getAll();
 		// Others
-		void closeEvent(QCloseEvent*);
+		void closeEvent(QCloseEvent*) override;
 		void on_buttonSearch_clicked();
 		void setSite(QString);
-		void focusSearch();
+		void focusSearch() override;
 
 	private:
 		TextEdit *m_search;
