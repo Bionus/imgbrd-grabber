@@ -863,6 +863,7 @@ QStringList zoomWindow::saveImageNow(bool fav)
 		QPushButton *saveQuit = fav ? ui->buttonSaveNQuitFav : ui->buttonSaveNQuit;
 		switch (res)
 		{
+			case Image::SaveResult::NotLoaded:
 			case Image::SaveResult::Error:
 				error(this, tr("Error saving image."));
 				return QStringList();
