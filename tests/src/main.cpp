@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
 
 	CustomNetworkAccessManager::TestMode = true;
 
-	for (QObject *suite : TestSuite::suites)
+	for (QObject *suite : TestSuite::getSuites())
 	{
 		if (!testSuites.isEmpty() && !testSuites.contains(suite->metaObject()->className()))
 			continue;

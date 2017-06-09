@@ -15,8 +15,6 @@
 	#include <float.h>
 #endif
 #include "ui_mainwindow.h"
-#include "ui_tag-tab.h"
-#include "ui_pool-tab.h"
 #include "ui/QAffiche.h"
 #include "settings/optionswindow.h"
 #include "settings/startwindow.h"
