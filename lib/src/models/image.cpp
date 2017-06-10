@@ -390,6 +390,9 @@ void Image::loadDetails(bool rateLimit)
 	}
 
 	m_parentSite->getAsync(rateLimit ? Site::QueryType::Retry : Site::QueryType::Details, m_parentSite->fixUrl(m_pageUrl), [this](QNetworkReply *reply) {
+		if (m_loadDetails != nullptr)
+			m_loadDetails->deleteLater();
+
 		m_loadDetails = reply;
 		m_loadDetails->setParent(this);
 		m_loadingDetails = true;
@@ -400,7 +403,10 @@ void Image::loadDetails(bool rateLimit)
 void Image::abortTags()
 {
 	if (m_loadingDetails && m_loadDetails->isRunning())
-	{ m_loadDetails->abort(); }
+	{
+		m_loadDetails->abort();
+		m_loadingDetails = false;
+	}
 }
 void Image::parseDetails()
 {
@@ -691,6 +697,9 @@ void Image::loadImage()
 		return;
 	}
 
+	if (m_loadImage != nullptr)
+		m_loadImage->deleteLater();
+
 	m_loadImage = m_parentSite->get(m_parentSite->fixUrl(m_url), m_parent, "image", this);
 	m_loadImage->setParent(this);
 	m_loadingImage = true;
@@ -782,7 +791,10 @@ void Image::downloadProgressImageS(qint64 v1, qint64 v2)
 void Image::abortImage()
 {
 	if (m_loadingImage && m_loadImage->isRunning())
-	{ m_loadImage->abort(); }
+	{
+		m_loadImage->abort();
+		m_loadingImage = false;
+	}
 }
 
 /**

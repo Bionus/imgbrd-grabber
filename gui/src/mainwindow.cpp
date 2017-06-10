@@ -2064,10 +2064,8 @@ void mainWindow::getAllPause()
 		log("Recovery of downloads...", Logger::Info);
 		for (int i = 0; i < m_getAllDownloading.size(); i++)
 		{
-			if (m_getAllDownloading[i]->tagsReply() != nullptr)
-			{ m_getAllDownloading[i]->loadDetails(); }
-			if (m_getAllDownloading[i]->imageReply() != nullptr)
-			{ m_getAllDownloading[i]->loadImage(); }
+			m_getAllDownloading[i]->loadDetails();
+			m_getAllDownloading[i]->loadImage();
 		}
 		m_getAll = true;
 	}
