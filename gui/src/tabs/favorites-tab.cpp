@@ -286,6 +286,8 @@ void favoritesTab::favoritesBack()
 {
 	ui->widgetResults->hide();
 	ui->widgetFavorites->show();
+	ui->splitter->setSizes(QList<int>() << 1 << 0);
+
 	if (!m_currentTags.isEmpty() || m_currentFav != -1)
 	{
 		m_currentTags = "";
