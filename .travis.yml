@@ -14,6 +14,7 @@ addons:
   apt:
     sources:
       - sourceline: 'ppa:ubuntu-sdk-team/ppa'
+      - ubuntu-toolchain-r-test
     packages:
       - qt5-qmake
       - qtbase5-dev
@@ -24,6 +25,7 @@ addons:
       - qt5-default
       - qttools5-dev-tools
       - sshpass
+      - lcov
 
 # Qt packages for OS X
 install:
@@ -46,21 +48,27 @@ before_script:
 
 # Build Grabber
 script:
-  - mkdir build
-  - cd build
+  - mkdir build && cd build
   - cmake ..
-  - make
+  - make -j8
   - cd ..
   - ./build/tests/tests
 
-# Upload code coverage
 after_success:
-  - bash <(curl -s https://codecov.io/bash)
+  # Upload code coverage
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]] && [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then
+      lcov --directory . --capture --output-file coverage.info &&
+      lcov --remove coverage.info '/usr/*' --output-file coverage.info &&
+      lcov --list coverage.info &&
+      bash <(curl -s https://codecov.io/bash)
+    ; fi
+  # Generate release name
   - if [[ "$TRAVIS_TAG" == "" ]]; then
       export BUILD_LABEL=$TRAVIS_BRANCH
     ; else
       export BUILD_LABEL=$TRAVIS_TAG
     ; fi
+  # Build and upload release
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]] && [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then
       cp "build/gui/gui" "release/Grabber" &&
       touch "release/settings.ini" &&

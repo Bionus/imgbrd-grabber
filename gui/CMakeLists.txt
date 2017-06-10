@@ -55,7 +55,10 @@ file(GLOB SOURCES
 	"src/utils/blacklist-fix/*.cpp"
 	"src/utils/empty-dirs-fix/*.cpp"
 	"src/utils/md5-fix/*.cpp"
-	"src/viewer/*.cpp")
+	"src/viewer/*.cpp"
+	"../resources/*.rc"
+	"../resources/*.qrc")
+file(GLOB_RECURSE FORMS "src/*.ui")
 include_directories("src/" "../lib/src/" "..")
 
 # Breakpad files
@@ -86,5 +89,5 @@ if(USE_BREAKPAD)
 	include_directories(${BREAKPAD}/src)
 endif()
 
-add_executable(${PROJECT_NAME} ${SOURCES} ${UTILS_SOURCES})
-target_link_libraries(${PROJECT_NAME} ${QT_LIBRARIES} lib)
+add_executable(${PROJECT_NAME} ${SOURCES} ${FORMS} ${UTILS_SOURCES})
+target_link_libraries(${PROJECT_NAME} ${QT_LIBRARIES} ${LIBS} lib)

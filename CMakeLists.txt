@@ -12,6 +12,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 project(Grabber)
+set(USE_SSL 1)
 
 add_definitions(-DVERSION="\\"5.3.3\\"")
 add_definitions(-DPROJECT_WEBSITE_URL="\\"https://bionus.github.io/imgbrd-grabber/\\"")
@@ -23,3 +24,22 @@ add_subdirectory(gui)
 add_subdirectory(cli)
 add_subdirectory(tests)
 add_subdirectory(CrashReporter)
+
+# SSL
+if(USE_SSL)
+	message("Compiling with SSL support")
+	find_package(OpenSSL REQUIRED)
+	if (OPENSSL_FOUND)
+		message("OpenSSL include dir: ${OPENSSL_INCLUDE_DIR}")
+		message("OpenSSL libraries: ${OPENSSL_LIBRARIES}")
+		include_directories(${OPENSSL_INCLUDE_DIR})
+		list(APPEND LIBS ${OPENSSL_LIBRARIES})
+	endif()
+endif()
+
+# Enable code coverage on the Travis Linux build
+if((DEFINED ENV{TRAVIS}) AND UNIX AND NOT APPLE AND CMAKE_COMPILER_IS_GNUCXX)
+	include(cmake/CodeCoverage.cmake)
+	setup_target_for_coverage(coverage tests coverage)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -fprofile-arcs -ftest-coverage")
+endif()
