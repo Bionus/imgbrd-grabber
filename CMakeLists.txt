@@ -25,6 +25,9 @@ add_subdirectory(cli)
 add_subdirectory(tests)
 add_subdirectory(CrashReporter)
 
+add_subdirectory(languages)
+add_custom_target(translations DEPENDS General_translations CrashReporter_translations)
+
 # SSL
 if(USE_SSL)
 	message("Compiling with SSL support")
