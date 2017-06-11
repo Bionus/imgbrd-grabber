@@ -23,6 +23,7 @@ addons:
       - qtmultimedia5-dev
       - libpulse-dev
       - qt5-default
+      - qttools5-dev
       - qttools5-dev-tools
       - sshpass
       - lcov
