@@ -19,15 +19,6 @@ add_definitions(-DPROJECT_WEBSITE_URL="https://bionus.github.io/imgbrd-grabber/"
 add_definitions(-DPROJECT_GITHUB_URL="https://github.com/Bionus/imgbrd-grabber")
 add_definitions(-DPREFIX="$ENV{PREFIX}")
 
-add_subdirectory(lib)
-add_subdirectory(gui)
-add_subdirectory(cli)
-add_subdirectory(tests)
-add_subdirectory(CrashReporter)
-
-add_subdirectory(languages)
-add_custom_target(translations DEPENDS General_translations CrashReporter_translations)
-
 # SSL
 if(USE_SSL)
 	message("Compiling with SSL support")
@@ -46,3 +37,12 @@ if((DEFINED ENV{TRAVIS}) AND UNIX AND NOT APPLE AND CMAKE_COMPILER_IS_GNUCXX)
 	setup_target_for_coverage(coverage tests coverage)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -fprofile-arcs -ftest-coverage")
 endif()
+
+add_subdirectory(lib)
+add_subdirectory(gui)
+add_subdirectory(cli)
+add_subdirectory(tests)
+add_subdirectory(CrashReporter)
+
+add_subdirectory(languages)
+add_custom_target(translations DEPENDS General_translations CrashReporter_translations)
