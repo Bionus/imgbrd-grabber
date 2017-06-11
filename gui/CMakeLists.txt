@@ -41,7 +41,6 @@ endif()
 
 # Input
 file(GLOB SOURCES
-	"../vendor/*.cpp"
 	"src/main/main.cpp"
 	"src/*.cpp"
 	"src/batch/*.cpp"
