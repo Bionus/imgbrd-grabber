@@ -52,17 +52,13 @@ void searchTab::init()
 {
 	m_endlessLoadingEnabled = true;
 	auto infinite = m_settings->value("infiniteScroll", "disabled");
-	infinite = "button";
 
-	if (infinite == "disabled" && ui_buttonEndlessLoad != nullptr)
-	{
+	// Always hide scroll button before results are loaded
+	if (ui_buttonEndlessLoad != nullptr)
 		ui_buttonEndlessLoad->hide();
-	}
-	else if (infinite == "scroll")
-	{
-		ui_buttonEndlessLoad->hide();
+
+	if (infinite == "scroll")
 		connect(ui_scrollAreaResults, &VerticalScrollArea::endOfScrollReached, this, &searchTab::endlessLoad);
-	}
 }
 
 searchTab::~searchTab()
@@ -371,8 +367,8 @@ void searchTab::postLoading(Page *page, QList<QSharedPointer<Image>> imgs)
 	if (finished)
 	{
 		// Re-enable endless loading
-		if (ui_buttonEndlessLoad != nullptr && ui_buttonEndlessLoad->isVisible())
-			ui_buttonEndlessLoad->setEnabled(true);
+		if (ui_buttonEndlessLoad != nullptr && m_settings->value("infiniteScroll", "disabled") == "button")
+			ui_buttonEndlessLoad->show();
 		m_endlessLoadingEnabled = true;
 	}
 
@@ -1107,7 +1103,7 @@ void searchTab::loadPage()
 
 	// Disable endless loading
 	if (ui_buttonEndlessLoad != nullptr && ui_buttonEndlessLoad->isVisible())
-		ui_buttonEndlessLoad->setEnabled(false);
+		ui_buttonEndlessLoad->hide();
 	m_endlessLoadingEnabled = false;
 
 	for (Site *site : loadSites())
