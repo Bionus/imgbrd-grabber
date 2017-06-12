@@ -300,7 +300,7 @@
       </sizepolicy>
      </property>
      <property name="styleSheet">
-      <string notr="true">QScrollArea {background-color:transparent;}</string>
+      <string notr="true">#scrollAreaResults, #scrollAreaWidget {background-color:transparent;}</string>
      </property>
      <property name="frameShape">
       <enum>QFrame::NoFrame</enum>
@@ -328,9 +328,6 @@
         <width>780</width>
         <height>325</height>
        </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color:transparent;</string>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout">
        <property name="leftMargin">
@@ -532,9 +529,6 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../../../resources/resources.qrc"/>
-  <include location="../../../resources/resources.qrc"/>
-  <include location="../../../resources/resources.qrc"/>
   <include location="../../../resources/resources.qrc"/>
  </resources>
  <connections>
