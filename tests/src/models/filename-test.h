@@ -52,6 +52,7 @@ class FilenameTest : public TestSuite
 		void testPathSpecies();
 		void testPathNoJpeg();
 		void testPathKeepInvalidTokens();
+		void testPathForbiddenSeparator();
 		void testGetReplacesSimple();
 		void testGetReplacesMultiple();
 		void testGetReplacesMatrix();

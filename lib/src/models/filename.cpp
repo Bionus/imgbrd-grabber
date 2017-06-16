@@ -500,9 +500,24 @@ QStringList Filename::path(const Image& img, Profile *profile, QString pth, int 
 
 	return fns;
 }
+
+QString cleanUpValue(QString res, QMap<QString, QString> options, QSettings *settings)
+{
+	// Forbidden characters
+	if (!options.contains("unsafe"))
+	{ res = res.replace("\\", "_").replace("%", "_").replace("/", "_").replace(":", "_").replace("|", "_").replace("*", "_").replace("?", "_").replace("\"", "_").replace("<", "_").replace(">", "_").replace("__", "_").replace("__", "_").replace("__", "_").trimmed(); }
+
+	// Replace underscores by spaces
+	if (!options.contains("underscores") && (!settings->value("Save/replaceblanks", false).toBool() || options.contains("spaces")))
+	{ res = res.replace("_", " "); }
+
+	return res;
+}
+
 QString Filename::optionedValue(QString res, QString key, QString ops, const Image& img, QSettings *settings, QStringList namespaces) const
 {
 	QString mainSeparator = settings->value("Save/separator", " ").toString();
+	bool cleaned = false;
 
 	// Parse options
 	QMap<QString,QString> options;
@@ -549,19 +564,19 @@ QString Filename::optionedValue(QString res, QString key, QString ops, const Ima
 		if (options.contains("separator"))
 		{ tagSeparator = fixSeparator(options["separator"]); }
 
+		// Clean each value separately
+		for (QString &t : vals)
+		{ t = cleanUpValue(t, options, settings); }
+		cleaned = true;
+
 		res = vals.join(tagSeparator);
 	}
 	if (options.contains("htmlescape"))
 	{ res = res.toHtmlEscaped(); }
 
 	// Forbidden characters and spaces replacement settings
-	if (key != "allo" && !key.startsWith("url_") && key != "filename")
-	{
-		if (!options.contains("unsafe"))
-		{ res = res.replace("\\", "_").replace("%", "_").replace("/", "_").replace(":", "_").replace("|", "_").replace("*", "_").replace("?", "_").replace("\"", "_").replace("<", "_").replace(">", "_").replace("__", "_").replace("__", "_").replace("__", "_").trimmed(); }
-		if (!options.contains("underscores") && (!settings->value("Save/replaceblanks", false).toBool() || options.contains("spaces")))
-		{ res = res.replace("_", " "); }
-	}
+	if (key != "allo" && !key.startsWith("url_") && key != "filename" && !cleaned)
+	{ res = cleanUpValue(res, options, settings); }
 
 	// Escape if necessary
 	if (m_escapeMethod != nullptr && options.contains("escape"))

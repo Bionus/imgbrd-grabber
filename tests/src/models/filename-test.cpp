@@ -333,6 +333,12 @@ void FilenameTest::testPathKeepInvalidTokens()
 	assertPath("%ext% %invalid_token%", "jpg %invalid_token%", "", true, false, true);
 }
 
+void FilenameTest::testPathForbiddenSeparator()
+{
+	m_settings->setValue("Save/copyright_multiple", "keepAll");
+	assertPath("%copyright:separator=/%", "copyright1/copyright2");
+}
+
 void FilenameTest::testGetReplacesSimple()
 {
 	QString format = "%artist%/%copyright%/%character%/%md5%.%ext%";
