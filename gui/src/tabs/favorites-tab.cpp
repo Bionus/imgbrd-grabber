@@ -14,11 +14,20 @@
 #include "helpers.h"
 #include "functions.h"
 
+#define FAVORITES_THUMB_SIZE 150
+
 
 favoritesTab::favoritesTab(QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
 	: searchTab(sites, profile, parent), ui(new Ui::favoritesTab), m_currentFav(0)
 {
 	ui->setupUi(this);
+
+	// Promote favorites layout into fixed-size grid layout
+	m_favoritesLayout = new FixedSizeGridLayout;
+	m_favoritesLayout->setFixedWidth(FAVORITES_THUMB_SIZE);
+	QWidget *layoutWidget = new QWidget;
+	layoutWidget->setLayout(m_favoritesLayout);
+	ui->layoutFavorites->addWidget(layoutWidget, 0, 0);
 
 	// UI members for SearchTab class
 	ui_checkMergeResults = ui->checkMergeResults;
@@ -105,7 +114,7 @@ void favoritesTab::updateFavorites()
 	{ m_favorites = reversed(m_favorites); }
 
 	QString format = tr("MM/dd/yyyy");
-	clearLayout(ui->layoutFavorites);
+	clearLayout(m_favoritesLayout);
 
 	QString display = m_settings->value("favorites_display", "ind").toString();
 	int i = 0;
@@ -121,6 +130,7 @@ void favoritesTab::updateFavorites()
 			QBouton *image = new QBouton(fav.getName(), false, false, 0, QColor(), this);
 				image->setIcon(img);
 				image->setIconSize(img.size());
+				image->setFixedSize(FAVORITES_THUMB_SIZE, FAVORITES_THUMB_SIZE);
 				image->setFlat(true);
 				image->setToolTip(xt);
 				connect(image, SIGNAL(rightClick(QString)), this, SLOT(favoriteProperties(QString)));
@@ -140,7 +150,7 @@ void favoritesTab::updateFavorites()
 			l->addWidget(caption);
 		}
 
-		ui->layoutFavorites->addWidget(w, i / 8, i % 8);
+		m_favoritesLayout->addFixedSizeWidget(w, i, m_favorites.count());
 		++i;
 	}
 }

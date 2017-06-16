@@ -58,6 +58,7 @@ class favoritesTab : public searchTab
 		QDateTime m_loadFavorite;
 		QString m_currentTags;
 		int m_currentFav;
+		FixedSizeGridLayout *m_favoritesLayout;
 };
 
 #endif // FAVORITES_TAB_H
