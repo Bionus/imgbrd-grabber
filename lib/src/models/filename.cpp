@@ -563,6 +563,8 @@ QString Filename::optionedValue(QString res, QString key, QString ops, const Ima
 		}
 		if (options.contains("separator"))
 		{ tagSeparator = fixSeparator(options["separator"]); }
+		if (options.contains("sort"))
+		{ qSort(vals); }
 
 		// Clean each value separately
 		for (QString &t : vals)
