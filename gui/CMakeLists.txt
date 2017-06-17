@@ -34,6 +34,7 @@ if(USE_QSCINTILLA)
 	find_package(QScintilla REQUIRED)
 	if(QSCINTILLA_FOUND)
 		add_definitions(-DUSE_QSCINTILLA=1)
+		list(APPEND LIBS ${QSCINTILLA_LIBRARY})
 	else()
 		MESSAGE(INFO "QScintilla2 not found")
 	endif()
@@ -70,12 +71,12 @@ if(USE_BREAKPAD)
 		set(CMAKE_CFLAGS_RELEASE "${CMAKE_CFLAGS_RELEASE} -O2 -MD -zi")
 		set(BREAKPAD "D:/bin/google-breakpad")
 		if(CMAKE_BUILD_TYPE STREQUAL "Release")
-			target_link_libraries(${PROJECT_NAME}
+			list(APPEND LIBS
 				"${BREAKPAD}/src/client/windows/Release/lib/common.lib"
 				"${BREAKPAD}/src/client/windows/Release/lib/crash_generation_client.lib"
 				"${BREAKPAD}/src/client/windows/Release/lib/exception_handler.lib")
 		elseif(CMAKE_BUILD_TYPE STREQUAL "Debug")
-			target_link_libraries(${PROJECT_NAME}
+			list(APPEND LIBS
 				"${BREAKPAD}/src/client/windows/Debug/lib/common.lib"
 				"${BREAKPAD}/src/client/windows/Debug/lib/crash_generation_client.lib"
 				"${BREAKPAD}/src/client/windows/Debug/lib/exception_handler.lib")
@@ -83,7 +84,7 @@ if(USE_BREAKPAD)
 	elseif(UNIX)
 		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fpermissive")
 		set(BREAKPAD "~/Programmation/google-breakpad")
-		target_link_libraries(${PROJECT_NAME} "${BREAKPAD}/src/client/linux/libbreakpad_client.a")
+		list(APPEND LIBS "${BREAKPAD}/src/client/linux/libbreakpad_client.a")
 	endif()
 	include_directories(${BREAKPAD}/src)
 endif()
