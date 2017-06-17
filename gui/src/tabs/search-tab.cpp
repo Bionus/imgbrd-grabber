@@ -373,9 +373,9 @@ void searchTab::postLoading(Page *page, QList<QSharedPointer<Image>> imgs)
 
 	loadImageThumbnails(page, imgs);
 
-	if (finished)
+	// Re-enable endless loading
+	if (finished && imgs.count() > 0)
 	{
-		// Re-enable endless loading
 		if (ui_buttonEndlessLoad != nullptr && m_settings->value("infiniteScroll", "disabled") == "button")
 			ui_buttonEndlessLoad->show();
 		m_endlessLoadingEnabled = true;
