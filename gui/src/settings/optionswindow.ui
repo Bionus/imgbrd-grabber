@@ -168,7 +168,7 @@
        </sizepolicy>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>12</number>
       </property>
       <widget class="QWidget" name="pageGeneral">
        <layout class="QFormLayout" name="formLayout_14">
@@ -1691,7 +1691,7 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="0" colspan="2">
+        <item row="3" column="0" colspan="2">
          <widget class="QCheckBox" name="checkResizeInsteadOfCropping">
           <property name="text">
            <string>Resize previews instead of cropping them</string>
@@ -1701,7 +1701,7 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="0" colspan="2">
+        <item row="4" column="0" colspan="2">
          <widget class="QCheckBox" name="checkAutocompletion">
           <property name="text">
            <string>Enable autocompletion</string>
@@ -1711,7 +1711,7 @@
           </property>
          </widget>
         </item>
-        <item row="4" column="0" colspan="2">
+        <item row="5" column="0" colspan="2">
          <widget class="QCheckBox" name="checkShowTagWarning">
           <property name="text">
            <string>Show warning if an incompatible modifier is found</string>
@@ -1721,7 +1721,7 @@
           </property>
          </widget>
         </item>
-        <item row="5" column="0" colspan="2">
+        <item row="6" column="0" colspan="2">
          <widget class="QCheckBox" name="checkShowWarnings">
           <property name="text">
            <string>Show other warnings</string>
@@ -1731,14 +1731,14 @@
           </property>
          </widget>
         </item>
-        <item row="6" column="0" colspan="2">
+        <item row="7" column="0" colspan="2">
          <widget class="QCheckBox" name="checkGetUnloadedPages">
           <property name="text">
            <string>Download not loaded pages</string>
           </property>
          </widget>
         </item>
-        <item row="7" column="0" colspan="2">
+        <item row="8" column="0" colspan="2">
          <widget class="QLabel" name="label_66">
           <property name="text">
            <string>&lt;i&gt;If you activate this option, pressing the &quot;Get this page&quot; button will take into account modifications made to the number of images per page, the page number, etc. even if they weren't loaded.&lt;/i&gt;</string>
@@ -1756,6 +1756,32 @@
           <property name="checked">
            <bool>true</bool>
           </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="labelInfiniteScroll">
+          <property name="text">
+           <string>Infinite scroll</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QComboBox" name="comboInfiniteScroll">
+          <item>
+           <property name="text">
+            <string>Disabled</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Button</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Scroll</string>
+           </property>
+          </item>
          </widget>
         </item>
        </layout>
@@ -2867,9 +2893,6 @@
   <tabstop>comboSources</tabstop>
  </tabstops>
  <resources>
-  <include location="../../../resources/resources.qrc"/>
-  <include location="../../../resources/resources.qrc"/>
-  <include location="../../../resources/resources.qrc"/>
   <include location="../../../resources/resources.qrc"/>
  </resources>
  <connections>
