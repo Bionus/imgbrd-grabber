@@ -89,5 +89,10 @@ if(USE_BREAKPAD)
 	include_directories(${BREAKPAD}/src)
 endif()
 
-add_executable(${PROJECT_NAME} ${SOURCES} ${FORMS} ${UTILS_SOURCES})
+if (WIN32)
+	add_executable(${PROJECT_NAME} WIN32 ${SOURCES} ${FORMS} ${UTILS_SOURCES})
+else()
+	add_executable(${PROJECT_NAME} ${SOURCES} ${FORMS} ${UTILS_SOURCES})
+endif()
+
 target_link_libraries(${PROJECT_NAME} ${QT_LIBRARIES} ${LIBS} lib)
