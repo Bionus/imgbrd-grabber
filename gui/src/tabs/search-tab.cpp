@@ -260,7 +260,8 @@ void searchTab::clear()
 	m_siteLayouts.clear();
 	m_layouts.clear();
 	m_boutons.clear();
-	m_pageLabels.clear();
+	qDeleteAll(m_siteLabels);
+	m_siteLabels.clear();
 	clearLayout(ui_layoutResults);
 
 	// Abort current loadings
@@ -358,12 +359,12 @@ void searchTab::postLoading(Page *page, QList<QSharedPointer<Image>> imgs)
 			ui_stackedMergeResults->setCurrentIndex(1);
 
 		// Create the label when loading the first page
-		if (m_page == 1 && m_pageLabels.isEmpty())
+		if (m_page == 1 && m_siteLabels.isEmpty())
 		{
 			QLabel *txt = new QLabel(this);
 			txt->setOpenExternalLinks(true);
 			setMergedLabelText(txt, m_images);
-			m_pageLabels.insert(nullptr, txt);
+			m_siteLabels.insert(nullptr, txt);
 
 			ui_layoutResults->addWidget(txt, 0, 0);
 			ui_layoutResults->setRowMinimumHeight(0, txt->sizeHint().height() + 10);
@@ -408,10 +409,10 @@ void searchTab::finishedLoadingTags(Page *page)
 		if (validateImage(img))
 			imgs.append(img);
 
-	if (ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked() && m_pageLabels.contains(nullptr))
-		setMergedLabelText(m_pageLabels[nullptr], m_images);
-	else if (m_pageLabels.contains(page))
-		setPageLabelText(m_pageLabels[page], page, imgs);
+	if (ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked() && m_siteLabels.contains(nullptr))
+		setMergedLabelText(m_siteLabels[nullptr], m_images);
+	else if (m_siteLabels.contains(page->site()))
+		setPageLabelText(m_siteLabels[page->site()], page, imgs);
 }
 
 void searchTab::loadImageThumbnails(Page *page, const QList<QSharedPointer<Image>> &imgs)
@@ -557,15 +558,20 @@ void searchTab::addResultsPage(Page *page, const QList<QSharedPointer<Image>> &i
 	if (pos < 0)
 		return;
 
-	QLabel *txt = new QLabel(this);
-	txt->setOpenExternalLinks(true);
-	setPageLabelText(txt, page, imgs, noResultsMessage);
-	m_pageLabels.insert(page, txt);
-
 	int page_x = pos % ui_spinColumns->value();
 	int page_y = (pos / ui_spinColumns->value()) * 2;
-	ui_layoutResults->addWidget(txt, page_y, page_x);
-	ui_layoutResults->setRowMinimumHeight(page_y, txt->sizeHint().height() + 10);
+
+	Site *site = page->site();
+	if (!m_siteLabels.contains(site))
+	{
+		QLabel *txt = new QLabel(this);
+		txt->setOpenExternalLinks(true);
+		m_siteLabels.insert(site, txt);
+
+		ui_layoutResults->addWidget(txt, page_y, page_x);
+		ui_layoutResults->setRowMinimumHeight(page_y, txt->sizeHint().height() + 10);
+	}
+	setPageLabelText(m_siteLabels[site], page, imgs, noResultsMessage);
 
 	if (m_siteLayouts.size() > pos)
 	{ addLayout(m_siteLayouts[page->site()], page_y + 1, page_x); }
@@ -631,8 +637,21 @@ void searchTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPoi
 	{
 		int pageCount = page->pagesCount();
 		int imageCount = page->imagesCount();
-		txt->setText("<a href=\""+page->url().toString().toHtmlEscaped()+"\">"+page->site()->name()+"</a> - "+tr("Page %1 of %2 (%3 of %4)").arg(page->page()).arg(pageCount > 0 ? QString::number(pageCount) : "?").arg(imgs.count()).arg(imageCount > 0 ? QString::number(imageCount) : "?"));
+
+		int firstPage = page->page();
+		int lastPage = page->page();
+		for (Page *p : m_pages[page->website()])
+		{
+			if (p->page() < firstPage)
+				firstPage = p->page();
+			if (p->page() > lastPage)
+				lastPage = p->page();
+		}
+
+		QString pageLabel = firstPage != lastPage ? QString("%1-%2").arg(firstPage).arg(lastPage) : QString::number(lastPage);
+		txt->setText("<a href=\""+page->url().toString().toHtmlEscaped()+"\">"+page->site()->name()+"</a> - "+tr("Page %1 of %2 (%3 of %4)").arg(pageLabel).arg(pageCount > 0 ? QString::number(pageCount) : "?").arg(imgs.count()).arg(imageCount > 0 ? QString::number(imageCount) : "?"));
 	}
+
 	/*if (page->search().join(" ") != m_search->toPlainText() && m_settings->value("showtagwarning", true).toBool())
 	{
 		QStringList uncommon = m_search->toPlainText().toLower().trimmed().split(" ", QString::SkipEmptyParts);
@@ -645,6 +664,7 @@ void searchTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPoi
 		if (!uncommon.isEmpty())
 		{ txt->setText(txt->text()+"<br/>"+QString(tr("Des modificateurs ont été otés de la recherche car ils ne sont pas compatibles avec cet imageboard : %1.")).arg(uncommon.join(" "))); }
 	}*/
+
 	// Show warnings
 	if (!page->errors().isEmpty() && m_settings->value("showwarnings", true).toBool())
 	{

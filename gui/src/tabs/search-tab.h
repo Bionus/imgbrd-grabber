@@ -148,7 +148,7 @@ class searchTab : public QWidget
 		QList<QSharedPointer<Image>> m_images;
 		QMap<QString, QList<Page*>> m_pages;
 		QMap<QString, Page*> m_lastPages;
-		QMap<Page*, QLabel*> m_pageLabels;
+		QMap<Site*, QLabel*> m_siteLabels;
 		QMap<Site*, QVBoxLayout*> m_siteLayouts;
 		QMap<Page*, FixedSizeGridLayout*> m_layouts;
 		int m_page;
