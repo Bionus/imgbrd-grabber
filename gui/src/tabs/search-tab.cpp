@@ -358,7 +358,7 @@ void searchTab::postLoading(Page *page, QList<QSharedPointer<Image>> imgs)
 			ui_stackedMergeResults->setCurrentIndex(1);
 
 		// Create the label when loading the first page
-		if (m_page == 1)
+		if (m_page == 1 && m_pageLabels.isEmpty())
 		{
 			QLabel *txt = new QLabel(this);
 			txt->setOpenExternalLinks(true);
@@ -574,18 +574,27 @@ void searchTab::setMergedLabelText(QLabel *txt, const QList<QSharedPointer<Image
 {
 	int maxPage = 0;
 	int sumImages = 0;
+	int firstPage = ui_spinPage->value();
+	int lastPage = ui_spinPage->value();
 
 	for (QList<Page*> ps : m_pages)
 	{
-		auto p = ps.last();
-
-		int pagesCount = p->pagesCount();
-		if (pagesCount > maxPage)
-			maxPage = pagesCount;
-
-		int imagesCount = p->imagesCount();
+		Page *first = ps.first();
+		int imagesCount = first->imagesCount();
 		if (imagesCount > 0)
-			sumImages += p->imagesCount();
+			sumImages += first->imagesCount();
+
+		for (Page *p : ps)
+		{
+			int pagesCount = p->pagesCount();
+			if (pagesCount > maxPage)
+				maxPage = pagesCount;
+
+			if (p->page() < firstPage)
+				firstPage = p->page();
+			if (p->page() > lastPage)
+				lastPage = p->page();
+		}
 	}
 
 	QString links;
@@ -600,7 +609,8 @@ void searchTab::setMergedLabelText(QLabel *txt, const QList<QSharedPointer<Image
 		}
 	}
 
-	txt->setText(QString(links + " - Page %1 of %2 (%3 of max %4)").arg(ui_spinPage->value()).arg(maxPage).arg(imgs.count()).arg(sumImages));
+	QString page = firstPage != lastPage ? QString("%1-%2").arg(firstPage).arg(lastPage) : QString::number(lastPage);
+	txt->setText(QString(links + " - Page %1 of %2 (%3 of max %4)").arg(page).arg(maxPage).arg(imgs.count()).arg(sumImages));
 }
 void searchTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage)
 {
