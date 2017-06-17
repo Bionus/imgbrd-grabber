@@ -63,6 +63,25 @@ QMap<QString,QPair<QString,QString>> getFilenames(QSettings *settings)
 	return tokens;
 }
 
+QMap<int, QMap<QString, QVariant> > getExternalLogFiles(QSettings *settings)
+{
+	QMap<int, QMap<QString, QVariant>> ret;
+
+	settings->beginGroup("LogFiles");
+	for (QString group : settings->childGroups())
+	{
+		settings->beginGroup(group);
+		QMap<QString, QVariant> logSettings;
+		for (QString key : settings->childKeys())
+		{ logSettings.insert(key, settings->value(key)); }
+		ret.insert(group.toInt(), logSettings);
+		settings->endGroup();
+	}
+	settings->endGroup();
+
+	return ret;
+}
+
 QStringList removeWildards(QStringList elements, QStringList remove)
 {
 	QStringList tags;
@@ -236,7 +255,7 @@ int levenshtein(QString s1, QString s2)
 bool setFileCreationDate(QString path, QDateTime datetime)
 {
 	#ifdef Q_OS_WIN
-		LPCWSTR filename = (const wchar_t*)path.utf16();
+		LPCSTR filename = path.toStdString().c_str();
 		HANDLE hfile = CreateFile(filename, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 		if (hfile == INVALID_HANDLE_VALUE)
 		{
@@ -357,6 +376,12 @@ QString setExtension(QString url, QString extension)
 			url = url.left(pPos) + "." + extension;
 	}
 	return url;
+}
+
+bool isUrl(QString str)
+{
+	QRegExp regexUrl("^https?://[^\\s/$.?#].[^\\s]*$");
+	return regexUrl.exactMatch(str);
 }
 
 QString fixFilename(QString fn, QString path, int maxlength, bool invalidChars)
@@ -518,4 +543,53 @@ QString fixFilenameWindows(QString fn, QString path, int maxlength, bool invalid
 	{ filename = filename.right(filename.length() - index - 1); }
 
 	return filename;
+}
+
+
+QString getExtensionFromHeader(const QByteArray &data12)
+{
+	QByteArray data8 = data12.left(8);
+	QByteArray data48 = data12.mid(4, 8);
+	QByteArray data6 = data12.left(6);
+	QByteArray data4 = data12.left(4);
+	QByteArray data3 = data12.left(3);
+	QByteArray data2 = data12.left(2);
+
+	// GIF
+	if (data6 == "GIF87a" || data6 == "GIF89a")
+		return "gif";
+
+	// PNG
+	if (data8 == "\211PNG\r\n\032\n")
+		return "png";
+
+	// JPG
+	if (data3 == "\255\216\255")
+		return "jpg";
+
+	// BMP
+	if (data2 == "BM")
+		return "bmp";
+
+	// WEBM
+	if (data4 == "\026\069\223\163")
+		return "webm";
+
+	// MP4
+	if (data48 == "ftyp3gp5" || data48 == "ftypMSNV" || data48 == "ftypisom")
+		return "mp4";
+
+	// SWF
+	if (data3 == "FWS" || data3 == "CWS" || data3 == "ZWS")
+		return "swf";
+
+	// FLV
+	if (data4 == "FLV\001")
+		return "flv";
+
+	// ICO
+	if (data4 == QByteArray("\000\000\001\000", 4))
+		return "ico";
+
+	return QString();
 }

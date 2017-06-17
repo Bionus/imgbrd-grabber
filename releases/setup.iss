@@ -1,5 +1,5 @@
 #define MyAppName "Grabber"
-#define MyAppVersion "5.3.3"
+#define MyAppVersion "5.4.0a1"
 #define MyAppPublisher "Bionus"
 #define MyAppURL "https://github.com/Bionus/imgbrd-grabber"
 #define MyAppExeName "Grabber.exe"
@@ -152,6 +152,7 @@ Source: "..\release\sites\Zerochan\sites.txt"; DestDir: "{localappdata}\Bionus\G
 Source: "..\release\sites\Zerochan\www.zerochan.net\settings.ini"; DestDir: "{localappdata}\Bionus\Grabber\sites\Zerochan\www.zerochan.net"; Flags: onlyifdoesntexist          
 Source: "..\release\themes\Default\*"; DestDir: "{localappdata}\Bionus\Grabber\themes\Default"; Flags: onlyifdoesntexist recursesubdirs
 Source: "..\release\themes\QDarkStyleSheet\*"; DestDir: "{localappdata}\Bionus\Grabber\themes\QDarkStyleSheet"; Flags: onlyifdoesntexist recursesubdirs
+Source: "..\release\webservices\*.ico"; DestDir: "{localappdata}\Bionus\Grabber\webservices"; Flags: onlyifdoesntexist
 
 [InstallDelete]         
 Type: filesandordirs; Name: "{app}\languages\updater"

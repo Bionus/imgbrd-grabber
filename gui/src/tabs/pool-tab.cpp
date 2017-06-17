@@ -35,6 +35,7 @@ poolTab::poolTab(QMap<QString, Site*> *sites, Profile *profile, mainWindow *pare
 	ui_buttonGetSel = ui->buttonGetSel;
 	ui_buttonFirstPage = ui->buttonFirstPage;
 	ui_buttonPreviousPage = ui->buttonPreviousPage;
+	ui_buttonEndlessLoad = nullptr;
 	ui_scrollAreaResults = ui->scrollAreaResults;
 
 	QStringList sources = m_sites->keys();
@@ -136,8 +137,10 @@ bool poolTab::read(const QJsonObject &json)
 
 void poolTab::getPage()
 {
+	Page *page = m_pages[ui->comboSites->currentText()].first();
+
 	bool unloaded = m_settings->value("getunloadedpages", false).toBool();
-	int perpage = unloaded ? ui->spinImagesPerPage->value() : m_pages.value(ui->comboSites->currentText())->images().count();
+	int perpage = unloaded ? ui->spinImagesPerPage->value() : page->images().count();
 	QString tags = "pool:"+QString::number(ui->spinPool->value())+" "+m_search->toPlainText()+" "+m_settings->value("add").toString().trimmed();
 	Site *site = m_sites->value(ui->comboSites->currentText());
 
@@ -145,10 +148,12 @@ void poolTab::getPage()
 }
 void poolTab::getAll()
 {
+	Page *page = m_pages[ui->comboSites->currentText()].first();
+
 	QString tags = "pool:"+QString::number(ui->spinPool->value())+" "+m_search->toPlainText()+" "+m_settings->value("add").toString().trimmed();
 	int limit = m_sites->value(ui->comboSites->currentText())->contains("Urls/1/Limit") ? m_sites->value(ui->comboSites->currentText())->value("Urls/1/Limit").toInt() : 0;
-	int perpage = qMin((limit > 0 ? limit : 200), qMax(m_pages.value(ui->comboSites->currentText())->images().count(), m_pages.value(ui->comboSites->currentText())->imagesCount()));
-	int total = qMax(m_pages.value(ui->comboSites->currentText())->images().count(), m_pages.value(ui->comboSites->currentText())->imagesCount());
+	int perpage = qMin((limit > 0 ? limit : 200), qMax(page->images().count(), page->imagesCount()));
+	int total = qMax(page->images().count(), page->imagesCount());
 	Site *site = m_sites->value(ui->comboSites->currentText());
 
 	emit batchAddGroup(DownloadQueryGroup(m_settings, tags, 1, perpage, total, site));

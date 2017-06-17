@@ -124,6 +124,26 @@ void FunctionsTest::testDateTimeFromString()
 	QCOMPARE(qDateTimeFromString("Fri Apr 14 23:49:40 -0500 2017").toUTC(), QDateTime(QDate(2017, 4, 15), QTime(4, 49, 40), Qt::UTC));
 }
 
+void FunctionsTest::testIsUrl()
+{
+	// Valid URLs
+	QCOMPARE(isUrl("http://foo.com/blah_blah"), true);
+	QCOMPARE(isUrl("http://foo.com/blah_blah_(wikipedia)"), true);
+	QCOMPARE(isUrl("http://foo.com/blah_(wikipedia)_blah#cite-1"), true);
+	QCOMPARE(isUrl("http://foo.com/(something)?after=parens"), true);
+	QCOMPARE(isUrl("http://1337.net"), true);
+	QCOMPARE(isUrl("http://a.b-c.de"), true);
+	QCOMPARE(isUrl("http://223.255.255.254"), true);
+
+	// Invalid URLs
+	QCOMPARE(isUrl("http://"), false);
+	QCOMPARE(isUrl("http://."), false);
+	QCOMPARE(isUrl("http://?"), false);
+	QCOMPARE(isUrl("//"), false);
+	QCOMPARE(isUrl("http:///a"), false);
+	QCOMPARE(isUrl("foo.com"), false);
+}
+
 
 void FunctionsTest::assertFixFilename(int platform, QString filename, QString path, QString expected)
 {

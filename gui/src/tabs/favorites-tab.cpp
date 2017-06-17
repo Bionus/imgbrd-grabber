@@ -14,11 +14,20 @@
 #include "helpers.h"
 #include "functions.h"
 
+#define FAVORITES_THUMB_SIZE 150
+
 
 favoritesTab::favoritesTab(QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
 	: searchTab(sites, profile, parent), ui(new Ui::favoritesTab), m_currentFav(0)
 {
 	ui->setupUi(this);
+
+	// Promote favorites layout into fixed-size grid layout
+	m_favoritesLayout = new FixedSizeGridLayout;
+	m_favoritesLayout->setFixedWidth(FAVORITES_THUMB_SIZE);
+	QWidget *layoutWidget = new QWidget;
+	layoutWidget->setLayout(m_favoritesLayout);
+	ui->layoutFavorites->addWidget(layoutWidget, 0, 0);
 
 	// UI members for SearchTab class
 	ui_checkMergeResults = ui->checkMergeResults;
@@ -40,11 +49,15 @@ favoritesTab::favoritesTab(QMap<QString,Site*> *sites, Profile *profile, mainWin
 	ui_buttonGetSel = ui->buttonGetSel;
 	ui_buttonFirstPage = ui->buttonFirstPage;
 	ui_buttonPreviousPage = ui->buttonPreviousPage;
+	ui_buttonEndlessLoad = nullptr;
 	ui_scrollAreaResults = ui->scrollAreaResults;
 
 	// Search field
 	m_postFiltering = createAutocomplete();
 	ui->layoutPlus->addWidget(m_postFiltering, 1, 1, 1, 3);
+
+	// Open tab with closed result splitter
+	ui->splitter->setSizes(QList<int>() << 1 << 0);
 
 	// Others
 	ui->checkMergeResults->setChecked(m_settings->value("mergeresults", false).toBool());
@@ -101,7 +114,7 @@ void favoritesTab::updateFavorites()
 	{ m_favorites = reversed(m_favorites); }
 
 	QString format = tr("MM/dd/yyyy");
-	clearLayout(ui->layoutFavorites);
+	clearLayout(m_favoritesLayout);
 
 	QString display = m_settings->value("favorites_display", "ind").toString();
 	int i = 0;
@@ -117,6 +130,7 @@ void favoritesTab::updateFavorites()
 			QBouton *image = new QBouton(fav.getName(), false, false, 0, QColor(), this);
 				image->setIcon(img);
 				image->setIconSize(img.size());
+				image->setFixedSize(FAVORITES_THUMB_SIZE, FAVORITES_THUMB_SIZE);
 				image->setFlat(true);
 				image->setToolTip(xt);
 				connect(image, SIGNAL(rightClick(QString)), this, SLOT(favoriteProperties(QString)));
@@ -136,7 +150,7 @@ void favoritesTab::updateFavorites()
 			l->addWidget(caption);
 		}
 
-		ui->layoutFavorites->addWidget(w, i / 8, i % 8);
+		m_favoritesLayout->addFixedSizeWidget(w, i, m_favorites.count());
 		++i;
 	}
 }
@@ -189,8 +203,9 @@ void favoritesTab::getPage()
 	bool unloaded = m_settings->value("getunloadedpages", false).toBool();
 	for (int i = 0; i < actuals.count(); i++)
 	{
+		Page *page = m_pages[actuals[i]].first();
 		QString search = m_currentTags+" "+m_settings->value("add").toString().toLower().trimmed();
-		int perpage = unloaded ? ui->spinImagesPerPage->value() : m_pages.value(actuals.at(i))->images().count();
+		int perpage = unloaded ? ui->spinImagesPerPage->value() : page->images().count();
 		emit batchAddGroup(DownloadQueryGroup(m_settings, search, ui->spinPage->value(), perpage, perpage, m_sites->value(actuals.at(i))));
 	}
 }
@@ -204,10 +219,11 @@ void favoritesTab::getAll()
 	}
 	for (int i = 0; i < actuals.count(); i++)
 	{
+		Page *page = m_pages[actuals[i]].first();
 		QString search = m_currentTags+" "+m_settings->value("add").toString().toLower().trimmed();
 		int limit = m_sites->value(actuals.at(i))->contains("Urls/1/Limit") ? m_sites->value(actuals.at(i))->value("Urls/1/Limit").toInt() : 0;
-		int perpage = qMin((limit > 0 ? limit : 1000), qMax(m_pages.value(actuals.at(i))->images().count(), m_pages.value(actuals.at(i))->imagesCount()));
-		int total = qMax(m_pages.value(actuals.at(i))->images().count(), m_pages.value(actuals.at(i))->imagesCount());
+		int perpage = qMin((limit > 0 ? limit : 1000), qMax(page->images().count(), page->imagesCount()));
+		int total = qMax(page->images().count(), page->imagesCount());
 		emit batchAddGroup(DownloadQueryGroup(m_settings, search, 1, perpage, total, m_sites->value(actuals.at(i))));
 	}
 }
@@ -282,6 +298,8 @@ void favoritesTab::favoritesBack()
 {
 	ui->widgetResults->hide();
 	ui->widgetFavorites->show();
+	ui->splitter->setSizes(QList<int>() << 1 << 0);
+
 	if (!m_currentTags.isEmpty() || m_currentFav != -1)
 	{
 		m_currentTags = "";

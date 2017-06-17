@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LogWindow</class>
+ <widget class="QDialog" name="LogWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>360</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Log</string>
+  </property>
+  <layout class="QFormLayout" name="formLayout">
+   <item row="1" column="0">
+    <widget class="QLabel" name="labelLocationType">
+     <property name="text">
+      <string>Location type</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QComboBox" name="comboLocationType">
+     <item>
+      <property name="text">
+       <string>Path and filename</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Unique file</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Suffix</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="2" column="0" colspan="2">
+    <widget class="QStackedWidget" name="widgetLocation">
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="pagePathAndFilename">
+      <layout class="QFormLayout" name="formLayout_2">
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item row="0" column="0">
+        <widget class="QLabel" name="labelFolder">
+         <property name="text">
+          <string>Folder</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <layout class="QHBoxLayout" name="layoutPath">
+         <item>
+          <widget class="QLineEdit" name="linePath"/>
+         </item>
+         <item>
+          <widget class="QPushButton" name="buttonPath">
+           <property name="maximumSize">
+            <size>
+             <width>30</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string notr="true">...</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="labelFilename">
+         <property name="text">
+          <string>Filename</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <layout class="QHBoxLayout" name="layoutFilename">
+         <item>
+          <widget class="QLineEdit" name="lineFilename"/>
+         </item>
+         <item>
+          <widget class="QPushButton" name="buttonFilename">
+           <property name="maximumSize">
+            <size>
+             <width>30</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string notr="true">...</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="pageUniqueFile">
+      <layout class="QFormLayout" name="formLayout_3">
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item row="0" column="0">
+        <widget class="QLabel" name="labelUniquePath">
+         <property name="text">
+          <string>Path</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <layout class="QHBoxLayout" name="layoutUniquePath">
+         <item>
+          <widget class="QLineEdit" name="lineUniquePath"/>
+         </item>
+         <item>
+          <widget class="QPushButton" name="buttonUniquePath">
+           <property name="maximumSize">
+            <size>
+             <width>30</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>...</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="pageSuffix">
+      <layout class="QFormLayout" name="formLayout_4">
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item row="0" column="0">
+        <widget class="QLabel" name="labelSuffix">
+         <property name="text">
+          <string>Suffix</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="lineSuffix"/>
+       </item>
+       <item row="1" column="0" colspan="2">
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>&lt;i&gt;Each time an image is saved, an external text file will be save with the same name at the same location.&lt;/i&gt;</string>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item row="3" column="0" colspan="2">
+    <widget class="QLabel" name="labelContent">
+     <property name="text">
+      <string>Text file content</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0" colspan="2">
+    <widget class="QPlainTextEdit" name="textEditContent"/>
+   </item>
+   <item row="6" column="0" colspan="2">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0" colspan="2">
+    <widget class="QLabel" name="labelContentHelp">
+     <property name="text">
+      <string>&lt;i&gt;Available tokens: the same as in the &quot;Save&quot; part.&lt;/i&gt;</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QLabel" name="labelName">
+     <property name="text">
+      <string>Name</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QLineEdit" name="lineName"/>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>LogWindow</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>236</x>
+     <y>350</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>187</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>LogWindow</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>304</x>
+     <y>350</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>286</x>
+     <y>187</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>comboLocationType</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>widgetLocation</receiver>
+   <slot>setCurrentIndex(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>156</x>
+     <y>51</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>145</x>
+     <y>69</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

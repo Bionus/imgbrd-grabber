@@ -12,7 +12,6 @@
 #include "models/site.h"
 #include "models/page.h"
 #include "models/profile.h"
-#include "reverse-search/reverse-search-loader.h"
 #include "settings/optionswindow.h"
 #include "threads/image-loader.h"
 #include "threads/image-loader-queue.h"
@@ -185,9 +184,6 @@ void zoomWindow::go()
 	// Load image details (exact tags & co)
 	connect(m_image.data(), &Image::finishedLoadingTags, this, &zoomWindow::replyFinishedDetails, Qt::UniqueConnection);
 	m_image->loadDetails();
-
-	ReverseSearchLoader loader(m_settings);
-	m_reverseSearchEngines = loader.getAllReverseSearchEngines();
 
 	if (!m_isFullscreen)
 		activateWindow();
@@ -867,6 +863,7 @@ QStringList zoomWindow::saveImageNow(bool fav)
 		QPushButton *saveQuit = fav ? ui->buttonSaveNQuitFav : ui->buttonSaveNQuit;
 		switch (res)
 		{
+			case Image::SaveResult::NotLoaded:
 			case Image::SaveResult::Error:
 				error(this, tr("Error saving image."));
 				return QStringList();

@@ -36,6 +36,7 @@ QString		formatFilesize(float size);
 QString		getExtension(QUrl url);
 QString		getExtension(QString url);
 QString		setExtension(QString url, QString extension);
+bool		isUrl(QString str);
 
 bool		setFileCreationDate(QString path, QDateTime time);
 void		shutDown(int timeout = 0);
@@ -49,8 +50,10 @@ QMap<QString,QString>		domToMap(QDomElement);
 
 QMap<QString,QStringList>	getCustoms(QSettings *settings);
 QMap<QString,QPair<QString,QString>>	getFilenames(QSettings *settings);
+QMap<int, QMap<QString, QVariant>>		getExternalLogFiles(QSettings *settings);
 
 QStringList removeWildards(QStringList elements, QStringList remove);
+QString getExtensionFromHeader(const QByteArray &data12);
 
 
 

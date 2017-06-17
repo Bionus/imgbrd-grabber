@@ -48,17 +48,34 @@ searchTab::searchTab(QMap<QString, Site*> *sites, Profile *profile, mainWindow *
 	setSelectedSources(m_settings);
 }
 
+void searchTab::init()
+{
+	m_endlessLoadingEnabled = true;
+	auto infinite = m_settings->value("infiniteScroll", "disabled");
+
+	// Always hide scroll button before results are loaded
+	if (ui_buttonEndlessLoad != nullptr)
+		ui_buttonEndlessLoad->hide();
+
+	if (infinite == "scroll")
+		connect(ui_scrollAreaResults, &VerticalScrollArea::endOfScrollReached, this, &searchTab::endlessLoad);
+}
+
 searchTab::~searchTab()
 {
-	qDeleteAll(m_pages);
+	for (QList<Page*> pages : m_pages)
+		qDeleteAll(pages);
 	m_pages.clear();
 	m_images.clear();
 	qDeleteAll(m_checkboxes);
 	m_checkboxes.clear();
-	for (Site *site : m_layouts.keys())
-	{ clearLayout(m_layouts[site]); }
-	qDeleteAll(m_layouts);
+
+	for (QLayout *layout : m_siteLayouts)
+	{ clearLayout(layout); }
+	qDeleteAll(m_siteLayouts);
+	m_siteLayouts.clear();
 	m_layouts.clear();
+
 	m_boutons.clear();
 }
 
@@ -89,14 +106,14 @@ void searchTab::optionsChanged()
 	ui_layoutResults->setHorizontalSpacing(m_settings->value("Margins/main", 10).toInt());
 }
 
-void searchTab::setTagsFromPages(const QMap<QString, Page*> &pages)
+void searchTab::setTagsFromPages(const QMap<QString, QList<Page*>> &pages)
 {
 	// Tags for this page
 	QList<Tag> taglist;
 	QStringList tagsGot;
-	for (int i = 0; i < pages.count(); i++)
+	for (QList<Page*> ps : pages)
 	{
-		QList<Tag> tags = pages.value(pages.keys().at(i))->tags();
+		QList<Tag> tags = ps.last()->tags();
 		for (Tag tag : tags)
 		{
 			if (!tag.text().isEmpty())
@@ -237,19 +254,24 @@ void searchTab::clear()
 	// Clear layout
 	for (int i = 0; i < ui_layoutResults->rowCount(); ++i)
 	{ ui_layoutResults->setRowMinimumHeight(i, 0); }
-	for (Site *site : m_layouts.keys())
-	{ clearLayout(m_layouts[site]); }
-	qDeleteAll(m_layouts);
+	for (QLayout *layout : m_siteLayouts)
+	{ clearLayout(layout); }
+	qDeleteAll(m_siteLayouts);
+	m_siteLayouts.clear();
 	m_layouts.clear();
 	m_boutons.clear();
-	m_pageLabels.clear();
+	qDeleteAll(m_siteLabels);
+	m_siteLabels.clear();
 	clearLayout(ui_layoutResults);
 
 	// Abort current loadings
-	for (int i = 0; i < m_pages.size(); i++)
+	for (QList<Page*> pages : m_pages)
 	{
-		m_pages.value(m_pages.keys().at(i))->abort();
-		m_pages.value(m_pages.keys().at(i))->abortTags();
+		for (Page *page : pages)
+		{
+			page->abort();
+			page->abortTags();
+		}
 	}
 	//qDeleteAll(m_pages);
 	m_pages.clear();
@@ -324,6 +346,8 @@ void searchTab::postLoading(Page *page, QList<QSharedPointer<Image>> imgs)
 	m_page++;
 
 	bool merged = ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked();
+	bool finished = m_page == m_pages.count() || (merged && ui_progressMergeResults != nullptr && ui_progressMergeResults->value() == ui_progressMergeResults->maximum());
+
 	if (merged)
 	{
 		// Increase the progress bar status
@@ -331,17 +355,16 @@ void searchTab::postLoading(Page *page, QList<QSharedPointer<Image>> imgs)
 			ui_progressMergeResults->setValue(ui_progressMergeResults->value() + 1);
 
 		// Hide progress bar when we load the last page
-		bool finished = m_page == m_pages.count() || (ui_progressMergeResults != nullptr && ui_progressMergeResults->value() == ui_progressMergeResults->maximum());
 		if (ui_stackedMergeResults != nullptr && finished)
 			ui_stackedMergeResults->setCurrentIndex(1);
 
 		// Create the label when loading the first page
-		if (m_page == 1)
+		if (m_page == 1 && m_siteLabels.isEmpty())
 		{
 			QLabel *txt = new QLabel(this);
 			txt->setOpenExternalLinks(true);
 			setMergedLabelText(txt, m_images);
-			m_pageLabels.insert(nullptr, txt);
+			m_siteLabels.insert(nullptr, txt);
 
 			ui_layoutResults->addWidget(txt, 0, 0);
 			ui_layoutResults->setRowMinimumHeight(0, txt->sizeHint().height() + 10);
@@ -349,6 +372,14 @@ void searchTab::postLoading(Page *page, QList<QSharedPointer<Image>> imgs)
 	}
 
 	loadImageThumbnails(page, imgs);
+
+	// Re-enable endless loading
+	if (finished && imgs.count() > 0)
+	{
+		if (ui_buttonEndlessLoad != nullptr && m_settings->value("infiniteScroll", "disabled") == "button")
+			ui_buttonEndlessLoad->show();
+		m_endlessLoadingEnabled = true;
+	}
 
 	ui_buttonGetAll->setDisabled(m_images.empty());
 	ui_buttonGetPage->setDisabled(m_images.empty());
@@ -378,10 +409,10 @@ void searchTab::finishedLoadingTags(Page *page)
 		if (validateImage(img))
 			imgs.append(img);
 
-	if (ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked() && m_pageLabels.contains(nullptr))
-		setMergedLabelText(m_pageLabels[nullptr], m_images);
-	else if (m_pageLabels.contains(page))
-		setPageLabelText(m_pageLabels[page], page, imgs);
+	if (ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked() && m_siteLabels.contains(nullptr))
+		setMergedLabelText(m_siteLabels[nullptr], m_images);
+	else if (m_siteLabels.contains(page->site()))
+		setPageLabelText(m_siteLabels[page->site()], page, imgs);
 }
 
 void searchTab::loadImageThumbnails(Page *page, const QList<QSharedPointer<Image>> &imgs)
@@ -523,49 +554,69 @@ bool searchTab::containsMergedMd5(int page, QString md5)
 
 void searchTab::addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage)
 {
-	int pos = m_pages.values().indexOf(page);
+	int pos = m_pages.keys().indexOf(page->website());
 	if (pos < 0)
 		return;
 
-	QLabel *txt = new QLabel(this);
-	txt->setOpenExternalLinks(true);
-	setPageLabelText(txt, page, imgs, noResultsMessage);
-	m_pageLabels.insert(page, txt);
-
 	int page_x = pos % ui_spinColumns->value();
 	int page_y = (pos / ui_spinColumns->value()) * 2;
-	ui_layoutResults->addWidget(txt, page_y, page_x);
-	ui_layoutResults->setRowMinimumHeight(page_y, txt->sizeHint().height() + 10);
 
-	if (m_layouts.size() > pos)
-	{ addLayout(m_layouts[page->site()], page_y + 1, page_x); }
+	Site *site = page->site();
+	if (!m_siteLabels.contains(site))
+	{
+		QLabel *txt = new QLabel(this);
+		txt->setOpenExternalLinks(true);
+		m_siteLabels.insert(site, txt);
+
+		ui_layoutResults->addWidget(txt, page_y, page_x);
+		ui_layoutResults->setRowMinimumHeight(page_y, txt->sizeHint().height() + 10);
+	}
+	setPageLabelText(m_siteLabels[site], page, imgs, noResultsMessage);
+
+	if (m_siteLayouts.size() > pos)
+	{ addLayout(m_siteLayouts[page->site()], page_y + 1, page_x); }
 }
 void searchTab::setMergedLabelText(QLabel *txt, const QList<QSharedPointer<Image>> &imgs)
 {
 	int maxPage = 0;
-	for (Page *p : m_pages)
-	{
-		int pagesCount = p->pagesCount();
-		if (pagesCount > maxPage)
-			maxPage = pagesCount;
-	}
-
 	int sumImages = 0;
-	for (Page *p : m_pages)
+	int firstPage = ui_spinPage->value();
+	int lastPage = ui_spinPage->value();
+
+	for (QList<Page*> ps : m_pages)
 	{
-		int imagesCount = p->imagesCount();
+		Page *first = ps.first();
+		int imagesCount = first->imagesCount();
 		if (imagesCount > 0)
-			sumImages += p->imagesCount();
+			sumImages += first->imagesCount();
+
+		for (Page *p : ps)
+		{
+			int pagesCount = p->pagesCount();
+			if (pagesCount > maxPage)
+				maxPage = pagesCount;
+
+			if (p->page() < firstPage)
+				firstPage = p->page();
+			if (p->page() > lastPage)
+				lastPage = p->page();
+		}
 	}
 
 	QString links;
 	if (m_pages.count() > 5)
-		links = "Multiple sources";
+	{ links = "Multiple sources"; }
 	else
-		for (Page *p : m_pages)
+	{
+		for (QList<Page*> ps : m_pages)
+		{
+			auto p = ps.last();
 			links += QString(!links.isEmpty() ? ", " : "") + "<a href=\""+p->url().toString().toHtmlEscaped()+"\">"+p->site()->name()+"</a>";
+		}
+	}
 
-	txt->setText(QString(links + " - Page %1 of %2 (%3 of max %4)").arg(ui_spinPage->value()).arg(maxPage).arg(imgs.count()).arg(sumImages));
+	QString page = firstPage != lastPage ? QString("%1-%2").arg(firstPage).arg(lastPage) : QString::number(lastPage);
+	txt->setText(QString(links + " - Page %1 of %2 (%3 of max %4)").arg(page).arg(maxPage).arg(imgs.count()).arg(sumImages));
 }
 void searchTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage)
 {
@@ -586,8 +637,21 @@ void searchTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPoi
 	{
 		int pageCount = page->pagesCount();
 		int imageCount = page->imagesCount();
-		txt->setText("<a href=\""+page->url().toString().toHtmlEscaped()+"\">"+page->site()->name()+"</a> - "+tr("Page %1 of %2 (%3 of %4)").arg(page->page()).arg(pageCount > 0 ? QString::number(pageCount) : "?").arg(imgs.count()).arg(imageCount > 0 ? QString::number(imageCount) : "?"));
+
+		int firstPage = page->page();
+		int lastPage = page->page();
+		for (Page *p : m_pages[page->website()])
+		{
+			if (p->page() < firstPage)
+				firstPage = p->page();
+			if (p->page() > lastPage)
+				lastPage = p->page();
+		}
+
+		QString pageLabel = firstPage != lastPage ? QString("%1-%2").arg(firstPage).arg(lastPage) : QString::number(lastPage);
+		txt->setText("<a href=\""+page->url().toString().toHtmlEscaped()+"\">"+page->site()->name()+"</a> - "+tr("Page %1 of %2 (%3 of %4)").arg(pageLabel).arg(pageCount > 0 ? QString::number(pageCount) : "?").arg(imgs.count()).arg(imageCount > 0 ? QString::number(imageCount) : "?"));
 	}
+
 	/*if (page->search().join(" ") != m_search->toPlainText() && m_settings->value("showtagwarning", true).toBool())
 	{
 		QStringList uncommon = m_search->toPlainText().toLower().trimmed().split(" ", QString::SkipEmptyParts);
@@ -600,6 +664,7 @@ void searchTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPoi
 		if (!uncommon.isEmpty())
 		{ txt->setText(txt->text()+"<br/>"+QString(tr("Des modificateurs ont été otés de la recherche car ils ne sont pas compatibles avec cet imageboard : %1.")).arg(uncommon.join(" "))); }
 	}*/
+
 	// Show warnings
 	if (!page->errors().isEmpty() && m_settings->value("showwarnings", true).toBool())
 	{
@@ -647,6 +712,25 @@ QBouton *searchTab::createImageThumbnail(int position, QSharedPointer<Image> img
 	return l;
 }
 
+QString getImageAlreadyExists(Image *img, Profile *profile)
+{
+	QSettings *settings = profile->getSettings();
+	QString path = settings->value("Save/path").toString().replace("\\", "/");
+	QString fn = settings->value("Save/filename").toString();
+
+	if (!Filename(fn).needExactTags(img->parentSite()))
+	{
+		QStringList files = img->path(fn, path, 0, true, false, true, true, true);
+		for (QString file : files)
+		{
+			if (QFile(file).exists())
+				return file;
+		}
+	}
+
+	return profile->md5Exists(img->md5());
+}
+
 void searchTab::thumbnailContextMenu(QSharedPointer<Image> img)
 {
 	QMenu *menu = new ImageContextMenu(m_settings, img, m_parent, this);
@@ -655,7 +739,11 @@ void searchTab::thumbnailContextMenu(QSharedPointer<Image> img)
 	// Save image
 	QSignalMapper *mapperSave = new QSignalMapper(this);
 	connect(mapperSave, SIGNAL(mapped(QObject*)), this, SLOT(contextSaveImage(QObject*)));
-	QAction *actionSave = new QAction(QIcon(":/images/icons/save.png"), tr("Save"), menu);
+	QAction *actionSave;
+	if (!getImageAlreadyExists(img.data(), m_profile).isEmpty())
+	{ actionSave = new QAction(QIcon(":/images/icons/remove.png"), tr("Delete"), menu); }
+	else
+	{ actionSave = new QAction(QIcon(":/images/icons/save.png"), tr("Save"), menu); }
 	menu->insertAction(first, actionSave);
 	connect(actionSave, SIGNAL(triggered()), mapperSave, SLOT(map()));
 	mapperSave->setMapping(actionSave, img.data());
@@ -681,13 +769,20 @@ void searchTab::thumbnailContextMenu(QSharedPointer<Image> img)
 }
 void searchTab::contextSaveImage(QObject *image)
 {
-	QString fn = m_settings->value("Save/filename").toString();
-	QString path = m_settings->value("Save/path").toString();
-
 	Image *img = (Image*)image;
-	if (m_boutons.contains(img))
-	{ connect(img, SIGNAL(downloadProgressImage(qint64, qint64)), m_boutons[img], SLOT(setProgress(qint64, qint64))); }
-	img->loadAndSave(fn, path);
+
+	QString already = getImageAlreadyExists(img, m_profile);
+	if (!already.isEmpty())
+	{ QFile(already).remove(); }
+	else
+	{
+		QString fn = m_settings->value("Save/filename").toString();
+		QString path = m_settings->value("Save/path").toString();
+
+		if (m_boutons.contains(img))
+		{ connect(img, SIGNAL(downloadProgressImage(qint64, qint64)), m_boutons[img], SLOT(setProgress(qint64, qint64))); }
+		img->loadAndSave(fn, path);
+	}
 }
 void searchTab::contextSaveImageAs(QObject *image)
 {
@@ -703,7 +798,7 @@ void searchTab::contextSaveImageAs(QObject *image)
 	{
 		path = QDir::toNativeSeparators(path);
 		m_settings->setValue("Zoom/lastDir", path.section(QDir::toNativeSeparators("/"), 0, -2));
-		img->loadAndSave(QStringList() << path, false);
+		img->loadAndSave(QStringList() << path, false, true);
 	}
 }
 void searchTab::contextSaveSelected()
@@ -745,7 +840,7 @@ void searchTab::addResultsImage(QSharedPointer<Image> img, bool merge)
 	QBouton *button = createImageThumbnail(absolutePosition, img);
 	m_boutons.insert(img.data(), button);
 
-	FixedSizeGridLayout *layout = m_layouts[m_layouts.contains(nullptr) ? nullptr : img->parentSite()];
+	FixedSizeGridLayout *layout = m_layouts[merge && m_layouts.contains(nullptr) ? nullptr : img->page()];
 	layout->addFixedSizeWidget(button, relativePosition, imagesPerPage);
 }
 
@@ -992,12 +1087,12 @@ void searchTab::loadTags(QStringList tags)
 
 	// Save previous pages
 	QStringList keys = m_sites->keys();
-	QMap<QString, Page*> lastPages;
+	m_lastPages.clear();
 	for (int i = 0; i < m_selectedSources.size(); i++)
 	{
 		QString site = keys[i];
 		if (m_checkboxes.at(i)->isChecked() && m_pages.contains(site))
-			lastPages.insert(site, m_pages[site]);
+			m_lastPages.insert(site, m_pages[site].last());
 	}
 
 	clear();
@@ -1009,7 +1104,6 @@ void searchTab::loadTags(QStringList tags)
 
 	// Get the search values
 	QString search = tags.join(" ");
-	int perpage = ui_spinImagesPerPage->value();
 
 	if (!m_from_history)
 	{ addHistory(search, ui_spinPage->value(), ui_spinImagesPerPage->value(), ui_spinColumns->value()); }
@@ -1030,19 +1124,54 @@ void searchTab::loadTags(QStringList tags)
 	if (merged)
 		m_layouts.insert(nullptr, createImagesLayout(m_settings));
 
+	loadPage();
+
+	emit changed(this);
+}
+
+void searchTab::endlessLoad()
+{
+	if (!m_endlessLoadingEnabled)
+		return;
+
+	ui_spinPage->setValue(ui_spinPage->value() + 1);
+	loadPage();
+}
+
+void searchTab::loadPage()
+{
+	bool merged = ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked();
+	int perpage = ui_spinImagesPerPage->value();
+	QStringList tags = m_lastTags.split(' ');
+
+	// Disable endless loading
+	if (ui_buttonEndlessLoad != nullptr && ui_buttonEndlessLoad->isVisible())
+		ui_buttonEndlessLoad->hide();
+	m_endlessLoadingEnabled = false;
+
 	for (Site *site : loadSites())
 	{
 		// Load results
 		Page *page = new Page(m_profile, site, m_sites->values(), tags, ui_spinPage->value(), perpage, m_postFiltering->toPlainText().split(" ", QString::SkipEmptyParts), false, this, 0, m_lastPage, m_lastPageMinId, m_lastPageMaxId);
 		connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(finishedLoading(Page*)));
 		connect(page, SIGNAL(failedLoading(Page*)), this, SLOT(failedLoading(Page*)));
-		if (lastPages.contains(page->website()))
-		{ page->setLastPage(lastPages[page->website()]); }
-		m_pages.insert(page->website(), page);
+
+		// Keep pointer to the new page
+		if (m_lastPages.contains(page->website()))
+		{ page->setLastPage(m_lastPages[page->website()]); }
+		if (!m_pages.contains(page->website()))
+		{ m_pages.insert(page->website(), QList<Page*>()); }
+		m_pages[page->website()].append(page);
 
 		// Setup the layout
 		if (!merged)
-			m_layouts.insert(site, createImagesLayout(m_settings));
+		{
+			FixedSizeGridLayout *pageLayout = createImagesLayout(m_settings);
+			m_layouts.insert(page, pageLayout);
+			if (!m_siteLayouts.contains(site))
+			{ m_siteLayouts.insert(site, new QVBoxLayout()); }
+			m_siteLayouts[site]->addLayout(pageLayout);
+		}
 
 		// Load tags if necessary
 		log(QString("Loading page <a href=\"%1\">%1</a>").arg(page->url().toString().toHtmlEscaped()));
@@ -1060,9 +1189,6 @@ void searchTab::loadTags(QStringList tags)
 	{ addLayout(m_layouts[nullptr], 1, 0); }
 	m_page = 0;
 
-	auto spacer = new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
-	ui_layoutResults->addItem(spacer, m_layouts.count() * 2, 0);
-
 	if (merged && ui_progressMergeResults != nullptr)
 	{
 		ui_progressMergeResults->setValue(0);
@@ -1070,8 +1196,6 @@ void searchTab::loadTags(QStringList tags)
 	}
 	if (ui_stackedMergeResults != nullptr)
 	{ ui_stackedMergeResults->setCurrentIndex(merged ? 0 : 1); }
-
-	emit changed(this);
 }
 
 void searchTab::addLayout(QLayout *layout, int row, int column)

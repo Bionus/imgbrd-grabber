@@ -49,9 +49,11 @@ class FilenameTest : public TestSuite
 		void testPathOptionNumSingle();
 		void testPathOptionNumSingleLength();
 		void testPathOptionNumMultiple();
+		void testPathOptionSort();
 		void testPathSpecies();
 		void testPathNoJpeg();
 		void testPathKeepInvalidTokens();
+		void testPathForbiddenSeparator();
 		void testGetReplacesSimple();
 		void testGetReplacesMultiple();
 		void testGetReplacesMatrix();

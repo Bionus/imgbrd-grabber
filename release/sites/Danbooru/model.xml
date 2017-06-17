@@ -7,13 +7,13 @@
 			<Login>login={pseudo}&amp;password_hash={password}&amp;</Login>
 			<Tags>/post/index.xml?{login}limit={limit}&amp;page={page}&amp;tags={tags}</Tags>
 			<Pools>/post/index.xml?{login}limit={limit}&amp;page={page}&amp;tags=pool:{pool} {tags}</Pools>
-			<MaxLimit>1000</MaxLimit>
+			<MaxLimit>200</MaxLimit>
 		</Xml>
 		<Json>
 			<Login>login={pseudo}&amp;password_hash={password}&amp;</Login>
 			<Tags>/post/index.json?{login}limit={limit}&amp;page={page}&amp;tags={tags}</Tags>
 			<Pools>/post/index.json?{login}limit={limit}&amp;page={page}&amp;tags=pool:{pool} {tags}</Pools>
-			<MaxLimit>1000</MaxLimit>
+			<MaxLimit>200</MaxLimit>
 		</Json>
 		<Html>
 			<Login>login={pseudo}&amp;password_hash={password}&amp;</Login>

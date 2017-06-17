@@ -7,7 +7,6 @@
 #include <QPushButton>
 #include "models/image.h"
 #include "models/favorite.h"
-#include "reverse-search/reverse-search-engine.h"
 
 
 namespace Ui
@@ -145,7 +144,6 @@ class zoomWindow : public QWidget
 		QStackedWidget *m_stackedWidget;
 		QAffiche *m_labelImage;
 		QList<QSharedPointer<Image>> m_images;
-		QList<ReverseSearchEngine> m_reverseSearchEngines;
 
 		// Display
 		QPixmap m_displayImage;

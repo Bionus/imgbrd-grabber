@@ -1,13 +1,12 @@
 language: cpp
 compiler: gcc
 
-# Linux build
-sudo: required
-dist: trusty
-
 # OS X build
 matrix:
   include:
+    - os: linux
+      dist: trusty
+      sudo: required
     - os: osx
 
 # Qt packages for Linux
@@ -15,6 +14,7 @@ addons:
   apt:
     sources:
       - sourceline: 'ppa:ubuntu-sdk-team/ppa'
+      - ubuntu-toolchain-r-test
     packages:
       - qt5-qmake
       - qtbase5-dev
@@ -23,8 +23,10 @@ addons:
       - qtmultimedia5-dev
       - libpulse-dev
       - qt5-default
+      - qttools5-dev
       - qttools5-dev-tools
       - sshpass
+      - lcov
 
 # Qt packages for OS X
 install:
@@ -37,30 +39,43 @@ install:
       export PATH
     ; fi
 
-# Start X before running tests on Linux
 before_script:
+  # Start X before running tests on Linux
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
       export DISPLAY=:99.0 &&
       sh -e /etc/init.d/xvfb start &&
       sleep 3
     ; fi
+  # Set the OpenSSL path on OSX
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+      export OPENSSL_ROOT_DIR=/usr/local/opt/openssl/
+    ; fi
 
 # Build Grabber
 script:
-  - qmake Grabber.pro
-  - make
-  - ./tests/build/release/tests
+  - mkdir build && cd build
+  - cmake ..
+  - make -j8
+  - cd ..
+  - ./build/tests/tests
 
-# Upload code coverage
 after_success:
-  - bash <(curl -s https://codecov.io/bash)
+  # Upload code coverage
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]] && [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then
+      lcov --directory . --capture --output-file coverage.info &&
+      lcov --remove coverage.info '/usr/*' --output-file coverage.info &&
+      lcov --list coverage.info &&
+      bash <(curl -s https://codecov.io/bash)
+    ; fi
+  # Generate release name
   - if [[ "$TRAVIS_TAG" == "" ]]; then
       export BUILD_LABEL=$TRAVIS_BRANCH
     ; else
       export BUILD_LABEL=$TRAVIS_TAG
     ; fi
+  # Build and upload release
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]] && [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then
-      cp "gui/build/release/Grabber" release &&
+      cp "build/gui/gui" "release/Grabber" &&
       touch "release/settings.ini" &&
       rm "release/CDR.exe" &&
       zip -r Grabber.zip release &&
@@ -70,8 +85,8 @@ after_success:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then
       touch "release/settings.ini" &&
       rm "release/CDR.exe" &&
-      mv release/* gui/build/release/Grabber.app/Contents/MacOS/ &&
-      mv gui/build/release/Grabber.app release &&
+      mv release/* build/gui/gui.app/Contents/MacOS/ &&
+      mv build/gui/gui.app release/Grabber.app &&
       cd release && zip -r ../Grabber.app.zip Grabber.app && cd - &&
       export OUTPUT_FILE="Grabber_${BUILD_LABEL}_mac.app.zip" &&
       sshpass -p "$SSH_PASS" scp -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no Grabber.app.zip $SSH_USER@$SSH_HOST:$OUTPUT_FILE

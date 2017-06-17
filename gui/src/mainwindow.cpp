@@ -15,8 +15,6 @@
 	#include <float.h>
 #endif
 #include "ui_mainwindow.h"
-#include "ui_tag-tab.h"
-#include "ui_pool-tab.h"
 #include "ui/QAffiche.h"
 #include "settings/optionswindow.h"
 #include "settings/startwindow.h"
@@ -265,17 +263,6 @@ void mainWindow::init(QStringList args, QMap<QString,QString> params)
 	if (m_showLog)
 		connect(&Logger::getInstance(), &Logger::newLog, this, &mainWindow::logShow);
 
-	// Check for updates
-	int cfuInterval = m_settings->value("check_for_updates", 24*60*60).toInt();
-	QDateTime lastCfu = m_settings->value("last_check_for_updates", QDateTime()).toDateTime();
-	if (cfuInterval >= 0 && (!lastCfu.isValid() || lastCfu.addSecs(cfuInterval) <= QDateTime::currentDateTime()))
-	{
-		m_settings->setValue("last_check_for_updates", QDateTime::currentDateTime());
-
-		m_updateDialog = new UpdateDialog(this);
-		m_updateDialog->checkForUpdates();
-	}
-
 	m_currentTab = nullptr;
 	log("End of initialization", Logger::Debug);
 }
@@ -457,6 +444,8 @@ int mainWindow::addTab(QString tag, bool background, bool save)
 
 	if (!tag.isEmpty())
 	{ w->setTags(tag); }
+	else
+	{ w->focusSearch(); }
 
 	return m_tabs.size() - 1;
 }
@@ -469,6 +458,8 @@ int mainWindow::addPoolTab(int pool, QString site, bool background, bool save)
 	{ w->setSite(site); }
 	if (pool != 0)
 	{ w->setPool(pool, site); }
+	else
+	{ w->focusSearch(); }
 
 	return m_tabs.size() - 1;
 }
@@ -1328,6 +1319,7 @@ void mainWindow::getAllFinishedLogins()
 	bool usePacking = m_settings->value("packing_enable", true).toBool();
 	int realConstImagesPerPack = m_settings->value("packing_size", 1000).toInt();
 
+	int total = 0;
 	for (int j : m_batchPending.keys())
 	{
 		DownloadQueryGroup b = m_batchPending[j];
@@ -1336,6 +1328,7 @@ void mainWindow::getAllFinishedLogins()
 		int pagesPerPack = qCeil((float)constImagesPerPack / b.perpage);
 		int imagesPerPack = pagesPerPack * b.perpage;
 		int packs = qCeil((float)b.total / imagesPerPack);
+		total += b.total;
 
 		int lastPageImages = b.total % imagesPerPack;
 		if (lastPageImages == 0)
@@ -1372,6 +1365,7 @@ void mainWindow::getAllFinishedLogins()
 		}
 	}
 
+	m_getAllImagesCount = total;
 	getNextPack();
 }
 
@@ -1439,6 +1433,9 @@ void mainWindow::getAllFinishedImages(QList<QSharedPointer<Image>> images)
 	m_progressBars[row]->setValue(0);
 	m_progressBars[row]->setMaximum(images.count());
 
+	// Update image count
+	m_getAllImagesCount -= m_batchPending[row].total - images.count();
+
 	if (m_downloaders.isEmpty())
 	{
 		m_batchAutomaticRetries = m_settings->value("Save/automaticretries", 0).toInt();
@@ -1485,9 +1482,8 @@ void mainWindow::getAllImages()
 
 	// Set some values on the batch window
 	m_progressdialog->updateColumns();
-	m_progressdialog->setImagesCount(qMin(m_getAllLimit, m_getAllRemaining.count()));
-	//m_progressdialog->setMaximum(count);
 	m_progressdialog->setText(tr("Downloading images..."));
+	m_progressdialog->setImagesCount(m_getAllImagesCount);
 	m_progressdialog->setImages(m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors);
 
 	// Check whether we need to get the tags first (for the filename) or if we can just download the images directly
@@ -1524,9 +1520,10 @@ void mainWindow::getAllImages()
 
 bool mainWindow::needExactTags(QSettings *settings)
 {
-	if (settings->value("Textfile/activate", false).toBool())
+	auto logFiles = getExternalLogFiles(settings);
+	for (int i : logFiles.keys())
 	{
-		Filename fn(settings->value("Textfile/content", "").toString());
+		Filename fn(logFiles[i]["content"].toString());
 		if (fn.needExactTags())
 			return true;
 	}
@@ -2067,10 +2064,8 @@ void mainWindow::getAllPause()
 		log("Recovery of downloads...", Logger::Info);
 		for (int i = 0; i < m_getAllDownloading.size(); i++)
 		{
-			if (m_getAllDownloading[i]->tagsReply() != nullptr)
-			{ m_getAllDownloading[i]->loadDetails(); }
-			if (m_getAllDownloading[i]->imageReply() != nullptr)
-			{ m_getAllDownloading[i]->loadImage(); }
+			m_getAllDownloading[i]->loadDetails();
+			m_getAllDownloading[i]->loadImage();
 		}
 		m_getAll = true;
 	}
@@ -2395,6 +2390,19 @@ void mainWindow::unviewitlater()
 void mainWindow::dragEnterEvent(QDragEnterEvent *event)
 {
 	const QMimeData* mimeData = event->mimeData();
+
+	// Drop a text containing an URL
+	if (mimeData->hasText())
+	{
+		QString url = mimeData->text();
+		if (isUrl(url))
+		{
+			event->acceptProposedAction();
+			return;
+		}
+	}
+
+	// Drop URLs
 	if (mimeData->hasUrls())
 	{
 		QList<QUrl> urlList = mimeData->urls();
@@ -2405,6 +2413,7 @@ void mainWindow::dragEnterEvent(QDragEnterEvent *event)
 			if (fileInfo.exists() && fileInfo.isFile())
 			{
 				event->acceptProposedAction();
+				return;
 			}
 		}
 	}
@@ -2413,12 +2422,35 @@ void mainWindow::dragEnterEvent(QDragEnterEvent *event)
 void mainWindow::dropEvent(QDropEvent* event)
 {
 	const QMimeData* mimeData = event->mimeData();
+
+	// Drop a text containing an URL
+	if (mimeData->hasText())
+	{
+		QString url = mimeData->text();
+		if (isUrl(url))
+		{
+			QEventLoop loopLoad;
+			QNetworkReply *reply = m_networkAccessManager.get(QNetworkRequest(QUrl(url)));
+			connect(reply, &QNetworkReply::finished, &loopLoad, &QEventLoop::quit);
+			loopLoad.exec();
+
+			if (reply->error() == QNetworkReply::NoError)
+			{
+				QString md5 = QCryptographicHash::hash(reply->readAll(), QCryptographicHash::Md5).toHex();
+				loadTag("md5:" + md5, true, false);
+			}
+			return;
+		}
+	}
+
+	// Drop URLs
 	if (mimeData->hasUrls())
 	{
 		QList<QUrl> urlList = mimeData->urls();
 		for (int i = 0; i < urlList.size() && i < 32; ++i)
 		{
 			loadMd5(urlList.at(i).toLocalFile(), true, false);
+			return;
 		}
 	}
 }

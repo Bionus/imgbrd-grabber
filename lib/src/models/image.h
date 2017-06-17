@@ -39,7 +39,7 @@ class Image : public QObject
 		QStringList blacklisted(QStringList, bool invert = true) const;
 		QStringList	stylishedTags(Profile *profile) const;
 		SaveResult  save(QString path, bool force = false, bool basic = false, bool addMd5 = true, bool startCommands = false, int count = 1);
-		QMap<QString, Image::SaveResult> save(QStringList paths, bool addMd5 = true, bool startCommands = false, int count = 1);
+		QMap<QString, Image::SaveResult> save(QStringList paths, bool addMd5 = true, bool startCommands = false, int count = 1, bool force = false);
 		QMap<QString, Image::SaveResult> save(QString filename, QString path, bool addMd5 = true, bool startCommands = false, int count = 1);
 		QString		url() const;
 		QString		md5() const;
@@ -92,11 +92,10 @@ class Image : public QObject
 		void		setRating(QString rating);
 		void		setFileExtension(QString ext);
 		QString		getNextExtension(QString current);
-		QString		getExtensionFromHeader(const QByteArray &data12);
 		QUrl		getDisplayableUrl() const;
 		bool		isVideo() const;
 		void		setTags(QList<Tag> tags);
-		void		loadAndSave(QStringList paths, bool needTags);
+		void		loadAndSave(QStringList paths, bool needTags, bool force = false);
 		void		loadAndSave(QString filename, QString path);
 
 	public slots:

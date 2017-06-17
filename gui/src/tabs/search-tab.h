@@ -31,6 +31,7 @@ class searchTab : public QWidget
 	public:
 		searchTab(QMap<QString, Site*> *sites, Profile *profile, mainWindow *parent);
 		~searchTab();
+		void init();
 		void mouseReleaseEvent(QMouseEvent *e);
 		virtual QList<bool> sources();
 		virtual QString tags() const = 0;
@@ -52,7 +53,7 @@ class searchTab : public QWidget
 
 	protected:
 		void setSelectedSources(QSettings *settings);
-		void setTagsFromPages(const QMap<QString, Page*> &pages);
+		void setTagsFromPages(const QMap<QString, QList<Page*>> &pages);
 		void addHistory(QString tags, int page, int ipp, int cols);
 		QStringList reasonsToFail(Page *page, QStringList complete = QStringList(), QString *meant = nullptr);
 		QColor imageColor(QSharedPointer<Image> img) const;
@@ -94,6 +95,8 @@ class searchTab : public QWidget
 		// Results
 		virtual void load() = 0;
 		void loadTags(QStringList tags);
+		void endlessLoad();
+		void loadPage();
 		virtual void addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage = nullptr);
 		void setMergedLabelText(QLabel *txt, const QList<QSharedPointer<Image>> &imgs);
 		virtual void setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage = nullptr);
@@ -143,13 +146,16 @@ class searchTab : public QWidget
 
 		QStringList m_completion;
 		QList<QSharedPointer<Image>> m_images;
-		QMap<QString, Page*> m_pages;
-		QMap<Page*, QLabel*> m_pageLabels;
-		QMap<Site*, FixedSizeGridLayout*> m_layouts;
+		QMap<QString, QList<Page*>> m_pages;
+		QMap<QString, Page*> m_lastPages;
+		QMap<Site*, QLabel*> m_siteLabels;
+		QMap<Site*, QVBoxLayout*> m_siteLayouts;
+		QMap<Page*, FixedSizeGridLayout*> m_layouts;
 		int m_page;
 		int m_pagemax;
 		bool m_stop;
 		int m_lastToggle;
+		bool m_endlessLoadingEnabled;
 
 		// History
 		bool m_from_history;
@@ -179,6 +185,7 @@ class searchTab : public QWidget
 		QPushButton *ui_buttonGetSel;
 		QPushButton *ui_buttonFirstPage;
 		QPushButton *ui_buttonPreviousPage;
+		QPushButton *ui_buttonEndlessLoad;
 		VerticalScrollArea *ui_scrollAreaResults;
 };
 

@@ -34,9 +34,20 @@ SiteWindow::~SiteWindow()
 
 void SiteWindow::accept()
 {
-	ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
-
 	m_url = ui->lineEdit->text();
+	if (!m_url.startsWith("http://") && !m_url.startsWith("https://"))
+	{ m_url.prepend("http://"); }
+	if (m_url.endsWith("/"))
+	{ m_url = m_url.left(m_url.size() - 1); }
+
+	// Check URL validity
+	if (!QRegularExpression("^(https?:\\/\\/)?([\\da-z.-]+)\\.([a-z.]{2,6})([\\/\\w .-]*)*\\/?$").match(m_url).hasMatch())
+	{
+		error(this, tr("The url you entered is not valid."));
+		return;
+	}
+
+	ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 
 	if (ui->checkBox->isChecked())
 	{

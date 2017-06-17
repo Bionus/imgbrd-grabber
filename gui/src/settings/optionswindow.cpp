@@ -6,14 +6,18 @@
 #include <QColorDialog>
 #include <QFontDialog>
 #include <QSqlDatabase>
+#include <QSignalMapper>
 #include "ui_optionswindow.h"
 #include "customwindow.h"
 #include "conditionwindow.h"
 #include "filenamewindow.h"
+#include "log-window.h"
+#include "web-service-window.h"
 #include "language-loader.h"
 #include "theme-loader.h"
 #include "models/site.h"
 #include "models/profile.h"
+#include "reverse-search/reverse-search-loader.h"
 #include "helpers.h"
 #include "functions.h"
 
@@ -96,17 +100,18 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	ui->spinThumbnailUpscale->setValue(settings->value("thumbnailUpscale", 1.0f).toFloat() * 100);
 	ui->checkAutocompletion->setChecked(settings->value("autocompletion", true).toBool());
 	ui->checkUseregexfortags->setChecked(settings->value("useregexfortags", true).toBool());
+	QStringList infiniteScroll = QStringList() << "disabled" << "button" << "scroll";
+	ui->comboInfiniteScroll->setCurrentIndex(infiniteScroll.indexOf(settings->value("infiniteScroll", "disabled").toString()));
 
-	ui->checkTextfileActivate->setChecked(settings->value("Textfile/activate", false).toBool());
-	ui->lineTextfileSuffix->setText(settings->value("Textfile/suffix", ".txt").toString());
-	ui->textEditTextfileContent->setPlainText(settings->value("Textfile/content", "%all%").toString());
-	ui->widgetTextfile->setEnabled(settings->value("Textfile/activate", false).toBool());
+	// External log files
+	showLogFiles(settings);
 
-	ui->checkSaveLogEnable->setChecked(settings->value("SaveLog/activate", false).toBool());
-	ui->lineSaveLogFile->setEnabled(settings->value("SaveLog/activate", false).toBool());
-	ui->lineSaveLogFile->setText(settings->value("SaveLog/file", "").toString());
-	ui->lineSaveLogFormat->setEnabled(settings->value("SaveLog/activate", false).toBool());
-	ui->lineSaveLogFormat->setText(settings->value("SaveLog/format", "%website% - %md5% - %all%").toString());
+	// Web services
+	ReverseSearchLoader loader(settings);
+	m_webServices = loader.getAllReverseSearchEngines();
+	for (int i = 0; i < m_webServices.count(); ++i)
+		m_webServicesIds.insert(m_webServices[i].id(), i);
+	showWebServices();
 
 	ui->comboBatchEnd->setCurrentIndex(settings->value("Batch/end", 0).toInt());
 	settings->beginGroup("Save");
@@ -376,6 +381,236 @@ void optionsWindow::addFilename(QString condition, QString filename, QString fol
 }
 
 
+void optionsWindow::showLogFiles(QSettings *settings)
+{
+	clearLayout(ui->layoutLogFiles);
+
+	auto logFiles = getExternalLogFiles(settings);
+	QSignalMapper *mapperEditLogFile = new QSignalMapper(this);
+	QSignalMapper *mapperRemoveLogFile = new QSignalMapper(this);
+	connect(mapperEditLogFile, SIGNAL(mapped(int)), this, SLOT(editLogFile(int)));
+	connect(mapperRemoveLogFile, SIGNAL(mapped(int)), this, SLOT(removeLogFile(int)));
+	for (int i : logFiles.keys())
+	{
+		auto logFile = logFiles[i];
+
+		QLabel *label = new QLabel(logFile["name"].toString());
+		label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+		ui->layoutLogFiles->addWidget(label, i, 0);
+
+		QPushButton *buttonEdit = new QPushButton("Edit");
+		mapperEditLogFile->setMapping(buttonEdit, i);
+		connect(buttonEdit, SIGNAL(clicked(bool)), mapperEditLogFile, SLOT(map()));
+		ui->layoutLogFiles->addWidget(buttonEdit, i, 1);
+
+		QPushButton *buttonDelete = new QPushButton("Remove");
+		mapperRemoveLogFile->setMapping(buttonDelete, i);
+		connect(buttonDelete, SIGNAL(clicked(bool)), mapperRemoveLogFile, SLOT(map()));
+		ui->layoutLogFiles->addWidget(buttonDelete, i, 2);
+	}
+}
+
+void optionsWindow::addLogFile()
+{
+	LogWindow *logWindow = new LogWindow(-1, m_profile, this);
+	connect(logWindow, &LogWindow::validated, this, &optionsWindow::setLogFile);
+	logWindow->show();
+}
+
+void optionsWindow::editLogFile(int index)
+{
+	LogWindow *logWindow = new LogWindow(index, m_profile, this);
+	connect(logWindow, &LogWindow::validated, this, &optionsWindow::setLogFile);
+	logWindow->show();
+}
+
+void optionsWindow::removeLogFile(int index)
+{
+	QSettings *settings = m_profile->getSettings();
+	settings->beginGroup("LogFiles");
+	settings->beginGroup(QString::number(index));
+	for (QString key : settings->childKeys())
+	{ settings->remove(key); }
+	settings->endGroup();
+	settings->endGroup();
+
+	showLogFiles(settings);
+}
+
+void optionsWindow::setLogFile(int index, QMap<QString, QVariant> logFile)
+{
+	QSettings *settings = m_profile->getSettings();
+	settings->beginGroup("LogFiles");
+
+	if (index < 0)
+	{ index = settings->childGroups().last().toInt() + 1; }
+
+	settings->beginGroup(QString::number(index));
+
+	for (QString key : logFile.keys())
+	{ settings->setValue(key, logFile[key]); }
+
+	settings->endGroup();
+	settings->endGroup();
+
+	showLogFiles(settings);
+}
+
+
+void optionsWindow::showWebServices()
+{
+	clearLayout(ui->layoutWebServices);
+
+	QSignalMapper *mapperEditWebService = new QSignalMapper(this);
+	QSignalMapper *mapperRemoveWebService = new QSignalMapper(this);
+	QSignalMapper *mapperMoveUpWebService = new QSignalMapper(this);
+	QSignalMapper *mapperMoveDownWebService = new QSignalMapper(this);
+	connect(mapperEditWebService, SIGNAL(mapped(int)), this, SLOT(editWebService(int)));
+	connect(mapperRemoveWebService, SIGNAL(mapped(int)), this, SLOT(removeWebService(int)));
+	connect(mapperMoveUpWebService, SIGNAL(mapped(int)), this, SLOT(moveUpWebService(int)));
+	connect(mapperMoveDownWebService, SIGNAL(mapped(int)), this, SLOT(moveDownWebService(int)));
+
+	int j = 0;
+	for (auto webService : m_webServices)
+	{
+		int id = webService.id();
+
+		QIcon icon = webService.icon();
+		QLabel *labelIcon = new QLabel();
+		labelIcon->setPixmap(icon.pixmap(QSize(16, 16)));
+		labelIcon->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
+		ui->layoutWebServices->addWidget(labelIcon, j, 0);
+
+		QLabel *label = new QLabel(webService.name());
+		label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+		ui->layoutWebServices->addWidget(label, j, 1);
+
+		if (j > 0)
+		{
+			QPushButton *buttonMoveUp = new QPushButton(QIcon(":/images/icons/arrow-up.png"), "");
+			mapperMoveUpWebService->setMapping(buttonMoveUp, id);
+			connect(buttonMoveUp, SIGNAL(clicked(bool)), mapperMoveUpWebService, SLOT(map()));
+			ui->layoutWebServices->addWidget(buttonMoveUp, j, 2);
+		}
+
+		if (j < m_webServices.count() - 1)
+		{
+			QPushButton *buttonMoveDown = new QPushButton(QIcon(":/images/icons/arrow-down.png"), "");
+			mapperMoveDownWebService->setMapping(buttonMoveDown, id);
+			connect(buttonMoveDown, SIGNAL(clicked(bool)), mapperMoveDownWebService, SLOT(map()));
+			ui->layoutWebServices->addWidget(buttonMoveDown, j, 3);
+		}
+
+		QPushButton *buttonEdit = new QPushButton("Edit");
+		mapperEditWebService->setMapping(buttonEdit, id);
+		connect(buttonEdit, SIGNAL(clicked(bool)), mapperEditWebService, SLOT(map()));
+		ui->layoutWebServices->addWidget(buttonEdit, j, 4);
+
+		QPushButton *buttonDelete = new QPushButton("Remove");
+		mapperRemoveWebService->setMapping(buttonDelete, id);
+		connect(buttonDelete, SIGNAL(clicked(bool)), mapperRemoveWebService, SLOT(map()));
+		ui->layoutWebServices->addWidget(buttonDelete, j, 5);
+
+		++j;
+	}
+}
+
+void optionsWindow::addWebService()
+{
+	WebServiceWindow *wsWindow = new WebServiceWindow(nullptr, this);
+	connect(wsWindow, &WebServiceWindow::validated, this, &optionsWindow::setWebService);
+	wsWindow->show();
+}
+
+void optionsWindow::editWebService(int id)
+{
+	int pos = m_webServicesIds[id];
+	WebServiceWindow *wsWindow = new WebServiceWindow(&m_webServices[pos], this);
+	connect(wsWindow, &WebServiceWindow::validated, this, &optionsWindow::setWebService);
+	wsWindow->show();
+}
+
+void optionsWindow::removeWebService(int id)
+{
+	m_webServices.removeAt(m_webServicesIds[id]);
+	QFile(savePath("webservices/") + QString::number(id) + ".ico").remove();
+	showWebServices();
+}
+
+void optionsWindow::setWebService(ReverseSearchEngine rse, QByteArray favicon)
+{
+	// Write icon information to disk
+	if (!favicon.isEmpty())
+	{
+		QString faviconPath = savePath("webservices/") + QString::number(rse.id()) + ".ico";
+		QFile f(faviconPath);
+		if (f.open(QFile::WriteOnly))
+		{
+			f.write(favicon);
+			f.close();
+		}
+		rse = ReverseSearchEngine(rse.id(), faviconPath, rse.name(), rse.tpl(), rse.order());
+	}
+
+	// Generate new ID for new web services
+	if (rse.id() < 0)
+	{
+		int maxOrder = 0;
+		int maxId = 0;
+		for (auto ws : m_webServices)
+		{
+			if (ws.id() > maxId)
+				maxId = ws.id();
+			if (ws.order() > maxOrder)
+				maxOrder = ws.order();
+		}
+
+		rse.setId(maxId + 1);
+		rse.setOrder(maxOrder + 1);
+		m_webServices.append(rse);
+	}
+	else
+	{ m_webServices[m_webServicesIds[rse.id()]] = rse; }
+
+	showWebServices();
+}
+
+void optionsWindow::moveUpWebService(int id)
+{
+	int i = m_webServicesIds[id];
+	if (i == 0)
+		return;
+
+	swapWebServices(i, i - 1);
+}
+
+void optionsWindow::moveDownWebService(int id)
+{
+	int i = m_webServicesIds[id];
+	if (i == m_webServicesIds.count() - 1)
+		return;
+
+	swapWebServices(i, i + 1);
+}
+
+int sortByOrder(ReverseSearchEngine a, ReverseSearchEngine b)
+{ return a.order() < b.order(); }
+void optionsWindow::swapWebServices(int a, int b)
+{
+	int pos = m_webServices[b].order();
+	m_webServices[b].setOrder(m_webServices[a].order());
+	m_webServices[a].setOrder(pos);
+
+	// Re-order web services
+	qSort(m_webServices.begin(), m_webServices.end(), sortByOrder);
+	m_webServicesIds.clear();
+	for (int i = 0; i < m_webServices.count(); ++i)
+		m_webServicesIds.insert(m_webServices[i].id(), i);
+
+	showWebServices();
+}
+
+
 void optionsWindow::setColor(QLineEdit *lineEdit, bool button)
 {
 	QString text = lineEdit->text();
@@ -576,8 +811,10 @@ void optionsWindow::save()
 	settings->setValue("thumbnailUpscale", (float)ui->spinThumbnailUpscale->value() / 100.0f);
 	settings->setValue("autocompletion", ui->checkAutocompletion->isChecked());
 	settings->setValue("useregexfortags", ui->checkUseregexfortags->isChecked());
+	QStringList infiniteScroll = QStringList() << "disabled" << "button" << "scroll";
+	settings->setValue("infiniteScroll", infiniteScroll.at(ui->comboInfiniteScroll->currentIndex()));
 
-	settings->beginGroup("Textfile");
+	/*settings->beginGroup("Textfile");
 		settings->setValue("activate", ui->checkTextfileActivate->isChecked());
 		settings->setValue("suffix", ui->lineTextfileSuffix->text());
 		settings->setValue("content", ui->textEditTextfileContent->toPlainText());
@@ -587,7 +824,7 @@ void optionsWindow::save()
 		settings->setValue("activate", ui->checkSaveLogEnable->isChecked());
 		settings->setValue("file", ui->lineSaveLogFile->text());
 		settings->setValue("format", ui->lineSaveLogFormat->text());
-	settings->endGroup();
+	settings->endGroup();*/
 
 	settings->setValue("Batch/end", ui->comboBatchEnd->currentIndex());
 	settings->beginGroup("Save");
@@ -709,6 +946,18 @@ void optionsWindow::save()
 			for (int i = 0; i < m_customNames.size(); i++)
 			{ settings->setValue(m_customNames.at(i)->text(), m_customTags.at(i)->text()); }
 		settings->endGroup();
+	settings->endGroup();
+
+	// Web services
+	settings->beginGroup("WebServices");
+	for (auto webService : m_webServices)
+	{
+		settings->beginGroup(QString::number(webService.id()));
+		settings->setValue("name", webService.name());
+		settings->setValue("url", webService.tpl());
+		settings->setValue("order", webService.order());
+		settings->endGroup();
+	}
 	settings->endGroup();
 
 	// Themes

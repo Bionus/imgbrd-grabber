@@ -2,13 +2,16 @@
 
 ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 brew install qt5 --with-docs --with-developer --with-d-bus --with-mysql
-brew install gcc
+brew install gcc cmake
 
-QT_SELECT=5 qmake "Grabber.pro"
-make
+mkdir build
+cd build
+cmake ..
+make -j8
+cd ..
 
 appDir=release/Grabber.app/Contents/MacOS
-mv gui/Grabber.app release
+mv build/gui/gui.app release/Grabber.app
 mv release/* $appDir
 touch $appDir/settings.ini
 

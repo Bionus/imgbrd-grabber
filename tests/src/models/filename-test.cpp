@@ -303,6 +303,17 @@ void FilenameTest::testPathOptionNumMultiple()
 	QFile::remove("tests/resources/tmp/7331 (2).jpg");
 }
 
+void FilenameTest::testPathOptionSort()
+{
+	m_img->deleteLater();
+	m_details["tags_copyright"] = "copyright2 copyright1";
+	m_settings->setValue("Save/copyright_multiple", "keepAll");
+	m_img = new Image(m_site, m_details, m_profile);
+
+	assertPath("%copyright%", "copyright2 copyright1");
+	assertPath("%copyright:sort%", "copyright1 copyright2");
+}
+
 void FilenameTest::testPathSpecies()
 {
 	m_img->deleteLater();
@@ -331,6 +342,12 @@ void FilenameTest::testPathKeepInvalidTokens()
 {
 	assertPath("%invalid_token% %ext%", "%invalid_token% jpg", "", true, false, true);
 	assertPath("%ext% %invalid_token%", "jpg %invalid_token%", "", true, false, true);
+}
+
+void FilenameTest::testPathForbiddenSeparator()
+{
+	m_settings->setValue("Save/copyright_multiple", "keepAll");
+	assertPath("%copyright:separator=/%", "copyright1/copyright2");
 }
 
 void FilenameTest::testGetReplacesSimple()

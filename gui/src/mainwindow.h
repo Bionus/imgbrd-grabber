@@ -26,7 +26,6 @@ class poolTab;
 class tagTab;
 class favoritesTab;
 class batchWindow;
-class UpdateDialog;
 class Profile;
 class Downloader;
 class Favorite;
@@ -181,7 +180,6 @@ class mainWindow : public QMainWindow
 
 	private:
 		Profile				*m_profile;
-		UpdateDialog		*m_updateDialog;
 		QList<Favorite>		&m_favorites;
 		int					m_getAllDownloaded, m_getAllExists, m_getAllIgnored, m_getAll404s, m_getAllErrors, m_getAllSkipped, m_getAllLimit, m_downloads, m_waitForLogin;
 		bool				m_allow, m_mustGetTags, m_loaded, m_getAll, m_forcedTab;
@@ -204,11 +202,12 @@ class mainWindow : public QMainWindow
 		QList<Downloader*>  m_downloaders, m_downloadersDone;
 		QQueue<Downloader*>	m_waitingDownloaders;
 		QList<Site*>		m_getAllLogins;
-		int					m_batchAutomaticRetries;
+		int					m_batchAutomaticRetries, m_getAllImagesCount;
 		bool				m_restore, m_showLog;
 		QMap<QString, QIcon>	m_icons;
 		QMap<QString, Site*>	m_sites;
 		QLinkedList<QJsonObject>	m_closedTabs;
+		QNetworkAccessManager m_networkAccessManager;
 };
 
 #endif // MAINWINDOW_H

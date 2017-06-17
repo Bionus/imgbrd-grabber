@@ -2,6 +2,7 @@
 #include "ui_update-dialog.h"
 #include <QMessageBox>
 #include <QProcess>
+#include "helpers.h"
 #ifndef Q_OS_WIN
 	#include <QDesktopServices>
 #endif
@@ -12,7 +13,7 @@ UpdateDialog::UpdateDialog(QWidget *parent)
 {
 	ui->setupUi(this);
 
-	ui->labelChangelog->setVisible(ui->checkShowChangelog->isChecked());
+	ui->scrollArea->setVisible(ui->checkShowChangelog->isChecked());
 	ui->progressDownload->hide();
 	resize(300, 0);
 
@@ -26,7 +27,7 @@ UpdateDialog::~UpdateDialog()
 
 void UpdateDialog::resizeToFit()
 {
-	ui->labelChangelog->setVisible(ui->checkShowChangelog->isChecked());
+	ui->scrollArea->setVisible(ui->checkShowChangelog->isChecked());
 	int width = ui->labelUpdateAvailable->size().width();
 
 	ui->labelUpdateAvailable->setMinimumWidth(width);
@@ -43,9 +44,13 @@ void UpdateDialog::checkForUpdates()
 void UpdateDialog::checkForUpdatesDone(QString newVersion, bool available, QString changelog)
 {
 	if (!available)
+	{
+		emit noUpdateAvailable();
 		return;
+	}
 
-	ui->labelChangelog->setText(changelog);
+	ui->labelChangelog->setTextFormat(Qt::RichText);
+	ui->labelChangelog->setText(parseMarkdown(changelog));
 	ui->labelVersion->setText(tr("Version <b>%1</b>").arg(newVersion));
 
 	show();
@@ -87,7 +92,9 @@ void UpdateDialog::downloadFinished(QString path)
 	{
 		QProcess::startDetached(path);
 
-		m_parent->close();
+		if (m_parent != Q_NULLPTR)
+		{ m_parent->close();}
+
 		qApp->exit();
 	}
 	else

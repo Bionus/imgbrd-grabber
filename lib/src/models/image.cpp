@@ -273,7 +273,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	m_pools = QList<Pool>();
 }
 
-void Image::loadAndSave(QStringList paths, bool needTags)
+void Image::loadAndSave(QStringList paths, bool needTags, bool force)
 {
 	// Load details first if necessary
 	if (needTags)
@@ -285,7 +285,7 @@ void Image::loadAndSave(QStringList paths, bool needTags)
 	}
 
 	// Then we load the image
-	//if (!m_loadedImage)
+	if (!m_loadedImage)
 	{
 		QEventLoop loopImage;
 		connect(this, &Image::finishedImage, &loopImage, &QEventLoop::quit);
@@ -295,7 +295,7 @@ void Image::loadAndSave(QStringList paths, bool needTags)
 	}
 
 	// We finally save
-	save(paths);
+	save(paths, true, false, 1, force);
 }
 void Image::loadAndSave(QString filename, QString path)
 {
@@ -390,6 +390,9 @@ void Image::loadDetails(bool rateLimit)
 	}
 
 	m_parentSite->getAsync(rateLimit ? Site::QueryType::Retry : Site::QueryType::Details, m_parentSite->fixUrl(m_pageUrl), [this](QNetworkReply *reply) {
+		if (m_loadDetails != nullptr)
+			m_loadDetails->deleteLater();
+
 		m_loadDetails = reply;
 		m_loadDetails->setParent(this);
 		m_loadingDetails = true;
@@ -400,7 +403,10 @@ void Image::loadDetails(bool rateLimit)
 void Image::abortTags()
 {
 	if (m_loadingDetails && m_loadDetails->isRunning())
-	{ m_loadDetails->abort(); }
+	{
+		m_loadDetails->abort();
+		m_loadingDetails = false;
+	}
 }
 void Image::parseDetails()
 {
@@ -691,6 +697,9 @@ void Image::loadImage()
 		return;
 	}
 
+	if (m_loadImage != nullptr)
+		m_loadImage->deleteLater();
+
 	m_loadImage = m_parentSite->get(m_parentSite->fixUrl(m_url), m_parent, "image", this);
 	m_loadImage->setParent(this);
 	m_loadingImage = true;
@@ -698,44 +707,6 @@ void Image::loadImage()
 
 	connect(m_loadImage, &QNetworkReply::downloadProgress, this, &Image::downloadProgressImageS);
 	connect(m_loadImage, &QNetworkReply::finished, this, &Image::finishedImageS);
-}
-QString Image::getExtensionFromHeader(const QByteArray &data12)
-{
-	QByteArray data8 = data12.left(8);
-	QByteArray data48 = data12.mid(4, 8);
-	QByteArray data6 = data12.left(6);
-	QByteArray data4 = data12.left(4);
-	QByteArray data3 = data12.left(3);
-
-	// GIF
-	if (data6 == "GIF87a" || data6 == "GIF89a")
-		return "gif";
-
-	// PNG
-	if (data8 == "\211PNG\r\n\032\n")
-		return "png";
-
-	// JPG
-	if (data3 == "\255\216\255")
-		return "jpg";
-
-	// WEBM
-	if (data4 == "\026\069\223\163")
-		return "webm";
-
-	// MP4
-	if (data48 == "ftyp3gp5" || data48 == "ftypMSNV" || data48 == "ftypisom")
-		return "mp4";
-
-	// SWF
-	if (data3 == "FWS" || data3 == "CWS" || data3 == "ZWS")
-		return "swf";
-
-	// FLV
-	if (data4 == "FLV\001")
-		return "flv";
-
-	return QString();
 }
 void Image::finishedImageS()
 {
@@ -764,9 +735,11 @@ void Image::finishedImageS()
 		bool sampleFallback = m_settings->value("Save/samplefallback", true).toBool();
 		QString ext = getExtension(m_url);
 		QString newext = getNextExtension(ext);
-		bool isLast = newext.isEmpty();
 
-		if (!isLast || (sampleFallback && !m_sampleUrl.isEmpty() && !m_tryingSample))
+		bool shouldFallback = sampleFallback && !m_sampleUrl.isEmpty();
+		bool isLast = newext.isEmpty() || (shouldFallback && m_tryingSample);
+
+		if (!isLast || (shouldFallback && !m_tryingSample))
 		{
 			if (isLast)
 			{
@@ -818,7 +791,10 @@ void Image::downloadProgressImageS(qint64 v1, qint64 v2)
 void Image::abortImage()
 {
 	if (m_loadingImage && m_loadImage->isRunning())
-	{ m_loadImage->abort(); }
+	{
+		m_loadImage->abort();
+		m_loadingImage = false;
+	}
 }
 
 /**
@@ -936,36 +912,38 @@ Image::SaveResult Image::save(QString path, bool force, bool basic, bool addMd5,
 			}
 
 			// Save info to a text file
-			if (m_settings->value("Textfile/activate", false).toBool() && !basic)
+			if (!basic)
 			{
-				QString textfileFormat = m_settings->value("Textfile/content", "%all%").toString();
-				QStringList cont = this->path(textfileFormat, "", count, true, true, false, false, false);
-				if (!cont.isEmpty())
+				auto logFiles = getExternalLogFiles(m_settings);
+				for (int i : logFiles.keys())
 				{
-					QString suffix = m_settings->value("Textfile/suffix", ".txt").toString();
-					QString contents = cont.at(0);
-					QFile file_tags(path + suffix);
-					if (file_tags.open(QFile::WriteOnly | QFile::Text))
+					auto logFile = logFiles[i];
+					QString textfileFormat = logFile["content"].toString();
+					QStringList cont = this->path(textfileFormat, "", count, true, true, false, false, false);
+					if (!cont.isEmpty())
 					{
-						file_tags.write(contents.toUtf8());
-						file_tags.close();
-					}
-				}
-			}
+						int locationType = logFile["locationType"].toInt();
+						QString contents = cont.first();
 
-			// Log info to a text file
-			if (m_settings->value("SaveLog/activate", false).toBool() && !m_settings->value("SaveLog/file", "").toString().isEmpty() && !basic)
-			{
-				QString savelogFormat = m_settings->value("SaveLog/format", "%website% - %md5% - %all%").toString();
-				QStringList cont = this->path(savelogFormat, "", count, true, true, false, false, false);
-				if (!cont.isEmpty())
-				{
-					QString contents = cont.at(0);
-					QFile file_tags(m_settings->value("SaveLog/file", "").toString());
-					if (file_tags.open(QFile::WriteOnly | QFile::Append | QFile::Text))
-					{
-						file_tags.write(contents.toUtf8() + "\n");
-						file_tags.close();
+						// File path
+						QString fileTagsPath;
+						if (locationType == 0)
+							fileTagsPath = this->path(logFile["filename"].toString(), logFile["path"].toString(), 0, true, false, true, true, true).first();
+						else if (locationType == 1)
+							fileTagsPath = logFile["uniquePath"].toString();
+						else if (locationType == 2)
+							fileTagsPath = path + logFile["suffix"].toString();
+
+						// Append to file if necessary
+						QFile fileTags(fileTagsPath);
+						bool append = fileTags.exists();
+						if (fileTags.open(QFile::WriteOnly | QFile::Append | QFile::Text))
+						{
+							if (append)
+								fileTags.write("\n");
+							fileTags.write(contents.toUtf8());
+							fileTags.close();
+						}
 					}
 				}
 			}
@@ -1012,11 +990,11 @@ Image::SaveResult Image::save(QString path, bool force, bool basic, bool addMd5,
 
 	return res;
 }
-QMap<QString, Image::SaveResult> Image::save(QStringList paths, bool addMd5, bool startCommands, int count)
+QMap<QString, Image::SaveResult> Image::save(QStringList paths, bool addMd5, bool startCommands, int count, bool force)
 {
 	QMap<QString, Image::SaveResult> res;
 	for (QString path : paths)
-		res.insert(path, save(path, false, false, addMd5, startCommands, count));
+		res.insert(path, save(path, force, false, addMd5, startCommands, count));
 	return res;
 }
 QMap<QString, Image::SaveResult> Image::save(QString filename, QString path, bool addMd5, bool startCommands, int count)

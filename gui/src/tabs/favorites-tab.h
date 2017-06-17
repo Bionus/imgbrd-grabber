@@ -23,8 +23,8 @@ class favoritesTab : public searchTab
 		explicit favoritesTab(QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent);
 		~favoritesTab();
 		Ui::favoritesTab *ui;
-		QList<bool> sources();
-		QString tags() const;
+		QList<bool> sources() override;
+		QString tags() const override;
 		void write(QJsonObject &json) const override;
 
 	protected:
@@ -32,10 +32,10 @@ class favoritesTab : public searchTab
 
 	public slots:
 		// Zooms
-		void setTags(QString);
+		void setTags(QString) override;
 		// Loading
-		void load();
-		bool validateImage(QSharedPointer<Image> img);
+		void load() override;
+		bool validateImage(QSharedPointer<Image> img) override;
 		// Batch
 		void getPage();
 		void getAll();
@@ -49,8 +49,8 @@ class favoritesTab : public searchTab
 		void setFavoriteViewed(QString);
 		void viewed();
 		// Others
-		void closeEvent(QCloseEvent*);
-		void focusSearch();
+		void closeEvent(QCloseEvent*) override;
+		void focusSearch() override;
 		void addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage = nullptr) override;
 		void setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage = nullptr) override;
 
@@ -58,6 +58,7 @@ class favoritesTab : public searchTab
 		QDateTime m_loadFavorite;
 		QString m_currentTags;
 		int m_currentFav;
+		FixedSizeGridLayout *m_favoritesLayout;
 };
 
 #endif // FAVORITES_TAB_H

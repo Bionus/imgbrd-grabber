@@ -154,6 +154,18 @@ QSize QBouton::sizeHint() const
 
 void QBouton::mousePressEvent(QMouseEvent *event)
 {
+	// Ignore clicks outside the thumbnail
+	QSize imgSize = sizeHint();
+	QSize size = this->size();
+	int wMargin = (size.width() - imgSize.width()) / 2;
+	int hMargin = (size.height() - imgSize.height()) / 2;
+	QPoint pos = event->pos();
+	if (pos.x() < wMargin
+			|| pos.y() < hMargin
+			|| pos.x() > imgSize.width() + wMargin
+			|| pos.y() > imgSize.height() + hMargin)
+		return;
+
 	if (event->button() == Qt::LeftButton)
 	{
 		if (event->modifiers() & Qt::ControlModifier)
