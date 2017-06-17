@@ -160,6 +160,7 @@ void tagTab::getPage()
 {
 	if (m_pages.empty())
 		return;
+
 	QStringList actuals, keys = m_sites->keys();
 	for (int i = 0; i < m_checkboxes.count(); i++)
 	{
@@ -169,13 +170,15 @@ void tagTab::getPage()
 	bool unloaded = m_settings->value("getunloadedpages", false).toBool();
 	for (int i = 0; i < actuals.count(); i++)
 	{
-		if (m_pages.contains(actuals.at(i)))
+		if (m_pages.contains(actuals[i]))
 		{
-			int perpage = unloaded ? ui->spinImagesPerPage->value() : (m_pages.value(actuals.at(i))->images().count() > ui->spinImagesPerPage->value() ? m_pages.value(actuals.at(i))->images().count() : ui->spinImagesPerPage->value());
-			if (perpage <= 0 || m_pages.value(actuals.at(i))->images().count() <= 0)
+			auto page = m_pages[actuals[i]].first();
+
+			int perpage = unloaded ? ui->spinImagesPerPage->value() : (page->images().count() > ui->spinImagesPerPage->value() ? page->images().count() : ui->spinImagesPerPage->value());
+			if (perpage <= 0 || page->images().count() <= 0)
 				continue;
 
-			QString search = m_pages.value(actuals.at(i))->search().join(' ');
+			QString search = page->search().join(' ');
 			emit batchAddGroup(DownloadQueryGroup(m_settings, search, ui->spinPage->value(), perpage, perpage, m_sites->value(actuals.at(i))));
 		}
 	}
@@ -194,7 +197,8 @@ void tagTab::getAll()
 
 	for (QString actual : actuals)
 	{
-		Page *page = m_pages[actual];
+		Page *page = m_pages[actual].first();
+
 		int highLimit = page->highLimit();
 		int currentCount = page->images().count();
 		int total = qMax(currentCount, page->imagesCount());
@@ -202,7 +206,7 @@ void tagTab::getAll()
 		if (perPage == 0 && total == 0)
 			continue;
 
-		QString search = m_pages[actual]->search().join(' ');
+		QString search = page->search().join(' ');
 		emit batchAddGroup(DownloadQueryGroup(m_settings, search, 1, perPage, total, m_sites->value(actual)));
 	}
 }

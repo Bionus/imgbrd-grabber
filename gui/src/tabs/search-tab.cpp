@@ -63,7 +63,8 @@ void searchTab::init()
 
 searchTab::~searchTab()
 {
-	qDeleteAll(m_pages);
+	for (QList<Page*> pages : m_pages)
+		qDeleteAll(pages);
 	m_pages.clear();
 	m_images.clear();
 	qDeleteAll(m_checkboxes);
@@ -102,14 +103,14 @@ void searchTab::optionsChanged()
 	ui_layoutResults->setHorizontalSpacing(m_settings->value("Margins/main", 10).toInt());
 }
 
-void searchTab::setTagsFromPages(const QMap<QString, Page*> &pages)
+void searchTab::setTagsFromPages(const QMap<QString, QList<Page*>> &pages)
 {
 	// Tags for this page
 	QList<Tag> taglist;
 	QStringList tagsGot;
-	for (int i = 0; i < pages.count(); i++)
+	for (QList<Page*> ps : pages)
 	{
-		QList<Tag> tags = pages.value(pages.keys().at(i))->tags();
+		QList<Tag> tags = ps.last()->tags();
 		for (Tag tag : tags)
 		{
 			if (!tag.text().isEmpty())
@@ -259,10 +260,13 @@ void searchTab::clear()
 	clearLayout(ui_layoutResults);
 
 	// Abort current loadings
-	for (int i = 0; i < m_pages.size(); i++)
+	for (QList<Page*> pages : m_pages)
 	{
-		m_pages.value(m_pages.keys().at(i))->abort();
-		m_pages.value(m_pages.keys().at(i))->abortTags();
+		for (Page *page : pages)
+		{
+			page->abort();
+			page->abortTags();
+		}
 	}
 	//qDeleteAll(m_pages);
 	m_pages.clear();
@@ -545,7 +549,7 @@ bool searchTab::containsMergedMd5(int page, QString md5)
 
 void searchTab::addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage)
 {
-	int pos = m_pages.values().indexOf(page);
+	int pos = m_pages.keys().indexOf(page->website());
 	if (pos < 0)
 		return;
 
@@ -565,16 +569,16 @@ void searchTab::addResultsPage(Page *page, const QList<QSharedPointer<Image>> &i
 void searchTab::setMergedLabelText(QLabel *txt, const QList<QSharedPointer<Image>> &imgs)
 {
 	int maxPage = 0;
-	for (Page *p : m_pages)
+	int sumImages = 0;
+
+	for (QList<Page*> ps : m_pages)
 	{
+		auto p = ps.last();
+
 		int pagesCount = p->pagesCount();
 		if (pagesCount > maxPage)
 			maxPage = pagesCount;
-	}
 
-	int sumImages = 0;
-	for (Page *p : m_pages)
-	{
 		int imagesCount = p->imagesCount();
 		if (imagesCount > 0)
 			sumImages += p->imagesCount();
@@ -582,10 +586,15 @@ void searchTab::setMergedLabelText(QLabel *txt, const QList<QSharedPointer<Image
 
 	QString links;
 	if (m_pages.count() > 5)
-		links = "Multiple sources";
+	{ links = "Multiple sources"; }
 	else
-		for (Page *p : m_pages)
+	{
+		for (QList<Page*> ps : m_pages)
+		{
+			auto p = ps.last();
 			links += QString(!links.isEmpty() ? ", " : "") + "<a href=\""+p->url().toString().toHtmlEscaped()+"\">"+p->site()->name()+"</a>";
+		}
+	}
 
 	txt->setText(QString(links + " - Page %1 of %2 (%3 of max %4)").arg(ui_spinPage->value()).arg(maxPage).arg(imgs.count()).arg(sumImages));
 }
@@ -1044,12 +1053,12 @@ void searchTab::loadTags(QStringList tags)
 
 	// Save previous pages
 	QStringList keys = m_sites->keys();
-	QMap<QString, Page*> lastPages;
+	m_lastPages.clear();
 	for (int i = 0; i < m_selectedSources.size(); i++)
 	{
 		QString site = keys[i];
 		if (m_checkboxes.at(i)->isChecked() && m_pages.contains(site))
-			lastPages.insert(site, m_pages[site]);
+			m_lastPages.insert(site, m_pages[site].last());
 	}
 
 	clear();
@@ -1112,9 +1121,11 @@ void searchTab::loadPage()
 		Page *page = new Page(m_profile, site, m_sites->values(), tags, ui_spinPage->value(), perpage, m_postFiltering->toPlainText().split(" ", QString::SkipEmptyParts), false, this, 0, m_lastPage, m_lastPageMinId, m_lastPageMaxId);
 		connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(finishedLoading(Page*)));
 		connect(page, SIGNAL(failedLoading(Page*)), this, SLOT(failedLoading(Page*)));
-		/*if (lastPages.contains(page->website()))
-		{ page->setLastPage(lastPages[page->website()]); }*/
-		m_pages.insert(page->website(), page);
+		if (m_lastPages.contains(page->website()))
+		{ page->setLastPage(m_lastPages[page->website()]); }
+		if (!m_pages.contains(page->website()))
+		{ m_pages.insert(page->website(), QList<Page*>()); }
+		m_pages[page->website()].append(page);
 
 		// Setup the layout
 		if (!merged)

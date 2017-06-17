@@ -203,8 +203,9 @@ void favoritesTab::getPage()
 	bool unloaded = m_settings->value("getunloadedpages", false).toBool();
 	for (int i = 0; i < actuals.count(); i++)
 	{
+		Page *page = m_pages[actuals[i]].first();
 		QString search = m_currentTags+" "+m_settings->value("add").toString().toLower().trimmed();
-		int perpage = unloaded ? ui->spinImagesPerPage->value() : m_pages.value(actuals.at(i))->images().count();
+		int perpage = unloaded ? ui->spinImagesPerPage->value() : page->images().count();
 		emit batchAddGroup(DownloadQueryGroup(m_settings, search, ui->spinPage->value(), perpage, perpage, m_sites->value(actuals.at(i))));
 	}
 }
@@ -218,10 +219,11 @@ void favoritesTab::getAll()
 	}
 	for (int i = 0; i < actuals.count(); i++)
 	{
+		Page *page = m_pages[actuals[i]].first();
 		QString search = m_currentTags+" "+m_settings->value("add").toString().toLower().trimmed();
 		int limit = m_sites->value(actuals.at(i))->contains("Urls/1/Limit") ? m_sites->value(actuals.at(i))->value("Urls/1/Limit").toInt() : 0;
-		int perpage = qMin((limit > 0 ? limit : 1000), qMax(m_pages.value(actuals.at(i))->images().count(), m_pages.value(actuals.at(i))->imagesCount()));
-		int total = qMax(m_pages.value(actuals.at(i))->images().count(), m_pages.value(actuals.at(i))->imagesCount());
+		int perpage = qMin((limit > 0 ? limit : 1000), qMax(page->images().count(), page->imagesCount()));
+		int total = qMax(page->images().count(), page->imagesCount());
 		emit batchAddGroup(DownloadQueryGroup(m_settings, search, 1, perpage, total, m_sites->value(actuals.at(i))));
 	}
 }
