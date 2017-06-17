@@ -741,7 +741,7 @@ void searchTab::thumbnailContextMenu(QSharedPointer<Image> img)
 	connect(mapperSave, SIGNAL(mapped(QObject*)), this, SLOT(contextSaveImage(QObject*)));
 	QAction *actionSave;
 	if (!getImageAlreadyExists(img.data(), m_profile).isEmpty())
-	{ actionSave = new QAction(QIcon(":/images/icons/remove.png"), tr("Delete"), menu); }
+	{ actionSave = new QAction(QIcon(":/images/status/error.png"), tr("Delete"), menu); }
 	else
 	{ actionSave = new QAction(QIcon(":/images/icons/save.png"), tr("Save"), menu); }
 	menu->insertAction(first, actionSave);
