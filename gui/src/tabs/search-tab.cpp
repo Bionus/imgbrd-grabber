@@ -69,10 +69,13 @@ searchTab::~searchTab()
 	m_images.clear();
 	qDeleteAll(m_checkboxes);
 	m_checkboxes.clear();
-	for (Site *site : m_layouts.keys())
-	{ clearLayout(m_layouts[site]); }
-	qDeleteAll(m_layouts);
+
+	for (QLayout *layout : m_siteLayouts)
+	{ clearLayout(layout); }
+	qDeleteAll(m_siteLayouts);
+	m_siteLayouts.clear();
 	m_layouts.clear();
+
 	m_boutons.clear();
 }
 
@@ -251,9 +254,10 @@ void searchTab::clear()
 	// Clear layout
 	for (int i = 0; i < ui_layoutResults->rowCount(); ++i)
 	{ ui_layoutResults->setRowMinimumHeight(i, 0); }
-	for (Site *site : m_layouts.keys())
-	{ clearLayout(m_layouts[site]); }
-	qDeleteAll(m_layouts);
+	for (QLayout *layout : m_siteLayouts)
+	{ clearLayout(layout); }
+	qDeleteAll(m_siteLayouts);
+	m_siteLayouts.clear();
 	m_layouts.clear();
 	m_boutons.clear();
 	m_pageLabels.clear();
@@ -563,8 +567,8 @@ void searchTab::addResultsPage(Page *page, const QList<QSharedPointer<Image>> &i
 	ui_layoutResults->addWidget(txt, page_y, page_x);
 	ui_layoutResults->setRowMinimumHeight(page_y, txt->sizeHint().height() + 10);
 
-	if (m_layouts.size() > pos)
-	{ addLayout(m_layouts[page->site()], page_y + 1, page_x); }
+	if (m_siteLayouts.size() > pos)
+	{ addLayout(m_siteLayouts[page->site()], page_y + 1, page_x); }
 }
 void searchTab::setMergedLabelText(QLabel *txt, const QList<QSharedPointer<Image>> &imgs)
 {
@@ -806,7 +810,7 @@ void searchTab::addResultsImage(QSharedPointer<Image> img, bool merge)
 	QBouton *button = createImageThumbnail(absolutePosition, img);
 	m_boutons.insert(img.data(), button);
 
-	FixedSizeGridLayout *layout = m_layouts[m_layouts.contains(nullptr) ? nullptr : img->parentSite()];
+	FixedSizeGridLayout *layout = m_layouts[merge && m_layouts.contains(nullptr) ? nullptr : img->page()];
 	layout->addFixedSizeWidget(button, relativePosition, imagesPerPage);
 }
 
@@ -1121,6 +1125,8 @@ void searchTab::loadPage()
 		Page *page = new Page(m_profile, site, m_sites->values(), tags, ui_spinPage->value(), perpage, m_postFiltering->toPlainText().split(" ", QString::SkipEmptyParts), false, this, 0, m_lastPage, m_lastPageMinId, m_lastPageMaxId);
 		connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(finishedLoading(Page*)));
 		connect(page, SIGNAL(failedLoading(Page*)), this, SLOT(failedLoading(Page*)));
+
+		// Keep pointer to the new page
 		if (m_lastPages.contains(page->website()))
 		{ page->setLastPage(m_lastPages[page->website()]); }
 		if (!m_pages.contains(page->website()))
@@ -1129,7 +1135,13 @@ void searchTab::loadPage()
 
 		// Setup the layout
 		if (!merged)
-			m_layouts.insert(site, createImagesLayout(m_settings));
+		{
+			FixedSizeGridLayout *pageLayout = createImagesLayout(m_settings);
+			m_layouts.insert(page, pageLayout);
+			if (!m_siteLayouts.contains(site))
+			{ m_siteLayouts.insert(site, new QVBoxLayout()); }
+			m_siteLayouts[site]->addLayout(pageLayout);
+		}
 
 		// Load tags if necessary
 		log(QString("Loading page <a href=\"%1\">%1</a>").arg(page->url().toString().toHtmlEscaped()));

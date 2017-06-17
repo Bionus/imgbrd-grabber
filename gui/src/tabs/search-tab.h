@@ -149,7 +149,8 @@ class searchTab : public QWidget
 		QMap<QString, QList<Page*>> m_pages;
 		QMap<QString, Page*> m_lastPages;
 		QMap<Page*, QLabel*> m_pageLabels;
-		QMap<Site*, FixedSizeGridLayout*> m_layouts;
+		QMap<Site*, QVBoxLayout*> m_siteLayouts;
+		QMap<Page*, FixedSizeGridLayout*> m_layouts;
 		int m_page;
 		int m_pagemax;
 		bool m_stop;
