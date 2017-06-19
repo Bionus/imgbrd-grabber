@@ -1,9 +1,15 @@
 #!/usr/bin/env sh
 
-add-apt-repository --yes "ppa:ubuntu-sdk-team/ppa"
-apt-get update -qq
-apt-get install -qq "qt5-qmake" "qtbase5-dev" "qtdeclarative5-dev" "qtscript5-dev" "qtmultimedia5-dev" "libpulse-dev" "qt5-default" "qttools5-dev-tools"
-apt-get install -qq "g++" "cmake"
+if [ "$(which pacman)" = "/usr/bin/pacman" ]
+then
+  sudo pacman -Sy
+  sudo pacman -S "qt" "gcc" "cmake" "libpulse"
+else
+  add-apt-repository --yes "ppa:ubuntu-sdk-team/ppa"
+  apt-get update -qq
+  apt-get install -qq "qt5-qmake" "qtbase5-dev" "qtdeclarative5-dev" "qtscript5-dev" "qtmultimedia5-dev" "libpulse-dev" "qt5-default" "qttools5-dev-tools"
+  apt-get install -qq "g++" "cmake"
+fi
 
 mkdir build
 cd build
