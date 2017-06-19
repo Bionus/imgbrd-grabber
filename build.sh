@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-if [ "$(which pacman)" = "/usr/bin/pacman" ]
+if type pacman > /dev/null 2>&1
 then
   sudo pacman -Sy
   sudo pacman -S "qt" "gcc" "cmake" "libpulse"
