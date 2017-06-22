@@ -1169,14 +1169,28 @@ void zoomWindow::updateWindowTitle()
 	setWindowTitle(QString("%1 - %2 (%3/%4)").arg(title, m_image->parentSite()->name(), QString::number(m_images.indexOf(m_image) + 1), QString::number(m_images.count())));
 }
 
+int zoomWindow::firstNonBlacklisted(int direction)
+{
+	int index = m_images.indexOf(m_image);
+	int first = index;
+	index = (index + m_images.count() + direction) % m_images.count();
+
+	// Skip blacklisted images
+	QStringList blacklistedtags(m_settings->value("blacklistedtags").toString().split(" "));
+	while (!m_images[index]->blacklisted(blacklistedtags).isEmpty() && index != first)
+	{
+		index = (index + m_images.count() + direction) % m_images.count();
+	}
+
+	return index;
+}
+
 void zoomWindow::next()
 {
 	m_image->abortTags();
 	m_image->abortImage();
 
-	int index = m_images.indexOf(m_image);
-	index = (index + 1) % m_images.count();
-
+	int index = firstNonBlacklisted(+1);
 	load(m_images[index]);
 }
 
@@ -1185,9 +1199,7 @@ void zoomWindow::previous()
 	m_image->abortTags();
 	m_image->abortImage();
 
-	int index = m_images.indexOf(m_image);
-	index = (index + m_images.count() - 1) % m_images.count();
-
+	int index = firstNonBlacklisted(-1);
 	load(m_images[index]);
 }
 

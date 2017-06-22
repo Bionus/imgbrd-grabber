@@ -101,6 +101,7 @@ class zoomWindow : public QWidget
 
 	private:
 		void showThumbnail();
+		int firstNonBlacklisted(int direction);
 		Qt::Alignment getAlignments(QString type);
 
 	signals:
