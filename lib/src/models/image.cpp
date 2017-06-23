@@ -7,6 +7,8 @@
 #include "commands/commands.h"
 #include "functions.h"
 
+#define MAX_LOAD_FILESIZE (1024*1024*50)
+
 
 QString removeCacheUrl(QString url)
 {
@@ -697,6 +699,12 @@ void Image::loadImage()
 		return;
 	}
 
+	if (m_fileSize > MAX_LOAD_FILESIZE)
+	{
+		emit finishedImage((QNetworkReply::NetworkError)500, "");
+		return;
+	}
+
 	if (m_loadImage != nullptr)
 		m_loadImage->deleteLater();
 
@@ -717,6 +725,8 @@ void Image::finishedImageS()
 	{
 		m_loadImage->deleteLater();
 		m_loadImage = nullptr;
+		if (m_fileSize > MAX_LOAD_FILESIZE)
+		{ emit finishedImage((QNetworkReply::NetworkError)500, ""); }
 		return;
 	}
 
@@ -787,6 +797,12 @@ void Image::downloadProgressImageS(qint64 v1, qint64 v2)
 
 	if (m_loadImage == nullptr || v2 <= 0)
 		return;
+
+	if (m_fileSize > MAX_LOAD_FILESIZE)
+	{
+		m_loadImage->abort();
+		return;
+	}
 
 	m_data.append(m_loadImage->readAll());
 

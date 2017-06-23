@@ -623,6 +623,8 @@ void zoomWindow::replyFinishedZoom(QNetworkReply::NetworkError err, QString erro
 		pendingUpdate();
 		draw();
 	}
+	else if (err == 500)
+	{ error(this, tr("File is too big to be displayed.\r\n%1").arg(m_image->url())); }
 	else if (err == QNetworkReply::ContentNotFoundError)
 	{ log("Image not found."); }
 	else if (err != QNetworkReply::OperationCanceledError)
