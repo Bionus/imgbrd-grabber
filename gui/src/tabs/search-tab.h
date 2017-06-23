@@ -69,6 +69,7 @@ class searchTab : public QWidget
 		void contextSaveImage(QObject *image);
 		void contextSaveImageAs(QObject *image);
 		void contextSaveSelected();
+		void setEndlessLoadingMode(bool enabled);
 
 	private:
 		void addLayout(QLayout *layout, int row, int column);

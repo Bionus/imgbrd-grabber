@@ -297,6 +297,15 @@ TextEdit *searchTab::createAutocomplete()
 	return ret;
 }
 
+void searchTab::setEndlessLoadingMode(bool enabled)
+{
+	// Toggle endless loading button
+	if (ui_buttonEndlessLoad != nullptr && m_settings->value("infiniteScroll", "disabled") == "button")
+		ui_buttonEndlessLoad->setVisible(enabled);
+
+	m_endlessLoadingEnabled = enabled;
+}
+
 void searchTab::finishedLoading(Page* page)
 {
 	if (m_stop)
@@ -386,9 +395,7 @@ void searchTab::postLoading(Page *page, QList<QSharedPointer<Image>> imgs)
 		}
 		if (!allFinished)
 		{
-			if (ui_buttonEndlessLoad != nullptr && m_settings->value("infiniteScroll", "disabled") == "button")
-				ui_buttonEndlessLoad->show();
-			m_endlessLoadingEnabled = true;
+			setEndlessLoadingMode(true);
 		}
 	}
 
@@ -1154,11 +1161,7 @@ void searchTab::loadPage()
 	bool merged = ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked();
 	int perpage = ui_spinImagesPerPage->value();
 	QStringList tags = m_lastTags.split(' ');
-
-	// Disable endless loading
-	if (ui_buttonEndlessLoad != nullptr && ui_buttonEndlessLoad->isVisible())
-		ui_buttonEndlessLoad->hide();
-	m_endlessLoadingEnabled = false;
+	setEndlessLoadingMode(false);
 
 	for (Site *site : loadSites())
 	{
