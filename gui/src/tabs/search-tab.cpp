@@ -373,12 +373,23 @@ void searchTab::postLoading(Page *page, QList<QSharedPointer<Image>> imgs)
 
 	loadImageThumbnails(page, imgs);
 
-	// Re-enable endless loading
-	if (finished && imgs.count() > 0)
+	// Re-enable endless loading if all sources have reached the last page
+	if (finished)
 	{
-		if (ui_buttonEndlessLoad != nullptr && m_settings->value("infiniteScroll", "disabled") == "button")
-			ui_buttonEndlessLoad->show();
-		m_endlessLoadingEnabled = true;
+		bool allFinished = true;
+		for (auto ps : m_pages)
+		{
+			int pagesCount = ps.first()->pagesCount();
+			int imagesPerPage = ps.first()->imagesPerPage();
+			if (ps.last()->page() < pagesCount && ps.last()->images().count() >= imagesPerPage)
+				allFinished = false;
+		}
+		if (!allFinished)
+		{
+			if (ui_buttonEndlessLoad != nullptr && m_settings->value("infiniteScroll", "disabled") == "button")
+				ui_buttonEndlessLoad->show();
+			m_endlessLoadingEnabled = true;
+		}
 	}
 
 	ui_buttonGetAll->setDisabled(m_images.empty());
