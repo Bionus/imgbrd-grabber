@@ -878,10 +878,10 @@ Image::SaveResult Image::save(QString path, bool force, bool basic, bool addMd5,
 
 		if (md5Duplicate.isEmpty() || whatToDo == "save" || force)
 		{
-			if (!m_source.isEmpty() && QFile::exists(m_source))
+			if (!m_savePath.isEmpty() && QFile::exists(m_savePath))
 			{
-				log(QString("Saving image in <a href=\"file:///%1\">%1</a> (from <a href=\"file:///%2\">%2</a>)").arg(path).arg(m_source));
-				QFile::copy(m_source, path);
+				log(QString("Saving image in <a href=\"file:///%1\">%1</a> (from <a href=\"file:///%2\">%2</a>)").arg(path).arg(m_savePath));
+				QFile::copy(m_savePath, path);
 			}
 			else
 			{
@@ -984,6 +984,8 @@ Image::SaveResult Image::save(QString path, bool force, bool basic, bool addMd5,
 			{ commands.tag(*this, tag, true); }
 		if (startCommands)
 		{ commands.after(); }
+
+		m_savePath = path;
 	}
 	else
 	{ res = SaveResult::AlreadyExists; }
