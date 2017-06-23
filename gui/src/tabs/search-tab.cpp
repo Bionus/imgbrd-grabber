@@ -59,6 +59,9 @@ void searchTab::init()
 
 	if (infinite == "scroll")
 		connect(ui_scrollAreaResults, &VerticalScrollArea::endOfScrollReached, this, &searchTab::endlessLoad);
+
+	if (infinite != "disabled" && ui_checkMergeResults != nullptr)
+		connect(ui_checkMergeResults, &QCheckBox::toggled, this, &searchTab::setMergeResultsMode);
 }
 
 searchTab::~searchTab()
@@ -295,6 +298,22 @@ TextEdit *searchTab::createAutocomplete()
 	}
 
 	return ret;
+}
+
+void searchTab::setMergeResultsMode(bool merged)
+{
+	// Restore endless loading mode
+	if (merged == m_pageMergedMode)
+	{
+		setEndlessLoadingMode(m_endlessLoadingEnabledPast);
+	}
+
+	// Disable endless loading
+	else
+	{
+		m_endlessLoadingEnabledPast = m_endlessLoadingEnabled;
+		setEndlessLoadingMode(false);
+	}
 }
 
 void searchTab::setEndlessLoadingMode(bool enabled)
@@ -1139,6 +1158,7 @@ void searchTab::loadTags(QStringList tags)
 	ui_buttonPreviousPage->setEnabled(ui_spinPage->value() > 1);
 
 	bool merged = ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked();
+	m_pageMergedMode = merged;
 	if (merged)
 		m_layouts.insert(nullptr, createImagesLayout(m_settings));
 

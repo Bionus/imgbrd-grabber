@@ -69,6 +69,7 @@ class searchTab : public QWidget
 		void contextSaveImage(QObject *image);
 		void contextSaveImageAs(QObject *image);
 		void contextSaveSelected();
+		void setMergeResultsMode(bool merged);
 		void setEndlessLoadingMode(bool enabled);
 
 	private:
@@ -156,7 +157,8 @@ class searchTab : public QWidget
 		int m_pagemax;
 		bool m_stop;
 		int m_lastToggle;
-		bool m_endlessLoadingEnabled;
+		bool m_endlessLoadingEnabled, m_endlessLoadingEnabledPast;
+		bool m_pageMergedMode;
 
 		// History
 		bool m_from_history;
