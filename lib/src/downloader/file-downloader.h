@@ -11,8 +11,9 @@ class FileDownloader : public QObject
 	Q_OBJECT
 
 	public:
-		explicit FileDownloader(QNetworkReply *reply, QString path, QObject *parent = Q_NULLPTR);
-		explicit FileDownloader(QNetworkReply *reply, QStringList paths, QObject *parent = Q_NULLPTR);
+		explicit FileDownloader(QObject *parent = Q_NULLPTR);
+		bool start(QNetworkReply *reply, QString path);
+		bool start(QNetworkReply *reply, QStringList paths);
 
 	signals:
 		void finished();

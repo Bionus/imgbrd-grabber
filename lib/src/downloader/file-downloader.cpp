@@ -1,18 +1,29 @@
 #include "file-downloader.h"
 
 
-FileDownloader::FileDownloader(QNetworkReply *reply, QString path, QObject *parent)
-	: FileDownloader(reply, QStringList(path), parent)
+FileDownloader::FileDownloader(QObject *parent)
+	: QObject(parent)
 {}
 
-FileDownloader::FileDownloader(QNetworkReply *reply, QStringList paths, QObject *parent)
-	: QObject(parent), m_reply(reply), m_file(paths.takeFirst())
+bool FileDownloader::start(QNetworkReply *reply, QString path)
 {
-	connect(reply, &QNetworkReply::readyRead, this, &FileDownloader::replyReadyRead);
-	connect(reply, &QNetworkReply::finished, this, &FileDownloader::replyFinished);
+	return start(reply, QStringList(path));
+}
+bool FileDownloader::start(QNetworkReply *reply, QStringList paths)
+{
+	m_file.setFileName(paths.takeFirst());
+	bool ok = m_file.open(QFile::WriteOnly | QFile::Truncate);
 
-	m_file.open(QFile::WriteOnly | QFile::Truncate);
 	m_copies = paths;
+	m_reply = reply;
+
+	if (ok)
+	{
+		connect(reply, &QNetworkReply::readyRead, this, &FileDownloader::replyReadyRead);
+		connect(reply, &QNetworkReply::finished, this, &FileDownloader::replyFinished);
+	}
+
+	return ok;
 }
 
 
