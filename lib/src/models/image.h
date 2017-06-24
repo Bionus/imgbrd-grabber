@@ -38,9 +38,9 @@ class Image : public QObject
 		QStringList	path(QString fn = "", QString pth = "", int counter = 0, bool complex = true, bool simple = false, bool maxlength = true, bool shouldFixFilename = true, bool getFull = false) const;
 		QStringList blacklisted(QStringList, bool invert = true) const;
 		QStringList	stylishedTags(Profile *profile) const;
-		SaveResult  save(QString path, bool force = false, bool basic = false, bool addMd5 = true, bool startCommands = false, int count = 1);
-		QMap<QString, Image::SaveResult> save(QStringList paths, bool addMd5 = true, bool startCommands = false, int count = 1, bool force = false);
-		QMap<QString, Image::SaveResult> save(QString filename, QString path, bool addMd5 = true, bool startCommands = false, int count = 1);
+		SaveResult  save(QString path, bool force = false, bool basic = false, bool addMd5 = true, bool startCommands = false, int count = 1, bool loadIfNecessary = false);
+		QMap<QString, Image::SaveResult> save(QStringList paths, bool addMd5 = true, bool startCommands = false, int count = 1, bool force = false, bool loadIfNecessary = false);
+		QMap<QString, Image::SaveResult> save(QString filename, QString path, bool addMd5 = true, bool startCommands = false, int count = 1, bool loadIfNecessary = false);
 		QString		url() const;
 		QString		md5() const;
 		QString		author() const;

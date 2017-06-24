@@ -893,7 +893,7 @@ QStringList Image::stylishedTags(Profile *profile) const
 	return t;
 }
 
-Image::SaveResult Image::save(QString path, bool force, bool basic, bool addMd5, bool startCommands, int count)
+Image::SaveResult Image::save(QString path, bool force, bool basic, bool addMd5, bool startCommands, int count, bool loadIfNecessary)
 {
 	SaveResult res = SaveResult::Saved;
 
@@ -926,7 +926,10 @@ Image::SaveResult Image::save(QString path, bool force, bool basic, bool addMd5,
 			else
 			{
 				if (m_data.isEmpty())
-					return SaveResult::NotLoaded;
+				{
+					if (!loadIfNecessary)
+						return SaveResult::NotLoaded;
+				}
 
 				log(QString("Saving image in <a href=\"file:///%1\">%1</a>").arg(path));
 
@@ -1032,17 +1035,17 @@ Image::SaveResult Image::save(QString path, bool force, bool basic, bool addMd5,
 
 	return res;
 }
-QMap<QString, Image::SaveResult> Image::save(QStringList paths, bool addMd5, bool startCommands, int count, bool force)
+QMap<QString, Image::SaveResult> Image::save(QStringList paths, bool addMd5, bool startCommands, int count, bool force, bool loadIfNecessary)
 {
 	QMap<QString, Image::SaveResult> res;
 	for (QString path : paths)
-		res.insert(path, save(path, force, false, addMd5, startCommands, count));
+		res.insert(path, save(path, force, false, addMd5, startCommands, count, loadIfNecessary));
 	return res;
 }
-QMap<QString, Image::SaveResult> Image::save(QString filename, QString path, bool addMd5, bool startCommands, int count)
+QMap<QString, Image::SaveResult> Image::save(QString filename, QString path, bool addMd5, bool startCommands, int count, bool loadIfNecessary)
 {
 	QStringList paths = this->path(filename, path, count, true, false, true, true, true);
-	return save(paths, addMd5, startCommands, count);
+	return save(paths, addMd5, startCommands, count, loadIfNecessary);
 }
 
 QList<Tag> Image::filteredTags(QStringList remove) const
