@@ -144,6 +144,7 @@ void favoritesTab::updateFavorites()
 			caption->setTextFormat(Qt::RichText);
 			caption->setAlignment(Qt::AlignCenter);
 			caption->setToolTip(xt);
+			caption->setFixedWidth(FAVORITES_THUMB_SIZE);
 		if (!caption->text().isEmpty())
 		{
 			connect(caption, SIGNAL(clicked(QString)), this, SLOT(loadFavorite(QString)));
