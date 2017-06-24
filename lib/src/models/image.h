@@ -101,7 +101,7 @@ class Image : public QObject
 	public slots:
 		void loadPreview();
 		void loadDetails(bool rateLimit = false);
-		void loadImage();
+		void loadImage(bool inMemory = true);
 		void abortPreview();
 		void abortTags();
 		void abortImage();

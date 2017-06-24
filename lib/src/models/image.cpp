@@ -679,7 +679,7 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 	return filename.path(*this, m_profile, pth, counter, complex, maxlength, shouldFixFilename, getFull);
 }
 
-void Image::loadImage()
+void Image::loadImage(bool inMemory)
 {
 	if (m_loadingImage)
 		return;
@@ -690,7 +690,7 @@ void Image::loadImage()
 		return;
 	}
 
-	if (m_fileSize > MAX_LOAD_FILESIZE)
+	if (m_fileSize > MAX_LOAD_FILESIZE && inMemory)
 	{
 		emit finishedImage((QNetworkReply::NetworkError)500, "");
 		return;
@@ -704,8 +704,16 @@ void Image::loadImage()
 	m_loadingImage = true;
 	m_data.clear();
 
-	connect(m_loadImage, &QNetworkReply::downloadProgress, this, &Image::downloadProgressImageInMemory);
-	connect(m_loadImage, &QNetworkReply::finished, this, &Image::finishedImageInMemory);
+	if (inMemory)
+	{
+		connect(m_loadImage, &QNetworkReply::downloadProgress, this, &Image::downloadProgressImageInMemory);
+		connect(m_loadImage, &QNetworkReply::finished, this, &Image::finishedImageInMemory);
+	}
+	else
+	{
+		connect(m_loadImage, &QNetworkReply::downloadProgress, this, &Image::downloadProgressImageBasic);
+		connect(m_loadImage, &QNetworkReply::finished, this, &Image::finishedImageBasic);
+	}
 }
 
 void Image::finishedImageBasic()
@@ -926,7 +934,7 @@ Image::SaveResult Image::save(QString path, bool force, bool basic, bool addMd5,
 					QEventLoop loopImage;
 					FileDownloader fileDownloader(this);
 					connect(&fileDownloader, &FileDownloader::finished, &loopImage, &QEventLoop::quit);
-					loadImage();
+					loadImage(false);
 					if (!fileDownloader.start(m_loadImage, path))
 					{
 						log("Unable to open file");
