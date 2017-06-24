@@ -291,8 +291,7 @@ void Image::loadAndSave(QStringList paths, bool needTags, bool force)
 	{
 		QEventLoop loopImage;
 		connect(this, &Image::finishedImage, &loopImage, &QEventLoop::quit);
-		if (!m_loadingImage)
-		{ loadImage(); }
+		loadImage();
 		loopImage.exec();
 	}
 
@@ -713,10 +712,19 @@ void Image::loadImage()
 	m_loadingImage = true;
 	m_data.clear();
 
-	connect(m_loadImage, &QNetworkReply::downloadProgress, this, &Image::downloadProgressImageS);
-	connect(m_loadImage, &QNetworkReply::finished, this, &Image::finishedImageS);
+	connect(m_loadImage, &QNetworkReply::downloadProgress, this, &Image::downloadProgressImageInMemory);
+	connect(m_loadImage, &QNetworkReply::finished, this, &Image::finishedImageInMemory);
 }
-void Image::finishedImageS()
+
+void Image::finishedImageBasic()
+{
+	finishedImageS(false);
+}
+void Image::finishedImageInMemory()
+{
+	finishedImageS(true);
+}
+void Image::finishedImageS(bool inMemory)
 {
 	m_loadingImage = false;
 
@@ -772,7 +780,7 @@ void Image::finishedImageS()
 			log("Image not found.");
 		}
 	}
-	else
+	else if (inMemory)
 	{
 		m_data.append(m_loadImage->readAll());
 
@@ -789,7 +797,16 @@ void Image::finishedImageS()
 
 	emit finishedImage(error, errorString);
 }
-void Image::downloadProgressImageS(qint64 v1, qint64 v2)
+
+void Image::downloadProgressImageBasic(qint64 v1, qint64 v2)
+{
+	downloadProgressImageS(v1, v2, false);
+}
+void Image::downloadProgressImageInMemory(qint64 v1, qint64 v2)
+{
+	downloadProgressImageS(v1, v2, true);
+}
+void Image::downloadProgressImageS(qint64 v1, qint64 v2, bool inMemory)
 {
 	// Set filesize if not set
 	if (m_fileSize == 0)
@@ -798,13 +815,16 @@ void Image::downloadProgressImageS(qint64 v1, qint64 v2)
 	if (m_loadImage == nullptr || v2 <= 0)
 		return;
 
-	if (m_fileSize > MAX_LOAD_FILESIZE)
+	if (inMemory)
 	{
-		m_loadImage->abort();
-		return;
-	}
+		if (m_fileSize > MAX_LOAD_FILESIZE)
+		{
+			m_loadImage->abort();
+			return;
+		}
 
-	m_data.append(m_loadImage->readAll());
+		m_data.append(m_loadImage->readAll());
+	}
 
 	emit downloadProgressImage(v1, v2);
 }

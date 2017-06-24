@@ -110,8 +110,12 @@ class Image : public QObject
 		void unload();
 
 	private slots:
-		void finishedImageS();
-		void downloadProgressImageS(qint64, qint64);
+		void finishedImageBasic();
+		void finishedImageInMemory();
+		void finishedImageS(bool inMemory);
+		void downloadProgressImageBasic(qint64, qint64);
+		void downloadProgressImageInMemory(qint64, qint64);
+		void downloadProgressImageS(qint64, qint64, bool inMemory);
 
 	signals:
 		void finishedLoadingPreview();
