@@ -12,6 +12,7 @@ class FileDownloader : public QObject
 
 	public:
 		explicit FileDownloader(QNetworkReply *reply, QString path, QObject *parent = Q_NULLPTR);
+		explicit FileDownloader(QNetworkReply *reply, QStringList paths, QObject *parent = Q_NULLPTR);
 
 	signals:
 		void finished();
@@ -23,6 +24,7 @@ class FileDownloader : public QObject
 	private:
 		QNetworkReply *m_reply;
 		QFile m_file;
+		QStringList m_copies;
 };
 
 #endif // FILE_DOWNLOADER_H
