@@ -354,8 +354,7 @@ void searchTab::finishedLoading(Page* page)
 	ui_buttonNextPage->setEnabled(maxpage > ui_spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1 || (page->imagesCount() == 0 && page->images().count() > 0));
 	ui_buttonLastPage->setEnabled(maxpage > ui_spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1);
 
-	if (!merged)
-		addResultsPage(page, imgs);
+	addResultsPage(page, imgs, merged);
 
 	if (!m_settings->value("useregexfortags", true).toBool())
 		setTagsFromPages(m_pages);
@@ -589,8 +588,11 @@ bool searchTab::containsMergedMd5(int page, QString md5)
 	return false;
 }
 
-void searchTab::addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage)
+void searchTab::addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, bool merged, QString noResultsMessage)
 {
+	if (merged)
+		return;
+
 	int pos = m_pages.keys().indexOf(page->website());
 	if (pos < 0)
 		return;

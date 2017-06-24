@@ -99,7 +99,7 @@ class searchTab : public QWidget
 		void loadTags(QStringList tags);
 		void endlessLoad();
 		void loadPage();
-		virtual void addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage = nullptr);
+		virtual void addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, bool merged, QString noResultsMessage = nullptr);
 		void setMergedLabelText(QLabel *txt, const QList<QSharedPointer<Image>> &imgs);
 		virtual void setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage = nullptr);
 		void addResultsImage(QSharedPointer<Image> img, bool merge = false);
