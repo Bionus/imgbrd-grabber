@@ -1059,7 +1059,7 @@ QMap<QString, Image::SaveResult> Image::save(QStringList paths, bool addMd5, boo
 QMap<QString, Image::SaveResult> Image::save(QString filename, QString path, bool addMd5, bool startCommands, int count, bool loadIfNecessary)
 {
 	QStringList paths = this->path(filename, path, count, true, false, true, true, true);
-	return save(paths, addMd5, startCommands, count, loadIfNecessary);
+	return save(paths, addMd5, startCommands, count, false, loadIfNecessary);
 }
 
 QList<Tag> Image::filteredTags(QStringList remove) const
