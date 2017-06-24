@@ -286,17 +286,8 @@ void Image::loadAndSave(QStringList paths, bool needTags, bool force)
 		loopDetails.exec();
 	}
 
-	// Then we load the image
-	if (!m_loadedImage)
-	{
-		QEventLoop loopImage;
-		connect(this, &Image::finishedImage, &loopImage, &QEventLoop::quit);
-		loadImage();
-		loopImage.exec();
-	}
-
 	// We finally save
-	save(paths, true, false, 1, force);
+	save(paths, true, false, 1, force, true);
 }
 void Image::loadAndSave(QString filename, QString path)
 {
@@ -927,8 +918,14 @@ Image::SaveResult Image::save(QString path, bool force, bool basic, bool addMd5,
 			{
 				if (m_data.isEmpty())
 				{
-					if (!loadIfNecessary)
+					if (!loadIfNecessary || m_loadedImage)
 						return SaveResult::NotLoaded;
+
+					// Then we load the image
+					QEventLoop loopImage;
+					connect(this, &Image::finishedImage, &loopImage, &QEventLoop::quit);
+					loadImage();
+					loopImage.exec();
 				}
 
 				log(QString("Saving image in <a href=\"file:///%1\">%1</a>").arg(path));
