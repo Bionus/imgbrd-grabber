@@ -5,6 +5,7 @@
 #include "filename.h"
 #include "profile.h"
 #include "commands/commands.h"
+#include "downloader/file-downloader.h"
 #include "functions.h"
 
 #define MAX_LOAD_FILESIZE (1024*1024*50)
@@ -921,30 +922,38 @@ Image::SaveResult Image::save(QString path, bool force, bool basic, bool addMd5,
 					if (!loadIfNecessary || m_loadedImage)
 						return SaveResult::NotLoaded;
 
-					// Then we load the image
+					log(QString("Loading and saving image in <a href=\"file:///%1\">%1</a>").arg(path));
 					QEventLoop loopImage;
-					connect(this, &Image::finishedImage, &loopImage, &QEventLoop::quit);
+					FileDownloader fileDownloader(this);
+					connect(&fileDownloader, &FileDownloader::finished, &loopImage, &QEventLoop::quit);
 					loadImage();
-					loopImage.exec();
-				}
-
-				log(QString("Saving image in <a href=\"file:///%1\">%1</a>").arg(path));
-
-				if (f.open(QFile::WriteOnly))
-				{
-					if (f.write(m_data) < 0)
+					if (!fileDownloader.start(m_loadImage, path))
 					{
-						f.close();
-						f.remove();
-						log(QString("File saving error: %1)").arg(f.errorString()));
+						log("Unable to open file");
 						return SaveResult::Error;
 					}
-					f.close();
+					loopImage.exec();
 				}
 				else
 				{
-					log("Unable to open file");
-					return SaveResult::Error;
+					log(QString("Saving image in <a href=\"file:///%1\">%1</a>").arg(path));
+
+					if (f.open(QFile::WriteOnly))
+					{
+						if (f.write(m_data) < 0)
+						{
+							f.close();
+							f.remove();
+							log(QString("File saving error: %1)").arg(f.errorString()));
+							return SaveResult::Error;
+						}
+						f.close();
+					}
+					else
+					{
+						log("Unable to open file");
+						return SaveResult::Error;
+					}
 				}
 
 				if (addMd5)
