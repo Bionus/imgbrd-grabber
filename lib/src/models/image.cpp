@@ -276,7 +276,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	m_pools = QList<Pool>();
 }
 
-void Image::loadAndSave(QStringList paths, bool needTags, bool force)
+QMap<QString, Image::SaveResult> Image::loadAndSave(QStringList paths, bool needTags, bool force)
 {
 	// Load details first if necessary
 	if (needTags)
@@ -288,13 +288,13 @@ void Image::loadAndSave(QStringList paths, bool needTags, bool force)
 	}
 
 	// We finally save
-	save(paths, true, false, 1, force, true);
+	return save(paths, true, false, 1, force, true);
 }
-void Image::loadAndSave(QString filename, QString path)
+QMap<QString, Image::SaveResult> Image::loadAndSave(QString filename, QString path)
 {
 	QStringList paths = this->path(filename, path, 1, true, false, true, true, true);
 	bool needTags = Filename(filename).needExactTags(parentSite());
-	loadAndSave(paths, needTags);
+	return loadAndSave(paths, needTags);
 }
 
 
@@ -792,10 +792,11 @@ void Image::finishedImageS(bool inMemory)
 	QString errorString = m_loadImage->errorString();
 
 	m_loadedImage = (error == QNetworkReply::ContentNotFoundError || error == QNetworkReply::NoError);
+	m_loadImageError = error;
 	m_loadImage->deleteLater();
 	m_loadImage = nullptr;
 
-	emit finishedImage(error, errorString);
+	emit finishedImage(m_loadImageError, errorString);
 }
 
 void Image::downloadProgressImageBasic(qint64 v1, qint64 v2)
@@ -943,11 +944,10 @@ Image::SaveResult Image::save(QString path, bool force, bool basic, bool addMd5,
 					loopImage.exec();
 
 					// Handle network errors
-					NetworkError error = m_loadImage->error();
-					if (error != QNetworkReply::NoError)
+					if (m_loadImageError != QNetworkReply::NoError)
 					{
 						f.remove();
-						if (error == QNetworkReply::ContentNotFoundError)
+						if (m_loadImageError == QNetworkReply::ContentNotFoundError)
 						{ return SaveResult::NotFound; }
 						return SaveResult::NetworkError;
 					}

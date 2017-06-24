@@ -97,8 +97,8 @@ class Image : public QObject
 		QUrl		getDisplayableUrl() const;
 		bool		isVideo() const;
 		void		setTags(QList<Tag> tags);
-		void		loadAndSave(QStringList paths, bool needTags, bool force = false);
-		void		loadAndSave(QString filename, QString path);
+		QMap<QString, SaveResult> loadAndSave(QStringList paths, bool needTags, bool force = false);
+		QMap<QString, SaveResult> loadAndSave(QString filename, QString path);
 
 	public slots:
 		void loadPreview();
@@ -147,6 +147,7 @@ class Image : public QObject
 		QStringList		m_search;
 		Site			*m_parentSite;
 		QMap<QString, QString>   m_details;
+		QNetworkReply::NetworkError m_loadImageError;
 		bool			m_loadingPreview, m_loadingDetails, m_loadingImage, m_tryingSample, m_loadedDetails, m_loadedImage;
 };
 
