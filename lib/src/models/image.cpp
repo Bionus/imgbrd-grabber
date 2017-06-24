@@ -941,6 +941,16 @@ Image::SaveResult Image::save(QString path, bool force, bool basic, bool addMd5,
 						return SaveResult::Error;
 					}
 					loopImage.exec();
+
+					// Handle network errors
+					NetworkError error = m_loadImage->error();
+					if (error != QNetworkReply::NoError)
+					{
+						f.remove();
+						if (error == QNetworkReply::ContentNotFoundError)
+						{ return SaveResult::NotFound; }
+						return SaveResult::NetworkError;
+					}
 				}
 				else
 				{

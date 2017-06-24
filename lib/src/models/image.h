@@ -27,7 +27,9 @@ class Image : public QObject
 			Copied,
 			Saved,
 			Error,
-			NotLoaded
+			NotLoaded,
+			NotFound,
+			NetworkError
 		};
 		Image();
 		Image(Site *site, QMap<QString,QString> details, Profile *profile, Page *parent = NULL);
