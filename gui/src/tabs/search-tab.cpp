@@ -59,6 +59,9 @@ void searchTab::init()
 
 	if (infinite == "scroll")
 		connect(ui_scrollAreaResults, &VerticalScrollArea::endOfScrollReached, this, &searchTab::endlessLoad);
+
+	if (infinite != "disabled" && ui_checkMergeResults != nullptr)
+		connect(ui_checkMergeResults, &QCheckBox::toggled, this, &searchTab::setMergeResultsMode);
 }
 
 searchTab::~searchTab()
@@ -297,6 +300,31 @@ TextEdit *searchTab::createAutocomplete()
 	return ret;
 }
 
+void searchTab::setMergeResultsMode(bool merged)
+{
+	// Restore endless loading mode
+	if (merged == m_pageMergedMode)
+	{
+		setEndlessLoadingMode(m_endlessLoadingEnabledPast);
+	}
+
+	// Disable endless loading
+	else
+	{
+		m_endlessLoadingEnabledPast = m_endlessLoadingEnabled;
+		setEndlessLoadingMode(false);
+	}
+}
+
+void searchTab::setEndlessLoadingMode(bool enabled)
+{
+	// Toggle endless loading button
+	if (ui_buttonEndlessLoad != nullptr && m_settings->value("infiniteScroll", "disabled") == "button")
+		ui_buttonEndlessLoad->setVisible(enabled);
+
+	m_endlessLoadingEnabled = enabled;
+}
+
 void searchTab::finishedLoading(Page* page)
 {
 	if (m_stop)
@@ -326,8 +354,7 @@ void searchTab::finishedLoading(Page* page)
 	ui_buttonNextPage->setEnabled(maxpage > ui_spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1 || (page->imagesCount() == 0 && page->images().count() > 0));
 	ui_buttonLastPage->setEnabled(maxpage > ui_spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1);
 
-	if (!merged)
-		addResultsPage(page, imgs);
+	addResultsPage(page, imgs, merged);
 
 	if (!m_settings->value("useregexfortags", true).toBool())
 		setTagsFromPages(m_pages);
@@ -373,12 +400,21 @@ void searchTab::postLoading(Page *page, QList<QSharedPointer<Image>> imgs)
 
 	loadImageThumbnails(page, imgs);
 
-	// Re-enable endless loading
-	if (finished && imgs.count() > 0)
+	// Re-enable endless loading if all sources have reached the last page
+	if (finished)
 	{
-		if (ui_buttonEndlessLoad != nullptr && m_settings->value("infiniteScroll", "disabled") == "button")
-			ui_buttonEndlessLoad->show();
-		m_endlessLoadingEnabled = true;
+		bool allFinished = true;
+		for (auto ps : m_pages)
+		{
+			int pagesCount = ps.first()->pagesCount();
+			int imagesPerPage = ps.first()->imagesPerPage();
+			if (ps.last()->page() < pagesCount && ps.last()->pageImageCount() >= imagesPerPage)
+				allFinished = false;
+		}
+		if (!allFinished)
+		{
+			setEndlessLoadingMode(true);
+		}
 	}
 
 	ui_buttonGetAll->setDisabled(m_images.empty());
@@ -552,8 +588,11 @@ bool searchTab::containsMergedMd5(int page, QString md5)
 	return false;
 }
 
-void searchTab::addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage)
+void searchTab::addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, bool merged, QString noResultsMessage)
 {
+	if (merged)
+		return;
+
 	int pos = m_pages.keys().indexOf(page->website());
 	if (pos < 0)
 		return;
@@ -620,8 +659,25 @@ void searchTab::setMergedLabelText(QLabel *txt, const QList<QSharedPointer<Image
 }
 void searchTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage)
 {
+	int pageCount = page->pagesCount();
+	int imageCount = page->imagesCount();
+
+	int firstPage = imgs.count() > 0 ? page->page() : 0;
+	int lastPage = imgs.count() > 0 ? page->page() : 0;
+	int totalCount = 0;
+	for (Page *p : m_pages[page->website()])
+	{
+		if (p->images().count() == 0)
+			continue;
+		if (p->page() < firstPage || firstPage == 0)
+			firstPage = p->page();
+		if (p->page() > lastPage)
+			lastPage = p->page();
+		totalCount += p->images().count();
+	}
+
 	// No results message
-	if (imgs.count() == 0)
+	if (totalCount == 0)
 	{
 		QString meant;
 		QStringList reasons = reasonsToFail(page, m_completion, &meant);
@@ -635,21 +691,8 @@ void searchTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPoi
 	}
 	else
 	{
-		int pageCount = page->pagesCount();
-		int imageCount = page->imagesCount();
-
-		int firstPage = page->page();
-		int lastPage = page->page();
-		for (Page *p : m_pages[page->website()])
-		{
-			if (p->page() < firstPage)
-				firstPage = p->page();
-			if (p->page() > lastPage)
-				lastPage = p->page();
-		}
-
 		QString pageLabel = firstPage != lastPage ? QString("%1-%2").arg(firstPage).arg(lastPage) : QString::number(lastPage);
-		txt->setText("<a href=\""+page->url().toString().toHtmlEscaped()+"\">"+page->site()->name()+"</a> - "+tr("Page %1 of %2 (%3 of %4)").arg(pageLabel).arg(pageCount > 0 ? QString::number(pageCount) : "?").arg(imgs.count()).arg(imageCount > 0 ? QString::number(imageCount) : "?"));
+		txt->setText("<a href=\""+page->url().toString().toHtmlEscaped()+"\">"+page->site()->name()+"</a> - "+tr("Page %1 of %2 (%3 of %4)").arg(pageLabel).arg(pageCount > 0 ? QString::number(pageCount) : "?").arg(totalCount).arg(imageCount > 0 ? QString::number(imageCount) : "?"));
 	}
 
 	/*if (page->search().join(" ") != m_search->toPlainText() && m_settings->value("showtagwarning", true).toBool())
@@ -741,7 +784,7 @@ void searchTab::thumbnailContextMenu(QSharedPointer<Image> img)
 	connect(mapperSave, SIGNAL(mapped(QObject*)), this, SLOT(contextSaveImage(QObject*)));
 	QAction *actionSave;
 	if (!getImageAlreadyExists(img.data(), m_profile).isEmpty())
-	{ actionSave = new QAction(QIcon(":/images/icons/remove.png"), tr("Delete"), menu); }
+	{ actionSave = new QAction(QIcon(":/images/status/error.png"), tr("Delete"), menu); }
 	else
 	{ actionSave = new QAction(QIcon(":/images/icons/save.png"), tr("Save"), menu); }
 	menu->insertAction(first, actionSave);
@@ -1121,6 +1164,7 @@ void searchTab::loadTags(QStringList tags)
 	ui_buttonPreviousPage->setEnabled(ui_spinPage->value() > 1);
 
 	bool merged = ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked();
+	m_pageMergedMode = merged;
 	if (merged)
 		m_layouts.insert(nullptr, createImagesLayout(m_settings));
 
@@ -1143,11 +1187,7 @@ void searchTab::loadPage()
 	bool merged = ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked();
 	int perpage = ui_spinImagesPerPage->value();
 	QStringList tags = m_lastTags.split(' ');
-
-	// Disable endless loading
-	if (ui_buttonEndlessLoad != nullptr && ui_buttonEndlessLoad->isVisible())
-		ui_buttonEndlessLoad->hide();
-	m_endlessLoadingEnabled = false;
+	setEndlessLoadingMode(false);
 
 	for (Site *site : loadSites())
 	{

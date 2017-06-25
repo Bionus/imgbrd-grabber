@@ -144,6 +144,7 @@ void favoritesTab::updateFavorites()
 			caption->setTextFormat(Qt::RichText);
 			caption->setAlignment(Qt::AlignCenter);
 			caption->setToolTip(xt);
+			caption->setFixedWidth(FAVORITES_THUMB_SIZE);
 		if (!caption->text().isEmpty())
 		{
 			connect(caption, SIGNAL(clicked(QString)), this, SLOT(loadFavorite(QString)));
@@ -172,11 +173,11 @@ void favoritesTab::write(QJsonObject &json) const
 }
 
 
-void favoritesTab::addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage)
+void favoritesTab::addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, bool merged, QString noResultsMessage)
 {
 	Q_UNUSED(noResultsMessage);
-	searchTab::addResultsPage(page, imgs, tr("No result since the %1").arg(m_loadFavorite.toString(tr("MM/dd/yyyy 'at' hh:mm"))));
-	ui->splitter->setSizes(QList<int>() << (imgs.count() >= m_settings->value("hidefavorites", 20).toInt() ? 0 : 1) << 1);
+	searchTab::addResultsPage(page, imgs, merged, tr("No result since the %1").arg(m_loadFavorite.toString(tr("MM/dd/yyyy 'at' hh:mm"))));
+	ui->splitter->setSizes(QList<int>() << (m_images.count() >= m_settings->value("hidefavorites", 20).toInt() ? 0 : 1) << 1);
 }
 
 void favoritesTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage)

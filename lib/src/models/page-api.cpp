@@ -197,6 +197,7 @@ void PageApi::load(bool rateLimit)
 	// Reading reply and resetting vars
 	m_images.clear();
 	m_tags.clear();
+	m_pageImageCount = 0;
 	/*m_imagesCount = -1;
 	m_pagesCount = -1;*/
 
@@ -287,13 +288,18 @@ void PageApi::parseImage(QMap<QString,QString> d, int position, QList<Tag> tags)
 	if (d["sample_url"].isEmpty())
 	{ d["sample_url"] = d["preview_url"]; }
 
-	// Generate image
-	QSharedPointer<Image> img(new Image(m_site, d, m_profile, m_parentPage));
-	QStringList errors = img->filter(m_postFiltering);
+	QStringList errors;
 
 	// If the file path is wrong (ends with "/.jpg")
 	if (errors.isEmpty() && d["file_url"].endsWith("/." + d["ext"]))
 	{ errors.append("file url"); }
+
+	if (errors.isEmpty())
+	{ m_pageImageCount++; }
+
+	// Generate image
+	QSharedPointer<Image> img(new Image(m_site, d, m_profile, m_parentPage));
+	errors.append(img->filter(m_postFiltering));
 
 	// Add if everything is ok
 	if (errors.isEmpty())
@@ -797,6 +803,7 @@ void PageApi::parseNavigation(const QString &source)
 void PageApi::clear()
 {
 	m_images.clear();
+	m_pageImageCount = 0;
 }
 
 QList<QSharedPointer<Image>>	PageApi::images()		{ return m_images;		}
@@ -813,6 +820,8 @@ int PageApi::imagesPerPage()
 { return m_imagesPerPage;	}
 int PageApi::page()
 { return m_page;			}
+int PageApi::pageImageCount()
+{ return m_pageImageCount;	}
 int PageApi::highLimit()
 {
 	if (m_api->contains("Urls/Limit"))

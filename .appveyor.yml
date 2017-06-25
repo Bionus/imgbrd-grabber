@@ -1,0 +1,65 @@
+version: '{build}'
+
+environment:
+  APPVEYOR: 1
+  DEPLOY: 0
+
+  matrix:
+    # MSVC x86
+    - PLATFORM: amd64_x86
+      QTDIR: C:\Qt\5.7\msvc2015
+      MAKE: nmake
+      MAKEFILES: NMake Makefiles
+      DEPLOY: 1
+
+    # MSVC x64
+    - PLATFORM: amd64
+      QTDIR: C:\Qt\5.7\msvc2015_64
+      MAKE: nmake
+      MAKEFILES: NMake Makefiles
+
+    # MinGW
+    - PLATFORM: mingw
+      QTDIR: C:\Qt\5.7\mingw53_32
+      MAKE: mingw32-make
+      MAKEFILES: MinGW Makefiles
+
+init:
+  - git config --global core.autocrlf input
+  - if %PLATFORM%==mingw set PATH=%PATH:C:\Program Files\Git\usr\bin;=%
+  - if %platform%==mingw set PATH=C:\Qt\Tools\mingw492_32\bin;%PATH%
+  - set PATH=%QTDIR%\bin;%PATH%
+  - if not %PLATFORM%==mingw call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" %PLATFORM%
+
+build_script:
+  - mkdir build
+  - cd build
+  - cmake .. -G "%MAKEFILES%" -DCMAKE_BUILD_TYPE=Release
+  - if not %platform%==mingw (nmake) else (mingw32-make)
+  - cd ..
+  - cp build\gui\gui.exe release\Grabber.exe
+
+test_script:
+  - build\tests\tests.exe
+
+artifacts:
+  - path: release\Grabber.exe
+
+deploy:
+  - provider: GitHub
+    tag: nightly
+    release: Nightly
+    draft: false
+    prerelease: true
+    force_update: true
+    artifact: release\Grabber.exe
+    description: |
+      Nightly automated builds from the develop branch.
+      Automatically uploaded by AppVeyor, **use at your own risk**!
+
+      *Note: you need to first install Grabber normally before using nightly releases.*
+    auth_token:
+      secure: mUYQ72KBJUaYr5Bhy2HkBkEY13Q7k27Q7IRmOGXfTOq7YnXUS9PikETcZvzCfiVu
+    on:
+      branch: develop
+      DEPLOY: 1

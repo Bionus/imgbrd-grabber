@@ -5,7 +5,10 @@
 #include "filename.h"
 #include "profile.h"
 #include "commands/commands.h"
+#include "downloader/file-downloader.h"
 #include "functions.h"
+
+#define MAX_LOAD_FILESIZE (1024*1024*200)
 
 
 QString removeCacheUrl(QString url)
@@ -202,7 +205,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	// Get file url and try to improve it to save bandwidth
 	m_url = m_fileUrl.toString();
 	QString ext = getExtension(m_url);
-	if (m_details.contains("ext"))
+	if (m_details.contains("ext") && !m_details["ext"].isEmpty())
 	{
 		QString realExt = m_details["ext"];
 		if (ext != realExt)
@@ -273,7 +276,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	m_pools = QList<Pool>();
 }
 
-void Image::loadAndSave(QStringList paths, bool needTags, bool force)
+QMap<QString, Image::SaveResult> Image::loadAndSave(QStringList paths, bool needTags, bool force)
 {
 	// Load details first if necessary
 	if (needTags)
@@ -284,24 +287,14 @@ void Image::loadAndSave(QStringList paths, bool needTags, bool force)
 		loopDetails.exec();
 	}
 
-	// Then we load the image
-	if (!m_loadedImage)
-	{
-		QEventLoop loopImage;
-		connect(this, &Image::finishedImage, &loopImage, &QEventLoop::quit);
-		if (!m_loadingImage)
-		{ loadImage(); }
-		loopImage.exec();
-	}
-
 	// We finally save
-	save(paths, true, false, 1, force);
+	return save(paths, true, false, 1, force, true);
 }
-void Image::loadAndSave(QString filename, QString path)
+QMap<QString, Image::SaveResult> Image::loadAndSave(QString filename, QString path)
 {
 	QStringList paths = this->path(filename, path, 1, true, false, true, true, true);
 	bool needTags = Filename(filename).needExactTags(parentSite());
-	loadAndSave(paths, needTags);
+	return loadAndSave(paths, needTags);
 }
 
 
@@ -686,7 +679,7 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 	return filename.path(*this, m_profile, pth, counter, complex, maxlength, shouldFixFilename, getFull);
 }
 
-void Image::loadImage()
+void Image::loadImage(bool inMemory)
 {
 	if (m_loadingImage)
 		return;
@@ -697,18 +690,48 @@ void Image::loadImage()
 		return;
 	}
 
+	if (m_fileSize > MAX_LOAD_FILESIZE && inMemory)
+	{
+		emit finishedImage((QNetworkReply::NetworkError)500, "");
+		return;
+	}
+
 	if (m_loadImage != nullptr)
 		m_loadImage->deleteLater();
+
+	// Setup extension rotator
+	bool animated = hasTag("gif") || hasTag("animated_gif") || hasTag("mp4") || hasTag("animated_png") || hasTag("webm") || hasTag("animated");
+	QStringList extensions = animated
+		? QStringList() << "webm" << "mp4" << "gif" << "jpg" << "png" << "jpeg" << "swf"
+		: QStringList() << "jpg" << "png" << "gif" << "jpeg" << "webm" << "swf" << "mp4";
+	m_extensionRotator = new ExtensionRotator(getExtension(m_url), extensions);
 
 	m_loadImage = m_parentSite->get(m_parentSite->fixUrl(m_url), m_parent, "image", this);
 	m_loadImage->setParent(this);
 	m_loadingImage = true;
 	m_data.clear();
 
-	connect(m_loadImage, &QNetworkReply::downloadProgress, this, &Image::downloadProgressImageS);
-	connect(m_loadImage, &QNetworkReply::finished, this, &Image::finishedImageS);
+	if (inMemory)
+	{
+		connect(m_loadImage, &QNetworkReply::downloadProgress, this, &Image::downloadProgressImageInMemory);
+		connect(m_loadImage, &QNetworkReply::finished, this, &Image::finishedImageInMemory);
+	}
+	else
+	{
+		connect(m_loadImage, &QNetworkReply::downloadProgress, this, &Image::downloadProgressImageBasic);
+		connect(m_loadImage, &QNetworkReply::finished, this, &Image::finishedImageBasic);
+	}
 }
-void Image::finishedImageS()
+
+void Image::finishedImageBasic()
+{
+	finishedImageS(false);
+}
+void Image::finishedImageInMemory()
+{
+	finishedImageS(true);
+}
+void Image::finishedImageS(bool inMemory)
 {
 	m_loadingImage = false;
 
@@ -717,6 +740,8 @@ void Image::finishedImageS()
 	{
 		m_loadImage->deleteLater();
 		m_loadImage = nullptr;
+		if (m_fileSize > MAX_LOAD_FILESIZE)
+		{ emit finishedImage((QNetworkReply::NetworkError)500, ""); }
 		return;
 	}
 
@@ -734,7 +759,7 @@ void Image::finishedImageS()
 	{
 		bool sampleFallback = m_settings->value("Save/samplefallback", true).toBool();
 		QString ext = getExtension(m_url);
-		QString newext = getNextExtension(ext);
+		QString newext = m_extensionRotator->next();
 
 		bool shouldFallback = sampleFallback && !m_sampleUrl.isEmpty();
 		bool isLast = newext.isEmpty() || (shouldFallback && m_tryingSample);
@@ -762,7 +787,7 @@ void Image::finishedImageS()
 			log("Image not found.");
 		}
 	}
-	else
+	else if (inMemory)
 	{
 		m_data.append(m_loadImage->readAll());
 
@@ -774,17 +799,40 @@ void Image::finishedImageS()
 	QString errorString = m_loadImage->errorString();
 
 	m_loadedImage = (error == QNetworkReply::ContentNotFoundError || error == QNetworkReply::NoError);
+	m_loadImageError = error;
 	m_loadImage->deleteLater();
 	m_loadImage = nullptr;
 
-	emit finishedImage(error, errorString);
+	emit finishedImage(m_loadImageError, errorString);
 }
-void Image::downloadProgressImageS(qint64 v1, qint64 v2)
+
+void Image::downloadProgressImageBasic(qint64 v1, qint64 v2)
 {
+	downloadProgressImageS(v1, v2, false);
+}
+void Image::downloadProgressImageInMemory(qint64 v1, qint64 v2)
+{
+	downloadProgressImageS(v1, v2, true);
+}
+void Image::downloadProgressImageS(qint64 v1, qint64 v2, bool inMemory)
+{
+	// Set filesize if not set
+	if (m_fileSize == 0)
+		m_fileSize = v2;
+
 	if (m_loadImage == nullptr || v2 <= 0)
 		return;
 
-	m_data.append(m_loadImage->readAll());
+	if (inMemory)
+	{
+		if (m_fileSize > MAX_LOAD_FILESIZE)
+		{
+			m_loadImage->abort();
+			return;
+		}
+
+		m_data.append(m_loadImage->readAll());
+	}
 
 	emit downloadProgressImage(v1, v2);
 }
@@ -853,7 +901,7 @@ QStringList Image::stylishedTags(Profile *profile) const
 	return t;
 }
 
-Image::SaveResult Image::save(QString path, bool force, bool basic, bool addMd5, bool startCommands, int count)
+Image::SaveResult Image::save(QString path, bool force, bool basic, bool addMd5, bool startCommands, int count, bool loadIfNecessary)
 {
 	SaveResult res = SaveResult::Saved;
 
@@ -878,33 +926,59 @@ Image::SaveResult Image::save(QString path, bool force, bool basic, bool addMd5,
 
 		if (md5Duplicate.isEmpty() || whatToDo == "save" || force)
 		{
-			if (!m_source.isEmpty() && QFile::exists(m_source))
+			if (!m_savePath.isEmpty() && QFile::exists(m_savePath))
 			{
-				log(QString("Saving image in <a href=\"file:///%1\">%1</a> (from <a href=\"file:///%2\">%2</a>)").arg(path).arg(m_source));
-				QFile::copy(m_source, path);
+				log(QString("Saving image in <a href=\"file:///%1\">%1</a> (from <a href=\"file:///%2\">%2</a>)").arg(path).arg(m_savePath));
+				QFile::copy(m_savePath, path);
 			}
 			else
 			{
 				if (m_data.isEmpty())
-					return SaveResult::NotLoaded;
-
-				log(QString("Saving image in <a href=\"file:///%1\">%1</a>").arg(path));
-
-				if (f.open(QFile::WriteOnly))
 				{
-					if (f.write(m_data) < 0)
+					if (!loadIfNecessary || m_loadedImage)
+						return SaveResult::NotLoaded;
+
+					log(QString("Loading and saving image in <a href=\"file:///%1\">%1</a>").arg(path));
+					QEventLoop loopImage;
+					FileDownloader fileDownloader(this);
+					connect(&fileDownloader, &FileDownloader::finished, &loopImage, &QEventLoop::quit);
+					loadImage(false);
+					if (!fileDownloader.start(m_loadImage, path))
 					{
-						f.close();
-						f.remove();
-						log(QString("File saving error: %1)").arg(f.errorString()));
+						log("Unable to open file");
 						return SaveResult::Error;
 					}
-					f.close();
+					loopImage.exec();
+
+					// Handle network errors
+					if (m_loadImageError != QNetworkReply::NoError)
+					{
+						f.remove();
+						if (m_loadImageError == QNetworkReply::ContentNotFoundError)
+						{ return SaveResult::NotFound; }
+						return SaveResult::NetworkError;
+					}
 				}
 				else
 				{
-					log("Unable to open file");
-					return SaveResult::Error;
+					log(QString("Saving image in <a href=\"file:///%1\">%1</a>").arg(path));
+
+					if (f.open(QFile::WriteOnly))
+					{
+						if (f.write(m_data) < 0)
+						{
+							f.close();
+							f.remove();
+							log(QString("File saving error: %1)").arg(f.errorString()));
+							return SaveResult::Error;
+						}
+						f.close();
+					}
+					else
+					{
+						log("Unable to open file");
+						return SaveResult::Error;
+					}
 				}
 
 				if (addMd5)
@@ -984,23 +1058,25 @@ Image::SaveResult Image::save(QString path, bool force, bool basic, bool addMd5,
 			{ commands.tag(*this, tag, true); }
 		if (startCommands)
 		{ commands.after(); }
+
+		m_savePath = path;
 	}
 	else
 	{ res = SaveResult::AlreadyExists; }
 
 	return res;
 }
-QMap<QString, Image::SaveResult> Image::save(QStringList paths, bool addMd5, bool startCommands, int count, bool force)
+QMap<QString, Image::SaveResult> Image::save(QStringList paths, bool addMd5, bool startCommands, int count, bool force, bool loadIfNecessary)
 {
 	QMap<QString, Image::SaveResult> res;
 	for (QString path : paths)
-		res.insert(path, save(path, force, false, addMd5, startCommands, count));
+		res.insert(path, save(path, force, false, addMd5, startCommands, count, loadIfNecessary));
 	return res;
 }
-QMap<QString, Image::SaveResult> Image::save(QString filename, QString path, bool addMd5, bool startCommands, int count)
+QMap<QString, Image::SaveResult> Image::save(QString filename, QString path, bool addMd5, bool startCommands, int count, bool loadIfNecessary)
 {
 	QStringList paths = this->path(filename, path, count, true, false, true, true, true);
-	return save(paths, addMd5, startCommands, count);
+	return save(paths, addMd5, startCommands, count, false, loadIfNecessary);
 }
 
 QList<Tag> Image::filteredTags(QStringList remove) const
@@ -1199,39 +1275,6 @@ void Image::setFileExtension(QString ext)
 {
 	m_url = setExtension(m_url, ext);
 	m_fileUrl = setExtension(m_fileUrl.toString(), ext);
-}
-
-QString Image::getNextExtension(QString ext)
-{
-	bool animated = hasTag("gif") || hasTag("animated_gif") || hasTag("mp4") || hasTag("animated_png") || hasTag("webm") || hasTag("animated");
-	bool isLast = animated ? ext == "swf" : ext == "mp4";
-	if (isLast)
-		return QString();
-
-	QMap<QString,QString> nextext;
-	if (animated)
-	{
-		nextext["webm"] = "mp4";
-		nextext["mp4"] = "gif";
-		nextext["gif"] = "jpg";
-		nextext["jpg"] = "png";
-		nextext["png"] = "jpeg";
-		nextext["jpeg"] = "swf";
-	}
-	else
-	{
-		nextext["jpg"] = "png";
-		nextext["png"] = "gif";
-		nextext["gif"] = "jpeg";
-		nextext["jpeg"] = "webm";
-		nextext["webm"] = "swf";
-		nextext["swf"] = "mp4";
-	}
-
-	if (nextext.contains(ext))
-		return nextext[ext];
-
-	return (animated ? "webm" : "jpg");
 }
 
 bool Image::isVideo() const

@@ -8,6 +8,7 @@
 #include <QSettings>
 #include "tag.h"
 #include "pool.h"
+#include "downloader/extension-rotator.h"
 
 
 class Page;
@@ -27,7 +28,9 @@ class Image : public QObject
 			Copied,
 			Saved,
 			Error,
-			NotLoaded
+			NotLoaded,
+			NotFound,
+			NetworkError
 		};
 		Image();
 		Image(Site *site, QMap<QString,QString> details, Profile *profile, Page *parent = NULL);
@@ -38,9 +41,9 @@ class Image : public QObject
 		QStringList	path(QString fn = "", QString pth = "", int counter = 0, bool complex = true, bool simple = false, bool maxlength = true, bool shouldFixFilename = true, bool getFull = false) const;
 		QStringList blacklisted(QStringList, bool invert = true) const;
 		QStringList	stylishedTags(Profile *profile) const;
-		SaveResult  save(QString path, bool force = false, bool basic = false, bool addMd5 = true, bool startCommands = false, int count = 1);
-		QMap<QString, Image::SaveResult> save(QStringList paths, bool addMd5 = true, bool startCommands = false, int count = 1, bool force = false);
-		QMap<QString, Image::SaveResult> save(QString filename, QString path, bool addMd5 = true, bool startCommands = false, int count = 1);
+		SaveResult  save(QString path, bool force = false, bool basic = false, bool addMd5 = true, bool startCommands = false, int count = 1, bool loadIfNecessary = false);
+		QMap<QString, Image::SaveResult> save(QStringList paths, bool addMd5 = true, bool startCommands = false, int count = 1, bool force = false, bool loadIfNecessary = false);
+		QMap<QString, Image::SaveResult> save(QString filename, QString path, bool addMd5 = true, bool startCommands = false, int count = 1, bool loadIfNecessary = false);
 		QString		url() const;
 		QString		md5() const;
 		QString		author() const;
@@ -91,17 +94,16 @@ class Image : public QObject
 		void		setSavePath(QString);
 		void		setRating(QString rating);
 		void		setFileExtension(QString ext);
-		QString		getNextExtension(QString current);
 		QUrl		getDisplayableUrl() const;
 		bool		isVideo() const;
 		void		setTags(QList<Tag> tags);
-		void		loadAndSave(QStringList paths, bool needTags, bool force = false);
-		void		loadAndSave(QString filename, QString path);
+		QMap<QString, SaveResult> loadAndSave(QStringList paths, bool needTags, bool force = false);
+		QMap<QString, SaveResult> loadAndSave(QString filename, QString path);
 
 	public slots:
 		void loadPreview();
 		void loadDetails(bool rateLimit = false);
-		void loadImage();
+		void loadImage(bool inMemory = true);
 		void abortPreview();
 		void abortTags();
 		void abortImage();
@@ -110,8 +112,12 @@ class Image : public QObject
 		void unload();
 
 	private slots:
-		void finishedImageS();
-		void downloadProgressImageS(qint64, qint64);
+		void finishedImageBasic();
+		void finishedImageInMemory();
+		void finishedImageS(bool inMemory);
+		void downloadProgressImageBasic(qint64, qint64);
+		void downloadProgressImageInMemory(qint64, qint64);
+		void downloadProgressImageS(qint64, qint64, bool inMemory);
 
 	signals:
 		void finishedLoadingPreview();
@@ -141,6 +147,8 @@ class Image : public QObject
 		QStringList		m_search;
 		Site			*m_parentSite;
 		QMap<QString, QString>   m_details;
+		QNetworkReply::NetworkError m_loadImageError;
+		ExtensionRotator *m_extensionRotator;
 		bool			m_loadingPreview, m_loadingDetails, m_loadingImage, m_tryingSample, m_loadedDetails, m_loadedImage;
 };
 

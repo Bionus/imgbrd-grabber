@@ -38,6 +38,7 @@ class Page : public QObject
 		int			imagesPerPage();
 		int			highLimit();
 		int			page();
+		int			pageImageCount();
 		int			minId();
 		int			maxId();
 		QUrl		nextPage();

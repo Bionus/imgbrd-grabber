@@ -20,7 +20,9 @@ class ProfileTest : public TestSuite
 		void testLoadFavorites();
 		void testAddFavorite();
 		void testRemoveFavorite();
+#ifndef Q_OS_WIN
 		void testRemoveFavoriteThumb();
+#endif
 
 		// MD5s
 		void testLoadMd5s();

@@ -7,7 +7,7 @@ if(CMAKE_BUILD_TYPE STREQUAL "Release")
 endif()
 
 # Travis settings
-if(DEFINED ENV{TRAVIS})
+if(DEFINED ENV{TRAVIS} OR DEFINED ENV{APPVEYOR})
 	set(USE_BREAKPAD 0)
 	set(USE_QSCINTILLA 0)
 endif()

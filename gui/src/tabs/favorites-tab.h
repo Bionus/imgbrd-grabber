@@ -51,7 +51,7 @@ class favoritesTab : public searchTab
 		// Others
 		void closeEvent(QCloseEvent*) override;
 		void focusSearch() override;
-		void addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage = nullptr) override;
+		void addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, bool merged, QString noResultsMessage = nullptr) override;
 		void setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage = nullptr) override;
 
 	private:

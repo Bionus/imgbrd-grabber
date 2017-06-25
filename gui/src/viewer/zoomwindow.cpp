@@ -23,7 +23,7 @@
 
 
 zoomWindow::zoomWindow(QList<QSharedPointer<Image> > images, QSharedPointer<Image> image, Site *site, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
-	: QWidget(Q_NULLPTR, Qt::Window), m_parent(parent), m_profile(profile), m_favorites(profile->getFavorites()), m_viewItLater(profile->getKeptForLater()), m_ignore(profile->getIgnored()), m_settings(profile->getSettings()), ui(new Ui::zoomWindow), m_site(site), timeout(300), m_loaded(false), m_loadedImage(false), m_loadedDetails(false), m_displayImage(QPixmap()), m_displayMovie(nullptr), m_finished(false), m_size(0), m_sites(sites), m_source(), m_fullScreen(nullptr), m_images(images), m_isFullscreen(false), m_isSlideshowRunning(false), m_imagePath(""), m_labelImageScaled(false)
+	: QWidget(Q_NULLPTR, Qt::Window), m_parent(parent), m_profile(profile), m_favorites(profile->getFavorites()), m_viewItLater(profile->getKeptForLater()), m_ignore(profile->getIgnored()), m_settings(profile->getSettings()), ui(new Ui::zoomWindow), m_site(site), timeout(300), m_tooBig(false), m_loadedImage(false), m_loadedDetails(false), m_displayImage(QPixmap()), m_displayMovie(nullptr), m_finished(false), m_size(0), m_sites(sites), m_source(), m_fullScreen(nullptr), m_images(images), m_isFullscreen(false), m_isSlideshowRunning(false), m_imagePath(""), m_labelImageScaled(false)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	ui->setupUi(this);
@@ -233,7 +233,7 @@ void zoomWindow::copyImageFileToClipboard()
 	QString path = m_imagePath;
 	if (path.isEmpty() || !QFile::exists(path))
 	{
-		QMap<QString, Image::SaveResult> files = m_image->save(m_settings->value("Save/filename").toString(), m_profile->tempPath(), false);
+		QMap<QString, Image::SaveResult> files = m_image->save(m_settings->value("Save/filename").toString(), m_profile->tempPath(), false, false, 1, true);
 		path = files.firstKey();
 	}
 
@@ -275,7 +275,6 @@ void zoomWindow::openPoolId(Page *p)
 
 	m_image = p->images().at(0);
 	timeout = 300;
-	m_loaded = false;
 	m_loadedDetails = false;
 	m_loadedImage = false;
 	m_finished = false;
@@ -623,6 +622,12 @@ void zoomWindow::replyFinishedZoom(QNetworkReply::NetworkError err, QString erro
 		pendingUpdate();
 		draw();
 	}
+	else if (err == 500)
+	{
+		m_tooBig = true;
+		if (!m_image->isVideo())
+		{ error(this, tr("File is too big to be displayed.\r\n%1").arg(m_image->url())); }
+	}
 	else if (err == QNetworkReply::ContentNotFoundError)
 	{ log("Image not found."); }
 	else if (err != QNetworkReply::OperationCanceledError)
@@ -635,8 +640,8 @@ void zoomWindow::pendingUpdate()
 	if (m_mustSave == 0)
 		return;
 
-	// If the image is not even loaded, we cannot save it
-	if (!m_loadedImage)
+	// If the image is not even loaded, we cannot save it (unless it's a big file)
+	if (!m_loadedImage && !m_tooBig)
 		return;
 
 	bool fav = (m_mustSave == 3 || m_mustSave == 4);
@@ -645,8 +650,6 @@ void zoomWindow::pendingUpdate()
 	// If the image is loaded but we need their tags and we don't have them, we wait
 	if (!m_loadedDetails && fn.needExactTags(m_site))
 		return;
-
-	m_loaded = true;
 
 	switch (m_mustSave)
 	{
@@ -851,7 +854,7 @@ QStringList zoomWindow::saveImageNow(bool fav)
 	}
 
 	QStringList paths;
-	QMap<QString, Image::SaveResult> results = m_image->save(m_settings->value("Save/filename"+QString(fav ? "_favorites" : "")).toString(), pth);
+	QMap<QString, Image::SaveResult> results = m_image->save(m_settings->value("Save/filename"+QString(fav ? "_favorites" : "")).toString(), pth, true, false, 1, true);
 	auto it = results.begin();
 	while (it != results.end())
 	{
@@ -922,7 +925,7 @@ QString zoomWindow::saveImageAs()
 		path = QDir::toNativeSeparators(path);
 		m_settings->setValue("Zoom/lastDir", path.section(QDir::toNativeSeparators("/"), 0, -2));
 
-		m_image->save(path, true, true);
+		m_image->save(path, true, true, true, false, 1, true);
 		m_imagePath = path;
 	}
 
@@ -1169,14 +1172,28 @@ void zoomWindow::updateWindowTitle()
 	setWindowTitle(QString("%1 - %2 (%3/%4)").arg(title, m_image->parentSite()->name(), QString::number(m_images.indexOf(m_image) + 1), QString::number(m_images.count())));
 }
 
+int zoomWindow::firstNonBlacklisted(int direction)
+{
+	int index = m_images.indexOf(m_image);
+	int first = index;
+	index = (index + m_images.count() + direction) % m_images.count();
+
+	// Skip blacklisted images
+	QStringList blacklistedtags(m_settings->value("blacklistedtags").toString().split(" "));
+	while (!m_images[index]->blacklisted(blacklistedtags).isEmpty() && index != first)
+	{
+		index = (index + m_images.count() + direction) % m_images.count();
+	}
+
+	return index;
+}
+
 void zoomWindow::next()
 {
 	m_image->abortTags();
 	m_image->abortImage();
 
-	int index = m_images.indexOf(m_image);
-	index = (index + 1) % m_images.count();
-
+	int index = firstNonBlacklisted(+1);
 	load(m_images[index]);
 }
 
@@ -1185,9 +1202,7 @@ void zoomWindow::previous()
 	m_image->abortTags();
 	m_image->abortImage();
 
-	int index = m_images.indexOf(m_image);
-	index = (index + m_images.count() - 1) % m_images.count();
-
+	int index = firstNonBlacklisted(-1);
 	load(m_images[index]);
 }
 
@@ -1208,7 +1223,7 @@ void zoomWindow::openFile(bool now)
 	QString path = m_imagePath;
 	if (path.isEmpty() || !QFile::exists(path))
 	{
-		QMap<QString, Image::SaveResult> files = m_image->save(m_settings->value("Save/filename").toString(), m_profile->tempPath(), false);
+		QMap<QString, Image::SaveResult> files = m_image->save(m_settings->value("Save/filename").toString(), m_profile->tempPath(), false, false, 1, true);
 		path = files.firstKey();
 	}
 

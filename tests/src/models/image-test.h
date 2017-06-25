@@ -49,7 +49,6 @@ class ImageTest : public TestSuite
 		void testSaveDuplicate();
 		void testSaveLog();
 		void testSetUrl();
-		void testGetNextExtension();
 
 	private:
 		Profile *m_profile;
