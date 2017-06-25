@@ -2,6 +2,7 @@ version: '{build}'
 
 environment:
   APPVEYOR: 1
+  DEPLOY: 0
 
   matrix:
     # MSVC x86
@@ -9,6 +10,7 @@ environment:
       QTDIR: C:\Qt\5.7\msvc2015
       MAKE: nmake
       MAKEFILES: NMake Makefiles
+      DEPLOY: 1
 
     # MSVC x64
     - PLATFORM: amd64
@@ -45,9 +47,9 @@ artifacts:
 
 deploy:
   - provider: GitHub
-    tag: ""
+    tag: nightly
     release: Nightly
-    draft: true
+    draft: false
     prerelease: true
     force_update: true
     artifact: release\Grabber.exe
@@ -58,4 +60,4 @@ deploy:
       secure: mUYQ72KBJUaYr5Bhy2HkBkEY13Q7k27Q7IRmOGXfTOq7YnXUS9PikETcZvzCfiVu
     on:
       branch: develop
-      PLATFORM: amd64_x86
+      DEPLOY: 1
