@@ -55,10 +55,20 @@ int main(int argc, char *argv[])
 {
 	QApplication app(argc, argv);
 	app.setApplicationName("Grabber");
-	app.setApplicationDisplayName("Grabber");
 	app.setApplicationVersion(VERSION);
 	app.setOrganizationName("Bionus");
 	app.setOrganizationDomain("bionus.fr.cr");
+
+	// Set window title according to the current build
+	#ifdef NIGHTLY
+		QString commit(NIGHTLY_COMMIT);
+		if (!commit.isEmpty())
+			app.setApplicationDisplayName("Grabber Nightly - " + commit);
+		else
+			app.setApplicationDisplayName("Grabber Nightly");
+	#else
+		app.setApplicationDisplayName("Grabber");
+	#endif
 
 	QCommandLineParser parser;
 	parser.addHelpOption();
