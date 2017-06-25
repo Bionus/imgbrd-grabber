@@ -3,7 +3,7 @@
 #include <QMessageBox>
 #include <QProcess>
 #include "helpers.h"
-#ifndef Q_OS_WIN
+#if !defined Q_OS_WIN || defined NIGHTLY
 	#include <QDesktopServices>
 #endif
 
