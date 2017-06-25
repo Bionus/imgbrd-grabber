@@ -680,16 +680,18 @@ void searchTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPoi
 
 		int firstPage = page->page();
 		int lastPage = page->page();
+		int totalCount = 0;
 		for (Page *p : m_pages[page->website()])
 		{
 			if (p->page() < firstPage)
 				firstPage = p->page();
 			if (p->page() > lastPage)
 				lastPage = p->page();
+			totalCount += p->images().count();
 		}
 
 		QString pageLabel = firstPage != lastPage ? QString("%1-%2").arg(firstPage).arg(lastPage) : QString::number(lastPage);
-		txt->setText("<a href=\""+page->url().toString().toHtmlEscaped()+"\">"+page->site()->name()+"</a> - "+tr("Page %1 of %2 (%3 of %4)").arg(pageLabel).arg(pageCount > 0 ? QString::number(pageCount) : "?").arg(imgs.count()).arg(imageCount > 0 ? QString::number(imageCount) : "?"));
+		txt->setText("<a href=\""+page->url().toString().toHtmlEscaped()+"\">"+page->site()->name()+"</a> - "+tr("Page %1 of %2 (%3 of %4)").arg(pageLabel).arg(pageCount > 0 ? QString::number(pageCount) : "?").arg(totalCount).arg(imageCount > 0 ? QString::number(imageCount) : "?"));
 	}
 
 	/*if (page->search().join(" ") != m_search->toPlainText() && m_settings->value("showtagwarning", true).toBool())
