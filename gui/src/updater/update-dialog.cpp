@@ -49,8 +49,14 @@ void UpdateDialog::checkForUpdatesDone(QString newVersion, bool available, QStri
 		return;
 	}
 
-	ui->labelChangelog->setTextFormat(Qt::RichText);
-	ui->labelChangelog->setText(parseMarkdown(changelog));
+	bool hasChangelog = !changelog.isEmpty();
+	if (hasChangelog)
+	{
+		ui->labelChangelog->setTextFormat(Qt::RichText);
+		ui->labelChangelog->setText(parseMarkdown(changelog));
+	}
+	ui->checkShowChangelog->setVisible(hasChangelog);
+	ui->scrollArea->setVisible(hasChangelog);
 	ui->labelVersion->setText(tr("Version <b>%1</b>").arg(newVersion));
 
 	show();
