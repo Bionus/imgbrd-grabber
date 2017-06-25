@@ -65,6 +65,7 @@ QPoint FixedSizeGridLayout::getThumbPosition(int width, int relativePosition, in
 	return QPoint(column, row);
 }
 
+#include <QDebug>
 void FixedSizeGridLayout::redoLayout(int width)
 {
 	QList<QWidget*> children;
@@ -72,20 +73,29 @@ void FixedSizeGridLayout::redoLayout(int width)
 	while ((child = takeAt(0)) != 0)
 	{
 		QWidget *widget = child->widget();
-		widget->hide();
-
+		if (widget != nullptr)
+		{
+			widget->hide();
+			children.append(widget);
+		}
 		removeItem(child);
-		children.append(widget);
 	}
 
+	int imagesPerPage = m_imagesPerPage == 0 ? children.count() : m_imagesPerPage;
+	int imagesPerLine = getImagesPerLine(width, imagesPerPage);
 	for (int i = 0; i < children.count(); ++i)
 	{
 		QWidget *widget = children[i];
 		widget->show();
 
-		int imagesPerPage = m_imagesPerPage == 0 ? children.count() : m_imagesPerPage;
 		QPoint pos = getThumbPosition(width, i, imagesPerPage);
 		addWidget(widget, pos.y(), pos.x());
+	}
+
+	if (children.count() > 0)
+	{
+		for (int i = children.count(); i < imagesPerLine; ++i)
+		{ addItem(new QSpacerItem(m_fixedWidth, 1), 0, i); }
 	}
 }
 
@@ -102,4 +112,11 @@ void FixedSizeGridLayout::addFixedSizeWidget(QWidget *widget, int position, int 
 
 	QPoint pos = getThumbPosition(m_width, position, imagesPerPage);
 	addWidget(widget, pos.y(), pos.x());
+
+	int imagesPerLine = getImagesPerLine(m_width, imagesPerPage);
+	if (imagesPerPage < imagesPerLine)
+	{
+		for (int i = imagesPerPage; i < imagesPerLine; ++i)
+		{ addItem(new QSpacerItem(m_fixedWidth, 1), 0, i); }
+	}
 }
