@@ -22,12 +22,14 @@ class FixedSizeGridLayout : public QGridLayout
 		bool shouldRedoLayout(int width);
 		int getImagesPerLine(int width, int imagesPerPage) const;
 		QPoint getThumbPosition(int width, int relativePosition, int imagesPerPage) const;
+		void fillLayout(int count, int width, int imagesPerPage);
 
 	private:
 		int m_fixedWidth;
 		int m_width;
 		int m_oldImagesPerLine;
 		int m_imagesPerPage;
+		bool m_frozen;
 };
 
 #endif // FIXED_SIZE_GRID_LAYOUT_H
