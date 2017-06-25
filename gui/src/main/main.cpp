@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
 	#ifdef NIGHTLY
 		QString commit(NIGHTLY_COMMIT);
 		if (!commit.isEmpty())
-			app.setApplicationDisplayName("Grabber Nightly - " + commit);
+			app.setApplicationDisplayName("Grabber Nightly - " + commit.left(8));
 		else
 			app.setApplicationDisplayName("Grabber Nightly");
 	#else
