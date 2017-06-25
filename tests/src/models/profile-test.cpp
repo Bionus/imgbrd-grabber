@@ -83,6 +83,7 @@ void ProfileTest::testRemoveFavorite()
 	QCOMPARE(lines.count(), 1);
 	QCOMPARE(lines[0], Favorite("tag_2", 100, QDateTime(QDate(2016, 10, 1), QTime(12, 23, 17))).toString());
 }
+#ifndef Q_OS_WIN
 void ProfileTest::testRemoveFavoriteThumb()
 {
 	Favorite fav("tag_1", 20, QDateTime(QDate(2016, 9, 1), QTime(9, 23, 17)));
@@ -97,6 +98,7 @@ void ProfileTest::testRemoveFavoriteThumb()
 	m_profile->removeFavorite(fav);
 	QVERIFY(!thumb.exists());
 }
+#endif
 
 void ProfileTest::testLoadMd5s()
 {
