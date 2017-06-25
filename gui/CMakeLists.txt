@@ -13,7 +13,7 @@ if(DEFINED ENV{TRAVIS} OR DEFINED ENV{APPVEYOR})
 endif()
 
 # Nightly version settings
-if (DEFINED ENV{APPVEYOR} OR 1)
+if (DEFINED ENV{APPVEYOR})
 	add_definitions(-DNIGHTLY=1)
 	add_definitions(-DNIGHTLY_COMMIT="$ENV{APPVEYOR_REPO_COMMIT}")
 endif()

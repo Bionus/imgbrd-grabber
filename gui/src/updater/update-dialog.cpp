@@ -59,7 +59,7 @@ void UpdateDialog::checkForUpdatesDone(QString newVersion, bool available, QStri
 
 void UpdateDialog::accept()
 {
-	#ifdef Q_OS_WIN
+	#if defined Q_OS_WIN && !defined NIGHTLY
 		downloadUpdate();
 	#else
 		QDesktopServices::openUrl(m_updater.latestUrl());
