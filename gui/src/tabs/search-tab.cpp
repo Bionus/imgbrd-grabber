@@ -659,8 +659,25 @@ void searchTab::setMergedLabelText(QLabel *txt, const QList<QSharedPointer<Image
 }
 void searchTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage)
 {
+	int pageCount = page->pagesCount();
+	int imageCount = page->imagesCount();
+
+	int firstPage = imgs.count() > 0 ? page->page() : 0;
+	int lastPage = imgs.count() > 0 ? page->page() : 0;
+	int totalCount = 0;
+	for (Page *p : m_pages[page->website()])
+	{
+		if (p->images().count() == 0)
+			continue;
+		if (p->page() < firstPage || firstPage == 0)
+			firstPage = p->page();
+		if (p->page() > lastPage)
+			lastPage = p->page();
+		totalCount += p->images().count();
+	}
+
 	// No results message
-	if (imgs.count() == 0)
+	if (totalCount == 0)
 	{
 		QString meant;
 		QStringList reasons = reasonsToFail(page, m_completion, &meant);
@@ -674,21 +691,6 @@ void searchTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPoi
 	}
 	else
 	{
-		int pageCount = page->pagesCount();
-		int imageCount = page->imagesCount();
-
-		int firstPage = page->page();
-		int lastPage = page->page();
-		int totalCount = 0;
-		for (Page *p : m_pages[page->website()])
-		{
-			if (p->page() < firstPage)
-				firstPage = p->page();
-			if (p->page() > lastPage)
-				lastPage = p->page();
-			totalCount += p->images().count();
-		}
-
 		QString pageLabel = firstPage != lastPage ? QString("%1-%2").arg(firstPage).arg(lastPage) : QString::number(lastPage);
 		txt->setText("<a href=\""+page->url().toString().toHtmlEscaped()+"\">"+page->site()->name()+"</a> - "+tr("Page %1 of %2 (%3 of %4)").arg(pageLabel).arg(pageCount > 0 ? QString::number(pageCount) : "?").arg(totalCount).arg(imageCount > 0 ? QString::number(imageCount) : "?"));
 	}
