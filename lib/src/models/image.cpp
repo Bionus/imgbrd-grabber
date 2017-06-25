@@ -205,7 +205,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	// Get file url and try to improve it to save bandwidth
 	m_url = m_fileUrl.toString();
 	QString ext = getExtension(m_url);
-	if (m_details.contains("ext"))
+	if (m_details.contains("ext") && !m_details["ext"].isEmpty())
 	{
 		QString realExt = m_details["ext"];
 		if (ext != realExt)
