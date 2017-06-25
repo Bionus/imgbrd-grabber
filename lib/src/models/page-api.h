@@ -43,6 +43,7 @@ class PageApi : public QObject
 		int				imagesPerPage();
 		int				highLimit();
 		int				page();
+		int				pageImageCount();
 		int				minId();
 		int				maxId();
 		void			setUrl(QUrl url);
@@ -80,7 +81,7 @@ class PageApi : public QObject
 		QList<QSharedPointer<Image>>	m_images;
 		QList<Tag>		m_tags;
 		QNetworkReply	*m_reply, *m_replyTags;
-		int				m_imagesCount, m_pagesCount;
+		int				m_imagesCount, m_pagesCount, m_pageImageCount;
 		bool			m_imagesCountSafe, m_pagesCountSafe;
 };
 
