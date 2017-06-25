@@ -57,7 +57,7 @@ deploy:
       Nightly automated builds from the develop branch.
       Automatically uploaded by AppVeyor, **use at your own risk**!
 
-      *Note: you need to first install Grabber normally before using nightly releases.*
+      *Note: you need to first install Grabber normally before using nightly releases. Then, replace the existing `Grabber.exe` file in your installation folder by this one.*
     auth_token:
       secure: mUYQ72KBJUaYr5Bhy2HkBkEY13Q7k27Q7IRmOGXfTOq7YnXUS9PikETcZvzCfiVu
     on:
