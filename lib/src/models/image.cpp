@@ -699,6 +699,13 @@ void Image::loadImage(bool inMemory)
 	if (m_loadImage != nullptr)
 		m_loadImage->deleteLater();
 
+	// Setup extension rotator
+	bool animated = hasTag("gif") || hasTag("animated_gif") || hasTag("mp4") || hasTag("animated_png") || hasTag("webm") || hasTag("animated");
+	QStringList extensions = animated
+		? QStringList() << "webm" << "mp4" << "gif" << "jpg" << "png" << "jpeg" << "swf"
+		: QStringList() << "jpg" << "png" << "gif" << "jpeg" << "webm" << "swf" << "mp4";
+	m_extensionRotator = new ExtensionRotator(getExtension(m_url), extensions);
+
 	m_loadImage = m_parentSite->get(m_parentSite->fixUrl(m_url), m_parent, "image", this);
 	m_loadImage->setParent(this);
 	m_loadingImage = true;
@@ -752,7 +759,7 @@ void Image::finishedImageS(bool inMemory)
 	{
 		bool sampleFallback = m_settings->value("Save/samplefallback", true).toBool();
 		QString ext = getExtension(m_url);
-		QString newext = getNextExtension(ext);
+		QString newext = m_extensionRotator->next();
 
 		bool shouldFallback = sampleFallback && !m_sampleUrl.isEmpty();
 		bool isLast = newext.isEmpty() || (shouldFallback && m_tryingSample);
@@ -1268,39 +1275,6 @@ void Image::setFileExtension(QString ext)
 {
 	m_url = setExtension(m_url, ext);
 	m_fileUrl = setExtension(m_fileUrl.toString(), ext);
-}
-
-QString Image::getNextExtension(QString ext)
-{
-	bool animated = hasTag("gif") || hasTag("animated_gif") || hasTag("mp4") || hasTag("animated_png") || hasTag("webm") || hasTag("animated");
-	bool isLast = animated ? ext == "swf" : ext == "mp4";
-	if (isLast)
-		return QString();
-
-	QMap<QString,QString> nextext;
-	if (animated)
-	{
-		nextext["webm"] = "mp4";
-		nextext["mp4"] = "gif";
-		nextext["gif"] = "jpg";
-		nextext["jpg"] = "png";
-		nextext["png"] = "jpeg";
-		nextext["jpeg"] = "swf";
-	}
-	else
-	{
-		nextext["jpg"] = "png";
-		nextext["png"] = "gif";
-		nextext["gif"] = "jpeg";
-		nextext["jpeg"] = "webm";
-		nextext["webm"] = "swf";
-		nextext["swf"] = "mp4";
-	}
-
-	if (nextext.contains(ext))
-		return nextext[ext];
-
-	return (animated ? "webm" : "jpg");
 }
 
 bool Image::isVideo() const

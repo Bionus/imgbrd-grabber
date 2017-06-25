@@ -8,6 +8,7 @@
 #include <QSettings>
 #include "tag.h"
 #include "pool.h"
+#include "downloader/extension-rotator.h"
 
 
 class Page;
@@ -93,7 +94,6 @@ class Image : public QObject
 		void		setSavePath(QString);
 		void		setRating(QString rating);
 		void		setFileExtension(QString ext);
-		QString		getNextExtension(QString current);
 		QUrl		getDisplayableUrl() const;
 		bool		isVideo() const;
 		void		setTags(QList<Tag> tags);
@@ -148,6 +148,7 @@ class Image : public QObject
 		Site			*m_parentSite;
 		QMap<QString, QString>   m_details;
 		QNetworkReply::NetworkError m_loadImageError;
+		ExtensionRotator *m_extensionRotator;
 		bool			m_loadingPreview, m_loadingDetails, m_loadingImage, m_tryingSample, m_loadedDetails, m_loadedImage;
 };
 
