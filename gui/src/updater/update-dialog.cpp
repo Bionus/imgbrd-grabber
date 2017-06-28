@@ -8,8 +8,8 @@
 #endif
 
 
-UpdateDialog::UpdateDialog(QWidget *parent)
-	: QDialog(Q_NULLPTR), ui(new Ui::UpdateDialog), m_parent(parent)
+UpdateDialog::UpdateDialog(bool *shouldQuit, QWidget *parent)
+	: QDialog(Q_NULLPTR), ui(new Ui::UpdateDialog), m_shouldQuit(shouldQuit), m_parent(parent)
 {
 	ui->setupUi(this);
 
@@ -43,6 +43,10 @@ void UpdateDialog::checkForUpdates()
 
 void UpdateDialog::checkForUpdatesDone(QString newVersion, bool available, QString changelog)
 {
+	newVersion = "v6.0.0";
+	available = true;
+	changelog = "";
+
 	if (!available)
 	{
 		emit noUpdateAvailable();
@@ -93,18 +97,11 @@ void UpdateDialog::downloadFinished(QString path)
 {
 	ui->progressDownload->setValue(ui->progressDownload->maximum());
 
-	int reponse = QMessageBox::question(this, tr("Updater"), tr("To go on with the update, the program must be closed. Do you want to close now?"), QMessageBox::Yes | QMessageBox::No);
-	if (reponse == QMessageBox::Yes)
-	{
-		QProcess::startDetached(path);
+	QProcess::startDetached(path);
 
-		if (m_parent != Q_NULLPTR)
-		{ m_parent->close();}
+	if (m_parent != Q_NULLPTR)
+	{ m_parent->close(); }
 
-		qApp->exit();
-	}
-	else
-	{
-		close();
-	}
+	*m_shouldQuit = true;
+	qApp->exit();
 }

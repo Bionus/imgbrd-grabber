@@ -186,7 +186,8 @@ int main(int argc, char *argv[])
 			{
 				settings->setValue("last_check_for_updates", QDateTime::currentDateTime());
 
-				UpdateDialog *updateDialog = new UpdateDialog();
+				bool shouldQuit = false;
+				UpdateDialog *updateDialog = new UpdateDialog(&shouldQuit);
 				QEventLoop *el = new QEventLoop();
 				QObject::connect(updateDialog, &UpdateDialog::noUpdateAvailable, el, &QEventLoop::quit);
 				QObject::connect(updateDialog, &UpdateDialog::rejected, el, &QEventLoop::quit);
@@ -194,6 +195,9 @@ int main(int argc, char *argv[])
 				updateDialog->checkForUpdates();
 				el->exec();
 				el->deleteLater();
+
+				if (shouldQuit)
+					return 0;
 			}
 
 			QMap<QString, QString> params;
