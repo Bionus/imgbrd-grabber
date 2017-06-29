@@ -1,5 +1,7 @@
 #include "file-downloader.h"
 
+#define WRITE_BUFFER_SIZE (200 * 1024)
+
 
 FileDownloader::FileDownloader(QObject *parent)
 	: QObject(parent)
@@ -29,6 +31,9 @@ bool FileDownloader::start(QNetworkReply *reply, QStringList paths)
 
 void FileDownloader::replyReadyRead()
 {
+	if (m_reply->bytesAvailable() < WRITE_BUFFER_SIZE)
+		return;
+
 	m_file.write(m_reply->readAll());
 }
 
