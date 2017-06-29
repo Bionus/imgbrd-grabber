@@ -456,22 +456,14 @@ void searchTab::loadImageThumbnails(Page *page, const QList<QSharedPointer<Image
 	QStringList tags = page->search();
 	for (int i = 0; i < imgs.count(); i++)
 	{
-		QStringList detected;
 		QSharedPointer<Image> img = imgs.at(i);
 		QList<QChar> modifiers = QList<QChar>() << '~' << '-';
 		for (int r = 0; r < tags.size(); r++)
 			if (modifiers.contains(tags[r][0]))
 				tags[r] = tags[r].mid(1);
 
-		if (!m_settings->value("blacklistedtags").toString().isEmpty())
-		{ detected = img->blacklisted(m_settings->value("blacklistedtags").toString().toLower().split(" ")); }
-		if (!detected.isEmpty() && m_settings->value("hideblacklisted", false).toBool())
-		{ log(QString("Image #%1 ignored. Reason: %2.").arg(i).arg("\""+detected.join(", ")+"\""));; }
-		else
-		{
-			connect(img.data(), &Image::finishedLoadingPreview, this, &searchTab::finishedLoadingPreview);
-			img->loadPreview();
-		}
+		connect(img.data(), &Image::finishedLoadingPreview, this, &searchTab::finishedLoadingPreview);
+		img->loadPreview();
 	}
 }
 
@@ -1264,7 +1256,15 @@ FixedSizeGridLayout *searchTab::createImagesLayout(QSettings *settings)
 
 bool searchTab::validateImage(QSharedPointer<Image> img)
 {
-	Q_UNUSED(img);
+	if (!m_settings->value("blacklistedtags").toString().isEmpty())
+	{
+		QStringList detected = img->blacklisted(m_settings->value("blacklistedtags").toString().toLower().split(" "));
+		if (!detected.isEmpty() && m_settings->value("hideblacklisted", false).toBool())
+		{
+			log(QString("Image #%1 ignored. Reason: %2.").arg(img->id()).arg("\""+detected.join(", ")+"\""));
+			return false;
+		}
+	}
 	return true;
 }
 
