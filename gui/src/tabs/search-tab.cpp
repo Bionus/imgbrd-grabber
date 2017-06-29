@@ -873,8 +873,21 @@ int searchTab::getActualImagesPerPage(Page *page, bool merge)
 void searchTab::addResultsImage(QSharedPointer<Image> img, bool merge)
 {
 	int absolutePosition = m_images.indexOf(img);
-	int relativePosition = merge ? absolutePosition : img->page()->images().indexOf(img);
 	int imagesPerPage = getActualImagesPerPage(img->page(), merge);
+
+	// Calculate relative position compared to validated images
+	int relativePosition = 0;
+	if (merge)
+	{ relativePosition = absolutePosition; }
+	else
+	{
+		QString error;
+		for (QSharedPointer<Image> i : img->page()->images())
+			if (i == img)
+				break;
+			else if (validateImage(i, error))
+				relativePosition++;
+	}
 
 	QBouton *button = createImageThumbnail(absolutePosition, img);
 	m_boutons.insert(img.data(), button);
