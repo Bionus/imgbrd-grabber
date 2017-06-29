@@ -1256,15 +1256,17 @@ FixedSizeGridLayout *searchTab::createImagesLayout(QSettings *settings)
 
 bool searchTab::validateImage(QSharedPointer<Image> img)
 {
-	if (!m_settings->value("blacklistedtags").toString().isEmpty())
+	static QStringList blacklistedTags = m_settings->value("blacklistedtags").toString().toLower().split(" ", QString::SkipEmptyParts);
+	if (!blacklistedTags.isEmpty())
 	{
-		QStringList detected = img->blacklisted(m_settings->value("blacklistedtags").toString().toLower().split(" "));
+		QStringList detected = img->blacklisted(blacklistedTags);
 		if (!detected.isEmpty() && m_settings->value("hideblacklisted", false).toBool())
 		{
 			log(QString("Image #%1 ignored. Reason: %2.").arg(img->id()).arg("\""+detected.join(", ")+"\""));
 			return false;
 		}
 	}
+
 	return true;
 }
 
