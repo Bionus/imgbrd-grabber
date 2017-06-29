@@ -43,10 +43,6 @@ void UpdateDialog::checkForUpdates()
 
 void UpdateDialog::checkForUpdatesDone(QString newVersion, bool available, QString changelog)
 {
-	newVersion = "v6.0.0";
-	available = true;
-	changelog = "";
-
 	if (!available)
 	{
 		emit noUpdateAvailable();
