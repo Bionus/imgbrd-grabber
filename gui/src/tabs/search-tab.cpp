@@ -338,9 +338,12 @@ void searchTab::finishedLoading(Page* page)
 
 	// Filter images depending on tabs
 	QList<QSharedPointer<Image>> validImages;
+	QString error;
 	for (QSharedPointer<Image> img : page->images())
-		if (validateImage(img))
+		if (validateImage(img, error))
 			validImages.append(img);
+		else
+			log(error);
 
 	// Remove already existing images for merged results
 	bool merged = ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked();
@@ -441,8 +444,9 @@ void searchTab::finishedLoadingTags(Page *page)
 
 	// Update image and page count
 	QList<QSharedPointer<Image>> imgs;
+	QString error;
 	for (QSharedPointer<Image> img : page->images())
-		if (validateImage(img))
+		if (validateImage(img, error))
 			imgs.append(img);
 
 	if (ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked() && m_siteLabels.contains(nullptr))
@@ -1254,7 +1258,7 @@ FixedSizeGridLayout *searchTab::createImagesLayout(QSettings *settings)
 }
 
 
-bool searchTab::validateImage(QSharedPointer<Image> img)
+bool searchTab::validateImage(QSharedPointer<Image> img, QString &error)
 {
 	static QStringList blacklistedTags = m_settings->value("blacklistedtags").toString().toLower().split(" ", QString::SkipEmptyParts);
 	if (!blacklistedTags.isEmpty())
@@ -1262,7 +1266,7 @@ bool searchTab::validateImage(QSharedPointer<Image> img)
 		QStringList detected = img->blacklisted(blacklistedTags);
 		if (!detected.isEmpty() && m_settings->value("hideblacklisted", false).toBool())
 		{
-			log(QString("Image #%1 ignored. Reason: %2.").arg(img->id()).arg("\""+detected.join(", ")+"\""));
+			error = QString("Image #%1 ignored. Reason: %2.").arg(img->id()).arg("\""+detected.join(", ")+"\"");
 			return false;
 		}
 	}
