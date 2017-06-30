@@ -99,7 +99,6 @@ class mainWindow : public QMainWindow
 		void getAllImages();
 		void getAllGetImage(QSharedPointer<Image> img);
 		void getAllPerformTags();
-		void getAllPerformImage(QNetworkReply::NetworkError error, QString errorString);
 		void getAllProgress(qint64, qint64);
 		void getAllCancel();
 		void getAllPause();
@@ -159,7 +158,6 @@ class mainWindow : public QMainWindow
 		void imageUrlChanged(QString, QString);
 		void updateCompleters();
 		void setSource(QString site);
-		void saveImage(QSharedPointer<Image> img, QString path = "", QString p = "", bool getAll = true);
 		void setTags(QList<Tag> tags, searchTab *from = nullptr);
 		void initialLoginsFinished();
 		QIcon& getIcon(QString path);

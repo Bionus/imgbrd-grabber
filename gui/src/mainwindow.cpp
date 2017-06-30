@@ -1776,7 +1776,8 @@ void mainWindow::getAllGetImage(QSharedPointer<Image> img)
 		p = m_groupBatchs[site_id - 1].path;
 	}
 
-	QMap<QString, Image::SaveResult> result = img->save(path, p, true, false);
+	int count = m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + 1;
+	QMap<QString, Image::SaveResult> result = img->save(path, p, true, false, count, false);
 	bool needLoading = false;
 	for (Image::SaveResult res : result)
 		if (res == Image::SaveResult::NotLoaded)
@@ -1791,71 +1792,40 @@ void mainWindow::getAllGetImage(QSharedPointer<Image> img)
 		m_downloadTime[img->url()]->start();
 		m_downloadTimeLast.insert(img->url(), new QTime);
 		m_downloadTimeLast[img->url()]->start();
-		connect(img.data(), &Image::finishedImage, this, &mainWindow::getAllPerformImage, Qt::UniqueConnection);
 		connect(img.data(), &Image::downloadProgressImage, this, &mainWindow::getAllProgress, Qt::UniqueConnection);
-		img->loadImage();
-		return;
+		result = img->save(path, p, true, false, count, true);
+		log(QString("Image received from <a href=\"%1\">%1</a> %2").arg(img->url()).arg(m_getAllDownloading.size()), Logger::Info);
 	}
 
-	QStringList paths = result.keys();
-	for (QString fp : paths)
-	{
-		Image::SaveResult res = result[fp];
-		if (res == Image::SaveResult::AlreadyExists)
-		{ m_getAllExists++; }
-		else if (res == Image::SaveResult::Ignored)
-		{ m_getAllIgnored++; }
-		else
-		{ m_getAllDownloaded++; }
-	}
-
-	// Continue to next image
-	//m_progressdialog->setValue(m_progressdialog->value()+img->value());
-	m_progressdialog->setImages(m_progressdialog->images()+1);
-	m_downloadTimeLast.remove(img->url());
-	m_getAllDownloading.removeAll(img);
-	_getAll();
-}
-void mainWindow::getAllPerformImage(QNetworkReply::NetworkError error, QString errorString)
-{
-	if (m_progressdialog->cancelled())
-		return;
-
-	QSharedPointer<Image> img;
-	for (QSharedPointer<Image> i : m_getAllDownloading)
-		if (i.data() == sender())
-			img = i;
-	if (img.isNull())
-		return;
-
+	// Save error count to compare it later on
 	bool del = true;
+	bool diskError = false;
+	auto res = result.first();
 
-	log(QString("Image received from <a href=\"%1\">%1</a> %2").arg(img->url()).arg(m_getAllDownloading.size()), Logger::Info);
-
-	// Row
-	int site_id = m_progressdialog->batch(img->url());
-	int row = getRowForSite(site_id);
-
-	int errors = m_getAllErrors, e404s = m_getAll404s;
-	if (error == QNetworkReply::NoError)
+	// Disk writing errors
+	for (QString path : result.keys())
 	{
-		if (site_id >= 0)
+		if (result[path] == Image::SaveResult::Error)
 		{
-			ui->tableBatchGroups->item(row, 0)->setIcon(getIcon(":/images/status/downloading.png"));
-			saveImage(img, m_groupBatchs[site_id - 1].filename, m_groupBatchs[site_id - 1].path);
+			diskError = true;
+			m_getAllErrors++;
+			m_progressdialog->pause();
+			QMessageBox::critical(m_progressdialog, tr("Error"), tr("An error occured saving the image.\n%1\nPlease solve the issue before resuming the download.").arg(path));
 		}
-		else
-		{ saveImage(img); }
 	}
-	else if (error == QNetworkReply::ContentNotFoundError)
+
+	if (res == Image::SaveResult::NotFound)
 	{ m_getAll404s++; }
-	else
+	else if (res == Image::SaveResult::NetworkError)
 	{
-		log(QString("Unknown error for the image: <a href=\"%1\">%1</a>. \"%2\"").arg(img->url().toHtmlEscaped(), errorString), Logger::Error);
+		log(QString("Unknown error for the image: <a href=\"%1\">%1</a>.").arg(img->url().toHtmlEscaped()), Logger::Error);
 		m_getAllErrors++;
 	}
-
-	if (m_getAllErrors == errors && m_getAll404s == e404s)
+	else if (res == Image::SaveResult::AlreadyExists)
+	{ m_getAllExists++; }
+	else if (res == Image::SaveResult::Ignored)
+	{ m_getAllIgnored++; }
+	else if (!diskError)
 	{
 		m_getAllDownloaded++;
 		m_progressdialog->loadedImage(img->url());
@@ -1868,39 +1838,6 @@ void mainWindow::getAllPerformImage(QNetworkReply::NetworkError error, QString e
 	}
 
 	getAllImageOk(img, site_id, del);
-}
-void mainWindow::saveImage(QSharedPointer<Image> img, QString path, QString p, bool getAll)
-{
-	// Get image's content
-	if (!img->data().isEmpty())
-	{
-		// Path
-		if (path == "")
-		{ path = m_settings->value("Save/filename").toString(); }
-		if (p == "")
-		{ p = img->folder().isEmpty() ? m_settings->value("Save/path").toString() : img->folder(); }
-		int count = m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + 1;
-
-		QMap<QString, Image::SaveResult> result = img->save(path, p, true, false, count);
-
-		QStringList paths = result.keys();
-		for (QString path : paths)
-		{
-			if (result[path] == Image::SaveResult::Error)
-			{
-				m_getAllErrors++;
-				m_progressdialog->pause();
-				QMessageBox::critical(m_progressdialog, tr("Error"), tr("An error occured saving the image.\n%1\nPlease solve the issue before resuming the download.").arg(path));
-			}
-		}
-	}
-
-	else
-	{
-		log(QString("Nothing has been received for the image: <a href=\"%1\">%1</a>.").arg(img->url().toHtmlEscaped()), Logger::Error);
-		if (getAll)
-		{ m_getAllErrors++; }
-	}
 }
 
 void mainWindow::getAllCancel()
