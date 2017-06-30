@@ -1158,7 +1158,7 @@ void mainWindow::getAll(bool all)
 
 	if (m_progressdialog == nullptr)
 	{
-		m_progressdialog = new batchWindow(this);
+		m_progressdialog = new batchWindow(m_profile->getSettings(), this);
 		connect(m_progressdialog, SIGNAL(paused()), this, SLOT(getAllPause()));
 		connect(m_progressdialog, SIGNAL(rejected()), this, SLOT(getAllCancel()));
 		connect(m_progressdialog, SIGNAL(skipped()), this, SLOT(getAllSkip()));

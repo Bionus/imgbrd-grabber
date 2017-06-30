@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QProgressBar>
 #include <QMap>
+#include <QSettings>
 #ifdef Q_OS_WIN
 	#include <QWinTaskbarButton>
 	#include <QWinTaskbarProgress>
@@ -23,7 +24,7 @@ class batchWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		explicit batchWindow(QWidget *parent = 0);
+		explicit batchWindow(QSettings *settings, QWidget *parent = 0);
 		~batchWindow();
 		int value();
 		int maximum();
@@ -69,6 +70,7 @@ class batchWindow : public QDialog
 
 	private:
 		Ui::batchWindow			*ui;
+		QSettings				*m_settings;
 		QSize					m_currentSize;
 		int						m_imagesCount, m_items, m_value, m_images, m_maxSpeeds, m_lastDownloading;
 		QStringList				m_urls;
