@@ -1180,31 +1180,26 @@ void mainWindow::getAll(bool all)
 	m_getAllSkippedImages.clear();
 	m_batchPending.clear();
 
-	QList<QTableWidgetItem *> selected = ui->tableBatchUniques->selectedItems();
-	int count = selected.size();
 	if (!all)
 	{
 		QList<int> tdl;
-		for (int r = 0; r < count; r++)
+		for (QTableWidgetItem *item : ui->tableBatchUniques->selectedItems())
 		{
-			int row = selected.at(r)->row();
-
+			int row = item->row();
 			if (tdl.contains(row))
 				continue;
-			else
-			{
-				tdl.append(row);
-				int i = row;
-				Site *site = m_batchs[i].site;
-				m_getAllRemaining.append(QSharedPointer<Image>(new Image(site, m_batchs[i].values, m_profile, new Page(m_profile, site, m_sites.values(), m_batchs[i].values.value("tags").split(" "), 1, 1, QStringList(), false, this))));
-			}
+			tdl.append(row);
+
+			DownloadQueryImage batch = m_batchs[row];
+			Page *page = new Page(m_profile, batch.site, m_sites.values(), batch.values.value("tags").split(" "), 1, 1, QStringList(), false, this);
+			m_getAllRemaining.append(QSharedPointer<Image>(new Image(batch.site, batch.values, m_profile, page)));
 		}
 	}
 	else
 	{
-		for (int i = 0; i < m_batchs.size(); i++)
+		for (DownloadQueryImage batch : m_batchs)
 		{
-			if (m_batchs[i].values.value("file_url").isEmpty())
+			if (batch.values.value("file_url").isEmpty())
 			{
 				// If we cannot get the image's url, we try looking for it
 				/*Page *page = new Page(m_sites[site], &m_sites, m_groupBatchs.at(i).at(0).split(' '), m_groupBatchs.at(i).at(1).toInt()+r, pp, QStringList(), false, this);
@@ -1216,8 +1211,8 @@ void mainWindow::getAll(bool all)
 			}
 			else
 			{
-				Site *site = m_batchs[i].site;
-				m_getAllRemaining.append(QSharedPointer<Image>(new Image(site, m_batchs[i].values, m_profile, new Page(m_profile, site, m_sites.values(), m_batchs[i].values["tags"].split(" "), 1, 1, QStringList(), false, this))));
+				Page *page = new Page(m_profile, batch.site, m_sites.values(), batch.values["tags"].split(" "), 1, 1, QStringList(), false, this);
+				m_getAllRemaining.append(QSharedPointer<Image>(new Image(batch.site, batch.values, m_profile, page)));
 			}
 		}
 	}
@@ -1228,14 +1223,12 @@ void mainWindow::getAll(bool all)
 	{ ui->tableBatchGroups->item(i, 0)->setIcon(getIcon(":/images/status/pending.png")); }
 	m_allow = true;
 	m_profile->getCommands().before();
-	selected = ui->tableBatchGroups->selectedItems();
-	count = selected.size();
 	m_batchDownloading.clear();
 
 	QSet<int> todownload = QSet<int>();
-	for (int i = 0; i < count; i++)
-		if (!todownload.contains(selected.at(i)->row()))
-			todownload.insert(selected.at(i)->row());
+	for (QTableWidgetItem *item : ui->tableBatchGroups->selectedItems())
+		if (!todownload.contains(item->row()))
+			todownload.insert(item->row());
 
 	if (all || !todownload.isEmpty())
 	{
