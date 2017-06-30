@@ -485,13 +485,11 @@ void zoomWindow::load()
 #define TIME 500
 void zoomWindow::downloadProgress(qint64 bytesReceived, qint64 bytesTotal)
 {
-	 if (m_image->isVideo() || m_url.section('.', -1).toLower() == "gif")
-		 return;
-
 	ui->progressBarDownload->setMaximum(bytesTotal);
 	ui->progressBarDownload->setValue(bytesReceived);
 
-	if (m_imageTime.elapsed() > TIME || (bytesTotal > 0 && bytesReceived / bytesTotal > PERCENT))
+	bool isAnimated = m_image->isVideo() || m_url.section('.', -1).toLower() == "gif";
+	if (!isAnimated && (m_imageTime.elapsed() > TIME || (bytesTotal > 0 && bytesReceived / bytesTotal > PERCENT)))
 	{
 		m_imageTime.restart();
 		emit loadImage(m_image->data());
