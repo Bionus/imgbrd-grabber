@@ -8,7 +8,7 @@
 #include "downloader/file-downloader.h"
 #include "functions.h"
 
-#define MAX_LOAD_FILESIZE (1024*1024*200)
+#define MAX_LOAD_FILESIZE (1024*1024*50)
 
 
 QString removeCacheUrl(QString url)
