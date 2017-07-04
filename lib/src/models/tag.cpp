@@ -179,7 +179,7 @@ QString Tag::qFontToCss(QFont font)
 	return "font-family:'"+font.family()+"'; font-size:"+size+"; font-style:"+style+"; font-weight:"+weight+"; text-decoration:"+(decorations.isEmpty() ? "none" : decorations.join(" "))+";";
 }
 
-QStringList Tag::Stylished(QList<Tag> tags, Profile *profile, bool count, bool nounderscores)
+QStringList Tag::Stylished(QList<Tag> tags, Profile *profile, bool count, bool nounderscores, bool sort)
 {
 	QStringList ignored = profile->getIgnored();
 	QStringList blacklisted = profile->getSettings()->value("blacklistedtags").toString().split(' ');
@@ -188,7 +188,9 @@ QStringList Tag::Stylished(QList<Tag> tags, Profile *profile, bool count, bool n
 	for (Tag tag : tags)
 		t.append(tag.stylished(profile, ignored, blacklisted, count, nounderscores));
 
-	t.sort();
+	if (sort)
+		t.sort();
+
 	return t;
 }
 

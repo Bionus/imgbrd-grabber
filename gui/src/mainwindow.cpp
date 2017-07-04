@@ -531,7 +531,7 @@ void mainWindow::setTags(QList<Tag> tags, searchTab *from)
 	connect(taglabel, static_cast<void (QAffiche::*)(QString)>(&QAffiche::middleClicked), this, &mainWindow::loadTagTab);
 	connect(taglabel, &QAffiche::linkHovered, this, &mainWindow::linkHovered);
 	connect(taglabel, &QAffiche::linkActivated, this, &mainWindow::loadTagNoTab);
-	taglabel->setText(Tag::Stylished(tags, m_profile, true, true).join("<br/>"));
+	taglabel->setText(Tag::Stylished(tags, m_profile, true, true, false).join("<br/>"));
 
 	// Context menu
 	taglabel->setContextMenuPolicy(Qt::CustomContextMenu);
