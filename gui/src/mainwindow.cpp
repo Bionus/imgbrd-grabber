@@ -706,6 +706,15 @@ void mainWindow::openSettingsFolder()
 
 void mainWindow::batchClear()
 {
+	// Don't do anything if there's nothing to clear
+	if (ui->tableBatchGroups->rowCount() == 0 && ui->tableBatchUniques->rowCount() == 0)
+		return;
+
+	// Confirm deletion
+	auto reponse = QMessageBox::question(this, tr("Confirmation"), tr("Are you sure you want to clear your download list?"), QMessageBox::Yes | QMessageBox::No);
+	if (reponse != QMessageBox::Yes)
+		return;
+
 	m_batchs.clear();
 	ui->tableBatchUniques->clearContents();
 	ui->tableBatchUniques->setRowCount(0);
