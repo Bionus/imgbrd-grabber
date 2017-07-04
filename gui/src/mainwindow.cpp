@@ -2130,24 +2130,6 @@ void mainWindow::saveSettings()
 	m_settings->sync();
 }
 
-void mainWindow::increaseDownloads()
-{
-	m_downloads++;
-	updateDownloads();
-}
-void mainWindow::decreaseDownloads()
-{
-	m_downloads--;
-	updateDownloads();
-}
-void mainWindow::updateDownloads()
-{
-	if (m_downloads == 0)
-		setWindowTitle("");
-	else
-		setWindowTitle(tr("%n download(s) in progress", "", m_downloads));
-}
-
 
 
 void mainWindow::loadMd5(QString path, bool newTab, bool background, bool save)
