@@ -43,6 +43,7 @@
 #include "tabs/tag-tab.h"
 #include "tabs/pool-tab.h"
 #include "tabs/favorites-tab.h"
+#include "danbooru-downloader-importer.h"
 #include "helpers.h"
 #include "functions.h"
 
@@ -362,69 +363,14 @@ void mainWindow::onFirstLoad()
 	ow->save();
 	ow->deleteLater();
 
-	// Detect danbooru downloader
-	QSettings cfg(QSettings::IniFormat, QSettings::UserScope, "Mozilla", "Firefox");
-	QString path = QFileInfo(cfg.fileName()).absolutePath()+"/Firefox";
-	QSettings profiles(path+"/profiles.ini", QSettings::IniFormat);
-
-	if (QFile::exists(path+"/"+profiles.value("Profile0/Path").toString()+"/extensions/danbooru_downloader@cuberocks.net.xpi"))
+	// Detect and Danbooru Downloader settings
+	DanbooruDownloaderImporter ddImporter;
+	if (ddImporter.isInstalled())
 	{
 		int reponse = QMessageBox::question(this, "", tr("The Mozilla Firefox addon \"Danbooru Downloader\" has been detected on your system. Do you want to load its preferences?"), QMessageBox::Yes | QMessageBox::No);
 		if (reponse == QMessageBox::Yes)
 		{
-			QFile prefs(path+"/"+profiles.value("Profile0/Path").toString()+"/prefs.js");
-			if (prefs.exists() && prefs.open(QIODevice::ReadOnly | QIODevice::Text))
-			{
-				QString source = prefs.readAll();
-				QRegExp rx("user_pref\\(\"danbooru.downloader.([^\"]+)\", ([^\\)]+)\\);");
-				QMap<QString,QString> firefox, assoc;
-				assoc["blacklist"] = "blacklistedtags";
-				assoc["generalTagsSeparator"] = "separator";
-				assoc["multipleArtistsAll"] = "artist_useall";
-				assoc["multipleArtistsDefault"] = "artist_value";
-				assoc["multipleArtistsSeparator"] = "artist_sep";
-				assoc["multipleCharactersAll"] = "character_useall";
-				assoc["multipleCharactersDefault"] = "character_value";
-				assoc["multipleCharactersSeparator"] = "character_sep";
-				assoc["multipleCopyrightsAll"] = "copyright_useall";
-				assoc["multipleCopyrightsDefault"] = "copyright_value";
-				assoc["multipleCopyrightsSeparator"] = "copyright_sep";
-				assoc["noArtist"] = "artist_empty";
-				assoc["noCharacter"] = "character_empty";
-				assoc["noCopyright"] = "copyright_empty";
-				assoc["targetFolder"] = "path";
-				assoc["targetName"] = "filename";
-
-				int pos = 0;
-				while ((pos = rx.indexIn(source, pos)) != -1)
-				{
-					pos += rx.matchedLength();
-					QString value = rx.cap(2);
-					if (value.startsWith('"'))	{ value = value.right(value.length() - 1);	}
-					if (value.endsWith('"'))	{ value = value.left(value.length() - 1);	}
-					firefox[rx.cap(1)] = value;
-				}
-
-				m_settings->beginGroup("Save");
-				if (firefox.keys().contains("useBlacklist"))
-				{
-					if (firefox["useBlacklist"] == "true")
-					{ m_settings->setValue("downloadblacklist", false); }
-					else
-					{ m_settings->setValue("downloadblacklist", true); }
-				}
-				for (int i = 0; i < firefox.size(); i++)
-				{
-					if (assoc.keys().contains(firefox.keys().at(i)))
-					{
-						QString v =  firefox.values().at(i);
-						v.replace("\\\\", "\\");
-						m_settings->setValue(assoc[firefox.keys().at(i)], v);
-					}
-				}
-				m_settings->endGroup();
-				prefs.close();
-			}
+			ddImporter.import(m_settings);
 			return;
 		}
 	}
