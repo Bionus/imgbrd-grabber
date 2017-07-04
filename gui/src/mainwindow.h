@@ -84,7 +84,6 @@ class mainWindow : public QMainWindow
 		void batchMoveUp();
 		void batchMoveDown();
 		void batchSel();
-		void batchChange(int);
 		void updateBatchGroups(int, int);
 		void addGroup();
 		void addUnique();

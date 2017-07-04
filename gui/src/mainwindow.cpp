@@ -811,19 +811,6 @@ void mainWindow::batchMoveDown()
 	batchMove(1);
 }
 
-void mainWindow::batchChange(int)
-{
-	/*if (!m_tabs[0]->ui->checkMergeResults->isChecked())
-	{
-		int n = 0;
-		for (int i = 0; i < m_webPics.count(); i++)
-		{
-			if (m_webPics.at(i)->id() == id)
-			{ n = i; break; }
-		}
-		batchAddUnique(m_details.at(n));
-	}*/
-}
 void mainWindow::updateBatchGroups(int y, int x)
 {
 	if (m_allow && x > 0)

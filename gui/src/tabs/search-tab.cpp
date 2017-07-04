@@ -746,7 +746,6 @@ QBouton *searchTab::createImageThumbnail(int position, QSharedPointer<Image> img
 
 	connect(l, SIGNAL(appui(int)), this, SLOT(webZoom(int)));
 	connect(l, SIGNAL(toggled(int, bool, bool)), this, SLOT(toggleImage(int, bool, bool)));
-	connect(l, SIGNAL(rightClick(int)), m_parent, SLOT(batchChange(int)));
 
 	return l;
 }
