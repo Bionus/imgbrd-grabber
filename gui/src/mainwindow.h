@@ -110,8 +110,8 @@ class mainWindow : public QMainWindow
 		bool needExactTags(QSettings *settings);
 		void _getAll();
 		// Tabs
-		int addTab(QString tag = "", bool background = false, bool save = true);
-		int addPoolTab(int pool = 0, QString site = "", bool background = false, bool save = true);
+		void addTab(QString tag = "", bool background = false, bool save = true);
+		void addPoolTab(int pool = 0, QString site = "", bool background = false, bool save = true);
 		void addSearchTab(searchTab*, bool background = false, bool save = true);
 		void updateTabTitle(searchTab*);
 		void tabClosed(searchTab*);

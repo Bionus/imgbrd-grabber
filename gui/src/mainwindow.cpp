@@ -437,7 +437,7 @@ void mainWindow::onFirstLoad()
 	swin->show();
 }
 
-int mainWindow::addTab(QString tag, bool background, bool save)
+void mainWindow::addTab(QString tag, bool background, bool save)
 {
 	tagTab *w = new tagTab(&m_sites, m_profile, this);
 	this->addSearchTab(w, background, save);
@@ -446,10 +446,8 @@ int mainWindow::addTab(QString tag, bool background, bool save)
 	{ w->setTags(tag); }
 	else
 	{ w->focusSearch(); }
-
-	return m_tabs.size() - 1;
 }
-int mainWindow::addPoolTab(int pool, QString site, bool background, bool save)
+void mainWindow::addPoolTab(int pool, QString site, bool background, bool save)
 {
 	poolTab *w = new poolTab(&m_sites, m_profile, this);
 	this->addSearchTab(w, background, save);
@@ -460,8 +458,6 @@ int mainWindow::addPoolTab(int pool, QString site, bool background, bool save)
 	{ w->setPool(pool, site); }
 	else
 	{ w->focusSearch(); }
-
-	return m_tabs.size() - 1;
 }
 void mainWindow::addSearchTab(searchTab *w, bool background, bool save)
 {
@@ -587,7 +583,7 @@ void mainWindow::setTags(QList<Tag> tags, searchTab *from)
 	connect(taglabel, static_cast<void (QAffiche::*)(QString)>(&QAffiche::middleClicked), this, &mainWindow::loadTagTab);
 	connect(taglabel, &QAffiche::linkHovered, this, &mainWindow::linkHovered);
 	connect(taglabel, &QAffiche::linkActivated, this, &mainWindow::loadTagNoTab);
-	taglabel->setText(Tag::Stylished(tags, m_profile, true, true));
+	taglabel->setText(Tag::Stylished(tags, m_profile, true, true).join("<br/>"));
 
 	// Context menu
 	taglabel->setContextMenuPolicy(Qt::CustomContextMenu);

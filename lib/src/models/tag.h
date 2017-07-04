@@ -30,7 +30,7 @@ class Tag
 		QString		typedText()	const;
 
 		static QString qFontToCss(QFont font);
-		static QStringList Stylished(QList<Tag>, Profile *profile, bool count = false, bool nounderscores = false) const;
+		static QStringList Stylished(QList<Tag>, Profile *profile, bool count = false, bool nounderscores = false);
 
 	private:
 		QString		m_text, m_type;
