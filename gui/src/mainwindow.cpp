@@ -582,20 +582,12 @@ void mainWindow::setTags(QList<Tag> tags, searchTab *from)
 
 	clearLayout(ui->dockInternetScrollLayout);
 
-	QString text = "";
-	for (Tag tag : tags)
-	{
-		if (!text.isEmpty())
-			text += "<br/>";
-		text += tag.stylished(m_profile, QStringList(), QStringList(), true, true);
-	}
-
 	QAffiche *taglabel = new QAffiche(QVariant(), 0, QColor(), this);
 	taglabel->setTextInteractionFlags(Qt::LinksAccessibleByMouse);
 	connect(taglabel, static_cast<void (QAffiche::*)(QString)>(&QAffiche::middleClicked), this, &mainWindow::loadTagTab);
 	connect(taglabel, &QAffiche::linkHovered, this, &mainWindow::linkHovered);
 	connect(taglabel, &QAffiche::linkActivated, this, &mainWindow::loadTagNoTab);
-	taglabel->setText(text);
+	taglabel->setText(Tag::Stylished(tags, m_profile, true, true));
 
 	// Context menu
 	taglabel->setContextMenuPolicy(Qt::CustomContextMenu);
