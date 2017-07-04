@@ -332,7 +332,8 @@ void zoomWindow::contextMenu(QPoint)
 	if (this->link.isEmpty())
 		return;
 
-	TagContextMenu *menu = new TagContextMenu(this->link, m_image->tags(), QUrl(), m_profile, true, this);
+	Page page(m_profile, m_site, QList<Site*>() << m_site, QStringList() << this->link);
+	TagContextMenu *menu = new TagContextMenu(this->link, m_image->tags(), page.friendlyUrl(), m_profile, true, this);
 	connect(menu, &TagContextMenu::openNewTab, this, &zoomWindow::openInNewTab);
 	connect(menu, &TagContextMenu::setFavoriteImage, this, &zoomWindow::setfavorite);
 	menu->exec(QCursor::pos());

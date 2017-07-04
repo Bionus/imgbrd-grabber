@@ -156,6 +156,7 @@ int				Page::page()		{ return m_page;								}
 int				Page::pageImageCount()	{ return m_pageApis[m_currentApi]->pageImageCount();	}
 QList<QSharedPointer<Image>>	Page::images()		{ return m_pageApis[m_currentApi]->images();	}
 QUrl			Page::url()			{ return m_pageApis[m_currentApi]->url();		}
+QUrl			Page::friendlyUrl()	{ return m_pageApis[m_regexApi < 0 ? m_currentApi : m_regexApi]->url();	}
 QString			Page::source()		{ return m_pageApis[m_currentApi]->source();	}
 QList<Tag>		Page::tags()		{ return m_pageApis[m_currentApi]->tags();		}
 QUrl			Page::nextPage()	{ return m_pageApis[m_currentApi]->nextPage();	}

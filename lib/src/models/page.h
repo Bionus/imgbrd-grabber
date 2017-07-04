@@ -29,6 +29,7 @@ class Page : public QObject
 		int			imagesCount(bool guess = true);
 		int			pagesCount(bool guess = true);
 		QUrl		url();
+		QUrl		friendlyUrl();
 		QString		source();
 		QString		website();
 		QString		wiki();
