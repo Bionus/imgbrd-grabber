@@ -111,13 +111,13 @@ class zoomWindow : public QWidget
 		QSharedPointer<Image> m_image;
 		QMap<QString,QString> regex, m_details;
 		Site *m_site;
-		int timeout, m_mustSave;
+		int m_timeout, m_mustSave;
 		bool m_tooBig, m_loadedImage, m_loadedDetails;
 		QString id, m_url, tags, rating, score, user, format;
 		QAffiche *m_labelTagsTop, *m_labelTagsLeft;
 		QTimer *m_resizeTimer;
 		QTime m_imageTime;
-		QString link;
+		QString m_link;
 		bool m_finished;
 		int m_size;
 		QMap<QString,Site*> *m_sites;

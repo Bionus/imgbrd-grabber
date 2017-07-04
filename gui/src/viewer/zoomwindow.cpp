@@ -24,7 +24,7 @@
 
 
 zoomWindow::zoomWindow(QList<QSharedPointer<Image> > images, QSharedPointer<Image> image, Site *site, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
-	: QWidget(Q_NULLPTR, Qt::Window), m_parent(parent), m_profile(profile), m_favorites(profile->getFavorites()), m_viewItLater(profile->getKeptForLater()), m_ignore(profile->getIgnored()), m_settings(profile->getSettings()), ui(new Ui::zoomWindow), m_site(site), timeout(300), m_tooBig(false), m_loadedImage(false), m_loadedDetails(false), m_displayImage(QPixmap()), m_displayMovie(nullptr), m_finished(false), m_size(0), m_sites(sites), m_source(), m_fullScreen(nullptr), m_images(images), m_isFullscreen(false), m_isSlideshowRunning(false), m_imagePath(""), m_labelImageScaled(false)
+	: QWidget(Q_NULLPTR, Qt::Window), m_parent(parent), m_profile(profile), m_favorites(profile->getFavorites()), m_viewItLater(profile->getKeptForLater()), m_ignore(profile->getIgnored()), m_settings(profile->getSettings()), ui(new Ui::zoomWindow), m_site(site), m_timeout(300), m_tooBig(false), m_loadedImage(false), m_loadedDetails(false), m_displayImage(QPixmap()), m_displayMovie(nullptr), m_finished(false), m_size(0), m_sites(sites), m_source(), m_fullScreen(nullptr), m_images(images), m_isFullscreen(false), m_isSlideshowRunning(false), m_imagePath(""), m_labelImageScaled(false)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	ui->setupUi(this);
@@ -275,7 +275,7 @@ void zoomWindow::openPoolId(Page *p)
 	}
 
 	m_image = p->images().at(0);
-	timeout = 300;
+	m_timeout = 300;
 	m_loadedDetails = false;
 	m_loadedImage = false;
 	m_finished = false;
@@ -326,14 +326,14 @@ void zoomWindow::openSaveDirFav()
 { openSaveDir(true); }
 
 void zoomWindow::linkHovered(QString url)
-{ this->link = url; }
+{ m_link = url; }
 void zoomWindow::contextMenu(QPoint)
 {
-	if (this->link.isEmpty())
+	if (m_link.isEmpty())
 		return;
 
-	Page page(m_profile, m_site, QList<Site*>() << m_site, QStringList() << this->link);
-	TagContextMenu *menu = new TagContextMenu(this->link, m_image->tags(), page.friendlyUrl(), m_profile, true, this);
+	Page page(m_profile, m_site, QList<Site*>() << m_site, QStringList() << m_link);
+	TagContextMenu *menu = new TagContextMenu(m_link, m_image->tags(), page.friendlyUrl(), m_profile, true, this);
 	connect(menu, &TagContextMenu::openNewTab, this, &zoomWindow::openInNewTab);
 	connect(menu, &TagContextMenu::setFavoriteImage, this, &zoomWindow::setfavorite);
 	menu->exec(QCursor::pos());
@@ -341,14 +341,14 @@ void zoomWindow::contextMenu(QPoint)
 
 void zoomWindow::openInNewTab()
 {
-	m_parent->addTab(this->link);
+	m_parent->addTab(m_link);
 }
 void zoomWindow::setfavorite()
 {
 	if (!m_loadedImage)
 		return;
 
-	Favorite fav(link);
+	Favorite fav(m_link);
 	int pos = m_favorites.indexOf(fav);
 	if (pos >= 0)
 	{
@@ -924,10 +924,10 @@ void zoomWindow::toggleSlideshow()
 void zoomWindow::resizeEvent(QResizeEvent *e)
 {
 	if (!m_resizeTimer->isActive())
-	{ this->timeout = qMin(500, qMax(50, (m_displayImage.width() * m_displayImage.height()) / 100000)); }
+	{ m_timeout = qMin(500, qMax(50, (m_displayImage.width() * m_displayImage.height()) / 100000)); }
 	m_resizeTimer->stop();
-	m_resizeTimer->start(this->timeout);
-	this->update(true);
+	m_resizeTimer->start(m_timeout);
+	update(true);
 
 	QWidget::resizeEvent(e);
 }
