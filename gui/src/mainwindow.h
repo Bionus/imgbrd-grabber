@@ -80,7 +80,6 @@ class mainWindow : public QMainWindow
 		// Batch download management
 		void batchClear();
 		void batchClearSel();
-		QList<int> getSelectedRows(QList<QTableWidgetItem*> selected);
 		void batchMove(int);
 		void batchMoveUp();
 		void batchMoveDown();

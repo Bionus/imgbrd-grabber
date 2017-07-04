@@ -765,27 +765,16 @@ void mainWindow::batchClearSel()
 	updateGroupCount();
 }
 
-QList<int> mainWindow::getSelectedRows(QList<QTableWidgetItem*> selected)
-{
-	QList<int> rows;
-	for (QTableWidgetItem *item : selected)
-	{
-		int row = item->row();
-		if (rows.contains(row))
-			continue;
-		else
-			rows.append(row);
-	}
-	return rows;
-}
-
 void mainWindow::batchMove(int diff)
 {
 	QList<QTableWidgetItem *> selected = ui->tableBatchGroups->selectedItems();
 	if (selected.isEmpty())
 		return;
 
-	QList<int> rows = getSelectedRows(selected);
+	QSet<int> rows;
+	for (QTableWidgetItem *item : selected)
+		rows.insert(item->row());
+
 	for (int sourceRow : rows)
 	{
 		int destRow = sourceRow + diff;
