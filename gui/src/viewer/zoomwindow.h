@@ -51,17 +51,7 @@ class zoomWindow : public QWidget
 		void linkHovered(QString);
 		void contextMenu(QPoint);
 		void openInNewTab();
-		void openInNewWindow();
-		void openInBrowser();
-		void favorite();
 		void setfavorite();
-		void unfavorite();
-		void viewitlater();
-		void unviewitlater();
-		void ignore();
-		void unignore();
-		void blacklist();
-		void unblacklist();
 		void downloadProgress(qint64 bytesReceived, qint64 bytesTotal);
 		void colore();
 		void urlChanged(QString, QString);
@@ -75,8 +65,6 @@ class zoomWindow : public QWidget
 		void imageContextMenu();
 		void copyImageFileToClipboard();
 		void copyImageDataToClipboard();
-		void copyTagToClipboard();
-		void copyAllTagsToClipboard();
 
 		// Full screen
 		void toggleFullScreen();

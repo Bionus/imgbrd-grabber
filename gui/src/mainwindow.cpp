@@ -44,6 +44,7 @@
 #include "tabs/pool-tab.h"
 #include "tabs/favorites-tab.h"
 #include "danbooru-downloader-importer.h"
+#include "tag-context-menu.h"
 #include "helpers.h"
 #include "functions.h"
 
@@ -523,6 +524,7 @@ void mainWindow::setTags(QList<Tag> tags, searchTab *from)
 		return;
 
 	clearLayout(ui->dockInternetScrollLayout);
+	m_currentTags = tags;
 
 	QAffiche *taglabel = new QAffiche(QVariant(), 0, QColor(), this);
 	taglabel->setTextInteractionFlags(Qt::LinksAccessibleByMouse);
@@ -2182,57 +2184,16 @@ void mainWindow::linkHovered(QString tag)
 }
 void mainWindow::contextMenu()
 {
-	QMenu *menu = new QMenu(this);
-	if (!this->m_link.isEmpty())
-	{
-		bool favorited = false;
-		for (Favorite fav : m_favorites)
-			if (fav.getName() == m_link)
-				favorited = true;
-		if (favorited)
-		{ menu->addAction(QIcon(":/images/icons/remove.png"), tr("Remove from favorites"), this, SLOT(unfavorite())); }
-		else
-		{ menu->addAction(QIcon(":/images/icons/add.png"), tr("Add to favorites"), this, SLOT(favorite())); }
+	if (m_link.isEmpty())
+		return;
 
-		QStringList &vil = m_profile->getKeptForLater();
-		if (vil.contains(m_link, Qt::CaseInsensitive))
-		{ menu->addAction(QIcon(":/images/icons/remove.png"), tr("Don't keep for later"), this, SLOT(unviewitlater())); }
-		else
-		{ menu->addAction(QIcon(":/images/icons/add.png"), tr("Keep for later"), this, SLOT(viewitlater())); }
-
-		menu->addSeparator();
-		menu->addAction(QIcon(":/images/icons/tab-plus.png"), tr("Open in a new tab"), this, SLOT(openInNewTab()));
-		menu->addAction(QIcon(":/images/icons/window.png"), tr("Open in a new window"), this, SLOT(openInNewWindow()));
-	}
+	TagContextMenu *menu = new TagContextMenu(m_link, m_currentTags, QUrl(), m_profile, false, this);
+	connect(menu, &TagContextMenu::openNewTab, this, &mainWindow::openInNewTab);
 	menu->exec(QCursor::pos());
 }
-
 void mainWindow::openInNewTab()
 {
 	addTab(m_link);
-}
-void mainWindow::openInNewWindow()
-{
-	QProcess myProcess;
-	myProcess.startDetached(qApp->arguments().at(0), QStringList(m_link));
-}
-
-void mainWindow::favorite()
-{
-	m_profile->addFavorite(m_link);
-}
-void mainWindow::unfavorite()
-{
-	m_profile->removeFavorite(m_link);
-}
-
-void mainWindow::viewitlater()
-{
-	m_profile->addKeptForLater(m_link);
-}
-void mainWindow::unviewitlater()
-{
-	m_profile->removeKeptForLater(m_link);
 }
 
 

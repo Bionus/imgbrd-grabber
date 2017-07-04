@@ -20,6 +20,7 @@
 #include "helpers.h"
 #include "functions.h"
 #include "image-context-menu.h"
+#include "tag-context-menu.h"
 
 
 zoomWindow::zoomWindow(QList<QSharedPointer<Image> > images, QSharedPointer<Image> image, Site *site, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
@@ -328,84 +329,18 @@ void zoomWindow::linkHovered(QString url)
 { this->link = url; }
 void zoomWindow::contextMenu(QPoint)
 {
-	QMenu *menu = new QMenu(this);
-	if (!this->link.isEmpty())
-	{
-		// Favorites
-		if (m_favorites.contains(Favorite(link)))
-		{
-			menu->addAction(QIcon(":/images/icons/remove.png"), tr("Remove from favorites"), this, SLOT(unfavorite()));
-			menu->addAction(QIcon(":/images/icons/save.png"), tr("Choose as image"), this, SLOT(setfavorite()));
-		}
-		else
-		{ menu->addAction(QIcon(":/images/icons/add.png"), tr("Add to favorites"), this, SLOT(favorite())); }
+	if (this->link.isEmpty())
+		return;
 
-		// Keep for later
-		if (m_viewItLater.contains(link, Qt::CaseInsensitive))
-		{ menu->addAction(QIcon(":/images/icons/remove.png"), tr("Don't keep for later"), this, SLOT(unviewitlater())); }
-		else
-		{ menu->addAction(QIcon(":/images/icons/add.png"), tr("Keep for later"), this, SLOT(viewitlater())); }
-
-		// Blacklist
-		QStringList blacklistedTags = m_settings->value("blacklistedtags").toString().split(' ');
-		if (blacklistedTags.contains(link))
-		{ menu->addAction(QIcon(":/images/icons/eye-plus.png"), tr("Don't blacklist"), this, SLOT(unblacklist())); }
-		else
-		{ menu->addAction(QIcon(":/images/icons/eye-minus.png"), tr("Blacklist"), this, SLOT(blacklist())); }
-
-		// Ignore
-		if (m_ignore.contains(link, Qt::CaseInsensitive))
-		{ menu->addAction(QIcon(":/images/icons/eye-plus.png"), tr("Don't ignore"), this, SLOT(unignore())); }
-		else
-		{ menu->addAction(QIcon(":/images/icons/eye-minus.png"), tr("Ignore"), this, SLOT(ignore())); }
-		menu->addSeparator();
-
-		// Copy
-		menu->addAction(QIcon(":/images/icons/copy.png"), tr("Copy tag"), this, SLOT(copyTagToClipboard()));
-		menu->addAction(QIcon(":/images/icons/copy.png"), tr("Copy all tags"), this, SLOT(copyAllTagsToClipboard()));
-		menu->addSeparator();
-
-		// Tabs
-		menu->addAction(QIcon(":/images/icons/tab-plus.png"), tr("Open in a new tab"), this, SLOT(openInNewTab()));
-		menu->addAction(QIcon(":/images/icons/window.png"), tr("Open in new a window"), this, SLOT(openInNewWindow()));
-		menu->addAction(QIcon(":/images/icons/browser.png"), tr("Open in browser"), this, SLOT(openInBrowser()));
-	}
+	TagContextMenu *menu = new TagContextMenu(this->link, m_image->tags(), QUrl(), m_profile, true, this);
+	connect(menu, &TagContextMenu::openNewTab, this, &zoomWindow::openInNewTab);
+	connect(menu, &TagContextMenu::setFavoriteImage, this, &zoomWindow::setfavorite);
 	menu->exec(QCursor::pos());
 }
 
 void zoomWindow::openInNewTab()
 {
-	m_parent->addTab(link);
-}
-void zoomWindow::openInNewWindow()
-{
-	QProcess myProcess;
-	myProcess.startDetached(qApp->arguments().at(0), QStringList(link));
-}
-void zoomWindow::openInBrowser()
-{
-	QDesktopServices::openUrl(m_image->pageUrl());
-}
-void zoomWindow::copyTagToClipboard()
-{
-	QApplication::clipboard()->setText(this->link);
-}
-void zoomWindow::copyAllTagsToClipboard()
-{
-	QStringList tags;
-	for (Tag tag : m_image->tags())
-		tags.append(tag.text());
-
-	QApplication::clipboard()->setText(tags.join(' '));
-}
-
-void zoomWindow::favorite()
-{
-	Favorite fav(link);
-	if (m_loadedImage)
-		fav.setImage(m_displayImage);
-
-	m_profile->addFavorite(fav);
+	m_parent->addTab(this->link);
 }
 void zoomWindow::setfavorite()
 {
@@ -425,43 +360,6 @@ void zoomWindow::setfavorite()
 	}
 
 	m_profile->emitFavorite();
-}
-void zoomWindow::unfavorite()
-{
-	m_profile->removeFavorite(Favorite(link));
-}
-
-void zoomWindow::viewitlater()
-{
-	m_profile->addKeptForLater(link);
-}
-void zoomWindow::unviewitlater()
-{
-	m_profile->removeKeptForLater(link);
-}
-
-void zoomWindow::ignore()
-{
-	m_profile->addIgnored(link);
-}
-void zoomWindow::unignore()
-{
-	m_profile->removeIgnored(link);
-}
-
-void zoomWindow::blacklist()
-{
-	QString blacklistedTags = m_settings->value("blacklistedtags").toString();
-	blacklistedTags += " " + link;
-	m_settings->setValue("blacklistedtags", blacklistedTags);
-	colore();
-}
-void zoomWindow::unblacklist()
-{
-	QStringList blacklistedTags = m_settings->value("blacklistedtags").toString().split(' ');
-	blacklistedTags.removeAll(link);
-	m_settings->setValue("blacklistedtags", blacklistedTags.join(' '));
-	colore();
 }
 
 void zoomWindow::load()

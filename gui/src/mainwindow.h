@@ -134,11 +134,6 @@ class mainWindow : public QMainWindow
 		void linkHovered(QString tag);
 		void contextMenu();
 		void openInNewTab();
-		void openInNewWindow();
-		void favorite();
-		void unfavorite();
-		void viewitlater();
-		void unviewitlater();
 		// Others
 		void closeEvent(QCloseEvent*);
 		void onFirstLoad();
@@ -202,6 +197,7 @@ class mainWindow : public QMainWindow
 		bool				m_restore, m_showLog;
 		QMap<QString, QIcon>	m_icons;
 		QMap<QString, Site*>	m_sites;
+		QList<Tag>				m_currentTags;
 		QLinkedList<QJsonObject>	m_closedTabs;
 		QNetworkAccessManager m_networkAccessManager;
 };
