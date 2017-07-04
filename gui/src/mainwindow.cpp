@@ -607,8 +607,9 @@ void mainWindow::setTags(QList<Tag> tags, searchTab *from)
 void mainWindow::closeCurrentTab()
 {
 	// Unclosable tabs have a maximum width of 16777214 (default: 16777215)
-	if (ui->tabWidget->widget(ui->tabWidget->currentIndex())->maximumWidth() != 16777214)
-	{ ui->tabWidget->widget(ui->tabWidget->currentIndex())->deleteLater(); }
+	auto currentTab = ui->tabWidget->currentWidget();
+	if (currentTab->maximumWidth() != 16777214)
+	{ currentTab->deleteLater(); }
 }
 
 void mainWindow::addTableItem(QTableWidget *table, int row, int col, QString text)
@@ -617,7 +618,6 @@ void mainWindow::addTableItem(QTableWidget *table, int row, int col, QString tex
 	item->setToolTip(text);
 
 	table->setItem(row, col, item);
-
 }
 
 void mainWindow::batchAddGroup(const DownloadQueryGroup &values)
