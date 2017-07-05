@@ -42,6 +42,12 @@ void FileDownloader::replyFinished()
 	m_file.write(m_reply->readAll());
 	m_file.close();
 
+	if (m_reply->error() != QNetworkReply::NoError)
+	{
+		m_file.remove();
+		return;
+	}
+
 	for (QString copy : m_copies)
 		m_file.copy(copy);
 
