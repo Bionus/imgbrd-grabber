@@ -148,7 +148,7 @@ void Page::clear()
 
 Site			*Page::site()		{ return m_site;								}
 QString			Page::website()		{ return m_website;								}
-QString			Page::wiki()		{ return m_wiki;								}
+QString			Page::wiki()		{ return m_pageApis[m_regexApi < 0 ? m_currentApi : m_regexApi]->wiki(); }
 QStringList		Page::search()		{ return m_search;								}
 QStringList		Page::errors()		{ return m_errors;								}
 int				Page::imagesPerPage()	{ return m_imagesPerPage;					}
