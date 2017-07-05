@@ -73,6 +73,10 @@
           var baseURI = window.location.host;
           $('a').on('click', function(event) {
             var th = $(this);
+            if (th.hasClass('fancybox')) {
+              return;
+            }
+
             var name = th.attr('data-label') ? th.data('label') : th.html();
             var href = th.attr('href');
 
