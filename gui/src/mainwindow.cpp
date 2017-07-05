@@ -511,6 +511,7 @@ void mainWindow::currentTabChanged(int tab)
 			{ return; }
 
 			setTags(tb->results());
+			setWiki(tb->wiki());
 			m_currentTab = ui->tabWidget->currentWidget();
 
 			ui->labelWiki->setText("<style>.title { font-weight: bold; } ul { margin-left: -30px; }</style>"+tb->wiki());
