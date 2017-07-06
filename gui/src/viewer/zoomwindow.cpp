@@ -1077,7 +1077,7 @@ int zoomWindow::firstNonBlacklisted(int direction)
 	index = (index + m_images.count() + direction) % m_images.count();
 
 	// Skip blacklisted images
-	QStringList blacklistedtags(m_settings->value("blacklistedtags").toString().split(" "));
+	auto blacklistedtags = m_profile->getBlacklist();
 	while (!m_images[index]->blacklisted(blacklistedtags).isEmpty() && index != first)
 	{
 		index = (index + m_images.count() + direction) % m_images.count();

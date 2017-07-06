@@ -20,7 +20,7 @@ BlacklistFix1::BlacklistFix1(Profile *profile, QMap<QString,Site*> sites, QWidge
 	QSettings *settings = profile->getSettings();
 	ui->lineFolder->setText(settings->value("Save/path").toString());
 	ui->lineFilename->setText(settings->value("Save/filename").toString());
-	ui->lineBlacklist->setText(settings->value("blacklistedtags").toString());
+	ui->lineBlacklist->setText(profile->getBlacklist().join(' '));
 	ui->comboSource->addItems(m_sites.keys());
 	ui->progressBar->hide();
 

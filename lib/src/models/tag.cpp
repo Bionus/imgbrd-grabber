@@ -182,7 +182,7 @@ QString Tag::qFontToCss(QFont font)
 QStringList Tag::Stylished(QList<Tag> tags, Profile *profile, bool count, bool nounderscores, bool sort)
 {
 	QStringList ignored = profile->getIgnored();
-	QStringList blacklisted = profile->getSettings()->value("blacklistedtags").toString().split(' ');
+	QStringList blacklisted = m_profile->getBlacklist();
 
 	QStringList t;
 	for (Tag tag : tags)
