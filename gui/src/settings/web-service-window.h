@@ -15,7 +15,7 @@ namespace Ui
 class WebServiceWindow : public QDialog
 {
 	Q_OBJECT
-	
+
 	public:
 		explicit WebServiceWindow(const ReverseSearchEngine *webService, QWidget *parent = Q_NULLPTR);
 		~WebServiceWindow();

@@ -15,7 +15,7 @@ namespace Ui
 class SourcesSettingsWindow : public QDialog
 {
 	Q_OBJECT
-	
+
 	public:
 		explicit SourcesSettingsWindow(Site* site, QWidget *parent = 0);
 		~SourcesSettingsWindow();

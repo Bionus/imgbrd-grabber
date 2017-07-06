@@ -12,6 +12,6 @@ int main(int argc, char *argv[])
 
 	CrashReporterWindow w;
 	w.show();
-	
+
 	return app.exec();
 }
