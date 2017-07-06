@@ -530,9 +530,18 @@ void zoomWindow::replyFinishedZoom(QNetworkReply::NetworkError err, QString erro
 		{ error(this, tr("File is too big to be displayed.\r\n%1").arg(m_image->url())); }
 	}
 	else if (err == QNetworkReply::ContentNotFoundError)
-	{ log("Image not found."); }
+	{ showLoadingError("Image not found."); }
+	else if (err == QNetworkReply::UnknownContentError)
+	{ showLoadingError("Error loading the image."); }
 	else if (err != QNetworkReply::OperationCanceledError)
 	{ error(this, tr("An unexpected error occured loading the image (%1 - %2).\r\n%3").arg(err).arg(errorString).arg(m_image->url())); }
+}
+
+void zoomWindow::showLoadingError(QString message)
+{
+	log(message);
+	ui->labelLoadingError->setText(message);
+	ui->labelLoadingError->show();
 }
 
 void zoomWindow::pendingUpdate()
@@ -1012,6 +1021,7 @@ void zoomWindow::load(QSharedPointer<Image> image)
 	m_image = image;
 	connect(m_image.data(), &Image::urlChanged, this, &zoomWindow::urlChanged, Qt::UniqueConnection);
 	m_size = 0;
+	ui->labelLoadingError->hide();
 
 	// Show the thumbnail if the image was not already preloaded
 	if (isVisible())

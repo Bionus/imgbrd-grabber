@@ -60,6 +60,7 @@ class zoomWindow : public QWidget
 		void updateButtonPlus();
 		void openFile(bool now = false);
 		void updateWindowTitle();
+		void showLoadingError(QString error);
 
 		// Context menus
 		void imageContextMenu();
