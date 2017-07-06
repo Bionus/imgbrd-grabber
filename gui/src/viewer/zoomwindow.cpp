@@ -169,19 +169,17 @@ void zoomWindow::go()
 	if (pos == "top")
 	{
 		ui->widgetLeft->hide();
-		m_labelTagsTop->setText(m_image->stylishedTags(m_profile).join(" "));
 		m_labelTagsTop->show();
 	}
 	else
 	{
 		m_labelTagsTop->hide();
-		m_labelTagsLeft->setText(m_image->stylishedTags(m_profile).join("<br/>"));
-		m_labelTagsLeft->setMinimumWidth(m_labelTagsLeft->sizeHint().width() + ui->scrollArea->verticalScrollBar()->sizeHint().width());
 		m_labelTagsLeft->show();
 		ui->widgetLeft->show();
 	}
 
 	m_detailsWindow = new detailsWindow(m_profile, this);
+	colore();
 
 	// Load image details (exact tags & co)
 	connect(m_image.data(), &Image::finishedLoadingTags, this, &zoomWindow::replyFinishedDetails, Qt::UniqueConnection);
@@ -495,12 +493,17 @@ void zoomWindow::replyFinishedDetails()
 }
 void zoomWindow::colore()
 {
-	QStringList t = m_image->stylishedTags(m_profile);
-	tags = t.join(' ');
+	QStringList t = Tag::Stylished(m_image->tags(), m_profile, false);
+	QString tags = t.join(' ');
+
 	if (ui->widgetLeft->isHidden())
 	{ m_labelTagsTop->setText(tags); }
 	else
-	{ m_labelTagsLeft->setText(t.join("<br/>")); }
+	{
+		m_labelTagsLeft->setText(t.join("<br/>"));
+		ui->scrollArea->setMinimumWidth(m_labelTagsLeft->sizeHint().width() + ui->scrollArea->verticalScrollBar()->sizeHint().width());
+	}
+
 	m_detailsWindow->setTags(tags);
 }
 
