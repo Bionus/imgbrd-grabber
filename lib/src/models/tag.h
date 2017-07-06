@@ -12,7 +12,7 @@ class Tag
 {
 	public:
 		Tag();
-		explicit Tag(QString text, QString type = "unknown", int count = 1, QStringList related = QStringList());
+		explicit Tag(QString text, QString type = "unknown", int count = 0, QStringList related = QStringList());
 		~Tag();
 		static Tag FromCapture(QStringList caps, QStringList order = QStringList());
 		static QList<Tag> FromRegexp(QString rx, QStringList order, const QString &source);
