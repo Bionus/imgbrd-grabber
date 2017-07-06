@@ -493,7 +493,7 @@ void zoomWindow::replyFinishedDetails()
 }
 void zoomWindow::colore()
 {
-	QStringList t = Tag::Stylished(m_image->tags(), m_profile, false);
+	QStringList t = Tag::Stylished(m_image->tags(), m_profile, m_settings->value("Zoom/showTagCount", false).toBool());
 	QString tags = t.join(' ');
 
 	if (ui->widgetLeft->isHidden())

@@ -221,6 +221,7 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	ui->checkResultsFixedWidthLayout->setChecked(settings->value("resultsFixedWidthLayout", false).toBool());
 	ui->checkImageCloseMiddleClick->setChecked(settings->value("imageCloseMiddleClick", true).toBool());
 	ui->checkImageNavigateScroll->setChecked(settings->value("imageNavigateScroll", true).toBool());
+	ui->checkZoomShowTagCount->setChecked(settings->value("Zoom/showTagCount", false).toBool());
 	QStringList positionsV = QStringList() << "top" << "center" << "bottom";
 	QStringList positionsH = QStringList() << "left" << "center" << "right";
 	ui->comboImagePositionImageV->setCurrentIndex(positionsV.indexOf(settings->value("imagePositionImageV", "center").toString()));
@@ -974,6 +975,7 @@ void optionsWindow::save()
 	settings->setValue("resultsFixedWidthLayout", ui->checkResultsFixedWidthLayout->isChecked());
 	settings->setValue("imageCloseMiddleClick", ui->checkImageCloseMiddleClick->isChecked());
 	settings->setValue("imageNavigateScroll", ui->checkImageNavigateScroll->isChecked());
+	settings->setValue("Zoom/showTagCount", ui->checkZoomShowTagCount->isChecked());
 	QStringList positionsV = QStringList() << "top" << "center" << "bottom";
 	QStringList positionsH = QStringList() << "left" << "center" << "right";
 	settings->setValue("imagePositionImageV", positionsV.at(ui->comboImagePositionImageV->currentIndex()));
