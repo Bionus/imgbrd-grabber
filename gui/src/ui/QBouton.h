@@ -8,7 +8,7 @@
 class QBouton : public QPushButton
 {
 	Q_OBJECT
- 
+
 	public:
 		QBouton(QVariant id = 0, bool resizeInsteadOfCropping = false, bool smartSizeHint = false, int border = 0, QColor color = QColor(), QWidget *parent = 0);
 		QVariant id();
@@ -24,7 +24,7 @@ class QBouton : public QPushButton
 		void setProgress(qint64 current, qint64 max);
 		void scale(const QPixmap &image, float scale);
 		void paintEvent(QPaintEvent *event);
-		
+
 	signals:
 		void appui(QVariant);
 		void appui(int);

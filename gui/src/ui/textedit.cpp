@@ -210,21 +210,21 @@ void TextEdit::keyPressEvent(QKeyEvent *e)
 		QTextEdit::keyPressEvent(e);
 	}
 	doColor();
-	
+
 	const bool ctrlOrShift = e->modifiers() & (Qt::ControlModifier | Qt::ShiftModifier);
 	if (!c || (ctrlOrShift && e->text().isEmpty()))
 		return;
-	
+
 	static QString eow(" ");
 	bool hasModifier = (e->modifiers() != Qt::NoModifier) && !ctrlOrShift;
 	QString completionPrefix = textUnderCursor();
-	
+
 	if (!isShortcut && (hasModifier || e->text().isEmpty()|| completionPrefix.length() < 3 || eow.contains(e->text().right(1))))
 	{
 		c->popup()->hide();
 		return;
 	}
-	
+
 	if (completionPrefix != c->completionPrefix())
 		c->setCompletionPrefix(completionPrefix);
 

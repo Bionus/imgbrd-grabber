@@ -12,7 +12,7 @@ namespace Ui
 class CrashReporterWindow : public QMainWindow
 {
 	Q_OBJECT
-	
+
 	public:
 		explicit CrashReporterWindow(QWidget *parent = 0);
 		~CrashReporterWindow();
