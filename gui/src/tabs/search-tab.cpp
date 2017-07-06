@@ -216,8 +216,7 @@ QStringList searchTab::reasonsToFail(Page* page, QStringList completion, QString
 QColor searchTab::imageColor(QSharedPointer<Image> img) const
 {
 	// Blacklisted
-	QStringList blacklistedtags(m_settings->value("blacklistedtags").toString().split(" "));
-	QStringList detected = img->blacklisted(blacklistedtags);
+	QStringList detected = img->blacklisted(m_profile->getBlacklist());
 	if (!detected.isEmpty())
 		return QColor("#000000");
 
@@ -490,8 +489,7 @@ void searchTab::finishedLoadingPreview()
 	}
 
 	// Download whitelist images on thumbnail view
-	QStringList blacklistedtags(m_settings->value("blacklistedtags").toString().split(" "));
-	QStringList detected = img->blacklisted(blacklistedtags);
+	QStringList detected = img->blacklisted(m_profile->getBlacklist());
 	QStringList whitelistedtags(m_settings->value("whitelistedtags").toString().split(" "));
 	QStringList whitelisted = img->blacklisted(whitelistedtags);
 	if (!whitelisted.isEmpty() && m_settings->value("whitelist_download", "image").toString() == "page")
@@ -1003,16 +1001,12 @@ void searchTab::webZoom(int id)
 {
 	QSharedPointer<Image> image = m_images.at(id);
 
-	if (!m_settings->value("blacklistedtags").toString().isEmpty())
+	QStringList detected = image->blacklisted(m_profile->getBlacklist());
+	if (!detected.isEmpty())
 	{
-		QStringList blacklistedtags(m_settings->value("blacklistedtags").toString().split(" "));
-		QStringList detected = image->blacklisted(blacklistedtags);
-		if (!detected.isEmpty())
-		{
-			int reply = QMessageBox::question(parentWidget(), tr("Blacklist"), tr("%n tag figuring in the blacklist detected in this image: %1. Do you want to display it anyway?", "", detected.size()).arg(detected.join(", ")), QMessageBox::Yes | QMessageBox::No);
-			if (reply == QMessageBox::No)
-			{ return; }
-		}
+		int reply = QMessageBox::question(parentWidget(), tr("Blacklist"), tr("%n tag figuring in the blacklist detected in this image: %1. Do you want to display it anyway?", "", detected.size()).arg(detected.join(", ")), QMessageBox::Yes | QMessageBox::No);
+		if (reply == QMessageBox::No)
+		{ return; }
 	}
 
 	zoomWindow *zoom = new zoomWindow(m_images, image, image->page()->site(), m_sites, m_profile, m_parent);
@@ -1272,15 +1266,11 @@ FixedSizeGridLayout *searchTab::createImagesLayout(QSettings *settings)
 
 bool searchTab::validateImage(QSharedPointer<Image> img, QString &error)
 {
-	static QStringList blacklistedTags = m_settings->value("blacklistedtags").toString().toLower().split(" ", QString::SkipEmptyParts);
-	if (!blacklistedTags.isEmpty())
+	QStringList detected = img->blacklisted(m_profile->getBlacklist());
+	if (!detected.isEmpty() && m_settings->value("hideblacklisted", false).toBool())
 	{
-		QStringList detected = img->blacklisted(blacklistedTags);
-		if (!detected.isEmpty() && m_settings->value("hideblacklisted", false).toBool())
-		{
-			error = QString("Image #%1 ignored. Reason: %2.").arg(img->id()).arg("\""+detected.join(", ")+"\"");
-			return false;
-		}
+		error = QString("Image #%1 ignored. Reason: %2.").arg(img->id()).arg("\""+detected.join(", ")+"\"");
+		return false;
 	}
 
 	return true;
