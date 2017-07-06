@@ -1264,7 +1264,7 @@ void mainWindow::getAllFinishedLogins()
 													nullptr,
 													nullptr,
 													b.getBlacklisted,
-													m_settings->value("blacklistedtags").toString().split(' '),
+													m_profile->getBlacklist(),
 													false,
 													0,
 													"",
@@ -1536,12 +1536,7 @@ void mainWindow::_getAll()
 void mainWindow::getAllGetImageIfNotBlacklisted(QSharedPointer<Image> img, int site_id)
 {
 	// Check if image is blacklisted
-	bool detected = false;
-	if (!m_settings->value("blacklistedtags").toString().isEmpty())
-	{
-		QStringList blacklistedtags(m_settings->value("blacklistedtags").toString().split(' '));
-		detected = !img->blacklisted(blacklistedtags).isEmpty();
-	}
+	bool detected = !img->blacklisted(m_profile->getBlacklist()).isEmpty();
 
 	if (detected && site_id >= 0 && !m_groupBatchs[site_id - 1].getBlacklisted)
 	{

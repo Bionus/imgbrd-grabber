@@ -156,7 +156,7 @@ int main(int argc, char *argv[])
 											parser.value(userOption),
 											parser.value(passwordOption),
 											parser.isSet(blacklistOption),
-											profile->getSettings()->value("blacklistedtags").toString().split(' '),
+											profile->getBlacklist(),
 											parser.isSet(noDuplicatesOption),
 											parser.value(tagsMinOption).toInt(),
 											parser.value(tagsFormatOption));

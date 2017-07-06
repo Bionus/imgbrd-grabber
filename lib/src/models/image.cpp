@@ -877,12 +877,9 @@ int Image::value() const
 QStringList Image::blacklisted(QStringList blacklistedtags, bool invert) const
 {
 	QStringList detected;
-	QRegExp reg;
-	reg.setCaseSensitivity(Qt::CaseInsensitive);
-	reg.setPatternSyntax(QRegExp::Wildcard);
 	for (QString tag : blacklistedtags)
 	{
-		if (!this->match(tag, invert).isEmpty())
+		if (!match(tag, invert).isEmpty())
 		{ detected.append(tag); }
 	}
 	return detected;
