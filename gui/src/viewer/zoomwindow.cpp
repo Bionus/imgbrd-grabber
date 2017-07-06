@@ -73,6 +73,7 @@ zoomWindow::zoomWindow(QList<QSharedPointer<Image> > images, QSharedPointer<Imag
 	connect(m_profile, &Profile::favoritesChanged, this, &zoomWindow::colore);
 	connect(m_profile, &Profile::keptForLaterChanged, this, &zoomWindow::colore);
 	connect(m_profile, &Profile::ignoredChanged, this, &zoomWindow::colore);
+	connect(m_profile, &Profile::blacklistChanged, this, &zoomWindow::colore);
 
 	m_stackedWidget = new QStackedWidget(this);
 		ui->verticalLayout->insertWidget(1, m_stackedWidget, 1);

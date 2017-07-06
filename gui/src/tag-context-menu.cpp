@@ -25,8 +25,7 @@ TagContextMenu::TagContextMenu(QString tag, QList<Tag> allTags, QUrl browserUrl,
 	{ addAction(QIcon(":/images/icons/add.png"), tr("Keep for later"), this, SLOT(viewitlater())); }
 
 	// Blacklist
-	QStringList blacklistedTags = profile->getSettings()->value("blacklistedtags").toString().split(' ');
-	if (blacklistedTags.contains(m_tag))
+	if (profile->getBlacklist().contains(m_tag))
 	{ addAction(QIcon(":/images/icons/eye-plus.png"), tr("Don't blacklist"), this, SLOT(unblacklist())); }
 	else
 	{ addAction(QIcon(":/images/icons/eye-minus.png"), tr("Blacklist"), this, SLOT(blacklist())); }
@@ -86,17 +85,11 @@ void TagContextMenu::unignore()
 
 void TagContextMenu::blacklist()
 {
-	QString blacklistedTags = m_profile->getSettings()->value("blacklistedtags").toString();
-	blacklistedTags += " " + m_tag;
-	m_profile->getSettings()->setValue("blacklistedtags", blacklistedTags);
-	//colore();
+	m_profile->addBlacklistedTag(m_tag);
 }
 void TagContextMenu::unblacklist()
 {
-	QStringList blacklistedTags = m_profile->getSettings()->value("blacklistedtags").toString().split(' ');
-	blacklistedTags.removeAll(m_tag);
-	m_profile->getSettings()->setValue("blacklistedtags", blacklistedTags.join(' '));
-	//colore();
+	m_profile->removeBlacklistedTag(m_tag);
 }
 
 void TagContextMenu::openInNewTab()
