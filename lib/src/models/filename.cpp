@@ -649,7 +649,7 @@ bool Filename::isValid(QString *error) const
 		return returnError(orange.arg(QObject::tr("Your filename doesn't ends by an extension, symbolized by %ext%! You may not be able to open saved files.")), error);
 
 	// Field must contain an unique token
-	if (!m_format.contains("%md5%") && !m_format.contains("%id%") && !m_format.contains("%count%"))
+	if (!m_format.contains("%md5%") && !m_format.contains("%id%") && !m_format.contains("%num%"))
 		return returnError(orange.arg(QObject::tr("Your filename is not unique to each image and an image may overwrite a previous one at saving! You should use%md5%, which is unique to each image, to avoid this inconvenience.")), error);
 
 	// Looking for unknown tokens
