@@ -444,7 +444,13 @@ void optionsWindow::setLogFile(int index, QMap<QString, QVariant> logFile)
 	settings->beginGroup("LogFiles");
 
 	if (index < 0)
-	{ index = settings->childGroups().last().toInt() + 1; }
+	{
+		auto childGroups = settings->childGroups();
+		if (childGroups.isEmpty())
+		{ index = 0; }
+		else
+		{ index = settings->childGroups().last().toInt() + 1; }
+	}
 
 	settings->beginGroup(QString::number(index));
 
