@@ -752,7 +752,7 @@ void optionsWindow::save()
 {
 	QSettings *settings = m_profile->getSettings();
 
-	settings->setValue("blacklistedtags", ui->lineBlacklist->text());
+	m_profile->setBlacklistedTags(ui->lineBlacklist->text().split(' ', QString::SkipEmptyParts));
 	settings->setValue("downloadblacklist", ui->checkDownloadBlacklisted->isChecked());
 	settings->setValue("whitelistedtags", ui->lineWhitelist->text());
 	settings->setValue("ignoredtags", ui->lineIgnored->text());

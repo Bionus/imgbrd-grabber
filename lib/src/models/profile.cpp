@@ -310,6 +310,12 @@ void Profile::addSite(Site *site)
 }
 
 
+void Profile::setBlacklistedTags(QStringList tags)
+{
+	m_blacklistedTags = tags;
+	emit blacklistChanged();
+}
+
 void Profile::addBlacklistedTag(QString tag)
 {
 	m_blacklistedTags.append(tag);

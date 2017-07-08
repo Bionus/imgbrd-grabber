@@ -52,7 +52,8 @@ class Profile : public QObject
 		// Sites management
 		void addSite(Site *site);
 
-		// Ignore management
+		// Blacklist management
+		void setBlacklistedTags(QStringList tags);
 		void addBlacklistedTag(QString tag);
 		void removeBlacklistedTag(QString tag);
 
