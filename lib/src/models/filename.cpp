@@ -455,8 +455,8 @@ QStringList Filename::path(const Image& img, Profile *profile, QString pth, int 
 			if (!hasNum.isEmpty())
 			{
 				int mid = QDir::toNativeSeparators(cFilename).lastIndexOf(QDir::separator());
-				QDir dir(pth + QDir::separator() + cFilename.left(mid));
-				QString cRight = cFilename.right(cFilename.length() - mid - 1);
+				QDir dir(pth + (mid >= 0 ? QDir::separator() + cFilename.left(mid) : ""));
+				QString cRight = mid >= 0 ? cFilename.right(cFilename.length() - mid - 1) : cFilename;
 				QString filter = QString(cRight).replace(hasNum, "*");
 				QFileInfoList files = dir.entryInfoList(QStringList() << filter, QDir::Files, QDir::NoSort);
 
