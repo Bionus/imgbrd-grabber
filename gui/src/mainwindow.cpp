@@ -65,13 +65,13 @@ void mainWindow::init(QStringList args, QMap<QString,QString> params)
 	m_settings->setValue("crashed", true);
 	m_settings->sync();
 
-	m_showLog = m_settings->value("Log/show", true).toBool();
-	if (!m_showLog)
-	{ ui->tabWidget->removeTab(ui->tabWidget->indexOf(ui->tabLog)); }
-
 	ThemeLoader themeLoader(savePath("themes/", true));
 	themeLoader.setTheme(m_settings->value("theme", "Default").toString());
 	ui->setupUi(this);
+
+	m_showLog = m_settings->value("Log/show", true).toBool();
+	if (!m_showLog)
+	{ ui->tabWidget->removeTab(ui->tabWidget->indexOf(ui->tabLog)); }
 
 	// On first launch after setup, we restore the setup's language
 	QString setupSettingsFile = savePath("innosetup.ini");
