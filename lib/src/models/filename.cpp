@@ -453,13 +453,17 @@ QStringList Filename::path(const Image& img, Profile *profile, QString pth, int 
 
 			if (!hasNum.isEmpty())
 			{
-				QFileInfoList files = QDir(pth).entryInfoList(QStringList() << QString(cFilename).replace(hasNum, "*"), QDir::Files, QDir::Name);
+				int mid = QDir::toNativeSeparators(cFilename).lastIndexOf(QDir::separator());
+				QDir dir(pth + QDir::separator() + cFilename.left(mid));
+				QString cRight = cFilename.right(cFilename.length() - mid - 1);
+				QString filter = QString(cRight).replace(hasNum, "*");
+				QFileInfoList files = dir.entryInfoList(QStringList() << filter, QDir::Files, QDir::Name);
 				int num = 1;
 				if (!files.isEmpty())
 				{
 					QString last = files.last().fileName();
-					int pos = cFilename.indexOf(hasNum);
-					int len = last.length() - cFilename.length() + 5;
+					int pos = cRight.indexOf(hasNum);
+					int len = last.length() - cRight.length() + 5;
 					num = last.mid(pos, len).toInt() + 1;
 				}
 				cFilename.replace(hasNum, optionedValue(QString::number(num), "num", numOptions, img, settings, namespaces));
