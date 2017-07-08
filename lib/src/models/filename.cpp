@@ -1,5 +1,6 @@
 #include "filename.h"
 #include <QtScript>
+#include <QCollator>
 #include <QIcon>
 #include "site.h"
 #include "profile.h"
@@ -457,7 +458,14 @@ QStringList Filename::path(const Image& img, Profile *profile, QString pth, int 
 				QDir dir(pth + QDir::separator() + cFilename.left(mid));
 				QString cRight = cFilename.right(cFilename.length() - mid - 1);
 				QString filter = QString(cRight).replace(hasNum, "*");
-				QFileInfoList files = dir.entryInfoList(QStringList() << filter, QDir::Files, QDir::Name);
+				QFileInfoList files = dir.entryInfoList(QStringList() << filter, QDir::Files, QDir::NoSort);
+
+				// Sort files naturally
+				QCollator collator;
+				collator.setNumericMode(true);
+				std::sort(files.begin(), files.end(), [&collator](const QFileInfo &a, const QFileInfo &b)
+				{ return collator.compare(a.fileName(), b.fileName()) < 0; });
+
 				int num = 1;
 				if (!files.isEmpty())
 				{
