@@ -1498,7 +1498,7 @@ void mainWindow::_getAll()
 			{
 				ui->tableBatchGroups->item(row, 0)->setIcon(getIcon(":/images/status/downloading.png"));
 				path = m_groupBatchs[site_id - 1].filename;
-				pth = m_groupBatchs[site_id - 1].page;
+				pth = m_groupBatchs[site_id - 1].path;
 			}
 
 			QString p = img->folder().isEmpty() ? pth : img->folder();
