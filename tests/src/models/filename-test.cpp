@@ -302,6 +302,19 @@ void FilenameTest::testPathOptionNumMultiple()
 	QFile::remove("tests/resources/tmp/7331 (1).jpg");
 	QFile::remove("tests/resources/tmp/7331 (2).jpg");
 }
+void FilenameTest::testPathOptionNumAboveTen()
+{
+	int count = 15;
+	for (int i = 1; i < count; ++i)
+		QFile::copy("tests/resources/image_1x1.png", "tests/resources/tmp/7331 (" + QString::number(i) + ").jpg");
+
+	assertPath("%id% (%num%).%ext%",
+			   "7331 (" + QString::number(count) + ").jpg",
+			   "tests/resources/tmp/");
+
+	for (int i = 1; i < count; ++i)
+		QFile::remove("tests/resources/tmp/7331 (" + QString::number(i) + ").jpg");
+}
 
 void FilenameTest::testPathOptionSort()
 {
