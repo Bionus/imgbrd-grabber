@@ -17,7 +17,11 @@ ProgramUpdater::ProgramUpdater(QString baseUrl)
 
 void ProgramUpdater::checkForUpdates()
 {
-	QUrl url(m_baseUrl + "/releases/latest");
+	#ifdef NIGHTLY
+		QUrl url(m_baseUrl + "/releases/tags/nightly");
+	#else
+		QUrl url(m_baseUrl + "/releases/latest");
+	#endif
 	QNetworkRequest request(url);
 
 	m_checkForUpdatesReply = m_networkAccessManager.get(request);
@@ -31,12 +35,19 @@ void ProgramUpdater::checkForUpdatesDone()
 	QVariant json = Json::parse(m_source);
 	QMap<QString, QVariant> lastRelease = json.toMap();
 
-	QString latest = lastRelease["name"].toString().mid(1);
-	QString changelog = lastRelease["body"].toString();
+	QString changelog;
+	#if defined NIGHTLY
+		QString latest = lastRelease["target_commitish"].toString();
+		QString current = QString(NIGHTLY_COMMIT);
+		bool isNew = !current.isEmpty() && latest != current;
+		latest = latest.left(8);
+	#else
+		QString latest = lastRelease["name"].toString().mid(1);
+		bool isNew = compareVersions(latest, QString(VERSION)) > 0;
+		changelog = lastRelease["body"].toString();
+	#endif
 
 	m_newVersion = latest;
-	bool isNew = compareVersions(latest, QString(VERSION)) > 0;
-
 	emit finished(latest, isNew, changelog);
 }
 

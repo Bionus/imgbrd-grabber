@@ -8,7 +8,7 @@
 #include "downloader/file-downloader.h"
 #include "functions.h"
 
-#define MAX_LOAD_FILESIZE (1024*1024*200)
+#define MAX_LOAD_FILESIZE (1024*1024*50)
 
 
 QString removeCacheUrl(QString url)
@@ -877,12 +877,9 @@ int Image::value() const
 QStringList Image::blacklisted(QStringList blacklistedtags, bool invert) const
 {
 	QStringList detected;
-	QRegExp reg;
-	reg.setCaseSensitivity(Qt::CaseInsensitive);
-	reg.setPatternSyntax(QRegExp::Wildcard);
 	for (QString tag : blacklistedtags)
 	{
-		if (!this->match(tag, invert).isEmpty())
+		if (!match(tag, invert).isEmpty())
 		{ detected.append(tag); }
 	}
 	return detected;
@@ -890,15 +887,7 @@ QStringList Image::blacklisted(QStringList blacklistedtags, bool invert) const
 
 QStringList Image::stylishedTags(Profile *profile) const
 {
-	QStringList ignored = profile->getIgnored();
-	QStringList blacklisted = profile->getSettings()->value("blacklistedtags").toString().split(' ');
-
-	QStringList t;
-	for (Tag tag : m_tags)
-		t.append(tag.stylished(profile, ignored, blacklisted));
-
-	t.sort();
-	return t;
+	return Tag::Stylished(m_tags, profile);
 }
 
 Image::SaveResult Image::save(QString path, bool force, bool basic, bool addMd5, bool startCommands, int count, bool loadIfNecessary)

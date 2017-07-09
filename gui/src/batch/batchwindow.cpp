@@ -8,20 +8,19 @@
 
 
 
-batchWindow::batchWindow(QWidget *parent)
-	: QDialog(parent), ui(new Ui::batchWindow), m_imagesCount(0), m_items(0), m_images(0), m_maxSpeeds(0), m_lastDownloading(0), m_cancel(false), m_paused(false)
+batchWindow::batchWindow(QSettings *settings, QWidget *parent)
+	: QDialog(parent), ui(new Ui::batchWindow), m_settings(settings), m_imagesCount(0), m_items(0), m_images(0), m_maxSpeeds(0), m_lastDownloading(0), m_cancel(false), m_paused(false)
 {
 	ui->setupUi(this);
 	ui->tableWidget->resizeColumnToContents(0);
 	m_currentSize = size();
 
-	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
-	restoreGeometry(settings.value("Batch/geometry").toByteArray());
-	ui->buttonDetails->setChecked(settings.value("Batch/details", true).toBool());
-	on_buttonDetails_clicked(settings.value("Batch/details", true).toBool());
-	ui->comboEnd->setCurrentIndex(settings.value("Batch/end", 0).toInt());
-	ui->checkRemove->setChecked(settings.value("Batch/remove", false).toBool());
-	ui->checkScrollToDownload->setChecked(settings.value("Batch/scrollToDownload", true).toBool());
+	restoreGeometry(m_settings->value("Batch/geometry").toByteArray());
+	ui->buttonDetails->setChecked(m_settings->value("Batch/details", true).toBool());
+	on_buttonDetails_clicked(m_settings->value("Batch/details", true).toBool());
+	ui->comboEnd->setCurrentIndex(m_settings->value("Batch/end", 0).toInt());
+	ui->checkRemove->setChecked(m_settings->value("Batch/remove", false).toBool());
+	ui->checkScrollToDownload->setChecked(m_settings->value("Batch/scrollToDownload", true).toBool());
 
 	m_speeds = QMap<QString, int>();
 	m_urls = QStringList();
@@ -56,13 +55,12 @@ batchWindow::~batchWindow()
 }
 void batchWindow::closeEvent(QCloseEvent *e)
 {
-	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
-	settings.setValue("Batch/geometry", saveGeometry());
-	settings.setValue("Batch/details", ui->buttonDetails->isChecked());
-	settings.setValue("Batch/end", ui->comboEnd->currentIndex());
-	settings.setValue("Batch/remove", ui->checkRemove->isChecked());
-	settings.setValue("Batch/scrollToDownload", ui->checkScrollToDownload->isChecked());
-	settings.sync();
+	m_settings->setValue("Batch/geometry", saveGeometry());
+	m_settings->setValue("Batch/details", ui->buttonDetails->isChecked());
+	m_settings->setValue("Batch/end", ui->comboEnd->currentIndex());
+	m_settings->setValue("Batch/remove", ui->checkRemove->isChecked());
+	m_settings->setValue("Batch/scrollToDownload", ui->checkScrollToDownload->isChecked());
+	m_settings->sync();
 
 	if (m_images < m_imagesCount)
 	{

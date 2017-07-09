@@ -29,6 +29,7 @@ class Page : public QObject
 		int			imagesCount(bool guess = true);
 		int			pagesCount(bool guess = true);
 		QUrl		url();
+		QUrl		friendlyUrl();
 		QString		source();
 		QString		website();
 		QString		wiki();
@@ -67,7 +68,7 @@ class Page : public QObject
 		QStringList		m_postFiltering, m_errors, m_search;
 		int				m_imagesPerPage, m_currentSource, m_lastPage, m_lastPageMinId, m_lastPageMaxId, m_imagesCount, m_pagesCount, m_page, m_blim, m_pool;
 		bool			m_smart;
-		QString			m_format, m_website, m_source, m_wiki, m_originalUrl;
+		QString			m_format, m_website, m_source, m_originalUrl;
 };
 
 #endif // PAGE_H

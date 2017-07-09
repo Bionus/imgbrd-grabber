@@ -221,6 +221,7 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	ui->checkResultsFixedWidthLayout->setChecked(settings->value("resultsFixedWidthLayout", false).toBool());
 	ui->checkImageCloseMiddleClick->setChecked(settings->value("imageCloseMiddleClick", true).toBool());
 	ui->checkImageNavigateScroll->setChecked(settings->value("imageNavigateScroll", true).toBool());
+	ui->checkZoomShowTagCount->setChecked(settings->value("Zoom/showTagCount", false).toBool());
 	QStringList positionsV = QStringList() << "top" << "center" << "bottom";
 	QStringList positionsH = QStringList() << "left" << "center" << "right";
 	ui->comboImagePositionImageV->setCurrentIndex(positionsV.indexOf(settings->value("imagePositionImageV", "center").toString()));
@@ -443,7 +444,13 @@ void optionsWindow::setLogFile(int index, QMap<QString, QVariant> logFile)
 	settings->beginGroup("LogFiles");
 
 	if (index < 0)
-	{ index = settings->childGroups().last().toInt() + 1; }
+	{
+		auto childGroups = settings->childGroups();
+		if (childGroups.isEmpty())
+		{ index = 0; }
+		else
+		{ index = settings->childGroups().last().toInt() + 1; }
+	}
 
 	settings->beginGroup(QString::number(index));
 
@@ -745,7 +752,7 @@ void optionsWindow::save()
 {
 	QSettings *settings = m_profile->getSettings();
 
-	settings->setValue("blacklistedtags", ui->lineBlacklist->text());
+	m_profile->setBlacklistedTags(ui->lineBlacklist->text().split(' ', QString::SkipEmptyParts));
 	settings->setValue("downloadblacklist", ui->checkDownloadBlacklisted->isChecked());
 	settings->setValue("whitelistedtags", ui->lineWhitelist->text());
 	settings->setValue("ignoredtags", ui->lineIgnored->text());
@@ -974,6 +981,7 @@ void optionsWindow::save()
 	settings->setValue("resultsFixedWidthLayout", ui->checkResultsFixedWidthLayout->isChecked());
 	settings->setValue("imageCloseMiddleClick", ui->checkImageCloseMiddleClick->isChecked());
 	settings->setValue("imageNavigateScroll", ui->checkImageNavigateScroll->isChecked());
+	settings->setValue("Zoom/showTagCount", ui->checkZoomShowTagCount->isChecked());
 	QStringList positionsV = QStringList() << "top" << "center" << "bottom";
 	QStringList positionsH = QStringList() << "left" << "center" << "right";
 	settings->setValue("imagePositionImageV", positionsV.at(ui->comboImagePositionImageV->currentIndex()));

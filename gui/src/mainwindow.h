@@ -13,6 +13,8 @@
 #include <QTableWidgetItem>
 #include <QProgressBar>
 #include "models/site.h"
+#include "models/image.h"
+#include "downloader/image-downloader.h"
 
 
 namespace Ui
@@ -43,7 +45,7 @@ class mainWindow : public QMainWindow
 
 	public slots:
 		// Log
-		void logShow(QDateTime date, QString msg);
+		void logShow(QString msg);
 		void logClear();
 		void logOpen();
 		// Menus
@@ -80,12 +82,10 @@ class mainWindow : public QMainWindow
 		// Batch download management
 		void batchClear();
 		void batchClearSel();
-		QList<int> getSelectedRows(QList<QTableWidgetItem*> selected);
 		void batchMove(int);
 		void batchMoveUp();
 		void batchMoveDown();
 		void batchSel();
-		void batchChange(int);
 		void updateBatchGroups(int, int);
 		void addGroup();
 		void addUnique();
@@ -98,8 +98,8 @@ class mainWindow : public QMainWindow
 		void getAllFinishedImages(QList<QSharedPointer<Image>> images);
 		void getAllImages();
 		void getAllGetImage(QSharedPointer<Image> img);
+		void getAllGetImageSaved(QSharedPointer<Image> img, QMap<QString, Image::SaveResult> result);
 		void getAllPerformTags();
-		void getAllPerformImage(QNetworkReply::NetworkError error, QString errorString);
 		void getAllProgress(qint64, qint64);
 		void getAllCancel();
 		void getAllPause();
@@ -113,8 +113,8 @@ class mainWindow : public QMainWindow
 		bool needExactTags(QSettings *settings);
 		void _getAll();
 		// Tabs
-		int addTab(QString tag = "", bool background = false, bool save = true);
-		int addPoolTab(int pool = 0, QString site = "", bool background = false, bool save = true);
+		void addTab(QString tag = "", bool background = false, bool save = true);
+		void addPoolTab(int pool = 0, QString site = "", bool background = false, bool save = true);
 		void addSearchTab(searchTab*, bool background = false, bool save = true);
 		void updateTabTitle(searchTab*);
 		void tabClosed(searchTab*);
@@ -125,10 +125,6 @@ class mainWindow : public QMainWindow
 		bool loadTabs(QString);
 		void updateTabs();
 		void focusSearch();
-		// Title
-		void increaseDownloads();
-		void decreaseDownloads();
-		void updateDownloads();
 		// Tag list
 		void loadMd5(QString path, bool newTab = true, bool background = true, bool save = true);
 		void loadTag(QString tag, bool newTab = true, bool background = true, bool save = true);
@@ -137,11 +133,6 @@ class mainWindow : public QMainWindow
 		void linkHovered(QString tag);
 		void contextMenu();
 		void openInNewTab();
-		void openInNewWindow();
-		void favorite();
-		void unfavorite();
-		void viewitlater();
-		void unviewitlater();
 		// Others
 		void closeEvent(QCloseEvent*);
 		void onFirstLoad();
@@ -159,7 +150,6 @@ class mainWindow : public QMainWindow
 		void imageUrlChanged(QString, QString);
 		void updateCompleters();
 		void setSource(QString site);
-		void saveImage(QSharedPointer<Image> img, QString path = "", QString p = "", bool getAll = true);
 		void setTags(QList<Tag> tags, searchTab *from = nullptr);
 		void initialLoginsFinished();
 		QIcon& getIcon(QString path);
@@ -189,6 +179,7 @@ class mainWindow : public QMainWindow
 		QTranslator			m_translator, m_qtTranslator;
 		QList<DownloadQueryGroup>		m_groupBatchs;
 		QList<QSharedPointer<Image>>	m_getAllRemaining, m_getAllDownloading, m_getAllFailed, m_images, m_getAllSkippedImages;
+		QMap<QSharedPointer<Image>, ImageDownloader*>	m_getAllImageDownloaders;
 		QWidget				*m_currentTab;
 		QList<searchTab*>	m_tabs;
 		QList<bool>			m_selectedSources;
@@ -206,6 +197,7 @@ class mainWindow : public QMainWindow
 		bool				m_restore, m_showLog;
 		QMap<QString, QIcon>	m_icons;
 		QMap<QString, Site*>	m_sites;
+		QList<Tag>				m_currentTags;
 		QLinkedList<QJsonObject>	m_closedTabs;
 		QNetworkAccessManager m_networkAccessManager;
 };

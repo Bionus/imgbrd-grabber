@@ -41,7 +41,7 @@ class searchTab : public QWidget
 		int columns();
 		QString postFilter();
 		virtual void setTags(QString) = 0;
-		virtual bool validateImage(QSharedPointer<Image> img);
+		virtual bool validateImage(QSharedPointer<Image> img, QString &error);
 		QStringList selectedImages();
 		void setSources(QList<bool> sources);
 		void setImagesPerPage(int ipp);

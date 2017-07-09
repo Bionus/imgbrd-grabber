@@ -37,7 +37,7 @@ build_script:
   - cmake .. -G "%MAKEFILES%" -DCMAKE_BUILD_TYPE=Release
   - if not %platform%==mingw (nmake) else (mingw32-make)
   - cd ..
-  - cp build\gui\gui.exe release\Grabber.exe
+  - copy build\gui\gui.exe release\Grabber.exe
 
 test_script:
   - build\tests\tests.exe
@@ -57,7 +57,10 @@ deploy:
       Nightly automated builds from the develop branch.
       Automatically uploaded by AppVeyor, **use at your own risk**!
 
-      *Note: you need to first install Grabber normally before using nightly releases.*
+      **Head:** $(APPVEYOR_REPO_COMMIT)
+      **Date:** $(APPVEYOR_REPO_COMMIT_TIMESTAMP)
+
+      *Note: you need to first install Grabber normally before using nightly releases. Then, replace the existing `Grabber.exe` file in your installation folder by this one.*
     auth_token:
       secure: mUYQ72KBJUaYr5Bhy2HkBkEY13Q7k27Q7IRmOGXfTOq7YnXUS9PikETcZvzCfiVu
     on:

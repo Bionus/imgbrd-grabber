@@ -6,10 +6,16 @@ if(CMAKE_BUILD_TYPE STREQUAL "Release")
 	set(USE_QSCINTILLA 1)
 endif()
 
-# Travis settings
+# Continuous integration settings
 if(DEFINED ENV{TRAVIS} OR DEFINED ENV{APPVEYOR})
 	set(USE_BREAKPAD 0)
 	set(USE_QSCINTILLA 0)
+endif()
+
+# Nightly version settings
+if (DEFINED ENV{APPVEYOR})
+	add_definitions(-DNIGHTLY=1)
+	add_definitions(-DNIGHTLY_COMMIT="$ENV{APPVEYOR_REPO_COMMIT}")
 endif()
 
 # Qt libraries

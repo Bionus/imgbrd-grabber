@@ -788,7 +788,9 @@ void PageApi::parseNavigation(const QString &source)
 	{
 		QRegExp rxlast(m_site->value("Regex/Count"));
 		rxlast.indexIn(source, 0);
-		setImageCount(rxlast.cap(1).remove(",").toInt(), true);
+		int cnt = rxlast.cap(1).remove(",").toInt();
+		if (cnt > 0)
+		{ setImageCount(cnt, true); }
 	}
 	if (m_imagesCount < 1)
 	{

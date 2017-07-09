@@ -55,10 +55,20 @@ int main(int argc, char *argv[])
 {
 	QApplication app(argc, argv);
 	app.setApplicationName("Grabber");
-	app.setApplicationDisplayName("Grabber");
 	app.setApplicationVersion(VERSION);
 	app.setOrganizationName("Bionus");
 	app.setOrganizationDomain("bionus.fr.cr");
+
+	// Set window title according to the current build
+	#ifdef NIGHTLY
+		QString commit(NIGHTLY_COMMIT);
+		if (!commit.isEmpty())
+			app.setApplicationDisplayName("Grabber Nightly - " + commit.left(8));
+		else
+			app.setApplicationDisplayName("Grabber Nightly");
+	#else
+		app.setApplicationDisplayName("Grabber");
+	#endif
 
 	QCommandLineParser parser;
 	parser.addHelpOption();
@@ -146,7 +156,7 @@ int main(int argc, char *argv[])
 											parser.value(userOption),
 											parser.value(passwordOption),
 											parser.isSet(blacklistOption),
-											profile->getSettings()->value("blacklistedtags").toString().split(' '),
+											profile->getBlacklist(),
 											parser.isSet(noDuplicatesOption),
 											parser.value(tagsMinOption).toInt(),
 											parser.value(tagsFormatOption));
@@ -176,7 +186,8 @@ int main(int argc, char *argv[])
 			{
 				settings->setValue("last_check_for_updates", QDateTime::currentDateTime());
 
-				UpdateDialog *updateDialog = new UpdateDialog();
+				bool shouldQuit = false;
+				UpdateDialog *updateDialog = new UpdateDialog(&shouldQuit);
 				QEventLoop *el = new QEventLoop();
 				QObject::connect(updateDialog, &UpdateDialog::noUpdateAvailable, el, &QEventLoop::quit);
 				QObject::connect(updateDialog, &UpdateDialog::rejected, el, &QEventLoop::quit);
@@ -184,6 +195,9 @@ int main(int argc, char *argv[])
 				updateDialog->checkForUpdates();
 				el->exec();
 				el->deleteLater();
+
+				if (shouldQuit)
+					return 0;
 			}
 
 			QMap<QString, QString> params;

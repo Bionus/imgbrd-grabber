@@ -90,6 +90,9 @@ Profile::Profile(QString path)
 	}
 
 	m_commands = new Commands(this);
+
+	// Blacklisted tags
+	m_blacklistedTags = m_settings->value("blacklistedtags").toString().split(' ', QString::SkipEmptyParts);
 }
 
 Profile::~Profile()
@@ -105,9 +108,6 @@ Profile::~Profile()
 
 void Profile::sync()
 {
-	if (m_settings != nullptr)
-		m_settings->sync();
-
 	if (m_path.isEmpty())
 		return;
 
@@ -162,6 +162,13 @@ void Profile::sync()
 	Commands *newCommands = new Commands(this);
 	m_commands = newCommands;
 	delete oldCommands;
+
+	// Blacklisted tags
+	m_settings->setValue("blacklistedtags", m_blacklistedTags.join(' '));
+
+	// Sync settings
+	if (m_settings != nullptr)
+		m_settings->sync();
 }
 
 QString Profile::tempPath() const
@@ -303,6 +310,25 @@ void Profile::addSite(Site *site)
 }
 
 
+void Profile::setBlacklistedTags(QStringList tags)
+{
+	m_blacklistedTags = tags;
+	emit blacklistChanged();
+}
+
+void Profile::addBlacklistedTag(QString tag)
+{
+	m_blacklistedTags.append(tag);
+	emit blacklistChanged();
+}
+
+void Profile::removeBlacklistedTag(QString tag)
+{
+	m_blacklistedTags.removeAll(tag);
+	emit blacklistChanged();
+}
+
+
 QString Profile::getPath() const				{ return m_path;				}
 QSettings *Profile::getSettings() const			{ return m_settings;			}
 QList<Favorite> &Profile::getFavorites()		{ return m_favorites;			}
@@ -311,3 +337,4 @@ QStringList &Profile::getIgnored()				{ return m_ignored;				}
 Commands &Profile::getCommands()				{ return *m_commands;			}
 QStringList &Profile::getAutoComplete()			{ return m_autoComplete;		}
 QStringList &Profile::getCustomAutoComplete()	{ return m_customAutoComplete;	}
+QStringList &Profile::getBlacklist()			{ return m_blacklistedTags;		}

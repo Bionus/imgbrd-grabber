@@ -8,14 +8,14 @@
 class QAffiche : public QLabel
 {
 	Q_OBJECT
-	
+
 	public:
 		QAffiche(QVariant id = QVariant(), int border = 0, QColor color = QColor(), QWidget *parent = 0);
 		~QAffiche();
 		void setImage(const QImage &);
 		void setImage(const QPixmap &);
 		Qt::MouseButton lastPressed();
-	
+
 	signals:
 		void doubleClicked();
 		void doubleClicked(int);
@@ -33,7 +33,7 @@ class QAffiche : public QLabel
 		void mouseOver(int);
 		void mouseOut();
 		void mouseOut(int);
-		
+
 	protected:
 		//void paintEvent(QPaintEvent*);
 		void mouseDoubleClickEvent(QMouseEvent*);

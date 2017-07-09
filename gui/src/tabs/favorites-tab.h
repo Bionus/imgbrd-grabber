@@ -35,7 +35,7 @@ class favoritesTab : public searchTab
 		void setTags(QString) override;
 		// Loading
 		void load() override;
-		bool validateImage(QSharedPointer<Image> img) override;
+		bool validateImage(QSharedPointer<Image> img, QString &error) override;
 		// Batch
 		void getPage();
 		void getAll();

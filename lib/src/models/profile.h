@@ -52,6 +52,11 @@ class Profile : public QObject
 		// Sites management
 		void addSite(Site *site);
 
+		// Blacklist management
+		void setBlacklistedTags(QStringList tags);
+		void addBlacklistedTag(QString tag);
+		void removeBlacklistedTag(QString tag);
+
 		// Getters
 		QString getPath() const;
 		QSettings *getSettings() const;
@@ -61,12 +66,14 @@ class Profile : public QObject
 		Commands &getCommands();
 		QStringList &getAutoComplete();
 		QStringList &getCustomAutoComplete();
+		QStringList &getBlacklist();
 
 	signals:
 		void favoritesChanged();
 		void keptForLaterChanged();
 		void ignoredChanged();
 		void sitesChanged();
+		void blacklistChanged();
 
 	private:
 		QString 		m_path;
@@ -77,6 +84,7 @@ class Profile : public QObject
 		Commands		*m_commands;
 		QStringList		m_autoComplete;
 		QStringList		m_customAutoComplete;
+		QStringList		m_blacklistedTags;
 		QHash<QString, QString>	m_md5s;
 };
 

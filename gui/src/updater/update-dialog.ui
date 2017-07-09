@@ -129,16 +129,13 @@
       <enum>Qt::Horizontal</enum>
      </property>
      <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+      <set>QDialogButtonBox::No|QDialogButtonBox::Yes</set>
      </property>
     </widget>
    </item>
   </layout>
  </widget>
  <resources>
-  <include location="../../../resources/resources.qrc"/>
-  <include location="../../../resources/resources.qrc"/>
-  <include location="../../../resources/resources.qrc"/>
   <include location="../../../resources/resources.qrc"/>
  </resources>
  <connections>

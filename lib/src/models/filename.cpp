@@ -1,5 +1,6 @@
 #include "filename.h"
 #include <QtScript>
+#include <QCollator>
 #include <QIcon>
 #include "site.h"
 #include "profile.h"
@@ -453,13 +454,24 @@ QStringList Filename::path(const Image& img, Profile *profile, QString pth, int 
 
 			if (!hasNum.isEmpty())
 			{
-				QFileInfoList files = QDir(pth).entryInfoList(QStringList() << QString(cFilename).replace(hasNum, "*"), QDir::Files, QDir::Name);
+				int mid = QDir::toNativeSeparators(cFilename).lastIndexOf(QDir::separator());
+				QDir dir(pth + (mid >= 0 ? QDir::separator() + cFilename.left(mid) : ""));
+				QString cRight = mid >= 0 ? cFilename.right(cFilename.length() - mid - 1) : cFilename;
+				QString filter = QString(cRight).replace(hasNum, "*");
+				QFileInfoList files = dir.entryInfoList(QStringList() << filter, QDir::Files, QDir::NoSort);
+
+				// Sort files naturally
+				QCollator collator;
+				collator.setNumericMode(true);
+				std::sort(files.begin(), files.end(), [&collator](const QFileInfo &a, const QFileInfo &b)
+				{ return collator.compare(a.fileName(), b.fileName()) < 0; });
+
 				int num = 1;
 				if (!files.isEmpty())
 				{
 					QString last = files.last().fileName();
-					int pos = cFilename.indexOf(hasNum);
-					int len = last.length() - cFilename.length() + 5;
+					int pos = cRight.indexOf(hasNum);
+					int len = last.length() - cRight.length() + 5;
 					num = last.mid(pos, len).toInt() + 1;
 				}
 				cFilename.replace(hasNum, optionedValue(QString::number(num), "num", numOptions, img, settings, namespaces));
@@ -637,7 +649,7 @@ bool Filename::isValid(QString *error) const
 		return returnError(orange.arg(QObject::tr("Your filename doesn't ends by an extension, symbolized by %ext%! You may not be able to open saved files.")), error);
 
 	// Field must contain an unique token
-	if (!m_format.contains("%md5%") && !m_format.contains("%id%") && !m_format.contains("%count%"))
+	if (!m_format.contains("%md5%") && !m_format.contains("%id%") && !m_format.contains("%num%"))
 		return returnError(orange.arg(QObject::tr("Your filename is not unique to each image and an image may overwrite a previous one at saving! You should use%md5%, which is unique to each image, to avoid this inconvenience.")), error);
 
 	// Looking for unknown tokens

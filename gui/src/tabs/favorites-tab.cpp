@@ -162,9 +162,9 @@ void favoritesTab::load()
 	loadTags(m_currentTags.trimmed().split(' ', QString::SkipEmptyParts));
 }
 
-bool favoritesTab::validateImage(QSharedPointer<Image> img)
+bool favoritesTab::validateImage(QSharedPointer<Image> img, QString &error)
 {
-	return (img->createdAt() > m_loadFavorite || img->createdAt().isNull());
+	return (img->createdAt() > m_loadFavorite || img->createdAt().isNull()) && searchTab::validateImage(img, error);
 }
 
 void favoritesTab::write(QJsonObject &json) const

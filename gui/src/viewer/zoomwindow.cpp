@@ -20,10 +20,11 @@
 #include "helpers.h"
 #include "functions.h"
 #include "image-context-menu.h"
+#include "tag-context-menu.h"
 
 
 zoomWindow::zoomWindow(QList<QSharedPointer<Image> > images, QSharedPointer<Image> image, Site *site, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
-	: QWidget(Q_NULLPTR, Qt::Window), m_parent(parent), m_profile(profile), m_favorites(profile->getFavorites()), m_viewItLater(profile->getKeptForLater()), m_ignore(profile->getIgnored()), m_settings(profile->getSettings()), ui(new Ui::zoomWindow), m_site(site), timeout(300), m_tooBig(false), m_loadedImage(false), m_loadedDetails(false), m_displayImage(QPixmap()), m_displayMovie(nullptr), m_finished(false), m_size(0), m_sites(sites), m_source(), m_fullScreen(nullptr), m_images(images), m_isFullscreen(false), m_isSlideshowRunning(false), m_imagePath(""), m_labelImageScaled(false)
+	: QWidget(Q_NULLPTR, Qt::Window), m_parent(parent), m_profile(profile), m_favorites(profile->getFavorites()), m_viewItLater(profile->getKeptForLater()), m_ignore(profile->getIgnored()), m_settings(profile->getSettings()), ui(new Ui::zoomWindow), m_site(site), m_timeout(300), m_tooBig(false), m_loadedImage(false), m_loadedDetails(false), m_displayImage(QPixmap()), m_displayMovie(nullptr), m_finished(false), m_size(0), m_sites(sites), m_source(), m_fullScreen(nullptr), m_images(images), m_isFullscreen(false), m_isSlideshowRunning(false), m_imagePath(""), m_labelImageScaled(false)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	ui->setupUi(this);
@@ -72,6 +73,7 @@ zoomWindow::zoomWindow(QList<QSharedPointer<Image> > images, QSharedPointer<Imag
 	connect(m_profile, &Profile::favoritesChanged, this, &zoomWindow::colore);
 	connect(m_profile, &Profile::keptForLaterChanged, this, &zoomWindow::colore);
 	connect(m_profile, &Profile::ignoredChanged, this, &zoomWindow::colore);
+	connect(m_profile, &Profile::blacklistChanged, this, &zoomWindow::colore);
 
 	m_stackedWidget = new QStackedWidget(this);
 		ui->verticalLayout->insertWidget(1, m_stackedWidget, 1);
@@ -167,19 +169,17 @@ void zoomWindow::go()
 	if (pos == "top")
 	{
 		ui->widgetLeft->hide();
-		m_labelTagsTop->setText(m_image->stylishedTags(m_profile).join(" "));
 		m_labelTagsTop->show();
 	}
 	else
 	{
 		m_labelTagsTop->hide();
-		m_labelTagsLeft->setText(m_image->stylishedTags(m_profile).join("<br/>"));
-		m_labelTagsLeft->setMinimumWidth(m_labelTagsLeft->sizeHint().width() + ui->scrollArea->verticalScrollBar()->sizeHint().width());
 		m_labelTagsLeft->show();
 		ui->widgetLeft->show();
 	}
 
 	m_detailsWindow = new detailsWindow(m_profile, this);
+	colore();
 
 	// Load image details (exact tags & co)
 	connect(m_image.data(), &Image::finishedLoadingTags, this, &zoomWindow::replyFinishedDetails, Qt::UniqueConnection);
@@ -274,7 +274,7 @@ void zoomWindow::openPoolId(Page *p)
 	}
 
 	m_image = p->images().at(0);
-	timeout = 300;
+	m_timeout = 300;
 	m_loadedDetails = false;
 	m_loadedImage = false;
 	m_finished = false;
@@ -325,94 +325,29 @@ void zoomWindow::openSaveDirFav()
 { openSaveDir(true); }
 
 void zoomWindow::linkHovered(QString url)
-{ this->link = url; }
+{ m_link = url; }
 void zoomWindow::contextMenu(QPoint)
 {
-	QMenu *menu = new QMenu(this);
-	if (!this->link.isEmpty())
-	{
-		// Favorites
-		if (m_favorites.contains(Favorite(link)))
-		{
-			menu->addAction(QIcon(":/images/icons/remove.png"), tr("Remove from favorites"), this, SLOT(unfavorite()));
-			menu->addAction(QIcon(":/images/icons/save.png"), tr("Choose as image"), this, SLOT(setfavorite()));
-		}
-		else
-		{ menu->addAction(QIcon(":/images/icons/add.png"), tr("Add to favorites"), this, SLOT(favorite())); }
+	if (m_link.isEmpty())
+		return;
 
-		// Keep for later
-		if (m_viewItLater.contains(link, Qt::CaseInsensitive))
-		{ menu->addAction(QIcon(":/images/icons/remove.png"), tr("Don't keep for later"), this, SLOT(unviewitlater())); }
-		else
-		{ menu->addAction(QIcon(":/images/icons/add.png"), tr("Keep for later"), this, SLOT(viewitlater())); }
-
-		// Blacklist
-		QStringList blacklistedTags = m_settings->value("blacklistedtags").toString().split(' ');
-		if (blacklistedTags.contains(link))
-		{ menu->addAction(QIcon(":/images/icons/eye-plus.png"), tr("Don't blacklist"), this, SLOT(unblacklist())); }
-		else
-		{ menu->addAction(QIcon(":/images/icons/eye-minus.png"), tr("Blacklist"), this, SLOT(blacklist())); }
-
-		// Ignore
-		if (m_ignore.contains(link, Qt::CaseInsensitive))
-		{ menu->addAction(QIcon(":/images/icons/eye-plus.png"), tr("Don't ignore"), this, SLOT(unignore())); }
-		else
-		{ menu->addAction(QIcon(":/images/icons/eye-minus.png"), tr("Ignore"), this, SLOT(ignore())); }
-		menu->addSeparator();
-
-		// Copy
-		menu->addAction(QIcon(":/images/icons/copy.png"), tr("Copy tag"), this, SLOT(copyTagToClipboard()));
-		menu->addAction(QIcon(":/images/icons/copy.png"), tr("Copy all tags"), this, SLOT(copyAllTagsToClipboard()));
-		menu->addSeparator();
-
-		// Tabs
-		menu->addAction(QIcon(":/images/icons/tab-plus.png"), tr("Open in a new tab"), this, SLOT(openInNewTab()));
-		menu->addAction(QIcon(":/images/icons/window.png"), tr("Open in new a window"), this, SLOT(openInNewWindow()));
-		menu->addAction(QIcon(":/images/icons/browser.png"), tr("Open in browser"), this, SLOT(openInBrowser()));
-	}
+	Page page(m_profile, m_site, QList<Site*>() << m_site, QStringList() << m_link);
+	TagContextMenu *menu = new TagContextMenu(m_link, m_image->tags(), page.friendlyUrl(), m_profile, true, this);
+	connect(menu, &TagContextMenu::openNewTab, this, &zoomWindow::openInNewTab);
+	connect(menu, &TagContextMenu::setFavoriteImage, this, &zoomWindow::setfavorite);
 	menu->exec(QCursor::pos());
 }
 
 void zoomWindow::openInNewTab()
 {
-	m_parent->addTab(link);
-}
-void zoomWindow::openInNewWindow()
-{
-	QProcess myProcess;
-	myProcess.startDetached(qApp->arguments().at(0), QStringList(link));
-}
-void zoomWindow::openInBrowser()
-{
-	QDesktopServices::openUrl(m_image->pageUrl());
-}
-void zoomWindow::copyTagToClipboard()
-{
-	QApplication::clipboard()->setText(this->link);
-}
-void zoomWindow::copyAllTagsToClipboard()
-{
-	QStringList tags;
-	for (Tag tag : m_image->tags())
-		tags.append(tag.text());
-
-	QApplication::clipboard()->setText(tags.join(' '));
-}
-
-void zoomWindow::favorite()
-{
-	Favorite fav(link);
-	if (m_loadedImage)
-		fav.setImage(m_displayImage);
-
-	m_profile->addFavorite(fav);
+	m_parent->addTab(m_link);
 }
 void zoomWindow::setfavorite()
 {
 	if (!m_loadedImage)
 		return;
 
-	Favorite fav(link);
+	Favorite fav(m_link);
 	int pos = m_favorites.indexOf(fav);
 	if (pos >= 0)
 	{
@@ -425,43 +360,6 @@ void zoomWindow::setfavorite()
 	}
 
 	m_profile->emitFavorite();
-}
-void zoomWindow::unfavorite()
-{
-	m_profile->removeFavorite(Favorite(link));
-}
-
-void zoomWindow::viewitlater()
-{
-	m_profile->addKeptForLater(link);
-}
-void zoomWindow::unviewitlater()
-{
-	m_profile->removeKeptForLater(link);
-}
-
-void zoomWindow::ignore()
-{
-	m_profile->addIgnored(link);
-}
-void zoomWindow::unignore()
-{
-	m_profile->removeIgnored(link);
-}
-
-void zoomWindow::blacklist()
-{
-	QString blacklistedTags = m_settings->value("blacklistedtags").toString();
-	blacklistedTags += " " + link;
-	m_settings->setValue("blacklistedtags", blacklistedTags);
-	colore();
-}
-void zoomWindow::unblacklist()
-{
-	QStringList blacklistedTags = m_settings->value("blacklistedtags").toString().split(' ');
-	blacklistedTags.removeAll(link);
-	m_settings->setValue("blacklistedtags", blacklistedTags.join(' '));
-	colore();
 }
 
 void zoomWindow::load()
@@ -485,13 +383,11 @@ void zoomWindow::load()
 #define TIME 500
 void zoomWindow::downloadProgress(qint64 bytesReceived, qint64 bytesTotal)
 {
-	 if (m_image->isVideo() || m_url.section('.', -1).toLower() == "gif")
-		 return;
-
 	ui->progressBarDownload->setMaximum(bytesTotal);
 	ui->progressBarDownload->setValue(bytesReceived);
 
-	if (m_imageTime.elapsed() > TIME || (bytesTotal > 0 && bytesReceived / bytesTotal > PERCENT))
+	bool isAnimated = m_image->isVideo() || m_url.section('.', -1).toLower() == "gif";
+	if (!isAnimated && (m_imageTime.elapsed() > TIME || (bytesTotal > 0 && bytesReceived / bytesTotal > PERCENT)))
 	{
 		m_imageTime.restart();
 		emit loadImage(m_image->data());
@@ -597,12 +493,17 @@ void zoomWindow::replyFinishedDetails()
 }
 void zoomWindow::colore()
 {
-	QStringList t = m_image->stylishedTags(m_profile);
-	tags = t.join(' ');
+	QStringList t = Tag::Stylished(m_image->tags(), m_profile, m_settings->value("Zoom/showTagCount", false).toBool());
+	QString tags = t.join(' ');
+
 	if (ui->widgetLeft->isHidden())
 	{ m_labelTagsTop->setText(tags); }
 	else
-	{ m_labelTagsLeft->setText(t.join("<br/>")); }
+	{
+		m_labelTagsLeft->setText(t.join("<br/>"));
+		ui->scrollArea->setMinimumWidth(m_labelTagsLeft->sizeHint().width() + ui->scrollArea->verticalScrollBar()->sizeHint().width());
+	}
+
 	m_detailsWindow->setTags(tags);
 }
 
@@ -629,9 +530,18 @@ void zoomWindow::replyFinishedZoom(QNetworkReply::NetworkError err, QString erro
 		{ error(this, tr("File is too big to be displayed.\r\n%1").arg(m_image->url())); }
 	}
 	else if (err == QNetworkReply::ContentNotFoundError)
-	{ log("Image not found."); }
+	{ showLoadingError("Image not found."); }
+	else if (err == QNetworkReply::UnknownContentError)
+	{ showLoadingError("Error loading the image."); }
 	else if (err != QNetworkReply::OperationCanceledError)
 	{ error(this, tr("An unexpected error occured loading the image (%1 - %2).\r\n%3").arg(err).arg(errorString).arg(m_image->url())); }
+}
+
+void zoomWindow::showLoadingError(QString message)
+{
+	log(message);
+	ui->labelLoadingError->setText(message);
+	ui->labelLoadingError->show();
 }
 
 void zoomWindow::pendingUpdate()
@@ -1027,10 +937,10 @@ void zoomWindow::toggleSlideshow()
 void zoomWindow::resizeEvent(QResizeEvent *e)
 {
 	if (!m_resizeTimer->isActive())
-	{ this->timeout = qMin(500, qMax(50, (m_displayImage.width() * m_displayImage.height()) / 100000)); }
+	{ m_timeout = qMin(500, qMax(50, (m_displayImage.width() * m_displayImage.height()) / 100000)); }
 	m_resizeTimer->stop();
-	m_resizeTimer->start(this->timeout);
-	this->update(true);
+	m_resizeTimer->start(m_timeout);
+	update(true);
 
 	QWidget::resizeEvent(e);
 }
@@ -1111,6 +1021,7 @@ void zoomWindow::load(QSharedPointer<Image> image)
 	m_image = image;
 	connect(m_image.data(), &Image::urlChanged, this, &zoomWindow::urlChanged, Qt::UniqueConnection);
 	m_size = 0;
+	ui->labelLoadingError->hide();
 
 	// Show the thumbnail if the image was not already preloaded
 	if (isVisible())
@@ -1179,7 +1090,7 @@ int zoomWindow::firstNonBlacklisted(int direction)
 	index = (index + m_images.count() + direction) % m_images.count();
 
 	// Skip blacklisted images
-	QStringList blacklistedtags(m_settings->value("blacklistedtags").toString().split(" "));
+	auto blacklistedtags = m_profile->getBlacklist();
 	while (!m_images[index]->blacklisted(blacklistedtags).isEmpty() && index != first)
 	{
 		index = (index + m_images.count() + direction) % m_images.count();

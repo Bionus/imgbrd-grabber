@@ -1138,9 +1138,6 @@ QTextEdit {
  </tabstops>
  <resources>
   <include location="../../resources/resources.qrc"/>
-  <include location="../../resources/resources.qrc"/>
-  <include location="../../resources/resources.qrc"/>
-  <include location="../../resources/resources.qrc"/>
  </resources>
  <connections>
   <connection>
@@ -1502,7 +1499,7 @@ QTextEdit {
    <slot>logClear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>332</x>
+     <x>327</x>
      <y>526</y>
     </hint>
     <hint type="destinationlabel">
@@ -1534,7 +1531,7 @@ QTextEdit {
    <slot>logOpen()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>612</x>
+     <x>609</x>
      <y>526</y>
     </hint>
     <hint type="destinationlabel">

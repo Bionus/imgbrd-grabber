@@ -216,8 +216,7 @@ QStringList searchTab::reasonsToFail(Page* page, QStringList completion, QString
 QColor searchTab::imageColor(QSharedPointer<Image> img) const
 {
 	// Blacklisted
-	QStringList blacklistedtags(m_settings->value("blacklistedtags").toString().split(" "));
-	QStringList detected = img->blacklisted(blacklistedtags);
+	QStringList detected = img->blacklisted(m_profile->getBlacklist());
 	if (!detected.isEmpty())
 		return QColor("#000000");
 
@@ -338,9 +337,12 @@ void searchTab::finishedLoading(Page* page)
 
 	// Filter images depending on tabs
 	QList<QSharedPointer<Image>> validImages;
+	QString error;
 	for (QSharedPointer<Image> img : page->images())
-		if (validateImage(img))
+		if (validateImage(img, error))
 			validImages.append(img);
+		else
+			log(error);
 
 	// Remove already existing images for merged results
 	bool merged = ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked();
@@ -441,8 +443,9 @@ void searchTab::finishedLoadingTags(Page *page)
 
 	// Update image and page count
 	QList<QSharedPointer<Image>> imgs;
+	QString error;
 	for (QSharedPointer<Image> img : page->images())
-		if (validateImage(img))
+		if (validateImage(img, error))
 			imgs.append(img);
 
 	if (ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked() && m_siteLabels.contains(nullptr))
@@ -456,22 +459,14 @@ void searchTab::loadImageThumbnails(Page *page, const QList<QSharedPointer<Image
 	QStringList tags = page->search();
 	for (int i = 0; i < imgs.count(); i++)
 	{
-		QStringList detected;
 		QSharedPointer<Image> img = imgs.at(i);
 		QList<QChar> modifiers = QList<QChar>() << '~' << '-';
 		for (int r = 0; r < tags.size(); r++)
 			if (modifiers.contains(tags[r][0]))
 				tags[r] = tags[r].mid(1);
 
-		if (!m_settings->value("blacklistedtags").toString().isEmpty())
-		{ detected = img->blacklisted(m_settings->value("blacklistedtags").toString().toLower().split(" ")); }
-		if (!detected.isEmpty() && m_settings->value("hideblacklisted", false).toBool())
-		{ log(QString("Image #%1 ignored. Reason: %2.").arg(i).arg("\""+detected.join(", ")+"\""));; }
-		else
-		{
-			connect(img.data(), &Image::finishedLoadingPreview, this, &searchTab::finishedLoadingPreview);
-			img->loadPreview();
-		}
+		connect(img.data(), &Image::finishedLoadingPreview, this, &searchTab::finishedLoadingPreview);
+		img->loadPreview();
 	}
 }
 
@@ -494,8 +489,7 @@ void searchTab::finishedLoadingPreview()
 	}
 
 	// Download whitelist images on thumbnail view
-	QStringList blacklistedtags(m_settings->value("blacklistedtags").toString().split(" "));
-	QStringList detected = img->blacklisted(blacklistedtags);
+	QStringList detected = img->blacklisted(m_profile->getBlacklist());
 	QStringList whitelistedtags(m_settings->value("whitelistedtags").toString().split(" "));
 	QStringList whitelisted = img->blacklisted(whitelistedtags);
 	if (!whitelisted.isEmpty() && m_settings->value("whitelist_download", "image").toString() == "page")
@@ -750,7 +744,6 @@ QBouton *searchTab::createImageThumbnail(int position, QSharedPointer<Image> img
 
 	connect(l, SIGNAL(appui(int)), this, SLOT(webZoom(int)));
 	connect(l, SIGNAL(toggled(int, bool, bool)), this, SLOT(toggleImage(int, bool, bool)));
-	connect(l, SIGNAL(rightClick(int)), m_parent, SLOT(batchChange(int)));
 
 	return l;
 }
@@ -877,8 +870,21 @@ int searchTab::getActualImagesPerPage(Page *page, bool merge)
 void searchTab::addResultsImage(QSharedPointer<Image> img, bool merge)
 {
 	int absolutePosition = m_images.indexOf(img);
-	int relativePosition = merge ? absolutePosition : img->page()->images().indexOf(img);
 	int imagesPerPage = getActualImagesPerPage(img->page(), merge);
+
+	// Calculate relative position compared to validated images
+	int relativePosition = 0;
+	if (merge)
+	{ relativePosition = absolutePosition; }
+	else
+	{
+		QString error;
+		for (QSharedPointer<Image> i : img->page()->images())
+			if (i == img)
+				break;
+			else if (validateImage(i, error))
+				relativePosition++;
+	}
 
 	QBouton *button = createImageThumbnail(absolutePosition, img);
 	m_boutons.insert(img.data(), button);
@@ -995,16 +1001,12 @@ void searchTab::webZoom(int id)
 {
 	QSharedPointer<Image> image = m_images.at(id);
 
-	if (!m_settings->value("blacklistedtags").toString().isEmpty())
+	QStringList detected = image->blacklisted(m_profile->getBlacklist());
+	if (!detected.isEmpty())
 	{
-		QStringList blacklistedtags(m_settings->value("blacklistedtags").toString().split(" "));
-		QStringList detected = image->blacklisted(blacklistedtags);
-		if (!detected.isEmpty())
-		{
-			int reply = QMessageBox::question(parentWidget(), tr("Blacklist"), tr("%n tag figuring in the blacklist detected in this image: %1. Do you want to display it anyway?", "", detected.size()).arg(detected.join(", ")), QMessageBox::Yes | QMessageBox::No);
-			if (reply == QMessageBox::No)
-			{ return; }
-		}
+		int reply = QMessageBox::question(parentWidget(), tr("Blacklist"), tr("%n tag figuring in the blacklist detected in this image: %1. Do you want to display it anyway?", "", detected.size()).arg(detected.join(", ")), QMessageBox::Yes | QMessageBox::No);
+		if (reply == QMessageBox::No)
+		{ return; }
 	}
 
 	zoomWindow *zoom = new zoomWindow(m_images, image, image->page()->site(), m_sites, m_profile, m_parent);
@@ -1262,9 +1264,15 @@ FixedSizeGridLayout *searchTab::createImagesLayout(QSettings *settings)
 }
 
 
-bool searchTab::validateImage(QSharedPointer<Image> img)
+bool searchTab::validateImage(QSharedPointer<Image> img, QString &error)
 {
-	Q_UNUSED(img);
+	QStringList detected = img->blacklisted(m_profile->getBlacklist());
+	if (!detected.isEmpty() && m_settings->value("hideblacklisted", false).toBool())
+	{
+		error = QString("Image #%1 ignored. Reason: %2.").arg(img->id()).arg("\""+detected.join(", ")+"\"");
+		return false;
+	}
+
 	return true;
 }
 
