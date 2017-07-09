@@ -32,6 +32,7 @@
 #include "downloader/download-query-loader.h"
 #include "downloader/download-query-image.h"
 #include "downloader/download-query-group.h"
+#include "downloader/image-downloader.h"
 #include "updater/update-dialog.h"
 #include "theme-loader.h"
 #include "models/api.h"
@@ -1686,26 +1687,26 @@ void mainWindow::getAllGetImage(QSharedPointer<Image> img)
 		p = m_groupBatchs[site_id - 1].path;
 	}
 
-	int count = m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + 1;
-	QMap<QString, Image::SaveResult> result = img->save(path, p, true, false, count, false);
-	bool needLoading = false;
-	for (Image::SaveResult res : result)
-		if (res == Image::SaveResult::NotLoaded)
-			needLoading = true;
+	// Track download progress
+	m_progressdialog->loadingImage(img->url());
+	m_downloadTime.insert(img->url(), new QTime);
+	m_downloadTime[img->url()]->start();
+	m_downloadTimeLast.insert(img->url(), new QTime);
+	m_downloadTimeLast[img->url()]->start();
+	connect(img.data(), &Image::downloadProgressImage, this, &mainWindow::getAllProgress, Qt::UniqueConnection);
 
-	// If the image needs to be loaded
-	if (needLoading)
-	{
-		log(QString("Loading image from <a href=\"%1\">%1</a> %2").arg(img->fileUrl().toString()).arg(m_getAllDownloading.size()), Logger::Info);
-		m_progressdialog->loadingImage(img->url());
-		m_downloadTime.insert(img->url(), new QTime);
-		m_downloadTime[img->url()]->start();
-		m_downloadTimeLast.insert(img->url(), new QTime);
-		m_downloadTimeLast[img->url()]->start();
-		connect(img.data(), &Image::downloadProgressImage, this, &mainWindow::getAllProgress, Qt::UniqueConnection);
-		result = img->save(path, p, true, false, count, true);
-		log(QString("Image received from <a href=\"%1\">%1</a> %2").arg(img->url()).arg(m_getAllDownloading.size()), Logger::Info);
-	}
+	// Start loading and saving image
+	log(QString("Loading image from <a href=\"%1\">%1</a> %2").arg(img->fileUrl().toString()).arg(m_getAllDownloading.size()), Logger::Info);
+	int count = m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + 1;
+	auto imgDownloader = new ImageDownloader(img, this);
+	connect(imgDownloader, &ImageDownloader::saved, this, &mainWindow::getAllGetImageSaved);
+	imgDownloader->save(path, p, true, false, count);
+}
+
+void mainWindow::getAllGetImageSaved(QSharedPointer<Image> img, QMap<QString, Image::SaveResult> result)
+{
+	// Delete ImageDownloader to prevent leaks
+	sender()->deleteLater();
 
 	// Save error count to compare it later on
 	bool del = true;
@@ -1727,10 +1728,7 @@ void mainWindow::getAllGetImage(QSharedPointer<Image> img)
 	if (res == Image::SaveResult::NotFound)
 	{ m_getAll404s++; }
 	else if (res == Image::SaveResult::NetworkError)
-	{
-		log(QString("Unknown error for the image: <a href=\"%1\">%1</a>.").arg(img->url().toHtmlEscaped()), Logger::Error);
-		m_getAllErrors++;
-	}
+	{ m_getAllErrors++; }
 	else if (res == Image::SaveResult::AlreadyExists)
 	{ m_getAllExists++; }
 	else if (res == Image::SaveResult::Ignored)
@@ -1747,6 +1745,7 @@ void mainWindow::getAllGetImage(QSharedPointer<Image> img)
 		del = false;
 	}
 
+	int site_id = m_progressdialog->batch(img->url());
 	getAllImageOk(img, site_id, del);
 }
 

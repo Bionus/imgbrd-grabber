@@ -13,6 +13,7 @@
 #include <QTableWidgetItem>
 #include <QProgressBar>
 #include "models/site.h"
+#include "models/image.h"
 
 
 namespace Ui
@@ -96,6 +97,7 @@ class mainWindow : public QMainWindow
 		void getAllFinishedImages(QList<QSharedPointer<Image>> images);
 		void getAllImages();
 		void getAllGetImage(QSharedPointer<Image> img);
+		void getAllGetImageSaved(QSharedPointer<Image> img, QMap<QString, Image::SaveResult> result);
 		void getAllPerformTags();
 		void getAllProgress(qint64, qint64);
 		void getAllCancel();
