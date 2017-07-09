@@ -14,6 +14,7 @@
 #include <QProgressBar>
 #include "models/site.h"
 #include "models/image.h"
+#include "downloader/image-downloader.h"
 
 
 namespace Ui
@@ -178,6 +179,7 @@ class mainWindow : public QMainWindow
 		QTranslator			m_translator, m_qtTranslator;
 		QList<DownloadQueryGroup>		m_groupBatchs;
 		QList<QSharedPointer<Image>>	m_getAllRemaining, m_getAllDownloading, m_getAllFailed, m_images, m_getAllSkippedImages;
+		QMap<QSharedPointer<Image>, ImageDownloader*>	m_getAllImageDownloaders;
 		QWidget				*m_currentTab;
 		QList<searchTab*>	m_tabs;
 		QList<bool>			m_selectedSources;

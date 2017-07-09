@@ -1684,6 +1684,13 @@ void mainWindow::getAllGetImage(QSharedPointer<Image> img)
 		p = m_groupBatchs[site_id - 1].path;
 	}
 
+	// If there is already a downloader for this image, we simply restart it
+	if (m_getAllImageDownloaders.contains(img))
+	{
+		m_getAllImageDownloaders[img]->save(path, p, true, false, count);
+		return;
+	}
+
 	// Track download progress
 	m_progressdialog->loadingImage(img->url());
 	m_downloadTime.insert(img->url(), new QTime);
@@ -1698,12 +1705,14 @@ void mainWindow::getAllGetImage(QSharedPointer<Image> img)
 	auto imgDownloader = new ImageDownloader(img, this);
 	connect(imgDownloader, &ImageDownloader::saved, this, &mainWindow::getAllGetImageSaved);
 	imgDownloader->save(path, p, true, false, count);
+	m_getAllImageDownloaders[img] = imgDownloader;
 }
 
 void mainWindow::getAllGetImageSaved(QSharedPointer<Image> img, QMap<QString, Image::SaveResult> result)
 {
 	// Delete ImageDownloader to prevent leaks
-	sender()->deleteLater();
+	m_getAllImageDownloaders[img]->deleteLater();
+	m_getAllImageDownloaders.remove(img);
 
 	// Save error count to compare it later on
 	bool del = true;
