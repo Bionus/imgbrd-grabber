@@ -2,15 +2,15 @@
 #include "logger.h"
 
 
-ImageDownloader::ImageDownloader(QSharedPointer<Image> img, QObject *parent)
-	: QObject(parent), m_image(img), m_fileDownloader(this)
-{}
-
-void ImageDownloader::save(QString filename, QString path, bool addMd5, bool startCommands, int count)
+ImageDownloader::ImageDownloader(QSharedPointer<Image> img, QString filename, QString path, int count, QObject *parent)
+	: QObject(parent), m_image(img), m_fileDownloader(this), m_count(count)
 {
 	m_paths = m_image->path(filename, path, count, true, false, true, true, true);
+}
 
-	QMap<QString, Image::SaveResult> result = m_image->save(m_paths, addMd5, startCommands, count, false, false);
+void ImageDownloader::save(bool addMd5, bool startCommands)
+{
+	QMap<QString, Image::SaveResult> result = m_image->save(m_paths, addMd5, startCommands, m_count, false, false);
 	bool needLoading = false;
 	for (Image::SaveResult res : result)
 		if (res == Image::SaveResult::NotLoaded)
@@ -25,7 +25,7 @@ void ImageDownloader::save(QString filename, QString path, bool addMd5, bool sta
 
 	// Load the image directly on the disk
 	log(QString("Loading and saving image in <a href=\"file:///%1\">%1</a>").arg(m_paths.first()));
-	connect(m_image.data(), &Image::finishedImage, this, &ImageDownloader::imageLoaded);
+	connect(m_image.data(), &Image::finishedImage, this, &ImageDownloader::imageLoaded, Qt::UniqueConnection);
 	m_image->loadImage(false);
 
 	// If we can't start writing for some reason, return an error

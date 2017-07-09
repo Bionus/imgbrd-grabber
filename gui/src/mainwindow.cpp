@@ -1670,6 +1670,13 @@ int mainWindow::getRowForSite(int site_id)
 
 void mainWindow::getAllGetImage(QSharedPointer<Image> img)
 {
+	// If there is already a downloader for this image, we simply restart it
+	if (m_getAllImageDownloaders.contains(img))
+	{
+		m_getAllImageDownloaders[img]->save(true, false);
+		return;
+	}
+
 	// Row
 	int site_id = m_progressdialog->batch(img->url());
 	int row = getRowForSite(site_id);
@@ -1684,13 +1691,6 @@ void mainWindow::getAllGetImage(QSharedPointer<Image> img)
 		p = m_groupBatchs[site_id - 1].path;
 	}
 
-	// If there is already a downloader for this image, we simply restart it
-	if (m_getAllImageDownloaders.contains(img))
-	{
-		m_getAllImageDownloaders[img]->save(path, p, true, false, count);
-		return;
-	}
-
 	// Track download progress
 	m_progressdialog->loadingImage(img->url());
 	m_downloadTime.insert(img->url(), new QTime);
@@ -1702,9 +1702,9 @@ void mainWindow::getAllGetImage(QSharedPointer<Image> img)
 	// Start loading and saving image
 	log(QString("Loading image from <a href=\"%1\">%1</a> %2").arg(img->fileUrl().toString()).arg(m_getAllDownloading.size()), Logger::Info);
 	int count = m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + 1;
-	auto imgDownloader = new ImageDownloader(img, this);
+	auto imgDownloader = new ImageDownloader(img, path, p, count, this);
 	connect(imgDownloader, &ImageDownloader::saved, this, &mainWindow::getAllGetImageSaved);
-	imgDownloader->save(path, p, true, false, count);
+	imgDownloader->save(true, false);
 	m_getAllImageDownloaders[img] = imgDownloader;
 }
 
