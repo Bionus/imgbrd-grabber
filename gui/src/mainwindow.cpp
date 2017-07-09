@@ -57,6 +57,16 @@ void mainWindow::init(QStringList args, QMap<QString,QString> params)
 {
 	m_settings = m_profile->getSettings();
 
+	ThemeLoader themeLoader(savePath("themes/", true));
+	themeLoader.setTheme(m_settings->value("theme", "Default").toString());
+	ui->setupUi(this);
+
+	m_showLog = m_settings->value("Log/show", true).toBool();
+	if (!m_showLog)
+	{ ui->tabWidget->removeTab(ui->tabWidget->indexOf(ui->tabLog)); }
+	else
+	{ connect(&Logger::getInstance(), &Logger::newLog, this, &mainWindow::logShow); }
+
 	log("New session started.", Logger::Info);
 	log(QString("Software version: %1.").arg(VERSION), Logger::Info);
 	log(QString("Path: %1").arg(qApp->applicationDirPath()), Logger::Info);
@@ -65,14 +75,6 @@ void mainWindow::init(QStringList args, QMap<QString,QString> params)
 	bool crashed = m_settings->value("crashed", false).toBool();
 	m_settings->setValue("crashed", true);
 	m_settings->sync();
-
-	ThemeLoader themeLoader(savePath("themes/", true));
-	themeLoader.setTheme(m_settings->value("theme", "Default").toString());
-	ui->setupUi(this);
-
-	m_showLog = m_settings->value("Log/show", true).toBool();
-	if (!m_showLog)
-	{ ui->tabWidget->removeTab(ui->tabWidget->indexOf(ui->tabLog)); }
 
 	// On first launch after setup, we restore the setup's language
 	QString setupSettingsFile = savePath("innosetup.ini");
@@ -262,9 +264,6 @@ void mainWindow::init(QStringList args, QMap<QString,QString> params)
 	connect(m_profile, &Profile::sitesChanged, this, &mainWindow::loadSites);
 	updateFavorites();
 	updateKeepForLater();
-
-	if (m_showLog)
-		connect(&Logger::getInstance(), &Logger::newLog, this, &mainWindow::logShow);
 
 	m_currentTab = nullptr;
 	log("End of initialization", Logger::Debug);
