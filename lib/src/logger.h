@@ -39,7 +39,7 @@ class Logger : public QObject
 		void logUpdate(QString);
 
 	signals:
-		void newLog(QDateTime date, QString message);
+		void newLog(QString message);
 
 	private:
 		Logger() {}

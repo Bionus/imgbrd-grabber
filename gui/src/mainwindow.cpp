@@ -889,14 +889,12 @@ void mainWindow::updateKeepForLater()
 }
 
 
-void mainWindow::logShow(QDateTime date, QString msg)
+void mainWindow::logShow(QString msg)
 {
 	if (!m_showLog)
 		return;
 
-	QString line = "[" + date.toString("hh:mm:ss.zzz") + "] " + msg;
-
-	ui->labelLog->appendHtml(line);
+	ui->labelLog->appendHtml(msg);
 	ui->labelLog->verticalScrollBar()->setValue(ui->labelLog->verticalScrollBar()->maximum());
 }
 void mainWindow::logClear()

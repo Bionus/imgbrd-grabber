@@ -44,7 +44,7 @@ class mainWindow : public QMainWindow
 
 	public slots:
 		// Log
-		void logShow(QDateTime date, QString msg);
+		void logShow(QString msg);
 		void logClear();
 		void logOpen();
 		// Menus
