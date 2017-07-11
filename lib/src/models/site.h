@@ -80,6 +80,7 @@ class Site : public QObject
 		QString password() const;
 		void setUsername(QString);
 		void setPassword(QString);
+		bool canTestLogin() const;
 
 		// XML info getters
 		bool contains(QString key) const;

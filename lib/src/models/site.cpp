@@ -225,6 +225,15 @@ void Site::login(bool force)
 	}
 }
 
+bool Site::canTestLogin() const
+{
+	if (m_settings->value("login/parameter", true).toBool())
+		return m_settings->value("login/maxPage", 0).toInt() > 0;
+
+	// Cannot post login information without an URL
+	return !m_settings->value("login/url", "").toString().isEmpty();
+}
+
 /**
  * Called when the login try is finished.
  */
