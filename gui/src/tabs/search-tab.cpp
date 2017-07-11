@@ -873,6 +873,11 @@ int searchTab::getActualImagesPerPage(Page *page, bool merge)
 
 void searchTab::addResultsImage(QSharedPointer<Image> img, bool merge)
 {
+	// Early return if the layout has already been removed
+	Page *layoutKey = merge && m_layouts.contains(nullptr) ? nullptr : img->page();
+	if (!m_layouts.contains(layoutKey))
+		return;
+
 	int absolutePosition = m_images.indexOf(img);
 	int imagesPerPage = getActualImagesPerPage(img->page(), merge);
 
@@ -893,7 +898,7 @@ void searchTab::addResultsImage(QSharedPointer<Image> img, bool merge)
 	QBouton *button = createImageThumbnail(absolutePosition, img);
 	m_boutons.insert(img.data(), button);
 
-	FixedSizeGridLayout *layout = m_layouts[merge && m_layouts.contains(nullptr) ? nullptr : img->page()];
+	FixedSizeGridLayout *layout = m_layouts[layoutKey];
 	layout->addFixedSizeWidget(button, relativePosition, imagesPerPage);
 }
 
