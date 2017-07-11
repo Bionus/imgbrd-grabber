@@ -512,7 +512,11 @@ void searchTab::finishedLoadingPreview()
 		{ download = true; }
 
 		if (download)
-		{ img->loadAndSave(m_settings->value("Save/filename").toString(), m_settings->value("Save/path").toString()); }
+		{
+			auto downloader = new ImageDownloader(img, m_settings->value("Save/filename").toString(), m_settings->value("Save/path").toString(), 1, this);
+			downloader->save(true, true);
+			connect(downloader, &ImageDownloader::saved, downloader, &ImageDownloader::deleteLater);
+		}
 	}
 
 	bool merge = ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked() && !m_images.empty();
