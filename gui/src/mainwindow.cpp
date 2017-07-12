@@ -1673,7 +1673,7 @@ void mainWindow::getAllGetImage(QSharedPointer<Image> img)
 	// If there is already a downloader for this image, we simply restart it
 	if (m_getAllImageDownloaders.contains(img))
 	{
-		m_getAllImageDownloaders[img]->save(true, false);
+		m_getAllImageDownloaders[img]->save();
 		return;
 	}
 
@@ -1702,9 +1702,9 @@ void mainWindow::getAllGetImage(QSharedPointer<Image> img)
 	// Start loading and saving image
 	log(QString("Loading image from <a href=\"%1\">%1</a> %2").arg(img->fileUrl().toString()).arg(m_getAllDownloading.size()), Logger::Info);
 	int count = m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + 1;
-	auto imgDownloader = new ImageDownloader(img, path, p, count, this);
+	auto imgDownloader = new ImageDownloader(img, path, p, count, true, false, this);
 	connect(imgDownloader, &ImageDownloader::saved, this, &mainWindow::getAllGetImageSaved);
-	imgDownloader->save(true, false);
+	imgDownloader->save();
 	m_getAllImageDownloaders[img] = imgDownloader;
 }
 

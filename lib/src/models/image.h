@@ -42,6 +42,7 @@ class Image : public QObject
 		QStringList blacklisted(QStringList, bool invert = true) const;
 		QStringList	stylishedTags(Profile *profile) const;
 		SaveResult  save(QString path, bool force = false, bool basic = false, bool addMd5 = true, bool startCommands = false, int count = 1, bool loadIfNecessary = false);
+		void		postSaving(QString path, bool addMd5 = true, bool startCommands = false, int count = 1, bool basic = false);
 		QMap<QString, Image::SaveResult> save(QStringList paths, bool addMd5 = true, bool startCommands = false, int count = 1, bool force = false, bool loadIfNecessary = false);
 		QMap<QString, Image::SaveResult> save(QString filename, QString path, bool addMd5 = true, bool startCommands = false, int count = 1, bool loadIfNecessary = false);
 		QString		url() const;

@@ -513,8 +513,8 @@ void searchTab::finishedLoadingPreview()
 
 		if (download)
 		{
-			auto downloader = new ImageDownloader(img, m_settings->value("Save/filename").toString(), m_settings->value("Save/path").toString(), 1, this);
-			downloader->save(true, true);
+			auto downloader = new ImageDownloader(img, m_settings->value("Save/filename").toString(), m_settings->value("Save/path").toString(), 1, true, true, this);
+			downloader->save();
 			connect(downloader, &ImageDownloader::saved, downloader, &ImageDownloader::deleteLater);
 		}
 	}

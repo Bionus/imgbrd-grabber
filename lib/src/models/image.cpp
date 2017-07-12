@@ -969,46 +969,6 @@ Image::SaveResult Image::save(QString path, bool force, bool basic, bool addMd5,
 						return SaveResult::Error;
 					}
 				}
-
-				if (addMd5)
-				{ m_profile->addMd5(md5(), path); }
-			}
-
-			// Save info to a text file
-			if (!basic)
-			{
-				auto logFiles = getExternalLogFiles(m_settings);
-				for (int i : logFiles.keys())
-				{
-					auto logFile = logFiles[i];
-					QString textfileFormat = logFile["content"].toString();
-					QStringList cont = this->path(textfileFormat, "", count, true, true, false, false, false);
-					if (!cont.isEmpty())
-					{
-						int locationType = logFile["locationType"].toInt();
-						QString contents = cont.first();
-
-						// File path
-						QString fileTagsPath;
-						if (locationType == 0)
-							fileTagsPath = this->path(logFile["filename"].toString(), logFile["path"].toString(), 0, true, false, true, true, true).first();
-						else if (locationType == 1)
-							fileTagsPath = logFile["uniquePath"].toString();
-						else if (locationType == 2)
-							fileTagsPath = path + logFile["suffix"].toString();
-
-						// Append to file if necessary
-						QFile fileTags(fileTagsPath);
-						bool append = fileTags.exists();
-						if (fileTags.open(QFile::WriteOnly | QFile::Append | QFile::Text))
-						{
-							if (append)
-								fileTags.write("\n");
-							fileTags.write(contents.toUtf8());
-							fileTags.close();
-						}
-					}
-				}
 			}
 		}
 		else if (whatToDo == "copy")
@@ -1032,28 +992,72 @@ Image::SaveResult Image::save(QString path, bool force, bool basic, bool addMd5,
 			return SaveResult::Ignored;
 		}
 
-		// Keep original date
-		if (m_settings->value("Save/keepDate", true).toBool())
-			setFileCreationDate(path, createdAt());
-
-		// Commands
-		Commands &commands = m_profile->getCommands();
-		if (startCommands)
-		{ commands.before(); }
-			for (Tag tag : tags())
-			{ commands.tag(*this, tag, false); }
-			commands.image(*this, path);
-			for (Tag tag : tags())
-			{ commands.tag(*this, tag, true); }
-		if (startCommands)
-		{ commands.after(); }
-
-		m_savePath = path;
+		postSaving(path, addMd5 && res == SaveResult::Saved, startCommands, count, basic);
 	}
 	else
 	{ res = SaveResult::AlreadyExists; }
 
 	return res;
+}
+void Image::postSaving(QString path, bool addMd5, bool startCommands, int count, bool basic)
+{
+	if (addMd5)
+	{ m_profile->addMd5(md5(), path); }
+
+	// Save info to a text file
+	if (!basic)
+	{
+		auto logFiles = getExternalLogFiles(m_settings);
+		for (int i : logFiles.keys())
+		{
+			auto logFile = logFiles[i];
+			QString textfileFormat = logFile["content"].toString();
+			QStringList cont = this->path(textfileFormat, "", count, true, true, false, false, false);
+			if (!cont.isEmpty())
+			{
+				int locationType = logFile["locationType"].toInt();
+				QString contents = cont.first();
+
+				// File path
+				QString fileTagsPath;
+				if (locationType == 0)
+					fileTagsPath = this->path(logFile["filename"].toString(), logFile["path"].toString(), 0, true, false, true, true, true).first();
+				else if (locationType == 1)
+					fileTagsPath = logFile["uniquePath"].toString();
+				else if (locationType == 2)
+					fileTagsPath = path + logFile["suffix"].toString();
+
+				// Append to file if necessary
+				QFile fileTags(fileTagsPath);
+				bool append = fileTags.exists();
+				if (fileTags.open(QFile::WriteOnly | QFile::Append | QFile::Text))
+				{
+					if (append)
+						fileTags.write("\n");
+					fileTags.write(contents.toUtf8());
+					fileTags.close();
+				}
+			}
+		}
+	}
+
+	// Keep original date
+	if (m_settings->value("Save/keepDate", true).toBool())
+		setFileCreationDate(path, createdAt());
+
+	// Commands
+	Commands &commands = m_profile->getCommands();
+	if (startCommands)
+	{ commands.before(); }
+		for (Tag tag : tags())
+		{ commands.tag(*this, tag, false); }
+		commands.image(*this, path);
+		for (Tag tag : tags())
+		{ commands.tag(*this, tag, true); }
+	if (startCommands)
+	{ commands.after(); }
+
+	m_savePath = path;
 }
 QMap<QString, Image::SaveResult> Image::save(QStringList paths, bool addMd5, bool startCommands, int count, bool force, bool loadIfNecessary)
 {
