@@ -779,7 +779,7 @@ void mainWindow::updateBatchGroups(int y, int x)
 					ui->tableBatchGroups->item(y, x)->setText(QString::number(m_groupBatchs[y].perpage));
 				}
 				else
-				{ m_groupBatchs[y].page = toInt; }
+				{ m_groupBatchs[y].perpage = toInt; }
 				break;
 
 			case 5:
