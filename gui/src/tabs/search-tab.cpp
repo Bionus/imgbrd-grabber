@@ -329,8 +329,6 @@ void searchTab::finishedLoading(Page* page)
 	if (m_stop)
 		return;
 
-	log(QString("Receiving page <a href=\"%1\">%1</a>").arg(page->url().toString().toHtmlEscaped()));
-
 	m_lastPage = page->page();
 	m_lastPageMinId = page->minId();
 	m_lastPageMaxId = page->maxId();
@@ -512,7 +510,11 @@ void searchTab::finishedLoadingPreview()
 		{ download = true; }
 
 		if (download)
-		{ img->loadAndSave(m_settings->value("Save/filename").toString(), m_settings->value("Save/path").toString()); }
+		{
+			auto downloader = new ImageDownloader(img, m_settings->value("Save/filename").toString(), m_settings->value("Save/path").toString(), 1, true, true, this);
+			downloader->save();
+			connect(downloader, &ImageDownloader::saved, downloader, &ImageDownloader::deleteLater);
+		}
 	}
 
 	bool merge = ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked() && !m_images.empty();
@@ -869,6 +871,11 @@ int searchTab::getActualImagesPerPage(Page *page, bool merge)
 
 void searchTab::addResultsImage(QSharedPointer<Image> img, bool merge)
 {
+	// Early return if the layout has already been removed
+	Page *layoutKey = merge && m_layouts.contains(nullptr) ? nullptr : img->page();
+	if (!m_layouts.contains(layoutKey))
+		return;
+
 	int absolutePosition = m_images.indexOf(img);
 	int imagesPerPage = getActualImagesPerPage(img->page(), merge);
 
@@ -889,7 +896,7 @@ void searchTab::addResultsImage(QSharedPointer<Image> img, bool merge)
 	QBouton *button = createImageThumbnail(absolutePosition, img);
 	m_boutons.insert(img.data(), button);
 
-	FixedSizeGridLayout *layout = m_layouts[merge && m_layouts.contains(nullptr) ? nullptr : img->page()];
+	FixedSizeGridLayout *layout = m_layouts[layoutKey];
 	layout->addFixedSizeWidget(button, relativePosition, imagesPerPage);
 }
 
@@ -1216,7 +1223,6 @@ void searchTab::loadPage()
 		}
 
 		// Load tags if necessary
-		log(QString("Loading page <a href=\"%1\">%1</a>").arg(page->url().toString().toHtmlEscaped()));
 		m_stop = false;
 		if (m_settings->value("useregexfortags", true).toBool())
 		{

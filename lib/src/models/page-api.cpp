@@ -157,7 +157,7 @@ void PageApi::updateUrls()
 		}
 		if (url.isEmpty())
 		{
-			log("No source of this site is compatible with pools.");
+			log(QString("[%1] No source of this site is compatible with pools.").arg(m_site->url()), Logger::Warning);
 			m_errors.append(tr("No source of this site is compatible with pools."));
 			m_search.removeAll("pool:"+poolRx.cap(1));
 			t.remove(m_pool);
@@ -202,6 +202,7 @@ void PageApi::load(bool rateLimit)
 	m_pagesCount = -1;*/
 
 	m_site->getAsync(rateLimit ? Site::QueryType::Retry : Site::QueryType::List, m_url, [this](QNetworkReply *reply) {
+		log(QString("[%1] Loading page <a href=\"%2\">%2</a>").arg(m_site->url()).arg(m_url.toString().toHtmlEscaped()), Logger::Info);
 		m_reply = reply;
 		connect(m_reply, SIGNAL(finished()), this, SLOT(parse()));
 	});
@@ -216,6 +217,7 @@ void PageApi::loadTags()
 {
 	if (!m_urlRegex.isEmpty())
 	{
+		log(QString("[%1] Loading tags from page <a href=\"%2\">%2</a>").arg(m_site->url()).arg(m_urlRegex.toString().toHtmlEscaped()), Logger::Info);
 		m_replyTags = m_site->get(m_urlRegex);
 		connect(m_replyTags, &QNetworkReply::finished, this, &PageApi::parseTags);
 	}
@@ -313,17 +315,21 @@ void PageApi::parseImage(QMap<QString,QString> d, int position, QList<Tag> tags)
 	else
 	{
 		img->deleteLater();
-		log(QString("Image #%1 ignored. Reason: %2.").arg(QString::number(position + 1), errors.join(", ")));
+		log(QString("[%1] Image #%2 ignored. Reason: %3.").arg(m_site->url()).arg(QString::number(position + 1), errors.join(", ")), Logger::Info);
 	}
 }
 
 void PageApi::parse()
 {
+	log(QString("[%1] Receiving page <a href=\"%2\">%2</a>").arg(m_site->url()).arg(m_reply->url().toString().toHtmlEscaped()), Logger::Info);
+
 	// Check redirection
 	QUrl redir = m_reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 	if (!redir.isEmpty())
 	{
-		m_url = m_site->fixUrl(redir.toString(), m_url);
+		QUrl newUrl = m_site->fixUrl(redir.toString(), m_url);
+		log(QString("[%1] Redirecting page <a href=\"%2\">%2</a> to <a href=\"%3\">%3</a>").arg(m_site->url()).arg(m_url.toString().toHtmlEscaped()).arg(newUrl.toString().toHtmlEscaped()), Logger::Debug);
+		m_url = newUrl;
 		load();
 		return;
 	}
@@ -331,7 +337,7 @@ void PageApi::parse()
 	int statusCode = m_reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 	if (statusCode == 429)
 	{
-		log("Limit reached (429). New try.");
+		log(QString("[%1] Limit reached (429). New try.").arg(m_site->url()), Logger::Warning);
 		load(true);
 		return;
 	}
@@ -341,7 +347,7 @@ void PageApi::parse()
 	if (m_source.isEmpty())
 	{
 		if (m_reply->error() != QNetworkReply::OperationCanceledError)
-		{ log(QString("Loading error: %1").arg(m_reply->errorString())); }
+		{ log(QString("[%1] Loading error: %1").arg(m_site->url()).arg(m_reply->errorString())); }
 		emit finishedLoading(this, LoadResult::Error);
 		return;
 	}
@@ -358,7 +364,7 @@ void PageApi::parse()
 		int errorLine, errorColumn;
 		if (!doc.setContent(m_source, false, &errorMsg, &errorLine, &errorColumn))
 		{
-			log(QString("Error parsing XML file: %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn)));
+			log(QString("[%1] Error parsing XML file: %2 (%3 - %4).").arg(m_site->url()).arg(errorMsg).arg(errorLine).arg(errorColumn), Logger::Warning);
 			emit finishedLoading(this, LoadResult::Error);
 			return;
 		}
@@ -430,7 +436,7 @@ void PageApi::parse()
 		int errorLine, errorColumn;
 		if (!doc.setContent(m_source, false, &errorMsg, &errorLine, &errorColumn))
 		{
-			log(QString("Error parsing RSS file: %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn)));
+			log(QString("[%1] Error parsing RSS file: %2 (%3 - %4).").arg(m_site->url()).arg(errorMsg).arg(errorLine).arg(errorColumn), Logger::Warning);
 			emit finishedLoading(this, LoadResult::Error);
 			return;
 		}
@@ -541,7 +547,7 @@ void PageApi::parse()
 			QMap<QString, QVariant> data = src.toMap();
 			if (data.contains("success") && data["success"].toBool() == false)
 			{
-				log(QString("JSON error reply: \"%1\"").arg(data["reason"].toString()));
+				log(QString("[%1] JSON error reply: \"%2\"").arg(m_site->url()).arg(data["reason"].toString()), Logger::Warning);
 				emit finishedLoading(this, LoadResult::Error);
 				return;
 			}
@@ -636,7 +642,7 @@ void PageApi::parse()
 		}
 		else
 		{
-			log(QString("Error parsing JSON file: \"%1\"").arg(m_source.left(500)));
+			log(QString("[%1] Error parsing JSON file: \"%2\"").arg(m_site->url()).arg(m_source.left(500)), Logger::Warning);
 			emit finishedLoading(this, LoadResult::Error);
 			return;
 		}
@@ -707,11 +713,15 @@ void PageApi::parse()
 }
 void PageApi::parseTags()
 {
+	log(QString("[%1] Receiving tags page <a href=\"%2\">%2</a>").arg(m_site->url()).arg(m_replyTags->url().toString().toHtmlEscaped()), Logger::Info);
+
 	// Check redirection
 	QUrl redir = m_replyTags->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 	if (!redir.isEmpty())
 	{
-		m_urlRegex = m_site->fixUrl(redir.toString(), m_urlRegex);
+		QUrl newUrl = m_site->fixUrl(redir.toString(), m_urlRegex);
+		log(QString("[%1] Redirecting tags page <a href=\"%2\">%2</a> to <a href=\"%3\">%3</a>").arg(m_site->url()).arg(m_urlRegex.toString().toHtmlEscaped()).arg(newUrl.toString().toHtmlEscaped()), Logger::Debug);
+		m_urlRegex = newUrl;
 		loadTags();
 		return;
 	}

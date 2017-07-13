@@ -155,7 +155,7 @@ void Site::login(bool force)
 		return;
 	}
 
-	log(QString("Logging into %1 (%2)...").arg(m_name, m_url));
+	log(QString("[%1] Logging in...").arg(m_url), Logger::Info);
 	initManager();
 
 	// Clear cookies if we want to force a re-login
@@ -225,6 +225,15 @@ void Site::login(bool force)
 	}
 }
 
+bool Site::canTestLogin() const
+{
+	if (m_settings->value("login/parameter", true).toBool())
+		return m_settings->value("login/maxPage", 0).toInt() > 0;
+
+	// Cannot post login information without an URL
+	return !m_settings->value("login/url", "").toString().isEmpty();
+}
+
 /**
  * Called when the login try is finished.
  */
@@ -249,7 +258,7 @@ void Site::loginFinished()
 	}
 	m_loggedIn = ok ? LoginStatus::LoggedIn : LoginStatus::LoggedOut;
 
-	log(QString("Logging into %1 (%2) finished (%3).").arg(m_name, m_url, ok ? tr("success") : tr("failure")));
+	log(QString("[%1] Login finished: %2.").arg(m_url).arg(ok ? "success" : "failure"));
 	emit loggedIn(this, ok ? LoginResult::Success : LoginResult::Error);
 }
 

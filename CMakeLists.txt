@@ -15,7 +15,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 project(Grabber)
 set(USE_SSL 1)
 
-add_definitions(-DVERSION="5.4.1")
+add_definitions(-DVERSION="5.4.2")
 add_definitions(-DPROJECT_WEBSITE_URL="https://bionus.github.io/imgbrd-grabber/")
 add_definitions(-DPROJECT_GITHUB_URL="https://github.com/Bionus/imgbrd-grabber")
 add_definitions(-DPREFIX="$ENV{PREFIX}")

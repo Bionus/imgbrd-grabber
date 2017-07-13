@@ -20,6 +20,7 @@ startWindow::startWindow(QMap<QString, Site*> *sites, Profile *profile, QWidget 
 {
 	ui->setupUi(this);
 	ui->labelHelp->setText(ui->labelHelp->text().replace("{website}", PROJECT_WEBSITE_URL));
+	ui->labelHelp->setText(ui->labelHelp->text().replace("{github}", PROJECT_GITHUB_URL));
 
 	// Language
 	LanguageLoader languageLoader(savePath("languages/", true));

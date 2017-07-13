@@ -1,5 +1,5 @@
 #define MyAppName "Grabber"
-#define MyAppVersion "5.4.1"
+#define MyAppVersion "5.4.2"
 #define MyAppPublisher "Bionus"
 #define MyAppURL "https://github.com/Bionus/imgbrd-grabber"
 #define MyAppExeName "Grabber.exe"
@@ -29,6 +29,7 @@ WizardSmallImageFile=..\resources\icon.bmp
 Compression=lzma
 SolidCompression=yes
 ChangesAssociations=yes
+DisableDirPage=no
 
 [CustomMessages]
 en.IGL=Imageboard-Grabber Links

@@ -2,15 +2,15 @@
 #include "logger.h"
 
 
-ImageDownloader::ImageDownloader(QSharedPointer<Image> img, QString filename, QString path, int count, QObject *parent)
-	: QObject(parent), m_image(img), m_fileDownloader(this), m_count(count)
+ImageDownloader::ImageDownloader(QSharedPointer<Image> img, QString filename, QString path, int count, bool addMd5, bool startCommands, QObject *parent)
+	: QObject(parent), m_image(img), m_fileDownloader(this), m_count(count), m_addMd5(addMd5), m_startCommands(startCommands)
 {
 	m_paths = m_image->path(filename, path, count, true, false, true, true, true);
 }
 
-void ImageDownloader::save(bool addMd5, bool startCommands)
+void ImageDownloader::save()
 {
-	QMap<QString, Image::SaveResult> result = m_image->save(m_paths, addMd5, startCommands, m_count, false, false);
+	QMap<QString, Image::SaveResult> result = m_image->save(m_paths, m_addMd5, m_startCommands, m_count, false, false);
 	bool needLoading = false;
 	for (Image::SaveResult res : result)
 		if (res == Image::SaveResult::NotLoaded)
@@ -61,5 +61,6 @@ void ImageDownloader::imageLoaded(QNetworkReply::NetworkError error, QString msg
 	}
 
 	// Success!
+	m_image->postSaving(m_paths.first(), m_addMd5, m_startCommands, m_count, false);
 	emit saved(m_image, makeMap(m_paths, Image::SaveResult::Saved));
 }

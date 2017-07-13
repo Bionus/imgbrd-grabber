@@ -104,6 +104,13 @@ SourcesSettingsWindow::SourcesSettingsWindow(Site *site, QWidget *parent) : QDia
 		headerRow++;
 	}
 
+	// Hide login testing buttons if we can't tests this site's login
+	if (!m_site->canTestLogin())
+	{
+		ui->widgetTestCredentials->hide();
+		ui->widgetTestLogin->hide();
+	}
+
 	connect(this, SIGNAL(accepted()), this, SLOT(save()));
 }
 

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>530</width>
-    <height>281</height>
+    <height>273</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -548,22 +548,36 @@
         </layout>
        </item>
        <item row="2" column="0" colspan="2">
-        <layout class="QHBoxLayout" name="layoutTestCredentials" stretch="1,0">
-         <item>
-          <widget class="QLabel" name="labelTestCredentials">
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="buttonTestCredentials">
-           <property name="text">
-            <string>Test</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
+        <widget class="QWidget" name="widgetTestCredentials" native="true">
+         <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,0">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="labelTestCredentials">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="buttonTestCredentials">
+            <property name="text">
+             <string>Test</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -610,59 +624,6 @@
           </property>
          </item>
         </widget>
-       </item>
-       <item row="2" column="0" colspan="2">
-        <widget class="QWidget" name="widget_2" native="true">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <layout class="QFormLayout" name="formLayout_6">
-          <property name="leftMargin">
-           <number>18</number>
-          </property>
-          <property name="topMargin">
-           <number>0</number>
-          </property>
-          <property name="rightMargin">
-           <number>0</number>
-          </property>
-          <property name="bottomMargin">
-           <number>0</number>
-          </property>
-         </layout>
-        </widget>
-       </item>
-       <item row="3" column="0">
-        <widget class="QLabel" name="labelLoginMaxPage">
-         <property name="text">
-          <string>Page limit</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="1">
-        <widget class="QSpinBox" name="spinLoginMaxPage">
-         <property name="maximum">
-          <number>10000</number>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="0" colspan="2">
-        <layout class="QHBoxLayout" name="layoutTestLogin" stretch="1,0">
-         <item>
-          <widget class="QLabel" name="labelTestLogin">
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pushButton_5">
-           <property name="text">
-            <string>Test</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
        </item>
        <item row="1" column="0" colspan="2">
         <widget class="QStackedWidget" name="stackedWidget">
@@ -892,6 +853,52 @@
          </widget>
         </widget>
        </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="labelLoginMaxPage">
+         <property name="text">
+          <string>Page limit</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QSpinBox" name="spinLoginMaxPage">
+         <property name="maximum">
+          <number>10000</number>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0" colspan="2">
+        <widget class="QWidget" name="widgetTestLogin" native="true">
+         <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,0">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="labelTestLogin">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_5">
+            <property name="text">
+             <string>Test</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
       </layout>
      </widget>
      <widget class="QWidget" name="tabCookies">
@@ -1023,15 +1030,10 @@
   <tabstop>lineAuthPseudo</tabstop>
   <tabstop>lineAuthPassword</tabstop>
   <tabstop>buttonAuthHash</tabstop>
-  <tabstop>buttonTestCredentials</tabstop>
-  <tabstop>pushButton_5</tabstop>
   <tabstop>buttonCancel</tabstop>
   <tabstop>buttonAccept</tabstop>
  </tabstops>
  <resources>
-  <include location="../../../resources/resources.qrc"/>
-  <include location="../../../resources/resources.qrc"/>
-  <include location="../../../resources/resources.qrc"/>
   <include location="../../../resources/resources.qrc"/>
  </resources>
  <connections>

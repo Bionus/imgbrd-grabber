@@ -151,7 +151,7 @@ void mainWindow::init(QStringList args, QMap<QString,QString> params)
 		QString srsc = "";
 		for (int i = 0; i < m_sites.size(); ++i)
 		{ srsc += (i != 0 ? ", " : "") + m_sites.keys().at(i) + " (" + m_sites.values().at(i)->type() + ")"; }
-		log(QString("%n source(s) found: %1").arg(srsc), Logger::Info);
+		log(QString("%1 source%2 found: %3").arg(m_sites.size()).arg(m_sites.size() > 1 ? "s" : "").arg(srsc), Logger::Info);
 	}
 
 	ui->actionClosetab->setShortcut(QKeySequence::Close);
@@ -779,7 +779,7 @@ void mainWindow::updateBatchGroups(int y, int x)
 					ui->tableBatchGroups->item(y, x)->setText(QString::number(m_groupBatchs[y].perpage));
 				}
 				else
-				{ m_groupBatchs[y].page = toInt; }
+				{ m_groupBatchs[y].perpage = toInt; }
 				break;
 
 			case 5:
@@ -1125,7 +1125,6 @@ void mainWindow::getAll(bool all)
 				/*Page *page = new Page(m_sites[site], &m_sites, m_groupBatchs.at(i).at(0).split(' '), m_groupBatchs.at(i).at(1).toInt()+r, pp, QStringList(), false, this);
 				connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(getAllFinishedLoading(Page*)));
 				page->load();
-				log(QString("Loading page <a href=\"%1\">%1</a>").arg(page->url().toString().toHtmlEscaped()));
 				m_groupBatchs[i][8] += (m_groupBatchs[i][8] == "" ? "" : "¤") + QString::number((int)page);
 				m_progressdialog->setImagesCount(m_progressdialog->count() + 1);*/
 			}
@@ -1673,7 +1672,7 @@ void mainWindow::getAllGetImage(QSharedPointer<Image> img)
 	// If there is already a downloader for this image, we simply restart it
 	if (m_getAllImageDownloaders.contains(img))
 	{
-		m_getAllImageDownloaders[img]->save(true, false);
+		m_getAllImageDownloaders[img]->save();
 		return;
 	}
 
@@ -1702,9 +1701,9 @@ void mainWindow::getAllGetImage(QSharedPointer<Image> img)
 	// Start loading and saving image
 	log(QString("Loading image from <a href=\"%1\">%1</a> %2").arg(img->fileUrl().toString()).arg(m_getAllDownloading.size()), Logger::Info);
 	int count = m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + 1;
-	auto imgDownloader = new ImageDownloader(img, path, p, count, this);
+	auto imgDownloader = new ImageDownloader(img, path, p, count, true, false, this);
 	connect(imgDownloader, &ImageDownloader::saved, this, &mainWindow::getAllGetImageSaved);
-	imgDownloader->save(true, false);
+	imgDownloader->save();
 	m_getAllImageDownloaders[img] = imgDownloader;
 }
 
