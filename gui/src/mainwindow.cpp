@@ -151,7 +151,7 @@ void mainWindow::init(QStringList args, QMap<QString,QString> params)
 		QString srsc = "";
 		for (int i = 0; i < m_sites.size(); ++i)
 		{ srsc += (i != 0 ? ", " : "") + m_sites.keys().at(i) + " (" + m_sites.values().at(i)->type() + ")"; }
-		log(QString("%n source(s) found: %1").arg(srsc), Logger::Info);
+		log(QString("%1 source%2 found: %3").arg(m_sites.size()).arg(m_sites.size() > 1 ? "s" : "").arg(srsc), Logger::Info);
 	}
 
 	ui->actionClosetab->setShortcut(QKeySequence::Close);
