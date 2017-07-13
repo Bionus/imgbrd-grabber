@@ -29,6 +29,7 @@ WizardSmallImageFile=..\resources\icon.bmp
 Compression=lzma
 SolidCompression=yes
 ChangesAssociations=yes
+DisableDirPage=no
 
 [CustomMessages]
 en.IGL=Imageboard-Grabber Links
