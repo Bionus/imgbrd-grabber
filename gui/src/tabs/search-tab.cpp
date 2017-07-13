@@ -329,8 +329,6 @@ void searchTab::finishedLoading(Page* page)
 	if (m_stop)
 		return;
 
-	log(QString("Receiving page <a href=\"%1\">%1</a>").arg(page->url().toString().toHtmlEscaped()));
-
 	m_lastPage = page->page();
 	m_lastPageMinId = page->minId();
 	m_lastPageMaxId = page->maxId();
@@ -1225,7 +1223,6 @@ void searchTab::loadPage()
 		}
 
 		// Load tags if necessary
-		log(QString("Loading page <a href=\"%1\">%1</a>").arg(page->url().toString().toHtmlEscaped()));
 		m_stop = false;
 		if (m_settings->value("useregexfortags", true).toBool())
 		{

@@ -202,6 +202,7 @@ void PageApi::load(bool rateLimit)
 	m_pagesCount = -1;*/
 
 	m_site->getAsync(rateLimit ? Site::QueryType::Retry : Site::QueryType::List, m_url, [this](QNetworkReply *reply) {
+		log(QString("[%1] Loading page <a href=\"%2\">%2</a>").arg(m_site->url()).arg(reply->url().toString().toHtmlEscaped()), Logger::Info);
 		m_reply = reply;
 		connect(m_reply, SIGNAL(finished()), this, SLOT(parse()));
 	});
@@ -216,6 +217,7 @@ void PageApi::loadTags()
 {
 	if (!m_urlRegex.isEmpty())
 	{
+		log(QString("[%1] Loading tags from page <a href=\"%2\">%2</a>").arg(m_site->url()).arg(m_urlRegex.toString().toHtmlEscaped()), Logger::Info);
 		m_replyTags = m_site->get(m_urlRegex);
 		connect(m_replyTags, &QNetworkReply::finished, this, &PageApi::parseTags);
 	}
@@ -319,11 +321,15 @@ void PageApi::parseImage(QMap<QString,QString> d, int position, QList<Tag> tags)
 
 void PageApi::parse()
 {
+	log(QString("[%1] Receiving page <a href=\"%2\">%2</a>").arg(m_site->url()).arg(m_reply->url().toString().toHtmlEscaped()), Logger::Info);
+
 	// Check redirection
 	QUrl redir = m_reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 	if (!redir.isEmpty())
 	{
-		m_url = m_site->fixUrl(redir.toString(), m_url);
+		QUrl newUrl = m_site->fixUrl(redir.toString(), m_url);
+		log(QString("[%1] Redirecting page <a href=\"%2\">%2</a> to <a href=\"%3\">%3</a>").arg(m_site->url()).arg(m_url.toString().toHtmlEscaped()).arg(newUrl.toString().toHtmlEscaped()), Logger::Debug);
+		m_url = newUrl;
 		load();
 		return;
 	}
@@ -707,11 +713,15 @@ void PageApi::parse()
 }
 void PageApi::parseTags()
 {
+	log(QString("[%1] Receiving tags page <a href=\"%2\">%2</a>").arg(m_site->url()).arg(m_replyTags->url().toString().toHtmlEscaped()), Logger::Info);
+
 	// Check redirection
 	QUrl redir = m_replyTags->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 	if (!redir.isEmpty())
 	{
-		m_urlRegex = m_site->fixUrl(redir.toString(), m_urlRegex);
+		QUrl newUrl = m_site->fixUrl(redir.toString(), m_urlRegex);
+		log(QString("[%1] Redirecting tags page <a href=\"%2\">%2</a> to <a href=\"%3\">%3</a>").arg(m_site->url()).arg(m_urlRegex.toString().toHtmlEscaped()).arg(newUrl.toString().toHtmlEscaped()), Logger::Debug);
+		m_urlRegex = newUrl;
 		loadTags();
 		return;
 	}
