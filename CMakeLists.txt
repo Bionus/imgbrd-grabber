@@ -22,21 +22,21 @@ add_definitions(-DPREFIX="$ENV{PREFIX}")
 
 # SSL
 if(USE_SSL)
-    message("Compiling with SSL support")
-    find_package(OpenSSL REQUIRED)
-    if (OPENSSL_FOUND)
-        message("OpenSSL include dir: ${OPENSSL_INCLUDE_DIR}")
-        message("OpenSSL libraries: ${OPENSSL_LIBRARIES}")
-        include_directories(${OPENSSL_INCLUDE_DIR})
-        list(APPEND LIBS ${OPENSSL_LIBRARIES})
-    endif()
+	message("Compiling with SSL support")
+	find_package(OpenSSL REQUIRED)
+	if (OPENSSL_FOUND)
+		message("OpenSSL include dir: ${OPENSSL_INCLUDE_DIR}")
+		message("OpenSSL libraries: ${OPENSSL_LIBRARIES}")
+		include_directories(${OPENSSL_INCLUDE_DIR})
+		list(APPEND LIBS ${OPENSSL_LIBRARIES})
+	endif()
 endif()
 
 # Enable code coverage on the Travis Linux build
 if((DEFINED ENV{TRAVIS}) AND UNIX AND NOT APPLE AND CMAKE_COMPILER_IS_GNUCXX)
-    include(cmake/CodeCoverage.cmake)
-    setup_target_for_coverage(coverage tests coverage)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -fprofile-arcs -ftest-coverage")
+	include(cmake/CodeCoverage.cmake)
+	setup_target_for_coverage(coverage tests coverage)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -fprofile-arcs -ftest-coverage")
 endif()
 
 add_subdirectory(lib)
@@ -48,6 +48,6 @@ add_subdirectory(CrashReporter)
 add_subdirectory(languages)
 add_custom_target(translations DEPENDS General_translations CrashReporter_translations)
 install(DIRECTORY release/ DESTINATION share/Grabber/
-        PATTERN "*.desktop" EXCLUDE
-        PATTERN "*.exe" EXCLUDE)
+		PATTERN "*.desktop" EXCLUDE
+		PATTERN "*.exe" EXCLUDE)
 install(FILES "release/Grabber.desktop" DESTINATION share/applications/)
