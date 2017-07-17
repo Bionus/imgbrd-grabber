@@ -1477,7 +1477,16 @@ void mainWindow::_getAll()
 		m_getAllDownloading.append(img);
 
 		// Get the tags first if necessary
-		if (m_mustGetTags)
+		bool hasUnknownTag = false;
+		for (Tag tag : img->tags())
+		{
+			if (tag.type().name() == "unknown")
+			{
+				hasUnknownTag = true;
+				break;
+			}
+		}
+		if (m_mustGetTags && hasUnknownTag)
 		{
 			connect(img.data(), &Image::finishedLoadingTags, this, &mainWindow::getAllPerformTags);
 			img->loadDetails();
