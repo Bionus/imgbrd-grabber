@@ -25,9 +25,7 @@ class TagTest : public TestSuite
 		void testTypeArtistEnding();
 		void testTypePrefix();
 		void testTypePrefixSpecies();
-		void testSetType();
 		void testShortType();
-		void testSetTypeShortType();
 		void testStylishedBasic();
 		void testStylishedIgnored();
 		void testStylishedBlacklisted();
