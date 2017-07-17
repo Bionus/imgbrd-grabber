@@ -6,7 +6,7 @@
 #include <QDateTime>
 #include <QPixmap>
 #include <QSettings>
-#include "tag.h"
+#include "tags/tag.h"
 #include "pool.h"
 #include "downloader/extension-rotator.h"
 
