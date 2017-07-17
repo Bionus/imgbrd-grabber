@@ -67,8 +67,10 @@ void TagApi::parse()
 		return;
 	}
 
+	// Initializations
 	QString source = m_reply->readAll();
 	QString format = m_api->getName();
+	QMap<int, TagType> tagTypes = m_site->tagDatabase()->tagTypes();
 	m_tags.clear();
 
 	if (source.isEmpty())
@@ -103,9 +105,10 @@ void TagApi::parse()
 			int id = node.namedItem("id").toElement().text().toInt();
 			QString name = node.namedItem("name").toElement().text();
 			int count = node.namedItem("count").toElement().text().toInt();
-			int type = node.namedItem("type").toElement().text().toInt();
+			int typeId = node.namedItem("type").toElement().text().toInt();
 
-			m_tags.append(Tag(name));
+			TagType tagType = tagTypes.contains(typeId) ? tagTypes[typeId] : TagType("unknown");
+			m_tags.append(Tag(name, tagType, count));
 		}
 	}
 
@@ -139,9 +142,10 @@ void TagApi::parse()
 			int id = sc.value("id").toInt();
 			QString name = sc.value("name").toString();
 			int count = sc.value("count").toInt();
-			int type = sc.value("type").toInt();
+			int typeId = sc.value("type").toInt();
 
-			m_tags.append(Tag(name));
+			TagType tagType = tagTypes.contains(typeId) ? tagTypes[typeId] : TagType("unknown");
+			m_tags.append(Tag(name, tagType, count));
 		}
 	}
 
