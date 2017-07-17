@@ -11,7 +11,7 @@ make -j8
 cd ..
 
 appDir=release/Grabber.app/Contents/MacOS
-mv build/gui/gui.app release/Grabber.app
+mv build/gui/Grabber.app release/
 mv release/* $appDir
 touch $appDir/settings.ini
 

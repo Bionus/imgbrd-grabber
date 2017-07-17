@@ -20,7 +20,7 @@ make -j8
 cd ..
 
 # Move the built binary to the release folder with its config
-mv "build/gui/gui" "release/Grabber"
+mv "build/gui/Grabber" "release/"
 touch "release/settings.ini"
 
 echo "Grabber has been compiled in the release directory. To run it, type './release/Grabber'"

@@ -66,7 +66,7 @@ Source: "..\resources\images\icon.ico";         DestDir: "{app}"; Flags: ignorev
 Source: "..\release\CDR.exe";                   DestDir: "{app}"; Flags: ignoreversion
 Source: "..\build\CrashReporter\CrashReporter.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\build\cli\cli.exe";                 DestDir: "{app}"; Flags: ignoreversion; DestName: "Grabber.com"
-Source: "..\build\gui\gui.exe";                 DestDir: "{app}"; Flags: ignoreversion; DestName: "Grabber.exe"
+Source: "..\build\gui\Grabber.exe";             DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\release\words.txt";                 DestDir: "{app}";
 Source: "..\release\libeay32.dll";              DestDir: "{app}"; Flags: ignoreversion
 Source: "..\release\libEGL.dll";                DestDir: "{app}"; Flags: ignoreversion
