@@ -18,7 +18,7 @@ set(USE_SSL 1)
 add_definitions(-DVERSION="5.4.2")
 add_definitions(-DPROJECT_WEBSITE_URL="https://bionus.github.io/imgbrd-grabber/")
 add_definitions(-DPROJECT_GITHUB_URL="https://github.com/Bionus/imgbrd-grabber")
-add_definitions(-DPREFIX="$ENV{PREFIX}")
+add_definitions(-DPREFIX="${CMAKE_INSTALL_PREFIX}")
 
 # SSL
 if(USE_SSL)
