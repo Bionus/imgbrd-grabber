@@ -1,4 +1,5 @@
 #include "tag-type.h"
+#include <QMap>
 
 
 TagType::TagType()
