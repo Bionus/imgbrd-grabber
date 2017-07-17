@@ -29,6 +29,7 @@ void TagLoader::cancel()
 {
 	emit rejected();
 	close();
+	deleteLater();
 }
 
 void TagLoader::start()
@@ -37,7 +38,8 @@ void TagLoader::start()
 
 	// Show progress bar
 	ui->progressBar->setValue(0);
-	ui->progressBar->setMaximum(100);
+	ui->progressBar->setMinimum(0);
+	ui->progressBar->setMaximum(0);
 	ui->progressBar->show();
 
 	// Get site and API
@@ -56,6 +58,7 @@ void TagLoader::start()
 		error(this, tr("No API supporting tag fetching found"));
 		return;
 	}
+	site->tagDatabase()->load();
 
 	// Load all tags
 	QList<Tag> allTags;
@@ -65,22 +68,27 @@ void TagLoader::start()
 	{
 		// Load tags for the current page
 		QEventLoop loop;
-		TagApi *tagApi = new TagApi(m_profile, site, api, page, 1000, this);
+		TagApi *tagApi = new TagApi(m_profile, site, api, page, 500, this);
 		connect(tagApi, &TagApi::finishedLoading, &loop, &QEventLoop::quit);
 		tagApi->load();
 		loop.exec();
 
 		tags = tagApi->tags();
 		allTags.append(tags);
-		qDebug() << tags.count() << allTags.count();
+		tagApi->deleteLater();
+
+		ui->progressBar->setValue(page);
+		page++;
 	}
 
-	// Hide progress bar
-	ui->progressBar->hide();
-	ui->progressBar->setValue(0);
-	ui->progressBar->setMaximum(0);
+	// Update tag database
+	site->tagDatabase()->setTags(allTags);
+	site->tagDatabase()->save();
 
+	// Hide progress bar
 	ui->buttonStart->setEnabled(true);
+	ui->progressBar->hide();
+	resize(size().width(), 0);
 
 	QMessageBox::information(this, tr("Finished"), tr("%n tag(s) loaded", "", allTags.count()));
 }
