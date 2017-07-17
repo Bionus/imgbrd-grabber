@@ -14,7 +14,7 @@ bool TagDatabase::load()
 	if (!m_database.isEmpty())
 		return true;
 
-	QMap<int, TagType> types = loadTypes(m_typeFile);
+	loadTypes(m_typeFile);
 
 	QFile file(m_tagFile);
 	if (!file.open(QFile::ReadOnly | QFile::Text))
@@ -29,19 +29,20 @@ bool TagDatabase::load()
 			continue;
 
 		int tId = data[1].toInt();
-		if (!types.contains(tId))
+		if (!m_tagTypes.contains(tId))
 			continue;
 
-		m_database.insert(data[0], types[tId]);
+		m_database.insert(data[0], m_tagTypes[tId]);
 	}
 	file.close();
 
 	return true;
 }
 
-QMap<int, TagType> TagDatabase::loadTypes(QString filename) const
+void TagDatabase::loadTypes(QString filename)
 {
-	QMap<int, TagType> types;
+	if (!m_tagTypes.isEmpty())
+		return;
 
 	QFile f(filename);
 	if (f.open(QFile::ReadOnly | QFile::Text))
@@ -55,12 +56,10 @@ QMap<int, TagType> TagDatabase::loadTypes(QString filename) const
 			if (data.count() != 2)
 				continue;
 
-			types.insert(data[0].toInt(), TagType(data[1]));
+			m_tagTypes.insert(data[0].toInt(), TagType(data[1]));
 		}
 		f.close();
 	}
-
-	return types;
 }
 
 TagType TagDatabase::getTagType(QString tag) const
@@ -69,4 +68,9 @@ TagType TagDatabase::getTagType(QString tag) const
 		return m_database[tag];
 
 	return TagType("unknown");
+}
+
+QMap<int, TagType> TagDatabase::tagTypes() const
+{
+	return m_tagTypes;
 }

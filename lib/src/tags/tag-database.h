@@ -12,14 +12,16 @@ class TagDatabase
 		TagDatabase(QString typeFile, QString tagFile);
 		bool load();
 		TagType getTagType(QString tag) const;
+		QMap<int, TagType> tagTypes() const;
 
 	protected:
-		QMap<int, TagType> loadTypes(QString filename) const;
+		void loadTypes(QString filename);
 
 	private:
 		QString m_typeFile;
 		QString m_tagFile;
 		QMap<QString, TagType> m_database;
+		QMap<int, TagType> m_tagTypes;
 };
 
 #endif // TAG_DATABASE_H
