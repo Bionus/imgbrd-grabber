@@ -8,14 +8,16 @@
 class TagDatabase
 {
 	public:
-		TagDatabase();
-		bool load(QString typeFile, QString tagFile);
+		TagDatabase(QString typeFile, QString tagFile);
+		bool load();
 		TagType getTagType(QString tag) const;
 
 	protected:
 		QMap<int, TagType> loadTypes(QString filename) const;
 
 	private:
+		QString m_typeFile;
+		QString m_tagFile;
 		QMap<QString, TagType> m_database;
 };
 
