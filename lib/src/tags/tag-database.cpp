@@ -2,14 +2,15 @@
 #include <QFile>
 
 
-TagDatabase::TagDatabase()
+TagDatabase::TagDatabase(QString typeFile, QString tagFile)
+	: m_typeFile(typeFile), m_tagFile(tagFile)
 {}
 
-bool TagDatabase::load(QString typeFile, QString tagFile)
+bool TagDatabase::load()
 {
-	QMap<int, TagType> types = loadTypes(typeFile);
+	QMap<int, TagType> types = loadTypes(m_typeFile);
 
-	QFile file(tagFile);
+	QFile file(m_tagFile);
 	if (!file.open(QFile::ReadOnly | QFile::Text))
 		return false;
 
