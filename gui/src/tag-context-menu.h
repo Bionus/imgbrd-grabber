@@ -6,7 +6,7 @@
 #include <QUrl>
 #include "models/profile.h"
 #include "models/image.h"
-#include "models/tag.h"
+#include "tags/tag.h"
 
 
 class TagContextMenu : public QMenu

@@ -3,7 +3,7 @@
 #include <QDir>
 #include "models/filename.h"
 #include "models/profile.h"
-#include "models/tag.h"
+#include "tags/tag.h"
 #include "sql-worker.h"
 #include "functions.h"
 
