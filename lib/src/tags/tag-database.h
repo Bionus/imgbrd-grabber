@@ -2,6 +2,7 @@
 #define TAG_DATABASE_H
 
 #include <QString>
+#include <QMap>
 #include "tag-type.h"
 
 
