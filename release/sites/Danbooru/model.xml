@@ -8,18 +8,24 @@
 			<Tags>/post/index.xml?{login}limit={limit}&amp;page={page}&amp;tags={tags}</Tags>
 			<Pools>/post/index.xml?{login}limit={limit}&amp;page={page}&amp;tags=pool:{pool} {tags}</Pools>
 			<MaxLimit>200</MaxLimit>
+			<TagApi>/tag/index.xml?{login}limit={limit}&amp;page={page}</TagApi>
+			<SingleTagApi>/tag/index.xml?{login}limit={limit}&amp;page={page}&amp;name={name}</SingleTagApi>
 		</Xml>
 		<Json>
 			<Login>login={pseudo}&amp;password_hash={password}&amp;</Login>
 			<Tags>/post/index.json?{login}limit={limit}&amp;page={page}&amp;tags={tags}</Tags>
 			<Pools>/post/index.json?{login}limit={limit}&amp;page={page}&amp;tags=pool:{pool} {tags}</Pools>
 			<MaxLimit>200</MaxLimit>
+			<TagApi>/tag/index.json?{login}limit={limit}&amp;page={page}</TagApi>
+			<SingleTagApi>/tag/index.json?{login}limit={limit}&amp;page={page}&amp;name={name}</SingleTagApi>
 		</Json>
 		<Html>
 			<Login>login={pseudo}&amp;password_hash={password}&amp;</Login>
 			<Tags>/post/index?{login}limit={limit}&amp;page={page}&amp;tags={tags}</Tags>
 			<Pools>/post/index?{login}limit={limit}&amp;page={page}&amp;tags=pool:{pool} {tags}</Pools>
 			<Post>/post/show/{id}</Post>
+			<TagApi>/tag/index?{login}limit={limit}&amp;page={page}</TagApi>
+			<SingleTagApi>/tag/index?{login}limit={limit}&amp;page={page}&amp;name={name}</SingleTagApi>
 		</Html>
 	</Urls>
 	<Auths>
