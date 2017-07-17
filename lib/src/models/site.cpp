@@ -33,9 +33,11 @@ Site::Site(QString url, Source *source)
 
 void Site::loadConfig()
 {
+	QString siteDir = m_source->getPath() + "/" + m_url + "/";
+
 	if (m_settings != nullptr)
 		m_settings->deleteLater();
-	m_settings = new QSettings(m_source->getPath() + "/" + m_url + "/settings.ini", QSettings::IniFormat);
+	m_settings = new QSettings(siteDir + "settings.ini", QSettings::IniFormat);
 	m_name = m_settings->value("name", m_url).toString();
 
 	// Get default source order
@@ -94,11 +96,15 @@ void Site::loadConfig()
 	}
 	if (m_cookieJar != nullptr)
 		resetCookieJar();
+
+	// Tag database
+	m_tagDatabase = new TagDatabase(siteDir + "tag-types.txt", siteDir + "tags.txt");
 }
 
 Site::~Site()
 {
 	m_settings->deleteLater();
+	delete m_tagDatabase;
 }
 
 
@@ -408,6 +414,7 @@ void Site::finishedTags()
 
 QVariant Site::setting(QString key, QVariant def)	{ return m_settings->value(key, def); }
 QSettings	*Site::settings()						{ return m_settings; }
+TagDatabase *Site::tagDatabase() const				{ return m_tagDatabase;	}
 
 QString Site::name()			{ return m_name;			}
 QString Site::url()				{ return m_url;				}
