@@ -61,6 +61,7 @@ file(GLOB SOURCES
 	"src/utils/blacklist-fix/*.cpp"
 	"src/utils/empty-dirs-fix/*.cpp"
 	"src/utils/md5-fix/*.cpp"
+	"src/utils/tag-loader/*.cpp"
 	"src/viewer/*.cpp"
 	"../resources/*.rc"
 	"../resources/*.qrc")

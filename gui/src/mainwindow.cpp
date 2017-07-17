@@ -27,6 +27,7 @@
 #include "utils/rename-existing/rename-existing-1.h"
 #include "utils/empty-dirs-fix/empty-dirs-fix-1.h"
 #include "utils/md5-fix/md5-fix.h"
+#include "utils/tag-loader/tag-loader.h"
 #include "models/filename.h"
 #include "downloader/downloader.h"
 #include "downloader/download-query-loader.h"
@@ -1949,6 +1950,11 @@ void mainWindow::md5FixOpen()
 void mainWindow::renameExisting()
 {
 	RenameExisting1 *win = new RenameExisting1(m_profile, m_sites, this);
+	win->show();
+}
+void mainWindow::utilTagLoader()
+{
+	TagLoader *win = new TagLoader(m_profile, m_sites, this);
 	win->show();
 }
 
