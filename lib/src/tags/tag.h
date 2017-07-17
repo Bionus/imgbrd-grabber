@@ -4,6 +4,7 @@
 #include <QString>
 #include <QStringList>
 #include <QFont>
+#include "tag-type.h"
 
 
 class Profile;
@@ -19,11 +20,11 @@ class Tag
 		static QString GetType(QString type, QStringList ids);
 		QString stylished(Profile *profile, QStringList ignored = QStringList(), QStringList blacklisted = QStringList(), bool count = false, bool nounderscores = false) const;
 		void setText(QString);
-		void setType(QString);
+		void setType(TagType);
 		void setCount(int);
 		void setRelated(QStringList);
 		QString		text()		const;
-		QString		type()		const;
+		TagType		type()		const;
 		int			shortType()	const;
 		int			count()		const;
 		QStringList	related()	const;
@@ -33,7 +34,8 @@ class Tag
 		static QStringList Stylished(QList<Tag>, Profile *profile, bool count = false, bool nounderscores = false, bool sort = true);
 
 	private:
-		QString		m_text, m_type;
+		QString		m_text;
+		TagType		m_type;
 		int			m_count;
 		QStringList	m_related;
 };

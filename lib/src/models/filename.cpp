@@ -233,9 +233,9 @@ QMap<QString, QStringList> Filename::makeDetails(const Image& img, Profile *prof
 	{
 		QString t = tag.text();
 
-		details[ignore.contains(t, Qt::CaseInsensitive) ? "generals" : tag.type()+"s"].append(t);
+		details[ignore.contains(t, Qt::CaseInsensitive) ? "generals" : tag.type().name()+"s"].append(t);
 		details["alls"].append(t);
-		details["alls_namespaces"].append(tag.type());
+		details["alls_namespaces"].append(tag.type().name());
 
 		QString underscored = QString(t);
 		underscored.replace(' ', '_');

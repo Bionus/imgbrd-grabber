@@ -113,8 +113,8 @@ bool Commands::tag(const Image &img, Tag tag, bool after)
 		{
 			exec.replace("%tag%", original)
 				.replace("%original%", tag.text())
-				.replace("%type%", tag.type())
-				.replace("%number%", QString::number(types[tag.type()]));
+				.replace("%type%", tag.type().name())
+				.replace("%number%", QString::number(types[tag.type().name()]));
 
 			log(QString("Execution of \"%1\"").arg(exec));
 			Logger::getInstance().logCommand(exec);
@@ -137,8 +137,8 @@ bool Commands::tag(const Image &img, Tag tag, bool after)
 		{
 			exec.replace("%tag%", m_sqlWorker->escape(original))
 				.replace("%original%", m_sqlWorker->escape(tag.text()))
-				.replace("%type%", m_sqlWorker->escape(tag.type()))
-				.replace("%number%", QString::number(types[tag.type()]));
+				.replace("%type%", m_sqlWorker->escape(tag.type().name()))
+				.replace("%number%", QString::number(types[tag.type().name()]));
 
 			if (!sqlExec(exec))
 				return false;

@@ -405,16 +405,16 @@ void ImageTest::testLoadDetails()
 	QList<Tag> tags = m_img->tags();
 	QCOMPARE(tags.count(), 23);
 	QCOMPARE(tags[0].text(), QString("to_heart_2"));
-	QCOMPARE(tags[0].type(), QString("copyright"));
+	QCOMPARE(tags[0].type().name(), QString("copyright"));
 	QCOMPARE(tags[0].count(), 5900);
 	QCOMPARE(tags[1].text(), QString("kousaka_tamaki"));
-	QCOMPARE(tags[1].type(), QString("character"));
+	QCOMPARE(tags[1].type().name(), QString("character"));
 	QCOMPARE(tags[1].count(), 2000);
 	QCOMPARE(tags[2].text(), QString("date_(senpen)"));
-	QCOMPARE(tags[2].type(), QString("artist"));
+	QCOMPARE(tags[2].type().name(), QString("artist"));
 	QCOMPARE(tags[2].count(), 251);
 	QCOMPARE(tags[3].text(), QString("1girl"));
-	QCOMPARE(tags[3].type(), QString("general"));
+	QCOMPARE(tags[3].type().name(), QString("general"));
 	QCOMPARE(tags[3].count(), 1679000);
 }
 void ImageTest::testLoadDetailsAbort()
