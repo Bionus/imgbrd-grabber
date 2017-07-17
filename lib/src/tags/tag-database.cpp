@@ -21,7 +21,8 @@ bool TagDatabase::load()
 		return false;
 
 	QTextStream in(&file);
-	while (!in.atEnd()) {
+	while (!in.atEnd())
+	{
 		QString line = in.readLine();
 
 		QStringList data = line.split(',');
@@ -45,21 +46,53 @@ void TagDatabase::loadTypes(QString filename)
 		return;
 
 	QFile f(filename);
-	if (f.open(QFile::ReadOnly | QFile::Text))
+	if (!f.open(QFile::ReadOnly | QFile::Text))
+		return;
+
+	QTextStream in(&f);
+	while (!in.atEnd())
 	{
-		QTextStream in(&f);
-		while (!in.atEnd())
-		{
-			QString line = in.readLine();
+		QString line = in.readLine();
 
-			QStringList data = line.split(',');
-			if (data.count() != 2)
-				continue;
+		QStringList data = line.split(',');
+		if (data.count() != 2)
+			continue;
 
-			m_tagTypes.insert(data[0].toInt(), TagType(data[1]));
-		}
-		f.close();
+		m_tagTypes.insert(data[0].toInt(), TagType(data[1]));
 	}
+	f.close();
+}
+
+bool TagDatabase::save()
+{
+	QFile file(m_tagFile);
+	if (!file.open(QFile::WriteOnly | QFile::Truncate | QFile::Text))
+		return false;
+
+	// Inverted tag type map to get the tag type ID from its name
+	QMap<QString, int> tagTypes;
+	for (int typeId : m_tagTypes.keys())
+		tagTypes.insert(m_tagTypes[typeId].name(), typeId);
+
+	QMapIterator<QString, TagType> i(m_database);
+	while (i.hasNext())
+	{
+		i.next();
+
+		TagType tagType = i.value();
+		int tagTypeId = tagTypes.contains(tagType.name()) ? tagTypes[tagType.name()] : -1;
+
+		file.write(QString(i.key() + "," + QString::number(tagTypeId) + "\n").toUtf8());
+	}
+
+	file.close();
+}
+
+void TagDatabase::setTags(const QList<Tag> &tags)
+{
+	m_database.clear();
+	for (Tag tag : tags)
+		m_database.insert(tag.text(), tag.type());
 }
 
 TagType TagDatabase::getTagType(QString tag) const
