@@ -233,7 +233,6 @@ void Tag::setRelated(QStringList r)	{ m_related = r;	}
 
 QString		Tag::text() const		{ return m_text;	}
 TagType		Tag::type() const		{ return m_type;	}
-int			Tag::shortType() const	{ return m_type.name() == "general" ? 0 : (m_type.name() == "artist" ? 1 : (m_type.name() == "copyright" ? 3 : 4)); }
 int			Tag::count() const		{ return m_count;	}
 QStringList	Tag::related() const	{ return m_related;	}
 
