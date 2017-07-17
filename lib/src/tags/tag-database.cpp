@@ -8,6 +8,10 @@ TagDatabase::TagDatabase(QString typeFile, QString tagFile)
 
 bool TagDatabase::load()
 {
+	// Don't reload databases
+	if (!m_database.isEmpty())
+		return true;
+
 	QMap<int, TagType> types = loadTypes(m_typeFile);
 
 	QFile file(m_tagFile);
