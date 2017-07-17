@@ -4,6 +4,7 @@
 #include <QString>
 #include <QMap>
 #include "tag-type.h"
+#include "tag.h"
 
 
 class TagDatabase
@@ -11,6 +12,8 @@ class TagDatabase
 	public:
 		TagDatabase(QString typeFile, QString tagFile);
 		bool load();
+		bool save();
+		void setTags(const QList<Tag> &tags);
 		TagType getTagType(QString tag) const;
 		QMap<int, TagType> tagTypes() const;
 
