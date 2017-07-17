@@ -36,27 +36,27 @@ void TagTest::testType()
 {
 	Tag tag("tag_text", "artist", 123, QStringList() << "related1" << "related2" << "related3");
 
-	QCOMPARE(tag.type(), QString("artist"));
+	QCOMPARE(tag.type().name(), QString("artist"));
 }
 void TagTest::testTypeArtistEnding()
 {
 	Tag tag("tag_text (artist)", "unknown", 123, QStringList() << "related1" << "related2" << "related3");
 
-	QCOMPARE(tag.type(), QString("artist"));
+	QCOMPARE(tag.type().name(), QString("artist"));
 	QCOMPARE(tag.text(), QString("tag_text"));
 }
 void TagTest::testTypePrefix()
 {
 	Tag tag("artist:tag_text", "unknown", 123, QStringList() << "related1" << "related2" << "related3");
 
-	QCOMPARE(tag.type(), QString("artist"));
+	QCOMPARE(tag.type().name(), QString("artist"));
 	QCOMPARE(tag.text(), QString("tag_text"));
 }
 void TagTest::testTypePrefixSpecies()
 {
 	Tag tag("species:tag_text", "unknown", 123, QStringList() << "related1" << "related2" << "related3");
 
-	QCOMPARE(tag.type(), QString("species"));
+	QCOMPARE(tag.type().name(), QString("species"));
 	QCOMPARE(tag.text(), QString("tag_text"));
 }
 void TagTest::testSetType()
@@ -64,7 +64,7 @@ void TagTest::testSetType()
 	Tag tag("tag_text", "character", 123, QStringList() << "related1" << "related2" << "related3");
 	tag.setType("artist");
 
-	QCOMPARE(tag.type(), QString("artist"));
+	QCOMPARE(tag.type().name(), QString("artist"));
 }
 void TagTest::testShortType()
 {
@@ -226,7 +226,7 @@ void TagTest::testTypeSpaced()
 {
 	Tag tag("artist1", "artist with spaces", 1, QStringList() << "tag1");
 
-	QCOMPARE(tag.type(), QString("artist"));
+	QCOMPARE(tag.type().name(), QString("artist"));
 }
 
 void TagTest::testGetType()
