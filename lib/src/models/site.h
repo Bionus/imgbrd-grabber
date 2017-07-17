@@ -9,7 +9,7 @@
 #include <QNetworkReply>
 #include <QUrl>
 #include <functional>
-#include "models/tag.h"
+#include "tags/tag.h"
 
 
 class Page;

@@ -6,7 +6,7 @@
 #include <QScrollBar>
 #include <QMenu>
 #include <QTextDocumentFragment>
-#include "models/tag.h"
+#include "tags/tag.h"
 #include "models/profile.h"
 #include "logger.h"
 

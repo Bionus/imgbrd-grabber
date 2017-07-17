@@ -2,7 +2,7 @@
 #define TAG_TEST_H
 
 #include "test-suite.h"
-#include "models/tag.h"
+#include "tags/tag.h"
 #include <QSettings>
 
 
