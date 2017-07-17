@@ -2,6 +2,7 @@
 
 *.qm
 release/sites/*/*/settings.ini
+release/sites/*/*/tags.txt
 tests/resources/md5s.txt
 tests/resources/settings.ini
 tests/resources/settings.ini.*
