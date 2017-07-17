@@ -32,7 +32,7 @@ bool TagDatabase::load(QString typeFile, QString tagFile)
 	return true;
 }
 
-QMap<int, TagType> loadTypes(QString filename) const
+QMap<int, TagType> TagDatabase::loadTypes(QString filename) const
 {
 	QMap<int, TagType> types;
 
