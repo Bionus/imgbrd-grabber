@@ -508,7 +508,7 @@ void Downloader::returnTagList(QList<Tag> ret)
 		ret.replace("%tag", tag.text());
 		ret.replace("%count", QString::number(tag.count()));
 		ret.replace("%type", tag.type().name());
-		ret.replace("%stype", QString::number(tag.shortType()));
+		ret.replace("%stype", QString::number(tag.type().number()));
 		std::cout << ret.toStdString() << std::endl;
 	}
 	emit quit();

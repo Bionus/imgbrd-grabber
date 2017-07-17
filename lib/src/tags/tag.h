@@ -24,7 +24,6 @@ class Tag
 		void setRelated(QStringList);
 		QString		text()		const;
 		TagType		type()		const;
-		int			shortType()	const;
 		int			count()		const;
 		QStringList	related()	const;
 		QString		typedText()	const;
