@@ -3,7 +3,7 @@
 
 #include <QMap>
 #include <QNetworkReply>
-#include "tag.h"
+#include "tags/tag.h"
 
 
 class Page;
