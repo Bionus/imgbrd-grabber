@@ -1,5 +1,7 @@
 #include "tag-database.h"
 #include <QFile>
+#include <QTextStream>
+#include <QStringList>
 
 
 TagDatabase::TagDatabase(QString typeFile, QString tagFile)
@@ -41,7 +43,7 @@ QMap<int, TagType> TagDatabase::loadTypes(QString filename) const
 {
 	QMap<int, TagType> types;
 
-	QFile f(typeFile);
+	QFile f(filename);
 	if (f.open(QFile::ReadOnly | QFile::Text))
 	{
 		QTextStream in(&f);
@@ -53,7 +55,7 @@ QMap<int, TagType> TagDatabase::loadTypes(QString filename) const
 			if (data.count() != 2)
 				continue;
 
-			types[data[0].toInt()] = data[1];
+			types.insert(data[0].toInt(), TagType(data[1]));
 		}
 		f.close();
 	}
