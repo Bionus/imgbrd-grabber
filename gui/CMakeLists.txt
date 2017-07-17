@@ -102,3 +102,5 @@ else()
 endif()
 
 target_link_libraries(${PROJECT_NAME} ${QT_LIBRARIES} ${LIBS} lib)
+set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "Grabber")
+install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin)
