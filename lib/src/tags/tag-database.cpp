@@ -1,5 +1,5 @@
 #include "tag-database.h"
-#include <File>
+#include <QFile>
 
 
 TagDatabase::TagDatabase()
