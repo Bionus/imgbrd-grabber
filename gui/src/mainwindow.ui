@@ -421,6 +421,7 @@ QTextEdit {
     <addaction name="actionEmptyDirsFix"/>
     <addaction name="actionMd5Fix"/>
     <addaction name="actionRenameExistingImages"/>
+    <addaction name="actionTagLoader"/>
     <addaction name="separator"/>
     <addaction name="actionOptions"/>
    </widget>
@@ -1109,6 +1110,11 @@ QTextEdit {
     <string notr="true">Ctrl+Shift+T</string>
    </property>
   </action>
+  <action name="actionTagLoader">
+   <property name="text">
+    <string>Tag loader</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -1700,6 +1706,22 @@ QTextEdit {
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionTagLoader</sender>
+   <signal>triggered()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>utilTagLoader()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>270</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>help()</slot>
@@ -1746,5 +1768,6 @@ QTextEdit {
   <slot>renameExisting()</slot>
   <slot>aboutGithub()</slot>
   <slot>restoreLastClosedTab()</slot>
+  <slot>utilTagLoader()</slot>
  </slots>
 </ui>
