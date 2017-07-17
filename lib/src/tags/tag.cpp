@@ -11,6 +11,10 @@ Tag::Tag()
 { }
 
 Tag::Tag(QString text, QString type, int count, QStringList related)
+	: Tag(text, TagType(type), count, related)
+{ }
+
+Tag::Tag(QString text, TagType type, int count, QStringList related)
 	: m_type(TagType(type)), m_count(count), m_related(related)
 {
 	// Decode HTML entities in the tag text
@@ -19,9 +23,9 @@ Tag::Tag(QString text, QString type, int count, QStringList related)
 	m_text = htmlEncoded.toPlainText().replace(' ', '_');
 
 	// Sometimes a type is found with multiple words, only the first is relevant
-	int typeSpace = type.indexOf(' ');
+	int typeSpace = m_type.name().indexOf(' ');
 	if (typeSpace != -1)
-	{ m_type = TagType(type.left(typeSpace)); }
+	{ m_type = TagType(m_type.name().left(typeSpace)); }
 
 	// Some artist names end with " (artist)" so we can guess their type
 	if (m_text.endsWith("(artist)") && m_type.name() == "unknown")
