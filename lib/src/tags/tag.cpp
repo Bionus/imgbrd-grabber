@@ -228,7 +228,6 @@ QString Tag::stylished(Profile *profile, QStringList ignored, QStringList blackl
 }
 
 void Tag::setText(QString text)		{ m_text = text;	}
-void Tag::setType(TagType type)		{ m_type = type;	}
 void Tag::setCount(int count)		{ m_count = count;	}
 void Tag::setRelated(QStringList r)	{ m_related = r;	}
 

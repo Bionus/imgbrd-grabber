@@ -59,23 +59,9 @@ void TagTest::testTypePrefixSpecies()
 	QCOMPARE(tag.type().name(), QString("species"));
 	QCOMPARE(tag.text(), QString("tag_text"));
 }
-void TagTest::testSetType()
-{
-	Tag tag("tag_text", "character", 123, QStringList() << "related1" << "related2" << "related3");
-	tag.setType("artist");
-
-	QCOMPARE(tag.type().name(), QString("artist"));
-}
 void TagTest::testShortType()
 {
 	Tag tag("tag_text", "artist", 123, QStringList() << "related1" << "related2" << "related3");
-
-	QCOMPARE(tag.shortType(), 1);
-}
-void TagTest::testSetTypeShortType()
-{
-	Tag tag("tag_text", "character", 123, QStringList() << "related1" << "related2" << "related3");
-	tag.setType("artist");
 
 	QCOMPARE(tag.shortType(), 1);
 }
