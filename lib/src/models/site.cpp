@@ -297,7 +297,7 @@ QNetworkRequest Site::makeRequest(QUrl url, Page *page, QString ref, Image *img)
 	// User-Agent header tokens and default value
 	QString userAgent = request.rawHeader("User-Agent");
 	if (userAgent.isEmpty())
-		userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:52.0) Gecko/20100101 Firefox/52.0";
+		userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:52.0) Gecko/20100101 Firefox/52.0 Grabber/%version%";
 	userAgent.replace("%version%", QString(VERSION));
 	request.setRawHeader("User-Agent", userAgent.toLatin1());
 
