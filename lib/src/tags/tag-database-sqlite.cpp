@@ -22,7 +22,7 @@ bool TagDatabaseSqlite::load()
 
 	// Load and connect to the database
 	m_database = QSqlDatabase::addDatabase("QSQLITE");
-	m_database.setDatabaseName("release/sites/Danbooru/e621.net/tags.db");
+	m_database.setDatabaseName(m_tagFile);
 	if (!m_database.open())
 		return false;
 
