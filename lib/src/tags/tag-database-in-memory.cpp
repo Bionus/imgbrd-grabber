@@ -80,10 +80,12 @@ void TagDatabaseInMemory::setTags(const QList<Tag> &tags)
 		m_database.insert(tag.text(), tag.type());
 }
 
-TagType TagDatabaseInMemory::getTagType(QString tag) const
+QMap<QString, TagType> TagDatabaseInMemory::getTagTypes(QStringList tags) const
 {
-	if (m_database.contains(tag))
-		return m_database[tag];
+	QMap<QString, TagType> ret;
+	for (QString tag : tags)
+		if (m_database.contains(tag))
+			ret.insert(tag, m_database[tag]);
 
-	return TagType("unknown");
+	return ret;
 }

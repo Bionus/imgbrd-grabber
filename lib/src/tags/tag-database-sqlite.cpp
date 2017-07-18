@@ -1,7 +1,9 @@
 #include "tag-database-sqlite.h"
-#include <QSqlQuery>
-#include <QSqlRecord>
-#include <QSqlError>
+#include <QtSql/QSqlQuery>
+#include <QtSql/QSqlRecord>
+#include <QtSql/QSqlError>
+#include <QtSql/QSqlDriver>
+#include <QtSql/QSqlField>
 #include <QVariant>
 #include "logger.h"
 
@@ -77,20 +79,34 @@ void TagDatabaseSqlite::setTags(const QList<Tag> &tags)
 		return;
 }
 
-TagType TagDatabaseSqlite::getTagType(QString tag) const
+QMap<QString, TagType> TagDatabaseSqlite::getTagTypes(QStringList tags) const
 {
+	QMap<QString, TagType> ret;
+
+	// Generate SQL with escaped values as we can't use WHERE IN (?) with prepared statements
+	QString sql = "SELECT tag, ttype FROM tags WHERE tag IN (";
+	QSqlDriver *driver = m_database.driver();
+	for (int i = 0; i < tags.count(); ++i)
+	{
+		QSqlField f;
+		f.setType(QVariant::String);
+		f.setValue(tags[i]);
+		sql += (i > 0 ? "," : "") + driver->formatValue(f);
+	}
+	sql += ")";
+
 	QSqlQuery query(m_database);
-	query.prepare("SELECT tag, ttype FROM tags WHERE tag IN (:tags)");
-	query.bindValue(":tags", QStringList() << tag);
-	if (!query.exec())
+	query.setForwardOnly(true);
+	if (!query.exec(sql))
 	{
 		log(QString("SQL error when getting tags: %1").arg(query.lastError().text()), Logger::Error);
-		return TagType("unknown");
+		return ret;
 	}
 
+	int idTag = query.record().indexOf("tag");
 	int idTtype = query.record().indexOf("ttype");
-	if (!query.first())
-		return TagType("unknown");
+	while (query.next())
+		ret.insert(query.value(idTag).toString(), m_tagTypes[query.value(idTtype).toInt()]);
 
-	return m_tagTypes[query.value(idTtype).toInt()];
+	return ret;
 }
