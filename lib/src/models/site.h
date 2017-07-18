@@ -10,7 +10,7 @@
 #include <QUrl>
 #include <functional>
 #include "tags/tag.h"
-#include "tags/tag-database.h"
+#include "tags/tag-database-in-memory.h"
 
 
 class Page;
