@@ -199,6 +199,16 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 		}
 	}
 
+	// Complete missing tag type information
+	QStringList unknownTags;
+	for (Tag tag : m_tags)
+		if (tag.type().name() == "unknown")
+			unknownTags.append(tag.text());
+	QMap<QString, TagType> dbTypes = parent->site()->tagDatabase()->getTagTypes(unknownTags);
+	for (Tag tag : m_tags)
+		if (dbTypes.contains(tag.text()))
+			tag.setType(dbTypes[tag.text()]);
+
 	// Get file url and try to improve it to save bandwidth
 	m_url = m_fileUrl.toString();
 	QString ext = getExtension(m_url);

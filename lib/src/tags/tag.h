@@ -21,6 +21,7 @@ class Tag
 		static QString GetType(QString type, QStringList ids);
 		QString stylished(Profile *profile, QStringList ignored = QStringList(), QStringList blacklisted = QStringList(), bool count = false, bool nounderscores = false) const;
 		void setText(QString);
+		void setType(TagType type);
 		void setCount(int);
 		void setRelated(QStringList);
 		QString		text()		const;
