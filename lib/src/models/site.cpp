@@ -98,7 +98,7 @@ void Site::loadConfig()
 		resetCookieJar();
 
 	// Tag database
-	m_tagDatabase = new TagDatabase(siteDir + "tag-types.txt", siteDir + "tags.txt");
+	m_tagDatabase = new TagDatabaseInMemory(siteDir + "tag-types.txt", siteDir + "tags.txt");
 }
 
 Site::~Site()
