@@ -14,6 +14,8 @@
 			<MaxPage>1000</MaxPage>
 			<AltPagePrev>a{max}</AltPagePrev>
 			<AltPageNext>b{min}</AltPageNext>
+			<TagApi>/tags.xml?{login}limit={limit}&amp;page={page}</TagApi>
+			<SingleTagApi>/tags.xml?{login}limit={limit}&amp;page={page}&amp;search[name]={name}</SingleTagApi>
 		</Xml>
 		<Json>
 			<Login>login={pseudo}&amp;password_hash={password}&amp;</Login>
@@ -23,6 +25,8 @@
 			<MaxPage>1000</MaxPage>
 			<AltPagePrev>a{max}</AltPagePrev>
 			<AltPageNext>b{min}</AltPageNext>
+			<TagApi>/tags.json?{login}limit={limit}&amp;page={page}</TagApi>
+			<SingleTagApi>/tags.json?{login}limit={limit}&amp;page={page}&amp;search[name]={name}</SingleTagApi>
 		</Json>
 		<Html>
 			<Login>login={pseudo}&amp;password_hash={password}&amp;</Login>
@@ -32,6 +36,8 @@
 			<MaxPage>1000</MaxPage>
 			<AltPagePrev>a{max}</AltPagePrev>
 			<AltPageNext>b{min}</AltPageNext>
+			<TagApi>/tags?{login}limit={limit}&amp;page={page}</TagApi>
+			<SingleTagApi>/tags?{login}limit={limit}&amp;page={page}&amp;search[name]={name}</SingleTagApi>
 		</Html>
 	</Urls>
 	<Auths>
