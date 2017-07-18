@@ -150,6 +150,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 		if (!details.contains(key))
 			continue;
 
+		TagType ttype(typ);
 		QStringList t = details[key].split(" ");
 		for (int i = 0; i < t.count(); ++i)
 		{
@@ -158,7 +159,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 				continue;
 
 			tg.replace("&amp;", "&");
-			m_tags.append(Tag(tg, typ));
+			m_tags.append(Tag(tg, ttype));
 		}
 	}
 	if (m_tags.isEmpty() && details.contains("tags"))
