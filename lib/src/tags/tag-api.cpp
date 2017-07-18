@@ -81,6 +81,12 @@ void TagApi::parse()
 		return;
 	}
 
+	// Tag variables definitions
+	int id;
+	QString name;
+	int count;
+	int typeId;
+
 	// XML
 	if (format == "Xml")
 	{
@@ -101,11 +107,29 @@ void TagApi::parse()
 		for (int i = 0; i < nodeList.count(); i++)
 		{
 			QDomNode node = nodeList.at(i);
+			QDomNamedNodeMap attr = node.attributes();
 
-			int id = node.namedItem("id").toElement().text().toInt();
-			QString name = node.namedItem("name").toElement().text();
-			int count = node.namedItem("count").toElement().text().toInt();
-			int typeId = node.namedItem("type").toElement().text().toInt();
+			if (!node.namedItem("post-count").isNull())
+			{
+				id = node.namedItem("id").toElement().text().toInt();
+				name = node.namedItem("name").toElement().text();
+				count = node.namedItem("post-count").toElement().text().toInt();
+				typeId = node.namedItem("category").toElement().text().toInt();
+			}
+			else if (attr.contains("name"))
+			{
+				id = attr.namedItem("id").toAttr().value().toInt();
+				name = attr.namedItem("name").toAttr().value();
+				count = attr.namedItem("count").toAttr().value().toInt();
+				typeId = attr.namedItem("type").toAttr().value().toInt();
+			}
+			else
+			{
+				id = node.namedItem("id").toElement().text().toInt();
+				name = node.namedItem("name").toElement().text();
+				count = node.namedItem("count").toElement().text().toInt();
+				typeId = node.namedItem("type").toElement().text().toInt();
+			}
 
 			TagType tagType = tagTypes.contains(typeId) ? tagTypes[typeId] : TagType("unknown");
 			m_tags.append(Tag(name, tagType, count));
@@ -139,10 +163,20 @@ void TagApi::parse()
 		{
 			QMap<QString, QVariant> sc = el.toMap();
 
-			int id = sc.value("id").toInt();
-			QString name = sc.value("name").toString();
-			int count = sc.value("count").toInt();
-			int typeId = sc.value("type").toInt();
+			if (sc.contains("post_count"))
+			{
+				id = sc.value("id").toInt();
+				name = sc.value("name").toString();
+				count = sc.value("post_count").toInt();
+				typeId = sc.value("category").toInt();
+			}
+			else
+			{
+				id = sc.value("id").toInt();
+				name = sc.value("name").toString();
+				count = sc.value("count").toInt();
+				typeId = sc.value("type").toInt();
+			}
 
 			TagType tagType = tagTypes.contains(typeId) ? tagTypes[typeId] : TagType("unknown");
 			m_tags.append(Tag(name, tagType, count));
