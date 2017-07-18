@@ -13,6 +13,7 @@
 #include "profile.h"
 #include "api.h"
 #include "custom-network-access-manager.h"
+#include "tags/tag-database-factory.h"
 #include "vendor/json.h"
 #include "logger.h"
 
@@ -98,7 +99,7 @@ void Site::loadConfig()
 		resetCookieJar();
 
 	// Tag database
-	m_tagDatabase = new TagDatabaseInMemory(siteDir + "tag-types.txt", siteDir + "tags.txt");
+	m_tagDatabase = TagDatabaseFactory::Create(siteDir);
 }
 
 Site::~Site()
