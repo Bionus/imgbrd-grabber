@@ -167,16 +167,12 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 		// Automatically find tag separator and split the list
 		QStringList t;
 		if (details["tags"].count(", ") != 0 && details["tags"].count(" ") / details["tags"].count(", ") < 2)
-		{ t = details["tags"].split(", "); }
+		{ t = details["tags"].split(", ", QString::SkipEmptyParts); }
 		else
-		{ t = details["tags"].split(" "); }
+		{ t = details["tags"].split(" ", QString::SkipEmptyParts); }
 
-		for (int i = 0; i < t.count(); ++i)
+		for (QString tg : t)
 		{
-			QString tg = t.at(i);
-			if (tg.isEmpty())
-				continue;
-
 			tg.replace("&amp;", "&");
 
 			int colon = tg.indexOf(':');
