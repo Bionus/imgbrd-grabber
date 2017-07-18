@@ -11,8 +11,8 @@ TagDatabase *TagDatabaseFactory::Create(QString directory)
 
 	QString typesFile = directory + "tag-types.txt";
 
-	if (QFile::exists(directory + "tags.txt"))
-		return new TagDatabaseInMemory(typesFile, directory + "tags.txt");
+	if (QFile::exists(directory + "tags.db"))
+		return new TagDatabaseSqlite(typesFile, directory + "tags.db");
 
-	return new TagDatabaseSqlite(typesFile, directory + "tags.db");
+	return new TagDatabaseInMemory(typesFile, directory + "tags.txt");
 }
