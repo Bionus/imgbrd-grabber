@@ -4,6 +4,8 @@
 release/sites/*/*/settings.ini
 release/sites/*/*/tags.txt
 release/sites/*/*/tags.db
+tests/resources/tags.txt
+tests/resources/tags.db
 tests/resources/md5s.txt
 tests/resources/settings.ini
 tests/resources/settings.ini.*

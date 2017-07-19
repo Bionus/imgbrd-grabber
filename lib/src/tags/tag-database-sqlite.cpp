@@ -26,13 +26,19 @@ bool TagDatabaseSqlite::load()
 	m_database = QSqlDatabase::addDatabase("QSQLITE");
 	m_database.setDatabaseName(m_tagFile);
 	if (!m_database.open())
+	{
+		log(QString("Could not open tag database: %1").arg(m_database.lastError().text()), Logger::Error);
 		return false;
+	}
 
 	// Create schema if necessary
 	QSqlQuery createQuery(m_database);
 	createQuery.prepare("CREATE TABLE IF NOT EXISTS tags (tag VARCHAR(255), ttype INT);");
 	if (!createQuery.exec())
+	{
+		log(QString("Could not create tag database schema: %1").arg(createQuery.lastError().text()), Logger::Error);
 		return false;
+	}
 
 	return true;
 }
