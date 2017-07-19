@@ -23,7 +23,7 @@ void TagDatabaseInMemoryTest::loadNonExistingFile()
 void TagDatabaseInMemoryTest::loadEmpty()
 {
 	QTemporaryFile file;
-    QVERIFY(file.open());
+	QVERIFY(file.open());
 
 	TagDatabaseInMemory database("tests/resources/tag-types.txt", file.fileName());
 	QVERIFY(database.load());
@@ -36,9 +36,9 @@ void TagDatabaseInMemoryTest::loadEmpty()
 void TagDatabaseInMemoryTest::loadInvalidLines()
 {
 	QTemporaryFile file;
-    QVERIFY(file.open());
-    file.write("tag1,1\ntag3\n");
-    file.seek(0);
+	QVERIFY(file.open());
+	file.write("tag1,1\ntag3\n");
+	file.seek(0);
 
 	TagDatabaseInMemory database("tests/resources/tag-types.txt", file.fileName());
 	QVERIFY(database.load());
@@ -54,9 +54,9 @@ void TagDatabaseInMemoryTest::loadInvalidLines()
 void TagDatabaseInMemoryTest::loadValidData()
 {
 	QTemporaryFile file;
-    QVERIFY(file.open());
-    file.write("tag1,0\ntag2,1\ntag3,3\ntag4,4");
-    file.seek(0);
+	QVERIFY(file.open());
+	file.write("tag1,0\ntag2,1\ntag3,3\ntag4,4");
+	file.seek(0);
 
 	TagDatabaseInMemory database("tests/resources/tag-types.txt", file.fileName());
 	QVERIFY(database.load());
@@ -68,6 +68,41 @@ void TagDatabaseInMemoryTest::loadValidData()
 	QCOMPARE(types.contains("tag3"), true);
 	QCOMPARE(types.value("tag1").name(), QString("general"));
 	QCOMPARE(types.value("tag3").name(), QString("copyright"));
+}
+
+
+void TagDatabaseInMemoryTest::saveEmpty()
+{
+	QString filename = "tmp_tags_file.txt";
+
+	TagDatabaseInMemory database("tests/resources/tag-types.txt", filename);
+	QVERIFY(database.load());
+
+	database.setTags(QList<Tag>());
+	QVERIFY(database.save());
+
+	QFile f(filename);
+	QVERIFY(f.open(QFile::ReadOnly | QFile::Text));
+	QString content = f.readAll();
+	QVERIFY(content.isEmpty());
+	QVERIFY(f.remove());
+}
+
+void TagDatabaseInMemoryTest::saveData()
+{
+	QString filename = "tmp_tags_file.txt";
+
+	TagDatabaseInMemory database("tests/resources/tag-types.txt", filename);
+	QVERIFY(database.load());
+
+	database.setTags(QList<Tag>() << Tag("tag1", TagType("general")) << Tag("tag2", TagType("copyright")));
+	QVERIFY(database.save());
+
+	QFile f(filename);
+	QVERIFY(f.open(QFile::ReadOnly | QFile::Text));
+	QString content = f.readAll();
+	QCOMPARE(content, QString("tag1,0\ntag2,3\n"));
+	QVERIFY(f.remove());
 }
 
 

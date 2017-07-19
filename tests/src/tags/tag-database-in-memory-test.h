@@ -16,6 +16,8 @@ class TagDatabaseInMemoryTest : public TagDatabaseTestSuite
 		void loadEmpty();
 		void loadInvalidLines();
 		void loadValidData();
+		void saveEmpty();
+		void saveData();
 };
 
 #endif // TAG_DATABASE_IN_MEMORY_TEST_H
