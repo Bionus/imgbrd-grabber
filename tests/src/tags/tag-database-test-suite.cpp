@@ -5,6 +5,10 @@
 
 TagDatabaseTestSuite::TagDatabaseTestSuite(TagDatabase *database)
 	: m_database(database)
+{}
+
+
+void TagDatabaseTestSuite::initTestCase()
 {
 	m_database->load();
 	m_database->setTags(QList<Tag>());
