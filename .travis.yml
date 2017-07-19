@@ -16,6 +16,8 @@ addons:
       - sourceline: 'ppa:ubuntu-sdk-team/ppa'
       - ubuntu-toolchain-r-test
     packages:
+      - sqlite3
+      - libqt5sql5-sqlite
       - qt5-qmake
       - qtbase5-dev
       - qtdeclarative5-dev
