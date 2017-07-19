@@ -13,6 +13,7 @@ class SqlWorkerTest : public TestSuite
 
 		void testConnectOk();
 		void testConnectError();
+		void testConnectDisabled();
 };
 
 #endif // SQL_WORKER_TEST_H

@@ -21,8 +21,6 @@ bool SqlWorker::connect()
 	if (!m_enabled || m_started)
 		return true;
 
-	m_started = true;
-
 	QSqlDatabase db = QSqlDatabase::addDatabase(m_driver);
 	db.setHostName(m_host);
 	db.setDatabaseName(m_database);
@@ -35,6 +33,7 @@ bool SqlWorker::connect()
 		return false;
 	}
 
+	m_started = true;
 	return true;
 }
 
