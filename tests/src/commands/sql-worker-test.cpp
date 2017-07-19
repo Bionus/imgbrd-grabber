@@ -34,4 +34,23 @@ void SqlWorkerTest::testConnectDisabled()
 }
 
 
+void SqlWorkerTest::testEscapeInteger()
+{
+	SqlWorker worker("QSQLITE", "", "", "", "test_sql_worker.db", nullptr);
+
+	QCOMPARE(worker.escape(-3), QString("-3"));
+	QCOMPARE(worker.escape(0), QString("0"));
+	QCOMPARE(worker.escape(21), QString("21"));
+	QCOMPARE(worker.escape(12345), QString("12345"));
+}
+
+void SqlWorkerTest::testEscapeString()
+{
+	SqlWorker worker("QSQLITE", "", "", "", "test_sql_worker.db", nullptr);
+
+	QCOMPARE(worker.escape("test"), QString("'test'"));
+	QCOMPARE(worker.escape("test'ed"), QString("'test''ed'"));
+}
+
+
 static SqlWorkerTest instance;

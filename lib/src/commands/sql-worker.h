@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QThread>
+#include <QVariant>
 
 
 class SqlWorker : public QThread
@@ -12,7 +13,7 @@ class SqlWorker : public QThread
 	public:
 		SqlWorker(QString driver, QString host, QString user, QString password, QString database, QObject *parent = 0);
 		bool connect();
-		static QString escape(QString text);
+		static QString escape(QVariant val);
 
 	public slots:
 		bool execute(QString sql);

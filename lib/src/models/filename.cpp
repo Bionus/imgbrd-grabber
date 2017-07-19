@@ -615,7 +615,7 @@ void Filename::setFormat(QString format)
 	m_format = format;
 }
 
-void Filename::setEscapeMethod(QString (*escapeMethod)(QString))
+void Filename::setEscapeMethod(QString (*escapeMethod)(QVariant))
 {
 	m_escapeMethod = escapeMethod;
 }

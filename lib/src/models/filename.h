@@ -4,6 +4,7 @@
 #include <QString>
 #include <QStringList>
 #include <QSettings>
+#include <QVariant>
 
 
 class Site;
@@ -17,7 +18,7 @@ class Filename
 		Filename(QString format);
 		QString getFormat() const;
 		void setFormat(QString format);
-		void setEscapeMethod(QString (*)(QString));
+		void setEscapeMethod(QString (*)(QVariant));
 
 		/**
 		 * Return the filename of the image according to the user's settings.
@@ -52,7 +53,7 @@ class Filename
 
 	private:
 		QString m_format;
-		QString (*m_escapeMethod)(QString) = nullptr;
+		QString (*m_escapeMethod)(QVariant) = nullptr;
 };
 
 #endif // FILENAME_H

@@ -37,15 +37,15 @@ bool SqlWorker::connect()
 	return true;
 }
 
-QString SqlWorker::escape(QString text)
+QString SqlWorker::escape(QVariant val)
 {
 	QSqlDriver *driver = QSqlDatabase::database().driver();
 	if (driver == nullptr)
 		return nullptr;
 
 	QSqlField f;
-	f.setType(QVariant::String);
-	f.setValue(text);
+	f.setType(val.type());
+	f.setValue(val);
 
 	return driver->formatValue(f);
 }
