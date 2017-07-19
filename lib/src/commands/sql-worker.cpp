@@ -31,7 +31,7 @@ bool SqlWorker::connect()
 
 	if (!db.open())
 	{
-		log(QString("Error initializing commands: %1").arg(db.lastError().text()));
+		log(QString("Error initializing commands: %1").arg(db.lastError().text()), Logger::Error);
 		return false;
 	}
 
