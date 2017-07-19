@@ -200,12 +200,12 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	}
 
 	// Complete missing tag type information
-	parent->site()->tagDatabase()->load();
+	m_parentSite->tagDatabase()->load();
 	QStringList unknownTags;
 	for (Tag const &tag : m_tags)
 		if (tag.type().name() == "unknown")
 			unknownTags.append(tag.text());
-	QMap<QString, TagType> dbTypes = parent->site()->tagDatabase()->getTagTypes(unknownTags);
+	QMap<QString, TagType> dbTypes = m_parentSite->tagDatabase()->getTagTypes(unknownTags);
 	for (Tag &tag : m_tags)
 		if (dbTypes.contains(tag.text()))
 			tag.setType(dbTypes[tag.text()]);
