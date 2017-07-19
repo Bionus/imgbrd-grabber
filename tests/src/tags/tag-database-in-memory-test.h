@@ -10,6 +10,12 @@ class TagDatabaseInMemoryTest : public TagDatabaseTestSuite
 
 	public:
 		TagDatabaseInMemoryTest();
+
+	private slots:
+		void loadNonExistingFile();
+		void loadEmpty();
+		void loadInvalidLines();
+		void loadValidData();
 };
 
 #endif // TAG_DATABASE_IN_MEMORY_TEST_H

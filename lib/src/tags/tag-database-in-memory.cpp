@@ -18,6 +18,8 @@ bool TagDatabaseInMemory::load()
 		return false;
 
 	QFile file(m_tagFile);
+	if (!file.exists())
+		return true;
 	if (!file.open(QFile::ReadOnly | QFile::Text))
 		return false;
 
