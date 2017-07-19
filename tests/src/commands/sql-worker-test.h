@@ -16,6 +16,7 @@ class SqlWorkerTest : public TestSuite
 		void testConnectDisabled();
 		void testEscapeInteger();
 		void testEscapeString();
+		void testExecCreateAndInsert();
 };
 
 #endif // SQL_WORKER_TEST_H
