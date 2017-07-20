@@ -10,6 +10,7 @@
 class TagDatabase
 {
 	public:
+		void loadTypes();
 		virtual bool load();
 		virtual bool save() = 0;
 		virtual void setTags(const QList<Tag> &tags) = 0;
@@ -18,9 +19,6 @@ class TagDatabase
 
 	protected:
 		TagDatabase(QString typeFile);
-
-	private:
-		void loadTypes(QString filename);
 
 	protected:
 		QMap<int, TagType> m_tagTypes;

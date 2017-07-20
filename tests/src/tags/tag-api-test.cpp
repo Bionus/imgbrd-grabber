@@ -5,25 +5,21 @@
 
 void TagApiTest::init()
 {
-	m_sites.insert("danbooru", new Site("danbooru.donmai.us", new Source(&profile, "release/sites/Danbooru (2.0)")));
-	m_sites.insert("e621", new Site("e621.net", new Source(&profile, "release/sites/Danbooru")));
-	m_sites.insert("behoimi", new Site("behoimi.org", new Source(&profile, "release/sites/Danbooru")));
+	m_site = new Site("danbooru.donmai.us", new Source(&profile, "release/sites/Danbooru (2.0)"));
 }
 
 void TagApiTest::cleanup()
 {
-	for (Site *site : m_sites)
-		site->deleteLater();
+	m_site->deleteLater();
 }
 
 
 void TagApiTest::testBasic()
 {
-	Site *site = m_sites["danbooru"];
-	TagApi tagApi(&profile, site, site->getApis().first(), 1, 100);
+	TagApi tagApi(&profile, m_site, m_site->getApis().first(), 1, 100);
 
 	// Wait for downloader
-	QSignalSpy spy(&tagApi, SIGNAL(finishedLoading(TagApi*, TagApi::LoadResult)));
+	QSignalSpy spy(&tagApi, SIGNAL(finishedLoading(TagApi*, LoadResult)));
 	tagApi.load(false);
 	QVERIFY(spy.wait());
 
@@ -33,6 +29,8 @@ void TagApiTest::testBasic()
 
 	QCOMPARE(result, TagApi::LoadResult::Ok);
 	QCOMPARE(tagApi.tags().count(), 100);
+	QCOMPARE(tagApi.tags().at(1).text(), QString("walkr"));
+	QCOMPARE(tagApi.tags().at(1).type().name(), QString("copyright"));
 }
 
 

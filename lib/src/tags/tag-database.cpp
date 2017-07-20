@@ -10,16 +10,16 @@ TagDatabase::TagDatabase(QString typeFile)
 
 bool TagDatabase::load()
 {
-	loadTypes(m_typeFile);
+	loadTypes();
 	return true;
 }
 
-void TagDatabase::loadTypes(QString filename)
+void TagDatabase::loadTypes()
 {
 	if (!m_tagTypes.isEmpty())
 		return;
 
-	QFile f(filename);
+	QFile f(m_typeFile);
 	if (!f.open(QFile::ReadOnly | QFile::Text))
 		return;
 

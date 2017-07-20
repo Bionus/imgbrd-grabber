@@ -18,7 +18,7 @@ class TagApiTest : public TestSuite
 		void testBasic();
 
 	private:
-		QMap<QString, Site*> m_sites;
+		Site* m_site;
 };
 
 #endif // TAG_API_TEST_H

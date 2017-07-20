@@ -70,6 +70,7 @@ void TagApi::parse()
 	// Initializations
 	QString source = m_reply->readAll();
 	QString format = m_api->getName();
+	m_site->tagDatabase()->loadTypes();
 	QMap<int, TagType> tagTypes = m_site->tagDatabase()->tagTypes();
 	m_tags.clear();
 
