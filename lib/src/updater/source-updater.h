@@ -1,6 +1,7 @@
 #ifndef SOURCE_UPDATER_H
 #define SOURCE_UPDATER_H
 
+#include <QNetworkReply>
 #include "updater.h"
 
 
@@ -17,7 +18,7 @@ class SourceUpdater : public Updater
 		void checkForUpdates();
 
 	private slots:
-		void checkForUpdatesDone(QNetworkReply *r);
+		void checkForUpdatesDone();
 
 	signals:
 		void finished(Source *source, bool isNew);
@@ -25,6 +26,7 @@ class SourceUpdater : public Updater
 	private:
 		Source *m_source;
 		QString m_baseUrl;
+		QNetworkReply *m_checkForUpdatesReply;
 };
 
 #endif // SOURCE_UPDATER_H

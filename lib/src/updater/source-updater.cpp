@@ -7,7 +7,10 @@
 
 SourceUpdater::SourceUpdater(Source *source, QString baseUrl)
 	: m_source(source), m_baseUrl(baseUrl)
-{ }
+{
+	if (!m_baseUrl.endsWith("/"))
+		m_baseUrl += "/";
+}
 
 
 void SourceUpdater::checkForUpdates()
@@ -15,15 +18,15 @@ void SourceUpdater::checkForUpdates()
 	QUrl url(m_baseUrl + m_source->getName() + "/model.xml");
 	QNetworkRequest request(url);
 
-	connect(&m_networkAccessManager, &QNetworkAccessManager::finished, this, &SourceUpdater::checkForUpdatesDone);
-	m_networkAccessManager.get(request);
+	m_checkForUpdatesReply = m_networkAccessManager->get(request);
+	connect(m_checkForUpdatesReply, &QNetworkReply::finished, this, &SourceUpdater::checkForUpdatesDone);
 }
 
-void SourceUpdater::checkForUpdatesDone(QNetworkReply *reply)
+void SourceUpdater::checkForUpdatesDone()
 {
 	bool isNew = false;
 
-	QString source = reply->readAll();
+	QString source = m_checkForUpdatesReply->readAll();
 	if (source.startsWith("<?xml"))
 	{
 		QFile current(m_source->getPath() + "/model.xml");
