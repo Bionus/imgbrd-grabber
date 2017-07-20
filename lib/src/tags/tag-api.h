@@ -12,6 +12,7 @@ class Site;
 class TagApi : public QObject
 {
 	Q_OBJECT
+	Q_ENUMS(LoadResult)
 
 	public:
 		enum LoadResult
@@ -32,7 +33,7 @@ class TagApi : public QObject
 		void parse();
 
 	signals:
-		void finishedLoading(TagApi *api, LoadResult status);
+		void finishedLoading(TagApi *api, TagApi::LoadResult status);
 
 	private:
 		Profile *m_profile;

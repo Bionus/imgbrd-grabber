@@ -10,6 +10,8 @@ class E621Test : public IntegrationTestSuite
 
 	private slots:
 		void testSwfUrls();
+		void testXmlTags();
+		void testJsonTags();
 };
 
 #endif // E621_TEST_H

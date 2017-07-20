@@ -54,5 +54,27 @@ void DanbooruTest::testPageTags()
 	QCOMPARE(tags[2].count(), 1009000);
 }
 
+void DanbooruTest::testXmlTags()
+{
+	QList<Tag> tags = getTags("Danbooru (2.0)", "danbooru.donmai.us", "xml");
+
+	QCOMPARE(tags.count(), 100);
+
+	QCOMPARE(tags[1].text(), QString("walkr"));
+	QCOMPARE(tags[1].count(), 1);
+	QCOMPARE(tags[1].type().name(), QString("copyright"));
+}
+
+void DanbooruTest::testJsonTags()
+{
+	QList<Tag> tags = getTags("Danbooru (2.0)", "danbooru.donmai.us", "json");
+
+	QCOMPARE(tags.count(), 100);
+
+	QCOMPARE(tags[1].text(), QString("walkr"));
+	QCOMPARE(tags[1].count(), 1);
+	QCOMPARE(tags[1].type().name(), QString("copyright"));
+}
+
 
 static DanbooruTest instance;

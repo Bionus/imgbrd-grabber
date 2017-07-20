@@ -72,5 +72,27 @@ void BehoimiTest::testPageTags()
 	QCOMPARE(tags[2].count(), 222);
 }
 
+void BehoimiTest::testXmlTags()
+{
+	QList<Tag> tags = getTags("Danbooru", "behoimi.org", "xml");
+
+	QCOMPARE(tags.count(), 100);
+
+	QCOMPARE(tags[3].text(), QString("okubo_mariko"));
+	QCOMPARE(tags[3].count(), 286);
+	QCOMPARE(tags[3].type().name(), QString("model"));
+}
+
+void BehoimiTest::testJsonTags()
+{
+	QList<Tag> tags = getTags("Danbooru", "behoimi.org", "json");
+
+	QCOMPARE(tags.count(), 100);
+
+	QCOMPARE(tags[1].text(), QString("07_ghost"));
+	QCOMPARE(tags[1].count(), 3);
+	QCOMPARE(tags[1].type().name(), QString("copyright"));
+}
+
 
 static BehoimiTest instance;

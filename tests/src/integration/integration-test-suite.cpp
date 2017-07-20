@@ -1,12 +1,14 @@
 #include <QtTest>
 #include <QStringList>
 #include "integration-test-suite.h"
+#include "tags/tag-api.h"
 #include "functions.h"
 
 
 void IntegrationTestSuite::initTestCase()
 {
 	Logger::getInstance().setLogFile("tests/test_log.log");
+	m_downloader = nullptr;
 }
 
 QList<Image*> IntegrationTestSuite::getImages(QString site, QString source, QString format, QString tags)
@@ -122,7 +124,46 @@ QList<Tag> IntegrationTestSuite::getPageTags(QString site, QString source, QStri
 	return result;
 }
 
+QList<Tag> IntegrationTestSuite::getTags(QString site, QString source, QString format)
+{
+	QDir().mkpath("tests/resources/sites/" + site + "/" + source);
+	QFile::copy("release/sites/" + site +"/model.xml", "tests/resources/sites/" + site +"/model.xml");
+	QFile::copy("release/sites/" + site +"/" + source + "/settings.ini", "tests/resources/sites/" + site +"/" + source + "/settings.ini");
+
+	QSettings settings("tests/resources/sites/" + site +"/" + source + "/settings.ini", QSettings::IniFormat);
+	settings.setValue("download/throttle_retry", 0);
+	settings.setValue("download/throttle_page", 0);
+	settings.setValue("download/throttle_thumbnail", 0);
+	settings.setValue("download/throttle_details", 0);
+	settings.setValue("sources/usedefault", false);
+	settings.setValue("sources/source_1", format);
+
+	Site *ste = new Site(source, new Source(&profile, "tests/resources/sites/" + site));
+	ste->setAutoLogin(false);
+
+	QList<Tag> result;
+	TagApi tagApi(&profile, ste, ste->getApis().first(), 1, 100);
+
+	// Wait for tag api
+	QSignalSpy spy(&tagApi, SIGNAL(finishedLoading(TagApi*, TagApi::LoadResult)));
+	tagApi.load(false);
+	if (!spy.wait())
+		return result;
+
+	// Check result type
+	QList<QVariant> arguments = spy.takeFirst();
+	TagApi::LoadResult res = arguments.at(1).value<TagApi::LoadResult>();
+	if (res != TagApi::LoadResult::Ok)
+		return result;
+
+	return tagApi.tags();
+}
+
 void IntegrationTestSuite::cleanup()
 {
-	m_downloader->deleteLater();
+	if (m_downloader != nullptr)
+	{
+		m_downloader->deleteLater();
+		m_downloader = nullptr;
+	}
 }

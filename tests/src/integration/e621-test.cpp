@@ -31,5 +31,27 @@ void E621Test::testSwfUrls()
 	QCOMPARE(actualUrls, expectedUrls);
 }
 
+void E621Test::testXmlTags()
+{
+	QList<Tag> tags = getTags("Danbooru", "e621.net", "xml");
+
+	QCOMPARE(tags.count(), 100);
+
+	QCOMPARE(tags[0].text(), QString("mammal"));
+	QCOMPARE(tags[0].count(), 866534);
+	QCOMPARE(tags[0].type().name(), QString("species"));
+}
+
+void E621Test::testJsonTags()
+{
+	QList<Tag> tags = getTags("Danbooru", "e621.net", "json");
+
+	QCOMPARE(tags.count(), 100);
+
+	QCOMPARE(tags[0].text(), QString("mammal"));
+	QCOMPARE(tags[0].count(), 866534);
+	QCOMPARE(tags[0].type().name(), QString("species"));
+}
+
 
 static E621Test instance;

@@ -13,6 +13,8 @@ class BehoimiTest : public IntegrationTestSuite
 		void testXml();
 		void testJson();
 		void testPageTags();
+		void testXmlTags();
+		void testJsonTags();
 };
 
 #endif // BEHOIMI_TEST_H

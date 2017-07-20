@@ -19,7 +19,7 @@ void TagApiTest::testBasic()
 	TagApi tagApi(&profile, m_site, m_site->getApis().first(), 1, 100);
 
 	// Wait for downloader
-	QSignalSpy spy(&tagApi, SIGNAL(finishedLoading(TagApi*, LoadResult)));
+	QSignalSpy spy(&tagApi, SIGNAL(finishedLoading(TagApi*, TagApi::LoadResult)));
 	tagApi.load(false);
 	QVERIFY(spy.wait());
 

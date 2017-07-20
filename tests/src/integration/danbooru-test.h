@@ -12,6 +12,8 @@ class DanbooruTest : public IntegrationTestSuite
 		void testHtml();
 		void testXml();
 		void testPageTags();
+		void testXmlTags();
+		void testJsonTags();
 };
 
 #endif // DANBOORU_TEST_H
