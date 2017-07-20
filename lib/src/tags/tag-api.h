@@ -45,4 +45,6 @@ class TagApi : public QObject
 		QList<Tag> m_tags;
 };
 
+Q_DECLARE_METATYPE(TagApi::LoadResult)
+
 #endif // TAG_API_H
