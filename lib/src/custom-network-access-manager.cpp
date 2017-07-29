@@ -58,7 +58,6 @@ QNetworkReply *CustomNetworkAccessManager::get(const QNetworkRequest &request)
 		return reply;
 	}
 
-	qDebug() << "real query" << request.url().toString();
 	return QNetworkAccessManager::get(request);
 }
 
