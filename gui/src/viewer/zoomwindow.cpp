@@ -315,7 +315,7 @@ void zoomWindow::openSaveDir(bool fav)
 			{
 				QDir dir(path);
 				if (!dir.mkpath(pth))
-				{ error(this, tr("Error creating folder.\r\n%1").arg(url)); }
+				{ error(this, tr("Error creating folder.\n%1").arg(url)); }
 				showInGraphicalShell(url);
 			}
 		}
@@ -527,14 +527,14 @@ void zoomWindow::replyFinishedZoom(QNetworkReply::NetworkError err, QString erro
 	{
 		m_tooBig = true;
 		if (!m_image->isVideo())
-		{ error(this, tr("File is too big to be displayed.\r\n%1").arg(m_image->url())); }
+		{ error(this, tr("File is too big to be displayed.\n%1").arg(m_image->url())); }
 	}
 	else if (err == QNetworkReply::ContentNotFoundError)
 	{ showLoadingError("Image not found."); }
 	else if (err == QNetworkReply::UnknownContentError)
 	{ showLoadingError("Error loading the image."); }
 	else if (err != QNetworkReply::OperationCanceledError)
-	{ error(this, tr("An unexpected error occured loading the image (%1 - %2).\r\n%3").arg(err).arg(errorString).arg(m_image->url())); }
+	{ error(this, tr("An unexpected error occured loading the image (%1 - %2).\n%3").arg(err).arg(errorString).arg(m_image->url())); }
 }
 
 void zoomWindow::showLoadingError(QString message)
