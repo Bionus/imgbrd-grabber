@@ -1016,13 +1016,16 @@ void mainWindow::options()
 
 void mainWindow::optionsClosed()
 {
-	m_tabs[0]->optionsChanged();
-	m_tabs[0]->updateCheckboxes();
+	for (searchTab* tab : m_tabs)
+	{
+		tab->optionsChanged();
+		tab->updateCheckboxes();
+	}
 }
 
 void mainWindow::setSource(QString source)
 {
-	if (m_tabs.size() < 1)
+	if (m_tabs.isEmpty())
 		return;
 
 	QList<bool> sel;
