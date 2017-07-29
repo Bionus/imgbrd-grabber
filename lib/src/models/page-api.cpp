@@ -386,6 +386,7 @@ void PageApi::parse()
 			{
 				QDomNode node = nodeList.at(id + first);
 				QMap<QString,QString> d;
+				QList<Tag> tags;
 				if (database == "array")
 				{
 					if (node.namedItem("md5").isNull())
@@ -410,6 +411,20 @@ void PageApi::parse()
 						for (int i = 0; i < infos.count(); i++)
 						{ d[infos.at(i)] = node.namedItem(assoc.at(i)).toElement().text(); }
 					}
+
+					// Typed tags
+					QDomNodeList tagTypes = node.namedItem("tags").childNodes();
+					if (!tagTypes.isEmpty())
+					{
+						for (int typeId = 0; typeId < tagTypes.count(); ++typeId)
+						{
+							QDomNode tagType = tagTypes.at(typeId);
+							TagType tType(tagType.nodeName());
+							QDomNodeList tagList = tagType.childNodes();
+							for (int iTag = 0; iTag < tagList.count(); ++iTag)
+							{ tags.append(Tag(tagList.at(iTag).toElement().text(), tType)); }
+						}
+					}
 				}
 				else
 				{
@@ -422,7 +437,7 @@ void PageApi::parse()
 										 : node.attributes().namedItem(infos.at(i)).nodeValue().trimmed();
 					}
 				}
-				this->parseImage(d, id + first);
+				this->parseImage(d, id + first, tags);
 			}
 		}
 	}
@@ -613,6 +628,23 @@ void PageApi::parse()
 							QMap<QString, QVariant> tag = tagData.toMap();
 							if (tag.contains("name"))
 								tags.append(Tag(tag["name"].toString(), Tag::GetType(tag["type"].toString(), tagTypes), tag["count"].toInt()));
+						}
+					}
+				}
+
+				// Typed tags (e621)
+				if (sc.contains("tags"))
+				{
+					QMap<QString, QVariant> tagTypes = sc["tags"].toMap();
+					if (!tagTypes.isEmpty())
+					{
+						for (QString tagType : tagTypes.keys())
+						{
+							TagType tType(tagType);
+							QList<QVariant> tagList = tagTypes.value(tagType).toList();
+							for (QVariant iTag : tagList)
+							{ tags.append(Tag(iTag.toString(), tType)); }
+
 						}
 					}
 				}

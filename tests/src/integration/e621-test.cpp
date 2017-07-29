@@ -31,6 +31,34 @@ void E621Test::testSwfUrls()
 	QCOMPARE(actualUrls, expectedUrls);
 }
 
+void E621Test::testXmlTypedTags()
+{
+	QList<Image*> images = getImages("Danbooru", "e621.net", "xml", "rating:safe");
+	QVERIFY(!images.isEmpty());
+
+	QList<Tag> tags = images.first()->tags();
+	QCOMPARE(tags.count(), 22);
+
+	QCOMPARE(tags[0].text(), QString("female"));
+	QCOMPARE(tags[0].type().name(), QString("general"));
+	QCOMPARE(tags[21].text(), QString("mammal"));
+	QCOMPARE(tags[21].type().name(), QString("species"));
+}
+
+void E621Test::testJsonTypedTags()
+{
+	QList<Image*> images = getImages("Danbooru", "e621.net", "json", "rating:safe");
+	QVERIFY(!images.isEmpty());
+
+	QList<Tag> tags = images.first()->tags();
+	QCOMPARE(tags.count(), 22);
+
+	QCOMPARE(tags[0].text(), QString("lumineko"));
+	QCOMPARE(tags[0].type().name(), QString("artist"));
+	QCOMPARE(tags[21].text(), QString("equine"));
+	QCOMPARE(tags[21].type().name(), QString("species"));
+}
+
 void E621Test::testXmlTags()
 {
 	QList<Tag> tags = getTags("Danbooru", "e621.net", "xml");
