@@ -73,7 +73,7 @@ void TagDatabaseInMemoryTest::loadValidData()
 
 void TagDatabaseInMemoryTest::saveEmpty()
 {
-	QString filename = "tmp_tags_file.txt";
+	QString filename = "test_tmp_tags_file.txt";
 
 	TagDatabaseInMemory database("tests/resources/tag-types.txt", filename);
 	QVERIFY(database.load());
@@ -90,7 +90,7 @@ void TagDatabaseInMemoryTest::saveEmpty()
 
 void TagDatabaseInMemoryTest::saveData()
 {
-	QString filename = "tmp_tags_file.txt";
+	QString filename = "test_tmp_tags_file.txt";
 
 	TagDatabaseInMemory database("tests/resources/tag-types.txt", filename);
 	QVERIFY(database.load());

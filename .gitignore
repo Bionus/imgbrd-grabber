@@ -13,6 +13,7 @@ tests/resources/*.txt
 tests/resources/thumbs/
 tests/resources/tmp/
 tests/resources/sites/
+/test_*
 target_wrapper.bat
 symbols/
 *.lock
