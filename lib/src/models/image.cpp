@@ -151,13 +151,9 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 			continue;
 
 		TagType ttype(typ);
-		QStringList t = details[key].split(" ");
-		for (int i = 0; i < t.count(); ++i)
+		QStringList t = details[key].split(' ', QString::SkipEmptyParts);
+		for (QString tg : t)
 		{
-			QString tg = t.at(i);
-			if (tg.isEmpty())
-				continue;
-
 			tg.replace("&amp;", "&");
 			m_tags.append(Tag(tg, ttype));
 		}
