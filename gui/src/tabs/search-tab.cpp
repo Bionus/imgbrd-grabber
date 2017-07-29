@@ -721,6 +721,7 @@ QBouton *searchTab::createImageThumbnail(int position, QSharedPointer<Image> img
 	bool resultsScrollArea = m_settings->value("resultsScrollArea", true).toBool();
 	bool fixedWidthLayout = m_settings->value("resultsFixedWidthLayout", false).toBool();
 	int borderSize = m_settings->value("borders", 3).toInt();
+	float upscale = m_settings->value("thumbnailUpscale", 1.0f).toFloat();
 
 	QBouton *l = new QBouton(position, resizeInsteadOfCropping, resultsScrollArea, borderSize, color, this);
 	l->setCheckable(true);
@@ -735,14 +736,14 @@ QBouton *searchTab::createImageThumbnail(int position, QSharedPointer<Image> img
 		.arg(img->fileSize() == 0 ? " " : tr("<b>Filesize:</b> %1 %2<br/>").arg(QString::number(size), unit))
 		.arg(!img->createdAt().isValid() ? " " : tr("<b>Date:</b> %1").arg(img->createdAt().toString(tr("'the 'MM/dd/yyyy' at 'hh:mm"))))
 	);
-	l->scale(img->previewImage(), m_settings->value("thumbnailUpscale", 1.0f).toFloat());
+	l->scale(img->previewImage(), upscale);
 	l->setFlat(true);
 
 	l->setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(l, &QWidget::customContextMenuRequested, this, [this, img]{ thumbnailContextMenu(img); });
 
 	if (fixedWidthLayout)
-		l->setFixedSize(FIXED_IMAGE_WIDTH + borderSize * 2, FIXED_IMAGE_WIDTH + borderSize * 2);
+		l->setFixedSize(FIXED_IMAGE_WIDTH * upscale + borderSize * 2, FIXED_IMAGE_WIDTH * upscale + borderSize * 2);
 
 	connect(l, SIGNAL(appui(int)), this, SLOT(webZoom(int)));
 	connect(l, SIGNAL(toggled(int, bool, bool)), this, SLOT(toggleImage(int, bool, bool)));
@@ -1263,7 +1264,8 @@ FixedSizeGridLayout *searchTab::createImagesLayout(QSettings *settings)
 	if (fixedWidthLayout)
 	{
 		int borderSize = settings->value("borders", 3).toInt();
-		l->setFixedWidth(FIXED_IMAGE_WIDTH + borderSize * 2);
+		float upscale = m_settings->value("thumbnailUpscale", 1.0f).toFloat();
+		l->setFixedWidth(FIXED_IMAGE_WIDTH * upscale + borderSize * 2);
 	}
 
 	return l;
