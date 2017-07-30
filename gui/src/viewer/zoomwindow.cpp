@@ -458,8 +458,11 @@ void zoomWindow::replyFinishedDetails()
 	// If the file already exists, we directly display it
 	if (!md5Exists.isEmpty() || !file1notexists || !file2notexists)
 	{
-		setButtonState(false, !file1notexists ? SaveButtonState::ExistsDisk : SaveButtonState::ExistsMd5);
-		setButtonState(true, !file2notexists ? SaveButtonState::ExistsDisk : SaveButtonState::ExistsMd5);
+		// Update save button state
+		SaveButtonState md5State = !md5Exists.isEmpty() ? SaveButtonState::ExistsMd5 : SaveButtonState::Save;
+		setButtonState(false, !file1notexists ? SaveButtonState::ExistsDisk : md5State);
+		setButtonState(true, !file2notexists ? SaveButtonState::ExistsDisk : md5State);
+
 		m_source = !md5Exists.isEmpty() ? md5Exists : (!file1notexists ? source1 : source2);
 		m_imagePath = m_source;
 		log(QString("Image loaded from the file <a href=\"file:///%1\">%1</a>").arg(m_source));
