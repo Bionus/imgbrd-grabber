@@ -6,11 +6,10 @@
 
 void SourceUpdaterTest::testNoUpdate()
 {
-	Source source(&profile, "tests/resources/sites/Danbooru (2.0)");
-	SourceUpdater updater(&source, "http://raw.githubusercontent.com/Bionus/imgbrd-grabber/master/release/sites");
+	SourceUpdater updater("Danbooru (2.0)", "tests/resources/sites/Danbooru (2.0)", "http://raw.githubusercontent.com/Bionus/imgbrd-grabber/master/release/sites");
 
 	// Wait for updater
-	QSignalSpy spy(&updater, SIGNAL(finished(Source*, bool)));
+	QSignalSpy spy(&updater, SIGNAL(finished(QString, bool)));
 	updater.checkForUpdates();
 	QVERIFY(spy.wait());
 
@@ -23,11 +22,10 @@ void SourceUpdaterTest::testNoUpdate()
 
 void SourceUpdaterTest::testChanged()
 {
-	Source source(&profile, "tests/resources/sites/Danbooru");
-	SourceUpdater updater(&source, "http://raw.githubusercontent.com/Bionus/imgbrd-grabber/master/release/sites");
+	SourceUpdater updater("Danbooru", "tests/resources/sites/Danbooru", "http://raw.githubusercontent.com/Bionus/imgbrd-grabber/master/release/sites");
 
 	// Wait for updater
-	QSignalSpy spy(&updater, SIGNAL(finished(Source*, bool)));
+	QSignalSpy spy(&updater, SIGNAL(finished(QString, bool)));
 	updater.checkForUpdates();
 	QVERIFY(spy.wait());
 

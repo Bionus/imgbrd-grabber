@@ -2,11 +2,10 @@
 #include <QFile>
 #include <QNetworkRequest>
 #include <QNetworkReply>
-#include "models/source.h"
 
 
-SourceUpdater::SourceUpdater(Source *source, QString baseUrl)
-	: m_source(source), m_baseUrl(baseUrl)
+SourceUpdater::SourceUpdater(QString source, QString directory, QString baseUrl)
+	: m_source(source), m_directory(directory), m_baseUrl(baseUrl)
 {
 	if (!m_baseUrl.endsWith("/"))
 		m_baseUrl += "/";
@@ -15,7 +14,7 @@ SourceUpdater::SourceUpdater(Source *source, QString baseUrl)
 
 void SourceUpdater::checkForUpdates()
 {
-	QUrl url(m_baseUrl + m_source->getName() + "/model.xml");
+	QUrl url(m_baseUrl + m_source + "/model.xml");
 	QNetworkRequest request(url);
 
 	m_checkForUpdatesReply = m_networkAccessManager->get(request);
@@ -29,7 +28,7 @@ void SourceUpdater::checkForUpdatesDone()
 	QString source = m_checkForUpdatesReply->readAll();
 	if (source.startsWith("<?xml"))
 	{
-		QFile current(m_source->getPath() + "/model.xml");
+		QFile current(m_directory + "/model.xml");
 		if (current.open(QFile::ReadOnly))
 		{
 			QString compare = current.readAll();

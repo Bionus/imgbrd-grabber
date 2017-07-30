@@ -39,6 +39,13 @@ sourcesWindow::sourcesWindow(Profile *profile, QList<bool> selected, QMap<QStrin
 	connect(ui->checkBox, SIGNAL(clicked()), this, SLOT(checkClicked()));
 	checkUpdate();
 
+	QStringList keys = m_sites->keys();
+	for (int i = 0; i < m_sites->size(); i++)
+	{
+		Source *source = m_sites->value(keys[i])->getSource();
+		(*m_sources)[source->getName()] = source;
+	}
+
 	// Check for updates in the model files
 	checkForUpdates();
 
@@ -271,23 +278,19 @@ QList<bool> sourcesWindow::getSelected()
 
 void sourcesWindow::checkForUpdates()
 {
-	QSet<Source*> sources;
-	QStringList keys = m_sites->keys();
-	for (int i = 0; i < m_sites->size(); i++)
-	{ sources.insert(m_sites->value(keys[i])->getSource()); }
-
-	for (Source *source : sources)
+	for (Source *source : m_sources->values())
 	{
 		SourceUpdater *updater = source->getUpdater();
 		connect(updater, &SourceUpdater::finished, this, &sourcesWindow::checkForUpdatesReceived);
 		updater->checkForUpdates();
 	}
 }
-void sourcesWindow::checkForUpdatesReceived(Source *source, bool isNew)
+void sourcesWindow::checkForUpdatesReceived(QString sourceName, bool isNew)
 {
 	if (!isNew)
 		return;
 
+	Source *source = m_sources->value(sourceName);
 	for (Site *site : source->getSites())
 	{
 		int pos = m_sites->values().indexOf(site);
