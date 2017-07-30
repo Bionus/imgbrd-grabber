@@ -69,6 +69,7 @@ void md5Fix::on_buttonStart_clicked()
 		}
 	}
 
+	int count = 0;
 	if (files.count() > 0)
 	{
 		// Show progresss bar
@@ -91,9 +92,9 @@ void md5Fix::on_buttonStart_clicked()
 				QRegExp regx("%([^%]*)%");
 				QString reg = QRegExp::escape(ui->lineFilename->text());
 				int pos = 0, cur = 0, id = -1;
-				while ((pos = regx.indexIn(ui->lineFilename->text(), pos)) != -1)
+				while ((pos = regx.indexIn(reg, pos)) != -1)
 				{
-					pos += regx.matchedLength();
+					pos += 4;
 					reg.replace(regx.cap(0), "(.+)");
 					if (regx.cap(1) == "md5")
 					{ id = cur; }
@@ -108,8 +109,13 @@ void md5Fix::on_buttonStart_clicked()
 					md5 = rx.cap(id + 1);
 				}
 			}
+
 			if (!md5.isEmpty())
-			{ m_profile->addMd5(md5, file.second); }
+			{
+				m_profile->addMd5(md5, file.second);
+				count++;
+			}
+
 			ui->progressBar->setValue(ui->progressBar->value() + 1);
 		}
 	}
@@ -121,5 +127,5 @@ void md5Fix::on_buttonStart_clicked()
 
 	ui->buttonStart->setEnabled(true);
 
-	QMessageBox::information(this, tr("Finished"), tr("%n MD5(s) loaded", "", files.count()));
+	QMessageBox::information(this, tr("Finished"), tr("%n MD5(s) loaded", "", count));
 }
