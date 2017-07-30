@@ -194,6 +194,8 @@ void SiteTest::testLoginGet()
 	siteSettings.setValue("login/cookie", "_danbooru_session");
 	m_site->loadConfig();
 
+	CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/danbooru.donmai.us/login.html");
+
 	// Wait for login
 	QSignalSpy spy(m_site, SIGNAL(loggedIn(Site*, Site::LoginResult)));
 	QTimer *timer = new QTimer(this);

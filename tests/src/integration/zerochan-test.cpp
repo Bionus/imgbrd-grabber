@@ -5,7 +5,7 @@
 
 void ZerochanTest::testHtml()
 {
-	QList<Image*> images = getImages("Zerochan", "www.zerochan.net", "regex", "Touhou");
+	QList<Image*> images = getImages("Zerochan", "www.zerochan.net", "regex", "Touhou", "results.html");
 
 	// Convert results
 	QList<int> ids;
@@ -23,7 +23,7 @@ void ZerochanTest::testHtml()
 
 void ZerochanTest::testRss()
 {
-	QList<Image*> images = getImages("Zerochan", "www.zerochan.net", "rss", "Touhou");
+	QList<Image*> images = getImages("Zerochan", "www.zerochan.net", "rss", "Touhou", "results.rss");
 
 	// Convert results
 	QList<int> ids;

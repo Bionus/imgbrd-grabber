@@ -6,7 +6,7 @@
 
 void E621Test::testSwfUrls()
 {
-	QList<Image*> images = getImages("Danbooru", "e621.net", "regex", "swf rating:safe");
+	QList<Image*> images = getImages("Danbooru", "e621.net", "regex", "swf rating:safe", "results.html");
 
 	// Convert results
 	QStringList md5s, urls;
@@ -33,7 +33,7 @@ void E621Test::testSwfUrls()
 
 void E621Test::testXmlTypedTags()
 {
-	QList<Image*> images = getImages("Danbooru", "e621.net", "xml", "rating:safe");
+	QList<Image*> images = getImages("Danbooru", "e621.net", "xml", "rating:safe", "results-typed.xml");
 	QVERIFY(!images.isEmpty());
 
 	QList<Tag> tags = images.first()->tags();
@@ -47,7 +47,7 @@ void E621Test::testXmlTypedTags()
 
 void E621Test::testJsonTypedTags()
 {
-	QList<Image*> images = getImages("Danbooru", "e621.net", "json", "rating:safe");
+	QList<Image*> images = getImages("Danbooru", "e621.net", "json", "rating:safe", "results-typed.json");
 	QVERIFY(!images.isEmpty());
 
 	QList<Tag> tags = images.first()->tags();
@@ -61,7 +61,7 @@ void E621Test::testJsonTypedTags()
 
 void E621Test::testXmlTags()
 {
-	QList<Tag> tags = getTags("Danbooru", "e621.net", "xml");
+	QList<Tag> tags = getTags("Danbooru", "e621.net", "xml", "tags.xml");
 
 	QCOMPARE(tags.count(), 100);
 
@@ -72,7 +72,7 @@ void E621Test::testXmlTags()
 
 void E621Test::testJsonTags()
 {
-	QList<Tag> tags = getTags("Danbooru", "e621.net", "json");
+	QList<Tag> tags = getTags("Danbooru", "e621.net", "json", "tags.json");
 
 	QCOMPARE(tags.count(), 100);
 

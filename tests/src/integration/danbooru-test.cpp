@@ -6,7 +6,7 @@
 
 void DanbooruTest::testHtml()
 {
-	QList<Image*> images = getImages("Danbooru (2.0)", "danbooru.donmai.us", "regex", "rating:safe");
+	QList<Image*> images = getImages("Danbooru (2.0)", "danbooru.donmai.us", "regex", "rating:safe", "results.html");
 
 	// Convert results
 	QStringList md5s;
@@ -24,7 +24,7 @@ void DanbooruTest::testHtml()
 
 void DanbooruTest::testXml()
 {
-	QList<Image*> images = getImages("Danbooru (2.0)", "danbooru.donmai.us", "xml", "rating:safe");
+	QList<Image*> images = getImages("Danbooru (2.0)", "danbooru.donmai.us", "xml", "rating:safe", "results.xml");
 
 	// Convert results
 	QStringList md5s;
@@ -42,7 +42,7 @@ void DanbooruTest::testXml()
 
 void DanbooruTest::testPageTags()
 {
-	QList<Tag> tags = getPageTags("Danbooru (2.0)", "danbooru.donmai.us", "regex", "rating:safe");
+	QList<Tag> tags = getPageTags("Danbooru (2.0)", "danbooru.donmai.us", "regex", "rating:safe", "results.html");
 
 	QCOMPARE(tags.count(), 25);
 
@@ -56,7 +56,7 @@ void DanbooruTest::testPageTags()
 
 void DanbooruTest::testXmlTags()
 {
-	QList<Tag> tags = getTags("Danbooru (2.0)", "danbooru.donmai.us", "xml");
+	QList<Tag> tags = getTags("Danbooru (2.0)", "danbooru.donmai.us", "xml", "tags.xml");
 
 	QCOMPARE(tags.count(), 100);
 
@@ -67,7 +67,7 @@ void DanbooruTest::testXmlTags()
 
 void DanbooruTest::testJsonTags()
 {
-	QList<Tag> tags = getTags("Danbooru (2.0)", "danbooru.donmai.us", "json");
+	QList<Tag> tags = getTags("Danbooru (2.0)", "danbooru.donmai.us", "json", "tags.json");
 
 	QCOMPARE(tags.count(), 100);
 

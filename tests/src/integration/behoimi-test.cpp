@@ -6,7 +6,7 @@
 
 void BehoimiTest::testHtml()
 {
-	QList<Image*> images = getImages("Danbooru", "behoimi.org", "regex", "blue_legwear rating:safe");
+	QList<Image*> images = getImages("Danbooru", "behoimi.org", "regex", "blue_legwear rating:safe", "results.html");
 
 	// Convert results
 	QStringList md5s;
@@ -24,7 +24,7 @@ void BehoimiTest::testHtml()
 
 void BehoimiTest::testXml()
 {
-	QList<Image*> images = getImages("Danbooru", "behoimi.org", "xml", "rating:safe");
+	QList<Image*> images = getImages("Danbooru", "behoimi.org", "xml", "rating:safe", "results.xml");
 
 	// Convert results
 	QStringList md5s;
@@ -42,7 +42,7 @@ void BehoimiTest::testXml()
 
 void BehoimiTest::testJson()
 {
-	QList<Image*> images = getImages("Danbooru", "behoimi.org", "json", "rating:safe");
+	QList<Image*> images = getImages("Danbooru", "behoimi.org", "json", "rating:safe", "results.json");
 
 	// Convert results
 	QStringList md5s;
@@ -60,7 +60,7 @@ void BehoimiTest::testJson()
 
 void BehoimiTest::testPageTags()
 {
-	QList<Tag> tags = getPageTags("Danbooru", "behoimi.org", "regex", "blue_legwear rating:safe");
+	QList<Tag> tags = getPageTags("Danbooru", "behoimi.org", "regex", "blue_legwear rating:safe", "results.html");
 
 	QCOMPARE(tags.count(), 25);
 
@@ -74,7 +74,7 @@ void BehoimiTest::testPageTags()
 
 void BehoimiTest::testXmlTags()
 {
-	QList<Tag> tags = getTags("Danbooru", "behoimi.org", "xml");
+	QList<Tag> tags = getTags("Danbooru", "behoimi.org", "xml", "tags.xml");
 
 	QCOMPARE(tags.count(), 100);
 
@@ -85,7 +85,7 @@ void BehoimiTest::testXmlTags()
 
 void BehoimiTest::testJsonTags()
 {
-	QList<Tag> tags = getTags("Danbooru", "behoimi.org", "json");
+	QList<Tag> tags = getTags("Danbooru", "behoimi.org", "json", "tags.json");
 
 	QCOMPARE(tags.count(), 100);
 

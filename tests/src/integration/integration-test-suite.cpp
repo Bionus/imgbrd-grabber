@@ -11,10 +11,14 @@ void IntegrationTestSuite::initTestCase()
 	m_downloader = nullptr;
 }
 
-QList<Image*> IntegrationTestSuite::getImages(QString site, QString source, QString format, QString tags)
+QList<Image*> IntegrationTestSuite::getImages(QString site, QString source, QString format, QString tags, QString file)
 {
 	setupSource(site);
 	setupSite(site, source);
+
+	// Setup network
+	if (!file.isEmpty())
+	{ CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/" + source + "/" + file); }
 
 	QSettings settings("tests/resources/sites/" + site +"/" + source + "/settings.ini", QSettings::IniFormat);
 	settings.setValue("download/throttle_retry", 0);
@@ -67,7 +71,7 @@ QList<Image*> IntegrationTestSuite::getImages(QString site, QString source, QStr
 	return result;
 }
 
-QList<Tag> IntegrationTestSuite::getPageTags(QString site, QString source, QString format, QString tags)
+QList<Tag> IntegrationTestSuite::getPageTags(QString site, QString source, QString format, QString tags, QString file)
 {
 	QDir().mkpath("tests/resources/sites/" + site + "/" + source);
 	QFile::copy("release/sites/" + site +"/model.xml", "tests/resources/sites/" + site +"/model.xml");
@@ -80,6 +84,10 @@ QList<Tag> IntegrationTestSuite::getPageTags(QString site, QString source, QStri
 	settings.setValue("download/throttle_details", 0);
 	settings.setValue("sources/usedefault", false);
 	settings.setValue("sources/source_1", format);
+
+	// Setup network
+	if (!file.isEmpty())
+	{ CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/" + source + "/" + file); }
 
 	QList<Site*> sites;
 	Site *ste = new Site(source, new Source(&profile, "tests/resources/sites/" + site));
@@ -124,7 +132,7 @@ QList<Tag> IntegrationTestSuite::getPageTags(QString site, QString source, QStri
 	return result;
 }
 
-QList<Tag> IntegrationTestSuite::getTags(QString site, QString source, QString format)
+QList<Tag> IntegrationTestSuite::getTags(QString site, QString source, QString format, QString file)
 {
 	QDir().mkpath("tests/resources/sites/" + site + "/" + source);
 	QFile::copy("release/sites/" + site +"/model.xml", "tests/resources/sites/" + site +"/model.xml");
@@ -137,6 +145,10 @@ QList<Tag> IntegrationTestSuite::getTags(QString site, QString source, QString f
 	settings.setValue("download/throttle_details", 0);
 	settings.setValue("sources/usedefault", false);
 	settings.setValue("sources/source_1", format);
+
+	// Setup network
+	if (!file.isEmpty())
+	{ CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/" + source + "/" + file); }
 
 	Site *ste = new Site(source, new Source(&profile, "tests/resources/sites/" + site));
 	ste->setAutoLogin(false);

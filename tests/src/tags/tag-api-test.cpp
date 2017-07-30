@@ -18,6 +18,8 @@ void TagApiTest::testBasic()
 {
 	TagApi tagApi(&profile, m_site, m_site->getApis().first(), 1, 100);
 
+	CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/danbooru.donmai.us/tags.xml");
+
 	// Wait for downloader
 	QSignalSpy spy(&tagApi, SIGNAL(finishedLoading(TagApi*, TagApi::LoadResult)));
 	tagApi.load(false);

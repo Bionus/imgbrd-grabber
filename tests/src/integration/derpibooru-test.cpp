@@ -6,7 +6,7 @@
 
 void DerpibooruTest::testHtml()
 {
-	QList<Image*> images = getImages("Booru-on-rails", "derpibooru.org", "regex", "safe");
+	QList<Image*> images = getImages("Booru-on-rails", "derpibooru.org", "regex", "safe", "results.html");
 
 	// Convert results
 	QList<int> ids;
@@ -24,7 +24,7 @@ void DerpibooruTest::testHtml()
 
 void DerpibooruTest::testJson()
 {
-	QList<Image*> images = getImages("Booru-on-rails", "derpibooru.org", "json", "safe");
+	QList<Image*> images = getImages("Booru-on-rails", "derpibooru.org", "json", "safe", "results.json");
 
 	// Convert results
 	QList<int> ids;

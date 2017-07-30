@@ -2,6 +2,8 @@
 #define CUSTOMNETWORKACCESSMANAGER_H
 
 #include <QNetworkAccessManager>
+#include <QQueue>
+#include <QString>
 
 
 class CustomNetworkAccessManager : public QNetworkAccessManager
@@ -12,6 +14,7 @@ class CustomNetworkAccessManager : public QNetworkAccessManager
 		void sslErrorHandler(QNetworkReply* qnr, QList<QSslError> errors);
 
 		static bool TestMode;
+		static QQueue<QString> NextFiles;
 };
 
 #endif // CUSTOMNETWORKACCESSMANAGER_H
