@@ -10,7 +10,9 @@ class SourceUpdaterTest : public TestSuite
 
 	private slots:
 		void testNoUpdate();
+#ifdef Q_OS_WIN
 		void testChanged();
+#endif
 };
 
 #endif // SOURCE_UPDATER_TEST_H
