@@ -20,6 +20,7 @@ void SourceUpdaterTest::testNoUpdate()
 	QVERIFY(!isNew);
 }
 
+#ifdef Q_OS_WIN
 void SourceUpdaterTest::testChanged()
 {
 	SourceUpdater updater("Danbooru", "tests/resources/sites/Danbooru", "http://raw.githubusercontent.com/Bionus/imgbrd-grabber/master/release/sites");
@@ -35,6 +36,7 @@ void SourceUpdaterTest::testChanged()
 
 	QVERIFY(isNew);
 }
+#endif
 
 
 static SourceUpdaterTest instance;
