@@ -50,6 +50,8 @@ QUrl PageApi::parseUrl(QString url, int pid, int p, QString t, QString pseudo, Q
 	{ maxPage = m_api->value("Urls/MaxPage").toInt(); }
 
 	m_isAltPage = maxPage >= 0 && p > maxPage && m_page - 1 <= m_lastPage && m_lastPage <= m_page + 1;
+	if (m_api->contains("Urls/NormalPage"))
+	{ url.replace("{cpage}", m_isAltPage ? "{altpage}" : m_api->value("Urls/NormalPage")); }
 	if (m_isAltPage)
 	{
 		url.replace("{altpage}", m_api->value("Urls/AltPage" + QString(m_lastPage > m_page ? "Prev" : "Next")));
@@ -719,7 +721,7 @@ void PageApi::parse()
 	// Virtual paging
 	int firstImage = 0;
 	int lastImage = m_smart ? m_imagesPerPage : m_images.size();
-	if (!m_originalUrl.contains("{page}") && !m_originalUrl.contains("{pagepart}") && !m_originalUrl.contains("{pid}"))
+	if (!m_originalUrl.contains("{page}") && !m_originalUrl.contains("{cpage}") && !m_originalUrl.contains("{pagepart}") && !m_originalUrl.contains("{pid}"))
 	{
 		firstImage = m_imagesPerPage * (m_page - 1);
 		lastImage = m_imagesPerPage;
@@ -738,7 +740,7 @@ void PageApi::parse()
 	QString t = m_search.join(" ");
 	if (m_site->contains("DefaultTag") && t.isEmpty())
 	{ t = m_site->value("DefaultTag"); }
-		if (!m_search.isEmpty() && !m_api->value("Urls/" + QString(t.isEmpty() && !m_api->contains("Urls/Home") ? "Home" : "Tags")).contains("{tags}"))
+	if (!m_search.isEmpty() && !m_api->value("Urls/" + QString(t.isEmpty() && !m_api->contains("Urls/Home") ? "Home" : "Tags")).contains("{tags}"))
 	{ m_errors.append(tr("Tag search is impossible with the chosen source (%1).").arg(m_format)); }
 
 	emit finishedLoading(this, LoadResult::Ok);
