@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QCheckBox>
 #include <QLabel>
+#include "models/source.h"
 
 
 namespace Ui
@@ -14,7 +15,6 @@ namespace Ui
 
 class QBouton;
 class Site;
-class Source;
 class Profile;
 
 class sourcesWindow : public QDialog
@@ -54,7 +54,7 @@ class sourcesWindow : public QDialog
 		QList<QLabel*> m_labels;
 		QList<QBouton*> m_buttons;
 		QMap<QString, Site*> *m_sites;
-		QMap<QString, Source*> *m_sources;
+		QMap<QString, Source*> m_sources;
 };
 
 #endif // SOURCESWINDOW_H

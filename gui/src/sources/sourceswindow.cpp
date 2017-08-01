@@ -43,7 +43,7 @@ sourcesWindow::sourcesWindow(Profile *profile, QList<bool> selected, QMap<QStrin
 	for (int i = 0; i < m_sites->size(); i++)
 	{
 		Source *source = m_sites->value(keys[i])->getSource();
-		(*m_sources)[source->getName()] = source;
+		m_sources[source->getName()] = source;
 	}
 
 	// Check for updates in the model files
@@ -278,7 +278,7 @@ QList<bool> sourcesWindow::getSelected()
 
 void sourcesWindow::checkForUpdates()
 {
-	for (Source *source : m_sources->values())
+	for (Source *source : m_sources.values())
 	{
 		SourceUpdater *updater = source->getUpdater();
 		connect(updater, &SourceUpdater::finished, this, &sourcesWindow::checkForUpdatesReceived);
@@ -290,7 +290,7 @@ void sourcesWindow::checkForUpdatesReceived(QString sourceName, bool isNew)
 	if (!isNew)
 		return;
 
-	Source *source = m_sources->value(sourceName);
+	Source *source = m_sources[sourceName];
 	for (Site *site : source->getSites())
 	{
 		int pos = m_sites->values().indexOf(site);
