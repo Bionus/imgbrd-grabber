@@ -216,10 +216,10 @@ QString savePath(QString file, bool exists)
 	if (QFile(QDir::toNativeSeparators(QDir::homePath()+"/Grabber/"+check)).exists())
 	{ return QDir::toNativeSeparators(QDir::homePath()+"/Grabber/"+file); }
 	#ifdef __linux__
-		if (QFile(QDir::toNativeSeparators(QString(PREFIX)+"/share/Grabber/"+check)).exists())
-		{ return QDir::toNativeSeparators(QString(PREFIX)+"/share/Grabber/"+file); }
 		if (QFile(QDir::toNativeSeparators(QDir::homePath()+"/.Grabber/"+check)).exists())
 		{ return QDir::toNativeSeparators(QDir::homePath()+"/.Grabber/"+file); }
+		if (QFile(QDir::toNativeSeparators(QString(PREFIX)+"/share/Grabber/"+check)).exists())
+		{ return QDir::toNativeSeparators(QString(PREFIX)+"/share/Grabber/"+file); }
 	#endif
 	return QDir::toNativeSeparators(QStandardPaths::writableLocation(QStandardPaths::DataLocation)+"/"+file);
 }
