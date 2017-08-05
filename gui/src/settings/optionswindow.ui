@@ -770,7 +770,7 @@
         <item row="10" column="0">
          <widget class="QLabel" name="label_19">
           <property name="text">
-           <string>If a file already exists</string>
+           <string>If a file already exists globally</string>
           </property>
          </widget>
         </item>
