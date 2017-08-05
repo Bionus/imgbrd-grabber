@@ -15,7 +15,7 @@ class Filename
 {
 	public:
 		Filename();
-		Filename(QString format);
+		explicit Filename(QString format);
 		QString getFormat() const;
 		void setFormat(QString format);
 		void setEscapeMethod(QString (*)(QVariant));

@@ -44,7 +44,7 @@ void DownloadQueryGroup::write(QJsonObject &json) const
 	json["path"] = path;
 }
 
-bool DownloadQueryGroup::read(const QJsonObject &json, QMap<QString, Site*> &sites)
+bool DownloadQueryGroup::read(const QJsonObject &json, const QMap<QString, Site*> &sites)
 {
 	QStringList tgs;
 	QJsonArray jsonTags = json["tags"].toArray();

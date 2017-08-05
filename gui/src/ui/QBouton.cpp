@@ -5,7 +5,7 @@
 
 
 QBouton::QBouton(QVariant id, bool resizeInsteadOfCropping, bool smartSizeHint, int border, QColor color, QWidget *parent)
-	: QPushButton(parent), _id(id), _resizeInsteadOfCropping(resizeInsteadOfCropping), _smartSizeHint(smartSizeHint), _np(false), _originalSize(QSize(-1,-1)), _penColor(color), _border(border), _progress(0), _progressMax(0)
+	: QPushButton(parent), _id(id), _resizeInsteadOfCropping(resizeInsteadOfCropping), _smartSizeHint(smartSizeHint), _penColor(color), _border(border), _progress(0), _progressMax(0)
 { }
 
 void QBouton::scale(const QPixmap &image, float scale)

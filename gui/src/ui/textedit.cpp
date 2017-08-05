@@ -244,7 +244,7 @@ void TextEdit::customContextMenuRequested(QPoint)
 				{ favsGroup->addAction(fav.getName()); }
 				if (!toPlainText().isEmpty())
 				{
-					if (m_favorites.contains(toPlainText()))
+					if (m_favorites.contains(Favorite(toPlainText())))
 					{ favs->addAction(QIcon(":/images/icons/remove.png"), tr("Remove"), this, SLOT(unsetFavorite())); }
 					else
 					{ favs->addAction(QIcon(":/images/icons/add.png"), tr("Add"), this, SLOT(setFavorite())); }

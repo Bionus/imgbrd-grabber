@@ -5,7 +5,7 @@
 
 
 SourceUpdater::SourceUpdater(QString source, QString directory, QString baseUrl)
-	: m_source(source), m_directory(directory), m_baseUrl(baseUrl)
+	: m_source(source), m_directory(directory), m_baseUrl(baseUrl), m_checkForUpdatesReply(Q_NULLPTR)
 {
 	if (!m_baseUrl.endsWith("/"))
 		m_baseUrl += "/";

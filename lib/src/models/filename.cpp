@@ -1,4 +1,5 @@
 #include "filename.h"
+#include <algorithm>
 #include <QtScript>
 #include <QCollator>
 #include <QIcon>

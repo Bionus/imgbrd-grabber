@@ -10,7 +10,7 @@ class QBouton : public QPushButton
 	Q_OBJECT
 
 	public:
-		QBouton(QVariant id = 0, bool resizeInsteadOfCropping = false, bool smartSizeHint = false, int border = 0, QColor color = QColor(), QWidget *parent = 0);
+		QBouton(QVariant id = 0, bool resizeInsteadOfCropping = false, bool smartSizeHint = false, int border = 0, QColor color = QColor(), QWidget *parent = Q_NULLPTR);
 		QVariant id();
 		void mousePressEvent(QMouseEvent *event);
 		virtual QSize sizeHint() const;
@@ -41,11 +41,9 @@ class QBouton : public QPushButton
 
 	private:
 		QVariant	_id;
-		bool		_resizeInsteadOfCropping, _smartSizeHint, _np, _toggled;
-		QSize		_originalSize;
+		bool		_resizeInsteadOfCropping, _smartSizeHint;
 		QColor		_penColor;
 		int			_border;
-		float		_scale;
 		qint64		_progress;
 		qint64		_progressMax;
 };

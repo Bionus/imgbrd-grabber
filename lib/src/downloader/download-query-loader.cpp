@@ -8,7 +8,7 @@
 #include "download-query-group.h"
 
 
-bool DownloadQueryLoader::load(QString path, QList<DownloadQueryImage> &uniques, QList<DownloadQueryGroup> &batchs, QMap<QString, Site*> &sites)
+bool DownloadQueryLoader::load(QString path, QList<DownloadQueryImage> &uniques, QList<DownloadQueryGroup> &batchs, const QMap<QString, Site*> &sites)
 {
 	QFile f(path);
 	if (!f.open(QFile::ReadOnly))
@@ -92,7 +92,7 @@ bool DownloadQueryLoader::load(QString path, QList<DownloadQueryImage> &uniques,
 	return false;
 }
 
-bool DownloadQueryLoader::save(QString path, QList<DownloadQueryImage> &uniques, QList<DownloadQueryGroup> &batchs)
+bool DownloadQueryLoader::save(QString path, const QList<DownloadQueryImage> &uniques, const QList<DownloadQueryGroup> &batchs)
 {
 	QFile saveFile(path);
 	if (!saveFile.open(QFile::WriteOnly))

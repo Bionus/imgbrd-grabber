@@ -9,7 +9,7 @@ Profile::Profile()
 	: m_settings(nullptr), m_commands(nullptr)
 {}
 Profile::Profile(QSettings *settings, QList<Favorite> favorites, QStringList keptForLater, QString path)
-	: m_path(path), m_settings(settings), m_favorites(favorites), m_keptForLater(keptForLater)
+	: m_path(path), m_settings(settings), m_favorites(favorites), m_keptForLater(keptForLater), m_commands(nullptr)
 {}
 Profile::Profile(QString path)
 	: m_path(path)

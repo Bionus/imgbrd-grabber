@@ -121,9 +121,10 @@ int main(int argc, char *argv[])
 
 	parser.process(app);
 
-	bool gui = false;
 	#if !USE_CLI
-		gui = !parser.isSet(cliOption);
+		bool gui = !parser.isSet(cliOption);
+	#else
+		bool gui = false;
 	#endif
 
 	if (!gui && !parser.isSet(verboseOption))

@@ -22,7 +22,7 @@ class SqlWorker;
 class Commands
 {
 	public:
-		Commands(Profile *profile);
+		explicit Commands(Profile *profile);
 		bool start();
 		bool before();
 		bool image(const Image &img, QString path);

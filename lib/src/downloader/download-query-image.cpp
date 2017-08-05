@@ -85,7 +85,7 @@ void DownloadQueryImage::write(QJsonObject &json) const
 	json["path"] = path;
 }
 
-bool DownloadQueryImage::read(const QJsonObject &json, QMap<QString, Site*> &sites)
+bool DownloadQueryImage::read(const QJsonObject &json, const QMap<QString, Site *> &sites)
 {
 	QStringList tags;
 	QJsonArray jsonTags = json["tags"].toArray();

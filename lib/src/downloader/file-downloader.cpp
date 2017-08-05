@@ -4,7 +4,7 @@
 
 
 FileDownloader::FileDownloader(QObject *parent)
-	: QObject(parent)
+	: QObject(parent), m_reply(Q_NULLPTR)
 {}
 
 bool FileDownloader::start(QNetworkReply *reply, QString path)

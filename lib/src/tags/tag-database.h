@@ -18,7 +18,7 @@ class TagDatabase
 		QMap<int, TagType> tagTypes() const;
 
 	protected:
-		TagDatabase(QString typeFile);
+		explicit TagDatabase(QString typeFile);
 
 	protected:
 		QMap<int, TagType> m_tagTypes;
