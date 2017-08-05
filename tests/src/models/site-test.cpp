@@ -186,12 +186,11 @@ void SiteTest::testLoginGet()
 	QSettings siteSettings("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/settings.ini", QSettings::IniFormat);
 	siteSettings.setValue("auth/pseudo", "user");
 	siteSettings.setValue("auth/password", "somepassword");
-	siteSettings.setValue("login/parameter", false);
-	siteSettings.setValue("login/method", "get");
-	siteSettings.setValue("login/pseudo", "name");
-	siteSettings.setValue("login/password", "password");
-	siteSettings.setValue("login/url", "/session/new");
-	siteSettings.setValue("login/cookie", "_danbooru_session");
+	siteSettings.setValue("login/type", "get");
+	siteSettings.setValue("login/get/pseudo", "name");
+	siteSettings.setValue("login/get/password", "password");
+	siteSettings.setValue("login/get/url", "/session/new");
+	siteSettings.setValue("login/get/cookie", "_danbooru_session");
 	m_site->loadConfig();
 
 	CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/danbooru.donmai.us/login.html");
@@ -220,12 +219,11 @@ void SiteTest::testLoginPost()
 	QSettings siteSettings("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/settings.ini", QSettings::IniFormat);
 	siteSettings.setValue("auth/pseudo", "user");
 	siteSettings.setValue("auth/password", "somepassword");
-	siteSettings.setValue("login/parameter", false);
-	siteSettings.setValue("login/method", "post");
-	siteSettings.setValue("login/pseudo", "name");
-	siteSettings.setValue("login/password", "password");
-	siteSettings.setValue("login/url", "/session");
-	siteSettings.setValue("login/cookie", "_danbooru_session");
+	siteSettings.setValue("login/type", "post");
+	siteSettings.setValue("login/post/pseudo", "name");
+	siteSettings.setValue("login/post/password", "password");
+	siteSettings.setValue("login/post/url", "/session");
+	siteSettings.setValue("login/post/cookie", "_danbooru_session");
 	m_site->loadConfig();
 
 	// Wait for login

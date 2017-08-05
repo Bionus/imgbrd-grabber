@@ -171,8 +171,8 @@ void Site::login(bool force)
 
 	m_loggedIn = LoginStatus::Pending;
 
-	bool byParameter = m_settings->value("login/parameter", true).toBool();
-	if (byParameter)
+	QString type = m_settings->value("login/type", "url").toString();
+	if (type == "url")
 	{
 		int maxPageAnonymous = m_settings->value("login/maxPage", 0).toInt();
 		if (maxPageAnonymous <= 0)
@@ -190,7 +190,7 @@ void Site::login(bool force)
 	}
 
 	// Cannot post login information without an URL
-	QString loginUrl = m_settings->value("login/url", "").toString();
+	QString loginUrl = m_settings->value("login/"+type+"/url", "").toString();
 	if (loginUrl.isEmpty())
 	{
 		emit loggedIn(this, LoginResult::Impossible);
@@ -198,8 +198,8 @@ void Site::login(bool force)
 	}
 
 	QUrlQuery query;
-	query.addQueryItem(m_settings->value("login/pseudo", "").toString(), m_username);
-	query.addQueryItem(m_settings->value("login/password", "").toString(), m_password);
+	query.addQueryItem(m_settings->value("login/"+type+"/pseudo", "").toString(), m_username);
+	query.addQueryItem(m_settings->value("login/"+type+"/password", "").toString(), m_password);
 
 	m_settings->beginGroup("login/fields");
 		QStringList keys = m_settings->childKeys();
@@ -207,38 +207,39 @@ void Site::login(bool force)
 			query.addQueryItem(key, setting(key).toString());
 	m_settings->endGroup();
 
-	QString method = m_settings->value("login/method", "post").toString();
-	if (method == "post")
+	if (type == "post")
 	{
 		QUrl postData;
 		postData.setQuery(query);
 
-		QNetworkRequest request(fixUrl(m_settings->value("login/url", "").toString()));
+		QNetworkRequest request(fixUrl(loginUrl));
 		request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
 
 		m_loginReply = m_manager->post(request, query.query(QUrl::FullyEncoded).toUtf8());
-		connect(m_loginReply, SIGNAL(finished()), this, SLOT(loginFinished()));
+		connect(m_loginReply, &QNetworkReply::finished, this, &Site::loginFinished);
 	}
 	else
 	{
-		QUrl url = fixUrl(m_settings->value("login/url", "").toString());
+		QUrl url = fixUrl(loginUrl);
 		url.setQuery(query);
 
 		QNetworkRequest request(url);
 		request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, CACHE_POLICY);
 
 		m_loginReply = getRequest(request);
-		connect(m_loginReply, SIGNAL(finished()), this, SLOT(loginFinished()));
+		connect(m_loginReply, &QNetworkReply::finished, this, &Site::loginFinished);
 	}
 }
 
 bool Site::canTestLogin() const
 {
-	if (m_settings->value("login/parameter", true).toBool())
+	QString type = m_settings->value("login/type", "url").toString();
+
+	if (type == "url")
 		return m_settings->value("login/maxPage", 0).toInt() > 0;
 
 	// Cannot post login information without an URL
-	return !m_settings->value("login/url", "").toString().isEmpty();
+	return !m_settings->value("login/"+type+"/url", "").toString().isEmpty();
 }
 
 /**
@@ -246,15 +247,15 @@ bool Site::canTestLogin() const
  */
 void Site::loginFinished()
 {
-	bool byParameter = m_settings->value("login/parameter", true).toBool();
+	QString type = m_settings->value("login/type", "url").toString();
 	bool ok = false;
-	if (byParameter)
+	if (type == "url")
 	{
 		ok = !m_loginPage->images().isEmpty();
 	}
 	else
 	{
-		QString cookiename = m_settings->value("login/cookie", "").toString();
+		QString cookiename = m_settings->value("login/"+type+"/cookie", "").toString();
 
 		QList<QNetworkCookie> cookies = m_cookieJar->cookiesForUrl(m_loginReply->url());
 		for (QNetworkCookie cookie : cookies)
