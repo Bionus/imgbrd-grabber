@@ -11,7 +11,8 @@ class ImageDownloader : public QObject
 	Q_OBJECT
 
 	public:
-		explicit ImageDownloader(QSharedPointer<Image> img, QString filename, QString path, int count, bool addMd5, bool startCommands, QObject *parent = Q_NULLPTR);
+		ImageDownloader(QSharedPointer<Image> img, QString filename, QString path, int count, bool addMd5, bool startCommands, QObject *parent = Q_NULLPTR);
+		ImageDownloader(QSharedPointer<Image> img, QStringList paths, int count, bool addMd5, bool startCommands, QObject *parent = Q_NULLPTR);
 		void save();
 
 	protected:

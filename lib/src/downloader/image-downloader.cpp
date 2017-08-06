@@ -3,10 +3,12 @@
 
 
 ImageDownloader::ImageDownloader(QSharedPointer<Image> img, QString filename, QString path, int count, bool addMd5, bool startCommands, QObject *parent)
-	: QObject(parent), m_image(img), m_fileDownloader(this), m_count(count), m_addMd5(addMd5), m_startCommands(startCommands)
-{
-	m_paths = m_image->path(filename, path, count, true, false, true, true, true);
-}
+	: ImageDownloader(img, m_image->path(filename, path, count, true, false, true, true, true), count, addMd5, startCommands, parent)
+{}
+
+ImageDownloader::ImageDownloader(QSharedPointer<Image> img, QStringList paths, int count, bool addMd5, bool startCommands, QObject *parent)
+	: QObject(parent), m_image(img), m_paths(paths), m_fileDownloader(this), m_count(count), m_addMd5(addMd5), m_startCommands(startCommands)
+{}
 
 void ImageDownloader::save()
 {
