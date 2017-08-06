@@ -11,7 +11,7 @@ class ImageDownloader : public QObject
 	Q_OBJECT
 
 	public:
-		ImageDownloader(QSharedPointer<Image> img, QString filename, QString path, int count, bool addMd5, bool startCommands, QObject *parent = Q_NULLPTR);
+		ImageDownloader(QSharedPointer<Image> img, QString filename, QString path, int count, bool addMd5, bool startCommands, QObject *parent = Q_NULLPTR, bool loadTags = false);
 		ImageDownloader(QSharedPointer<Image> img, QStringList paths, int count, bool addMd5, bool startCommands, QObject *parent = Q_NULLPTR);
 		void save();
 
@@ -22,12 +22,16 @@ class ImageDownloader : public QObject
 		void saved(QSharedPointer<Image> img, QMap<QString, Image::SaveResult> result);
 
 	private slots:
+		void loadedSave();
 		void imageLoaded(QNetworkReply::NetworkError error, QString msg);
 
 	private:
 		QSharedPointer<Image> m_image;
-		QStringList m_paths;
 		FileDownloader m_fileDownloader;
+		QString m_filename;
+		QString m_path;
+		bool m_loadTags;
+		QStringList m_paths;
 		int m_count;
 		bool m_addMd5;
 		bool m_startCommands;
