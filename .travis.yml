@@ -13,8 +13,7 @@ matrix:
 addons:
   apt:
     sources:
-      - sourceline: 'ppa:ubuntu-sdk-team/ppa'
-      - ubuntu-toolchain-r-test
+	  - ubuntu-toolchain-r-test
     packages:
       - sqlite3
       - libqt5sql5-sqlite
