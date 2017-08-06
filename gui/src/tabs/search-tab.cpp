@@ -808,7 +808,7 @@ void searchTab::thumbnailContextMenu(QSharedPointer<Image> img)
 }
 void searchTab::contextSaveImage(QObject *image)
 {
-	Image *img = (Image*)image;
+	Image *img = static_cast<Image*>(image);
 
 	QString already = getImageAlreadyExists(img, m_profile);
 	if (!already.isEmpty())
@@ -825,7 +825,7 @@ void searchTab::contextSaveImage(QObject *image)
 }
 void searchTab::contextSaveImageAs(QObject *image)
 {
-	Image *img = (Image*)image;
+	Image *img = static_cast<Image*>(image);
 
 	Filename format(m_settings->value("Save/filename").toString());
 	QStringList filenames = format.path(*img, m_profile);
