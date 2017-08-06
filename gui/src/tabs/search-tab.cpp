@@ -740,7 +740,7 @@ QBouton *searchTab::createImageThumbnail(int position, QSharedPointer<Image> img
 	l->setFlat(true);
 
 	l->setContextMenuPolicy(Qt::CustomContextMenu);
-	connect(l, &QWidget::customContextMenuRequested, this, [this, img]{ thumbnailContextMenu(img); });
+	connect(l, &QWidget::customContextMenuRequested, this, [this, position, img]{ thumbnailContextMenu(position, img); });
 
 	if (fixedWidthLayout)
 		l->setFixedSize(FIXED_IMAGE_WIDTH * upscale + borderSize * 2, FIXED_IMAGE_WIDTH * upscale + borderSize * 2);
@@ -770,14 +770,14 @@ QString getImageAlreadyExists(Image *img, Profile *profile)
 	return profile->md5Exists(img->md5());
 }
 
-void searchTab::thumbnailContextMenu(QSharedPointer<Image> img)
+void searchTab::thumbnailContextMenu(int position, QSharedPointer<Image> img)
 {
 	QMenu *menu = new ImageContextMenu(m_settings, img, m_parent, this);
 	QAction *first = menu->actions().first();
 
 	// Save image
 	QSignalMapper *mapperSave = new QSignalMapper(this);
-	connect(mapperSave, SIGNAL(mapped(QObject*)), this, SLOT(contextSaveImage(QObject*)));
+	connect(mapperSave, SIGNAL(mapped(int)), this, SLOT(contextSaveImage(int)));
 	QAction *actionSave;
 	if (!getImageAlreadyExists(img.data(), m_profile).isEmpty())
 	{ actionSave = new QAction(QIcon(":/images/status/error.png"), tr("Delete"), menu); }
@@ -785,15 +785,15 @@ void searchTab::thumbnailContextMenu(QSharedPointer<Image> img)
 	{ actionSave = new QAction(QIcon(":/images/icons/save.png"), tr("Save"), menu); }
 	menu->insertAction(first, actionSave);
 	connect(actionSave, SIGNAL(triggered()), mapperSave, SLOT(map()));
-	mapperSave->setMapping(actionSave, img.data());
+	mapperSave->setMapping(actionSave, position);
 
 	// Save image as...
 	QSignalMapper *mapperSaveAs = new QSignalMapper(this);
-	connect(mapperSaveAs, SIGNAL(mapped(QObject*)), this, SLOT(contextSaveImageAs(QObject*)));
+	connect(mapperSaveAs, SIGNAL(mapped(int)), this, SLOT(contextSaveImageAs(int)));
 	QAction *actionSaveAs = new QAction(QIcon(":/images/icons/save-as.png"), tr("Save as..."), menu);
 	menu->insertAction(first, actionSaveAs);
 	connect(actionSaveAs, SIGNAL(triggered()), mapperSaveAs, SLOT(map()));
-	mapperSaveAs->setMapping(actionSaveAs, img.data());
+	mapperSaveAs->setMapping(actionSaveAs, position);
 
 	if (!m_selectedImagesPtrs.empty())
 	{
@@ -806,9 +806,10 @@ void searchTab::thumbnailContextMenu(QSharedPointer<Image> img)
 
 	menu->exec(QCursor::pos());
 }
-void searchTab::contextSaveImage(QObject *image)
+void searchTab::contextSaveImage(int position)
 {
-	Image *img = static_cast<Image*>(image);
+	QSharedPointer<Image> image = m_images.at(position);
+	Image *img = image.data();
 
 	QString already = getImageAlreadyExists(img, m_profile);
 	if (!already.isEmpty())
@@ -820,12 +821,16 @@ void searchTab::contextSaveImage(QObject *image)
 
 		if (m_boutons.contains(img))
 		{ connect(img, SIGNAL(downloadProgressImage(qint64, qint64)), m_boutons[img], SLOT(setProgress(qint64, qint64))); }
-		img->loadAndSave(fn, path);
+
+		auto downloader = new ImageDownloader(image, fn, path, 1, true, true, this, true);
+		connect(downloader, &ImageDownloader::saved, downloader, &ImageDownloader::deleteLater);
+		downloader->save();
 	}
 }
-void searchTab::contextSaveImageAs(QObject *image)
+void searchTab::contextSaveImageAs(int position)
 {
-	Image *img = static_cast<Image*>(image);
+	QSharedPointer<Image> image = m_images.at(position);
+	Image *img = image.data();
 
 	Filename format(m_settings->value("Save/filename").toString());
 	QStringList filenames = format.path(*img, m_profile);
@@ -837,7 +842,10 @@ void searchTab::contextSaveImageAs(QObject *image)
 	{
 		path = QDir::toNativeSeparators(path);
 		m_settings->setValue("Zoom/lastDir", path.section(QDir::toNativeSeparators("/"), 0, -2));
-		img->loadAndSave(QStringList() << path, false, true);
+
+		auto downloader = new ImageDownloader(image, QStringList() << path, 1, true, true, this);
+		connect(downloader, &ImageDownloader::saved, downloader, &ImageDownloader::deleteLater);
+		downloader->save();
 	}
 }
 void searchTab::contextSaveSelected()
@@ -849,7 +857,10 @@ void searchTab::contextSaveSelected()
 	{
 		if (m_boutons.contains(img.data()))
 		{ connect(img.data(), SIGNAL(downloadProgressImage(qint64, qint64)), m_boutons[img.data()], SLOT(setProgress(qint64, qint64))); }
-		img->loadAndSave(fn, path);
+
+		auto downloader = new ImageDownloader(img, fn, path, 1, true, true, this, true);
+		connect(downloader, &ImageDownloader::saved, downloader, &ImageDownloader::deleteLater);
+		downloader->save();
 	}
 }
 

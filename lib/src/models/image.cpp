@@ -280,27 +280,6 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	m_pools = QList<Pool>();
 }
 
-QMap<QString, Image::SaveResult> Image::loadAndSave(QStringList paths, bool needTags, bool force)
-{
-	// Load details first if necessary
-	if (needTags)
-	{
-		QEventLoop loopDetails;
-		connect(this, &Image::finishedLoadingTags, &loopDetails, &QEventLoop::quit);
-		loadDetails();
-		loopDetails.exec();
-	}
-
-	// We finally save
-	return save(paths, true, false, 1, force, true);
-}
-QMap<QString, Image::SaveResult> Image::loadAndSave(QString filename, QString path)
-{
-	QStringList paths = this->path(filename, path, 1, true, false, true, true, true);
-	bool needTags = Filename(filename).needExactTags(parentSite());
-	return loadAndSave(paths, needTags);
-}
-
 
 void Image::loadPreview()
 {

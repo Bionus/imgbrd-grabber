@@ -98,8 +98,6 @@ class Image : public QObject
 		QUrl		getDisplayableUrl() const;
 		bool		isVideo() const;
 		void		setTags(QList<Tag> tags);
-		QMap<QString, SaveResult> loadAndSave(QStringList paths, bool needTags, bool force = false);
-		QMap<QString, SaveResult> loadAndSave(QString filename, QString path);
 
 	public slots:
 		void loadPreview();

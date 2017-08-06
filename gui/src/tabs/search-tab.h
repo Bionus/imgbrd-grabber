@@ -63,11 +63,11 @@ class searchTab : public QWidget
 		QBouton *createImageThumbnail(int position, QSharedPointer<Image> img);
 		int getActualImagesPerPage(Page *page, bool merge);
 		FixedSizeGridLayout *createImagesLayout(QSettings *settings);
-		void thumbnailContextMenu(QSharedPointer<Image> img);
+		void thumbnailContextMenu(int position, QSharedPointer<Image> img);
 
 	protected slots:
-		void contextSaveImage(QObject *image);
-		void contextSaveImageAs(QObject *image);
+		void contextSaveImage(int position);
+		void contextSaveImageAs(int position);
 		void contextSaveSelected();
 		void setMergeResultsMode(bool merged);
 		void setEndlessLoadingMode(bool enabled);
