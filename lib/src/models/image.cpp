@@ -1010,6 +1010,10 @@ void Image::postSaving(QString path, bool addMd5, bool startCommands, int count,
 				else if (locationType == 2)
 					fileTagsPath = path + logFile["suffix"].toString();
 
+				// Replace some post-save tokens
+				contents.replace("%path:nobackslash%", QDir::toNativeSeparators(path).replace("\\", "/"))
+						.replace("%path%", QDir::toNativeSeparators(path));
+
 				// Append to file if necessary
 				QFile fileTags(fileTagsPath);
 				bool append = fileTags.exists();
