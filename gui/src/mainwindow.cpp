@@ -1134,8 +1134,12 @@ void mainWindow::getAll(bool all)
 			}
 			else
 			{
+				QMap<QString, QString> data = batch.values;
+				data.insert("filename", batch.filename);
+				data.insert("folder", batch.path);
+
 				Page *page = new Page(m_profile, batch.site, m_sites.values(), batch.values["tags"].split(" "), 1, 1, QStringList(), false, this);
-				m_getAllRemaining.append(QSharedPointer<Image>(new Image(batch.site, batch.values, m_profile, page)));
+				m_getAllRemaining.append(QSharedPointer<Image>(new Image(batch.site, data, m_profile, page)));
 			}
 		}
 	}
@@ -1694,13 +1698,13 @@ void mainWindow::getAllGetImage(QSharedPointer<Image> img)
 	int row = getRowForSite(site_id);
 
 	// Path
-	QString path = m_settings->value("Save/filename").toString();
-	QString p = img->folder().isEmpty() ? m_settings->value("Save/path").toString() : img->folder();
+	QString filename = img->filename().isEmpty() ? m_settings->value("Save/filename").toString() : img->filename();
+	QString path = img->folder().isEmpty() ? m_settings->value("Save/path").toString() : img->folder();
 	if (site_id >= 0)
 	{
 		ui->tableBatchGroups->item(row, 0)->setIcon(getIcon(":/images/status/downloading.png"));
-		path = m_groupBatchs[site_id - 1].filename;
-		p = m_groupBatchs[site_id - 1].path;
+		filename = m_groupBatchs[site_id - 1].filename;
+		path = m_groupBatchs[site_id - 1].path;
 	}
 
 	// Track download progress
@@ -1714,7 +1718,7 @@ void mainWindow::getAllGetImage(QSharedPointer<Image> img)
 	// Start loading and saving image
 	log(QString("Loading image from <a href=\"%1\">%1</a> %2").arg(img->fileUrl().toString()).arg(m_getAllDownloading.size()), Logger::Info);
 	int count = m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + 1;
-	auto imgDownloader = new ImageDownloader(img, path, p, count, true, false, this);
+	auto imgDownloader = new ImageDownloader(img, filename, path, count, true, false, this);
 	connect(imgDownloader, &ImageDownloader::saved, this, &mainWindow::getAllGetImageSaved);
 	imgDownloader->save();
 	m_getAllImageDownloaders[img] = imgDownloader;
