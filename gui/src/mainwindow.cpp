@@ -162,6 +162,14 @@ void mainWindow::init(QStringList args, QMap<QString,QString> params)
 	QShortcut *actionFocusSearch = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_L), this);
 	connect(actionFocusSearch, &QShortcut::activated, this, &mainWindow::focusSearch);
 
+	QShortcut *actionDeleteBatchGroups = new QShortcut(QKeySequence::Delete, ui->tableBatchGroups);
+	actionDeleteBatchGroups->setContext(Qt::WidgetWithChildrenShortcut);
+	connect(actionDeleteBatchGroups, &QShortcut::activated, this, &mainWindow::batchClearSelGroups);
+
+	QShortcut *actionDeleteBatchUniques = new QShortcut(QKeySequence::Delete, ui->tableBatchUniques);
+	actionDeleteBatchUniques->setContext(Qt::WidgetWithChildrenShortcut);
+	connect(actionDeleteBatchUniques, &QShortcut::activated, this, &mainWindow::batchClearSelUniques);
+
 	ui->actionAddtab->setShortcut(QKeySequence::AddTab);
 	ui->actionQuit->setShortcut(QKeySequence::Quit);
 	ui->actionFolder->setShortcut(QKeySequence::Open);
@@ -665,6 +673,11 @@ void mainWindow::batchClear()
 }
 void mainWindow::batchClearSel()
 {
+	batchClearSelGroups();
+	batchClearSelUniques();
+}
+void mainWindow::batchClearSelGroups()
+{
 	// Delete group batchs
 	QList<QTableWidgetItem *> selected = ui->tableBatchGroups->selectedItems();
 	QList<int> todelete = QList<int>();
@@ -684,15 +697,19 @@ void mainWindow::batchClearSel()
 		ui->tableBatchGroups->removeRow(pos);
 		rem++;
 	}
-
+	updateGroupCount();
+}
+void mainWindow::batchClearSelUniques()
+{
 	// Delete single image downloads
-	selected = ui->tableBatchUniques->selectedItems();
-	count = selected.size();
-	todelete.clear();
+	QList<QTableWidgetItem *> selected = ui->tableBatchUniques->selectedItems();
+	QList<int> todelete = QList<int>();
+	int count = selected.size();
 	for (int i = 0; i < count; i++)
 	{ todelete.append(selected.at(i)->row()); }
 	qSort(todelete);
-	rem = 0;
+
+	int rem = 0;
 	for (int i : todelete)
 	{
 		int pos = i - rem;

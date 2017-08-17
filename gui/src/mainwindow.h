@@ -83,6 +83,8 @@ class mainWindow : public QMainWindow
 		// Batch download management
 		void batchClear();
 		void batchClearSel();
+		void batchClearSelGroups();
+		void batchClearSelUniques();
 		void batchMove(int);
 		void batchMoveUp();
 		void batchMoveDown();
