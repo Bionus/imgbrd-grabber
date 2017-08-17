@@ -25,6 +25,7 @@
 
 
 #include <QApplication>
+#include <QDir>
 #include "downloader/downloader.h"
 #include "models/profile.h"
 #include "models/site.h"
@@ -38,7 +39,6 @@
 #endif
 #if !USE_CLI && USE_BREAKPAD
 	#include <QFileInfo>
-	#include <QDir>
 	#include "crashhandler/crashhandler.h"
 #endif
 
