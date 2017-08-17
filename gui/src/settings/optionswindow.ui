@@ -1861,14 +1861,14 @@
           </property>
          </widget>
         </item>
-        <item row="6" column="0">
+        <item row="7" column="0">
          <widget class="QLabel" name="labelImagePositionImage">
           <property name="text">
            <string>Image position</string>
           </property>
          </widget>
         </item>
-        <item row="6" column="1">
+        <item row="7" column="1">
          <layout class="QHBoxLayout" name="layoutImagePositionImage">
           <item>
            <widget class="QComboBox" name="comboImagePositionImageV">
@@ -1916,14 +1916,14 @@
           </item>
          </layout>
         </item>
-        <item row="7" column="0">
+        <item row="8" column="0">
          <widget class="QLabel" name="labelImagePositionAnimation">
           <property name="text">
            <string>Animation position</string>
           </property>
          </widget>
         </item>
-        <item row="7" column="1">
+        <item row="8" column="1">
          <layout class="QHBoxLayout" name="layoutImagePositionAnimation">
           <item>
            <widget class="QComboBox" name="comboImagePositionAnimationV">
@@ -1971,14 +1971,14 @@
           </item>
          </layout>
         </item>
-        <item row="8" column="0">
+        <item row="9" column="0">
          <widget class="QLabel" name="labelImagePositionVideo">
           <property name="text">
            <string>Video position</string>
           </property>
          </widget>
         </item>
-        <item row="8" column="1">
+        <item row="9" column="1">
          <layout class="QHBoxLayout" name="layoutImagePositionVideo">
           <item>
            <widget class="QComboBox" name="comboImagePositionVideoV">
@@ -2026,14 +2026,14 @@
           </item>
          </layout>
         </item>
-        <item row="9" column="0">
+        <item row="10" column="0">
          <widget class="QLabel" name="label_88">
           <property name="text">
            <string>Background color</string>
           </property>
          </widget>
         </item>
-        <item row="9" column="1">
+        <item row="10" column="1">
          <layout class="QHBoxLayout" name="layoutImageBackgroundColor">
           <item>
            <widget class="QLineEdit" name="lineImageBackgroundColor"/>
@@ -2052,6 +2052,32 @@
           <property name="text">
            <string>Show tag count</string>
           </property>
+         </widget>
+        </item>
+        <item row="6" column="0">
+         <widget class="QLabel" name="labelImageTagOrder">
+          <property name="text">
+           <string>Tag order</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="1">
+         <widget class="QComboBox" name="comboImageTagOrder">
+          <item>
+           <property name="text">
+            <string>Type</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Name</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Count</string>
+           </property>
+          </item>
          </widget>
         </item>
        </layout>

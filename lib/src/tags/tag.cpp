@@ -183,17 +183,22 @@ QString Tag::qFontToCss(QFont font)
 	return "font-family:'"+font.family()+"'; font-size:"+size+"; font-style:"+style+"; font-weight:"+weight+"; text-decoration:"+(decorations.isEmpty() ? "none" : decorations.join(" "))+";";
 }
 
-QStringList Tag::Stylished(QList<Tag> tags, Profile *profile, bool count, bool nounderscores, bool sort)
+QStringList Tag::Stylished(QList<Tag> tags, Profile *profile, bool count, bool nounderscores, QString sort)
 {
 	QStringList ignored = profile->getIgnored();
 	QStringList blacklisted = profile->getBlacklist();
 
+	// Sort tag list
+	if (sort == "type")
+		qSort(tags.begin(), tags.end(), sortTagsByType);
+	else if (sort == "name")
+		qSort(tags.begin(), tags.end(), sortTagsByName);
+	else if (sort == "count")
+		qSort(tags.begin(), tags.end(), sortTagsByCount);
+
 	QStringList t;
 	for (Tag tag : tags)
 		t.append(tag.stylished(profile, ignored, blacklisted, count, nounderscores));
-
-	if (sort)
-		t.sort();
 
 	return t;
 }
@@ -246,7 +251,16 @@ QString Tag::typedText() const
 	return (m_type.name() != "general" ? m_type.name() + ":" : "") + m_text;
 }
 
-bool sortByFrequency(Tag s1, Tag s2)
+bool sortTagsByType(Tag s1, Tag s2)
+{
+	static QStringList typeOrder = QStringList() << "unknown" << "model" << "species" << "artist" << "character" << "copyright";
+	int t1 = typeOrder.indexOf(s1.type().name());
+	int t2 = typeOrder.indexOf(s2.type().name());
+	return t1 == t2 ? sortTagsByName(s1, s2) : t1 > t2;
+}
+bool sortTagsByName(Tag s1, Tag s2)
+{ return s1.text().localeAwareCompare(s2.text()) < 0; }
+bool sortTagsByCount(Tag s1, Tag s2)
 { return s1.count() > s2.count(); }
 
 bool operator==(const Tag &t1, const Tag &t2)

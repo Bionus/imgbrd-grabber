@@ -190,7 +190,7 @@ void TagTest::testCompare()
 	QCOMPARE(tag1 == tag5, true);
 }
 
-void TagTest::testSortByFrequency()
+void TagTest::testSortTagsByType()
 {
 	QList<Tag> taglist;
 	taglist.append(Tag("last", "artist", 1, QStringList() << "tag1"));
@@ -199,7 +199,41 @@ void TagTest::testSortByFrequency()
 	taglist.append(Tag("second", "character", 4, QStringList() << "tag4"));
 	taglist.append(Tag("first", "unknown", 5, QStringList() << "tag5"));
 
-	qSort(taglist.begin(), taglist.end(), sortByFrequency);
+	qSort(taglist.begin(), taglist.end(), sortTagsByType);
+
+	QCOMPARE(taglist[0].text(), QString("third"));
+	QCOMPARE(taglist[1].text(), QString("second"));
+	QCOMPARE(taglist[2].text(), QString("last"));
+	QCOMPARE(taglist[3].text(), QString("first"));
+	QCOMPARE(taglist[4].text(), QString("fourth"));
+}
+void TagTest::testSortTagsByName()
+{
+	QList<Tag> taglist;
+	taglist.append(Tag("last", "artist", 1, QStringList() << "tag1"));
+	taglist.append(Tag("fourth", "general", 2, QStringList() << "tag2"));
+	taglist.append(Tag("third", "copyright", 3, QStringList() << "tag3"));
+	taglist.append(Tag("second", "character", 4, QStringList() << "tag4"));
+	taglist.append(Tag("first", "unknown", 5, QStringList() << "tag5"));
+
+	qSort(taglist.begin(), taglist.end(), sortTagsByName);
+
+	QCOMPARE(taglist[0].text(), QString("first"));
+	QCOMPARE(taglist[1].text(), QString("fourth"));
+	QCOMPARE(taglist[2].text(), QString("last"));
+	QCOMPARE(taglist[3].text(), QString("second"));
+	QCOMPARE(taglist[4].text(), QString("third"));
+}
+void TagTest::testSortTagsByCount()
+{
+	QList<Tag> taglist;
+	taglist.append(Tag("last", "artist", 1, QStringList() << "tag1"));
+	taglist.append(Tag("fourth", "general", 2, QStringList() << "tag2"));
+	taglist.append(Tag("third", "copyright", 3, QStringList() << "tag3"));
+	taglist.append(Tag("second", "character", 4, QStringList() << "tag4"));
+	taglist.append(Tag("first", "unknown", 5, QStringList() << "tag5"));
+
+	qSort(taglist.begin(), taglist.end(), sortTagsByCount);
 
 	QCOMPARE(taglist[0].text(), QString("first"));
 	QCOMPARE(taglist[1].text(), QString("second"));

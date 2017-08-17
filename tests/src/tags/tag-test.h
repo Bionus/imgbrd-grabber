@@ -35,7 +35,9 @@ class TagTest : public TestSuite
 		void testTypedTextArtist();
 		void testTypedTextSpecies();
 		void testCompare();
-		void testSortByFrequency();
+		void testSortTagsByType();
+		void testSortTagsByName();
+		void testSortTagsByCount();
 		void testTypeSpaced();
 		void testGetType();
 

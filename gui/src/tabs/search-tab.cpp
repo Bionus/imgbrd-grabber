@@ -144,7 +144,7 @@ void searchTab::setTagsFromPages(const QMap<QString, QList<Page*>> &pages)
 	}
 
 	// We sort tags by frequency
-	qSort(taglist.begin(), taglist.end(), sortByFrequency);
+	qSort(taglist.begin(), taglist.end(), sortTagsByCount);
 
 	m_tags = taglist;
 	m_parent->setTags(m_tags, this);

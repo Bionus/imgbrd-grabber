@@ -31,7 +31,7 @@ class Tag
 		QString		typedText()	const;
 
 		static QString qFontToCss(QFont font);
-		static QStringList Stylished(QList<Tag>, Profile *profile, bool count = false, bool nounderscores = false, bool sort = true);
+		static QStringList Stylished(QList<Tag>, Profile *profile, bool count = false, bool nounderscores = false, QString sort = "");
 
 	private:
 		QString		m_text;
@@ -40,7 +40,9 @@ class Tag
 		QStringList	m_related;
 };
 
-bool sortByFrequency(Tag, Tag);
+bool sortTagsByType(Tag, Tag);
+bool sortTagsByName(Tag, Tag);
+bool sortTagsByCount(Tag, Tag);
 bool operator==(const Tag &t1, const Tag &t2);
 
 Q_DECLARE_METATYPE(Tag)
