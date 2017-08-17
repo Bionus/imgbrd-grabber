@@ -70,6 +70,19 @@ int main(int argc, char *argv[])
 		app.setApplicationDisplayName("Grabber");
 	#endif
 
+	// Copy settings files to writable directory
+	if (!QDir(savePath("sites/", true, true)).exists())
+	{
+		QStringList toCopy = QStringList() << "sites/" << "themes/" << "webservices/";
+		for (QString tgt : toCopy)
+		{
+			QString from = savePath(tgt, true, false);
+			QString to = savePath(tgt, true, true);
+			if (!QDir(to).exists() && QDir(from).exists())
+				copyRecursively(from, to);
+		}
+	}
+
 	QCommandLineParser parser;
 	parser.addHelpOption();
 	parser.addVersionOption();

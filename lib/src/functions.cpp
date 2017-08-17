@@ -198,30 +198,69 @@ QString formatFilesize(float size)
 	return QString("%1 %2").arg(roundedSize).arg(unit);
 }
 
+bool validSavePath(QString file, bool writable)
+{
+	QString nativeFile = QDir::toNativeSeparators(file);
+	QFileInfo info(nativeFile);
+	bool isWritable = info.isWritable() && !nativeFile.startsWith("C:\\Program Files");
+	return info.exists() && (!writable || isWritable);
+}
+
 /**
  * Return the path to a specified file in the config folder (since program files is not writable).
  * @param	file	The file.
  * @param	exists	If the file must already exist beforehand.
  * @return			The absolute path to the file.
  */
-QString savePath(QString file, bool exists)
+QString savePath(QString file, bool exists, bool writable)
 {
 	QString check = exists ? file : "settings.ini";
 	if (QDir(QDir::currentPath()+"/tests/resources/").exists())
 	{ return QDir::toNativeSeparators(QDir::currentPath()+"/tests/resources/"+file); }
-	if (QFile(QDir::toNativeSeparators(qApp->applicationDirPath()+"/"+check)).exists())
+	if (validSavePath(qApp->applicationDirPath()+"/"+check, writable))
 	{ return QDir::toNativeSeparators(qApp->applicationDirPath()+"/"+file); }
-	if (QFile(QDir::toNativeSeparators(QDir::currentPath()+"/"+check)).exists())
+	if (validSavePath(QDir::currentPath()+"/"+check, writable))
 	{ return QDir::toNativeSeparators(QDir::currentPath()+"/"+file); }
-	if (QFile(QDir::toNativeSeparators(QDir::homePath()+"/Grabber/"+check)).exists())
+	if (validSavePath(QDir::homePath()+"/Grabber/"+check, writable))
 	{ return QDir::toNativeSeparators(QDir::homePath()+"/Grabber/"+file); }
 	#ifdef __linux__
-		if (QFile(QDir::toNativeSeparators(QDir::homePath()+"/.Grabber/"+check)).exists())
+		if (validSavePath(QDir::homePath()+"/.Grabber/"+check, writable))
 		{ return QDir::toNativeSeparators(QDir::homePath()+"/.Grabber/"+file); }
-		if (QFile(QDir::toNativeSeparators(QString(PREFIX)+"/share/Grabber/"+check)).exists())
+		if (validSavePath(QString(PREFIX)+"/share/Grabber/"+check, writable))
 		{ return QDir::toNativeSeparators(QString(PREFIX)+"/share/Grabber/"+file); }
 	#endif
 	return QDir::toNativeSeparators(QStandardPaths::writableLocation(QStandardPaths::ConfigLocation)+"/"+file);
+}
+
+bool copyRecursively(QString srcFilePath, QString tgtFilePath)
+{
+	// Trim directory names of their trailing slashes
+	if (srcFilePath.endsWith(QDir::separator()))
+		srcFilePath.chop(1);
+	if (tgtFilePath.endsWith(QDir::separator()))
+		tgtFilePath.chop(1);
+
+	// Directly copy files using Qt function
+	if (!QFileInfo(srcFilePath).isDir())
+		return QFile::copy(srcFilePath, tgtFilePath);
+
+	// Try to create the target directory
+	QDir targetDir(tgtFilePath);
+	targetDir.cdUp();
+	if (!targetDir.mkdir(QFileInfo(tgtFilePath).fileName()))
+		return false;
+
+	QDir sourceDir(srcFilePath);
+	QStringList fileNames = sourceDir.entryList(QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot | QDir::Hidden | QDir::System);
+	foreach (const QString &fileName, fileNames)
+	{
+		const QString newSrcFilePath = srcFilePath + QDir::separator() + fileName;
+		const QString newTgtFilePath = tgtFilePath + QDir::separator() + fileName;
+		if (!copyRecursively(newSrcFilePath, newTgtFilePath))
+			return false;
+	}
+
+	return true;
 }
 
 /**
