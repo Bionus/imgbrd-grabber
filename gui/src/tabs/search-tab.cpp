@@ -521,36 +521,57 @@ void searchTab::finishedLoadingPreview()
 	addResultsImage(img, merge);
 }
 
+/**
+ * Get the proportion (from 0 to 1) of known tag types in a given image.
+ */
+float getImageKnownTagProportion(QSharedPointer<Image> img)
+{
+	if (img->tags().isEmpty())
+		return 0;
+
+	int known = 0;
+	for (Tag tag : img->tags())
+	{
+		if (tag.type().name() != "unknown")
+			known++;
+	}
+
+	return ((float)known / (float)img->tags().count());
+}
+
 QList<QSharedPointer<Image>> searchTab::mergeResults(int page, QList<QSharedPointer<Image>> results)
 {
-	QSet<QString> pageMd5s;
+	QMap<QString, float> pageMd5s;
 	for (QSharedPointer<Image> img : m_images)
 	{
 		QString md5 = img->md5();
 		if (md5.isEmpty())
 			continue;
 
-		pageMd5s.insert(md5);
+		float proportion = getImageKnownTagProportion(img);
+		pageMd5s[md5] = proportion;
 		addMergedMd5(page, md5);
 	}
 
-	QList<QSharedPointer<Image>> ret;
+	QMap<QString, QSharedPointer<Image>> ret;
 	for (QSharedPointer<Image> img : results)
 	{
 		QString md5 = img->md5();
-		if (md5.isEmpty() || (!pageMd5s.contains(md5) && !containsMergedMd5(page, md5)))
+		float proportion = getImageKnownTagProportion(img);
+
+		if (md5.isEmpty() || ((!pageMd5s.contains(md5) || proportion > pageMd5s[md5]) && !containsMergedMd5(page, md5)))
 		{
-			ret.append(img);
+			ret[md5] = img;
 
 			if (!md5.isEmpty())
 			{
-				pageMd5s.insert(md5);
+				pageMd5s[md5] = proportion;
 				addMergedMd5(page, md5);
 			}
 		}
 	}
 
-	return ret;
+	return ret.values();
 }
 
 void searchTab::addMergedMd5(int page, QString md5)
