@@ -229,7 +229,7 @@ QString savePath(QString file, bool exists, bool writable)
 		if (validSavePath(QString(PREFIX)+"/share/Grabber/"+check, writable))
 		{ return QDir::toNativeSeparators(QString(PREFIX)+"/share/Grabber/"+file); }
 	#endif
-	return QDir::toNativeSeparators(QStandardPaths::writableLocation(QStandardPaths::ConfigLocation)+"/"+file);
+	return QDir::toNativeSeparators(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation)+"/"+file);
 }
 
 bool copyRecursively(QString srcFilePath, QString tgtFilePath)
