@@ -34,6 +34,8 @@ class FilenameTest : public TestSuite
 		void testExpandTagSimple();
 		void testExpandTagWithInvalidCharacter();
 		void testExpandTagInvert();
+		void testExpandTagMultiple();
+		void testExpandTagIgnore();
 		void testExpandTokenSimple();
 		void testExpandTokenInvert();
 		void testExpandTokenComplex();

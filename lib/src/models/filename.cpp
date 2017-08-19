@@ -135,29 +135,37 @@ QString Filename::expandConditionals(QString text, QStringList tokens, QStringLi
 	if (depth > 0)
 	{
 		// Token-based conditions
-		reg = QRegExp("(!)?(%([^:%]+)(?::[^%]+)?%)");
+		reg = QRegExp("(-)?(!)?(%([^:%]+)(?::[^%]+)?%)");
 		pos = 0;
 		while ((pos = reg.indexIn(text, pos)) != -1)
 		{
-			bool invert = !reg.cap(1).isEmpty();
-			QString fullToken = reg.cap(2);
-			QString token = reg.cap(3);
+			bool ignore = !reg.cap(1).isEmpty();
+			bool invert = !reg.cap(2).isEmpty();
+			QString fullToken = reg.cap(3);
+			QString token = reg.cap(4);
 			if ((replaces.contains(token) && !replaces[token].first.isEmpty()) == !invert)
-			{ ret.replace(reg.cap(0), fullToken); }
+			{
+				QString rep = ignore ? "" : fullToken;
+				ret.replace(reg.cap(0), rep);
+			}
 			else
 			{ return ""; }
 			pos += reg.matchedLength();
 		}
 
 		// Tag-based conditions
-		reg = QRegExp("(!)?\"([^\"]+)\"");
+		reg = QRegExp("(-)?(!)?\"([^\"]+)\"");
 		pos = 0;
 		while ((pos = reg.indexIn(text, pos)) != -1)
 		{
-			bool invert = !reg.cap(1).isEmpty();
-			QString tag = reg.cap(2);
+			bool ignore = !reg.cap(1).isEmpty();
+			bool invert = !reg.cap(2).isEmpty();
+			QString tag = reg.cap(3);
 			if (tags.contains(tag, Qt::CaseInsensitive) == !invert)
-			{ ret.replace(reg.cap(0), this->cleanUpValue(tag, QMap<QString, QString>(), settings)); }
+			{
+				QString rep = ignore ? "" : this->cleanUpValue(tag, QMap<QString, QString>(), settings);
+				ret.replace(reg.cap(0), rep);
+			}
 			else
 			{ return ""; }
 			pos += reg.matchedLength();

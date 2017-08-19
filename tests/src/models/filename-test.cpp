@@ -210,6 +210,27 @@ void FilenameTest::testExpandTagInvert()
 	assertExpand("<image does not contain the tag !\"unknown\"><!\"tag2\" is not one of the image tags> %md5%.%ext%",
 				 "image does not contain the tag unknown %md5%.%ext%");
 }
+void FilenameTest::testExpandTagMultiple()
+{
+	assertExpand("<\"tag1\" \"tag2\"/>%md5%.%ext%", "tag1 tag2/%md5%.%ext%");
+	assertExpand("<\"tag1\" \"tag4\"/>%md5%.%ext%", "%md5%.%ext%");
+
+	assertExpand("<\"tag1\" !\"tag4\"/>%md5%.%ext%", "tag1 tag4/%md5%.%ext%");
+	assertExpand("<\"tag1\" !\"tag2\"/>%md5%.%ext%", "%md5%.%ext%");
+}
+void FilenameTest::testExpandTagIgnore()
+{
+	assertExpand("<\"tag1\"folder1/>%md5%.%ext%", "tag1folder1/%md5%.%ext%");
+	assertExpand("<-\"tag1\"folder1/>%md5%.%ext%", "folder1/%md5%.%ext%");
+
+	assertExpand("<\"tag1\"\"tag2\"folder1/>%md5%.%ext%", "tag1tag2folder1/%md5%.%ext%");
+	assertExpand("<-\"tag1\"-\"tag2\"folder1/>%md5%.%ext%", "folder1/%md5%.%ext%");
+
+	assertExpand("<\"tag1\" \"tag2\"/>%md5%.%ext%", "tag1 tag2/%md5%.%ext%");
+	assertExpand("<\"tag1\"-\"tag2\"/>%md5%.%ext%", "tag1/%md5%.%ext%");
+	assertExpand("<-\"tag1\"\"tag2\"/>%md5%.%ext%", "tag2/%md5%.%ext%");
+	assertExpand("<-\"tag1\"-\"tag2\"/>%md5%.%ext%", "/%md5%.%ext%");
+}
 void FilenameTest::testExpandTokenSimple()
 {
 	assertExpand("image - <%artist% some text><text %nothing%> %md5%.%ext%",
