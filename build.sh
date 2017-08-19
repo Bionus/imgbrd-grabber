@@ -7,7 +7,7 @@ then
   sudo pacman -S "qt" "gcc" "cmake" "libpulse"
 else
   sudo apt-get install -qq "qt5-qmake" "qtbase5-dev" "qtdeclarative5-dev" "qtscript5-dev" "qtmultimedia5-dev" "libpulse-dev" "qt5-default" "qttools5-dev-tools"
-  sudo apt-get install -qq "g++" "cmake"
+  sudo apt-get install -qq "g++" "cmake" "libssl-dev"
 fi
 
 # Build the project in the build directory
