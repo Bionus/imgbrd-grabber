@@ -215,8 +215,13 @@ bool validSavePath(QString file, bool writable)
 QString savePath(QString file, bool exists, bool writable)
 {
 	QString check = exists ? file : "settings.ini";
-	if (QDir(QDir::currentPath()+"/tests/resources/").exists())
-	{ return QDir::toNativeSeparators(QDir::currentPath()+"/tests/resources/"+file); }
+
+	if (isTestModeEnabled())
+	{
+		if (QDir(QDir::currentPath()+"/tests/resources/").exists())
+		{ return QDir::toNativeSeparators(QDir::currentPath()+"/tests/resources/"+file); }
+	}
+
 	if (validSavePath(qApp->applicationDirPath()+"/"+check, writable))
 	{ return QDir::toNativeSeparators(qApp->applicationDirPath()+"/"+file); }
 	if (validSavePath(QDir::currentPath()+"/"+check, writable))
@@ -642,4 +647,15 @@ QString getExtensionFromHeader(const QByteArray &data12)
 		return "ico";
 
 	return QString();
+}
+
+
+bool testModeEnabled = false;
+void setTestModeEnabled(bool testMode)
+{
+	testModeEnabled = testMode;
+}
+bool isTestModeEnabled()
+{
+	return testModeEnabled;
 }

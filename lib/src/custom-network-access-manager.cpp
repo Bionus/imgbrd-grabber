@@ -1,9 +1,9 @@
 #include "custom-network-access-manager.h"
 #include <QFile>
 #include <QDebug>
+#include "functions.h"
 #include "vendor/qcustomnetworkreply.h"
 
-bool CustomNetworkAccessManager::TestMode = false;
 QQueue<QString> CustomNetworkAccessManager::NextFiles;
 
 
@@ -15,7 +15,7 @@ CustomNetworkAccessManager::CustomNetworkAccessManager(QObject *parent)
 
 QNetworkReply *CustomNetworkAccessManager::get(const QNetworkRequest &request)
 {
-	if (CustomNetworkAccessManager::TestMode)
+	if (isTestModeEnabled())
 	{
 		QString md5 = QString(QCryptographicHash::hash(request.url().toString().toLatin1(), QCryptographicHash::Md5).toHex());
 		QString filename = request.url().fileName();

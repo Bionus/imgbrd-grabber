@@ -56,6 +56,9 @@ QMap<int, QMap<QString, QVariant>>		getExternalLogFiles(QSettings *settings);
 QStringList removeWildards(QStringList elements, QStringList remove);
 QString getExtensionFromHeader(const QByteArray &data12);
 
+void setTestModeEnabled(bool testMode);
+bool isTestModeEnabled();
+
 
 
 template <typename T>

@@ -1,6 +1,7 @@
 #include <QTest>
 #include "test-suite.h"
 #include "custom-network-access-manager.h"
+#include "functions.h"
 #include <iostream>
 
 
@@ -19,7 +20,7 @@ int main(int argc, char *argv[])
 	QMap<QString,int> results;
 	int failed = 0;
 
-	CustomNetworkAccessManager::TestMode = true;
+	setTestModeEnabled(true);
 
 	for (QObject *suite : TestSuite::getSuites())
 	{
