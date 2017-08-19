@@ -193,6 +193,16 @@ void FilenameTest::testExpandTagSimple()
 	assertExpand("<image contains the tag \"unknown1\"><\"unknown2\" is one of the image tags> %md5%.%ext%",
 				 " %md5%.%ext%");
 }
+void FilenameTest::testExpandTagWithInvalidCharacter()
+{
+	assertExpand("<\"fate/stay_night\"/>%md5%.%ext%", "%md5%.%ext%");
+
+	m_img->deleteLater();
+	m_details["tags_copyright"] = "fate/stay_night";
+	m_img = new Image(m_site, m_details, m_profile);
+
+	assertExpand("<\"fate/stay_night\"/>%md5%.%ext%", "fate_stay_night/%md5%.%ext%");
+}
 void FilenameTest::testExpandTagInvert()
 {
 	assertExpand("<image does not contain the tag !\"tag1\"><!\"unknown\" is not one of the image tags> %md5%.%ext%",
@@ -647,7 +657,7 @@ void FilenameTest::assertExpand(QString format, QString expected)
 
 	Filename fn(format);
 	QMap<QString, QPair<QString, QString>> replaces = fn.getReplaces(format, *m_img, m_profile, QMap<QString, QStringList>()).first();
-	QString actual = fn.expandConditionals(format, tokens, m_img->tagsString(), replaces);
+	QString actual = fn.expandConditionals(format, tokens, m_img->tagsString(), replaces, m_settings);
 	QCOMPARE(actual, expected);
 }
 
