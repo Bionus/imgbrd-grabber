@@ -1067,13 +1067,6 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="0" colspan="2">
-         <widget class="QRadioButton" name="radioArtistsKeepAll">
-          <property name="text">
-           <string>Keep all tags</string>
-          </property>
-         </widget>
-        </item>
         <item row="5" column="0">
          <widget class="QRadioButton" name="radioArtistsKeepNThenAdd">
           <property name="text">
@@ -1122,7 +1115,14 @@
           </item>
          </layout>
         </item>
-        <item row="7" column="0" colspan="2">
+        <item row="3" column="0">
+         <widget class="QRadioButton" name="radioArtistsKeepAll">
+          <property name="text">
+           <string>Keep all tags</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="0">
          <widget class="QRadioButton" name="radioArtistsMultiple">
           <property name="text">
            <string>One file per tag</string>
@@ -1236,14 +1236,14 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="0" colspan="2">
+        <item row="3" column="0">
          <widget class="QRadioButton" name="radioCopyrightsKeepAll">
           <property name="text">
            <string>Keep all tags</string>
           </property>
          </widget>
         </item>
-        <item row="7" column="0" colspan="2">
+        <item row="7" column="0">
          <widget class="QRadioButton" name="radioCopyrightsMultiple">
           <property name="text">
            <string>One file per tag</string>
@@ -1347,17 +1347,17 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="0" colspan="2">
-         <widget class="QRadioButton" name="radioCharactersKeepAll">
-          <property name="text">
-           <string>Keep all tags</string>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="0" colspan="2">
+        <item row="7" column="0">
          <widget class="QRadioButton" name="radioCharactersMultiple">
           <property name="text">
            <string>One file per tag</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QRadioButton" name="radioCharactersKeepAll">
+          <property name="text">
+           <string>Keep all tags</string>
           </property>
          </widget>
         </item>
@@ -1410,13 +1410,6 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="0" colspan="2">
-         <widget class="QRadioButton" name="radioSpeciesKeepAll">
-          <property name="text">
-           <string>Keep all tags</string>
-          </property>
-         </widget>
-        </item>
         <item row="4" column="0">
          <widget class="QRadioButton" name="radioSpeciesKeepN">
           <property name="text">
@@ -1465,7 +1458,14 @@
           </property>
          </widget>
         </item>
-        <item row="7" column="0" colspan="2">
+        <item row="3" column="0">
+         <widget class="QRadioButton" name="radioSpeciesKeepAll">
+          <property name="text">
+           <string>Keep all tags</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="0">
          <widget class="QRadioButton" name="radioSpeciesMultiple">
           <property name="text">
            <string>One file per tag</string>
