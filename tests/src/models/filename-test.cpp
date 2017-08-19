@@ -239,7 +239,7 @@ void FilenameTest::testExpandTokenSimple()
 void FilenameTest::testExpandTokenInvert()
 {
 	assertExpand("image - <!%artist% some text><text !%nothing%> %md5%.%ext%",
-				 "image - text %nothing% %md5%.%ext%");
+				 "image - text  %md5%.%ext%");
 }
 void FilenameTest::testExpandTokenComplex()
 {
@@ -247,6 +247,17 @@ void FilenameTest::testExpandTokenComplex()
 				 "image - %artist% some text  test %md5%.%ext%");
 	assertExpand("image - <%model% some text <%nothing% another text> test><<%character% some text> text %nothing%> %md5%.%ext%",
 				 "image -  %md5%.%ext%");*/
+}
+void FilenameTest::testExpandMultipleMixed()
+{
+	assertExpand("<\"tag1\" %artist%/>%md5%.%ext%", "tag1 %artist%/%md5%.%ext%");
+	assertExpand("<\"tag1\" %nothing%/>%md5%.%ext%", "%md5%.%ext%");
+
+	assertExpand("<\"tag1\"!%nothing%/>%md5%.%ext%", "tag1/%md5%.%ext%");
+	assertExpand("<\"tag1\"!%artist%/>%md5%.%ext%", "%md5%.%ext%");
+
+	assertExpand("<\"tag1\"-%artist%/>%md5%.%ext%", "tag1/%md5%.%ext%");
+	assertExpand("<-\"tag1\"%artist%/>%md5%.%ext%", "%artist%/%md5%.%ext%");
 }
 void FilenameTest::testExpandEscaping()
 {

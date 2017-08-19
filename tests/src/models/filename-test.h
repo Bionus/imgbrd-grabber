@@ -39,6 +39,7 @@ class FilenameTest : public TestSuite
 		void testExpandTokenSimple();
 		void testExpandTokenInvert();
 		void testExpandTokenComplex();
+		void testExpandMultipleMixed();
 		void testExpandEscaping();
 		void testPathOptionMax();
 		void testPathOptionMaxDouble();

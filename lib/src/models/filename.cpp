@@ -145,7 +145,7 @@ QString Filename::expandConditionals(QString text, QStringList tokens, QStringLi
 			QString token = reg.cap(4);
 			if ((replaces.contains(token) && !replaces[token].first.isEmpty()) == !invert)
 			{
-				QString rep = ignore ? "" : fullToken;
+				QString rep = ignore || invert ? "" : fullToken;
 				ret.replace(reg.cap(0), rep);
 			}
 			else
