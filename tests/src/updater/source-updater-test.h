@@ -9,7 +9,7 @@ class SourceUpdaterTest : public TestSuite
 	Q_OBJECT
 
 	private slots:
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN) && 0
 		void testNoUpdate();
 		void testChanged();
 #endif

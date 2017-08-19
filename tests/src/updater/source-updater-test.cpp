@@ -4,7 +4,7 @@
 #include "models/source.h"
 
 
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN) && 0
 void SourceUpdaterTest::testNoUpdate()
 {
 	SourceUpdater updater("Danbooru (2.0)", "tests/resources/sites/Danbooru (2.0)", "http://raw.githubusercontent.com/Bionus/imgbrd-grabber/master/release/sites");
