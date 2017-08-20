@@ -553,7 +553,11 @@ QList<QSharedPointer<Image>> searchTab::mergeResults(int page, QList<QSharedPoin
 		addMergedMd5(page, md5);
 	}
 
-	QMap<QString, QSharedPointer<Image>> ret;
+	QMap<QString, int> imgMd5s;
+	for (int i = 0; i < m_images.count(); ++i)
+		imgMd5s.insert(m_images[i]->md5(), i);
+
+	QList<QSharedPointer<Image>> ret;
 	for (QSharedPointer<Image> img : results)
 	{
 		QString md5 = img->md5();
@@ -561,17 +565,25 @@ QList<QSharedPointer<Image>> searchTab::mergeResults(int page, QList<QSharedPoin
 
 		if (md5.isEmpty() || ((!pageMd5s.contains(md5) || proportion > pageMd5s[md5]) && !containsMergedMd5(page, md5)))
 		{
-			ret[md5] = img;
-
-			if (!md5.isEmpty())
+			if (pageMd5s.contains(md5) && proportion > pageMd5s[md5])
 			{
+				m_images[imgMd5s[md5]] = img;
 				pageMd5s[md5] = proportion;
-				addMergedMd5(page, md5);
+			}
+			else
+			{
+				ret.append(img);
+
+				if (!md5.isEmpty())
+				{
+					pageMd5s[md5] = proportion;
+					addMergedMd5(page, md5);
+				}
 			}
 		}
 	}
 
-	return ret.values();
+	return ret;
 }
 
 void searchTab::addMergedMd5(int page, QString md5)
@@ -732,10 +744,23 @@ void searchTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPoi
 	}
 }
 
-QBouton *searchTab::createImageThumbnail(int position, QSharedPointer<Image> img)
+QString searchTab::makeThumbnailTooltip(QSharedPointer<Image> img) const
 {
 	float size = img->fileSize();
 	QString unit = getUnit(&size);
+
+	return QString("%1%2%3%4%5%6%7%8")
+		.arg(img->tags().isEmpty() ? " " : tr("<b>Tags:</b> %1<br/><br/>").arg(img->stylishedTags(m_profile).join(" ")))
+		.arg(img->id() == 0 ? " " : tr("<b>ID:</b> %1<br/>").arg(img->id()))
+		.arg(img->rating().isEmpty() ? " " : tr("<b>Rating:</b> %1<br/>").arg(img->rating()))
+		.arg(img->hasScore() ? tr("<b>Score:</b> %1<br/>").arg(img->score()) : " ")
+		.arg(img->author().isEmpty() ? " " : tr("<b>User:</b> %1<br/><br/>").arg(img->author()))
+		.arg(img->width() == 0 || img->height() == 0 ? " " : tr("<b>Size:</b> %1 x %2<br/>").arg(QString::number(img->width()), QString::number(img->height())))
+		.arg(img->fileSize() == 0 ? " " : tr("<b>Filesize:</b> %1 %2<br/>").arg(QString::number(size), unit))
+		.arg(!img->createdAt().isValid() ? " " : tr("<b>Date:</b> %1").arg(img->createdAt().toString(tr("'the 'MM/dd/yyyy' at 'hh:mm"))));
+}
+QBouton *searchTab::createImageThumbnail(int position, QSharedPointer<Image> img)
+{
 	QColor color = imageColor(img);
 
 	bool resizeInsteadOfCropping = m_settings->value("resizeInsteadOfCropping", true).toBool();
@@ -747,16 +772,7 @@ QBouton *searchTab::createImageThumbnail(int position, QSharedPointer<Image> img
 	QBouton *l = new QBouton(position, resizeInsteadOfCropping, resultsScrollArea, borderSize, color, this);
 	l->setCheckable(true);
 	l->setChecked(m_selectedImages.contains(img->url()));
-	l->setToolTip(QString("%1%2%3%4%5%6%7%8")
-		.arg(img->tags().isEmpty() ? " " : tr("<b>Tags:</b> %1<br/><br/>").arg(img->stylishedTags(m_profile).join(" ")))
-		.arg(img->id() == 0 ? " " : tr("<b>ID:</b> %1<br/>").arg(img->id()))
-		.arg(img->rating().isEmpty() ? " " : tr("<b>Rating:</b> %1<br/>").arg(img->rating()))
-		.arg(img->hasScore() ? tr("<b>Score:</b> %1<br/>").arg(img->score()) : " ")
-		.arg(img->author().isEmpty() ? " " : tr("<b>User:</b> %1<br/><br/>").arg(img->author()))
-		.arg(img->width() == 0 || img->height() == 0 ? " " : tr("<b>Size:</b> %1 x %2<br/>").arg(QString::number(img->width()), QString::number(img->height())))
-		.arg(img->fileSize() == 0 ? " " : tr("<b>Filesize:</b> %1 %2<br/>").arg(QString::number(size), unit))
-		.arg(!img->createdAt().isValid() ? " " : tr("<b>Date:</b> %1").arg(img->createdAt().toString(tr("'the 'MM/dd/yyyy' at 'hh:mm"))))
-	);
+	l->setToolTip(makeThumbnailTooltip(img));
 	l->scale(img->previewImage(), upscale);
 	l->setFlat(true);
 
