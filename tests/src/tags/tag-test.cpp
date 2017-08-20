@@ -36,48 +36,34 @@ void TagTest::testType()
 {
 	Tag tag("tag_text", "artist", 123, QStringList() << "related1" << "related2" << "related3");
 
-	QCOMPARE(tag.type(), QString("artist"));
+	QCOMPARE(tag.type().name(), QString("artist"));
 }
 void TagTest::testTypeArtistEnding()
 {
 	Tag tag("tag_text (artist)", "unknown", 123, QStringList() << "related1" << "related2" << "related3");
 
-	QCOMPARE(tag.type(), QString("artist"));
+	QCOMPARE(tag.type().name(), QString("artist"));
 	QCOMPARE(tag.text(), QString("tag_text"));
 }
 void TagTest::testTypePrefix()
 {
 	Tag tag("artist:tag_text", "unknown", 123, QStringList() << "related1" << "related2" << "related3");
 
-	QCOMPARE(tag.type(), QString("artist"));
+	QCOMPARE(tag.type().name(), QString("artist"));
 	QCOMPARE(tag.text(), QString("tag_text"));
 }
 void TagTest::testTypePrefixSpecies()
 {
 	Tag tag("species:tag_text", "unknown", 123, QStringList() << "related1" << "related2" << "related3");
 
-	QCOMPARE(tag.type(), QString("species"));
+	QCOMPARE(tag.type().name(), QString("species"));
 	QCOMPARE(tag.text(), QString("tag_text"));
-}
-void TagTest::testSetType()
-{
-	Tag tag("tag_text", "character", 123, QStringList() << "related1" << "related2" << "related3");
-	tag.setType("artist");
-
-	QCOMPARE(tag.type(), QString("artist"));
 }
 void TagTest::testShortType()
 {
 	Tag tag("tag_text", "artist", 123, QStringList() << "related1" << "related2" << "related3");
 
-	QCOMPARE(tag.shortType(), 1);
-}
-void TagTest::testSetTypeShortType()
-{
-	Tag tag("tag_text", "character", 123, QStringList() << "related1" << "related2" << "related3");
-	tag.setType("artist");
-
-	QCOMPARE(tag.shortType(), 1);
+	QCOMPARE(tag.type().number(), 1);
 }
 
 void TagTest::testCount()
@@ -204,7 +190,7 @@ void TagTest::testCompare()
 	QCOMPARE(tag1 == tag5, true);
 }
 
-void TagTest::testSortByFrequency()
+void TagTest::testSortTagsByType()
 {
 	QList<Tag> taglist;
 	taglist.append(Tag("last", "artist", 1, QStringList() << "tag1"));
@@ -213,7 +199,41 @@ void TagTest::testSortByFrequency()
 	taglist.append(Tag("second", "character", 4, QStringList() << "tag4"));
 	taglist.append(Tag("first", "unknown", 5, QStringList() << "tag5"));
 
-	qSort(taglist.begin(), taglist.end(), sortByFrequency);
+	qSort(taglist.begin(), taglist.end(), sortTagsByType);
+
+	QCOMPARE(taglist[0].text(), QString("third"));
+	QCOMPARE(taglist[1].text(), QString("second"));
+	QCOMPARE(taglist[2].text(), QString("last"));
+	QCOMPARE(taglist[3].text(), QString("first"));
+	QCOMPARE(taglist[4].text(), QString("fourth"));
+}
+void TagTest::testSortTagsByName()
+{
+	QList<Tag> taglist;
+	taglist.append(Tag("last", "artist", 1, QStringList() << "tag1"));
+	taglist.append(Tag("fourth", "general", 2, QStringList() << "tag2"));
+	taglist.append(Tag("third", "copyright", 3, QStringList() << "tag3"));
+	taglist.append(Tag("second", "character", 4, QStringList() << "tag4"));
+	taglist.append(Tag("first", "unknown", 5, QStringList() << "tag5"));
+
+	qSort(taglist.begin(), taglist.end(), sortTagsByName);
+
+	QCOMPARE(taglist[0].text(), QString("first"));
+	QCOMPARE(taglist[1].text(), QString("fourth"));
+	QCOMPARE(taglist[2].text(), QString("last"));
+	QCOMPARE(taglist[3].text(), QString("second"));
+	QCOMPARE(taglist[4].text(), QString("third"));
+}
+void TagTest::testSortTagsByCount()
+{
+	QList<Tag> taglist;
+	taglist.append(Tag("last", "artist", 1, QStringList() << "tag1"));
+	taglist.append(Tag("fourth", "general", 2, QStringList() << "tag2"));
+	taglist.append(Tag("third", "copyright", 3, QStringList() << "tag3"));
+	taglist.append(Tag("second", "character", 4, QStringList() << "tag4"));
+	taglist.append(Tag("first", "unknown", 5, QStringList() << "tag5"));
+
+	qSort(taglist.begin(), taglist.end(), sortTagsByCount);
 
 	QCOMPARE(taglist[0].text(), QString("first"));
 	QCOMPARE(taglist[1].text(), QString("second"));
@@ -226,7 +246,7 @@ void TagTest::testTypeSpaced()
 {
 	Tag tag("artist1", "artist with spaces", 1, QStringList() << "tag1");
 
-	QCOMPARE(tag.type(), QString("artist"));
+	QCOMPARE(tag.type().name(), QString("artist"));
 }
 
 void TagTest::testGetType()

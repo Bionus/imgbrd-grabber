@@ -13,6 +13,7 @@
 #include "profile.h"
 #include "api.h"
 #include "custom-network-access-manager.h"
+#include "tags/tag-database-factory.h"
 #include "vendor/json.h"
 #include "logger.h"
 
@@ -33,9 +34,11 @@ Site::Site(QString url, Source *source)
 
 void Site::loadConfig()
 {
+	QString siteDir = m_source->getPath() + "/" + m_url + "/";
+
 	if (m_settings != nullptr)
 		m_settings->deleteLater();
-	m_settings = new QSettings(m_source->getPath() + "/" + m_url + "/settings.ini", QSettings::IniFormat);
+	m_settings = new QSettings(siteDir + "settings.ini", QSettings::IniFormat);
 	m_name = m_settings->value("name", m_url).toString();
 
 	// Get default source order
@@ -94,11 +97,15 @@ void Site::loadConfig()
 	}
 	if (m_cookieJar != nullptr)
 		resetCookieJar();
+
+	// Tag database
+	m_tagDatabase = TagDatabaseFactory::Create(siteDir);
 }
 
 Site::~Site()
 {
 	m_settings->deleteLater();
+	delete m_tagDatabase;
 }
 
 
@@ -164,8 +171,8 @@ void Site::login(bool force)
 
 	m_loggedIn = LoginStatus::Pending;
 
-	bool byParameter = m_settings->value("login/parameter", true).toBool();
-	if (byParameter)
+	QString type = m_settings->value("login/type", "url").toString();
+	if (type == "url")
 	{
 		int maxPageAnonymous = m_settings->value("login/maxPage", 0).toInt();
 		if (maxPageAnonymous <= 0)
@@ -183,7 +190,7 @@ void Site::login(bool force)
 	}
 
 	// Cannot post login information without an URL
-	QString loginUrl = m_settings->value("login/url", "").toString();
+	QString loginUrl = m_settings->value("login/"+type+"/url", "").toString();
 	if (loginUrl.isEmpty())
 	{
 		emit loggedIn(this, LoginResult::Impossible);
@@ -191,8 +198,8 @@ void Site::login(bool force)
 	}
 
 	QUrlQuery query;
-	query.addQueryItem(m_settings->value("login/pseudo", "").toString(), m_username);
-	query.addQueryItem(m_settings->value("login/password", "").toString(), m_password);
+	query.addQueryItem(m_settings->value("login/"+type+"/pseudo", "").toString(), m_username);
+	query.addQueryItem(m_settings->value("login/"+type+"/password", "").toString(), m_password);
 
 	m_settings->beginGroup("login/fields");
 		QStringList keys = m_settings->childKeys();
@@ -200,38 +207,39 @@ void Site::login(bool force)
 			query.addQueryItem(key, setting(key).toString());
 	m_settings->endGroup();
 
-	QString method = m_settings->value("login/method", "post").toString();
-	if (method == "post")
+	if (type == "post")
 	{
 		QUrl postData;
 		postData.setQuery(query);
 
-		QNetworkRequest request(fixUrl(m_settings->value("login/url", "").toString()));
+		QNetworkRequest request(fixUrl(loginUrl));
 		request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
 
 		m_loginReply = m_manager->post(request, query.query(QUrl::FullyEncoded).toUtf8());
-		connect(m_loginReply, SIGNAL(finished()), this, SLOT(loginFinished()));
+		connect(m_loginReply, &QNetworkReply::finished, this, &Site::loginFinished);
 	}
 	else
 	{
-		QUrl url = fixUrl(m_settings->value("login/url", "").toString());
+		QUrl url = fixUrl(loginUrl);
 		url.setQuery(query);
 
 		QNetworkRequest request(url);
 		request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, CACHE_POLICY);
 
 		m_loginReply = getRequest(request);
-		connect(m_loginReply, SIGNAL(finished()), this, SLOT(loginFinished()));
+		connect(m_loginReply, &QNetworkReply::finished, this, &Site::loginFinished);
 	}
 }
 
 bool Site::canTestLogin() const
 {
-	if (m_settings->value("login/parameter", true).toBool())
+	QString type = m_settings->value("login/type", "url").toString();
+
+	if (type == "url")
 		return m_settings->value("login/maxPage", 0).toInt() > 0;
 
 	// Cannot post login information without an URL
-	return !m_settings->value("login/url", "").toString().isEmpty();
+	return !m_settings->value("login/"+type+"/url", "").toString().isEmpty();
 }
 
 /**
@@ -239,15 +247,15 @@ bool Site::canTestLogin() const
  */
 void Site::loginFinished()
 {
-	bool byParameter = m_settings->value("login/parameter", true).toBool();
+	QString type = m_settings->value("login/type", "url").toString();
 	bool ok = false;
-	if (byParameter)
+	if (type == "url")
 	{
 		ok = !m_loginPage->images().isEmpty();
 	}
 	else
 	{
-		QString cookiename = m_settings->value("login/cookie", "").toString();
+		QString cookiename = m_settings->value("login/"+type+"/cookie", "").toString();
 
 		QList<QNetworkCookie> cookies = m_cookieJar->cookiesForUrl(m_loginReply->url());
 		for (QNetworkCookie cookie : cookies)
@@ -291,9 +299,15 @@ QNetworkRequest Site::makeRequest(QUrl url, Page *page, QString ref, Image *img)
 	}
 
 	QMap<QString,QVariant> headers = m_settings->value("headers").toMap();
-	request.setRawHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:52.0) Gecko/20100101 Firefox/52.0");
 	for (QString key : headers.keys())
 	{ request.setRawHeader(key.toLatin1(), headers[key].toString().toLatin1()); }
+
+	// User-Agent header tokens and default value
+	QString userAgent = request.rawHeader("User-Agent");
+	if (userAgent.isEmpty())
+		userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:52.0) Gecko/20100101 Firefox/52.0 Grabber/%version%";
+	userAgent.replace("%version%", QString(VERSION));
+	request.setRawHeader("User-Agent", userAgent.toLatin1());
 
 	initManager();
 	request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, CACHE_POLICY);
@@ -402,6 +416,7 @@ void Site::finishedTags()
 
 QVariant Site::setting(QString key, QVariant def)	{ return m_settings->value(key, def); }
 QSettings	*Site::settings()						{ return m_settings; }
+TagDatabase *Site::tagDatabase() const				{ return m_tagDatabase;	}
 
 QString Site::name()			{ return m_name;			}
 QString Site::url()				{ return m_url;				}

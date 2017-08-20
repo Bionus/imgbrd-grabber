@@ -193,12 +193,43 @@ void FilenameTest::testExpandTagSimple()
 	assertExpand("<image contains the tag \"unknown1\"><\"unknown2\" is one of the image tags> %md5%.%ext%",
 				 " %md5%.%ext%");
 }
+void FilenameTest::testExpandTagWithInvalidCharacter()
+{
+	assertExpand("<\"fate/stay_night\"/>%md5%.%ext%", "%md5%.%ext%");
+
+	m_img->deleteLater();
+	m_details["tags_copyright"] = "fate/stay_night";
+	m_img = new Image(m_site, m_details, m_profile);
+
+	assertExpand("<\"fate/stay_night\"/>%md5%.%ext%", "fate_stay_night/%md5%.%ext%");
+}
 void FilenameTest::testExpandTagInvert()
 {
 	assertExpand("<image does not contain the tag !\"tag1\"><!\"unknown\" is not one of the image tags> %md5%.%ext%",
 				 "unknown is not one of the image tags %md5%.%ext%");
 	assertExpand("<image does not contain the tag !\"unknown\"><!\"tag2\" is not one of the image tags> %md5%.%ext%",
 				 "image does not contain the tag unknown %md5%.%ext%");
+}
+void FilenameTest::testExpandTagMultiple()
+{
+	assertExpand("<\"tag1\" \"tag2\"/>%md5%.%ext%", "tag1 tag2/%md5%.%ext%");
+	assertExpand("<\"tag1\" \"tag4\"/>%md5%.%ext%", "%md5%.%ext%");
+
+	assertExpand("<\"tag1\" !\"tag4\"/>%md5%.%ext%", "tag1 tag4/%md5%.%ext%");
+	assertExpand("<\"tag1\" !\"tag2\"/>%md5%.%ext%", "%md5%.%ext%");
+}
+void FilenameTest::testExpandTagIgnore()
+{
+	assertExpand("<\"tag1\"folder1/>%md5%.%ext%", "tag1folder1/%md5%.%ext%");
+	assertExpand("<-\"tag1\"folder1/>%md5%.%ext%", "folder1/%md5%.%ext%");
+
+	assertExpand("<\"tag1\"\"tag2\"folder1/>%md5%.%ext%", "tag1tag2folder1/%md5%.%ext%");
+	assertExpand("<-\"tag1\"-\"tag2\"folder1/>%md5%.%ext%", "folder1/%md5%.%ext%");
+
+	assertExpand("<\"tag1\" \"tag2\"/>%md5%.%ext%", "tag1 tag2/%md5%.%ext%");
+	assertExpand("<\"tag1\"-\"tag2\"/>%md5%.%ext%", "tag1/%md5%.%ext%");
+	assertExpand("<-\"tag1\"\"tag2\"/>%md5%.%ext%", "tag2/%md5%.%ext%");
+	assertExpand("<-\"tag1\"-\"tag2\"/>%md5%.%ext%", "/%md5%.%ext%");
 }
 void FilenameTest::testExpandTokenSimple()
 {
@@ -208,7 +239,7 @@ void FilenameTest::testExpandTokenSimple()
 void FilenameTest::testExpandTokenInvert()
 {
 	assertExpand("image - <!%artist% some text><text !%nothing%> %md5%.%ext%",
-				 "image - text %nothing% %md5%.%ext%");
+				 "image - text  %md5%.%ext%");
 }
 void FilenameTest::testExpandTokenComplex()
 {
@@ -216,6 +247,17 @@ void FilenameTest::testExpandTokenComplex()
 				 "image - %artist% some text  test %md5%.%ext%");
 	assertExpand("image - <%model% some text <%nothing% another text> test><<%character% some text> text %nothing%> %md5%.%ext%",
 				 "image -  %md5%.%ext%");*/
+}
+void FilenameTest::testExpandMultipleMixed()
+{
+	assertExpand("<\"tag1\" %artist%/>%md5%.%ext%", "tag1 %artist%/%md5%.%ext%");
+	assertExpand("<\"tag1\" %nothing%/>%md5%.%ext%", "%md5%.%ext%");
+
+	assertExpand("<\"tag1\"!%nothing%/>%md5%.%ext%", "tag1/%md5%.%ext%");
+	assertExpand("<\"tag1\"!%artist%/>%md5%.%ext%", "%md5%.%ext%");
+
+	assertExpand("<\"tag1\"-%artist%/>%md5%.%ext%", "tag1/%md5%.%ext%");
+	assertExpand("<-\"tag1\"%artist%/>%md5%.%ext%", "%artist%/%md5%.%ext%");
 }
 void FilenameTest::testExpandEscaping()
 {
@@ -612,7 +654,7 @@ void FilenameTest::testEscapeMethod()
 	m_img = new Image(m_site, m_details, m_profile);
 
 	Filename fn("INSERT INTO test (%id:escape%, %md5:escape%, %ext:escape%);");
-	fn.setEscapeMethod([](QString val) { return QString("'%1'").arg(val.replace("'", "''")); });
+	fn.setEscapeMethod([](QVariant val) { return QString("'%1'").arg(val.toString().replace("'", "''")); });
 
 	QCOMPARE(fn.path(*m_img, m_profile).first(), QString("INSERT INTO test ('7331', 'good''ol'' md5', 'jpg');"));
 }
@@ -647,7 +689,7 @@ void FilenameTest::assertExpand(QString format, QString expected)
 
 	Filename fn(format);
 	QMap<QString, QPair<QString, QString>> replaces = fn.getReplaces(format, *m_img, m_profile, QMap<QString, QStringList>()).first();
-	QString actual = fn.expandConditionals(format, tokens, m_img->tagsString(), replaces);
+	QString actual = fn.expandConditionals(format, tokens, m_img->tagsString(), replaces, m_settings);
 	QCOMPARE(actual, expected);
 }
 

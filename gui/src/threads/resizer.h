@@ -11,7 +11,7 @@ class Resizer : public QObject
 	Q_OBJECT
 
 	public:
-		Resizer(QObject *parent = Q_NULLPTR);
+		explicit Resizer(QObject *parent = Q_NULLPTR);
 
 	public slots:
 		void setSize(const QSize &size);

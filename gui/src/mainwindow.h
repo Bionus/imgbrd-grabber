@@ -61,6 +61,7 @@ class mainWindow : public QMainWindow
 		void emptyDirsFix();
 		void md5FixOpen();
 		void renameExisting();
+		void utilTagLoader();
 		// Language
 		void loadLanguage(const QString&, bool shutup = false);
 		void changeEvent(QEvent*);
@@ -82,6 +83,8 @@ class mainWindow : public QMainWindow
 		// Batch download management
 		void batchClear();
 		void batchClearSel();
+		void batchClearSelGroups();
+		void batchClearSelUniques();
 		void batchMove(int);
 		void batchMoveUp();
 		void batchMoveDown();

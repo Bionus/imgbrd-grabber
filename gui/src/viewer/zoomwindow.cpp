@@ -315,7 +315,7 @@ void zoomWindow::openSaveDir(bool fav)
 			{
 				QDir dir(path);
 				if (!dir.mkpath(pth))
-				{ error(this, tr("Error creating folder.\r\n%1").arg(url)); }
+				{ error(this, tr("Error creating folder.\n%1").arg(url)); }
 				showInGraphicalShell(url);
 			}
 		}
@@ -458,16 +458,11 @@ void zoomWindow::replyFinishedDetails()
 	// If the file already exists, we directly display it
 	if (!md5Exists.isEmpty() || !file1notexists || !file2notexists)
 	{
-		if (!file1notexists)
-		{
-			ui->buttonSave->setText(tr("Delete"));
-			ui->buttonSaveNQuit->setText(tr("Close"));
-		}
-		if (!file2notexists)
-		{
-			ui->buttonSaveFav->setText(tr("Delete (fav)"));
-			ui->buttonSaveNQuitFav->setText(tr("Close (fav)"));
-		}
+		// Update save button state
+		SaveButtonState md5State = !md5Exists.isEmpty() ? SaveButtonState::ExistsMd5 : SaveButtonState::Save;
+		setButtonState(false, !file1notexists ? SaveButtonState::ExistsDisk : md5State);
+		setButtonState(true, !file2notexists ? SaveButtonState::ExistsDisk : md5State);
+
 		m_source = !md5Exists.isEmpty() ? md5Exists : (!file1notexists ? source1 : source2);
 		m_imagePath = m_source;
 		log(QString("Image loaded from the file <a href=\"file:///%1\">%1</a>").arg(m_source));
@@ -493,7 +488,7 @@ void zoomWindow::replyFinishedDetails()
 }
 void zoomWindow::colore()
 {
-	QStringList t = Tag::Stylished(m_image->tags(), m_profile, m_settings->value("Zoom/showTagCount", false).toBool());
+	QStringList t = Tag::Stylished(m_image->tags(), m_profile, m_settings->value("Zoom/showTagCount", false).toBool(), false, m_settings->value("Zoom/tagOrder", "type").toString());
 	QString tags = t.join(' ');
 
 	if (ui->widgetLeft->isHidden())
@@ -505,6 +500,68 @@ void zoomWindow::colore()
 	}
 
 	m_detailsWindow->setTags(tags);
+}
+void zoomWindow::setButtonState(bool fav, SaveButtonState state)
+{
+	// Update state
+	if (fav)
+		m_saveButonStateFav = state;
+	else
+		m_saveButonState = state;
+
+	// Update actual button label
+	QPushButton *button = fav ? ui->buttonSaveFav : ui->buttonSave;
+	switch (state)
+	{
+		case SaveButtonState::Save:
+			button->setText(fav ? tr("Save (fav)") : tr("Save"));
+			break;
+
+		case SaveButtonState::Saving:
+			button->setText(fav ? tr("Saving... (fav)") : tr("Saving..."));
+			break;
+
+		case SaveButtonState::Saved:
+			button->setText(fav ? tr("Saved! (fav)") : tr("Saved!"));
+			break;
+
+		case SaveButtonState::Copied:
+			button->setText(fav ? tr("Copied! (fav)") : tr("Copied!"));
+			break;
+
+		case SaveButtonState::Moved:
+			button->setText(fav ? tr("Moved! (fav)") : tr("Moved!"));
+			break;
+
+		case SaveButtonState::ExistsMd5:
+			button->setText(fav ? tr("MD5 already exists (fav)") : tr("MD5 already exists"));
+			break;
+
+		case SaveButtonState::ExistsDisk:
+			button->setText(fav ? tr("Already exists (fav)") : tr("Already exists"));
+			break;
+
+		case SaveButtonState::Delete:
+			button->setText(fav ? tr("Delete (fav)") : tr("Delete"));
+			break;
+	}
+
+	// Update "Save a close" button label
+	QPushButton *saveQuit = fav ? ui->buttonSaveNQuitFav : ui->buttonSaveNQuit;
+	switch (state)
+	{
+		case SaveButtonState::Save:
+			saveQuit->setText(fav ? tr("Save and close (fav)") : tr("Save and close"));
+			break;
+
+		case SaveButtonState::Saving:
+			saveQuit->setText(fav ? tr("Saving... (fav)") : tr("Saving..."));
+			break;
+
+		default:
+			saveQuit->setText(fav ? tr("Close (fav)") : tr("Close"));
+			break;
+	}
 }
 
 void zoomWindow::replyFinishedZoom(QNetworkReply::NetworkError err, QString errorString)
@@ -527,14 +584,14 @@ void zoomWindow::replyFinishedZoom(QNetworkReply::NetworkError err, QString erro
 	{
 		m_tooBig = true;
 		if (!m_image->isVideo())
-		{ error(this, tr("File is too big to be displayed.\r\n%1").arg(m_image->url())); }
+		{ error(this, tr("File is too big to be displayed.\n%1").arg(m_image->url())); }
 	}
 	else if (err == QNetworkReply::ContentNotFoundError)
 	{ showLoadingError("Image not found."); }
 	else if (err == QNetworkReply::UnknownContentError)
 	{ showLoadingError("Error loading the image."); }
 	else if (err != QNetworkReply::OperationCanceledError)
-	{ error(this, tr("An unexpected error occured loading the image (%1 - %2).\r\n%3").arg(err).arg(errorString).arg(m_image->url())); }
+	{ error(this, tr("An unexpected error occured loading the image (%1 - %2).\n%3").arg(err).arg(errorString).arg(m_image->url())); }
 }
 
 void zoomWindow::showLoadingError(QString message)
@@ -705,7 +762,7 @@ void zoomWindow::saveNQuit()
 		return;
 	}
 
-	ui->buttonSaveNQuit->setText(tr("Saving..."));
+	setButtonState(false, SaveButtonState::Saving);
 	m_mustSave = 2;
 	pendingUpdate();
 }
@@ -718,24 +775,39 @@ void zoomWindow::saveNQuitFav()
 		return;
 	}
 
-	ui->buttonSaveNQuitFav->setText(tr("Saving..."));
+	setButtonState(true, SaveButtonState::Saving);
 	m_mustSave = 4;
 	pendingUpdate();
 }
 
 void zoomWindow::saveImage(bool fav)
 {
-	if (fav)
+	SaveButtonState state = fav ? m_saveButonStateFav : m_saveButonState;
+	switch (state)
 	{
-		ui->buttonSaveFav->setText(tr("Saving... (fav)"));
-		m_mustSave = 3;
+		case SaveButtonState::Save:
+			setButtonState(fav, SaveButtonState::Saving);
+			m_mustSave = fav ? 3 : 1;
+			pendingUpdate();
+			break;
+
+		case SaveButtonState::Saving:
+			return;
+
+		case SaveButtonState::Delete:
+		{
+			QFile f(m_imagePath);
+			if (m_image->data().isEmpty() && f.open(QFile::ReadOnly))
+			{ m_image->setData(f.readAll()); }
+			f.remove();
+			m_imagePath = "";
+			setButtonState(fav, SaveButtonState::Save);
+			break;
+		}
+
+		default:
+			setButtonState(fav, SaveButtonState::Delete);
 	}
-	else
-	{
-		ui->buttonSave->setText(tr("Saving..."));
-		m_mustSave = 1;
-	}
-	pendingUpdate();
 }
 void zoomWindow::saveImageFav()
 { saveImage(true); }
@@ -772,45 +844,34 @@ QStringList zoomWindow::saveImageNow(bool fav)
 		paths.append(it.key());
 		m_imagePath = it.key();
 
-		QPushButton *button = fav ? ui->buttonSaveFav : ui->buttonSave;
-		QPushButton *saveQuit = fav ? ui->buttonSaveNQuitFav : ui->buttonSaveNQuit;
 		switch (res)
 		{
-			case Image::SaveResult::NotLoaded:
-			case Image::SaveResult::Error:
-				error(this, tr("Error saving image."));
-				return QStringList();
-				break;
-
 			case Image::SaveResult::Saved:
-				button->setText(fav ? tr("Delete (fav)") : tr("Delete"));
+				setButtonState(fav, SaveButtonState::Saved);
 				break;
 
 			case Image::SaveResult::Copied:
-				button->setText(fav ? tr("Copied! (fav)") : tr("Copied!"));
+				setButtonState(fav, SaveButtonState::Copied);
 				break;
 
 			case Image::SaveResult::Moved:
-				button->setText(fav ? tr("Moved! (fav)") : tr("Moved!"));
+				setButtonState(fav, SaveButtonState::Moved);
 				break;
 
 			case Image::SaveResult::Ignored:
-				button->setText(fav ? tr("Ignored! (fav)") : tr("Ignored!"));
+				setButtonState(fav, SaveButtonState::ExistsMd5);
 				m_imagePath = m_profile->md5Exists(m_image->md5());
 				break;
 
 			case Image::SaveResult::AlreadyExists:
-				QFile f(it.key());
-				if (m_image->data().isEmpty() && f.open(QFile::ReadOnly))
-				{ m_image->setData(f.readAll()); }
-				f.remove();
-				m_imagePath = "";
-				button->setText(fav ? tr("Save (fav)") : tr("Save"));
+				setButtonState(fav, SaveButtonState::ExistsDisk);
+				break;
+
+			default:
+				error(this, tr("Error saving image."));
+				return QStringList();
 				break;
 		}
-		saveQuit->setText(res == Image::SaveResult::AlreadyExists
-						  ? (fav ? tr("Save and close (fav)") : tr("Save and close"))
-						  : (fav ? tr("Close (fav)") : tr("Close")));
 
 		++it;
 	}
@@ -1047,10 +1108,8 @@ void zoomWindow::load(QSharedPointer<Image> image)
 	}
 
 	// Reset buttons
-	ui->buttonSave->setText(tr("Save"));
-	ui->buttonSaveFav->setText(tr("Save (fav)"));
-	ui->buttonSaveNQuit->setText(tr("Save and close"));
-	ui->buttonSaveNQuitFav->setText(tr("Save and close (fav)"));
+	setButtonState(false, SaveButtonState::Save);
+	setButtonState(true, SaveButtonState::Save);
 
 	// Window title
 	updateWindowTitle();

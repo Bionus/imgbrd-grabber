@@ -4,6 +4,7 @@
 #include <QString>
 #include <QStringList>
 #include <QSettings>
+#include <QVariant>
 
 
 class Site;
@@ -14,10 +15,10 @@ class Filename
 {
 	public:
 		Filename();
-		Filename(QString format);
+		explicit Filename(QString format);
 		QString getFormat() const;
 		void setFormat(QString format);
-		void setEscapeMethod(QString (*)(QString));
+		void setEscapeMethod(QString (*)(QVariant));
 
 		/**
 		 * Return the filename of the image according to the user's settings.
@@ -41,10 +42,11 @@ class Filename
 		bool needExactTags(bool forceImageUrl = false, bool needDate = false) const;
 
 		QList<QMap<QString, QPair<QString, QString>>> getReplaces(QString filename, const Image &img, Profile *profile, QMap<QString,QStringList> custom) const;
-		QString expandConditionals(QString text, QStringList tokens, QStringList tags, QMap<QString, QPair<QString, QString>> replaces, int depth = 0) const;
+		QString expandConditionals(QString text, QStringList tokens, QStringList tags, QMap<QString, QPair<QString, QString>> replaces, QSettings *settings, int depth = 0) const;
 		QMap<QString, QStringList> makeDetails(const Image& img, Profile *profile, QSettings *settings) const;
 
 	protected:
+		QString cleanUpValue(QString res, QMap<QString, QString> options, QSettings *settings) const;
 		QString optionedValue(QString res, QString key, QString ops, const Image &img, QSettings *settings, QStringList namespaces) const;
 		QList<QPair<QString,QString>> getReplace(QString setting, QMap<QString,QStringList> details, QSettings *settings) const;
 		bool returnError(QString msg, QString *error) const;
@@ -52,7 +54,7 @@ class Filename
 
 	private:
 		QString m_format;
-		QString (*m_escapeMethod)(QString) = nullptr;
+		QString (*m_escapeMethod)(QVariant) = nullptr;
 };
 
 #endif // FILENAME_H

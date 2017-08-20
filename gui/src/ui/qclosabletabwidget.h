@@ -7,7 +7,7 @@
 class QClosableTabWidget : public QTabWidget
 {
 	public:
-		QClosableTabWidget(QWidget *parent);
+		explicit QClosableTabWidget(QWidget *parent);
 		bool eventFilter(QObject *o, QEvent *e);
 };
 

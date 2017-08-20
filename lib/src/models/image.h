@@ -6,7 +6,7 @@
 #include <QDateTime>
 #include <QPixmap>
 #include <QSettings>
-#include "tag.h"
+#include "tags/tag.h"
 #include "pool.h"
 #include "downloader/extension-rotator.h"
 
@@ -98,8 +98,6 @@ class Image : public QObject
 		QUrl		getDisplayableUrl() const;
 		bool		isVideo() const;
 		void		setTags(QList<Tag> tags);
-		QMap<QString, SaveResult> loadAndSave(QStringList paths, bool needTags, bool force = false);
-		QMap<QString, SaveResult> loadAndSave(QString filename, QString path);
 
 	public slots:
 		void loadPreview();

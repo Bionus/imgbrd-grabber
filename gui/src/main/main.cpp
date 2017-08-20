@@ -25,6 +25,7 @@
 
 
 #include <QApplication>
+#include <QDir>
 #include "downloader/downloader.h"
 #include "models/profile.h"
 #include "models/site.h"
@@ -38,7 +39,6 @@
 #endif
 #if !USE_CLI && USE_BREAKPAD
 	#include <QFileInfo>
-	#include <QDir>
 	#include "crashhandler/crashhandler.h"
 #endif
 
@@ -69,6 +69,19 @@ int main(int argc, char *argv[])
 	#else
 		app.setApplicationDisplayName("Grabber");
 	#endif
+
+	// Copy settings files to writable directory
+	if (!QDir(savePath("sites/", true, true)).exists())
+	{
+		QStringList toCopy = QStringList() << "sites/" << "themes/" << "webservices/";
+		for (QString tgt : toCopy)
+		{
+			QString from = savePath(tgt, true, false);
+			QString to = savePath(tgt, true, true);
+			if (!QDir(to).exists() && QDir(from).exists())
+				copyRecursively(from, to);
+		}
+	}
 
 	QCommandLineParser parser;
 	parser.addHelpOption();
@@ -121,9 +134,10 @@ int main(int argc, char *argv[])
 
 	parser.process(app);
 
-	bool gui = false;
 	#if !USE_CLI
-		gui = !parser.isSet(cliOption);
+		bool gui = !parser.isSet(cliOption);
+	#else
+		bool gui = false;
 	#endif
 
 	if (!gui && !parser.isSet(verboseOption))

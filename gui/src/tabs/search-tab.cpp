@@ -51,6 +51,7 @@ searchTab::searchTab(QMap<QString, Site*> *sites, Profile *profile, mainWindow *
 void searchTab::init()
 {
 	m_endlessLoadingEnabled = true;
+	m_endlessLoadOffset = 0;
 	auto infinite = m_settings->value("infiniteScroll", "disabled");
 
 	// Always hide scroll button before results are loaded
@@ -144,7 +145,7 @@ void searchTab::setTagsFromPages(const QMap<QString, QList<Page*>> &pages)
 	}
 
 	// We sort tags by frequency
-	qSort(taglist.begin(), taglist.end(), sortByFrequency);
+	qSort(taglist.begin(), taglist.end(), sortTagsByCount);
 
 	m_tags = taglist;
 	m_parent->setTags(m_tags, this);
@@ -247,6 +248,7 @@ void searchTab::clear()
 	// Reset loading variables
 	m_stop = true;
 	m_pagemax = -1;
+	m_endlessLoadOffset = 0;
 
 	// Clear page details
 	m_tags.clear();
@@ -521,31 +523,64 @@ void searchTab::finishedLoadingPreview()
 	addResultsImage(img, merge);
 }
 
+/**
+ * Get the proportion (from 0 to 1) of known tag types in a given image.
+ */
+float getImageKnownTagProportion(QSharedPointer<Image> img)
+{
+	if (img->tags().isEmpty())
+		return 0;
+
+	int known = 0;
+	for (Tag tag : img->tags())
+	{
+		if (tag.type().name() != "unknown")
+			known++;
+	}
+
+	return ((float)known / (float)img->tags().count());
+}
+
 QList<QSharedPointer<Image>> searchTab::mergeResults(int page, QList<QSharedPointer<Image>> results)
 {
-	QSet<QString> pageMd5s;
+	QMap<QString, float> pageMd5s;
 	for (QSharedPointer<Image> img : m_images)
 	{
 		QString md5 = img->md5();
 		if (md5.isEmpty())
 			continue;
 
-		pageMd5s.insert(md5);
+		float proportion = getImageKnownTagProportion(img);
+		pageMd5s[md5] = proportion;
 		addMergedMd5(page, md5);
 	}
+
+	QMap<QString, int> imgMd5s;
+	for (int i = 0; i < m_images.count(); ++i)
+		imgMd5s.insert(m_images[i]->md5(), i);
 
 	QList<QSharedPointer<Image>> ret;
 	for (QSharedPointer<Image> img : results)
 	{
 		QString md5 = img->md5();
-		if (md5.isEmpty() || (!pageMd5s.contains(md5) && !containsMergedMd5(page, md5)))
-		{
-			ret.append(img);
+		float proportion = getImageKnownTagProportion(img);
 
-			if (!md5.isEmpty())
+		if (md5.isEmpty() || ((!pageMd5s.contains(md5) || proportion > pageMd5s[md5]) && !containsMergedMd5(page, md5)))
+		{
+			if (pageMd5s.contains(md5) && proportion > pageMd5s[md5])
 			{
-				pageMd5s.insert(md5);
-				addMergedMd5(page, md5);
+				m_images[imgMd5s[md5]] = img;
+				pageMd5s[md5] = proportion;
+			}
+			else
+			{
+				ret.append(img);
+
+				if (!md5.isEmpty())
+				{
+					pageMd5s[md5] = proportion;
+					addMergedMd5(page, md5);
+				}
 			}
 		}
 	}
@@ -615,8 +650,8 @@ void searchTab::setMergedLabelText(QLabel *txt, const QList<QSharedPointer<Image
 {
 	int maxPage = 0;
 	int sumImages = 0;
-	int firstPage = ui_spinPage->value();
-	int lastPage = ui_spinPage->value();
+	int firstPage = ui_spinPage->value() + m_endlessLoadOffset;
+	int lastPage = ui_spinPage->value() + m_endlessLoadOffset;
 
 	for (QList<Page*> ps : m_pages)
 	{
@@ -711,21 +746,12 @@ void searchTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPoi
 	}
 }
 
-QBouton *searchTab::createImageThumbnail(int position, QSharedPointer<Image> img)
+QString searchTab::makeThumbnailTooltip(QSharedPointer<Image> img) const
 {
 	float size = img->fileSize();
 	QString unit = getUnit(&size);
-	QColor color = imageColor(img);
 
-	bool resizeInsteadOfCropping = m_settings->value("resizeInsteadOfCropping", true).toBool();
-	bool resultsScrollArea = m_settings->value("resultsScrollArea", true).toBool();
-	bool fixedWidthLayout = m_settings->value("resultsFixedWidthLayout", false).toBool();
-	int borderSize = m_settings->value("borders", 3).toInt();
-
-	QBouton *l = new QBouton(position, resizeInsteadOfCropping, resultsScrollArea, borderSize, color, this);
-	l->setCheckable(true);
-	l->setChecked(m_selectedImages.contains(img->url()));
-	l->setToolTip(QString("%1%2%3%4%5%6%7%8")
+	return QString("%1%2%3%4%5%6%7%8")
 		.arg(img->tags().isEmpty() ? " " : tr("<b>Tags:</b> %1<br/><br/>").arg(img->stylishedTags(m_profile).join(" ")))
 		.arg(img->id() == 0 ? " " : tr("<b>ID:</b> %1<br/>").arg(img->id()))
 		.arg(img->rating().isEmpty() ? " " : tr("<b>Rating:</b> %1<br/>").arg(img->rating()))
@@ -733,16 +759,30 @@ QBouton *searchTab::createImageThumbnail(int position, QSharedPointer<Image> img
 		.arg(img->author().isEmpty() ? " " : tr("<b>User:</b> %1<br/><br/>").arg(img->author()))
 		.arg(img->width() == 0 || img->height() == 0 ? " " : tr("<b>Size:</b> %1 x %2<br/>").arg(QString::number(img->width()), QString::number(img->height())))
 		.arg(img->fileSize() == 0 ? " " : tr("<b>Filesize:</b> %1 %2<br/>").arg(QString::number(size), unit))
-		.arg(!img->createdAt().isValid() ? " " : tr("<b>Date:</b> %1").arg(img->createdAt().toString(tr("'the 'MM/dd/yyyy' at 'hh:mm"))))
-	);
-	l->scale(img->previewImage(), m_settings->value("thumbnailUpscale", 1.0f).toFloat());
+		.arg(!img->createdAt().isValid() ? " " : tr("<b>Date:</b> %1").arg(img->createdAt().toString(tr("'the 'MM/dd/yyyy' at 'hh:mm"))));
+}
+QBouton *searchTab::createImageThumbnail(int position, QSharedPointer<Image> img)
+{
+	QColor color = imageColor(img);
+
+	bool resizeInsteadOfCropping = m_settings->value("resizeInsteadOfCropping", true).toBool();
+	bool resultsScrollArea = m_settings->value("resultsScrollArea", true).toBool();
+	bool fixedWidthLayout = m_settings->value("resultsFixedWidthLayout", false).toBool();
+	int borderSize = m_settings->value("borders", 3).toInt();
+	float upscale = m_settings->value("thumbnailUpscale", 1.0f).toFloat();
+
+	QBouton *l = new QBouton(position, resizeInsteadOfCropping, resultsScrollArea, borderSize, color, this);
+	l->setCheckable(true);
+	l->setChecked(m_selectedImages.contains(img->url()));
+	l->setToolTip(makeThumbnailTooltip(img));
+	l->scale(img->previewImage(), upscale);
 	l->setFlat(true);
 
 	l->setContextMenuPolicy(Qt::CustomContextMenu);
-	connect(l, &QWidget::customContextMenuRequested, this, [this, img]{ thumbnailContextMenu(img); });
+	connect(l, &QWidget::customContextMenuRequested, this, [this, position, img]{ thumbnailContextMenu(position, img); });
 
 	if (fixedWidthLayout)
-		l->setFixedSize(FIXED_IMAGE_WIDTH + borderSize * 2, FIXED_IMAGE_WIDTH + borderSize * 2);
+		l->setFixedSize(FIXED_IMAGE_WIDTH * upscale + borderSize * 2, FIXED_IMAGE_WIDTH * upscale + borderSize * 2);
 
 	connect(l, SIGNAL(appui(int)), this, SLOT(webZoom(int)));
 	connect(l, SIGNAL(toggled(int, bool, bool)), this, SLOT(toggleImage(int, bool, bool)));
@@ -769,14 +809,14 @@ QString getImageAlreadyExists(Image *img, Profile *profile)
 	return profile->md5Exists(img->md5());
 }
 
-void searchTab::thumbnailContextMenu(QSharedPointer<Image> img)
+void searchTab::thumbnailContextMenu(int position, QSharedPointer<Image> img)
 {
 	QMenu *menu = new ImageContextMenu(m_settings, img, m_parent, this);
 	QAction *first = menu->actions().first();
 
 	// Save image
 	QSignalMapper *mapperSave = new QSignalMapper(this);
-	connect(mapperSave, SIGNAL(mapped(QObject*)), this, SLOT(contextSaveImage(QObject*)));
+	connect(mapperSave, SIGNAL(mapped(int)), this, SLOT(contextSaveImage(int)));
 	QAction *actionSave;
 	if (!getImageAlreadyExists(img.data(), m_profile).isEmpty())
 	{ actionSave = new QAction(QIcon(":/images/status/error.png"), tr("Delete"), menu); }
@@ -784,15 +824,15 @@ void searchTab::thumbnailContextMenu(QSharedPointer<Image> img)
 	{ actionSave = new QAction(QIcon(":/images/icons/save.png"), tr("Save"), menu); }
 	menu->insertAction(first, actionSave);
 	connect(actionSave, SIGNAL(triggered()), mapperSave, SLOT(map()));
-	mapperSave->setMapping(actionSave, img.data());
+	mapperSave->setMapping(actionSave, position);
 
 	// Save image as...
 	QSignalMapper *mapperSaveAs = new QSignalMapper(this);
-	connect(mapperSaveAs, SIGNAL(mapped(QObject*)), this, SLOT(contextSaveImageAs(QObject*)));
+	connect(mapperSaveAs, SIGNAL(mapped(int)), this, SLOT(contextSaveImageAs(int)));
 	QAction *actionSaveAs = new QAction(QIcon(":/images/icons/save-as.png"), tr("Save as..."), menu);
 	menu->insertAction(first, actionSaveAs);
 	connect(actionSaveAs, SIGNAL(triggered()), mapperSaveAs, SLOT(map()));
-	mapperSaveAs->setMapping(actionSaveAs, img.data());
+	mapperSaveAs->setMapping(actionSaveAs, position);
 
 	if (!m_selectedImagesPtrs.empty())
 	{
@@ -805,9 +845,10 @@ void searchTab::thumbnailContextMenu(QSharedPointer<Image> img)
 
 	menu->exec(QCursor::pos());
 }
-void searchTab::contextSaveImage(QObject *image)
+void searchTab::contextSaveImage(int position)
 {
-	Image *img = (Image*)image;
+	QSharedPointer<Image> image = m_images.at(position);
+	Image *img = image.data();
 
 	QString already = getImageAlreadyExists(img, m_profile);
 	if (!already.isEmpty())
@@ -819,12 +860,16 @@ void searchTab::contextSaveImage(QObject *image)
 
 		if (m_boutons.contains(img))
 		{ connect(img, SIGNAL(downloadProgressImage(qint64, qint64)), m_boutons[img], SLOT(setProgress(qint64, qint64))); }
-		img->loadAndSave(fn, path);
+
+		auto downloader = new ImageDownloader(image, fn, path, 1, true, true, this, true);
+		connect(downloader, &ImageDownloader::saved, downloader, &ImageDownloader::deleteLater);
+		downloader->save();
 	}
 }
-void searchTab::contextSaveImageAs(QObject *image)
+void searchTab::contextSaveImageAs(int position)
 {
-	Image *img = (Image*)image;
+	QSharedPointer<Image> image = m_images.at(position);
+	Image *img = image.data();
 
 	Filename format(m_settings->value("Save/filename").toString());
 	QStringList filenames = format.path(*img, m_profile);
@@ -836,7 +881,10 @@ void searchTab::contextSaveImageAs(QObject *image)
 	{
 		path = QDir::toNativeSeparators(path);
 		m_settings->setValue("Zoom/lastDir", path.section(QDir::toNativeSeparators("/"), 0, -2));
-		img->loadAndSave(QStringList() << path, false, true);
+
+		auto downloader = new ImageDownloader(image, QStringList() << path, 1, true, true, this);
+		connect(downloader, &ImageDownloader::saved, downloader, &ImageDownloader::deleteLater);
+		downloader->save();
 	}
 }
 void searchTab::contextSaveSelected()
@@ -848,7 +896,10 @@ void searchTab::contextSaveSelected()
 	{
 		if (m_boutons.contains(img.data()))
 		{ connect(img.data(), SIGNAL(downloadProgressImage(qint64, qint64)), m_boutons[img.data()], SLOT(setProgress(qint64, qint64))); }
-		img->loadAndSave(fn, path);
+
+		auto downloader = new ImageDownloader(img, fn, path, 1, true, true, this, true);
+		connect(downloader, &ImageDownloader::saved, downloader, &ImageDownloader::deleteLater);
+		downloader->save();
 	}
 }
 
@@ -1187,7 +1238,13 @@ void searchTab::endlessLoad()
 	if (!m_endlessLoadingEnabled)
 		return;
 
-	ui_spinPage->setValue(ui_spinPage->value() + 1);
+	bool rememberPage = m_settings->value("infiniteScrollRememberPage", false).toBool();
+
+	if (rememberPage)
+		ui_spinPage->setValue(ui_spinPage->value() + 1);
+	else
+		m_endlessLoadOffset++;
+
 	loadPage();
 }
 
@@ -1195,13 +1252,14 @@ void searchTab::loadPage()
 {
 	bool merged = ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked();
 	int perpage = ui_spinImagesPerPage->value();
+	int currentPage = ui_spinPage->value() + m_endlessLoadOffset;
 	QStringList tags = m_lastTags.split(' ');
 	setEndlessLoadingMode(false);
 
 	for (Site *site : loadSites())
 	{
 		// Load results
-		Page *page = new Page(m_profile, site, m_sites->values(), tags, ui_spinPage->value(), perpage, m_postFiltering->toPlainText().split(" ", QString::SkipEmptyParts), false, this, 0, m_lastPage, m_lastPageMinId, m_lastPageMaxId);
+		Page *page = new Page(m_profile, site, m_sites->values(), tags, currentPage, perpage, m_postFiltering->toPlainText().split(" ", QString::SkipEmptyParts), false, this, 0, m_lastPage, m_lastPageMinId, m_lastPageMaxId);
 		connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(finishedLoading(Page*)));
 		connect(page, SIGNAL(failedLoading(Page*)), this, SLOT(failedLoading(Page*)));
 
@@ -1263,7 +1321,8 @@ FixedSizeGridLayout *searchTab::createImagesLayout(QSettings *settings)
 	if (fixedWidthLayout)
 	{
 		int borderSize = settings->value("borders", 3).toInt();
-		l->setFixedWidth(FIXED_IMAGE_WIDTH + borderSize * 2);
+		float upscale = m_settings->value("thumbnailUpscale", 1.0f).toFloat();
+		l->setFixedWidth(FIXED_IMAGE_WIDTH * upscale + borderSize * 2);
 	}
 
 	return l;

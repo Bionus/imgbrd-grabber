@@ -770,7 +770,7 @@
         <item row="10" column="0">
          <widget class="QLabel" name="label_19">
           <property name="text">
-           <string>If a file already exists</string>
+           <string>If a file already exists globally</string>
           </property>
          </widget>
         </item>
@@ -1067,13 +1067,6 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="0" colspan="2">
-         <widget class="QRadioButton" name="radioArtistsKeepAll">
-          <property name="text">
-           <string>Keep all tags</string>
-          </property>
-         </widget>
-        </item>
         <item row="5" column="0">
          <widget class="QRadioButton" name="radioArtistsKeepNThenAdd">
           <property name="text">
@@ -1122,7 +1115,14 @@
           </item>
          </layout>
         </item>
-        <item row="7" column="0" colspan="2">
+        <item row="3" column="0">
+         <widget class="QRadioButton" name="radioArtistsKeepAll">
+          <property name="text">
+           <string>Keep all tags</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="0">
          <widget class="QRadioButton" name="radioArtistsMultiple">
           <property name="text">
            <string>One file per tag</string>
@@ -1236,14 +1236,14 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="0" colspan="2">
+        <item row="3" column="0">
          <widget class="QRadioButton" name="radioCopyrightsKeepAll">
           <property name="text">
            <string>Keep all tags</string>
           </property>
          </widget>
         </item>
-        <item row="7" column="0" colspan="2">
+        <item row="7" column="0">
          <widget class="QRadioButton" name="radioCopyrightsMultiple">
           <property name="text">
            <string>One file per tag</string>
@@ -1347,17 +1347,17 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="0" colspan="2">
-         <widget class="QRadioButton" name="radioCharactersKeepAll">
-          <property name="text">
-           <string>Keep all tags</string>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="0" colspan="2">
+        <item row="7" column="0">
          <widget class="QRadioButton" name="radioCharactersMultiple">
           <property name="text">
            <string>One file per tag</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QRadioButton" name="radioCharactersKeepAll">
+          <property name="text">
+           <string>Keep all tags</string>
           </property>
          </widget>
         </item>
@@ -1410,13 +1410,6 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="0" colspan="2">
-         <widget class="QRadioButton" name="radioSpeciesKeepAll">
-          <property name="text">
-           <string>Keep all tags</string>
-          </property>
-         </widget>
-        </item>
         <item row="4" column="0">
          <widget class="QRadioButton" name="radioSpeciesKeepN">
           <property name="text">
@@ -1465,7 +1458,14 @@
           </property>
          </widget>
         </item>
-        <item row="7" column="0" colspan="2">
+        <item row="3" column="0">
+         <widget class="QRadioButton" name="radioSpeciesKeepAll">
+          <property name="text">
+           <string>Keep all tags</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="0">
          <widget class="QRadioButton" name="radioSpeciesMultiple">
           <property name="text">
            <string>One file per tag</string>
@@ -1513,7 +1513,7 @@
            <string>%</string>
           </property>
           <property name="minimum">
-           <number>100</number>
+           <number>10</number>
           </property>
           <property name="maximum">
            <number>1000</number>
@@ -1691,7 +1691,7 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="0" colspan="2">
+        <item row="4" column="0" colspan="2">
          <widget class="QCheckBox" name="checkResizeInsteadOfCropping">
           <property name="text">
            <string>Resize previews instead of cropping them</string>
@@ -1701,7 +1701,7 @@
           </property>
          </widget>
         </item>
-        <item row="4" column="0" colspan="2">
+        <item row="5" column="0" colspan="2">
          <widget class="QCheckBox" name="checkAutocompletion">
           <property name="text">
            <string>Enable autocompletion</string>
@@ -1711,7 +1711,7 @@
           </property>
          </widget>
         </item>
-        <item row="5" column="0" colspan="2">
+        <item row="6" column="0" colspan="2">
          <widget class="QCheckBox" name="checkShowTagWarning">
           <property name="text">
            <string>Show warning if an incompatible modifier is found</string>
@@ -1721,7 +1721,7 @@
           </property>
          </widget>
         </item>
-        <item row="6" column="0" colspan="2">
+        <item row="7" column="0" colspan="2">
          <widget class="QCheckBox" name="checkShowWarnings">
           <property name="text">
            <string>Show other warnings</string>
@@ -1731,14 +1731,14 @@
           </property>
          </widget>
         </item>
-        <item row="7" column="0" colspan="2">
+        <item row="8" column="0" colspan="2">
          <widget class="QCheckBox" name="checkGetUnloadedPages">
           <property name="text">
            <string>Download not loaded pages</string>
           </property>
          </widget>
         </item>
-        <item row="8" column="0" colspan="2">
+        <item row="9" column="0" colspan="2">
          <widget class="QLabel" name="label_66">
           <property name="text">
            <string>&lt;i&gt;If you activate this option, pressing the &quot;Get this page&quot; button will take into account modifications made to the number of images per page, the page number, etc. even if they weren't loaded.&lt;/i&gt;</string>
@@ -1782,6 +1782,13 @@
             <string>Scroll</string>
            </property>
           </item>
+         </widget>
+        </item>
+        <item row="3" column="0" colspan="2">
+         <widget class="QCheckBox" name="checkInfiniteScrollRememberPage">
+          <property name="text">
+           <string>Remember page number when infinite scrolling</string>
+          </property>
          </widget>
         </item>
        </layout>
@@ -1861,14 +1868,14 @@
           </property>
          </widget>
         </item>
-        <item row="6" column="0">
+        <item row="7" column="0">
          <widget class="QLabel" name="labelImagePositionImage">
           <property name="text">
            <string>Image position</string>
           </property>
          </widget>
         </item>
-        <item row="6" column="1">
+        <item row="7" column="1">
          <layout class="QHBoxLayout" name="layoutImagePositionImage">
           <item>
            <widget class="QComboBox" name="comboImagePositionImageV">
@@ -1916,14 +1923,14 @@
           </item>
          </layout>
         </item>
-        <item row="7" column="0">
+        <item row="8" column="0">
          <widget class="QLabel" name="labelImagePositionAnimation">
           <property name="text">
            <string>Animation position</string>
           </property>
          </widget>
         </item>
-        <item row="7" column="1">
+        <item row="8" column="1">
          <layout class="QHBoxLayout" name="layoutImagePositionAnimation">
           <item>
            <widget class="QComboBox" name="comboImagePositionAnimationV">
@@ -1971,14 +1978,14 @@
           </item>
          </layout>
         </item>
-        <item row="8" column="0">
+        <item row="9" column="0">
          <widget class="QLabel" name="labelImagePositionVideo">
           <property name="text">
            <string>Video position</string>
           </property>
          </widget>
         </item>
-        <item row="8" column="1">
+        <item row="9" column="1">
          <layout class="QHBoxLayout" name="layoutImagePositionVideo">
           <item>
            <widget class="QComboBox" name="comboImagePositionVideoV">
@@ -2026,14 +2033,14 @@
           </item>
          </layout>
         </item>
-        <item row="9" column="0">
+        <item row="10" column="0">
          <widget class="QLabel" name="label_88">
           <property name="text">
            <string>Background color</string>
           </property>
          </widget>
         </item>
-        <item row="9" column="1">
+        <item row="10" column="1">
          <layout class="QHBoxLayout" name="layoutImageBackgroundColor">
           <item>
            <widget class="QLineEdit" name="lineImageBackgroundColor"/>
@@ -2052,6 +2059,32 @@
           <property name="text">
            <string>Show tag count</string>
           </property>
+         </widget>
+        </item>
+        <item row="6" column="0">
+         <widget class="QLabel" name="labelImageTagOrder">
+          <property name="text">
+           <string>Tag order</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="1">
+         <widget class="QComboBox" name="comboImageTagOrder">
+          <item>
+           <property name="text">
+            <string>Type</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Name</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Count</string>
+           </property>
+          </item>
          </widget>
         </item>
        </layout>

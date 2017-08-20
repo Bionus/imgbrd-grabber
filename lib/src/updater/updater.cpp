@@ -1,6 +1,15 @@
 #include "updater.h"
 
 
+Updater::Updater()
+	: m_networkAccessManager(new CustomNetworkAccessManager(this))
+{}
+
+Updater::~Updater()
+{
+	m_networkAccessManager->deleteLater();
+}
+
 int Updater::compareVersions(QString a, QString b)
 {
 	int aSub = 0;

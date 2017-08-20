@@ -2,7 +2,7 @@
 #define UPDATER_H
 
 #include <QObject>
-#include <QNetworkAccessManager>
+#include "custom-network-access-manager.h"
 
 
 class Updater : public QObject
@@ -10,13 +10,15 @@ class Updater : public QObject
 	Q_OBJECT
 
 	public:
+		Updater();
+		~Updater();
 		int compareVersions(QString a, QString b);
 
 	public slots:
 		virtual void checkForUpdates() = 0;
 
 	protected:
-		QNetworkAccessManager m_networkAccessManager;
+		CustomNetworkAccessManager *m_networkAccessManager;
 };
 
 #endif // UPDATER_H

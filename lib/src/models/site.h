@@ -9,7 +9,8 @@
 #include <QNetworkReply>
 #include <QUrl>
 #include <functional>
-#include "models/tag.h"
+#include "tags/tag.h"
+#include "tags/tag-database-in-memory.h"
 
 
 class Page;
@@ -58,6 +59,7 @@ class Site : public QObject
 		QList<QNetworkCookie> cookies() const;
 		QVariant setting(QString key, QVariant def = QVariant());
 		QSettings *settings();
+		TagDatabase *tagDatabase() const;
 		QNetworkRequest makeRequest(QUrl url, Page *page = nullptr, QString referer = "", Image *img = nullptr);
 		QNetworkReply *get(QUrl url, Page *page = nullptr, QString referer = "", Image *img = nullptr);
 		void getAsync(QueryType type, QUrl url, std::function<void(QNetworkReply *)> callback, Page *page = nullptr, QString referer = "", Image *img = nullptr);
@@ -116,6 +118,7 @@ class Site : public QObject
 		QNetworkCookieJar *m_cookieJar;
 		QNetworkReply *m_updateReply, *m_tagsReply;
 		QList<Api*> m_apis;
+		TagDatabase *m_tagDatabase;
 
 		// Login
 		QNetworkReply *m_loginReply;

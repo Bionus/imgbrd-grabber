@@ -238,7 +238,7 @@ QString favoritesTab::tags() const
 
 void favoritesTab::loadFavorite(QString name)
 {
-	int index = name.isEmpty() ? m_currentFav : m_favorites.indexOf(name);
+	int index = name.isEmpty() ? m_currentFav : m_favorites.indexOf(Favorite(name));
 	if (index < 0)
 		return;
 
@@ -287,7 +287,7 @@ void favoritesTab::setFavoriteViewed(QString tag)
 {
 	log(QString("Marking \"%1\" as viewed...").arg(tag));
 
-	int index = tag.isEmpty() ? m_currentFav : m_favorites.indexOf(tag);
+	int index = tag.isEmpty() ? m_currentFav : m_favorites.indexOf(Favorite(tag));
 	if (index < 0)
 		return;
 
@@ -310,7 +310,7 @@ void favoritesTab::favoritesBack()
 }
 void favoritesTab::favoriteProperties(QString name)
 {
-	int index = name.isEmpty() ? m_currentFav : m_favorites.indexOf(name);
+	int index = name.isEmpty() ? m_currentFav : m_favorites.indexOf(Favorite(name));
 	if (index < 0)
 		return;
 

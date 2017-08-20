@@ -150,15 +150,12 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 		if (!details.contains(key))
 			continue;
 
-		QStringList t = details[key].split(" ");
-		for (int i = 0; i < t.count(); ++i)
+		TagType ttype(typ);
+		QStringList t = details[key].split(' ', QString::SkipEmptyParts);
+		for (QString tg : t)
 		{
-			QString tg = t.at(i);
-			if (tg.isEmpty())
-				continue;
-
 			tg.replace("&amp;", "&");
-			m_tags.append(Tag(tg, typ));
+			m_tags.append(Tag(tg, ttype));
 		}
 	}
 	if (m_tags.isEmpty() && details.contains("tags"))
@@ -166,16 +163,12 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 		// Automatically find tag separator and split the list
 		QStringList t;
 		if (details["tags"].count(", ") != 0 && details["tags"].count(" ") / details["tags"].count(", ") < 2)
-		{ t = details["tags"].split(", "); }
+		{ t = details["tags"].split(", ", QString::SkipEmptyParts); }
 		else
-		{ t = details["tags"].split(" "); }
+		{ t = details["tags"].split(" ", QString::SkipEmptyParts); }
 
-		for (int i = 0; i < t.count(); ++i)
+		for (QString tg : t)
 		{
-			QString tg = t.at(i);
-			if (tg.isEmpty())
-				continue;
-
 			tg.replace("&amp;", "&");
 
 			int colon = tg.indexOf(':');
@@ -201,6 +194,17 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 			{ m_tags.append(Tag(tg)); }
 		}
 	}
+
+	// Complete missing tag type information
+	m_parentSite->tagDatabase()->load();
+	QStringList unknownTags;
+	for (Tag const &tag : m_tags)
+		if (tag.type().name() == "unknown")
+			unknownTags.append(tag.text());
+	QMap<QString, TagType> dbTypes = m_parentSite->tagDatabase()->getTagTypes(unknownTags);
+	for (Tag &tag : m_tags)
+		if (dbTypes.contains(tag.text()))
+			tag.setType(dbTypes[tag.text()]);
 
 	// Get file url and try to improve it to save bandwidth
 	m_url = m_fileUrl.toString();
@@ -274,27 +278,6 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	m_loadingImage = false;
 	m_tryingSample = false;
 	m_pools = QList<Pool>();
-}
-
-QMap<QString, Image::SaveResult> Image::loadAndSave(QStringList paths, bool needTags, bool force)
-{
-	// Load details first if necessary
-	if (needTags)
-	{
-		QEventLoop loopDetails;
-		connect(this, &Image::finishedLoadingTags, &loopDetails, &QEventLoop::quit);
-		loadDetails();
-		loopDetails.exec();
-	}
-
-	// We finally save
-	return save(paths, true, false, 1, force, true);
-}
-QMap<QString, Image::SaveResult> Image::loadAndSave(QString filename, QString path)
-{
-	QStringList paths = this->path(filename, path, 1, true, false, true, true, true);
-	bool needTags = Filename(filename).needExactTags(parentSite());
-	return loadAndSave(paths, needTags);
 }
 
 
@@ -1026,6 +1009,10 @@ void Image::postSaving(QString path, bool addMd5, bool startCommands, int count,
 					fileTagsPath = logFile["uniquePath"].toString();
 				else if (locationType == 2)
 					fileTagsPath = path + logFile["suffix"].toString();
+
+				// Replace some post-save tokens
+				contents.replace("%path:nobackslash%", QDir::toNativeSeparators(path).replace("\\", "/"))
+						.replace("%path%", QDir::toNativeSeparators(path));
 
 				// Append to file if necessary
 				QFile fileTags(fileTagsPath);

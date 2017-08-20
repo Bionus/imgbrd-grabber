@@ -37,7 +37,7 @@ build_script:
   - cmake .. -G "%MAKEFILES%" -DCMAKE_BUILD_TYPE=Release
   - if not %platform%==mingw (nmake) else (mingw32-make)
   - cd ..
-  - copy build\gui\gui.exe release\Grabber.exe
+  - copy build\gui\Grabber.exe release\Grabber.exe
 
 test_script:
   - build\tests\tests.exe

@@ -6,7 +6,7 @@
 
 void SankakuTest::testHtml()
 {
-	QList<Image*> images = getImages("Sankaku", "idol.sankakucomplex.com", "regex", "rating:safe");
+	QList<Image*> images = getImages("Sankaku", "idol.sankakucomplex.com", "regex", "rating:safe", "results.html");
 
 	// Check results
 	QCOMPARE(images.count(), 20);
@@ -17,7 +17,7 @@ void SankakuTest::testHtml()
 
 void SankakuTest::testJson()
 {
-	QList<Image*> images = getImages("Sankaku", "idol.sankakucomplex.com", "json", "rating:safe");
+	QList<Image*> images = getImages("Sankaku", "idol.sankakucomplex.com", "json", "rating:safe", "results.json");
 
 	// Check results
 	QCOMPARE(images.count(), 20);
@@ -31,7 +31,7 @@ void SankakuTest::testJson()
 
 void SankakuTest::testAnimatedUrls()
 {
-	QList<Image*> images = getImages("Sankaku", "idol.sankakucomplex.com", "regex", "animated rating:safe");
+	QList<Image*> images = getImages("Sankaku", "idol.sankakucomplex.com", "regex", "animated rating:safe", "results-animated.html");
 
 	// Check results
 	QCOMPARE(images.count(), 20);

@@ -3,7 +3,7 @@
 #include <QDir>
 #include "models/filename.h"
 #include "models/profile.h"
-#include "models/tag.h"
+#include "tags/tag.h"
 #include "sql-worker.h"
 #include "functions.h"
 
@@ -92,14 +92,6 @@ bool Commands::image(const Image &img, QString path)
 
 bool Commands::tag(const Image &img, Tag tag, bool after)
 {
-	QMap<QString, int> types;
-	types["general"] = 0;
-	types["artist"] = 1;
-	types["general"] = 2;
-	types["copyright"] = 3;
-	types["character"] = 4;
-	types["model"] = 5;
-	types["photo_set"] = 6;
 	QString original = QString(tag.text()).replace(" ", "_");
 
 	QString command = after ? m_commandTagAfter : m_commandTagBefore;
@@ -113,8 +105,8 @@ bool Commands::tag(const Image &img, Tag tag, bool after)
 		{
 			exec.replace("%tag%", original)
 				.replace("%original%", tag.text())
-				.replace("%type%", tag.type())
-				.replace("%number%", QString::number(types[tag.type()]));
+				.replace("%type%", tag.type().name())
+				.replace("%number%", QString::number(tag.type().number()));
 
 			log(QString("Execution of \"%1\"").arg(exec));
 			Logger::getInstance().logCommand(exec);
@@ -137,8 +129,8 @@ bool Commands::tag(const Image &img, Tag tag, bool after)
 		{
 			exec.replace("%tag%", m_sqlWorker->escape(original))
 				.replace("%original%", m_sqlWorker->escape(tag.text()))
-				.replace("%type%", m_sqlWorker->escape(tag.type()))
-				.replace("%number%", QString::number(types[tag.type()]));
+				.replace("%type%", m_sqlWorker->escape(tag.type().name()))
+				.replace("%number%", QString::number(tag.type().number()));
 
 			if (!sqlExec(exec))
 				return false;

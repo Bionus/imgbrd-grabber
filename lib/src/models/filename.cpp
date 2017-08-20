@@ -1,4 +1,5 @@
 #include "filename.h"
+#include <algorithm>
 #include <QtScript>
 #include <QCollator>
 #include <QIcon>
@@ -114,7 +115,7 @@ QList<QMap<QString, QPair<QString, QString>>> Filename::getReplaces(QString file
 	return ret;
 }
 
-QString Filename::expandConditionals(QString text, QStringList tokens, QStringList tags, QMap<QString, QPair<QString, QString>> replaces, int depth) const
+QString Filename::expandConditionals(QString text, QStringList tokens, QStringList tags, QMap<QString, QPair<QString, QString>> replaces, QSettings *settings, int depth) const
 {
 	QString ret = text;
 
@@ -126,7 +127,7 @@ QString Filename::expandConditionals(QString text, QStringList tokens, QStringLi
 		if (!cap.isEmpty() && !cap.startsWith('<'))
 		{
 			cap += QString(">").repeated(cap.count('<') - cap.count('>'));
-			ret.replace("<" + cap + ">", this->expandConditionals(cap, tokens, tags, replaces, depth + 1));
+			ret.replace("<" + cap + ">", this->expandConditionals(cap, tokens, tags, replaces, settings, depth + 1));
 		}
 		pos += reg.matchedLength() + cap.count('<') - cap.count('>');
 	}
@@ -134,29 +135,37 @@ QString Filename::expandConditionals(QString text, QStringList tokens, QStringLi
 	if (depth > 0)
 	{
 		// Token-based conditions
-		reg = QRegExp("(!)?(%([^:%]+)(?::[^%]+)?%)");
+		reg = QRegExp("(-)?(!)?(%([^:%]+)(?::[^%]+)?%)");
 		pos = 0;
 		while ((pos = reg.indexIn(text, pos)) != -1)
 		{
-			bool invert = !reg.cap(1).isEmpty();
-			QString fullToken = reg.cap(2);
-			QString token = reg.cap(3);
+			bool ignore = !reg.cap(1).isEmpty();
+			bool invert = !reg.cap(2).isEmpty();
+			QString fullToken = reg.cap(3);
+			QString token = reg.cap(4);
 			if ((replaces.contains(token) && !replaces[token].first.isEmpty()) == !invert)
-			{ ret.replace(reg.cap(0), fullToken); }
+			{
+				QString rep = ignore || invert ? "" : fullToken;
+				ret.replace(reg.cap(0), rep);
+			}
 			else
 			{ return ""; }
 			pos += reg.matchedLength();
 		}
 
 		// Tag-based conditions
-		reg = QRegExp("(!)?\"([^\"]+)\"");
+		reg = QRegExp("(-)?(!)?\"([^\"]+)\"");
 		pos = 0;
 		while ((pos = reg.indexIn(text, pos)) != -1)
 		{
-			bool invert = !reg.cap(1).isEmpty();
-			QString tag = reg.cap(2);
+			bool ignore = !reg.cap(1).isEmpty();
+			bool invert = !reg.cap(2).isEmpty();
+			QString tag = reg.cap(3);
 			if (tags.contains(tag, Qt::CaseInsensitive) == !invert)
-			{ ret.replace(reg.cap(0), tag); }
+			{
+				QString rep = ignore ? "" : this->cleanUpValue(tag, QMap<QString, QString>(), settings);
+				ret.replace(reg.cap(0), rep);
+			}
 			else
 			{ return ""; }
 			pos += reg.matchedLength();
@@ -233,9 +242,9 @@ QMap<QString, QStringList> Filename::makeDetails(const Image& img, Profile *prof
 	{
 		QString t = tag.text();
 
-		details[ignore.contains(t, Qt::CaseInsensitive) ? "generals" : tag.type()+"s"].append(t);
+		details[ignore.contains(t, Qt::CaseInsensitive) ? "generals" : tag.type().name()+"s"].append(t);
 		details["alls"].append(t);
-		details["alls_namespaces"].append(tag.type());
+		details["alls_namespaces"].append(tag.type().name());
 
 		QString underscored = QString(t);
 		underscored.replace(' ', '_');
@@ -413,7 +422,7 @@ QStringList Filename::path(const Image& img, Profile *profile, QString pth, int 
 			if (complex)
 			{
 				QStringList tokens = QStringList() << "tags" << "artist" << "general" << "copyright" << "character" << "model" << "model|artist" << "species" << "filename" << "rating" << "md5" << "website" << "ext" << "all" << "id" << "search" << "allo" << "date" << "count" << "search_(\\d+)" << "score" << "height" << "width" << "path" << "pool" << "url_file" << "url_page" << custom.keys();
-				cFilename = this->expandConditionals(cFilename, tokens, details["allos"], replaces);
+				cFilename = this->expandConditionals(cFilename, tokens, details["allos"], replaces, settings);
 			}
 
 			// Replace everything
@@ -513,7 +522,7 @@ QStringList Filename::path(const Image& img, Profile *profile, QString pth, int 
 	return fns;
 }
 
-QString cleanUpValue(QString res, QMap<QString, QString> options, QSettings *settings)
+QString Filename::cleanUpValue(QString res, QMap<QString, QString> options, QSettings *settings) const
 {
 	// Forbidden characters
 	if (!options.contains("unsafe"))
@@ -580,7 +589,7 @@ QString Filename::optionedValue(QString res, QString key, QString ops, const Ima
 
 		// Clean each value separately
 		for (QString &t : vals)
-		{ t = cleanUpValue(t, options, settings); }
+		{ t = this->cleanUpValue(t, options, settings); }
 		cleaned = true;
 
 		res = vals.join(tagSeparator);
@@ -590,7 +599,7 @@ QString Filename::optionedValue(QString res, QString key, QString ops, const Ima
 
 	// Forbidden characters and spaces replacement settings
 	if (key != "allo" && !key.startsWith("url_") && key != "filename" && !cleaned)
-	{ res = cleanUpValue(res, options, settings); }
+	{ res = this->cleanUpValue(res, options, settings); }
 
 	// Escape if necessary
 	if (m_escapeMethod != nullptr && options.contains("escape"))
@@ -615,7 +624,7 @@ void Filename::setFormat(QString format)
 	m_format = format;
 }
 
-void Filename::setEscapeMethod(QString (*escapeMethod)(QString))
+void Filename::setEscapeMethod(QString (*escapeMethod)(QVariant))
 {
 	m_escapeMethod = escapeMethod;
 }

@@ -21,8 +21,6 @@ bool SqlWorker::connect()
 	if (!m_enabled || m_started)
 		return true;
 
-	m_started = true;
-
 	QSqlDatabase db = QSqlDatabase::addDatabase(m_driver);
 	db.setHostName(m_host);
 	db.setDatabaseName(m_database);
@@ -31,22 +29,23 @@ bool SqlWorker::connect()
 
 	if (!db.open())
 	{
-		log(QString("Error initializing commands: %1").arg(db.lastError().text()));
+		log(QString("Error initializing commands: %1").arg(db.lastError().text()), Logger::Error);
 		return false;
 	}
 
+	m_started = true;
 	return true;
 }
 
-QString SqlWorker::escape(QString text)
+QString SqlWorker::escape(QVariant val)
 {
 	QSqlDriver *driver = QSqlDatabase::database().driver();
 	if (driver == nullptr)
 		return nullptr;
 
 	QSqlField f;
-	f.setType(QVariant::String);
-	f.setValue(text);
+	f.setType(val.type());
+	f.setValue(val);
 
 	return driver->formatValue(f);
 }

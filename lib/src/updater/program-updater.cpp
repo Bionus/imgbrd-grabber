@@ -12,7 +12,7 @@ ProgramUpdater::ProgramUpdater()
 { }
 
 ProgramUpdater::ProgramUpdater(QString baseUrl)
-	: m_baseUrl(baseUrl)
+	: m_baseUrl(baseUrl), m_checkForUpdatesReply(Q_NULLPTR), m_downloadReply(Q_NULLPTR)
 { }
 
 void ProgramUpdater::checkForUpdates()
@@ -24,7 +24,7 @@ void ProgramUpdater::checkForUpdates()
 	#endif
 	QNetworkRequest request(url);
 
-	m_checkForUpdatesReply = m_networkAccessManager.get(request);
+	m_checkForUpdatesReply = m_networkAccessManager->get(request);
 	connect(m_checkForUpdatesReply, &QNetworkReply::finished, this, &ProgramUpdater::checkForUpdatesDone);
 }
 
@@ -70,7 +70,7 @@ void ProgramUpdater::downloadUpdate()
 	QNetworkRequest request(url);
 	log(QString("Downloading installer from \"%1\".").arg(url.toString()));
 
-	m_downloadReply = m_networkAccessManager.get(request);
+	m_downloadReply = m_networkAccessManager->get(request);
 	connect(m_downloadReply, &QNetworkReply::downloadProgress, this, &ProgramUpdater::downloadProgress);
 	connect(m_downloadReply, &QNetworkReply::finished, this, &ProgramUpdater::downloadDone);
 }
@@ -82,7 +82,7 @@ void ProgramUpdater::downloadDone()
 	{
 		log(QString("Installer download redirected to \"%1\".").arg(redir.toString()));
 		QNetworkRequest request(redir);
-		m_downloadReply = m_networkAccessManager.get(request);
+		m_downloadReply = m_networkAccessManager->get(request);
 		connect(m_downloadReply, &QNetworkReply::downloadProgress, this, &ProgramUpdater::downloadProgress);
 		connect(m_downloadReply, &QNetworkReply::finished, this, &ProgramUpdater::downloadDone);
 		return;

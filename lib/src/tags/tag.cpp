@@ -2,16 +2,20 @@
 #include <QTextDocument>
 #include <QSettings>
 #include <QSet>
-#include "favorite.h"
-#include "profile.h"
+#include "models/favorite.h"
+#include "models/profile.h"
 
 
 Tag::Tag()
-	: m_type("unknown"), m_count(0)
+	: m_type(TagType("unknown")), m_count(0)
 { }
 
 Tag::Tag(QString text, QString type, int count, QStringList related)
-	: m_type(type), m_count(count), m_related(related)
+	: Tag(text, TagType(type), count, related)
+{ }
+
+Tag::Tag(QString text, TagType type, int count, QStringList related)
+	: m_type(TagType(type)), m_count(count), m_related(related)
 {
 	// Decode HTML entities in the tag text
 	QTextDocument htmlEncoded;
@@ -19,25 +23,25 @@ Tag::Tag(QString text, QString type, int count, QStringList related)
 	m_text = htmlEncoded.toPlainText().replace(' ', '_');
 
 	// Sometimes a type is found with multiple words, only the first is relevant
-	int typeSpace = type.indexOf(' ');
+	int typeSpace = m_type.name().indexOf(' ');
 	if (typeSpace != -1)
-	{ m_type = type.left(typeSpace); }
+	{ m_type = TagType(m_type.name().left(typeSpace)); }
 
 	// Some artist names end with " (artist)" so we can guess their type
-	if (m_text.endsWith("(artist)") && type == "unknown")
+	if (m_text.endsWith("(artist)") && m_type.name() == "unknown")
 	{
-		m_type = "artist";
+		m_type = TagType("artist");
 		m_text = m_text.left(m_text.length() - 9);
 	}
 
-	if (m_type == "unknown" && m_text.contains(':'))
+	if (m_type.name() == "unknown" && m_text.contains(':'))
 	{
 		QStringList prep = QStringList() << "artist" << "copyright" << "character" << "model" << "species" << "unknown";
 		foreach (QString pre, prep)
 		{
 			if (m_text.startsWith(pre + ":"))
 			{
-				m_type = pre;
+				m_type = TagType(pre);
 				m_text = m_text.mid(pre.length() + 1);
 			}
 		}
@@ -179,17 +183,22 @@ QString Tag::qFontToCss(QFont font)
 	return "font-family:'"+font.family()+"'; font-size:"+size+"; font-style:"+style+"; font-weight:"+weight+"; text-decoration:"+(decorations.isEmpty() ? "none" : decorations.join(" "))+";";
 }
 
-QStringList Tag::Stylished(QList<Tag> tags, Profile *profile, bool count, bool nounderscores, bool sort)
+QStringList Tag::Stylished(QList<Tag> tags, Profile *profile, bool count, bool nounderscores, QString sort)
 {
 	QStringList ignored = profile->getIgnored();
 	QStringList blacklisted = profile->getBlacklist();
 
+	// Sort tag list
+	if (sort == "type")
+		qSort(tags.begin(), tags.end(), sortTagsByType);
+	else if (sort == "name")
+		qSort(tags.begin(), tags.end(), sortTagsByName);
+	else if (sort == "count")
+		qSort(tags.begin(), tags.end(), sortTagsByCount);
+
 	QStringList t;
 	for (Tag tag : tags)
 		t.append(tag.stylished(profile, ignored, blacklisted, count, nounderscores));
-
-	if (sort)
-		t.sort();
 
 	return t;
 }
@@ -205,7 +214,7 @@ QString Tag::stylished(Profile *profile, QStringList ignored, QStringList blackl
 	static const QStringList defaults = QStringList() << "#aa0000" << "#55bbff" << "#aa00aa" << "#00aa00" << "#0000ee" << "#000000" << "#ffc0cb" << "#000000" << "#999999" << "#ffcccc";
 
 	// Guess the correct tag family
-	QString key = tlist.contains(type()+"s") ? type() + "s" : "generals";
+	QString key = tlist.contains(type().name()+"s") ? type().name() + "s" : "generals";
 	if (blacklisted.contains(text(), Qt::CaseInsensitive))
 		key = "blacklisteds";
 	if (ignored.contains(text(), Qt::CaseInsensitive))
@@ -228,25 +237,33 @@ QString Tag::stylished(Profile *profile, QStringList ignored, QStringList blackl
 }
 
 void Tag::setText(QString text)		{ m_text = text;	}
-void Tag::setType(QString type)		{ m_type = type;	}
+void Tag::setType(TagType type)		{ m_type = type;	}
 void Tag::setCount(int count)		{ m_count = count;	}
 void Tag::setRelated(QStringList r)	{ m_related = r;	}
 
 QString		Tag::text() const		{ return m_text;	}
-QString		Tag::type() const		{ return m_type;	}
-int			Tag::shortType() const	{ return m_type == "general" ? 0 : (m_type == "artist" ? 1 : (m_type == "copyright" ? 3 : 4)); }
+TagType		Tag::type() const		{ return m_type;	}
 int			Tag::count() const		{ return m_count;	}
 QStringList	Tag::related() const	{ return m_related;	}
 
 QString Tag::typedText() const
 {
-	return (m_type != "general" ? m_type + ":" : "") + m_text;
+	return (m_type.name() != "general" ? m_type.name() + ":" : "") + m_text;
 }
 
-bool sortByFrequency(Tag s1, Tag s2)
+bool sortTagsByType(Tag s1, Tag s2)
+{
+	static QStringList typeOrder = QStringList() << "unknown" << "model" << "species" << "artist" << "character" << "copyright";
+	int t1 = typeOrder.indexOf(s1.type().name());
+	int t2 = typeOrder.indexOf(s2.type().name());
+	return t1 == t2 ? sortTagsByName(s1, s2) : t1 > t2;
+}
+bool sortTagsByName(Tag s1, Tag s2)
+{ return s1.text().localeAwareCompare(s2.text()) < 0; }
+bool sortTagsByCount(Tag s1, Tag s2)
 { return s1.count() > s2.count(); }
 
 bool operator==(const Tag &t1, const Tag &t2)
 {
-	return t1.text() == t2.text() && (t1.type() == t2.type() || t1.type() == "unknown" || t2.type() == "unknown");
+	return t1.text() == t2.text() && (t1.type() == t2.type() || t1.type().name() == "unknown" || t2.type().name() == "unknown");
 }

@@ -32,10 +32,14 @@ class FilenameTest : public TestSuite
 		void testPathSimpleJavascript();
 		void testPathInvalidJavascript();
 		void testExpandTagSimple();
+		void testExpandTagWithInvalidCharacter();
 		void testExpandTagInvert();
+		void testExpandTagMultiple();
+		void testExpandTagIgnore();
 		void testExpandTokenSimple();
 		void testExpandTokenInvert();
 		void testExpandTokenComplex();
+		void testExpandMultipleMixed();
 		void testExpandEscaping();
 		void testPathOptionMax();
 		void testPathOptionMaxDouble();

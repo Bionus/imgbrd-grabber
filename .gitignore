@@ -2,6 +2,10 @@
 
 *.qm
 release/sites/*/*/settings.ini
+release/sites/*/*/tags.txt
+release/sites/*/*/tags.db
+tests/resources/tags.txt
+tests/resources/tags.db
 tests/resources/md5s.txt
 tests/resources/settings.ini
 tests/resources/settings.ini.*
@@ -9,6 +13,7 @@ tests/resources/*.txt
 tests/resources/thumbs/
 tests/resources/tmp/
 tests/resources/sites/
+/test_*
 target_wrapper.bat
 symbols/
 *.lock
@@ -70,6 +75,7 @@ CTestTestfile.cmake
 *.vcxproj.user
 Grabber.VC.*
 win32/
+CMakeSettings.json
 
 
 # CLion

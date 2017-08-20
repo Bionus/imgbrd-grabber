@@ -2,7 +2,7 @@
 #define TAG_TEST_H
 
 #include "test-suite.h"
-#include "models/tag.h"
+#include "tags/tag.h"
 #include <QSettings>
 
 
@@ -25,9 +25,7 @@ class TagTest : public TestSuite
 		void testTypeArtistEnding();
 		void testTypePrefix();
 		void testTypePrefixSpecies();
-		void testSetType();
 		void testShortType();
-		void testSetTypeShortType();
 		void testStylishedBasic();
 		void testStylishedIgnored();
 		void testStylishedBlacklisted();
@@ -37,7 +35,9 @@ class TagTest : public TestSuite
 		void testTypedTextArtist();
 		void testTypedTextSpecies();
 		void testCompare();
-		void testSortByFrequency();
+		void testSortTagsByType();
+		void testSortTagsByName();
+		void testSortTagsByCount();
 		void testTypeSpaced();
 		void testGetType();
 

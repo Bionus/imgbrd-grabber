@@ -27,6 +27,7 @@
 #include "utils/rename-existing/rename-existing-1.h"
 #include "utils/empty-dirs-fix/empty-dirs-fix-1.h"
 #include "utils/md5-fix/md5-fix.h"
+#include "utils/tag-loader/tag-loader.h"
 #include "models/filename.h"
 #include "downloader/downloader.h"
 #include "downloader/download-query-loader.h"
@@ -160,6 +161,14 @@ void mainWindow::init(QStringList args, QMap<QString,QString> params)
 
 	QShortcut *actionFocusSearch = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_L), this);
 	connect(actionFocusSearch, &QShortcut::activated, this, &mainWindow::focusSearch);
+
+	QShortcut *actionDeleteBatchGroups = new QShortcut(QKeySequence::Delete, ui->tableBatchGroups);
+	actionDeleteBatchGroups->setContext(Qt::WidgetWithChildrenShortcut);
+	connect(actionDeleteBatchGroups, &QShortcut::activated, this, &mainWindow::batchClearSelGroups);
+
+	QShortcut *actionDeleteBatchUniques = new QShortcut(QKeySequence::Delete, ui->tableBatchUniques);
+	actionDeleteBatchUniques->setContext(Qt::WidgetWithChildrenShortcut);
+	connect(actionDeleteBatchUniques, &QShortcut::activated, this, &mainWindow::batchClearSelUniques);
 
 	ui->actionAddtab->setShortcut(QKeySequence::AddTab);
 	ui->actionQuit->setShortcut(QKeySequence::Quit);
@@ -532,7 +541,7 @@ void mainWindow::setTags(QList<Tag> tags, searchTab *from)
 	connect(taglabel, static_cast<void (QAffiche::*)(QString)>(&QAffiche::middleClicked), this, &mainWindow::loadTagTab);
 	connect(taglabel, &QAffiche::linkHovered, this, &mainWindow::linkHovered);
 	connect(taglabel, &QAffiche::linkActivated, this, &mainWindow::loadTagNoTab);
-	taglabel->setText(Tag::Stylished(tags, m_profile, true, true, false).join("<br/>"));
+	taglabel->setText(Tag::Stylished(tags, m_profile, true, true).join("<br/>"));
 
 	// Context menu
 	taglabel->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -664,6 +673,11 @@ void mainWindow::batchClear()
 }
 void mainWindow::batchClearSel()
 {
+	batchClearSelGroups();
+	batchClearSelUniques();
+}
+void mainWindow::batchClearSelGroups()
+{
 	// Delete group batchs
 	QList<QTableWidgetItem *> selected = ui->tableBatchGroups->selectedItems();
 	QList<int> todelete = QList<int>();
@@ -683,15 +697,19 @@ void mainWindow::batchClearSel()
 		ui->tableBatchGroups->removeRow(pos);
 		rem++;
 	}
-
+	updateGroupCount();
+}
+void mainWindow::batchClearSelUniques()
+{
 	// Delete single image downloads
-	selected = ui->tableBatchUniques->selectedItems();
-	count = selected.size();
-	todelete.clear();
+	QList<QTableWidgetItem *> selected = ui->tableBatchUniques->selectedItems();
+	QList<int> todelete = QList<int>();
+	int count = selected.size();
 	for (int i = 0; i < count; i++)
 	{ todelete.append(selected.at(i)->row()); }
 	qSort(todelete);
-	rem = 0;
+
+	int rem = 0;
 	for (int i : todelete)
 	{
 		int pos = i - rem;
@@ -1015,13 +1033,16 @@ void mainWindow::options()
 
 void mainWindow::optionsClosed()
 {
-	m_tabs[0]->optionsChanged();
-	m_tabs[0]->updateCheckboxes();
+	for (searchTab* tab : m_tabs)
+	{
+		tab->optionsChanged();
+		tab->updateCheckboxes();
+	}
 }
 
 void mainWindow::setSource(QString source)
 {
-	if (m_tabs.size() < 1)
+	if (m_tabs.isEmpty())
 		return;
 
 	QList<bool> sel;
@@ -1130,8 +1151,12 @@ void mainWindow::getAll(bool all)
 			}
 			else
 			{
+				QMap<QString, QString> data = batch.values;
+				data.insert("filename", batch.filename);
+				data.insert("folder", batch.path);
+
 				Page *page = new Page(m_profile, batch.site, m_sites.values(), batch.values["tags"].split(" "), 1, 1, QStringList(), false, this);
-				m_getAllRemaining.append(QSharedPointer<Image>(new Image(batch.site, batch.values, m_profile, page)));
+				m_getAllRemaining.append(QSharedPointer<Image>(new Image(batch.site, data, m_profile, page)));
 			}
 		}
 	}
@@ -1477,7 +1502,16 @@ void mainWindow::_getAll()
 		m_getAllDownloading.append(img);
 
 		// Get the tags first if necessary
-		if (m_mustGetTags)
+		bool hasUnknownTag = false;
+		for (Tag tag : img->tags())
+		{
+			if (tag.type().name() == "unknown")
+			{
+				hasUnknownTag = true;
+				break;
+			}
+		}
+		if (m_mustGetTags && hasUnknownTag)
 		{
 			connect(img.data(), &Image::finishedLoadingTags, this, &mainWindow::getAllPerformTags);
 			img->loadDetails();
@@ -1681,13 +1715,13 @@ void mainWindow::getAllGetImage(QSharedPointer<Image> img)
 	int row = getRowForSite(site_id);
 
 	// Path
-	QString path = m_settings->value("Save/filename").toString();
-	QString p = img->folder().isEmpty() ? m_settings->value("Save/path").toString() : img->folder();
+	QString filename = img->filename().isEmpty() ? m_settings->value("Save/filename").toString() : img->filename();
+	QString path = img->folder().isEmpty() ? m_settings->value("Save/path").toString() : img->folder();
 	if (site_id >= 0)
 	{
 		ui->tableBatchGroups->item(row, 0)->setIcon(getIcon(":/images/status/downloading.png"));
-		path = m_groupBatchs[site_id - 1].filename;
-		p = m_groupBatchs[site_id - 1].path;
+		filename = m_groupBatchs[site_id - 1].filename;
+		path = m_groupBatchs[site_id - 1].path;
 	}
 
 	// Track download progress
@@ -1701,7 +1735,7 @@ void mainWindow::getAllGetImage(QSharedPointer<Image> img)
 	// Start loading and saving image
 	log(QString("Loading image from <a href=\"%1\">%1</a> %2").arg(img->fileUrl().toString()).arg(m_getAllDownloading.size()), Logger::Info);
 	int count = m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + 1;
-	auto imgDownloader = new ImageDownloader(img, path, p, count, true, false, this);
+	auto imgDownloader = new ImageDownloader(img, filename, path, count, true, false, this);
 	connect(imgDownloader, &ImageDownloader::saved, this, &mainWindow::getAllGetImageSaved);
 	imgDownloader->save();
 	m_getAllImageDownloaders[img] = imgDownloader;
@@ -1940,6 +1974,11 @@ void mainWindow::md5FixOpen()
 void mainWindow::renameExisting()
 {
 	RenameExisting1 *win = new RenameExisting1(m_profile, m_sites, this);
+	win->show();
+}
+void mainWindow::utilTagLoader()
+{
+	TagLoader *win = new TagLoader(m_profile, m_sites, this);
 	win->show();
 }
 

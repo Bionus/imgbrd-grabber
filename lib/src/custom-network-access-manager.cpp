@@ -1,9 +1,10 @@
 #include "custom-network-access-manager.h"
 #include <QFile>
 #include <QDebug>
+#include "functions.h"
 #include "vendor/qcustomnetworkreply.h"
 
-bool CustomNetworkAccessManager::TestMode = false;
+QQueue<QString> CustomNetworkAccessManager::NextFiles;
 
 
 CustomNetworkAccessManager::CustomNetworkAccessManager(QObject *parent)
@@ -14,13 +15,16 @@ CustomNetworkAccessManager::CustomNetworkAccessManager(QObject *parent)
 
 QNetworkReply *CustomNetworkAccessManager::get(const QNetworkRequest &request)
 {
-	if (CustomNetworkAccessManager::TestMode)
+	if (isTestModeEnabled())
 	{
 		QString md5 = QString(QCryptographicHash::hash(request.url().toString().toLatin1(), QCryptographicHash::Md5).toHex());
 		QString filename = request.url().fileName();
 		QString ext = filename.contains('.') ? filename.mid(filename.lastIndexOf('.') + 1) : "html";
 		QString host = request.url().host();
 		QString path = "tests/resources/pages/" + host + "/" + md5 + "." + ext;
+
+		if (!CustomNetworkAccessManager::NextFiles.isEmpty())
+		{ path = CustomNetworkAccessManager::NextFiles.dequeue(); }
 
 		QFile f(path);
 		if (!f.open(QFile::ReadOnly))

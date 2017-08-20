@@ -1,16 +1,35 @@
 #include "image-downloader.h"
+#include "models/filename.h"
 #include "logger.h"
 
 
-ImageDownloader::ImageDownloader(QSharedPointer<Image> img, QString filename, QString path, int count, bool addMd5, bool startCommands, QObject *parent)
-	: QObject(parent), m_image(img), m_fileDownloader(this), m_count(count), m_addMd5(addMd5), m_startCommands(startCommands)
-{
-	m_paths = m_image->path(filename, path, count, true, false, true, true, true);
-}
+ImageDownloader::ImageDownloader(QSharedPointer<Image> img, QString filename, QString path, int count, bool addMd5, bool startCommands, QObject *parent, bool loadTags)
+	: QObject(parent), m_fileDownloader(this), m_image(img), m_filename(filename), m_path(path), m_loadTags(loadTags), m_count(count), m_addMd5(addMd5), m_startCommands(startCommands)
+{}
+
+ImageDownloader::ImageDownloader(QSharedPointer<Image> img, QStringList paths, int count, bool addMd5, bool startCommands, QObject *parent)
+	: QObject(parent), m_fileDownloader(this), m_image(img), m_paths(paths), m_count(count), m_addMd5(addMd5), m_startCommands(startCommands)
+{}
 
 void ImageDownloader::save()
 {
-	QMap<QString, Image::SaveResult> result = m_image->save(m_paths, m_addMd5, m_startCommands, m_count, false, false);
+	// If we use direct saving or don't want to load tags, we directly save the image
+	if (!m_loadTags || !m_paths.isEmpty() || !Filename(m_filename).needExactTags(m_image->parentSite()))
+	{
+		loadedSave();
+		return;
+	}
+
+	connect(m_image.data(), &Image::finishedLoadingTags, this, &ImageDownloader::loadedSave);
+	m_image->loadDetails();
+}
+
+void ImageDownloader::loadedSave()
+{
+	if (m_paths.isEmpty())
+		m_paths = m_image->path(m_filename, m_path, m_count, true, false, true, true, true);
+
+	QMap<QString, Image::SaveResult> result = m_image->save(m_paths, m_addMd5, m_startCommands, m_count, false);
 	bool needLoading = false;
 	for (Image::SaveResult res : result)
 		if (res == Image::SaveResult::NotLoaded)

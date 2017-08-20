@@ -1,6 +1,6 @@
 #include <QtTest>
 #include "page-api-test.h"
-#include "models/tag.h"
+#include "tags/tag.h"
 #include "models/source.h"
 
 

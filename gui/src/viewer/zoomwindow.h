@@ -27,6 +27,18 @@ class zoomWindow : public QWidget
 	Q_OBJECT
 
 	public:
+		enum SaveButtonState
+		{
+			Save,
+			Saving,
+			Saved,
+			Copied,
+			Moved,
+			ExistsMd5,
+			ExistsDisk,
+			Delete
+		};
+
 		zoomWindow(QList<QSharedPointer<Image>> images, QSharedPointer<Image> image, Site *site, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent);
 		~zoomWindow();
 		void go();
@@ -61,6 +73,7 @@ class zoomWindow : public QWidget
 		void openFile(bool now = false);
 		void updateWindowTitle();
 		void showLoadingError(QString error);
+		void setButtonState(bool fav, SaveButtonState state);
 
 		// Context menus
 		void imageContextMenu();
@@ -134,6 +147,7 @@ class zoomWindow : public QWidget
 		QStackedWidget *m_stackedWidget;
 		QAffiche *m_labelImage;
 		QList<QSharedPointer<Image>> m_images;
+		SaveButtonState m_saveButonState, m_saveButonStateFav;
 
 		// Display
 		QPixmap m_displayImage;

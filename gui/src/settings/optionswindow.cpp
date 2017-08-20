@@ -102,6 +102,7 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	ui->checkUseregexfortags->setChecked(settings->value("useregexfortags", true).toBool());
 	QStringList infiniteScroll = QStringList() << "disabled" << "button" << "scroll";
 	ui->comboInfiniteScroll->setCurrentIndex(infiniteScroll.indexOf(settings->value("infiniteScroll", "disabled").toString()));
+	ui->checkInfiniteScrollRememberPage->setChecked(settings->value("infiniteScrollRememberPage", false).toBool());
 
 	// External log files
 	showLogFiles(settings);
@@ -222,6 +223,8 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	ui->checkImageCloseMiddleClick->setChecked(settings->value("imageCloseMiddleClick", true).toBool());
 	ui->checkImageNavigateScroll->setChecked(settings->value("imageNavigateScroll", true).toBool());
 	ui->checkZoomShowTagCount->setChecked(settings->value("Zoom/showTagCount", false).toBool());
+	QStringList imageTagOrder = QStringList() << "type" << "name" << "count";
+	ui->comboImageTagOrder->setCurrentIndex(imageTagOrder.indexOf(settings->value("Zoom/tagOrder", "type").toString()));
 	QStringList positionsV = QStringList() << "top" << "center" << "bottom";
 	QStringList positionsH = QStringList() << "left" << "center" << "right";
 	ui->comboImagePositionImageV->setCurrentIndex(positionsV.indexOf(settings->value("imagePositionImageV", "center").toString()));
@@ -820,18 +823,7 @@ void optionsWindow::save()
 	settings->setValue("useregexfortags", ui->checkUseregexfortags->isChecked());
 	QStringList infiniteScroll = QStringList() << "disabled" << "button" << "scroll";
 	settings->setValue("infiniteScroll", infiniteScroll.at(ui->comboInfiniteScroll->currentIndex()));
-
-	/*settings->beginGroup("Textfile");
-		settings->setValue("activate", ui->checkTextfileActivate->isChecked());
-		settings->setValue("suffix", ui->lineTextfileSuffix->text());
-		settings->setValue("content", ui->textEditTextfileContent->toPlainText());
-	settings->endGroup();
-
-	settings->beginGroup("SaveLog");
-		settings->setValue("activate", ui->checkSaveLogEnable->isChecked());
-		settings->setValue("file", ui->lineSaveLogFile->text());
-		settings->setValue("format", ui->lineSaveLogFormat->text());
-	settings->endGroup();*/
+	settings->setValue("infiniteScrollRememberPage", ui->checkInfiniteScrollRememberPage->isChecked());
 
 	settings->setValue("Batch/end", ui->comboBatchEnd->currentIndex());
 	settings->beginGroup("Save");
@@ -982,6 +974,8 @@ void optionsWindow::save()
 	settings->setValue("imageCloseMiddleClick", ui->checkImageCloseMiddleClick->isChecked());
 	settings->setValue("imageNavigateScroll", ui->checkImageNavigateScroll->isChecked());
 	settings->setValue("Zoom/showTagCount", ui->checkZoomShowTagCount->isChecked());
+	QStringList imageTagOrder = QStringList() << "type" << "name" << "count";
+	settings->setValue("Zoom/tagOrder", imageTagOrder.at(ui->comboImageTagOrder->currentIndex()));
 	QStringList positionsV = QStringList() << "top" << "center" << "bottom";
 	QStringList positionsH = QStringList() << "left" << "center" << "right";
 	settings->setValue("imagePositionImageV", positionsV.at(ui->comboImagePositionImageV->currentIndex()));

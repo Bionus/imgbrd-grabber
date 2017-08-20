@@ -28,7 +28,8 @@
 
 
 QDateTime	qDateTimeFromString(QString s);
-QString		savePath(QString s = "", bool exists = false);
+QString		savePath(QString s = "", bool exists = false, bool writable = false);
+bool		copyRecursively(QString srcFilePath, QString tgtFilePath);
 int			levenshtein(QString, QString);
 QString		stripTags(QString);
 QString		getUnit(float *size);
@@ -54,6 +55,9 @@ QMap<int, QMap<QString, QVariant>>		getExternalLogFiles(QSettings *settings);
 
 QStringList removeWildards(QStringList elements, QStringList remove);
 QString getExtensionFromHeader(const QByteArray &data12);
+
+void setTestModeEnabled(bool testMode);
+bool isTestModeEnabled();
 
 
 

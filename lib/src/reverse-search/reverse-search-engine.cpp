@@ -1,6 +1,6 @@
+#include <QDesktopServices>
 #include "reverse-search-engine.h"
 #include "functions.h"
-#include <QDesktopServices>
 
 
 ReverseSearchEngine::ReverseSearchEngine()
