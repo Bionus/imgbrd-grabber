@@ -51,6 +51,7 @@ searchTab::searchTab(QMap<QString, Site*> *sites, Profile *profile, mainWindow *
 void searchTab::init()
 {
 	m_endlessLoadingEnabled = true;
+	m_endlessLoadOffset = 0;
 	auto infinite = m_settings->value("infiniteScroll", "disabled");
 
 	// Always hide scroll button before results are loaded
@@ -247,6 +248,7 @@ void searchTab::clear()
 	// Reset loading variables
 	m_stop = true;
 	m_pagemax = -1;
+	m_endlessLoadOffset = 0;
 
 	// Clear page details
 	m_tags.clear();
@@ -648,8 +650,8 @@ void searchTab::setMergedLabelText(QLabel *txt, const QList<QSharedPointer<Image
 {
 	int maxPage = 0;
 	int sumImages = 0;
-	int firstPage = ui_spinPage->value();
-	int lastPage = ui_spinPage->value();
+	int firstPage = ui_spinPage->value() + m_endlessLoadOffset;
+	int lastPage = ui_spinPage->value() + m_endlessLoadOffset;
 
 	for (QList<Page*> ps : m_pages)
 	{
@@ -1236,7 +1238,13 @@ void searchTab::endlessLoad()
 	if (!m_endlessLoadingEnabled)
 		return;
 
-	ui_spinPage->setValue(ui_spinPage->value() + 1);
+	bool rememberPage = m_settings->value("infiniteScrollRememberPage", false).toBool();
+
+	if (rememberPage)
+		ui_spinPage->setValue(ui_spinPage->value() + 1);
+	else
+		m_endlessLoadOffset++;
+
 	loadPage();
 }
 
@@ -1244,13 +1252,14 @@ void searchTab::loadPage()
 {
 	bool merged = ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked();
 	int perpage = ui_spinImagesPerPage->value();
+	int currentPage = ui_spinPage->value() + m_endlessLoadOffset;
 	QStringList tags = m_lastTags.split(' ');
 	setEndlessLoadingMode(false);
 
 	for (Site *site : loadSites())
 	{
 		// Load results
-		Page *page = new Page(m_profile, site, m_sites->values(), tags, ui_spinPage->value(), perpage, m_postFiltering->toPlainText().split(" ", QString::SkipEmptyParts), false, this, 0, m_lastPage, m_lastPageMinId, m_lastPageMaxId);
+		Page *page = new Page(m_profile, site, m_sites->values(), tags, currentPage, perpage, m_postFiltering->toPlainText().split(" ", QString::SkipEmptyParts), false, this, 0, m_lastPage, m_lastPageMinId, m_lastPageMaxId);
 		connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(finishedLoading(Page*)));
 		connect(page, SIGNAL(failedLoading(Page*)), this, SLOT(failedLoading(Page*)));
 

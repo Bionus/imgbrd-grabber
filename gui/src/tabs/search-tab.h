@@ -159,6 +159,7 @@ class searchTab : public QWidget
 		bool m_stop;
 		int m_lastToggle;
 		bool m_endlessLoadingEnabled, m_endlessLoadingEnabledPast;
+		int m_endlessLoadOffset;
 		bool m_pageMergedMode;
 
 		// History

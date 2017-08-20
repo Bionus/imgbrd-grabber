@@ -102,6 +102,7 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	ui->checkUseregexfortags->setChecked(settings->value("useregexfortags", true).toBool());
 	QStringList infiniteScroll = QStringList() << "disabled" << "button" << "scroll";
 	ui->comboInfiniteScroll->setCurrentIndex(infiniteScroll.indexOf(settings->value("infiniteScroll", "disabled").toString()));
+	ui->checkInfiniteScrollRememberPage->setChecked(settings->value("infiniteScrollRememberPage", false).toBool());
 
 	// External log files
 	showLogFiles(settings);
@@ -822,18 +823,7 @@ void optionsWindow::save()
 	settings->setValue("useregexfortags", ui->checkUseregexfortags->isChecked());
 	QStringList infiniteScroll = QStringList() << "disabled" << "button" << "scroll";
 	settings->setValue("infiniteScroll", infiniteScroll.at(ui->comboInfiniteScroll->currentIndex()));
-
-	/*settings->beginGroup("Textfile");
-		settings->setValue("activate", ui->checkTextfileActivate->isChecked());
-		settings->setValue("suffix", ui->lineTextfileSuffix->text());
-		settings->setValue("content", ui->textEditTextfileContent->toPlainText());
-	settings->endGroup();
-
-	settings->beginGroup("SaveLog");
-		settings->setValue("activate", ui->checkSaveLogEnable->isChecked());
-		settings->setValue("file", ui->lineSaveLogFile->text());
-		settings->setValue("format", ui->lineSaveLogFormat->text());
-	settings->endGroup();*/
+	settings->setValue("infiniteScrollRememberPage", ui->checkInfiniteScrollRememberPage->isChecked());
 
 	settings->setValue("Batch/end", ui->comboBatchEnd->currentIndex());
 	settings->beginGroup("Save");
