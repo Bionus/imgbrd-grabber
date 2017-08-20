@@ -101,7 +101,8 @@ void TagDatabaseInMemoryTest::saveData()
 	QFile f(filename);
 	QVERIFY(f.open(QFile::ReadOnly | QFile::Text));
 	QString content = f.readAll();
-	QCOMPARE(content, QString("tag1,0\ntag2,3\n"));
+	QVERIFY(content.contains("tag1,0\n"));
+	QVERIFY(content.contains("tag2,3\n"));
 	QVERIFY(f.remove());
 }
 
