@@ -13,7 +13,7 @@ matrix:
 addons:
   apt:
     sources:
-	  - ubuntu-toolchain-r-test
+      - ubuntu-toolchain-r-test
     packages:
       - sqlite3
       - libqt5sql5-sqlite
