@@ -19,7 +19,7 @@ void Logger::setLogFile(QString path)
 void Logger::log(QString l, LogLevel level)
 {
 	if (!m_logFile.isOpen())
-		setLogFile(savePath("main.log"));
+		setLogFile(savePath("main.log", false, true));
 
 	static const QStringList levels = QStringList() << "Debug" << "Info" << "Warning" << "Error";
 	static const QStringList colors = QStringList() << "#999" << "" << "orange" << "red";
@@ -46,7 +46,7 @@ void Logger::logCommand(QString l)
 {
 	if (!m_fCommandsLog.isOpen())
 	{
-		m_fCommandsLog.setFileName(savePath("commands.log"));
+		m_fCommandsLog.setFileName(savePath("commands.log", false, true));
 		m_fCommandsLog.open(QFile::Append | QFile::Text | QFile::Truncate);
 	}
 
@@ -58,7 +58,7 @@ void Logger::logCommandSql(QString l)
 {
 	if (!m_fCommandsSqlLog.isOpen())
 	{
-		m_fCommandsSqlLog.setFileName(savePath("commands.sql"));
+		m_fCommandsSqlLog.setFileName(savePath("commands.sql", false, true));
 		m_fCommandsSqlLog.open(QFile::Append | QFile::Text | QFile::Truncate);
 	}
 
