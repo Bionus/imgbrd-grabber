@@ -117,6 +117,7 @@ void favoritesTab::updateFavorites()
 	clearLayout(m_favoritesLayout);
 
 	QString display = m_settings->value("favorites_display", "ind").toString();
+	float upscale = m_settings->value("thumbnailUpscale", 1.0f).toFloat();
 	int i = 0;
 	for (Favorite fav : m_favorites)
 	{
@@ -128,9 +129,8 @@ void favoritesTab::updateFavorites()
 		{
 			QPixmap img = fav.getImage();
 			QBouton *image = new QBouton(fav.getName(), false, false, 0, QColor(), this);
-				image->setIcon(img);
-				image->setIconSize(img.size());
-				image->setFixedSize(FAVORITES_THUMB_SIZE, FAVORITES_THUMB_SIZE);
+				image->scale(img, upscale);
+				image->setFixedSize(FAVORITES_THUMB_SIZE * upscale, FAVORITES_THUMB_SIZE * upscale);
 				image->setFlat(true);
 				image->setToolTip(xt);
 				connect(image, SIGNAL(rightClick(QString)), this, SLOT(favoriteProperties(QString)));
