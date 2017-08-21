@@ -110,8 +110,6 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	// Web services
 	ReverseSearchLoader loader(settings);
 	m_webServices = loader.getAllReverseSearchEngines();
-	for (int i = 0; i < m_webServices.count(); ++i)
-		m_webServicesIds.insert(m_webServices[i].id(), i);
 	showWebServices();
 
 	ui->comboBatchEnd->setCurrentIndex(settings->value("Batch/end", 0).toInt());
@@ -480,10 +478,12 @@ void optionsWindow::showWebServices()
 	connect(mapperMoveUpWebService, SIGNAL(mapped(int)), this, SLOT(moveUpWebService(int)));
 	connect(mapperMoveDownWebService, SIGNAL(mapped(int)), this, SLOT(moveDownWebService(int)));
 
-	int j = 0;
-	for (auto webService : m_webServices)
+	m_webServicesIds.clear();
+	for (int j = 0; j < m_webServices.count(); ++j)
 	{
+		auto webService = m_webServices[j];
 		int id = webService.id();
+		m_webServicesIds.insert(id, j);
 
 		QIcon icon = webService.icon();
 		QLabel *labelIcon = new QLabel();
@@ -520,8 +520,6 @@ void optionsWindow::showWebServices()
 		mapperRemoveWebService->setMapping(buttonDelete, id);
 		connect(buttonDelete, SIGNAL(clicked(bool)), mapperRemoveWebService, SLOT(map()));
 		ui->layoutWebServices->addWidget(buttonDelete, j, 5);
-
-		++j;
 	}
 }
 
