@@ -23,7 +23,7 @@ SiteWindow::SiteWindow(Profile *profile, QMap<QString ,Site*> *sites, QWidget *p
 	m_sources = Source::getAllSources(nullptr);
 	for (Source *source : *m_sources)
 	{
-		ui->comboBox->addItem(QIcon(savePath("sites/" + source->getName() + "/icon.png")), source->getName());
+		ui->comboBox->addItem(QIcon(source->getPath() + "/icon.png"), source->getName());
 	}
 }
 

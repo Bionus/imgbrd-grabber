@@ -140,7 +140,7 @@ void SourcesSettingsWindow::deleteSite()
 	int reponse = QMessageBox::question(this, tr("Delete a site"), tr("Are you sure you want to delete the site %1?").arg(m_site->name()), QMessageBox::Yes | QMessageBox::No);
 	if (reponse == QMessageBox::Yes)
 	{
-		QFile f(savePath("sites/"+m_site->type()+"/sites.txt"));
+		QFile f(m_site->getSource()->getPath() + "/sites.txt");
 		f.open(QIODevice::ReadOnly);
 			QString sites = f.readAll();
 		f.close();

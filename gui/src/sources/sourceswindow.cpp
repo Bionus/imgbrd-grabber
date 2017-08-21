@@ -216,7 +216,7 @@ void sourcesWindow::addCheckboxes()
 			if (t == "icon" || t == "both")
 			{
 				QLabel *image = new QLabel(this);
-				image->setPixmap(QPixmap(savePath("sites/"+m_sites->value(k.at(i))->type()+"/icon.png")));
+				image->setPixmap(QPixmap(m_sites->value(k.at(i))->getSource()->getPath() + "/icon.png"));
 				ui->gridLayout->addWidget(image, i, n);
 				m_labels << image;
 				n++;
