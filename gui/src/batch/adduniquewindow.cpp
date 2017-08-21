@@ -44,7 +44,7 @@ void AddUniqueWindow::on_lineFilename_textChanged(QString text)
 {
 	QString message;
 	Filename fn(text);
-	fn.isValid(&message);
+	fn.isValid(m_profile, &message);
 	ui->labelFilename->setText(message);
 }
 

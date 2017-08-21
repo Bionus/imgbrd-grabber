@@ -115,7 +115,7 @@ void sourcesWindow::valid()
 
 void sourcesWindow::settingsSite(QString site)
 {
-	SourcesSettingsWindow *ssw = new SourcesSettingsWindow(m_sites->value(site), this);
+	SourcesSettingsWindow *ssw = new SourcesSettingsWindow(m_profile, m_sites->value(site), this);
 	connect(ssw, SIGNAL(siteDeleted(QString)), this, SLOT(deleteSite(QString)));
 	ssw->show();
 }
@@ -198,8 +198,7 @@ void sourcesWindow::removeCheckboxes()
  */
 void sourcesWindow::addCheckboxes()
 {
-	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
-	QString t = settings.value("Sources/Types", "icon").toString();
+	QString t = m_profile->getSettings()->value("Sources/Types", "icon").toString();
 
 	QStringList k = m_sites->keys();
 	for (int i = 0; i < k.count(); i++)

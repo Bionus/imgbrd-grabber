@@ -636,7 +636,7 @@ bool Filename::returnError(QString msg, QString *error) const
 
 	return false;
 }
-bool Filename::isValid(QString *error) const
+bool Filename::isValid(Profile *profile, QString *error) const
 {
 	QString red = "<span style=\"color:red\">%1</span>";
 	QString orange = "<span style=\"color:orange\">%1</span>";
@@ -662,9 +662,9 @@ bool Filename::isValid(QString *error) const
 		return returnError(orange.arg(QObject::tr("Your filename is not unique to each image and an image may overwrite a previous one at saving! You should use%md5%, which is unique to each image, to avoid this inconvenience.")), error);
 
 	// Looking for unknown tokens
-	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
-	auto customs = getCustoms(&settings);
-	QStringList tokens = QStringList() << "tags" << "artist" << "general" << "copyright" << "character" << "model" << "species" << "filename" << "rating" << "md5" << "website" << "websitename" << "ext" << "all" << "id" << "search" << "search_(\\d+)" << "allo" << customs.keys() << "date" << "score" << "count" << "width" << "height" << "pool" << "url_file" << "url_page";
+	QStringList tokens = QStringList() << "tags" << "artist" << "general" << "copyright" << "character" << "model" << "species" << "filename" << "rating" << "md5" << "website" << "websitename" << "ext" << "all" << "id" << "search" << "search_(\\d+)" << "allo" << "date" << "score" << "count" << "width" << "height" << "pool" << "url_file" << "url_page";
+	if (profile != nullptr)
+	{ tokens.append(getCustoms(profile->getSettings()).keys()); }
 	QRegExp rx("%(.+)%");
 	rx.setMinimal(true);
 	int pos = 0;

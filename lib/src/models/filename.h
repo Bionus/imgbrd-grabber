@@ -36,7 +36,7 @@ class Filename
 		 * @return			Whether the filename is valid or not.
 		 * @todo			Return a constant instead of a QString.
 		 */
-		bool isValid(QString *error = nullptr) const;
+		bool isValid(Profile *profile = nullptr, QString *error = nullptr) const;
 
 		bool needExactTags(Site *site, QString api = "") const;
 		bool needExactTags(bool forceImageUrl = false, bool needDate = false) const;

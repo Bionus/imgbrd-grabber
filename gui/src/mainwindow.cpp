@@ -2149,7 +2149,7 @@ void mainWindow::saveSettings()
 	ui->comboFilename->setCurrentIndex(0);
 	QString message;
 	Filename fn(ui->comboFilename->currentText());
-	fn.isValid(&message);
+	fn.isValid(m_profile, &message);
 	ui->labelFilename->setText(message);
 
 	// Save filename history

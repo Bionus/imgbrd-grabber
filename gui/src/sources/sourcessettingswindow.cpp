@@ -9,13 +9,13 @@
 #include "functions.h"
 
 
-SourcesSettingsWindow::SourcesSettingsWindow(Site *site, QWidget *parent) : QDialog(parent), ui(new Ui::SourcesSettingsWindow), m_site(site)
+SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidget *parent) : QDialog(parent), ui(new Ui::SourcesSettingsWindow), m_site(site)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	ui->setupUi(this);
 
 	QSettings *settings = site->settings();
-	QSettings global(savePath("settings.ini"), QSettings::IniFormat);
+	QSettings *global = profile->getSettings();
 
 	// Refferers
 	ui->lineSiteName->setText(settings->value("name", m_site->url()).toString());
@@ -41,10 +41,10 @@ SourcesSettingsWindow::SourcesSettingsWindow(Site *site, QWidget *parent) : QDia
 	// Source order
 	ui->checkSourcesDefault->setChecked(settings->value("sources/usedefault", true).toBool());
 	QStringList sources = QStringList() << "" << "xml" << "json" << "regex" << "rss";
-	ui->comboSources1->setCurrentIndex(sources.indexOf(settings->value("sources/source_1", global.value("source_1", sources[0]).toString()).toString()));
-	ui->comboSources2->setCurrentIndex(sources.indexOf(settings->value("sources/source_2", global.value("source_2", sources[1]).toString()).toString()));
-	ui->comboSources3->setCurrentIndex(sources.indexOf(settings->value("sources/source_3", global.value("source_3", sources[2]).toString()).toString()));
-	ui->comboSources4->setCurrentIndex(sources.indexOf(settings->value("sources/source_4", global.value("source_4", sources[3]).toString()).toString()));
+	ui->comboSources1->setCurrentIndex(sources.indexOf(settings->value("sources/source_1", global->value("source_1", sources[0]).toString()).toString()));
+	ui->comboSources2->setCurrentIndex(sources.indexOf(settings->value("sources/source_2", global->value("source_2", sources[1]).toString()).toString()));
+	ui->comboSources3->setCurrentIndex(sources.indexOf(settings->value("sources/source_3", global->value("source_3", sources[2]).toString()).toString()));
+	ui->comboSources4->setCurrentIndex(sources.indexOf(settings->value("sources/source_4", global->value("source_4", sources[3]).toString()).toString()));
 
 	// Credentials
 	ui->lineAuthPseudo->setText(settings->value("auth/pseudo", "").toString());

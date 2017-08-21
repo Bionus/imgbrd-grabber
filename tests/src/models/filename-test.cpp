@@ -521,7 +521,7 @@ void FilenameTest::testIsValid()
 	QCOMPARE(Filename("%md5% %date:format=yyyy-MM-dd%.%ext%").isValid(), true);
 
 	QString out;
-	Filename("%toto%.%ext%").isValid(&out);
+	Filename("%toto%.%ext%").isValid(m_profile, &out);
 	QCOMPARE(out.isEmpty(), false);
 }
 
