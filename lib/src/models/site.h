@@ -11,11 +11,11 @@
 #include <functional>
 #include "tags/tag.h"
 #include "tags/tag-database-in-memory.h"
+#include "source.h"
 
 
 class Page;
 class Image;
-class Source;
 class Api;
 class Profile;
 class CustomNetworkAccessManager;
