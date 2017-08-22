@@ -142,9 +142,10 @@ void poolTab::getPage()
 	bool unloaded = m_settings->value("getunloadedpages", false).toBool();
 	int perpage = unloaded ? ui->spinImagesPerPage->value() : page->images().count();
 	QString tags = "pool:"+QString::number(ui->spinPool->value())+" "+m_search->toPlainText()+" "+m_settings->value("add").toString().trimmed();
+	QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
 	Site *site = m_sites->value(ui->comboSites->currentText());
 
-	emit batchAddGroup(DownloadQueryGroup(m_settings, tags, ui->spinPage->value(), perpage, perpage, site));
+	emit batchAddGroup(DownloadQueryGroup(m_settings, tags, ui->spinPage->value(), perpage, perpage, postFiltering, site));
 }
 void poolTab::getAll()
 {
@@ -154,9 +155,10 @@ void poolTab::getAll()
 	int limit = m_sites->value(ui->comboSites->currentText())->contains("Urls/1/Limit") ? m_sites->value(ui->comboSites->currentText())->value("Urls/1/Limit").toInt() : 0;
 	int perpage = qMin((limit > 0 ? limit : 200), qMax(page->images().count(), page->imagesCount()));
 	int total = qMax(page->images().count(), page->imagesCount());
+	QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
 	Site *site = m_sites->value(ui->comboSites->currentText());
 
-	emit batchAddGroup(DownloadQueryGroup(m_settings, tags, 1, perpage, total, site));
+	emit batchAddGroup(DownloadQueryGroup(m_settings, tags, 1, perpage, total, postFiltering, site));
 }
 
 

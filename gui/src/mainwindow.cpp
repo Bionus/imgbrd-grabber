@@ -779,7 +779,8 @@ void mainWindow::updateBatchGroups(int y, int x)
 			case 3:	m_groupBatchs[y].page = toInt;						break;
 			case 6:	m_groupBatchs[y].filename = val;					break;
 			case 7:	m_groupBatchs[y].path = val;						break;
-			case 8:	m_groupBatchs[y].getBlacklisted = (val != "false");	break;
+			case 8:	m_groupBatchs[y].postFiltering = val.split(' ', QString::SkipEmptyParts);	break;
+			case 9:	m_groupBatchs[y].getBlacklisted = (val != "false");	break;
 
 			case 2:
 				if (!m_sites.contains(val))
@@ -1276,7 +1277,7 @@ void mainWindow::getAllFinishedLogins()
 		{
 			Downloader *downloader = new Downloader(m_profile,
 													b.tags.split(' '),
-													QStringList(),
+													b.postFiltering,
 													QList<Site*>() << b.site,
 													b.page + i * pagesPerPack,
 													(i == packs - 1 ? lastPageImages : imagesPerPack),
@@ -2042,7 +2043,8 @@ bool mainWindow::loadLinkList(QString filename)
 		addTableItem(ui->tableBatchGroups, row, 5, QString::number(queryGroup.total));
 		addTableItem(ui->tableBatchGroups, row, 6, queryGroup.filename);
 		addTableItem(ui->tableBatchGroups, row, 7, queryGroup.path);
-		addTableItem(ui->tableBatchGroups, row, 8, queryGroup.getBlacklisted ? "true" : "false");
+		addTableItem(ui->tableBatchGroups, row, 8, queryGroup.postFiltering.join(' '));
+		addTableItem(ui->tableBatchGroups, row, 9, queryGroup.getBlacklisted ? "true" : "false");
 
 		queryGroup.unk = "true";
 		m_groupBatchs.append(queryGroup);

@@ -19,14 +19,19 @@ AddGroupWindow::AddGroupWindow(QString selected, QMap<QString, Site*> sites, Pro
 	ui->comboSites->addItems(keys);
 	ui->comboSites->setCurrentIndex(keys.indexOf(selected));
 
+	QStringList completion;
+	completion.append(profile->getAutoComplete());
+	completion.append(profile->getCustomAutoComplete());
+	QCompleter *completer = new QCompleter(completion, this);
+	completer->setCaseSensitivity(Qt::CaseInsensitive);
+
 	m_lineTags = new TextEdit(profile, this);
-		QStringList completion;
-		completion.append(profile->getAutoComplete());
-		completion.append(profile->getCustomAutoComplete());
-		QCompleter *completer = new QCompleter(completion, this);
-		completer->setCaseSensitivity(Qt::CaseInsensitive);
-		m_lineTags->setCompleter(completer);
+	m_lineTags->setCompleter(completer);
 	ui->formLayout->setWidget(1, QFormLayout::FieldRole, m_lineTags);
+
+	m_linePostFiltering = new TextEdit(profile, this);
+	m_linePostFiltering->setCompleter(completer);
+	ui->formLayout->setWidget(5, QFormLayout::FieldRole, m_linePostFiltering);
 }
 
 /**
@@ -34,7 +39,8 @@ AddGroupWindow::AddGroupWindow(QString selected, QMap<QString, Site*> sites, Pro
  */
 void AddGroupWindow::ok()
 {
+	QStringList postFiltering = m_linePostFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
 	Site *site = m_sites.value(ui->comboSites->currentText());
-	emit sendData(DownloadQueryGroup(m_lineTags->toPlainText(), ui->spinPage->value(), ui->spinPP->value(), ui->spinLimit->value(), ui->checkBlacklist->isChecked(), site, m_settings->value("Save/filename").toString(), m_settings->value("Save/path").toString()));
+	emit sendData(DownloadQueryGroup(m_lineTags->toPlainText(), ui->spinPage->value(), ui->spinPP->value(), ui->spinLimit->value(), postFiltering, ui->checkBlacklist->isChecked(), site, m_settings->value("Save/filename").toString(), m_settings->value("Save/path").toString()));
 	close();
 }

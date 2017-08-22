@@ -207,7 +207,9 @@ void favoritesTab::getPage()
 		Page *page = m_pages[actuals[i]].first();
 		QString search = m_currentTags+" "+m_settings->value("add").toString().toLower().trimmed();
 		int perpage = unloaded ? ui->spinImagesPerPage->value() : page->images().count();
-		emit batchAddGroup(DownloadQueryGroup(m_settings, search, ui->spinPage->value(), perpage, perpage, m_sites->value(actuals.at(i))));
+		QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
+
+		emit batchAddGroup(DownloadQueryGroup(m_settings, search, ui->spinPage->value(), perpage, perpage, postFiltering, m_sites->value(actuals.at(i))));
 	}
 }
 void favoritesTab::getAll()
@@ -225,7 +227,9 @@ void favoritesTab::getAll()
 		int limit = m_sites->value(actuals.at(i))->contains("Urls/1/Limit") ? m_sites->value(actuals.at(i))->value("Urls/1/Limit").toInt() : 0;
 		int perpage = qMin((limit > 0 ? limit : 1000), qMax(page->images().count(), page->imagesCount()));
 		int total = qMax(page->images().count(), page->imagesCount());
-		emit batchAddGroup(DownloadQueryGroup(m_settings, search, 1, perpage, total, m_sites->value(actuals.at(i))));
+		QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
+
+		emit batchAddGroup(DownloadQueryGroup(m_settings, search, 1, perpage, total, postFiltering, m_sites->value(actuals.at(i))));
 	}
 }
 

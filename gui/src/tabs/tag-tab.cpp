@@ -179,7 +179,8 @@ void tagTab::getPage()
 				continue;
 
 			QString search = page->search().join(' ');
-			emit batchAddGroup(DownloadQueryGroup(m_settings, search, ui->spinPage->value(), perpage, perpage, m_sites->value(actuals.at(i))));
+			QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
+			emit batchAddGroup(DownloadQueryGroup(m_settings, search, ui->spinPage->value(), perpage, perpage, postFiltering, m_sites->value(actuals.at(i))));
 		}
 	}
 }
@@ -207,7 +208,8 @@ void tagTab::getAll()
 			continue;
 
 		QString search = page->search().join(' ');
-		emit batchAddGroup(DownloadQueryGroup(m_settings, search, 1, perPage, total, m_sites->value(actual)));
+		QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
+		emit batchAddGroup(DownloadQueryGroup(m_settings, search, 1, perPage, total, postFiltering, m_sites->value(actual)));
 	}
 }
 

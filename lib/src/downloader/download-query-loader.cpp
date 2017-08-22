@@ -49,7 +49,7 @@ bool DownloadQueryLoader::load(QString path, QList<DownloadQueryImage> &uniques,
 				if (!sites.contains(source) || infos.at(1).toInt() < 0 || infos.at(2).toInt() < 1 || infos.at(3).toInt() < 1)
 					continue;
 
-				batchs.append(DownloadQueryGroup(infos[0], infos[1].toInt(), infos[2].toInt(), infos[3].toInt(), infos[4] != "false", sites[source], infos[6], infos[7]));
+				batchs.append(DownloadQueryGroup(infos[0], infos[1].toInt(), infos[2].toInt(), infos[3].toInt(), QStringList(), infos[4] != "false", sites[source], infos[6], infos[7]));
 			}
 		}
 
