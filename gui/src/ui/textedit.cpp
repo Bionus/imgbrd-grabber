@@ -64,7 +64,7 @@ void TextEdit::doColor()
 	// Color metatags
 	QRegExp regexOr(" ~([^ ]+)"),
 			regexExclude(" -([^ ]+)"),
-			regexMeta(" (user|fav|md5|pool|rating|source|status|approver|unlocked|sub|id|width|height|score|mpixels|filesize|date|gentags|arttags|chartags|copytags|status|status|approver|order|parent):([^ ]*)", Qt::CaseInsensitive),
+			regexMeta(" (user|fav|md5|pool|rating|source|status|approver|unlocked|sub|id|width|height|score|mpixels|filesize|filetype|date|gentags|arttags|chartags|copytags|status|status|approver|order|parent):([^ ]*)", Qt::CaseInsensitive),
 			regexMd5(" ([0-9A-F]{32})", Qt::CaseInsensitive),
 			regexUrl(" (https?://[^\\s/$.?#].[^\\s]*) ");
 	txt.replace(regexOr, " <span style=\"color:green\">~\\1</span>");

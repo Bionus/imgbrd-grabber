@@ -499,7 +499,8 @@ int toDate(QString text)
 QString Image::match(QString filter, bool invert) const
 {
 	QStringList mathematicaltypes = QStringList() << "id" << "width" << "height" << "score" << "mpixels" << "filesize" << "date";
-	QStringList types = QStringList() << "rating" << "source" << mathematicaltypes;
+	QStringList stringtypes = QStringList() << "filetype";
+	QStringList types = QStringList() << "rating" << "source" << stringtypes << mathematicaltypes;
 
 	// Invert the filter by prepending '-'
 	if (filter.startsWith('-'))
@@ -561,6 +562,18 @@ QString Image::match(QString filter, bool invert) const
 				else
 				{ cond = input == filter.toInt(); }
 			}
+
+			if (!cond && !invert)
+			{ return tr("image's %1 does not match").arg(type); }
+			if (cond && invert)
+			{ return tr("image's %1 match").arg(type); }
+		}
+		else if (stringtypes.contains(type))
+		{
+			QString input;
+			if (type == "filetype")	{ input = getExtension(m_fileUrl);	}
+
+			bool cond = input == filter;
 
 			if (!cond && !invert)
 			{ return tr("image's %1 does not match").arg(type); }
