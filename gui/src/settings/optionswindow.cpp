@@ -541,7 +541,18 @@ void optionsWindow::editWebService(int id)
 void optionsWindow::removeWebService(int id)
 {
 	m_webServices.removeAt(m_webServicesIds[id]);
+
+	// Delete favicon file
 	QFile(savePath("webservices/") + QString::number(id) + ".ico").remove();
+
+	// Remove WebService config
+	QSettings *settings = m_profile->getSettings();
+	settings->beginGroup("WebServices");
+	settings->beginGroup(QString::number(id));
+	settings->remove("");
+	settings->endGroup();
+	settings->endGroup();
+
 	showWebServices();
 }
 
