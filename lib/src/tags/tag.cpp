@@ -56,7 +56,7 @@ Tag Tag::FromCapture(QStringList caps, QStringList order)
 {
 	QString type;
 	QString tag;
-	int count = 1;
+	int count = 0;
 
 	// Most common tag orders
 	if (order.empty())
