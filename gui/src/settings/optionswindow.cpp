@@ -547,21 +547,10 @@ void optionsWindow::removeWebService(int id)
 
 void optionsWindow::setWebService(ReverseSearchEngine rse, QByteArray favicon)
 {
-	// Write icon information to disk
-	if (!favicon.isEmpty())
-	{
-		QString faviconPath = savePath("webservices/") + QString::number(rse.id()) + ".ico";
-		QFile f(faviconPath);
-		if (f.open(QFile::WriteOnly))
-		{
-			f.write(favicon);
-			f.close();
-		}
-		rse = ReverseSearchEngine(rse.id(), faviconPath, rse.name(), rse.tpl(), rse.order());
-	}
+	bool isNew = rse.id() < 0;
 
 	// Generate new ID for new web services
-	if (rse.id() < 0)
+	if (isNew)
 	{
 		int maxOrder = 0;
 		int maxId = 0;
@@ -575,8 +564,23 @@ void optionsWindow::setWebService(ReverseSearchEngine rse, QByteArray favicon)
 
 		rse.setId(maxId + 1);
 		rse.setOrder(maxOrder + 1);
-		m_webServices.append(rse);
 	}
+
+	// Write icon information to disk
+	if (!favicon.isEmpty())
+	{
+		QString faviconPath = savePath("webservices/") + QString::number(rse.id()) + ".ico";
+		QFile f(faviconPath);
+		if (f.open(QFile::WriteOnly))
+		{
+			f.write(favicon);
+			f.close();
+		}
+		rse = ReverseSearchEngine(rse.id(), faviconPath, rse.name(), rse.tpl(), rse.order());
+	}
+
+	if (isNew)
+	{ m_webServices.append(rse); }
 	else
 	{ m_webServices[m_webServicesIds[rse.id()]] = rse; }
 
