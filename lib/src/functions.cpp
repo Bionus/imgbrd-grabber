@@ -355,7 +355,8 @@ QMap<QString,QString> domToMap(QDomElement dom)
 	dom.firstChildElement("Name").firstChild().nodeValue();
 	for (QDomNode n = dom.firstChild(); !n.isNull(); n = n.nextSibling())
 	{
-		if (n.firstChild().nodeName() == "#text")
+		auto type = n.firstChild().nodeType();
+		if (type == QDomNode::TextNode || type == QDomNode::CDATASectionNode)
 		{ details[n.nodeName()] = n.firstChild().nodeValue(); }
 		else
 		{
