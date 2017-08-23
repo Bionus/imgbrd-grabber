@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QNetworkReply>
 #include "reverse-search/reverse-search-engine.h"
+#include "custom-network-access-manager.h"
 
 
 namespace Ui
@@ -22,6 +23,7 @@ class WebServiceWindow : public QDialog
 
 	protected slots:
 		void getFavicon();
+		void faviconReceived();
 		void save();
 
 	signals:
@@ -31,6 +33,7 @@ class WebServiceWindow : public QDialog
 		Ui::WebServiceWindow *ui;
 		const ReverseSearchEngine *m_webService;
 		QNetworkReply *m_faviconReply;
+		CustomNetworkAccessManager *m_networkAccessManager;
 };
 
 #endif // WEB_SERVICE_WINDOW_H
