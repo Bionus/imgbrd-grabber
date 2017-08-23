@@ -441,7 +441,25 @@ void Image::parseDetails()
 		QStringList order = m_parentSite->value("Regex/TagsOrder").split('|', QString::SkipEmptyParts);
 		QList<Tag> tgs = Tag::FromRegexp(rxtags, order, source);
 		if (!tgs.isEmpty())
-		{ m_tags = tgs; }
+		{
+			if (m_rating.isEmpty())
+			{
+				int ratingTagIndex = -1;
+				for (int it = 0; it < tgs.count(); ++it)
+				{
+					if (tgs[it].type().name() == "rating")
+					{
+						m_rating = tgs[it].text();
+						ratingTagIndex = it;
+						break;
+					}
+				}
+				if (ratingTagIndex != -1)
+				{ tgs.removeAt(ratingTagIndex); }
+			}
+
+			m_tags = tgs;
+		}
 	}
 
 	// Image url
