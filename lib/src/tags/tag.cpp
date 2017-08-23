@@ -38,12 +38,12 @@ Tag::Tag(QString text, TagType type, int count, QStringList related)
 
 	if (m_text.contains(':') && weakTypes.contains(m_type.name()))
 	{
-		QStringList prep = QStringList() << "artist" << "copyright" << "character" << "model" << "species" << "unknown";
+		QStringList prep = QStringList() << "artist" << "copyright" << "character" << "model" << "species" << "unknown" << "oc";
 		foreach (QString pre, prep)
 		{
 			if (m_text.startsWith(pre + ":"))
 			{
-				m_type = TagType(pre);
+				m_type = TagType(Tag::GetType(pre, prep));
 				m_text = m_text.mid(pre.length() + 1);
 			}
 		}
@@ -143,6 +143,8 @@ QString Tag::GetType(QString type, QStringList ids)
 		return "general";
 	if (type == "character group")
 		return "general";
+	if (type == "oc")
+		return "character";
 
 	if (type.length() == 1)
 	{
