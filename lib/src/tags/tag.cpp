@@ -17,6 +17,8 @@ Tag::Tag(QString text, QString type, int count, QStringList related)
 Tag::Tag(QString text, TagType type, int count, QStringList related)
 	: m_type(TagType(type)), m_count(count), m_related(related)
 {
+	static QStringList weakTypes = QStringList() << "unknown" << "origin";
+
 	// Decode HTML entities in the tag text
 	QTextDocument htmlEncoded;
 	htmlEncoded.setHtml(text);
@@ -28,13 +30,13 @@ Tag::Tag(QString text, TagType type, int count, QStringList related)
 	{ m_type = TagType(m_type.name().left(typeSpace)); }
 
 	// Some artist names end with " (artist)" so we can guess their type
-	if (m_text.endsWith("(artist)") && m_type.name() == "unknown")
+	if (m_text.endsWith("(artist)") && weakTypes.contains(m_type.name()))
 	{
 		m_type = TagType("artist");
 		m_text = m_text.left(m_text.length() - 9);
 	}
 
-	if (m_type.name() == "unknown" && m_text.contains(':'))
+	if (m_text.contains(':') && weakTypes.contains(m_type.name()))
 	{
 		QStringList prep = QStringList() << "artist" << "copyright" << "character" << "model" << "species" << "unknown";
 		foreach (QString pre, prep)
