@@ -84,7 +84,7 @@ Tag Tag::FromCapture(QStringList caps, QStringList order)
 		{
 			type = Tag::GetType(cap, QStringList() << "general" << "artist" << "unknown" << "copyright" << "character" << "species");
 		}
-		else if (ord == "count" && count != 0)
+		else if (ord == "count" && count == 0)
 		{
 			QString countStr = cap.toLower();
 			countStr.remove(',');
