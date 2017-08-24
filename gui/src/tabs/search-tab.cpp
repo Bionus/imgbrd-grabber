@@ -948,7 +948,8 @@ void searchTab::addResultsImage(QSharedPointer<Image> img, bool merge)
 	m_boutons.insert(img.data(), button);
 
 	FixedSizeGridLayout *layout = m_layouts[layoutKey];
-	layout->addFixedSizeWidget(button, relativePosition, imagesPerPage);
+	//layout->addFixedSizeWidget(button, relativePosition, imagesPerPage);
+	layout->insertWidget(relativePosition, button);
 }
 
 void searchTab::addHistory(QString tags, int page, int ipp, int cols)
@@ -1313,9 +1314,9 @@ void searchTab::addLayout(QLayout *layout, int row, int column)
 
 FixedSizeGridLayout *searchTab::createImagesLayout(QSettings *settings)
 {
-	FixedSizeGridLayout *l = new FixedSizeGridLayout;
-	l->setHorizontalSpacing(settings->value("Margins/horizontal", 6).toInt());
-	l->setVerticalSpacing(settings->value("Margins/vertical", 6).toInt());
+	int hSpace = settings->value("Margins/horizontal", 6).toInt();
+	int vSpace = settings->value("Margins/vertical", 6).toInt();
+	FixedSizeGridLayout *l = new FixedSizeGridLayout(hSpace, vSpace);
 
 	bool fixedWidthLayout = m_settings->value("resultsFixedWidthLayout", false).toBool();
 	if (fixedWidthLayout)

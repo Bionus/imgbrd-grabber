@@ -118,7 +118,6 @@ void favoritesTab::updateFavorites()
 
 	QString display = m_settings->value("favorites_display", "ind").toString();
 	float upscale = m_settings->value("thumbnailUpscale", 1.0f).toFloat();
-	int i = 0;
 	for (Favorite fav : m_favorites)
 	{
 		QString xt = tr("<b>Name:</b> %1<br/><b>Note:</b> %2 %%<br/><b>Last view:</b> %3").arg(fav.getName(), QString::number(fav.getNote()), fav.getLastViewed().toString(format));
@@ -151,8 +150,7 @@ void favoritesTab::updateFavorites()
 			l->addWidget(caption);
 		}
 
-		m_favoritesLayout->addFixedSizeWidget(w, i, m_favorites.count());
-		++i;
+		m_favoritesLayout->addWidget(w);
 	}
 }
 
