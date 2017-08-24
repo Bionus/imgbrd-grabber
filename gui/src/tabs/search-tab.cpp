@@ -643,7 +643,7 @@ void searchTab::addResultsPage(Page *page, const QList<QSharedPointer<Image>> &i
 	}
 	setPageLabelText(m_siteLabels[site], page, imgs, noResultsMessage);
 
-	if (m_siteLayouts.size() > pos)
+	if (m_siteLayouts.contains(page->site()) && m_pages.value(page->website()).count() == 1)
 	{ addLayout(m_siteLayouts[page->site()], page_y + 1, page_x); }
 }
 void searchTab::setMergedLabelText(QLabel *txt, const QList<QSharedPointer<Image>> &imgs)
