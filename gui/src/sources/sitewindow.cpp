@@ -110,7 +110,7 @@ void SiteWindow::finish(Source *src)
 
 	// If the user wrote "https://" in the URL, we enable SSL for this site
 	if (ssl)
-	{ site->settings()->setValue("ssl", true); }
+	{ site->setSetting("ssl", true, false); }
 
 	// Save new sites
 	QFile f(src->getPath() + "/sites.txt");

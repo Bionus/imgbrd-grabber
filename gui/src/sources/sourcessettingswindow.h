@@ -2,6 +2,7 @@
 #define SOURCESSETTINGSWINDOW_H
 
 #include <QDialog>
+#include <QSettings>
 #include <QMap>
 #include "models/site.h"
 #include "models/profile.h"
@@ -36,6 +37,7 @@ class SourcesSettingsWindow : public QDialog
 	private:
 		Ui::SourcesSettingsWindow *ui;
 		Site *m_site;
+		QSettings *m_globalSettings;
 };
 
 #endif // SOURCESSETTINGSWINDOW_H

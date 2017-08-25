@@ -38,7 +38,9 @@ void Site::loadConfig()
 
 	if (m_settings != nullptr)
 		m_settings->deleteLater();
-	m_settings = new QSettings(siteDir + "settings.ini", QSettings::IniFormat);
+	QSettings *settingsCustom = new QSettings(siteDir + "settings.ini", QSettings::IniFormat);
+	QSettings *settingsDefaults = new QSettings(siteDir + "defaults.ini", QSettings::IniFormat);
+	m_settings = new MixedSettings(QList<QSettings*>() << settingsCustom << settingsDefaults);
 	m_name = m_settings->value("name", m_url).toString();
 
 	// Get default source order
@@ -415,7 +417,8 @@ void Site::finishedTags()
 }
 
 QVariant Site::setting(QString key, QVariant def)	{ return m_settings->value(key, def); }
-QSettings	*Site::settings()						{ return m_settings; }
+void Site::setSetting(QString key, QVariant value, QVariant def)	{ m_settings->setValue(key, value, def); }
+void Site::syncSettings() { m_settings->sync(); }
 TagDatabase *Site::tagDatabase() const				{ return m_tagDatabase;	}
 
 QString Site::name()			{ return m_name;			}
