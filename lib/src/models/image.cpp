@@ -265,6 +265,13 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	else if (details.contains("date"))
 	{ m_createdAt = QDateTime::fromString(details["date"], Qt::ISODate); }
 
+	// Setup extension rotator
+	bool animated = hasTag("gif") || hasTag("animated_gif") || hasTag("mp4") || hasTag("animated_png") || hasTag("webm") || hasTag("animated");
+	QStringList extensions = animated
+		? QStringList() << "webm" << "mp4" << "gif" << "jpg" << "png" << "jpeg" << "swf"
+		: QStringList() << "jpg" << "png" << "gif" << "jpeg" << "webm" << "swf" << "mp4";
+	m_extensionRotator = new ExtensionRotator(getExtension(m_url), extensions);
+
 	// Tech details
 	m_parent = parent;
 	m_previewTry = 0;
@@ -712,13 +719,6 @@ void Image::loadImage(bool inMemory)
 
 	if (m_loadImage != nullptr)
 		m_loadImage->deleteLater();
-
-	// Setup extension rotator
-	bool animated = hasTag("gif") || hasTag("animated_gif") || hasTag("mp4") || hasTag("animated_png") || hasTag("webm") || hasTag("animated");
-	QStringList extensions = animated
-		? QStringList() << "webm" << "mp4" << "gif" << "jpg" << "png" << "jpeg" << "swf"
-		: QStringList() << "jpg" << "png" << "gif" << "jpeg" << "webm" << "swf" << "mp4";
-	m_extensionRotator = new ExtensionRotator(getExtension(m_url), extensions);
 
 	m_loadImage = m_parentSite->get(m_parentSite->fixUrl(m_url), m_parent, "image", this);
 	m_loadImage->setParent(this);
