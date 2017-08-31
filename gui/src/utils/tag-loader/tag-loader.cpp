@@ -34,6 +34,24 @@ void TagLoader::cancel()
 
 void TagLoader::start()
 {
+    // Get site and API
+    Site *site = m_sites.value(ui->comboSource->currentText());
+    Api *api = Q_NULLPTR;
+    for (Api *a : site->getApis())
+    {
+        if (a->contains("Urls/TagApi"))
+        {
+            api = a;
+            break;
+        }
+    }
+    if (api == Q_NULLPTR)
+    {
+        error(this, tr("No API supporting tag fetching found"));
+        return;
+    }
+    site->tagDatabase()->load();
+
 	ui->buttonStart->setEnabled(false);
 
 	// Show progress bar
@@ -41,24 +59,6 @@ void TagLoader::start()
 	ui->progressBar->setMinimum(0);
 	ui->progressBar->setMaximum(0);
 	ui->progressBar->show();
-
-	// Get site and API
-	Site *site = m_sites.value(ui->comboSource->currentText());
-	Api *api = Q_NULLPTR;
-	for (Api *a : site->getApis())
-	{
-		if (a->contains("Urls/TagApi"))
-		{
-			api = a;
-			break;
-		}
-	}
-	if (api == Q_NULLPTR)
-	{
-		error(this, tr("No API supporting tag fetching found"));
-		return;
-	}
-	site->tagDatabase()->load();
 
 	// Load all tags
 	QList<Tag> allTags;
