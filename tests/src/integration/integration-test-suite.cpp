@@ -20,7 +20,7 @@ QList<Image*> IntegrationTestSuite::getImages(QString site, QString source, QStr
 	if (!file.isEmpty())
 	{ CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/" + source + "/" + file); }
 
-	QSettings settings("tests/resources/sites/" + site +"/" + source + "/settings.ini", QSettings::IniFormat);
+	QSettings settings("tests/resources/sites/" + site +"/" + source + "/defaults.ini", QSettings::IniFormat);
 	settings.setValue("download/throttle_retry", 0);
 	settings.setValue("download/throttle_page", 0);
 	settings.setValue("download/throttle_thumbnail", 0);
@@ -75,9 +75,9 @@ QList<Tag> IntegrationTestSuite::getPageTags(QString site, QString source, QStri
 {
 	QDir().mkpath("tests/resources/sites/" + site + "/" + source);
 	QFile::copy("release/sites/" + site +"/model.xml", "tests/resources/sites/" + site +"/model.xml");
-	QFile::copy("release/sites/" + site +"/" + source + "/settings.ini", "tests/resources/sites/" + site +"/" + source + "/settings.ini");
+	QFile::copy("release/sites/" + site +"/" + source + "/defaults.ini", "tests/resources/sites/" + site +"/" + source + "/defaults.ini");
 
-	QSettings settings("tests/resources/sites/" + site +"/" + source + "/settings.ini", QSettings::IniFormat);
+	QSettings settings("tests/resources/sites/" + site +"/" + source + "/defaults.ini", QSettings::IniFormat);
 	settings.setValue("download/throttle_retry", 0);
 	settings.setValue("download/throttle_page", 0);
 	settings.setValue("download/throttle_thumbnail", 0);
@@ -136,9 +136,9 @@ QList<Tag> IntegrationTestSuite::getTags(QString site, QString source, QString f
 {
 	QDir().mkpath("tests/resources/sites/" + site + "/" + source);
 	QFile::copy("release/sites/" + site +"/model.xml", "tests/resources/sites/" + site +"/model.xml");
-	QFile::copy("release/sites/" + site +"/" + source + "/settings.ini", "tests/resources/sites/" + site +"/" + source + "/settings.ini");
+	QFile::copy("release/sites/" + site +"/" + source + "/defaults.ini", "tests/resources/sites/" + site +"/" + source + "/defaults.ini");
 
-	QSettings settings("tests/resources/sites/" + site +"/" + source + "/settings.ini", QSettings::IniFormat);
+	QSettings settings("tests/resources/sites/" + site +"/" + source + "/defaults.ini", QSettings::IniFormat);
 	settings.setValue("download/throttle_retry", 0);
 	settings.setValue("download/throttle_page", 0);
 	settings.setValue("download/throttle_thumbnail", 0);

@@ -8,10 +8,10 @@ void SiteTest::init()
 	QDir().mkpath("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us");
 	QFile::remove("tests/resources/sites/Danbooru (2.0)/model.xml");
 	QFile::remove("tests/resources/sites/Danbooru (2.0)/sites.txt");
-	QFile::remove("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/settings.ini");
+	QFile::remove("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/defaults.ini");
 	QFile::copy("release/sites/Danbooru (2.0)/model.xml", "tests/resources/sites/Danbooru (2.0)/model.xml");
 	QFile::copy("release/sites/Danbooru (2.0)/sites.txt", "tests/resources/sites/Danbooru (2.0)/sites.txt");
-	QFile::copy("release/sites/Danbooru (2.0)/danbooru.donmai.us/settings.ini", "tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/settings.ini");
+	QFile::copy("release/sites/Danbooru (2.0)/danbooru.donmai.us/defaults.ini", "tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/defaults.ini");
 
 	m_settings = new QSettings("tests/resources/settings.ini", QSettings::IniFormat);
 	m_source = new Source(&profile, "tests/resources/sites/Danbooru (2.0)");
@@ -28,7 +28,7 @@ void SiteTest::cleanup()
 
 void SiteTest::testDefaultApis()
 {
-	QSettings settings("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/settings.ini", QSettings::IniFormat);
+	QSettings settings("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/defaults.ini", QSettings::IniFormat);
 	settings.setValue("sources/usedefault", false);
 	settings.setValue("sources/source_1", "");
 	settings.setValue("sources/source_2", "");
@@ -43,7 +43,7 @@ void SiteTest::testDefaultApis()
 
 void SiteTest::testNoApis()
 {
-	QSettings settings("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/settings.ini", QSettings::IniFormat);
+	QSettings settings("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/defaults.ini", QSettings::IniFormat);
 	settings.setValue("sources/usedefault", false);
 	settings.setValue("sources/source_1", "1");
 	settings.setValue("sources/source_2", "2");
@@ -147,7 +147,7 @@ void SiteTest::testCookies()
 	{
 		cookiesVariant.append(cookie.toRawForm());
 	}
-	QSettings siteSettings("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/settings.ini", QSettings::IniFormat);
+	QSettings siteSettings("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/defaults.ini", QSettings::IniFormat);
 	siteSettings.setValue("cookies", cookiesVariant);
 	siteSettings.sync();
 
@@ -164,7 +164,7 @@ void SiteTest::testCookies()
 void SiteTest::testLoginNone()
 {
 	// Prepare settings
-	QSettings siteSettings("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/settings.ini", QSettings::IniFormat);
+	QSettings siteSettings("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/defaults.ini", QSettings::IniFormat);
 	siteSettings.setValue("login/parameter", true);
 	m_site->loadConfig();
 
@@ -183,7 +183,7 @@ void SiteTest::testLoginNone()
 void SiteTest::testLoginGet()
 {
 	// Prepare settings
-	QSettings siteSettings("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/settings.ini", QSettings::IniFormat);
+	QSettings siteSettings("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/defaults.ini", QSettings::IniFormat);
 	siteSettings.setValue("auth/pseudo", "user");
 	siteSettings.setValue("auth/password", "somepassword");
 	siteSettings.setValue("login/type", "get");
@@ -216,7 +216,7 @@ void SiteTest::testLoginGet()
 void SiteTest::testLoginPost()
 {
 	// Prepare settings
-	QSettings siteSettings("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/settings.ini", QSettings::IniFormat);
+	QSettings siteSettings("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/defaults.ini", QSettings::IniFormat);
 	siteSettings.setValue("auth/pseudo", "user");
 	siteSettings.setValue("auth/password", "somepassword");
 	siteSettings.setValue("login/type", "post");

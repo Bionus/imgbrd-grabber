@@ -10,6 +10,7 @@ void SankakuTest::testHtml()
 
 	// Check results
 	QCOMPARE(images.count(), 20);
+	qDebug() << images;
 	QCOMPARE(images[0]->md5(), QString("7af162c8a2e5299d737de002fce087cf"));
 	QCOMPARE(images[1]->md5(), QString("8dd5c24458feb851c4dfbb302ebf5c06"));
 	QCOMPARE(images[2]->md5(), QString("33347fcbeb76b6d7d2c31a5d491d53ee"));
