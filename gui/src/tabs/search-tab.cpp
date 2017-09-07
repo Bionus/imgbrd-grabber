@@ -1302,7 +1302,7 @@ void searchTab::loadPage()
 		// Start loading
 		page->load();
 	}
-	if (merged && m_layouts.size() > 0)
+	if (merged && m_layouts.size() > 0 && m_endlessLoadOffset == 0)
 	{ addLayout(m_layouts[nullptr], 1, 0); }
 	m_page = 0;
 
