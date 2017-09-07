@@ -82,13 +82,13 @@ Tag Tag::FromCapture(QStringList caps, QStringList order)
 		}
 		else if (ord == "type" && type.isEmpty())
 		{
-			type = Tag::GetType(cap, QStringList() << "general" << "artist" << "unknown" << "copyright" << "character" << "species");
+			type = Tag::GetType(cap.trimmed(), QStringList() << "general" << "artist" << "unknown" << "copyright" << "character" << "species");
 		}
 		else if (ord == "count" && count == 0)
 		{
-			QString countStr = cap.toLower();
+			QString countStr = cap.toLower().trimmed();
 			countStr.remove(',');
-			count = countStr.endsWith('k') ? countStr.left(countStr.length() - 1).toFloat() * 1000 : countStr.toInt();
+			count = countStr.endsWith('k', Qt::CaseInsensitive) ? countStr.left(countStr.length() - 1).toFloat() * 1000 : countStr.toInt();
 		}
 	}
 
