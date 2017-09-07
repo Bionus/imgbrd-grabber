@@ -95,6 +95,7 @@ class Image : public QObject
 		void		setSavePath(QString);
 		void		setRating(QString rating);
 		void		setFileExtension(QString ext);
+		bool		shouldDisplaySample() const;
 		QUrl		getDisplayableUrl() const;
 		bool		isVideo() const;
 		void		setTags(QList<Tag> tags);

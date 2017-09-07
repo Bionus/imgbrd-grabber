@@ -6,6 +6,7 @@
 #include "profile.h"
 #include "commands/commands.h"
 #include "downloader/file-downloader.h"
+#include "models/api.h"
 #include "functions.h"
 
 #define MAX_LOAD_FILESIZE (1024*1024*50)
@@ -1157,13 +1158,15 @@ QSettings		*Image::settings() const	{ return m_settings;		}
 QMap<QString,QString> Image::details() const{ return m_details;			}
 QStringList		Image::search() const		{ return m_search;			}
 
-QUrl Image::getDisplayableUrl() const
+bool Image::shouldDisplaySample() const
 {
-	if (!m_sampleUrl.isEmpty() && !m_settings->value("Save/downloadoriginals", true).toBool())
-		return m_sampleUrl;
+	bool getOriginals = m_settings->value("Save/downloadoriginals", true).toBool();
+	bool displaySample = m_parentSite->getSource()->getApis().first()->value("DisplaySample") == "true";
 
-	return m_url;
+	return !m_sampleUrl.isEmpty() && (!getOriginals || displaySample);
 }
+QUrl Image::getDisplayableUrl() const
+{ return shouldDisplaySample() ? m_sampleUrl : m_url; }
 
 QStringList Image::tagsString() const
 {

@@ -375,6 +375,12 @@ void zoomWindow::load()
 	connect(m_image.data(), &Image::downloadProgressImage, this, &zoomWindow::downloadProgress);
 	connect(m_image.data(), &Image::finishedImage, this, &zoomWindow::replyFinishedZoom);
 
+	if (m_image->shouldDisplaySample())
+	{
+		m_saveUrl = m_image->url();
+		m_image->setUrl(m_url);
+	}
+
 	m_imageTime.start();
 	m_image->loadImage();
 }
@@ -570,6 +576,9 @@ void zoomWindow::replyFinishedZoom(QNetworkReply::NetworkError err, QString erro
 
 	ui->progressBarDownload->hide();
 	m_finished = true;
+
+	if (m_image->shouldDisplaySample())
+	{ m_image->setUrl(m_saveUrl); }
 
 	if (err == QNetworkReply::NoError)
 	{

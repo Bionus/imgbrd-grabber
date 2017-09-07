@@ -24,4 +24,5 @@
         <Regex>mailto:stalkerg@gmail\.com</Regex>
 	</Check>
 	<FirstPage>0</FirstPage>
+	<DisplaySample>true</DisplaySample>
 </Site>
