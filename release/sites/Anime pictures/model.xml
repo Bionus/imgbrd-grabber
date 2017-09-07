@@ -3,7 +3,7 @@
 	<Name>Danbooru</Name>
 	<Urls>
 		<Image>/pictures/download_image/{id}.jpg</Image>
-		<SampleReplaces>_cp.->_bp.|_sp.->_bp.</SampleReplaces>
+		<SampleReplaces>_cp.->_bp.&amp;_sp.->_bp.</SampleReplaces>
 		<Json>
 			<Tags>/pictures/view_posts/{page}?search_tag={tags}&amp;lang=en&amp;type=json</Tags>
 		</Json>
@@ -15,8 +15,8 @@
 	<Regex>
 		<ImageTags><![CDATA[<li id="tag_li_[^"]+"[^>]*>\s*<a[^>]*">([^<]+)<\/a>\s*<span>([^<]+)<\/span>\s*<\/li>]]></ImageTags>
 		<TagsOrder>tag|count</TagsOrder>
-		<Image>Post.register\((\{(?:.+)\})\);</Image>
-		<Order>json</Order>
+		<Image><![CDATA[<span[^>]*data-pubtime="([^"]+)">\s*<a href="(\/pictures\/view_post\/(\d+)[^"]+)"\s*title="Anime picture (\d+)x(\d+)"[^>]*>\s*<picture>\s*<source[^>]*>\s*<img\s*id="[^"]*"\s*class="img_sp"\s*src="([^"]+)"[^>]*>]]></Image>
+		<Order>created_at|page_url|id|width|height|preview_url</Order>
 		<LastPage>page of (\d+)</LastPage>
 	</Regex>
 	<Check>
