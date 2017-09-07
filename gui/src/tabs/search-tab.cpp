@@ -465,6 +465,7 @@ void searchTab::loadImageThumbnails(Page *page, const QList<QSharedPointer<Image
 			if (modifiers.contains(tags[r][0]))
 				tags[r] = tags[r].mid(1);
 
+		m_thumbnailsLoading[img.data()] = img;
 		connect(img.data(), &Image::finishedLoadingPreview, this, &searchTab::finishedLoadingPreview);
 		img->loadPreview();
 	}
@@ -476,10 +477,13 @@ void searchTab::finishedLoadingPreview()
 		return;
 
 	QSharedPointer<Image> img;
-	for (QSharedPointer<Image> i : m_images)
-		if (i.data() == sender())
-			img = i;
-	if (img.isNull())
+	QObject *key = sender();
+	if (m_thumbnailsLoading.contains(key))
+	{
+		img = m_thumbnailsLoading[key];
+		m_thumbnailsLoading.remove(key);
+	}
+	else
 	{
 		log("Could not find image related to loaded thumbnail", Logger::Warning);
 		return;
