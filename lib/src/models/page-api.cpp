@@ -266,7 +266,13 @@ QString _parseSetImageUrl(Site *site, Api* api, QString settingUrl, QString sett
 			ret.replace(rgx, rep.right(rep.size() - rep.indexOf("->") - 2));
 		}
 	}
-	return site->fixUrl(ret).toString();
+	QString fixed = site->fixUrl(ret).toString();
+
+	// Clean fake webp files
+	if (fixed.endsWith(".jpg.webp"))
+		fixed = fixed.left(fixed.length() - 5);
+
+	return fixed;
 }
 
 
