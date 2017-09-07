@@ -254,8 +254,9 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	m_sampleUrl = removeCacheUrl(m_sampleUrl.toString());
 	m_previewUrl = removeCacheUrl(m_previewUrl.toString());
 
-	// For ugoira images, we use the sample URL as the URL
-	if (!m_sampleUrl.isEmpty() && getExtension(m_url) == "zip")
+	// We use the sample URL as the URL for zip files (ugoira) or if the setting is set
+	bool downloadOriginals = m_settings->value("Save/downloadoriginals", true).toBool();
+	if (!m_sampleUrl.isEmpty() && (getExtension(m_url) == "zip" || !downloadOriginals))
 		m_url = m_sampleUrl.toString();
 
 	// Creation date
