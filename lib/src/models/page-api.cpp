@@ -734,6 +734,8 @@ void PageApi::parse()
 	while (m_images.size() > lastImage)
 	{ m_images.removeLast(); }
 
+	log(QString("[%1] Parsed page <a href=\"%2\">%2</a>: %3 images, %4 total (%5), %6 pages (%7)").arg(m_site->url()).arg(m_reply->url().toString().toHtmlEscaped()).arg(m_images.count()).arg(imagesCount(false)).arg(imagesCount(true)).arg(pagesCount(false)).arg(pagesCount(true)), Logger::Info);
+
 	m_reply->deleteLater();
 	m_reply = nullptr;
 
