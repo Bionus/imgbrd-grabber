@@ -610,6 +610,15 @@ void PageApi::parse()
 					for (int i = 0; i < from.count(); i++)
 					{ d[to[i]] = sc.value(from[i]).toString().trimmed(); }
 				}
+				// Anime-pictures format
+				else if (sc.contains("download_count"))
+				{
+					QStringList from, to;
+					from << "pubtime" << "small_preview" << "width" << "md5" << "height" << "id" << "score_number" << "big_preview" << "ext" << "size";
+					to << "created_at" << "preview_url" << "width" << "md5" << "height" << "id" << "score" << "sample_url" << "ext" << "filesize";
+					for (int i = 0; i < from.count(); i++)
+					{ d[to[i]] = sc.value(from[i]).toString().trimmed(); }
+				}
 				else
 				{
 					QStringList infos;
