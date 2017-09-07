@@ -170,6 +170,11 @@ void mainWindow::init(QStringList args, QMap<QString,QString> params)
 	actionDeleteBatchUniques->setContext(Qt::WidgetWithChildrenShortcut);
 	connect(actionDeleteBatchUniques, &QShortcut::activated, this, &mainWindow::batchClearSelUniques);
 
+	QShortcut *actionNextTab = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_PageDown), this);
+	connect(actionNextTab, &QShortcut::activated, this, &mainWindow::tabNext);
+	QShortcut *actionPrevTab = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_PageUp), this);
+	connect(actionPrevTab, &QShortcut::activated, this, &mainWindow::tabPrev);
+
 	ui->actionAddtab->setShortcut(QKeySequence::AddTab);
 	ui->actionQuit->setShortcut(QKeySequence::Quit);
 	ui->actionFolder->setShortcut(QKeySequence::Open);
@@ -556,6 +561,19 @@ void mainWindow::closeCurrentTab()
 	auto currentTab = ui->tabWidget->currentWidget();
 	if (currentTab->maximumWidth() != 16777214)
 	{ currentTab->deleteLater(); }
+}
+
+void mainWindow::tabNext()
+{
+	int index = ui->tabWidget->currentIndex();
+	int count = ui->tabWidget->count();
+	ui->tabWidget->setCurrentIndex((index + 1) % count);
+}
+void mainWindow::tabPrev()
+{
+	int index = ui->tabWidget->currentIndex();
+	int count = ui->tabWidget->count();
+	ui->tabWidget->setCurrentIndex((index - 1 + count) % count);
 }
 
 void mainWindow::addTableItem(QTableWidget *table, int row, int col, QString text)

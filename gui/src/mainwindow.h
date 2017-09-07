@@ -128,6 +128,8 @@ class mainWindow : public QMainWindow
 		bool loadTabs(QString);
 		void updateTabs();
 		void focusSearch();
+		void tabNext();
+		void tabPrev();
 		// Tag list
 		void loadMd5(QString path, bool newTab = true, bool background = true, bool save = true);
 		void loadTag(QString tag, bool newTab = true, bool background = true, bool save = true);
