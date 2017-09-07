@@ -480,7 +480,10 @@ void searchTab::finishedLoadingPreview()
 		if (i.data() == sender())
 			img = i;
 	if (img.isNull())
+	{
+		log("Could not find image related to loaded thumbnail", Logger::Warning);
 		return;
+	}
 
 	if (img->previewImage().isNull())
 	{
@@ -925,7 +928,10 @@ void searchTab::addResultsImage(QSharedPointer<Image> img, bool merge)
 	// Early return if the layout has already been removed
 	Page *layoutKey = merge && m_layouts.contains(nullptr) ? nullptr : img->page();
 	if (!m_layouts.contains(layoutKey))
+	{
+		log("Missing image layout", Logger::Error);
 		return;
+	}
 
 	int absolutePosition = m_images.indexOf(img);
 	int imagesPerPage = getActualImagesPerPage(img->page(), merge);
