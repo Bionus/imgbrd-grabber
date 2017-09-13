@@ -8,6 +8,7 @@
 #include <QCompleter>
 #include <QNetworkProxy>
 #include <QScrollBar>
+#include <QStorageInfo>
 #include <QMimeData>
 #include <qmath.h>
 #if defined(Q_OS_WIN)
@@ -1779,7 +1780,17 @@ void mainWindow::getAllGetImageSaved(QSharedPointer<Image> img, QMap<QString, Im
 			diskError = true;
 			m_getAllErrors++;
 			m_progressdialog->pause();
-			QMessageBox::critical(m_progressdialog, tr("Error"), tr("An error occured saving the image.\n%1\nPlease solve the issue before resuming the download.").arg(path));
+
+			QDir destinationDir = QFileInfo(path).absoluteDir();
+			QStorageInfo storage(destinationDir);
+			bool isDriveFull = storage.bytesAvailable() < img->fileSize() || storage.bytesAvailable() < 20 * 1024 * 1024;
+
+			QString msg;
+			if (isDriveFull)
+			{ msg = tr("Is seems that the destination directory is full.\n%1\nPlease solve the issue before resuming the download.").arg(path); }
+			else
+			{ msg = tr("An error occured saving the image.\n%1\nPlease solve the issue before resuming the download.").arg(path); }
+			QMessageBox::critical(m_progressdialog, tr("Error"), msg);
 		}
 	}
 
