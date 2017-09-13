@@ -20,7 +20,7 @@
    <string>Batch download</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../../../resources/resources.qrc">
+   <iconset resource="../../resources/resources.qrc">
     <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
   </property>
   <property name="modal">
@@ -262,10 +262,10 @@
   <tabstop>cancelButton</tabstop>
  </tabstops>
  <resources>
-  <include location="../../../resources/resources.qrc"/>
-  <include location="../../../resources/resources.qrc"/>
-  <include location="../../../resources/resources.qrc"/>
-  <include location="../../../resources/resources.qrc"/>
+  <include location="../../resources/resources.qrc"/>
+  <include location="../../resources/resources.qrc"/>
+  <include location="../../resources/resources.qrc"/>
+  <include location="../../resources/resources.qrc"/>
  </resources>
  <connections>
   <connection>

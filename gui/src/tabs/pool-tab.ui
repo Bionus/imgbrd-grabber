@@ -20,7 +20,7 @@
    <string>New pool tab</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../../../resources/resources.qrc">
+   <iconset resource="../../resources/resources.qrc">
     <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0,0,1,0">
@@ -462,10 +462,10 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../../../resources/resources.qrc"/>
-  <include location="../../../resources/resources.qrc"/>
-  <include location="../../../resources/resources.qrc"/>
-  <include location="../../../resources/resources.qrc"/>
+  <include location="../../resources/resources.qrc"/>
+  <include location="../../resources/resources.qrc"/>
+  <include location="../../resources/resources.qrc"/>
+  <include location="../../resources/resources.qrc"/>
  </resources>
  <connections>
   <connection>
