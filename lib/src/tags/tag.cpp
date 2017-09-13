@@ -15,7 +15,11 @@ Tag::Tag(QString text, QString type, int count, QStringList related)
 { }
 
 Tag::Tag(QString text, TagType type, int count, QStringList related)
-	: m_type(TagType(type)), m_count(count), m_related(related)
+	: Tag(0, text, type, count, related)
+{ }
+
+Tag::Tag(int id, QString text, TagType type, int count, QStringList related)
+	: m_id(id), m_type(TagType(type)), m_count(count), m_related(related)
 {
 	static QStringList weakTypes = QStringList() << "unknown" << "origin";
 
@@ -240,11 +244,13 @@ QString Tag::stylished(Profile *profile, QStringList ignored, QStringList blackl
 	return ret;
 }
 
+void Tag::setId(int id)				{ m_id = id;		}
 void Tag::setText(QString text)		{ m_text = text;	}
 void Tag::setType(TagType type)		{ m_type = type;	}
 void Tag::setCount(int count)		{ m_count = count;	}
 void Tag::setRelated(QStringList r)	{ m_related = r;	}
 
+int			Tag::id() const			{ return m_id;		}
 QString		Tag::text() const		{ return m_text;	}
 TagType		Tag::type() const		{ return m_type;	}
 int			Tag::count() const		{ return m_count;	}

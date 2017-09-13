@@ -133,7 +133,7 @@ void TagApi::parse()
 			}
 
 			TagType tagType = tagTypes.contains(typeId) ? tagTypes[typeId] : TagType("unknown");
-			m_tags.append(Tag(name, tagType, count));
+			m_tags.append(Tag(id, name, tagType, count));
 		}
 	}
 
@@ -180,7 +180,7 @@ void TagApi::parse()
 			}
 
 			TagType tagType = tagTypes.contains(typeId) ? tagTypes[typeId] : TagType("unknown");
-			m_tags.append(Tag(name, tagType, count));
+			m_tags.append(Tag(id, name, tagType, count));
 		}
 	}
 
