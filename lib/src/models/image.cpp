@@ -758,6 +758,8 @@ void Image::finishedImageS(bool inMemory)
 		m_loadImage = nullptr;
 		if (m_fileSize > MAX_LOAD_FILESIZE)
 		{ emit finishedImage((QNetworkReply::NetworkError)500, ""); }
+		else
+		{ emit finishedImage(QNetworkReply::OperationCanceledError, ""); }
 		return;
 	}
 
@@ -946,7 +948,9 @@ Image::SaveResult Image::save(QString path, bool force, bool basic, bool addMd5,
 					log(QString("Loading and saving image in <a href=\"file:///%1\">%1</a>").arg(path));
 					QEventLoop loopImage;
 					FileDownloader fileDownloader(this);
-					connect(&fileDownloader, &FileDownloader::finished, &loopImage, &QEventLoop::quit);
+					connect(&fileDownloader, &FileDownloader::writeError, &loopImage, &QEventLoop::quit);
+					connect(&fileDownloader, &FileDownloader::networkError, &loopImage, &QEventLoop::quit);
+					connect(&fileDownloader, &FileDownloader::success, &loopImage, &QEventLoop::quit);
 					loadImage(false);
 					if (!fileDownloader.start(m_loadImage, path))
 					{

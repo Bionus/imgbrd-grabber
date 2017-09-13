@@ -15,8 +15,13 @@ class FileDownloader : public QObject
 		bool start(QNetworkReply *reply, QString path);
 		bool start(QNetworkReply *reply, QStringList paths);
 
+	private:
+		void write(const QByteArray &data);
+
 	signals:
-		void finished();
+		void writeError();
+		void networkError(QNetworkReply::NetworkError error, QString errorString);
+		void success();
 
 	private slots:
 		void replyReadyRead();
@@ -25,6 +30,7 @@ class FileDownloader : public QObject
 	private:
 		QNetworkReply *m_reply;
 		QFile m_file;
+		bool m_writeError;
 		QStringList m_copies;
 };
 

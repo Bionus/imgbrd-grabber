@@ -16,6 +16,7 @@ bool FileDownloader::start(QNetworkReply *reply, QStringList paths)
 	m_file.setFileName(paths.takeFirst());
 	bool ok = m_file.open(QFile::WriteOnly | QFile::Truncate);
 
+	m_writeError = false;
 	m_copies = paths;
 	m_reply = reply;
 
@@ -34,22 +35,32 @@ void FileDownloader::replyReadyRead()
 	if (m_reply->bytesAvailable() < WRITE_BUFFER_SIZE)
 		return;
 
-	m_file.write(m_reply->readAll());
+	if (m_file.write(m_reply->readAll()) < 0)
+	{
+		m_writeError = true;
+		m_reply->abort();
+	}
 }
 
 void FileDownloader::replyFinished()
 {
-	m_file.write(m_reply->readAll());
+	QByteArray data = m_reply->readAll();
+	qint64 written = m_file.write(data);
 	m_file.close();
 
-	if (m_reply->error() != QNetworkReply::NoError)
+	bool failedLastWrite = data.length() > 0 && written < 0;
+	if (m_reply->error() != QNetworkReply::NoError || failedLastWrite)
 	{
 		m_file.remove();
+		if (failedLastWrite || m_writeError)
+			emit writeError();
+		else
+			emit networkError(m_reply->error(), m_reply->errorString());
 		return;
 	}
 
 	for (QString copy : m_copies)
 		m_file.copy(copy);
 
-	emit finished();
+	emit success();
 }
