@@ -910,23 +910,6 @@ void searchTab::contextSaveSelected()
 	}
 }
 
-int searchTab::getActualImagesPerPage(Page *page, bool merge)
-{
-	// If we are using merged results, the images/page corresponds to the total number of images
-	if (merge)
-		return m_images.count();
-
-	int imagesPerPage;
-
-	// If we can customize the limit, that means we can have confidence in the spin value
-	if (page->site()->value("Urls/Selected/Tags").contains("{limit}"))
-		imagesPerPage = ui_spinImagesPerPage->value();
-	else
-		imagesPerPage = page->images().size();
-
-	return (imagesPerPage <= 0 ? 20 : imagesPerPage);
-}
-
 void searchTab::addResultsImage(QSharedPointer<Image> img, bool merge)
 {
 	// Early return if the layout has already been removed
@@ -938,7 +921,6 @@ void searchTab::addResultsImage(QSharedPointer<Image> img, bool merge)
 	}
 
 	int absolutePosition = m_images.indexOf(img);
-	int imagesPerPage = getActualImagesPerPage(img->page(), merge);
 
 	// Calculate relative position compared to validated images
 	int relativePosition = 0;
@@ -958,7 +940,6 @@ void searchTab::addResultsImage(QSharedPointer<Image> img, bool merge)
 	m_boutons.insert(img.data(), button);
 
 	FixedSizeGridLayout *layout = m_layouts[layoutKey];
-	//layout->addFixedSizeWidget(button, relativePosition, imagesPerPage);
 	layout->insertWidget(relativePosition, button);
 }
 

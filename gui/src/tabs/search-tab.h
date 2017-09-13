@@ -62,7 +62,6 @@ class searchTab : public QWidget
 		void loadImageThumbnails(Page *page, const QList<QSharedPointer<Image>> &imgs);
 		QString makeThumbnailTooltip(QSharedPointer<Image> img) const;
 		QBouton *createImageThumbnail(int position, QSharedPointer<Image> img);
-		int getActualImagesPerPage(Page *page, bool merge);
 		FixedSizeGridLayout *createImagesLayout(QSettings *settings);
 		void thumbnailContextMenu(int position, QSharedPointer<Image> img);
 
