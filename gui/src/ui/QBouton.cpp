@@ -10,7 +10,7 @@ QBouton::QBouton(QVariant id, bool resizeInsteadOfCropping, bool smartSizeHint, 
 void QBouton::scale(const QPixmap &image, float scale)
 {
 	QSize size;
-	if (abs(scale - 1.0f) < 0.001f)
+	if (fabs(scale - 1.0f) < 0.001f)
 	{
 		size = image.size() * scale;
 		setIcon(image.scaled(size));
