@@ -1,5 +1,6 @@
 #include "page-api.h"
 #include <QDomDocument>
+#include <QRegularExpression>
 #include <math.h>
 #include "page.h"
 #include "site.h"
@@ -529,23 +530,25 @@ void PageApi::parse()
 		}
 
 		// Getting images
-		QRegExp rx(m_site->value("Regex/Image"));
-		QStringList order = m_site->value("Regex/Order").split('|');
-		rx.setMinimal(true);
-		int pos = 0, id = 0;
-		while ((pos = rx.indexIn(m_source, pos)) != -1)
+		QRegularExpression rx(m_site->value("Regex/Image"));
+		auto matches = rx.globalMatch(m_source);
+		int id = 0;
+		while (matches.hasNext())
 		{
-			pos += rx.matchedLength();
+			auto match = matches.next();
 			QMap<QString,QString> d;
-			for (int i = 0; i < order.size(); i++)
+			for (QString group : rx.namedCaptureGroups())
 			{
-				QString ord = order.at(i);
-				if (!d.contains(ord) || d[ord].isEmpty())
-				{ d[ord] = rx.cap(i + 1); }
+				if (group.isEmpty())
+					continue;
+
+				QString val = match.captured(group);
+				if (!val.isEmpty())
+				{ d[group] = val; }
 			}
 
 			// JSON elements
-			if (order.contains("json") && !d["json"].isEmpty())
+			if (d.contains("json") && !d["json"].isEmpty())
 			{
 				QVariant src = Json::parse(d["json"]);
 				if (!src.isNull())

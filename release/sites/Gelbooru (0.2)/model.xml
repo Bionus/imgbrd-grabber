@@ -19,8 +19,7 @@
 	</Urls>
 	<Regex>
 		<Tags><![CDATA[<li class="tag-type-(?<type>[^"]+)">(?:[^<]*<a[^>]*>[^<]*</a>)*[^<]*<a[^>]*>(?<tag>[^<]*)</a>[^<]*<span[^>]*>(?<count>\d+)</span>[^<]*</li>]]></Tags>
-		<Image>&lt;span[^&gt;]*(?: id=&quot;?\w(\d+)&quot;?)?&gt;\s*&lt;a[^&gt;]*(?: id=&quot;?\w(\d+)&quot;?)[^&gt;]*&gt;\s*&lt;img [^&gt;]*src=&quot;([^&quot;]+\/thumbnail_([^.]+)\.[^&quot;]+)&quot; [^&gt;]*title=&quot;\s*([^&quot;]+)&quot;[^&gt;]*\/?&gt;\s*&lt;\/a&gt;</Image>
-		<Order>id|id|preview_url|md5|tags</Order>
+		<Image><![CDATA[<span[^>]*(?: id="?\w(?<id>\d+)"?)?>\s*<a[^>]*(?: id="?\w(?<id>\d+)"?)[^>]*>\s*<img [^>]*src="(?<preview_url>[^"]+\/thumbnail_(?<md5>[^.]+)\.[^"]+)" [^>]*title="\s*(?<tags>[^"]+)"[^>]*\/?>\s*<\/a>]]></Image>
 		<ImageUrl>&lt;img[^&gt;]+src=&quot;([^&quot;]+)&quot;[^&gt;]+onclick=&quot;Note\.toggle\(\);&quot;[^&gt;]*/&gt;</ImageUrl>
         <LastPage>&lt;a href=&quot;[^&quot;]+pid=(\d+)[^&quot;]*&quot; alt=&quot;last page&quot;[^&gt;]*&gt;</LastPage>
 	</Regex>
