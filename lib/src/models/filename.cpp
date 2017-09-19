@@ -276,13 +276,108 @@ QMap<QString, QStringList> Filename::makeDetails(const Image& img, Profile *prof
 	return details;
 }
 
+QString Filename::generateJavaScriptVariables(QSettings *settings, QMap<QString, QPair<QString, QString>> replaces) const
+{
+	QString inits = "";
+	QStringList keys = replaces.keys();
+	for (int i = 0; i < replaces.size(); ++i)
+	{
+		QString key = keys.at(i);
+		QString res = replaces[key].first.isEmpty() ? replaces[key].second : replaces[key].first;
+
+		if (key == "all" || key == "tags" || key == "general" || key == "artist" || key == "copyright" || key == "character")
+		{
+			QStringList vals = res.split(TAGS_SEPARATOR);
+			QString mainSeparator = settings->value("Save/separator", " ").toString();
+			QString tagSeparator = fixSeparator(settings->value("Save/" + key + "_sep", mainSeparator).toString());
+			res = vals.join(tagSeparator);
+		}
+
+		if (key != "allo")
+		{
+			res = res.replace("\\", "_").replace("%", "_").replace("/", "_").replace(":", "_").replace("|", "_").replace("*", "_").replace("?", "_").replace("\"", "_").replace("<", "_").replace(">", "_").replace("__", "_").replace("__", "_").replace("__", "_").trimmed();
+			if (!settings->value("Save/replaceblanks", false).toBool())
+			{ res.replace("_", " "); }
+		}
+
+		if (key == "date")
+		{ inits += "var " + key + " = new Date(\"" + res + "\");\r\n"; }
+		else
+		{ inits += "var " + key + " = \"" + res + "\";\r\n"; }
+	}
+	return inits;
+}
+
+bool Filename::matchConditionalFilename(QString cond, QSettings *settings, QMap<QString, QPair<QString, QString>> replaces, QMap<QString, QStringList> details) const
+{
+	// Javascript conditions
+	if (cond.startsWith("javascript:"))
+	{
+		// We remove the "javascript:" part
+		cond = cond.right(cond.length() - 11);
+
+		// Variables initialization
+		QString inits = generateJavaScriptVariables(settings, replaces);
+
+		// Script execution
+		QScriptEngine engine;
+		QScriptValue result = engine.evaluate(QScriptProgram(inits + cond));
+		if (result.isError())
+		{
+			log("Error in Javascript evaluation:<br/>" + result.toString());
+			return false;
+		}
+
+		return result.toBool();
+	}
+
+	QStringList options = cond.split(' ');
+
+	// Token conditions
+	int condPer = cond.count('%');
+	if (condPer > 0 && condPer % 2 == 0)
+	{
+		QRegExp reg("%([^%]+)%");
+		reg.setMinimal(true);
+		int p = 0;
+		while ((p = reg.indexIn(cond, p)) != -1)
+		{
+			QString token = reg.cap(1);
+			if (replaces.contains(token))
+			{
+				options.removeOne(reg.cap(0));
+
+				// Real tokens
+				if (details.contains(token + "s"))
+				{ options.append(details[token + "s"]); }
+
+				// Custom tokens
+				if (!replaces.value(token).first.isEmpty())
+				{ options.append(replaces.value(token).first.split(' ')); }
+			}
+			p += reg.matchedLength();
+		}
+	}
+
+	// Tag conditions
+	for (QString opt : options)
+	{
+		if (details["alls"].contains(opt))
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
 QStringList Filename::path(const Image& img, Profile *profile, QString pth, int counter, bool complex, bool maxlength, bool shouldFixFilename, bool getFull, bool keepInvalidTokens) const
 {
 	QSettings *settings = profile->getSettings();
 	QStringList remove = settings->value("ignoredtags").toString().split(' ', QString::SkipEmptyParts);
 
-	QMap<QString,QStringList> custom = QMap<QString,QStringList>(), scustom = getCustoms(settings);
-	QMap<QString,QStringList> details = makeDetails(img, profile, settings);
+	QMap<QString, QStringList> custom = QMap<QString,QStringList>(), scustom = getCustoms(settings);
+	QMap<QString, QStringList> details = makeDetails(img, profile, settings);
 	for (Tag tag : img.filteredTags(remove))
 	{
 		for (int r = 0; r < scustom.size(); ++r)
@@ -300,51 +395,18 @@ QStringList Filename::path(const Image& img, Profile *profile, QString pth, int 
 
 	// Conditional filenames
 	QMap<QString, QPair<QString, QString>> filenames = getFilenames(settings);
-	for (int i = 0; i < filenames.size(); ++i)
+	for (QString cond : filenames.keys())
 	{
-		QString cond = filenames.keys().at(i);
-		QStringList options = cond.split(' ');
-
-		int condPer = cond.count('%');
-		if (condPer > 0 && condPer % 2 == 0)
+		if (matchConditionalFilename(cond, settings, replacesList.first(), details))
 		{
-			QRegExp reg("%([^%]+)%");
-			reg.setMinimal(true);
-			int p = 0;
-			while ((p = reg.indexIn(cond, p)) != -1)
+			QPair<QString, QString> result = filenames[cond];
+			if (!result.first.isEmpty())
 			{
-				QString token = reg.cap(1);
-				if (replacesList.first().contains(token))
-				{
-					options.removeOne(reg.cap(0));
-
-					// Real tokens
-					if (details.contains(token + "s"))
-					{ options.append(details[token + "s"]); }
-
-					// Custom tokens
-					if (!replacesList.first().value(token).first.isEmpty())
-					{ options.append(replacesList.first().value(token).first.split(' ')); }
-				}
-				p += reg.matchedLength();
+				filename = result.first;
+				replacesList = this->getReplaces(filename, img, profile, custom);
 			}
-		}
-
-		for (QString opt : options)
-		{
-			if (details["alls"].contains(opt))
-			{
-				if (!filenames.value(cond).first.isEmpty())
-				{
-					filename = filenames.value(cond).first;
-
-					// Update replaces accordingly
-					replacesList = this->getReplaces(filename, img, profile, custom);
-				}
-				if (!filenames.value(cond).second.isEmpty())
-				{ pth = filenames.value(cond).second; }
-				break;
-			}
+			if (!result.second.isEmpty())
+			{ pth = result.second; }
 		}
 	}
 
@@ -358,33 +420,7 @@ QStringList Filename::path(const Image& img, Profile *profile, QString pth, int 
 		for (auto replaces : replacesList)
 		{
 			// Variables initialization
-			QString inits = "";
-			QStringList keys = replaces.keys();
-			for (int i = 0; i < replaces.size(); ++i)
-			{
-				QString key = keys.at(i);
-				QString res = replaces[key].first.isEmpty() ? replaces[key].second : replaces[key].first;
-
-				if (key == "all" || key == "tags" || key == "general" || key == "artist" || key == "copyright" || key == "character")
-				{
-					QStringList vals = res.split(TAGS_SEPARATOR);
-					QString mainSeparator = settings->value("Save/separator", " ").toString();
-					QString tagSeparator = fixSeparator(settings->value("Save/" + key + "_sep", mainSeparator).toString());
-					res = vals.join(tagSeparator);
-				}
-
-				if (key != "allo")
-				{
-					res = res.replace("\\", "_").replace("%", "_").replace("/", "_").replace(":", "_").replace("|", "_").replace("*", "_").replace("?", "_").replace("\"", "_").replace("<", "_").replace(">", "_").replace("__", "_").replace("__", "_").replace("__", "_").trimmed();
-					if (!settings->value("Save/replaceblanks", false).toBool())
-					{ res.replace("_", " "); }
-				}
-
-				if (key == "date")
-				{ inits += "var " + key + " = new Date(\"" + res + "\");\r\n"; }
-				else
-				{ inits += "var " + key + " = \"" + res + "\";\r\n"; }
-			}
+			QString inits = generateJavaScriptVariables(settings, replaces);
 
 			// Script execution
 			QScriptEngine engine;

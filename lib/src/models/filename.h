@@ -51,6 +51,8 @@ class Filename
 		QList<QPair<QString,QString>> getReplace(QString setting, QMap<QString,QStringList> details, QSettings *settings) const;
 		bool returnError(QString msg, QString *error) const;
 		QString fixSeparator(QString separator) const;
+		QString generateJavaScriptVariables(QSettings *settings, QMap<QString, QPair<QString, QString>> replaces) const;
+		bool matchConditionalFilename(QString cond, QSettings *settings, QMap<QString, QPair<QString, QString>> replaces, QMap<QString, QStringList> details) const;
 
 	private:
 		QString m_format;

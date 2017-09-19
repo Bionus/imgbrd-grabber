@@ -71,6 +71,7 @@ class FilenameTest : public TestSuite
 		void testConditionalsTag();
 		void testConditionalsToken();
 		void testConditionalsCustom();
+		void testConditionalsJavascript();
 		void testCustoms();
 		void testReplaceBlanks();
 		void testCommand();
