@@ -57,18 +57,18 @@ Tag::Tag(int id, QString text, TagType type, int count, QStringList related)
 Tag::~Tag()
 { }
 
-Tag Tag::FromCapture(QRegularExpressionMatch match)
+Tag Tag::FromCapture(QRegularExpressionMatch match, QStringList groups)
 {
 	// Tag
 	QString tag;
-	if (!match.captured("tag").isEmpty())
+	if (groups.contains("tag"))
 	{
 		tag = match.captured("tag").replace(" ", "_").replace("&amp;", "&").trimmed();
 	}
 
 	// Type
 	QString type;
-	if (!match.captured("type").isEmpty())
+	if (groups.contains("type"))
 	{
 		type = Tag::GetType(match.captured("tag").trimmed(), QStringList() << "general" << "artist" << "unknown" << "copyright" << "character" << "species");
 	}
@@ -77,7 +77,7 @@ Tag Tag::FromCapture(QRegularExpressionMatch match)
 
 	// Count
 	int count = 0;
-	if (!match.captured("count").isEmpty())
+	if (groups.contains("count"))
 	{
 		QString countStr = match.captured("count").toLower().trimmed();
 		countStr.remove(',');
@@ -98,7 +98,7 @@ QList<Tag> Tag::FromRegexp(QString rx, const QString &source)
 	while (matches.hasNext())
 	{
 		auto match = matches.next();
-		Tag tag = Tag::FromCapture(match);
+		Tag tag = Tag::FromCapture(match, rxtags.namedCaptureGroups());
 
 		if (!got.contains(tag.text()))
 		{
