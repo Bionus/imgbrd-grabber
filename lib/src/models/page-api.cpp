@@ -138,11 +138,11 @@ void PageApi::updateUrls()
 	}
 
 	// Check if we are looking for a pool
-	QRegExp poolRx("pool:(\\d+)");
+	QRegularExpression poolRx("pool:(\\d+)");
+	auto match = poolRx.match(t);
 	QString url;
 	int pl = -1;
-	int pos = -1;
-	if ((pos = poolRx.indexIn(t)) != -1)
+	if (match.hasMatch())
 	{
 		for (int i = 1; i <= m_site->getApis().count() + 1; i++)
 		{
@@ -150,11 +150,11 @@ void PageApi::updateUrls()
 			if (api->contains("Urls/Pools"))
 			{
 				url = api->value("Urls/Pools");
-				url.replace("{pool}", poolRx.cap(1));
-				pl = poolRx.cap(1).toInt();
+				url.replace("{pool}", match.captured(1));
+				pl = match.captured(1).toInt();
 				m_currentSource = i;
 				m_api = api;
-				t = t.remove(pos, poolRx.cap(0).length()).trimmed();
+				t = t.remove(match.capturedStart(0), match.captured(0).length()).trimmed();
 				break;
 			}
 		}
@@ -162,7 +162,7 @@ void PageApi::updateUrls()
 		{
 			log(QString("[%1] No source of this site is compatible with pools.").arg(m_site->url()), Logger::Warning);
 			m_errors.append(tr("No source of this site is compatible with pools."));
-			m_search.removeAll("pool:"+poolRx.cap(1));
+			m_search.removeAll("pool:"+match.captured(1));
 			t.remove(m_pool);
 			t = t.trimmed();
 		}
@@ -179,11 +179,12 @@ void PageApi::updateUrls()
 	m_originalUrl = QString(url);
 	m_url = parseUrl(url, pid, p, t, pseudo, password).toString();
 
-	if ((pl >= 0 || poolRx.indexIn(t) != -1) && m_api->contains("Urls/Html/Pools"))
+	auto plMatch = poolRx.match(t);
+	if ((pl > 0 || plMatch.hasMatch()) && m_api->contains("Urls/Html/Pools"))
 	{
 		url = m_site->value("Urls/Html/Pools");
 		url = parseUrl(url, pid, p, t, pseudo, password).toString();
-		url.replace("{pool}", poolRx.cap(1));
+		url.replace("{pool}", pl > 0 ? QString::number(pl) : plMatch.captured(1));
 		m_urlRegex = QUrl(url);
 	}
 	else if (m_api->contains("Urls/Html/Tags"))
@@ -263,7 +264,7 @@ QString _parseSetImageUrl(Site *site, Api* api, QString settingUrl, QString sett
 		QStringList reps = api->value(settingReplaces).split('&');
 		for (QString rep : reps)
 		{
-			QRegExp rgx(rep.left(rep.indexOf("->")));
+			QRegularExpression rgx(rep.left(rep.indexOf("->")));
 			ret.replace(rgx, rep.right(rep.size() - rep.indexOf("->") - 2));
 		}
 	}
@@ -514,18 +515,17 @@ void PageApi::parse()
 		// Getting tags
 		if (m_site->contains("Regex/Tags"))
 		{
-			QRegExp rxtags(m_site->value("Regex/Tags"));
-			rxtags.setMinimal(true);
+			QRegularExpression rxtags(m_site->value("Regex/Tags"));
 			QStringList tags = QStringList();
-			int p = 0;
-			while (((p = rxtags.indexIn(m_source, p)) != -1))
+			auto matches = rxtags.globalMatch(m_source);
+			while (matches.hasNext())
 			{
-				if (!tags.contains(rxtags.cap(2)))
+				auto match = matches.next();
+				if (!tags.contains(match.captured(2)))
 				{
-					m_tags.append(Tag(rxtags.cap(2), rxtags.cap(1), rxtags.cap(3).toInt()));
-					tags.append(rxtags.cap(2));
+					m_tags.append(Tag(match.captured(2), match.captured(1), match.captured(3).toInt()));
+					tags.append(match.captured(2));
 				}
-				p += rxtags.matchedLength();
 			}
 		}
 
@@ -800,7 +800,7 @@ void PageApi::parseTags()
 		if (rxwiki.indexIn(source) != -1)
 		{
 			m_wiki = rxwiki.cap(1);
-			m_wiki.remove("/wiki/show?title=").remove(QRegExp("<p><a href=\"([^\"]+)\">Full entry &raquo;</a></p>")).replace("<h6>", "<span class=\"title\">").replace("</h6>", "</span>");
+			m_wiki.remove("/wiki/show?title=").remove(QRegularExpression("<p><a href=\"([^\"]+)\">Full entry &raquo;</a></p>")).replace("<h6>", "<span class=\"title\">").replace("</h6>", "</span>");
 		}
 	}
 
