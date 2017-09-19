@@ -40,12 +40,13 @@ class QBouton : public QPushButton
 		void toggled(QString id, bool toggle, bool range);
 
 	private:
-		QVariant	_id;
-		bool		_resizeInsteadOfCropping, _smartSizeHint;
-		QColor		_penColor;
-		int			_border;
-		qint64		_progress;
-		qint64		_progressMax;
+		QVariant m_id;
+		bool m_resizeInsteadOfCropping;
+		bool m_smartSizeHint;
+		QColor m_penColor;
+		int m_border;
+		qint64 m_progress;
+		qint64 m_progressMax;
 };
 
 #endif

@@ -302,8 +302,8 @@ void zoomWindow::openSaveDir(bool fav)
 
 		QStringList files = m_image->path(fn, path);
 		QString file = files.empty() ? "" : files.at(0);
-		QString pth = file.section(QDir::toNativeSeparators("/"), 0, -2);
-		QString url = path+QDir::toNativeSeparators("/")+pth;
+		QString pth = file.section(QDir::separator(), 0, -2);
+		QString url = path + QDir::separator() + pth;
 
 		QDir dir(url);
 		if (dir.exists())
@@ -313,8 +313,8 @@ void zoomWindow::openSaveDir(bool fav)
 			int reply = QMessageBox::question(this, tr("Folder does not exist"), tr("The save folder does not exist yet. Create it?"), QMessageBox::Yes | QMessageBox::No);
 			if (reply == QMessageBox::Yes)
 			{
-				QDir dir(path);
-				if (!dir.mkpath(pth))
+				QDir rootDir(path);
+				if (!rootDir.mkpath(pth))
 				{ error(this, tr("Error creating folder.\n%1").arg(url)); }
 				showInGraphicalShell(url);
 			}

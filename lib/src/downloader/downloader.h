@@ -47,7 +47,7 @@ class Downloader : public QObject
 	public slots:
 		void returnInt(int ret);
 		void returnString(QString ret);
-		void returnTagList(QList<Tag> ret);
+		void returnTagList(QList<Tag> tags);
 		void returnStringList(QStringList ret);
 		void finishedLoadingPageCount(Page *page);
 		void finishedLoadingTags(QList<Tag> tags);

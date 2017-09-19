@@ -26,12 +26,12 @@ void ProfileTest::cleanup()
 
 void ProfileTest::testConstructorEmpty()
 {
-	Profile profile;
+	Profile newProfile;
 
-	QCOMPARE(profile.getPath(), QString());
-	QVERIFY(profile.getSettings() == nullptr);
-	QVERIFY(profile.getFavorites().isEmpty());
-	QVERIFY(profile.getKeptForLater().isEmpty());
+	QCOMPARE(newProfile.getPath(), QString());
+	QVERIFY(newProfile.getSettings() == nullptr);
+	QVERIFY(newProfile.getFavorites().isEmpty());
+	QVERIFY(newProfile.getKeptForLater().isEmpty());
 }
 
 void ProfileTest::testConstructorPath()

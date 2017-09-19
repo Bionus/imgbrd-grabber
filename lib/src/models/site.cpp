@@ -288,16 +288,16 @@ QNetworkRequest Site::makeRequest(QUrl url, Page *page, QString ref, Image *img)
 	{ referer = m_settings->value("referer", "none").toString(); }
 	if (referer != "none" && (referer != "page" || page != NULL))
 	{
-		QString ref;
+		QString refHeader;
 		if (referer == "host")
-		{ ref = url.scheme()+"://"+url.host(); }
+		{ refHeader = url.scheme()+"://"+url.host(); }
 		else if (referer == "image")
-		{ ref = url.toString(); }
+		{ refHeader = url.toString(); }
 		else if (referer == "page" && page)
-		{ ref = page->url().toString(); }
+		{ refHeader = page->url().toString(); }
 		else if (referer == "details" && img)
-		{ ref = img->pageUrl().toString(); }
-		request.setRawHeader("Referer", ref.toLatin1());
+		{ refHeader = img->pageUrl().toString(); }
+		request.setRawHeader("Referer", refHeader.toLatin1());
 	}
 
 	QMap<QString,QVariant> headers = m_settings->value("headers").toMap();

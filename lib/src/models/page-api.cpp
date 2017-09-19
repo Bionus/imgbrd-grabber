@@ -259,8 +259,8 @@ QString _parseSetImageUrl(Site *site, Api* api, QString settingUrl, QString sett
 		if (ret.isEmpty() && !def.isEmpty())
 			ret = def;
 
-		QStringList replaces = api->value(settingReplaces).split('&');
-		for (QString rep : replaces)
+		QStringList reps = api->value(settingReplaces).split('&');
+		for (QString rep : reps)
 		{
 			QRegExp rgx(rep.left(rep.indexOf("->")));
 			ret.replace(rgx, rep.right(rep.size() - rep.indexOf("->") - 2));

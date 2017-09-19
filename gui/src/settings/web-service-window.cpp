@@ -61,17 +61,17 @@ void WebServiceWindow::save()
 	}
 
 	// Save favicon contents
-	QByteArray data;
+	QByteArray faviconData;
 	if (m_faviconReply->error() == QNetworkReply::NoError)
 	{
-		data = m_faviconReply->readAll();
+		faviconData = m_faviconReply->readAll();
 		m_faviconReply->deleteLater();
 	}
 
 	// Emit the success signal
 	QString name = ui->lineName->text();
 	QString url = ui->lineUrl->text();
-	emit validated(ReverseSearchEngine(id, "", name, url, order), data);
+	emit validated(ReverseSearchEngine(id, "", name, url, order), faviconData);
 
 	deleteLater();
 }

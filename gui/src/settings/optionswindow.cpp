@@ -193,13 +193,13 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	settings->endGroup();
 
 	// Custom tokens
-	QMap<QString,QStringList> customs = getCustoms(settings);
+	QMap<QString, QStringList> customs = getCustoms(settings);
 	m_customNames = QList<QLineEdit*>();
 	m_customTags = QList<QLineEdit*>();
-	for (int i = 0; i < customs.size(); i++)
+	for (QString key : customs.keys())
 	{
-		QLineEdit *leName = new QLineEdit(customs.keys().at(i));
-		QLineEdit *leTags = new QLineEdit(customs.values().at(i).join(" "));
+		QLineEdit *leName = new QLineEdit(key);
+		QLineEdit *leTags = new QLineEdit(customs[key].join(" "));
 		m_customNames.append(leName);
 		m_customTags.append(leTags);
 		ui->layoutCustom->insertRow(i, leName, leTags);
@@ -955,8 +955,8 @@ void optionsWindow::save()
 		settings->setValue("simultaneous", ui->spinSimultaneous->value());
 		settings->beginGroup("Customs");
 			settings->remove("");
-			for (int i = 0; i < m_customNames.size(); i++)
-			{ settings->setValue(m_customNames.at(i)->text(), m_customTags.at(i)->text()); }
+			for (QLineEdit *le : m_customNames)
+			{ settings->setValue(le->text(), le->text()); }
 		settings->endGroup();
 	settings->endGroup();
 

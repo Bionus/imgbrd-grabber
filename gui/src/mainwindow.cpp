@@ -1171,12 +1171,12 @@ void mainWindow::getAll(bool all)
 			}
 			else
 			{
-				QMap<QString, QString> data = batch.values;
-				data.insert("filename", batch.filename);
-				data.insert("folder", batch.path);
+				QMap<QString, QString> dta = batch.values;
+				dta.insert("filename", batch.filename);
+				dta.insert("folder", batch.path);
 
 				Page *page = new Page(m_profile, batch.site, m_sites.values(), batch.values["tags"].split(" "), 1, 1, QStringList(), false, this);
-				m_getAllRemaining.append(QSharedPointer<Image>(new Image(batch.site, data, m_profile, page)));
+				m_getAllRemaining.append(QSharedPointer<Image>(new Image(batch.site, dta, m_profile, page)));
 			}
 		}
 	}
@@ -1552,13 +1552,13 @@ void mainWindow::_getAll()
 				pth = m_groupBatchs[site_id - 1].path;
 			}
 
-			QString p = img->folder().isEmpty() ? pth : img->folder();
-			QStringList paths = img->path(path, p, m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + 1, true, false, true, true, true);
+			QString imgPath = img->folder().isEmpty() ? pth : img->folder();
+			QStringList paths = img->path(path, imgPath, m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + 1, true, false, true, true, true);
 
 			bool notexists = true;
-			for (QString path : paths)
+			for (QString p : paths)
 			{
-				QFile f(path);
+				QFile f(p);
 				if (f.exists())
 				{ notexists = false; }
 			}
