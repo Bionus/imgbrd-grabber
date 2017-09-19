@@ -16,7 +16,7 @@
 		</Html>
 	</Urls>
 	<Regex>
-		<ImageTags><![CDATA[<span class="tag dropdown"(?: data-tag-category="([^"]+)")? data-tag-id="[^"]+" data-tag-name="([^"]+)" data-tag-slug="[^"]+">]]></ImageTags>
+		<ImageTags><![CDATA[<span class="tag dropdown"(?: data-tag-category="(?<type>[^"]+)")? data-tag-id="(?<id>[^"]+)" data-tag-name="(?<tag>[^"]+)" data-tag-slug="[^"]+">]]></ImageTags>
 		<Image>&lt;div class=&quot;image-container[^&quot;]*&quot; data-aspect-ratio=&quot;[^&quot;]*&quot; data-comment-count=&quot;([^&quot;]*)&quot; data-created-at=&quot;([^&quot;]*)&quot; data-download-uri=&quot;([^&quot;]*)&quot; data-downvotes=&quot;[^&quot;]*&quot; data-faves=&quot;([^&quot;]*)&quot; data-height=&quot;([^&quot;]*)&quot; data-image-id=&quot;([^&quot;]*)&quot; data-image-tag-aliases=&quot;([^&quot;]*)&quot; data-image-tags=&quot;[^&quot;]*&quot; data-orig-sha512=&quot;[^&quot;]*&quot; data-score=&quot;([^&quot;]*)&quot; data-sha512=&quot;([^&quot;]*)&quot; data-size=&quot;[^&quot;]*&quot; data-source-url=&quot;([^&quot;]*)&quot; data-upvotes=&quot;([^&quot;]*)&quot; data-uris=&quot;[^&quot;]*&quot; data-width=&quot;([^&quot;]*)&quot;&gt;.*&lt;a[^&gt;]*&gt;&lt;img[^&gt;]* src=&quot;([^&quot;]*)&quot;\/&gt;&lt;\/a&gt;&lt;\/div&gt;</Image>
 		<Order>comments|created_at|file_url|favorites|height|id|tags|score|md5|source|width|preview_url</Order>
 		<LastPage>&lt;a href=&quot;(?:\/images\/page\/|\/tags\/[^\?]*\?[^&quot;]*page=|\/search\/index\?[^&quot;]*page=)(\d+)[^&quot;]*&quot;&gt;Last</LastPage>

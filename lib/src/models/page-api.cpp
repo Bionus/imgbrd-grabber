@@ -781,8 +781,7 @@ void PageApi::parseTags()
 
 	if (m_site->contains("Regex/Tags"))
 	{
-		QStringList order = m_site->value("Regex/TagsOrder").split('|', QString::SkipEmptyParts);
-		QList<Tag> tgs = Tag::FromRegexp(m_site->value("Regex/Tags"), order, source);
+		QList<Tag> tgs = Tag::FromRegexp(m_site->value("Regex/Tags"), source);
 		if (!tgs.isEmpty())
 		{ m_tags = tgs; }
 	}

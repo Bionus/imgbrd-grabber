@@ -447,8 +447,7 @@ void Image::parseDetails()
 	{ rxtags = m_parentSite->value("Regex/Tags"); }
 	if (!rxtags.isEmpty())
 	{
-		QStringList order = m_parentSite->value("Regex/TagsOrder").split('|', QString::SkipEmptyParts);
-		QList<Tag> tgs = Tag::FromRegexp(rxtags, order, source);
+		QList<Tag> tgs = Tag::FromRegexp(rxtags, source);
 		if (!tgs.isEmpty())
 		{
 			if (m_rating.isEmpty())

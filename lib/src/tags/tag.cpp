@@ -2,6 +2,7 @@
 #include <QTextDocument>
 #include <QSettings>
 #include <QSet>
+#include <QRegularExpression>
 #include "models/favorite.h"
 #include "models/profile.h"
 
@@ -56,68 +57,48 @@ Tag::Tag(int id, QString text, TagType type, int count, QStringList related)
 Tag::~Tag()
 { }
 
-Tag Tag::FromCapture(QStringList caps, QStringList order)
+Tag Tag::FromCapture(QRegularExpressionMatch match)
 {
-	QString type;
+	// Tag
 	QString tag;
-	int count = 0;
-
-	// Most common tag orders
-	if (order.empty())
+	if (!match.captured("tag").isEmpty())
 	{
-		switch (caps.count())
-		{
-			case 4:	order << "type" << "" << "count" << "tag";	break;
-			case 3:	order << "type" << "tag" << "count";		break;
-			case 2:	order << "type" << "tag";					break;
-			case 1:	order << "tag";								break;
-		}
+		tag = match.captured("tag").replace(" ", "_").replace("&amp;", "&").trimmed();
 	}
 
-	int max = qMin(order.size(), caps.size());
-	for (int o = 0; o < max; o++)
+	// Type
+	QString type;
+	if (!match.captured("type").isEmpty())
 	{
-		QString ord = order[o];
-		QString cap = caps[o];
-
-		if (ord == "tag" && tag.isEmpty())
-		{
-			tag = cap.replace(" ", "_").replace("&amp;", "&").trimmed();
-		}
-		else if (ord == "type" && type.isEmpty())
-		{
-			type = Tag::GetType(cap.trimmed(), QStringList() << "general" << "artist" << "unknown" << "copyright" << "character" << "species");
-		}
-		else if (ord == "count" && count == 0)
-		{
-			QString countStr = cap.toLower().trimmed();
-			countStr.remove(',');
-			count = countStr.endsWith('k', Qt::CaseInsensitive) ? countStr.left(countStr.length() - 1).toFloat() * 1000 : countStr.toInt();
-		}
+		type = Tag::GetType(match.captured("tag").trimmed(), QStringList() << "general" << "artist" << "unknown" << "copyright" << "character" << "species");
 	}
-
 	if (type.isEmpty())
 	{ type = "unknown"; }
+
+	// Count
+	int count = 0;
+	if (!match.captured("count").isEmpty())
+	{
+		QString countStr = match.captured("count").toLower().trimmed();
+		countStr.remove(',');
+		count = countStr.endsWith('k', Qt::CaseInsensitive) ? countStr.left(countStr.length() - 1).toFloat() * 1000 : countStr.toInt();
+	}
 
 	return Tag(tag, type, count);
 }
 
-QList<Tag> Tag::FromRegexp(QString rx, QStringList order, const QString &source)
+QList<Tag> Tag::FromRegexp(QString rx, const QString &source)
 {
-	QRegExp rxtags(rx);
-	rxtags.setMinimal(true);
+	QRegularExpression rxtags(rx);
 
 	QList<Tag> ret;
 	QSet<QString> got;
 
-	int pos = 0;
-	while ((pos = rxtags.indexIn(source, pos)) != -1)
+	auto matches = rxtags.globalMatch(source);
+	while (matches.hasNext())
 	{
-		pos += rxtags.matchedLength();
-
-		QStringList caps = rxtags.capturedTexts();
-		caps.removeFirst();
-		Tag tag = Tag::FromCapture(caps, order);
+		auto match = matches.next();
+		Tag tag = Tag::FromCapture(match);
 
 		if (!got.contains(tag.text()))
 		{

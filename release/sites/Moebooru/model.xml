@@ -18,7 +18,7 @@
 		</Html>
 	</Urls>
 	<Regex>
-		<Tags>&lt;li class=&quot;(?:[^&quot;]* )?tag-type-([^&quot; ]+)&quot;[^&gt;]*&gt;(?:[^&lt;]*&lt;a[^&gt;]*&gt;[^&lt;]*&lt;/a&gt;)*[^&lt;]*&lt;a[^&gt;]*&gt;([^&lt;]*)&lt;/a&gt;[^&lt;]*&lt;span[^&gt;]*&gt;(\d+)k?&lt;/span&gt;[^&lt;]*&lt;/li&gt;</Tags>
+		<Tags><![CDATA[<li class="(?:[^"]* )?tag-type-(?<type>[^" ]+)"[^>]*>(?:[^<]*<a[^>]*>[^<]*</a>)*[^<]*<a[^>]*>(?<tag>[^<]*)</a>[^<]*<span[^>]*>(?<count>\d+)k?</span>[^<]*</li>]]></Tags>
 		<Image>Post\.register\((\{(?:.+)\})\);?</Image>
 		<Order>json</Order>
 		<LastPage>&lt;link href=&quot;[^&quot;]*\?.*page=(\d+)[^&quot;]*&quot; rel=&quot;last&quot; title=&quot;Last Page&quot;&gt;</LastPage>

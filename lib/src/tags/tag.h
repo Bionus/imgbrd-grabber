@@ -17,8 +17,8 @@ class Tag
 		explicit Tag(QString text, TagType type, int count = 0, QStringList related = QStringList());
 		explicit Tag(int id, QString text, TagType type, int count = 0, QStringList related = QStringList());
 		~Tag();
-		static Tag FromCapture(QStringList caps, QStringList order = QStringList());
-		static QList<Tag> FromRegexp(QString rx, QStringList order, const QString &source);
+		static Tag FromCapture(QRegularExpressionMatch match);
+		static QList<Tag> FromRegexp(QString rx, const QString &source);
 		static QString GetType(QString type, QStringList ids);
 		QString stylished(Profile *profile, QStringList ignored = QStringList(), QStringList blacklisted = QStringList(), bool count = false, bool nounderscores = false) const;
 		void setId(int id);

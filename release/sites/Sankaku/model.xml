@@ -28,7 +28,7 @@
 		</Html>
 	</Urls>
 	<Regex>
-		<Tags>&lt;li class=&quot;?[^&quot;&gt;]*tag-type-([^&quot;&gt;]+)(?:|&quot;[^&gt;]*)&gt;.*&lt;a href=&quot;[^&quot;]+&quot;[^&gt;]*&gt;([^&lt;\?]+)&lt;\/a&gt;.*&lt;span class=&quot;?post-count&quot;?&gt;(\d+)&lt;\/span&gt;.*&lt;\/li&gt;</Tags>
+		<Tags><![CDATA[<li class="?[^">]*tag-type-(?<type>[^">]+)(?:|"[^>]*)>.*<a href="[^"]+"[^>]*>(?<tag>[^<\?]+)<\/a>.*<span class="?post-count"?>(?<count>\d+)<\/span>.*<\/li>]]></Tags>
 		<Image>&lt;span[^&gt;]* id=&quot;?p(\d+)&quot;?&gt;&lt;a[^&gt;]*&gt;&lt;img[^&gt;]* src=&quot;([^&quot;]+\/preview\/\w{2}\/\w{2}\/([^.]+)\.[^&quot;]+)&quot; title=&quot;([^&quot;]+)&quot;[^&gt;]+&gt;&lt;\/a&gt;&lt;\/span&gt;</Image>
 		<Order>id|preview_url|md5|tags</Order>
 		<TagTypes>general,idol,unknown,copyright,character,photoset,unknown,unknown,medium,meta</TagTypes>
