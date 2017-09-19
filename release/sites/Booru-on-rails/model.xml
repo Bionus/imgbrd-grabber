@@ -17,7 +17,7 @@
 	</Urls>
 	<Regex>
 		<ImageTags><![CDATA[<span class="tag dropdown"(?: data-tag-category="(?<type>[^"]+)")? data-tag-id="(?<id>[^"]+)" data-tag-name="(?<tag>[^"]+)" data-tag-slug="[^"]+">]]></ImageTags>
-		<Image><![CDATA[<div class="image-container[^"]*" data-aspect-ratio="[^"]*" data-comment-count="(?<comments>[^"]*)" data-created-at="(?<created_at>[^"]*)" data-download-uri="(?<file_url>[^"]*)" data-downvotes="[^"]*" data-faves="(?<favorites>[^"]*)" data-height="(?<height>[^"]*)" data-image-id="(?<id>[^"]*)" data-image-tag-aliases="(?<tags>[^"]*)" data-image-tags="[^"]*" data-orig-sha512="[^"]*" data-score="(?<score>[^"]*)" data-sha512="(?<md5>[^"]*)" data-size="[^"]*" data-source-url="(?<source>[^"]*)" data-upvotes="[^"]*" data-uris="[^"]*" data-width="(?<width>[^"]*)">.*<a[^>]*><img[^>]* src="(?<preview_url>[^"]*)"\/><\/a><\/div>]]></Image>
+		<Image><![CDATA[<div class="image-container[^"]*" data-aspect-ratio="[^"]*" data-comment-count="(?<comments>[^"]*)" data-created-at="(?<created_at>[^"]*)" data-download-uri="(?<file_url>[^"]*)" data-downvotes="[^"]*" data-faves="(?<favorites>[^"]*)" data-height="(?<height>[^"]*)" data-image-id="(?<id>[^"]*)" data-image-tag-aliases="(?<tags>[^"]*)" data-image-tags="[^"]*" data-orig-sha512="[^"]*" data-score="(?<score>[^"]*)" data-sha512="(?<md5>[^"]*)" data-size="[^"]*" data-source-url="(?<source>[^"]*)" data-upvotes="[^"]*" data-uris="[^"]*" data-width="(?<width>[^"]*)">.*?<a[^>]*><img[^>]* src="(?<preview_url>[^"]*)"\/><\/a><\/div>]]></Image>
 		<LastPage>&lt;a href=&quot;(?:\/images\/page\/|\/tags\/[^\?]*\?[^&quot;]*page=|\/search\/index\?[^&quot;]*page=)(\d+)[^&quot;]*&quot;&gt;Last</LastPage>
 		<Count>of &lt;strong&gt;([^&lt;]+)&lt;\/strong&gt; total</Count>
 	</Regex>

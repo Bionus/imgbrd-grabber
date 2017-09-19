@@ -28,7 +28,7 @@
 		</Html>
 	</Urls>
 	<Regex>
-		<Tags><![CDATA[<li class="?[^">]*tag-type-(?<type>[^">]+)(?:|"[^>]*)>.*<a href="[^"]+"[^>]*>(?<tag>[^<\?]+)<\/a>.*<span class="?post-count"?>(?<count>\d+)<\/span>.*<\/li>]]></Tags>
+		<Tags><![CDATA[<li class="?[^">]*tag-type-(?<type>[^">]+)(?:|"[^>]*)>.*?<a href="[^"]+"[^>]*>(?<tag>[^<\?]+)<\/a>.*?<span class="?post-count"?>(?<count>\d+)<\/span>.*?<\/li>]]></Tags>
 		<Image><![CDATA[<span[^>]* id="?p(?<id>\d+)"?><a[^>]*><img[^>]* src="(?<preview_url>[^"]+\/preview\/\w{2}\/\w{2}\/(?<md5>[^.]+)\.[^"]+)" title="(?<tags>[^"]+)"[^>]+><\/a><\/span>]]></Image>
 		<TagTypes>general,idol,unknown,copyright,character,photoset,unknown,unknown,medium,meta</TagTypes>
 		<LastPage>&lt;link href=&quot;[^&quot;]*\?.*page=(\d+)[^&quot;]*&quot; rel=&quot;last&quot; title=&quot;Last Page&quot;&gt;</LastPage>
