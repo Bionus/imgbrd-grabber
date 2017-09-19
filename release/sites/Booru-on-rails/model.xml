@@ -22,7 +22,7 @@
 		<LastPage>&lt;a href=&quot;(?:\/images\/page\/|\/tags\/[^\?]*\?[^&quot;]*page=|\/search\/index\?[^&quot;]*page=)(\d+)[^&quot;]*&quot;&gt;Last</LastPage>
 		<Count>of &lt;strong&gt;([^&lt;]+)&lt;\/strong&gt; total</Count>
 	</Regex>
-	<Check>&gt;
+	<Check>
 		<Url>/</Url>
 		<Regex>Powered by the booru-on-rails project</Regex>
 	</Check>
