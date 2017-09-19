@@ -87,7 +87,7 @@ void startWindow::save()
 		while (!pth.exists() && pth.path() != op)
 		{
 			op = pth.path();
-			pth.setPath(pth.path().remove(QRegExp("/([^/]+)$")));
+			pth.setPath(pth.path().remove(QRegularExpression("/([^/]+)$")));
 		}
 		if (pth.path() == op)
 		{ error(this, tr("An error occured creating the save folder.")); }

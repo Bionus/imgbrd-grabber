@@ -61,7 +61,6 @@ void clearLayout(QLayout *layout)
 	}
 }
 
-#include <QDebug>
 QString parseMarkdown(QString str)
 {
 	// Windows EOL

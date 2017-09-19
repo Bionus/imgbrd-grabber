@@ -62,11 +62,11 @@ void TextEdit::doColor()
 		txt.replace(" "+fav.getName()+" ", " <span style=\""+styleFavs+"\">"+fav.getName()+"</span> ");
 
 	// Color metatags
-	QRegExp regexOr(" ~([^ ]+)"),
-			regexExclude(" -([^ ]+)"),
-			regexMeta(" (user|fav|md5|pool|rating|source|status|approver|unlocked|sub|id|width|height|score|mpixels|filesize|filetype|date|gentags|arttags|chartags|copytags|status|status|approver|order|parent):([^ ]*)", Qt::CaseInsensitive),
-			regexMd5(" ([0-9A-F]{32})", Qt::CaseInsensitive),
-			regexUrl(" (https?://[^\\s/$.?#].[^\\s]*) ");
+	static QRegularExpression regexOr(" ~([^ ]+)"),
+		regexExclude(" -([^ ]+)"),
+		regexMeta(" (user|fav|md5|pool|rating|source|status|approver|unlocked|sub|id|width|height|score|mpixels|filesize|filetype|date|gentags|arttags|chartags|copytags|status|status|approver|order|parent):([^ ]*)", QRegularExpression::CaseInsensitiveOption),
+		regexMd5(" ([0-9A-F]{32})", QRegularExpression::CaseInsensitiveOption),
+		regexUrl(" (https?://[^\\s/$.?#].[^\\s]*) ");
 	txt.replace(regexOr, " <span style=\"color:green\">~\\1</span>");
 	txt.replace(regexExclude, " <span style=\"color:red\">-\\1</span>");
 	txt.replace(regexMeta, " <span style=\"color:brown\">\\1:\\2</span>");

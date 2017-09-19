@@ -82,7 +82,7 @@ void FilenameWindow::on_lineClassic_textChanged(QString text)
 		pos += date.matchedLength();
 	}
 
-	QString value = "'"+text.replace(QRegExp("%([^%]+)%"), "' + \\1 + '").remove(" + '' + ").trimmed()+"'";
+	QString value = "'"+text.replace(QRegularExpression("%([^%]+)%"), "' + \\1 + '").remove(" + '' + ").trimmed()+"'";
 	if (value.startsWith("' + "))
 	{ value = value.right(value.length() - 4); }
 	if (value.startsWith("'' + "))

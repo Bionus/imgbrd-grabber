@@ -10,6 +10,7 @@
 #include <QUrl>
 #include <QLocale>
 #include <QTimeZone>
+#include <QRegularExpression>
 #include "math.h"
 #ifdef Q_OS_WIN
 	#include <windows.h>
@@ -376,7 +377,7 @@ QMap<QString,QString> domToMap(QDomElement dom)
  */
 QString stripTags(QString str)
 {
-	static QRegExp strip("<[^>]*>");
+	static QRegularExpression strip("<[^>]*>");
 	return str.remove(strip);
 }
 
@@ -436,8 +437,8 @@ QString setExtension(QString url, QString extension)
 
 bool isUrl(QString str)
 {
-	QRegExp regexUrl("^https?://[^\\s/$.?#].[^\\s]*$");
-	return regexUrl.exactMatch(str);
+	static QRegularExpression regexUrl("^https?://[^\\s/$.?#].[^\\s]*$");
+	return regexUrl.match(str).hasMatch();
 }
 
 QString fixFilename(QString fn, QString path, int maxlength, bool invalidChars)

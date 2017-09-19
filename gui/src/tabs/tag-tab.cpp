@@ -85,8 +85,8 @@ void tagTab::load()
 	QString search = m_search->toPlainText().trimmed();
 	if (m_settings->value("enable_md5_fast_search", true).toBool())
 	{
-		QRegExp md5Matcher("^[0-9A-F]{32}$", Qt::CaseInsensitive);
-		if (md5Matcher.exactMatch(search))
+		static QRegularExpression md5Matcher("^[0-9A-F]{32}$", QRegularExpression::CaseInsensitiveOption);
+		if (md5Matcher.match(search).hasMatch())
 			search.prepend("md5:");
 	}
 	QStringList tags = search.split(" ", QString::SkipEmptyParts);
