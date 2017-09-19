@@ -8,7 +8,9 @@
 #include <QCompleter>
 #include <QNetworkProxy>
 #include <QScrollBar>
-#include <QStorageInfo>
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 4, 0))
+	#include <QStorageInfo>
+#endif
 #include <QMimeData>
 #include <qmath.h>
 #if defined(Q_OS_WIN)
@@ -1781,9 +1783,12 @@ void mainWindow::getAllGetImageSaved(QSharedPointer<Image> img, QMap<QString, Im
 			m_getAllErrors++;
 			m_progressdialog->pause();
 
-			QDir destinationDir = QFileInfo(path).absoluteDir();
-			QStorageInfo storage(destinationDir);
-			bool isDriveFull = storage.bytesAvailable() < img->fileSize() || storage.bytesAvailable() < 20 * 1024 * 1024;
+			bool isDriveFull = false;
+			#if (QT_VERSION >= QT_VERSION_CHECK(5, 4, 0))
+				QDir destinationDir = QFileInfo(path).absoluteDir();
+				QStorageInfo storage(destinationDir);
+				isDriveFull = storage.bytesAvailable() < img->fileSize() || storage.bytesAvailable() < 20 * 1024 * 1024;
+			#endif
 
 			QString msg;
 			if (isDriveFull)
