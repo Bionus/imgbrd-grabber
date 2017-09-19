@@ -428,13 +428,12 @@ void Image::parseDetails()
 	if (m_parentSite->contains("Regex/Pools"))
 	{
 		m_pools.clear();
-		QRegExp rx(m_parentSite->value("Regex/Pools"));
-		rx.setMinimal(true);
-		int pos = 0;
-		while ((pos = rx.indexIn(source, pos)) != -1)
+		QRegularExpression rx(m_parentSite->value("Regex/Pools"));
+		auto matches = rx.globalMatch(source);
+		while (matches.hasNext())
 		{
-			pos += rx.matchedLength();
-			QString previous = rx.cap(1), id = rx.cap(2), name = rx.cap(3), next = rx.cap(4);
+			auto match = matches.next();
+			QString previous = match.captured(1), id = match.captured(2), name = match.captured(3), next = match.captured(4);
 			m_pools.append(Pool(id.toInt(), name, m_id, next.toInt(), previous.toInt()));
 		}
 	}
@@ -473,14 +472,13 @@ void Image::parseDetails()
 	// Image url
 	if ((m_url.isEmpty() || m_parentSite->contains("Regex/ForceImageUrl")) && m_parentSite->contains("Regex/ImageUrl"))
 	{
-		QRegExp rx = QRegExp(m_parentSite->value("Regex/ImageUrl"));
-		rx.setMinimal(true);
-		int pos = 0;
+		QRegularExpression rx(m_parentSite->value("Regex/ImageUrl"));
 		QString before = m_url;
-		while ((pos = rx.indexIn(source, pos)) != -1)
+		auto matches = rx.globalMatch(source);
+		while (matches.hasNext())
 		{
-			pos += rx.matchedLength();
-			QString newurl = m_parentSite->fixUrl(rx.cap(1), QUrl(m_url)).toString();
+			auto match = matches.next();
+			QString newurl = m_parentSite->fixUrl(match.captured(1), QUrl(m_url)).toString();
 			m_url = newurl;
 			m_fileUrl = newurl;
 		}
@@ -494,13 +492,12 @@ void Image::parseDetails()
 	// Image date
 	if ((!m_createdAt.isValid() || m_parentSite->contains("Regex/ForceImageDate")) && m_parentSite->contains("Regex/ImageDate"))
 	{
-		QRegExp rx = QRegExp(m_parentSite->value("Regex/ImageDate"));
-		rx.setMinimal(true);
-		int pos = 0;
-		while ((pos = rx.indexIn(source, pos)) != -1)
+		QRegularExpression rx(m_parentSite->value("Regex/ImageDate"));
+		auto matches = rx.globalMatch(source);
+		while (matches.hasNext())
 		{
-			pos += rx.matchedLength();
-			m_createdAt = qDateTimeFromString(rx.cap(1));
+			auto match = matches.next();
+			m_createdAt = qDateTimeFromString(match.captured(1));
 		}
 	}
 
@@ -626,7 +623,7 @@ QString Image::match(QString filter, bool invert) const
 			}
 			else if (type == "source")
 			{
-				QRegExp rx = QRegExp(filter+"*", Qt::CaseInsensitive, QRegExp::Wildcard);
+				QRegExp rx(filter + "*", Qt::CaseInsensitive, QRegExp::Wildcard);
 				bool cond = rx.exactMatch(m_source);
 				if (!cond && !invert)
 				{ return tr("image's source does not starts with \"%1\"").arg(filter); }
@@ -641,10 +638,7 @@ QString Image::match(QString filter, bool invert) const
 		bool cond = false;
 		for (Tag tag : m_tags)
 		{
-			QRegExp reg;
-			reg.setCaseSensitivity(Qt::CaseInsensitive);
-			reg.setPatternSyntax(QRegExp::Wildcard);
-			reg.setPattern(filter.trimmed());
+			QRegExp reg(filter.trimmed(), Qt::CaseInsensitive, QRegExp::Wildcard);
 			if (reg.exactMatch(tag.text()))
 			{
 				cond = true;

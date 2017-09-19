@@ -80,7 +80,7 @@
 		<ImageUrl>&lt;section[^&gt;]* data-file-url=&quot;([^&quot;]*)&quot;</ImageUrl>
         <LastPage>&gt;([0-9]+)&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a[^&gt;]* rel=&quot;next&quot;[^&gt;]*&gt;&amp;gt;&amp;gt;&lt;</LastPage>
 		<Pools>&lt;div class=&quot;status-notice&quot; id=&quot;pool\d+&quot;&gt;[^&lt;]*Pool:[^&lt;]*(?:&lt;a href=&quot;/post/show/(\d+)&quot; &gt;&amp;lt;&amp;lt;&lt;/a&gt;)?[^&lt;]*&lt;a href=&quot;/pool/show/(\d+)&quot; &gt;([^&lt;]+)&lt;/a&gt;[^&lt;]*(?:&lt;a href=&quot;/post/show/(\d+)&quot; &gt;&amp;gt;&amp;gt;&lt;/a&gt;)?[^&lt;]*&lt;/div&gt;</Pools>
-		<Wiki>&lt;div id=&quot;excerpt&quot;(?:[^&gt;]+)&gt;(.+)&lt;/div&gt;</Wiki>
+		<Wiki>&lt;div id=&quot;excerpt&quot;(?:[^&gt;]+)&gt;(.+?)&lt;/div&gt;</Wiki>
 	</Regex>
 	<Check>
 		<Url>/</Url>

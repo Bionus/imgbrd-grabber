@@ -499,9 +499,10 @@ void PageApi::parse()
 
 				if (!d.contains("id"))
 				{
-					QRegExp rx("/(\\d+)");
-					rx.indexIn(d["page_url"]);
-					d.insert("id", rx.cap(1));
+					QRegularExpression rx("/(\\d+)");
+					auto match = rx.match(d["page_url"]);
+					if (match.hasMatch())
+					{ d.insert("id", match.captured(1)); }
 				}
 
 				this->parseImage(d, id + first);
@@ -795,11 +796,11 @@ void PageApi::parseTags()
 	m_wiki.clear();
 	if (m_site->contains("Regex/Wiki"))
 	{
-		QRegExp rxwiki(m_site->value("Regex/Wiki"));
-		rxwiki.setMinimal(true);
-		if (rxwiki.indexIn(source) != -1)
+		QRegularExpression rxwiki(m_site->value("Regex/Wiki"));
+		auto match = rxwiki.match(source);
+		if (match.hasMatch())
 		{
-			m_wiki = rxwiki.cap(1);
+			m_wiki = match.captured(1);
 			m_wiki.remove("/wiki/show?title=").remove(QRegularExpression("<p><a href=\"([^\"]+)\">Full entry &raquo;</a></p>")).replace("<h6>", "<span class=\"title\">").replace("</h6>", "</span>");
 		}
 	}
@@ -815,15 +816,17 @@ void PageApi::parseNavigation(const QString &source)
 	// Navigation
 	if (m_site->contains("Regex/NextPage") && m_urlNextPage.isEmpty())
 	{
-		QRegExp rx(m_site->value("Regex/NextPage"));
-		if (rx.indexIn(source, 0) >= 0)
-		{ m_urlNextPage = QUrl(rx.cap(1)); }
+		QRegularExpression rx(m_site->value("Regex/NextPage"));
+		auto match = rx.match(source);
+		if (match.hasMatch())
+		{ m_urlNextPage = QUrl(match.captured(1)); }
 	}
 	if (m_site->contains("Regex/PrevPage") && m_urlPrevPage.isEmpty())
 	{
-		QRegExp rx(m_site->value("Regex/PrevPage"));
-		if (rx.indexIn(source, 0) >= 0)
-		{ m_urlPrevPage = QUrl(rx.cap(1)); }
+		QRegularExpression rx(m_site->value("Regex/PrevPage"));
+		auto match = rx.match(source);
+		if (match.hasMatch())
+		{ m_urlPrevPage = QUrl(match.captured(1)); }
 	}
 
 	// Last page
@@ -831,9 +834,9 @@ void PageApi::parseNavigation(const QString &source)
 	{ setPageCount(m_site->value("LastPage").toInt(), true); }
 	if (m_site->contains("Regex/LastPage") && m_pagesCount < 1)
 	{
-		QRegExp rxlast(m_site->value("Regex/LastPage"));
-		rxlast.indexIn(source, 0);
-		int cnt = rxlast.cap(1).remove(",").toInt();
+		QRegularExpression rxlast(m_site->value("Regex/LastPage"));
+		auto match = rxlast.match(source);
+		int cnt = match.hasMatch() ? match.captured(1).remove(",").toInt() : 0;
 		if (cnt > 0)
 		{
 			int pagesCount = cnt;
@@ -849,9 +852,9 @@ void PageApi::parseNavigation(const QString &source)
 	// Count images
 	if (m_site->contains("Regex/Count") && m_imagesCount < 1)
 	{
-		QRegExp rxlast(m_site->value("Regex/Count"));
-		rxlast.indexIn(source, 0);
-		int cnt = rxlast.cap(1).remove(",").toInt();
+		QRegularExpression rxlast(m_site->value("Regex/Count"));
+		auto match = rxlast.match(source);
+		int cnt = match.hasMatch() ? match.captured(1).remove(",").toInt() : 0;
 		if (cnt > 0)
 		{ setImageCount(cnt, true); }
 	}

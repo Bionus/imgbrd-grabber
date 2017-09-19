@@ -17,7 +17,7 @@
 		<Tags><![CDATA[<li class="tag-type-(?<type>[^"]+)">[^<]*<a href="[^"]+">[^<]*</a>[^<]*<a href="[^"]+">(?<tag>[^<]+)</a>[^<]*</li>|<a class=['"]tag_name['"] href=['"]([^'"]+)(?:/1)?['"]>(?<tag>[^<]+)</a>]]></Tags>
 		<Image><![CDATA[<a(?: class=['"][^'"]*['"])? href=['"][^'">]*\/post\/view\/(?<id>[^'"]+)['"][^>]*>[^<]*(?<image><img(?: id=['"](?:[^'"]*)['"])? title=['"](?<tags>[^'"\/]*)(?: \/\/ (?<width>[^'"]+)x(?<height>[^'"]+) \/\/ (?<filesize>[^'"]*) \/\/ (?<ext>[^'"]*))?['"] alt=['"][^'"]*['"](?: height=['"][^'"]*['"])? width=['"][^'"]*['"](?: height=['"][^'"]*['"])?[^>]*(?:src|data-original)=['"][^'"]*(?<preview_url>\/_thumbs\/(?<md5>[^\/]*)\/[^'"]*\.jpg|\/thumb\/(?<md5>[^'"]*)\.jpg|questionable\.jpg)['"][^>]*>).*?<\/a>|<a href=['"][^'">]*\/i(?<id>[^'"]+)['"](?: class=['"][^'"]*['"])?[^>]*>[^<]*(?<image><img(?: id=['"](?:[^'"]*)['"])? src=['"][^'"]*(?<preview_url>\/_thumbs\/(?<md5>[^'"]*)(?:_th)?\.jpg|\/thumb\/(?<md5>[^'"]*)\.jpg|questionable\.jpg)['"] title=['"](?<tags>[^'"\/]+) \/\/ (?<width>[^'"]+)x(?<height>[^'"]+) \/\/ (?<filesize>[^'"]*) \/\/ (?<ext>[^'"]*)['"] alt=['"][^'"]*['"] ?\/?>)[^<]*<\/a>]]></Image>
 		<LastPage>&lt;a href=['&quot;]/post/list(?:/[^/]+)?/(\d*)['&quot;]&gt;Last&lt;/a&gt;</LastPage>
-		<ImageUrl>&lt;img.+ id=['&quot;]main_image['&quot;] src=['&quot;]([^']+)['&quot;][^&gt;]*&gt;</ImageUrl>
+		<ImageUrl>&lt;img.+?id=['&quot;]main_image['&quot;] src=['&quot;]([^']+)['&quot;][^&gt;]*&gt;</ImageUrl>
 		<ForceImageUrl>true</ForceImageUrl>
 		<ImageDate>&lt;time datetime=['&quot;]([^'&quot;]+)['&quot;]&gt;</ImageDate>
 	</Regex>

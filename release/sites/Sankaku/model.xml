@@ -31,10 +31,10 @@
 		<Tags><![CDATA[<li class="?[^">]*tag-type-(?<type>[^">]+)(?:|"[^>]*)>.*?<a href="[^"]+"[^>]*>(?<tag>[^<\?]+)<\/a>.*?<span class="?post-count"?>(?<count>\d+)<\/span>.*?<\/li>]]></Tags>
 		<Image><![CDATA[<span[^>]* id="?p(?<id>\d+)"?><a[^>]*><img[^>]* src="(?<preview_url>[^"]+\/preview\/\w{2}\/\w{2}\/(?<md5>[^.]+)\.[^"]+)" title="(?<tags>[^"]+)"[^>]+><\/a><\/span>]]></Image>
 		<TagTypes>general,idol,unknown,copyright,character,photoset,unknown,unknown,medium,meta</TagTypes>
-		<LastPage>&lt;link href=&quot;[^&quot;]*\?.*page=(\d+)[^&quot;]*&quot; rel=&quot;last&quot; title=&quot;Last Page&quot;&gt;</LastPage>
+		<LastPage>&lt;link href=&quot;[^&quot;]*\?.*?page=(\d+)[^&quot;]*&quot; rel=&quot;last&quot; title=&quot;Last Page&quot;&gt;</LastPage>
 		<Count>class=&quot;?tag-type-none&quot;? title=&quot;Post Count: ([^&quot;]+)&quot;</Count>
 		<Pools>&lt;div class=&quot;status-notice&quot; id=&quot;pool\d+&quot;&gt;[^&lt;]*Pool:[^&lt;]*(?:&lt;a href=&quot;/post/show/(\d+)&quot; &gt;&amp;lt;&amp;lt;&lt;/a&gt;)?[^&lt;]*&lt;a href=&quot;/pool/show/(\d+)&quot; &gt;([^&lt;]+)&lt;/a&gt;[^&lt;]*(?:&lt;a href=&quot;/post/show/(\d+)&quot; &gt;&amp;gt;&amp;gt;&lt;/a&gt;)?[^&lt;]*&lt;/div&gt;</Pools>
-		<Wiki>&lt;div id=&quot;sidebar-wiki&quot;(?:[^&gt;]+)&gt;(.+)&lt;/div&gt;</Wiki>
+		<Wiki>&lt;div id=&quot;sidebar-wiki&quot;(?:[^&gt;]+)&gt;(.+?)&lt;/div&gt;</Wiki>
 		<ImageDate>&lt;a href=&quot;\/\?tags=date[^&quot;]+&quot; title=&quot;([^&quot;]+)&quot;&gt;</ImageDate>
 		<ImageUrl>&lt;li&gt;Original: &lt;a href=&quot;([^&quot;]+)&quot;</ImageUrl>
 	</Regex>

@@ -23,7 +23,7 @@
 	<Regex>
 		<Tags><![CDATA[<li[^>]*>\s*<a [^>]+>(?<tag>[^>]+)<\/a>\s+(?:<span>(?<type>[^<]+) (?<count>[0-9]+)<\/span>|(?<type>[^<]*))\s*<\/li>]]></Tags>
 		<Image><![CDATA[<a href=['"]\/(?<id>[^'"]+)['"][^>]*>[^<]*(?:<b>[^<]*<\/b>)?[^<]*(?:<span>[^<]*<\/span>)?[^<]*(?<image><img\s*src=['"](?<preview_url>[^'"]*)['"][^>]*\/?>)]]></Image>
-		<Count>has ([0-9,]+) .*images\.</Count>
+		<Count>has ([0-9,]+) .*?images\.</Count>
 		<LastPage>page (?:[0-9,]+) of ([0-9,]+)</LastPage>
 		<ImageUrl>&lt;div id=&quot;large&quot;&gt;\s*&lt;a href=&quot;([^&quot;]+)&quot;[^&gt;]* tabindex=&quot;1&quot;&gt;</ImageUrl>
 		<ForceImageUrl>true</ForceImageUrl>
