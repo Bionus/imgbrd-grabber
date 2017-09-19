@@ -15,6 +15,8 @@
 			<MaxPage>476</MaxPage>
 			<PagePart>&amp;pid={pid}</PagePart>
 			<AltPageNext> id:&lt;{min}&amp;p=1</AltPageNext>
+			<TagApi>/index.php?page=tags&amp;s=list&amp;pid={page}</TagApi>
+			<SingleTagApi>/index.php?page=tags&amp;s=list&amp;pid={page}&amp;tags={name}</SingleTagApi>
 		</Html>
 	</Urls>
 	<Regex>

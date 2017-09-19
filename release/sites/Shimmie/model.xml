@@ -8,6 +8,8 @@
 			<Home>/post/list/{page}</Home>
 			<Tags>/post/list/{tags}/{page}</Tags>
 			<Post>/post/view/{id}</Post>
+			<TagApi>/tags?starts_with=</TagApi>
+			<SingleTagApi>/tags?starts_with={name}</SingleTagApi>
 		</Html>
 		<Rss>
 			<Tags>/rss/images/{page}</Tags>
