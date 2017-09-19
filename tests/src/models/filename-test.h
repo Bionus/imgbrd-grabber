@@ -49,6 +49,7 @@ class FilenameTest : public TestSuite
 		void testPathOptionTagNamespaceComplex();
 		void testPathOptionTagExcludeNamespace();
 		void testPathOptionTagSeparator();
+		void testPathOptionTagSeparatorEscape();
 		void testPathOptionCount();
 		void testPathOptionNumSingle();
 		void testPathOptionNumSingleLength();

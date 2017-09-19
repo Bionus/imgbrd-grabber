@@ -315,6 +315,10 @@ void FilenameTest::testPathOptionTagSeparator()
 {
 	assertPath("%general:separator=+%", "tag1+tag2+tag3+test_tag1+test_tag2+test_tag3");
 }
+void FilenameTest::testPathOptionTagSeparatorEscape()
+{
+	assertPath("%general:separator=\\,%", "tag1,tag2,tag3,test_tag1,test_tag2,test_tag3");
+}
 void FilenameTest::testPathOptionCount()
 {
 	assertPath("%md5% (%count%).%ext%", "1bc29b36f623ba82aaf6724fd3b16718 (7).jpg");

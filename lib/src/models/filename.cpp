@@ -544,12 +544,16 @@ QString Filename::optionedValue(QString res, QString key, QString ops, const Ima
 	QMap<QString,QString> options;
 	if (!ops.isEmpty())
 	{
-		QStringList opts = ops.split(',');
+		QStringList opts = ops.split(QRegularExpression("(?<!\\\\),"), QString::SkipEmptyParts);
 		for (QString opt : opts)
 		{
 			int index = opt.indexOf('=');
 			if (index != -1)
-			{ options.insert(opt.left(index), opt.mid(index + 1)); }
+			{
+				QString val = opt.mid(index + 1);
+				val.replace("\\,", ",");
+				options.insert(opt.left(index), val);
+			}
 			else
 			{ options.insert(opt, "true"); }
 		}
