@@ -51,10 +51,10 @@ void FilenameWindow::on_lineClassic_textChanged(QString text)
 	fn.isValid(m_profile, &message);
 	ui->labelValidator->setText(message);
 
-	QRegExp date("%date:format=([^%]+)%");
-	int pos = 0;
 	text = text.replace("\\", "\\\\").replace("'", "\\'");
 
+	QRegExp date("%date:format=([^%]+)%");
+	int pos = 0;
 	while ((pos = date.indexIn(text, pos)) != -1)
 	{
 		QString cap = date.cap(1);

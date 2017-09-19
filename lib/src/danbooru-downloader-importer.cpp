@@ -1,5 +1,6 @@
 #include "danbooru-downloader-importer.h"
 #include <QFileInfo>
+#include <QRegularExpression>
 
 
 DanbooruDownloaderImporter::DanbooruDownloaderImporter()
@@ -26,7 +27,7 @@ void DanbooruDownloaderImporter::import(QSettings *dest) const
 		return;
 
 	QString source = prefs.readAll();
-	QRegExp rx("user_pref\\(\"danbooru.downloader.([^\"]+)\", ([^\\)]+)\\);");
+	QRegularExpression rx("user_pref\\(\"danbooru.downloader.([^\"]+)\", ([^\\)]+)\\);");
 	QMap<QString,QString> firefox, assoc;
 	assoc["blacklist"] = "blacklistedtags";
 	assoc["generalTagsSeparator"] = "separator";
@@ -45,14 +46,14 @@ void DanbooruDownloaderImporter::import(QSettings *dest) const
 	assoc["targetFolder"] = "path";
 	assoc["targetName"] = "filename";
 
-	int pos = 0;
-	while ((pos = rx.indexIn(source, pos)) != -1)
+	auto matches = rx.globalMatch(source);
+	while (matches.hasNext())
 	{
-		pos += rx.matchedLength();
-		QString value = rx.cap(2);
+		auto match = matches.next();
+		QString value = match.captured(2);
 		if (value.startsWith('"'))	{ value = value.right(value.length() - 1);	}
 		if (value.endsWith('"'))	{ value = value.left(value.length() - 1);	}
-		firefox[rx.cap(1)] = value;
+		firefox[match.captured(1)] = value;
 	}
 
 	dest->beginGroup("Save");
