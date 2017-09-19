@@ -9,6 +9,5 @@
 void error(QWidget *parent, QString message);
 void showInGraphicalShell(const QString &path);
 void clearLayout(QLayout *layout);
-QString parseMarkdown(QString str);
 
 #endif // HELPERS_H
