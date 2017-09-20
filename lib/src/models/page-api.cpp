@@ -537,7 +537,7 @@ void PageApi::parse()
 		while (matches.hasNext())
 		{
 			auto match = matches.next();
-			QMap<QString,QString> d;
+			QMap<QString, QString> d;
 			for (QString group : rx.namedCaptureGroups())
 			{
 				if (group.isEmpty())
@@ -554,7 +554,7 @@ void PageApi::parse()
 				QVariant src = Json::parse(d["json"]);
 				if (!src.isNull())
 				{
-					QMap<QString,QVariant> map = src.toMap();
+					QMap<QString, QVariant> map = src.toMap();
 					for (int i = 0; i < map.size(); i++)
 					{ d[map.keys().at(i)] = map.values().at(i).toString(); }
 				}
