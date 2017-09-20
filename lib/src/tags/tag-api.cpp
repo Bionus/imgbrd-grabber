@@ -1,5 +1,6 @@
 #include "tag-api.h"
 #include <QDomDocument>
+#include <QRegularExpression>
 #include "models/site.h"
 #include "models/api.h"
 #include "vendor/json.h"
@@ -180,6 +181,40 @@ void TagApi::parse()
 			}
 
 			TagType tagType = tagTypes.contains(typeId) ? tagTypes[typeId] : TagType("unknown");
+			m_tags.append(Tag(id, name, tagType, count));
+		}
+	}
+
+	// Regexes
+	else if (format == "Html")
+	{
+		// Read tags
+		QRegularExpression rx(m_site->value("Regex/TagApi"));
+		auto matches = rx.globalMatch(source);
+		while (matches.hasNext())
+		{
+			auto match = matches.next();
+
+			// Parse result using the regex
+			QMap<QString, QString> d;
+			for (QString group : rx.namedCaptureGroups())
+			{
+				if (group.isEmpty())
+					continue;
+
+				QString val = match.captured(group);
+				if (!val.isEmpty())
+				{ d[group] = val.trimmed(); }
+			}
+
+			// Map variables
+			id = d.contains("id") ? d["id"].toInt() : 0;
+			name = d["tag"];
+			count = d.contains("count") ? d["count"].toInt() : 0;
+			typeId = d.contains("typeId") ? d["typeId"].toInt() : -1;
+			QString ttype = d["type"];
+
+			TagType tagType = !ttype.isEmpty() ? TagType(ttype) : (tagTypes.contains(typeId) ? tagTypes[typeId] : TagType("unknown"));
 			m_tags.append(Tag(id, name, tagType, count));
 		}
 	}
