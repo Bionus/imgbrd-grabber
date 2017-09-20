@@ -14,6 +14,7 @@ TagApi::TagApi(Profile *profile, Site *site, Api *api, int page, int limit, QObj
 	QString url = m_api->value("Urls/TagApi");
 
 	// Basic information
+	page = page - 1 + m_api->value("FirstPage").toInt();
 	url.replace("{page}", QString::number(page));
 	url.replace("{limit}", QString::number(limit));
 
@@ -189,7 +190,7 @@ void TagApi::parse()
 	else if (format == "Html")
 	{
 		// Read tags
-		QRegularExpression rx(m_site->value("Regex/TagApi"));
+		QRegularExpression rx(m_site->value("Regex/TagApi"), QRegularExpression::DotMatchesEverythingOption);
 		auto matches = rx.globalMatch(source);
 		while (matches.hasNext())
 		{
