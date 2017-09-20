@@ -174,7 +174,7 @@ void TagApi::parse()
 				id = sc.value("id").toInt();
 				name = sc.value("name").toString();
 				count = sc.value("images").toInt();
-				ttype = sc.value("category");
+				ttype = sc.value("category").toString();
 			}
 			else if (sc.contains("post_count"))
 			{
