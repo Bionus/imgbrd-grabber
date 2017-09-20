@@ -41,16 +41,16 @@ Tag::Tag(int id, QString text, TagType type, int count, QStringList related)
 		m_text = m_text.left(m_text.length() - 9);
 	}
 
-	if (m_text.contains(':') && weakTypes.contains(m_type.name()))
+	int sepPos = m_text.indexOf(':');
+	if (sepPos != -1 && weakTypes.contains(m_type.name()))
 	{
 		QStringList prep = QStringList() << "artist" << "copyright" << "character" << "model" << "species" << "unknown" << "oc";
-		foreach (QString pre, prep)
+		QString pre = Tag::GetType(m_text.left(sepPos), QStringList());
+		int prepIndex = prep.indexOf(pre);
+		if (prepIndex != -1)
 		{
-			if (m_text.startsWith(pre + ":"))
-			{
-				m_type = TagType(Tag::GetType(pre, prep));
-				m_text = m_text.mid(pre.length() + 1);
-			}
+			m_type = TagType(Tag::GetType(prep[prepIndex], prep));
+			m_text = m_text.mid(sepPos + 1);
 		}
 	}
 }

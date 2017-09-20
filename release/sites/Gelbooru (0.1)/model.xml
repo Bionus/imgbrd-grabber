@@ -11,7 +11,7 @@
 	</Urls>
 	<Regex>
 		<Tags><![CDATA[<li><a[^>]*>\+</a><a [^>]*>-</a> <span [^>]*>\? <a href="[^"]*">(?<tag>[^<]+)</a> (?<count>\d+)</span></li>]]></Tags>
-		<Image><![CDATA[<span class="thumb"><a id="p(?<id>\d+)" href="[^"]+"><img src="(?<preview_url>[^"]*thumbnail_(?<md5>[^.]+)\.[^"]+)" alt="post" border="0" title=" *(?<tags>[^"]*) *score:(?<score>[^ "]+) *rating:(?<rating>[^ "]+) *"\/><\/a>[^<]*(?:<script type="text\/javascript">[^<]*\/\/<!\[CDATA\[[^<]*posts\[[^]]+\] = \{'tags':'(?<tags>[^']+)'\.split\(\/ \/g\), 'rating':'(?<rating>[^']+)', 'score':(?<score>[^,]+), 'user':'(?<author>[^']+)'\}[^<]*\/\/\]\]>[^<]*<\/script>)?<\/span>]]></Image>
+		<Image><![CDATA[<span class="thumb"><a id="p(?<id>\d+)" href="[^"]+"><img src="(?<preview_url>[^"]*thumbnail_(?<md5>[^.]+)\.[^"]+)" alt="post" border="0" title=" *(?<tags>[^"]*) *score:(?<score>[^ "]+) *rating:(?<rating>[^ "]+) *"\/><\/a>[^<]*(?:<script type="text\/javascript">[^<]*\/\/<!\[CDATA\[[^<]*posts\[[^]]+\] = \{'tags':'(?<tags_2>[^']+)'\.split\(\/ \/g\), 'rating':'(?<rating_2>[^']+)', 'score':(?<score_2>[^,]+), 'user':'(?<author>[^']+)'\}[^<]*\/\/\]\]>[^<]*<\/script>)?<\/span>]]></Image>
 		<ImageUrl>&lt;img[^&gt;]+src=&quot;([^&quot;]+)&quot;[^&gt;]+onclick=&quot;Note\.toggle\(\);&quot;[^&gt;]*/&gt;</ImageUrl>
 	</Regex>
 	<Check>
