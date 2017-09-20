@@ -516,7 +516,7 @@ void PageApi::parse()
 		// Getting tags
 		if (m_site->contains("Regex/Tags"))
 		{
-			QRegularExpression rxtags(m_site->value("Regex/Tags"));
+			QRegularExpression rxtags(m_site->value("Regex/Tags"), QRegularExpression::DotMatchesEverythingOption);
 			QStringList tags = QStringList();
 			auto matches = rxtags.globalMatch(m_source);
 			while (matches.hasNext())
@@ -531,7 +531,7 @@ void PageApi::parse()
 		}
 
 		// Getting images
-		QRegularExpression rx(m_site->value("Regex/Image"));
+		QRegularExpression rx(m_site->value("Regex/Image"), QRegularExpression::DotMatchesEverythingOption);
 		auto matches = rx.globalMatch(m_source);
 		int id = 0;
 		while (matches.hasNext())
