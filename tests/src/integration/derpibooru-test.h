@@ -11,6 +11,8 @@ class DerpibooruTest : public IntegrationTestSuite
 	private slots:
 		void testHtml();
 		void testJson();
+		void testHtmlTags();
+		void testJsonTags();
 };
 
 #endif // DERPIBOORU_TEST_H

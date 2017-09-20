@@ -12,6 +12,7 @@ class E621Test : public IntegrationTestSuite
 		void testSwfUrls();
 		void testXmlTypedTags();
 		void testJsonTypedTags();
+		void testHtmlTags();
 		void testXmlTags();
 		void testJsonTags();
 };

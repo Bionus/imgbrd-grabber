@@ -40,5 +40,27 @@ void DerpibooruTest::testJson()
 	QCOMPARE(ids, expected);
 }
 
+void DerpibooruTest::testHtmlTags()
+{
+	QList<Tag> tags = getTags("Booru-on-rails", "derpibooru.org", "regex", "tags.html");
+
+	QCOMPARE(tags.count(), 250);
+
+	QCOMPARE(tags[1].text(), QString("solo"));
+	QCOMPARE(tags[1].count(), 599506);
+	QCOMPARE(tags[1].type().name(), QString("unknown"));
+}
+
+void DerpibooruTest::testJsonTags()
+{
+	QList<Tag> tags = getTags("Booru-on-rails", "derpibooru.org", "json", "tags.json");
+
+	QCOMPARE(tags.count(), 250);
+
+	QCOMPARE(tags[1].text(), QString("solo"));
+	QCOMPARE(tags[1].count(), 599506);
+	QCOMPARE(tags[1].type().name(), QString("unknown"));
+}
+
 
 static DerpibooruTest instance;

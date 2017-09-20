@@ -54,6 +54,17 @@ void DanbooruTest::testPageTags()
 	QCOMPARE(tags[2].count(), 1240000);
 }
 
+void DanbooruTest::testHtmlTags()
+{
+	QList<Tag> tags = getTags("Danbooru (2.0)", "danbooru.donmai.us", "regex", "tags.html");
+
+	QCOMPARE(tags.count(), 100);
+
+	QCOMPARE(tags[1].text(), QString("apollo_star"));
+	QCOMPARE(tags[1].count(), 1);
+	QCOMPARE(tags[1].type().name(), QString("artist"));
+}
+
 void DanbooruTest::testXmlTags()
 {
 	QList<Tag> tags = getTags("Danbooru (2.0)", "danbooru.donmai.us", "xml", "tags.xml");

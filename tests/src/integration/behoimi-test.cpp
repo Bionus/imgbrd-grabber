@@ -72,6 +72,17 @@ void BehoimiTest::testPageTags()
 	QCOMPARE(tags[2].count(), 222);
 }
 
+void BehoimiTest::testHtmlTags()
+{
+	QList<Tag> tags = getTags("Danbooru", "behoimi.org", "regex", "tags.html");
+
+	QCOMPARE(tags.count(), 50);
+
+	QCOMPARE(tags[2].text(), QString("104"));
+	QCOMPARE(tags[2].count(), 9);
+	QCOMPARE(tags[2].type().name(), QString("model"));
+}
+
 void BehoimiTest::testXmlTags()
 {
 	QList<Tag> tags = getTags("Danbooru", "behoimi.org", "xml", "tags.xml");
