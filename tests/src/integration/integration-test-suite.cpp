@@ -28,6 +28,7 @@ QList<Image*> IntegrationTestSuite::getImages(QString site, QString source, QStr
 	settings.setValue("sources/usedefault", false);
 	settings.setValue("sources/source_1", format);
 	settings.sync();
+	m_filesToRemove.append(settings.fileName());
 
 	QList<Site*> sites;
 	Site *ste = new Site(source, new Source(&profile, "tests/resources/sites/" + site));
@@ -86,6 +87,7 @@ QList<Tag> IntegrationTestSuite::getPageTags(QString site, QString source, QStri
 	settings.setValue("sources/usedefault", false);
 	settings.setValue("sources/source_1", format);
 	settings.sync();
+	m_filesToRemove.append(settings.fileName());
 
 	// Setup network
 	if (!file.isEmpty())
@@ -148,6 +150,7 @@ QList<Tag> IntegrationTestSuite::getTags(QString site, QString source, QString f
 	settings.setValue("sources/usedefault", false);
 	settings.setValue("sources/source_1", format);
 	settings.sync();
+	m_filesToRemove.append(settings.fileName());
 
 	// Setup network
 	if (!file.isEmpty())
@@ -181,4 +184,8 @@ void IntegrationTestSuite::cleanup()
 		m_downloader->deleteLater();
 		m_downloader = nullptr;
 	}
+
+	for (QString file : m_filesToRemove)
+	{ QFile(file).remove(); }
+	m_filesToRemove.clear();
 }
