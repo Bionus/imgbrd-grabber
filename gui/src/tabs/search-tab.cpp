@@ -398,6 +398,8 @@ void searchTab::postLoading(Page *page, QList<QSharedPointer<Image>> imgs)
 			ui_layoutResults->addWidget(txt, 0, 0);
 			ui_layoutResults->setRowMinimumHeight(0, txt->sizeHint().height() + 10);
 		}
+		else
+		{ setMergedLabelText(m_siteLabels[nullptr], m_images); }
 	}
 
 	loadImageThumbnails(page, imgs);
