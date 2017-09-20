@@ -79,7 +79,7 @@ void TagLoader::start()
 		tagApi->deleteLater();
 
 		ui->progressBar->setValue(page);
-		ui->labelProgress->setText(QString::number(page));
+		ui->labelProgress->setText(QString("%1 - %2").arg(page).arg(allTags.count()));
 		page++;
 	}
 
