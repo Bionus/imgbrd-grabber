@@ -547,7 +547,9 @@ void PageApi::parse()
 				if (!val.isEmpty())
 				{
 					int underscorePos = group.indexOf('_');
-					if (underscorePos != -1)
+					bool ok;
+					group.mid(underscorePos + 1).toInt(&ok);
+					if (underscorePos != -1 && ok)
 					{ group = group.left(underscorePos); }
 					d[group] = val;
 				}
