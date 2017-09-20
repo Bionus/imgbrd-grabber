@@ -1,0 +1,493 @@
+<!DOCTYPE html><html>
+	<head>
+		<meta charset="UTF-8">
+		<title> Image List  / rating:safe | Gelbooru</title><link rel="stylesheet" type="text/css" media="screen" href="responsive.css?9" title="default" />
+		<link rel="stylesheet" type="text/css" media="screen" href="css/jquery-ui.css" title="default" />
+		<link rel="SHORTCUT ICON" href="favicon.png" />
+		<meta name="keywords" content="anime, doujinshi, hentai, porn, sex, japanese hentai, anime hentai, imageboard" />
+		<meta name="description" content="Gelbooru is one of the largest hentai and safe image resource available! Over a million images for you to search and view, and it is all free!" />
+		<meta name="rating" content="mature" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="search" type="application/opensearchdescription+xml" title="Gelbooru.com: Coded by Geltas" href="gelbooru.xml" />
+		<link rel="alternate" href="index.php?page=cooliris" type="application/rss+xml" title="RSS" id="gallery" />
+		<link href="index.php?page=atom" rel="alternate" title="ATOM" type="application/atom+xml"/>
+		
+		<link rel="stylesheet" href="//gelbooru.com/bootstrap.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+		<script src="//gelbooru.com/script/jquery.cookie.js"></script>
+		<script src="//gelbooru.com/script/jqueryCaret.js"></script>
+		<script src="//gelbooru.com/script/miscJs.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="https://ads.exoclick.com/ad_track.js"></script>
+		<script src="https://www.google.com/recaptcha/api.js"></script>
+		<script type="text/javascript" src="//gelbooru.com/script/application.js?56"></script>
+		<script type="text/javascript" src="//gelbooru.com/script/license.gelbooru.js"></script>
+	</head>
+	<body>
+		<div class="container-fluid">
+			<nav class="navbar navbar-default">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+					  <span class="sr-only">Toggle navigation</span>
+					  <span class="icon-bar"></span>
+					  <span class="icon-bar"></span>
+					  <span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="//gelbooru.com/"><span class="hidden-sm hidden-md hidden-lg">Gelbooru</span></a>
+				</div>
+				<div id="navbar" class="navbar-collapse collapse">
+					<ul class="nav navbar-nav">
+						<li><a href="index.php?page=account&amp;s=home">Account</a></li>
+						<li class="active strong"><a href="index.php?page=post&amp;s=list&amp;tags=all">Posts</a></li>
+						<li><a href="index.php?page=comment&amp;s=list">Comments</a></li>
+						<li><a href="index.php?page=wiki&amp;s=list">Wiki</a></li>
+						<li><a href="index.php?page=tags&amp;s=list">Tags</a></li>
+						<li><a href="index.php?page=pool&amp;s=list">Pools</a></li>
+						<li><a href="index.php?page=forum&amp;s=list">Forum</a></li>
+						<li><a href="index.php?page=tracker&amp;s=list">Trac</a></li>
+						<li><a href="http://thedoujin.com/" target="_BLANK" style="color: #fff000;"><b>Doujin</b></a></li>
+					</ul>
+				</div>
+			</nav>
+		<nav class="navbar navbar-default" id="submenu">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar2" aria-expanded="false" aria-controls="navbar">
+						  <span class="sr-only">Toggle navigation</span>
+						  <span class="icon-bar"></span>
+						  <span class="icon-bar"></span>
+						  <span class="icon-bar"></span>
+						</button>
+			<div id="navbar2" class="navbar-collapse collapse">
+		<ul class="nav navbar-nav">	<li><a href="index.php?page=post&amp;s=list">List</a></li>
+	<li><a href="index.php?page=post&amp;s=add">Upload</a></li>
+	<li><a href="index.php?page=post&amp;s=addVideo">Upload WebM</a></li>
+	<li><a href="index.php?page=post&amp;s=random">Random</a></li>
+	<li><a href="https://discord.gg/Zxs9tPE">Discord</a></li>
+	<li><a href="tos.php"><b>TOS</b></a></li>
+	<li><a href="index.php?page=dmca&amp;s=index">DMCA</a></li>
+</ul></div></nav></div><div class="alert alert-warning small" style="padding: 10px 15px 10px 15px; font-size: 11px;" id="motd">
+			<i><b>Notice</b></i>: Visit your account options to access your <a href="https://patreon.com/gelbooru" target="_blank" style="color: #ffff00;">Patreon rewards</a> for July. <a href="javascript:;" onclick="$.cookie('motd','1'); $('#motd').hide(); $('#motdspacer').show(); return false;" style="color: #fff; text-decoration: underline;">(Dismiss)</a>
+		</div>
+		<div style="display: none; padding: 0px 15px 0px 15px;" id="motdspacer">&nbsp;</div>
+	<div class="padding15">
+		
+		<div id="long-notice"></div><div id="notice" style="display: none;"></div>
+		<div class="alert alert-success" role="alert"  style="display: none;"><center><a href="index.php?page=gmail">You have mail</a></center></div>
+	<script type="text/javascript">
+		if($.cookie('motd') == 1)
+		{
+			$("#motd").hide();
+			$("#motdspacer").show();
+		}
+	</script>	<script type="text/javascript">
+	//<![CDATA[
+	var posts = {}; var pignored = {};
+	//]]>
+	</script><script src="https://gelbooru.com/ads.js?"></script>
+	<!--[if lt IE 7]>
+	<div style="background: #f0f0f0; padding: 10px; text-align: center; border: 3px solid #dadada;">Support for this browser is very limited. Please upgrade or switch to a new browser.
+		<a href="http://www.mozilla.com/firefox/">Firefox</a>, <a href="http://www.microsoft.com/windows/internet-explorer/download-ie.aspx">Internet Explorer</a>.
+	</div>
+	<![endif]-->
+	<div class="alert alert-success" role="alert"  style="display:none;">
+		<center><a href="index.php?page=help&amp;topic=post"><b>Safe images only mode.</b></a></center>
+	</div>
+	<div class="hidden-sm hidden-md hidden-lg"><center><a href="javascript:;" onclick="$('#searchTags').toggleClass('hidden-xs'); toggleShowTags(); return false;">Toggle Tags</a></center><br /></div>
+
+	<script type="text/javascript">
+	function toggleShowTags() {
+		if($.cookie('showTags') == 0)
+		{
+			$.cookie('showTags','1');
+		}
+		else
+		{
+			$.cookie('showTags','0');
+		}
+		return true;
+	}
+	</script>
+	<ul id="tag-list">
+		
+		<form action="index.php?page=search" method="post">
+				<input id="tags-search" name="tags" class="search_list" type="text" value="rating:safe" placeholder="Ex: blue_sky cloud 1girl"/>
+				<a href="javascript:;" onclick="alert('This does nothing at this moment.');return false;"><span class="ui-icon ui-icon-plus additional-search" title="Save this search. Check your account page."> </span></a>
+				<br />
+				<input name="commit" class="secondary_search" type="submit" value="Search" /><br /><br />
+		</form>
+		
+		<li></li>
+				<div id="blacklisted-sidebar" style="display: none; text-align:center;">
+			<img src="layout/icons/exclamation-small.png" alt="alert" style="margin-top: -1px;" /><a href="#" onclick="$('.blacklisted').toggleClass('blacklisted'); $('#blacklisted-sidebar').toggle(); return false;"><b>Show Blacklisted</b></a> <span id="blacklist-count" class="post-count"></span>
+			<br /><br />
+		</div>
+		
+		<div class="hidden-xs" id="searchTags">
+		<h4>Tags</h4>
+		<script type="text/javascript">
+			if($.cookie('showTags') == 1)
+			{
+				$('#searchTags').toggleClass('hidden-xs');
+			}
+		</script>	
+
+<li class="tag-type-general">
+			<a href="index.php?page=wiki&amp;s=list&amp;search=00s" title="Wiki">?</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('00s'); return false;" title="Add to search">+</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('-00s'); return false;" title="Remove from search">-</a>
+			<a href="index.php?page=post&amp;s=list&amp;tags=00s" rel="nofollow">00s</a> <span style="color: #a0a0a0;">255610</span></li><li class="tag-type-general">
+			<a href="index.php?page=wiki&amp;s=list&amp;search=1girl" title="Wiki">?</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('1girl'); return false;" title="Add to search">+</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('-1girl'); return false;" title="Remove from search">-</a>
+			<a href="index.php?page=post&amp;s=list&amp;tags=1girl" rel="nofollow">1girl</a> <span style="color: #a0a0a0;">2302988</span></li><li class="tag-type-general">
+			<a href="index.php?page=wiki&amp;s=list&amp;search=aqua_hair" title="Wiki">?</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('aqua_hair'); return false;" title="Add to search">+</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('-aqua_hair'); return false;" title="Remove from search">-</a>
+			<a href="index.php?page=post&amp;s=list&amp;tags=aqua_hair" rel="nofollow">aqua hair</a> <span style="color: #a0a0a0;">60142</span></li><li class="tag-type-general">
+			<a href="index.php?page=wiki&amp;s=list&amp;search=bangs" title="Wiki">?</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('bangs'); return false;" title="Add to search">+</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('-bangs'); return false;" title="Remove from search">-</a>
+			<a href="index.php?page=post&amp;s=list&amp;tags=bangs" rel="nofollow">bangs</a> <span style="color: #a0a0a0;">197265</span></li><li class="tag-type-general">
+			<a href="index.php?page=wiki&amp;s=list&amp;search=barefoot" title="Wiki">?</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('barefoot'); return false;" title="Add to search">+</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('-barefoot'); return false;" title="Remove from search">-</a>
+			<a href="index.php?page=post&amp;s=list&amp;tags=barefoot" rel="nofollow">barefoot</a> <span style="color: #a0a0a0;">200925</span></li><li class="tag-type-general">
+			<a href="index.php?page=wiki&amp;s=list&amp;search=bikini" title="Wiki">?</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('bikini'); return false;" title="Add to search">+</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('-bikini'); return false;" title="Remove from search">-</a>
+			<a href="index.php?page=post&amp;s=list&amp;tags=bikini" rel="nofollow">bikini</a> <span style="color: #a0a0a0;">171440</span></li><li class="tag-type-general">
+			<a href="index.php?page=wiki&amp;s=list&amp;search=black_bikini" title="Wiki">?</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('black_bikini'); return false;" title="Add to search">+</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('-black_bikini'); return false;" title="Remove from search">-</a>
+			<a href="index.php?page=post&amp;s=list&amp;tags=black_bikini" rel="nofollow">black bikini</a> <span style="color: #a0a0a0;">10841</span></li><li class="tag-type-general">
+			<a href="index.php?page=wiki&amp;s=list&amp;search=black_hair" title="Wiki">?</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('black_hair'); return false;" title="Add to search">+</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('-black_hair'); return false;" title="Remove from search">-</a>
+			<a href="index.php?page=post&amp;s=list&amp;tags=black_hair" rel="nofollow">black hair</a> <span style="color: #a0a0a0;">612090</span></li><li class="tag-type-general">
+			<a href="index.php?page=wiki&amp;s=list&amp;search=blue_eyes" title="Wiki">?</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('blue_eyes'); return false;" title="Add to search">+</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('-blue_eyes'); return false;" title="Remove from search">-</a>
+			<a href="index.php?page=post&amp;s=list&amp;tags=blue_eyes" rel="nofollow">blue eyes</a> <span style="color: #a0a0a0;">799025</span></li><li class="tag-type-general">
+			<a href="index.php?page=wiki&amp;s=list&amp;search=blush" title="Wiki">?</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('blush'); return false;" title="Add to search">+</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('-blush'); return false;" title="Remove from search">-</a>
+			<a href="index.php?page=post&amp;s=list&amp;tags=blush" rel="nofollow">blush</a> <span style="color: #a0a0a0;">1300882</span></li><li class="tag-type-general">
+			<a href="index.php?page=wiki&amp;s=list&amp;search=breasts" title="Wiki">?</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('breasts'); return false;" title="Add to search">+</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('-breasts'); return false;" title="Remove from search">-</a>
+			<a href="index.php?page=post&amp;s=list&amp;tags=breasts" rel="nofollow">breasts</a> <span style="color: #a0a0a0;">1460676</span></li><li class="tag-type-general">
+			<a href="index.php?page=wiki&amp;s=list&amp;search=cleavage" title="Wiki">?</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('cleavage'); return false;" title="Add to search">+</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('-cleavage'); return false;" title="Remove from search">-</a>
+			<a href="index.php?page=post&amp;s=list&amp;tags=cleavage" rel="nofollow">cleavage</a> <span style="color: #a0a0a0;">344949</span></li><li class="tag-type-general">
+			<a href="index.php?page=wiki&amp;s=list&amp;search=closed_mouth" title="Wiki">?</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('closed_mouth'); return false;" title="Add to search">+</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('-closed_mouth'); return false;" title="Remove from search">-</a>
+			<a href="index.php?page=post&amp;s=list&amp;tags=closed_mouth" rel="nofollow">closed mouth</a> <span style="color: #a0a0a0;">57629</span></li><li class="tag-type-general">
+			<a href="index.php?page=wiki&amp;s=list&amp;search=collarbone" title="Wiki">?</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('collarbone'); return false;" title="Add to search">+</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('-collarbone'); return false;" title="Remove from search">-</a>
+			<a href="index.php?page=post&amp;s=list&amp;tags=collarbone" rel="nofollow">collarbone</a> <span style="color: #a0a0a0;">135431</span></li><li class="tag-type-general">
+			<a href="index.php?page=wiki&amp;s=list&amp;search=confetti" title="Wiki">?</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('confetti'); return false;" title="Add to search">+</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('-confetti'); return false;" title="Remove from search">-</a>
+			<a href="index.php?page=post&amp;s=list&amp;tags=confetti" rel="nofollow">confetti</a> <span style="color: #a0a0a0;">2779</span></li><li class="tag-type-general">
+			<a href="index.php?page=wiki&amp;s=list&amp;search=covered_navel" title="Wiki">?</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('covered_navel'); return false;" title="Add to search">+</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('-covered_navel'); return false;" title="Remove from search">-</a>
+			<a href="index.php?page=post&amp;s=list&amp;tags=covered_navel" rel="nofollow">covered navel</a> <span style="color: #a0a0a0;">17426</span></li><li class="tag-type-general">
+			<a href="index.php?page=wiki&amp;s=list&amp;search=feet" title="Wiki">?</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('feet'); return false;" title="Add to search">+</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('-feet'); return false;" title="Remove from search">-</a>
+			<a href="index.php?page=post&amp;s=list&amp;tags=feet" rel="nofollow">feet</a> <span style="color: #a0a0a0;">154281</span></li><li class="tag-type-general">
+			<a href="index.php?page=wiki&amp;s=list&amp;search=food" title="Wiki">?</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('food'); return false;" title="Add to search">+</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('-food'); return false;" title="Remove from search">-</a>
+			<a href="index.php?page=post&amp;s=list&amp;tags=food" rel="nofollow">food</a> <span style="color: #a0a0a0;">128776</span></li><li class="tag-type-general">
+			<a href="index.php?page=wiki&amp;s=list&amp;search=full_body" title="Wiki">?</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('full_body'); return false;" title="Add to search">+</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('-full_body'); return false;" title="Remove from search">-</a>
+			<a href="index.php?page=post&amp;s=list&amp;tags=full_body" rel="nofollow">full body</a> <span style="color: #a0a0a0;">148006</span></li><li class="tag-type-general">
+			<a href="index.php?page=wiki&amp;s=list&amp;search=hair_between_eyes" title="Wiki">?</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('hair_between_eyes'); return false;" title="Add to search">+</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('-hair_between_eyes'); return false;" title="Remove from search">-</a>
+			<a href="index.php?page=post&amp;s=list&amp;tags=hair_between_eyes" rel="nofollow">hair between eyes</a> <span style="color: #a0a0a0;">84556</span></li><li class="tag-type-character">
+			<a href="index.php?page=wiki&amp;s=list&amp;search=hatsune_miku" title="Wiki">?</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('hatsune_miku'); return false;" title="Add to search">+</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('-hatsune_miku'); return false;" title="Remove from search">-</a>
+			<a href="index.php?page=post&amp;s=list&amp;tags=hatsune_miku" rel="nofollow">hatsune miku</a> <span style="color: #a0a0a0;">74058</span></li><li class="tag-type-general">
+			<a href="index.php?page=wiki&amp;s=list&amp;search=highres" title="Wiki">?</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('highres'); return false;" title="Add to search">+</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('-highres'); return false;" title="Remove from search">-</a>
+			<a href="index.php?page=post&amp;s=list&amp;tags=highres" rel="nofollow">highres</a> <span style="color: #a0a0a0;">1154339</span></li><li class="tag-type-general">
+			<a href="index.php?page=wiki&amp;s=list&amp;search=holding" title="Wiki">?</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('holding'); return false;" title="Add to search">+</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('-holding'); return false;" title="Remove from search">-</a>
+			<a href="index.php?page=post&amp;s=list&amp;tags=holding" rel="nofollow">holding</a> <span style="color: #a0a0a0;">119299</span></li><li class="tag-type-general">
+			<a href="index.php?page=wiki&amp;s=list&amp;search=holding_food" title="Wiki">?</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('holding_food'); return false;" title="Add to search">+</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('-holding_food'); return false;" title="Remove from search">-</a>
+			<a href="index.php?page=post&amp;s=list&amp;tags=holding_food" rel="nofollow">holding food</a> <span style="color: #a0a0a0;">3381</span></li><li class="tag-type-general">
+			<a href="index.php?page=wiki&amp;s=list&amp;search=kinukawa_chinatsu" title="Wiki">?</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('kinukawa_chinatsu'); return false;" title="Add to search">+</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('-kinukawa_chinatsu'); return false;" title="Remove from search">-</a>
+			<a href="index.php?page=post&amp;s=list&amp;tags=kinukawa_chinatsu" rel="nofollow">kinukawa chinatsu</a> <span style="color: #a0a0a0;">10</span></li><li class="tag-type-general">
+			<a href="index.php?page=wiki&amp;s=list&amp;search=large_breasts" title="Wiki">?</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('large_breasts'); return false;" title="Add to search">+</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('-large_breasts'); return false;" title="Remove from search">-</a>
+			<a href="index.php?page=post&amp;s=list&amp;tags=large_breasts" rel="nofollow">large breasts</a> <span style="color: #a0a0a0;">605754</span></li><li class="tag-type-general">
+			<a href="index.php?page=wiki&amp;s=list&amp;search=lavender_eyes" title="Wiki">?</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('lavender_eyes'); return false;" title="Add to search">+</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('-lavender_eyes'); return false;" title="Remove from search">-</a>
+			<a href="index.php?page=post&amp;s=list&amp;tags=lavender_eyes" rel="nofollow">lavender eyes</a> <span style="color: #a0a0a0;">1999</span></li><li class="tag-type-general">
+			<a href="index.php?page=wiki&amp;s=list&amp;search=lavender_hair" title="Wiki">?</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('lavender_hair'); return false;" title="Add to search">+</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('-lavender_hair'); return false;" title="Remove from search">-</a>
+			<a href="index.php?page=post&amp;s=list&amp;tags=lavender_hair" rel="nofollow">lavender hair</a> <span style="color: #a0a0a0;">17096</span></li><li class="tag-type-general">
+			<a href="index.php?page=wiki&amp;s=list&amp;search=legs" title="Wiki">?</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('legs'); return false;" title="Add to search">+</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('-legs'); return false;" title="Remove from search">-</a>
+			<a href="index.php?page=post&amp;s=list&amp;tags=legs" rel="nofollow">legs</a> <span style="color: #a0a0a0;">106445</span></li><li class="tag-type-general">
+			<a href="index.php?page=wiki&amp;s=list&amp;search=long_hair" title="Wiki">?</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('long_hair'); return false;" title="Add to search">+</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('-long_hair'); return false;" title="Remove from search">-</a>
+			<a href="index.php?page=post&amp;s=list&amp;tags=long_hair" rel="nofollow">long hair</a> <span style="color: #a0a0a0;">1678136</span></li><li class="tag-type-general">
+			<a href="index.php?page=wiki&amp;s=list&amp;search=looking_at_viewer" title="Wiki">?</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('looking_at_viewer'); return false;" title="Add to search">+</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('-looking_at_viewer'); return false;" title="Remove from search">-</a>
+			<a href="index.php?page=post&amp;s=list&amp;tags=looking_at_viewer" rel="nofollow">looking at viewer</a> <span style="color: #a0a0a0;">688002</span></li><li class="tag-type-general">
+			<a href="index.php?page=wiki&amp;s=list&amp;search=multicolored_hair" title="Wiki">?</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('multicolored_hair'); return false;" title="Add to search">+</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('-multicolored_hair'); return false;" title="Remove from search">-</a>
+			<a href="index.php?page=post&amp;s=list&amp;tags=multicolored_hair" rel="nofollow">multicolored hair</a> <span style="color: #a0a0a0;">73448</span></li><li class="tag-type-general">
+			<a href="index.php?page=wiki&amp;s=list&amp;search=navel" title="Wiki">?</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('navel'); return false;" title="Add to search">+</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('-navel'); return false;" title="Remove from search">-</a>
+			<a href="index.php?page=post&amp;s=list&amp;tags=navel" rel="nofollow">navel</a> <span style="color: #a0a0a0;">393852</span></li><li class="tag-type-copyright">
+			<a href="index.php?page=wiki&amp;s=list&amp;search=original" title="Wiki">?</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('original'); return false;" title="Add to search">+</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('-original'); return false;" title="Remove from search">-</a>
+			<a href="index.php?page=post&amp;s=list&amp;tags=original" rel="nofollow">original</a> <span style="color: #a0a0a0;">397776</span></li><li class="tag-type-general">
+			<a href="index.php?page=wiki&amp;s=list&amp;search=plantar_flexion" title="Wiki">?</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('plantar_flexion'); return false;" title="Add to search">+</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('-plantar_flexion'); return false;" title="Remove from search">-</a>
+			<a href="index.php?page=post&amp;s=list&amp;tags=plantar_flexion" rel="nofollow">plantar flexion</a> <span style="color: #a0a0a0;">89</span></li><li class="tag-type-general">
+			<a href="index.php?page=wiki&amp;s=list&amp;search=popsicle" title="Wiki">?</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('popsicle'); return false;" title="Add to search">+</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('-popsicle'); return false;" title="Remove from search">-</a>
+			<a href="index.php?page=post&amp;s=list&amp;tags=popsicle" rel="nofollow">popsicle</a> <span style="color: #a0a0a0;">12066</span></li><li class="tag-type-general">
+			<a href="index.php?page=wiki&amp;s=list&amp;search=purple_hair" title="Wiki">?</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('purple_hair'); return false;" title="Add to search">+</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('-purple_hair'); return false;" title="Remove from search">-</a>
+			<a href="index.php?page=post&amp;s=list&amp;tags=purple_hair" rel="nofollow">purple hair</a> <span style="color: #a0a0a0;">286303</span></li><li class="tag-type-general">
+			<a href="index.php?page=wiki&amp;s=list&amp;search=sidelocks" title="Wiki">?</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('sidelocks'); return false;" title="Add to search">+</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('-sidelocks'); return false;" title="Remove from search">-</a>
+			<a href="index.php?page=post&amp;s=list&amp;tags=sidelocks" rel="nofollow">sidelocks</a> <span style="color: #a0a0a0;">57044</span></li><li class="tag-type-general">
+			<a href="index.php?page=wiki&amp;s=list&amp;search=simple_background" title="Wiki">?</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('simple_background'); return false;" title="Add to search">+</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('-simple_background'); return false;" title="Remove from search">-</a>
+			<a href="index.php?page=post&amp;s=list&amp;tags=simple_background" rel="nofollow">simple background</a> <span style="color: #a0a0a0;">417347</span></li><li class="tag-type-general">
+			<a href="index.php?page=wiki&amp;s=list&amp;search=sitting" title="Wiki">?</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('sitting'); return false;" title="Add to search">+</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('-sitting'); return false;" title="Remove from search">-</a>
+			<a href="index.php?page=post&amp;s=list&amp;tags=sitting" rel="nofollow">sitting</a> <span style="color: #a0a0a0;">324567</span></li><li class="tag-type-general">
+			<a href="index.php?page=wiki&amp;s=list&amp;search=skirt" title="Wiki">?</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('skirt'); return false;" title="Add to search">+</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('-skirt'); return false;" title="Remove from search">-</a>
+			<a href="index.php?page=post&amp;s=list&amp;tags=skirt" rel="nofollow">skirt</a> <span style="color: #a0a0a0;">595787</span></li><li class="tag-type-general">
+			<a href="index.php?page=wiki&amp;s=list&amp;search=small_breasts" title="Wiki">?</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('small_breasts'); return false;" title="Add to search">+</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('-small_breasts'); return false;" title="Remove from search">-</a>
+			<a href="index.php?page=post&amp;s=list&amp;tags=small_breasts" rel="nofollow">small breasts</a> <span style="color: #a0a0a0;">144224</span></li><li class="tag-type-general">
+			<a href="index.php?page=wiki&amp;s=list&amp;search=smile" title="Wiki">?</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('smile'); return false;" title="Add to search">+</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('-smile'); return false;" title="Remove from search">-</a>
+			<a href="index.php?page=post&amp;s=list&amp;tags=smile" rel="nofollow">smile</a> <span style="color: #a0a0a0;">920250</span></li><li class="tag-type-general">
+			<a href="index.php?page=wiki&amp;s=list&amp;search=solo" title="Wiki">?</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('solo'); return false;" title="Add to search">+</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('-solo'); return false;" title="Remove from search">-</a>
+			<a href="index.php?page=post&amp;s=list&amp;tags=solo" rel="nofollow">solo</a> <span style="color: #a0a0a0;">1824601</span></li><li class="tag-type-general">
+			<a href="index.php?page=wiki&amp;s=list&amp;search=standing" title="Wiki">?</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('standing'); return false;" title="Add to search">+</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('-standing'); return false;" title="Remove from search">-</a>
+			<a href="index.php?page=post&amp;s=list&amp;tags=standing" rel="nofollow">standing</a> <span style="color: #a0a0a0;">181547</span></li><li class="tag-type-general">
+			<a href="index.php?page=wiki&amp;s=list&amp;search=streaked_hair" title="Wiki">?</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('streaked_hair'); return false;" title="Add to search">+</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('-streaked_hair'); return false;" title="Remove from search">-</a>
+			<a href="index.php?page=post&amp;s=list&amp;tags=streaked_hair" rel="nofollow">streaked hair</a> <span style="color: #a0a0a0;">6417</span></li><li class="tag-type-general">
+			<a href="index.php?page=wiki&amp;s=list&amp;search=swimsuit" title="Wiki">?</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('swimsuit'); return false;" title="Add to search">+</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('-swimsuit'); return false;" title="Remove from search">-</a>
+			<a href="index.php?page=post&amp;s=list&amp;tags=swimsuit" rel="nofollow">swimsuit</a> <span style="color: #a0a0a0;">254947</span></li><li class="tag-type-general">
+			<a href="index.php?page=wiki&amp;s=list&amp;search=thighs" title="Wiki">?</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('thighs'); return false;" title="Add to search">+</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('-thighs'); return false;" title="Remove from search">-</a>
+			<a href="index.php?page=post&amp;s=list&amp;tags=thighs" rel="nofollow">thighs</a> <span style="color: #a0a0a0;">144415</span></li><li class="tag-type-artist">
+			<a href="index.php?page=wiki&amp;s=list&amp;search=tsunekichi" title="Wiki">?</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('tsunekichi'); return false;" title="Add to search">+</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('-tsunekichi'); return false;" title="Remove from search">-</a>
+			<a href="index.php?page=post&amp;s=list&amp;tags=tsunekichi" rel="nofollow">tsunekichi</a> <span style="color: #a0a0a0;">90</span></li><li class="tag-type-general">
+			<a href="index.php?page=wiki&amp;s=list&amp;search=twintails" title="Wiki">?</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('twintails'); return false;" title="Add to search">+</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('-twintails'); return false;" title="Remove from search">-</a>
+			<a href="index.php?page=post&amp;s=list&amp;tags=twintails" rel="nofollow">twintails</a> <span style="color: #a0a0a0;">439000</span></li><li class="tag-type-general">
+			<a href="index.php?page=wiki&amp;s=list&amp;search=two-tone_hair" title="Wiki">?</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('two-tone_hair'); return false;" title="Add to search">+</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('-two-tone_hair'); return false;" title="Remove from search">-</a>
+			<a href="index.php?page=post&amp;s=list&amp;tags=two-tone_hair" rel="nofollow">two-tone hair</a> <span style="color: #a0a0a0;">28575</span></li><li class="tag-type-copyright">
+			<a href="index.php?page=wiki&amp;s=list&amp;search=vocaloid" title="Wiki">?</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('vocaloid'); return false;" title="Add to search">+</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('-vocaloid'); return false;" title="Remove from search">-</a>
+			<a href="index.php?page=post&amp;s=list&amp;tags=vocaloid" rel="nofollow">vocaloid</a> <span style="color: #a0a0a0;">114239</span></li><li class="tag-type-general">
+			<a href="index.php?page=wiki&amp;s=list&amp;search=white_background" title="Wiki">?</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('white_background'); return false;" title="Add to search">+</a>
+			<a rel="nofollow" href="javascript:;" onclick="tagPM('-white_background'); return false;" title="Remove from search">-</a>
+			<a href="index.php?page=post&amp;s=list&amp;tags=white_background" rel="nofollow">white background</a> <span style="color: #a0a0a0;">301711</span></li><br /><br /><br /><br /></ul><span id="nup"></span></div><div class="contain-push"><div class="hidden-xs" style="max-width: 728px; overflow: hidden; padding-left: 10px; border-right: 10px solid #fff;"><iframe width="728" scrolling="no" height="90" frameborder="0" 
+
+src="https://ads2.contentabc.com/ads?spot_id=825461&rand=1588922964" 
+
+allowtransparency="true" marginheight="0" marginwidth="0" name="spot_id_825461"> </iframe><br /></div><br /><span id="tup"></span><div class="thumbnail-preview"><span id="s3889459" class="thumb"><a id="p3889459" href="//gelbooru.com/index.php?page=post&amp;s=view&amp;id=3889459" ><img src="https://simg3.gelbooru.com/thumbnails/2f/d8/thumbnail_2fd892ef1143793644e0b8f38e1c8849.jpg" alt="Image: 3889459" title="00s 1girl aqua_hair blue_eyes breasts cleavage confetti covered_navel hatsune_miku large_breasts long_hair looking_at_viewer navel skirt smile solo standing twintails vocaloid score:0 rating:safe" class="preview "/></a></span>
+						</div>
+					<div class="thumbnail-preview"><span id="s3889454" class="thumb"><a id="p3889454" href="//gelbooru.com/index.php?page=post&amp;s=view&amp;id=3889454" ><img src="https://simg3.gelbooru.com/thumbnails/b2/9c/thumbnail_b29ccbb2fcbeddad7a95b93c822ecbc0.jpg" alt="Image: 3889454" title=" 1girl bangs barefoot bikini black_bikini black_hair blush breasts closed_mouth collarbone feet food full_body hair_between_eyes highres holding holding_food kinukawa_chinatsu lavender_eyes lavender_hair legs long_hair looking_at_viewer multicolored_hair original plantar_flexion popsicle purple_hair sidelocks simple_background sitting small_breasts solo streaked_hair swimsuit thighs tsunekichi two-tone_hair white_background  score:0 rating:safe" class="preview "/></a></span>
+						</div>
+					<div class="thumbnail-preview"><span id="s3889452" class="thumb"><a id="p3889452" href="//gelbooru.com/index.php?page=post&amp;s=view&amp;id=3889452" ><img src="https://simg3.gelbooru.com/thumbnails/31/bf/thumbnail_31bf5040bafd4ebda1ae241857476b65.jpg" alt="Image: 3889452" title=" 1girl absurdres akira_(tsunekichi) bangs blouse blush breasts closed_mouth commentary_request expressionless grey_skirt hair_between_eyes hand_on_own_chest highres knees large_breasts looking_at_viewer original pleated_skirt psd_available red_eyes school_uniform short_hair short_sleeves simple_background sitting skirt solo sweater_vest thighs tsunekichi tsurime white_background white_blouse white_hair  score:0 rating:safe" class="preview "/></a></span>
+						</div>
+					<div class="thumbnail-preview"><span id="s3889451" class="thumb"><a id="p3889451" href="//gelbooru.com/index.php?page=post&amp;s=view&amp;id=3889451" ><img src="https://simg3.gelbooru.com/thumbnails/9d/e3/thumbnail_9de31cbd4c7f6563c919c1ccac0e7a3f.jpg" alt="Image: 3889451" title=" 1girl absurdres akira_(tsunekichi) bangs black_legwear blouse blush breasts closed_mouth expressionless grey_skirt hair_between_eyes hand_on_own_chest highres knees large_breasts looking_at_viewer original pantyhose pleated_skirt psd_available red_eyes school_uniform short_hair short_sleeves simple_background sitting skirt solo sweater_vest thighs tsunekichi tsurime white_background white_blouse white_hair  score:0 rating:safe" class="preview "/></a></span>
+						</div>
+					<div class="thumbnail-preview"><span id="s3889449" class="thumb"><a id="p3889449" href="//gelbooru.com/index.php?page=post&amp;s=view&amp;id=3889449" ><img src="https://simg3.gelbooru.com/thumbnails/44/1c/thumbnail_441ca055e7cc4dc823d9747b735f2cae.jpg" alt="Image: 3889449" title=" 2boys ? alphonse_elric animal blonde_hair brothers den_(fma) dog eating edward_elric expressionless eyebrows_visible_through_hair food fullmetal_alchemist grey_shirt long_hair long_sleeves looking_at_viewer looking_away male_focus multiple_boys noako pie pointing ponytail pov shirt short_hair siblings simple_background white_background white_shirt yellow_eyes  score:0 rating:safe" class="preview "/></a></span>
+						</div>
+					<div class="thumbnail-preview"><span id="s3889447" class="thumb"><a id="p3889447" href="//gelbooru.com/index.php?page=post&amp;s=view&amp;id=3889447" ><img src="https://simg3.gelbooru.com/thumbnails/11/3c/thumbnail_113c436934c5976eea22e20e7543b8db.jpg" alt="Image: 3889447" title=" 1girl 3d adapted_costume android arms_between_legs baka-chanlove black_dress black_hairband black_legwear blindfold blindfold_slip blue_eyes bob_cut breasts cleavage cleavage_cutout dress feather-trimmed_sleeves feather_trim hair_ornament hair_over_one_eye hairband highres koshirae long_sleeves looking_at_viewer medium_hair mole mole_under_mouth nier_(series) nier_automata outdoors pantyhose pillarboxed puffy_long_sleeves puffy_sleeves realistic saya_(scabbard) silver_hair sitting tassel tree tsuba_(guard) tsuka_(handle) v_arms wariza yorha_no._2_type_b yorha_no._9_type_s  score:0 rating:safe" class="preview "/></a></span>
+						</div>
+					<div class="thumbnail-preview"><span id="s3889446" class="thumb"><a id="p3889446" href="//gelbooru.com/index.php?page=post&amp;s=view&amp;id=3889446" ><img src="https://simg3.gelbooru.com/thumbnails/a8/d3/thumbnail_a8d3104d9252cf0fc5415505014eb583.jpg" alt="Image: 3889446" title=" 1girl anklet armlet arms_up army black_hair blue_sky bracelet braid breasts cleavage_cutout closed_mouth copyright_request dancing day desert dress green_dress grey_eyes holding holding_sword holding_weapon horseback_riding jewelry large_breasts lipstick long_hair looking_at_viewer makeup navel no_humans official_art original outdoors realistic red_dress red_lipstick riding sand scimitar serious sky solo_focus standing standing_on_one_leg sword turban veil very_long_hair watermark weapon web_address wristband wristlet xiaji  score:0 rating:safe" class="preview "/></a></span>
+						</div>
+					<div class="thumbnail-preview"><span id="s3889444" class="thumb"><a id="p3889444" href="//gelbooru.com/index.php?page=post&amp;s=view&amp;id=3889444" ><img src="https://simg3.gelbooru.com/thumbnails/c9/a9/thumbnail_c9a9ce22ff72dd0589e687c424aa7f1d.jpg" alt="Image: 3889444" title=" 1girl animal_ears bangs blonde_hair fate/extra fate/extra_ccc_fox_tail fate_(series) flower fox_ears highres saber_(fate/extra_ccc_fox_tail) sideways_glance solo yellow_eyes  score:0 rating:safe" class="preview "/></a></span>
+						</div>
+					<div class="thumbnail-preview"><span id="s3889443" class="thumb"><a id="p3889443" href="//gelbooru.com/index.php?page=post&amp;s=view&amp;id=3889443" ><img src="https://simg3.gelbooru.com/thumbnails/da/11/thumbnail_da113e06568a474842dad5374ff9fc75.jpg" alt="Image: 3889443" title=" 3girls 4koma akagi_(kantai_collection) brown_hair comic commentary_request highres hiyoko_(nikuyakidaijinn) japanese_clothes kaga_(kantai_collection) kantai_collection long_hair multiple_girls ryuujou_(kantai_collection) side_ponytail speech_bubble sweatdrop translation_request twintails twitter_username visor_cap younger  score:0 rating:safe" class="preview "/></a></span>
+						</div>
+					<div class="thumbnail-preview"><span id="s3889441" class="thumb"><a id="p3889441" href="//gelbooru.com/index.php?page=post&amp;s=view&amp;id=3889441" ><img src="https://simg3.gelbooru.com/thumbnails/c4/29/thumbnail_c429afda81f63001712c2699f37b076c.jpg" alt="Image: 3889441" title=" 1girl bangs bird black_legwear blue_dress blue_eyes blue_hair blue_sky breasts claws closed_mouth cloud cloudy_sky commentary_request detached_collar dress eyebrows_visible_through_hair fantasy fingernails giant_hand hair_ornament high_heels large_breasts long_hair looking_at_viewer magic official_art outdoors pointing pointing_at_viewer pointy_ears ruins seisen_cerberus sharp_fingernails side_cutout sky solo standing standing_on_one_leg stone_floor striped striped_legwear thighhighs tower town vertical-striped_legwear vertical_stripes very_long_hair wristlet xiaji  score:0 rating:safe" class="preview "/></a></span>
+						</div>
+					<div class="thumbnail-preview"><span id="s3889440" class="thumb"><a id="p3889440" href="//gelbooru.com/index.php?page=post&amp;s=view&amp;id=3889440" ><img src="https://simg3.gelbooru.com/thumbnails/7f/3d/thumbnail_7f3dd44c680371e4c1ecff934f6b71d3.jpg" alt="Image: 3889440" title=" crobat darkrai deoxys dugtrio electrode gengar greninja highres lucario mega_gengar mega_lopunny mega_lucario mega_sceptile ninjask noivern pheromosa pokemon pokemon_(creature) sceptile talonflame weavile  score:0 rating:safe" class="preview "/></a></span>
+						</div>
+					<div class="thumbnail-preview"><span id="s3889439" class="thumb"><a id="p3889439" href="//gelbooru.com/index.php?page=post&amp;s=view&amp;id=3889439" ><img src="https://simg3.gelbooru.com/thumbnails/13/34/thumbnail_133491df32d363931b12889b5a43be12.jpg" alt="Image: 3889439" title=" 1girl arm_behind_back bangs beach black_hair blue_sky bracelet breasts cleavage_cutout closed_mouth cloud cloudy_sky commentary_request contrapposto cowboy_shot dated fantasy floral_print flower hair_flower hair_ornament jewelry large_breasts leotard long_hair looking_at_viewer magic navel_cutout necklace ocean official_art open_clothes open_skirt outdoors palm_tree parted_lips pearl_bracelet petals pink_eyes pink_skirt red_lips sand seisen_cerberus skirt sky smile solo standing swimsuit tree very_long_hair water watermark web_address wristlet xiaji  score:0 rating:safe" class="preview "/></a></span>
+						</div>
+					<div class="thumbnail-preview"><span id="s3889438" class="thumb"><a id="p3889438" href="//gelbooru.com/index.php?page=post&amp;s=view&amp;id=3889438" ><img src="https://simg3.gelbooru.com/thumbnails/90/95/thumbnail_9095ea8cc05931d3390d149d9d9c8c9b.jpg" alt="Image: 3889438" title=" 2boys alphonse_elric black_coat blonde_hair brothers coat edward_elric expressionless fullmetal_alchemist grey_coat happy long_hair looking_at_another looking_at_viewer male_focus multiple_boys necktie ponytail shirt short_hair siblings simple_background smile waistcoat white_background white_shirt yellow_eyes  score:0 rating:safe" class="preview "/></a></span>
+						</div>
+					<div class="thumbnail-preview"><span id="s3889437" class="thumb"><a id="p3889437" href="//gelbooru.com/index.php?page=post&amp;s=view&amp;id=3889437" ><img src="https://simg3.gelbooru.com/thumbnails/bf/4b/thumbnail_bf4b8317e3ed26d40214f888f495b5f7.jpg" alt="Image: 3889437" title=" 1girl blazer blue_eyes blue_lipstick card highres jacket kakegurui lipstick makeup momobami_kirari roaa_(jlsinjun) silver_hair simple_background smile solo  score:0 rating:safe" class="preview "/></a></span>
+						</div>
+					<div class="thumbnail-preview"><span id="s3889436" class="thumb"><a id="p3889436" href="//gelbooru.com/index.php?page=post&amp;s=view&amp;id=3889436" ><img src="https://simg3.gelbooru.com/thumbnails/b2/d0/thumbnail_b2d04e1643d7b4e96b2e4822fc431fc7.jpg" alt="Image: 3889436" title=" 1boy adjusting_clothes adjusting_gloves aldnoah.zero aqua_eyes bangs belt blonde_hair blue_background blue_jacket blue_pants buttons closed_mouth commentary_request cowboy_shot gloves hair_between_eyes jacket long_sleeves looking_at_viewer male_focus military military_uniform pants slaine_troyard solo standing sweat uniform veryberry00 white_gloves  score:0 rating:safe" class="preview "/></a></span>
+						</div>
+					<div class="thumbnail-preview"><span id="s3889435" class="thumb"><a id="p3889435" href="//gelbooru.com/index.php?page=post&amp;s=view&amp;id=3889435" ><img src="https://simg3.gelbooru.com/thumbnails/37/4f/thumbnail_374f6c08125f5d54fea539d72d9bcae5.jpg" alt="Image: 3889435" title=" 1girl absurdres animal_ears bag bangs blonde_hair blush braid fang fate/extra fate/extra_ccc_fox_tail fate_(series) fox_ears fox_girl fox_tail full_body highres katana kneehighs phone saber_(fate/extra_ccc_fox_tail) school_bag school_uniform solo sparkle sword tail weapon yellow_eyes  score:0 rating:safe" class="preview "/></a></span>
+						</div>
+					<div class="thumbnail-preview"><span id="s3889434" class="thumb"><a id="p3889434" href="//gelbooru.com/index.php?page=post&amp;s=view&amp;id=3889434" ><img src="https://simg3.gelbooru.com/thumbnails/99/48/thumbnail_994885781fec32727f179e83694ec706.jpg" alt="Image: 3889434" title=" 2girls armor ass black_legwear blonde_hair blue_eyes commentary_request fate/grand_order fate_(series) headpiece highres jeanne_alter long_hair looking_at_viewer multiple_girls open_mouth ruler_(fate/apocrypha) satsuki_(miicat) smile teeth thighhighs yellow_eyes  score:0 rating:safe" class="preview "/></a></span>
+						</div>
+					<div class="thumbnail-preview"><span id="s3889433" class="thumb"><a id="p3889433" href="//gelbooru.com/index.php?page=post&amp;s=view&amp;id=3889433" ><img src="https://simg3.gelbooru.com/thumbnails/73/c8/thumbnail_73c8ecf2d3c54246e61cf9bfaa92c82e.jpg" alt="Image: 3889433" title=" 1girl ass bag bangs black_hair blouse blurry blush closed_mouth depth_of_field eyebrows_visible_through_hair from_behind grey_eyes highres long_hair looking_at_viewer looking_back low_twintails matsunaga_kouyou original panties pantyshot pleated_skirt school_uniform serafuku short_sleeves shoulder_bag sidelocks skirt solo twintails underwear wardrobe_malfunction white_blouse white_panties  score:0 rating:safe" class="preview "/></a></span>
+						</div>
+					<div class="thumbnail-preview"><span id="s3889432" class="thumb"><a id="p3889432" href="//gelbooru.com/index.php?page=post&amp;s=view&amp;id=3889432" ><img src="https://simg3.gelbooru.com/thumbnails/de/e7/thumbnail_dee7519358234134d936ca74f8b7a8f4.jpg" alt="Image: 3889432" title=" 1girl absurdres archery arrow bare_shoulders between_breasts blue_eyes bow bra bracer breasts butterfly cape closed_mouth cross-laced_clothes green_cape green_legwear green_pants highres holding holding_bow holding_weapon hood leather li_fengyang long_hair looking_to_the_side medium_breasts nature navel original outdoors pants quiver red_hair rope sheath sheathed solo sword underwear wavy_hair weapon  score:0 rating:safe" class="preview "/></a></span>
+						</div>
+					<div class="thumbnail-preview"><span id="s3889431" class="thumb"><a id="p3889431" href="//gelbooru.com/index.php?page=post&amp;s=view&amp;id=3889431" ><img src="https://simg3.gelbooru.com/thumbnails/97/6a/thumbnail_976a5c4e6b6f8cf65366b635daa1d8fa.jpg" alt="Image: 3889431" title=" absurdres alolan_vulpix bag blonde_hair dress green_eyes hat highres huge_filesize lillie_(pokemon) pokemon pokemon_(game) pokemon_sm white_dress white_hat  score:0 rating:safe" class="preview "/></a></span>
+						</div>
+					<div class="thumbnail-preview"><span id="s3889430" class="thumb"><a id="p3889430" href="//gelbooru.com/index.php?page=post&amp;s=view&amp;id=3889430" ><img src="https://simg3.gelbooru.com/thumbnails/6e/c7/thumbnail_6ec7ad4c3eab250beca4a554c88caf69.jpg" alt="Image: 3889430" title=" 1girl bangs black_dress black_hair black_legwear closed_mouth cowboy_shot dress dress_lift fur_trim grey_background grey_eyes hair_bun lifted_by_self looking_at_viewer original pantyhose pencil_skirt red_skirt simple_background skirt smile solo veryberry00  score:0 rating:safe" class="preview "/></a></span>
+						</div>
+					<div class="thumbnail-preview"><span id="s3889429" class="thumb"><a id="p3889429" href="//gelbooru.com/index.php?page=post&amp;s=view&amp;id=3889429" ><img src="https://simg3.gelbooru.com/thumbnails/ed/a1/thumbnail_eda1027caf7dd8cdf27dd76b723be050.jpg" alt="Image: 3889429" title=" 1girl bikini blue_eyes braid breasts cleavage hair_ornament hinata_yuu_(atelierhinata) long_hair looking_at_viewer navel neptune_(series) purple_hair purple_heart purple_heart_(chaos) swimsuit symbol-shaped_pupils twin_braids very_long_hair  score:0 rating:safe" class="preview "/></a></span>
+						</div>
+					<div class="thumbnail-preview"><span id="s3889428" class="thumb"><a id="p3889428" href="//gelbooru.com/index.php?page=post&amp;s=view&amp;id=3889428" ><img src="https://simg3.gelbooru.com/thumbnails/d4/ba/thumbnail_d4baa10bd427f9ed34e58ed9e6febf1d.jpg" alt="Image: 3889428" title=" 1girl birthday black_hair cape cardigan crown highres love_live! love_live!_school_idol_project red_eyes ribbon roaa_(jlsinjun) solo twintails yazawa_nico  score:0 rating:safe" class="preview "/></a></span>
+						</div>
+					<div class="thumbnail-preview"><span id="s3889427" class="thumb"><a id="p3889427" href="//gelbooru.com/index.php?page=post&amp;s=view&amp;id=3889427" ><img src="https://simg3.gelbooru.com/thumbnails/2e/84/thumbnail_2e841431c785739563f0363ecdf3981b.jpg" alt="Image: 3889427" title=" 2boys alphonse_elric androgynous black_shirt blonde_hair braid brothers edward_elric eyebrows_visible_through_hair eyes_closed fullmetal_alchemist happy long_hair looking_at_another male_focus multiple_boys shirt siblings simple_background smile translation_request white_background yellow_eyes  score:0 rating:safe" class="preview "/></a></span>
+						</div>
+					<div class="thumbnail-preview"><span id="s3889426" class="thumb"><a id="p3889426" href="//gelbooru.com/index.php?page=post&amp;s=view&amp;id=3889426" ><img src="https://simg3.gelbooru.com/thumbnails/d0/ca/thumbnail_d0ca3e7fdb0d5a9ee6769306046719ce.jpg" alt="Image: 3889426" title=" 2boys blonde_hair blue_eyes character_request closed_mouth commentary_request crystal eyebrows_visible_through_hair flower_ornament flower_request fur_trim hair_between_eyes highres holding holding_staff hug long_sleeves looking_at_viewer male_focus multiple_boys parted_lips robe rope satsuki_(miicat) smile snowflakes staff star tsubasa_chronicle white_robe wide_sleeves  score:0 rating:safe" class="preview "/></a></span>
+						</div>
+					<div class="thumbnail-preview"><span id="s3889425" class="thumb"><a id="p3889425" href="//gelbooru.com/index.php?page=post&amp;s=view&amp;id=3889425" ><img src="https://simg3.gelbooru.com/thumbnails/79/2a/thumbnail_792aff70cd88bbfba9e985f667601ad3.jpg" alt="Image: 3889425" title=" 1girl bangs blush brown_eyes brown_hair character_request cherry_blossoms commentary_request fan floral_print flower folding_fan hair_between_eyes japanese_clothes kimono long_sleeves looking_at_viewer parted_lips satsuki_(miicat) short_hair solo tsubasa_chronicle wide_sleeves  score:0 rating:safe" class="preview "/></a></span>
+						</div>
+					<div class="thumbnail-preview"><span id="s3889423" class="thumb"><a id="p3889423" href="//gelbooru.com/index.php?page=post&amp;s=view&amp;id=3889423" ><img src="https://simg3.gelbooru.com/thumbnails/16/4f/thumbnail_164f2106e6aaaf29eb23782d90596411.jpg" alt="Image: 3889423" title=" &amp;gt;_&amp;lt; 1girl :3 black_legwear blue_hair blush bow breasts buruma cowboy_shot day gradient_hair grey_hair gym_uniform hair_bow highres long_hair looking_at_viewer mask mask_on_head medium_breasts mole mole_under_mouth monkey monkey_ears monkey_mask monkey_tail multicolored_hair name_tag official_art outdoors red_bow shirt_tug short_sleeves solo tail thighhighs unleashed very_long_hair wristband x3 yellow_eyes zizim  score:0 rating:safe" class="preview "/></a></span>
+						</div>
+					<div class="thumbnail-preview"><span id="s3889422" class="thumb"><a id="p3889422" href="//gelbooru.com/index.php?page=post&amp;s=view&amp;id=3889422" ><img src="https://simg3.gelbooru.com/thumbnails/6c/c7/thumbnail_6cc7cf763587b1fcb24eecc7f083d230.jpg" alt="Image: 3889422" title=" 1girl bangs black_gloves black_legwear black_serafuku black_skirt blue_neckerchief braid chibi collared_shirt elbow_gloves eyes_closed full_body gloves kantai_collection kouu_hiyoyo long_hair mole mole_under_eye neckerchief parted_bangs pink_background pleated_skirt school_uniform serafuku shirt silver_hair simple_background single_braid skirt sleeveless sleeveless_shirt solo standing twitter_username umikaze_(kantai_collection) very_long_hair  score:0 rating:safe" class="preview "/></a></span>
+						</div>
+					<div class="thumbnail-preview"><span id="s3889420" class="thumb"><a id="p3889420" href="//gelbooru.com/index.php?page=post&amp;s=view&amp;id=3889420" ><img src="https://simg3.gelbooru.com/thumbnails/9d/35/thumbnail_9d35e8a7959d66d9f1a939f54f8590aa.jpg" alt="Image: 3889420" title=" 1girl absurdres ahoge bare_shoulders beer_mug black_eyes black_hair black_nails breasts bridal_gauntlets collar dress food froth full_body highres holding holding_tray large_breasts long_hair looking_at_viewer mole mole_under_eye nail_polish official_art open-back_dress parted_lips red_dress smile solidus solo standing tray very_long_hair zizim  score:0 rating:safe" class="preview "/></a></span>
+						</div>
+					<div class="thumbnail-preview"><span id="s3889419" class="thumb"><a id="p3889419" href="//gelbooru.com/index.php?page=post&amp;s=view&amp;id=3889419" ><img src="https://simg3.gelbooru.com/thumbnails/0f/60/thumbnail_0f603590a96b3310d192ee467a52d9c4.jpg" alt="Image: 3889419" title=" 1girl absurdres belt black_hair black_legwear boots breasts cleavage closed_mouth epaulettes full_body gloves hair_over_one_eye hat high_heel_boots high_heels highres jacket_on_shoulders large_breasts long_hair long_sleeves looking_at_viewer military military_hat military_uniform mole mole_under_eye official_art panties panties_under_pantyhose pantyhose peaked_cap red_eyes smile solidus solo standing thigh_boots thighband_pantyhose thighhighs underwear uniform very_long_hair whip white_boots white_gloves white_panties zizim  score:0 rating:safe" class="preview "/></a></span>
+						</div>
+					<div class="thumbnail-preview"><span id="s3889418" class="thumb"><a id="p3889418" href="//gelbooru.com/index.php?page=post&amp;s=view&amp;id=3889418" ><img src="https://simg3.gelbooru.com/thumbnails/97/ab/thumbnail_97ab08b94a263984388aebfeeb49bd53.jpg" alt="Image: 3889418" title=" &amp;gt;:) 1girl armband bangs black_panties blonde_hair blue_eyes breasts choker cleavage elf fishnet_legwear fishnets full_body garter_straps gloves hair_ornament hair_stick hat high_heels large_breasts long_sleeves looking_at_viewer miniskirt necktie nurse nurse_cap official_art panties pantyshot pantyshot_(standing) parted_lips pointy_ears red_necktie short_hair skirt skirt_set smile solidus solo standing thighhighs underwear white_gloves zizim  score:0 rating:safe" class="preview "/></a></span>
+						</div>
+					<div class="thumbnail-preview"><span id="s3889417" class="thumb"><a id="p3889417" href="//gelbooru.com/index.php?page=post&amp;s=view&amp;id=3889417" ><img src="https://simg3.gelbooru.com/thumbnails/a1/43/thumbnail_a143e033013e03ed12a2c8dbb2bb1158.jpg" alt="Image: 3889417" title=" &amp;gt;:) 1girl absurdres ahoge bangs blonde_hair blue_eyes breasts bun_cover china_dress chinese_clothes double_bun dress fire full_body hair_bun hair_ribbon highres kiseru large_breasts long_hair looking_at_viewer low-tied_long_hair official_art parted_lips pelvic_curtain pipe ribbon smile solidus solo standing swept_bangs tattoo tress_ribbon very_long_hair wrist_cuffs zizim  score:0 rating:safe" class="preview "/></a></span>
+						</div>
+					<div class="thumbnail-preview"><span id="s3889416" class="thumb"><a id="p3889416" href="//gelbooru.com/index.php?page=post&amp;s=view&amp;id=3889416" ><img src="https://simg3.gelbooru.com/thumbnails/1a/81/thumbnail_1a815f39432f3047272f0ec04ed1e673.jpg" alt="Image: 3889416" title=" 2boys alphonse_elric armor back-to-back belt black_pants black_shirt blonde_hair boots braid branch brothers coat edward_elric eyes_closed flower full_armor fullmetal_alchemist gloves grass happy leaf male_focus multiple_boys nature pants red_coat shirt siblings sitting sleeping sleeping_on_person smile sunlight tree  score:0 rating:safe" class="preview "/></a></span>
+						</div>
+					<div class="thumbnail-preview"><span id="s3889415" class="thumb"><a id="p3889415" href="//gelbooru.com/index.php?page=post&amp;s=view&amp;id=3889415" ><img src="https://simg3.gelbooru.com/thumbnails/f1/89/thumbnail_f189e6737c32a158838e3cedc735c606.jpg" alt="Image: 3889415" title=" 1girl absurdres bare_shoulders black_dress black_sclera breasts closed_mouth crystal detached_sleeves dress dress_lift flower full_body hair_flower hair_ornament heterochromia highres large_breasts lifted_by_self long_hair long_sleeves looking_at_viewer official_art pale_skin pantyhose red_eyes solidus solo standing underboob veins very_long_hair wavy_hair white_hair wide_sleeves wings yellow_eyes zizim  score:0 rating:safe" class="preview "/></a></span>
+						</div>
+					<div class="thumbnail-preview"><span id="s3889414" class="thumb"><a id="p3889414" href="//gelbooru.com/index.php?page=post&amp;s=view&amp;id=3889414" ><img src="https://simg3.gelbooru.com/thumbnails/d7/7c/thumbnail_d77ca3eabbd6c824ce34c913b22d1fd7.jpg" alt="Image: 3889414" title=" 1girl absurdres armpits black_dress black_legwear black_sclera breasts closed_mouth crystal dress flower full_body hair_flower hair_ornament highres large_breasts long_hair looking_at_viewer official_art pale_skin pantyhose revealing_clothes single_gauntlet solidus solo standing veins very_long_hair wavy_hair white_hair wings yellow_eyes zizim  score:0 rating:safe" class="preview "/></a></span>
+						</div>
+					<div class="thumbnail-preview"><span id="s3889413" class="thumb"><a id="p3889413" href="//gelbooru.com/index.php?page=post&amp;s=view&amp;id=3889413" ><img src="https://simg3.gelbooru.com/thumbnails/fc/c8/thumbnail_fcc86e30fc008bfea9b47fe489fc78bb.jpg" alt="Image: 3889413" title=" 1girl animal_ears bangs blonde_hair fate/extra fate/extra_ccc_fox_tail fate_(series) fox_ears fox_girl fox_tail full_body grey_background highres katana kneehighs saber_(fate/extra_ccc_fox_tail) school_uniform simple_background sitting solo suzushika_(13_96) sword tail weapon yellow_eyes  score:0 rating:safe" class="preview "/></a></span>
+						</div>
+					<div class="thumbnail-preview"><span id="s3889408" class="thumb"><a id="p3889408" href="//gelbooru.com/index.php?page=post&amp;s=view&amp;id=3889408" ><img src="https://simg3.gelbooru.com/thumbnails/8c/da/thumbnail_8cda7b79aa977cdf50381e26e7a71201.jpg" alt="Image: 3889408" title="5girls 6+boys akimichi_chouchou anger_vein angry attack blush boruto:_naruto_next_generations character_request eeshin_(eishin5584) izuno_wasabi kakei_sumire kaminarimon_denki long_hair metal_lee mitsuki_(naruto) monochrome multiple_boys multiple_girls nara_shikadai naruto scared short_hair surprised suzumeno_namida sweat sweatdrop tears uchiha_sarada uzumaki_boruto yamanaka_inojin yuino_iwabee score:0 rating:safe" class="preview "/></a></span>
+						</div>
+					<div class="thumbnail-preview"><span id="s3889402" class="thumb"><a id="p3889402" href="//gelbooru.com/index.php?page=post&amp;s=view&amp;id=3889402" ><img src="https://simg3.gelbooru.com/thumbnails/97/a3/thumbnail_97a39c740a22a82050e0120e5bc890b7.jpg" alt="Image: 3889402" title=" assassin_of_black asterios_(fate/grand_order) berserker_of_black black_hair blush book braid breasts circlet cleavage curvy dai-xt dark_skin fate/apocrypha fate/extra fate/extra_ccc fate/grand_order fate_(series) forehead_jewel fujimaru_ritsuka_(female) green_eyes hat highres horns ishtar_(fate/grand_order) jewelry king_hassan_(fate/grand_order) large_breasts long_hair looking_at_viewer mask nursery_rhyme_(fate/extra) orange_hair pink_hair scheherazade_(fate/grand_order) side_ponytail skindentation skirt sleeping smile staff thumb_ring tohsaka_rin veil very_long_hair  score:0 rating:safe" class="preview "/></a></span>
+						</div>
+					<div class="thumbnail-preview"><span id="s3889401" class="thumb"><a id="p3889401" href="//gelbooru.com/index.php?page=post&amp;s=view&amp;id=3889401" ><img src="https://simg3.gelbooru.com/thumbnails/f5/ba/thumbnail_f5ba2dc481f524cf5adb6b168f7bdb95.jpg" alt="Image: 3889401" title=" 2girls bare_shoulders blonde_hair breasts cleavage eyebrows fate/grand_order fate_(series) grey_background hokora_(n70) horns ibaraki_douji_(fate/grand_order) japanese_clothes long_hair looking_at_viewer multiple_girls oni oni_horns pointy_ears purple_eyes purple_hair simple_background smile smirk tattoo twintails wu_zetian_(fate/grand_order) yellow_eyes  score:0 rating:safe" class="preview "/></a></span>
+						</div>
+					<div class="thumbnail-preview"><span id="s3889400" class="thumb"><a id="p3889400" href="//gelbooru.com/index.php?page=post&amp;s=view&amp;id=3889400" ><img src="https://simg3.gelbooru.com/thumbnails/59/e8/thumbnail_59e8f36fd7dcd5a170962de79edbfcc5.jpg" alt="Image: 3889400" title=" 2girls arm_at_side armband bangs belt_buckle black_bow black_gloves black_jacket black_ribbon black_scarf black_skirt blush bow brown_eyes brown_hair brown_legwear buckle commentary cowboy_shot fingerless_gloves girls_frontline gloves grey_shirt hair_bow hair_ornament hairclip hand_up jacket light_brown_hair light_particles long_sleeves looking_at_viewer miniskirt multiple_girls narami one_side_up open_clothes open_jacket pantyhose pleated_skirt pouch ribbon scar scar_across_eye scarf shiny shiny_hair shirt simple_background skirt standing twintails ump49_(girls_frontline) ump9_(girls_frontline) waving white_background yellow_eyes  score:0 rating:safe" class="preview "/></a></span>
+						</div>
+					<div class="thumbnail-preview"><span id="s3889399" class="thumb"><a id="p3889399" href="//gelbooru.com/index.php?page=post&amp;s=view&amp;id=3889399" ><img src="https://simg3.gelbooru.com/thumbnails/50/70/thumbnail_5070142d7d92bdc173b42fb45dda5168.jpg" alt="Image: 3889399" title=" 1girl black_swimsuit breasts brown_eyes brown_hair competition_swimsuit cowboy_shot indoor_pool large_breasts long_hair looking_at_viewer mouth_hold one-piece_swimsuit original pool rubber_band solo starting_block swimsuit wet youshu_ohepe  score:0 rating:safe" class="preview "/></a></span>
+						</div>
+					<div class="thumbnail-preview"><span id="s3889398" class="thumb"><a id="p3889398" href="//gelbooru.com/index.php?page=post&amp;s=view&amp;id=3889398" ><img src="https://simg3.gelbooru.com/thumbnails/95/9d/thumbnail_959dbfa91e55857d2fede56b9245dccd.jpg" alt="Image: 3889398" title=" 1girl absurdres alternate_eye_color bow collarbone grin hair_bow hakama heart highres japanese_clothes kamikaze_(kantai_collection) kantai_collection kimono long_hair meiji_schoolgirl_uniform pink_hakama purple_hair red_eyes red_kimono sakakiba_misogi smile solo speech_bubble translation_request yellow_bow  score:0 rating:safe" class="preview "/></a></span>
+						</div>
+					<center><br /><center><div class="hidden-xs" style="max-width: 1000px; overflow: hidden; padding-left: 10px; border-right: 10px solid #fff;"><script async src="//adserver.juicyads.com/js/jads.js"></script>
+<ins id="525613" data-width="924" data-height="258"></ins>
+<script>(adsbyjuicy = window.adsbyjuicy || []).push({'adzone':525613});</script></div></center><br /><div id="paginater"><div class="pagination"> <b>1</b> <a href="?page=post&amp;s=list&amp;tags=rating%3Asafe&amp;pid=42">2</a><a href="?page=post&amp;s=list&amp;tags=rating%3Asafe&amp;pid=84">3</a><a href="?page=post&amp;s=list&amp;tags=rating%3Asafe&amp;pid=126">4</a><a href="?page=post&amp;s=list&amp;tags=rating%3Asafe&amp;pid=168">5</a><a href="?page=post&amp;s=list&amp;tags=rating%3Asafe&amp;pid=210">6</a><a href="?page=post&amp;s=list&amp;tags=rating%3Asafe&amp;pid=252">7</a><a href="?page=post&amp;s=list&amp;tags=rating%3Asafe&amp;pid=294">8</a><a href="?page=post&amp;s=list&amp;tags=rating%3Asafe&amp;pid=336">9</a><a href="?page=post&amp;s=list&amp;tags=rating%3Asafe&amp;pid=378">10</a><a href="?page=post&amp;s=list&amp;tags=rating%3Asafe&amp;pid=420">11</a><a href="?page=post&amp;s=list&amp;tags=rating%3Asafe&amp;pid=462">12</a><a href="?page=post&amp;s=list&amp;tags=rating%3Asafe&amp;pid=504">13</a><a href="?page=post&amp;s=list&amp;tags=rating%3Asafe&amp;pid=546">14</a><a href="?page=post&amp;s=list&amp;tags=rating%3Asafe&amp;pid=588">15</a><a href="?page=post&amp;s=list&amp;tags=rating%3Asafe&amp;pid=630">16</a><a href="?page=post&amp;s=list&amp;tags=rating%3Asafe&amp;pid=42" alt="next">&rsaquo;</a><a href="?page=post&amp;s=list&amp;tags=rating%3Asafe&amp;pid=2249268" alt="last page">&raquo;</a></div></div><br /><br /></center><br /><br /><script type="text/javascript">
+	BetterJsPop.add('https://ads2.contentabc.com/ads?spot_id=852605', {under: true, newTab: false, device: 'desktop', cookieExpires: 43200, cookieName: 'gelcomPoop', });
+</script>
+					<br /><br />
+				<script type="text/javascript">
+					document.addEventListener('DOMContentLoaded', function() {
+						if(typeof abvertDar === 'undefined'){
+						document.getElementById("paginater").innerHTML+=('</div><br /><span><a href="https://gelbooru.com/redirect.php?s=aHR0cDovL21haW4uZHluc3J2YWJhLmNvbS9jbGljay5waHA/ZGF0YT1JSHd4T0RBeU1UazNmSHhvZEhSd0pUTkJKVEpHSlRKR2MyVmpkWEpsTG1KemRHeHVheTVqYjIwbE1rWnphWFJsY3lVeVJpVXpSbU5oZENVelJIZDNKVEkyWTJGdGNDVXpSSGQzWTJGdGNDMGxOMEptYjNKdFlYUWxOMFFsTWpaallYUmxaMjl5ZVdsa0pUTkVKVGRDWTJGMFpXZHZjbmxmYVdRbE4wUWxNalpqYjI1MkpUTkVKVGRDWTI5dWRtVnljMmx2Ym5OZmRISmhZMnRwYm1jbE4wUjhmSHd3Zkh3eE5UQTFPVEl4TWpjNWZHZGxiR0p2YjNKMUxtTnZiWHczT0M0eE9USXVNVFUwTGpJek1ueDhNVFU1TkRrMU9ETjhNalUwTlRNd09Yd3hNVEI4ZkRCOE0zdzBNSHd3ZkRCOGZETXdNSGd5TlRCOE1Yd3dmSHg4TVRBMGZId3hmREI4ZkRGOE1UTTFNRGQ4TVRneE5ERjhJQ0I4ZkRGOE1Id3dmREI4TUh3ek1ERXlPRGMwZkRCOE1qazRPRFV3TjN4OGZFOUxmRE15WkdRd05UVmtORGhqTVRJeE9Ua3hNRE0xTW1Oak16azNOemczT0RReQ=="><img src="//gelbooru.com/thumbnails/0C/322388-17421090033055342_1.gif"></a><a href="https://gelbooru.com/redirect.php?s=aHR0cDovL21haW4uZHluc3J2YWJhLmNvbS9jbGljay5waHA/ZGF0YT1JSHd4T0RBeU1UazNmSHhvZEhSd0pUTkJKVEpHSlRKR2MyVmpkWEpsTG1KemRHeHVheTVqYjIwbE1rWnphWFJsY3lVeVJpVXpSbU5oZENVelJIZDNKVEkyWTJGdGNDVXpSSGQzWTJGdGNDMGxOMEptYjNKdFlYUWxOMFFsTWpaallYUmxaMjl5ZVdsa0pUTkVKVGRDWTJGMFpXZHZjbmxmYVdRbE4wUWxNalpqYjI1MkpUTkVKVGRDWTI5dWRtVnljMmx2Ym5OZmRISmhZMnRwYm1jbE4wUjhmSHd3Zkh3eE5UQTFPVEl4TWpjNWZHZGxiR0p2YjNKMUxtTnZiWHczT0M0eE9USXVNVFUwTGpJek1ueDhNVFU1TkRrMU9EVjhNalUwTlRNeE1Yd3hNVEI4ZkRCOE0zdzBNSHd3ZkRCOGZETXdNSGd5TlRCOE1Yd3dmSHg4TVRBMGZId3hmREI4ZkRGOE1UTTFNRGQ4TVRneE5ERjhJQ0I4ZkRGOE1Id3dmREI4TUh3ek1ERXlPRGMwZkRCOE1qazRPRFV3TjN4OGZFOUxmRFJsTURGak9UUXlObVJsTmpneE5EVTNaams1T1dFNE0ySTRPVEV5TVRjMA=="><img src="//gelbooru.com/thumbnails/0C/322388-17421090033058099_1.gif"></a><a href="https://gelbooru.com/redirect.php?s=aHR0cDovL21haW4uZHluc3J2YWJhLmNvbS9jbGljay5waHA/ZGF0YT1JSHd4TXpneU1UWXpmSHhvZEhSd0pUTkJKVEpHSlRKR2MyVmpkWEpsTG1KemRHeHVheTVqYjIwbE1rWnphWFJsY3lVeVJuTnZablF1Y0dod0pUTkdZMkZ0Y0NVelJDVTNRbVp2Y20xaGRDVTNSQ1V5Tm1OaGRHVm5iM0o1YVdRbE0wUWxOMEpqWVhSbFoyOXllVjlwWkNVM1JDVXlObU52Ym5ZbE0wUWxOMEpqYjI1MlpYSnphVzl1YzE5MGNtRmphMmx1WnlVM1JIeDhmREI4ZkRFMU1EVTVNakV5TnpsOFoyVnNZbTl2Y25VdVkyOXRmRGM0TGpFNU1pNHhOVFF1TWpNeWZId3hNemN5T1RJMU1Yd3hOamd3TmpNMGZERXhNSHg4TUh3emZEUXdmREI4TUh4OE16QXdlREkxTUh3eGZEQjhmSHd4TURSOGZERjhNSHg4TVh3eE16VXdPWHd4T0RFME0zd2dJSHg4TVh3d2ZEQjhNSHd3ZkRNd01USTROelI4TUh3eU9UZzROVEEzZkh4OFQwdDhPRGhtWTJRMU16STNOVFV3TVdFd016WTBPR001T1dFMlpqbGxOell4TXpRJTNE"><img src="//gelbooru.com/thumbnails/0C/322388-16712161714123100_1_xacd.gif"></a></span>');
+						document.getElementById("nup").innerHTML+=('<div style="position: absolute; margin-left: 220px;"><a href="https://gelbooru.com/redirect.php?s=aHR0cDovL21haW4uZHluc3J2YWJhLmNvbS9jbGljay5waHA/ZGF0YT1JSHd4TXpneU1UYzFmSHhvZEhSd0pUTkJKVEpHSlRKR2MyVmpkWEpsTG1KemRHeHVheTVqYjIwbE1rWnphWFJsY3lVeVJuTnZablF1Y0dod0pUTkdZMkZ0Y0NVelJDVTNRbVp2Y20xaGRDVTNSQ1V5Tm1OaGRHVm5iM0o1YVdRbE0wUWxOMEpqWVhSbFoyOXllVjlwWkNVM1JDVXlObU52Ym5ZbE0wUWxOMEpqYjI1MlpYSnphVzl1YzE5MGNtRmphMmx1WnlVM1JIeDhmREI4ZkRFMU1EVTVNakV5TnpsOFoyVnNZbTl2Y25VdVkyOXRmRGM0TGpFNU1pNHhOVFF1TWpNeWZId3hNemN5TnprNE5Yd3lOVEl5TlRZM2ZEazVmSHd3ZkROOE5EQjhNSHd3Zkh3M01qaDRPVEI4TVh3d2ZIeDhNVEEwZkh3eGZEQjhmREY4TVRNMU1EbDhNVGd4TkROOElDQjhmREY4TUh3d2ZEQjhNSHd6TURFeU9EYzBmREI4TWprNE9EVXdOM3g4ZkU5TGZHRTBZamcxTmpGak56VXhOVFZtWW1NeVlUY3dPR0ZqTW1NNE1HVmxaVE16"><img src="//gelbooru.com/thumbnails/0C/322388-16712145048666233_1.jpg"></a><br /><br /><a href="https://media.r18.com/track/NzcxLjEuMS4xLjAuMC4wLjAuMA/lp/videos/025/" rel="nofollow" target="_blank"><img src="//gelbooru.com/r18/r18_03.jpg"></a><br /><div style="font-size: 12px; margin: 10px; padding: 10px; border: 1px dotted #bababa; background: #fafafa;">Disable your adblocker for a far more pleasant viewing experience. The maintainers of the filter lists have stopped updating our domain (~1 year broken) leaving the site non-functional for people who subscribe to their list. Our ad serving system has been updated to reduce ad exposure over time. When browsing the site without adblock enabled, you will receive less and less ads, and quite quickly not see any ads at all for the rest of the day, with zero effort from you. <b>(This is currently disabled as we are trying to pay for new hardware)</b> You can also disable your choice of an advertisement in your account options. You will not be able to see this in action while you have certain extensions enabled. NoScript is known to cause false positives, disabling it will make this message go away. Some users have an adblock built into their antivirus. Please see your antivirus documentation to disable that functionality.</div>');
+						document.getElementById("tup").innerHTML+=('<a href="https://gelbooru.com/redirect.php?s=aHR0cDovL21haW4uZHluc3J2YWJhLmNvbS9jbGljay5waHA/ZGF0YT1JSHd4T1RJek1qRTJmSHhvZEhSd0pUTkJKVEpHSlRKR2RISmpheTVwYzJoMFlYSnRaV1JwWVM1dVpYUWxNa1pqWVRFek16STRaaTFtTWpJd0xUUXlPREl0T1RVMFppMDFZak0zTldJeE9ETm1OV01sTTBaallXMXdZV2xuYmw5cFpDVXpSQ1UzUW1OaGJYQmhhV2R1WDJsa0pUZEVKVEkyYzNKalgyaHZjM1J1WVcxbEpUTkVKVGRDYzNKalgyaHZjM1J1WVcxbEpUZEVKVEkyYzJsMFpWOXBaQ1V6UkNVM1FuTnBkR1ZmYVdRbE4wUWxNalo2YjI1bFgybGtKVE5FSlRkQ2VtOXVaVjlwWkNVM1JDVXlObU5oZEdWbmIzSjVYMmxrSlRORUpUZENZMkYwWldkdmNubGZhV1FsTjBRbE1qWjJZWEpwWVhScGIyNWZhV1FsTTBRbE4wSjJZWEpwWVhScGIyNWZhV1FsTjBRbE1qWmpiM1Z1ZEhKNUpUTkVKVGRDWTI5MWJuUnllU1UzUkNVeU5tTnZjM1FsTTBRbE4wSmpiM04wSlRkRUpUSTJkR0ZuSlRORUpUZENZMjl1ZG1WeWMybHZibk5mZEhKaFkydHBibWNsTjBSOGZId3dmSHd4TlRBMU9USXhNamM1ZkdkbGJHSnZiM0oxTG1OdmJYdzNPQzR4T1RJdU1UVTBMakl6TW54OE1UWTJOamd5T0RaOE1qRXlORGt6T1h3eE1UQjhmREI4TTN3ME1Id3dmREI4ZkRFMk1IZzJNREI4TVh3d2ZIeDhNVEEwZkh3eGZEQjhmREY4TUh3d2ZDQWdmSHd4ZkRCOE1Id3dmREI4TXpBeE1qZzNOSHd3ZkRJNU9EZzFNRGQ4Zkh4UFMzeG1aakZrWTJWaU0yVXlNalV4TldJeVlqRmlZVE0wWW1ZNU4yVTRZV013WlElM0QlM0Q="><img src="//gelbooru.com/thumbnails/0C/140058-17710074105974900_1_xask.gif"></a>');
+					}});
+				</script>	<script type="text/javascript">
+				$('#tags-search').autocomplete({
+					source: function(request, response) {
+						var term = "";
+						var pos = parseInt($('#tags-search').caret());
+						var terms = decodeURIComponent(request.term);
+						var spacePos = terms.indexOf(" ");
+						var nextPos = spacePos;
+						var startPos = -1;
+						
+						while(nextPos < pos && nextPos > -1) {
+							spacePos = nextPos;
+							
+							nextPos = terms.indexOf(" ", spacePos + 1);
+						}
+						
+						if(spacePos > pos || spacePos < 0)
+							spacePos = -1;
+							
+						startPos = spacePos+1;
+							
+						term = terms.substring(startPos, pos+1);
+						
+						$.ajax('https://gelbooru.com/index.php?page=autocomplete&term=' + term, {
+							method: 'GET',
+							success: function(data, status, xhr) {
+								var suggestions = [];
+								
+								for(var i = 0; i < data.length; i++) {
+									suggestions.push(replaceRange(startPos, pos, terms, data[i]));
+								}
+								
+								response(suggestions);
+							},
+							error: function(xhr, status, error) {
+								response($.ui.autocomplete.escapeRegex([]));
+							},
+						});
+					},
+					delay: 150
+				});
+				ExoLoader.addZone({"type": "popunder", "idzone": "164278" , "frequency_period": 720, "frequecny_count": 1});				
+				function tagPM(tagInput){
+					$('#tags-search').val($('#tags-search').val() + ' ' + tagInput);
+				}
+	</script>
+	</div>
+</body></html>

@@ -545,7 +545,12 @@ void PageApi::parse()
 
 				QString val = match.captured(group);
 				if (!val.isEmpty())
-				{ d[group] = val; }
+				{
+					int underscorePos = group.indexOf('_');
+					if (underscorePos != -1)
+					{ group = group.left(underscorePos); }
+					d[group] = val;
+				}
 			}
 
 			// JSON elements
