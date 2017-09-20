@@ -20,13 +20,14 @@ QList<Image*> IntegrationTestSuite::getImages(QString site, QString source, QStr
 	if (!file.isEmpty())
 	{ CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/" + source + "/" + file); }
 
-	QSettings settings("tests/resources/sites/" + site +"/" + source + "/defaults.ini", QSettings::IniFormat);
+	QSettings settings("tests/resources/sites/" + site +"/" + source + "/settings.ini", QSettings::IniFormat);
 	settings.setValue("download/throttle_retry", 0);
 	settings.setValue("download/throttle_page", 0);
 	settings.setValue("download/throttle_thumbnail", 0);
 	settings.setValue("download/throttle_details", 0);
 	settings.setValue("sources/usedefault", false);
 	settings.setValue("sources/source_1", format);
+	settings.sync();
 
 	QList<Site*> sites;
 	Site *ste = new Site(source, new Source(&profile, "tests/resources/sites/" + site));
@@ -77,13 +78,14 @@ QList<Tag> IntegrationTestSuite::getPageTags(QString site, QString source, QStri
 	QFile::copy("release/sites/" + site +"/model.xml", "tests/resources/sites/" + site +"/model.xml");
 	QFile::copy("release/sites/" + site +"/" + source + "/defaults.ini", "tests/resources/sites/" + site +"/" + source + "/defaults.ini");
 
-	QSettings settings("tests/resources/sites/" + site +"/" + source + "/defaults.ini", QSettings::IniFormat);
+	QSettings settings("tests/resources/sites/" + site +"/" + source + "/settings.ini", QSettings::IniFormat);
 	settings.setValue("download/throttle_retry", 0);
 	settings.setValue("download/throttle_page", 0);
 	settings.setValue("download/throttle_thumbnail", 0);
 	settings.setValue("download/throttle_details", 0);
 	settings.setValue("sources/usedefault", false);
 	settings.setValue("sources/source_1", format);
+	settings.sync();
 
 	// Setup network
 	if (!file.isEmpty())
@@ -138,13 +140,14 @@ QList<Tag> IntegrationTestSuite::getTags(QString site, QString source, QString f
 	QFile::copy("release/sites/" + site +"/model.xml", "tests/resources/sites/" + site +"/model.xml");
 	QFile::copy("release/sites/" + site +"/" + source + "/defaults.ini", "tests/resources/sites/" + site +"/" + source + "/defaults.ini");
 
-	QSettings settings("tests/resources/sites/" + site +"/" + source + "/defaults.ini", QSettings::IniFormat);
+	QSettings settings("tests/resources/sites/" + site +"/" + source + "/settings.ini", QSettings::IniFormat);
 	settings.setValue("download/throttle_retry", 0);
 	settings.setValue("download/throttle_page", 0);
 	settings.setValue("download/throttle_thumbnail", 0);
 	settings.setValue("download/throttle_details", 0);
 	settings.setValue("sources/usedefault", false);
 	settings.setValue("sources/source_1", format);
+	settings.sync();
 
 	// Setup network
 	if (!file.isEmpty())
