@@ -89,6 +89,7 @@ void TagApi::parse()
 	QString name;
 	int count;
 	int typeId;
+	QString ttype;
 
 	// XML
 	if (format == "Xml")
@@ -112,6 +113,7 @@ void TagApi::parse()
 			QDomNode node = nodeList.at(i);
 			QDomNamedNodeMap attr = node.attributes();
 
+			ttype = "";
 			if (!node.namedItem("post-count").isNull())
 			{
 				id = node.namedItem("id").toElement().text().toInt();
@@ -134,7 +136,7 @@ void TagApi::parse()
 				typeId = node.namedItem("type").toElement().text().toInt();
 			}
 
-			TagType tagType = tagTypes.contains(typeId) ? tagTypes[typeId] : TagType("unknown");
+			TagType tagType = !ttype.isEmpty() ? TagType(ttype) : (tagTypes.contains(typeId) ? tagTypes[typeId] : TagType("unknown"));
 			m_tags.append(Tag(id, name, tagType, count));
 		}
 	}
@@ -166,7 +168,15 @@ void TagApi::parse()
 		{
 			QMap<QString, QVariant> sc = el.toMap();
 
-			if (sc.contains("post_count"))
+			ttype = "";
+			if (sc.contains("short_description"))
+			{
+				id = sc.value("id").toInt();
+				name = sc.value("name").toString();
+				count = sc.value("images").toInt();
+				ttype = sc.value("category");
+			}
+			else if (sc.contains("post_count"))
 			{
 				id = sc.value("id").toInt();
 				name = sc.value("name").toString();
@@ -181,7 +191,7 @@ void TagApi::parse()
 				typeId = sc.value("type").toInt();
 			}
 
-			TagType tagType = tagTypes.contains(typeId) ? tagTypes[typeId] : TagType("unknown");
+			TagType tagType = !ttype.isEmpty() ? TagType(ttype) : (tagTypes.contains(typeId) ? tagTypes[typeId] : TagType("unknown"));
 			m_tags.append(Tag(id, name, tagType, count));
 		}
 	}
@@ -213,7 +223,7 @@ void TagApi::parse()
 			name = d["tag"];
 			count = d.contains("count") ? d["count"].toInt() : 0;
 			typeId = d.contains("typeId") ? d["typeId"].toInt() : -1;
-			QString ttype = d["type"];
+			ttype = d["type"];
 
 			TagType tagType = !ttype.isEmpty() ? TagType(ttype) : (tagTypes.contains(typeId) ? tagTypes[typeId] : TagType("unknown"));
 			m_tags.append(Tag(id, name, tagType, count));
