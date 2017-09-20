@@ -13,6 +13,7 @@ namespace Ui
 
 class Profile;
 class Site;
+class Api;
 
 class TagLoader : public QDialog
 {
@@ -21,6 +22,9 @@ class TagLoader : public QDialog
 	public:
 		explicit TagLoader(Profile *profile, QMap<QString, Site*> sites, QWidget *parent = Q_NULLPTR);
 		~TagLoader();
+
+	protected:
+		QList<Api*> getCompatibleApis(Site *site) const;
 
 	private slots:
 		void start();

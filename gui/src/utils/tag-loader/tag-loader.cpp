@@ -14,7 +14,15 @@ TagLoader::TagLoader(Profile *profile, QMap<QString, Site *> sites, QWidget *par
 {
 	ui->setupUi(this);
 
-	ui->comboSource->addItems(m_sites.keys());
+	QStringList keys;
+	for (QString key : sites.keys())
+	{
+		Site *site = sites[key];
+		if (!getCompatibleApis(site).isEmpty())
+			keys.append(key);
+	}
+
+	ui->comboSource->addItems(keys);
 	ui->widgetProgress->hide();
 
 	resize(size().width(), 0);
@@ -23,6 +31,16 @@ TagLoader::TagLoader(Profile *profile, QMap<QString, Site *> sites, QWidget *par
 TagLoader::~TagLoader()
 {
 	delete ui;
+}
+
+QList<Api*> TagLoader::getCompatibleApis(Site *site) const
+{
+	QList<Api*> apis;
+	for (Api *a : site->getApis())
+		if (a->contains("Urls/TagApi"))
+			apis.append(a);
+
+	return apis;
 }
 
 void TagLoader::cancel()
@@ -36,20 +54,8 @@ void TagLoader::start()
 {
 	// Get site and API
 	Site *site = m_sites.value(ui->comboSource->currentText());
-	Api *api = Q_NULLPTR;
-	for (Api *a : site->getApis())
-	{
-		if (a->contains("Urls/TagApi"))
-		{
-			api = a;
-			break;
-		}
-	}
-	if (api == Q_NULLPTR)
-	{
-		error(this, tr("No API supporting tag fetching found"));
-		return;
-	}
+	QList<Api*> apis = getCompatibleApis(site);
+	Api *api = apis.first();
 	site->tagDatabase()->load();
 
 	ui->buttonStart->setEnabled(false);
