@@ -70,7 +70,7 @@ Tag Tag::FromCapture(QRegularExpressionMatch match, QStringList groups)
 	QString type;
 	if (groups.contains("type"))
 	{
-		type = Tag::GetType(match.captured("tag").trimmed(), QStringList() << "general" << "artist" << "unknown" << "copyright" << "character" << "species");
+		type = Tag::GetType(match.captured("type").trimmed(), QStringList() << "general" << "artist" << "unknown" << "copyright" << "character" << "species");
 	}
 	if (type.isEmpty())
 	{ type = "unknown"; }
