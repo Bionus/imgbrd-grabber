@@ -12,12 +12,20 @@ void Logger::setLogFile(QString path)
 	m_logFile.open(QFile::Append | QFile::Text | QFile::Truncate);
 }
 
+void Logger::setLogLevel(LogLevel level)
+{
+	m_level = level;
+}
+
 /**
  * Append text in the log in a new line.
  * @param	l	The message to append.
  */
 void Logger::log(QString l, LogLevel level)
 {
+	if (level < m_level)
+		return;
+
 	if (!m_logFile.isOpen())
 		setLogFile(savePath("main.log", false, true));
 

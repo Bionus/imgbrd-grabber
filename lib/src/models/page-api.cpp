@@ -338,7 +338,7 @@ void PageApi::parse()
 	if (!redir.isEmpty())
 	{
 		QUrl newUrl = m_site->fixUrl(redir.toString(), m_url);
-		log(QString("[%1] Redirecting page <a href=\"%2\">%2</a> to <a href=\"%3\">%3</a>").arg(m_site->url()).arg(m_url.toString().toHtmlEscaped()).arg(newUrl.toString().toHtmlEscaped()), Logger::Debug);
+		log(QString("[%1] Redirecting page <a href=\"%2\">%2</a> to <a href=\"%3\">%3</a>").arg(m_site->url()).arg(m_url.toString().toHtmlEscaped()).arg(newUrl.toString().toHtmlEscaped()), Logger::Info);
 		m_url = newUrl;
 		load();
 		return;
@@ -782,7 +782,7 @@ void PageApi::parseTags()
 	if (!redir.isEmpty())
 	{
 		QUrl newUrl = m_site->fixUrl(redir.toString(), m_urlRegex);
-		log(QString("[%1] Redirecting tags page <a href=\"%2\">%2</a> to <a href=\"%3\">%3</a>").arg(m_site->url()).arg(m_urlRegex.toString().toHtmlEscaped()).arg(newUrl.toString().toHtmlEscaped()), Logger::Debug);
+		log(QString("[%1] Redirecting tags page <a href=\"%2\">%2</a> to <a href=\"%3\">%3</a>").arg(m_site->url()).arg(m_urlRegex.toString().toHtmlEscaped()).arg(newUrl.toString().toHtmlEscaped()), Logger::Info);
 		m_urlRegex = newUrl;
 		loadTags();
 		return;

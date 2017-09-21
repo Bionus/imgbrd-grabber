@@ -137,8 +137,11 @@ int main(int argc, char *argv[])
 		bool gui = false;
 	#endif
 
-	if (!gui && !parser.isSet(verboseOption))
+	bool verbose = parser.isSet(verboseOption);
+	if (!gui && !verbose)
 		qInstallMessageHandler(noMessageOutput);
+	else if (verbose)
+		Logger::getInstance().setLogLevel(Logger::Debug);
 
 	#if USE_BREAKPAD && !USE_CLI
 		if (gui)
