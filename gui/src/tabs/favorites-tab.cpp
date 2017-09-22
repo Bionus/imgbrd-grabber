@@ -157,6 +157,8 @@ void favoritesTab::updateFavorites()
 
 void favoritesTab::load()
 {
+	updateTitle();
+
 	loadTags(m_currentTags.trimmed().split(' ', QString::SkipEmptyParts));
 }
 
@@ -191,6 +193,8 @@ void favoritesTab::setTags(QString tags, bool preload)
 
 	if (preload)
 		load();
+	else
+		updateTitle();
 }
 
 void favoritesTab::getPage()
@@ -338,4 +342,9 @@ void favoritesTab::changeEvent(QEvent *event)
 	}
 
 	QWidget::changeEvent(event);
+}
+
+void favoritesTab::updateTitle()
+{
+	// No-op, the Favorites tab never changes its title
 }

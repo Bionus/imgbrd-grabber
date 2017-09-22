@@ -45,6 +45,7 @@ class tagTab : public searchTab
 		void closeEvent(QCloseEvent*) override;
 		void on_buttonSearch_clicked();
 		void focusSearch() override;
+		void updateTitle() override;
 
 	private:
 		TextEdit *m_search;

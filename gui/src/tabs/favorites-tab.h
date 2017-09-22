@@ -53,6 +53,7 @@ class favoritesTab : public searchTab
 		void focusSearch() override;
 		void addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, bool merged, QString noResultsMessage = nullptr) override;
 		void setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage = nullptr) override;
+		void updateTitle() override;
 
 	private:
 		QDateTime m_loadFavorite;

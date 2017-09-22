@@ -79,13 +79,12 @@ void poolTab::closeEvent(QCloseEvent *e)
 
 void poolTab::load()
 {
+	updateTitle();
+
 	// Get the search values
 	QString search = m_search->toPlainText();
 	QStringList tags = search.trimmed().split(" ", QString::SkipEmptyParts);
 	tags.prepend("pool:"+QString::number(ui->spinPool->value()));
-
-	setWindowTitle("Pool #" + QString::number(ui->spinPool->value()) + (search.isEmpty() ? "" : " - " + QString(search).replace("&", "&&")));
-	emit titleChanged(this);
 
 	loadTags(tags);
 }
@@ -169,6 +168,8 @@ void poolTab::setTags(QString tags, bool preload)
 
 	if (preload)
 		load();
+	else
+		updateTitle();
 }
 void poolTab::setPool(int id, QString site)
 {
@@ -204,4 +205,11 @@ void poolTab::changeEvent(QEvent *event)
 	}
 
 	QWidget::changeEvent(event);
+}
+
+void poolTab::updateTitle()
+{
+	QString search = m_search->toPlainText().trimmed();
+	setWindowTitle("Pool #" + QString::number(ui->spinPool->value()) + (search.isEmpty() ? "" : " - " + QString(search).replace("&", "&&")));
+	emit titleChanged(this);
 }

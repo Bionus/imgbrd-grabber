@@ -81,19 +81,19 @@ void tagTab::closeEvent(QCloseEvent *e)
 
 void tagTab::load()
 {
-	// Get the search values
+	updateTitle();
+
 	QString search = m_search->toPlainText().trimmed();
+
+	// Search an image directly by typing its MD5
 	if (m_settings->value("enable_md5_fast_search", true).toBool())
 	{
 		static QRegularExpression md5Matcher("^[0-9A-F]{32}$", QRegularExpression::CaseInsensitiveOption);
 		if (md5Matcher.match(search).hasMatch())
 			search.prepend("md5:");
 	}
+
 	QStringList tags = search.split(" ", QString::SkipEmptyParts);
-
-	setWindowTitle(search.isEmpty() ? tr("Search") : QString(search).replace("&", "&&"));
-	emit titleChanged(this);
-
 	loadTags(tags);
 }
 
@@ -156,6 +156,8 @@ void tagTab::setTags(QString tags, bool preload)
 
 	if (preload)
 		load();
+	else
+		updateTitle();
 }
 
 void tagTab::getPage()
@@ -234,4 +236,11 @@ void tagTab::changeEvent(QEvent *event)
 	}
 
 	QWidget::changeEvent(event);
+}
+
+void tagTab::updateTitle()
+{
+	QString search = m_search->toPlainText().trimmed();
+	setWindowTitle(search.isEmpty() ? tr("Search") : QString(search).replace("&", "&&"));
+	emit titleChanged(this);
 }

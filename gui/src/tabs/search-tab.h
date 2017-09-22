@@ -96,6 +96,7 @@ class searchTab : public QWidget
 		void historyNext();
 		// Results
 		virtual void load() = 0;
+		virtual void updateTitle() = 0;
 		void loadTags(QStringList tags);
 		void endlessLoad();
 		void loadPage();
