@@ -20,6 +20,7 @@ sourcesWindow::sourcesWindow(Profile *profile, QList<bool> selected, QMap<QStrin
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	ui->setupUi(this);
+	restoreGeometry(m_profile->getSettings()->value("Sources/geometry").toByteArray());
 
 	bool checkall = true;
 	for (int i = 0; i < selected.count(); i++)
@@ -63,6 +64,7 @@ sourcesWindow::~sourcesWindow()
  */
 void sourcesWindow::closeEvent(QCloseEvent *event)
 {
+	m_profile->getSettings()->setValue("Sources/geometry", saveGeometry());
 	emit closed();
 	event->accept();
 }
