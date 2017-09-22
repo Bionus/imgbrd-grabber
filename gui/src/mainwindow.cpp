@@ -530,8 +530,6 @@ void mainWindow::currentTabChanged(int tab)
 			setTags(tb->results());
 			setWiki(tb->wiki());
 			m_currentTab = ui->tabWidget->currentWidget();
-
-			ui->labelWiki->setText("<style>.title { font-weight: bold; } ul { margin-left: -30px; }</style>"+tb->wiki());
 		}
 	}
 }
@@ -2103,7 +2101,7 @@ bool mainWindow::loadLinkList(QString filename)
 
 void mainWindow::setWiki(QString wiki)
 {
-	ui->labelWiki->setText(wiki);
+	ui->labelWiki->setText("<style>.title { font-weight: bold; } ul { margin-left: -30px; }</style>" + wiki);
 }
 
 QIcon& mainWindow::getIcon(QString path)
