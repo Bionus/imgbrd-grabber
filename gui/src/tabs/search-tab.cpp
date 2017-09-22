@@ -1158,7 +1158,7 @@ void searchTab::saveSources(QList<bool> sel, bool canLoad)
 	for (int i = 0; i < m_sites->count(); i++)
 	{
 		if (sav.at(i) == '1')
-		{ m_sites->value(keys[i])->login(m_profile); }
+		{ m_sites->value(keys[i])->login(); }
 	}
 
 	updateCheckboxes();

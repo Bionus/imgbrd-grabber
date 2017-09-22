@@ -158,7 +158,10 @@ void Site::resetCookieJar()
  */
 void Site::login(bool force)
 {
-	if (!force && m_loggedIn != LoginStatus::Unknown && m_loggedIn != LoginStatus::Pending)
+	if (!force && m_loggedIn == LoginStatus::Pending)
+		return;
+
+	if (!force && m_loggedIn != LoginStatus::Unknown)
 	{
 		emit loggedIn(this, LoginResult::Already);
 		return;
