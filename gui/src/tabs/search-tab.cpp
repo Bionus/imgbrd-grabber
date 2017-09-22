@@ -366,6 +366,9 @@ void searchTab::finishedLoading(Page* page)
 
 void searchTab::failedLoading(Page *page)
 {
+	if (m_stop)
+		return;
+
 	if (ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked())
 		postLoading(page, page->images());
 }
