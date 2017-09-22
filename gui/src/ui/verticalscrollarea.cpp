@@ -21,6 +21,9 @@ void VerticalScrollArea::resizeEvent(QResizeEvent *event)
 
 void VerticalScrollArea::setScrollEnabled(bool enabled)
 {
+	if (m_scrollEnabled == enabled)
+		return;
+
 	m_scrollEnabled = enabled;
 	setVerticalScrollBarPolicy(enabled ? Qt::ScrollBarAsNeeded : Qt::ScrollBarAlwaysOff);
 	updateWidgetSize();
