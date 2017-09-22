@@ -8,10 +8,14 @@
 #include "pool-tab.h"
 #include "ui_pool-tab.h"
 #include "mainwindow.h"
+#include "models/profile.h"
 
 
 bool TabsLoader::load(QString path, QList<searchTab*> &allTabs, int &currentTab, Profile *profile, QMap<QString, Site*> &sites, mainWindow *parent)
 {
+	QSettings *settings = profile->getSettings();
+	bool preload = settings->value("preloadAllTabs", false).toBool();
+
 	QFile f(path);
 	if (!f.open(QFile::ReadOnly))
 	{
@@ -42,7 +46,7 @@ bool TabsLoader::load(QString path, QList<searchTab*> &allTabs, int &currentTab,
 					tab->ui->spinPage->setValue(infos[2].toInt());
 					tab->ui->spinImagesPerPage->setValue(infos[4].toInt());
 					tab->ui->spinColumns->setValue(infos[5].toInt());
-					tab->setTags(infos[2]);
+					tab->setTags(infos[2], preload);
 
 					allTabs.append(tab);
 				}
@@ -52,7 +56,7 @@ bool TabsLoader::load(QString path, QList<searchTab*> &allTabs, int &currentTab,
 					tab->ui->spinPage->setValue(infos[1].toInt());
 					tab->ui->spinImagesPerPage->setValue(infos[2].toInt());
 					tab->ui->spinColumns->setValue(infos[3].toInt());
-					tab->setTags(infos[0]);
+					tab->setTags(infos[0], preload);
 
 					allTabs.append(tab);
 				}
@@ -79,7 +83,7 @@ bool TabsLoader::load(QString path, QList<searchTab*> &allTabs, int &currentTab,
 				for (auto tabJson : tabs)
 				{
 					QJsonObject infos = tabJson.toObject();
-					searchTab *tab = loadTab(infos, profile, sites, parent);
+					searchTab *tab = loadTab(infos, profile, sites, parent, preload);
 					if (tab != nullptr)
 						allTabs.append(tab);
 				}
@@ -91,20 +95,20 @@ bool TabsLoader::load(QString path, QList<searchTab*> &allTabs, int &currentTab,
 	return false;
 }
 
-searchTab *TabsLoader::loadTab(QJsonObject infos, Profile *profile, QMap<QString, Site*> &sites, mainWindow *parent)
+searchTab *TabsLoader::loadTab(QJsonObject infos, Profile *profile, QMap<QString, Site*> &sites, mainWindow *parent, bool preload)
 {
 	QString type = infos["type"].toString();
 
 	if (type == "tag")
 	{
 		tagTab *tab = new tagTab(&sites, profile, parent);
-		if (tab->read(infos))
+		if (tab->read(infos, preload))
 			return tab;
 	}
 	else if (type == "pool")
 	{
 		poolTab *tab = new poolTab(&sites, profile, parent);
-		if (tab->read(infos))
+		if (tab->read(infos, preload))
 			return tab;
 	}
 

@@ -184,11 +184,13 @@ void favoritesTab::setPageLabelText(QLabel *txt, Page *page, const QList<QShared
 	searchTab::setPageLabelText(txt, page, imgs, tr("No result since the %1").arg(m_loadFavorite.toString(tr("MM/dd/yyyy 'at' hh:mm"))));
 }
 
-void favoritesTab::setTags(QString tags)
+void favoritesTab::setTags(QString tags, bool preload)
 {
 	activateWindow();
 	m_currentTags = tags;
-	load();
+
+	if (preload)
+		load();
 }
 
 void favoritesTab::getPage()

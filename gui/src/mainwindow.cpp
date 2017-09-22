@@ -55,7 +55,7 @@
 
 
 mainWindow::mainWindow(Profile *profile)
-	: ui(new Ui::mainWindow), m_profile(profile), m_favorites(m_profile->getFavorites()), m_downloads(0), m_loaded(false), m_getAll(false), m_forcedTab(false), m_batchAutomaticRetries(0), m_showLog(true)
+	: ui(new Ui::mainWindow), m_profile(profile), m_favorites(m_profile->getFavorites()), m_downloads(0), m_loaded(false), m_getAll(false), m_forcedTab(-1), m_batchAutomaticRetries(0), m_showLog(true)
 { }
 void mainWindow::init(QStringList args, QMap<QString,QString> params)
 {
@@ -297,8 +297,7 @@ void mainWindow::parseArgs(QStringList args, QMap<QString,QString> params)
 		if (info.suffix() == "igl")
 		{
 			loadLinkList(info.absoluteFilePath());
-			ui->tabWidget->setCurrentIndex(m_tabs.size() + 1);
-			m_forcedTab = true;
+			m_forcedTab = m_tabs.size() + 1;
 			return;
 		}
 
@@ -334,11 +333,11 @@ void mainWindow::initialLoginsDone()
 	if (m_tabs.isEmpty())
 	{ addTab(); }
 
-	if (!m_forcedTab)
-	{ ui->tabWidget->setCurrentIndex(0); }
-
 	m_currentTab = ui->tabWidget->currentWidget();
 	m_loaded = true;
+
+	ui->tabWidget->setCurrentIndex(qMax(0, m_forcedTab));
+	m_forcedTab = -1;
 }
 
 void mainWindow::loadSites()
@@ -471,15 +470,15 @@ bool mainWindow::loadTabs(QString filename)
 	if (!TabsLoader::load(filename, tabs, currentTab, m_profile, m_sites, this))
 		return false;
 
+	bool preload = m_settings->value("preloadAllTabs", false).toBool();
 	for (auto tab : tabs)
-		addSearchTab(tab, true, false);
-
-	if (currentTab >= 0)
 	{
-		ui->tabWidget->setCurrentIndex(currentTab);
-		m_forcedTab = true;
+		addSearchTab(tab, true, false);
+		if (!preload)
+			m_tabsWaitingForPreload.append(tab);
 	}
 
+	m_forcedTab = currentTab;
 	return true;
 }
 void mainWindow::updateTabTitle(searchTab *tab)
@@ -512,7 +511,7 @@ void mainWindow::restoreLastClosedTab()
 		return;
 
 	QJsonObject infos = m_closedTabs.takeLast();
-	searchTab *tab = TabsLoader::loadTab(infos, m_profile, m_sites, this);
+	searchTab *tab = TabsLoader::loadTab(infos, m_profile, m_sites, this, true);
 	addSearchTab(tab);
 
 	ui->actionRestoreLastClosedTab->setEnabled(!m_closedTabs.isEmpty());
@@ -524,11 +523,16 @@ void mainWindow::currentTabChanged(int tab)
 		if (ui->tabWidget->widget(tab)->maximumWidth() != 16777214)
 		{
 			searchTab *tb = m_tabs[tab];
-			if (m_currentTab != nullptr && m_currentTab == ui->tabWidget->currentWidget())
-			{ return; }
-
-			setTags(tb->results());
-			setWiki(tb->wiki());
+			if (m_tabsWaitingForPreload.contains(tb))
+			{
+				tb->load();
+				m_tabsWaitingForPreload.removeAll(tb);
+			}
+			else if (m_currentTab != ui->tabWidget->currentWidget())
+			{
+				setTags(tb->results());
+				setWiki(tb->wiki());
+			}
 			m_currentTab = ui->tabWidget->currentWidget();
 		}
 	}

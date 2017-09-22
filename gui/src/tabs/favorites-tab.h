@@ -32,7 +32,7 @@ class favoritesTab : public searchTab
 
 	public slots:
 		// Zooms
-		void setTags(QString) override;
+		void setTags(QString tags, bool preload = true) override;
 		// Loading
 		void load() override;
 		bool validateImage(QSharedPointer<Image> img, QString &error) override;

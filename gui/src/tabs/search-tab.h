@@ -40,7 +40,7 @@ class searchTab : public QWidget
 		int imagesPerPage();
 		int columns();
 		QString postFilter();
-		virtual void setTags(QString) = 0;
+		virtual void setTags(QString tags, bool preload = true) = 0;
 		virtual bool validateImage(QSharedPointer<Image> img, QString &error);
 		QStringList selectedImages();
 		void setSources(QList<bool> sources);

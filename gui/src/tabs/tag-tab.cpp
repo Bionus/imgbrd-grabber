@@ -114,7 +114,7 @@ void tagTab::write(QJsonObject &json) const
 	json["sites"] = sites;
 }
 
-bool tagTab::read(const QJsonObject &json)
+bool tagTab::read(const QJsonObject &json, bool preload)
 {
 	ui->spinPage->setValue(json["page"].toInt());
 	ui->spinImagesPerPage->setValue(json["perpage"].toInt());
@@ -143,17 +143,19 @@ bool tagTab::read(const QJsonObject &json)
 	QJsonArray jsonTags = json["tags"].toArray();
 	for (auto tag : jsonTags)
 		tags.append(tag.toString());
-	setTags(tags.join(' '));
+	setTags(tags.join(' '), preload);
 
 	return true;
 }
 
 
-void tagTab::setTags(QString tags)
+void tagTab::setTags(QString tags, bool preload)
 {
 	activateWindow();
 	m_search->setText(tags);
-	load();
+
+	if (preload)
+		load();
 }
 
 void tagTab::getPage()

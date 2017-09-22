@@ -90,6 +90,7 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	int i = settings->value("Sources/Letters", 3).toInt();
 	ui->comboSourcesLetters->setCurrentIndex((i < 0)+(i < -1));
 	ui->spinSourcesLetters->setValue(i < 0 ? 3 : i);
+	ui->checkPreloadAllTabs->setChecked(settings->value("preloadAllTabs", false).toBool());
 
 	QStringList ftypes = QStringList() << "ind" << "in" << "id" << "nd" << "i" << "n" << "d";
 	ui->comboFavoritesDisplay->setCurrentIndex(ftypes.indexOf(settings->value("favorites_display", "ind").toString()));
@@ -819,6 +820,7 @@ void optionsWindow::save()
 	settings->setValue("Sources/Types", types.at(ui->comboSources->currentIndex()));
 	int i = ui->comboSourcesLetters->currentIndex();
 	settings->setValue("Sources/Letters", (i == 0 ? ui->spinSourcesLetters->value() : -i));
+	settings->setValue("preloadAllTabs", ui->checkPreloadAllTabs->isChecked());
 
 	QStringList ftypes = QStringList() << "ind" << "in" << "id" << "nd" << "i" << "n" << "d";
 	if (settings->value("favorites_display", "ind").toString() != ftypes.at(ui->comboFavoritesDisplay->currentIndex()))

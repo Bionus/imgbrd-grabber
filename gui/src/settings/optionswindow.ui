@@ -1677,6 +1677,13 @@
           </property>
          </widget>
         </item>
+        <item row="8" column="0" colspan="2">
+         <widget class="QCheckBox" name="checkPreloadAllTabs">
+          <property name="text">
+           <string>Preload all tabs when restoring a previous session</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </widget>
       <widget class="QWidget" name="pageInterfaceSearchResults">

@@ -177,7 +177,8 @@ class mainWindow : public QMainWindow
 		Profile				*m_profile;
 		QList<Favorite>		&m_favorites;
 		int					m_getAllDownloaded, m_getAllExists, m_getAllIgnored, m_getAll404s, m_getAllErrors, m_getAllSkipped, m_getAllLimit, m_downloads, m_waitForLogin;
-		bool				m_allow, m_mustGetTags, m_loaded, m_getAll, m_forcedTab;
+		bool				m_allow, m_mustGetTags, m_loaded, m_getAll;
+		int					m_forcedTab;
 		QSettings			*m_settings;
 		batchWindow			*m_progressdialog;
 		QString				m_currLang, m_link;
@@ -186,7 +187,7 @@ class mainWindow : public QMainWindow
 		QList<QSharedPointer<Image>>	m_getAllRemaining, m_getAllDownloading, m_getAllFailed, m_images, m_getAllSkippedImages;
 		QMap<QSharedPointer<Image>, ImageDownloader*>	m_getAllImageDownloaders;
 		QWidget				*m_currentTab;
-		QList<searchTab*>	m_tabs;
+		QList<searchTab*>	m_tabs, m_tabsWaitingForPreload;
 		QList<bool>			m_selectedSources;
 		favoritesTab		*m_favoritesTab;
 		QMap<QString,QTime*>			m_downloadTime, m_downloadTimeLast;

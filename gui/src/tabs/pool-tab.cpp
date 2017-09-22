@@ -109,7 +109,7 @@ void poolTab::write(QJsonObject &json) const
 	json["postFiltering"] = QJsonArray::fromStringList(m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts));
 }
 
-bool poolTab::read(const QJsonObject &json)
+bool poolTab::read(const QJsonObject &json, bool preload)
 {
 	ui->spinPool->setValue(json["pool"].toInt());
 	ui->comboSites->setCurrentText(json["site"].toString());
@@ -129,7 +129,7 @@ bool poolTab::read(const QJsonObject &json)
 	QJsonArray jsonTags = json["tags"].toArray();
 	for (auto tag : jsonTags)
 		tags.append(tag.toString());
-	setTags(tags.join(' '));
+	setTags(tags.join(' '), preload);
 
 	return true;
 }
@@ -162,11 +162,13 @@ void poolTab::getAll()
 }
 
 
-void poolTab::setTags(QString tags)
+void poolTab::setTags(QString tags, bool preload)
 {
 	activateWindow();
 	m_search->setText(tags);
-	load();
+
+	if (preload)
+		load();
 }
 void poolTab::setPool(int id, QString site)
 {

@@ -28,14 +28,14 @@ class tagTab : public searchTab
 		Ui::tagTab *ui;
 		QString tags() const override;
 		void write(QJsonObject &json) const override;
-		bool read(const QJsonObject &json);
+		bool read(const QJsonObject &json, bool preload = true);
 
 	protected:
 		void changeEvent(QEvent *event) override;
 
 	public slots:
 		// Zooms
-		void setTags(QString) override;
+		void setTags(QString tags, bool preload = true) override;
 		// Loading
 		void load() override;
 		// Batch
