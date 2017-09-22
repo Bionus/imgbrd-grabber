@@ -98,7 +98,7 @@ void searchTab::setSelectedSources(QSettings *settings)
 
 void searchTab::optionsChanged()
 {
-	log(QString("Updating settings for tab \"%1\".").arg(windowTitle()));
+	log(QString("Updating settings for tab \"%1\".").arg(windowTitle()), Logger::Debug);
 	// ui->retranslateUi(this);
 
 	ui_spinImagesPerPage->setValue(m_settings->value("limit", 20).toInt());
