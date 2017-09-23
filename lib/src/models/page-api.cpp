@@ -546,7 +546,7 @@ void PageApi::parse()
 				QString val = match.captured(group);
 				if (!val.isEmpty())
 				{
-					int underscorePos = group.indexOf('_');
+					int underscorePos = group.lastIndexOf('_');
 					bool ok;
 					group.mid(underscorePos + 1).toInt(&ok);
 					if (underscorePos != -1 && ok)
