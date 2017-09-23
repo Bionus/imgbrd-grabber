@@ -495,10 +495,7 @@ void searchTab::finishedLoadingPreview()
 	}
 
 	if (img->previewImage().isNull())
-	{
-		log(QString("One of the thumbnails is empty (<a href=\"%1\">%1</a>).").arg(img->previewUrl().toString()), Logger::Error);
-		return;
-	}
+	{ log(QString("One of the thumbnails is empty (<a href=\"%1\">%1</a>).").arg(img->previewUrl().toString()), Logger::Error); }
 
 	// Download whitelist images on thumbnail view
 	QStringList detected = img->blacklisted(m_profile->getBlacklist());
@@ -787,7 +784,10 @@ QBouton *searchTab::createImageThumbnail(int position, QSharedPointer<Image> img
 	l->setCheckable(true);
 	l->setChecked(m_selectedImages.contains(img->url()));
 	l->setToolTip(makeThumbnailTooltip(img));
-	l->scale(img->previewImage(), upscale);
+	if (img->previewImage().isNull())
+	{ l->scale(QPixmap(":/images/noimage.png"), upscale); }
+	else
+	{ l->scale(img->previewImage(), upscale); }
 	l->setFlat(true);
 
 	l->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -1054,6 +1054,9 @@ void searchTab::updateCheckboxes()
 
 void searchTab::webZoom(int id)
 {
+	if (id < 0 || id >= m_images.count())
+		return;
+
 	QSharedPointer<Image> image = m_images.at(id);
 
 	QStringList detected = image->blacklisted(m_profile->getBlacklist());
