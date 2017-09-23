@@ -222,7 +222,7 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	ui->checkImageCloseMiddleClick->setChecked(settings->value("imageCloseMiddleClick", true).toBool());
 	ui->checkImageNavigateScroll->setChecked(settings->value("imageNavigateScroll", true).toBool());
 	ui->checkZoomShowTagCount->setChecked(settings->value("Zoom/showTagCount", false).toBool());
-	ui->checkZoomViewSamples->setChecked(settings->value("Zoom/viewSamples", false).toBool());
+	//ui->checkZoomViewSamples->setChecked(settings->value("Zoom/viewSamples", false).toBool());
 	QStringList imageTagOrder = QStringList() << "type" << "name" << "count";
 	ui->comboImageTagOrder->setCurrentIndex(imageTagOrder.indexOf(settings->value("Zoom/tagOrder", "type").toString()));
 	QStringList positionsV = QStringList() << "top" << "center" << "bottom";
@@ -990,7 +990,7 @@ void optionsWindow::save()
 	settings->setValue("imageCloseMiddleClick", ui->checkImageCloseMiddleClick->isChecked());
 	settings->setValue("imageNavigateScroll", ui->checkImageNavigateScroll->isChecked());
 	settings->setValue("Zoom/showTagCount", ui->checkZoomShowTagCount->isChecked());
-	settings->setValue("Zoom/viewSamples", ui->checkZoomViewSamples->isChecked());
+	//settings->setValue("Zoom/viewSamples", ui->checkZoomViewSamples->isChecked());
 	QStringList imageTagOrder = QStringList() << "type" << "name" << "count";
 	settings->setValue("Zoom/tagOrder", imageTagOrder.at(ui->comboImageTagOrder->currentIndex()));
 	QStringList positionsV = QStringList() << "top" << "center" << "bottom";
