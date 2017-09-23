@@ -34,6 +34,7 @@ class TagLoader : public QDialog
 		Ui::TagLoader *ui;
 		Profile *m_profile;
 		QMap<QString, Site*> m_sites;
+		QStringList m_options;
 };
 
 #endif // TAG_LOADER_H

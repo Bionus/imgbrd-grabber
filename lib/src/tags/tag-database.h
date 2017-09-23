@@ -15,6 +15,7 @@ class TagDatabase
 		virtual bool save() = 0;
 		virtual void setTags(const QList<Tag> &tags) = 0;
 		virtual QMap<QString, TagType> getTagTypes(QStringList tags) const = 0;
+		virtual int count() const = 0;
 		QMap<int, TagType> tagTypes() const;
 
 	protected:

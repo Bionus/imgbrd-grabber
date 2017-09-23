@@ -13,10 +13,12 @@ class TagDatabaseSqlite : public TagDatabase
 		bool save();
 		void setTags(const QList<Tag> &tags);
 		QMap<QString, TagType> getTagTypes(QStringList tags) const;
+		int count() const override;
 
 	private:
 		QString m_tagFile;
 		QSqlDatabase m_database;
+		mutable int m_count;
 };
 
 #endif // TAG_DATABASE_SQLITE_H

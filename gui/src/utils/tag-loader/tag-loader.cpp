@@ -19,7 +19,10 @@ TagLoader::TagLoader(Profile *profile, QMap<QString, Site *> sites, QWidget *par
 	{
 		Site *site = sites[key];
 		if (!getCompatibleApis(site).isEmpty())
-			keys.append(key);
+		{
+			m_options.append(key);
+			keys.append(QString("%1 (%L2 tags)").arg(key).arg(site->tagDatabase()->count()));
+		}
 	}
 
 	ui->comboSource->addItems(keys);

@@ -9,7 +9,7 @@
 
 
 TagDatabaseSqlite::TagDatabaseSqlite(QString typeFile, QString tagFile)
-	: TagDatabase(typeFile), m_tagFile(tagFile)
+	: TagDatabase(typeFile), m_tagFile(tagFile), m_count(-1)
 {}
 
 bool TagDatabaseSqlite::load()
@@ -84,6 +84,8 @@ void TagDatabaseSqlite::setTags(const QList<Tag> &tags)
 
 	if (!m_database.commit())
 		return;
+
+	m_count = -1;
 }
 
 QMap<QString, TagType> TagDatabaseSqlite::getTagTypes(QStringList tags) const
@@ -116,4 +118,21 @@ QMap<QString, TagType> TagDatabaseSqlite::getTagTypes(QStringList tags) const
 		ret.insert(query.value(idTag).toString(), m_tagTypes[query.value(idTtype).toInt()]);
 
 	return ret;
+}
+
+int TagDatabaseSqlite::count() const
+{
+	if (m_count != -1)
+		return m_count;
+
+	QSqlQuery query(m_database);
+	QString sql = "SELECT COUNT(*) FROM tags";
+	if (!query.exec(sql) || !query.next())
+	{
+		log(QString("SQL error when getting tag count: %1").arg(query.lastError().text()), Logger::Error);
+		return -1;
+	}
+
+	m_count = query.value(0).toInt();
+	return m_count;
 }
