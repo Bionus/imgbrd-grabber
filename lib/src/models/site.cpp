@@ -498,7 +498,10 @@ QList<QNetworkCookie> Site::cookies() const
 
 bool Site::isLoggedIn(bool unknown) const
 {
-	if (m_settings->value("login/parameter", true).toBool() && !m_username.isEmpty() && !m_password.isEmpty())
+	QString type = m_settings->value("login/type", "url").toString();
+	int maxPageAnonymous = m_settings->value("login/maxPage", 0).toInt();
+
+	if (type == "url" && !m_username.isEmpty() && !m_password.isEmpty() && maxPageAnonymous <= 0)
 		return true;
 
 	if (unknown)
