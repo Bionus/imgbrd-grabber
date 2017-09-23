@@ -490,13 +490,13 @@ void searchTab::finishedLoadingPreview()
 	}
 	else
 	{
-		log("Could not find image related to loaded thumbnail", Logger::Warning);
+		log("Could not find image related to loaded thumbnail", Logger::Error);
 		return;
 	}
 
 	if (img->previewImage().isNull())
 	{
-		log(QString("<b>Warning:</b> %1").arg(tr("one of the thumbnails is empty (<a href=\"%1\">%1</a>).").arg(img->previewUrl().toString())));
+		log(QString("One of the thumbnails is empty (<a href=\"%1\">%1</a>).").arg(img->previewUrl().toString()), Logger::Error);
 		return;
 	}
 
