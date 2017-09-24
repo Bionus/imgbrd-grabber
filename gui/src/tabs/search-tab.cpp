@@ -925,7 +925,21 @@ void searchTab::addResultsImage(QSharedPointer<Image> img, bool merge)
 		return;
 	}
 
+	// Calculate image absolute position
 	int absolutePosition = m_images.indexOf(img);
+	if (absolutePosition < 0 && !img->md5().isEmpty())
+	{
+		int j = 0;
+		for (QSharedPointer<Image> i : img->page()->images())
+		{
+			if (i->md5() == img->md5())
+			{
+				absolutePosition = j;
+				break;
+			}
+			j++;
+		}
+	}
 
 	// Calculate relative position compared to validated images
 	int relativePosition = 0;
