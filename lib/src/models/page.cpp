@@ -167,7 +167,7 @@ int Page::imagesCount(bool guess)
 {
 	if (m_regexApi >= 0 && !m_pageApis[m_currentApi]->isImageCountSure())
 	{
-		int count = m_pageApis[m_regexApi]->imagesCount(false);
+		int count = m_pageApis[m_regexApi]->imagesCount(guess);
 		if (count >= 0)
 			return count;
 	}
@@ -177,7 +177,7 @@ int Page::pagesCount(bool guess)
 {
 	if (m_regexApi >= 0 && !m_pageApis[m_currentApi]->isPageCountSure())
 	{
-		int count = m_pageApis[m_regexApi]->pagesCount(false);
+		int count = m_pageApis[m_regexApi]->pagesCount(guess);
 		if (count >= 0)
 			return count;
 	}
