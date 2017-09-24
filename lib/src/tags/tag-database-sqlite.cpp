@@ -9,7 +9,7 @@
 
 
 TagDatabaseSqlite::TagDatabaseSqlite(QString typeFile, QString tagFile)
-	: TagDatabase(typeFile), m_tagFile(tagFile)
+	: TagDatabase(typeFile), m_tagFile(tagFile), m_count(-1)
 {}
 
 bool TagDatabaseSqlite::load()
@@ -33,7 +33,7 @@ bool TagDatabaseSqlite::load()
 
 	// Create schema if necessary
 	QSqlQuery createQuery(m_database);
-	createQuery.prepare("CREATE TABLE IF NOT EXISTS tags (tag VARCHAR(255), ttype INT);");
+	createQuery.prepare("CREATE TABLE IF NOT EXISTS tags (id INT, tag VARCHAR(255), ttype INT);");
 	if (!createQuery.exec())
 	{
 		log(QString("Could not create tag database schema: %1").arg(createQuery.lastError().text()), Logger::Error);
@@ -67,11 +67,12 @@ void TagDatabaseSqlite::setTags(const QList<Tag> &tags)
 		return;
 
 	QSqlQuery addQuery(m_database);
-	addQuery.prepare("INSERT INTO tags (tag, ttype) VALUES (:tag, :ttype)");
+	addQuery.prepare("INSERT INTO tags (id, tag, ttype) VALUES (:id, :tag, :ttype)");
 
 	for (Tag tag : tags)
 	{
 		QString type = tag.type().name();
+		addQuery.bindValue(":id", tag.id());
 		addQuery.bindValue(":tag", tag.text());
 		addQuery.bindValue(":ttype", tagTypes.contains(type) ? tagTypes[type] : -1);
 		if (!addQuery.exec())
@@ -83,6 +84,8 @@ void TagDatabaseSqlite::setTags(const QList<Tag> &tags)
 
 	if (!m_database.commit())
 		return;
+
+	m_count = -1;
 }
 
 QMap<QString, TagType> TagDatabaseSqlite::getTagTypes(QStringList tags) const
@@ -115,4 +118,21 @@ QMap<QString, TagType> TagDatabaseSqlite::getTagTypes(QStringList tags) const
 		ret.insert(query.value(idTag).toString(), m_tagTypes[query.value(idTtype).toInt()]);
 
 	return ret;
+}
+
+int TagDatabaseSqlite::count() const
+{
+	if (m_count != -1)
+		return m_count;
+
+	QSqlQuery query(m_database);
+	QString sql = "SELECT COUNT(*) FROM tags";
+	if (!query.exec(sql) || !query.next())
+	{
+		log(QString("SQL error when getting tag count: %1").arg(query.lastError().text()), Logger::Error);
+		return -1;
+	}
+
+	m_count = query.value(0).toInt();
+	return m_count;
 }

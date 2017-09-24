@@ -90,6 +90,7 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	int i = settings->value("Sources/Letters", 3).toInt();
 	ui->comboSourcesLetters->setCurrentIndex((i < 0)+(i < -1));
 	ui->spinSourcesLetters->setValue(i < 0 ? 3 : i);
+	ui->checkPreloadAllTabs->setChecked(settings->value("preloadAllTabs", false).toBool());
 
 	QStringList ftypes = QStringList() << "ind" << "in" << "id" << "nd" << "i" << "n" << "d";
 	ui->comboFavoritesDisplay->setCurrentIndex(ftypes.indexOf(settings->value("favorites_display", "ind").toString()));
@@ -110,8 +111,6 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	// Web services
 	ReverseSearchLoader loader(settings);
 	m_webServices = loader.getAllReverseSearchEngines();
-	for (int i = 0; i < m_webServices.count(); ++i)
-		m_webServicesIds.insert(m_webServices[i].id(), i);
 	showWebServices();
 
 	ui->comboBatchEnd->setCurrentIndex(settings->value("Batch/end", 0).toInt());
@@ -195,13 +194,13 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	settings->endGroup();
 
 	// Custom tokens
-	QMap<QString,QStringList> customs = getCustoms(settings);
+	QMap<QString, QStringList> customs = getCustoms(settings);
 	m_customNames = QList<QLineEdit*>();
 	m_customTags = QList<QLineEdit*>();
-	for (int i = 0; i < customs.size(); i++)
+	for (QString key : customs.keys())
 	{
-		QLineEdit *leName = new QLineEdit(customs.keys().at(i));
-		QLineEdit *leTags = new QLineEdit(customs.values().at(i).join(" "));
+		QLineEdit *leName = new QLineEdit(key);
+		QLineEdit *leTags = new QLineEdit(customs[key].join(" "));
 		m_customNames.append(leName);
 		m_customTags.append(leTags);
 		ui->layoutCustom->insertRow(i, leName, leTags);
@@ -223,6 +222,7 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	ui->checkImageCloseMiddleClick->setChecked(settings->value("imageCloseMiddleClick", true).toBool());
 	ui->checkImageNavigateScroll->setChecked(settings->value("imageNavigateScroll", true).toBool());
 	ui->checkZoomShowTagCount->setChecked(settings->value("Zoom/showTagCount", false).toBool());
+	//ui->checkZoomViewSamples->setChecked(settings->value("Zoom/viewSamples", false).toBool());
 	QStringList imageTagOrder = QStringList() << "type" << "name" << "count";
 	ui->comboImageTagOrder->setCurrentIndex(imageTagOrder.indexOf(settings->value("Zoom/tagOrder", "type").toString()));
 	QStringList positionsV = QStringList() << "top" << "center" << "bottom";
@@ -480,10 +480,12 @@ void optionsWindow::showWebServices()
 	connect(mapperMoveUpWebService, SIGNAL(mapped(int)), this, SLOT(moveUpWebService(int)));
 	connect(mapperMoveDownWebService, SIGNAL(mapped(int)), this, SLOT(moveDownWebService(int)));
 
-	int j = 0;
-	for (auto webService : m_webServices)
+	m_webServicesIds.clear();
+	for (int j = 0; j < m_webServices.count(); ++j)
 	{
+		auto webService = m_webServices[j];
 		int id = webService.id();
+		m_webServicesIds.insert(id, j);
 
 		QIcon icon = webService.icon();
 		QLabel *labelIcon = new QLabel();
@@ -520,8 +522,6 @@ void optionsWindow::showWebServices()
 		mapperRemoveWebService->setMapping(buttonDelete, id);
 		connect(buttonDelete, SIGNAL(clicked(bool)), mapperRemoveWebService, SLOT(map()));
 		ui->layoutWebServices->addWidget(buttonDelete, j, 5);
-
-		++j;
 	}
 }
 
@@ -543,27 +543,27 @@ void optionsWindow::editWebService(int id)
 void optionsWindow::removeWebService(int id)
 {
 	m_webServices.removeAt(m_webServicesIds[id]);
+
+	// Delete favicon file
 	QFile(savePath("webservices/") + QString::number(id) + ".ico").remove();
+
+	// Remove WebService config
+	QSettings *settings = m_profile->getSettings();
+	settings->beginGroup("WebServices");
+	settings->beginGroup(QString::number(id));
+	settings->remove("");
+	settings->endGroup();
+	settings->endGroup();
+
 	showWebServices();
 }
 
 void optionsWindow::setWebService(ReverseSearchEngine rse, QByteArray favicon)
 {
-	// Write icon information to disk
-	if (!favicon.isEmpty())
-	{
-		QString faviconPath = savePath("webservices/") + QString::number(rse.id()) + ".ico";
-		QFile f(faviconPath);
-		if (f.open(QFile::WriteOnly))
-		{
-			f.write(favicon);
-			f.close();
-		}
-		rse = ReverseSearchEngine(rse.id(), faviconPath, rse.name(), rse.tpl(), rse.order());
-	}
+	bool isNew = rse.id() < 0;
 
 	// Generate new ID for new web services
-	if (rse.id() < 0)
+	if (isNew)
 	{
 		int maxOrder = 0;
 		int maxId = 0;
@@ -577,8 +577,23 @@ void optionsWindow::setWebService(ReverseSearchEngine rse, QByteArray favicon)
 
 		rse.setId(maxId + 1);
 		rse.setOrder(maxOrder + 1);
-		m_webServices.append(rse);
 	}
+
+	// Write icon information to disk
+	if (!favicon.isEmpty())
+	{
+		QString faviconPath = savePath("webservices/") + QString::number(rse.id()) + ".ico";
+		QFile f(faviconPath);
+		if (f.open(QFile::WriteOnly))
+		{
+			f.write(favicon);
+			f.close();
+		}
+		rse = ReverseSearchEngine(rse.id(), faviconPath, rse.name(), rse.tpl(), rse.order());
+	}
+
+	if (isNew)
+	{ m_webServices.append(rse); }
 	else
 	{ m_webServices[m_webServicesIds[rse.id()]] = rse; }
 
@@ -805,6 +820,7 @@ void optionsWindow::save()
 	settings->setValue("Sources/Types", types.at(ui->comboSources->currentIndex()));
 	int i = ui->comboSourcesLetters->currentIndex();
 	settings->setValue("Sources/Letters", (i == 0 ? ui->spinSourcesLetters->value() : -i));
+	settings->setValue("preloadAllTabs", ui->checkPreloadAllTabs->isChecked());
 
 	QStringList ftypes = QStringList() << "ind" << "in" << "id" << "nd" << "i" << "n" << "d";
 	if (settings->value("favorites_display", "ind").toString() != ftypes.at(ui->comboFavoritesDisplay->currentIndex()))
@@ -845,7 +861,7 @@ void optionsWindow::save()
 			while (!pth.exists() && pth.path() != op)
 			{
 				op = pth.path();
-				pth.setPath(pth.path().remove(QRegExp("/([^/]+)$")));
+				pth.setPath(pth.path().remove(QRegularExpression("/([^/]+)$")));
 			}
 			if (pth.path() == op)
 			{ error(this, tr("An error occured creating the save folder.")); }
@@ -861,7 +877,7 @@ void optionsWindow::save()
 			while (!pth.exists() && pth.path() != op)
 			{
 				op = pth.path();
-				pth.setPath(pth.path().remove(QRegExp("/([^/]+)$")));
+				pth.setPath(pth.path().remove(QRegularExpression("/([^/]+)$")));
 			}
 			if (pth.path() == op)
 			{ error(this, tr("An error occured creating the favorites save folder.")); }
@@ -942,8 +958,8 @@ void optionsWindow::save()
 		settings->setValue("simultaneous", ui->spinSimultaneous->value());
 		settings->beginGroup("Customs");
 			settings->remove("");
-			for (int i = 0; i < m_customNames.size(); i++)
-			{ settings->setValue(m_customNames.at(i)->text(), m_customTags.at(i)->text()); }
+			for (QLineEdit *le : m_customNames)
+			{ settings->setValue(le->text(), le->text()); }
 		settings->endGroup();
 	settings->endGroup();
 
@@ -974,6 +990,7 @@ void optionsWindow::save()
 	settings->setValue("imageCloseMiddleClick", ui->checkImageCloseMiddleClick->isChecked());
 	settings->setValue("imageNavigateScroll", ui->checkImageNavigateScroll->isChecked());
 	settings->setValue("Zoom/showTagCount", ui->checkZoomShowTagCount->isChecked());
+	//settings->setValue("Zoom/viewSamples", ui->checkZoomViewSamples->isChecked());
 	QStringList imageTagOrder = QStringList() << "type" << "name" << "count";
 	settings->setValue("Zoom/tagOrder", imageTagOrder.at(ui->comboImageTagOrder->currentIndex()));
 	QStringList positionsV = QStringList() << "top" << "center" << "bottom";

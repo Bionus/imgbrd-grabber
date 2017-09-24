@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Site>
+	<Name>Danbooru</Name>
+	<Urls>
+		<Image>/pictures/download_image/{id}.jpg</Image>
+		<SampleReplaces>_cp.->_bp.&amp;_sp.->_bp.</SampleReplaces>
+		<Json>
+			<Tags>/pictures/view_posts/{page}?search_tag={tags}&amp;lang=en&amp;type=json</Tags>
+		</Json>
+		<Html>
+			<Tags>/pictures/view_posts/{page}?search_tag={tags}&amp;lang=en</Tags>
+			<Post>/pictures/view_post/{id}?lang=en</Post>
+			<TagApi>/pictures/view_all_tags/{page}?lang=en</TagApi>
+			<SingleTagApi>/pictures/view_all_tags/{page}?search_text={name}&amp;lang=en</SingleTagApi>
+		</Html>
+	</Urls>
+	<Regex>
+		<ImageTags><![CDATA[<li id="tag_li_[^"]+"[^>]*>\s*<a[^>]*">(?<tag>[^<]+)<\/a>\s*<span>(?<count>[^<]+)<\/span>\s*<\/li>]]></ImageTags>
+		<Image><![CDATA[<span[^>]*data-pubtime="(?<created_at>[^"]+)">\s*<a href="(?<page_url>\/pictures\/view_post\/(?<id>\d+)[^"]+)"\s*title="Anime picture (?<width>\d+)x(?<height>\d+)"[^>]*>\s*<picture>\s*<source[^>]*>\s*<img\s*id="[^"]*"\s*class="img_sp"\s*src="(?<preview_url>[^"]+)"[^>]*>]]></Image>
+		<TagApi><![CDATA[<tr>\s*<td>(?<id>\d+)<\/td>\s*<td>\s*<a.+?>(?<tag>.+?)<\/a>.*?<\/td>\s*<td>.*?<\/td>\s*<td>.*?<\/td>\s*<td>(?<type>.+?)<\/td>\s*<td>(?<count>\d+)<\/td>\s*<\/tr>]]></TagApi>
+		<LastPage>page of (\d+)</LastPage>
+	</Regex>
+	<Check>
+		<Url>/</Url>
+        <Regex>mailto:stalkerg@gmail\.com</Regex>
+	</Check>
+	<FirstPage>0</FirstPage>
+</Site>

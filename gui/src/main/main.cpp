@@ -71,16 +71,13 @@ int main(int argc, char *argv[])
 	#endif
 
 	// Copy settings files to writable directory
-	if (!QDir(savePath("sites/", true, true)).exists())
+	QStringList toCopy = QStringList() << "sites/" << "themes/" << "webservices/";
+	for (QString tgt : toCopy)
 	{
-		QStringList toCopy = QStringList() << "sites/" << "themes/" << "webservices/";
-		for (QString tgt : toCopy)
-		{
-			QString from = savePath(tgt, true, false);
-			QString to = savePath(tgt, true, true);
-			if (!QDir(to).exists() && QDir(from).exists())
-				copyRecursively(from, to);
-		}
+		QString from = savePath(tgt, true, false);
+		QString to = savePath(tgt, true, true);
+		if (!QDir(to).exists() && QDir(from).exists())
+			copyRecursively(from, to);
 	}
 
 	QCommandLineParser parser;
@@ -140,8 +137,11 @@ int main(int argc, char *argv[])
 		bool gui = false;
 	#endif
 
-	if (!gui && !parser.isSet(verboseOption))
+	bool verbose = parser.isSet(verboseOption);
+	if (!gui && !verbose)
 		qInstallMessageHandler(noMessageOutput);
+	else if (verbose)
+		Logger::getInstance().setLogLevel(Logger::Debug);
 
 	#if USE_BREAKPAD && !USE_CLI
 		if (gui)

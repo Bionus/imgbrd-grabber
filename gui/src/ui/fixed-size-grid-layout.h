@@ -1,35 +1,45 @@
 #ifndef FIXED_SIZE_GRID_LAYOUT_H
 #define FIXED_SIZE_GRID_LAYOUT_H
 
-#include <QGridLayout>
-#include <QWidget>
+#include <QLayout>
 #include <QRect>
-#include <QPoint>
+#include <QStyle>
 
 
-class FixedSizeGridLayout : public QGridLayout
+class FixedSizeGridLayout : public QLayout
 {
-	Q_OBJECT
-
 	public:
-		explicit FixedSizeGridLayout(QWidget *parent = Q_NULLPTR);
-		void setFixedWidth(int width);
-		void redoLayout(int width);
-		void addFixedSizeWidget(QWidget *widget, int position, int imagesPerPage);
-		void setGeometry(const QRect &rect);
+		explicit FixedSizeGridLayout(QWidget *parent, int hSpacing = -1, int vSpacing = -1);
+		explicit FixedSizeGridLayout(int hSpacing = -1, int vSpacing = -1);
+		~FixedSizeGridLayout();
 
-	protected:
-		bool shouldRedoLayout(int width);
-		int getImagesPerLine(int width, int imagesPerPage) const;
-		QPoint getThumbPosition(int width, int relativePosition, int imagesPerPage) const;
-		void fillLayout(int count, int width, int imagesPerPage);
+		void setFixedWidth(int width);
+
+		void addItem(QLayoutItem *item) override;
+		void insertItem(int index, QLayoutItem *item);
+		void insertWidget(int index, QWidget *widget);
+		QLayoutItem *itemAt(int index) const override;
+		QLayoutItem *takeAt(int index) override;
+		int count() const override;
+
+		int horizontalSpacing() const;
+		int verticalSpacing() const;
+		Qt::Orientations expandingDirections() const override;
+		bool hasHeightForWidth() const override;
+		int heightForWidth(int) const override;
+		QSize minimumSize() const override;
+		QSize sizeHint() const override;
+		void setGeometry(const QRect &rect) override;
 
 	private:
+		int doLayout(const QRect &rect, bool testOnly) const;
+		int smartSpacing(QStyle::PixelMetric pm) const;
+		int widgetSpacing(int spacing, QWidget *widget, Qt::Orientation orientation) const;
+
+		int m_hSpace;
+		int m_vSpace;
 		int m_fixedWidth;
-		int m_width;
-		int m_oldImagesPerLine;
-		int m_imagesPerPage;
-		bool m_frozen;
+		QList<QLayoutItem*> m_items;
 };
 
 #endif // FIXED_SIZE_GRID_LAYOUT_H

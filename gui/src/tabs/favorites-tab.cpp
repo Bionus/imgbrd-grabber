@@ -117,7 +117,7 @@ void favoritesTab::updateFavorites()
 	clearLayout(m_favoritesLayout);
 
 	QString display = m_settings->value("favorites_display", "ind").toString();
-	int i = 0;
+	float upscale = m_settings->value("thumbnailUpscale", 1.0f).toFloat();
 	for (Favorite fav : m_favorites)
 	{
 		QString xt = tr("<b>Name:</b> %1<br/><b>Note:</b> %2 %%<br/><b>Last view:</b> %3").arg(fav.getName(), QString::number(fav.getNote()), fav.getLastViewed().toString(format));
@@ -128,9 +128,8 @@ void favoritesTab::updateFavorites()
 		{
 			QPixmap img = fav.getImage();
 			QBouton *image = new QBouton(fav.getName(), false, false, 0, QColor(), this);
-				image->setIcon(img);
-				image->setIconSize(img.size());
-				image->setFixedSize(FAVORITES_THUMB_SIZE, FAVORITES_THUMB_SIZE);
+				image->scale(img, upscale);
+				image->setFixedSize(FAVORITES_THUMB_SIZE * upscale, FAVORITES_THUMB_SIZE * upscale);
 				image->setFlat(true);
 				image->setToolTip(xt);
 				connect(image, SIGNAL(rightClick(QString)), this, SLOT(favoriteProperties(QString)));
@@ -151,14 +150,15 @@ void favoritesTab::updateFavorites()
 			l->addWidget(caption);
 		}
 
-		m_favoritesLayout->addFixedSizeWidget(w, i, m_favorites.count());
-		++i;
+		m_favoritesLayout->addWidget(w);
 	}
 }
 
 
 void favoritesTab::load()
 {
+	updateTitle();
+
 	loadTags(m_currentTags.trimmed().split(' ', QString::SkipEmptyParts));
 }
 
@@ -186,11 +186,15 @@ void favoritesTab::setPageLabelText(QLabel *txt, Page *page, const QList<QShared
 	searchTab::setPageLabelText(txt, page, imgs, tr("No result since the %1").arg(m_loadFavorite.toString(tr("MM/dd/yyyy 'at' hh:mm"))));
 }
 
-void favoritesTab::setTags(QString tags)
+void favoritesTab::setTags(QString tags, bool preload)
 {
 	activateWindow();
 	m_currentTags = tags;
-	load();
+
+	if (preload)
+		load();
+	else
+		updateTitle();
 }
 
 void favoritesTab::getPage()
@@ -207,7 +211,9 @@ void favoritesTab::getPage()
 		Page *page = m_pages[actuals[i]].first();
 		QString search = m_currentTags+" "+m_settings->value("add").toString().toLower().trimmed();
 		int perpage = unloaded ? ui->spinImagesPerPage->value() : page->images().count();
-		emit batchAddGroup(DownloadQueryGroup(m_settings, search, ui->spinPage->value(), perpage, perpage, m_sites->value(actuals.at(i))));
+		QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
+
+		emit batchAddGroup(DownloadQueryGroup(m_settings, search, ui->spinPage->value(), perpage, perpage, postFiltering, m_sites->value(actuals.at(i))));
 	}
 }
 void favoritesTab::getAll()
@@ -225,7 +231,9 @@ void favoritesTab::getAll()
 		int limit = m_sites->value(actuals.at(i))->contains("Urls/1/Limit") ? m_sites->value(actuals.at(i))->value("Urls/1/Limit").toInt() : 0;
 		int perpage = qMin((limit > 0 ? limit : 1000), qMax(page->images().count(), page->imagesCount()));
 		int total = qMax(page->images().count(), page->imagesCount());
-		emit batchAddGroup(DownloadQueryGroup(m_settings, search, 1, perpage, total, m_sites->value(actuals.at(i))));
+		QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
+
+		emit batchAddGroup(DownloadQueryGroup(m_settings, search, 1, perpage, total, postFiltering, m_sites->value(actuals.at(i))));
 	}
 }
 
@@ -334,4 +342,9 @@ void favoritesTab::changeEvent(QEvent *event)
 	}
 
 	QWidget::changeEvent(event);
+}
+
+void favoritesTab::updateTitle()
+{
+	// No-op, the Favorites tab never changes its title
 }

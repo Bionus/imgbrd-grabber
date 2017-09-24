@@ -2,6 +2,7 @@
 #include <QEventLoop>
 #include <QNetworkRequest>
 #include <QNetworkReply>
+#include <QRegularExpression>
 #include "source.h"
 #include "api.h"
 #include "custom-network-access-manager.h"
@@ -52,8 +53,8 @@ Source *SourceGuesser::start()
 				m_cache[checkUrl] = reply->readAll();
 			}
 
-			QRegExp rx(map->value("Check/Regex"));
-			if (rx.indexIn(m_cache[checkUrl]) != -1)
+			QRegularExpression rx(map->value("Check/Regex"));
+			if (rx.match(m_cache[checkUrl]).hasMatch())
 			{
 				emit finished(source);
 				return source;

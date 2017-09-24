@@ -33,6 +33,7 @@ class AddGroupWindow : public QDialog
 	private:
 		Ui::AddGroupWindow		*ui;
 		TextEdit				*m_lineTags;
+		TextEdit				*m_linePostFiltering;
 		QMap<QString, Site*>	m_sites;
 		QSettings				*m_settings;
 };

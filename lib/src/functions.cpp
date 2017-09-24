@@ -10,6 +10,7 @@
 #include <QUrl>
 #include <QLocale>
 #include <QTimeZone>
+#include <QRegularExpression>
 #include "math.h"
 #ifdef Q_OS_WIN
 	#include <windows.h>
@@ -355,7 +356,8 @@ QMap<QString,QString> domToMap(QDomElement dom)
 	dom.firstChildElement("Name").firstChild().nodeValue();
 	for (QDomNode n = dom.firstChild(); !n.isNull(); n = n.nextSibling())
 	{
-		if (n.firstChild().nodeName() == "#text")
+		auto type = n.firstChild().nodeType();
+		if (type == QDomNode::TextNode || type == QDomNode::CDATASectionNode)
 		{ details[n.nodeName()] = n.firstChild().nodeValue(); }
 		else
 		{
@@ -375,7 +377,7 @@ QMap<QString,QString> domToMap(QDomElement dom)
  */
 QString stripTags(QString str)
 {
-	static QRegExp strip("<[^>]*>");
+	static QRegularExpression strip("<[^>]*>");
 	return str.remove(strip);
 }
 
@@ -435,8 +437,8 @@ QString setExtension(QString url, QString extension)
 
 bool isUrl(QString str)
 {
-	QRegExp regexUrl("^https?://[^\\s/$.?#].[^\\s]*$");
-	return regexUrl.exactMatch(str);
+	static QRegularExpression regexUrl("^https?://[^\\s/$.?#].[^\\s]*$");
+	return regexUrl.match(str).hasMatch();
 }
 
 QString fixFilename(QString fn, QString path, int maxlength, bool invalidChars)
@@ -658,4 +660,31 @@ void setTestModeEnabled(bool testMode)
 bool isTestModeEnabled()
 {
 	return testModeEnabled;
+}
+
+
+QString parseMarkdown(QString str)
+{
+	// Windows EOL
+	str.replace("\\r\\n", "\\n");
+
+	// Headers
+	QRegularExpression header("^(#+)([^#].*)$");
+	header.setPatternOptions(QRegularExpression::MultilineOption);
+	auto matches = header.globalMatch(str);
+	while (matches.hasNext()) {
+		auto match = matches.next();
+		int level = qMax(1, qMin(6, match.captured(1).length()));
+		QString result = "<h" + QString::number(level) + ">" + match.captured(2).trimmed() + "</h" + QString::number(level) + ">";
+		str.replace(match.captured(0), result);
+	}
+
+	// Issue links
+	QRegularExpression issueLinks("(issue|fix) #(\\d+)");
+	str.replace(issueLinks, "<a href='" + QString(PROJECT_GITHUB_URL) + "/issues/\\2'>\\1 #\\2</a>");
+
+	// Line breaks to HTML
+	str.replace("\n", "<br/>");
+
+	return str;
 }

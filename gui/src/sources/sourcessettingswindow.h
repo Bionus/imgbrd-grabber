@@ -2,8 +2,10 @@
 #define SOURCESSETTINGSWINDOW_H
 
 #include <QDialog>
+#include <QSettings>
 #include <QMap>
 #include "models/site.h"
+#include "models/profile.h"
 
 
 namespace Ui
@@ -17,7 +19,7 @@ class SourcesSettingsWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		explicit SourcesSettingsWindow(Site* site, QWidget *parent = 0);
+		explicit SourcesSettingsWindow(Profile *profile, Site* site, QWidget *parent = 0);
 		~SourcesSettingsWindow();
 
 	public slots:
@@ -35,6 +37,7 @@ class SourcesSettingsWindow : public QDialog
 	private:
 		Ui::SourcesSettingsWindow *ui;
 		Site *m_site;
+		QSettings *m_globalSettings;
 };
 
 #endif // SOURCESSETTINGSWINDOW_H

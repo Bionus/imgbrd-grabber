@@ -98,7 +98,7 @@ void searchTab::setSelectedSources(QSettings *settings)
 
 void searchTab::optionsChanged()
 {
-	log(QString("Updating settings for tab \"%1\".").arg(windowTitle()));
+	log(QString("Updating settings for tab \"%1\".").arg(windowTitle()), Logger::Debug);
 	// ui->retranslateUi(this);
 
 	ui_spinImagesPerPage->setValue(m_settings->value("limit", 20).toInt());
@@ -366,6 +366,9 @@ void searchTab::finishedLoading(Page* page)
 
 void searchTab::failedLoading(Page *page)
 {
+	if (m_stop)
+		return;
+
 	if (ui_checkMergeResults != nullptr && ui_checkMergeResults->isChecked())
 		postLoading(page, page->images());
 }
@@ -398,6 +401,8 @@ void searchTab::postLoading(Page *page, QList<QSharedPointer<Image>> imgs)
 			ui_layoutResults->addWidget(txt, 0, 0);
 			ui_layoutResults->setRowMinimumHeight(0, txt->sizeHint().height() + 10);
 		}
+		else
+		{ setMergedLabelText(m_siteLabels[nullptr], m_images); }
 	}
 
 	loadImageThumbnails(page, imgs);
@@ -465,6 +470,7 @@ void searchTab::loadImageThumbnails(Page *page, const QList<QSharedPointer<Image
 			if (modifiers.contains(tags[r][0]))
 				tags[r] = tags[r].mid(1);
 
+		m_thumbnailsLoading[img.data()] = img;
 		connect(img.data(), &Image::finishedLoadingPreview, this, &searchTab::finishedLoadingPreview);
 		img->loadPreview();
 	}
@@ -476,17 +482,20 @@ void searchTab::finishedLoadingPreview()
 		return;
 
 	QSharedPointer<Image> img;
-	for (QSharedPointer<Image> i : m_images)
-		if (i.data() == sender())
-			img = i;
-	if (img.isNull())
-		return;
-
-	if (img->previewImage().isNull())
+	QObject *key = sender();
+	if (m_thumbnailsLoading.contains(key))
 	{
-		log(QString("<b>Warning:</b> %1").arg(tr("one of the thumbnails is empty (<a href=\"%1\">%1</a>).").arg(img->previewUrl().toString())));
+		img = m_thumbnailsLoading[key];
+		m_thumbnailsLoading.remove(key);
+	}
+	else
+	{
+		log("Could not find image related to loaded thumbnail", Logger::Error);
 		return;
 	}
+
+	if (img->previewImage().isNull())
+	{ log(QString("One of the thumbnails is empty (<a href=\"%1\">%1</a>).").arg(img->previewUrl().toString()), Logger::Error); }
 
 	// Download whitelist images on thumbnail view
 	QStringList detected = img->blacklisted(m_profile->getBlacklist());
@@ -643,7 +652,7 @@ void searchTab::addResultsPage(Page *page, const QList<QSharedPointer<Image>> &i
 	}
 	setPageLabelText(m_siteLabels[site], page, imgs, noResultsMessage);
 
-	if (m_siteLayouts.size() > pos)
+	if (m_siteLayouts.contains(page->site()) && m_pages.value(page->website()).count() == 1)
 	{ addLayout(m_siteLayouts[page->site()], page_y + 1, page_x); }
 }
 void searchTab::setMergedLabelText(QLabel *txt, const QList<QSharedPointer<Image>> &imgs)
@@ -775,7 +784,10 @@ QBouton *searchTab::createImageThumbnail(int position, QSharedPointer<Image> img
 	l->setCheckable(true);
 	l->setChecked(m_selectedImages.contains(img->url()));
 	l->setToolTip(makeThumbnailTooltip(img));
-	l->scale(img->previewImage(), upscale);
+	if (img->previewImage().isNull())
+	{ l->scale(QPixmap(":/images/noimage.png"), upscale); }
+	else
+	{ l->scale(img->previewImage(), upscale); }
 	l->setFlat(true);
 
 	l->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -903,32 +915,31 @@ void searchTab::contextSaveSelected()
 	}
 }
 
-int searchTab::getActualImagesPerPage(Page *page, bool merge)
-{
-	// If we are using merged results, the images/page corresponds to the total number of images
-	if (merge)
-		return m_images.count();
-
-	int imagesPerPage;
-
-	// If we can customize the limit, that means we can have confidence in the spin value
-	if (page->site()->value("Urls/Selected/Tags").contains("{limit}"))
-		imagesPerPage = ui_spinImagesPerPage->value();
-	else
-		imagesPerPage = page->images().size();
-
-	return (imagesPerPage <= 0 ? 20 : imagesPerPage);
-}
-
 void searchTab::addResultsImage(QSharedPointer<Image> img, bool merge)
 {
 	// Early return if the layout has already been removed
 	Page *layoutKey = merge && m_layouts.contains(nullptr) ? nullptr : img->page();
 	if (!m_layouts.contains(layoutKey))
+	{
+		log("Missing image layout", Logger::Error);
 		return;
+	}
 
+	// Calculate image absolute position
 	int absolutePosition = m_images.indexOf(img);
-	int imagesPerPage = getActualImagesPerPage(img->page(), merge);
+	if (absolutePosition < 0 && !img->md5().isEmpty())
+	{
+		int j = 0;
+		for (QSharedPointer<Image> i : img->page()->images())
+		{
+			if (i->md5() == img->md5())
+			{
+				absolutePosition = j;
+				break;
+			}
+			j++;
+		}
+	}
 
 	// Calculate relative position compared to validated images
 	int relativePosition = 0;
@@ -948,7 +959,7 @@ void searchTab::addResultsImage(QSharedPointer<Image> img, bool merge)
 	m_boutons.insert(img.data(), button);
 
 	FixedSizeGridLayout *layout = m_layouts[layoutKey];
-	layout->addFixedSizeWidget(button, relativePosition, imagesPerPage);
+	layout->insertWidget(relativePosition, button);
 }
 
 void searchTab::addHistory(QString tags, int page, int ipp, int cols)
@@ -1057,6 +1068,9 @@ void searchTab::updateCheckboxes()
 
 void searchTab::webZoom(int id)
 {
+	if (id < 0 || id >= m_images.count())
+		return;
+
 	QSharedPointer<Image> image = m_images.at(id);
 
 	QStringList detected = image->blacklisted(m_profile->getBlacklist());
@@ -1164,7 +1178,7 @@ void searchTab::saveSources(QList<bool> sel, bool canLoad)
 	for (int i = 0; i < m_sites->count(); i++)
 	{
 		if (sav.at(i) == '1')
-		{ m_sites->value(keys[i])->login(m_profile); }
+		{ m_sites->value(keys[i])->login(); }
 	}
 
 	updateCheckboxes();
@@ -1291,7 +1305,7 @@ void searchTab::loadPage()
 		// Start loading
 		page->load();
 	}
-	if (merged && m_layouts.size() > 0)
+	if (merged && m_layouts.size() > 0 && m_endlessLoadOffset == 0)
 	{ addLayout(m_layouts[nullptr], 1, 0); }
 	m_page = 0;
 
@@ -1313,9 +1327,9 @@ void searchTab::addLayout(QLayout *layout, int row, int column)
 
 FixedSizeGridLayout *searchTab::createImagesLayout(QSettings *settings)
 {
-	FixedSizeGridLayout *l = new FixedSizeGridLayout;
-	l->setHorizontalSpacing(settings->value("Margins/horizontal", 6).toInt());
-	l->setVerticalSpacing(settings->value("Margins/vertical", 6).toInt());
+	int hSpace = settings->value("Margins/horizontal", 6).toInt();
+	int vSpace = settings->value("Margins/vertical", 6).toInt();
+	FixedSizeGridLayout *l = new FixedSizeGridLayout(hSpace, vSpace);
 
 	bool fixedWidthLayout = m_settings->value("resultsFixedWidthLayout", false).toBool();
 	if (fixedWidthLayout)

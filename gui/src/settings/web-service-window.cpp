@@ -11,6 +11,8 @@ WebServiceWindow::WebServiceWindow(const ReverseSearchEngine *webService, QWidge
 {
 	ui->setupUi(this);
 
+	m_networkAccessManager = new CustomNetworkAccessManager(this);
+
 	if (webService != nullptr)
 	{
 		ui->lineName->setText(webService->name());
@@ -31,9 +33,22 @@ void WebServiceWindow::getFavicon()
 	QUrl url(ui->lineUrl->text());
 	QString favicon = url.scheme() + "://" + url.authority() + "/favicon.ico";
 
-	auto nam = new QNetworkAccessManager(this);
-	m_faviconReply = nam->get(QNetworkRequest(QUrl(favicon)));
-	connect(m_faviconReply, &QNetworkReply::finished, this, &WebServiceWindow::save);
+	m_faviconReply = m_networkAccessManager->get(QNetworkRequest(QUrl(favicon)));
+	connect(m_faviconReply, &QNetworkReply::finished, this, &WebServiceWindow::faviconReceived);
+}
+
+void WebServiceWindow::faviconReceived()
+{
+	// Check redirection
+	QUrl redir = m_faviconReply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
+	if (!redir.isEmpty())
+	{
+		m_faviconReply = m_networkAccessManager->get(QNetworkRequest(QUrl(redir)));
+		connect(m_faviconReply, &QNetworkReply::finished, this, &WebServiceWindow::faviconReceived);
+		return;
+	}
+
+	save();
 }
 
 void WebServiceWindow::save()
@@ -46,17 +61,17 @@ void WebServiceWindow::save()
 	}
 
 	// Save favicon contents
-	QByteArray data;
+	QByteArray faviconData;
 	if (m_faviconReply->error() == QNetworkReply::NoError)
 	{
-		data = m_faviconReply->readAll();
+		faviconData = m_faviconReply->readAll();
 		m_faviconReply->deleteLater();
 	}
 
 	// Emit the success signal
 	QString name = ui->lineName->text();
 	QString url = ui->lineUrl->text();
-	emit validated(ReverseSearchEngine(id, "", name, url, order), data);
+	emit validated(ReverseSearchEngine(id, "", name, url, order), faviconData);
 
 	deleteLater();
 }

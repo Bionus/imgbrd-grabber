@@ -6,6 +6,7 @@
 #include "profile.h"
 #include "commands/commands.h"
 #include "downloader/file-downloader.h"
+#include "models/api.h"
 #include "functions.h"
 
 #define MAX_LOAD_FILESIZE (1024*1024*50)
@@ -254,8 +255,9 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	m_sampleUrl = removeCacheUrl(m_sampleUrl.toString());
 	m_previewUrl = removeCacheUrl(m_previewUrl.toString());
 
-	// For ugoira images, we use the sample URL as the URL
-	if (!m_sampleUrl.isEmpty() && getExtension(m_url) == "zip")
+	// We use the sample URL as the URL for zip files (ugoira) or if the setting is set
+	bool downloadOriginals = m_settings->value("Save/downloadoriginals", true).toBool();
+	if (!m_sampleUrl.isEmpty() && (getExtension(m_url) == "zip" || !downloadOriginals))
 		m_url = m_sampleUrl.toString();
 
 	// Creation date
@@ -264,6 +266,13 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	{ m_createdAt = qDateTimeFromString(details["created_at"]); }
 	else if (details.contains("date"))
 	{ m_createdAt = QDateTime::fromString(details["date"], Qt::ISODate); }
+
+	// Setup extension rotator
+	bool animated = hasTag("gif") || hasTag("animated_gif") || hasTag("mp4") || hasTag("animated_png") || hasTag("webm") || hasTag("animated");
+	QStringList extensions = animated
+		? QStringList() << "webm" << "mp4" << "gif" << "jpg" << "png" << "jpeg" << "swf"
+		: QStringList() << "jpg" << "png" << "gif" << "jpeg" << "webm" << "swf" << "mp4";
+	m_extensionRotator = new ExtensionRotator(getExtension(m_url), extensions);
 
 	// Tech details
 	m_parent = parent;
@@ -340,7 +349,7 @@ void Image::parsePreview()
 	// If nothing has been received
 	if (m_imagePreview.isNull() && m_previewTry <= 3)
 	{
-		log(QString("<b>Warning:</b> %1").arg(QString("one of the thumbnails is empty (<a href=\"%1\">%1</a>). New try (%2/%3)...").arg(m_previewUrl.toString()).arg(m_previewTry).arg(3)));
+		log(QString("One of the thumbnails is empty (<a href=\"%1\">%1</a>). New try (%2/%3)...").arg(m_previewUrl.toString()).arg(m_previewTry).arg(3), Logger::Warning);
 
 		if (hasTag("flash"))
 		{ m_imagePreview.load(":/images/flash.png"); }
@@ -419,13 +428,12 @@ void Image::parseDetails()
 	if (m_parentSite->contains("Regex/Pools"))
 	{
 		m_pools.clear();
-		QRegExp rx(m_parentSite->value("Regex/Pools"));
-		rx.setMinimal(true);
-		int pos = 0;
-		while ((pos = rx.indexIn(source, pos)) != -1)
+		QRegularExpression rx(m_parentSite->value("Regex/Pools"));
+		auto matches = rx.globalMatch(source);
+		while (matches.hasNext())
 		{
-			pos += rx.matchedLength();
-			QString previous = rx.cap(1), id = rx.cap(2), name = rx.cap(3), next = rx.cap(4);
+			auto match = matches.next();
+			QString previous = match.captured(1), id = match.captured(2), name = match.captured(3), next = match.captured(4);
 			m_pools.append(Pool(id.toInt(), name, m_id, next.toInt(), previous.toInt()));
 		}
 	}
@@ -438,23 +446,39 @@ void Image::parseDetails()
 	{ rxtags = m_parentSite->value("Regex/Tags"); }
 	if (!rxtags.isEmpty())
 	{
-		QStringList order = m_parentSite->value("Regex/TagsOrder").split('|', QString::SkipEmptyParts);
-		QList<Tag> tgs = Tag::FromRegexp(rxtags, order, source);
+		QList<Tag> tgs = Tag::FromRegexp(rxtags, source);
 		if (!tgs.isEmpty())
-		{ m_tags = tgs; }
+		{
+			if (m_rating.isEmpty())
+			{
+				int ratingTagIndex = -1;
+				for (int it = 0; it < tgs.count(); ++it)
+				{
+					if (tgs[it].type().name() == "rating")
+					{
+						m_rating = tgs[it].text();
+						ratingTagIndex = it;
+						break;
+					}
+				}
+				if (ratingTagIndex != -1)
+				{ tgs.removeAt(ratingTagIndex); }
+			}
+
+			m_tags = tgs;
+		}
 	}
 
 	// Image url
 	if ((m_url.isEmpty() || m_parentSite->contains("Regex/ForceImageUrl")) && m_parentSite->contains("Regex/ImageUrl"))
 	{
-		QRegExp rx = QRegExp(m_parentSite->value("Regex/ImageUrl"));
-		rx.setMinimal(true);
-		int pos = 0;
+		QRegularExpression rx(m_parentSite->value("Regex/ImageUrl"));
 		QString before = m_url;
-		while ((pos = rx.indexIn(source, pos)) != -1)
+		auto matches = rx.globalMatch(source);
+		while (matches.hasNext())
 		{
-			pos += rx.matchedLength();
-			QString newurl = m_parentSite->fixUrl(rx.cap(1), QUrl(m_url)).toString();
+			auto match = matches.next();
+			QString newurl = m_parentSite->fixUrl(match.captured(1), QUrl(m_url)).toString();
 			m_url = newurl;
 			m_fileUrl = newurl;
 		}
@@ -468,13 +492,12 @@ void Image::parseDetails()
 	// Image date
 	if ((!m_createdAt.isValid() || m_parentSite->contains("Regex/ForceImageDate")) && m_parentSite->contains("Regex/ImageDate"))
 	{
-		QRegExp rx = QRegExp(m_parentSite->value("Regex/ImageDate"));
-		rx.setMinimal(true);
-		int pos = 0;
-		while ((pos = rx.indexIn(source, pos)) != -1)
+		QRegularExpression rx(m_parentSite->value("Regex/ImageDate"));
+		auto matches = rx.globalMatch(source);
+		while (matches.hasNext())
 		{
-			pos += rx.matchedLength();
-			m_createdAt = qDateTimeFromString(rx.cap(1));
+			auto match = matches.next();
+			m_createdAt = qDateTimeFromString(match.captured(1));
 		}
 	}
 
@@ -499,7 +522,8 @@ int toDate(QString text)
 QString Image::match(QString filter, bool invert) const
 {
 	QStringList mathematicaltypes = QStringList() << "id" << "width" << "height" << "score" << "mpixels" << "filesize" << "date";
-	QStringList types = QStringList() << "rating" << "source" << mathematicaltypes;
+	QStringList stringtypes = QStringList() << "filetype";
+	QStringList types = QStringList() << "rating" << "source" << stringtypes << mathematicaltypes;
 
 	// Invert the filter by prepending '-'
 	if (filter.startsWith('-'))
@@ -567,6 +591,18 @@ QString Image::match(QString filter, bool invert) const
 			if (cond && invert)
 			{ return tr("image's %1 match").arg(type); }
 		}
+		else if (stringtypes.contains(type))
+		{
+			QString input;
+			if (type == "filetype")	{ input = getExtension(m_fileUrl);	}
+
+			bool cond = input == filter;
+
+			if (!cond && !invert)
+			{ return tr("image's %1 does not match").arg(type); }
+			if (cond && invert)
+			{ return tr("image's %1 match").arg(type); }
+		}
 		else
 		{
 			if (type == "rating")
@@ -587,7 +623,7 @@ QString Image::match(QString filter, bool invert) const
 			}
 			else if (type == "source")
 			{
-				QRegExp rx = QRegExp(filter+"*", Qt::CaseInsensitive, QRegExp::Wildcard);
+				QRegExp rx(filter + "*", Qt::CaseInsensitive, QRegExp::Wildcard);
 				bool cond = rx.exactMatch(m_source);
 				if (!cond && !invert)
 				{ return tr("image's source does not starts with \"%1\"").arg(filter); }
@@ -602,10 +638,7 @@ QString Image::match(QString filter, bool invert) const
 		bool cond = false;
 		for (Tag tag : m_tags)
 		{
-			QRegExp reg;
-			reg.setCaseSensitivity(Qt::CaseInsensitive);
-			reg.setPatternSyntax(QRegExp::Wildcard);
-			reg.setPattern(filter.trimmed());
+			QRegExp reg(filter.trimmed(), Qt::CaseInsensitive, QRegExp::Wildcard);
 			if (reg.exactMatch(tag.text()))
 			{
 				cond = true;
@@ -682,13 +715,6 @@ void Image::loadImage(bool inMemory)
 	if (m_loadImage != nullptr)
 		m_loadImage->deleteLater();
 
-	// Setup extension rotator
-	bool animated = hasTag("gif") || hasTag("animated_gif") || hasTag("mp4") || hasTag("animated_png") || hasTag("webm") || hasTag("animated");
-	QStringList extensions = animated
-		? QStringList() << "webm" << "mp4" << "gif" << "jpg" << "png" << "jpeg" << "swf"
-		: QStringList() << "jpg" << "png" << "gif" << "jpeg" << "webm" << "swf" << "mp4";
-	m_extensionRotator = new ExtensionRotator(getExtension(m_url), extensions);
-
 	m_loadImage = m_parentSite->get(m_parentSite->fixUrl(m_url), m_parent, "image", this);
 	m_loadImage->setParent(this);
 	m_loadingImage = true;
@@ -725,6 +751,8 @@ void Image::finishedImageS(bool inMemory)
 		m_loadImage = nullptr;
 		if (m_fileSize > MAX_LOAD_FILESIZE)
 		{ emit finishedImage((QNetworkReply::NetworkError)500, ""); }
+		else
+		{ emit finishedImage(QNetworkReply::OperationCanceledError, ""); }
 		return;
 	}
 
@@ -913,7 +941,9 @@ Image::SaveResult Image::save(QString path, bool force, bool basic, bool addMd5,
 					log(QString("Loading and saving image in <a href=\"file:///%1\">%1</a>").arg(path));
 					QEventLoop loopImage;
 					FileDownloader fileDownloader(this);
-					connect(&fileDownloader, &FileDownloader::finished, &loopImage, &QEventLoop::quit);
+					connect(&fileDownloader, &FileDownloader::writeError, &loopImage, &QEventLoop::quit);
+					connect(&fileDownloader, &FileDownloader::networkError, &loopImage, &QEventLoop::quit);
+					connect(&fileDownloader, &FileDownloader::success, &loopImage, &QEventLoop::quit);
 					loadImage(false);
 					if (!fileDownloader.start(m_loadImage, path))
 					{
@@ -1125,13 +1155,16 @@ QSettings		*Image::settings() const	{ return m_settings;		}
 QMap<QString,QString> Image::details() const{ return m_details;			}
 QStringList		Image::search() const		{ return m_search;			}
 
-QUrl Image::getDisplayableUrl() const
+bool Image::shouldDisplaySample() const
 {
-	if (!m_sampleUrl.isEmpty() && !m_settings->value("Save/downloadoriginals", true).toBool())
-		return m_sampleUrl;
+	bool getOriginals = m_settings->value("Save/downloadoriginals", true).toBool();
+	bool viewSample = m_settings->value("Zoom/viewSamples", false).toBool();
+	bool displaySample = m_parentSite->getSource()->getApis().first()->value("DisplaySample") == "true";
 
-	return m_url;
+	return !m_sampleUrl.isEmpty() && (!getOriginals || displaySample || viewSample);
 }
+QUrl Image::getDisplayableUrl() const
+{ return shouldDisplaySample() ? m_sampleUrl : m_url; }
 
 QStringList Image::tagsString() const
 {

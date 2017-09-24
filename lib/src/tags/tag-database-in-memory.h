@@ -13,6 +13,7 @@ class TagDatabaseInMemory : public TagDatabase
 		bool save();
 		void setTags(const QList<Tag> &tags);
 		QMap<QString, TagType> getTagTypes(QStringList tags) const;
+		int count() const override;
 
 	private:
 		QString m_tagFile;

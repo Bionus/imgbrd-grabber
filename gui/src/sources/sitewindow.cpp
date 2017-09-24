@@ -23,7 +23,7 @@ SiteWindow::SiteWindow(Profile *profile, QMap<QString ,Site*> *sites, QWidget *p
 	m_sources = Source::getAllSources(nullptr);
 	for (Source *source : *m_sources)
 	{
-		ui->comboBox->addItem(QIcon(savePath("sites/" + source->getName() + "/icon.png")), source->getName());
+		ui->comboBox->addItem(QIcon(source->getPath() + "/icon.png"), source->getName());
 	}
 }
 
@@ -110,7 +110,7 @@ void SiteWindow::finish(Source *src)
 
 	// If the user wrote "https://" in the URL, we enable SSL for this site
 	if (ssl)
-	{ site->settings()->setValue("ssl", true); }
+	{ site->setSetting("ssl", true, false); }
 
 	// Save new sites
 	QFile f(src->getPath() + "/sites.txt");

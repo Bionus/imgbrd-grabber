@@ -14,7 +14,7 @@
    <bool>true</bool>
   </property>
   <property name="windowIcon">
-   <iconset resource="../../resources/resources.qrc">
+   <iconset resource="../resources/resources.qrc">
     <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
@@ -124,6 +124,11 @@
           <column>
            <property name="text">
             <string>Folder</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Post-filtering</string>
            </property>
           </column>
           <column>
@@ -930,7 +935,7 @@ QTextEdit {
   </widget>
   <action name="actionOptions">
    <property name="icon">
-    <iconset resource="../../resources/resources.qrc">
+    <iconset resource="../resources/resources.qrc">
      <normaloff>:/images/icons/settings.png</normaloff>:/images/icons/settings.png</iconset>
    </property>
    <property name="text">
@@ -942,7 +947,7 @@ QTextEdit {
   </action>
   <action name="actionFolder">
    <property name="icon">
-    <iconset resource="../../resources/resources.qrc">
+    <iconset resource="../resources/resources.qrc">
      <normaloff>:/images/icons/folder-images.png</normaloff>:/images/icons/folder-images.png</iconset>
    </property>
    <property name="text">
@@ -951,7 +956,7 @@ QTextEdit {
   </action>
   <action name="actionQuit">
    <property name="icon">
-    <iconset resource="../../resources/resources.qrc">
+    <iconset resource="../resources/resources.qrc">
      <normaloff>:/images/icons/exit.png</normaloff>:/images/icons/exit.png</iconset>
    </property>
    <property name="text">
@@ -960,7 +965,7 @@ QTextEdit {
   </action>
   <action name="actionAboutGrabber">
    <property name="icon">
-    <iconset resource="../../resources/resources.qrc">
+    <iconset resource="../resources/resources.qrc">
      <normaloff>:/images/icons/about.png</normaloff>:/images/icons/about.png</iconset>
    </property>
    <property name="text">
@@ -969,7 +974,7 @@ QTextEdit {
   </action>
   <action name="actionAboutQt">
    <property name="icon">
-    <iconset resource="../../resources/resources.qrc">
+    <iconset resource="../resources/resources.qrc">
      <normaloff>:/images/icons/qt.png</normaloff>:/images/icons/qt.png</iconset>
    </property>
    <property name="text">
@@ -978,7 +983,7 @@ QTextEdit {
   </action>
   <action name="actionAddtab">
    <property name="icon">
-    <iconset resource="../../resources/resources.qrc">
+    <iconset resource="../resources/resources.qrc">
      <normaloff>:/images/icons/tab-plus.png</normaloff>:/images/icons/tab-plus.png</iconset>
    </property>
    <property name="text">
@@ -987,7 +992,7 @@ QTextEdit {
   </action>
   <action name="actionClosetab">
    <property name="icon">
-    <iconset resource="../../resources/resources.qrc">
+    <iconset resource="../resources/resources.qrc">
      <normaloff>:/images/icons/tab-minus.png</normaloff>:/images/icons/tab-minus.png</iconset>
    </property>
    <property name="text">
@@ -1042,7 +1047,7 @@ QTextEdit {
   </action>
   <action name="actionAddpooltab">
    <property name="icon">
-    <iconset resource="../../resources/resources.qrc">
+    <iconset resource="../resources/resources.qrc">
      <normaloff>:/images/icons/tab-poolplus.png</normaloff>:/images/icons/tab-poolplus.png</iconset>
    </property>
    <property name="text">
@@ -1056,7 +1061,7 @@ QTextEdit {
   </action>
   <action name="actionSettingsFolder">
    <property name="icon">
-    <iconset resource="../../resources/resources.qrc">
+    <iconset resource="../resources/resources.qrc">
      <normaloff>:/images/icons/folder-document.png</normaloff>:/images/icons/folder-document.png</iconset>
    </property>
    <property name="text">
@@ -1065,7 +1070,7 @@ QTextEdit {
   </action>
   <action name="actionAboutWebsite">
    <property name="icon">
-    <iconset resource="../../resources/resources.qrc">
+    <iconset resource="../resources/resources.qrc">
      <normaloff>:/images/icons/browser.png</normaloff>:/images/icons/browser.png</iconset>
    </property>
    <property name="text">
@@ -1074,7 +1079,7 @@ QTextEdit {
   </action>
   <action name="actionAboutReportBug">
    <property name="icon">
-    <iconset resource="../../resources/resources.qrc">
+    <iconset resource="../resources/resources.qrc">
      <normaloff>:/images/icons/bug.png</normaloff>:/images/icons/bug.png</iconset>
    </property>
    <property name="text">
@@ -1088,7 +1093,7 @@ QTextEdit {
   </action>
   <action name="actionAboutGithub">
    <property name="icon">
-    <iconset resource="../../resources/resources.qrc">
+    <iconset resource="../resources/resources.qrc">
      <normaloff>:/images/icons/github.png</normaloff>:/images/icons/github.png</iconset>
    </property>
    <property name="text">
@@ -1100,7 +1105,7 @@ QTextEdit {
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="../../resources/resources.qrc">
+    <iconset resource="../resources/resources.qrc">
      <normaloff>:/images/icons/tab-arrow.png</normaloff>:/images/icons/tab-arrow.png</iconset>
    </property>
    <property name="text">
@@ -1143,7 +1148,7 @@ QTextEdit {
   <tabstop>buttonSaveSettings</tabstop>
  </tabstops>
  <resources>
-  <include location="../../resources/resources.qrc"/>
+  <include location="../resources/resources.qrc"/>
  </resources>
  <connections>
   <connection>

@@ -48,32 +48,32 @@ SearchWindow::SearchWindow(QString tags, Profile *profile, QWidget *parent)
 
 	if (tags.contains("order:"))
 	{
-		QRegExp reg("order:([^ ]+)");
-		reg.indexIn(tags);
-		ui->comboOrder->setCurrentIndex(orders.indexOf(reg.cap(1))+1);
-		tags.remove(reg.cap(0));
+		QRegularExpression reg("order:([^ ]+)");
+		auto match = reg.match(tags);
+		ui->comboOrder->setCurrentIndex(orders.indexOf(match.captured(1)) + 1);
+		tags.remove(match.captured(0));
 	}
 	if (tags.contains("rating:"))
 	{
-		QRegExp reg("-?rating:[^ ]+");
-		reg.indexIn(tags);
-		ui->comboRating->setCurrentIndex(ratings.indexOf(reg.cap(0))+1);
-		tags.remove(reg.cap(0));
+		QRegularExpression reg("-?rating:[^ ]+");
+		auto match = reg.match(tags);
+		ui->comboRating->setCurrentIndex(ratings.indexOf(match.captured(0)) + 1);
+		tags.remove(match.captured(0));
 	}
 	if (tags.contains("status:"))
 	{
-		QRegExp reg("status:([^ ]+)");
-		reg.indexIn(tags);
-		ui->comboStatus->setCurrentIndex(status.indexOf(reg.cap(1))+1);
-		tags.remove(reg.cap(0));
+		QRegularExpression reg("status:([^ ]+)");
+		auto match = reg.match(tags);
+		ui->comboStatus->setCurrentIndex(status.indexOf(match.captured(1)) + 1);
+		tags.remove(match.captured(0));
 	}
 	if (tags.contains("date:"))
 	{
-		QRegExp reg("date:([^ ]+)");
-		reg.indexIn(tags);
-		m_calendar->setSelectedDate(QDate::fromString(reg.cap(1), "MM/dd/yyyy"));
-		ui->lineDate->setText(reg.cap(1));
-		tags.remove(reg.cap(0));
+		QRegularExpression reg("date:([^ ]+)");
+		auto match = reg.match(tags);
+		m_calendar->setSelectedDate(QDate::fromString(match.captured(1), "MM/dd/yyyy"));
+		ui->lineDate->setText(match.captured(1));
+		tags.remove(match.captured(0));
 	}
 
 	m_tags->setText(tags);

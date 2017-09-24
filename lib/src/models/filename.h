@@ -36,7 +36,7 @@ class Filename
 		 * @return			Whether the filename is valid or not.
 		 * @todo			Return a constant instead of a QString.
 		 */
-		bool isValid(QString *error = nullptr) const;
+		bool isValid(Profile *profile = nullptr, QString *error = nullptr) const;
 
 		bool needExactTags(Site *site, QString api = "") const;
 		bool needExactTags(bool forceImageUrl = false, bool needDate = false) const;
@@ -51,6 +51,8 @@ class Filename
 		QList<QPair<QString,QString>> getReplace(QString setting, QMap<QString,QStringList> details, QSettings *settings) const;
 		bool returnError(QString msg, QString *error) const;
 		QString fixSeparator(QString separator) const;
+		QString generateJavaScriptVariables(QSettings *settings, QMap<QString, QPair<QString, QString>> replaces) const;
+		bool matchConditionalFilename(QString cond, QSettings *settings, QMap<QString, QPair<QString, QString>> replaces, QMap<QString, QStringList> details) const;
 
 	private:
 		QString m_format;

@@ -11,11 +11,12 @@
 #include <functional>
 #include "tags/tag.h"
 #include "tags/tag-database-in-memory.h"
+#include "source.h"
+#include "mixed-settings.h"
 
 
 class Page;
 class Image;
-class Source;
 class Api;
 class Profile;
 class CustomNetworkAccessManager;
@@ -58,7 +59,8 @@ class Site : public QObject
 		QString url();
 		QList<QNetworkCookie> cookies() const;
 		QVariant setting(QString key, QVariant def = QVariant());
-		QSettings *settings();
+		void setSetting(QString key, QVariant value, QVariant def);
+		void syncSettings();
 		TagDatabase *tagDatabase() const;
 		QNetworkRequest makeRequest(QUrl url, Page *page = nullptr, QString referer = "", Image *img = nullptr);
 		QNetworkReply *get(QUrl url, Page *page = nullptr, QString referer = "", Image *img = nullptr);
@@ -113,7 +115,7 @@ class Site : public QObject
 		QString m_url;
 		Source *m_source;
 		QList<QNetworkCookie> m_cookies;
-		QSettings *m_settings;
+		MixedSettings *m_settings;
 		CustomNetworkAccessManager *m_manager;
 		QNetworkCookieJar *m_cookieJar;
 		QNetworkReply *m_updateReply, *m_tagsReply;

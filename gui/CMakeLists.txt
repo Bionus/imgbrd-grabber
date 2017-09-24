@@ -63,8 +63,8 @@ file(GLOB SOURCES
 	"src/utils/md5-fix/*.cpp"
 	"src/utils/tag-loader/*.cpp"
 	"src/viewer/*.cpp"
-	"../resources/*.rc"
-	"../resources/*.qrc")
+	"resources/*.rc"
+	"resources/*.qrc")
 file(GLOB_RECURSE FORMS "src/*.ui")
 include_directories("src/" "../lib/src/" "..")
 

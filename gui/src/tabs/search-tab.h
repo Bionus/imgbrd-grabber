@@ -40,7 +40,7 @@ class searchTab : public QWidget
 		int imagesPerPage();
 		int columns();
 		QString postFilter();
-		virtual void setTags(QString) = 0;
+		virtual void setTags(QString tags, bool preload = true) = 0;
 		virtual bool validateImage(QSharedPointer<Image> img, QString &error);
 		QStringList selectedImages();
 		void setSources(QList<bool> sources);
@@ -62,7 +62,6 @@ class searchTab : public QWidget
 		void loadImageThumbnails(Page *page, const QList<QSharedPointer<Image>> &imgs);
 		QString makeThumbnailTooltip(QSharedPointer<Image> img) const;
 		QBouton *createImageThumbnail(int position, QSharedPointer<Image> img);
-		int getActualImagesPerPage(Page *page, bool merge);
 		FixedSizeGridLayout *createImagesLayout(QSettings *settings);
 		void thumbnailContextMenu(int position, QSharedPointer<Image> img);
 
@@ -97,6 +96,7 @@ class searchTab : public QWidget
 		void historyNext();
 		// Results
 		virtual void load() = 0;
+		virtual void updateTitle() = 0;
 		void loadTags(QStringList tags);
 		void endlessLoad();
 		void loadPage();
@@ -148,6 +148,7 @@ class searchTab : public QWidget
 		QString				m_wiki;
 
 		QStringList m_completion;
+		QMap<QObject*, QSharedPointer<Image>> m_thumbnailsLoading;
 		QList<QSharedPointer<Image>> m_images;
 		QMap<QString, QList<Page*>> m_pages;
 		QMap<QString, Page*> m_lastPages;

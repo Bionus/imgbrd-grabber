@@ -5,18 +5,18 @@
 		<ImageReplaces>/preview/->/&amp;([^s]).sankakucomplex->\1s.sankakucomplex</ImageReplaces>
 		<Login>login={pseudo}&amp;password_hash={password}&amp;appkey={appkey}&amp;</Login>
 		<Xml>
-			<Tags>/post/index.xml?{login}limit={limit}&amp;page={page}&amp;tags={tags}</Tags>
-			<Pools>/post/index.xml?{login}limit={limit}&amp;page={page}&amp;tags=pool:{pool} {tags}</Pools>
+			<Tags>/post/index.xml?{login}page={page}&amp;tags={tags}</Tags>
+			<Pools>/post/index.xml?{login}page={page}&amp;tags=pool:{pool} {tags}</Pools>
 			<NeedAuth>true</NeedAuth>
 		</Xml>
 		<Json>
-			<Tags>/post/index.json?{login}limit={limit}&amp;page={page}&amp;tags={tags}</Tags>
-			<Pools>/post/index.json?{login}limit={limit}&amp;page={page}&amp;tags=pool:{pool} {tags}</Pools>
+			<Tags>/post/index.json?{login}page={page}&amp;tags={tags}</Tags>
+			<Pools>/post/index.json?{login}page={page}&amp;tags=pool:{pool} {tags}</Pools>
 			<NeedAuth>true</NeedAuth>
 		</Json>
 		<Html>
-			<Tags>/post/index?{login}limit={limit}&amp;tags={tags}&amp;{pagepart}{altpage}</Tags>
-			<Pools>/post/index?{login}limit={limit}&amp;tags=pool:{pool} {tags}&amp;{pagepart}{altpage}</Pools>
+			<Tags>/post/index?{login}tags={tags}&amp;{pagepart}{altpage}</Tags>
+			<Pools>/post/index?{login}tags=pool:{pool} {tags}&amp;{pagepart}{altpage}</Pools>
 			<Post>/post/show/{id}</Post>
 			<Limit>20</Limit>
 			<MaxLimit>200</MaxLimit>
@@ -28,14 +28,13 @@
 		</Html>
 	</Urls>
 	<Regex>
-		<Tags>&lt;li class=&quot;?[^&quot;&gt;]*tag-type-([^&quot;&gt;]+)(?:|&quot;[^&gt;]*)&gt;.*&lt;a href=&quot;[^&quot;]+&quot;[^&gt;]*&gt;([^&lt;\?]+)&lt;\/a&gt;.*&lt;span class=&quot;?post-count&quot;?&gt;(\d+)&lt;\/span&gt;.*&lt;\/li&gt;</Tags>
-		<Image>&lt;span[^&gt;]* id=&quot;?p(\d+)&quot;?&gt;&lt;a[^&gt;]*&gt;&lt;img[^&gt;]* src=&quot;([^&quot;]+\/preview\/\w{2}\/\w{2}\/([^.]+)\.[^&quot;]+)&quot; title=&quot;([^&quot;]+)&quot;[^&gt;]+&gt;&lt;\/a&gt;&lt;\/span&gt;</Image>
-		<Order>id|preview_url|md5|tags</Order>
+		<Tags><![CDATA[<li class="?[^">]*tag-type-(?<type>[^">]+)(?:|"[^>]*)>.*?<a href="[^"]+"[^>]*>(?<tag>[^<\?]+)<\/a>.*?<span class="?post-count"?>(?<count>\d+)<\/span>.*?<\/li>]]></Tags>
+		<Image><![CDATA[<span[^>]* id="?p(?<id>\d+)"?><a[^>]*><img[^>]* src="(?<preview_url>[^"]+\/preview\/\w{2}\/\w{2}\/(?<md5>[^.]+)\.[^"]+)" title="(?<tags>[^"]+)"[^>]+><\/a><\/span>]]></Image>
 		<TagTypes>general,idol,unknown,copyright,character,photoset,unknown,unknown,medium,meta</TagTypes>
-		<LastPage>&lt;link href=&quot;[^&quot;]*\?.*page=(\d+)[^&quot;]*&quot; rel=&quot;last&quot; title=&quot;Last Page&quot;&gt;</LastPage>
+		<LastPage>&lt;link href=&quot;[^&quot;]*\?.*?page=(\d+)[^&quot;]*&quot; rel=&quot;last&quot; title=&quot;Last Page&quot;&gt;</LastPage>
 		<Count>class=&quot;?tag-type-none&quot;? title=&quot;Post Count: ([^&quot;]+)&quot;</Count>
 		<Pools>&lt;div class=&quot;status-notice&quot; id=&quot;pool\d+&quot;&gt;[^&lt;]*Pool:[^&lt;]*(?:&lt;a href=&quot;/post/show/(\d+)&quot; &gt;&amp;lt;&amp;lt;&lt;/a&gt;)?[^&lt;]*&lt;a href=&quot;/pool/show/(\d+)&quot; &gt;([^&lt;]+)&lt;/a&gt;[^&lt;]*(?:&lt;a href=&quot;/post/show/(\d+)&quot; &gt;&amp;gt;&amp;gt;&lt;/a&gt;)?[^&lt;]*&lt;/div&gt;</Pools>
-		<Wiki>&lt;div id=&quot;sidebar-wiki&quot;(?:[^&gt;]+)&gt;(.+)&lt;/div&gt;</Wiki>
+		<Wiki>&lt;div id=&quot;sidebar-wiki&quot;(?:[^&gt;]+)&gt;(.+?)&lt;/div&gt;</Wiki>
 		<ImageDate>&lt;a href=&quot;\/\?tags=date[^&quot;]+&quot; title=&quot;([^&quot;]+)&quot;&gt;</ImageDate>
 		<ImageUrl>&lt;li&gt;Original: &lt;a href=&quot;([^&quot;]+)&quot;</ImageUrl>
 	</Regex>

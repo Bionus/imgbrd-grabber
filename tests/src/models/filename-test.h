@@ -49,6 +49,7 @@ class FilenameTest : public TestSuite
 		void testPathOptionTagNamespaceComplex();
 		void testPathOptionTagExcludeNamespace();
 		void testPathOptionTagSeparator();
+		void testPathOptionTagSeparatorEscape();
 		void testPathOptionCount();
 		void testPathOptionNumSingle();
 		void testPathOptionNumSingleLength();
@@ -70,6 +71,7 @@ class FilenameTest : public TestSuite
 		void testConditionalsTag();
 		void testConditionalsToken();
 		void testConditionalsCustom();
+		void testConditionalsJavascript();
 		void testCustoms();
 		void testReplaceBlanks();
 		void testCommand();

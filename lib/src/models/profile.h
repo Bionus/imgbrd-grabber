@@ -68,6 +68,11 @@ class Profile : public QObject
 		QStringList &getCustomAutoComplete();
 		QStringList &getBlacklist();
 
+	private:
+		void syncFavorites();
+		void syncKeptForLater();
+		void syncIgnored();
+
 	signals:
 		void favoritesChanged();
 		void keptForLaterChanged();

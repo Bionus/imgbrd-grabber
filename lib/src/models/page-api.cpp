@@ -1,5 +1,6 @@
 #include "page-api.h"
 #include <QDomDocument>
+#include <QRegularExpression>
 #include <math.h>
 #include "page.h"
 #include "site.h"
@@ -137,11 +138,11 @@ void PageApi::updateUrls()
 	}
 
 	// Check if we are looking for a pool
-	QRegExp poolRx("pool:(\\d+)");
+	QRegularExpression poolRx("pool:(\\d+)");
+	auto match = poolRx.match(t);
 	QString url;
 	int pl = -1;
-	int pos = -1;
-	if ((pos = poolRx.indexIn(t)) != -1)
+	if (match.hasMatch())
 	{
 		for (int i = 1; i <= m_site->getApis().count() + 1; i++)
 		{
@@ -149,11 +150,11 @@ void PageApi::updateUrls()
 			if (api->contains("Urls/Pools"))
 			{
 				url = api->value("Urls/Pools");
-				url.replace("{pool}", poolRx.cap(1));
-				pl = poolRx.cap(1).toInt();
+				url.replace("{pool}", match.captured(1));
+				pl = match.captured(1).toInt();
 				m_currentSource = i;
 				m_api = api;
-				t = t.remove(pos, poolRx.cap(0).length()).trimmed();
+				t = t.remove(match.capturedStart(0), match.captured(0).length()).trimmed();
 				break;
 			}
 		}
@@ -161,7 +162,7 @@ void PageApi::updateUrls()
 		{
 			log(QString("[%1] No source of this site is compatible with pools.").arg(m_site->url()), Logger::Warning);
 			m_errors.append(tr("No source of this site is compatible with pools."));
-			m_search.removeAll("pool:"+poolRx.cap(1));
+			m_search.removeAll("pool:"+match.captured(1));
 			t.remove(m_pool);
 			t = t.trimmed();
 		}
@@ -178,11 +179,12 @@ void PageApi::updateUrls()
 	m_originalUrl = QString(url);
 	m_url = parseUrl(url, pid, p, t, pseudo, password).toString();
 
-	if ((pl >= 0 || poolRx.indexIn(t) != -1) && m_api->contains("Urls/Html/Pools"))
+	auto plMatch = poolRx.match(t);
+	if ((pl > 0 || plMatch.hasMatch()) && m_api->contains("Urls/Html/Pools"))
 	{
 		url = m_site->value("Urls/Html/Pools");
 		url = parseUrl(url, pid, p, t, pseudo, password).toString();
-		url.replace("{pool}", poolRx.cap(1));
+		url.replace("{pool}", pl > 0 ? QString::number(pl) : plMatch.captured(1));
 		m_urlRegex = QUrl(url);
 	}
 	else if (m_api->contains("Urls/Html/Tags"))
@@ -259,14 +261,20 @@ QString _parseSetImageUrl(Site *site, Api* api, QString settingUrl, QString sett
 		if (ret.isEmpty() && !def.isEmpty())
 			ret = def;
 
-		QStringList replaces = api->value(settingReplaces).split('&');
-		for (QString rep : replaces)
+		QStringList reps = api->value(settingReplaces).split('&');
+		for (QString rep : reps)
 		{
-			QRegExp rgx(rep.left(rep.indexOf("->")));
+			QRegularExpression rgx(rep.left(rep.indexOf("->")));
 			ret.replace(rgx, rep.right(rep.size() - rep.indexOf("->") - 2));
 		}
 	}
-	return site->fixUrl(ret).toString();
+	QString fixed = site->fixUrl(ret).toString();
+
+	// Clean fake webp files
+	if (fixed.endsWith(".jpg.webp"))
+		fixed = fixed.left(fixed.length() - 5);
+
+	return fixed;
 }
 
 
@@ -330,7 +338,7 @@ void PageApi::parse()
 	if (!redir.isEmpty())
 	{
 		QUrl newUrl = m_site->fixUrl(redir.toString(), m_url);
-		log(QString("[%1] Redirecting page <a href=\"%2\">%2</a> to <a href=\"%3\">%3</a>").arg(m_site->url()).arg(m_url.toString().toHtmlEscaped()).arg(newUrl.toString().toHtmlEscaped()), Logger::Debug);
+		log(QString("[%1] Redirecting page <a href=\"%2\">%2</a> to <a href=\"%3\">%3</a>").arg(m_site->url()).arg(m_url.toString().toHtmlEscaped()).arg(newUrl.toString().toHtmlEscaped()), Logger::Info);
 		m_url = newUrl;
 		load();
 		return;
@@ -349,7 +357,7 @@ void PageApi::parse()
 	if (m_source.isEmpty())
 	{
 		if (m_reply->error() != QNetworkReply::OperationCanceledError)
-		{ log(QString("[%1] Loading error: %1").arg(m_site->url()).arg(m_reply->errorString())); }
+		{ log(QString("[%1] Loading error: %2 (%3)").arg(m_site->url()).arg(m_reply->errorString()).arg(m_reply->error())); }
 		emit finishedLoading(this, LoadResult::Error);
 		return;
 	}
@@ -491,9 +499,10 @@ void PageApi::parse()
 
 				if (!d.contains("id"))
 				{
-					QRegExp rx("/(\\d+)");
-					rx.indexIn(d["page_url"]);
-					d.insert("id", rx.cap(1));
+					QRegularExpression rx("/(\\d+)");
+					auto match = rx.match(d["page_url"]);
+					if (match.hasMatch())
+					{ d.insert("id", match.captured(1)); }
 				}
 
 				this->parseImage(d, id + first);
@@ -507,44 +516,52 @@ void PageApi::parse()
 		// Getting tags
 		if (m_site->contains("Regex/Tags"))
 		{
-			QRegExp rxtags(m_site->value("Regex/Tags"));
-			rxtags.setMinimal(true);
+			QRegularExpression rxtags(m_site->value("Regex/Tags"), QRegularExpression::DotMatchesEverythingOption);
 			QStringList tags = QStringList();
-			int p = 0;
-			while (((p = rxtags.indexIn(m_source, p)) != -1))
+			auto matches = rxtags.globalMatch(m_source);
+			while (matches.hasNext())
 			{
-				if (!tags.contains(rxtags.cap(2)))
+				auto match = matches.next();
+				if (!tags.contains(match.captured(2)))
 				{
-					m_tags.append(Tag(rxtags.cap(2), rxtags.cap(1), rxtags.cap(3).toInt()));
-					tags.append(rxtags.cap(2));
+					m_tags.append(Tag(match.captured(2), match.captured(1), match.captured(3).toInt()));
+					tags.append(match.captured(2));
 				}
-				p += rxtags.matchedLength();
 			}
 		}
 
 		// Getting images
-		QRegExp rx(m_site->value("Regex/Image"));
-		QStringList order = m_site->value("Regex/Order").split('|');
-		rx.setMinimal(true);
-		int pos = 0, id = 0;
-		while ((pos = rx.indexIn(m_source, pos)) != -1)
+		QRegularExpression rx(m_site->value("Regex/Image"), QRegularExpression::DotMatchesEverythingOption);
+		auto matches = rx.globalMatch(m_source);
+		int id = 0;
+		while (matches.hasNext())
 		{
-			pos += rx.matchedLength();
-			QMap<QString,QString> d;
-			for (int i = 0; i < order.size(); i++)
+			auto match = matches.next();
+			QMap<QString, QString> d;
+			for (QString group : rx.namedCaptureGroups())
 			{
-				QString ord = order.at(i);
-				if (!d.contains(ord) || d[ord].isEmpty())
-				{ d[ord] = rx.cap(i + 1); }
+				if (group.isEmpty())
+					continue;
+
+				QString val = match.captured(group);
+				if (!val.isEmpty())
+				{
+					int underscorePos = group.lastIndexOf('_');
+					bool ok;
+					group.mid(underscorePos + 1).toInt(&ok);
+					if (underscorePos != -1 && ok)
+					{ group = group.left(underscorePos); }
+					d[group] = val;
+				}
 			}
 
 			// JSON elements
-			if (order.contains("json") && !d["json"].isEmpty())
+			if (d.contains("json") && !d["json"].isEmpty())
 			{
 				QVariant src = Json::parse(d["json"]);
 				if (!src.isNull())
 				{
-					QMap<QString,QVariant> map = src.toMap();
+					QMap<QString, QVariant> map = src.toMap();
 					for (int i = 0; i < map.size(); i++)
 					{ d[map.keys().at(i)] = map.values().at(i).toString(); }
 				}
@@ -607,6 +624,15 @@ void PageApi::parse()
 					QStringList from, to;
 					from << "now" << "w" << "md5" << "h" << "no" << "com" << "time" << "tim" << "name" << "fsize";
 					to << "created_at" << "width" << "md5" << "height" << "id" << "comment" << "created_at" << "tim" << "author" << "file_size";
+					for (int i = 0; i < from.count(); i++)
+					{ d[to[i]] = sc.value(from[i]).toString().trimmed(); }
+				}
+				// Anime-pictures format
+				else if (sc.contains("download_count"))
+				{
+					QStringList from, to;
+					from << "pubtime" << "small_preview" << "width" << "md5" << "height" << "id" << "score_number" << "big_preview" << "ext" << "size";
+					to << "created_at" << "preview_url" << "width" << "md5" << "height" << "id" << "score" << "sample_url" << "ext" << "filesize";
 					for (int i = 0; i < from.count(); i++)
 					{ d[to[i]] = sc.value(from[i]).toString().trimmed(); }
 				}
@@ -734,6 +760,8 @@ void PageApi::parse()
 	while (m_images.size() > lastImage)
 	{ m_images.removeLast(); }
 
+	log(QString("[%1] Parsed page <a href=\"%2\">%2</a>: %3 images, %4 total (%5), %6 pages (%7)").arg(m_site->url()).arg(m_reply->url().toString().toHtmlEscaped()).arg(m_images.count()).arg(imagesCount(false)).arg(imagesCount(true)).arg(pagesCount(false)).arg(pagesCount(true)), Logger::Info);
+
 	m_reply->deleteLater();
 	m_reply = nullptr;
 
@@ -754,7 +782,7 @@ void PageApi::parseTags()
 	if (!redir.isEmpty())
 	{
 		QUrl newUrl = m_site->fixUrl(redir.toString(), m_urlRegex);
-		log(QString("[%1] Redirecting tags page <a href=\"%2\">%2</a> to <a href=\"%3\">%3</a>").arg(m_site->url()).arg(m_urlRegex.toString().toHtmlEscaped()).arg(newUrl.toString().toHtmlEscaped()), Logger::Debug);
+		log(QString("[%1] Redirecting tags page <a href=\"%2\">%2</a> to <a href=\"%3\">%3</a>").arg(m_site->url()).arg(m_urlRegex.toString().toHtmlEscaped()).arg(newUrl.toString().toHtmlEscaped()), Logger::Info);
 		m_urlRegex = newUrl;
 		loadTags();
 		return;
@@ -764,8 +792,7 @@ void PageApi::parseTags()
 
 	if (m_site->contains("Regex/Tags"))
 	{
-		QStringList order = m_site->value("Regex/TagsOrder").split('|', QString::SkipEmptyParts);
-		QList<Tag> tgs = Tag::FromRegexp(m_site->value("Regex/Tags"), order, source);
+		QList<Tag> tgs = Tag::FromRegexp(m_site->value("Regex/Tags"), source);
 		if (!tgs.isEmpty())
 		{ m_tags = tgs; }
 	}
@@ -776,12 +803,12 @@ void PageApi::parseTags()
 	m_wiki.clear();
 	if (m_site->contains("Regex/Wiki"))
 	{
-		QRegExp rxwiki(m_site->value("Regex/Wiki"));
-		rxwiki.setMinimal(true);
-		if (rxwiki.indexIn(source) != -1)
+		QRegularExpression rxwiki(m_site->value("Regex/Wiki"));
+		auto match = rxwiki.match(source);
+		if (match.hasMatch())
 		{
-			m_wiki = rxwiki.cap(1);
-			m_wiki.remove("/wiki/show?title=").remove(QRegExp("<p><a href=\"([^\"]+)\">Full entry &raquo;</a></p>")).replace("<h6>", "<span class=\"title\">").replace("</h6>", "</span>");
+			m_wiki = match.captured(1);
+			m_wiki.remove("/wiki/show?title=").remove(QRegularExpression("<p><a href=\"([^\"]+)\">Full entry &raquo;</a></p>")).replace("<h6>", "<span class=\"title\">").replace("</h6>", "</span>");
 		}
 	}
 
@@ -796,15 +823,17 @@ void PageApi::parseNavigation(const QString &source)
 	// Navigation
 	if (m_site->contains("Regex/NextPage") && m_urlNextPage.isEmpty())
 	{
-		QRegExp rx(m_site->value("Regex/NextPage"));
-		if (rx.indexIn(source, 0) >= 0)
-		{ m_urlNextPage = QUrl(rx.cap(1)); }
+		QRegularExpression rx(m_site->value("Regex/NextPage"));
+		auto match = rx.match(source);
+		if (match.hasMatch())
+		{ m_urlNextPage = QUrl(match.captured(1)); }
 	}
 	if (m_site->contains("Regex/PrevPage") && m_urlPrevPage.isEmpty())
 	{
-		QRegExp rx(m_site->value("Regex/PrevPage"));
-		if (rx.indexIn(source, 0) >= 0)
-		{ m_urlPrevPage = QUrl(rx.cap(1)); }
+		QRegularExpression rx(m_site->value("Regex/PrevPage"));
+		auto match = rx.match(source);
+		if (match.hasMatch())
+		{ m_urlPrevPage = QUrl(match.captured(1)); }
 	}
 
 	// Last page
@@ -812,9 +841,9 @@ void PageApi::parseNavigation(const QString &source)
 	{ setPageCount(m_site->value("LastPage").toInt(), true); }
 	if (m_site->contains("Regex/LastPage") && m_pagesCount < 1)
 	{
-		QRegExp rxlast(m_site->value("Regex/LastPage"));
-		rxlast.indexIn(source, 0);
-		int cnt = rxlast.cap(1).remove(",").toInt();
+		QRegularExpression rxlast(m_site->value("Regex/LastPage"));
+		auto match = rxlast.match(source);
+		int cnt = match.hasMatch() ? match.captured(1).remove(",").toInt() : 0;
 		if (cnt > 0)
 		{
 			int pagesCount = cnt;
@@ -830,9 +859,9 @@ void PageApi::parseNavigation(const QString &source)
 	// Count images
 	if (m_site->contains("Regex/Count") && m_imagesCount < 1)
 	{
-		QRegExp rxlast(m_site->value("Regex/Count"));
-		rxlast.indexIn(source, 0);
-		int cnt = rxlast.cap(1).remove(",").toInt();
+		QRegularExpression rxlast(m_site->value("Regex/Count"));
+		auto match = rxlast.match(source);
+		int cnt = match.hasMatch() ? match.captured(1).remove(",").toInt() : 0;
 		if (cnt > 0)
 		{ setImageCount(cnt, true); }
 	}

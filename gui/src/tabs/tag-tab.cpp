@@ -81,19 +81,19 @@ void tagTab::closeEvent(QCloseEvent *e)
 
 void tagTab::load()
 {
-	// Get the search values
+	updateTitle();
+
 	QString search = m_search->toPlainText().trimmed();
+
+	// Search an image directly by typing its MD5
 	if (m_settings->value("enable_md5_fast_search", true).toBool())
 	{
-		QRegExp md5Matcher("^[0-9A-F]{32}$", Qt::CaseInsensitive);
-		if (md5Matcher.exactMatch(search))
+		static QRegularExpression md5Matcher("^[0-9A-F]{32}$", QRegularExpression::CaseInsensitiveOption);
+		if (md5Matcher.match(search).hasMatch())
 			search.prepend("md5:");
 	}
+
 	QStringList tags = search.split(" ", QString::SkipEmptyParts);
-
-	setWindowTitle(search.isEmpty() ? tr("Search") : QString(search).replace("&", "&&"));
-	emit titleChanged(this);
-
 	loadTags(tags);
 }
 
@@ -114,7 +114,7 @@ void tagTab::write(QJsonObject &json) const
 	json["sites"] = sites;
 }
 
-bool tagTab::read(const QJsonObject &json)
+bool tagTab::read(const QJsonObject &json, bool preload)
 {
 	ui->spinPage->setValue(json["page"].toInt());
 	ui->spinImagesPerPage->setValue(json["perpage"].toInt());
@@ -143,17 +143,21 @@ bool tagTab::read(const QJsonObject &json)
 	QJsonArray jsonTags = json["tags"].toArray();
 	for (auto tag : jsonTags)
 		tags.append(tag.toString());
-	setTags(tags.join(' '));
+	setTags(tags.join(' '), preload);
 
 	return true;
 }
 
 
-void tagTab::setTags(QString tags)
+void tagTab::setTags(QString tags, bool preload)
 {
 	activateWindow();
 	m_search->setText(tags);
-	load();
+
+	if (preload)
+		load();
+	else
+		updateTitle();
 }
 
 void tagTab::getPage()
@@ -179,7 +183,8 @@ void tagTab::getPage()
 				continue;
 
 			QString search = page->search().join(' ');
-			emit batchAddGroup(DownloadQueryGroup(m_settings, search, ui->spinPage->value(), perpage, perpage, m_sites->value(actuals.at(i))));
+			QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
+			emit batchAddGroup(DownloadQueryGroup(m_settings, search, ui->spinPage->value(), perpage, perpage, postFiltering, m_sites->value(actuals.at(i))));
 		}
 	}
 }
@@ -207,7 +212,8 @@ void tagTab::getAll()
 			continue;
 
 		QString search = page->search().join(' ');
-		emit batchAddGroup(DownloadQueryGroup(m_settings, search, 1, perPage, total, m_sites->value(actual)));
+		QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
+		emit batchAddGroup(DownloadQueryGroup(m_settings, search, 1, perPage, total, postFiltering, m_sites->value(actual)));
 	}
 }
 
@@ -230,4 +236,11 @@ void tagTab::changeEvent(QEvent *event)
 	}
 
 	QWidget::changeEvent(event);
+}
+
+void tagTab::updateTitle()
+{
+	QString search = m_search->toPlainText().trimmed();
+	setWindowTitle(search.isEmpty() ? tr("Search") : QString(search).replace("&", "&&"));
+	emit titleChanged(this);
 }

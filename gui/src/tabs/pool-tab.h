@@ -28,14 +28,14 @@ class poolTab : public searchTab
 		QString tags() const override;
 		QList<Site*> loadSites() const override;
 		void write(QJsonObject &json) const override;
-		bool read(const QJsonObject &json);
+		bool read(const QJsonObject &json, bool preload = true);
 
 	protected:
 		void changeEvent(QEvent *event) override;
 
 	public slots:
 		// Zooms
-		void setTags(QString) override;
+		void setTags(QString tags, bool preload = true) override;
 		void setPool(int id, QString site);
 		// Loading
 		void load() override;
@@ -47,6 +47,7 @@ class poolTab : public searchTab
 		void on_buttonSearch_clicked();
 		void setSite(QString);
 		void focusSearch() override;
+		void updateTitle() override;
 
 	private:
 		TextEdit *m_search;

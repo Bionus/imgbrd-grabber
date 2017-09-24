@@ -59,6 +59,17 @@ void E621Test::testJsonTypedTags()
 	QCOMPARE(tags[21].type().name(), QString("species"));
 }
 
+void E621Test::testHtmlTags()
+{
+	QList<Tag> tags = getTags("Danbooru", "e621.net", "regex", "tags.html");
+
+	QCOMPARE(tags.count(), 100);
+
+	QCOMPARE(tags[0].text(), QString("mammal"));
+	QCOMPARE(tags[0].count(), 907884);
+	QCOMPARE(tags[0].type().name(), QString("species"));
+}
+
 void E621Test::testXmlTags()
 {
 	QList<Tag> tags = getTags("Danbooru", "e621.net", "xml", "tags.xml");

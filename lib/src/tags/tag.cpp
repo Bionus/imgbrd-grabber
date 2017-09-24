@@ -2,6 +2,7 @@
 #include <QTextDocument>
 #include <QSettings>
 #include <QSet>
+#include <QRegularExpression>
 #include "models/favorite.h"
 #include "models/profile.h"
 
@@ -15,8 +16,14 @@ Tag::Tag(QString text, QString type, int count, QStringList related)
 { }
 
 Tag::Tag(QString text, TagType type, int count, QStringList related)
-	: m_type(TagType(type)), m_count(count), m_related(related)
+	: Tag(0, text, type, count, related)
+{ }
+
+Tag::Tag(int id, QString text, TagType type, int count, QStringList related)
+	: m_id(id), m_type(TagType(type)), m_count(count), m_related(related)
 {
+	static QStringList weakTypes = QStringList() << "unknown" << "origin";
+
 	// Decode HTML entities in the tag text
 	QTextDocument htmlEncoded;
 	htmlEncoded.setHtml(text);
@@ -28,90 +35,70 @@ Tag::Tag(QString text, TagType type, int count, QStringList related)
 	{ m_type = TagType(m_type.name().left(typeSpace)); }
 
 	// Some artist names end with " (artist)" so we can guess their type
-	if (m_text.endsWith("(artist)") && m_type.name() == "unknown")
+	if (m_text.endsWith("(artist)") && weakTypes.contains(m_type.name()))
 	{
 		m_type = TagType("artist");
 		m_text = m_text.left(m_text.length() - 9);
 	}
 
-	if (m_type.name() == "unknown" && m_text.contains(':'))
+	int sepPos = m_text.indexOf(':');
+	if (sepPos != -1 && weakTypes.contains(m_type.name()))
 	{
-		QStringList prep = QStringList() << "artist" << "copyright" << "character" << "model" << "species" << "unknown";
-		foreach (QString pre, prep)
+		QStringList prep = QStringList() << "artist" << "copyright" << "character" << "model" << "species" << "unknown" << "oc";
+		QString pre = Tag::GetType(m_text.left(sepPos), QStringList());
+		int prepIndex = prep.indexOf(pre);
+		if (prepIndex != -1)
 		{
-			if (m_text.startsWith(pre + ":"))
-			{
-				m_type = TagType(pre);
-				m_text = m_text.mid(pre.length() + 1);
-			}
+			m_type = TagType(Tag::GetType(prep[prepIndex], prep));
+			m_text = m_text.mid(sepPos + 1);
 		}
 	}
 }
 Tag::~Tag()
 { }
 
-Tag Tag::FromCapture(QStringList caps, QStringList order)
+Tag Tag::FromCapture(QRegularExpressionMatch match, QStringList groups)
 {
-	QString type;
+	// Tag
 	QString tag;
-	int count = 1;
-
-	// Most common tag orders
-	if (order.empty())
+	if (groups.contains("tag"))
 	{
-		switch (caps.count())
-		{
-			case 4:	order << "type" << "" << "count" << "tag";	break;
-			case 3:	order << "type" << "tag" << "count";		break;
-			case 2:	order << "type" << "tag";					break;
-			case 1:	order << "tag";								break;
-		}
+		tag = match.captured("tag").replace(" ", "_").replace("&amp;", "&").trimmed();
 	}
 
-	int max = qMin(order.size(), caps.size());
-	for (int o = 0; o < max; o++)
+	// Type
+	QString type;
+	if (groups.contains("type"))
 	{
-		QString ord = order[o];
-		QString cap = caps[o];
-
-		if (ord == "tag" && tag.isEmpty())
-		{
-			tag = cap.replace(" ", "_").replace("&amp;", "&").trimmed();
-		}
-		else if (ord == "type" && type.isEmpty())
-		{
-			type = Tag::GetType(cap, QStringList() << "general" << "artist" << "unknown" << "copyright" << "character" << "species");
-		}
-		else if (ord == "count" && count != 0)
-		{
-			QString countStr = cap.toLower();
-			countStr.remove(',');
-			count = countStr.endsWith('k') ? countStr.left(countStr.length() - 1).toFloat() * 1000 : countStr.toInt();
-		}
+		type = Tag::GetType(match.captured("type").trimmed(), QStringList() << "general" << "artist" << "unknown" << "copyright" << "character" << "species");
 	}
-
 	if (type.isEmpty())
 	{ type = "unknown"; }
+
+	// Count
+	int count = 0;
+	if (groups.contains("count"))
+	{
+		QString countStr = match.captured("count").toLower().trimmed();
+		countStr.remove(',');
+		count = countStr.endsWith('k', Qt::CaseInsensitive) ? countStr.left(countStr.length() - 1).toFloat() * 1000 : countStr.toInt();
+	}
 
 	return Tag(tag, type, count);
 }
 
-QList<Tag> Tag::FromRegexp(QString rx, QStringList order, const QString &source)
+QList<Tag> Tag::FromRegexp(QString rx, const QString &source)
 {
-	QRegExp rxtags(rx);
-	rxtags.setMinimal(true);
+	QRegularExpression rxtags(rx);
 
 	QList<Tag> ret;
 	QSet<QString> got;
 
-	int pos = 0;
-	while ((pos = rxtags.indexIn(source, pos)) != -1)
+	auto matches = rxtags.globalMatch(source);
+	while (matches.hasNext())
 	{
-		pos += rxtags.matchedLength();
-
-		QStringList caps = rxtags.capturedTexts();
-		caps.removeFirst();
-		Tag tag = Tag::FromCapture(caps, order);
+		auto match = matches.next();
+		Tag tag = Tag::FromCapture(match, rxtags.namedCaptureGroups());
 
 		if (!got.contains(tag.text()))
 		{
@@ -141,6 +128,8 @@ QString Tag::GetType(QString type, QStringList ids)
 		return "general";
 	if (type == "character group")
 		return "general";
+	if (type == "oc")
+		return "character";
 
 	if (type.length() == 1)
 	{
@@ -236,11 +225,13 @@ QString Tag::stylished(Profile *profile, QStringList ignored, QStringList blackl
 	return ret;
 }
 
+void Tag::setId(int id)				{ m_id = id;		}
 void Tag::setText(QString text)		{ m_text = text;	}
 void Tag::setType(TagType type)		{ m_type = type;	}
 void Tag::setCount(int count)		{ m_count = count;	}
 void Tag::setRelated(QStringList r)	{ m_related = r;	}
 
+int			Tag::id() const			{ return m_id;		}
 QString		Tag::text() const		{ return m_text;	}
 TagType		Tag::type() const		{ return m_type;	}
 int			Tag::count() const		{ return m_count;	}

@@ -1,140 +1,181 @@
 #include "fixed-size-grid-layout.h"
-#include "math.h"
+#include <QtWidgets>
 
 
-FixedSizeGridLayout::FixedSizeGridLayout(QWidget *parent)
-	: QGridLayout(parent), m_fixedWidth(0), m_width(0), m_oldImagesPerLine(0), m_imagesPerPage(0), m_frozen(false)
+FixedSizeGridLayout::FixedSizeGridLayout(QWidget *parent, int hSpacing, int vSpacing)
+	: QLayout(parent), m_hSpace(hSpacing), m_vSpace(vSpacing)
+{}
+
+FixedSizeGridLayout::FixedSizeGridLayout(int hSpacing, int vSpacing)
+	: m_hSpace(hSpacing), m_vSpace(vSpacing)
+{}
+
+FixedSizeGridLayout::~FixedSizeGridLayout()
 {
+	QLayoutItem *item;
+	while (item = takeAt(0))
+		delete item;
 }
+
 
 void FixedSizeGridLayout::setFixedWidth(int width)
 {
 	m_fixedWidth = width;
 }
 
-bool FixedSizeGridLayout::shouldRedoLayout(int width)
-{
-	if (m_oldImagesPerLine == 0)
-		return true;
 
-	int newImagesPerLine = getImagesPerLine(width, m_imagesPerPage);
-	return newImagesPerLine != m_oldImagesPerLine;
+void FixedSizeGridLayout::addItem(QLayoutItem *item)
+{
+	m_items.append(item);
+}
+
+void FixedSizeGridLayout::insertItem(int index, QLayoutItem *item)
+{
+	if (index < 0)
+		index = m_items.count();
+
+	m_items.insert(index, item);
+}
+
+void FixedSizeGridLayout::insertWidget(int index, QWidget *widget)
+{
+	addChildWidget(widget);
+	insertItem(index, new QWidgetItemV2(widget));
+}
+
+int FixedSizeGridLayout::count() const
+{
+	return m_items.size();
+}
+
+QLayoutItem *FixedSizeGridLayout::itemAt(int index) const
+{
+	return m_items.value(index);
+}
+
+QLayoutItem *FixedSizeGridLayout::takeAt(int index)
+{
+	if (index >= 0 && index < m_items.size())
+		return m_items.takeAt(index);
+
+	return 0;
+}
+
+
+int FixedSizeGridLayout::horizontalSpacing() const
+{
+	if (m_hSpace >= 0) {
+		return m_hSpace;
+	} else {
+		return smartSpacing(QStyle::PM_LayoutHorizontalSpacing);
+	}
+}
+
+int FixedSizeGridLayout::verticalSpacing() const
+{
+	if (m_vSpace >= 0) {
+		return m_vSpace;
+	} else {
+		return smartSpacing(QStyle::PM_LayoutVerticalSpacing);
+	}
+}
+
+Qt::Orientations FixedSizeGridLayout::expandingDirections() const
+{
+	return 0;
+}
+
+bool FixedSizeGridLayout::hasHeightForWidth() const
+{
+	return true;
+}
+
+int FixedSizeGridLayout::heightForWidth(int width) const
+{
+	int height = doLayout(QRect(0, 0, width, 0), true);
+	return height;
+}
+
+QSize FixedSizeGridLayout::minimumSize() const
+{
+	QSize size;
+	QLayoutItem *item;
+	foreach (item, m_items)
+		size = size.expandedTo(item->minimumSize());
+
+	size += QSize(2 * margin(), 2 * margin());
+	return size;
+}
+
+QSize FixedSizeGridLayout::sizeHint() const
+{
+	return minimumSize();
 }
 
 void FixedSizeGridLayout::setGeometry(const QRect &rect)
 {
-	QGridLayout::setGeometry(rect);
-
-	if (!m_frozen && shouldRedoLayout(rect.width()))
-	{
-		m_frozen = true;
-		redoLayout(rect.width());
-		m_frozen = false;
-	}
-
-	m_oldImagesPerLine = getImagesPerLine(rect.width(), m_imagesPerPage);
-	m_width = rect.width();
+	QLayout::setGeometry(rect);
+	doLayout(rect, false);
 }
 
-int FixedSizeGridLayout::getImagesPerLine(int width, int imagesPerPage) const
-{
-	int result;
 
-	if (m_fixedWidth > 0)
+int FixedSizeGridLayout::doLayout(const QRect &rect, bool testOnly) const
+{
+	int left, top, right, bottom;
+	getContentsMargins(&left, &top, &right, &bottom);
+	QRect effectiveRect = rect.adjusted(+left, +top, -right, -bottom);
+	int x = effectiveRect.x();
+	int y = effectiveRect.y();
+	int w = effectiveRect.width();
+
+	int lineHeight = 0;
+	for (QLayoutItem *item : m_items)
 	{
-		int marginLeft, marginTop, marginRight, marginBottom;
-		getContentsMargins(&marginLeft, &marginTop, &marginRight, &marginBottom);
+		int spaceX = widgetSpacing(horizontalSpacing(), item->widget(), Qt::Horizontal);
+		int spaceY = widgetSpacing(verticalSpacing(), item->widget(), Qt::Vertical);
 
-		int betweenImages = horizontalSpacing();
-		int aroundLayout = marginLeft + marginRight;
-		result = floor((width + betweenImages - aroundLayout) / (m_fixedWidth + betweenImages));
-	}
-	else
-	{ result = ceil(sqrt((double)imagesPerPage)); }
+		int nbElts = qMax(1, (w + spaceX) / (m_fixedWidth + spaceX));
+		int totalSpace = w - (m_fixedWidth * nbElts);
+		spaceX = qMax(spaceX, totalSpace / qMax(1, nbElts - 1));
 
-	// There must always be at least one image per line
-	if (result < 1)
-		return 1;
-
-	return result;
-}
-
-QPoint FixedSizeGridLayout::getThumbPosition(int width, int relativePosition, int imagesPerPage) const
-{
-	int imagesPerLine = getImagesPerLine(width, imagesPerPage);
-
-	int row = floor(float(relativePosition % imagesPerPage) / imagesPerLine);
-	int column = relativePosition % imagesPerLine;
-
-	return QPoint(column, row);
-}
-
-#include <QDebug>
-void FixedSizeGridLayout::redoLayout(int width)
-{
-	QList<QWidget*> children;
-	QLayoutItem *child;
-	while ((child = takeAt(0)) != 0)
-	{
-		QWidget *widget = child->widget();
-		if (widget != nullptr)
+		int nextX = x + item->sizeHint().width() + spaceX;
+		if (nextX - spaceX - 1 > effectiveRect.right() && lineHeight > 0)
 		{
-			widget->hide();
-			if (widget->minimumHeight() == 1)
-				widget->deleteLater();
-			else
-				children.append(widget);
+			x = effectiveRect.x();
+			y = y + lineHeight + spaceY;
+			nextX = x + item->sizeHint().width() + spaceX;
+			lineHeight = 0;
 		}
-		removeItem(child);
+
+		if (!testOnly)
+			item->setGeometry(QRect(QPoint(x, y), item->sizeHint()));
+
+		x = nextX;
+		lineHeight = qMax(lineHeight, item->sizeHint().height());
 	}
-
-	if (children.isEmpty())
-		return;
-
-	int imagesPerPage = m_imagesPerPage == 0 ? children.count() : m_imagesPerPage;
-	fillLayout(children.count(), width, imagesPerPage);
-	for (int i = 0; i < children.count(); ++i)
-	{
-		QWidget *widget = children[i];
-		widget->show();
-
-		QPoint pos = getThumbPosition(width, i, imagesPerPage);
-		addWidget(widget, pos.y(), pos.x());
-	}
+	return y + lineHeight - rect.y() + bottom;
 }
 
-void FixedSizeGridLayout::addFixedSizeWidget(QWidget *widget, int position, int imagesPerPage)
+int FixedSizeGridLayout::smartSpacing(QStyle::PixelMetric pm) const
 {
-	m_frozen = true;
+	QObject *parent = this->parent();
+	if (!parent)
+		return -1;
 
-	// Redo layout if necessary when the total number of images changes in merged results mode
-	if (imagesPerPage != m_imagesPerPage)
+	if (parent->isWidgetType())
 	{
-		m_imagesPerPage = imagesPerPage;
-		if (shouldRedoLayout(m_width))
-			redoLayout(m_width);
-		m_oldImagesPerLine = getImagesPerLine(m_width, m_imagesPerPage);
+		QWidget *pw = static_cast<QWidget*>(parent);
+		return pw->style()->pixelMetric(pm, 0, pw);
 	}
 
-	QPoint pos = getThumbPosition(m_width, position, imagesPerPage);
-	addWidget(widget, pos.y(), pos.x());
-
-	fillLayout(imagesPerPage, m_width, imagesPerPage);
-
-	m_frozen = false;
+	return static_cast<QLayout*>(parent)->spacing();
 }
 
-void FixedSizeGridLayout::fillLayout(int count, int width, int imagesPerPage)
+int FixedSizeGridLayout::widgetSpacing(int spacing, QWidget *widget, Qt::Orientation orientation) const
 {
-	int imagesPerLine = getImagesPerLine(width, imagesPerPage);
-	if (count < imagesPerLine)
-	{
-		for (int i = count; i < imagesPerLine; ++i)
-		{
-			auto l = new QWidget();
-			l->setFixedWidth(m_fixedWidth);
-			l->setMinimumHeight(1);
-			addWidget(l, 0, i);
-		}
-	}
+	if (spacing >= 0)
+		return spacing;
+
+	QSizePolicy::ControlType controlType = widget->sizePolicy().controlType();
+	return widget->style()->layoutSpacing(controlType, controlType, orientation);
 }

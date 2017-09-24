@@ -6,6 +6,7 @@
 #include "optionswindow.h"
 #include "filenamewindow.h"
 #include "language-loader.h"
+#include "models/profile.h"
 #include "helpers.h"
 #include "functions.h"
 
@@ -69,16 +70,16 @@ void startWindow::on_buttonFilenamePlus_clicked()
  */
 void startWindow::save()
 {
-	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
-	settings.beginGroup("Save");
+	QSettings *settings = m_profile->getSettings();
+	settings->beginGroup("Save");
 
 	// Filename
-	settings.setValue("filename", ui->lineFilename->text());
-	settings.setValue("filename_real", ui->lineFilename->text());
+	settings->setValue("filename", ui->lineFilename->text());
+	settings->setValue("filename_real", ui->lineFilename->text());
 
 	// Folder
-	settings.setValue("path", ui->lineFolder->text());
-	settings.setValue("path_real", ui->lineFolder->text());
+	settings->setValue("path", ui->lineFolder->text());
+	settings->setValue("path_real", ui->lineFolder->text());
 	QDir pth = QDir(ui->lineFolder->text());
 	if (!pth.exists())
 	{
@@ -86,26 +87,26 @@ void startWindow::save()
 		while (!pth.exists() && pth.path() != op)
 		{
 			op = pth.path();
-			pth.setPath(pth.path().remove(QRegExp("/([^/]+)$")));
+			pth.setPath(pth.path().remove(QRegularExpression("/([^/]+)$")));
 		}
 		if (pth.path() == op)
 		{ error(this, tr("An error occured creating the save folder.")); }
 		else
 		{ pth.mkpath(ui->lineFolder->text()); }
 	}
-	settings.endGroup();
+	settings->endGroup();
 
 	// Language
 	QString lang = ui->comboLanguage->currentData().toString();
-	if (settings.value("language", "English").toString() != lang)
+	if (settings->value("language", "English").toString() != lang)
 	{
-		settings.setValue("language", lang);
+		settings->setValue("language", lang);
 		emit languageChanged(lang);
 	}
 
 	emit sourceChanged(ui->comboSource->currentText());
 
-	settings.sync();
+	settings->sync();
 	emit settingsChanged();
 }
 

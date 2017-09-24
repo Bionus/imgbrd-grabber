@@ -26,7 +26,7 @@
    <string>Favorites</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../../../resources/resources.qrc">
+   <iconset resource="../../resources/resources.qrc">
     <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,0">
@@ -367,9 +367,12 @@ QWidget#scrollAreaWidgetContents {
                 <property name="orientation">
                  <enum>Qt::Vertical</enum>
                 </property>
+                <property name="sizeType">
+                 <enum>QSizePolicy::MinimumExpanding</enum>
+                </property>
                 <property name="sizeHint" stdset="0">
                  <size>
-                  <width>20</width>
+                  <width>0</width>
                   <height>0</height>
                  </size>
                 </property>
@@ -680,7 +683,7 @@ QWidget#scrollAreaWidgetContents {
   <tabstop>pushButton_2</tabstop>
  </tabstops>
  <resources>
-  <include location="../../../resources/resources.qrc"/>
+  <include location="../../resources/resources.qrc"/>
  </resources>
  <connections>
   <connection>

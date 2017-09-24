@@ -19,6 +19,8 @@ class FunctionsTest : public TestSuite
 		void testRemoveWildards();
 		void testDateTimeFromString();
 		void testIsUrl();
+		void testParseMarkdownHeaders();
+		void testParseMarkdownIssueLinks();
 
 	protected:
 		void assertFixFilename(int platform, QString filename, QString path, QString expected);

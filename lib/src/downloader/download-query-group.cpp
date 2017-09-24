@@ -6,16 +6,16 @@
 DownloadQueryGroup::DownloadQueryGroup()
 { }
 
-DownloadQueryGroup::DownloadQueryGroup(QSettings *settings, QString tags, int page, int perpage, int total, Site *site, QString unk)
-	: tags(tags), page(page), perpage(perpage), total(total), site(site), unk(unk)
+DownloadQueryGroup::DownloadQueryGroup(QSettings *settings, QString tags, int page, int perpage, int total, QStringList postFiltering, Site *site, QString unk)
+	: tags(tags), page(page), perpage(perpage), total(total), postFiltering(postFiltering), site(site), unk(unk)
 {
 	getBlacklisted = settings->value("downloadblacklist").toBool();
 	filename = settings->value("Save/filename").toString();
 	path = settings->value("Save/path").toString();
 }
 
-DownloadQueryGroup::DownloadQueryGroup(QString tags, int page, int perpage, int total, bool blacklisted, Site *site, QString filename, QString path, QString unk)
-	: tags(tags), page(page), perpage(perpage), total(total), getBlacklisted(blacklisted), site(site), filename(filename), path(path), unk(unk)
+DownloadQueryGroup::DownloadQueryGroup(QString tags, int page, int perpage, int total, QStringList postFiltering, bool blacklisted, Site *site, QString filename, QString path, QString unk)
+	: tags(tags), page(page), perpage(perpage), total(total), postFiltering(postFiltering), getBlacklisted(blacklisted), site(site), filename(filename), path(path), unk(unk)
 { }
 
 
@@ -37,6 +37,7 @@ void DownloadQueryGroup::write(QJsonObject &json) const
 	json["page"] = page;
 	json["perpage"] = perpage;
 	json["total"] = total;
+	json["postFiltering"] = QJsonArray::fromStringList(postFiltering);
 	json["getBlacklisted"] = getBlacklisted;
 
 	json["site"] = site->url();
@@ -59,6 +60,12 @@ bool DownloadQueryGroup::read(const QJsonObject &json, const QMap<QString, Site*
 
 	filename = json["filename"].toString().replace("\\n", "\n");
 	path = json["path"].toString();
+
+	// Post filtering
+	postFiltering.clear();
+	QJsonArray jsonPostFilters = json["postFiltering"].toArray();
+	for (auto tag : jsonPostFilters)
+		postFiltering.append(tag.toString());
 
 	// Get site
 	QString sitename = json["site"].toString();

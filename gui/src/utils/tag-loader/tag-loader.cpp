@@ -10,12 +10,23 @@
 
 
 TagLoader::TagLoader(Profile *profile, QMap<QString, Site *> sites, QWidget *parent)
-	: QDialog(parent), ui(new Ui::TagLoader), m_profile(profile), m_sites(sites)
+	: QDialog(), ui(new Ui::TagLoader), m_profile(profile), m_sites(sites)
 {
 	ui->setupUi(this);
 
-	ui->comboSource->addItems(m_sites.keys());
-	ui->progressBar->hide();
+	QStringList keys;
+	for (QString key : sites.keys())
+	{
+		Site *site = sites[key];
+		if (!getCompatibleApis(site).isEmpty())
+		{
+			m_options.append(key);
+			keys.append(QString("%1 (%L2 tags)").arg(key).arg(site->tagDatabase()->count()));
+		}
+	}
+
+	ui->comboSource->addItems(keys);
+	ui->widgetProgress->hide();
 
 	resize(size().width(), 0);
 }
@@ -23,6 +34,16 @@ TagLoader::TagLoader(Profile *profile, QMap<QString, Site *> sites, QWidget *par
 TagLoader::~TagLoader()
 {
 	delete ui;
+}
+
+QList<Api*> TagLoader::getCompatibleApis(Site *site) const
+{
+	QList<Api*> apis;
+	for (Api *a : site->getApis())
+		if (a->contains("Urls/TagApi"))
+			apis.append(a);
+
+	return apis;
 }
 
 void TagLoader::cancel()
@@ -34,31 +55,20 @@ void TagLoader::cancel()
 
 void TagLoader::start()
 {
+	// Get site and API
+	Site *site = m_sites.value(m_options[ui->comboSource->currentIndex()]);
+	QList<Api*> apis = getCompatibleApis(site);
+	Api *api = apis.first();
+	site->tagDatabase()->load();
+
 	ui->buttonStart->setEnabled(false);
 
 	// Show progress bar
 	ui->progressBar->setValue(0);
 	ui->progressBar->setMinimum(0);
 	ui->progressBar->setMaximum(0);
-	ui->progressBar->show();
-
-	// Get site and API
-	Site *site = m_sites.value(ui->comboSource->currentText());
-	Api *api = Q_NULLPTR;
-	for (Api *a : site->getApis())
-	{
-		if (a->contains("Urls/TagApi"))
-		{
-			api = a;
-			break;
-		}
-	}
-	if (api == Q_NULLPTR)
-	{
-		error(this, tr("No API supporting tag fetching found"));
-		return;
-	}
-	site->tagDatabase()->load();
+	ui->labelProgress->setText("0");
+	ui->widgetProgress->show();
 
 	// Load all tags
 	QList<Tag> allTags;
@@ -78,6 +88,7 @@ void TagLoader::start()
 		tagApi->deleteLater();
 
 		ui->progressBar->setValue(page);
+		ui->labelProgress->setText(QString("%1 - %2").arg(page).arg(allTags.count()));
 		page++;
 	}
 
@@ -87,7 +98,7 @@ void TagLoader::start()
 
 	// Hide progress bar
 	ui->buttonStart->setEnabled(true);
-	ui->progressBar->hide();
+	ui->widgetProgress->hide();
 	resize(size().width(), 0);
 
 	QMessageBox::information(this, tr("Finished"), tr("%n tag(s) loaded", "", allTags.count()));

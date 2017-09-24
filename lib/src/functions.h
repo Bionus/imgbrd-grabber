@@ -59,6 +59,8 @@ QString getExtensionFromHeader(const QByteArray &data12);
 void setTestModeEnabled(bool testMode);
 bool isTestModeEnabled();
 
+QString parseMarkdown(QString str);
+
 
 
 template <typename T>

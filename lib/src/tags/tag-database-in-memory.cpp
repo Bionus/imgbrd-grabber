@@ -91,3 +91,8 @@ QMap<QString, TagType> TagDatabaseInMemory::getTagTypes(QStringList tags) const
 
 	return ret;
 }
+
+int TagDatabaseInMemory::count() const
+{
+	return m_database.count();
+}

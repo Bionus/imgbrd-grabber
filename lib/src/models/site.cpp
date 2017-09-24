@@ -38,7 +38,9 @@ void Site::loadConfig()
 
 	if (m_settings != nullptr)
 		m_settings->deleteLater();
-	m_settings = new QSettings(siteDir + "settings.ini", QSettings::IniFormat);
+	QSettings *settingsCustom = new QSettings(siteDir + "settings.ini", QSettings::IniFormat);
+	QSettings *settingsDefaults = new QSettings(siteDir + "defaults.ini", QSettings::IniFormat);
+	m_settings = new MixedSettings(QList<QSettings*>() << settingsCustom << settingsDefaults);
 	m_name = m_settings->value("name", m_url).toString();
 
 	// Get default source order
@@ -156,7 +158,10 @@ void Site::resetCookieJar()
  */
 void Site::login(bool force)
 {
-	if (!force && m_loggedIn != LoginStatus::Unknown && m_loggedIn != LoginStatus::Pending)
+	if (!force && m_loggedIn == LoginStatus::Pending)
+		return;
+
+	if (!force && m_loggedIn != LoginStatus::Unknown)
 	{
 		emit loggedIn(this, LoginResult::Already);
 		return;
@@ -286,16 +291,16 @@ QNetworkRequest Site::makeRequest(QUrl url, Page *page, QString ref, Image *img)
 	{ referer = m_settings->value("referer", "none").toString(); }
 	if (referer != "none" && (referer != "page" || page != NULL))
 	{
-		QString ref;
+		QString refHeader;
 		if (referer == "host")
-		{ ref = url.scheme()+"://"+url.host(); }
+		{ refHeader = url.scheme()+"://"+url.host(); }
 		else if (referer == "image")
-		{ ref = url.toString(); }
+		{ refHeader = url.toString(); }
 		else if (referer == "page" && page)
-		{ ref = page->url().toString(); }
+		{ refHeader = page->url().toString(); }
 		else if (referer == "details" && img)
-		{ ref = img->pageUrl().toString(); }
-		request.setRawHeader("Referer", ref.toLatin1());
+		{ refHeader = img->pageUrl().toString(); }
+		request.setRawHeader("Referer", refHeader.toLatin1());
 	}
 
 	QMap<QString,QVariant> headers = m_settings->value("headers").toMap();
@@ -415,7 +420,8 @@ void Site::finishedTags()
 }
 
 QVariant Site::setting(QString key, QVariant def)	{ return m_settings->value(key, def); }
-QSettings	*Site::settings()						{ return m_settings; }
+void Site::setSetting(QString key, QVariant value, QVariant def)	{ m_settings->setValue(key, value, def); }
+void Site::syncSettings() { m_settings->sync(); }
 TagDatabase *Site::tagDatabase() const				{ return m_tagDatabase;	}
 
 QString Site::name()			{ return m_name;			}
@@ -492,7 +498,10 @@ QList<QNetworkCookie> Site::cookies() const
 
 bool Site::isLoggedIn(bool unknown) const
 {
-	if (m_settings->value("login/parameter", true).toBool() && !m_username.isEmpty() && !m_password.isEmpty())
+	QString type = m_settings->value("login/type", "url").toString();
+	int maxPageAnonymous = m_settings->value("login/maxPage", 0).toInt();
+
+	if (type == "url" && !m_username.isEmpty() && !m_password.isEmpty() && maxPageAnonymous <= 0)
 		return true;
 
 	if (unknown)

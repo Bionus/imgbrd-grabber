@@ -14,7 +14,7 @@
    <string>Options</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../../../resources/resources.qrc">
+   <iconset resource="../../resources/resources.qrc">
     <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout">
@@ -168,7 +168,7 @@
        </sizepolicy>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>13</number>
       </property>
       <widget class="QWidget" name="pageGeneral">
        <layout class="QFormLayout" name="formLayout_14">
@@ -1677,6 +1677,13 @@
           </property>
          </widget>
         </item>
+        <item row="8" column="0" colspan="2">
+         <widget class="QCheckBox" name="checkPreloadAllTabs">
+          <property name="text">
+           <string>Preload all tabs when restoring a previous session</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </widget>
       <widget class="QWidget" name="pageInterfaceSearchResults">
@@ -1868,6 +1875,39 @@
           </property>
          </widget>
         </item>
+        <item row="5" column="0" colspan="2">
+         <widget class="QCheckBox" name="checkZoomShowTagCount">
+          <property name="text">
+           <string>Show tag count</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="0">
+         <widget class="QLabel" name="labelImageTagOrder">
+          <property name="text">
+           <string>Tag order</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="1">
+         <widget class="QComboBox" name="comboImageTagOrder">
+          <item>
+           <property name="text">
+            <string>Type</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Name</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Count</string>
+           </property>
+          </item>
+         </widget>
+        </item>
         <item row="7" column="0">
          <widget class="QLabel" name="labelImagePositionImage">
           <property name="text">
@@ -2053,39 +2093,6 @@
            </widget>
           </item>
          </layout>
-        </item>
-        <item row="5" column="0" colspan="2">
-         <widget class="QCheckBox" name="checkZoomShowTagCount">
-          <property name="text">
-           <string>Show tag count</string>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="0">
-         <widget class="QLabel" name="labelImageTagOrder">
-          <property name="text">
-           <string>Tag order</string>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="1">
-         <widget class="QComboBox" name="comboImageTagOrder">
-          <item>
-           <property name="text">
-            <string>Type</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Name</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Count</string>
-           </property>
-          </item>
-         </widget>
         </item>
        </layout>
       </widget>
@@ -2933,7 +2940,7 @@
   <tabstop>comboSources</tabstop>
  </tabstops>
  <resources>
-  <include location="../../../resources/resources.qrc"/>
+  <include location="../../resources/resources.qrc"/>
  </resources>
  <connections>
   <connection>

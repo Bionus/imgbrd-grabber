@@ -15,12 +15,14 @@
 			<MaxPage>476</MaxPage>
 			<PagePart>&amp;pid={pid}</PagePart>
 			<AltPageNext> id:&lt;{min}&amp;p=1</AltPageNext>
+			<TagApi>/index.php?page=tags&amp;s=list&amp;pid={page}</TagApi>
+			<SingleTagApi>/index.php?page=tags&amp;s=list&amp;pid={page}&amp;tags={name}</SingleTagApi>
 		</Html>
 	</Urls>
 	<Regex>
-		<Tags>&lt;li class=&quot;tag-type-([^&quot;]+)&quot;&gt;(?:[^&lt;]*&lt;a[^&gt;]*&gt;[^&lt;]*&lt;/a&gt;)*[^&lt;]*&lt;a[^&gt;]*&gt;([^&lt;]*)&lt;/a&gt;[^&lt;]*&lt;span[^&gt;]*&gt;(\d+)&lt;/span&gt;[^&lt;]*&lt;/li&gt;</Tags>
-		<Image>&lt;span[^&gt;]*(?: id=&quot;?\w(\d+)&quot;?)?&gt;\s*&lt;a[^&gt;]*(?: id=&quot;?\w(\d+)&quot;?)[^&gt;]*&gt;\s*&lt;img [^&gt;]*src=&quot;([^&quot;]+\/thumbnail_([^.]+)\.[^&quot;]+)&quot; [^&gt;]*title=&quot;\s*([^&quot;]+)&quot;[^&gt;]*\/?&gt;\s*&lt;\/a&gt;</Image>
-		<Order>id|id|preview_url|md5|tags</Order>
+		<Tags><![CDATA[<li class="tag-type-(?<type>[^"]+)">(?:[^<]*<a[^>]*>[^<]*</a>)*[^<]*<a[^>]*>(?<tag>[^<]*)</a>[^<]*<span[^>]*>(?<count>\d+)</span>[^<]*</li>]]></Tags>
+		<Image><![CDATA[<span[^>]*(?: id="?\w(?<id>\d+)"?)?>\s*<a[^>]*(?: id="?\w(?<id_2>\d+)"?)[^>]*>\s*<img [^>]*src="(?<preview_url>[^"]+\/thumbnail_(?<md5>[^.]+)\.[^"]+)" [^>]*title="\s*(?<tags>[^"]+)"[^>]*\/?>\s*<\/a>]]></Image>
+		<TagApi><![CDATA[<tr>\s*<td>(?<count>\d+)<\/td>\s*<td><span class="tag-type-(?<type>[^"]+)"><a[^>]+>(?<tag>.+?)<\/a><\/span><\/td>]]></TagApi>
 		<ImageUrl>&lt;img[^&gt;]+src=&quot;([^&quot;]+)&quot;[^&gt;]+onclick=&quot;Note\.toggle\(\);&quot;[^&gt;]*/&gt;</ImageUrl>
         <LastPage>&lt;a href=&quot;[^&quot;]+pid=(\d+)[^&quot;]*&quot; alt=&quot;last page&quot;[^&gt;]*&gt;</LastPage>
 	</Regex>

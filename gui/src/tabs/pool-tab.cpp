@@ -79,13 +79,12 @@ void poolTab::closeEvent(QCloseEvent *e)
 
 void poolTab::load()
 {
+	updateTitle();
+
 	// Get the search values
 	QString search = m_search->toPlainText();
 	QStringList tags = search.trimmed().split(" ", QString::SkipEmptyParts);
 	tags.prepend("pool:"+QString::number(ui->spinPool->value()));
-
-	setWindowTitle("Pool #" + QString::number(ui->spinPool->value()) + (search.isEmpty() ? "" : " - " + QString(search).replace("&", "&&")));
-	emit titleChanged(this);
 
 	loadTags(tags);
 }
@@ -109,7 +108,7 @@ void poolTab::write(QJsonObject &json) const
 	json["postFiltering"] = QJsonArray::fromStringList(m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts));
 }
 
-bool poolTab::read(const QJsonObject &json)
+bool poolTab::read(const QJsonObject &json, bool preload)
 {
 	ui->spinPool->setValue(json["pool"].toInt());
 	ui->comboSites->setCurrentText(json["site"].toString());
@@ -129,7 +128,7 @@ bool poolTab::read(const QJsonObject &json)
 	QJsonArray jsonTags = json["tags"].toArray();
 	for (auto tag : jsonTags)
 		tags.append(tag.toString());
-	setTags(tags.join(' '));
+	setTags(tags.join(' '), preload);
 
 	return true;
 }
@@ -142,9 +141,10 @@ void poolTab::getPage()
 	bool unloaded = m_settings->value("getunloadedpages", false).toBool();
 	int perpage = unloaded ? ui->spinImagesPerPage->value() : page->images().count();
 	QString tags = "pool:"+QString::number(ui->spinPool->value())+" "+m_search->toPlainText()+" "+m_settings->value("add").toString().trimmed();
+	QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
 	Site *site = m_sites->value(ui->comboSites->currentText());
 
-	emit batchAddGroup(DownloadQueryGroup(m_settings, tags, ui->spinPage->value(), perpage, perpage, site));
+	emit batchAddGroup(DownloadQueryGroup(m_settings, tags, ui->spinPage->value(), perpage, perpage, postFiltering, site));
 }
 void poolTab::getAll()
 {
@@ -154,17 +154,22 @@ void poolTab::getAll()
 	int limit = m_sites->value(ui->comboSites->currentText())->contains("Urls/1/Limit") ? m_sites->value(ui->comboSites->currentText())->value("Urls/1/Limit").toInt() : 0;
 	int perpage = qMin((limit > 0 ? limit : 200), qMax(page->images().count(), page->imagesCount()));
 	int total = qMax(page->images().count(), page->imagesCount());
+	QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
 	Site *site = m_sites->value(ui->comboSites->currentText());
 
-	emit batchAddGroup(DownloadQueryGroup(m_settings, tags, 1, perpage, total, site));
+	emit batchAddGroup(DownloadQueryGroup(m_settings, tags, 1, perpage, total, postFiltering, site));
 }
 
 
-void poolTab::setTags(QString tags)
+void poolTab::setTags(QString tags, bool preload)
 {
 	activateWindow();
 	m_search->setText(tags);
-	load();
+
+	if (preload)
+		load();
+	else
+		updateTitle();
 }
 void poolTab::setPool(int id, QString site)
 {
@@ -200,4 +205,11 @@ void poolTab::changeEvent(QEvent *event)
 	}
 
 	QWidget::changeEvent(event);
+}
+
+void poolTab::updateTitle()
+{
+	QString search = m_search->toPlainText().trimmed();
+	setWindowTitle("Pool #" + QString::number(ui->spinPool->value()) + (search.isEmpty() ? "" : " - " + QString(search).replace("&", "&&")));
+	emit titleChanged(this);
 }

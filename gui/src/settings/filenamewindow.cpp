@@ -48,13 +48,13 @@ void FilenameWindow::on_lineClassic_textChanged(QString text)
 {
 	QString message;
 	Filename fn(text);
-	fn.isValid(&message);
+	fn.isValid(m_profile, &message);
 	ui->labelValidator->setText(message);
+
+	text = text.replace("\\", "\\\\").replace("'", "\\'");
 
 	QRegExp date("%date:format=([^%]+)%");
 	int pos = 0;
-	text = text.replace("\\", "\\\\").replace("'", "\\'");
-
 	while ((pos = date.indexIn(text, pos)) != -1)
 	{
 		QString cap = date.cap(1);
@@ -82,7 +82,7 @@ void FilenameWindow::on_lineClassic_textChanged(QString text)
 		pos += date.matchedLength();
 	}
 
-	QString value = "'"+text.replace(QRegExp("%([^%]+)%"), "' + \\1 + '").remove(" + '' + ").trimmed()+"'";
+	QString value = "'"+text.replace(QRegularExpression("%([^%]+)%"), "' + \\1 + '").remove(" + '' + ").trimmed()+"'";
 	if (value.startsWith("' + "))
 	{ value = value.right(value.length() - 4); }
 	if (value.startsWith("'' + "))

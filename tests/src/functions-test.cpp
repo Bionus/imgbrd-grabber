@@ -144,6 +144,24 @@ void FunctionsTest::testIsUrl()
 	QCOMPARE(isUrl("foo.com"), false);
 }
 
+void FunctionsTest::testParseMarkdownHeaders()
+{
+	QCOMPARE(parseMarkdown("# h1"), QString("<h1>h1</h1>"));
+	QCOMPARE(parseMarkdown("## h2"), QString("<h2>h2</h2>"));
+	QCOMPARE(parseMarkdown("### h3"), QString("<h3>h3</h3>"));
+	QCOMPARE(parseMarkdown("#### h4"), QString("<h4>h4</h4>"));
+	QCOMPARE(parseMarkdown("##### h5"), QString("<h5>h5</h5>"));
+	QCOMPARE(parseMarkdown("###### h6"), QString("<h6>h6</h6>"));
+	QCOMPARE(parseMarkdown("####### h7"), QString("<h6>h7</h6>"));
+	QCOMPARE(parseMarkdown("a # h1"), QString("a # h1"));
+}
+void FunctionsTest::testParseMarkdownIssueLinks()
+{
+	QCOMPARE(parseMarkdown("issue #123"), QString("<a href='" + QString(PROJECT_GITHUB_URL) + "/issues/123'>issue #123</a>"));
+	QCOMPARE(parseMarkdown("fix #123"), QString("<a href='" + QString(PROJECT_GITHUB_URL) + "/issues/123'>fix #123</a>"));
+	QCOMPARE(parseMarkdown("issue 123"), QString("issue 123"));
+}
+
 
 void FunctionsTest::assertFixFilename(int platform, QString filename, QString path, QString expected)
 {

@@ -32,7 +32,7 @@ class favoritesTab : public searchTab
 
 	public slots:
 		// Zooms
-		void setTags(QString) override;
+		void setTags(QString tags, bool preload = true) override;
 		// Loading
 		void load() override;
 		bool validateImage(QSharedPointer<Image> img, QString &error) override;
@@ -53,6 +53,7 @@ class favoritesTab : public searchTab
 		void focusSearch() override;
 		void addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, bool merged, QString noResultsMessage = nullptr) override;
 		void setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage = nullptr) override;
+		void updateTitle() override;
 
 	private:
 		QDateTime m_loadFavorite;

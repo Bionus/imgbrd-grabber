@@ -75,12 +75,12 @@
 		</Auth>
 	</Auths>
 	<Regex>
-		<Tags>&lt;li class=&quot;?[^&quot;&gt;]*tag-type-([^&quot;&gt;]+)(?:|&quot;[^&gt;]*)&gt;.*&lt;a href=&quot;[^&quot;]+&quot;[^&gt;]*&gt;([^&lt;\?]+)&lt;\/a&gt;.*&lt;span class=&quot;?post-count&quot;?&gt;(\d+)&lt;\/span&gt;.*&lt;\/li&gt;</Tags>
-		<Image>Post.register\((\{(?:.+)\})\);</Image>
-		<Order>json</Order>
-		<LastPage>&lt;link href=&quot;[^&quot;]*\?.*page=(\d+)[^&quot;]*&quot; rel=&quot;last&quot; title=&quot;Last Page&quot;&gt;</LastPage>
+		<Tags><![CDATA[<li class="?[^">]*tag-type-(?<type>[^">]+)(?:|"[^>]*)>.*?<a href="[^"]+"[^>]*>(?<tag>[^<\?]+)<\/a>.*?<span class="?post-count"?>(?<count>\d+)<\/span>.*?<\/li>]]></Tags>
+		<Image><![CDATA[Post\.register\((?<json>\{.+?\})\);?]]></Image>
+		<TagApi><![CDATA[<tr[^>]*>\s*<td[^>]*>(?<count>\d+)<\/td>\s*<td[^>]*>\s*(?:<a[^>]+>\?<\/a>\s*)?<a[^>]+>(?<tag>.+?)<\/a>\s*<\/td>\s*<td[^>]*>\s*(?<type>.+?)\s*\([^()]+\)\s*<\/td>]]></TagApi>
+		<LastPage>&lt;link href=&quot;[^&quot;]*\?.*?page=(\d+)[^&quot;]*&quot; rel=&quot;last&quot; title=&quot;Last Page&quot;&gt;</LastPage>
 		<Pools>&lt;div class=&quot;status-notice&quot; id=&quot;pool\d+&quot;&gt;[^&lt;]*Pool:[^&lt;]*(?:&lt;a href=&quot;/post/show/(\d+)&quot; &gt;&amp;lt;&amp;lt;&lt;/a&gt;)?[^&lt;]*&lt;a href=&quot;/pool/show/(\d+)&quot; &gt;([^&lt;]+)&lt;/a&gt;[^&lt;]*(?:&lt;a href=&quot;/post/show/(\d+)&quot; &gt;&amp;gt;&amp;gt;&lt;/a&gt;)?[^&lt;]*&lt;/div&gt;</Pools>
-		<Wiki>&lt;div id=&quot;sidebar-wiki&quot;(?:[^&gt;]+)&gt;(.+)&lt;/div&gt;</Wiki>
+		<Wiki>&lt;div id=&quot;sidebar-wiki&quot;(?:[^&gt;]+)&gt;(.+?)&lt;/div&gt;</Wiki>
 	</Regex>
 	<Check>
 		<Url>/</Url>

@@ -25,10 +25,10 @@ Page::Page(Profile *profile, Site *site, QList<Site*> sites, QStringList tags, i
 
 	// Get the list of all enabled modifiers
 	QStringList modifiers = QStringList();
-	for (Site *site : sites)
+	for (Site *ste : sites)
 	{
-		if (site->contains("Modifiers"))
-		{ modifiers.append(site->value("Modifiers").trimmed().split(" ", QString::SkipEmptyParts)); }
+		if (ste->contains("Modifiers"))
+		{ modifiers.append(ste->value("Modifiers").trimmed().split(" ", QString::SkipEmptyParts)); }
 	}
 	if (m_site->contains("Modifiers"))
 	{
@@ -167,7 +167,7 @@ int Page::imagesCount(bool guess)
 {
 	if (m_regexApi >= 0 && !m_pageApis[m_currentApi]->isImageCountSure())
 	{
-		int count = m_pageApis[m_regexApi]->imagesCount(false);
+		int count = m_pageApis[m_regexApi]->imagesCount(guess);
 		if (count >= 0)
 			return count;
 	}
@@ -177,7 +177,7 @@ int Page::pagesCount(bool guess)
 {
 	if (m_regexApi >= 0 && !m_pageApis[m_currentApi]->isPageCountSure())
 	{
-		int count = m_pageApis[m_regexApi]->pagesCount(false);
+		int count = m_pageApis[m_regexApi]->pagesCount(guess);
 		if (count >= 0)
 			return count;
 	}

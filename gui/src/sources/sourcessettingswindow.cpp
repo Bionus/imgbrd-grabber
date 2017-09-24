@@ -9,68 +9,66 @@
 #include "functions.h"
 
 
-SourcesSettingsWindow::SourcesSettingsWindow(Site *site, QWidget *parent) : QDialog(parent), ui(new Ui::SourcesSettingsWindow), m_site(site)
+SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidget *parent)
+	: QDialog(parent), ui(new Ui::SourcesSettingsWindow), m_site(site), m_globalSettings(profile->getSettings())
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	ui->setupUi(this);
 
-	QSettings *settings = site->settings();
-	QSettings global(savePath("settings.ini"), QSettings::IniFormat);
-
 	// Refferers
-	ui->lineSiteName->setText(settings->value("name", m_site->url()).toString());
+	ui->lineSiteName->setText(site->setting("name", m_site->url()).toString());
 	QStringList referers = QStringList() << "none" << "host" << "page" << "image";
 	QStringList referers_preview = QStringList() << "" << "none" << "host" << "page" << "image";
 	QStringList referers_image = QStringList() << "" << "none" << "host" << "page" << "details" << "image";
-	ui->comboReferer->setCurrentIndex(referers.indexOf(settings->value("referer", "none").toString()));
-	ui->comboRefererPreview->setCurrentIndex(referers_preview.indexOf(settings->value("referer_preview", "").toString()));
-	ui->comboRefererImage->setCurrentIndex(referers_image.indexOf(settings->value("referer_image", "").toString()));
-	ui->spinIgnoreAlways->setValue(settings->value("ignore/always", 0).toInt());
-	ui->spinIgnore1->setValue(settings->value("ignore/1", 0).toInt());
-	ui->checkSsl->setChecked(settings->value("ssl", false).toBool());
+	ui->comboReferer->setCurrentIndex(referers.indexOf(site->setting("referer", "none").toString()));
+	ui->comboRefererPreview->setCurrentIndex(referers_preview.indexOf(site->setting("referer_preview", "").toString()));
+	ui->comboRefererImage->setCurrentIndex(referers_image.indexOf(site->setting("referer_image", "").toString()));
+	ui->spinIgnoreAlways->setValue(site->setting("ignore/always", 0).toInt());
+	ui->spinIgnore1->setValue(site->setting("ignore/1", 0).toInt());
+	ui->checkSsl->setChecked(site->setting("ssl", false).toBool());
 
 	// Download settings
-	ui->spinImagesPerPage->setValue(settings->value("download/imagesperpage", 200).toInt());
-	ui->spinSimultaneousDownloads->setValue(settings->value("download/simultaneous", 10).toInt());
-	ui->spinThrottleDetails->setValue(settings->value("download/throttle_details", 0).toInt());
-	ui->spinThrottleImage->setValue(settings->value("download/throttle_image", 0).toInt());
-	ui->spinThrottlePage->setValue(settings->value("download/throttle_page", 0).toInt());
-	ui->spinThrottleRetry->setValue(settings->value("download/throttle_retry", 0).toInt());
-	ui->spinThrottleThumbnail->setValue(settings->value("download/throttle_thumbnail", 0).toInt());
+	ui->spinImagesPerPage->setValue(site->setting("download/imagesperpage", 200).toInt());
+	ui->spinSimultaneousDownloads->setValue(site->setting("download/simultaneous", 10).toInt());
+	ui->spinThrottleDetails->setValue(site->setting("download/throttle_details", 0).toInt());
+	ui->spinThrottleImage->setValue(site->setting("download/throttle_image", 0).toInt());
+	ui->spinThrottlePage->setValue(site->setting("download/throttle_page", 0).toInt());
+	ui->spinThrottleRetry->setValue(site->setting("download/throttle_retry", 0).toInt());
+	ui->spinThrottleThumbnail->setValue(site->setting("download/throttle_thumbnail", 0).toInt());
 
 	// Source order
-	ui->checkSourcesDefault->setChecked(settings->value("sources/usedefault", true).toBool());
+	ui->checkSourcesDefault->setChecked(site->setting("sources/usedefault", true).toBool());
 	QStringList sources = QStringList() << "" << "xml" << "json" << "regex" << "rss";
-	ui->comboSources1->setCurrentIndex(sources.indexOf(settings->value("sources/source_1", global.value("source_1", sources[0]).toString()).toString()));
-	ui->comboSources2->setCurrentIndex(sources.indexOf(settings->value("sources/source_2", global.value("source_2", sources[1]).toString()).toString()));
-	ui->comboSources3->setCurrentIndex(sources.indexOf(settings->value("sources/source_3", global.value("source_3", sources[2]).toString()).toString()));
-	ui->comboSources4->setCurrentIndex(sources.indexOf(settings->value("sources/source_4", global.value("source_4", sources[3]).toString()).toString()));
+	ui->comboSources1->setCurrentIndex(sources.indexOf(site->setting("sources/source_1", m_globalSettings->value("source_1", sources[0]).toString()).toString()));
+	ui->comboSources2->setCurrentIndex(sources.indexOf(site->setting("sources/source_2", m_globalSettings->value("source_2", sources[1]).toString()).toString()));
+	ui->comboSources3->setCurrentIndex(sources.indexOf(site->setting("sources/source_3", m_globalSettings->value("source_3", sources[2]).toString()).toString()));
+	ui->comboSources4->setCurrentIndex(sources.indexOf(site->setting("sources/source_4", m_globalSettings->value("source_4", sources[3]).toString()).toString()));
 
 	// Credentials
-	ui->lineAuthPseudo->setText(settings->value("auth/pseudo", "").toString());
-	ui->lineAuthPassword->setText(settings->value("auth/password", "").toString());
+	ui->lineAuthPseudo->setText(site->setting("auth/pseudo", "").toString());
+	ui->lineAuthPassword->setText(site->setting("auth/password", "").toString());
 
 	// Login
 	QStringList types = QStringList() << "url" << "get" << "post" << "oauth1" << "oauth2";
-	QString defaultType = settings->value("login/parameter", true).toBool() ? "url" : settings->value("login/method", "post").toString();
-	QString type = settings->value("login/type", defaultType).toString();
+	QString defaultType = site->setting("login/parameter", true).toBool() ? "url" : site->setting("login/method", "post").toString();
+	QString type = site->setting("login/type", defaultType).toString();
 	ui->comboLoginType->setCurrentIndex(types.indexOf(type));
-	ui->lineLoginGetUrl->setText(settings->value("login/get/url", type != "get" ? "" : settings->value("login/url", "").toString()).toString());
-	ui->lineLoginGetPseudo->setText(settings->value("login/get/pseudo", type != "get" ? "" : settings->value("login/pseudo", "").toString()).toString());
-	ui->lineLoginGetPassword->setText(settings->value("login/get/password", type != "get" ? "" : settings->value("login/password", "").toString()).toString());
-	ui->lineLoginGetCookie->setText(settings->value("login/get/cookie", type != "get" ? "" : settings->value("login/cookie", "").toString()).toString());
-	ui->lineLoginPostUrl->setText(settings->value("login/post/url", type != "post" ? "" : settings->value("login/url", "").toString()).toString());
-	ui->lineLoginPostPseudo->setText(settings->value("login/post/pseudo", type != "post" ? "" : settings->value("login/pseudo", "").toString()).toString());
-	ui->lineLoginPostPassword->setText(settings->value("login/post/password", type != "post" ? "" : settings->value("login/password", "").toString()).toString());
-	ui->lineLoginPostCookie->setText(settings->value("login/post/cookie", type != "post" ? "" : settings->value("login/cookie", "").toString()).toString());
-	ui->lineLoginOAuth1RequestTokenUrl->setText(settings->value("login/oauth1/requestTokenUrl", "").toString());
-	ui->lineLoginOAuth1AuthorizeUrl->setText(settings->value("login/oauth1/authorizeUrl", "").toString());
-	ui->lineLoginOAuth1AccessTokenUrl->setText(settings->value("login/oauth1/accessTokenUrl", "").toString());
-	ui->lineLoginOAuth2RequestUrl->setText(settings->value("login/oauth2/requestUrl", "").toString());
-	ui->lineLoginOAuth2TokenUrl->setText(settings->value("login/oauth2/tokenUrl", "").toString());
-	ui->lineLoginOAuth2RefreshTokenUrl->setText(settings->value("login/oauth2/refreshTokenUrl", "").toString());
-	ui->lineLoginOAuth2Scope->setText(settings->value("login/oauth2/scope", "").toString());
-	ui->spinLoginMaxPage->setValue(settings->value("login/maxPage", 0).toInt());
+	ui->lineLoginGetUrl->setText(site->setting("login/get/url", type != "get" ? "" : site->setting("login/url", "").toString()).toString());
+	ui->lineLoginGetPseudo->setText(site->setting("login/get/pseudo", type != "get" ? "" : site->setting("login/pseudo", "").toString()).toString());
+	ui->lineLoginGetPassword->setText(site->setting("login/get/password", type != "get" ? "" : site->setting("login/password", "").toString()).toString());
+	ui->lineLoginGetCookie->setText(site->setting("login/get/cookie", type != "get" ? "" : site->setting("login/cookie", "").toString()).toString());
+	ui->lineLoginPostUrl->setText(site->setting("login/post/url", type != "post" ? "" : site->setting("login/url", "").toString()).toString());
+	ui->lineLoginPostPseudo->setText(site->setting("login/post/pseudo", type != "post" ? "" : site->setting("login/pseudo", "").toString()).toString());
+	ui->lineLoginPostPassword->setText(site->setting("login/post/password", type != "post" ? "" : site->setting("login/password", "").toString()).toString());
+	ui->lineLoginPostCookie->setText(site->setting("login/post/cookie", type != "post" ? "" : site->setting("login/cookie", "").toString()).toString());
+	ui->lineLoginOAuth1RequestTokenUrl->setText(site->setting("login/oauth1/requestTokenUrl", "").toString());
+	ui->lineLoginOAuth1AuthorizeUrl->setText(site->setting("login/oauth1/authorizeUrl", "").toString());
+	ui->lineLoginOAuth1AccessTokenUrl->setText(site->setting("login/oauth1/accessTokenUrl", "").toString());
+	ui->lineLoginOAuth2RequestUrl->setText(site->setting("login/oauth2/requestUrl", "").toString());
+	ui->lineLoginOAuth2TokenUrl->setText(site->setting("login/oauth2/tokenUrl", "").toString());
+	ui->lineLoginOAuth2RefreshTokenUrl->setText(site->setting("login/oauth2/refreshTokenUrl", "").toString());
+	ui->lineLoginOAuth2Scope->setText(site->setting("login/oauth2/scope", "").toString());
+	ui->spinLoginMaxPage->setValue(site->setting("login/maxPage", 0).toInt());
 
 	// Hide hash if unncessary
 	if (site->value("PasswordSalt").isEmpty())
@@ -91,7 +89,7 @@ SourcesSettingsWindow::SourcesSettingsWindow(Site *site, QWidget *parent) : QDia
 	}
 
 	// Headers
-	QMap<QString, QVariant> headers = site->settings()->value("headers").toMap();
+	QMap<QString, QVariant> headers = site->setting("headers").toMap();
 	ui->tableHeaders->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 	ui->tableHeaders->setRowCount(headers.count());
 	int headerRow = 0;
@@ -140,7 +138,7 @@ void SourcesSettingsWindow::deleteSite()
 	int reponse = QMessageBox::question(this, tr("Delete a site"), tr("Are you sure you want to delete the site %1?").arg(m_site->name()), QMessageBox::Yes | QMessageBox::No);
 	if (reponse == QMessageBox::Yes)
 	{
-		QFile f(savePath("sites/"+m_site->type()+"/sites.txt"));
+		QFile f(m_site->getSource()->getPath() + "/sites.txt");
 		f.open(QIODevice::ReadOnly);
 			QString sites = f.readAll();
 		f.close();
@@ -189,57 +187,55 @@ void SourcesSettingsWindow::loginTested(Site*, Site::LoginResult result)
 
 void SourcesSettingsWindow::save()
 {
-	QSettings *settings = m_site->settings();
-
-	settings->setValue("name", ui->lineSiteName->text());
+	m_site->setSetting("name", ui->lineSiteName->text(), m_site->url());
 	QStringList referers = QStringList() << "none" << "host" << "page" << "image";
 	QStringList referers_preview = QStringList() << "" << "none" << "host" << "page" << "image";
 	QStringList referers_image = QStringList() << "" << "none" << "host" << "page" << "details" << "image";
-	settings->setValue("referer", referers[ui->comboReferer->currentIndex()]);
-	settings->setValue("referer_preview", referers_preview[ui->comboRefererPreview->currentIndex()]);
-	settings->setValue("referer_image", referers_image[ui->comboRefererImage->currentIndex()]);
-	settings->setValue("ignore/always", ui->spinIgnoreAlways->value());
-	settings->setValue("ignore/1", ui->spinIgnore1->value());
-	settings->setValue("ssl", ui->checkSsl->isChecked());
+	m_site->setSetting("referer", referers[ui->comboReferer->currentIndex()], "none");
+	m_site->setSetting("referer_preview", referers_preview[ui->comboRefererPreview->currentIndex()], "");
+	m_site->setSetting("referer_image", referers_image[ui->comboRefererImage->currentIndex()], "");
+	m_site->setSetting("ignore/always", ui->spinIgnoreAlways->value(), 0);
+	m_site->setSetting("ignore/1", ui->spinIgnore1->value(), 0);
+	m_site->setSetting("ssl", ui->checkSsl->isChecked(), false);
 
-	settings->setValue("download/imagesperpage", ui->spinImagesPerPage->value());
-	settings->setValue("download/simultaneous", ui->spinSimultaneousDownloads->value());
-	settings->setValue("download/throttle_details", ui->spinThrottleDetails->value());
-	settings->setValue("download/throttle_image", ui->spinThrottleImage->value());
-	settings->setValue("download/throttle_page", ui->spinThrottlePage->value());
-	settings->setValue("download/throttle_retry", ui->spinThrottleRetry->value());
-	settings->setValue("download/throttle_thumbnail", ui->spinThrottleThumbnail->value());
+	m_site->setSetting("download/imagesperpage", ui->spinImagesPerPage->value(), 200);
+	m_site->setSetting("download/simultaneous", ui->spinSimultaneousDownloads->value(), 10);
+	m_site->setSetting("download/throttle_details", ui->spinThrottleDetails->value(), 0);
+	m_site->setSetting("download/throttle_image", ui->spinThrottleImage->value(), 0);
+	m_site->setSetting("download/throttle_page", ui->spinThrottlePage->value(), 0);
+	m_site->setSetting("download/throttle_retry", ui->spinThrottleRetry->value(), 0);
+	m_site->setSetting("download/throttle_thumbnail", ui->spinThrottleThumbnail->value(), 0);
 
 	QStringList sources = QStringList() << "" << "xml" << "json" << "regex" << "rss";
-	settings->setValue("sources/usedefault", ui->checkSourcesDefault->isChecked());
-	settings->setValue("sources/source_1", sources[qMax(0, ui->comboSources1->currentIndex())]);
-	settings->setValue("sources/source_2", sources[qMax(0, ui->comboSources2->currentIndex())]);
-	settings->setValue("sources/source_3", sources[qMax(0, ui->comboSources3->currentIndex())]);
-	settings->setValue("sources/source_4", sources[qMax(0, ui->comboSources4->currentIndex())]);
+	m_site->setSetting("sources/usedefault", ui->checkSourcesDefault->isChecked(), true);
+	m_site->setSetting("sources/source_1", sources[qMax(0, ui->comboSources1->currentIndex())], m_globalSettings->value("source_1", sources[0]).toString());
+	m_site->setSetting("sources/source_2", sources[qMax(0, ui->comboSources2->currentIndex())], m_globalSettings->value("source_2", sources[1]).toString());
+	m_site->setSetting("sources/source_3", sources[qMax(0, ui->comboSources3->currentIndex())], m_globalSettings->value("source_3", sources[2]).toString());
+	m_site->setSetting("sources/source_4", sources[qMax(0, ui->comboSources4->currentIndex())], m_globalSettings->value("source_4", sources[3]).toString());
 
 
-	settings->setValue("auth/pseudo", ui->lineAuthPseudo->text());
-	settings->setValue("auth/password", ui->lineAuthPassword->text());
+	m_site->setSetting("auth/pseudo", ui->lineAuthPseudo->text(), "");
+	m_site->setSetting("auth/password", ui->lineAuthPassword->text(), "");
 
 	// Login
 	QStringList types = QStringList() << "url" << "get" << "post" << "oauth1" << "oauth2";
-	settings->setValue("login/type", types[ui->comboLoginType->currentIndex()]);
-	settings->setValue("login/get/url", ui->lineLoginGetUrl->text());
-	settings->setValue("login/get/pseudo", ui->lineLoginGetPseudo->text());
-	settings->setValue("login/get/password", ui->lineLoginGetPassword->text());
-	settings->setValue("login/get/cookie", ui->lineLoginGetCookie->text());
-	settings->setValue("login/post/url", ui->lineLoginPostUrl->text());
-	settings->setValue("login/post/pseudo", ui->lineLoginPostPseudo->text());
-	settings->setValue("login/post/password", ui->lineLoginPostPassword->text());
-	settings->setValue("login/post/cookie", ui->lineLoginPostCookie->text());
-	settings->setValue("login/oauth1/requestTokenUrl", ui->lineLoginOAuth1RequestTokenUrl->text());
-	settings->setValue("login/oauth1/authorizeUrl", ui->lineLoginOAuth1AuthorizeUrl->text());
-	settings->setValue("login/oauth1/accessTokenUrl", ui->lineLoginOAuth1AccessTokenUrl->text());
-	settings->setValue("login/oauth2/requestUrl", ui->lineLoginOAuth2RequestUrl->text());
-	settings->setValue("login/oauth2/tokenUrl", ui->lineLoginOAuth2TokenUrl->text());
-	settings->setValue("login/oauth2/refreshTokenUrl", ui->lineLoginOAuth2RefreshTokenUrl->text());
-	settings->setValue("login/oauth2/scope", ui->lineLoginOAuth2Scope->text());
-	settings->setValue("login/maxPage", ui->spinLoginMaxPage->value());
+	m_site->setSetting("login/type", types[ui->comboLoginType->currentIndex()], "url");
+	m_site->setSetting("login/get/url", ui->lineLoginGetUrl->text(), "");
+	m_site->setSetting("login/get/pseudo", ui->lineLoginGetPseudo->text(), "");
+	m_site->setSetting("login/get/password", ui->lineLoginGetPassword->text(), "");
+	m_site->setSetting("login/get/cookie", ui->lineLoginGetCookie->text(), "");
+	m_site->setSetting("login/post/url", ui->lineLoginPostUrl->text(), "");
+	m_site->setSetting("login/post/pseudo", ui->lineLoginPostPseudo->text(), "");
+	m_site->setSetting("login/post/password", ui->lineLoginPostPassword->text(), "");
+	m_site->setSetting("login/post/cookie", ui->lineLoginPostCookie->text(), "");
+	m_site->setSetting("login/oauth1/requestTokenUrl", ui->lineLoginOAuth1RequestTokenUrl->text(), "");
+	m_site->setSetting("login/oauth1/authorizeUrl", ui->lineLoginOAuth1AuthorizeUrl->text(), "");
+	m_site->setSetting("login/oauth1/accessTokenUrl", ui->lineLoginOAuth1AccessTokenUrl->text(), "");
+	m_site->setSetting("login/oauth2/requestUrl", ui->lineLoginOAuth2RequestUrl->text(), "");
+	m_site->setSetting("login/oauth2/tokenUrl", ui->lineLoginOAuth2TokenUrl->text(), "");
+	m_site->setSetting("login/oauth2/refreshTokenUrl", ui->lineLoginOAuth2RefreshTokenUrl->text(), "");
+	m_site->setSetting("login/oauth2/scope", ui->lineLoginOAuth2Scope->text(), "");
+	m_site->setSetting("login/maxPage", ui->spinLoginMaxPage->value(), 0);
 
 	// Cookies
 	QList<QVariant> cookies;
@@ -253,7 +249,7 @@ void SourcesSettingsWindow::save()
 		cookie.setValue(ui->tableCookies->item(i, 1)->text().toLatin1());
 		cookies.append(cookie.toRawForm());
 	}
-	settings->setValue("cookies", cookies);
+	m_site->setSetting("cookies", cookies, QList<QVariant>());
 
 	// Headers
 	QMap<QString, QVariant> headers;
@@ -264,9 +260,9 @@ void SourcesSettingsWindow::save()
 
 		headers.insert(ui->tableHeaders->item(i, 0)->text(), ui->tableHeaders->item(i, 1)->text());
 	}
-	settings->setValue("headers", headers);
+	m_site->setSetting("headers", headers, QMap<QString,QVariant>());
 
-	settings->sync();
+	m_site->syncSettings();
 
 	m_site->loadConfig();
 }

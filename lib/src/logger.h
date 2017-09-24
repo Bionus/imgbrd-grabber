@@ -17,10 +17,10 @@ class Logger : public QObject
 	public:
 		enum LogLevel
 		{
-			Debug,
-			Info,
-			Warning,
-			Error
+			Debug = 0,
+			Info = 1,
+			Warning = 2,
+			Error = 3
 		};
 
 		// Singleton pattern
@@ -33,6 +33,7 @@ class Logger : public QObject
 		void operator=(Logger const&) = delete;
 
 		void setLogFile(QString path);
+		void setLogLevel(LogLevel level);
 		void log(QString, LogLevel type = Info);
 		void logCommand(QString);
 		void logCommandSql(QString);
@@ -44,6 +45,7 @@ class Logger : public QObject
 	private:
 		Logger() {}
 		QFile m_logFile, m_fCommandsLog, m_fCommandsSqlLog;
+		LogLevel m_level = LogLevel::Info;
 };
 
 

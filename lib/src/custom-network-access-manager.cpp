@@ -23,11 +23,14 @@ QNetworkReply *CustomNetworkAccessManager::get(const QNetworkRequest &request)
 		QString host = request.url().host();
 		QString path = "tests/resources/pages/" + host + "/" + md5 + "." + ext;
 
-		if (!CustomNetworkAccessManager::NextFiles.isEmpty())
+		bool fromQueue = !CustomNetworkAccessManager::NextFiles.isEmpty();
+		if (fromQueue)
 		{ path = CustomNetworkAccessManager::NextFiles.dequeue(); }
 
 		QFile f(path);
-		if (!f.open(QFile::ReadOnly))
+		bool opened = f.open(QFile::ReadOnly);
+		bool logFilename = !opened || !fromQueue;
+		if (!opened)
 		{
 			md5 = QString(QCryptographicHash::hash(request.url().toString().toLatin1(), QCryptographicHash::Md5).toHex());
 			f.setFileName("tests/resources/pages/" + host + "/" + md5 + "." + ext);
@@ -51,7 +54,8 @@ QNetworkReply *CustomNetworkAccessManager::get(const QNetworkRequest &request)
 			}
 		}
 
-		qDebug() << ("Reply from file: " + request.url().toString() + " -> " + f.fileName());
+		if (logFilename)
+		{ qDebug() << ("Reply from file: " + request.url().toString() + " -> " + f.fileName()); }
 		QByteArray content = f.readAll();
 
 		QCustomNetworkReply *reply = new QCustomNetworkReply(this);
@@ -62,6 +66,7 @@ QNetworkReply *CustomNetworkAccessManager::get(const QNetworkRequest &request)
 		return reply;
 	}
 
+	log(QString("Loading <a href=\"%1\">%1</a>").arg(request.url().toString().toHtmlEscaped()), Logger::Debug);
 	return QNetworkAccessManager::get(request);
 }
 

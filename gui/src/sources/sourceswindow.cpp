@@ -20,6 +20,7 @@ sourcesWindow::sourcesWindow(Profile *profile, QList<bool> selected, QMap<QStrin
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	ui->setupUi(this);
+	restoreGeometry(m_profile->getSettings()->value("Sources/geometry").toByteArray());
 
 	bool checkall = true;
 	for (int i = 0; i < selected.count(); i++)
@@ -63,6 +64,7 @@ sourcesWindow::~sourcesWindow()
  */
 void sourcesWindow::closeEvent(QCloseEvent *event)
 {
+	m_profile->getSettings()->setValue("Sources/geometry", saveGeometry());
 	emit closed();
 	event->accept();
 }
@@ -115,7 +117,7 @@ void sourcesWindow::valid()
 
 void sourcesWindow::settingsSite(QString site)
 {
-	SourcesSettingsWindow *ssw = new SourcesSettingsWindow(m_sites->value(site), this);
+	SourcesSettingsWindow *ssw = new SourcesSettingsWindow(m_profile, m_sites->value(site), this);
 	connect(ssw, SIGNAL(siteDeleted(QString)), this, SLOT(deleteSite(QString)));
 	ssw->show();
 }
@@ -198,8 +200,7 @@ void sourcesWindow::removeCheckboxes()
  */
 void sourcesWindow::addCheckboxes()
 {
-	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
-	QString t = settings.value("Sources/Types", "icon").toString();
+	QString t = m_profile->getSettings()->value("Sources/Types", "icon").toString();
 
 	QStringList k = m_sites->keys();
 	for (int i = 0; i < k.count(); i++)
@@ -217,7 +218,7 @@ void sourcesWindow::addCheckboxes()
 			if (t == "icon" || t == "both")
 			{
 				QLabel *image = new QLabel(this);
-				image->setPixmap(QPixmap(savePath("sites/"+m_sites->value(k.at(i))->type()+"/icon.png")));
+				image->setPixmap(QPixmap(m_sites->value(k.at(i))->getSource()->getPath() + "/icon.png").scaled(QSize(16, 16)));
 				ui->gridLayout->addWidget(image, i, n);
 				m_labels << image;
 				n++;

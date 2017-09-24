@@ -27,6 +27,8 @@ QList<Image*> IntegrationTestSuite::getImages(QString site, QString source, QStr
 	settings.setValue("download/throttle_details", 0);
 	settings.setValue("sources/usedefault", false);
 	settings.setValue("sources/source_1", format);
+	settings.sync();
+	m_filesToRemove.append(settings.fileName());
 
 	QList<Site*> sites;
 	Site *ste = new Site(source, new Source(&profile, "tests/resources/sites/" + site));
@@ -75,7 +77,7 @@ QList<Tag> IntegrationTestSuite::getPageTags(QString site, QString source, QStri
 {
 	QDir().mkpath("tests/resources/sites/" + site + "/" + source);
 	QFile::copy("release/sites/" + site +"/model.xml", "tests/resources/sites/" + site +"/model.xml");
-	QFile::copy("release/sites/" + site +"/" + source + "/settings.ini", "tests/resources/sites/" + site +"/" + source + "/settings.ini");
+	QFile::copy("release/sites/" + site +"/" + source + "/defaults.ini", "tests/resources/sites/" + site +"/" + source + "/defaults.ini");
 
 	QSettings settings("tests/resources/sites/" + site +"/" + source + "/settings.ini", QSettings::IniFormat);
 	settings.setValue("download/throttle_retry", 0);
@@ -84,6 +86,8 @@ QList<Tag> IntegrationTestSuite::getPageTags(QString site, QString source, QStri
 	settings.setValue("download/throttle_details", 0);
 	settings.setValue("sources/usedefault", false);
 	settings.setValue("sources/source_1", format);
+	settings.sync();
+	m_filesToRemove.append(settings.fileName());
 
 	// Setup network
 	if (!file.isEmpty())
@@ -136,7 +140,7 @@ QList<Tag> IntegrationTestSuite::getTags(QString site, QString source, QString f
 {
 	QDir().mkpath("tests/resources/sites/" + site + "/" + source);
 	QFile::copy("release/sites/" + site +"/model.xml", "tests/resources/sites/" + site +"/model.xml");
-	QFile::copy("release/sites/" + site +"/" + source + "/settings.ini", "tests/resources/sites/" + site +"/" + source + "/settings.ini");
+	QFile::copy("release/sites/" + site +"/" + source + "/defaults.ini", "tests/resources/sites/" + site +"/" + source + "/defaults.ini");
 
 	QSettings settings("tests/resources/sites/" + site +"/" + source + "/settings.ini", QSettings::IniFormat);
 	settings.setValue("download/throttle_retry", 0);
@@ -145,6 +149,8 @@ QList<Tag> IntegrationTestSuite::getTags(QString site, QString source, QString f
 	settings.setValue("download/throttle_details", 0);
 	settings.setValue("sources/usedefault", false);
 	settings.setValue("sources/source_1", format);
+	settings.sync();
+	m_filesToRemove.append(settings.fileName());
 
 	// Setup network
 	if (!file.isEmpty())
@@ -178,4 +184,8 @@ void IntegrationTestSuite::cleanup()
 		m_downloader->deleteLater();
 		m_downloader = nullptr;
 	}
+
+	for (QString file : m_filesToRemove)
+	{ QFile(file).remove(); }
+	m_filesToRemove.clear();
 }

@@ -127,7 +127,7 @@ class zoomWindow : public QWidget
 		Site *m_site;
 		int m_timeout, m_mustSave;
 		bool m_tooBig, m_loadedImage, m_loadedDetails;
-		QString id, m_url, rating, score, user, format;
+		QString id, m_url, m_saveUrl, rating, score, user;
 		QAffiche *m_labelTagsTop, *m_labelTagsLeft;
 		QTimer *m_resizeTimer;
 		QTime m_imageTime;

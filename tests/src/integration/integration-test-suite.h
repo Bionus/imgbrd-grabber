@@ -25,6 +25,7 @@ class IntegrationTestSuite : public TestSuite
 	protected:
 		Downloader	*m_downloader;
 		Site		*m_site;
+		QStringList m_filesToRemove;
 };
 
 #endif // INTEGRATION_TEST_SUITE_H
