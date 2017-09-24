@@ -56,7 +56,7 @@ void TagLoader::cancel()
 void TagLoader::start()
 {
 	// Get site and API
-	Site *site = m_sites.value(ui->comboSource->currentText());
+	Site *site = m_sites.value(m_options[ui->comboSource->currentIndex()]);
 	QList<Api*> apis = getCompatibleApis(site);
 	Api *api = apis.first();
 	site->tagDatabase()->load();
