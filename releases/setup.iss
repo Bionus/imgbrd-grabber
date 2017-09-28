@@ -117,6 +117,10 @@ Source: "..\release\sqldrivers\qsqlite.dll";    DestDir: "{app}\sqldrivers"; Fla
 Source: "..\release\sqldrivers\qsqlmysql.dll";  DestDir: "{app}\sqldrivers"; Flags: ignoreversion
 Source: "..\release\sqldrivers\qsqlodbc.dll";   DestDir: "{app}\sqldrivers"; Flags: ignoreversion
 Source: "..\release\sqldrivers\qsqlpsql.dll";   DestDir: "{app}\sqldrivers"; Flags: ignoreversion
+Source: "..\release\sites\Anime pictures\icon.png";     DestDir: "{localappdata}\Bionus\Grabber\sites\Anime pictures"; Flags: ignoreversion
+Source: "..\release\sites\Anime pictures\model.xml";    DestDir: "{localappdata}\Bionus\Grabber\sites\Anime pictures"; Flags: ignoreversion
+Source: "..\release\sites\Anime pictures\sites.txt";    DestDir: "{localappdata}\Bionus\Grabber\sites\Anime pictures"; Flags: onlyifdoesntexist
+Source: "..\release\sites\Anime pictures\anime-pictures.net\defaults.ini"; DestDir: "{localappdata}\Bionus\Grabber\sites\Anime pictures\anime-pictures.net"; Flags: ignoreversion
 Source: "..\release\sites\Booru-on-rails\icon.png";     DestDir: "{localappdata}\Bionus\Grabber\sites\Booru-on-rails"; Flags: ignoreversion
 Source: "..\release\sites\Booru-on-rails\model.xml";    DestDir: "{localappdata}\Bionus\Grabber\sites\Booru-on-rails"; Flags: ignoreversion
 Source: "..\release\sites\Booru-on-rails\sites.txt";    DestDir: "{localappdata}\Bionus\Grabber\sites\Booru-on-rails"; Flags: onlyifdoesntexist
