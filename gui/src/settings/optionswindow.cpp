@@ -197,13 +197,14 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	QMap<QString, QStringList> customs = getCustoms(settings);
 	m_customNames = QList<QLineEdit*>();
 	m_customTags = QList<QLineEdit*>();
+	i = 0;
 	for (QString key : customs.keys())
 	{
 		QLineEdit *leName = new QLineEdit(key);
 		QLineEdit *leTags = new QLineEdit(customs[key].join(" "));
 		m_customNames.append(leName);
 		m_customTags.append(leTags);
-		ui->layoutCustom->insertRow(i, leName, leTags);
+		ui->layoutCustom->insertRow(i++, leName, leTags);
 	}
 
 	// Themes
@@ -958,8 +959,8 @@ void optionsWindow::save()
 		settings->setValue("simultaneous", ui->spinSimultaneous->value());
 		settings->beginGroup("Customs");
 			settings->remove("");
-			for (QLineEdit *le : m_customNames)
-			{ settings->setValue(le->text(), le->text()); }
+			for (int i = 0; i < m_customNames.size(); i++)
+			{ settings->setValue(m_customNames[i]->text(), m_customTags[i]->text()); }
 		settings->endGroup();
 	settings->endGroup();
 
