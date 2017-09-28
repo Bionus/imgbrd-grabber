@@ -517,6 +517,7 @@ void zoomWindow::setButtonState(bool fav, SaveButtonState state)
 
 	// Update actual button label
 	QPushButton *button = fav ? ui->buttonSaveFav : ui->buttonSave;
+	button->setToolTip("");
 	switch (state)
 	{
 		case SaveButtonState::Save:
@@ -540,10 +541,12 @@ void zoomWindow::setButtonState(bool fav, SaveButtonState state)
 			break;
 
 		case SaveButtonState::ExistsMd5:
+			button->setToolTip(m_imagePath);
 			button->setText(fav ? tr("MD5 already exists (fav)") : tr("MD5 already exists"));
 			break;
 
 		case SaveButtonState::ExistsDisk:
+			button->setToolTip(m_imagePath);
 			button->setText(fav ? tr("Already exists (fav)") : tr("Already exists"));
 			break;
 
