@@ -14,7 +14,7 @@ QMap<QString, QString> LanguageLoader::getAllLanguages() const
 
 	QStringList languageFiles = QDir(m_path).entryList(QStringList("*.qm"), QDir::Files);
 	QMap<QString, QString> languages;
-	for (QString languageFile : languageFiles)
+	for (const QString &languageFile : languageFiles)
 	{
 		QString lang = languageFile.left(languageFile.length() - 3);
 		QString fullLang = fullLanguages.value(lang, lang).toString();

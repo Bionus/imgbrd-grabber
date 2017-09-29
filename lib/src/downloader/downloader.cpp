@@ -126,7 +126,7 @@ void Downloader::finishedLoadingPageTags(Page *page)
 
 	QList<Tag> list;
 	for (int i = 0; i < m_pagesT.size(); ++i)
-		for (Tag tag : m_pagesT.at(i)->tags())
+		for (const Tag &tag : m_pagesT.at(i)->tags())
 		{
 			bool found = false;
 			for (int j = 0; j < list.size(); ++j)
@@ -310,7 +310,7 @@ void Downloader::finishedLoadingImages(Page *page)
 	for (int i = 0; i < m_pages.size(); ++i)
 	{
 		Page *p = m_pages.at(i);
-		for (QSharedPointer<Image> img : p->images())
+		for (const QSharedPointer<Image> &img : p->images())
 		{
 			// Blacklisted tags
 			if (!m_blacklist)
@@ -359,7 +359,7 @@ void Downloader::finishedLoadingImage()
 		return;
 
 	QSharedPointer<Image> image;
-	for (QSharedPointer<Image> i : m_imagesDownloading)
+	for (const QSharedPointer<Image> &i : m_imagesDownloading)
 		if (i.data() == sender())
 			image = i;
 	if (image.isNull())
@@ -446,7 +446,7 @@ void Downloader::finishedLoadingUrls(Page *page)
 	for (int i = 0; i < m_pages.size(); ++i)
 	{
 		Page *p = m_pages.at(i);
-		for (QSharedPointer<Image> img : p->images())
+		for (const QSharedPointer<Image> &img : p->images())
 		{
 			// Blacklisted tags
 			if (!m_blacklist)
@@ -477,7 +477,7 @@ void Downloader::finishedLoadingUrls(Page *page)
 
 	QStringList urls;
 	int i = 0;
-	for (QSharedPointer<Image> img : images)
+	for (const QSharedPointer<Image> &img : images)
 		if (m_max <= 0 || i++ < m_max)
 			urls.append(img->url());
 
@@ -499,7 +499,7 @@ void Downloader::returnString(QString ret)
 }
 void Downloader::returnTagList(QList<Tag> tags)
 {
-	for (Tag tag : tags)
+	for (const Tag &tag : tags)
 	{
 		QString ret = m_tagsformat;
 		ret.replace("\\t", "\t");
@@ -515,7 +515,7 @@ void Downloader::returnTagList(QList<Tag> tags)
 }
 void Downloader::returnStringList(QStringList ret)
 {
-	for (QString str : ret)
+	for (const QString &str : ret)
 		std::cout << str.toStdString() << std::endl;
 	emit quit();
 }

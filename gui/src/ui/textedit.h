@@ -13,18 +13,17 @@ class TextEdit : public QTextEdit
 	Q_OBJECT
 
 	public:
-		TextEdit(Profile *profile, QWidget *parent = 0);
-		~TextEdit();
+		explicit TextEdit(Profile *profile, QWidget *parent = Q_NULLPTR);
 		void setCompleter(QCompleter *c);
 		QCompleter *completer() const;
-		QSize sizeHint() const;
+		QSize sizeHint() const override;
 		void doColor();
 		void setText(const QString &text);
 
 	protected:
-		void keyPressEvent(QKeyEvent *e);
-		void focusInEvent(QFocusEvent *e);
-		void wheelEvent(QWheelEvent *e);
+		void keyPressEvent(QKeyEvent *e) override;
+		void focusInEvent(QFocusEvent *e) override;
+		void wheelEvent(QWheelEvent *e) override;
 
 	private:
 		QString textUnderCursor() const;

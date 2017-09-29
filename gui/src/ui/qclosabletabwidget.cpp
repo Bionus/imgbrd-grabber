@@ -13,7 +13,7 @@ bool QClosableTabWidget::eventFilter(QObject *o, QEvent *e)
 {
 	if (o == tabBar() && e->type() == QEvent::MouseButtonPress)
 	{
-		QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(e);
+		auto *mouseEvent = static_cast<QMouseEvent *>(e);
 		if (mouseEvent->button() == Qt::MiddleButton)
 		{
 			int index = tabBar()->tabAt(mouseEvent->pos());

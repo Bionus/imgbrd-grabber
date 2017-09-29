@@ -59,7 +59,7 @@ void FileDownloader::replyFinished()
 		return;
 	}
 
-	for (QString copy : m_copies)
+	for (const QString &copy : m_copies)
 		m_file.copy(copy);
 
 	emit success();

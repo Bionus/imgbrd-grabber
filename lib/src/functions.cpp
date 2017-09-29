@@ -11,7 +11,7 @@
 #include <QLocale>
 #include <QTimeZone>
 #include <QRegularExpression>
-#include "math.h"
+#include <cmath>
 #ifdef Q_OS_WIN
 	#include <windows.h>
 #else
@@ -69,11 +69,11 @@ QMap<int, QMap<QString, QVariant> > getExternalLogFiles(QSettings *settings)
 	QMap<int, QMap<QString, QVariant>> ret;
 
 	settings->beginGroup("LogFiles");
-	for (QString group : settings->childGroups())
+	for (const QString &group : settings->childGroups())
 	{
 		settings->beginGroup(group);
 		QMap<QString, QVariant> logSettings;
-		for (QString key : settings->childKeys())
+		for (const QString &key : settings->childKeys())
 		{ logSettings.insert(key, settings->value(key)); }
 		ret.insert(group.toInt(), logSettings);
 		settings->endGroup();
@@ -90,10 +90,10 @@ QStringList removeWildards(QStringList elements, QStringList remove)
 	QRegExp reg;
 	reg.setCaseSensitivity(Qt::CaseInsensitive);
 	reg.setPatternSyntax(QRegExp::Wildcard);
-	for (QString tag : elements)
+	for (const QString &tag : elements)
 	{
 		bool removed = false;
-		for (QString rem : remove)
+		for (const QString &rem : remove)
 		{
 			reg.setPattern(rem);
 			if (reg.exactMatch(tag))
@@ -199,7 +199,7 @@ QString formatFilesize(float size)
 	return QString("%1 %2").arg(roundedSize).arg(unit);
 }
 
-bool validSavePath(QString file, bool writable)
+bool validSavePath(const QString &file, bool writable)
 {
 	QString nativeFile = QDir::toNativeSeparators(file);
 	QFileInfo info(nativeFile);

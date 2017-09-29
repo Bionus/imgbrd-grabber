@@ -130,7 +130,7 @@ void zoomWindow::go()
 	if (!m_settings->value("whitelistedtags").toString().isEmpty())
 	{
 		QStringList whitelist = m_settings->value("whitelistedtags").toString().split(" ");
-		for (Tag t : m_image->tags())
+		for (const Tag &t : m_image->tags())
 		{
 			if (whitelist.contains(t.text()))
 			{
@@ -144,7 +144,7 @@ void zoomWindow::go()
 
 	m_url = m_image->getDisplayableUrl().toString();
 
-	QTimer *timer = new QTimer(this);
+	auto *timer = new QTimer(this);
 		connect(timer, SIGNAL(timeout()), this, SLOT(update()));
 		timer->setSingleShot(true);
 		m_resizeTimer = timer;
@@ -237,7 +237,7 @@ void zoomWindow::copyImageFileToClipboard()
 		path = files.firstKey();
 	}
 
-	QMimeData* mimeData = new QMimeData();
+	auto *mimeData = new QMimeData();
 	mimeData->setUrls({ QUrl::fromLocalFile(path) });
 	QApplication::clipboard()->setMimeData(mimeData);
 }
@@ -267,7 +267,7 @@ void zoomWindow::openPool(QString url)
 }
 void zoomWindow::openPoolId(Page *p)
 {
-	if (p->images().size() < 1)
+	if (p->images().empty())
 	{
 		p->deleteLater();
 		return;
@@ -437,7 +437,7 @@ void zoomWindow::replyFinishedDetails()
 	QStringList pth1s = m_image->path(m_settings->value("Save/filename").toString(), path1, 0, true, false, true, true, true);
 	QString source1;
 	bool file1notexists = false;
-	for (QString pth1 : pth1s)
+	for (const QString &pth1 : pth1s)
 	{
 		QFile file(pth1);
 		if (file.exists())
@@ -450,7 +450,7 @@ void zoomWindow::replyFinishedDetails()
 	QStringList pth2s = m_image->path(m_settings->value("Save/filename_favorites").toString(), path2, 0, true, false, true, true, true);
 	QString source2;
 	bool file2notexists = false;
-	for (QString pth2 : pth2s)
+	for (const QString &pth2 : pth2s)
 	{
 		QFile file(pth2);
 		if (file.exists())
@@ -838,7 +838,7 @@ QStringList zoomWindow::saveImageNow(bool fav)
 		{ reply = QMessageBox::question(this, tr("Error"), tr("You did not specified a save format! Do you want to open the options window?"), QMessageBox::Yes | QMessageBox::No); }
 		if (reply == QMessageBox::Yes)
 		{
-			optionsWindow *options = new optionsWindow(m_profile, parentWidget());
+			auto *options = new optionsWindow(m_profile, parentWidget());
 			//options->onglets->setCurrentIndex(3);
 			options->setWindowModality(Qt::ApplicationModal);
 			options->show();

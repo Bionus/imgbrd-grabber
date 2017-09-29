@@ -22,7 +22,7 @@ AddGroupWindow::AddGroupWindow(QString selected, QMap<QString, Site*> sites, Pro
 	QStringList completion;
 	completion.append(profile->getAutoComplete());
 	completion.append(profile->getCustomAutoComplete());
-	QCompleter *completer = new QCompleter(completion, this);
+	auto *completer = new QCompleter(completion, this);
 	completer->setCaseSensitivity(Qt::CaseInsensitive);
 
 	m_lineTags = new TextEdit(profile, this);

@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	for (auto key : results.keys())
+	for (const QString &key : results.keys())
 	{
 		std::cout << '[' << (results.value(key) != 0 ? "FAIL" : "OK") << "] " << key.toStdString() << std::endl;
 	}

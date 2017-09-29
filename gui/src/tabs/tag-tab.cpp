@@ -200,7 +200,7 @@ void tagTab::getAll()
 			actuals.append(keys.at(i));
 	}
 
-	for (QString actual : actuals)
+	for (const QString &actual : actuals)
 	{
 		Page *page = m_pages[actual].first();
 

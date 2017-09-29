@@ -39,7 +39,7 @@ poolTab::poolTab(QMap<QString, Site*> *sites, Profile *profile, mainWindow *pare
 	ui_scrollAreaResults = ui->scrollAreaResults;
 
 	QStringList sources = m_sites->keys();
-	for (QString source : sources)
+	for (const QString &source : sources)
 	{ ui->comboSites->addItem(source); }
 
 	// Search field

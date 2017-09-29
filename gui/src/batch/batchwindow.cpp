@@ -199,7 +199,7 @@ void batchWindow::updateColumns()
 int batchWindow::indexOf(QString url)
 {
 	int i = m_urls.indexOf(url);
-	if (i < 0 || ui->tableWidget->item(i, 1) == NULL)
+	if (i < 0 || ui->tableWidget->item(i, 1) == Q_NULLPTR)
 		return -1;
 	return i;
 }

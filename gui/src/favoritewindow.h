@@ -20,7 +20,7 @@ class favoriteWindow : public QDialog
 
 	public:
 		favoriteWindow(Profile *profile, Favorite favorite, QWidget *parent);
-		~favoriteWindow();
+		~favoriteWindow() override;
 
 	public slots:
 		void save();

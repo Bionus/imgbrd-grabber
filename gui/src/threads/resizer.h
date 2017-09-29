@@ -15,7 +15,7 @@ class Resizer : public QObject
 
 	public slots:
 		void setSize(const QSize &size);
-		void setAspectRatioMode(const Qt::AspectRatioMode mode);
+		void setAspectRatioMode(Qt::AspectRatioMode mode);
 		void setInput(const QImage &input);
 		void setInput(const QString &filename);
 		void run();

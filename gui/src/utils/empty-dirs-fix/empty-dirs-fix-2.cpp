@@ -8,7 +8,7 @@ EmptyDirsFix2::EmptyDirsFix2(QStringList folders, QWidget *parent) : QDialog(par
 {
 	ui->setupUi(this);
 
-	for (QString folder : folders)
+	for (const QString &folder : folders)
 	{ ui->listWidget->addItem(new QListWidgetItem(folder)); }
 	ui->listWidget->selectAll();
 }
@@ -31,8 +31,8 @@ void EmptyDirsFix2::deleteSel()
 {
 	QStringList folders;
 	QList<QListWidgetItem*> sel = ui->listWidget->selectedItems();
-	for (int i = 0; i < sel.size(); i++)
-	{ folders.append(sel.at(i)->text()); }
+	for (QListWidgetItem *s : sel)
+	{ folders.append(s->text()); }
 
 	if (folders.isEmpty())
 	{

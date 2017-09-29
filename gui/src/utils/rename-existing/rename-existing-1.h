@@ -21,7 +21,7 @@ class RenameExisting1 : public QDialog
 
 	public:
 		explicit RenameExisting1(Profile *profile, QMap<QString,Site*> sites, QWidget *parent = Q_NULLPTR);
-		~RenameExisting1();
+		~RenameExisting1() override;
 
 	private slots:
 		void getAll(Page *p);

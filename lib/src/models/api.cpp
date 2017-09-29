@@ -5,7 +5,7 @@ Api::Api(QString name, QMap<QString, QString> data)
 	: QObject(), m_name(name), m_data(data)
 {
 	QString prefix = "Urls/" + m_name;
-	for (QString key : m_data.keys())
+	for (const QString &key : m_data.keys())
 	{
 		if (key.startsWith(prefix))
 		{

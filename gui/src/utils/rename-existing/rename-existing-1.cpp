@@ -164,7 +164,7 @@ void RenameExisting1::getAll(Page *p)
 
 void RenameExisting1::getTags()
 {
-	Image *img = dynamic_cast<Image*>(sender());
+	auto *img = dynamic_cast<Image*>(sender());
 
 	m_getAll[img->md5()].second = img->path(ui->lineFilenameDestination->text(), ui->lineFolder->text(), 0, true, false, true, true, true).first();
 	ui->progressBar->setValue(ui->progressBar->value() + 1);

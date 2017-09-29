@@ -81,7 +81,7 @@ SourcesSettingsWindow::SourcesSettingsWindow(Profile *profile, Site *site, QWidg
 	ui->tableCookies->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 	ui->tableCookies->setRowCount(cookies.count());
 	int row = 0;
-	for (QNetworkCookie cookie : site->cookies())
+	for (const QNetworkCookie &cookie : site->cookies())
 	{
 		ui->tableCookies->setItem(row, 0, new QTableWidgetItem(QString(cookie.name())));
 		ui->tableCookies->setItem(row, 1, new QTableWidgetItem(QString(cookie.value())));

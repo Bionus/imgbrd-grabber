@@ -14,11 +14,11 @@ class CustomWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		explicit CustomWindow(QWidget *parent = 0);
-		~CustomWindow();
+		explicit CustomWindow(QWidget *parent = Q_NULLPTR);
+		~CustomWindow() override;
 
 	public slots:
-		void accept();
+		void accept() override;
 
 	signals:
 		void validated(QString, QString);

@@ -20,11 +20,11 @@ class SiteWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		explicit SiteWindow(Profile *profile, QMap<QString, Site*> *sites, QWidget *parent = 0);
-		~SiteWindow();
+		explicit SiteWindow(Profile *profile, QMap<QString, Site*> *sites, QWidget *parent = Q_NULLPTR);
+		~SiteWindow() override;
 
 	public slots:
-		void accept();
+		void accept() override;
 		void finish(Source *source = nullptr);
 
 	private:

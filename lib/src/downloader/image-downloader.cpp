@@ -60,7 +60,7 @@ void ImageDownloader::loadedSave()
 QMap<QString, Image::SaveResult> ImageDownloader::makeMap(QStringList keys, Image::SaveResult value)
 {
 	QMap<QString, Image::SaveResult> res;
-	for (QString key : keys)
+	for (const QString &key : keys)
 		res.insert(key, value);
 	return res;
 }

@@ -86,7 +86,7 @@ QList<QMap<QString, QPair<QString, QString>>> Filename::getReplaces(QString file
 
 	ret.append(replaces);
 	QStringList keys = QStringList() << "artist" << "copyright" << "character" << "model" << "species";
-	for (QString key : keys)
+	for (const QString &key : keys)
 	{
 		if (filename.contains(QRegularExpression("%"+key+"(?::[^%]+)?%")))
 		{
@@ -238,7 +238,7 @@ QMap<QString, QStringList> Filename::makeDetails(const Image& img, Profile *prof
 	QRegExp reg;
 	reg.setCaseSensitivity(Qt::CaseInsensitive);
 	reg.setPatternSyntax(QRegExp::Wildcard);
-	for (Tag tag : img.filteredTags(remove))
+	for (const Tag &tag : img.filteredTags(remove))
 	{
 		QString t = tag.text();
 
@@ -255,7 +255,7 @@ QMap<QString, QStringList> Filename::makeDetails(const Image& img, Profile *prof
 	if (settings->value("Save/copyright_useshorter", true).toBool())
 	{
 		QStringList copyrights;
-		for (QString cop : details["copyrights"])
+		for (const QString &cop : details["copyrights"])
 		{
 			bool found = false;
 			for (int r = 0; r < copyrights.size(); ++r)
@@ -282,7 +282,7 @@ QString Filename::generateJavaScriptVariables(QSettings *settings, QMap<QString,
 	QStringList keys = replaces.keys();
 	for (int i = 0; i < replaces.size(); ++i)
 	{
-		QString key = keys.at(i);
+		const QString &key = keys.at(i);
 		QString res = replaces[key].first.isEmpty() ? replaces[key].second : replaces[key].first;
 
 		if (key == "all" || key == "tags" || key == "general" || key == "artist" || key == "copyright" || key == "character")
@@ -359,13 +359,9 @@ bool Filename::matchConditionalFilename(QString cond, QSettings *settings, QMap<
 	}
 
 	// Tag conditions
-	for (QString opt : options)
-	{
+	for (const QString &opt : options)
 		if (details["alls"].contains(opt))
-		{
 			return true;
-		}
-	}
 
 	return false;
 }
@@ -377,7 +373,7 @@ QStringList Filename::path(const Image& img, Profile *profile, QString pth, int 
 
 	QMap<QString, QStringList> custom = QMap<QString,QStringList>(), scustom = getCustoms(settings);
 	QMap<QString, QStringList> details = makeDetails(img, profile, settings);
-	for (Tag tag : img.filteredTags(remove))
+	for (const Tag &tag : img.filteredTags(remove))
 	{
 		for (int r = 0; r < scustom.size(); ++r)
 		{
@@ -394,7 +390,7 @@ QStringList Filename::path(const Image& img, Profile *profile, QString pth, int 
 
 	// Conditional filenames
 	QMap<QString, QPair<QString, QString>> filenames = getFilenames(settings);
-	for (QString cond : filenames.keys())
+	for (const QString &cond : filenames.keys())
 	{
 		if (matchConditionalFilename(cond, settings, replacesList.first(), details))
 		{
@@ -416,7 +412,7 @@ QStringList Filename::path(const Image& img, Profile *profile, QString pth, int 
 		// We remove the "javascript:" part
 		filename = filename.right(filename.length() - 11);
 
-		for (auto replaces : replacesList)
+		for (const auto &replaces : replacesList)
 		{
 			// Variables initialization
 			QString inits = generateJavaScriptVariables(settings, replaces);
@@ -580,7 +576,7 @@ QString Filename::optionedValue(QString res, QString key, QString ops, const Ima
 	if (!ops.isEmpty())
 	{
 		QStringList opts = ops.split(QRegularExpression("(?<!\\\\),"), QString::SkipEmptyParts);
-		for (QString opt : opts)
+		for (const QString &opt : opts)
 		{
 			int index = opt.indexOf('=');
 			if (index != -1)
@@ -758,7 +754,7 @@ bool Filename::needExactTags(bool forceImageUrl, bool needDate) const
 
 	// The filename contains one of the special tags
 	QStringList forbidden = QStringList() << "artist" << "copyright" << "character" << "model" << "species" << "general";
-	for (QString token : forbidden)
+	for (const QString &token : forbidden)
 		if (m_format.contains(QRegularExpression("%" + token + "(?::([^%]+))?%")))
 			return true;
 

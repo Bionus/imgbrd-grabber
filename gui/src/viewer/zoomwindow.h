@@ -40,7 +40,7 @@ class zoomWindow : public QWidget
 		};
 
 		zoomWindow(QList<QSharedPointer<Image>> images, QSharedPointer<Image> image, Site *site, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent);
-		~zoomWindow();
+		~zoomWindow() override;
 		void go();
 		void load();
 
@@ -93,11 +93,11 @@ class zoomWindow : public QWidget
 		void previous();
 
 	protected:
-		void closeEvent(QCloseEvent *);
-		void resizeEvent(QResizeEvent *);
-		void showEvent(QShowEvent *);
-		void mouseReleaseEvent(QMouseEvent *);
-		void wheelEvent(QWheelEvent *);
+		void closeEvent(QCloseEvent *) override;
+		void resizeEvent(QResizeEvent *) override;
+		void showEvent(QShowEvent *) override;
+		void mouseReleaseEvent(QMouseEvent *) override;
+		void wheelEvent(QWheelEvent *) override;
 		void draw();
 
 	private:

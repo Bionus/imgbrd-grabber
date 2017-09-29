@@ -76,9 +76,9 @@ void sourcesWindow::checkUpdate()
 {
 	bool onechecked = false;
 	bool oneunchecked = false;
-	for (int i = 0; i < m_checks.size(); i++)
+	for (QCheckBox *check : m_checks)
 	{
-		if (m_checks[i]->isChecked())
+		if (check->isChecked())
 		{ onechecked = true; }
 		else
 		{ oneunchecked = true; }
@@ -152,7 +152,7 @@ void sourcesWindow::deleteSite(QString site)
  */
 void sourcesWindow::addSite()
 {
-	SiteWindow *sw = new SiteWindow(m_profile, m_sites, this);
+	auto *sw = new SiteWindow(m_profile, m_sites, this);
 	connect(sw, &SiteWindow::accepted, this, &sourcesWindow::updateCheckboxes);
 	sw->show();
 }
@@ -205,7 +205,7 @@ void sourcesWindow::addCheckboxes()
 	QStringList k = m_sites->keys();
 	for (int i = 0; i < k.count(); i++)
 	{
-		QCheckBox *check = new QCheckBox(this);
+		auto *check = new QCheckBox(this);
 			check->setChecked(m_selected.size() > i && m_selected[i]);
 			check->setText(k.at(i));
 			connect(check, SIGNAL(stateChanged(int)), this, SLOT(checkUpdate()));

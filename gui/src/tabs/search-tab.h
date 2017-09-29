@@ -30,9 +30,9 @@ class searchTab : public QWidget
 
 	public:
 		searchTab(QMap<QString, Site*> *sites, Profile *profile, mainWindow *parent);
-		~searchTab();
+		~searchTab() override;
 		void init();
-		void mouseReleaseEvent(QMouseEvent *e);
+		void mouseReleaseEvent(QMouseEvent *e) override;
 		virtual QList<bool> sources();
 		virtual QString tags() const = 0;
 		QList<Tag> results();
@@ -41,7 +41,7 @@ class searchTab : public QWidget
 		int columns();
 		QString postFilter();
 		virtual void setTags(QString tags, bool preload = true) = 0;
-		virtual bool validateImage(QSharedPointer<Image> img, QString &error);
+		virtual bool validateImage(const QSharedPointer<Image> &img, QString &error);
 		QStringList selectedImages();
 		void setSources(QList<bool> sources);
 		void setImagesPerPage(int ipp);

@@ -13,7 +13,7 @@ class SourceUpdater : public Updater
 		SourceUpdater(QString source, QString directory, QString baseUrl);
 
 	public slots:
-		void checkForUpdates();
+		void checkForUpdates() override;
 
 	private slots:
 		void checkForUpdatesDone();

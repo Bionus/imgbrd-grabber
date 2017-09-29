@@ -24,7 +24,7 @@ class tagTab : public searchTab
 
 	public:
 		explicit tagTab(QMap<QString, Site*> *sites, Profile *profile, mainWindow *parent);
-		~tagTab();
+		~tagTab() override;
 		Ui::tagTab *ui;
 		QString tags() const override;
 		void write(QJsonObject &json) const override;

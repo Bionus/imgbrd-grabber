@@ -10,8 +10,7 @@ class QAffiche : public QLabel
 	Q_OBJECT
 
 	public:
-		QAffiche(QVariant id = QVariant(), int border = 0, QColor color = QColor(), QWidget *parent = 0);
-		~QAffiche();
+		explicit QAffiche(QVariant id = QVariant(), int border = 0, QColor color = QColor(), QWidget *parent = Q_NULLPTR);
 		void setImage(const QImage &);
 		void setImage(const QPixmap &);
 		Qt::MouseButton lastPressed();
@@ -36,11 +35,11 @@ class QAffiche : public QLabel
 
 	protected:
 		//void paintEvent(QPaintEvent*);
-		void mouseDoubleClickEvent(QMouseEvent*);
-		void mousePressEvent(QMouseEvent*);
-		void mouseReleaseEvent(QMouseEvent*);
-		void enterEvent(QEvent*);
-		void leaveEvent(QEvent*);
+		void mouseDoubleClickEvent(QMouseEvent*) override;
+		void mousePressEvent(QMouseEvent*) override;
+		void mouseReleaseEvent(QMouseEvent*) override;
+		void enterEvent(QEvent*) override;
+		void leaveEvent(QEvent*) override;
 		bool hitLabel(const QPoint &p);
 		bool m_pressed;
 		QVariant m_id;

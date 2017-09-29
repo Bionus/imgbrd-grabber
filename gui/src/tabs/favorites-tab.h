@@ -21,7 +21,7 @@ class favoritesTab : public searchTab
 
 	public:
 		explicit favoritesTab(QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent);
-		~favoritesTab();
+		~favoritesTab() override;
 		Ui::favoritesTab *ui;
 		QList<bool> sources() override;
 		QString tags() const override;
@@ -35,7 +35,7 @@ class favoritesTab : public searchTab
 		void setTags(QString tags, bool preload = true) override;
 		// Loading
 		void load() override;
-		bool validateImage(QSharedPointer<Image> img, QString &error) override;
+		bool validateImage(const QSharedPointer<Image> &img, QString &error) override;
 		// Batch
 		void getPage();
 		void getAll();

@@ -33,7 +33,7 @@ class Image : public QObject
 			NetworkError
 		};
 		Image();
-		Image(Site *site, QMap<QString,QString> details, Profile *profile, Page *parent = NULL);
+		Image(Site *site, QMap<QString,QString> details, Profile *profile, Page *parent = Q_NULLPTR);
 		Image(const Image &other);
 		int			value() const;
 		QString		match(QString filter, bool invert = false) const;

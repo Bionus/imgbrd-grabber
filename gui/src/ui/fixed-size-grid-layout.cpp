@@ -58,7 +58,7 @@ QLayoutItem *FixedSizeGridLayout::takeAt(int index)
 	if (index >= 0 && index < m_items.size())
 		return m_items.takeAt(index);
 
-	return 0;
+	return Q_NULLPTR;
 }
 
 
@@ -82,7 +82,7 @@ int FixedSizeGridLayout::verticalSpacing() const
 
 Qt::Orientations FixedSizeGridLayout::expandingDirections() const
 {
-	return 0;
+	return Q_NULLPTR;
 }
 
 bool FixedSizeGridLayout::hasHeightForWidth() const
@@ -164,8 +164,8 @@ int FixedSizeGridLayout::smartSpacing(QStyle::PixelMetric pm) const
 
 	if (parent->isWidgetType())
 	{
-		QWidget *pw = static_cast<QWidget*>(parent);
-		return pw->style()->pixelMetric(pm, 0, pw);
+		auto *pw = static_cast<QWidget*>(parent);
+		return pw->style()->pixelMetric(pm, Q_NULLPTR, pw);
 	}
 
 	return static_cast<QLayout*>(parent)->spacing();

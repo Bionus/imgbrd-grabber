@@ -27,7 +27,7 @@ class FilenameWindow : public QDialog
 
 	public:
 		explicit FilenameWindow(Profile *profile, QString value = "", QWidget *parent = Q_NULLPTR);
-		~FilenameWindow();
+		~FilenameWindow() override;
 		QString format();
 
 	public slots:

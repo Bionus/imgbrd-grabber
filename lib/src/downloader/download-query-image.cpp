@@ -32,7 +32,7 @@ DownloadQueryImage::DownloadQueryImage(int id, QString md5, QString rating, QStr
 void DownloadQueryImage::initFromImage(QSharedPointer<Image> img)
 {
 	QStringList tags;
-	for (Tag tag : img->tags())
+	for (const Tag &tag : img->tags())
 		tags.append(tag.text());
 
 	initFromData(img->id(), img->md5(), img->rating(), tags.join(" "), img->fileUrl().toString(), img->createdAt().toString(Qt::ISODate));

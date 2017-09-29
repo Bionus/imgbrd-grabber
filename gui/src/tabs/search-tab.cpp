@@ -34,7 +34,7 @@ searchTab::searchTab(QMap<QString, Site*> *sites, Profile *profile, mainWindow *
 	m_completion.append(profile->getCustomAutoComplete());
 
 	// Favorite tags
-	for (Favorite fav : m_favorites)
+	for (const Favorite &fav : m_favorites)
 		m_completion.append(fav.getName());
 
 	// Modifiers
@@ -67,7 +67,7 @@ void searchTab::init()
 
 searchTab::~searchTab()
 {
-	for (QList<Page*> pages : m_pages)
+	for (const QList<Page*> &pages : m_pages)
 		qDeleteAll(pages);
 	m_pages.clear();
 	m_images.clear();
@@ -180,7 +180,7 @@ QStringList searchTab::reasonsToFail(Page* page, QStringList completion, QString
 				tag = tag.mid(1);
 
 			int lev = qCeil((tag.length() - 1) / 4.0f);
-			for (QString comp : completion)
+			for (const QString &comp : completion)
 			{
 				// Ignore tags that are too long
 				if (abs(comp.length() - tag.length()) > lev)
@@ -222,9 +222,9 @@ QColor searchTab::imageColor(QSharedPointer<Image> img) const
 		return QColor("#000000");
 
 	// Favorited (except for exact favorite search)
-	for (Tag tag : img->tags())
+	for (const Tag &tag : img->tags())
 		if (!img->page()->search().contains(tag.text()))
-			for (Favorite fav : m_favorites)
+			for (const Favorite &fav : m_favorites)
 				if (fav.getName() == tag.text())
 					return QColor("#ffc0cb");
 
@@ -279,20 +279,20 @@ void searchTab::clear()
 	}
 	//qDeleteAll(m_pages);
 	m_pages.clear();
-	for (int i = 0; i < m_images.size(); i++)
-	{ m_images.at(i)->abortPreview(); }
+	for (auto img : m_images)
+	{ img->abortPreview(); }
 	m_images.clear();
 }
 
 TextEdit *searchTab::createAutocomplete()
 {
-	TextEdit *ret = new TextEdit(m_profile, this);
+	auto *ret = new TextEdit(m_profile, this);
 	connect(ret, &TextEdit::returnPressed, this, &searchTab::load);
 
 	// Add auto-complete if necessary
 	if (m_settings->value("autocompletion", true).toBool())
 	{
-		QCompleter *completer = new QCompleter(m_completion, ret);
+		auto *completer = new QCompleter(m_completion, ret);
 		completer->setCaseSensitivity(Qt::CaseInsensitive);
 
 		ret->setCompleter(completer);
@@ -338,7 +338,7 @@ void searchTab::finishedLoading(Page* page)
 	// Filter images depending on tabs
 	QList<QSharedPointer<Image>> validImages;
 	QString error;
-	for (QSharedPointer<Image> img : page->images())
+	for (const QSharedPointer<Image> &img : page->images())
 		if (validateImage(img, error))
 			validImages.append(img);
 		else
@@ -449,7 +449,7 @@ void searchTab::finishedLoadingTags(Page *page)
 	// Update image and page count
 	QList<QSharedPointer<Image>> imgs;
 	QString error;
-	for (QSharedPointer<Image> img : page->images())
+	for (const QSharedPointer<Image> &img : page->images())
 		if (validateImage(img, error))
 			imgs.append(img);
 
@@ -535,13 +535,13 @@ void searchTab::finishedLoadingPreview()
 /**
  * Get the proportion (from 0 to 1) of known tag types in a given image.
  */
-float getImageKnownTagProportion(QSharedPointer<Image> img)
+float getImageKnownTagProportion(const QSharedPointer<Image> &img)
 {
 	if (img->tags().isEmpty())
 		return 0;
 
 	int known = 0;
-	for (Tag tag : img->tags())
+	for (const Tag &tag : img->tags())
 	{
 		if (tag.type().name() != "unknown")
 			known++;
@@ -553,7 +553,7 @@ float getImageKnownTagProportion(QSharedPointer<Image> img)
 QList<QSharedPointer<Image>> searchTab::mergeResults(int page, QList<QSharedPointer<Image>> results)
 {
 	QMap<QString, float> pageMd5s;
-	for (QSharedPointer<Image> img : m_images)
+	for (const QSharedPointer<Image> &img : m_images)
 	{
 		QString md5 = img->md5();
 		if (md5.isEmpty())
@@ -569,7 +569,7 @@ QList<QSharedPointer<Image>> searchTab::mergeResults(int page, QList<QSharedPoin
 		imgMd5s.insert(m_images[i]->md5(), i);
 
 	QList<QSharedPointer<Image>> ret;
-	for (QSharedPointer<Image> img : results)
+	for (const QSharedPointer<Image> &img : results)
 	{
 		QString md5 = img->md5();
 		float proportion = getImageKnownTagProportion(img);
@@ -827,7 +827,7 @@ void searchTab::thumbnailContextMenu(int position, QSharedPointer<Image> img)
 	QAction *first = menu->actions().first();
 
 	// Save image
-	QSignalMapper *mapperSave = new QSignalMapper(this);
+	auto *mapperSave = new QSignalMapper(this);
 	connect(mapperSave, SIGNAL(mapped(int)), this, SLOT(contextSaveImage(int)));
 	QAction *actionSave;
 	if (!getImageAlreadyExists(img.data(), m_profile).isEmpty())
@@ -839,7 +839,7 @@ void searchTab::thumbnailContextMenu(int position, QSharedPointer<Image> img)
 	mapperSave->setMapping(actionSave, position);
 
 	// Save image as...
-	QSignalMapper *mapperSaveAs = new QSignalMapper(this);
+	auto *mapperSaveAs = new QSignalMapper(this);
 	connect(mapperSaveAs, SIGNAL(mapped(int)), this, SLOT(contextSaveImageAs(int)));
 	QAction *actionSaveAs = new QAction(QIcon(":/images/icons/save-as.png"), tr("Save as..."), menu);
 	menu->insertAction(first, actionSaveAs);
@@ -904,7 +904,7 @@ void searchTab::contextSaveSelected()
 	QString fn = m_settings->value("Save/filename").toString();
 	QString path = m_settings->value("Save/path").toString();
 
-	for (QSharedPointer<Image> img : m_selectedImagesPtrs)
+	for (const QSharedPointer<Image> &img : m_selectedImagesPtrs)
 	{
 		if (m_boutons.contains(img.data()))
 		{ connect(img.data(), SIGNAL(downloadProgressImage(qint64, qint64)), m_boutons[img.data()], SLOT(setProgress(qint64, qint64))); }
@@ -930,7 +930,7 @@ void searchTab::addResultsImage(QSharedPointer<Image> img, bool merge)
 	if (absolutePosition < 0 && !img->md5().isEmpty())
 	{
 		int j = 0;
-		for (QSharedPointer<Image> i : img->page()->images())
+		for (const QSharedPointer<Image> &i : img->page()->images())
 		{
 			if (i->md5() == img->md5())
 			{
@@ -948,7 +948,7 @@ void searchTab::addResultsImage(QSharedPointer<Image> img, bool merge)
 	else
 	{
 		QString error;
-		for (QSharedPointer<Image> i : img->page()->images())
+		for (const QSharedPointer<Image> &i : img->page()->images())
 			if (i == img)
 				break;
 			else if (validateImage(i, error))
@@ -1018,7 +1018,7 @@ void searchTab::getSel()
 	if (m_selectedImagesPtrs.empty())
 		return;
 
-	for (QSharedPointer<Image> img : m_selectedImagesPtrs)
+	for (const QSharedPointer<Image> &img : m_selectedImagesPtrs)
 	{
 		emit batchAddUnique(DownloadQueryImage(m_settings, img, img->parentSite()));
 	}
@@ -1305,7 +1305,7 @@ void searchTab::loadPage()
 		// Start loading
 		page->load();
 	}
-	if (merged && m_layouts.size() > 0 && m_endlessLoadOffset == 0)
+	if (merged && !m_layouts.empty() && m_endlessLoadOffset == 0)
 	{ addLayout(m_layouts[nullptr], 1, 0); }
 	m_page = 0;
 
@@ -1329,7 +1329,7 @@ FixedSizeGridLayout *searchTab::createImagesLayout(QSettings *settings)
 {
 	int hSpace = settings->value("Margins/horizontal", 6).toInt();
 	int vSpace = settings->value("Margins/vertical", 6).toInt();
-	FixedSizeGridLayout *l = new FixedSizeGridLayout(hSpace, vSpace);
+	auto *l = new FixedSizeGridLayout(hSpace, vSpace);
 
 	bool fixedWidthLayout = m_settings->value("resultsFixedWidthLayout", false).toBool();
 	if (fixedWidthLayout)
@@ -1343,7 +1343,7 @@ FixedSizeGridLayout *searchTab::createImagesLayout(QSettings *settings)
 }
 
 
-bool searchTab::validateImage(QSharedPointer<Image> img, QString &error)
+bool searchTab::validateImage(const QSharedPointer<Image> &img, QString &error)
 {
 	QStringList detected = img->blacklisted(m_profile->getBlacklist());
 	if (!detected.isEmpty() && m_settings->value("hideblacklisted", false).toBool())

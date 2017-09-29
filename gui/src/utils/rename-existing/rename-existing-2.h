@@ -18,8 +18,8 @@ class RenameExisting2 : public QDialog
 	Q_OBJECT
 
 	public:
-		explicit RenameExisting2(QList<QPair<QString,QString>> details, QString folder, QWidget *parent = 0);
-		~RenameExisting2();
+		explicit RenameExisting2(QList<QPair<QString,QString>> details, QString folder, QWidget *parent = Q_NULLPTR);
+		~RenameExisting2() override;
 		void deleteDir(QString path);
 
 	private slots:

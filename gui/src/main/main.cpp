@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
 
 	// Copy settings files to writable directory
 	QStringList toCopy = QStringList() << "sites/" << "themes/" << "webservices/";
-	for (QString tgt : toCopy)
+	for (const QString &tgt : toCopy)
 	{
 		QString from = savePath(tgt, true, false);
 		QString to = savePath(tgt, true, true);
@@ -201,8 +201,8 @@ int main(int argc, char *argv[])
 				settings->setValue("last_check_for_updates", QDateTime::currentDateTime());
 
 				bool shouldQuit = false;
-				UpdateDialog *updateDialog = new UpdateDialog(&shouldQuit);
-				QEventLoop *el = new QEventLoop();
+				auto *updateDialog = new UpdateDialog(&shouldQuit);
+				auto *el = new QEventLoop();
 				QObject::connect(updateDialog, &UpdateDialog::noUpdateAvailable, el, &QEventLoop::quit);
 				QObject::connect(updateDialog, &UpdateDialog::rejected, el, &QEventLoop::quit);
 
@@ -225,7 +225,7 @@ int main(int argc, char *argv[])
 			params.insert("ignore", parser.isSet(blacklistOption) ? "true" : "false");
 			params.insert("tags", parser.value(tagsOption));
 
-			mainWindow *mainwindow = new mainWindow(profile);
+			auto *mainwindow = new mainWindow(profile);
 			mainwindow->init(parser.positionalArguments(), params);
 			mainwindow->show();
 		}

@@ -164,7 +164,7 @@ void TagApi::parse()
 
 		// Read tags
 		QList<QVariant> sourc = src.toList();
-		for (QVariant el : sourc)
+		for (const QVariant &el : sourc)
 		{
 			QMap<QString, QVariant> sc = el.toMap();
 
@@ -208,7 +208,7 @@ void TagApi::parse()
 
 			// Parse result using the regex
 			QMap<QString, QString> d;
-			for (QString group : rx.namedCaptureGroups())
+			for (const QString &group : rx.namedCaptureGroups())
 			{
 				if (group.isEmpty())
 					continue;

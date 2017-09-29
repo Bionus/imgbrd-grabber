@@ -9,8 +9,8 @@ class QCustomNetworkReply : public QNetworkReply
     Q_OBJECT
 
 	public:
-		QCustomNetworkReply(QObject *parent = 0);
-		~QCustomNetworkReply();
+		explicit QCustomNetworkReply(QObject *parent = Q_NULLPTR);
+		~QCustomNetworkReply() override;
 
 		void setHttpStatusCode(int code, const QByteArray &statusText = QByteArray());
 		void setHeader(QNetworkRequest::KnownHeaders header, const QVariant &value);
@@ -19,12 +19,12 @@ class QCustomNetworkReply : public QNetworkReply
 		void setContent(const QString &content);
 		void setContent(const QByteArray &content);
 
-		void abort();
-		qint64 bytesAvailable() const;
-		bool isSequential() const;
+		void abort() override;
+		qint64 bytesAvailable() const override;
+		bool isSequential() const override;
 
 	protected:
-		qint64 readData(char *data, qint64 maxSize);
+		qint64 readData(char *data, qint64 maxSize) override;
 
 	private:
 		struct QCustomNetworkReplyPrivate *d;

@@ -22,13 +22,13 @@ class sourcesWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		explicit sourcesWindow(Profile *profile, QList<bool> selected, QMap<QString,Site*> *sites, QWidget *parent = 0);
-		~sourcesWindow();
+		explicit sourcesWindow(Profile *profile, QList<bool> selected, QMap<QString,Site*> *sites, QWidget *parent = Q_NULLPTR);
+		~sourcesWindow() override;
 		QList<bool> getSelected();
 
 	public slots:
 		void valid();
-		void closeEvent(QCloseEvent *);
+		void closeEvent(QCloseEvent *) override;
 		void checkAll(int check = 2);
 		void addSite();
 		void settingsSite(QString);

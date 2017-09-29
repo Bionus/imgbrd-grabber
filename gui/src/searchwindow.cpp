@@ -26,7 +26,7 @@ SearchWindow::SearchWindow(QString tags, Profile *profile, QWidget *parent)
 	connect(ui->buttonCalendar, SIGNAL(clicked()), m_calendar, SLOT(show()));
 
 	QStringList favs;
-	for (Favorite fav : profile->getFavorites())
+	for (const Favorite &fav : profile->getFavorites())
 		favs.append(fav.getName());
 	m_tags = new TextEdit(profile, this);
 		m_tags->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -36,7 +36,7 @@ SearchWindow::SearchWindow(QString tags, Profile *profile, QWidget *parent)
 			completion.append(favs);
 			completion.removeDuplicates();
 			completion.sort();
-			QCompleter *completer = new QCompleter(completion, m_tags);
+			auto *completer = new QCompleter(completion, m_tags);
 				completer->setCaseSensitivity(Qt::CaseInsensitive);
 			m_tags->setCompleter(completer);
 		connect(m_tags, SIGNAL(returnPressed()), this, SLOT(accept()));

@@ -20,7 +20,7 @@ class LogWindow : public QDialog
 
 	public:
 		explicit LogWindow(int index, Profile *profile, QWidget *parent = Q_NULLPTR);
-		~LogWindow();
+		~LogWindow() override;
 
 	protected slots:
 		void save();

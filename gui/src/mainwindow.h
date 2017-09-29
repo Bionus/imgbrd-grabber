@@ -40,7 +40,7 @@ class mainWindow : public QMainWindow
 
 	public:
 		explicit mainWindow(Profile *profile);
-		~mainWindow();
+		~mainWindow() override;
 		Ui::mainWindow *ui;
 
 	public slots:
@@ -64,7 +64,7 @@ class mainWindow : public QMainWindow
 		void utilTagLoader();
 		// Language
 		void loadLanguage(const QString&, bool shutup = false);
-		void changeEvent(QEvent*);
+		void changeEvent(QEvent*) override;
 		// Favorites
 		void updateFavorites();
 		void updateKeepForLater();
@@ -139,7 +139,7 @@ class mainWindow : public QMainWindow
 		void contextMenu();
 		void openInNewTab();
 		// Others
-		void closeEvent(QCloseEvent*);
+		void closeEvent(QCloseEvent*) override;
 		void onFirstLoad();
 		void init(QStringList args, QMap<QString,QString> params);
 		void parseArgs(QStringList args, QMap<QString,QString> params);
@@ -161,8 +161,8 @@ class mainWindow : public QMainWindow
 		void setWiki(QString);
 
 		// Drag & drop
-		void dragEnterEvent(QDragEnterEvent *event);
-		void dropEvent(QDropEvent* event);
+		void dragEnterEvent(QDragEnterEvent *event) override;
+		void dropEvent(QDropEvent* event) override;
 
 	protected:
 		int getRowForSite(int site_id);

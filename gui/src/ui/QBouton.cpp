@@ -1,7 +1,7 @@
 #include "QBouton.h"
 #include <QPainter>
 #include <QPaintEvent>
-#include "math.h"
+#include <cmath>
 
 
 QBouton::QBouton(QVariant id, bool resizeInsteadOfCropping, bool smartSizeHint, int border, QColor color, QWidget *parent)

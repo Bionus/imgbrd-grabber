@@ -148,7 +148,6 @@ void FilenameWindow::done(int r)
 	}
 
 	QDialog::done(r);
-	return;
 }
 
 void FilenameWindow::send()

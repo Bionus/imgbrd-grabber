@@ -1,7 +1,7 @@
 #include "page-api.h"
 #include <QDomDocument>
 #include <QRegularExpression>
-#include <math.h>
+#include <cmath>
 #include "page.h"
 #include "site.h"
 #include "api.h"
@@ -262,7 +262,7 @@ QString _parseSetImageUrl(Site *site, Api* api, QString settingUrl, QString sett
 			ret = def;
 
 		QStringList reps = api->value(settingReplaces).split('&');
-		for (QString rep : reps)
+		for (const QString &rep : reps)
 		{
 			QRegularExpression rgx(rep.left(rep.indexOf("->")));
 			ret.replace(rgx, rep.right(rep.size() - rep.indexOf("->") - 2));
@@ -651,7 +651,7 @@ void PageApi::parse()
 					if (!tgs.isEmpty())
 					{
 						QStringList tagTypes = m_api->value("Regex/TagTypes").split(',');
-						for (QVariant tagData : tgs)
+						for (const QVariant &tagData : tgs)
 						{
 							QMap<QString, QVariant> tag = tagData.toMap();
 							if (tag.contains("name"))
@@ -666,11 +666,11 @@ void PageApi::parse()
 					QMap<QString, QVariant> tagTypes = sc["tags"].toMap();
 					if (!tagTypes.isEmpty())
 					{
-						for (QString tagType : tagTypes.keys())
+						for (const QString &tagType : tagTypes.keys())
 						{
 							TagType tType(tagType);
 							QList<QVariant> tagList = tagTypes.value(tagType).toList();
-							for (QVariant iTag : tagList)
+							for (const QVariant &iTag : tagList)
 							{ tags.append(Tag(iTag.toString(), tType)); }
 
 						}
@@ -867,7 +867,7 @@ void PageApi::parseNavigation(const QString &source)
 	}
 	if (m_imagesCount < 1)
 	{
-		for (Tag tag : m_tags)
+		for (const Tag &tag : m_tags)
 		{
 			if (tag.text() == m_search.join(" "))
 			{ setImageCount(tag.count(), false); }
@@ -930,7 +930,7 @@ int PageApi::pagesCount(bool guess)
 int PageApi::maxId()
 {
 	int maxId = 0;
-	for (QSharedPointer<Image> img : m_images)
+	for (const QSharedPointer<Image> &img : m_images)
 		if (img->id() > maxId || maxId == 0)
 			maxId = img->id();
 	return maxId;
@@ -938,7 +938,7 @@ int PageApi::maxId()
 int PageApi::minId()
 {
 	int minId = 0;
-	for (QSharedPointer<Image> img : m_images)
+	for (const QSharedPointer<Image> &img : m_images)
 		if (img->id() < minId || minId == 0)
 			minId = img->id();
 	return minId;

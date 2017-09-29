@@ -24,8 +24,8 @@ class batchWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		explicit batchWindow(QSettings *settings, QWidget *parent = 0);
-		~batchWindow();
+		explicit batchWindow(QSettings *settings, QWidget *parent = Q_NULLPTR);
+		~batchWindow() override;
 		int value();
 		int maximum();
 		int images();
@@ -55,7 +55,7 @@ class batchWindow : public QDialog
 		void loadedImage(QString);
 		void errorImage(QString);
 		void on_buttonDetails_clicked(bool visible);
-		void closeEvent(QCloseEvent *);
+		void closeEvent(QCloseEvent *) override;
 		void copyToClipboard();
 		void cancel();
 		void drawSpeed();

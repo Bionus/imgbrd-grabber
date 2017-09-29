@@ -1,5 +1,5 @@
 #include "page.h"
-#include <math.h>
+#include <cmath>
 #include "site.h"
 #include "api.h"
 #include "vendor/json.h"

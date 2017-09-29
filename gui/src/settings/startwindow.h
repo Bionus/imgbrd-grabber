@@ -19,7 +19,7 @@ class startWindow : public QDialog
 
 	public:
 		startWindow(QMap<QString, Site*> *sites, Profile *profile, QWidget *parent = Q_NULLPTR);
-		~startWindow();
+		~startWindow() override;
 
 	public slots:
 		void save();

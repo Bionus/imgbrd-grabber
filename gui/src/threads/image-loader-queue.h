@@ -12,7 +12,7 @@ class ImageLoaderQueue : public QObject
 	Q_OBJECT
 
 	public:
-		ImageLoaderQueue(ImageLoader *imageLoader, QObject *parent = Q_NULLPTR);
+		explicit ImageLoaderQueue(ImageLoader *imageLoader, QObject *parent = Q_NULLPTR);
 
 	public slots:
 		void load(const QByteArray &data);

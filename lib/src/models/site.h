@@ -51,7 +51,7 @@ class Site : public QObject
 		};
 
 		Site(QString url, Source *source);
-		~Site();
+		~Site() override;
 		void loadConfig();
 		void initManager();
 		QString type();
@@ -67,7 +67,7 @@ class Site : public QObject
 		void getAsync(QueryType type, QUrl url, std::function<void(QNetworkReply *)> callback, Page *page = nullptr, QString referer = "", Image *img = nullptr);
 		static QList<Site*> getSites(Profile *profile, QStringList sources);
 		static QMap<QString, Site *> getAllSites(Profile *profile);
-		QUrl fixUrl(QUrl url) const { return fixUrl(url.toString()); }
+		QUrl fixUrl(const QUrl &url) const { return fixUrl(url.toString()); }
 		QUrl fixUrl(QString url) const;
 		QUrl fixUrl(QString url, QUrl old) const;
 

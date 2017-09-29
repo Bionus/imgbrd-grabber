@@ -73,7 +73,7 @@ void Site::loadConfig()
 
 	// Apis
 	m_apis.clear();
-	for (QString src : sources)
+	for (const QString &src : sources)
 	{
 		Api *api = m_source->getApi(src == "Regex" ? "Html" : src);
 		if (api != nullptr && !m_apis.contains(api))
@@ -87,7 +87,7 @@ void Site::loadConfig()
 	// Cookies
 	m_cookies.clear();
 	QList<QVariant> cookies = m_settings->value("cookies", "").toList();
-	for (QVariant variant : cookies)
+	for (const QVariant &variant : cookies)
 	{
 		QList<QNetworkCookie> cookiz = QNetworkCookie::parseCookies(variant.toByteArray());
 		for (QNetworkCookie cookie : cookiz)
@@ -123,7 +123,7 @@ void Site::initManager()
 		connect(m_manager, &CustomNetworkAccessManager::finished, this, &Site::finished);
 
 		// Cache
-		QNetworkDiskCache *diskCache = new QNetworkDiskCache(m_manager);
+		auto *diskCache = new QNetworkDiskCache(m_manager);
 		diskCache->setCacheDirectory(m_source->getProfile()->getPath() + "/cache/");
 		m_manager->setCache(diskCache);
 
@@ -143,7 +143,7 @@ void Site::resetCookieJar()
 
 	m_cookieJar = new QNetworkCookieJar(m_manager);
 
-	for (QNetworkCookie cookie : m_cookies)
+	for (const QNetworkCookie &cookie : m_cookies)
 	{ m_cookieJar->insertCookie(cookie); }
 
 	m_manager->setCookieJar(m_cookieJar);
@@ -208,7 +208,7 @@ void Site::login(bool force)
 
 	m_settings->beginGroup("login/fields");
 		QStringList keys = m_settings->childKeys();
-		for (QString key : keys)
+		for (const QString &key : keys)
 			query.addQueryItem(key, setting(key).toString());
 	m_settings->endGroup();
 
@@ -263,7 +263,7 @@ void Site::loginFinished()
 		QString cookiename = m_settings->value("login/"+type+"/cookie", "").toString();
 
 		QList<QNetworkCookie> cookies = m_cookieJar->cookiesForUrl(m_loginReply->url());
-		for (QNetworkCookie cookie : cookies)
+		for (const QNetworkCookie &cookie : cookies)
 		{
 			if (cookie.name() == cookiename && !cookie.value().isEmpty())
 			{ ok = true; }
@@ -289,7 +289,7 @@ QNetworkRequest Site::makeRequest(QUrl url, Page *page, QString ref, Image *img)
 	QString referer = m_settings->value("referer"+(!ref.isEmpty() ? "_"+ref : ""), "").toString();
 	if (referer.isEmpty() && !ref.isEmpty())
 	{ referer = m_settings->value("referer", "none").toString(); }
-	if (referer != "none" && (referer != "page" || page != NULL))
+	if (referer != "none" && (referer != "page" || page != Q_NULLPTR))
 	{
 		QString refHeader;
 		if (referer == "host")
@@ -304,7 +304,7 @@ QNetworkRequest Site::makeRequest(QUrl url, Page *page, QString ref, Image *img)
 	}
 
 	QMap<QString,QVariant> headers = m_settings->value("headers").toMap();
-	for (QString key : headers.keys())
+	for (const QString &key : headers.keys())
 	{ request.setRawHeader(key.toLatin1(), headers[key].toString().toLatin1()); }
 
 	// User-Agent header tokens and default value
@@ -369,7 +369,7 @@ QList<Site*> Site::getSites(Profile *profile, QStringList sources)
 	QMap<QString, Site*> sites = Site::getAllSites(profile);
 
 	QList<Site*> ret;
-	for (QString source : sources)
+	for (const QString &source : sources)
 		if (sites.contains(source))
 			ret.append(sites.value(source));
 

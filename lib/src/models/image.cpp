@@ -145,7 +145,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 
 	// Tags
 	QStringList types = QStringList() << "general" << "artist" << "character" << "copyright" << "model" << "species";
-	for (QString typ : types)
+	for (const QString &typ : types)
 	{
 		QString key = "tags_" + typ;
 		if (!details.contains(key))
@@ -508,7 +508,7 @@ void Image::parseDetails()
 	emit finishedLoadingTags();
 }
 
-int toDate(QString text)
+int toDate(const QString &text)
 {
 	QDateTime date = QDateTime::fromString(text, "yyyy-MM-dd");
 	if (date.isValid())
@@ -636,7 +636,7 @@ QString Image::match(QString filter, bool invert) const
 	{
 		// Check if any tag match the filter (case insensitive plain text with wildcards allowed)
 		bool cond = false;
-		for (Tag tag : m_tags)
+		for (const Tag &tag : m_tags)
 		{
 			QRegExp reg(filter.trimmed(), Qt::CaseInsensitive, QRegExp::Wildcard);
 			if (reg.exactMatch(tag.text()))
@@ -658,7 +658,7 @@ QString Image::match(QString filter, bool invert) const
 QStringList Image::filter(QStringList filters) const
 {
 	QStringList ret;
-	for (QString filter : filters)
+	for (const QString &filter : filters)
 	{
 		QString match = this->match(filter);
 		if (!match.isEmpty())
@@ -888,7 +888,7 @@ int Image::value() const
 QStringList Image::blacklisted(QStringList blacklistedtags, bool invert) const
 {
 	QStringList detected;
-	for (QString tag : blacklistedtags)
+	for (const QString &tag : blacklistedtags)
 	{
 		if (!match(tag, invert).isEmpty())
 		{ detected.append(tag); }
@@ -1066,10 +1066,10 @@ void Image::postSaving(QString path, bool addMd5, bool startCommands, int count,
 	Commands &commands = m_profile->getCommands();
 	if (startCommands)
 	{ commands.before(); }
-		for (Tag tag : tags())
+		for (const Tag &tag : tags())
 		{ commands.tag(*this, tag, false); }
 		commands.image(*this, path);
-		for (Tag tag : tags())
+		for (const Tag &tag : tags())
 		{ commands.tag(*this, tag, true); }
 	if (startCommands)
 	{ commands.after(); }
@@ -1079,7 +1079,7 @@ void Image::postSaving(QString path, bool addMd5, bool startCommands, int count,
 QMap<QString, Image::SaveResult> Image::save(QStringList paths, bool addMd5, bool startCommands, int count, bool force, bool loadIfNecessary)
 {
 	QMap<QString, Image::SaveResult> res;
-	for (QString path : paths)
+	for (const QString &path : paths)
 		res.insert(path, save(path, force, false, addMd5, startCommands, count, loadIfNecessary));
 	return res;
 }
@@ -1096,10 +1096,10 @@ QList<Tag> Image::filteredTags(QStringList remove) const
 	QRegExp reg;
 	reg.setCaseSensitivity(Qt::CaseInsensitive);
 	reg.setPatternSyntax(QRegExp::Wildcard);
-	for (Tag tag : m_tags)
+	for (const Tag &tag : m_tags)
 	{
 		bool removed = false;
-		for (QString rem : remove)
+		for (const QString &rem : remove)
 		{
 			reg.setPattern(rem);
 			if (reg.exactMatch(tag.text()))
@@ -1169,8 +1169,8 @@ QUrl Image::getDisplayableUrl() const
 QStringList Image::tagsString() const
 {
 	QStringList tags;
-	for (Tag tag : m_tags)
-	{ tags.append(tag.text()); }
+	for (const Tag &tag : m_tags)
+		tags.append(tag.text());
 	return tags;
 }
 
@@ -1245,21 +1245,21 @@ QString Image::md5() const
 bool Image::hasTag(QString tag) const
 {
 	tag = tag.trimmed();
-	for (Tag t : m_tags)
+	for (const Tag &t : m_tags)
 		if (QString::compare(t.text(), tag, Qt::CaseInsensitive) == 0)
 			return true;
 	return false;
 }
 bool Image::hasAnyTag(QStringList tags) const
 {
-	for (QString tag : tags)
+	for (const QString &tag : tags)
 		if (this->hasTag(tag))
 			return true;
 	return false;
 }
 bool Image::hasAllTags(QStringList tags) const
 {
-	for (QString tag : tags)
+	for (const QString &tag : tags)
 		if (!this->hasTag(tag))
 			return false;
 	return true;

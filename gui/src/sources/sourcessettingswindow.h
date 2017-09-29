@@ -19,8 +19,8 @@ class SourcesSettingsWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		explicit SourcesSettingsWindow(Profile *profile, Site* site, QWidget *parent = 0);
-		~SourcesSettingsWindow();
+		explicit SourcesSettingsWindow(Profile *profile, Site* site, QWidget *parent = Q_NULLPTR);
+		~SourcesSettingsWindow() override;
 
 	public slots:
 		void on_buttonAuthHash_clicked();

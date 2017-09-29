@@ -13,7 +13,7 @@ class Downloader : public QObject
 
 	public:
 		Downloader();
-		~Downloader();
+		~Downloader() override;
 		Downloader(Profile *profile, QStringList tags, QStringList postfiltering, QList<Site*> sources, int page, int max, int perpage, QString location, QString filename, QString user, QString password, bool blacklist, QStringList blacklistedtags, bool noduplicates, int tagsmin, QString tagsformat, Downloader *previous = nullptr);
 		void setQuit(bool quit);
 		void downloadImages(QList<QSharedPointer<Image>> images);

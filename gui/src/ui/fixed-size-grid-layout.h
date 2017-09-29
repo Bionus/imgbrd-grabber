@@ -11,7 +11,7 @@ class FixedSizeGridLayout : public QLayout
 	public:
 		explicit FixedSizeGridLayout(QWidget *parent, int hSpacing = -1, int vSpacing = -1);
 		explicit FixedSizeGridLayout(int hSpacing = -1, int vSpacing = -1);
-		~FixedSizeGridLayout();
+		~FixedSizeGridLayout() override;
 
 		void setFixedWidth(int width);
 

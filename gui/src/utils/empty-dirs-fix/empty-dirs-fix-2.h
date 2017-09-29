@@ -19,8 +19,8 @@ class EmptyDirsFix2 : public QDialog
 	Q_OBJECT
 
 	public:
-		explicit EmptyDirsFix2(QStringList folders, QWidget *parent = 0);
-		~EmptyDirsFix2();
+		explicit EmptyDirsFix2(QStringList folders, QWidget *parent = Q_NULLPTR);
+		~EmptyDirsFix2() override;
 		bool removeDir(QString);
 
 	private slots:

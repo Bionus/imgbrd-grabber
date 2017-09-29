@@ -18,8 +18,8 @@ class Page : public QObject
 	Q_OBJECT
 
 	public:
-		explicit Page(Profile *profile, Site *site, QList<Site*> sites, QStringList tags = QStringList(), int page = 1, int limit = 25, QStringList postFiltering = QStringList(), bool smart = false, QObject *parent = 0, int pool = 0, int lastPage = 0, int lastPageMinId = 0, int lastPageMaxId = 0);
-		~Page();
+		explicit Page(Profile *profile, Site *site, QList<Site*> sites, QStringList tags = QStringList(), int page = 1, int limit = 25, QStringList postFiltering = QStringList(), bool smart = false, QObject *parent = Q_NULLPTR, int pool = 0, int lastPage = 0, int lastPageMinId = 0, int lastPageMaxId = 0);
+		~Page() override;
 		void		setLastPage(Page *page);
 		void		fallback(bool load = true);
 		void		load(bool rateLimit = false);
