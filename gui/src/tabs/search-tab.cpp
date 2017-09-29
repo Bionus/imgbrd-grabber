@@ -1020,7 +1020,7 @@ void searchTab::getSel()
 
 	for (const QSharedPointer<Image> &img : m_selectedImagesPtrs)
 	{
-		emit batchAddUnique(DownloadQueryImage(m_settings, img, img->parentSite()));
+		emit batchAddUnique(DownloadQueryImage(m_settings, *img, img->parentSite()));
 	}
 
 	m_selectedImagesPtrs.clear();

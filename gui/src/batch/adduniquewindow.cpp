@@ -112,7 +112,7 @@ void AddUniqueWindow::addLoadedImage()
 }
 void AddUniqueWindow::addImage(QSharedPointer<Image> img)
 {
-	emit sendData(DownloadQueryImage(img, m_sites[ui->comboSites->currentText()], ui->lineFilename->text(), ui->lineFolder->text()));
+	emit sendData(DownloadQueryImage(*img, m_sites[ui->comboSites->currentText()], ui->lineFilename->text(), ui->lineFolder->text()));
 
 	if (m_close)
 		close();

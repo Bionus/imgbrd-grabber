@@ -5,10 +5,7 @@
 #include "models/site.h"
 
 
-DownloadQueryImage::DownloadQueryImage()
-{ }
-
-DownloadQueryImage::DownloadQueryImage(QSettings *settings, QSharedPointer<Image> img, Site *site)
+DownloadQueryImage::DownloadQueryImage(QSettings *settings, const Image &img, Site *site)
 	: site(site)
 {
 	filename = settings->value("Save/filename").toString();
@@ -17,28 +14,28 @@ DownloadQueryImage::DownloadQueryImage(QSettings *settings, QSharedPointer<Image
 	initFromImage(img);
 }
 
-DownloadQueryImage::DownloadQueryImage(QSharedPointer<Image> img, Site *site, QString filename, QString path)
-	: site(site), filename(filename), path(path)
+DownloadQueryImage::DownloadQueryImage(const Image &img, Site *site, QString filename, QString path)
+	: site(site), filename(std::move(filename)), path(std::move(path))
 {
 	initFromImage(img);
 }
 
-DownloadQueryImage::DownloadQueryImage(int id, QString md5, QString rating, QString tags, QString fileUrl, QString date, Site *site, QString filename, QString path)
-	: site(site), filename(filename), path(path)
+DownloadQueryImage::DownloadQueryImage(int id, const QString &md5, const QString &rating, const QString &tags, const QString &fileUrl, const QString &date, Site *site, QString filename, QString path)
+	: site(site), filename(std::move(filename)), path(std::move(path))
 {
 	initFromData(id, md5, rating, tags, fileUrl, date);
 }
 
-void DownloadQueryImage::initFromImage(QSharedPointer<Image> img)
+void DownloadQueryImage::initFromImage(const Image &img)
 {
 	QStringList tags;
-	for (const Tag &tag : img->tags())
+	for (const Tag &tag : img.tags())
 		tags.append(tag.text());
 
-	initFromData(img->id(), img->md5(), img->rating(), tags.join(" "), img->fileUrl().toString(), img->createdAt().toString(Qt::ISODate));
+	initFromData(img.id(), img.md5(), img.rating(), tags.join(" "), img.fileUrl().toString(), img.createdAt().toString(Qt::ISODate));
 }
 
-void DownloadQueryImage::initFromData(int id, QString md5, QString rating, QString tags, QString fileUrl, QString date)
+void DownloadQueryImage::initFromData(int id, const QString &md5, const QString &rating, const QString &tags, const QString &fileUrl, const QString &date)
 {
 	values["filename"] = filename;
 	values["path"] = path;
@@ -58,7 +55,7 @@ void DownloadQueryImage::initFromData(int id, QString md5, QString rating, QStri
 }
 
 
-QString DownloadQueryImage::toString(QString separator) const
+QString DownloadQueryImage::toString(const QString &separator) const
 {
 	return values["id"] + separator +
 			values["md5"] + separator +
@@ -114,7 +111,7 @@ bool DownloadQueryImage::read(const QJsonObject &json, const QMap<QString, Site 
 }
 
 
-bool operator==(const DownloadQueryImage& lhs, const DownloadQueryImage& rhs)
+bool operator==(const DownloadQueryImage &lhs, const DownloadQueryImage &rhs)
 {
 	return lhs.values == rhs.values
 			&& lhs.site == rhs.site
@@ -122,7 +119,7 @@ bool operator==(const DownloadQueryImage& lhs, const DownloadQueryImage& rhs)
 			&& lhs.path == rhs.path;
 }
 
-bool operator!=(const DownloadQueryImage& lhs, const DownloadQueryImage& rhs)
+bool operator!=(const DownloadQueryImage &lhs, const DownloadQueryImage &rhs)
 {
 	return !(lhs == rhs);
 }
