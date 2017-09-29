@@ -1903,7 +1903,7 @@ void mainWindow::getAllFinished()
 	int failedCount = m_getAllErrors + m_getAllSkipped;
 	if (failedCount > 0)
 	{
-		int reponse = QMessageBox::No;
+		int reponse;
 		if (m_batchAutomaticRetries > 0)
 		{
 			m_batchAutomaticRetries--;

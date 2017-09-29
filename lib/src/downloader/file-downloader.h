@@ -15,9 +15,6 @@ class FileDownloader : public QObject
 		bool start(QNetworkReply *reply, QString path);
 		bool start(QNetworkReply *reply, QStringList paths);
 
-	private:
-		void write(const QByteArray &data);
-
 	signals:
 		void writeError();
 		void networkError(QNetworkReply::NetworkError error, QString errorString);

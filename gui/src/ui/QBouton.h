@@ -45,6 +45,7 @@ class QBouton : public QPushButton
 		bool m_smartSizeHint;
 		QColor m_penColor;
 		int m_border;
+		bool m_center;
 		qint64 m_progress;
 		qint64 m_progressMax;
 };

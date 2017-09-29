@@ -5,7 +5,7 @@
 
 
 QBouton::QBouton(QVariant id, bool resizeInsteadOfCropping, bool smartSizeHint, int border, QColor color, QWidget *parent)
-	: QPushButton(parent), m_id(id), m_resizeInsteadOfCropping(resizeInsteadOfCropping), m_smartSizeHint(smartSizeHint), m_penColor(color), m_border(border), m_progress(0), m_progressMax(0)
+	: QPushButton(parent), m_id(id), m_resizeInsteadOfCropping(resizeInsteadOfCropping), m_smartSizeHint(smartSizeHint), m_penColor(color), m_border(border), m_center(true), m_progress(0), m_progressMax(0)
 { }
 
 void QBouton::scale(const QPixmap &image, float scale)
@@ -61,8 +61,7 @@ void QBouton::paintEvent(QPaintEvent *event)
 		return;
 
 	// Center the image
-	bool center = true;
-	if (center)
+	if (m_center)
 	{
 		x += (region.width() - w) / 2;
 		y += (region.height() - h) / 2;

@@ -25,7 +25,6 @@ class sourcesWindow : public QDialog
 		explicit sourcesWindow(Profile *profile, QList<bool> selected, QMap<QString,Site*> *sites, QWidget *parent = 0);
 		~sourcesWindow();
 		QList<bool> getSelected();
-		int getColumns();
 
 	public slots:
 		void valid();

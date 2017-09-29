@@ -95,7 +95,6 @@ class zoomWindow : public QWidget
 	protected:
 		void closeEvent(QCloseEvent *);
 		void resizeEvent(QResizeEvent *);
-		void save(QString, QPushButton *);
 		void showEvent(QShowEvent *);
 		void mouseReleaseEvent(QMouseEvent *);
 		void wheelEvent(QWheelEvent *);

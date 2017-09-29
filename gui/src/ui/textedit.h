@@ -20,7 +20,6 @@ class TextEdit : public QTextEdit
 		QSize sizeHint() const;
 		void doColor();
 		void setText(const QString &text);
-		void setFavorites(QStringList);
 
 	protected:
 		void keyPressEvent(QKeyEvent *e);
