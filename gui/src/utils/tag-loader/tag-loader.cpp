@@ -10,7 +10,7 @@
 
 
 TagLoader::TagLoader(Profile *profile, QMap<QString, Site *> sites, QWidget *parent)
-	: QDialog(), ui(new Ui::TagLoader), m_profile(profile), m_sites(sites)
+	: QDialog(parent), ui(new Ui::TagLoader), m_profile(profile), m_sites(sites)
 {
 	ui->setupUi(this);
 

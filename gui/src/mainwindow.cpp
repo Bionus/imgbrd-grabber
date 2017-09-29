@@ -2015,7 +2015,7 @@ void mainWindow::renameExisting()
 }
 void mainWindow::utilTagLoader()
 {
-	auto *win = new TagLoader(m_profile, m_sites, this);
+	auto *win = new TagLoader(m_profile, m_sites);
 	win->show();
 }
 
