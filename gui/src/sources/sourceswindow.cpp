@@ -206,7 +206,7 @@ void sourcesWindow::addCheckboxes()
 	for (int i = 0; i < k.count(); i++)
 	{
 		QCheckBox *check = new QCheckBox(this);
-			check->setChecked(m_selected.size() > i ? m_selected[i] : false);
+			check->setChecked(m_selected.size() > i && m_selected[i]);
 			check->setText(k.at(i));
 			connect(check, SIGNAL(stateChanged(int)), this, SLOT(checkUpdate()));
 			m_checks << check;

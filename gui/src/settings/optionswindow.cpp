@@ -959,8 +959,8 @@ void optionsWindow::save()
 		settings->setValue("simultaneous", ui->spinSimultaneous->value());
 		settings->beginGroup("Customs");
 			settings->remove("");
-			for (int i = 0; i < m_customNames.size(); i++)
-			{ settings->setValue(m_customNames[i]->text(), m_customTags[i]->text()); }
+			for (int j = 0; j < m_customNames.size(); j++)
+			{ settings->setValue(m_customNames[j]->text(), m_customTags[j]->text()); }
 		settings->endGroup();
 	settings->endGroup();
 

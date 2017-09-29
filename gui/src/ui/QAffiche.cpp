@@ -57,10 +57,7 @@ void QAffiche::mouseDoubleClickEvent(QMouseEvent* e)
 void QAffiche::mousePressEvent(QMouseEvent* e)
 {
 	m_lastPressed = e->button();
-	if (e->button() == Qt::LeftButton || e->button() == Qt::MidButton)
-	{ m_pressed = true; }
-	else
-	{ m_pressed = false; }
+	m_pressed = e->button() == Qt::LeftButton || e->button() == Qt::MidButton;
 	emit pressed();
 	emit pressed(m_id.toInt());
 	QLabel::mousePressEvent(e);

@@ -579,7 +579,7 @@ void PageApi::parse()
 		{
 			// Check JSON error message
 			QMap<QString, QVariant> data = src.toMap();
-			if (data.contains("success") && data["success"].toBool() == false)
+			if (data.contains("success") && !data["success"].toBool())
 			{
 				log(QString("[%1] JSON error reply: \"%2\"").arg(m_site->url()).arg(data["reason"].toString()), Logger::Warning);
 				emit finishedLoading(this, LoadResult::Error);

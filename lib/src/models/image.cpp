@@ -117,9 +117,9 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	m_parentId = details.contains("parent_id") ? details["parent_id"].toInt() : 0;
 	m_fileSize = details.contains("file_size") ? details["file_size"].toInt() : 0;
 	m_authorId = details.contains("creator_id") ? details["creator_id"].toInt() : 0;
-	m_hasChildren = details.contains("has_children") ? details["has_children"] == "true" : false;
-	m_hasNote = details.contains("has_note") ? details["has_note"] == "true" : false;
-	m_hasComments = details.contains("has_comments") ? details["has_comments"] == "true" : false;
+	m_hasChildren = details.contains("has_children") && details["has_children"] == "true";
+	m_hasNote = details.contains("has_note") && details["has_note"] == "true";
+	m_hasComments = details.contains("has_comments") && details["has_comments"] == "true";
 	m_fileUrl = details.contains("file_url") ? m_parentSite->fixUrl(details["file_url"]) : QUrl();
 	m_sampleUrl = details.contains("sample_url") ? m_parentSite->fixUrl(details["sample_url"]) : QUrl();
 	m_previewUrl = details.contains("preview_url") ? m_parentSite->fixUrl(details["preview_url"]) : QUrl();

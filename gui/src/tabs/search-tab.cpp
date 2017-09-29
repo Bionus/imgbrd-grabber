@@ -92,7 +92,7 @@ void searchTab::setSelectedSources(QSettings *settings)
 	{
 		if (sav.count() <= i)
 		{ sav[i] = '0'; }
-		m_selectedSources.append(sav.at(i) == '1' ? true : false);
+		m_selectedSources.append(sav.at(i) == '1');
 	}
 }
 
@@ -1055,7 +1055,7 @@ void searchTab::updateCheckboxes()
 			{ m = url.indexOf('.', m+1); }
 		}
 
-		bool isChecked = m_selectedSources.size() > i ? m_selectedSources.at(i) : false;
+		bool isChecked = m_selectedSources.size() > i && m_selectedSources.at(i);
 		QCheckBox *c = new QCheckBox(url.left(m), this);
 			c->setChecked(isChecked);
 			ui_layoutSourcesList->addWidget(c);
