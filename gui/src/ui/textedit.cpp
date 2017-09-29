@@ -64,11 +64,11 @@ void TextEdit::doColor()
 		regexMeta(" (user|fav|md5|pool|rating|source|status|approver|unlocked|sub|id|width|height|score|mpixels|filesize|filetype|date|gentags|arttags|chartags|copytags|status|status|approver|order|parent):([^ ]*)", QRegularExpression::CaseInsensitiveOption),
 		regexMd5(" ([0-9A-F]{32})", QRegularExpression::CaseInsensitiveOption),
 		regexUrl(" (https?://[^\\s/$.?#].[^\\s]*) ");
-	txt.replace(regexOr, " <span style=\"color:green\">~\\1</span>");
-	txt.replace(regexExclude, " <span style=\"color:red\">-\\1</span>");
-	txt.replace(regexMeta, " <span style=\"color:brown\">\\1:\\2</span>");
-	txt.replace(regexMd5, " <span style=\"color:purple\">\\1</span>");
-	txt.replace(regexUrl, " <span style=\"color:blue\">\\1</span>");
+	txt.replace(regexOr, R"( <span style="color:green">~\1</span>)");
+	txt.replace(regexExclude, R"( <span style="color:red">-\1</span>)");
+	txt.replace(regexMeta, R"( <span style="color:brown">\1:\2</span>)");
+	txt.replace(regexMd5, R"( <span style="color:purple">\1</span>)");
+	txt.replace(regexUrl, R"( <span style="color:blue">\1</span>)");
 
 	// Replace spaces to not be trimmed by the HTML renderer
 	txt = txt.mid(1, txt.length() - 2);

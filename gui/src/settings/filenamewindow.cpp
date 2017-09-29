@@ -59,9 +59,8 @@ void FilenameWindow::on_lineClassic_textChanged(QString text)
 	{
 		QString cap = date.cap(1);
 		QString format = "";
-		for (int i = 0; i < cap.length(); ++i)
+		for (QChar c : cap)
 		{
-			QChar c = cap.at(i);
 			if (c == 'Y')
 			{ format += "' + date.getFullYear() + '"; }
 			else if (c == 'M')

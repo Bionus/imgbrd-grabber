@@ -906,7 +906,7 @@ void mainWindow::updateFavorites()
 
 	for (const Favorite &fav : m_favorites)
 	{
-		QLabel *lab = new QLabel(QString("<a href=\"%1\" style=\"color:black;text-decoration:none;\">%2</a>").arg(fav.getName(), fav.getName()), this);
+		QLabel *lab = new QLabel(QString(R"(<a href="%1" style="color:black;text-decoration:none;">%2</a>)").arg(fav.getName(), fav.getName()), this);
 		connect(lab, SIGNAL(linkActivated(QString)), this, SLOT(loadTag(QString)));
 		lab->setToolTip("<img src=\""+fav.getImagePath()+"\" /><br/>"+tr("<b>Name:</b> %1<br/><b>Note:</b> %2 %%<br/><b>Last view:</b> %3").arg(fav.getName(), QString::number(fav.getNote()), fav.getLastViewed().toString(format)));
 		ui->layoutFavoritesDock->addWidget(lab);
@@ -921,7 +921,7 @@ void mainWindow::updateKeepForLater()
 	for (const QString &tag : kfl)
 	{
 		auto *taglabel = new QAffiche(QString(tag), 0, QColor(), this);
-		taglabel->setText(QString("<a href=\"%1\" style=\"color:black;text-decoration:none;\">%1</a>").arg(tag));
+		taglabel->setText(QString(R"(<a href="%1" style="color:black;text-decoration:none;">%1</a>)").arg(tag));
 		taglabel->setTextInteractionFlags(Qt::LinksAccessibleByMouse);
 		connect(taglabel, static_cast<void (QAffiche::*)(QString)>(&QAffiche::middleClicked), this, &mainWindow::loadTagTab);
 		connect(taglabel, &QAffiche::linkActivated, this, &mainWindow::loadTagNoTab);
@@ -1691,7 +1691,7 @@ void mainWindow::getAllPerformTags()
 
 	int cnt = m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + 1;
 	QStringList paths = img->path(path, p, cnt, true, false, true, true, true);
-	QString pth = paths.at(0); // FIXME
+	const QString &pth = paths.at(0); // FIXME
 
 	QFile f(pth);
 	if (!f.exists())	{ f.setFileName(pth.section('.', 0, -2)+".png");	}
@@ -1984,7 +1984,7 @@ void mainWindow::getAllPause()
 	else
 	{
 		log("Recovery of downloads...", Logger::Info);
-		for (auto img : m_getAllDownloading)
+		for (const auto &img : m_getAllDownloading)
 		{
 			getAllGetImage(img);
 		}

@@ -118,7 +118,7 @@ void searchTab::setTagsFromPages(const QMap<QString, QList<Page*>> &pages)
 	for (QList<Page*> ps : pages)
 	{
 		QList<Tag> tags = ps.last()->tags();
-		for (Tag tag : tags)
+		for (const Tag &tag : tags)
 		{
 			if (!tag.text().isEmpty())
 			{
@@ -207,7 +207,7 @@ QStringList searchTab::reasonsToFail(Page* page, QStringList completion, QString
 		if (c > 0)
 		{
 			QStringList res = results.values(), cl = clean.values();
-			*meant = "<a href=\""+cl.join(" ").toHtmlEscaped()+"\" style=\"color:black;text-decoration:none;\">"+res.join(" ")+"</a>";
+			*meant = "<a href=\"" + cl.join(" ").toHtmlEscaped() + "\" style=\"color:black;text-decoration:none;\">"+res.join(" ")+"</a>";
 		}
 	}
 
@@ -279,7 +279,7 @@ void searchTab::clear()
 	}
 	//qDeleteAll(m_pages);
 	m_pages.clear();
-	for (auto img : m_images)
+	for (const auto &img : m_images)
 	{ img->abortPreview(); }
 	m_images.clear();
 }
@@ -464,7 +464,7 @@ void searchTab::loadImageThumbnails(Page *page, const QList<QSharedPointer<Image
 	QStringList tags = page->search();
 	for (int i = 0; i < imgs.count(); i++)
 	{
-		QSharedPointer<Image> img = imgs.at(i);
+		const QSharedPointer<Image> &img = imgs.at(i);
 		QList<QChar> modifiers = QList<QChar>() << '~' << '-';
 		for (int r = 0; r < tags.size(); r++)
 			if (modifiers.contains(tags[r][0]))

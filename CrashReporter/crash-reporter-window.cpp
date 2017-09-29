@@ -9,7 +9,7 @@
 #include "ui_crash-reporter-window.h"
 
 
-QString savePath(QString file, bool exists = false)
+QString savePath(const QString &file, bool exists = false)
 {
 	#ifdef TEST
 		Q_UNUSED(exists);
@@ -38,7 +38,7 @@ CrashReporterWindow::CrashReporterWindow(QWidget *parent) : QMainWindow(parent),
 	QString lang = settings.value("language", "English").toString();
 	QLocale locale = QLocale(lang);
 	QLocale::setDefault(locale);
-	QTranslator *translator = new QTranslator(this);
+	auto *translator = new QTranslator(this);
 	if (translator->load("crashreporter/"+lang))
 	{
 		qApp->installTranslator(translator);

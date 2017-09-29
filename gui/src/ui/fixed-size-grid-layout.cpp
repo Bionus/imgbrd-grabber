@@ -13,7 +13,7 @@ FixedSizeGridLayout::FixedSizeGridLayout(int hSpacing, int vSpacing)
 FixedSizeGridLayout::~FixedSizeGridLayout()
 {
 	QLayoutItem *item;
-	while ((item = takeAt(0)) != 0)
+	while ((item = takeAt(0)) != Q_NULLPTR)
 		delete item;
 }
 

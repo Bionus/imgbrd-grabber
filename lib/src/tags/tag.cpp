@@ -186,7 +186,7 @@ QStringList Tag::Stylished(QList<Tag> tags, Profile *profile, bool count, bool n
 		qSort(tags.begin(), tags.end(), sortTagsByCount);
 
 	QStringList t;
-	for (Tag tag : tags)
+	for (const Tag &tag : tags)
 		t.append(tag.stylished(profile, ignored, blacklisted, count, nounderscores));
 
 	return t;
@@ -208,7 +208,7 @@ QString Tag::stylished(Profile *profile, QStringList ignored, QStringList blackl
 		key = "blacklisteds";
 	if (ignored.contains(text(), Qt::CaseInsensitive))
 		key = "ignoreds";
-	for (Favorite fav : profile->getFavorites())
+	for (const Favorite &fav : profile->getFavorites())
 		if (fav.getName() == m_text)
 			key = "favorites";
 
