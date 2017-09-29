@@ -20,7 +20,7 @@ class QBouton : public QPushButton
 		QSize getIconSize(int regionWidth, int regionHeight, bool wOnly = false) const;
 
 	public slots:
-		void setId(QVariant);
+		void setId(const QVariant &id);
 		void setProgress(qint64 current, qint64 max);
 		void scale(const QPixmap &image, float scale);
 		void paintEvent(QPaintEvent *event) override;

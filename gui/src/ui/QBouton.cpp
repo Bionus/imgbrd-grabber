@@ -5,7 +5,7 @@
 
 
 QBouton::QBouton(QVariant id, bool resizeInsteadOfCropping, bool smartSizeHint, int border, QColor color, QWidget *parent)
-	: QPushButton(parent), m_id(id), m_resizeInsteadOfCropping(resizeInsteadOfCropping), m_smartSizeHint(smartSizeHint), m_penColor(color), m_border(border), m_center(true), m_progress(0), m_progressMax(0)
+	: QPushButton(parent), m_id(std::move(id)), m_resizeInsteadOfCropping(resizeInsteadOfCropping), m_smartSizeHint(smartSizeHint), m_penColor(std::move(color)), m_border(border), m_center(true), m_progress(0), m_progressMax(0)
 { }
 
 void QBouton::scale(const QPixmap &image, float scale)
@@ -27,7 +27,7 @@ void QBouton::scale(const QPixmap &image, float scale)
 
 QVariant QBouton::id()
 { return m_id; }
-void QBouton::setId(QVariant id)
+void QBouton::setId(const QVariant &id)
 { m_id = id; }
 
 void QBouton::setProgress(qint64 current, qint64 max)

@@ -11,7 +11,7 @@ class ReverseSearchEngine
 	public:
 		ReverseSearchEngine();
 		ReverseSearchEngine(int id, QString icon, QString name, QString tpl, int order);
-		void searchByUrl(QUrl url) const;
+		void searchByUrl(const QUrl &url) const;
 
 		int id() const;
 		QIcon icon() const;
@@ -23,7 +23,7 @@ class ReverseSearchEngine
 		void setOrder(int order);
 
 	protected:
-		QIcon loadIcon(QString path) const;
+		QIcon loadIcon(const QString &path) const;
 
 	private:
 		int m_id;
