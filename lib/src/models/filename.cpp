@@ -13,8 +13,6 @@
 
 typedef QPair<QString,QString> QStrP;
 
-Filename::Filename()
-{ }
 Filename::Filename(QString format)
 	: m_format(format)
 { }
@@ -667,7 +665,7 @@ void Filename::setEscapeMethod(QString (*escapeMethod)(QVariant))
 bool Filename::returnError(QString msg, QString *error) const
 {
 	if (error != nullptr)
-		*error = msg;
+		*error = std::move(msg);
 
 	return false;
 }

@@ -57,7 +57,7 @@
 mainWindow::mainWindow(Profile *profile)
 	: ui(new Ui::mainWindow), m_profile(profile), m_favorites(m_profile->getFavorites()), m_downloads(0), m_loaded(false), m_getAll(false), m_forcedTab(-1), m_batchAutomaticRetries(0), m_showLog(true)
 { }
-void mainWindow::init(QStringList args, QMap<QString,QString> params)
+void mainWindow::init(const QStringList &args, const QMap<QString, QString> &params)
 {
 	m_settings = m_profile->getSettings();
 
@@ -286,7 +286,7 @@ void mainWindow::init(QStringList args, QMap<QString,QString> params)
 	log("End of initialization", Logger::Debug);
 }
 
-void mainWindow::parseArgs(QStringList args, QMap<QString,QString> params)
+void mainWindow::parseArgs(const QStringList &args, const QMap<QString, QString> &params)
 {
 	// When we use Grabber to open a file
 	QStringList tags;
@@ -458,11 +458,11 @@ void mainWindow::addSearchTab(searchTab *w, bool background, bool save)
 		saveTabs(m_profile->getPath() + "/tabs.txt");
 }
 
-bool mainWindow::saveTabs(QString filename)
+bool mainWindow::saveTabs(const QString &filename)
 {
 	return TabsLoader::save(filename, m_tabs, (searchTab*)m_currentTab);
 }
-bool mainWindow::loadTabs(QString filename)
+bool mainWindow::loadTabs(const QString &filename)
 {
 	QList<searchTab*> tabs;
 	int currentTab;

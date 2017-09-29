@@ -2,7 +2,7 @@
 
 
 Pool::Pool(int id, QString name, int current, int next, int previous)
-	: m_id(id), m_name(name), m_current(current), m_next(next), m_previous(previous)
+	: m_id(id), m_name(std::move(name)), m_current(current), m_next(next), m_previous(previous)
 { }
 
 int		Pool::id() const		{ return m_id;			}

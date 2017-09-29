@@ -14,7 +14,7 @@ class Profile;
 class Filename
 {
 	public:
-		Filename();
+		Filename() = default;
 		explicit Filename(QString format);
 		QString getFormat() const;
 		void setFormat(QString format);

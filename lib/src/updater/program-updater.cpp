@@ -12,7 +12,7 @@ ProgramUpdater::ProgramUpdater()
 { }
 
 ProgramUpdater::ProgramUpdater(QString baseUrl)
-	: m_baseUrl(baseUrl), m_checkForUpdatesReply(Q_NULLPTR), m_downloadReply(Q_NULLPTR)
+	: m_baseUrl(std::move(baseUrl)), m_checkForUpdatesReply(Q_NULLPTR), m_downloadReply(Q_NULLPTR)
 { }
 
 void ProgramUpdater::checkForUpdates()

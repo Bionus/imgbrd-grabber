@@ -27,7 +27,7 @@
 
 
 Site::Site(QString url, Source *source)
-	: m_type(source->getName()), m_url(url), m_source(source), m_settings(nullptr), m_manager(nullptr), m_cookieJar(nullptr), m_loggedIn(LoginStatus::Unknown), m_loginCheck(false), m_autoLogin(true)
+	: m_type(source->getName()), m_url(std::move(url)), m_source(source), m_settings(nullptr), m_manager(nullptr), m_cookieJar(nullptr), m_loggedIn(LoginStatus::Unknown), m_loginCheck(false), m_autoLogin(true)
 {
 	loadConfig();
 }
@@ -357,7 +357,7 @@ QNetworkReply *Site::get(QUrl url, Page *page, QString ref, Image *img)
 	return this->getRequest(request);
 }
 
-QNetworkReply *Site::getRequest(QNetworkRequest request)
+QNetworkReply *Site::getRequest(const QNetworkRequest &request)
 {
 	m_lastRequest = QDateTime::currentDateTime();
 	return m_manager->get(request);
@@ -419,16 +419,16 @@ void Site::finishedTags()
 	emit finishedLoadingTags(tags);
 }
 
-QVariant Site::setting(QString key, QVariant def)	{ return m_settings->value(key, def); }
-void Site::setSetting(QString key, QVariant value, QVariant def)	{ m_settings->setValue(key, value, def); }
+QVariant Site::setting(const QString &key, const QVariant &def)	{ return m_settings->value(key, def); }
+void Site::setSetting(const QString &key, const QVariant &value, const QVariant &def)	{ m_settings->setValue(key, value, def); }
 void Site::syncSettings() { m_settings->sync(); }
-TagDatabase *Site::tagDatabase() const				{ return m_tagDatabase;	}
+TagDatabase *Site::tagDatabase() const  { return m_tagDatabase;	}
 
-QString Site::name()			{ return m_name;			}
-QString Site::url()				{ return m_url;				}
-QString Site::type()			{ return m_type;			}
+QString Site::name() const { return m_name;	}
+QString Site::url() const	{ return m_url;	}
+QString Site::type() const	{ return m_type;	}
 
-Source *Site::getSource() const	{ return m_source;			}
+Source *Site::getSource() const	{ return m_source;		}
 QList<Api*> Site::getApis(bool filterAuth) const
 {
 	if (!filterAuth)
@@ -456,16 +456,16 @@ bool Site::autoLogin() const	{ return m_autoLogin;	}
 QString Site::username() const	{ return m_username;	}
 QString Site::password() const	{ return m_password;	}
 
-void Site::setAutoLogin(bool autoLogin)		{ m_autoLogin = autoLogin;	}
-void Site::setUsername(QString username)	{ m_username = username;	}
-void Site::setPassword(QString password)	{ m_password = password;	}
+void Site::setAutoLogin(bool autoLogin)	        { m_autoLogin = autoLogin;	}
+void Site::setUsername(const QString &username)	{ m_username = username;	}
+void Site::setPassword(const QString &password)	{ m_password = password;	}
 
-QUrl Site::fixUrl(QString url) const
+QUrl Site::fixUrl(const QString &url) const
 {
 	return this->fixUrl(url, QUrl());
 }
 
-QUrl Site::fixUrl(QString url, QUrl old) const
+QUrl Site::fixUrl(const QString &url, const QUrl &old) const
 {
 	if (url.isEmpty())
 		return QUrl();
@@ -511,13 +511,13 @@ bool Site::isLoggedIn(bool unknown) const
 }
 
 
-bool Site::contains(QString key) const
+bool Site::contains(const QString &key) const
 {
 	if (m_apis.isEmpty())
 		return false;
 	return m_apis.first()->contains(key);
 }
-QString Site::value(QString key) const
+QString Site::value(const QString &key) const
 {
 	if (m_apis.isEmpty())
 		return QString();

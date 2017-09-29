@@ -9,8 +9,6 @@
 #include "logger.h"
 
 
-Downloader::Downloader()
-{}
 Downloader::~Downloader()
 {
 	qDeleteAll(m_pages);

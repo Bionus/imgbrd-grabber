@@ -5,7 +5,7 @@
 
 
 TagDatabase::TagDatabase(QString typeFile)
-	: m_typeFile(typeFile)
+	: m_typeFile(std::move(typeFile))
 {}
 
 bool TagDatabase::load()

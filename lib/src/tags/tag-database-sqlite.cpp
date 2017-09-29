@@ -9,7 +9,7 @@
 
 
 TagDatabaseSqlite::TagDatabaseSqlite(QString typeFile, QString tagFile)
-	: TagDatabase(typeFile), m_tagFile(tagFile), m_count(-1)
+	: TagDatabase(std::move(typeFile)), m_tagFile(std::move(tagFile)), m_count(-1)
 {}
 
 bool TagDatabaseSqlite::load()

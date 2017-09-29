@@ -10,7 +10,7 @@
 
 
 SourceGuesser::SourceGuesser(QString url, QList<Source*> sources)
-	: m_url(url), m_sources(sources)
+	: m_url(std::move(url)), m_sources(std::move(sources))
 {
 	m_manager = new CustomNetworkAccessManager(this);
 }

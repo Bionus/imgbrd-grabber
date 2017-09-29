@@ -4,7 +4,7 @@
 
 
 ThemeLoader::ThemeLoader(QString path)
-	: m_path(path)
+	: m_path(std::move(path))
 {}
 
 QStringList ThemeLoader::getAllThemes() const

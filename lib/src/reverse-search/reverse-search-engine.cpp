@@ -3,10 +3,7 @@
 #include "functions.h"
 
 
-ReverseSearchEngine::ReverseSearchEngine()
-{}
-
-ReverseSearchEngine::ReverseSearchEngine(int id, QString icon, QString name, QString tpl, int order)
+ReverseSearchEngine::ReverseSearchEngine(int id, const QString &icon, QString name, QString tpl, int order)
 	: m_icon(loadIcon(icon)), m_id(id), m_name(std::move(name)), m_tpl(std::move(tpl)), m_order(order)
 {}
 

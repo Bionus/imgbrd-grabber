@@ -13,12 +13,12 @@ class DownloadQueryGroup
 {
 	public:
 		// Constructors
-		DownloadQueryGroup();
+		DownloadQueryGroup() = default;
 		DownloadQueryGroup(QSettings *settings, QString tags, int page, int perPage, int total, QStringList postFiltering, Site *site, QString unk = "");
 		DownloadQueryGroup(QString tags, int page, int perPage, int total, QStringList postFiltering, bool getBlacklisted, Site *site, QString filename, QString path, QString unk = "");
 
 		// Serialization
-		QString toString(QString separator) const;
+		QString toString(const QString &separator) const;
 		void write(QJsonObject &json) const;
 		bool read(const QJsonObject &json, const QMap<QString, Site*> &sites);
 

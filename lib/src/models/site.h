@@ -54,12 +54,12 @@ class Site : public QObject
 		~Site() override;
 		void loadConfig();
 		void initManager();
-		QString type();
-		QString name();
-		QString url();
+		QString type() const;
+		QString name() const;
+		QString url() const;
 		QList<QNetworkCookie> cookies() const;
-		QVariant setting(QString key, QVariant def = QVariant());
-		void setSetting(QString key, QVariant value, QVariant def);
+		QVariant setting(const QString &key, const QVariant &def = QVariant());
+		void setSetting(const QString &key, const QVariant &value, const QVariant &def);
 		void syncSettings();
 		TagDatabase *tagDatabase() const;
 		QNetworkRequest makeRequest(QUrl url, Page *page = nullptr, QString referer = "", Image *img = nullptr);
@@ -68,8 +68,8 @@ class Site : public QObject
 		static QList<Site*> getSites(Profile *profile, QStringList sources);
 		static QMap<QString, Site *> getAllSites(Profile *profile);
 		QUrl fixUrl(const QUrl &url) const { return fixUrl(url.toString()); }
-		QUrl fixUrl(QString url) const;
-		QUrl fixUrl(QString url, QUrl old) const;
+		QUrl fixUrl(const QString &url) const;
+		QUrl fixUrl(const QString &url, const QUrl &old) const;
 
 		// Api
 		QList<Api*> getApis(bool filterAuth = false) const;
@@ -82,17 +82,17 @@ class Site : public QObject
 		bool isLoggedIn(bool unknown = false) const;
 		QString username() const;
 		QString password() const;
-		void setUsername(QString);
-		void setPassword(QString);
+		void setUsername(const QString &username);
+		void setPassword(const QString &password);
 		bool canTestLogin() const;
 
 		// XML info getters
-		bool contains(QString key) const;
-		QString value(QString key) const;
-		QString operator[](QString key) const { return value(key); }
+		bool contains(const QString &key) const;
+		QString value(const QString &key) const;
+		QString operator[](const QString &key) const { return value(key); }
 
 	private:
-		QNetworkReply *getRequest(QNetworkRequest request);
+		QNetworkReply *getRequest(const QNetworkRequest &request);
 
 	public slots:
 		void login(bool force = false);

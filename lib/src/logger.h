@@ -43,7 +43,7 @@ class Logger : public QObject
 		void newLog(QString message);
 
 	private:
-		Logger() {}
+		Logger() = default;
 		QFile m_logFile, m_fCommandsLog, m_fCommandsSqlLog;
 		LogLevel m_level = LogLevel::Info;
 };

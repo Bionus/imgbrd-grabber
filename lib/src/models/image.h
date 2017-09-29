@@ -37,14 +37,14 @@ class Image : public QObject
 		Image(const Image &other);
 		int			value() const;
 		QString		match(QString filter, bool invert = false) const;
-		QStringList	filter(QStringList filters) const;
+		QStringList	filter(const QStringList &filters) const;
 		QStringList	path(QString fn = "", QString pth = "", int counter = 0, bool complex = true, bool simple = false, bool maxLength = true, bool shouldFixFilename = true, bool getFull = false) const;
-		QStringList blacklisted(QStringList, bool invert = true) const;
+		QStringList blacklisted(const QStringList &blacklistedTags, bool invert = true) const;
 		QStringList	stylishedTags(Profile *profile) const;
-		SaveResult  save(QString path, bool force = false, bool basic = false, bool addMd5 = true, bool startCommands = false, int count = 1, bool loadIfNecessary = false);
-		void		postSaving(QString path, bool addMd5 = true, bool startCommands = false, int count = 1, bool basic = false);
-		QMap<QString, Image::SaveResult> save(QStringList paths, bool addMd5 = true, bool startCommands = false, int count = 1, bool force = false, bool loadIfNecessary = false);
-		QMap<QString, Image::SaveResult> save(QString filename, QString path, bool addMd5 = true, bool startCommands = false, int count = 1, bool loadIfNecessary = false);
+		SaveResult  save(const QString &path, bool force = false, bool basic = false, bool addMd5 = true, bool startCommands = false, int count = 1, bool loadIfNecessary = false);
+		void		postSaving(const QString &path, bool addMd5 = true, bool startCommands = false, int count = 1, bool basic = false);
+		QMap<QString, Image::SaveResult> save(const QStringList &paths, bool addMd5 = true, bool startCommands = false, int count = 1, bool force = false, bool loadIfNecessary = false);
+		QMap<QString, Image::SaveResult> save(const QString &filename, const QString &path, bool addMd5 = true, bool startCommands = false, int count = 1, bool loadIfNecessary = false);
 		QString		url() const;
 		QString		md5() const;
 		QString		author() const;
@@ -55,7 +55,7 @@ class Image : public QObject
 		QString		filename() const;
 		QString		folder() const;
 		QList<Tag>	tags() const;
-		QList<Tag>	filteredTags(QStringList remove) const;
+		QList<Tag>	filteredTags(const QStringList &remove) const;
 		QStringList tagsString() const;
 		QStringList search() const;
 		QList<Pool>	pools() const;
@@ -92,13 +92,13 @@ class Image : public QObject
 		void		setData(const QByteArray &data);
 		void		setSize(QSize size);
 		void		setFileSize(int size);
-		void		setSavePath(QString);
+		void		setSavePath(const QString &savePath);
 		void		setRating(QString rating);
 		void		setFileExtension(QString ext);
 		bool		shouldDisplaySample() const;
 		QUrl		getDisplayableUrl() const;
 		bool		isVideo() const;
-		void		setTags(QList<Tag> tags);
+		void		setTags(const QList<Tag> &tags);
 
 	public slots:
 		void loadPreview();

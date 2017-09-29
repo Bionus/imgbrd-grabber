@@ -12,7 +12,7 @@
 
 
 PageApi::PageApi(Page *parentPage, Profile *profile, Site *site, Api *api, QStringList tags, int page, int limit, QStringList postFiltering, bool smart, QObject *parent, int pool, int lastPage, int lastPageMinId, int lastPageMaxId)
-	: QObject(parent), m_parentPage(parentPage), m_profile(profile), m_site(site), m_api(api), m_search(tags), m_postFiltering(postFiltering), m_errors(QStringList()), m_imagesPerPage(limit), m_currentSource(0), m_lastPage(lastPage), m_lastPageMinId(lastPageMinId), m_lastPageMaxId(lastPageMaxId), m_smart(smart), m_reply(nullptr), m_replyTags(nullptr)
+	: QObject(parent), m_parentPage(parentPage), m_profile(profile), m_site(site), m_api(api), m_search(std::move(tags)), m_postFiltering(std::move(postFiltering)), m_errors(QStringList()), m_imagesPerPage(limit), m_currentSource(0), m_lastPage(lastPage), m_lastPageMinId(lastPageMinId), m_lastPageMaxId(lastPageMaxId), m_smart(smart), m_reply(nullptr), m_replyTags(nullptr)
 {
 	m_imagesCount = -1;
 	m_pagesCount = -1;
@@ -25,8 +25,6 @@ PageApi::PageApi(Page *parentPage, Profile *profile, Site *site, Api *api, QStri
 
 	updateUrls();
 }
-PageApi::~PageApi()
-{ }
 
 QUrl PageApi::parseUrl(QString url, int pid, int p, QString t, QString pseudo, QString password)
 {
@@ -944,7 +942,7 @@ int PageApi::minId()
 	return minId;
 }
 
-void PageApi::setUrl(QUrl url)
+void PageApi::setUrl(const QUrl &url)
 {
 	m_url = url;
 }

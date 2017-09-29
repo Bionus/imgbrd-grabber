@@ -124,8 +124,8 @@ class mainWindow : public QMainWindow
 		void restoreLastClosedTab();
 		void currentTabChanged(int);
 		void closeCurrentTab();
-		bool saveTabs(QString);
-		bool loadTabs(QString);
+		bool saveTabs(const QString &filename);
+		bool loadTabs(const QString &filename);
 		void updateTabs();
 		void focusSearch();
 		void tabNext();
@@ -141,8 +141,8 @@ class mainWindow : public QMainWindow
 		// Others
 		void closeEvent(QCloseEvent*) override;
 		void onFirstLoad();
-		void init(QStringList args, QMap<QString,QString> params);
-		void parseArgs(QStringList args, QMap<QString,QString> params);
+		void init(const QStringList &args, const QMap<QString, QString> &params);
+		void parseArgs(const QStringList &args, const QMap<QString, QString> &params);
 		void on_buttonSaveLinkList_clicked();
 		void on_buttonLoadLinkList_clicked();
 		bool saveLinkList(QString filename);

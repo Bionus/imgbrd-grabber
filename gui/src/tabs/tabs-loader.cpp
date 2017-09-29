@@ -11,7 +11,7 @@
 #include "models/profile.h"
 
 
-bool TabsLoader::load(QString path, QList<searchTab*> &allTabs, int &currentTab, Profile *profile, QMap<QString, Site*> &sites, mainWindow *parent)
+bool TabsLoader::load(const QString &path, QList<searchTab*> &allTabs, int &currentTab, Profile *profile, QMap<QString, Site*> &sites, mainWindow *parent)
 {
 	QSettings *settings = profile->getSettings();
 	bool preload = settings->value("preloadAllTabs", false).toBool();
@@ -115,7 +115,7 @@ searchTab *TabsLoader::loadTab(QJsonObject info, Profile *profile, QMap<QString,
 	return nullptr;
 }
 
-bool TabsLoader::save(QString path, QList<searchTab*> &allTabs, searchTab *currentTab)
+bool TabsLoader::save(const QString &path, QList<searchTab*> &allTabs, searchTab *currentTab)
 {
 	QFile saveFile(path);
 	if (!saveFile.open(QFile::WriteOnly))

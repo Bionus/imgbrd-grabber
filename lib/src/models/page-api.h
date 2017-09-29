@@ -24,7 +24,6 @@ class PageApi : public QObject
 		};
 
 		explicit PageApi(Page *parentPage, Profile *profile, Site *site, Api *api, QStringList tags = QStringList(), int page = 1, int limit = 25, QStringList postFiltering = QStringList(), bool smart = false, QObject *parent = Q_NULLPTR, int pool = 0, int lastPage = 0, int lastPageMinId = 0, int lastPageMaxId = 0);
-		~PageApi() override;
 		void			setLastPage(Page *page);
 		void			load(bool rateLimit = false);
 		void			loadTags();
@@ -46,7 +45,7 @@ class PageApi : public QObject
 		int				pageImageCount();
 		int				minId();
 		int				maxId();
-		void			setUrl(QUrl url);
+		void			setUrl(const QUrl &url);
 		QUrl			nextPage();
 		QUrl			prevPage();
 

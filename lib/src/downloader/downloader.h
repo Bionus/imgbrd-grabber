@@ -12,7 +12,7 @@ class Downloader : public QObject
 	Q_OBJECT
 
 	public:
-		Downloader();
+		Downloader() = default;
 		~Downloader() override;
 		Downloader(Profile *profile, QStringList tags, QStringList postFiltering, QList<Site*> sources, int page, int max, int perPage, QString location, QString filename, QString user, QString password, bool blacklist, QStringList blacklistedTags, bool noDuplicates, int tagsMin, QString tagsFormat, Downloader *previous = nullptr);
 		void setQuit(bool quit);

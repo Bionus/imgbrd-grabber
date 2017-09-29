@@ -528,7 +528,7 @@ QString Image::match(QString filter, bool invert) const
 	// Invert the filter by prepending '-'
 	if (filter.startsWith('-'))
 	{
-		filter = filter.right(filter.length()-1);
+		filter = filter.right(filter.length() - 1);
 		invert = !invert;
 	}
 
@@ -655,7 +655,7 @@ QString Image::match(QString filter, bool invert) const
 	return QString();
 }
 
-QStringList Image::filter(QStringList filters) const
+QStringList Image::filter(const QStringList &filters) const
 {
 	QStringList ret;
 	for (const QString &filter : filters)
@@ -882,13 +882,13 @@ int Image::value() const
 /**
  * Checks whether an image contains a given set of tags.
  *
- * @param blacklistedtags The list of tags to check.
+ * @param blacklistedTags The list of tags to check.
  * @return The blacklisted tags found in the image (empty list if none is found).
  */
-QStringList Image::blacklisted(QStringList blacklistedtags, bool invert) const
+QStringList Image::blacklisted(const QStringList &blacklistedTags, bool invert) const
 {
 	QStringList detected;
-	for (const QString &tag : blacklistedtags)
+	for (const QString &tag : blacklistedTags)
 	{
 		if (!match(tag, invert).isEmpty())
 		{ detected.append(tag); }
@@ -901,7 +901,7 @@ QStringList Image::stylishedTags(Profile *profile) const
 	return Tag::Stylished(m_tags, profile);
 }
 
-Image::SaveResult Image::save(QString path, bool force, bool basic, bool addMd5, bool startCommands, int count, bool loadIfNecessary)
+Image::SaveResult Image::save(const QString &path, bool force, bool basic, bool addMd5, bool startCommands, int count, bool loadIfNecessary)
 {
 	SaveResult res = SaveResult::Saved;
 
@@ -1012,7 +1012,7 @@ Image::SaveResult Image::save(QString path, bool force, bool basic, bool addMd5,
 
 	return res;
 }
-void Image::postSaving(QString path, bool addMd5, bool startCommands, int count, bool basic)
+void Image::postSaving(const QString &path, bool addMd5, bool startCommands, int count, bool basic)
 {
 	if (addMd5)
 	{ m_profile->addMd5(md5(), path); }
@@ -1076,20 +1076,20 @@ void Image::postSaving(QString path, bool addMd5, bool startCommands, int count,
 
 	m_savePath = path;
 }
-QMap<QString, Image::SaveResult> Image::save(QStringList paths, bool addMd5, bool startCommands, int count, bool force, bool loadIfNecessary)
+QMap<QString, Image::SaveResult> Image::save(const QStringList &paths, bool addMd5, bool startCommands, int count, bool force, bool loadIfNecessary)
 {
 	QMap<QString, Image::SaveResult> res;
 	for (const QString &path : paths)
 		res.insert(path, save(path, force, false, addMd5, startCommands, count, loadIfNecessary));
 	return res;
 }
-QMap<QString, Image::SaveResult> Image::save(QString filename, QString path, bool addMd5, bool startCommands, int count, bool loadIfNecessary)
+QMap<QString, Image::SaveResult> Image::save(const QString &filename, const QString &path, bool addMd5, bool startCommands, int count, bool loadIfNecessary)
 {
 	QStringList paths = this->path(filename, path, count, true, false, true, true, true);
 	return save(paths, addMd5, startCommands, count, false, loadIfNecessary);
 }
 
-QList<Tag> Image::filteredTags(QStringList remove) const
+QList<Tag> Image::filteredTags(const QStringList &remove) const
 {
 	QList<Tag> tags;
 
@@ -1205,11 +1205,11 @@ void	Image::setData(const QByteArray &d)
 		m_md5 = QCryptographicHash::hash(m_data, QCryptographicHash::Md5).toHex();
 	}
 }
-void Image::setSavePath(QString savePath)
+void Image::setSavePath(const QString &savePath)
 {
 	m_savePath = savePath;
 }
-void Image::setTags(QList<Tag> tags)
+void Image::setTags(const QList<Tag> &tags)
 {
 	m_tags = tags;
 }

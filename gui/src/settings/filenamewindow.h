@@ -35,7 +35,7 @@ class FilenameWindow : public QDialog
 		void on_buttonHelpClassic_clicked();
 		void on_buttonHelpJavascript_clicked();
 		void send();
-		void done(int r);
+		void done(int r) override;
 
 	signals:
 		void validated(QString);
