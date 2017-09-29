@@ -113,7 +113,7 @@ void searchTab::optionsChanged()
 void searchTab::setTagsFromPages(const QMap<QString, QList<Page*>> &pages)
 {
 	// Tags for this page
-	QList<Tag> taglist;
+	QList<Tag> tagList;
 	QStringList tagsGot;
 	for (QList<Page*> ps : pages)
 	{
@@ -133,11 +133,11 @@ void searchTab::setTagsFromPages(const QMap<QString, QList<Page*>> &pages)
 				if (tagsGot.contains(tag.text()))
 				{
 					int index = tagsGot.indexOf(tag.text());
-					taglist[index].setCount(taglist[index].count() + tag.count());
+					tagList[index].setCount(tagList[index].count() + tag.count());
 				}
 				else
 				{
-					taglist.append(tag);
+					tagList.append(tag);
 					tagsGot.append(tag.text());
 				}
 			}
@@ -145,9 +145,9 @@ void searchTab::setTagsFromPages(const QMap<QString, QList<Page*>> &pages)
 	}
 
 	// We sort tags by frequency
-	qSort(taglist.begin(), taglist.end(), sortTagsByCount);
+	qSort(tagList.begin(), tagList.end(), sortTagsByCount);
 
-	m_tags = taglist;
+	m_tags = tagList;
 	m_parent->setTags(m_tags, this);
 }
 
@@ -155,7 +155,7 @@ QStringList searchTab::reasonsToFail(Page* page, QStringList completion, QString
 {
 	QStringList reasons = QStringList();
 
-	// If the request yieleded no source, the server may be offline
+	// If the request yielded no source, the server may be offline
 	if (page->source().isEmpty())
 	{ reasons.append(tr("server offline")); }
 
@@ -350,11 +350,11 @@ void searchTab::finishedLoading(Page* page)
 
 	m_images.append(imgs);
 
-	int maxpage = page->pagesCount();
-	if (maxpage < m_pagemax || m_pagemax == -1)
-		m_pagemax = maxpage;
-	ui_buttonNextPage->setEnabled(maxpage > ui_spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1 || (page->imagesCount() == 0 && page->images().count() > 0));
-	ui_buttonLastPage->setEnabled(maxpage > ui_spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1);
+	int maxPage = page->pagesCount();
+	if (maxPage < m_pagemax || m_pagemax == -1)
+		m_pagemax = maxPage;
+	ui_buttonNextPage->setEnabled(maxPage > ui_spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1 || (page->imagesCount() == 0 && page->images().count() > 0));
+	ui_buttonLastPage->setEnabled(maxPage > ui_spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1);
 
 	addResultsPage(page, imgs, merged);
 
@@ -440,11 +440,11 @@ void searchTab::finishedLoadingTags(Page *page)
 		m_parent->setWiki(m_wiki);
 	}
 
-	int maxpage = page->pagesCount();
-	if (maxpage < m_pagemax || m_pagemax == -1)
-		m_pagemax = maxpage;
-	ui_buttonNextPage->setEnabled(maxpage > ui_spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1 || (page->imagesCount() == 0 && page->images().count() > 0));
-	ui_buttonLastPage->setEnabled(maxpage > ui_spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1);
+	int maxPage = page->pagesCount();
+	if (maxPage < m_pagemax || m_pagemax == -1)
+		m_pagemax = maxPage;
+	ui_buttonNextPage->setEnabled(maxPage > ui_spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1 || (page->imagesCount() == 0 && page->images().count() > 0));
+	ui_buttonLastPage->setEnabled(maxPage > ui_spinPage->value() || page->imagesCount() == -1 || page->pagesCount() == -1);
 
 	// Update image and page count
 	QList<QSharedPointer<Image>> imgs;
@@ -499,8 +499,8 @@ void searchTab::finishedLoadingPreview()
 
 	// Download whitelist images on thumbnail view
 	QStringList detected = img->blacklisted(m_profile->getBlacklist());
-	QStringList whitelistedtags(m_settings->value("whitelistedtags").toString().split(" "));
-	QStringList whitelisted = img->blacklisted(whitelistedtags);
+	QStringList whitelistedTags(m_settings->value("whitelistedtags").toString().split(" "));
+	QStringList whitelisted = img->blacklisted(whitelistedTags);
 	if (!whitelisted.isEmpty() && m_settings->value("whitelist_download", "image").toString() == "page")
 	{
 		bool download = false;

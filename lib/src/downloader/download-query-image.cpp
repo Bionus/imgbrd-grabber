@@ -103,12 +103,12 @@ bool DownloadQueryImage::read(const QJsonObject &json, const QMap<QString, Site 
 	path = json["path"].toString();
 
 	// Get site
-	QString sitename = json["site"].toString();
-	if (!sites.contains(sitename))
+	QString siteName = json["site"].toString();
+	if (!sites.contains(siteName))
 	{
 		return false;
 	}
-	site = sites[sitename];
+	site = sites[siteName];
 
 	return true;
 }

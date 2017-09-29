@@ -72,7 +72,7 @@ void md5Fix::on_buttonStart_clicked()
 	int count = 0;
 	if (files.count() > 0)
 	{
-		// Show progresss bar
+		// Show progress bar
 		ui->progressBar->setValue(0);
 		ui->progressBar->setMaximum(files.size());
 		ui->progressBar->show();
@@ -120,7 +120,7 @@ void md5Fix::on_buttonStart_clicked()
 		}
 	}
 
-	// Hide progresss bar
+	// Hide progress bar
 	ui->progressBar->hide();
 	ui->progressBar->setValue(0);
 	ui->progressBar->setMaximum(0);

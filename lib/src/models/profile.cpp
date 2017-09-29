@@ -24,10 +24,10 @@ Profile::Profile(QString path)
 		fileFavorites.close();
 
 		QSet<QString> unique;
-		QStringList wrds = favs.split("\n", QString::SkipEmptyParts);
-		for (const QString &wrd : wrds)
+		QStringList words = favs.split("\n", QString::SkipEmptyParts);
+		for (const QString &word : words)
 		{
-			Favorite fav = Favorite::fromString(m_path, wrd);
+			Favorite fav = Favorite::fromString(m_path, word);
 			if (!unique.contains(fav.getName()))
 			{
 				unique.insert(fav.getName());

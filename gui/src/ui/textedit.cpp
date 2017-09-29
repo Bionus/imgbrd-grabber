@@ -50,13 +50,13 @@ void TextEdit::doColor()
 {
 	QString txt = " " + this->toPlainText().toHtmlEscaped() + " ";
 
-	// Color favorited tags
-	QFont fontFavs;
-	fontFavs.fromString(m_profile->getSettings()->value("Coloring/Fonts/favorites").toString());
-	QString colorFavs = m_profile->getSettings()->value("Coloring/Colors/favorites", "#ffc0cb").toString();
-	QString styleFavs = "color:" + colorFavs + "; " + Tag::qFontToCss(fontFavs);
+	// Color favorite tags
+	QFont fontFavorites;
+	fontFavorites.fromString(m_profile->getSettings()->value("Coloring/Fonts/favorites").toString());
+	QString colorFavorites = m_profile->getSettings()->value("Coloring/Colors/favorites", "#ffc0cb").toString();
+	QString styleFavorites = "color:" + colorFavorites + "; " + Tag::qFontToCss(fontFavorites);
 	for (const Favorite &fav : m_favorites)
-		txt.replace(" "+fav.getName()+" ", " <span style=\""+styleFavs+"\">"+fav.getName()+"</span> ");
+		txt.replace(" "+fav.getName()+" ", " <span style=\""+styleFavorites+"\">"+fav.getName()+"</span> ");
 
 	// Color metatags
 	static QRegularExpression regexOr(" ~([^ ]+)"),

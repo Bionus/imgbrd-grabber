@@ -114,10 +114,10 @@ void BlacklistFix1::on_buttonContinue_clicked()
 		m_details.append(det);
 	}
 
-	int reponse = QMessageBox::question(this, tr("Blacklist fixer"), tr("You are about to download information from %n image(s). Are you sure you want to continue?", "", m_details.size()), QMessageBox::Yes | QMessageBox::No);
-	if (reponse == QMessageBox::Yes)
+	int response = QMessageBox::question(this, tr("Blacklist fixer"), tr("You are about to download information from %n image(s). Are you sure you want to continue?", "", m_details.size()), QMessageBox::Yes | QMessageBox::No);
+	if (response == QMessageBox::Yes)
 	{
-		// Show progresss bar
+		// Show progress bar
 		ui->progressBar->setValue(0);
 		ui->progressBar->setMaximum(files.size());
 		ui->progressBar->show();

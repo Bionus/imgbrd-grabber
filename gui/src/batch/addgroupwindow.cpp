@@ -35,7 +35,7 @@ AddGroupWindow::AddGroupWindow(QString selected, QMap<QString, Site*> sites, Pro
 }
 
 /**
- * Relays the informations to the parent window.
+ * Relays the information to the parent window.
  */
 void AddGroupWindow::ok()
 {

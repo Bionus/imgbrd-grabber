@@ -58,7 +58,7 @@ sourcesWindow::~sourcesWindow()
 }
 
 /**
- * When closed, the window emit a signal wich will trigger a slot in the mainwindow.
+ * When closed, the window emit a signal which will trigger a slot in the main window.
  * @param	event	The event triggered wy window's closing
  * @todo	Why use a signal, since we can simply use a pointer to the parent window, or a signal giving not a pointer to this window, but directly m_selected ?
  */
@@ -74,25 +74,25 @@ void sourcesWindow::closeEvent(QCloseEvent *event)
  */
 void sourcesWindow::checkUpdate()
 {
-	bool onechecked = false;
-	bool oneunchecked = false;
+	bool oneChecked = false;
+	bool oneUnchecked = false;
 	for (QCheckBox *check : m_checks)
 	{
 		if (check->isChecked())
-		{ onechecked = true; }
+		{ oneChecked = true; }
 		else
-		{ oneunchecked = true; }
+		{ oneUnchecked = true; }
 	}
-	if (onechecked && !oneunchecked)
+	if (oneChecked && !oneUnchecked)
 	{ ui->checkBox->setCheckState(Qt::Checked); }
-	else if (!onechecked && oneunchecked)
+	else if (!oneChecked && oneUnchecked)
 	{ ui->checkBox->setCheckState(Qt::Unchecked); }
 	else
 	{ ui->checkBox->setCheckState(Qt::PartiallyChecked); }
 }
 
 /**
- * Altern between the checked and unchecked state of the tri-state checkbox "Check all".
+ * Alternate between the checked and unchecked state of the tri-state checkbox "Check all".
  */
 void sourcesWindow::checkClicked()
 {
@@ -261,7 +261,7 @@ void sourcesWindow::addCheckboxes()
 /**
  * Check of uncheck all checkboxes, according to "check".
  *
- * @param	check	Qt::CheckState saying if we must check or uncheck everithing (0 = uncheck, 2 = check)
+ * @param	check	Qt::CheckState saying if we must check or uncheck everything (0 = uncheck, 2 = check)
  */
 void sourcesWindow::checkAll(int check)
 {

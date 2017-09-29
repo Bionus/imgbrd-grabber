@@ -40,10 +40,10 @@ void WebServiceWindow::getFavicon()
 void WebServiceWindow::faviconReceived()
 {
 	// Check redirection
-	QUrl redir = m_faviconReply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
-	if (!redir.isEmpty())
+	QUrl redirection = m_faviconReply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
+	if (!redirection.isEmpty())
 	{
-		m_faviconReply = m_networkAccessManager->get(QNetworkRequest(QUrl(redir)));
+		m_faviconReply = m_networkAccessManager->get(QNetworkRequest(QUrl(redirection)));
 		connect(m_faviconReply, &QNetworkReply::finished, this, &WebServiceWindow::faviconReceived);
 		return;
 	}

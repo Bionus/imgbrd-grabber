@@ -38,7 +38,7 @@ class Image : public QObject
 		int			value() const;
 		QString		match(QString filter, bool invert = false) const;
 		QStringList	filter(QStringList filters) const;
-		QStringList	path(QString fn = "", QString pth = "", int counter = 0, bool complex = true, bool simple = false, bool maxlength = true, bool shouldFixFilename = true, bool getFull = false) const;
+		QStringList	path(QString fn = "", QString pth = "", int counter = 0, bool complex = true, bool simple = false, bool maxLength = true, bool shouldFixFilename = true, bool getFull = false) const;
 		QStringList blacklisted(QStringList, bool invert = true) const;
 		QStringList	stylishedTags(Profile *profile) const;
 		SaveResult  save(QString path, bool force = false, bool basic = false, bool addMd5 = true, bool startCommands = false, int count = 1, bool loadIfNecessary = false);

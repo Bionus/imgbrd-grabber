@@ -139,12 +139,12 @@ void poolTab::getPage()
 	Page *page = m_pages[ui->comboSites->currentText()].first();
 
 	bool unloaded = m_settings->value("getunloadedpages", false).toBool();
-	int perpage = unloaded ? ui->spinImagesPerPage->value() : page->images().count();
+	int perPage = unloaded ? ui->spinImagesPerPage->value() : page->images().count();
 	QString tags = "pool:"+QString::number(ui->spinPool->value())+" "+m_search->toPlainText()+" "+m_settings->value("add").toString().trimmed();
 	QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
 	Site *site = m_sites->value(ui->comboSites->currentText());
 
-	emit batchAddGroup(DownloadQueryGroup(m_settings, tags, ui->spinPage->value(), perpage, perpage, postFiltering, site));
+	emit batchAddGroup(DownloadQueryGroup(m_settings, tags, ui->spinPage->value(), perPage, perPage, postFiltering, site));
 }
 void poolTab::getAll()
 {
@@ -198,7 +198,7 @@ QString poolTab::tags() const
 
 void poolTab::changeEvent(QEvent *event)
 {
-	// Automatically retranslate this tab on language change
+	// Automatically re-translate this tab on language change
 	if (event->type() == QEvent::LanguageChange)
 	{
 		ui->retranslateUi(this);

@@ -54,7 +54,7 @@ void Site::loadConfig()
 	if (defaults.isEmpty())
 	{ defaults =  QStringList() << "Xml" << "Json" << "Regex" << "Rss"; }
 
-	// Get overriden source order
+	// Get overridden source order
 	QStringList sources;
 	if (!m_settings->value("sources/usedefault", true).toBool())
 	{
@@ -86,11 +86,11 @@ void Site::loadConfig()
 
 	// Cookies
 	m_cookies.clear();
-	QList<QVariant> cookies = m_settings->value("cookies", "").toList();
-	for (const QVariant &variant : cookies)
+	QList<QVariant> settingsCookies = m_settings->value("cookies", "").toList();
+	for (const QVariant &variant : settingsCookies)
 	{
-		QList<QNetworkCookie> cookiz = QNetworkCookie::parseCookies(variant.toByteArray());
-		for (QNetworkCookie cookie : cookiz)
+		QList<QNetworkCookie> cookies = QNetworkCookie::parseCookies(variant.toByteArray());
+		for (QNetworkCookie cookie : cookies)
 		{
 			cookie.setDomain(m_url);
 			cookie.setPath("/");
@@ -260,12 +260,12 @@ void Site::loginFinished()
 	}
 	else
 	{
-		QString cookiename = m_settings->value("login/"+type+"/cookie", "").toString();
+		QString cookieName = m_settings->value("login/"+type+"/cookie", "").toString();
 
 		QList<QNetworkCookie> cookies = m_cookieJar->cookiesForUrl(m_loginReply->url());
 		for (const QNetworkCookie &cookie : cookies)
 		{
-			if (cookie.name() == cookiename && !cookie.value().isEmpty())
+			if (cookie.name() == cookieName && !cookie.value().isEmpty())
 			{ ok = true; }
 		}
 	}

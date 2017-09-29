@@ -220,7 +220,7 @@ void zoomWindow::imageContextMenu()
 	QAction *copyDataAction = new QAction(QIcon(":/images/icons/document-binary.png"), tr("Copy data"), menu);
 	connect(copyDataAction, SIGNAL(triggered()), this, SLOT(copyImageDataToClipboard()));
 
-	// Insert actionsat the beginning
+	// Insert actions at the beginning
 	QAction *first = menu->actions().first();
 	menu->insertAction(first, copyImageAction);
 	menu->insertAction(first, copyDataAction);
@@ -720,9 +720,9 @@ void zoomWindow::draw()
 
 /**
  * Updates the image label to use the current image.
- * @param onlysize true to update the image quickly
+ * @param onlySize true to update the image quickly
  */
-void zoomWindow::update(bool onlysize, bool force)
+void zoomWindow::update(bool onlySize, bool force)
 {
 	// Update image alignment
 	QString ext = m_url.section('.', -1).toLower();
@@ -740,9 +740,9 @@ void zoomWindow::update(bool onlysize, bool force)
 		return;
 
 	bool needScaling = (m_displayImage.width() > m_labelImage->width() || m_displayImage.height() > m_labelImage->height());
-	if (needScaling && (onlysize || m_loadedImage || force))
+	if (needScaling && (onlySize || m_loadedImage || force))
 	{
-		Qt::TransformationMode mode = onlysize ? Qt::FastTransformation : Qt::SmoothTransformation;
+		Qt::TransformationMode mode = onlySize ? Qt::FastTransformation : Qt::SmoothTransformation;
 		m_labelImage->setImage(m_displayImage.scaled(m_labelImage->width(), m_labelImage->height(), Qt::KeepAspectRatio, mode));
 		m_labelImageScaled = true;
 	}

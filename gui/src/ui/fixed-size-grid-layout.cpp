@@ -134,9 +134,9 @@ int FixedSizeGridLayout::doLayout(const QRect &rect, bool testOnly) const
 		int spaceX = widgetSpacing(horizontalSpacing(), item->widget(), Qt::Horizontal);
 		int spaceY = widgetSpacing(verticalSpacing(), item->widget(), Qt::Vertical);
 
-		int nbElts = qMax(1, (w + spaceX) / (m_fixedWidth + spaceX));
-		int totalSpace = w - (m_fixedWidth * nbElts);
-		spaceX = qMax(spaceX, totalSpace / qMax(1, nbElts - 1));
+		int nbElements = qMax(1, (w + spaceX) / (m_fixedWidth + spaceX));
+		int totalSpace = w - (m_fixedWidth * nbElements);
+		spaceX = qMax(spaceX, totalSpace / qMax(1, nbElements - 1));
 
 		int nextX = x + item->sizeHint().width() + spaceX;
 		if (nextX - spaceX - 1 > effectiveRect.right() && lineHeight > 0)

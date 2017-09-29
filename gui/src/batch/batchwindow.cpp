@@ -176,10 +176,12 @@ void batchWindow::addImage(QString url, int batch, float size)
 	ui->tableWidget->setItem(m_items, 3, new QTableWidgetItem(size != 0 ? QLocale::system().toString(size, 'f', size < 10 ? 2 : 0)+" "+unit : ""));
 	ui->tableWidget->setItem(m_items, 4, new QTableWidgetItem());
 	ui->tableWidget->setItem(m_items, 5, new QTableWidgetItem("0 %"));
-	/* QProgressBar *prog = new QProgressBar(this);
-	prog->setTextVisible(false);
-	m_progressBars.append(prog);
-	ui->tableWidget->setCellWidget(m_items, 5, prog); */
+
+	/* auto *progressBar = new QProgressBar(this);
+	progressBar->setTextVisible(false);
+	m_progressBars.append(progressBar);
+	ui->tableWidget->setCellWidget(m_items, 5, progressBar); */
+
 	m_items++;
 }
 void batchWindow::updateColumns()

@@ -19,7 +19,7 @@ bool QClosableTabWidget::eventFilter(QObject *o, QEvent *e)
 			int index = tabBar()->tabAt(mouseEvent->pos());
 			QWidget *w = widget(index);
 
-			// Unclosable tabs have a maximum width of 16777214 (default: 16777215)
+			// Non-closable tabs have a maximum width of 16777214 (default: 16777215)
 			if (w->maximumWidth() != 16777214)
 			{
 				w->deleteLater();

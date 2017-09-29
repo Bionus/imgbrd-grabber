@@ -326,10 +326,10 @@ void Image::parsePreview()
 	}
 
 	// Check redirection
-	QUrl redir = m_loadPreview->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
-	if (!redir.isEmpty())
+	QUrl redirection = m_loadPreview->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
+	if (!redirection.isEmpty())
 	{
-		m_previewUrl = redir;
+		m_previewUrl = redirection;
 		loadPreview();
 		return;
 	}
@@ -532,7 +532,7 @@ QString Image::match(QString filter, bool invert) const
 		invert = !invert;
 	}
 
-	// Metatags
+	// Meta-tags
 	if (filter.contains(":"))
 	{
 		QString type = filter.section(':', 0, 0).toLower();
@@ -676,7 +676,7 @@ QStringList Image::filter(QStringList filters) const
  * @param simple True to force using the fn and pth parameters.
  * @return The filename of the image, with any token replaced.
  */
-QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool simple, bool maxlength, bool shouldFixFilename, bool getFull) const
+QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool simple, bool maxLength, bool shouldFixFilename, bool getFull) const
 {
 	if (!simple)
 	{
@@ -692,7 +692,7 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 	}
 
 	Filename filename(fn);
-	return filename.path(*this, m_profile, pth, counter, complex, maxlength, shouldFixFilename, getFull);
+	return filename.path(*this, m_profile, pth, counter, complex, maxLength, shouldFixFilename, getFull);
 }
 
 void Image::loadImage(bool inMemory)

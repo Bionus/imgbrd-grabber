@@ -90,7 +90,7 @@ void startWindow::save()
 			pth.setPath(pth.path().remove(QRegularExpression("/([^/]+)$")));
 		}
 		if (pth.path() == op)
-		{ error(this, tr("An error occured creating the save folder.")); }
+		{ error(this, tr("An error occurred creating the save folder.")); }
 		else
 		{ pth.mkpath(ui->lineFolder->text()); }
 	}

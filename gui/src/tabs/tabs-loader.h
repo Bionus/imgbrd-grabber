@@ -17,7 +17,7 @@ class TabsLoader
 {
 	public:
 		static bool load(QString path, QList<searchTab*> &allTabs, int &currentTab, Profile *profile, QMap<QString, Site *> &sites, mainWindow *parent);
-		static searchTab *loadTab(QJsonObject infos, Profile *profile, QMap<QString, Site*> &sites, mainWindow *parent, bool preload);
+		static searchTab *loadTab(QJsonObject info, Profile *profile, QMap<QString, Site*> &sites, mainWindow *parent, bool preload);
 		static bool save(QString path, QList<searchTab*> &allTabs, searchTab *currentTab);
 };
 

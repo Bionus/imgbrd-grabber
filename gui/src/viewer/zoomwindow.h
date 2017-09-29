@@ -45,7 +45,7 @@ class zoomWindow : public QWidget
 		void load();
 
 	public slots:
-		void update(bool onlysize = false, bool force = false);
+		void update(bool onlySize = false, bool force = false);
 		void replyFinishedDetails();
 		void replyFinishedZoom(QNetworkReply::NetworkError error = QNetworkReply::NoError, QString errorString = "");
 		void display(const QPixmap &, int);

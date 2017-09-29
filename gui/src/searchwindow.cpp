@@ -25,15 +25,15 @@ SearchWindow::SearchWindow(QString tags, Profile *profile, QWidget *parent)
 		connect(m_calendar, SIGNAL(activated(QDate)), m_calendar, SLOT(close()));
 	connect(ui->buttonCalendar, SIGNAL(clicked()), m_calendar, SLOT(show()));
 
-	QStringList favs;
+	QStringList favorites;
 	for (const Favorite &fav : profile->getFavorites())
-		favs.append(fav.getName());
+		favorites.append(fav.getName());
 	m_tags = new TextEdit(profile, this);
 		m_tags->setContextMenuPolicy(Qt::CustomContextMenu);
 		QStringList completion;
 			completion.append(profile->getAutoComplete());
 			completion.append(profile->getCustomAutoComplete());
-			completion.append(favs);
+			completion.append(favorites);
 			completion.removeDuplicates();
 			completion.sort();
 			auto *completer = new QCompleter(completion, m_tags);

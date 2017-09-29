@@ -95,20 +95,20 @@ bool TabsLoader::load(QString path, QList<searchTab*> &allTabs, int &currentTab,
 	return false;
 }
 
-searchTab *TabsLoader::loadTab(QJsonObject infos, Profile *profile, QMap<QString, Site*> &sites, mainWindow *parent, bool preload)
+searchTab *TabsLoader::loadTab(QJsonObject info, Profile *profile, QMap<QString, Site*> &sites, mainWindow *parent, bool preload)
 {
-	QString type = infos["type"].toString();
+	QString type = info["type"].toString();
 
 	if (type == "tag")
 	{
 		auto *tab = new tagTab(&sites, profile, parent);
-		if (tab->read(infos, preload))
+		if (tab->read(info, preload))
 			return tab;
 	}
 	else if (type == "pool")
 	{
 		auto *tab = new poolTab(&sites, profile, parent);
-		if (tab->read(infos, preload))
+		if (tab->read(info, preload))
 			return tab;
 	}
 

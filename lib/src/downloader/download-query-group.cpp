@@ -6,16 +6,16 @@
 DownloadQueryGroup::DownloadQueryGroup()
 { }
 
-DownloadQueryGroup::DownloadQueryGroup(QSettings *settings, QString tags, int page, int perpage, int total, QStringList postFiltering, Site *site, QString unk)
-	: tags(tags), page(page), perpage(perpage), total(total), postFiltering(postFiltering), site(site), unk(unk)
+DownloadQueryGroup::DownloadQueryGroup(QSettings *settings, QString tags, int page, int perPage, int total, QStringList postFiltering, Site *site, QString unk)
+	: tags(tags), page(page), perpage(perPage), total(total), postFiltering(postFiltering), site(site), unk(unk)
 {
 	getBlacklisted = settings->value("downloadblacklist").toBool();
 	filename = settings->value("Save/filename").toString();
 	path = settings->value("Save/path").toString();
 }
 
-DownloadQueryGroup::DownloadQueryGroup(QString tags, int page, int perpage, int total, QStringList postFiltering, bool blacklisted, Site *site, QString filename, QString path, QString unk)
-	: tags(tags), page(page), perpage(perpage), total(total), postFiltering(postFiltering), getBlacklisted(blacklisted), site(site), filename(filename), path(path), unk(unk)
+DownloadQueryGroup::DownloadQueryGroup(QString tags, int page, int perPage, int total, QStringList postFiltering, bool blacklisted, Site *site, QString filename, QString path, QString unk)
+	: tags(tags), page(page), perpage(perPage), total(total), postFiltering(postFiltering), getBlacklisted(blacklisted), site(site), filename(filename), path(path), unk(unk)
 { }
 
 
@@ -68,12 +68,12 @@ bool DownloadQueryGroup::read(const QJsonObject &json, const QMap<QString, Site*
 		postFiltering.append(tag.toString());
 
 	// Get site
-	QString sitename = json["site"].toString();
-	if (!sites.contains(sitename))
+	QString siteName = json["site"].toString();
+	if (!sites.contains(siteName))
 	{
 		return false;
 	}
-	site = sites[sitename];
+	site = sites[siteName];
 
 	// Validate values
 	if (page < 1 || perpage < 1 || total < 1)

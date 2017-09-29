@@ -366,7 +366,7 @@ bool Filename::matchConditionalFilename(QString cond, QSettings *settings, QMap<
 	return false;
 }
 
-QStringList Filename::path(const Image& img, Profile *profile, QString pth, int counter, bool complex, bool maxlength, bool shouldFixFilename, bool getFull, bool keepInvalidTokens) const
+QStringList Filename::path(const Image& img, Profile *profile, QString pth, int counter, bool complex, bool maxLength, bool shouldFixFilename, bool getFull, bool keepInvalidTokens) const
 {
 	QSettings *settings = profile->getSettings();
 	QStringList remove = settings->value("ignoredtags").toString().split(' ', QString::SkipEmptyParts);
@@ -531,7 +531,7 @@ QStringList Filename::path(const Image& img, Profile *profile, QString pth, int 
 		// Max filename size option
 		if (shouldFixFilename)
 		{
-			int limit = !maxlength ? 0 : settings->value("Save/limit").toInt();
+			int limit = !maxLength ? 0 : settings->value("Save/limit").toInt();
 			fns[i] = fixFilename(fns[i], pth, limit);
 		}
 
