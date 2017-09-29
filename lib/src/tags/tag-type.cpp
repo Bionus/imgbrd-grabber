@@ -6,7 +6,7 @@ TagType::TagType()
 	: TagType("unknown")
 {}
 TagType::TagType(QString name)
-	: m_name(std::move(name))
+	: m_name(name)
 {}
 
 QString TagType::name() const

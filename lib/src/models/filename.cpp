@@ -665,7 +665,7 @@ void Filename::setEscapeMethod(QString (*escapeMethod)(QVariant))
 bool Filename::returnError(QString msg, QString *error) const
 {
 	if (error != nullptr)
-		*error = std::move(msg);
+		*error = msg;
 
 	return false;
 }

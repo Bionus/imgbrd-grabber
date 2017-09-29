@@ -15,13 +15,13 @@ DownloadQueryImage::DownloadQueryImage(QSettings *settings, const Image &img, Si
 }
 
 DownloadQueryImage::DownloadQueryImage(const Image &img, Site *site, QString filename, QString path)
-	: site(site), filename(std::move(filename)), path(std::move(path))
+	: site(site), filename(filename), path(path)
 {
 	initFromImage(img);
 }
 
 DownloadQueryImage::DownloadQueryImage(int id, const QString &md5, const QString &rating, const QString &tags, const QString &fileUrl, const QString &date, Site *site, QString filename, QString path)
-	: site(site), filename(std::move(filename)), path(std::move(path))
+	: site(site), filename(filename), path(path)
 {
 	initFromData(id, md5, rating, tags, fileUrl, date);
 }

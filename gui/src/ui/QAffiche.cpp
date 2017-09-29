@@ -6,9 +6,9 @@ QAffiche::QAffiche(QVariant id, int border, QColor color, QWidget *parent)
 	: QLabel(parent), m_lastPressed(Qt::NoButton)
 {
 	m_pressed = false;
-	m_id = std::move(id);
+	m_id = id;
 	m_border = border;
-	m_color = std::move(color);
+	m_color = color;
 	setText("");
 }
 

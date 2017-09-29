@@ -12,15 +12,15 @@ Tag::Tag()
 { }
 
 Tag::Tag(QString text, QString type, int count, QStringList related)
-	: Tag(std::move(text), TagType(std::move(type)), count, std::move(related))
+	: Tag(text, TagType(type), count, related)
 { }
 
 Tag::Tag(QString text, TagType type, int count, QStringList related)
-	: Tag(0, std::move(text), std::move(type), count, std::move(related))
+	: Tag(0, text, type, count, related)
 { }
 
 Tag::Tag(int id, QString text, TagType type, int count, QStringList related)
-	: m_id(id), m_type(type), m_count(count), m_related(std::move(related))
+	: m_id(id), m_type(type), m_count(count), m_related(related)
 {
 	static QStringList weakTypes = QStringList() << "unknown" << "origin";
 

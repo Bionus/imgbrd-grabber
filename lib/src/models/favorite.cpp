@@ -4,10 +4,10 @@
 
 
 Favorite::Favorite(QString name)
-	: Favorite(std::move(name), 50, QDateTime::currentDateTime(), QString())
+	: Favorite(name, 50, QDateTime::currentDateTime(), QString())
 {}
 Favorite::Favorite(QString name, int note, QDateTime lastViewed, QString imagePath)
-	: m_name(std::move(name)), m_note(note), m_lastViewed(lastViewed), m_imagePath(std::move(imagePath))
+	: m_name(name), m_note(note), m_lastViewed(lastViewed), m_imagePath(imagePath)
 {}
 
 void Favorite::setImagePath(const QString &imagePath)

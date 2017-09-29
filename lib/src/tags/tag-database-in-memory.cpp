@@ -4,7 +4,7 @@
 
 
 TagDatabaseInMemory::TagDatabaseInMemory(QString typeFile, QString tagFile)
-	: TagDatabase(std::move(typeFile)), m_tagFile(std::move(tagFile))
+	: TagDatabase(typeFile), m_tagFile(tagFile)
 {}
 
 bool TagDatabaseInMemory::load()

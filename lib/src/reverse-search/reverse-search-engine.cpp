@@ -4,7 +4,7 @@
 
 
 ReverseSearchEngine::ReverseSearchEngine(int id, const QString &icon, QString name, QString tpl, int order)
-	: m_icon(loadIcon(icon)), m_id(id), m_name(std::move(name)), m_tpl(std::move(tpl)), m_order(order)
+	: m_icon(loadIcon(icon)), m_id(id), m_name(name), m_tpl(tpl), m_order(order)
 {}
 
 QIcon ReverseSearchEngine::loadIcon(const QString &path) const

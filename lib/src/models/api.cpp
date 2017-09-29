@@ -2,7 +2,7 @@
 
 
 Api::Api(QString name, QMap<QString, QString> data)
-	: QObject(), m_name(std::move(name)), m_data(std::move(data))
+	: QObject(), m_name(name), m_data(data)
 {
 	QString prefix = "Urls/" + m_name;
 	for (const QString &key : m_data.keys())
