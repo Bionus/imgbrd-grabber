@@ -12,7 +12,7 @@
 
 
 PageApi::PageApi(Page *parentPage, Profile *profile, Site *site, Api *api, QStringList tags, int page, int limit, QStringList postFiltering, bool smart, QObject *parent, int pool, int lastPage, int lastPageMinId, int lastPageMaxId)
-	: QObject(parent), m_parentPage(parentPage), m_profile(profile), m_site(site), m_api(api), m_search(tags), m_postFiltering(postFiltering), m_errors(QStringList()), m_imagesPerPage(limit), m_currentSource(0), m_lastPage(lastPage), m_lastPageMinId(lastPageMinId), m_lastPageMaxId(lastPageMaxId), m_smart(smart), m_reply(nullptr), m_replyTags(nullptr)
+	: QObject(parent), m_parentPage(parentPage), m_profile(profile), m_site(site), m_api(api), m_search(tags), m_postFiltering(postFiltering), m_errors(QStringList()), m_imagesPerPage(limit), m_lastPage(lastPage), m_lastPageMinId(lastPageMinId), m_lastPageMaxId(lastPageMaxId), m_smart(smart), m_reply(nullptr), m_replyTags(nullptr)
 {
 	m_imagesCount = -1;
 	m_pagesCount = -1;
@@ -92,7 +92,6 @@ void PageApi::setLastPage(Page *page)
 	m_lastPageMaxId = page->maxId();
 	m_lastPageMinId = page->minId();
 
-	m_currentSource--;
 	if (!page->nextPage().isEmpty())
 	{ m_url = page->nextPage(); }
 	else
@@ -142,15 +141,13 @@ void PageApi::updateUrls()
 	int pl = -1;
 	if (match.hasMatch())
 	{
-		for (int i = 1; i <= m_site->getApis().count() + 1; i++)
+		for (Api *api : m_site->getApis())
 		{
-			Api *api = m_site->getApis().at(i - 1);
 			if (api->contains("Urls/Pools"))
 			{
 				url = api->value("Urls/Pools");
 				url.replace("{pool}", match.captured(1));
 				pl = match.captured(1).toInt();
-				m_currentSource = i;
 				m_api = api;
 				t = t.remove(match.capturedStart(0), match.captured(0).length()).trimmed();
 				break;

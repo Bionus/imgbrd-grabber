@@ -66,7 +66,7 @@ class Page : public QObject
 		QList<PageApi*>	m_pageApis;
 		int				m_regexApi;
 		QStringList		m_postFiltering, m_errors, m_search;
-		int				m_imagesPerPage, m_currentSource, m_lastPage, m_lastPageMinId, m_lastPageMaxId, m_imagesCount, m_pagesCount, m_page, m_blim, m_pool;
+		int				m_imagesPerPage, m_lastPage, m_lastPageMinId, m_lastPageMaxId, m_imagesCount, m_pagesCount, m_page, m_blim, m_pool;
 		bool			m_smart;
 		QString			m_format, m_website, m_source, m_originalUrl;
 };

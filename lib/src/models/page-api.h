@@ -73,7 +73,7 @@ class PageApi : public QObject
 		Site			*m_site;
 		Api				*m_api;
 		QStringList		m_search, m_postFiltering, m_errors;
-		int				m_imagesPerPage, m_currentSource, m_lastPage, m_lastPageMinId, m_lastPageMaxId, m_page, m_blim, m_pool;
+		int				m_imagesPerPage, m_lastPage, m_lastPageMinId, m_lastPageMaxId, m_page, m_blim, m_pool;
 		bool			m_smart, m_isAltPage;
 		QString			m_format, m_source, m_wiki, m_originalUrl;
 		QUrl			m_url, m_urlRegex, m_urlNextPage, m_urlPrevPage;
