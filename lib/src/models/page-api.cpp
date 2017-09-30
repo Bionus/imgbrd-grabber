@@ -22,6 +22,7 @@ PageApi::PageApi(Page *parentPage, Profile *profile, Site *site, Api *api, QStri
 	m_search = tags;
 	m_page = page;
 	m_pool = pool;
+	m_format = m_api->getName();
 
 	updateUrls();
 }
@@ -358,7 +359,6 @@ void PageApi::parse()
 	}
 
 	int first = m_smart ? ((m_page - 1) * m_imagesPerPage) % m_blim : 0;
-	m_format = m_api->getName();
 
 	// XML
 	if (m_format == "Xml")
