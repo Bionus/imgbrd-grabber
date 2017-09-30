@@ -162,6 +162,20 @@ void TagTest::testStylishedFavorite()
 	QString expected = "<a href=\"tag_text\" style=\"color:#ffc0cb; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">tag_text</a>";
 	QCOMPARE(actual, expected);
 }
+void TagTest::testStylishedKeptForLater()
+{
+	m_settings->setValue("Coloring/Fonts/keptForLater", ",8.25,-1,5,50,0,0,0,0,0");
+	m_settings->setValue("Coloring/Colors/keptForLater", "#aa0000");
+
+	Tag tag("tag_text", "artist", 123, QStringList() << "related1" << "related2" << "related3");
+
+	QStringList keptForLater = QStringList() << "tag_text";
+
+	m_profile = new Profile(m_settings, QList<Favorite>(), keptForLater);
+	QString actual = tag.stylished(m_profile);
+	QString expected = "<a href=\"tag_text\" style=\"color:#aa0000; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">tag_text</a>";
+	QCOMPARE(actual, expected);
+}
 void TagTest::testStylishedWithCount()
 {
 	m_settings->setValue("Coloring/Fonts/artists", ",8.25,-1,5,50,0,0,0,0,0");

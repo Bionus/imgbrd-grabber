@@ -30,6 +30,7 @@ class TagTest : public TestSuite
 		void testStylishedIgnored();
 		void testStylishedBlacklisted();
 		void testStylishedFavorite();
+		void testStylishedKeptForLater();
 		void testStylishedWithCount();
 		void testTypedTextGeneral();
 		void testTypedTextArtist();

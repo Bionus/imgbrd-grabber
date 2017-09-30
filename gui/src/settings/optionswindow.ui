@@ -168,7 +168,7 @@
        </sizepolicy>
       </property>
       <property name="currentIndex">
-       <number>13</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="pageGeneral">
        <layout class="QFormLayout" name="formLayout_14">
@@ -2099,14 +2099,14 @@
       <widget class="QWidget" name="pageInterfaceColoring">
        <layout class="QFormLayout" name="formLayout_11">
         <item row="0" column="0">
-         <widget class="QLabel" name="label_30">
+         <widget class="QLabel" name="labelColoringArtists">
           <property name="text">
            <string>Artists</string>
           </property>
          </widget>
         </item>
         <item row="0" column="1">
-         <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="1,0,0">
+         <layout class="QHBoxLayout" name="layoutColoringArtists" stretch="1,0,0">
           <item>
            <widget class="QLineEdit" name="lineColoringArtists">
             <property name="text">
@@ -2131,14 +2131,14 @@
          </layout>
         </item>
         <item row="1" column="0">
-         <widget class="QLabel" name="label_15">
+         <widget class="QLabel" name="labelColoringCircles">
           <property name="text">
            <string>Circle</string>
           </property>
          </widget>
         </item>
         <item row="1" column="1">
-         <layout class="QHBoxLayout" name="horizontalLayout_8">
+         <layout class="QHBoxLayout" name="layoutColoringCircles">
           <item>
            <widget class="QLineEdit" name="lineColoringCircles"/>
           </item>
@@ -2159,14 +2159,14 @@
          </layout>
         </item>
         <item row="2" column="0">
-         <widget class="QLabel" name="label_31">
+         <widget class="QLabel" name="labelColoringSeries">
           <property name="text">
            <string>Series</string>
           </property>
          </widget>
         </item>
         <item row="2" column="1">
-         <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <layout class="QHBoxLayout" name="layoutColoringCopyrights">
           <item>
            <widget class="QLineEdit" name="lineColoringCopyrights"/>
           </item>
@@ -2187,14 +2187,14 @@
          </layout>
         </item>
         <item row="3" column="0">
-         <widget class="QLabel" name="label_32">
+         <widget class="QLabel" name="labelColoringCharacters">
           <property name="text">
            <string>Characters</string>
           </property>
          </widget>
         </item>
         <item row="3" column="1">
-         <layout class="QHBoxLayout" name="horizontalLayout_5">
+         <layout class="QHBoxLayout" name="layoutColoringCharacters">
           <item>
            <widget class="QLineEdit" name="lineColoringCharacters"/>
           </item>
@@ -2215,14 +2215,14 @@
          </layout>
         </item>
         <item row="5" column="0">
-         <widget class="QLabel" name="label_33">
+         <widget class="QLabel" name="labelColoringModels">
           <property name="text">
            <string>Models</string>
           </property>
          </widget>
         </item>
         <item row="5" column="1">
-         <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="1,0,0">
+         <layout class="QHBoxLayout" name="layoutColoringModels" stretch="1,0,0">
           <item>
            <widget class="QLineEdit" name="lineColoringModels"/>
           </item>
@@ -2243,14 +2243,14 @@
          </layout>
         </item>
         <item row="6" column="0">
-         <widget class="QLabel" name="label_34">
+         <widget class="QLabel" name="labelColoringGenerals">
           <property name="text">
            <string>Generals</string>
           </property>
          </widget>
         </item>
         <item row="6" column="1">
-         <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="1,0,0">
+         <layout class="QHBoxLayout" name="layoutColoringGenerals" stretch="1,0,0">
           <item>
            <widget class="QLineEdit" name="lineColoringGenerals"/>
           </item>
@@ -2271,14 +2271,14 @@
          </layout>
         </item>
         <item row="7" column="0">
-         <widget class="QLabel" name="label_45">
+         <widget class="QLabel" name="labelColoringFavorites">
           <property name="text">
            <string>Favorites</string>
           </property>
          </widget>
         </item>
         <item row="7" column="1">
-         <layout class="QHBoxLayout" name="horizontalLayout_10">
+         <layout class="QHBoxLayout" name="layoutColoringFavorites">
           <item>
            <widget class="QLineEdit" name="lineColoringFavorites"/>
           </item>
@@ -2298,15 +2298,15 @@
           </item>
          </layout>
         </item>
-        <item row="8" column="0">
-         <widget class="QLabel" name="label_46">
+        <item row="9" column="0">
+         <widget class="QLabel" name="labelColoringBlacklisteds">
           <property name="text">
            <string>Blacklisted</string>
           </property>
          </widget>
         </item>
-        <item row="8" column="1">
-         <layout class="QHBoxLayout" name="horizontalLayout_11">
+        <item row="9" column="1">
+         <layout class="QHBoxLayout" name="layoutColoringBlacklisteds">
           <item>
            <widget class="QLineEdit" name="lineColoringBlacklisteds"/>
           </item>
@@ -2326,15 +2326,15 @@
           </item>
          </layout>
         </item>
-        <item row="9" column="0">
-         <widget class="QLabel" name="label_58">
+        <item row="10" column="0">
+         <widget class="QLabel" name="labelColoringIgnoreds">
           <property name="text">
            <string>Ignored</string>
           </property>
          </widget>
         </item>
-        <item row="9" column="1">
-         <layout class="QHBoxLayout" name="horizontalLayout_12">
+        <item row="10" column="1">
+         <layout class="QHBoxLayout" name="layoutColoringIgnoreds">
           <item>
            <widget class="QLineEdit" name="lineColoringIgnoreds"/>
           </item>
@@ -2355,14 +2355,14 @@
          </layout>
         </item>
         <item row="4" column="0">
-         <widget class="QLabel" name="label_87">
+         <widget class="QLabel" name="labelColoringSpecies">
           <property name="text">
            <string>Species</string>
           </property>
          </widget>
         </item>
         <item row="4" column="1">
-         <layout class="QHBoxLayout" name="horizontalLayout_22">
+         <layout class="QHBoxLayout" name="layoutColoringSpecies">
           <item>
            <widget class="QLineEdit" name="lineColoringSpecies"/>
           </item>
@@ -2382,17 +2382,47 @@
           </item>
          </layout>
         </item>
+        <item row="8" column="0">
+         <widget class="QLabel" name="labelColoringKeptForLater">
+          <property name="text">
+           <string>Kept for later</string>
+          </property>
+         </widget>
+        </item>
+        <item row="8" column="1">
+         <layout class="QHBoxLayout" name="layoutColoringKeptForLater">
+          <item>
+           <widget class="QLineEdit" name="lineColoringKeptForLater"/>
+          </item>
+          <item>
+           <widget class="QPushButton" name="buttonColoringKeptForLaterColor">
+            <property name="text">
+             <string>Color</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="buttonColoringKeptForLaterFont">
+            <property name="text">
+             <string>Font</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
        </layout>
-       <zorder>label_30</zorder>
-       <zorder>label_31</zorder>
-       <zorder>label_32</zorder>
-       <zorder>label_33</zorder>
-       <zorder>label_34</zorder>
-       <zorder>label_45</zorder>
-       <zorder>label_46</zorder>
-       <zorder>label_58</zorder>
-       <zorder>label_15</zorder>
-       <zorder>label_87</zorder>
+       <zorder>labelColoringArtists</zorder>
+       <zorder>labelColoringSeries</zorder>
+       <zorder>labelColoringCharacters</zorder>
+       <zorder>labelColoringModels</zorder>
+       <zorder>labelColoringGenerals</zorder>
+       <zorder>labelColoringFavorites</zorder>
+       <zorder>labelColoringBlacklisteds</zorder>
+       <zorder>labelColoringIgnoreds</zorder>
+       <zorder>labelColoringCircles</zorder>
+       <zorder>labelColoringSpecies</zorder>
+       <zorder>labelColoringKeptForLater</zorder>
+       <zorder>horizontalLayoutWidget</zorder>
       </widget>
       <widget class="QWidget" name="pageInterfaceMargins">
        <layout class="QFormLayout" name="formLayout_9">
@@ -2998,12 +3028,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>319</x>
-     <y>32</y>
+     <x>528</x>
+     <y>165</y>
     </hint>
     <hint type="destinationlabel">
-     <x>278</x>
-     <y>31</y>
+     <x>408</x>
+     <y>161</y>
     </hint>
    </hints>
   </connection>
@@ -3014,12 +3044,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>319</x>
-     <y>30</y>
+     <x>528</x>
+     <y>165</y>
     </hint>
     <hint type="destinationlabel">
-     <x>278</x>
-     <y>29</y>
+     <x>408</x>
+     <y>161</y>
     </hint>
    </hints>
   </connection>
@@ -3046,12 +3076,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>360</x>
-     <y>32</y>
+     <x>647</x>
+     <y>192</y>
     </hint>
     <hint type="destinationlabel">
-     <x>278</x>
-     <y>32</y>
+     <x>391</x>
+     <y>189</y>
     </hint>
    </hints>
   </connection>
@@ -3062,12 +3092,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>359</x>
-     <y>32</y>
+     <x>646</x>
+     <y>165</y>
     </hint>
     <hint type="destinationlabel">
-     <x>278</x>
-     <y>31</y>
+     <x>408</x>
+     <y>161</y>
     </hint>
    </hints>
   </connection>
@@ -3078,12 +3108,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>360</x>
-     <y>26</y>
+     <x>647</x>
+     <y>138</y>
     </hint>
     <hint type="destinationlabel">
-     <x>278</x>
-     <y>26</y>
+     <x>358</x>
+     <y>135</y>
     </hint>
    </hints>
   </connection>
@@ -3110,12 +3140,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>360</x>
-     <y>34</y>
+     <x>647</x>
+     <y>192</y>
     </hint>
     <hint type="destinationlabel">
-     <x>278</x>
-     <y>34</y>
+     <x>391</x>
+     <y>189</y>
     </hint>
    </hints>
   </connection>
@@ -3126,12 +3156,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>360</x>
-     <y>28</y>
+     <x>647</x>
+     <y>138</y>
     </hint>
     <hint type="destinationlabel">
-     <x>278</x>
-     <y>28</y>
+     <x>358</x>
+     <y>135</y>
     </hint>
    </hints>
   </connection>
@@ -3142,12 +3172,12 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>360</x>
-     <y>26</y>
+     <x>639</x>
+     <y>57</y>
     </hint>
     <hint type="destinationlabel">
-     <x>360</x>
-     <y>31</y>
+     <x>639</x>
+     <y>95</y>
     </hint>
    </hints>
   </connection>
@@ -3178,8 +3208,8 @@
      <y>20</y>
     </hint>
     <hint type="destinationlabel">
-     <x>360</x>
-     <y>29</y>
+     <x>639</x>
+     <y>70</y>
     </hint>
    </hints>
   </connection>
@@ -3190,12 +3220,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>359</x>
-     <y>30</y>
+     <x>646</x>
+     <y>165</y>
     </hint>
     <hint type="destinationlabel">
-     <x>278</x>
-     <y>29</y>
+     <x>408</x>
+     <y>161</y>
     </hint>
    </hints>
   </connection>

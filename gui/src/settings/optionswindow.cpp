@@ -246,11 +246,12 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 			ui->lineColoringModels->setText(settings->value("models", "#0000ee").toString());
 			ui->lineColoringGenerals->setText(settings->value("generals", "#000000").toString());
 			ui->lineColoringFavorites->setText(settings->value("favorites", "#ffc0cb").toString());
+			ui->lineColoringKeptForLater->setText(settings->value("keptForLater", "#000000").toString());
 			ui->lineColoringBlacklisteds->setText(settings->value("blacklisteds", "#000000").toString());
 			ui->lineColoringIgnoreds->setText(settings->value("ignoreds", "#999999").toString());
 		settings->endGroup();
 		settings->beginGroup("Fonts");
-			QFont fontArtists, fontCircles, fontCopyrights, fontCharacters, fontSpecies, fontModels, fontGenerals, fontFavorites, fontBlacklisteds, fontIgnoreds;
+			QFont fontArtists, fontCircles, fontCopyrights, fontCharacters, fontSpecies, fontModels, fontGenerals, fontFavorites, fontKeptForLater, fontBlacklisteds, fontIgnoreds;
 			fontArtists.fromString(settings->value("artists").toString());
 			fontCircles.fromString(settings->value("circles").toString());
 			fontCopyrights.fromString(settings->value("copyrights").toString());
@@ -259,6 +260,7 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 			fontModels.fromString(settings->value("models").toString());
 			fontGenerals.fromString(settings->value("generals").toString());
 			fontFavorites.fromString(settings->value("favorites").toString());
+			fontKeptForLater.fromString(settings->value("keptForLater").toString());
 			fontBlacklisteds.fromString(settings->value("blacklisteds").toString());
 			fontIgnoreds.fromString(settings->value("ignoreds").toString());
 			ui->lineColoringArtists->setFont(fontArtists);
@@ -269,6 +271,7 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 			ui->lineColoringModels->setFont(fontModels);
 			ui->lineColoringGenerals->setFont(fontGenerals);
 			ui->lineColoringFavorites->setFont(fontFavorites);
+			ui->lineColoringKeptForLater->setFont(fontKeptForLater);
 			ui->lineColoringBlacklisteds->setFont(fontBlacklisteds);
 			ui->lineColoringIgnoreds->setFont(fontIgnoreds);
 		settings->endGroup();
@@ -678,6 +681,8 @@ void optionsWindow::on_lineColoringGenerals_textChanged()
 { setColor(ui->lineColoringGenerals); }
 void optionsWindow::on_lineColoringFavorites_textChanged()
 { setColor(ui->lineColoringFavorites); }
+void optionsWindow::on_lineColoringKeptForLater_textChanged()
+{ setColor(ui->lineColoringKeptForLater); }
 void optionsWindow::on_lineColoringBlacklisteds_textChanged()
 { setColor(ui->lineColoringBlacklisteds); }
 void optionsWindow::on_lineColoringIgnoreds_textChanged()
@@ -701,6 +706,8 @@ void optionsWindow::on_buttonColoringGeneralsColor_clicked()
 { setColor(ui->lineColoringGenerals, true); }
 void optionsWindow::on_buttonColoringFavoritesColor_clicked()
 { setColor(ui->lineColoringFavorites, true); }
+void optionsWindow::on_buttonColoringKeptForLaterColor_clicked()
+{ setColor(ui->lineColoringKeptForLater, true); }
 void optionsWindow::on_buttonColoringBlacklistedsColor_clicked()
 { setColor(ui->lineColoringBlacklisteds, true); }
 void optionsWindow::on_buttonColoringIgnoredsColor_clicked()
@@ -724,6 +731,8 @@ void optionsWindow::on_buttonColoringGeneralsFont_clicked()
 { setFont(ui->lineColoringGenerals); }
 void optionsWindow::on_buttonColoringFavoritesFont_clicked()
 { setFont(ui->lineColoringFavorites); }
+void optionsWindow::on_buttonColoringKeptForLaterFont_clicked()
+{ setFont(ui->lineColoringKeptForLater); }
 void optionsWindow::on_buttonColoringBlacklistedsFont_clicked()
 { setFont(ui->lineColoringBlacklisteds); }
 void optionsWindow::on_buttonColoringIgnoredsFont_clicked()
@@ -1014,6 +1023,7 @@ void optionsWindow::save()
 			settings->setValue("models", ui->lineColoringModels->text());
 			settings->setValue("generals", ui->lineColoringGenerals->text());
 			settings->setValue("favorites", ui->lineColoringFavorites->text());
+			settings->setValue("keptForLater", ui->lineColoringKeptForLater->text());
 			settings->setValue("blacklisteds", ui->lineColoringBlacklisteds->text());
 			settings->setValue("ignoreds", ui->lineColoringIgnoreds->text());
 		settings->endGroup();
@@ -1026,6 +1036,7 @@ void optionsWindow::save()
 			settings->setValue("models", ui->lineColoringModels->font().toString());
 			settings->setValue("generals", ui->lineColoringGenerals->font().toString());
 			settings->setValue("favorites", ui->lineColoringFavorites->font().toString());
+			settings->setValue("keptForLater", ui->lineColoringKeptForLater->font().toString());
 			settings->setValue("blacklisteds", ui->lineColoringBlacklisteds->font().toString());
 			settings->setValue("ignoreds", ui->lineColoringIgnoreds->font().toString());
 		settings->endGroup();

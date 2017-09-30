@@ -58,6 +58,14 @@ void TextEdit::doColor()
 	for (const Favorite &fav : m_favorites)
 		txt.replace(" "+fav.getName()+" ", " <span style=\""+styleFavorites+"\">"+fav.getName()+"</span> ");
 
+	// Color kept for later tags
+	QFont fontKeptForLater;
+	fontKeptForLater.fromString(m_profile->getSettings()->value("Coloring/Fonts/keptForLater").toString());
+	QString colorKeptForLater = m_profile->getSettings()->value("Coloring/Colors/keptForLater", "#000000").toString();
+	QString styleKeptForLater = "color:" + colorKeptForLater + "; " + Tag::qFontToCss(fontKeptForLater);
+	for (const QString &tag : m_viewItLater)
+		txt.replace(" "+tag+" ", " <span style=\""+styleKeptForLater+"\">"+tag+"</span> ");
+
 	// Color metatags
 	static QRegularExpression regexOr(" ~([^ ]+)"),
 		regexExclude(" -([^ ]+)"),

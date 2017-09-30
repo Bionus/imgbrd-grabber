@@ -197,8 +197,8 @@ QStringList Tag::Stylished(QList<Tag> tags, Profile *profile, bool count, bool n
  */
 QString Tag::stylished(Profile *profile, QStringList ignored, QStringList blacklisted, bool count, bool noUnderscores) const
 {
-	static const QStringList tlist = QStringList() << "artists" << "circles" << "copyrights" << "characters" << "models" << "generals" << "favorites" << "blacklisteds" << "ignoreds" << "favorites";
-	static const QStringList defaults = QStringList() << "#aa0000" << "#55bbff" << "#aa00aa" << "#00aa00" << "#0000ee" << "#000000" << "#ffc0cb" << "#000000" << "#999999" << "#ffcccc";
+	static const QStringList tlist = QStringList() << "artists" << "circles" << "copyrights" << "characters" << "models" << "generals" << "favorites" << "keptForLater" << "blacklisteds" << "ignoreds" << "favorites";
+	static const QStringList defaults = QStringList() << "#aa0000" << "#55bbff" << "#aa00aa" << "#00aa00" << "#0000ee" << "#000000" << "#ffc0cb" << "#000000" << "#000000" << "#999999" << "#ffcccc";
 
 	// Guess the correct tag family
 	QString key = tlist.contains(type().name()+"s") ? type().name() + "s" : "generals";
@@ -206,6 +206,9 @@ QString Tag::stylished(Profile *profile, QStringList ignored, QStringList blackl
 		key = "blacklisteds";
 	if (ignored.contains(text(), Qt::CaseInsensitive))
 		key = "ignoreds";
+	for (const QString &tag : profile->getKeptForLater())
+		if (tag == m_text)
+			key = "keptForLater";
 	for (const Favorite &fav : profile->getFavorites())
 		if (fav.getName() == m_text)
 			key = "favorites";
