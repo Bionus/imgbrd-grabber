@@ -22,7 +22,6 @@ Source::Source(Profile *profile, QString dir)
 	: m_dir(dir), m_name(QFileInfo(dir).fileName()), m_profile(profile), m_updater(m_name, m_dir, updaterBaseUrl)
 {
 	// Load XML details for this source from its model file
-
 	QFile file(m_dir + "/model.xml");
 	if (file.open(QIODevice::ReadOnly | QIODevice::Text))
 	{
@@ -54,6 +53,17 @@ Source::Source(Profile *profile, QString dir)
 			}
 			else
 			{ log(QString("No valid source has been found in the model.xml file from %1.").arg(m_name)); }
+
+			// Read tag naming format
+			static QMap<QString, TagNameFormat::CaseFormat> caseAssoc
+			{
+				{ "lower", TagNameFormat::Lower },
+				{ "upper_first", TagNameFormat::UpperFirst },
+				{ "upper", TagNameFormat::Upper },
+				{ "caps", TagNameFormat::Caps },
+			};
+			auto caseFormat = caseAssoc.value(details.value("TagFormat/Case", "lower"), TagNameFormat::Lower);
+			m_tagNameFormat = TagNameFormat(caseFormat, details.value("TagFormat/WordSeparator", "_"));
 		}
 
 		file.close();
