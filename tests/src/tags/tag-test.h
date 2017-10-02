@@ -26,15 +26,6 @@ class TagTest : public TestSuite
 		void testTypePrefix();
 		void testTypePrefixSpecies();
 		void testShortType();
-		void testStylishedBasic();
-		void testStylishedIgnored();
-		void testStylishedBlacklisted();
-		void testStylishedFavorite();
-		void testStylishedKeptForLater();
-		void testStylishedWithCount();
-		void testTypedTextGeneral();
-		void testTypedTextArtist();
-		void testTypedTextSpecies();
 		void testCompare();
 		void testSortTagsByType();
 		void testSortTagsByName();

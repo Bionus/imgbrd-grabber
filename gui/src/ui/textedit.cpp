@@ -6,8 +6,8 @@
 #include <QScrollBar>
 #include <QMenu>
 #include <QTextDocumentFragment>
-#include "tags/tag.h"
 #include "models/profile.h"
+#include "functions.h"
 #include "logger.h"
 
 
@@ -54,7 +54,7 @@ void TextEdit::doColor()
 	QFont fontFavorites;
 	fontFavorites.fromString(m_profile->getSettings()->value("Coloring/Fonts/favorites").toString());
 	QString colorFavorites = m_profile->getSettings()->value("Coloring/Colors/favorites", "#ffc0cb").toString();
-	QString styleFavorites = "color:" + colorFavorites + "; " + Tag::qFontToCss(fontFavorites);
+	QString styleFavorites = "color:" + colorFavorites + "; " + qFontToCss(fontFavorites);
 	for (const Favorite &fav : m_favorites)
 		txt.replace(" "+fav.getName()+" ", " <span style=\""+styleFavorites+"\">"+fav.getName()+"</span> ");
 
@@ -62,7 +62,7 @@ void TextEdit::doColor()
 	QFont fontKeptForLater;
 	fontKeptForLater.fromString(m_profile->getSettings()->value("Coloring/Fonts/keptForLater").toString());
 	QString colorKeptForLater = m_profile->getSettings()->value("Coloring/Colors/keptForLater", "#000000").toString();
-	QString styleKeptForLater = "color:" + colorKeptForLater + "; " + Tag::qFontToCss(fontKeptForLater);
+	QString styleKeptForLater = "color:" + colorKeptForLater + "; " + qFontToCss(fontKeptForLater);
 	for (const QString &tag : m_viewItLater)
 		txt.replace(" "+tag+" ", " <span style=\""+styleKeptForLater+"\">"+tag+"</span> ");
 

@@ -7,6 +7,7 @@
 #include "commands/commands.h"
 #include "downloader/file-downloader.h"
 #include "models/api.h"
+#include "tags/tag-stylist.h"
 #include "functions.h"
 
 #define MAX_LOAD_FILESIZE (1024*1024*50)
@@ -898,7 +899,8 @@ QStringList Image::blacklisted(const QStringList &blacklistedTags, bool invert) 
 
 QStringList Image::stylishedTags(Profile *profile) const
 {
-	return Tag::Stylished(m_tags, profile);
+	TagStylist stylist(profile);
+	return stylist.stylished(m_tags);
 }
 
 Image::SaveResult Image::save(const QString &path, bool force, bool basic, bool addMd5, bool startCommands, int count, bool loadIfNecessary)

@@ -19,7 +19,6 @@ class Tag
 		static Tag FromCapture(const QRegularExpressionMatch &match, const QStringList &groups);
 		static QList<Tag> FromRegexp(QString rx, const QString &source);
 		static QString GetType(QString type, QStringList ids);
-		QString stylished(Profile *profile, QStringList ignored = QStringList(), QStringList blacklisted = QStringList(), bool count = false, bool noUnderscores = false) const;
 		void setId(int id);
 		void setText(const QString &text);
 		void setType(const TagType &type);
@@ -30,9 +29,6 @@ class Tag
 		TagType		type()		const;
 		int			count()		const;
 		QStringList	related()	const;
-
-		static QString qFontToCss(QFont font);
-		static QStringList Stylished(QList<Tag>, Profile *profile, bool count = false, bool noUnderscores = false, QString sort = "");
 
 	private:
 		int			m_id;

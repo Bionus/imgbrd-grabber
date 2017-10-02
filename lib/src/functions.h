@@ -61,6 +61,8 @@ bool isTestModeEnabled();
 
 QString parseMarkdown(QString str);
 
+QString qFontToCss(const QFont &font);
+
 
 
 template <typename T>

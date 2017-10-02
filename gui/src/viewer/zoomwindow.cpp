@@ -13,6 +13,7 @@
 #include "models/page.h"
 #include "models/profile.h"
 #include "settings/optionswindow.h"
+#include "tags/tag-stylist.h"
 #include "threads/image-loader.h"
 #include "threads/image-loader-queue.h"
 #include "detailswindow.h"
@@ -494,7 +495,7 @@ void zoomWindow::replyFinishedDetails()
 }
 void zoomWindow::colore()
 {
-	QStringList t = Tag::Stylished(m_image->tags(), m_profile, m_settings->value("Zoom/showTagCount", false).toBool(), false, m_settings->value("Zoom/tagOrder", "type").toString());
+	QStringList t = TagStylist(m_profile).stylished(m_image->tags(), m_settings->value("Zoom/showTagCount", false).toBool(), false, m_settings->value("Zoom/tagOrder", "type").toString());
 	QString tags = t.join(' ');
 
 	if (ui->widgetLeft->isHidden())

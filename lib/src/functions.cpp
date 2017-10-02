@@ -3,6 +3,7 @@
 #include <QFile>
 #include <QDir>
 #include <QFileInfo>
+#include <QFont>
 #include <QProcess>
 #include <QStandardPaths>
 #include <QCoreApplication>
@@ -687,4 +688,36 @@ QString parseMarkdown(QString str)
 	str.replace("\n", "<br/>");
 
 	return str;
+}
+
+
+/**
+ * Converts a QFont to a CSS string.
+ * @param	font	The font to convert.
+ * @return	The CSS font.
+ */
+QString qFontToCss(const QFont &font)
+{
+	QString style;
+	switch (font.style())
+	{
+		case QFont::StyleNormal:	style = "normal";	break;
+		case QFont::StyleItalic:	style = "italic";	break;
+		case QFont::StyleOblique:	style = "oblique";	break;
+	}
+
+	QString size;
+	if (font.pixelSize() == -1)
+	{ size = QString::number(font.pointSize())+"pt"; }
+	else
+	{ size = QString::number(font.pixelSize())+"px"; }
+
+	// Should be "font.weight() * 8 + 100", but linux doesn't handle weight the same way windows do
+	QString weight = QString::number(font.weight() * 8);
+
+	QStringList decorations;
+	if (font.strikeOut())	{ decorations.append("line-through");	}
+	if (font.underline())	{ decorations.append("underline");		}
+
+	return "font-family:'"+font.family()+"'; font-size:"+size+"; font-style:"+style+"; font-weight:"+weight+"; text-decoration:"+(decorations.isEmpty() ? "none" : decorations.join(" "))+";";
 }
