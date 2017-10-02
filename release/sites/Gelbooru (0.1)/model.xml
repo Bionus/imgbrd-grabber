@@ -22,4 +22,8 @@
 	<DefaultTag>all</DefaultTag>
 	<FirstPage>0</FirstPage>
 	<PasswordSalt>choujin-steiner--%password%--</PasswordSalt>
+	<TagFormat>
+		<Case>lower</Case>
+		<WordSeparator>_</WordSeparator>
+	</TagFormat>
 </Site>

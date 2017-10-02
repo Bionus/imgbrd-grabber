@@ -34,4 +34,8 @@
 		<Regex>© [0-9]+-[0-9]+ Zerochan</Regex>
 	</Check>
 	<FirstPage>1</FirstPage>
+	<TagFormat>
+		<Case>upper</Case>
+		<WordSeparator> </WordSeparator>
+	</TagFormat>
 </Site>

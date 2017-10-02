@@ -32,4 +32,8 @@
 	</Check>
 	<Modifiers>faved_by: width: height: uploader: source_url: description: sha512_hash: aspect_ratio:</Modifiers>
 	<FirstPage>1</FirstPage>
+	<TagFormat>
+		<Case>lower</Case>
+		<WordSeparator> </WordSeparator>
+	</TagFormat>
 </Site>

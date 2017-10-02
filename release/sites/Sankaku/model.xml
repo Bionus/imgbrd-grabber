@@ -46,4 +46,8 @@
 	<FirstPage>1</FirstPage>
 	<PasswordSalt>choujin-steiner--%password%--</PasswordSalt>
 	<AppkeySalt>sankakuapp_%username%_Z5NE9YASej</AppkeySalt>
+	<TagFormat>
+		<Case>lower</Case>
+		<WordSeparator>_</WordSeparator>
+	</TagFormat>
 </Site>
