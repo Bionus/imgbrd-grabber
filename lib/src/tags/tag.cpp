@@ -238,11 +238,6 @@ TagType		Tag::type() const		{ return m_type;	}
 int			Tag::count() const		{ return m_count;	}
 QStringList	Tag::related() const	{ return m_related;	}
 
-QString Tag::typedText() const
-{
-	return (m_type.name() != "general" ? m_type.name() + ":" : "") + m_text;
-}
-
 bool sortTagsByType(Tag s1, Tag s2)
 {
 	static QStringList typeOrder = QStringList() << "unknown" << "model" << "species" << "artist" << "character" << "copyright";

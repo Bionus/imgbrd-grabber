@@ -30,7 +30,6 @@ class Tag
 		TagType		type()		const;
 		int			count()		const;
 		QStringList	related()	const;
-		QString		typedText()	const;
 
 		static QString qFontToCss(QFont font);
 		static QStringList Stylished(QList<Tag>, Profile *profile, bool count = false, bool noUnderscores = false, QString sort = "");
