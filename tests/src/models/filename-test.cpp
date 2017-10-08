@@ -177,6 +177,19 @@ void FilenameTest::testPathSimpleJavascript()
 	assertPath("javascript:md5 + '.' + ext", "1bc29b36f623ba82aaf6724fd3b16718.jpg");
 }
 
+void FilenameTest::testPathJavascriptToken()
+{
+	m_settings->setValue("Save/copyright_multiple", "keepAll");
+	assertPath("javascript:copyright", "copyright1 copyright2");
+}
+
+void FilenameTest::testPathJavascriptArray()
+{
+	// TODO: make the "keepAll" unnecessary for this array
+	m_settings->setValue("Save/copyright_multiple", "keepAll");
+	assertPath("javascript:copyrights.join('-')", "copyright1-copyright2");
+}
+
 void FilenameTest::testPathInvalidJavascript()
 {
 	assertPath("javascript:'", QStringList());

@@ -278,6 +278,23 @@ QMap<QString, QStringList> Filename::makeDetails(const Image& img, Profile *prof
 	return details;
 }
 
+QString generateJavaScriptVariableInternal(const QString &name, const QString &value)
+{
+	return "var " + name + " = " + value + ";\r\n";
+}
+QString generateJavaScriptVariableDate(const QString &name, const QString &value)
+{
+	return generateJavaScriptVariableInternal(name, "new Date(\"" + value + "\")");
+}
+QString generateJavaScriptVariable(const QString &name, const QStringList &values)
+{
+	return generateJavaScriptVariableInternal(name, values.isEmpty() ? "[]" : "[\"" + values.join("\", \"") + "\"]");
+}
+QString generateJavaScriptVariable(const QString &name, const QString &value)
+{
+	return generateJavaScriptVariableInternal(name, "\"" + value + "\"");
+}
+
 QString Filename::generateJavaScriptVariables(QSettings *settings, QMap<QString, QPair<QString, QString>> replaces) const
 {
 	QString inits = "";
@@ -292,6 +309,10 @@ QString Filename::generateJavaScriptVariables(QSettings *settings, QMap<QString,
 			QStringList vals = res.split(TAGS_SEPARATOR);
 			QString mainSeparator = settings->value("Save/separator", " ").toString();
 			QString tagSeparator = fixSeparator(settings->value("Save/" + key + "_sep", mainSeparator).toString());
+
+			if (key != "all" && key != "tags")
+			{ inits += generateJavaScriptVariable(key + "s", vals); }
+
 			res = vals.join(tagSeparator);
 		}
 
@@ -303,9 +324,9 @@ QString Filename::generateJavaScriptVariables(QSettings *settings, QMap<QString,
 		}
 
 		if (key == "date")
-		{ inits += "var " + key + " = new Date(\"" + res + "\");\r\n"; }
+		{ inits += generateJavaScriptVariableDate(key, res); }
 		else
-		{ inits += "var " + key + " = \"" + res + "\";\r\n"; }
+		{ inits += generateJavaScriptVariable(key, res); }
 	}
 	return inits;
 }
