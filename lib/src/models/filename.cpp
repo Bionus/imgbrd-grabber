@@ -83,10 +83,14 @@ QList<QMap<QString, QPair<QString, QString>>> Filename::getReplaces(QString file
 	replaces.insert("all_namespaces", QStrP(namespaces.join(" "), ""));
 
 	ret.append(replaces);
+
+	bool isJavascript = filename.startsWith("javascript:");
 	QStringList keys = QStringList() << "artist" << "copyright" << "character" << "model" << "species";
 	for (const QString &key : keys)
 	{
-		if (filename.contains(QRegularExpression("%"+key+"(?::[^%]+)?%")))
+		bool hasToken = !isJavascript && filename.contains(QRegularExpression("%"+key+"(?::[^%]+)?%"));
+		bool hasVar = isJavascript && filename.contains(key);
+		if (hasToken || hasVar)
 		{
 			QList<QPair<QString, QString>> reps = this->getReplace(key, details, settings);
 			int cnt = ret.count();
