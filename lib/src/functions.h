@@ -7,6 +7,7 @@
 #include <QSettings>
 #include <QDomElement>
 #include <QString>
+#include <QDir>
 #include "models/favorite.h"
 #include "logger.h"
 
@@ -62,6 +63,8 @@ bool isTestModeEnabled();
 QString parseMarkdown(QString str);
 
 QString qFontToCss(const QFont &font);
+
+QList<QPair<QString, QStringList>> listFilesFromDirectory(const QDir &dir, const QStringList &suffixes);
 
 
 

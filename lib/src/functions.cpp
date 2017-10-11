@@ -12,6 +12,7 @@
 #include <QLocale>
 #include <QTimeZone>
 #include <QRegularExpression>
+#include <QDirIterator>
 #include <cmath>
 #ifdef Q_OS_WIN
 	#include <windows.h>
@@ -721,3 +722,42 @@ QString qFontToCss(const QFont &font)
 
 	return "font-family:'"+font.family()+"'; font-size:"+size+"; font-style:"+style+"; font-weight:"+weight+"; text-decoration:"+(decorations.isEmpty() ? "none" : decorations.join(" "))+";";
 }
+
+bool isFileParentWithSuffix(const QString &fileName, const QString &parent, const QStringList &suffixes)
+{
+	for (const QString &suffix : suffixes)
+		if (fileName == parent + suffix)
+			return true;
+	return false;
+}
+QList<QPair<QString, QStringList>> listFilesFromDirectory(const QDir &dir, const QStringList &suffixes)
+{
+	auto files = QList<QPair<QString, QStringList>>();
+
+	QDirIterator it(dir, QDirIterator::Subdirectories);
+	while (it.hasNext())
+	{
+		it.next();
+
+		if (it.fileInfo().isDir())
+			continue;
+
+		QString path = it.filePath();
+		QString fileName = path.right(path.length() - dir.absolutePath().length() - 1);
+
+		if (!files.isEmpty())
+		{
+			const QString &previous = files.last().first;
+			if (isFileParentWithSuffix(fileName, previous, suffixes))
+			{
+				files.last().second.append(fileName);
+				continue;
+			}
+		}
+
+		files.append(QPair<QString, QStringList>(fileName, QStringList()));
+	}
+
+	return files;
+}
+
