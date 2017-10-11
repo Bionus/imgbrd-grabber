@@ -2088,7 +2088,7 @@ bool mainWindow::loadLinkList(QString filename)
 		QTableWidgetItem *it = new QTableWidgetItem(getIcon(":/images/status/"+QString(val == max ? "ok" : (val > 0 ? "downloading" : "pending"))+".png"), "");
 		it->setFlags(it->flags() ^ Qt::ItemIsEditable);
 		it->setTextAlignment(Qt::AlignCenter);
-		ui->tableBatchGroups->setItem(ui->tableBatchGroups->rowCount()-1, 0, it);
+		ui->tableBatchGroups->setItem(row, 0, it);
 
 		auto *prog = new QProgressBar(this);
 		prog->setMaximum(queryGroup.total);
@@ -2096,7 +2096,7 @@ bool mainWindow::loadLinkList(QString filename)
 		prog->setMinimum(0);
 		prog->setTextVisible(false);
 		m_progressBars.append(prog);
-		ui->tableBatchGroups->setCellWidget(ui->tableBatchGroups->rowCount()-1, 9, prog);
+		ui->tableBatchGroups->setCellWidget(row, 10, prog);
 	}
 	m_allow = true;
 	updateGroupCount();
