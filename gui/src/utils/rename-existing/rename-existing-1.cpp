@@ -9,6 +9,7 @@
 #include "models/page.h"
 #include "models/profile.h"
 #include "models/image.h"
+#include "functions.h"
 #include "helpers.h"
 
 
@@ -20,6 +21,7 @@ RenameExisting1::RenameExisting1(Profile *profile, QMap<QString,Site*> sites, QW
 	QSettings *settings = profile->getSettings();
 	ui->lineFolder->setText(settings->value("Save/path").toString());
 	ui->lineFilenameOrigin->setText(settings->value("Save/filename").toString());
+	ui->lineSuffixes->setText(getExternalLogFilesSuffixes(profile->getSettings()).join(", "));
 	ui->lineFilenameDestination->setText(settings->value("Save/filename").toString());
 	ui->comboSource->addItems(m_sites.keys());
 	ui->progressBar->hide();
@@ -61,27 +63,24 @@ void RenameExisting1::on_buttonContinue_clicked()
 		return;
 	}
 
+	// Suffixes
+	QStringList suffixes = ui->lineSuffixes->text().split(',');
+	for (QString &suffix : suffixes)
+		suffix = suffix.trimmed();
+
 	// Get all files from the destination directory
-	typedef QPair<QString,QString> QStringPair;
-	QVector<QStringPair> files = QVector<QStringPair>();
-	QDirIterator it(dir, QDirIterator::Subdirectories);
-	while (it.hasNext())
-	{
-		it.next();
-		if (!it.fileInfo().isDir())
-		{
-			int len = it.filePath().length() - dir.absolutePath().length() - 1;
-			files.append(QPair<QString,QString>(it.filePath().right(len), it.filePath()));
-		}
-	}
+	auto files = listFilesFromDirectory(dir, suffixes);
 
 	// Parse all files
-	for (QStringPair file : files)
+	for (const auto &file : files)
 	{
+		QString fileName = file.first;
+		QString path = dir.absoluteFilePath(fileName);
+
 		QString md5 = "";
 		if (ui->radioForce->isChecked())
 		{
-			QFile fle(file.second);
+			QFile fle(path);
 			fle.open(QFile::ReadOnly);
 			md5 = QCryptographicHash::hash(fle.readAll(), QCryptographicHash::Md5).toHex();
 		}
@@ -101,7 +100,7 @@ void RenameExisting1::on_buttonContinue_clicked()
 			QRegExp rx(reg);
 			rx.setMinimal(true);
 			pos = 0;
-			while ((pos = rx.indexIn(file.first, pos)) != -1)
+			while ((pos = rx.indexIn(fileName, pos)) != -1)
 			{
 				pos += rx.matchedLength();
 				md5 = rx.cap(id + 1);
@@ -110,10 +109,16 @@ void RenameExisting1::on_buttonContinue_clicked()
 
 		if (!md5.isEmpty())
 		{
-			QMap<QString,QString> det;
-			det.insert("md5", md5);
-			det.insert("path", QDir::toNativeSeparators(file.first));
-			det.insert("path_full", QDir::toNativeSeparators(file.second));
+			RenameExistingFile det;
+			det.md5 = md5;
+			det.path = QDir::toNativeSeparators(path);
+			if (!file.second.isEmpty()) {
+				QStringList children;
+				for (const QString &child : file.second) {
+					children.append(QDir::toNativeSeparators(dir.absoluteFilePath(child)));
+				}
+				det.children = children;
+			}
 			m_details.append(det);
 		}
 	}
@@ -150,7 +155,7 @@ void RenameExisting1::getAll(Page *p)
 		}
 		else
 		{
-			m_getAll[img->md5()].second = img->path(ui->lineFilenameDestination->text(), ui->lineFolder->text(), 0, true, false, true, true, true).first();
+			m_getAll[img->md5()].newPath = img->path(ui->lineFilenameDestination->text(), ui->lineFolder->text(), 0, true, false, true, true, true).first();
 			ui->progressBar->setValue(ui->progressBar->value() + 1);
 		}
 	}
@@ -166,7 +171,7 @@ void RenameExisting1::getTags()
 {
 	auto *img = dynamic_cast<Image*>(sender());
 
-	m_getAll[img->md5()].second = img->path(ui->lineFilenameDestination->text(), ui->lineFolder->text(), 0, true, false, true, true, true).first();
+	m_getAll[img->md5()].newPath = img->path(ui->lineFilenameDestination->text(), ui->lineFolder->text(), 0, true, false, true, true, true).first();
 	ui->progressBar->setValue(ui->progressBar->value() + 1);
 
 	loadNext();
@@ -176,10 +181,10 @@ void RenameExisting1::loadNext()
 {
 	if (!m_details.isEmpty())
 	{
-		QMap<QString,QString> det = m_details.takeFirst();
-		m_getAll.insert(det.value("md5"), QPair<QString,QString>(det.value("path_full"), ""));
+		RenameExistingFile det = m_details.takeFirst();
+		m_getAll.insert(det.md5, det);
 
-		Page *page = new Page(m_profile, m_sites.value(ui->comboSource->currentText()), m_sites.values(), QStringList("md5:" + det.value("md5")), 1, 1);
+		Page *page = new Page(m_profile, m_sites.value(ui->comboSource->currentText()), m_sites.values(), QStringList("md5:" + det.md5), 1, 1);
 		connect(page, &Page::finishedLoading, this, &RenameExisting1::getAll);
 		page->load();
 
@@ -195,7 +200,7 @@ void RenameExisting1::loadNext()
 		return;
 	}
 
-	RenameExisting2 *nextStep = new RenameExisting2(m_getAll.values(), ui->lineFolder->text(), parentWidget());
+	RenameExisting2 *nextStep = new RenameExisting2(m_getAll.values(), QDir::toNativeSeparators(ui->lineFolder->text()), parentWidget());
 	close();
 	nextStep->show();
 }
