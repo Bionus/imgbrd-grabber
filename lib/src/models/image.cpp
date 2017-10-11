@@ -1294,6 +1294,18 @@ void Image::setFileExtension(QString ext)
 
 bool Image::isVideo() const
 {
-	QString ext = getExtension(m_url);
+	QString ext = getExtension(m_url).toLower();
 	return ext == "mp4" || ext == "webm";
+}
+QString Image::isAnimated() const
+{
+	QString ext = getExtension(m_url).toLower();
+
+	if (ext == "gif" || ext == "apng")
+		return ext;
+
+	if (ext == "png" && (hasTag("animated") || hasTag("animated_png")))
+		return "apng";
+
+	return QString();
 }

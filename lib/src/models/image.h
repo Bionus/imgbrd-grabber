@@ -98,6 +98,7 @@ class Image : public QObject
 		bool		shouldDisplaySample() const;
 		QUrl		getDisplayableUrl() const;
 		bool		isVideo() const;
+		QString		isAnimated() const;
 		void		setTags(const QList<Tag> &tags);
 
 	public slots:

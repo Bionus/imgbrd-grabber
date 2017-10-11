@@ -149,6 +149,7 @@ class zoomWindow : public QWidget
 		SaveButtonState m_saveButonState, m_saveButonStateFav;
 
 		// Display
+		QString m_isAnimated;
 		QPixmap m_displayImage;
 		QMovie *m_displayMovie;
 		bool m_labelImageScaled;

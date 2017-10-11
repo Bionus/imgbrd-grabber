@@ -393,7 +393,7 @@ void zoomWindow::downloadProgress(qint64 bytesReceived, qint64 bytesTotal)
 	ui->progressBarDownload->setMaximum(bytesTotal);
 	ui->progressBarDownload->setValue(bytesReceived);
 
-	bool isAnimated = m_image->isVideo() || m_url.section('.', -1).toLower() == "gif";
+	bool isAnimated = m_image->isVideo() || !m_isAnimated.isEmpty();
 	if (!isAnimated && (m_imageTime.elapsed() > TIME || (bytesTotal > 0 && bytesReceived / bytesTotal > PERCENT)))
 	{
 		m_imageTime.restart();
@@ -433,6 +433,8 @@ void zoomWindow::replyFinishedDetails()
 		ui->labelPools->setText(pools.join("<br />"));
 		ui->labelPools->show();
 	}
+
+	m_isAnimated = m_image->isAnimated();
 
 	QString path1 = m_settings->value("Save/path").toString().replace("\\", "/");
 	QStringList pth1s = m_image->path(m_settings->value("Save/filename").toString(), path1, 0, true, false, true, true, true);
@@ -659,6 +661,7 @@ void zoomWindow::pendingUpdate()
 	m_mustSave = 0;
 }
 
+#include <QDebug>
 void zoomWindow::draw()
 {
 	// Videos don't get drawn
@@ -672,7 +675,7 @@ void zoomWindow::draw()
 	QString filename;
 	if (!m_source.isEmpty())
 	{ filename = m_source; }
-	else if (ext == "gif")
+	else if (!m_isAnimated.isEmpty())
 	{
 		filename = QDir::temp().absoluteFilePath("grabber-" + fn);
 		QFile f(filename);
@@ -684,9 +687,12 @@ void zoomWindow::draw()
 	}
 
 	// GIF (using QLabel support for QMovie)
-	if (ext == "gif")
+	if (!m_isAnimated.isEmpty())
 	{
-		m_displayMovie = new QMovie(filename, QByteArray(), this);
+		auto formats = QImageReader::supportedImageFormats();
+		for (const auto &format : formats)
+			qDebug() << QString(format);
+		m_displayMovie = new QMovie(filename, m_isAnimated.toLatin1(), this);
 		m_labelImage->setMovie(m_displayMovie);
 		m_stackedWidget->setCurrentWidget(m_labelImage);
 		m_displayMovie->start();
@@ -730,7 +736,7 @@ void zoomWindow::update(bool onlySize, bool force)
 	QString type;
 	if (m_image->isVideo())
 	{ type = "imagePositionVideo"; }
-	else if (ext == "gif")
+	else if (!m_isAnimated.isEmpty())
 	{ type = "imagePositionAnimation"; }
 	else
 	{ type = "imagePositionImage"; }
@@ -936,7 +942,7 @@ void zoomWindow::fullScreen()
 	m_fullScreen = new QAffiche(QVariant(), 0, QColor(), this);
 	m_fullScreen->setStyleSheet("background-color: black");
 	m_fullScreen->setAlignment(Qt::AlignCenter);
-	if (ext == "gif")
+	if (!m_isAnimated.isEmpty())
 	{ m_fullScreen->setMovie(m_displayMovie); }
 	else
 	{ m_fullScreen->setImage(m_displayImage.scaled(QApplication::desktop()->screenGeometry().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation)); }
@@ -988,7 +994,7 @@ void zoomWindow::prepareNextSlide()
 	// We make sure to wait to see the whole displayed item
 	qint64 additionalInterval = 0;
 	QString ext = getExtension(m_image->url());
-	if (ext == "gif")
+	if (!m_isAnimated.isEmpty())
 		additionalInterval = m_displayMovie->nextFrameDelay() * m_displayMovie->frameCount();
 
 	qint64 totalInterval = interval * 1000 + additionalInterval;
@@ -1065,7 +1071,7 @@ void zoomWindow::showThumbnail()
 	}
 
 	// Gifs get non-resizable thumbnails
-	else if (m_url.section('.', -1).toLower() == "gif")
+	else if (!m_isAnimated.isEmpty())
 	{
 		m_labelImage->setPixmap(m_image->previewImage().scaled(size, Qt::IgnoreAspectRatio, Qt::FastTransformation));
 	}
@@ -1093,6 +1099,7 @@ void zoomWindow::load(QSharedPointer<Image> image)
 	m_displayImage = QPixmap();
 	m_imagePath = "";
 	m_image = image;
+	m_isAnimated = image->isAnimated();
 	connect(m_image.data(), &Image::urlChanged, this, &zoomWindow::urlChanged, Qt::UniqueConnection);
 	m_size = 0;
 	ui->labelLoadingError->hide();
