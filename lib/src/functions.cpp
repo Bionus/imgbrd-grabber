@@ -84,6 +84,20 @@ QMap<int, QMap<QString, QVariant> > getExternalLogFiles(QSettings *settings)
 
 	return ret;
 }
+QStringList getExternalLogFilesSuffixes(QSettings *settings)
+{
+	QStringList suffixes;
+
+	auto logFiles = getExternalLogFiles(settings);
+	for (int key : logFiles.keys())
+	{
+		const QMap<QString, QVariant> &logFile = logFiles.value(key);
+		if (logFile["locationType"].toInt() == 2)
+		{ suffixes.append(logFile["suffix"].toString()); }
+	}
+
+	return suffixes;
+}
 
 QStringList removeWildards(QStringList elements, QStringList remove)
 {
