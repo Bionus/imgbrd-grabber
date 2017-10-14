@@ -190,7 +190,7 @@ class mainWindow : public QMainWindow
 		QList<searchTab*>	m_tabs, m_tabsWaitingForPreload;
 		QList<bool>			m_selectedSources;
 		favoritesTab		*m_favoritesTab;
-		QMap<QString,QTime*>			m_downloadTime, m_downloadTimeLast;
+		QMap<QString, QTime>			m_downloadTime, m_downloadTimeLast;
 		QList<QProgressBar*>			m_progressBars;
 		QList<DownloadQueryImage>		m_batchs;
 		QMap<int, DownloadQueryGroup>	m_batchPending;

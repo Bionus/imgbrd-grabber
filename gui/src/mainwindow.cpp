@@ -1619,6 +1619,7 @@ void mainWindow::getAllImageOk(QSharedPointer<Image> img, int site_id, bool del)
 	}
 
 	img->unload();
+	m_downloadTime.remove(img->url());
 	m_downloadTimeLast.remove(img->url());
 	m_getAllDownloading.removeAll(img);
 
@@ -1645,13 +1646,13 @@ void mainWindow::getAllProgress(qint64 bytesReceived, qint64 bytesTotal)
 		m_progressdialog->sizeImage(url, bytesTotal);
 	}
 
-	if (!m_downloadTimeLast.contains(url) || m_downloadTimeLast[url] == nullptr)
+	if (!m_downloadTimeLast.contains(url))
 		return;
 
-	if (m_downloadTimeLast[url]->elapsed() >= 1000)
+	if (m_downloadTimeLast[url].elapsed() >= 1000)
 	{
-		m_downloadTimeLast[url]->restart();
-		int elapsed = m_downloadTime[url]->elapsed();
+		m_downloadTimeLast[url].restart();
+		int elapsed = m_downloadTime[url].elapsed();
 		float speed = elapsed != 0 ? (bytesReceived * 1000) / elapsed : 0;
 		m_progressdialog->speedImage(url, speed);
 	}
@@ -1751,10 +1752,10 @@ void mainWindow::getAllGetImage(QSharedPointer<Image> img)
 
 	// Track download progress
 	m_progressdialog->loadingImage(img->url());
-	m_downloadTime.insert(img->url(), new QTime);
-	m_downloadTime[img->url()]->start();
-	m_downloadTimeLast.insert(img->url(), new QTime);
-	m_downloadTimeLast[img->url()]->start();
+	m_downloadTime.insert(img->url(), QTime());
+	m_downloadTime[img->url()].start();
+	m_downloadTimeLast.insert(img->url(), QTime());
+	m_downloadTimeLast[img->url()].start();
 	connect(img.data(), &Image::downloadProgressImage, this, &mainWindow::getAllProgress, Qt::UniqueConnection);
 
 	// Start loading and saving image
