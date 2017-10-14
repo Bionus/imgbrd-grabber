@@ -1251,7 +1251,9 @@ void mainWindow::getAllLogin()
 		return;
 	}
 
-	m_progressdialog->setImagesCount(m_getAllLogins.count());
+	m_progressdialog->setCurrentValue(0);
+	m_progressdialog->setCurrentMax(m_getAllLogins.count());
+
 	while (!logins.isEmpty())
 	{
 		Site *site = logins.dequeue();
@@ -1264,7 +1266,7 @@ void mainWindow::getAllFinishedLogin(Site *site, Site::LoginResult)
 	if (m_getAllLogins.empty())
 	{ return; }
 
-	m_progressdialog->setImages(m_progressdialog->images() + 1);
+	m_progressdialog->setCurrentValue(m_progressdialog->currentValue() + 1);
 	m_getAllLogins.removeAll(site);
 
 	if (m_getAllLogins.empty())
@@ -1347,14 +1349,18 @@ void mainWindow::getNextPack()
 
 void mainWindow::getAllGetPages()
 {
-	m_progressdialog->clear();
+	m_progressdialog->clearImages();
 	m_progressdialog->setText(tr("Downloading pages, please wait..."));
 
+	int max = 0;
 	for (Downloader *downloader : m_downloaders)
 	{
-		m_progressdialog->setImagesCount(m_progressdialog->count() + downloader->pagesCount());
 		downloader->getImages();
+		max += downloader->pagesCount();
 	}
+
+	m_progressdialog->setCurrentValue(0);
+	m_progressdialog->setCurrentMax(max);
 }
 
 /**
@@ -1369,7 +1375,7 @@ void mainWindow::getAllFinishedPage(Page *page)
 	int pos = d->getData().toInt();
 	m_groupBatchs[pos].unk += (m_groupBatchs[pos].unk == "" ? "" : "¤") + QString::number((quintptr)page);
 
-	m_progressdialog->setImages(m_progressdialog->images() + 1);
+	m_progressdialog->setCurrentValue(m_progressdialog->currentValue() + 1);
 }
 
 /**
@@ -1409,7 +1415,7 @@ void mainWindow::getAllImages()
 	log(QString("All images' urls have been received (%1).").arg(m_getAllRemaining.count()), Logger::Info);
 
 	// We add the images to the download dialog
-	int count = 0;
+	m_progressdialog->clearImages();
 	m_progressdialog->setText(tr("Preparing images, please wait..."));
 	m_progressdialog->setCount(m_getAllRemaining.count());
 	for (int i = 0; i < m_getAllRemaining.count(); i++)
@@ -1429,16 +1435,15 @@ void mainWindow::getAllImages()
 		m_progressdialog->addImage(m_getAllRemaining[i]->url(), n, m_getAllRemaining[i]->fileSize());
 		connect(m_getAllRemaining[i].data(), SIGNAL(urlChanged(QString, QString)), m_progressdialog, SLOT(imageUrlChanged(QString, QString)));
 		connect(m_getAllRemaining[i].data(), SIGNAL(urlChanged(QString, QString)), this, SLOT(imageUrlChanged(QString, QString)));
-
-		m_progressdialog->setImages(i+1);
-		count += m_getAllRemaining[i]->value();
 	}
 
 	// Set some values on the batch window
 	m_progressdialog->updateColumns();
 	m_progressdialog->setText(tr("Downloading images..."));
-	m_progressdialog->setImagesCount(m_getAllImagesCount);
-	m_progressdialog->setImages(m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors);
+	m_progressdialog->setCurrentValue(0);
+	m_progressdialog->setCurrentMax(m_getAllRemaining.count());
+	m_progressdialog->setTotalValue(m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors);
+	m_progressdialog->setTotalMax(m_getAllImagesCount);
 
 	// Check whether we need to get the tags first (for the filename) or if we can just download the images directly
 	// TODO: having one batch needing it currently causes all batches to need it, should mae it batch (Downloader) dependent
@@ -1599,8 +1604,8 @@ void mainWindow::getAllGetImageIfNotBlacklisted(QSharedPointer<Image> img, int s
 
 void mainWindow::getAllImageOk(QSharedPointer<Image> img, int site_id, bool del)
 {
-	//m_progressdialog->setValue(m_progressdialog->value() + img->value());
-	m_progressdialog->setImages(m_progressdialog->images() + 1);
+	m_progressdialog->setCurrentValue(m_progressdialog->currentValue() + 1);
+	m_progressdialog->setTotalValue(m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors);
 
 	if (site_id >= 0)
 	{
@@ -1697,8 +1702,7 @@ void mainWindow::getAllPerformTags()
 	}
 	else
 	{
-		//m_progressdialog->setValue(m_progressdialog->value()+img->value());
-		m_progressdialog->setImages(m_progressdialog->images()+1);
+		m_progressdialog->setCurrentValue(m_progressdialog->currentValue() + 1);
 		m_getAllExists++;
 		log(QString("File already exists: <a href=\"file:///%1\">%1</a>").arg(f.fileName()), Logger::Info);
 		m_progressdialog->loadedImage(img->url());
@@ -1710,6 +1714,7 @@ void mainWindow::getAllPerformTags()
 		}
 		m_downloadTimeLast.remove(img->url());
 		m_getAllDownloading.removeAll(img);
+		m_progressdialog->setTotalValue(m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors);
 		_getAll();
 	}
 }
@@ -1851,6 +1856,7 @@ void mainWindow::getAllSkip()
 	m_getAllDownloading.clear();
 
 	m_getAllSkipped += count;
+	m_progressdialog->setTotalValue(m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors);
 	for (int i = 0; i < count; ++i)
 		_getAll();
 
@@ -1866,7 +1872,7 @@ void mainWindow::getAllFinished()
 	}
 
 	log("Images download finished.", Logger::Info);
-	m_progressdialog->setValue(m_progressdialog->maximum());
+	m_progressdialog->setTotalValue(m_progressdialog->totalMax());
 
 	// Delete objects
 	for (Downloader *d : m_downloadersDone)

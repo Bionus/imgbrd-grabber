@@ -26,10 +26,10 @@ class batchWindow : public QDialog
 	public:
 		explicit batchWindow(QSettings *settings, QWidget *parent = Q_NULLPTR);
 		~batchWindow() override;
-		int value();
-		int maximum();
-		int images();
-		int count();
+		int currentValue() const;
+		int currentMax() const;
+		int totalValue() const;
+		int totalMax() const;
 		int endAction();
 		int indexOf(QString);
 		int batch(QString);
@@ -41,12 +41,12 @@ class batchWindow : public QDialog
 
 	public slots:
 		void clear();
+		void clearImages();
 		void setText(QString);
-		void setValue(int);
-		void setLittleValue(int);
-		void setMaximum(int);
-		void setImages(int);
-		void setImagesCount(int);
+		void setCurrentValue(int val);
+		void setCurrentMax(int max);
+		void setTotalValue(int val);
+		void setTotalMax(int max);
 		void addImage(QString, int, float);
 		void sizeImage(QString, float);
 		void loadingImage(QString);
@@ -72,7 +72,7 @@ class batchWindow : public QDialog
 		Ui::batchWindow			*ui;
 		QSettings				*m_settings;
 		QSize					m_currentSize;
-		int						m_imagesCount, m_items, m_value, m_images, m_maxSpeeds, m_lastDownloading;
+		int						m_imagesCount, m_items, m_images, m_maxSpeeds, m_lastDownloading;
 		QStringList				m_urls;
 		QList<QProgressBar*>	m_progressBars;
 		QMap<QString, int>		m_speeds;
