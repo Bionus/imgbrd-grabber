@@ -290,6 +290,11 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	m_pools = QList<Pool>();
 }
 
+Image::~Image()
+{
+	delete m_extensionRotator;
+}
+
 
 void Image::loadPreview()
 {
