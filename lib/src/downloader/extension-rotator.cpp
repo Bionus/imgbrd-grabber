@@ -1,6 +1,13 @@
 #include "extension-rotator.h"
 
 
+ExtensionRotator::ExtensionRotator(const ExtensionRotator &other)
+{
+	m_initialExtension = other.m_initialExtension;
+	m_extensions = other.m_extensions;
+	m_next = other.m_next;
+}
+
 ExtensionRotator::ExtensionRotator(QString initialExtension, QStringList extensions)
 	: m_initialExtension(initialExtension), m_extensions(extensions)
 {

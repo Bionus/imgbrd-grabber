@@ -8,6 +8,8 @@
 class ExtensionRotator
 {
 	public:
+		explicit ExtensionRotator() = default;
+		explicit ExtensionRotator(const ExtensionRotator &other);
 		explicit ExtensionRotator(QString initialExtension, QStringList extensions);
 		QString next();
 

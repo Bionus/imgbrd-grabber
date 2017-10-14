@@ -84,6 +84,7 @@ Image::Image(const Image &other)
 	m_parentSite = other.m_parentSite;
 	m_details = other.m_details;
 
+	m_extensionRotator = other.m_extensionRotator;
 	m_loadingPreview = other.m_loadingPreview;
 	m_loadingDetails = other.m_loadingDetails;
 	m_loadingImage = other.m_loadingImage;
@@ -273,7 +274,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	QStringList extensions = animated
 		? QStringList() << "webm" << "mp4" << "gif" << "jpg" << "png" << "jpeg" << "swf"
 		: QStringList() << "jpg" << "png" << "gif" << "jpeg" << "webm" << "swf" << "mp4";
-	m_extensionRotator = new ExtensionRotator(getExtension(m_url), extensions);
+	m_extensionRotator = ExtensionRotator(getExtension(m_url), extensions);
 
 	// Tech details
 	m_parent = parent;
@@ -288,11 +289,6 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	m_loadingImage = false;
 	m_tryingSample = false;
 	m_pools = QList<Pool>();
-}
-
-Image::~Image()
-{
-	delete m_extensionRotator;
 }
 
 
@@ -775,8 +771,7 @@ void Image::finishedImageS(bool inMemory)
 	if (m_loadImage->error() == QNetworkReply::ContentNotFoundError)
 	{
 		bool sampleFallback = m_settings->value("Save/samplefallback", true).toBool();
-		QString ext = getExtension(m_url);
-		QString newext = m_extensionRotator->next();
+		QString newext = m_extensionRotator.next();
 
 		bool shouldFallback = sampleFallback && !m_sampleUrl.isEmpty();
 		bool isLast = newext.isEmpty() || (shouldFallback && m_tryingSample);

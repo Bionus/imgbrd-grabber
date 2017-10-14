@@ -35,7 +35,6 @@ class Image : public QObject
 		Image();
 		Image(Site *site, QMap<QString,QString> details, Profile *profile, Page *parent = Q_NULLPTR);
 		Image(const Image &other);
-		~Image();
 		int			value() const;
 		QString		match(QString filter, bool invert = false) const;
 		QStringList	filter(const QStringList &filters) const;
@@ -150,7 +149,7 @@ class Image : public QObject
 		Site			*m_parentSite;
 		QMap<QString, QString>   m_details;
 		QNetworkReply::NetworkError m_loadImageError;
-		ExtensionRotator *m_extensionRotator;
+		ExtensionRotator m_extensionRotator;
 		bool			m_loadingPreview, m_loadingDetails, m_loadingImage, m_tryingSample, m_loadedDetails, m_loadedImage;
 };
 
