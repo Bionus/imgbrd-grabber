@@ -884,12 +884,7 @@ void mainWindow::addUnique()
 
 void mainWindow::updateFavorites()
 {
-	while (!ui->layoutFavoritesDock->isEmpty())
-	{
-		QWidget *wid = ui->layoutFavoritesDock->takeAt(0)->widget();
-		wid->hide();
-		wid->deleteLater();
-	}
+	clearLayout(ui->layoutFavoritesDock);
 
 	QStringList assoc = QStringList() << "name" << "note" << "lastviewed";
 	QString order = assoc[qMax(ui->comboOrderFav->currentIndex(), 0)];
