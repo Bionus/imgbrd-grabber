@@ -272,7 +272,7 @@ void mainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	{ ui->tableBatchGroups->horizontalHeader()->resizeSection(i, sizes.at(i).toInt()); }
 
 	m_lineFolder_completer = QStringList(m_settings->value("Save/path").toString());
-	ui->lineFolder->setCompleter(new QCompleter(m_lineFolder_completer));
+	ui->lineFolder->setCompleter(new QCompleter(m_lineFolder_completer, ui->lineFolder));
 	//m_lineFilename_completer = QStringList(m_settings->value("Save/filename").toString());
 	//ui->lineFilename->setCompleter(new QCompleter(m_lineFilename_completer));
 	ui->comboFilename->setAutoCompletionCaseSensitivity(Qt::CaseSensitive);
