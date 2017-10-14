@@ -53,7 +53,7 @@
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="layoutPresets" stretch="1,0,0,0,0">
+    <layout class="QHBoxLayout" name="layoutPresets" stretch="1,0">
      <item>
       <widget class="QComboBox" name="comboPresets">
        <item>
@@ -64,57 +64,64 @@
       </widget>
      </item>
      <item>
-      <widget class="QToolButton" name="buttonPresetSave">
-       <property name="enabled">
-        <bool>false</bool>
+      <layout class="QHBoxLayout" name="layoutPresetsButtons">
+       <property name="spacing">
+        <number>3</number>
        </property>
-       <property name="text">
-        <string notr="true"/>
-       </property>
-       <property name="icon">
-        <iconset resource="../../resources/resources.qrc">
-         <normaloff>:/images/icons/save.png</normaloff>:/images/icons/save.png</iconset>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QToolButton" name="buttonPresetEdit">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="text">
-        <string notr="true"/>
-       </property>
-       <property name="icon">
-        <iconset resource="../../resources/resources.qrc">
-         <normaloff>:/images/icons/edit.png</normaloff>:/images/icons/edit.png</iconset>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QToolButton" name="buttonPresetDelete">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="text">
-        <string>...</string>
-       </property>
-       <property name="icon">
-        <iconset resource="../../resources/resources.qrc">
-         <normaloff>:/images/icons/remove.png</normaloff>:/images/icons/remove.png</iconset>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QToolButton" name="buttonPresetAdd">
-       <property name="text">
-        <string notr="true"/>
-       </property>
-       <property name="icon">
-        <iconset resource="../../resources/resources.qrc">
-         <normaloff>:/images/icons/add.png</normaloff>:/images/icons/add.png</iconset>
-       </property>
-      </widget>
+       <item>
+        <widget class="QToolButton" name="buttonPresetSave">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="text">
+          <string notr="true"/>
+         </property>
+         <property name="icon">
+          <iconset resource="../../resources/resources.qrc">
+           <normaloff>:/images/icons/save.png</normaloff>:/images/icons/save.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QToolButton" name="buttonPresetEdit">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="text">
+          <string notr="true"/>
+         </property>
+         <property name="icon">
+          <iconset resource="../../resources/resources.qrc">
+           <normaloff>:/images/icons/edit.png</normaloff>:/images/icons/edit.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QToolButton" name="buttonPresetDelete">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="text">
+          <string>...</string>
+         </property>
+         <property name="icon">
+          <iconset resource="../../resources/resources.qrc">
+           <normaloff>:/images/icons/remove.png</normaloff>:/images/icons/remove.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QToolButton" name="buttonPresetAdd">
+         <property name="text">
+          <string notr="true"/>
+         </property>
+         <property name="icon">
+          <iconset resource="../../resources/resources.qrc">
+           <normaloff>:/images/icons/add.png</normaloff>:/images/icons/add.png</iconset>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </item>
@@ -138,7 +145,7 @@
         <x>0</x>
         <y>0</y>
         <width>297</width>
-        <height>443</height>
+        <height>441</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout">
