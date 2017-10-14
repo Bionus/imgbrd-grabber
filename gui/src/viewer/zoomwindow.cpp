@@ -689,9 +689,6 @@ void zoomWindow::draw()
 	// GIF (using QLabel support for QMovie)
 	if (!m_isAnimated.isEmpty())
 	{
-		auto formats = QImageReader::supportedImageFormats();
-		for (const auto &format : formats)
-			qDebug() << QString(format);
 		m_displayMovie = new QMovie(filename, m_isAnimated.toLatin1(), this);
 		m_labelImage->setMovie(m_displayMovie);
 		m_stackedWidget->setCurrentWidget(m_labelImage);
