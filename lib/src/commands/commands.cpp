@@ -35,6 +35,11 @@ Commands::Commands(Profile *profile)
 	m_sqlWorker->setObjectName("SqlThread");
 }
 
+Commands::~Commands()
+{
+	m_sqlWorker->deleteLater();
+}
+
 bool Commands::start()
 {
 	return m_sqlWorker->connect();
