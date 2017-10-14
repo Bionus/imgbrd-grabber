@@ -1390,9 +1390,6 @@ void mainWindow::getAllFinishedImages(QList<QSharedPointer<Image>> images)
 	m_progressBars[row]->setValue(0);
 	m_progressBars[row]->setMaximum(images.count());
 
-	// Update image count
-	m_getAllImagesCount -= m_batchPending[row].total - images.count();
-
 	if (m_downloaders.isEmpty())
 	{
 		m_batchAutomaticRetries = m_settings->value("Save/automaticretries", 0).toInt();
