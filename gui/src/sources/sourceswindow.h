@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QCheckBox>
+#include <QSettings>
 #include <QLabel>
 #include "models/source.h"
 
@@ -40,6 +41,16 @@ class sourcesWindow : public QDialog
 		void addCheckboxes();
 		void removeCheckboxes();
 		void updateCheckboxes();
+		QList<Site*> selected() const;
+
+		// Presets
+		QMap<QString, QStringList> loadPresets(QSettings *settings) const;
+		void savePresets(QSettings *settings) const;
+		void addPreset();
+		void deletePreset();
+		void editPreset();
+		void savePreset();
+		void selectPreset(QString name);
 
 	signals:
 		void closed();
@@ -54,6 +65,7 @@ class sourcesWindow : public QDialog
 		QList<QBouton*> m_buttons;
 		QMap<QString, Site*> *m_sites;
 		QMap<QString, Source*> m_sources;
+		QMap<QString, QStringList> m_presets;
 };
 
 #endif // SOURCESWINDOW_H
