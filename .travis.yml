@@ -17,14 +17,9 @@ addons:
     packages:
       - sqlite3
       - libqt5sql5-sqlite
-      - qt5-qmake
       - qtbase5-dev
-      - qtdeclarative5-dev
       - qtscript5-dev
       - qtmultimedia5-dev
-      - libpulse-dev
-      - qt5-default
-      - qttools5-dev
       - qttools5-dev-tools
       - sshpass
       - lcov
