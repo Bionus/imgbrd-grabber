@@ -538,6 +538,8 @@ int Downloader::pagesCount() const
 		pages = 1;
 	return pages * m_sites.size();
 }
+int Downloader::imagesMax() const
+{ return m_max; }
 Page *Downloader::lastPage() const
 { return m_lastPage; }
 

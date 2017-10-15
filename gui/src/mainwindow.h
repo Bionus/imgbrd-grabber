@@ -199,7 +199,7 @@ class mainWindow : public QMainWindow
 		QList<Downloader*>  m_downloaders, m_downloadersDone;
 		QQueue<Downloader*>	m_waitingDownloaders;
 		QList<Site*>		m_getAllLogins;
-		int					m_batchAutomaticRetries, m_getAllImagesCount;
+		int					m_batchAutomaticRetries, m_getAllImagesCount, m_batchCurrentPackSize;
 		bool				m_restore, m_showLog;
 		QMap<QString, QIcon>	m_icons;
 		QMap<QString, Site*>	m_sites;

@@ -30,6 +30,7 @@ class Downloader : public QObject
 		int ignoredCount() const;
 		int duplicatesCount() const;
 		int pagesCount() const;
+		int imagesMax() const;
 		Page *lastPage() const;
 
 	signals:

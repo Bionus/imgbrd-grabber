@@ -1353,14 +1353,17 @@ void mainWindow::getAllGetPages()
 	m_progressdialog->setText(tr("Downloading pages, please wait..."));
 
 	int max = 0;
+	int packSize = 0;
 	for (Downloader *downloader : m_downloaders)
 	{
 		downloader->getImages();
 		max += downloader->pagesCount();
+		packSize += downloader->imagesMax();
 	}
 
 	m_progressdialog->setCurrentValue(0);
 	m_progressdialog->setCurrentMax(max);
+	m_batchCurrentPackSize = packSize;
 }
 
 /**
@@ -1395,6 +1398,10 @@ void mainWindow::getAllFinishedImages(QList<QSharedPointer<Image>> images)
 	int row = downloader->getData().toInt();
 	m_progressBars[row]->setValue(0);
 	m_progressBars[row]->setMaximum(images.count());
+
+	// Update image to take into account unlisted images
+	int unlisted = m_batchCurrentPackSize - images.count();
+	m_getAllImagesCount -= unlisted;
 
 	if (m_downloaders.isEmpty())
 	{
