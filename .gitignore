@@ -29,6 +29,7 @@ symbols/
 *.sql
 *.zip
 build/
+build_linux/
 debug/
 {gui,cli}/release/
 cache/
@@ -49,7 +50,7 @@ CrashReporter/release/
 
 # CMake
 
-CMakeLists.txt.user
+CMakeLists.txt.user*
 CMakeCache.txt
 CMakeFiles
 CMakeScripts
