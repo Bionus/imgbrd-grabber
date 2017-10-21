@@ -35,12 +35,6 @@ Shimmie
 </div>
 
 <div class="source" markdown="1">
-![](assets/img/sources/sankaku.png)
-
-Sankaku Complex
-</div>
-
-<div class="source" markdown="1">
 ![](assets/img/sources/yandere.png)
 
 Yande.re
