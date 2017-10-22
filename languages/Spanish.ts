@@ -636,7 +636,7 @@
     <message>
         <location filename="../lib/src/models/filename.cpp" line="729"/>
         <source>Valid filename!</source>
-        <translation>¡El nombre del archivo no es válido!</translation>
+        <translation>¡Nombre de archivo válido!</translation>
     </message>
     <message>
         <source>B</source>
