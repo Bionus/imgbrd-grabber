@@ -842,7 +842,7 @@ void PageApi::parseNavigation(const QString &source)
 		if (cnt > 0)
 		{
 			int pagesCount = cnt;
-			if (m_originalUrl.contains("{pid}"))
+			if (m_originalUrl.contains("{pid}") || (m_api->contains("Urls/PagePart") && m_api->value("Urls/PagePart").contains("{pid}")))
 			{
 				int ppid = m_api->contains("Urls/Limit") ? m_api->value("Urls/Limit").toInt() : m_imagesPerPage;
 				pagesCount = floor((float)pagesCount / (float)ppid) + 1;
