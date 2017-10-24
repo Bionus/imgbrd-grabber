@@ -37,7 +37,7 @@ QList<QMap<QString, QPair<QString, QString>>> Filename::getReplaces(QString file
 	replaces.insert("website", QStrP(img.parentSite()->url(), ""));
 	replaces.insert("websitename", QStrP(img.parentSite()->name(), ""));
 	replaces.insert("md5", QStrP(img.md5(), ""));
-	replaces.insert("date", QStrP(img.createdAt().toString(QObject::tr("MM-dd-yyyy HH.mm")), ""));
+	replaces.insert("date", QStrP(img.createdAt().toString(Qt::ISODate), ""));
 	replaces.insert("id", QStrP(QString::number(img.id()), "0"));
 	QStringList search = removeWildards(img.search(), remove);
 	for (int i = 0; i < search.size(); ++i)
@@ -494,7 +494,7 @@ QStringList Filename::path(const Image& img, Profile *profile, QString pth, int 
 					if (key == "count")
 						res = QString::number(counter);
 
-					res = optionedValue(res, key, options, img, settings, namespaces);
+					res = optionedValue(res, key, options, settings, namespaces);
 
 					cFilename.replace(replacerx.cap(0), res);
 					p += res.length();
@@ -537,7 +537,7 @@ QStringList Filename::path(const Image& img, Profile *profile, QString pth, int 
 					int len = last.length() - cRight.length() + 5;
 					num = last.mid(pos, len).toInt() + 1;
 				}
-				cFilename.replace(hasNum, optionedValue(QString::number(num), "num", numOptions, img, settings, namespaces));
+				cFilename.replace(hasNum, optionedValue(QString::number(num), "num", numOptions, settings, namespaces));
 			}
 
 			fns.append(cFilename);
@@ -589,7 +589,7 @@ QString Filename::cleanUpValue(QString res, QMap<QString, QString> options, QSet
 	return res;
 }
 
-QString Filename::optionedValue(QString res, QString key, QString ops, const Image& img, QSettings *settings, QStringList namespaces) const
+QString Filename::optionedValue(QString res, QString key, QString ops, QSettings *settings, QStringList namespaces) const
 {
 	QString mainSeparator = settings->value("Save/separator", " ").toString();
 	bool cleaned = false;
@@ -615,7 +615,10 @@ QString Filename::optionedValue(QString res, QString key, QString ops, const Ima
 
 	// Apply options
 	if (key == "date" && options.contains("format"))
-	{ res = img.createdAt().toString(options["format"]); }
+	{
+		QString format = options.value("format", QObject::tr("MM-dd-yyyy HH.mm"));
+		res = QDateTime::fromString(res, Qt::ISODate).toString(format);
+	}
 	if (key == "count" || key == "num")
 	{ res = options.contains("length") ? QString("%1").arg(res.toInt(), options["length"].toInt(), 10, QChar('0')) : res; }
 	if (options.contains("maxlength"))
