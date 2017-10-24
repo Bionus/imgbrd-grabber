@@ -237,9 +237,6 @@ QMap<QString, QStringList> Filename::makeDetails(const Image& img, Profile *prof
 	QStringList remove = settings->value("ignoredtags").toString().split(' ', QString::SkipEmptyParts);
 
 	QMap<QString, QStringList> details;
-	QRegExp reg;
-	reg.setCaseSensitivity(Qt::CaseInsensitive);
-	reg.setPatternSyntax(QRegExp::Wildcard);
 	for (const Tag &tag : img.filteredTags(remove))
 	{
 		QString t = tag.text();
