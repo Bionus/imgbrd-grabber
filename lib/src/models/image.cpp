@@ -903,7 +903,7 @@ QStringList Image::stylishedTags(Profile *profile) const
 	return stylist.stylished(m_tags);
 }
 
-Image::SaveResult Image::save(const QString &path, bool force, bool basic, bool addMd5, bool startCommands, int count, bool loadIfNecessary)
+Image::SaveResult Image::save(const QString &path, bool force, bool basic, bool addMd5, bool startCommands, int count, bool loadIfNecessary, bool postSave)
 {
 	SaveResult res = SaveResult::Saved;
 
@@ -1007,7 +1007,8 @@ Image::SaveResult Image::save(const QString &path, bool force, bool basic, bool 
 			return SaveResult::Ignored;
 		}
 
-		postSaving(path, addMd5 && res == SaveResult::Saved, startCommands, count, basic);
+		if (postSave)
+		{ postSaving(path, addMd5 && res == SaveResult::Saved, startCommands, count, basic); }
 	}
 	else
 	{ res = SaveResult::AlreadyExists; }
