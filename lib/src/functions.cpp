@@ -775,3 +775,15 @@ QList<QPair<QString, QStringList>> listFilesFromDirectory(const QDir &dir, const
 	return files;
 }
 
+bool isVariantEmpty(const QVariant &value)
+{
+	switch (value.type())
+	{
+		case QVariant::Type::Int: return value.toInt() == 0;
+		case QVariant::Type::List: return value.toList().isEmpty();
+		case QVariant::Type::Map: return value.toMap().isEmpty();
+		case QVariant::Type::String: return value.toString().isEmpty();
+		case QVariant::Type::StringList: return value.toStringList().isEmpty();
+	}
+	return false;
+}

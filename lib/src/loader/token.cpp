@@ -1,18 +1,7 @@
 #include "token.h"
 #include <QDateTime>
+#include "functions.h"
 
-
-bool isVariantEmpty(const QVariant &value)
-{
-	switch (value.type())
-	{
-		case QVariant::Type::List: return value.toList().isEmpty();
-		case QVariant::Type::StringList: return value.toStringList().isEmpty();
-		case QVariant::Type::String: return value.toString().isEmpty();
-		case QVariant::Type::Int: return value.toInt() == 0;
-	}
-	return false;
-}
 
 Token::Token(const QString &key, const QVariant &value, const QVariant &def)
 	: m_key(key)
