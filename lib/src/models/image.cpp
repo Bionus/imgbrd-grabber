@@ -1322,14 +1322,14 @@ void Image::preload(const Filename &filename)
 	loop.exec();
 }
 
-QStringList Image::paths(const Filename &filename, const QString &folder) const
+QStringList Image::paths(const Filename &filename, const QString &folder, int count) const
 {
-	return path(filename.getFormat(), folder, 0, true, false, true, true, true);
+	return path(filename.getFormat(), folder, count, true, false, true, true, true);
 }
 
-Image::SaveResult Image::preSave(const QString &path, bool addMd5, bool startCommands, int count)
+Image::SaveResult Image::preSave(const QString &path)
 {
-	return save(path, false, false, addMd5, startCommands, count, false, false);
+	return save(path, false, false, false, false, 0, false, false);
 }
 
 void Image::postSave(QMap<QString, Image::SaveResult> result, bool addMd5, bool startCommands, int count)

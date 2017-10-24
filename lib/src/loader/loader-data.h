@@ -16,7 +16,7 @@ struct LoaderData
 	int max;
 
 	// Results
-	int ignored;
+	QList<QSharedPointer<Downloadable>> ignored;
 	QList<QSharedPointer<Downloadable>> results;
 };
 

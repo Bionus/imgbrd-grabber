@@ -14,7 +14,9 @@ class DownloadableDownloader : public QObject
 	Q_OBJECT
 
 	public:
-		explicit DownloadableDownloader(QSharedPointer<Downloadable> downloadable, const Filename &filename, const QString &folder, Site *site, int count, bool addMd5, bool startCommands, bool loadTags, QObject *parent = Q_NULLPTR);
+		explicit DownloadableDownloader(QSharedPointer<Downloadable> downloadable, Site *site, int count, bool addMd5, bool startCommands, bool loadTags, QObject *parent = Q_NULLPTR);
+		void setPath(const Filename &filename, const QString &folder);
+		void setPath(const QStringList &paths);
 		void save();
 
 	protected slots:

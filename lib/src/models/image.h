@@ -92,8 +92,8 @@ class Image : public QObject, public Downloadable
 		// Downloadable
 		virtual QString url() const override;
 		virtual void preload(const Filename &filename) override;
-		virtual QStringList paths(const Filename &filename, const QString &folder) const override;
-		virtual SaveResult preSave(const QString &path, bool addMd5, bool startCommands, int count) override;
+		virtual QStringList paths(const Filename &filename, const QString &folder, int count) const override;
+		virtual SaveResult preSave(const QString &path) override;
 		virtual void postSave(QMap<QString, SaveResult> result, bool addMd5, bool startCommands, int count) override;
 
 	public slots:

@@ -4,9 +4,20 @@
 #include "logger.h"
 
 
-DownloadableDownloader::DownloadableDownloader(QSharedPointer<Downloadable> downloadable, const Filename &filename, const QString &folder, Site *site, int count, bool addMd5, bool startCommands, bool loadTags, QObject *parent)
-	: QObject(parent), m_downloadable(downloadable), m_filename(filename), m_folder(folder), m_site(site), m_count(count), m_addMd5(addMd5), m_startCommands(startCommands), m_loadTags(loadTags)
+DownloadableDownloader::DownloadableDownloader(QSharedPointer<Downloadable> downloadable, Site *site, int count, bool addMd5, bool startCommands, bool loadTags, QObject *parent)
+	: QObject(parent), m_downloadable(downloadable), m_site(site), m_count(count), m_addMd5(addMd5), m_startCommands(startCommands), m_loadTags(loadTags)
 {}
+
+void DownloadableDownloader::setPath(const Filename &filename, const QString &folder)
+{
+	m_filename = filename;
+	m_folder = folder;
+}
+
+void DownloadableDownloader::setPath(const QStringList &paths)
+{
+	m_paths = paths;
+}
 
 void DownloadableDownloader::setResult(QStringList keys, Downloadable::SaveResult value)
 {
@@ -23,14 +34,14 @@ void DownloadableDownloader::save()
 void DownloadableDownloader::preloaded()
 {
 	QString url = m_downloadable->url();
-	QStringList paths = m_downloadable->paths(m_filename, m_folder);
+	QStringList paths = !m_paths.isEmpty() ? m_paths : m_downloadable->paths(m_filename, m_folder, m_count);
 
 	// Sometimes we don't even need to download the image to save it
 	m_paths.clear();
 	m_result.clear();
 	for (const QString &path : paths)
 	{
-		Downloadable::SaveResult result = m_downloadable->preSave(path, m_addMd5, m_startCommands, m_count);
+		Downloadable::SaveResult result = m_downloadable->preSave(path);
 		if (result == Downloadable::SaveResult::NotLoaded)
 		{ m_paths.append(path); }
 		else

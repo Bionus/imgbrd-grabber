@@ -42,7 +42,7 @@ LoaderData LoaderQuery::next()
 		// Skip blacklisted images
 		if (!getBlacklisted && !img->blacklisted(blacklist).empty())
 		{
-			ret.ignored++;
+			ret.ignored.append(img);
 			continue;
 		}
 
