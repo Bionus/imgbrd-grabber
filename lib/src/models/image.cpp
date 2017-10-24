@@ -1310,3 +1310,32 @@ QString Image::isAnimated() const
 
 	return QString();
 }
+
+void Image::preload(const Filename &filename)
+{
+	if (!filename.needExactTags(m_parentSite))
+		return;
+
+	QEventLoop loop;
+	QObject::connect(this, &Image::finishedLoadingTags, &loop, &QEventLoop::quit);
+	loadDetails();
+	loop.exec();
+}
+
+QStringList Image::paths(const Filename &filename, const QString &folder) const
+{
+	return path(filename.getFormat(), folder, 0, true, false, true, true, true);
+}
+
+Image::SaveResult Image::preSave(const QString &path, bool addMd5, bool startCommands, int count)
+{
+	return save(path, false, false, addMd5, startCommands, count, false, false);
+}
+
+void Image::postSave(QMap<QString, Image::SaveResult> result, bool addMd5, bool startCommands, int count)
+{
+	const QString &path = result.firstKey();
+	Image::SaveResult res = result[path];
+
+	postSaving(path, addMd5 && res == SaveResult::Saved, startCommands, count);
+}

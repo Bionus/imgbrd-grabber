@@ -9,29 +9,18 @@
 #include "tags/tag.h"
 #include "pool.h"
 #include "downloader/extension-rotator.h"
+#include "loader/downloadable.h"
 
 
 class Page;
 class Site;
 class Profile;
 
-class Image : public QObject
+class Image : public QObject, public Downloadable
 {
 	Q_OBJECT
 
 	public:
-		enum SaveResult
-		{
-			AlreadyExists,
-			Ignored,
-			Moved,
-			Copied,
-			Saved,
-			Error,
-			NotLoaded,
-			NotFound,
-			NetworkError
-		};
 		Image();
 		Image(Site *site, QMap<QString,QString> details, Profile *profile, Page *parent = Q_NULLPTR);
 		Image(const Image &other);
@@ -45,7 +34,6 @@ class Image : public QObject
 		void		postSaving(const QString &path, bool addMd5 = true, bool startCommands = false, int count = 1, bool basic = false);
 		QMap<QString, Image::SaveResult> save(const QStringList &paths, bool addMd5 = true, bool startCommands = false, int count = 1, bool force = false, bool loadIfNecessary = false);
 		QMap<QString, Image::SaveResult> save(const QString &filename, const QString &path, bool addMd5 = true, bool startCommands = false, int count = 1, bool loadIfNecessary = false);
-		QString		url() const;
 		QString		md5() const;
 		QString		author() const;
 		QString		status() const;
@@ -100,6 +88,13 @@ class Image : public QObject
 		bool		isVideo() const;
 		QString		isAnimated() const;
 		void		setTags(const QList<Tag> &tags);
+
+		// Downloadable
+		virtual QString url() const override;
+		virtual void preload(const Filename &filename) override;
+		virtual QStringList paths(const Filename &filename, const QString &folder) const override;
+		virtual SaveResult preSave(const QString &path, bool addMd5, bool startCommands, int count) override;
+		virtual void postSave(QMap<QString, SaveResult> result, bool addMd5, bool startCommands, int count) override;
 
 	public slots:
 		void loadPreview();
