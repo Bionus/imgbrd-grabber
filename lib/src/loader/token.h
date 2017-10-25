@@ -8,13 +8,22 @@
 class Token
 {
 	public:
-		explicit Token(const QString &key, const QVariant &value, const QVariant &def);
-		QString key() const;
+		explicit Token() = default;
+		explicit Token(const QVariant &value, const QVariant &def = QVariant());
+		explicit Token(const QVariant &value, const QString &whatToDoDefault, const QString &emptyDefault, const QString &multipleDefault);
+
 		QVariant value() const;
+		QString toString() const;
+
+		QString whatToDoDefault() const;
+		QString emptyDefault() const;
+		QString multipleDefault() const;
 
 	private:
-		QString m_key;
 		QVariant m_value;
+		QString m_whatToDoDefault;
+		QString m_emptyDefault;
+		QString m_multipleDefault;
 };
 
 #endif // TOKEN_H

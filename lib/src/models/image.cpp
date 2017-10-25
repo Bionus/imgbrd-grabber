@@ -1327,39 +1327,39 @@ QStringList Image::paths(const Filename &filename, const QString &folder, int co
 	return path(filename.getFormat(), folder, count, true, false, true, true, true);
 }
 
-QMap<QString, QVariant> Image::tokens(Profile *profile) const
+QMap<QString, Token> Image::tokens(Profile *profile) const
 {
 	QSettings *settings = profile->getSettings();
 	QStringList ignore = profile->getIgnored();
 	QStringList remove = settings->value("ignoredtags").toString().split(' ', QString::SkipEmptyParts);
 
-	QList<Token> tokens;
+	QMap<QString, Token> tokens;
 
 	// Pool
 	QRegularExpression poolRegexp("pool:(\\d+)");
 	QRegularExpressionMatch poolMatch = poolRegexp.match(m_search.join(' '));
-	tokens.append(Token("pool", poolMatch.hasMatch() ? poolMatch.captured(1) : "", ""));
+	tokens.insert("pool", Token(poolMatch.hasMatch() ? poolMatch.captured(1) : "", ""));
 
 	// Metadata
-	tokens.append(Token("filename", QUrl::fromPercentEncoding(m_url.section('/', -1).section('.', 0, -2).toUtf8()), ""));
-	tokens.append(Token("website", m_parentSite->url(), ""));
-	tokens.append(Token("websitename", m_parentSite->name(), ""));
-	tokens.append(Token("md5", md5(), ""));
-	tokens.append(Token("date", m_createdAt, QDateTime()));
-	tokens.append(Token("id", m_id, 0));
-	tokens.append(Token("rating", m_rating, "unknown"));
-	tokens.append(Token("score", m_score, 0));
-	tokens.append(Token("height", m_size.height(), 0));
-	tokens.append(Token("width", m_size.width(), 0));
-	tokens.append(Token("url_file", m_url, ""));
-	tokens.append(Token("url_page", m_pageUrl.toString(), ""));
+	tokens.insert("filename", Token(QUrl::fromPercentEncoding(m_url.section('/', -1).section('.', 0, -2).toUtf8()), ""));
+	tokens.insert("website", Token(m_parentSite->url(), ""));
+	tokens.insert("websitename", Token(m_parentSite->name(), ""));
+	tokens.insert("md5", Token(md5(), ""));
+	tokens.insert("date", Token(m_createdAt, QDateTime()));
+	tokens.insert("id", Token(m_id, 0));
+	tokens.insert("rating", Token(m_rating, "unknown"));
+	tokens.insert("score", Token(m_score, 0));
+	tokens.insert("height", Token(m_size.height(), 0));
+	tokens.insert("width", Token(m_size.width(), 0));
+	tokens.insert("url_file", Token(m_url, ""));
+	tokens.insert("url_page", Token(m_pageUrl.toString(), ""));
 
 	// Search
 	for (int i = 0; i < m_search.size(); ++i)
-	{ tokens.append(Token("search_" + QString::number(i + 1), m_search[i], "")); }
+	{ tokens.insert("search_" + QString::number(i + 1), Token(m_search[i], "")); }
 	for (int i = m_search.size(); i < 10; ++i)
-	{ tokens.append(Token("search_" + QString::number(i + 1), "", "")); }
-	tokens.append(Token("search", m_search.join(' '), ""));
+	{ tokens.insert("search_" + QString::number(i + 1), Token("", "")); }
+	tokens.insert("search", Token(m_search.join(' '), ""));
 
 	// Tags
 	QMap<QString, QStringList> details;
@@ -1399,30 +1399,25 @@ QMap<QString, QVariant> Image::tokens(Profile *profile) const
 	}
 
 	// Tags
-	tokens.append(Token("general", details["general"], QStringList()));
-	tokens.append(Token("artist", details["artist"], QStringList()));
-	tokens.append(Token("copyright", details["copyright"], QStringList()));
-	tokens.append(Token("character", details["character"], QStringList()));
-	tokens.append(Token("model", details["model"], QStringList()));
-	tokens.append(Token("species", details["species"], QStringList()));
-	tokens.append(Token("allos", details["allos"], QStringList()));
-	tokens.append(Token("allo", details["allos"].join(' '), ""));
-	tokens.append(Token("tags", details["alls"], QStringList()));
-	tokens.append(Token("all", details["alls"], QStringList()));
-	tokens.append(Token("all_namespaces", details["alls_namespaces"], QStringList()));
+	tokens.insert("general", Token(details["general"]));
+	tokens.insert("artist", Token(details["artist"], "replaceAll", "anonymous", "multiple artists"));
+	tokens.insert("copyright", Token(details["copyright"], "replaceAll", "misc", "crossover"));
+	tokens.insert("character", Token(details["character"], "replaceAll", "unknown", "group"));
+	tokens.insert("model", Token(details["model"], "replaceAll", "unknown", "multiple"));
+	tokens.insert("species", Token(details["species"], "replaceAll", "unknown", "multiple"));
+	tokens.insert("allos", Token(details["allos"]));
+	tokens.insert("allo", Token(details["allos"].join(' '), ""));
+	tokens.insert("tags", Token(details["alls"]));
+	tokens.insert("all", Token(details["alls"]));
+	tokens.insert("all_namespaces", Token(details["alls_namespaces"]));
 
 	// Extension
 	QString ext = getExtension(m_url);
 	if (settings->value("Save/noJpeg", true).toBool() && ext == "jpeg")
 		ext = "jpg";
-	tokens.append(Token("ext", ext, "jpg"));
+	tokens.insert("ext", Token(ext, "jpg"));
 
-	// List to map
-	QMap<QString, QVariant> replaces;
-	for (const Token &token : tokens)
-	{ replaces.insert(token.key(), token.value()); }
-
-	return replaces;
+	return tokens;
 }
 
 Image::SaveResult Image::preSave(const QString &path)

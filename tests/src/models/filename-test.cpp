@@ -428,7 +428,7 @@ void FilenameTest::testExpandTokensSimple()
 
 	Filename fn(format);
 	m_settings->setValue("Save/character_multiple", "replaceAll");
-	QList<QMap<QString, QVariant>> replaces = fn.expandTokens(format, m_img->tokens(m_profile), m_settings);
+	QList<QMap<QString, Token>> replaces = fn.expandTokens(format, m_img->tokens(m_profile), m_settings);
 
 	QCOMPARE(replaces.count(), 1);
 	QCOMPARE(replaces[0]["artist"].toString(), QString("artist1"));
@@ -441,7 +441,7 @@ void FilenameTest::testExpandTokensMultiple()
 
 	Filename fn(format);
 	m_settings->setValue("Save/character_multiple", "multiple");
-	QList<QMap<QString, QVariant>> replaces = fn.expandTokens(format, m_img->tokens(m_profile), m_settings);
+	QList<QMap<QString, Token>> replaces = fn.expandTokens(format, m_img->tokens(m_profile), m_settings);
 
 	QCOMPARE(replaces.count(), 2);
 	QCOMPARE(replaces[0]["artist"].toString(), QString("artist1"));
@@ -458,7 +458,7 @@ void FilenameTest::testExpandTokensMatrix()
 	Filename fn(format);
 	m_settings->setValue("Save/character_multiple", "multiple");
 	m_settings->setValue("Save/copyright_multiple", "multiple");
-	QList<QMap<QString, QVariant>> replaces = fn.expandTokens(format, m_img->tokens(m_profile), m_settings);
+	QList<QMap<QString, Token>> replaces = fn.expandTokens(format, m_img->tokens(m_profile), m_settings);
 
 	QCOMPARE(replaces.count(), 4);
 	QCOMPARE(replaces[0]["artist"].toString(), QString("artist1"));

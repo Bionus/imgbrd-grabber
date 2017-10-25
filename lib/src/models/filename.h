@@ -5,6 +5,7 @@
 #include <QStringList>
 #include <QSettings>
 #include <QVariant>
+#include "loader/token.h"
 
 
 class Site;
@@ -29,7 +30,7 @@ class Filename
 		 * @return The filename of the image, with any token replaced.
 		 */
 		QStringList path(const Image& img, Profile *settings, QString pth = "", int counter = 0, bool complex = true, bool maxLength = true, bool shouldFixFilename = true, bool getFull = false, bool keepInvalidTokens = false) const;
-		QStringList	path(QMap<QString, QVariant> tokens, Profile *settings, QString folder = "", int counter = 0, bool complex = true, bool maxLength = true, bool shouldFixFilename = true, bool getFull = false, bool keepInvalidTokens = false) const;
+		QStringList	path(QMap<QString, Token> tokens, Profile *settings, QString folder = "", int counter = 0, bool complex = true, bool maxLength = true, bool shouldFixFilename = true, bool getFull = false, bool keepInvalidTokens = false) const;
 
 		/**
 		 * Check filename format's validity.
@@ -42,17 +43,17 @@ class Filename
 		bool needExactTags(Site *site, QString api = "") const;
 		bool needExactTags(bool forceImageUrl = false, bool needDate = false) const;
 
-		QList<QMap<QString, QVariant>> expandTokens(const QString &filename, QMap<QString, QVariant> tokens, QSettings *settings) const;
-		QString expandConditionals(QString text, QStringList tags, const QMap<QString, QVariant> &tokens, QSettings *settings, int depth = 0) const;
+		QList<QMap<QString, Token> > expandTokens(const QString &filename, QMap<QString, Token> tokens, QSettings *settings) const;
+		QString expandConditionals(QString text, QStringList tags, const QMap<QString, Token> &tokens, QSettings *settings, int depth = 0) const;
 
 	protected:
 		QString cleanUpValue(QString res, QMap<QString, QString> options, QSettings *settings) const;
 		QString optionedValue(const QVariant &val, QString key, QString ops, QSettings *settings, QStringList namespaces) const;
-		QList<QVariant> getReplace(const QString &key, const QStringList &value, QSettings *settings) const;
+		QList<Token> getReplace(const QString &key, const Token &token, QSettings *settings) const;
 		bool returnError(QString msg, QString *error) const;
 		QString fixSeparator(QString separator) const;
-		QString generateJavaScriptVariables(QSettings *settings, const QMap<QString, QVariant> &tokens) const;
-		bool matchConditionalFilename(QString cond, QSettings *settings, const QMap<QString, QVariant> &tokens) const;
+		QString generateJavaScriptVariables(QSettings *settings, const QMap<QString, Token> &tokens) const;
+		bool matchConditionalFilename(QString cond, QSettings *settings, const QMap<QString, Token> &tokens) const;
 
 	private:
 		QString m_format;

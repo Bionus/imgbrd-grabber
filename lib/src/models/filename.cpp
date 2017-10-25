@@ -17,7 +17,7 @@ Filename::Filename(QString format)
 	: m_format(format)
 { }
 
-QString Filename::expandConditionals(QString text, QStringList tags, const QMap<QString, QVariant> &tokens, QSettings *settings, int depth) const
+QString Filename::expandConditionals(QString text, QStringList tags, const QMap<QString, Token> &tokens, QSettings *settings, int depth) const
 {
 	QString ret = text;
 
@@ -46,7 +46,7 @@ QString Filename::expandConditionals(QString text, QStringList tags, const QMap<
 			bool invert = !match.captured(2).isEmpty();
 			QString fullToken = match.captured(3);
 			QString token = match.captured(4);
-			if ((tokens.contains(token) && !isVariantEmpty(tokens[token])) == !invert)
+			if ((tokens.contains(token) && !isVariantEmpty(tokens[token].value())) == !invert)
 			{
 				QString rep = ignore || invert ? "" : fullToken;
 				ret.replace(match.captured(0), rep);
@@ -80,37 +80,35 @@ QString Filename::expandConditionals(QString text, QStringList tags, const QMap<
 	return ret;
 }
 
-QList<QVariant> Filename::getReplace(const QString &key, const QStringList &value, QSettings *settings) const
+QList<Token> Filename::getReplace(const QString &key, const Token &token, QSettings *settings) const
 {
-	QList<QVariant> ret;
+	QList<Token> ret;
+	QStringList value = token.value().toStringList();
 
-	QStringList applicable = QStringList() << "artist" << "copyright" << "character" << "model" << "species";
-	if (!applicable.contains(key))
+	if (token.whatToDoDefault().isEmpty())
 	{
-		ret.append(value);
+		ret.append(Token(value));
 		return ret;
 	}
 
 	settings->beginGroup("Save");
-	QString emptyDefault = key == "copyright" ? "misc" : (key == "artist" ? "anonymous" : "unknown");
-	QString multipleDefault = key == "copyright" ? "crossover" : (key == "artist" ? "multiple artists" : (key == "character" ? "group" : "multiple"));
 
 	if (value.isEmpty())
-	{ ret.append(settings->value(key + "_empty", emptyDefault).toString()); }
+	{ ret.append(Token(settings->value(key + "_empty", token.emptyDefault()).toString())); }
 	else if (value.size() > settings->value(key + "_multiple_limit", 1).toInt())
 	{
-		QString whatToDo = settings->value(key + "_multiple", "replaceAll").toString();
+		QString whatToDo = settings->value(key + "_multiple", token.whatToDoDefault()).toString();
 		if (whatToDo == "keepAll")
-		{ ret.append(value); }
+		{ ret.append(Token(value)); }
 		else if (whatToDo == "multiple")
 		{
 			for (const QString &val : value)
-			{ ret.append(val); }
+			{ ret.append(Token(val)); }
 		}
 		else if (whatToDo == "keepN")
 		{
 			int keepN = settings->value(key + "_multiple_keepN", 1).toInt();
-			ret.append(QStringList(value.mid(0, qMax(1, keepN))));
+			ret.append(Token(QStringList(value.mid(0, qMax(1, keepN)))));
 		}
 		else if (whatToDo == "keepNThenAdd")
 		{
@@ -120,15 +118,15 @@ QList<QVariant> Filename::getReplace(const QString &key, const QStringList &valu
 			thenAdd.replace("%count%", QString::number(value.size() - keepN));
 			QStringList keptValues = value.mid(0, qMax(1, keepN));
 			if (value.size() > keepN)
-			{ ret.append(keptValues.join(' ') + thenAdd); }
+			{ ret.append(Token(keptValues.join(' ') + thenAdd)); }
 			else
-			{ ret.append(keptValues); }
+			{ ret.append(Token(keptValues)); }
 		}
 		else
-		{ ret.append(settings->value(key + "_value", multipleDefault).toString()); }
+		{ ret.append(Token(settings->value(key + "_value", token.multipleDefault()).toString())); }
 	}
 	else
-	{ ret.append(value); }
+	{ ret.append(Token(value)); }
 
 	settings->endGroup();
 	return ret;
@@ -151,12 +149,12 @@ QString generateJavaScriptVariable(const QString &name, const QString &value)
 	return generateJavaScriptVariableInternal(name, "\"" + value + "\"");
 }
 
-QString Filename::generateJavaScriptVariables(QSettings *settings, const QMap<QString, QVariant> &tokens) const
+QString Filename::generateJavaScriptVariables(QSettings *settings, const QMap<QString, Token> &tokens) const
 {
 	QString inits = "";
 	for (const QString &key : tokens.keys())
 	{
-		QVariant val = tokens[key];
+		QVariant val = tokens[key].value();
 		QString res;
 
 		if (val.type() == QVariant::StringList)
@@ -190,7 +188,7 @@ QString Filename::generateJavaScriptVariables(QSettings *settings, const QMap<QS
 	return inits;
 }
 
-bool Filename::matchConditionalFilename(QString cond, QSettings *settings, const QMap<QString, QVariant> &tokens) const
+bool Filename::matchConditionalFilename(QString cond, QSettings *settings, const QMap<QString, Token> &tokens) const
 {
 	// Javascript conditions
 	if (cond.startsWith("javascript:"))
@@ -214,7 +212,7 @@ bool Filename::matchConditionalFilename(QString cond, QSettings *settings, const
 	}
 
 	// Other conditions require tag tokens
-	if (!tokens.contains("tags"))
+	if (!tokens.contains("allos"))
 		return false;
 
 	QStringList options = cond.split(' ');
@@ -233,7 +231,7 @@ bool Filename::matchConditionalFilename(QString cond, QSettings *settings, const
 			{
 				options.removeOne(match.captured(0));
 
-				QVariant val = tokens[token];
+				QVariant val = tokens[token].value();
 				if (val.type() == QVariant::StringList)
 				{ options.append(val.toStringList()); }
 			}
@@ -241,23 +239,24 @@ bool Filename::matchConditionalFilename(QString cond, QSettings *settings, const
 	}
 
 	// Tag conditions
+	QStringList tags = tokens["allos"].value().toStringList();
 	for (const QString &opt : options)
-		if (tokens["tags"].toStringList().contains(opt))
+		if (tags.contains(opt))
 			return true;
 
 	return false;
 }
 
-QList<QMap<QString, QVariant>> Filename::expandTokens(const QString &filename, QMap<QString, QVariant> tokens, QSettings *settings) const
+QList<QMap<QString, Token>> Filename::expandTokens(const QString &filename, QMap<QString, Token> tokens, QSettings *settings) const
 {
-	QList<QMap<QString, QVariant>> ret;
+	QList<QMap<QString, Token>> ret;
 	ret.append(tokens);
 
 	bool isJavascript = filename.startsWith("javascript:");
 	for (const QString &key : tokens.keys())
 	{
-		const QVariant &val = tokens[key];
-		if (val.type() != QVariant::StringList)
+		const Token &token = tokens[key];
+		if (token.value().type() != QVariant::StringList)
 			continue;
 
 		bool hasToken = !isJavascript && filename.contains(QRegularExpression("%"+key+"(?::[^%]+)?%"));
@@ -265,7 +264,7 @@ QList<QMap<QString, QVariant>> Filename::expandTokens(const QString &filename, Q
 		if (!hasToken && !hasVar)
 			continue;
 
-		QList<QVariant> reps = getReplace(key, val.toStringList(), settings);
+		QList<Token> reps = getReplace(key, token, settings);
 		int cnt = ret.count();
 		for (int i = 0; i < cnt; ++i)
 		{
@@ -284,20 +283,20 @@ QList<QMap<QString, QVariant>> Filename::expandTokens(const QString &filename, Q
 
 QStringList Filename::path(const Image& img, Profile *profile, QString pth, int counter, bool complex, bool maxLength, bool shouldFixFilename, bool getFull, bool keepInvalidTokens) const
 { return path(img.tokens(profile), profile, pth, counter, complex, maxLength, shouldFixFilename, getFull, keepInvalidTokens); }
-QStringList Filename::path(QMap<QString, QVariant> tokens, Profile *profile, QString folder, int counter, bool complex, bool maxLength, bool shouldFixFilename, bool getFull, bool keepInvalidTokens) const
+QStringList Filename::path(QMap<QString, Token> tokens, Profile *profile, QString folder, int counter, bool complex, bool maxLength, bool shouldFixFilename, bool getFull, bool keepInvalidTokens) const
 {
 	QSettings *settings = profile->getSettings();
 	QString filename = m_format;
 
 	// Count token
-	tokens.insert("count", counter);
+	tokens.insert("count", Token(counter));
 
 	// Custom tokens (if the tokens contain tags)
 	if (tokens.contains("tags"))
 	{
 		QMap<QString, QStringList> scustom = getCustoms(settings);
 		QMap<QString, QStringList> custom;
-		for (const QString &tag : tokens["tags"].toStringList())
+		for (const QString &tag : tokens["tags"].value().toStringList())
 		{
 			for (const QString &key : scustom.keys())
 			{
@@ -308,7 +307,7 @@ QStringList Filename::path(QMap<QString, QVariant> tokens, Profile *profile, QSt
 			}
 		}
 		for (const QString &key : custom.keys())
-		{ tokens.insert(key, custom[key]); }
+		{ tokens.insert(key, Token(custom[key])); }
 	}
 
 	// Conditional filenames
@@ -326,7 +325,7 @@ QStringList Filename::path(QMap<QString, QVariant> tokens, Profile *profile, QSt
 	}
 
 	// Expand tokens into multiple filenames
-	QList<QMap<QString, QVariant>> replacesList = expandTokens(filename, tokens, settings);
+	QList<QMap<QString, Token>> replacesList = expandTokens(filename, tokens, settings);
 
 	QStringList fns;
 
@@ -369,11 +368,11 @@ QStringList Filename::path(QMap<QString, QVariant> tokens, Profile *profile, QSt
 			QString cFilename = QString(filename);
 			QString hasNum;
 			QString numOptions;
-			QStringList namespaces = replaces["all_namespaces"].toStringList();
+			QStringList namespaces = replaces["all_namespaces"].value().toStringList();
 
 			// Conditionals
 			if (complex)
-			{ cFilename = this->expandConditionals(cFilename, tokens["allos"].toStringList(), replaces, settings); }
+			{ cFilename = this->expandConditionals(cFilename, tokens["allos"].value().toStringList(), replaces, settings); }
 
 			// Replace everything
 			QRegExp replacerx("%([^:]+)(?::([^%]+))?%");
@@ -386,8 +385,7 @@ QStringList Filename::path(QMap<QString, QVariant> tokens, Profile *profile, QSt
 
 				if (replaces.contains(key))
 				{
-					QVariant val = replaces[key];
-
+					QVariant val = replaces[key].value();
 					QString res = optionedValue(val, key, options, settings, namespaces);
 					cFilename.replace(replacerx.cap(0), res);
 					p += res.length();
