@@ -614,7 +614,8 @@ void mainWindow::batchAddGroup(const DownloadQueryGroup &values)
 	addTableItem(ui->tableBatchGroups, row, 5, QString::number(values.total));
 	addTableItem(ui->tableBatchGroups, row, 6, values.filename);
 	addTableItem(ui->tableBatchGroups, row, 7, values.path);
-	addTableItem(ui->tableBatchGroups, row, 8, values.getBlacklisted ? "true" : "false");
+	addTableItem(ui->tableBatchGroups, row, 8, values.postFiltering.join(' '));
+	addTableItem(ui->tableBatchGroups, row, 9, values.getBlacklisted ? "true" : "false");
 
 	auto *prog = new QProgressBar(this);
 	prog->setTextVisible(false);
