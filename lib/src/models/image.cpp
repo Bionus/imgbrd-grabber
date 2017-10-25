@@ -1359,7 +1359,7 @@ QMap<QString, QVariant> Image::tokens(Profile *profile) const
 	{ tokens.append(Token("search_" + QString::number(i + 1), m_search[i], "")); }
 	for (int i = m_search.size(); i < 10; ++i)
 	{ tokens.append(Token("search_" + QString::number(i + 1), "", "")); }
-	tokens.append(Token("search", m_search, QStringList()));
+	tokens.append(Token("search", m_search.join(' '), ""));
 
 	// Tags
 	QMap<QString, QStringList> details;
@@ -1367,7 +1367,7 @@ QMap<QString, QVariant> Image::tokens(Profile *profile) const
 	{
 		QString t = tag.text();
 
-		details[ignore.contains(t, Qt::CaseInsensitive) ? "generals" : tag.type().name()+"s"].append(t);
+		details[ignore.contains(t, Qt::CaseInsensitive) ? "general" : tag.type().name()].append(t);
 		details["alls"].append(t);
 		details["alls_namespaces"].append(tag.type().name());
 
@@ -1380,7 +1380,7 @@ QMap<QString, QVariant> Image::tokens(Profile *profile) const
 	if (settings->value("Save/copyright_useshorter", true).toBool())
 	{
 		QStringList copyrights;
-		for (const QString &cop : details["copyrights"])
+		for (const QString &cop : details["copyright"])
 		{
 			bool found = false;
 			for (int r = 0; r < copyrights.size(); ++r)
@@ -1395,16 +1395,17 @@ QMap<QString, QVariant> Image::tokens(Profile *profile) const
 			if (!found)
 			{ copyrights.append(cop); }
 		}
-		details["copyrights"] = copyrights;
+		details["copyright"] = copyrights;
 	}
 
 	// Tags
-	tokens.append(Token("general", details["generals"], QStringList()));
-	tokens.append(Token("artist", details["artists"], QStringList()));
-	tokens.append(Token("copyright", details["copyrights"], QStringList()));
-	tokens.append(Token("character", details["characters"], QStringList()));
-	tokens.append(Token("model", details["models"], QStringList()));
+	tokens.append(Token("general", details["general"], QStringList()));
+	tokens.append(Token("artist", details["artist"], QStringList()));
+	tokens.append(Token("copyright", details["copyright"], QStringList()));
+	tokens.append(Token("character", details["character"], QStringList()));
+	tokens.append(Token("model", details["model"], QStringList()));
 	tokens.append(Token("species", details["species"], QStringList()));
+	tokens.append(Token("allos", details["allos"], QStringList()));
 	tokens.append(Token("allo", details["allos"].join(' '), ""));
 	tokens.append(Token("tags", details["alls"], QStringList()));
 	tokens.append(Token("all", details["alls"], QStringList()));
