@@ -62,12 +62,9 @@ class FilenameTest : public TestSuite
 		void testPathNoJpeg();
 		void testPathKeepInvalidTokens();
 		void testPathForbiddenSeparator();
-		void testGetReplacesSimple();
-		void testGetReplacesMultiple();
-		void testGetReplacesMatrix();
-		void testGetReplacesCustom();
-		void testGetReplacesSpecies();
-		void testGetReplacesSpeciesMultiple();
+		void testExpandTokensSimple();
+		void testExpandTokensMultiple();
+		void testExpandTokensMatrix();
 		void testIsValid();
 		void testUseShorterCopyright();
 		void testConditionalsTag();
