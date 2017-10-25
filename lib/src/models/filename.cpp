@@ -64,23 +64,9 @@ QList<QMap<QString, QPair<QString, QString>>> Filename::getReplaces(QString file
 		ext = "jpg";
 	replaces.insert("ext", QStrP(ext, "jpg"));
 
-	// Remove duplicates in %all%
-	QStringList rem = (filename.contains("%artist%") ? details["artists"] : QStringList()) +
-		(filename.contains("%copyright%") ? details["copyrights"] : QStringList()) +
-		(filename.contains("%character%") ? details["characters"] : QStringList()) +
-		(filename.contains("%model%") ? details["models"] : QStringList()) +
-		(filename.contains("%species%") ? details["species"] : QStringList()) +
-		(filename.contains("%general%") ? details["generals"] : QStringList());
-	QStringList l = details["alls"];
-	QStringList namespaces = details["alls_namespaces"];
-	for (int i = 0; i < rem.size(); ++i)
-	{
-		int index = l.indexOf(rem.at(i));
-		l.removeAt(index);
-		namespaces.removeAt(index);
-	}
-	replaces.insert("all", QStrP(l.join(TAGS_SEPARATOR), ""));
-	replaces.insert("all_namespaces", QStrP(namespaces.join(" "), ""));
+	// Namespaced tokens
+	replaces.insert("all", QStrP(details["alls"].join(TAGS_SEPARATOR), ""));
+	replaces.insert("all_namespaces", QStrP(details["alls_namespaces"].join(" "), ""));
 
 	ret.append(replaces);
 
@@ -626,6 +612,22 @@ QString Filename::optionedValue(QString res, QString key, QString ops, QSettings
 		QString tagSeparator = fixSeparator(settings->value("Save/" + key + "_sep", mainSeparator).toString());
 
 		// Namespaces
+		if (options.contains("ignorenamespace"))
+		{
+			QStringList ignored = options["ignorenamespace"].split(' ');
+			QStringList filtered, filteredNamespaces;
+			for (int i = 0; i < vals.count(); ++i)
+			{
+				QString nspace = key == "all" ? namespaces[i] : key;
+				if (!ignored.contains(nspace))
+				{
+					filtered.append(vals[i]);
+					filteredNamespaces.append(namespaces[i]);
+				}
+			}
+			vals = filtered;
+			namespaces = filteredNamespaces;
+		}
 		if (options.contains("includenamespace"))
 		{
 			QStringList excluded;

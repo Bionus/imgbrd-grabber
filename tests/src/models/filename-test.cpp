@@ -310,7 +310,7 @@ void FilenameTest::testPathOptionTagNamespaceComplex()
 	m_settings->setValue("Save/character_multiple", "keepAll");
 	m_settings->setValue("Save/replaceblanks", true);
 
-	assertPath("%all:includenamespace,unsafe,separator=\n%\n\n%general%",
+	assertPath("%all:ignorenamespace=general,includenamespace,unsafe,separator=\n%\n\n%general%",
 			   "artist:artist1\ncharacter:character1\ncharacter:character2\ncopyright:copyright1\ncopyright:copyright2\n\ntag1 tag2 tag3 test_tag1 test_tag2 test_tag3",
 			   "", false);
 }
