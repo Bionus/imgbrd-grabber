@@ -1327,7 +1327,7 @@ QStringList Image::paths(const Filename &filename, const QString &folder, int co
 	return path(filename.getFormat(), folder, count, true, false, true, true, true);
 }
 
-QList<Token> Image::tokens(Profile *profile) const
+QMap<QString, QVariant> Image::tokens(Profile *profile) const
 {
 	QSettings *settings = profile->getSettings();
 	QStringList ignore = profile->getIgnored();
@@ -1416,7 +1416,12 @@ QList<Token> Image::tokens(Profile *profile) const
 		ext = "jpg";
 	tokens.append(Token("ext", ext, "jpg"));
 
-	return tokens;
+	// List to map
+	QMap<QString, QVariant> replaces;
+	for (const Token &token : tokens)
+	{ replaces.insert(token.key(), token.value()); }
+
+	return replaces;
 }
 
 Image::SaveResult Image::preSave(const QString &path)
