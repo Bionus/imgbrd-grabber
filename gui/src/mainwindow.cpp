@@ -1805,7 +1805,10 @@ void mainWindow::getAllGetImageSaved(QSharedPointer<Image> img, QMap<QString, Im
 	}
 
 	if (diskError || res == Image::SaveResult::NetworkError)
-	{ m_getAllErrors++; }
+	{
+		m_getAllErrors++;
+		m_getAllFailed.append(img);
+	}
 	else if (res == Image::SaveResult::NotFound)
 	{ m_getAll404s++; }
 	else if (res == Image::SaveResult::AlreadyExists)
@@ -1879,23 +1882,6 @@ void mainWindow::getAllFinished()
 	qDeleteAll(m_downloadersDone);
 	m_downloadersDone.clear();
 
-	// Information about downloads
-	if (m_getAllErrors <= 0 || m_batchAutomaticRetries <= 0)
-	{
-		QMessageBox::information(
-			this,
-			tr("Getting images"),
-			QString(
-				tr("%n file(s) downloaded successfully.", "", m_getAllDownloaded)+"\r\n"+
-				tr("%n file(s) ignored.", "", m_getAllIgnored)+"\r\n"+
-				tr("%n file(s) already existing.", "", m_getAllExists)+"\r\n"+
-				tr("%n file(s) not found on the server.", "", m_getAll404s)+"\r\n"+
-				tr("%n file(s) skipped.", "", m_getAllSkipped)+"\r\n"+
-				tr("%n error(s).", "", m_getAllErrors)
-			)
-		);
-	}
-
 	// Retry in case of error
 	int failedCount = m_getAllErrors + m_getAllSkipped;
 	if (failedCount > 0)
@@ -1932,6 +1918,20 @@ void mainWindow::getAllFinished()
 			return;
 		}
 	}
+
+	// Download result
+	QMessageBox::information(
+		this,
+		tr("Getting images"),
+		QString(
+			tr("%n file(s) downloaded successfully.", "", m_getAllDownloaded)+"\r\n"+
+			tr("%n file(s) ignored.", "", m_getAllIgnored)+"\r\n"+
+			tr("%n file(s) already existing.", "", m_getAllExists)+"\r\n"+
+			tr("%n file(s) not found on the server.", "", m_getAll404s)+"\r\n"+
+			tr("%n file(s) skipped.", "", m_getAllSkipped)+"\r\n"+
+			tr("%n error(s).", "", m_getAllErrors)
+		)
+	);
 
 	// Final action
 	switch (m_progressdialog->endAction())
