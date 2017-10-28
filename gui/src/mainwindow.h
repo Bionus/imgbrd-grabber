@@ -167,7 +167,7 @@ class mainWindow : public QMainWindow
 	protected:
 		int getRowForSite(int site_id);
 		void getAllGetImageIfNotBlacklisted(QSharedPointer<Image> img, int site_id);
-		void getAllImageOk(QSharedPointer<Image> img, int site_id, bool del = true);
+		void getAllImageOk(QSharedPointer<Image> img, int site_id);
 		QList<Site*> getSelectedSites();
 		Site* getSelectedSiteOrDefault();
 		void initialLoginsDone();

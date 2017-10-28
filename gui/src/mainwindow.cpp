@@ -1584,6 +1584,7 @@ void mainWindow::_getAll()
 			{
 				m_getAllExists++;
 				log(QString("File already exists: <a href=\"file:///%1\">%1</a>").arg(paths.at(0)), Logger::Info);
+				m_progressdialog->loadedImage(img->url(), Image::SaveResult::AlreadyExists);
 				getAllImageOk(img, site_id);
 			}
 		}
@@ -1603,14 +1604,14 @@ void mainWindow::getAllGetImageIfNotBlacklisted(QSharedPointer<Image> img, int s
 	{
 		m_getAllIgnored++;
 		log("Image ignored.", Logger::Info);
-
+		m_progressdialog->loadedImage(img->url(), Image::SaveResult::Ignored);
 		getAllImageOk(img, site_id);
 	}
 	else
 	{ getAllGetImage(img); }
 }
 
-void mainWindow::getAllImageOk(QSharedPointer<Image> img, int site_id, bool del)
+void mainWindow::getAllImageOk(QSharedPointer<Image> img, int site_id)
 {
 	m_progressdialog->setCurrentValue(m_progressdialog->currentValue() + 1);
 	m_progressdialog->setTotalValue(m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors);
@@ -1627,9 +1628,6 @@ void mainWindow::getAllImageOk(QSharedPointer<Image> img, int site_id, bool del)
 	m_downloadTime.remove(img->url());
 	m_downloadTimeLast.remove(img->url());
 	m_getAllDownloading.removeAll(img);
-
-	if (del)
-	{ m_progressdialog->loadedImage(img->url()); }
 
 	_getAll();
 }
@@ -1713,7 +1711,7 @@ void mainWindow::getAllPerformTags()
 		m_progressdialog->setCurrentValue(m_progressdialog->currentValue() + 1);
 		m_getAllExists++;
 		log(QString("File already exists: <a href=\"file:///%1\">%1</a>").arg(f.fileName()), Logger::Info);
-		m_progressdialog->loadedImage(img->url());
+		m_progressdialog->loadedImage(img->url(), Image::SaveResult::AlreadyExists);
 		if (site_id >= 0)
 		{
 			m_progressBars[site_id - 1]->setValue(m_progressBars[site_id - 1]->value()+1);
@@ -1779,7 +1777,6 @@ void mainWindow::getAllGetImageSaved(QSharedPointer<Image> img, QMap<QString, Im
 	m_getAllImageDownloaders.remove(img);
 
 	// Save error count to compare it later on
-	bool del = true;
 	bool diskError = false;
 	auto res = result.first();
 
@@ -1789,7 +1786,6 @@ void mainWindow::getAllGetImageSaved(QSharedPointer<Image> img, QMap<QString, Im
 		if (result[path] == Image::SaveResult::Error)
 		{
 			diskError = true;
-			m_getAllErrors++;
 			m_progressdialog->pause();
 
 			bool isDriveFull = false;
@@ -1808,28 +1804,21 @@ void mainWindow::getAllGetImageSaved(QSharedPointer<Image> img, QMap<QString, Im
 		}
 	}
 
-	if (res == Image::SaveResult::NotFound)
-	{ m_getAll404s++; }
-	else if (res == Image::SaveResult::NetworkError)
+	if (diskError || res == Image::SaveResult::NetworkError)
 	{ m_getAllErrors++; }
+	else if (res == Image::SaveResult::NotFound)
+	{ m_getAll404s++; }
 	else if (res == Image::SaveResult::AlreadyExists)
 	{ m_getAllExists++; }
 	else if (res == Image::SaveResult::Ignored)
 	{ m_getAllIgnored++; }
-	else if (!diskError)
-	{
-		m_getAllDownloaded++;
-		m_progressdialog->loadedImage(img->url());
-	}
 	else
-	{
-		m_progressdialog->errorImage(img->url());
-		m_getAllFailed.append(img);
-		del = false;
-	}
+	{ m_getAllDownloaded++; }
+
+	m_progressdialog->loadedImage(img->url(), res);
 
 	int site_id = m_progressdialog->batch(img->url());
-	getAllImageOk(img, site_id, del);
+	getAllImageOk(img, site_id);
 }
 
 void mainWindow::getAllCancel()

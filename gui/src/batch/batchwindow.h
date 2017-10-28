@@ -5,6 +5,7 @@
 #include <QProgressBar>
 #include <QMap>
 #include <QSettings>
+#include "loader/downloadable.h"
 #ifdef Q_OS_WIN
 	#include <QWinTaskbarButton>
 	#include <QWinTaskbarProgress>
@@ -52,8 +53,7 @@ class batchWindow : public QDialog
 		void loadingImage(QString);
 		void statusImage(QString, int);
 		void speedImage(QString, float);
-		void loadedImage(QString);
-		void errorImage(QString);
+		void loadedImage(QString url, Downloadable::SaveResult result);
 		void on_buttonDetails_clicked(bool visible);
 		void closeEvent(QCloseEvent *) override;
 		void copyToClipboard();

@@ -280,28 +280,43 @@ void batchWindow::sizeImage(QString url, float size)
 		ui->tableWidget->setItem(i, 3, new QTableWidgetItem(size != 0 ? QLocale::system().toString(size, 'f', size < 10 ? 2 : 0)+" "+unit : ""));
 	}
 }
-void batchWindow::loadedImage(QString url)
+void batchWindow::loadedImage(QString url, Downloadable::SaveResult result)
 {
+	// Update speed
 	m_speeds.remove(url);
 	drawSpeed();
 
+	// Update table
 	int i = indexOf(url);
 	if (i != -1)
 	{
-		ui->tableWidget->item(i, 0)->setIcon(QIcon(":/images/status/ok.png"));
 		ui->tableWidget->item(i, 4)->setText("");
-		ui->tableWidget->item(i, 5)->setText("100 %");
-	}
-}
-void batchWindow::errorImage(QString url)
-{
-	m_speeds.remove(url);
+		ui->tableWidget->item(i, 5)->setText("");
 
-	int i = indexOf(url);
-	if (i != -1)
-	{
-		ui->tableWidget->item(i, 0)->setIcon(QIcon(":/images/status/error.png"));
-		ui->tableWidget->item(i, 4)->setText("");
+		switch (result)
+		{
+			case Downloadable::SaveResult::AlreadyExists:
+			case Downloadable::SaveResult::Ignored:
+				ui->tableWidget->item(i, 0)->setIcon(QIcon(":/images/status/ignored.png"));
+				break;
+
+			case Downloadable::SaveResult::Error:
+			case Downloadable::SaveResult::NotFound:
+			case Downloadable::SaveResult::NetworkError:
+				ui->tableWidget->item(i, 0)->setIcon(QIcon(":/images/status/error.png"));
+				break;
+
+			case Downloadable::SaveResult::Moved:
+			case Downloadable::SaveResult::Copied:
+			case Downloadable::SaveResult::Saved:
+				ui->tableWidget->item(i, 0)->setIcon(QIcon(":/images/status/ok.png"));
+				ui->tableWidget->item(i, 5)->setText("100 %");
+				break;
+
+			default:
+				ui->tableWidget->item(i, 0)->setIcon(QIcon(":/images/status/unknown.png"));
+				break;
+		}
 	}
 }
 
