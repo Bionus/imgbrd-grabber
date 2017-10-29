@@ -1481,7 +1481,9 @@ void mainWindow::getAllImages()
 		log("Downloading images directly.", Logger::Info);
 
 	// We start the simultaneous downloads
-	for (int i = 0; i < qMax(1, qMin(m_settings->value("Save/simultaneous").toInt(), 10)); i++)
+	int count = qMax(1, qMin(m_settings->value("Save/simultaneous").toInt(), 10));
+	m_getAllCurrentlyProcessing = count;
+	for (int i = 0; i < count; i++)
 		_getAll();
 }
 
@@ -1591,7 +1593,7 @@ void mainWindow::_getAll()
 	}
 
 	// When the batch download finishes
-	else if (m_getAllDownloading.isEmpty() && m_getAll)
+	else if (--m_getAllCurrentlyProcessing == 0 && m_getAll)
 	{ getAllFinished(); }
 }
 
@@ -1857,6 +1859,7 @@ void mainWindow::getAllSkip()
 
 	m_getAllSkipped += count;
 	m_progressdialog->setTotalValue(m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors);
+	m_getAllCurrentlyProcessing = count;
 	for (int i = 0; i < count; ++i)
 		_getAll();
 

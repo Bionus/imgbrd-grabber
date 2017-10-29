@@ -12,6 +12,7 @@
 #include <QLinkedList>
 #include <QTableWidgetItem>
 #include <QProgressBar>
+#include <QAtomicInteger>
 #include "models/site.h"
 #include "models/image.h"
 #include "downloader/image-downloader.h"
@@ -206,6 +207,7 @@ class mainWindow : public QMainWindow
 		QList<Tag>				m_currentTags;
 		QLinkedList<QJsonObject>	m_closedTabs;
 		QNetworkAccessManager m_networkAccessManager;
+		QAtomicInteger<int> m_getAllCurrentlyProcessing;
 };
 
 #endif // MAINWINDOW_H
