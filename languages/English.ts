@@ -366,49 +366,49 @@
 <context>
     <name>Image</name>
     <message>
-        <location filename="../lib/src/models/image.cpp" line="542"/>
+        <location filename="../lib/src/models/image.cpp" line="543"/>
         <source>unknown type &quot;%1&quot; (available types: &quot;%2&quot;)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/src/models/image.cpp" line="591"/>
-        <location filename="../lib/src/models/image.cpp" line="603"/>
+        <location filename="../lib/src/models/image.cpp" line="592"/>
+        <location filename="../lib/src/models/image.cpp" line="604"/>
         <source>image&apos;s %1 does not match</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/src/models/image.cpp" line="593"/>
-        <location filename="../lib/src/models/image.cpp" line="605"/>
+        <location filename="../lib/src/models/image.cpp" line="594"/>
+        <location filename="../lib/src/models/image.cpp" line="606"/>
         <source>image&apos;s %1 match</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/src/models/image.cpp" line="621"/>
+        <location filename="../lib/src/models/image.cpp" line="622"/>
         <source>image is not &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/src/models/image.cpp" line="623"/>
+        <location filename="../lib/src/models/image.cpp" line="624"/>
         <source>image is &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/src/models/image.cpp" line="630"/>
+        <location filename="../lib/src/models/image.cpp" line="631"/>
         <source>image&apos;s source does not starts with &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/src/models/image.cpp" line="632"/>
+        <location filename="../lib/src/models/image.cpp" line="633"/>
         <source>image&apos;s source starts with &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/src/models/image.cpp" line="651"/>
+        <location filename="../lib/src/models/image.cpp" line="652"/>
         <source>image does not contains &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/src/models/image.cpp" line="653"/>
+        <location filename="../lib/src/models/image.cpp" line="654"/>
         <source>image contains &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -577,47 +577,47 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../lib/src/models/filename.cpp" line="40"/>
+        <location filename="../lib/src/models/filename.cpp" line="511"/>
         <source>MM-dd-yyyy HH.mm</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/src/models/filename.cpp" line="680"/>
+        <location filename="../lib/src/models/filename.cpp" line="621"/>
         <source>Filename must not be empty!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/src/models/filename.cpp" line="685"/>
+        <location filename="../lib/src/models/filename.cpp" line="626"/>
         <source>Can&apos;t validate Javascript expressions.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/src/models/filename.cpp" line="691"/>
+        <location filename="../lib/src/models/filename.cpp" line="632"/>
         <source>Your filename doesn&apos;t ends by an extension, symbolized by %ext%! You may not be able to open saved files.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/src/models/filename.cpp" line="695"/>
+        <location filename="../lib/src/models/filename.cpp" line="636"/>
         <source>Your filename is not unique to each image and an image may overwrite a previous one at saving! You should use%md5%, which is unique to each image, to avoid this inconvenience.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/src/models/filename.cpp" line="714"/>
+        <location filename="../lib/src/models/filename.cpp" line="655"/>
         <source>The %%1% token does not exist and will not be replaced.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/src/models/filename.cpp" line="721"/>
+        <location filename="../lib/src/models/filename.cpp" line="662"/>
         <source>Your format contains characters forbidden on Windows! Forbidden characters: * ? &quot; : &lt; &gt; |</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/src/models/filename.cpp" line="726"/>
+        <location filename="../lib/src/models/filename.cpp" line="667"/>
         <source>You have chosen to use the %id% token. Know that it is only unique for a selected site. The same ID can identify different images depending on the site.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/src/models/filename.cpp" line="729"/>
+        <location filename="../lib/src/models/filename.cpp" line="670"/>
         <source>Valid filename!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -630,17 +630,17 @@
 <context>
     <name>RenameExisting1</name>
     <message>
-        <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="51"/>
+        <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="53"/>
         <source>This folder does not exist.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="59"/>
+        <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="61"/>
         <source>If you want to get the MD5 from the filename, you have to include the %md5% token in it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="125"/>
+        <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="130"/>
         <source>You are about to download information from %n image(s). Are you sure you want to continue?</source>
         <translation>
             <numerusform>You are about to download information from %n image. Are you sure you want to continue?</numerusform>
@@ -649,7 +649,7 @@
     </message>
     <message>
         <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="14"/>
-        <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="125"/>
+        <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="130"/>
         <source>Rename existing images</source>
         <translation type="unfinished"></translation>
     </message>
@@ -696,6 +696,11 @@
     <message>
         <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="113"/>
         <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="125"/>
+        <source>Suffixes</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1553,99 +1558,99 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/batch/batchwindow.ui" line="56"/>
+        <location filename="../gui/src/batch/batchwindow.ui" line="185"/>
         <source>Details</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/batch/batchwindow.ui" line="82"/>
+        <location filename="../gui/src/batch/batchwindow.ui" line="211"/>
         <location filename="../gui/src/batch/batchwindow.cpp" line="84"/>
         <source>Pause</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/batch/batchwindow.ui" line="89"/>
+        <location filename="../gui/src/batch/batchwindow.ui" line="218"/>
         <source>Skip</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/batch/batchwindow.ui" line="96"/>
-        <location filename="../gui/src/batch/batchwindow.cpp" line="128"/>
+        <location filename="../gui/src/batch/batchwindow.ui" line="225"/>
+        <location filename="../gui/src/batch/batchwindow.cpp" line="118"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/batch/batchwindow.ui" line="156"/>
+        <location filename="../gui/src/batch/batchwindow.ui" line="84"/>
         <source>Batch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/batch/batchwindow.ui" line="161"/>
+        <location filename="../gui/src/batch/batchwindow.ui" line="89"/>
         <source>Url</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/batch/batchwindow.ui" line="166"/>
+        <location filename="../gui/src/batch/batchwindow.ui" line="94"/>
         <source>Filesize</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/batch/batchwindow.ui" line="171"/>
+        <location filename="../gui/src/batch/batchwindow.ui" line="99"/>
         <source>Speed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/batch/batchwindow.ui" line="176"/>
+        <location filename="../gui/src/batch/batchwindow.ui" line="104"/>
         <source>Progress</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/batch/batchwindow.ui" line="186"/>
+        <location filename="../gui/src/batch/batchwindow.ui" line="114"/>
         <source>Follow downloaded images</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/batch/batchwindow.ui" line="193"/>
+        <location filename="../gui/src/batch/batchwindow.ui" line="121"/>
         <source>Copy links to clipboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/batch/batchwindow.ui" line="204"/>
+        <location filename="../gui/src/batch/batchwindow.ui" line="132"/>
         <source>When the download is finished</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/batch/batchwindow.ui" line="212"/>
+        <location filename="../gui/src/batch/batchwindow.ui" line="140"/>
         <source>Do nothing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/batch/batchwindow.ui" line="217"/>
+        <location filename="../gui/src/batch/batchwindow.ui" line="145"/>
         <source>Close window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/batch/batchwindow.ui" line="222"/>
+        <location filename="../gui/src/batch/batchwindow.ui" line="150"/>
         <source>Open CD tray</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/batch/batchwindow.ui" line="227"/>
+        <location filename="../gui/src/batch/batchwindow.ui" line="155"/>
         <source>Open destination folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/batch/batchwindow.ui" line="232"/>
+        <location filename="../gui/src/batch/batchwindow.ui" line="160"/>
         <source>Play a sound</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/batch/batchwindow.ui" line="237"/>
+        <location filename="../gui/src/batch/batchwindow.ui" line="165"/>
         <source>Shutdown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/batch/batchwindow.ui" line="245"/>
+        <location filename="../gui/src/batch/batchwindow.ui" line="173"/>
         <source>Remove</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1660,30 +1665,30 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/batch/batchwindow.cpp" line="326"/>
-        <location filename="../gui/src/batch/batchwindow.cpp" line="327"/>
+        <location filename="../gui/src/batch/batchwindow.cpp" line="350"/>
+        <location filename="../gui/src/batch/batchwindow.cpp" line="351"/>
         <source>h &apos;h&apos; m &apos;m&apos; s &apos;s&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/batch/batchwindow.cpp" line="326"/>
-        <location filename="../gui/src/batch/batchwindow.cpp" line="327"/>
+        <location filename="../gui/src/batch/batchwindow.cpp" line="350"/>
+        <location filename="../gui/src/batch/batchwindow.cpp" line="351"/>
         <source>m &apos;m&apos; s &apos;s&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/batch/batchwindow.cpp" line="326"/>
-        <location filename="../gui/src/batch/batchwindow.cpp" line="327"/>
+        <location filename="../gui/src/batch/batchwindow.cpp" line="350"/>
+        <location filename="../gui/src/batch/batchwindow.cpp" line="351"/>
         <source>s &apos;s&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/batch/batchwindow.cpp" line="330"/>
+        <location filename="../gui/src/batch/batchwindow.cpp" line="354"/>
         <source>&lt;b&gt;Average speed:&lt;/b&gt; %1 %2&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Elapsed time:&lt;/b&gt; %3&lt;br/&gt;&lt;b&gt;Remaining time:&lt;/b&gt; %4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/batch/batchwindow.cpp" line="355"/>
+        <location filename="../gui/src/batch/batchwindow.cpp" line="387"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2110,112 +2115,112 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/mainwindow.cpp" line="634"/>
+        <location filename="../gui/src/mainwindow.cpp" line="635"/>
         <source>Groups (%1/%2)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/mainwindow.cpp" line="684"/>
+        <location filename="../gui/src/mainwindow.cpp" line="685"/>
         <source>Confirmation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/mainwindow.cpp" line="684"/>
+        <location filename="../gui/src/mainwindow.cpp" line="685"/>
         <source>Are you sure you want to clear your download list?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/mainwindow.cpp" line="812"/>
+        <location filename="../gui/src/mainwindow.cpp" line="813"/>
         <source>This source is not valid.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/mainwindow.cpp" line="821"/>
+        <location filename="../gui/src/mainwindow.cpp" line="822"/>
         <source>The image per page value must be greater or equal to 1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/mainwindow.cpp" line="831"/>
+        <location filename="../gui/src/mainwindow.cpp" line="832"/>
         <source>The image limit must be greater or equal to 0.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/mainwindow.cpp" line="906"/>
+        <location filename="../gui/src/mainwindow.cpp" line="902"/>
         <source>MM/dd/yyyy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/mainwindow.cpp" line="912"/>
+        <location filename="../gui/src/mainwindow.cpp" line="908"/>
         <source>&lt;b&gt;Name:&lt;/b&gt; %1&lt;br/&gt;&lt;b&gt;Note:&lt;/b&gt; %2 %%&lt;br/&gt;&lt;b&gt;Last view:&lt;/b&gt; %3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/mainwindow.cpp" line="998"/>
+        <location filename="../gui/src/mainwindow.cpp" line="994"/>
         <source>Are you sure you want to quit?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/mainwindow.cpp" line="1000"/>
+        <location filename="../gui/src/mainwindow.cpp" line="996"/>
         <source>Don&apos;t keep for later</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/mainwindow.cpp" line="1115"/>
+        <location filename="../gui/src/mainwindow.cpp" line="1111"/>
         <source>You did not specify a save folder!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/mainwindow.cpp" line="1120"/>
+        <location filename="../gui/src/mainwindow.cpp" line="1116"/>
         <source>You did not specify a filename!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/mainwindow.cpp" line="1237"/>
+        <location filename="../gui/src/mainwindow.cpp" line="1234"/>
         <source>Logging in, please wait...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/mainwindow.cpp" line="1356"/>
+        <location filename="../gui/src/mainwindow.cpp" line="1355"/>
         <source>Downloading pages, please wait...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/mainwindow.cpp" line="1421"/>
+        <location filename="../gui/src/mainwindow.cpp" line="1428"/>
         <source>Preparing images, please wait...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/mainwindow.cpp" line="1447"/>
+        <location filename="../gui/src/mainwindow.cpp" line="1451"/>
         <source>Downloading images...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/mainwindow.cpp" line="1798"/>
+        <location filename="../gui/src/mainwindow.cpp" line="1803"/>
         <source>Is seems that the destination directory is full.
 %1
 Please solve the issue before resuming the download.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/mainwindow.cpp" line="1801"/>
+        <location filename="../gui/src/mainwindow.cpp" line="1806"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/mainwindow.cpp" line="1800"/>
+        <location filename="../gui/src/mainwindow.cpp" line="1805"/>
         <source>An error occured saving the image.
 %1
 Please solve the issue before resuming the download.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/mainwindow.cpp" line="1891"/>
-        <location filename="../gui/src/mainwindow.cpp" line="1916"/>
+        <location filename="../gui/src/mainwindow.cpp" line="1902"/>
+        <location filename="../gui/src/mainwindow.cpp" line="1931"/>
         <source>Getting images</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/src/mainwindow.cpp" line="1893"/>
+        <location filename="../gui/src/mainwindow.cpp" line="1933"/>
         <source>%n file(s) downloaded successfully.</source>
         <translation>
             <numerusform>%n file downloaded successfully.</numerusform>
@@ -2223,7 +2228,7 @@ Please solve the issue before resuming the download.</source>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/src/mainwindow.cpp" line="1894"/>
+        <location filename="../gui/src/mainwindow.cpp" line="1934"/>
         <source>%n file(s) ignored.</source>
         <translation>
             <numerusform>%n file ignored.</numerusform>
@@ -2231,7 +2236,7 @@ Please solve the issue before resuming the download.</source>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/src/mainwindow.cpp" line="1895"/>
+        <location filename="../gui/src/mainwindow.cpp" line="1935"/>
         <source>%n file(s) already existing.</source>
         <translation>
             <numerusform>%n file already existing.</numerusform>
@@ -2239,7 +2244,7 @@ Please solve the issue before resuming the download.</source>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/src/mainwindow.cpp" line="1896"/>
+        <location filename="../gui/src/mainwindow.cpp" line="1936"/>
         <source>%n file(s) not found on the server.</source>
         <translation>
             <numerusform>%n file not found on the server.</numerusform>
@@ -2247,7 +2252,7 @@ Please solve the issue before resuming the download.</source>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/src/mainwindow.cpp" line="1897"/>
+        <location filename="../gui/src/mainwindow.cpp" line="1937"/>
         <source>%n file(s) skipped.</source>
         <translation>
             <numerusform>%n file skipped.</numerusform>
@@ -2255,7 +2260,7 @@ Please solve the issue before resuming the download.</source>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/src/mainwindow.cpp" line="1898"/>
+        <location filename="../gui/src/mainwindow.cpp" line="1938"/>
         <source>%n error(s).</source>
         <translation>
             <numerusform>%n error.</numerusform>
@@ -2263,48 +2268,48 @@ Please solve the issue before resuming the download.</source>
         </translation>
     </message>
     <message>
-        <location filename="../gui/src/mainwindow.cpp" line="1916"/>
+        <location filename="../gui/src/mainwindow.cpp" line="1902"/>
         <source>Errors occured during the images download. Do you want to restart the download of those images? (%1/%2)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/mainwindow.cpp" line="2026"/>
-        <location filename="../gui/src/mainwindow.cpp" line="2034"/>
+        <location filename="../gui/src/mainwindow.cpp" line="2028"/>
         <location filename="../gui/src/mainwindow.cpp" line="2036"/>
+        <location filename="../gui/src/mainwindow.cpp" line="2038"/>
         <source>Save link list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/mainwindow.cpp" line="2026"/>
-        <location filename="../gui/src/mainwindow.cpp" line="2045"/>
+        <location filename="../gui/src/mainwindow.cpp" line="2028"/>
+        <location filename="../gui/src/mainwindow.cpp" line="2047"/>
         <source>Imageboard-Grabber links (*.igl)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/mainwindow.cpp" line="2034"/>
+        <location filename="../gui/src/mainwindow.cpp" line="2036"/>
         <source>Link list saved successfully!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/mainwindow.cpp" line="2036"/>
-        <location filename="../gui/src/mainwindow.cpp" line="2052"/>
+        <location filename="../gui/src/mainwindow.cpp" line="2038"/>
+        <location filename="../gui/src/mainwindow.cpp" line="2054"/>
         <source>Error opening file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/mainwindow.cpp" line="2045"/>
-        <location filename="../gui/src/mainwindow.cpp" line="2050"/>
+        <location filename="../gui/src/mainwindow.cpp" line="2047"/>
         <location filename="../gui/src/mainwindow.cpp" line="2052"/>
+        <location filename="../gui/src/mainwindow.cpp" line="2054"/>
         <source>Load link list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/mainwindow.cpp" line="2050"/>
+        <location filename="../gui/src/mainwindow.cpp" line="2052"/>
         <source>Link list loaded successfully!</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/src/mainwindow.cpp" line="2062"/>
+        <location filename="../gui/src/mainwindow.cpp" line="2064"/>
         <source>Loading %n download(s)</source>
         <translation>
             <numerusform>Loading %n download</numerusform>
@@ -2312,7 +2317,7 @@ Please solve the issue before resuming the download.</source>
         </translation>
     </message>
     <message>
-        <location filename="../gui/src/mainwindow.cpp" line="2122"/>
+        <location filename="../gui/src/mainwindow.cpp" line="2124"/>
         <source>Choose a save folder</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2660,17 +2665,17 @@ Please solve the issue before resuming the download.</source>
 <context>
     <name>md5Fix</name>
     <message>
-        <location filename="../gui/src/utils/md5-fix/md5-fix.cpp" line="45"/>
+        <location filename="../gui/src/utils/md5-fix/md5-fix.cpp" line="46"/>
         <source>This folder does not exist.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/utils/md5-fix/md5-fix.cpp" line="53"/>
+        <location filename="../gui/src/utils/md5-fix/md5-fix.cpp" line="54"/>
         <source>If you want to get the MD5 from the filename, you have to include the %md5% token in it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/src/utils/md5-fix/md5-fix.cpp" line="130"/>
+        <location filename="../gui/src/utils/md5-fix/md5-fix.cpp" line="128"/>
         <source>%n MD5(s) loaded</source>
         <translation>
             <numerusform>%n MD5 loaded</numerusform>
@@ -2678,7 +2683,7 @@ Please solve the issue before resuming the download.</source>
         </translation>
     </message>
     <message>
-        <location filename="../gui/src/utils/md5-fix/md5-fix.cpp" line="130"/>
+        <location filename="../gui/src/utils/md5-fix/md5-fix.cpp" line="128"/>
         <source>Finished</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2725,6 +2730,11 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../gui/src/utils/md5-fix/md5-fix.ui" line="106"/>
         <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/src/utils/md5-fix/md5-fix.ui" line="115"/>
+        <source>Suffixes</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4003,28 +4013,49 @@ Please solve the issue before resuming the download.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/sources/sourceswindow.ui" line="107"/>
+        <location filename="../gui/src/sources/sourceswindow.ui" line="105"/>
+        <source>...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/src/sources/sourceswindow.ui" line="180"/>
         <source>Add</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/sources/sourceswindow.ui" line="127"/>
+        <location filename="../gui/src/sources/sourceswindow.ui" line="200"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/sources/sourceswindow.ui" line="134"/>
+        <location filename="../gui/src/sources/sourceswindow.ui" line="207"/>
         <source>Ok</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/sources/sourceswindow.cpp" line="237"/>
+        <location filename="../gui/src/sources/sourceswindow.cpp" line="249"/>
         <source>Options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/sources/sourceswindow.cpp" line="300"/>
+        <location filename="../gui/src/sources/sourceswindow.cpp" line="312"/>
         <source>An update for this source is available.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/src/sources/sourceswindow.cpp" line="361"/>
+        <source>Create a new preset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/src/sources/sourceswindow.cpp" line="361"/>
+        <location filename="../gui/src/sources/sourceswindow.cpp" line="383"/>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/src/sources/sourceswindow.cpp" line="383"/>
+        <source>Edit preset</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4168,14 +4199,14 @@ Please solve the issue before resuming the download.</source>
     <name>zoomWindow</name>
     <message>
         <location filename="../gui/src/viewer/zoomwindow.ui" line="23"/>
-        <location filename="../gui/src/viewer/zoomwindow.cpp" line="1152"/>
-        <location filename="../gui/src/viewer/zoomwindow.cpp" line="1154"/>
+        <location filename="../gui/src/viewer/zoomwindow.cpp" line="1156"/>
+        <location filename="../gui/src/viewer/zoomwindow.cpp" line="1158"/>
         <source>Image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/src/viewer/zoomwindow.ui" line="147"/>
-        <location filename="../gui/src/viewer/zoomwindow.cpp" line="525"/>
+        <location filename="../gui/src/viewer/zoomwindow.cpp" line="527"/>
         <source>Save</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4186,7 +4217,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
         <location filename="../gui/src/viewer/zoomwindow.ui" line="161"/>
-        <location filename="../gui/src/viewer/zoomwindow.cpp" line="564"/>
+        <location filename="../gui/src/viewer/zoomwindow.cpp" line="566"/>
         <source>Save and close</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4202,13 +4233,13 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
         <location filename="../gui/src/viewer/zoomwindow.ui" line="219"/>
-        <location filename="../gui/src/viewer/zoomwindow.cpp" line="525"/>
+        <location filename="../gui/src/viewer/zoomwindow.cpp" line="527"/>
         <source>Save (fav)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/src/viewer/zoomwindow.ui" line="226"/>
-        <location filename="../gui/src/viewer/zoomwindow.cpp" line="564"/>
+        <location filename="../gui/src/viewer/zoomwindow.cpp" line="566"/>
         <source>Save and close (fav)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4244,122 +4275,122 @@ Please solve the issue before resuming the download.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/viewer/zoomwindow.cpp" line="533"/>
+        <location filename="../gui/src/viewer/zoomwindow.cpp" line="535"/>
         <source>Saved! (fav)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/viewer/zoomwindow.cpp" line="533"/>
+        <location filename="../gui/src/viewer/zoomwindow.cpp" line="535"/>
         <source>Saved!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/viewer/zoomwindow.cpp" line="546"/>
+        <location filename="../gui/src/viewer/zoomwindow.cpp" line="548"/>
         <source>MD5 already exists (fav)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/viewer/zoomwindow.cpp" line="546"/>
+        <location filename="../gui/src/viewer/zoomwindow.cpp" line="548"/>
         <source>MD5 already exists</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/viewer/zoomwindow.cpp" line="551"/>
+        <location filename="../gui/src/viewer/zoomwindow.cpp" line="553"/>
         <source>Already exists (fav)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/viewer/zoomwindow.cpp" line="551"/>
+        <location filename="../gui/src/viewer/zoomwindow.cpp" line="553"/>
         <source>Already exists</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/viewer/zoomwindow.cpp" line="555"/>
+        <location filename="../gui/src/viewer/zoomwindow.cpp" line="557"/>
         <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/viewer/zoomwindow.cpp" line="572"/>
+        <location filename="../gui/src/viewer/zoomwindow.cpp" line="574"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/viewer/zoomwindow.cpp" line="555"/>
+        <location filename="../gui/src/viewer/zoomwindow.cpp" line="557"/>
         <source>Delete (fav)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/viewer/zoomwindow.cpp" line="572"/>
+        <location filename="../gui/src/viewer/zoomwindow.cpp" line="574"/>
         <source>Close (fav)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/viewer/zoomwindow.cpp" line="600"/>
+        <location filename="../gui/src/viewer/zoomwindow.cpp" line="602"/>
         <source>File is too big to be displayed.
 %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/viewer/zoomwindow.cpp" line="607"/>
+        <location filename="../gui/src/viewer/zoomwindow.cpp" line="609"/>
         <source>An unexpected error occured loading the image (%1 - %2).
 %3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/viewer/zoomwindow.cpp" line="529"/>
-        <location filename="../gui/src/viewer/zoomwindow.cpp" line="568"/>
+        <location filename="../gui/src/viewer/zoomwindow.cpp" line="531"/>
+        <location filename="../gui/src/viewer/zoomwindow.cpp" line="570"/>
         <source>Saving...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/viewer/zoomwindow.cpp" line="529"/>
-        <location filename="../gui/src/viewer/zoomwindow.cpp" line="568"/>
+        <location filename="../gui/src/viewer/zoomwindow.cpp" line="531"/>
+        <location filename="../gui/src/viewer/zoomwindow.cpp" line="570"/>
         <source>Saving... (fav)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/viewer/zoomwindow.cpp" line="837"/>
-        <location filename="../gui/src/viewer/zoomwindow.cpp" line="839"/>
+        <location filename="../gui/src/viewer/zoomwindow.cpp" line="840"/>
+        <location filename="../gui/src/viewer/zoomwindow.cpp" line="842"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/viewer/zoomwindow.cpp" line="837"/>
+        <location filename="../gui/src/viewer/zoomwindow.cpp" line="840"/>
         <source>You did not specified a save folder! Do you want to open the options window?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/viewer/zoomwindow.cpp" line="839"/>
+        <location filename="../gui/src/viewer/zoomwindow.cpp" line="842"/>
         <source>You did not specified a save format! Do you want to open the options window?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/viewer/zoomwindow.cpp" line="884"/>
+        <location filename="../gui/src/viewer/zoomwindow.cpp" line="887"/>
         <source>Error saving image.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/viewer/zoomwindow.cpp" line="537"/>
+        <location filename="../gui/src/viewer/zoomwindow.cpp" line="539"/>
         <source>Copied! (fav)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/viewer/zoomwindow.cpp" line="537"/>
+        <location filename="../gui/src/viewer/zoomwindow.cpp" line="539"/>
         <source>Copied!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/viewer/zoomwindow.cpp" line="541"/>
+        <location filename="../gui/src/viewer/zoomwindow.cpp" line="543"/>
         <source>Moved! (fav)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/viewer/zoomwindow.cpp" line="541"/>
+        <location filename="../gui/src/viewer/zoomwindow.cpp" line="543"/>
         <source>Moved!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/src/viewer/zoomwindow.cpp" line="906"/>
+        <location filename="../gui/src/viewer/zoomwindow.cpp" line="909"/>
         <source>Save image</source>
         <translation type="unfinished"></translation>
     </message>
