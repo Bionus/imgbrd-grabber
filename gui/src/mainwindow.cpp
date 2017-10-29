@@ -1132,6 +1132,7 @@ void mainWindow::getAll(bool all)
 	m_getAllDownloaded = 0;
 	m_getAllExists = 0;
 	m_getAllIgnored = 0;
+	m_getAllIgnoredPre = 0;
 	m_getAll404s = 0;
 	m_getAllErrors = 0;
 	m_getAllSkipped = 0;
@@ -1392,7 +1393,7 @@ void mainWindow::getAllFinishedImages(QList<QSharedPointer<Image>> images)
 	auto *downloader = (Downloader*)QObject::sender();
 	m_downloaders.removeAll(downloader);
 	m_downloadersDone.append(downloader);
-	m_getAllIgnored += downloader->ignoredCount();
+	m_getAllIgnoredPre += downloader->ignoredCount();
 
 	m_getAllRemaining.append(images);
 
@@ -1914,6 +1915,7 @@ void mainWindow::getAllFinished()
 			m_getAllDownloaded = 0;
 			m_getAllExists = 0;
 			m_getAllIgnored = 0;
+			m_getAllIgnoredPre = 0;
 			m_getAll404s = 0;
 			m_getAllErrors = 0;
 			m_getAllSkipped = 0;
@@ -1929,7 +1931,7 @@ void mainWindow::getAllFinished()
 		tr("Getting images"),
 		QString(
 			tr("%n file(s) downloaded successfully.", "", m_getAllDownloaded)+"\r\n"+
-			tr("%n file(s) ignored.", "", m_getAllIgnored)+"\r\n"+
+			tr("%n file(s) ignored.", "", m_getAllIgnored + m_getAllIgnoredPre)+"\r\n"+
 			tr("%n file(s) already existing.", "", m_getAllExists)+"\r\n"+
 			tr("%n file(s) not found on the server.", "", m_getAll404s)+"\r\n"+
 			tr("%n file(s) skipped.", "", m_getAllSkipped)+"\r\n"+

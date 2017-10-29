@@ -177,7 +177,7 @@ class mainWindow : public QMainWindow
 	private:
 		Profile				*m_profile;
 		QList<Favorite>		&m_favorites;
-		int					m_getAllDownloaded, m_getAllExists, m_getAllIgnored, m_getAll404s, m_getAllErrors, m_getAllSkipped, m_getAllLimit, m_downloads, m_waitForLogin;
+		int					m_getAllDownloaded, m_getAllExists, m_getAllIgnored, m_getAllIgnoredPre, m_getAll404s, m_getAllErrors, m_getAllSkipped, m_getAllLimit, m_downloads, m_waitForLogin;
 		bool				m_allow, m_mustGetTags, m_loaded, m_getAll;
 		int					m_forcedTab;
 		QSettings			*m_settings;
