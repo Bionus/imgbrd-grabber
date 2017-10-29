@@ -12,6 +12,7 @@
 #include <QLinkedList>
 #include <QTableWidgetItem>
 #include <QProgressBar>
+#include <QAtomicInteger>
 #include "models/site.h"
 #include "models/image.h"
 #include "downloader/image-downloader.h"
@@ -40,7 +41,7 @@ class mainWindow : public QMainWindow
 
 	public:
 		explicit mainWindow(Profile *profile);
-		~mainWindow();
+		~mainWindow() override;
 		Ui::mainWindow *ui;
 
 	public slots:
@@ -64,7 +65,7 @@ class mainWindow : public QMainWindow
 		void utilTagLoader();
 		// Language
 		void loadLanguage(const QString&, bool shutup = false);
-		void changeEvent(QEvent*);
+		void changeEvent(QEvent*) override;
 		// Favorites
 		void updateFavorites();
 		void updateKeepForLater();
@@ -124,8 +125,8 @@ class mainWindow : public QMainWindow
 		void restoreLastClosedTab();
 		void currentTabChanged(int);
 		void closeCurrentTab();
-		bool saveTabs(QString);
-		bool loadTabs(QString);
+		bool saveTabs(const QString &filename);
+		bool loadTabs(const QString &filename);
 		void updateTabs();
 		void focusSearch();
 		void tabNext();
@@ -139,10 +140,10 @@ class mainWindow : public QMainWindow
 		void contextMenu();
 		void openInNewTab();
 		// Others
-		void closeEvent(QCloseEvent*);
+		void closeEvent(QCloseEvent*) override;
 		void onFirstLoad();
-		void init(QStringList args, QMap<QString,QString> params);
-		void parseArgs(QStringList args, QMap<QString,QString> params);
+		void init(const QStringList &args, const QMap<QString, QString> &params);
+		void parseArgs(const QStringList &args, const QMap<QString, QString> &params);
 		void on_buttonSaveLinkList_clicked();
 		void on_buttonLoadLinkList_clicked();
 		bool saveLinkList(QString filename);
@@ -161,13 +162,13 @@ class mainWindow : public QMainWindow
 		void setWiki(QString);
 
 		// Drag & drop
-		void dragEnterEvent(QDragEnterEvent *event);
-		void dropEvent(QDropEvent* event);
+		void dragEnterEvent(QDragEnterEvent *event) override;
+		void dropEvent(QDropEvent* event) override;
 
 	protected:
 		int getRowForSite(int site_id);
 		void getAllGetImageIfNotBlacklisted(QSharedPointer<Image> img, int site_id);
-		void getAllImageOk(QSharedPointer<Image> img, int site_id, bool del = true);
+		void getAllImageOk(QSharedPointer<Image> img, int site_id);
 		QList<Site*> getSelectedSites();
 		Site* getSelectedSiteOrDefault();
 		void initialLoginsDone();
@@ -176,7 +177,7 @@ class mainWindow : public QMainWindow
 	private:
 		Profile				*m_profile;
 		QList<Favorite>		&m_favorites;
-		int					m_getAllDownloaded, m_getAllExists, m_getAllIgnored, m_getAll404s, m_getAllErrors, m_getAllSkipped, m_getAllLimit, m_downloads, m_waitForLogin;
+		int					m_getAllDownloaded, m_getAllExists, m_getAllIgnored, m_getAllIgnoredPre, m_getAll404s, m_getAllErrors, m_getAllSkipped, m_getAllLimit, m_downloads, m_waitForLogin;
 		bool				m_allow, m_mustGetTags, m_loaded, m_getAll;
 		int					m_forcedTab;
 		QSettings			*m_settings;
@@ -190,7 +191,7 @@ class mainWindow : public QMainWindow
 		QList<searchTab*>	m_tabs, m_tabsWaitingForPreload;
 		QList<bool>			m_selectedSources;
 		favoritesTab		*m_favoritesTab;
-		QMap<QString,QTime*>			m_downloadTime, m_downloadTimeLast;
+		QMap<QString, QTime>			m_downloadTime, m_downloadTimeLast;
 		QList<QProgressBar*>			m_progressBars;
 		QList<DownloadQueryImage>		m_batchs;
 		QMap<int, DownloadQueryGroup>	m_batchPending;
@@ -199,13 +200,14 @@ class mainWindow : public QMainWindow
 		QList<Downloader*>  m_downloaders, m_downloadersDone;
 		QQueue<Downloader*>	m_waitingDownloaders;
 		QList<Site*>		m_getAllLogins;
-		int					m_batchAutomaticRetries, m_getAllImagesCount;
+		int					m_batchAutomaticRetries, m_getAllImagesCount, m_batchCurrentPackSize;
 		bool				m_restore, m_showLog;
 		QMap<QString, QIcon>	m_icons;
 		QMap<QString, Site*>	m_sites;
 		QList<Tag>				m_currentTags;
 		QLinkedList<QJsonObject>	m_closedTabs;
 		QNetworkAccessManager m_networkAccessManager;
+		QAtomicInteger<int> m_getAllCurrentlyProcessing;
 };
 
 #endif // MAINWINDOW_H

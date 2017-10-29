@@ -15,7 +15,7 @@ class ProgramUpdater : public Updater
 		QUrl latestUrl() const;
 
 	public slots:
-		void checkForUpdates();
+		void checkForUpdates() override;
 		void downloadUpdate();
 
 	private slots:

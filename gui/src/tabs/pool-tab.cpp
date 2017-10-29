@@ -19,6 +19,7 @@ poolTab::poolTab(QMap<QString, Site*> *sites, Profile *profile, mainWindow *pare
 	// UI members for SearchTab class
 	ui_checkMergeResults = nullptr;
 	ui_progressMergeResults = nullptr;
+	ui_stackedMergeResults = nullptr;
 	ui_spinPage = ui->spinPage;
 	ui_spinImagesPerPage = ui->spinImagesPerPage;
 	ui_spinColumns = ui->spinColumns;
@@ -39,7 +40,7 @@ poolTab::poolTab(QMap<QString, Site*> *sites, Profile *profile, mainWindow *pare
 	ui_scrollAreaResults = ui->scrollAreaResults;
 
 	QStringList sources = m_sites->keys();
-	for (QString source : sources)
+	for (const QString &source : sources)
 	{ ui->comboSites->addItem(source); }
 
 	// Search field
@@ -139,12 +140,12 @@ void poolTab::getPage()
 	Page *page = m_pages[ui->comboSites->currentText()].first();
 
 	bool unloaded = m_settings->value("getunloadedpages", false).toBool();
-	int perpage = unloaded ? ui->spinImagesPerPage->value() : page->images().count();
+	int perPage = unloaded ? ui->spinImagesPerPage->value() : page->images().count();
 	QString tags = "pool:"+QString::number(ui->spinPool->value())+" "+m_search->toPlainText()+" "+m_settings->value("add").toString().trimmed();
 	QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
 	Site *site = m_sites->value(ui->comboSites->currentText());
 
-	emit batchAddGroup(DownloadQueryGroup(m_settings, tags, ui->spinPage->value(), perpage, perpage, postFiltering, site));
+	emit batchAddGroup(DownloadQueryGroup(m_settings, tags, ui->spinPage->value(), perPage, perPage, postFiltering, site));
 }
 void poolTab::getAll()
 {
@@ -198,7 +199,7 @@ QString poolTab::tags() const
 
 void poolTab::changeEvent(QEvent *event)
 {
-	// Automatically retranslate this tab on language change
+	// Automatically re-translate this tab on language change
 	if (event->type() == QEvent::LanguageChange)
 	{
 		ui->retranslateUi(this);

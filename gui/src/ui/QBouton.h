@@ -10,20 +10,20 @@ class QBouton : public QPushButton
 	Q_OBJECT
 
 	public:
-		QBouton(QVariant id = 0, bool resizeInsteadOfCropping = false, bool smartSizeHint = false, int border = 0, QColor color = QColor(), QWidget *parent = Q_NULLPTR);
+		explicit QBouton(QVariant id = 0, bool resizeInsteadOfCropping = false, bool smartSizeHint = false, int border = 0, QColor color = QColor(), QWidget *parent = Q_NULLPTR);
 		QVariant id();
-		void mousePressEvent(QMouseEvent *event);
-		virtual QSize sizeHint() const;
-		virtual void resizeEvent(QResizeEvent *event);
+		void mousePressEvent(QMouseEvent *event) override;
+		QSize sizeHint() const override;
+		void resizeEvent(QResizeEvent *event) override;
 
 	private:
 		QSize getIconSize(int regionWidth, int regionHeight, bool wOnly = false) const;
 
 	public slots:
-		void setId(QVariant);
+		void setId(const QVariant &id);
 		void setProgress(qint64 current, qint64 max);
 		void scale(const QPixmap &image, float scale);
-		void paintEvent(QPaintEvent *event);
+		void paintEvent(QPaintEvent *event) override;
 
 	signals:
 		void appui(QVariant);
@@ -45,6 +45,7 @@ class QBouton : public QPushButton
 		bool m_smartSizeHint;
 		QColor m_penColor;
 		int m_border;
+		bool m_center;
 		qint64 m_progress;
 		qint64 m_progressMax;
 };

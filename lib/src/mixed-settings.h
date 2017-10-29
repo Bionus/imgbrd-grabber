@@ -12,7 +12,7 @@ class MixedSettings : public QObject
 
 	public:
 		explicit MixedSettings(QList<QSettings*> settings);
-		~MixedSettings();
+		~MixedSettings() override;
 
 		QVariant value(const QString &key, const QVariant &defaultValue = QVariant()) const;
 		void setValue(const QString &key, const QVariant &value, const QVariant &defaultValue = QVariant());

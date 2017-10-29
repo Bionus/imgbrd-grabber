@@ -118,11 +118,11 @@ void favoritesTab::updateFavorites()
 
 	QString display = m_settings->value("favorites_display", "ind").toString();
 	float upscale = m_settings->value("thumbnailUpscale", 1.0f).toFloat();
-	for (Favorite fav : m_favorites)
+	for (const Favorite &fav : m_favorites)
 	{
 		QString xt = tr("<b>Name:</b> %1<br/><b>Note:</b> %2 %%<br/><b>Last view:</b> %3").arg(fav.getName(), QString::number(fav.getNote()), fav.getLastViewed().toString(format));
 		QWidget *w = new QWidget(ui->scrollAreaWidgetContents);
-		QVBoxLayout *l = new QVBoxLayout(w);
+		auto *l = new QVBoxLayout(w);
 
 		if (display.contains("i"))
 		{
@@ -162,7 +162,7 @@ void favoritesTab::load()
 	loadTags(m_currentTags.trimmed().split(' ', QString::SkipEmptyParts));
 }
 
-bool favoritesTab::validateImage(QSharedPointer<Image> img, QString &error)
+bool favoritesTab::validateImage(const QSharedPointer<Image> &img, QString &error)
 {
 	return (img->createdAt() > m_loadFavorite || img->createdAt().isNull()) && searchTab::validateImage(img, error);
 }
@@ -282,7 +282,7 @@ void favoritesTab::viewed()
 		int reponse = QMessageBox::question(this, tr("Mark as viewed"), tr("Are you sure you want to mark all your favorites as viewed?"), QMessageBox::Yes | QMessageBox::No);
 		if (reponse == QMessageBox::Yes)
 		{
-			for (Favorite fav : m_favorites)
+			for (const Favorite &fav : m_favorites)
 			{ setFavoriteViewed(fav.getName()); }
 		}
 	}

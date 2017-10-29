@@ -103,15 +103,32 @@ void batchWindow::cancel()
 }
 bool batchWindow::cancelled()
 { return m_cancel; }
+
 void batchWindow::clear()
 {
 	m_cancel = false;
 	m_paused = false;
 
-	m_items = 0;
-	m_value = 0;
 	m_imagesCount = 0;
 	m_images = 0;
+
+	ui->progressTotal->setValue(0);
+	ui->progressTotal->setMaximum(100);
+	ui->labelImages->setText("0/0");
+	ui->cancelButton->setText(tr("Cancel"));
+
+	#ifdef Q_OS_WIN
+		m_taskBarProgress->setMinimum(0);
+		m_taskBarProgress->setMaximum(0);
+		m_taskBarProgress->setValue(0);
+		m_taskBarProgress->setVisible(true);
+	#endif
+
+	clearImages();
+}
+void batchWindow::clearImages()
+{
+	m_items = 0;
 	m_maxSpeeds = 0;
 	m_lastDownloading = 0;
 
@@ -121,25 +138,17 @@ void batchWindow::clear()
 	ui->tableWidget->clearContents();
 	ui->tableWidget->setRowCount(0);
 	ui->labelMessage->setText("");
-	ui->progressBar->setValue(0);
-	ui->progressBar->setMaximum(100);
-	ui->labelImages->setText("0/0");
+	ui->progressCurrent->setValue(0);
+	ui->progressCurrent->setMaximum(100);
 	ui->labelSpeed->setText("");
-	ui->cancelButton->setText(tr("Cancel"));
 
 	qDeleteAll(m_progressBars);
 	m_progressBars.clear();
 	m_speeds.clear();
 	m_urls.clear();
 	m_mean.clear();
-
-	#ifdef Q_OS_WIN
-		m_taskBarProgress->setMinimum(0);
-		m_taskBarProgress->setMaximum(0);
-		m_taskBarProgress->setValue(0);
-		m_taskBarProgress->setVisible(true);
-	#endif
 }
+
 void batchWindow::copyToClipboard()
 {
 	QList<QTableWidgetItem *> selected = ui->tableWidget->selectedItems();
@@ -176,10 +185,12 @@ void batchWindow::addImage(QString url, int batch, float size)
 	ui->tableWidget->setItem(m_items, 3, new QTableWidgetItem(size != 0 ? QLocale::system().toString(size, 'f', size < 10 ? 2 : 0)+" "+unit : ""));
 	ui->tableWidget->setItem(m_items, 4, new QTableWidgetItem());
 	ui->tableWidget->setItem(m_items, 5, new QTableWidgetItem("0 %"));
-	/* QProgressBar *prog = new QProgressBar(this);
-	prog->setTextVisible(false);
-	m_progressBars.append(prog);
-	ui->tableWidget->setCellWidget(m_items, 5, prog); */
+
+	/* auto *progressBar = new QProgressBar(this);
+	progressBar->setTextVisible(false);
+	m_progressBars.append(progressBar);
+	ui->tableWidget->setCellWidget(m_items, 5, progressBar); */
+
 	m_items++;
 }
 void batchWindow::updateColumns()
@@ -199,7 +210,7 @@ void batchWindow::updateColumns()
 int batchWindow::indexOf(QString url)
 {
 	int i = m_urls.indexOf(url);
-	if (i < 0 || ui->tableWidget->item(i, 1) == NULL)
+	if (i < 0 || ui->tableWidget->item(i, 1) == Q_NULLPTR)
 		return -1;
 	return i;
 }
@@ -269,28 +280,43 @@ void batchWindow::sizeImage(QString url, float size)
 		ui->tableWidget->setItem(i, 3, new QTableWidgetItem(size != 0 ? QLocale::system().toString(size, 'f', size < 10 ? 2 : 0)+" "+unit : ""));
 	}
 }
-void batchWindow::loadedImage(QString url)
+void batchWindow::loadedImage(QString url, Downloadable::SaveResult result)
 {
+	// Update speed
 	m_speeds.remove(url);
 	drawSpeed();
 
+	// Update table
 	int i = indexOf(url);
 	if (i != -1)
 	{
-		ui->tableWidget->item(i, 0)->setIcon(QIcon(":/images/status/ok.png"));
 		ui->tableWidget->item(i, 4)->setText("");
-		ui->tableWidget->item(i, 5)->setText("100 %");
-	}
-}
-void batchWindow::errorImage(QString url)
-{
-	m_speeds.remove(url);
+		ui->tableWidget->item(i, 5)->setText("");
 
-	int i = indexOf(url);
-	if (i != -1)
-	{
-		ui->tableWidget->item(i, 0)->setIcon(QIcon(":/images/status/error.png"));
-		ui->tableWidget->item(i, 4)->setText("");
+		switch (result)
+		{
+			case Downloadable::SaveResult::AlreadyExists:
+			case Downloadable::SaveResult::Ignored:
+				ui->tableWidget->item(i, 0)->setIcon(QIcon(":/images/status/ignored.png"));
+				break;
+
+			case Downloadable::SaveResult::Error:
+			case Downloadable::SaveResult::NotFound:
+			case Downloadable::SaveResult::NetworkError:
+				ui->tableWidget->item(i, 0)->setIcon(QIcon(":/images/status/error.png"));
+				break;
+
+			case Downloadable::SaveResult::Moved:
+			case Downloadable::SaveResult::Copied:
+			case Downloadable::SaveResult::Saved:
+				ui->tableWidget->item(i, 0)->setIcon(QIcon(":/images/status/ok.png"));
+				ui->tableWidget->item(i, 5)->setText("100 %");
+				break;
+
+			default:
+				ui->tableWidget->item(i, 0)->setIcon(QIcon(":/images/status/unknown.png"));
+				break;
+		}
 	}
 }
 
@@ -345,48 +371,45 @@ void batchWindow::on_buttonDetails_clicked(bool visible)
 
 void batchWindow::setText(QString text)
 { ui->labelMessage->setText(text); }
-void batchWindow::setValue(int value)
+
+void batchWindow::setCurrentValue(int val)
+{ ui->progressCurrent->setValue(val); }
+void batchWindow::setCurrentMax(int max)
+{ ui->progressCurrent->setMaximum(max); }
+
+void batchWindow::setTotalValue(int val)
 {
-	m_value = value;
-	ui->progressBar->setValue(m_value);
-	if (ui->progressBar->maximum() <= m_value)
+	m_images = val;
+	ui->labelImages->setText(QString("%1/%2").arg(m_images).arg(m_imagesCount));
+	ui->progressTotal->setValue(val);
+
+	if (val >= m_imagesCount)
 	{ ui->cancelButton->setText(tr("Close")); }
 
 	#ifdef Q_OS_WIN
-		m_taskBarProgress->setValue(value);
+		m_taskBarProgress->setValue(val);
 	#endif
 }
-void batchWindow::setLittleValue(int)
-{ /*ui->progressBar->setValue(m_value + value);*/ }
-void batchWindow::setMaximum(int value)
+void batchWindow::setTotalMax(int max)
 {
-	ui->progressBar->setMaximum(value);
+	m_imagesCount = max;
+	ui->labelImages->setText(QString("0/%2").arg(max));
+	ui->progressTotal->setMaximum(max);
 
 	#ifdef Q_OS_WIN
-		m_taskBarProgress->setMaximum(value);
-	#endif
-}
-void batchWindow::setImagesCount(int value)
-{
-	m_imagesCount = value;
-	ui->labelImages->setText(QString("0/%2").arg(m_imagesCount));
-	setMaximum(value);
-}
-void batchWindow::setImages(int value)
-{
-	m_images = value;
-	ui->labelImages->setText(QString("%1/%2").arg(m_images).arg(m_imagesCount));
-	ui->progressBar->setValue(value);
-
-	#ifdef Q_OS_WIN
-		m_taskBarProgress->setValue(value);
+		m_taskBarProgress->setMaximum(max);
 	#endif
 }
 
-int batchWindow::value()		{ return m_value;						}
-int batchWindow::maximum()		{ return ui->progressBar->maximum();	}
-int batchWindow::images()		{ return m_images;						}
-int batchWindow::count()		{ return m_imagesCount;					}
-int batchWindow::endAction()	{ return ui->comboEnd->currentIndex();	}
-bool batchWindow::endRemove()	{ return ui->checkRemove->isChecked();	}
-bool batchWindow::isPaused()	{ return m_paused;						}
+int batchWindow::currentValue() const
+{ return ui->progressCurrent->value(); }
+int batchWindow::currentMax() const
+{ return ui->progressCurrent->maximum(); }
+int batchWindow::totalValue() const
+{ return ui->progressTotal->value(); }
+int batchWindow::totalMax() const
+{ return ui->progressTotal->maximum(); }
+
+int batchWindow::endAction()	{ return ui->comboEnd->currentIndex();		}
+bool batchWindow::endRemove()	{ return ui->checkRemove->isChecked();		}
+bool batchWindow::isPaused()	{ return m_paused;							}

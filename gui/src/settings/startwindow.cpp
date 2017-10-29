@@ -26,7 +26,7 @@ startWindow::startWindow(QMap<QString, Site*> *sites, Profile *profile, QWidget 
 	// Language
 	LanguageLoader languageLoader(savePath("languages/", true));
 	QMap<QString, QString> languages = languageLoader.getAllLanguages();
-	for (QString language : languages.keys())
+	for (const QString &language : languages.keys())
 	{ ui->comboLanguage->addItem(languages[language], language); }
 	ui->comboLanguage->setCurrentText("English");
 
@@ -90,7 +90,7 @@ void startWindow::save()
 			pth.setPath(pth.path().remove(QRegularExpression("/([^/]+)$")));
 		}
 		if (pth.path() == op)
-		{ error(this, tr("An error occured creating the save folder.")); }
+		{ error(this, tr("An error occurred creating the save folder.")); }
 		else
 		{ pth.mkpath(ui->lineFolder->text()); }
 	}
@@ -115,7 +115,7 @@ void startWindow::save()
  */
 void startWindow::openOptions()
 {
-	optionsWindow *ow = new optionsWindow(m_profile, parentWidget());
+	auto *ow = new optionsWindow(m_profile, parentWidget());
 	ow->show();
 
 	this->close();

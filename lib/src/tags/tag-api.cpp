@@ -59,10 +59,10 @@ void TagApi::parse()
 	log(QString("[%1] Receiving tags page <a href=\"%2\">%2</a>").arg(m_site->url()).arg(m_reply->url().toString().toHtmlEscaped()), Logger::Info);
 
 	// Check redirection
-	QUrl redir = m_reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
-	if (!redir.isEmpty())
+	QUrl redirection = m_reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
+	if (!redirection.isEmpty())
 	{
-		QUrl newUrl = m_site->fixUrl(redir.toString(), m_url);
+		QUrl newUrl = m_site->fixUrl(redirection.toString(), m_url);
 		log(QString("[%1] Redirecting tags page <a href=\"%2\">%2</a> to <a href=\"%3\">%3</a>").arg(m_site->url()).arg(m_url.toString().toHtmlEscaped()).arg(newUrl.toString().toHtmlEscaped()), Logger::Info);
 		m_url = newUrl;
 		load();
@@ -155,7 +155,7 @@ void TagApi::parse()
 		QMap<QString, QVariant> data = src.toMap();
 
 		// Check for a JSON error message
-		if (data.contains("success") && data["success"].toBool() == false)
+		if (data.contains("success") && !data["success"].toBool())
 		{
 			log(QString("[%1] JSON error reply: \"%2\"").arg(m_site->url()).arg(data["reason"].toString()), Logger::Warning);
 			emit finishedLoading(this, LoadResult::Error);
@@ -164,7 +164,7 @@ void TagApi::parse()
 
 		// Read tags
 		QList<QVariant> sourc = src.toList();
-		for (QVariant el : sourc)
+		for (const QVariant &el : sourc)
 		{
 			QMap<QString, QVariant> sc = el.toMap();
 
@@ -208,7 +208,7 @@ void TagApi::parse()
 
 			// Parse result using the regex
 			QMap<QString, QString> d;
-			for (QString group : rx.namedCaptureGroups())
+			for (const QString &group : rx.namedCaptureGroups())
 			{
 				if (group.isEmpty())
 					continue;

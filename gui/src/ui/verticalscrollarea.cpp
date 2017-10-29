@@ -4,13 +4,12 @@
 
 
 VerticalScrollArea::VerticalScrollArea(QWidget *parent)
-	: QScrollArea(parent), m_endOfScroll(0)
+	: QScrollArea(parent), m_scrollEnabled(true), m_endOfScroll(0)
 {
 	setWidgetResizable(true);
 	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-
-	setScrollEnabled(true);
+	updateWidgetSize();
 }
 
 void VerticalScrollArea::resizeEvent(QResizeEvent *event)

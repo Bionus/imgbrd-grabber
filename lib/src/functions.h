@@ -7,6 +7,7 @@
 #include <QSettings>
 #include <QDomElement>
 #include <QString>
+#include <QDir>
 #include "models/favorite.h"
 #include "logger.h"
 
@@ -38,6 +39,7 @@ QString		getExtension(QUrl url);
 QString		getExtension(QString url);
 QString		setExtension(QString url, QString extension);
 bool		isUrl(QString str);
+bool		isVariantEmpty(const QVariant &value);
 
 bool		setFileCreationDate(QString path, QDateTime time);
 void		shutDown(int timeout = 0);
@@ -52,6 +54,7 @@ QMap<QString,QString>		domToMap(QDomElement);
 QMap<QString,QStringList>	getCustoms(QSettings *settings);
 QMap<QString,QPair<QString,QString>>	getFilenames(QSettings *settings);
 QMap<int, QMap<QString, QVariant>>		getExternalLogFiles(QSettings *settings);
+QStringList								getExternalLogFilesSuffixes(QSettings *settings);
 
 QStringList removeWildards(QStringList elements, QStringList remove);
 QString getExtensionFromHeader(const QByteArray &data12);
@@ -60,6 +63,10 @@ void setTestModeEnabled(bool testMode);
 bool isTestModeEnabled();
 
 QString parseMarkdown(QString str);
+
+QString qFontToCss(const QFont &font);
+
+QList<QPair<QString, QStringList>> listFilesFromDirectory(const QDir &dir, const QStringList &suffixes);
 
 
 

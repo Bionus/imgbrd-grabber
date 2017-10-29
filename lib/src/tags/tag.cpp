@@ -20,7 +20,7 @@ Tag::Tag(QString text, TagType type, int count, QStringList related)
 { }
 
 Tag::Tag(int id, QString text, TagType type, int count, QStringList related)
-	: m_id(id), m_type(TagType(type)), m_count(count), m_related(related)
+	: m_id(id), m_type(type), m_count(count), m_related(related)
 {
 	static QStringList weakTypes = QStringList() << "unknown" << "origin";
 
@@ -54,10 +54,8 @@ Tag::Tag(int id, QString text, TagType type, int count, QStringList related)
 		}
 	}
 }
-Tag::~Tag()
-{ }
 
-Tag Tag::FromCapture(QRegularExpressionMatch match, QStringList groups)
+Tag Tag::FromCapture(const QRegularExpressionMatch &match, const QStringList &groups)
 {
 	// Tag
 	QString tag;
@@ -141,106 +139,17 @@ QString Tag::GetType(QString type, QStringList ids)
 	return type;
 }
 
-/**
- * Converts a QFont to a CSS string.
- * @param	font	The font to convert.
- * @return	The CSS font.
- */
-QString Tag::qFontToCss(QFont font)
-{
-	QString style;
-	switch (font.style())
-	{
-		case QFont::StyleNormal:	style = "normal";	break;
-		case QFont::StyleItalic:	style = "italic";	break;
-		case QFont::StyleOblique:	style = "oblique";	break;
-	}
-
-	QString size;
-	if (font.pixelSize() == -1)
-	{ size = QString::number(font.pointSize())+"pt"; }
-	else
-	{ size = QString::number(font.pixelSize())+"px"; }
-
-	// Should be "font.weight() * 8 + 100", but linux doesn't handle weight the same way windows do
-	QString weight = QString::number(font.weight() * 8);
-
-	QStringList decorations;
-	if (font.strikeOut())	{ decorations.append("line-through");	}
-	if (font.underline())	{ decorations.append("underline");		}
-
-	return "font-family:'"+font.family()+"'; font-size:"+size+"; font-style:"+style+"; font-weight:"+weight+"; text-decoration:"+(decorations.isEmpty() ? "none" : decorations.join(" "))+";";
-}
-
-QStringList Tag::Stylished(QList<Tag> tags, Profile *profile, bool count, bool nounderscores, QString sort)
-{
-	QStringList ignored = profile->getIgnored();
-	QStringList blacklisted = profile->getBlacklist();
-
-	// Sort tag list
-	if (sort == "type")
-		qSort(tags.begin(), tags.end(), sortTagsByType);
-	else if (sort == "name")
-		qSort(tags.begin(), tags.end(), sortTagsByName);
-	else if (sort == "count")
-		qSort(tags.begin(), tags.end(), sortTagsByCount);
-
-	QStringList t;
-	for (Tag tag : tags)
-		t.append(tag.stylished(profile, ignored, blacklisted, count, nounderscores));
-
-	return t;
-}
-
-/**
- * Return the colored tag.
- * @param favs The list of the user's favorite tags.
- * @return The HTML colored tag.
- */
-QString Tag::stylished(Profile *profile, QStringList ignored, QStringList blacklisted, bool count, bool nounderscores) const
-{
-	static const QStringList tlist = QStringList() << "artists" << "circles" << "copyrights" << "characters" << "models" << "generals" << "favorites" << "blacklisteds" << "ignoreds" << "favorites";
-	static const QStringList defaults = QStringList() << "#aa0000" << "#55bbff" << "#aa00aa" << "#00aa00" << "#0000ee" << "#000000" << "#ffc0cb" << "#000000" << "#999999" << "#ffcccc";
-
-	// Guess the correct tag family
-	QString key = tlist.contains(type().name()+"s") ? type().name() + "s" : "generals";
-	if (blacklisted.contains(text(), Qt::CaseInsensitive))
-		key = "blacklisteds";
-	if (ignored.contains(text(), Qt::CaseInsensitive))
-		key = "ignoreds";
-	for (Favorite fav : profile->getFavorites())
-		if (fav.getName() == m_text)
-			key = "favorites";
-
-	QFont font;
-	font.fromString(profile->getSettings()->value("Coloring/Fonts/" + key).toString());
-	QString color = profile->getSettings()->value("Coloring/Colors/" + key, defaults.at(tlist.indexOf(key))).toString();
-	QString style = "color:" + color + "; " + qFontToCss(font);
-
-	QString ret;
-	ret = "<a href=\"" + text() + "\" style=\"" + style + "\">" + (nounderscores ? text().replace('_', ' ') : text()) + "</a>";
-	if (count && this->count() > 0)
-		ret += " <span style=\"color:#aaa\">(" + QString("%L1").arg(this->count()) + ")</span>";
-
-	return ret;
-}
-
-void Tag::setId(int id)				{ m_id = id;		}
-void Tag::setText(QString text)		{ m_text = text;	}
-void Tag::setType(TagType type)		{ m_type = type;	}
-void Tag::setCount(int count)		{ m_count = count;	}
-void Tag::setRelated(QStringList r)	{ m_related = r;	}
+void Tag::setId(int id)					{ m_id = id;		}
+void Tag::setText(const QString &text)		{ m_text = text;	}
+void Tag::setType(const TagType &type)		{ m_type = type;	}
+void Tag::setCount(int count)				{ m_count = count;	}
+void Tag::setRelated(const QStringList &r)	{ m_related = r;	}
 
 int			Tag::id() const			{ return m_id;		}
 QString		Tag::text() const		{ return m_text;	}
 TagType		Tag::type() const		{ return m_type;	}
 int			Tag::count() const		{ return m_count;	}
 QStringList	Tag::related() const	{ return m_related;	}
-
-QString Tag::typedText() const
-{
-	return (m_type.name() != "general" ? m_type.name() + ":" : "") + m_text;
-}
 
 bool sortTagsByType(Tag s1, Tag s2)
 {

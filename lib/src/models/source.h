@@ -4,6 +4,7 @@
 #include <QString>
 #include <QList>
 #include "updater/source-updater.h"
+#include "tags/tag-name-format.h"
 
 
 class Site;
@@ -16,7 +17,7 @@ class Source : public QObject
 
 	public:
 		Source(Profile *profile, QString dir);
-		~Source();
+		~Source() override;
 
 		// Getters
 		QString getName() const;
@@ -37,6 +38,7 @@ class Source : public QObject
 		QList<Api*> m_apis;
 		Profile *m_profile;
 		SourceUpdater m_updater;
+		TagNameFormat m_tagNameFormat;
 };
 
 #endif // SOURCE_H

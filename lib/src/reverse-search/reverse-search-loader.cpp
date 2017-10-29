@@ -24,7 +24,7 @@ QList<ReverseSearchEngine> ReverseSearchLoader::getAllReverseSearchEngines() con
 
 	// Load groups
 	m_settings->beginGroup("WebServices");
-	for (QString group : m_settings->childGroups())
+	for (const QString &group : m_settings->childGroups())
 	{
 		m_settings->beginGroup(group);
 		int id = group.toInt();

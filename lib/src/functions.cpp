@@ -3,6 +3,7 @@
 #include <QFile>
 #include <QDir>
 #include <QFileInfo>
+#include <QFont>
 #include <QProcess>
 #include <QStandardPaths>
 #include <QCoreApplication>
@@ -11,7 +12,8 @@
 #include <QLocale>
 #include <QTimeZone>
 #include <QRegularExpression>
-#include "math.h"
+#include <QDirIterator>
+#include <cmath>
 #ifdef Q_OS_WIN
 	#include <windows.h>
 #else
@@ -69,11 +71,11 @@ QMap<int, QMap<QString, QVariant> > getExternalLogFiles(QSettings *settings)
 	QMap<int, QMap<QString, QVariant>> ret;
 
 	settings->beginGroup("LogFiles");
-	for (QString group : settings->childGroups())
+	for (const QString &group : settings->childGroups())
 	{
 		settings->beginGroup(group);
 		QMap<QString, QVariant> logSettings;
-		for (QString key : settings->childKeys())
+		for (const QString &key : settings->childKeys())
 		{ logSettings.insert(key, settings->value(key)); }
 		ret.insert(group.toInt(), logSettings);
 		settings->endGroup();
@@ -81,6 +83,20 @@ QMap<int, QMap<QString, QVariant> > getExternalLogFiles(QSettings *settings)
 	settings->endGroup();
 
 	return ret;
+}
+QStringList getExternalLogFilesSuffixes(QSettings *settings)
+{
+	QStringList suffixes;
+
+	auto logFiles = getExternalLogFiles(settings);
+	for (int key : logFiles.keys())
+	{
+		const QMap<QString, QVariant> &logFile = logFiles.value(key);
+		if (logFile["locationType"].toInt() == 2)
+		{ suffixes.append(logFile["suffix"].toString()); }
+	}
+
+	return suffixes;
 }
 
 QStringList removeWildards(QStringList elements, QStringList remove)
@@ -90,10 +106,10 @@ QStringList removeWildards(QStringList elements, QStringList remove)
 	QRegExp reg;
 	reg.setCaseSensitivity(Qt::CaseInsensitive);
 	reg.setPatternSyntax(QRegExp::Wildcard);
-	for (QString tag : elements)
+	for (const QString &tag : elements)
 	{
 		bool removed = false;
-		for (QString rem : remove)
+		for (const QString &rem : remove)
 		{
 			reg.setPattern(rem);
 			if (reg.exactMatch(tag))
@@ -199,7 +215,7 @@ QString formatFilesize(float size)
 	return QString("%1 %2").arg(roundedSize).arg(unit);
 }
 
-bool validSavePath(QString file, bool writable)
+bool validSavePath(const QString &file, bool writable)
 {
 	QString nativeFile = QDir::toNativeSeparators(file);
 	QFileInfo info(nativeFile);
@@ -687,4 +703,87 @@ QString parseMarkdown(QString str)
 	str.replace("\n", "<br/>");
 
 	return str;
+}
+
+
+/**
+ * Converts a QFont to a CSS string.
+ * @param	font	The font to convert.
+ * @return	The CSS font.
+ */
+QString qFontToCss(const QFont &font)
+{
+	QString style;
+	switch (font.style())
+	{
+		case QFont::StyleNormal:	style = "normal";	break;
+		case QFont::StyleItalic:	style = "italic";	break;
+		case QFont::StyleOblique:	style = "oblique";	break;
+	}
+
+	QString size;
+	if (font.pixelSize() == -1)
+	{ size = QString::number(font.pointSize())+"pt"; }
+	else
+	{ size = QString::number(font.pixelSize())+"px"; }
+
+	// Should be "font.weight() * 8 + 100", but linux doesn't handle weight the same way windows do
+	QString weight = QString::number(font.weight() * 8);
+
+	QStringList decorations;
+	if (font.strikeOut())	{ decorations.append("line-through");	}
+	if (font.underline())	{ decorations.append("underline");		}
+
+	return "font-family:'"+font.family()+"'; font-size:"+size+"; font-style:"+style+"; font-weight:"+weight+"; text-decoration:"+(decorations.isEmpty() ? "none" : decorations.join(" "))+";";
+}
+
+bool isFileParentWithSuffix(const QString &fileName, const QString &parent, const QStringList &suffixes)
+{
+	for (const QString &suffix : suffixes)
+		if (fileName == parent + suffix)
+			return true;
+	return false;
+}
+QList<QPair<QString, QStringList>> listFilesFromDirectory(const QDir &dir, const QStringList &suffixes)
+{
+	auto files = QList<QPair<QString, QStringList>>();
+
+	QDirIterator it(dir, QDirIterator::Subdirectories);
+	while (it.hasNext())
+	{
+		it.next();
+
+		if (it.fileInfo().isDir())
+			continue;
+
+		QString path = it.filePath();
+		QString fileName = path.right(path.length() - dir.absolutePath().length() - 1);
+
+		if (!files.isEmpty())
+		{
+			const QString &previous = files.last().first;
+			if (isFileParentWithSuffix(fileName, previous, suffixes))
+			{
+				files.last().second.append(fileName);
+				continue;
+			}
+		}
+
+		files.append(QPair<QString, QStringList>(fileName, QStringList()));
+	}
+
+	return files;
+}
+
+bool isVariantEmpty(const QVariant &value)
+{
+	switch (value.type())
+	{
+		case QVariant::Type::Int: return value.toInt() == 0;
+		case QVariant::Type::List: return value.toList().isEmpty();
+		case QVariant::Type::Map: return value.toMap().isEmpty();
+		case QVariant::Type::String: return value.toString().isEmpty();
+		case QVariant::Type::StringList: return value.toStringList().isEmpty();
+	}
+	return false;
 }

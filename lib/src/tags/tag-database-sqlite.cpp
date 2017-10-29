@@ -69,7 +69,7 @@ void TagDatabaseSqlite::setTags(const QList<Tag> &tags)
 	QSqlQuery addQuery(m_database);
 	addQuery.prepare("INSERT INTO tags (id, tag, ttype) VALUES (:id, :tag, :ttype)");
 
-	for (Tag tag : tags)
+	for (const Tag &tag : tags)
 	{
 		QString type = tag.type().name();
 		addQuery.bindValue(":id", tag.id());

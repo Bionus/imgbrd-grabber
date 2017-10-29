@@ -54,7 +54,7 @@ void Site::loadConfig()
 	if (defaults.isEmpty())
 	{ defaults =  QStringList() << "Xml" << "Json" << "Regex" << "Rss"; }
 
-	// Get overriden source order
+	// Get overridden source order
 	QStringList sources;
 	if (!m_settings->value("sources/usedefault", true).toBool())
 	{
@@ -73,7 +73,7 @@ void Site::loadConfig()
 
 	// Apis
 	m_apis.clear();
-	for (QString src : sources)
+	for (const QString &src : sources)
 	{
 		Api *api = m_source->getApi(src == "Regex" ? "Html" : src);
 		if (api != nullptr && !m_apis.contains(api))
@@ -86,11 +86,11 @@ void Site::loadConfig()
 
 	// Cookies
 	m_cookies.clear();
-	QList<QVariant> cookies = m_settings->value("cookies", "").toList();
-	for (QVariant variant : cookies)
+	QList<QVariant> settingsCookies = m_settings->value("cookies", "").toList();
+	for (const QVariant &variant : settingsCookies)
 	{
-		QList<QNetworkCookie> cookiz = QNetworkCookie::parseCookies(variant.toByteArray());
-		for (QNetworkCookie cookie : cookiz)
+		QList<QNetworkCookie> cookies = QNetworkCookie::parseCookies(variant.toByteArray());
+		for (QNetworkCookie cookie : cookies)
 		{
 			cookie.setDomain(m_url);
 			cookie.setPath("/");
@@ -123,7 +123,7 @@ void Site::initManager()
 		connect(m_manager, &CustomNetworkAccessManager::finished, this, &Site::finished);
 
 		// Cache
-		QNetworkDiskCache *diskCache = new QNetworkDiskCache(m_manager);
+		auto *diskCache = new QNetworkDiskCache(m_manager);
 		diskCache->setCacheDirectory(m_source->getProfile()->getPath() + "/cache/");
 		m_manager->setCache(diskCache);
 
@@ -143,7 +143,7 @@ void Site::resetCookieJar()
 
 	m_cookieJar = new QNetworkCookieJar(m_manager);
 
-	for (QNetworkCookie cookie : m_cookies)
+	for (const QNetworkCookie &cookie : m_cookies)
 	{ m_cookieJar->insertCookie(cookie); }
 
 	m_manager->setCookieJar(m_cookieJar);
@@ -208,7 +208,7 @@ void Site::login(bool force)
 
 	m_settings->beginGroup("login/fields");
 		QStringList keys = m_settings->childKeys();
-		for (QString key : keys)
+		for (const QString &key : keys)
 			query.addQueryItem(key, setting(key).toString());
 	m_settings->endGroup();
 
@@ -260,12 +260,12 @@ void Site::loginFinished()
 	}
 	else
 	{
-		QString cookiename = m_settings->value("login/"+type+"/cookie", "").toString();
+		QString cookieName = m_settings->value("login/"+type+"/cookie", "").toString();
 
 		QList<QNetworkCookie> cookies = m_cookieJar->cookiesForUrl(m_loginReply->url());
-		for (QNetworkCookie cookie : cookies)
+		for (const QNetworkCookie &cookie : cookies)
 		{
-			if (cookie.name() == cookiename && !cookie.value().isEmpty())
+			if (cookie.name() == cookieName && !cookie.value().isEmpty())
 			{ ok = true; }
 		}
 	}
@@ -289,7 +289,7 @@ QNetworkRequest Site::makeRequest(QUrl url, Page *page, QString ref, Image *img)
 	QString referer = m_settings->value("referer"+(!ref.isEmpty() ? "_"+ref : ""), "").toString();
 	if (referer.isEmpty() && !ref.isEmpty())
 	{ referer = m_settings->value("referer", "none").toString(); }
-	if (referer != "none" && (referer != "page" || page != NULL))
+	if (referer != "none" && (referer != "page" || page != Q_NULLPTR))
 	{
 		QString refHeader;
 		if (referer == "host")
@@ -304,7 +304,7 @@ QNetworkRequest Site::makeRequest(QUrl url, Page *page, QString ref, Image *img)
 	}
 
 	QMap<QString,QVariant> headers = m_settings->value("headers").toMap();
-	for (QString key : headers.keys())
+	for (const QString &key : headers.keys())
 	{ request.setRawHeader(key.toLatin1(), headers[key].toString().toLatin1()); }
 
 	// User-Agent header tokens and default value
@@ -357,7 +357,7 @@ QNetworkReply *Site::get(QUrl url, Page *page, QString ref, Image *img)
 	return this->getRequest(request);
 }
 
-QNetworkReply *Site::getRequest(QNetworkRequest request)
+QNetworkReply *Site::getRequest(const QNetworkRequest &request)
 {
 	m_lastRequest = QDateTime::currentDateTime();
 	return m_manager->get(request);
@@ -369,7 +369,7 @@ QList<Site*> Site::getSites(Profile *profile, QStringList sources)
 	QMap<QString, Site*> sites = Site::getAllSites(profile);
 
 	QList<Site*> ret;
-	for (QString source : sources)
+	for (const QString &source : sources)
 		if (sites.contains(source))
 			ret.append(sites.value(source));
 
@@ -419,16 +419,16 @@ void Site::finishedTags()
 	emit finishedLoadingTags(tags);
 }
 
-QVariant Site::setting(QString key, QVariant def)	{ return m_settings->value(key, def); }
-void Site::setSetting(QString key, QVariant value, QVariant def)	{ m_settings->setValue(key, value, def); }
+QVariant Site::setting(const QString &key, const QVariant &def)	{ return m_settings->value(key, def); }
+void Site::setSetting(const QString &key, const QVariant &value, const QVariant &def)	{ m_settings->setValue(key, value, def); }
 void Site::syncSettings() { m_settings->sync(); }
-TagDatabase *Site::tagDatabase() const				{ return m_tagDatabase;	}
+TagDatabase *Site::tagDatabase() const  { return m_tagDatabase;	}
 
-QString Site::name()			{ return m_name;			}
-QString Site::url()				{ return m_url;				}
-QString Site::type()			{ return m_type;			}
+QString Site::name() const { return m_name;	}
+QString Site::url() const	{ return m_url;	}
+QString Site::type() const	{ return m_type;	}
 
-Source *Site::getSource() const	{ return m_source;			}
+Source *Site::getSource() const	{ return m_source;		}
 QList<Api*> Site::getApis(bool filterAuth) const
 {
 	if (!filterAuth)
@@ -456,16 +456,16 @@ bool Site::autoLogin() const	{ return m_autoLogin;	}
 QString Site::username() const	{ return m_username;	}
 QString Site::password() const	{ return m_password;	}
 
-void Site::setAutoLogin(bool autoLogin)		{ m_autoLogin = autoLogin;	}
-void Site::setUsername(QString username)	{ m_username = username;	}
-void Site::setPassword(QString password)	{ m_password = password;	}
+void Site::setAutoLogin(bool autoLogin)	        { m_autoLogin = autoLogin;	}
+void Site::setUsername(const QString &username)	{ m_username = username;	}
+void Site::setPassword(const QString &password)	{ m_password = password;	}
 
-QUrl Site::fixUrl(QString url) const
+QUrl Site::fixUrl(const QString &url) const
 {
 	return this->fixUrl(url, QUrl());
 }
 
-QUrl Site::fixUrl(QString url, QUrl old) const
+QUrl Site::fixUrl(const QString &url, const QUrl &old) const
 {
 	if (url.isEmpty())
 		return QUrl();
@@ -511,13 +511,13 @@ bool Site::isLoggedIn(bool unknown) const
 }
 
 
-bool Site::contains(QString key) const
+bool Site::contains(const QString &key) const
 {
 	if (m_apis.isEmpty())
 		return false;
 	return m_apis.first()->contains(key);
 }
-QString Site::value(QString key) const
+QString Site::value(const QString &key) const
 {
 	if (m_apis.isEmpty())
 		return QString();

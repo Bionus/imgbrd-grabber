@@ -20,7 +20,7 @@ class EmptyDirsFix1 : public QDialog
 
 	public:
 		explicit EmptyDirsFix1(Profile *profile, QWidget *parent = Q_NULLPTR);
-		~EmptyDirsFix1();
+		~EmptyDirsFix1() override;
 
 	public slots:
 		void next();

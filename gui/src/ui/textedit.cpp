@@ -6,13 +6,13 @@
 #include <QScrollBar>
 #include <QMenu>
 #include <QTextDocumentFragment>
-#include "tags/tag.h"
 #include "models/profile.h"
+#include "functions.h"
 #include "logger.h"
 
 
 TextEdit::TextEdit(Profile *profile, QWidget *parent)
-	: QTextEdit(parent), c(0), m_profile(profile), m_favorites(profile->getFavorites()), m_viewItLater(profile->getKeptForLater())
+	: QTextEdit(parent), c(Q_NULLPTR), m_profile(profile), m_favorites(profile->getFavorites()), m_viewItLater(profile->getKeptForLater())
 {
 	setTabChangesFocus(true);
 	setWordWrapMode(QTextOption::NoWrap);
@@ -23,9 +23,6 @@ TextEdit::TextEdit(Profile *profile, QWidget *parent)
 	setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(this, &QTextEdit::customContextMenuRequested, this, &TextEdit::customContextMenuRequested);
 }
-
-TextEdit::~TextEdit()
-{ }
 
 QSize TextEdit::sizeHint() const
 {
@@ -53,13 +50,21 @@ void TextEdit::doColor()
 {
 	QString txt = " " + this->toPlainText().toHtmlEscaped() + " ";
 
-	// Color favorited tags
-	QFont fontFavs;
-	fontFavs.fromString(m_profile->getSettings()->value("Coloring/Fonts/favorites").toString());
-	QString colorFavs = m_profile->getSettings()->value("Coloring/Colors/favorites", "#ffc0cb").toString();
-	QString styleFavs = "color:" + colorFavs + "; " + Tag::qFontToCss(fontFavs);
-	for (Favorite fav : m_favorites)
-		txt.replace(" "+fav.getName()+" ", " <span style=\""+styleFavs+"\">"+fav.getName()+"</span> ");
+	// Color favorite tags
+	QFont fontFavorites;
+	fontFavorites.fromString(m_profile->getSettings()->value("Coloring/Fonts/favorites").toString());
+	QString colorFavorites = m_profile->getSettings()->value("Coloring/Colors/favorites", "#ffc0cb").toString();
+	QString styleFavorites = "color:" + colorFavorites + "; " + qFontToCss(fontFavorites);
+	for (const Favorite &fav : m_favorites)
+		txt.replace(" "+fav.getName()+" ", " <span style=\""+styleFavorites+"\">"+fav.getName()+"</span> ");
+
+	// Color kept for later tags
+	QFont fontKeptForLater;
+	fontKeptForLater.fromString(m_profile->getSettings()->value("Coloring/Fonts/keptForLater").toString());
+	QString colorKeptForLater = m_profile->getSettings()->value("Coloring/Colors/keptForLater", "#000000").toString();
+	QString styleKeptForLater = "color:" + colorKeptForLater + "; " + qFontToCss(fontKeptForLater);
+	for (const QString &tag : m_viewItLater)
+		txt.replace(" "+tag+" ", " <span style=\""+styleKeptForLater+"\">"+tag+"</span> ");
 
 	// Color metatags
 	static QRegularExpression regexOr(" ~([^ ]+)"),
@@ -67,11 +72,11 @@ void TextEdit::doColor()
 		regexMeta(" (user|fav|md5|pool|rating|source|status|approver|unlocked|sub|id|width|height|score|mpixels|filesize|filetype|date|gentags|arttags|chartags|copytags|status|status|approver|order|parent):([^ ]*)", QRegularExpression::CaseInsensitiveOption),
 		regexMd5(" ([0-9A-F]{32})", QRegularExpression::CaseInsensitiveOption),
 		regexUrl(" (https?://[^\\s/$.?#].[^\\s]*) ");
-	txt.replace(regexOr, " <span style=\"color:green\">~\\1</span>");
-	txt.replace(regexExclude, " <span style=\"color:red\">-\\1</span>");
-	txt.replace(regexMeta, " <span style=\"color:brown\">\\1:\\2</span>");
-	txt.replace(regexMd5, " <span style=\"color:purple\">\\1</span>");
-	txt.replace(regexUrl, " <span style=\"color:blue\">\\1</span>");
+	txt.replace(regexOr, R"( <span style="color:green">~\1</span>)");
+	txt.replace(regexExclude, R"( <span style="color:red">-\1</span>)");
+	txt.replace(regexMeta, R"( <span style="color:brown">\1:\2</span>)");
+	txt.replace(regexMd5, R"( <span style="color:purple">\1</span>)");
+	txt.replace(regexUrl, R"( <span style="color:blue">\1</span>)");
 
 	// Replace spaces to not be trimmed by the HTML renderer
 	txt = txt.mid(1, txt.length() - 2);
@@ -125,7 +130,7 @@ void TextEdit::setCompleter(QCompleter *completer)
 
 	// Disconnect the previous completer
 	if (c)
-		QObject::disconnect(c, 0, this, 0);
+		QObject::disconnect(c, Q_NULLPTR, this, Q_NULLPTR);
 
 	// Set the new completer and connect it to the field
 	c = completer;
@@ -235,12 +240,12 @@ void TextEdit::keyPressEvent(QKeyEvent *e)
 
 void TextEdit::customContextMenuRequested(QPoint)
 {
-	QMenu *menu = new QMenu(this);
-		QMenu *favs = new QMenu(tr("Favorites"), menu);
-			QActionGroup* favsGroup = new QActionGroup(favs);
+	auto *menu = new QMenu(this);
+		auto *favs = new QMenu(tr("Favorites"), menu);
+			auto *favsGroup = new QActionGroup(favs);
 				favsGroup->setExclusive(true);
 				connect(favsGroup, SIGNAL(triggered(QAction *)), this, SLOT(insertFav(QAction *)));
-				for (Favorite fav : m_favorites)
+				for (const Favorite &fav : m_favorites)
 				{ favsGroup->addAction(fav.getName()); }
 				if (!toPlainText().isEmpty())
 				{
@@ -254,11 +259,11 @@ void TextEdit::customContextMenuRequested(QPoint)
 				favs->setIcon(QIcon(":/images/icons/favorite.png"));
 				favs->setStyleSheet("* { menu-scrollable: 1 }");
 			menu->addMenu(favs);
-		QMenu *vils = new QMenu(tr("Kept for later"), menu);
-			QActionGroup* vilsGroup = new QActionGroup(vils);
+		auto *vils = new QMenu(tr("Kept for later"), menu);
+			auto *vilsGroup = new QActionGroup(vils);
 				vilsGroup->setExclusive(true);
 				connect(vilsGroup, SIGNAL(triggered(QAction *)), this, SLOT(insertFav(QAction *)));
-				for (QString viewItLater : m_viewItLater)
+				for (const QString &viewItLater : m_viewItLater)
 				{ vilsGroup->addAction(viewItLater); }
 				if (!toPlainText().isEmpty())
 				{
@@ -271,8 +276,8 @@ void TextEdit::customContextMenuRequested(QPoint)
 				vils->addActions(vilsGroup->actions());
 				vils->setIcon(QIcon(":/images/icons/book.png"));
 			menu->addMenu(vils);
-		QMenu *ratings = new QMenu(tr("Ratings"), menu);
-			QActionGroup* ratingsGroup = new QActionGroup(favs);
+		auto *ratings = new QMenu(tr("Ratings"), menu);
+			auto *ratingsGroup = new QActionGroup(favs);
 				ratingsGroup->setExclusive(true);
 				connect(ratingsGroup, SIGNAL(triggered(QAction *)), this, SLOT(insertFav(QAction *)));
 					ratingsGroup->addAction(QIcon(":/images/ratings/safe.png"), "rating:safe");
@@ -281,8 +286,8 @@ void TextEdit::customContextMenuRequested(QPoint)
 				ratings->addActions(ratingsGroup->actions());
 				ratings->setIcon(QIcon(":/images/ratings/none.png"));
 			menu->addMenu(ratings);
-		QMenu *sortings = new QMenu(tr("Sortings"), menu);
-			QActionGroup* sortingsGroup = new QActionGroup(favs);
+		auto *sortings = new QMenu(tr("Sortings"), menu);
+			auto *sortingsGroup = new QActionGroup(favs);
 				sortingsGroup->setExclusive(true);
 				connect(sortingsGroup, SIGNAL(triggered(QAction *)), this, SLOT(insertFav(QAction *)));
 					sortingsGroup->addAction(QIcon(":/images/sortings/change.png"), "order:change");

@@ -1,5 +1,5 @@
 #include "page.h"
-#include <math.h>
+#include <cmath>
 #include "site.h"
 #include "api.h"
 #include "vendor/json.h"
@@ -7,7 +7,7 @@
 
 
 Page::Page(Profile *profile, Site *site, QList<Site*> sites, QStringList tags, int page, int limit, QStringList postFiltering, bool smart, QObject *parent, int pool, int lastPage, int lastPageMinId, int lastPageMaxId)
-	: QObject(parent), m_site(site), m_regexApi(-1), m_postFiltering(postFiltering), m_errors(QStringList()), m_imagesPerPage(limit), m_currentSource(0), m_lastPage(lastPage), m_lastPageMinId(lastPageMinId), m_lastPageMaxId(lastPageMaxId), m_smart(smart)
+	: QObject(parent), m_site(site), m_regexApi(-1), m_postFiltering(postFiltering), m_errors(QStringList()), m_imagesPerPage(limit), m_lastPage(lastPage), m_lastPageMinId(lastPageMinId), m_lastPageMaxId(lastPageMaxId), m_smart(smart)
 {
 	m_website = m_site->url();
 	m_imagesCount = -1;
@@ -62,7 +62,7 @@ Page::~Page()
 	qDeleteAll(m_pageApis);
 }
 
-void Page::fallback(bool bload)
+void Page::fallback(bool loadIfPossible)
 {
 	if (m_currentApi >= m_siteApis.count() - 1)
 	{
@@ -76,7 +76,7 @@ void Page::fallback(bool bload)
 	if (m_currentApi > 0)
 		log(QString("[%1] Loading using %2 failed. Retry using %3.").arg(m_site->url()).arg(m_siteApis[m_currentApi - 1]->getName()).arg(m_siteApis[m_currentApi]->getName()), Logger::Warning);
 
-	if (bload)
+	if (loadIfPossible)
 		load();
 }
 

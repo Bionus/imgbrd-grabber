@@ -78,14 +78,14 @@ bool TagDatabaseInMemory::save()
 void TagDatabaseInMemory::setTags(const QList<Tag> &tags)
 {
 	m_database.clear();
-	for (Tag tag : tags)
+	for (const Tag &tag : tags)
 		m_database.insert(tag.text(), tag.type());
 }
 
 QMap<QString, TagType> TagDatabaseInMemory::getTagTypes(QStringList tags) const
 {
 	QMap<QString, TagType> ret;
-	for (QString tag : tags)
+	for (const QString &tag : tags)
 		if (m_database.contains(tag))
 			ret.insert(tag, m_database[tag]);
 

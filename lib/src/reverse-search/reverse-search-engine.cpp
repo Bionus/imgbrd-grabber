@@ -3,14 +3,11 @@
 #include "functions.h"
 
 
-ReverseSearchEngine::ReverseSearchEngine()
-{}
-
-ReverseSearchEngine::ReverseSearchEngine(int id, QString icon, QString name, QString tpl, int order)
+ReverseSearchEngine::ReverseSearchEngine(int id, const QString &icon, QString name, QString tpl, int order)
 	: m_icon(loadIcon(icon)), m_id(id), m_name(name), m_tpl(tpl), m_order(order)
 {}
 
-QIcon ReverseSearchEngine::loadIcon(QString path) const
+QIcon ReverseSearchEngine::loadIcon(const QString &path) const
 {
 	if (path.isEmpty())
 		return QIcon();
@@ -32,7 +29,7 @@ QIcon ReverseSearchEngine::loadIcon(QString path) const
 	return QIcon(path);
 }
 
-void ReverseSearchEngine::searchByUrl(QUrl url) const
+void ReverseSearchEngine::searchByUrl(const QUrl &url) const
 {
 	QString tpl = QString(m_tpl);
 	tpl.replace("{url}", url.toEncoded());

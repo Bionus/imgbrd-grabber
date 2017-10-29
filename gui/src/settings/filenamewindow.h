@@ -27,7 +27,7 @@ class FilenameWindow : public QDialog
 
 	public:
 		explicit FilenameWindow(Profile *profile, QString value = "", QWidget *parent = Q_NULLPTR);
-		~FilenameWindow();
+		~FilenameWindow() override;
 		QString format();
 
 	public slots:
@@ -35,7 +35,7 @@ class FilenameWindow : public QDialog
 		void on_buttonHelpClassic_clicked();
 		void on_buttonHelpJavascript_clicked();
 		void send();
-		void done(int r);
+		void done(int r) override;
 
 	signals:
 		void validated(QString);

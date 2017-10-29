@@ -18,13 +18,13 @@ class UpdateDialog : public QDialog
 
 	public:
 		explicit UpdateDialog(bool *shouldQuit, QWidget *parent = Q_NULLPTR);
-		~UpdateDialog();
+		~UpdateDialog() override;
 
 	signals:
 		void noUpdateAvailable();
 
 	public slots:
-		void accept();
+		void accept() override;
 		void checkForUpdates();
 		void downloadUpdate();
 		void resizeToFit();

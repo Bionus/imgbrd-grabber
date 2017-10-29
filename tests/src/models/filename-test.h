@@ -30,6 +30,8 @@ class FilenameTest : public TestSuite
 		void testPathKeptTokens();
 		void testPathFull();
 		void testPathSimpleJavascript();
+		void testPathJavascriptToken();
+		void testPathJavascriptArray();
 		void testPathInvalidJavascript();
 		void testExpandTagSimple();
 		void testExpandTagWithInvalidCharacter();
@@ -60,12 +62,9 @@ class FilenameTest : public TestSuite
 		void testPathNoJpeg();
 		void testPathKeepInvalidTokens();
 		void testPathForbiddenSeparator();
-		void testGetReplacesSimple();
-		void testGetReplacesMultiple();
-		void testGetReplacesMatrix();
-		void testGetReplacesCustom();
-		void testGetReplacesSpecies();
-		void testGetReplacesSpeciesMultiple();
+		void testExpandTokensSimple();
+		void testExpandTokensMultiple();
+		void testExpandTokensMatrix();
 		void testIsValid();
 		void testUseShorterCopyright();
 		void testConditionalsTag();

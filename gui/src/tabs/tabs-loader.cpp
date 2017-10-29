@@ -11,7 +11,7 @@
 #include "models/profile.h"
 
 
-bool TabsLoader::load(QString path, QList<searchTab*> &allTabs, int &currentTab, Profile *profile, QMap<QString, Site*> &sites, mainWindow *parent)
+bool TabsLoader::load(const QString &path, QList<searchTab*> &allTabs, int &currentTab, Profile *profile, QMap<QString, Site*> &sites, mainWindow *parent)
 {
 	QSettings *settings = profile->getSettings();
 	bool preload = settings->value("preloadAllTabs", false).toBool();
@@ -40,7 +40,7 @@ bool TabsLoader::load(QString path, QList<searchTab*> &allTabs, int &currentTab,
 			{
 				if (infos[infos.size() - 1] == "pool")
 				{
-					poolTab *tab = new poolTab(&sites, profile, parent);
+					auto *tab = new poolTab(&sites, profile, parent);
 					tab->ui->spinPool->setValue(infos[0].toInt());
 					tab->ui->comboSites->setCurrentIndex(infos[1].toInt());
 					tab->ui->spinPage->setValue(infos[2].toInt());
@@ -52,7 +52,7 @@ bool TabsLoader::load(QString path, QList<searchTab*> &allTabs, int &currentTab,
 				}
 				else
 				{
-					tagTab *tab = new tagTab(&sites, profile, parent);
+					auto *tab = new tagTab(&sites, profile, parent);
 					tab->ui->spinPage->setValue(infos[1].toInt());
 					tab->ui->spinImagesPerPage->setValue(infos[2].toInt());
 					tab->ui->spinColumns->setValue(infos[3].toInt());
@@ -95,27 +95,27 @@ bool TabsLoader::load(QString path, QList<searchTab*> &allTabs, int &currentTab,
 	return false;
 }
 
-searchTab *TabsLoader::loadTab(QJsonObject infos, Profile *profile, QMap<QString, Site*> &sites, mainWindow *parent, bool preload)
+searchTab *TabsLoader::loadTab(QJsonObject info, Profile *profile, QMap<QString, Site*> &sites, mainWindow *parent, bool preload)
 {
-	QString type = infos["type"].toString();
+	QString type = info["type"].toString();
 
 	if (type == "tag")
 	{
-		tagTab *tab = new tagTab(&sites, profile, parent);
-		if (tab->read(infos, preload))
+		auto *tab = new tagTab(&sites, profile, parent);
+		if (tab->read(info, preload))
 			return tab;
 	}
 	else if (type == "pool")
 	{
-		poolTab *tab = new poolTab(&sites, profile, parent);
-		if (tab->read(infos, preload))
+		auto *tab = new poolTab(&sites, profile, parent);
+		if (tab->read(info, preload))
 			return tab;
 	}
 
 	return nullptr;
 }
 
-bool TabsLoader::save(QString path, QList<searchTab*> &allTabs, searchTab *currentTab)
+bool TabsLoader::save(const QString &path, QList<searchTab*> &allTabs, searchTab *currentTab)
 {
 	QFile saveFile(path);
 	if (!saveFile.open(QFile::WriteOnly))

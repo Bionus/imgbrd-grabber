@@ -16,25 +16,19 @@ class Tag
 		explicit Tag(QString text, QString type = "unknown", int count = 0, QStringList related = QStringList());
 		explicit Tag(QString text, TagType type, int count = 0, QStringList related = QStringList());
 		explicit Tag(int id, QString text, TagType type, int count = 0, QStringList related = QStringList());
-		~Tag();
-		static Tag FromCapture(QRegularExpressionMatch match, QStringList groups);
+		static Tag FromCapture(const QRegularExpressionMatch &match, const QStringList &groups);
 		static QList<Tag> FromRegexp(QString rx, const QString &source);
 		static QString GetType(QString type, QStringList ids);
-		QString stylished(Profile *profile, QStringList ignored = QStringList(), QStringList blacklisted = QStringList(), bool count = false, bool nounderscores = false) const;
 		void setId(int id);
-		void setText(QString);
-		void setType(TagType type);
-		void setCount(int);
-		void setRelated(QStringList);
+		void setText(const QString &text);
+		void setType(const TagType &type);
+		void setCount(int count);
+		void setRelated(const QStringList &related);
 		int			id()		const;
 		QString		text()		const;
 		TagType		type()		const;
 		int			count()		const;
 		QStringList	related()	const;
-		QString		typedText()	const;
-
-		static QString qFontToCss(QFont font);
-		static QStringList Stylished(QList<Tag>, Profile *profile, bool count = false, bool nounderscores = false, QString sort = "");
 
 	private:
 		int			m_id;

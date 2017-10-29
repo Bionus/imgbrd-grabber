@@ -7,6 +7,7 @@
 #include "commands/commands.h"
 #include "downloader/file-downloader.h"
 #include "models/api.h"
+#include "tags/tag-stylist.h"
 #include "functions.h"
 
 #define MAX_LOAD_FILESIZE (1024*1024*50)
@@ -83,6 +84,7 @@ Image::Image(const Image &other)
 	m_parentSite = other.m_parentSite;
 	m_details = other.m_details;
 
+	m_extensionRotator = other.m_extensionRotator;
 	m_loadingPreview = other.m_loadingPreview;
 	m_loadingDetails = other.m_loadingDetails;
 	m_loadingImage = other.m_loadingImage;
@@ -117,9 +119,9 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	m_parentId = details.contains("parent_id") ? details["parent_id"].toInt() : 0;
 	m_fileSize = details.contains("file_size") ? details["file_size"].toInt() : 0;
 	m_authorId = details.contains("creator_id") ? details["creator_id"].toInt() : 0;
-	m_hasChildren = details.contains("has_children") ? details["has_children"] == "true" : false;
-	m_hasNote = details.contains("has_note") ? details["has_note"] == "true" : false;
-	m_hasComments = details.contains("has_comments") ? details["has_comments"] == "true" : false;
+	m_hasChildren = details.contains("has_children") && details["has_children"] == "true";
+	m_hasNote = details.contains("has_note") && details["has_note"] == "true";
+	m_hasComments = details.contains("has_comments") && details["has_comments"] == "true";
 	m_fileUrl = details.contains("file_url") ? m_parentSite->fixUrl(details["file_url"]) : QUrl();
 	m_sampleUrl = details.contains("sample_url") ? m_parentSite->fixUrl(details["sample_url"]) : QUrl();
 	m_previewUrl = details.contains("preview_url") ? m_parentSite->fixUrl(details["preview_url"]) : QUrl();
@@ -145,7 +147,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 
 	// Tags
 	QStringList types = QStringList() << "general" << "artist" << "character" << "copyright" << "model" << "species";
-	for (QString typ : types)
+	for (const QString &typ : types)
 	{
 		QString key = "tags_" + typ;
 		if (!details.contains(key))
@@ -272,7 +274,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	QStringList extensions = animated
 		? QStringList() << "webm" << "mp4" << "gif" << "jpg" << "png" << "jpeg" << "swf"
 		: QStringList() << "jpg" << "png" << "gif" << "jpeg" << "webm" << "swf" << "mp4";
-	m_extensionRotator = new ExtensionRotator(getExtension(m_url), extensions);
+	m_extensionRotator = ExtensionRotator(getExtension(m_url), extensions);
 
 	// Tech details
 	m_parent = parent;
@@ -326,10 +328,10 @@ void Image::parsePreview()
 	}
 
 	// Check redirection
-	QUrl redir = m_loadPreview->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
-	if (!redir.isEmpty())
+	QUrl redirection = m_loadPreview->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
+	if (!redirection.isEmpty())
 	{
-		m_previewUrl = redir;
+		m_previewUrl = redirection;
 		loadPreview();
 		return;
 	}
@@ -508,7 +510,7 @@ void Image::parseDetails()
 	emit finishedLoadingTags();
 }
 
-int toDate(QString text)
+int toDate(const QString &text)
 {
 	QDateTime date = QDateTime::fromString(text, "yyyy-MM-dd");
 	if (date.isValid())
@@ -528,11 +530,11 @@ QString Image::match(QString filter, bool invert) const
 	// Invert the filter by prepending '-'
 	if (filter.startsWith('-'))
 	{
-		filter = filter.right(filter.length()-1);
+		filter = filter.right(filter.length() - 1);
 		invert = !invert;
 	}
 
-	// Metatags
+	// Meta-tags
 	if (filter.contains(":"))
 	{
 		QString type = filter.section(':', 0, 0).toLower();
@@ -636,7 +638,7 @@ QString Image::match(QString filter, bool invert) const
 	{
 		// Check if any tag match the filter (case insensitive plain text with wildcards allowed)
 		bool cond = false;
-		for (Tag tag : m_tags)
+		for (const Tag &tag : m_tags)
 		{
 			QRegExp reg(filter.trimmed(), Qt::CaseInsensitive, QRegExp::Wildcard);
 			if (reg.exactMatch(tag.text()))
@@ -655,10 +657,10 @@ QString Image::match(QString filter, bool invert) const
 	return QString();
 }
 
-QStringList Image::filter(QStringList filters) const
+QStringList Image::filter(const QStringList &filters) const
 {
 	QStringList ret;
-	for (QString filter : filters)
+	for (const QString &filter : filters)
 	{
 		QString match = this->match(filter);
 		if (!match.isEmpty())
@@ -676,7 +678,7 @@ QStringList Image::filter(QStringList filters) const
  * @param simple True to force using the fn and pth parameters.
  * @return The filename of the image, with any token replaced.
  */
-QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool simple, bool maxlength, bool shouldFixFilename, bool getFull) const
+QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool simple, bool maxLength, bool shouldFixFilename, bool getFull) const
 {
 	if (!simple)
 	{
@@ -692,7 +694,7 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 	}
 
 	Filename filename(fn);
-	return filename.path(*this, m_profile, pth, counter, complex, maxlength, shouldFixFilename, getFull);
+	return filename.path(*this, m_profile, pth, counter, complex, maxLength, shouldFixFilename, getFull);
 }
 
 void Image::loadImage(bool inMemory)
@@ -769,8 +771,7 @@ void Image::finishedImageS(bool inMemory)
 	if (m_loadImage->error() == QNetworkReply::ContentNotFoundError)
 	{
 		bool sampleFallback = m_settings->value("Save/samplefallback", true).toBool();
-		QString ext = getExtension(m_url);
-		QString newext = m_extensionRotator->next();
+		QString newext = m_extensionRotator.next();
 
 		bool shouldFallback = sampleFallback && !m_sampleUrl.isEmpty();
 		bool isLast = newext.isEmpty() || (shouldFallback && m_tryingSample);
@@ -882,13 +883,13 @@ int Image::value() const
 /**
  * Checks whether an image contains a given set of tags.
  *
- * @param blacklistedtags The list of tags to check.
+ * @param blacklistedTags The list of tags to check.
  * @return The blacklisted tags found in the image (empty list if none is found).
  */
-QStringList Image::blacklisted(QStringList blacklistedtags, bool invert) const
+QStringList Image::blacklisted(const QStringList &blacklistedTags, bool invert) const
 {
 	QStringList detected;
-	for (QString tag : blacklistedtags)
+	for (const QString &tag : blacklistedTags)
 	{
 		if (!match(tag, invert).isEmpty())
 		{ detected.append(tag); }
@@ -898,10 +899,11 @@ QStringList Image::blacklisted(QStringList blacklistedtags, bool invert) const
 
 QStringList Image::stylishedTags(Profile *profile) const
 {
-	return Tag::Stylished(m_tags, profile);
+	TagStylist stylist(profile);
+	return stylist.stylished(m_tags);
 }
 
-Image::SaveResult Image::save(QString path, bool force, bool basic, bool addMd5, bool startCommands, int count, bool loadIfNecessary)
+Image::SaveResult Image::save(const QString &path, bool force, bool basic, bool addMd5, bool startCommands, int count, bool loadIfNecessary, bool postSave)
 {
 	SaveResult res = SaveResult::Saved;
 
@@ -1005,14 +1007,15 @@ Image::SaveResult Image::save(QString path, bool force, bool basic, bool addMd5,
 			return SaveResult::Ignored;
 		}
 
-		postSaving(path, addMd5 && res == SaveResult::Saved, startCommands, count, basic);
+		if (postSave)
+		{ postSaving(path, addMd5 && res == SaveResult::Saved, startCommands, count, basic); }
 	}
 	else
 	{ res = SaveResult::AlreadyExists; }
 
 	return res;
 }
-void Image::postSaving(QString path, bool addMd5, bool startCommands, int count, bool basic)
+void Image::postSaving(const QString &path, bool addMd5, bool startCommands, int count, bool basic)
 {
 	if (addMd5)
 	{ m_profile->addMd5(md5(), path); }
@@ -1066,40 +1069,40 @@ void Image::postSaving(QString path, bool addMd5, bool startCommands, int count,
 	Commands &commands = m_profile->getCommands();
 	if (startCommands)
 	{ commands.before(); }
-		for (Tag tag : tags())
+		for (const Tag &tag : tags())
 		{ commands.tag(*this, tag, false); }
 		commands.image(*this, path);
-		for (Tag tag : tags())
+		for (const Tag &tag : tags())
 		{ commands.tag(*this, tag, true); }
 	if (startCommands)
 	{ commands.after(); }
 
 	m_savePath = path;
 }
-QMap<QString, Image::SaveResult> Image::save(QStringList paths, bool addMd5, bool startCommands, int count, bool force, bool loadIfNecessary)
+QMap<QString, Image::SaveResult> Image::save(const QStringList &paths, bool addMd5, bool startCommands, int count, bool force, bool loadIfNecessary)
 {
 	QMap<QString, Image::SaveResult> res;
-	for (QString path : paths)
+	for (const QString &path : paths)
 		res.insert(path, save(path, force, false, addMd5, startCommands, count, loadIfNecessary));
 	return res;
 }
-QMap<QString, Image::SaveResult> Image::save(QString filename, QString path, bool addMd5, bool startCommands, int count, bool loadIfNecessary)
+QMap<QString, Image::SaveResult> Image::save(const QString &filename, const QString &path, bool addMd5, bool startCommands, int count, bool loadIfNecessary)
 {
 	QStringList paths = this->path(filename, path, count, true, false, true, true, true);
 	return save(paths, addMd5, startCommands, count, false, loadIfNecessary);
 }
 
-QList<Tag> Image::filteredTags(QStringList remove) const
+QList<Tag> Image::filteredTags(const QStringList &remove) const
 {
 	QList<Tag> tags;
 
 	QRegExp reg;
 	reg.setCaseSensitivity(Qt::CaseInsensitive);
 	reg.setPatternSyntax(QRegExp::Wildcard);
-	for (Tag tag : m_tags)
+	for (const Tag &tag : m_tags)
 	{
 		bool removed = false;
-		for (QString rem : remove)
+		for (const QString &rem : remove)
 		{
 			reg.setPattern(rem);
 			if (reg.exactMatch(tag.text()))
@@ -1169,8 +1172,8 @@ QUrl Image::getDisplayableUrl() const
 QStringList Image::tagsString() const
 {
 	QStringList tags;
-	for (Tag tag : m_tags)
-	{ tags.append(tag.text()); }
+	for (const Tag &tag : m_tags)
+		tags.append(tag.text());
 	return tags;
 }
 
@@ -1205,11 +1208,11 @@ void	Image::setData(const QByteArray &d)
 		m_md5 = QCryptographicHash::hash(m_data, QCryptographicHash::Md5).toHex();
 	}
 }
-void Image::setSavePath(QString savePath)
+void Image::setSavePath(const QString &savePath)
 {
 	m_savePath = savePath;
 }
-void Image::setTags(QList<Tag> tags)
+void Image::setTags(const QList<Tag> &tags)
 {
 	m_tags = tags;
 }
@@ -1245,21 +1248,21 @@ QString Image::md5() const
 bool Image::hasTag(QString tag) const
 {
 	tag = tag.trimmed();
-	for (Tag t : m_tags)
+	for (const Tag &t : m_tags)
 		if (QString::compare(t.text(), tag, Qt::CaseInsensitive) == 0)
 			return true;
 	return false;
 }
 bool Image::hasAnyTag(QStringList tags) const
 {
-	for (QString tag : tags)
+	for (const QString &tag : tags)
 		if (this->hasTag(tag))
 			return true;
 	return false;
 }
 bool Image::hasAllTags(QStringList tags) const
 {
-	for (QString tag : tags)
+	for (const QString &tag : tags)
 		if (!this->hasTag(tag))
 			return false;
 	return true;
@@ -1292,6 +1295,140 @@ void Image::setFileExtension(QString ext)
 
 bool Image::isVideo() const
 {
-	QString ext = getExtension(m_url);
+	QString ext = getExtension(m_url).toLower();
 	return ext == "mp4" || ext == "webm";
+}
+QString Image::isAnimated() const
+{
+	QString ext = getExtension(m_url).toLower();
+
+	if (ext == "gif" || ext == "apng")
+		return ext;
+
+	if (ext == "png" && (hasTag("animated") || hasTag("animated_png")))
+		return "apng";
+
+	return QString();
+}
+
+void Image::preload(const Filename &filename)
+{
+	if (!filename.needExactTags(m_parentSite))
+		return;
+
+	QEventLoop loop;
+	QObject::connect(this, &Image::finishedLoadingTags, &loop, &QEventLoop::quit);
+	loadDetails();
+	loop.exec();
+}
+
+QStringList Image::paths(const Filename &filename, const QString &folder, int count) const
+{
+	return path(filename.getFormat(), folder, count, true, false, true, true, true);
+}
+
+QMap<QString, Token> Image::tokens(Profile *profile) const
+{
+	QSettings *settings = profile->getSettings();
+	QStringList ignore = profile->getIgnored();
+	QStringList remove = settings->value("ignoredtags").toString().split(' ', QString::SkipEmptyParts);
+
+	QMap<QString, Token> tokens;
+
+	// Pool
+	QRegularExpression poolRegexp("pool:(\\d+)");
+	QRegularExpressionMatch poolMatch = poolRegexp.match(m_search.join(' '));
+	tokens.insert("pool", Token(poolMatch.hasMatch() ? poolMatch.captured(1) : "", ""));
+
+	// Metadata
+	tokens.insert("filename", Token(QUrl::fromPercentEncoding(m_url.section('/', -1).section('.', 0, -2).toUtf8()), ""));
+	tokens.insert("website", Token(m_parentSite->url(), ""));
+	tokens.insert("websitename", Token(m_parentSite->name(), ""));
+	tokens.insert("md5", Token(md5(), ""));
+	tokens.insert("date", Token(m_createdAt, QDateTime()));
+	tokens.insert("id", Token(m_id, 0));
+	tokens.insert("rating", Token(m_rating, "unknown"));
+	tokens.insert("score", Token(m_score, 0));
+	tokens.insert("height", Token(m_size.height(), 0));
+	tokens.insert("width", Token(m_size.width(), 0));
+	tokens.insert("url_file", Token(m_url, ""));
+	tokens.insert("url_page", Token(m_pageUrl.toString(), ""));
+
+	// Search
+	for (int i = 0; i < m_search.size(); ++i)
+	{ tokens.insert("search_" + QString::number(i + 1), Token(m_search[i], "")); }
+	for (int i = m_search.size(); i < 10; ++i)
+	{ tokens.insert("search_" + QString::number(i + 1), Token("", "")); }
+	tokens.insert("search", Token(m_search.join(' '), ""));
+
+	// Tags
+	QMap<QString, QStringList> details;
+	for (const Tag &tag : filteredTags(remove))
+	{
+		QString t = tag.text();
+
+		details[ignore.contains(t, Qt::CaseInsensitive) ? "general" : tag.type().name()].append(t);
+		details["alls"].append(t);
+		details["alls_namespaces"].append(tag.type().name());
+
+		QString underscored = QString(t);
+		underscored.replace(' ', '_');
+		details["allos"].append(underscored);
+	}
+
+	// Shorten copyrights
+	if (settings->value("Save/copyright_useshorter", true).toBool())
+	{
+		QStringList copyrights;
+		for (const QString &cop : details["copyright"])
+		{
+			bool found = false;
+			for (int r = 0; r < copyrights.size(); ++r)
+			{
+				if (copyrights.at(r).left(cop.size()) == cop.left(copyrights.at(r).size()))
+				{
+					if (cop.size() < copyrights.at(r).size())
+					{ copyrights[r] = cop; }
+					found = true;
+				}
+			}
+			if (!found)
+			{ copyrights.append(cop); }
+		}
+		details["copyright"] = copyrights;
+	}
+
+	// Tags
+	tokens.insert("general", Token(details["general"]));
+	tokens.insert("artist", Token(details["artist"], "replaceAll", "anonymous", "multiple artists"));
+	tokens.insert("copyright", Token(details["copyright"], "replaceAll", "misc", "crossover"));
+	tokens.insert("character", Token(details["character"], "replaceAll", "unknown", "group"));
+	tokens.insert("model", Token(details["model"], "replaceAll", "unknown", "multiple"));
+	tokens.insert("species", Token(details["species"], "replaceAll", "unknown", "multiple"));
+	tokens.insert("allos", Token(details["allos"]));
+	tokens.insert("allo", Token(details["allos"].join(' '), ""));
+	tokens.insert("tags", Token(details["alls"]));
+	tokens.insert("all", Token(details["alls"]));
+	tokens.insert("all_namespaces", Token(details["alls_namespaces"]));
+
+	// Extension
+	QString ext = getExtension(m_url);
+	if (settings->value("Save/noJpeg", true).toBool() && ext == "jpeg")
+		ext = "jpg";
+	tokens.insert("ext", Token(ext, "jpg"));
+
+	return tokens;
+}
+
+Image::SaveResult Image::preSave(const QString &path)
+{
+	return save(path, false, false, false, false, 0, false, false);
+}
+
+void Image::postSave(QMap<QString, Image::SaveResult> result, bool addMd5, bool startCommands, int count)
+{
+	const QString &path = result.firstKey();
+	Image::SaveResult res = result[path];
+
+	postSaving(path, addMd5 && res == SaveResult::Saved, startCommands, count);
 }

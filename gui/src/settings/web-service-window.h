@@ -19,7 +19,7 @@ class WebServiceWindow : public QDialog
 
 	public:
 		explicit WebServiceWindow(const ReverseSearchEngine *webService, QWidget *parent = Q_NULLPTR);
-		~WebServiceWindow();
+		~WebServiceWindow() override;
 
 	protected slots:
 		void getFavicon();

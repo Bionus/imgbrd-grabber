@@ -40,12 +40,12 @@ class zoomWindow : public QWidget
 		};
 
 		zoomWindow(QList<QSharedPointer<Image>> images, QSharedPointer<Image> image, Site *site, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent);
-		~zoomWindow();
+		~zoomWindow() override;
 		void go();
 		void load();
 
 	public slots:
-		void update(bool onlysize = false, bool force = false);
+		void update(bool onlySize = false, bool force = false);
 		void replyFinishedDetails();
 		void replyFinishedZoom(QNetworkReply::NetworkError error = QNetworkReply::NoError, QString errorString = "");
 		void display(const QPixmap &, int);
@@ -93,12 +93,11 @@ class zoomWindow : public QWidget
 		void previous();
 
 	protected:
-		void closeEvent(QCloseEvent *);
-		void resizeEvent(QResizeEvent *);
-		void save(QString, QPushButton *);
-		void showEvent(QShowEvent *);
-		void mouseReleaseEvent(QMouseEvent *);
-		void wheelEvent(QWheelEvent *);
+		void closeEvent(QCloseEvent *) override;
+		void resizeEvent(QResizeEvent *) override;
+		void showEvent(QShowEvent *) override;
+		void mouseReleaseEvent(QMouseEvent *) override;
+		void wheelEvent(QWheelEvent *) override;
 		void draw();
 
 	private:
@@ -150,6 +149,7 @@ class zoomWindow : public QWidget
 		SaveButtonState m_saveButonState, m_saveButonStateFav;
 
 		// Display
+		QString m_isAnimated;
 		QPixmap m_displayImage;
 		QMovie *m_displayMovie;
 		bool m_labelImageScaled;

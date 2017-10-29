@@ -10,12 +10,12 @@ Favorite::Favorite(QString name, int note, QDateTime lastViewed, QString imagePa
 	: m_name(name), m_note(note), m_lastViewed(lastViewed), m_imagePath(imagePath)
 {}
 
-void Favorite::setImagePath(QString val)
-{ m_imagePath = val; }
-void Favorite::setLastViewed(QDateTime val)
-{ m_lastViewed = val; }
-void Favorite::setNote(int val)
-{ m_note = val; }
+void Favorite::setImagePath(const QString &imagePath)
+{ m_imagePath = imagePath; }
+void Favorite::setLastViewed(const QDateTime &lastViewed)
+{ m_lastViewed = lastViewed; }
+void Favorite::setNote(int note)
+{ m_note = note; }
 
 QString Favorite::getName(bool clean) const
 {
@@ -30,7 +30,7 @@ QDateTime Favorite::getLastViewed() const
 QString Favorite::getImagePath() const
 { return m_imagePath; }
 
-bool Favorite::setImage(QPixmap& img)
+bool Favorite::setImage(const QPixmap &img)
 {
 	if (!QDir(savePath("thumbs")).exists())
 		QDir(savePath()).mkdir("thumbs");
@@ -55,7 +55,7 @@ QString Favorite::toString() const
 {
 	return getName() + "|" + QString::number(getNote()) + "|" + getLastViewed().toString(Qt::ISODate);
 }
-Favorite Favorite::fromString(QString path, QString text)
+Favorite Favorite::fromString(const QString &path, const QString &text)
 {
 	QStringList xp = text.split("|");
 

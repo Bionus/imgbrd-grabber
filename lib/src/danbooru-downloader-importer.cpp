@@ -58,12 +58,7 @@ void DanbooruDownloaderImporter::import(QSettings *dest) const
 
 	dest->beginGroup("Save");
 	if (firefox.keys().contains("useBlacklist"))
-	{
-		if (firefox["useBlacklist"] == "true")
-		{ dest->setValue("downloadblacklist", false); }
-		else
-		{ dest->setValue("downloadblacklist", true); }
-	}
+	{ dest->setValue("downloadblacklist", firefox["useBlacklist"] != "true"); }
 	for (int i = 0; i < firefox.size(); i++)
 	{
 		if (assoc.keys().contains(firefox.keys().at(i)))

@@ -23,7 +23,7 @@ class poolTab : public searchTab
 
 	public:
 		explicit poolTab(QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent);
-		~poolTab();
+		~poolTab() override;
 		Ui::poolTab *ui;
 		QString tags() const override;
 		QList<Site*> loadSites() const override;

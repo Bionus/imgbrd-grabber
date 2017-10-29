@@ -18,8 +18,8 @@ class BlacklistFix2 : public QDialog
 	Q_OBJECT
 
 	public:
-		explicit BlacklistFix2(QList<QMap<QString,QString> > details, QStringList blacklist, QWidget *parent = 0);
-		~BlacklistFix2();
+		explicit BlacklistFix2(QList<QMap<QString,QString> > details, QStringList blacklist, QWidget *parent = Q_NULLPTR);
+		~BlacklistFix2() override;
 
 	private slots:
 		void on_buttonSelectBlacklisted_clicked();

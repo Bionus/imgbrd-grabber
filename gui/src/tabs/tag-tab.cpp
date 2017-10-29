@@ -200,7 +200,7 @@ void tagTab::getAll()
 			actuals.append(keys.at(i));
 	}
 
-	for (QString actual : actuals)
+	for (const QString &actual : actuals)
 	{
 		Page *page = m_pages[actual].first();
 
@@ -229,7 +229,7 @@ QString tagTab::tags() const
 
 void tagTab::changeEvent(QEvent *event)
 {
-	// Automatically retranslate this tab on language change
+	// Automatically re-translate this tab on language change
 	if (event->type() == QEvent::LanguageChange)
 	{
 		ui->retranslateUi(this);

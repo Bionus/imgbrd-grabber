@@ -32,7 +32,7 @@ bool DownloadQueryLoader::load(QString path, QList<DownloadQueryImage> &uniques,
 		if (det.empty())
 			return false;
 
-		for (QString link : det)
+		for (const QString &link : det)
 		{
 			QStringList infos = link.split(fieldSeparator);
 			if (infos.size() == 9)
@@ -102,19 +102,19 @@ bool DownloadQueryLoader::save(QString path, const QList<DownloadQueryImage> &un
 
 	// Batch downloads
 	QJsonArray batchsJson;
-	for (int i = 0; i < batchs.size(); i++)
+	for (const auto &b : batchs)
 	{
 		QJsonObject batch;
-		batchs[i].write(batch);
+		b.write(batch);
 		batchsJson.append(batch);
 	}
 
 	// Unique images
 	QJsonArray uniquesJson;
-	for (int i = 0; i < uniques.size(); i++)
+	for (const auto &u : uniques)
 	{
 		QJsonObject unique;
-		uniques[i].write(unique);
+		u.write(unique);
 		uniquesJson.append(unique);
 	}
 

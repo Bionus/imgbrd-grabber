@@ -11,7 +11,7 @@ class Updater : public QObject
 
 	public:
 		Updater();
-		~Updater();
+		~Updater() override;
 		int compareVersions(QString a, QString b);
 
 	public slots:

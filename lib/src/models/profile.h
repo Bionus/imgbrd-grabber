@@ -20,7 +20,7 @@ class Profile : public QObject
 		Profile();
 		Profile(QSettings *settings, QList<Favorite> favorites, QStringList keptForLater = QStringList(), QString path = QString());
 		explicit Profile(QString path);
-		~Profile();
+		~Profile() override;
 		void sync();
 
 		// Temporary path

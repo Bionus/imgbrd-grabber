@@ -2,7 +2,7 @@
 
 
 Resizer::Resizer(QObject *parent)
-	: QObject(parent)
+	: QObject(parent), m_aspectMode(Qt::KeepAspectRatio)
 { }
 
 void Resizer::run()
@@ -28,7 +28,7 @@ void Resizer::setSize(const QSize &size)
 }
 
 
-void Resizer::setAspectRatioMode(const Qt::AspectRatioMode mode)
+void Resizer::setAspectRatioMode(Qt::AspectRatioMode mode)
 {
 	m_aspectMode = mode;
 }

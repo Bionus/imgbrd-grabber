@@ -77,11 +77,11 @@ void ProgramUpdater::downloadUpdate()
 
 void ProgramUpdater::downloadDone()
 {
-	QUrl redir = m_downloadReply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
-	if (!redir.isEmpty())
+	QUrl redirection = m_downloadReply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
+	if (!redirection.isEmpty())
 	{
-		log(QString("Installer download redirected to \"%1\".").arg(redir.toString()));
-		QNetworkRequest request(redir);
+		log(QString("Installer download redirected to \"%1\".").arg(redirection.toString()));
+		QNetworkRequest request(redirection);
 		m_downloadReply = m_networkAccessManager->get(request);
 		connect(m_downloadReply, &QNetworkReply::downloadProgress, this, &ProgramUpdater::downloadProgress);
 		connect(m_downloadReply, &QNetworkReply::finished, this, &ProgramUpdater::downloadDone);

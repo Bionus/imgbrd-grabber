@@ -2,7 +2,8 @@
 #include <QMouseEvent>
 
 
-QAffiche::QAffiche(QVariant id, int border, QColor color, QWidget *parent) : QLabel(parent)
+QAffiche::QAffiche(QVariant id, int border, QColor color, QWidget *parent)
+	: QLabel(parent), m_lastPressed(Qt::NoButton)
 {
 	m_pressed = false;
 	m_id = id;
@@ -10,8 +11,6 @@ QAffiche::QAffiche(QVariant id, int border, QColor color, QWidget *parent) : QLa
 	m_color = color;
 	setText("");
 }
-QAffiche::~QAffiche()
-{  }
 
 /*void QAffiche::paintEvent(QPaintEvent *event)
 {
@@ -57,10 +56,7 @@ void QAffiche::mouseDoubleClickEvent(QMouseEvent* e)
 void QAffiche::mousePressEvent(QMouseEvent* e)
 {
 	m_lastPressed = e->button();
-	if (e->button() == Qt::LeftButton || e->button() == Qt::MidButton)
-	{ m_pressed = true; }
-	else
-	{ m_pressed = false; }
+	m_pressed = e->button() == Qt::LeftButton || e->button() == Qt::MidButton;
 	emit pressed();
 	emit pressed(m_id.toInt());
 	QLabel::mousePressEvent(e);

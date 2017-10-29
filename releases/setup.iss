@@ -1,5 +1,5 @@
 #define MyAppName "Grabber"
-#define MyAppVersion "5.5.1"
+#define MyAppVersion "5.5.2"
 #define MyAppPublisher "Bionus"
 #define MyAppURL "https://github.com/Bionus/imgbrd-grabber"
 #define MyAppExeName "Grabber.exe"
@@ -62,7 +62,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 0,6.1
 
 [Files]
-Source: "..\resources\images\icon.ico";         DestDir: "{app}"; Flags: ignoreversion
+Source: "resources\images\icon.ico";            DestDir: "{app}"; Flags: ignoreversion
 Source: "..\release\CDR.exe";                   DestDir: "{app}"; Flags: ignoreversion
 Source: "..\build\CrashReporter\CrashReporter.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\build\cli\Grabber-cli.exe";         DestDir: "{app}"; Flags: ignoreversion; DestName: "Grabber.com"
@@ -117,6 +117,10 @@ Source: "..\release\sqldrivers\qsqlite.dll";    DestDir: "{app}\sqldrivers"; Fla
 Source: "..\release\sqldrivers\qsqlmysql.dll";  DestDir: "{app}\sqldrivers"; Flags: ignoreversion
 Source: "..\release\sqldrivers\qsqlodbc.dll";   DestDir: "{app}\sqldrivers"; Flags: ignoreversion
 Source: "..\release\sqldrivers\qsqlpsql.dll";   DestDir: "{app}\sqldrivers"; Flags: ignoreversion
+Source: "..\release\sites\Anime pictures\icon.png";     DestDir: "{localappdata}\Bionus\Grabber\sites\Anime pictures"; Flags: ignoreversion
+Source: "..\release\sites\Anime pictures\model.xml";    DestDir: "{localappdata}\Bionus\Grabber\sites\Anime pictures"; Flags: ignoreversion
+Source: "..\release\sites\Anime pictures\sites.txt";    DestDir: "{localappdata}\Bionus\Grabber\sites\Anime pictures"; Flags: onlyifdoesntexist
+Source: "..\release\sites\Anime pictures\anime-pictures.net\defaults.ini"; DestDir: "{localappdata}\Bionus\Grabber\sites\Anime pictures\anime-pictures.net"; Flags: ignoreversion
 Source: "..\release\sites\Booru-on-rails\icon.png";     DestDir: "{localappdata}\Bionus\Grabber\sites\Booru-on-rails"; Flags: ignoreversion
 Source: "..\release\sites\Booru-on-rails\model.xml";    DestDir: "{localappdata}\Bionus\Grabber\sites\Booru-on-rails"; Flags: ignoreversion
 Source: "..\release\sites\Booru-on-rails\sites.txt";    DestDir: "{localappdata}\Bionus\Grabber\sites\Booru-on-rails"; Flags: onlyifdoesntexist

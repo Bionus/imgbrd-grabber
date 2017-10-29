@@ -8,7 +8,6 @@ class Pool
 {
 	public:
 		explicit Pool(int id, QString name, int current, int next = 0, int previous = 0);
-		~Pool();
 
 		// Getters
 		int		id() const;

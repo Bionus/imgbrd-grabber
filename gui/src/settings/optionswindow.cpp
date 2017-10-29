@@ -33,7 +33,7 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 
 	LanguageLoader languageLoader(savePath("languages/", true));
 	QMap<QString, QString> languages = languageLoader.getAllLanguages();
-	for (QString language : languages.keys())
+	for (const QString &language : languages.keys())
 	{ ui->comboLanguages->addItem(languages[language], language); }
 
 	QSettings *settings = profile->getSettings();
@@ -79,7 +79,7 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 		m_filenamesFilenames.append(leFilename);
 		m_filenamesFolders.append(leFolder);
 
-		QHBoxLayout *layout = new QHBoxLayout(this);
+		auto *layout = new QHBoxLayout(this);
 		layout->addWidget(leCondition);
 		layout->addWidget(leFilename);
 		layout->addWidget(leFolder);
@@ -197,19 +197,20 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	QMap<QString, QStringList> customs = getCustoms(settings);
 	m_customNames = QList<QLineEdit*>();
 	m_customTags = QList<QLineEdit*>();
-	for (QString key : customs.keys())
+	i = 0;
+	for (const QString &key : customs.keys())
 	{
-		QLineEdit *leName = new QLineEdit(key);
-		QLineEdit *leTags = new QLineEdit(customs[key].join(" "));
+		auto *leName = new QLineEdit(key);
+		auto *leTags = new QLineEdit(customs[key].join(" "));
 		m_customNames.append(leName);
 		m_customTags.append(leTags);
-		ui->layoutCustom->insertRow(i, leName, leTags);
+		ui->layoutCustom->insertRow(i++, leName, leTags);
 	}
 
 	// Themes
 	ThemeLoader themeLoader(savePath("themes/", true));
 	QStringList themes = themeLoader.getAllThemes();
-	for (QString theme : themes)
+	for (const QString &theme : themes)
 	{ ui->comboTheme->addItem(theme, theme); }
 	ui->comboTheme->setCurrentText(settings->value("theme", "Default").toString());
 
@@ -245,11 +246,12 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 			ui->lineColoringModels->setText(settings->value("models", "#0000ee").toString());
 			ui->lineColoringGenerals->setText(settings->value("generals", "#000000").toString());
 			ui->lineColoringFavorites->setText(settings->value("favorites", "#ffc0cb").toString());
+			ui->lineColoringKeptForLater->setText(settings->value("keptForLater", "#000000").toString());
 			ui->lineColoringBlacklisteds->setText(settings->value("blacklisteds", "#000000").toString());
 			ui->lineColoringIgnoreds->setText(settings->value("ignoreds", "#999999").toString());
 		settings->endGroup();
 		settings->beginGroup("Fonts");
-			QFont fontArtists, fontCircles, fontCopyrights, fontCharacters, fontSpecies, fontModels, fontGenerals, fontFavorites, fontBlacklisteds, fontIgnoreds;
+			QFont fontArtists, fontCircles, fontCopyrights, fontCharacters, fontSpecies, fontModels, fontGenerals, fontFavorites, fontKeptForLater, fontBlacklisteds, fontIgnoreds;
 			fontArtists.fromString(settings->value("artists").toString());
 			fontCircles.fromString(settings->value("circles").toString());
 			fontCopyrights.fromString(settings->value("copyrights").toString());
@@ -258,6 +260,7 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 			fontModels.fromString(settings->value("models").toString());
 			fontGenerals.fromString(settings->value("generals").toString());
 			fontFavorites.fromString(settings->value("favorites").toString());
+			fontKeptForLater.fromString(settings->value("keptForLater").toString());
 			fontBlacklisteds.fromString(settings->value("blacklisteds").toString());
 			fontIgnoreds.fromString(settings->value("ignoreds").toString());
 			ui->lineColoringArtists->setFont(fontArtists);
@@ -268,6 +271,7 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 			ui->lineColoringModels->setFont(fontModels);
 			ui->lineColoringGenerals->setFont(fontGenerals);
 			ui->lineColoringFavorites->setFont(fontFavorites);
+			ui->lineColoringKeptForLater->setFont(fontKeptForLater);
 			ui->lineColoringBlacklisteds->setFont(fontBlacklisteds);
 			ui->lineColoringIgnoreds->setFont(fontIgnoreds);
 		settings->endGroup();
@@ -349,35 +353,35 @@ void optionsWindow::on_buttonFavoritesPlus_clicked()
 
 void optionsWindow::on_buttonCustom_clicked()
 {
-	CustomWindow *cw = new CustomWindow(this);
+	auto *cw = new CustomWindow(this);
 	connect(cw, SIGNAL(validated(QString, QString)), this, SLOT(addCustom(QString, QString)));
 	cw->show();
 }
 void optionsWindow::addCustom(QString name, QString tags)
 {
-	QLineEdit *leName = new QLineEdit(name);
-	QLineEdit *leTags = new QLineEdit(tags);
+	auto *leName = new QLineEdit(name);
+	auto *leTags = new QLineEdit(tags);
 	ui->layoutCustom->insertRow(m_customNames.size(), leName, leTags);
 	m_customNames.append(leName);
 	m_customTags.append(leTags);
 }
 void optionsWindow::on_buttonFilenames_clicked()
 {
-	conditionWindow *cw = new conditionWindow();
+	auto *cw = new conditionWindow();
 	connect(cw, SIGNAL(validated(QString, QString, QString)), this, SLOT(addFilename(QString, QString, QString)));
 	cw->show();
 }
 void optionsWindow::addFilename(QString condition, QString filename, QString folder)
 {
-	QLineEdit *leCondition = new QLineEdit(condition);
-	QLineEdit *leFilename = new QLineEdit(filename);
-	QLineEdit *leFolder = new QLineEdit(folder);
+	auto *leCondition = new QLineEdit(condition);
+	auto *leFilename = new QLineEdit(filename);
+	auto *leFolder = new QLineEdit(folder);
 
 	m_filenamesConditions.append(leCondition);
 	m_filenamesFilenames.append(leFilename);
 	m_filenamesFolders.append(leFolder);
 
-	QHBoxLayout *layout = new QHBoxLayout(this);
+	auto *layout = new QHBoxLayout(this);
 	layout->addWidget(leCondition);
 	layout->addWidget(leFilename);
 	layout->addWidget(leFolder);
@@ -390,24 +394,24 @@ void optionsWindow::showLogFiles(QSettings *settings)
 	clearLayout(ui->layoutLogFiles);
 
 	auto logFiles = getExternalLogFiles(settings);
-	QSignalMapper *mapperEditLogFile = new QSignalMapper(this);
-	QSignalMapper *mapperRemoveLogFile = new QSignalMapper(this);
+	auto *mapperEditLogFile = new QSignalMapper(this);
+	auto *mapperRemoveLogFile = new QSignalMapper(this);
 	connect(mapperEditLogFile, SIGNAL(mapped(int)), this, SLOT(editLogFile(int)));
 	connect(mapperRemoveLogFile, SIGNAL(mapped(int)), this, SLOT(removeLogFile(int)));
 	for (int i : logFiles.keys())
 	{
 		auto logFile = logFiles[i];
 
-		QLabel *label = new QLabel(logFile["name"].toString());
+		auto *label = new QLabel(logFile["name"].toString());
 		label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 		ui->layoutLogFiles->addWidget(label, i, 0);
 
-		QPushButton *buttonEdit = new QPushButton("Edit");
+		auto *buttonEdit = new QPushButton("Edit");
 		mapperEditLogFile->setMapping(buttonEdit, i);
 		connect(buttonEdit, SIGNAL(clicked(bool)), mapperEditLogFile, SLOT(map()));
 		ui->layoutLogFiles->addWidget(buttonEdit, i, 1);
 
-		QPushButton *buttonDelete = new QPushButton("Remove");
+		auto *buttonDelete = new QPushButton("Remove");
 		mapperRemoveLogFile->setMapping(buttonDelete, i);
 		connect(buttonDelete, SIGNAL(clicked(bool)), mapperRemoveLogFile, SLOT(map()));
 		ui->layoutLogFiles->addWidget(buttonDelete, i, 2);
@@ -416,14 +420,14 @@ void optionsWindow::showLogFiles(QSettings *settings)
 
 void optionsWindow::addLogFile()
 {
-	LogWindow *logWindow = new LogWindow(-1, m_profile, this);
+	auto *logWindow = new LogWindow(-1, m_profile, this);
 	connect(logWindow, &LogWindow::validated, this, &optionsWindow::setLogFile);
 	logWindow->show();
 }
 
 void optionsWindow::editLogFile(int index)
 {
-	LogWindow *logWindow = new LogWindow(index, m_profile, this);
+	auto *logWindow = new LogWindow(index, m_profile, this);
 	connect(logWindow, &LogWindow::validated, this, &optionsWindow::setLogFile);
 	logWindow->show();
 }
@@ -433,7 +437,7 @@ void optionsWindow::removeLogFile(int index)
 	QSettings *settings = m_profile->getSettings();
 	settings->beginGroup("LogFiles");
 	settings->beginGroup(QString::number(index));
-	for (QString key : settings->childKeys())
+	for (const QString &key : settings->childKeys())
 	{ settings->remove(key); }
 	settings->endGroup();
 	settings->endGroup();
@@ -457,7 +461,7 @@ void optionsWindow::setLogFile(int index, QMap<QString, QVariant> logFile)
 
 	settings->beginGroup(QString::number(index));
 
-	for (QString key : logFile.keys())
+	for (const QString &key : logFile.keys())
 	{ settings->setValue(key, logFile[key]); }
 
 	settings->endGroup();
@@ -471,10 +475,10 @@ void optionsWindow::showWebServices()
 {
 	clearLayout(ui->layoutWebServices);
 
-	QSignalMapper *mapperEditWebService = new QSignalMapper(this);
-	QSignalMapper *mapperRemoveWebService = new QSignalMapper(this);
-	QSignalMapper *mapperMoveUpWebService = new QSignalMapper(this);
-	QSignalMapper *mapperMoveDownWebService = new QSignalMapper(this);
+	auto *mapperEditWebService = new QSignalMapper(this);
+	auto *mapperRemoveWebService = new QSignalMapper(this);
+	auto *mapperMoveUpWebService = new QSignalMapper(this);
+	auto *mapperMoveDownWebService = new QSignalMapper(this);
 	connect(mapperEditWebService, SIGNAL(mapped(int)), this, SLOT(editWebService(int)));
 	connect(mapperRemoveWebService, SIGNAL(mapped(int)), this, SLOT(removeWebService(int)));
 	connect(mapperMoveUpWebService, SIGNAL(mapped(int)), this, SLOT(moveUpWebService(int)));
@@ -527,7 +531,7 @@ void optionsWindow::showWebServices()
 
 void optionsWindow::addWebService()
 {
-	WebServiceWindow *wsWindow = new WebServiceWindow(nullptr, this);
+	auto *wsWindow = new WebServiceWindow(nullptr, this);
 	connect(wsWindow, &WebServiceWindow::validated, this, &optionsWindow::setWebService);
 	wsWindow->show();
 }
@@ -535,7 +539,7 @@ void optionsWindow::addWebService()
 void optionsWindow::editWebService(int id)
 {
 	int pos = m_webServicesIds[id];
-	WebServiceWindow *wsWindow = new WebServiceWindow(&m_webServices[pos], this);
+	auto *wsWindow = new WebServiceWindow(&m_webServices[pos], this);
 	connect(wsWindow, &WebServiceWindow::validated, this, &optionsWindow::setWebService);
 	wsWindow->show();
 }
@@ -567,7 +571,7 @@ void optionsWindow::setWebService(ReverseSearchEngine rse, QByteArray favicon)
 	{
 		int maxOrder = 0;
 		int maxId = 0;
-		for (auto ws : m_webServices)
+		for (const ReverseSearchEngine &ws : m_webServices)
 		{
 			if (ws.id() > maxId)
 				maxId = ws.id();
@@ -677,6 +681,8 @@ void optionsWindow::on_lineColoringGenerals_textChanged()
 { setColor(ui->lineColoringGenerals); }
 void optionsWindow::on_lineColoringFavorites_textChanged()
 { setColor(ui->lineColoringFavorites); }
+void optionsWindow::on_lineColoringKeptForLater_textChanged()
+{ setColor(ui->lineColoringKeptForLater); }
 void optionsWindow::on_lineColoringBlacklisteds_textChanged()
 { setColor(ui->lineColoringBlacklisteds); }
 void optionsWindow::on_lineColoringIgnoreds_textChanged()
@@ -700,6 +706,8 @@ void optionsWindow::on_buttonColoringGeneralsColor_clicked()
 { setColor(ui->lineColoringGenerals, true); }
 void optionsWindow::on_buttonColoringFavoritesColor_clicked()
 { setColor(ui->lineColoringFavorites, true); }
+void optionsWindow::on_buttonColoringKeptForLaterColor_clicked()
+{ setColor(ui->lineColoringKeptForLater, true); }
 void optionsWindow::on_buttonColoringBlacklistedsColor_clicked()
 { setColor(ui->lineColoringBlacklisteds, true); }
 void optionsWindow::on_buttonColoringIgnoredsColor_clicked()
@@ -723,6 +731,8 @@ void optionsWindow::on_buttonColoringGeneralsFont_clicked()
 { setFont(ui->lineColoringGenerals); }
 void optionsWindow::on_buttonColoringFavoritesFont_clicked()
 { setFont(ui->lineColoringFavorites); }
+void optionsWindow::on_buttonColoringKeptForLaterFont_clicked()
+{ setFont(ui->lineColoringKeptForLater); }
 void optionsWindow::on_buttonColoringBlacklistedsFont_clicked()
 { setFont(ui->lineColoringBlacklisteds); }
 void optionsWindow::on_buttonColoringIgnoredsFont_clicked()
@@ -958,14 +968,14 @@ void optionsWindow::save()
 		settings->setValue("simultaneous", ui->spinSimultaneous->value());
 		settings->beginGroup("Customs");
 			settings->remove("");
-			for (QLineEdit *le : m_customNames)
-			{ settings->setValue(le->text(), le->text()); }
+			for (int j = 0; j < m_customNames.size(); j++)
+			{ settings->setValue(m_customNames[j]->text(), m_customTags[j]->text()); }
 		settings->endGroup();
 	settings->endGroup();
 
 	// Web services
 	settings->beginGroup("WebServices");
-	for (auto webService : m_webServices)
+	for (const ReverseSearchEngine &webService : m_webServices)
 	{
 		settings->beginGroup(QString::number(webService.id()));
 		settings->setValue("name", webService.name());
@@ -1013,6 +1023,7 @@ void optionsWindow::save()
 			settings->setValue("models", ui->lineColoringModels->text());
 			settings->setValue("generals", ui->lineColoringGenerals->text());
 			settings->setValue("favorites", ui->lineColoringFavorites->text());
+			settings->setValue("keptForLater", ui->lineColoringKeptForLater->text());
 			settings->setValue("blacklisteds", ui->lineColoringBlacklisteds->text());
 			settings->setValue("ignoreds", ui->lineColoringIgnoreds->text());
 		settings->endGroup();
@@ -1025,6 +1036,7 @@ void optionsWindow::save()
 			settings->setValue("models", ui->lineColoringModels->font().toString());
 			settings->setValue("generals", ui->lineColoringGenerals->font().toString());
 			settings->setValue("favorites", ui->lineColoringFavorites->font().toString());
+			settings->setValue("keptForLater", ui->lineColoringKeptForLater->font().toString());
 			settings->setValue("blacklisteds", ui->lineColoringBlacklisteds->font().toString());
 			settings->setValue("ignoreds", ui->lineColoringIgnoreds->font().toString());
 		settings->endGroup();

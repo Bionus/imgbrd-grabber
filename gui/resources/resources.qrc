@@ -61,5 +61,7 @@
         <file>images/icons/eye-plus.png</file>
         <file>images/icons/github.png</file>
         <file>images/icons/tab-arrow.png</file>
+        <file>images/icons/edit.png</file>
+        <file>images/status/ignored.png</file>
     </qresource>
 </RCC>

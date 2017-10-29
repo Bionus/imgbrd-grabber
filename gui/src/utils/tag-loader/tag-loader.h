@@ -21,7 +21,7 @@ class TagLoader : public QDialog
 
 	public:
 		explicit TagLoader(Profile *profile, QMap<QString, Site*> sites, QWidget *parent = Q_NULLPTR);
-		~TagLoader();
+		~TagLoader() override;
 
 	protected:
 		QList<Api*> getCompatibleApis(Site *site) const;

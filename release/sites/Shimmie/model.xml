@@ -28,4 +28,8 @@
 		<Regex>Running Shimmie|Shimmie version |Running &lt;a href=['&quot;][^'&quot;]+['&quot;]&gt;Shimmie&lt;/a&gt;</Regex>
 	</Check>
 	<FirstPage>1</FirstPage>
+	<TagFormat>
+		<Case>lower</Case>
+		<WordSeparator>_</WordSeparator>
+	</TagFormat>
 </Site>

@@ -7,14 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>380</width>
-    <height>220</height>
+    <height>246</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Rename existing images</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../../../resources.qrc">
+   <iconset resource="../../../resources/resources.qrc">
     <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
   </property>
   <layout class="QFormLayout" name="formLayout">
@@ -55,27 +55,27 @@
    <item row="3" column="1">
     <widget class="QLineEdit" name="lineFilenameOrigin"/>
    </item>
-   <item row="4" column="0">
+   <item row="5" column="0">
     <widget class="QLabel" name="labelFilenameDestination">
      <property name="text">
       <string>Destintation filename</string>
      </property>
     </widget>
    </item>
-   <item row="4" column="1">
+   <item row="5" column="1">
     <widget class="QLineEdit" name="lineFilenameDestination"/>
    </item>
-   <item row="5" column="0">
+   <item row="6" column="0">
     <widget class="QLabel" name="labelSource">
      <property name="text">
       <string>Source</string>
      </property>
     </widget>
    </item>
-   <item row="5" column="1">
+   <item row="6" column="1">
     <widget class="QComboBox" name="comboSource"/>
    </item>
-   <item row="6" column="0" colspan="2">
+   <item row="7" column="0" colspan="2">
     <widget class="QProgressBar" name="progressBar">
      <property name="enabled">
       <bool>true</bool>
@@ -85,7 +85,7 @@
      </property>
     </widget>
    </item>
-   <item row="7" column="0" colspan="2">
+   <item row="8" column="0" colspan="2">
     <layout class="QHBoxLayout" name="layoutButtons">
      <item>
       <spacer name="horizontalSpacer">
@@ -116,12 +116,20 @@
      </item>
     </layout>
    </item>
+   <item row="4" column="1">
+    <widget class="QLineEdit" name="lineSuffixes"/>
+   </item>
+   <item row="4" column="0">
+    <widget class="QLabel" name="labelSuffixes">
+     <property name="text">
+      <string>Suffixes</string>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <resources>
-  <include location="../../../resources.qrc"/>
-  <include location="../../../resources.qrc"/>
-  <include location="../../../resources.qrc"/>
+  <include location="../../../resources/resources.qrc"/>
  </resources>
  <connections/>
 </ui>

@@ -21,7 +21,7 @@ class BlacklistFix1 : public QDialog
 
 	public:
 		explicit BlacklistFix1(Profile *profile, QMap<QString, Site*> sites, QWidget *parent = Q_NULLPTR);
-		~BlacklistFix1();
+		~BlacklistFix1() override;
 
 	private slots:
 		void getAll(Page *p = nullptr);

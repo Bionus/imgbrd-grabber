@@ -13,6 +13,7 @@
 #include "models/page.h"
 #include "models/profile.h"
 #include "settings/optionswindow.h"
+#include "tags/tag-stylist.h"
 #include "threads/image-loader.h"
 #include "threads/image-loader-queue.h"
 #include "detailswindow.h"
@@ -23,7 +24,7 @@
 #include "tag-context-menu.h"
 
 
-zoomWindow::zoomWindow(QList<QSharedPointer<Image> > images, QSharedPointer<Image> image, Site *site, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
+zoomWindow::zoomWindow(QList<QSharedPointer<Image>> images, QSharedPointer<Image> image, Site *site, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
 	: QWidget(Q_NULLPTR, Qt::Window), m_parent(parent), m_profile(profile), m_favorites(profile->getFavorites()), m_viewItLater(profile->getKeptForLater()), m_ignore(profile->getIgnored()), m_settings(profile->getSettings()), ui(new Ui::zoomWindow), m_site(site), m_timeout(300), m_tooBig(false), m_loadedImage(false), m_loadedDetails(false), m_displayImage(QPixmap()), m_displayMovie(nullptr), m_finished(false), m_size(0), m_sites(sites), m_source(), m_fullScreen(nullptr), m_images(images), m_isFullscreen(false), m_isSlideshowRunning(false), m_imagePath(""), m_labelImageScaled(false)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
@@ -130,7 +131,7 @@ void zoomWindow::go()
 	if (!m_settings->value("whitelistedtags").toString().isEmpty())
 	{
 		QStringList whitelist = m_settings->value("whitelistedtags").toString().split(" ");
-		for (Tag t : m_image->tags())
+		for (const Tag &t : m_image->tags())
 		{
 			if (whitelist.contains(t.text()))
 			{
@@ -144,7 +145,7 @@ void zoomWindow::go()
 
 	m_url = m_image->getDisplayableUrl().toString();
 
-	QTimer *timer = new QTimer(this);
+	auto *timer = new QTimer(this);
 		connect(timer, SIGNAL(timeout()), this, SLOT(update()));
 		timer->setSingleShot(true);
 		m_resizeTimer = timer;
@@ -220,7 +221,7 @@ void zoomWindow::imageContextMenu()
 	QAction *copyDataAction = new QAction(QIcon(":/images/icons/document-binary.png"), tr("Copy data"), menu);
 	connect(copyDataAction, SIGNAL(triggered()), this, SLOT(copyImageDataToClipboard()));
 
-	// Insert actionsat the beginning
+	// Insert actions at the beginning
 	QAction *first = menu->actions().first();
 	menu->insertAction(first, copyImageAction);
 	menu->insertAction(first, copyDataAction);
@@ -237,7 +238,7 @@ void zoomWindow::copyImageFileToClipboard()
 		path = files.firstKey();
 	}
 
-	QMimeData* mimeData = new QMimeData();
+	auto *mimeData = new QMimeData();
 	mimeData->setUrls({ QUrl::fromLocalFile(path) });
 	QApplication::clipboard()->setMimeData(mimeData);
 }
@@ -267,7 +268,7 @@ void zoomWindow::openPool(QString url)
 }
 void zoomWindow::openPoolId(Page *p)
 {
-	if (p->images().size() < 1)
+	if (p->images().empty())
 	{
 		p->deleteLater();
 		return;
@@ -392,7 +393,7 @@ void zoomWindow::downloadProgress(qint64 bytesReceived, qint64 bytesTotal)
 	ui->progressBarDownload->setMaximum(bytesTotal);
 	ui->progressBarDownload->setValue(bytesReceived);
 
-	bool isAnimated = m_image->isVideo() || m_url.section('.', -1).toLower() == "gif";
+	bool isAnimated = m_image->isVideo() || !m_isAnimated.isEmpty();
 	if (!isAnimated && (m_imageTime.elapsed() > TIME || (bytesTotal > 0 && bytesReceived / bytesTotal > PERCENT)))
 	{
 		m_imageTime.restart();
@@ -433,11 +434,13 @@ void zoomWindow::replyFinishedDetails()
 		ui->labelPools->show();
 	}
 
+	m_isAnimated = m_image->isAnimated();
+
 	QString path1 = m_settings->value("Save/path").toString().replace("\\", "/");
 	QStringList pth1s = m_image->path(m_settings->value("Save/filename").toString(), path1, 0, true, false, true, true, true);
 	QString source1;
 	bool file1notexists = false;
-	for (QString pth1 : pth1s)
+	for (const QString &pth1 : pth1s)
 	{
 		QFile file(pth1);
 		if (file.exists())
@@ -450,7 +453,7 @@ void zoomWindow::replyFinishedDetails()
 	QStringList pth2s = m_image->path(m_settings->value("Save/filename_favorites").toString(), path2, 0, true, false, true, true, true);
 	QString source2;
 	bool file2notexists = false;
-	for (QString pth2 : pth2s)
+	for (const QString &pth2 : pth2s)
 	{
 		QFile file(pth2);
 		if (file.exists())
@@ -464,14 +467,14 @@ void zoomWindow::replyFinishedDetails()
 	// If the file already exists, we directly display it
 	if (!md5Exists.isEmpty() || !file1notexists || !file2notexists)
 	{
+		m_source = !md5Exists.isEmpty() ? md5Exists : (!file1notexists ? source1 : source2);
+		m_imagePath = m_source;
+		log(QString("Image loaded from the file <a href=\"file:///%1\">%1</a>").arg(m_source));
+
 		// Update save button state
 		SaveButtonState md5State = !md5Exists.isEmpty() ? SaveButtonState::ExistsMd5 : SaveButtonState::Save;
 		setButtonState(false, !file1notexists ? SaveButtonState::ExistsDisk : md5State);
 		setButtonState(true, !file2notexists ? SaveButtonState::ExistsDisk : md5State);
-
-		m_source = !md5Exists.isEmpty() ? md5Exists : (!file1notexists ? source1 : source2);
-		m_imagePath = m_source;
-		log(QString("Image loaded from the file <a href=\"file:///%1\">%1</a>").arg(m_source));
 
 		// Fix extension when it should be guessed
 		QString fext = m_source.section('.', -1);
@@ -494,7 +497,7 @@ void zoomWindow::replyFinishedDetails()
 }
 void zoomWindow::colore()
 {
-	QStringList t = Tag::Stylished(m_image->tags(), m_profile, m_settings->value("Zoom/showTagCount", false).toBool(), false, m_settings->value("Zoom/tagOrder", "type").toString());
+	QStringList t = TagStylist(m_profile).stylished(m_image->tags(), m_settings->value("Zoom/showTagCount", false).toBool(), false, m_settings->value("Zoom/tagOrder", "type").toString());
 	QString tags = t.join(' ');
 
 	if (ui->widgetLeft->isHidden())
@@ -517,6 +520,7 @@ void zoomWindow::setButtonState(bool fav, SaveButtonState state)
 
 	// Update actual button label
 	QPushButton *button = fav ? ui->buttonSaveFav : ui->buttonSave;
+	button->setToolTip("");
 	switch (state)
 	{
 		case SaveButtonState::Save:
@@ -540,10 +544,12 @@ void zoomWindow::setButtonState(bool fav, SaveButtonState state)
 			break;
 
 		case SaveButtonState::ExistsMd5:
+			button->setToolTip(m_imagePath);
 			button->setText(fav ? tr("MD5 already exists (fav)") : tr("MD5 already exists"));
 			break;
 
 		case SaveButtonState::ExistsDisk:
+			button->setToolTip(m_imagePath);
 			button->setText(fav ? tr("Already exists (fav)") : tr("Already exists"));
 			break;
 
@@ -655,6 +661,7 @@ void zoomWindow::pendingUpdate()
 	m_mustSave = 0;
 }
 
+#include <QDebug>
 void zoomWindow::draw()
 {
 	// Videos don't get drawn
@@ -668,7 +675,7 @@ void zoomWindow::draw()
 	QString filename;
 	if (!m_source.isEmpty())
 	{ filename = m_source; }
-	else if (ext == "gif")
+	else if (!m_isAnimated.isEmpty())
 	{
 		filename = QDir::temp().absoluteFilePath("grabber-" + fn);
 		QFile f(filename);
@@ -680,9 +687,9 @@ void zoomWindow::draw()
 	}
 
 	// GIF (using QLabel support for QMovie)
-	if (ext == "gif")
+	if (!m_isAnimated.isEmpty())
 	{
-		m_displayMovie = new QMovie(filename, QByteArray(), this);
+		m_displayMovie = new QMovie(filename, m_isAnimated.toLatin1(), this);
 		m_labelImage->setMovie(m_displayMovie);
 		m_stackedWidget->setCurrentWidget(m_labelImage);
 		m_displayMovie->start();
@@ -717,16 +724,16 @@ void zoomWindow::draw()
 
 /**
  * Updates the image label to use the current image.
- * @param onlysize true to update the image quickly
+ * @param onlySize true to update the image quickly
  */
-void zoomWindow::update(bool onlysize, bool force)
+void zoomWindow::update(bool onlySize, bool force)
 {
 	// Update image alignment
 	QString ext = m_url.section('.', -1).toLower();
 	QString type;
 	if (m_image->isVideo())
 	{ type = "imagePositionVideo"; }
-	else if (ext == "gif")
+	else if (!m_isAnimated.isEmpty())
 	{ type = "imagePositionAnimation"; }
 	else
 	{ type = "imagePositionImage"; }
@@ -737,9 +744,9 @@ void zoomWindow::update(bool onlysize, bool force)
 		return;
 
 	bool needScaling = (m_displayImage.width() > m_labelImage->width() || m_displayImage.height() > m_labelImage->height());
-	if (needScaling && (onlysize || m_loadedImage || force))
+	if (needScaling && (onlySize || m_loadedImage || force))
 	{
-		Qt::TransformationMode mode = onlysize ? Qt::FastTransformation : Qt::SmoothTransformation;
+		Qt::TransformationMode mode = onlySize ? Qt::FastTransformation : Qt::SmoothTransformation;
 		m_labelImage->setImage(m_displayImage.scaled(m_labelImage->width(), m_labelImage->height(), Qt::KeepAspectRatio, mode));
 		m_labelImageScaled = true;
 	}
@@ -835,7 +842,7 @@ QStringList zoomWindow::saveImageNow(bool fav)
 		{ reply = QMessageBox::question(this, tr("Error"), tr("You did not specified a save format! Do you want to open the options window?"), QMessageBox::Yes | QMessageBox::No); }
 		if (reply == QMessageBox::Yes)
 		{
-			optionsWindow *options = new optionsWindow(m_profile, parentWidget());
+			auto *options = new optionsWindow(m_profile, parentWidget());
 			//options->onglets->setCurrentIndex(3);
 			options->setWindowModality(Qt::ApplicationModal);
 			options->show();
@@ -932,7 +939,7 @@ void zoomWindow::fullScreen()
 	m_fullScreen = new QAffiche(QVariant(), 0, QColor(), this);
 	m_fullScreen->setStyleSheet("background-color: black");
 	m_fullScreen->setAlignment(Qt::AlignCenter);
-	if (ext == "gif")
+	if (!m_isAnimated.isEmpty())
 	{ m_fullScreen->setMovie(m_displayMovie); }
 	else
 	{ m_fullScreen->setImage(m_displayImage.scaled(QApplication::desktop()->screenGeometry().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation)); }
@@ -984,7 +991,7 @@ void zoomWindow::prepareNextSlide()
 	// We make sure to wait to see the whole displayed item
 	qint64 additionalInterval = 0;
 	QString ext = getExtension(m_image->url());
-	if (ext == "gif")
+	if (!m_isAnimated.isEmpty())
 		additionalInterval = m_displayMovie->nextFrameDelay() * m_displayMovie->frameCount();
 
 	qint64 totalInterval = interval * 1000 + additionalInterval;
@@ -1061,7 +1068,7 @@ void zoomWindow::showThumbnail()
 	}
 
 	// Gifs get non-resizable thumbnails
-	else if (m_url.section('.', -1).toLower() == "gif")
+	else if (!m_isAnimated.isEmpty())
 	{
 		m_labelImage->setPixmap(m_image->previewImage().scaled(size, Qt::IgnoreAspectRatio, Qt::FastTransformation));
 	}
@@ -1089,6 +1096,7 @@ void zoomWindow::load(QSharedPointer<Image> image)
 	m_displayImage = QPixmap();
 	m_imagePath = "";
 	m_image = image;
+	m_isAnimated = image->isAnimated();
 	connect(m_image.data(), &Image::urlChanged, this, &zoomWindow::urlChanged, Qt::UniqueConnection);
 	m_size = 0;
 	ui->labelLoadingError->hide();

@@ -22,7 +22,7 @@ class TagApi : public QObject
 		};
 
 		explicit TagApi(Profile *profile, Site *site, Api *api, int page = 1, int limit = 1000, QObject *parent = Q_NULLPTR);
-		~TagApi();
+		~TagApi() override;
 		void load(bool rateLimit = false);
 		QList<Tag> tags() const;
 

@@ -25,4 +25,8 @@
         <Regex>mailto:stalkerg@gmail\.com</Regex>
 	</Check>
 	<FirstPage>0</FirstPage>
+	<TagFormat>
+		<Case>lower</Case>
+		<WordSeparator> </WordSeparator>
+	</TagFormat>
 </Site>

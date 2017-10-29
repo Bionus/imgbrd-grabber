@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QMap>
 #include "models/filename.h"
+#include "rename-existing-file.h"
 
 
 namespace Ui
@@ -21,7 +22,7 @@ class RenameExisting1 : public QDialog
 
 	public:
 		explicit RenameExisting1(Profile *profile, QMap<QString,Site*> sites, QWidget *parent = Q_NULLPTR);
-		~RenameExisting1();
+		~RenameExisting1() override;
 
 	private slots:
 		void getAll(Page *p);
@@ -36,9 +37,9 @@ class RenameExisting1 : public QDialog
 		QMap<QString, Site*>					m_sites;
 		Filename								m_filename;
 		bool									m_needDetails;
-		QList<QMap<QString, QString>>			m_details;
+		QList<RenameExistingFile>				m_details;
 		QList<QSharedPointer<Image>>			m_getTags;
-		QMap<QString, QPair<QString, QString>>	m_getAll;
+		QMap<QString, RenameExistingFile>		m_getAll;
 };
 
 #endif // RENAME_EXISTING_1_H

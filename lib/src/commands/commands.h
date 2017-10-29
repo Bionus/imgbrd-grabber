@@ -23,6 +23,7 @@ class Commands
 {
 	public:
 		explicit Commands(Profile *profile);
+		~Commands();
 		bool start();
 		bool before();
 		bool image(const Image &img, QString path);

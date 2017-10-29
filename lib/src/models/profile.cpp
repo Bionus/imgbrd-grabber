@@ -24,10 +24,10 @@ Profile::Profile(QString path)
 		fileFavorites.close();
 
 		QSet<QString> unique;
-		QStringList wrds = favs.split("\n", QString::SkipEmptyParts);
-		for (QString wrd : wrds)
+		QStringList words = favs.split("\n", QString::SkipEmptyParts);
+		for (const QString &word : words)
 		{
-			Favorite fav = Favorite::fromString(m_path, wrd);
+			Favorite fav = Favorite::fromString(m_path, word);
 			if (!unique.contains(fav.getName()))
 			{
 				unique.insert(fav.getName());
@@ -136,8 +136,8 @@ void Profile::sync()
 	}
 
 	// Update commands settings
-	Commands *oldCommands = m_commands;
-	Commands *newCommands = new Commands(this);
+	auto *oldCommands = m_commands;
+	auto *newCommands = new Commands(this);
 	m_commands = newCommands;
 	delete oldCommands;
 
@@ -153,7 +153,7 @@ void Profile::syncFavorites()
 	QFile fileFavorites(m_path + "/favorites.txt");
 	if (fileFavorites.open(QFile::WriteOnly | QFile::Text | QFile::Truncate))
 	{
-		for (Favorite fav : m_favorites)
+		for (const Favorite &fav : m_favorites)
 			fileFavorites.write(QString(fav.getName() + "|" + QString::number(fav.getNote()) + "|" + fav.getLastViewed().toString(Qt::ISODate) + "\r\n").toUtf8());
 
 		fileFavorites.close();

@@ -10,7 +10,7 @@ class TagDatabaseTestSuite : public TestSuite
 	Q_OBJECT
 
 	protected:
-		TagDatabaseTestSuite(TagDatabase *database);
+		explicit TagDatabaseTestSuite(TagDatabase *database);
 
 	private slots:
 		void initTestCase();

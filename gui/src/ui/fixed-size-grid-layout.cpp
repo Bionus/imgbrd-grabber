@@ -13,7 +13,7 @@ FixedSizeGridLayout::FixedSizeGridLayout(int hSpacing, int vSpacing)
 FixedSizeGridLayout::~FixedSizeGridLayout()
 {
 	QLayoutItem *item;
-	while (item = takeAt(0))
+	while ((item = takeAt(0)) != Q_NULLPTR)
 		delete item;
 }
 
@@ -58,7 +58,7 @@ QLayoutItem *FixedSizeGridLayout::takeAt(int index)
 	if (index >= 0 && index < m_items.size())
 		return m_items.takeAt(index);
 
-	return 0;
+	return Q_NULLPTR;
 }
 
 
@@ -82,7 +82,7 @@ int FixedSizeGridLayout::verticalSpacing() const
 
 Qt::Orientations FixedSizeGridLayout::expandingDirections() const
 {
-	return 0;
+	return Q_NULLPTR;
 }
 
 bool FixedSizeGridLayout::hasHeightForWidth() const
@@ -134,9 +134,9 @@ int FixedSizeGridLayout::doLayout(const QRect &rect, bool testOnly) const
 		int spaceX = widgetSpacing(horizontalSpacing(), item->widget(), Qt::Horizontal);
 		int spaceY = widgetSpacing(verticalSpacing(), item->widget(), Qt::Vertical);
 
-		int nbElts = qMax(1, (w + spaceX) / (m_fixedWidth + spaceX));
-		int totalSpace = w - (m_fixedWidth * nbElts);
-		spaceX = qMax(spaceX, totalSpace / qMax(1, nbElts - 1));
+		int nbElements = qMax(1, (w + spaceX) / (m_fixedWidth + spaceX));
+		int totalSpace = w - (m_fixedWidth * nbElements);
+		spaceX = qMax(spaceX, totalSpace / qMax(1, nbElements - 1));
 
 		int nextX = x + item->sizeHint().width() + spaceX;
 		if (nextX - spaceX - 1 > effectiveRect.right() && lineHeight > 0)
@@ -164,8 +164,8 @@ int FixedSizeGridLayout::smartSpacing(QStyle::PixelMetric pm) const
 
 	if (parent->isWidgetType())
 	{
-		QWidget *pw = static_cast<QWidget*>(parent);
-		return pw->style()->pixelMetric(pm, 0, pw);
+		auto *pw = static_cast<QWidget*>(parent);
+		return pw->style()->pixelMetric(pm, Q_NULLPTR, pw);
 	}
 
 	return static_cast<QLayout*>(parent)->spacing();

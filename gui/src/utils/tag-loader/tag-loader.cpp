@@ -10,12 +10,12 @@
 
 
 TagLoader::TagLoader(Profile *profile, QMap<QString, Site *> sites, QWidget *parent)
-	: QDialog(), ui(new Ui::TagLoader), m_profile(profile), m_sites(sites)
+	: QDialog(parent), ui(new Ui::TagLoader), m_profile(profile), m_sites(sites)
 {
 	ui->setupUi(this);
 
 	QStringList keys;
-	for (QString key : sites.keys())
+	for (const QString &key : sites.keys())
 	{
 		Site *site = sites[key];
 		if (!getCompatibleApis(site).isEmpty())
@@ -78,7 +78,7 @@ void TagLoader::start()
 	{
 		// Load tags for the current page
 		QEventLoop loop;
-		TagApi *tagApi = new TagApi(m_profile, site, api, page, 500, this);
+		auto *tagApi = new TagApi(m_profile, site, api, page, 500, this);
 		connect(tagApi, &TagApi::finishedLoading, &loop, &QEventLoop::quit);
 		tagApi->load();
 		loop.exec();
