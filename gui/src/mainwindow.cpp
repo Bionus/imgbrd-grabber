@@ -1905,6 +1905,7 @@ void mainWindow::getAllFinished()
 			m_getAllRemaining.clear();
 			m_getAllRemaining.append(m_getAllFailed);
 			m_getAllRemaining.append(m_getAllSkippedImages);
+			m_getAllImagesCount = m_getAllRemaining.count();
 			m_getAllFailed.clear();
 			m_getAllSkippedImages.clear();
 			m_getAllDownloaded = 0;
