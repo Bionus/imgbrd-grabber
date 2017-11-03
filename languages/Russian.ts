@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="ru_RU" sourcelanguage="en_US">
+<TS version="2.0" language="ru_RU" sourcelanguage="en_US">
 <context>
     <name>AboutWindow</name>
     <message>
@@ -74,7 +74,7 @@
     <message>
         <location filename="../gui/src/batch/addgroupwindow.ui" line="127"/>
         <source>Post-filtering</source>
-        <translation type="unfinished">Пост-фильтр</translation>
+        <translation>Пост-фильтр</translation>
     </message>
 </context>
 <context>
@@ -443,17 +443,17 @@
     <message>
         <location filename="../gui/src/settings/log-window.ui" line="20"/>
         <source>Location type</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Тип местоположения</translation>
     </message>
     <message>
         <location filename="../gui/src/settings/log-window.ui" line="28"/>
         <source>Path and filename</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Путь и имя файла</translation>
     </message>
     <message>
         <location filename="../gui/src/settings/log-window.ui" line="33"/>
         <source>Unique file</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Уникальный файл</translation>
     </message>
     <message>
         <location filename="../gui/src/settings/log-window.ui" line="38"/>
@@ -474,7 +474,7 @@
     <message>
         <location filename="../gui/src/settings/log-window.ui" line="129"/>
         <source>Path</source>
-        <translation type="unfinished"></translation>
+        <translation>Путь</translation>
     </message>
     <message>
         <location filename="../gui/src/settings/log-window.ui" line="147"/>
@@ -585,15 +585,15 @@
     </message>
     <message>
         <source>&lt;b&gt;Error:&lt;/b&gt; %1</source>
-        <translation type="vanished">&lt;b&gt;Ошибка:&lt;/b&gt; %1</translation>
+        <translation>&lt;b&gt;Ошибка:&lt;/b&gt; %1</translation>
     </message>
     <message>
         <source>&lt;b&gt;Warning:&lt;/b&gt; %1</source>
-        <translation type="vanished">&lt;b&gt;Предупреждение:&lt;/b&gt; %1</translation>
+        <translation>&lt;b&gt;Предупреждение:&lt;/b&gt; %1</translation>
     </message>
     <message>
         <source>&lt;b&gt;Notice:&lt;/b&gt; %1</source>
-        <translation type="vanished">&lt;b&gt;Примечание:&lt;/b&gt; %1</translation>
+        <translation>&lt;b&gt;Примечание:&lt;/b&gt; %1</translation>
     </message>
     <message>
         <location filename="../lib/src/models/filename.cpp" line="511"/>
@@ -602,7 +602,7 @@
     </message>
     <message>
         <source>Error in Javascript evaluation:&lt;br/&gt;</source>
-        <translation type="vanished">Ошибка в определении Javascript: &lt;br/&gt;</translation>
+        <translation>Ошибка в определении Javascript: &lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../lib/src/models/filename.cpp" line="621"/>
@@ -646,31 +646,31 @@
     </message>
     <message>
         <source>B</source>
-        <translation type="vanished">Б</translation>
+        <translation>Б</translation>
     </message>
     <message>
         <source>KB</source>
-        <translation type="vanished">КБ</translation>
+        <translation>КБ</translation>
     </message>
     <message>
         <source>MB</source>
-        <translation type="vanished">МБ</translation>
+        <translation>МБ</translation>
     </message>
     <message>
         <source>GB</source>
-        <translation type="vanished">ГБ</translation>
+        <translation>ГБ</translation>
     </message>
     <message>
         <source>KiB</source>
-        <translation type="vanished">КиБ</translation>
+        <translation>КиБ</translation>
     </message>
     <message>
         <source>MiB</source>
-        <translation type="vanished">МиБ</translation>
+        <translation>МиБ</translation>
     </message>
     <message>
         <source>GiB</source>
-        <translation type="vanished">ГиБ</translation>
+        <translation>ГиБ</translation>
     </message>
 </context>
 <context>
@@ -729,7 +729,7 @@
     <message>
         <location filename="../gui/src/utils/rename-existing/rename-existing-1.ui" line="125"/>
         <source>Suffixes</source>
-        <translation type="unfinished"></translation>
+        <translation>Суффиксы</translation>
     </message>
     <message>
         <location filename="../gui/src/utils/rename-existing/rename-existing-1.cpp" line="53"/>
@@ -961,11 +961,11 @@
     <name>Site</name>
     <message>
         <source>success</source>
-        <translation type="vanished">успех</translation>
+        <translation>успех</translation>
     </message>
     <message>
         <source>failure</source>
-        <translation type="vanished">неудача</translation>
+        <translation>неудача</translation>
     </message>
 </context>
 <context>
@@ -998,7 +998,7 @@
     <message>
         <location filename="../gui/src/sources/sitewindow.cpp" line="46"/>
         <source>The url you entered is not valid.</source>
-        <translation type="unfinished"></translation>
+        <translation>Введённый адрес недействителен.</translation>
     </message>
     <message>
         <location filename="../gui/src/sources/sitewindow.cpp" line="86"/>
@@ -1208,7 +1208,7 @@
     <message>
         <location filename="../gui/src/sources/sourcessettingswindow.ui" line="512"/>
         <source>Credentials</source>
-        <translation>Полномочия</translation>
+        <translation>Авторизация</translation>
     </message>
     <message>
         <location filename="../gui/src/sources/sourcessettingswindow.ui" line="518"/>
@@ -1242,11 +1242,11 @@
     </message>
     <message>
         <source>Through url</source>
-        <translation type="vanished">Через url</translation>
+        <translation>Через url</translation>
     </message>
     <message>
         <source>Method</source>
-        <translation type="vanished">Метод</translation>
+        <translation>Метод</translation>
     </message>
     <message>
         <location filename="../gui/src/sources/sourcessettingswindow.ui" line="608"/>
@@ -1288,12 +1288,12 @@
     <message>
         <location filename="../gui/src/sources/sourcessettingswindow.ui" line="618"/>
         <source>OAuth 1</source>
-        <translation type="unfinished"></translation>
+        <translation>OAuth 1</translation>
     </message>
     <message>
         <location filename="../gui/src/sources/sourcessettingswindow.ui" line="623"/>
         <source>OAuth 2</source>
-        <translation type="unfinished"></translation>
+        <translation>OAuth 2</translation>
     </message>
     <message>
         <location filename="../gui/src/sources/sourcessettingswindow.ui" line="766"/>
@@ -1483,21 +1483,21 @@
     <name>TagLoader</name>
     <message>
         <source>Md5 list fixer</source>
-        <translation type="vanished">Фиксер списка MD5</translation>
+        <translation>Фиксер списка MD5</translation>
     </message>
     <message>
         <source>%v/%m</source>
-        <translation type="vanished">%v/%m</translation>
+        <translation>%v/%m</translation>
     </message>
     <message>
         <location filename="../gui/src/utils/tag-loader/tag-loader.ui" line="14"/>
         <source>Tag loader</source>
-        <translation type="unfinished"></translation>
+        <translation>Загрузчик тегов</translation>
     </message>
     <message>
         <location filename="../gui/src/utils/tag-loader/tag-loader.ui" line="55"/>
         <source>%v</source>
-        <translation type="unfinished"></translation>
+        <translation>%v</translation>
     </message>
     <message>
         <location filename="../gui/src/utils/tag-loader/tag-loader.ui" line="87"/>
@@ -1512,7 +1512,7 @@
     <message>
         <location filename="../gui/src/utils/tag-loader/tag-loader.ui" line="109"/>
         <source>Generate the local tag database for a given source. Afterwards, even if the source&apos;s API does not provide tag type information, Grabber can directly check it in its local tag database.</source>
-        <translation type="unfinished"></translation>
+        <translation>Создаёт локальную базу  тегов для данного источника. Впоследствии, даже если API  источника не предоставит информацию о типе тегов, Grabber сможет напрямую проверить его по своей локальной базе тегов.</translation>
     </message>
     <message>
         <location filename="../gui/src/utils/tag-loader/tag-loader.ui" line="24"/>
@@ -1527,10 +1527,10 @@
     <message numerus="yes">
         <location filename="../gui/src/utils/tag-loader/tag-loader.cpp" line="104"/>
         <source>%n tag(s) loaded</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n тег загружен</numerusform>
+            <numerusform>%n тега загружено</numerusform>
+            <numerusform>%n тегов загружено</numerusform>
         </translation>
     </message>
 </context>
@@ -1608,7 +1608,7 @@
     </message>
     <message>
         <source>To go on with the update, the program must be closed. Do you want to close now?</source>
-        <translation type="vanished">Для продолжения обновления нужно закрыть Grabber. Закрыть сейчас?</translation>
+        <translation>Для продолжения обновления нужно закрыть Grabber. Закрыть сейчас?</translation>
     </message>
 </context>
 <context>
@@ -2220,7 +2220,7 @@
     <message>
         <location filename="../gui/src/mainwindow.ui" line="131"/>
         <source>Post-filtering</source>
-        <translation type="unfinished">Пост-фильтр</translation>
+        <translation>Пост-фильтр</translation>
     </message>
     <message>
         <location filename="../gui/src/mainwindow.ui" line="136"/>
@@ -2497,7 +2497,7 @@
     <message>
         <location filename="../gui/src/mainwindow.ui" line="1120"/>
         <source>Tag loader</source>
-        <translation type="unfinished"></translation>
+        <translation>Загрузчик тегов</translation>
     </message>
     <message>
         <location filename="../gui/src/mainwindow.cpp" line="149"/>
@@ -2511,7 +2511,7 @@
     </message>
     <message>
         <source>It seems that the application was not properly closed for its last use. Do you want to start without restoring your last session?</source>
-        <translation type="vanished">Видимо приложение в прошлый раз было закрыто некорректно. Хотите ли вы начать новый сеанс?</translation>
+        <translation>Видимо приложение в прошлый раз было закрыто некорректно. Хотите ли вы начать новый сеанс?</translation>
     </message>
     <message>
         <location filename="../gui/src/mainwindow.cpp" line="202"/>
@@ -2531,12 +2531,12 @@
     <message>
         <location filename="../gui/src/mainwindow.cpp" line="685"/>
         <source>Confirmation</source>
-        <translation type="unfinished"></translation>
+        <translation>Подтверждение</translation>
     </message>
     <message>
         <location filename="../gui/src/mainwindow.cpp" line="685"/>
         <source>Are you sure you want to clear your download list?</source>
-        <translation type="unfinished"></translation>
+        <translation>Вы уверены, что хотите очистить список загрузок?</translation>
     </message>
     <message>
         <location filename="../gui/src/mainwindow.cpp" line="813"/>
@@ -2595,7 +2595,7 @@
     </message>
     <message numerus="yes">
         <source>All images&apos; urls have been received (%n image(s)).</source>
-        <translation type="vanished">
+        <translation>
             <numerusform>Адреса всех изображений были получены (%n изображение)).</numerusform>
             <numerusform>Адреса всех изображений были получены (%n изображения)).</numerusform>
             <numerusform>Адреса всех изображений были получены (%n изображений)).</numerusform>
@@ -2616,7 +2616,7 @@
 %1
 %2
 Please solve the issue before resuming the download.</source>
-        <translation type="vanished">При сохранении изображения произошла ошибка.
+        <translation>При сохранении изображения произошла ошибка.
 %1
 %2
 Пожалуйста, решите эт проблему перед тем, как возобновить загрузку.</translation>
@@ -2759,7 +2759,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message numerus="yes">
         <source>%n download(s) in progress</source>
-        <translation type="vanished">
+        <translation>
             <numerusform>%n загрузка в процессе</numerusform>
             <numerusform>%n загрузки в процессе</numerusform>
             <numerusform>%n загрузок в процессе</numerusform>
@@ -2767,23 +2767,23 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
         <source>Remove from favorites</source>
-        <translation type="vanished">Убрать из избранного</translation>
+        <translation>Убрать из избранного</translation>
     </message>
     <message>
         <source>Add to favorites</source>
-        <translation type="vanished">Добавить в избранное</translation>
+        <translation>Добавить в избранное</translation>
     </message>
     <message>
         <source>Keep for later</source>
-        <translation type="vanished">Оставить на потом</translation>
+        <translation>Оставить на потом</translation>
     </message>
     <message>
         <source>Open in a new tab</source>
-        <translation type="vanished">Открыть в новой вкладе</translation>
+        <translation>Открыть в новой вкладе</translation>
     </message>
     <message>
         <source>Open in a new window</source>
-        <translation type="vanished">Открыть в новом окне</translation>
+        <translation>Открыть в новом окне</translation>
     </message>
 </context>
 <context>
@@ -2836,7 +2836,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../gui/src/utils/md5-fix/md5-fix.ui" line="115"/>
         <source>Suffixes</source>
-        <translation type="unfinished"></translation>
+        <translation>Суффиксы</translation>
     </message>
     <message>
         <location filename="../gui/src/utils/md5-fix/md5-fix.cpp" line="46"/>
@@ -2850,7 +2850,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
         <source>Unable to open the MD5 file.</source>
-        <translation type="vanished">Не удаётся открыть MD5 файл.</translation>
+        <translation>Не удаётся открыть MD5 файл.</translation>
     </message>
     <message>
         <location filename="../gui/src/utils/md5-fix/md5-fix.cpp" line="128"/>
@@ -2876,7 +2876,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
         <source>1</source>
-        <translation type="vanished">1</translation>
+        <translation>1</translation>
     </message>
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="59"/>
@@ -2906,11 +2906,11 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
         <source>Separate text file</source>
-        <translation type="vanished">Файлы с тегами</translation>
+        <translation>Файлы с тегами</translation>
     </message>
     <message>
         <source>Separate log</source>
-        <translation type="vanished">Файл с логом</translation>
+        <translation>Файл с логом</translation>
     </message>
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="88"/>
@@ -3238,7 +3238,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="773"/>
         <source>If a file already exists globally</source>
-        <translation type="unfinished"></translation>
+        <translation>Если файл уже существует где-либо</translation>
     </message>
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="828"/>
@@ -3297,7 +3297,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
         <source>If a file already exists</source>
-        <translation type="vanished">Если файл уже существует</translation>
+        <translation>Если файл уже существует</translation>
     </message>
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="789"/>
@@ -3346,35 +3346,35 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
         <source>&lt;i&gt;Each time an image is saved, an external text file will be save with the same name at the same location, containing the image&apos;s tags.&lt;/i&gt;</source>
-        <translation type="vanished">&lt;i&gt;Каждый раз при сохранении изображения, с тем же именем в той же папке будет создаваться текстовый файл, содержащий его тэги&lt;/i&gt;</translation>
+        <translation>&lt;i&gt;Каждый раз при сохранении изображения, с тем же именем в той же папке будет создаваться текстовый файл, содержащий его тэги&lt;/i&gt;</translation>
     </message>
     <message>
         <source>Enable external text files</source>
-        <translation type="vanished">Сохраненять теги в отдельный текстовый файл</translation>
+        <translation>Сохраненять теги в отдельный текстовый файл</translation>
     </message>
     <message>
         <source>Text file content</source>
-        <translation type="vanished">Содержимое текстового файла</translation>
+        <translation>Содержимое текстового файла</translation>
     </message>
     <message>
         <source>Available tokens: the same as in the &quot;Save&quot; part.</source>
-        <translation type="vanished">Доступные переменные такие же как во вкладке &quot;Сохранение&quot;.</translation>
+        <translation>Доступные переменные такие же как во вкладке &quot;Сохранение&quot;.</translation>
     </message>
     <message>
         <source>Enable external logging</source>
-        <translation type="vanished">Включить сохранение лога в файл</translation>
+        <translation>Включить сохранение лога в файл</translation>
     </message>
     <message>
         <source>Log file</source>
-        <translation type="vanished">Файл лога</translation>
+        <translation>Файл лога</translation>
     </message>
     <message>
         <source>Line format</source>
-        <translation type="vanished">Формат строк</translation>
+        <translation>Формат строк</translation>
     </message>
     <message>
         <source>&lt;i&gt;Each time an image is saved, a new line will be added to the selected file.&lt;/i&gt;</source>
-        <translation type="vanished">&lt;i&gt;При каждом скачивании изображения, в файл лога будет добавляться новая строка.&lt;/i&gt;</translation>
+        <translation>&lt;i&gt;При каждом скачивании изображения, в файл лога будет добавляться новая строка.&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="1028"/>
@@ -3452,7 +3452,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
         <source>Use a scroll area for the results</source>
-        <translation type="vanished">Режим показа результатов поиска с полоской  прокрутки</translation>
+        <translation>Режим показа результатов поиска с полоской  прокрутки</translation>
     </message>
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="1704"/>
@@ -3472,7 +3472,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="83"/>
         <source>Separate log files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Отдельные файлы лога</translation>
     </message>
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="991"/>
@@ -3482,7 +3482,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="1004"/>
         <source>Add a separate log file</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Добавить отдельный файл лога</translation>
     </message>
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="1589"/>
@@ -3639,7 +3639,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
         <source>Enable MD5 search field</source>
-        <translation type="vanished">Включить отдельное поле для поиска по MD5</translation>
+        <translation>Включить отдельное поле для поиска по MD5</translation>
     </message>
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="2104"/>
@@ -3706,7 +3706,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="1683"/>
         <source>Preload all tabs when restoring a previous session</source>
-        <translation type="unfinished"></translation>
+        <translation>Подгружать все вкладки при востановлении сессии</translation>
     </message>
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="1694"/>
@@ -3721,27 +3721,27 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="1771"/>
         <source>Infinite scroll</source>
-        <translation type="unfinished"></translation>
+        <translation>Бесконечная прокрутка</translation>
     </message>
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="1779"/>
         <source>Disabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Отключена</translation>
     </message>
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="1784"/>
         <source>Button</source>
-        <translation type="unfinished"></translation>
+        <translation>Кнопкой</translation>
     </message>
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="1789"/>
         <source>Scroll</source>
-        <translation type="unfinished"></translation>
+        <translation>Прокруткой</translation>
     </message>
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="1797"/>
         <source>Remember page number when infinite scrolling</source>
-        <translation type="unfinished"></translation>
+        <translation>Запоминать номер начальной страницы при бесконечной прокрутке</translation>
     </message>
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="1834"/>
@@ -3815,22 +3815,22 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="1881"/>
         <source>Show tag count</source>
-        <translation type="unfinished"></translation>
+        <translation>Показывать количество тегов</translation>
     </message>
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="1888"/>
         <source>Tag order</source>
-        <translation type="unfinished"></translation>
+        <translation>Сортировка тегов</translation>
     </message>
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="1901"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Имя</translation>
     </message>
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="1906"/>
         <source>Count</source>
-        <translation type="unfinished"></translation>
+        <translation>Количество</translation>
     </message>
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="2127"/>
@@ -3860,7 +3860,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="2388"/>
         <source>Kept for later</source>
-        <translation type="unfinished"></translation>
+        <translation>На потом</translation>
     </message>
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="2435"/>
@@ -3934,7 +3934,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="2692"/>
         <source>Add a web service</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавить веб-сервис</translation>
     </message>
     <message>
         <location filename="../gui/src/settings/optionswindow.ui" line="2729"/>
@@ -4069,7 +4069,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
         <source>Search</source>
-        <translation type="vanished">Поиск</translation>
+        <translation>Поиск</translation>
     </message>
 </context>
 <context>
@@ -4091,7 +4091,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
         <source>one of the thumbnails is empty (&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;).</source>
-        <translation type="vanished">одна из миниатюр пустая (&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;).</translation>
+        <translation>одна из миниатюр пустая (&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;).</translation>
     </message>
     <message>
         <location filename="../gui/src/tabs/search-tab.cpp" line="509"/>
@@ -4213,7 +4213,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../gui/src/sources/sourceswindow.ui" line="105"/>
         <source>...</source>
-        <translation type="unfinished">...</translation>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../gui/src/sources/sourceswindow.ui" line="180"/>
@@ -4238,22 +4238,22 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../gui/src/sources/sourceswindow.cpp" line="361"/>
         <source>Create a new preset</source>
-        <translation type="unfinished"></translation>
+        <translation>Создать шаблон</translation>
     </message>
     <message>
         <location filename="../gui/src/sources/sourceswindow.cpp" line="361"/>
         <location filename="../gui/src/sources/sourceswindow.cpp" line="383"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Имя</translation>
     </message>
     <message>
         <location filename="../gui/src/sources/sourceswindow.cpp" line="383"/>
         <source>Edit preset</source>
-        <translation type="unfinished"></translation>
+        <translation>Изменить шаблон</translation>
     </message>
     <message>
         <source>An update for this source is available, but for another version of the program.</source>
-        <translation type="vanished">Для этого источника доступно обновление, но для другой версии программы.</translation>
+        <translation>Для этого источника доступно обновление, но для другой версии программы.</translation>
     </message>
     <message>
         <location filename="../gui/src/sources/sourceswindow.cpp" line="312"/>
@@ -4310,7 +4310,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
         <source>&lt;i&gt;If you use Grabber for the first time, it is advised to first read the &lt;a href=&quot;{website}/wiki/GettingStarted&quot;&gt;getting started&lt;/a&gt; wiki page.&lt;/i&gt;</source>
-        <translation type="vanished">&lt;i&gt;Если вы используете Граббер в первый раз, советуем ознакомиться с &lt;a href=&quot;{website}/wiki/GettingStarted&quot;&gt;информацией для начинающих&lt;/a&gt;(на английском).&lt;/i&gt;</translation>
+        <translation>&lt;i&gt;Если вы используете Граббер в первый раз, советуем ознакомиться с &lt;a href=&quot;{website}/wiki/GettingStarted&quot;&gt;информацией для начинающих&lt;/a&gt;(на английском).&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../gui/src/settings/startwindow.ui" line="132"/>
@@ -4325,11 +4325,11 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../gui/src/settings/startwindow.cpp" line="93"/>
         <source>An error occurred creating the save folder.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка при создании папки для сохранения.</translation>
     </message>
     <message>
         <source>An error occured creating the save folder.</source>
-        <translation type="vanished">Ошибка при создании папки для сохранения.</translation>
+        <translation>Ошибка при создании папки для сохранения.</translation>
     </message>
 </context>
 <context>
@@ -4372,7 +4372,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../gui/src/tabs/tag-tab.ui" line="351"/>
         <source>Load more results</source>
-        <translation type="unfinished"></translation>
+        <translation>Показать ещё результаты</translation>
     </message>
     <message>
         <location filename="../gui/src/tabs/tag-tab.ui" line="412"/>
@@ -4460,15 +4460,15 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
         <source>Safe</source>
-        <translation type="vanished">Безопасно</translation>
+        <translation>Безопасно</translation>
     </message>
     <message>
         <source>Questionable</source>
-        <translation type="vanished">Под вопросом</translation>
+        <translation>Под вопросом</translation>
     </message>
     <message>
         <source>Explicit</source>
-        <translation type="vanished">Откровенный</translation>
+        <translation>Откровенный</translation>
     </message>
     <message>
         <location filename="../gui/src/viewer/zoomwindow.cpp" line="314"/>
@@ -4482,51 +4482,51 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
         <source>Remove from favorites</source>
-        <translation type="vanished">Убрать из избранного</translation>
+        <translation>Убрать из избранного</translation>
     </message>
     <message>
         <source>Choose as image</source>
-        <translation type="vanished">Выберите как изображение</translation>
+        <translation>Выберите как изображение</translation>
     </message>
     <message>
         <source>Add to favorites</source>
-        <translation type="vanished">Добавить в избранное</translation>
+        <translation>Добавить в избранное</translation>
     </message>
     <message>
         <source>Don&apos;t keep for later</source>
-        <translation type="vanished">Не оставлять на потом</translation>
+        <translation>Не оставлять на потом</translation>
     </message>
     <message>
         <source>Keep for later</source>
-        <translation type="vanished">Оставить на потом</translation>
+        <translation>Оставить на потом</translation>
     </message>
     <message>
         <source>Don&apos;t blacklist</source>
-        <translation type="vanished">Убрать из чёрного списка</translation>
+        <translation>Убрать из чёрного списка</translation>
     </message>
     <message>
         <source>Blacklist</source>
-        <translation type="vanished">Добавить в чёрный список</translation>
+        <translation>Добавить в чёрный список</translation>
     </message>
     <message>
         <source>Don&apos;t ignore</source>
-        <translation type="vanished">Не игнорировать</translation>
+        <translation>Не игнорировать</translation>
     </message>
     <message>
         <source>Ignore</source>
-        <translation type="vanished">Игнорировать</translation>
+        <translation>Игнорировать</translation>
     </message>
     <message>
         <source>Open in a new tab</source>
-        <translation type="vanished">Открыть в новой вкладе</translation>
+        <translation>Открыть в новой вкладе</translation>
     </message>
     <message>
         <source>Open in new a window</source>
-        <translation type="vanished">Открыть в новом окне</translation>
+        <translation>Открыть в новом окне</translation>
     </message>
     <message>
         <source>Open in browser</source>
-        <translation type="vanished">Открыть в браузере</translation>
+        <translation>Открыть в браузере</translation>
     </message>
     <message>
         <location filename="../gui/src/viewer/zoomwindow.cpp" line="557"/>
@@ -4535,7 +4535,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
         <source>File already exists</source>
-        <translation type="vanished">Файл уже существует</translation>
+        <translation>Файл уже существует</translation>
     </message>
     <message>
         <location filename="../gui/src/viewer/zoomwindow.cpp" line="574"/>
@@ -4544,7 +4544,7 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
         <source>File already exists (fav)</source>
-        <translation type="vanished">Файл уже существует (избранное)</translation>
+        <translation>Файл уже существует (избранное)</translation>
     </message>
     <message>
         <location filename="../gui/src/viewer/zoomwindow.cpp" line="574"/>
@@ -4554,7 +4554,7 @@ Please solve the issue before resuming the download.</source>
     <message>
         <source>An unexpected error occured loading the image (%1).
 %2</source>
-        <translation type="vanished">Неожиданная ошибка во время загрузки изображения (%1).
+        <translation>Неожиданная ошибка во время загрузки изображения (%1).
 %2</translation>
     </message>
     <message>
@@ -4569,11 +4569,11 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
         <source>Copy tag</source>
-        <translation type="vanished">Копировать тег</translation>
+        <translation>Копировать тег</translation>
     </message>
     <message>
         <source>Copy all tags</source>
-        <translation type="vanished">Копировать все теги</translation>
+        <translation>Копировать все теги</translation>
     </message>
     <message>
         <location filename="../gui/src/viewer/zoomwindow.cpp" line="319"/>
@@ -4591,7 +4591,8 @@ Please solve the issue before resuming the download.</source>
         <location filename="../gui/src/viewer/zoomwindow.cpp" line="602"/>
         <source>File is too big to be displayed.
 %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Файл слишколь большой для предпоказа.
+%1</translation>
     </message>
     <message>
         <location filename="../gui/src/viewer/zoomwindow.cpp" line="609"/>
@@ -4615,22 +4616,22 @@ Please solve the issue before resuming the download.</source>
     <message>
         <location filename="../gui/src/viewer/zoomwindow.cpp" line="548"/>
         <source>MD5 already exists (fav)</source>
-        <translation type="unfinished"></translation>
+        <translation>Совпадение MD5(избр)</translation>
     </message>
     <message>
         <location filename="../gui/src/viewer/zoomwindow.cpp" line="548"/>
         <source>MD5 already exists</source>
-        <translation type="unfinished"></translation>
+        <translation>Совпадение MD5</translation>
     </message>
     <message>
         <location filename="../gui/src/viewer/zoomwindow.cpp" line="553"/>
         <source>Already exists (fav)</source>
-        <translation type="unfinished"></translation>
+        <translation>Уже существует(избр)</translation>
     </message>
     <message>
         <location filename="../gui/src/viewer/zoomwindow.cpp" line="553"/>
         <source>Already exists</source>
-        <translation type="unfinished"></translation>
+        <translation>Уже существует</translation>
     </message>
     <message>
         <location filename="../gui/src/viewer/zoomwindow.cpp" line="840"/>
@@ -4685,11 +4686,11 @@ Please solve the issue before resuming the download.</source>
     </message>
     <message>
         <source>Ignored! (fav)</source>
-        <translation type="vanished">Проигнорировано! (избранное)</translation>
+        <translation>Проигнорировано! (избранное)</translation>
     </message>
     <message>
         <source>Ignored!</source>
-        <translation type="vanished">Проигнорировано!</translation>
+        <translation>Проигнорировано!</translation>
     </message>
     <message>
         <location filename="../gui/src/viewer/zoomwindow.cpp" line="909"/>
