@@ -5,10 +5,7 @@
 #include <QMap>
 #include <QCalendarWidget>
 #include <QJsonObject>
-#include "ui/textedit.h"
-#include "models/page.h"
 #include "search-tab.h"
-
 
 
 namespace Ui
@@ -18,6 +15,7 @@ namespace Ui
 
 
 class mainWindow;
+class TextEdit;
 
 class poolTab : public searchTab
 {
@@ -25,34 +23,34 @@ class poolTab : public searchTab
 
 	public:
 		explicit poolTab(QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent);
-		~poolTab();
+		~poolTab() override;
 		Ui::poolTab *ui;
-		QString tags() const;
+		QString tags() const override;
 		QList<Site*> loadSites() const override;
 		void write(QJsonObject &json) const override;
-		bool read(const QJsonObject &json);
+		bool read(const QJsonObject &json, bool preload = true);
+
+	protected:
+		void changeEvent(QEvent *event) override;
 
 	public slots:
 		// Zooms
-		void setTags(QString);
+		void setTags(QString tags, bool preload = true) override;
 		void setPool(int id, QString site);
 		// Loading
-		void load();
-		bool validateImage(QSharedPointer<Image> img);
+		void load() override;
 		// Batch
 		void getPage();
 		void getAll();
 		// Others
-		void closeEvent(QCloseEvent*);
+		void closeEvent(QCloseEvent*) override;
 		void on_buttonSearch_clicked();
 		void setSite(QString);
-		void focusSearch();
+		void focusSearch() override;
+		void updateTitle() override;
 
 	private:
-		int				m_id;
-		TextEdit		*m_search;
-		QCalendarWidget	*m_calendar;
-		bool			m_sized;
+		TextEdit *m_search;
 };
 
 #endif // POOL_TAB_H

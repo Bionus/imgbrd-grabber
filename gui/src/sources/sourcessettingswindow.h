@@ -2,9 +2,10 @@
 #define SOURCESSETTINGSWINDOW_H
 
 #include <QDialog>
+#include <QSettings>
 #include <QMap>
 #include "models/site.h"
-
+#include "models/profile.h"
 
 
 namespace Ui
@@ -13,14 +14,13 @@ namespace Ui
 }
 
 
-
 class SourcesSettingsWindow : public QDialog
 {
 	Q_OBJECT
-	
+
 	public:
-		explicit SourcesSettingsWindow(Site* site, QWidget *parent = 0);
-		~SourcesSettingsWindow();
+		explicit SourcesSettingsWindow(Profile *profile, Site* site, QWidget *parent = Q_NULLPTR);
+		~SourcesSettingsWindow() override;
 
 	public slots:
 		void on_buttonAuthHash_clicked();
@@ -37,6 +37,7 @@ class SourcesSettingsWindow : public QDialog
 	private:
 		Ui::SourcesSettingsWindow *ui;
 		Site *m_site;
+		QSettings *m_globalSettings;
 };
 
 #endif // SOURCESSETTINGSWINDOW_H

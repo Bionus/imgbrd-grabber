@@ -1,11 +1,20 @@
 #include "logger.h"
 #include "functions.h"
 
+#ifdef QT_DEBUG
+	#include <QDebug>
+#endif
+
 
 void Logger::setLogFile(QString path)
 {
 	m_logFile.setFileName(path);
 	m_logFile.open(QFile::Append | QFile::Text | QFile::Truncate);
+}
+
+void Logger::setLogLevel(LogLevel level)
+{
+	m_level = level;
 }
 
 /**
@@ -14,18 +23,30 @@ void Logger::setLogFile(QString path)
  */
 void Logger::log(QString l, LogLevel level)
 {
-	if (!m_logFile.isOpen())
-		setLogFile(savePath("main.log"));
+	if (level < m_level)
+		return;
 
+	if (!m_logFile.isOpen())
+		setLogFile(savePath("main.log", false, true));
+
+	static const QStringList levels = QStringList() << "Debug" << "Info" << "Warning" << "Error";
+	static const QStringList colors = QStringList() << "#999" << "" << "orange" << "red";
+	QString levelStr = levels[level];
 	QDateTime time = QDateTime::currentDateTime();
-	m_logFile.write(QString("["+time.toString("hh:mm:ss.zzz")+"] "+stripTags(l)+"\n").toUtf8());
+
+	// Write ASCII log to file
+	m_logFile.write(QString("["+time.toString("hh:mm:ss.zzz")+"]["+levelStr+"] "+stripTags(l)+"\n").toUtf8());
 	m_logFile.flush();
 
-	QString msg = (level == Error ? QObject::tr("<b>Error:</b> %1").arg(l) : (level == Warning ? QObject::tr("<b>Warning:</b> %1").arg(l) : (level == Notice ? QObject::tr("<b>Notice:</b> %1").arg(l) : l)));
-	emit newLog(time, msg);
+	// Emit colored HTML log
+	QString levelColor = colors[level];
+	QString msg = "[" + time.toString("hh:mm:ss.zzz") + "][" + levelStr + "] " + l;
+	if (!levelColor.isEmpty())
+		msg = QString("<span style='color:%1'>%2</span>").arg(levelColor).arg(msg);
+	emit newLog(msg);
 
 	#ifdef QT_DEBUG
-		qDebug() << time.toString("hh:mm:ss.zzz") << l;
+		qDebug() << time.toString("hh:mm:ss.zzz") << levelStr << l;
 	#endif
 }
 
@@ -33,7 +54,7 @@ void Logger::logCommand(QString l)
 {
 	if (!m_fCommandsLog.isOpen())
 	{
-		m_fCommandsLog.setFileName(savePath("commands.log"));
+		m_fCommandsLog.setFileName(savePath("commands.log", false, true));
 		m_fCommandsLog.open(QFile::Append | QFile::Text | QFile::Truncate);
 	}
 
@@ -45,7 +66,7 @@ void Logger::logCommandSql(QString l)
 {
 	if (!m_fCommandsSqlLog.isOpen())
 	{
-		m_fCommandsSqlLog.setFileName(savePath("commands.sql"));
+		m_fCommandsSqlLog.setFileName(savePath("commands.sql", false, true));
 		m_fCommandsSqlLog.open(QFile::Append | QFile::Text | QFile::Truncate);
 	}
 

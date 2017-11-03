@@ -3,7 +3,7 @@
 
 #include <QString>
 #include <QThread>
-#include "models/image.h"
+#include <QVariant>
 
 
 class SqlWorker : public QThread
@@ -11,8 +11,9 @@ class SqlWorker : public QThread
 	Q_OBJECT
 
 	public:
-		SqlWorker(QString driver, QString host, QString user, QString password, QString database, QObject *parent = 0);
+		SqlWorker(QString driver, QString host, QString user, QString password, QString database, QObject *parent = Q_NULLPTR);
 		bool connect();
+		static QString escape(QVariant val);
 
 	public slots:
 		bool execute(QString sql);

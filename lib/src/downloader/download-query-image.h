@@ -6,23 +6,24 @@
 #include <QSettings>
 #include <QMap>
 #include <QJsonObject>
-#include "models/image.h"
-#include "models/site.h"
 
+
+class Image;
+class Site;
 
 class DownloadQueryImage
 {
 	public:
 		// Constructors
-		DownloadQueryImage();
-		DownloadQueryImage(QSettings *settings, QSharedPointer<Image> img, Site *site);
-		DownloadQueryImage(QSharedPointer<Image> img, Site *site, QString filename, QString path);
-		DownloadQueryImage(int id, QString md5, QString rating, QString tags, QString fileUrl, QString date, Site *site, QString filename, QString path);
+		DownloadQueryImage() = default;
+		DownloadQueryImage(QSettings *settings, const Image &img, Site *site);
+		DownloadQueryImage(const Image &img, Site *site, QString filename, QString path);
+		DownloadQueryImage(int id, const QString &md5, const QString &rating, const QString &tags, const QString &fileUrl, const QString &date, Site *site, QString filename, QString path);
 
 		// Serialization
-		QString toString(QString separator) const;
+		QString toString(const QString &separator) const;
 		void write(QJsonObject &json) const;
-		bool read(const QJsonObject &json, QMap<QString, Site *> &sites);
+		bool read(const QJsonObject &json, const QMap<QString, Site *> &sites);
 
 		// Public members
 		Site *site;
@@ -31,9 +32,12 @@ class DownloadQueryImage
 		QMap<QString, QString> values;
 
 	private:
-		void initFromImage(QSharedPointer<Image> img);
-		void initFromData(int id, QString md5, QString rating, QString tags, QString fileUrl, QString date);
+		void initFromImage(const Image &img);
+		void initFromData(int id, const QString &md5, const QString &rating, const QString &tags, const QString &fileUrl, const QString &date);
 };
+
+bool operator==(const DownloadQueryImage &lhs, const DownloadQueryImage &rhs);
+bool operator!=(const DownloadQueryImage &lhs, const DownloadQueryImage &rhs);
 
 Q_DECLARE_METATYPE(DownloadQueryImage)
 

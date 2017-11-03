@@ -3,13 +3,14 @@
 
 #include <QSettings>
 #include <QList>
-#include "reverse-search-engine.h"
 
+
+class ReverseSearchEngine;
 
 class ReverseSearchLoader
 {
 	public:
-		ReverseSearchLoader(QSettings *settings);
+		explicit ReverseSearchLoader(QSettings *settings);
 		QList<ReverseSearchEngine> getAllReverseSearchEngines() const;
 
 	private:

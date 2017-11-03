@@ -1,17 +1,13 @@
-#include <QSettings>
-#include <QFile>
-#include <QNetworkCookie>
-#include <iostream>
-#include <QSet>
 #include "page.h"
-#include "vendor/json.h"
-#include "math.h"
+#include <cmath>
 #include "site.h"
-
+#include "api.h"
+#include "vendor/json.h"
+#include "logger.h"
 
 
 Page::Page(Profile *profile, Site *site, QList<Site*> sites, QStringList tags, int page, int limit, QStringList postFiltering, bool smart, QObject *parent, int pool, int lastPage, int lastPageMinId, int lastPageMaxId)
-	: QObject(parent), m_site(site), m_regexApi(0), m_postFiltering(postFiltering), m_errors(QStringList()), m_imagesPerPage(limit), m_currentSource(0), m_lastPage(lastPage), m_lastPageMinId(lastPageMinId), m_lastPageMaxId(lastPageMaxId), m_smart(smart)
+	: QObject(parent), m_site(site), m_regexApi(-1), m_postFiltering(postFiltering), m_errors(QStringList()), m_imagesPerPage(limit), m_lastPage(lastPage), m_lastPageMinId(lastPageMinId), m_lastPageMaxId(lastPageMaxId), m_smart(smart)
 {
 	m_website = m_site->url();
 	m_imagesCount = -1;
@@ -26,14 +22,13 @@ Page::Page(Profile *profile, Site *site, QList<Site*> sites, QStringList tags, i
 		.replace(" -rating:q ", " -rating:questionable ", Qt::CaseInsensitive)
 		.replace(" -rating:e ", " -rating:explicit ", Qt::CaseInsensitive);
 	tags = text.split(" ", QString::SkipEmptyParts);
-	tags.removeDuplicates();
 
 	// Get the list of all enabled modifiers
 	QStringList modifiers = QStringList();
-	for (Site *site : sites)
+	for (Site *ste : sites)
 	{
-		if (site->contains("Modifiers"))
-		{ modifiers.append(site->value("Modifiers").trimmed().split(" ", QString::SkipEmptyParts)); }
+		if (ste->contains("Modifiers"))
+		{ modifiers.append(ste->value("Modifiers").trimmed().split(" ", QString::SkipEmptyParts)); }
 	}
 	if (m_site->contains("Modifiers"))
 	{
@@ -67,11 +62,11 @@ Page::~Page()
 	qDeleteAll(m_pageApis);
 }
 
-void Page::fallback(bool bload)
+void Page::fallback(bool loadIfPossible)
 {
 	if (m_currentApi >= m_siteApis.count() - 1)
 	{
-		log("No valid source of the site returned result.");
+		log(QString("[%1] No valid source of the site returned result.").arg(m_site->url()), Logger::Warning);
 		m_errors.append(tr("No valid source of the site returned result."));
 		emit failedLoading(this);
 		return;
@@ -79,9 +74,9 @@ void Page::fallback(bool bload)
 
 	m_currentApi++;
 	if (m_currentApi > 0)
-		log(QString("Loading using %1 failed. Retry using %2.").arg(m_siteApis[m_currentApi - 1]->getName()).arg(m_siteApis[m_currentApi]->getName()));
+		log(QString("[%1] Loading using %2 failed. Retry using %3.").arg(m_site->url()).arg(m_siteApis[m_currentApi - 1]->getName()).arg(m_siteApis[m_currentApi]->getName()), Logger::Warning);
 
-	if (bload)
+	if (loadIfPossible)
 		load();
 }
 
@@ -153,24 +148,26 @@ void Page::clear()
 
 Site			*Page::site()		{ return m_site;								}
 QString			Page::website()		{ return m_website;								}
-QString			Page::wiki()		{ return m_wiki;								}
+QString			Page::wiki()		{ return m_pageApis[m_regexApi < 0 ? m_currentApi : m_regexApi]->wiki(); }
 QStringList		Page::search()		{ return m_search;								}
 QStringList		Page::errors()		{ return m_errors;								}
 int				Page::imagesPerPage()	{ return m_imagesPerPage;					}
 int				Page::page()		{ return m_page;								}
+int				Page::pageImageCount()	{ return m_pageApis[m_currentApi]->pageImageCount();	}
 QList<QSharedPointer<Image>>	Page::images()		{ return m_pageApis[m_currentApi]->images();	}
 QUrl			Page::url()			{ return m_pageApis[m_currentApi]->url();		}
+QUrl			Page::friendlyUrl()	{ return m_pageApis[m_regexApi < 0 ? m_currentApi : m_regexApi]->url();	}
 QString			Page::source()		{ return m_pageApis[m_currentApi]->source();	}
-QList<Tag>		Page::tags()		{ return m_pageApis[m_currentApi]->tags();		}
+QList<Tag>		Page::tags()		{ return m_pageApis[m_regexApi < 0 ? m_currentApi : m_regexApi]->tags(); }
 QUrl			Page::nextPage()	{ return m_pageApis[m_currentApi]->nextPage();	}
 QUrl			Page::prevPage()	{ return m_pageApis[m_currentApi]->prevPage();	}
 int				Page::highLimit()	{ return m_pageApis[m_currentApi]->highLimit(); }
 
 int Page::imagesCount(bool guess)
 {
-	if (m_regexApi >= 0)
+	if (m_regexApi >= 0 && !m_pageApis[m_currentApi]->isImageCountSure())
 	{
-		int count = m_pageApis[m_regexApi]->imagesCount(false);
+		int count = m_pageApis[m_regexApi]->imagesCount(guess);
 		if (count >= 0)
 			return count;
 	}
@@ -178,9 +175,9 @@ int Page::imagesCount(bool guess)
 }
 int Page::pagesCount(bool guess)
 {
-	if (m_regexApi >= 0)
+	if (m_regexApi >= 0 && !m_pageApis[m_currentApi]->isPageCountSure())
 	{
-		int count = m_pageApis[m_regexApi]->pagesCount(false);
+		int count = m_pageApis[m_regexApi]->pagesCount(guess);
 		if (count >= 0)
 			return count;
 	}

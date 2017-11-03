@@ -5,12 +5,7 @@
 #include <QMap>
 #include <QCalendarWidget>
 #include <QJsonObject>
-#include "ui/textedit.h"
 #include "search-tab.h"
-#include "models/page.h"
-#include "mainwindow.h"
-#include "downloader/downloader.h"
-
 
 
 namespace Ui
@@ -19,8 +14,9 @@ namespace Ui
 }
 
 
-
 class mainWindow;
+class Downloader;
+class TextEdit;
 
 class tagTab : public searchTab
 {
@@ -28,33 +24,31 @@ class tagTab : public searchTab
 
 	public:
 		explicit tagTab(QMap<QString, Site*> *sites, Profile *profile, mainWindow *parent);
-		~tagTab();
+		~tagTab() override;
 		Ui::tagTab *ui;
-		QString tags() const;
-		QString results();
-		QList<Site*> loadSites() const override;
+		QString tags() const override;
 		void write(QJsonObject &json) const override;
-		bool read(const QJsonObject &json);
+		bool read(const QJsonObject &json, bool preload = true);
+
+	protected:
+		void changeEvent(QEvent *event) override;
 
 	public slots:
 		// Zooms
-		void setTags(QString);
+		void setTags(QString tags, bool preload = true) override;
 		// Loading
-		void load();
-		bool validateImage(QSharedPointer<Image> img);
+		void load() override;
 		// Batch
 		void getPage();
 		void getAll();
 		// Others
-		void closeEvent(QCloseEvent*);
+		void closeEvent(QCloseEvent*) override;
 		void on_buttonSearch_clicked();
-		void focusSearch();
+		void focusSearch() override;
+		void updateTitle() override;
 
 	private:
-		TextEdit		*m_search;
-		QCalendarWidget	*m_calendar;
-		bool			m_sized;
-		Downloader		*m_downloader;
+		TextEdit *m_search;
 };
 
 #endif // TAG_TAB_H

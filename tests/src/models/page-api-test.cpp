@@ -1,6 +1,6 @@
 #include <QtTest>
 #include "page-api-test.h"
-#include "models/tag.h"
+#include "tags/tag.h"
 #include "models/source.h"
 
 
@@ -24,7 +24,7 @@ void PageApiTest::testParseUrlBasic()
 	PageApi pageApi(&page, &profile, m_site, m_site->getApis().first(), tags);
 
 	QCOMPARE(pageApi.parseUrl("/index.php?page=post&s=list&pid={pid}&tags={tags}").toString(),
-			 QString("http://gelbooru.com/index.php?page=post&s=list&pid=0&tags=test tag"));
+			 QString("https://gelbooru.com/index.php?page=post&s=list&pid=0&tags=test tag"));
 }
 
 void PageApiTest::testParseUrlLogin()
@@ -38,7 +38,7 @@ void PageApiTest::testParseUrlLogin()
 	PageApi pageApi(&page, &profile, site, site->getApis().first(), tags);
 
 	QCOMPARE(pageApi.parseUrl("/posts.xml?{login}limit={limit}&page={page}{altpage}&tags={tags}").toString(),
-			 QString("http://danbooru.donmai.us/posts.xml?login=user&password_hash=pass&limit=25&page=1&tags=test tag"));
+			 QString("https://danbooru.donmai.us/posts.xml?login=user&password_hash=pass&limit=25&page=1&tags=test tag"));
 }
 
 void PageApiTest::testParseUrlAltPage()
@@ -51,7 +51,7 @@ void PageApiTest::testParseUrlAltPage()
 	pageApi.setLastPage(&prevPage);
 
 	QCOMPARE(pageApi.parseUrl("/posts.xml?{login}limit={limit}&page={altpage}&tags={tags}").toString(),
-			 QString("http://danbooru.donmai.us/posts.xml?login=user&password_hash=pass&limit=25&page=b0&tags=test tag"));
+			 QString("https://danbooru.donmai.us/posts.xml?login=user&password_hash=pass&limit=25&page=b0&tags=test tag"));
 }
 
 

@@ -1,11 +1,13 @@
 #include "sitewindow.h"
 #include "ui_sitewindow.h"
 #include <QFile>
-#include "mainwindow.h"
-#include "functions.h"
+#include <QPushButton>
+#include "models/profile.h"
+#include "models/site.h"
 #include "models/source.h"
 #include "models/source-guesser.h"
 #include "helpers.h"
+#include "functions.h"
 
 
 SiteWindow::SiteWindow(Profile *profile, QMap<QString ,Site*> *sites, QWidget *parent)
@@ -21,7 +23,7 @@ SiteWindow::SiteWindow(Profile *profile, QMap<QString ,Site*> *sites, QWidget *p
 	m_sources = Source::getAllSources(nullptr);
 	for (Source *source : *m_sources)
 	{
-		ui->comboBox->addItem(QIcon(savePath("sites/" + source->getName() + "/icon.png")), source->getName());
+		ui->comboBox->addItem(QIcon(source->getPath() + "/icon.png"), source->getName());
 	}
 }
 
@@ -32,9 +34,20 @@ SiteWindow::~SiteWindow()
 
 void SiteWindow::accept()
 {
-	ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
-
 	m_url = ui->lineEdit->text();
+	if (!m_url.startsWith("http://") && !m_url.startsWith("https://"))
+	{ m_url.prepend("http://"); }
+	if (m_url.endsWith("/"))
+	{ m_url = m_url.left(m_url.size() - 1); }
+
+	// Check URL validity
+	if (!QRegularExpression(R"(^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([\/\w .-]*)*\/?$)").match(m_url).hasMatch())
+	{
+		error(this, tr("The url you entered is not valid."));
+		return;
+	}
+
+	ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 
 	if (ui->checkBox->isChecked())
 	{
@@ -79,9 +92,25 @@ void SiteWindow::finish(Source *src)
 		}
 	}
 
+	// Remove unnecessary prefix
+	bool ssl = false;
+	if (m_url.startsWith("http://"))
+	{ m_url = m_url.mid(7); }
+	else if (m_url.startsWith("https://"))
+	{
+		m_url = m_url.mid(8);
+		ssl = true;
+	}
+	if (m_url.endsWith('/'))
+	{ m_url = m_url.left(m_url.length() - 1); }
+
 	Site *site = new Site(m_url, src);
 	src->getSites().append(site);
 	m_sites->insert(site->url(), site);
+
+	// If the user wrote "https://" in the URL, we enable SSL for this site
+	if (ssl)
+	{ site->setSetting("ssl", true, false); }
 
 	// Save new sites
 	QFile f(src->getPath() + "/sites.txt");

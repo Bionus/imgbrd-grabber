@@ -1,11 +1,21 @@
 #include "updater.h"
+#include <QRegularExpression>
 
+
+Updater::Updater()
+	: m_networkAccessManager(new CustomNetworkAccessManager(this))
+{}
+
+Updater::~Updater()
+{
+	m_networkAccessManager->deleteLater();
+}
 
 int Updater::compareVersions(QString a, QString b)
 {
 	int aSub = 0;
 	char aSubType = ' ';
-	int aPos = a.indexOf(QRegExp("[a-z]"));
+	int aPos = a.indexOf(QRegularExpression("[a-z]"));
 	if (aPos != -1)
 	{
 		aSubType = a[aPos].toLatin1();
@@ -15,7 +25,7 @@ int Updater::compareVersions(QString a, QString b)
 
 	int bSub = 0;
 	char bSubType = ' ';
-	int bPos = b.indexOf(QRegExp("[a-z]"));
+	int bPos = b.indexOf(QRegularExpression("[a-z]"));
 	if (bPos != -1)
 	{
 		bSubType = b[bPos].toLatin1();

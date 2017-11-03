@@ -1,5 +1,5 @@
 #include <QApplication>
-#include "mainwindow.h"
+#include "crash-reporter-window.h"
 
 
 int main(int argc, char *argv[])
@@ -10,8 +10,8 @@ int main(int argc, char *argv[])
 	app.setOrganizationName("Bionus");
 	app.setOrganizationDomain("bionus.fr.cr");
 
-	MainWindow w;
+	CrashReporterWindow w;
 	w.show();
-	
+
 	return app.exec();
 }

@@ -6,7 +6,7 @@
 
 void BehoimiTest::testHtml()
 {
-	QList<Image*> images = getImages("Danbooru", "behoimi.org", "regex", "blue_legwear rating:safe");
+	QList<Image*> images = getImages("Danbooru", "behoimi.org", "regex", "blue_legwear rating:safe", "results.html");
 
 	// Convert results
 	QStringList md5s;
@@ -24,7 +24,7 @@ void BehoimiTest::testHtml()
 
 void BehoimiTest::testXml()
 {
-	QList<Image*> images = getImages("Danbooru", "behoimi.org", "xml", "rating:safe");
+	QList<Image*> images = getImages("Danbooru", "behoimi.org", "xml", "rating:safe", "results.xml");
 
 	// Convert results
 	QStringList md5s;
@@ -42,7 +42,7 @@ void BehoimiTest::testXml()
 
 void BehoimiTest::testJson()
 {
-	QList<Image*> images = getImages("Danbooru", "behoimi.org", "json", "rating:safe");
+	QList<Image*> images = getImages("Danbooru", "behoimi.org", "json", "rating:safe", "results.json");
 
 	// Convert results
 	QStringList md5s;
@@ -60,7 +60,7 @@ void BehoimiTest::testJson()
 
 void BehoimiTest::testPageTags()
 {
-	QList<Tag> tags = getPageTags("Danbooru", "behoimi.org", "regex", "blue_legwear rating:safe");
+	QList<Tag> tags = getPageTags("Danbooru", "behoimi.org", "regex", "blue_legwear rating:safe", "results.html");
 
 	QCOMPARE(tags.count(), 25);
 
@@ -70,6 +70,39 @@ void BehoimiTest::testPageTags()
 	QCOMPARE(tags[1].count(), 295);
 	QCOMPARE(tags[2].text(), QString("thighhighs"));
 	QCOMPARE(tags[2].count(), 222);
+}
+
+void BehoimiTest::testHtmlTags()
+{
+	QList<Tag> tags = getTags("Danbooru", "behoimi.org", "regex", "tags.html");
+
+	QCOMPARE(tags.count(), 50);
+
+	QCOMPARE(tags[2].text(), QString("104"));
+	QCOMPARE(tags[2].count(), 9);
+	QCOMPARE(tags[2].type().name(), QString("model"));
+}
+
+void BehoimiTest::testXmlTags()
+{
+	QList<Tag> tags = getTags("Danbooru", "behoimi.org", "xml", "tags.xml");
+
+	QCOMPARE(tags.count(), 100);
+
+	QCOMPARE(tags[3].text(), QString("okubo_mariko"));
+	QCOMPARE(tags[3].count(), 286);
+	QCOMPARE(tags[3].type().name(), QString("model"));
+}
+
+void BehoimiTest::testJsonTags()
+{
+	QList<Tag> tags = getTags("Danbooru", "behoimi.org", "json", "tags.json");
+
+	QCOMPARE(tags.count(), 100);
+
+	QCOMPARE(tags[1].text(), QString("07_ghost"));
+	QCOMPARE(tags[1].count(), 3);
+	QCOMPARE(tags[1].type().name(), QString("copyright"));
 }
 
 

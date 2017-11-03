@@ -1,10 +1,10 @@
+#include "program-updater.h"
 #include <QNetworkRequest>
 #include <QNetworkReply>
 #include <QDir>
 #include <QFile>
-#include "program-updater.h"
-#include "functions.h"
 #include "vendor/json.h"
+#include "logger.h"
 
 
 ProgramUpdater::ProgramUpdater()
@@ -12,15 +12,19 @@ ProgramUpdater::ProgramUpdater()
 { }
 
 ProgramUpdater::ProgramUpdater(QString baseUrl)
-	: m_baseUrl(baseUrl)
+	: m_baseUrl(baseUrl), m_checkForUpdatesReply(Q_NULLPTR), m_downloadReply(Q_NULLPTR)
 { }
 
 void ProgramUpdater::checkForUpdates()
 {
-	QUrl url(m_baseUrl + "/releases/latest");
+	#ifdef NIGHTLY
+		QUrl url(m_baseUrl + "/releases/tags/nightly");
+	#else
+		QUrl url(m_baseUrl + "/releases/latest");
+	#endif
 	QNetworkRequest request(url);
 
-	m_checkForUpdatesReply = m_networkAccessManager.get(request);
+	m_checkForUpdatesReply = m_networkAccessManager->get(request);
 	connect(m_checkForUpdatesReply, &QNetworkReply::finished, this, &ProgramUpdater::checkForUpdatesDone);
 }
 
@@ -31,15 +35,29 @@ void ProgramUpdater::checkForUpdatesDone()
 	QVariant json = Json::parse(m_source);
 	QMap<QString, QVariant> lastRelease = json.toMap();
 
-	QString latest = lastRelease["name"].toString().mid(1);
-	QString changelog = lastRelease["body"].toString();
+	QString changelog;
+	#if defined NIGHTLY
+		QString latest = lastRelease["target_commitish"].toString();
+		QString current = QString(NIGHTLY_COMMIT);
+		bool isNew = !current.isEmpty() && latest != current;
+		latest = latest.left(8);
+	#else
+		QString latest = lastRelease["name"].toString().mid(1);
+		bool isNew = compareVersions(latest, QString(VERSION)) > 0;
+		changelog = lastRelease["body"].toString();
+	#endif
 
 	m_newVersion = latest;
-	bool isNew = compareVersions(latest, QString(VERSION)) > 0;
-
 	emit finished(latest, isNew, changelog);
 }
 
+
+QUrl ProgramUpdater::latestUrl() const
+{
+	QVariant json = Json::parse(m_source);
+	QMap<QString, QVariant> lastRelease = json.toMap();
+	return QUrl(lastRelease["html_url"].toString());
+}
 
 void ProgramUpdater::downloadUpdate()
 {
@@ -52,19 +70,19 @@ void ProgramUpdater::downloadUpdate()
 	QNetworkRequest request(url);
 	log(QString("Downloading installer from \"%1\".").arg(url.toString()));
 
-	m_downloadReply = m_networkAccessManager.get(request);
+	m_downloadReply = m_networkAccessManager->get(request);
 	connect(m_downloadReply, &QNetworkReply::downloadProgress, this, &ProgramUpdater::downloadProgress);
 	connect(m_downloadReply, &QNetworkReply::finished, this, &ProgramUpdater::downloadDone);
 }
 
 void ProgramUpdater::downloadDone()
 {
-	QUrl redir = m_downloadReply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
-	if (!redir.isEmpty())
+	QUrl redirection = m_downloadReply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
+	if (!redirection.isEmpty())
 	{
-		log(QString("Installer download redirected to \"%1\".").arg(redir.toString()));
-		QNetworkRequest request(redir);
-		m_downloadReply = m_networkAccessManager.get(request);
+		log(QString("Installer download redirected to \"%1\".").arg(redirection.toString()));
+		QNetworkRequest request(redirection);
+		m_downloadReply = m_networkAccessManager->get(request);
 		connect(m_downloadReply, &QNetworkReply::downloadProgress, this, &ProgramUpdater::downloadProgress);
 		connect(m_downloadReply, &QNetworkReply::finished, this, &ProgramUpdater::downloadDone);
 		return;

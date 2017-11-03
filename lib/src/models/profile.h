@@ -4,6 +4,8 @@
 #include <QString>
 #include <QList>
 #include <QSettings>
+#include <QPair>
+#include <QHash>
 #include "models/favorite.h"
 
 
@@ -17,8 +19,8 @@ class Profile : public QObject
 	public:
 		Profile();
 		Profile(QSettings *settings, QList<Favorite> favorites, QStringList keptForLater = QStringList(), QString path = QString());
-		Profile(QString path);
-		~Profile();
+		explicit Profile(QString path);
+		~Profile() override;
 		void sync();
 
 		// Temporary path
@@ -38,16 +40,22 @@ class Profile : public QObject
 		void removeIgnored(QString tag);
 
 		// MD5 management
-		QString md5Exists(QString);
-		void addMd5(QString, QString);
-		void setMd5(QString, QString);
-		void removeMd5(QString);
+		QPair<QString, QString> md5Action(QString md5);
+		QString md5Exists(QString md5);
+		void addMd5(QString md5, QString path);
+		void setMd5(QString md5, QString path);
+		void removeMd5(QString md5);
 
 		// Auto-completion
 		void addAutoComplete(QString tag);
 
 		// Sites management
 		void addSite(Site *site);
+
+		// Blacklist management
+		void setBlacklistedTags(QStringList tags);
+		void addBlacklistedTag(QString tag);
+		void removeBlacklistedTag(QString tag);
 
 		// Getters
 		QString getPath() const;
@@ -58,12 +66,19 @@ class Profile : public QObject
 		Commands &getCommands();
 		QStringList &getAutoComplete();
 		QStringList &getCustomAutoComplete();
+		QStringList &getBlacklist();
+
+	private:
+		void syncFavorites();
+		void syncKeptForLater();
+		void syncIgnored();
 
 	signals:
 		void favoritesChanged();
 		void keptForLaterChanged();
 		void ignoredChanged();
 		void sitesChanged();
+		void blacklistChanged();
 
 	private:
 		QString 		m_path;
@@ -74,7 +89,8 @@ class Profile : public QObject
 		Commands		*m_commands;
 		QStringList		m_autoComplete;
 		QStringList		m_customAutoComplete;
-		QMap<QString, QString>	m_md5s;
+		QStringList		m_blacklistedTags;
+		QHash<QString, QString>	m_md5s;
 };
 
 #endif // PROFILE_H

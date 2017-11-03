@@ -3,11 +3,7 @@
 
 #include <QWidget>
 #include <QMap>
-#include "ui/textedit.h"
 #include "search-tab.h"
-#include "models/page.h"
-#include "mainwindow.h"
-
 
 
 namespace Ui
@@ -16,8 +12,8 @@ namespace Ui
 }
 
 
-
 class mainWindow;
+class Page;
 
 class favoritesTab : public searchTab
 {
@@ -25,19 +21,21 @@ class favoritesTab : public searchTab
 
 	public:
 		explicit favoritesTab(QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent);
-		~favoritesTab();
+		~favoritesTab() override;
 		Ui::favoritesTab *ui;
-		QList<bool> sources();
-		QString tags() const;
-		QList<Site*> loadSites() const override;
+		QList<bool> sources() override;
+		QString tags() const override;
 		void write(QJsonObject &json) const override;
+
+	protected:
+		void changeEvent(QEvent *event) override;
 
 	public slots:
 		// Zooms
-		void setTags(QString);
+		void setTags(QString tags, bool preload = true) override;
 		// Loading
-		void load();
-		bool validateImage(QSharedPointer<Image> img);
+		void load() override;
+		bool validateImage(const QSharedPointer<Image> &img, QString &error) override;
 		// Batch
 		void getPage();
 		void getAll();
@@ -51,17 +49,17 @@ class favoritesTab : public searchTab
 		void setFavoriteViewed(QString);
 		void viewed();
 		// Others
-		void closeEvent(QCloseEvent*);
-		void addTabFavorite(QString);
-		void focusSearch();
-		void addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage = nullptr) override;
+		void closeEvent(QCloseEvent*) override;
+		void focusSearch() override;
+		void addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, bool merged, QString noResultsMessage = nullptr) override;
 		void setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage = nullptr) override;
+		void updateTitle() override;
 
 	private:
 		QDateTime m_loadFavorite;
 		QString m_currentTags;
-		bool m_sized;
 		int m_currentFav;
+		FixedSizeGridLayout *m_favoritesLayout;
 };
 
 #endif // FAVORITES_TAB_H

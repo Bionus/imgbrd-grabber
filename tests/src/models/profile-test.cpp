@@ -26,12 +26,12 @@ void ProfileTest::cleanup()
 
 void ProfileTest::testConstructorEmpty()
 {
-	Profile profile;
+	Profile newProfile;
 
-	QCOMPARE(profile.getPath(), QString());
-	QVERIFY(profile.getSettings() == nullptr);
-	QVERIFY(profile.getFavorites().isEmpty());
-	QVERIFY(profile.getKeptForLater().isEmpty());
+	QCOMPARE(newProfile.getPath(), QString());
+	QVERIFY(newProfile.getSettings() == nullptr);
+	QVERIFY(newProfile.getFavorites().isEmpty());
+	QVERIFY(newProfile.getKeptForLater().isEmpty());
 }
 
 void ProfileTest::testConstructorPath()
@@ -83,6 +83,7 @@ void ProfileTest::testRemoveFavorite()
 	QCOMPARE(lines.count(), 1);
 	QCOMPARE(lines[0], Favorite("tag_2", 100, QDateTime(QDate(2016, 10, 1), QTime(12, 23, 17))).toString());
 }
+#ifndef Q_OS_WIN
 void ProfileTest::testRemoveFavoriteThumb()
 {
 	Favorite fav("tag_1", 20, QDateTime(QDate(2016, 9, 1), QTime(9, 23, 17)));
@@ -97,6 +98,7 @@ void ProfileTest::testRemoveFavoriteThumb()
 	m_profile->removeFavorite(fav);
 	QVERIFY(!thumb.exists());
 }
+#endif
 
 void ProfileTest::testLoadMd5s()
 {
@@ -151,6 +153,57 @@ void ProfileTest::testRemoveMd5()
 
 	QCOMPARE(lines.count(), 1);
 	QVERIFY(lines.contains("ad0234829205b9033196ba818f7a872btests/resources/image_1x1.png"));
+}
+
+
+void ProfileTest::testMd5ActionDontKeepDeleted()
+{
+	m_profile->getSettings()->setValue("Save/md5Duplicates", "move");
+	m_profile->getSettings()->setValue("Save/keepDeletedMd5", false);
+
+	QPair<QString, QString> action;
+
+	action = m_profile->md5Action("new");
+	QCOMPARE(action.first, QString("move"));
+	QCOMPARE(action.second, QString(""));
+
+	m_profile->addMd5("new", "tests/resources/image_1x1.png");
+
+	action = m_profile->md5Action("new");
+	QCOMPARE(action.first, QString("move"));
+	QCOMPARE(action.second, QString("tests/resources/image_1x1.png"));
+
+	m_profile->removeMd5("new");
+
+	action = m_profile->md5Action("new");
+	QCOMPARE(action.first, QString("move"));
+	QCOMPARE(action.second, QString(""));
+
+	// Restore state
+	m_profile->getSettings()->setValue("Save/md5Duplicates", "save");
+}
+
+void ProfileTest::testMd5ActionKeepDeleted()
+{
+	m_profile->getSettings()->setValue("Save/md5Duplicates", "move");
+	m_profile->getSettings()->setValue("Save/keepDeletedMd5", true);
+
+	QPair<QString, QString> action;
+
+	action = m_profile->md5Action("new");
+	QCOMPARE(action.first, QString("move"));
+	QCOMPARE(action.second, QString(""));
+
+	m_profile->addMd5("new", "NON_EXISTING_FILE");
+
+	action = m_profile->md5Action("new");
+	QCOMPARE(action.first, QString("ignore"));
+	QCOMPARE(action.second, QString("NON_EXISTING_FILE"));
+
+	// Restore state
+	m_profile->removeMd5("new");
+	m_profile->getSettings()->setValue("Save/md5Duplicates", "save");
+	m_profile->getSettings()->setValue("Save/keepDeletedMd5", false);
 }
 
 

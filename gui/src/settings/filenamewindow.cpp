@@ -1,6 +1,6 @@
+#include "filenamewindow.h"
 #include <QDesktopServices>
 #include "ui_filenamewindow.h"
-#include "filenamewindow.h"
 #include "models/image.h"
 #include "models/site.h"
 #include "models/filename.h"
@@ -48,20 +48,19 @@ void FilenameWindow::on_lineClassic_textChanged(QString text)
 {
 	QString message;
 	Filename fn(text);
-	fn.isValid(&message);
+	fn.isValid(m_profile, &message);
 	ui->labelValidator->setText(message);
+
+	text = text.replace("\\", "\\\\").replace("'", "\\'");
 
 	QRegExp date("%date:format=([^%]+)%");
 	int pos = 0;
-	text = text.replace("\\", "\\\\").replace("'", "\\'");
-
 	while ((pos = date.indexIn(text, pos)) != -1)
 	{
 		QString cap = date.cap(1);
 		QString format = "";
-		for (int i = 0; i < cap.length(); ++i)
+		for (QChar c : cap)
 		{
-			QChar c = cap.at(i);
 			if (c == 'Y')
 			{ format += "' + date.getFullYear() + '"; }
 			else if (c == 'M')
@@ -82,7 +81,7 @@ void FilenameWindow::on_lineClassic_textChanged(QString text)
 		pos += date.matchedLength();
 	}
 
-	QString value = "'"+text.replace(QRegExp("%([^%]+)%"), "' + \\1 + '").remove(" + '' + ").trimmed()+"'";
+	QString value = "'"+text.replace(QRegularExpression("%([^%]+)%"), "' + \\1 + '").remove(" + '' + ").trimmed()+"'";
 	if (value.startsWith("' + "))
 	{ value = value.right(value.length() - 4); }
 	if (value.startsWith("'' + "))
@@ -97,11 +96,11 @@ void FilenameWindow::on_lineClassic_textChanged(QString text)
 
 void FilenameWindow::on_buttonHelpClassic_clicked()
 {
-	QDesktopServices::openUrl(QUrl("https://github.com/Bionus/imgbrd-grabber/wiki/Filename"));
+	QDesktopServices::openUrl(QUrl(QString(PROJECT_GITHUB_URL) + "/wiki/Filename"));
 }
 void FilenameWindow::on_buttonHelpJavascript_clicked()
 {
-	QDesktopServices::openUrl(QUrl("https://github.com/Bionus/imgbrd-grabber/wiki/Filename#javascript"));
+	QDesktopServices::openUrl(QUrl(QString(PROJECT_GITHUB_URL) + "/wiki/Filename#javascript"));
 }
 
 QString FilenameWindow::format()
@@ -148,7 +147,6 @@ void FilenameWindow::done(int r)
 	}
 
 	QDialog::done(r);
-	return;
 }
 
 void FilenameWindow::send()

@@ -24,26 +24,22 @@
  */
 
 
-
 #include <QApplication>
-#include <QtGlobal>
-#include <QSettings>
+#include <QDir>
 #include "downloader/downloader.h"
+#include "models/profile.h"
 #include "models/site.h"
+#include "functions.h"
+#include "mainwindow.h"
+#include "updater/update-dialog.h"
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 2, 0))
 	#include <QCommandLineParser>
 #else
 	#include <vendor/qcommandlineparser.h>
 #endif
-#if !USE_CLI
-	#include <QtGui>
-	#include "ui/QAffiche.h"
-	#include "ui/QBouton.h"
-	#include "viewer/zoomwindow.h"
-	#include "settings/optionswindow.h"
-	#if USE_BREAKPAD
-		#include "crashhandler/crashhandler.h"
-	#endif
+#if !USE_CLI && USE_BREAKPAD
+	#include <QFileInfo>
+	#include "crashhandler/crashhandler.h"
 #endif
 
 
@@ -59,10 +55,30 @@ int main(int argc, char *argv[])
 {
 	QApplication app(argc, argv);
 	app.setApplicationName("Grabber");
-	app.setApplicationDisplayName("Grabber");
 	app.setApplicationVersion(VERSION);
 	app.setOrganizationName("Bionus");
 	app.setOrganizationDomain("bionus.fr.cr");
+
+	// Set window title according to the current build
+	#ifdef NIGHTLY
+		QString commit(NIGHTLY_COMMIT);
+		if (!commit.isEmpty())
+			app.setApplicationDisplayName("Grabber Nightly - " + commit.left(8));
+		else
+			app.setApplicationDisplayName("Grabber Nightly");
+	#else
+		app.setApplicationDisplayName("Grabber");
+	#endif
+
+	// Copy settings files to writable directory
+	QStringList toCopy = QStringList() << "sites/" << "themes/" << "webservices/";
+	for (const QString &tgt : toCopy)
+	{
+		QString from = savePath(tgt, true, false);
+		QString to = savePath(tgt, true, true);
+		if (!QDir(to).exists() && QDir(from).exists())
+			copyRecursively(from, to);
+	}
 
 	QCommandLineParser parser;
 	parser.addHelpOption();
@@ -115,13 +131,17 @@ int main(int argc, char *argv[])
 
 	parser.process(app);
 
-	bool gui = false;
 	#if !USE_CLI
-		gui = !parser.isSet(cliOption);
+		bool gui = !parser.isSet(cliOption);
+	#else
+		bool gui = false;
 	#endif
 
-	if (!gui && !parser.isSet(verboseOption))
+	bool verbose = parser.isSet(verboseOption);
+	if (!gui && !verbose)
 		qInstallMessageHandler(noMessageOutput);
+	else if (verbose)
+		Logger::getInstance().setLogLevel(Logger::Debug);
 
 	#if USE_BREAKPAD && !USE_CLI
 		if (gui)
@@ -150,7 +170,7 @@ int main(int argc, char *argv[])
 											parser.value(userOption),
 											parser.value(passwordOption),
 											parser.isSet(blacklistOption),
-											profile->getSettings()->value("blacklistedtags").toString().split(' '),
+											profile->getBlacklist(),
 											parser.isSet(noDuplicatesOption),
 											parser.value(tagsMinOption).toInt(),
 											parser.value(tagsFormatOption));
@@ -172,6 +192,28 @@ int main(int argc, char *argv[])
 	#if !USE_CLI
 		else
 		{
+			// Check for updates
+			QSettings *settings = profile->getSettings();
+			int cfuInterval = settings->value("check_for_updates", 24*60*60).toInt();
+			QDateTime lastCfu = settings->value("last_check_for_updates", QDateTime()).toDateTime();
+			if (cfuInterval >= 0 && (!lastCfu.isValid() || lastCfu.addSecs(cfuInterval) <= QDateTime::currentDateTime()))
+			{
+				settings->setValue("last_check_for_updates", QDateTime::currentDateTime());
+
+				bool shouldQuit = false;
+				auto *updateDialog = new UpdateDialog(&shouldQuit);
+				auto *el = new QEventLoop();
+				QObject::connect(updateDialog, &UpdateDialog::noUpdateAvailable, el, &QEventLoop::quit);
+				QObject::connect(updateDialog, &UpdateDialog::rejected, el, &QEventLoop::quit);
+
+				updateDialog->checkForUpdates();
+				el->exec();
+				el->deleteLater();
+
+				if (shouldQuit)
+					return 0;
+			}
+
 			QMap<QString, QString> params;
 			params.insert("booru", parser.value(sourceOption));
 			params.insert("limit", parser.value(limitOption));
@@ -183,7 +225,7 @@ int main(int argc, char *argv[])
 			params.insert("ignore", parser.isSet(blacklistOption) ? "true" : "false");
 			params.insert("tags", parser.value(tagsOption));
 
-			mainWindow *mainwindow = new mainWindow(profile);
+			auto *mainwindow = new mainWindow(profile);
 			mainwindow->init(parser.positionalArguments(), params);
 			mainwindow->show();
 		}

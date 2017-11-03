@@ -2,7 +2,6 @@
 #include "ui_conditionwindow.h"
 
 
-
 conditionWindow::conditionWindow(QWidget *parent) : QDialog(parent), ui(new Ui::conditionWindow)
 {
 	ui->setupUi(this);

@@ -1,11 +1,11 @@
-#include <QProcess>
-#include <QtSql/QSqlDatabase>
-#include <QtSql/QSqlQuery>
-#include <QtSql/QSqlError>
-#include <QDir>
 #include "commands.h"
-#include "functions.h"
+#include <QProcess>
+#include <QDir>
 #include "models/filename.h"
+#include "models/profile.h"
+#include "tags/tag.h"
+#include "sql-worker.h"
+#include "functions.h"
 
 
 
@@ -33,6 +33,11 @@ Commands::Commands(Profile *profile)
 								settings->value("Exec/SQL/password").toString(),
 								settings->value("Exec/SQL/database").toString());
 	m_sqlWorker->setObjectName("SqlThread");
+}
+
+Commands::~Commands()
+{
+	m_sqlWorker->deleteLater();
 }
 
 bool Commands::start()
@@ -74,12 +79,13 @@ bool Commands::image(const Image &img, QString path)
 	if (!m_mysqlSettings.image.isEmpty())
 	{
 		Filename fn(m_mysqlSettings.image);
+		fn.setEscapeMethod(&SqlWorker::escape);
 		QStringList execs = fn.path(img, m_profile, "", 0, false, false, false, false);
 
 		for (QString exec : execs)
 		{
-			exec.replace("%path:nobackslash%", QDir::toNativeSeparators(path).replace("\\", "/"))
-				.replace("%path%", QDir::toNativeSeparators(path));
+			exec.replace("%path:nobackslash%", m_sqlWorker->escape(QDir::toNativeSeparators(path).replace("\\", "/")))
+				.replace("%path%", m_sqlWorker->escape(QDir::toNativeSeparators(path)));
 
 			if (!sqlExec(exec))
 				return false;
@@ -91,28 +97,21 @@ bool Commands::image(const Image &img, QString path)
 
 bool Commands::tag(const Image &img, Tag tag, bool after)
 {
-	QMap<QString, int> types;
-	types["general"] = 0;
-	types["artist"] = 1;
-	types["general"] = 2;
-	types["copyright"] = 3;
-	types["character"] = 4;
-	types["model"] = 5;
-	types["photo_set"] = 6;
 	QString original = QString(tag.text()).replace(" ", "_");
 
 	QString command = after ? m_commandTagAfter : m_commandTagBefore;
 	if (!command.isEmpty())
 	{
 		Filename fn(command);
+		fn.setEscapeMethod(&SqlWorker::escape);
 		QStringList execs = fn.path(img, m_profile, "", 0, false, false, false, false, true);
 
 		for (QString exec : execs)
 		{
 			exec.replace("%tag%", original)
 				.replace("%original%", tag.text())
-				.replace("%type%", tag.type())
-				.replace("%number%", QString::number(types[tag.type()]));
+				.replace("%type%", tag.type().name())
+				.replace("%number%", QString::number(tag.type().number()));
 
 			log(QString("Execution of \"%1\"").arg(exec));
 			Logger::getInstance().logCommand(exec);
@@ -133,10 +132,10 @@ bool Commands::tag(const Image &img, Tag tag, bool after)
 
 		for (QString exec : execs)
 		{
-			exec.replace("%tag%", original)
-				.replace("%original%", tag.text())
-				.replace("%type%", tag.type())
-				.replace("%number%", QString::number(types[tag.type()]));
+			exec.replace("%tag%", m_sqlWorker->escape(original))
+				.replace("%original%", m_sqlWorker->escape(tag.text()))
+				.replace("%type%", m_sqlWorker->escape(tag.type().name()))
+				.replace("%number%", QString::number(tag.type().number()));
 
 			if (!sqlExec(exec))
 				return false;
@@ -156,7 +155,6 @@ bool Commands::after()
 
 bool Commands::sqlExec(QString sql)
 {
-	//m_sqlWorker->execute(sql);
 	QMetaObject::invokeMethod(m_sqlWorker, "execute", Qt::QueuedConnection, Q_ARG(QString, sql));
 	return true;
 }

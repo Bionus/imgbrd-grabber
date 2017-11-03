@@ -8,7 +8,7 @@ EmptyDirsFix2::EmptyDirsFix2(QStringList folders, QWidget *parent) : QDialog(par
 {
 	ui->setupUi(this);
 
-	for (QString folder : folders)
+	for (const QString &folder : folders)
 	{ ui->listWidget->addItem(new QListWidgetItem(folder)); }
 	ui->listWidget->selectAll();
 }
@@ -31,8 +31,8 @@ void EmptyDirsFix2::deleteSel()
 {
 	QStringList folders;
 	QList<QListWidgetItem*> sel = ui->listWidget->selectedItems();
-	for (int i = 0; i < sel.size(); i++)
-	{ folders.append(sel.at(i)->text()); }
+	for (QListWidgetItem *s : sel)
+	{ folders.append(s->text()); }
 
 	if (folders.isEmpty())
 	{
@@ -40,8 +40,8 @@ void EmptyDirsFix2::deleteSel()
 		return;
 	}
 
-	int reponse = QMessageBox::question(this, tr("Empty folders fixer"), tr("You are about to delete %n folder. Are you sure you want to continue?", "", folders.size()), QMessageBox::Yes | QMessageBox::No);
-	if (reponse == QMessageBox::Yes)
+	int response = QMessageBox::question(this, tr("Empty folders fixer"), tr("You are about to delete %n folder. Are you sure you want to continue?", "", folders.size()), QMessageBox::Yes | QMessageBox::No);
+	if (response == QMessageBox::Yes)
 	{
 		for (int i = 0; i < folders.size(); i++)
 		{ removeDir(folders.at(i)); }

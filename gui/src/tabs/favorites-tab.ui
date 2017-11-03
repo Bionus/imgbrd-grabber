@@ -26,7 +26,7 @@
    <string>Favorites</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../../../resources/resources.qrc">
+   <iconset resource="../../resources/resources.qrc">
     <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,0">
@@ -303,12 +303,12 @@
            </widget>
           </item>
           <item>
-           <widget class="QScrollArea" name="scrollArea">
+           <widget class="VerticalScrollArea" name="scrollArea">
             <property name="styleSheet">
              <string notr="true">QAbstractScrollArea,
 QWidget#scrollAreaWidgetContents {
 	background-color: transparent;
-} </string>
+}</string>
             </property>
             <property name="frameShape">
              <enum>QFrame::NoFrame</enum>
@@ -322,6 +322,9 @@ QWidget#scrollAreaWidgetContents {
             <property name="horizontalScrollBarPolicy">
              <enum>Qt::ScrollBarAlwaysOff</enum>
             </property>
+            <property name="sizeAdjustPolicy">
+             <enum>QAbstractScrollArea::AdjustToContents</enum>
+            </property>
             <property name="widgetResizable">
              <bool>true</bool>
             </property>
@@ -331,11 +334,11 @@ QWidget#scrollAreaWidgetContents {
                <x>0</x>
                <y>0</y>
                <width>780</width>
-               <height>249</height>
+               <height>188</height>
               </rect>
              </property>
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
+              <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
@@ -364,9 +367,12 @@ QWidget#scrollAreaWidgetContents {
                 <property name="orientation">
                  <enum>Qt::Vertical</enum>
                 </property>
+                <property name="sizeType">
+                 <enum>QSizePolicy::MinimumExpanding</enum>
+                </property>
                 <property name="sizeHint" stdset="0">
                  <size>
-                  <width>20</width>
+                  <width>0</width>
                   <height>0</height>
                  </size>
                 </property>
@@ -442,7 +448,7 @@ QWidget#scrollAreaWidgetContents {
             <x>0</x>
             <y>0</y>
             <width>780</width>
-            <height>69</height>
+            <height>130</height>
            </rect>
           </property>
           <property name="styleSheet">
@@ -677,10 +683,7 @@ QWidget#scrollAreaWidgetContents {
   <tabstop>pushButton_2</tabstop>
  </tabstops>
  <resources>
-  <include location="../../../resources/resources.qrc"/>
-  <include location="../../../resources/resources.qrc"/>
-  <include location="../../../resources/resources.qrc"/>
-  <include location="../../../resources/resources.qrc"/>
+  <include location="../../resources/resources.qrc"/>
  </resources>
  <connections>
   <connection>

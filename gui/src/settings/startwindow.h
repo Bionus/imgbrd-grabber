@@ -2,9 +2,6 @@
 #define STARTWINDOW_H
 
 #include <QDialog>
-#include "models/site.h"
-#include "models/profile.h"
-
 
 
 namespace Ui
@@ -13,13 +10,16 @@ namespace Ui
 }
 
 
+class Site;
+class Profile;
+
 class startWindow : public QDialog
 {
 	Q_OBJECT
 
 	public:
 		startWindow(QMap<QString, Site*> *sites, Profile *profile, QWidget *parent = Q_NULLPTR);
-		~startWindow();
+		~startWindow() override;
 
 	public slots:
 		void save();

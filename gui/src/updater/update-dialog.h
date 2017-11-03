@@ -17,11 +17,14 @@ class UpdateDialog : public QDialog
 	Q_OBJECT
 
 	public:
-		explicit UpdateDialog(QWidget *parent);
-		~UpdateDialog();
+		explicit UpdateDialog(bool *shouldQuit, QWidget *parent = Q_NULLPTR);
+		~UpdateDialog() override;
+
+	signals:
+		void noUpdateAvailable();
 
 	public slots:
-		void accept();
+		void accept() override;
 		void checkForUpdates();
 		void downloadUpdate();
 		void resizeToFit();
@@ -33,6 +36,7 @@ class UpdateDialog : public QDialog
 
 	private:
 		Ui::UpdateDialog	*ui;
+		bool				*m_shouldQuit;
 		QWidget				*m_parent;
 		ProgramUpdater		m_updater;
 };

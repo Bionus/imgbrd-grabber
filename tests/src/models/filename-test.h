@@ -26,13 +26,23 @@ class FilenameTest : public TestSuite
 		void testPathKeepNThenAdd();
 		void testPathIgnoredTags();
 		void testPathEmptyDirs();
+		void testPathEmptyDirsNetworkDrive();
 		void testPathKeptTokens();
 		void testPathFull();
 		void testPathSimpleJavascript();
+		void testPathJavascriptToken();
+		void testPathJavascriptArray();
 		void testPathInvalidJavascript();
-		void testExpandTag();
+		void testExpandTagSimple();
+		void testExpandTagWithInvalidCharacter();
+		void testExpandTagInvert();
+		void testExpandTagMultiple();
+		void testExpandTagIgnore();
 		void testExpandTokenSimple();
+		void testExpandTokenInvert();
 		void testExpandTokenComplex();
+		void testExpandMultipleMixed();
+		void testExpandEscaping();
 		void testPathOptionMax();
 		void testPathOptionMaxDouble();
 		void testPathOptionDateFormat();
@@ -41,36 +51,36 @@ class FilenameTest : public TestSuite
 		void testPathOptionTagNamespaceComplex();
 		void testPathOptionTagExcludeNamespace();
 		void testPathOptionTagSeparator();
+		void testPathOptionTagSeparatorEscape();
 		void testPathOptionCount();
 		void testPathOptionNumSingle();
 		void testPathOptionNumSingleLength();
 		void testPathOptionNumMultiple();
+		void testPathOptionNumAboveTen();
+		void testPathOptionSort();
 		void testPathSpecies();
-		void testGetReplacesSimple();
-		void testGetReplacesMultiple();
-		void testGetReplacesMatrix();
-		void testGetReplacesCustom();
-		void testGetReplacesSpecies();
-		void testGetReplacesSpeciesMultiple();
+		void testPathNoJpeg();
+		void testPathKeepInvalidTokens();
+		void testPathForbiddenSeparator();
+		void testExpandTokensSimple();
+		void testExpandTokensMultiple();
+		void testExpandTokensMatrix();
 		void testIsValid();
 		void testUseShorterCopyright();
 		void testConditionalsTag();
 		void testConditionalsToken();
 		void testConditionalsCustom();
+		void testConditionalsJavascript();
 		void testCustoms();
 		void testReplaceBlanks();
 		void testCommand();
-
-		void testNeedExactTagsBasic();
-		void testNeedExactTagsSite();
-		void testNeedExactTagsJavascript();
-		void testNeedExactTagsFilename();
-		void testNeedExactTagsToken();
-		void testNeedExactTagsOption();
+		void testFilenameWithMultipleUnderscores();
+		void testNeedExactTags();
+		void testEscapeMethod();
 
 	protected:
-		void assertPath(QString format, QString expected, QString path = "", bool shouldFixFilename = true, bool fullPath = false);
-		void assertPath(QString format, QStringList expected, QString path = "", bool shouldFixFilename = true, bool fullPath = false);
+		void assertPath(QString format, QString expected, QString path = "", bool shouldFixFilename = true, bool fullPath = false, bool keepInvalidTokens = false);
+		void assertPath(QString format, QStringList expected, QString path = "", bool shouldFixFilename = true, bool fullPath = false, bool keepInvalidTokens = false);
 		void assertExpand(QString format, QString expected);
 
 	private:

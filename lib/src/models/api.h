@@ -3,9 +3,7 @@
 
 #include <QObject>
 #include <QString>
-#include <QList>
 #include <QMap>
-
 
 
 class Api : public QObject
@@ -20,9 +18,9 @@ class Api : public QObject
 		bool needAuth() const;
 
 		// XML info getters
-		bool contains(QString key) const;
-		QString value(QString key) const;
-		QString operator[](QString key) const { return value(key); }
+		bool contains(const QString &key) const;
+		QString value(const QString &key) const;
+		QString operator[](const QString &key) const { return value(key); }
 
 	private:
 		QString m_name;

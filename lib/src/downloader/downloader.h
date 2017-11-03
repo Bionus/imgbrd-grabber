@@ -1,23 +1,20 @@
 #ifndef DOWNLOADER_H
 #define DOWNLOADER_H
 
-#include "models/page.h"
-#include "models/image.h"
 #include <QVariant>
-
+#include "models/image.h"
 
 
 class Page;
-class Image;
 
 class Downloader : public QObject
 {
 	Q_OBJECT
 
 	public:
-		Downloader();
-		~Downloader();
-		Downloader(Profile *profile, QStringList tags, QStringList postfiltering, QList<Site*> sources, int page, int max, int perpage, QString location, QString filename, QString user, QString password, bool blacklist, QStringList blacklistedtags, bool noduplicates, int tagsmin, QString tagsformat);
+		Downloader() = default;
+		~Downloader() override;
+		Downloader(Profile *profile, QStringList tags, QStringList postFiltering, QList<Site*> sources, int page, int max, int perPage, QString location, QString filename, QString user, QString password, bool blacklist, QStringList blacklistedTags, bool noDuplicates, int tagsMin, QString tagsFormat, Downloader *previous = nullptr);
 		void setQuit(bool quit);
 		void downloadImages(QList<QSharedPointer<Image>> images);
 		void loadNext();
@@ -33,6 +30,8 @@ class Downloader : public QObject
 		int ignoredCount() const;
 		int duplicatesCount() const;
 		int pagesCount() const;
+		int imagesMax() const;
+		Page *lastPage() const;
 
 	signals:
 		void finished(QNetworkReply*);
@@ -49,7 +48,7 @@ class Downloader : public QObject
 	public slots:
 		void returnInt(int ret);
 		void returnString(QString ret);
-		void returnTagList(QList<Tag> ret);
+		void returnTagList(QList<Tag> tags);
 		void returnStringList(QStringList ret);
 		void finishedLoadingPageCount(Page *page);
 		void finishedLoadingTags(QList<Tag> tags);
@@ -77,6 +76,7 @@ class Downloader : public QObject
 		QList<Tag> m_results;
 		QVariant m_data;
 		bool m_cancelled, m_quit;
+		Downloader *m_previous;
 };
 
 #endif // DOWNLOADER_H

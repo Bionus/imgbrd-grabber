@@ -12,9 +12,15 @@ class FunctionsTest : public TestSuite
 		void testFixFilenameWindows();
 		void testFixFilenameLinux();
 		void testGetUnit();
+		void testFormatFilesize();
 		void testGetExtension();
 		void testSetExtension();
 		void testLevenshtein();
+		void testRemoveWildards();
+		void testDateTimeFromString();
+		void testIsUrl();
+		void testParseMarkdownHeaders();
+		void testParseMarkdownIssueLinks();
 
 	protected:
 		void assertFixFilename(int platform, QString filename, QString path, QString expected);

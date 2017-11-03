@@ -9,13 +9,13 @@
 class Favorite
 {
 	public:
-		Favorite(QString name);
+		explicit Favorite(QString name);
 		Favorite(QString name, int note, QDateTime lastViewed, QString imagePath = "");
 
 		// Getters and setters
-		void setNote(int);
-		void setLastViewed(QDateTime);
-		void setImagePath(QString);
+		void setNote(int note);
+		void setLastViewed(const QDateTime &lastViewed);
+		void setImagePath(const QString &imagePath);
 		int			getNote()		const;
 		QDateTime	getLastViewed()	const;
 		QString		getImagePath()	const;
@@ -27,11 +27,11 @@ class Favorite
 		 */
 		QString getName(bool clean = false) const;
 
-		bool setImage(QPixmap&);
+		bool setImage(const QPixmap &img);
 		QPixmap getImage() const;
 
 		QString toString() const;
-		static Favorite fromString(QString path, QString text);
+		static Favorite fromString(const QString &path, const QString &text);
 
 	private:
 		QString		m_name;

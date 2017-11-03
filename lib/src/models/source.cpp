@@ -1,25 +1,30 @@
+#include "source.h"
 #include <QStringList>
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
-#include "source.h"
+#include <QDomDocument>
 #include "site.h"
+#include "api.h"
+#include "profile.h"
 #include "functions.h"
-
 
 
 QList<Source*> *g_allSources = Q_NULLPTR;
 
+#if defined NIGHTLY || defined QT_DEBUG
+	const QString updaterBaseUrl = "https://raw.githubusercontent.com/Bionus/imgbrd-grabber/develop/release/sites";
+#else
+	const QString updaterBaseUrl = "https://raw.githubusercontent.com/Bionus/imgbrd-grabber/master/release/sites";
+#endif
+
 Source::Source(Profile *profile, QString dir)
-	: m_dir(dir), m_profile(profile), m_updater(this, "https://raw.githubusercontent.com/Bionus/imgbrd-grabber/master/release/sites")
+	: m_dir(dir), m_name(QFileInfo(dir).fileName()), m_profile(profile), m_updater(m_name, m_dir, updaterBaseUrl)
 {
 	// Load XML details for this source from its model file
 	QFile file(m_dir + "/model.xml");
 	if (file.open(QIODevice::ReadOnly | QIODevice::Text))
 	{
-		QFileInfo info(m_dir);
-		m_name = info.fileName();
-
 		QString fileContents = file.readAll();
 		QDomDocument doc;
 		QString errorMsg;
@@ -34,13 +39,13 @@ Source::Source(Profile *profile, QString dir)
 			// Get the list of possible API for this Source
 			QStringList possibleApis = QStringList() << "Xml" << "Json" << "Rss" << "Html";
 			QStringList availableApis;
-			for (QString api : possibleApis)
+			for (const QString &api : possibleApis)
 				if (details.contains("Urls/" + api + "/Tags"))
 					availableApis.append(api);
 
 			if (!availableApis.isEmpty())
 			{
-				for (QString apiName : availableApis)
+				for (const QString &apiName : availableApis)
 				{
 					Api *api = new Api(apiName, details);
 					m_apis.append(api);
@@ -48,6 +53,17 @@ Source::Source(Profile *profile, QString dir)
 			}
 			else
 			{ log(QString("No valid source has been found in the model.xml file from %1.").arg(m_name)); }
+
+			// Read tag naming format
+			static QMap<QString, TagNameFormat::CaseFormat> caseAssoc
+			{
+				{ "lower", TagNameFormat::Lower },
+				{ "upper_first", TagNameFormat::UpperFirst },
+				{ "upper", TagNameFormat::Upper },
+				{ "caps", TagNameFormat::Caps },
+			};
+			auto caseFormat = caseAssoc.value(details.value("TagFormat/Case", "lower"), TagNameFormat::Lower);
+			m_tagNameFormat = TagNameFormat(caseFormat, details.value("TagFormat/WordSeparator", "_"));
 		}
 
 		file.close();
@@ -73,6 +89,12 @@ Source::Source(Profile *profile, QString dir)
 	{ log(QString("No site for source %1").arg(m_name)); }
 }
 
+Source::~Source()
+{
+	qDeleteAll(m_apis);
+	qDeleteAll(m_sites);
+}
+
 
 QString Source::getName() const 		{ return m_name;		}
 QString Source::getPath() const 		{ return m_dir;			}
@@ -96,10 +118,10 @@ QList<Source*> *Source::getAllSources(Profile *profile)
 	if (g_allSources != Q_NULLPTR)
 		return g_allSources;
 
-	QList<Source*> *sources = new QList<Source*>();
+	auto *sources = new QList<Source*>();
 	QStringList dirs = QDir(profile->getPath() + "/sites/").entryList(QDir::Dirs | QDir::NoDotAndDotDot);
 
-	for (QString dir : dirs)
+	for (const QString &dir : dirs)
 	{
 		Source *source = new Source(profile, profile->getPath() + "/sites/" + dir);
 		sources->append(source);

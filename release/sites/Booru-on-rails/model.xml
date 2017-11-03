@@ -7,24 +7,33 @@
 			<Home>/images.json?key={password}&amp;page={page}&amp;nocomments=1&amp;nofav=1</Home>
 			<Tags>/search.json?key={password}&amp;page={page}&amp;q={tags}&amp;nocomments=1&amp;nofav=1</Tags>
 			<Limit>15</Limit>
+			<TagApi>/tags.json?key={password}&amp;page={page}</TagApi>
+			<SingleTagApi>/tags.json?key={password}&amp;page={page}&amp;tq={name}</SingleTagApi>
 		</Json>
 		<Html>
 			<Home>/images/page/{page}?key={password}</Home>
 			<Tags>/search?key={password}&amp;page={page}&amp;sbq={tags}</Tags>
 			<Post>/{id}</Post>
 			<Limit>15</Limit>
+			<TagApi>/tags?key={password}&amp;page={page}</TagApi>
+			<SingleTagApi>/tags?key={password}&amp;page={page}&amp;tq={name}</SingleTagApi>
 		</Html>
 	</Urls>
 	<Regex>
-		<Image>&lt;div class=&quot;image-container[^&quot;]*&quot; data-aspect-ratio=&quot;[^&quot;]*&quot; data-comment-count=&quot;([^&quot;]*)&quot; data-created-at=&quot;([^&quot;]*)&quot; data-download-uri=&quot;([^&quot;]*)&quot; data-downvotes=&quot;[^&quot;]*&quot; data-faves=&quot;([^&quot;]*)&quot; data-height=&quot;([^&quot;]*)&quot; data-image-id=&quot;([^&quot;]*)&quot; data-image-tag-aliases=&quot;([^&quot;]*)&quot; data-image-tags=&quot;[^&quot;]*&quot; data-orig-sha512=&quot;[^&quot;]*&quot; data-score=&quot;([^&quot;]*)&quot; data-sha512=&quot;([^&quot;]*)&quot; data-size=&quot;[^&quot;]*&quot; data-source-url=&quot;([^&quot;]*)&quot; data-upvotes=&quot;([^&quot;]*)&quot; data-uris=&quot;[^&quot;]*&quot; data-width=&quot;([^&quot;]*)&quot;&gt;.*&lt;a[^&gt;]*&gt;&lt;img[^&gt;]* src=&quot;([^&quot;]*)&quot;\/&gt;&lt;\/a&gt;&lt;\/div&gt;</Image>
-		<Order>comments|created_at|file_url|favorites|height|id|tags|score|md5|source|width|preview_url</Order>
-		<LastPage>&lt;a href=&quot;(?:/images/page/|/tags/[^\?]*\?.*page=|/search/index\?.*page=)(\d+)[^&quot;]*&quot;>Last</LastPage>
-		<Count>of &lt;strong&gt;([^&lt;]+)&lt;/strong&gt; total</Count>
+		<ImageTags><![CDATA[<span class="tag dropdown"(?: data-tag-category="(?<type>[^"]+)")? data-tag-id="(?<id>[^"]+)" data-tag-name="(?<tag>[^"]+)" data-tag-slug="[^"]+">]]></ImageTags>
+		<Image><![CDATA[<div class="image-container[^"]*" data-aspect-ratio="[^"]*" data-comment-count="(?<comments>[^"]*)" data-created-at="(?<created_at>[^"]*)" data-download-uri="(?<file_url>[^"]*)" data-downvotes="[^"]*" data-faves="(?<favorites>[^"]*)" data-height="(?<height>[^"]*)" data-image-id="(?<id>[^"]*)" data-image-tag-aliases="(?<tags>[^"]*)" data-image-tags="[^"]*" data-orig-sha512="[^"]*" data-score="(?<score>[^"]*)" data-sha512="(?<md5>[^"]*)" data-size="[^"]*" data-source-url="(?<source>[^"]*)" data-upvotes="[^"]*" data-uris="[^"]*" data-width="(?<width>[^"]*)">.*?<a[^>]*><img[^>]* src="(?<preview_url>[^"]*)"\/><\/a><\/div>]]></Image>
+		<TagApi><![CDATA[<span class="tag dropdown"(?: data-tag-category="(?<type>[^"]+)")? data-tag-id="(?<id>\d+)" data-tag-name="(?<tag>.+?)".+?<span class="tag__count">\s*\((?<count>\d+)\)<\/span>]]></TagApi>
+		<LastPage>&lt;a href=&quot;(?:\/images\/page\/|\/tags\/[^\?]*\?[^&quot;]*page=|\/search\/index\?[^&quot;]*page=)(\d+)[^&quot;]*&quot;&gt;Last</LastPage>
+		<Count>of &lt;strong&gt;([^&lt;]+)&lt;\/strong&gt; total</Count>
 	</Regex>
-	<Check>&gt;
+	<Check>
 		<Url>/</Url>
 		<Regex>Powered by the booru-on-rails project</Regex>
 	</Check>
 	<Modifiers>faved_by: width: height: uploader: source_url: description: sha512_hash: aspect_ratio:</Modifiers>
 	<FirstPage>1</FirstPage>
+	<TagFormat>
+		<Case>lower</Case>
+		<WordSeparator> </WordSeparator>
+	</TagFormat>
 </Site>

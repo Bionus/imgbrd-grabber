@@ -63,11 +63,11 @@ void BlacklistFix2::on_buttonOk_clicked()
 	// Delete selected images
 	QList<QTableWidgetItem *> selected = ui->tableWidget->selectedItems();
 	int count = selected.size();
-	QSet<int> todelete = QSet<int>();
+	QSet<int> toDelete = QSet<int>();
 	for (int i = 0; i < count; i++)
-	{ todelete.insert(selected.at(i)->row()); }
+	{ toDelete.insert(selected.at(i)->row()); }
 	int rem = 0;
-	for (int i : todelete)
+	for (int i : toDelete)
 	{
 		QFile::remove(m_details.at(ui->tableWidget->item(i - rem, 0)->text().toInt()-1).value("path_full"));
 		ui->tableWidget->removeRow(i - rem);

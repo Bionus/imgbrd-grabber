@@ -1,6 +1,6 @@
 /**
  * @file json.h
- * 
+ *
  * @author Eeli Reilin <eeli@nilier.org>,
  *		 Mikko Ahonen <mikko.j.ahonen@jyu.fi>
  * @version 0.1
@@ -271,7 +271,7 @@ QVariant Json::parseString(const QString &json, int &index, bool &success)
 					QString unicodeStr = json.mid(index, 4);
 
 					int symbol = unicodeStr.toInt(0, 16);
-					
+
 					s.append(QChar(symbol));
 
 					index += 4;
@@ -309,7 +309,7 @@ QVariant Json::parseNumber(const QString &json, int &index)
 	QString numberStr;
 
 	numberStr = json.mid(index, charLength);
-	
+
 	index = lastIndex + 1;
 
 	return QVariant(numberStr);

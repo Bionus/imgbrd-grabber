@@ -8,10 +8,10 @@ void SiteTest::init()
 	QDir().mkpath("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us");
 	QFile::remove("tests/resources/sites/Danbooru (2.0)/model.xml");
 	QFile::remove("tests/resources/sites/Danbooru (2.0)/sites.txt");
-	QFile::remove("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/settings.ini");
+	QFile::remove("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/defaults.ini");
 	QFile::copy("release/sites/Danbooru (2.0)/model.xml", "tests/resources/sites/Danbooru (2.0)/model.xml");
 	QFile::copy("release/sites/Danbooru (2.0)/sites.txt", "tests/resources/sites/Danbooru (2.0)/sites.txt");
-	QFile::copy("release/sites/Danbooru (2.0)/danbooru.donmai.us/settings.ini", "tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/settings.ini");
+	QFile::copy("release/sites/Danbooru (2.0)/danbooru.donmai.us/defaults.ini", "tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/defaults.ini");
 
 	m_settings = new QSettings("tests/resources/settings.ini", QSettings::IniFormat);
 	m_source = new Source(&profile, "tests/resources/sites/Danbooru (2.0)");
@@ -28,7 +28,7 @@ void SiteTest::cleanup()
 
 void SiteTest::testDefaultApis()
 {
-	QSettings settings("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/settings.ini", QSettings::IniFormat);
+	QSettings settings("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/defaults.ini", QSettings::IniFormat);
 	settings.setValue("sources/usedefault", false);
 	settings.setValue("sources/source_1", "");
 	settings.setValue("sources/source_2", "");
@@ -43,7 +43,7 @@ void SiteTest::testDefaultApis()
 
 void SiteTest::testNoApis()
 {
-	QSettings settings("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/settings.ini", QSettings::IniFormat);
+	QSettings settings("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/defaults.ini", QSettings::IniFormat);
 	settings.setValue("sources/usedefault", false);
 	settings.setValue("sources/source_1", "1");
 	settings.setValue("sources/source_2", "2");
@@ -79,13 +79,13 @@ void SiteTest::testSetPassword()
 void SiteTest::testFixUrlBasic()
 {
 	QCOMPARE(m_site->fixUrl(""), QUrl());
-	QCOMPARE(m_site->fixUrl("http://test.com/dir/toto.jpg"), QUrl("http://test.com/dir/toto.jpg"));
-	QCOMPARE(m_site->fixUrl("//test.com/dir/toto.jpg"), QUrl("http://test.com/dir/toto.jpg"));
+	QCOMPARE(m_site->fixUrl("http://test.com/dir/toto.jpg"), QUrl("https://test.com/dir/toto.jpg"));
+	QCOMPARE(m_site->fixUrl("//test.com/dir/toto.jpg"), QUrl("https://test.com/dir/toto.jpg"));
 }
 void SiteTest::testFixUrlRoot()
 {
-	QCOMPARE(m_site->fixUrl("/dir/toto.jpg"), QUrl("http://danbooru.donmai.us/dir/toto.jpg"));
-	QCOMPARE(m_site->fixUrl("dir/toto.jpg"), QUrl("http://danbooru.donmai.us/dir/toto.jpg"));
+	QCOMPARE(m_site->fixUrl("/dir/toto.jpg"), QUrl("https://danbooru.donmai.us/dir/toto.jpg"));
+	QCOMPARE(m_site->fixUrl("dir/toto.jpg"), QUrl("https://danbooru.donmai.us/dir/toto.jpg"));
 }
 void SiteTest::testFixUrlRelative()
 {
@@ -147,7 +147,7 @@ void SiteTest::testCookies()
 	{
 		cookiesVariant.append(cookie.toRawForm());
 	}
-	QSettings siteSettings("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/settings.ini", QSettings::IniFormat);
+	QSettings siteSettings("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/defaults.ini", QSettings::IniFormat);
 	siteSettings.setValue("cookies", cookiesVariant);
 	siteSettings.sync();
 
@@ -164,7 +164,7 @@ void SiteTest::testCookies()
 void SiteTest::testLoginNone()
 {
 	// Prepare settings
-	QSettings siteSettings("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/settings.ini", QSettings::IniFormat);
+	QSettings siteSettings("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/defaults.ini", QSettings::IniFormat);
 	siteSettings.setValue("login/parameter", true);
 	m_site->loadConfig();
 
@@ -183,16 +183,17 @@ void SiteTest::testLoginNone()
 void SiteTest::testLoginGet()
 {
 	// Prepare settings
-	QSettings siteSettings("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/settings.ini", QSettings::IniFormat);
+	QSettings siteSettings("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/defaults.ini", QSettings::IniFormat);
 	siteSettings.setValue("auth/pseudo", "user");
 	siteSettings.setValue("auth/password", "somepassword");
-	siteSettings.setValue("login/parameter", false);
-	siteSettings.setValue("login/method", "get");
-	siteSettings.setValue("login/pseudo", "name");
-	siteSettings.setValue("login/password", "password");
-	siteSettings.setValue("login/url", "/session/new");
-	siteSettings.setValue("login/cookie", "_danbooru_session");
+	siteSettings.setValue("login/type", "get");
+	siteSettings.setValue("login/get/pseudo", "name");
+	siteSettings.setValue("login/get/password", "password");
+	siteSettings.setValue("login/get/url", "/session/new");
+	siteSettings.setValue("login/get/cookie", "_danbooru_session");
 	m_site->loadConfig();
+
+	CustomNetworkAccessManager::NextFiles.enqueue("tests/resources/pages/danbooru.donmai.us/login.html");
 
 	// Wait for login
 	QSignalSpy spy(m_site, SIGNAL(loggedIn(Site*, Site::LoginResult)));
@@ -215,15 +216,14 @@ void SiteTest::testLoginGet()
 void SiteTest::testLoginPost()
 {
 	// Prepare settings
-	QSettings siteSettings("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/settings.ini", QSettings::IniFormat);
+	QSettings siteSettings("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/defaults.ini", QSettings::IniFormat);
 	siteSettings.setValue("auth/pseudo", "user");
 	siteSettings.setValue("auth/password", "somepassword");
-	siteSettings.setValue("login/parameter", false);
-	siteSettings.setValue("login/method", "post");
-	siteSettings.setValue("login/pseudo", "name");
-	siteSettings.setValue("login/password", "password");
-	siteSettings.setValue("login/url", "/session");
-	siteSettings.setValue("login/cookie", "_danbooru_session");
+	siteSettings.setValue("login/type", "post");
+	siteSettings.setValue("login/post/pseudo", "name");
+	siteSettings.setValue("login/post/password", "password");
+	siteSettings.setValue("login/post/url", "/session");
+	siteSettings.setValue("login/post/cookie", "_danbooru_session");
 	m_site->loadConfig();
 
 	// Wait for login

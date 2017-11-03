@@ -8,21 +8,21 @@
 #include <QMap>
 #include <QPushButton>
 #include <QLayout>
-#include <QGridLayout>
 #include <QLabel>
 #include <QProgressBar>
 #include <QStackedWidget>
-#include "ui/QBouton.h"
-#include "ui/textedit.h"
-#include "ui/verticalscrollarea.h"
 #include "models/image.h"
-#include "models/profile.h"
-#include "downloader/download-query-group.h"
-#include "downloader/download-query-image.h"
-
+#include "ui/fixed-size-grid-layout.h"
 
 
 class mainWindow;
+class QBouton;
+class TextEdit;
+class VerticalScrollArea;
+class Profile;
+class Favorite;
+class DownloadQueryGroup;
+class DownloadQueryImage;
 
 class searchTab : public QWidget
 {
@@ -30,7 +30,9 @@ class searchTab : public QWidget
 
 	public:
 		searchTab(QMap<QString, Site*> *sites, Profile *profile, mainWindow *parent);
-		void mouseReleaseEvent(QMouseEvent *e);
+		~searchTab() override;
+		void init();
+		void mouseReleaseEvent(QMouseEvent *e) override;
 		virtual QList<bool> sources();
 		virtual QString tags() const = 0;
 		QList<Tag> results();
@@ -38,29 +40,40 @@ class searchTab : public QWidget
 		int imagesPerPage();
 		int columns();
 		QString postFilter();
-		virtual void setTags(QString) = 0;
-		virtual bool validateImage(QSharedPointer<Image> img) = 0;
+		virtual void setTags(QString tags, bool preload = true) = 0;
+		virtual bool validateImage(const QSharedPointer<Image> &img, QString &error);
 		QStringList selectedImages();
 		void setSources(QList<bool> sources);
 		void setImagesPerPage(int ipp);
 		void setColumns(int columns);
 		void setPostFilter(QString postfilter);
-		virtual QList<Site*> loadSites() const = 0;
+		virtual QList<Site*> loadSites() const;
 		virtual void onLoad();
 		virtual void write(QJsonObject &json) const = 0;
 
 	protected:
 		void setSelectedSources(QSettings *settings);
-		void setTagsFromPages(const QMap<QString, Page*> &pages);
+		void setTagsFromPages(const QMap<QString, QList<Page*>> &pages);
 		void addHistory(QString tags, int page, int ipp, int cols);
 		QStringList reasonsToFail(Page *page, QStringList complete = QStringList(), QString *meant = nullptr);
 		QColor imageColor(QSharedPointer<Image> img) const;
 		void clear();
 		TextEdit *createAutocomplete();
 		void loadImageThumbnails(Page *page, const QList<QSharedPointer<Image>> &imgs);
+		QString makeThumbnailTooltip(QSharedPointer<Image> img) const;
 		QBouton *createImageThumbnail(int position, QSharedPointer<Image> img);
-		int getActualImagesPerPage(Page *page, bool merge);
-		QGridLayout *createImagesLayout(QSettings *settings);
+		FixedSizeGridLayout *createImagesLayout(QSettings *settings);
+		void thumbnailContextMenu(int position, QSharedPointer<Image> img);
+
+	protected slots:
+		void contextSaveImage(int position);
+		void contextSaveImageAs(int position);
+		void contextSaveSelected();
+		void setMergeResultsMode(bool merged);
+		void setEndlessLoadingMode(bool enabled);
+
+	private:
+		void addLayout(QLayout *layout, int row, int column);
 
 	public slots:
 		// Sources
@@ -83,17 +96,23 @@ class searchTab : public QWidget
 		void historyNext();
 		// Results
 		virtual void load() = 0;
+		virtual void updateTitle() = 0;
 		void loadTags(QStringList tags);
-		bool waitForMergedResults(QList<QSharedPointer<Image>> results, QList<QSharedPointer<Image>> &imgs);
-		virtual void addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage = nullptr);
+		void endlessLoad();
+		void loadPage();
+		virtual void addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, bool merged, QString noResultsMessage = nullptr);
 		void setMergedLabelText(QLabel *txt, const QList<QSharedPointer<Image>> &imgs);
 		virtual void setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage = nullptr);
 		void addResultsImage(QSharedPointer<Image> img, bool merge = false);
 		void finishedLoadingPreview();
+		// Merged
+		QList<QSharedPointer<Image>> mergeResults(int page, QList<QSharedPointer<Image>> results);
+		void addMergedMd5(int page, QString md5);
+		bool containsMergedMd5(int page, QString md5);
 		// Loading
 		void finishedLoading(Page *page);
 		void failedLoading(Page *page);
-		void postLoading(Page *page, QList<QSharedPointer<Image>> source);
+		void postLoading(Page *page, QList<QSharedPointer<Image>> imgs);
 		void finishedLoadingTags(Page *page);
 		// Image selection
 		void selectImage(QSharedPointer<Image> img);
@@ -117,7 +136,7 @@ class searchTab : public QWidget
 		Profile				*m_profile;
 		int					m_lastPage, m_lastPageMaxId, m_lastPageMinId;
 		QMap<QString,Site*>	*m_sites;
-		QMap<QSharedPointer<Image>, QBouton*>	m_boutons;
+		QMap<Image*, QBouton*>	m_boutons;
 		QStringList			m_selectedImages;
 		QList<QSharedPointer<Image>>	m_selectedImagesPtrs;
 		QList<bool>			m_selectedSources;
@@ -129,20 +148,27 @@ class searchTab : public QWidget
 		QString				m_wiki;
 
 		QStringList m_completion;
+		QMap<QObject*, QSharedPointer<Image>> m_thumbnailsLoading;
 		QList<QSharedPointer<Image>> m_images;
-		QMap<QString, Page*> m_pages;
-		QMap<Page*, QLabel*> m_pageLabels;
-		QMap<Site*, QGridLayout*> m_layouts;
+		QMap<QString, QList<Page*>> m_pages;
+		QMap<QString, Page*> m_lastPages;
+		QMap<Site*, QLabel*> m_siteLabels;
+		QMap<Site*, QVBoxLayout*> m_siteLayouts;
+		QMap<Page*, FixedSizeGridLayout*> m_layouts;
 		int m_page;
 		int m_pagemax;
 		bool m_stop;
 		int m_lastToggle;
+		bool m_endlessLoadingEnabled, m_endlessLoadingEnabledPast;
+		int m_endlessLoadOffset;
+		bool m_pageMergedMode;
 
 		// History
 		bool m_from_history;
 		int m_history_cursor;
 		QList<QMap<QString,QString>> m_history;
 		QString m_lastTags;
+		QList<QPair<int, QSet<QString>>> m_mergedMd5s;
 
 		// UI stuff
 		TextEdit *m_postFiltering;
@@ -165,6 +191,7 @@ class searchTab : public QWidget
 		QPushButton *ui_buttonGetSel;
 		QPushButton *ui_buttonFirstPage;
 		QPushButton *ui_buttonPreviousPage;
+		QPushButton *ui_buttonEndlessLoad;
 		VerticalScrollArea *ui_scrollAreaResults;
 };
 

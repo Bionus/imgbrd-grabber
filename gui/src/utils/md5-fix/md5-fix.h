@@ -3,8 +3,6 @@
 
 #include <QDialog>
 #include <QMap>
-#include "models/profile.h"
-
 
 
 namespace Ui
@@ -13,6 +11,7 @@ namespace Ui
 }
 
 
+class Profile;
 
 class md5Fix : public QDialog
 {
@@ -20,7 +19,7 @@ class md5Fix : public QDialog
 
 	public:
 		explicit md5Fix(Profile *profile, QWidget *parent = Q_NULLPTR);
-		~md5Fix();
+		~md5Fix() override;
 
 	private slots:
 		void on_buttonCancel_clicked();

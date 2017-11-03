@@ -1,0 +1,7 @@
+0,unknow
+1,character
+2,characteristic
+3,copyright
+4,artist
+5,copyright
+6,copyright

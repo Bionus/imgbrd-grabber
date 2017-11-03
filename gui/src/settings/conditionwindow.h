@@ -4,7 +4,6 @@
 #include <QDialog>
 
 
-
 namespace Ui
 {
 	class conditionWindow;
@@ -15,11 +14,11 @@ class conditionWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		explicit conditionWindow(QWidget *parent = 0);
-		~conditionWindow();
+		explicit conditionWindow(QWidget *parent = Q_NULLPTR);
+		~conditionWindow() override;
 
 	public slots:
-		void accept();
+		void accept() override;
 
 	signals:
 		void validated(QString, QString, QString);

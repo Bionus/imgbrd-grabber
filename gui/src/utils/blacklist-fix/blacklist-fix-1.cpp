@@ -7,6 +7,8 @@
 #include "blacklist-fix-2.h"
 #include "ui_blacklist-fix-1.h"
 #include "models/page.h"
+#include "models/profile.h"
+#include "models/image.h"
 #include "helpers.h"
 
 
@@ -18,7 +20,7 @@ BlacklistFix1::BlacklistFix1(Profile *profile, QMap<QString,Site*> sites, QWidge
 	QSettings *settings = profile->getSettings();
 	ui->lineFolder->setText(settings->value("Save/path").toString());
 	ui->lineFilename->setText(settings->value("Save/filename").toString());
-	ui->lineBlacklist->setText(settings->value("blacklistedtags").toString());
+	ui->lineBlacklist->setText(profile->getBlacklist().join(' '));
 	ui->comboSource->addItems(m_sites.keys());
 	ui->progressBar->hide();
 
@@ -112,10 +114,10 @@ void BlacklistFix1::on_buttonContinue_clicked()
 		m_details.append(det);
 	}
 
-	int reponse = QMessageBox::question(this, tr("Blacklist fixer"), tr("You are about to download information from %n image(s). Are you sure you want to continue?", "", m_details.size()), QMessageBox::Yes | QMessageBox::No);
-	if (reponse == QMessageBox::Yes)
+	int response = QMessageBox::question(this, tr("Blacklist fixer"), tr("You are about to download information from %n image(s). Are you sure you want to continue?", "", m_details.size()), QMessageBox::Yes | QMessageBox::No);
+	if (response == QMessageBox::Yes)
 	{
-		// Show progresss bar
+		// Show progress bar
 		ui->progressBar->setValue(0);
 		ui->progressBar->setMaximum(files.size());
 		ui->progressBar->show();
@@ -126,7 +128,7 @@ void BlacklistFix1::on_buttonContinue_clicked()
 
 void BlacklistFix1::getAll(Page *p)
 {
-	if (p != nullptr && p->images().size() > 0)
+	if (p != nullptr && !p->images().empty())
 	{
 		QSharedPointer<Image> img = p->images().at(0);
 		m_getAll[img->md5()].insert("tags", img->tagsString().join(" "));

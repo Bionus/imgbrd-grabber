@@ -18,7 +18,7 @@ class AboutWindow : public QDialog
 
 	public:
 		explicit AboutWindow(QString v, QWidget *parent = Q_NULLPTR);
-		~AboutWindow();
+		~AboutWindow() override;
 
 	public slots:
 		void finished(QString newVersion, bool available);

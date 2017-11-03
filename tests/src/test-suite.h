@@ -49,9 +49,7 @@ class TestSuite : public QObject
 		explicit TestSuite();
 		void setupSource(QString site);
 		void setupSite(QString site, QString source);
-
-	public:
-		static QList<QObject*> suites;
+		static QList<QObject*> &getSuites();
 
 	protected:
 		Profile profile;

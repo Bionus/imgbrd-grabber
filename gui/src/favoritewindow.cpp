@@ -1,18 +1,16 @@
+#include "favoritewindow.h"
+#include "ui_favoritewindow.h"
 #include <QFile>
 #include <QFileDialog>
 #include <QSettings>
-#include "favoritewindow.h"
-#include "ui_favoritewindow.h"
+#include "models/profile.h"
 #include "functions.h"
-
 
 
 /**
  * Constructor of the favoriteWindow class, completing its window.
- * @param	tag			The favorite that will be edited
- * @param	note		Its note, from 0 to 100
- * @param	lastviewed	The date when the user last cliked on "Set as viewed"
- * @param	imagepath	Path to the favorite's image
+ * @param	profile		The current user profile
+ * @param	Favorite	The favorite we are setting options for
  * @param	parent		The parent window
  */
 favoriteWindow::favoriteWindow(Profile *profile, Favorite favorite, QWidget *parent)
@@ -45,11 +43,11 @@ void favoriteWindow::on_buttonRemove_clicked()
 }
 
 /**
- * Opens a window to choose an image to set the imagepath value.
+ * Opens a window to choose an image to set the image path value.
  */
 void favoriteWindow::on_openButton_clicked()
 {
-	QString file = QFileDialog::getOpenFileName(this, tr("Choose an image"), QSettings(savePath("settings.ini"), QSettings::IniFormat).value("Save/path").toString(), "Images (*.png *.gif *.jpg *.jpeg)");
+	QString file = QFileDialog::getOpenFileName(this, tr("Choose an image"), m_profile->getSettings()->value("Save/path").toString(), "Images (*.png *.gif *.jpg *.jpeg)");
 	if (!file.isEmpty())
 	{ ui->imageLineEdit->setText(file); }
 }

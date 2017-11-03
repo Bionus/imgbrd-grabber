@@ -4,13 +4,10 @@
 #include <QMap>
 #include <QStringList>
 #include <QDateTime>
-#include <QFont>
 #include <QSettings>
 #include <QDomElement>
-#include <algorithm>
 #include <QString>
-#include <QNetworkReply>
-#include <QSslError>
+#include <QDir>
 #include "models/favorite.h"
 #include "logger.h"
 
@@ -31,10 +28,9 @@
 #endif
 
 
-
-void		sslErrorHandler(QNetworkReply* qnr, QList<QSslError> errors);
 QDateTime	qDateTimeFromString(QString s);
-QString		savePath(QString s = "", bool exists = false);
+QString		savePath(QString s = "", bool exists = false, bool writable = false);
+bool		copyRecursively(QString srcFilePath, QString tgtFilePath);
 int			levenshtein(QString, QString);
 QString		stripTags(QString);
 QString		getUnit(float *size);
@@ -42,6 +38,8 @@ QString		formatFilesize(float size);
 QString		getExtension(QUrl url);
 QString		getExtension(QString url);
 QString		setExtension(QString url, QString extension);
+bool		isUrl(QString str);
+bool		isVariantEmpty(const QVariant &value);
 
 bool		setFileCreationDate(QString path, QDateTime time);
 void		shutDown(int timeout = 0);
@@ -55,6 +53,20 @@ QMap<QString,QString>		domToMap(QDomElement);
 
 QMap<QString,QStringList>	getCustoms(QSettings *settings);
 QMap<QString,QPair<QString,QString>>	getFilenames(QSettings *settings);
+QMap<int, QMap<QString, QVariant>>		getExternalLogFiles(QSettings *settings);
+QStringList								getExternalLogFilesSuffixes(QSettings *settings);
+
+QStringList removeWildards(QStringList elements, QStringList remove);
+QString getExtensionFromHeader(const QByteArray &data12);
+
+void setTestModeEnabled(bool testMode);
+bool isTestModeEnabled();
+
+QString parseMarkdown(QString str);
+
+QString qFontToCss(const QFont &font);
+
+QList<QPair<QString, QStringList>> listFilesFromDirectory(const QDir &dir, const QStringList &suffixes);
 
 
 

@@ -1,16 +1,17 @@
 #include "source-guesser.h"
 #include <QEventLoop>
-#include "functions.h"
+#include <QNetworkRequest>
+#include <QNetworkReply>
+#include <QRegularExpression>
+#include "source.h"
+#include "api.h"
+#include "custom-network-access-manager.h"
+#include "logger.h"
 
 
 SourceGuesser::SourceGuesser(QString url, QList<Source*> sources)
 	: m_url(url), m_sources(sources)
 {
-	if (!m_url.startsWith("http"))
-	{ m_url.prepend("http://"); }
-	if (m_url.endsWith("/"))
-	{ m_url = m_url.left(m_url.size() - 1); }
-
 	m_manager = new CustomNetworkAccessManager(this);
 }
 
@@ -52,8 +53,8 @@ Source *SourceGuesser::start()
 				m_cache[checkUrl] = reply->readAll();
 			}
 
-			QRegExp rx(map->value("Check/Regex"));
-			if (rx.indexIn(m_cache[checkUrl]) != -1)
+			QRegularExpression rx(map->value("Check/Regex"));
+			if (rx.match(m_cache[checkUrl]).hasMatch())
 			{
 				emit finished(source);
 				return source;

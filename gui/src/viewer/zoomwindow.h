@@ -4,15 +4,9 @@
 #include <QtGui>
 #include <QtNetwork>
 #include <QStackedWidget>
-#include "ui/QAffiche.h"
+#include <QPushButton>
 #include "models/image.h"
-#include "models/profile.h"
-#include "reverse-search/reverse-search-engine.h"
-#include "mainwindow.h"
-#include "detailswindow.h"
-#include "threads/image-loader.h"
-#include "threads/image-loader-queue.h"
-
+#include "models/favorite.h"
 
 
 namespace Ui
@@ -21,18 +15,37 @@ namespace Ui
 }
 
 
+class QAffiche;
+class Profile;
+class mainWindow;
+class detailsWindow;
+class ImageLoader;
+class ImageLoaderQueue;
+
 class zoomWindow : public QWidget
 {
 	Q_OBJECT
 
 	public:
+		enum SaveButtonState
+		{
+			Save,
+			Saving,
+			Saved,
+			Copied,
+			Moved,
+			ExistsMd5,
+			ExistsDisk,
+			Delete
+		};
+
 		zoomWindow(QList<QSharedPointer<Image>> images, QSharedPointer<Image> image, Site *site, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent);
-		~zoomWindow();
+		~zoomWindow() override;
 		void go();
 		void load();
 
 	public slots:
-		void update(bool onlysize = false, bool force = false);
+		void update(bool onlySize = false, bool force = false);
 		void replyFinishedDetails();
 		void replyFinishedZoom(QNetworkReply::NetworkError error = QNetworkReply::NoError, QString errorString = "");
 		void display(const QPixmap &, int);
@@ -50,32 +63,22 @@ class zoomWindow : public QWidget
 		void linkHovered(QString);
 		void contextMenu(QPoint);
 		void openInNewTab();
-		void openInNewWindow();
-		void openInBrowser();
-		void favorite();
 		void setfavorite();
-		void unfavorite();
-		void viewitlater();
-		void unviewitlater();
-		void ignore();
-		void unignore();
 		void downloadProgress(qint64 bytesReceived, qint64 bytesTotal);
 		void colore();
-		void sslErrorHandler(QNetworkReply*, QList<QSslError>);
 		void urlChanged(QString, QString);
 		void showDetails();
 		void pendingUpdate();
 		void updateButtonPlus();
 		void openFile(bool now = false);
 		void updateWindowTitle();
+		void showLoadingError(QString error);
+		void setButtonState(bool fav, SaveButtonState state);
 
 		// Context menus
 		void imageContextMenu();
-		void reverseImageSearch(int i);
 		void copyImageFileToClipboard();
 		void copyImageDataToClipboard();
-		void copyTagToClipboard();
-		void copyAllTagsToClipboard();
 
 		// Full screen
 		void toggleFullScreen();
@@ -90,16 +93,16 @@ class zoomWindow : public QWidget
 		void previous();
 
 	protected:
-		void closeEvent(QCloseEvent *);
-		void resizeEvent(QResizeEvent *);
-		void save(QString, QPushButton *);
-		void showEvent(QShowEvent *);
-		void mouseReleaseEvent(QMouseEvent *);
-		void wheelEvent(QWheelEvent *);
+		void closeEvent(QCloseEvent *) override;
+		void resizeEvent(QResizeEvent *) override;
+		void showEvent(QShowEvent *) override;
+		void mouseReleaseEvent(QMouseEvent *) override;
+		void wheelEvent(QWheelEvent *) override;
 		void draw();
 
 	private:
 		void showThumbnail();
+		int firstNonBlacklisted(int direction);
 		Qt::Alignment getAlignments(QString type);
 
 	signals:
@@ -121,13 +124,13 @@ class zoomWindow : public QWidget
 		QSharedPointer<Image> m_image;
 		QMap<QString,QString> regex, m_details;
 		Site *m_site;
-		int timeout, m_mustSave;
-		bool m_loaded, m_loadedImage, m_loadedDetails;
-		QString id, m_url, tags, rating, score, user, format;
+		int m_timeout, m_mustSave;
+		bool m_tooBig, m_loadedImage, m_loadedDetails;
+		QString id, m_url, m_saveUrl, rating, score, user;
 		QAffiche *m_labelTagsTop, *m_labelTagsLeft;
 		QTimer *m_resizeTimer;
 		QTime m_imageTime;
-		QString link;
+		QString m_link;
 		bool m_finished;
 		int m_size;
 		QMap<QString,Site*> *m_sites;
@@ -143,12 +146,13 @@ class zoomWindow : public QWidget
 		QStackedWidget *m_stackedWidget;
 		QAffiche *m_labelImage;
 		QList<QSharedPointer<Image>> m_images;
-		QSignalMapper *m_reverseSearchSignalMapper;
-		QList<ReverseSearchEngine> m_reverseSearchEngines;
+		SaveButtonState m_saveButonState, m_saveButonStateFav;
 
 		// Display
+		QString m_isAnimated;
 		QPixmap m_displayImage;
 		QMovie *m_displayMovie;
+		bool m_labelImageScaled;
 
 		// Threads
 		QThread m_imageLoaderThread;

@@ -3,9 +3,12 @@
 #include <QJsonDocument>
 #include <QJsonArray>
 #include <QJsonObject>
+#include "models/site.h"
+#include "download-query-image.h"
+#include "download-query-group.h"
 
 
-bool DownloadQueryLoader::load(QString path, QList<DownloadQueryImage> &uniques, QList<DownloadQueryGroup> &batchs, QMap<QString, Site*> &sites)
+bool DownloadQueryLoader::load(QString path, QList<DownloadQueryImage> &uniques, QList<DownloadQueryGroup> &batchs, const QMap<QString, Site*> &sites)
 {
 	QFile f(path);
 	if (!f.open(QFile::ReadOnly))
@@ -29,7 +32,7 @@ bool DownloadQueryLoader::load(QString path, QList<DownloadQueryImage> &uniques,
 		if (det.empty())
 			return false;
 
-		for (QString link : det)
+		for (const QString &link : det)
 		{
 			QStringList infos = link.split(fieldSeparator);
 			if (infos.size() == 9)
@@ -46,7 +49,7 @@ bool DownloadQueryLoader::load(QString path, QList<DownloadQueryImage> &uniques,
 				if (!sites.contains(source) || infos.at(1).toInt() < 0 || infos.at(2).toInt() < 1 || infos.at(3).toInt() < 1)
 					continue;
 
-				batchs.append(DownloadQueryGroup(infos[0], infos[1].toInt(), infos[2].toInt(), infos[3].toInt(), infos[4] != "false", sites[source], infos[6], infos[7]));
+				batchs.append(DownloadQueryGroup(infos[0], infos[1].toInt(), infos[2].toInt(), infos[3].toInt(), QStringList(), infos[4] != "false", sites[source], infos[6], infos[7]));
 			}
 		}
 
@@ -89,7 +92,7 @@ bool DownloadQueryLoader::load(QString path, QList<DownloadQueryImage> &uniques,
 	return false;
 }
 
-bool DownloadQueryLoader::save(QString path, QList<DownloadQueryImage> &uniques, QList<DownloadQueryGroup> &batchs)
+bool DownloadQueryLoader::save(QString path, const QList<DownloadQueryImage> &uniques, const QList<DownloadQueryGroup> &batchs)
 {
 	QFile saveFile(path);
 	if (!saveFile.open(QFile::WriteOnly))
@@ -99,19 +102,19 @@ bool DownloadQueryLoader::save(QString path, QList<DownloadQueryImage> &uniques,
 
 	// Batch downloads
 	QJsonArray batchsJson;
-	for (int i = 0; i < batchs.size(); i++)
+	for (const auto &b : batchs)
 	{
 		QJsonObject batch;
-		batchs[i].write(batch);
+		b.write(batch);
 		batchsJson.append(batch);
 	}
 
 	// Unique images
 	QJsonArray uniquesJson;
-	for (int i = 0; i < uniques.size(); i++)
+	for (const auto &u : uniques)
 	{
 		QJsonObject unique;
-		uniques[i].write(unique);
+		u.write(unique);
 		uniquesJson.append(unique);
 	}
 

@@ -1,15 +1,19 @@
-#include <QMessageBox>
-#include <QProcess>
 #include "update-dialog.h"
 #include "ui_update-dialog.h"
+#include <QMessageBox>
+#include <QProcess>
+#include "functions.h"
+#if !defined Q_OS_WIN || defined NIGHTLY
+	#include <QDesktopServices>
+#endif
 
 
-UpdateDialog::UpdateDialog(QWidget *parent)
-	: QDialog(Q_NULLPTR), ui(new Ui::UpdateDialog), m_parent(parent)
+UpdateDialog::UpdateDialog(bool *shouldQuit, QWidget *parent)
+	: QDialog(Q_NULLPTR), ui(new Ui::UpdateDialog), m_shouldQuit(shouldQuit), m_parent(parent)
 {
 	ui->setupUi(this);
 
-	ui->labelChangelog->setVisible(ui->checkShowChangelog->isChecked());
+	ui->scrollArea->setVisible(ui->checkShowChangelog->isChecked());
 	ui->progressDownload->hide();
 	resize(300, 0);
 
@@ -23,7 +27,7 @@ UpdateDialog::~UpdateDialog()
 
 void UpdateDialog::resizeToFit()
 {
-	ui->labelChangelog->setVisible(ui->checkShowChangelog->isChecked());
+	ui->scrollArea->setVisible(ui->checkShowChangelog->isChecked());
 	int width = ui->labelUpdateAvailable->size().width();
 
 	ui->labelUpdateAvailable->setMinimumWidth(width);
@@ -40,9 +44,19 @@ void UpdateDialog::checkForUpdates()
 void UpdateDialog::checkForUpdatesDone(QString newVersion, bool available, QString changelog)
 {
 	if (!available)
+	{
+		emit noUpdateAvailable();
 		return;
+	}
 
-	ui->labelChangelog->setText(changelog);
+	bool hasChangelog = !changelog.isEmpty();
+	if (hasChangelog)
+	{
+		ui->labelChangelog->setTextFormat(Qt::RichText);
+		ui->labelChangelog->setText(parseMarkdown(changelog));
+	}
+	ui->checkShowChangelog->setVisible(hasChangelog);
+	ui->scrollArea->setVisible(hasChangelog);
 	ui->labelVersion->setText(tr("Version <b>%1</b>").arg(newVersion));
 
 	show();
@@ -51,7 +65,12 @@ void UpdateDialog::checkForUpdatesDone(QString newVersion, bool available, QStri
 
 void UpdateDialog::accept()
 {
-	downloadUpdate();
+	#if defined Q_OS_WIN && !defined NIGHTLY
+		downloadUpdate();
+	#else
+		QDesktopServices::openUrl(m_updater.latestUrl());
+		close();
+	#endif
 }
 
 
@@ -74,16 +93,11 @@ void UpdateDialog::downloadFinished(QString path)
 {
 	ui->progressDownload->setValue(ui->progressDownload->maximum());
 
-	int reponse = QMessageBox::question(this, tr("Updater"), tr("To go on with the update, the program must be closed. Do you want to close now?"), QMessageBox::Yes | QMessageBox::No);
-	if (reponse == QMessageBox::Yes)
-	{
-		QProcess::startDetached(path);
+	QProcess::startDetached(path);
 
-		m_parent->close();
-		qApp->exit();
-	}
-	else
-	{
-		close();
-	}
+	if (m_parent != Q_NULLPTR)
+	{ m_parent->close(); }
+
+	*m_shouldQuit = true;
+	qApp->exit();
 }

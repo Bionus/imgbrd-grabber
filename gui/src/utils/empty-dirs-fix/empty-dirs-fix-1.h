@@ -4,8 +4,6 @@
 #include <QDialog>
 #include <QStringList>
 #include <QDir>
-#include "models/profile.h"
-
 
 
 namespace Ui
@@ -14,13 +12,15 @@ namespace Ui
 }
 
 
+class Profile;
+
 class EmptyDirsFix1 : public QDialog
 {
 	Q_OBJECT
 
 	public:
 		explicit EmptyDirsFix1(Profile *profile, QWidget *parent = Q_NULLPTR);
-		~EmptyDirsFix1();
+		~EmptyDirsFix1() override;
 
 	public slots:
 		void next();

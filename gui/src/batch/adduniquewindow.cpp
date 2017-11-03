@@ -7,7 +7,10 @@
 #include "vendor/json.h"
 #include "models/page.h"
 #include "models/filename.h"
-
+#include "models/site.h"
+#include "models/profile.h"
+#include "models/image.h"
+#include "downloader/download-query-image.h"
 
 
 /**
@@ -41,7 +44,7 @@ void AddUniqueWindow::on_lineFilename_textChanged(QString text)
 {
 	QString message;
 	Filename fn(text);
-	fn.isValid(&message);
+	fn.isValid(m_profile, &message);
 	ui->labelFilename->setText(message);
 }
 
@@ -109,7 +112,7 @@ void AddUniqueWindow::addLoadedImage()
 }
 void AddUniqueWindow::addImage(QSharedPointer<Image> img)
 {
-	emit sendData(DownloadQueryImage(img, m_sites[ui->comboSites->currentText()], ui->lineFilename->text(), ui->lineFolder->text()));
+	emit sendData(DownloadQueryImage(*img, m_sites[ui->comboSites->currentText()], ui->lineFilename->text(), ui->lineFolder->text()));
 
 	if (m_close)
 		close();

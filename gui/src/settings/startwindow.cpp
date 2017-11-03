@@ -1,14 +1,14 @@
 #include "startwindow.h"
+#include <QFileDialog>
+#include <QSettings>
+#include <QStandardPaths>
 #include "ui_startwindow.h"
 #include "optionswindow.h"
 #include "filenamewindow.h"
-#include "functions.h"
 #include "language-loader.h"
-#include <QFileDialog>
-#include <QSettings>
-#include <QDesktopServices>
+#include "models/profile.h"
 #include "helpers.h"
-
+#include "functions.h"
 
 
 /**
@@ -20,11 +20,13 @@ startWindow::startWindow(QMap<QString, Site*> *sites, Profile *profile, QWidget 
 	: QDialog(parent), ui(new Ui::startWindow), m_profile(profile), m_sites(sites)
 {
 	ui->setupUi(this);
+	ui->labelHelp->setText(ui->labelHelp->text().replace("{website}", PROJECT_WEBSITE_URL));
+	ui->labelHelp->setText(ui->labelHelp->text().replace("{github}", PROJECT_GITHUB_URL));
 
 	// Language
 	LanguageLoader languageLoader(savePath("languages/", true));
 	QMap<QString, QString> languages = languageLoader.getAllLanguages();
-	for (QString language : languages.keys())
+	for (const QString &language : languages.keys())
 	{ ui->comboLanguage->addItem(languages[language], language); }
 	ui->comboLanguage->setCurrentText("English");
 
@@ -68,16 +70,16 @@ void startWindow::on_buttonFilenamePlus_clicked()
  */
 void startWindow::save()
 {
-	QSettings settings(savePath("settings.ini"), QSettings::IniFormat);
-	settings.beginGroup("Save");
+	QSettings *settings = m_profile->getSettings();
+	settings->beginGroup("Save");
 
 	// Filename
-	settings.setValue("filename", ui->lineFilename->text());
-	settings.setValue("filename_real", ui->lineFilename->text());
+	settings->setValue("filename", ui->lineFilename->text());
+	settings->setValue("filename_real", ui->lineFilename->text());
 
 	// Folder
-	settings.setValue("path", ui->lineFolder->text());
-	settings.setValue("path_real", ui->lineFolder->text());
+	settings->setValue("path", ui->lineFolder->text());
+	settings->setValue("path_real", ui->lineFolder->text());
 	QDir pth = QDir(ui->lineFolder->text());
 	if (!pth.exists())
 	{
@@ -85,26 +87,26 @@ void startWindow::save()
 		while (!pth.exists() && pth.path() != op)
 		{
 			op = pth.path();
-			pth.setPath(pth.path().remove(QRegExp("/([^/]+)$")));
+			pth.setPath(pth.path().remove(QRegularExpression("/([^/]+)$")));
 		}
 		if (pth.path() == op)
-		{ error(this, tr("An error occured creating the save folder.")); }
+		{ error(this, tr("An error occurred creating the save folder.")); }
 		else
 		{ pth.mkpath(ui->lineFolder->text()); }
 	}
-	settings.endGroup();
+	settings->endGroup();
 
 	// Language
 	QString lang = ui->comboLanguage->currentData().toString();
-	if (settings.value("language", "English").toString() != lang)
+	if (settings->value("language", "English").toString() != lang)
 	{
-		settings.setValue("language", lang);
+		settings->setValue("language", lang);
 		emit languageChanged(lang);
 	}
 
 	emit sourceChanged(ui->comboSource->currentText());
 
-	settings.sync();
+	settings->sync();
 	emit settingsChanged();
 }
 
@@ -113,7 +115,7 @@ void startWindow::save()
  */
 void startWindow::openOptions()
 {
-	optionsWindow *ow = new optionsWindow(m_profile, parentWidget());
+	auto *ow = new optionsWindow(m_profile, parentWidget());
 	ow->show();
 
 	this->close();

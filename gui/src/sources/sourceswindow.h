@@ -3,10 +3,9 @@
 
 #include <QDialog>
 #include <QCheckBox>
+#include <QSettings>
 #include <QLabel>
-#include "ui/QBouton.h"
-#include "models/site.h"
-
+#include "models/source.h"
 
 
 namespace Ui
@@ -15,20 +14,22 @@ namespace Ui
 }
 
 
+class QBouton;
+class Site;
+class Profile;
 
 class sourcesWindow : public QDialog
 {
 	Q_OBJECT
 
 	public:
-		explicit sourcesWindow(Profile *profile, QList<bool> selected, QMap<QString,Site*> *sites, QWidget *parent = 0);
-		~sourcesWindow();
+		explicit sourcesWindow(Profile *profile, QList<bool> selected, QMap<QString,Site*> *sites, QWidget *parent = Q_NULLPTR);
+		~sourcesWindow() override;
 		QList<bool> getSelected();
-		int getColumns();
 
 	public slots:
 		void valid();
-		void closeEvent(QCloseEvent *);
+		void closeEvent(QCloseEvent *) override;
 		void checkAll(int check = 2);
 		void addSite();
 		void settingsSite(QString);
@@ -36,10 +37,20 @@ class sourcesWindow : public QDialog
 		void checkUpdate();
 		void checkClicked();
 		void checkForUpdates();
-		void checkForUpdatesReceived(Source *source, bool isNew);
+		void checkForUpdatesReceived(QString source, bool isNew);
 		void addCheckboxes();
 		void removeCheckboxes();
 		void updateCheckboxes();
+		QList<Site*> selected() const;
+
+		// Presets
+		QMap<QString, QStringList> loadPresets(QSettings *settings) const;
+		void savePresets(QSettings *settings) const;
+		void addPreset();
+		void deletePreset();
+		void editPreset();
+		void savePreset();
+		void selectPreset(QString name);
 
 	signals:
 		void closed();
@@ -52,7 +63,9 @@ class sourcesWindow : public QDialog
 		QList<QCheckBox*> m_checks;
 		QList<QLabel*> m_labels;
 		QList<QBouton*> m_buttons;
-		QMap<QString,Site*> *m_sites;
+		QMap<QString, Site*> *m_sites;
+		QMap<QString, Source*> m_sources;
+		QMap<QString, QStringList> m_presets;
 };
 
 #endif // SOURCESWINDOW_H

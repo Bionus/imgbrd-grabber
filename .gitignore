@@ -2,6 +2,10 @@
 
 *.qm
 release/sites/*/*/settings.ini
+release/sites/*/*/tags.txt
+release/sites/*/*/tags.db
+tests/resources/tags.txt
+tests/resources/tags.db
 tests/resources/md5s.txt
 tests/resources/settings.ini
 tests/resources/settings.ini.*
@@ -9,6 +13,7 @@ tests/resources/*.txt
 tests/resources/thumbs/
 tests/resources/tmp/
 tests/resources/sites/
+/test_*
 target_wrapper.bat
 symbols/
 *.lock
@@ -24,6 +29,7 @@ symbols/
 *.sql
 *.zip
 build/
+build_linux/
 debug/
 {gui,cli}/release/
 cache/
@@ -42,6 +48,20 @@ CrashReporter/debug/
 CrashReporter/release/
 
 
+# CMake
+
+CMakeLists.txt.user*
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+
+
 # Unix
 
 *~
@@ -56,12 +76,12 @@ CrashReporter/release/
 *.vcxproj.user
 Grabber.VC.*
 win32/
+CMakeSettings.json
 
 
 # CLion
 
 .idea/
-CMakeLists.txt
 
 
 # C++ objects and libs

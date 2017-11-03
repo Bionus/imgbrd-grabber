@@ -8,18 +8,18 @@
 #include <QList>
 #include <QNetworkReply>
 #include <QUrl>
-#include <QSslError>
 #include <functional>
-#include "tag.h"
-#include "api.h"
-#include "profile.h"
-#include "custom-network-access-manager.h"
-
+#include "tags/tag.h"
+#include "tags/tag-database-in-memory.h"
+#include "source.h"
+#include "mixed-settings.h"
 
 
 class Page;
 class Image;
-class Source;
+class Api;
+class Profile;
+class CustomNetworkAccessManager;
 
 class Site : public QObject
 {
@@ -51,23 +51,25 @@ class Site : public QObject
 		};
 
 		Site(QString url, Source *source);
-		~Site();
+		~Site() override;
 		void loadConfig();
 		void initManager();
-		QString type();
-		QString name();
-		QString url();
+		QString type() const;
+		QString name() const;
+		QString url() const;
 		QList<QNetworkCookie> cookies() const;
-		QVariant setting(QString key, QVariant def = QVariant());
-		QSettings *settings();
+		QVariant setting(const QString &key, const QVariant &def = QVariant());
+		void setSetting(const QString &key, const QVariant &value, const QVariant &def);
+		void syncSettings();
+		TagDatabase *tagDatabase() const;
 		QNetworkRequest makeRequest(QUrl url, Page *page = nullptr, QString referer = "", Image *img = nullptr);
 		QNetworkReply *get(QUrl url, Page *page = nullptr, QString referer = "", Image *img = nullptr);
 		void getAsync(QueryType type, QUrl url, std::function<void(QNetworkReply *)> callback, Page *page = nullptr, QString referer = "", Image *img = nullptr);
 		static QList<Site*> getSites(Profile *profile, QStringList sources);
 		static QMap<QString, Site *> getAllSites(Profile *profile);
-		QUrl fixUrl(QUrl url) const { return fixUrl(url.toString()); }
-		QUrl fixUrl(QString url) const;
-		QUrl fixUrl(QString url, QUrl old) const;
+		QUrl fixUrl(const QUrl &url) const { return fixUrl(url.toString()); }
+		QUrl fixUrl(const QString &url) const;
+		QUrl fixUrl(const QString &url, const QUrl &old) const;
 
 		// Api
 		QList<Api*> getApis(bool filterAuth = false) const;
@@ -80,16 +82,17 @@ class Site : public QObject
 		bool isLoggedIn(bool unknown = false) const;
 		QString username() const;
 		QString password() const;
-		void setUsername(QString);
-		void setPassword(QString);
+		void setUsername(const QString &username);
+		void setPassword(const QString &password);
+		bool canTestLogin() const;
 
 		// XML info getters
-		bool contains(QString key) const;
-		QString value(QString key) const;
-		QString operator[](QString key) const { return value(key); }
+		bool contains(const QString &key) const;
+		QString value(const QString &key) const;
+		QString operator[](const QString &key) const { return value(key); }
 
 	private:
-		QNetworkReply *getRequest(QNetworkRequest request);
+		QNetworkReply *getRequest(const QNetworkRequest &request);
 
 	public slots:
 		void login(bool force = false);
@@ -112,11 +115,12 @@ class Site : public QObject
 		QString m_url;
 		Source *m_source;
 		QList<QNetworkCookie> m_cookies;
-		QSettings *m_settings;
+		MixedSettings *m_settings;
 		CustomNetworkAccessManager *m_manager;
 		QNetworkCookieJar *m_cookieJar;
 		QNetworkReply *m_updateReply, *m_tagsReply;
 		QList<Api*> m_apis;
+		TagDatabase *m_tagDatabase;
 
 		// Login
 		QNetworkReply *m_loginReply;

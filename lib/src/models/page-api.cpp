@@ -1,29 +1,31 @@
-#include <QSettings>
-#include <QFile>
-#include <QNetworkCookie>
-#include <iostream>
-#include <QSet>
-#include "page.h"
 #include "page-api.h"
-#include "vendor/json.h"
-#include "math.h"
+#include <QDomDocument>
+#include <QRegularExpression>
+#include <cmath>
+#include "page.h"
 #include "site.h"
-
+#include "api.h"
+#include "image.h"
+#include "vendor/json.h"
+#include "logger.h"
+#include "functions.h"
 
 
 PageApi::PageApi(Page *parentPage, Profile *profile, Site *site, Api *api, QStringList tags, int page, int limit, QStringList postFiltering, bool smart, QObject *parent, int pool, int lastPage, int lastPageMinId, int lastPageMaxId)
-	: QObject(parent), m_parentPage(parentPage), m_profile(profile), m_site(site), m_api(api), m_search(tags), m_postFiltering(postFiltering), m_errors(QStringList()), m_imagesPerPage(limit), m_currentSource(0), m_lastPage(lastPage), m_lastPageMinId(lastPageMinId), m_lastPageMaxId(lastPageMaxId), m_smart(smart), m_reply(nullptr), m_replyTags(nullptr)
+	: QObject(parent), m_parentPage(parentPage), m_profile(profile), m_site(site), m_api(api), m_search(tags), m_postFiltering(postFiltering), m_errors(QStringList()), m_imagesPerPage(limit), m_lastPage(lastPage), m_lastPageMinId(lastPageMinId), m_lastPageMaxId(lastPageMaxId), m_smart(smart), m_reply(nullptr), m_replyTags(nullptr)
 {
 	m_imagesCount = -1;
 	m_pagesCount = -1;
+	m_imagesCountSafe = false;
+	m_pagesCountSafe = false;
+
 	m_search = tags;
 	m_page = page;
 	m_pool = pool;
+	m_format = m_api->getName();
 
 	updateUrls();
 }
-PageApi::~PageApi()
-{ }
 
 QUrl PageApi::parseUrl(QString url, int pid, int p, QString t, QString pseudo, QString password)
 {
@@ -48,6 +50,8 @@ QUrl PageApi::parseUrl(QString url, int pid, int p, QString t, QString pseudo, Q
 	{ maxPage = m_api->value("Urls/MaxPage").toInt(); }
 
 	m_isAltPage = maxPage >= 0 && p > maxPage && m_page - 1 <= m_lastPage && m_lastPage <= m_page + 1;
+	if (m_api->contains("Urls/NormalPage"))
+	{ url.replace("{cpage}", m_isAltPage ? "{altpage}" : m_api->value("Urls/NormalPage")); }
 	if (m_isAltPage)
 	{
 		url.replace("{altpage}", m_api->value("Urls/AltPage" + QString(m_lastPage > m_page ? "Prev" : "Next")));
@@ -89,7 +93,6 @@ void PageApi::setLastPage(Page *page)
 	m_lastPageMaxId = page->maxId();
 	m_lastPageMinId = page->minId();
 
-	m_currentSource--;
 	if (!page->nextPage().isEmpty())
 	{ m_url = page->nextPage(); }
 	else
@@ -117,32 +120,45 @@ void PageApi::updateUrls()
 	}
 	p = p - 1 + m_api->value("FirstPage").toInt();
 
+	// GET login information
+	QString pseudo = m_site->username();
+	QString password = m_site->password();
+
+	int pid = m_api->contains("Urls/Limit") ? m_api->value("Urls/Limit").toInt() * (m_page - 1) : m_imagesPerPage * (m_page - 1);
+
+	// URL searches
+	if (m_search.count() == 1 && !t.isEmpty() && isUrl(t))
+	{
+		m_originalUrl = QString(t);
+		m_url = parseUrl(t, pid, p, t, pseudo, password).toString();
+		m_urlRegex = parseUrl(t, pid, p, t, pseudo, password).toString();
+		return;
+	}
+
 	// Check if we are looking for a pool
-	QRegExp poolRx("pool:(\\d+)");
+	QRegularExpression poolRx("pool:(\\d+)");
+	auto match = poolRx.match(t);
 	QString url;
 	int pl = -1;
-	int pos = -1;
-	if ((pos = poolRx.indexIn(t)) != -1)
+	if (match.hasMatch())
 	{
-		for (int i = 1; i <= m_site->getApis().count() + 1; i++)
+		for (Api *api : m_site->getApis())
 		{
-			Api *api = m_site->getApis().at(i - 1);
 			if (api->contains("Urls/Pools"))
 			{
 				url = api->value("Urls/Pools");
-				url.replace("{pool}", poolRx.cap(1));
-				pl = poolRx.cap(1).toInt();
-				m_currentSource = i;
+				url.replace("{pool}", match.captured(1));
+				pl = match.captured(1).toInt();
 				m_api = api;
-				t = t.remove(pos, poolRx.cap(0).length()).trimmed();
+				t = t.remove(match.capturedStart(0), match.captured(0).length()).trimmed();
 				break;
 			}
 		}
 		if (url.isEmpty())
 		{
-			log("No source of this site is compatible with pools.");
+			log(QString("[%1][%2] No source of this site is compatible with pools.").arg(m_site->url()).arg(m_format), Logger::Warning);
 			m_errors.append(tr("No source of this site is compatible with pools."));
-			m_search.removeAll("pool:"+poolRx.cap(1));
+			m_search.removeAll("pool:"+match.captured(1));
 			t.remove(m_pool);
 			t = t.trimmed();
 		}
@@ -155,21 +171,16 @@ void PageApi::updateUrls()
 		{ url = m_api->value("Urls/Tags"); }
 	}
 
-	// GET login information
-	QString pseudo = m_site->username();
-	QString password = m_site->password();
-
-	int pid = m_api->contains("Urls/Limit") ? m_api->value("Urls/Limit").toInt() * (m_page - 1) : m_imagesPerPage * (m_page - 1);
-
 	// Global replace tokens
 	m_originalUrl = QString(url);
 	m_url = parseUrl(url, pid, p, t, pseudo, password).toString();
 
-	if ((pl >= 0 || poolRx.indexIn(t) != -1) && m_api->contains("Urls/Html/Pools"))
+	auto plMatch = poolRx.match(t);
+	if ((pl > 0 || plMatch.hasMatch()) && m_api->contains("Urls/Html/Pools"))
 	{
 		url = m_site->value("Urls/Html/Pools");
 		url = parseUrl(url, pid, p, t, pseudo, password).toString();
-		url.replace("{pool}", poolRx.cap(1));
+		url.replace("{pool}", pl > 0 ? QString::number(pl) : plMatch.captured(1));
 		m_urlRegex = QUrl(url);
 	}
 	else if (m_api->contains("Urls/Html/Tags"))
@@ -186,10 +197,12 @@ void PageApi::load(bool rateLimit)
 	// Reading reply and resetting vars
 	m_images.clear();
 	m_tags.clear();
+	m_pageImageCount = 0;
 	/*m_imagesCount = -1;
 	m_pagesCount = -1;*/
 
 	m_site->getAsync(rateLimit ? Site::QueryType::Retry : Site::QueryType::List, m_url, [this](QNetworkReply *reply) {
+		log(QString("[%1][%2] Loading page <a href=\"%3\">%3</a>").arg(m_site->url()).arg(m_format).arg(m_url.toString().toHtmlEscaped()), Logger::Info);
 		m_reply = reply;
 		connect(m_reply, SIGNAL(finished()), this, SLOT(parse()));
 	});
@@ -204,6 +217,7 @@ void PageApi::loadTags()
 {
 	if (!m_urlRegex.isEmpty())
 	{
+		log(QString("[%1][%2] Loading tags from page <a href=\"%3\">%3</a>").arg(m_site->url()).arg(m_format).arg(m_urlRegex.toString().toHtmlEscaped()), Logger::Info);
 		m_replyTags = m_site->get(m_urlRegex);
 		connect(m_replyTags, &QNetworkReply::finished, this, &PageApi::parseTags);
 	}
@@ -221,9 +235,15 @@ QString _parseSetImageUrl(Site *site, Api* api, QString settingUrl, QString sett
 		QStringList options = api->value(settingUrl).split('|');
 		for (QString opt : options)
 		{
+			if (opt.contains("{tim}") && d->value("tim").isEmpty())
+				return "";
+
 			opt.replace("{id}", d->value("id"))
 			.replace("{md5}", d->value("md5"))
-			.replace("{ext}", d->value("ext", "jpg"));
+			.replace("{ext}", d->value("ext", "jpg"))
+			.replace("{tim}", d->value("tim"))
+			.replace("{website}", site->url())
+			.replace("{cdn}", QString(site->url()).replace("boards.4chan", "4cdn"));
 
 			if (!opt.endsWith("/." + d->value("ext")) && !opt.contains('{'))
 			{
@@ -237,14 +257,20 @@ QString _parseSetImageUrl(Site *site, Api* api, QString settingUrl, QString sett
 		if (ret.isEmpty() && !def.isEmpty())
 			ret = def;
 
-		QStringList replaces = api->value(settingReplaces).split('&');
-		for (QString rep : replaces)
+		QStringList reps = api->value(settingReplaces).split('&');
+		for (const QString &rep : reps)
 		{
-			QRegExp rgx(rep.left(rep.indexOf("->")));
+			QRegularExpression rgx(rep.left(rep.indexOf("->")));
 			ret.replace(rgx, rep.right(rep.size() - rep.indexOf("->") - 2));
 		}
 	}
-	return site->fixUrl(ret).toString();
+	QString fixed = site->fixUrl(ret).toString();
+
+	// Clean fake webp files
+	if (fixed.endsWith(".jpg.webp"))
+		fixed = fixed.left(fixed.length() - 5);
+
+	return fixed;
 }
 
 
@@ -256,6 +282,10 @@ void PageApi::parseImage(QMap<QString,QString> d, int position, QList<Tag> tags)
 	if (!d.contains("sample_url"))
 	{ d["sample_url"] = ""; }
 
+	// Remove dot before extension
+	if (d.contains("ext") && d["ext"][0] == '.')
+	{ d["ext"] = d["ext"].mid(1); }
+
 	// Fix urls
 	d["file_url"] = _parseSetImageUrl(m_site, m_api, "Urls/Image", "Urls/ImageReplaces", d["file_url"], &d, true, d["preview_url"]);
 	d["sample_url"] = _parseSetImageUrl(m_site, m_api, "Urls/Sample", "Urls/SampleReplaces", d["sample_url"], &d, true, d["preview_url"]);
@@ -266,13 +296,18 @@ void PageApi::parseImage(QMap<QString,QString> d, int position, QList<Tag> tags)
 	if (d["sample_url"].isEmpty())
 	{ d["sample_url"] = d["preview_url"]; }
 
-	// Generate image
-	QSharedPointer<Image> img = QSharedPointer<Image>(new Image(m_site, d, m_profile, m_parentPage));
-	QStringList errors = img->filter(m_postFiltering);
+	QStringList errors;
 
 	// If the file path is wrong (ends with "/.jpg")
 	if (errors.isEmpty() && d["file_url"].endsWith("/." + d["ext"]))
 	{ errors.append("file url"); }
+
+	if (errors.isEmpty())
+	{ m_pageImageCount++; }
+
+	// Generate image
+	QSharedPointer<Image> img(new Image(m_site, d, m_profile, m_parentPage));
+	errors.append(img->filter(m_postFiltering));
 
 	// Add if everything is ok
 	if (errors.isEmpty())
@@ -286,17 +321,21 @@ void PageApi::parseImage(QMap<QString,QString> d, int position, QList<Tag> tags)
 	else
 	{
 		img->deleteLater();
-		log(QString("Image #%1 ignored. Reason: %2.").arg(QString::number(position + 1), errors.join(", ")));
+		log(QString("[%1][%2] Image #%3 ignored. Reason: %4.").arg(m_site->url()).arg(m_format).arg(QString::number(position + 1), errors.join(", ")), Logger::Info);
 	}
 }
 
 void PageApi::parse()
 {
+	log(QString("[%1][%2] Receiving page <a href=\"%3\">%3</a>").arg(m_site->url()).arg(m_format).arg(m_reply->url().toString().toHtmlEscaped()), Logger::Info);
+
 	// Check redirection
 	QUrl redir = m_reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 	if (!redir.isEmpty())
 	{
-		m_url = m_site->fixUrl(redir.toString(), m_url);
+		QUrl newUrl = m_site->fixUrl(redir.toString(), m_url);
+		log(QString("[%1][%2] Redirecting page <a href=\"%3\">%3</a> to <a href=\"%4\">%4</a>").arg(m_site->url()).arg(m_format).arg(m_url.toString().toHtmlEscaped()).arg(newUrl.toString().toHtmlEscaped()), Logger::Info);
+		m_url = newUrl;
 		load();
 		return;
 	}
@@ -304,7 +343,7 @@ void PageApi::parse()
 	int statusCode = m_reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 	if (statusCode == 429)
 	{
-		log("Limit reached (429). New try.");
+		log(QString("[%1][%2] Limit reached (429). New try.").arg(m_site->url()).arg(m_format), Logger::Warning);
 		load(true);
 		return;
 	}
@@ -314,13 +353,12 @@ void PageApi::parse()
 	if (m_source.isEmpty())
 	{
 		if (m_reply->error() != QNetworkReply::OperationCanceledError)
-		{ log(QString("Loading error: %1").arg(m_reply->errorString())); }
+		{ log(QString("[%1][%2] Loading error: %3 (%4)").arg(m_site->url()).arg(m_format).arg(m_reply->errorString()).arg(m_reply->error())); }
 		emit finishedLoading(this, LoadResult::Error);
 		return;
 	}
 
 	int first = m_smart ? ((m_page - 1) * m_imagesPerPage) % m_blim : 0;
-	m_format = m_api->getName();
 
 	// XML
 	if (m_format == "Xml")
@@ -331,7 +369,7 @@ void PageApi::parse()
 		int errorLine, errorColumn;
 		if (!doc.setContent(m_source, false, &errorMsg, &errorLine, &errorColumn))
 		{
-			log(QString("Error parsing XML file: %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn)));
+			log(QString("[%1][%2] Error parsing XML file: %3 (%4 - %5).").arg(m_site->url()).arg(m_format).arg(errorMsg).arg(errorLine).arg(errorColumn), Logger::Warning);
 			emit finishedLoading(this, LoadResult::Error);
 			return;
 		}
@@ -343,10 +381,7 @@ void PageApi::parse()
 		if (count == 0 && database == "array")
 		{ count = docElem.elementsByTagName("total-count").at(0).toElement().text().toInt(); }
 		if (count > 0)
-		{
-			m_imagesCount = count;
-			m_pagesCount = ceil(((float)count) / m_imagesPerPage);
-		}
+		{ setImageCount(count, true); }
 
 		// Reading posts
 		QDomNodeList nodeList = docElem.elementsByTagName("post");
@@ -356,6 +391,7 @@ void PageApi::parse()
 			{
 				QDomNode node = nodeList.at(id + first);
 				QMap<QString,QString> d;
+				QList<Tag> tags;
 				if (database == "array")
 				{
 					if (node.namedItem("md5").isNull())
@@ -380,6 +416,20 @@ void PageApi::parse()
 						for (int i = 0; i < infos.count(); i++)
 						{ d[infos.at(i)] = node.namedItem(assoc.at(i)).toElement().text(); }
 					}
+
+					// Typed tags
+					QDomNodeList tagTypes = node.namedItem("tags").childNodes();
+					if (!tagTypes.isEmpty())
+					{
+						for (int typeId = 0; typeId < tagTypes.count(); ++typeId)
+						{
+							QDomNode tagType = tagTypes.at(typeId);
+							TagType tType(tagType.nodeName());
+							QDomNodeList tagList = tagType.childNodes();
+							for (int iTag = 0; iTag < tagList.count(); ++iTag)
+							{ tags.append(Tag(tagList.at(iTag).toElement().text(), tType)); }
+						}
+					}
 				}
 				else
 				{
@@ -392,7 +442,7 @@ void PageApi::parse()
 										 : node.attributes().namedItem(infos.at(i)).nodeValue().trimmed();
 					}
 				}
-				this->parseImage(d, id + first);
+				this->parseImage(d, id + first, tags);
 			}
 		}
 	}
@@ -406,7 +456,7 @@ void PageApi::parse()
 		int errorLine, errorColumn;
 		if (!doc.setContent(m_source, false, &errorMsg, &errorLine, &errorColumn))
 		{
-			log(QString("Error parsing RSS file: %1 (%2 - %3).").arg(errorMsg, QString::number(errorLine), QString::number(errorColumn)));
+			log(QString("[%1][%2] Error parsing RSS file: %3 (%4 - %5).").arg(m_site->url()).arg(m_format).arg(errorMsg).arg(errorLine).arg(errorColumn), Logger::Warning);
 			emit finishedLoading(this, LoadResult::Error);
 			return;
 		}
@@ -444,9 +494,10 @@ void PageApi::parse()
 
 				if (!d.contains("id"))
 				{
-					QRegExp rx("/(\\d+)");
-					rx.indexIn(d["page_url"]);
-					d.insert("id", rx.cap(1));
+					QRegularExpression rx("/(\\d+)");
+					auto match = rx.match(d["page_url"]);
+					if (match.hasMatch())
+					{ d.insert("id", match.captured(1)); }
 				}
 
 				this->parseImage(d, id + first);
@@ -460,44 +511,52 @@ void PageApi::parse()
 		// Getting tags
 		if (m_site->contains("Regex/Tags"))
 		{
-			QRegExp rxtags(m_site->value("Regex/Tags"));
-			rxtags.setMinimal(true);
+			QRegularExpression rxtags(m_site->value("Regex/Tags"), QRegularExpression::DotMatchesEverythingOption);
 			QStringList tags = QStringList();
-			int p = 0;
-			while (((p = rxtags.indexIn(m_source, p)) != -1))
+			auto matches = rxtags.globalMatch(m_source);
+			while (matches.hasNext())
 			{
-				if (!tags.contains(rxtags.cap(2)))
+				auto match = matches.next();
+				if (!tags.contains(match.captured(2)))
 				{
-					m_tags.append(Tag(rxtags.cap(2), rxtags.cap(1), rxtags.cap(3).toInt()));
-					tags.append(rxtags.cap(2));
+					m_tags.append(Tag(match.captured(2), match.captured(1), match.captured(3).toInt()));
+					tags.append(match.captured(2));
 				}
-				p += rxtags.matchedLength();
 			}
 		}
 
 		// Getting images
-		QRegExp rx(m_site->value("Regex/Image"));
-		QStringList order = m_site->value("Regex/Order").split('|');
-		rx.setMinimal(true);
-		int pos = 0, id = 0;
-		while ((pos = rx.indexIn(m_source, pos)) != -1)
+		QRegularExpression rx(m_site->value("Regex/Image"), QRegularExpression::DotMatchesEverythingOption);
+		auto matches = rx.globalMatch(m_source);
+		int id = 0;
+		while (matches.hasNext())
 		{
-			pos += rx.matchedLength();
-			QMap<QString,QString> d;
-			for (int i = 0; i < order.size(); i++)
+			auto match = matches.next();
+			QMap<QString, QString> d;
+			for (QString group : rx.namedCaptureGroups())
 			{
-				QString ord = order.at(i);
-				if (!d.contains(ord) || d[ord].isEmpty())
-				{ d[ord] = rx.cap(i + 1); }
+				if (group.isEmpty())
+					continue;
+
+				QString val = match.captured(group);
+				if (!val.isEmpty())
+				{
+					int underscorePos = group.lastIndexOf('_');
+					bool ok;
+					group.mid(underscorePos + 1).toInt(&ok);
+					if (underscorePos != -1 && ok)
+					{ group = group.left(underscorePos); }
+					d[group] = val;
+				}
 			}
 
 			// JSON elements
-			if (order.contains("json") && !d["json"].isEmpty())
+			if (d.contains("json") && !d["json"].isEmpty())
 			{
 				QVariant src = Json::parse(d["json"]);
 				if (!src.isNull())
 				{
-					QMap<QString,QVariant> map = src.toMap();
+					QMap<QString, QVariant> map = src.toMap();
 					for (int i = 0; i < map.size(); i++)
 					{ d[map.keys().at(i)] = map.values().at(i).toString(); }
 				}
@@ -515,23 +574,23 @@ void PageApi::parse()
 		{
 			// Check JSON error message
 			QMap<QString, QVariant> data = src.toMap();
-			if (data.contains("success") && data["success"].toBool() == false)
+			if (data.contains("success") && !data["success"].toBool())
 			{
-				log(QString("JSON error reply: \"%1\"").arg(data["reason"].toString()));
+				log(QString("[%1][%2] JSON error reply: \"%3\"").arg(m_site->url()).arg(m_format).arg(data["reason"].toString()), Logger::Warning);
 				emit finishedLoading(this, LoadResult::Error);
 				return;
 			}
 
 			if (data.contains("total"))
-			{ m_imagesCount = data.value("total").toInt(); }
+			{ setImageCount(data.value("total").toInt(), true); }
+
+			// Get the list of posts
+			QList<QVariant> sourc = src.toList();
+			QStringList postsKey = QStringList() << "images" << "search" << "posts";
+			for (int i = 0; i < postsKey.count() && sourc.isEmpty(); ++i)
+			{ sourc = data.value(postsKey[i]).toList(); }
 
 			QMap<QString, QVariant> sc;
-			QList<QVariant> sourc = src.toList();
-			if (sourc.isEmpty())
-			{ sourc = data.value("images").toList(); }
-			if (sourc.isEmpty())
-			{ sourc = data.value("search").toList(); }
-
 			for (int id = 0; id < sourc.count(); id++)
 			{
 				QList<Tag> tags;
@@ -548,11 +607,29 @@ void PageApi::parse()
 				}
 				else if (sc.contains("tag_ids"))
 				{
-					QStringList infos, assoc;
-					infos << "created_at" << "source" << "file_url" << "preview_url" << "width" << "md5" << "height" << "id" << "tags" << "author" << "score";
-					assoc << "created_at" << "source_url" << "image" << "image" << "width" << "sha512_hash" << "height" << "id" << "tags" << "uploader" << "score";
-					for (int i = 0; i < infos.count(); i++)
-					{ d[infos.at(i)] = sc.value(assoc.at(i)).toString().trimmed(); }
+					QStringList from, to;
+					from << "created_at" << "source_url" << "image" << "image" << "width" << "sha512_hash" << "height" << "id" << "tags" << "uploader" << "score";
+					to << "created_at" << "source" << "file_url" << "preview_url" << "width" << "md5" << "height" << "id" << "tags" << "author" << "score";
+					for (int i = 0; i < from.count(); i++)
+					{ d[to[i]] = sc.value(from[i]).toString().trimmed(); }
+				}
+				// 4chan format
+				else if (sc.contains("resto"))
+				{
+					QStringList from, to;
+					from << "now" << "w" << "md5" << "h" << "no" << "com" << "time" << "tim" << "name" << "fsize";
+					to << "created_at" << "width" << "md5" << "height" << "id" << "comment" << "created_at" << "tim" << "author" << "file_size";
+					for (int i = 0; i < from.count(); i++)
+					{ d[to[i]] = sc.value(from[i]).toString().trimmed(); }
+				}
+				// Anime-pictures format
+				else if (sc.contains("download_count"))
+				{
+					QStringList from, to;
+					from << "pubtime" << "small_preview" << "width" << "md5" << "height" << "id" << "score_number" << "big_preview" << "ext" << "size";
+					to << "created_at" << "preview_url" << "width" << "md5" << "height" << "id" << "score" << "sample_url" << "ext" << "filesize";
+					for (int i = 0; i < from.count(); i++)
+					{ d[to[i]] = sc.value(from[i]).toString().trimmed(); }
 				}
 				else
 				{
@@ -569,11 +646,28 @@ void PageApi::parse()
 					if (!tgs.isEmpty())
 					{
 						QStringList tagTypes = m_api->value("Regex/TagTypes").split(',');
-						for (QVariant tagData : tgs)
+						for (const QVariant &tagData : tgs)
 						{
 							QMap<QString, QVariant> tag = tagData.toMap();
 							if (tag.contains("name"))
 								tags.append(Tag(tag["name"].toString(), Tag::GetType(tag["type"].toString(), tagTypes), tag["count"].toInt()));
+						}
+					}
+				}
+
+				// Typed tags (e621)
+				if (sc.contains("tags"))
+				{
+					QMap<QString, QVariant> tagTypes = sc["tags"].toMap();
+					if (!tagTypes.isEmpty())
+					{
+						for (const QString &tagType : tagTypes.keys())
+						{
+							TagType tType(tagType);
+							QList<QVariant> tagList = tagTypes.value(tagType).toList();
+							for (const QVariant &iTag : tagList)
+							{ tags.append(Tag(iTag.toString(), tType)); }
+
 						}
 					}
 				}
@@ -603,7 +697,7 @@ void PageApi::parse()
 		}
 		else
 		{
-			log(QString("Error parsing JSON file: \"%1\"").arg(m_source.left(500)));
+			log(QString("[%1][%2] Error parsing JSON file: \"%3\"").arg(m_site->url()).arg(m_format).arg(m_source.left(500)), Logger::Warning);
 			emit finishedLoading(this, LoadResult::Error);
 			return;
 		}
@@ -648,7 +742,7 @@ void PageApi::parse()
 	// Virtual paging
 	int firstImage = 0;
 	int lastImage = m_smart ? m_imagesPerPage : m_images.size();
-	if (!m_originalUrl.contains("{page}") && !m_originalUrl.contains("{pagepart}") && !m_originalUrl.contains("{pid}"))
+	if (!m_originalUrl.contains("{page}") && !m_originalUrl.contains("{cpage}") && !m_originalUrl.contains("{pagepart}") && !m_originalUrl.contains("{pid}"))
 	{
 		firstImage = m_imagesPerPage * (m_page - 1);
 		lastImage = m_imagesPerPage;
@@ -661,24 +755,30 @@ void PageApi::parse()
 	while (m_images.size() > lastImage)
 	{ m_images.removeLast(); }
 
+	log(QString("[%1][%2] Parsed page <a href=\"%3\">%3</a>: %4 images, %5 total (%6), %7 pages (%8)").arg(m_site->url()).arg(m_format).arg(m_reply->url().toString().toHtmlEscaped()).arg(m_images.count()).arg(imagesCount(false)).arg(imagesCount(true)).arg(pagesCount(false)).arg(pagesCount(true)), Logger::Info);
+
 	m_reply->deleteLater();
 	m_reply = nullptr;
 
 	QString t = m_search.join(" ");
 	if (m_site->contains("DefaultTag") && t.isEmpty())
 	{ t = m_site->value("DefaultTag"); }
-		if (!m_search.isEmpty() && !m_api->value("Urls/" + QString(t.isEmpty() && !m_api->contains("Urls/Home") ? "Home" : "Tags")).contains("{tags}"))
+	if (!m_search.isEmpty() && !m_api->value("Urls/" + QString(t.isEmpty() && !m_api->contains("Urls/Home") ? "Home" : "Tags")).contains("{tags}"))
 	{ m_errors.append(tr("Tag search is impossible with the chosen source (%1).").arg(m_format)); }
 
 	emit finishedLoading(this, LoadResult::Ok);
 }
 void PageApi::parseTags()
 {
+	log(QString("[%1][%2] Receiving tags page <a href=\"%3\">%3</a>").arg(m_site->url()).arg(m_format).arg(m_replyTags->url().toString().toHtmlEscaped()), Logger::Info);
+
 	// Check redirection
 	QUrl redir = m_replyTags->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 	if (!redir.isEmpty())
 	{
-		m_urlRegex = m_site->fixUrl(redir.toString(), m_urlRegex);
+		QUrl newUrl = m_site->fixUrl(redir.toString(), m_urlRegex);
+		log(QString("[%1][%2] Redirecting tags page <a href=\"%3\">%3</a> to <a href=\"%4\">%4</a>").arg(m_site->url()).arg(m_format).arg(m_urlRegex.toString().toHtmlEscaped()).arg(newUrl.toString().toHtmlEscaped()), Logger::Info);
+		m_urlRegex = newUrl;
 		loadTags();
 		return;
 	}
@@ -687,8 +787,7 @@ void PageApi::parseTags()
 
 	if (m_site->contains("Regex/Tags"))
 	{
-		QStringList order = m_site->value("Regex/TagsOrder").split('|', QString::SkipEmptyParts);
-		QList<Tag> tgs = Tag::FromRegexp(m_site->value("Regex/Tags"), order, source);
+		QList<Tag> tgs = Tag::FromRegexp(m_site->value("Regex/Tags"), source);
 		if (!tgs.isEmpty())
 		{ m_tags = tgs; }
 	}
@@ -699,12 +798,12 @@ void PageApi::parseTags()
 	m_wiki.clear();
 	if (m_site->contains("Regex/Wiki"))
 	{
-		QRegExp rxwiki(m_site->value("Regex/Wiki"));
-		rxwiki.setMinimal(true);
-		if (rxwiki.indexIn(source) != -1)
+		QRegularExpression rxwiki(m_site->value("Regex/Wiki"));
+		auto match = rxwiki.match(source);
+		if (match.hasMatch())
 		{
-			m_wiki = rxwiki.cap(1);
-			m_wiki.remove("/wiki/show?title=").remove(QRegExp("<p><a href=\"([^\"]+)\">Full entry &raquo;</a></p>")).replace("<h6>", "<span class=\"title\">").replace("</h6>", "</span>");
+			m_wiki = match.captured(1);
+			m_wiki.remove("/wiki/show?title=").remove(QRegularExpression("<p><a href=\"([^\"]+)\">Full entry &raquo;</a></p>")).replace("<h6>", "<span class=\"title\">").replace("</h6>", "</span>");
 		}
 	}
 
@@ -719,51 +818,54 @@ void PageApi::parseNavigation(const QString &source)
 	// Navigation
 	if (m_site->contains("Regex/NextPage") && m_urlNextPage.isEmpty())
 	{
-		QRegExp rx(m_site->value("Regex/NextPage"));
-		if (rx.indexIn(source, 0) >= 0)
-		{ m_urlNextPage = QUrl(rx.cap(1)); }
+		QRegularExpression rx(m_site->value("Regex/NextPage"));
+		auto match = rx.match(source);
+		if (match.hasMatch())
+		{ m_urlNextPage = QUrl(match.captured(1)); }
 	}
 	if (m_site->contains("Regex/PrevPage") && m_urlPrevPage.isEmpty())
 	{
-		QRegExp rx(m_site->value("Regex/PrevPage"));
-		if (rx.indexIn(source, 0) >= 0)
-		{ m_urlPrevPage = QUrl(rx.cap(1)); }
+		QRegularExpression rx(m_site->value("Regex/PrevPage"));
+		auto match = rx.match(source);
+		if (match.hasMatch())
+		{ m_urlPrevPage = QUrl(match.captured(1)); }
 	}
 
 	// Last page
 	if (m_site->contains("LastPage") && m_pagesCount < 1)
-	{ m_pagesCount = m_site->value("LastPage").toInt(); }
+	{ setPageCount(m_site->value("LastPage").toInt(), true); }
 	if (m_site->contains("Regex/LastPage") && m_pagesCount < 1)
 	{
-		QRegExp rxlast(m_site->value("Regex/LastPage"));
-		rxlast.indexIn(source, 0);
-		int cnt = rxlast.cap(1).remove(",").toInt();
+		QRegularExpression rxlast(m_site->value("Regex/LastPage"));
+		auto match = rxlast.match(source);
+		int cnt = match.hasMatch() ? match.captured(1).remove(",").toInt() : 0;
 		if (cnt > 0)
 		{
-			m_pagesCount = cnt;
-			if (m_originalUrl.contains("{pid}"))
+			int pagesCount = cnt;
+			if (m_originalUrl.contains("{pid}") || (m_api->contains("Urls/PagePart") && m_api->value("Urls/PagePart").contains("{pid}")))
 			{
 				int ppid = m_api->contains("Urls/Limit") ? m_api->value("Urls/Limit").toInt() : m_imagesPerPage;
-				m_pagesCount = floor((float)m_pagesCount / (float)ppid) + 1;
+				pagesCount = floor((float)pagesCount / (float)ppid) + 1;
 			}
+			setPageCount(pagesCount, true);
 		}
 	}
 
 	// Count images
 	if (m_site->contains("Regex/Count") && m_imagesCount < 1)
 	{
-		QRegExp rxlast(m_site->value("Regex/Count"));
-		rxlast.indexIn(source, 0);
-		m_imagesCount = rxlast.cap(1).remove(",").toInt();
+		QRegularExpression rxlast(m_site->value("Regex/Count"));
+		auto match = rxlast.match(source);
+		int cnt = match.hasMatch() ? match.captured(1).remove(",").toInt() : 0;
+		if (cnt > 0)
+		{ setImageCount(cnt, true); }
 	}
 	if (m_imagesCount < 1)
 	{
-		for (Tag tag : m_tags)
+		for (const Tag &tag : m_tags)
 		{
 			if (tag.text() == m_search.join(" "))
-			{
-				m_imagesCount = tag.count();
-			}
+			{ setImageCount(tag.count(), false); }
 		}
 	}
 }
@@ -771,6 +873,7 @@ void PageApi::parseNavigation(const QString &source)
 void PageApi::clear()
 {
 	m_images.clear();
+	m_pageImageCount = 0;
 }
 
 QList<QSharedPointer<Image>>	PageApi::images()		{ return m_images;		}
@@ -787,13 +890,18 @@ int PageApi::imagesPerPage()
 { return m_imagesPerPage;	}
 int PageApi::page()
 { return m_page;			}
+int PageApi::pageImageCount()
+{ return m_pageImageCount;	}
 int PageApi::highLimit()
 {
 	if (m_api->contains("Urls/Limit"))
 		return m_api->value("Urls/Limit").toInt();
+	if (m_api->contains("Urls/MaxLimit"))
+		return m_api->value("Urls/MaxLimit").toInt();
 	return 0;
 }
 
+bool PageApi::isImageCountSure() { return m_imagesCountSafe; }
 int PageApi::imagesCount(bool guess)
 {
 	int perPage = m_api->contains("Urls/Limit") && !m_api->contains("Urls/MaxLimit") ? m_api->value("Urls/Limit").toInt() : m_imagesPerPage;
@@ -803,6 +911,7 @@ int PageApi::imagesCount(bool guess)
 
 	return m_imagesCount;
 }
+bool PageApi::isPageCountSure() { return m_pagesCountSafe; }
 int PageApi::pagesCount(bool guess)
 {
 	int perPage = m_api->contains("Urls/Limit") && !m_api->contains("Urls/MaxLimit") ? m_api->value("Urls/Limit").toInt() : m_imagesPerPage;
@@ -816,7 +925,7 @@ int PageApi::pagesCount(bool guess)
 int PageApi::maxId()
 {
 	int maxId = 0;
-	for (QSharedPointer<Image> img : m_images)
+	for (const QSharedPointer<Image> &img : m_images)
 		if (img->id() > maxId || maxId == 0)
 			maxId = img->id();
 	return maxId;
@@ -824,13 +933,37 @@ int PageApi::maxId()
 int PageApi::minId()
 {
 	int minId = 0;
-	for (QSharedPointer<Image> img : m_images)
+	for (const QSharedPointer<Image> &img : m_images)
 		if (img->id() < minId || minId == 0)
 			minId = img->id();
 	return minId;
 }
 
-void PageApi::setUrl(QUrl url)
+void PageApi::setUrl(const QUrl &url)
 {
 	m_url = url;
+}
+
+void PageApi::setImageCount(int count, bool sure)
+{
+	if (m_imagesCount <= 0 || (!m_imagesCountSafe && sure))
+	{
+		m_imagesCount = count;
+		m_imagesCountSafe = sure;
+
+		if (sure)
+		{ setPageCount(ceil(((float)count) / m_imagesPerPage), true); }
+	}
+}
+
+void PageApi::setPageCount(int count, bool sure)
+{
+	if (m_pagesCount <= 0 || (!m_pagesCountSafe && sure))
+	{
+		m_pagesCount = count;
+		m_pagesCountSafe = sure;
+
+		if (sure)
+		{ setImageCount(count * m_imagesPerPage, false); }
+	}
 }

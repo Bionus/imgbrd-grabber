@@ -47,7 +47,6 @@ class ImageTest : public TestSuite
 #endif
 		void testSaveAlreadyExists();
 		void testSaveDuplicate();
-		void testSaveTextfile();
 		void testSaveLog();
 		void testSetUrl();
 

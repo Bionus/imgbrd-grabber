@@ -14,7 +14,7 @@
    <bool>true</bool>
   </property>
   <property name="windowIcon">
-   <iconset resource="../../resources/resources.qrc">
+   <iconset resource="../resources/resources.qrc">
     <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
@@ -124,6 +124,11 @@
           <column>
            <property name="text">
             <string>Folder</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Post-filtering</string>
            </property>
           </column>
           <column>
@@ -408,6 +413,7 @@ QTextEdit {
     </property>
     <addaction name="actionAboutGrabber"/>
     <addaction name="actionAboutWebsite"/>
+    <addaction name="actionAboutGithub"/>
     <addaction name="actionAboutReportBug"/>
     <addaction name="separator"/>
     <addaction name="actionAboutQt"/>
@@ -420,6 +426,7 @@ QTextEdit {
     <addaction name="actionEmptyDirsFix"/>
     <addaction name="actionMd5Fix"/>
     <addaction name="actionRenameExistingImages"/>
+    <addaction name="actionTagLoader"/>
     <addaction name="separator"/>
     <addaction name="actionOptions"/>
    </widget>
@@ -435,6 +442,7 @@ QTextEdit {
     <addaction name="actionAddtab"/>
     <addaction name="actionAddpooltab"/>
     <addaction name="actionClosetab"/>
+    <addaction name="actionRestoreLastClosedTab"/>
     <addaction name="separator"/>
     <addaction name="actionFolder"/>
     <addaction name="actionSettingsFolder"/>
@@ -927,7 +935,7 @@ QTextEdit {
   </widget>
   <action name="actionOptions">
    <property name="icon">
-    <iconset resource="../../resources/resources.qrc">
+    <iconset resource="../resources/resources.qrc">
      <normaloff>:/images/icons/settings.png</normaloff>:/images/icons/settings.png</iconset>
    </property>
    <property name="text">
@@ -939,7 +947,7 @@ QTextEdit {
   </action>
   <action name="actionFolder">
    <property name="icon">
-    <iconset resource="../../resources/resources.qrc">
+    <iconset resource="../resources/resources.qrc">
      <normaloff>:/images/icons/folder-images.png</normaloff>:/images/icons/folder-images.png</iconset>
    </property>
    <property name="text">
@@ -948,7 +956,7 @@ QTextEdit {
   </action>
   <action name="actionQuit">
    <property name="icon">
-    <iconset resource="../../resources/resources.qrc">
+    <iconset resource="../resources/resources.qrc">
      <normaloff>:/images/icons/exit.png</normaloff>:/images/icons/exit.png</iconset>
    </property>
    <property name="text">
@@ -957,7 +965,7 @@ QTextEdit {
   </action>
   <action name="actionAboutGrabber">
    <property name="icon">
-    <iconset resource="../../resources/resources.qrc">
+    <iconset resource="../resources/resources.qrc">
      <normaloff>:/images/icons/about.png</normaloff>:/images/icons/about.png</iconset>
    </property>
    <property name="text">
@@ -966,7 +974,7 @@ QTextEdit {
   </action>
   <action name="actionAboutQt">
    <property name="icon">
-    <iconset resource="../../resources/resources.qrc">
+    <iconset resource="../resources/resources.qrc">
      <normaloff>:/images/icons/qt.png</normaloff>:/images/icons/qt.png</iconset>
    </property>
    <property name="text">
@@ -975,7 +983,7 @@ QTextEdit {
   </action>
   <action name="actionAddtab">
    <property name="icon">
-    <iconset resource="../../resources/resources.qrc">
+    <iconset resource="../resources/resources.qrc">
      <normaloff>:/images/icons/tab-plus.png</normaloff>:/images/icons/tab-plus.png</iconset>
    </property>
    <property name="text">
@@ -984,7 +992,7 @@ QTextEdit {
   </action>
   <action name="actionClosetab">
    <property name="icon">
-    <iconset resource="../../resources/resources.qrc">
+    <iconset resource="../resources/resources.qrc">
      <normaloff>:/images/icons/tab-minus.png</normaloff>:/images/icons/tab-minus.png</iconset>
    </property>
    <property name="text">
@@ -1039,7 +1047,7 @@ QTextEdit {
   </action>
   <action name="actionAddpooltab">
    <property name="icon">
-    <iconset resource="../../resources/resources.qrc">
+    <iconset resource="../resources/resources.qrc">
      <normaloff>:/images/icons/tab-poolplus.png</normaloff>:/images/icons/tab-poolplus.png</iconset>
    </property>
    <property name="text">
@@ -1053,7 +1061,7 @@ QTextEdit {
   </action>
   <action name="actionSettingsFolder">
    <property name="icon">
-    <iconset resource="../../resources/resources.qrc">
+    <iconset resource="../resources/resources.qrc">
      <normaloff>:/images/icons/folder-document.png</normaloff>:/images/icons/folder-document.png</iconset>
    </property>
    <property name="text">
@@ -1062,7 +1070,7 @@ QTextEdit {
   </action>
   <action name="actionAboutWebsite">
    <property name="icon">
-    <iconset resource="../../resources/resources.qrc">
+    <iconset resource="../resources/resources.qrc">
      <normaloff>:/images/icons/browser.png</normaloff>:/images/icons/browser.png</iconset>
    </property>
    <property name="text">
@@ -1071,7 +1079,7 @@ QTextEdit {
   </action>
   <action name="actionAboutReportBug">
    <property name="icon">
-    <iconset resource="../../resources/resources.qrc">
+    <iconset resource="../resources/resources.qrc">
      <normaloff>:/images/icons/bug.png</normaloff>:/images/icons/bug.png</iconset>
    </property>
    <property name="text">
@@ -1081,6 +1089,35 @@ QTextEdit {
   <action name="actionRenameExistingImages">
    <property name="text">
     <string>Rename existing images</string>
+   </property>
+  </action>
+  <action name="actionAboutGithub">
+   <property name="icon">
+    <iconset resource="../resources/resources.qrc">
+     <normaloff>:/images/icons/github.png</normaloff>:/images/icons/github.png</iconset>
+   </property>
+   <property name="text">
+    <string>Project GitHub</string>
+   </property>
+  </action>
+  <action name="actionRestoreLastClosedTab">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../resources/resources.qrc">
+     <normaloff>:/images/icons/tab-arrow.png</normaloff>:/images/icons/tab-arrow.png</iconset>
+   </property>
+   <property name="text">
+    <string>Restore last closed tab</string>
+   </property>
+   <property name="shortcut">
+    <string notr="true">Ctrl+Shift+T</string>
+   </property>
+  </action>
+  <action name="actionTagLoader">
+   <property name="text">
+    <string>Tag loader</string>
    </property>
   </action>
  </widget>
@@ -1111,10 +1148,7 @@ QTextEdit {
   <tabstop>buttonSaveSettings</tabstop>
  </tabstops>
  <resources>
-  <include location="../../resources/resources.qrc"/>
-  <include location="../../resources/resources.qrc"/>
-  <include location="../../resources/resources.qrc"/>
-  <include location="../../resources/resources.qrc"/>
+  <include location="../resources/resources.qrc"/>
  </resources>
  <connections>
   <connection>
@@ -1428,7 +1462,7 @@ QTextEdit {
    <slot>getAll()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>645</x>
+     <x>644</x>
      <y>498</y>
     </hint>
     <hint type="destinationlabel">
@@ -1444,7 +1478,7 @@ QTextEdit {
    <slot>batchClearSel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>506</x>
+     <x>503</x>
      <y>498</y>
     </hint>
     <hint type="destinationlabel">
@@ -1460,7 +1494,7 @@ QTextEdit {
    <slot>batchClear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>366</x>
+     <x>362</x>
      <y>498</y>
     </hint>
     <hint type="destinationlabel">
@@ -1476,7 +1510,7 @@ QTextEdit {
    <slot>logClear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>332</x>
+     <x>327</x>
      <y>526</y>
     </hint>
     <hint type="destinationlabel">
@@ -1508,7 +1542,7 @@ QTextEdit {
    <slot>logOpen()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>612</x>
+     <x>609</x>
      <y>526</y>
     </hint>
     <hint type="destinationlabel">
@@ -1645,6 +1679,54 @@ QTextEdit {
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionAboutGithub</sender>
+   <signal>triggered()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>aboutGithub()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>270</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionRestoreLastClosedTab</sender>
+   <signal>triggered()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>restoreLastClosedTab()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>270</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionTagLoader</sender>
+   <signal>triggered()</signal>
+   <receiver>mainWindow</receiver>
+   <slot>utilTagLoader()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>270</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>help()</slot>
@@ -1689,5 +1771,8 @@ QTextEdit {
   <slot>aboutWebsite()</slot>
   <slot>aboutReportBug()</slot>
   <slot>renameExisting()</slot>
+  <slot>aboutGithub()</slot>
+  <slot>restoreLastClosedTab()</slot>
+  <slot>utilTagLoader()</slot>
  </slots>
 </ui>

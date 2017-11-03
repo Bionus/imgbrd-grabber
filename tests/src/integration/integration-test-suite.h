@@ -6,6 +6,7 @@
 #include "downloader/downloader.h"
 #include "models/source.h"
 #include "models/site.h"
+#include "models/image.h"
 
 
 class IntegrationTestSuite : public TestSuite
@@ -17,12 +18,14 @@ class IntegrationTestSuite : public TestSuite
 		void cleanup();
 
 	protected:
-		QList<Image*> getImages(QString site, QString source, QString format, QString tags);
-		QList<Tag> getPageTags(QString site, QString source, QString format, QString tags);
+		QList<Image*> getImages(QString site, QString source, QString format, QString tags, QString file = "");
+		QList<Tag> getPageTags(QString site, QString source, QString format, QString tags, QString file = "");
+		QList<Tag> getTags(QString site, QString source, QString format, QString file = "");
 
 	protected:
 		Downloader	*m_downloader;
 		Site		*m_site;
+		QStringList m_filesToRemove;
 };
 
 #endif // INTEGRATION_TEST_SUITE_H

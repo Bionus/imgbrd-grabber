@@ -2,6 +2,8 @@
 #include <QtGlobal>
 #include "downloader/downloader.h"
 #include "models/site.h"
+#include "models/profile.h"
+#include "functions.h"
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 2, 0))
 	#include <QCommandLineParser>
 #else
@@ -32,13 +34,13 @@ int main(int argc, char *argv[])
 	QCommandLineOption sourceOption(QStringList() << "s" << "sources", "Source websites.", "sources");
 	QCommandLineOption pageOption(QStringList() << "p" << "page", "Starting page.", "page", "1");
 	QCommandLineOption limitOption(QStringList() << "m" << "max", "Maximum of returned images.", "count");
-	QCommandLineOption perpageOption(QStringList() << "i" << "perpage", "Number of images per page.", "count", "20");
+	QCommandLineOption perPageOption(QStringList() << "i" << "perpage", "Number of images per page.", "count", "20");
 	QCommandLineOption pathOption(QStringList() << "l" << "location", "Location to save the results.", "path");
 	QCommandLineOption filenameOption(QStringList() << "f" << "filename", "Filename to save the results.", "filename");
 	QCommandLineOption userOption(QStringList() << "u" << "user", "Username to connect to the source.", "user");
 	QCommandLineOption passwordOption(QStringList() << "w" << "password", "Password to connect to the source.", "password");
 	QCommandLineOption blacklistOption(QStringList() << "b" << "blacklist", "Download blacklisted images.");
-	QCommandLineOption postfilteringOption(QStringList() << "r" << "postfilter", "Filter results.", "filter");
+	QCommandLineOption postFilteringOption(QStringList() << "r" << "postfilter", "Filter results.", "filter");
 	QCommandLineOption noDuplicatesOption(QStringList() << "n" << "no-duplicates", "Remove duplicates from results.");
 	QCommandLineOption verboseOption(QStringList() << "d" << "debug", "Show debug messages.");
 	QCommandLineOption tagsMinOption(QStringList() << "tm" << "tags-min", "Minimum count for tags to be returned.", "count", "0");
@@ -47,13 +49,13 @@ int main(int argc, char *argv[])
 	parser.addOption(sourceOption);
 	parser.addOption(pageOption);
 	parser.addOption(limitOption);
-	parser.addOption(perpageOption);
+	parser.addOption(perPageOption);
 	parser.addOption(pathOption);
 	parser.addOption(filenameOption);
 	parser.addOption(userOption);
 	parser.addOption(passwordOption);
 	parser.addOption(blacklistOption);
-	parser.addOption(postfilteringOption);
+	parser.addOption(postFilteringOption);
 	parser.addOption(tagsMinOption);
 	parser.addOption(tagsFormatOption);
 	parser.addOption(noDuplicatesOption);
@@ -75,38 +77,38 @@ int main(int argc, char *argv[])
 		qInstallMessageHandler(noMessageOutput);
 
 	Profile *profile = new Profile(savePath());
-	Downloader *dwnldr = new Downloader(profile,
+	Downloader *downloader = new Downloader(profile,
 										parser.value(tagsOption).split(" ", QString::SkipEmptyParts),
-										parser.value(postfilteringOption).split(" ", QString::SkipEmptyParts),
+										parser.value(postFilteringOption).split(" ", QString::SkipEmptyParts),
 										Site::getSites(profile, parser.value(sourceOption).split(" ", QString::SkipEmptyParts)),
 										parser.value(pageOption).toInt(),
 										parser.value(limitOption).toInt(),
-										parser.value(perpageOption).toInt(),
+										parser.value(perPageOption).toInt(),
 										parser.value(pathOption),
 										parser.value(filenameOption),
 										parser.value(userOption),
 										parser.value(passwordOption),
 										parser.isSet(blacklistOption),
-										profile->getSettings()->value("blacklistedtags").toString().split(' '),
+										profile->getBlacklist(),
 										parser.isSet(noDuplicatesOption),
 										parser.value(tagsMinOption).toInt(),
 										parser.value(tagsFormatOption));
 
 	if (parser.isSet(returnCountOption))
-		dwnldr->getPageCount();
+		downloader->getPageCount();
 	else if (parser.isSet(returnTagsOption))
-		dwnldr->getPageTags();
+		downloader->getPageTags();
 	else if (parser.isSet(returnPureTagsOption))
-		dwnldr->getTags();
+		downloader->getTags();
 	else if (parser.isSet(returnImagesOption))
-		dwnldr->getUrls();
+		downloader->getUrls();
 	else if (parser.isSet(downloadOption))
-		dwnldr->getImages();
+		downloader->getImages();
 	else
 		parser.showHelp();
 
-	dwnldr->setQuit(true);
-	QObject::connect(dwnldr, SIGNAL(quit()), qApp, SLOT(quit()));
+	downloader->setQuit(true);
+	QObject::connect(downloader, SIGNAL(quit()), qApp, SLOT(quit()));
 
 	return app.exec();
 }

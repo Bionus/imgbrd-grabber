@@ -3,8 +3,8 @@
 
 #include <QDialog>
 #include <QTreeWidgetItem>
-#include "models/profile.h"
-
+#include <QSettings>
+#include "reverse-search/reverse-search-engine.h"
 
 
 namespace Ui
@@ -13,7 +13,7 @@ namespace Ui
 }
 
 
-class mainWindow;
+class Profile;
 
 class optionsWindow : public QDialog
 {
@@ -21,7 +21,7 @@ class optionsWindow : public QDialog
 
 	public:
 		explicit optionsWindow(Profile *profile, QWidget *parent = Q_NULLPTR);
-		~optionsWindow();
+		~optionsWindow() override;
 		void setColor(QLineEdit *lineEdit, bool button = false);
 		void setFont(QLineEdit *lineEdit);
 
@@ -38,6 +38,7 @@ class optionsWindow : public QDialog
 		void on_lineColoringModels_textChanged();
 		void on_lineColoringGenerals_textChanged();
 		void on_lineColoringFavorites_textChanged();
+		void on_lineColoringKeptForLater_textChanged();
 		void on_lineColoringBlacklisteds_textChanged();
 		void on_lineColoringIgnoreds_textChanged();
 		void on_buttonColoringArtistsColor_clicked();
@@ -48,6 +49,7 @@ class optionsWindow : public QDialog
 		void on_buttonColoringModelsColor_clicked();
 		void on_buttonColoringGeneralsColor_clicked();
 		void on_buttonColoringFavoritesColor_clicked();
+		void on_buttonColoringKeptForLaterColor_clicked();
 		void on_buttonColoringBlacklistedsColor_clicked();
 		void on_buttonColoringIgnoredsColor_clicked();
 		void on_buttonColoringArtistsFont_clicked();
@@ -58,6 +60,7 @@ class optionsWindow : public QDialog
 		void on_buttonColoringModelsFont_clicked();
 		void on_buttonColoringGeneralsFont_clicked();
 		void on_buttonColoringFavoritesFont_clicked();
+		void on_buttonColoringKeptForLaterFont_clicked();
 		void on_buttonColoringBlacklistedsFont_clicked();
 		void on_buttonColoringIgnoredsFont_clicked();
 		void on_lineBorderColor_textChanged();
@@ -65,9 +68,29 @@ class optionsWindow : public QDialog
 		void on_buttonFilenamePlus_clicked();
 		void on_buttonFavoritesPlus_clicked();
 		void on_buttonCustom_clicked();
+		void on_buttonImageBackgroundColor_textChanged();
+		void on_buttonImageBackgroundColor_clicked();
 		void addCustom(QString, QString);
 		void on_buttonFilenames_clicked();
 		void addFilename(QString, QString, QString);
+
+		// Log files
+		void addLogFile();
+		void showLogFiles(QSettings *settings);
+		void editLogFile(int index);
+		void removeLogFile(int index);
+		void setLogFile(int index, QMap<QString, QVariant> logFile);
+
+		// Web services
+		void addWebService();
+		void showWebServices();
+		void editWebService(int id);
+		void removeWebService(int id);
+		void setWebService(ReverseSearchEngine rse, QByteArray favicon);
+		void moveUpWebService(int id);
+		void moveDownWebService(int id);
+		void swapWebServices(int a, int b);
+
 		void save();
 
 	signals:
@@ -77,6 +100,8 @@ class optionsWindow : public QDialog
 	private:
 		Ui::optionsWindow *ui;
 		Profile *m_profile;
+		QList<ReverseSearchEngine> m_webServices;
+		QMap<int, int> m_webServicesIds;
 		QList<QLineEdit*> m_customNames, m_customTags, m_filenamesConditions, m_filenamesFilenames, m_filenamesFolders;
 };
 

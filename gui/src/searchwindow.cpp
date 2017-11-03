@@ -1,11 +1,11 @@
-#include <QSettings>
+#include "searchwindow.h"
+#include "ui_searchwindow.h"
 #include <QFile>
 #include <QFileDialog>
 #include <QCryptographicHash>
-#include "searchwindow.h"
-#include "ui_searchwindow.h"
+#include "ui/textedit.h"
+#include "models/profile.h"
 #include "functions.h"
-
 
 
 SearchWindow::SearchWindow(QString tags, Profile *profile, QWidget *parent)
@@ -25,18 +25,18 @@ SearchWindow::SearchWindow(QString tags, Profile *profile, QWidget *parent)
 		connect(m_calendar, SIGNAL(activated(QDate)), m_calendar, SLOT(close()));
 	connect(ui->buttonCalendar, SIGNAL(clicked()), m_calendar, SLOT(show()));
 
-	QStringList favs;
-	for (Favorite fav : profile->getFavorites())
-		favs.append(fav.getName());
+	QStringList favorites;
+	for (const Favorite &fav : profile->getFavorites())
+		favorites.append(fav.getName());
 	m_tags = new TextEdit(profile, this);
 		m_tags->setContextMenuPolicy(Qt::CustomContextMenu);
 		QStringList completion;
 			completion.append(profile->getAutoComplete());
 			completion.append(profile->getCustomAutoComplete());
-			completion.append(favs);
+			completion.append(favorites);
 			completion.removeDuplicates();
 			completion.sort();
-			QCompleter *completer = new QCompleter(completion, m_tags);
+			auto *completer = new QCompleter(completion, m_tags);
 				completer->setCaseSensitivity(Qt::CaseInsensitive);
 			m_tags->setCompleter(completer);
 		connect(m_tags, SIGNAL(returnPressed()), this, SLOT(accept()));
@@ -48,32 +48,32 @@ SearchWindow::SearchWindow(QString tags, Profile *profile, QWidget *parent)
 
 	if (tags.contains("order:"))
 	{
-		QRegExp reg("order:([^ ]+)");
-		reg.indexIn(tags);
-		ui->comboOrder->setCurrentIndex(orders.indexOf(reg.cap(1))+1);
-		tags.remove(reg.cap(0));
+		QRegularExpression reg("order:([^ ]+)");
+		auto match = reg.match(tags);
+		ui->comboOrder->setCurrentIndex(orders.indexOf(match.captured(1)) + 1);
+		tags.remove(match.captured(0));
 	}
 	if (tags.contains("rating:"))
 	{
-		QRegExp reg("-?rating:[^ ]+");
-		reg.indexIn(tags);
-		ui->comboRating->setCurrentIndex(ratings.indexOf(reg.cap(0))+1);
-		tags.remove(reg.cap(0));
+		QRegularExpression reg("-?rating:[^ ]+");
+		auto match = reg.match(tags);
+		ui->comboRating->setCurrentIndex(ratings.indexOf(match.captured(0)) + 1);
+		tags.remove(match.captured(0));
 	}
 	if (tags.contains("status:"))
 	{
-		QRegExp reg("status:([^ ]+)");
-		reg.indexIn(tags);
-		ui->comboStatus->setCurrentIndex(status.indexOf(reg.cap(1))+1);
-		tags.remove(reg.cap(0));
+		QRegularExpression reg("status:([^ ]+)");
+		auto match = reg.match(tags);
+		ui->comboStatus->setCurrentIndex(status.indexOf(match.captured(1)) + 1);
+		tags.remove(match.captured(0));
 	}
 	if (tags.contains("date:"))
 	{
-		QRegExp reg("date:([^ ]+)");
-		reg.indexIn(tags);
-		m_calendar->setSelectedDate(QDate::fromString(reg.cap(1), "MM/dd/yyyy"));
-		ui->lineDate->setText(reg.cap(1));
-		tags.remove(reg.cap(0));
+		QRegularExpression reg("date:([^ ]+)");
+		auto match = reg.match(tags);
+		m_calendar->setSelectedDate(QDate::fromString(match.captured(1), "MM/dd/yyyy"));
+		ui->lineDate->setText(match.captured(1));
+		tags.remove(match.captured(0));
 	}
 
 	m_tags->setText(tags);
