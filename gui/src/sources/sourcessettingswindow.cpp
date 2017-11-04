@@ -157,8 +157,7 @@ void SourcesSettingsWindow::testLogin()
 {
 	save();
 
-	ui->labelTestCredentials->setText("<i>Connexion...</li>");
-	ui->labelTestLogin->setText("<i>Connexion...</li>");
+	setLoginStatus(tr("Connection..."));
 
 	connect(m_site, &Site::loggedIn, this, &SourcesSettingsWindow::loginTested);
 	m_site->login(true);
@@ -169,20 +168,24 @@ void SourcesSettingsWindow::loginTested(Site*, Site::LoginResult result)
 	switch (result)
 	{
 		case Site::LoginResult::Success:
-			ui->labelTestCredentials->setText("<i>" + tr("Success!") + "</i>");
-			ui->labelTestLogin->setText("<i>" + tr("Success!") + "</i>");
+			setLoginStatus(tr("Success!"));
 			break;
 
 		case Site::LoginResult::Error:
-			ui->labelTestCredentials->setText("<i>" + tr("Failure") + "</i>");
-			ui->labelTestLogin->setText("<i>" + tr("Failure") + "</i>");
+			setLoginStatus(tr("Failure"));
 			break;
 
 		default:
-			ui->labelTestCredentials->setText("<i>" + tr("Unable to test") + "</i>");
-			ui->labelTestLogin->setText("<i>" + tr("Unable to test") + "</i>");
+			setLoginStatus(tr("Unable to test"));
 			break;
 	}
+}
+
+void SourcesSettingsWindow::setLoginStatus(const QString &msg)
+{
+	QString italic = QString("<i>%1</li>").arg(msg);
+	ui->labelTestCredentials->setText(italic);
+	ui->labelTestLogin->setText(italic);
 }
 
 void SourcesSettingsWindow::save()
