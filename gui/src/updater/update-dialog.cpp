@@ -13,7 +13,8 @@ UpdateDialog::UpdateDialog(bool *shouldQuit, QWidget *parent)
 {
 	ui->setupUi(this);
 
-	ui->scrollArea->setVisible(ui->checkShowChangelog->isChecked());
+	ui->checkShowChangelog->hide();
+	ui->scrollArea->hide();
 	ui->progressDownload->hide();
 	resize(300, 0);
 
@@ -56,7 +57,7 @@ void UpdateDialog::checkForUpdatesDone(QString newVersion, bool available, QStri
 		ui->labelChangelog->setText(parseMarkdown(changelog));
 	}
 	ui->checkShowChangelog->setVisible(hasChangelog);
-	ui->scrollArea->setVisible(hasChangelog);
+	ui->scrollArea->setVisible(hasChangelog && ui->checkShowChangelog->isChecked());
 	ui->labelVersion->setText(tr("Version <b>%1</b>").arg(newVersion));
 
 	show();
