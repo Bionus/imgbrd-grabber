@@ -177,14 +177,16 @@ int main(int argc, char *argv[])
 
 		if (parser.isSet(returnCountOption))
 			dwnldr->getPageCount();
-		if (parser.isSet(returnTagsOption))
+		else if (parser.isSet(returnTagsOption))
 			dwnldr->getPageTags();
-		if (parser.isSet(returnPureTagsOption))
+		else if (parser.isSet(returnPureTagsOption))
 			dwnldr->getTags();
-		if (parser.isSet(returnImagesOption))
+		else if (parser.isSet(returnImagesOption))
 			dwnldr->getUrls();
-		if (parser.isSet(downloadOption))
+		else if (parser.isSet(downloadOption))
 			dwnldr->getImages();
+		else
+			parser.showHelp();
 
 		dwnldr->setQuit(true);
 		QObject::connect(dwnldr, SIGNAL(quit()), qApp, SLOT(quit()));
