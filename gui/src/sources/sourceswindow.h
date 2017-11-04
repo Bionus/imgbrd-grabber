@@ -34,6 +34,7 @@ class sourcesWindow : public QDialog
 		void addSite();
 		void settingsSite(QString);
 		void deleteSite(QString);
+		void openSite(QString site) const;
 		void checkUpdate();
 		void checkClicked();
 		void checkForUpdates();

@@ -3,10 +3,13 @@
 #include <QMessageBox>
 #include <QCloseEvent>
 #include <QInputDialog>
+#include <QDesktopServices>
 #include "ui/QBouton.h"
+#include "ui/QAffiche.h"
 #include "sitewindow.h"
 #include "sourcessettingswindow.h"
 #include "models/source.h"
+#include "models/site.h"
 #include "functions.h"
 
 
@@ -127,6 +130,11 @@ void sourcesWindow::valid()
 	this->close();
 }
 
+void sourcesWindow::openSite(QString site) const
+{
+	QDesktopServices::openUrl(QUrl(m_sites->value(site)->fixUrl("/")));
+}
+
 void sourcesWindow::settingsSite(QString site)
 {
 	SourcesSettingsWindow *ssw = new SourcesSettingsWindow(m_profile, m_sites->value(site), this);
@@ -229,8 +237,9 @@ void sourcesWindow::addCheckboxes()
 		{
 			if (t == "icon" || t == "both")
 			{
-				QLabel *image = new QLabel(this);
+				QAffiche *image = new QAffiche(k.at(i), 0, QColor(), this);
 				image->setPixmap(QPixmap(m_sites->value(k.at(i))->getSource()->getPath() + "/icon.png").scaled(QSize(16, 16)));
+				connect(image, SIGNAL(clicked(QString)), this, SLOT(openSite(QString)));
 				ui->gridLayout->addWidget(image, i, n);
 				m_labels << image;
 				n++;
