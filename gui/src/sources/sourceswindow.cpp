@@ -358,7 +358,10 @@ QList<Site*> sourcesWindow::selected() const
 
 void sourcesWindow::addPreset()
 {
-	QString name = QInputDialog::getText(this, tr("Create a new preset"), tr("Name"));
+	bool ok;
+	QString name = QInputDialog::getText(this, tr("Create a new preset"), tr("Name"), QLineEdit::Normal, "", &ok);
+	if (!ok)
+		return;
 
 	QStringList sel;
 	for (Site *site : selected())
