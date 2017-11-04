@@ -29,7 +29,7 @@ QString removeCacheUrl(QString url)
 }
 
 Image::Image()
-	: QObject(), m_profile(nullptr)
+	: QObject(), m_profile(nullptr), m_extensionRotator(nullptr)
 { }
 
 // TODO: clean up this mess
@@ -274,7 +274,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	QStringList extensions = animated
 		? QStringList() << "webm" << "mp4" << "gif" << "jpg" << "png" << "jpeg" << "swf"
 		: QStringList() << "jpg" << "png" << "gif" << "jpeg" << "webm" << "swf" << "mp4";
-	m_extensionRotator = ExtensionRotator(getExtension(m_url), extensions);
+	m_extensionRotator = new ExtensionRotator(getExtension(m_url), extensions);
 
 	// Tech details
 	m_parent = parent;
@@ -289,6 +289,13 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	m_loadingImage = false;
 	m_tryingSample = false;
 	m_pools = QList<Pool>();
+	m_extensionRotator = nullptr;
+}
+
+Image::~Image()
+{
+	if (m_extensionRotator != nullptr)
+		delete m_extensionRotator;
 }
 
 
@@ -486,6 +493,7 @@ void Image::parseDetails()
 		}
 		if (before != m_url)
 		{
+			m_extensionRotator = nullptr;
 			setFileSize(0);
 			emit urlChanged(before, m_url);
 		}
@@ -771,7 +779,7 @@ void Image::finishedImageS(bool inMemory)
 	if (m_loadImage->error() == QNetworkReply::ContentNotFoundError)
 	{
 		bool sampleFallback = m_settings->value("Save/samplefallback", true).toBool();
-		QString newext = m_extensionRotator.next();
+		QString newext = m_extensionRotator != nullptr ? m_extensionRotator->next() : "";
 
 		bool shouldFallback = sampleFallback && !m_sampleUrl.isEmpty();
 		bool isLast = newext.isEmpty() || (shouldFallback && m_tryingSample);
