@@ -1094,6 +1094,7 @@ void zoomWindow::load(QSharedPointer<Image> image)
 	disconnect(m_image.data(), &Image::finishedLoadingTags, this, &zoomWindow::replyFinishedDetails);
 
 	m_displayImage = QPixmap();
+	m_loadedImage = false;
 	m_imagePath = "";
 	m_image = image;
 	m_isAnimated = image->isAnimated();
