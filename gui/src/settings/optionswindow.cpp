@@ -406,12 +406,12 @@ void optionsWindow::showLogFiles(QSettings *settings)
 		label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 		ui->layoutLogFiles->addWidget(label, i, 0);
 
-		auto *buttonEdit = new QPushButton("Edit");
+		auto *buttonEdit = new QPushButton(tr("Edit"));
 		mapperEditLogFile->setMapping(buttonEdit, i);
 		connect(buttonEdit, SIGNAL(clicked(bool)), mapperEditLogFile, SLOT(map()));
 		ui->layoutLogFiles->addWidget(buttonEdit, i, 1);
 
-		auto *buttonDelete = new QPushButton("Remove");
+		auto *buttonDelete = new QPushButton(tr("Remove"));
 		mapperRemoveLogFile->setMapping(buttonDelete, i);
 		connect(buttonDelete, SIGNAL(clicked(bool)), mapperRemoveLogFile, SLOT(map()));
 		ui->layoutLogFiles->addWidget(buttonDelete, i, 2);
@@ -517,12 +517,12 @@ void optionsWindow::showWebServices()
 			ui->layoutWebServices->addWidget(buttonMoveDown, j, 3);
 		}
 
-		QPushButton *buttonEdit = new QPushButton("Edit");
+		QPushButton *buttonEdit = new QPushButton(tr("Edit"));
 		mapperEditWebService->setMapping(buttonEdit, id);
 		connect(buttonEdit, SIGNAL(clicked(bool)), mapperEditWebService, SLOT(map()));
 		ui->layoutWebServices->addWidget(buttonEdit, j, 4);
 
-		QPushButton *buttonDelete = new QPushButton("Remove");
+		QPushButton *buttonDelete = new QPushButton(tr("Remove"));
 		mapperRemoveWebService->setMapping(buttonDelete, id);
 		connect(buttonDelete, SIGNAL(clicked(bool)), mapperRemoveWebService, SLOT(map()));
 		ui->layoutWebServices->addWidget(buttonDelete, j, 5);
