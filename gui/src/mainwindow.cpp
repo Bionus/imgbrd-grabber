@@ -2321,7 +2321,6 @@ void mainWindow::dropEvent(QDropEvent* event)
 		for (int i = 0; i < urlList.size() && i < 32; ++i)
 		{
 			loadMd5(urlList.at(i).toLocalFile(), true, false);
-			return;
 		}
 	}
 }
