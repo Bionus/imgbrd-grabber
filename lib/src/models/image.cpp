@@ -480,7 +480,7 @@ void Image::parseDetails()
 		while (matches.hasNext())
 		{
 			auto match = matches.next();
-			QString newurl = m_parentSite->fixUrl(match.captured(1), QUrl(m_url)).toString();
+			QString newurl = m_parentSite->fixUrl(match.captured(1).replace("&amp;", "&"), QUrl(m_url)).toString();
 			m_url = newurl;
 			m_fileUrl = newurl;
 		}
