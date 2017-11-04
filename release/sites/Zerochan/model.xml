@@ -25,9 +25,9 @@
 		<Image><![CDATA[<a href=['"]\/(?<id>[^'"]+)['"][^>]*>[^<]*(?:<b>[^<]*<\/b>)?[^<]*(?:<span>[^<]*<\/span>)?[^<]*(?<image><img\s*src=['"](?<preview_url>[^'"]*)['"][^>]*\/?>)]]></Image>
 		<Count>has ([0-9,]+) .*?images\.</Count>
 		<LastPage>page (?:[0-9,]+) of ([0-9,]+)</LastPage>
-		<ImageUrl>&lt;div id=&quot;large&quot;&gt;\s*&lt;a href=&quot;([^&quot;]+)&quot;[^&gt;]* tabindex=&quot;1&quot;&gt;</ImageUrl>
+		<ImageUrl><![CDATA[<div id="large">\s*<a href="([^"]+)"[^>]* tabindex="1">]]></ImageUrl>
 		<ForceImageUrl>true</ForceImageUrl>
-		<ImageDate>Entry by &lt;a href=&quot;[^&quot;]+&quot;&gt;[^&lt;]+&lt;\/a&gt;\s*&lt;span title=&quot;([^&quot;]+)&quot;&gt;</ImageDate>
+		<ImageDate><![CDATA[Entry by <a href="[^"]+">[^<]+<\/a>\s*<span title="([^"]+)">]]></ImageDate>
 	</Regex>
 	<Check>
 		<Url>/</Url>

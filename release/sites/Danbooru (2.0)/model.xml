@@ -78,10 +78,10 @@
 		<Tags><![CDATA[<li class="category-(?<type>[^\"]+)">(?:\s*<a class="wiki-link" href="[^"]+">\?<\/a>)?\s*<a class="search-tag"\s+[^>]*href="[^\"]+\"[^>]*>(?<tag>[^<]+)<\/a>\s*<span class="post-count">(?<count>[^<]+)<\/span>\s*<\/li>]]></Tags>
 		<Image><![CDATA[<article[^>]* id="[^"]*" class="[^"]*"\s+data-id="(?<id>[^"]*)"\s+data-has-sound="[^"]*"\s+data-tags="(?<tags>[^"]*)"\s+data-pools="(?<pools>[^"]*)"\s+data-uploader="(?<author>[^"]*)"\s+data-approver-id="(?<approver>[^"]*)"\s+data-rating="(?<rating>[^"]*)"\s+data-width="(?<width>[^"]*)"\s+data-height="(?<height>[^"]*)"\s+data-flags="(?<flags>[^"]*)"\s+data-parent-id="(?<parent_id>[^"]*)"\s+data-has-children="(?<has_children>[^"]*)"\s+data-score="(?<score>[^"]*)"\s+data-views="[^"]*"\s+data-fav-count="(?<fav_count>[^"]*)"\s+data-pixiv-id="[^"]*"\s+data-file-ext="(?<ext>[^"]*)"\s+data-source="[^"]*"\s+data-normalized-source="[^"]*"\s+data-is-favorited="[^"]*"\s+data-md5="(?<md5>[^"]*)"\s+data-file-url="(?<file_url>[^"]*)"\s+data-large-file-url="(?<sample_url>[^"]*)"\s+data-preview-file-url="(?<preview_url>[^"]*)"]]></Image>
 		<TagApi><![CDATA[<tr[^>]*>\s*<td[^>]*>(?<count>\d+)<\/td>\s*<td class="category-(?<typeId>\d+)">\s*<a[^>]+>\?<\/a>\s*<a[^>]+>(?<tag>.+?)<\/a>\s*<\/td>\s*<td[^>]*>\s*(?:<a href="\/tags\/(?<id>\d+)\/[^"]+">)?]]></TagApi>
-		<ImageUrl>&lt;section[^&gt;]* data-file-url=&quot;([^&quot;]*)&quot;</ImageUrl>
+		<ImageUrl><![CDATA[<section[^>]* data-file-url="([^"]*)"]]></ImageUrl>
 		<LastPage><![CDATA[>([0-9]+)<\/a><\/li><li[^<]*><a[^>]* rel="next"]]></LastPage>
-		<Pools>&lt;div class=&quot;status-notice&quot; id=&quot;pool\d+&quot;&gt;[^&lt;]*Pool:[^&lt;]*(?:&lt;a href=&quot;/post/show/(\d+)&quot; &gt;&amp;lt;&amp;lt;&lt;/a&gt;)?[^&lt;]*&lt;a href=&quot;/pool/show/(\d+)&quot; &gt;([^&lt;]+)&lt;/a&gt;[^&lt;]*(?:&lt;a href=&quot;/post/show/(\d+)&quot; &gt;&amp;gt;&amp;gt;&lt;/a&gt;)?[^&lt;]*&lt;/div&gt;</Pools>
-		<Wiki>&lt;div id=&quot;excerpt&quot;(?:[^&gt;]+)&gt;(.+?)&lt;/div&gt;</Wiki>
+		<Pools><![CDATA[<div class="status-notice" id="pool\d+">[^<]*Pool:[^<]*(?:<a href="/post/show/(\d+)" >&lt;&lt;</a>)?[^<]*<a href="/pool/show/(\d+)" >([^<]+)</a>[^<]*(?:<a href="/post/show/(\d+)" >&gt;&gt;</a>)?[^<]*</div>]]></Pools>
+		<Wiki><![CDATA[<div id="excerpt"(?:[^>]+)>(.+?)</div>]]></Wiki>
 	</Regex>
 	<Check>
 		<Url>/</Url>

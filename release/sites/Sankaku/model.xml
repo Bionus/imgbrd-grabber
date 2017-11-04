@@ -31,12 +31,14 @@
 		<Tags><![CDATA[<li class="?[^">]*tag-type-(?<type>[^">]+)(?:|"[^>]*)>.*?<a href="[^"]+"[^>]*>(?<tag>[^<\?]+)<\/a>.*?<span class="?post-count"?>(?<count>\d+)<\/span>.*?<\/li>]]></Tags>
 		<Image><![CDATA[<span[^>]* id="?p(?<id>\d+)"?><a[^>]*><img[^>]* src="(?<preview_url>[^"]+\/preview\/\w{2}\/\w{2}\/(?<md5>[^.]+)\.[^"]+)" title="(?<tags>[^"]+)"[^>]+><\/a><\/span>]]></Image>
 		<TagTypes>general,idol,unknown,copyright,character,photoset,unknown,unknown,medium,meta</TagTypes>
-		<LastPage>&lt;link href=&quot;[^&quot;]*\?.*?page=(\d+)[^&quot;]*&quot; rel=&quot;last&quot; title=&quot;Last Page&quot;&gt;</LastPage>
-		<Count>class=&quot;?tag-type-none&quot;? title=&quot;Post Count: ([^&quot;]+)&quot;</Count>
-		<Pools>&lt;div class=&quot;status-notice&quot; id=&quot;pool\d+&quot;&gt;[^&lt;]*Pool:[^&lt;]*(?:&lt;a href=&quot;/post/show/(\d+)&quot; &gt;&amp;lt;&amp;lt;&lt;/a&gt;)?[^&lt;]*&lt;a href=&quot;/pool/show/(\d+)&quot; &gt;([^&lt;]+)&lt;/a&gt;[^&lt;]*(?:&lt;a href=&quot;/post/show/(\d+)&quot; &gt;&amp;gt;&amp;gt;&lt;/a&gt;)?[^&lt;]*&lt;/div&gt;</Pools>
-		<Wiki>&lt;div id=&quot;sidebar-wiki&quot;(?:[^&gt;]+)&gt;(.+?)&lt;/div&gt;</Wiki>
-		<ImageDate>&lt;a href=&quot;\/\?tags=date[^&quot;]+&quot; title=&quot;([^&quot;]+)&quot;&gt;</ImageDate>
-		<ImageUrl>&lt;li&gt;Original: &lt;a href=&quot;([^&quot;]+)&quot;</ImageUrl>
+		<LastPage><![CDATA[<link href="[^"]*\?.*?page=(\d+)[^"]*" rel="last" title="Last Page">]]></LastPage>
+		<Count><![CDATA[class="?tag-type-none"? title="Post Count: ([^"]+)"]]></Count>
+		<Pools><![CDATA[<div class="status-notice" id="pool\d+">[^<]*Pool:[^<]*(?:<a href="/post/show/(\d+)" >&lt;&lt;</a>)?[^<]*<a href="/pool/show/(\d+)" >([^<]+)</a>[^<]*(?:<a href="/post/show/(\d+)" >&gt;&gt;</a>)?[^<]*</div>]]></Pools>
+		<Wiki><![CDATA[<div id="sidebar-wiki"(?:[^>]+)>(.+?)</div>]]></Wiki>
+		<ImageUrl><![CDATA[<li>Original: <a href="([^"]+)"]]></ImageUrl>
+		<ForceImageUrl>true</ForceImageUrl>
+		<ImageDate><![CDATA[<a href="\/\?tags=date[^"]+" title="([^"]+)">]]></ImageDate>
+		<NeedLoad>true</NeedLoad>
 	</Regex>
 	<Check>
 		<Url>/</Url>
