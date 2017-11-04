@@ -1792,15 +1792,22 @@ void mainWindow::getAllGetImageSaved(QSharedPointer<Image> img, QMap<QString, Im
 			m_progressdialog->pause();
 
 			bool isDriveFull = false;
+			QString drive;
 			#if (QT_VERSION >= QT_VERSION_CHECK(5, 4, 0))
 				QDir destinationDir = QFileInfo(path).absoluteDir();
 				QStorageInfo storage(destinationDir);
 				isDriveFull = storage.bytesAvailable() < img->fileSize() || storage.bytesAvailable() < 20 * 1024 * 1024;
+				QString rootPath = storage.rootPath();
+				#ifdef Q_OS_WIN
+					drive = QString("%1 (%2)").arg(storage.name()).arg(rootPath.endsWith("/") ? rootPath.left(rootPath.length() - 1) : rootPath);
+				#else
+					drive = rootPath;
+				#endif
 			#endif
 
 			QString msg;
 			if (isDriveFull)
-			{ msg = tr("Is seems that the destination directory is full.\n%1\nPlease solve the issue before resuming the download.").arg(path); }
+			{ msg = tr("Not enough space on the destination drive \"%1\".\nPlease free some space before resuming the download.").arg(drive); }
 			else
 			{ msg = tr("An error occured saving the image.\n%1\nPlease solve the issue before resuming the download.").arg(path); }
 			QMessageBox::critical(m_progressdialog, tr("Error"), msg);
