@@ -685,8 +685,7 @@ QString parseMarkdown(QString str)
 	str.replace("\\r\\n", "\\n");
 
 	// Headers
-	QRegularExpression header("^(#+)([^#].*)$");
-	header.setPatternOptions(QRegularExpression::MultilineOption);
+	QRegularExpression header("^(#+)([^#].*)$", QRegularExpression::MultilineOption);
 	auto matches = header.globalMatch(str);
 	while (matches.hasNext()) {
 		auto match = matches.next();
