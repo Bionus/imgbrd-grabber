@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>detailsWindow</class>
- <widget class="QWidget" name="detailsWindow">
+ <class>DetailsWindow</class>
+ <widget class="QWidget" name="DetailsWindow">
   <property name="windowModality">
    <enum>Qt::WindowModal</enum>
   </property>
@@ -505,7 +505,7 @@
   <connection>
    <sender>pushButton</sender>
    <signal>clicked()</signal>
-   <receiver>detailsWindow</receiver>
+   <receiver>DetailsWindow</receiver>
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">

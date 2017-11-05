@@ -14,7 +14,7 @@
 #include "models/profile.h"
 #include "models/filename.h"
 #include "sources/sourceswindow.h"
-#include "viewer/zoomwindow.h"
+#include "viewer/zoom-window.h"
 #include "reverse-search/reverse-search-loader.h"
 #include "mainwindow.h"
 #include "helpers.h"
@@ -511,7 +511,7 @@ void searchTab::finishedLoadingPreview()
 			{ download = true; }
 			else if (reponse == QMessageBox::Open)
 			{
-				zoomWindow *zoom = new zoomWindow(m_images, img, img->page()->site(), m_sites, m_profile, m_parent);
+				ZoomWindow *zoom = new ZoomWindow(m_images, img, img->page()->site(), m_sites, m_profile, m_parent);
 				zoom->show();
 				connect(zoom, SIGNAL(linkClicked(QString)), this, SLOT(setTags(QString)));
 				connect(zoom, SIGNAL(poolClicked(int, QString)), m_parent, SLOT(addPoolTab(int, QString)));
@@ -1081,7 +1081,7 @@ void searchTab::webZoom(int id)
 		{ return; }
 	}
 
-	zoomWindow *zoom = new zoomWindow(m_images, image, image->page()->site(), m_sites, m_profile, m_parent);
+	ZoomWindow *zoom = new ZoomWindow(m_images, image, image->page()->site(), m_sites, m_profile, m_parent);
 	zoom->show();
 	connect(zoom, SIGNAL(linkClicked(QString)), this, SLOT(setTags(QString)));
 	connect(zoom, SIGNAL(poolClicked(int, QString)), m_parent, SLOT(addPoolTab(int, QString)));

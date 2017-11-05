@@ -1,5 +1,5 @@
-#ifndef HEADER_ZOOMWINDOW
-#define HEADER_ZOOMWINDOW
+#ifndef ZOOM_WINDOW_H
+#define ZOOM_WINDOW_H
 
 #include <QtGui>
 #include <QtNetwork>
@@ -11,18 +11,18 @@
 
 namespace Ui
 {
-	class zoomWindow;
+	class ZoomWindow;
 }
 
 
 class QAffiche;
 class Profile;
 class mainWindow;
-class detailsWindow;
+class DetailsWindow;
 class ImageLoader;
 class ImageLoaderQueue;
 
-class zoomWindow : public QWidget
+class ZoomWindow : public QWidget
 {
 	Q_OBJECT
 
@@ -39,8 +39,8 @@ class zoomWindow : public QWidget
 			Delete
 		};
 
-		zoomWindow(QList<QSharedPointer<Image>> images, QSharedPointer<Image> image, Site *site, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent);
-		~zoomWindow() override;
+		ZoomWindow(QList<QSharedPointer<Image>> images, QSharedPointer<Image> image, Site *site, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent);
+		~ZoomWindow() override;
 		void go();
 		void load();
 
@@ -119,8 +119,8 @@ class zoomWindow : public QWidget
 		QStringList &m_viewItLater;
 		QStringList &m_ignore;
 		QSettings *m_settings;
-		Ui::zoomWindow *ui;
-		detailsWindow *m_detailsWindow;
+		Ui::ZoomWindow *ui;
+		DetailsWindow *m_detailsWindow;
 		QSharedPointer<Image> m_image;
 		QMap<QString,QString> regex, m_details;
 		Site *m_site;
@@ -161,4 +161,4 @@ class zoomWindow : public QWidget
 		ImageLoaderQueue *m_imageLoaderQueue;
 };
 
-#endif
+#endif // ZOOM_WINDOW_H

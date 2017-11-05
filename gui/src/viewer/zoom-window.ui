@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>zoomWindow</class>
- <widget class="QWidget" name="zoomWindow">
+ <class>ZoomWindow</class>
+ <widget class="QWidget" name="ZoomWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -288,7 +288,7 @@
   <connection>
    <sender>buttonSave</sender>
    <signal>clicked()</signal>
-   <receiver>zoomWindow</receiver>
+   <receiver>ZoomWindow</receiver>
    <slot>saveImage()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -304,7 +304,7 @@
   <connection>
    <sender>buttonSaveNQuit</sender>
    <signal>clicked()</signal>
-   <receiver>zoomWindow</receiver>
+   <receiver>ZoomWindow</receiver>
    <slot>saveNQuit()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -320,7 +320,7 @@
   <connection>
    <sender>buttonOpen</sender>
    <signal>clicked()</signal>
-   <receiver>zoomWindow</receiver>
+   <receiver>ZoomWindow</receiver>
    <slot>openSaveDir()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -336,7 +336,7 @@
   <connection>
    <sender>buttonSaveAs</sender>
    <signal>clicked()</signal>
-   <receiver>zoomWindow</receiver>
+   <receiver>ZoomWindow</receiver>
    <slot>saveImageAs()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -352,7 +352,7 @@
   <connection>
    <sender>labelPools</sender>
    <signal>linkActivated(QString)</signal>
-   <receiver>zoomWindow</receiver>
+   <receiver>ZoomWindow</receiver>
    <slot>openPool(QString)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -368,7 +368,7 @@
   <connection>
    <sender>buttonSaveFav</sender>
    <signal>clicked()</signal>
-   <receiver>zoomWindow</receiver>
+   <receiver>ZoomWindow</receiver>
    <slot>saveImageFav()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -384,7 +384,7 @@
   <connection>
    <sender>buttonSaveNQuitFav</sender>
    <signal>clicked()</signal>
-   <receiver>zoomWindow</receiver>
+   <receiver>ZoomWindow</receiver>
    <slot>saveNQuitFav()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -400,7 +400,7 @@
   <connection>
    <sender>buttonOpenFav</sender>
    <signal>clicked()</signal>
-   <receiver>zoomWindow</receiver>
+   <receiver>ZoomWindow</receiver>
    <slot>openSaveDirFav()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -432,7 +432,7 @@
   <connection>
    <sender>buttonPrev</sender>
    <signal>clicked()</signal>
-   <receiver>zoomWindow</receiver>
+   <receiver>ZoomWindow</receiver>
    <slot>previous()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -448,7 +448,7 @@
   <connection>
    <sender>buttonNext</sender>
    <signal>clicked()</signal>
-   <receiver>zoomWindow</receiver>
+   <receiver>ZoomWindow</receiver>
    <slot>next()</slot>
    <hints>
     <hint type="sourcelabel">

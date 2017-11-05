@@ -1,15 +1,15 @@
-#include "detailswindow.h"
-#include "ui_detailswindow.h"
+#include "details-window.h"
+#include "ui_details-window.h"
 #include "models/image.h"
 #include "functions.h"
 
 
 /**
- * Constructor of the detailsWindow class, completing its window.
+ * Constructor of the DetailsWindow class, completing its window.
  * @param	tags		Image's tags (colored or not)
  */
-detailsWindow::detailsWindow(Profile *profile, QWidget *parent)
-	: QDialog(parent), ui(new Ui::detailsWindow), m_profile(profile)
+DetailsWindow::DetailsWindow(Profile *profile, QWidget *parent)
+	: QDialog(parent), ui(new Ui::DetailsWindow), m_profile(profile)
 {
 	ui->setupUi(this);
 
@@ -17,9 +17,9 @@ detailsWindow::detailsWindow(Profile *profile, QWidget *parent)
 }
 
 /**
- * Destructor of the detailsWindow class
+ * Destructor of the DetailsWindow class
  */
-detailsWindow::~detailsWindow()
+DetailsWindow::~DetailsWindow()
 {
 	delete ui;
 }
@@ -27,12 +27,12 @@ detailsWindow::~detailsWindow()
 /**
  * Setter for tags
  */
-void detailsWindow::setTags(QString tags)
+void DetailsWindow::setTags(QString tags)
 {
 	ui->labelTags->setText(tags);
 }
 
-void detailsWindow::setImage(QSharedPointer<Image> image)
+void DetailsWindow::setImage(QSharedPointer<Image> image)
 {
 	setTags(image->stylishedTags(m_profile).join(' '));
 
