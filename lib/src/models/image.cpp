@@ -289,7 +289,6 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	m_loadingImage = false;
 	m_tryingSample = false;
 	m_pools = QList<Pool>();
-	m_extensionRotator = nullptr;
 }
 
 Image::~Image()
