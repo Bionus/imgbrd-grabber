@@ -492,6 +492,7 @@ void Image::parseDetails()
 		}
 		if (before != m_url)
 		{
+			delete m_extensionRotator;
 			m_extensionRotator = nullptr;
 			setFileSize(0);
 			emit urlChanged(before, m_url);
