@@ -369,7 +369,7 @@ void sourcesWindow::addPreset()
 {
 	bool ok;
 	QString name = QInputDialog::getText(this, tr("Create a new preset"), tr("Name"), QLineEdit::Normal, "", &ok);
-	if (!ok)
+	if (!ok || name.isEmpty())
 		return;
 
 	QStringList sel;
@@ -391,8 +391,11 @@ void sourcesWindow::deletePreset()
 
 void sourcesWindow::editPreset()
 {
+	bool ok;
 	QString oldName = ui->comboPresets->currentText();
-	QString newName = QInputDialog::getText(this, tr("Edit preset"), tr("Name"), QLineEdit::Normal, oldName);
+	QString newName = QInputDialog::getText(this, tr("Edit preset"), tr("Name"), QLineEdit::Normal, oldName, &ok);
+	if (!ok || newName.isEmpty())
+		return;
 
 	m_presets.insert(newName, m_presets[oldName]);
 	m_presets.remove(oldName);
