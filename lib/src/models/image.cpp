@@ -163,12 +163,16 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	}
 	if (m_tags.isEmpty() && details.contains("tags"))
 	{
+		QString tgs = QString(details["tags"]).replace(QRegularExpression("[\r\n\t]+"), " ");
+
 		// Automatically find tag separator and split the list
 		QStringList t;
-		if (details["tags"].count(", ") != 0 && details["tags"].count(" ") / details["tags"].count(", ") < 2)
-		{ t = details["tags"].split(", ", QString::SkipEmptyParts); }
+		int commas = tgs.count(", ");
+		int spaces = tgs.count(" ");
+		if (commas >= 10 || (commas > 0 && (spaces - commas) / commas < 2))
+		{ t = tgs.split(", ", QString::SkipEmptyParts); }
 		else
-		{ t = details["tags"].split(" ", QString::SkipEmptyParts); }
+		{ t = tgs.split(" ", QString::SkipEmptyParts); }
 
 		for (QString tg : t)
 		{
