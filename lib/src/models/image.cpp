@@ -845,7 +845,7 @@ void Image::downloadProgressImageInMemory(qint64 v1, qint64 v2)
 void Image::downloadProgressImageS(qint64 v1, qint64 v2, bool inMemory)
 {
 	// Set filesize if not set
-	if (m_fileSize == 0)
+	if (m_fileSize == 0 || m_fileSize < v2 / 2)
 		m_fileSize = v2;
 
 	if (m_loadImage == nullptr || v2 <= 0)
