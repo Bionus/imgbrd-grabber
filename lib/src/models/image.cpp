@@ -705,12 +705,12 @@ QStringList Image::path(QString fn, QString pth, int counter, bool complex, bool
 	return filename.path(*this, m_profile, pth, counter, complex, maxLength, shouldFixFilename, getFull);
 }
 
-void Image::loadImage(bool inMemory)
+void Image::loadImage(bool inMemory, bool force)
 {
 	if (m_loadingImage)
 		return;
 
-	if (m_loadedImage)
+	if (m_loadedImage && !force)
 	{
 		emit finishedImage(QNetworkReply::NoError, "");
 		return;
@@ -725,9 +725,13 @@ void Image::loadImage(bool inMemory)
 	if (m_loadImage != nullptr)
 		m_loadImage->deleteLater();
 
+	if (force)
+		setUrl(fileUrl().toString());
+
 	m_loadImage = m_parentSite->get(m_parentSite->fixUrl(m_url), m_parent, "image", this);
 	m_loadImage->setParent(this);
 	m_loadingImage = true;
+	m_loadedImage = false;
 	m_data.clear();
 
 	if (inMemory)

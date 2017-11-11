@@ -215,6 +215,10 @@ void ZoomWindow::imageContextMenu()
 {
 	QMenu *menu = new ImageContextMenu(m_settings, m_image, m_parent, this);
 
+	// Reload action
+	QAction *reloadImageAction = new QAction(QIcon(":/images/icons/update.png"), tr("Reload"), menu);
+	connect(reloadImageAction, SIGNAL(triggered()), this, SLOT(reloadImage()));
+
 	// Copy actions
 	QAction *copyImageAction = new QAction(QIcon(":/images/icons/copy.png"), tr("Copy file"), menu);
 	connect(copyImageAction, SIGNAL(triggered()), this, SLOT(copyImageFileToClipboard()));
@@ -223,11 +227,17 @@ void ZoomWindow::imageContextMenu()
 
 	// Insert actions at the beginning
 	QAction *first = menu->actions().first();
+	menu->insertAction(first, reloadImageAction);
+	menu->insertSeparator(first);
 	menu->insertAction(first, copyImageAction);
 	menu->insertAction(first, copyDataAction);
 	menu->insertSeparator(first);
 
 	menu->exec(QCursor::pos());
+}
+void ZoomWindow::reloadImage()
+{
+	load(true);
 }
 void ZoomWindow::copyImageFileToClipboard()
 {
@@ -363,7 +373,7 @@ void ZoomWindow::setfavorite()
 	m_profile->emitFavorite();
 }
 
-void ZoomWindow::load()
+void ZoomWindow::load(bool force)
 {
 	log(QString("Loading image from <a href=\"%1\">%1</a>").arg(m_url));
 
@@ -383,7 +393,7 @@ void ZoomWindow::load()
 	}
 
 	m_imageTime.start();
-	m_image->loadImage();
+	m_image->loadImage(true, force);
 }
 
 #define PERCENT 0.05f
@@ -1108,6 +1118,7 @@ void ZoomWindow::load(QSharedPointer<Image> image)
 
 	// Preload gallery images
 	int preload = m_settings->value("preload", 0).toInt();
+	preload = 1;
 	if (preload > 0)
 	{
 		QSet<int> preloaded;

@@ -42,7 +42,7 @@ class ZoomWindow : public QWidget
 		ZoomWindow(QList<QSharedPointer<Image>> images, QSharedPointer<Image> image, Site *site, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent);
 		~ZoomWindow() override;
 		void go();
-		void load();
+		void load(bool force = false);
 
 	public slots:
 		void update(bool onlySize = false, bool force = false);
@@ -77,6 +77,7 @@ class ZoomWindow : public QWidget
 
 		// Context menus
 		void imageContextMenu();
+		void reloadImage();
 		void copyImageFileToClipboard();
 		void copyImageDataToClipboard();
 

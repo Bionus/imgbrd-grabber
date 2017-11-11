@@ -101,7 +101,7 @@ class Image : public QObject, public Downloadable
 	public slots:
 		void loadPreview();
 		void loadDetails(bool rateLimit = false);
-		void loadImage(bool inMemory = true);
+		void loadImage(bool inMemory = true, bool force = false);
 		void abortPreview();
 		void abortTags();
 		void abortImage();
