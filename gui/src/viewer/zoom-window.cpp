@@ -1118,7 +1118,6 @@ void ZoomWindow::load(QSharedPointer<Image> image)
 
 	// Preload gallery images
 	int preload = m_settings->value("preload", 0).toInt();
-	preload = 1;
 	if (preload > 0)
 	{
 		QSet<int> preloaded;
