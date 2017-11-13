@@ -24,7 +24,6 @@ class Image : public QObject, public Downloadable
 		Image();
 		Image(Site *site, QMap<QString,QString> details, Profile *profile, Page *parent = Q_NULLPTR);
 		Image(const Image &other);
-		~Image();
 		int			value() const;
 		QString		match(QString filter, bool invert = false) const;
 		QStringList	filter(const QStringList &filters) const;

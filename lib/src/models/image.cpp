@@ -278,7 +278,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	QStringList extensions = animated
 		? QStringList() << "webm" << "mp4" << "gif" << "jpg" << "png" << "jpeg" << "swf"
 		: QStringList() << "jpg" << "png" << "gif" << "jpeg" << "webm" << "swf" << "mp4";
-	m_extensionRotator = new ExtensionRotator(getExtension(m_url), extensions);
+	m_extensionRotator = new ExtensionRotator(getExtension(m_url), extensions, this);
 
 	// Tech details
 	m_parent = parent;
@@ -294,13 +294,6 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	m_tryingSample = false;
 	m_pools = QList<Pool>();
 }
-
-Image::~Image()
-{
-	if (m_extensionRotator != nullptr)
-		delete m_extensionRotator;
-}
-
 
 void Image::loadPreview()
 {
