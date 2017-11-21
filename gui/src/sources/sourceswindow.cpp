@@ -163,6 +163,8 @@ void sourcesWindow::deleteSite(QString site)
 		m_labels.removeAt(i);
 	}
 
+	emit siteDeleted(m_sites->value(site));
+
 	m_sites->remove(site);
 	m_selected.removeAt(i);
 }

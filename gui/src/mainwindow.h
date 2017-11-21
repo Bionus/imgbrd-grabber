@@ -86,6 +86,8 @@ class mainWindow : public QMainWindow
 		void batchClearSel();
 		void batchClearSelGroups();
 		void batchClearSelUniques();
+		void batchRemoveGroups(QList<int> rows);
+		void batchRemoveUniques(QList<int> rows);
 		void batchMove(int);
 		void batchMoveUp();
 		void batchMoveDown();
@@ -160,6 +162,7 @@ class mainWindow : public QMainWindow
 		void initialLoginsFinished();
 		QIcon& getIcon(QString path);
 		void setWiki(QString);
+		void siteDeleted(Site *site);
 
 		// Drag & drop
 		void dragEnterEvent(QDragEnterEvent *event) override;

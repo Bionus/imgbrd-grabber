@@ -703,17 +703,34 @@ void mainWindow::batchClearSel()
 }
 void mainWindow::batchClearSelGroups()
 {
-	// Delete group batchs
-	QList<QTableWidgetItem *> selected = ui->tableBatchGroups->selectedItems();
-	QList<int> todelete = QList<int>();
-	int count = selected.size();
-	for (int i = 0; i < count; i++)
-		if (!todelete.contains(selected.at(i)->row()))
-			todelete.append(selected.at(i)->row());
-	qSort(todelete);
+	QList<int> rows;
+	for (QTableWidgetItem *selected : ui->tableBatchGroups->selectedItems())
+	{
+		int row = selected->row();
+		if (!rows.contains(row))
+			rows.append(row);
+	}
+
+	batchRemoveGroups(rows);
+}
+void mainWindow::batchClearSelUniques()
+{
+	QList<int> rows;
+	for (QTableWidgetItem *selected : ui->tableBatchUniques->selectedItems())
+	{
+		int row = selected->row();
+		if (!rows.contains(row))
+			rows.append(row);
+	}
+
+	batchRemoveUniques(rows);
+}
+void mainWindow::batchRemoveGroups(QList<int> rows)
+{
+	qSort(rows);
 
 	int rem = 0;
-	for (int i : todelete)
+	for (int i : rows)
 	{
 		int pos = i - rem;
 		m_progressBars[pos]->deleteLater();
@@ -722,26 +739,22 @@ void mainWindow::batchClearSelGroups()
 		ui->tableBatchGroups->removeRow(pos);
 		rem++;
 	}
+
 	updateGroupCount();
 }
-void mainWindow::batchClearSelUniques()
+void mainWindow::batchRemoveUniques(QList<int> rows)
 {
-	// Delete single image downloads
-	QList<QTableWidgetItem *> selected = ui->tableBatchUniques->selectedItems();
-	QList<int> todelete = QList<int>();
-	int count = selected.size();
-	for (int i = 0; i < count; i++)
-	{ todelete.append(selected.at(i)->row()); }
-	qSort(todelete);
+	qSort(rows);
 
 	int rem = 0;
-	for (int i : todelete)
+	for (int i : rows)
 	{
 		int pos = i - rem;
 		ui->tableBatchUniques->removeRow(pos);
 		m_batchs.removeAt(pos);
 		rem++;
 	}
+
 	updateGroupCount();
 }
 
@@ -2116,6 +2129,27 @@ bool mainWindow::loadLinkList(QString filename)
 void mainWindow::setWiki(QString wiki)
 {
 	ui->labelWiki->setText("<style>.title { font-weight: bold; } ul { margin-left: -30px; }</style>" + wiki);
+}
+
+void mainWindow::siteDeleted(Site *site)
+{
+	QList<int> batchRows;
+	for (int i = 0; i < m_groupBatchs.count(); ++i)
+	{
+		const DownloadQueryGroup &batch = m_groupBatchs[i];
+		if (batch.site == site)
+			batchRows.append(i);
+	}
+	batchRemoveGroups(batchRows);
+
+	QList<int> uniquesRows;
+	for (int i = 0; i < m_batchs.count(); ++i)
+	{
+		const DownloadQueryImage &batch = m_batchs[i];
+		if (batch.site == site)
+			uniquesRows.append(i);
+	}
+	batchRemoveUniques(uniquesRows);
 }
 
 QIcon& mainWindow::getIcon(QString path)
