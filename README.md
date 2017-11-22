@@ -52,7 +52,7 @@ For users interested, a nightly version is built automatically on every commit o
 * Spanish
 
 ## Default sources
-You can add additional sources very easily, but here's a shot list of some sources that are included and supported by default: Danbooru, Gelbooru, yande.re, Shimmie, Sankaku complex, e621, Konachan, rule34, safebooru, behoimi, Zerochan...
+You can add additional sources very easily, but here's a shot list of some sources that are included and supported by default: Danbooru, Gelbooru, yande.re, Shimmie, e621, Konachan, rule34, safebooru, behoimi, Zerochan...
 
 ## Compilation
 If you want more info about compilation steps, see the [Compilation](https://github.com/Bionus/imgbrd-grabber/wiki/Compilation) wiki page.
