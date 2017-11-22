@@ -54,9 +54,6 @@ For users interested, a nightly version is built automatically on every commit o
 ## Default sources
 You can add additional sources very easily, but here's a shot list of some sources that are included and supported by default: Danbooru, Gelbooru, yande.re, Shimmie, Sankaku complex, e621, Konachan, rule34, safebooru, behoimi, Zerochan...
 
-## Contact
-If you have any questions about the program, found a bug and don't want to use the github issue tracker, or anything, you can contact me by mail in French or in English at [bio.nus@hotmail.fr](mailto:bio.nus@hotmail.fr). Please prefer using Github's built-in issue tracker though, as the answer to your question or problem might help other people!
-
 ## Compilation
 If you want more info about compilation steps, see the [Compilation](https://github.com/Bionus/imgbrd-grabber/wiki/Compilation) wiki page.
 
