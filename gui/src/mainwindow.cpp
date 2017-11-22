@@ -1973,18 +1973,7 @@ void mainWindow::getAllFinished()
 
 	// Remove after download and retries are finished
 	if (m_progressdialog->endRemove())
-	{
-		int rem = 0;
-		for (int i : m_batchDownloading)
-		{
-			int pos = i - rem;
-			m_progressBars[pos]->deleteLater();
-			m_progressBars.removeAt(pos);
-			m_groupBatchs.removeAt(pos);
-			ui->tableBatchGroups->removeRow(pos);
-			rem++;
-		}
-	}
+	{ batchRemoveGroups(m_batchDownloading.toList()); }
 
 	// End of batch download
 	m_profile->getCommands().after();
