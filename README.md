@@ -22,6 +22,8 @@ Grabber works on Windows, Mac, and Linux.
 ## Download
 You can download the latest release [here](https://github.com/Bionus/imgbrd-grabber/releases/latest), or find all previous releases [here](https://github.com/Bionus/imgbrd-grabber/releases).
 
+For users interested, a nightly version is built automatically on every commit on the `develop` branch, and can be downloaded [here](https://github.com/Bionus/imgbrd-grabber/releases/nightly). Note that it might be less stable than official releases, so use at your own risk.
+
 ## Main features
 * Browse images from the internet
 * Download thousands of images at once
