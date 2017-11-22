@@ -1,4 +1,4 @@
-<img src="resources/images/readme-icon.png" align="right" />
+<img src="gui/resources/images/readme-icon.png" align="right" />
 
 # Grabber
 
