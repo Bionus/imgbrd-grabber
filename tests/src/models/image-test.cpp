@@ -305,17 +305,53 @@ void ImageTest::testMatchSource()
 	QCOMPARE(m_img->match("source:http://test.fr", true), QString());
 }
 
-void ImageTest::testFilter()
+void ImageTest::testFilterNumeric()
 {
 	QStringList filters;
 
 	// No match
-	filters = m_img->filter(QStringList() << "id:<=10000" << "width:>100");
+	filters = m_img->filter(QStringList() << "id:<=10000" << "width:>100" << "date:<2017-01-01");
 	QCOMPARE(filters, QStringList());
 
 	// All match
-	filters = m_img->filter(QStringList() << "id:>10000" << "width:<=100");
-	QCOMPARE(filters, QStringList() << "image's id does not match" << "image's width does not match");
+	filters = m_img->filter(QStringList() << "id:>10000" << "width:<=100" << "date:>=2017-01-01");
+	QCOMPARE(filters, QStringList() << "image's id does not match" << "image's width does not match" << "image's date does not match");
+}
+void ImageTest::testFilterString()
+{
+	QStringList filters;
+
+	// No match
+	filters = m_img->filter(QStringList() << "filetype:jpg");
+	QCOMPARE(filters, QStringList());
+
+	// All match
+	filters = m_img->filter(QStringList() << "filetype:png");
+	QCOMPARE(filters, QStringList() << "image's filetype does not match");
+}
+void ImageTest::testFilterSpecial()
+{
+	QStringList filters;
+
+	// No match
+	filters = m_img->filter(QStringList() << "rating:s" << "rating:safe" << "source:http://google.com");
+	QCOMPARE(filters, QStringList());
+
+	// All match
+	filters = m_img->filter(QStringList() << "rating:e" << "rating:explicit" << "source:http://test.com");
+	QCOMPARE(filters, QStringList() << "image is not \"explicit\"" << "image is not \"explicit\"" << "image's source does not starts with \"http://test.com\"");
+}
+void ImageTest::testFilterInvert()
+{
+	QStringList filters;
+
+	// No match
+	filters = m_img->filter(QStringList() << "-id:>10000" << "-width:<=100" << "-date:>=2017-01-01");
+	QCOMPARE(filters, QStringList());
+
+	// All match
+	filters = m_img->filter(QStringList() << "-id:<=10000" << "-width:>100" << "-date:<2017-01-01");
+	QCOMPARE(filters, QStringList() << "image's id match" << "image's width match" << "image's date match");
 }
 
 void ImageTest::testValue()
