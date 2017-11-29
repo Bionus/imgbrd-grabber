@@ -86,7 +86,7 @@
      <item>
       <widget class="QLabel" name="labelCredits">
        <property name="text">
-        <string>Russian translation byr Николай Тихонов.</string>
+        <string>Russian translation by Николай Тихонов.</string>
        </property>
       </widget>
      </item>

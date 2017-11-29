@@ -20,8 +20,12 @@
     </message>
     <message>
         <location filename="../gui/src/aboutwindow.ui" line="89"/>
+        <source>Russian translation by Николай Тихонов.</source>
+        <translation>Traduction russe par Николай Тихонов.</translation>
+    </message>
+    <message>
         <source>Russian translation byr Николай Тихонов.</source>
-        <translation>Russian translation byr Николай Тихонов.</translation>
+        <translation type="vanished">Russian translation byr Николай Тихонов.</translation>
     </message>
     <message>
         <location filename="../gui/src/aboutwindow.cpp" line="25"/>
