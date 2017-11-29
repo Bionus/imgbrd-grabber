@@ -526,12 +526,8 @@ int toDate(const QString &text)
 	return 0;
 }
 
-QString Image::match(QString filter, bool invert) const
+QString Image::match(const QMap<QString, Token> &tokens, QString filter, bool invert) const
 {
-	QStringList mathematicaltypes = QStringList() << "id" << "width" << "height" << "score" << "mpixels" << "filesize" << "date";
-	QStringList stringtypes = QStringList() << "filetype";
-	QStringList types = QStringList() << "rating" << "source" << stringtypes << mathematicaltypes;
-
 	// Invert the filter by prepending '-'
 	if (filter.startsWith('-'))
 	{
@@ -544,21 +540,20 @@ QString Image::match(QString filter, bool invert) const
 	{
 		QString type = filter.section(':', 0, 0).toLower();
 		filter = filter.section(':', 1).toLower();
-		if (!types.contains(type))
-		{ return tr("unknown type \"%1\" (available types: \"%2\")").arg(type, types.join("\", \"")); }
-		if (mathematicaltypes.contains(type))
+		if (!tokens.contains(type))
+		{ return tr("unknown type \"%1\" (available types: \"%2\")").arg(type, tokens.keys().join("\", \"")); }
+
+		QVariant token = tokens[type].value();
+		if (token.type() == QVariant::Int || token.type() == QVariant::DateTime)
 		{
 			int input = 0;
-			if (type == "id")		{ input = m_id;										}
-			if (type == "width")	{ input = m_size.width();							}
-			if (type == "height")	{ input = m_size.height();							}
-			if (type == "score")	{ input = m_score;									}
-			if (type == "mpixels")	{ input = m_size.width() * m_size.height();			}
-			if (type == "filesize")	{ input = m_fileSize;								}
-			if (type == "date")		{ input = m_createdAt.toString("yyyyMMdd").toInt();	}
+			if (token.type() == QVariant::Int)
+			{ input = token.toInt(); }
+			else if (token.type() == QVariant::DateTime)
+			{ input = token.toDateTime().toString("yyyyMMdd").toInt(); }
 
 			bool cond;
-			if (type == "date")
+			if (token.type() == QVariant::DateTime)
 			{
 				if (filter.startsWith("..") || filter.startsWith("<="))
 				{ cond = input <= toDate(filter.right(filter.size()-2)); }
@@ -598,18 +593,6 @@ QString Image::match(QString filter, bool invert) const
 			if (cond && invert)
 			{ return tr("image's %1 match").arg(type); }
 		}
-		else if (stringtypes.contains(type))
-		{
-			QString input;
-			if (type == "filetype")	{ input = getExtension(m_fileUrl);	}
-
-			bool cond = input == filter;
-
-			if (!cond && !invert)
-			{ return tr("image's %1 does not match").arg(type); }
-			if (cond && invert)
-			{ return tr("image's %1 match").arg(type); }
-		}
 		else
 		{
 			if (type == "rating")
@@ -622,7 +605,7 @@ QString Image::match(QString filter, bool invert) const
 				if (assoc.contains(filter))
 					filter = assoc[filter];
 
-				bool cond = m_rating.toLower().startsWith(filter.left(1));
+				bool cond = token.toString().toLower().startsWith(filter.left(1));
 				if (!cond && !invert)
 				{ return tr("image is not \"%1\"").arg(filter); }
 				if (cond && invert)
@@ -631,22 +614,35 @@ QString Image::match(QString filter, bool invert) const
 			else if (type == "source")
 			{
 				QRegExp rx(filter + "*", Qt::CaseInsensitive, QRegExp::Wildcard);
-				bool cond = rx.exactMatch(m_source);
+				bool cond = rx.exactMatch(token.toString());
 				if (!cond && !invert)
 				{ return tr("image's source does not starts with \"%1\"").arg(filter); }
 				if (cond && invert)
 				{ return tr("image's source starts with \"%1\"").arg(filter); }
 			}
+			else
+			{
+				QString input = token.toString();
+
+				bool cond = input == filter;
+
+				if (!cond && !invert)
+				{ return tr("image's %1 does not match").arg(type); }
+				if (cond && invert)
+				{ return tr("image's %1 match").arg(type); }
+			}
 		}
 	}
 	else if (!filter.isEmpty())
 	{
+		QStringList tags = tokens["allos"].value().toStringList();
+
 		// Check if any tag match the filter (case insensitive plain text with wildcards allowed)
 		bool cond = false;
-		for (const Tag &tag : m_tags)
+		for (const QString &tag : tags)
 		{
 			QRegExp reg(filter.trimmed(), Qt::CaseInsensitive, QRegExp::Wildcard);
-			if (reg.exactMatch(tag.text()))
+			if (reg.exactMatch(tag))
 			{
 				cond = true;
 				break;
@@ -664,10 +660,12 @@ QString Image::match(QString filter, bool invert) const
 
 QStringList Image::filter(const QStringList &filters) const
 {
+	QMap<QString, Token> toks = tokens(m_profile);
+
 	QStringList ret;
 	for (const QString &filter : filters)
 	{
-		QString match = this->match(filter);
+		QString match = this->match(toks, filter);
 		if (!match.isEmpty())
 			ret.append(match);
 	}
@@ -897,10 +895,11 @@ int Image::value() const
  */
 QStringList Image::blacklisted(const QStringList &blacklistedTags, bool invert) const
 {
+	QMap<QString, Token> toks = tokens(m_profile);
 	QStringList detected;
 	for (const QString &tag : blacklistedTags)
 	{
-		if (!match(tag, invert).isEmpty())
+		if (!match(toks, tag, invert).isEmpty())
 		{ detected.append(tag); }
 	}
 	return detected;
@@ -1360,8 +1359,11 @@ QMap<QString, Token> Image::tokens(Profile *profile) const
 	tokens.insert("score", Token(m_score, 0));
 	tokens.insert("height", Token(m_size.height(), 0));
 	tokens.insert("width", Token(m_size.width(), 0));
+	tokens.insert("mpixels", Token(m_size.width() * m_size.height(), 0));
 	tokens.insert("url_file", Token(m_url, ""));
 	tokens.insert("url_page", Token(m_pageUrl.toString(), ""));
+	tokens.insert("source", Token(m_source, ""));
+	tokens.insert("filesize", Token(m_fileSize, 0));
 
 	// Search
 	for (int i = 0; i < m_search.size(); ++i)
@@ -1425,6 +1427,7 @@ QMap<QString, Token> Image::tokens(Profile *profile) const
 	if (settings->value("Save/noJpeg", true).toBool() && ext == "jpeg")
 		ext = "jpg";
 	tokens.insert("ext", Token(ext, "jpg"));
+	tokens.insert("filetype", Token(ext, "jpg"));
 
 	return tokens;
 }

@@ -25,7 +25,7 @@ class Image : public QObject, public Downloadable
 		Image(Site *site, QMap<QString,QString> details, Profile *profile, Page *parent = Q_NULLPTR);
 		Image(const Image &other);
 		int			value() const;
-		QString		match(QString filter, bool invert = false) const;
+		QString		match(const QMap<QString, Token> &tokens, QString filter, bool invert = false) const;
 		QStringList	filter(const QStringList &filters) const;
 		QStringList	path(QString fn = "", QString pth = "", int counter = 0, bool complex = true, bool simple = false, bool maxLength = true, bool shouldFixFilename = true, bool getFull = false) const;
 		QStringList blacklisted(const QStringList &blacklistedTags, bool invert = true) const;

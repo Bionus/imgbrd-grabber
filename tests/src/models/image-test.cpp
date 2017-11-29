@@ -219,90 +219,102 @@ void ImageTest::testBlacklisted()
 
 void ImageTest::testMatchTag()
 {
+	auto tokens = m_img->tokens(m_profile);
+
 	// Basic
-	QCOMPARE(m_img->match("tag1"), QString());
-	QCOMPARE(m_img->match("character1"), QString());
-	QCOMPARE(m_img->match("tag7"), QString("image does not contains \"tag7\""));
+	QCOMPARE(m_img->match(tokens, "tag1"), QString());
+	QCOMPARE(m_img->match(tokens, "character1"), QString());
+	QCOMPARE(m_img->match(tokens, "tag7"), QString("image does not contains \"tag7\""));
 
 	// Minus
-	QCOMPARE(m_img->match("-tag1"), QString("image contains \"tag1\""));
-	QCOMPARE(m_img->match("-character1"), QString("image contains \"character1\""));
-	QCOMPARE(m_img->match("-tag7"), QString());
+	QCOMPARE(m_img->match(tokens, "-tag1"), QString("image contains \"tag1\""));
+	QCOMPARE(m_img->match(tokens, "-character1"), QString("image contains \"character1\""));
+	QCOMPARE(m_img->match(tokens, "-tag7"), QString());
 
 	// Invert
-	QCOMPARE(m_img->match("tag1", true), QString("image contains \"tag1\""));
-	QCOMPARE(m_img->match("character1", true), QString("image contains \"character1\""));
-	QCOMPARE(m_img->match("tag7", true), QString());
+	QCOMPARE(m_img->match(tokens, "tag1", true), QString("image contains \"tag1\""));
+	QCOMPARE(m_img->match(tokens, "character1", true), QString("image contains \"character1\""));
+	QCOMPARE(m_img->match(tokens, "tag7", true), QString());
 
 	// Invert minus
-	QCOMPARE(m_img->match("-tag1", true), QString());
-	QCOMPARE(m_img->match("-character1", true), QString());
-	QCOMPARE(m_img->match("-tag7", true), QString("image does not contains \"tag7\""));
+	QCOMPARE(m_img->match(tokens, "-tag1", true), QString());
+	QCOMPARE(m_img->match(tokens, "-character1", true), QString());
+	QCOMPARE(m_img->match(tokens, "-tag7", true), QString("image does not contains \"tag7\""));
 }
 
 void ImageTest::testMatchUnknown()
 {
-	QCOMPARE(m_img->match("toto:test").startsWith("unknown type \"toto\""), true);
+	auto tokens = m_img->tokens(m_profile);
+
+	QCOMPARE(m_img->match(tokens, "toto:test").startsWith("unknown type \"toto\""), true);
 }
 
 void ImageTest::testMatchMathematical()
 {
+	auto tokens = m_img->tokens(m_profile);
+
 	// Basic
-	QCOMPARE(m_img->match("id:>1000"), QString());
-	QCOMPARE(m_img->match("id:<=1000"), QString("image's id does not match"));
-	QCOMPARE(m_img->match("id:>=0", true), QString("image's id match"));
+	QCOMPARE(m_img->match(tokens, "id:>1000"), QString());
+	QCOMPARE(m_img->match(tokens, "id:<=1000"), QString("image's id does not match"));
+	QCOMPARE(m_img->match(tokens, "id:>=0", true), QString("image's id match"));
 
 	// Other types
-	QCOMPARE(m_img->match("width:..1000"), QString());
-	QCOMPARE(m_img->match("height:500.."), QString());
-	QCOMPARE(m_img->match("score:10..30"), QString());
-	QCOMPARE(m_img->match("mpixels:<1000000"), QString());
-	QCOMPARE(m_img->match("filesize:358400"), QString());
+	QCOMPARE(m_img->match(tokens, "width:..1000"), QString());
+	QCOMPARE(m_img->match(tokens, "height:500.."), QString());
+	QCOMPARE(m_img->match(tokens, "score:10..30"), QString());
+	QCOMPARE(m_img->match(tokens, "mpixels:<1000000"), QString());
+	QCOMPARE(m_img->match(tokens, "filesize:358400"), QString());
 }
 
 void ImageTest::testMatchDate()
 {
-	QCOMPARE(m_img->match("date:>08/16/2016"), QString());
-	QCOMPARE(m_img->match("date:>=2016-08-16"), QString());
-	QCOMPARE(m_img->match("date:<08/20/2016"), QString());
-	QCOMPARE(m_img->match("date:<=2016-08-20"), QString());
-	QCOMPARE(m_img->match("date:..08/20/2016"), QString());
-	QCOMPARE(m_img->match("date:2016-08-16.."), QString());
-	QCOMPARE(m_img->match("date:08/16/2016..2016-08-20"), QString());
-	QCOMPARE(m_img->match("date:2016-08-18"), QString());
+	auto tokens = m_img->tokens(m_profile);
+
+	QCOMPARE(m_img->match(tokens, "date:>08/16/2016"), QString());
+	QCOMPARE(m_img->match(tokens, "date:>=2016-08-16"), QString());
+	QCOMPARE(m_img->match(tokens, "date:<08/20/2016"), QString());
+	QCOMPARE(m_img->match(tokens, "date:<=2016-08-20"), QString());
+	QCOMPARE(m_img->match(tokens, "date:..08/20/2016"), QString());
+	QCOMPARE(m_img->match(tokens, "date:2016-08-16.."), QString());
+	QCOMPARE(m_img->match(tokens, "date:08/16/2016..2016-08-20"), QString());
+	QCOMPARE(m_img->match(tokens, "date:2016-08-18"), QString());
 
 	// Invalid date
-	QCOMPARE(m_img->match("date:someday"), QString("image's date does not match"));
+	QCOMPARE(m_img->match(tokens, "date:someday"), QString("image's date does not match"));
 }
 
 void ImageTest::testMatchRating()
 {
+	auto tokens = m_img->tokens(m_profile);
+
 	// Basic
-	QCOMPARE(m_img->match("rating:safe"), QString());
-	QCOMPARE(m_img->match("rating:explicit"), QString("image is not \"explicit\""));
+	QCOMPARE(m_img->match(tokens, "rating:safe"), QString());
+	QCOMPARE(m_img->match(tokens, "rating:explicit"), QString("image is not \"explicit\""));
 
 	// Short versions
-	QCOMPARE(m_img->match("rating:s"), QString());
-	QCOMPARE(m_img->match("rating:e"), QString("image is not \"explicit\""));
+	QCOMPARE(m_img->match(tokens, "rating:s"), QString());
+	QCOMPARE(m_img->match(tokens, "rating:e"), QString("image is not \"explicit\""));
 
 	// Invert
-	QCOMPARE(m_img->match("rating:safe", true), QString("image is \"safe\""));
-	QCOMPARE(m_img->match("rating:explicit", true), QString());
+	QCOMPARE(m_img->match(tokens, "rating:safe", true), QString("image is \"safe\""));
+	QCOMPARE(m_img->match(tokens, "rating:explicit", true), QString());
 }
 
 void ImageTest::testMatchSource()
 {
+	auto tokens = m_img->tokens(m_profile);
+
 	// Full
-	QCOMPARE(m_img->match("source:http://google.com/toto/toto.jpg"), QString());
-	QCOMPARE(m_img->match("source:http://test.fr/toto/toto.jpg"), QString("image's source does not starts with \"http://test.fr/toto/toto.jpg\""));
+	QCOMPARE(m_img->match(tokens, "source:http://google.com/toto/toto.jpg"), QString());
+	QCOMPARE(m_img->match(tokens, "source:http://test.fr/toto/toto.jpg"), QString("image's source does not starts with \"http://test.fr/toto/toto.jpg\""));
 
 	// Short
-	QCOMPARE(m_img->match("source:http://google.com"), QString());
-	QCOMPARE(m_img->match("source:http://test.fr"), QString("image's source does not starts with \"http://test.fr\""));
+	QCOMPARE(m_img->match(tokens, "source:http://google.com"), QString());
+	QCOMPARE(m_img->match(tokens, "source:http://test.fr"), QString("image's source does not starts with \"http://test.fr\""));
 
 	// Invert
-	QCOMPARE(m_img->match("source:http://google.com", true), QString("image's source starts with \"http://google.com\""));
-	QCOMPARE(m_img->match("source:http://test.fr", true), QString());
+	QCOMPARE(m_img->match(tokens, "source:http://google.com", true), QString("image's source starts with \"http://google.com\""));
+	QCOMPARE(m_img->match(tokens, "source:http://test.fr", true), QString());
 }
 
 void ImageTest::testFilterNumeric()
