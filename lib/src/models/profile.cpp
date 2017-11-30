@@ -247,7 +247,7 @@ QPair<QString, QString> Profile::md5Action(QString md5)
 	QString action = m_settings->value("Save/md5Duplicates", "save").toString();
 	bool keepDeleted = m_settings->value("Save/keepDeletedMd5", false).toBool();
 
-	bool contains = m_md5s.contains(md5);
+	bool contains = !md5.isEmpty() && m_md5s.contains(md5);
 	QString path = contains ? m_md5s[md5] : QString();
 	bool exists = contains && QFile::exists(path);
 
@@ -288,7 +288,8 @@ QString Profile::md5Exists(QString md5)
  */
 void Profile::addMd5(QString md5, QString path)
 {
-	m_md5s.insert(md5, path);
+	if (!md5.isEmpty())
+	{ m_md5s.insert(md5, path); }
 }
 
 /**
