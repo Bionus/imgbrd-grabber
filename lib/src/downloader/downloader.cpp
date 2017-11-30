@@ -6,6 +6,7 @@
 #include "models/site.h"
 #include "models/page.h"
 #include "models/image.h"
+#include "models/post-filter.h"
 #include "logger.h"
 
 
@@ -315,7 +316,7 @@ void Downloader::finishedLoadingImages(Page *page)
 			// Blacklisted tags
 			if (!m_blacklist)
 			{
-				if (!img->blacklisted(m_blacklistedTags).empty())
+				if (!PostFilter::blacklisted(img->tokens(m_profile), m_blacklistedTags).empty())
 				{
 					++m_ignored;
 					continue;
@@ -450,7 +451,7 @@ void Downloader::finishedLoadingUrls(Page *page)
 			// Blacklisted tags
 			if (!m_blacklist)
 			{
-				if (!img->blacklisted(m_blacklistedTags).empty())
+				if (!PostFilter::blacklisted(img->tokens(m_profile), m_blacklistedTags).empty())
 				{
 					++m_ignored;
 					continue;

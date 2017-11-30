@@ -13,6 +13,7 @@
 #include "models/page.h"
 #include "models/profile.h"
 #include "models/filename.h"
+#include "models/post-filter.h"
 #include "sources/sourceswindow.h"
 #include "viewer/zoom-window.h"
 #include "reverse-search/reverse-search-loader.h"
@@ -217,7 +218,7 @@ QStringList searchTab::reasonsToFail(Page* page, QStringList completion, QString
 QColor searchTab::imageColor(QSharedPointer<Image> img) const
 {
 	// Blacklisted
-	QStringList detected = img->blacklisted(m_profile->getBlacklist());
+	QStringList detected = PostFilter::blacklisted(img->tokens(m_profile), m_profile->getBlacklist());
 	if (!detected.isEmpty())
 		return QColor("#000000");
 
@@ -498,9 +499,9 @@ void searchTab::finishedLoadingPreview()
 	{ log(QString("One of the thumbnails is empty (<a href=\"%1\">%1</a>).").arg(img->previewUrl().toString()), Logger::Error); }
 
 	// Download whitelist images on thumbnail view
-	QStringList detected = img->blacklisted(m_profile->getBlacklist());
+	QStringList detected = PostFilter::blacklisted(img->tokens(m_profile), m_profile->getBlacklist());
 	QStringList whitelistedTags(m_settings->value("whitelistedtags").toString().split(" "));
-	QStringList whitelisted = img->blacklisted(whitelistedTags);
+	QStringList whitelisted = PostFilter::blacklisted(img->tokens(m_profile), whitelistedTags);
 	if (!whitelisted.isEmpty() && m_settings->value("whitelist_download", "image").toString() == "page")
 	{
 		bool download = false;
@@ -1073,7 +1074,7 @@ void searchTab::webZoom(int id)
 
 	QSharedPointer<Image> image = m_images.at(id);
 
-	QStringList detected = image->blacklisted(m_profile->getBlacklist());
+	QStringList detected = PostFilter::blacklisted(image->tokens(m_profile), m_profile->getBlacklist());
 	if (!detected.isEmpty())
 	{
 		int reply = QMessageBox::question(parentWidget(), tr("Blacklist"), tr("%n tag figuring in the blacklist detected in this image: %1. Do you want to display it anyway?", "", detected.size()).arg(detected.join(", ")), QMessageBox::Yes | QMessageBox::No);
@@ -1346,7 +1347,7 @@ FixedSizeGridLayout *searchTab::createImagesLayout(QSettings *settings)
 
 bool searchTab::validateImage(const QSharedPointer<Image> &img, QString &error)
 {
-	QStringList detected = img->blacklisted(m_profile->getBlacklist());
+	QStringList detected = PostFilter::blacklisted(img->tokens(m_profile), m_profile->getBlacklist());
 	if (!detected.isEmpty() && m_settings->value("hideblacklisted", false).toBool())
 	{
 		error = QString("Image #%1 ignored. Reason: %2.").arg(img->id()).arg("\""+detected.join(", ")+"\"");

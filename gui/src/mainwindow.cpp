@@ -43,6 +43,7 @@
 #include "models/profile.h"
 #include "models/page.h"
 #include "models/favorite.h"
+#include "models/post-filter.h"
 #include "tabs/tabs-loader.h"
 #include "tabs/search-tab.h"
 #include "tabs/tag-tab.h"
@@ -1614,7 +1615,7 @@ void mainWindow::_getAll()
 void mainWindow::getAllGetImageIfNotBlacklisted(QSharedPointer<Image> img, int site_id)
 {
 	// Check if image is blacklisted
-	bool detected = !img->blacklisted(m_profile->getBlacklist()).isEmpty();
+	bool detected = !PostFilter::blacklisted(img->tokens(m_profile), m_profile->getBlacklist()).isEmpty();
 
 	if (detected && site_id >= 0 && !m_groupBatchs[site_id - 1].getBlacklisted)
 	{

@@ -12,6 +12,7 @@
 #include "models/site.h"
 #include "models/page.h"
 #include "models/profile.h"
+#include "models/post-filter.h"
 #include "settings/optionswindow.h"
 #include "tags/tag-stylist.h"
 #include "threads/image-loader.h"
@@ -1178,7 +1179,7 @@ int ZoomWindow::firstNonBlacklisted(int direction)
 
 	// Skip blacklisted images
 	auto blacklistedtags = m_profile->getBlacklist();
-	while (!m_images[index]->blacklisted(blacklistedtags).isEmpty() && index != first)
+	while (!PostFilter::blacklisted(m_images[index]->tokens(m_profile), blacklistedtags).isEmpty() && index != first)
 	{
 		index = (index + m_images.count() + direction) % m_images.count();
 	}

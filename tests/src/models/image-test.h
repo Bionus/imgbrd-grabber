@@ -24,17 +24,6 @@ class ImageTest : public TestSuite
 		void testMd5FromFile();
 		void testStylishedTags();
 		void testUnload();
-		void testBlacklisted();
-		void testMatchTag();
-		void testMatchUnknown();
-		void testMatchMathematical();
-		void testMatchDate();
-		void testMatchRating();
-		void testMatchSource();
-		void testFilterNumeric();
-		void testFilterString();
-		void testFilterSpecial();
-		void testFilterInvert();
 		void testValue();
 		void testLoadPreview();
 		void testLoadPreviewAbort();

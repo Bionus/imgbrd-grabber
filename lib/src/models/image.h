@@ -25,10 +25,7 @@ class Image : public QObject, public Downloadable
 		Image(Site *site, QMap<QString,QString> details, Profile *profile, Page *parent = Q_NULLPTR);
 		Image(const Image &other);
 		int			value() const;
-		QString		match(const QMap<QString, Token> &tokens, QString filter, bool invert = false) const;
-		QStringList	filter(const QStringList &filters) const;
 		QStringList	path(QString fn = "", QString pth = "", int counter = 0, bool complex = true, bool simple = false, bool maxLength = true, bool shouldFixFilename = true, bool getFull = false) const;
-		QStringList blacklisted(const QStringList &blacklistedTags, bool invert = true) const;
 		QStringList	stylishedTags(Profile *profile) const;
 		SaveResult  save(const QString &path, bool force = false, bool basic = false, bool addMd5 = true, bool startCommands = false, int count = 1, bool loadIfNecessary = false, bool postSave = true);
 		void		postSaving(const QString &path, bool addMd5 = true, bool startCommands = false, int count = 1, bool basic = false);

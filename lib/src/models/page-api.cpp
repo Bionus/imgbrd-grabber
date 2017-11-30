@@ -9,6 +9,7 @@
 #include "vendor/json.h"
 #include "logger.h"
 #include "functions.h"
+#include "models/post-filter.h"
 
 
 PageApi::PageApi(Page *parentPage, Profile *profile, Site *site, Api *api, QStringList tags, int page, int limit, QStringList postFiltering, bool smart, QObject *parent, int pool, int lastPage, int lastPageMinId, int lastPageMaxId)
@@ -307,7 +308,7 @@ void PageApi::parseImage(QMap<QString,QString> d, int position, QList<Tag> tags)
 
 	// Generate image
 	QSharedPointer<Image> img(new Image(m_site, d, m_profile, m_parentPage));
-	errors.append(img->filter(m_postFiltering));
+	errors.append(PostFilter::filter(img->tokens(m_profile), m_postFiltering));
 
 	// Add if everything is ok
 	if (errors.isEmpty())

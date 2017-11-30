@@ -4,6 +4,7 @@
 #include "models/image.h"
 #include "models/page.h"
 #include "models/site.h"
+#include "models/post-filter.h"
 
 
 LoaderQuery::LoaderQuery(Site *site, QMap<QString, QVariant> options)
@@ -40,7 +41,7 @@ LoaderData LoaderQuery::next()
 	for (const QSharedPointer<Image> &img : request.images())
 	{
 		// Skip blacklisted images
-		if (!getBlacklisted && !img->blacklisted(blacklist).empty())
+		if (!getBlacklisted && !PostFilter::blacklisted(img->tokens(profile), blacklist).empty())
 		{
 			ret.ignored.append(img);
 			continue;
