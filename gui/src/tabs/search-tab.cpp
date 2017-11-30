@@ -68,8 +68,6 @@ void searchTab::init()
 
 searchTab::~searchTab()
 {
-	for (const QList<Page*> &pages : m_pages)
-		qDeleteAll(pages);
 	m_pages.clear();
 	m_images.clear();
 	qDeleteAll(m_checkboxes);
@@ -111,12 +109,12 @@ void searchTab::optionsChanged()
 	ui_layoutResults->setHorizontalSpacing(m_settings->value("Margins/main", 10).toInt());
 }
 
-void searchTab::setTagsFromPages(const QMap<QString, QList<Page*>> &pages)
+void searchTab::setTagsFromPages(const QMap<QString, QList<QSharedPointer<Page>>> &pages)
 {
 	// Tags for this page
 	QList<Tag> tagList;
 	QStringList tagsGot;
-	for (QList<Page*> ps : pages)
+	for (const auto &ps : pages)
 	{
 		QList<Tag> tags = ps.last()->tags();
 		for (const Tag &tag : tags)
@@ -270,19 +268,21 @@ void searchTab::clear()
 	clearLayout(ui_layoutResults);
 
 	// Abort current loadings
-	for (QList<Page*> pages : m_pages)
+	for (const auto &pages : m_pages)
 	{
-		for (Page *page : pages)
+		for (auto page : pages)
 		{
 			page->abort();
 			page->abortTags();
 		}
 	}
-	//qDeleteAll(m_pages);
 	m_pages.clear();
 	for (const auto &img : m_images)
 	{ img->abortPreview(); }
 	m_images.clear();
+
+	m_selectedImagesPtrs.clear();
+	m_thumbnailsLoading.clear();
 }
 
 TextEdit *searchTab::createAutocomplete()
@@ -663,14 +663,14 @@ void searchTab::setMergedLabelText(QLabel *txt, const QList<QSharedPointer<Image
 	int firstPage = ui_spinPage->value() + m_endlessLoadOffset;
 	int lastPage = ui_spinPage->value() + m_endlessLoadOffset;
 
-	for (QList<Page*> ps : m_pages)
+	for (const auto &ps : m_pages)
 	{
-		Page *first = ps.first();
+		QSharedPointer<Page> first = ps.first();
 		int imagesCount = first->imagesCount();
 		if (imagesCount > 0)
 			sumImages += first->imagesCount();
 
-		for (Page *p : ps)
+		for (QSharedPointer<Page> p : ps)
 		{
 			int pagesCount = p->pagesCount();
 			if (pagesCount > maxPage)
@@ -688,7 +688,7 @@ void searchTab::setMergedLabelText(QLabel *txt, const QList<QSharedPointer<Image
 	{ links = "Multiple sources"; }
 	else
 	{
-		for (QList<Page*> ps : m_pages)
+		for (const auto &ps : m_pages)
 		{
 			auto p = ps.last();
 			links += QString(!links.isEmpty() ? ", " : "") + "<a href=\""+p->url().toString().toHtmlEscaped()+"\">"+p->site()->name()+"</a>";
@@ -706,7 +706,7 @@ void searchTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPoi
 	int firstPage = imgs.count() > 0 ? page->page() : 0;
 	int lastPage = imgs.count() > 0 ? page->page() : 0;
 	int totalCount = 0;
-	for (Page *p : m_pages[page->website()])
+	for (QSharedPointer<Page> p : m_pages[page->website()])
 	{
 		if (p->images().count() == 0)
 			continue;
@@ -1281,10 +1281,10 @@ void searchTab::loadPage()
 
 		// Keep pointer to the new page
 		if (m_lastPages.contains(page->website()))
-		{ page->setLastPage(m_lastPages[page->website()]); }
+		{ page->setLastPage(m_lastPages[page->website()].data()); }
 		if (!m_pages.contains(page->website()))
-		{ m_pages.insert(page->website(), QList<Page*>()); }
-		m_pages[page->website()].append(page);
+		{ m_pages.insert(page->website(), QList<QSharedPointer<Page>>()); }
+		m_pages[page->website()].append(QSharedPointer<Page>(page));
 
 		// Setup the layout
 		if (!merged)

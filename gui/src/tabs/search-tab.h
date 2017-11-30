@@ -53,7 +53,7 @@ class searchTab : public QWidget
 
 	protected:
 		void setSelectedSources(QSettings *settings);
-		void setTagsFromPages(const QMap<QString, QList<Page*>> &pages);
+		void setTagsFromPages(const QMap<QString, QList<QSharedPointer<Page> > > &pages);
 		void addHistory(QString tags, int page, int ipp, int cols);
 		QStringList reasonsToFail(Page *page, QStringList complete = QStringList(), QString *meant = nullptr);
 		QColor imageColor(QSharedPointer<Image> img) const;
@@ -150,8 +150,8 @@ class searchTab : public QWidget
 		QStringList m_completion;
 		QMap<QObject*, QSharedPointer<Image>> m_thumbnailsLoading;
 		QList<QSharedPointer<Image>> m_images;
-		QMap<QString, QList<Page*>> m_pages;
-		QMap<QString, Page*> m_lastPages;
+		QMap<QString, QList<QSharedPointer<Page>>> m_pages;
+		QMap<QString, QSharedPointer<Page>> m_lastPages;
 		QMap<Site*, QLabel*> m_siteLabels;
 		QMap<Site*, QVBoxLayout*> m_siteLayouts;
 		QMap<Page*, FixedSizeGridLayout*> m_layouts;

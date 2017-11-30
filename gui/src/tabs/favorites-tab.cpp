@@ -208,7 +208,7 @@ void favoritesTab::getPage()
 	bool unloaded = m_settings->value("getunloadedpages", false).toBool();
 	for (int i = 0; i < actuals.count(); i++)
 	{
-		Page *page = m_pages[actuals[i]].first();
+		auto page = m_pages[actuals[i]].first();
 		QString search = m_currentTags+" "+m_settings->value("add").toString().toLower().trimmed();
 		int perpage = unloaded ? ui->spinImagesPerPage->value() : page->images().count();
 		QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
@@ -226,7 +226,7 @@ void favoritesTab::getAll()
 	}
 	for (int i = 0; i < actuals.count(); i++)
 	{
-		Page *page = m_pages[actuals[i]].first();
+		auto page = m_pages[actuals[i]].first();
 		QString search = m_currentTags+" "+m_settings->value("add").toString().toLower().trimmed();
 		int limit = m_sites->value(actuals.at(i))->contains("Urls/1/Limit") ? m_sites->value(actuals.at(i))->value("Urls/1/Limit").toInt() : 0;
 		int perpage = qMin((limit > 0 ? limit : 1000), qMax(page->images().count(), page->imagesCount()));

@@ -137,7 +137,7 @@ bool poolTab::read(const QJsonObject &json, bool preload)
 
 void poolTab::getPage()
 {
-	Page *page = m_pages[ui->comboSites->currentText()].first();
+	auto page = m_pages[ui->comboSites->currentText()].first();
 
 	bool unloaded = m_settings->value("getunloadedpages", false).toBool();
 	int perPage = unloaded ? ui->spinImagesPerPage->value() : page->images().count();
@@ -149,7 +149,7 @@ void poolTab::getPage()
 }
 void poolTab::getAll()
 {
-	Page *page = m_pages[ui->comboSites->currentText()].first();
+	auto page = m_pages[ui->comboSites->currentText()].first();
 
 	QString tags = "pool:"+QString::number(ui->spinPool->value())+" "+m_search->toPlainText()+" "+m_settings->value("add").toString().trimmed();
 	int limit = m_sites->value(ui->comboSites->currentText())->contains("Urls/1/Limit") ? m_sites->value(ui->comboSites->currentText())->value("Urls/1/Limit").toInt() : 0;

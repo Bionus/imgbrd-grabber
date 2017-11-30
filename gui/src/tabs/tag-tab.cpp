@@ -202,7 +202,7 @@ void tagTab::getAll()
 
 	for (const QString &actual : actuals)
 	{
-		Page *page = m_pages[actual].first();
+		QSharedPointer<Page> page = m_pages[actual].first();
 
 		int highLimit = page->highLimit();
 		int currentCount = page->images().count();
