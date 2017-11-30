@@ -21,7 +21,7 @@
 	</Urls>
 	<Regex>
 		<Tags><![CDATA[<li class="tag-type-(?<type>[^"]+)">(?:[^<]*<a[^>]*>[^<]*</a>)*[^<]*<a[^>]*>(?<tag>[^<]*)</a>[^<]*<span[^>]*>(?<count>\d+)</span>[^<]*</li>]]></Tags>
-		<Image><![CDATA[<span[^>]*(?: id="?\w(?<id>\d+)"?)?>\s*<a[^>]*(?: id="?\w(?<id_2>\d+)"?)[^>]*>\s*<img [^>]*src="(?<preview_url>[^"]+\/thumbnail_(?<md5>[^.]+)\.[^"]+)" [^>]*title="\s*(?<tags>[^"]+)"[^>]*\/?>\s*<\/a>|<img\s+class="preview"\s+src="(?<preview_url_2>[^"]+\/thumbnail_(?<md5_2>[^.]+)\.[^"]+)" [^>]*title="\s*(?<tags_2>[^"]+)"[^>]*\/?>]]></Image>
+		<Image><![CDATA[<span[^>]*(?: id="?\w(?<id>\d+)"?)?>\s*<a[^>]*(?: id="?\w(?<id_2>\d+)"?)[^>]*>\s*<img [^>]*(?:src|data-original)="(?<preview_url>[^"]+\/thumbnail_(?<md5>[^.]+)\.[^"]+)" [^>]*title="\s*(?<tags>[^"]+)"[^>]*\/?>\s*<\/a>|<img\s+class="preview"\s+src="(?<preview_url_2>[^"]+\/thumbnail_(?<md5_2>[^.]+)\.[^"]+)" [^>]*title="\s*(?<tags_2>[^"]+)"[^>]*\/?>]]></Image>
 		<TagApi><![CDATA[<tr>\s*<td>(?<count>\d+)<\/td>\s*<td><span class="tag-type-(?<type>[^"]+)"><a[^>]+>(?<tag>.+?)<\/a><\/span><\/td>]]></TagApi>
 		<ImageUrl><![CDATA[<img[^>]+src="([^"]+)"[^>]+onclick="Note\.toggle\(\);"[^>]*/>]]></ImageUrl>
         <LastPage><![CDATA[<a href="[^"]+pid=(\d+)[^"]*" alt="last page"[^>]*>]]></LastPage>
