@@ -1156,6 +1156,7 @@ void mainWindow::getAll(bool all)
 	m_getAllDownloading.clear();
 	m_getAllSkippedImages.clear();
 	m_batchPending.clear();
+	m_lastDownloader = nullptr;
 
 	if (!all)
 	{
@@ -1293,6 +1294,7 @@ void mainWindow::getAllFinishedLogins()
 {
 	bool usePacking = m_settings->value("packing_enable", true).toBool();
 	int realConstImagesPerPack = m_settings->value("packing_size", 1000).toInt();
+	realConstImagesPerPack = 5;
 
 	int total = 0;
 	for (int j : m_batchPending.keys())
@@ -1406,7 +1408,6 @@ void mainWindow::getAllFinishedImages(QList<QSharedPointer<Image>> images)
 {
 	auto *downloader = (Downloader*)QObject::sender();
 	m_downloaders.removeAll(downloader);
-	m_downloadersDone.append(downloader);
 	m_getAllIgnoredPre += downloader->ignoredCount();
 
 	m_getAllRemaining.append(images);
@@ -1414,6 +1415,10 @@ void mainWindow::getAllFinishedImages(QList<QSharedPointer<Image>> images)
 	int row = downloader->getData().toInt();
 	m_progressBars[row]->setValue(0);
 	m_progressBars[row]->setMaximum(images.count());
+
+	if (m_lastDownloader != nullptr)
+	{ m_lastDownloader->deleteLater(); }
+	m_lastDownloader = downloader;
 
 	// Update image to take into account unlisted images
 	int unlisted = m_batchCurrentPackSize - images.count();
@@ -1900,12 +1905,11 @@ void mainWindow::getAllFinished()
 	m_progressdialog->setTotalValue(m_progressdialog->totalMax());
 
 	// Delete objects
-	for (Downloader *d : m_downloadersDone)
+	if (m_lastDownloader != nullptr)
 	{
-		d->clear();
+		m_lastDownloader->deleteLater();
+		m_lastDownloader = nullptr;
 	}
-	qDeleteAll(m_downloadersDone);
-	m_downloadersDone.clear();
 
 	// Retry in case of error
 	int failedCount = m_getAllErrors + m_getAllSkipped;

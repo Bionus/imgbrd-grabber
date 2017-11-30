@@ -200,7 +200,8 @@ class mainWindow : public QMainWindow
 		QMap<int, DownloadQueryGroup>	m_batchPending;
 		QSet<int>						m_batchDownloading;
 		QStringList			m_lineFilename_completer, m_lineFolder_completer;
-		QList<Downloader*>  m_downloaders, m_downloadersDone;
+		QList<Downloader*>  m_downloaders;
+		Downloader			*m_lastDownloader;
 		QQueue<Downloader*>	m_waitingDownloaders;
 		QList<Site*>		m_getAllLogins;
 		int					m_batchAutomaticRetries, m_getAllImagesCount, m_batchCurrentPackSize;
