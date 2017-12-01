@@ -10,14 +10,17 @@
 #include "functions.h"
 
 
-#if defined NIGHTLY || defined QT_DEBUG
-	const QString updaterBaseUrl = "https://raw.githubusercontent.com/Bionus/imgbrd-grabber/develop/release/sites";
-#else
-	const QString updaterBaseUrl = "https://raw.githubusercontent.com/Bionus/imgbrd-grabber/master/release/sites";
-#endif
+QString getUpdaterBaseUrl()
+{
+	#if defined NIGHTLY || defined QT_DEBUG
+		return QStringLiteral("https://raw.githubusercontent.com/Bionus/imgbrd-grabber/develop/release/sites");
+	#else
+		return QStringLiteral("https://raw.githubusercontent.com/Bionus/imgbrd-grabber/master/release/sites");
+	#endif
+}
 
 Source::Source(Profile *profile, QString dir)
-	: m_dir(dir), m_name(QFileInfo(dir).fileName()), m_profile(profile), m_updater(m_name, m_dir, updaterBaseUrl)
+	: m_dir(dir), m_name(QFileInfo(dir).fileName()), m_profile(profile), m_updater(m_name, m_dir, getUpdaterBaseUrl())
 {
 	// Load XML details for this source from its model file
 	QFile file(m_dir + "/model.xml");
