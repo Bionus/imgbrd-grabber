@@ -65,8 +65,6 @@ class Site : public QObject
 		QNetworkRequest makeRequest(QUrl url, Page *page = nullptr, QString referer = "", Image *img = nullptr);
 		QNetworkReply *get(QUrl url, Page *page = nullptr, QString referer = "", Image *img = nullptr);
 		void getAsync(QueryType type, QUrl url, std::function<void(QNetworkReply *)> callback, Page *page = nullptr, QString referer = "", Image *img = nullptr);
-		static QList<Site*> getSites(Profile *profile, QStringList sources);
-		static QMap<QString, Site *> getAllSites(Profile *profile);
 		QUrl fixUrl(const QUrl &url) const { return fixUrl(url.toString()); }
 		QUrl fixUrl(const QString &url) const;
 		QUrl fixUrl(const QString &url, const QUrl &old) const;

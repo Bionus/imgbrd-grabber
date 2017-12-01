@@ -30,7 +30,7 @@ class SiteWindow : public QDialog
 	private:
 		Ui::SiteWindow *ui;
 		Profile *m_profile;
-		QList<Source*> *m_sources;
+		QList<Source*> m_sources;
 		QMap<QString ,Site*> *m_sites;
 		QString m_url;
 };

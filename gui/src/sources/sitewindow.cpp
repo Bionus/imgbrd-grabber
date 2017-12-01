@@ -20,8 +20,8 @@ SiteWindow::SiteWindow(Profile *profile, QMap<QString ,Site*> *sites, QWidget *p
 	ui->comboBox->setDisabled(true);
 	ui->checkBox->setChecked(true);
 
-	m_sources = Source::getAllSources(nullptr);
-	for (Source *source : *m_sources)
+	m_sources = profile->getSources().values();
+	for (Source *source : m_sources)
 	{
 		ui->comboBox->addItem(QIcon(source->getPath() + "/icon.png"), source->getName());
 	}
@@ -52,10 +52,10 @@ void SiteWindow::accept()
 	if (ui->checkBox->isChecked())
 	{
 		ui->progressBar->setValue(0);
-		ui->progressBar->setMaximum(m_sources->count());
+		ui->progressBar->setMaximum(m_sources.count());
 		ui->progressBar->show();
 
-		SourceGuesser sourceGuesser(m_url, *m_sources);
+		SourceGuesser sourceGuesser(m_url, m_sources);
 		connect(&sourceGuesser, &SourceGuesser::progress, ui->progressBar, &QProgressBar::setValue);
 		connect(&sourceGuesser, &SourceGuesser::finished, this, &SiteWindow::finish);
 		sourceGuesser.start();
@@ -64,7 +64,7 @@ void SiteWindow::accept()
 	}
 
 	Source *src = nullptr;
-	for (Source *source : *m_sources)
+	for (Source *source : m_sources)
 	{
 		if (source->getName() == ui->comboBox->currentText())
 		{

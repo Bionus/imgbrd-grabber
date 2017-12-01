@@ -16,6 +16,17 @@ Profile::Profile(QString path)
 {
 	m_settings = new QSettings(m_path + "/settings.ini", QSettings::IniFormat);
 
+	// Load sources
+	QStringList dirs = QDir(m_path + "/sites/").entryList(QDir::Dirs | QDir::NoDotAndDotDot);
+	for (const QString &dir : dirs)
+	{
+		Source *source = new Source(this, m_path + "/sites/" + dir);
+		m_sources.insert(dir, source);
+
+		for (Site *site : source->getSites())
+			m_sites.insert(site->url(), site);
+	}
+
 	// Load favorites
 	QFile fileFavorites(m_path + "/favorites.txt");
 	if (fileFavorites.open(QFile::ReadOnly | QFile::Text))
@@ -320,7 +331,7 @@ void Profile::addAutoComplete(QString tag)
 
 void Profile::addSite(Site *site)
 {
-	Q_UNUSED(site);
+	m_sites.insert(site->url(), site);
 	emit sitesChanged();
 }
 
@@ -353,3 +364,14 @@ Commands &Profile::getCommands()				{ return *m_commands;			}
 QStringList &Profile::getAutoComplete()			{ return m_autoComplete;		}
 QStringList &Profile::getCustomAutoComplete()	{ return m_customAutoComplete;	}
 QStringList &Profile::getBlacklist()			{ return m_blacklistedTags;		}
+const QMap<QString, Source*> &Profile::getSources() const	{ return m_sources;	}
+const QMap<QString, Site*> &Profile::getSites() const		{ return m_sites;	}
+
+QList<Site*> Profile::getFilteredSites(QStringList urls) const
+{
+	QList<Site*> ret;
+	for (const QString &url : urls)
+		if (m_sites.contains(url))
+			ret.append(m_sites.value(url));
+	return ret;
+}

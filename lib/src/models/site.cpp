@@ -364,30 +364,6 @@ QNetworkReply *Site::getRequest(const QNetworkRequest &request)
 }
 
 
-QList<Site*> Site::getSites(Profile *profile, QStringList sources)
-{
-	QMap<QString, Site*> sites = Site::getAllSites(profile);
-
-	QList<Site*> ret;
-	for (const QString &source : sources)
-		if (sites.contains(source))
-			ret.append(sites.value(source));
-
-	return ret;
-}
-QMap<QString, Site*> Site::getAllSites(Profile *profile)
-{
-	QMap<QString, Site*> ret;
-
-	QList<Source*> *sources = Source::getAllSources(profile);
-	for (Source *source : *sources)
-		for (Site *site : source->getSites())
-			ret.insert(site->url(), site);
-
-	return ret;
-}
-
-
 void Site::loadTags(int page, int limit)
 {
 	initManager();

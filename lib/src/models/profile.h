@@ -11,6 +11,7 @@
 
 class Commands;
 class Site;
+class Source;
 
 class Profile : public QObject
 {
@@ -67,6 +68,9 @@ class Profile : public QObject
 		QStringList &getAutoComplete();
 		QStringList &getCustomAutoComplete();
 		QStringList &getBlacklist();
+		const QMap<QString, Source*> &getSources() const;
+		const QMap<QString, Site*> &getSites() const;
+		QList<Site*> getFilteredSites(QStringList urls) const;
 
 	private:
 		void syncFavorites();
@@ -91,6 +95,8 @@ class Profile : public QObject
 		QStringList		m_customAutoComplete;
 		QStringList		m_blacklistedTags;
 		QHash<QString, QString>	m_md5s;
+		QMap<QString, Source*>	m_sources;
+		QMap<QString, Site*>	m_sites;
 };
 
 #endif // PROFILE_H

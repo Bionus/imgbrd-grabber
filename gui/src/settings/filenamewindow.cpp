@@ -4,6 +4,7 @@
 #include "models/image.h"
 #include "models/site.h"
 #include "models/filename.h"
+#include "models/profile.h"
 
 
 FilenameWindow::FilenameWindow(Profile *profile, QString value, QWidget *parent)
@@ -119,7 +120,7 @@ QString FilenameWindow::format()
 
 void FilenameWindow::done(int r)
 {
-	QMap<QString, Site*> sites = Site::getAllSites(m_profile);
+	QMap<QString, Site*> sites = m_profile->getSites();
 
 	if (QDialog::Accepted == r && ui->radioJavascript->isChecked() && !sites.isEmpty())
 	{

@@ -10,8 +10,6 @@
 #include "functions.h"
 
 
-QList<Source*> *g_allSources = Q_NULLPTR;
-
 #if defined NIGHTLY || defined QT_DEBUG
 	const QString updaterBaseUrl = "https://raw.githubusercontent.com/Bionus/imgbrd-grabber/develop/release/sites";
 #else
@@ -109,24 +107,4 @@ Api *Source::getApi(QString name) const
 		if (api->getName() == name)
 			return api;
 	return nullptr;
-}
-
-
-
-QList<Source*> *Source::getAllSources(Profile *profile)
-{
-	if (g_allSources != Q_NULLPTR)
-		return g_allSources;
-
-	auto *sources = new QList<Source*>();
-	QStringList dirs = QDir(profile->getPath() + "/sites/").entryList(QDir::Dirs | QDir::NoDotAndDotDot);
-
-	for (const QString &dir : dirs)
-	{
-		Source *source = new Source(profile, profile->getPath() + "/sites/" + dir);
-		sources->append(source);
-	}
-
-	g_allSources = sources;
-	return g_allSources;
 }

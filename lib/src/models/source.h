@@ -28,9 +28,6 @@ class Source : public QObject
 		Profile *getProfile() const;
 		const SourceUpdater &getUpdater() const;
 
-		// Get an unique pointer to the list of all sources
-		static QList<Source*> *getAllSources(Profile *profile);
-
 	private:
 		QString m_dir;
 		QString m_name;

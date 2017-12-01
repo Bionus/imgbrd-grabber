@@ -344,7 +344,7 @@ void mainWindow::initialLoginsDone()
 
 void mainWindow::loadSites()
 {
-	QMap<QString, Site*> sites = Site::getAllSites(m_profile);
+	QMap<QString, Site*> sites = m_profile->getSites();
 
 	QStringList current = m_sites.keys();
 	QStringList news = sites.keys();

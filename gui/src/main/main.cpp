@@ -161,7 +161,7 @@ int main(int argc, char *argv[])
 		Downloader *dwnldr = new Downloader(profile,
 											parser.value(tagsOption).split(" ", QString::SkipEmptyParts),
 											parser.value(postfilteringOption).split(" ", QString::SkipEmptyParts),
-											Site::getSites(profile, parser.value(sourceOption).split(" ", QString::SkipEmptyParts)),
+											profile->getFilteredSites(parser.value(sourceOption).split(" ", QString::SkipEmptyParts)),
 											parser.value(pageOption).toInt(),
 											parser.value(limitOption).toInt(),
 											parser.value(perpageOption).toInt(),

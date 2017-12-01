@@ -98,12 +98,12 @@ void SiteTest::testGetSites()
 {
 	QList<Site*> sites;
 
-	sites = Site::getSites(&profile, QStringList() << "danbooru.donmai.us");
+	sites = profile.getFilteredSites(QStringList() << "danbooru.donmai.us");
 	QCOMPARE(sites.count(), 1);
 	QCOMPARE(sites.first()->url(), QString("danbooru.donmai.us"));
 	QCOMPARE(sites.first()->type(), QString("Danbooru (2.0)"));
 
-	sites = Site::getSites(&profile, QStringList() << "test (does not exist)" << "danbooru.donmai.us");
+	sites = profile.getFilteredSites(QStringList() << "test (does not exist)" << "danbooru.donmai.us");
 	QCOMPARE(sites.count(), 1);
 	QCOMPARE(sites.first()->url(), QString("danbooru.donmai.us"));
 	QCOMPARE(sites.first()->type(), QString("Danbooru (2.0)"));

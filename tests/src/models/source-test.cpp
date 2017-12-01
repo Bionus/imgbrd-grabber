@@ -66,13 +66,5 @@ void SourceTest::testIgnoreEmptySites()
 	QVERIFY(source.getSites().isEmpty());
 }
 
-void SourceTest::testGetAllCached()
-{
-	QList<Source*> *sources1 = Source::getAllSources(&profile);
-	QList<Source*> *sources2 = Source::getAllSources(&profile);
-
-	QCOMPARE(sources1, sources2);
-}
-
 
 static SourceTest instance;

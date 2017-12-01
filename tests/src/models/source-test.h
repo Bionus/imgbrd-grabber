@@ -20,12 +20,6 @@ class SourceTest : public TestSuite
 		void testMissingSites();
 		void testIgnoreEmptySites();
 
-		/**
-		 * Multiple calls should always return the very same pointer (not only the same
-		 * data) as the result should be cached.
-		 */
-		void testGetAllCached();
-
 	private:
 		QSettings *m_settings;
 		Source *m_source;
