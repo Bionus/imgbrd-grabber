@@ -10,14 +10,14 @@
  * Constructor of the AddGroupWindow class, generating its window.
  * @param	parent		The parent window
  */
-AddGroupWindow::AddGroupWindow(QString selected, QMap<QString, Site*> sites, Profile *profile, QWidget *parent)
-	: QDialog(parent), ui(new Ui::AddGroupWindow), m_sites(sites), m_settings(profile->getSettings())
+AddGroupWindow::AddGroupWindow(Site *selected, Profile *profile, QWidget *parent)
+	: QDialog(parent), ui(new Ui::AddGroupWindow), m_sites(profile->getSites()), m_settings(profile->getSettings())
 {
 	ui->setupUi(this);
 
 	QStringList keys = m_sites.keys();
 	ui->comboSites->addItems(keys);
-	ui->comboSites->setCurrentIndex(keys.indexOf(selected));
+	ui->comboSites->setCurrentIndex(keys.indexOf(selected->url()));
 
 	QStringList completion;
 	completion.append(profile->getAutoComplete());

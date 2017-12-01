@@ -12,8 +12,8 @@
 #include "helpers.h"
 
 
-BlacklistFix1::BlacklistFix1(Profile *profile, QMap<QString,Site*> sites, QWidget *parent)
-	: QDialog(parent), ui(new Ui::BlacklistFix1), m_profile(profile), m_sites(sites)
+BlacklistFix1::BlacklistFix1(Profile *profile, QWidget *parent)
+	: QDialog(parent), ui(new Ui::BlacklistFix1), m_profile(profile), m_sites(profile->getSites())
 {
 	ui->setupUi(this);
 

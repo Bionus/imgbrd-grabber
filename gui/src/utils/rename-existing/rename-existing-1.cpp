@@ -13,8 +13,8 @@
 #include "helpers.h"
 
 
-RenameExisting1::RenameExisting1(Profile *profile, QMap<QString,Site*> sites, QWidget *parent)
-	: QDialog(parent), ui(new Ui::RenameExisting1), m_profile(profile), m_sites(sites)
+RenameExisting1::RenameExisting1(Profile *profile, QWidget *parent)
+	: QDialog(parent), ui(new Ui::RenameExisting1), m_profile(profile), m_sites(profile->getSites())
 {
 	ui->setupUi(this);
 

@@ -9,15 +9,15 @@
 #include "helpers.h"
 
 
-TagLoader::TagLoader(Profile *profile, QMap<QString, Site *> sites, QWidget *parent)
-	: QDialog(parent), ui(new Ui::TagLoader), m_profile(profile), m_sites(sites)
+TagLoader::TagLoader(Profile *profile, QWidget *parent)
+	: QDialog(parent), ui(new Ui::TagLoader), m_profile(profile), m_sites(profile->getSites())
 {
 	ui->setupUi(this);
 
 	QStringList keys;
-	for (const QString &key : sites.keys())
+	for (const QString &key : m_sites.keys())
 	{
-		Site *site = sites[key];
+		Site *site = m_sites[key];
 		if (!getCompatibleApis(site).isEmpty())
 		{
 			m_options.append(key);

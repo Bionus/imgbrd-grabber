@@ -18,13 +18,13 @@
  * @param	favorites	List of favorites tags, needed for coloration
  * @param	parent		The parent window
  */
-AddUniqueWindow::AddUniqueWindow(QString selected, QMap<QString,Site*> sites, Profile *profile, QWidget *parent)
-	: QDialog(parent), ui(new Ui::AddUniqueWindow), m_sites(sites), m_profile(profile)
+AddUniqueWindow::AddUniqueWindow(Site *selected, Profile *profile, QWidget *parent)
+	: QDialog(parent), ui(new Ui::AddUniqueWindow), m_sites(profile->getSites()), m_profile(profile)
 {
 	ui->setupUi(this);
 
 	ui->comboSites->addItems(m_sites.keys());
-	ui->comboSites->setCurrentIndex(m_sites.keys().indexOf(selected));
+	ui->comboSites->setCurrentIndex(m_sites.keys().indexOf(selected->url()));
 
 	QSettings *settings = profile->getSettings();
 	ui->lineFolder->setText(settings->value("Save/path").toString());

@@ -16,8 +16,8 @@
  *
  * @param parent	The parent window
  */
-startWindow::startWindow(QMap<QString, Site*> *sites, Profile *profile, QWidget *parent)
-	: QDialog(parent), ui(new Ui::startWindow), m_profile(profile), m_sites(sites)
+startWindow::startWindow(Profile *profile, QWidget *parent)
+	: QDialog(parent), ui(new Ui::startWindow), m_profile(profile)
 {
 	ui->setupUi(this);
 	ui->labelHelp->setText(ui->labelHelp->text().replace("{website}", PROJECT_WEBSITE_URL));
@@ -31,7 +31,7 @@ startWindow::startWindow(QMap<QString, Site*> *sites, Profile *profile, QWidget 
 	ui->comboLanguage->setCurrentText("English");
 
 	// Sources
-	QStringList sources = m_sites->keys();
+	QStringList sources = profile->getSites().keys();
 	ui->comboSource->addItems(sources);
 	if (sources.contains("danbooru.donmai.us"))
 	{ ui->comboSource->setCurrentText("danbooru.donmai.us"); }

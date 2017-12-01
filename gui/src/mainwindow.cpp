@@ -62,6 +62,7 @@ mainWindow::mainWindow(Profile *profile)
 void mainWindow::init(const QStringList &args, const QMap<QString, QString> &params)
 {
 	m_settings = m_profile->getSettings();
+	auto sites = m_profile->getSites();
 
 	ThemeLoader themeLoader(savePath("themes/", true));
 	themeLoader.setTheme(m_settings->value("theme", "Default").toString());
@@ -143,9 +144,7 @@ void mainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	ui->tableBatchUniques->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
 	log("Loading sources", Logger::Debug);
-	loadSites();
-
-	if (m_sites.empty())
+	if (sites.empty())
 	{
 		QMessageBox::critical(this, tr("No source found"), tr("No source found. Do you have a configuration problem? Try to reinstall the program."));
 		qApp->quit();
@@ -155,9 +154,10 @@ void mainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	else
 	{
 		QString srsc = "";
-		for (int i = 0; i < m_sites.size(); ++i)
-		{ srsc += (i != 0 ? ", " : "") + m_sites.keys().at(i) + " (" + m_sites.values().at(i)->type() + ")"; }
-		log(QString("%1 source%2 found: %3").arg(m_sites.size()).arg(m_sites.size() > 1 ? "s" : "").arg(srsc), Logger::Info);
+		QStringList keys = sites.keys();
+		for (const QString &key : keys)
+		{ srsc += (!srsc.isEmpty() ? ", " : "") + key + " (" + sites.value(key)->type() + ")"; }
+		log(QString("%1 source%2 found: %3").arg(sites.size()).arg(sites.size() > 1 ? "s" : "").arg(srsc), Logger::Info);
 	}
 
 	ui->actionClosetab->setShortcut(QKeySequence::Close);
@@ -225,7 +225,7 @@ void mainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 		ui->tabWidget->setCornerWidget(add);
 
 	// Favorites tab
-	m_favoritesTab = new favoritesTab(&m_sites, m_profile, this);
+	m_favoritesTab = new favoritesTab(&m_profile->getSites(), m_profile, this);
 	connect(m_favoritesTab, &searchTab::batchAddGroup, this, &mainWindow::batchAddGroup);
 	connect(m_favoritesTab, SIGNAL(batchAddUnique(DownloadQueryImage)), this, SLOT(batchAddUnique(DownloadQueryImage)));
 	connect(m_favoritesTab, &searchTab::titleChanged, this, &mainWindow::updateTabTitle);
@@ -236,30 +236,29 @@ void mainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	// Load given files
 	parseArgs(args, params);
 
-	// Initial login and selected sources setup
-	QStringList keys = m_sites.keys();
+	// Get list of selected sources
+	QStringList keys = sites.keys();
 	QString sav = m_settings->value("sites", "1").toString();
-	m_waitForLogin = 0;
-	QList<Site*> requiredLogins;
-	for (int i = 0; i < m_sites.count(); i++)
+	for (int i = 0; i < qMin(sites.count(), sav.count()); i++)
 	{
-		if (i < sav.count() && sav[i] == '1')
+		if (sav[i] == '1')
 		{
-			m_selectedSources.append(true);
-			connect(m_sites[keys[i]], &Site::loggedIn, this, &mainWindow::initialLoginsFinished);
-			requiredLogins.append(m_sites[keys[i]]);
+			Site *site = sites[keys[i]];
+			connect(site, &Site::loggedIn, this, &mainWindow::initialLoginsFinished);
+			m_selectedSites.append(site);
 		}
-		else
-		{ m_selectedSources.append(false); }
 	}
-	if (requiredLogins.isEmpty())
+
+	// Initial login on selected sources
+	m_waitForLogin = 0;
+	if (m_selectedSites.isEmpty())
 	{
 		initialLoginsDone();
 	}
 	else
 	{
-		m_waitForLogin += requiredLogins.count();
-		for (Site *site : requiredLogins)
+		m_waitForLogin += m_selectedSites.count();
+		for (Site *site : m_selectedSites)
 			site->login();
 	}
 
@@ -280,7 +279,6 @@ void mainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 
 	connect(m_profile, &Profile::favoritesChanged, this, &mainWindow::updateFavorites);
 	connect(m_profile, &Profile::keptForLaterChanged, this, &mainWindow::updateKeepForLater);
-	connect(m_profile, &Profile::sitesChanged, this, &mainWindow::loadSites);
 	updateFavorites();
 	updateKeepForLater();
 
@@ -342,20 +340,6 @@ void mainWindow::initialLoginsDone()
 	m_forcedTab = -1;
 }
 
-void mainWindow::loadSites()
-{
-	QMap<QString, Site*> sites = m_profile->getSites();
-
-	QStringList current = m_sites.keys();
-	QStringList news = sites.keys();
-
-	for (const QString &k : news)
-	{
-		if (!current.contains(k))
-		{ m_sites.insert(k, sites.value(k)); }
-	}
-}
-
 mainWindow::~mainWindow()
 {
 	delete m_profile;
@@ -391,7 +375,7 @@ void mainWindow::onFirstLoad()
 	}
 
 	// Open startup window
-	auto *swin = new startWindow(&m_sites, m_profile, this);
+	auto *swin = new startWindow(m_profile, this);
 	connect(swin, SIGNAL(languageChanged(QString)), this, SLOT(loadLanguage(QString)));
 	connect(swin, &startWindow::settingsChanged, this, &mainWindow::on_buttonInitSettings_clicked);
 	connect(swin, &startWindow::sourceChanged, this, &mainWindow::setSource);
@@ -400,7 +384,7 @@ void mainWindow::onFirstLoad()
 
 void mainWindow::addTab(QString tag, bool background, bool save)
 {
-	auto *w = new tagTab(&m_sites, m_profile, this);
+	auto *w = new tagTab(&m_profile->getSites(), m_profile, this);
 	this->addSearchTab(w, background, save);
 
 	if (!tag.isEmpty())
@@ -410,7 +394,7 @@ void mainWindow::addTab(QString tag, bool background, bool save)
 }
 void mainWindow::addPoolTab(int pool, QString site, bool background, bool save)
 {
-	auto *w = new poolTab(&m_sites, m_profile, this);
+	auto *w = new poolTab(&m_profile->getSites(), m_profile, this);
 	this->addSearchTab(w, background, save);
 
 	if (!site.isEmpty())
@@ -465,7 +449,7 @@ bool mainWindow::loadTabs(const QString &filename)
 	QList<searchTab*> tabs;
 	int currentTab;
 
-	if (!TabsLoader::load(filename, tabs, currentTab, m_profile, m_sites, this))
+	if (!TabsLoader::load(filename, tabs, currentTab, m_profile, m_profile->getSites(), this))
 		return false;
 
 	bool preload = m_settings->value("preloadAllTabs", false).toBool();
@@ -509,7 +493,7 @@ void mainWindow::restoreLastClosedTab()
 		return;
 
 	QJsonObject infos = m_closedTabs.takeLast();
-	searchTab *tab = TabsLoader::loadTab(infos, m_profile, m_sites, this, true);
+	searchTab *tab = TabsLoader::loadTab(infos, m_profile, m_profile->getSites(), this, true);
 	addSearchTab(tab);
 
 	ui->actionRestoreLastClosedTab->setEnabled(!m_closedTabs.isEmpty());
@@ -818,12 +802,13 @@ void mainWindow::updateBatchGroups(int y, int x)
 			case 9:	m_groupBatchs[y].getBlacklisted = (val != "false");	break;
 
 			case 2:
-				if (!m_sites.contains(val))
+				if (!m_profile->getSites().contains(val))
 				{
 					error(this, tr("This source is not valid."));
 					ui->tableBatchGroups->item(y, x)->setText(m_groupBatchs[y].site->url());
 				}
-				m_groupBatchs[y].site = m_sites.value(val);
+				else
+				{ m_groupBatchs[y].site = m_profile->getSites().value(val); }
 				break;
 
 			case 4:
@@ -854,41 +839,23 @@ void mainWindow::updateBatchGroups(int y, int x)
 	}
 }
 
-QList<Site*> mainWindow::getSelectedSites()
-{
-	if (m_tabs.count() > 0)
-		m_selectedSources = m_tabs[0]->sources();
-
-	QList<Site*> selected;
-	for (int i = 0; i < m_selectedSources.count(); i++)
-		if (m_selectedSources[i])
-			selected.append(m_sites.values().at(i));
-
-	return selected;
-}
 Site* mainWindow::getSelectedSiteOrDefault()
 {
-	QList<Site*> selected = getSelectedSites();
+	if (m_selectedSites.isEmpty())
+		return m_profile->getSites().first();
 
-	if (selected.isEmpty())
-		return m_sites.first();
-
-	return selected.first();
+	return m_selectedSites.first();
 }
 
 void mainWindow::addGroup()
 {
-	QString selected = getSelectedSiteOrDefault()->name();
-
-	AddGroupWindow *wAddGroup = new AddGroupWindow(selected, m_sites, m_profile, this);
+	AddGroupWindow *wAddGroup = new AddGroupWindow(getSelectedSiteOrDefault(), m_profile, this);
 	connect(wAddGroup, &AddGroupWindow::sendData, this, &mainWindow::batchAddGroup);
 	wAddGroup->show();
 }
 void mainWindow::addUnique()
 {
-	QString selected = getSelectedSiteOrDefault()->name();
-
-	AddUniqueWindow *wAddUnique = new AddUniqueWindow(selected, m_sites, m_profile, this);
+	AddUniqueWindow *wAddUnique = new AddUniqueWindow(getSelectedSiteOrDefault(), m_profile, this);
 	connect(wAddUnique, SIGNAL(sendData(DownloadQueryImage)), this, SLOT(batchAddUnique(DownloadQueryImage)));
 	wAddUnique->show();
 }
@@ -1073,15 +1040,21 @@ void mainWindow::optionsClosed()
 
 void mainWindow::setSource(QString source)
 {
+	if (!m_profile->getSites().contains(source))
+		return;
+
+	m_selectedSites.clear();
+	m_selectedSites.append(m_profile->getSites().value(source));
+
 	if (m_tabs.isEmpty())
 		return;
 
 	QList<bool> sel;
-	QStringList keys = m_sites.keys();
+	QStringList keys = m_profile->getSites().keys();
 	for (const QString &key : keys)
 	{ sel.append(key == source); }
 
-	m_tabs[0]->saveSources(sel);
+	m_tabs.first()->saveSources(sel);
 }
 
 void mainWindow::aboutWebsite()
@@ -1165,7 +1138,7 @@ void mainWindow::getAll(bool all)
 			tdl.append(row);
 
 			DownloadQueryImage batch = m_batchs[row];
-			Page *page = new Page(m_profile, batch.site, m_sites.values(), batch.values.value("tags").split(" "), 1, 1, QStringList(), false, this);
+			Page *page = new Page(m_profile, batch.site, m_profile->getSites().values(), batch.values.value("tags").split(" "), 1, 1, QStringList(), false, this);
 			m_getAllRemaining.append(QSharedPointer<Image>(new Image(batch.site, batch.values, m_profile, page)));
 		}
 	}
@@ -1188,7 +1161,7 @@ void mainWindow::getAll(bool all)
 				dta.insert("filename", batch.filename);
 				dta.insert("folder", batch.path);
 
-				Page *page = new Page(m_profile, batch.site, m_sites.values(), batch.values["tags"].split(" "), 1, 1, QStringList(), false, this);
+				Page *page = new Page(m_profile, batch.site, m_profile->getSites().values(), batch.values["tags"].split(" "), 1, 1, QStringList(), false, this);
 				m_getAllRemaining.append(QSharedPointer<Image>(new Image(batch.site, dta, m_profile, page)));
 			}
 		}
@@ -2008,7 +1981,7 @@ void mainWindow::getAllPause()
 
 void mainWindow::blacklistFix()
 {
-	auto *win = new BlacklistFix1(m_profile, m_sites, this);
+	auto *win = new BlacklistFix1(m_profile, this);
 	win->show();
 }
 void mainWindow::emptyDirsFix()
@@ -2023,12 +1996,12 @@ void mainWindow::md5FixOpen()
 }
 void mainWindow::renameExisting()
 {
-	auto *win = new RenameExisting1(m_profile, m_sites, this);
+	auto *win = new RenameExisting1(m_profile, this);
 	win->show();
 }
 void mainWindow::utilTagLoader()
 {
-	auto *win = new TagLoader(m_profile, m_sites);
+	auto *win = new TagLoader(m_profile);
 	win->show();
 }
 
@@ -2068,7 +2041,7 @@ bool mainWindow::loadLinkList(QString filename)
 	QList<DownloadQueryImage> newBatchs;
 	QList<DownloadQueryGroup> newGroupBatchs;
 
-	if (!DownloadQueryLoader::load(filename, newBatchs, newGroupBatchs, m_sites))
+	if (!DownloadQueryLoader::load(filename, newBatchs, newGroupBatchs, m_profile->getSites()))
 		return false;
 
 	log(tr("Loading %n download(s)", "", newBatchs.count() + newGroupBatchs.count()), Logger::Info);

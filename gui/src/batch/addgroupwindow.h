@@ -22,7 +22,7 @@ class AddGroupWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		AddGroupWindow(QString selected, QMap<QString, Site*> sites, Profile *profile, QWidget *parent);
+		AddGroupWindow(Site *selected, Profile *profile, QWidget *parent = Q_NULLPTR);
 
 	public slots:
 		void ok();

@@ -154,7 +154,6 @@ class mainWindow : public QMainWindow
 		void on_buttonInitSettings_clicked();
 		void saveSettings();
 		void on_buttonFolder_clicked();
-		void loadSites();
 		void imageUrlChanged(QString, QString);
 		void updateCompleters();
 		void setSource(QString site);
@@ -192,7 +191,7 @@ class mainWindow : public QMainWindow
 		QMap<QSharedPointer<Image>, ImageDownloader*>	m_getAllImageDownloaders;
 		QWidget				*m_currentTab;
 		QList<searchTab*>	m_tabs, m_tabsWaitingForPreload;
-		QList<bool>			m_selectedSources;
+		QList<Site*>		m_selectedSites;
 		favoritesTab		*m_favoritesTab;
 		QMap<QString, QTime>			m_downloadTime, m_downloadTimeLast;
 		QList<QProgressBar*>			m_progressBars;
@@ -207,7 +206,6 @@ class mainWindow : public QMainWindow
 		int					m_batchAutomaticRetries, m_getAllImagesCount, m_batchCurrentPackSize;
 		bool				m_restore, m_showLog;
 		QMap<QString, QIcon>	m_icons;
-		QMap<QString, Site*>	m_sites;
 		QList<Tag>				m_currentTags;
 		QLinkedList<QJsonObject>	m_closedTabs;
 		QNetworkAccessManager m_networkAccessManager;
