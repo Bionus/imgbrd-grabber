@@ -12,8 +12,6 @@ class PostFilter
 	public:
 		static QStringList filter(const QMap<QString, Token> &tokens, const QStringList &filters);
 		static QStringList blacklisted(const QMap<QString, Token> &tokens, const QStringList &blacklistedTags, bool invert = true);
-
-	protected:
 		static QString match(const QMap<QString, Token> &tokens, QString filter, bool invert = false);
 };
 
