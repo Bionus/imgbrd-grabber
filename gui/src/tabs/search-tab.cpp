@@ -85,13 +85,13 @@ searchTab::~searchTab()
 
 void searchTab::setSelectedSources(QSettings *settings)
 {
-	QString sel = '1'+QString().fill('0',m_sites->count()-1);
-	QString sav = settings->value("sites", sel).toString();
-	for (int i = 0; i < sel.count(); i++)
+	QStringList sav = settings->value("sites", "").toStringList();
+	for (const QString &key : sav)
 	{
-		if (sav.count() <= i)
-		{ sav[i] = '0'; }
-		m_selectedSources.append(sav.at(i) == '1');
+		if (!m_sites->contains(key))
+			continue;
+
+		m_selectedSources.append(m_sites->value(key));
 	}
 }
 
@@ -1160,18 +1160,18 @@ void searchTab::toggleImage(int id, bool toggle, bool range)
 void searchTab::openSourcesWindow()
 {
 	sourcesWindow *adv = new sourcesWindow(m_profile, m_selectedSources, m_sites, this);
-	connect(adv, SIGNAL(valid(QList<bool>)), this, SLOT(saveSources(QList<bool>)));
+	connect(adv, SIGNAL(valid(QList<Site*>)), this, SLOT(saveSources(QList<Site*>)));
 	connect(adv, &sourcesWindow::siteDeleted, m_parent, &mainWindow::siteDeleted);
 	adv->show();
 }
 
-void searchTab::saveSources(QList<bool> sel, bool canLoad)
+void searchTab::saveSources(QList<Site*> sel, bool canLoad)
 {
 	log("Saving sources...");
 
-	QString sav;
-	for (bool enabled : sel)
-	{ sav += (enabled ? "1" : "0"); }
+	QStringList sav;
+	for (Site *enabled : sel)
+	{ sav.append(enabled->url()); }
 	m_settings->setValue("sites", sav);
 	m_selectedSources = sel;
 
@@ -1367,10 +1367,10 @@ QList<Site*> searchTab::loadSites() const
 }
 
 
-void searchTab::setSources(QList<bool> sources)
+void searchTab::setSources(QList<Site*> sources)
 { m_selectedSources = sources; }
 
-QList<bool> searchTab::sources()
+QList<Site*> searchTab::sources()
 { return m_selectedSources; }
 QStringList searchTab::selectedImages()
 { return m_selectedImages; }

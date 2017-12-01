@@ -238,7 +238,7 @@ void favoritesTab::getAll()
 }
 
 
-QList<bool> favoritesTab::sources()
+QList<Site*> favoritesTab::sources()
 { return m_selectedSources; }
 
 QString favoritesTab::tags() const

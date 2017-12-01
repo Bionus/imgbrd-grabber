@@ -33,7 +33,7 @@ class searchTab : public QWidget
 		~searchTab() override;
 		void init();
 		void mouseReleaseEvent(QMouseEvent *e) override;
-		virtual QList<bool> sources();
+		virtual QList<Site*> sources();
 		virtual QString tags() const = 0;
 		QList<Tag> results();
 		QString wiki();
@@ -43,7 +43,7 @@ class searchTab : public QWidget
 		virtual void setTags(QString tags, bool preload = true) = 0;
 		virtual bool validateImage(const QSharedPointer<Image> &img, QString &error);
 		QStringList selectedImages();
-		void setSources(QList<bool> sources);
+		void setSources(QList<Site*> sources);
 		void setImagesPerPage(int ipp);
 		void setColumns(int columns);
 		void setPostFilter(QString postfilter);
@@ -78,7 +78,7 @@ class searchTab : public QWidget
 	public slots:
 		// Sources
 		void openSourcesWindow();
-		void saveSources(QList<bool> sel, bool canLoad = true);
+		void saveSources(QList<Site*> sel, bool canLoad = true);
 		void updateCheckboxes();
 		// Zooms
 		void webZoom(int);
@@ -139,7 +139,7 @@ class searchTab : public QWidget
 		QMap<Image*, QBouton*>	m_boutons;
 		QStringList			m_selectedImages;
 		QList<QSharedPointer<Image>>	m_selectedImagesPtrs;
-		QList<bool>			m_selectedSources;
+		QList<Site*>		m_selectedSources;
 		QList<QCheckBox*>	m_checkboxes;
 		QList<Favorite>		&m_favorites;
 		QList<Tag>			m_tags;

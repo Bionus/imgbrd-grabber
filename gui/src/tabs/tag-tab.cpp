@@ -133,10 +133,11 @@ bool tagTab::read(const QJsonObject &json, bool preload)
 	QJsonArray jsonSelectedSources = json["sites"].toArray();
 	for (auto site : jsonSelectedSources)
 		selectedSources.append(site.toString());
-	QList<bool> selectedSourcesBool;
+	QList<Site*> selectedSourcesObj;
 	for (Site *site : *m_sites)
-		selectedSourcesBool.append(selectedSources.contains(site->url()));
-	saveSources(selectedSourcesBool, false);
+		if (selectedSources.contains(site->url()))
+			selectedSourcesObj.append(site);
+	saveSources(selectedSourcesObj, false);
 
 	// Tags
 	QStringList tags;

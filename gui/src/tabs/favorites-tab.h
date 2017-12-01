@@ -23,7 +23,7 @@ class favoritesTab : public searchTab
 		explicit favoritesTab(QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent);
 		~favoritesTab() override;
 		Ui::favoritesTab *ui;
-		QList<bool> sources() override;
+		QList<Site*> sources() override;
 		QString tags() const override;
 		void write(QJsonObject &json) const override;
 

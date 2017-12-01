@@ -237,16 +237,15 @@ void mainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	parseArgs(args, params);
 
 	// Get list of selected sources
-	QStringList keys = sites.keys();
-	QString sav = m_settings->value("sites", "1").toString();
-	for (int i = 0; i < qMin(sites.count(), sav.count()); i++)
+	QStringList sav = m_settings->value("sites", "").toStringList();
+	for (const QString &key : sav)
 	{
-		if (sav[i] == '1')
-		{
-			Site *site = sites[keys[i]];
-			connect(site, &Site::loggedIn, this, &mainWindow::initialLoginsFinished);
-			m_selectedSites.append(site);
-		}
+		if (!sites.contains(key))
+			continue;
+
+		Site *site = sites.value(key);
+		connect(site, &Site::loggedIn, this, &mainWindow::initialLoginsFinished);
+		m_selectedSites.append(site);
 	}
 
 	// Initial login on selected sources
@@ -1049,12 +1048,7 @@ void mainWindow::setSource(QString source)
 	if (m_tabs.isEmpty())
 		return;
 
-	QList<bool> sel;
-	QStringList keys = m_profile->getSites().keys();
-	for (const QString &key : keys)
-	{ sel.append(key == source); }
-
-	m_tabs.first()->saveSources(sel);
+	m_tabs.first()->saveSources(m_selectedSites);
 }
 
 void mainWindow::aboutWebsite()

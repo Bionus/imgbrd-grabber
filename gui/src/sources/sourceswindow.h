@@ -55,7 +55,7 @@ class sourcesWindow : public QDialog
 
 	signals:
 		void closed();
-		void valid(QList<bool>);
+		void valid(QList<Site*>);
 		void siteDeleted(Site *site);
 
 	private:

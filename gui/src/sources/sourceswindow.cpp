@@ -123,10 +123,13 @@ void sourcesWindow::checkClicked()
  */
 void sourcesWindow::valid()
 {
-	for (int i = 0; i < m_selected.count(); i++)
-		m_selected[i] = m_checks.at(i)->isChecked();
+	QList<Site*> selected;
+	for (const QString &key : m_sites->keys())
+	for (int i = 0; i < m_sites.count(); i++)
+		if (m_checks.at(i)->isChecked())
+			selected.append(m_sites[key]);
 
-	emit valid(m_selected);
+	emit valid(selected);
 	this->close();
 }
 
