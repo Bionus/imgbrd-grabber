@@ -1148,22 +1148,16 @@ void mainWindow::getAll(bool all)
 		{
 			if (batch.values.value("file_url").isEmpty())
 			{
-				// If we cannot get the image's url, we try looking for it
-				/*Page *page = new Page(m_sites[site], &m_sites, m_groupBatchs.at(i).at(0).split(' '), m_groupBatchs.at(i).at(1).toInt()+r, pp, QStringList(), false, this);
-				connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(getAllFinishedLoading(Page*)));
-				page->load();
-				m_groupBatchs[i][8] += (m_groupBatchs[i][8] == "" ? "" : "¤") + QString::number((int)page);
-				m_progressdialog->setImagesCount(m_progressdialog->count() + 1);*/
+				log("No file URL provided in image download query", Logger::Warning);
+				continue;
 			}
-			else
-			{
-				QMap<QString, QString> dta = batch.values;
-				dta.insert("filename", batch.filename);
-				dta.insert("folder", batch.path);
 
-				Page *page = new Page(m_profile, batch.site, m_profile->getSites().values(), batch.values["tags"].split(" "), 1, 1, QStringList(), false, this);
-				m_getAllRemaining.append(QSharedPointer<Image>(new Image(batch.site, dta, m_profile, page)));
-			}
+			QMap<QString, QString> dta = batch.values;
+			dta.insert("filename", batch.filename);
+			dta.insert("folder", batch.path);
+
+			Page *page = new Page(m_profile, batch.site, m_profile->getSites().values(), batch.values["tags"].split(" "), 1, 1, QStringList(), false, this);
+			m_getAllRemaining.append(QSharedPointer<Image>(new Image(batch.site, dta, m_profile, page)));
 		}
 	}
 	m_getAllLimit = m_batchs.size();
