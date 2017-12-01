@@ -30,6 +30,10 @@ searchTab::searchTab(Profile *profile, mainWindow *parent)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 
+	// Checkboxes
+	m_checkboxesSignalMapper = new QSignalMapper(this);
+	connect(m_checkboxesSignalMapper, SIGNAL(mapped(QString)), this, SLOT(toggleSource(QString)));
+
 	// Auto-complete list
 	m_completion.append(profile->getAutoComplete());
 	m_completion.append(profile->getCustomAutoComplete());
@@ -1062,6 +1066,8 @@ void searchTab::updateCheckboxes()
 
 		QCheckBox *c = new QCheckBox(url.left(m), this);
 			c->setChecked(m_selectedSources.contains(site));
+			m_checkboxesSignalMapper->setMapping(c, key);
+			connect(c, SIGNAL(toggled(bool)), m_checkboxesSignalMapper, SLOT(map()));
 			ui_layoutSourcesList->addWidget(c);
 
 		m_checkboxes.append(c);
@@ -1203,12 +1209,13 @@ void searchTab::loadTags(QStringList tags)
 	tags.append(m_settings->value("add").toString().trimmed().split(" ", QString::SkipEmptyParts));
 
 	// Save previous pages
-	QStringList keys = m_sites.keys();
 	m_lastPages.clear();
-	for (int i = 0; i < m_selectedSources.size(); i++)
+	QStringList keys = m_sites.keys();
+	for (Site *sel : m_selectedSources)
 	{
-		QString site = keys[i];
-		if (m_checkboxes.at(i)->isChecked() && m_pages.contains(site))
+		QString site = sel->url();
+		int i = keys.indexOf(site);
+		if (m_pages.contains(site))
 			m_lastPages.insert(site, m_pages[site].last());
 	}
 
@@ -1356,17 +1363,19 @@ bool searchTab::validateImage(const QSharedPointer<Image> &img, QString &error)
 }
 
 QList<Site*> searchTab::loadSites() const
-{
-	QList<Site*> sites;
-	for (int i = 0; i < m_selectedSources.size(); i++)
-		if (m_checkboxes.at(i)->isChecked())
-			sites.append(m_sites.value(m_sites.keys().at(i)));
-	return sites;
-}
+{ return m_selectedSources; }
 
 
 void searchTab::setSources(QList<Site*> sources)
 { m_selectedSources = sources; }
+void searchTab::toggleSource(QString url)
+{
+	Site *site = m_sites.value(url);
+
+	int removed = m_selectedSources.removeAll(site);
+	if (removed == 0)
+		m_selectedSources.append(site);
+}
 
 QList<Site*> searchTab::sources()
 { return m_selectedSources; }

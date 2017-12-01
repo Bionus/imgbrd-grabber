@@ -6,6 +6,7 @@
 #include <QCheckBox>
 #include <QSpinBox>
 #include <QMap>
+#include <QSignalMapper>
 #include <QPushButton>
 #include <QLayout>
 #include <QLabel>
@@ -71,6 +72,7 @@ class searchTab : public QWidget
 		void contextSaveSelected();
 		void setMergeResultsMode(bool merged);
 		void setEndlessLoadingMode(bool enabled);
+		void toggleSource(QString url);
 
 	private:
 		void addLayout(QLayout *layout, int row, int column);
@@ -140,6 +142,7 @@ class searchTab : public QWidget
 		QStringList			m_selectedImages;
 		QList<QSharedPointer<Image>>	m_selectedImagesPtrs;
 		QList<Site*>		m_selectedSources;
+		QSignalMapper		*m_checkboxesSignalMapper;
 		QList<QCheckBox*>	m_checkboxes;
 		QList<Favorite>		&m_favorites;
 		QList<Tag>			m_tags;
