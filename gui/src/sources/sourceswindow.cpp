@@ -19,7 +19,7 @@
  * @param	sites		QStringList of sites names
  * @param	parent		The parent window
  */
-sourcesWindow::sourcesWindow(Profile *profile, QList<bool> selected, QMap<QString, Site*> *sites, QWidget *parent)
+sourcesWindow::sourcesWindow(Profile *profile, QList<Site*> selected, QMap<QString, Site*> *sites, QWidget *parent)
 	: QDialog(parent), ui(new Ui::sourcesWindow), m_profile(profile), m_selected(selected), m_sites(sites)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
@@ -124,10 +124,10 @@ void sourcesWindow::checkClicked()
 void sourcesWindow::valid()
 {
 	QList<Site*> selected;
-	for (const QString &key : m_sites->keys())
-	for (int i = 0; i < m_sites.count(); i++)
+	QStringList keys = m_sites->keys();
+	for (int i = 0; i < keys.count(); i++)
 		if (m_checks.at(i)->isChecked())
-			selected.append(m_sites[key]);
+			selected.append(m_sites->value(keys[i]));
 
 	emit valid(selected);
 	this->close();
@@ -166,10 +166,12 @@ void sourcesWindow::deleteSite(QString site)
 		m_labels.removeAt(i);
 	}
 
-	emit siteDeleted(m_sites->value(site));
+
+	Site *obj = m_sites->value(site);
+	emit siteDeleted(obj);
 
 	m_sites->remove(site);
-	m_selected.removeAt(i);
+	m_selected.removeAll(obj);
 }
 
 /**
@@ -184,16 +186,6 @@ void sourcesWindow::addSite()
 
 void sourcesWindow::updateCheckboxes()
 {
-	QStringList k = m_sites->keys();
-	for (int i = 0; i < k.count(); i++)
-	{
-		if (m_checks.at(i)->text() != k.at(i))
-		{
-			m_selected.insert(i, true);
-			break;
-		}
-	}
-
 	removeCheckboxes();
 	addCheckboxes();
 }
@@ -230,9 +222,10 @@ void sourcesWindow::addCheckboxes()
 	QStringList k = m_sites->keys();
 	for (int i = 0; i < k.count(); i++)
 	{
+		Site *site = m_sites->value(k.at(i));
 		auto *check = new QCheckBox(this);
-			check->setChecked(m_selected.size() > i && m_selected[i]);
-			check->setText(k.at(i));
+			check->setChecked(m_selected.contains(site));
+			check->setText(site->url());
 			connect(check, SIGNAL(stateChanged(int)), this, SLOT(checkUpdate()));
 			m_checks << check;
 			ui->gridLayout->addWidget(check, i, 0);
@@ -294,14 +287,6 @@ void sourcesWindow::checkAll(int check)
 	for (int i = 0; i < m_checks.count(); i++)
 		m_checks.at(i)->setChecked(check == 2);
 }
-
-/**
- * Accessor for the "selected" variable.
- *
- * @return A bool list corresponding to selected websites.
- */
-QList<bool> sourcesWindow::getSelected()
-{ return m_selected; }
 
 void sourcesWindow::checkForUpdates()
 {

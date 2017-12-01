@@ -23,7 +23,7 @@ class tagTab : public searchTab
 	Q_OBJECT
 
 	public:
-		explicit tagTab(QMap<QString, Site*> *sites, Profile *profile, mainWindow *parent);
+		explicit tagTab(Profile *profile, mainWindow *parent);
 		~tagTab() override;
 		Ui::tagTab *ui;
 		QString tags() const override;

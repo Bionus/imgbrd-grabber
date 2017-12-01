@@ -29,7 +29,7 @@ class searchTab : public QWidget
 	Q_OBJECT
 
 	public:
-		searchTab(QMap<QString, Site*> *sites, Profile *profile, mainWindow *parent);
+		searchTab(Profile *profile, mainWindow *parent);
 		~searchTab() override;
 		void init();
 		void mouseReleaseEvent(QMouseEvent *e) override;
@@ -135,7 +135,7 @@ class searchTab : public QWidget
 	protected:
 		Profile				*m_profile;
 		int					m_lastPage, m_lastPageMaxId, m_lastPageMinId;
-		QMap<QString,Site*>	*m_sites;
+		QMap<QString,Site*> m_sites;
 		QMap<Image*, QBouton*>	m_boutons;
 		QStringList			m_selectedImages;
 		QList<QSharedPointer<Image>>	m_selectedImagesPtrs;

@@ -10,8 +10,8 @@
 #include "helpers.h"
 
 
-poolTab::poolTab(QMap<QString, Site*> *sites, Profile *profile, mainWindow *parent)
-	: searchTab(sites, profile, parent), ui(new Ui::poolTab)
+poolTab::poolTab(Profile *profile, mainWindow *parent)
+	: searchTab(profile, parent), ui(new Ui::poolTab)
 {
 	ui->setupUi(this);
 	ui->widgetMeant->hide();
@@ -39,7 +39,7 @@ poolTab::poolTab(QMap<QString, Site*> *sites, Profile *profile, mainWindow *pare
 	ui_buttonEndlessLoad = nullptr;
 	ui_scrollAreaResults = ui->scrollAreaResults;
 
-	QStringList sources = m_sites->keys();
+	QStringList sources = m_sites.keys();
 	for (const QString &source : sources)
 	{ ui->comboSites->addItem(source); }
 
@@ -93,7 +93,7 @@ void poolTab::load()
 QList<Site*> poolTab::loadSites() const
 {
 	QList<Site*> sites;
-	sites.append(m_sites->value(ui->comboSites->currentText()));
+	sites.append(m_sites.value(ui->comboSites->currentText()));
 	return sites;
 }
 
@@ -143,7 +143,7 @@ void poolTab::getPage()
 	int perPage = unloaded ? ui->spinImagesPerPage->value() : page->images().count();
 	QString tags = "pool:"+QString::number(ui->spinPool->value())+" "+m_search->toPlainText()+" "+m_settings->value("add").toString().trimmed();
 	QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
-	Site *site = m_sites->value(ui->comboSites->currentText());
+	Site *site = m_sites.value(ui->comboSites->currentText());
 
 	emit batchAddGroup(DownloadQueryGroup(m_settings, tags, ui->spinPage->value(), perPage, perPage, postFiltering, site));
 }
@@ -152,11 +152,11 @@ void poolTab::getAll()
 	auto page = m_pages[ui->comboSites->currentText()].first();
 
 	QString tags = "pool:"+QString::number(ui->spinPool->value())+" "+m_search->toPlainText()+" "+m_settings->value("add").toString().trimmed();
-	int limit = m_sites->value(ui->comboSites->currentText())->contains("Urls/1/Limit") ? m_sites->value(ui->comboSites->currentText())->value("Urls/1/Limit").toInt() : 0;
+	int limit = m_sites.value(ui->comboSites->currentText())->contains("Urls/1/Limit") ? m_sites.value(ui->comboSites->currentText())->value("Urls/1/Limit").toInt() : 0;
 	int perpage = qMin((limit > 0 ? limit : 200), qMax(page->images().count(), page->imagesCount()));
 	int total = qMax(page->images().count(), page->imagesCount());
 	QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
-	Site *site = m_sites->value(ui->comboSites->currentText());
+	Site *site = m_sites.value(ui->comboSites->currentText());
 
 	emit batchAddGroup(DownloadQueryGroup(m_settings, tags, 1, perpage, total, postFiltering, site));
 }

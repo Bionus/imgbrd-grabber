@@ -25,8 +25,8 @@
 #include "tag-context-menu.h"
 
 
-ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, QSharedPointer<Image> image, Site *site, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
-	: QWidget(Q_NULLPTR, Qt::Window), m_parent(parent), m_profile(profile), m_favorites(profile->getFavorites()), m_viewItLater(profile->getKeptForLater()), m_ignore(profile->getIgnored()), m_settings(profile->getSettings()), ui(new Ui::ZoomWindow), m_site(site), m_timeout(300), m_tooBig(false), m_loadedImage(false), m_loadedDetails(false), m_displayImage(QPixmap()), m_displayMovie(nullptr), m_finished(false), m_size(0), m_sites(sites), m_source(), m_fullScreen(nullptr), m_images(images), m_isFullscreen(false), m_isSlideshowRunning(false), m_imagePath(""), m_labelImageScaled(false)
+ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, QSharedPointer<Image> image, Site *site, Profile *profile, mainWindow *parent)
+	: QWidget(Q_NULLPTR, Qt::Window), m_parent(parent), m_profile(profile), m_favorites(profile->getFavorites()), m_viewItLater(profile->getKeptForLater()), m_ignore(profile->getIgnored()), m_settings(profile->getSettings()), ui(new Ui::ZoomWindow), m_site(site), m_timeout(300), m_tooBig(false), m_loadedImage(false), m_loadedDetails(false), m_displayImage(QPixmap()), m_displayMovie(nullptr), m_finished(false), m_size(0), m_source(), m_fullScreen(nullptr), m_images(images), m_isFullscreen(false), m_isSlideshowRunning(false), m_imagePath(""), m_labelImageScaled(false)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	ui->setupUi(this);
@@ -272,7 +272,7 @@ void ZoomWindow::openPool(QString url)
 	{ emit poolClicked(url.right(url.length() - 5).toInt(), m_image->site()); }
 	else
 	{
-		Page *p = new Page(m_profile, m_sites->value(m_image->site()), m_sites->values(), QStringList() << "id:"+url, 1, 1, QStringList(), false, this);
+		Page *p = new Page(m_profile, m_image->parentSite(), m_profile->getSites().values(), QStringList() << "id:"+url, 1, 1, QStringList(), false, this);
 		connect(p, SIGNAL(finishedLoading(Page*)), this, SLOT(openPoolId(Page*)));
 		p->load();
 	}

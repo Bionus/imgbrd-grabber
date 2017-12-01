@@ -225,7 +225,7 @@ void mainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 		ui->tabWidget->setCornerWidget(add);
 
 	// Favorites tab
-	m_favoritesTab = new favoritesTab(&m_profile->getSites(), m_profile, this);
+	m_favoritesTab = new favoritesTab(m_profile, this);
 	connect(m_favoritesTab, &searchTab::batchAddGroup, this, &mainWindow::batchAddGroup);
 	connect(m_favoritesTab, SIGNAL(batchAddUnique(DownloadQueryImage)), this, SLOT(batchAddUnique(DownloadQueryImage)));
 	connect(m_favoritesTab, &searchTab::titleChanged, this, &mainWindow::updateTabTitle);
@@ -383,7 +383,7 @@ void mainWindow::onFirstLoad()
 
 void mainWindow::addTab(QString tag, bool background, bool save)
 {
-	auto *w = new tagTab(&m_profile->getSites(), m_profile, this);
+	auto *w = new tagTab(m_profile, this);
 	this->addSearchTab(w, background, save);
 
 	if (!tag.isEmpty())
@@ -393,7 +393,7 @@ void mainWindow::addTab(QString tag, bool background, bool save)
 }
 void mainWindow::addPoolTab(int pool, QString site, bool background, bool save)
 {
-	auto *w = new poolTab(&m_profile->getSites(), m_profile, this);
+	auto *w = new poolTab(m_profile, this);
 	this->addSearchTab(w, background, save);
 
 	if (!site.isEmpty())
@@ -448,7 +448,7 @@ bool mainWindow::loadTabs(const QString &filename)
 	QList<searchTab*> tabs;
 	int currentTab;
 
-	if (!TabsLoader::load(filename, tabs, currentTab, m_profile, m_profile->getSites(), this))
+	if (!TabsLoader::load(filename, tabs, currentTab, m_profile, this))
 		return false;
 
 	bool preload = m_settings->value("preloadAllTabs", false).toBool();
@@ -492,7 +492,7 @@ void mainWindow::restoreLastClosedTab()
 		return;
 
 	QJsonObject infos = m_closedTabs.takeLast();
-	searchTab *tab = TabsLoader::loadTab(infos, m_profile, m_profile->getSites(), this, true);
+	searchTab *tab = TabsLoader::loadTab(infos, m_profile, this, true);
 	addSearchTab(tab);
 
 	ui->actionRestoreLastClosedTab->setEnabled(!m_closedTabs.isEmpty());

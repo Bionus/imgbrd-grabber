@@ -39,7 +39,7 @@ class ZoomWindow : public QWidget
 			Delete
 		};
 
-		ZoomWindow(QList<QSharedPointer<Image>> images, QSharedPointer<Image> image, Site *site, QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent);
+		ZoomWindow(QList<QSharedPointer<Image>> images, QSharedPointer<Image> image, Site *site, Profile *profile, mainWindow *parent);
 		~ZoomWindow() override;
 		void go();
 		void load(bool force = false);

@@ -20,7 +20,7 @@ class favoritesTab : public searchTab
 	Q_OBJECT
 
 	public:
-		explicit favoritesTab(QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent);
+		explicit favoritesTab(Profile *profile, mainWindow *parent);
 		~favoritesTab() override;
 		Ui::favoritesTab *ui;
 		QList<Site*> sources() override;

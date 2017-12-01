@@ -11,7 +11,7 @@
 #include "models/profile.h"
 
 
-bool TabsLoader::load(const QString &path, QList<searchTab*> &allTabs, int &currentTab, Profile *profile, QMap<QString, Site*> &sites, mainWindow *parent)
+bool TabsLoader::load(const QString &path, QList<searchTab*> &allTabs, int &currentTab, Profile *profile, mainWindow *parent)
 {
 	QSettings *settings = profile->getSettings();
 	bool preload = settings->value("preloadAllTabs", false).toBool();
@@ -40,7 +40,7 @@ bool TabsLoader::load(const QString &path, QList<searchTab*> &allTabs, int &curr
 			{
 				if (infos[infos.size() - 1] == "pool")
 				{
-					auto *tab = new poolTab(&sites, profile, parent);
+					auto *tab = new poolTab(profile, parent);
 					tab->ui->spinPool->setValue(infos[0].toInt());
 					tab->ui->comboSites->setCurrentIndex(infos[1].toInt());
 					tab->ui->spinPage->setValue(infos[2].toInt());
@@ -52,7 +52,7 @@ bool TabsLoader::load(const QString &path, QList<searchTab*> &allTabs, int &curr
 				}
 				else
 				{
-					auto *tab = new tagTab(&sites, profile, parent);
+					auto *tab = new tagTab(profile, parent);
 					tab->ui->spinPage->setValue(infos[1].toInt());
 					tab->ui->spinImagesPerPage->setValue(infos[2].toInt());
 					tab->ui->spinColumns->setValue(infos[3].toInt());
@@ -83,7 +83,7 @@ bool TabsLoader::load(const QString &path, QList<searchTab*> &allTabs, int &curr
 				for (auto tabJson : tabs)
 				{
 					QJsonObject infos = tabJson.toObject();
-					searchTab *tab = loadTab(infos, profile, sites, parent, preload);
+					searchTab *tab = loadTab(infos, profile, parent, preload);
 					if (tab != nullptr)
 						allTabs.append(tab);
 				}
@@ -95,19 +95,19 @@ bool TabsLoader::load(const QString &path, QList<searchTab*> &allTabs, int &curr
 	return false;
 }
 
-searchTab *TabsLoader::loadTab(QJsonObject info, Profile *profile, QMap<QString, Site*> &sites, mainWindow *parent, bool preload)
+searchTab *TabsLoader::loadTab(QJsonObject info, Profile *profile, mainWindow *parent, bool preload)
 {
 	QString type = info["type"].toString();
 
 	if (type == "tag")
 	{
-		auto *tab = new tagTab(&sites, profile, parent);
+		auto *tab = new tagTab(profile, parent);
 		if (tab->read(info, preload))
 			return tab;
 	}
 	else if (type == "pool")
 	{
-		auto *tab = new poolTab(&sites, profile, parent);
+		auto *tab = new poolTab(profile, parent);
 		if (tab->read(info, preload))
 			return tab;
 	}

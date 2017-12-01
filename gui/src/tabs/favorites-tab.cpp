@@ -17,8 +17,8 @@
 #define FAVORITES_THUMB_SIZE 150
 
 
-favoritesTab::favoritesTab(QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
-	: searchTab(sites, profile, parent), ui(new Ui::favoritesTab), m_currentFav(0)
+favoritesTab::favoritesTab(Profile *profile, mainWindow *parent)
+	: searchTab(profile, parent), ui(new Ui::favoritesTab), m_currentFav(0)
 {
 	ui->setupUi(this);
 
@@ -199,7 +199,7 @@ void favoritesTab::setTags(QString tags, bool preload)
 
 void favoritesTab::getPage()
 {
-	QStringList actuals, keys = m_sites->keys();
+	QStringList actuals, keys = m_sites.keys();
 	for (int i = 0; i < m_checkboxes.count(); i++)
 	{
 		if (m_checkboxes.at(i)->isChecked())
@@ -213,12 +213,12 @@ void favoritesTab::getPage()
 		int perpage = unloaded ? ui->spinImagesPerPage->value() : page->images().count();
 		QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
 
-		emit batchAddGroup(DownloadQueryGroup(m_settings, search, ui->spinPage->value(), perpage, perpage, postFiltering, m_sites->value(actuals.at(i))));
+		emit batchAddGroup(DownloadQueryGroup(m_settings, search, ui->spinPage->value(), perpage, perpage, postFiltering, m_sites.value(actuals.at(i))));
 	}
 }
 void favoritesTab::getAll()
 {
-	QStringList actuals, keys = m_sites->keys();
+	QStringList actuals, keys = m_sites.keys();
 	for (int i = 0; i < m_checkboxes.count(); i++)
 	{
 		if (m_checkboxes.at(i)->isChecked())
@@ -228,12 +228,12 @@ void favoritesTab::getAll()
 	{
 		auto page = m_pages[actuals[i]].first();
 		QString search = m_currentTags+" "+m_settings->value("add").toString().toLower().trimmed();
-		int limit = m_sites->value(actuals.at(i))->contains("Urls/1/Limit") ? m_sites->value(actuals.at(i))->value("Urls/1/Limit").toInt() : 0;
+		int limit = m_sites.value(actuals.at(i))->contains("Urls/1/Limit") ? m_sites.value(actuals.at(i))->value("Urls/1/Limit").toInt() : 0;
 		int perpage = qMin((limit > 0 ? limit : 1000), qMax(page->images().count(), page->imagesCount()));
 		int total = qMax(page->images().count(), page->imagesCount());
 		QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
 
-		emit batchAddGroup(DownloadQueryGroup(m_settings, search, 1, perpage, total, postFiltering, m_sites->value(actuals.at(i))));
+		emit batchAddGroup(DownloadQueryGroup(m_settings, search, 1, perpage, total, postFiltering, m_sites.value(actuals.at(i))));
 	}
 }
 

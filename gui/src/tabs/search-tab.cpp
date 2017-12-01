@@ -25,8 +25,8 @@
 #define FIXED_IMAGE_WIDTH 150
 
 
-searchTab::searchTab(QMap<QString, Site*> *sites, Profile *profile, mainWindow *parent)
-	: QWidget(parent), m_profile(profile), m_lastPageMaxId(0), m_lastPageMinId(0), m_sites(sites), m_favorites(profile->getFavorites()), m_parent(parent), m_settings(profile->getSettings()), m_pagemax(-1), m_stop(true), m_from_history(false), m_history_cursor(0), m_lastTags(QString())
+searchTab::searchTab(Profile *profile, mainWindow *parent)
+	: QWidget(parent), m_profile(profile), m_lastPageMaxId(0), m_lastPageMinId(0), m_sites(profile->getSites()), m_favorites(profile->getFavorites()), m_parent(parent), m_settings(profile->getSettings()), m_pagemax(-1), m_stop(true), m_from_history(false), m_history_cursor(0), m_lastTags(QString())
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 
@@ -39,9 +39,12 @@ searchTab::searchTab(QMap<QString, Site*> *sites, Profile *profile, mainWindow *
 		m_completion.append(fav.getName());
 
 	// Modifiers
-	for (int i = 0; i < sites->size(); i++)
-		if (sites->value(sites->keys().at(i))->contains("Modifiers"))
-			m_completion.append(sites->value(sites->keys().at(i))->value("Modifiers").trimmed().split(" ", QString::SkipEmptyParts));
+	for (const QString &key : m_sites.keys())
+	{
+		Site *site = m_sites.value(key);
+		if (site->contains("Modifiers"))
+			m_completion.append(site->value("Modifiers").trimmed().split(" ", QString::SkipEmptyParts));
+	}
 
 	m_completion.removeDuplicates();
 	m_completion.sort();
@@ -88,10 +91,10 @@ void searchTab::setSelectedSources(QSettings *settings)
 	QStringList sav = settings->value("sites", "").toStringList();
 	for (const QString &key : sav)
 	{
-		if (!m_sites->contains(key))
+		if (!m_sites.contains(key))
 			continue;
 
-		m_selectedSources.append(m_sites->value(key));
+		m_selectedSources.append(m_sites.value(key));
 	}
 }
 
@@ -512,7 +515,7 @@ void searchTab::finishedLoadingPreview()
 			{ download = true; }
 			else if (reponse == QMessageBox::Open)
 			{
-				ZoomWindow *zoom = new ZoomWindow(m_images, img, img->page()->site(), m_sites, m_profile, m_parent);
+				ZoomWindow *zoom = new ZoomWindow(m_images, img, img->page()->site(), m_profile, m_parent);
 				zoom->show();
 				connect(zoom, SIGNAL(linkClicked(QString)), this, SLOT(setTags(QString)));
 				connect(zoom, SIGNAL(poolClicked(int, QString)), m_parent, SLOT(addPoolTab(int, QString)));
@@ -1037,7 +1040,7 @@ void searchTab::updateCheckboxes()
 	qDeleteAll(m_checkboxes);
 	m_checkboxes.clear();
 
-	QStringList urls = m_sites->keys();
+	QStringList urls = m_sites.keys();
 	int n = m_settings->value("Sources/Letters", 3).toInt();
 	int m = n;
 
@@ -1082,7 +1085,7 @@ void searchTab::webZoom(int id)
 		{ return; }
 	}
 
-	ZoomWindow *zoom = new ZoomWindow(m_images, image, image->page()->site(), m_sites, m_profile, m_parent);
+	ZoomWindow *zoom = new ZoomWindow(m_images, image, image->page()->site(), m_profile, m_parent);
 	zoom->show();
 	connect(zoom, SIGNAL(linkClicked(QString)), this, SLOT(setTags(QString)));
 	connect(zoom, SIGNAL(poolClicked(int, QString)), m_parent, SLOT(addPoolTab(int, QString)));
@@ -1159,7 +1162,7 @@ void searchTab::toggleImage(int id, bool toggle, bool range)
 
 void searchTab::openSourcesWindow()
 {
-	sourcesWindow *adv = new sourcesWindow(m_profile, m_selectedSources, m_sites, this);
+	sourcesWindow *adv = new sourcesWindow(m_profile, m_selectedSources, &m_sites, this);
 	connect(adv, SIGNAL(valid(QList<Site*>)), this, SLOT(saveSources(QList<Site*>)));
 	connect(adv, &sourcesWindow::siteDeleted, m_parent, &mainWindow::siteDeleted);
 	adv->show();
@@ -1176,12 +1179,8 @@ void searchTab::saveSources(QList<Site*> sel, bool canLoad)
 	m_selectedSources = sel;
 
 	// Log into new sources
-	QStringList keys = m_sites->keys();
-	for (int i = 0; i < m_sites->count(); i++)
-	{
-		if (sav.at(i) == '1')
-		{ m_sites->value(keys[i])->login(); }
-	}
+	for (Site *site : sel)
+	{ site->login(); }
 
 	updateCheckboxes();
 
@@ -1205,7 +1204,7 @@ void searchTab::loadTags(QStringList tags)
 	tags.append(m_settings->value("add").toString().trimmed().split(" ", QString::SkipEmptyParts));
 
 	// Save previous pages
-	QStringList keys = m_sites->keys();
+	QStringList keys = m_sites.keys();
 	m_lastPages.clear();
 	for (int i = 0; i < m_selectedSources.size(); i++)
 	{
@@ -1275,7 +1274,7 @@ void searchTab::loadPage()
 	for (Site *site : loadSites())
 	{
 		// Load results
-		Page *page = new Page(m_profile, site, m_sites->values(), tags, currentPage, perpage, m_postFiltering->toPlainText().split(" ", QString::SkipEmptyParts), false, this, 0, m_lastPage, m_lastPageMinId, m_lastPageMaxId);
+		Page *page = new Page(m_profile, site, m_sites.values(), tags, currentPage, perpage, m_postFiltering->toPlainText().split(" ", QString::SkipEmptyParts), false, this, 0, m_lastPage, m_lastPageMinId, m_lastPageMaxId);
 		connect(page, SIGNAL(finishedLoading(Page*)), this, SLOT(finishedLoading(Page*)));
 		connect(page, SIGNAL(failedLoading(Page*)), this, SLOT(failedLoading(Page*)));
 
@@ -1362,7 +1361,7 @@ QList<Site*> searchTab::loadSites() const
 	QList<Site*> sites;
 	for (int i = 0; i < m_selectedSources.size(); i++)
 		if (m_checkboxes.at(i)->isChecked())
-			sites.append(m_sites->value(m_sites->keys().at(i)));
+			sites.append(m_sites.value(m_sites.keys().at(i)));
 	return sites;
 }
 

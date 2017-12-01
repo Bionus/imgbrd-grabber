@@ -9,8 +9,8 @@
 #include "helpers.h"
 
 
-tagTab::tagTab(QMap<QString,Site*> *sites, Profile *profile, mainWindow *parent)
-	: searchTab(sites, profile, parent), ui(new Ui::tagTab)
+tagTab::tagTab(Profile *profile, mainWindow *parent)
+	: searchTab(profile, parent), ui(new Ui::tagTab)
 {
 	ui->setupUi(this);
 	ui->widgetMeant->hide();
@@ -134,7 +134,7 @@ bool tagTab::read(const QJsonObject &json, bool preload)
 	for (auto site : jsonSelectedSources)
 		selectedSources.append(site.toString());
 	QList<Site*> selectedSourcesObj;
-	for (Site *site : *m_sites)
+	for (Site *site : m_sites)
 		if (selectedSources.contains(site->url()))
 			selectedSourcesObj.append(site);
 	saveSources(selectedSourcesObj, false);
@@ -166,7 +166,7 @@ void tagTab::getPage()
 	if (m_pages.empty())
 		return;
 
-	QStringList actuals, keys = m_sites->keys();
+	QStringList actuals, keys = m_sites.keys();
 	for (int i = 0; i < m_checkboxes.count(); i++)
 	{
 		if (m_checkboxes.at(i)->isChecked())
@@ -185,7 +185,7 @@ void tagTab::getPage()
 
 			QString search = page->search().join(' ');
 			QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
-			emit batchAddGroup(DownloadQueryGroup(m_settings, search, ui->spinPage->value(), perpage, perpage, postFiltering, m_sites->value(actuals.at(i))));
+			emit batchAddGroup(DownloadQueryGroup(m_settings, search, ui->spinPage->value(), perpage, perpage, postFiltering, m_sites.value(actuals.at(i))));
 		}
 	}
 }
@@ -194,7 +194,7 @@ void tagTab::getAll()
 	if (m_pages.empty())
 		return;
 
-	QStringList actuals, keys = m_sites->keys();
+	QStringList actuals, keys = m_sites.keys();
 	for (int i = 0; i < m_checkboxes.count(); i++)
 	{
 		if (m_checkboxes.at(i)->isChecked())
@@ -214,7 +214,7 @@ void tagTab::getAll()
 
 		QString search = page->search().join(' ');
 		QStringList postFiltering = m_postFiltering->toPlainText().split(' ', QString::SkipEmptyParts);
-		emit batchAddGroup(DownloadQueryGroup(m_settings, search, 1, perPage, total, postFiltering, m_sites->value(actual)));
+		emit batchAddGroup(DownloadQueryGroup(m_settings, search, 1, perPage, total, postFiltering, m_sites.value(actual)));
 	}
 }
 
