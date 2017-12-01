@@ -134,7 +134,6 @@ class ZoomWindow : public QWidget
 		QString m_link;
 		bool m_finished;
 		int m_size;
-		QMap<QString,Site*> *m_sites;
 		QString m_source;
 		QString m_imagePath;
 		QTime m_lastWheelEvent;

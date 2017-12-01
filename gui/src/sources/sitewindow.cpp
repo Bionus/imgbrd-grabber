@@ -10,8 +10,8 @@
 #include "functions.h"
 
 
-SiteWindow::SiteWindow(Profile *profile, QMap<QString ,Site*> *sites, QWidget *parent)
-	: QDialog(parent), ui(new Ui::SiteWindow), m_profile(profile), m_sites(sites)
+SiteWindow::SiteWindow(Profile *profile, QWidget *parent)
+	: QDialog(parent), ui(new Ui::SiteWindow), m_profile(profile)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	ui->setupUi(this);
@@ -104,9 +104,9 @@ void SiteWindow::finish(Source *src)
 	if (m_url.endsWith('/'))
 	{ m_url = m_url.left(m_url.length() - 1); }
 
+
 	Site *site = new Site(m_url, src);
-	src->getSites().append(site);
-	m_sites->insert(site->url(), site);
+	m_profile->addSite(site);
 
 	// If the user wrote "https://" in the URL, we enable SSL for this site
 	if (ssl)

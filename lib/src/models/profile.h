@@ -52,6 +52,7 @@ class Profile : public QObject
 
 		// Sites management
 		void addSite(Site *site);
+		void removeSite(Site *site);
 
 		// Blacklist management
 		void setBlacklistedTags(QStringList tags);
@@ -82,6 +83,7 @@ class Profile : public QObject
 		void keptForLaterChanged();
 		void ignoredChanged();
 		void sitesChanged();
+		void siteDeleted(Site *site);
 		void blacklistChanged();
 
 	private:

@@ -23,7 +23,7 @@ class sourcesWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		explicit sourcesWindow(Profile *profile, QList<Site*> selected, QMap<QString,Site*> *sites, QWidget *parent = Q_NULLPTR);
+		explicit sourcesWindow(Profile *profile, QList<Site*> selected, QWidget *parent = Q_NULLPTR);
 		~sourcesWindow() override;
 
 	public slots:
@@ -55,7 +55,6 @@ class sourcesWindow : public QDialog
 	signals:
 		void closed();
 		void valid(QList<Site*>);
-		void siteDeleted(Site *site);
 
 	private:
 		Ui::sourcesWindow *ui;
@@ -64,8 +63,8 @@ class sourcesWindow : public QDialog
 		QList<QCheckBox*> m_checks;
 		QList<QLabel*> m_labels;
 		QList<QBouton*> m_buttons;
-		QMap<QString, Site*> *m_sites;
-		QMap<QString, Source*> m_sources;
+		const QMap<QString, Site*> &m_sites;
+		const QMap<QString, Source*> &m_sources;
 		QMap<QString, QStringList> m_presets;
 };
 

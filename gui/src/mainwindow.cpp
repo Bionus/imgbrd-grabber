@@ -278,6 +278,7 @@ void mainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 
 	connect(m_profile, &Profile::favoritesChanged, this, &mainWindow::updateFavorites);
 	connect(m_profile, &Profile::keptForLaterChanged, this, &mainWindow::updateKeepForLater);
+	connect(m_profile, &Profile::siteDeleted, this, &mainWindow::siteDeleted);
 	updateFavorites();
 	updateKeepForLater();
 

@@ -21,7 +21,7 @@ Profile::Profile(QString path)
 	for (const QString &dir : dirs)
 	{
 		Source *source = new Source(this, m_path + "/sites/" + dir);
-		m_sources.insert(dir, source);
+		m_sources.insert(source->getName(), source);
 
 		for (Site *site : source->getSites())
 			m_sites.insert(site->url(), site);
@@ -333,6 +333,13 @@ void Profile::addAutoComplete(QString tag)
 void Profile::addSite(Site *site)
 {
 	m_sites.insert(site->url(), site);
+	emit sitesChanged();
+}
+
+void Profile::removeSite(Site *site)
+{
+	m_sites.remove(site->url());
+	emit siteDeleted(site);
 	emit sitesChanged();
 }
 

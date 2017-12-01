@@ -1040,13 +1040,14 @@ void searchTab::updateCheckboxes()
 	qDeleteAll(m_checkboxes);
 	m_checkboxes.clear();
 
-	QStringList urls = m_sites.keys();
 	int n = m_settings->value("Sources/Letters", 3).toInt();
 	int m = n;
 
-	for (int i = 0; i < urls.size(); i++)
+	for (const QString &key : m_sites.keys())
 	{
-		QString url = urls[i];
+		Site *site = m_sites[key];
+		QString url = site->url();
+
 		if (url.startsWith("www."))
 		{ url = url.right(url.length() - 4); }
 		else if (url.startsWith("chan."))
@@ -1059,9 +1060,8 @@ void searchTab::updateCheckboxes()
 			{ m = url.indexOf('.', m+1); }
 		}
 
-		bool isChecked = m_selectedSources.size() > i && m_selectedSources.at(i);
 		QCheckBox *c = new QCheckBox(url.left(m), this);
-			c->setChecked(isChecked);
+			c->setChecked(m_selectedSources.contains(site));
 			ui_layoutSourcesList->addWidget(c);
 
 		m_checkboxes.append(c);
@@ -1162,9 +1162,8 @@ void searchTab::toggleImage(int id, bool toggle, bool range)
 
 void searchTab::openSourcesWindow()
 {
-	sourcesWindow *adv = new sourcesWindow(m_profile, m_selectedSources, &m_sites, this);
+	sourcesWindow *adv = new sourcesWindow(m_profile, m_selectedSources, this);
 	connect(adv, SIGNAL(valid(QList<Site*>)), this, SLOT(saveSources(QList<Site*>)));
-	connect(adv, &sourcesWindow::siteDeleted, m_parent, &mainWindow::siteDeleted);
 	adv->show();
 }
 
