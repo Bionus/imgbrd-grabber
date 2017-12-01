@@ -16,7 +16,7 @@ class Source : public QObject
 	Q_OBJECT
 
 	public:
-		Source(Profile *profile, QString dir);
+		explicit Source(Profile *profile, QString dir);
 		~Source() override;
 
 		// Getters
@@ -26,7 +26,7 @@ class Source : public QObject
 		QList<Api*> getApis() const;
 		Api *getApi(QString name) const;
 		Profile *getProfile() const;
-		SourceUpdater *getUpdater();
+		const SourceUpdater &getUpdater() const;
 
 		// Get an unique pointer to the list of all sources
 		static QList<Source*> *getAllSources(Profile *profile);

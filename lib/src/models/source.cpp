@@ -96,12 +96,12 @@ Source::~Source()
 }
 
 
-QString Source::getName() const 		{ return m_name;		}
-QString Source::getPath() const 		{ return m_dir;			}
-QList<Site*> Source::getSites() const	{ return m_sites;		}
-QList<Api*> Source::getApis() const		{ return m_apis;		}
-Profile *Source::getProfile() const		{ return m_profile;		}
-SourceUpdater *Source::getUpdater() 	{ return &m_updater;	}
+QString Source::getName() const					{ return m_name;	}
+QString Source::getPath() const					{ return m_dir;		}
+QList<Site*> Source::getSites() const			{ return m_sites;	}
+QList<Api*> Source::getApis() const				{ return m_apis;	}
+Profile *Source::getProfile() const				{ return m_profile;	}
+const SourceUpdater &Source::getUpdater() const	{ return m_updater;	}
 
 Api *Source::getApi(QString name) const
 {

@@ -15,7 +15,7 @@ class Updater : public QObject
 		int compareVersions(QString a, QString b);
 
 	public slots:
-		virtual void checkForUpdates() = 0;
+		virtual void checkForUpdates() const = 0;
 
 	protected:
 		CustomNetworkAccessManager *m_networkAccessManager;

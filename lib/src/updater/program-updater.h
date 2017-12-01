@@ -15,7 +15,7 @@ class ProgramUpdater : public Updater
 		QUrl latestUrl() const;
 
 	public slots:
-		void checkForUpdates() override;
+		void checkForUpdates() const override;
 		void downloadUpdate();
 
 	private slots:
@@ -29,7 +29,6 @@ class ProgramUpdater : public Updater
 
 	private:
 		QString m_baseUrl;
-		QNetworkReply *m_checkForUpdatesReply;
 		QNetworkReply *m_downloadReply;
 		QString m_source;
 		QString m_newVersion;

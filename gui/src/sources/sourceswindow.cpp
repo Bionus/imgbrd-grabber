@@ -304,9 +304,9 @@ void sourcesWindow::checkForUpdates()
 {
 	for (Source *source : m_sources.values())
 	{
-		SourceUpdater *updater = source->getUpdater();
-		connect(updater, &SourceUpdater::finished, this, &sourcesWindow::checkForUpdatesReceived);
-		updater->checkForUpdates();
+		const SourceUpdater &updater = source->getUpdater();
+		connect(&updater, &SourceUpdater::finished, this, &sourcesWindow::checkForUpdatesReceived);
+		updater.checkForUpdates();
 	}
 }
 void sourcesWindow::checkForUpdatesReceived(QString sourceName, bool isNew)
