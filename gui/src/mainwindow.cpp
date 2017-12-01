@@ -349,19 +349,15 @@ void mainWindow::loadSites()
 	QStringList current = m_sites.keys();
 	QStringList news = sites.keys();
 
-	for (int i = 0; i < sites.size(); ++i)
+	for (const QString &k : news)
 	{
-		QString k = news[i];
 		if (!current.contains(k))
 		{ m_sites.insert(k, sites.value(k)); }
-		/*else
-		{ delete sites->value(k); }*/
 	}
 }
 
 mainWindow::~mainWindow()
 {
-	qDeleteAll(m_sites);
 	delete m_profile;
 	delete ui;
 }

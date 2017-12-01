@@ -113,6 +113,7 @@ Profile::~Profile()
 	if (m_settings != nullptr)
 		m_settings->deleteLater();
 
+	qDeleteAll(m_sources);
 	delete m_commands;
 }
 
