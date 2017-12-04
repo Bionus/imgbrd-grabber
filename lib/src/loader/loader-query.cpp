@@ -11,6 +11,16 @@ LoaderQuery::LoaderQuery(Site *site, QMap<QString, QVariant> options)
 	: m_site(site), m_options(options), m_finished(false), m_offset(0)
 {}
 
+bool LoaderQuery::start()
+{
+	QEventLoop loop;
+	QObject::connect(m_site, &Site::loggedIn, &loop, &QEventLoop::quit);
+	m_site->login();
+	loop.exec();
+
+	return true;
+}
+
 LoaderData LoaderQuery::next()
 {
 	LoaderData ret;
