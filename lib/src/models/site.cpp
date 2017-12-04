@@ -7,6 +7,8 @@
 #include <QUrlQuery>
 #include <QDir>
 #include <QTimer>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include "page.h"
 #include "image.h"
 #include "source.h"
@@ -194,6 +196,28 @@ void Site::login(bool force)
 		return;
 	}
 
+	// OAuth 2
+	if (type == "oauth2")
+	{
+		// Get user application credentials
+		QString consumerKey = m_settings->value("auth/consumerKey", "").toString();
+		QString consumerSecret = m_settings->value("auth/consumerSecret", "").toString();
+		QByteArray bearerCredentials = QUrl::toPercentEncoding(consumerKey) + ":" + QUrl::toPercentEncoding(consumerSecret);
+		QByteArray base64BearerCredentials = bearerCredentials.toBase64();
+
+		// Create request
+		QNetworkRequest request(fixUrl(m_settings->value("login/oauth2/tokenUrl").toString()));
+		request.setRawHeader("Authorization", "Basic " + base64BearerCredentials);
+		request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded;charset=UTF-8");
+		QString body = "grant_type=client_credentials";
+
+		// Post request and wait for a reply
+		m_loginReply = m_manager->post(request, body.toUtf8());
+		connect(m_loginReply, &QNetworkReply::finished, this, &Site::loginFinished);
+
+		return;
+	}
+
 	// Cannot post login information without an URL
 	QString loginUrl = m_settings->value("login/"+type+"/url", "").toString();
 	if (loginUrl.isEmpty())
@@ -243,6 +267,9 @@ bool Site::canTestLogin() const
 	if (type == "url")
 		return m_settings->value("login/maxPage", 0).toInt() > 0;
 
+	if (type == "oauth2")
+		return true; // TODO
+
 	// Cannot post login information without an URL
 	return !m_settings->value("login/"+type+"/url", "").toString().isEmpty();
 }
@@ -257,6 +284,19 @@ void Site::loginFinished()
 	if (type == "url")
 	{
 		ok = !m_loginPage->images().isEmpty();
+	}
+	else if (type == "oauth2")
+	{
+		QString result = m_loginReply->readAll();
+		QJsonDocument jsonDocument = QJsonDocument::fromJson(result.toUtf8());
+		QJsonObject jsonObject = jsonDocument.object();
+		if (jsonObject.value("token_type").toString() == "bearer")
+		{
+			m_token = jsonObject.value("access_token").toString();
+			ok = true;
+		}
+		else
+		{ log(QString("[%1] Wrong OAuth2 token type received.").arg(m_url)); }
 	}
 	else
 	{
@@ -306,6 +346,11 @@ QNetworkRequest Site::makeRequest(QUrl url, Page *page, QString ref, Image *img)
 	QMap<QString,QVariant> headers = m_settings->value("headers").toMap();
 	for (const QString &key : headers.keys())
 	{ request.setRawHeader(key.toLatin1(), headers[key].toString().toLatin1()); }
+
+	// Add OAuth 2 authorization header
+	QString type = m_settings->value("login/type", "url").toString();
+	if (type == "oauth2" && !m_token.isEmpty())
+	{ request.setRawHeader("Authorization", "Bearer " + m_token.toUtf8()); }
 
 	// User-Agent header tokens and default value
 	QString userAgent = request.rawHeader("User-Agent");

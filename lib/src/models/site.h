@@ -125,7 +125,7 @@ class Site : public QObject
 		Page *m_loginPage;
 		LoginStatus m_loggedIn;
 		bool m_loginCheck, m_autoLogin;
-		QString m_username, m_password;
+		QString m_username, m_password, m_token;
 
 		// Async
 		std::function<void(QNetworkReply*)> m_lastCallback;
