@@ -220,35 +220,6 @@ QStringList searchTab::reasonsToFail(Page* page, QStringList completion, QString
 	return reasons;
 }
 
-QColor searchTab::imageColor(QSharedPointer<Image> img) const
-{
-	// Blacklisted
-	QStringList detected = PostFilter::blacklisted(img->tokens(m_profile), m_profile->getBlacklist());
-	if (!detected.isEmpty())
-		return QColor("#000000");
-
-	// Favorited (except for exact favorite search)
-	for (const Tag &tag : img->tags())
-		if (!img->page()->search().contains(tag.text()))
-			for (const Favorite &fav : m_favorites)
-				if (fav.getName() == tag.text())
-					return QColor("#ffc0cb");
-
-	// Image with a parent
-	if (img->parentId() != 0)
-		return QColor("#cccc00");
-
-	// Image with children
-	if (img->hasChildren())
-		return QColor("#00ff00");
-
-	// Pending image
-	if (img->status() == "pending")
-		return QColor("#0000ff");
-
-	return QColor();
-}
-
 void searchTab::clear()
 {
 	// Reset loading variables
@@ -780,7 +751,7 @@ QString searchTab::makeThumbnailTooltip(QSharedPointer<Image> img) const
 }
 QBouton *searchTab::createImageThumbnail(int position, QSharedPointer<Image> img)
 {
-	QColor color = imageColor(img);
+	QColor color = img->color();
 
 	bool resizeInsteadOfCropping = m_settings->value("resizeInsteadOfCropping", true).toBool();
 	bool resultsScrollArea = m_settings->value("resultsScrollArea", true).toBool();

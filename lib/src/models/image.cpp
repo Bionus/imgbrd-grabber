@@ -7,6 +7,7 @@
 #include "commands/commands.h"
 #include "downloader/file-downloader.h"
 #include "models/api.h"
+#include "models/post-filter.h"
 #include "tags/tag-stylist.h"
 #include "functions.h"
 
@@ -1048,6 +1049,36 @@ void Image::setSavePath(const QString &savePath)
 void Image::setTags(const QList<Tag> &tags)
 {
 	m_tags = tags;
+}
+
+QColor Image::color() const
+{
+	// Blacklisted
+	QStringList detected = PostFilter::blacklisted(tokens(m_profile), m_profile->getBlacklist());
+	if (!detected.isEmpty())
+		return QColor("#000000");
+
+	// Favorited (except for exact favorite search)
+	auto favorites = m_profile->getFavorites();
+	for (const Tag &tag : m_tags)
+		if (!m_parent->search().contains(tag.text()))
+			for (const Favorite &fav : favorites)
+				if (fav.getName() == tag.text())
+					return QColor("#ffc0cb");
+
+	// Image with a parent
+	if (m_parentId != 0)
+		return QColor("#cccc00");
+
+	// Image with children
+	if (m_hasChildren)
+		return QColor("#00ff00");
+
+	// Pending image
+	if (m_status == "pending")
+		return QColor("#0000ff");
+
+	return QColor();
 }
 
 QString Image::md5() const
