@@ -1181,11 +1181,9 @@ void searchTab::loadTags(QStringList tags)
 
 	// Save previous pages
 	m_lastPages.clear();
-	QStringList keys = m_sites.keys();
 	for (Site *sel : m_selectedSources)
 	{
 		QString site = sel->url();
-		int i = keys.indexOf(site);
 		if (m_pages.contains(site))
 			m_lastPages.insert(site, m_pages[site].last());
 	}
