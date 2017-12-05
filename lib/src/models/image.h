@@ -66,7 +66,6 @@ class Image : public QObject, public Downloadable
 		const QPixmap &previewImage();
 		Page		*page() const;
 		const QByteArray &data() const;
-		QSettings	*settings() const;
 		Site		*parentSite() const;
 		QNetworkReply	*imageReply() const;
 		QNetworkReply	*tagsReply() const;
@@ -78,8 +77,6 @@ class Image : public QObject, public Downloadable
 		void		setData(const QByteArray &data);
 		void		setSize(QSize size);
 		void		setFileSize(int size);
-		void		setSavePath(const QString &savePath);
-		void		setRating(QString rating);
 		void		setFileExtension(QString ext);
 		bool		shouldDisplaySample() const;
 		QUrl		getDisplayableUrl() const;
@@ -94,6 +91,9 @@ class Image : public QObject, public Downloadable
 		virtual QMap<QString, Token> tokens(Profile *profile) const;
 		virtual SaveResult preSave(const QString &path) override;
 		virtual void postSave(QMap<QString, SaveResult> result, bool addMd5, bool startCommands, int count) override;
+
+	protected:
+		void setRating(QString rating);
 
 	public slots:
 		void loadPreview();

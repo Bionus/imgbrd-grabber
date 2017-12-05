@@ -988,7 +988,6 @@ Page			*Image::page() const		{ return m_parent;			}
 const QByteArray&Image::data() const		{ return m_data;			}
 QNetworkReply	*Image::imageReply() const	{ return m_loadImage;		}
 QNetworkReply	*Image::tagsReply() const	{ return m_loadDetails;		}
-QSettings		*Image::settings() const	{ return m_settings;		}
 QMap<QString,QString> Image::details() const{ return m_details;			}
 QStringList		Image::search() const		{ return m_search;			}
 
@@ -1041,10 +1040,6 @@ void	Image::setData(const QByteArray &d)
 	{
 		m_md5 = QCryptographicHash::hash(m_data, QCryptographicHash::Md5).toHex();
 	}
-}
-void Image::setSavePath(const QString &savePath)
-{
-	m_savePath = savePath;
 }
 void Image::setTags(const QList<Tag> &tags)
 {
