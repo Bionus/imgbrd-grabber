@@ -92,6 +92,13 @@ class Image : public QObject, public Downloadable
 		virtual SaveResult preSave(const QString &path) override;
 		virtual void postSave(QMap<QString, SaveResult> result, bool addMd5, bool startCommands, int count) override;
 
+		// Templates
+		template <typename T>
+		T token(QString name) const
+		{
+			return tokens(m_profile).value(name).value<T>();
+		}
+
 	protected:
 		void setRating(QString rating);
 
