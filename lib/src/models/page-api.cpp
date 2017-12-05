@@ -359,7 +359,7 @@ void PageApi::parse()
 		return;
 	}
 
-	int first = m_smart ? ((m_page - 1) * m_imagesPerPage) % m_blim : 0;
+	int first = m_smart && m_blim > 0 ? ((m_page - 1) * m_imagesPerPage) % m_blim : 0;
 
 	// XML
 	if (m_format == "Xml")
