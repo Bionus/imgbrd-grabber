@@ -1212,9 +1212,19 @@ QMap<QString, Token> Image::tokens(Profile *profile) const
 	tokens.insert("width", Token(m_size.width(), 0));
 	tokens.insert("mpixels", Token(m_size.width() * m_size.height(), 0));
 	tokens.insert("url_file", Token(m_url, ""));
+	tokens.insert("url_sample", Token(m_sampleUrl.toString(), ""));
+	tokens.insert("url_thumbnail", Token(m_previewUrl.toString(), ""));
 	tokens.insert("url_page", Token(m_pageUrl.toString(), ""));
 	tokens.insert("source", Token(m_source, ""));
 	tokens.insert("filesize", Token(m_fileSize, 0));
+	tokens.insert("author", Token(m_author, ""));
+	tokens.insert("authorid", Token(m_authorId, 0));
+	tokens.insert("parentid", Token(m_parentId, 0));
+
+	// Flags
+	tokens.insert("has_children", Token(m_hasChildren, false));
+	tokens.insert("has_note", Token(m_hasNote, false));
+	tokens.insert("has_comments", Token(m_hasComments, false));
 
 	// Search
 	for (int i = 0; i < m_search.size(); ++i)
