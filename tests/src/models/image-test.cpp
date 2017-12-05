@@ -139,7 +139,7 @@ void ImageTest::testMd5FromData()
 
 	QCOMPARE(m_img->md5(), QString("098f6bcd4621d373cade4e832627b4f6"));
 }
-void ImageTest::testMd5FromFile()
+/*void ImageTest::testMd5FromFile()
 {
 	m_details.remove("md5");
 	m_img->deleteLater();
@@ -147,7 +147,7 @@ void ImageTest::testMd5FromFile()
 	m_img->setSavePath("tests/resources/image_1x1.png");
 
 	QCOMPARE(m_img->md5(), QString("956ddde86fb5ce85218b21e2f49e5c50"));
-}
+}*/
 
 void ImageTest::testStylishedTags()
 {
