@@ -114,7 +114,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	m_filename = details.contains("filename") ? details["filename"] : "";
 	m_folder = details.contains("folder") ? details["folder"] : "";
 	m_search = parent != nullptr ? parent->search() : (details.contains("search") ? details["search"].split(' ') : QStringList());
-	m_id = details.contains("id") ? details["id"].toInt() : 0;
+	m_id = details.contains("id") ? details["id"].toULongLong() : 0;
 	m_score = details.contains("score") ? details["score"].toInt() : 0;
 	m_hasScore = details.contains("score");
 	m_parentId = details.contains("parent_id") ? details["parent_id"].toInt() : 0;
@@ -965,7 +965,7 @@ QString			Image::filename() const		{ return m_filename;		}
 QString			Image::folder() const		{ return m_folder;			}
 QList<Tag>		Image::tags() const			{ return m_tags;			}
 QList<Pool>		Image::pools() const		{ return m_pools;			}
-int				Image::id() const			{ return m_id;				}
+qulonglong		Image::id() const			{ return m_id;				}
 int				Image::score() const		{ return m_score;			}
 int				Image::parentId() const		{ return m_parentId;		}
 int				Image::fileSize() const		{ return m_fileSize;		}

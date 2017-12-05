@@ -45,7 +45,7 @@ class Image : public QObject, public Downloadable
 		QStringList tagsString() const;
 		QStringList search() const;
 		QList<Pool>	pools() const;
-		int			id() const;
+		qulonglong	id() const;
 		int			score() const;
 		int			parentId() const;
 		int			fileSize() const;
@@ -123,7 +123,8 @@ class Image : public QObject, public Downloadable
 
 	private:
 		Page			*m_parent;
-		int				m_id, m_score, m_parentId, m_fileSize, m_authorId, m_previewTry;
+		qulonglong		m_id;
+		int				m_score, m_parentId, m_fileSize, m_authorId, m_previewTry;
 		bool			m_hasChildren, m_hasNote, m_hasComments, m_hasScore;
 		QString			m_url;
 		QString	mutable m_md5;

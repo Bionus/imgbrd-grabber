@@ -43,8 +43,8 @@ class PageApi : public QObject
 		int				highLimit();
 		int				page();
 		int				pageImageCount();
-		int				minId();
-		int				maxId();
+		qulonglong		minId() const;
+		qulonglong		maxId() const;
 		void			setUrl(const QUrl &url);
 		QUrl			nextPage();
 		QUrl			prevPage();
@@ -73,7 +73,8 @@ class PageApi : public QObject
 		Site			*m_site;
 		Api				*m_api;
 		QStringList		m_search, m_postFiltering, m_errors;
-		int				m_imagesPerPage, m_lastPage, m_lastPageMinId, m_lastPageMaxId, m_page, m_blim, m_pool;
+		int				m_imagesPerPage, m_lastPage, m_page, m_blim, m_pool;
+		qulonglong		m_lastPageMinId, m_lastPageMaxId;
 		bool			m_smart, m_isAltPage;
 		QString			m_format, m_source, m_wiki, m_originalUrl;
 		QUrl			m_url, m_urlRegex, m_urlNextPage, m_urlPrevPage;

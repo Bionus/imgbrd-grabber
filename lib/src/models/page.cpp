@@ -184,11 +184,11 @@ int Page::pagesCount(bool guess)
 	return m_pageApis[m_currentApi]->pagesCount(guess);
 }
 
-int Page::maxId()
+qulonglong Page::maxId() const
 {
 	return m_pageApis[m_currentApi]->maxId();
 }
-int Page::minId()
+qulonglong Page::minId() const
 {
 	return m_pageApis[m_currentApi]->minId();
 }

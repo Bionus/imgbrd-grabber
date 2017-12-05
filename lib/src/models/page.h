@@ -40,8 +40,8 @@ class Page : public QObject
 		int			highLimit();
 		int			page();
 		int			pageImageCount();
-		int			minId();
-		int			maxId();
+		qulonglong	minId() const;
+		qulonglong	maxId() const;
 		QUrl		nextPage();
 		QUrl		prevPage();
 

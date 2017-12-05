@@ -923,17 +923,17 @@ int PageApi::pagesCount(bool guess)
 	return m_pagesCount;
 }
 
-int PageApi::maxId()
+qulonglong PageApi::maxId() const
 {
-	int maxId = 0;
+	qulonglong maxId = 0;
 	for (const QSharedPointer<Image> &img : m_images)
 		if (img->id() > maxId || maxId == 0)
 			maxId = img->id();
 	return maxId;
 }
-int PageApi::minId()
+qulonglong PageApi::minId() const
 {
-	int minId = 0;
+	qulonglong minId = 0;
 	for (const QSharedPointer<Image> &img : m_images)
 		if (img->id() < minId || minId == 0)
 			minId = img->id();
