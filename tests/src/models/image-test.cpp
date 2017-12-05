@@ -98,35 +98,10 @@ void ImageTest::testCopy()
 {
 	Image clone = *m_img;
 
-	QCOMPARE(clone.id(), m_img->id());
-	QCOMPARE(clone.md5(), m_img->md5());
-	QCOMPARE(clone.tags(), m_img->tags());
-	QCOMPARE(clone.author(), m_img->author());
-	QCOMPARE(clone.status(), m_img->status());
-	QCOMPARE(clone.rating(), m_img->rating());
-	QCOMPARE(clone.source(), m_img->source());
-	QCOMPARE(clone.site(), m_img->site());
+	QCOMPARE(clone.tokens(m_profile), m_img->tokens(m_profile));
 	QCOMPARE(clone.parentSite(), m_img->parentSite());
 	QCOMPARE(clone.filename(), m_img->filename());
 	QCOMPARE(clone.folder(), m_img->folder());
-	QCOMPARE(clone.pools().count(), m_img->pools().count());
-	QCOMPARE(clone.fileSize(), m_img->fileSize());
-	QCOMPARE(clone.score(), m_img->score());
-	QCOMPARE(clone.parentId(), m_img->parentId());
-	QCOMPARE(clone.width(), m_img->width());
-	QCOMPARE(clone.height(), m_img->height());
-	QCOMPARE(clone.authorId(), m_img->authorId());
-	QCOMPARE(clone.createdAt(), m_img->createdAt());
-	QCOMPARE(clone.hasChildren(), m_img->hasChildren());
-	QCOMPARE(clone.hasNote(), m_img->hasNote());
-	QCOMPARE(clone.hasComments(), m_img->hasComments());
-	QCOMPARE(clone.hasScore(), m_img->hasScore());
-	QCOMPARE(clone.fileUrl(), m_img->fileUrl());
-	QCOMPARE(clone.sampleUrl(), m_img->sampleUrl());
-	QCOMPARE(clone.previewUrl(), m_img->previewUrl());
-	QCOMPARE(clone.pageUrl(), m_img->pageUrl());
-	QCOMPARE(clone.size(), m_img->size());
-	QCOMPARE(clone.previewImage(), m_img->previewImage());
 	QCOMPARE(clone.page(), m_img->page());
 	QCOMPARE(clone.data(), m_img->data());
 	QCOMPARE(clone.settings(), m_img->settings());

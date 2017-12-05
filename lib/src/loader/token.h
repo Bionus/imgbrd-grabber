@@ -26,4 +26,7 @@ class Token
 		QString m_multipleDefault;
 };
 
+bool operator==(const Token &lhs, const Token &rhs);
+bool operator!=(const Token &lhs, const Token &rhs);
+
 #endif // TOKEN_H
