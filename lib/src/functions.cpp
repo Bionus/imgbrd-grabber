@@ -327,7 +327,8 @@ int levenshtein(QString s1, QString s2)
 bool setFileCreationDate(QString path, QDateTime datetime)
 {
 	#ifdef Q_OS_WIN
-		LPCSTR filename = path.toStdString().c_str();
+		QByteArray bytePath = path.toLocal8Bit();
+		LPCSTR filename = bytePath.constData();
 		HANDLE hfile = CreateFile(filename, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 		if (hfile == INVALID_HANDLE_VALUE)
 		{
