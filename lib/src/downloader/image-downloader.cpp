@@ -85,6 +85,8 @@ void ImageDownloader::networkError(QNetworkReply::NetworkError error, QString ms
 
 void ImageDownloader::success()
 {
-	m_image->postSaving(m_paths.first(), m_addMd5, m_startCommands, m_count, false);
+	for (const QString &path : m_paths)
+		m_image->postSaving(path, m_addMd5, m_startCommands, m_count, false);
+
 	emit saved(m_image, makeMap(m_paths, Image::SaveResult::Saved));
 }
