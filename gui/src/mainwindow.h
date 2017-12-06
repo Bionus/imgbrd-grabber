@@ -69,18 +69,6 @@ class mainWindow : public QMainWindow
 		// Favorites
 		void updateFavorites();
 		void updateKeepForLater();
-		/*void loadFavorite(int);
-		void favoriteProperties(int);
-		void viewed();
-		void setFavoriteViewed(QString);
-		void favoritesBack();
-		void checkFavorites();
-		void loadNextFavorite();*/
-		// Download
-		/*void web(QString tags = "");
-		void finishedLoading(Page*);
-		void finishedLoadingPreview(QSharedPointer<Image>);
-		void webZoom(int);*/
 		// Batch download management
 		void batchClear();
 		void batchClearSel();
