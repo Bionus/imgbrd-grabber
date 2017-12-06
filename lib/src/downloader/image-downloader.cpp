@@ -44,7 +44,8 @@ void ImageDownloader::loadedSave()
 
 	// Load the image directly on the disk
 	log(QString("Loading and saving image in <a href=\"file:///%1\">%1</a>").arg(m_paths.first()));
-	connect(m_image.data(), &Image::finishedImage, this, &ImageDownloader::imageLoaded, Qt::UniqueConnection);
+	connect(&m_fileDownloader, &FileDownloader::success, this, &ImageDownloader::success, Qt::UniqueConnection);
+	connect(&m_fileDownloader, &FileDownloader::networkError, this, &ImageDownloader::networkError, Qt::UniqueConnection);
 	connect(&m_fileDownloader, &FileDownloader::writeError, this, &ImageDownloader::writeError, Qt::UniqueConnection);
 	m_image->loadImage(false);
 
@@ -71,22 +72,19 @@ void ImageDownloader::writeError()
 	emit saved(m_image, makeMap(m_paths, Image::SaveResult::Error));
 }
 
-void ImageDownloader::imageLoaded(QNetworkReply::NetworkError error, QString msg)
+void ImageDownloader::networkError(QNetworkReply::NetworkError error, QString msg)
 {
-	// Handle network errors
-	if (error != QNetworkReply::NoError)
+	if (error == QNetworkReply::ContentNotFoundError)
+	{ emit saved(m_image, makeMap(m_paths, Image::SaveResult::NotFound)); }
+	else if (error != QNetworkReply::OperationCanceledError)
 	{
-		if (error == QNetworkReply::ContentNotFoundError)
-		{ emit saved(m_image, makeMap(m_paths, Image::SaveResult::NotFound)); }
-		else if (error != QNetworkReply::OperationCanceledError)
-		{
-			log(QString("Network error for the image: <a href=\"%1\">%1</a>: %2 (%3)").arg(m_image->url().toHtmlEscaped()).arg(error).arg(msg), Logger::Error);
-			emit saved(m_image, makeMap(m_paths, Image::SaveResult::NetworkError));
-		}
-		return;
+		log(QString("Network error for the image: <a href=\"%1\">%1</a>: %2 (%3)").arg(m_image->url().toHtmlEscaped()).arg(error).arg(msg), Logger::Error);
+		emit saved(m_image, makeMap(m_paths, Image::SaveResult::NetworkError));
 	}
+}
 
-	// Success!
+void ImageDownloader::success()
+{
 	m_image->postSaving(m_paths.first(), m_addMd5, m_startCommands, m_count, false);
 	emit saved(m_image, makeMap(m_paths, Image::SaveResult::Saved));
 }

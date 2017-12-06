@@ -24,7 +24,8 @@ class ImageDownloader : public QObject
 	private slots:
 		void loadedSave();
 		void writeError();
-		void imageLoaded(QNetworkReply::NetworkError error, QString msg);
+		void networkError(QNetworkReply::NetworkError error, QString msg);
+		void success();
 
 	private:
 		QSharedPointer<Image> m_image;
