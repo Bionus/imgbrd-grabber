@@ -1076,6 +1076,22 @@ QColor Image::color() const
 	return QColor();
 }
 
+QString Image::tooltip() const
+{
+	float size = m_fileSize;
+	QString unit = getUnit(&size);
+
+	return QString("%1%2%3%4%5%6%7%8")
+		.arg(m_tags.isEmpty() ? " " : tr("<b>Tags:</b> %1<br/><br/>").arg(stylishedTags(m_profile).join(" ")))
+		.arg(m_id == 0 ? " " : tr("<b>ID:</b> %1<br/>").arg(m_id))
+		.arg(m_rating.isEmpty() ? " " : tr("<b>Rating:</b> %1<br/>").arg(m_rating))
+		.arg(m_hasScore ? tr("<b>Score:</b> %1<br/>").arg(m_score) : " ")
+		.arg(m_author.isEmpty() ? " " : tr("<b>User:</b> %1<br/><br/>").arg(m_author))
+		.arg(m_size.width() == 0 || m_size.height() == 0 ? " " : tr("<b>Size:</b> %1 x %2<br/>").arg(QString::number(m_size.width()), QString::number(m_size.height())))
+		.arg(m_fileSize == 0 ? " " : tr("<b>Filesize:</b> %1 %2<br/>").arg(QString::number(size), unit))
+		.arg(!m_createdAt.isValid() ? " " : tr("<b>Date:</b> %1").arg(m_createdAt.toString(tr("'the 'MM/dd/yyyy' at 'hh:mm"))));
+}
+
 QString Image::md5() const
 {
 	// If we know the path to the image or its content but not its md5, we calculate it first

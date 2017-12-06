@@ -32,6 +32,7 @@ class Image : public QObject, public Downloadable
 		QMap<QString, Image::SaveResult> save(const QStringList &paths, bool addMd5 = true, bool startCommands = false, int count = 1, bool force = false, bool loadIfNecessary = false);
 		QMap<QString, Image::SaveResult> save(const QString &filename, const QString &path, bool addMd5 = true, bool startCommands = false, int count = 1, bool loadIfNecessary = false);
 		QColor		color() const override;
+		QString		tooltip() const override;
 		QString		md5() const;
 		QString		author() const;
 		QString		status() const;

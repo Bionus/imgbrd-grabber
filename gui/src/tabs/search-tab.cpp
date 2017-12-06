@@ -734,21 +734,6 @@ void searchTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPoi
 	}
 }
 
-QString searchTab::makeThumbnailTooltip(QSharedPointer<Image> img) const
-{
-	float size = img->fileSize();
-	QString unit = getUnit(&size);
-
-	return QString("%1%2%3%4%5%6%7%8")
-		.arg(img->tags().isEmpty() ? " " : tr("<b>Tags:</b> %1<br/><br/>").arg(img->stylishedTags(m_profile).join(" ")))
-		.arg(img->id() == 0 ? " " : tr("<b>ID:</b> %1<br/>").arg(img->id()))
-		.arg(img->rating().isEmpty() ? " " : tr("<b>Rating:</b> %1<br/>").arg(img->rating()))
-		.arg(img->hasScore() ? tr("<b>Score:</b> %1<br/>").arg(img->score()) : " ")
-		.arg(img->author().isEmpty() ? " " : tr("<b>User:</b> %1<br/><br/>").arg(img->author()))
-		.arg(img->width() == 0 || img->height() == 0 ? " " : tr("<b>Size:</b> %1 x %2<br/>").arg(QString::number(img->width()), QString::number(img->height())))
-		.arg(img->fileSize() == 0 ? " " : tr("<b>Filesize:</b> %1 %2<br/>").arg(QString::number(size), unit))
-		.arg(!img->createdAt().isValid() ? " " : tr("<b>Date:</b> %1").arg(img->createdAt().toString(tr("'the 'MM/dd/yyyy' at 'hh:mm"))));
-}
 QBouton *searchTab::createImageThumbnail(int position, QSharedPointer<Image> img)
 {
 	QColor color = img->color();
@@ -762,7 +747,7 @@ QBouton *searchTab::createImageThumbnail(int position, QSharedPointer<Image> img
 	QBouton *l = new QBouton(position, resizeInsteadOfCropping, resultsScrollArea, borderSize, color, this);
 	l->setCheckable(true);
 	l->setChecked(m_selectedImages.contains(img->url()));
-	l->setToolTip(makeThumbnailTooltip(img));
+	l->setToolTip(img->tooltip());
 	if (img->previewImage().isNull())
 	{ l->scale(QPixmap(":/images/noimage.png"), upscale); }
 	else
