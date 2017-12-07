@@ -1015,9 +1015,10 @@ void	Image::setUrl(QString u)
 	setFileSize(0);
 	emit urlChanged(m_url, u);
 	m_url = u;
+	refreshTokens();
 }
-void	Image::setSize(QSize size)	{ m_size = size;	}
-void	Image::setFileSize(int s)	{ m_fileSize = s;	}
+void	Image::setSize(QSize size)	{ m_size = size; refreshTokens();	}
+void	Image::setFileSize(int s)	{ m_fileSize = s; refreshTokens();	}
 void	Image::setData(const QByteArray &d)
 {
 	m_data = d;
@@ -1039,11 +1040,13 @@ void	Image::setData(const QByteArray &d)
 	if (m_md5.isEmpty())
 	{
 		m_md5 = QCryptographicHash::hash(m_data, QCryptographicHash::Md5).toHex();
+		refreshTokens();
 	}
 }
 void Image::setTags(const QList<Tag> &tags)
 {
 	m_tags = tags;
+	refreshTokens();
 }
 
 QColor Image::color() const
@@ -1160,12 +1163,14 @@ void Image::setRating(QString rating)
 	{ m_rating = assoc.value(rating); }
 	else
 	{ m_rating = rating.toLower(); }
+	refreshTokens();
 }
 
 void Image::setFileExtension(QString ext)
 {
 	m_url = setExtension(m_url, ext);
 	m_fileUrl = setExtension(m_fileUrl.toString(), ext);
+	refreshTokens();
 }
 
 bool Image::isVideo() const
@@ -1202,7 +1207,7 @@ QStringList Image::paths(const Filename &filename, const QString &folder, int co
 	return path(filename.getFormat(), folder, count, true, false, true, true, true);
 }
 
-QMap<QString, Token> Image::tokens(Profile *profile) const
+QMap<QString, Token> Image::generateTokens(Profile *profile) const
 {
 	QSettings *settings = profile->getSettings();
 	QStringList ignore = profile->getIgnored();
