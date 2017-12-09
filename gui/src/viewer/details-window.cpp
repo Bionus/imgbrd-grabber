@@ -35,5 +35,6 @@ void DetailsWindow::setImage(QSharedPointer<Image> image)
 		}
 	}
 
-	resize(QSize(400, 200));
+	update();
+	resize(sizeHint());
 }
