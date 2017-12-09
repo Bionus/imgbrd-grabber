@@ -75,12 +75,12 @@ class Image : public QObject, public Downloadable
 		void		setTags(const QList<Tag> &tags);
 
 		// Downloadable
-		virtual QString url() const override;
-		virtual void preload(const Filename &filename) override;
-		virtual QStringList paths(const Filename &filename, const QString &folder, int count) const override;
-		virtual QMap<QString, Token> generateTokens(Profile *profile) const;
-		virtual SaveResult preSave(const QString &path) override;
-		virtual void postSave(QMap<QString, SaveResult> result, bool addMd5, bool startCommands, int count) override;
+		QString url() const override;
+		void preload(const Filename &filename) override;
+		QStringList paths(const Filename &filename, const QString &folder, int count) const override;
+		QMap<QString, Token> generateTokens(Profile *profile) const;
+		SaveResult preSave(const QString &path) override;
+		void postSave(QMap<QString, SaveResult> result, bool addMd5, bool startCommands, int count) override;
 
 		// Templates
 		template <typename T>
