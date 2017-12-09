@@ -1252,7 +1252,6 @@ void mainWindow::getAllFinishedLogins()
 {
 	bool usePacking = m_settings->value("packing_enable", true).toBool();
 	int realConstImagesPerPack = m_settings->value("packing_size", 1000).toInt();
-	realConstImagesPerPack = 5;
 
 	int total = 0;
 	for (int j : m_batchPending.keys())
