@@ -159,7 +159,6 @@ class mainWindow : public QMainWindow
 		int getRowForSite(int site_id);
 		void getAllGetImageIfNotBlacklisted(QSharedPointer<Image> img, int site_id);
 		void getAllImageOk(QSharedPointer<Image> img, int site_id);
-		QList<Site*> getSelectedSites();
 		Site* getSelectedSiteOrDefault();
 		void initialLoginsDone();
 		void addTableItem(QTableWidget *table, int row, int col, QString text);

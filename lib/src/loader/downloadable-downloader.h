@@ -30,7 +30,6 @@ class DownloadableDownloader : public QObject
 
 	protected:
 		void setResult(QStringList keys, Downloadable::SaveResult value);
-		void postSave();
 
 	private:
 		QSharedPointer<Downloadable> m_downloadable;

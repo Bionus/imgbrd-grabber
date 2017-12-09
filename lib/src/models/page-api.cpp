@@ -1,7 +1,7 @@
 #include "models/page-api.h"
 #include <QDomDocument>
 #include <QRegularExpression>
-#include <cmath>
+#include <QtMath>
 #include "functions.h"
 #include "logger.h"
 #include "models/api.h"
@@ -12,7 +12,7 @@
 #include "vendor/json.h"
 
 
-PageApi::PageApi(Page *parentPage, Profile *profile, Site *site, Api *api, QStringList tags, int page, int limit, QStringList postFiltering, bool smart, QObject *parent, int pool, int lastPage, int lastPageMinId, int lastPageMaxId)
+PageApi::PageApi(Page *parentPage, Profile *profile, Site *site, Api *api, QStringList tags, int page, int limit, QStringList postFiltering, bool smart, QObject *parent, int pool, int lastPage, qulonglong lastPageMinId, qulonglong lastPageMaxId)
 	: QObject(parent), m_parentPage(parentPage), m_profile(profile), m_site(site), m_api(api), m_search(tags), m_postFiltering(postFiltering), m_errors(QStringList()), m_imagesPerPage(limit), m_lastPage(lastPage), m_lastPageMinId(lastPageMinId), m_lastPageMaxId(lastPageMaxId), m_smart(smart), m_reply(nullptr), m_replyTags(nullptr)
 {
 	m_imagesCount = -1;
@@ -117,7 +117,7 @@ void PageApi::updateUrls()
 	{
 		if (m_imagesPerPage > m_blim || limited)
 		{ m_imagesPerPage = m_blim; }
-		p = static_cast<int>(floor(((m_page - 1.) * m_imagesPerPage) / m_blim) + 1);
+		p = qFloor(((m_page - 1.) * m_imagesPerPage) / m_blim) + 1;
 	}
 	p = p - 1 + m_api->value("FirstPage").toInt();
 
@@ -377,7 +377,7 @@ void PageApi::parse()
 		QDomElement docElem = doc.documentElement();
 
 		// Getting last page
-		int count = docElem.attributes().namedItem("count").nodeValue().toFloat();
+		int count = docElem.attributes().namedItem("count").nodeValue().toInt();
 		QString database = docElem.attributes().namedItem("type").nodeValue();
 		if (count == 0 && database == "array")
 		{ count = docElem.elementsByTagName("total-count").at(0).toElement().text().toInt(); }
@@ -845,7 +845,7 @@ void PageApi::parseNavigation(const QString &source)
 			if (m_originalUrl.contains("{pid}") || (m_api->contains("Urls/PagePart") && m_api->value("Urls/PagePart").contains("{pid}")))
 			{
 				int ppid = m_api->contains("Urls/Limit") ? m_api->value("Urls/Limit").toInt() : m_imagesPerPage;
-				pagesCount = floor(static_cast<float>(pagesCount) / static_cast<float>(ppid)) + 1;
+				pagesCount = qFloor(static_cast<float>(pagesCount) / static_cast<float>(ppid)) + 1;
 			}
 			setPageCount(pagesCount, true);
 		}
@@ -917,7 +917,7 @@ int PageApi::pagesCount(bool guess)
 	int perPage = m_api->contains("Urls/Limit") && !m_api->contains("Urls/MaxLimit") ? m_api->value("Urls/Limit").toInt() : m_imagesPerPage;
 
 	if (m_pagesCount < 0 && guess && m_imagesCount >= 0)
-		return static_cast<int>(ceil(static_cast<float>(m_imagesCount) / perPage));
+		return qCeil(static_cast<float>(m_imagesCount) / perPage);
 
 	return m_pagesCount;
 }
@@ -952,7 +952,7 @@ void PageApi::setImageCount(int count, bool sure)
 		m_imagesCountSafe = sure;
 
 		if (sure)
-		{ setPageCount(ceil(static_cast<float>(count) / m_imagesPerPage), true); }
+		{ setPageCount(qCeil(static_cast<float>(count) / m_imagesPerPage), true); }
 	}
 }
 

@@ -5,6 +5,7 @@
 #include <QJsonObject>
 #include "downloader/download-query-group.h"
 #include "downloader/download-query-image.h"
+#include "logger.h"
 #include "models/site.h"
 
 
@@ -41,7 +42,7 @@ bool DownloadQueryLoader::load(QString path, QList<DownloadQueryImage> &uniques,
 				if (!sites.contains(source))
 					continue;
 
-				uniques.append(DownloadQueryImage(infos[0].toInt(), infos[1], infos[2], infos[3], infos[4], infos[5], sites[source], infos[7], infos[8]));
+				uniques.append(DownloadQueryImage(infos[0].toULongLong(), infos[1], infos[2], infos[3], infos[4], infos[5], sites[source], infos[7], infos[8]));
 			}
 			else
 			{
@@ -57,38 +58,39 @@ bool DownloadQueryLoader::load(QString path, QList<DownloadQueryImage> &uniques,
 	}
 
 	// Other versions are JSON-based
-	else
+	f.reset();
+
+	QByteArray data = f.readAll();
+	QJsonDocument loadDoc = QJsonDocument::fromJson(data);
+	QJsonObject object = loadDoc.object();
+
+	int version = object["version"].toInt();
+	switch (version)
 	{
-		f.reset();
-
-		QByteArray data = f.readAll();
-		QJsonDocument loadDoc = QJsonDocument::fromJson(data);
-		QJsonObject object = loadDoc.object();
-
-		int version = object["version"].toInt();
-		switch (version)
+		case 3:
 		{
-			case 3:
-				QJsonArray batchsJson = object["batchs"].toArray();
-				for (auto batchJson : batchsJson)
-				{
-					DownloadQueryGroup batch;
-					if (batch.read(batchJson.toObject(), sites))
-						batchs.append(batch);
-				}
+			QJsonArray batchsJson = object["batchs"].toArray();
+			for (auto batchJson : batchsJson)
+			{
+				DownloadQueryGroup batch;
+				if (batch.read(batchJson.toObject(), sites))
+					batchs.append(batch);
+			}
 
-				QJsonArray uniquesJson = object["uniques"].toArray();
-				for (auto uniqueJson : uniquesJson)
-				{
-					DownloadQueryImage unique;
-					if (unique.read(uniqueJson.toObject(), sites))
-						uniques.append(unique);
-				}
-				return true;
+			QJsonArray uniquesJson = object["uniques"].toArray();
+			for (auto uniqueJson : uniquesJson)
+			{
+				DownloadQueryImage unique;
+				if (unique.read(uniqueJson.toObject(), sites))
+					uniques.append(unique);
+			}
+			return true;
 		}
-	}
 
-	return false;
+		default:
+			log(QString("Unknown IGL file version: %1").arg(version), Logger::Warning);
+			return false;
+	}
 }
 
 bool DownloadQueryLoader::save(QString path, const QList<DownloadQueryImage> &uniques, const QList<DownloadQueryGroup> &batchs)

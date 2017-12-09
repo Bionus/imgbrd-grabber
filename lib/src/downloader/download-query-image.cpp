@@ -20,7 +20,7 @@ DownloadQueryImage::DownloadQueryImage(const Image &img, Site *site, QString fil
 	initFromImage(img);
 }
 
-DownloadQueryImage::DownloadQueryImage(int id, const QString &md5, const QString &rating, const QString &tags, const QString &fileUrl, const QString &date, Site *site, QString filename, QString path)
+DownloadQueryImage::DownloadQueryImage(qulonglong id, const QString &md5, const QString &rating, const QString &tags, const QString &fileUrl, const QString &date, Site *site, QString filename, QString path)
 	: site(site), filename(filename), path(path)
 {
 	initFromData(id, md5, rating, tags, fileUrl, date);
@@ -35,7 +35,7 @@ void DownloadQueryImage::initFromImage(const Image &img)
 	initFromData(img.id(), img.md5(), img.rating(), tags.join(" "), img.fileUrl().toString(), img.createdAt().toString(Qt::ISODate));
 }
 
-void DownloadQueryImage::initFromData(int id, const QString &md5, const QString &rating, const QString &tags, const QString &fileUrl, const QString &date)
+void DownloadQueryImage::initFromData(qulonglong id, const QString &md5, const QString &rating, const QString &tags, const QString &fileUrl, const QString &date)
 {
 	values["filename"] = filename;
 	values["path"] = path;

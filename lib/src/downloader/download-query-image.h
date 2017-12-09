@@ -18,7 +18,7 @@ class DownloadQueryImage
 		DownloadQueryImage() = default;
 		DownloadQueryImage(QSettings *settings, const Image &img, Site *site);
 		DownloadQueryImage(const Image &img, Site *site, QString filename, QString path);
-		DownloadQueryImage(int id, const QString &md5, const QString &rating, const QString &tags, const QString &fileUrl, const QString &date, Site *site, QString filename, QString path);
+		DownloadQueryImage(qulonglong id, const QString &md5, const QString &rating, const QString &tags, const QString &fileUrl, const QString &date, Site *site, QString filename, QString path);
 
 		// Serialization
 		QString toString(const QString &separator) const;
@@ -33,7 +33,7 @@ class DownloadQueryImage
 
 	private:
 		void initFromImage(const Image &img);
-		void initFromData(int id, const QString &md5, const QString &rating, const QString &tags, const QString &fileUrl, const QString &date);
+		void initFromData(qulonglong id, const QString &md5, const QString &rating, const QString &tags, const QString &fileUrl, const QString &date);
 };
 
 bool operator==(const DownloadQueryImage &lhs, const DownloadQueryImage &rhs);

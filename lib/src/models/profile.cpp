@@ -263,14 +263,16 @@ QPair<QString, QString> Profile::md5Action(QString md5)
 	QString path = contains ? m_md5s[md5] : QString();
 	bool exists = contains && QFile::exists(path);
 
-	if (contains && !exists && !keepDeleted)
+	if (contains && !exists)
 	{
-		removeMd5(md5);
-		path = QString();
+		if (!keepDeleted)
+		{
+			removeMd5(md5);
+			path = QString();
+		}
+		else
+		{ action = "ignore"; }
 	}
-
-	else if (contains && !exists && keepDeleted)
-		action = "ignore";
 
 	return QPair<QString, QString>(action, path);
 }

@@ -3,6 +3,7 @@
 #include <QSet>
 #include <QSettings>
 #include <QTextDocument>
+#include <QtMath>
 #include "models/favorite.h"
 #include "models/profile.h"
 
@@ -79,7 +80,7 @@ Tag Tag::FromCapture(const QRegularExpressionMatch &match, const QStringList &gr
 	{
 		QString countStr = match.captured("count").toLower().trimmed();
 		countStr.remove(',');
-		count = countStr.endsWith('k', Qt::CaseInsensitive) ? countStr.left(countStr.length() - 1).toFloat() * 1000 : countStr.toInt();
+		count = countStr.endsWith('k', Qt::CaseInsensitive) ? qFloor(countStr.left(countStr.length() - 1).toFloat() * 1000) : countStr.toInt();
 	}
 
 	return Tag(tag, type, count);

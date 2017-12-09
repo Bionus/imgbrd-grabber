@@ -1,5 +1,6 @@
 #include "tabs/favorites-tab.h"
 #include <QMessageBox>
+#include <QtMath>
 #include <ui_favorites-tab.h>
 #include "downloader/download-query-group.h"
 #include "favoritewindow.h"
@@ -130,7 +131,7 @@ void favoritesTab::updateFavorites()
 			QPixmap img = fav.getImage();
 			QBouton *image = new QBouton(fav.getName(), false, false, 0, QColor(), this);
 				image->scale(img, upscale);
-				image->setFixedSize(FAVORITES_THUMB_SIZE * upscale, FAVORITES_THUMB_SIZE * upscale);
+				image->setFixedSize(qFloor(FAVORITES_THUMB_SIZE * upscale), qFloor(FAVORITES_THUMB_SIZE * upscale));
 				image->setFlat(true);
 				image->setToolTip(xt);
 				connect(image, SIGNAL(rightClick(QString)), this, SLOT(favoriteProperties(QString)));

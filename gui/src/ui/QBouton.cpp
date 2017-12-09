@@ -1,7 +1,7 @@
 #include "ui/QBouton.h"
 #include <QPainter>
 #include <QPaintEvent>
-#include <cmath>
+#include <QtMath>
 
 
 QBouton::QBouton(QVariant id, bool resizeInsteadOfCropping, bool smartSizeHint, int border, QColor color, QWidget *parent)
@@ -91,7 +91,7 @@ void QBouton::paintEvent(QPaintEvent *event)
 
 		float ratio = static_cast<float>(m_progress) / m_progressMax;
 		QPoint p1(qMax(x, 0) + a, qMax(y, 0) + a);
-		QPoint p2(p1.x() + (iconSize.width() - a) * ratio, p1.y());
+		QPoint p2(qFloor(p1.x() + (iconSize.width() - a) * ratio), p1.y());
 
 		if (p2.x() > p1.x())
 		{

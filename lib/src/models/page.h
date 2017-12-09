@@ -18,7 +18,7 @@ class Page : public QObject
 	Q_OBJECT
 
 	public:
-		explicit Page(Profile *profile, Site *site, QList<Site*> sites, QStringList tags = QStringList(), int page = 1, int limit = 25, QStringList postFiltering = QStringList(), bool smart = false, QObject *parent = Q_NULLPTR, int pool = 0, int lastPage = 0, int lastPageMinId = 0, int lastPageMaxId = 0);
+		explicit Page(Profile *profile, Site *site, QList<Site*> sites, QStringList tags = QStringList(), int page = 1, int limit = 25, QStringList postFiltering = QStringList(), bool smart = false, QObject *parent = Q_NULLPTR, int pool = 0, int lastPage = 0, qulonglong lastPageMinId = 0, qulonglong lastPageMaxId = 0);
 		~Page() override;
 		void		setLastPage(Page *page);
 		void		fallback(bool loadIfPossible = true);
@@ -66,7 +66,8 @@ class Page : public QObject
 		QList<PageApi*>	m_pageApis;
 		int				m_regexApi;
 		QStringList		m_postFiltering, m_errors, m_search;
-		int				m_imagesPerPage, m_lastPage, m_lastPageMinId, m_lastPageMaxId, m_imagesCount, m_pagesCount, m_page, m_blim, m_pool;
+		int				m_imagesPerPage, m_lastPage, m_imagesCount, m_pagesCount, m_page, m_blim, m_pool;
+		qulonglong		m_lastPageMinId, m_lastPageMaxId;
 		bool			m_smart;
 		QString			m_format, m_website, m_source, m_originalUrl;
 };

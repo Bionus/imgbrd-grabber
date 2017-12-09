@@ -378,7 +378,7 @@ void Site::getAsync(QueryType type, QUrl url, std::function<void(QNetworkReply*)
 	m_lastCallback = callback;
 	m_callbackRequest = this->makeRequest(url, page, ref, img);
 
-	int sinceLastRequest = m_lastRequest.msecsTo(QDateTime::currentDateTime());
+	qint64 sinceLastRequest = m_lastRequest.msecsTo(QDateTime::currentDateTime());
 
 	QString key = (type == QueryType::Retry ? "retry" : (type == QueryType::List ? "page" : (type == QueryType::Img ? "image" : (type == QueryType::Thumb ? "thumbnail" : "details"))));
 	int def = (type == QueryType::Retry ? 60 : 0);
@@ -534,9 +534,7 @@ bool Site::isLoggedIn(bool unknown) const
 
 bool Site::contains(const QString &key) const
 {
-	if (m_apis.isEmpty())
-		return false;
-	return m_apis.first()->contains(key);
+	return !m_apis.isEmpty() && m_apis.first()->contains(key);
 }
 QString Site::value(const QString &key) const
 {

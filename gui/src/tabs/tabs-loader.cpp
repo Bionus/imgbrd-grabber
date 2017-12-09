@@ -3,6 +3,7 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include "logger.h"
 #include "mainwindow.h"
 #include "models/profile.h"
 #include "pool-tab.h"
@@ -68,30 +69,31 @@ bool TabsLoader::load(const QString &path, QList<searchTab*> &allTabs, int &curr
 	}
 
 	// Other versions are JSON-based
-	else
+	QByteArray data = f.readAll();
+	QJsonDocument loadDoc = QJsonDocument::fromJson(data);
+	QJsonObject object = loadDoc.object();
+
+	int version = object["version"].toInt();
+	switch (version)
 	{
-		QByteArray data = f.readAll();
-		QJsonDocument loadDoc = QJsonDocument::fromJson(data);
-		QJsonObject object = loadDoc.object();
-
-		int version = object["version"].toInt();
-		switch (version)
+		case 2:
 		{
-			case 2:
-				currentTab = object["current"].toInt();
-				QJsonArray tabs = object["tabs"].toArray();
-				for (auto tabJson : tabs)
-				{
-					QJsonObject infos = tabJson.toObject();
-					searchTab *tab = loadTab(infos, profile, parent, preload);
-					if (tab != nullptr)
-						allTabs.append(tab);
-				}
-				return true;
+			currentTab = object["current"].toInt();
+			QJsonArray tabs = object["tabs"].toArray();
+			for (auto tabJson : tabs)
+			{
+				QJsonObject infos = tabJson.toObject();
+				searchTab *tab = loadTab(infos, profile, parent, preload);
+				if (tab != nullptr)
+					allTabs.append(tab);
+			}
+			return true;
 		}
-	}
 
-	return false;
+		default:
+			log(QString("Unknown tabs file version: %1").arg(version), Logger::Warning);
+			return false;
+	}
 }
 
 searchTab *TabsLoader::loadTab(QJsonObject info, Profile *profile, mainWindow *parent, bool preload)

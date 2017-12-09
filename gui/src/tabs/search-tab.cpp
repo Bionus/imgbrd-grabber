@@ -758,7 +758,7 @@ QBouton *searchTab::createImageThumbnail(int position, QSharedPointer<Image> img
 	connect(l, &QWidget::customContextMenuRequested, this, [this, position, img]{ thumbnailContextMenu(position, img); });
 
 	if (fixedWidthLayout)
-		l->setFixedSize(FIXED_IMAGE_WIDTH * upscale + borderSize * 2, FIXED_IMAGE_WIDTH * upscale + borderSize * 2);
+		l->setFixedSize(qFloor(FIXED_IMAGE_WIDTH * upscale + borderSize * 2), qFloor(FIXED_IMAGE_WIDTH * upscale + borderSize * 2));
 
 	connect(l, SIGNAL(appui(int)), this, SLOT(webZoom(int)));
 	connect(l, SIGNAL(toggled(int, bool, bool)), this, SLOT(toggleImage(int, bool, bool)));
@@ -1297,7 +1297,7 @@ FixedSizeGridLayout *searchTab::createImagesLayout(QSettings *settings)
 	{
 		int borderSize = settings->value("borders", 3).toInt();
 		float upscale = m_settings->value("thumbnailUpscale", 1.0f).toFloat();
-		l->setFixedWidth(FIXED_IMAGE_WIDTH * upscale + borderSize * 2);
+		l->setFixedWidth(qFloor(FIXED_IMAGE_WIDTH * upscale + borderSize * 2));
 	}
 
 	return l;

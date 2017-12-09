@@ -12,8 +12,8 @@
 #include <QSettings>
 #include <QStandardPaths>
 #include <QTimeZone>
+#include <QtMath>
 #include <QUrl>
-#include <cmath>
 #ifdef Q_OS_WIN
 	#include <windows.h>
 #else
@@ -133,7 +133,7 @@ QDateTime qDateTimeFromString(QString str)
 {
 	QDateTime date;
 
-	int toInt = str.toInt();
+	uint toInt = str.toUInt();
 	if (toInt != 0)
 	{
 		date.setTime_t(toInt);
@@ -161,7 +161,7 @@ QDateTime qDateTimeFromString(QString str)
 			date = QDateTime::fromString(str.left(19), "yyyy/MM/dd HH:mm:ss");
 		else
 			decay = str.right(6).remove(':').toFloat() / 100;
-		date.setOffsetFromUtc(3600 * decay);
+		date.setOffsetFromUtc(qFloor(3600 * decay));
 	}
 	else
 	{
@@ -184,7 +184,7 @@ QDateTime qDateTimeFromString(QString str)
 		QTime time = QTime::fromString(str.mid(11, 8), "HH:mm:ss");
 		date.setDate(QDate(year, month, day));
 		date.setTime(time);
-		date.setOffsetFromUtc(3600 * decay);
+		date.setOffsetFromUtc(qFloor(3600 * decay));
 	}
 
 	return date;
@@ -302,19 +302,19 @@ bool copyRecursively(QString srcFilePath, QString tgtFilePath)
  */
 int levenshtein(QString s1, QString s2)
 {
-	const size_t len1 = s1.size(), len2 = s2.size();
-	QVector<QVector<uint>> d(len1 + 1, QVector<uint>(len2 + 1));
+	const int len1 = s1.size(), len2 = s2.size();
+	QVector<QVector<int>> d(len1 + 1, QVector<int>(len2 + 1));
 
 	d[0][0] = 0;
-	for (uint i = 1; i <= len1; ++i) d[i][0] = i;
-	for (uint i = 1; i <= len2; ++i) d[0][i] = i;
+	for (int i = 1; i <= len1; ++i) d[i][0] = i;
+	for (int i = 1; i <= len2; ++i) d[0][i] = i;
 
-	for (uint i = 1; i <= len1; ++i)
+	for (int i = 1; i <= len1; ++i)
 	{
-		for (uint j = 1; j <= len2; ++j)
+		for (int j = 1; j <= len2; ++j)
 		{
-			const uint a = qMin(d[i - 1][j] + 1, d[i][j - 1] + 1);
-			const uint b = d[i - 1][j - 1] + (s1[i - 1] == s2[j - 1] ? 0 : 1);
+			const int a = qMin(d[i - 1][j] + 1, d[i][j - 1] + 1);
+			const int b = d[i - 1][j - 1] + (s1[i - 1] == s2[j - 1] ? 0 : 1);
 			d[i][j] = qMin(a, b);
 		}
 	}
@@ -782,6 +782,6 @@ bool isVariantEmpty(const QVariant &value)
 		case QVariant::Type::Map: return value.toMap().isEmpty();
 		case QVariant::Type::String: return value.toString().isEmpty();
 		case QVariant::Type::StringList: return value.toStringList().isEmpty();
+		default: return false;
 	}
-	return false;
 }

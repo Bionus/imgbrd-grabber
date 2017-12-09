@@ -333,7 +333,8 @@ void batchWindow::drawSpeed()
 	{ m_mean.append(speed); }
 	QString unit = getUnit(&speed)+"/s";
 
-	float speedMean = 0, count = qMin(m_mean.count(), 60);
+	float speedMean = 0;
+	int count = qMin(m_mean.count(), 60);
 	if (count > 0)
 	{
 		for (int i = m_mean.count() - count; i < m_mean.count() - 1; i++)
@@ -343,15 +344,15 @@ void batchWindow::drawSpeed()
 	QString unitMean = getUnit(&speedMean)+"/s";
 
 	int elapsed = m_start->elapsed();
-	int remaining = m_images > 0 ? static_cast<int>((elapsed * m_imagesCount) / m_images) : 0;
+	int remaining = m_images > 0 ? (elapsed * m_imagesCount) / m_images : 0;
 	QTime tElapsed, tRemaining;
 	tElapsed = tElapsed.addMSecs(elapsed);
 	tRemaining = tRemaining.addMSecs(remaining);
 	QString fElapsed = elapsed > 3600000 ? tr("h 'h' m 'm' s 's'") : (elapsed > 60000 ? tr("m 'm' s 's'") : tr("s 's'"));
 	QString fRemaining = remaining > 3600000 ? tr("h 'h' m 'm' s 's'") : (remaining > 60000 ? tr("m 'm' s 's'") : tr("s 's'"));
 
-	ui->labelSpeed->setText(QLocale::system().toString(static_cast<float>(speed), 'f', speed < 10 ? 2 : 0)+" "+unit);
-	ui->labelSpeed->setToolTip(tr("<b>Average speed:</b> %1 %2<br/><br/><b>Elapsed time:</b> %3<br/><b>Remaining time:</b> %4").arg(QLocale::system().toString(static_cast<float>(speedMean), 'f', speedMean < 10 ? 2 : 0), unitMean, tElapsed.toString(fElapsed), tRemaining.toString(fRemaining)));
+	ui->labelSpeed->setText(QLocale::system().toString(speed, 'f', speed < 10 ? 2 : 0)+" "+unit);
+	ui->labelSpeed->setToolTip(tr("<b>Average speed:</b> %1 %2<br/><br/><b>Elapsed time:</b> %3<br/><b>Remaining time:</b> %4").arg(QLocale::system().toString(speedMean, 'f', speedMean < 10 ? 2 : 0), unitMean, tElapsed.toString(fElapsed), tRemaining.toString(fRemaining)));
 }
 
 void batchWindow::on_buttonDetails_clicked(bool visible)
