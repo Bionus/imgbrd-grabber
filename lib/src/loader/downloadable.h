@@ -7,6 +7,8 @@
 #include "token.h"
 
 
+typedef QPair<QString, QString> QStrP;
+
 class Downloadable
 {
 	public:
@@ -32,6 +34,7 @@ class Downloadable
 
 		virtual QColor color() const = 0;
 		virtual QString tooltip() const = 0;
+		virtual QList<QStrP> detailsData() const = 0;
 
 	protected:
 		virtual QMap<QString, Token> generateTokens(Profile *profile) const = 0;

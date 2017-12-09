@@ -1095,6 +1095,38 @@ QString Image::tooltip() const
 		.arg(!m_createdAt.isValid() ? " " : tr("<b>Date:</b> %1").arg(m_createdAt.toString(tr("'the 'MM/dd/yyyy' at 'hh:mm"))));
 }
 
+QList<QStrP> Image::detailsData() const
+{
+	QString unknown = tr("<i>Unknown</i>");
+	QString yes = tr("yes");
+	QString no = tr("no");
+
+	return {
+		QStrP(tr("Tags"), stylishedTags(m_profile).join(' ')),
+		QStrP(),
+		QStrP(tr("ID"), m_id != 0 ? QString::number(m_id) : unknown),
+		QStrP(tr("MD5"), !m_md5.isEmpty() ? m_md5 : unknown),
+		QStrP(tr("Rating"), !m_rating.isEmpty() ? m_rating : unknown),
+		QStrP(tr("Score"), QString::number(m_score)),
+		QStrP(tr("Author"), !m_author.isEmpty() ? m_author : unknown),
+		QStrP(),
+		QStrP(tr("Date"), m_createdAt.isValid() ? m_createdAt.toString(tr("'the' MM/dd/yyyy 'at' hh:mm")) : unknown),
+		QStrP(tr("Size"), !m_size.isEmpty() ? QString::number(m_size.width())+"x"+QString::number(m_size.height()) : unknown),
+		QStrP(tr("Filesize"), m_fileSize != 0 ? formatFilesize(m_fileSize) : unknown),
+		QStrP(),
+		QStrP(tr("Page"), !m_pageUrl.isEmpty() ? QString("<a href=\"%1\">%1</a>").arg(m_pageUrl.toString()) : unknown),
+		QStrP(tr("URL"), !m_fileUrl.isEmpty() ? QString("<a href=\"%1\">%1</a>").arg(m_fileUrl.toString()) : unknown),
+		QStrP(tr("Source"), !m_source.isEmpty() ? QString("<a href=\"%1\">%1</a>").arg(m_source) : unknown),
+		QStrP(tr("Sample"), !m_sampleUrl.isEmpty() ? QString("<a href=\"%1\">%1</a>").arg(m_sampleUrl.toString()) : unknown),
+		QStrP(tr("Thumbnail"), !m_previewUrl.isEmpty() ? QString("<a href=\"%1\">%1</a>").arg(m_previewUrl.toString()) : unknown),
+		QStrP(),
+		QStrP(tr("Parent"), m_parentId != 0 ? tr("yes (#%1)").arg(m_parentId) : no),
+		QStrP(tr("Comments"), m_hasComments ? yes : no),
+		QStrP(tr("Children"), m_hasChildren ? yes : no),
+		QStrP(tr("Notes"), m_hasNote ? yes : no),
+	};
+}
+
 QString Image::md5() const
 {
 	// If we know the path to the image or its content but not its md5, we calculate it first

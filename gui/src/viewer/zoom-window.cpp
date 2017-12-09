@@ -519,7 +519,7 @@ void ZoomWindow::colore()
 		ui->scrollArea->setMinimumWidth(m_labelTagsLeft->sizeHint().width() + ui->scrollArea->verticalScrollBar()->sizeHint().width());
 	}
 
-	m_detailsWindow->setTags(tags);
+	m_detailsWindow->setImage(m_image);
 }
 void ZoomWindow::setButtonState(bool fav, SaveButtonState state)
 {
