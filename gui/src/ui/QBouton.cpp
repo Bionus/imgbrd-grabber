@@ -108,7 +108,7 @@ void QBouton::paintEvent(QPaintEvent *event)
 		QPen pen(m_penColor);
 		pen.setWidth(p*2);
 		painter.setPen(pen);
-		painter.drawRect(qMax(x,0), qMax(y,0), qMin(w,size().width()), qMin(h,size().height()));
+		painter.drawRect(qMax(x, 0), qMax(y, 0), qMin(w, size().width()), qMin(h, size().height()));
 	}
 }
 

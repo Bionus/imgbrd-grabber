@@ -85,7 +85,7 @@ QString PostFilter::match(const QMap<QString, Token> &tokens, QString filter, bo
 		{
 			if (type == "rating")
 			{
-				QMap<QString,QString> assoc;
+				QMap<QString, QString> assoc;
 				assoc["s"] = "safe";
 				assoc["q"] = "questionable";
 				assoc["e"] = "explicit";

@@ -61,7 +61,7 @@ class PageApi : public QObject
 		void finishedLoadingTags(PageApi*);
 
 	protected:
-		void parseImage(QMap<QString,QString> data, int position, QList<Tag> tags = QList<Tag>());
+		void parseImage(QMap<QString, QString> data, int position, QList<Tag> tags = QList<Tag>());
 		void parseNavigation(const QString &source);
 		void updateUrls();
 		void setImageCount(int count, bool sure);

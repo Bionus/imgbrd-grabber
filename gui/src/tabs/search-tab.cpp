@@ -928,7 +928,7 @@ void searchTab::addResultsImage(QSharedPointer<Image> img, bool merge)
 
 void searchTab::addHistory(QString tags, int page, int ipp, int cols)
 {
-	QMap<QString,QString> srch = QMap<QString,QString>();
+	QMap<QString, QString> srch;
 	srch["tags"] = tags;
 	srch["page"] = QString::number(page);
 	srch["ipp"] = QString::number(ipp);

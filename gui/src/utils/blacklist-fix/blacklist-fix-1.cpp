@@ -61,8 +61,7 @@ void BlacklistFix1::on_buttonContinue_clicked()
 	}
 
 	// Get all files from the destination directory
-	typedef QPair<QString,QString> QStringPair;
-	QVector<QStringPair> files = QVector<QStringPair>();
+	QVector<QPair<QString, QString>> files;
 	QDirIterator it(dir, QDirIterator::Subdirectories);
 	while (it.hasNext())
 	{
@@ -70,12 +69,12 @@ void BlacklistFix1::on_buttonContinue_clicked()
 		if (!it.fileInfo().isDir())
 		{
 			int len = it.filePath().length() - dir.absolutePath().length() - 1;
-			files.append(QPair<QString,QString>(it.filePath().right(len), it.filePath()));
+			files.append(QPair<QString, QString>(it.filePath().right(len), it.filePath()));
 		}
 	}
 
 	// Parse all files
-	for (QStringPair file : files)
+	for (QPair<QString, QString> file : files)
 	{
 		QString md5 = "";
 		if (ui->radioForce->isChecked())
@@ -107,7 +106,7 @@ void BlacklistFix1::on_buttonContinue_clicked()
 			}
 		}
 
-		QMap<QString,QString> det;
+		QMap<QString, QString> det;
 		det.insert("md5", md5);
 		det.insert("path", file.first);
 		det.insert("path_full", file.second);

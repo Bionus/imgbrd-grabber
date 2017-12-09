@@ -229,7 +229,7 @@ void PageApi::abortTags()
 		m_replyTags->abort();
 }
 
-QString _parseSetImageUrl(Site *site, Api* api, QString settingUrl, QString settingReplaces, QString ret, QMap<QString,QString> *d, bool replaces = true, QString def = QString())
+QString _parseSetImageUrl(Site *site, Api* api, QString settingUrl, QString settingReplaces, QString ret, QMap<QString, QString> *d, bool replaces = true, QString def = QString())
 {
 	if (api->contains(settingUrl) && ret.length() < 5)
 	{
@@ -275,7 +275,7 @@ QString _parseSetImageUrl(Site *site, Api* api, QString settingUrl, QString sett
 }
 
 
-void PageApi::parseImage(QMap<QString,QString> d, int position, QList<Tag> tags)
+void PageApi::parseImage(QMap<QString, QString> d, int position, QList<Tag> tags)
 {
 	// Set default values
 	if (!d.contains("file_url"))
@@ -391,7 +391,7 @@ void PageApi::parse()
 			for (int id = 0; id < nodeList.count(); id++)
 			{
 				QDomNode node = nodeList.at(id + first);
-				QMap<QString,QString> d;
+				QMap<QString, QString> d;
 				QList<Tag> tags;
 				if (database == "array")
 				{
@@ -470,7 +470,7 @@ void PageApi::parse()
 			for (int id = 0; id < nodeList.count(); id++)
 			{
 				QDomNodeList children = nodeList.at(id + first).childNodes();
-				QMap<QString,QString> d, dat;
+				QMap<QString, QString> d, dat;
 				for (int i = 0; i < children.size(); i++)
 				{
 					QString content = children.at(i).childNodes().at(0).nodeValue();
@@ -597,7 +597,7 @@ void PageApi::parse()
 				QList<Tag> tags;
 
 				sc = sourc.at(id + first).toMap();
-				QMap<QString,QString> d;
+				QMap<QString, QString> d;
 				if (sc.contains("tag_string"))
 				{
 					QStringList infos, assoc;

@@ -71,7 +71,7 @@ void AddUniqueWindow::ok(bool close)
 		url.replace("{id}", ui->lineId->text());
 		url.replace("{md5}", ui->lineMd5->text());
 
-		QMap<QString,QString> details = QMap<QString,QString>();
+		auto details = QMap<QString, QString>();
 		details.insert("page_url", url);
 		details.insert("id", ui->lineId->text());
 		details.insert("md5", ui->lineMd5->text());

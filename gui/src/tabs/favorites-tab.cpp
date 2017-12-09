@@ -139,7 +139,7 @@ void favoritesTab::updateFavorites()
 			l->addWidget(image);
 		}
 
-		QAffiche *caption = new QAffiche(fav.getName(), 0 ,QColor(), this);
+		QAffiche *caption = new QAffiche(fav.getName(), 0, QColor(), this);
 			caption->setText((display.contains("n") ? fav.getName() : "") + (display.contains("d") ? "<br/>("+QString::number(fav.getNote())+" % - "+fav.getLastViewed().toString(format)+")" : ""));
 			caption->setTextFormat(Qt::RichText);
 			caption->setAlignment(Qt::AlignCenter);

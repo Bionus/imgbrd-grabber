@@ -137,7 +137,7 @@ class searchTab : public QWidget
 		Profile				*m_profile;
 		int					m_lastPage;
 		qulonglong			m_lastPageMaxId, m_lastPageMinId;
-		const QMap<QString,Site*> &m_sites;
+		const QMap<QString, Site*> &m_sites;
 		QMap<Image*, QBouton*>	m_boutons;
 		QStringList			m_selectedImages;
 		QList<QSharedPointer<Image>>	m_selectedImagesPtrs;
@@ -169,7 +169,7 @@ class searchTab : public QWidget
 		// History
 		bool m_from_history;
 		int m_history_cursor;
-		QList<QMap<QString,QString>> m_history;
+		QList<QMap<QString, QString>> m_history;
 		QString m_lastTags;
 		QList<QPair<int, QSet<QString>>> m_mergedMd5s;
 

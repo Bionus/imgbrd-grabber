@@ -1172,7 +1172,7 @@ void Image::unload()
 
 void Image::setRating(QString rating)
 {
-	QMap<QString,QString> assoc;
+	QMap<QString, QString> assoc;
 		assoc["s"] = "safe";
 		assoc["q"] = "questionable";
 		assoc["e"] = "explicit";

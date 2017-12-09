@@ -39,7 +39,7 @@ class AddUniqueWindow : public QDialog
 	private:
 		Ui::AddUniqueWindow		*ui;
 		Page					*m_page;
-		QMap<QString,Site*>		m_sites;
+		QMap<QString, Site*>	m_sites;
 		bool					m_close;
 		Profile					*m_profile;
 		QSharedPointer<Image>	m_image;

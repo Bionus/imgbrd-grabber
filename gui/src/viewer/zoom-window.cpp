@@ -80,7 +80,7 @@ ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, QSharedPointer<Image
 	m_stackedWidget = new QStackedWidget(this);
 		ui->verticalLayout->insertWidget(1, m_stackedWidget, 1);
 	m_labelImage = new QAffiche(QVariant(), 0, QColor(), this);
-		m_labelImage->setSizePolicy(QSizePolicy(QSizePolicy::Ignored,QSizePolicy::Ignored));
+		m_labelImage->setSizePolicy(QSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored));
 		connect(m_labelImage, SIGNAL(doubleClicked()), this, SLOT(openFile()));
 		m_stackedWidget->addWidget(m_labelImage);
 

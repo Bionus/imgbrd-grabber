@@ -49,10 +49,10 @@ QString fixFilename(QString filename, QString path = "", int maxlength = 0, bool
 QString fixFilenameWindows(QString filename, QString path = "", int maxlength = 0, bool invalidChars = true);
 QString fixFilenameLinux(QString filename, QString path = "", int maxlength = 0, bool invalidChars = true);
 
-QMap<QString,QString>		domToMap(QDomElement);
+QMap<QString, QString>		domToMap(QDomElement);
 
-QMap<QString,QStringList>	getCustoms(QSettings *settings);
-QMap<QString,QPair<QString,QString>>	getFilenames(QSettings *settings);
+QMap<QString, QStringList>	getCustoms(QSettings *settings);
+QMap<QString, QPair<QString, QString>>	getFilenames(QSettings *settings);
 QMap<int, QMap<QString, QVariant>>		getExternalLogFiles(QSettings *settings);
 QStringList								getExternalLogFilesSuffixes(QSettings *settings);
 

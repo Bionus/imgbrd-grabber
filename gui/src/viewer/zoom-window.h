@@ -123,7 +123,7 @@ class ZoomWindow : public QWidget
 		Ui::ZoomWindow *ui;
 		DetailsWindow *m_detailsWindow;
 		QSharedPointer<Image> m_image;
-		QMap<QString,QString> regex, m_details;
+		QMap<QString, QString> regex, m_details;
 		Site *m_site;
 		int m_timeout, m_mustSave;
 		bool m_tooBig, m_loadedImage, m_loadedDetails;

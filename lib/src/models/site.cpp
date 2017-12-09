@@ -343,7 +343,7 @@ QNetworkRequest Site::makeRequest(QUrl url, Page *page, QString ref, Image *img)
 		request.setRawHeader("Referer", refHeader.toLatin1());
 	}
 
-	QMap<QString,QVariant> headers = m_settings->value("headers").toMap();
+	QMap<QString, QVariant> headers = m_settings->value("headers").toMap();
 	for (const QString &key : headers.keys())
 	{ request.setRawHeader(key.toLatin1(), headers[key].toString().toLatin1()); }
 

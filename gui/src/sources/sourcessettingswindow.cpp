@@ -263,7 +263,7 @@ void SourcesSettingsWindow::save()
 
 		headers.insert(ui->tableHeaders->item(i, 0)->text(), ui->tableHeaders->item(i, 1)->text());
 	}
-	m_site->setSetting("headers", headers, QMap<QString,QVariant>());
+	m_site->setSetting("headers", headers, QMap<QString, QVariant>());
 
 	m_site->syncSettings();
 

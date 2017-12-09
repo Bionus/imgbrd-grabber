@@ -220,7 +220,7 @@ void mainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 	// Tab add button
 	QPushButton *add = new QPushButton(QIcon(":/images/add.png"), "", this);
 		add->setFlat(true);
-		add->resize(QSize(12,12));
+		add->resize(QSize(12, 12));
 		connect(add, SIGNAL(clicked()), this, SLOT(addTab()));
 		ui->tabWidget->setCornerWidget(add);
 
@@ -429,7 +429,7 @@ void mainWindow::addSearchTab(searchTab *w, bool background, bool save)
 
 	QPushButton *closeTab = new QPushButton(QIcon(":/images/close.png"), "", this);
 		closeTab->setFlat(true);
-		closeTab->resize(QSize(8,8));
+		closeTab->resize(QSize(8, 8));
 		connect(closeTab, SIGNAL(clicked()), w, SLOT(deleteLater()));
 		ui->tabWidget->findChild<QTabBar*>()->setTabButton(index, QTabBar::RightSide, closeTab);
 

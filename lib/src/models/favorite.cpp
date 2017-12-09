@@ -37,7 +37,7 @@ bool Favorite::setImage(const QPixmap &img)
 
 	m_imagePath = savePath("thumbs/" + getName(true) + ".png");
 	return img
-			.scaled(QSize(150,150), Qt::KeepAspectRatio, Qt::SmoothTransformation)
+			.scaled(QSize(150, 150), Qt::KeepAspectRatio, Qt::SmoothTransformation)
 			.save(m_imagePath, "PNG");
 }
 QPixmap Favorite::getImage() const
@@ -45,7 +45,7 @@ QPixmap Favorite::getImage() const
 	QPixmap img(m_imagePath);
 	if (img.width() > 150 || img.height() > 150)
 	{
-		img = img.scaled(QSize(150,150), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+		img = img.scaled(QSize(150, 150), Qt::KeepAspectRatio, Qt::SmoothTransformation);
 		img.save(savePath("thumbs/" + getName(true) + ".png"), "PNG");
 	}
 	return img;

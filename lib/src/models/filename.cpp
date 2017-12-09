@@ -11,8 +11,6 @@
 #define TAGS_SEPARATOR " "
 
 
-typedef QPair<QString,QString> QStrP;
-
 Filename::Filename(QString format)
 	: m_format(format)
 { }
@@ -485,7 +483,7 @@ QString Filename::optionedValue(const QVariant &val, QString key, QString ops, Q
 	bool cleaned = false;
 
 	// Parse options
-	QMap<QString,QString> options;
+	QMap<QString, QString> options;
 	if (!ops.isEmpty())
 	{
 		QStringList opts = ops.split(QRegularExpression("(?<!\\\\),"), QString::SkipEmptyParts);

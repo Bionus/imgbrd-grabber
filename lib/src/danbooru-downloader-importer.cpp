@@ -28,7 +28,7 @@ void DanbooruDownloaderImporter::import(QSettings *dest) const
 
 	QString source = prefs.readAll();
 	QRegularExpression rx("user_pref\\(\"danbooru.downloader.([^\"]+)\", ([^\\)]+)\\);");
-	QMap<QString,QString> firefox, assoc;
+	QMap<QString, QString> firefox, assoc;
 	assoc["blacklist"] = "blacklistedtags";
 	assoc["generalTagsSeparator"] = "separator";
 	assoc["multipleArtistsAll"] = "artist_useall";

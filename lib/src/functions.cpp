@@ -32,7 +32,7 @@ using namespace std;
  */
 QMap<QString, QStringList> getCustoms(QSettings *settings)
 {
-	QMap<QString,QStringList> tokens;
+	QMap<QString, QStringList> tokens;
 	settings->beginGroup("Save/Customs");
 	QStringList keys = settings->childKeys();
 	for (int i = 0; i < keys.size(); i++)
@@ -45,9 +45,9 @@ QMap<QString, QStringList> getCustoms(QSettings *settings)
  * Load multiple filenames from settings.
  * @return	The map with token names as keys and token tags as values.
  */
-QMap<QString,QPair<QString,QString>> getFilenames(QSettings *settings)
+QMap<QString, QPair<QString, QString>> getFilenames(QSettings *settings)
 {
-	QMap<QString,QPair<QString,QString>> tokens;
+	QMap<QString, QPair<QString, QString>> tokens;
 
 	settings->beginGroup("Filenames");
 	int count = settings->childKeys().count() / 3;
@@ -55,7 +55,7 @@ QMap<QString,QPair<QString,QString>> getFilenames(QSettings *settings)
 	{
 		if (settings->contains(QString::number(i) + "_cond"))
 		{
-			QPair<QString,QString> pair;
+			QPair<QString, QString> pair;
 			pair.first = settings->value(QString::number(i) + "_fn").toString();
 			pair.second = settings->value(QString::number(i) + "_dir").toString();
 			tokens.insert(settings->value(QString::number(i) + "_cond").toString(), pair);
@@ -367,9 +367,9 @@ bool setFileCreationDate(QString path, QDateTime datetime)
  * @param	dom		The DOM element to convert.
  * @return	A QString map with names (joined with a slash if necessary) as keys and texts as values.
  */
-QMap<QString,QString> domToMap(QDomElement dom)
+QMap<QString, QString> domToMap(QDomElement dom)
 {
-	QMap<QString,QString> details;
+	QMap<QString, QString> details;
 	dom.firstChildElement("Name").firstChild().nodeValue();
 	for (QDomNode n = dom.firstChild(); !n.isNull(); n = n.nextSibling())
 	{
@@ -378,7 +378,7 @@ QMap<QString,QString> domToMap(QDomElement dom)
 		{ details[n.nodeName()] = n.firstChild().nodeValue(); }
 		else
 		{
-			QMap<QString,QString> r = domToMap(n.toElement());
+			QMap<QString, QString> r = domToMap(n.toElement());
 			QStringList k = r.keys();
 			for (int i = 0; i < r.count(); i++)
 			{ details[n.nodeName()+"/"+k.at(i)] = r.value(k.at(i)); }
