@@ -11,7 +11,7 @@ class ExtensionRotator : public QObject
 	Q_OBJECT
 
 	public:
-		explicit ExtensionRotator() = default;
+		ExtensionRotator() = default;
 		explicit ExtensionRotator(const ExtensionRotator &other);
 		explicit ExtensionRotator(QString initialExtension, QStringList extensions, QObject *parent = Q_NULLPTR);
 		~ExtensionRotator();
