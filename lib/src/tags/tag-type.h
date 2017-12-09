@@ -1,8 +1,8 @@
 #ifndef TAG_TYPE_H
 #define TAG_TYPE_H
 
-#include <QString>
 #include <QMetaType>
+#include <QString>
 
 
 class TagType

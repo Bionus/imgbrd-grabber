@@ -1,13 +1,13 @@
 #ifndef FILENAMEWINDOW_H
 #define FILENAMEWINDOW_H
 
+#include <QCloseEvent>
 #include <QDialog>
 #include <QMessageBox>
-#include <QCloseEvent>
 
 #if USE_QSCINTILLA
-	#include <Qsci/qsciscintilla.h>
 	#include <Qsci/qscilexerjavascript.h>
+	#include <Qsci/qsciscintilla.h>
 #else
 	#include <QTextEdit>
 #endif

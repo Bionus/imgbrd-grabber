@@ -1,9 +1,9 @@
 #ifndef FAVORITE_H
 #define FAVORITE_H
 
-#include <QString>
 #include <QDateTime>
 #include <QPixmap>
+#include <QString>
 
 
 class Favorite

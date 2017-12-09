@@ -1,9 +1,9 @@
 #include "models/page.h"
 #include <cmath>
-#include "models/site.h"
-#include "models/api.h"
-#include "vendor/json.h"
 #include "logger.h"
+#include "models/api.h"
+#include "models/site.h"
+#include "vendor/json.h"
 
 
 Page::Page(Profile *profile, Site *site, QList<Site*> sites, QStringList tags, int page, int limit, QStringList postFiltering, bool smart, QObject *parent, int pool, int lastPage, int lastPageMinId, int lastPageMaxId)

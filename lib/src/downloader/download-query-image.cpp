@@ -1,8 +1,8 @@
 #include "downloader/download-query-image.h"
 #include <QJsonArray>
-#include "tags/tag.h"
 #include "models/image.h"
 #include "models/site.h"
+#include "tags/tag.h"
 
 
 DownloadQueryImage::DownloadQueryImage(QSettings *settings, const Image &img, Site *site)

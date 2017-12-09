@@ -1,25 +1,25 @@
-#include "optionswindow.h"
-#include <QNetworkProxy>
-#include <QSettings>
+#include "settings/optionswindow.h"
+#include <QColorDialog>
 #include <QDir>
 #include <QFileDialog>
-#include <QColorDialog>
 #include <QFontDialog>
-#include <QSqlDatabase>
+#include <QNetworkProxy>
+#include <QSettings>
 #include <QSignalMapper>
-#include "ui_optionswindow.h"
-#include "customwindow.h"
-#include "conditionwindow.h"
-#include "filenamewindow.h"
-#include "log-window.h"
-#include "web-service-window.h"
-#include "language-loader.h"
-#include "theme-loader.h"
-#include "models/site.h"
-#include "models/profile.h"
-#include "reverse-search/reverse-search-loader.h"
-#include "helpers.h"
+#include <QSqlDatabase>
+#include <ui_optionswindow.h>
 #include "functions.h"
+#include "helpers.h"
+#include "language-loader.h"
+#include "models/profile.h"
+#include "models/site.h"
+#include "reverse-search/reverse-search-loader.h"
+#include "settings/conditionwindow.h"
+#include "settings/customwindow.h"
+#include "settings/filenamewindow.h"
+#include "settings/log-window.h"
+#include "settings/web-service-window.h"
+#include "theme-loader.h"
 
 
 optionsWindow::optionsWindow(Profile *profile, QWidget *parent)

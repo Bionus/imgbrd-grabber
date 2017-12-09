@@ -1,15 +1,15 @@
 #ifndef FUNCTIONS_H
 #define FUNCTIONS_H
 
-#include <QMap>
-#include <QStringList>
 #include <QDateTime>
-#include <QSettings>
-#include <QDomElement>
-#include <QString>
 #include <QDir>
-#include "models/favorite.h"
+#include <QDomElement>
+#include <QMap>
+#include <QSettings>
+#include <QString>
+#include <QStringList>
 #include "logger.h"
+#include "models/favorite.h"
 
 
 // Filesize units

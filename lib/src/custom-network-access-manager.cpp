@@ -1,6 +1,6 @@
 #include "custom-network-access-manager.h"
-#include <QFile>
 #include <QDebug>
+#include <QFile>
 #include "functions.h"
 #include "vendor/qcustomnetworkreply.h"
 

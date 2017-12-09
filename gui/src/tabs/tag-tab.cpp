@@ -1,12 +1,12 @@
-#include "tag-tab.h"
+#include "tabs/tag-tab.h"
 #include <QJsonArray>
-#include "ui_tag-tab.h"
-#include "ui/textedit.h"
+#include <ui_tag-tab.h>
+#include "downloader/download-query-group.h"
+#include "helpers.h"
 #include "models/page.h"
 #include "models/site.h"
-#include "downloader/download-query-group.h"
 #include "searchwindow.h"
-#include "helpers.h"
+#include "ui/textedit.h"
 
 
 tagTab::tagTab(Profile *profile, mainWindow *parent)

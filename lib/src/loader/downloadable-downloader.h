@@ -3,8 +3,8 @@
 
 #include <QObject>
 #include <QSharedPointer>
-#include "loader/downloadable.h"
 #include "downloader/file-downloader.h"
+#include "loader/downloadable.h"
 
 
 class Site;

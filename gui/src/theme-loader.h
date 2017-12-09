@@ -1,8 +1,8 @@
 #ifndef THEME_LOADER_H
 #define THEME_LOADER_H
 
-#include <QString>
 #include <QSettings>
+#include <QString>
 
 
 class ThemeLoader

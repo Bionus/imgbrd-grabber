@@ -1,13 +1,13 @@
-#include "pool-tab.h"
+#include "tabs/pool-tab.h"
 #include <QJsonArray>
-#include "ui_pool-tab.h"
-#include "ui/textedit.h"
-#include "searchwindow.h"
+#include <ui_pool-tab.h>
+#include "downloader/download-query-group.h"
+#include "helpers.h"
 #include "mainwindow.h"
 #include "models/page.h"
 #include "models/site.h"
-#include "downloader/download-query-group.h"
-#include "helpers.h"
+#include "searchwindow.h"
+#include "ui/textedit.h"
 
 
 poolTab::poolTab(Profile *profile, mainWindow *parent)

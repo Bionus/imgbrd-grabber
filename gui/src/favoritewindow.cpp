@@ -2,9 +2,9 @@
 #include <QFile>
 #include <QFileDialog>
 #include <QSettings>
-#include "ui_favoritewindow.h"
-#include "models/profile.h"
+#include <ui_favoritewindow.h>
 #include "functions.h"
+#include "models/profile.h"
 
 
 /**

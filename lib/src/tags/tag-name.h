@@ -1,9 +1,9 @@
 #ifndef TAG_NAME_H
 #define TAG_NAME_H
 
+#include <QMetaType>
 #include <QString>
 #include <QStringList>
-#include <QMetaType>
 #include "tags/tag-name-format.h"
 
 

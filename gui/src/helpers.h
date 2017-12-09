@@ -1,9 +1,9 @@
 #ifndef HELPERS_H
 #define HELPERS_H
 
-#include <QWidget>
-#include <QString>
 #include <QLayout>
+#include <QString>
+#include <QWidget>
 
 
 void error(QWidget *parent, QString message);

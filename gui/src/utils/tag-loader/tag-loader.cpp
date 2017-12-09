@@ -1,12 +1,12 @@
-#include "tag-loader.h"
+#include "utils/tag-loader/tag-loader.h"
 #include <QMessageBox>
-#include "ui_tag-loader.h"
+#include <ui_tag-loader.h>
+#include "helpers.h"
+#include "models/api.h"
 #include "models/profile.h"
 #include "models/site.h"
-#include "models/api.h"
-#include "tags/tag-api.h"
 #include "tags/tag.h"
-#include "helpers.h"
+#include "tags/tag-api.h"
 
 
 TagLoader::TagLoader(Profile *profile, QWidget *parent)

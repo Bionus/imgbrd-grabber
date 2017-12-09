@@ -1,9 +1,9 @@
 #ifndef TAG_STYLIST_H
 #define TAG_STYLIST_H
 
-#include <QString>
 #include <QFont>
 #include <QList>
+#include <QString>
 #include "tags/tag.h"
 
 

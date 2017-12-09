@@ -1,8 +1,8 @@
 #ifndef SECURE_FILE_H
 #define SECURE_FILE_H
 
-#include <QString>
 #include <QFile>
+#include <QString>
 #include "vendor/simplecrypt.h"
 
 

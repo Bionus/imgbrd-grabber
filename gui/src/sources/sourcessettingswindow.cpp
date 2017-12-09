@@ -1,11 +1,11 @@
-#include "sourcessettingswindow.h"
-#include <QMessageBox>
-#include <QInputDialog>
-#include <QFile>
+#include "sources/sourcessettingswindow.h"
 #include <QCryptographicHash>
-#include <QSettings>
+#include <QFile>
+#include <QInputDialog>
+#include <QMessageBox>
 #include <QNetworkCookie>
-#include "ui_sourcessettingswindow.h"
+#include <QSettings>
+#include <ui_sourcessettingswindow.h>
 #include "functions.h"
 
 

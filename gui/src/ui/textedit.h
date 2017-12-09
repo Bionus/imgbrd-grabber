@@ -1,8 +1,8 @@
 #ifndef HEADER_TEXTEDIT
 #define HEADER_TEXTEDIT
 
-#include <QTextEdit>
 #include <QCompleter>
+#include <QTextEdit>
 
 
 class Profile;

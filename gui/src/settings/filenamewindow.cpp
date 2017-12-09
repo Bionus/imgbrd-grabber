@@ -1,10 +1,10 @@
-#include "filenamewindow.h"
+#include "settings/filenamewindow.h"
 #include <QDesktopServices>
-#include "ui_filenamewindow.h"
-#include "models/image.h"
-#include "models/site.h"
+#include <ui_filenamewindow.h>
 #include "models/filename.h"
+#include "models/image.h"
 #include "models/profile.h"
+#include "models/site.h"
 
 
 FilenameWindow::FilenameWindow(Profile *profile, QString value, QWidget *parent)

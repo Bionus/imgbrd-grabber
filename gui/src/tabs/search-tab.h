@@ -1,17 +1,17 @@
 #ifndef SEARCH_TAB_H
 #define SEARCH_TAB_H
 
-#include <QWidget>
-#include <QList>
 #include <QCheckBox>
-#include <QSpinBox>
-#include <QMap>
-#include <QSignalMapper>
-#include <QPushButton>
-#include <QLayout>
 #include <QLabel>
+#include <QLayout>
+#include <QList>
+#include <QMap>
 #include <QProgressBar>
+#include <QPushButton>
+#include <QSignalMapper>
+#include <QSpinBox>
 #include <QStackedWidget>
+#include <QWidget>
 #include "models/image.h"
 #include "ui/fixed-size-grid-layout.h"
 

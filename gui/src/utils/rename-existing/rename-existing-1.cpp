@@ -1,16 +1,16 @@
-#include <QSettings>
+#include "utils/rename-existing/rename-existing-1.h"
+#include <QCryptographicHash>
 #include <QDir>
 #include <QDirIterator>
-#include <QCryptographicHash>
 #include <QMessageBox>
-#include "rename-existing-1.h"
-#include "rename-existing-2.h"
-#include "ui_rename-existing-1.h"
-#include "models/page.h"
-#include "models/profile.h"
-#include "models/image.h"
+#include <QSettings>
+#include <ui_rename-existing-1.h>
 #include "functions.h"
 #include "helpers.h"
+#include "models/image.h"
+#include "models/page.h"
+#include "models/profile.h"
+#include "utils/rename-existing/rename-existing-2.h"
 
 
 RenameExisting1::RenameExisting1(Profile *profile, QWidget *parent)

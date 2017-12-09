@@ -1,11 +1,11 @@
 #ifndef PROFILE_H
 #define PROFILE_H
 
-#include <QString>
-#include <QList>
-#include <QSettings>
-#include <QPair>
 #include <QHash>
+#include <QList>
+#include <QPair>
+#include <QSettings>
+#include <QString>
 #include "models/favorite.h"
 
 

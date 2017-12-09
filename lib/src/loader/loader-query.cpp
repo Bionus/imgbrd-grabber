@@ -3,8 +3,8 @@
 #include <QtMath>
 #include "models/image.h"
 #include "models/page.h"
-#include "models/site.h"
 #include "models/post-filter.h"
+#include "models/site.h"
 
 
 LoaderQuery::LoaderQuery(Site *site, QMap<QString, QVariant> options)

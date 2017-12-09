@@ -2,8 +2,8 @@
 #define IMAGE_DOWNLOADER_H
 
 #include <QObject>
-#include "models/image.h"
 #include "downloader/file-downloader.h"
+#include "models/image.h"
 
 
 class ImageDownloader : public QObject

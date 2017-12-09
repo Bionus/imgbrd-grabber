@@ -3,9 +3,9 @@
 
 #include <QList>
 #include <QPair>
-#include <QUrl>
-#include <QStringList>
 #include <QSharedPointer>
+#include <QStringList>
+#include <QUrl>
 #include "loader/downloadable.h"
 
 

@@ -1,8 +1,8 @@
 #ifndef IMAGE_LOADER_H
 #define IMAGE_LOADER_H
 
-#include <QPixmap>
 #include <QByteArray>
+#include <QPixmap>
 
 
 class ImageLoader : public QObject

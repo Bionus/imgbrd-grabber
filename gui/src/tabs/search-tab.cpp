@@ -1,26 +1,26 @@
-#include "search-tab.h"
-#include <QMouseEvent>
-#include <QMessageBox>
-#include <QSet>
-#include <QMenu>
+#include "tabs/search-tab.h"
 #include <QFileDialog>
-#include "ui/textedit.h"
-#include "ui/QBouton.h"
-#include "ui/verticalscrollarea.h"
-#include "ui/fixed-size-grid-layout.h"
+#include <QMenu>
+#include <QMessageBox>
+#include <QMouseEvent>
+#include <QSet>
 #include "downloader/download-query-image.h"
-#include "models/favorite.h"
-#include "models/page.h"
-#include "models/profile.h"
-#include "models/filename.h"
-#include "models/post-filter.h"
-#include "sources/sourceswindow.h"
-#include "viewer/zoom-window.h"
-#include "reverse-search/reverse-search-loader.h"
-#include "mainwindow.h"
-#include "helpers.h"
 #include "functions.h"
+#include "helpers.h"
 #include "image-context-menu.h"
+#include "mainwindow.h"
+#include "models/favorite.h"
+#include "models/filename.h"
+#include "models/page.h"
+#include "models/post-filter.h"
+#include "models/profile.h"
+#include "reverse-search/reverse-search-loader.h"
+#include "sources/sourceswindow.h"
+#include "ui/fixed-size-grid-layout.h"
+#include "ui/QBouton.h"
+#include "ui/textedit.h"
+#include "ui/verticalscrollarea.h"
+#include "viewer/zoom-window.h"
 
 #define FIXED_IMAGE_WIDTH 150
 

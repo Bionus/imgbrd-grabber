@@ -1,10 +1,10 @@
 #ifndef DOWNLOAD_QUERY_GROUP_H
 #define DOWNLOAD_QUERY_GROUP_H
 
-#include <QMetaType>
-#include <QString>
-#include <QSettings>
 #include <QJsonObject>
+#include <QMetaType>
+#include <QSettings>
+#include <QString>
 
 
 class Site;

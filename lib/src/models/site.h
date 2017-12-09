@@ -1,18 +1,18 @@
 #ifndef SITE_H
 #define SITE_H
 
-#include <QString>
-#include <QVariant>
-#include <QSettings>
-#include <QMap>
 #include <QList>
+#include <QMap>
 #include <QNetworkReply>
+#include <QSettings>
+#include <QString>
 #include <QUrl>
+#include <QVariant>
 #include <functional>
+#include "mixed-settings.h"
+#include "source.h"
 #include "tags/tag.h"
 #include "tags/tag-database-in-memory.h"
-#include "source.h"
-#include "mixed-settings.h"
 
 
 class Page;

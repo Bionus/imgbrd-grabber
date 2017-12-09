@@ -1,8 +1,8 @@
 #ifndef SEARCHWINDOW_H
 #define SEARCHWINDOW_H
 
-#include <QDialog>
 #include <QCalendarWidget>
+#include <QDialog>
 
 
 namespace Ui

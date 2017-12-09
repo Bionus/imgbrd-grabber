@@ -3,7 +3,7 @@
 
 #include <QDialog>
 #include <QLabel>
-#include "rename-existing-file.h"
+#include "utils/rename-existing/rename-existing-file.h"
 
 
 namespace Ui

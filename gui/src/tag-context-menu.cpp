@@ -1,8 +1,8 @@
 #include "tag-context-menu.h"
-#include <QProcess>
-#include <QDesktopServices>
 #include <QApplication>
 #include <QClipboard>
+#include <QDesktopServices>
+#include <QProcess>
 
 
 TagContextMenu::TagContextMenu(QString tag, QList<Tag> allTags, QUrl browserUrl, Profile *profile, bool setImage, QWidget *parent)

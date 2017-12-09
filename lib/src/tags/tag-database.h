@@ -1,10 +1,10 @@
 #ifndef TAG_DATABASE_H
 #define TAG_DATABASE_H
 
-#include <QString>
 #include <QMap>
-#include "tags/tag-type.h"
+#include <QString>
 #include "tags/tag.h"
+#include "tags/tag-type.h"
 
 
 class TagDatabase

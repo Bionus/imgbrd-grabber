@@ -1,7 +1,7 @@
-#include "log-window.h"
-#include "ui_log-window.h"
-#include "models/profile.h"
+#include "settings/log-window.h"
+#include <ui_log-window.h>
 #include "functions.h"
+#include "models/profile.h"
 
 
 LogWindow::LogWindow(int index, Profile *profile, QWidget *parent)

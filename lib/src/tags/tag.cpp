@@ -1,8 +1,8 @@
 #include "tag.h"
-#include <QTextDocument>
-#include <QSettings>
-#include <QSet>
 #include <QRegularExpression>
+#include <QSet>
+#include <QSettings>
+#include <QTextDocument>
 #include "models/favorite.h"
 #include "models/profile.h"
 

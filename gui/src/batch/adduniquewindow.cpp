@@ -1,16 +1,16 @@
-#include <QSettings>
+#include "batch/adduniquewindow.h"
 #include <QFileDialog>
-#include "adduniquewindow.h"
-#include "ui_adduniquewindow.h"
+#include <QSettings>
+#include <ui_adduniquewindow.h>
+#include "downloader/download-query-image.h"
 #include "functions.h"
 #include "helpers.h"
-#include "vendor/json.h"
-#include "models/page.h"
 #include "models/filename.h"
-#include "models/site.h"
-#include "models/profile.h"
 #include "models/image.h"
-#include "downloader/download-query-image.h"
+#include "models/page.h"
+#include "models/profile.h"
+#include "models/site.h"
+#include "vendor/json.h"
 
 
 /**

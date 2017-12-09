@@ -1,9 +1,9 @@
 #include <QCoreApplication>
 #include <QtGlobal>
 #include "downloader/downloader.h"
-#include "models/site.h"
-#include "models/profile.h"
 #include "functions.h"
+#include "models/profile.h"
+#include "models/site.h"
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 2, 0))
 	#include <QCommandLineParser>
 #else

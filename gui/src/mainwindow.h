@@ -3,19 +3,19 @@
 
 #define CLOSED_TAB_HISTORY_MAX 20
 
-#include <QMainWindow>
-#include <QSettings>
-#include <QProcess>
-#include <QTranslator>
-#include <QSet>
-#include <QQueue>
-#include <QLinkedList>
-#include <QTableWidgetItem>
-#include <QProgressBar>
 #include <QAtomicInteger>
-#include "models/site.h"
-#include "models/image.h"
+#include <QLinkedList>
+#include <QMainWindow>
+#include <QProcess>
+#include <QProgressBar>
+#include <QQueue>
+#include <QSet>
+#include <QSettings>
+#include <QTableWidgetItem>
+#include <QTranslator>
 #include "downloader/image-downloader.h"
+#include "models/image.h"
+#include "models/site.h"
 
 
 namespace Ui

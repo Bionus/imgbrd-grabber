@@ -2,8 +2,8 @@
 #define BATCHWINDOW_H
 
 #include <QDialog>
-#include <QProgressBar>
 #include <QMap>
+#include <QProgressBar>
 #include <QSettings>
 #include "loader/downloadable.h"
 #ifdef Q_OS_WIN

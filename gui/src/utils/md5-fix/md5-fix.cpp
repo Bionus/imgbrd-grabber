@@ -1,10 +1,10 @@
-#include <QSettings>
+#include "utils/md5-fix/md5-fix.h"
+#include <QCryptographicHash>
 #include <QDir>
 #include <QDirIterator>
-#include <QCryptographicHash>
 #include <QMessageBox>
-#include "md5-fix.h"
-#include "ui_md5-fix.h"
+#include <QSettings>
+#include <ui_md5-fix.h>
 #include "functions.h"
 #include "helpers.h"
 #include "models/profile.h"

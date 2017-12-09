@@ -2,8 +2,8 @@
 #define ADDGROUPWINDOW_H
 
 #include <QDialog>
-#include <QStringList>
 #include <QSettings>
+#include <QStringList>
 
 
 namespace Ui

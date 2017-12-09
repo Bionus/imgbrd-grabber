@@ -1,8 +1,8 @@
-#include "details-window.h"
+#include "viewer/details-window.h"
 #include <QLabel>
-#include "ui_details-window.h"
-#include "models/image.h"
+#include <ui_details-window.h>
 #include "helpers.h"
+#include "models/image.h"
 
 
 DetailsWindow::DetailsWindow(Profile *profile, QWidget *parent)

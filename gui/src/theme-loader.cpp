@@ -1,6 +1,6 @@
 #include "theme-loader.h"
-#include <QDir>
 #include <QApplication>
+#include <QDir>
 
 
 ThemeLoader::ThemeLoader(QString path)

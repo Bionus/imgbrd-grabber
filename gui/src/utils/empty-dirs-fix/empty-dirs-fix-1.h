@@ -2,8 +2,8 @@
 #define EMPTY_DIRS_FIX_1_H
 
 #include <QDialog>
-#include <QStringList>
 #include <QDir>
+#include <QStringList>
 
 
 namespace Ui

@@ -27,10 +27,10 @@
 #include <QApplication>
 #include <QDir>
 #include "downloader/downloader.h"
-#include "models/profile.h"
-#include "models/site.h"
 #include "functions.h"
 #include "mainwindow.h"
+#include "models/profile.h"
+#include "models/site.h"
 #include "updater/update-dialog.h"
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 2, 0))
 	#include <QCommandLineParser>

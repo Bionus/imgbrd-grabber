@@ -1,9 +1,9 @@
 #ifndef SOURCE_GUESSER_H
 #define SOURCE_GUESSER_H
 
-#include <QObject>
 #include <QList>
 #include <QMap>
+#include <QObject>
 #include <QUrl>
 
 

@@ -1,6 +1,6 @@
 #include "language-loader.h"
-#include <QSettings>
 #include <QDir>
+#include <QSettings>
 
 
 LanguageLoader::LanguageLoader(QString path)

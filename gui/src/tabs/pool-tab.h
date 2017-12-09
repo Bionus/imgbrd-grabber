@@ -1,11 +1,11 @@
 #ifndef POOL_TAB_H
 #define POOL_TAB_H
 
-#include <QWidget>
-#include <QMap>
 #include <QCalendarWidget>
 #include <QJsonObject>
-#include "search-tab.h"
+#include <QMap>
+#include <QWidget>
+#include "tabs/search-tab.h"
 
 
 namespace Ui

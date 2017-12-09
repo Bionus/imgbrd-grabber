@@ -1,4 +1,4 @@
-#include "image-loader.h"
+#include "threads/image-loader.h"
 
 
 ImageLoader::ImageLoader(QObject* parent)

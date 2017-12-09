@@ -1,11 +1,11 @@
 #include "commands/commands.h"
-#include <QProcess>
 #include <QDir>
+#include <QProcess>
+#include "commands/sql-worker.h"
+#include "functions.h"
 #include "models/filename.h"
 #include "models/profile.h"
 #include "tags/tag.h"
-#include "commands/sql-worker.h"
-#include "functions.h"
 
 
 

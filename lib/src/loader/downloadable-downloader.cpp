@@ -1,7 +1,7 @@
 #include "loader/downloadable-downloader.h"
-#include "models/site.h"
-#include "models/image.h"
 #include "logger.h"
+#include "models/image.h"
+#include "models/site.h"
 
 
 DownloadableDownloader::DownloadableDownloader(QSharedPointer<Downloadable> downloadable, Site *site, int count, bool addMd5, bool startCommands, bool loadTags, QObject *parent)

@@ -1,13 +1,13 @@
 #include "downloader/downloader.h"
-#include <QFile>
 #include <QDir>
+#include <QFile>
 #include <qmath.h>
 #include <iostream>
-#include "models/site.h"
-#include "models/page.h"
-#include "models/image.h"
-#include "models/post-filter.h"
 #include "logger.h"
+#include "models/image.h"
+#include "models/page.h"
+#include "models/post-filter.h"
+#include "models/site.h"
 
 
 Downloader::~Downloader()

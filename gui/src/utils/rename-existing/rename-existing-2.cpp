@@ -1,7 +1,7 @@
+#include "utils/rename-existing/rename-existing-2.h"
 #include <QDir>
 #include <QFile>
-#include "rename-existing-2.h"
-#include "ui_rename-existing-2.h"
+#include <ui_rename-existing-2.h>
 #include "functions.h"
 
 

@@ -1,4 +1,4 @@
-#include "resizer.h"
+#include "threads/resizer.h"
 
 
 Resizer::Resizer(QObject *parent)

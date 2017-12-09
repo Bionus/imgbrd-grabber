@@ -1,10 +1,10 @@
 #ifndef SOURCE_H
 #define SOURCE_H
 
-#include <QString>
 #include <QList>
-#include "updater/source-updater.h"
+#include <QString>
 #include "tags/tag-name-format.h"
+#include "updater/source-updater.h"
 
 
 class Site;

@@ -1,14 +1,14 @@
 #include "tabs-loader.h"
 #include <QFile>
-#include <QJsonDocument>
 #include <QJsonArray>
+#include <QJsonDocument>
 #include <QJsonObject>
-#include "tag-tab.h"
-#include "ui_tag-tab.h"
-#include "pool-tab.h"
-#include "ui_pool-tab.h"
 #include "mainwindow.h"
 #include "models/profile.h"
+#include "pool-tab.h"
+#include "tag-tab.h"
+#include "ui_pool-tab.h"
+#include "ui_tag-tab.h"
 
 
 bool TabsLoader::load(const QString &path, QList<searchTab*> &allTabs, int &currentTab, Profile *profile, mainWindow *parent)

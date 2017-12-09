@@ -1,11 +1,11 @@
 #include "tags/tag-api.h"
 #include <QDomDocument>
 #include <QRegularExpression>
-#include "models/site.h"
-#include "models/api.h"
-#include "vendor/json.h"
-#include "logger.h"
 #include "functions.h"
+#include "logger.h"
+#include "models/api.h"
+#include "models/site.h"
+#include "vendor/json.h"
 
 
 TagApi::TagApi(Profile *profile, Site *site, Api *api, int page, int limit, QObject *parent)

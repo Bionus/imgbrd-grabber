@@ -3,8 +3,8 @@
 
 #include <QString>
 #include <QUrl>
-#include "models/filename.h"
 #include "loader/token.h"
+#include "models/filename.h"
 
 
 typedef QPair<QString, QString> QStrP;

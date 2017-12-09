@@ -1,9 +1,9 @@
 #ifndef FAVORITES_TAB_H
 #define FAVORITES_TAB_H
 
-#include <QWidget>
 #include <QMap>
-#include "search-tab.h"
+#include <QWidget>
+#include "tabs/search-tab.h"
 
 
 namespace Ui

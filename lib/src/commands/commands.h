@@ -1,8 +1,8 @@
 #ifndef COMMANDS_H
 #define COMMANDS_H
 
-#include <QString>
 #include <QSettings>
+#include <QString>
 
 struct MysqlSettings
 {

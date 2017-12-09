@@ -1,9 +1,9 @@
 #ifndef PAGE_H
 #define PAGE_H
 
+#include <QList>
 #include <QObject>
 #include <QString>
-#include <QList>
 #include "models/page-api.h"
 
 

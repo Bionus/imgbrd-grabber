@@ -1,9 +1,9 @@
-#include <QSettings>
+#include "utils/empty-dirs-fix/empty-dirs-fix-1.h"
 #include <QMessageBox>
-#include "empty-dirs-fix-1.h"
-#include "empty-dirs-fix-2.h"
-#include "ui_empty-dirs-fix-1.h"
+#include <QSettings>
+#include <ui_empty-dirs-fix-1.h>
 #include "models/profile.h"
+#include "utils/empty-dirs-fix/empty-dirs-fix-2.h"
 
 
 EmptyDirsFix1::EmptyDirsFix1(Profile *profile, QWidget *parent)

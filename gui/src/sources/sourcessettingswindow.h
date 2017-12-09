@@ -2,10 +2,10 @@
 #define SOURCESSETTINGSWINDOW_H
 
 #include <QDialog>
-#include <QSettings>
 #include <QMap>
-#include "models/site.h"
+#include <QSettings>
 #include "models/profile.h"
+#include "models/site.h"
 
 
 namespace Ui

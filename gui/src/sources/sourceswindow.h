@@ -1,10 +1,10 @@
 #ifndef SOURCESWINDOW_H
 #define SOURCESWINDOW_H
 
-#include <QDialog>
 #include <QCheckBox>
-#include <QSettings>
+#include <QDialog>
 #include <QLabel>
+#include <QSettings>
 #include "models/source.h"
 
 

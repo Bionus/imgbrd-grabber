@@ -1,9 +1,9 @@
+#include "batch/batchwindow.h"
+#include <QClipboard>
+#include <QCloseEvent>
 #include <QSettings>
 #include <QTime>
-#include <QCloseEvent>
-#include <QClipboard>
-#include "batch/batchwindow.h"
-#include "ui_batchwindow.h"
+#include <ui_batchwindow.h>
 #include "functions.h"
 
 

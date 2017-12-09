@@ -3,8 +3,8 @@
 
 #include <QDialog>
 #include <QNetworkReply>
-#include "reverse-search/reverse-search-engine.h"
 #include "custom-network-access-manager.h"
+#include "reverse-search/reverse-search-engine.h"
 
 
 namespace Ui

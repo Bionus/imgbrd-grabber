@@ -1,9 +1,9 @@
 #include "tags/tag-database-sqlite.h"
+#include <QtSql/QSqlDriver>
+#include <QtSql/QSqlError>
+#include <QtSql/QSqlField>
 #include <QtSql/QSqlQuery>
 #include <QtSql/QSqlRecord>
-#include <QtSql/QSqlError>
-#include <QtSql/QSqlDriver>
-#include <QtSql/QSqlField>
 #include <QVariant>
 #include "logger.h"
 

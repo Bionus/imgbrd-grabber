@@ -1,28 +1,28 @@
-#include "zoom-window.h"
+#include "viewer/zoom-window.h"
 #include <QApplication>
 #include <QDesktopWidget>
-#include <QMessageBox>
-#include <QShortcut>
-#include <QMenu>
 #include <QFileDialog>
+#include <QMenu>
+#include <QMessageBox>
 #include <QScrollBar>
-#include "ui_zoom-window.h"
-#include "ui/QAffiche.h"
+#include <QShortcut>
+#include <ui_zoom-window.h>
+#include "functions.h"
+#include "helpers.h"
+#include "image-context-menu.h"
+#include "mainwindow.h"
 #include "models/filename.h"
-#include "models/site.h"
 #include "models/page.h"
-#include "models/profile.h"
 #include "models/post-filter.h"
+#include "models/profile.h"
+#include "models/site.h"
 #include "settings/optionswindow.h"
+#include "tag-context-menu.h"
 #include "tags/tag-stylist.h"
 #include "threads/image-loader.h"
 #include "threads/image-loader-queue.h"
-#include "details-window.h"
-#include "mainwindow.h"
-#include "helpers.h"
-#include "functions.h"
-#include "image-context-menu.h"
-#include "tag-context-menu.h"
+#include "ui/QAffiche.h"
+#include "viewer/details-window.h"
 
 
 ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, QSharedPointer<Image> image, Site *site, Profile *profile, mainWindow *parent)

@@ -1,6 +1,6 @@
 #include "tags/tag-stylist.h"
-#include "models/profile.h"
 #include "functions.h"
+#include "models/profile.h"
 
 
 TagStylist::TagStylist(Profile *profile)

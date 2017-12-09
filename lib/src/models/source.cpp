@@ -1,13 +1,13 @@
 #include "models/source.h"
-#include <QStringList>
 #include <QDir>
+#include <QDomDocument>
 #include <QFile>
 #include <QFileInfo>
-#include <QDomDocument>
-#include "models/site.h"
+#include <QStringList>
+#include "functions.h"
 #include "models/api.h"
 #include "models/profile.h"
-#include "functions.h"
+#include "models/site.h"
 
 
 QString getUpdaterBaseUrl()

@@ -1,9 +1,9 @@
 #ifndef TABS_LOADER_H
 #define TABS_LOADER_H
 
-#include <QString>
-#include <QMap>
 #include <QJsonObject>
+#include <QMap>
+#include <QString>
 
 
 class Profile;

@@ -1,9 +1,9 @@
 #ifndef POST_FILTER_H
 #define POST_FILTER_H
 
+#include <QMap>
 #include <QString>
 #include <QStringList>
-#include <QMap>
 #include "loader/token.h"
 
 

@@ -1,9 +1,9 @@
 #ifndef FILENAME_H
 #define FILENAME_H
 
+#include <QSettings>
 #include <QString>
 #include <QStringList>
-#include <QSettings>
 #include <QVariant>
 #include "loader/token.h"
 

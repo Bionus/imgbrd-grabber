@@ -1,18 +1,18 @@
-#include "favorites-tab.h"
+#include "tabs/favorites-tab.h"
 #include <QMessageBox>
-#include "ui_favorites-tab.h"
-#include "ui/QBouton.h"
-#include "ui/QAffiche.h"
-#include "ui/textedit.h"
+#include <ui_favorites-tab.h>
+#include "downloader/download-query-group.h"
 #include "favoritewindow.h"
+#include "functions.h"
+#include "helpers.h"
 #include "mainwindow.h"
 #include "models/favorite.h"
 #include "models/page.h"
 #include "models/profile.h"
 #include "models/site.h"
-#include "downloader/download-query-group.h"
-#include "helpers.h"
-#include "functions.h"
+#include "ui/QAffiche.h"
+#include "ui/QBouton.h"
+#include "ui/textedit.h"
 
 #define FAVORITES_THUMB_SIZE 150
 

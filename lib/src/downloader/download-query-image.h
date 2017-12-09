@@ -1,11 +1,11 @@
 #ifndef DOWNLOAD_QUERY_IMAGE_H
 #define DOWNLOAD_QUERY_IMAGE_H
 
-#include <QMetaType>
-#include <QString>
-#include <QSettings>
-#include <QMap>
 #include <QJsonObject>
+#include <QMap>
+#include <QMetaType>
+#include <QSettings>
+#include <QString>
 
 
 class Image;

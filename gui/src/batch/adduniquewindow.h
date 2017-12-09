@@ -1,8 +1,8 @@
 #ifndef ADDUNIQUEWINDOW_H
 #define ADDUNIQUEWINDOW_H
 
-#include <QMap>
 #include <QDialog>
+#include <QMap>
 
 
 namespace Ui

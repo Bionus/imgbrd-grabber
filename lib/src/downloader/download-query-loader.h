@@ -1,9 +1,9 @@
 #ifndef DOWNLOAD_QUERY_LOADER_H
 #define DOWNLOAD_QUERY_LOADER_H
 
-#include <QString>
 #include <QList>
 #include <QMap>
+#include <QString>
 
 
 class Site;

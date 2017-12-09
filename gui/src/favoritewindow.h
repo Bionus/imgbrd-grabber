@@ -1,8 +1,8 @@
 #ifndef FAVORITEWINDOW_H
 #define FAVORITEWINDOW_H
 
-#include <QDialog>
 #include <QDateTime>
+#include <QDialog>
 #include "models/favorite.h"
 
 

@@ -1,6 +1,6 @@
+#include "utils/empty-dirs-fix/empty-dirs-fix-2.h"
 #include <QMessageBox>
-#include "empty-dirs-fix-2.h"
-#include "ui_empty-dirs-fix-2.h"
+#include <ui_empty-dirs-fix-2.h>
 
 
 

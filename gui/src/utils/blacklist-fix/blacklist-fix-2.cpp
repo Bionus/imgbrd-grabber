@@ -1,6 +1,6 @@
+#include "utils/blacklist-fix/blacklist-fix-2.h"
 #include <QFile>
-#include "blacklist-fix-2.h"
-#include "ui_blacklist-fix-2.h"
+#include <ui_blacklist-fix-2.h>
 
 
 

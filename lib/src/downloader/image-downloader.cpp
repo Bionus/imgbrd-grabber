@@ -1,6 +1,6 @@
 #include "downloader/image-downloader.h"
-#include "models/filename.h"
 #include "logger.h"
+#include "models/filename.h"
 
 
 ImageDownloader::ImageDownloader(QSharedPointer<Image> img, QString filename, QString path, int count, bool addMd5, bool startCommands, QObject *parent, bool loadTags)

@@ -1,9 +1,9 @@
+#include "commands/sql-worker.h"
 #include <QtSql/QSqlDatabase>
-#include <QtSql/QSqlQuery>
+#include <QtSql/QSqlDriver>
 #include <QtSql/QSqlError>
 #include <QtSql/QSqlField>
-#include <QtSql/QSqlDriver>
-#include "commands/sql-worker.h"
+#include <QtSql/QSqlQuery>
 #include "logger.h"
 
 

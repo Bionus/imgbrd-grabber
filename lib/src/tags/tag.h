@@ -1,9 +1,9 @@
 #ifndef TAG_H
 #define TAG_H
 
+#include <QFont>
 #include <QString>
 #include <QStringList>
-#include <QFont>
 #include "tags/tag-type.h"
 
 

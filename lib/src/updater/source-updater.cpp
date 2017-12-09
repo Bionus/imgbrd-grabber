@@ -1,7 +1,7 @@
 #include "updater/source-updater.h"
 #include <QFile>
-#include <QNetworkRequest>
 #include <QNetworkReply>
+#include <QNetworkRequest>
 
 
 SourceUpdater::SourceUpdater(QString source, QString directory, QString baseUrl)

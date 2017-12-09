@@ -1,15 +1,15 @@
-#include <QSettings>
+#include "utils/blacklist-fix/blacklist-fix-1.h"
+#include <QCryptographicHash>
 #include <QDir>
 #include <QDirIterator>
-#include <QCryptographicHash>
 #include <QMessageBox>
-#include "blacklist-fix-1.h"
-#include "blacklist-fix-2.h"
-#include "ui_blacklist-fix-1.h"
+#include <QSettings>
+#include <ui_blacklist-fix-1.h>
+#include "helpers.h"
+#include "models/image.h"
 #include "models/page.h"
 #include "models/profile.h"
-#include "models/image.h"
-#include "helpers.h"
+#include "utils/blacklist-fix/blacklist-fix-2.h"
 
 
 BlacklistFix1::BlacklistFix1(Profile *profile, QWidget *parent)

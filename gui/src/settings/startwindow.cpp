@@ -3,12 +3,12 @@
 #include <QSettings>
 #include <QStandardPaths>
 #include <ui_startwindow.h>
-#include "settings/optionswindow.h"
-#include "settings/filenamewindow.h"
+#include "functions.h"
+#include "helpers.h"
 #include "language-loader.h"
 #include "models/profile.h"
-#include "helpers.h"
-#include "functions.h"
+#include "settings/filenamewindow.h"
+#include "settings/optionswindow.h"
 
 
 /**

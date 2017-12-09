@@ -1,15 +1,15 @@
 #ifndef IMAGE_H
 #define IMAGE_H
 
+#include <QDateTime>
 #include <QMap>
 #include <QNetworkReply>
-#include <QDateTime>
 #include <QPixmap>
 #include <QSettings>
-#include "tags/tag.h"
-#include "models/pool.h"
 #include "downloader/extension-rotator.h"
 #include "loader/downloadable.h"
+#include "models/pool.h"
+#include "tags/tag.h"
 
 
 class Page;

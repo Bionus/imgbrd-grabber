@@ -2,8 +2,8 @@
 #define OPTIONSWINDOW_H
 
 #include <QDialog>
-#include <QTreeWidgetItem>
 #include <QSettings>
+#include <QTreeWidgetItem>
 #include "reverse-search/reverse-search-engine.h"
 
 

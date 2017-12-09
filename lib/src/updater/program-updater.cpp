@@ -1,10 +1,10 @@
 #include "updater/program-updater.h"
-#include <QNetworkRequest>
-#include <QNetworkReply>
 #include <QDir>
 #include <QFile>
-#include "vendor/json.h"
+#include <QNetworkReply>
+#include <QNetworkRequest>
 #include "logger.h"
+#include "vendor/json.h"
 
 
 ProgramUpdater::ProgramUpdater()

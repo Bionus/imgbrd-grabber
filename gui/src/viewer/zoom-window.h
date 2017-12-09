@@ -1,12 +1,12 @@
 #ifndef ZOOM_WINDOW_H
 #define ZOOM_WINDOW_H
 
+#include <QPushButton>
+#include <QStackedWidget>
 #include <QtGui>
 #include <QtNetwork>
-#include <QStackedWidget>
-#include <QPushButton>
-#include "models/image.h"
 #include "models/favorite.h"
+#include "models/image.h"
 
 
 namespace Ui

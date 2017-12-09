@@ -1,13 +1,13 @@
-#include "sitewindow.h"
+#include "sources/sitewindow.h"
 #include <QFile>
 #include <QPushButton>
-#include "ui_sitewindow.h"
+#include <ui_sitewindow.h>
+#include "functions.h"
+#include "helpers.h"
 #include "models/profile.h"
 #include "models/site.h"
 #include "models/source.h"
 #include "models/source-guesser.h"
-#include "helpers.h"
-#include "functions.h"
 
 
 SiteWindow::SiteWindow(Profile *profile, QWidget *parent)

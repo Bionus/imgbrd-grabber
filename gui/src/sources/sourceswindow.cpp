@@ -1,16 +1,16 @@
-#include "sourceswindow.h"
-#include <QMessageBox>
+#include "sources/sourceswindow.h"
 #include <QCloseEvent>
-#include <QInputDialog>
 #include <QDesktopServices>
-#include "ui_sourceswindow.h"
-#include "ui/QBouton.h"
-#include "ui/QAffiche.h"
-#include "sitewindow.h"
-#include "sourcessettingswindow.h"
-#include "models/source.h"
-#include "models/site.h"
+#include <QInputDialog>
+#include <QMessageBox>
+#include <ui_sourceswindow.h>
 #include "functions.h"
+#include "models/site.h"
+#include "models/source.h"
+#include "sources/sitewindow.h"
+#include "sources/sourcessettingswindow.h"
+#include "ui/QAffiche.h"
+#include "ui/QBouton.h"
 
 
 /**

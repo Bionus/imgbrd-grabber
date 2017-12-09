@@ -1,9 +1,9 @@
 #include "helpers.h"
+#include <QDesktopServices>
+#include <QDir>
 #include <QMessageBox>
 #include <QProcess>
-#include <QDir>
 #include <QStringList>
-#include <QDesktopServices>
 #include <QUrl>
 
 

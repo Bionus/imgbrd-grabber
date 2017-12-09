@@ -1,9 +1,9 @@
 #ifndef API_H
 #define API_H
 
+#include <QMap>
 #include <QObject>
 #include <QString>
-#include <QMap>
 
 
 class Api : public QObject

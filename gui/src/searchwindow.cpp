@@ -1,11 +1,11 @@
 #include "searchwindow.h"
+#include <QCryptographicHash>
 #include <QFile>
 #include <QFileDialog>
-#include <QCryptographicHash>
-#include "ui_searchwindow.h"
-#include "ui/textedit.h"
-#include "models/profile.h"
+#include <ui_searchwindow.h>
 #include "functions.h"
+#include "models/profile.h"
+#include "ui/textedit.h"
 
 
 SearchWindow::SearchWindow(QString tags, Profile *profile, QWidget *parent)
