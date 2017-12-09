@@ -138,7 +138,7 @@ void mainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 		{ log("Enabling system-wide proxy.", Logger::Info); }
 	}
 
-	m_progressdialog = nullptr;
+	m_progressDialog = nullptr;
 
 	ui->tableBatchGroups->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 	ui->tableBatchUniques->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
@@ -930,7 +930,7 @@ void mainWindow::logClear()
 void mainWindow::logOpen()
 { QDesktopServices::openUrl("file:///" + m_profile->getPath() + "/main.log"); }
 
-void mainWindow::loadLanguage(const QString& rLanguage, bool shutup)
+void mainWindow::loadLanguage(const QString& rLanguage, bool quiet)
 {
 	if (m_currLang != rLanguage)
 	{
@@ -941,7 +941,7 @@ void mainWindow::loadLanguage(const QString& rLanguage, bool shutup)
 		m_translator.load(savePath("languages/"+m_currLang+".qm", true));
 		m_qtTranslator.load(savePath("languages/qt/"+m_currLang+".qm", true));
 
-		if (!shutup)
+		if (!quiet)
 		{
 			log(QString("Translating texts in %1...").arg(m_currLang), Logger::Info);
 			ui->retranslateUi(this);
@@ -1097,12 +1097,12 @@ void mainWindow::getAll(bool all)
 	}
 	log("Batch download started.", Logger::Info);
 
-	if (m_progressdialog == nullptr)
+	if (m_progressDialog == nullptr)
 	{
-		m_progressdialog = new batchWindow(m_profile->getSettings(), this);
-		connect(m_progressdialog, SIGNAL(paused()), this, SLOT(getAllPause()));
-		connect(m_progressdialog, SIGNAL(rejected()), this, SLOT(getAllCancel()));
-		connect(m_progressdialog, SIGNAL(skipped()), this, SLOT(getAllSkip()));
+		m_progressDialog = new batchWindow(m_profile->getSettings(), this);
+		connect(m_progressDialog, SIGNAL(paused()), this, SLOT(getAllPause()));
+		connect(m_progressDialog, SIGNAL(rejected()), this, SLOT(getAllCancel()));
+		connect(m_progressDialog, SIGNAL(skipped()), this, SLOT(getAllSkip()));
 	}
 
 	// Reinitialize variables
@@ -1198,14 +1198,14 @@ void mainWindow::getAll(bool all)
 		return;
 	}
 
-	m_progressdialog->show();
+	m_progressDialog->show();
 	getAllLogin();
 }
 
 void mainWindow::getAllLogin()
 {
-	m_progressdialog->clear();
-	m_progressdialog->setText(tr("Logging in, please wait..."));
+	m_progressDialog->clear();
+	m_progressDialog->setText(tr("Logging in, please wait..."));
 
 	m_getAllLogins.clear();
 	QQueue<Site*> logins;
@@ -1227,8 +1227,8 @@ void mainWindow::getAllLogin()
 		return;
 	}
 
-	m_progressdialog->setCurrentValue(0);
-	m_progressdialog->setCurrentMax(m_getAllLogins.count());
+	m_progressDialog->setCurrentValue(0);
+	m_progressDialog->setCurrentMax(m_getAllLogins.count());
 
 	while (!logins.isEmpty())
 	{
@@ -1242,7 +1242,7 @@ void mainWindow::getAllFinishedLogin(Site *site, Site::LoginResult)
 	if (m_getAllLogins.empty())
 	{ return; }
 
-	m_progressdialog->setCurrentValue(m_progressdialog->currentValue() + 1);
+	m_progressDialog->setCurrentValue(m_progressDialog->currentValue() + 1);
 	m_getAllLogins.removeAll(site);
 
 	if (m_getAllLogins.empty())
@@ -1325,8 +1325,8 @@ void mainWindow::getNextPack()
 
 void mainWindow::getAllGetPages()
 {
-	m_progressdialog->clearImages();
-	m_progressdialog->setText(tr("Downloading pages, please wait..."));
+	m_progressDialog->clearImages();
+	m_progressDialog->setText(tr("Downloading pages, please wait..."));
 
 	int max = 0;
 	int packSize = 0;
@@ -1337,8 +1337,8 @@ void mainWindow::getAllGetPages()
 		packSize += downloader->imagesMax();
 	}
 
-	m_progressdialog->setCurrentValue(0);
-	m_progressdialog->setCurrentMax(max);
+	m_progressDialog->setCurrentValue(0);
+	m_progressDialog->setCurrentMax(max);
 	m_batchCurrentPackSize = packSize;
 }
 
@@ -1354,7 +1354,7 @@ void mainWindow::getAllFinishedPage(Page *page)
 	int pos = d->getData().toInt();
 	m_groupBatchs[pos].unk += (m_groupBatchs[pos].unk == "" ? "" : "¤") + QString::number((quintptr)page);
 
-	m_progressdialog->setCurrentValue(m_progressdialog->currentValue() + 1);
+	m_progressDialog->setCurrentValue(m_progressDialog->currentValue() + 1);
 }
 
 /**
@@ -1401,9 +1401,9 @@ void mainWindow::getAllImages()
 	log(QString("All images' urls have been received (%1).").arg(m_getAllRemaining.count()), Logger::Info);
 
 	// We add the images to the download dialog
-	m_progressdialog->clearImages();
-	m_progressdialog->setText(tr("Preparing images, please wait..."));
-	m_progressdialog->setCount(m_getAllRemaining.count());
+	m_progressDialog->clearImages();
+	m_progressDialog->setText(tr("Preparing images, please wait..."));
+	m_progressDialog->setCount(m_getAllRemaining.count());
 	for (int i = 0; i < m_getAllRemaining.count(); i++)
 	{
 		// We find the image's batch ID using its page
@@ -1418,18 +1418,18 @@ void mainWindow::getAllImages()
 		}
 
 		// We add the image
-		m_progressdialog->addImage(m_getAllRemaining[i]->url(), n, m_getAllRemaining[i]->fileSize());
-		connect(m_getAllRemaining[i].data(), SIGNAL(urlChanged(QString, QString)), m_progressdialog, SLOT(imageUrlChanged(QString, QString)));
+		m_progressDialog->addImage(m_getAllRemaining[i]->url(), n, m_getAllRemaining[i]->fileSize());
+		connect(m_getAllRemaining[i].data(), SIGNAL(urlChanged(QString, QString)), m_progressDialog, SLOT(imageUrlChanged(QString, QString)));
 		connect(m_getAllRemaining[i].data(), SIGNAL(urlChanged(QString, QString)), this, SLOT(imageUrlChanged(QString, QString)));
 	}
 
 	// Set some values on the batch window
-	m_progressdialog->updateColumns();
-	m_progressdialog->setText(tr("Downloading images..."));
-	m_progressdialog->setCurrentValue(0);
-	m_progressdialog->setCurrentMax(m_getAllRemaining.count());
-	m_progressdialog->setTotalValue(m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors);
-	m_progressdialog->setTotalMax(m_getAllImagesCount);
+	m_progressDialog->updateColumns();
+	m_progressDialog->setText(tr("Downloading images..."));
+	m_progressDialog->setCurrentValue(0);
+	m_progressDialog->setCurrentMax(m_getAllRemaining.count());
+	m_progressDialog->setTotalValue(m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors);
+	m_progressDialog->setTotalMax(m_getAllImagesCount);
 
 	// Check whether we need to get the tags first (for the filename) or if we can just download the images directly
 	// TODO(Bionus): having one batch needing it currently causes all batches to need it, should mae it batch (Downloader) dependent
@@ -1501,7 +1501,7 @@ bool mainWindow::needExactTags(QSettings *settings)
 void mainWindow::_getAll()
 {
 	// We quit as soon as the user cancels
-	if (m_progressdialog->cancelled())
+	if (m_progressDialog->cancelled())
 		return;
 
 	// If there are still images do download
@@ -1529,7 +1529,7 @@ void mainWindow::_getAll()
 		else
 		{
 			// Row
-			int site_id = m_progressdialog->batch(img->url());
+			int site_id = m_progressDialog->batch(img->url());
 			int row = getRowForSite(site_id);
 
 			// Path
@@ -1564,7 +1564,7 @@ void mainWindow::_getAll()
 			{
 				m_getAllExists++;
 				log(QString("File already exists: <a href=\"file:///%1\">%1</a>").arg(paths.at(0)), Logger::Info);
-				m_progressdialog->loadedImage(img->url(), Image::SaveResult::AlreadyExists);
+				m_progressDialog->loadedImage(img->url(), Image::SaveResult::AlreadyExists);
 				getAllImageOk(img, site_id);
 			}
 		}
@@ -1584,7 +1584,7 @@ void mainWindow::getAllGetImageIfNotBlacklisted(QSharedPointer<Image> img, int s
 	{
 		m_getAllIgnored++;
 		log("Image ignored.", Logger::Info);
-		m_progressdialog->loadedImage(img->url(), Image::SaveResult::Ignored);
+		m_progressDialog->loadedImage(img->url(), Image::SaveResult::Ignored);
 		getAllImageOk(img, site_id);
 	}
 	else
@@ -1593,8 +1593,8 @@ void mainWindow::getAllGetImageIfNotBlacklisted(QSharedPointer<Image> img, int s
 
 void mainWindow::getAllImageOk(QSharedPointer<Image> img, int site_id)
 {
-	m_progressdialog->setCurrentValue(m_progressdialog->currentValue() + 1);
-	m_progressdialog->setTotalValue(m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors);
+	m_progressDialog->setCurrentValue(m_progressDialog->currentValue() + 1);
+	m_progressDialog->setTotalValue(m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors);
 
 	if (site_id >= 0)
 	{
@@ -1626,7 +1626,7 @@ void mainWindow::getAllProgress(qint64 bytesReceived, qint64 bytesTotal)
 	if (img->fileSize() == 0)
 	{
 		img->setFileSize(bytesTotal);
-		m_progressdialog->sizeImage(url, bytesTotal);
+		m_progressDialog->sizeImage(url, bytesTotal);
 	}
 
 	if (!m_downloadTimeLast.contains(url))
@@ -1637,14 +1637,14 @@ void mainWindow::getAllProgress(qint64 bytesReceived, qint64 bytesTotal)
 		m_downloadTimeLast[url].restart();
 		int elapsed = m_downloadTime[url].elapsed();
 		float speed = elapsed != 0 ? (bytesReceived * 1000) / elapsed : 0;
-		m_progressdialog->speedImage(url, speed);
+		m_progressDialog->speedImage(url, speed);
 	}
 
-	m_progressdialog->statusImage(url, bytesTotal != 0 ? (bytesReceived * 100) / bytesTotal : 0);
+	m_progressDialog->statusImage(url, bytesTotal != 0 ? (bytesReceived * 100) / bytesTotal : 0);
 }
 void mainWindow::getAllPerformTags()
 {
-	if (m_progressdialog->cancelled())
+	if (m_progressDialog->cancelled())
 		return;
 
 	log("Tags received", Logger::Info);
@@ -1657,7 +1657,7 @@ void mainWindow::getAllPerformTags()
 		return;
 
 	// Row
-	int site_id = m_progressdialog->batch(img->url());
+	int site_id = m_progressDialog->batch(img->url());
 	int row = getRowForSite(site_id);
 
 	// Getting path
@@ -1688,10 +1688,10 @@ void mainWindow::getAllPerformTags()
 	}
 	else
 	{
-		m_progressdialog->setCurrentValue(m_progressdialog->currentValue() + 1);
+		m_progressDialog->setCurrentValue(m_progressDialog->currentValue() + 1);
 		m_getAllExists++;
 		log(QString("File already exists: <a href=\"file:///%1\">%1</a>").arg(f.fileName()), Logger::Info);
-		m_progressdialog->loadedImage(img->url(), Image::SaveResult::AlreadyExists);
+		m_progressDialog->loadedImage(img->url(), Image::SaveResult::AlreadyExists);
 		if (site_id >= 0)
 		{
 			m_progressBars[site_id - 1]->setValue(m_progressBars[site_id - 1]->value()+1);
@@ -1700,7 +1700,7 @@ void mainWindow::getAllPerformTags()
 		}
 		m_downloadTimeLast.remove(img->url());
 		m_getAllDownloading.removeAll(img);
-		m_progressdialog->setTotalValue(m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors);
+		m_progressDialog->setTotalValue(m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors);
 		_getAll();
 	}
 }
@@ -1720,7 +1720,7 @@ void mainWindow::getAllGetImage(QSharedPointer<Image> img)
 	}
 
 	// Row
-	int site_id = m_progressdialog->batch(img->url());
+	int site_id = m_progressDialog->batch(img->url());
 	int row = getRowForSite(site_id);
 
 	// Path
@@ -1734,7 +1734,7 @@ void mainWindow::getAllGetImage(QSharedPointer<Image> img)
 	}
 
 	// Track download progress
-	m_progressdialog->loadingImage(img->url());
+	m_progressDialog->loadingImage(img->url());
 	m_downloadTime.insert(img->url(), QTime());
 	m_downloadTime[img->url()].start();
 	m_downloadTimeLast.insert(img->url(), QTime());
@@ -1766,7 +1766,7 @@ void mainWindow::getAllGetImageSaved(QSharedPointer<Image> img, QMap<QString, Im
 		if (result[path] == Image::SaveResult::Error)
 		{
 			diskError = true;
-			m_progressdialog->pause();
+			m_progressDialog->pause();
 
 			bool isDriveFull = false;
 			QString drive;
@@ -1787,7 +1787,7 @@ void mainWindow::getAllGetImageSaved(QSharedPointer<Image> img, QMap<QString, Im
 			{ msg = tr("Not enough space on the destination drive \"%1\".\nPlease free some space before resuming the download.").arg(drive); }
 			else
 			{ msg = tr("An error occured saving the image.\n%1\nPlease solve the issue before resuming the download.").arg(path); }
-			QMessageBox::critical(m_progressdialog, tr("Error"), msg);
+			QMessageBox::critical(m_progressDialog, tr("Error"), msg);
 		}
 	}
 
@@ -1805,16 +1805,16 @@ void mainWindow::getAllGetImageSaved(QSharedPointer<Image> img, QMap<QString, Im
 	else
 	{ m_getAllDownloaded++; }
 
-	m_progressdialog->loadedImage(img->url(), res);
+	m_progressDialog->loadedImage(img->url(), res);
 
-	int site_id = m_progressdialog->batch(img->url());
+	int site_id = m_progressDialog->batch(img->url());
 	getAllImageOk(img, site_id);
 }
 
 void mainWindow::getAllCancel()
 {
 	log("Cancelling downloads...", Logger::Info);
-	m_progressdialog->cancel();
+	m_progressDialog->cancel();
 	for (const QSharedPointer<Image> &image : m_getAllDownloading)
 	{
 		image->abortTags();
@@ -1843,7 +1843,7 @@ void mainWindow::getAllSkip()
 	m_getAllDownloading.clear();
 
 	m_getAllSkipped += count;
-	m_progressdialog->setTotalValue(m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors);
+	m_progressDialog->setTotalValue(m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors);
 	m_getAllCurrentlyProcessing = count;
 	for (int i = 0; i < count; ++i)
 		_getAll();
@@ -1860,7 +1860,7 @@ void mainWindow::getAllFinished()
 	}
 
 	log("Images download finished.", Logger::Info);
-	m_progressdialog->setTotalValue(m_progressdialog->totalMax());
+	m_progressDialog->setTotalValue(m_progressDialog->totalMax());
 
 	// Delete objects
 	if (m_lastDownloader != nullptr)
@@ -1888,7 +1888,7 @@ void mainWindow::getAllFinished()
 		if (reponse == QMessageBox::Yes)
 		{
 			m_getAll = true;
-			m_progressdialog->clear();
+			m_progressDialog->clear();
 			m_getAllRemaining.clear();
 			m_getAllRemaining.append(m_getAllFailed);
 			m_getAllRemaining.append(m_getAllSkippedImages);
@@ -1902,7 +1902,7 @@ void mainWindow::getAllFinished()
 			m_getAll404s = 0;
 			m_getAllErrors = 0;
 			m_getAllSkipped = 0;
-			m_progressdialog->show();
+			m_progressDialog->show();
 			getAllImages();
 			return;
 		}
@@ -1923,9 +1923,9 @@ void mainWindow::getAllFinished()
 	);
 
 	// Final action
-	switch (m_progressdialog->endAction())
+	switch (m_progressDialog->endAction())
 	{
-		case 1:	m_progressdialog->close();				break;
+		case 1:	m_progressDialog->close();				break;
 		case 2:	openTray();								break;
 		case 3:	saveFolder();							break;
 		case 4:	QSound::play(":/sounds/finished.wav");	break;
@@ -1935,7 +1935,7 @@ void mainWindow::getAllFinished()
 	m_getAll = false;
 
 	// Remove after download and retries are finished
-	if (m_progressdialog->endRemove())
+	if (m_progressDialog->endRemove())
 	{ batchRemoveGroups(m_batchDownloading.toList()); }
 
 	// End of batch download
@@ -1946,7 +1946,7 @@ void mainWindow::getAllFinished()
 
 void mainWindow::getAllPause()
 {
-	if (m_progressdialog->isPaused())
+	if (m_progressDialog->isPaused())
 	{
 		log("Pausing downloads...", Logger::Info);
 		for (const auto &img : m_getAllDownloading)

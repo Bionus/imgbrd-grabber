@@ -62,17 +62,17 @@ class Downloader : public QObject
 	private:
 		Profile *m_profile;
 		Page *m_lastPage;
-		QStringList m_tags, m_postfiltering;
+		QStringList m_tags, m_postFiltering;
 		QList<Site*> m_sites;
-		int m_page, m_max, m_perpage, m_waiting, m_ignored, m_duplicates, m_tagsmin;
+		int m_page, m_max, m_perPage, m_waiting, m_ignored, m_duplicates, m_tagsMin;
 		QString m_location, m_filename, m_user, m_password;
-		bool m_blacklist, m_noduplicates;
-		QString m_tagsformat;
+		bool m_blacklist, m_noDuplicates;
+		QString m_tagsFormat;
 		QStringList m_blacklistedTags;
 
-		QList<Page*> m_pages, m_pagesC, m_pagesT, m_opages, m_opagesC, m_opagesT;
+		QList<Page*> m_pages, m_pagesC, m_pagesT, m_oPages, m_oPagesC, m_oPagesT;
 		QList<QSharedPointer<Image>> m_images, m_imagesDownloading;
-		QList<QPair<Site*, int> > m_pagesP, m_opagesP;
+		QList<QPair<Site*, int> > m_pagesP, m_oPagesP;
 		QList<Tag> m_results;
 		QVariant m_data;
 		bool m_cancelled, m_quit;

@@ -1,5 +1,5 @@
-#ifndef FILENAMEWINDOW_H
-#define FILENAMEWINDOW_H
+#ifndef FILENAME_WINDOW_H
+#define FILENAME_WINDOW_H
 
 #include <QCloseEvent>
 #include <QDialog>
@@ -50,4 +50,4 @@ class FilenameWindow : public QDialog
 		#endif
 };
 
-#endif // FILENAMEWINDOW_H
+#endif // FILENAME_WINDOW_H

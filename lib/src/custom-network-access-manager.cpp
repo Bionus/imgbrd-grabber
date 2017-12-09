@@ -74,7 +74,7 @@ QNetworkReply *CustomNetworkAccessManager::get(const QNetworkRequest &request)
  * Log SSL errors in debug mode only.
  *
  * @param qnr		The network reply who generated the SSL errors
- * @param errors	The list of SSL errors that occured
+ * @param errors	The list of SSL errors that occurred
  */
 void CustomNetworkAccessManager::sslErrorHandler(QNetworkReply* qnr, QList<QSslError> errors)
 {

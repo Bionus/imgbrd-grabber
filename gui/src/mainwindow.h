@@ -1,5 +1,5 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef MAIN_WINDOW_H
+#define MAIN_WINDOW_H
 
 #define CLOSED_TAB_HISTORY_MAX 20
 
@@ -64,7 +64,7 @@ class mainWindow : public QMainWindow
 		void renameExisting();
 		void utilTagLoader();
 		// Language
-		void loadLanguage(const QString&, bool shutup = false);
+		void loadLanguage(const QString&, bool quiet = false);
 		void changeEvent(QEvent*) override;
 		// Favorites
 		void updateFavorites();
@@ -170,7 +170,7 @@ class mainWindow : public QMainWindow
 		bool				m_allow, m_mustGetTags, m_loaded, m_getAll;
 		int					m_forcedTab;
 		QSettings			*m_settings;
-		batchWindow			*m_progressdialog;
+		batchWindow			*m_progressDialog;
 		QString				m_currLang, m_link;
 		QTranslator			m_translator, m_qtTranslator;
 		QList<DownloadQueryGroup>		m_groupBatchs;
@@ -199,4 +199,4 @@ class mainWindow : public QMainWindow
 		QAtomicInteger<int> m_getAllCurrentlyProcessing;
 };
 
-#endif // MAINWINDOW_H
+#endif // MAIN_WINDOW_H

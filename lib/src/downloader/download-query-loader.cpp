@@ -9,7 +9,7 @@
 #include "models/site.h"
 
 
-bool DownloadQueryLoader::load(QString path, QList<DownloadQueryImage> &uniques, QList<DownloadQueryGroup> &batchs, const QMap<QString, Site*> &sites)
+bool DownloadQueryLoader::load(QString path, QList<DownloadQueryImage> &uniques, QList<DownloadQueryGroup> &groups, const QMap<QString, Site*> &sites)
 {
 	QFile f(path);
 	if (!f.open(QFile::ReadOnly))
@@ -50,7 +50,7 @@ bool DownloadQueryLoader::load(QString path, QList<DownloadQueryImage> &uniques,
 				if (!sites.contains(source) || infos.at(1).toInt() < 0 || infos.at(2).toInt() < 1 || infos.at(3).toInt() < 1)
 					continue;
 
-				batchs.append(DownloadQueryGroup(infos[0], infos[1].toInt(), infos[2].toInt(), infos[3].toInt(), QStringList(), infos[4] != "false", sites[source], infos[6], infos[7]));
+				groups.append(DownloadQueryGroup(infos[0], infos[1].toInt(), infos[2].toInt(), infos[3].toInt(), QStringList(), infos[4] != "false", sites[source], infos[6], infos[7]));
 			}
 		}
 
@@ -69,12 +69,12 @@ bool DownloadQueryLoader::load(QString path, QList<DownloadQueryImage> &uniques,
 	{
 		case 3:
 		{
-			QJsonArray batchsJson = object["batchs"].toArray();
-			for (auto batchJson : batchsJson)
+			QJsonArray groupsJson = object["batchs"].toArray();
+			for (auto groupJson : groupsJson)
 			{
 				DownloadQueryGroup batch;
-				if (batch.read(batchJson.toObject(), sites))
-					batchs.append(batch);
+				if (batch.read(groupJson.toObject(), sites))
+					groups.append(batch);
 			}
 
 			QJsonArray uniquesJson = object["uniques"].toArray();
@@ -93,7 +93,7 @@ bool DownloadQueryLoader::load(QString path, QList<DownloadQueryImage> &uniques,
 	}
 }
 
-bool DownloadQueryLoader::save(QString path, const QList<DownloadQueryImage> &uniques, const QList<DownloadQueryGroup> &batchs)
+bool DownloadQueryLoader::save(QString path, const QList<DownloadQueryImage> &uniques, const QList<DownloadQueryGroup> &groups)
 {
 	QFile saveFile(path);
 	if (!saveFile.open(QFile::WriteOnly))
@@ -102,12 +102,12 @@ bool DownloadQueryLoader::save(QString path, const QList<DownloadQueryImage> &un
 	}
 
 	// Batch downloads
-	QJsonArray batchsJson;
-	for (const auto &b : batchs)
+	QJsonArray groupsJson;
+	for (const auto &b : groups)
 	{
 		QJsonObject batch;
 		b.write(batch);
-		batchsJson.append(batch);
+		groupsJson.append(batch);
 	}
 
 	// Unique images
@@ -122,7 +122,7 @@ bool DownloadQueryLoader::save(QString path, const QList<DownloadQueryImage> &un
 	// Generate result
 	QJsonObject full;
 	full["version"] = 3;
-	full["batchs"] = batchsJson;
+	full["batchs"] = groupsJson;
 	full["uniques"] = uniquesJson;
 
 	// Write result

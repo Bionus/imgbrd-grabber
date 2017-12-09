@@ -111,54 +111,54 @@ void TagTest::testCompare()
 
 void TagTest::testSortTagsByType()
 {
-	QList<Tag> taglist;
-	taglist.append(Tag("last", "artist", 1, QStringList() << "tag1"));
-	taglist.append(Tag("fourth", "general", 2, QStringList() << "tag2"));
-	taglist.append(Tag("third", "copyright", 3, QStringList() << "tag3"));
-	taglist.append(Tag("second", "character", 4, QStringList() << "tag4"));
-	taglist.append(Tag("first", "unknown", 5, QStringList() << "tag5"));
+	QList<Tag> tagList;
+	tagList.append(Tag("last", "artist", 1, QStringList() << "tag1"));
+	tagList.append(Tag("fourth", "general", 2, QStringList() << "tag2"));
+	tagList.append(Tag("third", "copyright", 3, QStringList() << "tag3"));
+	tagList.append(Tag("second", "character", 4, QStringList() << "tag4"));
+	tagList.append(Tag("first", "unknown", 5, QStringList() << "tag5"));
 
-	qSort(taglist.begin(), taglist.end(), sortTagsByType);
+	qSort(tagList.begin(), tagList.end(), sortTagsByType);
 
-	QCOMPARE(taglist[0].text(), QString("third"));
-	QCOMPARE(taglist[1].text(), QString("second"));
-	QCOMPARE(taglist[2].text(), QString("last"));
-	QCOMPARE(taglist[3].text(), QString("first"));
-	QCOMPARE(taglist[4].text(), QString("fourth"));
+	QCOMPARE(tagList[0].text(), QString("third"));
+	QCOMPARE(tagList[1].text(), QString("second"));
+	QCOMPARE(tagList[2].text(), QString("last"));
+	QCOMPARE(tagList[3].text(), QString("first"));
+	QCOMPARE(tagList[4].text(), QString("fourth"));
 }
 void TagTest::testSortTagsByName()
 {
-	QList<Tag> taglist;
-	taglist.append(Tag("last", "artist", 1, QStringList() << "tag1"));
-	taglist.append(Tag("fourth", "general", 2, QStringList() << "tag2"));
-	taglist.append(Tag("third", "copyright", 3, QStringList() << "tag3"));
-	taglist.append(Tag("second", "character", 4, QStringList() << "tag4"));
-	taglist.append(Tag("first", "unknown", 5, QStringList() << "tag5"));
+	QList<Tag> tagList;
+	tagList.append(Tag("last", "artist", 1, QStringList() << "tag1"));
+	tagList.append(Tag("fourth", "general", 2, QStringList() << "tag2"));
+	tagList.append(Tag("third", "copyright", 3, QStringList() << "tag3"));
+	tagList.append(Tag("second", "character", 4, QStringList() << "tag4"));
+	tagList.append(Tag("first", "unknown", 5, QStringList() << "tag5"));
 
-	qSort(taglist.begin(), taglist.end(), sortTagsByName);
+	qSort(tagList.begin(), tagList.end(), sortTagsByName);
 
-	QCOMPARE(taglist[0].text(), QString("first"));
-	QCOMPARE(taglist[1].text(), QString("fourth"));
-	QCOMPARE(taglist[2].text(), QString("last"));
-	QCOMPARE(taglist[3].text(), QString("second"));
-	QCOMPARE(taglist[4].text(), QString("third"));
+	QCOMPARE(tagList[0].text(), QString("first"));
+	QCOMPARE(tagList[1].text(), QString("fourth"));
+	QCOMPARE(tagList[2].text(), QString("last"));
+	QCOMPARE(tagList[3].text(), QString("second"));
+	QCOMPARE(tagList[4].text(), QString("third"));
 }
 void TagTest::testSortTagsByCount()
 {
-	QList<Tag> taglist;
-	taglist.append(Tag("last", "artist", 1, QStringList() << "tag1"));
-	taglist.append(Tag("fourth", "general", 2, QStringList() << "tag2"));
-	taglist.append(Tag("third", "copyright", 3, QStringList() << "tag3"));
-	taglist.append(Tag("second", "character", 4, QStringList() << "tag4"));
-	taglist.append(Tag("first", "unknown", 5, QStringList() << "tag5"));
+	QList<Tag> tagList;
+	tagList.append(Tag("last", "artist", 1, QStringList() << "tag1"));
+	tagList.append(Tag("fourth", "general", 2, QStringList() << "tag2"));
+	tagList.append(Tag("third", "copyright", 3, QStringList() << "tag3"));
+	tagList.append(Tag("second", "character", 4, QStringList() << "tag4"));
+	tagList.append(Tag("first", "unknown", 5, QStringList() << "tag5"));
 
-	qSort(taglist.begin(), taglist.end(), sortTagsByCount);
+	qSort(tagList.begin(), tagList.end(), sortTagsByCount);
 
-	QCOMPARE(taglist[0].text(), QString("first"));
-	QCOMPARE(taglist[1].text(), QString("second"));
-	QCOMPARE(taglist[2].text(), QString("third"));
-	QCOMPARE(taglist[3].text(), QString("fourth"));
-	QCOMPARE(taglist[4].text(), QString("last"));
+	QCOMPARE(tagList[0].text(), QString("first"));
+	QCOMPARE(tagList[1].text(), QString("second"));
+	QCOMPARE(tagList[2].text(), QString("third"));
+	QCOMPARE(tagList[3].text(), QString("fourth"));
+	QCOMPARE(tagList[4].text(), QString("last"));
 }
 
 void TagTest::testTypeSpaced()
