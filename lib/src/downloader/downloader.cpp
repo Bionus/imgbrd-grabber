@@ -166,7 +166,7 @@ void Downloader::getTags()
 
 	for (Site *site : m_sites)
 	{
-		int pages = qCeil((float)m_max / m_perpage);
+		int pages = qCeil(static_cast<float>(m_max) / m_perpage);
 		if (pages <= 0 || m_perpage <= 0 || m_max <= 0)
 			pages = 1;
 		connect(site, &Site::finishedLoadingTags, this, &Downloader::finishedLoadingTags);
@@ -274,7 +274,7 @@ void Downloader::getImages()
 
 	for (Site *site : m_sites)
 	{
-		int pages = qCeil((float)m_max / m_perpage);
+		int pages = qCeil(static_cast<float>(m_max) / m_perpage);
 		if (pages <= 0 || m_perpage <= 0 || m_max <= 0)
 			pages = 1;
 		for (int p = 0; p < pages; ++p)
@@ -412,7 +412,7 @@ void Downloader::getUrls()
 
 	for (Site *site : m_sites)
 	{
-		int pages = qCeil((float)m_max / m_perpage);
+		int pages = qCeil(static_cast<float>(m_max) / m_perpage);
 		if (pages <= 0 || m_perpage <= 0 || m_max <= 0)
 			pages = 1;
 		for (int p = 0; p < pages; ++p)
@@ -534,7 +534,7 @@ int Downloader::duplicatesCount() const
 { return m_duplicates; }
 int Downloader::pagesCount() const
 {
-	int pages = qCeil((float)m_max / m_perpage);
+	int pages = qCeil(static_cast<float>(m_max) / m_perpage);
 	if (pages <= 0 || m_perpage <= 0 || m_max <= 0)
 		pages = 1;
 	return pages * m_sites.size();

@@ -117,7 +117,7 @@ void PageApi::updateUrls()
 	{
 		if (m_imagesPerPage > m_blim || limited)
 		{ m_imagesPerPage = m_blim; }
-		p = (int)floor(((m_page - 1.) * m_imagesPerPage) / m_blim) + 1;
+		p = static_cast<int>(floor(((m_page - 1.) * m_imagesPerPage) / m_blim) + 1);
 	}
 	p = p - 1 + m_api->value("FirstPage").toInt();
 
@@ -845,7 +845,7 @@ void PageApi::parseNavigation(const QString &source)
 			if (m_originalUrl.contains("{pid}") || (m_api->contains("Urls/PagePart") && m_api->value("Urls/PagePart").contains("{pid}")))
 			{
 				int ppid = m_api->contains("Urls/Limit") ? m_api->value("Urls/Limit").toInt() : m_imagesPerPage;
-				pagesCount = floor((float)pagesCount / (float)ppid) + 1;
+				pagesCount = floor(static_cast<float>(pagesCount) / static_cast<float>(ppid)) + 1;
 			}
 			setPageCount(pagesCount, true);
 		}
@@ -917,7 +917,7 @@ int PageApi::pagesCount(bool guess)
 	int perPage = m_api->contains("Urls/Limit") && !m_api->contains("Urls/MaxLimit") ? m_api->value("Urls/Limit").toInt() : m_imagesPerPage;
 
 	if (m_pagesCount < 0 && guess && m_imagesCount >= 0)
-		return (int)ceil(((float)m_imagesCount) / perPage);
+		return static_cast<int>(ceil(static_cast<float>(m_imagesCount) / perPage));
 
 	return m_pagesCount;
 }
@@ -952,7 +952,7 @@ void PageApi::setImageCount(int count, bool sure)
 		m_imagesCountSafe = sure;
 
 		if (sure)
-		{ setPageCount(ceil(((float)count) / m_imagesPerPage), true); }
+		{ setPageCount(ceil(static_cast<float>(count) / m_imagesPerPage), true); }
 	}
 }
 

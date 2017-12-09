@@ -159,8 +159,7 @@ void ZoomWindow::go()
 	{
 		if (!m_image->size().isEmpty())
 		{
-			if (float(m_image->width())/float(m_image->height()) >= 4./3.)
-			{ pos = "top"; }
+			if (static_cast<float>(m_image->width()) / static_cast<float>(m_image->height()) >= 4./3.) { pos = "top"; }
 			else
 			{ pos = "left"; }
 		}

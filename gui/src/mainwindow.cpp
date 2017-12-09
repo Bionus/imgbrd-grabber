@@ -317,7 +317,8 @@ void mainWindow::parseArgs(const QStringList &args, const QMap<QString, QString>
 
 void mainWindow::initialLoginsFinished()
 {
-	disconnect((Site*)sender(), &Site::loggedIn, this, &mainWindow::initialLoginsFinished);
+	Site *site = qobject_cast<Site*>(sender());
+	disconnect(site, &Site::loggedIn, this, &mainWindow::initialLoginsFinished);
 
 	m_waitForLogin--;
 	if (m_waitForLogin != 0)
@@ -442,7 +443,7 @@ void mainWindow::addSearchTab(searchTab *w, bool background, bool save)
 
 bool mainWindow::saveTabs(const QString &filename)
 {
-	return TabsLoader::save(filename, m_tabs, (searchTab*)m_currentTab);
+	return TabsLoader::save(filename, m_tabs, reinterpret_cast<searchTab*>(m_currentTab));
 }
 bool mainWindow::loadTabs(const QString &filename)
 {
@@ -1259,9 +1260,9 @@ void mainWindow::getAllFinishedLogins()
 		DownloadQueryGroup b = m_batchPending[j];
 
 		int constImagesPerPack = usePacking ? realConstImagesPerPack : b.total;
-		int pagesPerPack = qCeil((float)constImagesPerPack / b.perpage);
+		int pagesPerPack = qCeil(static_cast<float>(constImagesPerPack) / b.perpage);
 		int imagesPerPack = pagesPerPack * b.perpage;
-		int packs = qCeil((float)b.total / imagesPerPack);
+		int packs = qCeil(static_cast<float>(b.total) / imagesPerPack);
 		total += b.total;
 
 		int lastPageImages = b.total % imagesPerPack;
@@ -1348,7 +1349,7 @@ void mainWindow::getAllGetPages()
  */
 void mainWindow::getAllFinishedPage(Page *page)
 {
-	auto *d = (Downloader*)QObject::sender();
+	Downloader *d = qobject_cast<Downloader*>(sender());
 
 	int pos = d->getData().toInt();
 	m_groupBatchs[pos].unk += (m_groupBatchs[pos].unk == "" ? "" : "¤") + QString::number((quintptr)page);
@@ -1363,7 +1364,7 @@ void mainWindow::getAllFinishedPage(Page *page)
  */
 void mainWindow::getAllFinishedImages(QList<QSharedPointer<Image>> images)
 {
-	auto *downloader = (Downloader*)QObject::sender();
+	Downloader *downloader = qobject_cast<Downloader*>(sender());
 	m_downloaders.removeAll(downloader);
 	m_getAllIgnoredPre += downloader->ignoredCount();
 

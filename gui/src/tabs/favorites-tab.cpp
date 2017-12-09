@@ -68,8 +68,8 @@ favoritesTab::favoritesTab(Profile *profile, mainWindow *parent)
 
 	QStringList assoc = QStringList() << "name" << "note" << "lastviewed";
 		ui->comboOrder->setCurrentIndex(assoc.indexOf(m_settings->value("Favorites/order", "name").toString()));
-		ui->comboAsc->setCurrentIndex(int(m_settings->value("Favorites/reverse", false).toBool()));
-		m_settings->setValue("reverse", bool(ui->comboAsc->currentIndex() == 1));
+		ui->comboAsc->setCurrentIndex(static_cast<int>(m_settings->value("Favorites/reverse", false).toBool()));
+		m_settings->setValue("reverse", ui->comboAsc->currentIndex() == 1);
 	ui->widgetResults->hide();
 
 	connect(m_profile, &Profile::favoritesChanged, this, &favoritesTab::updateFavorites);
@@ -88,7 +88,7 @@ void favoritesTab::closeEvent(QCloseEvent *e)
 	m_settings->beginGroup("Favorites");
 		QStringList assoc = QStringList() << "name" << "note" << "lastviewed";
 		m_settings->setValue("order", assoc[ui->comboOrder->currentIndex()]);
-		m_settings->setValue("reverse", bool(ui->comboAsc->currentIndex() == 1));
+		m_settings->setValue("reverse", ui->comboAsc->currentIndex() == 1);
 	m_settings->endGroup();
 	m_settings->sync();
 

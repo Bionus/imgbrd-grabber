@@ -89,7 +89,7 @@ void QBouton::paintEvent(QPaintEvent *event)
 		int lineHeight = 6;
 		int a = p + lineHeight/2;
 
-		float ratio = (float)m_progress / m_progressMax;
+		float ratio = static_cast<float>(m_progress) / m_progressMax;
 		QPoint p1(qMax(x, 0) + a, qMax(y, 0) + a);
 		QPoint p2(p1.x() + (iconSize.width() - a) * ratio, p1.y());
 
@@ -124,8 +124,8 @@ QSize QBouton::getIconSize(int regionWidth, int regionHeight, bool wOnly) const
 	if (m_resizeInsteadOfCropping)
 	{
 		float coef = wOnly
-					 ? qMin(1.0f, float(regionWidth) / float(w))
-					 : qMin(1.0f, qMin(float(regionWidth) / float(w), float(regionHeight) / float(h)));
+					 ? qMin(1.0f, static_cast<float>(regionWidth) / static_cast<float>(w))
+					 : qMin(1.0f, qMin(static_cast<float>(regionWidth) / static_cast<float>(w), static_cast<float>(regionHeight) / static_cast<float>(h)));
 		w *= coef;
 		h *= coef;
 	}

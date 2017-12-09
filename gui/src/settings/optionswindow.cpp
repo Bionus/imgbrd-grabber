@@ -844,7 +844,7 @@ void optionsWindow::save()
 	settings->endGroup();
 
 	settings->setValue("resizeInsteadOfCropping", ui->checkResizeInsteadOfCropping->isChecked());
-	settings->setValue("thumbnailUpscale", (float)ui->spinThumbnailUpscale->value() / 100.0f);
+	settings->setValue("thumbnailUpscale", static_cast<float>(ui->spinThumbnailUpscale->value()) / 100.0f);
 	settings->setValue("autocompletion", ui->checkAutocompletion->isChecked());
 	settings->setValue("useregexfortags", ui->checkUseregexfortags->isChecked());
 	QStringList infiniteScroll = QStringList() << "disabled" << "button" << "scroll";

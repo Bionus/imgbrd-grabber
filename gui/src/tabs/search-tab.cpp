@@ -526,7 +526,7 @@ float getImageKnownTagProportion(const QSharedPointer<Image> &img)
 			known++;
 	}
 
-	return ((float)known / (float)img->tags().count());
+	return (static_cast<float>(known) / static_cast<float>(img->tags().count()));
 }
 
 QList<QSharedPointer<Image>> searchTab::mergeResults(int page, QList<QSharedPointer<Image>> results)

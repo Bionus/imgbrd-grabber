@@ -84,13 +84,13 @@ void TextEdit::doColor()
 	for (int i = 0; i < txt.length(); ++i)
 	{
 		if (txt[i] == ' ' && depth == 0)
-			txt[i] = (char)29;
+			txt[i] = QChar(29);
 		else if (txt[i] == '<')
 			depth++;
 		else if (txt[i] == '>')
 			depth--;
 	}
-	txt.replace((char)29, "&nbsp;");
+	txt.replace(QChar(29), "&nbsp;");
 
 	// Setup cursor
 	QTextCursor crsr = textCursor();

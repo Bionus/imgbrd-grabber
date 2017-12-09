@@ -22,8 +22,8 @@ bool DownloadQueryLoader::load(QString path, QList<DownloadQueryImage> &uniques,
 	// Version 1 and 2 are plain text
 	if (header.startsWith("[IGL "))
 	{
-		QString fieldSeparator((char)29);
-		QString lineSeparator((char)28);
+		QString fieldSeparator(QChar(29));
+		QString lineSeparator(QChar(28));
 
 		// Read the remaining file
 		QString links = f.readAll();

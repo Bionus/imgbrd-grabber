@@ -61,7 +61,7 @@ LoaderData LoaderQuery::next()
 	}
 
 	// Paging
-	int pageCount = qCeil((float)limit / perPage);
+	int pageCount = qCeil(static_cast<float>(limit) / perPage);
 	m_offset++;
 	m_finished = m_offset == pageCount;
 
