@@ -1,5 +1,4 @@
 #include <QtTest>
-#include <QTimer>
 #include "tag-database-test-suite.h"
 
 

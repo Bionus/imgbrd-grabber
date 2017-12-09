@@ -1,6 +1,4 @@
 #include "settings/web-service-window.h"
-#include <QFile>
-#include <QNetworkAccessManager>
 #include <QNetworkRequest>
 #include <ui_web-service-window.h>
 #include "functions.h"

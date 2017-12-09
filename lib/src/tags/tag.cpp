@@ -1,11 +1,8 @@
 #include "tag.h"
 #include <QRegularExpression>
 #include <QSet>
-#include <QSettings>
 #include <QTextDocument>
 #include <QtMath>
-#include "models/favorite.h"
-#include "models/profile.h"
 
 
 Tag::Tag()

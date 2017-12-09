@@ -8,8 +8,6 @@
 #include "models/profile.h"
 #include "models/site.h"
 
-#define TAGS_SEPARATOR " "
-
 
 Filename::Filename(QString format)
 	: m_format(format)

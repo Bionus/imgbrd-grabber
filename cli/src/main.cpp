@@ -1,5 +1,4 @@
 #include <QCoreApplication>
-#include <QtGlobal>
 #include "downloader/downloader.h"
 #include "functions.h"
 #include "models/profile.h"

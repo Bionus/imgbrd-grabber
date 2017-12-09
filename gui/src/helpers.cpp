@@ -1,10 +1,13 @@
 #include "helpers.h"
-#include <QDesktopServices>
 #include <QDir>
 #include <QMessageBox>
 #include <QProcess>
-#include <QStringList>
-#include <QUrl>
+#if defined(Q_OS_MAC)
+	#include <QStringList>
+#elif !defined(Q_OS_WIN)
+	#include <QDesktopServices>
+	#include <QUrl>
+#endif
 
 
 /**

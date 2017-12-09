@@ -1,7 +1,7 @@
 #ifndef SOURCE_UPDATER_H
 #define SOURCE_UPDATER_H
 
-#include <QNetworkReply>
+#include <QString>
 #include "updater/updater.h"
 
 

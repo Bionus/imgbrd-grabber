@@ -1,6 +1,5 @@
 #include <QtTest>
 #include "page-test.h"
-#include "tags/tag.h"
 #include "models/source.h"
 
 

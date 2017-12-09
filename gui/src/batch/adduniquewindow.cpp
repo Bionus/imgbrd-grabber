@@ -3,14 +3,12 @@
 #include <QSettings>
 #include <ui_adduniquewindow.h>
 #include "downloader/download-query-image.h"
-#include "functions.h"
 #include "helpers.h"
 #include "models/filename.h"
 #include "models/image.h"
 #include "models/page.h"
 #include "models/profile.h"
 #include "models/site.h"
-#include "vendor/json.h"
 
 
 /**

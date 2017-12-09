@@ -1,6 +1,4 @@
 #include "models/site.h"
-#include <QDir>
-#include <QFile>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QNetworkCookie>

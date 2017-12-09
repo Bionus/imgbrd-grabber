@@ -1,5 +1,4 @@
 #include "ui/verticalscrollarea.h"
-#include <QEvent>
 #include <QScrollBar>
 
 

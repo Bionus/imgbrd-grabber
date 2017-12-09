@@ -1,5 +1,4 @@
 #include "tags/tag-name.h"
-#include <QMap>
 
 
 TagName::TagName()
