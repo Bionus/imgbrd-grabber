@@ -1,5 +1,5 @@
-#include "reverse-search-loader.h"
-#include "reverse-search-engine.h"
+#include "reverse-search/reverse-search-loader.h"
+#include "reverse-search/reverse-search-engine.h"
 #include "functions.h"
 
 

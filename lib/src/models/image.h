@@ -7,7 +7,7 @@
 #include <QPixmap>
 #include <QSettings>
 #include "tags/tag.h"
-#include "pool.h"
+#include "models/pool.h"
 #include "downloader/extension-rotator.h"
 #include "loader/downloadable.h"
 

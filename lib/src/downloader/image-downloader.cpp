@@ -1,4 +1,4 @@
-#include "image-downloader.h"
+#include "downloader/image-downloader.h"
 #include "models/filename.h"
 #include "logger.h"
 

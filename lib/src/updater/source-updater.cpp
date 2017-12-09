@@ -1,4 +1,4 @@
-#include "source-updater.h"
+#include "updater/source-updater.h"
 #include <QFile>
 #include <QNetworkRequest>
 #include <QNetworkReply>

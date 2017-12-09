@@ -4,7 +4,7 @@
 #include <QMap>
 #include <QString>
 #include <QVariant>
-#include "loader-data.h"
+#include "loader/loader-data.h"
 
 
 class Loader;

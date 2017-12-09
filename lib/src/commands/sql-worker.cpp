@@ -3,7 +3,7 @@
 #include <QtSql/QSqlError>
 #include <QtSql/QSqlField>
 #include <QtSql/QSqlDriver>
-#include "sql-worker.h"
+#include "commands/sql-worker.h"
 #include "logger.h"
 
 

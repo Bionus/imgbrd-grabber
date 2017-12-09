@@ -3,8 +3,8 @@
 
 #include <QString>
 #include <QStringList>
-#include "qmetatype.h"
-#include "tag-name-format.h"
+#include <QMetaType>
+#include "tags/tag-name-format.h"
 
 
 class TagName

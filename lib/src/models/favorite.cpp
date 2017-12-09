@@ -1,4 +1,4 @@
-#include "favorite.h"
+#include "models/favorite.h"
 #include <QDir>
 #include "functions.h"
 

@@ -1,10 +1,10 @@
-#include "source-guesser.h"
+#include "models/source-guesser.h"
 #include <QEventLoop>
 #include <QNetworkRequest>
 #include <QNetworkReply>
 #include <QRegularExpression>
-#include "source.h"
-#include "api.h"
+#include "models/source.h"
+#include "models/api.h"
 #include "custom-network-access-manager.h"
 #include "logger.h"
 

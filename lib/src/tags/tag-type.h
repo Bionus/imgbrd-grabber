@@ -2,7 +2,7 @@
 #define TAG_TYPE_H
 
 #include <QString>
-#include "qmetatype.h"
+#include <QMetaType>
 
 
 class TagType

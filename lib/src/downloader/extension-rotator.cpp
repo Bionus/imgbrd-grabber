@@ -1,4 +1,4 @@
-#include "extension-rotator.h"
+#include "downloader/extension-rotator.h"
 
 
 ExtensionRotator::ExtensionRotator(const ExtensionRotator &other)

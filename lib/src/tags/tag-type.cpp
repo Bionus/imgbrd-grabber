@@ -1,4 +1,4 @@
-#include "tag-type.h"
+#include "tags/tag-type.h"
 #include <QMap>
 
 

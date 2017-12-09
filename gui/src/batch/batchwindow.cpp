@@ -2,7 +2,7 @@
 #include <QTime>
 #include <QCloseEvent>
 #include <QClipboard>
-#include "batchwindow.h"
+#include "batch/batchwindow.h"
 #include "ui_batchwindow.h"
 #include "functions.h"
 

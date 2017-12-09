@@ -1,10 +1,10 @@
-#include "startwindow.h"
+#include "settings/startwindow.h"
 #include <QFileDialog>
 #include <QSettings>
 #include <QStandardPaths>
-#include "ui_startwindow.h"
-#include "optionswindow.h"
-#include "filenamewindow.h"
+#include <ui_startwindow.h>
+#include "settings/optionswindow.h"
+#include "settings/filenamewindow.h"
 #include "language-loader.h"
 #include "models/profile.h"
 #include "helpers.h"

@@ -1,12 +1,12 @@
-#include "source.h"
+#include "models/source.h"
 #include <QStringList>
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
 #include <QDomDocument>
-#include "site.h"
-#include "api.h"
-#include "profile.h"
+#include "models/site.h"
+#include "models/api.h"
+#include "models/profile.h"
 #include "functions.h"
 
 

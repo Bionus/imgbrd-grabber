@@ -1,4 +1,4 @@
-#include "loader-query.h"
+#include "loader/loader-query.h"
 #include <QEventLoop>
 #include <QtMath>
 #include "models/image.h"

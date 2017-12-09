@@ -1,4 +1,4 @@
-#include "program-updater.h"
+#include "updater/program-updater.h"
 #include <QNetworkRequest>
 #include <QNetworkReply>
 #include <QDir>

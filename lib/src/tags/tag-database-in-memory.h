@@ -1,7 +1,7 @@
 #ifndef TAG_DATABASE_IN_MEMORY_H
 #define TAG_DATABASE_IN_MEMORY_H
 
-#include "tag-database.h"
+#include "tags/tag-database.h"
 #include <QHash>
 
 

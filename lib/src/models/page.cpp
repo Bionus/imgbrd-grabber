@@ -1,7 +1,7 @@
-#include "page.h"
+#include "models/page.h"
 #include <cmath>
-#include "site.h"
-#include "api.h"
+#include "models/site.h"
+#include "models/api.h"
 #include "vendor/json.h"
 #include "logger.h"
 

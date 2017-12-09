@@ -1,8 +1,8 @@
-#include "downloader.h"
-#include <iostream>
+#include "downloader/downloader.h"
 #include <QFile>
 #include <QDir>
 #include <qmath.h>
+#include <iostream>
 #include "models/site.h"
 #include "models/page.h"
 #include "models/image.h"

@@ -6,7 +6,7 @@
 #include <QUrl>
 #include <QStringList>
 #include <QSharedPointer>
-#include "downloadable.h"
+#include "loader/downloadable.h"
 
 
 struct LoaderData

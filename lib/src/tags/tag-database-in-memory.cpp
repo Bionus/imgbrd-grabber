@@ -1,4 +1,4 @@
-#include "tag-database-in-memory.h"
+#include "tags/tag-database-in-memory.h"
 #include <QFile>
 #include <QTextStream>
 

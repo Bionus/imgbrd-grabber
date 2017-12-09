@@ -2,7 +2,7 @@
 #define SOURCE_UPDATER_H
 
 #include <QNetworkReply>
-#include "updater.h"
+#include "updater/updater.h"
 
 
 class SourceUpdater : public Updater

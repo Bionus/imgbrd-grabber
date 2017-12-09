@@ -4,7 +4,7 @@
 #include <QString>
 #include <QStringList>
 #include <QFont>
-#include "tag-type.h"
+#include "tags/tag-type.h"
 
 
 class Profile;

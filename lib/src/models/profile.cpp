@@ -1,7 +1,7 @@
-#include "profile.h"
+#include "models/profile.h"
 #include <QFile>
 #include <QDir>
-#include "site.h"
+#include "models/site.h"
 #include "commands/commands.h"
 
 

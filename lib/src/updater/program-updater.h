@@ -2,7 +2,7 @@
 #define PROGRAM_UPDATER_H
 
 #include <QNetworkReply>
-#include "updater.h"
+#include "updater/updater.h"
 
 
 class ProgramUpdater : public Updater

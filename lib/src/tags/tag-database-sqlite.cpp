@@ -1,4 +1,4 @@
-#include "tag-database-sqlite.h"
+#include "tags/tag-database-sqlite.h"
 #include <QtSql/QSqlQuery>
 #include <QtSql/QSqlRecord>
 #include <QtSql/QSqlError>

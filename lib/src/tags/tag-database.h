@@ -3,8 +3,8 @@
 
 #include <QString>
 #include <QMap>
-#include "tag-type.h"
-#include "tag.h"
+#include "tags/tag-type.h"
+#include "tags/tag.h"
 
 
 class TagDatabase

@@ -2,7 +2,7 @@
 #define TAG_API_H
 
 #include <QNetworkReply>
-#include "tag.h"
+#include "tags/tag.h"
 
 
 class Profile;

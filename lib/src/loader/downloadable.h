@@ -4,7 +4,7 @@
 #include <QString>
 #include <QUrl>
 #include "models/filename.h"
-#include "token.h"
+#include "loader/token.h"
 
 
 typedef QPair<QString, QString> QStrP;

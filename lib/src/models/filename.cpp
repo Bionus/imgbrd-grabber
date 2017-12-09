@@ -1,11 +1,11 @@
-#include "filename.h"
+#include "models/filename.h"
 #include <QtScript>
 #include <QCollator>
 #include <QIcon>
 #include <algorithm>
-#include "site.h"
-#include "profile.h"
-#include "image.h"
+#include "models/site.h"
+#include "models/profile.h"
+#include "models/image.h"
 #include "functions.h"
 
 #define TAGS_SEPARATOR " "

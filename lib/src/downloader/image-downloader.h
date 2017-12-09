@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include "models/image.h"
-#include "file-downloader.h"
+#include "downloader/file-downloader.h"
 
 
 class ImageDownloader : public QObject

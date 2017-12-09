@@ -1,4 +1,4 @@
-#include "download-query-image.h"
+#include "downloader/download-query-image.h"
 #include <QJsonArray>
 #include "tags/tag.h"
 #include "models/image.h"

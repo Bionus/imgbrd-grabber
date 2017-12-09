@@ -1,4 +1,4 @@
-#include "downloadable.h"
+#include "loader/downloadable.h"
 
 
 const QMap<QString, Token> &Downloadable::tokens(Profile *profile) const

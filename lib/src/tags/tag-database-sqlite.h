@@ -1,7 +1,7 @@
 #ifndef TAG_DATABASE_SQLITE_H
 #define TAG_DATABASE_SQLITE_H
 
-#include "tag-database.h"
+#include "tags/tag-database.h"
 #include <QSqlDatabase>
 
 

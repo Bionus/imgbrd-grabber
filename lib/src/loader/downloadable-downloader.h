@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include <QSharedPointer>
-#include "downloadable.h"
+#include "loader/downloadable.h"
 #include "downloader/file-downloader.h"
 
 

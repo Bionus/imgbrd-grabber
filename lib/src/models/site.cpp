@@ -1,4 +1,4 @@
-#include "site.h"
+#include "models/site.h"
 #include <QFile>
 #include <QNetworkCookie>
 #include <QNetworkCookieJar>
@@ -9,11 +9,11 @@
 #include <QTimer>
 #include <QJsonDocument>
 #include <QJsonObject>
-#include "page.h"
-#include "image.h"
-#include "source.h"
-#include "profile.h"
-#include "api.h"
+#include "models/page.h"
+#include "models/image.h"
+#include "models/source.h"
+#include "models/profile.h"
+#include "models/api.h"
 #include "custom-network-access-manager.h"
 #include "tags/tag-database-factory.h"
 #include "vendor/json.h"

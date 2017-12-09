@@ -1,11 +1,11 @@
-#include "page-api.h"
+#include "models/page-api.h"
 #include <QDomDocument>
 #include <QRegularExpression>
 #include <cmath>
-#include "page.h"
-#include "site.h"
-#include "api.h"
-#include "image.h"
+#include "models/page.h"
+#include "models/site.h"
+#include "models/api.h"
+#include "models/image.h"
 #include "vendor/json.h"
 #include "logger.h"
 #include "functions.h"
