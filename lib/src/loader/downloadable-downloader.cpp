@@ -59,7 +59,7 @@ void DownloadableDownloader::preloaded()
 	// Load the image directly on the disk
 	log(QString("Loading and saving image in <a href=\"file:///%1\">%1</a>").arg(m_paths.first()));
 	m_url = m_site->fixUrl(url);
-	QNetworkReply *reply = m_site->get(m_url, Q_NULLPTR, "image", Q_NULLPTR); // TODO
+	QNetworkReply *reply = m_site->get(m_url, Q_NULLPTR, "image", Q_NULLPTR); // TODO(Bionus)
 	QObject::connect(&m_fileDownloader, &FileDownloader::writeError, this, &DownloadableDownloader::writeError, Qt::UniqueConnection);
 	QObject::connect(&m_fileDownloader, &FileDownloader::networkError, this, &DownloadableDownloader::networkError, Qt::UniqueConnection);
 	QObject::connect(&m_fileDownloader, &FileDownloader::success, this, &DownloadableDownloader::success, Qt::UniqueConnection);

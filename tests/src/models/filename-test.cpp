@@ -185,7 +185,7 @@ void FilenameTest::testPathJavascriptToken()
 
 void FilenameTest::testPathJavascriptArray()
 {
-	// TODO: make the "keepAll" unnecessary for this array
+	// TODO(Bionus): make the "keepAll" unnecessary for this array
 	m_settings->setValue("Save/copyright_multiple", "keepAll");
 	assertPath("javascript:copyrights.join('-')", "copyright1-copyright2");
 }

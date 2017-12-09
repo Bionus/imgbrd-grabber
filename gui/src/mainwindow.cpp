@@ -1432,7 +1432,7 @@ void mainWindow::getAllImages()
 	m_progressdialog->setTotalMax(m_getAllImagesCount);
 
 	// Check whether we need to get the tags first (for the filename) or if we can just download the images directly
-	// TODO: having one batch needing it currently causes all batches to need it, should mae it batch (Downloader) dependent
+	// TODO(Bionus): having one batch needing it currently causes all batches to need it, should mae it batch (Downloader) dependent
 	m_mustGetTags = needExactTags(m_settings);
 	for (int f = 0; f < m_groupBatchs.size() && !m_mustGetTags; f++)
 	{

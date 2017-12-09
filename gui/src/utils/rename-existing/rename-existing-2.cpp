@@ -82,12 +82,10 @@ void RenameExisting2::on_buttonOk_clicked()
 
 		// Move file
 		QFile::rename(image.path, image.newPath);
-		qDebug() << "parent" << image.path << image.newPath;
 		for (const QString &child : image.children)
 		{
 			QString newPath = QString(child).replace(image.path, image.newPath);
 			QFile::rename(child, newPath);
-			qDebug() << "child" << child << newPath;
 		}
 
 		// Delete old path if necessary

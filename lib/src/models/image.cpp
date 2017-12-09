@@ -33,7 +33,7 @@ Image::Image()
 	: QObject(), m_profile(nullptr), m_extensionRotator(nullptr)
 { }
 
-// TODO: clean up this mess
+// TODO(Bionus): clean up this mess
 Image::Image(const Image &other)
 	: QObject(other.parent())
 {
