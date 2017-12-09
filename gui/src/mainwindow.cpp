@@ -870,11 +870,11 @@ void mainWindow::updateFavorites()
 	bool reverse = (ui->comboAscFav->currentIndex() == 1);
 
 	if (order == "note")
-	{ qSort(m_favorites.begin(), m_favorites.end(), sortByNote); }
+	{ std::sort(m_favorites.begin(), m_favorites.end(), Favorite::sortByNote); }
 	else if (order == "lastviewed")
-	{ qSort(m_favorites.begin(), m_favorites.end(), sortByLastviewed); }
+	{ std::sort(m_favorites.begin(), m_favorites.end(), Favorite::sortByLastviewed); }
 	else
-	{ qSort(m_favorites.begin(), m_favorites.end(), sortByName); }
+	{ std::sort(m_favorites.begin(), m_favorites.end(), Favorite::sortByName); }
 	if (reverse)
 	{ m_favorites = reversed(m_favorites); }
 	QString format = tr("MM/dd/yyyy");

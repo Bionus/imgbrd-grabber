@@ -77,11 +77,5 @@ QList<T> reversed(const QList<T> & in)
 	std::reverse_copy(in.begin(), in.end(), std::back_inserter(result));
 	return result;
 }
-inline bool sortByNote(const Favorite &s1, const Favorite &s2)
-{ return s1.getNote() < s2.getNote(); }
-inline bool sortByName(const Favorite &s1, const Favorite &s2)
-{ return s1.getName().toLower() < s2.getName().toLower(); }
-inline bool sortByLastviewed(const Favorite &s1, const Favorite &s2)
-{ return s1.getLastViewed() < s2.getLastViewed(); }
 
 #endif // FUNCTIONS_H

@@ -70,6 +70,13 @@ Favorite Favorite::fromString(const QString &path, const QString &text)
 	return Favorite(tag, note, lastViewed, thumbPath);
 }
 
+bool Favorite::sortByNote(const Favorite &s1, const Favorite &s2)
+{ return s1.getNote() < s2.getNote(); }
+bool Favorite::sortByName(const Favorite &s1, const Favorite &s2)
+{ return s1.getName().toLower() < s2.getName().toLower(); }
+bool Favorite::sortByLastviewed(const Favorite &s1, const Favorite &s2)
+{ return s1.getLastViewed() < s2.getLastViewed(); }
+
 
 bool operator==(const Favorite& lhs, const Favorite& rhs)
 { return lhs.getName().toLower() == rhs.getName().toLower(); }

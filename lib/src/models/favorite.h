@@ -33,6 +33,10 @@ class Favorite
 		QString toString() const;
 		static Favorite fromString(const QString &path, const QString &text);
 
+		static bool sortByNote(const Favorite &s1, const Favorite &s2);
+		static bool sortByName(const Favorite &s1, const Favorite &s2);
+		static bool sortByLastviewed(const Favorite &s1, const Favorite &s2);
+
 	private:
 		QString		m_name;
 		int			m_note;
