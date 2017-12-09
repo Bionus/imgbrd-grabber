@@ -122,7 +122,8 @@ void favoritesTab::updateFavorites()
 	{
 		QString xt = tr("<b>Name:</b> %1<br/><b>Note:</b> %2 %%<br/><b>Last view:</b> %3").arg(fav.getName(), QString::number(fav.getNote()), fav.getLastViewed().toString(format));
 		QWidget *w = new QWidget(ui->scrollAreaWidgetContents);
-		auto *l = new QVBoxLayout(w);
+		auto *l = new QVBoxLayout;
+		w->setLayout(l);
 
 		if (display.contains("i"))
 		{
