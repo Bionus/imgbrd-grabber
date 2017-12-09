@@ -34,7 +34,6 @@ class startWindow : public QDialog
 	private:
 		Ui::startWindow *ui;
 		Profile *m_profile;
-
 };
 
 #endif // STARTWINDOW_H

@@ -31,7 +31,6 @@ class favoriteWindow : public QDialog
 		Ui::favoriteWindow	*ui;
 		Profile				*m_profile;
 		Favorite			m_favorite;
-
 };
 
 #endif // FAVORITEWINDOW_H

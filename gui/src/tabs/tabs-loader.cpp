@@ -89,7 +89,6 @@ bool TabsLoader::load(const QString &path, QList<searchTab*> &allTabs, int &curr
 				}
 				return true;
 		}
-
 	}
 
 	return false;

@@ -25,7 +25,6 @@ class DetailsWindow : public QDialog
 	private:
 		Ui::DetailsWindow *ui;
 		Profile *m_profile;
-
 };
 
 #endif // DETAILS_WINDOW_H

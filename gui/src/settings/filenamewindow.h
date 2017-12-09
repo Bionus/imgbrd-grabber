@@ -48,7 +48,6 @@ class FilenameWindow : public QDialog
 		#else
 			QTextEdit *m_scintilla;
 		#endif
-
 };
 
 #endif // FILENAMEWINDOW_H

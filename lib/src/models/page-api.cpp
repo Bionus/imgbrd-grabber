@@ -668,7 +668,6 @@ void PageApi::parse()
 							QList<QVariant> tagList = tagTypes.value(tagType).toList();
 							for (const QVariant &iTag : tagList)
 							{ tags.append(Tag(iTag.toString(), tType)); }
-
 						}
 					}
 				}

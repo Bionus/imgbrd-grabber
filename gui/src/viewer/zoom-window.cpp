@@ -795,7 +795,6 @@ void ZoomWindow::saveNQuit()
 }
 void ZoomWindow::saveNQuitFav()
 {
-
 	if (!m_imagePath.isEmpty())
 	{
 		close();

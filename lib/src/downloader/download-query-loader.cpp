@@ -86,7 +86,6 @@ bool DownloadQueryLoader::load(QString path, QList<DownloadQueryImage> &uniques,
 				}
 				return true;
 		}
-
 	}
 
 	return false;
