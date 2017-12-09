@@ -83,7 +83,6 @@ Image::Image(const Image &other)
 	m_settings = other.m_settings;
 	m_search = other.m_search;
 	m_parentSite = other.m_parentSite;
-	m_details = other.m_details;
 
 	m_extensionRotator = other.m_extensionRotator;
 	m_loadingPreview = other.m_loadingPreview;
@@ -107,7 +106,6 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	}
 
 	// Other details
-	m_details = details;
 	m_md5 = details.contains("md5") ? details["md5"] : "";
 	m_author = details.contains("author") ? details["author"] : "";
 	m_status = details.contains("status") ? details["status"] : "";
@@ -217,9 +215,9 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	// Get file url and try to improve it to save bandwidth
 	m_url = m_fileUrl.toString();
 	QString ext = getExtension(m_url);
-	if (m_details.contains("ext") && !m_details["ext"].isEmpty())
+	if (details.contains("ext") && !details["ext"].isEmpty())
 	{
-		QString realExt = m_details["ext"];
+		QString realExt = details["ext"];
 		if (ext != realExt)
 		{ setFileExtension(realExt); }
 	}
@@ -955,10 +953,7 @@ QList<Tag> Image::filteredTags(const QStringList &remove) const
 
 
 QString			Image::url() const			{ return m_url;				}
-QString			Image::author() const		{ return m_author;			}
-QString			Image::status() const		{ return m_status;			}
 QString			Image::rating() const		{ return m_rating;			}
-QString			Image::source() const		{ return m_source;			}
 QString			Image::site() const			{ return m_site;			}
 Site			*Image::parentSite() const	{ return m_parentSite;		}
 QString			Image::filename() const		{ return m_filename;		}
@@ -966,17 +961,10 @@ QString			Image::folder() const		{ return m_folder;			}
 QList<Tag>		Image::tags() const			{ return m_tags;			}
 QList<Pool>		Image::pools() const		{ return m_pools;			}
 qulonglong		Image::id() const			{ return m_id;				}
-int				Image::score() const		{ return m_score;			}
-int				Image::parentId() const		{ return m_parentId;		}
 int				Image::fileSize() const		{ return m_fileSize;		}
 int				Image::width() const		{ return m_size.width();	}
 int				Image::height() const		{ return m_size.height();	}
-int				Image::authorId() const		{ return m_authorId;		}
 QDateTime		Image::createdAt() const	{ return m_createdAt;		}
-bool			Image::hasChildren() const	{ return m_hasChildren;		}
-bool			Image::hasNote() const		{ return m_hasNote;			}
-bool			Image::hasComments() const	{ return m_hasComments;		}
-bool			Image::hasScore() const		{ return m_hasScore;		}
 QUrl			Image::fileUrl() const		{ return m_fileUrl;			}
 QUrl			Image::sampleUrl() const	{ return m_sampleUrl;		}
 QUrl			Image::previewUrl() const	{ return m_previewUrl;		}
@@ -988,8 +976,6 @@ Page			*Image::page() const		{ return m_parent;			}
 const QByteArray&Image::data() const		{ return m_data;			}
 QNetworkReply	*Image::imageReply() const	{ return m_loadImage;		}
 QNetworkReply	*Image::tagsReply() const	{ return m_loadDetails;		}
-QMap<QString,QString> Image::details() const{ return m_details;			}
-QStringList		Image::search() const		{ return m_search;			}
 
 bool Image::shouldDisplaySample() const
 {

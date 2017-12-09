@@ -77,7 +77,7 @@ void ImageTest::testConstructor()
 
 	// Without parent site
 	img = new Image(nullptr, m_details, m_profile);
-	QCOMPARE(img->details().isEmpty(), true);
+	QCOMPARE((int)img->id(), 0);
 	img->deleteLater();
 
 	// With a given page URL
@@ -104,8 +104,6 @@ void ImageTest::testCopy()
 	QCOMPARE(clone.folder(), m_img->folder());
 	QCOMPARE(clone.page(), m_img->page());
 	QCOMPARE(clone.data(), m_img->data());
-	QCOMPARE(clone.details(), m_img->details());
-	QCOMPARE(clone.search(), m_img->search());
 }
 
 void ImageTest::testHasTag()
