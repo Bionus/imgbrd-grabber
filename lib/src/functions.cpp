@@ -285,7 +285,7 @@ bool copyRecursively(QString srcFilePath, QString tgtFilePath)
 
 	QDir sourceDir(srcFilePath);
 	QStringList fileNames = sourceDir.entryList(QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot | QDir::Hidden | QDir::System);
-	foreach (const QString &fileName, fileNames)
+	for (const QString &fileName : fileNames)
 	{
 		const QString newSrcFilePath = srcFilePath + QDir::separator() + fileName;
 		const QString newTgtFilePath = tgtFilePath + QDir::separator() + fileName;
@@ -305,21 +305,21 @@ bool copyRecursively(QString srcFilePath, QString tgtFilePath)
 int levenshtein(QString s1, QString s2)
 {
 	const size_t len1 = s1.size(), len2 = s2.size();
-	QVector<QVector<unsigned int> > d(len1 + 1, QVector<unsigned int>(len2 + 1));
+	QVector<QVector<uint>> d(len1 + 1, QVector<uint>(len2 + 1));
 
 	d[0][0] = 0;
-	for(unsigned int i = 1; i <= len1; ++i) d[i][0] = i;
-	for(unsigned int i = 1; i <= len2; ++i) d[0][i] = i;
+	for (uint i = 1; i <= len1; ++i) d[i][0] = i;
+	for (uint i = 1; i <= len2; ++i) d[0][i] = i;
 
-	for(unsigned int i = 1; i <= len1; ++i)
-		for (unsigned int j = 1; j <= len2; ++j)
-			d[i][j] = qMin(
-				qMin(
-					d[i - 1][j] + 1,
-					d[i][j - 1] + 1
-				),
-				d[i - 1][j - 1] + (s1[i - 1] == s2[j - 1] ? 0 : 1)
-			);
+	for (uint i = 1; i <= len1; ++i)
+	{
+		for (uint j = 1; j <= len2; ++j)
+		{
+			const uint a = qMin(d[i - 1][j] + 1, d[i][j - 1] + 1);
+			const uint b = d[i - 1][j - 1] + (s1[i - 1] == s2[j - 1] ? 0 : 1);
+			d[i][j] = qMin(a, b);
+		}
+	}
 
 	return d[len1][len2];
 }
