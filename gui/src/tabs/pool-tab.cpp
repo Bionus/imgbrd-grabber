@@ -1,6 +1,6 @@
 #include "pool-tab.h"
-#include "ui_pool-tab.h"
 #include <QJsonArray>
+#include "ui_pool-tab.h"
 #include "ui/textedit.h"
 #include "searchwindow.h"
 #include "mainwindow.h"

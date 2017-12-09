@@ -14,8 +14,8 @@
 #include <QMimeData>
 #include <qmath.h>
 #if defined(Q_OS_WIN)
-	#include "windows.h"
 	#include <cfloat>
+	#include "windows.h"
 #endif
 #include "ui_mainwindow.h"
 #include "ui/QAffiche.h"

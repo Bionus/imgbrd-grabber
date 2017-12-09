@@ -1,6 +1,6 @@
 #include "tag-loader.h"
-#include "ui_tag-loader.h"
 #include <QMessageBox>
+#include "ui_tag-loader.h"
 #include "models/profile.h"
 #include "models/site.h"
 #include "models/api.h"

@@ -1,4 +1,4 @@
-#include "QAffiche.h"
+#include "ui/QAffiche.h"
 #include <QMouseEvent>
 
 
