@@ -1,7 +1,7 @@
 #include "sitewindow.h"
-#include "ui_sitewindow.h"
 #include <QFile>
 #include <QPushButton>
+#include "ui_sitewindow.h"
 #include "models/profile.h"
 #include "models/site.h"
 #include "models/source.h"

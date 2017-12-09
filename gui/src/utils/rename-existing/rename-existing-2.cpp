@@ -65,7 +65,6 @@ void RenameExisting2::deleteDir(QString path)
 	}
 }
 
-#include <QDebug>
 void RenameExisting2::on_buttonOk_clicked()
 {
 	// Move all images

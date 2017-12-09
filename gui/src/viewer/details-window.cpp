@@ -1,6 +1,6 @@
 #include "details-window.h"
-#include "ui_details-window.h"
 #include <QLabel>
+#include "ui_details-window.h"
 #include "models/image.h"
 #include "helpers.h"
 

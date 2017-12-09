@@ -1,9 +1,9 @@
 #include "sourceswindow.h"
-#include "ui_sourceswindow.h"
 #include <QMessageBox>
 #include <QCloseEvent>
 #include <QInputDialog>
 #include <QDesktopServices>
+#include "ui_sourceswindow.h"
 #include "ui/QBouton.h"
 #include "ui/QAffiche.h"
 #include "sitewindow.h"

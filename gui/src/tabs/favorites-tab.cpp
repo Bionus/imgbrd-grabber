@@ -1,6 +1,6 @@
 #include "favorites-tab.h"
-#include "ui_favorites-tab.h"
 #include <QMessageBox>
+#include "ui_favorites-tab.h"
 #include "ui/QBouton.h"
 #include "ui/QAffiche.h"
 #include "ui/textedit.h"

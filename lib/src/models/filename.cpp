@@ -1,8 +1,8 @@
 #include "filename.h"
-#include <algorithm>
 #include <QtScript>
 #include <QCollator>
 #include <QIcon>
+#include <algorithm>
 #include "site.h"
 #include "profile.h"
 #include "image.h"

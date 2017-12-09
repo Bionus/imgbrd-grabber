@@ -1,7 +1,7 @@
 #include "update-dialog.h"
-#include "ui_update-dialog.h"
 #include <QMessageBox>
 #include <QProcess>
+#include "ui_update-dialog.h"
 #include "functions.h"
 #if !defined Q_OS_WIN || defined NIGHTLY
 	#include <QDesktopServices>

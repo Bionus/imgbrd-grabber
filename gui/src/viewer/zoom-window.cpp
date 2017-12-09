@@ -1,5 +1,4 @@
 #include "zoom-window.h"
-#include "ui_zoom-window.h"
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QMessageBox>
@@ -7,6 +6,7 @@
 #include <QMenu>
 #include <QFileDialog>
 #include <QScrollBar>
+#include "ui_zoom-window.h"
 #include "ui/QAffiche.h"
 #include "models/filename.h"
 #include "models/site.h"
@@ -672,7 +672,6 @@ void ZoomWindow::pendingUpdate()
 	m_mustSave = 0;
 }
 
-#include <QDebug>
 void ZoomWindow::draw()
 {
 	// Videos don't get drawn

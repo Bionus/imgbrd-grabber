@@ -1,6 +1,6 @@
 #include "tag-tab.h"
-#include "ui_tag-tab.h"
 #include <QJsonArray>
+#include "ui_tag-tab.h"
 #include "ui/textedit.h"
 #include "models/page.h"
 #include "models/site.h"
