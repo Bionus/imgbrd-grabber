@@ -23,8 +23,6 @@
 	#include <QDebug>
 #endif
 
-using namespace std;
-
 
 /**
  * Load custom tokens from settings.
