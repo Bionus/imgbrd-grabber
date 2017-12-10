@@ -29,6 +29,7 @@ DownloadQueryImage::DownloadQueryImage(qulonglong id, const QString &md5, const 
 void DownloadQueryImage::initFromImage(const Image &img)
 {
 	QStringList tags;
+	tags.reserve(img.tags().count());
 	for (const Tag &tag : img.tags())
 		tags.append(tag.text());
 
@@ -84,8 +85,9 @@ void DownloadQueryImage::write(QJsonObject &json) const
 
 bool DownloadQueryImage::read(const QJsonObject &json, const QMap<QString, Site *> &sites)
 {
-	QStringList tags;
 	QJsonArray jsonTags = json["tags"].toArray();
+	QStringList tags;
+	tags.reserve(jsonTags.count());
 	for (auto tag : jsonTags)
 		tags.append(tag.toString());
 

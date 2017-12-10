@@ -28,6 +28,7 @@ QString TagNameFormat::wordSeparator() const
 QString TagNameFormat::formatted(const QStringList &words) const
 {
 	QStringList res;
+	res.reserve(words.count());
 	for (int i = 0; i < words.length(); ++i)
 		res.append(formatted(words[i], i));
 

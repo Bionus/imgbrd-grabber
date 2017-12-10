@@ -98,6 +98,7 @@ QList<Token> Filename::getReplace(const QString &key, const Token &token, QSetti
 		{ ret.append(Token(value)); }
 		else if (whatToDo == "multiple")
 		{
+			ret.reserve(ret.count() + value.count());
 			for (const QString &val : value)
 			{ ret.append(Token(val)); }
 		}

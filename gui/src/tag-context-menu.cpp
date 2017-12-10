@@ -112,6 +112,7 @@ void TagContextMenu::copyTagToClipboard()
 void TagContextMenu::copyAllTagsToClipboard()
 {
 	QStringList tags;
+	tags.reserve(m_allTags.count());
 	for (const Tag &tag : m_allTags)
 		tags.append(tag.text());
 

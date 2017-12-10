@@ -39,6 +39,7 @@ searchTab::searchTab(Profile *profile, mainWindow *parent)
 	m_completion.append(profile->getCustomAutoComplete());
 
 	// Favorite tags
+	m_completion.reserve(m_completion.count() + m_favorites.count());
 	for (const Favorite &fav : m_favorites)
 		m_completion.append(fav.getName());
 
@@ -1134,6 +1135,7 @@ void searchTab::saveSources(const QList<Site*> &sel, bool canLoad)
 	log("Saving sources...");
 
 	QStringList sav;
+	sav.reserve(sel.count());
 	for (Site *enabled : sel)
 	{ sav.append(enabled->url()); }
 	m_settings->setValue("sites", sav);

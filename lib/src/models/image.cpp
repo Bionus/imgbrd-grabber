@@ -991,6 +991,7 @@ QUrl Image::getDisplayableUrl() const
 QStringList Image::tagsString() const
 {
 	QStringList tags;
+	tags.reserve(m_tags.count());
 	for (const Tag &tag : m_tags)
 		tags.append(tag.text());
 	return tags;

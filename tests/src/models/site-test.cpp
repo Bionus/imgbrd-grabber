@@ -123,6 +123,8 @@ void SiteTest::testLoadTags()
 	// Convert results
 	QVector<Tag> tags;
 	QStringList tagsText;
+	tags.reserve(variants.count());
+	tagsText.reserve(variants.count());
 	for (const QVariant &variant : variants)
 	{
 		Tag tag = variant.value<Tag>();
@@ -143,6 +145,7 @@ void SiteTest::testCookies()
 	cookies.append(QNetworkCookie("test_name_2", "test_value_2"));
 
 	QList<QVariant> cookiesVariant;
+	cookiesVariant.reserve(cookies.count());
 	for (const QNetworkCookie &cookie : cookies)
 	{
 		cookiesVariant.append(cookie.toRawForm());

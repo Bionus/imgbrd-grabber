@@ -437,8 +437,10 @@ void ZoomWindow::replyFinishedDetails()
 	// Show pool information
 	if (!m_image->pools().isEmpty())
 	{
-		QStringList pools = QStringList();
-		for (const Pool &p : m_image->pools())
+		auto imgPools = m_image->pools();
+		QStringList pools;
+		pools.reserve(imgPools.count());
+		for (const Pool &p : imgPools)
 		{ pools.append((p.previous() != 0 ? "<a href=\""+QString::number(p.previous())+"\">&lt;</a> " : "")+"<a href=\"pool:"+QString::number(p.id())+"\">"+p.name()+"</a>"+(p.next() != 0 ? " <a href=\""+QString::number(p.next())+"\">&gt;</a>" : "")); }
 		ui->labelPools->setText(pools.join("<br />"));
 		ui->labelPools->show();

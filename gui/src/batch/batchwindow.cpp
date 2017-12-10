@@ -157,6 +157,7 @@ void batchWindow::copyToClipboard()
 	if (count < 1)
 	{
 		count = ui->tableWidget->rowCount();
+		urls.reserve(count);
 		for (int i = 0; i < count; i++)
 		{ urls.append(ui->tableWidget->item(i, 2)->text()); }
 	}

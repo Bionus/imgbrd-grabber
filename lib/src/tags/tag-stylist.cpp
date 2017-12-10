@@ -18,6 +18,7 @@ QStringList TagStylist::stylished(QList<Tag> tags, bool count, bool noUnderscore
 		qSort(tags.begin(), tags.end(), sortTagsByCount);
 
 	QStringList t;
+	t.reserve(tags.count());
 	for (const Tag &tag : tags)
 		t.append(stylished(tag, count, noUnderscores));
 

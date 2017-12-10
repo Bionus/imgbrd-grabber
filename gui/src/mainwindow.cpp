@@ -1000,7 +1000,8 @@ void mainWindow::closeEvent(QCloseEvent *e)
 		saveTabs(m_profile->getPath() + "/tabs.txt");
 		m_settings->setValue("state", saveState());
 		m_settings->setValue("geometry", saveGeometry());
-		QStringList sizes = QStringList();
+		QStringList sizes;
+		sizes.reserve(ui->tableBatchGroups->columnCount());
 		for (int i = 0; i < ui->tableBatchGroups->columnCount(); i++)
 		{ sizes.append(QString::number(ui->tableBatchGroups->horizontalHeader()->sectionSize(i))); }
 		m_settings->setValue("batch", sizes.join(","));

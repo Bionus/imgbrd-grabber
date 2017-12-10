@@ -10,6 +10,7 @@ void BehoimiTest::testHtml()
 
 	// Convert results
 	QStringList md5s;
+	md5s.reserve(images.count());
 	for (Image *img : images)
 	{
 		md5s.append(img->md5());
@@ -28,6 +29,7 @@ void BehoimiTest::testXml()
 
 	// Convert results
 	QStringList md5s;
+	md5s.reserve(images.count());
 	for (Image *img : images)
 	{
 		md5s.append(img->md5());
@@ -46,6 +48,7 @@ void BehoimiTest::testJson()
 
 	// Convert results
 	QStringList md5s;
+	md5s.reserve(images.count());
 	for (Image *img : images)
 	{
 		md5s.append(img->md5());

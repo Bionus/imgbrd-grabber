@@ -10,6 +10,8 @@ void E621Test::testSwfUrls()
 
 	// Convert results
 	QStringList md5s, urls;
+	md5s.reserve(images.count());
+	urls.reserve(images.count());
 	for (Image *img : images)
 	{
 		md5s.append(img->md5());

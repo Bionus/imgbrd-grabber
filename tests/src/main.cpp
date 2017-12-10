@@ -14,6 +14,7 @@ int main(int argc, char *argv[])
 	#endif
 
 	QStringList testSuites;
+	testSuites.reserve(argc - 1);
 	for (int i = 1; i < argc; ++i)
 		testSuites.append(argv[i]);
 

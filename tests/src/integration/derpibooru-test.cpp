@@ -10,6 +10,7 @@ void DerpibooruTest::testHtml()
 
 	// Convert results
 	QList<qulonglong> ids;
+	ids.reserve(images.count());
 	for (Image *img : images)
 	{
 		ids.append(img->id());
@@ -28,6 +29,7 @@ void DerpibooruTest::testJson()
 
 	// Convert results
 	QList<qulonglong> ids;
+	ids.reserve(images.count());
 	for (Image *img : images)
 	{
 		ids.append(img->id());

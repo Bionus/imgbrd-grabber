@@ -9,6 +9,7 @@ void ZerochanTest::testHtml()
 
 	// Convert results
 	QList<qulonglong> ids;
+	ids.reserve(images.count());
 	for (Image *img : images)
 	{
 		ids.append(img->id());
@@ -27,6 +28,7 @@ void ZerochanTest::testRss()
 
 	// Convert results
 	QList<qulonglong> ids;
+	ids.reserve(images.count());
 	for (Image *img : images)
 	{
 		ids.append(img->id());

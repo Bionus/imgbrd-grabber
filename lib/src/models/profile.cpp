@@ -36,6 +36,7 @@ Profile::Profile(const QString &path)
 
 		QSet<QString> unique;
 		QStringList words = favs.split("\n", QString::SkipEmptyParts);
+		m_favorites.reserve(words.count());
 		for (const QString &word : words)
 		{
 			Favorite fav = Favorite::fromString(m_path, word);

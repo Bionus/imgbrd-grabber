@@ -26,6 +26,7 @@ SearchWindow::SearchWindow(QString tags, Profile *profile, QWidget *parent)
 	connect(ui->buttonCalendar, SIGNAL(clicked()), m_calendar, SLOT(show()));
 
 	QStringList favorites;
+	favorites.reserve(profile->getFavorites().count());
 	for (const Favorite &fav : profile->getFavorites())
 		favorites.append(fav.getName());
 	m_tags = new TextEdit(profile, this);

@@ -425,6 +425,7 @@ void Site::finishedTags()
 	if (!src.isNull())
 	{
 		QList<QVariant> sourc = src.toList();
+		tags.reserve(sourc.count());
 		for (int id = 0; id < sourc.count(); id++)
 		{
 			QMap<QString, QVariant> sc = sourc.at(id).toMap();

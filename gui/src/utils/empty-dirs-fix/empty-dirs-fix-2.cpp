@@ -30,8 +30,9 @@ bool EmptyDirsFix2::removeDir(QString path)
 
 void EmptyDirsFix2::deleteSel()
 {
-	QStringList folders;
 	QList<QListWidgetItem*> sel = ui->listWidget->selectedItems();
+	QStringList folders;
+	folders.reserve(sel.count());
 	for (QListWidgetItem *s : sel)
 	{ folders.append(s->text()); }
 

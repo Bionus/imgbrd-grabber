@@ -65,6 +65,7 @@ QList<Image*> IntegrationTestSuite::getImages(const QString &site, const QString
 	QVariantList variants = arguments.at(0).value<QVariantList>();
 
 	// Convert results
+	result.reserve(variants.count());
 	for (const QVariant &variant : variants)
 	{
 		QSharedPointer<Image> img = variant.value<QSharedPointer<Image>>();
@@ -128,6 +129,7 @@ QList<Tag> IntegrationTestSuite::getPageTags(const QString &site, const QString 
 	QVariantList variants = arguments.at(0).value<QVariantList>();
 
 	// Convert results
+	result.reserve(variants.count());
 	for (const QVariant &variant : variants)
 	{
 		Tag tag = variant.value<Tag>();

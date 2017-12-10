@@ -353,8 +353,10 @@ void sourcesWindow::addPreset()
 	if (!ok || name.isEmpty())
 		return;
 
+	const QList<Site*> &selectedSites = selected();
 	QStringList sel;
-	for (Site *site : selected())
+	sel.reserve(selectedSites.count());
+	for (Site *site : selectedSites)
 		sel.append(site->url());
 	m_presets.insert(name, sel);
 
@@ -389,8 +391,10 @@ void sourcesWindow::editPreset()
 
 void sourcesWindow::savePreset()
 {
+	const QList<Site*> &selectedSites = selected();
 	QStringList sel;
-	for (Site *site : selected())
+	sel.reserve(selectedSites.count());
+	for (Site *site : selectedSites)
 		sel.append(site->url());
 	m_presets[ui->comboPresets->currentText()] = sel;
 

@@ -43,6 +43,7 @@ Page::Page(Profile *profile, Site *site, const QList<Site*> &sites, QStringList 
 
 	// Generate pages
 	m_siteApis = m_site->getApis(true);
+	m_pageApis.reserve(m_siteApis.count());
 	for (Api *api : m_siteApis)
 	{
 		m_pageApis.append(new PageApi(this, profile, m_site, api, m_search, page, limit, postFiltering, smart, parent, pool, lastPage, lastPageMinId, lastPageMaxId));

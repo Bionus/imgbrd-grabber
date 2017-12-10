@@ -114,9 +114,9 @@ void RenameExisting1::on_buttonContinue_clicked()
 			det.path = QDir::toNativeSeparators(path);
 			if (!file.second.isEmpty()) {
 				QStringList children;
-				for (const QString &child : file.second) {
-					children.append(QDir::toNativeSeparators(dir.absoluteFilePath(child)));
-				}
+				children.reserve(file.second.count());
+				for (const QString &child : file.second)
+				{ children.append(QDir::toNativeSeparators(dir.absoluteFilePath(child))); }
 				det.children = children;
 			}
 			m_details.append(det);

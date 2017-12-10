@@ -118,15 +118,17 @@ bool poolTab::read(const QJsonObject &json, bool preload)
 	ui->spinColumns->setValue(json["columns"].toInt());
 
 	// Post filtering
-	QStringList postFilters;
 	QJsonArray jsonPostFilters = json["postFiltering"].toArray();
+	QStringList postFilters;
+	postFilters.reserve(jsonPostFilters.count());
 	for (auto tag : jsonPostFilters)
 		postFilters.append(tag.toString());
 	setPostFilter(postFilters.join(' '));
 
 	// Tags
-	QStringList tags;
 	QJsonArray jsonTags = json["tags"].toArray();
+	QStringList tags;
+	tags.reserve(jsonTags.count());
 	for (auto tag : jsonTags)
 		tags.append(tag.toString());
 	setTags(tags.join(' '), preload);

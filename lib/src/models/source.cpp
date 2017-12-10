@@ -46,6 +46,7 @@ Source::Source(Profile *profile, const QString &dir)
 
 			if (!availableApis.isEmpty())
 			{
+				m_apis.reserve(availableApis.count());
 				for (const QString &apiName : availableApis)
 				{
 					Api *api = new Api(apiName, details);

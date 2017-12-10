@@ -11,6 +11,7 @@ BlacklistFix2::BlacklistFix2(const QList<QMap<QString, QString>> &details, const
 
 	ui->tableWidget->setRowCount(m_details.size());
 	QStringList found = QStringList(), tags;
+	m_previews.reserve(m_details.count());
 	for (int i = 0; i < m_details.size(); i++)
 	{
 		QString color = "blue";
