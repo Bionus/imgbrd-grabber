@@ -29,7 +29,10 @@ QString PostFilter::match(const QMap<QString, Token> &tokens, QString filter, bo
 		QString type = filter.section(':', 0, 0).toLower();
 		filter = filter.section(':', 1).toLower();
 		if (!tokens.contains(type))
-		{ return QObject::tr("unknown type \"%1\" (available types: \"%2\")").arg(type, QStringList(tokens.keys()).join("\", \"")); }
+		{
+			QStringList keys = tokens.keys();
+			return QObject::tr("unknown type \"%1\" (available types: \"%2\")").arg(type, keys.join("\", \""));
+		}
 
 		QVariant token = tokens[type].value();
 		if (token.type() == QVariant::Int || token.type() == QVariant::DateTime)

@@ -3,6 +3,7 @@
 
 #include <QMetaType>
 #include <QString>
+#include <QStringList>
 
 
 class TagNameFormat
