@@ -616,7 +616,7 @@ void ZoomWindow::replyFinishedZoom(QNetworkReply::NetworkError err, QString erro
 	else if (err == QNetworkReply::UnknownContentError)
 	{ showLoadingError("Error loading the image."); }
 	else if (err != QNetworkReply::OperationCanceledError)
-	{ error(this, tr("An unexpected error occured loading the image (%1 - %2).\n%3").arg(err).arg(errorString).arg(m_image->url())); }
+	{ error(this, tr("An unexpected error occured loading the image (%1 - %2).\n%3").arg(err).arg(errorString, m_image->url())); }
 }
 
 void ZoomWindow::showLoadingError(QString message)

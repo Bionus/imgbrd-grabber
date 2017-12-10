@@ -349,12 +349,12 @@ QStringList Filename::path(QMap<QString, Token> tokens, Profile *profile, QStrin
 			fns.append(result.toString());
 		}
 	}
-	else
+	else if (!filename.isEmpty())
 	{
 		// We get path and remove useless slashes from filename
 		folder.replace("\\", "/");
 		//filename.replace("\\", "/");
-		if (filename.left(1) == "/")
+		if (filename.at(0) == "/")
 		{ filename = filename.right(filename.length() - 1); }
 		if (folder.right(1) == "/")
 		{ folder = folder.left(folder.length() - 1); }
@@ -650,7 +650,7 @@ bool Filename::isValid(Profile *profile, QString *error) const
 		}
 
 		if (!found)
-			return returnError(orange.arg(QObject::tr("The %%1% token does not exist and will not be replaced.")).arg(match.captured(1)), error);
+			return returnError(orange.arg(QObject::tr("The %%1% token does not exist and will not be replaced."), match.captured(1)), error);
 	}
 
 	// Check for invalid windows characters

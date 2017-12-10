@@ -762,7 +762,7 @@ Image::SaveResult Image::save(const QString &path, bool force, bool basic, bool 
 		{
 			if (!m_savePath.isEmpty() && QFile::exists(m_savePath))
 			{
-				log(QString("Saving image in <a href=\"file:///%1\">%1</a> (from <a href=\"file:///%2\">%2</a>)").arg(path).arg(m_savePath));
+				log(QString("Saving image in <a href=\"file:///%1\">%1</a> (from <a href=\"file:///%2\">%2</a>)").arg(path, m_savePath));
 				QFile::copy(m_savePath, path);
 			}
 			else
@@ -820,14 +820,14 @@ Image::SaveResult Image::save(const QString &path, bool force, bool basic, bool 
 		}
 		else if (whatToDo == "copy")
 		{
-			log(QString("Copy from <a href=\"file:///%1\">%1</a> to <a href=\"file:///%2\">%2</a>").arg(md5Duplicate).arg(path));
+			log(QString("Copy from <a href=\"file:///%1\">%1</a> to <a href=\"file:///%2\">%2</a>").arg(md5Duplicate, path));
 			QFile::copy(md5Duplicate, path);
 
 			res = SaveResult::Copied;
 		}
 		else if (whatToDo == "move")
 		{
-			log(QString("Moving from <a href=\"file:///%1\">%1</a> to <a href=\"file:///%2\">%2</a>").arg(md5Duplicate).arg(path));
+			log(QString("Moving from <a href=\"file:///%1\">%1</a> to <a href=\"file:///%2\">%2</a>").arg(md5Duplicate, path));
 			QFile::rename(md5Duplicate, path);
 			m_profile->setMd5(md5(), path);
 

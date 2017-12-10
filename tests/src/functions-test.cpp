@@ -39,11 +39,11 @@ void FunctionsTest::testFormatFilesize()
 {
 	QStringList units = FILESIZE_UNITS;
 
-	QCOMPARE(formatFilesize(800), QString("%1 %2").arg("800").arg(units[0]));
-	QCOMPARE(formatFilesize(1500), QString("%1 %2").arg("1.46").arg(units[1]));
-	QCOMPARE(formatFilesize(2048), QString("%1 %2").arg("2").arg(units[1]));
-	QCOMPARE(formatFilesize(5000000), QString("%1 %2").arg("4.77").arg(units[2]));
-	QCOMPARE(formatFilesize(7340032), QString("%1 %2").arg("7").arg(units[2]));
+	QCOMPARE(formatFilesize(800), QString("%1 %2").arg("800", units[0]));
+	QCOMPARE(formatFilesize(1500), QString("%1 %2").arg("1.46", units[1]));
+	QCOMPARE(formatFilesize(2048), QString("%1 %2").arg("2", units[1]));
+	QCOMPARE(formatFilesize(5000000), QString("%1 %2").arg("4.77", units[2]));
+	QCOMPARE(formatFilesize(7340032), QString("%1 %2").arg("7", units[2]));
 }
 
 void FunctionsTest::testGetExtension()

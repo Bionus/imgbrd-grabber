@@ -42,7 +42,7 @@ void Logger::log(QString l, LogLevel level)
 	QString levelColor = colors[level];
 	QString msg = "[" + time.toString("hh:mm:ss.zzz") + "][" + levelStr + "] " + l;
 	if (!levelColor.isEmpty())
-		msg = QString("<span style='color:%1'>%2</span>").arg(levelColor).arg(msg);
+		msg = QString("<span style='color:%1'>%2</span>").arg(levelColor, msg);
 	emit newLog(msg);
 
 	#ifdef QT_DEBUG

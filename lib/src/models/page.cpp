@@ -73,7 +73,7 @@ void Page::fallback(bool loadIfPossible)
 
 	m_currentApi++;
 	if (m_currentApi > 0)
-		log(QString("[%1] Loading using %2 failed. Retry using %3.").arg(m_site->url()).arg(m_siteApis[m_currentApi - 1]->getName()).arg(m_siteApis[m_currentApi]->getName()), Logger::Warning);
+		log(QString("[%1] Loading using %2 failed. Retry using %3.").arg(m_site->url(), m_siteApis[m_currentApi - 1]->getName(), m_siteApis[m_currentApi]->getName()), Logger::Warning);
 
 	if (loadIfPossible)
 		load();

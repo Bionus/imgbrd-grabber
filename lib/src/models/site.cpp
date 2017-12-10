@@ -309,7 +309,7 @@ void Site::loginFinished()
 	}
 	m_loggedIn = ok ? LoginStatus::LoggedIn : LoginStatus::LoggedOut;
 
-	log(QString("[%1] Login finished: %2.").arg(m_url).arg(ok ? "success" : "failure"));
+	log(QString("[%1] Login finished: %2.").arg(m_url, ok ? "success" : "failure"));
 	emit loggedIn(this, ok ? LoginResult::Success : LoginResult::Error);
 }
 

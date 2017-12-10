@@ -443,7 +443,7 @@ void Downloader::finishedLoadingUrls(Page *page)
 	}
 
 	QSet<QString> md5s;
-	QList<QSharedPointer<Image>> images;
+	QVector<QSharedPointer<Image>> images;
 	for (Page *p : m_pages)
 	{
 		for (const QSharedPointer<Image> &img : p->images())

@@ -38,7 +38,7 @@ TagApi::~TagApi()
 void TagApi::load(bool rateLimit)
 {
 	m_site->getAsync(rateLimit ? Site::QueryType::Retry : Site::QueryType::List, m_url, [this](QNetworkReply *reply) {
-		log(QString("[%1] Loading tags page <a href=\"%2\">%2</a>").arg(m_site->url()).arg(m_url.toString().toHtmlEscaped()), Logger::Info);
+		log(QString("[%1] Loading tags page <a href=\"%2\">%2</a>").arg(m_site->url(), m_url.toString().toHtmlEscaped()), Logger::Info);
 
 		if (m_reply != nullptr)
 			m_reply->deleteLater();
@@ -56,14 +56,14 @@ void TagApi::abort()
 
 void TagApi::parse()
 {
-	log(QString("[%1] Receiving tags page <a href=\"%2\">%2</a>").arg(m_site->url()).arg(m_reply->url().toString().toHtmlEscaped()), Logger::Info);
+	log(QString("[%1] Receiving tags page <a href=\"%2\">%2</a>").arg(m_site->url(), m_reply->url().toString().toHtmlEscaped()), Logger::Info);
 
 	// Check redirection
 	QUrl redirection = m_reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
 	if (!redirection.isEmpty())
 	{
 		QUrl newUrl = m_site->fixUrl(redirection.toString(), m_url);
-		log(QString("[%1] Redirecting tags page <a href=\"%2\">%2</a> to <a href=\"%3\">%3</a>").arg(m_site->url()).arg(m_url.toString().toHtmlEscaped()).arg(newUrl.toString().toHtmlEscaped()), Logger::Info);
+		log(QString("[%1] Redirecting tags page <a href=\"%2\">%2</a> to <a href=\"%3\">%3</a>").arg(m_site->url(), m_url.toString().toHtmlEscaped(), newUrl.toString().toHtmlEscaped()), Logger::Info);
 		m_url = newUrl;
 		load();
 		return;
@@ -79,7 +79,7 @@ void TagApi::parse()
 	if (source.isEmpty())
 	{
 		if (m_reply->error() != QNetworkReply::OperationCanceledError)
-		{ log(QString("[%1] Loading error: %2 (%3)").arg(m_site->url()).arg(m_reply->errorString()).arg(m_reply->error())); }
+		{ log(QString("[%1] Loading error: %2 (%3)").arg(m_site->url(), m_reply->errorString()).arg(m_reply->error())); }
 		emit finishedLoading(this, LoadResult::Error);
 		return;
 	}
@@ -100,7 +100,7 @@ void TagApi::parse()
 		int errorLine, errorColumn;
 		if (!doc.setContent(source, false, &errorMsg, &errorLine, &errorColumn))
 		{
-			log(QString("[%1] Error parsing XML file: %2 (%3 - %4).").arg(m_site->url()).arg(errorMsg).arg(errorLine).arg(errorColumn), Logger::Warning);
+			log(QString("[%1] Error parsing XML file: %2 (%3 - %4).").arg(m_site->url(), errorMsg).arg(errorLine).arg(errorColumn), Logger::Warning);
 			emit finishedLoading(this, LoadResult::Error);
 			return;
 		}
@@ -148,7 +148,7 @@ void TagApi::parse()
 		QVariant src = Json::parse(source);
 		if (src.isNull())
 		{
-			log(QString("[%1] Error parsing JSON file: \"%2\"").arg(m_site->url()).arg(source.left(500)), Logger::Warning);
+			log(QString("[%1] Error parsing JSON file: \"%2\"").arg(m_site->url(), source.left(500)), Logger::Warning);
 			emit finishedLoading(this, LoadResult::Error);
 			return;
 		}
@@ -157,7 +157,7 @@ void TagApi::parse()
 		// Check for a JSON error message
 		if (data.contains("success") && !data["success"].toBool())
 		{
-			log(QString("[%1] JSON error reply: \"%2\"").arg(m_site->url()).arg(data["reason"].toString()), Logger::Warning);
+			log(QString("[%1] JSON error reply: \"%2\"").arg(m_site->url(), data["reason"].toString()), Logger::Warning);
 			emit finishedLoading(this, LoadResult::Error);
 			return;
 		}
