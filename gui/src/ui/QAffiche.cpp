@@ -2,7 +2,7 @@
 #include <QMouseEvent>
 
 
-QAffiche::QAffiche(QVariant id, int border, QColor color, QWidget *parent)
+QAffiche::QAffiche(const QVariant &id, int border, QColor color, QWidget *parent)
 	: QLabel(parent), m_lastPressed(Qt::NoButton)
 {
 	m_pressed = false;

@@ -15,7 +15,7 @@
  * @param	parent	The parent widget
  * @param	error	The error message
  */
-void error(QWidget *parent, QString error)
+void error(QWidget *parent, const QString &error)
 {
 	QMessageBox::critical(parent, QObject::tr("Error"), error);
 }

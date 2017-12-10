@@ -21,7 +21,7 @@ class CustomWindow : public QDialog
 		void accept() override;
 
 	signals:
-		void validated(QString, QString);
+		void validated(const QString &name, const QString &tags);
 
 	private:
 		Ui::CustomWindow *ui;

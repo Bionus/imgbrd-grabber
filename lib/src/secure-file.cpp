@@ -3,7 +3,7 @@
 #include <QDataStream>
 
 
-SecureFile::SecureFile(QString filename, QString key)
+SecureFile::SecureFile(const QString &filename, const QString &key)
 	: m_file(filename), m_encryptor(generateIntKey(key))
 {}
 
@@ -19,7 +19,7 @@ quint64 SecureFile::generateIntKey(const QString &key) const
 }
 
 
-void SecureFile::write(QByteArray data)
+void SecureFile::write(const QByteArray &data)
 {
 	if (m_file.open(QFile::WriteOnly))
 	{

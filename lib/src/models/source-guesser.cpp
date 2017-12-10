@@ -9,7 +9,7 @@
 #include "models/source.h"
 
 
-SourceGuesser::SourceGuesser(QString url, QList<Source*> sources)
+SourceGuesser::SourceGuesser(const QString &url, const QList<Source *> &sources)
 	: m_url(url), m_sources(sources)
 {
 	m_manager = new CustomNetworkAccessManager(this);

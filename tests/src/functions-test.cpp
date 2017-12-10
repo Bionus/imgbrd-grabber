@@ -163,7 +163,7 @@ void FunctionsTest::testParseMarkdownIssueLinks()
 }
 
 
-void FunctionsTest::assertFixFilename(int platform, QString filename, QString path, QString expected)
+void FunctionsTest::assertFixFilename(int platform, const QString &filename, const QString &path, const QString &expected)
 {
 	QString actual;
 	switch (platform)

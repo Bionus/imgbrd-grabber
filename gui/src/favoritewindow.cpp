@@ -13,7 +13,7 @@
  * @param	Favorite	The favorite we are setting options for
  * @param	parent		The parent window
  */
-favoriteWindow::favoriteWindow(Profile *profile, Favorite favorite, QWidget *parent)
+favoriteWindow::favoriteWindow(Profile *profile, const Favorite &favorite, QWidget *parent)
 	: QDialog(parent), ui(new Ui::favoriteWindow), m_profile(profile), m_favorite(favorite)
 {
 	ui->setupUi(this);

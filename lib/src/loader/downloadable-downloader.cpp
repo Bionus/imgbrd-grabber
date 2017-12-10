@@ -19,7 +19,7 @@ void DownloadableDownloader::setPath(const QStringList &paths)
 	m_paths = paths;
 }
 
-void DownloadableDownloader::setResult(QStringList keys, Downloadable::SaveResult value)
+void DownloadableDownloader::setResult(const QStringList &keys, Downloadable::SaveResult value)
 {
 	for (const QString &key : keys)
 		m_result.insert(key, value);
@@ -79,7 +79,7 @@ void DownloadableDownloader::writeError()
 	emit saved(m_downloadable, m_result);
 }
 
-void DownloadableDownloader::networkError(QNetworkReply::NetworkError error, QString errorString)
+void DownloadableDownloader::networkError(QNetworkReply::NetworkError error, const QString &errorString)
 {
 	// Ignore cancel errors
 	if (error == QNetworkReply::OperationCanceledError)

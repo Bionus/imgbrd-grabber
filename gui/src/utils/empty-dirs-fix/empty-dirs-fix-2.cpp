@@ -4,7 +4,8 @@
 
 
 
-EmptyDirsFix2::EmptyDirsFix2(QStringList folders, QWidget *parent) : QDialog(parent), ui(new Ui::EmptyDirsFix2)
+EmptyDirsFix2::EmptyDirsFix2(const QStringList &folders, QWidget *parent)
+	: QDialog(parent), ui(new Ui::EmptyDirsFix2)
 {
 	ui->setupUi(this);
 

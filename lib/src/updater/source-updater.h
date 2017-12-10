@@ -10,7 +10,7 @@ class SourceUpdater : public Updater
 	Q_OBJECT
 
 	public:
-		SourceUpdater(QString source, QString directory, QString baseUrl);
+		SourceUpdater(const QString &source, const QString &directory, const QString &baseUrl);
 
 	public slots:
 		void checkForUpdates() const override;
@@ -19,7 +19,7 @@ class SourceUpdater : public Updater
 		void checkForUpdatesDone();
 
 	signals:
-		void finished(QString source, bool isNew);
+		void finished(const QString &source, bool isNew);
 
 	private:
 		QString m_source;

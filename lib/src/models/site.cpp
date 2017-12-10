@@ -26,7 +26,7 @@
 
 
 
-Site::Site(QString url, Source *source)
+Site::Site(const QString &url, Source *source)
 	: m_type(source->getName()), m_url(url), m_source(source), m_settings(nullptr), m_manager(nullptr), m_cookieJar(nullptr), m_loggedIn(LoginStatus::Unknown), m_loginCheck(false), m_autoLogin(true)
 {
 	loadConfig();
@@ -314,7 +314,7 @@ void Site::loginFinished()
 }
 
 
-QNetworkRequest Site::makeRequest(QUrl url, Page *page, QString ref, Image *img)
+QNetworkRequest Site::makeRequest(QUrl url, Page *page, const QString &ref, Image *img)
 {
 	if (m_autoLogin && m_loggedIn == LoginStatus::Unknown)
 		login();
@@ -371,7 +371,7 @@ QNetworkRequest Site::makeRequest(QUrl url, Page *page, QString ref, Image *img)
  * @param img	The related image
  * @return		The equivalent network request
  */
-void Site::getAsync(QueryType type, QUrl url, std::function<void(QNetworkReply*)> callback, Page *page, QString ref, Image *img)
+void Site::getAsync(QueryType type, const QUrl &url, const std::function<void(QNetworkReply*)> &callback, Page *page, const QString &ref, Image *img)
 {
 	m_lastCallback = callback;
 	m_callbackRequest = this->makeRequest(url, page, ref, img);
@@ -394,7 +394,7 @@ void Site::getCallback()
 	m_lastCallback(this->getRequest(m_callbackRequest));
 }
 
-QNetworkReply *Site::get(QUrl url, Page *page, QString ref, Image *img)
+QNetworkReply *Site::get(const QUrl &url, Page *page, const QString &ref, Image *img)
 {
 	QNetworkRequest request = this->makeRequest(url, page, ref, img);
 	return this->getRequest(request);

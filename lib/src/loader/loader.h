@@ -13,7 +13,7 @@ class Loader
 {
 	public:
 		explicit Loader(Site *site);
-		LoaderQuery search(QMap<QString, QVariant> options) const;
+		LoaderQuery search(const QMap<QString, QVariant> &options) const;
 
 	private:
 		Site *m_site;

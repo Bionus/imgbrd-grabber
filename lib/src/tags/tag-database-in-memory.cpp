@@ -3,7 +3,7 @@
 #include <QTextStream>
 
 
-TagDatabaseInMemory::TagDatabaseInMemory(QString typeFile, QString tagFile)
+TagDatabaseInMemory::TagDatabaseInMemory(const QString &typeFile, const QString &tagFile)
 	: TagDatabase(typeFile), m_tagFile(tagFile)
 {}
 
@@ -82,7 +82,7 @@ void TagDatabaseInMemory::setTags(const QList<Tag> &tags)
 		m_database.insert(tag.text(), tag.type());
 }
 
-QMap<QString, TagType> TagDatabaseInMemory::getTagTypes(QStringList tags) const
+QMap<QString, TagType> TagDatabaseInMemory::getTagTypes(const QStringList &tags) const
 {
 	QMap<QString, TagType> ret;
 	for (const QString &tag : tags)

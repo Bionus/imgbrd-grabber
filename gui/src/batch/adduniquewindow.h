@@ -31,7 +31,7 @@ class AddUniqueWindow : public QDialog
 		void addLoadedImage();
 		void addImage(QSharedPointer<Image> img);
 		void on_buttonFolder_clicked();
-		void on_lineFilename_textChanged(QString);
+		void on_lineFilename_textChanged(const QString &);
 
 	signals:
 		void sendData(const DownloadQueryImage &);

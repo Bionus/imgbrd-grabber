@@ -4,7 +4,7 @@
 
 
 
-BlacklistFix2::BlacklistFix2(QList<QMap<QString, QString>> details, QStringList blacklist, QWidget *parent)
+BlacklistFix2::BlacklistFix2(const QList<QMap<QString, QString>> &details, const QStringList &blacklist, QWidget *parent)
 	: QDialog(parent), ui(new Ui::BlacklistFix2), m_details(details), m_blacklist(blacklist)
 {
 	ui->setupUi(this);

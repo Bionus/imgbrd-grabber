@@ -633,18 +633,18 @@ void FilenameTest::testEscapeMethod()
 	m_img = new Image(m_site, m_details, m_profile);
 
 	Filename fn("INSERT INTO test (%id:escape%, %md5:escape%, %ext:escape%);");
-	fn.setEscapeMethod([](QVariant val) { return QString("'%1'").arg(val.toString().replace("'", "''")); });
+	fn.setEscapeMethod([](const QVariant &val) { return QString("'%1'").arg(val.toString().replace("'", "''")); });
 
 	QCOMPARE(fn.path(*m_img, m_profile).first(), QString("INSERT INTO test ('7331', 'good''ol'' md5', 'jpg');"));
 }
 
 
-void FilenameTest::assertPath(QString format, QString expected, QString path, bool shouldFixFilename, bool fullPath, bool keepInvalidTokens)
+void FilenameTest::assertPath(const QString &format, const QString &expected, const QString &path, bool shouldFixFilename, bool fullPath, bool keepInvalidTokens)
 {
 	assertPath(format, QStringList() << expected, path, shouldFixFilename, fullPath, keepInvalidTokens);
 }
 
-void FilenameTest::assertPath(QString format, QStringList expected, QString path, bool shouldFixFilename, bool fullPath, bool keepInvalidTokens)
+void FilenameTest::assertPath(const QString &format, const QStringList &expected, QString path, bool shouldFixFilename, bool fullPath, bool keepInvalidTokens)
 {
 	if (path.isEmpty())
 		path = QDir::homePath();
@@ -662,7 +662,7 @@ void FilenameTest::assertPath(QString format, QStringList expected, QString path
 }
 
 
-void FilenameTest::assertExpand(QString format, QString expected)
+void FilenameTest::assertExpand(const QString &format, const QString &expected)
 {
 	Filename fn(format);
 	QString actual = fn.expandConditionals(format, m_img->tagsString(), m_img->tokens(m_profile), m_settings);

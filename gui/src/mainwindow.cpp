@@ -383,7 +383,7 @@ void mainWindow::onFirstLoad()
 	swin->show();
 }
 
-void mainWindow::addTab(QString tag, bool background, bool save)
+void mainWindow::addTab(const QString &tag, bool background, bool save)
 {
 	auto *w = new tagTab(m_profile, this);
 	this->addSearchTab(w, background, save);
@@ -393,7 +393,7 @@ void mainWindow::addTab(QString tag, bool background, bool save)
 	else
 	{ w->focusSearch(); }
 }
-void mainWindow::addPoolTab(int pool, QString site, bool background, bool save)
+void mainWindow::addPoolTab(int pool, const QString &site, bool background, bool save)
 {
 	auto *w = new poolTab(m_profile, this);
 	this->addSearchTab(w, background, save);
@@ -521,7 +521,7 @@ void mainWindow::currentTabChanged(int tab)
 	}
 }
 
-void mainWindow::setTags(QList<Tag> tags, searchTab *from)
+void mainWindow::setTags(const QList<Tag> &tags, searchTab *from)
 {
 	if (from != nullptr && m_tabs.indexOf(from) != ui->tabWidget->currentIndex())
 		return;
@@ -531,7 +531,7 @@ void mainWindow::setTags(QList<Tag> tags, searchTab *from)
 
 	QAffiche *taglabel = new QAffiche(QVariant(), 0, QColor(), this);
 	taglabel->setTextInteractionFlags(Qt::LinksAccessibleByMouse);
-	connect(taglabel, static_cast<void (QAffiche::*)(QString)>(&QAffiche::middleClicked), this, &mainWindow::loadTagTab);
+	connect(taglabel, static_cast<void (QAffiche::*)(const QString &)>(&QAffiche::middleClicked), this, &mainWindow::loadTagTab);
 	connect(taglabel, &QAffiche::linkHovered, this, &mainWindow::linkHovered);
 	connect(taglabel, &QAffiche::linkActivated, this, &mainWindow::loadTagNoTab);
 	taglabel->setText(TagStylist(m_profile).stylished(tags, true, true).join("<br/>"));
@@ -564,7 +564,7 @@ void mainWindow::tabPrev()
 	ui->tabWidget->setCurrentIndex((index - 1 + count) % count);
 }
 
-void mainWindow::addTableItem(QTableWidget *table, int row, int col, QString text)
+void mainWindow::addTableItem(QTableWidget *table, int row, int col, const QString &text)
 {
 	auto *item = new QTableWidgetItem(text);
 	item->setToolTip(text);
@@ -898,14 +898,14 @@ void mainWindow::updateKeepForLater()
 		auto *taglabel = new QAffiche(QString(tag), 0, QColor(), this);
 		taglabel->setText(QString(R"(<a href="%1" style="color:black;text-decoration:none;">%1</a>)").arg(tag));
 		taglabel->setTextInteractionFlags(Qt::LinksAccessibleByMouse);
-		connect(taglabel, static_cast<void (QAffiche::*)(QString)>(&QAffiche::middleClicked), this, &mainWindow::loadTagTab);
+		connect(taglabel, static_cast<void (QAffiche::*)(const QString &)>(&QAffiche::middleClicked), this, &mainWindow::loadTagTab);
 		connect(taglabel, &QAffiche::linkActivated, this, &mainWindow::loadTagNoTab);
 		ui->dockKflScrollLayout->addWidget(taglabel);
 	}
 }
 
 
-void mainWindow::logShow(QString msg)
+void mainWindow::logShow(const QString &msg)
 {
 	if (!m_showLog)
 		return;
@@ -1039,7 +1039,7 @@ void mainWindow::optionsClosed()
 	}
 }
 
-void mainWindow::setSource(QString source)
+void mainWindow::setSource(const QString &source)
 {
 	if (!m_profile->getSites().contains(source))
 		return;
@@ -1362,7 +1362,7 @@ void mainWindow::getAllFinishedPage(Page *page)
  *
  * @param images The images results on this page
  */
-void mainWindow::getAllFinishedImages(QList<QSharedPointer<Image>> images)
+void mainWindow::getAllFinishedImages(const QList<QSharedPointer<Image>> &images)
 {
 	Downloader *downloader = qobject_cast<Downloader*>(sender());
 	m_downloaders.removeAll(downloader);
@@ -1612,7 +1612,7 @@ void mainWindow::getAllImageOk(QSharedPointer<Image> img, int site_id)
 	_getAll();
 }
 
-void mainWindow::imageUrlChanged(QString before, QString after)
+void mainWindow::imageUrlChanged(const QString &before, const QString &after)
 {
 	m_downloadTimeLast.insert(after, m_downloadTimeLast[before]);
 	m_downloadTimeLast.remove(before);
@@ -2010,7 +2010,7 @@ void mainWindow::on_buttonSaveLinkList_clicked()
 	else
 	{ QMessageBox::critical(this, tr("Save link list"), tr("Error opening file.")); }
 }
-bool mainWindow::saveLinkList(QString filename)
+bool mainWindow::saveLinkList(const QString &filename)
 {
 	return DownloadQueryLoader::save(filename, m_batchs, m_groupBatchs);
 }
@@ -2026,7 +2026,7 @@ void mainWindow::on_buttonLoadLinkList_clicked()
 	else
 	{ QMessageBox::critical(this, tr("Load link list"), tr("Error opening file.")); }
 }
-bool mainWindow::loadLinkList(QString filename)
+bool mainWindow::loadLinkList(const QString &filename)
 {
 	QList<DownloadQueryImage> newBatchs;
 	QList<DownloadQueryGroup> newGroupBatchs;
@@ -2079,7 +2079,7 @@ bool mainWindow::loadLinkList(QString filename)
 	return true;
 }
 
-void mainWindow::setWiki(QString wiki)
+void mainWindow::setWiki(const QString &wiki)
 {
 	ui->labelWiki->setText("<style>.title { font-weight: bold; } ul { margin-left: -30px; }</style>" + wiki);
 }
@@ -2105,7 +2105,7 @@ void mainWindow::siteDeleted(Site *site)
 	batchRemoveUniques(uniquesRows);
 }
 
-QIcon& mainWindow::getIcon(QString path)
+QIcon& mainWindow::getIcon(const QString &path)
 {
 	if (!m_icons.contains(path))
 		m_icons.insert(path, QIcon(path));
@@ -2205,7 +2205,7 @@ void mainWindow::saveSettings()
 
 
 
-void mainWindow::loadMd5(QString path, bool newTab, bool background, bool save)
+void mainWindow::loadMd5(const QString &path, bool newTab, bool background, bool save)
 {
 	QFile file(path);
 	if (file.open(QFile::ReadOnly))
@@ -2216,7 +2216,7 @@ void mainWindow::loadMd5(QString path, bool newTab, bool background, bool save)
 		loadTag("md5:" + md5, newTab, background, save);
 	}
 }
-void mainWindow::loadTag(QString tag, bool newTab, bool background, bool save)
+void mainWindow::loadTag(const QString &tag, bool newTab, bool background, bool save)
 {
 	if (tag.startsWith("http://") || tag.startsWith("https://"))
 	{
@@ -2229,11 +2229,11 @@ void mainWindow::loadTag(QString tag, bool newTab, bool background, bool save)
 	else if (m_tabs.count() > 0 && ui->tabWidget->currentIndex() < m_tabs.count())
 		m_tabs[ui->tabWidget->currentIndex()]->setTags(tag);
 }
-void mainWindow::loadTagTab(QString tag)
+void mainWindow::loadTagTab(const QString &tag)
 { loadTag(tag.isEmpty() ? m_link : tag, true); }
-void mainWindow::loadTagNoTab(QString tag)
+void mainWindow::loadTagNoTab(const QString &tag)
 { loadTag(tag.isEmpty() ? m_link : tag, false); }
-void mainWindow::linkHovered(QString tag)
+void mainWindow::linkHovered(const QString &tag)
 {
 	m_link = tag;
 }

@@ -11,7 +11,7 @@ class ProgramUpdater : public Updater
 
 	public:
 		ProgramUpdater();
-		explicit ProgramUpdater(QString baseUrl);
+		explicit ProgramUpdater(const QString &baseUrl);
 		QUrl latestUrl() const;
 
 	public slots:
@@ -23,9 +23,9 @@ class ProgramUpdater : public Updater
 		void downloadDone();
 
 	signals:
-		void finished(QString newVersion, bool available, QString changelog);
+		void finished(const QString &newVersion, bool available, const QString &changelog);
 		void downloadProgress(qint64 bytesReceived, qint64 bytesTotal);
-		void downloadFinished(QString path);
+		void downloadFinished(const QString &path);
 
 	private:
 		QString m_baseUrl;

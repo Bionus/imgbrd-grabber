@@ -996,16 +996,16 @@ QStringList Image::tagsString() const
 	return tags;
 }
 
-void	Image::setUrl(QString u)
+void Image::setUrl(const QString &u)
 {
 	setFileSize(0);
 	emit urlChanged(m_url, u);
 	m_url = u;
 	refreshTokens();
 }
-void	Image::setSize(QSize size)	{ m_size = size; refreshTokens();	}
-void	Image::setFileSize(int s)	{ m_fileSize = s; refreshTokens();	}
-void	Image::setData(const QByteArray &d)
+void Image::setSize(QSize size)	{ m_size = size; refreshTokens();	}
+void Image::setFileSize(int s)	{ m_fileSize = s; refreshTokens();	}
+void Image::setData(const QByteArray &d)
 {
 	m_data = d;
 
@@ -1149,14 +1149,14 @@ bool Image::hasTag(QString tag) const
 			return true;
 	return false;
 }
-bool Image::hasAnyTag(QStringList tags) const
+bool Image::hasAnyTag(const QStringList &tags) const
 {
 	for (const QString &tag : tags)
 		if (this->hasTag(tag))
 			return true;
 	return false;
 }
-bool Image::hasAllTags(QStringList tags) const
+bool Image::hasAllTags(const QStringList &tags) const
 {
 	for (const QString &tag : tags)
 		if (!this->hasTag(tag))
@@ -1170,7 +1170,7 @@ void Image::unload()
 	m_data.clear();
 }
 
-void Image::setRating(QString rating)
+void Image::setRating(const QString &rating)
 {
 	QMap<QString, QString> assoc;
 		assoc["s"] = "safe";
@@ -1184,7 +1184,7 @@ void Image::setRating(QString rating)
 	refreshTokens();
 }
 
-void Image::setFileExtension(QString ext)
+void Image::setFileExtension(const QString &ext)
 {
 	m_url = setExtension(m_url, ext);
 	m_fileUrl = setExtension(m_fileUrl.toString(), ext);

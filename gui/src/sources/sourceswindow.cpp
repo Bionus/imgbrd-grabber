@@ -19,7 +19,7 @@
  * @param	sites		QStringList of sites names
  * @param	parent		The parent window
  */
-sourcesWindow::sourcesWindow(Profile *profile, QList<Site*> selected, QWidget *parent)
+sourcesWindow::sourcesWindow(Profile *profile, const QList<Site*> &selected, QWidget *parent)
 	: QDialog(parent), ui(new Ui::sourcesWindow), m_profile(profile), m_selected(selected), m_sites(profile->getSites()), m_sources(profile->getSources())
 {
 	setAttribute(Qt::WA_DeleteOnClose);
@@ -126,12 +126,12 @@ void sourcesWindow::valid()
 	this->close();
 }
 
-void sourcesWindow::openSite(QString site) const
+void sourcesWindow::openSite(const QString &site) const
 {
 	QDesktopServices::openUrl(QUrl(m_sites.value(site)->fixUrl("/")));
 }
 
-void sourcesWindow::settingsSite(QString site)
+void sourcesWindow::settingsSite(const QString &site)
 {
 	SourcesSettingsWindow *ssw = new SourcesSettingsWindow(m_profile, m_sites.value(site), this);
 	connect(ssw, SIGNAL(siteDeleted(QString)), this, SLOT(deleteSite(QString)));
@@ -142,7 +142,7 @@ void sourcesWindow::settingsSite(QString site)
  * Delete a site from the sources list.
  * @param	site	The url of the site to delete.
  */
-void sourcesWindow::deleteSite(QString site)
+void sourcesWindow::deleteSite(const QString &site)
 {
 	int i = m_sites.keys().indexOf(site);
 
@@ -288,7 +288,7 @@ void sourcesWindow::checkForUpdates()
 		updater.checkForUpdates();
 	}
 }
-void sourcesWindow::checkForUpdatesReceived(QString sourceName, bool isNew)
+void sourcesWindow::checkForUpdatesReceived(const QString &sourceName, bool isNew)
 {
 	if (!isNew)
 		return;
@@ -398,7 +398,7 @@ void sourcesWindow::savePreset()
 }
 
 
-void sourcesWindow::selectPreset(QString name)
+void sourcesWindow::selectPreset(const QString &name)
 {
 	bool isPreset = ui->comboPresets->currentIndex() > 0;
 

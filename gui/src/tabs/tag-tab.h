@@ -35,7 +35,7 @@ class tagTab : public searchTab
 
 	public slots:
 		// Zooms
-		void setTags(QString tags, bool preload = true) override;
+		void setTags(const QString &tags, bool preload = true) override;
 		// Loading
 		void load() override;
 		// Batch

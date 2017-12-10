@@ -22,14 +22,14 @@ class DownloadableDownloader : public QObject
 	protected slots:
 		void preloaded();
 		void writeError();
-		void networkError(QNetworkReply::NetworkError error, QString errorString);
+		void networkError(QNetworkReply::NetworkError error, const QString &errorString);
 		void success();
 
 	signals:
 		void saved(QSharedPointer<Downloadable> downloadable, QMap<QString, Downloadable::SaveResult> result);
 
 	protected:
-		void setResult(QStringList keys, Downloadable::SaveResult value);
+		void setResult(const QStringList &keys, Downloadable::SaveResult value);
 
 	private:
 		QSharedPointer<Downloadable> m_downloadable;

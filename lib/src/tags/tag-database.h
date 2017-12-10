@@ -14,12 +14,12 @@ class TagDatabase
 		virtual bool load();
 		virtual bool save() = 0;
 		virtual void setTags(const QList<Tag> &tags) = 0;
-		virtual QMap<QString, TagType> getTagTypes(QStringList tags) const = 0;
+		virtual QMap<QString, TagType> getTagTypes(const QStringList &tags) const = 0;
 		virtual int count() const = 0;
 		QMap<int, TagType> tagTypes() const;
 
 	protected:
-		explicit TagDatabase(QString typeFile);
+		explicit TagDatabase(const QString &typeFile);
 
 	protected:
 		QMap<int, TagType> m_tagTypes;

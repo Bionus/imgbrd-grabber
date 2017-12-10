@@ -3,10 +3,10 @@
 #include "functions.h"
 
 
-Favorite::Favorite(QString name)
+Favorite::Favorite(const QString &name)
 	: Favorite(name, 50, QDateTime::currentDateTime(), QString())
 {}
-Favorite::Favorite(QString name, int note, QDateTime lastViewed, QString imagePath)
+Favorite::Favorite(const QString &name, int note, const QDateTime &lastViewed, const QString &imagePath)
 	: m_name(name), m_note(note), m_lastViewed(lastViewed), m_imagePath(imagePath)
 {}
 

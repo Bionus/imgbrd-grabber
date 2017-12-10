@@ -25,7 +25,7 @@
 #include "viewer/details-window.h"
 
 
-ZoomWindow::ZoomWindow(QList<QSharedPointer<Image>> images, QSharedPointer<Image> image, Site *site, Profile *profile, mainWindow *parent)
+ZoomWindow::ZoomWindow(const QList<QSharedPointer<Image>> &images, QSharedPointer<Image> image, Site *site, Profile *profile, mainWindow *parent)
 	: QWidget(Q_NULLPTR, Qt::Window), m_parent(parent), m_profile(profile), m_favorites(profile->getFavorites()), m_viewItLater(profile->getKeptForLater()), m_ignore(profile->getIgnored()), m_settings(profile->getSettings()), ui(new Ui::ZoomWindow), m_site(site), m_timeout(300), m_tooBig(false), m_loadedImage(false), m_loadedDetails(false), m_displayImage(QPixmap()), m_displayMovie(nullptr), m_finished(false), m_size(0), m_source(), m_fullScreen(nullptr), m_images(images), m_isFullscreen(false), m_isSlideshowRunning(false), m_imagePath(""), m_labelImageScaled(false)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
@@ -263,9 +263,9 @@ void ZoomWindow::showDetails()
 	m_detailsWindow->show();
 }
 
-void ZoomWindow::openUrl(QString url)
+void ZoomWindow::openUrl(const QString &url)
 { emit linkClicked(url); }
-void ZoomWindow::openPool(QString url)
+void ZoomWindow::openPool(const QString &url)
 {
 	if (url.startsWith("pool:"))
 	{ emit poolClicked(url.rightRef(url.length() - 5).toInt(), m_image->site()); }
@@ -335,7 +335,7 @@ void ZoomWindow::openSaveDir(bool fav)
 void ZoomWindow::openSaveDirFav()
 { openSaveDir(true); }
 
-void ZoomWindow::linkHovered(QString url)
+void ZoomWindow::linkHovered(const QString &url)
 { m_link = url; }
 void ZoomWindow::contextMenu(QPoint)
 {
@@ -586,7 +586,7 @@ void ZoomWindow::setButtonState(bool fav, SaveButtonState state)
 	}
 }
 
-void ZoomWindow::replyFinishedZoom(QNetworkReply::NetworkError err, QString errorString)
+void ZoomWindow::replyFinishedZoom(QNetworkReply::NetworkError err, const QString &errorString)
 {
 	log(QString("Image received from <a href=\"%1\">%1</a>").arg(m_url));
 
@@ -619,7 +619,7 @@ void ZoomWindow::replyFinishedZoom(QNetworkReply::NetworkError err, QString erro
 	{ error(this, tr("An unexpected error occured loading the image (%1 - %2).\n%3").arg(err).arg(errorString, m_image->url())); }
 }
 
-void ZoomWindow::showLoadingError(QString message)
+void ZoomWindow::showLoadingError(const QString &message)
 {
 	log(message);
 	ui->labelLoadingError->setText(message);
@@ -766,7 +766,7 @@ void ZoomWindow::update(bool onlySize, bool force)
 	m_stackedWidget->setCurrentWidget(m_labelImage);
 }
 
-Qt::Alignment ZoomWindow::getAlignments(QString type)
+Qt::Alignment ZoomWindow::getAlignments(const QString &type)
 {
 	QString vertical = m_settings->value(type + "V", "center").toString();
 	QString horizontal = m_settings->value(type + "H", "left").toString();
@@ -1084,10 +1084,10 @@ void ZoomWindow::showThumbnail()
 	}
 }
 
-void ZoomWindow::urlChanged(QString old, QString nouv)
+void ZoomWindow::urlChanged(const QString &before, const QString &after)
 {
-	Q_UNUSED(old);
-	m_url = nouv;
+	Q_UNUSED(before);
+	m_url = after;
 }
 
 

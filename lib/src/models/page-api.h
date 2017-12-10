@@ -23,7 +23,7 @@ class PageApi : public QObject
 			Error
 		};
 
-		explicit PageApi(Page *parentPage, Profile *profile, Site *site, Api *api, QStringList tags = QStringList(), int page = 1, int limit = 25, QStringList postFiltering = QStringList(), bool smart = false, QObject *parent = Q_NULLPTR, int pool = 0, int lastPage = 0, qulonglong lastPageMinId = 0, qulonglong lastPageMaxId = 0);
+		explicit PageApi(Page *parentPage, Profile *profile, Site *site, Api *api, const QStringList &tags = QStringList(), int page = 1, int limit = 25, const QStringList &postFiltering = QStringList(), bool smart = false, QObject *parent = Q_NULLPTR, int pool = 0, int lastPage = 0, qulonglong lastPageMinId = 0, qulonglong lastPageMaxId = 0);
 		void			setLastPage(Page *page);
 		void			load(bool rateLimit = false);
 		void			loadTags();
@@ -61,7 +61,7 @@ class PageApi : public QObject
 		void finishedLoadingTags(PageApi*);
 
 	protected:
-		void parseImage(QMap<QString, QString> data, int position, QList<Tag> tags = QList<Tag>());
+		void parseImage(QMap<QString, QString> data, int position, const QList<Tag> &tags = QList<Tag>());
 		void parseNavigation(const QString &source);
 		void updateUrls();
 		void setImageCount(int count, bool sure);

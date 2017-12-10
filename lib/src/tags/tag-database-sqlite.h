@@ -8,11 +8,11 @@
 class TagDatabaseSqlite : public TagDatabase
 {
 	public:
-		TagDatabaseSqlite(QString typeFile, QString tagFile);
+		TagDatabaseSqlite(const QString &typeFile, const QString &tagFile);
 		bool load() override;
 		bool save() override;
 		void setTags(const QList<Tag> &tags) override;
-		QMap<QString, TagType> getTagTypes(QStringList tags) const override;
+		QMap<QString, TagType> getTagTypes(const QStringList &tags) const override;
 		int count() const override;
 
 	private:

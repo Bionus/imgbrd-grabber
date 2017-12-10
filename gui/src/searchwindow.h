@@ -23,7 +23,7 @@ class SearchWindow : public QDialog
 		~SearchWindow() override;
 
 	private:
-		QString generateSearch(QString additional = "") const;
+		QString generateSearch(const QString &additional = "") const;
 
 	public slots:
 		void setDate(QDate d);
@@ -31,7 +31,7 @@ class SearchWindow : public QDialog
 		void on_buttonImage_clicked();
 
 	signals:
-		void accepted(QString);
+		void accepted(const QString &search);
 
 	private:
 		Ui::SearchWindow	*ui;

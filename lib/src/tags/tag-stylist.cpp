@@ -7,7 +7,7 @@ TagStylist::TagStylist(Profile *profile)
 	: m_profile(profile)
 {}
 
-QStringList TagStylist::stylished(QList<Tag> tags, bool count, bool noUnderscores, QString sort) const
+QStringList TagStylist::stylished(QList<Tag> tags, bool count, bool noUnderscores, const QString &sort) const
 {
 	// Sort tag list
 	if (sort == "type")

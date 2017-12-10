@@ -19,7 +19,7 @@ QString getUpdaterBaseUrl()
 	#endif
 }
 
-Source::Source(Profile *profile, QString dir)
+Source::Source(Profile *profile, const QString &dir)
 	: m_dir(dir), m_name(QFileInfo(dir).fileName()), m_profile(profile), m_updater(m_name, m_dir, getUpdaterBaseUrl())
 {
 	// Load XML details for this source from its model file
@@ -104,7 +104,7 @@ QList<Api*> Source::getApis() const				{ return m_apis;	}
 Profile *Source::getProfile() const				{ return m_profile;	}
 const SourceUpdater &Source::getUpdater() const	{ return m_updater;	}
 
-Api *Source::getApi(QString name) const
+Api *Source::getApi(const QString &name) const
 {
 	for (Api *api : this->getApis())
 		if (api->getName() == name)

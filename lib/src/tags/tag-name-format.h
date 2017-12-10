@@ -18,7 +18,7 @@ class TagNameFormat
 		};
 
 		TagNameFormat();
-		TagNameFormat(CaseFormat caseFormat, QString wordSeparator);
+		TagNameFormat(CaseFormat caseFormat, const QString &wordSeparator);
 		static TagNameFormat &Normalized();
 		CaseFormat caseFormat() const;
 		QString wordSeparator() const;

@@ -11,7 +11,7 @@ class TagName
 {
 	public:
 		TagName();
-		explicit TagName(QString name, TagNameFormat format = TagNameFormat::Normalized());
+		explicit TagName(const QString &name, const TagNameFormat &format = TagNameFormat::Normalized());
 		QString normalized() const;
 		QString formatted(const TagNameFormat &format) const;
 

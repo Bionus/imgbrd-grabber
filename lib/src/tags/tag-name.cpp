@@ -4,7 +4,7 @@
 TagName::TagName()
 {}
 
-TagName::TagName(QString name, TagNameFormat format)
+TagName::TagName(const QString &name, const TagNameFormat &format)
 	: m_name(name), m_format(format)
 {
 	m_normalized = normalized();

@@ -32,7 +32,7 @@ class SourcesSettingsWindow : public QDialog
 		void loginTested(Site*, Site::LoginResult);
 
 	signals:
-		void siteDeleted(QString);
+		void siteDeleted(const QString &);
 
 	protected:
 		void setLoginStatus(const QString &msg);

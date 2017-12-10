@@ -7,7 +7,7 @@
 #include "models/site.h"
 
 
-LoaderQuery::LoaderQuery(Site *site, QMap<QString, QVariant> options)
+LoaderQuery::LoaderQuery(Site *site, const QMap<QString, QVariant> &options)
 	: m_site(site), m_options(options), m_finished(false), m_offset(0)
 {}
 

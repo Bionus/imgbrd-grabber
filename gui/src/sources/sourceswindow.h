@@ -23,7 +23,7 @@ class sourcesWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		explicit sourcesWindow(Profile *profile, QList<Site*> selected, QWidget *parent = Q_NULLPTR);
+		explicit sourcesWindow(Profile *profile, const QList<Site*> &selected, QWidget *parent = Q_NULLPTR);
 		~sourcesWindow() override;
 
 	public slots:
@@ -31,13 +31,13 @@ class sourcesWindow : public QDialog
 		void closeEvent(QCloseEvent *) override;
 		void checkAll(int check = 2);
 		void addSite();
-		void settingsSite(QString);
-		void deleteSite(QString);
-		void openSite(QString site) const;
+		void settingsSite(const QString &site);
+		void deleteSite(const QString &site);
+		void openSite(const QString &site) const;
 		void checkUpdate();
 		void checkClicked();
 		void checkForUpdates();
-		void checkForUpdatesReceived(QString source, bool isNew);
+		void checkForUpdatesReceived(const QString &source, bool isNew);
 		void addCheckboxes();
 		void removeCheckboxes();
 		void updateCheckboxes();
@@ -50,11 +50,11 @@ class sourcesWindow : public QDialog
 		void deletePreset();
 		void editPreset();
 		void savePreset();
-		void selectPreset(QString name);
+		void selectPreset(const QString &name);
 
 	signals:
 		void closed();
-		void valid(QList<Site*>);
+		void valid(const QList<Site*> &selectedSites);
 
 	private:
 		Ui::sourcesWindow *ui;

@@ -26,7 +26,7 @@ class LogWindow : public QDialog
 		void save();
 
 	signals:
-		void validated(int index, QMap<QString, QVariant> logFile);
+		void validated(int index, const QMap<QString, QVariant> &logFile);
 
 	private:
 		Ui::LogWindow *ui;

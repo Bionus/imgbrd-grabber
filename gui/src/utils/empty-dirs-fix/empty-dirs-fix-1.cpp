@@ -38,7 +38,7 @@ void EmptyDirsFix1::next()
 	edf2->show();
 }
 
-QStringList EmptyDirsFix1::mkList(QDir dir)
+QStringList EmptyDirsFix1::mkList(const QDir &dir)
 {
 	QStringList ret;
 	QStringList dirs = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
@@ -52,7 +52,7 @@ QStringList EmptyDirsFix1::mkList(QDir dir)
 	return ret;
 }
 
-bool EmptyDirsFix1::isEmpty(QDir dir)
+bool EmptyDirsFix1::isEmpty(const QDir &dir)
 {
 	QStringList files = dir.entryList(QDir::Files);
 	if (!files.isEmpty())

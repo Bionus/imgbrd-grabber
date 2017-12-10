@@ -157,7 +157,7 @@ void searchTab::setTagsFromPages(const QMap<QString, QList<QSharedPointer<Page>>
 	m_parent->setTags(m_tags, this);
 }
 
-QStringList searchTab::reasonsToFail(Page* page, QStringList completion, QString *meant)
+QStringList searchTab::reasonsToFail(Page* page, const QStringList &completion, QString *meant)
 {
 	QStringList reasons = QStringList();
 
@@ -352,7 +352,7 @@ void searchTab::failedLoading(Page *page)
 		postLoading(page, page->images());
 }
 
-void searchTab::postLoading(Page *page, QList<QSharedPointer<Image>> imgs)
+void searchTab::postLoading(Page *page, const QList<QSharedPointer<Image>> &imgs)
 {
 	m_page++;
 
@@ -529,7 +529,7 @@ float getImageKnownTagProportion(const QSharedPointer<Image> &img)
 	return (static_cast<float>(known) / static_cast<float>(img->tags().count()));
 }
 
-QList<QSharedPointer<Image>> searchTab::mergeResults(int page, QList<QSharedPointer<Image>> results)
+QList<QSharedPointer<Image>> searchTab::mergeResults(int page, const QList<QSharedPointer<Image>> &results)
 {
 	QMap<QString, float> pageMd5s;
 	for (const QSharedPointer<Image> &img : m_images)
@@ -576,7 +576,7 @@ QList<QSharedPointer<Image>> searchTab::mergeResults(int page, QList<QSharedPoin
 	return ret;
 }
 
-void searchTab::addMergedMd5(int page, QString md5)
+void searchTab::addMergedMd5(int page, const QString &md5)
 {
 	for (QPair<int, QSet<QString>> &pair : m_mergedMd5s)
 	{
@@ -592,7 +592,7 @@ void searchTab::addMergedMd5(int page, QString md5)
 	m_mergedMd5s.append(QPair<int, QSet<QString>>(page, set));
 }
 
-bool searchTab::containsMergedMd5(int page, QString md5)
+bool searchTab::containsMergedMd5(int page, const QString &md5)
 {
 	for (const QPair<int, QSet<QString>> &pair : m_mergedMd5s)
 	{
@@ -607,7 +607,7 @@ bool searchTab::containsMergedMd5(int page, QString md5)
 	return false;
 }
 
-void searchTab::addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, bool merged, QString noResultsMessage)
+void searchTab::addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, bool merged, const QString &noResultsMessage)
 {
 	if (merged)
 		return;
@@ -676,7 +676,7 @@ void searchTab::setMergedLabelText(QLabel *txt, const QList<QSharedPointer<Image
 	QString page = firstPage != lastPage ? QString("%1-%2").arg(firstPage).arg(lastPage) : QString::number(lastPage);
 	txt->setText(QString(links + " - Page %1 of %2 (%3 of max %4)").arg(page).arg(maxPage).arg(imgs.count()).arg(sumImages));
 }
-void searchTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage)
+void searchTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, const QString &noResultsMessage)
 {
 	int pageCount = page->pagesCount();
 	int imageCount = page->imagesCount();
@@ -926,7 +926,7 @@ void searchTab::addResultsImage(QSharedPointer<Image> img, bool merge)
 	layout->insertWidget(relativePosition, button);
 }
 
-void searchTab::addHistory(QString tags, int page, int ipp, int cols)
+void searchTab::addHistory(const QString &tags, int page, int ipp, int cols)
 {
 	QMap<QString, QString> srch;
 	srch["tags"] = tags;
@@ -1129,7 +1129,7 @@ void searchTab::openSourcesWindow()
 	adv->show();
 }
 
-void searchTab::saveSources(QList<Site*> sel, bool canLoad)
+void searchTab::saveSources(const QList<Site*> &sel, bool canLoad)
 {
 	log("Saving sources...");
 
@@ -1320,9 +1320,9 @@ QList<Site*> searchTab::loadSites() const
 { return m_selectedSources; }
 
 
-void searchTab::setSources(QList<Site*> sources)
+void searchTab::setSources(const QList<Site*> &sources)
 { m_selectedSources = sources; }
-void searchTab::toggleSource(QString url)
+void searchTab::toggleSource(const QString &url)
 {
 	Site *site = m_sites.value(url);
 
@@ -1376,7 +1376,7 @@ void searchTab::setImagesPerPage(int ipp)
 { ui_spinImagesPerPage->setValue(ipp); }
 void searchTab::setColumns(int columns)
 { ui_spinColumns->setValue(columns); }
-void searchTab::setPostFilter(QString postfilter)
+void searchTab::setPostFilter(const QString &postfilter)
 { m_postFiltering->setText(postfilter); }
 
 int searchTab::imagesPerPage()

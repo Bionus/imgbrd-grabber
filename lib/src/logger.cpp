@@ -6,7 +6,7 @@
 #endif
 
 
-void Logger::setLogFile(QString path)
+void Logger::setLogFile(const QString &path)
 {
 	m_logFile.setFileName(path);
 	m_logFile.open(QFile::Append | QFile::Text | QFile::Truncate);
@@ -21,7 +21,7 @@ void Logger::setLogLevel(LogLevel level)
  * Append text in the log in a new line.
  * @param	l	The message to append.
  */
-void Logger::log(QString l, LogLevel level)
+void Logger::log(const QString &l, LogLevel level)
 {
 	if (level < m_level)
 		return;
@@ -50,7 +50,7 @@ void Logger::log(QString l, LogLevel level)
 	#endif
 }
 
-void Logger::logCommand(QString l)
+void Logger::logCommand(const QString &l)
 {
 	if (!m_fCommandsLog.isOpen())
 	{
@@ -62,7 +62,7 @@ void Logger::logCommand(QString l)
 	m_fCommandsLog.flush();
 }
 
-void Logger::logCommandSql(QString l)
+void Logger::logCommandSql(const QString &l)
 {
 	if (!m_fCommandsSqlLog.isOpen())
 	{
@@ -78,7 +78,7 @@ void Logger::logCommandSql(QString l)
  * Append text in the log at the end of the current line.
  * @param	l	The message to append.
  */
-void Logger::logUpdate(QString l)
+void Logger::logUpdate(const QString &l)
 {
 	Q_UNUSED(l);
 
@@ -91,7 +91,7 @@ void Logger::logUpdate(QString l)
 }
 
 
-void log(QString l, Logger::LogLevel level)
+void log(const QString &l, Logger::LogLevel level)
 {
 	LOG(l, level);
 }

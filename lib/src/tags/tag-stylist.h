@@ -13,7 +13,7 @@ class TagStylist
 {
 	public:
 		explicit TagStylist(Profile *profile);
-		QStringList stylished(QList<Tag> tags, bool count = false, bool noUnderscores = false, QString sort = "") const;
+		QStringList stylished(QList<Tag> tags, bool count = false, bool noUnderscores = false, const QString &sort = "") const;
 		QString stylished(const Tag &tag, bool count = false, bool noUnderscores = false) const;
 
 	private:

@@ -4,7 +4,7 @@
 #include <QTextStream>
 
 
-TagDatabase::TagDatabase(QString typeFile)
+TagDatabase::TagDatabase(const QString &typeFile)
 	: m_typeFile(typeFile)
 {}
 

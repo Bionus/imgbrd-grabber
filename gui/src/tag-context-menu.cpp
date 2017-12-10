@@ -5,7 +5,7 @@
 #include <QProcess>
 
 
-TagContextMenu::TagContextMenu(QString tag, QList<Tag> allTags, QUrl browserUrl, Profile *profile, bool setImage, QWidget *parent)
+TagContextMenu::TagContextMenu(const QString &tag, const QList<Tag> &allTags, const QUrl &browserUrl, Profile *profile, bool setImage, QWidget *parent)
 	: QMenu(parent), m_tag(tag), m_allTags(allTags), m_browserUrl(browserUrl), m_profile(profile)
 {
 	// Favorites

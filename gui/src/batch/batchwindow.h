@@ -32,8 +32,8 @@ class batchWindow : public QDialog
 		int totalValue() const;
 		int totalMax() const;
 		int endAction();
-		int indexOf(QString);
-		int batch(QString);
+		int indexOf(const QString &url);
+		int batch(const QString &url);
 		void setCount(int);
 		void updateColumns();
 		bool endRemove();
@@ -43,23 +43,23 @@ class batchWindow : public QDialog
 	public slots:
 		void clear();
 		void clearImages();
-		void setText(QString);
+		void setText(const QString &text);
 		void setCurrentValue(int val);
 		void setCurrentMax(int max);
 		void setTotalValue(int val);
 		void setTotalMax(int max);
-		void addImage(QString, int, float);
-		void sizeImage(QString, float);
-		void loadingImage(QString);
-		void statusImage(QString, int);
-		void speedImage(QString, float);
-		void loadedImage(QString url, Downloadable::SaveResult result);
+		void addImage(const QString &, int, float);
+		void sizeImage(const QString &, float);
+		void loadingImage(const QString &url);
+		void statusImage(const QString &, int);
+		void speedImage(const QString &, float);
+		void loadedImage(const QString &url, Downloadable::SaveResult result);
 		void on_buttonDetails_clicked(bool visible);
 		void closeEvent(QCloseEvent *) override;
 		void copyToClipboard();
 		void cancel();
 		void drawSpeed();
-		void imageUrlChanged(QString, QString);
+		void imageUrlChanged(const QString &before, const QString &after);
 		void pause();
 		void skip();
 

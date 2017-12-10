@@ -42,7 +42,7 @@ void UpdateDialog::checkForUpdates()
 	m_updater.checkForUpdates();
 }
 
-void UpdateDialog::checkForUpdatesDone(QString newVersion, bool available, QString changelog)
+void UpdateDialog::checkForUpdatesDone(const QString &newVersion, bool available, const QString &changelog)
 {
 	if (!available)
 	{
@@ -90,7 +90,7 @@ void UpdateDialog::downloadProgress(qint64 bytesReceived, qint64 bytesTotal)
 	ui->progressDownload->setValue(bytesReceived);
 }
 
-void UpdateDialog::downloadFinished(QString path)
+void UpdateDialog::downloadFinished(const QString &path)
 {
 	ui->progressDownload->setValue(ui->progressDownload->maximum());
 

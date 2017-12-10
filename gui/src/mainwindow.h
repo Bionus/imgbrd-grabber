@@ -46,7 +46,7 @@ class mainWindow : public QMainWindow
 
 	public slots:
 		// Log
-		void logShow(QString msg);
+		void logShow(const QString &msg);
 		void logClear();
 		void logOpen();
 		// Menus
@@ -89,7 +89,7 @@ class mainWindow : public QMainWindow
 		// Batch download
 		void getAll(bool all = true);
 		void getAllFinishedPage(Page *page);
-		void getAllFinishedImages(QList<QSharedPointer<Image>> images);
+		void getAllFinishedImages(const QList<QSharedPointer<Image> > &images);
 		void getAllImages();
 		void getAllGetImage(QSharedPointer<Image> img);
 		void getAllGetImageSaved(QSharedPointer<Image> img, QMap<QString, Image::SaveResult> result);
@@ -107,8 +107,8 @@ class mainWindow : public QMainWindow
 		bool needExactTags(QSettings *settings);
 		void _getAll();
 		// Tabs
-		void addTab(QString tag = "", bool background = false, bool save = true);
-		void addPoolTab(int pool = 0, QString site = "", bool background = false, bool save = true);
+		void addTab(const QString &tag = "", bool background = false, bool save = true);
+		void addPoolTab(int pool = 0, const QString &site = "", bool background = false, bool save = true);
 		void addSearchTab(searchTab*, bool background = false, bool save = true);
 		void updateTabTitle(searchTab*);
 		void tabClosed(searchTab*);
@@ -122,11 +122,11 @@ class mainWindow : public QMainWindow
 		void tabNext();
 		void tabPrev();
 		// Tag list
-		void loadMd5(QString path, bool newTab = true, bool background = true, bool save = true);
-		void loadTag(QString tag, bool newTab = true, bool background = true, bool save = true);
-		void loadTagTab(QString tag);
-		void loadTagNoTab(QString tag);
-		void linkHovered(QString tag);
+		void loadMd5(const QString &path, bool newTab = true, bool background = true, bool save = true);
+		void loadTag(const QString &tag, bool newTab = true, bool background = true, bool save = true);
+		void loadTagTab(const QString &tag);
+		void loadTagNoTab(const QString &tag);
+		void linkHovered(const QString &tag);
 		void contextMenu();
 		void openInNewTab();
 		// Others
@@ -136,19 +136,19 @@ class mainWindow : public QMainWindow
 		void parseArgs(const QStringList &args, const QMap<QString, QString> &params);
 		void on_buttonSaveLinkList_clicked();
 		void on_buttonLoadLinkList_clicked();
-		bool saveLinkList(QString filename);
-		bool loadLinkList(QString filename);
+		bool saveLinkList(const QString &filename);
+		bool loadLinkList(const QString &filename);
 		void on_buttonSaveSettings_clicked();
 		void on_buttonInitSettings_clicked();
 		void saveSettings();
 		void on_buttonFolder_clicked();
-		void imageUrlChanged(QString, QString);
+		void imageUrlChanged(const QString &, const QString &);
 		void updateCompleters();
-		void setSource(QString site);
-		void setTags(QList<Tag> tags, searchTab *from = nullptr);
+		void setSource(const QString &site);
+		void setTags(const QList<Tag> &tags, searchTab *from = nullptr);
 		void initialLoginsFinished();
-		QIcon& getIcon(QString path);
-		void setWiki(QString);
+		QIcon& getIcon(const QString &path);
+		void setWiki(const QString &);
 		void siteDeleted(Site *site);
 
 		// Drag & drop
@@ -161,7 +161,7 @@ class mainWindow : public QMainWindow
 		void getAllImageOk(QSharedPointer<Image> img, int site_id);
 		Site* getSelectedSiteOrDefault();
 		void initialLoginsDone();
-		void addTableItem(QTableWidget *table, int row, int col, QString text);
+		void addTableItem(QTableWidget *table, int row, int col, const QString &text);
 
 	private:
 		Profile				*m_profile;

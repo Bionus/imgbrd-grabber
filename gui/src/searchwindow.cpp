@@ -83,7 +83,7 @@ SearchWindow::~SearchWindow()
 	delete ui;
 }
 
-QString SearchWindow::generateSearch(QString additional) const
+QString SearchWindow::generateSearch(const QString &additional) const
 {
 	QStringList orders = QStringList() << "id" << "id_desc" << "score_asc" << "score" << "mpixels_asc" << "mpixels" << "filesize" << "landscape" << "portrait" << "favcount" << "rank";
 	QStringList ratings = QStringList() << "rating:safe" << "-rating:safe" << "rating:questionable" << "-rating:questionable" << "rating:explicit" << "-rating:explicit";

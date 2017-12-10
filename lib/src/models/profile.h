@@ -19,8 +19,8 @@ class Profile : public QObject
 
 	public:
 		Profile();
-		Profile(QSettings *settings, QList<Favorite> favorites, QStringList keptForLater = QStringList(), QString path = QString());
-		explicit Profile(QString path);
+		Profile(QSettings *settings, const QList<Favorite> &favorites, const QStringList &keptForLater = QStringList(), const QString &path = QString());
+		explicit Profile(const QString &path);
 		~Profile() override;
 		void sync();
 
@@ -28,36 +28,36 @@ class Profile : public QObject
 		QString tempPath() const;
 
 		// Favorite management
-		void addFavorite(Favorite fav);
-		void removeFavorite(Favorite fav);
+		void addFavorite(const Favorite &fav);
+		void removeFavorite(const Favorite &fav);
 		void emitFavorite();
 
 		// KFL management
-		void addKeptForLater(QString tag);
-		void removeKeptForLater(QString tag);
+		void addKeptForLater(const QString &tag);
+		void removeKeptForLater(const QString &tag);
 
 		// Ignore management
-		void addIgnored(QString tag);
-		void removeIgnored(QString tag);
+		void addIgnored(const QString &tag);
+		void removeIgnored(const QString &tag);
 
 		// MD5 management
-		QPair<QString, QString> md5Action(QString md5);
-		QString md5Exists(QString md5);
-		void addMd5(QString md5, QString path);
-		void setMd5(QString md5, QString path);
-		void removeMd5(QString md5);
+		QPair<QString, QString> md5Action(const QString &md5);
+		QString md5Exists(const QString &md5);
+		void addMd5(const QString &md5, const QString &path);
+		void setMd5(const QString &md5, const QString &path);
+		void removeMd5(const QString &md5);
 
 		// Auto-completion
-		void addAutoComplete(QString tag);
+		void addAutoComplete(const QString &tag);
 
 		// Sites management
 		void addSite(Site *site);
 		void removeSite(Site *site);
 
 		// Blacklist management
-		void setBlacklistedTags(QStringList tags);
-		void addBlacklistedTag(QString tag);
-		void removeBlacklistedTag(QString tag);
+		void setBlacklistedTags(const QStringList &tags);
+		void addBlacklistedTag(const QString &tag);
+		void removeBlacklistedTag(const QString &tag);
 
 		// Getters
 		QString getPath() const;
@@ -71,7 +71,7 @@ class Profile : public QObject
 		QStringList &getBlacklist();
 		const QMap<QString, Source*> &getSources() const;
 		const QMap<QString, Site*> &getSites() const;
-		QList<Site*> getFilteredSites(QStringList urls) const;
+		QList<Site*> getFilteredSites(const QStringList &urls) const;
 
 	private:
 		void syncFavorites();

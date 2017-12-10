@@ -79,9 +79,9 @@ class FilenameTest : public TestSuite
 		void testEscapeMethod();
 
 	protected:
-		void assertPath(QString format, QString expected, QString path = "", bool shouldFixFilename = true, bool fullPath = false, bool keepInvalidTokens = false);
-		void assertPath(QString format, QStringList expected, QString path = "", bool shouldFixFilename = true, bool fullPath = false, bool keepInvalidTokens = false);
-		void assertExpand(QString format, QString expected);
+		void assertPath(const QString &format, const QString &expected, const QString &path = "", bool shouldFixFilename = true, bool fullPath = false, bool keepInvalidTokens = false);
+		void assertPath(const QString &format, const QStringList &expected, QString path = "", bool shouldFixFilename = true, bool fullPath = false, bool keepInvalidTokens = false);
+		void assertExpand(const QString &format, const QString &expected);
 
 	private:
 		Profile *m_profile;

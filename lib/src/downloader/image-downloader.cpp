@@ -3,11 +3,11 @@
 #include "models/filename.h"
 
 
-ImageDownloader::ImageDownloader(QSharedPointer<Image> img, QString filename, QString path, int count, bool addMd5, bool startCommands, QObject *parent, bool loadTags)
+ImageDownloader::ImageDownloader(QSharedPointer<Image> img, const QString &filename, const QString &path, int count, bool addMd5, bool startCommands, QObject *parent, bool loadTags)
 	: QObject(parent), m_fileDownloader(this), m_image(img), m_filename(filename), m_path(path), m_loadTags(loadTags), m_count(count), m_addMd5(addMd5), m_startCommands(startCommands), m_writeError(false)
 {}
 
-ImageDownloader::ImageDownloader(QSharedPointer<Image> img, QStringList paths, int count, bool addMd5, bool startCommands, QObject *parent)
+ImageDownloader::ImageDownloader(QSharedPointer<Image> img, const QStringList &paths, int count, bool addMd5, bool startCommands, QObject *parent)
 	: QObject(parent), m_fileDownloader(this), m_image(img), m_paths(paths), m_count(count), m_addMd5(addMd5), m_startCommands(startCommands), m_writeError(false)
 {}
 
@@ -58,7 +58,7 @@ void ImageDownloader::loadedSave()
 	}
 }
 
-QMap<QString, Image::SaveResult> ImageDownloader::makeMap(QStringList keys, Image::SaveResult value)
+QMap<QString, Image::SaveResult> ImageDownloader::makeMap(const QStringList &keys, Image::SaveResult value)
 {
 	QMap<QString, Image::SaveResult> res;
 	for (const QString &key : keys)
@@ -72,7 +72,7 @@ void ImageDownloader::writeError()
 	emit saved(m_image, makeMap(m_paths, Image::SaveResult::Error));
 }
 
-void ImageDownloader::networkError(QNetworkReply::NetworkError error, QString msg)
+void ImageDownloader::networkError(QNetworkReply::NetworkError error, const QString &msg)
 {
 	if (error == QNetworkReply::ContentNotFoundError)
 	{ emit saved(m_image, makeMap(m_paths, Image::SaveResult::NotFound)); }

@@ -4,7 +4,7 @@
 #include <QNetworkRequest>
 
 
-SourceUpdater::SourceUpdater(QString source, QString directory, QString baseUrl)
+SourceUpdater::SourceUpdater(const QString &source, const QString &directory, const QString &baseUrl)
 	: m_source(source), m_directory(directory), m_baseUrl(baseUrl)
 {
 	if (!m_baseUrl.endsWith("/"))

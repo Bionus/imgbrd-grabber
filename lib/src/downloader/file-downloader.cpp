@@ -7,17 +7,17 @@ FileDownloader::FileDownloader(QObject *parent)
 	: QObject(parent), m_reply(Q_NULLPTR)
 {}
 
-bool FileDownloader::start(QNetworkReply *reply, QString path)
+bool FileDownloader::start(QNetworkReply *reply, const QString &path)
 {
 	return start(reply, QStringList(path));
 }
-bool FileDownloader::start(QNetworkReply *reply, QStringList paths)
+bool FileDownloader::start(QNetworkReply *reply, const QStringList &paths)
 {
-	m_file.setFileName(paths.takeFirst());
+	m_copies = paths;
+	m_file.setFileName(m_copies.takeFirst());
 	bool ok = m_file.open(QFile::WriteOnly | QFile::Truncate);
 
 	m_writeError = false;
-	m_copies = paths;
 	m_reply = reply;
 
 	if (ok)

@@ -5,7 +5,7 @@
 TagType::TagType()
 	: TagType("unknown")
 {}
-TagType::TagType(QString name)
+TagType::TagType(const QString &name)
 	: m_name(name)
 {}
 

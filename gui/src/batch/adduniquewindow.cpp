@@ -39,7 +39,7 @@ void AddUniqueWindow::on_buttonFolder_clicked()
 	if (!folder.isEmpty())
 	{ ui->lineFolder->setText(folder); }
 }
-void AddUniqueWindow::on_lineFilename_textChanged(QString text)
+void AddUniqueWindow::on_lineFilename_textChanged(const QString &text)
 {
 	QString message;
 	Filename fn(text);

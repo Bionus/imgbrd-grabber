@@ -5,7 +5,7 @@
 #include "functions.h"
 
 
-RenameExisting2::RenameExisting2(QList<RenameExistingFile> details, QString folder, QWidget *parent)
+RenameExisting2::RenameExisting2(const QList<RenameExistingFile> &details, const QString &folder, QWidget *parent)
 	: QDialog(parent), ui(new Ui::RenameExisting2), m_details(details), m_folder(folder)
 {
 	ui->setupUi(this);
@@ -50,7 +50,7 @@ void RenameExisting2::on_buttonCancel_clicked()
 	close();
 }
 
-void RenameExisting2::deleteDir(QString path)
+void RenameExisting2::deleteDir(const QString &path)
 {
 	if (path == m_folder)
 		return;

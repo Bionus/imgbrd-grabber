@@ -8,7 +8,7 @@ ExtensionRotator::ExtensionRotator(const ExtensionRotator &other)
 	m_next = other.m_next;
 }
 
-ExtensionRotator::ExtensionRotator(QString initialExtension, QStringList extensions, QObject *parent)
+ExtensionRotator::ExtensionRotator(const QString &initialExtension, const QStringList &extensions, QObject *parent)
 	: QObject(parent), m_initialExtension(initialExtension), m_extensions(extensions)
 {
 	int index = extensions.indexOf(initialExtension);

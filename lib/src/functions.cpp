@@ -97,7 +97,7 @@ QStringList getExternalLogFilesSuffixes(QSettings *settings)
 	return suffixes;
 }
 
-QStringList removeWildards(QStringList elements, QStringList remove)
+QStringList removeWildards(const QStringList &elements, const QStringList &remove)
 {
 	QStringList tags;
 
@@ -227,7 +227,7 @@ bool validSavePath(const QString &file, bool writable)
  * @param	exists	If the file must already exist beforehand.
  * @return			The absolute path to the file.
  */
-QString savePath(QString file, bool exists, bool writable)
+QString savePath(const QString &file, bool exists, bool writable)
 {
 	QString check = exists ? file : "settings.ini";
 
@@ -322,7 +322,7 @@ int levenshtein(QString s1, QString s2)
 	return d[len1][len2];
 }
 
-bool setFileCreationDate(QString path, QDateTime datetime)
+bool setFileCreationDate(const QString &path, const QDateTime &datetime)
 {
 	#ifdef Q_OS_WIN
 		QByteArray bytePath = path.toLocal8Bit();
@@ -365,7 +365,7 @@ bool setFileCreationDate(QString path, QDateTime datetime)
  * @param	dom		The DOM element to convert.
  * @return	A QString map with names (joined with a slash if necessary) as keys and texts as values.
  */
-QMap<QString, QString> domToMap(QDomElement dom)
+QMap<QString, QString> domToMap(const QDomElement &dom)
 {
 	QMap<QString, QString> details;
 	dom.firstChildElement("Name").firstChild().nodeValue();
@@ -421,9 +421,9 @@ void openTray()
 	#endif
 }
 
-QString getExtension(QUrl url)
+QString getExtension(const QUrl &url)
 { return getExtension(url.toString()); }
-QString getExtension(QString url)
+QString getExtension(const QString &url)
 {
 	QString ext;
 	int pPos = url.lastIndexOf('.');
@@ -436,7 +436,7 @@ QString getExtension(QString url)
 	return ext;
 }
 
-QString setExtension(QString url, QString extension)
+QString setExtension(QString url, const QString &extension)
 {
 	int pPos = url.lastIndexOf('.');
 	if (pPos != -1 && pPos > url.indexOf('/', 7))
@@ -450,7 +450,7 @@ QString setExtension(QString url, QString extension)
 	return url;
 }
 
-bool isUrl(QString str)
+bool isUrl(const QString &str)
 {
 	static QRegularExpression regexUrl("^https?://[^\\s/$.?#].[^\\s]*$");
 	return regexUrl.match(str).hasMatch();
@@ -471,7 +471,7 @@ QString fixFilename(QString fn, QString path, int maxlength, bool invalidChars)
 	#endif
 }
 
-QString fixFilenameLinux(QString fn, QString path, int maxlength, bool invalidChars)
+QString fixFilenameLinux(const QString &fn, const QString &path, int maxlength, bool invalidChars)
 {
 	Q_UNUSED(invalidChars);
 
@@ -537,7 +537,7 @@ QString fixFilenameLinux(QString fn, QString path, int maxlength, bool invalidCh
 	#define MAX_PATH 260
 #endif
 
-QString fixFilenameWindows(QString fn, QString path, int maxlength, bool invalidChars)
+QString fixFilenameWindows(const QString &fn, const QString &path, int maxlength, bool invalidChars)
 {
 	// Fix parameters
 	QString sep = "\\";

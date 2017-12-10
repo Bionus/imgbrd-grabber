@@ -35,8 +35,8 @@ class poolTab : public searchTab
 
 	public slots:
 		// Zooms
-		void setTags(QString tags, bool preload = true) override;
-		void setPool(int id, QString site);
+		void setTags(const QString &tags, bool preload = true) override;
+		void setPool(int id, const QString &site);
 		// Loading
 		void load() override;
 		// Batch
@@ -45,7 +45,7 @@ class poolTab : public searchTab
 		// Others
 		void closeEvent(QCloseEvent*) override;
 		void on_buttonSearch_clicked();
-		void setSite(QString);
+		void setSite(const QString &site);
 		void focusSearch() override;
 		void updateTitle() override;
 

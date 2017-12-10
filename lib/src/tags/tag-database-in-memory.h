@@ -8,11 +8,11 @@
 class TagDatabaseInMemory : public TagDatabase
 {
 	public:
-		TagDatabaseInMemory(QString typeFile, QString tagFile);
+		TagDatabaseInMemory(const QString &typeFile, const QString &tagFile);
 		bool load() override;
 		bool save() override;
 		void setTags(const QList<Tag> &tags) override;
-		QMap<QString, TagType> getTagTypes(QStringList tags) const override;
+		QMap<QString, TagType> getTagTypes(const QStringList &tags) const override;
 		int count() const override;
 
 	private:

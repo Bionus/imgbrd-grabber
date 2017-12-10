@@ -8,10 +8,10 @@
 Profile::Profile()
 	: m_settings(nullptr), m_commands(nullptr)
 {}
-Profile::Profile(QSettings *settings, QList<Favorite> favorites, QStringList keptForLater, QString path)
+Profile::Profile(QSettings *settings, const QList<Favorite> &favorites, const QStringList &keptForLater, const QString &path)
 	: m_path(path), m_settings(settings), m_favorites(favorites), m_keptForLater(keptForLater), m_commands(nullptr)
 {}
-Profile::Profile(QString path)
+Profile::Profile(const QString &path)
 	: m_path(path)
 {
 	m_settings = new QSettings(m_path + "/settings.ini", QSettings::IniFormat);
@@ -198,7 +198,7 @@ QString Profile::tempPath() const
 	return tmp + QDir::separator() + subDir;
 }
 
-void Profile::addFavorite(Favorite fav)
+void Profile::addFavorite(const Favorite &fav)
 {
 	m_favorites.removeAll(fav);
 	m_favorites.append(fav);
@@ -206,7 +206,7 @@ void Profile::addFavorite(Favorite fav)
 	syncFavorites();
 	emit favoritesChanged();
 }
-void Profile::removeFavorite(Favorite fav)
+void Profile::removeFavorite(const Favorite &fav)
 {
 	m_favorites.removeAll(fav);
 
@@ -222,7 +222,7 @@ void Profile::emitFavorite()
 	emit favoritesChanged();
 }
 
-void Profile::addKeptForLater(QString tag)
+void Profile::addKeptForLater(const QString &tag)
 {
 	m_keptForLater.removeAll(tag);
 	m_keptForLater.append(tag);
@@ -230,7 +230,7 @@ void Profile::addKeptForLater(QString tag)
 	syncKeptForLater();
 	emit keptForLaterChanged();
 }
-void Profile::removeKeptForLater(QString tag)
+void Profile::removeKeptForLater(const QString &tag)
 {
 	m_keptForLater.removeAll(tag);
 
@@ -238,7 +238,7 @@ void Profile::removeKeptForLater(QString tag)
 	emit keptForLaterChanged();
 }
 
-void Profile::addIgnored(QString tag)
+void Profile::addIgnored(const QString &tag)
 {
 	m_ignored.removeAll(tag);
 	m_ignored.append(tag);
@@ -246,7 +246,7 @@ void Profile::addIgnored(QString tag)
 	syncIgnored();
 	emit ignoredChanged();
 }
-void Profile::removeIgnored(QString tag)
+void Profile::removeIgnored(const QString &tag)
 {
 	m_ignored.removeAll(tag);
 
@@ -254,7 +254,7 @@ void Profile::removeIgnored(QString tag)
 	emit ignoredChanged();
 }
 
-QPair<QString, QString> Profile::md5Action(QString md5)
+QPair<QString, QString> Profile::md5Action(const QString &md5)
 {
 	QString action = m_settings->value("Save/md5Duplicates", "save").toString();
 	bool keepDeleted = m_settings->value("Save/keepDeletedMd5", false).toBool();
@@ -282,7 +282,7 @@ QPair<QString, QString> Profile::md5Action(QString md5)
  * @param	md5		The md5 that needs to be checked.
  * @return			A QString containing the path to the already existing file, an empty QString if the md5 does not already exists.
  */
-QString Profile::md5Exists(QString md5)
+QString Profile::md5Exists(const QString &md5)
 {
 	if (m_md5s.contains(md5))
 	{
@@ -300,7 +300,7 @@ QString Profile::md5Exists(QString md5)
  * @param	md5		The md5 to add.
  * @param	path	The path to the image with this md5.
  */
-void Profile::addMd5(QString md5, QString path)
+void Profile::addMd5(const QString &md5, const QString &path)
 {
 	if (!md5.isEmpty())
 	{ m_md5s.insert(md5, path); }
@@ -311,7 +311,7 @@ void Profile::addMd5(QString md5, QString path)
  * @param	md5		The md5 to add.
  * @param	path	The path to the image with this md5.
  */
-void Profile::setMd5(QString md5, QString path)
+void Profile::setMd5(const QString &md5, const QString &path)
 {
 	m_md5s[md5] = path;
 }
@@ -320,13 +320,13 @@ void Profile::setMd5(QString md5, QString path)
  * Removes a md5 from the _md5 map and removes it from the md5 file.
  * @param	md5		The md5 to remove.
  */
-void Profile::removeMd5(QString md5)
+void Profile::removeMd5(const QString &md5)
 {
 	m_md5s.remove(md5);
 }
 
 
-void Profile::addAutoComplete(QString tag)
+void Profile::addAutoComplete(const QString &tag)
 {
 	m_customAutoComplete.append(tag);
 }
@@ -346,19 +346,19 @@ void Profile::removeSite(Site *site)
 }
 
 
-void Profile::setBlacklistedTags(QStringList tags)
+void Profile::setBlacklistedTags(const QStringList &tags)
 {
 	m_blacklistedTags = tags;
 	emit blacklistChanged();
 }
 
-void Profile::addBlacklistedTag(QString tag)
+void Profile::addBlacklistedTag(const QString &tag)
 {
 	m_blacklistedTags.append(tag);
 	emit blacklistChanged();
 }
 
-void Profile::removeBlacklistedTag(QString tag)
+void Profile::removeBlacklistedTag(const QString &tag)
 {
 	m_blacklistedTags.removeAll(tag);
 	emit blacklistChanged();
@@ -377,7 +377,7 @@ QStringList &Profile::getBlacklist()			{ return m_blacklistedTags;		}
 const QMap<QString, Source*> &Profile::getSources() const	{ return m_sources;	}
 const QMap<QString, Site*> &Profile::getSites() const		{ return m_sites;	}
 
-QList<Site*> Profile::getFilteredSites(QStringList urls) const
+QList<Site*> Profile::getFilteredSites(const QStringList &urls) const
 {
 	QList<Site*> ret;
 	for (const QString &url : urls)

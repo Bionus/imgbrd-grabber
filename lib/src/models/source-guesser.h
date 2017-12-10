@@ -15,7 +15,7 @@ class SourceGuesser : public QObject
 	Q_OBJECT
 
 	public:
-		SourceGuesser(QString url, QList<Source*> sources);
+		SourceGuesser(const QString &url, const QList<Source*> &sources);
 		Source *start();
 
 	signals:

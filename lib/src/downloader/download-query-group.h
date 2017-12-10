@@ -14,8 +14,8 @@ class DownloadQueryGroup
 	public:
 		// Constructors
 		DownloadQueryGroup() = default;
-		DownloadQueryGroup(QSettings *settings, QString tags, int page, int perPage, int total, QStringList postFiltering, Site *site, QString unk = "");
-		DownloadQueryGroup(QString tags, int page, int perPage, int total, QStringList postFiltering, bool getBlacklisted, Site *site, QString filename, QString path, QString unk = "");
+		DownloadQueryGroup(QSettings *settings, const QString &tags, int page, int perPage, int total, const QStringList &postFiltering, Site *site, const QString &unk = "");
+		DownloadQueryGroup(const QString &tags, int page, int perPage, int total, const QStringList &postFiltering, bool getBlacklisted, Site *site, const QString &filename, const QString &path, const QString &unk = "");
 
 		// Serialization
 		QString toString(const QString &separator) const;

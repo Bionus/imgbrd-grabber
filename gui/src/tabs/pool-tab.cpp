@@ -162,7 +162,7 @@ void poolTab::getAll()
 }
 
 
-void poolTab::setTags(QString tags, bool preload)
+void poolTab::setTags(const QString &tags, bool preload)
 {
 	activateWindow();
 	m_search->setText(tags);
@@ -172,7 +172,7 @@ void poolTab::setTags(QString tags, bool preload)
 	else
 		updateTitle();
 }
-void poolTab::setPool(int id, QString site)
+void poolTab::setPool(int id, const QString &site)
 {
 	activateWindow();
 	ui->spinPool->setValue(id);
@@ -181,7 +181,7 @@ void poolTab::setPool(int id, QString site)
 	{ ui->comboSites->setCurrentIndex(index); }
 	load();
 }
-void poolTab::setSite(QString site)
+void poolTab::setSite(const QString &site)
 {
 	int index = ui->comboSites->findText(site);
 	if (index != -1)

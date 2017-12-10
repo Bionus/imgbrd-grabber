@@ -23,7 +23,7 @@ class FunctionsTest : public TestSuite
 		void testParseMarkdownIssueLinks();
 
 	protected:
-		void assertFixFilename(int platform, QString filename, QString path, QString expected);
+		void assertFixFilename(int platform, const QString &filename, const QString &path, const QString &expected);
 };
 
 #endif // FUNCTIONS_TEST_H

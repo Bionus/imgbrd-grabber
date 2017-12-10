@@ -70,9 +70,9 @@ class optionsWindow : public QDialog
 		void on_buttonCustom_clicked();
 		void on_buttonImageBackgroundColor_textChanged();
 		void on_buttonImageBackgroundColor_clicked();
-		void addCustom(QString, QString);
+		void addCustom(const QString &, const QString &);
 		void on_buttonFilenames_clicked();
-		void addFilename(QString, QString, QString);
+		void addFilename(const QString &, const QString &, const QString &);
 
 		// Log files
 		void addLogFile();
@@ -86,7 +86,7 @@ class optionsWindow : public QDialog
 		void showWebServices();
 		void editWebService(int id);
 		void removeWebService(int id);
-		void setWebService(ReverseSearchEngine rse, QByteArray favicon);
+		void setWebService(ReverseSearchEngine rse, const QByteArray &favicon);
 		void moveUpWebService(int id);
 		void moveDownWebService(int id);
 		void swapWebServices(int a, int b);
@@ -94,7 +94,7 @@ class optionsWindow : public QDialog
 		void save();
 
 	signals:
-		void languageChanged(QString);
+		void languageChanged(const QString &lang);
 		void settingsChanged();
 
 	private:

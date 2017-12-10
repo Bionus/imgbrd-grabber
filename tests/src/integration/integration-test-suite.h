@@ -18,13 +18,13 @@ class IntegrationTestSuite : public TestSuite
 		void cleanup();
 
 	protected:
-		QList<Image*> getImages(QString site, QString source, QString format, QString tags, QString file = "");
-		QList<Tag> getPageTags(QString site, QString source, QString format, QString tags, QString file = "");
-		QList<Tag> getTags(QString site, QString source, QString format, QString file = "");
+		QList<Image*> getImages(const QString &site, const QString &source, const QString &format, const QString &tags, const QString &file = "");
+		QList<Tag> getPageTags(const QString &site, const QString &source, const QString &format, const QString &tags, const QString &file = "");
+		QList<Tag> getTags(const QString &site, const QString &source, const QString &format, const QString &file = "");
 
 	protected:
-		Downloader	*m_downloader;
-		Site		*m_site;
+		Downloader *m_downloader;
+		Site *m_site;
 		QStringList m_filesToRemove;
 };
 

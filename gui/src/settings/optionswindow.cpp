@@ -357,7 +357,7 @@ void optionsWindow::on_buttonCustom_clicked()
 	connect(cw, SIGNAL(validated(QString, QString)), this, SLOT(addCustom(QString, QString)));
 	cw->show();
 }
-void optionsWindow::addCustom(QString name, QString tags)
+void optionsWindow::addCustom(const QString &name, const QString &tags)
 {
 	auto *leName = new QLineEdit(name);
 	auto *leTags = new QLineEdit(tags);
@@ -371,7 +371,7 @@ void optionsWindow::on_buttonFilenames_clicked()
 	connect(cw, SIGNAL(validated(QString, QString, QString)), this, SLOT(addFilename(QString, QString, QString)));
 	cw->show();
 }
-void optionsWindow::addFilename(QString condition, QString filename, QString folder)
+void optionsWindow::addFilename(const QString &condition, const QString &filename, const QString &folder)
 {
 	auto *leCondition = new QLineEdit(condition);
 	auto *leFilename = new QLineEdit(filename);
@@ -563,7 +563,7 @@ void optionsWindow::removeWebService(int id)
 	showWebServices();
 }
 
-void optionsWindow::setWebService(ReverseSearchEngine rse, QByteArray favicon)
+void optionsWindow::setWebService(ReverseSearchEngine rse, const QByteArray &favicon)
 {
 	bool isNew = rse.id() < 0;
 
@@ -623,7 +623,7 @@ void optionsWindow::moveDownWebService(int id)
 	swapWebServices(i, i + 1);
 }
 
-int sortByOrder(ReverseSearchEngine a, ReverseSearchEngine b)
+int sortByOrder(const ReverseSearchEngine &a, const ReverseSearchEngine &b)
 { return a.order() < b.order(); }
 void optionsWindow::swapWebServices(int a, int b)
 {

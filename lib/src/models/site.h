@@ -50,7 +50,7 @@ class Site : public QObject
 			LoggedIn = 3,
 		};
 
-		Site(QString url, Source *source);
+		Site(const QString &url, Source *source);
 		~Site() override;
 		void loadConfig();
 		void initManager();
@@ -62,9 +62,9 @@ class Site : public QObject
 		void setSetting(const QString &key, const QVariant &value, const QVariant &def);
 		void syncSettings();
 		TagDatabase *tagDatabase() const;
-		QNetworkRequest makeRequest(QUrl url, Page *page = nullptr, QString referer = "", Image *img = nullptr);
-		QNetworkReply *get(QUrl url, Page *page = nullptr, QString referer = "", Image *img = nullptr);
-		void getAsync(QueryType type, QUrl url, std::function<void(QNetworkReply *)> callback, Page *page = nullptr, QString referer = "", Image *img = nullptr);
+		QNetworkRequest makeRequest(QUrl url, Page *page = nullptr, const QString &referer = "", Image *img = nullptr);
+		QNetworkReply *get(const QUrl &url, Page *page = nullptr, const QString &referer = "", Image *img = nullptr);
+		void getAsync(QueryType type, const QUrl &url, const std::function<void(QNetworkReply *)> &callback, Page *page = nullptr, const QString &referer = "", Image *img = nullptr);
 		QUrl fixUrl(const QUrl &url) const { return fixUrl(url.toString()); }
 		QUrl fixUrl(const QString &url) const;
 		QUrl fixUrl(const QString &url, const QUrl &old) const;
@@ -103,9 +103,9 @@ class Site : public QObject
 		void resetCookieJar();
 
 	signals:
-		void loggedIn(Site*, Site::LoginResult);
-		void finished(QNetworkReply*);
-		void finishedLoadingTags(QList<Tag>);
+		void loggedIn(Site *site, Site::LoginResult result);
+		void finished(QNetworkReply *reply);
+		void finishedLoadingTags(const QList<Tag> &tags);
 
 	private:
 		QString m_type;

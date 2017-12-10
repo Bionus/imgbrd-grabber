@@ -11,7 +11,7 @@ ProgramUpdater::ProgramUpdater()
 	: ProgramUpdater("https://api.github.com/repos/Bionus/imgbrd-grabber")
 { }
 
-ProgramUpdater::ProgramUpdater(QString baseUrl)
+ProgramUpdater::ProgramUpdater(const QString &baseUrl)
 	: m_baseUrl(baseUrl), m_downloadReply(Q_NULLPTR)
 { }
 

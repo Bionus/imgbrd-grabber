@@ -11,7 +11,7 @@ void IntegrationTestSuite::initTestCase()
 	m_downloader = nullptr;
 }
 
-QList<Image*> IntegrationTestSuite::getImages(QString site, QString source, QString format, QString tags, QString file)
+QList<Image*> IntegrationTestSuite::getImages(const QString &site, const QString &source, const QString &format, const QString &tags, const QString &file)
 {
 	setupSource(site);
 	setupSite(site, source);
@@ -73,7 +73,7 @@ QList<Image*> IntegrationTestSuite::getImages(QString site, QString source, QStr
 	return result;
 }
 
-QList<Tag> IntegrationTestSuite::getPageTags(QString site, QString source, QString format, QString tags, QString file)
+QList<Tag> IntegrationTestSuite::getPageTags(const QString &site, const QString &source, const QString &format, const QString &tags, const QString &file)
 {
 	QDir().mkpath("tests/resources/sites/" + site + "/" + source);
 	QFile::copy("release/sites/" + site +"/model.xml", "tests/resources/sites/" + site +"/model.xml");
@@ -136,7 +136,7 @@ QList<Tag> IntegrationTestSuite::getPageTags(QString site, QString source, QStri
 	return result;
 }
 
-QList<Tag> IntegrationTestSuite::getTags(QString site, QString source, QString format, QString file)
+QList<Tag> IntegrationTestSuite::getTags(const QString &site, const QString &source, const QString &format, const QString &file)
 {
 	QDir().mkpath("tests/resources/sites/" + site + "/" + source);
 	QFile::copy("release/sites/" + site +"/model.xml", "tests/resources/sites/" + site +"/model.xml");

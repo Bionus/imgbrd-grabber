@@ -76,7 +76,7 @@ QNetworkReply *CustomNetworkAccessManager::get(const QNetworkRequest &request)
  * @param qnr		The network reply who generated the SSL errors
  * @param errors	The list of SSL errors that occurred
  */
-void CustomNetworkAccessManager::sslErrorHandler(QNetworkReply* qnr, QList<QSslError> errors)
+void CustomNetworkAccessManager::sslErrorHandler(QNetworkReply *reply, const QList<QSslError> &errors)
 {
 	#ifdef QT_DEBUG
 		qDebug() << errors;
@@ -84,8 +84,8 @@ void CustomNetworkAccessManager::sslErrorHandler(QNetworkReply* qnr, QList<QSslE
 		Q_UNUSED(errors);
 	#endif
 	#ifndef TEST
-		qnr->ignoreSslErrors();
+		reply->ignoreSslErrors();
 	#else
-		Q_UNUSED(qnr);
+		Q_UNUSED(reply);
 	#endif
 }

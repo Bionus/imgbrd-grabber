@@ -27,7 +27,7 @@ class WebServiceWindow : public QDialog
 		void save();
 
 	signals:
-		void validated(ReverseSearchEngine webService, QByteArray favicon);
+		void validated(const ReverseSearchEngine &webService, const QByteArray &favicon);
 
 	private:
 		Ui::WebServiceWindow *ui;

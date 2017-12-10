@@ -150,7 +150,7 @@ bool tagTab::read(const QJsonObject &json, bool preload)
 }
 
 
-void tagTab::setTags(QString tags, bool preload)
+void tagTab::setTags(const QString &tags, bool preload)
 {
 	activateWindow();
 	m_search->setText(tags);

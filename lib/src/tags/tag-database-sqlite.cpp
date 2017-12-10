@@ -8,7 +8,7 @@
 #include "logger.h"
 
 
-TagDatabaseSqlite::TagDatabaseSqlite(QString typeFile, QString tagFile)
+TagDatabaseSqlite::TagDatabaseSqlite(const QString &typeFile, const QString &tagFile)
 	: TagDatabase(typeFile), m_tagFile(tagFile), m_count(-1)
 {}
 
@@ -88,7 +88,7 @@ void TagDatabaseSqlite::setTags(const QList<Tag> &tags)
 	m_count = -1;
 }
 
-QMap<QString, TagType> TagDatabaseSqlite::getTagTypes(QStringList tags) const
+QMap<QString, TagType> TagDatabaseSqlite::getTagTypes(const QStringList &tags) const
 {
 	QMap<QString, TagType> ret;
 

@@ -61,13 +61,13 @@ class Image : public QObject, public Downloadable
 		QNetworkReply	*imageReply() const;
 		QNetworkReply	*tagsReply() const;
 		bool		hasTag(QString tag) const;
-		bool		hasAnyTag(QStringList tags) const;
-		bool		hasAllTags(QStringList tags) const;
-		void		setUrl(QString);
+		bool		hasAnyTag(const QStringList &tags) const;
+		bool		hasAllTags(const QStringList &tags) const;
+		void		setUrl(const QString &);
 		void		setData(const QByteArray &data);
 		void		setSize(QSize size);
 		void		setFileSize(int size);
-		void		setFileExtension(QString ext);
+		void		setFileExtension(const QString &ext);
 		bool		shouldDisplaySample() const;
 		QUrl		getDisplayableUrl() const;
 		bool		isVideo() const;
@@ -84,13 +84,13 @@ class Image : public QObject, public Downloadable
 
 		// Templates
 		template <typename T>
-		T token(QString name) const
+		T token(const QString &name) const
 		{
 			return tokens(m_profile).value(name).value<T>();
 		}
 
 	protected:
-		void setRating(QString rating);
+		void setRating(const QString &rating);
 
 	public slots:
 		void loadPreview();
@@ -114,9 +114,9 @@ class Image : public QObject, public Downloadable
 	signals:
 		void finishedLoadingPreview();
 		void finishedLoadingTags();
-		void finishedImage(QNetworkReply::NetworkError, QString);
+		void finishedImage(QNetworkReply::NetworkError, const QString &);
 		void downloadProgressImage(qint64, qint64);
-		void urlChanged(QString, QString);
+		void urlChanged(const QString &before, const QString &after);
 
 	private:
 		Page			*m_parent;

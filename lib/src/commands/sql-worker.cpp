@@ -7,7 +7,7 @@
 #include "logger.h"
 
 
-SqlWorker::SqlWorker(QString driver, QString host, QString user, QString password, QString database, QObject *parent)
+SqlWorker::SqlWorker(const QString &driver, const QString &host, const QString &user, const QString &password, const QString &database, QObject *parent)
 	: QThread(parent), m_driver(driver), m_host(host), m_user(user), m_password(password), m_database(database)
 {
 	m_enabled = (m_driver == "QSQLITE" && !m_database.isEmpty())
@@ -37,7 +37,7 @@ bool SqlWorker::connect()
 	return true;
 }
 
-QString SqlWorker::escape(QVariant val)
+QString SqlWorker::escape(const QVariant &val)
 {
 	QSqlDriver *driver = QSqlDatabase::database().driver();
 	if (driver == nullptr)
@@ -50,7 +50,7 @@ QString SqlWorker::escape(QVariant val)
 	return driver->formatValue(f);
 }
 
-bool SqlWorker::execute(QString sql)
+bool SqlWorker::execute(const QString &sql)
 {
 	if (!m_enabled || !connect())
 		return false;

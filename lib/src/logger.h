@@ -32,15 +32,15 @@ class Logger : public QObject
 		Logger(Logger const&) = delete;
 		void operator=(Logger const&) = delete;
 
-		void setLogFile(QString path);
+		void setLogFile(const QString &path);
 		void setLogLevel(LogLevel level);
-		void log(QString, LogLevel type = Info);
-		void logCommand(QString);
-		void logCommandSql(QString);
-		void logUpdate(QString);
+		void log(const QString &, LogLevel type = Info);
+		void logCommand(const QString &);
+		void logCommandSql(const QString &);
+		void logUpdate(const QString &);
 
 	signals:
-		void newLog(QString message);
+		void newLog(const QString &message);
 
 	private:
 		Logger() = default;
@@ -50,6 +50,6 @@ class Logger : public QObject
 
 
 // Temporary shortcut for the macro
-void log(QString l, Logger::LogLevel level = Logger::Info);
+void log(const QString &l, Logger::LogLevel level = Logger::Info);
 
 #endif // LOGGER_H

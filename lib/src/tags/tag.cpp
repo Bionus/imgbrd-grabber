@@ -9,15 +9,15 @@ Tag::Tag()
 	: m_type(TagType("unknown")), m_count(0)
 { }
 
-Tag::Tag(QString text, QString type, int count, QStringList related)
+Tag::Tag(const QString &text, const QString &type, int count, const QStringList &related)
 	: Tag(text, TagType(type), count, related)
 { }
 
-Tag::Tag(QString text, TagType type, int count, QStringList related)
+Tag::Tag(const QString &text, const TagType &type, int count, const QStringList &related)
 	: Tag(0, text, type, count, related)
 { }
 
-Tag::Tag(int id, QString text, TagType type, int count, QStringList related)
+Tag::Tag(int id, const QString &text, const TagType &type, int count, const QStringList &related)
 	: m_id(id), m_type(type), m_count(count), m_related(related)
 {
 	static QStringList weakTypes = QStringList() << "unknown" << "origin";
@@ -83,7 +83,7 @@ Tag Tag::FromCapture(const QRegularExpressionMatch &match, const QStringList &gr
 	return Tag(tag, type, count);
 }
 
-QList<Tag> Tag::FromRegexp(QString rx, const QString &source)
+QList<Tag> Tag::FromRegexp(const QString &rx, const QString &source)
 {
 	QRegularExpression rxtags(rx);
 
@@ -149,16 +149,16 @@ TagType		Tag::type() const		{ return m_type;	}
 int			Tag::count() const		{ return m_count;	}
 QStringList	Tag::related() const	{ return m_related;	}
 
-bool sortTagsByType(Tag s1, Tag s2)
+bool sortTagsByType(const Tag &s1, const Tag &s2)
 {
 	static QStringList typeOrder = QStringList() << "unknown" << "model" << "species" << "artist" << "character" << "copyright";
 	int t1 = typeOrder.indexOf(s1.type().name());
 	int t2 = typeOrder.indexOf(s2.type().name());
 	return t1 == t2 ? sortTagsByName(s1, s2) : t1 > t2;
 }
-bool sortTagsByName(Tag s1, Tag s2)
+bool sortTagsByName(const Tag &s1, const Tag &s2)
 { return s1.text().localeAwareCompare(s2.text()) < 0; }
-bool sortTagsByCount(Tag s1, Tag s2)
+bool sortTagsByCount(const Tag &s1, const Tag &s2)
 { return s1.count() > s2.count(); }
 
 bool operator==(const Tag &t1, const Tag &t2)

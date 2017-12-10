@@ -10,7 +10,7 @@ class QAffiche : public QLabel
 	Q_OBJECT
 
 	public:
-		explicit QAffiche(QVariant id = QVariant(), int border = 0, QColor color = QColor(), QWidget *parent = Q_NULLPTR);
+		explicit QAffiche(const QVariant &id = QVariant(), int border = 0, QColor color = QColor(), QWidget *parent = Q_NULLPTR);
 		void setImage(const QImage &);
 		void setImage(const QPixmap &);
 		Qt::MouseButton lastPressed();
@@ -20,10 +20,10 @@ class QAffiche : public QLabel
 		void doubleClicked(int);
 		void clicked();
 		void clicked(int);
-		void clicked(QString);
+		void clicked(const QString &);
 		void middleClicked();
 		void middleClicked(int);
-		void middleClicked(QString);
+		void middleClicked(const QString &);
 		void pressed();
 		void pressed(int);
 		void released();

@@ -30,7 +30,7 @@ void Downloader::clear()
 	m_oPagesT.clear();
 }
 
-Downloader::Downloader(Profile *profile, QStringList tags, QStringList postFiltering, QList<Site*> sources, int page, int max, int perPage, QString location, QString filename, QString user, QString password, bool blacklist, QStringList blacklistedTags, bool noDuplicates, int tagsMin, QString tagsFormat, Downloader *previous)
+Downloader::Downloader(Profile *profile, const QStringList &tags, const QStringList &postFiltering, const QList<Site*> &sources, int page, int max, int perPage, const QString &location, const QString &filename, const QString &user, const QString &password, bool blacklist, const QStringList &blacklistedTags, bool noDuplicates, int tagsMin, const QString &tagsFormat, Downloader *previous)
 	: m_profile(profile), m_lastPage(nullptr), m_tags(tags), m_postFiltering(postFiltering), m_sites(sources), m_page(page), m_max(max), m_perPage(perPage), m_waiting(0), m_ignored(0), m_duplicates(0), m_tagsMin(tagsMin), m_location(location), m_filename(filename), m_user(user), m_password(password), m_blacklist(blacklist), m_noDuplicates(noDuplicates), m_tagsFormat(tagsFormat), m_blacklistedTags(blacklistedTags), m_quit(false), m_previous(previous), m_cancelled(false)
 { }
 
@@ -236,7 +236,7 @@ void Downloader::loadNext()
 		return;
 	}
 }
-void Downloader::finishedLoadingTags(QList<Tag> tags)
+void Downloader::finishedLoadingTags(const QList<Tag> &tags)
 {
 	if (m_cancelled)
 		return;
@@ -346,7 +346,7 @@ void Downloader::finishedLoadingImages(Page *page)
 		emit finishedImages(images);
 }
 
-void Downloader::downloadImages(QList<QSharedPointer<Image>> images)
+void Downloader::downloadImages(const QList<QSharedPointer<Image>> &images)
 {
 	m_images.clear();
 	m_images.append(images);
@@ -492,12 +492,12 @@ void Downloader::returnInt(int ret)
 	std::cout << ret << std::endl;
 	emit quit();
 }
-void Downloader::returnString(QString ret)
+void Downloader::returnString(const QString &ret)
 {
 	std::cout << ret.toStdString() << std::endl;
 	emit quit();
 }
-void Downloader::returnTagList(QList<Tag> tags)
+void Downloader::returnTagList(const QList<Tag> &tags)
 {
 	for (const Tag &tag : tags)
 	{
@@ -513,14 +513,14 @@ void Downloader::returnTagList(QList<Tag> tags)
 	}
 	emit quit();
 }
-void Downloader::returnStringList(QStringList ret)
+void Downloader::returnStringList(const QStringList &ret)
 {
 	for (const QString &str : ret)
 		std::cout << str.toStdString() << std::endl;
 	emit quit();
 }
 
-void Downloader::setData(QVariant data)
+void Downloader::setData(const QVariant &data)
 { m_data = data; }
 QVariant Downloader::getData() const
 { return m_data; }

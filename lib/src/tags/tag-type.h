@@ -9,7 +9,7 @@ class TagType
 {
 	public:
 		TagType();
-		explicit TagType(QString name);
+		explicit TagType(const QString &name);
 		QString name() const;
 		int number() const;
 

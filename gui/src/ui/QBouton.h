@@ -10,7 +10,7 @@ class QBouton : public QPushButton
 	Q_OBJECT
 
 	public:
-		explicit QBouton(QVariant id = 0, bool resizeInsteadOfCropping = false, bool smartSizeHint = false, int border = 0, QColor color = QColor(), QWidget *parent = Q_NULLPTR);
+		explicit QBouton(const QVariant &id = 0, bool resizeInsteadOfCropping = false, bool smartSizeHint = false, int border = 0, QColor color = QColor(), QWidget *parent = Q_NULLPTR);
 		QVariant id();
 		void mousePressEvent(QMouseEvent *event) override;
 		QSize sizeHint() const override;
@@ -26,18 +26,18 @@ class QBouton : public QPushButton
 		void paintEvent(QPaintEvent *event) override;
 
 	signals:
-		void appui(QVariant);
-		void appui(int);
-		void appui(QString);
-		void rightClick(QVariant);
-		void rightClick(int);
-		void rightClick(QString);
-		void middleClick(QVariant);
-		void middleClick(int);
-		void middleClick(QString);
-		void toggled(QVariant id, bool toggle, bool range);
+		void appui(const QVariant &id);
+		void appui(int id);
+		void appui(const QString &id);
+		void rightClick(const QVariant &id);
+		void rightClick(int id);
+		void rightClick(const QString &id);
+		void middleClick(const QVariant &id);
+		void middleClick(int id);
+		void middleClick(const QString &id);
+		void toggled(const QVariant &id, bool toggle, bool range);
 		void toggled(int id, bool toggle, bool range);
-		void toggled(QString id, bool toggle, bool range);
+		void toggled(const QString &id, bool toggle, bool range);
 
 	private:
 		QVariant m_id;

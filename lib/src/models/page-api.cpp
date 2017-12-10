@@ -12,7 +12,7 @@
 #include "vendor/json.h"
 
 
-PageApi::PageApi(Page *parentPage, Profile *profile, Site *site, Api *api, QStringList tags, int page, int limit, QStringList postFiltering, bool smart, QObject *parent, int pool, int lastPage, qulonglong lastPageMinId, qulonglong lastPageMaxId)
+PageApi::PageApi(Page *parentPage, Profile *profile, Site *site, Api *api, const QStringList &tags, int page, int limit, const QStringList &postFiltering, bool smart, QObject *parent, int pool, int lastPage, qulonglong lastPageMinId, qulonglong lastPageMaxId)
 	: QObject(parent), m_parentPage(parentPage), m_profile(profile), m_site(site), m_api(api), m_search(tags), m_postFiltering(postFiltering), m_errors(QStringList()), m_imagesPerPage(limit), m_lastPage(lastPage), m_lastPageMinId(lastPageMinId), m_lastPageMaxId(lastPageMaxId), m_smart(smart), m_reply(nullptr), m_replyTags(nullptr)
 {
 	m_imagesCount = -1;
@@ -229,7 +229,7 @@ void PageApi::abortTags()
 		m_replyTags->abort();
 }
 
-QString _parseSetImageUrl(Site *site, Api* api, QString settingUrl, QString settingReplaces, QString ret, QMap<QString, QString> *d, bool replaces = true, QString def = QString())
+QString _parseSetImageUrl(Site *site, Api* api, const QString &settingUrl, const QString &settingReplaces, QString ret, QMap<QString, QString> *d, bool replaces = true, const QString &def = QString())
 {
 	if (api->contains(settingUrl) && ret.length() < 5)
 	{
@@ -275,7 +275,7 @@ QString _parseSetImageUrl(Site *site, Api* api, QString settingUrl, QString sett
 }
 
 
-void PageApi::parseImage(QMap<QString, QString> d, int position, QList<Tag> tags)
+void PageApi::parseImage(QMap<QString, QString> d, int position, const QList<Tag> &tags)
 {
 	// Set default values
 	if (!d.contains("file_url"))

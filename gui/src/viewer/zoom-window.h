@@ -39,7 +39,7 @@ class ZoomWindow : public QWidget
 			Delete
 		};
 
-		ZoomWindow(QList<QSharedPointer<Image>> images, QSharedPointer<Image> image, Site *site, Profile *profile, mainWindow *parent);
+		ZoomWindow(const QList<QSharedPointer<Image>> &images, QSharedPointer<Image> image, Site *site, Profile *profile, mainWindow *parent);
 		~ZoomWindow() override;
 		void go();
 		void load(bool force = false);
@@ -47,7 +47,7 @@ class ZoomWindow : public QWidget
 	public slots:
 		void update(bool onlySize = false, bool force = false);
 		void replyFinishedDetails();
-		void replyFinishedZoom(QNetworkReply::NetworkError error = QNetworkReply::NoError, QString errorString = "");
+		void replyFinishedZoom(QNetworkReply::NetworkError error = QNetworkReply::NoError, const QString &errorString = "");
 		void display(const QPixmap &, int);
 		void saveNQuit();
 		void saveNQuitFav();
@@ -55,24 +55,24 @@ class ZoomWindow : public QWidget
 		void saveImageFav();
 		QStringList saveImageNow(bool fav = false);
 		QString saveImageAs();
-		void openUrl(QString);
-		void openPool(QString);
+		void openUrl(const QString &);
+		void openPool(const QString &);
 		void openPoolId(Page*);
 		void openSaveDir(bool fav = false);
 		void openSaveDirFav();
-		void linkHovered(QString);
+		void linkHovered(const QString &);
 		void contextMenu(QPoint);
 		void openInNewTab();
 		void setfavorite();
 		void downloadProgress(qint64 bytesReceived, qint64 bytesTotal);
 		void colore();
-		void urlChanged(QString, QString);
+		void urlChanged(const QString &before, const QString &after);
 		void showDetails();
 		void pendingUpdate();
 		void updateButtonPlus();
 		void openFile(bool now = false);
 		void updateWindowTitle();
-		void showLoadingError(QString error);
+		void showLoadingError(const QString &error);
 		void setButtonState(bool fav, SaveButtonState state);
 
 		// Context menus
@@ -104,12 +104,12 @@ class ZoomWindow : public QWidget
 	private:
 		void showThumbnail();
 		int firstNonBlacklisted(int direction);
-		Qt::Alignment getAlignments(QString type);
+		Qt::Alignment getAlignments(const QString &type);
 
 	signals:
-		void linkClicked(QString);
-		void poolClicked(int, QString);
-		void linkMiddleClicked(QString);
+		void linkClicked(const QString &);
+		void poolClicked(int, const QString &);
+		void linkMiddleClicked(const QString &);
 		void loadImage(const QByteArray &);
 		void clearLoadQueue();
 

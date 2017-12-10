@@ -3,7 +3,7 @@
 #include <QSettings>
 
 
-LanguageLoader::LanguageLoader(QString path)
+LanguageLoader::LanguageLoader(const QString &path)
 	: m_path(path)
 {}
 

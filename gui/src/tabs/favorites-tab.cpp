@@ -175,20 +175,20 @@ void favoritesTab::write(QJsonObject &json) const
 }
 
 
-void favoritesTab::addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, bool merged, QString noResultsMessage)
+void favoritesTab::addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, bool merged, const QString &noResultsMessage)
 {
 	Q_UNUSED(noResultsMessage);
 	searchTab::addResultsPage(page, imgs, merged, tr("No result since the %1").arg(m_loadFavorite.toString(tr("MM/dd/yyyy 'at' hh:mm"))));
 	ui->splitter->setSizes(QList<int>() << (m_images.count() >= m_settings->value("hidefavorites", 20).toInt() ? 0 : 1) << 1);
 }
 
-void favoritesTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage)
+void favoritesTab::setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, const QString &noResultsMessage)
 {
 	Q_UNUSED(noResultsMessage);
 	searchTab::setPageLabelText(txt, page, imgs, tr("No result since the %1").arg(m_loadFavorite.toString(tr("MM/dd/yyyy 'at' hh:mm"))));
 }
 
-void favoritesTab::setTags(QString tags, bool preload)
+void favoritesTab::setTags(const QString &tags, bool preload)
 {
 	activateWindow();
 	m_currentTags = tags;
@@ -246,7 +246,7 @@ QList<Site*> favoritesTab::sources()
 QString favoritesTab::tags() const
 { return m_currentTags;	}
 
-void favoritesTab::loadFavorite(QString name)
+void favoritesTab::loadFavorite(const QString &name)
 {
 	int index = name.isEmpty() ? m_currentFav : m_favorites.indexOf(Favorite(name));
 	if (index < 0)
@@ -293,7 +293,7 @@ void favoritesTab::viewed()
 
 	m_profile->emitFavorite();
 }
-void favoritesTab::setFavoriteViewed(QString tag)
+void favoritesTab::setFavoriteViewed(const QString &tag)
 {
 	log(QString("Marking \"%1\" as viewed...").arg(tag));
 
@@ -318,7 +318,7 @@ void favoritesTab::favoritesBack()
 		ui->widgetFavorites->show();
 	}
 }
-void favoritesTab::favoriteProperties(QString name)
+void favoritesTab::favoriteProperties(const QString &name)
 {
 	int index = name.isEmpty() ? m_currentFav : m_favorites.indexOf(Favorite(name));
 	if (index < 0)

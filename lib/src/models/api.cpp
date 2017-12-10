@@ -1,7 +1,7 @@
 #include "models/api.h"
 
 
-Api::Api(QString name, QMap<QString, QString> data)
+Api::Api(const QString &name, const QMap<QString, QString> &data)
 	: QObject(), m_name(name), m_data(data)
 {
 	QString prefix = "Urls/" + m_name;

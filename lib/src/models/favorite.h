@@ -9,8 +9,8 @@
 class Favorite
 {
 	public:
-		explicit Favorite(QString name);
-		Favorite(QString name, int note, QDateTime lastViewed, QString imagePath = "");
+		explicit Favorite(const QString &name);
+		Favorite(const QString &name, int note, const QDateTime &lastViewed, const QString &imagePath = "");
 
 		// Getters and setters
 		void setNote(int note);

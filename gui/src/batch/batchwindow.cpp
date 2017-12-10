@@ -173,7 +173,7 @@ void batchWindow::copyToClipboard()
 
 void batchWindow::setCount(int cnt)
 { ui->tableWidget->setRowCount(cnt); }
-void batchWindow::addImage(QString url, int batch, float size)
+void batchWindow::addImage(const QString &url, int batch, float size)
 {
 	m_urls.append(url);
 	QTableWidgetItem *id = new QTableWidgetItem(QString::number(m_items+1));
@@ -207,21 +207,21 @@ void batchWindow::updateColumns()
 	ui->tableWidget->resizeColumnToContents(0);
 	ui->tableWidget->repaint();
 }
-int batchWindow::indexOf(QString url)
+int batchWindow::indexOf(const QString &url)
 {
 	int i = m_urls.indexOf(url);
 	if (i < 0 || ui->tableWidget->item(i, 1) == Q_NULLPTR)
 		return -1;
 	return i;
 }
-int batchWindow::batch(QString url)
+int batchWindow::batch(const QString &url)
 {
 	int i = indexOf(url);
 	if (i == -1)
 		return -1;
 	return ui->tableWidget->item(i, 1)->text().toInt();
 }
-void batchWindow::loadingImage(QString url)
+void batchWindow::loadingImage(const QString &url)
 {
 	if (m_start->isNull())
 		m_start->start();
@@ -242,7 +242,7 @@ void batchWindow::loadingImage(QString url)
 		}
 	}
 }
-void batchWindow::imageUrlChanged(QString before, QString after)
+void batchWindow::imageUrlChanged(const QString &before, const QString &after)
 {
 	int i = indexOf(before);
 	if (i != -1)
@@ -254,13 +254,13 @@ void batchWindow::imageUrlChanged(QString before, QString after)
 		ui->tableWidget->item(i, 5)->setText("0 %");
 	}
 }
-void batchWindow::statusImage(QString url, int percent)
+void batchWindow::statusImage(const QString &url, int percent)
 {
 	int i = indexOf(url);
 	if (i != -1)
 		ui->tableWidget->item(i, 5)->setText(QString::number(percent)+" %");
 }
-void batchWindow::speedImage(QString url, float speed)
+void batchWindow::speedImage(const QString &url, float speed)
 {
 	m_speeds[url] = static_cast<int>(speed);
 	QString unit = getUnit(&speed)+"/s";
@@ -271,7 +271,7 @@ void batchWindow::speedImage(QString url, float speed)
 
 	drawSpeed();
 }
-void batchWindow::sizeImage(QString url, float size)
+void batchWindow::sizeImage(const QString &url, float size)
 {
 	int i = indexOf(url);
 	if (i != -1)
@@ -280,7 +280,7 @@ void batchWindow::sizeImage(QString url, float size)
 		ui->tableWidget->setItem(i, 3, new QTableWidgetItem(size != 0 ? QLocale::system().toString(size, 'f', size < 10 ? 2 : 0)+" "+unit : ""));
 	}
 }
-void batchWindow::loadedImage(QString url, Downloadable::SaveResult result)
+void batchWindow::loadedImage(const QString &url, Downloadable::SaveResult result)
 {
 	// Update speed
 	m_speeds.remove(url);
@@ -370,7 +370,7 @@ void batchWindow::on_buttonDetails_clicked(bool visible)
 	}
 }
 
-void batchWindow::setText(QString text)
+void batchWindow::setText(const QString &text)
 { ui->labelMessage->setText(text); }
 
 void batchWindow::setCurrentValue(int val)

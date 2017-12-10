@@ -12,12 +12,12 @@ class FileDownloader : public QObject
 
 	public:
 		explicit FileDownloader(QObject *parent = Q_NULLPTR);
-		bool start(QNetworkReply *reply, QString path);
-		bool start(QNetworkReply *reply, QStringList paths);
+		bool start(QNetworkReply *reply, const QString &path);
+		bool start(QNetworkReply *reply, const QStringList &paths);
 
 	signals:
 		void writeError();
-		void networkError(QNetworkReply::NetworkError error, QString errorString);
+		void networkError(QNetworkReply::NetworkError error, const QString &errorString);
 		void success();
 
 	private slots:

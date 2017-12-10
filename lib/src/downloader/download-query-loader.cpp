@@ -9,7 +9,7 @@
 #include "models/site.h"
 
 
-bool DownloadQueryLoader::load(QString path, QList<DownloadQueryImage> &uniques, QList<DownloadQueryGroup> &groups, const QMap<QString, Site*> &sites)
+bool DownloadQueryLoader::load(const QString &path, QList<DownloadQueryImage> &uniques, QList<DownloadQueryGroup> &groups, const QMap<QString, Site*> &sites)
 {
 	QFile f(path);
 	if (!f.open(QFile::ReadOnly))
@@ -93,7 +93,7 @@ bool DownloadQueryLoader::load(QString path, QList<DownloadQueryImage> &uniques,
 	}
 }
 
-bool DownloadQueryLoader::save(QString path, const QList<DownloadQueryImage> &uniques, const QList<DownloadQueryGroup> &groups)
+bool DownloadQueryLoader::save(const QString &path, const QList<DownloadQueryImage> &uniques, const QList<DownloadQueryGroup> &groups)
 {
 	QFile saveFile(path);
 	if (!saveFile.open(QFile::WriteOnly))

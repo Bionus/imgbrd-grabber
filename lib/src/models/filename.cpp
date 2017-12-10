@@ -9,11 +9,11 @@
 #include "models/site.h"
 
 
-Filename::Filename(QString format)
+Filename::Filename(const QString &format)
 	: m_format(format)
 { }
 
-QString Filename::expandConditionals(QString text, QStringList tags, const QMap<QString, Token> &tokens, QSettings *settings, int depth) const
+QString Filename::expandConditionals(const QString &text, const QStringList &tags, const QMap<QString, Token> &tokens, QSettings *settings, int depth) const
 {
 	QString ret = text;
 
@@ -278,7 +278,7 @@ QList<QMap<QString, Token>> Filename::expandTokens(const QString &filename, QMap
 	return ret;
 }
 
-QStringList Filename::path(const Image& img, Profile *profile, QString pth, int counter, bool complex, bool maxLength, bool shouldFixFilename, bool getFull, bool keepInvalidTokens) const
+QStringList Filename::path(const Image& img, Profile *profile, const QString &pth, int counter, bool complex, bool maxLength, bool shouldFixFilename, bool getFull, bool keepInvalidTokens) const
 { return path(img.tokens(profile), profile, pth, counter, complex, maxLength, shouldFixFilename, getFull, keepInvalidTokens); }
 QStringList Filename::path(QMap<QString, Token> tokens, Profile *profile, QString folder, int counter, bool complex, bool maxLength, bool shouldFixFilename, bool getFull, bool keepInvalidTokens) const
 {
@@ -465,7 +465,7 @@ QStringList Filename::path(QMap<QString, Token> tokens, Profile *profile, QStrin
 	return fns;
 }
 
-QString Filename::cleanUpValue(QString res, QMap<QString, QString> options, QSettings *settings) const
+QString Filename::cleanUpValue(QString res, const QMap<QString, QString> &options, QSettings *settings) const
 {
 	// Forbidden characters
 	if (!options.contains("unsafe"))
@@ -478,7 +478,7 @@ QString Filename::cleanUpValue(QString res, QMap<QString, QString> options, QSet
 	return res;
 }
 
-QString Filename::optionedValue(const QVariant &val, QString key, QString ops, QSettings *settings, QStringList namespaces) const
+QString Filename::optionedValue(const QVariant &val, const QString &key, const QString &ops, QSettings *settings, QStringList namespaces) const
 {
 	bool cleaned = false;
 
@@ -580,7 +580,7 @@ QString Filename::optionedValue(const QVariant &val, QString key, QString ops, Q
 	return res;
 }
 
-QString Filename::fixSeparator(QString separator) const
+QString Filename::fixSeparator(const QString &separator) const
 {
 	return QString(separator)
 		.replace("\\n", "\n")
@@ -591,17 +591,17 @@ QString Filename::getFormat() const
 {
 	return m_format;
 }
-void Filename::setFormat(QString format)
+void Filename::setFormat(const QString &format)
 {
 	m_format = format;
 }
 
-void Filename::setEscapeMethod(QString (*escapeMethod)(QVariant))
+void Filename::setEscapeMethod(QString (*escapeMethod)(const QVariant &))
 {
 	m_escapeMethod = escapeMethod;
 }
 
-bool Filename::returnError(QString msg, QString *error) const
+bool Filename::returnError(const QString &msg, QString *error) const
 {
 	if (error != nullptr)
 		*error = msg;
@@ -669,7 +669,7 @@ bool Filename::isValid(Profile *profile, QString *error) const
 	return true;
 }
 
-bool Filename::needExactTags(Site *site, QString api) const
+bool Filename::needExactTags(Site *site, const QString &api) const
 {
 	if (site != nullptr && site->contains("Regex/NeedLoad"))
 		return true;

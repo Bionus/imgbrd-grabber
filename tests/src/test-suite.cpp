@@ -7,14 +7,14 @@ TestSuite::TestSuite()
 	getSuites().append(this);
 }
 
-void TestSuite::setupSource(QString site)
+void TestSuite::setupSource(const QString &site)
 {
 	QDir().mkpath("tests/resources/sites/" + site);
 	QFile::remove("tests/resources/sites/" + site +"/model.xml");
 	QFile::copy("release/sites/" + site +"/model.xml", "tests/resources/sites/" + site +"/model.xml");
 }
 
-void TestSuite::setupSite(QString site, QString source)
+void TestSuite::setupSite(const QString &site, const QString &source)
 {
 	QDir().mkpath("tests/resources/sites/" + site + "/" + source);
 	QFile::remove("tests/resources/sites/" + site +"/" + source + "/defaults.ini");

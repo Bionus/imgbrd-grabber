@@ -19,7 +19,7 @@ class favoriteWindow : public QDialog
 	Q_OBJECT
 
 	public:
-		favoriteWindow(Profile *profile, Favorite favorite, QWidget *parent);
+		favoriteWindow(Profile *profile, const Favorite &favorite, QWidget *parent);
 		~favoriteWindow() override;
 
 	public slots:

@@ -21,7 +21,7 @@ class conditionWindow : public QDialog
 		void accept() override;
 
 	signals:
-		void validated(QString, QString, QString);
+		void validated(const QString &condition, const QString &filename, const QString &folder);
 
 	private:
 		Ui::conditionWindow *ui;

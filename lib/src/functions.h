@@ -29,34 +29,34 @@
 
 
 QDateTime	qDateTimeFromString(QString s);
-QString		savePath(QString s = "", bool exists = false, bool writable = false);
+QString		savePath(const QString &s = "", bool exists = false, bool writable = false);
 bool		copyRecursively(QString srcFilePath, QString tgtFilePath);
 int			levenshtein(QString, QString);
 QString		stripTags(QString);
 QString		getUnit(float *size);
 QString		formatFilesize(float size);
-QString		getExtension(QUrl url);
-QString		getExtension(QString url);
-QString		setExtension(QString url, QString extension);
-bool		isUrl(QString str);
+QString		getExtension(const QUrl &url);
+QString		getExtension(const QString &url);
+QString		setExtension(QString url, const QString &extension);
+bool		isUrl(const QString &str);
 bool		isVariantEmpty(const QVariant &value);
 
-bool		setFileCreationDate(QString path, QDateTime time);
+bool		setFileCreationDate(const QString &path, const QDateTime &time);
 void		shutDown(int timeout = 0);
 void		openTray();
 
 QString fixFilename(QString filename, QString path = "", int maxlength = 0, bool invalidChars = true);
-QString fixFilenameWindows(QString filename, QString path = "", int maxlength = 0, bool invalidChars = true);
-QString fixFilenameLinux(QString filename, QString path = "", int maxlength = 0, bool invalidChars = true);
+QString fixFilenameWindows(const QString &filename, const QString &path = "", int maxlength = 0, bool invalidChars = true);
+QString fixFilenameLinux(const QString &filename, const QString &path = "", int maxlength = 0, bool invalidChars = true);
 
-QMap<QString, QString>		domToMap(QDomElement);
+QMap<QString, QString>		domToMap(const QDomElement &);
 
 QMap<QString, QStringList>	getCustoms(QSettings *settings);
 QMap<QString, QPair<QString, QString>>	getFilenames(QSettings *settings);
 QMap<int, QMap<QString, QVariant>>		getExternalLogFiles(QSettings *settings);
 QStringList								getExternalLogFilesSuffixes(QSettings *settings);
 
-QStringList removeWildards(QStringList elements, QStringList remove);
+QStringList removeWildards(const QStringList &elements, const QStringList &remove);
 QString getExtensionFromHeader(const QByteArray &data12);
 
 void setTestModeEnabled(bool testMode);

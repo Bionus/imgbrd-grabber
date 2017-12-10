@@ -32,7 +32,7 @@ class favoritesTab : public searchTab
 
 	public slots:
 		// Zooms
-		void setTags(QString tags, bool preload = true) override;
+		void setTags(const QString &tags, bool preload = true) override;
 		// Loading
 		void load() override;
 		bool validateImage(const QSharedPointer<Image> &img, QString &error) override;
@@ -40,19 +40,19 @@ class favoritesTab : public searchTab
 		void getPage();
 		void getAll();
 		// Favorites
-		void favoriteProperties(QString);
+		void favoriteProperties(const QString &name);
 		void updateFavorites();
-		void loadFavorite(QString);
+		void loadFavorite(const QString &name);
 		void checkFavorites();
 		void loadNextFavorite();
 		void favoritesBack();
-		void setFavoriteViewed(QString);
+		void setFavoriteViewed(const QString &tag);
 		void viewed();
 		// Others
 		void closeEvent(QCloseEvent*) override;
 		void focusSearch() override;
-		void addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, bool merged, QString noResultsMessage = nullptr) override;
-		void setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, QString noResultsMessage = nullptr) override;
+		void addResultsPage(Page *page, const QList<QSharedPointer<Image>> &imgs, bool merged, const QString &noResultsMessage = nullptr) override;
+		void setPageLabelText(QLabel *txt, Page *page, const QList<QSharedPointer<Image>> &imgs, const QString &noResultsMessage = nullptr) override;
 		void updateTitle() override;
 
 	private:

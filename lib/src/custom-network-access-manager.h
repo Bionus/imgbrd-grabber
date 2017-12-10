@@ -13,7 +13,7 @@ class CustomNetworkAccessManager : public QNetworkAccessManager
 	public:
 		explicit CustomNetworkAccessManager(QObject *parent = Q_NULLPTR);
 		QNetworkReply *get(const QNetworkRequest &request);
-		void sslErrorHandler(QNetworkReply* qnr, QList<QSslError> errors);
+		void sslErrorHandler(QNetworkReply *reply, const QList<QSslError> &errors);
 
 		static QQueue<QString> NextFiles;
 };

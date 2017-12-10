@@ -17,13 +17,13 @@ class DownloadQueryImage
 		// Constructors
 		DownloadQueryImage() = default;
 		DownloadQueryImage(QSettings *settings, const Image &img, Site *site);
-		DownloadQueryImage(const Image &img, Site *site, QString filename, QString path);
-		DownloadQueryImage(qulonglong id, const QString &md5, const QString &rating, const QString &tags, const QString &fileUrl, const QString &date, Site *site, QString filename, QString path);
+		DownloadQueryImage(const Image &img, Site *site, const QString &filename, const QString &path);
+		DownloadQueryImage(qulonglong id, const QString &md5, const QString &rating, const QString &tags, const QString &fileUrl, const QString &date, Site *site, const QString &filename, const QString &path);
 
 		// Serialization
 		QString toString(const QString &separator) const;
 		void write(QJsonObject &json) const;
-		bool read(const QJsonObject &json, const QMap<QString, Site *> &sites);
+		bool read(const QJsonObject &json, const QMap<QString, Site*> &sites);
 
 		// Public members
 		Site *site;

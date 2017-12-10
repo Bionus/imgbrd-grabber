@@ -11,7 +11,7 @@ class Api : public QObject
 	Q_OBJECT
 
 	public:
-		Api(QString name, QMap<QString, QString> data);
+		Api(const QString &name, const QMap<QString, QString> &data);
 
 		// Getters
 		QString getName() const;
