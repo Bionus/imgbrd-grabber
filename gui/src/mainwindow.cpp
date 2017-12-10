@@ -157,7 +157,7 @@ void mainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 		QStringList keys = sites.keys();
 		for (const QString &key : keys)
 		{ srsc += (!srsc.isEmpty() ? ", " : "") + key + " (" + sites.value(key)->type() + ")"; }
-		log(QString("%1 source%2 found: %3").arg(sites.size()).arg(sites.size() > 1 ? "s" : "").arg(srsc), Logger::Info);
+		log(QString("%1 source%2 found: %3").arg(sites.size()).arg(sites.size() > 1 ? "s" : "", srsc), Logger::Info);
 	}
 
 	ui->actionClosetab->setShortcut(QKeySequence::Close);
