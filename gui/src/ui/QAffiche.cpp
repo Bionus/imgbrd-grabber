@@ -96,7 +96,7 @@ void QAffiche::leaveEvent(QEvent* e)
 	QLabel::leaveEvent(e);
 }
 
-bool QAffiche::hitLabel(const QPoint &p)
+bool QAffiche::hitLabel(QPoint p)
 { return rect().contains(p); }
 Qt::MouseButton QAffiche::lastPressed()
 { return m_lastPressed; }

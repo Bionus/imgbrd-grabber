@@ -26,7 +26,7 @@ class DownloadableDownloader : public QObject
 		void success();
 
 	signals:
-		void saved(QSharedPointer<Downloadable> downloadable, QMap<QString, Downloadable::SaveResult> result);
+		void saved(QSharedPointer<Downloadable> downloadable, const QMap<QString, Downloadable::SaveResult> &result);
 
 	protected:
 		void setResult(const QStringList &keys, Downloadable::SaveResult value);

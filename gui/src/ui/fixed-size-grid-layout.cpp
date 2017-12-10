@@ -118,7 +118,7 @@ void FixedSizeGridLayout::setGeometry(const QRect &rect)
 }
 
 
-int FixedSizeGridLayout::doLayout(const QRect &rect, bool testOnly) const
+int FixedSizeGridLayout::doLayout(QRect rect, bool testOnly) const
 {
 	int left, top, right, bottom;
 	getContentsMargins(&left, &top, &right, &bottom);

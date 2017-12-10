@@ -34,7 +34,7 @@ class FixedSizeGridLayout : public QLayout
 		void setGeometry(const QRect &rect) override;
 
 	private:
-		int doLayout(const QRect &rect, bool testOnly) const;
+		int doLayout(QRect rect, bool testOnly) const;
 		int smartSpacing(QStyle::PixelMetric pm) const;
 		int widgetSpacing(int spacing, QWidget *widget, Qt::Orientation orientation) const;
 

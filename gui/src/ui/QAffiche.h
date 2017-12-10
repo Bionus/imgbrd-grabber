@@ -40,7 +40,7 @@ class QAffiche : public QLabel
 		void mouseReleaseEvent(QMouseEvent*) override;
 		void enterEvent(QEvent*) override;
 		void leaveEvent(QEvent*) override;
-		bool hitLabel(const QPoint &p);
+		bool hitLabel(QPoint p);
 		bool m_pressed;
 		QVariant m_id;
 		int m_border;

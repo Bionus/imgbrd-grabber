@@ -305,8 +305,8 @@ QStringList Filename::path(QMap<QString, Token> tokens, Profile *profile, QStrin
 				{ custom[key].append(tag); }
 			}
 		}
-		for (const QString &key : custom.keys())
-		{ tokens.insert(key, Token(custom[key])); }
+		for (auto it = custom.begin(); it != custom.end(); ++it)
+		{ tokens.insert(it.key(), Token(it.value())); }
 	}
 
 	// Conditional filenames

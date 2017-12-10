@@ -22,7 +22,7 @@ void Resizer::run()
 	emit finished(output);
 }
 
-void Resizer::setSize(const QSize &size)
+void Resizer::setSize(QSize size)
 {
 	m_size = size;
 }

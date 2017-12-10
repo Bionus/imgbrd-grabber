@@ -38,7 +38,7 @@ class FilenameWindow : public QDialog
 		void done(int r) override;
 
 	signals:
-		void validated(QString);
+		void validated(const QString &format);
 
 	private:
 		Ui::FilenameWindow *ui;
