@@ -268,7 +268,7 @@ void ZoomWindow::openUrl(QString url)
 void ZoomWindow::openPool(QString url)
 {
 	if (url.startsWith("pool:"))
-	{ emit poolClicked(url.right(url.length() - 5).toInt(), m_image->site()); }
+	{ emit poolClicked(url.rightRef(url.length() - 5).toInt(), m_image->site()); }
 	else
 	{
 		Page *p = new Page(m_profile, m_image->parentSite(), m_profile->getSites().values(), QStringList() << "id:"+url, 1, 1, QStringList(), false, this);

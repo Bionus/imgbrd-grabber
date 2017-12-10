@@ -651,7 +651,7 @@ void FilenameTest::assertPath(QString format, QStringList expected, QString path
 
 	// Convert directory separators
 	QStringList expectedNative;
-	for (QString exp : expected)
+	for (const QString &exp : expected)
 	{
 		expectedNative.append(QDir::toNativeSeparators(exp));
 	}

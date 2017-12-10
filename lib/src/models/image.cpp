@@ -184,7 +184,7 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 				if (tp == "user")
 				{ m_author = tg.mid(colon + 1); }
 				else if (tp == "score")
-				{ m_score = tg.mid(colon + 1).toInt(); }
+				{ m_score = tg.midRef(colon + 1).toInt(); }
 				else if (tp == "size")
 				{
 					QStringList size = tg.mid(colon + 1).split('x');
@@ -1040,7 +1040,7 @@ QColor Image::color() const
 	// Blacklisted
 	QStringList detected = PostFilter::blacklisted(tokens(m_profile), m_profile->getBlacklist());
 	if (!detected.isEmpty())
-		return QColor("#000000");
+		return QColor(0, 0, 0);
 
 	// Favorited (except for exact favorite search)
 	auto favorites = m_profile->getFavorites();
@@ -1048,19 +1048,19 @@ QColor Image::color() const
 		if (!m_parent->search().contains(tag.text()))
 			for (const Favorite &fav : favorites)
 				if (fav.getName() == tag.text())
-					return QColor("#ffc0cb");
+					return QColor(255, 192, 203);
 
 	// Image with a parent
 	if (m_parentId != 0)
-		return QColor("#cccc00");
+		return QColor(204, 204, 0);
 
 	// Image with children
 	if (m_hasChildren)
-		return QColor("#00ff00");
+		return QColor(0, 255, 0);
 
 	// Pending image
 	if (m_status == "pending")
-		return QColor("#0000ff");
+		return QColor(0, 0, 255);
 
 	return QColor();
 }

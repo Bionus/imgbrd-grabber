@@ -1140,7 +1140,7 @@ void mainWindow::getAll(bool all)
 	}
 	else
 	{
-		for (DownloadQueryImage batch : m_batchs)
+		for (const DownloadQueryImage &batch : m_batchs)
 		{
 			if (batch.values.value("file_url").isEmpty())
 			{
@@ -2044,7 +2044,7 @@ bool mainWindow::loadLinkList(QString filename)
 	{
 		ui->tableBatchGroups->setRowCount(ui->tableBatchGroups->rowCount() + 1);
 		QString last = queryGroup.unk;
-		int max = last.right(last.indexOf("/")+1).toInt(), val = last.left(last.indexOf("/")).toInt();
+		int max = last.rightRef(last.indexOf("/")+1).toInt(), val = last.leftRef(last.indexOf("/")).toInt();
 
 		int row = ui->tableBatchGroups->rowCount() - 1;
 		addTableItem(ui->tableBatchGroups, row, 1, queryGroup.tags);

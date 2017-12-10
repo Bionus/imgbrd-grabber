@@ -176,10 +176,10 @@ QDateTime qDateTimeFromString(QString str)
 		}
 
 		QStringList months = QStringList() << "Jan" << "Feb" << "Mar" << "Apr" << "May" << "Jun" << "Jul" << "Aug" << "Sep" << "Oct" << "Nov" << "Dec";
-		int year = str.mid(26, 4).toInt();
+		int year = str.midRef(26, 4).toInt();
 		int month = months.indexOf(str.mid(4, 3)) + 1;
-		int day = str.mid(8, 2).toInt();
-		float decay = str.mid(20, 5).toFloat() / 100;
+		int day = str.midRef(8, 2).toInt();
+		float decay = str.midRef(20, 5).toFloat() / 100;
 
 		QTime time = QTime::fromString(str.mid(11, 8), "HH:mm:ss");
 		date.setDate(QDate(year, month, day));

@@ -61,17 +61,17 @@ QString PostFilter::match(const QMap<QString, Token> &tokens, QString filter, bo
 			else
 			{
 				if (filter.startsWith("..") || filter.startsWith("<="))
-				{ cond = input <= filter.right(filter.size()-2).toInt(); }
+				{ cond = input <= filter.rightRef(filter.size()-2).toInt(); }
 				else if (filter.endsWith(".."))
-				{ cond = input >= filter.left(filter.size()-2).toInt(); }
+				{ cond = input >= filter.leftRef(filter.size()-2).toInt(); }
 				else if (filter.startsWith(">="))
-				{ cond = input >= filter.right(filter.size()-2).toInt(); }
+				{ cond = input >= filter.rightRef(filter.size()-2).toInt(); }
 				else if (filter.startsWith("<"))
-				{ cond = input < filter.right(filter.size()-1).toInt(); }
+				{ cond = input < filter.rightRef(filter.size()-1).toInt(); }
 				else if (filter.startsWith(">"))
-				{ cond = input > filter.right(filter.size()-1).toInt(); }
+				{ cond = input > filter.rightRef(filter.size()-1).toInt(); }
 				else if (filter.contains(".."))
-				{ cond = input >= filter.left(filter.indexOf("..")).toInt() && input <= filter.right(filter.size()-filter.indexOf("..")-2).toInt();	}
+				{ cond = input >= filter.leftRef(filter.indexOf("..")).toInt() && input <= filter.rightRef(filter.size()-filter.indexOf("..")-2).toInt();	}
 				else
 				{ cond = input == filter.toInt(); }
 			}
@@ -93,7 +93,7 @@ QString PostFilter::match(const QMap<QString, Token> &tokens, QString filter, bo
 				if (assoc.contains(filter))
 					filter = assoc[filter];
 
-				bool cond = token.toString().toLower().startsWith(filter.left(1));
+				bool cond = token.toString().toLower().startsWith(filter.at(0));
 				if (!cond && !invert)
 				{ return QObject::tr("image is not \"%1\"").arg(filter); }
 				if (cond && invert)

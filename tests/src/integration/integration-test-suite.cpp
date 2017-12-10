@@ -65,7 +65,7 @@ QList<Image*> IntegrationTestSuite::getImages(QString site, QString source, QStr
 	QVariantList variants = arguments.at(0).value<QVariantList>();
 
 	// Convert results
-	for (QVariant variant : variants)
+	for (const QVariant &variant : variants)
 	{
 		QSharedPointer<Image> img = variant.value<QSharedPointer<Image>>();
 		result.append(img.data());
@@ -128,7 +128,7 @@ QList<Tag> IntegrationTestSuite::getPageTags(QString site, QString source, QStri
 	QVariantList variants = arguments.at(0).value<QVariantList>();
 
 	// Convert results
-	for (QVariant variant : variants)
+	for (const QVariant &variant : variants)
 	{
 		Tag tag = variant.value<Tag>();
 		result.append(tag);
@@ -185,7 +185,7 @@ void IntegrationTestSuite::cleanup()
 		m_downloader = nullptr;
 	}
 
-	for (QString file : m_filesToRemove)
+	for (const QString &file : m_filesToRemove)
 	{ QFile(file).remove(); }
 	m_filesToRemove.clear();
 }

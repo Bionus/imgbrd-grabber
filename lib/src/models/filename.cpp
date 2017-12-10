@@ -422,7 +422,7 @@ QStringList Filename::path(QMap<QString, Token> tokens, Profile *profile, QStrin
 					QString last = files.last().fileName();
 					int pos = cRight.indexOf(hasNum);
 					int len = last.length() - cRight.length() + 5;
-					num = last.mid(pos, len).toInt() + 1;
+					num = last.midRef(pos, len).toInt() + 1;
 				}
 				cFilename.replace(hasNum, optionedValue(num, "num", numOptions, settings, namespaces));
 			}
