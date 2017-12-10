@@ -33,8 +33,8 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 
 	LanguageLoader languageLoader(savePath("languages/", true));
 	QMap<QString, QString> languages = languageLoader.getAllLanguages();
-	for (const QString &language : languages.keys())
-	{ ui->comboLanguages->addItem(languages[language], language); }
+	for (auto it = languages.begin(); it != languages.end(); ++it)
+	{ ui->comboLanguages->addItem(it.value(), it.key()); }
 
 	QSettings *settings = profile->getSettings();
 	ui->comboLanguages->setCurrentText(languages[settings->value("language", "English").toString()]);
@@ -69,11 +69,11 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	QMap<QString, QPair<QString, QString>> filenames = getFilenames(settings);
 	m_filenamesConditions = QList<QLineEdit*>();
 	m_filenamesFilenames = QList<QLineEdit*>();
-	for (int i = 0; i < filenames.size(); i++)
+	for (auto it = filenames.begin(); it != filenames.end(); ++it)
 	{
-		QLineEdit *leCondition = new QLineEdit(filenames.keys().at(i));
-		QLineEdit *leFilename = new QLineEdit(filenames.values().at(i).first);
-		QLineEdit *leFolder = new QLineEdit(filenames.values().at(i).second);
+		QLineEdit *leCondition = new QLineEdit(it.key());
+		QLineEdit *leFilename = new QLineEdit(it.value().first);
+		QLineEdit *leFolder = new QLineEdit(it.value().second);
 
 		m_filenamesConditions.append(leCondition);
 		m_filenamesFilenames.append(leFilename);
@@ -198,10 +198,10 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	m_customNames = QList<QLineEdit*>();
 	m_customTags = QList<QLineEdit*>();
 	i = 0;
-	for (const QString &key : customs.keys())
+	for (auto it = customs.begin(); it != customs.end(); ++it)
 	{
-		auto *leName = new QLineEdit(key);
-		auto *leTags = new QLineEdit(customs[key].join(" "));
+		auto *leName = new QLineEdit(it.key());
+		auto *leTags = new QLineEdit(it.value().join(" "));
 		m_customNames.append(leName);
 		m_customTags.append(leTags);
 		ui->layoutCustom->insertRow(i++, leName, leTags);
@@ -398,9 +398,10 @@ void optionsWindow::showLogFiles(QSettings *settings)
 	auto *mapperRemoveLogFile = new QSignalMapper(this);
 	connect(mapperEditLogFile, SIGNAL(mapped(int)), this, SLOT(editLogFile(int)));
 	connect(mapperRemoveLogFile, SIGNAL(mapped(int)), this, SLOT(removeLogFile(int)));
-	for (int i : logFiles.keys())
+	for (auto it = logFiles.begin(); it != logFiles.end(); ++it)
 	{
-		auto logFile = logFiles[i];
+		int i = it.key();
+		auto logFile = it.value();
 
 		auto *label = new QLabel(logFile["name"].toString());
 		label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
@@ -461,8 +462,8 @@ void optionsWindow::setLogFile(int index, QMap<QString, QVariant> logFile)
 
 	settings->beginGroup(QString::number(index));
 
-	for (const QString &key : logFile.keys())
-	{ settings->setValue(key, logFile[key]); }
+	for (auto it = logFile.begin(); it != logFile.end(); ++it)
+	{ settings->setValue(it.key(), it.value()); }
 
 	settings->endGroup();
 	settings->endGroup();

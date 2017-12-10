@@ -5,12 +5,12 @@ Api::Api(QString name, QMap<QString, QString> data)
 	: QObject(), m_name(name), m_data(data)
 {
 	QString prefix = "Urls/" + m_name;
-	for (const QString &key : m_data.keys())
+	for (auto it = m_data.begin(); it != m_data.end(); ++it)
 	{
-		if (key.startsWith(prefix))
+		if (it.key().startsWith(prefix))
 		{
-			QString k = key.right(key.length() - prefix.length() - 1);
-			m_data["Urls/" + k] = m_data[key];
+			QString k = it.key().right(it.key().length() - prefix.length() - 1);
+			m_data["Urls/" + k] = it.value();
 		}
 	}
 }

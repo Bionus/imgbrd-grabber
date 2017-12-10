@@ -15,13 +15,13 @@ TagLoader::TagLoader(Profile *profile, QWidget *parent)
 	ui->setupUi(this);
 
 	QStringList keys;
-	for (const QString &key : m_sites.keys())
+	for (auto it = m_sites.begin(); it != m_sites.end(); ++it)
 	{
-		Site *site = m_sites[key];
+		Site *site = it.value();
 		if (!getCompatibleApis(site).isEmpty())
 		{
-			m_options.append(key);
-			keys.append(QString("%1 (%L2 tags)").arg(key).arg(site->tagDatabase()->count()));
+			m_options.append(it.key());
+			keys.append(QString("%1 (%L2 tags)").arg(it.key()).arg(site->tagDatabase()->count()));
 		}
 	}
 

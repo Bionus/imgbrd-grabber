@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
 	for (int i = 1; i < argc; ++i)
 		testSuites.append(argv[i]);
 
-	QMap<QString,int> results;
+	QMap<QString, int> results;
 	int failed = 0;
 
 	setTestModeEnabled(true);
@@ -35,9 +35,9 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	for (const QString &key : results.keys())
+	for (auto it = results.begin(); it != results.end(); ++it)
 	{
-		std::cout << '[' << (results.value(key) != 0 ? "FAIL" : "OK") << "] " << key.toStdString() << std::endl;
+		std::cout << '[' << (it.value() != 0 ? "FAIL" : "OK") << "] " << it.key().toStdString() << std::endl;
 	}
 
 	return failed;

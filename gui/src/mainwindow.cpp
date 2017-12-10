@@ -1255,9 +1255,9 @@ void mainWindow::getAllFinishedLogins()
 	int realConstImagesPerPack = m_settings->value("packing_size", 1000).toInt();
 
 	int total = 0;
-	for (int j : m_batchPending.keys())
+	for (auto j = m_batchPending.begin(); j != m_batchPending.end(); ++j)
 	{
-		DownloadQueryGroup b = m_batchPending[j];
+		DownloadQueryGroup b = j.value();
 
 		int constImagesPerPack = usePacking ? realConstImagesPerPack : b.total;
 		int pagesPerPack = qCeil(static_cast<float>(constImagesPerPack) / b.perpage);
@@ -1289,7 +1289,7 @@ void mainWindow::getAllFinishedLogins()
 													0,
 													"",
 													previous);
-			downloader->setData(j);
+			downloader->setData(j.key());
 			downloader->setQuit(false);
 
 			connect(downloader, &Downloader::finishedImages, this, &mainWindow::getAllFinishedImages);
@@ -1468,9 +1468,9 @@ void mainWindow::getAllImages()
 bool mainWindow::needExactTags(QSettings *settings)
 {
 	auto logFiles = getExternalLogFiles(settings);
-	for (int i : logFiles.keys())
+	for (auto it = logFiles.begin(); it != logFiles.end(); ++it)
 	{
-		Filename fn(logFiles[i]["content"].toString());
+		Filename fn(it.value().value("content").toString());
 		if (fn.needExactTags())
 			return true;
 	}
@@ -1761,9 +1761,10 @@ void mainWindow::getAllGetImageSaved(QSharedPointer<Image> img, QMap<QString, Im
 	auto res = result.first();
 
 	// Disk writing errors
-	for (const QString &path : result.keys())
+	for (auto it = result.begin(); it != result.end(); ++it)
 	{
-		if (result[path] == Image::SaveResult::Error)
+		const QString &path = it.key();
+		if (it.value() == Image::SaveResult::Error)
 		{
 			diskError = true;
 			m_progressDialog->pause();

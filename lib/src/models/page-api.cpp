@@ -558,8 +558,8 @@ void PageApi::parse()
 				if (!src.isNull())
 				{
 					QMap<QString, QVariant> map = src.toMap();
-					for (int i = 0; i < map.size(); i++)
-					{ d[map.keys().at(i)] = map.values().at(i).toString(); }
+					for (auto it = map.begin(); it != map.end(); ++it)
+					{ d[it.key()] = it.value().toString(); }
 				}
 			}
 			this->parseImage(d, id + first);
@@ -660,15 +660,12 @@ void PageApi::parse()
 				if (sc.contains("tags"))
 				{
 					QMap<QString, QVariant> tagTypes = sc["tags"].toMap();
-					if (!tagTypes.isEmpty())
+					for (auto it = tagTypes.begin(); it != tagTypes.end(); ++it)
 					{
-						for (const QString &tagType : tagTypes.keys())
-						{
-							TagType tType(tagType);
-							QList<QVariant> tagList = tagTypes.value(tagType).toList();
-							for (const QVariant &iTag : tagList)
-							{ tags.append(Tag(iTag.toString(), tType)); }
-						}
+						TagType tType(it.key());
+						QList<QVariant> tagList = it.value().toList();
+						for (const QVariant &iTag : tagList)
+						{ tags.append(Tag(iTag.toString(), tType)); }
 					}
 				}
 

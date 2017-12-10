@@ -93,7 +93,7 @@ QString PostFilter::match(const QMap<QString, Token> &tokens, QString filter, bo
 				if (assoc.contains(filter))
 					filter = assoc[filter];
 
-				bool cond = token.toString().toLower().startsWith(filter.at(0));
+				bool cond = !filter.isEmpty() && token.toString().toLower().startsWith(filter.at(0));
 				if (!cond && !invert)
 				{ return QObject::tr("image is not \"%1\"").arg(filter); }
 				if (cond && invert)

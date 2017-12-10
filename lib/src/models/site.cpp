@@ -342,8 +342,8 @@ QNetworkRequest Site::makeRequest(QUrl url, Page *page, QString ref, Image *img)
 	}
 
 	QMap<QString, QVariant> headers = m_settings->value("headers").toMap();
-	for (const QString &key : headers.keys())
-	{ request.setRawHeader(key.toLatin1(), headers[key].toString().toLatin1()); }
+	for (auto it = headers.begin(); it != headers.end(); ++it)
+	{ request.setRawHeader(it.key().toLatin1(), it.value().toString().toLatin1()); }
 
 	// Add OAuth 2 authorization header
 	QString type = m_settings->value("login/type", "url").toString();

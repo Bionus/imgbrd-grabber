@@ -43,9 +43,9 @@ searchTab::searchTab(Profile *profile, mainWindow *parent)
 		m_completion.append(fav.getName());
 
 	// Modifiers
-	for (const QString &key : m_sites.keys())
+	for (auto it = m_sites.begin(); it != m_sites.end(); ++it)
 	{
-		Site *site = m_sites.value(key);
+		Site *site = it.value();
 		if (site->contains("Modifiers"))
 			m_completion.append(site->value("Modifiers").trimmed().split(" ", QString::SkipEmptyParts));
 	}
@@ -1003,9 +1003,9 @@ void searchTab::updateCheckboxes()
 	int n = m_settings->value("Sources/Letters", 3).toInt();
 	int m = n;
 
-	for (const QString &key : m_sites.keys())
+	for (auto it = m_sites.begin(); it != m_sites.end(); ++it)
 	{
-		Site *site = m_sites[key];
+		Site *site = it.value();
 		QString url = site->url();
 
 		if (url.startsWith("www."))
@@ -1022,7 +1022,7 @@ void searchTab::updateCheckboxes()
 
 		QCheckBox *c = new QCheckBox(url.left(m), this);
 			c->setChecked(m_selectedSources.contains(site));
-			m_checkboxesSignalMapper->setMapping(c, key);
+			m_checkboxesSignalMapper->setMapping(c, it.key());
 			connect(c, SIGNAL(toggled(bool)), m_checkboxesSignalMapper, SLOT(map()));
 			ui_layoutSourcesList->addWidget(c);
 

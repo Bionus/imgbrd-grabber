@@ -57,15 +57,15 @@ void DanbooruDownloaderImporter::import(QSettings *dest) const
 	}
 
 	dest->beginGroup("Save");
-	if (firefox.keys().contains("useBlacklist"))
+	if (firefox.contains("useBlacklist"))
 	{ dest->setValue("downloadblacklist", firefox["useBlacklist"] != "true"); }
-	for (int i = 0; i < firefox.size(); i++)
+	for (auto it = firefox.begin(); it != firefox.end(); ++it)
 	{
-		if (assoc.keys().contains(firefox.keys().at(i)))
+		if (assoc.contains(it.key()))
 		{
-			QString v =  firefox.values().at(i);
+			QString v(it.value());
 			v.replace("\\\\", "\\");
-			dest->setValue(assoc[firefox.keys().at(i)], v);
+			dest->setValue(assoc[it.key()], v);
 		}
 	}
 	dest->endGroup();

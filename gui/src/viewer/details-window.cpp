@@ -20,7 +20,7 @@ void DetailsWindow::setImage(QSharedPointer<Image> image)
 {
 	clearLayout(ui->formLayout);
 
-	for (QPair<QString, QString> row : image->detailsData())
+	for (const QPair<QString, QString> &row : image->detailsData())
 	{
 		if (row.first.isEmpty() && row.second.isEmpty())
 		{

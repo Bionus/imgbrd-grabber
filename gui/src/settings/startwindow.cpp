@@ -26,8 +26,8 @@ startWindow::startWindow(Profile *profile, QWidget *parent)
 	// Language
 	LanguageLoader languageLoader(savePath("languages/", true));
 	QMap<QString, QString> languages = languageLoader.getAllLanguages();
-	for (const QString &language : languages.keys())
-	{ ui->comboLanguage->addItem(languages[language], language); }
+	for (auto it = languages.begin(); it != languages.end(); ++it)
+	{ ui->comboLanguage->addItem(it.value(), it.key()); }
 	ui->comboLanguage->setCurrentText("English");
 
 	// Sources

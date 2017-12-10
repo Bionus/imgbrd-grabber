@@ -327,8 +327,8 @@ void batchWindow::drawSpeed()
 	m_time->restart();
 
 	float speed = 0;
-	for (int sp : m_speeds.values())
-	{ speed += sp; }
+	for (auto sp = m_speeds.begin(); sp != m_speeds.end(); ++sp)
+	{ speed += sp.value(); }
 	if (m_speeds.size() == m_maxSpeeds)
 	{ m_mean.append(speed); }
 	QString unit = getUnit(&speed)+"/s";

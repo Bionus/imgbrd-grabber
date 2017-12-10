@@ -148,9 +148,10 @@ QString generateJavaScriptVariable(const QString &name, const QString &value)
 QString Filename::generateJavaScriptVariables(QSettings *settings, const QMap<QString, Token> &tokens) const
 {
 	QString inits = "";
-	for (const QString &key : tokens.keys())
+	for (auto it = tokens.begin(); it != tokens.end(); ++it)
 	{
-		QVariant val = tokens[key].value();
+		const QString &key = it.key();
+		QVariant val = it.value().value();
 		QString res;
 
 		if (val.type() == QVariant::StringList)
@@ -294,11 +295,12 @@ QStringList Filename::path(QMap<QString, Token> tokens, Profile *profile, QStrin
 		QMap<QString, QStringList> custom;
 		for (const QString &tag : tokens["tags"].value().toStringList())
 		{
-			for (const QString &key : scustom.keys())
+			for (auto it = scustom.begin(); it != scustom.end(); ++it)
 			{
+				const QString &key = it.key();
 				if (!custom.contains(key))
 				{ custom.insert(key, QStringList()); }
-				if (scustom[key].contains(tag, Qt::CaseInsensitive))
+				if (it.value().contains(tag, Qt::CaseInsensitive))
 				{ custom[key].append(tag); }
 			}
 		}
@@ -308,11 +310,11 @@ QStringList Filename::path(QMap<QString, Token> tokens, Profile *profile, QStrin
 
 	// Conditional filenames
 	QMap<QString, QPair<QString, QString>> filenames = getFilenames(settings);
-	for (const QString &cond : filenames.keys())
+	for (auto it = filenames.begin(); it != filenames.end(); ++it)
 	{
-		if (matchConditionalFilename(cond, settings, tokens))
+		if (matchConditionalFilename(it.key(), settings, tokens))
 		{
-			QPair<QString, QString> result = filenames[cond];
+			const QPair<QString, QString> &result = it.value();
 			if (!result.first.isEmpty())
 			{ filename = result.first; }
 			if (!result.second.isEmpty())

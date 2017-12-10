@@ -52,8 +52,8 @@ void TagDatabaseSqlite::setTags(const QList<Tag> &tags)
 {
 	// Inverted tag type map to get the tag type ID from its name
 	QMap<QString, int> tagTypes;
-	for (int typeId : m_tagTypes.keys())
-		tagTypes.insert(m_tagTypes[typeId].name(), typeId);
+	for (auto it = m_tagTypes.begin(); it != m_tagTypes.end(); ++it)
+		tagTypes.insert(it.value().name(), it.key());
 
 	QSqlQuery clearQuery(m_database);
 	clearQuery.prepare("DELETE FROM tags");

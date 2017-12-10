@@ -64,7 +64,7 @@ QMap<QString, QPair<QString, QString>> getFilenames(QSettings *settings)
 	return tokens;
 }
 
-QMap<int, QMap<QString, QVariant> > getExternalLogFiles(QSettings *settings)
+QMap<int, QMap<QString, QVariant>> getExternalLogFiles(QSettings *settings)
 {
 	QMap<int, QMap<QString, QVariant>> ret;
 
@@ -87,9 +87,9 @@ QStringList getExternalLogFilesSuffixes(QSettings *settings)
 	QStringList suffixes;
 
 	auto logFiles = getExternalLogFiles(settings);
-	for (int key : logFiles.keys())
+	for (auto it = logFiles.begin(); it != logFiles.end(); ++it)
 	{
-		const QMap<QString, QVariant> &logFile = logFiles.value(key);
+		const QMap<QString, QVariant> &logFile = it.value();
 		if (logFile["locationType"].toInt() == 2)
 		{ suffixes.append(logFile["suffix"].toString()); }
 	}

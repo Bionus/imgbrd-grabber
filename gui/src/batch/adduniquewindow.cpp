@@ -21,8 +21,9 @@ AddUniqueWindow::AddUniqueWindow(Site *selected, Profile *profile, QWidget *pare
 {
 	ui->setupUi(this);
 
-	ui->comboSites->addItems(m_sites.keys());
-	ui->comboSites->setCurrentIndex(m_sites.keys().indexOf(selected->url()));
+	auto items = m_sites.keys();
+	ui->comboSites->addItems(items);
+	ui->comboSites->setCurrentIndex(items.indexOf(selected->url()));
 
 	QSettings *settings = profile->getSettings();
 	ui->lineFolder->setText(settings->value("Save/path").toString());
