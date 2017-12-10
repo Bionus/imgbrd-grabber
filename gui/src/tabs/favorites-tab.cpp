@@ -93,7 +93,7 @@ void favoritesTab::closeEvent(QCloseEvent *e)
 	m_settings->endGroup();
 	m_settings->sync();
 
-	emit(closed(this));
+	emit closed(this);
 	e->accept();
 }
 

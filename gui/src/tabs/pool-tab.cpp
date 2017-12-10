@@ -73,7 +73,7 @@ void poolTab::on_buttonSearch_clicked()
 
 void poolTab::closeEvent(QCloseEvent *e)
 {
-	emit(closed(this));
+	emit closed(this);
 	e->accept();
 }
 

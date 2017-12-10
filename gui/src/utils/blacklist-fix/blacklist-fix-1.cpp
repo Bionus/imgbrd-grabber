@@ -74,7 +74,7 @@ void BlacklistFix1::on_buttonContinue_clicked()
 	}
 
 	// Parse all files
-	for (QPair<QString, QString> file : files)
+	for (const QPair<QString, QString> &file : files)
 	{
 		QString md5 = "";
 		if (ui->radioForce->isChecked())

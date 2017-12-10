@@ -678,7 +678,6 @@ void ZoomWindow::draw()
 		return;
 
 	QString fn = m_url.section('/', -1).toLower();
-	QString ext = fn.section('.', -1).toLower();
 
 	// We need a filename to display animations, so we get it if we're not already loading from a file
 	QString filename;
@@ -738,7 +737,6 @@ void ZoomWindow::draw()
 void ZoomWindow::update(bool onlySize, bool force)
 {
 	// Update image alignment
-	QString ext = m_url.section('.', -1).toLower();
 	QString type;
 	if (m_image->isVideo())
 	{ type = "imagePositionVideo"; }
@@ -941,8 +939,6 @@ void ZoomWindow::fullScreen()
 	if (!m_loadedImage && m_displayMovie == nullptr)
 		return;
 
-	QString ext = m_url.section('.', -1).toLower();
-
 	QWidget *widget;
 	m_fullScreen = new QAffiche(QVariant(), 0, QColor(), this);
 	m_fullScreen->setStyleSheet("background-color: black");
@@ -998,7 +994,6 @@ void ZoomWindow::prepareNextSlide()
 
 	// We make sure to wait to see the whole displayed item
 	qint64 additionalInterval = 0;
-	QString ext = getExtension(m_image->url());
 	if (!m_isAnimated.isEmpty())
 		additionalInterval = m_displayMovie->nextFrameDelay() * m_displayMovie->frameCount();
 

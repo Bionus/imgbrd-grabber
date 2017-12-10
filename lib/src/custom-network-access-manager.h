@@ -8,6 +8,8 @@
 
 class CustomNetworkAccessManager : public QNetworkAccessManager
 {
+	Q_OBJECT
+
 	public:
 		explicit CustomNetworkAccessManager(QObject *parent = Q_NULLPTR);
 		QNetworkReply *get(const QNetworkRequest &request);
