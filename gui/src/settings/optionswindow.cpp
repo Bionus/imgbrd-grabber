@@ -95,7 +95,17 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	QStringList ftypes = QStringList() << "ind" << "in" << "id" << "nd" << "i" << "n" << "d";
 	ui->comboFavoritesDisplay->setCurrentIndex(ftypes.indexOf(settings->value("favorites_display", "ind").toString()));
 
-	ui->checkShowLog->setChecked(settings->value("Log/show", true).toBool());
+	// Log
+	settings->beginGroup("Log");
+		ui->checkShowLog->setChecked(settings->value("show", true).toBool());
+	settings->endGroup();
+
+	// Monitoring
+	settings->beginGroup("Monitoring");
+		ui->checkMonitoringEnableTray->setChecked(settings->value("enableTray", false).toBool());
+		ui->checkMonitoringMinimizeToTray->setChecked(settings->value("minimizeToTray", false).toBool());
+		ui->checkMonitoringCloseToTray->setChecked(settings->value("closeToTray", false).toBool());
+	settings->endGroup();
 
 	ui->checkResizeInsteadOfCropping->setChecked(settings->value("resizeInsteadOfCropping", true).toBool());
 	ui->spinThumbnailUpscale->setValue(settings->value("thumbnailUpscale", 1.0f).toFloat() * 100);
@@ -840,8 +850,16 @@ void optionsWindow::save()
 		m_profile->emitFavorite();
 	}
 
+	// Log
 	settings->beginGroup("Log");
 		settings->setValue("show", ui->checkShowLog->isChecked());
+	settings->endGroup();
+
+	// Monitoring
+	settings->beginGroup("Monitoring");
+		settings->setValue("enableTray", ui->checkMonitoringEnableTray->isChecked());
+		settings->setValue("minimizeToTray", ui->checkMonitoringMinimizeToTray->isChecked());
+		settings->setValue("closeToTray", ui->checkMonitoringCloseToTray->isChecked());
 	settings->endGroup();
 
 	settings->setValue("resizeInsteadOfCropping", ui->checkResizeInsteadOfCropping->isChecked());

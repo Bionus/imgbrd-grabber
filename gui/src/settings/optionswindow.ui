@@ -141,6 +141,11 @@
       </item>
       <item>
        <property name="text">
+        <string>Monitoring</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
         <string>Proxy</string>
        </property>
       </item>
@@ -2422,7 +2427,6 @@
        <zorder>labelColoringCircles</zorder>
        <zorder>labelColoringSpecies</zorder>
        <zorder>labelColoringKeptForLater</zorder>
-       <zorder>horizontalLayoutWidget</zorder>
       </widget>
       <widget class="QWidget" name="pageInterfaceMargins">
        <layout class="QFormLayout" name="formLayout_9">
@@ -2578,6 +2582,46 @@
           <property name="checked">
            <bool>true</bool>
           </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="pageMonitoring">
+       <layout class="QFormLayout" name="formLayout_12">
+        <item row="0" column="0" colspan="2">
+         <widget class="QGroupBox" name="groupBox">
+          <property name="title">
+           <string>Tray icon</string>
+          </property>
+          <layout class="QFormLayout" name="formLayout_21">
+           <item row="0" column="0" colspan="2">
+            <widget class="QCheckBox" name="checkMonitoringEnableTray">
+             <property name="text">
+              <string>Enable system tray icon</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0" colspan="2">
+            <widget class="QCheckBox" name="checkMonitoringMinimizeToTray">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>Minimize to tray</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0" colspan="2">
+            <widget class="QCheckBox" name="checkMonitoringCloseToTray">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>Close to tray</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </widget>
         </item>
        </layout>
@@ -3268,12 +3312,44 @@
    <slot>addWebService()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>482</x>
-     <y>43</y>
+     <x>369</x>
+     <y>38</y>
     </hint>
     <hint type="destinationlabel">
      <x>661</x>
      <y>119</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkMonitoringEnableTray</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>checkMonitoringMinimizeToTray</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>331</x>
+     <y>30</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>331</x>
+     <y>45</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkMonitoringEnableTray</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>checkMonitoringCloseToTray</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>400</x>
+     <y>29</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>398</x>
+     <y>77</y>
     </hint>
    </hints>
   </connection>

@@ -11,6 +11,7 @@
 #include <QQueue>
 #include <QSet>
 #include <QSettings>
+#include <QSystemTrayIcon>
 #include <QTableWidgetItem>
 #include <QTranslator>
 #include "downloader/image-downloader.h"
@@ -129,6 +130,10 @@ class mainWindow : public QMainWindow
 		void linkHovered(const QString &tag);
 		void contextMenu();
 		void openInNewTab();
+		// System tray
+		void trayIconActivated(QSystemTrayIcon::ActivationReason reason);
+		void trayMessageClicked();
+		void trayClose();
 		// Others
 		void closeEvent(QCloseEvent*) override;
 		void onFirstLoad();
@@ -197,6 +202,10 @@ class mainWindow : public QMainWindow
 		QLinkedList<QJsonObject>	m_closedTabs;
 		QNetworkAccessManager m_networkAccessManager;
 		QAtomicInteger<int> m_getAllCurrentlyProcessing;
+
+		// System tray
+		QSystemTrayIcon *m_trayIcon;
+		bool m_closeFromTray = false;
 };
 
 #endif // MAIN_WINDOW_H

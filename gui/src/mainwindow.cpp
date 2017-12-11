@@ -9,6 +9,7 @@
 #include <QScrollBar>
 #include <QShortcut>
 #include <QSound>
+#include <QTimer>
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 4, 0))
 	#include <QStorageInfo>
 #endif
@@ -159,6 +160,27 @@ void mainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 		{ srsc += (!srsc.isEmpty() ? ", " : "") + key + " (" + sites.value(key)->type() + ")"; }
 		log(QString("%1 source%2 found: %3").arg(sites.size()).arg(sites.size() > 1 ? "s" : "", srsc), Logger::Info);
 	}
+
+	// System tray icon
+	if (m_settings->value("Monitoring/enableTray", false).toBool())
+	{
+		auto quitAction = new QAction(tr("&Quit"), this);
+		connect(quitAction, &QAction::triggered, this, &mainWindow::trayClose);
+
+		auto trayIconMenu = new QMenu(this);
+		trayIconMenu->addAction(quitAction);
+
+		m_trayIcon = new QSystemTrayIcon(this);
+		m_trayIcon->setContextMenu(trayIconMenu);
+		m_trayIcon->setIcon(windowIcon());
+		m_trayIcon->setToolTip(windowTitle());
+		m_trayIcon->show();
+
+		connect(m_trayIcon, &QSystemTrayIcon::activated, this, &mainWindow::trayIconActivated);
+		connect(m_trayIcon, &QSystemTrayIcon::messageClicked, this, &mainWindow::trayMessageClicked);
+	}
+	else
+	{ m_trayIcon = nullptr; }
 
 	ui->actionClosetab->setShortcut(QKeySequence::Close);
 	QShortcut *actionCloseTabW = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
@@ -953,18 +975,41 @@ void mainWindow::loadLanguage(const QString& rLanguage, bool quiet)
 // Update interface language
 void mainWindow::changeEvent(QEvent* event)
 {
+	// Translation
 	if (event->type() == QEvent::LocaleChange)
 	{
 		QString locale = QLocale::system().name();
-			locale.truncate(locale.lastIndexOf('_'));
-			loadLanguage(locale);
+		locale.truncate(locale.lastIndexOf('_'));
+		loadLanguage(locale);
 	}
+
+	// Minimize to tray
+	else if (event->type() == QEvent::WindowStateChange && (windowState() & Qt::WindowMinimized))
+	{
+		bool tray = m_settings->value("Monitoring/enableTray", false).toBool();
+		bool minimizeToTray = m_settings->value("Monitoring/minimizeToTray", false).toBool();
+		if (tray && minimizeToTray && m_trayIcon != nullptr && m_trayIcon->isVisible())
+		{
+			QTimer::singleShot(250, this, &mainWindow::hide);
+		}
+	}
+
 	QMainWindow::changeEvent(event);
 }
 
 // Save tabs and settings on close
 void mainWindow::closeEvent(QCloseEvent *e)
 {
+	// Close to tray
+	bool tray = m_settings->value("Monitoring/enableTray", false).toBool();
+	bool closeToTray = m_settings->value("Monitoring/closeToTray", false).toBool();
+	if (tray && closeToTray && m_trayIcon != nullptr && m_trayIcon->isVisible() && !m_closeFromTray)
+	{
+		hide();
+		e->ignore();
+		return;
+	}
+
 	// Confirm before closing if there is a batch download or multiple tabs
 	if (m_settings->value("confirm_close", true).toBool() && (m_tabs.count() > 1 || m_getAll))
 	{
@@ -1013,6 +1058,10 @@ void mainWindow::closeEvent(QCloseEvent *e)
 		m_profile->sync();
 	DONE();
 	m_loaded = false;
+
+	// Ensore the tray icon is hidden quickly on close
+	if (m_trayIcon != nullptr && m_trayIcon->isVisible())
+		m_trayIcon->hide();
 
 	e->accept();
 	qApp->quit();
@@ -2250,6 +2299,27 @@ void mainWindow::contextMenu()
 void mainWindow::openInNewTab()
 {
 	addTab(m_link);
+}
+
+
+void mainWindow::trayIconActivated(QSystemTrayIcon::ActivationReason reason)
+{
+	if (reason == QSystemTrayIcon::Trigger || reason == QSystemTrayIcon::DoubleClick)
+	{
+		showNormal();
+	}
+}
+
+void mainWindow::trayMessageClicked()
+{
+	// No op
+}
+
+void mainWindow::trayClose()
+{
+	m_closeFromTray = true;
+	close();
+	m_closeFromTray = false;
 }
 
 
