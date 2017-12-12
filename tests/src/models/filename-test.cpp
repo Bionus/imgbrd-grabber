@@ -124,15 +124,21 @@ void FilenameTest::testPathKeepNThenAdd()
 }
 void FilenameTest::testPathIgnoredTags()
 {
+	m_img->deleteLater();
 	m_settings->setValue("ignoredtags", "character1");
+	m_img = new Image(m_site, m_details, m_profile);
 	assertPath("%artist%/%copyright%/%character%/%md5%.%ext%",
 			   "artist1/crossover/character2/1bc29b36f623ba82aaf6724fd3b16718.jpg");
 
+	m_img->deleteLater();
 	m_settings->setValue("ignoredtags", "character*");
+	m_img = new Image(m_site, m_details, m_profile);
 	assertPath("%artist%/%copyright%/%character%/%md5%.%ext%",
 			   "artist1/crossover/unknown/1bc29b36f623ba82aaf6724fd3b16718.jpg");
 
+	m_img->deleteLater();
 	m_settings->setValue("Save/character_empty", "");
+	m_img = new Image(m_site, m_details, m_profile);
 	assertPath("%artist%/%copyright%/%character%/%md5%.%ext%",
 			   "artist1/crossover/1bc29b36f623ba82aaf6724fd3b16718.jpg");
 }
@@ -495,23 +501,24 @@ void FilenameTest::testIsValid()
 
 void FilenameTest::testUseShorterCopyright()
 {
-	m_img->deleteLater();
-
 	m_details["tags_copyright"] = "test test_2";
-	m_img = new Image(m_site, m_details, m_profile);
 
+	m_img->deleteLater();
 	m_settings->setValue("Save/copyright_useshorter", true);
+	m_img = new Image(m_site, m_details, m_profile);
 	assertPath("%copyright%", "test");
+
+	m_img->deleteLater();
 	m_settings->setValue("Save/copyright_multiple", "keepAll");
 	m_settings->setValue("Save/copyright_useshorter", false);
+	m_img = new Image(m_site, m_details, m_profile);
 	assertPath("%copyright%", "test test_2");
 
-	m_img->deleteLater();
-
 	m_details["tags_copyright"] = "test_2 test";
-	m_img = new Image(m_site, m_details, m_profile);
 
+	m_img->deleteLater();
 	m_settings->setValue("Save/copyright_useshorter", true);
+	m_img = new Image(m_site, m_details, m_profile);
 	assertPath("%copyright%", "test");
 }
 
