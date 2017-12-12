@@ -167,7 +167,7 @@ void Profile::syncFavorites()
 	if (fileFavorites.open(QFile::WriteOnly | QFile::Text | QFile::Truncate))
 	{
 		for (const Favorite &fav : m_favorites)
-			fileFavorites.write(QString(fav.getName() + "|" + QString::number(fav.getNote()) + "|" + fav.getLastViewed().toString(Qt::ISODate) + "\r\n").toUtf8());
+			fileFavorites.write(QString(fav.toString() + "\r\n").toUtf8());
 
 		fileFavorites.close();
 	}

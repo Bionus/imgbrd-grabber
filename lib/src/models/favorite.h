@@ -11,13 +11,19 @@ class Favorite
 	public:
 		explicit Favorite(const QString &name);
 		Favorite(const QString &name, int note, const QDateTime &lastViewed, const QString &imagePath = "");
+		Favorite(const QString &name, int note, const QDateTime &lastViewed, int monitoringInterval, const QDateTime &lastMonitoring, const QString &imagePath = "");
 
 		// Getters and setters
 		void setNote(int note);
 		void setLastViewed(const QDateTime &lastViewed);
+		void setMonitoringInterval(int seconds);
+		void setLastMonitoring(const QDateTime &lastMonitoring);
 		void setImagePath(const QString &imagePath);
 		int			getNote()		const;
 		QDateTime	getLastViewed()	const;
+		int			getMonitoringInterval() const;
+		QDateTime	getLastMonitoring() const;
+		int			getSecondsToNextMonitoring() const;
 		QString		getImagePath()	const;
 
 		/**
@@ -41,6 +47,8 @@ class Favorite
 		QString		m_name;
 		int			m_note;
 		QDateTime	m_lastViewed;
+		QDateTime	m_lastMonitoring;
+		int			m_monitoringInterval;
 		QString		m_imagePath;
 };
 

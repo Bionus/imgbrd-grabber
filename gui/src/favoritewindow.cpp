@@ -2,6 +2,7 @@
 #include <QFile>
 #include <QFileDialog>
 #include <QSettings>
+#include <QtMath>
 #include <ui_favoritewindow.h>
 #include "functions.h"
 #include "models/profile.h"
@@ -21,6 +22,7 @@ favoriteWindow::favoriteWindow(Profile *profile, const Favorite &favorite, QWidg
 	ui->tagLineEdit->setText(m_favorite.getName());
 	ui->noteSpinBox->setValue(m_favorite.getNote());
 	ui->lastViewedDateTimeEdit->setDateTime(m_favorite.getLastViewed());
+	ui->spinMonitoringInterval->setValue(qFloor(m_favorite.getMonitoringInterval() / 60));
 
 	connect(this, SIGNAL(accepted()), this, SLOT(save()));
 }
@@ -58,7 +60,7 @@ void favoriteWindow::on_openButton_clicked()
 void favoriteWindow::save()
 {
 	Favorite oldFav = m_favorite;
-	m_favorite = Favorite(ui->tagLineEdit->text(), ui->noteSpinBox->value(), ui->lastViewedDateTimeEdit->dateTime());
+	m_favorite = Favorite(ui->tagLineEdit->text(), ui->noteSpinBox->value(), ui->lastViewedDateTimeEdit->dateTime(), ui->spinMonitoringInterval->value() * 60, oldFav.getLastMonitoring());
 	m_favorite.setImagePath(savePath("thumbs/" + m_favorite.getName(true) + ".png"));
 
 	if (oldFav.getName() != m_favorite.getName())

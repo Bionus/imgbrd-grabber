@@ -2588,19 +2588,29 @@
       </widget>
       <widget class="QWidget" name="pageMonitoring">
        <layout class="QFormLayout" name="formLayout_12">
-        <item row="0" column="0" colspan="2">
+        <item row="0" column="0">
+         <widget class="QLabel" name="labelMonitoringStartupDelay">
+          <property name="text">
+           <string>Delay on startup</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QSpinBox" name="spinMonitoringStartupDelay">
+          <property name="suffix">
+           <string> s</string>
+          </property>
+          <property name="maximum">
+           <number>3600</number>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0" colspan="2">
          <widget class="QGroupBox" name="groupBox">
           <property name="title">
            <string>Tray icon</string>
           </property>
           <layout class="QFormLayout" name="formLayout_21">
-           <item row="0" column="0" colspan="2">
-            <widget class="QCheckBox" name="checkMonitoringEnableTray">
-             <property name="text">
-              <string>Enable system tray icon</string>
-             </property>
-            </widget>
-           </item>
            <item row="1" column="0" colspan="2">
             <widget class="QCheckBox" name="checkMonitoringMinimizeToTray">
              <property name="enabled">
@@ -2618,6 +2628,13 @@
              </property>
              <property name="text">
               <string>Close to tray</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0" colspan="2">
+            <widget class="QCheckBox" name="checkMonitoringEnableTray">
+             <property name="text">
+              <string>Enable system tray icon</string>
              </property>
             </widget>
            </item>
@@ -3328,12 +3345,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>331</x>
-     <y>30</y>
+     <x>341</x>
+     <y>102</y>
     </hint>
     <hint type="destinationlabel">
-     <x>331</x>
-     <y>45</y>
+     <x>341</x>
+     <y>117</y>
     </hint>
    </hints>
   </connection>
@@ -3344,12 +3361,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>400</x>
-     <y>29</y>
+     <x>410</x>
+     <y>101</y>
     </hint>
     <hint type="destinationlabel">
-     <x>398</x>
-     <y>77</y>
+     <x>408</x>
+     <y>149</y>
     </hint>
    </hints>
   </connection>
