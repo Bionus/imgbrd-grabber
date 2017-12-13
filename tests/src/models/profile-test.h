@@ -34,6 +34,7 @@ class ProfileTest : public TestSuite
 
 	private:
 		Profile *m_profile;
+		QList<QDateTime> m_dates;
 };
 
 #endif // PROFILE_TEST_H

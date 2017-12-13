@@ -3,10 +3,15 @@
 
 void ProfileTest::init()
 {
+	m_dates.clear();
+	m_dates.append(QDateTime(QDate(2016, 9, 1), QTime(9, 23, 17)));
+	m_dates.append(QDateTime(QDate(2016, 10, 1), QTime(12, 23, 17)));
+	m_dates.append(QDateTime(QDate(2016, 7, 1), QTime(9, 12, 17)));
+
 	QFile f("tests/resources/favorites.txt");
 	f.open(QFile::WriteOnly | QFile::Text);
-	f.write(Favorite("tag_1", 20, QDateTime(QDate(2016, 9, 1), QTime(9, 23, 17))).toString().toUtf8() + "\r\n");
-	f.write(Favorite("tag_2", 100, QDateTime(QDate(2016, 10, 1), QTime(12, 23, 17))).toString().toUtf8() + "\r\n");
+	f.write(Favorite("tag_1", 20, m_dates[0], 60, m_dates[0]).toString().toUtf8() + "\r\n");
+	f.write(Favorite("tag_2", 100, m_dates[1], 360, m_dates[1]).toString().toUtf8() + "\r\n");
 	f.close();
 
 	QFile f2("tests/resources/md5s.txt");
@@ -47,15 +52,15 @@ void ProfileTest::testLoadFavorites()
 	QCOMPARE(favs.count(), 2);
 	QCOMPARE(favs[0].getName(), QString("tag_1"));
 	QCOMPARE(favs[0].getNote(), 20);
-	QCOMPARE(favs[0].getLastViewed(), QDateTime(QDate(2016, 9, 1), QTime(9, 23, 17)));
+	QCOMPARE(favs[0].getLastViewed(), m_dates[0]);
 	QCOMPARE(favs[1].getName(), QString("tag_2"));
 	QCOMPARE(favs[1].getNote(), 100);
-	QCOMPARE(favs[1].getLastViewed(), QDateTime(QDate(2016, 10, 1), QTime(12, 23, 17)));
+	QCOMPARE(favs[1].getLastViewed(), m_dates[1]);
 }
 
 void ProfileTest::testAddFavorite()
 {
-	Favorite fav("tag_3", 70, QDateTime(QDate(2016, 7, 1), QTime(9, 12, 17)));
+	Favorite fav("tag_3", 70, m_dates[2], 120, m_dates[2]);
 	m_profile->addFavorite(fav);
 	m_profile->sync();
 
@@ -65,14 +70,14 @@ void ProfileTest::testAddFavorite()
 	f.close();
 
 	QCOMPARE(lines.count(), 3);
-	QCOMPARE(lines[0], Favorite("tag_1", 20, QDateTime(QDate(2016, 9, 1), QTime(9, 23, 17))).toString());
-	QCOMPARE(lines[1], Favorite("tag_2", 100, QDateTime(QDate(2016, 10, 1), QTime(12, 23, 17))).toString());
+	QCOMPARE(lines[0], Favorite("tag_1", 20, m_dates[0], 60, m_dates[0]).toString());
+	QCOMPARE(lines[1], Favorite("tag_2", 100, m_dates[1], 360, m_dates[1]).toString());
 	QCOMPARE(lines[2], fav.toString());
 }
 
 void ProfileTest::testRemoveFavorite()
 {
-	m_profile->removeFavorite(Favorite("tag_1", 20, QDateTime(QDate(2016, 9, 1), QTime(9, 23, 17))));
+	m_profile->removeFavorite(Favorite("tag_1", 20, m_dates[0], 60, m_dates[0]));
 	m_profile->sync();
 
 	QFile f("tests/resources/favorites.txt");
@@ -81,12 +86,12 @@ void ProfileTest::testRemoveFavorite()
 	f.close();
 
 	QCOMPARE(lines.count(), 1);
-	QCOMPARE(lines[0], Favorite("tag_2", 100, QDateTime(QDate(2016, 10, 1), QTime(12, 23, 17))).toString());
+	QCOMPARE(lines[0], Favorite("tag_2", 100, m_dates[1], 360, m_dates[1]).toString());
 }
 #ifndef Q_OS_WIN
 void ProfileTest::testRemoveFavoriteThumb()
 {
-	Favorite fav("tag_1", 20, QDateTime(QDate(2016, 9, 1), QTime(9, 23, 17)));
+	Favorite fav("tag_1", 20, m_dates[0], 60, m_dates[0]);
 
 	QDir(m_profile->getPath()).mkdir("thumb");
 	QFile thumb(m_profile->getPath() + "/thumbs/" + fav.getName(true) + ".png");
