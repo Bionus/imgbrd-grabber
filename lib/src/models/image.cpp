@@ -92,7 +92,7 @@ Image::Image(const Image &other)
 }
 
 Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page* parent)
-	: m_profile(profile), m_parentSite(site), m_extensionRotator(nullptr)
+	: m_profile(profile), m_parentSite(site), m_extensionRotator(nullptr), m_id(0)
 {
 	m_settings = m_profile->getSettings();
 
