@@ -35,13 +35,15 @@ QString PostFilter::match(const QMap<QString, Token> &tokens, QString filter, bo
 		}
 
 		QVariant token = tokens[type].value();
-		if (token.type() == QVariant::Int || token.type() == QVariant::DateTime)
+		if (token.type() == QVariant::Int || token.type() == QVariant::DateTime || token.type() == QVariant::ULongLong)
 		{
 			int input = 0;
 			if (token.type() == QVariant::Int)
 			{ input = token.toInt(); }
 			else if (token.type() == QVariant::DateTime)
 			{ input = token.toDateTime().toString("yyyyMMdd").toInt(); }
+			else if (token.type() == QVariant::ULongLong)
+			{ input = token.toULongLong(); }
 
 			bool cond;
 			if (token.type() == QVariant::DateTime)
