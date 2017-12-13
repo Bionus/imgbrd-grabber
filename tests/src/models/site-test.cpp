@@ -13,8 +13,9 @@ void SiteTest::init()
 	QFile::copy("release/sites/Danbooru (2.0)/sites.txt", "tests/resources/sites/Danbooru (2.0)/sites.txt");
 	QFile::copy("release/sites/Danbooru (2.0)/danbooru.donmai.us/defaults.ini", "tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/defaults.ini");
 
-	m_settings = new QSettings("tests/resources/settings.ini", QSettings::IniFormat);
-	m_source = new Source(&profile, "tests/resources/sites/Danbooru (2.0)");
+	m_profile = new Profile("tests/resources/");
+	m_settings = m_profile->getSettings();
+	m_source = new Source(m_profile, "tests/resources/sites/Danbooru (2.0)");
 	m_site = new Site("danbooru.donmai.us", m_source);
 }
 
@@ -35,7 +36,7 @@ void SiteTest::testDefaultApis()
 	settings.setValue("sources/source_3", "");
 	settings.setValue("sources/source_4", "");
 
-	Source source(&profile, "tests/resources/sites/Danbooru (2.0)");
+	Source source(m_profile, "tests/resources/sites/Danbooru (2.0)");
 	Site site("danbooru.donmai.us", &source);
 
 	QCOMPARE(site.getApis().count(), 3);
@@ -50,7 +51,7 @@ void SiteTest::testNoApis()
 	settings.setValue("sources/source_3", "3");
 	settings.setValue("sources/source_4", "4");
 
-	Source source(&profile, "tests/resources/sites/Danbooru (2.0)");
+	Source source(m_profile, "tests/resources/sites/Danbooru (2.0)");
 	Site site("danbooru.donmai.us", &source);
 
 	QCOMPARE(site.getApis().count(), 0);
@@ -98,12 +99,12 @@ void SiteTest::testGetSites()
 {
 	QList<Site*> sites;
 
-	sites = profile.getFilteredSites(QStringList() << "danbooru.donmai.us");
+	sites = m_profile->getFilteredSites(QStringList() << "danbooru.donmai.us");
 	QCOMPARE(sites.count(), 1);
 	QCOMPARE(sites.first()->url(), QString("danbooru.donmai.us"));
 	QCOMPARE(sites.first()->type(), QString("Danbooru (2.0)"));
 
-	sites = profile.getFilteredSites(QStringList() << "test (does not exist)" << "danbooru.donmai.us");
+	sites = m_profile->getFilteredSites(QStringList() << "test (does not exist)" << "danbooru.donmai.us");
 	QCOMPARE(sites.count(), 1);
 	QCOMPARE(sites.first()->url(), QString("danbooru.donmai.us"));
 	QCOMPARE(sites.first()->type(), QString("Danbooru (2.0)"));

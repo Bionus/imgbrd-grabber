@@ -34,6 +34,7 @@ class SiteTest : public TestSuite
 		void testLoginPost();
 
 	private:
+		Profile *m_profile;
 		QSettings *m_settings;
 		Source *m_source;
 		Site *m_site;
