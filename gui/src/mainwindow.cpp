@@ -173,7 +173,6 @@ void mainWindow::init(const QStringList &args, const QMap<QString, QString> &par
 		m_trayIcon = new QSystemTrayIcon(this);
 		m_trayIcon->setContextMenu(trayIconMenu);
 		m_trayIcon->setIcon(windowIcon());
-		m_trayIcon->setToolTip(windowTitle());
 		m_trayIcon->show();
 
 		connect(m_trayIcon, &QSystemTrayIcon::activated, this, &mainWindow::trayIconActivated);
@@ -361,6 +360,8 @@ void mainWindow::initialLoginsDone()
 
 	ui->tabWidget->setCurrentIndex(qMax(0, m_forcedTab));
 	m_forcedTab = -1;
+
+	QTimer::singleShot(m_settings->value("Monitoring/startupDelay", 0).toInt() * 1000, this, &mainWindow::monitoringTick);
 }
 
 mainWindow::~mainWindow()
@@ -2320,6 +2321,54 @@ void mainWindow::trayClose()
 	m_closeFromTray = true;
 	close();
 	m_closeFromTray = false;
+}
+
+
+void mainWindow::monitoringTick()
+{
+	int minNextMonitoring = -1;
+
+	for (Favorite &fav : m_favorites)
+	{
+		// Skip favorites with monitoring disabled
+		if (fav.getMonitoringInterval() == 0)
+			continue;
+
+		// If this favorite's monitoring expired, we check it for updates
+		int next = fav.getSecondsToNextMonitoring();
+		if (next <= 0)
+		{
+			Site *site = getSelectedSiteOrDefault();
+
+			QEventLoop loop;
+			Page *page = new Page(m_profile, site, m_profile->getSites().values(), fav.getName().split(' '), 1, 1, QStringList(), false, this);
+			connect(page, &Page::finishedLoading, &loop, &QEventLoop::quit);
+			page->load();
+			loop.exec();
+
+			// If the last image is more recent than the last monitoring, we trigger a notification
+			QSharedPointer<Image> first = page->images().first();
+			if (first->createdAt() > fav.getLastMonitoring() && m_trayIcon != nullptr && m_trayIcon->isVisible())
+			{
+				m_trayIcon->showMessage(
+					"Monitoring",
+					QString("New images for tag '%1' on source '%2'").arg(fav.getName(), site->name()),
+					QSystemTrayIcon::Information
+				);
+			}
+
+			fav.setLastMonitoring(QDateTime::currentDateTimeUtc());
+			next = fav.getSecondsToNextMonitoring();
+		}
+
+		// Only keep the soonest expiring timeout
+		if (next < minNextMonitoring || minNextMonitoring == -1)
+		{ minNextMonitoring = next; }
+	}
+
+	// Re-run this method as soon as one of the monitoring timeout expires
+	if (minNextMonitoring > 0)
+	{ QTimer::singleShot(minNextMonitoring * 1000, this, &mainWindow::monitoringTick); }
 }
 
 

@@ -134,6 +134,8 @@ class mainWindow : public QMainWindow
 		void trayIconActivated(QSystemTrayIcon::ActivationReason reason);
 		void trayMessageClicked();
 		void trayClose();
+		// Monitoring
+		void monitoringTick();
 		// Others
 		void closeEvent(QCloseEvent*) override;
 		void onFirstLoad();
