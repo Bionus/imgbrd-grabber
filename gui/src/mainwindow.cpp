@@ -2349,13 +2349,7 @@ void mainWindow::monitoringTick()
 			// If the last image is more recent than the last monitoring, we trigger a notification
 			QSharedPointer<Image> first = page->images().first();
 			if (first->createdAt() > fav.getLastMonitoring() && m_trayIcon != nullptr && m_trayIcon->isVisible())
-			{
-				m_trayIcon->showMessage(
-					"Monitoring",
-					QString("New images for tag '%1' on source '%2'").arg(fav.getName(), site->name()),
-					QSystemTrayIcon::Information
-				);
-			}
+			{ m_trayIcon->showMessage("Monitoring", QString("New images for tag '%1' on source '%2'").arg(fav.getName(), site->name()), QSystemTrayIcon::Information); }
 
 			fav.setLastMonitoring(QDateTime::currentDateTimeUtc());
 			next = fav.getSecondsToNextMonitoring();

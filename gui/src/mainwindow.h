@@ -3,7 +3,7 @@
 
 #define CLOSED_TAB_HISTORY_MAX 20
 
-#include <QAtomicInteger>
+#include <QAtomicInt>
 #include <QLinkedList>
 #include <QMainWindow>
 #include <QProcess>
@@ -203,7 +203,7 @@ class mainWindow : public QMainWindow
 		QList<Tag>				m_currentTags;
 		QLinkedList<QJsonObject>	m_closedTabs;
 		QNetworkAccessManager m_networkAccessManager;
-		QAtomicInteger<int> m_getAllCurrentlyProcessing;
+		QAtomicInt m_getAllCurrentlyProcessing;
 
 		// System tray
 		QSystemTrayIcon *m_trayIcon;
