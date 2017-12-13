@@ -361,7 +361,7 @@ void mainWindow::initialLoginsDone()
 	ui->tabWidget->setCurrentIndex(qMax(0, m_forcedTab));
 	m_forcedTab = -1;
 
-	QTimer::singleShot(m_settings->value("Monitoring/startupDelay", 0).toInt() * 1000, this, &mainWindow::monitoringTick);
+	QTimer::singleShot(m_settings->value("Monitoring/startupDelay", 0).toInt() * 1000, this, SLOT(monitoringTick()));
 }
 
 mainWindow::~mainWindow()
@@ -991,7 +991,7 @@ void mainWindow::changeEvent(QEvent* event)
 		bool minimizeToTray = m_settings->value("Monitoring/minimizeToTray", false).toBool();
 		if (tray && minimizeToTray && m_trayIcon != nullptr && m_trayIcon->isVisible())
 		{
-			QTimer::singleShot(250, this, &mainWindow::hide);
+			QTimer::singleShot(250, this, SLOT(hide()));
 		}
 	}
 
@@ -1511,7 +1511,7 @@ void mainWindow::getAllImages()
 
 	// We start the simultaneous downloads
 	int count = qMax(1, qMin(m_settings->value("Save/simultaneous").toInt(), 10));
-	m_getAllCurrentlyProcessing = count;
+	m_getAllCurrentlyProcessing.store(count);
 	for (int i = 0; i < count; i++)
 		_getAll();
 }
@@ -1622,7 +1622,7 @@ void mainWindow::_getAll()
 	}
 
 	// When the batch download finishes
-	else if (--m_getAllCurrentlyProcessing == 0 && m_getAll)
+	else if (m_getAllCurrentlyProcessing.fetchAndAddRelaxed(-1) == 1 && m_getAll)
 	{ getAllFinished(); }
 }
 
@@ -1896,7 +1896,7 @@ void mainWindow::getAllSkip()
 
 	m_getAllSkipped += count;
 	m_progressDialog->setTotalValue(m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors);
-	m_getAllCurrentlyProcessing = count;
+	m_getAllCurrentlyProcessing.store(count);
 	for (int i = 0; i < count; ++i)
 		_getAll();
 
@@ -2362,7 +2362,7 @@ void mainWindow::monitoringTick()
 
 	// Re-run this method as soon as one of the monitoring timeout expires
 	if (minNextMonitoring > 0)
-	{ QTimer::singleShot(minNextMonitoring * 1000, this, &mainWindow::monitoringTick); }
+	{ QTimer::singleShot(minNextMonitoring * 1000, this, SLOT(monitoringTick())); }
 }
 
 
