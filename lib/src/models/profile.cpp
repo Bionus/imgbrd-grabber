@@ -1,6 +1,9 @@
 #include "models/profile.h"
 #include <QDir>
 #include <QFile>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include "commands/commands.h"
 #include "models/site.h"
 
@@ -28,18 +31,36 @@ Profile::Profile(const QString &path)
 	}
 
 	// Load favorites
+	QSet<QString> unique;
 	QFile fileFavorites(m_path + "/favorites.txt");
 	if (fileFavorites.open(QFile::ReadOnly | QFile::Text))
 	{
 		QString favs = fileFavorites.readAll();
 		fileFavorites.close();
 
-		QSet<QString> unique;
 		QStringList words = favs.split("\n", QString::SkipEmptyParts);
 		m_favorites.reserve(words.count());
 		for (const QString &word : words)
 		{
 			Favorite fav = Favorite::fromString(m_path, word);
+			if (!unique.contains(fav.getName()))
+			{
+				unique.insert(fav.getName());
+				m_favorites.append(fav);
+			}
+		}
+	}
+	QFile fileFavoritesJson(m_path + "/favorites.json");
+	if (fileFavoritesJson.open(QFile::ReadOnly | QFile::Text))
+	{
+		QByteArray data = fileFavoritesJson.readAll();
+		QJsonDocument loadDoc = QJsonDocument::fromJson(data);
+		QJsonObject object = loadDoc.object();
+
+		QJsonArray favorites = object["favorites"].toArray();
+		for (auto favoriteJson : favorites)
+		{
+			Favorite fav = Favorite::fromJson(m_path, favoriteJson.toObject());
 			if (!unique.contains(fav.getName()))
 			{
 				unique.insert(fav.getName());
@@ -163,14 +184,29 @@ void Profile::sync()
 }
 void Profile::syncFavorites()
 {
-	QFile fileFavorites(m_path + "/favorites.txt");
+	QFile fileFavorites(m_path + "/favorites.json");
 	if (fileFavorites.open(QFile::WriteOnly | QFile::Text | QFile::Truncate))
 	{
+		// Generate JSON array
+		QJsonArray favoritesJson;
 		for (const Favorite &fav : m_favorites)
-			fileFavorites.write(QString(fav.toString() + "\r\n").toUtf8());
+		{
+			QJsonObject unique;
+			fav.toJson(unique);
+			favoritesJson.append(unique);
+		}
 
+		// Generate result
+		QJsonObject full;
+		full["version"] = 1;
+		full["favorites"] = favoritesJson;
+
+		// Write result
+		QJsonDocument saveDoc(full);
+		fileFavorites.write(saveDoc.toJson());
 		fileFavorites.close();
 	}
+	QFile::remove(m_path + "/favorites.txt");
 }
 void Profile::syncKeptForLater()
 {

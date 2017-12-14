@@ -85,6 +85,29 @@ Favorite Favorite::fromString(const QString &path, const QString &text)
 	return Favorite(tag, note, lastViewed, monitoringInterval, lastMonitoring, thumbPath);
 }
 
+void Favorite::toJson(QJsonObject &json) const
+{
+	json["tag"] = getName();
+	json["note"] = getNote();
+	json["lastViewed"] = getLastViewed().toString(Qt::ISODate);
+	json["monitoringInterval"] = getMonitoringInterval();
+	json["lastMonitoring"] = getLastMonitoring().toString(Qt::ISODate);
+}
+Favorite Favorite::fromJson(const QString &path, const QJsonObject &json)
+{
+	QString tag = json["tag"].toString();
+	int note = json["note"].toInt();
+	QDateTime lastViewed = QDateTime::fromString(json["lastViewed"].toString(), Qt::ISODate);
+	int monitoringInterval = json["monitoringInterval"].toInt();
+	QDateTime lastMonitoring = QDateTime::fromString(json["lastMonitoring"].toString(), Qt::ISODate);
+
+	QString thumbPath = path + "/thumbs/" + (QString(tag).remove('\\').remove('/').remove(':').remove('*').remove('?').remove('"').remove('<').remove('>').remove('|')) + ".png";
+	if (!QFile::exists(thumbPath))
+		thumbPath = ":/images/noimage.png";
+
+	return Favorite(tag, note, lastViewed, monitoringInterval, lastMonitoring, thumbPath);
+}
+
 bool Favorite::sortByNote(const Favorite &s1, const Favorite &s2)
 { return s1.getNote() < s2.getNote(); }
 bool Favorite::sortByName(const Favorite &s1, const Favorite &s2)

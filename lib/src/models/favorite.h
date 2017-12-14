@@ -2,6 +2,7 @@
 #define FAVORITE_H
 
 #include <QDateTime>
+#include <QJsonObject>
 #include <QPixmap>
 #include <QString>
 
@@ -38,6 +39,8 @@ class Favorite
 
 		QString toString() const;
 		static Favorite fromString(const QString &path, const QString &text);
+		void toJson(QJsonObject &json) const;
+		static Favorite fromJson(const QString &path, const QJsonObject &json);
 
 		static bool sortByNote(const Favorite &s1, const Favorite &s2);
 		static bool sortByName(const Favorite &s1, const Favorite &s2);
