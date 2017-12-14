@@ -2330,34 +2330,33 @@ void mainWindow::monitoringTick()
 
 	for (Favorite &fav : m_favorites)
 	{
-		// Skip favorites with monitoring disabled
-		if (fav.getMonitoringInterval() == 0)
-			continue;
-
-		// If this favorite's monitoring expired, we check it for updates
-		int next = fav.getSecondsToNextMonitoring();
-		if (next <= 0)
+		for (Monitor &monitor : fav.getMonitors())
 		{
-			Site *site = getSelectedSiteOrDefault();
+			// If this favorite's monitoring expired, we check it for updates
+			int next = monitor.secsToNextCheck();
+			if (next <= 0)
+			{
+				Site *site = getSelectedSiteOrDefault();
 
-			QEventLoop loop;
-			Page *page = new Page(m_profile, site, m_profile->getSites().values(), fav.getName().split(' '), 1, 1, QStringList(), false, this);
-			connect(page, &Page::finishedLoading, &loop, &QEventLoop::quit);
-			page->load();
-			loop.exec();
+				QEventLoop loop;
+				Page *page = new Page(m_profile, site, m_profile->getSites().values(), fav.getName().split(' '), 1, 1, QStringList(), false, this);
+				connect(page, &Page::finishedLoading, &loop, &QEventLoop::quit);
+				page->load();
+				loop.exec();
 
-			// If the last image is more recent than the last monitoring, we trigger a notification
-			QSharedPointer<Image> first = page->images().first();
-			if (first->createdAt() > fav.getLastMonitoring() && m_trayIcon != nullptr && m_trayIcon->isVisible())
-			{ m_trayIcon->showMessage("Monitoring", QString("New images for tag '%1' on source '%2'").arg(fav.getName(), site->name()), QSystemTrayIcon::Information); }
+				// If the last image is more recent than the last monitoring, we trigger a notification
+				QSharedPointer<Image> first = page->images().first();
+				if (first->createdAt() > monitor.lastCheck() && m_trayIcon != nullptr && m_trayIcon->isVisible())
+				{ m_trayIcon->showMessage("Monitoring", QString("New images for tag '%1' on source '%2'").arg(fav.getName(), site->name()), QSystemTrayIcon::Information); }
 
-			fav.setLastMonitoring(QDateTime::currentDateTimeUtc());
-			next = fav.getSecondsToNextMonitoring();
+				monitor.setLastCheck(QDateTime::currentDateTimeUtc());
+				next = monitor.secsToNextCheck();
+			}
+
+			// Only keep the soonest expiring timeout
+			if (next < minNextMonitoring || minNextMonitoring == -1)
+			{ minNextMonitoring = next; }
 		}
-
-		// Only keep the soonest expiring timeout
-		if (next < minNextMonitoring || minNextMonitoring == -1)
-		{ minNextMonitoring = next; }
 	}
 
 	// Re-run this method as soon as one of the monitoring timeout expires

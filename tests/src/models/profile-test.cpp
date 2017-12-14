@@ -8,10 +8,11 @@ void ProfileTest::init()
 	m_dates.append(QDateTime(QDate(2016, 10, 1), QTime(12, 23, 17)));
 	m_dates.append(QDateTime(QDate(2016, 7, 1), QTime(9, 12, 17)));
 
+	QFile::remove("tests/resources/favorites.json");
 	QFile f("tests/resources/favorites.txt");
 	f.open(QFile::WriteOnly | QFile::Text);
-	f.write(Favorite("tag_1", 20, m_dates[0], 60, m_dates[0]).toString().toUtf8() + "\r\n");
-	f.write(Favorite("tag_2", 100, m_dates[1], 360, m_dates[1]).toString().toUtf8() + "\r\n");
+	f.write(Favorite("tag_1", 20, m_dates[0]).toString().toUtf8() + "\r\n");
+	f.write(Favorite("tag_2", 100, m_dates[1]).toString().toUtf8() + "\r\n");
 	f.close();
 
 	QFile f2("tests/resources/md5s.txt");
@@ -60,33 +61,35 @@ void ProfileTest::testLoadFavorites()
 
 void ProfileTest::testAddFavorite()
 {
-	Favorite fav("tag_3", 70, m_dates[2], 120, m_dates[2]);
+	Favorite fav("tag_3", 70, m_dates[2]);
 	m_profile->addFavorite(fav);
 	m_profile->sync();
 
-	QFile f("tests/resources/favorites.txt");
+	QFile f("tests/resources/favorites.json");
 	f.open(QFile::ReadOnly | QFile::Text);
-	QStringList lines = QString(f.readAll()).split("\n", QString::SkipEmptyParts);
+	QJsonObject json = QJsonDocument::fromJson(f.readAll()).object();
+	QJsonArray lines = json["favorites"].toArray();
 	f.close();
 
 	QCOMPARE(lines.count(), 3);
-	QCOMPARE(lines[0], Favorite("tag_1", 20, m_dates[0], 60, m_dates[0]).toString());
-	QCOMPARE(lines[1], Favorite("tag_2", 100, m_dates[1], 360, m_dates[1]).toString());
-	QCOMPARE(lines[2], fav.toString());
+	QCOMPARE(lines[0].toObject().value("tag").toString(), QString("tag_1"));
+	QCOMPARE(lines[1].toObject().value("tag").toString(), QString("tag_2"));
+	QCOMPARE(lines[2].toObject().value("tag").toString(), QString("tag_3"));
 }
 
 void ProfileTest::testRemoveFavorite()
 {
-	m_profile->removeFavorite(Favorite("tag_1", 20, m_dates[0], 60, m_dates[0]));
+	m_profile->removeFavorite(Favorite("tag_1", 20, m_dates[0]));
 	m_profile->sync();
 
-	QFile f("tests/resources/favorites.txt");
+	QFile f("tests/resources/favorites.json");
 	f.open(QFile::ReadOnly | QFile::Text);
-	QStringList lines = QString(f.readAll()).split("\n", QString::SkipEmptyParts);
+	QJsonObject json = QJsonDocument::fromJson(f.readAll()).object();
+	QJsonArray lines = json["favorites"].toArray();
 	f.close();
 
 	QCOMPARE(lines.count(), 1);
-	QCOMPARE(lines[0], Favorite("tag_2", 100, m_dates[1], 360, m_dates[1]).toString());
+	QCOMPARE(lines[0].toObject().value("tag").toString(), QString("tag_2"));
 }
 #ifndef Q_OS_WIN
 void ProfileTest::testRemoveFavoriteThumb()

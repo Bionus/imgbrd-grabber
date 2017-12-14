@@ -1,5 +1,6 @@
 #include "models/favorite.h"
 #include <QDir>
+#include <QJsonArray>
 #include "functions.h"
 
 
@@ -7,10 +8,10 @@ Favorite::Favorite(const QString &name)
 	: Favorite(name, 50, QDateTime::currentDateTime(), QString())
 {}
 Favorite::Favorite(const QString &name, int note, const QDateTime &lastViewed, const QString &imagePath)
-	: Favorite(name, note, lastViewed, 0, QDateTime::currentDateTime(), imagePath)
+	: Favorite(name, note, lastViewed, QList<Monitor>(), imagePath)
 {}
-Favorite::Favorite(const QString &name, int note, const QDateTime &lastViewed, int monitoringInterval, const QDateTime &lastMonitoring, const QString &imagePath)
-	: m_name(name), m_note(note), m_lastViewed(lastViewed), m_monitoringInterval(monitoringInterval), m_lastMonitoring(lastMonitoring), m_imagePath(imagePath)
+Favorite::Favorite(const QString &name, int note, const QDateTime &lastViewed, const QList<Monitor> &monitors, const QString &imagePath)
+	: m_name(name), m_note(note), m_lastViewed(lastViewed), m_monitors(monitors), m_imagePath(imagePath)
 {}
 
 void Favorite::setImagePath(const QString &imagePath)
@@ -19,10 +20,6 @@ void Favorite::setLastViewed(const QDateTime &lastViewed)
 { m_lastViewed = lastViewed; }
 void Favorite::setNote(int note)
 { m_note = note; }
-void Favorite::setMonitoringInterval(int seconds)
-{ m_monitoringInterval = seconds; }
-void Favorite::setLastMonitoring(const QDateTime &lastMonitoring)
-{ m_lastMonitoring = lastMonitoring; }
 
 QString Favorite::getName(bool clean) const
 {
@@ -34,14 +31,10 @@ int Favorite::getNote() const
 { return m_note; }
 QDateTime Favorite::getLastViewed() const
 { return m_lastViewed; }
-int Favorite::getMonitoringInterval() const
-{ return m_monitoringInterval; }
-QDateTime Favorite::getLastMonitoring() const
-{ return m_lastMonitoring; }
-int Favorite::getSecondsToNextMonitoring() const
-{ return QDateTime::currentDateTimeUtc().secsTo(m_lastMonitoring.addSecs(m_monitoringInterval)); }
 QString Favorite::getImagePath() const
 { return m_imagePath; }
+QList<Monitor> &Favorite::getMonitors()
+{ return m_monitors; }
 
 bool Favorite::setImage(const QPixmap &img)
 {
@@ -66,7 +59,7 @@ QPixmap Favorite::getImage() const
 
 QString Favorite::toString() const
 {
-	return getName() + "|" + QString::number(getNote()) + "|" + getLastViewed().toString(Qt::ISODate) + "|" + QString::number(getMonitoringInterval()) + "|" + getLastMonitoring().toString(Qt::ISODate);
+	return getName() + "|" + QString::number(getNote()) + "|" + getLastViewed().toString(Qt::ISODate);
 }
 Favorite Favorite::fromString(const QString &path, const QString &text)
 {
@@ -75,14 +68,12 @@ Favorite Favorite::fromString(const QString &path, const QString &text)
 	QString tag = xp.takeFirst();
 	int note = xp.isEmpty() ? 50 : xp.takeFirst().toInt();
 	QDateTime lastViewed = xp.isEmpty() ? QDateTime(QDate(2000, 1, 1), QTime(0, 0, 0, 0)) : QDateTime::fromString(xp.takeFirst(), Qt::ISODate);
-	int monitoringInterval = xp.isEmpty() ? 0 : xp.takeFirst().toInt();
-	QDateTime lastMonitoring = xp.isEmpty() ? QDateTime(QDate(2000, 1, 1), QTime(0, 0, 0, 0)) : QDateTime::fromString(xp.takeFirst(), Qt::ISODate);
 
 	QString thumbPath = path + "/thumbs/" + (QString(tag).remove('\\').remove('/').remove(':').remove('*').remove('?').remove('"').remove('<').remove('>').remove('|')) + ".png";
 	if (!QFile::exists(thumbPath))
 		thumbPath = ":/images/noimage.png";
 
-	return Favorite(tag, note, lastViewed, monitoringInterval, lastMonitoring, thumbPath);
+	return Favorite(tag, note, lastViewed, thumbPath);
 }
 
 void Favorite::toJson(QJsonObject &json) const
@@ -90,22 +81,32 @@ void Favorite::toJson(QJsonObject &json) const
 	json["tag"] = getName();
 	json["note"] = getNote();
 	json["lastViewed"] = getLastViewed().toString(Qt::ISODate);
-	json["monitoringInterval"] = getMonitoringInterval();
-	json["lastMonitoring"] = getLastMonitoring().toString(Qt::ISODate);
+
+	QJsonArray monitorsJson;
+	for (const Monitor &monitor : m_monitors)
+	{
+		QJsonObject obj;
+		monitor.toJson(obj);
+		monitorsJson.append(obj);
+	}
+	json["monitors"] = monitorsJson;
 }
-Favorite Favorite::fromJson(const QString &path, const QJsonObject &json)
+Favorite Favorite::fromJson(const QString &path, const QJsonObject &json, const QMap<QString, Site *> &sites)
 {
 	QString tag = json["tag"].toString();
 	int note = json["note"].toInt();
 	QDateTime lastViewed = QDateTime::fromString(json["lastViewed"].toString(), Qt::ISODate);
-	int monitoringInterval = json["monitoringInterval"].toInt();
-	QDateTime lastMonitoring = QDateTime::fromString(json["lastMonitoring"].toString(), Qt::ISODate);
 
 	QString thumbPath = path + "/thumbs/" + (QString(tag).remove('\\').remove('/').remove(':').remove('*').remove('?').remove('"').remove('<').remove('>').remove('|')) + ".png";
 	if (!QFile::exists(thumbPath))
 		thumbPath = ":/images/noimage.png";
 
-	return Favorite(tag, note, lastViewed, monitoringInterval, lastMonitoring, thumbPath);
+	QList<Monitor> monitors;
+	QJsonArray monitorsJson = json["monitors"].toArray();
+	for (auto monitorJson : monitorsJson)
+	{ monitors.append(Monitor::fromJson(monitorJson.toObject(), sites)); }
+
+	return Favorite(tag, note, lastViewed, monitors, thumbPath);
 }
 
 bool Favorite::sortByNote(const Favorite &s1, const Favorite &s2)

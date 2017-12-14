@@ -193,24 +193,22 @@ void FavoriteTest::testGetImageResize()
 void FavoriteTest::testToString()
 {
 	QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:ss");
-	Favorite fav("fate/stay_night", 50, date, 60, date);
+	Favorite fav("fate/stay_night", 50, date);
 
-	QCOMPARE(fav.toString(), QString("fate/stay_night|50|2016-07-02T16:35:12|60|2016-07-02T16:35:12"));
+	QCOMPARE(fav.toString(), QString("fate/stay_night|50|2016-07-02T16:35:12"));
 }
 
 void FavoriteTest::testFromString()
 {
-	QString from = "fate/stay_night|50|2016-07-02T16:35:12|60|2016-07-02T16:35:12";
+	QString from = "fate/stay_night|50|2016-07-02T16:35:12";
 
 	QDateTime date = QDateTime::fromString("2016-07-02 16:35:12", "yyyy-MM-dd HH:mm:ss");
-	Favorite expected("fate/stay_night", 50, date, 60, date);
+	Favorite expected("fate/stay_night", 50, date);
 	Favorite actual = Favorite::fromString("", from);
 
 	QCOMPARE(actual.getName(), expected.getName());
 	QCOMPARE(actual.getNote(), expected.getNote());
 	QCOMPARE(actual.getLastViewed(), expected.getLastViewed());
-	QCOMPARE(actual.getMonitoringInterval(), expected.getMonitoringInterval());
-	QCOMPARE(actual.getLastMonitoring(), expected.getLastMonitoring());
 }
 
 

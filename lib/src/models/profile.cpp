@@ -60,7 +60,7 @@ Profile::Profile(const QString &path)
 		QJsonArray favorites = object["favorites"].toArray();
 		for (auto favoriteJson : favorites)
 		{
-			Favorite fav = Favorite::fromJson(m_path, favoriteJson.toObject());
+			Favorite fav = Favorite::fromJson(m_path, favoriteJson.toObject(), m_sites);
 			if (!unique.contains(fav.getName()))
 			{
 				unique.insert(fav.getName());
