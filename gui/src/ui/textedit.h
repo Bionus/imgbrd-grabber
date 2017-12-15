@@ -39,6 +39,7 @@ class TextEdit : public QTextEdit
 
 	signals:
 		void returnPressed();
+		void addedFavorite(const QString &name);
 
 	private:
 		QCompleter		*c;

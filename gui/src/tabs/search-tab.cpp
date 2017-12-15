@@ -268,6 +268,7 @@ TextEdit *searchTab::createAutocomplete()
 {
 	auto *ret = new TextEdit(m_profile, this);
 	connect(ret, &TextEdit::returnPressed, this, &searchTab::load);
+	connect(ret, &TextEdit::addedFavorite, this, &searchTab::setFavoriteImage);
 
 	// Add auto-complete if necessary
 	if (m_settings->value("autocompletion", true).toBool())
@@ -1331,6 +1332,17 @@ void searchTab::toggleSource(const QString &url)
 	int removed = m_selectedSources.removeAll(site);
 	if (removed == 0)
 		m_selectedSources.append(site);
+}
+void searchTab::setFavoriteImage(const QString &name)
+{
+	for (Favorite &fav : m_favorites)
+	{
+		if (fav.getName() == name)
+		{
+			fav.setImage(m_images.first()->previewImage());
+			m_profile->emitFavorite();
+		}
+	}
 }
 
 QList<Site*> searchTab::sources()

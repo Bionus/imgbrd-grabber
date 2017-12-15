@@ -319,6 +319,7 @@ void TextEdit::customContextMenuRequested(QPoint)
 void TextEdit::setFavorite()
 {
 	m_profile->addFavorite(Favorite(toPlainText()));
+	emit addedFavorite(toPlainText());
 }
 void TextEdit::unsetFavorite()
 {

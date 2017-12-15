@@ -71,6 +71,7 @@ class searchTab : public QWidget
 		void setMergeResultsMode(bool merged);
 		void setEndlessLoadingMode(bool enabled);
 		void toggleSource(const QString &url);
+		void setFavoriteImage(const QString &name);
 
 	private:
 		void addLayout(QLayout *layout, int row, int column);
