@@ -2345,9 +2345,24 @@ void mainWindow::monitoringTick()
 				loop.exec();
 
 				// If the last image is more recent than the last monitoring, we trigger a notification
-				QSharedPointer<Image> first = page->images().first();
-				if (first->createdAt() > monitor.lastCheck() && m_trayIcon != nullptr && m_trayIcon->isVisible())
-				{ m_trayIcon->showMessage("Monitoring", QString("New images for tag '%1' on source '%2'").arg(fav.getName(), site->name()), QSystemTrayIcon::Information); }
+				int newImages = 0;
+				int count = page->images().count();
+				for (QSharedPointer<Image> img : page->images())
+				{
+					if (img->createdAt() > monitor.lastCheck())
+					{ newImages++; }
+				}
+				if (newImages > 0 && m_trayIcon != nullptr && m_trayIcon->isVisible())
+				{
+					QString msg;
+					if (count == 1)
+					{ msg = tr("New images found for tag '%1' on '%2'"); }
+					else if (newImages < count)
+					{ msg = tr("%n new image(s) found for tag '%1' on '%2'", "", newImages); }
+					else
+					{ msg = tr("More than %n new image(s) found for tag '%1' on '%2'", "", newImages); }
+					m_trayIcon->showMessage(tr("Grabber monitoring"), msg.arg(fav.getName(), site->name()), QSystemTrayIcon::Information);
+				}
 
 				monitor.setLastCheck(QDateTime::currentDateTimeUtc());
 				next = monitor.secsToNextCheck();
