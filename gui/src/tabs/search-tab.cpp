@@ -1294,11 +1294,11 @@ FixedSizeGridLayout *searchTab::createImagesLayout(QSettings *settings)
 	int vSpace = settings->value("Margins/vertical", 6).toInt();
 	auto *l = new FixedSizeGridLayout(hSpace, vSpace);
 
-	bool fixedWidthLayout = m_settings->value("resultsFixedWidthLayout", false).toBool();
+	bool fixedWidthLayout = settings->value("resultsFixedWidthLayout", false).toBool();
 	if (fixedWidthLayout)
 	{
 		int borderSize = settings->value("borders", 3).toInt();
-		float upscale = m_settings->value("thumbnailUpscale", 1.0f).toFloat();
+		float upscale = settings->value("thumbnailUpscale", 1.0f).toFloat();
 		l->setFixedWidth(qFloor(FIXED_IMAGE_WIDTH * upscale + borderSize * 2));
 	}
 

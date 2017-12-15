@@ -24,8 +24,16 @@ favoritesTab::favoritesTab(Profile *profile, mainWindow *parent)
 	ui->setupUi(this);
 
 	// Promote favorites layout into fixed-size grid layout
-	m_favoritesLayout = new FixedSizeGridLayout;
-	m_favoritesLayout->setFixedWidth(FAVORITES_THUMB_SIZE);
+	int hSpace = m_settings->value("Margins/horizontal", 6).toInt();
+	int vSpace = m_settings->value("Margins/vertical", 6).toInt();
+	m_favoritesLayout = new FixedSizeGridLayout(hSpace, vSpace);
+	bool fixedWidthLayout = m_settings->value("resultsFixedWidthLayout", false).toBool();
+	if (fixedWidthLayout)
+	{
+		int borderSize = m_settings->value("borders", 3).toInt();
+		float upscale = m_settings->value("thumbnailUpscale", 1.0f).toFloat();
+		m_favoritesLayout->setFixedWidth(qFloor(FAVORITES_THUMB_SIZE * upscale + borderSize * 2));
+	}
 	QWidget *layoutWidget = new QWidget;
 	layoutWidget->setLayout(m_favoritesLayout);
 	ui->layoutFavorites->addWidget(layoutWidget, 0, 0);
@@ -119,11 +127,13 @@ void favoritesTab::updateFavorites()
 
 	QString display = m_settings->value("favorites_display", "ind").toString();
 	float upscale = m_settings->value("thumbnailUpscale", 1.0f).toFloat();
+	int borderSize = m_settings->value("borders", 3).toInt();
 	for (const Favorite &fav : m_favorites)
 	{
 		QString xt = tr("<b>Name:</b> %1<br/><b>Note:</b> %2 %%<br/><b>Last view:</b> %3").arg(fav.getName(), QString::number(fav.getNote()), fav.getLastViewed().toString(format));
 		QWidget *w = new QWidget(ui->scrollAreaWidgetContents);
 		auto *l = new QVBoxLayout;
+		l->setMargin(0);
 		w->setLayout(l);
 
 		if (display.contains("i"))
@@ -131,7 +141,7 @@ void favoritesTab::updateFavorites()
 			QPixmap img = fav.getImage();
 			QBouton *image = new QBouton(fav.getName(), false, false, 0, QColor(), this);
 				image->scale(img, upscale);
-				image->setFixedSize(qFloor(FAVORITES_THUMB_SIZE * upscale), qFloor(FAVORITES_THUMB_SIZE * upscale));
+				image->setFixedSize(qFloor(FAVORITES_THUMB_SIZE * upscale + borderSize * 2), qFloor(FAVORITES_THUMB_SIZE * upscale + borderSize * 2));
 				image->setFlat(true);
 				image->setToolTip(xt);
 				connect(image, SIGNAL(rightClick(QString)), this, SLOT(favoriteProperties(QString)));
@@ -145,7 +155,7 @@ void favoritesTab::updateFavorites()
 			caption->setTextFormat(Qt::RichText);
 			caption->setAlignment(Qt::AlignCenter);
 			caption->setToolTip(xt);
-			caption->setFixedWidth(FAVORITES_THUMB_SIZE);
+			caption->setFixedWidth(FAVORITES_THUMB_SIZE * upscale + borderSize * 2);
 		if (!caption->text().isEmpty())
 		{
 			connect(caption, SIGNAL(clicked(QString)), this, SLOT(loadFavorite(QString)));
