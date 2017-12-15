@@ -38,6 +38,7 @@
 #include "models/page.h"
 #include "models/post-filter.h"
 #include "models/profile.h"
+#include "monitoring-center.h"
 #include "settings/optionswindow.h"
 #include "settings/startwindow.h"
 #include "tabs/favorites-tab.h"
@@ -361,7 +362,8 @@ void mainWindow::initialLoginsDone()
 	ui->tabWidget->setCurrentIndex(qMax(0, m_forcedTab));
 	m_forcedTab = -1;
 
-	QTimer::singleShot(m_settings->value("Monitoring/startupDelay", 0).toInt() * 1000, this, SLOT(monitoringTick()));
+	m_monitoringCenter = new MonitoringCenter(m_profile, m_trayIcon, this);
+	m_monitoringCenter->start();
 }
 
 mainWindow::~mainWindow()
@@ -2321,62 +2323,6 @@ void mainWindow::trayClose()
 	m_closeFromTray = true;
 	close();
 	m_closeFromTray = false;
-}
-
-
-void mainWindow::monitoringTick()
-{
-	int minNextMonitoring = -1;
-
-	for (Favorite &fav : m_favorites)
-	{
-		for (Monitor &monitor : fav.getMonitors())
-		{
-			// If this favorite's monitoring expired, we check it for updates
-			int next = monitor.secsToNextCheck();
-			if (next <= 0)
-			{
-				Site *site = getSelectedSiteOrDefault();
-
-				QEventLoop loop;
-				Page *page = new Page(m_profile, site, m_profile->getSites().values(), fav.getName().split(' '), 1, 1, QStringList(), false, this);
-				connect(page, &Page::finishedLoading, &loop, &QEventLoop::quit);
-				page->load();
-				loop.exec();
-
-				// If the last image is more recent than the last monitoring, we trigger a notification
-				int newImages = 0;
-				int count = page->images().count();
-				for (QSharedPointer<Image> img : page->images())
-				{
-					if (img->createdAt() > monitor.lastCheck())
-					{ newImages++; }
-				}
-				if (newImages > 0 && m_trayIcon != nullptr && m_trayIcon->isVisible())
-				{
-					QString msg;
-					if (count == 1)
-					{ msg = tr("New images found for tag '%1' on '%2'"); }
-					else if (newImages < count)
-					{ msg = tr("%n new image(s) found for tag '%1' on '%2'", "", newImages); }
-					else
-					{ msg = tr("More than %n new image(s) found for tag '%1' on '%2'", "", newImages); }
-					m_trayIcon->showMessage(tr("Grabber monitoring"), msg.arg(fav.getName(), site->name()), QSystemTrayIcon::Information);
-				}
-
-				monitor.setLastCheck(QDateTime::currentDateTimeUtc());
-				next = monitor.secsToNextCheck();
-			}
-
-			// Only keep the soonest expiring timeout
-			if (next < minNextMonitoring || minNextMonitoring == -1)
-			{ minNextMonitoring = next; }
-		}
-	}
-
-	// Re-run this method as soon as one of the monitoring timeout expires
-	if (minNextMonitoring > 0)
-	{ QTimer::singleShot(minNextMonitoring * 1000, this, SLOT(monitoringTick())); }
 }
 
 

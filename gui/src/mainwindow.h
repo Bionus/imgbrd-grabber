@@ -35,6 +35,7 @@ class Downloader;
 class Favorite;
 class DownloadQueryGroup;
 class DownloadQueryImage;
+class MonitoringCenter;
 
 class mainWindow : public QMainWindow
 {
@@ -134,8 +135,6 @@ class mainWindow : public QMainWindow
 		void trayIconActivated(QSystemTrayIcon::ActivationReason reason);
 		void trayMessageClicked();
 		void trayClose();
-		// Monitoring
-		void monitoringTick();
 		// Others
 		void closeEvent(QCloseEvent*) override;
 		void onFirstLoad();
@@ -208,6 +207,7 @@ class mainWindow : public QMainWindow
 		// System tray
 		QSystemTrayIcon *m_trayIcon;
 		bool m_closeFromTray = false;
+		MonitoringCenter *m_monitoringCenter;
 };
 
 #endif // MAIN_WINDOW_H
