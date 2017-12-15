@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include <QSystemTrayIcon>
+#include "models/favorite.h"
+#include "models/monitor.h"
 
 
 class Profile;
@@ -20,6 +22,9 @@ class MonitoringCenter : public QObject
 
 	protected slots:
 		void tick();
+
+	protected:
+		void checkMonitor(const Monitor &monitor, const Favorite &favorite);
 
 	private:
 		Profile *m_profile;
