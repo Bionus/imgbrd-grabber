@@ -475,7 +475,7 @@ void searchTab::finishedLoadingPreview()
 	}
 
 	if (img->previewImage().isNull())
-	{ log(QString("One of the thumbnails is empty (<a href=\"%1\">%1</a>).").arg(img->previewUrl().toString()), Logger::Error); }
+	{ log(QString("One of the thumbnails is empty (<a href=\"%1\">%1</a>).").arg(img->url(Image::Size::Thumbnail)), Logger::Error); }
 
 	// Download whitelist images on thumbnail view
 	QStringList detected = PostFilter::blacklisted(img->tokens(m_profile), m_profile->getBlacklist());

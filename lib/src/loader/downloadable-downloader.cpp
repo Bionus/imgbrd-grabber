@@ -33,7 +33,7 @@ void DownloadableDownloader::save()
 
 void DownloadableDownloader::preloaded()
 {
-	QString url = m_downloadable->url();
+	QString url = m_downloadable->url(Downloadable::Size::Full);
 	QStringList paths = !m_paths.isEmpty() ? m_paths : m_downloadable->paths(m_filename, m_folder, m_count);
 
 	// Sometimes we don't even need to download the image to save it

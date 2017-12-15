@@ -35,6 +35,7 @@ class Image : public QObject, public Downloadable
 		QString		tooltip() const override;
 		QList<QStrP> detailsData() const override;
 		QString		md5() const;
+		QString		url() const;
 		QString		rating() const;
 		QString		site() const;
 		QString		filename() const;
@@ -50,8 +51,6 @@ class Image : public QObject, public Downloadable
 		QDateTime	createdAt() const;
 		QUrl		pageUrl() const;
 		QUrl		fileUrl() const;
-		QUrl		sampleUrl() const;
-		QUrl		previewUrl() const;
 		QSize		size() const;
 		QPixmap		previewImage() const;
 		const QPixmap &previewImage();
@@ -75,7 +74,7 @@ class Image : public QObject, public Downloadable
 		void		setTags(const QList<Tag> &tags);
 
 		// Downloadable
-		QString url() const override;
+		QString url(Size size) const override;
 		void preload(const Filename &filename) override;
 		QStringList paths(const Filename &filename, const QString &folder, int count) const override;
 		QMap<QString, Token> generateTokens(Profile *profile) const override;

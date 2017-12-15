@@ -966,8 +966,6 @@ int				Image::width() const		{ return m_size.width();	}
 int				Image::height() const		{ return m_size.height();	}
 QDateTime		Image::createdAt() const	{ return m_createdAt;		}
 QUrl			Image::fileUrl() const		{ return m_fileUrl;			}
-QUrl			Image::sampleUrl() const	{ return m_sampleUrl;		}
-QUrl			Image::previewUrl() const	{ return m_previewUrl;		}
 QUrl			Image::pageUrl() const		{ return m_pageUrl;			}
 QSize			Image::size() const			{ return m_size;			}
 QPixmap			Image::previewImage() const	{ return m_imagePreview;	}
@@ -1208,6 +1206,17 @@ QString Image::isAnimated() const
 		return "apng";
 
 	return QString();
+}
+
+
+QString Image::url(Size size) const
+{
+	switch (size)
+	{
+		case Size::Thumbnail: return m_previewUrl.toString();
+		case Size::Sample: return m_sampleUrl.toString();
+		default: return m_url;
+	}
 }
 
 void Image::preload(const Filename &filename)

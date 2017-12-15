@@ -25,8 +25,15 @@ class Downloadable
 			NetworkError
 		};
 
+		enum Size
+		{
+			Thumbnail,
+			Sample,
+			Full
+		};
+
 		virtual void preload(const Filename &filename) = 0;
-		virtual QString url() const = 0;
+		virtual QString url(Size size) const = 0;
 		virtual QStringList paths(const Filename &filename, const QString &folder, int count) const = 0;
 		const QMap<QString, Token> &tokens(Profile *profile) const;
 		virtual SaveResult preSave(const QString &path) = 0;
