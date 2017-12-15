@@ -130,7 +130,7 @@ void favoritesTab::updateFavorites()
 	int borderSize = m_settings->value("borders", 3).toInt();
 	for (const Favorite &fav : m_favorites)
 	{
-		QString xt = tr("<b>Name:</b> %1<br/><b>Note:</b> %2 %%<br/><b>Last view:</b> %3").arg(fav.getName(), QString::number(fav.getNote()), fav.getLastViewed().toString(format));
+		QString xt = tr("<b>Name:</b> %1<br/><b>Note:</b> %2 %<br/><b>Last view:</b> %3").arg(fav.getName(), QString::number(fav.getNote()), fav.getLastViewed().toString(format));
 		QWidget *w = new QWidget(ui->scrollAreaWidgetContents);
 		auto *l = new QVBoxLayout;
 		l->setMargin(0);
