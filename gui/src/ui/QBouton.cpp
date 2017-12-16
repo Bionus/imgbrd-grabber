@@ -11,10 +11,10 @@ QBouton::QBouton(const QVariant &id, bool resizeInsteadOfCropping, bool smartSiz
 void QBouton::scale(const QPixmap &image, float scale)
 {
 	QSize size;
-	if (fabs(scale - 1.0f) < 0.001f)
+	if (scale - 1.0f > 0.001f)
 	{
 		size = image.size() * scale;
-		setIcon(image.scaled(size));
+		setIcon(image.scaled(size, Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation));
 	}
 	else
 	{
