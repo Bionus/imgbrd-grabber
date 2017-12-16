@@ -795,7 +795,7 @@ void PageApi::parseTags()
 	m_wiki.clear();
 	if (m_site->contains("Regex/Wiki"))
 	{
-		QRegularExpression rxwiki(m_site->value("Regex/Wiki"));
+		QRegularExpression rxwiki(m_site->value("Regex/Wiki"), QRegularExpression::DotMatchesEverythingOption);
 		auto match = rxwiki.match(source);
 		if (match.hasMatch())
 		{
