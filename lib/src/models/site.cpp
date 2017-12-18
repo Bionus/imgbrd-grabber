@@ -266,7 +266,7 @@ bool Site::canTestLogin() const
 		return m_settings->value("login/maxPage", 0).toInt() > 0;
 
 	if (type == "oauth2")
-		return true; // TODO(Bionus): check that tokens and urls are set
+		return !m_settings->value("login/"+type+"/tokenUrl").toString().isEmpty();
 
 	// Cannot post login information without an URL
 	return !m_settings->value("login/"+type+"/url", "").toString().isEmpty();
