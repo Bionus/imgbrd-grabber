@@ -614,6 +614,52 @@ void PageApi::parse()
 					for (int i = 0; i < from.count(); i++)
 					{ d[to[i]] = sc.value(from[i]).toString().trimmed(); }
 				}
+				// Twitter format
+				else if (sc.contains("retweet_count"))
+				{
+					if (!sc.contains("extended_entities"))
+						continue;
+
+					auto entities = sc.value("extended_entities").toMap();
+					if (!entities.contains("media"))
+						continue;
+
+					auto medias = entities.value("media").toList();
+					if (medias.isEmpty())
+						continue;
+
+					auto media = medias.first().toMap();
+					auto sizes = media.value("sizes").toMap();
+
+					d["id"] = sc.value("id_str").toString();
+					d["created_at"] = sc.value("created_at").toString();
+					d["preview_url"] = media.value("media_url_https").toString() + ":thumb";
+					if (sizes.contains("medium"))
+					{ d["sample_url"] = media.value("media_url_https").toString() + ":medium"; }
+
+					auto size = sizes.value("large").toMap();
+					d["width"] = QString::number(size.value("w").toInt());
+					d["height"] = QString::number(size.value("h").toInt());
+
+					if (media.contains("video_info"))
+					{
+						int maxBitrate = -1;
+						auto videoInfo = media.value("video_info").toMap();
+						auto variants = videoInfo.value("variants").toList();
+						for (QVariant variant : variants)
+						{
+							auto variantInfo = variant.toMap();
+							int bitrate = variantInfo.value("bitrate").toInt();
+							if (bitrate > maxBitrate)
+							{
+								maxBitrate = bitrate;
+								d["file_url"] = variantInfo.value("url").toString();
+							}
+						}
+					}
+					else
+					{ d["file_url"] = media.value("media_url_https").toString() + ":large"; }
+				}
 				else
 				{
 					QStringList infos;
