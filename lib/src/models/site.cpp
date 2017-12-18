@@ -9,6 +9,10 @@
 #include <QUrlQuery>
 #include "custom-network-access-manager.h"
 #include "logger.h"
+#include "login/http-get-login.h"
+#include "login/http-post-login.h"
+#include "login/oauth2-login.h"
+#include "login/url-login.h"
 #include "models/api.h"
 #include "models/image.h"
 #include "models/page.h"
@@ -27,8 +31,20 @@
 
 
 Site::Site(const QString &url, Source *source)
-	: m_type(source->getName()), m_url(url), m_source(source), m_settings(nullptr), m_manager(nullptr), m_cookieJar(nullptr), m_loggedIn(LoginStatus::Unknown), m_loginCheck(false), m_autoLogin(true)
+	: m_type(source->getName()), m_url(url), m_source(source), m_settings(nullptr), m_manager(nullptr), m_cookieJar(nullptr), m_loggedIn(LoginStatus::Unknown), m_autoLogin(true)
 {
+	// Create the access manager and get its slots
+	m_manager = new CustomNetworkAccessManager(this);
+	connect(m_manager, &CustomNetworkAccessManager::finished, this, &Site::finished);
+
+	// Cache
+	auto *diskCache = new QNetworkDiskCache(m_manager);
+	diskCache->setCacheDirectory(m_source->getProfile()->getPath() + "/cache/");
+	m_manager->setCache(diskCache);
+
+	// Cookies
+	resetCookieJar();
+
 	loadConfig();
 }
 
@@ -81,8 +97,20 @@ void Site::loadConfig()
 	}
 
 	// Auth information
-	m_username = m_settings->value("auth/pseudo", "").toString();
-	m_password = m_settings->value("auth/password", "").toString();
+	QString type = m_settings->value("login/type", "url").toString();
+	if (type == "url")
+		m_login = new UrlLogin(this, m_manager, m_settings);
+	else if (type == "oauth2")
+		m_login = new OAuth2Login(this, m_manager, m_settings);
+	else if (type == "post")
+		m_login = new HttpPostLogin(this, m_manager, m_cookieJar, m_settings);
+	else if (type == "get")
+		m_login = new HttpGetLogin(this, m_manager, m_cookieJar, m_settings);
+	else
+	{
+		m_login = nullptr;
+		log(QString("Invalid login type '%1'").arg(type), Logger::Error);
+	}
 
 	// Cookies
 	m_cookies.clear();
@@ -110,27 +138,6 @@ Site::~Site()
 	delete m_tagDatabase;
 }
 
-
-/**
- * Initialize the network manager.
- */
-void Site::initManager()
-{
-	if (m_manager == nullptr)
-	{
-		// Create the access manager and get its slots
-		m_manager = new CustomNetworkAccessManager(this);
-		connect(m_manager, &CustomNetworkAccessManager::finished, this, &Site::finished);
-
-		// Cache
-		auto *diskCache = new QNetworkDiskCache(m_manager);
-		diskCache->setCacheDirectory(m_source->getProfile()->getPath() + "/cache/");
-		m_manager->setCache(diskCache);
-
-		// Cookies
-		resetCookieJar();
-	}
-}
 
 /**
  * Initialize or reset the site's cookie jar.
@@ -168,7 +175,6 @@ void Site::login(bool force)
 	}
 
 	log(QString("[%1] Logging in...").arg(m_url), Logger::Info);
-	initManager();
 
 	// Clear cookies if we want to force a re-login
 	if (force)
@@ -176,137 +182,27 @@ void Site::login(bool force)
 
 	m_loggedIn = LoginStatus::Pending;
 
-	QString type = m_settings->value("login/type", "url").toString();
-	if (type == "url")
-	{
-		int maxPageAnonymous = m_settings->value("login/maxPage", 0).toInt();
-		if (maxPageAnonymous <= 0)
-		{
-			emit loggedIn(this, LoginResult::Impossible);
-			return;
-		}
-
-		m_loginPage = new Page(m_source->getProfile(), this, QList<Site*>() << this, QStringList(), maxPageAnonymous);
-		connect(m_loginPage, &Page::finishedLoading, this, &Site::loginFinished);
-		connect(m_loginPage, &Page::failedLoading, this, &Site::loginFinished);
-		m_loginPage->load();
-
-		return;
-	}
-
-	// OAuth 2
-	if (type == "oauth2")
-	{
-		// Get user application credentials
-		QString consumerKey = m_settings->value("auth/consumerKey", "").toString();
-		QString consumerSecret = m_settings->value("auth/consumerSecret", "").toString();
-		QByteArray bearerCredentials = QUrl::toPercentEncoding(consumerKey) + ":" + QUrl::toPercentEncoding(consumerSecret);
-		QByteArray base64BearerCredentials = bearerCredentials.toBase64();
-
-		// Create request
-		QNetworkRequest request(fixUrl(m_settings->value("login/oauth2/tokenUrl").toString()));
-		request.setRawHeader("Authorization", "Basic " + base64BearerCredentials);
-		request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded;charset=UTF-8");
-		QString body = "grant_type=client_credentials";
-
-		// Post request and wait for a reply
-		m_loginReply = m_manager->post(request, body.toUtf8());
-		connect(m_loginReply, &QNetworkReply::finished, this, &Site::loginFinished);
-
-		return;
-	}
-
-	// Cannot post login information without an URL
-	QString loginUrl = m_settings->value("login/"+type+"/url", "").toString();
-	if (loginUrl.isEmpty())
+	if (!m_login->isTestable())
 	{
 		emit loggedIn(this, LoginResult::Impossible);
 		return;
 	}
 
-	QUrlQuery query;
-	query.addQueryItem(m_settings->value("login/"+type+"/pseudo", "").toString(), m_username);
-	query.addQueryItem(m_settings->value("login/"+type+"/password", "").toString(), m_password);
-
-	m_settings->beginGroup("login/fields");
-		QStringList keys = m_settings->childKeys();
-		for (const QString &key : keys)
-			query.addQueryItem(key, setting(key).toString());
-	m_settings->endGroup();
-
-	if (type == "post")
-	{
-		QUrl postData;
-		postData.setQuery(query);
-
-		QNetworkRequest request(fixUrl(loginUrl));
-		request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
-
-		m_loginReply = m_manager->post(request, query.query(QUrl::FullyEncoded).toUtf8());
-		connect(m_loginReply, &QNetworkReply::finished, this, &Site::loginFinished);
-	}
-	else
-	{
-		QUrl url = fixUrl(loginUrl);
-		url.setQuery(query);
-
-		QNetworkRequest request(url);
-		request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, CACHE_POLICY);
-
-		m_loginReply = getRequest(request);
-		connect(m_loginReply, &QNetworkReply::finished, this, &Site::loginFinished);
-	}
+	connect(m_login, &Login::loggedIn, this, &Site::loginFinished);
+	m_login->login();
 }
 
 bool Site::canTestLogin() const
 {
-	QString type = m_settings->value("login/type", "url").toString();
-
-	if (type == "url")
-		return m_settings->value("login/maxPage", 0).toInt() > 0;
-
-	if (type == "oauth2")
-		return !m_settings->value("login/"+type+"/tokenUrl").toString().isEmpty();
-
-	// Cannot post login information without an URL
-	return !m_settings->value("login/"+type+"/url", "").toString().isEmpty();
+	return m_login != nullptr && m_login->isTestable();
 }
 
 /**
  * Called when the login try is finished.
  */
-void Site::loginFinished()
+void Site::loginFinished(Login::Result result)
 {
-	QString type = m_settings->value("login/type", "url").toString();
-	bool ok = false;
-	if (type == "url")
-	{
-		ok = !m_loginPage->images().isEmpty();
-	}
-	else if (type == "oauth2")
-	{
-		QString result = m_loginReply->readAll();
-		QJsonDocument jsonDocument = QJsonDocument::fromJson(result.toUtf8());
-		QJsonObject jsonObject = jsonDocument.object();
-		if (jsonObject.value("token_type").toString() == "bearer")
-		{
-			m_token = jsonObject.value("access_token").toString();
-			ok = true;
-		}
-		else
-		{ log(QString("[%1] Wrong OAuth2 token type received.").arg(m_url)); }
-	}
-	else
-	{
-		QString cookieName = m_settings->value("login/"+type+"/cookie", "").toString();
-
-		QList<QNetworkCookie> cookies = m_cookieJar->cookiesForUrl(m_loginReply->url());
-		for (const QNetworkCookie &cookie : cookies)
-		{
-			if (cookie.name() == cookieName && !cookie.value().isEmpty())
-			{ ok = true; }
-		}
-	}
+	bool ok = result == Login::Result::Success;
 	m_loggedIn = ok ? LoginStatus::LoggedIn : LoginStatus::LoggedOut;
 
 	log(QString("[%1] Login finished: %2.").arg(m_url, ok ? "success" : "failure"));
@@ -341,14 +237,11 @@ QNetworkRequest Site::makeRequest(QUrl url, Page *page, const QString &ref, Imag
 		request.setRawHeader("Referer", refHeader.toLatin1());
 	}
 
+	m_login->complementRequest(&request);
+
 	QMap<QString, QVariant> headers = m_settings->value("headers").toMap();
 	for (auto it = headers.begin(); it != headers.end(); ++it)
 	{ request.setRawHeader(it.key().toLatin1(), it.value().toString().toLatin1()); }
-
-	// Add OAuth 2 authorization header
-	QString type = m_settings->value("login/type", "url").toString();
-	if (type == "oauth2" && !m_token.isEmpty())
-	{ request.setRawHeader("Authorization", "Bearer " + m_token.toUtf8()); }
 
 	// User-Agent header tokens and default value
 	QString userAgent = request.rawHeader("User-Agent");
@@ -357,7 +250,6 @@ QNetworkRequest Site::makeRequest(QUrl url, Page *page, const QString &ref, Imag
 	userAgent.replace("%version%", QString(VERSION));
 	request.setRawHeader("User-Agent", userAgent.toLatin1());
 
-	initManager();
 	request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, CACHE_POLICY);
 	return request;
 }
@@ -409,8 +301,6 @@ QNetworkReply *Site::getRequest(const QNetworkRequest &request)
 
 void Site::loadTags(int page, int limit)
 {
-	initManager();
-
 	QString protocol = (m_settings->value("ssl", false).toBool() ? "https" : "http");
 	m_tagsReply = get(QUrl(protocol + "://"+m_url+"/tags.json?search[hide_empty]=yes&limit="+QString::number(limit)+"&page=" + QString::number(page)));
 	connect(m_tagsReply, SIGNAL(finished()), this, SLOT(finishedTags()));
@@ -471,14 +361,13 @@ Api *Site::firstValidApi() const
 	return nullptr;
 }
 
+bool Site::autoLogin() const			{ return m_autoLogin;		}
+void Site::setAutoLogin(bool autoLogin)	{ m_autoLogin = autoLogin;	}
 
-bool Site::autoLogin() const	{ return m_autoLogin;	}
-QString Site::username() const	{ return m_username;	}
-QString Site::password() const	{ return m_password;	}
-
-void Site::setAutoLogin(bool autoLogin)	        { m_autoLogin = autoLogin;	}
-void Site::setUsername(const QString &username)	{ m_username = username;	}
-void Site::setPassword(const QString &password)	{ m_password = password;	}
+QString Site::fixLoginUrl(QString url, const QString &loginPart) const
+{
+	return m_login->complementUrl(url, loginPart);
+}
 
 QUrl Site::fixUrl(const QString &url) const
 {
@@ -518,12 +407,6 @@ QList<QNetworkCookie> Site::cookies() const
 
 bool Site::isLoggedIn(bool unknown) const
 {
-	QString type = m_settings->value("login/type", "url").toString();
-	int maxPageAnonymous = m_settings->value("login/maxPage", 0).toInt();
-
-	if (type == "url" && !m_username.isEmpty() && !m_password.isEmpty() && maxPageAnonymous <= 0)
-		return true;
-
 	if (unknown)
 		return m_loggedIn != LoginStatus::LoggedOut;
 

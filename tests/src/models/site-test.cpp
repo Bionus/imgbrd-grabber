@@ -59,24 +59,6 @@ void SiteTest::testNoApis()
 	QCOMPARE(site.value("Urls/Image"), QString());
 }
 
-void SiteTest::testSetUsername()
-{
-	QString username = "test";
-
-	QVERIFY(m_site->username() != username);
-	m_site->setUsername(username);
-	QVERIFY(m_site->username() == username);
-}
-
-void SiteTest::testSetPassword()
-{
-	QString password = "test";
-
-	QVERIFY(m_site->password() != password);
-	m_site->setPassword(password);
-	QVERIFY(m_site->password() == password);
-}
-
 void SiteTest::testFixUrlBasic()
 {
 	QCOMPARE(m_site->fixUrl(""), QUrl());

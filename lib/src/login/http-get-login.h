@@ -1,0 +1,18 @@
+#ifndef HTTP_GET_LOGIN_H
+#define HTTP_GET_LOGIN_H
+
+#include "login/http-login.h"
+
+
+class Site;
+
+class HttpGetLogin : public HttpLogin
+{
+	Q_OBJECT
+
+	public:
+		explicit HttpGetLogin(Site *site, QNetworkAccessManager *manager, QNetworkCookieJar *cookieJar, MixedSettings *settings);
+		QNetworkReply *getReply(const QString &url, const QUrlQuery &query) const override;
+};
+
+#endif // HTTP_GET_LOGIN_H

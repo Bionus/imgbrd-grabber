@@ -9,6 +9,7 @@
 #include <QUrl>
 #include <QVariant>
 #include <functional>
+#include "login/login.h"
 #include "mixed-settings.h"
 #include "source.h"
 #include "tags/tag.h"
@@ -53,7 +54,6 @@ class Site : public QObject
 		Site(const QString &url, Source *source);
 		~Site() override;
 		void loadConfig();
-		void initManager();
 		QString type() const;
 		QString name() const;
 		QString url() const;
@@ -78,11 +78,8 @@ class Site : public QObject
 		void setAutoLogin(bool autoLogin);
 		bool autoLogin() const;
 		bool isLoggedIn(bool unknown = false) const;
-		QString username() const;
-		QString password() const;
-		void setUsername(const QString &username);
-		void setPassword(const QString &password);
 		bool canTestLogin() const;
+		QString fixLoginUrl(QString url, const QString &loginPart) const;
 
 		// XML info getters
 		bool contains(const QString &key) const;
@@ -94,7 +91,7 @@ class Site : public QObject
 
 	public slots:
 		void login(bool force = false);
-		void loginFinished();
+		void loginFinished(Login::Result result);
 		void loadTags(int page, int limit);
 		void finishedTags();
 		void getCallback();
@@ -121,11 +118,9 @@ class Site : public QObject
 		TagDatabase *m_tagDatabase;
 
 		// Login
-		QNetworkReply *m_loginReply;
-		Page *m_loginPage;
+		Login *m_login;
 		LoginStatus m_loggedIn;
-		bool m_loginCheck, m_autoLogin;
-		QString m_username, m_password, m_token;
+		bool m_autoLogin;
 
 		// Async
 		std::function<void(QNetworkReply*)> m_lastCallback;

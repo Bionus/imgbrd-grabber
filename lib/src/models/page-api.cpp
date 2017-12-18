@@ -28,7 +28,7 @@ PageApi::PageApi(Page *parentPage, Profile *profile, Site *site, Api *api, const
 	updateUrls();
 }
 
-QUrl PageApi::parseUrl(QString url, int pid, int p, QString t, QString pseudo, QString password)
+QUrl PageApi::parseUrl(QString url, int pid, int p, QString t)
 {
 	if (pid < 0)
 		pid = (this->page() - 1) * this->imagesPerPage();
@@ -36,10 +36,6 @@ QUrl PageApi::parseUrl(QString url, int pid, int p, QString t, QString pseudo, Q
 		p = this->page();
 	if (t.isEmpty())
 		t = m_search.join(" ");
-	if (pseudo.isEmpty())
-		pseudo = m_site->username();
-	if (password.isEmpty())
-		password = m_site->password();
 
 	url.replace("{tags}", QUrl::toPercentEncoding(t));
 	url.replace("{limit}", QString::number(m_imagesPerPage));
@@ -73,17 +69,7 @@ QUrl PageApi::parseUrl(QString url, int pid, int p, QString t, QString pseudo, Q
 	url.replace("{pid}", QString::number(pid));
 	url.replace("{page}", QString::number(p));
 
-	bool hasLoginString = m_api->contains("Urls/Login") && (!pseudo.isEmpty() || !password.isEmpty());
-	url.replace("{login}", hasLoginString ? m_api->value("Urls/Login") : "");
-	url.replace("{pseudo}", pseudo);
-	url.replace("{password}", password);
-	if (url.contains("{appkey}"))
-	{
-		QString appkey = m_site->value("AppkeySalt");
-		appkey.replace("%password%", password);
-		appkey.replace("%username%", pseudo.toLower());
-		url.replace("{appkey}", QCryptographicHash::hash(appkey.toUtf8(), QCryptographicHash::Sha1).toHex());
-	}
+	url = m_site->fixLoginUrl(url, m_api->value("Urls/Login"));
 
 	return m_site->fixUrl(url);
 }
@@ -121,18 +107,14 @@ void PageApi::updateUrls()
 	}
 	p = p - 1 + m_api->value("FirstPage").toInt();
 
-	// GET login information
-	QString pseudo = m_site->username();
-	QString password = m_site->password();
-
 	int pid = m_api->contains("Urls/Limit") ? m_api->value("Urls/Limit").toInt() * (m_page - 1) : m_imagesPerPage * (m_page - 1);
 
 	// URL searches
 	if (m_search.count() == 1 && !t.isEmpty() && isUrl(t))
 	{
 		m_originalUrl = QString(t);
-		m_url = parseUrl(t, pid, p, t, pseudo, password).toString();
-		m_urlRegex = parseUrl(t, pid, p, t, pseudo, password).toString();
+		m_url = parseUrl(t, pid, p, t).toString();
+		m_urlRegex = parseUrl(t, pid, p, t).toString();
 		return;
 	}
 
@@ -174,20 +156,20 @@ void PageApi::updateUrls()
 
 	// Global replace tokens
 	m_originalUrl = QString(url);
-	m_url = parseUrl(url, pid, p, t, pseudo, password).toString();
+	m_url = parseUrl(url, pid, p, t).toString();
 
 	auto plMatch = poolRx.match(t);
 	if ((pl > 0 || plMatch.hasMatch()) && m_api->contains("Urls/Html/Pools"))
 	{
 		url = m_site->value("Urls/Html/Pools");
-		url = parseUrl(url, pid, p, t, pseudo, password).toString();
+		url = parseUrl(url, pid, p, t).toString();
 		url.replace("{pool}", pl > 0 ? QString::number(pl) : plMatch.captured(1));
 		m_urlRegex = QUrl(url);
 	}
 	else if (m_api->contains("Urls/Html/Tags"))
 	{
 		url = m_site->value("Urls/Html/"+QString(t.isEmpty() && m_site->contains("Urls/Html/Home") ? "Home" : "Tags"));
-		m_urlRegex = parseUrl(url, pid, p, t, pseudo, password);
+		m_urlRegex = parseUrl(url, pid, p, t);
 	}
 	else
 	{ m_urlRegex = ""; }

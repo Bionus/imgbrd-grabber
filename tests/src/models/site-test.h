@@ -18,9 +18,6 @@ class SiteTest : public TestSuite
 		void testDefaultApis();
 		void testNoApis();
 
-		void testSetUsername();
-		void testSetPassword();
-
 		void testFixUrlBasic();
 		void testFixUrlRoot();
 		void testFixUrlRelative();

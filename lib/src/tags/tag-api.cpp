@@ -19,12 +19,7 @@ TagApi::TagApi(Profile *profile, Site *site, Api *api, int page, int limit, QObj
 	url.replace("{limit}", QString::number(limit));
 
 	// Login information
-	QString pseudo = m_site->username();
-	QString password = m_site->password();
-	bool hasLoginString = m_api->contains("Urls/Login") && (!pseudo.isEmpty() || !password.isEmpty());
-	url.replace("{login}", hasLoginString ? m_api->value("Urls/Login") : "");
-	url.replace("{pseudo}", pseudo);
-	url.replace("{password}", password);
+	url = m_site->fixLoginUrl(url, m_api->value("Urls/Login"));
 
 	m_url = m_site->fixUrl(url);
 }
