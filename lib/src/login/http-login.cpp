@@ -5,8 +5,8 @@
 #include "models/site.h"
 
 
-HttpLogin::HttpLogin(const QString &type, Site *site, QNetworkAccessManager *manager, QNetworkCookieJar *cookieJar, MixedSettings *settings)
-	: m_type(type), m_site(site), m_manager(manager), m_cookieJar(cookieJar), m_settings(settings)
+HttpLogin::HttpLogin(const QString &type, Site *site, QNetworkAccessManager *manager, MixedSettings *settings)
+	: m_type(type), m_site(site), m_manager(manager), m_settings(settings)
 {}
 
 bool HttpLogin::isTestable() const
@@ -39,7 +39,9 @@ void HttpLogin::loginFinished()
 {
 	QString cookieName = m_settings->value("login/" + m_type + "/cookie", "").toString();
 
-	QList<QNetworkCookie> cookies = m_cookieJar->cookiesForUrl(m_loginReply->url());
+	QNetworkCookieJar *cookieJar = m_manager->cookieJar();
+	QList<QNetworkCookie> cookies = cookieJar->cookiesForUrl(m_loginReply->url());
+
 	for (const QNetworkCookie &cookie : cookies)
 	{
 		if (cookie.name() == cookieName && !cookie.value().isEmpty())

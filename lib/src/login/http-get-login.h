@@ -11,7 +11,7 @@ class HttpGetLogin : public HttpLogin
 	Q_OBJECT
 
 	public:
-		explicit HttpGetLogin(Site *site, QNetworkAccessManager *manager, QNetworkCookieJar *cookieJar, MixedSettings *settings);
+		explicit HttpGetLogin(Site *site, QNetworkAccessManager *manager, MixedSettings *settings);
 		QNetworkReply *getReply(const QString &url, const QUrlQuery &query) const override;
 };
 

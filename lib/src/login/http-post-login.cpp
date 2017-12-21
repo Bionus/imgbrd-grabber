@@ -3,8 +3,8 @@
 #include "models/site.h"
 
 
-HttpPostLogin::HttpPostLogin(Site *site, QNetworkAccessManager *manager, QNetworkCookieJar *cookieJar, MixedSettings *settings)
-	: HttpLogin("post", site, manager, cookieJar, settings)
+HttpPostLogin::HttpPostLogin(Site *site, QNetworkAccessManager *manager, MixedSettings *settings)
+	: HttpLogin("post", site, manager, settings)
 {}
 
 QNetworkReply *HttpPostLogin::getReply(const QString &loginUrl, const QUrlQuery &query) const

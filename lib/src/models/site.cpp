@@ -103,9 +103,9 @@ void Site::loadConfig()
 	else if (type == "oauth2")
 		m_login = new OAuth2Login(this, m_manager, m_settings);
 	else if (type == "post")
-		m_login = new HttpPostLogin(this, m_manager, m_cookieJar, m_settings);
+		m_login = new HttpPostLogin(this, m_manager, m_settings);
 	else if (type == "get")
-		m_login = new HttpGetLogin(this, m_manager, m_cookieJar, m_settings);
+		m_login = new HttpGetLogin(this, m_manager, m_settings);
 	else
 	{
 		m_login = nullptr;

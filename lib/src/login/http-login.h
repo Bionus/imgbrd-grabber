@@ -14,7 +14,7 @@ class HttpLogin : public Login
 	Q_OBJECT
 
 	public:
-		explicit HttpLogin(const QString &type, Site *site, QNetworkAccessManager *manager, QNetworkCookieJar *cookieJar, MixedSettings *settings);
+		explicit HttpLogin(const QString &type, Site *site, QNetworkAccessManager *manager, MixedSettings *settings);
 		bool isTestable() const override;
 		virtual QNetworkReply *getReply(const QString &url, const QUrlQuery &query) const = 0;
 
@@ -29,7 +29,6 @@ class HttpLogin : public Login
 		Site *m_site;
 		QNetworkReply *m_loginReply;
 		QNetworkAccessManager *m_manager;
-		QNetworkCookieJar *m_cookieJar;
 		MixedSettings *m_settings;
 };
 
