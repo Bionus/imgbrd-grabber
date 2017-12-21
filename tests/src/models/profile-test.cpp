@@ -94,7 +94,7 @@ void ProfileTest::testRemoveFavorite()
 #ifndef Q_OS_WIN
 void ProfileTest::testRemoveFavoriteThumb()
 {
-	Favorite fav("tag_1", 20, m_dates[0], 60, m_dates[0]);
+	Favorite fav("tag_1", 20, m_dates[0]);
 
 	QDir(m_profile->getPath()).mkdir("thumb");
 	QFile thumb(m_profile->getPath() + "/thumbs/" + fav.getName(true) + ".png");
