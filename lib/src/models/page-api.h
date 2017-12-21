@@ -61,7 +61,8 @@ class PageApi : public QObject
 		void finishedLoadingTags(PageApi*);
 
 	protected:
-		void parseImage(QMap<QString, QString> data, int position, const QList<Tag> &tags = QList<Tag>());
+		QSharedPointer<Image> parseImage(QMap<QString, QString> data, int position, const QList<Tag> &tags = QList<Tag>());
+		bool addImage(QSharedPointer<Image> img);
 		void parseNavigation(const QString &source);
 		void updateUrls();
 		void setImageCount(int count, bool sure);

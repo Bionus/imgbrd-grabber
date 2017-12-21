@@ -257,7 +257,7 @@ QString _parseSetImageUrl(Site *site, Api* api, const QString &settingUrl, const
 }
 
 
-void PageApi::parseImage(QMap<QString, QString> d, int position, const QList<Tag> &tags)
+QSharedPointer<Image> PageApi::parseImage(QMap<QString, QString> d, int position, const QList<Tag> &tags)
 {
 	// Set default values
 	if (!d.contains("file_url"))
@@ -285,27 +285,37 @@ void PageApi::parseImage(QMap<QString, QString> d, int position, const QList<Tag
 	if (errors.isEmpty() && d["file_url"].endsWith("/." + d["ext"]))
 	{ errors.append("file url"); }
 
-	if (errors.isEmpty())
-	{ m_pageImageCount++; }
+	if (!errors.isEmpty())
+	{
+		log(QString("[%1][%2] Image #%3 ignored. Reason: %4.").arg(m_site->url(), m_format, QString::number(position + 1), errors.join(", ")), Logger::Info);
+		return QSharedPointer<Image>();
+	}
 
 	// Generate image
 	QSharedPointer<Image> img(new Image(m_site, d, m_profile, m_parentPage));
-	errors.append(PostFilter::filter(img->tokens(m_profile), m_postFiltering));
+	if (!tags.isEmpty())
+		img->setTags(tags);
 
-	// Add if everything is ok
-	if (errors.isEmpty())
-	{
-		// If we could get detailed tags information
-		if (!tags.isEmpty())
-			img->setTags(tags);
+	return img;
+}
 
-		m_images.append(QSharedPointer<Image>(img));
-	}
-	else
+bool PageApi::addImage(QSharedPointer<Image> img)
+{
+	if (img.isNull())
+		return false;
+
+	m_pageImageCount++;
+
+	QStringList filters = PostFilter::filter(img->tokens(m_profile), m_postFiltering);
+	if (!filters.isEmpty())
 	{
 		img->deleteLater();
-		log(QString("[%1][%2] Image #%3 ignored. Reason: %4.").arg(m_site->url(), m_format, QString::number(position + 1), errors.join(", ")), Logger::Info);
+		log(QString("[%1][%2] Image filtered. Reason: %3.").arg(m_site->url(), m_format, filters.join(", ")), Logger::Info);
+		return false;
 	}
+
+	m_images.append(img);
+	return true;
 }
 
 void PageApi::parse()
@@ -425,7 +435,7 @@ void PageApi::parse()
 										 : node.attributes().namedItem(infos.at(i)).nodeValue().trimmed();
 					}
 				}
-				this->parseImage(d, id + first, tags);
+				addImage(parseImage(d, id + first, tags));
 			}
 		}
 	}
@@ -483,7 +493,7 @@ void PageApi::parse()
 					{ d.insert("id", match.captured(1)); }
 				}
 
-				this->parseImage(d, id + first);
+				addImage(parseImage(d, id + first));
 			}
 		}
 	}
@@ -544,7 +554,7 @@ void PageApi::parse()
 					{ d[it.key()] = it.value().toString(); }
 				}
 			}
-			this->parseImage(d, id + first);
+			addImage(parseImage(d, id + first));
 			id++;
 		}
 	}
@@ -717,7 +727,7 @@ void PageApi::parse()
 					{ d["created_at"] = time.value("s").toString(); }
 				}
 
-				this->parseImage(d, id + first, tags);
+				addImage(parseImage(d, id + first, tags));
 			}
 		}
 		else
