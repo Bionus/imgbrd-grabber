@@ -2,7 +2,7 @@
 #include "commands/commands.h"
 #include "downloader/file-downloader.h"
 #include "functions.h"
-#include "models/api.h"
+#include "models/api/api.h"
 #include "models/filename.h"
 #include "models/image.h"
 #include "models/page.h"

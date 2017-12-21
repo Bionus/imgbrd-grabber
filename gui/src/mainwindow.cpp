@@ -32,7 +32,7 @@
 #include "downloader/image-downloader.h"
 #include "functions.h"
 #include "helpers.h"
-#include "models/api.h"
+#include "models/api/api.h"
 #include "models/favorite.h"
 #include "models/filename.h"
 #include "models/page.h"

@@ -5,7 +5,11 @@
 #include <QFileInfo>
 #include <QStringList>
 #include "functions.h"
-#include "models/api.h"
+#include "models/api/api.h"
+#include "models/api/html-api.h"
+#include "models/api/json-api.h"
+#include "models/api/rss-api.h"
+#include "models/api/xml-api.h"
 #include "models/profile.h"
 #include "models/site.h"
 
@@ -49,8 +53,20 @@ Source::Source(Profile *profile, const QString &dir)
 				m_apis.reserve(availableApis.count());
 				for (const QString &apiName : availableApis)
 				{
-					Api *api = new Api(apiName, details);
-					m_apis.append(api);
+					Api *api = nullptr;
+					if (apiName == "Html")
+					{ api = new HtmlApi(details); }
+					else if (apiName == "Json")
+					{ api = new JsonApi(details); }
+					else if (apiName == "Rss")
+					{ api = new RssApi(details); }
+					else if (apiName == "Xml")
+					{ api = new XmlApi(details); }
+
+					if (api != nullptr)
+					{ m_apis.append(api); }
+					else
+					{ log(QString("Unknown API type '%1'").arg(apiName), Logger::Error); }
 				}
 			}
 			else

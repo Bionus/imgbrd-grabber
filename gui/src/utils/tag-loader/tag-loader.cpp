@@ -2,7 +2,7 @@
 #include <QMessageBox>
 #include <ui_tag-loader.h>
 #include "helpers.h"
-#include "models/api.h"
+#include "models/api/api.h"
 #include "models/profile.h"
 #include "models/site.h"
 #include "tags/tag.h"

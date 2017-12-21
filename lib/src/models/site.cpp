@@ -13,7 +13,7 @@
 #include "login/http-post-login.h"
 #include "login/oauth2-login.h"
 #include "login/url-login.h"
-#include "models/api.h"
+#include "models/api/api.h"
 #include "models/image.h"
 #include "models/page.h"
 #include "models/profile.h"

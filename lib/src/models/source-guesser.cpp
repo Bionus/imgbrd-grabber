@@ -5,7 +5,7 @@
 #include <QRegularExpression>
 #include "custom-network-access-manager.h"
 #include "logger.h"
-#include "models/api.h"
+#include "models/api/api.h"
 #include "models/source.h"
 
 
