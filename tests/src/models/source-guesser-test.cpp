@@ -19,7 +19,7 @@ void SourceGuesserTest::testNotFound()
 	SourceGuesser guesser("https://danbooru.donmai.us", sources);
 	Source *source = guesser.start();
 
-	Q_ASSERT(source == nullptr);
+	QVERIFY(source == nullptr);
 }
 
 void SourceGuesserTest::testDanbooru1()
@@ -32,7 +32,7 @@ void SourceGuesserTest::testDanbooru1()
 	SourceGuesser guesser("http://behoimi.org", sources);
 	Source *source = guesser.start();
 
-	Q_ASSERT(source != nullptr);
+	QVERIFY(source != nullptr);
 	QCOMPARE(source->getName(), QString("Danbooru"));
 }
 
@@ -46,7 +46,7 @@ void SourceGuesserTest::testDanbooru2()
 	SourceGuesser guesser("https://danbooru.donmai.us", sources);
 	Source *source = guesser.start();
 
-	Q_ASSERT(source != nullptr);
+	QVERIFY(source != nullptr);
 	QCOMPARE(source->getName(), QString("Danbooru (2.0)"));
 }
 
