@@ -18,6 +18,7 @@ void TestSuite::setupSite(const QString &site, const QString &source)
 {
 	QDir().mkpath("tests/resources/sites/" + site + "/" + source);
 	QFile::remove("tests/resources/sites/" + site +"/" + source + "/defaults.ini");
+	QFile::remove("tests/resources/sites/" + site +"/" + source + "/settings.ini");
 	if (QFile::exists("release/sites/" + site +"/" + source + "/defaults.ini"))
 	{ QFile::copy("release/sites/" + site +"/" + source + "/defaults.ini", "tests/resources/sites/" + site +"/" + source + "/defaults.ini"); }
 }

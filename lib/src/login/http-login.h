@@ -3,6 +3,7 @@
 
 #include <QNetworkReply>
 #include <QSettings>
+#include "custom-network-access-manager.h"
 #include "login/login.h"
 #include "mixed-settings.h"
 
@@ -14,7 +15,7 @@ class HttpLogin : public Login
 	Q_OBJECT
 
 	public:
-		explicit HttpLogin(const QString &type, Site *site, QNetworkAccessManager *manager, MixedSettings *settings);
+		explicit HttpLogin(const QString &type, Site *site, CustomNetworkAccessManager *manager, MixedSettings *settings);
 		bool isTestable() const override;
 		virtual QNetworkReply *getReply(const QString &url, const QUrlQuery &query) const = 0;
 
@@ -28,7 +29,7 @@ class HttpLogin : public Login
 		QString m_type;
 		Site *m_site;
 		QNetworkReply *m_loginReply;
-		QNetworkAccessManager *m_manager;
+		CustomNetworkAccessManager *m_manager;
 		MixedSettings *m_settings;
 };
 

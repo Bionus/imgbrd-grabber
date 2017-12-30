@@ -5,7 +5,7 @@
 #include "models/site.h"
 
 
-HttpLogin::HttpLogin(const QString &type, Site *site, QNetworkAccessManager *manager, MixedSettings *settings)
+HttpLogin::HttpLogin(const QString &type, Site *site, CustomNetworkAccessManager *manager, MixedSettings *settings)
 	: m_type(type), m_site(site), m_manager(manager), m_settings(settings)
 {}
 

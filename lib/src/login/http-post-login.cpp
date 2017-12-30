@@ -3,7 +3,7 @@
 #include "models/site.h"
 
 
-HttpPostLogin::HttpPostLogin(Site *site, QNetworkAccessManager *manager, MixedSettings *settings)
+HttpPostLogin::HttpPostLogin(Site *site, CustomNetworkAccessManager *manager, MixedSettings *settings)
 	: HttpLogin("post", site, manager, settings)
 {}
 
