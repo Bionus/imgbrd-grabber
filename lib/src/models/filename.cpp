@@ -289,26 +289,6 @@ QStringList Filename::path(QMap<QString, Token> tokens, Profile *profile, QStrin
 	// Count token
 	tokens.insert("count", Token(counter));
 
-	// Custom tokens (if the tokens contain tags)
-	if (tokens.contains("tags"))
-	{
-		QMap<QString, QStringList> scustom = getCustoms(settings);
-		QMap<QString, QStringList> custom;
-		for (const QString &tag : tokens["tags"].value().toStringList())
-		{
-			for (auto it = scustom.begin(); it != scustom.end(); ++it)
-			{
-				const QString &key = it.key();
-				if (!custom.contains(key))
-				{ custom.insert(key, QStringList()); }
-				if (it.value().contains(tag, Qt::CaseInsensitive))
-				{ custom[key].append(tag); }
-			}
-		}
-		for (auto it = custom.begin(); it != custom.end(); ++it)
-		{ tokens.insert(it.key(), Token(it.value())); }
-	}
-
 	// Conditional filenames
 	QMap<QString, QPair<QString, QString>> filenames = getFilenames(settings);
 	for (auto it = filenames.begin(); it != filenames.end(); ++it)
