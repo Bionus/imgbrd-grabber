@@ -1,6 +1,7 @@
 #include "post-filter.h"
 #include <QDateTime>
 #include <QObject>
+#include "functions.h"
 
 
 int toDate(const QString &text)
@@ -23,8 +24,16 @@ QString PostFilter::match(const QMap<QString, Token> &tokens, QString filter, bo
 		invert = !invert;
 	}
 
+	// Tokens
+	if (filter.startsWith('%') && filter.endsWith('%'))
+	{
+		QString key = filter.mid(1, filter.length() - 2);
+		if (!tokens.contains(key) || isVariantEmpty(tokens[key].value()))
+		{ return QObject::tr("image does not have a '%1' token").arg(key); }
+	}
+
 	// Meta-tags
-	if (filter.contains(":"))
+	else if (filter.contains(":"))
 	{
 		QString type = filter.section(':', 0, 0).toLower();
 		filter = filter.section(':', 1).toLower();
