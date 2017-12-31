@@ -9,7 +9,7 @@ class JsonApi : public Api
 	Q_OBJECT
 
 	public:
-		JsonApi(const QMap<QString, QString> &data);
+		explicit JsonApi(const QMap<QString, QString> &data);
 		ParsedPage parsePage(Page *parentPage, const QString &source, int first) const override;
 };
 

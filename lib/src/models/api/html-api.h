@@ -9,7 +9,7 @@ class HtmlApi : public Api
 	Q_OBJECT
 
 	public:
-		HtmlApi(const QMap<QString, QString> &data);
+		explicit HtmlApi(const QMap<QString, QString> &data);
 		ParsedPage parsePage(Page *parentPage, const QString &source, int first) const override;
 };
 

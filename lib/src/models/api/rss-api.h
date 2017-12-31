@@ -9,7 +9,7 @@ class RssApi : public Api
 	Q_OBJECT
 
 	public:
-		RssApi(const QMap<QString, QString> &data);
+		explicit RssApi(const QMap<QString, QString> &data);
 		ParsedPage parsePage(Page *parentPage, const QString &source, int first) const override;
 };
 

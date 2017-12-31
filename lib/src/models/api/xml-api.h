@@ -9,7 +9,7 @@ class XmlApi : public Api
 	Q_OBJECT
 
 	public:
-		XmlApi(const QMap<QString, QString> &data);
+		explicit XmlApi(const QMap<QString, QString> &data);
 		ParsedPage parsePage(Page *parentPage, const QString &source, int first) const override;
 };
 
