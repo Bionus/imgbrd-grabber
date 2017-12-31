@@ -99,10 +99,16 @@ void TagStylistTest::testWithCount()
 	QCOMPARE(actual, expected);
 }
 
-void TagStylistTest::testSort()
+void TagStylistTest::testSortName()
 {
 	assertSort("name", QStringList() << "tag1" << "tag2" << "tag3");
+}
+void TagStylistTest::testSortType()
+{
 	assertSort("type", QStringList() << "tag2" << "tag1" << "tag3");
+}
+void TagStylistTest::testSortCount()
+{
 	assertSort("count", QStringList() << "tag3" << "tag2" << "tag1");
 }
 
@@ -119,8 +125,8 @@ void TagStylistTest::assertSort(const QString &sort, const QStringList &expected
 	auto tags = QList<Tag>
 	{
 		Tag("tag3", "general", 3, QStringList()),
-		Tag("tag2", "artist", 2, QStringList()),
-		Tag("tag1", "copyright", 1, QStringList()),
+		Tag("tag2", "copyright", 2, QStringList()),
+		Tag("tag1", "artist", 1, QStringList()),
 	};
 
 	TagStylist stylist(new Profile(m_settings, QList<Favorite>()));
