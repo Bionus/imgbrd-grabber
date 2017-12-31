@@ -27,6 +27,17 @@ QNetworkReply *CustomNetworkAccessManager::get(const QNetworkRequest &request)
 		if (fromQueue)
 		{ path = CustomNetworkAccessManager::NextFiles.dequeue(); }
 
+		// Error testing
+		if (path == "404")
+		{
+			auto *reply = new QCustomNetworkReply(this);
+			reply->setHttpStatusCode(404, "Not Found");
+			reply->setNetworkError(QNetworkReply::ContentNotFoundError, "Not Found");
+			reply->setContentType("text/html");
+			reply->setContent(QByteArray());
+			return reply;
+		}
+
 		QFile f(path);
 		bool opened = f.open(QFile::ReadOnly);
 		bool logFilename = !opened || !fromQueue;

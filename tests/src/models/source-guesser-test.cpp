@@ -22,6 +22,19 @@ void SourceGuesserTest::testNotFound()
 	QVERIFY(source == nullptr);
 }
 
+void SourceGuesserTest::testNetworkError()
+{
+	QList<Source*> sources;
+	sources.append(new Source(&profile, "tests/resources/sites/Danbooru"));
+
+	CustomNetworkAccessManager::NextFiles.enqueue("404");
+
+	SourceGuesser guesser("http://behoimi.org", sources);
+	Source *source = guesser.start();
+
+	QVERIFY(source == nullptr);
+}
+
 void SourceGuesserTest::testDanbooru1()
 {
 	QList<Source*> sources;

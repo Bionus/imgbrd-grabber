@@ -12,6 +12,7 @@ class SourceGuesserTest : public TestSuite
 		void initTestCase();
 
 		void testNotFound();
+		void testNetworkError();
 		void testDanbooru1();
 		void testDanbooru2();
 };
