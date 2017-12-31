@@ -255,9 +255,14 @@ void searchTab::clear()
 			page->abortTags();
 		}
 	}
+	for (auto it = m_thumbnailsLoading.begin(); it != m_thumbnailsLoading.end(); ++it)
+	{
+		QNetworkReply *reply = it.key();
+		if (reply->isRunning())
+		{ reply->abort(); }
+	}
+
 	m_pages.clear();
-	for (const auto &img : m_images)
-	{ img->abortPreview(); }
 	m_images.clear();
 
 	m_selectedImagesPtrs.clear();
@@ -386,7 +391,9 @@ void searchTab::postLoading(Page *page, const QList<QSharedPointer<Image>> &imgs
 		{ setMergedLabelText(m_siteLabels[nullptr], m_images); }
 	}
 
-	loadImageThumbnails(page, imgs);
+	// Load thumbnails
+	for (const auto &img : imgs)
+	{ loadImageThumbnail(page, img, img->url(Image::Size::Thumbnail)); }
 
 	// Re-enable endless loading if all sources have reached the last page
 	if (finished)
@@ -440,21 +447,15 @@ void searchTab::finishedLoadingTags(Page *page)
 		setPageLabelText(m_siteLabels[page->site()], page, imgs);
 }
 
-void searchTab::loadImageThumbnails(Page *page, const QList<QSharedPointer<Image>> &imgs)
+void searchTab::loadImageThumbnail(Page *page, QSharedPointer<Image> img, const QString &url)
 {
-	QStringList tags = page->search();
-	for (int i = 0; i < imgs.count(); i++)
-	{
-		const QSharedPointer<Image> &img = imgs.at(i);
-		QList<QChar> modifiers = QList<QChar>() << '~' << '-';
-		for (int r = 0; r < tags.size(); r++)
-			if (modifiers.contains(tags[r][0]))
-				tags[r] = tags[r].mid(1);
+	Site *site = page->site();
 
-		m_thumbnailsLoading[img.data()] = img;
-		connect(img.data(), &Image::finishedLoadingPreview, this, &searchTab::finishedLoadingPreview);
-		img->loadPreview();
-	}
+	QNetworkReply *reply = site->get(site->fixUrl(url), page, "preview");
+	reply->setParent(this);
+
+	m_thumbnailsLoading[reply] = img;
+	connect(reply, &QNetworkReply::finished, this, &searchTab::finishedLoadingPreview);
 }
 
 void searchTab::finishedLoadingPreview()
@@ -463,20 +464,55 @@ void searchTab::finishedLoadingPreview()
 		return;
 
 	QSharedPointer<Image> img;
-	QObject *key = sender();
-	if (m_thumbnailsLoading.contains(key))
+	QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
+	if (m_thumbnailsLoading.contains(reply))
 	{
-		img = m_thumbnailsLoading[key];
-		m_thumbnailsLoading.remove(key);
+		img = m_thumbnailsLoading[reply];
+		m_thumbnailsLoading.remove(reply);
 	}
 	else
 	{
-		log("Could not find image related to loaded thumbnail", Logger::Error);
+		log(QString("Could not find image related to loaded thumbnail '%1'").arg(reply->url().toString()), Logger::Error);
 		return;
 	}
 
-	if (img->previewImage().isNull())
-	{ log(QString("One of the thumbnails is empty (<a href=\"%1\">%1</a>).").arg(img->url(Image::Size::Thumbnail)), Logger::Error); }
+	// Aborted
+	if (reply->error() == QNetworkReply::OperationCanceledError)
+	{
+		reply->deleteLater();
+		return;
+	}
+
+	// Check redirection
+	QUrl redirection = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
+	if (!redirection.isEmpty())
+	{
+		loadImageThumbnail(img->page(), img, redirection.toString());
+		reply->deleteLater();
+		return;
+	}
+
+	// Loading error
+	if (reply->error() != QNetworkReply::NoError)
+	{
+		log(QString("<b>Error:</b> %1").arg(QString("error loading thumbnail (%1)").arg(reply->errorString())));
+		reply->deleteLater();
+		return;
+	}
+
+	// Load preview from result
+	QPixmap preview;
+	preview.loadFromData(reply->readAll());
+	reply->deleteLater();
+	if (preview.isNull())
+	{
+		log(QString("One of the thumbnails is empty (<a href=\"%1\">%1</a>).").arg(img->url(Image::Size::Thumbnail)), Logger::Error);
+		if (img->hasTag("flash"))
+		{ preview.load(":/images/flash.png"); }
+		else
+		{ return; }
+	}
+	img->setPreviewImage(preview);
 
 	// Download whitelist images on thumbnail view
 	QStringList detected = PostFilter::blacklisted(img->tokens(m_profile), m_profile->getBlacklist());

@@ -25,8 +25,6 @@ class ImageTest : public TestSuite
 		void testStylishedTags();
 		void testUnload();
 		void testValue();
-		void testLoadPreview();
-		void testLoadPreviewAbort();
 		void testLoadImage();
 		void testLoadImageAbort();
 		void testLoadDetails();

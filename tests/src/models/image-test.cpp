@@ -216,24 +216,6 @@ void ImageTest::testValue()
 	QCOMPARE(m_img->value(), 500 * 500);
 }
 
-void ImageTest::testLoadPreview()
-{
-	// Load preview
-	QSignalSpy spy(m_img, SIGNAL(finishedLoadingPreview()));
-	m_img->loadPreview();
-	QVERIFY(spy.wait());
-
-	// Compare result
-	QCOMPARE(m_img->previewImage().size(), QSize(1, 1));
-}
-void ImageTest::testLoadPreviewAbort()
-{
-	QSignalSpy spy(m_img, SIGNAL(finishedLoadingPreview()));
-	m_img->loadPreview();
-	m_img->abortPreview();
-	QVERIFY(!spy.wait(1000));
-}
-
 void ImageTest::testLoadImage()
 {
 	// Load preview

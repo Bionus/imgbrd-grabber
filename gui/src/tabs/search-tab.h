@@ -60,6 +60,7 @@ class searchTab : public QWidget
 		void clear();
 		TextEdit *createAutocomplete();
 		void loadImageThumbnails(Page *page, const QList<QSharedPointer<Image>> &imgs);
+		void loadImageThumbnail(Page *page, QSharedPointer<Image> img, const QString &url);
 		QBouton *createImageThumbnail(int position, QSharedPointer<Image> img);
 		FixedSizeGridLayout *createImagesLayout(QSettings *settings);
 		void thumbnailContextMenu(int position, QSharedPointer<Image> img);
@@ -151,7 +152,7 @@ class searchTab : public QWidget
 		QString				m_wiki;
 
 		QStringList m_completion;
-		QMap<QObject*, QSharedPointer<Image>> m_thumbnailsLoading;
+		QMap<QNetworkReply*, QSharedPointer<Image>> m_thumbnailsLoading;
 		QList<QSharedPointer<Image>> m_images;
 		QMap<QString, QList<QSharedPointer<Page>>> m_pages;
 		QMap<QString, QSharedPointer<Page>> m_lastPages;

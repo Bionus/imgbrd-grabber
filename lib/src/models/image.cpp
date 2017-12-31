@@ -44,7 +44,6 @@ Image::Image(const Image &other)
 	m_parentId = other.m_parentId;
 	m_fileSize = other.m_fileSize;
 	m_authorId = other.m_authorId;
-	m_previewTry = other.m_previewTry;
 
 	m_hasChildren = other.m_hasChildren;
 	m_hasNote = other.m_hasNote;
@@ -72,7 +71,6 @@ Image::Image(const Image &other)
 	m_createdAt = other.m_createdAt;
 	m_data = other.m_data;
 
-	m_loadPreview = other.m_loadPreview;
 	m_loadDetails = other.m_loadDetails;
 	m_loadImage = other.m_loadImage;
 
@@ -281,8 +279,6 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 
 	// Tech details
 	m_parent = parent;
-	m_previewTry = 0;
-	m_loadPreview = nullptr;
 	m_loadDetails = nullptr;
 	m_loadImage = nullptr;
 	m_loadingPreview = false;
@@ -292,79 +288,6 @@ Image::Image(Site *site, QMap<QString, QString> details, Profile *profile, Page*
 	m_loadingImage = false;
 	m_tryingSample = false;
 	m_pools = QList<Pool>();
-}
-
-void Image::loadPreview()
-{
-	if (m_previewUrl.isEmpty())
-	{
-		log("Thumbnail loading cancelled (empty url).");
-		return;
-	}
-
-	m_previewTry++;
-	m_loadPreview = m_parentSite->get(m_parentSite->fixUrl(m_previewUrl), m_parent, "preview");
-	m_loadPreview->setParent(this);
-	m_loadingPreview = true;
-
-	connect(m_loadPreview, SIGNAL(finished()), this, SLOT(parsePreview()));
-}
-void Image::abortPreview()
-{
-	if (m_loadingPreview && m_loadPreview->isRunning())
-	{ m_loadPreview->abort(); }
-}
-void Image::parsePreview()
-{
-	m_loadingPreview = false;
-
-	if (m_loadPreview == nullptr)
-		return;
-
-	// Aborted
-	if (m_loadPreview->error() == QNetworkReply::OperationCanceledError)
-	{
-		m_loadPreview->deleteLater();
-		m_loadPreview = nullptr;
-		return;
-	}
-
-	// Check redirection
-	QUrl redirection = m_loadPreview->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
-	if (!redirection.isEmpty())
-	{
-		m_previewUrl = redirection;
-		loadPreview();
-		return;
-	}
-
-	// Loading error
-	if (m_loadPreview->error() != QNetworkReply::NoError)
-	{
-		log(QString("<b>Error:</b> %1").arg(QString("error loading thumbnail (%1)").arg(m_loadPreview->errorString())));
-	}
-
-	// Load preview from raw result
-	QByteArray data = m_loadPreview->readAll();
-	m_imagePreview.loadFromData(data);
-	m_loadPreview->deleteLater();
-	m_loadPreview = nullptr;
-
-	// If nothing has been received
-	if (m_imagePreview.isNull() && m_previewTry <= 3)
-	{
-		log(QString("One of the thumbnails is empty (<a href=\"%1\">%1</a>). New try (%2/%3)...").arg(m_previewUrl.toString()).arg(m_previewTry).arg(3), Logger::Warning);
-
-		if (hasTag("flash"))
-		{ m_imagePreview.load(":/images/flash.png"); }
-		else
-		{
-			loadPreview();
-			return;
-		}
-	}
-
-	emit finishedLoadingPreview();
 }
 
 void Image::loadDetails(bool rateLimit)
@@ -974,6 +897,9 @@ Page			*Image::page() const		{ return m_parent;			}
 const QByteArray&Image::data() const		{ return m_data;			}
 QNetworkReply	*Image::imageReply() const	{ return m_loadImage;		}
 QNetworkReply	*Image::tagsReply() const	{ return m_loadDetails;		}
+
+void Image::setPreviewImage(const QPixmap &preview)
+{ m_imagePreview = preview; }
 
 bool Image::shouldDisplaySample() const
 {

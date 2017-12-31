@@ -54,6 +54,7 @@ class Image : public QObject, public Downloadable
 		QSize		size() const;
 		QPixmap		previewImage() const;
 		const QPixmap &previewImage();
+		void		setPreviewImage(const QPixmap &preview);
 		Page		*page() const;
 		const QByteArray &data() const;
 		Site		*parentSite() const;
@@ -92,13 +93,10 @@ class Image : public QObject, public Downloadable
 		void setRating(const QString &rating);
 
 	public slots:
-		void loadPreview();
 		void loadDetails(bool rateLimit = false);
 		void loadImage(bool inMemory = true, bool force = false);
-		void abortPreview();
 		void abortTags();
 		void abortImage();
-		void parsePreview();
 		void parseDetails();
 		void unload();
 
@@ -120,7 +118,7 @@ class Image : public QObject, public Downloadable
 	private:
 		Page			*m_parent;
 		qulonglong		m_id;
-		int				m_score, m_parentId, m_fileSize, m_authorId, m_previewTry;
+		int				m_score, m_parentId, m_fileSize, m_authorId;
 		bool			m_hasChildren, m_hasNote, m_hasComments, m_hasScore;
 		QString			m_url;
 		QString	mutable m_md5;
@@ -130,7 +128,7 @@ class Image : public QObject, public Downloadable
 		QPixmap			m_imagePreview;
 		QDateTime		m_createdAt;
 		QByteArray		m_data;
-		QNetworkReply	*m_loadPreview, *m_loadDetails, *m_loadImage;
+		QNetworkReply	*m_loadDetails, *m_loadImage;
 		QList<Tag>		m_tags;
 		QList<Pool>		m_pools;
 		QTime			m_timer;
