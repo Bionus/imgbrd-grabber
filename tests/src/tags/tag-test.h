@@ -15,6 +15,9 @@ class TagTest : public TestSuite
 		void cleanup();
 
 		void testDefaultConstructor();
+		void testId();
+		void testIdDefault();
+		void testSetId();
 		void testText();
 		void testSetText();
 		void testCount();
@@ -25,6 +28,7 @@ class TagTest : public TestSuite
 		void testTypeArtistEnding();
 		void testTypePrefix();
 		void testTypePrefixSpecies();
+		void testSetType();
 		void testShortType();
 		void testCompare();
 		void testSortTagsByType();

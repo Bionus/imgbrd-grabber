@@ -18,6 +18,26 @@ void TagTest::testDefaultConstructor()
 	QCOMPARE(tag.text(), QString());
 }
 
+void TagTest::testId()
+{
+	Tag tag(123, "tag_text", TagType("artist"), 123, QStringList() << "related1" << "related2" << "related3");
+
+	QCOMPARE(tag.id(), 123);
+}
+void TagTest::testIdDefault()
+{
+	Tag tag("tag_text", "artist", 123, QStringList() << "related1" << "related2" << "related3");
+
+	QCOMPARE(tag.id(), 0);
+}
+void TagTest::testSetId()
+{
+	Tag tag(123, "tag_not_text", TagType("artist"), 123, QStringList() << "related1" << "related2" << "related3");
+	tag.setId(456);
+
+	QCOMPARE(tag.id(), 456);
+}
+
 void TagTest::testText()
 {
 	Tag tag("tag_text", "artist", 123, QStringList() << "related1" << "related2" << "related3");
@@ -64,6 +84,13 @@ void TagTest::testShortType()
 	Tag tag("tag_text", "artist", 123, QStringList() << "related1" << "related2" << "related3");
 
 	QCOMPARE(tag.type().number(), 1);
+}
+void TagTest::testSetType()
+{
+	Tag tag("tag_not_text", "artist", 123, QStringList() << "related1" << "related2" << "related3");
+	tag.setType(TagType("copyright"));
+
+	QCOMPARE(tag.type().name(), QString("copyright"));
 }
 
 void TagTest::testCount()
