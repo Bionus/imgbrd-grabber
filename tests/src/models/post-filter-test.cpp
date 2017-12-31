@@ -201,6 +201,10 @@ void PostFilterTest::testFilterString()
 	// All match
 	filters = PostFilter::filter(tokens, QStringList() << "filetype:png");
 	QCOMPARE(filters, QStringList() << "image's filetype does not match");
+
+	// Invert
+	filters = PostFilter::filter(tokens, QStringList() << "-filetype:jpg");
+	QCOMPARE(filters, QStringList() << "image's filetype match");
 }
 void PostFilterTest::testFilterSpecial()
 {
