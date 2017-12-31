@@ -14,6 +14,7 @@ class TagNameFormatTest : public TestSuite
 		void testUpperFirst();
 		void testUpper();
 		void testCaps();
+		void testUnknown();
 };
 
 #endif // TAG_NAME_FORMAT_TEST_H

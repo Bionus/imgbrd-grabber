@@ -42,5 +42,15 @@ void TagNameFormatTest::testCaps()
 	QCOMPARE(format.formatted(QStringList() << "Test" << "tAG"), QString("TEST_TAG"));
 }
 
+void TagNameFormatTest::testUnknown()
+{
+	TagNameFormat format((TagNameFormat::CaseFormat)123, " ");
+
+	QCOMPARE(format.formatted(QStringList()), QString(""));
+	QCOMPARE(format.formatted(QStringList() << "test"), QString("test"));
+	QCOMPARE(format.formatted(QStringList() << "test" << "tag"), QString("test tag"));
+	QCOMPARE(format.formatted(QStringList() << "Test" << "tAG"), QString("Test tAG"));
+}
+
 
 static TagNameFormatTest instance;
