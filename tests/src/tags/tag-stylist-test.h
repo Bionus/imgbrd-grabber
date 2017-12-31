@@ -20,6 +20,10 @@ class TagStylistTest : public TestSuite
 		void testFavorite();
 		void testKeptForLater();
 		void testWithCount();
+		void testSort();
+
+	protected:
+		void assertSort(const QString &sort, const QStringList &expectedOrder);
 
 	private:
 		QSettings *m_settings;

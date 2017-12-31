@@ -11,11 +11,11 @@ QStringList TagStylist::stylished(QList<Tag> tags, bool count, bool noUnderscore
 {
 	// Sort tag list
 	if (sort == "type")
-		qSort(tags.begin(), tags.end(), sortTagsByType);
+		std::sort(tags.begin(), tags.end(), sortTagsByType);
 	else if (sort == "name")
-		qSort(tags.begin(), tags.end(), sortTagsByName);
+		std::sort(tags.begin(), tags.end(), sortTagsByName);
 	else if (sort == "count")
-		qSort(tags.begin(), tags.end(), sortTagsByCount);
+		std::sort(tags.begin(), tags.end(), sortTagsByCount);
 
 	QStringList t;
 	t.reserve(tags.count());

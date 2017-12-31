@@ -99,5 +99,40 @@ void TagStylistTest::testWithCount()
 	QCOMPARE(actual, expected);
 }
 
+void TagStylistTest::testSort()
+{
+	assertSort("name", QStringList() << "tag1" << "tag2" << "tag3");
+	assertSort("type", QStringList() << "tag2" << "tag1" << "tag3");
+	assertSort("count", QStringList() << "tag3" << "tag2" << "tag1");
+}
+
+
+void TagStylistTest::assertSort(const QString &sort, const QStringList &expectedOrder)
+{
+	m_settings->setValue("Coloring/Fonts/artists", ",8.25,-1,5,50,0,0,0,0,0");
+	m_settings->setValue("Coloring/Colors/artists", "#aa0000");
+	m_settings->setValue("Coloring/Fonts/generals", ",8.25,-1,5,50,0,0,0,0,0");
+	m_settings->setValue("Coloring/Colors/generals", "#aa0000");
+	m_settings->setValue("Coloring/Fonts/copyrights", ",8.25,-1,5,50,0,0,0,0,0");
+	m_settings->setValue("Coloring/Colors/copyrights", "#aa0000");
+
+	auto tags = QList<Tag>
+	{
+		Tag("tag3", "general", 3, QStringList()),
+		Tag("tag2", "artist", 2, QStringList()),
+		Tag("tag1", "copyright", 1, QStringList()),
+	};
+
+	TagStylist stylist(new Profile(m_settings, QList<Favorite>()));
+	QStringList actual = stylist.stylished(tags, false, false, sort);
+
+	QString format = "<a href=\"%1\" style=\"color:#aa0000; font-family:''; font-size:8pt; font-style:normal; font-weight:400; text-decoration:none;\">%1</a>";
+	QStringList expected;
+	for (const QString &tag : expectedOrder)
+		expected.append(format.arg(tag));
+
+	QCOMPARE(actual, expected);
+}
+
 
 static TagStylistTest instance;
