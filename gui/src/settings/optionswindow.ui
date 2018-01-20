@@ -18,7 +18,7 @@
     <normaloff>:/images/icon.ico</normaloff>:/images/icon.ico</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="1" column="0">
+   <item row="2" column="0">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -28,7 +28,7 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="0">
+   <item row="1" column="0">
     <widget class="QSplitter" name="splitter">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -1703,6 +1703,49 @@
           </property>
          </widget>
         </item>
+        <item row="1" column="0" colspan="2">
+         <widget class="QCheckBox" name="checkResultsFixedWidthLayout">
+          <property name="text">
+           <string>Use a fixed-image-width layout</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="labelInfiniteScroll">
+          <property name="text">
+           <string>Infinite scroll</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QComboBox" name="comboInfiniteScroll">
+          <item>
+           <property name="text">
+            <string>Disabled</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Button</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Scroll</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="3" column="0" colspan="2">
+         <widget class="QCheckBox" name="checkInfiniteScrollRememberPage">
+          <property name="text">
+           <string>Remember page number when infinite scrolling</string>
+          </property>
+         </widget>
+        </item>
         <item row="4" column="0" colspan="2">
          <widget class="QCheckBox" name="checkResizeInsteadOfCropping">
           <property name="text">
@@ -1751,7 +1794,7 @@
          </widget>
         </item>
         <item row="9" column="0" colspan="2">
-         <widget class="QLabel" name="label_66">
+         <widget class="QLabel" name="labelGetUnloadedPages">
           <property name="text">
            <string>&lt;i&gt;If you activate this option, pressing the &quot;Get this page&quot; button will take into account modifications made to the number of images per page, the page number, etc. even if they weren't loaded.&lt;/i&gt;</string>
           </property>
@@ -1760,46 +1803,20 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="0" colspan="2">
-         <widget class="QCheckBox" name="checkResultsFixedWidthLayout">
+        <item row="10" column="0" colspan="2">
+         <widget class="QCheckBox" name="checkInvertToggle">
           <property name="text">
-           <string>Use a fixed-image-width layout</string>
+           <string>Invert Click and Ctrl+Click actions</string>
           </property>
-          <property name="checked">
+         </widget>
+        </item>
+        <item row="11" column="0" colspan="2">
+         <widget class="QLabel" name="labelInvertToggle">
+          <property name="text">
+           <string>&lt;i&gt;With this option enabled, clicking an image will mark it for download, while Ctrl+Click will open the details window.&lt;/i&gt;</string>
+          </property>
+          <property name="wordWrap">
            <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="labelInfiniteScroll">
-          <property name="text">
-           <string>Infinite scroll</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="QComboBox" name="comboInfiniteScroll">
-          <item>
-           <property name="text">
-            <string>Disabled</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Button</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Scroll</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item row="3" column="0" colspan="2">
-         <widget class="QCheckBox" name="checkInfiniteScrollRememberPage">
-          <property name="text">
-           <string>Remember page number when infinite scrolling</string>
           </property>
          </widget>
         </item>

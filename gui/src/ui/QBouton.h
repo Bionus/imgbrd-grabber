@@ -22,6 +22,7 @@ class QBouton : public QPushButton
 	public slots:
 		void setId(const QVariant &id);
 		void setProgress(qint64 current, qint64 max);
+		void setInvertToggle(bool invertToggle);
 		void scale(const QPixmap &image, float scale);
 		void paintEvent(QPaintEvent *event) override;
 
@@ -48,6 +49,7 @@ class QBouton : public QPushButton
 		bool m_center;
 		qint64 m_progress;
 		qint64 m_progressMax;
+		bool m_invertToggle;
 };
 
 #endif

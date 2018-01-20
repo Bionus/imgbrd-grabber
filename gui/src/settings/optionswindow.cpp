@@ -53,6 +53,7 @@ optionsWindow::optionsWindow(Profile *profile, QWidget *parent)
 	ui->checkShowTagWarning->setChecked(settings->value("showtagwarning", true).toBool());
 	ui->checkShowWarnings->setChecked(settings->value("showwarnings", true).toBool());
 	ui->checkGetUnloadedPages->setChecked(settings->value("getunloadedpages", false).toBool());
+	ui->checkInvertToggle->setChecked(settings->value("invertToggle", false).toBool());
 	ui->checkConfirmClose->setChecked(settings->value("confirm_close", true).toBool());
 	QList<int> checkForUpdates = QList<int>() << 0 << 24*60*60 << 7*24*60*60 << 30*24*60*60 << -1;
 	ui->comboCheckForUpdates->setCurrentIndex(checkForUpdates.indexOf(settings->value("check_for_updates", 24*60*60).toInt()));
@@ -816,6 +817,7 @@ void optionsWindow::save()
 	settings->setValue("showtagwarning", ui->checkShowTagWarning->isChecked());
 	settings->setValue("showwarnings", ui->checkShowWarnings->isChecked());
 	settings->setValue("getunloadedpages", ui->checkGetUnloadedPages->isChecked());
+	settings->setValue("invertToggle", ui->checkInvertToggle->isChecked());
 	settings->setValue("confirm_close", ui->checkConfirmClose->isChecked());
 	QList<int> checkForUpdates = QList<int>() << 0 << 24*60*60 << 7*24*60*60 << 30*24*60*60 << -1;
 	settings->setValue("check_for_updates", checkForUpdates.at(ui->comboCheckForUpdates->currentIndex()));

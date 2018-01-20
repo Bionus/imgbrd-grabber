@@ -785,6 +785,7 @@ QBouton *searchTab::createImageThumbnail(int position, QSharedPointer<Image> img
 	QBouton *l = new QBouton(position, resizeInsteadOfCropping, resultsScrollArea, borderSize, color, this);
 	l->setCheckable(true);
 	l->setChecked(m_selectedImages.contains(img->url()));
+	l->setInvertToggle(m_settings->value("invertToggle", false).toBool());
 	l->setToolTip(img->tooltip());
 	if (img->previewImage().isNull())
 	{ l->scale(QPixmap(":/images/noimage.png"), upscale); }

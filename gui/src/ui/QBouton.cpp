@@ -38,6 +38,9 @@ void QBouton::setProgress(qint64 current, qint64 max)
 	repaint();
 }
 
+void QBouton::setInvertToggle(bool invertToggle)
+{ m_invertToggle = invertToggle; }
+
 void QBouton::paintEvent(QPaintEvent *event)
 {
 	// Used for normal buttons
@@ -167,7 +170,8 @@ void QBouton::mousePressEvent(QMouseEvent *event)
 
 	if (event->button() == Qt::LeftButton)
 	{
-		if (event->modifiers() & Qt::ControlModifier)
+		bool ctrlPressed = event->modifiers() & Qt::ControlModifier;
+		if (ctrlPressed != m_invertToggle)
 		{
 			this->toggle();
 			bool range = event->modifiers() & Qt::ShiftModifier;
