@@ -1,5 +1,5 @@
-#include <QtTest>
 #include "page-api-test.h"
+#include <QtTest>
 #include "models/source.h"
 
 
@@ -19,7 +19,6 @@ void PageApiTest::init()
 
 	m_sites.append(new Site("danbooru.donmai.us", new Source(&profile, "tests/resources/sites/Danbooru (2.0)")));
 	m_site = new Site("gelbooru.com", new Source(&profile, "tests/resources/sites/Gelbooru (0.2)"));
-
 }
 
 void PageApiTest::cleanup()

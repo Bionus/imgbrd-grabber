@@ -1,6 +1,6 @@
-#include "source-guesser-test.h"
-#include "models/source-guesser.h"
 #include "models/source.h"
+#include "models/source-guesser.h"
+#include "source-guesser-test.h"
 
 
 void SourceGuesserTest::initTestCase()

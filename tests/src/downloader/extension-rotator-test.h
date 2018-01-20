@@ -1,8 +1,8 @@
 #ifndef EXTENSION_ROTATOR_TEST_H
 #define EXTENSION_ROTATOR_TEST_H
 
-#include "test-suite.h"
 #include "downloader/extension-rotator.h"
+#include "test-suite.h"
 
 
 class ExtensionRotatorTest : public TestSuite

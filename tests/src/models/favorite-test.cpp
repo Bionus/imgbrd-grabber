@@ -1,5 +1,5 @@
-#include <QtTest>
 #include "favorite-test.h"
+#include <QtTest>
 #include "functions.h"
 
 

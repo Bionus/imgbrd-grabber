@@ -1,8 +1,8 @@
-#include <QtTest>
-#include <QStringList>
 #include "integration-test-suite.h"
-#include "tags/tag-api.h"
+#include <QStringList>
+#include <QtTest>
 #include "functions.h"
+#include "tags/tag-api.h"
 
 
 void IntegrationTestSuite::initTestCase()
@@ -77,8 +77,8 @@ QList<Image*> IntegrationTestSuite::getImages(const QString &site, const QString
 QList<Tag> IntegrationTestSuite::getPageTags(const QString &site, const QString &source, const QString &format, const QString &tags, const QString &file)
 {
 	QDir().mkpath("tests/resources/sites/" + site + "/" + source);
-	QFile::copy("release/sites/" + site +"/model.xml", "tests/resources/sites/" + site +"/model.xml");
-	QFile::copy("release/sites/" + site +"/" + source + "/defaults.ini", "tests/resources/sites/" + site +"/" + source + "/defaults.ini");
+	QFile("release/sites/" + site +"/model.xml").copy("tests/resources/sites/" + site +"/model.xml");
+	QFile("release/sites/" + site +"/" + source + "/defaults.ini").copy("tests/resources/sites/" + site +"/" + source + "/defaults.ini");
 
 	QSettings settings("tests/resources/sites/" + site +"/" + source + "/settings.ini", QSettings::IniFormat);
 	settings.setValue("download/throttle_retry", 0);
@@ -141,8 +141,8 @@ QList<Tag> IntegrationTestSuite::getPageTags(const QString &site, const QString 
 QList<Tag> IntegrationTestSuite::getTags(const QString &site, const QString &source, const QString &format, const QString &file)
 {
 	QDir().mkpath("tests/resources/sites/" + site + "/" + source);
-	QFile::copy("release/sites/" + site +"/model.xml", "tests/resources/sites/" + site +"/model.xml");
-	QFile::copy("release/sites/" + site +"/" + source + "/defaults.ini", "tests/resources/sites/" + site +"/" + source + "/defaults.ini");
+	QFile("release/sites/" + site +"/model.xml").copy("tests/resources/sites/" + site +"/model.xml");
+	QFile("release/sites/" + site +"/" + source + "/defaults.ini").copy("tests/resources/sites/" + site +"/" + source + "/defaults.ini");
 
 	QSettings settings("tests/resources/sites/" + site +"/" + source + "/settings.ini", QSettings::IniFormat);
 	settings.setValue("download/throttle_retry", 0);

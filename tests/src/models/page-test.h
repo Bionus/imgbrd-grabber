@@ -1,9 +1,9 @@
 #ifndef PAGE_TEST_H
 #define PAGE_TEST_H
 
-#include "test-suite.h"
-#include "models/site.h"
 #include "models/page.h"
+#include "models/site.h"
+#include "test-suite.h"
 
 
 class PageTest : public TestSuite

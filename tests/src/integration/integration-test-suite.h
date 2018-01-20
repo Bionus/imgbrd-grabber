@@ -2,11 +2,11 @@
 #define INTEGRATION_TEST_SUITE_H
 
 #include <QSettings>
-#include "test-suite.h"
 #include "downloader/downloader.h"
-#include "models/source.h"
-#include "models/site.h"
 #include "models/image.h"
+#include "models/site.h"
+#include "models/source.h"
+#include "test-suite.h"
 
 
 class IntegrationTestSuite : public TestSuite

@@ -1,5 +1,5 @@
-#include <QtTest>
 #include "page-test.h"
+#include <QtTest>
 #include "models/source.h"
 
 

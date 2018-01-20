@@ -1,7 +1,7 @@
-#include <QtTest>
-#include "test-suite.h"
 #include "post-filter-test.h"
+#include <QtTest>
 #include "models/post-filter.h"
+#include "test-suite.h"
 
 
 void PostFilterTest::init()

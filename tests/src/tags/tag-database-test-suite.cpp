@@ -1,5 +1,5 @@
-#include <QtTest>
 #include "tag-database-test-suite.h"
+#include <QtTest>
 
 
 TagDatabaseTestSuite::TagDatabaseTestSuite(TagDatabase *database)

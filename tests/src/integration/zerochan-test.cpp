@@ -1,6 +1,6 @@
-#include <QtTest>
-#include <QStringList>
 #include "zerochan-test.h"
+#include <QStringList>
+#include <QtTest>
 
 
 void ZerochanTest::testHtml()

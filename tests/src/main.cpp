@@ -1,8 +1,8 @@
 #include <QTest>
-#include "test-suite.h"
+#include <iostream>
 #include "custom-network-access-manager.h"
 #include "functions.h"
-#include <iostream>
+#include "test-suite.h"
 
 
 int main(int argc, char *argv[])

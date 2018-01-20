@@ -1,9 +1,9 @@
 #ifndef TAG_TEST_H
 #define TAG_TEST_H
 
-#include "test-suite.h"
-#include "tags/tag.h"
 #include <QSettings>
+#include "tags/tag.h"
+#include "test-suite.h"
 
 
 class TagTest : public TestSuite

@@ -1,9 +1,9 @@
 #ifndef TAG_STYLIST_TEST_H
 #define TAG_STYLIST_TEST_H
 
-#include "test-suite.h"
-#include "tags/tag-stylist.h"
 #include <QSettings>
+#include "tags/tag-stylist.h"
+#include "test-suite.h"
 
 
 class TagStylistTest : public TestSuite

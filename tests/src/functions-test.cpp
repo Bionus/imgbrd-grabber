@@ -1,5 +1,5 @@
-#include "functions-test.h"
 #include "functions.h"
+#include "functions-test.h"
 
 
 void FunctionsTest::testFixFilenameWindows()

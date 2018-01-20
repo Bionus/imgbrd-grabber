@@ -1,7 +1,7 @@
-#include <QtTest>
-#include "test-suite.h"
 #include "image-test.h"
+#include <QtTest>
 #include "functions.h"
+#include "test-suite.h"
 
 
 void ImageTest::init()
@@ -219,7 +219,7 @@ void ImageTest::testValue()
 void ImageTest::testLoadImage()
 {
 	// Load preview
-	QSignalSpy spy(m_img, SIGNAL(finishedImage(QNetworkReply::NetworkError,QString)));
+	QSignalSpy spy(m_img, SIGNAL(finishedImage(QNetworkReply::NetworkError, QString)));
 	m_img->loadImage();
 	QVERIFY(spy.wait());
 
@@ -355,7 +355,7 @@ void ImageTest::testSaveDuplicate()
 	m_img->setData(QString("test").toLatin1());
 	QMap<QString, Image::SaveResult> res;
 
-	QFile::copy("tests/resources/image_1x1.png", "tests/resources/tmp/source.png");
+	QFile("tests/resources/image_1x1.png").copy("tests/resources/tmp/source.png");
 	m_profile->addMd5(m_img->md5(), "tests/resources/tmp/source.png");
 
 	m_settings->setValue("Save/md5Duplicates", "ignore");

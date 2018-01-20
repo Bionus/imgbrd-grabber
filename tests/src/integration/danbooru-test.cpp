@@ -1,6 +1,6 @@
-#include <QtTest>
-#include <QStringList>
 #include "danbooru-test.h"
+#include <QStringList>
+#include <QtTest>
 #include "functions.h"
 
 

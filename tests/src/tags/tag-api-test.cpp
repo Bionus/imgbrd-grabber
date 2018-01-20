@@ -1,5 +1,5 @@
-#include <QtTest>
 #include "tag-api-test.h"
+#include <QtTest>
 #include "models/source.h"
 
 

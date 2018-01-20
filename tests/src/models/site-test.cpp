@@ -1,6 +1,6 @@
-#include <QtTest>
-#include <QNetworkCookie>
 #include "site-test.h"
+#include <QNetworkCookie>
+#include <QtTest>
 
 
 void SiteTest::init()
@@ -9,9 +9,9 @@ void SiteTest::init()
 	QFile::remove("tests/resources/sites/Danbooru (2.0)/model.xml");
 	QFile::remove("tests/resources/sites/Danbooru (2.0)/sites.txt");
 	QFile::remove("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/defaults.ini");
-	QFile::copy("release/sites/Danbooru (2.0)/model.xml", "tests/resources/sites/Danbooru (2.0)/model.xml");
-	QFile::copy("release/sites/Danbooru (2.0)/sites.txt", "tests/resources/sites/Danbooru (2.0)/sites.txt");
-	QFile::copy("release/sites/Danbooru (2.0)/danbooru.donmai.us/defaults.ini", "tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/defaults.ini");
+	QFile("release/sites/Danbooru (2.0)/model.xml").copy("tests/resources/sites/Danbooru (2.0)/model.xml");
+	QFile("release/sites/Danbooru (2.0)/sites.txt").copy("tests/resources/sites/Danbooru (2.0)/sites.txt");
+	QFile("release/sites/Danbooru (2.0)/danbooru.donmai.us/defaults.ini").copy("tests/resources/sites/Danbooru (2.0)/danbooru.donmai.us/defaults.ini");
 
 	m_profile = new Profile("tests/resources/");
 	m_settings = m_profile->getSettings();

@@ -1,5 +1,5 @@
-#include <QtTest>
 #include "tag-test.h"
+#include <QtTest>
 
 
 void TagTest::init()

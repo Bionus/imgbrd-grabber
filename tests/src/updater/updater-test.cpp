@@ -1,5 +1,5 @@
-#include <QtTest>
 #include "updater-test.h"
+#include <QtTest>
 
 
 void UpdaterTest::testCompareEqual()
