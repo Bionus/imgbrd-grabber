@@ -228,6 +228,7 @@ void sourcesWindow::addCheckboxes()
 			{
 				QAffiche *image = new QAffiche(k.at(i), 0, QColor(), this);
 				image->setPixmap(QPixmap(m_sites.value(k.at(i))->getSource()->getPath() + "/icon.png").scaled(QSize(16, 16)));
+				image->setCursor(Qt::PointingHandCursor);
 				connect(image, SIGNAL(clicked(QString)), this, SLOT(openSite(QString)));
 				ui->gridLayout->addWidget(image, i, n);
 				m_labels << image;
