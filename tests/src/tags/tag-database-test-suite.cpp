@@ -37,7 +37,7 @@ void TagDatabaseTestSuite::testEmptyContainsNone()
 
 	QCOMPARE(types.count(), 0);
 	qDebug() << "Elapsed" << elapsed << "ms";
-	QVERIFY(elapsed < 10);
+	QVERIFY(elapsed < 20);
 }
 
 void TagDatabaseTestSuite::testFilledContainsAll()
