@@ -558,9 +558,8 @@ void Image::finishedImageS(bool inMemory)
 			}
 			else
 			{
-				QString oldUrl = m_url;
 				m_url = setExtension(m_url, newext);
-				log(QString("Image not found. New try with extension %1 (%2)...").arg(newext, oldUrl));
+				log(QString("Image not found. New try with extension %1 (%2)...").arg(newext, m_url));
 			}
 
 			loadImage();
