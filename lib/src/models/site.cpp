@@ -380,7 +380,11 @@ QUrl Site::fixUrl(const QString &url, const QUrl &old) const
 	if (url.startsWith("//"))
 	{ return QUrl(protocol + ":" + url); }
 	if (url.startsWith("/"))
-	{ return QUrl(protocol + "://" + m_url + url); }
+	{
+		QString baseUrl = m_url.mid(m_url.indexOf('/'));
+		QString right = url.startsWith(baseUrl) ? url.mid(baseUrl.length()) : url;
+		return QUrl(protocol + "://" + m_url + right);
+	}
 
 	if (!url.startsWith("http"))
 	{
