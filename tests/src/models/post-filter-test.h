@@ -16,6 +16,7 @@ class PostFilterTest : public TestSuite
 		void cleanup();
 
 		void testBlacklisted();
+		void testMatchToken();
 		void testMatchTag();
 		void testMatchUnknown();
 		void testMatchMathematical();

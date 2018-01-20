@@ -74,6 +74,27 @@ void PostFilterTest::testBlacklisted()
 	QCOMPARE(PostFilter::blacklisted(tokens, QStringList() << "character1" << "artist1", false), QStringList());
 }
 
+void PostFilterTest::testMatchToken()
+{
+	auto tokens = m_img->tokens(m_profile);
+
+	// Basic
+	QCOMPARE(PostFilter::match(tokens, "%copyright%"), QString());
+	QCOMPARE(PostFilter::match(tokens, "%toto%"), QString("image does not have a \"toto\" token"));
+
+	// Minus
+	QCOMPARE(PostFilter::match(tokens, "-%copyright%"), QString("image has a \"copyright\" token"));
+	QCOMPARE(PostFilter::match(tokens, "-%toto%"), QString());
+
+	// Invert
+	QCOMPARE(PostFilter::match(tokens, "%copyright%", true), QString("image has a \"copyright\" token"));
+	QCOMPARE(PostFilter::match(tokens, "%toto%", true), QString());
+
+	// Invert minus
+	QCOMPARE(PostFilter::match(tokens, "-%copyright%", true), QString());
+	QCOMPARE(PostFilter::match(tokens, "-%toto%", true), QString("image does not have a \"toto\" token"));
+}
+
 void PostFilterTest::testMatchTag()
 {
 	auto tokens = m_img->tokens(m_profile);

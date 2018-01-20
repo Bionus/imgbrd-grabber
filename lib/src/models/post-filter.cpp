@@ -28,8 +28,12 @@ QString PostFilter::match(const QMap<QString, Token> &tokens, QString filter, bo
 	if (filter.startsWith('%') && filter.endsWith('%'))
 	{
 		QString key = filter.mid(1, filter.length() - 2);
-		if (!tokens.contains(key) || isVariantEmpty(tokens[key].value()))
-		{ return QObject::tr("image does not have a '%1' token").arg(key); }
+		bool cond = tokens.contains(key) && !isVariantEmpty(tokens[key].value());
+
+		if (cond && invert)
+		{ return QObject::tr("image has a \"%1\" token").arg(key); }
+		else if (!cond && !invert)
+		{ return QObject::tr("image does not have a \"%1\" token").arg(key); }
 	}
 
 	// Meta-tags
