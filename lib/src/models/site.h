@@ -66,8 +66,7 @@ class Site : public QObject
 		QNetworkReply *get(const QUrl &url, Page *page = nullptr, const QString &referer = "", Image *img = nullptr);
 		void getAsync(QueryType type, const QUrl &url, const std::function<void(QNetworkReply *)> &callback, Page *page = nullptr, const QString &referer = "", Image *img = nullptr);
 		QUrl fixUrl(const QUrl &url) const { return fixUrl(url.toString()); }
-		QUrl fixUrl(const QString &url) const;
-		QUrl fixUrl(const QString &url, const QUrl &old) const;
+		QUrl fixUrl(const QString &url, const QUrl &old = QUrl()) const;
 
 		// Api
 		QList<Api*> getApis(bool filterAuth = false) const;

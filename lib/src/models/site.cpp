@@ -369,11 +369,6 @@ QString Site::fixLoginUrl(QString url, const QString &loginPart) const
 	return m_login->complementUrl(url, loginPart);
 }
 
-QUrl Site::fixUrl(const QString &url) const
-{
-	return this->fixUrl(url, QUrl());
-}
-
 QUrl Site::fixUrl(const QString &url, const QUrl &old) const
 {
 	if (url.isEmpty())
