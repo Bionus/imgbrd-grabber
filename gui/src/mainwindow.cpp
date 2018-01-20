@@ -10,6 +10,7 @@
 #include <QShortcut>
 #include <QSound>
 #include <QTimer>
+#include <algorithm>
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 4, 0))
 	#include <QStorageInfo>
 #endif
@@ -1057,7 +1058,7 @@ void mainWindow::closeEvent(QCloseEvent *e)
 		{ tab->deleteLater(); }
 		m_settings->setValue("crashed", false);
 		m_settings->sync();
-		QFile::copy(m_settings->fileName(), m_profile->getPath() + "/old/settings."+QString(VERSION)+".ini");
+		QFile(m_settings->fileName()).copy(m_profile->getPath() + "/old/settings."+QString(VERSION)+".ini");
 		m_profile->sync();
 	DONE();
 	m_loaded = false;

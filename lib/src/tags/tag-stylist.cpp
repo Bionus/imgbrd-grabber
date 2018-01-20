@@ -1,4 +1,5 @@
 #include "tags/tag-stylist.h"
+#include <algorithm>
 #include "functions.h"
 #include "models/profile.h"
 

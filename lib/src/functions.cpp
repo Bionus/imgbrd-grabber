@@ -273,7 +273,7 @@ bool copyRecursively(QString srcFilePath, QString tgtFilePath)
 
 	// Directly copy files using Qt function
 	if (!QFileInfo(srcFilePath).isDir())
-		return QFile::copy(srcFilePath, tgtFilePath);
+		return QFile(srcFilePath).copy(tgtFilePath);
 
 	// Try to create the target directory
 	QDir targetDir(tgtFilePath);

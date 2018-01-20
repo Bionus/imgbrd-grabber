@@ -2,6 +2,7 @@
 #include <QMessageBox>
 #include <QtMath>
 #include <ui_favorites-tab.h>
+#include <algorithm>
 #include "downloader/download-query-group.h"
 #include "favoritewindow.h"
 #include "functions.h"

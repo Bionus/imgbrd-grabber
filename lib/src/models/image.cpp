@@ -685,7 +685,7 @@ Image::SaveResult Image::save(const QString &path, bool force, bool basic, bool 
 			if (!m_savePath.isEmpty() && QFile::exists(m_savePath))
 			{
 				log(QString("Saving image in <a href=\"file:///%1\">%1</a> (from <a href=\"file:///%2\">%2</a>)").arg(path, m_savePath));
-				QFile::copy(m_savePath, path);
+				QFile(m_savePath).copy(path);
 			}
 			else
 			{
@@ -743,7 +743,7 @@ Image::SaveResult Image::save(const QString &path, bool force, bool basic, bool 
 		else if (whatToDo == "copy")
 		{
 			log(QString("Copy from <a href=\"file:///%1\">%1</a> to <a href=\"file:///%2\">%2</a>").arg(md5Duplicate, path));
-			QFile::copy(md5Duplicate, path);
+			QFile(md5Duplicate).copy(path);
 
 			res = SaveResult::Copied;
 		}
