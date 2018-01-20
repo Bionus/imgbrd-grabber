@@ -5,6 +5,7 @@
 #include "models/page.h"
 #include "models/profile.h"
 #include "models/site.h"
+#include "logger.h"
 
 
 MonitoringCenter::MonitoringCenter(Profile *profile, QSystemTrayIcon *trayIcon, QObject *parent)
@@ -13,6 +14,8 @@ MonitoringCenter::MonitoringCenter(Profile *profile, QSystemTrayIcon *trayIcon, 
 
 void MonitoringCenter::start()
 {
+	log("Monitoring starting", Logger::Info);
+
 	m_stop = false;
 	int secsDelay = m_profile->getSettings()->value("Monitoring/startupDelay", 0).toInt();
 	QTimer::singleShot(secsDelay * 1000, this, SLOT(tick()));
@@ -58,6 +61,7 @@ void MonitoringCenter::tick()
 		return;
 
 	int minNextMonitoring = -1;
+	log("Monitoring tick", Logger::Info);
 
 	for (Favorite &fav : m_profile->getFavorites())
 	{
@@ -81,10 +85,17 @@ void MonitoringCenter::tick()
 
 	// Re-run this method as soon as one of the monitoring timeout expires
 	if (minNextMonitoring > 0)
-	{ QTimer::singleShot(minNextMonitoring * 1000, this, SLOT(monitoringTick())); }
+	{
+		log(QString("Next monitoring will be in %1 seconds").arg(minNextMonitoring), Logger::Info);
+		QTimer::singleShot(minNextMonitoring * 1000, this, SLOT(tick()));
+	}
+	else
+	{ log("Monitoring finished", Logger::Info); }
 }
 
 void MonitoringCenter::stop()
 {
 	m_stop = true;
+
+	log("Monitoring stopped", Logger::Info);
 }
