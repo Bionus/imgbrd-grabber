@@ -51,6 +51,9 @@ sourcesWindow::sourcesWindow(Profile *profile, const QList<Site*> &selected, QWi
 	// Check for updates in the model files
 	checkForUpdates();
 
+	// Check if there is any reported problem for one of the sources
+	checkForSourceIssues();
+
 	ui->buttonOk->setFocus();
 }
 sourcesWindow::~sourcesWindow()
@@ -301,6 +304,41 @@ void sourcesWindow::checkForUpdatesReceived(const QString &sourceName, bool isNe
 
 		m_labels[pos]->setPixmap(QPixmap(":/images/icons/update.png"));
 		m_labels[pos]->setToolTip(tr("An update for this source is available."));
+	}
+}
+
+void sourcesWindow::checkForSourceIssues()
+{
+	auto *accessManager = new CustomNetworkAccessManager(this);
+	m_checkForSourceReply = accessManager->get(QNetworkRequest(QUrl(SOURCE_ISSUES_URL)));
+
+	connect(m_checkForSourceReply, &QNetworkReply::finished, this, &sourcesWindow::checkForSourceIssuesReceived);
+}
+void sourcesWindow::checkForSourceIssuesReceived()
+{
+	if (m_checkForSourceReply->error() != QNetworkReply::NoError)
+		return;
+
+	QString source = m_checkForSourceReply->readAll();
+	QStringList issues = source.split("\n");
+
+	for (const QString &issue : issues)
+	{
+		int index = issue.indexOf(':');
+		if (issue.isEmpty() || index < 0)
+			return;
+
+		const QString &site = issue.left(index).trimmed();
+		const QString &desc = issue.mid(index + 1).trimmed();
+
+		int pos = m_sites.keys().indexOf(site);
+		if (pos != -1)
+		{
+			m_labels[pos]->setPixmap(QPixmap(":/images/icons/warning.png"));
+			m_labels[pos]->setToolTip(desc);
+			m_checks[pos]->setStyleSheet("QCheckBox { color: red; }");
+			m_checks[pos]->setToolTip(desc);
+		}
 	}
 }
 

@@ -38,6 +38,8 @@ class sourcesWindow : public QDialog
 		void checkClicked();
 		void checkForUpdates();
 		void checkForUpdatesReceived(const QString &source, bool isNew);
+		void checkForSourceIssues();
+		void checkForSourceIssuesReceived();
 		void addCheckboxes();
 		void removeCheckboxes();
 		void updateCheckboxes();
@@ -66,6 +68,7 @@ class sourcesWindow : public QDialog
 		const QMap<QString, Site*> &m_sites;
 		const QMap<QString, Source*> &m_sources;
 		QMap<QString, QStringList> m_presets;
+		QNetworkReply *m_checkForSourceReply;
 };
 
 #endif // SOURCESWINDOW_H
