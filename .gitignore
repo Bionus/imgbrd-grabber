@@ -28,13 +28,13 @@ symbols/
 *.lib
 *.sql
 *.zip
-build/
-build_linux/
+build*/
 debug/
 {gui,cli}/release/
 cache/
 release/*.txt
 release/*.ini
+release/*.json
 release/lastdump
 release/crashes/
 release/thumbs/
