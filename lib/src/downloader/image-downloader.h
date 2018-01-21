@@ -13,6 +13,8 @@ class ImageDownloader : public QObject
 	public:
 		ImageDownloader(QSharedPointer<Image> img, const QString &filename, const QString &path, int count, bool addMd5, bool startCommands, QObject *parent = Q_NULLPTR, bool loadTags = false);
 		ImageDownloader(QSharedPointer<Image> img, const QStringList &paths, int count, bool addMd5, bool startCommands, QObject *parent = Q_NULLPTR);
+
+	public slots:
 		void save();
 
 	protected:

@@ -142,5 +142,6 @@ class Image : public QObject, public Downloadable
 };
 
 Q_DECLARE_METATYPE(Image)
+Q_DECLARE_METATYPE(Image::SaveResult)
 
 #endif // IMAGE_H
