@@ -14,6 +14,8 @@ class ImageDownloaderTest : public TestSuite
 		void testSuccessBasic();
 		void testSuccessLoadTags();
 		void testOpenError();
+		void testNotFound();
+		void testNetworkError();
 
 	protected:
 		Image *createImage();

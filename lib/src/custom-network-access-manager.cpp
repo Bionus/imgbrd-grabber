@@ -28,11 +28,19 @@ QNetworkReply *CustomNetworkAccessManager::get(const QNetworkRequest &request)
 		{ path = CustomNetworkAccessManager::NextFiles.dequeue(); }
 
 		// Error testing
-		if (path == "404")
+		if (path == "404" || path == "500")
 		{
 			auto *reply = new QCustomNetworkReply(this);
-			reply->setHttpStatusCode(404, "Not Found");
-			reply->setNetworkError(QNetworkReply::ContentNotFoundError, "Not Found");
+			if (path == "404")
+			{
+				reply->setHttpStatusCode(404, "Not Found");
+				reply->setNetworkError(QNetworkReply::ContentNotFoundError, "Not Found");
+			}
+			else
+			{
+				reply->setHttpStatusCode(500, "Internal Server Error");
+				reply->setNetworkError(QNetworkReply::UnknownNetworkError, "Internal Server Error");
+			}
 			reply->setContentType("text/html");
 			reply->setContent(QByteArray());
 			return reply;

@@ -54,6 +54,32 @@ void ImageDownloaderTest::testOpenError()
 	assertDownload(img, &downloader, expected, false);
 }
 
+void ImageDownloaderTest::testNotFound()
+{
+	QSharedPointer<Image> img(createImage());
+	ImageDownloader downloader(img, "out.jpg", "tests/resources/tmp", 1, false, false, Q_NULLPTR, false);
+
+	QMap<QString, Image::SaveResult> expected;
+	expected.insert(QDir::toNativeSeparators("tests/resources/tmp/out.jpg"), Image::SaveResult::NotFound);
+
+	CustomNetworkAccessManager::NextFiles.append("404");
+
+	assertDownload(img, &downloader, expected, false);
+}
+
+void ImageDownloaderTest::testNetworkError()
+{
+	QSharedPointer<Image> img(createImage());
+	ImageDownloader downloader(img, "out.jpg", "tests/resources/tmp", 1, false, false, Q_NULLPTR, false);
+
+	QMap<QString, Image::SaveResult> expected;
+	expected.insert(QDir::toNativeSeparators("tests/resources/tmp/out.jpg"), Image::SaveResult::NetworkError);
+
+	CustomNetworkAccessManager::NextFiles.append("500");
+
+	assertDownload(img, &downloader, expected, false);
+}
+
 
 void ImageDownloaderTest::assertDownload(QSharedPointer<Image> img, ImageDownloader *downloader, const QMap<QString, Image::SaveResult> &expected, bool shouldExist)
 {
