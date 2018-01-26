@@ -17,6 +17,7 @@ class ExtensionRotatorTest : public TestSuite
 		void testEmptyFirst();
 		void testEmptyList();
 		void testEmptyBoth();
+		void testCopyConstructor();
 };
 
 #endif // EXTENSION_ROTATOR_TEST_H

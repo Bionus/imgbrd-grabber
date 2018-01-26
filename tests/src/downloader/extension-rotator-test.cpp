@@ -64,5 +64,16 @@ void ExtensionRotatorTest::testEmptyBoth()
 	QCOMPARE(rotator.next(), QString());
 }
 
+void ExtensionRotatorTest::testCopyConstructor()
+{
+	ExtensionRotator rotator("mp4", QStringList() << "jpg" << "png" << "gif");
+	QCOMPARE(rotator.next(), QString("jpg"));
+	QCOMPARE(rotator.next(), QString("png"));
+
+	ExtensionRotator copy(rotator);
+	QCOMPARE(copy.next(), QString("gif"));
+	QCOMPARE(copy.next(), QString());
+}
+
 
 static ExtensionRotatorTest instance;
