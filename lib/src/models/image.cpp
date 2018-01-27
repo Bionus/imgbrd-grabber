@@ -896,6 +896,7 @@ Page			*Image::page() const		{ return m_parent;			}
 const QByteArray&Image::data() const		{ return m_data;			}
 QNetworkReply	*Image::imageReply() const	{ return m_loadImage;		}
 QNetworkReply	*Image::tagsReply() const	{ return m_loadDetails;		}
+ExtensionRotator	*Image::extensionRotator() const	{ return m_extensionRotator;	}
 
 void Image::setPreviewImage(const QPixmap &preview)
 { m_imagePreview = preview; }

@@ -26,6 +26,7 @@ class ImageDownloader : public QObject
 
 	private slots:
 		void loadedSave();
+		void loadImage();
 		void writeError();
 		void networkError(QNetworkReply::NetworkError error, const QString &msg);
 		void success();
@@ -42,6 +43,10 @@ class ImageDownloader : public QObject
 		bool m_addMd5;
 		bool m_startCommands;
 		bool m_writeError;
+
+		QNetworkReply *m_reply = Q_NULLPTR;
+		QString m_url = "";
+		bool m_tryingSample = false;
 };
 
 #endif // IMAGE_DOWNLOADER_H

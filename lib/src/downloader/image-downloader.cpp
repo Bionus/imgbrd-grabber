@@ -1,7 +1,10 @@
 #include "downloader/image-downloader.h"
 #include <QUuid>
+#include "functions.h"
 #include "logger.h"
 #include "models/filename.h"
+#include "models/profile.h"
+#include "models/site.h"
 
 
 ImageDownloader::ImageDownloader(QSharedPointer<Image> img, const QString &filename, const QString &path, int count, bool addMd5, bool startCommands, QObject *parent, bool loadTags)
@@ -52,15 +55,28 @@ void ImageDownloader::loadedSave()
 		return;
 	}
 
-	// Load the image directly on the disk
-	log(QString("Loading and saving image in <a href=\"file:///%1\">%1</a>").arg(m_paths.first()));
+	m_url = m_image->url(Image::Size::Full);
+	loadImage();
+}
+
+void ImageDownloader::loadImage()
+{
 	connect(&m_fileDownloader, &FileDownloader::success, this, &ImageDownloader::success, Qt::UniqueConnection);
 	connect(&m_fileDownloader, &FileDownloader::networkError, this, &ImageDownloader::networkError, Qt::UniqueConnection);
 	connect(&m_fileDownloader, &FileDownloader::writeError, this, &ImageDownloader::writeError, Qt::UniqueConnection);
-	m_image->loadImage(false);
+
+	// Delete previous replies for retries
+	if (m_reply != Q_NULLPTR)
+	{ m_reply->deleteLater(); }
+
+	// Load the image directly on the disk
+	log(QString("Loading and saving image in <a href=\"file:///%1\">%1</a>").arg(m_paths.first()));
+	Site *site = m_image->parentSite();
+	m_reply = site->get(site->fixUrl(m_url), m_image->page(), "image", m_image.data());
+	m_reply->setParent(this);
 
 	// If we can't start writing for some reason, return an error
-	if (!m_fileDownloader.start(m_image->imageReply(), QStringList() << m_temporaryPath))
+	if (!m_fileDownloader.start(m_reply, QStringList() << m_temporaryPath))
 	{
 		log("Unable to open file", Logger::Error);
 		emit saved(m_image, makeMap(m_paths, Image::SaveResult::Error));
@@ -85,7 +101,39 @@ void ImageDownloader::writeError()
 void ImageDownloader::networkError(QNetworkReply::NetworkError error, const QString &msg)
 {
 	if (error == QNetworkReply::ContentNotFoundError)
-	{ emit saved(m_image, makeMap(m_paths, Image::SaveResult::NotFound)); }
+	{
+		QSettings *settings = m_image->parentSite()->getSource()->getProfile()->getSettings();
+		ExtensionRotator *extensionRotator = m_image->extensionRotator();
+
+		bool sampleFallback = settings->value("Save/samplefallback", true).toBool();
+		QString newext = extensionRotator != nullptr ? extensionRotator->next() : "";
+
+		bool shouldFallback = sampleFallback && !m_image->url(Image::Size::Sample).isEmpty();
+		bool isLast = newext.isEmpty() || (shouldFallback && m_tryingSample);
+
+		if (!isLast || (shouldFallback && !m_tryingSample))
+		{
+			if (isLast)
+			{
+				m_url = m_image->url(Image::Size::Sample);
+				m_tryingSample = true;
+				log("Image not found. New try with its sample...");
+			}
+			else
+			{
+				m_url = setExtension(m_url, newext);
+				log(QString("Image not found. New try with extension %1 (%2)...").arg(newext, m_url));
+			}
+
+			m_image->setUrl(m_url);
+			loadImage();
+		}
+		else
+		{
+			log("Image not found.");
+			emit saved(m_image, makeMap(m_paths, Image::SaveResult::NotFound));
+		}
+	}
 	else if (error != QNetworkReply::OperationCanceledError)
 	{
 		log(QString("Network error for the image: <a href=\"%1\">%1</a>: %2 (%3)").arg(m_image->url().toHtmlEscaped()).arg(error).arg(msg), Logger::Error);

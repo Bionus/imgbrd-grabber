@@ -60,6 +60,7 @@ class Image : public QObject, public Downloadable
 		Site		*parentSite() const;
 		QNetworkReply	*imageReply() const;
 		QNetworkReply	*tagsReply() const;
+		ExtensionRotator *extensionRotator() const;
 		bool		hasTag(QString tag) const;
 		bool		hasAnyTag(const QStringList &tags) const;
 		bool		hasAllTags(const QStringList &tags) const;
