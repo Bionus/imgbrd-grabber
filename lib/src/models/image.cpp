@@ -831,7 +831,7 @@ void Image::postSaving(const QString &path, bool addMd5, bool startCommands, int
 	if (startCommands)
 	{ commands.after(); }
 
-	m_savePath = path;
+	setSavePath(path);
 }
 QMap<QString, Image::SaveResult> Image::save(const QStringList &paths, bool addMd5, bool startCommands, int count, bool force, bool loadIfNecessary)
 {
@@ -899,6 +899,11 @@ QNetworkReply	*Image::tagsReply() const	{ return m_loadDetails;		}
 
 void Image::setPreviewImage(const QPixmap &preview)
 { m_imagePreview = preview; }
+void Image::setSavePath(const QString &path)
+{
+	m_savePath = path;
+	refreshTokens();
+}
 
 bool Image::shouldDisplaySample() const
 {

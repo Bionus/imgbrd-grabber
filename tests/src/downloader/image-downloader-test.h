@@ -16,9 +16,11 @@ class ImageDownloaderTest : public TestSuite
 		void testOpenError();
 		void testNotFound();
 		void testNetworkError();
+		void testOriginalMd5();
+		void testGeneratedMd5();
 
 	protected:
-		Image *createImage();
+		Image *createImage(bool noMd5 = false);
 		void assertDownload(QSharedPointer<Image> img, ImageDownloader *downloader, const QMap<QString, Image::SaveResult> &expected, bool shouldExist);
 };
 

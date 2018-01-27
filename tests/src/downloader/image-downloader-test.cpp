@@ -5,10 +5,11 @@
 #include "models/source.h"
 
 
-Image *ImageDownloaderTest::createImage()
+Image *ImageDownloaderTest::createImage(bool noMd5)
 {
 	QMap<QString, QString> details;
-	details["md5"] = "1bc29b36f623ba82aaf6724fd3b16718";
+	if (!noMd5)
+	{ details["md5"] = "1bc29b36f623ba82aaf6724fd3b16718"; }
 	details["ext"] = "jpg";
 	details["id"] = "7331";
 	details["file_url"] = "http://test.com/img/oldfilename.jpg";
@@ -80,6 +81,28 @@ void ImageDownloaderTest::testNetworkError()
 	assertDownload(img, &downloader, expected, false);
 }
 
+void ImageDownloaderTest::testOriginalMd5()
+{
+	QSharedPointer<Image> img(createImage());
+	ImageDownloader downloader(img, "%md5%.%ext%", "tests/resources/tmp", 1, false, false, Q_NULLPTR, false);
+
+	QMap<QString, Image::SaveResult> expected;
+	expected.insert(QDir::toNativeSeparators("tests/resources/tmp/1bc29b36f623ba82aaf6724fd3b16718.jpg"), Image::SaveResult::Saved);
+
+	assertDownload(img, &downloader, expected, true);
+}
+
+void ImageDownloaderTest::testGeneratedMd5()
+{
+	QSharedPointer<Image> img(createImage(true));
+	ImageDownloader downloader(img, "%md5%.%ext%", "tests/resources/tmp", 1, false, false, Q_NULLPTR, false);
+
+	QMap<QString, Image::SaveResult> expected;
+	expected.insert(QDir::toNativeSeparators("tests/resources/tmp/956ddde86fb5ce85218b21e2f49e5c50.jpg"), Image::SaveResult::Saved);
+
+	assertDownload(img, &downloader, expected, true);
+}
+
 
 void ImageDownloaderTest::assertDownload(QSharedPointer<Image> img, ImageDownloader *downloader, const QMap<QString, Image::SaveResult> &expected, bool shouldExist)
 {
@@ -93,8 +116,6 @@ void ImageDownloaderTest::assertDownload(QSharedPointer<Image> img, ImageDownloa
 	auto result = arguments[1].value<QMap<QString, Image::SaveResult>>();
 
 	QCOMPARE(out, img);
-	qDebug() << "result" << result;
-	qDebug() << "expected" << expected;
 	QCOMPARE(result, expected);
 
 	for (const QString &path : result.keys())

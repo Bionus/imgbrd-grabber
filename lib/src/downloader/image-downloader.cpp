@@ -1,4 +1,5 @@
 #include "downloader/image-downloader.h"
+#include <QUuid>
 #include "logger.h"
 #include "models/filename.h"
 
@@ -26,18 +27,27 @@ void ImageDownloader::save()
 
 void ImageDownloader::loadedSave()
 {
+	m_temporaryPath = m_path + "/" + QUuid::createUuid().toString().mid(1, 36) + ".tmp";
+
 	if (m_paths.isEmpty())
 		m_paths = m_image->path(m_filename, m_path, m_count, true, false, true, true, true);
 
-	QMap<QString, Image::SaveResult> result = m_image->save(m_paths, m_addMd5, m_startCommands, m_count, false);
+	QMap<QString, Image::SaveResult> result = m_image->save(QStringList() << m_temporaryPath, m_addMd5, m_startCommands, m_count, false, false);
 	bool needLoading = false;
+	bool saveOk = false;
 	for (Image::SaveResult res : result)
+	{
 		if (res == Image::SaveResult::NotLoaded)
 			needLoading = true;
+		else if (res == Image::SaveResult::Saved || res == Image::SaveResult::Copied || res == Image::SaveResult::Moved)
+			saveOk = true;
+	}
 
 	// If we don't need any loading, we can return already
 	if (!needLoading)
 	{
+		if (saveOk)
+		{ postSaving(); }
 		emit saved(m_image, result);
 		return;
 	}
@@ -50,7 +60,7 @@ void ImageDownloader::loadedSave()
 	m_image->loadImage(false);
 
 	// If we can't start writing for some reason, return an error
-	if (!m_fileDownloader.start(m_image->imageReply(), m_paths))
+	if (!m_fileDownloader.start(m_image->imageReply(), QStringList() << m_temporaryPath))
 	{
 		log("Unable to open file", Logger::Error);
 		emit saved(m_image, makeMap(m_paths, Image::SaveResult::Error));
@@ -85,8 +95,22 @@ void ImageDownloader::networkError(QNetworkReply::NetworkError error, const QStr
 
 void ImageDownloader::success()
 {
-	for (const QString &path : m_paths)
-		m_image->postSaving(path, m_addMd5, m_startCommands, m_count, false);
-
+	postSaving();
 	emit saved(m_image, makeMap(m_paths, Image::SaveResult::Saved));
+}
+
+void ImageDownloader::postSaving()
+{
+	m_image->setSavePath(m_temporaryPath);
+
+	if (!m_filename.isEmpty())
+	{ m_paths = m_image->path(m_filename, m_path, m_count, true, false, true, true, true); }
+
+	QFile tmp(m_temporaryPath);
+	tmp.rename(m_paths.first());
+	for (int i = 1; i < m_paths.count(); ++i)
+	{ tmp.copy(m_paths[i]); }
+
+	for (const QString &path : m_paths)
+	{ m_image->postSaving(path, m_addMd5, m_startCommands, m_count, false); }
 }

@@ -19,6 +19,7 @@ class ImageDownloader : public QObject
 
 	protected:
 		QMap<QString, Image::SaveResult> makeMap(const QStringList &keys, Image::SaveResult value);
+		void postSaving();
 
 	signals:
 		void saved(QSharedPointer<Image> img, const QMap<QString, Image::SaveResult> &result);
@@ -36,6 +37,7 @@ class ImageDownloader : public QObject
 		QString m_path;
 		bool m_loadTags;
 		QStringList m_paths;
+		QString m_temporaryPath;
 		int m_count;
 		bool m_addMd5;
 		bool m_startCommands;
