@@ -1673,9 +1673,8 @@ void mainWindow::imageUrlChanged(const QString &before, const QString &after)
 	m_downloadTime.insert(after, m_downloadTime[before]);
 	m_downloadTime.remove(before);
 }
-void mainWindow::getAllProgress(qint64 bytesReceived, qint64 bytesTotal)
+void mainWindow::getAllProgress(QSharedPointer<Image> img, qint64 bytesReceived, qint64 bytesTotal)
 {
-	auto *img = static_cast<Image*>(sender());
 	QString url = img->url();
 	if (img->fileSize() == 0)
 	{
@@ -1793,13 +1792,13 @@ void mainWindow::getAllGetImage(QSharedPointer<Image> img)
 	m_downloadTime[img->url()].start();
 	m_downloadTimeLast.insert(img->url(), QTime());
 	m_downloadTimeLast[img->url()].start();
-	connect(img.data(), &Image::downloadProgressImage, this, &mainWindow::getAllProgress, Qt::UniqueConnection);
 
 	// Start loading and saving image
 	log(QString("Loading image from <a href=\"%1\">%1</a> %2").arg(img->fileUrl().toString()).arg(m_getAllDownloading.size()), Logger::Info);
 	int count = m_getAllDownloaded + m_getAllExists + m_getAllIgnored + m_getAllErrors + 1;
 	auto imgDownloader = new ImageDownloader(img, filename, path, count, true, false, this);
-	connect(imgDownloader, &ImageDownloader::saved, this, &mainWindow::getAllGetImageSaved);
+	connect(imgDownloader, &ImageDownloader::saved, this, &mainWindow::getAllGetImageSaved, Qt::UniqueConnection);
+	connect(imgDownloader, &ImageDownloader::downloadProgress, this, &mainWindow::getAllProgress, Qt::UniqueConnection);
 	imgDownloader->save();
 	m_getAllImageDownloaders[img] = imgDownloader;
 }

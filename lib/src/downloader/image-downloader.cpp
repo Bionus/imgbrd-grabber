@@ -74,6 +74,7 @@ void ImageDownloader::loadImage()
 	Site *site = m_image->parentSite();
 	m_reply = site->get(site->fixUrl(m_url), m_image->page(), "image", m_image.data());
 	m_reply->setParent(this);
+	connect(m_reply, &QNetworkReply::downloadProgress, this, &ImageDownloader::downloadProgressImage);
 
 	// If we can't start writing for some reason, return an error
 	if (!m_fileDownloader.start(m_reply, QStringList() << m_temporaryPath))
@@ -82,6 +83,11 @@ void ImageDownloader::loadImage()
 		emit saved(m_image, makeMap(m_paths, Image::SaveResult::Error));
 		return;
 	}
+}
+
+void ImageDownloader::downloadProgressImage(qint64 v1, qint64 v2)
+{
+	emit downloadProgress(m_image, v1, v2);
 }
 
 QMap<QString, Image::SaveResult> ImageDownloader::makeMap(const QStringList &keys, Image::SaveResult value)

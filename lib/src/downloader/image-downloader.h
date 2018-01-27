@@ -22,11 +22,13 @@ class ImageDownloader : public QObject
 		QMap<QString, Downloadable::SaveResult> postSaving(QMap<QString, Downloadable::SaveResult> result = QMap<QString, Downloadable::SaveResult>());
 
 	signals:
+		void downloadProgress(QSharedPointer<Image> img, qint64 v1, qint64 v2);
 		void saved(QSharedPointer<Image> img, const QMap<QString, Image::SaveResult> &result);
 
 	private slots:
 		void loadedSave();
 		void loadImage();
+		void downloadProgressImage(qint64 v1, qint64 v2);
 		void writeError();
 		void networkError(QNetworkReply::NetworkError error, const QString &msg);
 		void success();

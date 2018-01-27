@@ -96,7 +96,7 @@ class mainWindow : public QMainWindow
 		void getAllGetImage(QSharedPointer<Image> img);
 		void getAllGetImageSaved(QSharedPointer<Image> img, QMap<QString, Image::SaveResult> result);
 		void getAllPerformTags();
-		void getAllProgress(qint64, qint64);
+		void getAllProgress(QSharedPointer<Image> img, qint64, qint64);
 		void getAllCancel();
 		void getAllPause();
 		void getAllSkip();
