@@ -7,12 +7,12 @@
 #include "models/site.h"
 
 
-ImageDownloader::ImageDownloader(QSharedPointer<Image> img, const QString &filename, const QString &path, int count, bool addMd5, bool startCommands, QObject *parent, bool loadTags)
-	: QObject(parent), m_fileDownloader(this), m_image(img), m_filename(filename), m_path(path), m_loadTags(loadTags), m_count(count), m_addMd5(addMd5), m_startCommands(startCommands), m_writeError(false)
+ImageDownloader::ImageDownloader(QSharedPointer<Image> img, const QString &filename, const QString &path, int count, bool addMd5, bool startCommands, QObject *parent, bool loadTags, bool rotate)
+	: QObject(parent), m_fileDownloader(this), m_image(img), m_filename(filename), m_path(path), m_loadTags(loadTags), m_count(count), m_addMd5(addMd5), m_startCommands(startCommands), m_writeError(false), m_rotate(rotate)
 {}
 
-ImageDownloader::ImageDownloader(QSharedPointer<Image> img, const QStringList &paths, int count, bool addMd5, bool startCommands, QObject *parent)
-	: QObject(parent), m_fileDownloader(this), m_image(img), m_paths(paths), m_count(count), m_addMd5(addMd5), m_startCommands(startCommands), m_writeError(false)
+ImageDownloader::ImageDownloader(QSharedPointer<Image> img, const QStringList &paths, int count, bool addMd5, bool startCommands, QObject *parent, bool rotate)
+	: QObject(parent), m_fileDownloader(this), m_image(img), m_paths(paths), m_count(count), m_addMd5(addMd5), m_startCommands(startCommands), m_writeError(false), m_rotate(rotate)
 {}
 
 void ImageDownloader::save()
@@ -117,7 +117,7 @@ void ImageDownloader::networkError(QNetworkReply::NetworkError error, const QStr
 		bool shouldFallback = sampleFallback && !m_image->url(Image::Size::Sample).isEmpty();
 		bool isLast = newext.isEmpty() || (shouldFallback && m_tryingSample);
 
-		if (!isLast || (shouldFallback && !m_tryingSample))
+		if (m_rotate && (!isLast || (shouldFallback && !m_tryingSample)))
 		{
 			if (isLast)
 			{

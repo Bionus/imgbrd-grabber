@@ -18,6 +18,7 @@ class ImageDownloaderTest : public TestSuite
 		void testNetworkError();
 		void testOriginalMd5();
 		void testGeneratedMd5();
+		void testRotateExtension();
 
 	protected:
 		Image *createImage(bool noMd5 = false);
