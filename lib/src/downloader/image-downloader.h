@@ -19,7 +19,7 @@ class ImageDownloader : public QObject
 
 	protected:
 		QMap<QString, Image::SaveResult> makeMap(const QStringList &keys, Image::SaveResult value);
-		void postSaving();
+		QMap<QString, Downloadable::SaveResult> postSaving(QMap<QString, Downloadable::SaveResult> result = QMap<QString, Downloadable::SaveResult>());
 
 	signals:
 		void saved(QSharedPointer<Image> img, const QMap<QString, Image::SaveResult> &result);

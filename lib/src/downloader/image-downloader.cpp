@@ -50,7 +50,7 @@ void ImageDownloader::loadedSave()
 	if (!needLoading)
 	{
 		if (saveOk)
-		{ postSaving(); }
+		{ result = postSaving(result); }
 		emit saved(m_image, result);
 		return;
 	}
@@ -143,11 +143,10 @@ void ImageDownloader::networkError(QNetworkReply::NetworkError error, const QStr
 
 void ImageDownloader::success()
 {
-	postSaving();
-	emit saved(m_image, makeMap(m_paths, Image::SaveResult::Saved));
+	emit saved(m_image, postSaving());
 }
 
-void ImageDownloader::postSaving()
+QMap<QString, Image::SaveResult> ImageDownloader::postSaving(QMap<QString, Image::SaveResult> result)
 {
 	m_image->setSavePath(m_temporaryPath);
 
@@ -155,10 +154,35 @@ void ImageDownloader::postSaving()
 	{ m_paths = m_image->path(m_filename, m_path, m_count, true, false, true, true, true); }
 
 	QFile tmp(m_temporaryPath);
-	tmp.rename(m_paths.first());
-	for (int i = 1; i < m_paths.count(); ++i)
-	{ tmp.copy(m_paths[i]); }
+	bool moved = false;
 
-	for (const QString &path : m_paths)
-	{ m_image->postSaving(path, m_addMd5, m_startCommands, m_count, false); }
+	for (int i = 0; i < m_paths.count(); ++i)
+	{
+		const QString &path = m_paths[i];
+
+		QFile f(path);
+		if (f.exists())
+		{
+			result[path] = Image::SaveResult::AlreadyExists;
+			continue;
+		}
+
+		if (!moved)
+		{
+			tmp.rename(path);
+			moved = true;
+		}
+		else
+		{ tmp.copy(path); }
+
+		if (!result.contains(path))
+		{ result[path] = Image::SaveResult::Saved; }
+
+		m_image->postSaving(path, m_addMd5, m_startCommands, m_count, false);
+	}
+
+	if (!moved)
+	{ tmp.remove(); }
+
+	return result;
 }
