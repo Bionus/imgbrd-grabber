@@ -1,5 +1,6 @@
 #include "extension-rotator-test.h"
 #include <QtTest>
+#include <algorithm>
 
 
 void ExtensionRotatorTest::testBasic()
