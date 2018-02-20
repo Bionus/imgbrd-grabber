@@ -5,6 +5,15 @@
 #include "models/source.h"
 
 
+void ImageDownloaderTest::cleanup()
+{
+	QDir dir("tests/resources/tmp/");
+	for (const QString &file : dir.entryList(QDir::Files))
+	{
+		dir.remove(file);
+	}
+}
+
 Image *ImageDownloaderTest::createImage(bool noMd5)
 {
 	QMap<QString, QString> details;
